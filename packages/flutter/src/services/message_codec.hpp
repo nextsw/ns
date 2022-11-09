@@ -1,57 +1,53 @@
-#ifndef MESSAGE_CODEC_H
-#define MESSAGE_CODEC_H
-#include <memory>
-#include <typed_data.hpp>
+#ifndef PACKAGES_FLUTTER_SRC_SERVICES_MESSAGE_CODEC
+#define PACKAGES_FLUTTER_SRC_SERVICES_MESSAGE_CODEC
+#include <base.hpp>
+#include <dart/typed_data/typed_data.hpp>
 
-#include <flutter/foundation.hpp>
+#include <dart/core/core.hpp>
+#include <packages/flutter/lib/foundation.hpp>
 #include "platform_channel.hpp"
 
 
-
-class MessageCodec<T> {
+template<typename T> class MessageCodecCls : public ObjectCls {
 public:
 
-    ByteData encodeMessage(T message);
-
-    T decodeMessage(ByteData message);
-
+    virtual ByteData encodeMessage(T message);
+    virtual T decodeMessage(ByteData message);
 private:
 
 };
+template<typename T> using MessageCodec = std::shared_ptr<MessageCodecCls<T>>;
 
-class MethodCall {
+class MethodCallCls : public ObjectCls {
 public:
     String method;
 
     dynamic arguments;
 
 
-     MethodCall(dynamic arguments, String method);
+     MethodCallCls(dynamic arguments, String method);
 
-    String toString();
+    virtual String toString();
 
 private:
 
 };
+using MethodCall = std::shared_ptr<MethodCallCls>;
 
-class MethodCodec {
+class MethodCodecCls : public ObjectCls {
 public:
 
-    ByteData encodeMethodCall(MethodCall methodCall);
-
-    MethodCall decodeMethodCall(ByteData methodCall);
-
-    dynamic decodeEnvelope(ByteData envelope);
-
-    ByteData encodeSuccessEnvelope(Object result);
-
-    ByteData encodeErrorEnvelope(String code, Object details, String message);
-
+    virtual ByteData encodeMethodCall(MethodCall methodCall);
+    virtual MethodCall decodeMethodCall(ByteData methodCall);
+    virtual dynamic decodeEnvelope(ByteData envelope);
+    virtual ByteData encodeSuccessEnvelope(Object result);
+    virtual ByteData encodeErrorEnvelope(String code, Object details, String message);
 private:
 
 };
+using MethodCodec = std::shared_ptr<MethodCodecCls>;
 
-class PlatformException {
+class PlatformExceptionCls : public ObjectCls {
 public:
     String code;
 
@@ -62,25 +58,27 @@ public:
     String stacktrace;
 
 
-     PlatformException(String code, dynamic details, String message, String stacktrace);
+     PlatformExceptionCls(String code, dynamic details, String message, String stacktrace);
 
-    String toString();
+    virtual String toString();
 
 private:
 
 };
+using PlatformException = std::shared_ptr<PlatformExceptionCls>;
 
-class MissingPluginException {
+class MissingPluginExceptionCls : public ObjectCls {
 public:
     String message;
 
 
-     MissingPluginException(String message);
-
-    String toString();
+     MissingPluginExceptionCls(String message);
+    virtual String toString();
 
 private:
 
 };
+using MissingPluginException = std::shared_ptr<MissingPluginExceptionCls>;
+
 
 #endif

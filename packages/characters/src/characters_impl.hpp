@@ -1,219 +1,219 @@
-#ifndef CHARACTERS_IMPL_H
-#define CHARACTERS_IMPL_H
-#include <memory>
+#ifndef PACKAGES_CHARACTERS_SRC_CHARACTERS_IMPL
+#define PACKAGES_CHARACTERS_SRC_CHARACTERS_IMPL
+#include <base.hpp>
 
-#include <characters/src/grapheme_clusters/table.hpp>
+#include <dart/core/core.hpp>
+#include <packages/characters/characters.hpp>
 #include "characters.hpp"
 #include "grapheme_clusters/constants.hpp"
 #include "grapheme_clusters/breaks.hpp"
 
 
-
-class StringCharacters : Iterable<String> {
+class StringCharactersCls : public IterableCls<String> {
 public:
     String string;
 
 
-     StringCharacters(String string);
+     StringCharactersCls(String string);
+    virtual CharacterRange iterator();
 
-    CharacterRange iterator();
+    virtual CharacterRange iteratorAtEnd();
 
-    CharacterRange iteratorAtEnd();
+    virtual String first();
 
-    String first();
+    virtual String last();
 
-    String last();
+    virtual String single();
 
-    String single();
+    virtual bool isEmpty();
 
-    bool isEmpty();
+    virtual bool isNotEmpty();
 
-    bool isNotEmpty();
+    virtual int length();
 
-    int length();
+    template<typename T>  virtual Iterable<T> whereType();
 
-    Iterable<T> whereType<T>();
+    virtual String join(String separator);
 
-    String join(String separator);
+    virtual String lastWhere(String orElse() , bool test(String element) );
 
-    String lastWhere(FunctionType orElse, FunctionType test);
+    virtual String elementAt(int index);
 
-    String elementAt(int index);
+    virtual bool contains(Object singleCharacterString);
 
-    bool contains(Object singleCharacterString);
+    virtual bool startsWith(Characters characters);
 
-    bool startsWith(Characters characters);
+    virtual bool endsWith(Characters characters);
 
-    bool endsWith(Characters characters);
+    virtual Characters replaceAll(Characters pattern, Characters replacement);
 
-    Characters replaceAll(Characters pattern, Characters replacement);
+    virtual Characters replaceFirst(Characters pattern, Characters replacement);
 
-    Characters replaceFirst(Characters pattern, Characters replacement);
+    virtual Iterable<Characters> split(int maxParts, Characters pattern);
 
-    Iterable<Characters> split(int maxParts, Characters pattern);
+    virtual bool containsAll(Characters characters);
 
-    bool containsAll(Characters characters);
+    virtual Characters skip(int count);
 
-    Characters skip(int count);
+    virtual Characters take(int count);
 
-    Characters take(int count);
+    virtual Characters getRange(int end, int start);
 
-    Characters getRange(int end, int start);
+    virtual Characters characterAt(int position);
 
-    Characters characterAt(int position);
+    virtual Characters skipWhile(bool test(String ) );
 
-    Characters skipWhile(FunctionType test);
+    virtual Characters takeWhile(bool test(String ) );
 
-    Characters takeWhile(FunctionType test);
+    virtual Characters where(bool test(String ) );
 
-    Characters where(FunctionType test);
+    virtual Characters operator+(Characters characters);
 
-    Characters +(Characters characters);
+    virtual Characters skipLast(int count);
 
-    Characters skipLast(int count);
+    virtual Characters skipLastWhile(bool test(String ) );
 
-    Characters skipLastWhile(FunctionType test);
+    virtual Characters takeLast(int count);
 
-    Characters takeLast(int count);
+    virtual Characters takeLastWhile(bool test(String ) );
 
-    Characters takeLastWhile(FunctionType test);
+    virtual Characters toLowerCase();
 
-    Characters toLowerCase();
+    virtual Characters toUpperCase();
 
-    Characters toUpperCase();
+    virtual bool operator==(Object other);
 
-    bool ==(Object other);
+    virtual int hashCode();
 
-    int hashCode();
+    virtual String toString();
 
-    String toString();
+    virtual CharacterRange findFirst(Characters characters);
 
-    CharacterRange findFirst(Characters characters);
-
-    CharacterRange findLast(Characters characters);
+    virtual CharacterRange findLast(Characters characters);
 
 private:
 
-    StringCharacterRange _rangeAll();
+    virtual StringCharacterRange _rangeAll();
 
-    int _skipIndices(Breaks breaks, int count, int cursor);
+    virtual int _skipIndices(Breaks breaks, int count, int cursor);
 
-    Characters _skip(int count);
+    virtual Characters _skip(int count);
 
-    Characters _take(int count);
+    virtual Characters _take(int count);
 
 };
+using StringCharacters = std::shared_ptr<StringCharactersCls>;
 
-class StringCharacterRange {
+class StringCharacterRangeCls : public ObjectCls {
 public:
 
-     StringCharacterRange(String string);
+     StringCharacterRangeCls(String stringValue);
 
-    void  at(int endIndex, int startIndex, String string);
+    virtual void  at(int endIndex, int startIndex, String stringValue);
 
-    String current();
+    virtual String current();
 
-    bool moveNext(int count);
+    virtual bool moveNext(int count);
 
-    bool moveBack(int count);
+    virtual bool moveBack(int count);
 
-    Iterable<int> utf16CodeUnits();
+    virtual Iterable<int> utf16CodeUnits();
 
-    Runes runes();
+    virtual Runes runes();
 
-    CharacterRange copy();
+    virtual CharacterRange copy();
 
-    void collapseToEnd();
+    virtual void collapseToEnd();
 
-    void collapseToStart();
+    virtual void collapseToStart();
 
-    bool dropFirst(int count);
+    virtual bool dropFirst(int count);
 
-    bool dropTo(Characters target);
+    virtual bool dropTo(Characters target);
 
-    bool dropUntil(Characters target);
+    virtual bool dropUntil(Characters target);
 
-    void dropWhile(FunctionType test);
+    virtual void dropWhile(bool test(String ) );
 
-    bool dropLast(int count);
+    virtual bool dropLast(int count);
 
-    bool dropBackTo(Characters target);
+    virtual bool dropBackTo(Characters target);
 
-    bool dropBackUntil(Characters target);
+    virtual bool dropBackUntil(Characters target);
 
-    void dropBackWhile(FunctionType test);
+    virtual void dropBackWhile(bool test(String ) );
 
-    bool expandNext(int count);
+    virtual bool expandNext(int count);
 
-    bool expandTo(Characters target);
+    virtual bool expandTo(Characters target);
 
-    void expandWhile(FunctionType test);
+    virtual void expandWhile(bool test(String character) );
 
-    void expandAll();
+    virtual void expandAll();
 
-    bool expandBack(int count);
+    virtual bool expandBack(int count);
 
-    bool expandBackTo(Characters target);
+    virtual bool expandBackTo(Characters target);
 
-    void expandBackWhile(FunctionType test);
+    virtual void expandBackWhile(bool test(String character) );
 
-    bool expandBackUntil(Characters target);
+    virtual bool expandBackUntil(Characters target);
 
-    void expandBackAll();
+    virtual void expandBackAll();
 
-    bool expandUntil(Characters target);
+    virtual bool expandUntil(Characters target);
 
-    bool isEmpty();
+    virtual bool isEmpty();
 
-    bool isNotEmpty();
+    virtual bool isNotEmpty();
 
-    bool moveBackUntil(Characters target);
+    virtual bool moveBackUntil(Characters target);
 
-    bool collapseToFirst(Characters target);
+    virtual bool collapseToFirst(Characters target);
 
-    bool collapseToLast(Characters target);
+    virtual bool collapseToLast(Characters target);
 
-    bool moveUntil(Characters target);
+    virtual bool moveUntil(Characters target);
 
-    CharacterRange replaceFirst(Characters pattern, Characters replacement);
+    virtual CharacterRange replaceFirst(Characters pattern, Characters replacement);
 
-    CharacterRange replaceAll(Characters pattern, Characters replacement);
+    virtual CharacterRange replaceAll(Characters pattern, Characters replacement);
 
-    CharacterRange replaceRange(Characters replacement);
+    virtual CharacterRange replaceRange(Characters replacement);
 
-    Characters source();
+    virtual Characters source();
 
-    bool startsWith(Characters characters);
+    virtual bool startsWith(Characters characters);
 
-    bool endsWith(Characters characters);
+    virtual bool endsWith(Characters characters);
 
-    bool isFollowedBy(Characters characters);
+    virtual bool isFollowedBy(Characters characters);
 
-    bool isPrecededBy(Characters characters);
+    virtual bool isPrecededBy(Characters characters);
 
-    bool moveBackTo(Characters target);
+    virtual bool moveBackTo(Characters target);
 
-    bool moveTo(Characters target);
+    virtual bool moveTo(Characters target);
 
-    Characters charactersAfter();
+    virtual Characters charactersAfter();
 
-    Characters charactersBefore();
+    virtual Characters charactersBefore();
 
-    Characters currentCharacters();
+    virtual Characters currentCharacters();
 
-    void moveBackAll();
+    virtual void moveBackAll();
 
-    void moveNextAll();
+    virtual void moveNextAll();
 
-    String stringAfter();
+    virtual String stringAfter();
 
-    int stringAfterLength();
+    virtual int stringAfterLength();
 
-    String stringBefore();
+    virtual String stringBefore();
 
-    int stringBeforeLength();
+    virtual int stringBeforeLength();
 
-    Iterable<CharacterRange> split(int maxParts, Characters pattern);
+    virtual Iterable<CharacterRange> split(int maxParts, Characters pattern);
 
 private:
     String _string;
@@ -225,34 +225,34 @@ private:
     String _currentCache;
 
 
-    void  _(int _end, int _start, String _string);
+    virtual void  _(int _end, int _start, String _string);
+    virtual void _move(int end, int start);
 
-    void _move(int end, int start);
+    virtual Breaks _breaksFromEnd();
 
-    Breaks _breaksFromEnd();
+    virtual BackBreaks _backBreaksFromStart();
 
-    BackBreaks _backBreaksFromStart();
+    virtual bool _advanceEnd(int count, int newStart);
 
-    bool _advanceEnd(int count, int newStart);
+    virtual bool _moveNextPattern(int end, String patternString, int start);
 
-    bool _moveNextPattern(int end, String patternString, int start);
+    virtual bool _retractStart(int count, int newEnd);
 
-    bool _retractStart(int count, int newEnd);
+    virtual bool _movePreviousPattern(int end, String patternString, int start);
 
-    bool _movePreviousPattern(int end, String patternString, int start);
+    virtual bool _retractStartUntil(int newEnd, String targetString);
 
-    bool _retractStartUntil(int newEnd, String targetString);
+    virtual bool _advanceEndUntil(int newStart, String targetString);
 
-    bool _advanceEndUntil(int newStart, String targetString);
+    static StringCharacterRange _expandRange(int end, int start, String stringValue);
 
-    static StringCharacterRange _expandRange(int end, int start, String string);
+    virtual bool _endsWith(int end, int start, String stringValue);
 
-    bool _endsWith(int end, int start, String string);
-
-    bool _startsWith(int end, int start, String string);
+    virtual bool _startsWith(int end, int start, String stringValue);
 
 };
-String _explodeReplace(int end, String internalReplacement, String outerReplacement, int start, String string);
+using StringCharacterRange = std::shared_ptr<StringCharacterRangeCls>;
+String _explodeReplace(int end, String internalReplacement, String outerReplacement, int start, String stringValue);
 
 int _indexOf(int end, String pattern, String source, int start);
 
@@ -261,6 +261,7 @@ int _gcIndexOf(int end, String pattern, String source, int start);
 int _lastIndexOf(int end, String pattern, String source, int start);
 
 int _gcLastIndexOf(int end, String pattern, String source, int start);
+
 
 
 #endif

@@ -1,31 +1,36 @@
 #include "plugins.hpp"
-void CallbackHandle::fromRawHandle(int _handle)
+void CallbackHandleCls::fromRawHandle(int _handle)
 
-int CallbackHandle::toRawHandle() {
+int CallbackHandleCls::toRawHandle() {
     return _handle;
 }
 
-bool CallbackHandle::==(Object other) {
-    if (runtimeType != other.runtimeType)     {
+bool CallbackHandleCls::==(Object other) {
+    if (runtimeType != other->runtimeType)     {
         return false;
     }
-    return other is CallbackHandle && other._handle == _handle;
+    return other is CallbackHandle && other->_handle == _handle;
 }
 
-int CallbackHandle::hashCode() {
-    return _handle.hashCode;
+int CallbackHandleCls::hashCode() {
+    return _handle->hashCode;
 }
 
-CallbackHandle PluginUtilities::getCallbackHandle(FunctionType callback) {
+CallbackHandle PluginUtilitiesCls::getCallbackHandle(void  callback() ) {
     assert(callback != nullptr, "'callback' must not be null.");
-    return _forwardCache.putIfAbsent(callback, );
+    return _forwardCache->putIfAbsent(callback, [=] () {
+        int handle = _getCallbackHandle(callback);
+        return handle != nullptr? CallbackHandleCls->fromRawHandle(handle) : nullptr;
+    });
 }
 
-FunctionType PluginUtilities::getCallbackFromHandle(CallbackHandle handle) {
+void  Function() PluginUtilitiesCls::getCallbackFromHandle(CallbackHandle handle) {
     assert(handle != nullptr, "'handle' must not be null.");
-    return _backwardCache.putIfAbsent(handle, );
+    return _backwardCache->putIfAbsent(handle, [=] ()     {
+        _getCallbackFromHandle(handle->toRawHandle());
+    });
 }
 
-void PluginUtilities::_() {
+void PluginUtilitiesCls::_() {
     return ;
 }

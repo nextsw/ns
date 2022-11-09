@@ -1,4 +1,4 @@
 #include "extensions.hpp"
-Characters StringCharacters::characters() {
-    return Characters(this);
+Characters StringCharactersCls::characters() {
+    return make<CharactersCls>(this);
 }

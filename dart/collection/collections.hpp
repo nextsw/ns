@@ -1,25 +1,27 @@
-#ifndef COLLECTIONS_H
-#define COLLECTIONS_H
-#include <memory>
+#ifndef DART_COLLECTION_COLLECTIONS
+#define DART_COLLECTION_COLLECTIONS
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
 
 
-
-
-class UnmodifiableListView<E> : UnmodifiableListBase<E> {
+template<typename E> class UnmodifiableListViewCls : public UnmodifiableListBaseCls<E> {
 public:
 
-     UnmodifiableListView(Iterable<E> source);
+     UnmodifiableListViewCls(Iterable<E> source);
 
-    List<R> cast<R>();
+    template<typename R>  virtual List<R> cast();
 
-    int length();
+    virtual int length();
 
-    E [](int index);
+    virtual E operator[](int index);
 
 private:
     Iterable<E> _source;
 
 
 };
+template<typename E> using UnmodifiableListView = std::shared_ptr<UnmodifiableListViewCls<E>>;
+
 
 #endif

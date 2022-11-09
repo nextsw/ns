@@ -1,35 +1,35 @@
 #include "html_escape.hpp"
-HtmlEscapeMode::HtmlEscapeMode(bool escapeApos, bool escapeLtGt, bool escapeQuot, bool escapeSlash, String name) {
+HtmlEscapeModeCls::HtmlEscapeModeCls(bool escapeApos, bool escapeLtGt, bool escapeQuot, bool escapeSlash, String name) {
     {
         _name = name;
     }
 }
 
-String HtmlEscapeMode::toString() {
+String HtmlEscapeModeCls::toString() {
     return _name;
 }
 
-String HtmlEscape::convert(String text) {
-    auto val = _convert(text, 0, text.length);
+String HtmlEscapeCls::convert(String text) {
+    auto val = _convert(text, 0, text->length);
     return val == nullptr? text : val;
 }
 
-StringConversionSink HtmlEscape::startChunkedConversion(Sink<String> sink) {
-    return _HtmlEscapeSink(this, sink is StringConversionSink? sink : StringConversionSink.from(sink));
+StringConversionSink HtmlEscapeCls::startChunkedConversion(Sink<String> sink) {
+    return make<_HtmlEscapeSinkCls>(this, sink is StringConversionSink? sink : StringConversionSinkCls->from(sink));
 }
 
-String HtmlEscape::_convert(int end, int start, String text) {
+String HtmlEscapeCls::_convert(int end, int start, String text) {
     StringBuffer result;
     for (;  < end; i++) {
         auto ch = text[i];
         String replacement;
         ;
         if (replacement != nullptr) {
-            result = StringBuffer();
+            result = make<StringBufferCls>();
             if (i > start)             {
-                result.write(text.substring(start, i));
+                result->write(text->substring(start, i));
             }
-            result.write(replacement);
+            result->write(replacement);
             start = i + 1;
         }
     }
@@ -37,23 +37,23 @@ String HtmlEscape::_convert(int end, int start, String text) {
         return nullptr;
     }
     if (end > start)     {
-        result.write(text.substring(start, end));
+        result->write(text->substring(start, end));
     }
-    return result.toString();
+    return result->toString();
 }
 
-void _HtmlEscapeSink::addSlice(String chunk, int end, bool isLast, int start) {
-    auto val = _escape._convert(chunk, start, end);
+void _HtmlEscapeSinkCls::addSlice(String chunk, int end, bool isLast, int start) {
+    auto val = _escape->_convert(chunk, start, end);
     if (val == nullptr) {
-        _sink.addSlice(chunk, start, end, isLast);
+        _sink->addSlice(chunk, start, end, isLast);
     } else {
-        _sink.add(val);
+        _sink->add(val);
         if (isLast)         {
-            _sink.close();
+            _sink->close();
         }
     }
 }
 
-void _HtmlEscapeSink::close() {
-    _sink.close();
+void _HtmlEscapeSinkCls::close() {
+    _sink->close();
 }

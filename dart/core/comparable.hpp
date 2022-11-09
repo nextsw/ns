@@ -1,19 +1,20 @@
-#ifndef COMPARABLE_H
-#define COMPARABLE_H
-#include <memory>
+#ifndef DART_CORE_COMPARABLE
+#define DART_CORE_COMPARABLE
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
 
 
-
-
-class Comparable<T> {
+template<typename T> class ComparableCls : public ObjectCls {
 public:
 
-    int compareTo(T other);
-
+    virtual int compareTo(T other);
     static int compare(Comparable a, Comparable b);
 
 private:
 
 };
+template<typename T> using Comparable = std::shared_ptr<ComparableCls<T>>;
+
 
 #endif

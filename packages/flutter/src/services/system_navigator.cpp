@@ -1,20 +1,20 @@
 #include "system_navigator.hpp"
-Future<void> SystemNavigator::pop(bool animated) {
-    await await SystemChannels.platform.<void>invokeMethod("SystemNavigator.pop", animated);
+Future<void> SystemNavigatorCls::pop(bool animated) {
+    await await SystemChannelsCls::platform-><void>invokeMethod("SystemNavigator.pop", animated);
 }
 
-Future<void> SystemNavigator::selectSingleEntryHistory() {
-    return SystemChannels.navigation.<void>invokeMethod("selectSingleEntryHistory");
+Future<void> SystemNavigatorCls::selectSingleEntryHistory() {
+    return SystemChannelsCls::navigation-><void>invokeMethod("selectSingleEntryHistory");
 }
 
-Future<void> SystemNavigator::selectMultiEntryHistory() {
-    return SystemChannels.navigation.<void>invokeMethod("selectMultiEntryHistory");
+Future<void> SystemNavigatorCls::selectMultiEntryHistory() {
+    return SystemChannelsCls::navigation-><void>invokeMethod("selectMultiEntryHistory");
 }
 
-Future<void> SystemNavigator::routeInformationUpdated(String location, bool replace, Object state) {
-    return SystemChannels.navigation.<void>invokeMethod("routeInformationUpdated", );
+Future<void> SystemNavigatorCls::routeInformationUpdated(String location, bool replace, Object state) {
+    Map<String, dynamic> map1 = make<MapCls<>>();map1.set("location", location);map1.set("state", state);map1.set("replace", replace);return SystemChannelsCls::navigation-><void>invokeMethod("routeInformationUpdated", list1);
 }
 
-Future<void> SystemNavigator::routeUpdated(String previousRouteName, String routeName) {
-    return SystemChannels.navigation.<void>invokeMethod("routeUpdated", );
+Future<void> SystemNavigatorCls::routeUpdated(String previousRouteName, String routeName) {
+    Map<String, dynamic> map1 = make<MapCls<>>();map1.set("previousRouteName", previousRouteName);map1.set("routeName", routeName);return SystemChannelsCls::navigation-><void>invokeMethod("routeUpdated", list1);
 }

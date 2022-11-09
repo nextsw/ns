@@ -1,11 +1,11 @@
 #include "algorithms.hpp"
-int binarySearch<E>(FunctionType compare, List<E> sortedList, E value) {
+int binarySearchtemplate<typename E> (int compare(E , E ) , List<E> sortedList, E value) {
     compare = defaultCompare;
     return <E, E>binarySearchBy(sortedList, identity, compare, value);
 }
 
-int binarySearchBy<E, K>(FunctionType compare, int end, FunctionType keyOf, List<E> sortedList, int start, E value) {
-    end = RangeError.checkValidRange(start, end, sortedList.length);
+int binarySearchBytemplate<typename E, typename K> (int compare(K , K ) , int end, K keyOf(E element) , List<E> sortedList, int start, E value) {
+    end = RangeErrorCls->checkValidRange(start, end, sortedList->length);
     auto min = start;
     auto max = end;
     auto key = keyOf(value);
@@ -25,13 +25,13 @@ int binarySearchBy<E, K>(FunctionType compare, int end, FunctionType keyOf, List
     return -1;
 }
 
-int lowerBound<E>(FunctionType compare, List<E> sortedList, E value) {
+int lowerBoundtemplate<typename E> (int compare(E , E ) , List<E> sortedList, E value) {
     compare = defaultCompare;
     return <E, E>lowerBoundBy(sortedList, identity, compare, value);
 }
 
-int lowerBoundBy<E, K>(FunctionType compare, int end, FunctionType keyOf, List<E> sortedList, int start, E value) {
-    end = RangeError.checkValidRange(start, end, sortedList.length);
+int lowerBoundBytemplate<typename E, typename K> (int compare(K , K ) , int end, K keyOf(E element) , List<E> sortedList, int start, E value) {
+    end = RangeErrorCls->checkValidRange(start, end, sortedList->length);
     auto min = start;
     auto max = end;
     auto key = keyOf(value);
@@ -49,11 +49,11 @@ int lowerBoundBy<E, K>(FunctionType compare, int end, FunctionType keyOf, List<E
 }
 
 void shuffle(List elements, int end, Random random, int start) {
-    random = Random();
-    end = elements.length;
+    random = make<RandomCls>();
+    end = elements->length;
     auto length = end - start;
     while (length > 1) {
-        auto pos = random.nextInt(length);
+        auto pos = random->nextInt(length);
         length--;
         auto tmp1 = elements[start + pos];
         elements[start + pos] = elements[start + length];
@@ -61,12 +61,12 @@ void shuffle(List elements, int end, Random random, int start) {
     }
 }
 
-void reverse<E>(List<E> elements, int end, int start) {
-    end = RangeError.checkValidRange(start, end, elements.length);
+void reversetemplate<typename E> (List<E> elements, int end, int start) {
+    end = RangeErrorCls->checkValidRange(start, end, elements->length);
     <E>_reverse(elements, start, end);
 }
 
-void _reverse<E>(List<E> elements, int end, int start) {
+void _reversetemplate<typename E> (List<E> elements, int end, int start) {
     for (;  < j; i++, j--) {
         auto tmp = elements[i];
         elements[i] = elements[j];
@@ -74,9 +74,9 @@ void _reverse<E>(List<E> elements, int end, int start) {
     }
 }
 
-void insertionSort<E>(FunctionType compare, List<E> elements, int end, int start) {
+void insertionSorttemplate<typename E> (int compare(E , E ) , List<E> elements, int end, int start) {
     compare = defaultCompare;
-    end = elements.length;
+    end = elements->length;
     for (;  < end; pos++) {
         auto min = start;
         auto max = pos;
@@ -90,12 +90,12 @@ void insertionSort<E>(FunctionType compare, List<E> elements, int end, int start
                 min = mid + 1;
             }
         }
-        elements.setRange(min + 1, pos + 1, elements, min);
+        elements->setRange(min + 1, pos + 1, elements, min);
         elements[min] = element;
     }
 }
 
-void insertionSortBy<E, K>(FunctionType compare, List<E> elements, int end, FunctionType keyOf, int start) {
-    end = RangeError.checkValidRange(start, end, elements.length);
+void insertionSortBytemplate<typename E, typename K> (int compare(K a, K b) , List<E> elements, int end, K keyOf(E element) , int start) {
+    end = RangeErrorCls->checkValidRange(start, end, elements->length);
     _movingInsertionSort(elements, keyOf, compare, start, end, elements, start);
 }

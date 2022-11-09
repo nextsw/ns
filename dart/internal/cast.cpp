@@ -1,374 +1,406 @@
 #include "cast.hpp"
-Iterator<T> _CastIterableBase::iterator() {
-    return <S, T>CastIterator(_source.iterator);
+template<typename S, typename T> Iterator<T> _CastIterableBaseCls<S, T>::iterator() {
+    return <S, T>make<CastIteratorCls>(_source->iterator);
 }
 
-int _CastIterableBase::length() {
-    return _source.length;
+template<typename S, typename T> int _CastIterableBaseCls<S, T>::length() {
+    return _source->length;
 }
 
-bool _CastIterableBase::isEmpty() {
-    return _source.isEmpty;
+template<typename S, typename T> bool _CastIterableBaseCls<S, T>::isEmpty() {
+    return _source->isEmpty;
 }
 
-bool _CastIterableBase::isNotEmpty() {
-    return _source.isNotEmpty;
+template<typename S, typename T> bool _CastIterableBaseCls<S, T>::isNotEmpty() {
+    return _source->isNotEmpty;
 }
 
-Iterable<T> _CastIterableBase::skip(int count) {
-    return <S, T>CastIterable(_source.skip(count));
+template<typename S, typename T> Iterable<T> _CastIterableBaseCls<S, T>::skip(int count) {
+    return <S, T>make<CastIterableCls>(_source->skip(count));
 }
 
-Iterable<T> _CastIterableBase::take(int count) {
-    return <S, T>CastIterable(_source.take(count));
+template<typename S, typename T> Iterable<T> _CastIterableBaseCls<S, T>::take(int count) {
+    return <S, T>make<CastIterableCls>(_source->take(count));
 }
 
-T _CastIterableBase::elementAt(int index) {
-    return (;
+template<typename S, typename T> T _CastIterableBaseCls<S, T>::elementAt(int index) {
+    return ((T)_source->elementAt(index));
 }
 
-T _CastIterableBase::first() {
-    return (;
+template<typename S, typename T> T _CastIterableBaseCls<S, T>::first() {
+    return ((T)_source->first);
 }
 
-T _CastIterableBase::last() {
-    return (;
+template<typename S, typename T> T _CastIterableBaseCls<S, T>::last() {
+    return ((T)_source->last);
 }
 
-T _CastIterableBase::single() {
-    return (;
+template<typename S, typename T> T _CastIterableBaseCls<S, T>::single() {
+    return ((T)_source->single);
 }
 
-bool _CastIterableBase::contains(Object other) {
-    return _source.contains(other);
+template<typename S, typename T> bool _CastIterableBaseCls<S, T>::contains(Object other) {
+    return _source->contains(other);
 }
 
-T _CastIterableBase::lastWhere(FunctionType orElse, FunctionType test) {
-    return (;
+template<typename S, typename T> T _CastIterableBaseCls<S, T>::lastWhere(T orElse() , bool test(T element) ) {
+    return ((T)_source->lastWhere([=] (S element)     {
+        test(((T)element));
+    }(orElse == nullptr)? nullptr : [=] ()     {
+        ((S)orElse());
+    }));
 }
 
-String _CastIterableBase::toString() {
-    return _source.toString();
+template<typename S, typename T> String _CastIterableBaseCls<S, T>::toString() {
+    return _source->toString();
 }
 
-bool CastIterator::moveNext() {
-    return _source.moveNext();
+template<typename S, typename T> bool CastIteratorCls<S, T>::moveNext() {
+    return _source->moveNext();
 }
 
-T CastIterator::current() {
-    return (;
+template<typename S, typename T> T CastIteratorCls<S, T>::current() {
+    return ((T)_source->current);
 }
 
-CastIterable::CastIterable(Iterable<S> source) {
+template<typename S, typename T> CastIterableCls<S, T>::CastIterableCls(Iterable<S> source) {
     {
         if (source is EfficientLengthIterable<S>) {
-            return <S, T>_EfficientLengthCastIterable(source);
+            return <S, T>make<_EfficientLengthCastIterableCls>(source);
         }
         return <S, T>_(source);
     }
 }
 
-Iterable<R> CastIterable::cast<R>() {
-    return <S, R>CastIterable(_source);
+template<typename S, typename T> Iterable<R> CastIterableCls<S, T>::casttemplate<typename R> () {
+    return <S, R>make<CastIterableCls>(_source);
 }
 
-_EfficientLengthCastIterable::_EfficientLengthCastIterable(EfficientLengthIterable<S> source) {
+template<typename S, typename T> _EfficientLengthCastIterableCls<S, T>::_EfficientLengthCastIterableCls(EfficientLengthIterable<S> source) {
     {
-        super._(source);
+        super->_(source);
     }
 }
 
-T _CastListBase::[](int index) {
-    return (;
+template<typename S, typename T> T _CastListBaseCls<S, T>::[](int index) {
+    return ((T)_source[index]);
 }
 
-void _CastListBase::[]=(int index, T value) {
-    _source[index] = (;
+template<typename S, typename T> void _CastListBaseCls<S, T>::[]=(int index, T value) {
+    _source[index] = ((S)value);
 }
 
-void _CastListBase::length(int length) {
-    _source.length = length;
+template<typename S, typename T> void _CastListBaseCls<S, T>::length(int length) {
+    _source->length = length;
 }
 
-void _CastListBase::add(T value) {
-    _source.add(();
+template<typename S, typename T> void _CastListBaseCls<S, T>::add(T value) {
+    _source->add(((S)value));
 }
 
-void _CastListBase::addAll(Iterable<T> values) {
-    _source.addAll(<T, S>CastIterable(values));
+template<typename S, typename T> void _CastListBaseCls<S, T>::addAll(Iterable<T> values) {
+    _source->addAll(<T, S>make<CastIterableCls>(values));
 }
 
-void _CastListBase::sort(FunctionType compare) {
-    _source.sort(compare == nullptr? nullptr : );
+template<typename S, typename T> void _CastListBaseCls<S, T>::sort(int compare(T v1, T v2) ) {
+    _source->sort(compare == nullptr? nullptr : [=] (S v1,S v2)     {
+        compare(((T)v1), ((T)v2));
+    });
 }
 
-void _CastListBase::shuffle(Random random) {
-    _source.shuffle(random);
+template<typename S, typename T> void _CastListBaseCls<S, T>::shuffle(Random random) {
+    _source->shuffle(random);
 }
 
-void _CastListBase::insert(T element, int index) {
-    _source.insert(index, ();
+template<typename S, typename T> void _CastListBaseCls<S, T>::insert(T element, int index) {
+    _source->insert(index, ((S)element));
 }
 
-void _CastListBase::insertAll(Iterable<T> elements, int index) {
-    _source.insertAll(index, <T, S>CastIterable(elements));
+template<typename S, typename T> void _CastListBaseCls<S, T>::insertAll(Iterable<T> elements, int index) {
+    _source->insertAll(index, <T, S>make<CastIterableCls>(elements));
 }
 
-void _CastListBase::setAll(Iterable<T> elements, int index) {
-    _source.setAll(index, <T, S>CastIterable(elements));
+template<typename S, typename T> void _CastListBaseCls<S, T>::setAll(Iterable<T> elements, int index) {
+    _source->setAll(index, <T, S>make<CastIterableCls>(elements));
 }
 
-bool _CastListBase::remove(Object value) {
-    return _source.remove(value);
+template<typename S, typename T> bool _CastListBaseCls<S, T>::remove(Object value) {
+    return _source->remove(value);
 }
 
-T _CastListBase::removeAt(int index) {
-    return (;
+template<typename S, typename T> T _CastListBaseCls<S, T>::removeAt(int index) {
+    return ((T)_source->removeAt(index));
 }
 
-T _CastListBase::removeLast() {
-    return (;
+template<typename S, typename T> T _CastListBaseCls<S, T>::removeLast() {
+    return ((T)_source->removeLast());
 }
 
-void _CastListBase::removeWhere(FunctionType test) {
-    _source.removeWhere();
+template<typename S, typename T> void _CastListBaseCls<S, T>::removeWhere(bool test(T element) ) {
+    _source->removeWhere([=] (S element)     {
+        test(((T)element));
+    });
 }
 
-void _CastListBase::retainWhere(FunctionType test) {
-    _source.retainWhere();
+template<typename S, typename T> void _CastListBaseCls<S, T>::retainWhere(bool test(T element) ) {
+    _source->retainWhere([=] (S element)     {
+        test(((T)element));
+    });
 }
 
-Iterable<T> _CastListBase::getRange(int end, int start) {
-    return <S, T>CastIterable(_source.getRange(start, end));
+template<typename S, typename T> Iterable<T> _CastListBaseCls<S, T>::getRange(int end, int start) {
+    return <S, T>make<CastIterableCls>(_source->getRange(start, end));
 }
 
-void _CastListBase::setRange(int end, Iterable<T> iterable, int skipCount, int start) {
-    _source.setRange(start, end, <T, S>CastIterable(iterable), skipCount);
+template<typename S, typename T> void _CastListBaseCls<S, T>::setRange(int end, Iterable<T> iterable, int skipCount, int start) {
+    _source->setRange(start, end, <T, S>make<CastIterableCls>(iterable), skipCount);
 }
 
-void _CastListBase::removeRange(int end, int start) {
-    _source.removeRange(start, end);
+template<typename S, typename T> void _CastListBaseCls<S, T>::removeRange(int end, int start) {
+    _source->removeRange(start, end);
 }
 
-void _CastListBase::fillRange(int end, T fillValue, int start) {
-    _source.fillRange(start, end, ();
+template<typename S, typename T> void _CastListBaseCls<S, T>::fillRange(int end, T fillValue, int start) {
+    _source->fillRange(start, end, ((S)fillValue));
 }
 
-void _CastListBase::replaceRange(int end, Iterable<T> replacement, int start) {
-    _source.replaceRange(start, end, <T, S>CastIterable(replacement));
+template<typename S, typename T> void _CastListBaseCls<S, T>::replaceRange(int end, Iterable<T> replacement, int start) {
+    _source->replaceRange(start, end, <T, S>make<CastIterableCls>(replacement));
 }
 
-List<R> CastList::cast<R>() {
-    return <S, R>CastList(_source);
+template<typename S, typename T> List<R> CastListCls<S, T>::casttemplate<typename R> () {
+    return <S, R>make<CastListCls>(_source);
 }
 
-Set<R> CastSet::cast<R>() {
-    return <S, R>CastSet(_source, _emptySet);
+template<typename S, typename T> Set<R> CastSetCls<S, T>::casttemplate<typename R> () {
+    return <S, R>make<CastSetCls>(_source, _emptySet);
 }
 
-bool CastSet::add(T value) {
-    return _source.add(();
+template<typename S, typename T> bool CastSetCls<S, T>::add(T value) {
+    return _source->add(((S)value));
 }
 
-void CastSet::addAll(Iterable<T> elements) {
-    _source.addAll(<T, S>CastIterable(elements));
+template<typename S, typename T> void CastSetCls<S, T>::addAll(Iterable<T> elements) {
+    _source->addAll(<T, S>make<CastIterableCls>(elements));
 }
 
-bool CastSet::remove(Object object) {
-    return _source.remove(object);
+template<typename S, typename T> bool CastSetCls<S, T>::remove(Object object) {
+    return _source->remove(object);
 }
 
-void CastSet::removeAll(Iterable<Object> objects) {
-    _source.removeAll(objects);
+template<typename S, typename T> void CastSetCls<S, T>::removeAll(Iterable<Object> objects) {
+    _source->removeAll(objects);
 }
 
-void CastSet::retainAll(Iterable<Object> objects) {
-    _source.retainAll(objects);
+template<typename S, typename T> void CastSetCls<S, T>::retainAll(Iterable<Object> objects) {
+    _source->retainAll(objects);
 }
 
-void CastSet::removeWhere(FunctionType test) {
-    _source.removeWhere();
+template<typename S, typename T> void CastSetCls<S, T>::removeWhere(bool test(T element) ) {
+    _source->removeWhere([=] (S element)     {
+        test(((T)element));
+    });
 }
 
-void CastSet::retainWhere(FunctionType test) {
-    _source.retainWhere();
+template<typename S, typename T> void CastSetCls<S, T>::retainWhere(bool test(T element) ) {
+    _source->retainWhere([=] (S element)     {
+        test(((T)element));
+    });
 }
 
-bool CastSet::containsAll(Iterable<Object> objects) {
-    return _source.containsAll(objects);
+template<typename S, typename T> bool CastSetCls<S, T>::containsAll(Iterable<Object> objects) {
+    return _source->containsAll(objects);
 }
 
-Set<T> CastSet::intersection(Set<Object> other) {
+template<typename S, typename T> Set<T> CastSetCls<S, T>::intersection(Set<Object> other) {
     if (_emptySet != nullptr)     {
         return _conditionalAdd(other, true);
     }
-    return <S, T>CastSet(_source.intersection(other), nullptr);
+    return <S, T>make<CastSetCls>(_source->intersection(other), nullptr);
 }
 
-Set<T> CastSet::difference(Set<Object> other) {
+template<typename S, typename T> Set<T> CastSetCls<S, T>::difference(Set<Object> other) {
     if (_emptySet != nullptr)     {
         return _conditionalAdd(other, false);
     }
-    return <S, T>CastSet(_source.difference(other), nullptr);
+    return <S, T>make<CastSetCls>(_source->difference(other), nullptr);
 }
 
-Set<T> CastSet::union(Set<T> other) {
-    return ;
+template<typename S, typename T> Set<T> CastSetCls<S, T>::union(Set<T> other) {
+    return _c1;
 }
 
-void CastSet::clear() {
-    _source.clear();
+template<typename S, typename T> void CastSetCls<S, T>::clear() {
+    auto _c1 = _clone();_c1.addAll(other);_source->clear();
 }
 
-Set<T> CastSet::toSet() {
+template<typename S, typename T> Set<T> CastSetCls<S, T>::toSet() {
     return _clone();
 }
 
-T CastSet::lookup(Object key) {
-    return (;
+template<typename S, typename T> T CastSetCls<S, T>::lookup(Object key) {
+    return ((T)_source->lookup(key));
 }
 
-Set<T> CastSet::_conditionalAdd(Set<Object> other, bool otherContains) {
+template<typename S, typename T> Set<T> CastSetCls<S, T>::_conditionalAdd(Set<Object> other, bool otherContains) {
     auto emptySet = _emptySet;
-    Set<T> result = (emptySet == nullptr)? <T>Set() : <T>emptySet();
+    Set<T> result = (emptySet == nullptr)? <T>make<SetCls>() : <T>emptySet();
     for (auto element : _source) {
-        T castElement = (;
-        if (otherContains == other.contains(castElement))         {
-            result.add(castElement);
+        T castElement = ((T)element);
+        if (otherContains == other->contains(castElement))         {
+            result->add(castElement);
         }
     }
     return result;
 }
 
-Set<T> CastSet::_clone() {
+template<typename S, typename T> Set<T> CastSetCls<S, T>::_clone() {
     auto emptySet = _emptySet;
-    Set<T> result = (emptySet == nullptr)? <T>Set() : <T>emptySet();
-    result.addAll(this);
+    Set<T> result = (emptySet == nullptr)? <T>make<SetCls>() : <T>emptySet();
+    result->addAll(this);
     return result;
 }
 
-Map<RK, RV> CastMap::cast<RK, RV>() {
-    return <SK, SV, RK, RV>CastMap(_source);
+template<typename SK, typename SV, typename K, typename V> Map<RK, RV> CastMapCls<SK, SV, K, V>::casttemplate<typename RK, typename RV> () {
+    return <SK, SV, RK, RV>make<CastMapCls>(_source);
 }
 
-bool CastMap::containsValue(Object value) {
-    return _source.containsValue(value);
+template<typename SK, typename SV, typename K, typename V> bool CastMapCls<SK, SV, K, V>::containsValue(Object value) {
+    return _source->containsValue(value);
 }
 
-bool CastMap::containsKey(Object key) {
-    return _source.containsKey(key);
+template<typename SK, typename SV, typename K, typename V> bool CastMapCls<SK, SV, K, V>::containsKey(Object key) {
+    return _source->containsKey(key);
 }
 
-V CastMap::[](Object key) {
-    return (;
+template<typename SK, typename SV, typename K, typename V> V CastMapCls<SK, SV, K, V>::[](Object key) {
+    return ((V)_source[key]);
 }
 
-void CastMap::[]=(K key, V value) {
-    _source[(] = (;
+template<typename SK, typename SV, typename K, typename V> void CastMapCls<SK, SV, K, V>::[]=(K key, V value) {
+    _source[((SK)key)] = ((SV)value);
 }
 
-V CastMap::putIfAbsent(FunctionType ifAbsent, K key) {
-    return (;
+template<typename SK, typename SV, typename K, typename V> V CastMapCls<SK, SV, K, V>::putIfAbsent(V ifAbsent() , K key) {
+    return ((V)_source->putIfAbsent(((SK)key), [=] ()     {
+        ((SV)ifAbsent());
+    }));
 }
 
-void CastMap::addAll(Map<K, V> other) {
-    _source.addAll(<K, V, SK, SV>CastMap(other));
+template<typename SK, typename SV, typename K, typename V> void CastMapCls<SK, SV, K, V>::addAll(Map<K, V> other) {
+    _source->addAll(<K, V, SK, SV>make<CastMapCls>(other));
 }
 
-V CastMap::remove(Object key) {
-    return (;
+template<typename SK, typename SV, typename K, typename V> V CastMapCls<SK, SV, K, V>::remove(Object key) {
+    return ((V)_source->remove(key));
 }
 
-void CastMap::clear() {
-    _source.clear();
+template<typename SK, typename SV, typename K, typename V> void CastMapCls<SK, SV, K, V>::clear() {
+    _source->clear();
 }
 
-void CastMap::forEach(FunctionType f) {
-    _source.forEach();
+template<typename SK, typename SV, typename K, typename V> void CastMapCls<SK, SV, K, V>::forEach(void f(K key, V value) ) {
+    _source->forEach([=] (SK key,SV value) {
+        f(((K)key), ((V)value));
+    });
 }
 
-Iterable<K> CastMap::keys() {
-    return <SK, K>CastIterable(_source.keys);
+template<typename SK, typename SV, typename K, typename V> Iterable<K> CastMapCls<SK, SV, K, V>::keys() {
+    return <SK, K>make<CastIterableCls>(_source->keys);
 }
 
-Iterable<V> CastMap::values() {
-    return <SV, V>CastIterable(_source.values);
+template<typename SK, typename SV, typename K, typename V> Iterable<V> CastMapCls<SK, SV, K, V>::values() {
+    return <SV, V>make<CastIterableCls>(_source->values);
 }
 
-int CastMap::length() {
-    return _source.length;
+template<typename SK, typename SV, typename K, typename V> int CastMapCls<SK, SV, K, V>::length() {
+    return _source->length;
 }
 
-bool CastMap::isEmpty() {
-    return _source.isEmpty;
+template<typename SK, typename SV, typename K, typename V> bool CastMapCls<SK, SV, K, V>::isEmpty() {
+    return _source->isEmpty;
 }
 
-bool CastMap::isNotEmpty() {
-    return _source.isNotEmpty;
+template<typename SK, typename SV, typename K, typename V> bool CastMapCls<SK, SV, K, V>::isNotEmpty() {
+    return _source->isNotEmpty;
 }
 
-V CastMap::update(FunctionType ifAbsent, K key, FunctionType update) {
-    return (;
+template<typename SK, typename SV, typename K, typename V> V CastMapCls<SK, SV, K, V>::update(V ifAbsent() , K key, V update(V value) ) {
+    return ((V)_source->update(((SK)key), [=] (SV value)     {
+        ((SV)update(((V)value)));
+    }(ifAbsent == nullptr)? nullptr : [=] ()     {
+        ((SV)ifAbsent());
+    }));
 }
 
-void CastMap::updateAll(FunctionType update) {
-    _source.updateAll();
+template<typename SK, typename SV, typename K, typename V> void CastMapCls<SK, SV, K, V>::updateAll(V update(K key, V value) ) {
+    _source->updateAll([=] (SK key,SV value)     {
+        ((SV)update(((K)key), ((V)value)));
+    });
 }
 
-Iterable<MapEntry<K, V>> CastMap::entries() {
-    return _source.entries.<MapEntry<K, V>>map();
+template<typename SK, typename SV, typename K, typename V> Iterable<MapEntry<K, V>> CastMapCls<SK, SV, K, V>::entries() {
+    return _source->entries-><MapEntry<K, V>>map([=] (MapEntry<SK, SV> e)     {
+        <K, V>make<MapEntryCls>(((K)e->key), ((V)e->value));
+    });
 }
 
-void CastMap::addEntries(Iterable<MapEntry<K, V>> entries) {
+template<typename SK, typename SV, typename K, typename V> void CastMapCls<SK, SV, K, V>::addEntries(Iterable<MapEntry<K, V>> entries) {
     for (auto entry : entries) {
-        _source[(] = (;
+        _source[((SK)entry->key)] = ((SV)entry->value);
     }
 }
 
-void CastMap::removeWhere(FunctionType test) {
-    _source.removeWhere();
+template<typename SK, typename SV, typename K, typename V> void CastMapCls<SK, SV, K, V>::removeWhere(bool test(K key, V value) ) {
+    _source->removeWhere([=] (SK key,SV value)     {
+        test(((K)key), ((V)value));
+    });
 }
 
-Queue<R> CastQueue::cast<R>() {
-    return <S, R>CastQueue(_source);
+template<typename S, typename T> Queue<R> CastQueueCls<S, T>::casttemplate<typename R> () {
+    return <S, R>make<CastQueueCls>(_source);
 }
 
-T CastQueue::removeFirst() {
-    return (;
+template<typename S, typename T> T CastQueueCls<S, T>::removeFirst() {
+    return ((T)_source->removeFirst());
 }
 
-T CastQueue::removeLast() {
-    return (;
+template<typename S, typename T> T CastQueueCls<S, T>::removeLast() {
+    return ((T)_source->removeLast());
 }
 
-void CastQueue::add(T value) {
-    _source.add(();
+template<typename S, typename T> void CastQueueCls<S, T>::add(T value) {
+    _source->add(((S)value));
 }
 
-void CastQueue::addFirst(T value) {
-    _source.addFirst(();
+template<typename S, typename T> void CastQueueCls<S, T>::addFirst(T value) {
+    _source->addFirst(((S)value));
 }
 
-void CastQueue::addLast(T value) {
-    _source.addLast(();
+template<typename S, typename T> void CastQueueCls<S, T>::addLast(T value) {
+    _source->addLast(((S)value));
 }
 
-bool CastQueue::remove(Object other) {
-    return _source.remove(other);
+template<typename S, typename T> bool CastQueueCls<S, T>::remove(Object other) {
+    return _source->remove(other);
 }
 
-void CastQueue::addAll(Iterable<T> elements) {
-    _source.addAll(<T, S>CastIterable(elements));
+template<typename S, typename T> void CastQueueCls<S, T>::addAll(Iterable<T> elements) {
+    _source->addAll(<T, S>make<CastIterableCls>(elements));
 }
 
-void CastQueue::removeWhere(FunctionType test) {
-    _source.removeWhere();
+template<typename S, typename T> void CastQueueCls<S, T>::removeWhere(bool test(T element) ) {
+    _source->removeWhere([=] (S element)     {
+        test(((T)element));
+    });
 }
 
-void CastQueue::retainWhere(FunctionType test) {
-    _source.retainWhere();
+template<typename S, typename T> void CastQueueCls<S, T>::retainWhere(bool test(T element) ) {
+    _source->retainWhere([=] (S element)     {
+        test(((T)element));
+    });
 }
 
-void CastQueue::clear() {
-    _source.clear();
+template<typename S, typename T> void CastQueueCls<S, T>::clear() {
+    _source->clear();
 }

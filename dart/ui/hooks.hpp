@@ -1,8 +1,8 @@
-#ifndef HOOKS_H
-#define HOOKS_H
-#include <memory>
+#ifndef DART_UI_HOOKS
+#define DART_UI_HOOKS
+#include <base.hpp>
 
-
+#include <dart/core/core.hpp>
 
 void _updateWindowMetrics(double devicePixelRatio, List<double> displayFeaturesBounds, List<int> displayFeaturesState, List<int> displayFeaturesType, double height, Object id, double physicalTouchSlop, double systemGestureInsetBottom, double systemGestureInsetLeft, double systemGestureInsetRight, double systemGestureInsetTop, double viewInsetBottom, double viewInsetLeft, double viewInsetRight, double viewInsetTop, double viewPaddingBottom, double viewPaddingLeft, double viewPaddingRight, double viewPaddingTop, double width);
 
@@ -32,17 +32,18 @@ void _drawFrame();
 
 bool _onError(Object error, StackTrace stackTrace);
 
-void _runMain(List<String> args, FunctionType startMainIsolateFunction, FunctionType userMainFunction);
+void _runMain(List<String> args, void  startMainIsolateFunction() , void  userMainFunction() );
 
-void _invoke(FunctionType callback, Zone zone);
+void _invoke(void callback() , Zone zone);
 
-void _invoke1<A>(A arg, FunctionType callback, Zone zone);
+template<typename A>  void _invoke1(A arg, void callback(A a) , Zone zone);
 
-void _invoke2<A1, A2>(A1 arg1, A2 arg2, FunctionType callback, Zone zone);
+template<typename A1, typename A2>  void _invoke2(A1 arg1, A2 arg2, void callback(A1 a1, A2 a2) , Zone zone);
 
-void _invoke3<A1, A2, A3>(A1 arg1, A2 arg2, A3 arg3, FunctionType callback, Zone zone);
+template<typename A1, typename A2, typename A3>  void _invoke3(A1 arg1, A2 arg2, A3 arg3, void callback(A1 a1, A2 a2, A3 a3) , Zone zone);
 
 bool _isLoopback(String host);
+
 
 
 #endif

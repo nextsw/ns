@@ -1,11 +1,12 @@
-#ifndef RAW_KEYBOARD_H
-#define RAW_KEYBOARD_H
-#include <memory>
-#include <flutter/foundation.hpp>
+#ifndef PACKAGES_FLUTTER_SRC_SERVICES_RAW_KEYBOARD
+#define PACKAGES_FLUTTER_SRC_SERVICES_RAW_KEYBOARD
+#include <base.hpp>
+#include <packages/flutter/lib/foundation.hpp>
 #include "keyboard_key.g.hpp"
 
-#include <io/io.hpp>
-#include <flutter/foundation.hpp>
+#include <dart/core/core.hpp>
+#include <dart/io/io.hpp>
+#include <packages/flutter/lib/foundation.hpp>
 #include "binding.hpp"
 #include "hardware_keyboard.hpp"
 #include "keyboard_key.g.hpp"
@@ -17,7 +18,6 @@
 #include "raw_keyboard_web.hpp"
 #include "raw_keyboard_windows.hpp"
 #include "system_channels.hpp"
-
 
 
 enum KeyboardSide{
@@ -39,38 +39,33 @@ enum ModifierKey{
     symbolModifier,
 } // end ModifierKey
 
-class RawKeyEventData {
+class RawKeyEventDataCls : public ObjectCls {
 public:
 
-     RawKeyEventData();
+     RawKeyEventDataCls();
+    virtual bool isModifierPressed(ModifierKey key, KeyboardSide side);
+    virtual KeyboardSide getModifierSide(ModifierKey key);
+    virtual bool isControlPressed();
 
-    bool isModifierPressed(ModifierKey key, KeyboardSide side);
+    virtual bool isShiftPressed();
 
-    KeyboardSide getModifierSide(ModifierKey key);
+    virtual bool isAltPressed();
 
-    bool isControlPressed();
+    virtual bool isMetaPressed();
 
-    bool isShiftPressed();
+    virtual Map<ModifierKey, KeyboardSide> modifiersPressed();
 
-    bool isAltPressed();
-
-    bool isMetaPressed();
-
-    Map<ModifierKey, KeyboardSide> modifiersPressed();
-
-    PhysicalKeyboardKey physicalKey();
-
-    LogicalKeyboardKey logicalKey();
-
-    String keyLabel();
-
-    bool shouldDispatchEvent();
+    virtual PhysicalKeyboardKey physicalKey();
+    virtual LogicalKeyboardKey logicalKey();
+    virtual String keyLabel();
+    virtual bool shouldDispatchEvent();
 
 private:
 
 };
+using RawKeyEventData = std::shared_ptr<RawKeyEventDataCls>;
 
-class RawKeyEvent {
+class RawKeyEventCls : public ObjectCls {
 public:
     String character;
 
@@ -79,70 +74,71 @@ public:
     RawKeyEventData data;
 
 
-     RawKeyEvent(String character, RawKeyEventData data, bool repeat);
+     RawKeyEventCls(String character, RawKeyEventData data, bool repeat);
+    virtual void  fromMessage(Map<String, Object> message);
 
-    void  fromMessage(Map<String, Object> message);
+    virtual bool isKeyPressed(LogicalKeyboardKey key);
 
-    bool isKeyPressed(LogicalKeyboardKey key);
+    virtual bool isControlPressed();
 
-    bool isControlPressed();
+    virtual bool isShiftPressed();
 
-    bool isShiftPressed();
+    virtual bool isAltPressed();
 
-    bool isAltPressed();
+    virtual bool isMetaPressed();
 
-    bool isMetaPressed();
+    virtual PhysicalKeyboardKey physicalKey();
 
-    PhysicalKeyboardKey physicalKey();
+    virtual LogicalKeyboardKey logicalKey();
 
-    LogicalKeyboardKey logicalKey();
-
-    void debugFillProperties(DiagnosticPropertiesBuilder properties);
+    virtual void debugFillProperties(DiagnosticPropertiesBuilder properties);
 
 private:
 
 };
+using RawKeyEvent = std::shared_ptr<RawKeyEventCls>;
 
-class RawKeyDownEvent : RawKeyEvent {
+class RawKeyDownEventCls : public RawKeyEventCls {
 public:
 
-     RawKeyDownEvent(Unknown, Unknown, Unknown);
-
+     RawKeyDownEventCls(Unknown character, Unknown data, Unknown repeat);
 private:
 
 };
+using RawKeyDownEvent = std::shared_ptr<RawKeyDownEventCls>;
 
-class RawKeyUpEvent : RawKeyEvent {
+class RawKeyUpEventCls : public RawKeyEventCls {
 public:
 
-     RawKeyUpEvent(Unknown, Unknown);
+     RawKeyUpEventCls(Unknown character, Unknown data);
 
 private:
 
 };
+using RawKeyUpEvent = std::shared_ptr<RawKeyUpEventCls>;
 
-class RawKeyboard {
+class RawKeyboardCls : public ObjectCls {
 public:
     static RawKeyboard instance;
 
 
-    void addListener(ValueChanged<RawKeyEvent> listener);
+    virtual void addListener(ValueChanged<RawKeyEvent> listener);
 
-    void removeListener(ValueChanged<RawKeyEvent> listener);
+    virtual void removeListener(ValueChanged<RawKeyEvent> listener);
 
-    RawKeyEventHandler keyEventHandler();
+    virtual RawKeyEventHandler keyEventHandler();
 
-    void  keyEventHandler(RawKeyEventHandler handler);
+    virtual void  keyEventHandler(RawKeyEventHandler handler);
 
-    bool handleRawKeyEvent(RawKeyEvent event);
+    virtual bool handleRawKeyEvent(RawKeyEvent event);
 
-    Set<LogicalKeyboardKey> keysPressed();
+    virtual Set<LogicalKeyboardKey> keysPressed();
 
-    Set<PhysicalKeyboardKey> physicalKeysPressed();
+    virtual Set<PhysicalKeyboardKey> physicalKeysPressed();
 
-    LogicalKeyboardKey lookUpLayout(PhysicalKeyboardKey physicalKey);
+    virtual LogicalKeyboardKey lookUpLayout(PhysicalKeyboardKey physicalKey);
 
-    void clearKeysPressed();
+    virtual void clearKeysPressed();
 
 private:
     List<ValueChanged<RawKeyEvent>> _listeners;
@@ -160,27 +156,28 @@ private:
     Map<PhysicalKeyboardKey, LogicalKeyboardKey> _keysPressed;
 
 
-    void  _();
-
-    void _synchronizeModifiers(RawKeyEvent event);
+    virtual void  _();
+    virtual void _synchronizeModifiers(RawKeyEvent event);
 
 };
+using RawKeyboard = std::shared_ptr<RawKeyboardCls>;
 
-class _ModifierSidePair {
+class _ModifierSidePairCls : public ObjectCls {
 public:
     ModifierKey modifier;
 
     KeyboardSide side;
 
 
-    bool ==(Object other);
+    virtual bool operator==(Object other);
 
-    int hashCode();
+    virtual int hashCode();
 
 private:
 
-     _ModifierSidePair(ModifierKey modifier, KeyboardSide side);
-
+     _ModifierSidePairCls(ModifierKey modifier, KeyboardSide side);
 };
+using _ModifierSidePair = std::shared_ptr<_ModifierSidePairCls>;
+
 
 #endif

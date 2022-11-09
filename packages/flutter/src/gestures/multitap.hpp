@@ -1,11 +1,12 @@
-#ifndef MULTITAP_H
-#define MULTITAP_H
-#include <memory>
-#include <ui.hpp>
+#ifndef PACKAGES_FLUTTER_SRC_GESTURES_MULTITAP
+#define PACKAGES_FLUTTER_SRC_GESTURES_MULTITAP
+#include <base.hpp>
+#include <dart/ui/ui.hpp>
 #include "events.hpp"
 #include "tap.hpp"
 
-#include <async/async.hpp>
+#include <dart/core/core.hpp>
+#include <dart/async/async.hpp>
 #include "arena.hpp"
 #include "binding.hpp"
 #include "constants.hpp"
@@ -15,23 +16,23 @@
 #include "tap.hpp"
 
 
-
-class _CountdownZoned {
+class _CountdownZonedCls : public ObjectCls {
 public:
 
-    bool timeout();
+    virtual bool timeout();
 
 private:
     bool _timeout;
 
 
-     _CountdownZoned(Duration duration);
+     _CountdownZonedCls(Duration duration);
 
-    void _onTimeout();
+    virtual void _onTimeout();
 
 };
+using _CountdownZoned = std::shared_ptr<_CountdownZonedCls>;
 
-class _TapTracker {
+class _TapTrackerCls : public ObjectCls {
 public:
     DeviceGestureSettings gestureSettings;
 
@@ -42,15 +43,15 @@ public:
     int initialButtons;
 
 
-    void startTrackingPointer(PointerRoute route, Matrix4 transform);
+    virtual void startTrackingPointer(PointerRoute route, Matrix4 transform);
 
-    void stopTrackingPointer(PointerRoute route);
+    virtual void stopTrackingPointer(PointerRoute route);
 
-    bool isWithinGlobalTolerance(PointerEvent event, double tolerance);
+    virtual bool isWithinGlobalTolerance(PointerEvent event, double tolerance);
 
-    bool hasElapsedMinTime();
+    virtual bool hasElapsedMinTime();
 
-    bool hasSameButton(PointerDownEvent event);
+    virtual bool hasSameButton(PointerDownEvent event);
 
 private:
     Offset _initialGlobalPosition;
@@ -60,11 +61,12 @@ private:
     bool _isTrackingPointer;
 
 
-     _TapTracker(Duration doubleTapMinTime, GestureArenaEntry entry, PointerDownEvent event, DeviceGestureSettings gestureSettings);
+     _TapTrackerCls(Duration doubleTapMinTime, GestureArenaEntry entry, PointerDownEvent event, DeviceGestureSettings gestureSettings);
 
 };
+using _TapTracker = std::shared_ptr<_TapTrackerCls>;
 
-class DoubleTapGestureRecognizer : GestureRecognizer {
+class DoubleTapGestureRecognizerCls : public GestureRecognizerCls {
 public:
     GestureTapDownCallback onDoubleTapDown;
 
@@ -73,19 +75,18 @@ public:
     GestureTapCancelCallback onDoubleTapCancel;
 
 
-     DoubleTapGestureRecognizer(Unknown, Unknown, Unknown);
+     DoubleTapGestureRecognizerCls(Unknown debugOwner, Unknown kind, Unknown supportedDevices);
+    virtual bool isPointerAllowed(PointerDownEvent event);
 
-    bool isPointerAllowed(PointerDownEvent event);
+    virtual void addAllowedPointer(PointerDownEvent event);
 
-    void addAllowedPointer(PointerDownEvent event);
+    virtual void acceptGesture(int pointer);
 
-    void acceptGesture(int pointer);
+    virtual void rejectGesture(int pointer);
 
-    void rejectGesture(int pointer);
+    virtual void dispose();
 
-    void dispose();
-
-    String debugDescription();
+    virtual String debugDescription();
 
 private:
     Timer _doubleTapTimer;
@@ -95,46 +96,47 @@ private:
     Map<int, _TapTracker> _trackers;
 
 
-    void _trackTap(PointerDownEvent event);
+    virtual void _trackTap(PointerDownEvent event);
 
-    void _handleEvent(PointerEvent event);
+    virtual void _handleEvent(PointerEvent event);
 
-    void _reject(_TapTracker tracker);
+    virtual void _reject(_TapTracker tracker);
 
-    void _reset();
+    virtual void _reset();
 
-    void _registerFirstTap(_TapTracker tracker);
+    virtual void _registerFirstTap(_TapTracker tracker);
 
-    void _registerSecondTap(_TapTracker tracker);
+    virtual void _registerSecondTap(_TapTracker tracker);
 
-    void _clearTrackers();
+    virtual void _clearTrackers();
 
-    void _freezeTracker(_TapTracker tracker);
+    virtual void _freezeTracker(_TapTracker tracker);
 
-    void _startDoubleTapTimer();
+    virtual void _startDoubleTapTimer();
 
-    void _stopDoubleTapTimer();
+    virtual void _stopDoubleTapTimer();
 
-    void _checkUp(int buttons);
+    virtual void _checkUp(int buttons);
 
-    void _checkCancel();
+    virtual void _checkCancel();
 
 };
+using DoubleTapGestureRecognizer = std::shared_ptr<DoubleTapGestureRecognizerCls>;
 
-class _TapGesture : _TapTracker {
+class _TapGestureCls : public _TapTrackerCls {
 public:
     MultiTapGestureRecognizer gestureRecognizer;
 
 
-    void handleEvent(PointerEvent event);
+    virtual void handleEvent(PointerEvent event);
 
-    void stopTrackingPointer(PointerRoute route);
+    virtual void stopTrackingPointer(PointerRoute route);
 
-    void accept();
+    virtual void accept();
 
-    void reject();
+    virtual void reject();
 
-    void cancel();
+    virtual void cancel();
 
 private:
     bool _wonArena;
@@ -146,13 +148,14 @@ private:
     OffsetPair _finalPosition;
 
 
-     _TapGesture(PointerEvent event, MultiTapGestureRecognizer gestureRecognizer, Unknown, Duration longTapDelay);
+     _TapGestureCls(PointerEvent event, MultiTapGestureRecognizer gestureRecognizer, Unknown gestureSettings, Duration longTapDelay);
 
-    void _check();
+    virtual void _check();
 
 };
+using _TapGesture = std::shared_ptr<_TapGestureCls>;
 
-class MultiTapGestureRecognizer : GestureRecognizer {
+class MultiTapGestureRecognizerCls : public GestureRecognizerCls {
 public:
     GestureMultiTapDownCallback onTapDown;
 
@@ -167,31 +170,31 @@ public:
     GestureMultiTapDownCallback onLongTapDown;
 
 
-     MultiTapGestureRecognizer(Unknown, Unknown, Duration longTapDelay, Unknown);
+     MultiTapGestureRecognizerCls(Unknown debugOwner, Unknown kind, Duration longTapDelay, Unknown supportedDevices);
+    virtual void addAllowedPointer(PointerDownEvent event);
 
-    void addAllowedPointer(PointerDownEvent event);
+    virtual void acceptGesture(int pointer);
 
-    void acceptGesture(int pointer);
+    virtual void rejectGesture(int pointer);
 
-    void rejectGesture(int pointer);
+    virtual void dispose();
 
-    void dispose();
-
-    String debugDescription();
+    virtual String debugDescription();
 
 private:
     Map<int, _TapGesture> _gestureMap;
 
 
-    void _dispatchCancel(int pointer);
+    virtual void _dispatchCancel(int pointer);
 
-    void _dispatchTap(int pointer, OffsetPair position);
+    virtual void _dispatchTap(int pointer, OffsetPair position);
 
-    void _dispatchLongTap(OffsetPair lastPosition, int pointer);
+    virtual void _dispatchLongTap(OffsetPair lastPosition, int pointer);
 
 };
+using MultiTapGestureRecognizer = std::shared_ptr<MultiTapGestureRecognizerCls>;
 
-class SerialTapDownDetails {
+class SerialTapDownDetailsCls : public ObjectCls {
 public:
     Offset globalPosition;
 
@@ -204,24 +207,26 @@ public:
     int count;
 
 
-     SerialTapDownDetails(int buttons, int count, Offset globalPosition, PointerDeviceKind kind, Offset localPosition);
+     SerialTapDownDetailsCls(int buttons, int count, Offset globalPosition, PointerDeviceKind kind, Offset localPosition);
 
 private:
 
 };
+using SerialTapDownDetails = std::shared_ptr<SerialTapDownDetailsCls>;
 
-class SerialTapCancelDetails {
+class SerialTapCancelDetailsCls : public ObjectCls {
 public:
     int count;
 
 
-     SerialTapCancelDetails(int count);
+     SerialTapCancelDetailsCls(int count);
 
 private:
 
 };
+using SerialTapCancelDetails = std::shared_ptr<SerialTapCancelDetailsCls>;
 
-class SerialTapUpDetails {
+class SerialTapUpDetailsCls : public ObjectCls {
 public:
     Offset globalPosition;
 
@@ -232,13 +237,14 @@ public:
     int count;
 
 
-     SerialTapUpDetails(int count, Offset globalPosition, PointerDeviceKind kind, Offset localPosition);
+     SerialTapUpDetailsCls(int count, Offset globalPosition, PointerDeviceKind kind, Offset localPosition);
 
 private:
 
 };
+using SerialTapUpDetails = std::shared_ptr<SerialTapUpDetailsCls>;
 
-class SerialTapGestureRecognizer : GestureRecognizer {
+class SerialTapGestureRecognizerCls : public GestureRecognizerCls {
 public:
     GestureSerialTapDownCallback onSerialTapDown;
 
@@ -247,21 +253,20 @@ public:
     GestureSerialTapUpCallback onSerialTapUp;
 
 
-     SerialTapGestureRecognizer(Unknown, Unknown);
+     SerialTapGestureRecognizerCls(Unknown debugOwner, Unknown supportedDevices);
+    virtual bool isTrackingPointer();
 
-    bool isTrackingPointer();
+    virtual bool isPointerAllowed(PointerDownEvent event);
 
-    bool isPointerAllowed(PointerDownEvent event);
+    virtual void addAllowedPointer(PointerDownEvent event);
 
-    void addAllowedPointer(PointerDownEvent event);
+    virtual void acceptGesture(int pointer);
 
-    void acceptGesture(int pointer);
+    virtual void rejectGesture(int pointer);
 
-    void rejectGesture(int pointer);
+    virtual void dispose();
 
-    void dispose();
-
-    String debugDescription();
+    virtual String debugDescription();
 
 private:
     Timer _serialTapTimer;
@@ -273,28 +278,30 @@ private:
     _TapTracker _pendingTap;
 
 
-    bool _representsSameSeries(PointerDownEvent event, _TapTracker tap);
+    virtual bool _representsSameSeries(PointerDownEvent event, _TapTracker tap);
 
-    void _trackTap(PointerDownEvent event);
+    virtual void _trackTap(PointerDownEvent event);
 
-    void _handleEvent(PointerEvent event);
+    virtual void _handleEvent(PointerEvent event);
 
-    void _rejectPendingTap();
+    virtual void _rejectPendingTap();
 
-    void _reset();
+    virtual void _reset();
 
-    void _registerTap(PointerUpEvent event, _TapTracker tracker);
+    virtual void _registerTap(PointerUpEvent event, _TapTracker tracker);
 
-    void _stopTrackingPointer(_TapTracker tracker);
+    virtual void _stopTrackingPointer(_TapTracker tracker);
 
-    void _startSerialTapTimer();
+    virtual void _startSerialTapTimer();
 
-    void _stopSerialTapTimer();
+    virtual void _stopSerialTapTimer();
 
-    void _checkUp(PointerUpEvent event, _TapTracker tracker);
+    virtual void _checkUp(PointerUpEvent event, _TapTracker tracker);
 
-    void _checkCancel(int count);
+    virtual void _checkCancel(int count);
 
 };
+using SerialTapGestureRecognizer = std::shared_ptr<SerialTapGestureRecognizerCls>;
+
 
 #endif

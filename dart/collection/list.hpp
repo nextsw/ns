@@ -1,11 +1,11 @@
-#ifndef LIST_H
-#define LIST_H
-#include <memory>
+#ifndef DART_COLLECTION_LIST
+#define DART_COLLECTION_LIST
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
 
 
-
-
-class ListBase<E> : Object {
+template<typename E> class ListBaseCls : public ObjectCls {
 public:
 
     static String listToString(List list);
@@ -13,134 +13,137 @@ public:
 private:
 
 };
+template<typename E> using ListBase = std::shared_ptr<ListBaseCls<E>>;
 
-class ListMixin<E> {
+template<typename E> class ListMixinCls : public ObjectCls {
 public:
 
-    Iterator<E> iterator();
+    virtual Iterator<E> iterator();
 
-    E elementAt(int index);
+    virtual E elementAt(int index);
 
-    Iterable<E> followedBy(Iterable<E> other);
+    virtual Iterable<E> followedBy(Iterable<E> other);
 
-    void forEach(FunctionType action);
+    virtual void forEach(void action(E element) );
 
-    bool isEmpty();
+    virtual bool isEmpty();
 
-    bool isNotEmpty();
+    virtual bool isNotEmpty();
 
-    E first();
+    virtual E first();
 
-    void first(E value);
+    virtual void first(E value);
 
-    E last();
+    virtual E last();
 
-    void last(E value);
+    virtual void last(E value);
 
-    E single();
+    virtual E single();
 
-    bool contains(Object element);
+    virtual bool contains(Object element);
 
-    bool every(FunctionType test);
+    virtual bool every(bool test(E element) );
 
-    bool any(FunctionType test);
+    virtual bool any(bool test(E element) );
 
-    E firstWhere(FunctionType orElse, FunctionType test);
+    virtual E firstWhere(E orElse() , bool test(E element) );
 
-    E lastWhere(FunctionType orElse, FunctionType test);
+    virtual E lastWhere(E orElse() , bool test(E element) );
 
-    E singleWhere(FunctionType orElse, FunctionType test);
+    virtual E singleWhere(E orElse() , bool test(E element) );
 
-    String join(String separator);
+    virtual String join(String separator);
 
-    Iterable<E> where(FunctionType test);
+    virtual Iterable<E> where(bool test(E element) );
 
-    Iterable<T> whereType<T>();
+    template<typename T>  virtual Iterable<T> whereType();
 
-    Iterable<T> map<T>(FunctionType f);
+    template<typename T>  virtual Iterable<T> map(T f(E element) );
 
-    Iterable<T> expand<T>(FunctionType f);
+    template<typename T>  virtual Iterable<T> expand(Iterable<T> f(E element) );
 
-    E reduce(FunctionType combine);
+    virtual E reduce(E combine(E element, E previousValue) );
 
-    T fold<T>(FunctionType combine, T initialValue);
+    template<typename T>  virtual T fold(T combine(E element, T previousValue) , T initialValue);
 
-    Iterable<E> skip(int count);
+    virtual Iterable<E> skip(int count);
 
-    Iterable<E> skipWhile(FunctionType test);
+    virtual Iterable<E> skipWhile(bool test(E element) );
 
-    Iterable<E> take(int count);
+    virtual Iterable<E> take(int count);
 
-    Iterable<E> takeWhile(FunctionType test);
+    virtual Iterable<E> takeWhile(bool test(E element) );
 
-    List<E> toList(bool growable);
+    virtual List<E> toList(bool growable);
 
-    Set<E> toSet();
+    virtual Set<E> toSet();
 
-    void add(E element);
+    virtual void add(E element);
 
-    void addAll(Iterable<E> iterable);
+    virtual void addAll(Iterable<E> iterable);
 
-    bool remove(Object element);
+    virtual bool remove(Object element);
 
-    void removeWhere(FunctionType test);
+    virtual void removeWhere(bool test(E element) );
 
-    void retainWhere(FunctionType test);
+    virtual void retainWhere(bool test(E element) );
 
-    void clear();
+    virtual void clear();
 
-    List<R> cast<R>();
+    template<typename R>  virtual List<R> cast();
 
-    E removeLast();
+    virtual E removeLast();
 
-    void sort(FunctionType compare);
+    virtual void sort(int compare(E a, E b) );
 
-    void shuffle(Random random);
+    virtual void shuffle(Random random);
 
-    Map<int, E> asMap();
+    virtual Map<int, E> asMap();
 
-    List<E> +(List<E> other);
+    virtual List<E> operator+(List<E> other);
 
-    List<E> sublist(int end, int start);
+    virtual List<E> sublist(int end, int start);
 
-    Iterable<E> getRange(int end, int start);
+    virtual Iterable<E> getRange(int end, int start);
 
-    void removeRange(int end, int start);
+    virtual void removeRange(int end, int start);
 
-    void fillRange(int end, E fill, int start);
+    virtual void fillRange(int end, E fill, int start);
 
-    void setRange(int end, Iterable<E> iterable, int skipCount, int start);
+    virtual void setRange(int end, Iterable<E> iterable, int skipCount, int start);
 
-    void replaceRange(int end, Iterable<E> newContents, int start);
+    virtual void replaceRange(int end, Iterable<E> newContents, int start);
 
-    int indexOf(Object element, int start);
+    virtual int indexOf(Object element, int start);
 
-    int indexWhere(int start, FunctionType test);
+    virtual int indexWhere(int start, bool test(E element) );
 
-    int lastIndexOf(Object element, int start);
+    virtual int lastIndexOf(Object element, int start);
 
-    int lastIndexWhere(int start, FunctionType test);
+    virtual int lastIndexWhere(int start, bool test(E element) );
 
-    void insert(E element, int index);
+    virtual void insert(E element, int index);
 
-    E removeAt(int index);
+    virtual E removeAt(int index);
 
-    void insertAll(int index, Iterable<E> iterable);
+    virtual void insertAll(int index, Iterable<E> iterable);
 
-    void setAll(int index, Iterable<E> iterable);
+    virtual void setAll(int index, Iterable<E> iterable);
 
-    Iterable<E> reversed();
+    virtual Iterable<E> reversed();
 
-    String toString();
+    virtual String toString();
 
 private:
 
-    void _closeGap(int end, int start);
+    virtual void _closeGap(int end, int start);
 
-    void _filter(bool retainMatching, FunctionType test);
+    virtual void _filter(bool retainMatching, bool test(E element) );
 
     static int _compareAny(dynamic a, dynamic b);
 
 };
+template<typename E> using ListMixin = std::shared_ptr<ListMixinCls<E>>;
+
 
 #endif

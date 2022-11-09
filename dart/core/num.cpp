@@ -1,5 +1,5 @@
 #include "num.hpp"
-num num::parse(String input, FunctionType onError) {
+num numCls::parse(String input, num onError(String input) ) {
     num result = tryParse(input);
     if (result != nullptr)     {
         return result;
@@ -10,7 +10,7 @@ num num::parse(String input, FunctionType onError) {
     return onError(input);
 }
 
-num num::tryParse(String input) {
-    String source = input.trim();
-    return int.tryParse(source) ?? double.tryParse(source);
+num numCls::tryParse(String input) {
+    String source = input->trim();
+    return intValue->tryParse(source) ?? double->tryParse(source);
 }

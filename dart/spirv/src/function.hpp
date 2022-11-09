@@ -1,11 +1,11 @@
-#ifndef FUNCTION_H
-#define FUNCTION_H
-#include <memory>
+#ifndef DART_SPIRV_SRC_FUNCTION
+#define DART_SPIRV_SRC_FUNCTION
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
 
 
-
-
-class _Variable {
+class _VariableCls : public ObjectCls {
 public:
     int id;
 
@@ -18,11 +18,11 @@ public:
 
 private:
 
-     _Variable(int id, int type);
-
+     _VariableCls(int id, int type);
 };
+using _Variable = std::shared_ptr<_VariableCls>;
 
-class _Function {
+class _FunctionCls : public ObjectCls {
 public:
     _Transpiler transpiler;
 
@@ -43,24 +43,26 @@ public:
     Map<int, _Variable> variables;
 
 
-    _Block addBlock(int id);
+    virtual _Block addBlock(int id);
 
-    _Block block(int id);
+    virtual _Block block(int id);
 
-    void declareVariable(int id, int type);
+    virtual void declareVariable(int id, int type);
 
-    _Variable variable(int id);
+    virtual _Variable variable(int id);
 
-    void declareParam(int id, int paramType);
+    virtual void declareParam(int id, int paramType);
 
-    List<_Variable> variableDeps(int id);
+    virtual List<_Variable> variableDeps(int id);
 
-    void write(StringBuffer out);
+    virtual void write(StringBuffer out);
 
 private:
 
-     _Function(int name, _Transpiler transpiler, _FunctionType type);
+     _FunctionCls(int name, _Transpiler transpiler, _FunctionType type);
 
 };
+using _Function = std::shared_ptr<_FunctionCls>;
+
 
 #endif

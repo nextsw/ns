@@ -1,10 +1,7 @@
 #include "equality_map.hpp"
-EqualityMap::EqualityMap(Equality<K> equality) {
-    {
-        super(LinkedHashMap(equality.equals, equality.hash, equality.isValidKey));
-    }
+template<typename K, typename V> EqualityMapCls<K, V>::EqualityMapCls(Equality<K> equality) {
 }
 
-void EqualityMap::from(Equality<K> equality, Map<K, V> other) {
+template<typename K, typename V> void EqualityMapCls<K, V>::from(Equality<K> equality, Map<K, V> other) {
     addAll(other);
 }

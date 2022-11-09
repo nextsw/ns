@@ -1,36 +1,36 @@
-#ifndef RAY_H
-#define RAY_H
-#include <memory>
+#ifndef PACKAGES_VECTOR_MATH_SRC_VECTOR_MATH_64_RAY
+#define PACKAGES_VECTOR_MATH_SRC_VECTOR_MATH_64_RAY
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
 
 
-
-
-class Ray {
+class RayCls : public ObjectCls {
 public:
 
-    Vector3 origin();
+    virtual Vector3 origin();
 
-    Vector3 direction();
+    virtual Vector3 direction();
 
-     Ray();
+     RayCls();
 
-    void  copy(Ray other);
+    virtual void  copy(Ray other);
 
-    void  originDirection(Vector3 direction, Vector3 origin);
+    virtual void  originDirection(Vector3 direction, Vector3 origin);
 
-    void copyFrom(Ray other);
+    virtual void copyFrom(Ray other);
 
-    Vector3 at(double t);
+    virtual Vector3 at(double t);
 
-    void copyAt(Vector3 other, double t);
+    virtual void copyAt(Vector3 other, double t);
 
-    double intersectsWithSphere(Sphere other);
+    virtual double intersectsWithSphere(Sphere other);
 
-    double intersectsWithTriangle(Triangle other);
+    virtual double intersectsWithTriangle(Triangle other);
 
-    double intersectsWithQuad(Quad other);
+    virtual double intersectsWithQuad(Quad other);
 
-    double intersectsWithAabb3(Aabb3 other);
+    virtual double intersectsWithAabb3(Aabb3 other);
 
 private:
     Vector3 _origin;
@@ -49,5 +49,7 @@ private:
 
 
 };
+using Ray = std::shared_ptr<RayCls>;
+
 
 #endif

@@ -1,4 +1,4 @@
 #include "meta_meta.hpp"
-String TargetKindExtension::displayString() {
+String TargetKindExtensionCls::displayString() {
     ;
 }

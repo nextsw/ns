@@ -1,8 +1,8 @@
-#ifndef POINTER_H
-#define POINTER_H
-#include <memory>
+#ifndef DART_UI_POINTER
+#define DART_UI_POINTER
+#include <base.hpp>
 
-
+#include <dart/core/core.hpp>
 
 
 enum PointerChange{
@@ -33,7 +33,7 @@ enum PointerSignalKind{
     unknown,
 } // end PointerSignalKind
 
-class PointerData {
+class PointerDataCls : public ObjectCls {
 public:
     int embedderId;
 
@@ -106,25 +106,27 @@ public:
     double rotation;
 
 
-     PointerData(int buttons, PointerChange change, int device, double distance, double distanceMax, int embedderId, PointerDeviceKind kind, bool obscured, double orientation, double panDeltaX, double panDeltaY, double panX, double panY, double physicalDeltaX, double physicalDeltaY, double physicalX, double physicalY, int platformData, int pointerIdentifier, double pressure, double pressureMax, double pressureMin, double radiusMajor, double radiusMax, double radiusMin, double radiusMinor, double rotation, double scale, double scrollDeltaX, double scrollDeltaY, PointerSignalKind signalKind, double size, bool synthesized, double tilt, Duration timeStamp);
+     PointerDataCls(int buttons, PointerChange change, int device, double distance, double distanceMax, int embedderId, PointerDeviceKind kind, bool obscured, double orientation, double panDeltaX, double panDeltaY, double panX, double panY, double physicalDeltaX, double physicalDeltaY, double physicalX, double physicalY, int platformData, int pointerIdentifier, double pressure, double pressureMax, double pressureMin, double radiusMajor, double radiusMax, double radiusMin, double radiusMinor, double rotation, double scale, double scrollDeltaX, double scrollDeltaY, PointerSignalKind signalKind, double size, bool synthesized, double tilt, Duration timeStamp);
+    virtual String toString();
 
-    String toString();
-
-    String toStringFull();
+    virtual String toStringFull();
 
 private:
 
 };
+using PointerData = std::shared_ptr<PointerDataCls>;
 
-class PointerDataPacket {
+class PointerDataPacketCls : public ObjectCls {
 public:
     List<PointerData> data;
 
 
-     PointerDataPacket(List<PointerData> data);
+     PointerDataPacketCls(List<PointerData> data);
 
 private:
 
 };
+using PointerDataPacket = std::shared_ptr<PointerDataPacketCls>;
+
 
 #endif

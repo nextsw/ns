@@ -1,32 +1,32 @@
-#ifndef GEOMETRY_H
-#define GEOMETRY_H
-#include <memory>
+#ifndef DART_UI_GEOMETRY
+#define DART_UI_GEOMETRY
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
 
 
-
-
-class OffsetBase {
+class OffsetBaseCls : public ObjectCls {
 public:
 
-     OffsetBase(double _dx, double _dy);
+     OffsetBaseCls(double _dx, double _dy);
 
-    bool isInfinite();
+    virtual bool isInfinite();
 
-    bool isFinite();
+    virtual bool isFinite();
 
-    bool <(OffsetBase other);
+    virtual bool operator<(OffsetBase other);
 
-    bool <=(OffsetBase other);
+    virtual bool operator<=(OffsetBase other);
 
-    bool >(OffsetBase other);
+    virtual bool operator>(OffsetBase other);
 
-    bool >=(OffsetBase other);
+    virtual bool operator>=(OffsetBase other);
 
-    bool ==(Object other);
+    virtual bool operator==(Object other);
 
-    int hashCode();
+    virtual int hashCode();
 
-    String toString();
+    virtual String toString();
 
 private:
     double _dx;
@@ -35,138 +35,141 @@ private:
 
 
 };
+using OffsetBase = std::shared_ptr<OffsetBaseCls>;
 
-class Offset : OffsetBase {
+class OffsetCls : public OffsetBaseCls {
 public:
-    static const Offset zero;
+    static Offset zero;
 
-    static const Offset infinite;
+    static Offset infinite;
 
 
-     Offset(double dx, double dy);
+     OffsetCls(double dx, double dy);
 
-    void  fromDirection(double direction, double distance);
+    virtual void  fromDirection(double direction, double distance);
 
-    double dx();
+    virtual double dx();
 
-    double dy();
+    virtual double dy();
 
-    double distance();
+    virtual double distance();
 
-    double distanceSquared();
+    virtual double distanceSquared();
 
-    double direction();
+    virtual double direction();
 
-    Offset scale(double scaleX, double scaleY);
+    virtual Offset scale(double scaleX, double scaleY);
 
-    Offset translate(double translateX, double translateY);
+    virtual Offset translate(double translateX, double translateY);
 
-    Offset -();
+    virtual Offset operator-();
 
-    Offset -(Offset other);
+    virtual Offset operator-(Offset other);
 
-    Offset +(Offset other);
+    virtual Offset operator+(Offset other);
 
-    Offset *(double operand);
+    virtual Offset operator*(double operand);
 
-    Offset /(double operand);
+    virtual Offset operator/(double operand);
 
-    Offset ~/(double operand);
+    virtual Offset operator~/(double operand);
 
-    Offset %(double operand);
+    virtual Offset operator%(double operand);
 
-    Rect &(Size other);
+    virtual Rect operator&(Size other);
 
     static Offset lerp(Offset a, Offset b, double t);
 
-    bool ==(Object other);
+    virtual bool operator==(Object other);
 
-    int hashCode();
+    virtual int hashCode();
 
-    String toString();
+    virtual String toString();
 
 private:
 
 };
+using Offset = std::shared_ptr<OffsetCls>;
 
-class Size : OffsetBase {
+class SizeCls : public OffsetBaseCls {
 public:
-    static const Size zero;
+    static Size zero;
 
-    static const Size infinite;
+    static Size infinite;
 
 
-     Size(double height, double width);
+     SizeCls(double height, double width);
 
-    void  copy(Size source);
+    virtual void  copy(Size source);
 
-    void  square(double dimension);
+    virtual void  square(double dimension);
 
-    void  fromWidth(double width);
+    virtual void  fromWidth(double width);
 
-    void  fromHeight(double height);
+    virtual void  fromHeight(double height);
 
-    void  fromRadius(double radius);
+    virtual void  fromRadius(double radius);
 
-    double width();
+    virtual double width();
 
-    double height();
+    virtual double height();
 
-    double aspectRatio();
+    virtual double aspectRatio();
 
-    bool isEmpty();
+    virtual bool isEmpty();
 
-    OffsetBase -(OffsetBase other);
+    virtual OffsetBase operator-(OffsetBase other);
 
-    Size +(Offset other);
+    virtual Size operator+(Offset other);
 
-    Size *(double operand);
+    virtual Size operator*(double operand);
 
-    Size /(double operand);
+    virtual Size operator/(double operand);
 
-    Size ~/(double operand);
+    virtual Size operator~/(double operand);
 
-    Size %(double operand);
+    virtual Size operator%(double operand);
 
-    double shortestSide();
+    virtual double shortestSide();
 
-    double longestSide();
+    virtual double longestSide();
 
-    Offset topLeft(Offset origin);
+    virtual Offset topLeft(Offset origin);
 
-    Offset topCenter(Offset origin);
+    virtual Offset topCenter(Offset origin);
 
-    Offset topRight(Offset origin);
+    virtual Offset topRight(Offset origin);
 
-    Offset centerLeft(Offset origin);
+    virtual Offset centerLeft(Offset origin);
 
-    Offset center(Offset origin);
+    virtual Offset center(Offset origin);
 
-    Offset centerRight(Offset origin);
+    virtual Offset centerRight(Offset origin);
 
-    Offset bottomLeft(Offset origin);
+    virtual Offset bottomLeft(Offset origin);
 
-    Offset bottomCenter(Offset origin);
+    virtual Offset bottomCenter(Offset origin);
 
-    Offset bottomRight(Offset origin);
+    virtual Offset bottomRight(Offset origin);
 
-    bool contains(Offset offset);
+    virtual bool contains(Offset offset);
 
-    Size flipped();
+    virtual Size flipped();
 
     static Size lerp(Size a, Size b, double t);
 
-    bool ==(Object other);
+    virtual bool operator==(Object other);
 
-    int hashCode();
+    virtual int hashCode();
 
-    String toString();
+    virtual String toString();
 
 private:
 
 };
+using Size = std::shared_ptr<SizeCls>;
 
-class Rect {
+class RectCls : public ObjectCls {
 public:
     double left;
 
@@ -176,129 +179,130 @@ public:
 
     double bottom;
 
-    static const Rect zero;
+    static Rect zero;
 
-    static const Rect largest;
+    static Rect largest;
 
 
-    void  fromLTRB(double bottom, double left, double right, double top);
+    virtual void  fromLTRB(double bottom, double left, double right, double top);
 
-    void  fromLTWH(double height, double left, double top, double width);
+    virtual void  fromLTWH(double height, double left, double top, double width);
 
-    void  fromCircle(Offset center, double radius);
+    virtual void  fromCircle(Offset center, double radius);
 
-    void  fromCenter(Offset center, double height, double width);
+    virtual void  fromCenter(Offset center, double height, double width);
 
-    void  fromPoints(Offset a, Offset b);
+    virtual void  fromPoints(Offset a, Offset b);
 
-    double width();
+    virtual double width();
 
-    double height();
+    virtual double height();
 
-    Size size();
+    virtual Size size();
 
-    bool hasNaN();
+    virtual bool hasNaN();
 
-    bool isInfinite();
+    virtual bool isInfinite();
 
-    bool isFinite();
+    virtual bool isFinite();
 
-    bool isEmpty();
+    virtual bool isEmpty();
 
-    Rect shift(Offset offset);
+    virtual Rect shift(Offset offset);
 
-    Rect translate(double translateX, double translateY);
+    virtual Rect translate(double translateX, double translateY);
 
-    Rect inflate(double delta);
+    virtual Rect inflate(double delta);
 
-    Rect deflate(double delta);
+    virtual Rect deflate(double delta);
 
-    Rect intersect(Rect other);
+    virtual Rect intersect(Rect other);
 
-    Rect expandToInclude(Rect other);
+    virtual Rect expandToInclude(Rect other);
 
-    bool overlaps(Rect other);
+    virtual bool overlaps(Rect other);
 
-    double shortestSide();
+    virtual double shortestSide();
 
-    double longestSide();
+    virtual double longestSide();
 
-    Offset topLeft();
+    virtual Offset topLeft();
 
-    Offset topCenter();
+    virtual Offset topCenter();
 
-    Offset topRight();
+    virtual Offset topRight();
 
-    Offset centerLeft();
+    virtual Offset centerLeft();
 
-    Offset center();
+    virtual Offset center();
 
-    Offset centerRight();
+    virtual Offset centerRight();
 
-    Offset bottomLeft();
+    virtual Offset bottomLeft();
 
-    Offset bottomCenter();
+    virtual Offset bottomCenter();
 
-    Offset bottomRight();
+    virtual Offset bottomRight();
 
-    bool contains(Offset offset);
+    virtual bool contains(Offset offset);
 
     static Rect lerp(Rect a, Rect b, double t);
 
-    bool ==(Object other);
+    virtual bool operator==(Object other);
 
-    int hashCode();
+    virtual int hashCode();
 
-    String toString();
+    virtual String toString();
 
 private:
-    static const double _giantScalar;
+    static double _giantScalar;
 
 
-    Float32List _getValue32();
+    virtual Float32List _getValue32();
 
 };
+using Rect = std::shared_ptr<RectCls>;
 
-class Radius {
+class RadiusCls : public ObjectCls {
 public:
     double x;
 
     double y;
 
-    static const Radius zero;
+    static Radius zero;
 
 
-    void  circular(double radius);
+    virtual void  circular(double radius);
 
-    void  elliptical(double x, double y);
+    virtual void  elliptical(double x, double y);
+    virtual Radius operator-();
 
-    Radius -();
+    virtual Radius operator-(Radius other);
 
-    Radius -(Radius other);
+    virtual Radius operator+(Radius other);
 
-    Radius +(Radius other);
+    virtual Radius operator*(double operand);
 
-    Radius *(double operand);
+    virtual Radius operator/(double operand);
 
-    Radius /(double operand);
+    virtual Radius operator~/(double operand);
 
-    Radius ~/(double operand);
-
-    Radius %(double operand);
+    virtual Radius operator%(double operand);
 
     static Radius lerp(Radius a, Radius b, double t);
 
-    bool ==(Object other);
+    virtual bool operator==(Object other);
 
-    int hashCode();
+    virtual int hashCode();
 
-    String toString();
+    virtual String toString();
 
 private:
 
 };
+using Radius = std::shared_ptr<RadiusCls>;
 
-class RRect {
+class RRectCls : public ObjectCls {
 public:
     double left;
 
@@ -324,110 +328,113 @@ public:
 
     double blRadiusY;
 
-    static const RRect zero;
+    static RRect zero;
 
 
-    void  fromLTRBXY(double bottom, double left, double radiusX, double radiusY, double right, double top);
+    virtual void  fromLTRBXY(double bottom, double left, double radiusX, double radiusY, double right, double top);
 
-    void  fromLTRBR(double bottom, double left, Radius radius, double right, double top);
+    virtual void  fromLTRBR(double bottom, double left, Radius radius, double right, double top);
 
-    void  fromRectXY(double radiusX, double radiusY, Rect rect);
+    virtual void  fromRectXY(double radiusX, double radiusY, Rect rect);
 
-    void  fromRectAndRadius(Radius radius, Rect rect);
+    virtual void  fromRectAndRadius(Radius radius, Rect rect);
 
-    void  fromLTRBAndCorners(double bottom, Radius bottomLeft, Radius bottomRight, double left, double right, double top, Radius topLeft, Radius topRight);
+    virtual void  fromLTRBAndCorners(double bottom, Radius bottomLeft, Radius bottomRight, double left, double right, double top, Radius topLeft, Radius topRight);
 
-    void  fromRectAndCorners(Radius bottomLeft, Radius bottomRight, Rect rect, Radius topLeft, Radius topRight);
+    virtual void  fromRectAndCorners(Radius bottomLeft, Radius bottomRight, Rect rect, Radius topLeft, Radius topRight);
 
-    Radius tlRadius();
+    virtual Radius tlRadius();
 
-    Radius trRadius();
+    virtual Radius trRadius();
 
-    Radius brRadius();
+    virtual Radius brRadius();
 
-    Radius blRadius();
+    virtual Radius blRadius();
 
-    RRect shift(Offset offset);
+    virtual RRect shift(Offset offset);
 
-    RRect inflate(double delta);
+    virtual RRect inflate(double delta);
 
-    RRect deflate(double delta);
+    virtual RRect deflate(double delta);
 
-    double width();
+    virtual double width();
 
-    double height();
+    virtual double height();
 
-    Rect outerRect();
+    virtual Rect outerRect();
 
-    Rect safeInnerRect();
+    virtual Rect safeInnerRect();
 
-    Rect middleRect();
+    virtual Rect middleRect();
 
-    Rect wideMiddleRect();
+    virtual Rect wideMiddleRect();
 
-    Rect tallMiddleRect();
+    virtual Rect tallMiddleRect();
 
-    bool isEmpty();
+    virtual bool isEmpty();
 
-    bool isFinite();
+    virtual bool isFinite();
 
-    bool isRect();
+    virtual bool isRect();
 
-    bool isStadium();
+    virtual bool isStadium();
 
-    bool isEllipse();
+    virtual bool isEllipse();
 
-    bool isCircle();
+    virtual bool isCircle();
 
-    double shortestSide();
+    virtual double shortestSide();
 
-    double longestSide();
+    virtual double longestSide();
 
-    bool hasNaN();
+    virtual bool hasNaN();
 
-    Offset center();
+    virtual Offset center();
 
-    RRect scaleRadii();
+    virtual RRect scaleRadii();
 
-    bool contains(Offset point);
+    virtual bool contains(Offset point);
 
     static RRect lerp(RRect a, RRect b, double t);
 
-    bool ==(Object other);
+    virtual bool operator==(Object other);
 
-    int hashCode();
+    virtual int hashCode();
 
-    String toString();
+    virtual String toString();
 
 private:
 
-    void  _raw(double blRadiusX, double blRadiusY, double bottom, double brRadiusX, double brRadiusY, double left, double right, double tlRadiusX, double tlRadiusY, double top, double trRadiusX, double trRadiusY);
+    virtual void  _raw(double blRadiusX, double blRadiusY, double bottom, double brRadiusX, double brRadiusY, double left, double right, double tlRadiusX, double tlRadiusY, double top, double trRadiusX, double trRadiusY);
 
-    Float32List _getValue32();
+    virtual Float32List _getValue32();
 
-    double _getMin(double limit, double min, double radius1, double radius2);
+    virtual double _getMin(double limit, double min, double radius1, double radius2);
 
 };
+using RRect = std::shared_ptr<RRectCls>;
 
-class RSTransform {
+class RSTransformCls : public ObjectCls {
 public:
 
-     RSTransform(double scos, double ssin, double tx, double ty);
+     RSTransformCls(double scos, double ssin, double tx, double ty);
 
-    void  fromComponents(double anchorX, double anchorY, double rotation, double scale, double translateX, double translateY);
+    virtual void  fromComponents(double anchorX, double anchorY, double rotation, double scale, double translateX, double translateY);
 
-    double scos();
+    virtual double scos();
 
-    double ssin();
+    virtual double ssin();
 
-    double tx();
+    virtual double tx();
 
-    double ty();
+    virtual double ty();
 
 private:
     Float32List _value;
 
 
 };
+using RSTransform = std::shared_ptr<RSTransformCls>;
+
 
 #endif

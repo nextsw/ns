@@ -1,14 +1,14 @@
-#ifndef CLAMPED_SIMULATION_H
-#define CLAMPED_SIMULATION_H
-#include <memory>
+#ifndef PACKAGES_FLUTTER_SRC_PHYSICS_CLAMPED_SIMULATION
+#define PACKAGES_FLUTTER_SRC_PHYSICS_CLAMPED_SIMULATION
+#include <base.hpp>
 #include "simulation.hpp"
 
-#include <flutter/foundation.hpp>
+#include <dart/core/core.hpp>
+#include <packages/flutter/lib/foundation.hpp>
 #include "simulation.hpp"
 
 
-
-class ClampedSimulation : Simulation {
+class ClampedSimulationCls : public SimulationCls {
 public:
     Simulation simulation;
 
@@ -21,18 +21,20 @@ public:
     double dxMax;
 
 
-     ClampedSimulation(double dxMax, double dxMin, Simulation simulation, double xMax, double xMin);
+     ClampedSimulationCls(double dxMax, double dxMin, Simulation simulation, double xMax, double xMin);
 
-    double x(double time);
+    virtual double x(double time);
 
-    double dx(double time);
+    virtual double dx(double time);
 
-    bool isDone(double time);
+    virtual bool isDone(double time);
 
-    String toString();
+    virtual String toString();
 
 private:
 
 };
+using ClampedSimulation = std::shared_ptr<ClampedSimulationCls>;
+
 
 #endif

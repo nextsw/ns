@@ -1,40 +1,39 @@
-#ifndef LINKED_LIST_H
-#define LINKED_LIST_H
-#include <memory>
+#ifndef DART_COLLECTION_LINKED_LIST
+#define DART_COLLECTION_LINKED_LIST
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
 
 
-
-
-class LinkedList<E extends LinkedListEntry<E>> : Iterable<E> {
+template<typename E : LinkedListEntry<E>> class LinkedListCls : public IterableCls<E> {
 public:
 
-     LinkedList();
+     LinkedListCls();
+    virtual void addFirst(E entry);
 
-    void addFirst(E entry);
+    virtual void add(E entry);
 
-    void add(E entry);
+    virtual void addAll(Iterable<E> entries);
 
-    void addAll(Iterable<E> entries);
+    virtual bool remove(E entry);
 
-    bool remove(E entry);
+    virtual bool contains(Object entry);
 
-    bool contains(Object entry);
+    virtual Iterator<E> iterator();
 
-    Iterator<E> iterator();
+    virtual int length();
 
-    int length();
+    virtual void clear();
 
-    void clear();
+    virtual E first();
 
-    E first();
+    virtual E last();
 
-    E last();
+    virtual E single();
 
-    E single();
+    virtual void forEach(void action(E entry) );
 
-    void forEach(FunctionType action);
-
-    bool isEmpty();
+    virtual bool isEmpty();
 
 private:
     int _modificationCount;
@@ -44,18 +43,19 @@ private:
     E _first;
 
 
-    void _insertBefore(E entry, E newEntry, bool updateFirst);
+    virtual void _insertBefore(E entry, E newEntry, bool updateFirst);
 
-    void _unlink(E entry);
+    virtual void _unlink(E entry);
 
 };
+template<typename E : LinkedListEntry<E>> using LinkedList = std::shared_ptr<LinkedListCls<E : LinkedListEntry<E>>>;
 
-class _LinkedListIterator<E extends LinkedListEntry<E>> {
+template<typename E : LinkedListEntry<E>> class _LinkedListIteratorCls : public ObjectCls {
 public:
 
-    E current();
+    virtual E current();
 
-    bool moveNext();
+    virtual bool moveNext();
 
 private:
     LinkedList<E> _list;
@@ -69,24 +69,25 @@ private:
     bool _visitedFirst;
 
 
-     _LinkedListIterator(LinkedList<E> list);
+     _LinkedListIteratorCls(LinkedList<E> list);
 
 };
+template<typename E : LinkedListEntry<E>> using _LinkedListIterator = std::shared_ptr<_LinkedListIteratorCls<E : LinkedListEntry<E>>>;
 
-class LinkedListEntry<E extends LinkedListEntry<E>> {
+template<typename E : LinkedListEntry<E>> class LinkedListEntryCls : public ObjectCls {
 public:
 
-    LinkedList<E> list();
+    virtual LinkedList<E> list();
 
-    void unlink();
+    virtual void unlink();
 
-    E next();
+    virtual E next();
 
-    E previous();
+    virtual E previous();
 
-    void insertAfter(E entry);
+    virtual void insertAfter(E entry);
 
-    void insertBefore(E entry);
+    virtual void insertBefore(E entry);
 
 private:
     LinkedList<E> _list;
@@ -97,5 +98,7 @@ private:
 
 
 };
+template<typename E : LinkedListEntry<E>> using LinkedListEntry = std::shared_ptr<LinkedListEntryCls<E : LinkedListEntry<E>>>;
+
 
 #endif

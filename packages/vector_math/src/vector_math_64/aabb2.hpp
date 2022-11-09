@@ -1,54 +1,54 @@
-#ifndef AABB2_H
-#define AABB2_H
-#include <memory>
+#ifndef PACKAGES_VECTOR_MATH_SRC_VECTOR_MATH_64_AABB2
+#define PACKAGES_VECTOR_MATH_SRC_VECTOR_MATH_64_AABB2
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
 
 
-
-
-class Aabb2 {
+class Aabb2Cls : public ObjectCls {
 public:
 
-    Vector2 min();
+    virtual Vector2 min();
 
-    Vector2 max();
+    virtual Vector2 max();
 
-    Vector2 center();
+    virtual Vector2 center();
 
-     Aabb2();
+     Aabb2Cls();
 
-    void  copy(Aabb2 other);
+    virtual void  copy(Aabb2 other);
 
-    void  minMax(Vector2 max, Vector2 min);
+    virtual void  minMax(Vector2 max, Vector2 min);
 
-    void  centerAndHalfExtents(Vector2 center, Vector2 halfExtents);
+    virtual void  centerAndHalfExtents(Vector2 center, Vector2 halfExtents);
 
-    void  fromBuffer(ByteBuffer buffer, int offset);
+    virtual void  fromBuffer(ByteBuffer buffer, int offset);
 
-    void setCenterAndHalfExtents(Vector2 center, Vector2 halfExtents);
+    virtual void setCenterAndHalfExtents(Vector2 center, Vector2 halfExtents);
 
-    void copyCenterAndHalfExtents(Vector2 center, Vector2 halfExtents);
+    virtual void copyCenterAndHalfExtents(Vector2 center, Vector2 halfExtents);
 
-    void copyFrom(Aabb2 other);
+    virtual void copyFrom(Aabb2 other);
 
-    void transform(Matrix3 t);
+    virtual void transform(Matrix3 t);
 
-    void rotate(Matrix3 t);
+    virtual void rotate(Matrix3 t);
 
-    Aabb2 transformed(Aabb2 out, Matrix3 t);
+    virtual Aabb2 transformed(Aabb2 out, Matrix3 t);
 
-    Aabb2 rotated(Aabb2 out, Matrix3 t);
+    virtual Aabb2 rotated(Aabb2 out, Matrix3 t);
 
-    void hull(Aabb2 other);
+    virtual void hull(Aabb2 other);
 
-    void hullPoint(Vector2 point);
+    virtual void hullPoint(Vector2 point);
 
-    bool containsAabb2(Aabb2 other);
+    virtual bool containsAabb2(Aabb2 other);
 
-    bool containsVector2(Vector2 other);
+    virtual bool containsVector2(Vector2 other);
 
-    bool intersectsWithAabb2(Aabb2 other);
+    virtual bool intersectsWithAabb2(Aabb2 other);
 
-    bool intersectsWithVector2(Vector2 other);
+    virtual bool intersectsWithVector2(Vector2 other);
 
 private:
     Vector2 _min;
@@ -60,8 +60,10 @@ private:
     static auto  _halfExtents;
 
 
-    void _updateCenterAndHalfExtents();
+    virtual void _updateCenterAndHalfExtents();
 
 };
+using Aabb2 = std::shared_ptr<Aabb2Cls>;
+
 
 #endif

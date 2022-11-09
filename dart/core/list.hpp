@@ -1,103 +1,64 @@
-#ifndef LIST_H
-#define LIST_H
-#include <memory>
+#ifndef DART_CORE_LIST
+#define DART_CORE_LIST
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
 
 
-
-
-class List<E> {
+template<typename E> class ListCls : public ObjectCls {
 public:
 
-    external  List(int length);
+    extern  ListCls(int length);
+    extern void  filled(E fill, bool growable, int length);
+    extern void  empty(bool growable);
+    extern void  from(Iterable elements, bool growable);
+    extern void  of(Iterable<E> elements, bool growable);
+    extern void  generate(E generator(int index) , bool growable, int length);
+    extern void  unmodifiable(Iterable elements);
+    template<typename S, typename T>  static List<T> castFrom(List<S> source);
 
-    external void  filled(E fill, bool growable, int length);
+    template<typename T>  static void copyRange(int at, int end, List<T> source, int start, List<T> target);
 
-    external void  empty(bool growable);
+    template<typename T>  static void writeIterable(int at, Iterable<T> source, List<T> target);
 
-    external void  from(Iterable elements, bool growable);
-
-    external void  of(Iterable<E> elements, bool growable);
-
-    external void  generate(FunctionType generator, bool growable, int length);
-
-    external void  unmodifiable(Iterable elements);
-
-    static List<T> castFrom<S, T>(List<S> source);
-
-    static void copyRange<T>(int at, int end, List<T> source, int start, List<T> target);
-
-    static void writeIterable<T>(int at, Iterable<T> source, List<T> target);
-
-    List<R> cast<R>();
-
-    E [](int index);
-
-    void []=(int index, E value);
-
-    void first(E value);
-
-    void last(E value);
-
-    int length();
-
-    void  length(int newLength);
-
-    void add(E value);
-
-    void addAll(Iterable<E> iterable);
-
-    Iterable<E> reversed();
-
-    void sort(FunctionType compare);
-
-    void shuffle(Random random);
-
-    int indexOf(E element, int start);
-
-    int indexWhere(int start, FunctionType test);
-
-    int lastIndexWhere(int start, FunctionType test);
-
-    int lastIndexOf(E element, int start);
-
-    void clear();
-
-    void insert(E element, int index);
-
-    void insertAll(int index, Iterable<E> iterable);
-
-    void setAll(int index, Iterable<E> iterable);
-
-    bool remove(Object value);
-
-    E removeAt(int index);
-
-    E removeLast();
-
-    void removeWhere(FunctionType test);
-
-    void retainWhere(FunctionType test);
-
-    List<E> +(List<E> other);
-
-    List<E> sublist(int end, int start);
-
-    Iterable<E> getRange(int end, int start);
-
-    void setRange(int end, Iterable<E> iterable, int skipCount, int start);
-
-    void removeRange(int end, int start);
-
-    void fillRange(int end, E fillValue, int start);
-
-    void replaceRange(int end, Iterable<E> replacements, int start);
-
-    Map<int, E> asMap();
-
-    bool ==(Object other);
-
+    template<typename R>  virtual List<R> cast();
+    virtual E operator[](int index);
+    virtual void operator[]=(int index, E value);
+    virtual void first(E value);
+    virtual void last(E value);
+    virtual int length();
+    virtual void  length(int newLength);
+    virtual void add(E value);
+    virtual void addAll(Iterable<E> iterable);
+    virtual Iterable<E> reversed();
+    virtual void sort(int compare(E a, E b) );
+    virtual void shuffle(Random random);
+    virtual int indexOf(E element, int start);
+    virtual int indexWhere(int start, bool test(E element) );
+    virtual int lastIndexWhere(int start, bool test(E element) );
+    virtual int lastIndexOf(E element, int start);
+    virtual void clear();
+    virtual void insert(E element, int index);
+    virtual void insertAll(int index, Iterable<E> iterable);
+    virtual void setAll(int index, Iterable<E> iterable);
+    virtual bool remove(Object value);
+    virtual E removeAt(int index);
+    virtual E removeLast();
+    virtual void removeWhere(bool test(E element) );
+    virtual void retainWhere(bool test(E element) );
+    virtual List<E> operator+(List<E> other);
+    virtual List<E> sublist(int end, int start);
+    virtual Iterable<E> getRange(int end, int start);
+    virtual void setRange(int end, Iterable<E> iterable, int skipCount, int start);
+    virtual void removeRange(int end, int start);
+    virtual void fillRange(int end, E fillValue, int start);
+    virtual void replaceRange(int end, Iterable<E> replacements, int start);
+    virtual Map<int, E> asMap();
+    virtual bool operator==(Object other);
 private:
 
 };
+template<typename E> using List = std::shared_ptr<ListCls<E>>;
+
 
 #endif

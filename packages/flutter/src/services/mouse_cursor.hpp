@@ -1,224 +1,224 @@
-#ifndef MOUSE_CURSOR_H
-#define MOUSE_CURSOR_H
-#include <memory>
-#include <flutter/foundation.hpp>
-#include <flutter/gestures.hpp>
+#ifndef PACKAGES_FLUTTER_SRC_SERVICES_MOUSE_CURSOR
+#define PACKAGES_FLUTTER_SRC_SERVICES_MOUSE_CURSOR
+#include <base.hpp>
+#include <packages/flutter/lib/foundation.hpp>
+#include <packages/flutter/flutter.hpp>
 
-#include <flutter/foundation.hpp>
-#include <flutter/gestures.hpp>
+#include <dart/core/core.hpp>
+#include <packages/flutter/lib/foundation.hpp>
+#include <packages/flutter/flutter.hpp>
 #include "system_channels.hpp"
 
 
-
-class MouseCursorManager {
+class MouseCursorManagerCls : public ObjectCls {
 public:
     MouseCursor fallbackMouseCursor;
 
 
-     MouseCursorManager(MouseCursor fallbackMouseCursor);
+     MouseCursorManagerCls(MouseCursor fallbackMouseCursor);
 
-    MouseCursor debugDeviceActiveCursor(int device);
+    virtual MouseCursor debugDeviceActiveCursor(int device);
 
-    void handleDeviceCursorUpdate(Iterable<MouseCursor> cursorCandidates, int device, PointerEvent triggeringEvent);
+    virtual void handleDeviceCursorUpdate(Iterable<MouseCursor> cursorCandidates, int device, PointerEvent triggeringEvent);
 
 private:
     Map<int, MouseCursorSession> _lastSession;
 
 
 };
+using MouseCursorManager = std::shared_ptr<MouseCursorManagerCls>;
 
-class MouseCursorSession {
+class MouseCursorSessionCls : public ObjectCls {
 public:
     MouseCursor cursor;
 
     int device;
 
 
-     MouseCursorSession(MouseCursor cursor, int device);
+     MouseCursorSessionCls(MouseCursor cursor, int device);
 
-    Future<void> activate();
+    virtual Future<void> activate();
+    virtual void dispose();
+private:
 
-    void dispose();
+};
+using MouseCursorSession = std::shared_ptr<MouseCursorSessionCls>;
+
+class MouseCursorCls : public ObjectCls {
+public:
+    static MouseCursor defer;
+
+    static MouseCursor uncontrolled;
+
+
+     MouseCursorCls();
+    virtual MouseCursorSession createSession(int device);
+    virtual String debugDescription();
+    virtual String toString(DiagnosticLevel minLevel);
 
 private:
 
 };
+using MouseCursor = std::shared_ptr<MouseCursorCls>;
 
-class MouseCursor {
-public:
-    static const MouseCursor defer;
-
-    static const MouseCursor uncontrolled;
-
-
-     MouseCursor();
-
-    MouseCursorSession createSession(int device);
-
-    String debugDescription();
-
-    String toString(DiagnosticLevel minLevel);
-
-private:
-
-};
-
-class _DeferringMouseCursor : MouseCursor {
+class _DeferringMouseCursorCls : public MouseCursorCls {
 public:
 
-    MouseCursorSession createSession(int device);
+    virtual MouseCursorSession createSession(int device);
 
-    String debugDescription();
+    virtual String debugDescription();
 
     static MouseCursor firstNonDeferred(Iterable<MouseCursor> cursors);
 
 private:
 
-    void  _();
-
+    virtual void  _();
 };
+using _DeferringMouseCursor = std::shared_ptr<_DeferringMouseCursorCls>;
 
-class _NoopMouseCursorSession : MouseCursorSession {
+class _NoopMouseCursorSessionCls : public MouseCursorSessionCls {
 public:
 
-    Future<void> activate();
+    virtual Future<void> activate();
 
-    void dispose();
+    virtual void dispose();
 
 private:
 
-     _NoopMouseCursorSession(_NoopMouseCursor cursor, Unknown);
-
+     _NoopMouseCursorSessionCls(_NoopMouseCursor cursor, Unknown device);
 };
+using _NoopMouseCursorSession = std::shared_ptr<_NoopMouseCursorSessionCls>;
 
-class _NoopMouseCursor : MouseCursor {
+class _NoopMouseCursorCls : public MouseCursorCls {
 public:
 
-    _NoopMouseCursorSession createSession(int device);
+    virtual _NoopMouseCursorSession createSession(int device);
 
-    String debugDescription();
+    virtual String debugDescription();
 
 private:
 
-    void  _();
-
+    virtual void  _();
 };
+using _NoopMouseCursor = std::shared_ptr<_NoopMouseCursorCls>;
 
-class _SystemMouseCursorSession : MouseCursorSession {
+class _SystemMouseCursorSessionCls : public MouseCursorSessionCls {
 public:
 
-    SystemMouseCursor cursor();
+    virtual SystemMouseCursor cursor();
 
-    Future<void> activate();
+    virtual Future<void> activate();
 
-    void dispose();
+    virtual void dispose();
 
 private:
 
-     _SystemMouseCursorSession(SystemMouseCursor cursor, Unknown);
-
+     _SystemMouseCursorSessionCls(SystemMouseCursor cursor, Unknown device);
 };
+using _SystemMouseCursorSession = std::shared_ptr<_SystemMouseCursorSessionCls>;
 
-class SystemMouseCursor : MouseCursor {
+class SystemMouseCursorCls : public MouseCursorCls {
 public:
     String kind;
 
 
-    String debugDescription();
+    virtual String debugDescription();
 
-    MouseCursorSession createSession(int device);
+    virtual MouseCursorSession createSession(int device);
 
-    bool ==(Object other);
+    virtual bool operator==(Object other);
 
-    int hashCode();
+    virtual int hashCode();
 
-    void debugFillProperties(DiagnosticPropertiesBuilder properties);
+    virtual void debugFillProperties(DiagnosticPropertiesBuilder properties);
 
 private:
 
-    void  _(String kind);
+    virtual void  _(String kind);
 
 };
+using SystemMouseCursor = std::shared_ptr<SystemMouseCursorCls>;
 
-class SystemMouseCursors {
+class SystemMouseCursorsCls : public ObjectCls {
 public:
-    static const SystemMouseCursor none;
+    static SystemMouseCursor none;
 
-    static const SystemMouseCursor basic;
+    static SystemMouseCursor basic;
 
-    static const SystemMouseCursor click;
+    static SystemMouseCursor click;
 
-    static const SystemMouseCursor forbidden;
+    static SystemMouseCursor forbidden;
 
-    static const SystemMouseCursor wait;
+    static SystemMouseCursor wait;
 
-    static const SystemMouseCursor progress;
+    static SystemMouseCursor progress;
 
-    static const SystemMouseCursor contextMenu;
+    static SystemMouseCursor contextMenu;
 
-    static const SystemMouseCursor help;
+    static SystemMouseCursor help;
 
-    static const SystemMouseCursor text;
+    static SystemMouseCursor text;
 
-    static const SystemMouseCursor verticalText;
+    static SystemMouseCursor verticalText;
 
-    static const SystemMouseCursor cell;
+    static SystemMouseCursor cell;
 
-    static const SystemMouseCursor precise;
+    static SystemMouseCursor precise;
 
-    static const SystemMouseCursor move;
+    static SystemMouseCursor move;
 
-    static const SystemMouseCursor grab;
+    static SystemMouseCursor grab;
 
-    static const SystemMouseCursor grabbing;
+    static SystemMouseCursor grabbing;
 
-    static const SystemMouseCursor noDrop;
+    static SystemMouseCursor noDrop;
 
-    static const SystemMouseCursor alias;
+    static SystemMouseCursor alias;
 
-    static const SystemMouseCursor copy;
+    static SystemMouseCursor copy;
 
-    static const SystemMouseCursor disappearing;
+    static SystemMouseCursor disappearing;
 
-    static const SystemMouseCursor allScroll;
+    static SystemMouseCursor allScroll;
 
-    static const SystemMouseCursor resizeLeftRight;
+    static SystemMouseCursor resizeLeftRight;
 
-    static const SystemMouseCursor resizeUpDown;
+    static SystemMouseCursor resizeUpDown;
 
-    static const SystemMouseCursor resizeUpLeftDownRight;
+    static SystemMouseCursor resizeUpLeftDownRight;
 
-    static const SystemMouseCursor resizeUpRightDownLeft;
+    static SystemMouseCursor resizeUpRightDownLeft;
 
-    static const SystemMouseCursor resizeUp;
+    static SystemMouseCursor resizeUp;
 
-    static const SystemMouseCursor resizeDown;
+    static SystemMouseCursor resizeDown;
 
-    static const SystemMouseCursor resizeLeft;
+    static SystemMouseCursor resizeLeft;
 
-    static const SystemMouseCursor resizeRight;
+    static SystemMouseCursor resizeRight;
 
-    static const SystemMouseCursor resizeUpLeft;
+    static SystemMouseCursor resizeUpLeft;
 
-    static const SystemMouseCursor resizeUpRight;
+    static SystemMouseCursor resizeUpRight;
 
-    static const SystemMouseCursor resizeDownLeft;
+    static SystemMouseCursor resizeDownLeft;
 
-    static const SystemMouseCursor resizeDownRight;
+    static SystemMouseCursor resizeDownRight;
 
-    static const SystemMouseCursor resizeColumn;
+    static SystemMouseCursor resizeColumn;
 
-    static const SystemMouseCursor resizeRow;
+    static SystemMouseCursor resizeRow;
 
-    static const SystemMouseCursor zoomIn;
+    static SystemMouseCursor zoomIn;
 
-    static const SystemMouseCursor zoomOut;
+    static SystemMouseCursor zoomOut;
 
 
 private:
 
-    void  _();
-
+    virtual void  _();
 };
+using SystemMouseCursors = std::shared_ptr<SystemMouseCursorsCls>;
+
 
 #endif

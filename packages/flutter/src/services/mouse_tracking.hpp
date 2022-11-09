@@ -1,17 +1,17 @@
-#ifndef MOUSE_TRACKING_H
-#define MOUSE_TRACKING_H
-#include <memory>
-#include <flutter/foundation.hpp>
-#include <flutter/gestures.hpp>
+#ifndef PACKAGES_FLUTTER_SRC_SERVICES_MOUSE_TRACKING
+#define PACKAGES_FLUTTER_SRC_SERVICES_MOUSE_TRACKING
+#include <base.hpp>
+#include <packages/flutter/lib/foundation.hpp>
+#include <packages/flutter/flutter.hpp>
 #include "mouse_cursor.hpp"
 
-#include <flutter/foundation.hpp>
-#include <flutter/gestures.hpp>
+#include <dart/core/core.hpp>
+#include <packages/flutter/lib/foundation.hpp>
+#include <packages/flutter/flutter.hpp>
 #include "mouse_cursor.hpp"
 
 
-
-class MouseTrackerAnnotation {
+class MouseTrackerAnnotationCls : public ObjectCls {
 public:
     PointerEnterEventListener onEnter;
 
@@ -22,12 +22,14 @@ public:
     bool validForMouseTracker;
 
 
-     MouseTrackerAnnotation(MouseCursor cursor, PointerEnterEventListener onEnter, PointerExitEventListener onExit, bool validForMouseTracker);
+     MouseTrackerAnnotationCls(MouseCursor cursor, PointerEnterEventListener onEnter, PointerExitEventListener onExit, bool validForMouseTracker);
 
-    void debugFillProperties(DiagnosticPropertiesBuilder properties);
+    virtual void debugFillProperties(DiagnosticPropertiesBuilder properties);
 
 private:
 
 };
+using MouseTrackerAnnotation = std::shared_ptr<MouseTrackerAnnotationCls>;
+
 
 #endif

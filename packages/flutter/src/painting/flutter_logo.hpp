@@ -1,10 +1,11 @@
-#ifndef FLUTTER_LOGO_H
-#define FLUTTER_LOGO_H
-#include <memory>
+#ifndef PACKAGES_FLUTTER_SRC_PAINTING_FLUTTER_LOGO
+#define PACKAGES_FLUTTER_SRC_PAINTING_FLUTTER_LOGO
+#include <base.hpp>
 
-#include <math/math.hpp>
-#include <ui/ui.hpp>
-#include <flutter/foundation.hpp>
+#include <dart/core/core.hpp>
+#include <dart/math/math.hpp>
+#include <dart/ui/ui.hpp>
+#include <packages/flutter/lib/foundation.hpp>
 #include "alignment.hpp"
 #include "basic_types.hpp"
 #include "box_fit.hpp"
@@ -17,14 +18,13 @@
 #include "text_style.hpp"
 
 
-
 enum FlutterLogoStyle{
     markOnly,
     horizontal,
     stacked,
 } // end FlutterLogoStyle
 
-class FlutterLogoDecoration : Decoration {
+class FlutterLogoDecorationCls : public DecorationCls {
 public:
     Color textColor;
 
@@ -33,29 +33,29 @@ public:
     EdgeInsets margin;
 
 
-     FlutterLogoDecoration(EdgeInsets margin, FlutterLogoStyle style, Color textColor);
+     FlutterLogoDecorationCls(EdgeInsets margin, FlutterLogoStyle style, Color textColor);
 
-    bool debugAssertIsValid();
+    virtual bool debugAssertIsValid();
 
-    bool isComplex();
+    virtual bool isComplex();
 
     static FlutterLogoDecoration lerp(FlutterLogoDecoration a, FlutterLogoDecoration b, double t);
 
-    FlutterLogoDecoration lerpFrom(Decoration a, double t);
+    virtual FlutterLogoDecoration lerpFrom(Decoration a, double t);
 
-    FlutterLogoDecoration lerpTo(Decoration b, double t);
+    virtual FlutterLogoDecoration lerpTo(Decoration b, double t);
 
-    bool hitTest(Offset position, Size size, TextDirection textDirection);
+    virtual bool hitTest(Offset position, Size size, TextDirection textDirection);
 
-    BoxPainter createBoxPainter(VoidCallback onChanged);
+    virtual BoxPainter createBoxPainter(VoidCallback onChanged);
 
-    Path getClipPath(Rect rect, TextDirection textDirection);
+    virtual Path getClipPath(Rect rect, TextDirection textDirection);
 
-    bool ==(Object other);
+    virtual bool operator==(Object other);
 
-    int hashCode();
+    virtual int hashCode();
 
-    void debugFillProperties(DiagnosticPropertiesBuilder properties);
+    virtual void debugFillProperties(DiagnosticPropertiesBuilder properties);
 
 private:
     double _position;
@@ -63,16 +63,16 @@ private:
     double _opacity;
 
 
-    void  _(double _opacity, double _position, EdgeInsets margin, FlutterLogoStyle style, Color textColor);
-
-    bool _inTransition();
+    virtual void  _(double _opacity, double _position, EdgeInsets margin, FlutterLogoStyle style, Color textColor);
+    virtual bool _inTransition();
 
 };
+using FlutterLogoDecoration = std::shared_ptr<FlutterLogoDecorationCls>;
 
-class _FlutterLogoPainter : BoxPainter {
+class _FlutterLogoPainterCls : public BoxPainterCls {
 public:
 
-    void paint(Canvas canvas, ImageConfiguration configuration, Offset offset);
+    virtual void paint(Canvas canvas, ImageConfiguration configuration, Offset offset);
 
 private:
     FlutterLogoDecoration _config;
@@ -82,12 +82,14 @@ private:
     Rect _textBoundingRect;
 
 
-     _FlutterLogoPainter(FlutterLogoDecoration _config);
+     _FlutterLogoPainterCls(FlutterLogoDecoration _config);
 
-    void _prepareText();
+    virtual void _prepareText();
 
-    void _paintLogo(Canvas canvas, Rect rect);
+    virtual void _paintLogo(Canvas canvas, Rect rect);
 
 };
+using _FlutterLogoPainter = std::shared_ptr<_FlutterLogoPainterCls>;
+
 
 #endif

@@ -1,13 +1,13 @@
-#ifndef BREAKS_H
-#define BREAKS_H
-#include <memory>
+#ifndef PACKAGES_CHARACTERS_SRC_GRAPHEME_CLUSTERS_BREAKS
+#define PACKAGES_CHARACTERS_SRC_GRAPHEME_CLUSTERS_BREAKS
+#include <base.hpp>
 
+#include <dart/core/core.hpp>
 #include "constants.hpp"
 #include "table.hpp"
 
 
-
-class Breaks {
+class BreaksCls : public ObjectCls {
 public:
     String base;
 
@@ -18,17 +18,17 @@ public:
     int state;
 
 
-     Breaks(String base, int cursor, int end, int state);
+     BreaksCls(String base, int cursor, int end, int state);
+    virtual Breaks copy();
 
-    Breaks copy();
-
-    int nextBreak();
+    virtual int nextBreak();
 
 private:
 
 };
+using Breaks = std::shared_ptr<BreaksCls>;
 
-class BackBreaks {
+class BackBreaksCls : public ObjectCls {
 public:
     String base;
 
@@ -39,17 +39,17 @@ public:
     int state;
 
 
-     BackBreaks(String base, int cursor, int start, int state);
+     BackBreaksCls(String base, int cursor, int start, int state);
+    virtual BackBreaks copy();
 
-    BackBreaks copy();
-
-    int nextBreak();
+    virtual int nextBreak();
 
 private:
 
-    int _lookAhead(int state);
+    virtual int _lookAhead(int state);
 
 };
+using BackBreaks = std::shared_ptr<BackBreaksCls>;
 int lookAhead(String base, int cursor, int start, int state);
 
 int lookAheadRegional(String base, int cursor, int start);
@@ -61,6 +61,7 @@ bool isGraphemeClusterBoundary(int end, int index, int start, String text);
 int previousBreak(int end, int index, int start, String text);
 
 int nextBreak(int end, int index, int start, String text);
+
 
 
 #endif

@@ -1,36 +1,36 @@
-#ifndef QUAD_H
-#define QUAD_H
-#include <memory>
+#ifndef PACKAGES_VECTOR_MATH_SRC_VECTOR_MATH_64_QUAD
+#define PACKAGES_VECTOR_MATH_SRC_VECTOR_MATH_64_QUAD
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
 
 
-
-
-class Quad {
+class QuadCls : public ObjectCls {
 public:
 
-    Vector3 point0();
+    virtual Vector3 point0();
 
-    Vector3 point1();
+    virtual Vector3 point1();
 
-    Vector3 point2();
+    virtual Vector3 point2();
 
-    Vector3 point3();
+    virtual Vector3 point3();
 
-     Quad();
+     QuadCls();
 
-    void  copy(Quad other);
+    virtual void  copy(Quad other);
 
-    void  points(Vector3 point0, Vector3 point1, Vector3 point2, Vector3 point3);
+    virtual void  points(Vector3 point0, Vector3 point1, Vector3 point2, Vector3 point3);
 
-    void copyFrom(Quad other);
+    virtual void copyFrom(Quad other);
 
-    void copyNormalInto(Vector3 normal);
+    virtual void copyNormalInto(Vector3 normal);
 
-    void copyTriangles(Triangle triangle0, Triangle triangle1);
+    virtual void copyTriangles(Triangle triangle0, Triangle triangle1);
 
-    void transform(Matrix4 t);
+    virtual void transform(Matrix4 t);
 
-    void translate(Vector3 offset);
+    virtual void translate(Vector3 offset);
 
 private:
     Vector3 _point0;
@@ -43,5 +43,7 @@ private:
 
 
 };
+using Quad = std::shared_ptr<QuadCls>;
+
 
 #endif

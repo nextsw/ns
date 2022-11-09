@@ -1,101 +1,67 @@
-#ifndef STRING_H
-#define STRING_H
-#include <memory>
+#ifndef DART_CORE_STRING
+#define DART_CORE_STRING
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
 
 
-
-
-class String {
+class StringCls : public ObjectCls {
 public:
 
-    external void  fromCharCodes(Iterable<int> charCodes, int end, int start);
-
-    external void  fromCharCode(int charCode);
-
-    external void  fromEnvironment(String defaultValue, String name);
-
-    String [](int index);
-
-    int codeUnitAt(int index);
-
-    int length();
-
-    int hashCode();
-
-    bool ==(Object other);
-
-    int compareTo(String other);
-
-    bool endsWith(String other);
-
-    bool startsWith(int index, Pattern pattern);
-
-    int indexOf(Pattern pattern, int start);
-
-    int lastIndexOf(Pattern pattern, int start);
-
-    bool isEmpty();
-
-    bool isNotEmpty();
-
-    String +(String other);
-
-    String substring(int end, int start);
-
-    String trim();
-
-    String trimLeft();
-
-    String trimRight();
-
-    String *(int times);
-
-    String padLeft(String padding, int width);
-
-    String padRight(String padding, int width);
-
-    bool contains(Pattern other, int startIndex);
-
-    String replaceFirst(Pattern from, int startIndex, String to);
-
-    String replaceFirstMapped(Pattern from, FunctionType replace, int startIndex);
-
-    String replaceAll(Pattern from, String replace);
-
-    String replaceAllMapped(Pattern from, FunctionType replace);
-
-    String replaceRange(int end, String replacement, int start);
-
-    List<String> split(Pattern pattern);
-
-    String splitMapJoin(FunctionType onMatch, FunctionType onNonMatch, Pattern pattern);
-
-    List<int> codeUnits();
-
-    Runes runes();
-
-    String toLowerCase();
-
-    String toUpperCase();
-
+    extern void  fromCharCodes(Iterable<int> charCodes, int end, int start);
+    extern void  fromCharCode(int charCode);
+    extern void  fromEnvironment(String defaultValue, String name);
+    virtual String operator[](int index);
+    virtual int codeUnitAt(int index);
+    virtual int length();
+    virtual int hashCode();
+    virtual bool operator==(Object other);
+    virtual int compareTo(String other);
+    virtual bool endsWith(String other);
+    virtual bool startsWith(int index, Pattern pattern);
+    virtual int indexOf(Pattern pattern, int start);
+    virtual int lastIndexOf(Pattern pattern, int start);
+    virtual bool isEmpty();
+    virtual bool isNotEmpty();
+    virtual String operator+(String other);
+    virtual String substring(int end, int start);
+    virtual String trim();
+    virtual String trimLeft();
+    virtual String trimRight();
+    virtual String operator*(int times);
+    virtual String padLeft(String padding, int width);
+    virtual String padRight(String padding, int width);
+    virtual bool contains(Pattern other, int startIndex);
+    virtual String replaceFirst(Pattern from, int startIndex, String to);
+    virtual String replaceFirstMapped(Pattern from, String replace(Match match) , int startIndex);
+    virtual String replaceAll(Pattern from, String replace);
+    virtual String replaceAllMapped(Pattern from, String replace(Match match) );
+    virtual String replaceRange(int end, String replacement, int start);
+    virtual List<String> split(Pattern pattern);
+    virtual String splitMapJoin(String onMatch(Match ) , String onNonMatch(String ) , Pattern pattern);
+    virtual List<int> codeUnits();
+    virtual Runes runes();
+    virtual String toLowerCase();
+    virtual String toUpperCase();
 private:
 
 };
+using String = std::shared_ptr<StringCls>;
 
-class Runes : Iterable<int> {
+class RunesCls : public IterableCls<int> {
 public:
     String string;
 
 
-     Runes(String string);
+     RunesCls(String string);
+    virtual RuneIterator iterator();
 
-    RuneIterator iterator();
-
-    int last();
+    virtual int last();
 
 private:
 
 };
+using Runes = std::shared_ptr<RunesCls>;
 bool _isLeadSurrogate(int code);
 
 bool _isTrailSurrogate(int code);
@@ -103,30 +69,30 @@ bool _isTrailSurrogate(int code);
 int _combineSurrogatePair(int end, int start);
 
 
-class RuneIterator {
+class RuneIteratorCls : public ObjectCls {
 public:
     String string;
 
 
-     RuneIterator(String string);
+     RuneIteratorCls(String stringValue);
 
-    void  at(int index, String string);
+    virtual void  at(int index, String stringValue);
 
-    int rawIndex();
+    virtual int rawIndex();
 
-    void rawIndex(int rawIndex);
+    virtual void rawIndex(int rawIndex);
 
-    void reset(int rawIndex);
+    virtual void reset(int rawIndex);
 
-    int current();
+    virtual int current();
 
-    int currentSize();
+    virtual int currentSize();
 
-    String currentAsString();
+    virtual String currentAsString();
 
-    bool moveNext();
+    virtual bool moveNext();
 
-    bool movePrevious();
+    virtual bool movePrevious();
 
 private:
     int _position;
@@ -136,8 +102,10 @@ private:
     int _currentCodePoint;
 
 
-    void _checkSplitSurrogate(int index);
+    virtual void _checkSplitSurrogate(int index);
 
 };
+using RuneIterator = std::shared_ptr<RuneIteratorCls>;
+
 
 #endif

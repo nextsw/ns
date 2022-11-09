@@ -1,38 +1,38 @@
 #include "animation_controller.hpp"
-AnimationController::AnimationController(AnimationBehavior animationBehavior, String debugLabel, Duration duration, double lowerBound, Duration reverseDuration, double upperBound, double value, TickerProvider vsync) {
+AnimationControllerCls::AnimationControllerCls(AnimationBehavior animationBehavior, String debugLabel, Duration duration, double lowerBound, Duration reverseDuration, double upperBound, double value, TickerProvider vsync) {
     {
         assert(lowerBound != nullptr);
         assert(upperBound != nullptr);
         assert(upperBound >= lowerBound);
         assert(vsync != nullptr);
-        _direction = _AnimationDirection.forward;
+        _direction = _AnimationDirectionCls::forward;
     }
     {
-        _ticker = vsync.createTicker(_tick);
+        _ticker = vsync->createTicker(_tick);
         _internalSetValue(value ?? lowerBound);
     }
 }
 
-void AnimationController::unbounded(AnimationBehavior animationBehavior, String debugLabel, Duration duration, Duration reverseDuration, double value, TickerProvider vsync) {
-    _ticker = vsync.createTicker(_tick);
+void AnimationControllerCls::unbounded(AnimationBehavior animationBehavior, String debugLabel, Duration duration, Duration reverseDuration, double value, TickerProvider vsync) {
+    _ticker = vsync->createTicker(_tick);
     _internalSetValue(value);
 }
 
-Animation<double> AnimationController::view() {
+Animation<double> AnimationControllerCls::view() {
     return this;
 }
 
-void AnimationController::resync(TickerProvider vsync) {
+void AnimationControllerCls::resync(TickerProvider vsync) {
     Ticker oldTicker = _ticker!;
-    _ticker = vsync.createTicker(_tick);
-    _ticker!.absorbTicker(oldTicker);
+    _ticker = vsync->createTicker(_tick);
+    _ticker!->absorbTicker(oldTicker);
 }
 
-double AnimationController::value() {
+double AnimationControllerCls::value() {
     return _value;
 }
 
-void AnimationController::value(double newValue) {
+void AnimationControllerCls::value(double newValue) {
     assert(newValue != nullptr);
     stop();
     _internalSetValue(newValue);
@@ -40,186 +40,216 @@ void AnimationController::value(double newValue) {
     _checkStatusChanged();
 }
 
-void AnimationController::reset() {
+void AnimationControllerCls::reset() {
     value = lowerBound;
 }
 
-double AnimationController::velocity() {
+double AnimationControllerCls::velocity() {
     if (!isAnimating) {
         return 0.0;
     }
-    return _simulation!.dx(lastElapsedDuration!.inMicroseconds.toDouble() / Duration.microsecondsPerSecond);
+    return _simulation!->dx(lastElapsedDuration!->inMicroseconds->toDouble() / DurationCls::microsecondsPerSecond);
 }
 
-Duration AnimationController::lastElapsedDuration() {
+Duration AnimationControllerCls::lastElapsedDuration() {
     return _lastElapsedDuration;
 }
 
-bool AnimationController::isAnimating() {
-    return _ticker != nullptr && _ticker!.isActive;
+bool AnimationControllerCls::isAnimating() {
+    return _ticker != nullptr && _ticker!->isActive;
 }
 
-AnimationStatus AnimationController::status() {
+AnimationStatus AnimationControllerCls::status() {
     return _status;
 }
 
-TickerFuture AnimationController::forward(double from) {
-    assert(());
+TickerFuture AnimationControllerCls::forward(double from) {
+    assert([=] () {
+        if (duration == nullptr) {
+            ;
+        }
+        return true;
+    }());
     assert(_ticker != nullptr, "AnimationController.forward() called after AnimationController.dispose()\nAnimationController methods should not be used after calling dispose.");
-    _direction = _AnimationDirection.forward;
+    _direction = _AnimationDirectionCls::forward;
     if (from != nullptr) {
         value = from;
     }
     return _animateToInternal(upperBound);
 }
 
-TickerFuture AnimationController::reverse(double from) {
-    assert(());
+TickerFuture AnimationControllerCls::reverse(double from) {
+    assert([=] () {
+        if (duration == nullptr && reverseDuration == nullptr) {
+            ;
+        }
+        return true;
+    }());
     assert(_ticker != nullptr, "AnimationController.reverse() called after AnimationController.dispose()\nAnimationController methods should not be used after calling dispose.");
-    _direction = _AnimationDirection.reverse;
+    _direction = _AnimationDirectionCls::reverse;
     if (from != nullptr) {
         value = from;
     }
     return _animateToInternal(lowerBound);
 }
 
-TickerFuture AnimationController::animateTo(Curve curve, Duration duration, double target) {
-    assert(());
+TickerFuture AnimationControllerCls::animateTo(Curve curve, Duration duration, double target) {
+    assert([=] () {
+        if (this->duration == nullptr && duration == nullptr) {
+            ;
+        }
+        return true;
+    }());
     assert(_ticker != nullptr, "AnimationController.animateTo() called after AnimationController.dispose()\nAnimationController methods should not be used after calling dispose.");
-    _direction = _AnimationDirection.forward;
+    _direction = _AnimationDirectionCls::forward;
     return _animateToInternal(targetduration, curve);
 }
 
-TickerFuture AnimationController::animateBack(Curve curve, Duration duration, double target) {
-    assert(());
+TickerFuture AnimationControllerCls::animateBack(Curve curve, Duration duration, double target) {
+    assert([=] () {
+        if (this->duration == nullptr && reverseDuration == nullptr && duration == nullptr) {
+            ;
+        }
+        return true;
+    }());
     assert(_ticker != nullptr, "AnimationController.animateBack() called after AnimationController.dispose()\nAnimationController methods should not be used after calling dispose.");
-    _direction = _AnimationDirection.reverse;
+    _direction = _AnimationDirectionCls::reverse;
     return _animateToInternal(targetduration, curve);
 }
 
-TickerFuture AnimationController::repeat(double max, double min, Duration period, bool reverse) {
+TickerFuture AnimationControllerCls::repeat(double max, double min, Duration period, bool reverse) {
     min = lowerBound;
     max = upperBound;
     period = duration;
-    assert(());
+    assert([=] () {
+        if (period == nullptr) {
+            ;
+        }
+        return true;
+    }());
     assert(max >= min);
     assert(max <= upperBound && min >= lowerBound);
     assert(reverse != nullptr);
     stop();
-    return _startSimulation(_RepeatingSimulation(_value, min, max, reverse, period!, _directionSetter));
+    return _startSimulation(make<_RepeatingSimulationCls>(_value, min, max, reverse, period!, _directionSetter));
 }
 
-TickerFuture AnimationController::fling(AnimationBehavior animationBehavior, SpringDescription springDescription, double velocity) {
+TickerFuture AnimationControllerCls::fling(AnimationBehavior animationBehavior, SpringDescription springDescription, double velocity) {
     springDescription = _kFlingSpringDescription;
-    _direction =  < 0.0? _AnimationDirection.reverse : _AnimationDirection.forward;
-    double target =  < 0.0? lowerBound - _kFlingTolerance.distance : upperBound + _kFlingTolerance.distance;
+    _direction =  < 0.0? _AnimationDirectionCls::reverse : _AnimationDirectionCls::forward;
+    double target =  < 0.0? lowerBound - _kFlingTolerance->distance : upperBound + _kFlingTolerance->distance;
     double scale = 1.0;
-    AnimationBehavior behavior = animationBehavior ?? this.animationBehavior;
-    if (SemanticsBinding.instance.disableAnimations) {
+    AnimationBehavior behavior = animationBehavior ?? this->animationBehavior;
+    if (SemanticsBindingCls::instance->disableAnimations) {
         ;
     }
-    SpringSimulation simulation = ;
-    assert(simulation.type != SpringType.underDamped, "The resulting spring simulation is of type SpringType.underDamped.\nThis can lead to unexpected look of the animation, please adjust the springDescription parameter");
+    auto _c1 = make<SpringSimulationCls>(springDescription, value, target, velocity * scale);_c1.tolerance = _kFlingTolerance;SpringSimulation simulation = _c1;
+    assert(simulation->type != SpringTypeCls::underDamped, "The resulting spring simulation is of type SpringType.underDamped.\nThis can lead to unexpected look of the animation, please adjust the springDescription parameter");
     stop();
     return _startSimulation(simulation);
 }
 
-TickerFuture AnimationController::animateWith(Simulation simulation) {
+TickerFuture AnimationControllerCls::animateWith(Simulation simulation) {
     assert(_ticker != nullptr, "AnimationController.animateWith() called after AnimationController.dispose()\nAnimationController methods should not be used after calling dispose.");
     stop();
-    _direction = _AnimationDirection.forward;
+    _direction = _AnimationDirectionCls::forward;
     return _startSimulation(simulation);
 }
 
-void AnimationController::stop(bool canceled) {
+void AnimationControllerCls::stop(bool canceled) {
     assert(_ticker != nullptr, "AnimationController.stop() called after AnimationController.dispose()\nAnimationController methods should not be used after calling dispose.");
     _simulation = nullptr;
     _lastElapsedDuration = nullptr;
-    _ticker!.stop(canceled);
+    _ticker!->stop(canceled);
 }
 
-void AnimationController::dispose() {
-    assert(());
-    _ticker!.dispose();
+void AnimationControllerCls::dispose() {
+    assert([=] () {
+        if (_ticker == nullptr) {
+            ;
+        }
+        return true;
+    }());
+    _ticker!->dispose();
     _ticker = nullptr;
     clearStatusListeners();
     clearListeners();
-    super.dispose();
+    super->dispose();
 }
 
-String AnimationController::toStringDetails() {
+String AnimationControllerCls::toStringDetails() {
     String paused = isAnimating? "" : "; paused";
-    String ticker = _ticker == nullptr? "; DISPOSED" : (_ticker!.muted? "; silenced" : "");
+    String ticker = _ticker == nullptr? "; DISPOSED" : (_ticker!->muted? "; silenced" : "");
     String label = debugLabel == nullptr? "" : "; for $debugLabel";
     String more = "${super.toStringDetails()} ${value.toStringAsFixed(3)}";
     return "$more$paused$ticker$label";
 }
 
-void AnimationController::_internalSetValue(double newValue) {
+void AnimationControllerCls::_internalSetValue(double newValue) {
     _value = clampDouble(newValue, lowerBound, upperBound);
     if (_value == lowerBound) {
-        _status = AnimationStatus.dismissed;
+        _status = AnimationStatusCls::dismissed;
     } else     {
         if (_value == upperBound) {
-        _status = AnimationStatus.completed;
+        _status = AnimationStatusCls::completed;
     } else {
-        _status = (_direction == _AnimationDirection.forward)? AnimationStatus.forward : AnimationStatus.reverse;
+        _status = (_direction == _AnimationDirectionCls::forward)? AnimationStatusCls::forward : AnimationStatusCls::reverse;
     }
 ;
     }}
 
-TickerFuture AnimationController::_animateToInternal(Curve curve, Duration duration, double target) {
+TickerFuture AnimationControllerCls::_animateToInternal(Curve curve, Duration duration, double target) {
     double scale = 1.0;
-    if (SemanticsBinding.instance.disableAnimations) {
+    if (SemanticsBindingCls::instance->disableAnimations) {
         ;
     }
     Duration simulationDuration = duration;
     if (simulationDuration == nullptr) {
-        assert(!(this.duration == nullptr && _direction == _AnimationDirection.forward));
-        assert(!(this.duration == nullptr && _direction == _AnimationDirection.reverse && reverseDuration == nullptr));
+        assert(!(this->duration == nullptr && _direction == _AnimationDirectionCls::forward));
+        assert(!(this->duration == nullptr && _direction == _AnimationDirectionCls::reverse && reverseDuration == nullptr));
         double range = upperBound - lowerBound;
-        double remainingFraction = range.isFinite? (target - _value).abs() / range : 1.0;
-        Duration directionDuration = (_direction == _AnimationDirection.reverse && reverseDuration != nullptr)? reverseDuration! : this.duration!;
+        double remainingFraction = range->isFinite? (target - _value)->abs() / range : 1.0;
+        Duration directionDuration = (_direction == _AnimationDirectionCls::reverse && reverseDuration != nullptr)? reverseDuration! : this->duration!;
         simulationDuration = directionDuration * remainingFraction;
     } else     {
         if (target == value) {
-        simulationDuration = Duration.zero;
+        simulationDuration = DurationCls::zero;
     }
 ;
     }    stop();
-    if (simulationDuration == Duration.zero) {
+    if (simulationDuration == DurationCls::zero) {
         if (value != target) {
             _value = clampDouble(target, lowerBound, upperBound);
             notifyListeners();
         }
-        _status = (_direction == _AnimationDirection.forward)? AnimationStatus.completed : AnimationStatus.dismissed;
+        _status = (_direction == _AnimationDirectionCls::forward)? AnimationStatusCls::completed : AnimationStatusCls::dismissed;
         _checkStatusChanged();
-        return TickerFuture.complete();
+        return TickerFutureCls->complete();
     }
-    assert(simulationDuration > Duration.zero);
+    assert(simulationDuration > DurationCls::zero);
     assert(!isAnimating);
-    return _startSimulation(_InterpolationSimulation(_value, target, simulationDuration, curve, scale));
+    return _startSimulation(make<_InterpolationSimulationCls>(_value, target, simulationDuration, curve, scale));
 }
 
-void AnimationController::_directionSetter(_AnimationDirection direction) {
+void AnimationControllerCls::_directionSetter(_AnimationDirection direction) {
     _direction = direction;
-    _status = (_direction == _AnimationDirection.forward)? AnimationStatus.forward : AnimationStatus.reverse;
+    _status = (_direction == _AnimationDirectionCls::forward)? AnimationStatusCls::forward : AnimationStatusCls::reverse;
     _checkStatusChanged();
 }
 
-TickerFuture AnimationController::_startSimulation(Simulation simulation) {
+TickerFuture AnimationControllerCls::_startSimulation(Simulation simulation) {
     assert(simulation != nullptr);
     assert(!isAnimating);
     _simulation = simulation;
-    _lastElapsedDuration = Duration.zero;
-    _value = clampDouble(simulation.x(0.0), lowerBound, upperBound);
-    TickerFuture result = _ticker!.start();
-    _status = (_direction == _AnimationDirection.forward)? AnimationStatus.forward : AnimationStatus.reverse;
+    _lastElapsedDuration = DurationCls::zero;
+    _value = clampDouble(simulation->x(0.0), lowerBound, upperBound);
+    TickerFuture result = _ticker!->start();
+    _status = (_direction == _AnimationDirectionCls::forward)? AnimationStatusCls::forward : AnimationStatusCls::reverse;
     _checkStatusChanged();
     return result;
 }
 
-void AnimationController::_checkStatusChanged() {
+void AnimationControllerCls::_checkStatusChanged() {
     AnimationStatus newStatus = status;
     if (_lastReportedStatus != newStatus) {
         _lastReportedStatus = newStatus;
@@ -227,20 +257,20 @@ void AnimationController::_checkStatusChanged() {
     }
 }
 
-void AnimationController::_tick(Duration elapsed) {
+void AnimationControllerCls::_tick(Duration elapsed) {
     _lastElapsedDuration = elapsed;
-    double elapsedInSeconds = elapsed.inMicroseconds.toDouble() / Duration.microsecondsPerSecond;
+    double elapsedInSeconds = elapsed->inMicroseconds->toDouble() / DurationCls::microsecondsPerSecond;
     assert(elapsedInSeconds >= 0.0);
-    _value = clampDouble(_simulation!.x(elapsedInSeconds), lowerBound, upperBound);
-    if (_simulation!.isDone(elapsedInSeconds)) {
-        _status = (_direction == _AnimationDirection.forward)? AnimationStatus.completed : AnimationStatus.dismissed;
+    _value = clampDouble(_simulation!->x(elapsedInSeconds), lowerBound, upperBound);
+    if (_simulation!->isDone(elapsedInSeconds)) {
+        _status = (_direction == _AnimationDirectionCls::forward)? AnimationStatusCls::completed : AnimationStatusCls::dismissed;
         stop(false);
     }
     notifyListeners();
     _checkStatusChanged();
 }
 
-double _InterpolationSimulation::x(double timeInSeconds) {
+double _InterpolationSimulationCls::x(double timeInSeconds) {
     double t = clampDouble(timeInSeconds / _durationInSeconds, 0.0, 1.0);
     if (t == 0.0) {
         return _begin;
@@ -248,55 +278,55 @@ double _InterpolationSimulation::x(double timeInSeconds) {
         if (t == 1.0) {
         return _end;
     } else {
-        return _begin + (_end - _begin) * _curve.transform(t);
+        return _begin + (_end - _begin) * _curve->transform(t);
     }
 ;
     }}
 
-double _InterpolationSimulation::dx(double timeInSeconds) {
-    double epsilon = tolerance.time;
+double _InterpolationSimulationCls::dx(double timeInSeconds) {
+    double epsilon = tolerance->time;
     return (x(timeInSeconds + epsilon) - x(timeInSeconds - epsilon)) / (2 * epsilon);
 }
 
-bool _InterpolationSimulation::isDone(double timeInSeconds) {
+bool _InterpolationSimulationCls::isDone(double timeInSeconds) {
     return timeInSeconds > _durationInSeconds;
 }
 
-_InterpolationSimulation::_InterpolationSimulation(double _begin, Curve _curve, double _end, Duration duration, double scale) {
+_InterpolationSimulationCls::_InterpolationSimulationCls(double _begin, Curve _curve, double _end, Duration duration, double scale) {
     {
         assert(_begin != nullptr);
         assert(_end != nullptr);
-        assert(duration != nullptr && duration.inMicroseconds > 0);
-        _durationInSeconds = (duration.inMicroseconds * scale) / Duration.microsecondsPerSecond;
+        assert(duration != nullptr && duration->inMicroseconds > 0);
+        _durationInSeconds = (duration->inMicroseconds * scale) / DurationCls::microsecondsPerSecond;
     }
 }
 
-double _RepeatingSimulation::x(double timeInSeconds) {
+double _RepeatingSimulationCls::x(double timeInSeconds) {
     assert(timeInSeconds >= 0.0);
     double totalTimeInSeconds = timeInSeconds + _initialT;
     double t = (totalTimeInSeconds / _periodInSeconds) % 1.0;
-    bool isPlayingReverse = (totalTimeInSeconds ~/ _periodInSeconds).isOdd;
+    bool isPlayingReverse = (totalTimeInSeconds ~/ _periodInSeconds)->isOdd;
     if (reverse && isPlayingReverse) {
-        directionSetter(_AnimationDirection.reverse);
-        return ui.lerpDouble(max, min, t)!;
+        directionSetter(_AnimationDirectionCls::reverse);
+        return ui->lerpDouble(max, min, t)!;
     } else {
-        directionSetter(_AnimationDirection.forward);
-        return ui.lerpDouble(min, max, t)!;
+        directionSetter(_AnimationDirectionCls::forward);
+        return ui->lerpDouble(min, max, t)!;
     }
 }
 
-double _RepeatingSimulation::dx(double timeInSeconds) {
+double _RepeatingSimulationCls::dx(double timeInSeconds) {
     return (max - min) / _periodInSeconds;
 }
 
-bool _RepeatingSimulation::isDone(double timeInSeconds) {
+bool _RepeatingSimulationCls::isDone(double timeInSeconds) {
     return false;
 }
 
-_RepeatingSimulation::_RepeatingSimulation(_DirectionSetter directionSetter, double initialValue, double max, double min, Duration period, bool reverse) {
+_RepeatingSimulationCls::_RepeatingSimulationCls(_DirectionSetter directionSetter, double initialValue, double max, double min, Duration period, bool reverse) {
     {
-        _periodInSeconds = period.inMicroseconds / Duration.microsecondsPerSecond;
-        _initialT = (max == min)? 0.0 : (initialValue / (max - min)) * (period.inMicroseconds / Duration.microsecondsPerSecond);
+        _periodInSeconds = period->inMicroseconds / DurationCls::microsecondsPerSecond;
+        _initialT = (max == min)? 0.0 : (initialValue / (max - min)) * (period->inMicroseconds / DurationCls::microsecondsPerSecond);
     }
     {
         assert(_periodInSeconds > 0.0);

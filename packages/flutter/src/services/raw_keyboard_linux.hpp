@@ -1,17 +1,17 @@
-#ifndef RAW_KEYBOARD_LINUX_H
-#define RAW_KEYBOARD_LINUX_H
-#include <memory>
-#include <flutter/foundation.hpp>
+#ifndef PACKAGES_FLUTTER_SRC_SERVICES_RAW_KEYBOARD_LINUX
+#define PACKAGES_FLUTTER_SRC_SERVICES_RAW_KEYBOARD_LINUX
+#include <base.hpp>
+#include <packages/flutter/lib/foundation.hpp>
 #include "keyboard_key.g.hpp"
 #include "raw_keyboard.hpp"
 
-#include <flutter/foundation.hpp>
+#include <dart/core/core.hpp>
+#include <packages/flutter/lib/foundation.hpp>
 #include "keyboard_maps.g.hpp"
 #include "raw_keyboard.hpp"
 
 
-
-class RawKeyEventDataLinux : RawKeyEventData {
+class RawKeyEventDataLinuxCls : public RawKeyEventDataCls {
 public:
     KeyHelper keyHelper;
 
@@ -28,113 +28,112 @@ public:
     int specifiedLogicalKey;
 
 
-     RawKeyEventDataLinux(bool isDown, int keyCode, KeyHelper keyHelper, int modifiers, int scanCode, int specifiedLogicalKey, int unicodeScalarValues);
+     RawKeyEventDataLinuxCls(bool isDown, int keyCode, KeyHelper keyHelper, int modifiers, int scanCode, int specifiedLogicalKey, int unicodeScalarValues);
 
-    String keyLabel();
+    virtual String keyLabel();
 
-    PhysicalKeyboardKey physicalKey();
+    virtual PhysicalKeyboardKey physicalKey();
 
-    LogicalKeyboardKey logicalKey();
+    virtual LogicalKeyboardKey logicalKey();
 
-    bool isModifierPressed(ModifierKey key, KeyboardSide side);
+    virtual bool isModifierPressed(ModifierKey key, KeyboardSide side);
 
-    KeyboardSide getModifierSide(ModifierKey key);
+    virtual KeyboardSide getModifierSide(ModifierKey key);
 
-    void debugFillProperties(DiagnosticPropertiesBuilder properties);
+    virtual void debugFillProperties(DiagnosticPropertiesBuilder properties);
 
-    bool ==(Object other);
+    virtual bool operator==(Object other);
 
-    int hashCode();
+    virtual int hashCode();
 
 private:
 
 };
+using RawKeyEventDataLinux = std::shared_ptr<RawKeyEventDataLinuxCls>;
 
-class KeyHelper {
+class KeyHelperCls : public ObjectCls {
 public:
 
-     KeyHelper(String toolkit);
+     KeyHelperCls(String toolkit);
 
-    String debugToolkit();
-
-    KeyboardSide getModifierSide(ModifierKey key);
-
-    bool isModifierPressed(bool isDown, ModifierKey key, int keyCode, int modifiers, KeyboardSide side);
-
-    LogicalKeyboardKey numpadKey(int keyCode);
-
-    LogicalKeyboardKey logicalKey(int keyCode);
-
-    int platformPlane();
-
+    virtual String debugToolkit();
+    virtual KeyboardSide getModifierSide(ModifierKey key);
+    virtual bool isModifierPressed(bool isDown, ModifierKey key, int keyCode, int modifiers, KeyboardSide side);
+    virtual LogicalKeyboardKey numpadKey(int keyCode);
+    virtual LogicalKeyboardKey logicalKey(int keyCode);
+    virtual int platformPlane();
 private:
 
 };
+using KeyHelper = std::shared_ptr<KeyHelperCls>;
 
-class GLFWKeyHelper {
+class GLFWKeyHelperCls : public ObjectCls {
 public:
-    static const int modifierCapsLock;
+    static int modifierCapsLock;
 
-    static const int modifierShift;
+    static int modifierShift;
 
-    static const int modifierControl;
+    static int modifierControl;
 
-    static const int modifierAlt;
+    static int modifierAlt;
 
-    static const int modifierMeta;
+    static int modifierMeta;
 
-    static const int modifierNumericPad;
+    static int modifierNumericPad;
 
 
-    String debugToolkit();
+    virtual String debugToolkit();
 
-    bool isModifierPressed(bool isDown, ModifierKey key, int keyCode, int modifiers, KeyboardSide side);
+    virtual bool isModifierPressed(bool isDown, ModifierKey key, int keyCode, int modifiers, KeyboardSide side);
 
-    KeyboardSide getModifierSide(ModifierKey key);
+    virtual KeyboardSide getModifierSide(ModifierKey key);
 
-    LogicalKeyboardKey numpadKey(int keyCode);
+    virtual LogicalKeyboardKey numpadKey(int keyCode);
 
-    LogicalKeyboardKey logicalKey(int keyCode);
+    virtual LogicalKeyboardKey logicalKey(int keyCode);
 
-    int platformPlane();
+    virtual int platformPlane();
 
 private:
 
-    int _mergeModifiers(bool isDown, int keyCode, int modifiers);
+    virtual int _mergeModifiers(bool isDown, int keyCode, int modifiers);
 
 };
+using GLFWKeyHelper = std::shared_ptr<GLFWKeyHelperCls>;
 
-class GtkKeyHelper {
+class GtkKeyHelperCls : public ObjectCls {
 public:
-    static const int modifierShift;
+    static int modifierShift;
 
-    static const int modifierCapsLock;
+    static int modifierCapsLock;
 
-    static const int modifierControl;
+    static int modifierControl;
 
-    static const int modifierMod1;
+    static int modifierMod1;
 
-    static const int modifierMod2;
+    static int modifierMod2;
 
-    static const int modifierMeta;
+    static int modifierMeta;
 
 
-    String debugToolkit();
+    virtual String debugToolkit();
 
-    bool isModifierPressed(bool isDown, ModifierKey key, int keyCode, int modifiers, KeyboardSide side);
+    virtual bool isModifierPressed(bool isDown, ModifierKey key, int keyCode, int modifiers, KeyboardSide side);
 
-    KeyboardSide getModifierSide(ModifierKey key);
+    virtual KeyboardSide getModifierSide(ModifierKey key);
 
-    LogicalKeyboardKey numpadKey(int keyCode);
+    virtual LogicalKeyboardKey numpadKey(int keyCode);
 
-    LogicalKeyboardKey logicalKey(int keyCode);
+    virtual LogicalKeyboardKey logicalKey(int keyCode);
 
-    int platformPlane();
+    virtual int platformPlane();
 
 private:
 
-    int _mergeModifiers(bool isDown, int keyCode, int modifiers);
+    virtual int _mergeModifiers(bool isDown, int keyCode, int modifiers);
 
 };
+using GtkKeyHelper = std::shared_ptr<GtkKeyHelperCls>;
+
 
 #endif

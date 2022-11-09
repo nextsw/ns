@@ -1,78 +1,82 @@
-#ifndef SEMANTICS_EVENT_H
-#define SEMANTICS_EVENT_H
-#include <memory>
-#include <ui.hpp>
+#ifndef PACKAGES_FLUTTER_SRC_SEMANTICS_SEMANTICS_EVENT
+#define PACKAGES_FLUTTER_SRC_SEMANTICS_SEMANTICS_EVENT
+#include <base.hpp>
+#include <dart/ui/ui.hpp>
 
-#include <flutter/foundation.hpp>
-#include <flutter/painting.hpp>
+#include <dart/core/core.hpp>
+#include <packages/flutter/lib/foundation.hpp>
+#include <packages/flutter/flutter.hpp>
 
 
-
-class SemanticsEvent {
+class SemanticsEventCls : public ObjectCls {
 public:
     String type;
 
 
-     SemanticsEvent(String type);
+     SemanticsEventCls(String type);
+    virtual Map<String, dynamic> toMap(int nodeId);
 
-    Map<String, dynamic> toMap(int nodeId);
-
-    Map<String, dynamic> getDataMap();
-
-    String toString();
+    virtual Map<String, dynamic> getDataMap();
+    virtual String toString();
 
 private:
 
 };
+using SemanticsEvent = std::shared_ptr<SemanticsEventCls>;
 
-class AnnounceSemanticsEvent : SemanticsEvent {
+class AnnounceSemanticsEventCls : public SemanticsEventCls {
 public:
     String message;
 
     TextDirection textDirection;
 
 
-     AnnounceSemanticsEvent(String message, TextDirection textDirection);
+     AnnounceSemanticsEventCls(String message, TextDirection textDirection);
 
-    Map<String, dynamic> getDataMap();
+    virtual Map<String, dynamic> getDataMap();
 
 private:
 
 };
+using AnnounceSemanticsEvent = std::shared_ptr<AnnounceSemanticsEventCls>;
 
-class TooltipSemanticsEvent : SemanticsEvent {
+class TooltipSemanticsEventCls : public SemanticsEventCls {
 public:
     String message;
 
 
-     TooltipSemanticsEvent(String message);
+     TooltipSemanticsEventCls(String message);
 
-    Map<String, dynamic> getDataMap();
+    virtual Map<String, dynamic> getDataMap();
 
 private:
 
 };
+using TooltipSemanticsEvent = std::shared_ptr<TooltipSemanticsEventCls>;
 
-class LongPressSemanticsEvent : SemanticsEvent {
+class LongPressSemanticsEventCls : public SemanticsEventCls {
 public:
 
-     LongPressSemanticsEvent();
+     LongPressSemanticsEventCls();
 
-    Map<String, dynamic> getDataMap();
+    virtual Map<String, dynamic> getDataMap();
 
 private:
 
 };
+using LongPressSemanticsEvent = std::shared_ptr<LongPressSemanticsEventCls>;
 
-class TapSemanticEvent : SemanticsEvent {
+class TapSemanticEventCls : public SemanticsEventCls {
 public:
 
-     TapSemanticEvent();
+     TapSemanticEventCls();
 
-    Map<String, dynamic> getDataMap();
+    virtual Map<String, dynamic> getDataMap();
 
 private:
 
 };
+using TapSemanticEvent = std::shared_ptr<TapSemanticEventCls>;
+
 
 #endif

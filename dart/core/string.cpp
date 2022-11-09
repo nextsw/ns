@@ -1,16 +1,16 @@
 #include "string.hpp"
-RuneIterator Runes::iterator() {
-    return RuneIterator(string);
+RuneIterator RunesCls::iterator() {
+    return make<RuneIteratorCls>(stringValue);
 }
 
-int Runes::last() {
-    if (string.length == 0) {
+int RunesCls::last() {
+    if (stringValue->length == 0) {
         ;
     }
-    int length = string.length;
-    int code = string.codeUnitAt(length - 1);
-    if (_isTrailSurrogate(code) && string.length > 1) {
-        int previousCode = string.codeUnitAt(length - 2);
+    int length = stringValue->length;
+    int code = stringValue->codeUnitAt(length - 1);
+    if (_isTrailSurrogate(code) && stringValue->length > 1) {
+        int previousCode = stringValue->codeUnitAt(length - 2);
         if (_isLeadSurrogate(previousCode)) {
             return _combineSurrogatePair(previousCode, code);
         }
@@ -30,64 +30,64 @@ int _combineSurrogatePair(int end, int start) {
     return 0x10000 + ((start & 0x3FF) << 10) + (end & 0x3FF);
 }
 
-RuneIterator::RuneIterator(String string) {
+RuneIteratorCls::RuneIteratorCls(String stringValue) {
     {
-        this.string = string;
+        this->stringValue = stringValue;
         _position = 0;
         _nextPosition = 0;
     }
 }
 
-void RuneIterator::at(int index, String string) {
-    RangeError.checkValueInInterval(index, 0, string.length);
+void RuneIteratorCls::at(int index, String stringValue) {
+    RangeErrorCls->checkValueInInterval(index, 0, stringValue->length);
     _checkSplitSurrogate(index);
 }
 
-int RuneIterator::rawIndex() {
+int RuneIteratorCls::rawIndex() {
     return (_position != _nextPosition)? _position : -1;
 }
 
-void RuneIterator::rawIndex(int rawIndex) {
-    RangeError.checkValidIndex(rawIndex, string, "rawIndex");
+void RuneIteratorCls::rawIndex(int rawIndex) {
+    RangeErrorCls->checkValidIndex(rawIndex, stringValue, "rawIndex");
     reset(rawIndex);
     moveNext();
 }
 
-void RuneIterator::reset(int rawIndex) {
-    RangeError.checkValueInInterval(rawIndex, 0, string.length, "rawIndex");
+void RuneIteratorCls::reset(int rawIndex) {
+    RangeErrorCls->checkValueInInterval(rawIndex, 0, stringValue->length, "rawIndex");
     _checkSplitSurrogate(rawIndex);
     _position = _nextPosition = rawIndex;
     _currentCodePoint = -1;
 }
 
-int RuneIterator::current() {
+int RuneIteratorCls::current() {
     return _currentCodePoint;
 }
 
-int RuneIterator::currentSize() {
+int RuneIteratorCls::currentSize() {
     return _nextPosition - _position;
 }
 
-String RuneIterator::currentAsString() {
+String RuneIteratorCls::currentAsString() {
     if (_position == _nextPosition)     {
         return "";
     }
     if (_position + 1 == _nextPosition)     {
-        return string[_position];
+        return stringValue[_position];
     }
-    return string.substring(_position, _nextPosition);
+    return stringValue->substring(_position, _nextPosition);
 }
 
-bool RuneIterator::moveNext() {
+bool RuneIteratorCls::moveNext() {
     _position = _nextPosition;
-    if (_position == string.length) {
+    if (_position == stringValue->length) {
         _currentCodePoint = -1;
         return false;
     }
-    int codeUnit = string.codeUnitAt(_position);
+    int codeUnit = stringValue->codeUnitAt(_position);
     int nextPosition = _position + 1;
-    if (_isLeadSurrogate(codeUnit) &&  < string.length) {
-        int nextCodeUnit = string.codeUnitAt(nextPosition);
+    if (_isLeadSurrogate(codeUnit) &&  < stringValue->length) {
+        int nextCodeUnit = stringValue->codeUnitAt(nextPosition);
         if (_isTrailSurrogate(nextCodeUnit)) {
             _nextPosition = nextPosition + 1;
             _currentCodePoint = _combineSurrogatePair(codeUnit, nextCodeUnit);
@@ -99,16 +99,16 @@ bool RuneIterator::moveNext() {
     return true;
 }
 
-bool RuneIterator::movePrevious() {
+bool RuneIteratorCls::movePrevious() {
     _nextPosition = _position;
     if (_position == 0) {
         _currentCodePoint = -1;
         return false;
     }
     int position = _position - 1;
-    int codeUnit = string.codeUnitAt(position);
+    int codeUnit = stringValue->codeUnitAt(position);
     if (_isTrailSurrogate(codeUnit) && position > 0) {
-        int prevCodeUnit = string.codeUnitAt(position - 1);
+        int prevCodeUnit = stringValue->codeUnitAt(position - 1);
         if (_isLeadSurrogate(prevCodeUnit)) {
             _position = position - 1;
             _currentCodePoint = _combineSurrogatePair(prevCodeUnit, codeUnit);
@@ -120,8 +120,8 @@ bool RuneIterator::movePrevious() {
     return true;
 }
 
-void RuneIterator::_checkSplitSurrogate(int index) {
-    if (index > 0 &&  < string.length && _isLeadSurrogate(string.codeUnitAt(index - 1)) && _isTrailSurrogate(string.codeUnitAt(index))) {
+void RuneIteratorCls::_checkSplitSurrogate(int index) {
+    if (index > 0 &&  < stringValue->length && _isLeadSurrogate(stringValue->codeUnitAt(index - 1)) && _isTrailSurrogate(stringValue->codeUnitAt(index))) {
         ;
     }
 }

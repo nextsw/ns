@@ -1,18 +1,24 @@
 #include "shader_warm_up.hpp"
-Size ShaderWarmUp::size() {
-    return const ui.Size(100.0, 100.0);
+Size ShaderWarmUpCls::size() {
+    return ui->make<SizeCls>(100.0, 100.0);
 }
 
-Future<void> ShaderWarmUp::execute() {
-    PictureRecorder recorder = ui.PictureRecorder();
-    Canvas canvas = ui.Canvas(recorder);
+Future<void> ShaderWarmUpCls::execute() {
+    PictureRecorder recorder = ui->make<PictureRecorderCls>();
+    Canvas canvas = ui->make<CanvasCls>(recorder);
     await await warmUpOnCanvas(canvas);
-    Picture picture = recorder.endRecording();
+    Picture picture = recorder->endRecording();
     assert(debugCaptureShaderWarmUpPicture(picture));
     if (!kIsWeb) {
-        TimelineTask shaderWarmUpTask = TimelineTask();
-        shaderWarmUpTask.start("Warm-up shader");
-        ;
+        TimelineTask shaderWarmUpTask = make<TimelineTaskCls>();
+        shaderWarmUpTask->start("Warm-up shader");
+        try {
+            Image image = await picture->toImage(size->width->ceil(), size->height->ceil());
+            assert(debugCaptureShaderWarmUpImage(image));
+            image->dispose();
+        } finally {
+            shaderWarmUpTask->finish();
+        };
     }
-    picture.dispose();
+    picture->dispose();
 }

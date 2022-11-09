@@ -1,75 +1,99 @@
 #include "secure_server_socket.hpp"
-Future<SecureServerSocket> SecureServerSocket::bind(address , int backlog, SecurityContext context, int port, bool requestClientCertificate, bool requireClientCertificate, bool shared, List<String> supportedProtocols, bool v6Only) {
-    return RawSecureServerSocket.bind(address, port, contextbacklog, v6Only, requestClientCertificate, requireClientCertificate, supportedProtocols, shared).then();
+Future<SecureServerSocket> SecureServerSocketCls::bind(address , int backlog, SecurityContext context, int port, bool requestClientCertificate, bool requireClientCertificate, bool shared, List<String> supportedProtocols, bool v6Only) {
+    return RawSecureServerSocketCls->bind(address, port, contextbacklog, v6Only, requestClientCertificate, requireClientCertificate, supportedProtocols, shared)->then([=] (Unknown  serverSocket)     {
+        SecureServerSocketCls->_(serverSocket);
+    });
 }
 
-StreamSubscription<SecureSocket> SecureServerSocket::listen(bool cancelOnError, FunctionType onData, FunctionType onDone, FunctionType onError) {
-    return _socket.map().listen(onDataonError, onDone, cancelOnError);
+StreamSubscription<SecureSocket> SecureServerSocketCls::listen(bool cancelOnError, void onData(SecureSocket socket) , void onDone() , void  onError() ) {
+    return _socket->map([=] (Unknown  rawSocket)     {
+        SecureSocketCls->_(rawSocket);
+    })->listen(onDataonError, onDone, cancelOnError);
 }
 
-int SecureServerSocket::port() {
-    return _socket.port;
+int SecureServerSocketCls::port() {
+    return _socket->port;
 }
 
-InternetAddress SecureServerSocket::address() {
-    return _socket.address;
+InternetAddress SecureServerSocketCls::address() {
+    return _socket->address;
 }
 
-Future<SecureServerSocket> SecureServerSocket::close() {
-    return _socket.close().then();
+Future<SecureServerSocket> SecureServerSocketCls::close() {
+    return _socket->close()->then([=] ()     {
+        this;
+    });
 }
 
-void SecureServerSocket::_owner(owner ) {
-    _socket._owner = owner;
+void SecureServerSocketCls::_owner(owner ) {
+    _socket->_owner = owner;
 }
 
-Future<RawSecureServerSocket> RawSecureServerSocket::bind(address , int backlog, SecurityContext context, int port, bool requestClientCertificate, bool requireClientCertificate, bool shared, List<String> supportedProtocols, bool v6Only) {
-    return RawServerSocket.bind(address, portbacklog, v6Only, shared).then();
+Future<RawSecureServerSocket> RawSecureServerSocketCls::bind(address , int backlog, SecurityContext context, int port, bool requestClientCertificate, bool requireClientCertificate, bool shared, List<String> supportedProtocols, bool v6Only) {
+    return RawServerSocketCls->bind(address, portbacklog, v6Only, shared)->then([=] (Unknown  serverSocket)     {
+        RawSecureServerSocketCls->_(serverSocket, context, requestClientCertificate, requireClientCertificate, supportedProtocols);
+    });
 }
 
-StreamSubscription<RawSecureSocket> RawSecureServerSocket::listen(bool cancelOnError, FunctionType onData, FunctionType onDone, FunctionType onError) {
-    return _controller.stream.listen(onDataonError, onDone, cancelOnError);
+StreamSubscription<RawSecureSocket> RawSecureServerSocketCls::listen(bool cancelOnError, void onData(RawSecureSocket s) , void onDone() , void  onError() ) {
+    return _controller->stream->listen(onDataonError, onDone, cancelOnError);
 }
 
-int RawSecureServerSocket::port() {
-    return _socket.port;
+int RawSecureServerSocketCls::port() {
+    return _socket->port;
 }
 
-InternetAddress RawSecureServerSocket::address() {
-    return _socket.address;
+InternetAddress RawSecureServerSocketCls::address() {
+    return _socket->address;
 }
 
-Future<RawSecureServerSocket> RawSecureServerSocket::close() {
+Future<RawSecureServerSocket> RawSecureServerSocketCls::close() {
     _closed = true;
-    return _socket.close().then();
+    return _socket->close()->then([=] ()     {
+        this;
+    });
 }
 
-void RawSecureServerSocket::_(SecurityContext _context, RawServerSocket _socket, bool requestClientCertificate, bool requireClientCertificate, List<String> supportedProtocols) {
-    _controller = <RawSecureSocket>StreamController(true, _onSubscriptionStateChange, _onPauseStateChange, _onPauseStateChange, _onSubscriptionStateChange);
+void RawSecureServerSocketCls::_(SecurityContext _context, RawServerSocket _socket, bool requestClientCertificate, bool requireClientCertificate, List<String> supportedProtocols) {
+    _controller = <RawSecureSocket>make<StreamControllerCls>(true, _onSubscriptionStateChange, _onPauseStateChange, _onPauseStateChange, _onSubscriptionStateChange);
 }
 
-void RawSecureServerSocket::_onData(RawSocket connection) {
+void RawSecureServerSocketCls::_onData(RawSocket connection) {
     auto remotePort;
-    ;
-    _RawSecureSocket.connect(connection.address, remotePort, true, connection_context, requestClientCertificate, requireClientCertificate, supportedProtocols).then().catchError();
+    try {
+        remotePort = connection->remotePort;
+    } catch (Unknown e) {
+        return;
+    };
+    _RawSecureSocketCls->connect(connection->address, remotePort, true, connection_context, requestClientCertificate, requireClientCertificate, supportedProtocols)->then([=] (RawSecureSocket secureConnection) {
+        if (_closed) {
+            secureConnection->close();
+        } else {
+            _controller->add(secureConnection);
+        }
+    })->catchError([=] (Unknown  e,Unknown  s) {
+        if (!_closed) {
+            _controller->addError(e, s);
+        }
+    });
 }
 
-void RawSecureServerSocket::_onPauseStateChange() {
-    if (_controller.isPaused) {
-        _subscription!.pause();
+void RawSecureServerSocketCls::_onPauseStateChange() {
+    if (_controller->isPaused) {
+        _subscription!->pause();
     } else {
-        _subscription!.resume();
+        _subscription!->resume();
     }
 }
 
-void RawSecureServerSocket::_onSubscriptionStateChange() {
-    if (_controller.hasListener) {
-        _subscription = _socket.listen(_onData_controller.addError, _controller.close);
+void RawSecureServerSocketCls::_onSubscriptionStateChange() {
+    if (_controller->hasListener) {
+        _subscription = _socket->listen(_onData_controller->addError, _controller->close);
     } else {
         close();
     }
 }
 
-void RawSecureServerSocket::_owner(owner ) {
-    (()._owner = owner;
+void RawSecureServerSocketCls::_owner(owner ) {
+    (((dynamic)_socket))->_owner = owner;
 }

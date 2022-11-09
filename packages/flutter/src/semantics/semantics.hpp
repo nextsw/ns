@@ -1,38 +1,38 @@
-#ifndef SEMANTICS_H
-#define SEMANTICS_H
-#include <memory>
-#include <ui.hpp>
-#include <flutter/foundation.hpp>
-#include <flutter/services.hpp>
-#include <vector_math/vector_math_64.hpp>
+#ifndef PACKAGES_FLUTTER_SRC_SEMANTICS_SEMANTICS
+#define PACKAGES_FLUTTER_SRC_SEMANTICS_SEMANTICS
+#include <base.hpp>
+#include <dart/ui/ui.hpp>
+#include <packages/flutter/lib/foundation.hpp>
+#include <packages/flutter/flutter.hpp>
+#include <packages/vector_math/vector_math.hpp>
 #include "semantics_event.hpp"
 
-#include <math/math.hpp>
-#include <ui/ui.hpp>
-#include <ui/ui.hpp>
-#include <flutter/foundation.hpp>
-#include <flutter/painting.hpp>
-#include <flutter/services.hpp>
-#include <vector_math/vector_math_64.hpp>
+#include <dart/core/core.hpp>
+#include <dart/math/math.hpp>
+#include <dart/ui/ui.hpp>
+#include <dart/ui/ui.hpp>
+#include <packages/flutter/lib/foundation.hpp>
+#include <packages/flutter/flutter.hpp>
+#include <packages/flutter/flutter.hpp>
+#include <packages/vector_math/vector_math.hpp>
 #include "binding.hpp"
 #include "semantics_event.hpp"
 
 
-
-class SemanticsTag {
+class SemanticsTagCls : public ObjectCls {
 public:
     String name;
 
 
-     SemanticsTag(String name);
-
-    String toString();
+     SemanticsTagCls(String name);
+    virtual String toString();
 
 private:
 
 };
+using SemanticsTag = std::shared_ptr<SemanticsTagCls>;
 
-class CustomSemanticsAction {
+class CustomSemanticsActionCls : public ObjectCls {
 public:
     String label;
 
@@ -41,15 +41,15 @@ public:
     SemanticsAction action;
 
 
-     CustomSemanticsAction(String label);
+     CustomSemanticsActionCls(String label);
 
-    void  overridingAction(SemanticsAction action, String hint);
+    virtual void  overridingAction(SemanticsAction action, String hint);
 
-    int hashCode();
+    virtual int hashCode();
 
-    bool ==(Object other);
+    virtual bool operator==(Object other);
 
-    String toString();
+    virtual String toString();
 
     static int getIdentifier(CustomSemanticsAction action);
 
@@ -64,44 +64,47 @@ private:
 
 
 };
+using CustomSemanticsAction = std::shared_ptr<CustomSemanticsActionCls>;
 
-class AttributedString {
+class AttributedStringCls : public ObjectCls {
 public:
     String string;
 
     List<StringAttribute> attributes;
 
 
-     AttributedString(List<StringAttribute> attributes, String string);
+     AttributedStringCls(List<StringAttribute> attributes, String string);
 
-    AttributedString +(AttributedString other);
+    virtual AttributedString operator+(AttributedString other);
 
-    bool ==(Object other);
+    virtual bool operator==(Object other);
 
-    int hashCode();
+    virtual int hashCode();
 
-    String toString();
+    virtual String toString();
 
 private:
 
 };
+using AttributedString = std::shared_ptr<AttributedStringCls>;
 
-class AttributedStringProperty : DiagnosticsProperty<AttributedString> {
+class AttributedStringPropertyCls : public DiagnosticsPropertyCls<AttributedString> {
 public:
     bool showWhenEmpty;
 
 
-     AttributedStringProperty(Unknown, Unknown, Unknown, String name, Unknown, bool showWhenEmpty, Unknown);
+     AttributedStringPropertyCls(Unknown defaultValue, Unknown description, Unknown level, String name, Unknown showName, bool showWhenEmpty, Unknown value);
 
-    bool isInteresting();
+    virtual bool isInteresting();
 
-    String valueToString(TextTreeConfiguration parentConfiguration);
+    virtual String valueToString(TextTreeConfiguration parentConfiguration);
 
 private:
 
 };
+using AttributedStringProperty = std::shared_ptr<AttributedStringPropertyCls>;
 
-class SemanticsData {
+class SemanticsDataCls : public ObjectCls {
 public:
     int flags;
 
@@ -152,71 +155,73 @@ public:
     List<int> customSemanticsActionIds;
 
 
-     SemanticsData(int actions, AttributedString attributedDecreasedValue, AttributedString attributedHint, AttributedString attributedIncreasedValue, AttributedString attributedLabel, AttributedString attributedValue, int currentValueLength, List<int> customSemanticsActionIds, double elevation, int flags, int maxValueLength, int platformViewId, Rect rect, int scrollChildCount, double scrollExtentMax, double scrollExtentMin, int scrollIndex, double scrollPosition, Set<SemanticsTag> tags, TextDirection textDirection, TextSelection textSelection, double thickness, String tooltip, Matrix4 transform);
+     SemanticsDataCls(int actions, AttributedString attributedDecreasedValue, AttributedString attributedHint, AttributedString attributedIncreasedValue, AttributedString attributedLabel, AttributedString attributedValue, int currentValueLength, List<int> customSemanticsActionIds, double elevation, int flags, int maxValueLength, int platformViewId, Rect rect, int scrollChildCount, double scrollExtentMax, double scrollExtentMin, int scrollIndex, double scrollPosition, Set<SemanticsTag> tags, TextDirection textDirection, TextSelection textSelection, double thickness, String tooltip, Matrix4 transform);
 
-    String label();
+    virtual String label();
 
-    String value();
+    virtual String value();
 
-    String increasedValue();
+    virtual String increasedValue();
 
-    String decreasedValue();
+    virtual String decreasedValue();
 
-    String hint();
+    virtual String hint();
 
-    bool hasFlag(SemanticsFlag flag);
+    virtual bool hasFlag(SemanticsFlag flag);
 
-    bool hasAction(SemanticsAction action);
+    virtual bool hasAction(SemanticsAction action);
 
-    String toStringShort();
+    virtual String toStringShort();
 
-    void debugFillProperties(DiagnosticPropertiesBuilder properties);
+    virtual void debugFillProperties(DiagnosticPropertiesBuilder properties);
 
-    bool ==(Object other);
+    virtual bool operator==(Object other);
 
-    int hashCode();
+    virtual int hashCode();
 
 private:
 
     static bool _sortedListsEqual(List<int> left, List<int> right);
 
 };
+using SemanticsData = std::shared_ptr<SemanticsDataCls>;
 
-class _SemanticsDiagnosticableNode : DiagnosticableNode<SemanticsNode> {
+class _SemanticsDiagnosticableNodeCls : public DiagnosticableNodeCls<SemanticsNode> {
 public:
     DebugSemanticsDumpOrder childOrder;
 
 
-    List<DiagnosticsNode> getChildren();
+    virtual List<DiagnosticsNode> getChildren();
 
 private:
 
-     _SemanticsDiagnosticableNode(DebugSemanticsDumpOrder childOrder, Unknown, Unknown, Unknown);
-
+     _SemanticsDiagnosticableNodeCls(DebugSemanticsDumpOrder childOrder, Unknown name, Unknown style, Unknown value);
 };
+using _SemanticsDiagnosticableNode = std::shared_ptr<_SemanticsDiagnosticableNodeCls>;
 
-class SemanticsHintOverrides : DiagnosticableTree {
+class SemanticsHintOverridesCls : public DiagnosticableTreeCls {
 public:
     String onTapHint;
 
     String onLongPressHint;
 
 
-     SemanticsHintOverrides(String onLongPressHint, String onTapHint);
+     SemanticsHintOverridesCls(String onLongPressHint, String onTapHint);
 
-    bool isNotEmpty();
+    virtual bool isNotEmpty();
 
-    int hashCode();
+    virtual int hashCode();
 
-    bool ==(Object other);
+    virtual bool operator==(Object other);
 
-    void debugFillProperties(DiagnosticPropertiesBuilder properties);
+    virtual void debugFillProperties(DiagnosticPropertiesBuilder properties);
 
 private:
 
 };
+using SemanticsHintOverrides = std::shared_ptr<SemanticsHintOverridesCls>;
 
-class SemanticsProperties : DiagnosticableTree {
+class SemanticsPropertiesCls : public DiagnosticableTreeCls {
 public:
     bool enabled;
 
@@ -337,19 +342,20 @@ public:
     Map<CustomSemanticsAction, VoidCallback> customSemanticsActions;
 
 
-     SemanticsProperties(AttributedString attributedDecreasedValue, AttributedString attributedHint, AttributedString attributedIncreasedValue, AttributedString attributedLabel, AttributedString attributedValue, bool button, bool checked, int currentValueLength, Map<CustomSemanticsAction, VoidCallback> customSemanticsActions, String decreasedValue, bool enabled, bool focusable, bool focused, bool header, bool hidden, String hint, SemanticsHintOverrides hintOverrides, bool image, bool inMutuallyExclusiveGroup, String increasedValue, bool keyboardKey, String label, bool link, bool liveRegion, int maxValueLength, bool multiline, bool namesRoute, bool obscured, VoidCallback onCopy, VoidCallback onCut, VoidCallback onDecrease, VoidCallback onDidGainAccessibilityFocus, VoidCallback onDidLoseAccessibilityFocus, VoidCallback onDismiss, VoidCallback onIncrease, VoidCallback onLongPress, MoveCursorHandler onMoveCursorBackwardByCharacter, MoveCursorHandler onMoveCursorBackwardByWord, MoveCursorHandler onMoveCursorForwardByCharacter, MoveCursorHandler onMoveCursorForwardByWord, VoidCallback onPaste, VoidCallback onScrollDown, VoidCallback onScrollLeft, VoidCallback onScrollRight, VoidCallback onScrollUp, SetSelectionHandler onSetSelection, SetTextHandler onSetText, VoidCallback onTap, bool readOnly, bool scopesRoute, bool selected, bool slider, SemanticsSortKey sortKey, SemanticsTag tagForChildren, TextDirection textDirection, bool textField, bool toggled, String tooltip, String value);
+     SemanticsPropertiesCls(AttributedString attributedDecreasedValue, AttributedString attributedHint, AttributedString attributedIncreasedValue, AttributedString attributedLabel, AttributedString attributedValue, bool button, bool checked, int currentValueLength, Map<CustomSemanticsAction, VoidCallback> customSemanticsActions, String decreasedValue, bool enabled, bool focusable, bool focused, bool header, bool hidden, String hint, SemanticsHintOverrides hintOverrides, bool image, bool inMutuallyExclusiveGroup, String increasedValue, bool keyboardKey, String label, bool link, bool liveRegion, int maxValueLength, bool multiline, bool namesRoute, bool obscured, VoidCallback onCopy, VoidCallback onCut, VoidCallback onDecrease, VoidCallback onDidGainAccessibilityFocus, VoidCallback onDidLoseAccessibilityFocus, VoidCallback onDismiss, VoidCallback onIncrease, VoidCallback onLongPress, MoveCursorHandler onMoveCursorBackwardByCharacter, MoveCursorHandler onMoveCursorBackwardByWord, MoveCursorHandler onMoveCursorForwardByCharacter, MoveCursorHandler onMoveCursorForwardByWord, VoidCallback onPaste, VoidCallback onScrollDown, VoidCallback onScrollLeft, VoidCallback onScrollRight, VoidCallback onScrollUp, SetSelectionHandler onSetSelection, SetTextHandler onSetText, VoidCallback onTap, bool readOnly, bool scopesRoute, bool selected, bool slider, SemanticsSortKey sortKey, SemanticsTag tagForChildren, TextDirection textDirection, bool textField, bool toggled, String tooltip, String value);
 
-    void debugFillProperties(DiagnosticPropertiesBuilder properties);
+    virtual void debugFillProperties(DiagnosticPropertiesBuilder properties);
 
-    String toStringShort();
+    virtual String toStringShort();
 
 private:
 
 };
+using SemanticsProperties = std::shared_ptr<SemanticsPropertiesCls>;
 void debugResetSemanticsIdCounter();
 
 
-class SemanticsNode : AbstractNode {
+class SemanticsNodeCls : public AbstractNodeCls {
 public:
     Key key;
 
@@ -364,122 +370,122 @@ public:
     Set<SemanticsTag> tags;
 
 
-     SemanticsNode(Key key, VoidCallback showOnScreen);
+     SemanticsNodeCls(Key key, VoidCallback showOnScreen);
 
-    void  root(Key key, SemanticsOwner owner, VoidCallback showOnScreen);
+    virtual void  root(Key key, SemanticsOwner owner, VoidCallback showOnScreen);
 
-    int id();
+    virtual int id();
 
-    Matrix4 transform();
+    virtual Matrix4 transform();
 
-    void  transform(Matrix4 value);
+    virtual void  transform(Matrix4 value);
 
-    Rect rect();
+    virtual Rect rect();
 
-    void  rect(Rect value);
+    virtual void  rect(Rect value);
 
-    bool isInvisible();
+    virtual bool isInvisible();
 
-    bool isMergedIntoParent();
+    virtual bool isMergedIntoParent();
 
-    void  isMergedIntoParent(bool value);
+    virtual void  isMergedIntoParent(bool value);
 
-    bool isPartOfNodeMerging();
+    virtual bool isPartOfNodeMerging();
 
-    bool mergeAllDescendantsIntoThisNode();
+    virtual bool mergeAllDescendantsIntoThisNode();
 
-    bool hasChildren();
+    virtual bool hasChildren();
 
-    int childrenCount();
+    virtual int childrenCount();
 
-    void visitChildren(SemanticsNodeVisitor visitor);
+    virtual void visitChildren(SemanticsNodeVisitor visitor);
 
-    SemanticsOwner owner();
+    virtual SemanticsOwner owner();
 
-    SemanticsNode parent();
+    virtual SemanticsNode parent();
 
-    void redepthChildren();
+    virtual void redepthChildren();
 
-    void attach(SemanticsOwner owner);
+    virtual void attach(SemanticsOwner owner);
 
-    void detach();
+    virtual void detach();
 
-    bool isTagged(SemanticsTag tag);
+    virtual bool isTagged(SemanticsTag tag);
 
-    bool hasFlag(SemanticsFlag flag);
+    virtual bool hasFlag(SemanticsFlag flag);
 
-    String label();
+    virtual String label();
 
-    AttributedString attributedLabel();
+    virtual AttributedString attributedLabel();
 
-    String value();
+    virtual String value();
 
-    AttributedString attributedValue();
+    virtual AttributedString attributedValue();
 
-    String increasedValue();
+    virtual String increasedValue();
 
-    AttributedString attributedIncreasedValue();
+    virtual AttributedString attributedIncreasedValue();
 
-    String decreasedValue();
+    virtual String decreasedValue();
 
-    AttributedString attributedDecreasedValue();
+    virtual AttributedString attributedDecreasedValue();
 
-    String hint();
+    virtual String hint();
 
-    AttributedString attributedHint();
+    virtual AttributedString attributedHint();
 
-    String tooltip();
+    virtual String tooltip();
 
-    double elevation();
+    virtual double elevation();
 
-    double thickness();
+    virtual double thickness();
 
-    SemanticsHintOverrides hintOverrides();
+    virtual SemanticsHintOverrides hintOverrides();
 
-    TextDirection textDirection();
+    virtual TextDirection textDirection();
 
-    SemanticsSortKey sortKey();
+    virtual SemanticsSortKey sortKey();
 
-    TextSelection textSelection();
+    virtual TextSelection textSelection();
 
-    bool isMultiline();
+    virtual bool isMultiline();
 
-    int scrollChildCount();
+    virtual int scrollChildCount();
 
-    int scrollIndex();
+    virtual int scrollIndex();
 
-    double scrollPosition();
+    virtual double scrollPosition();
 
-    double scrollExtentMax();
+    virtual double scrollExtentMax();
 
-    double scrollExtentMin();
+    virtual double scrollExtentMin();
 
-    int platformViewId();
+    virtual int platformViewId();
 
-    int maxValueLength();
+    virtual int maxValueLength();
 
-    int currentValueLength();
+    virtual int currentValueLength();
 
-    void updateWith(List<SemanticsNode> childrenInInversePaintOrder, SemanticsConfiguration config);
+    virtual void updateWith(List<SemanticsNode> childrenInInversePaintOrder, SemanticsConfiguration config);
 
-    SemanticsData getSemanticsData();
+    virtual SemanticsData getSemanticsData();
 
-    void sendEvent(SemanticsEvent event);
+    virtual void sendEvent(SemanticsEvent event);
 
-    String toStringShort();
+    virtual String toStringShort();
 
-    void debugFillProperties(DiagnosticPropertiesBuilder properties);
+    virtual void debugFillProperties(DiagnosticPropertiesBuilder properties);
 
-    String toStringDeep(DebugSemanticsDumpOrder childOrder, DiagnosticLevel minLevel, String prefixLineOne, String prefixOtherLines);
+    virtual String toStringDeep(DebugSemanticsDumpOrder childOrder, DiagnosticLevel minLevel, String prefixLineOne, String prefixOtherLines);
 
-    DiagnosticsNode toDiagnosticsNode(DebugSemanticsDumpOrder childOrder, String name, DiagnosticsTreeStyle style);
+    virtual DiagnosticsNode toDiagnosticsNode(DebugSemanticsDumpOrder childOrder, String name, DiagnosticsTreeStyle style);
 
-    List<DiagnosticsNode> debugDescribeChildren(DebugSemanticsDumpOrder childOrder);
+    virtual List<DiagnosticsNode> debugDescribeChildren(DebugSemanticsDumpOrder childOrder);
 
-    List<SemanticsNode> debugListChildrenInOrder(DebugSemanticsDumpOrder childOrder);
+    virtual List<SemanticsNode> debugListChildrenInOrder(DebugSemanticsDumpOrder childOrder);
 
 private:
-    static const int _maxFrameworkAccessibilityIdentifier;
+    static int _maxFrameworkAccessibilityIdentifier;
 
     static int _lastIdentifier;
 
@@ -564,25 +570,26 @@ private:
 
     static int _generateNewId();
 
-    void _replaceChildren(List<SemanticsNode> newChildren);
+    virtual void _replaceChildren(List<SemanticsNode> newChildren);
 
-    bool _visitDescendants(SemanticsNodeVisitor visitor);
+    virtual bool _visitDescendants(SemanticsNodeVisitor visitor);
 
-    void _markDirty();
+    virtual void _markDirty();
 
-    bool _isDifferentFromCurrentSemanticAnnotation(SemanticsConfiguration config);
+    virtual bool _isDifferentFromCurrentSemanticAnnotation(SemanticsConfiguration config);
 
-    bool _canPerformAction(SemanticsAction action);
+    virtual bool _canPerformAction(SemanticsAction action);
 
     static Float64List _initIdentityTransform();
 
-    void _addToUpdate(SemanticsUpdateBuilder builder, Set<int> customSemanticsActionIdsUpdate);
+    virtual void _addToUpdate(SemanticsUpdateBuilder builder, Set<int> customSemanticsActionIdsUpdate);
 
-    List<SemanticsNode> _childrenInTraversalOrder();
+    virtual List<SemanticsNode> _childrenInTraversalOrder();
 
 };
+using SemanticsNode = std::shared_ptr<SemanticsNodeCls>;
 
-class _BoxEdge {
+class _BoxEdgeCls : public ObjectCls {
 public:
     bool isLeadingEdge;
 
@@ -591,15 +598,16 @@ public:
     SemanticsNode node;
 
 
-    int compareTo(_BoxEdge other);
+    virtual int compareTo(_BoxEdge other);
 
 private:
 
-     _BoxEdge(bool isLeadingEdge, SemanticsNode node, double offset);
+     _BoxEdgeCls(bool isLeadingEdge, SemanticsNode node, double offset);
 
 };
+using _BoxEdge = std::shared_ptr<_BoxEdgeCls>;
 
-class _SemanticsSortGroup : Comparable<_SemanticsSortGroup> {
+class _SemanticsSortGroupCls : public ComparableCls<_SemanticsSortGroup> {
 public:
     double startOffset;
 
@@ -608,23 +616,24 @@ public:
     List<SemanticsNode> nodes;
 
 
-    int compareTo(_SemanticsSortGroup other);
+    virtual int compareTo(_SemanticsSortGroup other);
 
-    List<SemanticsNode> sortedWithinVerticalGroup();
+    virtual List<SemanticsNode> sortedWithinVerticalGroup();
 
-    List<SemanticsNode> sortedWithinKnot();
+    virtual List<SemanticsNode> sortedWithinKnot();
 
 private:
 
-     _SemanticsSortGroup(double startOffset, TextDirection textDirection);
+     _SemanticsSortGroupCls(double startOffset, TextDirection textDirection);
 
 };
+using _SemanticsSortGroup = std::shared_ptr<_SemanticsSortGroupCls>;
 Offset _pointInParentCoordinates(SemanticsNode node, Offset point);
 
 List<SemanticsNode> _childrenInDefaultOrder(List<SemanticsNode> children, TextDirection textDirection);
 
 
-class _TraversalSortNode {
+class _TraversalSortNodeCls : public ObjectCls {
 public:
     SemanticsNode node;
 
@@ -633,28 +642,29 @@ public:
     int position;
 
 
-    int compareTo(_TraversalSortNode other);
+    virtual int compareTo(_TraversalSortNode other);
 
 private:
 
-     _TraversalSortNode(SemanticsNode node, int position, SemanticsSortKey sortKey);
+     _TraversalSortNodeCls(SemanticsNode node, int position, SemanticsSortKey sortKey);
 
 };
+using _TraversalSortNode = std::shared_ptr<_TraversalSortNodeCls>;
 
-class SemanticsOwner : ChangeNotifier {
+class SemanticsOwnerCls : public ChangeNotifierCls {
 public:
 
-    SemanticsNode rootSemanticsNode();
+    virtual SemanticsNode rootSemanticsNode();
 
-    void dispose();
+    virtual void dispose();
 
-    void sendSemanticsUpdate();
+    virtual void sendSemanticsUpdate();
 
-    void performAction(SemanticsAction action, Object args, int id);
+    virtual void performAction(SemanticsAction action, Object args, int id);
 
-    void performActionAt(SemanticsAction action, Object args, Offset position);
+    virtual void performActionAt(SemanticsAction action, Object args, Offset position);
 
-    String toString();
+    virtual String toString();
 
 private:
     Set<SemanticsNode> _dirtyNodes;
@@ -664,320 +674,321 @@ private:
     Set<SemanticsNode> _detachedNodes;
 
 
-    SemanticsActionHandler _getSemanticsActionHandlerForId(SemanticsAction action, int id);
+    virtual SemanticsActionHandler _getSemanticsActionHandlerForId(SemanticsAction action, int id);
 
-    SemanticsActionHandler _getSemanticsActionHandlerForPosition(SemanticsAction action, SemanticsNode node, Offset position);
+    virtual SemanticsActionHandler _getSemanticsActionHandlerForPosition(SemanticsAction action, SemanticsNode node, Offset position);
 
 };
+using SemanticsOwner = std::shared_ptr<SemanticsOwnerCls>;
 
-class SemanticsConfiguration {
+class SemanticsConfigurationCls : public ObjectCls {
 public:
     bool explicitChildNodes;
 
     bool isBlockingSemanticsOfPreviouslyPaintedNodes;
 
 
-    bool isSemanticBoundary();
+    virtual bool isSemanticBoundary();
 
-    void  isSemanticBoundary(bool value);
+    virtual void  isSemanticBoundary(bool value);
 
-    bool hasBeenAnnotated();
+    virtual bool hasBeenAnnotated();
 
-    VoidCallback onTap();
+    virtual VoidCallback onTap();
 
-    void  onTap(VoidCallback value);
+    virtual void  onTap(VoidCallback value);
 
-    VoidCallback onLongPress();
+    virtual VoidCallback onLongPress();
 
-    void  onLongPress(VoidCallback value);
+    virtual void  onLongPress(VoidCallback value);
 
-    VoidCallback onScrollLeft();
+    virtual VoidCallback onScrollLeft();
 
-    void  onScrollLeft(VoidCallback value);
+    virtual void  onScrollLeft(VoidCallback value);
 
-    VoidCallback onDismiss();
+    virtual VoidCallback onDismiss();
 
-    void  onDismiss(VoidCallback value);
+    virtual void  onDismiss(VoidCallback value);
 
-    VoidCallback onScrollRight();
+    virtual VoidCallback onScrollRight();
 
-    void  onScrollRight(VoidCallback value);
+    virtual void  onScrollRight(VoidCallback value);
 
-    VoidCallback onScrollUp();
+    virtual VoidCallback onScrollUp();
 
-    void  onScrollUp(VoidCallback value);
+    virtual void  onScrollUp(VoidCallback value);
 
-    VoidCallback onScrollDown();
+    virtual VoidCallback onScrollDown();
 
-    void  onScrollDown(VoidCallback value);
+    virtual void  onScrollDown(VoidCallback value);
 
-    VoidCallback onIncrease();
+    virtual VoidCallback onIncrease();
 
-    void  onIncrease(VoidCallback value);
+    virtual void  onIncrease(VoidCallback value);
 
-    VoidCallback onDecrease();
+    virtual VoidCallback onDecrease();
 
-    void  onDecrease(VoidCallback value);
+    virtual void  onDecrease(VoidCallback value);
 
-    VoidCallback onCopy();
+    virtual VoidCallback onCopy();
 
-    void  onCopy(VoidCallback value);
+    virtual void  onCopy(VoidCallback value);
 
-    VoidCallback onCut();
+    virtual VoidCallback onCut();
 
-    void  onCut(VoidCallback value);
+    virtual void  onCut(VoidCallback value);
 
-    VoidCallback onPaste();
+    virtual VoidCallback onPaste();
 
-    void  onPaste(VoidCallback value);
+    virtual void  onPaste(VoidCallback value);
 
-    VoidCallback onShowOnScreen();
+    virtual VoidCallback onShowOnScreen();
 
-    void  onShowOnScreen(VoidCallback value);
+    virtual void  onShowOnScreen(VoidCallback value);
 
-    MoveCursorHandler onMoveCursorForwardByCharacter();
+    virtual MoveCursorHandler onMoveCursorForwardByCharacter();
 
-    void  onMoveCursorForwardByCharacter(MoveCursorHandler value);
+    virtual void  onMoveCursorForwardByCharacter(MoveCursorHandler value);
 
-    MoveCursorHandler onMoveCursorBackwardByCharacter();
+    virtual MoveCursorHandler onMoveCursorBackwardByCharacter();
 
-    void  onMoveCursorBackwardByCharacter(MoveCursorHandler value);
+    virtual void  onMoveCursorBackwardByCharacter(MoveCursorHandler value);
 
-    MoveCursorHandler onMoveCursorForwardByWord();
+    virtual MoveCursorHandler onMoveCursorForwardByWord();
 
-    void  onMoveCursorForwardByWord(MoveCursorHandler value);
+    virtual void  onMoveCursorForwardByWord(MoveCursorHandler value);
 
-    MoveCursorHandler onMoveCursorBackwardByWord();
+    virtual MoveCursorHandler onMoveCursorBackwardByWord();
 
-    void  onMoveCursorBackwardByWord(MoveCursorHandler value);
+    virtual void  onMoveCursorBackwardByWord(MoveCursorHandler value);
 
-    SetSelectionHandler onSetSelection();
+    virtual SetSelectionHandler onSetSelection();
 
-    void  onSetSelection(SetSelectionHandler value);
+    virtual void  onSetSelection(SetSelectionHandler value);
 
-    SetTextHandler onSetText();
+    virtual SetTextHandler onSetText();
 
-    void  onSetText(SetTextHandler value);
+    virtual void  onSetText(SetTextHandler value);
 
-    VoidCallback onDidGainAccessibilityFocus();
+    virtual VoidCallback onDidGainAccessibilityFocus();
 
-    void  onDidGainAccessibilityFocus(VoidCallback value);
+    virtual void  onDidGainAccessibilityFocus(VoidCallback value);
 
-    VoidCallback onDidLoseAccessibilityFocus();
+    virtual VoidCallback onDidLoseAccessibilityFocus();
 
-    void  onDidLoseAccessibilityFocus(VoidCallback value);
+    virtual void  onDidLoseAccessibilityFocus(VoidCallback value);
 
-    SemanticsActionHandler getActionHandler(SemanticsAction action);
+    virtual SemanticsActionHandler getActionHandler(SemanticsAction action);
 
-    SemanticsSortKey sortKey();
+    virtual SemanticsSortKey sortKey();
 
-    void  sortKey(SemanticsSortKey value);
+    virtual void  sortKey(SemanticsSortKey value);
 
-    int indexInParent();
+    virtual int indexInParent();
 
-    void  indexInParent(int value);
+    virtual void  indexInParent(int value);
 
-    int scrollChildCount();
+    virtual int scrollChildCount();
 
-    void  scrollChildCount(int value);
+    virtual void  scrollChildCount(int value);
 
-    int scrollIndex();
+    virtual int scrollIndex();
 
-    void  scrollIndex(int value);
+    virtual void  scrollIndex(int value);
 
-    int platformViewId();
+    virtual int platformViewId();
 
-    void  platformViewId(int value);
+    virtual void  platformViewId(int value);
 
-    int maxValueLength();
+    virtual int maxValueLength();
 
-    void  maxValueLength(int value);
+    virtual void  maxValueLength(int value);
 
-    int currentValueLength();
+    virtual int currentValueLength();
 
-    void  currentValueLength(int value);
+    virtual void  currentValueLength(int value);
 
-    bool isMergingSemanticsOfDescendants();
+    virtual bool isMergingSemanticsOfDescendants();
 
-    void  isMergingSemanticsOfDescendants(bool value);
+    virtual void  isMergingSemanticsOfDescendants(bool value);
 
-    Map<CustomSemanticsAction, VoidCallback> customSemanticsActions();
+    virtual Map<CustomSemanticsAction, VoidCallback> customSemanticsActions();
 
-    void  customSemanticsActions(Map<CustomSemanticsAction, VoidCallback> value);
+    virtual void  customSemanticsActions(Map<CustomSemanticsAction, VoidCallback> value);
 
-    String label();
+    virtual String label();
 
-    void  label(String label);
+    virtual void  label(String label);
 
-    AttributedString attributedLabel();
+    virtual AttributedString attributedLabel();
 
-    void  attributedLabel(AttributedString attributedLabel);
+    virtual void  attributedLabel(AttributedString attributedLabel);
 
-    String value();
+    virtual String value();
 
-    void  value(String value);
+    virtual void  value(String value);
 
-    AttributedString attributedValue();
+    virtual AttributedString attributedValue();
 
-    void  attributedValue(AttributedString attributedValue);
+    virtual void  attributedValue(AttributedString attributedValue);
 
-    String increasedValue();
+    virtual String increasedValue();
 
-    void  increasedValue(String increasedValue);
+    virtual void  increasedValue(String increasedValue);
 
-    AttributedString attributedIncreasedValue();
+    virtual AttributedString attributedIncreasedValue();
 
-    void  attributedIncreasedValue(AttributedString attributedIncreasedValue);
+    virtual void  attributedIncreasedValue(AttributedString attributedIncreasedValue);
 
-    String decreasedValue();
+    virtual String decreasedValue();
 
-    void  decreasedValue(String decreasedValue);
+    virtual void  decreasedValue(String decreasedValue);
 
-    AttributedString attributedDecreasedValue();
+    virtual AttributedString attributedDecreasedValue();
 
-    void  attributedDecreasedValue(AttributedString attributedDecreasedValue);
+    virtual void  attributedDecreasedValue(AttributedString attributedDecreasedValue);
 
-    String hint();
+    virtual String hint();
 
-    void  hint(String hint);
+    virtual void  hint(String hint);
 
-    AttributedString attributedHint();
+    virtual AttributedString attributedHint();
 
-    void  attributedHint(AttributedString attributedHint);
+    virtual void  attributedHint(AttributedString attributedHint);
 
-    String tooltip();
+    virtual String tooltip();
 
-    void  tooltip(String tooltip);
+    virtual void  tooltip(String tooltip);
 
-    SemanticsHintOverrides hintOverrides();
+    virtual SemanticsHintOverrides hintOverrides();
 
-    void  hintOverrides(SemanticsHintOverrides value);
+    virtual void  hintOverrides(SemanticsHintOverrides value);
 
-    double elevation();
+    virtual double elevation();
 
-    void  elevation(double value);
+    virtual void  elevation(double value);
 
-    double thickness();
+    virtual double thickness();
 
-    void  thickness(double value);
+    virtual void  thickness(double value);
 
-    bool scopesRoute();
+    virtual bool scopesRoute();
 
-    void  scopesRoute(bool value);
+    virtual void  scopesRoute(bool value);
 
-    bool namesRoute();
+    virtual bool namesRoute();
 
-    void  namesRoute(bool value);
+    virtual void  namesRoute(bool value);
 
-    bool isImage();
+    virtual bool isImage();
 
-    void  isImage(bool value);
+    virtual void  isImage(bool value);
 
-    bool liveRegion();
+    virtual bool liveRegion();
 
-    void  liveRegion(bool value);
+    virtual void  liveRegion(bool value);
 
-    TextDirection textDirection();
+    virtual TextDirection textDirection();
 
-    void  textDirection(TextDirection textDirection);
+    virtual void  textDirection(TextDirection textDirection);
 
-    bool isSelected();
+    virtual bool isSelected();
 
-    void  isSelected(bool value);
+    virtual void  isSelected(bool value);
 
-    bool isEnabled();
+    virtual bool isEnabled();
 
-    void  isEnabled(bool value);
+    virtual void  isEnabled(bool value);
 
-    bool isChecked();
+    virtual bool isChecked();
 
-    void  isChecked(bool value);
+    virtual void  isChecked(bool value);
 
-    bool isToggled();
+    virtual bool isToggled();
 
-    void  isToggled(bool value);
+    virtual void  isToggled(bool value);
 
-    bool isInMutuallyExclusiveGroup();
+    virtual bool isInMutuallyExclusiveGroup();
 
-    void  isInMutuallyExclusiveGroup(bool value);
+    virtual void  isInMutuallyExclusiveGroup(bool value);
 
-    bool isFocusable();
+    virtual bool isFocusable();
 
-    void  isFocusable(bool value);
+    virtual void  isFocusable(bool value);
 
-    bool isFocused();
+    virtual bool isFocused();
 
-    void  isFocused(bool value);
+    virtual void  isFocused(bool value);
 
-    bool isButton();
+    virtual bool isButton();
 
-    void  isButton(bool value);
+    virtual void  isButton(bool value);
 
-    bool isLink();
+    virtual bool isLink();
 
-    void  isLink(bool value);
+    virtual void  isLink(bool value);
 
-    bool isHeader();
+    virtual bool isHeader();
 
-    void  isHeader(bool value);
+    virtual void  isHeader(bool value);
 
-    bool isSlider();
+    virtual bool isSlider();
 
-    void  isSlider(bool value);
+    virtual void  isSlider(bool value);
 
-    bool isKeyboardKey();
+    virtual bool isKeyboardKey();
 
-    void  isKeyboardKey(bool value);
+    virtual void  isKeyboardKey(bool value);
 
-    bool isHidden();
+    virtual bool isHidden();
 
-    void  isHidden(bool value);
+    virtual void  isHidden(bool value);
 
-    bool isTextField();
+    virtual bool isTextField();
 
-    void  isTextField(bool value);
+    virtual void  isTextField(bool value);
 
-    bool isReadOnly();
+    virtual bool isReadOnly();
 
-    void  isReadOnly(bool value);
+    virtual void  isReadOnly(bool value);
 
-    bool isObscured();
+    virtual bool isObscured();
 
-    void  isObscured(bool value);
+    virtual void  isObscured(bool value);
 
-    bool isMultiline();
+    virtual bool isMultiline();
 
-    void  isMultiline(bool value);
+    virtual void  isMultiline(bool value);
 
-    bool hasImplicitScrolling();
+    virtual bool hasImplicitScrolling();
 
-    void  hasImplicitScrolling(bool value);
+    virtual void  hasImplicitScrolling(bool value);
 
-    TextSelection textSelection();
+    virtual TextSelection textSelection();
 
-    void  textSelection(TextSelection value);
+    virtual void  textSelection(TextSelection value);
 
-    double scrollPosition();
+    virtual double scrollPosition();
 
-    void  scrollPosition(double value);
+    virtual void  scrollPosition(double value);
 
-    double scrollExtentMax();
+    virtual double scrollExtentMax();
 
-    void  scrollExtentMax(double value);
+    virtual void  scrollExtentMax(double value);
 
-    double scrollExtentMin();
+    virtual double scrollExtentMin();
 
-    void  scrollExtentMin(double value);
+    virtual void  scrollExtentMin(double value);
 
-    Iterable<SemanticsTag> tagsForChildren();
+    virtual Iterable<SemanticsTag> tagsForChildren();
 
-    void addTagForChildren(SemanticsTag tag);
+    virtual void addTagForChildren(SemanticsTag tag);
 
-    bool isCompatibleWith(SemanticsConfiguration other);
+    virtual bool isCompatibleWith(SemanticsConfiguration other);
 
-    void absorb(SemanticsConfiguration child);
+    virtual void absorb(SemanticsConfiguration child);
 
-    SemanticsConfiguration copy();
+    virtual SemanticsConfiguration copy();
 
 private:
     bool _isSemanticBoundary;
@@ -1081,17 +1092,18 @@ private:
     int _flags;
 
 
-    void _addAction(SemanticsAction action, SemanticsActionHandler handler);
+    virtual void _addAction(SemanticsAction action, SemanticsActionHandler handler);
 
-    void _addArgumentlessAction(SemanticsAction action, VoidCallback handler);
+    virtual void _addArgumentlessAction(SemanticsAction action, VoidCallback handler);
 
-    void _onCustomSemanticsAction(Object args);
+    virtual void _onCustomSemanticsAction(Object args);
 
-    void _setFlag(SemanticsFlag flag, bool value);
+    virtual void _setFlag(SemanticsFlag flag, bool value);
 
-    bool _hasFlag(SemanticsFlag flag);
+    virtual bool _hasFlag(SemanticsFlag flag);
 
 };
+using SemanticsConfiguration = std::shared_ptr<SemanticsConfigurationCls>;
 
 enum DebugSemanticsDumpOrder{
     inverseHitTest,
@@ -1100,36 +1112,37 @@ enum DebugSemanticsDumpOrder{
 AttributedString _concatAttributedString(AttributedString otherAttributedString, TextDirection otherTextDirection, AttributedString thisAttributedString, TextDirection thisTextDirection);
 
 
-class SemanticsSortKey {
+class SemanticsSortKeyCls : public ObjectCls {
 public:
     String name;
 
 
-     SemanticsSortKey(String name);
+     SemanticsSortKeyCls(String name);
+    virtual int compareTo(SemanticsSortKey other);
 
-    int compareTo(SemanticsSortKey other);
-
-    int doCompare(SemanticsSortKey other);
-
-    void debugFillProperties(DiagnosticPropertiesBuilder properties);
+    virtual int doCompare(SemanticsSortKey other);
+    virtual void debugFillProperties(DiagnosticPropertiesBuilder properties);
 
 private:
 
 };
+using SemanticsSortKey = std::shared_ptr<SemanticsSortKeyCls>;
 
-class OrdinalSortKey : SemanticsSortKey {
+class OrdinalSortKeyCls : public SemanticsSortKeyCls {
 public:
     double order;
 
 
-     OrdinalSortKey(Unknown, double order);
+     OrdinalSortKeyCls(Unknown name, double order);
 
-    int doCompare(OrdinalSortKey other);
+    virtual int doCompare(OrdinalSortKey other);
 
-    void debugFillProperties(DiagnosticPropertiesBuilder properties);
+    virtual void debugFillProperties(DiagnosticPropertiesBuilder properties);
 
 private:
 
 };
+using OrdinalSortKey = std::shared_ptr<OrdinalSortKeyCls>;
+
 
 #endif

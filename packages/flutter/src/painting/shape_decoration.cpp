@@ -1,53 +1,53 @@
 #include "shape_decoration.hpp"
-ShapeDecoration::ShapeDecoration(Color color, Gradient gradient, DecorationImage image, List<BoxShadow> shadows, ShapeBorder shape) {
+ShapeDecorationCls::ShapeDecorationCls(Color color, Gradient gradient, DecorationImage image, List<BoxShadow> shadows, ShapeBorder shape) {
     {
         assert(!(color != nullptr && gradient != nullptr));
         assert(shape != nullptr);
     }
 }
 
-void ShapeDecoration::fromBoxDecoration(BoxDecoration source) {
+void ShapeDecorationCls::fromBoxDecoration(BoxDecoration source) {
     ShapeBorder shape;
-    assert(source.shape != nullptr);
+    assert(source->shape != nullptr);
     ;
-    return ShapeDecoration(source.color, source.image, source.gradient, source.boxShadow, shape);
+    return make<ShapeDecorationCls>(source->color, source->image, source->gradient, source->boxShadow, shape);
 }
 
-Path ShapeDecoration::getClipPath(Rect rect, TextDirection textDirection) {
-    return shape.getOuterPath(recttextDirection);
+Path ShapeDecorationCls::getClipPath(Rect rect, TextDirection textDirection) {
+    return shape->getOuterPath(recttextDirection);
 }
 
-EdgeInsetsGeometry ShapeDecoration::padding() {
-    return shape.dimensions;
+EdgeInsetsGeometry ShapeDecorationCls::padding() {
+    return shape->dimensions;
 }
 
-bool ShapeDecoration::isComplex() {
+bool ShapeDecorationCls::isComplex() {
     return shadows != nullptr;
 }
 
-ShapeDecoration ShapeDecoration::lerpFrom(Decoration a, double t) {
+ShapeDecoration ShapeDecorationCls::lerpFrom(Decoration a, double t) {
     if (a is BoxDecoration) {
-        return ShapeDecoration.lerp(ShapeDecoration.fromBoxDecoration(a), this, t);
+        return ShapeDecorationCls->lerp(ShapeDecorationCls->fromBoxDecoration(a), this, t);
     } else     {
         if (a == nullptr || a is ShapeDecoration) {
-        return ShapeDecoration.lerp((, this, t);
+        return ShapeDecorationCls->lerp(((ShapeDecoration)a), this, t);
     }
 ;
-    }    return (;
+    }    return ((ShapeDecoration)super->lerpFrom(a, t));
 }
 
-ShapeDecoration ShapeDecoration::lerpTo(Decoration b, double t) {
+ShapeDecoration ShapeDecorationCls::lerpTo(Decoration b, double t) {
     if (b is BoxDecoration) {
-        return ShapeDecoration.lerp(this, ShapeDecoration.fromBoxDecoration(b), t);
+        return ShapeDecorationCls->lerp(this, ShapeDecorationCls->fromBoxDecoration(b), t);
     } else     {
         if (b == nullptr || b is ShapeDecoration) {
-        return ShapeDecoration.lerp(this, (, t);
+        return ShapeDecorationCls->lerp(this, ((ShapeDecoration)b), t);
     }
 ;
-    }    return (;
+    }    return ((ShapeDecoration)super->lerpTo(b, t));
 }
 
-ShapeDecoration ShapeDecoration::lerp(ShapeDecoration a, ShapeDecoration b, double t) {
+ShapeDecoration ShapeDecorationCls::lerp(ShapeDecoration a, ShapeDecoration b, double t) {
     assert(t != nullptr);
     if (a == nullptr && b == nullptr) {
         return nullptr;
@@ -60,119 +60,118 @@ ShapeDecoration ShapeDecoration::lerp(ShapeDecoration a, ShapeDecoration b, doub
             return b;
         }
     }
-    return ShapeDecoration(Color.lerp(a?.color, b?.color, t), Gradient.lerp(a?.gradient, b?.gradient, t),  < 0.5? a!.image : b!.image, BoxShadow.lerpList(a?.shadows, b?.shadows, t), ShapeBorder.lerp(a?.shape, b?.shape, t)!);
+    return make<ShapeDecorationCls>(ColorCls->lerp(a?->color, b?->color, t), GradientCls->lerp(a?->gradient, b?->gradient, t),  < 0.5? a!->image : b!->image, BoxShadowCls->lerpList(a?->shadows, b?->shadows, t), ShapeBorderCls->lerp(a?->shape, b?->shape, t)!);
 }
 
-bool ShapeDecoration::==(Object other) {
+bool ShapeDecorationCls::==(Object other) {
     if (identical(this, other)) {
         return true;
     }
-    if (other.runtimeType != runtimeType) {
+    if (other->runtimeType != runtimeType) {
         return false;
     }
-    return other is ShapeDecoration && other.color == color && other.gradient == gradient && other.image == image && <BoxShadow>listEquals(other.shadows, shadows) && other.shape == shape;
+    return other is ShapeDecoration && other->color == color && other->gradient == gradient && other->image == image && <BoxShadow>listEquals(other->shadows, shadows) && other->shape == shape;
 }
 
-int ShapeDecoration::hashCode() {
-    return Object.hash(color, gradient, image, shape, shadows == nullptr? nullptr : Object.hashAll(shadows!));
+int ShapeDecorationCls::hashCode() {
+    return ObjectCls->hash(color, gradient, image, shape, shadows == nullptr? nullptr : ObjectCls->hashAll(shadows!));
 }
 
-void ShapeDecoration::debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties.defaultDiagnosticsTreeStyle = DiagnosticsTreeStyle.whitespace;
-    properties.add(ColorProperty("color", colornullptr));
-    properties.add(<Gradient>DiagnosticsProperty("gradient", gradientnullptr));
-    properties.add(<DecorationImage>DiagnosticsProperty("image", imagenullptr));
-    properties.add(<BoxShadow>IterableProperty("shadows", shadowsnullptr, DiagnosticsTreeStyle.whitespace));
-    properties.add(<ShapeBorder>DiagnosticsProperty("shape", shape));
+void ShapeDecorationCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super->debugFillProperties(properties);
+    properties->defaultDiagnosticsTreeStyle = DiagnosticsTreeStyleCls::whitespace;
+    properties->add(make<ColorPropertyCls>("color", colornullptr));
+    properties->add(<Gradient>make<DiagnosticsPropertyCls>("gradient", gradientnullptr));
+    properties->add(<DecorationImage>make<DiagnosticsPropertyCls>("image", imagenullptr));
+    properties->add(<BoxShadow>make<IterablePropertyCls>("shadows", shadowsnullptr, DiagnosticsTreeStyleCls::whitespace));
+    properties->add(<ShapeBorder>make<DiagnosticsPropertyCls>("shape", shape));
 }
 
-bool ShapeDecoration::hitTest(Offset position, Size size, TextDirection textDirection) {
-    return shape.getOuterPath(Offset.zero & sizetextDirection).contains(position);
+bool ShapeDecorationCls::hitTest(Offset position, Size size, TextDirection textDirection) {
+    return shape->getOuterPath(OffsetCls::zero & sizetextDirection)->contains(position);
 }
 
-BoxPainter ShapeDecoration::createBoxPainter(VoidCallback onChanged) {
+BoxPainter ShapeDecorationCls::createBoxPainter(VoidCallback onChanged) {
     assert(onChanged != nullptr || image == nullptr);
-    return _ShapeDecorationPainter(this, onChanged!);
+    return make<_ShapeDecorationPainterCls>(this, onChanged!);
 }
 
-VoidCallback _ShapeDecorationPainter::onChanged() {
-    return super.onChanged!;
+VoidCallback _ShapeDecorationPainterCls::onChanged() {
+    return super->onChanged!;
 }
 
-void _ShapeDecorationPainter::dispose() {
-    _imagePainter?.dispose();
-    super.dispose();
+void _ShapeDecorationPainterCls::dispose() {
+    _imagePainter?->dispose();
+    super->dispose();
 }
 
-void _ShapeDecorationPainter::paint(Canvas canvas, ImageConfiguration configuration, Offset offset) {
+void _ShapeDecorationPainterCls::paint(Canvas canvas, ImageConfiguration configuration, Offset offset) {
     assert(configuration != nullptr);
-    assert(configuration.size != nullptr);
-    Rect rect = offset & configuration.size!;
-    TextDirection textDirection = configuration.textDirection;
+    assert(configuration->size != nullptr);
+    Rect rect = offset & configuration->size!;
+    TextDirection textDirection = configuration->textDirection;
     _precache(rect, textDirection);
     _paintShadows(canvas);
     _paintInterior(canvas);
     _paintImage(canvas, configuration);
-    _decoration.shape.paint(canvas, recttextDirection);
+    _decoration->shape->paint(canvas, recttextDirection);
 }
 
-_ShapeDecorationPainter::_ShapeDecorationPainter(ShapeDecoration _decoration, VoidCallback onChanged) {
+_ShapeDecorationPainterCls::_ShapeDecorationPainterCls(ShapeDecoration _decoration, VoidCallback onChanged) {
     {
         assert(_decoration != nullptr);
-        super(onChanged);
     }
 }
 
-void _ShapeDecorationPainter::_precache(Rect rect, TextDirection textDirection) {
+void _ShapeDecorationPainterCls::_precache(Rect rect, TextDirection textDirection) {
     assert(rect != nullptr);
     if (rect == _lastRect && textDirection == _lastTextDirection) {
         return;
     }
-    if (_interiorPaint == nullptr && (_decoration.color != nullptr || _decoration.gradient != nullptr)) {
-        _interiorPaint = Paint();
-        if (_decoration.color != nullptr) {
-            _interiorPaint!.color = _decoration.color!;
+    if (_interiorPaint == nullptr && (_decoration->color != nullptr || _decoration->gradient != nullptr)) {
+        _interiorPaint = make<PaintCls>();
+        if (_decoration->color != nullptr) {
+            _interiorPaint!->color = _decoration->color!;
         }
     }
-    if (_decoration.gradient != nullptr) {
-        _interiorPaint!.shader = _decoration.gradient!.createShader(recttextDirection);
+    if (_decoration->gradient != nullptr) {
+        _interiorPaint!->shader = _decoration->gradient!->createShader(recttextDirection);
     }
-    if (_decoration.shadows != nullptr) {
+    if (_decoration->shadows != nullptr) {
         if (_shadowCount == nullptr) {
-            _shadowCount = _decoration.shadows!.length;
-            _shadowPaints = ;
+            _shadowCount = _decoration->shadows!->length;
+                    List<Paint> list1 = make<ListCls<>>();        for (auto _x1 : _decoration->shadows!->map([=] (BoxShadow shadow)             {                        shadow->toPaint();                    })) {        {            list1.add(_x1);        }_shadowPaints = list1;
         }
-        _shadowPaths = ;
+                    })) {    {        list2.add(_x2);    }_shadowPaths =         List<Path> list2 = make<ListCls<>>();        for (auto _x2 : _decoration->shadows!->map([=] (BoxShadow shadow) {                    return _decoration->shape->getOuterPath(rect->shift(shadow->offset)->inflate(shadow->spreadRadius)textDirection);list2;
     }
     if (_interiorPaint != nullptr || _shadowCount != nullptr) {
-        _outerPath = _decoration.shape.getOuterPath(recttextDirection);
+        _outerPath = _decoration->shape->getOuterPath(recttextDirection);
     }
-    if (_decoration.image != nullptr) {
-        _innerPath = _decoration.shape.getInnerPath(recttextDirection);
+    if (_decoration->image != nullptr) {
+        _innerPath = _decoration->shape->getInnerPath(recttextDirection);
     }
     _lastRect = rect;
     _lastTextDirection = textDirection;
 }
 
-void _ShapeDecorationPainter::_paintShadows(Canvas canvas) {
+void _ShapeDecorationPainterCls::_paintShadows(Canvas canvas) {
     if (_shadowCount != nullptr) {
         for (;  < _shadowCount!; index = 1) {
-            canvas.drawPath(_shadowPaths[index], _shadowPaints[index]);
+            canvas->drawPath(_shadowPaths[index], _shadowPaints[index]);
         }
     }
 }
 
-void _ShapeDecorationPainter::_paintInterior(Canvas canvas) {
+void _ShapeDecorationPainterCls::_paintInterior(Canvas canvas) {
     if (_interiorPaint != nullptr) {
-        canvas.drawPath(_outerPath, _interiorPaint!);
+        canvas->drawPath(_outerPath, _interiorPaint!);
     }
 }
 
-void _ShapeDecorationPainter::_paintImage(Canvas canvas, ImageConfiguration configuration) {
-    if (_decoration.image == nullptr) {
+void _ShapeDecorationPainterCls::_paintImage(Canvas canvas, ImageConfiguration configuration) {
+    if (_decoration->image == nullptr) {
         return;
     }
-    _imagePainter = _decoration.image!.createPainter(onChanged);
-    _imagePainter!.paint(canvas, _lastRect!, _innerPath, configuration);
+    _imagePainter = _decoration->image!->createPainter(onChanged);
+    _imagePainter!->paint(canvas, _lastRect!, _innerPath, configuration);
 }

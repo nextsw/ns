@@ -1,86 +1,85 @@
-#ifndef LISTENER_HELPERS_H
-#define LISTENER_HELPERS_H
-#include <memory>
-#include <ui.hpp>
+#ifndef PACKAGES_FLUTTER_SRC_ANIMATION_LISTENER_HELPERS
+#define PACKAGES_FLUTTER_SRC_ANIMATION_LISTENER_HELPERS
+#include <base.hpp>
+#include <dart/ui/ui.hpp>
 #include "animation.hpp"
 
-#include <flutter/foundation.hpp>
+#include <dart/core/core.hpp>
+#include <packages/flutter/lib/foundation.hpp>
 #include "animation.hpp"
 
 
-
-class AnimationLazyListenerMixin {
+class AnimationLazyListenerMixinCls : public ObjectCls {
 public:
 
-    void didRegisterListener();
+    virtual void didRegisterListener();
 
-    void didUnregisterListener();
+    virtual void didUnregisterListener();
 
-    void didStartListening();
-
-    void didStopListening();
-
-    bool isListening();
+    virtual void didStartListening();
+    virtual void didStopListening();
+    virtual bool isListening();
 
 private:
     int _listenerCounter;
 
 
 };
+using AnimationLazyListenerMixin = std::shared_ptr<AnimationLazyListenerMixinCls>;
 
-class AnimationEagerListenerMixin {
+class AnimationEagerListenerMixinCls : public ObjectCls {
 public:
 
-    void didRegisterListener();
+    virtual void didRegisterListener();
 
-    void didUnregisterListener();
+    virtual void didUnregisterListener();
 
-    void dispose();
+    virtual void dispose();
 
 private:
 
 };
+using AnimationEagerListenerMixin = std::shared_ptr<AnimationEagerListenerMixinCls>;
 
-class AnimationLocalListenersMixin {
+class AnimationLocalListenersMixinCls : public ObjectCls {
 public:
 
-    void didRegisterListener();
+    virtual void didRegisterListener();
+    virtual void didUnregisterListener();
+    virtual void addListener(VoidCallback listener);
 
-    void didUnregisterListener();
+    virtual void removeListener(VoidCallback listener);
 
-    void addListener(VoidCallback listener);
+    virtual void clearListeners();
 
-    void removeListener(VoidCallback listener);
-
-    void clearListeners();
-
-    void notifyListeners();
+    virtual void notifyListeners();
 
 private:
     ObserverList<VoidCallback> _listeners;
 
 
 };
+using AnimationLocalListenersMixin = std::shared_ptr<AnimationLocalListenersMixinCls>;
 
-class AnimationLocalStatusListenersMixin {
+class AnimationLocalStatusListenersMixinCls : public ObjectCls {
 public:
 
-    void didRegisterListener();
+    virtual void didRegisterListener();
+    virtual void didUnregisterListener();
+    virtual void addStatusListener(AnimationStatusListener listener);
 
-    void didUnregisterListener();
+    virtual void removeStatusListener(AnimationStatusListener listener);
 
-    void addStatusListener(AnimationStatusListener listener);
+    virtual void clearStatusListeners();
 
-    void removeStatusListener(AnimationStatusListener listener);
-
-    void clearStatusListeners();
-
-    void notifyStatusListeners(AnimationStatus status);
+    virtual void notifyStatusListeners(AnimationStatus status);
 
 private:
     ObserverList<AnimationStatusListener> _statusListeners;
 
 
 };
+using AnimationLocalStatusListenersMixin = std::shared_ptr<AnimationLocalStatusListenersMixinCls>;
+
 
 #endif

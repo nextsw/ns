@@ -1,19 +1,19 @@
-#ifndef RAW_KEYBOARD_WEB_H
-#define RAW_KEYBOARD_WEB_H
-#include <memory>
-#include <flutter/foundation.hpp>
+#ifndef PACKAGES_FLUTTER_SRC_SERVICES_RAW_KEYBOARD_WEB
+#define PACKAGES_FLUTTER_SRC_SERVICES_RAW_KEYBOARD_WEB
+#include <base.hpp>
+#include <packages/flutter/lib/foundation.hpp>
 #include "keyboard_key.g.hpp"
 #include "raw_keyboard.hpp"
 
-#include <flutter/foundation.hpp>
+#include <dart/core/core.hpp>
+#include <packages/flutter/lib/foundation.hpp>
 #include "keyboard_maps.g.hpp"
 #include "raw_keyboard.hpp"
-
 
 String _unicodeChar(String key);
 
 
-class RawKeyEventDataWeb : RawKeyEventData {
+class RawKeyEventDataWebCls : public RawKeyEventDataCls {
 public:
     String code;
 
@@ -25,43 +25,45 @@ public:
 
     int keyCode;
 
-    static const int modifierNone;
+    static int modifierNone;
 
-    static const int modifierShift;
+    static int modifierShift;
 
-    static const int modifierAlt;
+    static int modifierAlt;
 
-    static const int modifierControl;
+    static int modifierControl;
 
-    static const int modifierMeta;
+    static int modifierMeta;
 
-    static const int modifierNumLock;
+    static int modifierNumLock;
 
-    static const int modifierCapsLock;
+    static int modifierCapsLock;
 
-    static const int modifierScrollLock;
+    static int modifierScrollLock;
 
 
-     RawKeyEventDataWeb(String code, String key, int keyCode, int location, int metaState);
+     RawKeyEventDataWebCls(String code, String key, int keyCode, int location, int metaState);
 
-    String keyLabel();
+    virtual String keyLabel();
 
-    PhysicalKeyboardKey physicalKey();
+    virtual PhysicalKeyboardKey physicalKey();
 
-    LogicalKeyboardKey logicalKey();
+    virtual LogicalKeyboardKey logicalKey();
 
-    bool isModifierPressed(ModifierKey key, KeyboardSide side);
+    virtual bool isModifierPressed(ModifierKey key, KeyboardSide side);
 
-    KeyboardSide getModifierSide(ModifierKey key);
+    virtual KeyboardSide getModifierSide(ModifierKey key);
 
-    void debugFillProperties(DiagnosticPropertiesBuilder properties);
+    virtual void debugFillProperties(DiagnosticPropertiesBuilder properties);
 
-    bool ==(Object other);
+    virtual bool operator==(Object other);
 
-    int hashCode();
+    virtual int hashCode();
 
 private:
 
 };
+using RawKeyEventDataWeb = std::shared_ptr<RawKeyEventDataWebCls>;
+
 
 #endif

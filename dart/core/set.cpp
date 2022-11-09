@@ -1,8 +1,8 @@
 #include "set.hpp"
-void Set::unmodifiable(Iterable<E> elements) {
-    return <E>UnmodifiableSetView();
+template<typename E> void SetCls<E>::unmodifiable(Iterable<E> elements) {
+    return <E>make<UnmodifiableSetViewCls>(list1);
 }
 
-Set<T> Set::castFrom<S, T>(FunctionType newSet, Set<S> source) {
-    return <S, T>CastSet(source, newSet);
+template<typename E> Set<T> SetCls<E>::castFromtemplate<typename S, typename T> (Set<R> newSet() , Set<S> source) {
+    return <S, T>make<CastSetCls>(source, newSet);
 }

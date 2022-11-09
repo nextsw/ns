@@ -1,8 +1,8 @@
 #include "deferred_component.hpp"
-Future<void> DeferredComponent::installDeferredComponent(String componentName) {
-    await await SystemChannels.deferredComponent.<void>invokeMethod("installDeferredComponent", );
+Future<void> DeferredComponentCls::installDeferredComponent(String componentName) {
+    Map<String, dynamic> map1 = make<MapCls<>>();map1.set("loadingUnitId", -1);map1.set("componentName", componentName);await await SystemChannelsCls::deferredComponent-><void>invokeMethod("installDeferredComponent", list1);
 }
 
-Future<void> DeferredComponent::uninstallDeferredComponent(String componentName) {
-    await await SystemChannels.deferredComponent.<void>invokeMethod("uninstallDeferredComponent", );
+Future<void> DeferredComponentCls::uninstallDeferredComponent(String componentName) {
+    Map<String, dynamic> map1 = make<MapCls<>>();map1.set("loadingUnitId", -1);map1.set("componentName", componentName);await await SystemChannelsCls::deferredComponent-><void>invokeMethod("uninstallDeferredComponent", list1);
 }

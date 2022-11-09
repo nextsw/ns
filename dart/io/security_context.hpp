@@ -1,39 +1,27 @@
-#ifndef SECURITY_CONTEXT_H
-#define SECURITY_CONTEXT_H
-#include <memory>
+#ifndef DART_IO_SECURITY_CONTEXT
+#define DART_IO_SECURITY_CONTEXT
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
 
 
-
-
-class SecurityContext {
+class SecurityContextCls : public ObjectCls {
 public:
     bool allowLegacyUnsafeRenegotiation;
 
 
-    external  SecurityContext(bool withTrustedRoots);
-
-    external static SecurityContext defaultContext();
-
-    void usePrivateKey(String file, String password);
-
-    void usePrivateKeyBytes(List<int> keyBytes, String password);
-
-    void setTrustedCertificates(String file, String password);
-
-    void setTrustedCertificatesBytes(List<int> certBytes, String password);
-
-    void useCertificateChain(String file, String password);
-
-    void useCertificateChainBytes(List<int> chainBytes, String password);
-
-    void setClientAuthorities(String file, String password);
-
-    void setClientAuthoritiesBytes(List<int> authCertBytes, String password);
-
-    external static bool alpnSupported();
-
-    void setAlpnProtocols(bool isServer, List<String> protocols);
-
+    extern  SecurityContextCls(bool withTrustedRoots);
+    extern static SecurityContext defaultContext();
+    virtual void usePrivateKey(String file, String password);
+    virtual void usePrivateKeyBytes(List<int> keyBytes, String password);
+    virtual void setTrustedCertificates(String file, String password);
+    virtual void setTrustedCertificatesBytes(List<int> certBytes, String password);
+    virtual void useCertificateChain(String file, String password);
+    virtual void useCertificateChainBytes(List<int> chainBytes, String password);
+    virtual void setClientAuthorities(String file, String password);
+    virtual void setClientAuthoritiesBytes(List<int> authCertBytes, String password);
+    extern static bool alpnSupported();
+    virtual void setAlpnProtocols(bool isServer, List<String> protocols);
 private:
 
     static Uint8List _protocolsToLengthEncoding(List<String> protocols);
@@ -41,5 +29,7 @@ private:
     static Uint8List _protocolsToLengthEncodingNonAsciiBailout(List<String> protocols);
 
 };
+using SecurityContext = std::shared_ptr<SecurityContextCls>;
+
 
 #endif

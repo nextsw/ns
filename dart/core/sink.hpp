@@ -1,19 +1,19 @@
-#ifndef SINK_H
-#define SINK_H
-#include <memory>
+#ifndef DART_CORE_SINK
+#define DART_CORE_SINK
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
 
 
-
-
-class Sink<T> {
+template<typename T> class SinkCls : public ObjectCls {
 public:
 
-    void add(T data);
-
-    void close();
-
+    virtual void add(T data);
+    virtual void close();
 private:
 
 };
+template<typename T> using Sink = std::shared_ptr<SinkCls<T>>;
+
 
 #endif

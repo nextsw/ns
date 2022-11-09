@@ -1,19 +1,20 @@
-#ifndef BINDING_H
-#define BINDING_H
-#include <memory>
-#include <ui.hpp>
-#include <flutter/foundation.hpp>
+#ifndef PACKAGES_FLUTTER_SRC_GESTURES_BINDING
+#define PACKAGES_FLUTTER_SRC_GESTURES_BINDING
+#include <base.hpp>
+#include <dart/ui/ui.hpp>
+#include <packages/flutter/lib/foundation.hpp>
 #include "arena.hpp"
 #include "events.hpp"
 #include "hit_test.hpp"
 #include "pointer_router.hpp"
 #include "pointer_signal_resolver.hpp"
 
-#include <async/async.hpp>
-#include <collection/collection.hpp>
-#include <ui/ui.hpp>
-#include <flutter/foundation.hpp>
-#include <flutter/scheduler.hpp>
+#include <dart/core/core.hpp>
+#include <dart/async/async.hpp>
+#include <dart/collection/collection.hpp>
+#include <dart/ui/ui.hpp>
+#include <packages/flutter/lib/foundation.hpp>
+#include <packages/flutter/flutter.hpp>
 #include "arena.hpp"
 #include "converter.hpp"
 #include "debug.hpp"
@@ -24,26 +25,26 @@
 #include "resampler.hpp"
 
 
-
-class SamplingClock {
+class SamplingClockCls : public ObjectCls {
 public:
 
-    DateTime now();
+    virtual DateTime now();
 
-    Stopwatch stopwatch();
+    virtual Stopwatch stopwatch();
 
 private:
 
 };
+using SamplingClock = std::shared_ptr<SamplingClockCls>;
 
-class _Resampler {
+class _ResamplerCls : public ObjectCls {
 public:
 
-    void addOrDispatch(PointerEvent event);
+    virtual void addOrDispatch(PointerEvent event);
 
-    void sample(SamplingClock clock, Duration samplingOffset);
+    virtual void sample(SamplingClock clock, Duration samplingOffset);
 
-    void stop();
+    virtual void stop();
 
 private:
     Map<int, PointerEventResampler> _resamplers;
@@ -67,17 +68,17 @@ private:
     Timer _timer;
 
 
-     _Resampler(HandleEventCallback _handlePointerEvent, _HandleSampleTimeChangedCallback _handleSampleTimeChanged, Duration _samplingInterval);
-
-    void _onSampleTimeChanged();
+     _ResamplerCls(HandleEventCallback _handlePointerEvent, _HandleSampleTimeChangedCallback _handleSampleTimeChanged, Duration _samplingInterval);
+    virtual void _onSampleTimeChanged();
 
 };
-const Duration _defaultSamplingOffset;
+using _Resampler = std::shared_ptr<_ResamplerCls>;
+Duration _defaultSamplingOffset;
 
-const Duration _samplingInterval;
+Duration _samplingInterval;
 
 
-class GestureBinding {
+class GestureBindingCls : public ObjectCls {
 public:
     PointerRouter pointerRouter;
 
@@ -90,25 +91,25 @@ public:
     Duration samplingOffset;
 
 
-    void initInstances();
+    virtual void initInstances();
 
     static GestureBinding instance();
 
-    void unlocked();
+    virtual void unlocked();
 
-    void cancelPointer(int pointer);
+    virtual void cancelPointer(int pointer);
 
-    void handlePointerEvent(PointerEvent event);
+    virtual void handlePointerEvent(PointerEvent event);
 
-    void hitTest(Offset position, HitTestResult result);
+    virtual void hitTest(Offset position, HitTestResult result);
 
-    void dispatchEvent(PointerEvent event, HitTestResult hitTestResult);
+    virtual void dispatchEvent(PointerEvent event, HitTestResult hitTestResult);
 
-    void handleEvent(HitTestEntry entry, PointerEvent event);
+    virtual void handleEvent(HitTestEntry entry, PointerEvent event);
 
-    void resetGestureBinding();
+    virtual void resetGestureBinding();
 
-    SamplingClock debugSamplingClock();
+    virtual SamplingClock debugSamplingClock();
 
 private:
     static GestureBinding _instance;
@@ -120,29 +121,31 @@ private:
     _Resampler _resampler;
 
 
-    void _handlePointerDataPacket(PointerDataPacket packet);
+    virtual void _handlePointerDataPacket(PointerDataPacket packet);
 
-    void _flushPointerEventQueue();
+    virtual void _flushPointerEventQueue();
 
-    void _handlePointerEventImmediately(PointerEvent event);
+    virtual void _handlePointerEventImmediately(PointerEvent event);
 
-    void _handleSampleTimeChanged();
+    virtual void _handleSampleTimeChanged();
 
-    SamplingClock _samplingClock();
+    virtual SamplingClock _samplingClock();
 
 };
+using GestureBinding = std::shared_ptr<GestureBindingCls>;
 
-class FlutterErrorDetailsForPointerEventDispatcher : FlutterErrorDetails {
+class FlutterErrorDetailsForPointerEventDispatcherCls : public FlutterErrorDetailsCls {
 public:
     PointerEvent event;
 
     HitTestEntry hitTestEntry;
 
 
-     FlutterErrorDetailsForPointerEventDispatcher(Unknown, PointerEvent event, Unknown, HitTestEntry hitTestEntry, Unknown, Unknown, Unknown, Unknown);
-
+     FlutterErrorDetailsForPointerEventDispatcherCls(Unknown context, PointerEvent event, Unknown exception, HitTestEntry hitTestEntry, Unknown informationCollector, Unknown library, Unknown silent, Unknown stack);
 private:
 
 };
+using FlutterErrorDetailsForPointerEventDispatcher = std::shared_ptr<FlutterErrorDetailsForPointerEventDispatcherCls>;
+
 
 #endif

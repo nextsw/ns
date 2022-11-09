@@ -1,150 +1,152 @@
-#ifndef EQUALITY_H
-#define EQUALITY_H
-#include <memory>
+#ifndef PACKAGES_COLLECTION_SRC_EQUALITY
+#define PACKAGES_COLLECTION_SRC_EQUALITY
+#include <base.hpp>
 
-#include <collection/collection.hpp>
+#include <dart/core/core.hpp>
+#include <dart/collection/collection.hpp>
 #include "comparators.hpp"
 
+int _hashMask;
 
-const int _hashMask;
 
-
-class Equality<E> {
+template<typename E> class EqualityCls : public ObjectCls {
 public:
 
-     Equality();
-
-    bool equals(E e1, E e2);
-
-    int hash(E e);
-
-    bool isValidKey(Object o);
-
+     EqualityCls();
+    virtual bool equals(E e1, E e2);
+    virtual int hash(E e);
+    virtual bool isValidKey(Object o);
 private:
 
 };
+template<typename E> using Equality = std::shared_ptr<EqualityCls<E>>;
 
-class EqualityBy<E, F> {
+template<typename E, typename F> class EqualityByCls : public ObjectCls {
 public:
 
-     EqualityBy(FunctionType comparisonKey, Equality<F> inner);
+     EqualityByCls(F comparisonKey(E ) , Equality<F> inner);
 
-    bool equals(E e1, E e2);
+    virtual bool equals(E e1, E e2);
 
-    int hash(E e);
+    virtual int hash(E e);
 
-    bool isValidKey(Object o);
+    virtual bool isValidKey(Object o);
 
 private:
-    FunctionType _comparisonKey;
+    F Function(E ) _comparisonKey;
 
     Equality<F> _inner;
 
 
 };
+template<typename E, typename F> using EqualityBy = std::shared_ptr<EqualityByCls<E, F>>;
 
-class DefaultEquality<E> {
+template<typename E> class DefaultEqualityCls : public ObjectCls {
 public:
 
-     DefaultEquality();
+     DefaultEqualityCls();
+    virtual bool equals(Object e1, Object e2);
 
-    bool equals(Object e1, Object e2);
+    virtual int hash(Object e);
 
-    int hash(Object e);
-
-    bool isValidKey(Object o);
+    virtual bool isValidKey(Object o);
 
 private:
 
 };
+template<typename E> using DefaultEquality = std::shared_ptr<DefaultEqualityCls<E>>;
 
-class IdentityEquality<E> {
+template<typename E> class IdentityEqualityCls : public ObjectCls {
 public:
 
-     IdentityEquality();
+     IdentityEqualityCls();
+    virtual bool equals(E e1, E e2);
 
-    bool equals(E e1, E e2);
+    virtual int hash(E e);
 
-    int hash(E e);
-
-    bool isValidKey(Object o);
+    virtual bool isValidKey(Object o);
 
 private:
 
 };
+template<typename E> using IdentityEquality = std::shared_ptr<IdentityEqualityCls<E>>;
 
-class IterableEquality<E> {
+template<typename E> class IterableEqualityCls : public ObjectCls {
 public:
 
-     IterableEquality(Equality<E> elementEquality);
+     IterableEqualityCls(Equality<E> elementEquality);
 
-    bool equals(Iterable<E> elements1, Iterable<E> elements2);
+    virtual bool equals(Iterable<E> elements1, Iterable<E> elements2);
 
-    int hash(Iterable<E> elements);
+    virtual int hash(Iterable<E> elements);
 
-    bool isValidKey(Object o);
-
-private:
-    Equality<E> _elementEquality;
-
-
-};
-
-class ListEquality<E> {
-public:
-
-     ListEquality(Equality<E> elementEquality);
-
-    bool equals(List<E> list1, List<E> list2);
-
-    int hash(List<E> list);
-
-    bool isValidKey(Object o);
+    virtual bool isValidKey(Object o);
 
 private:
     Equality<E> _elementEquality;
 
 
 };
+template<typename E> using IterableEquality = std::shared_ptr<IterableEqualityCls<E>>;
 
-class _UnorderedEquality<E, T extends Iterable<E>> {
+template<typename E> class ListEqualityCls : public ObjectCls {
 public:
 
-    bool equals(T elements1, T elements2);
+     ListEqualityCls(Equality<E> elementEquality);
 
-    int hash(T elements);
+    virtual bool equals(List<E> list1, List<E> list2);
+
+    virtual int hash(List<E> list);
+
+    virtual bool isValidKey(Object o);
 
 private:
     Equality<E> _elementEquality;
 
 
-     _UnorderedEquality(Equality<E> _elementEquality);
-
 };
+template<typename E> using ListEquality = std::shared_ptr<ListEqualityCls<E>>;
 
-class UnorderedIterableEquality<E> : _UnorderedEquality<E, Iterable<E>> {
+template<typename E, typename T : Iterable<E>> class _UnorderedEqualityCls : public ObjectCls {
 public:
 
-     UnorderedIterableEquality(Equality<E> elementEquality);
+    virtual bool equals(T elements1, T elements2);
 
-    bool isValidKey(Object o);
+    virtual int hash(T elements);
+
+private:
+    Equality<E> _elementEquality;
+
+
+     _UnorderedEqualityCls(Equality<E> _elementEquality);
+};
+template<typename E, typename T : Iterable<E>> using _UnorderedEquality = std::shared_ptr<_UnorderedEqualityCls<E, T : Iterable<E>>>;
+
+template<typename E> class UnorderedIterableEqualityCls : public _UnorderedEqualityCls<E, Iterable<E>> {
+public:
+
+     UnorderedIterableEqualityCls(Equality<E> elementEquality);
+
+    virtual bool isValidKey(Object o);
 
 private:
 
 };
+template<typename E> using UnorderedIterableEquality = std::shared_ptr<UnorderedIterableEqualityCls<E>>;
 
-class SetEquality<E> : _UnorderedEquality<E, Set<E>> {
+template<typename E> class SetEqualityCls : public _UnorderedEqualityCls<E, Set<E>> {
 public:
 
-     SetEquality(Equality<E> elementEquality);
+     SetEqualityCls(Equality<E> elementEquality);
 
-    bool isValidKey(Object o);
+    virtual bool isValidKey(Object o);
 
 private:
 
 };
+template<typename E> using SetEquality = std::shared_ptr<SetEqualityCls<E>>;
 
-class _MapEntry {
+class _MapEntryCls : public ObjectCls {
 public:
     MapEquality equality;
 
@@ -153,26 +155,26 @@ public:
     Object value;
 
 
-    int hashCode();
+    virtual int hashCode();
 
-    bool ==(Object other);
+    virtual bool operator==(Object other);
 
 private:
 
-     _MapEntry(MapEquality equality, Object key, Object value);
-
+     _MapEntryCls(MapEquality equality, Object key, Object value);
 };
+using _MapEntry = std::shared_ptr<_MapEntryCls>;
 
-class MapEquality<K, V> {
+template<typename K, typename V> class MapEqualityCls : public ObjectCls {
 public:
 
-     MapEquality(Equality<K> keys, Equality<V> values);
+     MapEqualityCls(Equality<K> keys, Equality<V> values);
 
-    bool equals(Map<K, V> map1, Map<K, V> map2);
+    virtual bool equals(Map<K, V> map1, Map<K, V> map2);
 
-    int hash(Map<K, V> map);
+    virtual int hash(Map<K, V> map);
 
-    bool isValidKey(Object o);
+    virtual bool isValidKey(Object o);
 
 private:
     Equality<K> _keyEquality;
@@ -181,36 +183,38 @@ private:
 
 
 };
+template<typename K, typename V> using MapEquality = std::shared_ptr<MapEqualityCls<K, V>>;
 
-class MultiEquality<E> {
+template<typename E> class MultiEqualityCls : public ObjectCls {
 public:
 
-     MultiEquality(Iterable<Equality<E>> equalities);
+     MultiEqualityCls(Iterable<Equality<E>> equalities);
 
-    bool equals(E e1, E e2);
+    virtual bool equals(E e1, E e2);
 
-    int hash(E e);
+    virtual int hash(E e);
 
-    bool isValidKey(Object o);
+    virtual bool isValidKey(Object o);
 
 private:
     Iterable<Equality<E>> _equalities;
 
 
 };
+template<typename E> using MultiEquality = std::shared_ptr<MultiEqualityCls<E>>;
 
-class DeepCollectionEquality {
+class DeepCollectionEqualityCls : public ObjectCls {
 public:
 
-     DeepCollectionEquality(Equality base);
+     DeepCollectionEqualityCls(Equality base);
 
-    void  unordered(Equality base);
+    virtual void  unordered(Equality base);
 
-    bool equals(e1 , e2 );
+    virtual bool equals(e1 , e2 );
 
-    int hash(Object o);
+    virtual int hash(Object o);
 
-    bool isValidKey(Object o);
+    virtual bool isValidKey(Object o);
 
 private:
     Equality _base;
@@ -219,20 +223,22 @@ private:
 
 
 };
+using DeepCollectionEquality = std::shared_ptr<DeepCollectionEqualityCls>;
 
-class CaseInsensitiveEquality {
+class CaseInsensitiveEqualityCls : public ObjectCls {
 public:
 
-     CaseInsensitiveEquality();
+     CaseInsensitiveEqualityCls();
+    virtual bool equals(String string1, String string2);
 
-    bool equals(String string1, String string2);
+    virtual int hash(String stringValue);
 
-    int hash(String string);
-
-    bool isValidKey(Object object);
+    virtual bool isValidKey(Object object);
 
 private:
 
 };
+using CaseInsensitiveEquality = std::shared_ptr<CaseInsensitiveEqualityCls>;
+
 
 #endif

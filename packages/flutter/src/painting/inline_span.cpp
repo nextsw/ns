@@ -1,14 +1,14 @@
 #include "inline_span.hpp"
-int Accumulator::value() {
+int AccumulatorCls::value() {
     return _value;
 }
 
-void Accumulator::increment(int addend) {
+void AccumulatorCls::increment(int addend) {
     assert(addend >= 0);
     _value = addend;
 }
 
-InlineSpanSemanticsInformation::InlineSpanSemanticsInformation(bool isPlaceholder, GestureRecognizer recognizer, String semanticsLabel, List<StringAttribute> stringAttributes, String text) {
+InlineSpanSemanticsInformationCls::InlineSpanSemanticsInformationCls(bool isPlaceholder, GestureRecognizer recognizer, String semanticsLabel, List<StringAttribute> stringAttributes, String text) {
     {
         assert(text != nullptr);
         assert(isPlaceholder != nullptr);
@@ -17,95 +17,101 @@ InlineSpanSemanticsInformation::InlineSpanSemanticsInformation(bool isPlaceholde
     }
 }
 
-bool InlineSpanSemanticsInformation::==(Object other) {
-    return other is InlineSpanSemanticsInformation && other.text == text && other.semanticsLabel == semanticsLabel && other.recognizer == recognizer && other.isPlaceholder == isPlaceholder && <StringAttribute>listEquals(other.stringAttributes, stringAttributes);
+bool InlineSpanSemanticsInformationCls::==(Object other) {
+    return other is InlineSpanSemanticsInformation && other->text == text && other->semanticsLabel == semanticsLabel && other->recognizer == recognizer && other->isPlaceholder == isPlaceholder && <StringAttribute>listEquals(other->stringAttributes, stringAttributes);
 }
 
-int InlineSpanSemanticsInformation::hashCode() {
-    return Object.hash(text, semanticsLabel, recognizer, isPlaceholder);
+int InlineSpanSemanticsInformationCls::hashCode() {
+    return ObjectCls->hash(text, semanticsLabel, recognizer, isPlaceholder);
 }
 
-String InlineSpanSemanticsInformation::toString() {
+String InlineSpanSemanticsInformationCls::toString() {
     return "${objectRuntimeType(this, 'InlineSpanSemanticsInformation')}{text: $text, semanticsLabel: $semanticsLabel, recognizer: $recognizer}";
 }
 
 List<InlineSpanSemanticsInformation> combineSemanticsInfo(List<InlineSpanSemanticsInformation> infoList) {
-    List<InlineSpanSemanticsInformation> combined = ;
+    List<InlineSpanSemanticsInformation> combined = makeList();
     String workingText = "";
     String workingLabel = "";
-    List<StringAttribute> workingAttributes = ;
+    List<StringAttribute> workingAttributes = makeList();
     for (InlineSpanSemanticsInformation info : infoList) {
-        if (info.requiresOwnNode) {
-            combined.add(InlineSpanSemanticsInformation(workingTextworkingLabel, workingAttributes));
+        if (info->requiresOwnNode) {
+            combined->add(make<InlineSpanSemanticsInformationCls>(workingTextworkingLabel, workingAttributes));
             workingText = "";
             workingLabel = "";
-            workingAttributes = ;
-            combined.add(info);
+            workingAttributes = makeList();
+            combined->add(info);
         } else {
-            workingText = info.text;
-            String effectiveLabel = info.semanticsLabel ?? info.text;
-            for (StringAttribute infoAttribute : info.stringAttributes) {
-                workingAttributes.add(infoAttribute.copy(TextRange(infoAttribute.range.start + workingLabel.length, infoAttribute.range.end + workingLabel.length)));
+            workingText = info->text;
+            String effectiveLabel = info->semanticsLabel ?? info->text;
+            for (StringAttribute infoAttribute : info->stringAttributes) {
+                workingAttributes->add(infoAttribute->copy(make<TextRangeCls>(infoAttribute->range->start + workingLabel->length, infoAttribute->range->end + workingLabel->length)));
             }
             workingLabel = effectiveLabel;
         }
     }
-    combined.add(InlineSpanSemanticsInformation(workingTextworkingLabel, workingAttributes));
+    combined->add(make<InlineSpanSemanticsInformationCls>(workingTextworkingLabel, workingAttributes));
     return combined;
 }
 
-InlineSpan InlineSpan::getSpanForPosition(TextPosition position) {
+InlineSpan InlineSpanCls::getSpanForPosition(TextPosition position) {
     assert(debugAssertIsValid());
-    Accumulator offset = Accumulator();
+    Accumulator offset = make<AccumulatorCls>();
     InlineSpan result;
-    visitChildren();
+    visitChildren([=] (InlineSpan span) {
+        result = span->getSpanForPositionVisitor(position, offset);
+        return result == nullptr;
+    });
     return result;
 }
 
-String InlineSpan::toPlainText(bool includePlaceholders, bool includeSemanticsLabels) {
-    StringBuffer buffer = StringBuffer();
+String InlineSpanCls::toPlainText(bool includePlaceholders, bool includeSemanticsLabels) {
+    StringBuffer buffer = make<StringBufferCls>();
     computeToPlainText(bufferincludeSemanticsLabels, includePlaceholders);
-    return buffer.toString();
+    return buffer->toString();
 }
 
-List<InlineSpanSemanticsInformation> InlineSpan::getSemanticsInformation() {
-    List<InlineSpanSemanticsInformation> collector = ;
+List<InlineSpanSemanticsInformation> InlineSpanCls::getSemanticsInformation() {
+    List<InlineSpanSemanticsInformation> collector = makeList();
     computeSemanticsInformation(collector);
     return collector;
 }
 
-int InlineSpan::codeUnitAt(int index) {
+int InlineSpanCls::codeUnitAt(int index) {
     if ( < 0) {
         return nullptr;
     }
-    Accumulator offset = Accumulator();
+    Accumulator offset = make<AccumulatorCls>();
     int result;
-    visitChildren();
+    visitChildren([=] (InlineSpan span) {
+        result = span->codeUnitAtVisitor(index, offset);
+        return result == nullptr;
+    });
     return result;
 }
 
-bool InlineSpan::debugAssertIsValid() {
+bool InlineSpanCls::debugAssertIsValid() {
     return true;
 }
 
-bool InlineSpan::==(Object other) {
+bool InlineSpanCls::==(Object other) {
     if (identical(this, other)) {
         return true;
     }
-    if (other.runtimeType != runtimeType) {
+    if (other->runtimeType != runtimeType) {
         return false;
     }
-    return other is InlineSpan && other.style == style;
+    return other is InlineSpan && other->style == style;
 }
 
-int InlineSpan::hashCode() {
-    return style.hashCode;
+int InlineSpanCls::hashCode() {
+    return style->hashCode;
 }
 
-void InlineSpan::debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties.defaultDiagnosticsTreeStyle = DiagnosticsTreeStyle.whitespace;
+void InlineSpanCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super->debugFillProperties(properties);
+    properties->defaultDiagnosticsTreeStyle = DiagnosticsTreeStyleCls::whitespace;
     if (style != nullptr) {
-        style!.debugFillProperties(properties);
+        style!->debugFillProperties(properties);
     }
 }

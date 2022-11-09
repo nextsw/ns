@@ -1,67 +1,67 @@
 #include "list.hpp"
-String ListBase::listToString(List list) {
-    return IterableBase.iterableToFullString(list, "[", "]");
+template<typename E> String ListBaseCls<E>::listToString(List list) {
+    return IterableBaseCls->iterableToFullString(list, "[", "]");
 }
 
-Iterator<E> ListMixin::iterator() {
-    return <E>ListIterator(this);
+template<typename E> Iterator<E> ListMixinCls<E>::iterator() {
+    return <E>make<ListIteratorCls>(this);
 }
 
-E ListMixin::elementAt(int index) {
+template<typename E> E ListMixinCls<E>::elementAt(int index) {
     return this[index];
 }
 
-Iterable<E> ListMixin::followedBy(Iterable<E> other) {
+template<typename E> Iterable<E> ListMixinCls<E>::followedBy(Iterable<E> other) {
     return <E>firstEfficient(this, other);
 }
 
-void ListMixin::forEach(FunctionType action) {
-    int length = this.length;
+template<typename E> void ListMixinCls<E>::forEach(void action(E element) ) {
+    int length = this->length;
     for (;  < length; i++) {
         action(this[i]);
-        if (length != this.length) {
+        if (length != this->length) {
             ;
         }
     }
 }
 
-bool ListMixin::isEmpty() {
+template<typename E> bool ListMixinCls<E>::isEmpty() {
     return length == 0;
 }
 
-bool ListMixin::isNotEmpty() {
+template<typename E> bool ListMixinCls<E>::isNotEmpty() {
     return !isEmpty;
 }
 
-E ListMixin::first() {
+template<typename E> E ListMixinCls<E>::first() {
     if (length == 0)     {
         ;
     }
     return this[0];
 }
 
-void ListMixin::first(E value) {
+template<typename E> void ListMixinCls<E>::first(E value) {
     if (length == 0)     {
         ;
     }
     this[0] = value;
 }
 
-E ListMixin::last() {
+template<typename E> E ListMixinCls<E>::last() {
     if (length == 0)     {
         ;
     }
     return this[length - 1];
 }
 
-void ListMixin::last(E value) {
+template<typename E> void ListMixinCls<E>::last(E value) {
     if (length == 0)     {
         ;
     }
     this[length - 1] = value;
 }
 
-E ListMixin::single() {
+template<typename E> E ListMixinCls<E>::single() {
     if (length == 0)     {
         ;
     }
@@ -71,53 +71,53 @@ E ListMixin::single() {
     return this[0];
 }
 
-bool ListMixin::contains(Object element) {
-    int length = this.length;
+template<typename E> bool ListMixinCls<E>::contains(Object element) {
+    int length = this->length;
     for (;  < length; i++) {
         if (this[i] == element)         {
             return true;
         }
-        if (length != this.length) {
+        if (length != this->length) {
             ;
         }
     }
     return false;
 }
 
-bool ListMixin::every(FunctionType test) {
-    int length = this.length;
+template<typename E> bool ListMixinCls<E>::every(bool test(E element) ) {
+    int length = this->length;
     for (;  < length; i++) {
         if (!test(this[i]))         {
             return false;
         }
-        if (length != this.length) {
+        if (length != this->length) {
             ;
         }
     }
     return true;
 }
 
-bool ListMixin::any(FunctionType test) {
-    int length = this.length;
+template<typename E> bool ListMixinCls<E>::any(bool test(E element) ) {
+    int length = this->length;
     for (;  < length; i++) {
         if (test(this[i]))         {
             return true;
         }
-        if (length != this.length) {
+        if (length != this->length) {
             ;
         }
     }
     return false;
 }
 
-E ListMixin::firstWhere(FunctionType orElse, FunctionType test) {
-    int length = this.length;
+template<typename E> E ListMixinCls<E>::firstWhere(E orElse() , bool test(E element) ) {
+    int length = this->length;
     for (;  < length; i++) {
         E element = this[i];
         if (test(element))         {
             return element;
         }
-        if (length != this.length) {
+        if (length != this->length) {
             ;
         }
     }
@@ -127,14 +127,14 @@ E ListMixin::firstWhere(FunctionType orElse, FunctionType test) {
     ;
 }
 
-E ListMixin::lastWhere(FunctionType orElse, FunctionType test) {
-    int length = this.length;
+template<typename E> E ListMixinCls<E>::lastWhere(E orElse() , bool test(E element) ) {
+    int length = this->length;
     for (; i >= 0; i--) {
         E element = this[i];
         if (test(element))         {
             return element;
         }
-        if (length != this.length) {
+        if (length != this->length) {
             ;
         }
     }
@@ -144,8 +144,8 @@ E ListMixin::lastWhere(FunctionType orElse, FunctionType test) {
     ;
 }
 
-E ListMixin::singleWhere(FunctionType orElse, FunctionType test) {
-    int length = this.length;
+template<typename E> E ListMixinCls<E>::singleWhere(E orElse() , bool test(E element) ) {
+    int length = this->length;
     E match;
     bool matchFound = false;
     for (;  < length; i++) {
@@ -157,7 +157,7 @@ E ListMixin::singleWhere(FunctionType orElse, FunctionType test) {
             matchFound = true;
             match = element;
         }
-        if (length != this.length) {
+        if (length != this->length) {
             ;
         }
     }
@@ -170,133 +170,133 @@ E ListMixin::singleWhere(FunctionType orElse, FunctionType test) {
     ;
 }
 
-String ListMixin::join(String separator) {
+template<typename E> String ListMixinCls<E>::join(String separator) {
     if (length == 0)     {
         return "";
     }
-    StringBuffer buffer = ;
-    return buffer.toString();
+    auto _c1 = make<StringBufferCls>();_c1.writeAll(this, separator);StringBuffer buffer = _c1;
+    return buffer->toString();
 }
 
-Iterable<E> ListMixin::where(FunctionType test) {
-    return <E>WhereIterable(this, test);
+template<typename E> Iterable<E> ListMixinCls<E>::where(bool test(E element) ) {
+    return <E>make<WhereIterableCls>(this, test);
 }
 
-Iterable<T> ListMixin::whereType<T>() {
-    return <T>WhereTypeIterable(this);
+template<typename E> Iterable<T> ListMixinCls<E>::whereTypetemplate<typename T> () {
+    return <T>make<WhereTypeIterableCls>(this);
 }
 
-Iterable<T> ListMixin::map<T>(FunctionType f) {
-    return <E, T>MappedListIterable(this, f);
+template<typename E> Iterable<T> ListMixinCls<E>::maptemplate<typename T> (T f(E element) ) {
+    return <E, T>make<MappedListIterableCls>(this, f);
 }
 
-Iterable<T> ListMixin::expand<T>(FunctionType f) {
-    return <E, T>ExpandIterable(this, f);
+template<typename E> Iterable<T> ListMixinCls<E>::expandtemplate<typename T> (Iterable<T> f(E element) ) {
+    return <E, T>make<ExpandIterableCls>(this, f);
 }
 
-E ListMixin::reduce(FunctionType combine) {
-    int length = this.length;
+template<typename E> E ListMixinCls<E>::reduce(E combine(E element, E previousValue) ) {
+    int length = this->length;
     if (length == 0)     {
         ;
     }
     E value = this[0];
     for (;  < length; i++) {
         value = combine(value, this[i]);
-        if (length != this.length) {
+        if (length != this->length) {
             ;
         }
     }
     return value;
 }
 
-T ListMixin::fold<T>(FunctionType combine, T initialValue) {
+template<typename E> T ListMixinCls<E>::foldtemplate<typename T> (T combine(E element, T previousValue) , T initialValue) {
     auto value = initialValue;
-    int length = this.length;
+    int length = this->length;
     for (;  < length; i++) {
         value = combine(value, this[i]);
-        if (length != this.length) {
+        if (length != this->length) {
             ;
         }
     }
     return value;
 }
 
-Iterable<E> ListMixin::skip(int count) {
-    return <E>SubListIterable(this, count, nullptr);
+template<typename E> Iterable<E> ListMixinCls<E>::skip(int count) {
+    return <E>make<SubListIterableCls>(this, count, nullptr);
 }
 
-Iterable<E> ListMixin::skipWhile(FunctionType test) {
-    return <E>SkipWhileIterable(this, test);
+template<typename E> Iterable<E> ListMixinCls<E>::skipWhile(bool test(E element) ) {
+    return <E>make<SkipWhileIterableCls>(this, test);
 }
 
-Iterable<E> ListMixin::take(int count) {
-    return <E>SubListIterable(this, 0, checkNotNullable(count, "count"));
+template<typename E> Iterable<E> ListMixinCls<E>::take(int count) {
+    return <E>make<SubListIterableCls>(this, 0, checkNotNullable(count, "count"));
 }
 
-Iterable<E> ListMixin::takeWhile(FunctionType test) {
-    return <E>TakeWhileIterable(this, test);
+template<typename E> Iterable<E> ListMixinCls<E>::takeWhile(bool test(E element) ) {
+    return <E>make<TakeWhileIterableCls>(this, test);
 }
 
-List<E> ListMixin::toList(bool growable) {
-    if (this.isEmpty)     {
+template<typename E> List<E> ListMixinCls<E>::toList(bool growable) {
+    if (this->isEmpty)     {
         return <E>empty(growable);
     }
     auto first = this[0];
-    auto result = <E>filled(this.length, firstgrowable);
-    for (;  < this.length; i++) {
+    auto result = <E>filled(this->length, firstgrowable);
+    for (;  < this->length; i++) {
         result[i] = this[i];
     }
     return result;
 }
 
-Set<E> ListMixin::toSet() {
-    Set<E> result = <E>Set();
+template<typename E> Set<E> ListMixinCls<E>::toSet() {
+    Set<E> result = <E>make<SetCls>();
     for (;  < length; i++) {
-        result.add(this[i]);
+        result->add(this[i]);
     }
     return result;
 }
 
-void ListMixin::add(E element) {
-    this[this.length++] = element;
+template<typename E> void ListMixinCls<E>::add(E element) {
+    this[this->length++] = element;
 }
 
-void ListMixin::addAll(Iterable<E> iterable) {
-    int i = this.length;
+template<typename E> void ListMixinCls<E>::addAll(Iterable<E> iterable) {
+    int i = this->length;
     for (E element : iterable) {
-        assert(this.length == i || ());
+        assert(this->length == i || ());
         add(element);
         i++;
     }
 }
 
-bool ListMixin::remove(Object element) {
-    for (;  < this.length; i++) {
+template<typename E> bool ListMixinCls<E>::remove(Object element) {
+    for (;  < this->length; i++) {
         if (this[i] == element) {
-            this._closeGap(i, i + 1);
+            this->_closeGap(i, i + 1);
             return true;
         }
     }
     return false;
 }
 
-void ListMixin::removeWhere(FunctionType test) {
+template<typename E> void ListMixinCls<E>::removeWhere(bool test(E element) ) {
     _filter(test, false);
 }
 
-void ListMixin::retainWhere(FunctionType test) {
+template<typename E> void ListMixinCls<E>::retainWhere(bool test(E element) ) {
     _filter(test, true);
 }
 
-void ListMixin::clear() {
-    this.length = 0;
+template<typename E> void ListMixinCls<E>::clear() {
+    this->length = 0;
 }
 
-List<R> ListMixin::cast<R>() {
-    return List.<E, R>castFrom(this);
+template<typename E> List<R> ListMixinCls<E>::casttemplate<typename R> () {
+    return ListCls-><E, R>castFrom(this);
 }
 
-E ListMixin::removeLast() {
+template<typename E> E ListMixinCls<E>::removeLast() {
     if (length == 0) {
         ;
     }
@@ -305,18 +305,18 @@ E ListMixin::removeLast() {
     return result;
 }
 
-void ListMixin::sort(FunctionType compare) {
-    Sort.sort(this, compare ?? _compareAny);
+template<typename E> void ListMixinCls<E>::sort(int compare(E a, E b) ) {
+    SortCls->sort(this, compare ?? _compareAny);
 }
 
-void ListMixin::shuffle(Random random) {
-    random = Random();
+template<typename E> void ListMixinCls<E>::shuffle(Random random) {
+    random = make<RandomCls>();
     if (random == nullptr)     {
         ;
     }
-    int length = this.length;
+    int length = this->length;
     while (length > 1) {
-        int pos = random.nextInt(length);
+        int pos = random->nextInt(length);
         length = 1;
         auto tmp = this[length];
         this[length] = this[pos];
@@ -324,61 +324,61 @@ void ListMixin::shuffle(Random random) {
     }
 }
 
-Map<int, E> ListMixin::asMap() {
-    return <E>ListMapView(this);
+template<typename E> Map<int, E> ListMixinCls<E>::asMap() {
+    return <E>make<ListMapViewCls>(this);
 }
 
-List<E> ListMixin::+(List<E> other) {
-    return ;
+template<typename E> List<E> ListMixinCls<E>::+(List<E> other) {
+    return list1;
 }
 
-List<E> ListMixin::sublist(int end, int start) {
-    int listLength = this.length;
+template<typename E> List<E> ListMixinCls<E>::sublist(int end, int start) {
+    for (auto _x1 : this) {{    list1.add(_x1);}for (auto _x1 : other) {{    list1.add(_x1);}int listLength = this->length;
     end = listLength;
     if (end == nullptr)     {
         ;
     }
-    RangeError.checkValidRange(start, end, listLength);
-    return List.from(getRange(start, end));
+    RangeErrorCls->checkValidRange(start, end, listLength);
+    return ListCls->from(getRange(start, end));
 }
 
-Iterable<E> ListMixin::getRange(int end, int start) {
-    RangeError.checkValidRange(start, end, this.length);
-    return <E>SubListIterable(this, start, end);
+template<typename E> Iterable<E> ListMixinCls<E>::getRange(int end, int start) {
+    RangeErrorCls->checkValidRange(start, end, this->length);
+    return <E>make<SubListIterableCls>(this, start, end);
 }
 
-void ListMixin::removeRange(int end, int start) {
-    RangeError.checkValidRange(start, end, this.length);
+template<typename E> void ListMixinCls<E>::removeRange(int end, int start) {
+    RangeErrorCls->checkValidRange(start, end, this->length);
     if (end > start) {
         _closeGap(start, end);
     }
 }
 
-void ListMixin::fillRange(int end, E fill, int start) {
-    E value = (;
-    RangeError.checkValidRange(start, end, this.length);
+template<typename E> void ListMixinCls<E>::fillRange(int end, E fill, int start) {
+    E value = ((E)fill);
+    RangeErrorCls->checkValidRange(start, end, this->length);
     for (;  < end; i++) {
         this[i] = value;
     }
 }
 
-void ListMixin::setRange(int end, Iterable<E> iterable, int skipCount, int start) {
-    RangeError.checkValidRange(start, end, this.length);
+template<typename E> void ListMixinCls<E>::setRange(int end, Iterable<E> iterable, int skipCount, int start) {
+    RangeErrorCls->checkValidRange(start, end, this->length);
     int length = end - start;
     if (length == 0)     {
         return;
     }
-    RangeError.checkNotNegative(skipCount, "skipCount");
+    RangeErrorCls->checkNotNegative(skipCount, "skipCount");
     List<E> otherList;
     int otherStart;
     if (iterable is List<E>) {
         otherList = iterable;
         otherStart = skipCount;
     } else {
-        otherList = iterable.skip(skipCount).toList(false);
+        otherList = iterable->skip(skipCount)->toList(false);
         otherStart = 0;
     }
-    if (otherStart + length > otherList.length) {
+    if (otherStart + length > otherList->length) {
         ;
     }
     if ( < start) {
@@ -392,25 +392,25 @@ void ListMixin::setRange(int end, Iterable<E> iterable, int skipCount, int start
     }
 }
 
-void ListMixin::replaceRange(int end, Iterable<E> newContents, int start) {
-    RangeError.checkValidRange(start, end, this.length);
-    if (start == this.length) {
+template<typename E> void ListMixinCls<E>::replaceRange(int end, Iterable<E> newContents, int start) {
+    RangeErrorCls->checkValidRange(start, end, this->length);
+    if (start == this->length) {
         addAll(newContents);
         return;
     }
     if (newContents is! EfficientLengthIterable) {
-        newContents = newContents.toList();
+        newContents = newContents->toList();
     }
     int removeLength = end - start;
-    int insertLength = newContents.length;
+    int insertLength = newContents->length;
     if (removeLength >= insertLength) {
         int insertEnd = start + insertLength;
-        this.setRange(start, insertEnd, newContents);
+        this->setRange(start, insertEnd, newContents);
         if (removeLength > insertLength) {
             _closeGap(insertEnd, end);
         }
     } else     {
-        if (end == this.length) {
+        if (end == this->length) {
         int i = start;
         for (E element : newContents) {
             if ( < end) {
@@ -422,24 +422,24 @@ void ListMixin::replaceRange(int end, Iterable<E> newContents, int start) {
         }
     } else {
         int delta = insertLength - removeLength;
-        int oldLength = this.length;
+        int oldLength = this->length;
         int insertEnd = start + insertLength;
         for (;  < oldLength; ++i) {
             add(this[i > 0? i : 0]);
         }
         if ( < oldLength) {
-            this.setRange(insertEnd, oldLength, this, end);
+            this->setRange(insertEnd, oldLength, this, end);
         }
-        this.setRange(start, insertEnd, newContents);
+        this->setRange(start, insertEnd, newContents);
     }
 ;
     }}
 
-int ListMixin::indexOf(Object element, int start) {
+template<typename E> int ListMixinCls<E>::indexOf(Object element, int start) {
     if ( < 0)     {
         start = 0;
     }
-    for (;  < this.length; i++) {
+    for (;  < this->length; i++) {
         if (this[i] == element)         {
             return i;
         }
@@ -447,11 +447,11 @@ int ListMixin::indexOf(Object element, int start) {
     return -1;
 }
 
-int ListMixin::indexWhere(int start, FunctionType test) {
+template<typename E> int ListMixinCls<E>::indexWhere(int start, bool test(E element) ) {
     if ( < 0)     {
         start = 0;
     }
-    for (;  < this.length; i++) {
+    for (;  < this->length; i++) {
         if (test(this[i]))         {
             return i;
         }
@@ -459,9 +459,9 @@ int ListMixin::indexWhere(int start, FunctionType test) {
     return -1;
 }
 
-int ListMixin::lastIndexOf(Object element, int start) {
-    if (start == nullptr || start >= this.length)     {
-        start = this.length - 1;
+template<typename E> int ListMixinCls<E>::lastIndexOf(Object element, int start) {
+    if (start == nullptr || start >= this->length)     {
+        start = this->length - 1;
     }
     if (start == nullptr)     {
         ;
@@ -474,9 +474,9 @@ int ListMixin::lastIndexOf(Object element, int start) {
     return -1;
 }
 
-int ListMixin::lastIndexWhere(int start, FunctionType test) {
-    if (start == nullptr || start >= this.length)     {
-        start = this.length - 1;
+template<typename E> int ListMixinCls<E>::lastIndexWhere(int start, bool test(E element) ) {
+    if (start == nullptr || start >= this->length)     {
+        start = this->length - 1;
     }
     if (start == nullptr)     {
         ;
@@ -489,10 +489,10 @@ int ListMixin::lastIndexWhere(int start, FunctionType test) {
     return -1;
 }
 
-void ListMixin::insert(E element, int index) {
+template<typename E> void ListMixinCls<E>::insert(E element, int index) {
     checkNotNullable(index, "index");
-    auto length = this.length;
-    RangeError.checkValueInInterval(index, 0, length, "index");
+    auto length = this->length;
+    RangeErrorCls->checkValueInInterval(index, 0, length, "index");
     add(element);
     if (index != length) {
         setRange(index + 1, length + 1, this, index);
@@ -500,22 +500,22 @@ void ListMixin::insert(E element, int index) {
     }
 }
 
-E ListMixin::removeAt(int index) {
+template<typename E> E ListMixinCls<E>::removeAt(int index) {
     E result = this[index];
     _closeGap(index, index + 1);
     return result;
 }
 
-void ListMixin::insertAll(int index, Iterable<E> iterable) {
-    RangeError.checkValueInInterval(index, 0, length, "index");
+template<typename E> void ListMixinCls<E>::insertAll(int index, Iterable<E> iterable) {
+    RangeErrorCls->checkValueInInterval(index, 0, length, "index");
     if (index == length) {
         addAll(iterable);
         return;
     }
     if (iterable is! EfficientLengthIterable || identical(iterable, this)) {
-        iterable = iterable.toList();
+        iterable = iterable->toList();
     }
-    int insertionLength = iterable.length;
+    int insertionLength = iterable->length;
     if (insertionLength == 0) {
         return;
     }
@@ -523,8 +523,8 @@ void ListMixin::insertAll(int index, Iterable<E> iterable) {
     for (;  < oldLength; ++i) {
         add(this[i > 0? i : 0]);
     }
-    if (iterable.length != insertionLength) {
-        this.length = insertionLength;
+    if (iterable->length != insertionLength) {
+        this->length = insertionLength;
         ;
     }
     int oldCopyStart = index + insertionLength;
@@ -534,9 +534,9 @@ void ListMixin::insertAll(int index, Iterable<E> iterable) {
     setAll(index, iterable);
 }
 
-void ListMixin::setAll(int index, Iterable<E> iterable) {
+template<typename E> void ListMixinCls<E>::setAll(int index, Iterable<E> iterable) {
     if (iterable is List) {
-        setRange(index, index + iterable.length, iterable);
+        setRange(index, index + iterable->length, iterable);
     } else {
         for (E element : iterable) {
             this[index++] = element;
@@ -544,16 +544,16 @@ void ListMixin::setAll(int index, Iterable<E> iterable) {
     }
 }
 
-Iterable<E> ListMixin::reversed() {
-    return <E>ReversedListIterable(this);
+template<typename E> Iterable<E> ListMixinCls<E>::reversed() {
+    return <E>make<ReversedListIterableCls>(this);
 }
 
-String ListMixin::toString() {
-    return IterableBase.iterableToFullString(this, "[", "]");
+template<typename E> String ListMixinCls<E>::toString() {
+    return IterableBaseCls->iterableToFullString(this, "[", "]");
 }
 
-void ListMixin::_closeGap(int end, int start) {
-    int length = this.length;
+template<typename E> void ListMixinCls<E>::_closeGap(int end, int start) {
+    int length = this->length;
     assert(0 <= start);
     assert( < end);
     assert(end <= length);
@@ -561,27 +561,27 @@ void ListMixin::_closeGap(int end, int start) {
     for (;  < length; i++) {
         this[i - size] = this[i];
     }
-    this.length = length - size;
+    this->length = length - size;
 }
 
-void ListMixin::_filter(bool retainMatching, FunctionType test) {
-    List<E> retained = ;
-    int length = this.length;
+template<typename E> void ListMixinCls<E>::_filter(bool retainMatching, bool test(E element) ) {
+    List<E> retained = makeList();
+    int length = this->length;
     for (;  < length; i++) {
         auto element = this[i];
         if (test(element) == retainMatching) {
-            retained.add(element);
+            retained->add(element);
         }
-        if (length != this.length) {
+        if (length != this->length) {
             ;
         }
     }
-    if (retained.length != this.length) {
-        this.setRange(0, retained.length, retained);
-        this.length = retained.length;
+    if (retained->length != this->length) {
+        this->setRange(0, retained->length, retained);
+        this->length = retained->length;
     }
 }
 
-int ListMixin::_compareAny(dynamic a, dynamic b) {
-    return Comparable.compare((, ();
+template<typename E> int ListMixinCls<E>::_compareAny(dynamic a, dynamic b) {
+    return ComparableCls->compare(((Comparable)a), ((Comparable)b));
 }

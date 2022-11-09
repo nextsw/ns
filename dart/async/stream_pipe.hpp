@@ -1,44 +1,43 @@
-#ifndef STREAM_PIPE_H
-#define STREAM_PIPE_H
-#include <memory>
+#ifndef DART_ASYNC_STREAM_PIPE
+#define DART_ASYNC_STREAM_PIPE
+#include <base.hpp>
 
+#include <dart/core/core.hpp>
 
-
-void  _runUserCode<T>(onSuccess , onError , FunctionType userCode);
+template<typename T>  void  _runUserCode(onSuccess , onError , T userCode() );
 
 void _cancelAndError(Object error, _Future future, StackTrace stackTrace, StreamSubscription subscription);
 
 void _cancelAndErrorWithReplacement(Object error, _Future future, StackTrace stackTrace, StreamSubscription subscription);
 
-FunctionType _cancelAndErrorClosure(_Future future, StreamSubscription subscription);
+void Function(Object error, StackTrace stackTrace) _cancelAndErrorClosure(_Future future, StreamSubscription subscription);
 
 void _cancelAndValue(value , _Future future, StreamSubscription subscription);
 
 
-class _ForwardingStream<S, T> : Stream<T> {
+template<typename S, typename T> class _ForwardingStreamCls : public StreamCls<T> {
 public:
 
-    bool isBroadcast();
+    virtual bool isBroadcast();
 
-    StreamSubscription<T> listen(bool cancelOnError, FunctionType onData, FunctionType onDone, FunctionType onError);
+    virtual StreamSubscription<T> listen(bool cancelOnError, void onData(T value) , void onDone() , void  onError() );
 
 private:
     Stream<S> _source;
 
 
-     _ForwardingStream(Stream<S> _source);
+     _ForwardingStreamCls(Stream<S> _source);
+    virtual StreamSubscription<T> _createSubscription(bool cancelOnError, void onData(T data) , void onDone() , void  onError() );
 
-    StreamSubscription<T> _createSubscription(bool cancelOnError, FunctionType onData, FunctionType onDone, FunctionType onError);
+    virtual void _handleData(S data, _EventSink<T> sink);
+    virtual void _handleError(Object error, _EventSink<T> sink, StackTrace stackTrace);
 
-    void _handleData(S data, _EventSink<T> sink);
-
-    void _handleError(Object error, _EventSink<T> sink, StackTrace stackTrace);
-
-    void _handleDone(_EventSink<T> sink);
+    virtual void _handleDone(_EventSink<T> sink);
 
 };
+template<typename S, typename T> using _ForwardingStream = std::shared_ptr<_ForwardingStreamCls<S, T>>;
 
-class _ForwardingStreamSubscription<S, T> : _BufferingStreamSubscription<T> {
+template<typename S, typename T> class _ForwardingStreamSubscriptionCls : public _BufferingStreamSubscriptionCls<T> {
 public:
 
 private:
@@ -47,168 +46,180 @@ private:
     StreamSubscription<S> _subscription;
 
 
-     _ForwardingStreamSubscription(_ForwardingStream<S, T> _stream, bool cancelOnError, FunctionType onData, FunctionType onDone, FunctionType onError);
+     _ForwardingStreamSubscriptionCls(_ForwardingStream<S, T> _stream, bool cancelOnError, void onData(T data) , void onDone() , void  onError() );
 
-    void _add(T data);
+    virtual void _add(T data);
 
-    void _addError(Object error, StackTrace stackTrace);
+    virtual void _addError(Object error, StackTrace stackTrace);
 
-    void _onPause();
+    virtual void _onPause();
 
-    void _onResume();
+    virtual void _onResume();
 
-    Future<void> _onCancel();
+    virtual Future<void> _onCancel();
 
-    void _handleData(S data);
+    virtual void _handleData(S data);
 
-    void _handleError(error , StackTrace stackTrace);
+    virtual void _handleError(error , StackTrace stackTrace);
 
-    void _handleDone();
+    virtual void _handleDone();
 
 };
+template<typename S, typename T> using _ForwardingStreamSubscription = std::shared_ptr<_ForwardingStreamSubscriptionCls<S, T>>;
 void _addErrorWithReplacement(Object error, _EventSink sink, StackTrace stackTrace);
 
 
-class _WhereStream<T> : _ForwardingStream<T, T> {
+template<typename T> class _WhereStreamCls : public _ForwardingStreamCls<T, T> {
 public:
 
 private:
-    FunctionType _test;
+    bool Function(T ) _test;
 
 
-     _WhereStream(Stream<T> source, FunctionType test);
+     _WhereStreamCls(Stream<T> source, bool test(T value) );
 
-    void _handleData(T inputEvent, _EventSink<T> sink);
+    virtual void _handleData(T inputEvent, _EventSink<T> sink);
 
 };
+template<typename T> using _WhereStream = std::shared_ptr<_WhereStreamCls<T>>;
 
-class _MapStream<S, T> : _ForwardingStream<S, T> {
+template<typename S, typename T> class _MapStreamCls : public _ForwardingStreamCls<S, T> {
 public:
 
 private:
     _Transformation<S, T> _transform;
 
 
-     _MapStream(Stream<S> source, FunctionType transform);
+     _MapStreamCls(Stream<S> source, T transform(S event) );
 
-    void _handleData(S inputEvent, _EventSink<T> sink);
+    virtual void _handleData(S inputEvent, _EventSink<T> sink);
 
 };
+template<typename S, typename T> using _MapStream = std::shared_ptr<_MapStreamCls<S, T>>;
 
-class _ExpandStream<S, T> : _ForwardingStream<S, T> {
+template<typename S, typename T> class _ExpandStreamCls : public _ForwardingStreamCls<S, T> {
 public:
 
 private:
     _Transformation<S, Iterable<T>> _expand;
 
 
-     _ExpandStream(FunctionType expand, Stream<S> source);
+     _ExpandStreamCls(Iterable<T> expand(S event) , Stream<S> source);
 
-    void _handleData(S inputEvent, _EventSink<T> sink);
+    virtual void _handleData(S inputEvent, _EventSink<T> sink);
 
 };
+template<typename S, typename T> using _ExpandStream = std::shared_ptr<_ExpandStreamCls<S, T>>;
 
-class _HandleErrorStream<T> : _ForwardingStream<T, T> {
+template<typename T> class _HandleErrorStreamCls : public _ForwardingStreamCls<T, T> {
 public:
 
 private:
-    FunctionType _onError;
+    void Function(Object , StackTrace ) _onError;
 
-    FunctionType _test;
+    bool Function(Object ) _test;
 
 
-     _HandleErrorStream(FunctionType _onError, FunctionType _test, Stream<T> source);
+     _HandleErrorStreamCls(void Function(Object , StackTrace ) _onError, bool Function(Object ) _test, Stream<T> source);
 
-    void _handleData(T data, _EventSink<T> sink);
+    virtual void _handleData(T data, _EventSink<T> sink);
 
-    void _handleError(Object error, _EventSink<T> sink, StackTrace stackTrace);
+    virtual void _handleError(Object error, _EventSink<T> sink, StackTrace stackTrace);
 
 };
+template<typename T> using _HandleErrorStream = std::shared_ptr<_HandleErrorStreamCls<T>>;
 
-class _TakeStream<T> : _ForwardingStream<T, T> {
+template<typename T> class _TakeStreamCls : public _ForwardingStreamCls<T, T> {
 public:
 
 private:
     int _count;
 
 
-     _TakeStream(int count, Stream<T> source);
+     _TakeStreamCls(int count, Stream<T> source);
 
-    StreamSubscription<T> _createSubscription(bool cancelOnError, FunctionType onData, FunctionType onDone, FunctionType onError);
+    virtual StreamSubscription<T> _createSubscription(bool cancelOnError, void onData(T data) , void onDone() , void  onError() );
 
-    void _handleData(T inputEvent, _EventSink<T> sink);
+    virtual void _handleData(T inputEvent, _EventSink<T> sink);
 
 };
+template<typename T> using _TakeStream = std::shared_ptr<_TakeStreamCls<T>>;
 
-class _StateStreamSubscription<S, T> : _ForwardingStreamSubscription<T, T> {
+template<typename S, typename T> class _StateStreamSubscriptionCls : public _ForwardingStreamSubscriptionCls<T, T> {
 public:
 
 private:
     S _subState;
 
 
-     _StateStreamSubscription(S _subState, bool cancelOnError, FunctionType onData, FunctionType onDone, FunctionType onError, _ForwardingStream<T, T> stream);
+     _StateStreamSubscriptionCls(S _subState, bool cancelOnError, void onData(T data) , void onDone() , void  onError() , _ForwardingStream<T, T> stream);
 
 };
+template<typename S, typename T> using _StateStreamSubscription = std::shared_ptr<_StateStreamSubscriptionCls<S, T>>;
 
-class _TakeWhileStream<T> : _ForwardingStream<T, T> {
+template<typename T> class _TakeWhileStreamCls : public _ForwardingStreamCls<T, T> {
 public:
 
 private:
-    FunctionType _test;
+    bool Function(T ) _test;
 
 
-     _TakeWhileStream(Stream<T> source, FunctionType test);
+     _TakeWhileStreamCls(Stream<T> source, bool test(T value) );
 
-    void _handleData(T inputEvent, _EventSink<T> sink);
+    virtual void _handleData(T inputEvent, _EventSink<T> sink);
 
 };
+template<typename T> using _TakeWhileStream = std::shared_ptr<_TakeWhileStreamCls<T>>;
 
-class _SkipStream<T> : _ForwardingStream<T, T> {
+template<typename T> class _SkipStreamCls : public _ForwardingStreamCls<T, T> {
 public:
 
 private:
     int _count;
 
 
-     _SkipStream(int count, Stream<T> source);
+     _SkipStreamCls(int count, Stream<T> source);
 
-    StreamSubscription<T> _createSubscription(bool cancelOnError, FunctionType onData, FunctionType onDone, FunctionType onError);
+    virtual StreamSubscription<T> _createSubscription(bool cancelOnError, void onData(T data) , void onDone() , void  onError() );
 
-    void _handleData(T inputEvent, _EventSink<T> sink);
+    virtual void _handleData(T inputEvent, _EventSink<T> sink);
 
 };
+template<typename T> using _SkipStream = std::shared_ptr<_SkipStreamCls<T>>;
 
-class _SkipWhileStream<T> : _ForwardingStream<T, T> {
+template<typename T> class _SkipWhileStreamCls : public _ForwardingStreamCls<T, T> {
 public:
 
 private:
-    FunctionType _test;
+    bool Function(T ) _test;
 
 
-     _SkipWhileStream(Stream<T> source, FunctionType test);
+     _SkipWhileStreamCls(Stream<T> source, bool test(T value) );
 
-    StreamSubscription<T> _createSubscription(bool cancelOnError, FunctionType onData, FunctionType onDone, FunctionType onError);
+    virtual StreamSubscription<T> _createSubscription(bool cancelOnError, void onData(T data) , void onDone() , void  onError() );
 
-    void _handleData(T inputEvent, _EventSink<T> sink);
+    virtual void _handleData(T inputEvent, _EventSink<T> sink);
 
 };
+template<typename T> using _SkipWhileStream = std::shared_ptr<_SkipWhileStreamCls<T>>;
 
-class _DistinctStream<T> : _ForwardingStream<T, T> {
+template<typename T> class _DistinctStreamCls : public _ForwardingStreamCls<T, T> {
 public:
 
 private:
     static auto  _SENTINEL;
 
-    FunctionType _equals;
+    bool Function(T , T ) _equals;
 
 
-     _DistinctStream(FunctionType equals, Stream<T> source);
+     _DistinctStreamCls(bool equals(T a, T b) , Stream<T> source);
 
-    StreamSubscription<T> _createSubscription(bool cancelOnError, FunctionType onData, FunctionType onDone, FunctionType onError);
+    virtual StreamSubscription<T> _createSubscription(bool cancelOnError, void onData(T data) , void onDone() , void  onError() );
 
-    void _handleData(T inputEvent, _EventSink<T> sink);
+    virtual void _handleData(T inputEvent, _EventSink<T> sink);
 
 };
+template<typename T> using _DistinctStream = std::shared_ptr<_DistinctStreamCls<T>>;
+
 
 #endif

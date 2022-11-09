@@ -1,5 +1,5 @@
 #include "platform_impl.hpp"
-String _Platform::localeName() {
+String _PlatformCls::localeName() {
     Unknown result = (_localeClosure == nullptr)? _localeName() : _localeClosure!();
     if (result is OSError) {
         ;
@@ -7,23 +7,23 @@ String _Platform::localeName() {
     return result;
 }
 
-int _Platform::numberOfProcessors() {
+int _PlatformCls::numberOfProcessors() {
     return _numberOfProcessors();
 }
 
-String _Platform::pathSeparator() {
+String _PlatformCls::pathSeparator() {
     return _pathSeparator();
 }
 
-String _Platform::operatingSystem() {
+String _PlatformCls::operatingSystem() {
     return _operatingSystem();
 }
 
-Uri _Platform::script() {
+Uri _PlatformCls::script() {
     return _script();
 }
 
-String _Platform::operatingSystemVersion() {
+String _PlatformCls::operatingSystemVersion() {
     if (_cachedOSVersion == nullptr) {
         auto result = _operatingSystemVersion();
         if (result is OSError) {
@@ -34,7 +34,7 @@ String _Platform::operatingSystemVersion() {
     return _cachedOSVersion!;
 }
 
-String _Platform::localHostname() {
+String _PlatformCls::localHostname() {
     auto result = _localHostname();
     if (result is OSError) {
         ;
@@ -42,26 +42,26 @@ String _Platform::localHostname() {
     return result;
 }
 
-List<String> _Platform::executableArguments() {
+List<String> _PlatformCls::executableArguments() {
     return _executableArguments();
 }
 
-Map<String, String> _Platform::environment() {
+Map<String, String> _PlatformCls::environment() {
     if (_environmentCache == nullptr) {
         auto env = _environment();
         if (env is! OSError) {
             auto isWindows = operatingSystem == "windows";
-            auto result = isWindows? <String>_CaseInsensitiveStringMap() : <String, String>Map();
+            auto result = isWindows? <String>make<_CaseInsensitiveStringMapCls>() : <String, String>make<MapCls>();
             for (auto str : env) {
                 if (str == nullptr) {
                     continue;
                 }
-                auto equalsIndex = str.indexOf("=");
+                auto equalsIndex = str->indexOf("=");
                 if (equalsIndex > 0) {
-                    result[str.substring(0, equalsIndex)] = str.substring(equalsIndex + 1);
+                    result[str->substring(0, equalsIndex)] = str->substring(equalsIndex + 1);
                 }
             }
-            _environmentCache = <String, String>UnmodifiableMapView(result);
+            _environmentCache = <String, String>make<UnmodifiableMapViewCls>(result);
         } else {
             _environmentCache = env;
         }
@@ -73,86 +73,88 @@ Map<String, String> _Platform::environment() {
     }
 }
 
-String _Platform::version() {
+String _PlatformCls::version() {
     return _version();
 }
 
-bool _CaseInsensitiveStringMap::containsKey(Object key) {
-    return key is String && _map.containsKey(key.toUpperCase());
+template<typename V> bool _CaseInsensitiveStringMapCls<V>::containsKey(Object key) {
+    return key is String && _map->containsKey(key->toUpperCase());
 }
 
-bool _CaseInsensitiveStringMap::containsValue(Object value) {
-    return _map.containsValue(value);
+template<typename V> bool _CaseInsensitiveStringMapCls<V>::containsValue(Object value) {
+    return _map->containsValue(value);
 }
 
-V _CaseInsensitiveStringMap::[](Object key) {
-    return key is String? _map[key.toUpperCase()] : nullptr;
+template<typename V> V _CaseInsensitiveStringMapCls<V>::[](Object key) {
+    return key is String? _map[key->toUpperCase()] : nullptr;
 }
 
-void _CaseInsensitiveStringMap::[]=(String key, V value) {
-    _map[key.toUpperCase()] = value;
+template<typename V> void _CaseInsensitiveStringMapCls<V>::[]=(String key, V value) {
+    _map[key->toUpperCase()] = value;
 }
 
-V _CaseInsensitiveStringMap::putIfAbsent(FunctionType ifAbsent, String key) {
-    return _map.putIfAbsent(key.toUpperCase(), ifAbsent);
+template<typename V> V _CaseInsensitiveStringMapCls<V>::putIfAbsent(V ifAbsent() , String key) {
+    return _map->putIfAbsent(key->toUpperCase(), ifAbsent);
 }
 
-void _CaseInsensitiveStringMap::addAll(Map<String, V> other) {
-    other.forEach();
+template<typename V> void _CaseInsensitiveStringMapCls<V>::addAll(Map<String, V> other) {
+    other->forEach([=] (Unknown  key,Unknown  value)     {
+        this[key->toUpperCase()] = value;
+    });
 }
 
-V _CaseInsensitiveStringMap::remove(Object key) {
-    return key is String? _map.remove(key.toUpperCase()) : nullptr;
+template<typename V> V _CaseInsensitiveStringMapCls<V>::remove(Object key) {
+    return key is String? _map->remove(key->toUpperCase()) : nullptr;
 }
 
-void _CaseInsensitiveStringMap::clear() {
-    _map.clear();
+template<typename V> void _CaseInsensitiveStringMapCls<V>::clear() {
+    _map->clear();
 }
 
-void _CaseInsensitiveStringMap::forEach(FunctionType f) {
-    _map.forEach(f);
+template<typename V> void _CaseInsensitiveStringMapCls<V>::forEach(void f(String key, V value) ) {
+    _map->forEach(f);
 }
 
-Iterable<String> _CaseInsensitiveStringMap::keys() {
-    return _map.keys;
+template<typename V> Iterable<String> _CaseInsensitiveStringMapCls<V>::keys() {
+    return _map->keys;
 }
 
-Iterable<V> _CaseInsensitiveStringMap::values() {
-    return _map.values;
+template<typename V> Iterable<V> _CaseInsensitiveStringMapCls<V>::values() {
+    return _map->values;
 }
 
-int _CaseInsensitiveStringMap::length() {
-    return _map.length;
+template<typename V> int _CaseInsensitiveStringMapCls<V>::length() {
+    return _map->length;
 }
 
-bool _CaseInsensitiveStringMap::isEmpty() {
-    return _map.isEmpty;
+template<typename V> bool _CaseInsensitiveStringMapCls<V>::isEmpty() {
+    return _map->isEmpty;
 }
 
-bool _CaseInsensitiveStringMap::isNotEmpty() {
-    return _map.isNotEmpty;
+template<typename V> bool _CaseInsensitiveStringMapCls<V>::isNotEmpty() {
+    return _map->isNotEmpty;
 }
 
-Iterable<MapEntry<String, V>> _CaseInsensitiveStringMap::entries() {
-    return _map.entries;
+template<typename V> Iterable<MapEntry<String, V>> _CaseInsensitiveStringMapCls<V>::entries() {
+    return _map->entries;
 }
 
-Map<K2, V2> _CaseInsensitiveStringMap::map<K2, V2>(FunctionType transform) {
-    return _map.map(transform);
+template<typename V> Map<K2, V2> _CaseInsensitiveStringMapCls<V>::maptemplate<typename K2, typename V2> (MapEntry<K2, V2> transform(String key, V value) ) {
+    return _map->map(transform);
 }
 
-V _CaseInsensitiveStringMap::update(FunctionType ifAbsent, String key, FunctionType update) {
-    return _map.update(key.toUpperCase(), updateifAbsent);
+template<typename V> V _CaseInsensitiveStringMapCls<V>::update(V ifAbsent() , String key, V update(V value) ) {
+    return _map->update(key->toUpperCase(), updateifAbsent);
 }
 
-void _CaseInsensitiveStringMap::updateAll(FunctionType update) {
-    _map.updateAll(update);
+template<typename V> void _CaseInsensitiveStringMapCls<V>::updateAll(V update(String key, V value) ) {
+    _map->updateAll(update);
 }
 
-void _CaseInsensitiveStringMap::removeWhere(FunctionType test) {
-    _map.removeWhere(test);
+template<typename V> void _CaseInsensitiveStringMapCls<V>::removeWhere(bool test(String key, V value) ) {
+    _map->removeWhere(test);
 }
 
-String _CaseInsensitiveStringMap::toString() {
-    return _map.toString();
+template<typename V> String _CaseInsensitiveStringMapCls<V>::toString() {
+    return _map->toString();
 }

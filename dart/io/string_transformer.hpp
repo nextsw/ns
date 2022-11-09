@@ -1,91 +1,90 @@
-#ifndef STRING_TRANSFORMER_H
-#define STRING_TRANSFORMER_H
-#include <memory>
+#ifndef DART_IO_STRING_TRANSFORMER
+#define DART_IO_STRING_TRANSFORMER
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
+
+SystemEncoding systemEncoding;
 
 
-
-const SystemEncoding systemEncoding;
-
-
-class SystemEncoding : Encoding {
+class SystemEncodingCls : public EncodingCls {
 public:
 
-     SystemEncoding();
+     SystemEncodingCls();
+    virtual String name();
 
-    String name();
+    virtual List<int> encode(String input);
 
-    List<int> encode(String input);
+    virtual String decode(List<int> encoded);
 
-    String decode(List<int> encoded);
+    virtual Converter<String, List<int>> encoder();
 
-    Converter<String, List<int>> encoder();
-
-    Converter<List<int>, String> decoder();
+    virtual Converter<List<int>, String> decoder();
 
 private:
 
 };
+using SystemEncoding = std::shared_ptr<SystemEncodingCls>;
 
-class _WindowsCodePageEncoder : Converter<String, List<int>> {
+class _WindowsCodePageEncoderCls : public ConverterCls<String, List<int>> {
 public:
 
-    List<int> convert(String input);
+    virtual List<int> convert(String input);
 
-    StringConversionSink startChunkedConversion(Sink<List<int>> sink);
+    virtual StringConversionSink startChunkedConversion(Sink<List<int>> sink);
 
 private:
 
-     _WindowsCodePageEncoder();
-
-    external static List<int> _encodeString(String string);
-
+     _WindowsCodePageEncoderCls();
+    extern static List<int> _encodeString(String stringValue);
 };
+using _WindowsCodePageEncoder = std::shared_ptr<_WindowsCodePageEncoderCls>;
 
-class _WindowsCodePageEncoderSink : StringConversionSinkBase {
+class _WindowsCodePageEncoderSinkCls : public StringConversionSinkBaseCls {
 public:
 
-    void close();
+    virtual void close();
 
-    void add(String string);
+    virtual void add(String stringValue);
 
-    void addSlice(int end, bool isLast, String source, int start);
+    virtual void addSlice(int end, bool isLast, String source, int start);
 
 private:
     Sink<List<int>> _sink;
 
 
-     _WindowsCodePageEncoderSink(Sink<List<int>> _sink);
-
+     _WindowsCodePageEncoderSinkCls(Sink<List<int>> _sink);
 };
+using _WindowsCodePageEncoderSink = std::shared_ptr<_WindowsCodePageEncoderSinkCls>;
 
-class _WindowsCodePageDecoder : Converter<List<int>, String> {
+class _WindowsCodePageDecoderCls : public ConverterCls<List<int>, String> {
 public:
 
-    String convert(List<int> input);
+    virtual String convert(List<int> input);
 
-    ByteConversionSink startChunkedConversion(Sink<String> sink);
+    virtual ByteConversionSink startChunkedConversion(Sink<String> sink);
 
 private:
 
-     _WindowsCodePageDecoder();
-
-    external static String _decodeBytes(List<int> bytes);
-
+     _WindowsCodePageDecoderCls();
+    extern static String _decodeBytes(List<int> bytes);
 };
+using _WindowsCodePageDecoder = std::shared_ptr<_WindowsCodePageDecoderCls>;
 
-class _WindowsCodePageDecoderSink : ByteConversionSinkBase {
+class _WindowsCodePageDecoderSinkCls : public ByteConversionSinkBaseCls {
 public:
 
-    void close();
+    virtual void close();
 
-    void add(List<int> bytes);
+    virtual void add(List<int> bytes);
 
 private:
     Sink<String> _sink;
 
 
-     _WindowsCodePageDecoderSink(Sink<String> _sink);
-
+     _WindowsCodePageDecoderSinkCls(Sink<String> _sink);
 };
+using _WindowsCodePageDecoderSink = std::shared_ptr<_WindowsCodePageDecoderSinkCls>;
+
 
 #endif

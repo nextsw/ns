@@ -1,10 +1,7 @@
 #include "equality_set.hpp"
-EqualitySet::EqualitySet(Equality<E> equality) {
-    {
-        super(LinkedHashSet(equality.equals, equality.hash, equality.isValidKey));
-    }
+template<typename E> EqualitySetCls<E>::EqualitySetCls(Equality<E> equality) {
 }
 
-void EqualitySet::from(Equality<E> equality, Iterable<E> other) {
+template<typename E> void EqualitySetCls<E>::from(Equality<E> equality, Iterable<E> other) {
     addAll(other);
 }

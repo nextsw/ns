@@ -1,34 +1,34 @@
 #include "text_input.hpp"
-void TextInputType::numberWithOptions(bool decimal, bool signed)
+void TextInputTypeCls::numberWithOptions(bool decimal, bool signed)
 
-Map<String, dynamic> TextInputType::toJson() {
-    return ;
+Map<String, dynamic> TextInputTypeCls::toJson() {
+    Map<String, dynamic> map1 = make<MapCls<>>();map1.set("name", _name);map1.set("signed", signed);map1.set("decimal", decimal);return list1;
 }
 
-String TextInputType::toString() {
+String TextInputTypeCls::toString() {
     return "${objectRuntimeType(this, 'TextInputType')}(name: $_name, signed: $signed, decimal: $decimal)";
 }
 
-bool TextInputType::==(Object other) {
-    return other is TextInputType && other.index == index && other.signed == signed && other.decimal == decimal;
+bool TextInputTypeCls::==(Object other) {
+    return other is TextInputType && other->index == index && other->signed == signed && other->decimal == decimal;
 }
 
-int TextInputType::hashCode() {
-    return Object.hash(index, signed, decimal);
+int TextInputTypeCls::hashCode() {
+    return ObjectCls->hash(index, signed, decimal);
 }
 
-void TextInputType::_(int index)
+void TextInputTypeCls::_(int index)
 
-String TextInputType::_name() {
+String TextInputTypeCls::_name() {
     return "TextInputType.${_names[index]}";
 }
 
-TextInputConfiguration::TextInputConfiguration(String actionLabel, bool autocorrect, AutofillConfiguration autofillConfiguration, bool enableDeltaModel, bool enableIMEPersonalizedLearning, bool enableInteractiveSelection, bool enableSuggestions, TextInputAction inputAction, TextInputType inputType, Brightness keyboardAppearance, bool obscureText, bool readOnly, SmartDashesType smartDashesType, SmartQuotesType smartQuotesType, TextCapitalization textCapitalization) {
+TextInputConfigurationCls::TextInputConfigurationCls(String actionLabel, bool autocorrect, AutofillConfiguration autofillConfiguration, bool enableDeltaModel, bool enableIMEPersonalizedLearning, bool enableInteractiveSelection, bool enableSuggestions, TextInputAction inputAction, TextInputType inputType, Brightness keyboardAppearance, bool obscureText, bool readOnly, SmartDashesType smartDashesType, SmartQuotesType smartQuotesType, TextCapitalization textCapitalization) {
     {
         assert(inputType != nullptr);
         assert(obscureText != nullptr);
-        smartDashesType = smartDashesType ?? (obscureText? SmartDashesType.disabled : SmartDashesType.enabled);
-        smartQuotesType = smartQuotesType ?? (obscureText? SmartQuotesType.disabled : SmartQuotesType.enabled);
+        smartDashesType = smartDashesType ?? (obscureText? SmartDashesTypeCls::disabled : SmartDashesTypeCls::enabled);
+        smartQuotesType = smartQuotesType ?? (obscureText? SmartQuotesTypeCls::disabled : SmartQuotesTypeCls::enabled);
         assert(autocorrect != nullptr);
         assert(enableSuggestions != nullptr);
         assert(keyboardAppearance != nullptr);
@@ -39,13 +39,13 @@ TextInputConfiguration::TextInputConfiguration(String actionLabel, bool autocorr
     }
 }
 
-TextInputConfiguration TextInputConfiguration::copyWith(String actionLabel, bool autocorrect, AutofillConfiguration autofillConfiguration, bool enableDeltaModel, bool enableIMEPersonalizedLearning, bool enableInteractiveSelection, bool enableSuggestions, TextInputAction inputAction, TextInputType inputType, Brightness keyboardAppearance, bool obscureText, bool readOnly, SmartDashesType smartDashesType, SmartQuotesType smartQuotesType, TextCapitalization textCapitalization) {
-    return TextInputConfiguration(inputType ?? this.inputType, readOnly ?? this.readOnly, obscureText ?? this.obscureText, autocorrect ?? this.autocorrect, smartDashesType ?? this.smartDashesType, smartQuotesType ?? this.smartQuotesType, enableSuggestions ?? this.enableSuggestions, enableInteractiveSelection ?? this.enableInteractiveSelection, inputAction ?? this.inputAction, textCapitalization ?? this.textCapitalization, keyboardAppearance ?? this.keyboardAppearance, enableIMEPersonalizedLearning ?? this.enableIMEPersonalizedLearning, autofillConfiguration ?? this.autofillConfiguration, enableDeltaModel ?? this.enableDeltaModel);
+TextInputConfiguration TextInputConfigurationCls::copyWith(String actionLabel, bool autocorrect, AutofillConfiguration autofillConfiguration, bool enableDeltaModel, bool enableIMEPersonalizedLearning, bool enableInteractiveSelection, bool enableSuggestions, TextInputAction inputAction, TextInputType inputType, Brightness keyboardAppearance, bool obscureText, bool readOnly, SmartDashesType smartDashesType, SmartQuotesType smartQuotesType, TextCapitalization textCapitalization) {
+    return make<TextInputConfigurationCls>(inputType ?? this->inputType, readOnly ?? this->readOnly, obscureText ?? this->obscureText, autocorrect ?? this->autocorrect, smartDashesType ?? this->smartDashesType, smartQuotesType ?? this->smartQuotesType, enableSuggestions ?? this->enableSuggestions, enableInteractiveSelection ?? this->enableInteractiveSelection, inputAction ?? this->inputAction, textCapitalization ?? this->textCapitalization, keyboardAppearance ?? this->keyboardAppearance, enableIMEPersonalizedLearning ?? this->enableIMEPersonalizedLearning, autofillConfiguration ?? this->autofillConfiguration, enableDeltaModel ?? this->enableDeltaModel);
 }
 
-Map<String, dynamic> TextInputConfiguration::toJson() {
-    Map<String, dynamic> autofill = autofillConfiguration.toJson();
-    return ;
+Map<String, dynamic> TextInputConfigurationCls::toJson() {
+    Map<String, dynamic> autofill = autofillConfiguration->toJson();
+    Map<String, dynamic> map1 = make<MapCls<>>();map1.set("inputType", inputType->toJson());map1.set("readOnly", readOnly);map1.set("obscureText", obscureText);map1.set("autocorrect", autocorrect);map1.set("smartDashesType", smartDashesType->index->toString());map1.set("smartQuotesType", smartQuotesType->index->toString());map1.set("enableSuggestions", enableSuggestions);map1.set("enableInteractiveSelection", enableInteractiveSelection);map1.set("actionLabel", actionLabel);map1.set("inputAction", inputAction->toString());map1.set("textCapitalization", textCapitalization->toString());map1.set("keyboardAppearance", keyboardAppearance->toString());map1.set("enableIMEPersonalizedLearning", enableIMEPersonalizedLearning);if (autofill != nullptr) {    map1.set("autofill", autofill);}map1.set("enableDeltaModel", enableDeltaModel);return list1;
 }
 
 TextAffinity _toTextAffinity(String affinity) {
@@ -53,14 +53,14 @@ TextAffinity _toTextAffinity(String affinity) {
     return nullptr;
 }
 
-RawFloatingCursorPoint::RawFloatingCursorPoint(Offset offset, FloatingCursorDragState state) {
+RawFloatingCursorPointCls::RawFloatingCursorPointCls(Offset offset, FloatingCursorDragState state) {
     {
         assert(state != nullptr);
-        assert(state != FloatingCursorDragState.Update || offset != nullptr);
+        assert(state != FloatingCursorDragStateCls::UpdateCls || offset != nullptr);
     }
 }
 
-TextEditingValue::TextEditingValue(TextRange composing, TextSelection selection, String text) {
+TextEditingValueCls::TextEditingValueCls(TextRange composing, TextSelection selection, String text) {
     {
         assert(text != nullptr);
         assert(selection != nullptr);
@@ -68,198 +68,203 @@ TextEditingValue::TextEditingValue(TextRange composing, TextSelection selection,
     }
 }
 
-void TextEditingValue::fromJSON(Map<String, dynamic> encoded) {
-    String text = (;
-    TextSelection selection = TextSelection(( ?? -1, ( ?? -1, _toTextAffinity(() ?? TextAffinity.downstream, ( ?? false);
-    TextRange composing = TextRange(( ?? -1, ( ?? -1);
+void TextEditingValueCls::fromJSON(Map<String, dynamic> encoded) {
+    String text = ((String)encoded["text"]);
+    TextSelection selection = make<TextSelectionCls>(((int)encoded["selectionBase"]) ?? -1, ((int)encoded["selectionExtent"]) ?? -1, _toTextAffinity(((String)encoded["selectionAffinity"])) ?? TextAffinityCls::downstream, ((bool)encoded["selectionIsDirectional"]) ?? false);
+    TextRange composing = make<TextRangeCls>(((int)encoded["composingBase"]) ?? -1, ((int)encoded["composingExtent"]) ?? -1);
     assert(_textRangeIsValid(selection, text));
     assert(_textRangeIsValid(composing, text));
-    return TextEditingValue(text, selection, composing);
+    return make<TextEditingValueCls>(text, selection, composing);
 }
 
-TextEditingValue TextEditingValue::copyWith(TextRange composing, TextSelection selection, String text) {
-    return TextEditingValue(text ?? this.text, selection ?? this.selection, composing ?? this.composing);
+TextEditingValue TextEditingValueCls::copyWith(TextRange composing, TextSelection selection, String text) {
+    return make<TextEditingValueCls>(text ?? this->text, selection ?? this->selection, composing ?? this->composing);
 }
 
-bool TextEditingValue::isComposingRangeValid() {
-    return composing.isValid && composing.isNormalized && composing.end <= text.length;
+bool TextEditingValueCls::isComposingRangeValid() {
+    return composing->isValid && composing->isNormalized && composing->end <= text->length;
 }
 
-TextEditingValue TextEditingValue::replaced(TextRange replacementRange, String replacementString) {
-    if (!replacementRange.isValid) {
+TextEditingValue TextEditingValueCls::replaced(TextRange replacementRange, String replacementString) {
+    if (!replacementRange->isValid) {
         return this;
     }
-    String newText = text.replaceRange(replacementRange.start, replacementRange.end, replacementString);
-    if (replacementRange.end - replacementRange.start == replacementString.length) {
+    String newText = text->replaceRange(replacementRange->start, replacementRange->end, replacementString);
+    if (replacementRange->end - replacementRange->start == replacementString->length) {
         return copyWith(newText);
     }
-    ;
-    TextSelection adjustedSelection = TextSelection(adjustIndex(selection.baseOffset), adjustIndex(selection.extentOffset));
-    TextRange adjustedComposing = TextRange(adjustIndex(composing.start), adjustIndex(composing.end));
+    InlineMethod;
+    TextSelection adjustedSelection = make<TextSelectionCls>(adjustIndex(selection->baseOffset), adjustIndex(selection->extentOffset));
+    TextRange adjustedComposing = make<TextRangeCls>(adjustIndex(composing->start), adjustIndex(composing->end));
     assert(_textRangeIsValid(adjustedSelection, newText));
     assert(_textRangeIsValid(adjustedComposing, newText));
-    return TextEditingValue(newText, adjustedSelection, adjustedComposing);
+    return make<TextEditingValueCls>(newText, adjustedSelection, adjustedComposing);
 }
 
-Map<String, dynamic> TextEditingValue::toJSON() {
+Map<String, dynamic> TextEditingValueCls::toJSON() {
     assert(_textRangeIsValid(selection, text));
     assert(_textRangeIsValid(composing, text));
-    return ;
+    Map<String, dynamic> map1 = make<MapCls<>>();map1.set("text", text);map1.set("selectionBase", selection->baseOffset);map1.set("selectionExtent", selection->extentOffset);map1.set("selectionAffinity", selection->affinity->toString());map1.set("selectionIsDirectional", selection->isDirectional);map1.set("composingBase", composing->start);map1.set("composingExtent", composing->end);return list1;
 }
 
-String TextEditingValue::toString() {
+String TextEditingValueCls::toString() {
     return "${objectRuntimeType(this, 'TextEditingValue')}(text: \u2524$text\u251C, selection: $selection, composing: $composing)";
 }
 
-bool TextEditingValue::==(Object other) {
+bool TextEditingValueCls::==(Object other) {
     if (identical(this, other)) {
         return true;
     }
-    return other is TextEditingValue && other.text == text && other.selection == selection && other.composing == composing;
+    return other is TextEditingValue && other->text == text && other->selection == selection && other->composing == composing;
 }
 
-int TextEditingValue::hashCode() {
-    return Object.hash(text.hashCode, selection.hashCode, composing.hashCode);
+int TextEditingValueCls::hashCode() {
+    return ObjectCls->hash(text->hashCode, selection->hashCode, composing->hashCode);
 }
 
-bool TextEditingValue::_textRangeIsValid(TextRange range, String text) {
-    if (range.start == -1 && range.end == -1) {
+bool TextEditingValueCls::_textRangeIsValid(TextRange range, String text) {
+    if (range->start == -1 && range->end == -1) {
         return true;
     }
-    assert(range.start >= 0 && range.start <= text.length, "Range start ${range.start} is out of text of length ${text.length}");
-    assert(range.end >= 0 && range.end <= text.length, "Range end ${range.end} is out of text of length ${text.length}");
+    assert(range->start >= 0 && range->start <= text->length, "Range start ${range.start} is out of text of length ${text.length}");
+    assert(range->end >= 0 && range->end <= text->length, "Range end ${range.end} is out of text of length ${text.length}");
     return true;
 }
 
-bool TextSelectionDelegate::cutEnabled() {
+bool TextSelectionDelegateCls::cutEnabled() {
     return true;
 }
 
-bool TextSelectionDelegate::copyEnabled() {
+bool TextSelectionDelegateCls::copyEnabled() {
     return true;
 }
 
-bool TextSelectionDelegate::pasteEnabled() {
+bool TextSelectionDelegateCls::pasteEnabled() {
     return true;
 }
 
-bool TextSelectionDelegate::selectAllEnabled() {
+bool TextSelectionDelegateCls::selectAllEnabled() {
     return true;
 }
 
-void TextInputClient::showToolbar() {
+void TextInputClientCls::showToolbar() {
 }
 
-void TextInputClient::insertTextPlaceholder(Size size) {
+void TextInputClientCls::insertTextPlaceholder(Size size) {
 }
 
-void TextInputClient::removeTextPlaceholder() {
+void TextInputClientCls::removeTextPlaceholder() {
 }
 
-bool SelectionRect::==(Object other) {
+bool SelectionRectCls::==(Object other) {
     if (identical(this, other)) {
         return true;
     }
-    if (runtimeType != other.runtimeType) {
+    if (runtimeType != other->runtimeType) {
         return false;
     }
-    return other is SelectionRect && other.position == position && other.bounds == bounds;
+    return other is SelectionRect && other->position == position && other->bounds == bounds;
 }
 
-int SelectionRect::hashCode() {
-    return Object.hash(position, bounds);
+int SelectionRectCls::hashCode() {
+    return ObjectCls->hash(position, bounds);
 }
 
-String SelectionRect::toString() {
+String SelectionRectCls::toString() {
     return "SelectionRect($position, $bounds)";
 }
 
-void TextInputConnection::debugResetId(int to) {
+void TextInputConnectionCls::debugResetId(int to) {
     assert(to != nullptr);
-    assert(());
+    assert([=] () {
+        _nextId = to;
+        return true;
+    }());
 }
 
-bool TextInputConnection::attached() {
-    return TextInput._instance._currentConnection == this;
+bool TextInputConnectionCls::attached() {
+    return TextInputCls::_instance->_currentConnection == this;
 }
 
-bool TextInputConnection::scribbleInProgress() {
-    return TextInput._instance.scribbleInProgress;
+bool TextInputConnectionCls::scribbleInProgress() {
+    return TextInputCls::_instance->scribbleInProgress;
 }
 
-void TextInputConnection::show() {
+void TextInputConnectionCls::show() {
     assert(attached);
-    TextInput._instance._show();
+    TextInputCls::_instance->_show();
 }
 
-void TextInputConnection::requestAutofill() {
+void TextInputConnectionCls::requestAutofill() {
     assert(attached);
-    TextInput._instance._requestAutofill();
+    TextInputCls::_instance->_requestAutofill();
 }
 
-void TextInputConnection::updateConfig(TextInputConfiguration configuration) {
+void TextInputConnectionCls::updateConfig(TextInputConfiguration configuration) {
     assert(attached);
-    TextInput._instance._updateConfig(configuration);
+    TextInputCls::_instance->_updateConfig(configuration);
 }
 
-void TextInputConnection::setEditingState(TextEditingValue value) {
+void TextInputConnectionCls::setEditingState(TextEditingValue value) {
     assert(attached);
-    TextInput._instance._setEditingState(value);
+    TextInputCls::_instance->_setEditingState(value);
 }
 
-void TextInputConnection::setEditableSizeAndTransform(Size editableBoxSize, Matrix4 transform) {
+void TextInputConnectionCls::setEditableSizeAndTransform(Size editableBoxSize, Matrix4 transform) {
     if (editableBoxSize != _cachedSize || transform != _cachedTransform) {
         _cachedSize = editableBoxSize;
         _cachedTransform = transform;
-        TextInput._instance._setEditableSizeAndTransform();
+            Map<String, dynamic> map1 = make<MapCls<>>();    map1.set("width", editableBoxSize->width);    map1.set("height", editableBoxSize->height);    map1.set("transform", transform->storage);TextInputCls::_instance->_setEditableSizeAndTransform(list1);
     }
 }
 
-void TextInputConnection::setComposingRect(Rect rect) {
+void TextInputConnectionCls::setComposingRect(Rect rect) {
     assert(rect != nullptr);
     if (rect == _cachedRect) {
         return;
     }
     _cachedRect = rect;
-    Rect validRect = rect.isFinite? rect : Offset.zero & const Size(-1, -1);
-    TextInput._instance._setComposingTextRect();
+    Rect validRect = rect->isFinite? rect : OffsetCls::zero & make<SizeCls>(-1, -1);
+    Map<String, dynamic> map1 = make<MapCls<>>();map1.set("width", validRect->width);map1.set("height", validRect->height);map1.set("x", validRect->left);map1.set("y", validRect->top);TextInputCls::_instance->_setComposingTextRect(list1);
 }
 
-void TextInputConnection::setCaretRect(Rect rect) {
+void TextInputConnectionCls::setCaretRect(Rect rect) {
     assert(rect != nullptr);
     if (rect == _cachedCaretRect) {
         return;
     }
     _cachedCaretRect = rect;
-    Rect validRect = rect.isFinite? rect : Offset.zero & const Size(-1, -1);
-    TextInput._instance._setCaretRect();
+    Rect validRect = rect->isFinite? rect : OffsetCls::zero & make<SizeCls>(-1, -1);
+    Map<String, dynamic> map1 = make<MapCls<>>();map1.set("width", validRect->width);map1.set("height", validRect->height);map1.set("x", validRect->left);map1.set("y", validRect->top);TextInputCls::_instance->_setCaretRect(list1);
 }
 
-void TextInputConnection::setSelectionRects(List<SelectionRect> selectionRects) {
+void TextInputConnectionCls::setSelectionRects(List<SelectionRect> selectionRects) {
     if (!listEquals(_cachedSelectionRects, selectionRects)) {
         _cachedSelectionRects = selectionRects;
-        TextInput._instance._setSelectionRects(selectionRects.map().toList());
+        TextInputCls::_instance->_setSelectionRects(selectionRects->map([=] (SelectionRect rect) {
+            return makeList(ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem);
+        })->toList());
     }
 }
 
-void TextInputConnection::setStyle(String fontFamily, double fontSize, FontWeight fontWeight, TextAlign textAlign, TextDirection textDirection) {
+void TextInputConnectionCls::setStyle(String fontFamily, double fontSize, FontWeight fontWeight, TextAlign textAlign, TextDirection textDirection) {
     assert(attached);
-    TextInput._instance._setStyle();
+    Map<String, dynamic> map1 = make<MapCls<>>();map1.set("fontFamily", fontFamily);map1.set("fontSize", fontSize);map1.set("fontWeightIndex", fontWeight?->index);map1.set("textAlignIndex", textAlign->index);map1.set("textDirectionIndex", textDirection->index);TextInputCls::_instance->_setStyle(list1);
 }
 
-void TextInputConnection::close() {
+void TextInputConnectionCls::close() {
     if (attached) {
-        TextInput._instance._clearClient();
+        TextInputCls::_instance->_clearClient();
     }
     assert(!attached);
 }
 
-void TextInputConnection::connectionClosedReceived() {
-    TextInput._instance._currentConnection = nullptr;
+void TextInputConnectionCls::connectionClosedReceived() {
+    TextInputCls::_instance->_currentConnection = nullptr;
     assert(!attached);
 }
 
-void TextInputConnection::_(TextInputClient _client)
+void TextInputConnectionCls::_(TextInputClient _client)
 
 TextInputAction _toTextInputAction(String action) {
     ;
@@ -275,81 +280,115 @@ RawFloatingCursorPoint _toTextPoint(Map<String, dynamic> encoded, FloatingCursor
     assert(state != nullptr, "You must provide a state to set a new editing point.");
     assert(encoded["X"] != nullptr, "You must provide a value for the horizontal location of the floating cursor.");
     assert(encoded["Y"] != nullptr, "You must provide a value for the vertical location of the floating cursor.");
-    Offset offset = state == FloatingCursorDragState.Update? Offset((, () : Offset.zero;
-    return RawFloatingCursorPoint(offset, state);
+    Offset offset = state == FloatingCursorDragStateCls::UpdateCls? make<OffsetCls>(((double)encoded["X"]), ((double)encoded["Y"])) : OffsetCls::zero;
+    return make<RawFloatingCursorPointCls>(offset, state);
 }
 
-void TextInput::setChannel(MethodChannel newChannel) {
-    assert(());
+void TextInputCls::setChannel(MethodChannel newChannel) {
+    assert([=] () {
+            auto _c1 = newChannel;    _c1.setMethodCallHandler(_instance->_loudlyHandleTextInputInvocation);_instance->_channel = _c1;
+        return true;
+    }());
 }
 
-void TextInput::ensureInitialized() {
+void TextInputCls::ensureInitialized() {
     _instance;
 }
 
-TextInputConnection TextInput::attach(TextInputClient client, TextInputConfiguration configuration) {
+TextInputConnection TextInputCls::attach(TextInputClient client, TextInputConfiguration configuration) {
     assert(client != nullptr);
     assert(configuration != nullptr);
-    TextInputConnection connection = TextInputConnection._(client);
-    _instance._attach(connection, configuration);
+    TextInputConnection connection = TextInputConnectionCls->_(client);
+    _instance->_attach(connection, configuration);
     return connection;
 }
 
-Map<String, ScribbleClient> TextInput::scribbleClients() {
-    return TextInput._instance._scribbleClients;
+Map<String, ScribbleClient> TextInputCls::scribbleClients() {
+    return TextInputCls::_instance->_scribbleClients;
 }
 
-bool TextInput::scribbleInProgress() {
+bool TextInputCls::scribbleInProgress() {
     return _scribbleInProgress;
 }
 
-void TextInput::finishAutofillContext(bool shouldSave) {
+void TextInputCls::finishAutofillContext(bool shouldSave) {
     assert(shouldSave != nullptr);
-    TextInput._instance._channel.<void>invokeMethod("TextInput.finishAutofillContext", shouldSave);
+    TextInputCls::_instance->_channel-><void>invokeMethod("TextInput.finishAutofillContext", shouldSave);
 }
 
-void TextInput::registerScribbleElement(String elementIdentifier, ScribbleClient scribbleClient) {
-    TextInput._instance._scribbleClients[elementIdentifier] = scribbleClient;
+void TextInputCls::registerScribbleElement(String elementIdentifier, ScribbleClient scribbleClient) {
+    TextInputCls::_instance->_scribbleClients[elementIdentifier] = scribbleClient;
 }
 
-void TextInput::unregisterScribbleElement(String elementIdentifier) {
-    TextInput._instance._scribbleClients.remove(elementIdentifier);
+void TextInputCls::unregisterScribbleElement(String elementIdentifier) {
+    TextInputCls::_instance->_scribbleClients->remove(elementIdentifier);
 }
 
-void TextInput::_() {
-    _channel = SystemChannels.textInput;
-    _channel.setMethodCallHandler(_loudlyHandleTextInputInvocation);
+void TextInputCls::_() {
+    _channel = SystemChannelsCls::textInput;
+    _channel->setMethodCallHandler(_loudlyHandleTextInputInvocation);
 }
 
-void TextInput::_attach(TextInputConfiguration configuration, TextInputConnection connection) {
+void TextInputCls::_attach(TextInputConfiguration configuration, TextInputConnection connection) {
     assert(connection != nullptr);
-    assert(connection._client != nullptr);
+    assert(connection->_client != nullptr);
     assert(configuration != nullptr);
-    assert(_debugEnsureInputActionWorksOnPlatform(configuration.inputAction));
-    _channel.<void>invokeMethod("TextInput.setClient", );
+    assert(_debugEnsureInputActionWorksOnPlatform(configuration->inputAction));
+    _channel-><void>invokeMethod("TextInput.setClient", makeList(ArrayItem, ArrayItem));
     _currentConnection = connection;
     _currentConfiguration = configuration;
 }
 
-bool TextInput::_debugEnsureInputActionWorksOnPlatform(TextInputAction inputAction) {
-    assert(());
+bool TextInputCls::_debugEnsureInputActionWorksOnPlatform(TextInputAction inputAction) {
+    assert([=] () {
+        if (kIsWeb) {
+            return true;
+        }
+        if (PlatformCls::isIOS) {
+            assert(_iOSSupportedInputActions->contains(inputAction), "The requested TextInputAction "$inputAction" is not supported on iOS.");
+        } else         {
+            if (PlatformCls::isAndroid) {
+            assert(_androidSupportedInputActions->contains(inputAction), "The requested TextInputAction "$inputAction" is not supported on Android.");
+        }
+;
+        }        return true;
+    }());
     return true;
 }
 
-Future<dynamic> TextInput::_loudlyHandleTextInputInvocation(MethodCall call) {
-    ;
+Future<dynamic> TextInputCls::_loudlyHandleTextInputInvocation(MethodCall call) {
+    try {
+        return await _handleTextInputInvocation(call);
+    } catch (Unknown exception) {
+        FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(exception, stack, "services library", make<ErrorDescriptionCls>("during method call ${call.method}"), [=] ()         {
+            makeList(ArrayItem);
+        }));
+        throw;
+    };
 }
 
-Future<dynamic> TextInput::_handleTextInputInvocation(MethodCall methodCall) {
-    String method = methodCall.method;
+Future<dynamic> TextInputCls::_handleTextInputInvocation(MethodCall methodCall) {
+    String method = methodCall->method;
     if (method == "TextInputClient.focusElement") {
-        List<dynamic> args = (;
-        _scribbleClients[args[0]]?.onScribbleFocus(Offset((().toDouble(), (().toDouble()));
+        List<dynamic> args = ((List<dynamic>)methodCall->arguments);
+        _scribbleClients[args[0]]?->onScribbleFocus(make<OffsetCls>((((num)args[1]))->toDouble(), (((num)args[2]))->toDouble()));
         return;
     } else     {
         if (method == "TextInputClient.requestElementsInRect") {
-        List<double> args = (().<num>cast().<double>map().toList();
-        return _scribbleClients.keys.where().map().toList();
+        List<double> args = (((List<dynamic>)methodCall->arguments))-><num>cast()-><double>map([=] (num value) {
+    value->toDouble();
+})->toList();
+        return _scribbleClients->keys->where([=] (String elementIdentifier) {
+            Rect rect = RectCls->fromLTWH(args[0], args[1], args[2], args[3]);
+            if (!(_scribbleClients[elementIdentifier]?->isInScribbleRect(rect) ?? false)) {
+                return false;
+            }
+            Rect bounds = _scribbleClients[elementIdentifier]?->bounds ?? RectCls::zero;
+            return !(bounds == RectCls::zero || bounds->hasNaN || bounds->isInfinite);
+        })->map([=] (String elementIdentifier) {
+            Rect bounds = _scribbleClients[elementIdentifier]!->bounds;
+                    List<dynamic> list1 = make<ListCls<>>();        list1.add(ArrayItem);        for (auto _x1 : makeList(ArrayItem, ArrayItem, ArrayItem, ArrayItem)) {        {            list1.add(_x1);        }return list1;
+        })->toList();
     } else     {
         if (method == "TextInputClient.scribbleInteractionBegan") {
         _scribbleInProgress = true;
@@ -366,33 +405,38 @@ Future<dynamic> TextInput::_handleTextInputInvocation(MethodCall methodCall) {
         return;
     }
     if (method == "TextInputClient.requestExistingInputState") {
-        assert(_currentConnection!._client != nullptr);
+        assert(_currentConnection!->_client != nullptr);
         _attach(_currentConnection!, _currentConfiguration);
-        TextEditingValue editingValue = _currentConnection!._client.currentTextEditingValue;
+        TextEditingValue editingValue = _currentConnection!->_client->currentTextEditingValue;
         if (editingValue != nullptr) {
             _setEditingState(editingValue);
         }
         return;
     }
-    List<dynamic> args = (;
+    List<dynamic> args = ((List<dynamic>)methodCall->arguments);
     if (method == "TextInputClient.updateEditingStateWithTag") {
-        assert(_currentConnection!._client != nullptr);
-        TextInputClient client = _currentConnection!._client;
-        AutofillScope scope = client.currentAutofillScope;
-        Map<String, dynamic> editingValue = (;
-        for (String tag : editingValue.keys) {
-            TextEditingValue textEditingValue = TextEditingValue.fromJSON(();
-            AutofillClient client = scope?.getAutofillClient(tag);
-            if (client != nullptr && client.textInputConfiguration.autofillConfiguration.enabled) {
-                client.autofill(textEditingValue);
+        assert(_currentConnection!->_client != nullptr);
+        TextInputClient client = _currentConnection!->_client;
+        AutofillScope scope = client->currentAutofillScope;
+        Map<String, dynamic> editingValue = ((Map<String, dynamic>)args[1]);
+        for (String tag : editingValue->keys) {
+            TextEditingValue textEditingValue = TextEditingValueCls->fromJSON(((Map<String, dynamic>)editingValue[tag]));
+            AutofillClient client = scope?->getAutofillClient(tag);
+            if (client != nullptr && client->textInputConfiguration->autofillConfiguration->enabled) {
+                client->autofill(textEditingValue);
             }
         }
         return;
     }
-    int client = (;
-    if (client != _currentConnection!._id) {
+    int client = ((int)args[0]);
+    if (client != _currentConnection!->_id) {
         bool debugAllowAnyway = false;
-        assert(());
+        assert([=] () {
+            if (client == -1) {
+                debugAllowAnyway = true;
+            }
+            return true;
+        }());
         if (!debugAllowAnyway) {
             return;
         }
@@ -400,54 +444,59 @@ Future<dynamic> TextInput::_handleTextInputInvocation(MethodCall methodCall) {
     ;
 }
 
-void TextInput::_scheduleHide() {
+void TextInputCls::_scheduleHide() {
     if (_hidePending) {
         return;
     }
     _hidePending = true;
-    scheduleMicrotask();
+    scheduleMicrotask([=] () {
+        _hidePending = false;
+        if (_currentConnection == nullptr) {
+            _channel-><void>invokeMethod("TextInput.hide");
+        }
+    });
 }
 
-void TextInput::_clearClient() {
-    _channel.<void>invokeMethod("TextInput.clearClient");
+void TextInputCls::_clearClient() {
+    _channel-><void>invokeMethod("TextInput.clearClient");
     _currentConnection = nullptr;
     _scheduleHide();
 }
 
-void TextInput::_updateConfig(TextInputConfiguration configuration) {
+void TextInputCls::_updateConfig(TextInputConfiguration configuration) {
     assert(configuration != nullptr);
-    _channel.<void>invokeMethod("TextInput.updateConfig", configuration.toJson());
+    _channel-><void>invokeMethod("TextInput.updateConfig", configuration->toJson());
 }
 
-void TextInput::_setEditingState(TextEditingValue value) {
+void TextInputCls::_setEditingState(TextEditingValue value) {
     assert(value != nullptr);
-    _channel.<void>invokeMethod("TextInput.setEditingState", value.toJSON());
+    _channel-><void>invokeMethod("TextInput.setEditingState", value->toJSON());
 }
 
-void TextInput::_show() {
-    _channel.<void>invokeMethod("TextInput.show");
+void TextInputCls::_show() {
+    _channel-><void>invokeMethod("TextInput.show");
 }
 
-void TextInput::_requestAutofill() {
-    _channel.<void>invokeMethod("TextInput.requestAutofill");
+void TextInputCls::_requestAutofill() {
+    _channel-><void>invokeMethod("TextInput.requestAutofill");
 }
 
-void TextInput::_setEditableSizeAndTransform(Map<String, dynamic> args) {
-    _channel.<void>invokeMethod("TextInput.setEditableSizeAndTransform", args);
+void TextInputCls::_setEditableSizeAndTransform(Map<String, dynamic> args) {
+    _channel-><void>invokeMethod("TextInput.setEditableSizeAndTransform", args);
 }
 
-void TextInput::_setComposingTextRect(Map<String, dynamic> args) {
-    _channel.<void>invokeMethod("TextInput.setMarkedTextRect", args);
+void TextInputCls::_setComposingTextRect(Map<String, dynamic> args) {
+    _channel-><void>invokeMethod("TextInput.setMarkedTextRect", args);
 }
 
-void TextInput::_setCaretRect(Map<String, dynamic> args) {
-    _channel.<void>invokeMethod("TextInput.setCaretRect", args);
+void TextInputCls::_setCaretRect(Map<String, dynamic> args) {
+    _channel-><void>invokeMethod("TextInput.setCaretRect", args);
 }
 
-void TextInput::_setSelectionRects(List<List<num>> args) {
-    _channel.<void>invokeMethod("TextInput.setSelectionRects", args);
+void TextInputCls::_setSelectionRects(List<List<num>> args) {
+    _channel-><void>invokeMethod("TextInput.setSelectionRects", args);
 }
 
-void TextInput::_setStyle(Map<String, dynamic> args) {
-    _channel.<void>invokeMethod("TextInput.setStyle", args);
+void TextInputCls::_setStyle(Map<String, dynamic> args) {
+    _channel-><void>invokeMethod("TextInput.setStyle", args);
 }

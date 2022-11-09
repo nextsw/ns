@@ -1,9 +1,9 @@
-#ifndef SYSTEM_SOUND_H
-#define SYSTEM_SOUND_H
-#include <memory>
+#ifndef PACKAGES_FLUTTER_SRC_SERVICES_SYSTEM_SOUND
+#define PACKAGES_FLUTTER_SRC_SERVICES_SYSTEM_SOUND
+#include <base.hpp>
 
+#include <dart/core/core.hpp>
 #include "system_channels.hpp"
-
 
 
 enum SystemSoundType{
@@ -11,15 +11,16 @@ enum SystemSoundType{
     alert,
 } // end SystemSoundType
 
-class SystemSound {
+class SystemSoundCls : public ObjectCls {
 public:
 
     static Future<void> play(SystemSoundType type);
 
 private:
 
-    void  _();
-
+    virtual void  _();
 };
+using SystemSound = std::shared_ptr<SystemSoundCls>;
+
 
 #endif

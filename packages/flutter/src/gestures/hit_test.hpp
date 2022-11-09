@@ -1,121 +1,117 @@
-#ifndef HIT_TEST_H
-#define HIT_TEST_H
-#include <memory>
-#include <ui.hpp>
-#include <vector_math/vector_math_64.hpp>
+#ifndef PACKAGES_FLUTTER_SRC_GESTURES_HIT_TEST
+#define PACKAGES_FLUTTER_SRC_GESTURES_HIT_TEST
+#include <base.hpp>
+#include <dart/ui/ui.hpp>
+#include <packages/vector_math/vector_math.hpp>
 #include "events.hpp"
 
-#include <flutter/foundation.hpp>
-#include <vector_math/vector_math_64.hpp>
+#include <dart/core/core.hpp>
+#include <packages/flutter/lib/foundation.hpp>
+#include <packages/vector_math/vector_math.hpp>
 #include "events.hpp"
 
 
-
-class HitTestable {
+class HitTestableCls : public ObjectCls {
 public:
 
-    void hitTest(Offset position, HitTestResult result);
-
+    virtual void hitTest(Offset position, HitTestResult result);
 private:
 
-    void  _();
-
+    virtual void  _();
 };
+using HitTestable = std::shared_ptr<HitTestableCls>;
 
-class HitTestDispatcher {
+class HitTestDispatcherCls : public ObjectCls {
 public:
 
-    void dispatchEvent(PointerEvent event, HitTestResult result);
-
+    virtual void dispatchEvent(PointerEvent event, HitTestResult result);
 private:
 
-    void  _();
-
+    virtual void  _();
 };
+using HitTestDispatcher = std::shared_ptr<HitTestDispatcherCls>;
 
-class HitTestTarget {
+class HitTestTargetCls : public ObjectCls {
 public:
 
-    void handleEvent(HitTestEntry<HitTestTarget> entry, PointerEvent event);
-
+    virtual void handleEvent(HitTestEntry<HitTestTarget> entry, PointerEvent event);
 private:
 
-    void  _();
-
+    virtual void  _();
 };
+using HitTestTarget = std::shared_ptr<HitTestTargetCls>;
 
-class HitTestEntry<T extends HitTestTarget> {
+template<typename T : HitTestTarget> class HitTestEntryCls : public ObjectCls {
 public:
     T target;
 
 
-     HitTestEntry(T target);
+     HitTestEntryCls(T target);
+    virtual String toString();
 
-    String toString();
-
-    Matrix4 transform();
+    virtual Matrix4 transform();
 
 private:
     Matrix4 _transform;
 
 
 };
+template<typename T : HitTestTarget> using HitTestEntry = std::shared_ptr<HitTestEntryCls<T : HitTestTarget>>;
 
-class _TransformPart {
+class _TransformPartCls : public ObjectCls {
 public:
 
-    Matrix4 multiply(Matrix4 rhs);
-
+    virtual Matrix4 multiply(Matrix4 rhs);
 private:
 
-     _TransformPart();
-
+     _TransformPartCls();
 };
+using _TransformPart = std::shared_ptr<_TransformPartCls>;
 
-class _MatrixTransformPart : _TransformPart {
+class _MatrixTransformPartCls : public _TransformPartCls {
 public:
     Matrix4 matrix;
 
 
-    Matrix4 multiply(Matrix4 rhs);
+    virtual Matrix4 multiply(Matrix4 rhs);
 
 private:
 
-     _MatrixTransformPart(Matrix4 matrix);
-
+     _MatrixTransformPartCls(Matrix4 matrix);
 };
+using _MatrixTransformPart = std::shared_ptr<_MatrixTransformPartCls>;
 
-class _OffsetTransformPart : _TransformPart {
+class _OffsetTransformPartCls : public _TransformPartCls {
 public:
     Offset offset;
 
 
-    Matrix4 multiply(Matrix4 rhs);
+    virtual Matrix4 multiply(Matrix4 rhs);
 
 private:
 
-     _OffsetTransformPart(Offset offset);
-
+     _OffsetTransformPartCls(Offset offset);
 };
+using _OffsetTransformPart = std::shared_ptr<_OffsetTransformPartCls>;
 
-class HitTestResult {
+class HitTestResultCls : public ObjectCls {
 public:
 
-     HitTestResult();
+     HitTestResultCls();
 
-    void  wrap(HitTestResult result);
+    virtual void  wrap(HitTestResult result);
 
-    Iterable<HitTestEntry> path();
+    virtual Iterable<HitTestEntry> path();
 
-    void add(HitTestEntry entry);
+    virtual void add(HitTestEntry entry);
 
-    void pushTransform(Matrix4 transform);
+    virtual void pushTransform(Matrix4 transform);
 
-    void pushOffset(Offset offset);
+    virtual void pushOffset(Offset offset);
 
-    void popTransform();
+    virtual void popTransform();
 
-    String toString();
+    virtual String toString();
 
 private:
     List<HitTestEntry> _path;
@@ -125,12 +121,14 @@ private:
     List<_TransformPart> _localTransforms;
 
 
-    void _globalizeTransforms();
+    virtual void _globalizeTransforms();
 
-    Matrix4 _lastTransform();
+    virtual Matrix4 _lastTransform();
 
-    bool _debugVectorMoreOrLessEquals(Vector4 a, Vector4 b, double epsilon);
+    virtual bool _debugVectorMoreOrLessEquals(Vector4 a, Vector4 b, double epsilon);
 
 };
+using HitTestResult = std::shared_ptr<HitTestResultCls>;
+
 
 #endif

@@ -1,30 +1,31 @@
-#ifndef BROADCAST_STREAM_CONTROLLER_H
-#define BROADCAST_STREAM_CONTROLLER_H
-#include <memory>
+#ifndef DART_ASYNC_BROADCAST_STREAM_CONTROLLER
+#define DART_ASYNC_BROADCAST_STREAM_CONTROLLER
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
 
 
-
-
-class _BroadcastStream<T> : _ControllerStream<T> {
+template<typename T> class _BroadcastStreamCls : public _ControllerStreamCls<T> {
 public:
 
-    bool isBroadcast();
+    virtual bool isBroadcast();
 
 private:
 
-     _BroadcastStream(_StreamControllerLifecycle<T> controller);
+     _BroadcastStreamCls(_StreamControllerLifecycle<T> controller);
 
 };
+template<typename T> using _BroadcastStream = std::shared_ptr<_BroadcastStreamCls<T>>;
 
-class _BroadcastSubscription<T> : _ControllerSubscription<T> {
+template<typename T> class _BroadcastSubscriptionCls : public _ControllerSubscriptionCls<T> {
 public:
 
 private:
-    static const int _STATE_EVENT_ID;
+    static int _STATE_EVENT_ID;
 
-    static const int _STATE_FIRING;
+    static int _STATE_FIRING;
 
-    static const int _STATE_REMOVE_AFTER_FIRING;
+    static int _STATE_REMOVE_AFTER_FIRING;
 
     int _eventState;
 
@@ -33,69 +34,70 @@ private:
     _BroadcastSubscription<T> _previous;
 
 
-     _BroadcastSubscription(bool cancelOnError, _StreamControllerLifecycle<T> controller, FunctionType onData, FunctionType onDone, FunctionType onError);
+     _BroadcastSubscriptionCls(bool cancelOnError, _StreamControllerLifecycle<T> controller, void onData(T data) , void onDone() , void  onError() );
 
-    bool _expectsEvent(int eventId);
+    virtual bool _expectsEvent(int eventId);
 
-    void _toggleEventId();
+    virtual void _toggleEventId();
 
-    bool _isFiring();
+    virtual bool _isFiring();
 
-    void _setRemoveAfterFiring();
+    virtual void _setRemoveAfterFiring();
 
-    bool _removeAfterFiring();
+    virtual bool _removeAfterFiring();
 
-    void _onPause();
+    virtual void _onPause();
 
-    void _onResume();
+    virtual void _onResume();
 
 };
+template<typename T> using _BroadcastSubscription = std::shared_ptr<_BroadcastSubscriptionCls<T>>;
 
-class _BroadcastStreamController<T> {
+template<typename T> class _BroadcastStreamControllerCls : public ObjectCls {
 public:
-    FunctionType onListen;
+    void Function() onListen;
 
-    FunctionType onCancel;
+    FutureOr<void> Function() onCancel;
 
 
-    FunctionType onPause();
+    virtual void Function() onPause();
 
-    void onPause(FunctionType onPauseHandler);
+    virtual void onPause(void onPauseHandler() );
 
-    FunctionType onResume();
+    virtual void Function() onResume();
 
-    void onResume(FunctionType onResumeHandler);
+    virtual void onResume(void onResumeHandler() );
 
-    Stream<T> stream();
+    virtual Stream<T> stream();
 
-    StreamSink<T> sink();
+    virtual StreamSink<T> sink();
 
-    bool isClosed();
+    virtual bool isClosed();
 
-    bool isPaused();
+    virtual bool isPaused();
 
-    bool hasListener();
+    virtual bool hasListener();
 
-    void add(T data);
+    virtual void add(T data);
 
-    void addError(Object error, StackTrace stackTrace);
+    virtual void addError(Object error, StackTrace stackTrace);
 
-    Future close();
+    virtual Future close();
 
-    Future<void> done();
+    virtual Future<void> done();
 
-    Future addStream(bool cancelOnError, Stream<T> stream);
+    virtual Future addStream(bool cancelOnError, Stream<T> stream);
 
 private:
-    static const int _STATE_INITIAL;
+    static int _STATE_INITIAL;
 
-    static const int _STATE_EVENT_ID;
+    static int _STATE_EVENT_ID;
 
-    static const int _STATE_FIRING;
+    static int _STATE_FIRING;
 
-    static const int _STATE_CLOSED;
+    static int _STATE_CLOSED;
 
-    static const int _STATE_ADDSTREAM;
+    static int _STATE_ADDSTREAM;
 
     int _state;
 
@@ -108,103 +110,108 @@ private:
     _Future<void> _doneFuture;
 
 
-     _BroadcastStreamController(FunctionType onCancel, FunctionType onListen);
+     _BroadcastStreamControllerCls(FutureOr<void> Function() onCancel, void Function() onListen);
 
-    bool _hasOneListener();
+    virtual bool _hasOneListener();
 
-    bool _isFiring();
+    virtual bool _isFiring();
 
-    bool _isAddingStream();
+    virtual bool _isAddingStream();
 
-    bool _mayAddEvent();
+    virtual bool _mayAddEvent();
 
-    _Future<void> _ensureDoneFuture();
+    virtual _Future<void> _ensureDoneFuture();
 
-    bool _isEmpty();
+    virtual bool _isEmpty();
 
-    void _addListener(_BroadcastSubscription<T> subscription);
+    virtual void _addListener(_BroadcastSubscription<T> subscription);
 
-    void _removeListener(_BroadcastSubscription<T> subscription);
+    virtual void _removeListener(_BroadcastSubscription<T> subscription);
 
-    StreamSubscription<T> _subscribe(bool cancelOnError, FunctionType onData, FunctionType onDone, FunctionType onError);
+    virtual StreamSubscription<T> _subscribe(bool cancelOnError, void onData(T data) , void onDone() , void  onError() );
 
-    Future<void> _recordCancel(StreamSubscription<T> sub);
+    virtual Future<void> _recordCancel(StreamSubscription<T> sub);
 
-    void _recordPause(StreamSubscription<T> subscription);
+    virtual void _recordPause(StreamSubscription<T> subscription);
 
-    void _recordResume(StreamSubscription<T> subscription);
+    virtual void _recordResume(StreamSubscription<T> subscription);
 
-    Error _addEventError();
+    virtual Error _addEventError();
 
-    void _add(T data);
+    virtual void _add(T data);
 
-    void _addError(Object error, StackTrace stackTrace);
+    virtual void _addError(Object error, StackTrace stackTrace);
 
-    void _close();
+    virtual void _close();
 
-    void _forEachListener(FunctionType action);
+    virtual void _forEachListener(void action(_BufferingStreamSubscription<T> subscription) );
 
-    void _callOnCancel();
+    virtual void _callOnCancel();
 
 };
+template<typename T> using _BroadcastStreamController = std::shared_ptr<_BroadcastStreamControllerCls<T>>;
 
-class _SyncBroadcastStreamController<T> : _BroadcastStreamController<T> {
+template<typename T> class _SyncBroadcastStreamControllerCls : public _BroadcastStreamControllerCls<T> {
 public:
 
 private:
 
-     _SyncBroadcastStreamController(FunctionType onCancel, FunctionType onListen);
+     _SyncBroadcastStreamControllerCls(void onCancel() , void onListen() );
 
-    bool _mayAddEvent();
+    virtual bool _mayAddEvent();
 
-    void  _addEventError();
+    virtual void  _addEventError();
 
-    void _sendData(T data);
+    virtual void _sendData(T data);
 
-    void _sendError(Object error, StackTrace stackTrace);
+    virtual void _sendError(Object error, StackTrace stackTrace);
 
-    void _sendDone();
+    virtual void _sendDone();
 
 };
+template<typename T> using _SyncBroadcastStreamController = std::shared_ptr<_SyncBroadcastStreamControllerCls<T>>;
 
-class _AsyncBroadcastStreamController<T> : _BroadcastStreamController<T> {
+template<typename T> class _AsyncBroadcastStreamControllerCls : public _BroadcastStreamControllerCls<T> {
 public:
 
 private:
 
-     _AsyncBroadcastStreamController(FunctionType onCancel, FunctionType onListen);
+     _AsyncBroadcastStreamControllerCls(void onCancel() , void onListen() );
 
-    void _sendData(T data);
+    virtual void _sendData(T data);
 
-    void _sendError(Object error, StackTrace stackTrace);
+    virtual void _sendError(Object error, StackTrace stackTrace);
 
-    void _sendDone();
+    virtual void _sendDone();
 
 };
+template<typename T> using _AsyncBroadcastStreamController = std::shared_ptr<_AsyncBroadcastStreamControllerCls<T>>;
 
-class _AsBroadcastStreamController<T> : _SyncBroadcastStreamController<T> {
+template<typename T> class _AsBroadcastStreamControllerCls : public _SyncBroadcastStreamControllerCls<T> {
 public:
 
-    void add(T data);
+    virtual void add(T data);
 
-    void addError(Object error, StackTrace stackTrace);
+    virtual void addError(Object error, StackTrace stackTrace);
 
-    Future close();
+    virtual Future close();
 
 private:
     _PendingEvents<T> _pending;
 
 
-     _AsBroadcastStreamController(FunctionType onCancel, FunctionType onListen);
+     _AsBroadcastStreamControllerCls(void onCancel() , void onListen() );
 
-    bool _hasPending();
+    virtual bool _hasPending();
 
-    void _addPendingEvent(_DelayedEvent event);
+    virtual void _addPendingEvent(_DelayedEvent event);
 
-    void _flushPending();
+    virtual void _flushPending();
 
-    void _callOnCancel();
+    virtual void _callOnCancel();
 
 };
+template<typename T> using _AsBroadcastStreamController = std::shared_ptr<_AsBroadcastStreamControllerCls<T>>;
+
 
 #endif

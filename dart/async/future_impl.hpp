@@ -1,124 +1,127 @@
-#ifndef FUTURE_IMPL_H
-#define FUTURE_IMPL_H
-#include <memory>
+#ifndef DART_ASYNC_FUTURE_IMPL
+#define DART_ASYNC_FUTURE_IMPL
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
 
 
-
-
-class _Completer<T> {
+template<typename T> class _CompleterCls : public ObjectCls {
 public:
     _Future<T> future;
 
 
-    void complete(FutureOr<T> value);
+    virtual void complete(FutureOr<T> value);
+    virtual void completeError(Object error, StackTrace stackTrace);
 
-    void completeError(Object error, StackTrace stackTrace);
-
-    bool isCompleted();
-
-private:
-
-    void _completeError(Object error, StackTrace stackTrace);
-
-};
-
-class _AsyncCompleter<T> : _Completer<T> {
-public:
-
-    void complete(FutureOr<T> value);
+    virtual bool isCompleted();
 
 private:
 
-    void _completeError(Object error, StackTrace stackTrace);
-
+    virtual void _completeError(Object error, StackTrace stackTrace);
 };
+template<typename T> using _Completer = std::shared_ptr<_CompleterCls<T>>;
 
-class _SyncCompleter<T> : _Completer<T> {
+template<typename T> class _AsyncCompleterCls : public _CompleterCls<T> {
 public:
 
-    void complete(FutureOr<T> value);
+    virtual void complete(FutureOr<T> value);
 
 private:
 
-    void _completeError(Object error, StackTrace stackTrace);
+    virtual void _completeError(Object error, StackTrace stackTrace);
 
 };
+template<typename T> using _AsyncCompleter = std::shared_ptr<_AsyncCompleterCls<T>>;
 
-class _FutureListener<S, T> {
+template<typename T> class _SyncCompleterCls : public _CompleterCls<T> {
 public:
-    static const int maskValue;
 
-    static const int maskError;
+    virtual void complete(FutureOr<T> value);
 
-    static const int maskTestError;
+private:
 
-    static const int maskWhenComplete;
+    virtual void _completeError(Object error, StackTrace stackTrace);
 
-    static const int stateChain;
+};
+template<typename T> using _SyncCompleter = std::shared_ptr<_SyncCompleterCls<T>>;
 
-    static const int stateThen;
+template<typename S, typename T> class _FutureListenerCls : public ObjectCls {
+public:
+    static int maskValue;
 
-    static const int stateThenOnerror;
+    static int maskError;
 
-    static const int stateCatchError;
+    static int maskTestError;
 
-    static const int stateCatchErrorTest;
+    static int maskWhenComplete;
 
-    static const int stateWhenComplete;
+    static int stateChain;
 
-    static const int maskType;
+    static int stateThen;
+
+    static int stateThenOnerror;
+
+    static int stateCatchError;
+
+    static int stateCatchErrorTest;
+
+    static int stateWhenComplete;
+
+    static int maskType;
 
     _Future<T> result;
 
     int state;
 
-    FunctionType callback;
+    void  Function() callback;
 
-    FunctionType errorCallback;
+    void  Function() errorCallback;
 
 
-    void  then(FunctionType errorCallback, FunctionType onValue, _Future<T> result);
+    virtual void  then(void  errorCallback() , FutureOr<T> onValue(S ) , _Future<T> result);
 
-    void  thenAwait(FunctionType errorCallback, FunctionType onValue, _Future<T> result);
+    virtual void  thenAwait(void  errorCallback() , FutureOr<T> onValue(S ) , _Future<T> result);
 
-    void  catchError(FunctionType callback, FunctionType errorCallback, _Future<T> result);
+    virtual void  catchError(void  Function() callback, void  Function() errorCallback, _Future<T> result);
 
-    void  whenComplete(FunctionType callback, _Future<T> result);
+    virtual void  whenComplete(void  Function() callback, _Future<T> result);
 
-    bool handlesValue();
+    virtual bool handlesValue();
 
-    bool handlesError();
+    virtual bool handlesError();
 
-    bool hasErrorTest();
+    virtual bool hasErrorTest();
 
-    bool handlesComplete();
+    virtual bool handlesComplete();
 
-    bool hasErrorCallback();
+    virtual bool hasErrorCallback();
 
-    FutureOr<T> handleValue(S sourceResult);
+    virtual FutureOr<T> handleValue(S sourceResult);
 
-    bool matchesErrorTest(AsyncError asyncError);
+    virtual bool matchesErrorTest(AsyncError asyncError);
 
-    FutureOr<T> handleError(AsyncError asyncError);
+    virtual FutureOr<T> handleError(AsyncError asyncError);
 
-    dynamic handleWhenComplete();
+    virtual dynamic handleWhenComplete();
 
-    bool shouldChain(Future<dynamic> value);
+    virtual bool shouldChain(Future<dynamic> value);
 
 private:
     _FutureListener _nextListener;
 
 
-    _Zone _zone();
+    virtual _Zone _zone();
 
-    FunctionType _onValue();
+    virtual FutureOr<T> Function(S ) _onValue();
 
-    FunctionType _onError();
+    virtual void  Function() _onError();
 
-    FunctionType _errorTest();
+    virtual bool Function(Object ) _errorTest();
 
-    FunctionType _whenCompleteAction();
+    virtual dynamic Function() _whenCompleteAction();
 
 };
+template<typename S, typename T> using _FutureListener = std::shared_ptr<_FutureListenerCls<S, T>>;
+
 
 #endif

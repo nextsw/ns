@@ -1,22 +1,22 @@
-#ifndef TEXT_EDITING_DELTA_H
-#define TEXT_EDITING_DELTA_H
-#include <memory>
-#include <ui.hpp>
+#ifndef PACKAGES_FLUTTER_SRC_SERVICES_TEXT_EDITING_DELTA
+#define PACKAGES_FLUTTER_SRC_SERVICES_TEXT_EDITING_DELTA
+#include <base.hpp>
+#include <dart/ui/ui.hpp>
 #include "text_editing.hpp"
 #include "text_input.hpp"
 
-#include <ui/ui.hpp>
-#include <flutter/foundation.hpp>
+#include <dart/core/core.hpp>
+#include <dart/ui/ui.hpp>
+#include <packages/flutter/lib/foundation.hpp>
 #include "text_editing.hpp"
 #include "text_input.hpp"
-
 
 TextAffinity _toTextAffinity(String affinity);
 
 String _replace(int end, String originalText, String replacementText, int start);
 
 
-class TextEditingDelta {
+class TextEditingDeltaCls : public ObjectCls {
 public:
     String oldText;
 
@@ -25,72 +25,73 @@ public:
     TextRange composing;
 
 
-     TextEditingDelta(TextRange composing, String oldText, TextSelection selection);
+     TextEditingDeltaCls(TextRange composing, String oldText, TextSelection selection);
 
-    void  fromJSON(Map<String, dynamic> encoded);
+    virtual void  fromJSON(Map<String, dynamic> encoded);
 
-    TextEditingValue apply(TextEditingValue value);
-
+    virtual TextEditingValue apply(TextEditingValue value);
 private:
 
 };
+using TextEditingDelta = std::shared_ptr<TextEditingDeltaCls>;
 
-class TextEditingDeltaInsertion : TextEditingDelta {
+class TextEditingDeltaInsertionCls : public TextEditingDeltaCls {
 public:
     String textInserted;
 
     int insertionOffset;
 
 
-     TextEditingDeltaInsertion(Unknown, int insertionOffset, Unknown, Unknown, String textInserted);
-
-    TextEditingValue apply(TextEditingValue value);
+     TextEditingDeltaInsertionCls(Unknown composing, int insertionOffset, Unknown oldText, Unknown selection, String textInserted);
+    virtual TextEditingValue apply(TextEditingValue value);
 
 private:
 
 };
+using TextEditingDeltaInsertion = std::shared_ptr<TextEditingDeltaInsertionCls>;
 
-class TextEditingDeltaDeletion : TextEditingDelta {
+class TextEditingDeltaDeletionCls : public TextEditingDeltaCls {
 public:
     TextRange deletedRange;
 
 
-     TextEditingDeltaDeletion(Unknown, TextRange deletedRange, Unknown, Unknown);
+     TextEditingDeltaDeletionCls(Unknown composing, TextRange deletedRange, Unknown oldText, Unknown selection);
+    virtual String textDeleted();
 
-    String textDeleted();
-
-    TextEditingValue apply(TextEditingValue value);
+    virtual TextEditingValue apply(TextEditingValue value);
 
 private:
 
 };
+using TextEditingDeltaDeletion = std::shared_ptr<TextEditingDeltaDeletionCls>;
 
-class TextEditingDeltaReplacement : TextEditingDelta {
+class TextEditingDeltaReplacementCls : public TextEditingDeltaCls {
 public:
     String replacementText;
 
     TextRange replacedRange;
 
 
-     TextEditingDeltaReplacement(Unknown, Unknown, TextRange replacedRange, String replacementText, Unknown);
+     TextEditingDeltaReplacementCls(Unknown composing, Unknown oldText, TextRange replacedRange, String replacementText, Unknown selection);
+    virtual String textReplaced();
 
-    String textReplaced();
-
-    TextEditingValue apply(TextEditingValue value);
+    virtual TextEditingValue apply(TextEditingValue value);
 
 private:
 
 };
+using TextEditingDeltaReplacement = std::shared_ptr<TextEditingDeltaReplacementCls>;
 
-class TextEditingDeltaNonTextUpdate : TextEditingDelta {
+class TextEditingDeltaNonTextUpdateCls : public TextEditingDeltaCls {
 public:
 
-     TextEditingDeltaNonTextUpdate(Unknown, Unknown, Unknown);
-
-    TextEditingValue apply(TextEditingValue value);
+     TextEditingDeltaNonTextUpdateCls(Unknown composing, Unknown oldText, Unknown selection);
+    virtual TextEditingValue apply(TextEditingValue value);
 
 private:
 
 };
+using TextEditingDeltaNonTextUpdate = std::shared_ptr<TextEditingDeltaNonTextUpdateCls>;
+
 
 #endif

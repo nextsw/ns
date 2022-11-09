@@ -1,54 +1,55 @@
-#ifndef UTF_H
-#define UTF_H
-#include <memory>
+#ifndef DART_CONVERT_UTF
+#define DART_CONVERT_UTF
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
+
+int unicodeReplacementCharacterRune;
+
+int unicodeBomCharacterRune;
+
+Utf8Codec utf8;
 
 
-
-const int unicodeReplacementCharacterRune;
-
-const int unicodeBomCharacterRune;
-
-const Utf8Codec utf8;
-
-
-class Utf8Codec : Encoding {
+class Utf8CodecCls : public EncodingCls {
 public:
 
-     Utf8Codec(bool allowMalformed);
+     Utf8CodecCls(bool allowMalformed);
 
-    String name();
+    virtual String name();
 
-    String decode(bool allowMalformed, List<int> codeUnits);
+    virtual String decode(bool allowMalformed, List<int> codeUnits);
 
-    Utf8Encoder encoder();
+    virtual Utf8Encoder encoder();
 
-    Utf8Decoder decoder();
+    virtual Utf8Decoder decoder();
 
 private:
     bool _allowMalformed;
 
 
 };
+using Utf8Codec = std::shared_ptr<Utf8CodecCls>;
 
-class Utf8Encoder : Converter<String, List<int>> {
+class Utf8EncoderCls : public ConverterCls<String, List<int>> {
 public:
 
-     Utf8Encoder();
+     Utf8EncoderCls();
+    virtual Uint8List convert(int end, int start, String stringValue);
 
-    Uint8List convert(int end, int start, String string);
+    virtual StringConversionSink startChunkedConversion(Sink<List<int>> sink);
 
-    StringConversionSink startChunkedConversion(Sink<List<int>> sink);
-
-    Stream<List<int>> bind(Stream<String> stream);
+    virtual Stream<List<int>> bind(Stream<String> stream);
 
 private:
 
 };
+using Utf8Encoder = std::shared_ptr<Utf8EncoderCls>;
 
-class _Utf8Encoder {
+class _Utf8EncoderCls : public ObjectCls {
 public:
 
-    void  withBufferSize(int bufferSize);
+    virtual void  withBufferSize(int bufferSize);
 
 private:
     int _carry;
@@ -57,71 +58,71 @@ private:
 
     Uint8List _buffer;
 
-    static const auto  _DEFAULT_BYTE_BUFFER_SIZE;
+    static auto  _DEFAULT_BYTE_BUFFER_SIZE;
 
 
-     _Utf8Encoder();
+     _Utf8EncoderCls();
 
     static Uint8List _createBuffer(int size);
 
-    void _writeReplacementCharacter();
+    virtual void _writeReplacementCharacter();
 
-    bool _writeSurrogate(int leadingSurrogate, int nextCodeUnit);
+    virtual bool _writeSurrogate(int leadingSurrogate, int nextCodeUnit);
 
-    int _fillBuffer(int end, int start, String str);
+    virtual int _fillBuffer(int end, int start, String str);
 
 };
+using _Utf8Encoder = std::shared_ptr<_Utf8EncoderCls>;
 
-class _Utf8EncoderSink : _Utf8Encoder {
+class _Utf8EncoderSinkCls : public _Utf8EncoderCls {
 public:
 
-    void close();
+    virtual void close();
 
-    void addSlice(int end, bool isLast, int start, String str);
+    virtual void addSlice(int end, bool isLast, int start, String str);
 
 private:
     ByteConversionSink _sink;
 
 
-     _Utf8EncoderSink(ByteConversionSink _sink);
-
+     _Utf8EncoderSinkCls(ByteConversionSink _sink);
 };
+using _Utf8EncoderSink = std::shared_ptr<_Utf8EncoderSinkCls>;
 
-class Utf8Decoder : Converter<List<int>, String> {
+class Utf8DecoderCls : public ConverterCls<List<int>, String> {
 public:
 
-     Utf8Decoder(bool allowMalformed);
+     Utf8DecoderCls(bool allowMalformed);
 
-    String convert(List<int> codeUnits, int end, int start);
+    virtual String convert(List<int> codeUnits, int end, int start);
 
-    ByteConversionSink startChunkedConversion(Sink<String> sink);
+    virtual ByteConversionSink startChunkedConversion(Sink<String> sink);
 
-    Stream<String> bind(Stream<List<int>> stream);
+    virtual Stream<String> bind(Stream<List<int>> stream);
 
-    external Converter<List<int>, T> fuse<T>(Converter<String, T> next);
-
+    template<typename T>  extern Converter<List<int>, T> fuse(Converter<String, T> next) override;
 private:
     bool _allowMalformed;
 
 
-    external static String _convertIntercepted(bool allowMalformed, List<int> codeUnits, int end, int start);
-
+    extern static String _convertIntercepted(bool allowMalformed, List<int> codeUnits, int end, int start);
 };
-const int _ONE_BYTE_LIMIT;
+using Utf8Decoder = std::shared_ptr<Utf8DecoderCls>;
+int _ONE_BYTE_LIMIT;
 
-const int _TWO_BYTE_LIMIT;
+int _TWO_BYTE_LIMIT;
 
-const int _THREE_BYTE_LIMIT;
+int _THREE_BYTE_LIMIT;
 
-const int _FOUR_BYTE_LIMIT;
+int _FOUR_BYTE_LIMIT;
 
-const int _SURROGATE_TAG_MASK;
+int _SURROGATE_TAG_MASK;
 
-const int _SURROGATE_VALUE_MASK;
+int _SURROGATE_VALUE_MASK;
 
-const int _LEAD_SURROGATE_MIN;
+int _LEAD_SURROGATE_MIN;
 
-const int _TAIL_SURROGATE_MIN;
+int _TAIL_SURROGATE_MIN;
 
 bool _isLeadSurrogate(int codeUnit);
 
@@ -130,143 +131,142 @@ bool _isTailSurrogate(int codeUnit);
 int _combineSurrogatePair(int lead, int tail);
 
 
-class _Utf8Decoder {
+class _Utf8DecoderCls : public ObjectCls {
 public:
     bool allowMalformed;
 
-    static const int typeMask;
+    static int typeMask;
 
-    static const int shiftedByteMask;
+    static int shiftedByteMask;
 
-    static const String typeTable;
+    static String typeTable;
 
-    static const int IA;
+    static int IA;
 
-    static const int BB;
+    static int BB;
 
-    static const int AB;
+    static int AB;
 
-    static const int X1;
+    static int X1;
 
-    static const int X2;
+    static int X2;
 
-    static const int X3;
+    static int X3;
 
-    static const int TO;
+    static int TO;
 
-    static const int TS;
+    static int TS;
 
-    static const int QO;
+    static int QO;
 
-    static const int QR;
+    static int QR;
 
-    static const int B1;
+    static int B1;
 
-    static const int B2;
+    static int B2;
 
-    static const int E1;
+    static int E1;
 
-    static const int E2;
+    static int E2;
 
-    static const int E3;
+    static int E3;
 
-    static const int E4;
+    static int E4;
 
-    static const int E5;
+    static int E5;
 
-    static const int E6;
+    static int E6;
 
-    static const int E7;
+    static int E7;
 
-    static const String transitionTable;
+    static String transitionTable;
 
-    static const int initial;
+    static int initial;
 
-    static const int accept;
+    static int accept;
 
-    static const int beforeBom;
+    static int beforeBom;
 
-    static const int afterBom;
+    static int afterBom;
 
-    static const int errorMissingExtension;
+    static int errorMissingExtension;
 
-    static const int errorUnexpectedExtension;
+    static int errorUnexpectedExtension;
 
-    static const int errorInvalid;
+    static int errorInvalid;
 
-    static const int errorOverlong;
+    static int errorOverlong;
 
-    static const int errorOutOfRange;
+    static int errorOutOfRange;
 
-    static const int errorSurrogate;
+    static int errorSurrogate;
 
-    static const int errorUnfinished;
+    static int errorUnfinished;
 
 
     static bool isErrorState(int state);
 
     static String errorDescription(int state);
 
-    external String convertSingle(List<int> codeUnits, int maybeEnd, int start);
+    extern String convertSingle(List<int> codeUnits, int maybeEnd, int start);
+    extern String convertChunked(List<int> codeUnits, int maybeEnd, int start);
+    virtual String convertGeneral(List<int> codeUnits, int maybeEnd, bool single, int start);
 
-    external String convertChunked(List<int> codeUnits, int maybeEnd, int start);
+    virtual void flush(StringSink sink);
 
-    String convertGeneral(List<int> codeUnits, int maybeEnd, bool single, int start);
-
-    void flush(StringSink sink);
-
-    String decodeGeneral(Uint8List bytes, int end, bool single, int start);
+    virtual String decodeGeneral(Uint8List bytes, int end, bool single, int start);
 
 private:
     int _state;
 
     int _charOrIndex;
 
-    static const String _IA;
+    static String _IA;
 
-    static const String _BB;
+    static String _BB;
 
-    static const String _AB;
+    static String _AB;
 
-    static const String _X1;
+    static String _X1;
 
-    static const String _X2;
+    static String _X2;
 
-    static const String _X3;
+    static String _X3;
 
-    static const String _TO;
+    static String _TO;
 
-    static const String _TS;
+    static String _TS;
 
-    static const String _QO;
+    static String _QO;
 
-    static const String _QR;
+    static String _QR;
 
-    static const String _B1;
+    static String _B1;
 
-    static const String _B2;
+    static String _B2;
 
-    static const String _E1;
+    static String _E1;
 
-    static const String _E2;
+    static String _E2;
 
-    static const String _E3;
+    static String _E3;
 
-    static const String _E4;
+    static String _E4;
 
-    static const String _E5;
+    static String _E5;
 
-    static const String _E6;
+    static String _E6;
 
-    static const String _E7;
+    static String _E7;
 
 
-    external  _Utf8Decoder(bool allowMalformed);
-
-    String _convertRecursive(Uint8List bytes, int end, bool single, int start);
+    extern  _Utf8DecoderCls(bool allowMalformed);
+    virtual String _convertRecursive(Uint8List bytes, int end, bool single, int start);
 
     static Uint8List _makeUint8List(List<int> codeUnits, int end, int start);
 
 };
+using _Utf8Decoder = std::shared_ptr<_Utf8DecoderCls>;
+
 
 #endif

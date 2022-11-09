@@ -1,15 +1,15 @@
-#ifndef IMAGE_STREAM_H
-#define IMAGE_STREAM_H
-#include <memory>
+#ifndef PACKAGES_FLUTTER_SRC_PAINTING_IMAGE_STREAM
+#define PACKAGES_FLUTTER_SRC_PAINTING_IMAGE_STREAM
+#include <base.hpp>
 
-#include <async/async.hpp>
-#include <ui/ui.hpp>
-#include <flutter/foundation.hpp>
-#include <flutter/scheduler.hpp>
+#include <dart/core/core.hpp>
+#include <dart/async/async.hpp>
+#include <dart/ui/ui.hpp>
+#include <packages/flutter/lib/foundation.hpp>
+#include <packages/flutter/flutter.hpp>
 
 
-
-class ImageInfo {
+class ImageInfoCls : public ObjectCls {
 public:
     Image image;
 
@@ -18,27 +18,28 @@ public:
     String debugLabel;
 
 
-     ImageInfo(String debugLabel, Image image, double scale);
+     ImageInfoCls(String debugLabel, Image image, double scale);
 
-    ImageInfo clone();
+    virtual ImageInfo clone();
 
-    bool isCloneOf(ImageInfo other);
+    virtual bool isCloneOf(ImageInfo other);
 
-    int sizeBytes();
+    virtual int sizeBytes();
 
-    void dispose();
+    virtual void dispose();
 
-    String toString();
+    virtual String toString();
 
-    int hashCode();
+    virtual int hashCode();
 
-    bool ==(Object other);
+    virtual bool operator==(Object other);
 
 private:
 
 };
+using ImageInfo = std::shared_ptr<ImageInfoCls>;
 
-class ImageStreamListener {
+class ImageStreamListenerCls : public ObjectCls {
 public:
     ImageListener onImage;
 
@@ -47,47 +48,48 @@ public:
     ImageErrorListener onError;
 
 
-     ImageStreamListener(ImageChunkListener onChunk, ImageErrorListener onError, ImageListener onImage);
+     ImageStreamListenerCls(ImageChunkListener onChunk, ImageErrorListener onError, ImageListener onImage);
 
-    int hashCode();
+    virtual int hashCode();
 
-    bool ==(Object other);
+    virtual bool operator==(Object other);
 
 private:
 
 };
+using ImageStreamListener = std::shared_ptr<ImageStreamListenerCls>;
 
-class ImageChunkEvent {
+class ImageChunkEventCls : public ObjectCls {
 public:
     int cumulativeBytesLoaded;
 
     int expectedTotalBytes;
 
 
-     ImageChunkEvent(int cumulativeBytesLoaded, int expectedTotalBytes);
+     ImageChunkEventCls(int cumulativeBytesLoaded, int expectedTotalBytes);
 
-    void debugFillProperties(DiagnosticPropertiesBuilder properties);
+    virtual void debugFillProperties(DiagnosticPropertiesBuilder properties);
 
 private:
 
 };
+using ImageChunkEvent = std::shared_ptr<ImageChunkEventCls>;
 
-class ImageStream {
+class ImageStreamCls : public ObjectCls {
 public:
 
-     ImageStream();
+     ImageStreamCls();
+    virtual ImageStreamCompleter completer();
 
-    ImageStreamCompleter completer();
+    virtual void setCompleter(ImageStreamCompleter value);
 
-    void setCompleter(ImageStreamCompleter value);
+    virtual void addListener(ImageStreamListener listener);
 
-    void addListener(ImageStreamListener listener);
+    virtual void removeListener(ImageStreamListener listener);
 
-    void removeListener(ImageStreamListener listener);
+    virtual Object key();
 
-    Object key();
-
-    void debugFillProperties(DiagnosticPropertiesBuilder properties);
+    virtual void debugFillProperties(DiagnosticPropertiesBuilder properties);
 
 private:
     ImageStreamCompleter _completer;
@@ -96,44 +98,46 @@ private:
 
 
 };
+using ImageStream = std::shared_ptr<ImageStreamCls>;
 
-class ImageStreamCompleterHandle {
+class ImageStreamCompleterHandleCls : public ObjectCls {
 public:
 
-    void dispose();
+    virtual void dispose();
 
 private:
     ImageStreamCompleter _completer;
 
 
-    void  _(ImageStreamCompleter _completer);
+    virtual void  _(ImageStreamCompleter _completer);
 
 };
+using ImageStreamCompleterHandle = std::shared_ptr<ImageStreamCompleterHandleCls>;
 
-class ImageStreamCompleter {
+class ImageStreamCompleterCls : public ObjectCls {
 public:
     String debugLabel;
 
 
-    bool hasListeners();
+    virtual bool hasListeners();
 
-    void addListener(ImageStreamListener listener);
+    virtual void addListener(ImageStreamListener listener);
 
-    ImageStreamCompleterHandle keepAlive();
+    virtual ImageStreamCompleterHandle keepAlive();
 
-    void removeListener(ImageStreamListener listener);
+    virtual void removeListener(ImageStreamListener listener);
 
-    void addOnLastListenerRemovedCallback(VoidCallback callback);
+    virtual void addOnLastListenerRemovedCallback(VoidCallback callback);
 
-    void removeOnLastListenerRemovedCallback(VoidCallback callback);
+    virtual void removeOnLastListenerRemovedCallback(VoidCallback callback);
 
-    void setImage(ImageInfo image);
+    virtual void setImage(ImageInfo image);
 
-    void reportError(DiagnosticsNode context, Object exception, InformationCollector informationCollector, bool silent, StackTrace stack);
+    virtual void reportError(DiagnosticsNode context, Object exception, InformationCollector informationCollector, bool silent, StackTrace stack);
 
-    void reportImageChunkEvent(ImageChunkEvent event);
+    virtual void reportImageChunkEvent(ImageChunkEvent event);
 
-    void debugFillProperties(DiagnosticPropertiesBuilder description);
+    virtual void debugFillProperties(DiagnosticPropertiesBuilder description);
 
 private:
     List<ImageStreamListener> _listeners;
@@ -153,29 +157,31 @@ private:
     List<VoidCallback> _onLastListenerRemovedCallbacks;
 
 
-    void _maybeDispose();
+    virtual void _maybeDispose();
 
-    void _checkDisposed();
+    virtual void _checkDisposed();
 
 };
+using ImageStreamCompleter = std::shared_ptr<ImageStreamCompleterCls>;
 
-class OneFrameImageStreamCompleter : ImageStreamCompleter {
+class OneFrameImageStreamCompleterCls : public ImageStreamCompleterCls {
 public:
 
-     OneFrameImageStreamCompleter(Future<ImageInfo> image, InformationCollector informationCollector);
+     OneFrameImageStreamCompleterCls(Future<ImageInfo> image, InformationCollector informationCollector);
 
 private:
 
 };
+using OneFrameImageStreamCompleter = std::shared_ptr<OneFrameImageStreamCompleterCls>;
 
-class MultiFrameImageStreamCompleter : ImageStreamCompleter {
+class MultiFrameImageStreamCompleterCls : public ImageStreamCompleterCls {
 public:
 
-     MultiFrameImageStreamCompleter(Stream<ImageChunkEvent> chunkEvents, Future<Codec> codec, String debugLabel, InformationCollector informationCollector, double scale);
+     MultiFrameImageStreamCompleterCls(Stream<ImageChunkEvent> chunkEvents, Future<Codec> codec, String debugLabel, InformationCollector informationCollector, double scale);
 
-    void addListener(ImageStreamListener listener);
+    virtual void addListener(ImageStreamListener listener);
 
-    void removeListener(ImageStreamListener listener);
+    virtual void removeListener(ImageStreamListener listener);
 
 private:
     StreamSubscription<ImageChunkEvent> _chunkSubscription;
@@ -199,22 +205,24 @@ private:
     bool _frameCallbackScheduled;
 
 
-    void _handleCodecReady(Codec codec);
+    virtual void _handleCodecReady(Codec codec);
 
-    void _handleAppFrame(Duration timestamp);
+    virtual void _handleAppFrame(Duration timestamp);
 
-    bool _isFirstFrame();
+    virtual bool _isFirstFrame();
 
-    bool _hasFrameDurationPassed(Duration timestamp);
+    virtual bool _hasFrameDurationPassed(Duration timestamp);
 
-    Future<void> _decodeNextFrameAndSchedule();
+    virtual Future<void> _decodeNextFrameAndSchedule();
 
-    void _scheduleAppFrame();
+    virtual void _scheduleAppFrame();
 
-    void _emitFrame(ImageInfo imageInfo);
+    virtual void _emitFrame(ImageInfo imageInfo);
 
-    void _maybeDispose();
+    virtual void _maybeDispose();
 
 };
+using MultiFrameImageStreamCompleter = std::shared_ptr<MultiFrameImageStreamCompleterCls>;
+
 
 #endif

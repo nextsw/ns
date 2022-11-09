@@ -1,23 +1,23 @@
 #include "matrix_utils.hpp"
-Offset MatrixUtils::getAsTranslation(Matrix4 transform) {
+Offset MatrixUtilsCls::getAsTranslation(Matrix4 transform) {
     assert(transform != nullptr);
-    Float64List values = transform.storage;
+    Float64List values = transform->storage;
     if (values[0] == 1.0 && values[1] == 0.0 && values[2] == 0.0 && values[3] == 0.0 && values[4] == 0.0 && values[5] == 1.0 && values[6] == 0.0 && values[7] == 0.0 && values[8] == 0.0 && values[9] == 0.0 && values[10] == 1.0 && values[11] == 0.0 && values[14] == 0.0 && values[15] == 1.0) {
-        return Offset(values[12], values[13]);
+        return make<OffsetCls>(values[12], values[13]);
     }
     return nullptr;
 }
 
-double MatrixUtils::getAsScale(Matrix4 transform) {
+double MatrixUtilsCls::getAsScale(Matrix4 transform) {
     assert(transform != nullptr);
-    Float64List values = transform.storage;
+    Float64List values = transform->storage;
     if (values[1] == 0.0 && values[2] == 0.0 && values[3] == 0.0 && values[4] == 0.0 && values[6] == 0.0 && values[7] == 0.0 && values[8] == 0.0 && values[9] == 0.0 && values[10] == 1.0 && values[11] == 0.0 && values[12] == 0.0 && values[13] == 0.0 && values[14] == 0.0 && values[15] == 1.0 && values[0] == values[5]) {
         return values[0];
     }
     return nullptr;
 }
 
-bool MatrixUtils::matrixEquals(Matrix4 a, Matrix4 b) {
+bool MatrixUtilsCls::matrixEquals(Matrix4 a, Matrix4 b) {
     if (identical(a, b)) {
         return true;
     }
@@ -29,35 +29,35 @@ bool MatrixUtils::matrixEquals(Matrix4 a, Matrix4 b) {
         return isIdentity(a);
     }
     assert(a != nullptr && b != nullptr);
-    return a.storage[0] == b.storage[0] && a.storage[1] == b.storage[1] && a.storage[2] == b.storage[2] && a.storage[3] == b.storage[3] && a.storage[4] == b.storage[4] && a.storage[5] == b.storage[5] && a.storage[6] == b.storage[6] && a.storage[7] == b.storage[7] && a.storage[8] == b.storage[8] && a.storage[9] == b.storage[9] && a.storage[10] == b.storage[10] && a.storage[11] == b.storage[11] && a.storage[12] == b.storage[12] && a.storage[13] == b.storage[13] && a.storage[14] == b.storage[14] && a.storage[15] == b.storage[15];
+    return a->storage[0] == b->storage[0] && a->storage[1] == b->storage[1] && a->storage[2] == b->storage[2] && a->storage[3] == b->storage[3] && a->storage[4] == b->storage[4] && a->storage[5] == b->storage[5] && a->storage[6] == b->storage[6] && a->storage[7] == b->storage[7] && a->storage[8] == b->storage[8] && a->storage[9] == b->storage[9] && a->storage[10] == b->storage[10] && a->storage[11] == b->storage[11] && a->storage[12] == b->storage[12] && a->storage[13] == b->storage[13] && a->storage[14] == b->storage[14] && a->storage[15] == b->storage[15];
 }
 
-bool MatrixUtils::isIdentity(Matrix4 a) {
+bool MatrixUtilsCls::isIdentity(Matrix4 a) {
     assert(a != nullptr);
-    return a.storage[0] == 1.0 && a.storage[1] == 0.0 && a.storage[2] == 0.0 && a.storage[3] == 0.0 && a.storage[4] == 0.0 && a.storage[5] == 1.0 && a.storage[6] == 0.0 && a.storage[7] == 0.0 && a.storage[8] == 0.0 && a.storage[9] == 0.0 && a.storage[10] == 1.0 && a.storage[11] == 0.0 && a.storage[12] == 0.0 && a.storage[13] == 0.0 && a.storage[14] == 0.0 && a.storage[15] == 1.0;
+    return a->storage[0] == 1.0 && a->storage[1] == 0.0 && a->storage[2] == 0.0 && a->storage[3] == 0.0 && a->storage[4] == 0.0 && a->storage[5] == 1.0 && a->storage[6] == 0.0 && a->storage[7] == 0.0 && a->storage[8] == 0.0 && a->storage[9] == 0.0 && a->storage[10] == 1.0 && a->storage[11] == 0.0 && a->storage[12] == 0.0 && a->storage[13] == 0.0 && a->storage[14] == 0.0 && a->storage[15] == 1.0;
 }
 
-Offset MatrixUtils::transformPoint(Offset point, Matrix4 transform) {
-    Float64List storage = transform.storage;
-    double x = point.dx;
-    double y = point.dy;
+Offset MatrixUtilsCls::transformPoint(Offset point, Matrix4 transform) {
+    Float64List storage = transform->storage;
+    double x = point->dx;
+    double y = point->dy;
     double rx = storage[0] * x + storage[4] * y + storage[12];
     double ry = storage[1] * x + storage[5] * y + storage[13];
     double rw = storage[3] * x + storage[7] * y + storage[15];
     if (rw == 1.0) {
-        return Offset(rx, ry);
+        return make<OffsetCls>(rx, ry);
     } else {
-        return Offset(rx / rw, ry / rw);
+        return make<OffsetCls>(rx / rw, ry / rw);
     }
 }
 
-Rect MatrixUtils::transformRect(Rect rect, Matrix4 transform) {
-    Float64List storage = transform.storage;
-    double x = rect.left;
-    double y = rect.top;
-    double w = rect.right - x;
-    double h = rect.bottom - y;
-    if (!w.isFinite || !h.isFinite) {
+Rect MatrixUtilsCls::transformRect(Rect rect, Matrix4 transform) {
+    Float64List storage = transform->storage;
+    double x = rect->left;
+    double y = rect->top;
+    double w = rect->right - x;
+    double h = rect->bottom - y;
+    if (!w->isFinite || !h->isFinite) {
         return _safeTransformRect(transform, rect);
     }
     double wx = storage[0] * w;
@@ -91,7 +91,7 @@ Rect MatrixUtils::transformRect(Rect rect, Matrix4 transform) {
         } else {
             bottom = hy;
         }
-        return Rect.fromLTRB(left, top, right, bottom);
+        return RectCls->fromLTRB(left, top, right, bottom);
     } else {
         double ww = storage[3] * w;
         double hw = storage[7] * h;
@@ -104,44 +104,44 @@ Rect MatrixUtils::transformRect(Rect rect, Matrix4 transform) {
         double lly = (ry + hy) / (rw + hw);
         double lrx = (rx + wx + hx) / (rw + ww + hw);
         double lry = (ry + wy + hy) / (rw + ww + hw);
-        return Rect.fromLTRB(_min4(ulx, urx, llx, lrx), _min4(uly, ury, lly, lry), _max4(ulx, urx, llx, lrx), _max4(uly, ury, lly, lry));
+        return RectCls->fromLTRB(_min4(ulx, urx, llx, lrx), _min4(uly, ury, lly, lry), _max4(ulx, urx, llx, lrx), _max4(uly, ury, lly, lry));
     }
 }
 
-Rect MatrixUtils::inverseTransformRect(Rect rect, Matrix4 transform) {
+Rect MatrixUtilsCls::inverseTransformRect(Rect rect, Matrix4 transform) {
     assert(rect != nullptr);
     if (isIdentity(transform)) {
         return rect;
     }
-    transform = ;
+    auto _c1 = Matrix4Cls->copy(transform);_c1.invert();transform = _c1;
     return transformRect(transform, rect);
 }
 
-Matrix4 MatrixUtils::createCylindricalProjectionTransform(double angle, Axis orientation, double perspective, double radius) {
+Matrix4 MatrixUtilsCls::createCylindricalProjectionTransform(double angle, Axis orientation, double perspective, double radius) {
     assert(radius != nullptr);
     assert(angle != nullptr);
     assert(perspective >= 0 && perspective <= 1.0);
     assert(orientation != nullptr);
-    Matrix4 result = ;
-    result = (;
+    auto _c1 = Matrix4Cls->identity();_c1.auto _c2 = setEntry(3, 2, -perspective);_c2.auto _c3 = setEntry(2, 3, -radius);_c3.setEntry(3, 3, perspective * radius + 1.0);_c3;_c2;Matrix4 result = _c1;
+    result = ((Matrix4)result * ((orientation == AxisCls::horizontal? Matrix4Cls->rotationY(angle) : Matrix4Cls->rotationX(angle)) * Matrix4Cls->translationValues(0.0, 0.0, radius)));
     return result;
 }
 
-Matrix4 MatrixUtils::forceToPoint(Offset offset) {
-    return ;
+Matrix4 MatrixUtilsCls::forceToPoint(Offset offset) {
+    auto _c1 = Matrix4Cls->identity();_c1.auto _c2 = setRow(0, make<Vector4Cls>(0, 0, 0, offset->dx));_c2.setRow(1, make<Vector4Cls>(0, 0, 0, offset->dy));_c2;return _c1;
 }
 
-Rect MatrixUtils::_safeTransformRect(Rect rect, Matrix4 transform) {
-    Float64List storage = transform.storage;
+Rect MatrixUtilsCls::_safeTransformRect(Rect rect, Matrix4 transform) {
+    Float64List storage = transform->storage;
     bool isAffine = storage[3] == 0.0 && storage[7] == 0.0 && storage[15] == 1.0;
-    _accumulate(storage, rect.left, rect.top, true, isAffine);
-    _accumulate(storage, rect.right, rect.top, false, isAffine);
-    _accumulate(storage, rect.left, rect.bottom, false, isAffine);
-    _accumulate(storage, rect.right, rect.bottom, false, isAffine);
-    return Rect.fromLTRB(_minMax[0], _minMax[1], _minMax[2], _minMax[3]);
+    _accumulate(storage, rect->left, rect->top, true, isAffine);
+    _accumulate(storage, rect->right, rect->top, false, isAffine);
+    _accumulate(storage, rect->left, rect->bottom, false, isAffine);
+    _accumulate(storage, rect->right, rect->bottom, false, isAffine);
+    return RectCls->fromLTRB(_minMax[0], _minMax[1], _minMax[2], _minMax[3]);
 }
 
-void MatrixUtils::_accumulate(bool first, bool isAffine, Float64List m, double x, double y) {
+void MatrixUtilsCls::_accumulate(bool first, bool isAffine, Float64List m, double x, double y) {
     double w = isAffine? 1.0 : 1.0 / (m[3] * x + m[7] * y + m[15]);
     double tx = (m[0] * x + m[4] * y + m[12]) * w;
     double ty = (m[1] * x + m[5] * y + m[13]) * w;
@@ -164,13 +164,13 @@ void MatrixUtils::_accumulate(bool first, bool isAffine, Float64List m, double x
     }
 }
 
-double MatrixUtils::_min4(double a, double b, double c, double d) {
+double MatrixUtilsCls::_min4(double a, double b, double c, double d) {
     double e = ( < b)? a : b;
     double f = ( < d)? c : d;
     return ( < f)? e : f;
 }
 
-double MatrixUtils::_max4(double a, double b, double c, double d) {
+double MatrixUtilsCls::_max4(double a, double b, double c, double d) {
     double e = (a > b)? a : b;
     double f = (c > d)? c : d;
     return (e > f)? e : f;
@@ -178,22 +178,22 @@ double MatrixUtils::_max4(double a, double b, double c, double d) {
 
 List<String> debugDescribeTransform(Matrix4 transform) {
     if (transform == nullptr) {
-        return const ;
+        return makeList(ArrayItem);
     }
-    return ;
+    return makeList(ArrayItem, ArrayItem, ArrayItem, ArrayItem);
 }
 
-TransformProperty::TransformProperty(Unknown, Unknown, String name, Unknown, Unknown) {
+TransformPropertyCls::TransformPropertyCls(Unknown defaultValue, Unknown level, String name, Unknown showName, Unknown value) {
     {
         assert(showName != nullptr);
         assert(level != nullptr);
     }
 }
 
-String TransformProperty::valueToString(TextTreeConfiguration parentConfiguration) {
-    if (parentConfiguration != nullptr && !parentConfiguration.lineBreakProperties) {
-        List<String> values = ;
+String TransformPropertyCls::valueToString(TextTreeConfiguration parentConfiguration) {
+    if (parentConfiguration != nullptr && !parentConfiguration->lineBreakProperties) {
+        List<String> values = makeList(ArrayItem, ArrayItem, ArrayItem, ArrayItem);
         return "[${values.join('; ')}]";
     }
-    return debugDescribeTransform(value).join("\n");
+    return debugDescribeTransform(value)->join("\n");
 }

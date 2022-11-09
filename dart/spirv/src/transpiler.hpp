@@ -1,21 +1,21 @@
-#ifndef TRANSPILER_H
-#define TRANSPILER_H
-#include <memory>
+#ifndef DART_SPIRV_SRC_TRANSPILER
+#define DART_SPIRV_SRC_TRANSPILER
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
+
+String _fragParamName;
+
+String _colorVariableName;
+
+String _glslESColorName;
+
+String _glslFragCoord;
+
+String _mainFunctionName;
 
 
-
-const String _fragParamName;
-
-const String _colorVariableName;
-
-const String _glslESColorName;
-
-const String _glslFragCoord;
-
-const String _mainFunctionName;
-
-
-class _Transpiler {
+class _TranspilerCls : public ObjectCls {
 public:
     Uint32List spirv;
 
@@ -78,132 +78,133 @@ public:
     int samplerCount;
 
 
-    void transpile();
+    virtual void transpile();
 
-    TranspileException failure(String why);
+    virtual TranspileException failure(String why);
 
-    void collectDeps(Set<int> collectedDeps, int id);
+    virtual void collectDeps(Set<int> collectedDeps, int id);
 
-    void writeFunctionAndDeps(int function, Set<int> visited);
+    virtual void writeFunctionAndDeps(int function, Set<int> visited);
 
-    void writeHeader();
+    virtual void writeHeader();
 
-    int resolveId(int id);
+    virtual int resolveId(int id);
 
-    String resolveName(int id);
+    virtual String resolveName(int id);
 
-    String resolveType(int type);
+    virtual String resolveType(int type);
 
-    String resolveResult(int name);
+    virtual String resolveResult(int name);
 
-    int readWord();
+    virtual int readWord();
 
-    void parseHeader();
+    virtual void parseHeader();
 
-    String readStringLiteral();
+    virtual String readStringLiteral();
 
-    void ref(int id);
+    virtual void ref(int id);
 
-    void addToCurrentBlock(_Instruction inst);
+    virtual void addToCurrentBlock(_Instruction inst);
 
-    void parseInstruction();
+    virtual void parseInstruction();
 
-    void typeCast();
+    virtual void typeCast();
 
-    void opExtInstImport();
+    virtual void opExtInstImport();
 
-    void opExtInst();
+    virtual void opExtInst();
 
-    void opMemoryModel();
+    virtual void opMemoryModel();
 
-    void opEntryPoint();
+    virtual void opEntryPoint();
 
-    void opExecutionMode();
+    virtual void opExecutionMode();
 
-    void opCapability();
+    virtual void opCapability();
 
-    void opTypeVoid();
+    virtual void opTypeVoid();
 
-    void opTypeBool();
+    virtual void opTypeBool();
 
-    void opTypeInt();
+    virtual void opTypeInt();
 
-    void opTypeFloat();
+    virtual void opTypeFloat();
 
-    void opTypeVector();
+    virtual void opTypeVector();
 
-    void opTypeMatrix();
+    virtual void opTypeMatrix();
 
-    void opTypeImage();
+    virtual void opTypeImage();
 
-    void opTypeSampledImage();
+    virtual void opTypeSampledImage();
 
-    void opTypePointer();
+    virtual void opTypePointer();
 
-    void opTypeFunction();
+    virtual void opTypeFunction();
 
-    void opConstantTrue();
+    virtual void opConstantTrue();
 
-    void opConstantFalse();
+    virtual void opConstantFalse();
 
-    void opConstant();
+    virtual void opConstant();
 
-    void opConstantComposite();
+    virtual void opConstantComposite();
 
-    void opFunction();
+    virtual void opFunction();
 
-    void opFunctionParameter();
+    virtual void opFunctionParameter();
 
-    void opFunctionEnd();
+    virtual void opFunctionEnd();
 
-    void opFunctionCall();
+    virtual void opFunctionCall();
 
-    void opVariable();
+    virtual void opVariable();
 
-    void opLoad();
+    virtual void opLoad();
 
-    void opSelect();
+    virtual void opSelect();
 
-    void opStore();
+    virtual void opStore();
 
-    void opAccessChain();
+    virtual void opAccessChain();
 
-    void opDecorate();
+    virtual void opDecorate();
 
-    void opVectorShuffle();
+    virtual void opVectorShuffle();
 
-    void opCompositeConstruct();
+    virtual void opCompositeConstruct();
 
-    void opCompositeExtract();
+    virtual void opCompositeExtract();
 
-    void opImageSampleImplicitLod();
+    virtual void opImageSampleImplicitLod();
 
-    void opLabel();
+    virtual void opLabel();
 
-    void opBranch();
+    virtual void opBranch();
 
-    void opBranchConditional();
+    virtual void opBranchConditional();
 
-    void opLoopMerge();
+    virtual void opLoopMerge();
 
-    void opSelectionMerge();
+    virtual void opSelectionMerge();
 
-    void opReturn();
+    virtual void opReturn();
 
-    void opReturnValue();
+    virtual void opReturnValue();
 
-    void parseUnaryOperator(_Operator op);
+    virtual void parseUnaryOperator(_Operator op);
 
-    void parseOperatorInst(_Operator op);
+    virtual void parseOperatorInst(_Operator op);
 
-    void parseBuiltinFunction(String functionName);
+    virtual void parseBuiltinFunction(String functionName);
 
-    void parseGLSLInst(int id, int type);
+    virtual void parseGLSLInst(int id, int type);
 
 private:
 
-     _Transpiler(Uint32List spirv, TargetLanguage target);
-
+     _TranspilerCls(Uint32List spirv, TargetLanguage target);
 };
+using _Transpiler = std::shared_ptr<_TranspilerCls>;
+
 
 #endif

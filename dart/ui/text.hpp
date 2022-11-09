@@ -1,8 +1,8 @@
-#ifndef TEXT_H
-#define TEXT_H
-#include <memory>
+#ifndef DART_UI_TEXT
+#define DART_UI_TEXT
+#include <base.hpp>
 
-
+#include <dart/core/core.hpp>
 
 
 enum FontStyle{
@@ -10,144 +10,146 @@ enum FontStyle{
     italic,
 } // end FontStyle
 
-class FontWeight {
+class FontWeightCls : public ObjectCls {
 public:
     int index;
 
-    static const FontWeight w100;
+    static FontWeight w100;
 
-    static const FontWeight w200;
+    static FontWeight w200;
 
-    static const FontWeight w300;
+    static FontWeight w300;
 
-    static const FontWeight w400;
+    static FontWeight w400;
 
-    static const FontWeight w500;
+    static FontWeight w500;
 
-    static const FontWeight w600;
+    static FontWeight w600;
 
-    static const FontWeight w700;
+    static FontWeight w700;
 
-    static const FontWeight w800;
+    static FontWeight w800;
 
-    static const FontWeight w900;
+    static FontWeight w900;
 
-    static const FontWeight normal;
+    static FontWeight normal;
 
-    static const FontWeight bold;
+    static FontWeight bold;
 
-    static const List<FontWeight> values;
+    static List<FontWeight> values;
 
 
     static FontWeight lerp(FontWeight a, FontWeight b, double t);
 
-    String toString();
+    virtual String toString();
 
 private:
 
-    void  _(int index);
-
+    virtual void  _(int index);
 };
+using FontWeight = std::shared_ptr<FontWeightCls>;
 
-class FontFeature {
+class FontFeatureCls : public ObjectCls {
 public:
     String feature;
 
     int value;
 
 
-     FontFeature(String feature, int value);
+     FontFeatureCls(String feature, int value);
 
-    void  enable(String feature);
+    virtual void  enable(String feature);
 
-    void  disable(String feature);
+    virtual void  disable(String feature);
 
-    void  alternative(int value);
+    virtual void  alternative(int value);
 
-    void  alternativeFractions();
+    virtual void  alternativeFractions();
 
-    void  contextualAlternates();
+    virtual void  contextualAlternates();
 
-    void  caseSensitiveForms();
+    virtual void  caseSensitiveForms();
 
-    void  characterVariant(int value);
+    virtual void  characterVariant(int value);
 
-    void  denominator();
+    virtual void  denominator();
 
-    void  fractions();
+    virtual void  fractions();
 
-    void  historicalForms();
+    virtual void  historicalForms();
 
-    void  historicalLigatures();
+    virtual void  historicalLigatures();
 
-    void  liningFigures();
+    virtual void  liningFigures();
 
-    void  localeAware(bool enable);
+    virtual void  localeAware(bool enable);
 
-    void  notationalForms(int value);
+    virtual void  notationalForms(int value);
 
-    void  numerators();
+    virtual void  numerators();
 
-    void  oldstyleFigures();
+    virtual void  oldstyleFigures();
 
-    void  ordinalForms();
+    virtual void  ordinalForms();
 
-    void  proportionalFigures();
+    virtual void  proportionalFigures();
 
-    void  randomize();
+    virtual void  randomize();
 
-    void  stylisticAlternates();
+    virtual void  stylisticAlternates();
 
-    void  scientificInferiors();
+    virtual void  scientificInferiors();
 
-    void  stylisticSet(int value);
+    virtual void  stylisticSet(int value);
 
-    void  subscripts();
+    virtual void  subscripts();
 
-    void  superscripts();
+    virtual void  superscripts();
 
-    void  swash(int value);
+    virtual void  swash(int value);
 
-    void  tabularFigures();
+    virtual void  tabularFigures();
 
-    void  slashedZero();
+    virtual void  slashedZero();
 
-    bool ==(Object other);
+    virtual bool operator==(Object other);
 
-    int hashCode();
+    virtual int hashCode();
 
-    String toString();
+    virtual String toString();
 
 private:
-    static const int _kEncodedSize;
+    static int _kEncodedSize;
 
 
-    void _encode(ByteData byteData);
+    virtual void _encode(ByteData byteData);
 
 };
+using FontFeature = std::shared_ptr<FontFeatureCls>;
 
-class FontVariation {
+class FontVariationCls : public ObjectCls {
 public:
     String axis;
 
     double value;
 
 
-     FontVariation(String axis, double value);
+     FontVariationCls(String axis, double value);
 
-    bool ==(Object other);
+    virtual bool operator==(Object other);
 
-    int hashCode();
+    virtual int hashCode();
 
-    String toString();
+    virtual String toString();
 
 private:
-    static const int _kEncodedSize;
+    static int _kEncodedSize;
 
 
-    void _encode(ByteData byteData);
+    virtual void _encode(ByteData byteData);
 
 };
+using FontVariation = std::shared_ptr<FontVariationCls>;
 
 enum TextAlign{
     left,
@@ -163,34 +165,34 @@ enum TextBaseline{
     ideographic,
 } // end TextBaseline
 
-class TextDecoration {
+class TextDecorationCls : public ObjectCls {
 public:
-    static const TextDecoration none;
+    static TextDecoration none;
 
-    static const TextDecoration underline;
+    static TextDecoration underline;
 
-    static const TextDecoration overline;
+    static TextDecoration overline;
 
-    static const TextDecoration lineThrough;
+    static TextDecoration lineThrough;
 
 
-    void  combine(List<TextDecoration> decorations);
+    virtual void  combine(List<TextDecoration> decorations);
 
-    bool contains(TextDecoration other);
+    virtual bool contains(TextDecoration other);
 
-    bool ==(Object other);
+    virtual bool operator==(Object other);
 
-    int hashCode();
+    virtual int hashCode();
 
-    String toString();
+    virtual String toString();
 
 private:
     int _mask;
 
 
-    void  _(int _mask);
-
+    virtual void  _(int _mask);
 };
+using TextDecoration = std::shared_ptr<TextDecorationCls>;
 
 enum TextDecorationStyle{
     solid,
@@ -205,7 +207,7 @@ enum TextLeadingDistribution{
     even,
 } // end TextLeadingDistribution
 
-class TextHeightBehavior {
+class TextHeightBehaviorCls : public ObjectCls {
 public:
     bool applyHeightToFirstAscent;
 
@@ -214,36 +216,36 @@ public:
     TextLeadingDistribution leadingDistribution;
 
 
-     TextHeightBehavior(bool applyHeightToFirstAscent, bool applyHeightToLastDescent, TextLeadingDistribution leadingDistribution);
+     TextHeightBehaviorCls(bool applyHeightToFirstAscent, bool applyHeightToLastDescent, TextLeadingDistribution leadingDistribution);
+    virtual bool operator==(Object other);
 
-    bool ==(Object other);
+    virtual int hashCode();
 
-    int hashCode();
-
-    String toString();
+    virtual String toString();
 
 private:
 
-    void  _fromEncoded(int encoded, TextLeadingDistribution leadingDistribution);
+    virtual void  _fromEncoded(int encoded, TextLeadingDistribution leadingDistribution);
 
-    int _encode();
+    virtual int _encode();
 
 };
-bool _listEquals<T>(List<T> a, List<T> b);
+using TextHeightBehavior = std::shared_ptr<TextHeightBehaviorCls>;
+template<typename T>  bool _listEquals(List<T> a, List<T> b);
 
 Int32List _encodeTextStyle(Paint background, Color color, TextDecoration decoration, Color decorationColor, TextDecorationStyle decorationStyle, double decorationThickness, String fontFamily, List<String> fontFamilyFallback, List<FontFeature> fontFeatures, double fontSize, FontStyle fontStyle, List<FontVariation> fontVariations, FontWeight fontWeight, Paint foreground, double height, double letterSpacing, Locale locale, List<Shadow> shadows, TextBaseline textBaseline, double wordSpacing);
 
 
-class TextStyle {
+class TextStyleCls : public ObjectCls {
 public:
 
-     TextStyle(Paint background, Color color, TextDecoration decoration, Color decorationColor, TextDecorationStyle decorationStyle, double decorationThickness, String fontFamily, List<String> fontFamilyFallback, List<FontFeature> fontFeatures, double fontSize, FontStyle fontStyle, List<FontVariation> fontVariations, FontWeight fontWeight, Paint foreground, double height, TextLeadingDistribution leadingDistribution, double letterSpacing, Locale locale, List<Shadow> shadows, TextBaseline textBaseline, double wordSpacing);
+     TextStyleCls(Paint background, Color color, TextDecoration decoration, Color decorationColor, TextDecorationStyle decorationStyle, double decorationThickness, String fontFamily, List<String> fontFamilyFallback, List<FontFeature> fontFeatures, double fontSize, FontStyle fontStyle, List<FontVariation> fontVariations, FontWeight fontWeight, Paint foreground, double height, TextLeadingDistribution leadingDistribution, double letterSpacing, Locale locale, List<Shadow> shadows, TextBaseline textBaseline, double wordSpacing);
 
-    bool ==(Object other);
+    virtual bool operator==(Object other);
 
-    int hashCode();
+    virtual int hashCode();
 
-    String toString();
+    virtual String toString();
 
 private:
     Int32List _encoded;
@@ -278,19 +280,20 @@ private:
 
 
 };
+using TextStyle = std::shared_ptr<TextStyleCls>;
 Int32List _encodeParagraphStyle(String ellipsis, String fontFamily, double fontSize, FontStyle fontStyle, FontWeight fontWeight, double height, Locale locale, int maxLines, StrutStyle strutStyle, TextAlign textAlign, TextDirection textDirection, TextHeightBehavior textHeightBehavior);
 
 
-class ParagraphStyle {
+class ParagraphStyleCls : public ObjectCls {
 public:
 
-     ParagraphStyle(String ellipsis, String fontFamily, double fontSize, FontStyle fontStyle, FontWeight fontWeight, double height, Locale locale, int maxLines, StrutStyle strutStyle, TextAlign textAlign, TextDirection textDirection, TextHeightBehavior textHeightBehavior);
+     ParagraphStyleCls(String ellipsis, String fontFamily, double fontSize, FontStyle fontStyle, FontWeight fontWeight, double height, Locale locale, int maxLines, StrutStyle strutStyle, TextAlign textAlign, TextDirection textDirection, TextHeightBehavior textHeightBehavior);
 
-    bool ==(Object other);
+    virtual bool operator==(Object other);
 
-    int hashCode();
+    virtual int hashCode();
 
-    String toString();
+    virtual String toString();
 
 private:
     Int32List _encoded;
@@ -311,17 +314,18 @@ private:
 
 
 };
+using ParagraphStyle = std::shared_ptr<ParagraphStyleCls>;
 ByteData _encodeStrut(String fontFamily, List<String> fontFamilyFallback, double fontSize, FontStyle fontStyle, FontWeight fontWeight, bool forceStrutHeight, double height, double leading, TextLeadingDistribution leadingDistribution);
 
 
-class StrutStyle {
+class StrutStyleCls : public ObjectCls {
 public:
 
-     StrutStyle(String fontFamily, List<String> fontFamilyFallback, double fontSize, FontStyle fontStyle, FontWeight fontWeight, bool forceStrutHeight, double height, double leading, TextLeadingDistribution leadingDistribution);
+     StrutStyleCls(String fontFamily, List<String> fontFamilyFallback, double fontSize, FontStyle fontStyle, FontWeight fontWeight, bool forceStrutHeight, double height, double leading, TextLeadingDistribution leadingDistribution);
 
-    bool ==(Object other);
+    virtual bool operator==(Object other);
 
-    int hashCode();
+    virtual int hashCode();
 
 private:
     ByteData _encoded;
@@ -333,16 +337,17 @@ private:
     TextLeadingDistribution _leadingDistribution;
 
 
-    bool _enabled();
+    virtual bool _enabled();
 
 };
+using StrutStyle = std::shared_ptr<StrutStyleCls>;
 
 enum TextDirection{
     rtl,
     ltr,
 } // end TextDirection
 
-class TextBox {
+class TextBoxCls : public ObjectCls {
 public:
     double left;
 
@@ -355,99 +360,102 @@ public:
     TextDirection direction;
 
 
-    void  fromLTRBD(double bottom, TextDirection direction, double left, double right, double top);
+    virtual void  fromLTRBD(double bottom, TextDirection direction, double left, double right, double top);
+    virtual Rect toRect();
 
-    Rect toRect();
+    virtual double start();
 
-    double start();
+    virtual double end();
 
-    double end();
+    virtual bool operator==(Object other);
 
-    bool ==(Object other);
+    virtual int hashCode();
 
-    int hashCode();
-
-    String toString();
+    virtual String toString();
 
 private:
 
 };
+using TextBox = std::shared_ptr<TextBoxCls>;
 
 enum TextAffinity{
     upstream,
     downstream,
 } // end TextAffinity
 
-class TextPosition {
+class TextPositionCls : public ObjectCls {
 public:
     int offset;
 
     TextAffinity affinity;
 
 
-     TextPosition(TextAffinity affinity, int offset);
+     TextPositionCls(TextAffinity affinity, int offset);
 
-    bool ==(Object other);
+    virtual bool operator==(Object other);
 
-    int hashCode();
+    virtual int hashCode();
 
-    String toString();
+    virtual String toString();
 
 private:
 
 };
+using TextPosition = std::shared_ptr<TextPositionCls>;
 
-class TextRange {
+class TextRangeCls : public ObjectCls {
 public:
-    static const TextRange empty;
+    static TextRange empty;
 
     int start;
 
     int end;
 
 
-     TextRange(int end, int start);
+     TextRangeCls(int end, int start);
 
-    void  collapsed(int offset);
+    virtual void  collapsed(int offset);
 
-    bool isValid();
+    virtual bool isValid();
 
-    bool isCollapsed();
+    virtual bool isCollapsed();
 
-    bool isNormalized();
+    virtual bool isNormalized();
 
-    String textBefore(String text);
+    virtual String textBefore(String text);
 
-    String textAfter(String text);
+    virtual String textAfter(String text);
 
-    String textInside(String text);
+    virtual String textInside(String text);
 
-    bool ==(Object other);
+    virtual bool operator==(Object other);
 
-    int hashCode();
+    virtual int hashCode();
 
-    String toString();
+    virtual String toString();
 
 private:
 
 };
+using TextRange = std::shared_ptr<TextRangeCls>;
 
-class ParagraphConstraints {
+class ParagraphConstraintsCls : public ObjectCls {
 public:
     double width;
 
 
-     ParagraphConstraints(double width);
+     ParagraphConstraintsCls(double width);
 
-    bool ==(Object other);
+    virtual bool operator==(Object other);
 
-    int hashCode();
+    virtual int hashCode();
 
-    String toString();
+    virtual String toString();
 
 private:
 
 };
+using ParagraphConstraints = std::shared_ptr<ParagraphConstraintsCls>;
 
 enum BoxHeightStyle{
     tight,
@@ -472,7 +480,7 @@ enum PlaceholderAlignment{
     middle,
 } // end PlaceholderAlignment
 
-class LineMetrics {
+class LineMetricsCls : public ObjectCls {
 public:
     bool hardBreak;
 
@@ -493,95 +501,78 @@ public:
     int lineNumber;
 
 
-     LineMetrics(double ascent, double baseline, double descent, bool hardBreak, double height, double left, int lineNumber, double unscaledAscent, double width);
+     LineMetricsCls(double ascent, double baseline, double descent, bool hardBreak, double height, double left, int lineNumber, double unscaledAscent, double width);
+    virtual bool operator==(Object other);
 
-    bool ==(Object other);
+    virtual int hashCode();
 
-    int hashCode();
-
-    String toString();
+    virtual String toString();
 
 private:
 
 };
+using LineMetrics = std::shared_ptr<LineMetricsCls>;
 
-class Paragraph : NativeFieldWrapperClass1 {
+class ParagraphCls : public NativeFieldWrapperClass1Cls {
 public:
 
-    double width();
+    virtual double width();
+    virtual double height();
+    virtual double longestLine();
+    virtual double minIntrinsicWidth();
+    virtual double maxIntrinsicWidth();
+    virtual double alphabeticBaseline();
+    virtual double ideographicBaseline();
+    virtual bool didExceedMaxLines();
+    virtual void layout(ParagraphConstraints constraints);
 
-    double height();
+    virtual List<TextBox> getBoxesForRange(BoxHeightStyle boxHeightStyle, BoxWidthStyle boxWidthStyle, int end, int start);
 
-    double longestLine();
+    virtual List<TextBox> getBoxesForPlaceholders();
 
-    double minIntrinsicWidth();
+    virtual TextPosition getPositionForOffset(Offset offset);
 
-    double maxIntrinsicWidth();
+    virtual TextRange getWordBoundary(TextPosition position);
 
-    double alphabeticBaseline();
+    virtual TextRange getLineBoundary(TextPosition position);
 
-    double ideographicBaseline();
-
-    bool didExceedMaxLines();
-
-    void layout(ParagraphConstraints constraints);
-
-    List<TextBox> getBoxesForRange(BoxHeightStyle boxHeightStyle, BoxWidthStyle boxWidthStyle, int end, int start);
-
-    List<TextBox> getBoxesForPlaceholders();
-
-    TextPosition getPositionForOffset(Offset offset);
-
-    TextRange getWordBoundary(TextPosition position);
-
-    TextRange getLineBoundary(TextPosition position);
-
-    List<LineMetrics> computeLineMetrics();
+    virtual List<LineMetrics> computeLineMetrics();
 
 private:
     bool _needsLayout;
 
 
-    void  _();
+    virtual void  _();
+    virtual void _layout(double width);
+    virtual List<TextBox> _decodeTextBoxes(Float32List encoded);
 
-    void _layout(double width);
-
-    List<TextBox> _decodeTextBoxes(Float32List encoded);
-
-    Float32List _getBoxesForRange(int boxHeightStyle, int boxWidthStyle, int end, int start);
-
-    Float32List _getBoxesForPlaceholders();
-
-    List<int> _getPositionForOffset(double dx, double dy);
-
-    List<int> _getWordBoundary(int offset);
-
-    List<int> _getLineBoundary(int offset);
-
-    void _paint(Canvas canvas, double x, double y);
-
-    Float64List _computeLineMetrics();
-
+    virtual Float32List _getBoxesForRange(int boxHeightStyle, int boxWidthStyle, int end, int start);
+    virtual Float32List _getBoxesForPlaceholders();
+    virtual List<int> _getPositionForOffset(double dx, double dy);
+    virtual List<int> _getWordBoundary(int offset);
+    virtual List<int> _getLineBoundary(int offset);
+    virtual void _paint(Canvas canvas, double x, double y);
+    virtual Float64List _computeLineMetrics();
 };
+using Paragraph = std::shared_ptr<ParagraphCls>;
 
-class ParagraphBuilder : NativeFieldWrapperClass1 {
+class ParagraphBuilderCls : public NativeFieldWrapperClass1Cls {
 public:
 
-     ParagraphBuilder(ParagraphStyle style);
+     ParagraphBuilderCls(ParagraphStyle style);
 
-    int placeholderCount();
+    virtual int placeholderCount();
 
-    List<double> placeholderScales();
+    virtual List<double> placeholderScales();
 
-    void pushStyle(TextStyle style);
+    virtual void pushStyle(TextStyle style);
 
-    void pop();
+    virtual void pop();
+    virtual void addText(String text);
 
-    void addText(String text);
+    virtual void addPlaceholder(PlaceholderAlignment alignment, TextBaseline baseline, double baselineOffset, double height, double scale, double width);
 
-    void addPlaceholder(PlaceholderAlignment alignment, TextBaseline baseline, double baselineOffset, double height, double scale, double width);
-
-    Paragraph build();
+    virtual Paragraph build();
 
 private:
     int _placeholderCount;
@@ -591,22 +582,19 @@ private:
     TextLeadingDistribution _defaultLeadingDistribution;
 
 
-    void _constructor(String ellipsis, Int32List encoded, String fontFamily, double fontSize, double height, String locale, ByteData strutData, List<Object> strutFontFamily);
-
-    void _pushStyle(ByteData backgroundData, List<Object> backgroundObjects, double decorationThickness, Int32List encoded, List<Object> fontFamilies, ByteData fontFeaturesData, double fontSize, ByteData fontVariationsData, ByteData foregroundData, List<Object> foregroundObjects, double height, double letterSpacing, String locale, ByteData shadowsData, double wordSpacing);
-
+    virtual void _constructor(String ellipsis, Int32List encoded, String fontFamily, double fontSize, double height, String locale, ByteData strutData, List<Object> strutFontFamily);
+    virtual void _pushStyle(ByteData backgroundData, List<Object> backgroundObjects, double decorationThickness, Int32List encoded, List<Object> fontFamilies, ByteData fontFeaturesData, double fontSize, ByteData fontVariationsData, ByteData foregroundData, List<Object> foregroundObjects, double height, double letterSpacing, String locale, ByteData shadowsData, double wordSpacing);
     static String _encodeLocale(Locale locale);
 
-    String _addText(String text);
-
-    String _addPlaceholder(int alignment, int baseline, double baselineOffset, double height, double width);
-
-    void _build(Paragraph outParagraph);
-
+    virtual String _addText(String text);
+    virtual String _addPlaceholder(int alignment, int baseline, double baselineOffset, double height, double width);
+    virtual void _build(Paragraph outParagraph);
 };
+using ParagraphBuilder = std::shared_ptr<ParagraphBuilderCls>;
 Future<void> loadFontFromList(String fontFamily, Uint8List list);
 
 ByteData _fontChangeMessage;
+
 
 
 #endif

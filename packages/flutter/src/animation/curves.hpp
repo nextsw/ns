@@ -1,69 +1,70 @@
-#ifndef CURVES_H
-#define CURVES_H
-#include <memory>
-#include <ui.hpp>
+#ifndef PACKAGES_FLUTTER_SRC_ANIMATION_CURVES
+#define PACKAGES_FLUTTER_SRC_ANIMATION_CURVES
+#include <base.hpp>
+#include <dart/ui/ui.hpp>
 
-#include <math/math.hpp>
-#include <ui/ui.hpp>
-#include <flutter/foundation.hpp>
+#include <dart/core/core.hpp>
+#include <dart/math/math.hpp>
+#include <dart/ui/ui.hpp>
+#include <packages/flutter/lib/foundation.hpp>
 
 
-
-class ParametricCurve<T> {
+template<typename T> class ParametricCurveCls : public ObjectCls {
 public:
 
-     ParametricCurve();
+     ParametricCurveCls();
+    virtual T transform(double t);
 
-    T transform(double t);
+    virtual T transformInternal(double t);
 
-    T transformInternal(double t);
-
-    String toString();
+    virtual String toString();
 
 private:
 
 };
+template<typename T> using ParametricCurve = std::shared_ptr<ParametricCurveCls<T>>;
 
-class Curve : ParametricCurve<double> {
+class CurveCls : public ParametricCurveCls<double> {
 public:
 
-     Curve();
+     CurveCls();
+    virtual double transform(double t);
 
-    double transform(double t);
-
-    Curve flipped();
+    virtual Curve flipped();
 
 private:
 
 };
+using Curve = std::shared_ptr<CurveCls>;
 
-class _Linear : Curve {
+class _LinearCls : public CurveCls {
 public:
 
-    double transformInternal(double t);
+    virtual double transformInternal(double t);
 
 private:
 
-    void  _();
-
+    virtual void  _();
 };
+using _Linear = std::shared_ptr<_LinearCls>;
 
-class SawTooth : Curve {
+class SawToothCls : public CurveCls {
 public:
     int count;
 
 
-     SawTooth(int count);
+     SawToothCls(int count);
 
-    double transformInternal(double t);
+    virtual double transformInternal(double t);
 
-    String toString();
+    virtual String toString();
 
 private:
 
 };
+using SawTooth = std::shared_ptr<SawToothCls>;
 
-class Interval : Curve {
+class IntervalCls : public CurveCls {
 public:
     double begin;
 
@@ -72,30 +73,32 @@ public:
     Curve curve;
 
 
-     Interval(double begin, Curve curve, double end);
+     IntervalCls(double begin, Curve curve, double end);
 
-    double transformInternal(double t);
+    virtual double transformInternal(double t);
 
-    String toString();
+    virtual String toString();
 
 private:
 
 };
+using Interval = std::shared_ptr<IntervalCls>;
 
-class Threshold : Curve {
+class ThresholdCls : public CurveCls {
 public:
     double threshold;
 
 
-     Threshold(double threshold);
+     ThresholdCls(double threshold);
 
-    double transformInternal(double t);
+    virtual double transformInternal(double t);
 
 private:
 
 };
+using Threshold = std::shared_ptr<ThresholdCls>;
 
-class Cubic : Curve {
+class CubicCls : public CurveCls {
 public:
     double a;
 
@@ -106,21 +109,22 @@ public:
     double d;
 
 
-     Cubic(double a, double b, double c, double d);
+     CubicCls(double a, double b, double c, double d);
 
-    double transformInternal(double t);
+    virtual double transformInternal(double t);
 
-    String toString();
+    virtual String toString();
 
 private:
-    static const double _cubicErrorBound;
+    static double _cubicErrorBound;
 
 
-    double _evaluateCubic(double a, double b, double m);
+    virtual double _evaluateCubic(double a, double b, double m);
 
 };
+using Cubic = std::shared_ptr<CubicCls>;
 
-class ThreePointCubic : Curve {
+class ThreePointCubicCls : public CurveCls {
 public:
     Offset a1;
 
@@ -133,56 +137,57 @@ public:
     Offset b2;
 
 
-     ThreePointCubic(Offset a1, Offset a2, Offset b1, Offset b2, Offset midpoint);
+     ThreePointCubicCls(Offset a1, Offset a2, Offset b1, Offset b2, Offset midpoint);
+    virtual double transformInternal(double t);
 
-    double transformInternal(double t);
-
-    String toString();
+    virtual String toString();
 
 private:
 
 };
+using ThreePointCubic = std::shared_ptr<ThreePointCubicCls>;
 
-class Curve2D : ParametricCurve<Offset> {
+class Curve2DCls : public ParametricCurveCls<Offset> {
 public:
 
-     Curve2D();
+     Curve2DCls();
+    virtual Iterable<Curve2DSample> generateSamples(double end, double start, double tolerance);
 
-    Iterable<Curve2DSample> generateSamples(double end, double start, double tolerance);
+    virtual int samplingSeed();
 
-    int samplingSeed();
-
-    double findInverse(double x);
+    virtual double findInverse(double x);
 
 private:
 
 };
+using Curve2D = std::shared_ptr<Curve2DCls>;
 
-class Curve2DSample {
+class Curve2DSampleCls : public ObjectCls {
 public:
     double t;
 
     Offset value;
 
 
-     Curve2DSample(double t, Offset value);
+     Curve2DSampleCls(double t, Offset value);
 
-    String toString();
+    virtual String toString();
 
 private:
 
 };
+using Curve2DSample = std::shared_ptr<Curve2DSampleCls>;
 
-class CatmullRomSpline : Curve2D {
+class CatmullRomSplineCls : public Curve2DCls {
 public:
 
-     CatmullRomSpline(List<Offset> controlPoints, Offset endHandle, Offset startHandle, double tension);
+     CatmullRomSplineCls(List<Offset> controlPoints, Offset endHandle, Offset startHandle, double tension);
 
-    void  precompute(List<Offset> controlPoints, Offset endHandle, Offset startHandle, double tension);
+    virtual void  precompute(List<Offset> controlPoints, Offset endHandle, Offset startHandle, double tension);
 
-    int samplingSeed();
+    virtual int samplingSeed();
 
-    Offset transformInternal(double t);
+    virtual Offset transformInternal(double t);
 
 private:
     List<List<Offset>> _cubicSegments;
@@ -198,24 +203,25 @@ private:
 
     static List<List<Offset>> _computeSegments(List<Offset> controlPoints, Offset endHandle, Offset startHandle, double tension);
 
-    void _initializeIfNeeded();
+    virtual void _initializeIfNeeded();
 
 };
+using CatmullRomSpline = std::shared_ptr<CatmullRomSplineCls>;
 
-class CatmullRomCurve : Curve {
+class CatmullRomCurveCls : public CurveCls {
 public:
     List<Offset> controlPoints;
 
     double tension;
 
 
-     CatmullRomCurve(List<Offset> controlPoints, double tension);
+     CatmullRomCurveCls(List<Offset> controlPoints, double tension);
 
-    void  precompute(List<Offset> controlPoints, double tension);
+    virtual void  precompute(List<Offset> controlPoints, double tension);
 
     static bool validateControlPoints(List<Offset> controlPoints, List<String> reasons, double tension);
 
-    double transformInternal(double t);
+    virtual double transformInternal(double t);
 
 private:
     static List<String> _debugAssertReasons;
@@ -226,204 +232,207 @@ private:
     static List<Curve2DSample> _computeSamples(List<Offset> controlPoints, double tension);
 
 };
+using CatmullRomCurve = std::shared_ptr<CatmullRomCurveCls>;
 
-class FlippedCurve : Curve {
+class FlippedCurveCls : public CurveCls {
 public:
     Curve curve;
 
 
-     FlippedCurve(Curve curve);
+     FlippedCurveCls(Curve curve);
 
-    double transformInternal(double t);
+    virtual double transformInternal(double t);
 
-    String toString();
+    virtual String toString();
 
 private:
 
 };
+using FlippedCurve = std::shared_ptr<FlippedCurveCls>;
 
-class _DecelerateCurve : Curve {
+class _DecelerateCurveCls : public CurveCls {
 public:
 
-    double transformInternal(double t);
+    virtual double transformInternal(double t);
 
 private:
 
-    void  _();
-
+    virtual void  _();
 };
+using _DecelerateCurve = std::shared_ptr<_DecelerateCurveCls>;
 double _bounce(double t);
 
 
-class _BounceInCurve : Curve {
+class _BounceInCurveCls : public CurveCls {
 public:
 
-    double transformInternal(double t);
+    virtual double transformInternal(double t);
 
 private:
 
-    void  _();
-
+    virtual void  _();
 };
+using _BounceInCurve = std::shared_ptr<_BounceInCurveCls>;
 
-class _BounceOutCurve : Curve {
+class _BounceOutCurveCls : public CurveCls {
 public:
 
-    double transformInternal(double t);
+    virtual double transformInternal(double t);
 
 private:
 
-    void  _();
-
+    virtual void  _();
 };
+using _BounceOutCurve = std::shared_ptr<_BounceOutCurveCls>;
 
-class _BounceInOutCurve : Curve {
+class _BounceInOutCurveCls : public CurveCls {
 public:
 
-    double transformInternal(double t);
+    virtual double transformInternal(double t);
 
 private:
 
-    void  _();
-
+    virtual void  _();
 };
+using _BounceInOutCurve = std::shared_ptr<_BounceInOutCurveCls>;
 
-class ElasticInCurve : Curve {
-public:
-    double period;
-
-
-     ElasticInCurve(double period);
-
-    double transformInternal(double t);
-
-    String toString();
-
-private:
-
-};
-
-class ElasticOutCurve : Curve {
+class ElasticInCurveCls : public CurveCls {
 public:
     double period;
 
 
-     ElasticOutCurve(double period);
+     ElasticInCurveCls(double period);
+    virtual double transformInternal(double t);
 
-    double transformInternal(double t);
-
-    String toString();
+    virtual String toString();
 
 private:
 
 };
+using ElasticInCurve = std::shared_ptr<ElasticInCurveCls>;
 
-class ElasticInOutCurve : Curve {
+class ElasticOutCurveCls : public CurveCls {
 public:
     double period;
 
 
-     ElasticInOutCurve(double period);
+     ElasticOutCurveCls(double period);
+    virtual double transformInternal(double t);
 
-    double transformInternal(double t);
-
-    String toString();
+    virtual String toString();
 
 private:
 
 };
+using ElasticOutCurve = std::shared_ptr<ElasticOutCurveCls>;
 
-class Curves {
+class ElasticInOutCurveCls : public CurveCls {
 public:
-    static const Curve linear;
+    double period;
 
-    static const Curve decelerate;
 
-    static const Cubic fastLinearToSlowEaseIn;
+     ElasticInOutCurveCls(double period);
+    virtual double transformInternal(double t);
 
-    static const Cubic ease;
+    virtual String toString();
 
-    static const Cubic easeIn;
+private:
 
-    static const Cubic easeInToLinear;
+};
+using ElasticInOutCurve = std::shared_ptr<ElasticInOutCurveCls>;
 
-    static const Cubic easeInSine;
+class CurvesCls : public ObjectCls {
+public:
+    static Curve linear;
 
-    static const Cubic easeInQuad;
+    static Curve decelerate;
 
-    static const Cubic easeInCubic;
+    static Cubic fastLinearToSlowEaseIn;
 
-    static const Cubic easeInQuart;
+    static Cubic ease;
 
-    static const Cubic easeInQuint;
+    static Cubic easeIn;
 
-    static const Cubic easeInExpo;
+    static Cubic easeInToLinear;
 
-    static const Cubic easeInCirc;
+    static Cubic easeInSine;
 
-    static const Cubic easeInBack;
+    static Cubic easeInQuad;
 
-    static const Cubic easeOut;
+    static Cubic easeInCubic;
 
-    static const Cubic linearToEaseOut;
+    static Cubic easeInQuart;
 
-    static const Cubic easeOutSine;
+    static Cubic easeInQuint;
 
-    static const Cubic easeOutQuad;
+    static Cubic easeInExpo;
 
-    static const Cubic easeOutCubic;
+    static Cubic easeInCirc;
 
-    static const Cubic easeOutQuart;
+    static Cubic easeInBack;
 
-    static const Cubic easeOutQuint;
+    static Cubic easeOut;
 
-    static const Cubic easeOutExpo;
+    static Cubic linearToEaseOut;
 
-    static const Cubic easeOutCirc;
+    static Cubic easeOutSine;
 
-    static const Cubic easeOutBack;
+    static Cubic easeOutQuad;
 
-    static const Cubic easeInOut;
+    static Cubic easeOutCubic;
 
-    static const Cubic easeInOutSine;
+    static Cubic easeOutQuart;
 
-    static const Cubic easeInOutQuad;
+    static Cubic easeOutQuint;
 
-    static const Cubic easeInOutCubic;
+    static Cubic easeOutExpo;
 
-    static const ThreePointCubic easeInOutCubicEmphasized;
+    static Cubic easeOutCirc;
 
-    static const Cubic easeInOutQuart;
+    static Cubic easeOutBack;
 
-    static const Cubic easeInOutQuint;
+    static Cubic easeInOut;
 
-    static const Cubic easeInOutExpo;
+    static Cubic easeInOutSine;
 
-    static const Cubic easeInOutCirc;
+    static Cubic easeInOutQuad;
 
-    static const Cubic easeInOutBack;
+    static Cubic easeInOutCubic;
 
-    static const Cubic fastOutSlowIn;
+    static ThreePointCubic easeInOutCubicEmphasized;
 
-    static const Cubic slowMiddle;
+    static Cubic easeInOutQuart;
 
-    static const Curve bounceIn;
+    static Cubic easeInOutQuint;
 
-    static const Curve bounceOut;
+    static Cubic easeInOutExpo;
 
-    static const Curve bounceInOut;
+    static Cubic easeInOutCirc;
 
-    static const ElasticInCurve elasticIn;
+    static Cubic easeInOutBack;
 
-    static const ElasticOutCurve elasticOut;
+    static Cubic fastOutSlowIn;
 
-    static const ElasticInOutCurve elasticInOut;
+    static Cubic slowMiddle;
+
+    static Curve bounceIn;
+
+    static Curve bounceOut;
+
+    static Curve bounceInOut;
+
+    static ElasticInCurve elasticIn;
+
+    static ElasticOutCurve elasticOut;
+
+    static ElasticInOutCurve elasticInOut;
 
 
 private:
 
-    void  _();
-
+    virtual void  _();
 };
+using Curves = std::shared_ptr<CurvesCls>;
+
 
 #endif

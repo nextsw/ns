@@ -1,56 +1,49 @@
-#ifndef BYTES_BUILDER_H
-#define BYTES_BUILDER_H
-#include <memory>
+#ifndef DART_INTERNAL_BYTES_BUILDER
+#define DART_INTERNAL_BYTES_BUILDER
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
 
 
-
-
-class BytesBuilder {
+class BytesBuilderCls : public ObjectCls {
 public:
 
-     BytesBuilder(bool copy);
+     BytesBuilderCls(bool copy);
 
-    void add(List<int> bytes);
-
-    void addByte(int byte);
-
-    Uint8List takeBytes();
-
-    Uint8List toBytes();
-
-    int length();
-
-    bool isEmpty();
-
-    bool isNotEmpty();
-
-    void clear();
-
+    virtual void add(List<int> bytes);
+    virtual void addByte(int byte);
+    virtual Uint8List takeBytes();
+    virtual Uint8List toBytes();
+    virtual int length();
+    virtual bool isEmpty();
+    virtual bool isNotEmpty();
+    virtual void clear();
 private:
 
 };
+using BytesBuilder = std::shared_ptr<BytesBuilderCls>;
 
-class _CopyingBytesBuilder {
+class _CopyingBytesBuilderCls : public ObjectCls {
 public:
 
-    void add(List<int> bytes);
+    virtual void add(List<int> bytes);
 
-    void addByte(int byte);
+    virtual void addByte(int byte);
 
-    Uint8List takeBytes();
+    virtual Uint8List takeBytes();
 
-    Uint8List toBytes();
+    virtual Uint8List toBytes();
 
-    int length();
+    virtual int length();
 
-    bool isEmpty();
+    virtual bool isEmpty();
 
-    bool isNotEmpty();
+    virtual bool isNotEmpty();
 
-    void clear();
+    virtual void clear();
 
 private:
-    static const int _initSize;
+    static int _initSize;
 
     static auto  _emptyList;
 
@@ -59,34 +52,35 @@ private:
     Uint8List _buffer;
 
 
-     _CopyingBytesBuilder();
+     _CopyingBytesBuilderCls();
 
-    void _grow(int required);
+    virtual void _grow(int required);
 
-    void _clear();
+    virtual void _clear();
 
     static int _pow2roundup(int x);
 
 };
+using _CopyingBytesBuilder = std::shared_ptr<_CopyingBytesBuilderCls>;
 
-class _BytesBuilder {
+class _BytesBuilderCls : public ObjectCls {
 public:
 
-    void add(List<int> bytes);
+    virtual void add(List<int> bytes);
 
-    void addByte(int byte);
+    virtual void addByte(int byte);
 
-    Uint8List takeBytes();
+    virtual Uint8List takeBytes();
 
-    Uint8List toBytes();
+    virtual Uint8List toBytes();
 
-    int length();
+    virtual int length();
 
-    bool isEmpty();
+    virtual bool isEmpty();
 
-    bool isNotEmpty();
+    virtual bool isNotEmpty();
 
-    void clear();
+    virtual void clear();
 
 private:
     int _length;
@@ -94,8 +88,10 @@ private:
     List<Uint8List> _chunks;
 
 
-    void _clear();
+    virtual void _clear();
 
 };
+using _BytesBuilder = std::shared_ptr<_BytesBuilderCls>;
+
 
 #endif

@@ -1,24 +1,24 @@
-#ifndef GRAVITY_SIMULATION_H
-#define GRAVITY_SIMULATION_H
-#include <memory>
+#ifndef PACKAGES_FLUTTER_SRC_PHYSICS_GRAVITY_SIMULATION
+#define PACKAGES_FLUTTER_SRC_PHYSICS_GRAVITY_SIMULATION
+#include <base.hpp>
 
-#include <flutter/foundation.hpp>
+#include <dart/core/core.hpp>
+#include <packages/flutter/lib/foundation.hpp>
 #include "simulation.hpp"
 
 
-
-class GravitySimulation : Simulation {
+class GravitySimulationCls : public SimulationCls {
 public:
 
-     GravitySimulation(double acceleration, double distance, double endDistance, double velocity);
+     GravitySimulationCls(double acceleration, double distance, double endDistance, double velocity);
 
-    double x(double time);
+    virtual double x(double time);
 
-    double dx(double time);
+    virtual double dx(double time);
 
-    bool isDone(double time);
+    virtual bool isDone(double time);
 
-    String toString();
+    virtual String toString();
 
 private:
     double _x;
@@ -31,5 +31,7 @@ private:
 
 
 };
+using GravitySimulation = std::shared_ptr<GravitySimulationCls>;
+
 
 #endif

@@ -1,17 +1,17 @@
 #include "profiler.hpp"
-Metric::Metric(String description, String name) {
+MetricCls::MetricCls(String description, String name) {
     {
-        if ((name == "vm") || name.contains("/")) {
+        if ((name == "vm") || name->contains("/")) {
             ;
         }
     }
 }
 
-double Gauge::value() {
+double GaugeCls::value() {
     return _value;
 }
 
-void Gauge::value(double v) {
+void GaugeCls::value(double v) {
     if ( < min) {
         v = min;
     } else     {
@@ -22,70 +22,66 @@ void Gauge::value(double v) {
     }    _value = v;
 }
 
-Gauge::Gauge(String description, double max, double min, String name) {
+GaugeCls::GaugeCls(String description, double max, double min, String name) {
     {
         _value = min;
-        super(name, description);
     }
     {
-        ArgumentError.checkNotNull(min, "min");
-        ArgumentError.checkNotNull(max, "max");
+        ArgumentErrorCls->checkNotNull(min, "min");
+        ArgumentErrorCls->checkNotNull(max, "max");
         if (!( < max))         {
             ;
         }
     }
 }
 
-Map Gauge::_toJSON() {
-    auto map = ;
+Map GaugeCls::_toJSON() {
+    map1.set("type", "Gauge");map1.set("id", "metrics/$name");map1.set("name", name);map1.set("description", description);map1.set("value", value);map1.set("min", min);map1.set("max", max);auto map = list1;
     return map;
 }
 
-Counter::Counter(String description, String name) {
-    {
-        super(name, description);
-    }
+CounterCls::CounterCls(String description, String name) {
 }
 
-double Counter::value() {
+double CounterCls::value() {
     return _value;
 }
 
-void Counter::value(double v) {
+void CounterCls::value(double v) {
     _value = v;
 }
 
-Map Counter::_toJSON() {
-    auto map = ;
+Map CounterCls::_toJSON() {
+    map1.set("type", "Counter");map1.set("id", "metrics/$name");map1.set("name", name);map1.set("description", description);map1.set("value", value);auto map = list1;
     return map;
 }
 
-void Metrics::register(Metric metric) {
-    ArgumentError.checkNotNull(metric, "metric");
-    if (_metrics[metric.name] != nullptr) {
+void MetricsCls::register(Metric metric) {
+    ArgumentErrorCls->checkNotNull(metric, "metric");
+    if (_metrics[metric->name] != nullptr) {
         ;
     }
-    _metrics[metric.name] = metric;
+    _metrics[metric->name] = metric;
 }
 
-void Metrics::deregister(Metric metric) {
-    ArgumentError.checkNotNull(metric, "metric");
-    _metrics.remove(metric.name);
+void MetricsCls::deregister(Metric metric) {
+    ArgumentErrorCls->checkNotNull(metric, "metric");
+    _metrics->remove(metric->name);
 }
 
-String Metrics::_printMetric(String id) {
+String MetricsCls::_printMetric(String id) {
     auto metric = _metrics[id];
     if (metric == nullptr) {
         return nullptr;
     }
-    return json.encode(metric._toJSON());
+    return json->encode(metric->_toJSON());
 }
 
-String Metrics::_printMetrics() {
-    auto metrics = ;
-    for (auto metric : _metrics.values) {
-        metrics.add(metric._toJSON());
+String MetricsCls::_printMetrics() {
+    auto metrics = makeList();
+    for (auto metric : _metrics->values) {
+        metrics->add(metric->_toJSON());
     }
-    auto map = ;
-    return json.encode(map);
+    map1.set("type", "MetricList");map1.set("metrics", metrics);auto map = list1;
+    return json->encode(map);
 }

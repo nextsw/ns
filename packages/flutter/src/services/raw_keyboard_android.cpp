@@ -1,5 +1,5 @@
 #include "raw_keyboard_android.hpp"
-RawKeyEventDataAndroid::RawKeyEventDataAndroid(int codePoint, int deviceId, int eventSource, int flags, int keyCode, int metaState, int plainCodePoint, int productId, int repeatCount, int scanCode, int vendorId) {
+RawKeyEventDataAndroidCls::RawKeyEventDataAndroidCls(int codePoint, int deviceId, int eventSource, int flags, int keyCode, int metaState, int plainCodePoint, int productId, int repeatCount, int scanCode, int vendorId) {
     {
         assert(flags != nullptr);
         assert(codePoint != nullptr);
@@ -9,84 +9,84 @@ RawKeyEventDataAndroid::RawKeyEventDataAndroid(int codePoint, int deviceId, int 
     }
 }
 
-String RawKeyEventDataAndroid::keyLabel() {
-    return plainCodePoint == 0? "" : String.fromCharCode(plainCodePoint & _kCombiningCharacterMask);
+String RawKeyEventDataAndroidCls::keyLabel() {
+    return plainCodePoint == 0? "" : StringCls->fromCharCode(plainCodePoint & _kCombiningCharacterMask);
 }
 
-PhysicalKeyboardKey RawKeyEventDataAndroid::physicalKey() {
-    if (kAndroidToPhysicalKey.containsKey(scanCode)) {
+PhysicalKeyboardKey RawKeyEventDataAndroidCls::physicalKey() {
+    if (kAndroidToPhysicalKey->containsKey(scanCode)) {
         return kAndroidToPhysicalKey[scanCode]!;
     }
     if (eventSource & _sourceJoystick == _sourceJoystick) {
         LogicalKeyboardKey foundKey = kAndroidToLogicalKey[keyCode];
-        if (foundKey == LogicalKeyboardKey.arrowUp) {
-            return PhysicalKeyboardKey.arrowUp;
+        if (foundKey == LogicalKeyboardKeyCls::arrowUp) {
+            return PhysicalKeyboardKeyCls::arrowUp;
         }
-        if (foundKey == LogicalKeyboardKey.arrowDown) {
-            return PhysicalKeyboardKey.arrowDown;
+        if (foundKey == LogicalKeyboardKeyCls::arrowDown) {
+            return PhysicalKeyboardKeyCls::arrowDown;
         }
-        if (foundKey == LogicalKeyboardKey.arrowLeft) {
-            return PhysicalKeyboardKey.arrowLeft;
+        if (foundKey == LogicalKeyboardKeyCls::arrowLeft) {
+            return PhysicalKeyboardKeyCls::arrowLeft;
         }
-        if (foundKey == LogicalKeyboardKey.arrowRight) {
-            return PhysicalKeyboardKey.arrowRight;
+        if (foundKey == LogicalKeyboardKeyCls::arrowRight) {
+            return PhysicalKeyboardKeyCls::arrowRight;
         }
     }
-    return PhysicalKeyboardKey(LogicalKeyboardKey.androidPlane + scanCode);
+    return make<PhysicalKeyboardKeyCls>(LogicalKeyboardKeyCls::androidPlane + scanCode);
 }
 
-LogicalKeyboardKey RawKeyEventDataAndroid::logicalKey() {
+LogicalKeyboardKey RawKeyEventDataAndroidCls::logicalKey() {
     LogicalKeyboardKey numPadKey = kAndroidNumPadMap[keyCode];
     if (numPadKey != nullptr) {
         return numPadKey;
     }
-    if (keyLabel.isNotEmpty && !LogicalKeyboardKey.isControlCharacter(keyLabel)) {
+    if (keyLabel->isNotEmpty && !LogicalKeyboardKeyCls->isControlCharacter(keyLabel)) {
         int combinedCodePoint = plainCodePoint & _kCombiningCharacterMask;
-        int keyId = LogicalKeyboardKey.unicodePlane | (combinedCodePoint & LogicalKeyboardKey.valueMask);
-        return LogicalKeyboardKey.findKeyByKeyId(keyId) ?? LogicalKeyboardKey(keyId);
+        int keyId = LogicalKeyboardKeyCls::unicodePlane | (combinedCodePoint & LogicalKeyboardKeyCls::valueMask);
+        return LogicalKeyboardKeyCls->findKeyByKeyId(keyId) ?? make<LogicalKeyboardKeyCls>(keyId);
     }
     LogicalKeyboardKey newKey = kAndroidToLogicalKey[keyCode];
     if (newKey != nullptr) {
         return newKey;
     }
-    return LogicalKeyboardKey(keyCode | LogicalKeyboardKey.androidPlane);
+    return make<LogicalKeyboardKeyCls>(keyCode | LogicalKeyboardKeyCls::androidPlane);
 }
 
-bool RawKeyEventDataAndroid::isModifierPressed(ModifierKey key, KeyboardSide side) {
+bool RawKeyEventDataAndroidCls::isModifierPressed(ModifierKey key, KeyboardSide side) {
     assert(side != nullptr);
     ;
 }
 
-KeyboardSide RawKeyEventDataAndroid::getModifierSide(ModifierKey key) {
-    ;
+KeyboardSide RawKeyEventDataAndroidCls::getModifierSide(ModifierKey key) {
+    InlineMethod;
     ;
 }
 
-void RawKeyEventDataAndroid::debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties.add(<int>DiagnosticsProperty("flags", flags));
-    properties.add(<int>DiagnosticsProperty("codePoint", codePoint));
-    properties.add(<int>DiagnosticsProperty("plainCodePoint", plainCodePoint));
-    properties.add(<int>DiagnosticsProperty("keyCode", keyCode));
-    properties.add(<int>DiagnosticsProperty("scanCode", scanCode));
-    properties.add(<int>DiagnosticsProperty("metaState", metaState));
+void RawKeyEventDataAndroidCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super->debugFillProperties(properties);
+    properties->add(<int>make<DiagnosticsPropertyCls>("flags", flags));
+    properties->add(<int>make<DiagnosticsPropertyCls>("codePoint", codePoint));
+    properties->add(<int>make<DiagnosticsPropertyCls>("plainCodePoint", plainCodePoint));
+    properties->add(<int>make<DiagnosticsPropertyCls>("keyCode", keyCode));
+    properties->add(<int>make<DiagnosticsPropertyCls>("scanCode", scanCode));
+    properties->add(<int>make<DiagnosticsPropertyCls>("metaState", metaState));
 }
 
-bool RawKeyEventDataAndroid::==(Object other) {
+bool RawKeyEventDataAndroidCls::==(Object other) {
     if (identical(this, other)) {
         return true;
     }
-    if (other.runtimeType != runtimeType) {
+    if (other->runtimeType != runtimeType) {
         return false;
     }
-    return other is RawKeyEventDataAndroid && other.flags == flags && other.codePoint == codePoint && other.plainCodePoint == plainCodePoint && other.keyCode == keyCode && other.scanCode == scanCode && other.metaState == metaState;
+    return other is RawKeyEventDataAndroid && other->flags == flags && other->codePoint == codePoint && other->plainCodePoint == plainCodePoint && other->keyCode == keyCode && other->scanCode == scanCode && other->metaState == metaState;
 }
 
-int RawKeyEventDataAndroid::hashCode() {
-    return Object.hash(flags, codePoint, plainCodePoint, keyCode, scanCode, metaState);
+int RawKeyEventDataAndroidCls::hashCode() {
+    return ObjectCls->hash(flags, codePoint, plainCodePoint, keyCode, scanCode, metaState);
 }
 
-bool RawKeyEventDataAndroid::_isLeftRightModifierPressed(int anyMask, int leftMask, int rightMask, KeyboardSide side) {
+bool RawKeyEventDataAndroidCls::_isLeftRightModifierPressed(int anyMask, int leftMask, int rightMask, KeyboardSide side) {
     if (metaState & anyMask == 0) {
         return false;
     }

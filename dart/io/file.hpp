@@ -1,195 +1,135 @@
-#ifndef FILE_H
-#define FILE_H
-#include <memory>
+#ifndef DART_IO_FILE
+#define DART_IO_FILE
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
 
 
-
-
-class FileMode {
+class FileModeCls : public ObjectCls {
 public:
-    static const auto  read;
+    static auto  read;
 
-    static const auto  write;
+    static auto  write;
 
-    static const auto  append;
+    static auto  append;
 
-    static const auto  writeOnly;
+    static auto  writeOnly;
 
-    static const auto  writeOnlyAppend;
+    static auto  writeOnlyAppend;
 
 
 private:
     int _mode;
 
 
-    void  _internal(int _mode);
-
+    virtual void  _internal(int _mode);
 };
+using FileMode = std::shared_ptr<FileModeCls>;
 
-class FileLock {
+class FileLockCls : public ObjectCls {
 public:
-    static const auto  shared;
+    static auto  shared;
 
-    static const auto  exclusive;
+    static auto  exclusive;
 
-    static const auto  blockingShared;
+    static auto  blockingShared;
 
-    static const auto  blockingExclusive;
+    static auto  blockingExclusive;
 
 
 private:
     int _type;
 
 
-    void  _internal(int _type);
-
+    virtual void  _internal(int _type);
 };
+using FileLock = std::shared_ptr<FileLockCls>;
 
-class File {
+class FileCls : public ObjectCls {
 public:
 
-     File(String path);
+     FileCls(String path);
 
-    void  fromUri(Uri uri);
+    virtual void  fromUri(Uri uri);
 
-    void  fromRawPath(Uint8List rawPath);
+    virtual void  fromRawPath(Uint8List rawPath);
 
-    Future<File> create(bool recursive);
-
-    void createSync(bool recursive);
-
-    Future<File> rename(String newPath);
-
-    File renameSync(String newPath);
-
-    Future<File> copy(String newPath);
-
-    File copySync(String newPath);
-
-    Future<int> length();
-
-    int lengthSync();
-
-    File absolute();
-
-    Future<DateTime> lastAccessed();
-
-    DateTime lastAccessedSync();
-
-    Future setLastAccessed(DateTime time);
-
-    void setLastAccessedSync(DateTime time);
-
-    Future<DateTime> lastModified();
-
-    DateTime lastModifiedSync();
-
-    Future setLastModified(DateTime time);
-
-    void setLastModifiedSync(DateTime time);
-
-    Future<RandomAccessFile> open(FileMode mode);
-
-    RandomAccessFile openSync(FileMode mode);
-
-    Stream<List<int>> openRead(int end, int start);
-
-    IOSink openWrite(Encoding encoding, FileMode mode);
-
-    Future<Uint8List> readAsBytes();
-
-    Uint8List readAsBytesSync();
-
-    Future<String> readAsString(Encoding encoding);
-
-    String readAsStringSync(Encoding encoding);
-
-    Future<List<String>> readAsLines(Encoding encoding);
-
-    List<String> readAsLinesSync(Encoding encoding);
-
-    Future<File> writeAsBytes(List<int> bytes, bool flush, FileMode mode);
-
-    void writeAsBytesSync(List<int> bytes, bool flush, FileMode mode);
-
-    Future<File> writeAsString(String contents, Encoding encoding, bool flush, FileMode mode);
-
-    void writeAsStringSync(String contents, Encoding encoding, bool flush, FileMode mode);
-
-    String path();
-
+    virtual Future<File> create(bool recursive);
+    virtual void createSync(bool recursive);
+    virtual Future<File> rename(String newPath);
+    virtual File renameSync(String newPath);
+    virtual Future<File> copy(String newPath);
+    virtual File copySync(String newPath);
+    virtual Future<int> length();
+    virtual int lengthSync();
+    virtual File absolute();
+    virtual Future<DateTime> lastAccessed();
+    virtual DateTime lastAccessedSync();
+    virtual Future setLastAccessed(DateTime time);
+    virtual void setLastAccessedSync(DateTime time);
+    virtual Future<DateTime> lastModified();
+    virtual DateTime lastModifiedSync();
+    virtual Future setLastModified(DateTime time);
+    virtual void setLastModifiedSync(DateTime time);
+    virtual Future<RandomAccessFile> open(FileMode mode);
+    virtual RandomAccessFile openSync(FileMode mode);
+    virtual Stream<List<int>> openRead(int end, int start);
+    virtual IOSink openWrite(Encoding encoding, FileMode mode);
+    virtual Future<Uint8List> readAsBytes();
+    virtual Uint8List readAsBytesSync();
+    virtual Future<String> readAsString(Encoding encoding);
+    virtual String readAsStringSync(Encoding encoding);
+    virtual Future<List<String>> readAsLines(Encoding encoding);
+    virtual List<String> readAsLinesSync(Encoding encoding);
+    virtual Future<File> writeAsBytes(List<int> bytes, bool flush, FileMode mode);
+    virtual void writeAsBytesSync(List<int> bytes, bool flush, FileMode mode);
+    virtual Future<File> writeAsString(String contents, Encoding encoding, bool flush, FileMode mode);
+    virtual void writeAsStringSync(String contents, Encoding encoding, bool flush, FileMode mode);
+    virtual String path();
 private:
 
 };
+using File = std::shared_ptr<FileCls>;
 
-class RandomAccessFile {
+class RandomAccessFileCls : public ObjectCls {
 public:
 
-    Future<void> close();
-
-    void closeSync();
-
-    Future<int> readByte();
-
-    int readByteSync();
-
-    Future<Uint8List> read(int count);
-
-    Uint8List readSync(int count);
-
-    Future<int> readInto(List<int> buffer, int end, int start);
-
-    int readIntoSync(List<int> buffer, int end, int start);
-
-    Future<RandomAccessFile> writeByte(int value);
-
-    int writeByteSync(int value);
-
-    Future<RandomAccessFile> writeFrom(List<int> buffer, int end, int start);
-
-    void writeFromSync(List<int> buffer, int end, int start);
-
-    Future<RandomAccessFile> writeString(Encoding encoding, String string);
-
-    void writeStringSync(Encoding encoding, String string);
-
-    Future<int> position();
-
-    int positionSync();
-
-    Future<RandomAccessFile> setPosition(int position);
-
-    void setPositionSync(int position);
-
-    Future<RandomAccessFile> truncate(int length);
-
-    void truncateSync(int length);
-
-    Future<int> length();
-
-    int lengthSync();
-
-    Future<RandomAccessFile> flush();
-
-    void flushSync();
-
-    Future<RandomAccessFile> lock(int end, FileLock mode, int start);
-
-    void lockSync(int end, FileLock mode, int start);
-
-    Future<RandomAccessFile> unlock(int end, int start);
-
-    void unlockSync(int end, int start);
-
-    String toString();
-
-    String path();
-
+    virtual Future<void> close();
+    virtual void closeSync();
+    virtual Future<int> readByte();
+    virtual int readByteSync();
+    virtual Future<Uint8List> read(int count);
+    virtual Uint8List readSync(int count);
+    virtual Future<int> readInto(List<int> buffer, int end, int start);
+    virtual int readIntoSync(List<int> buffer, int end, int start);
+    virtual Future<RandomAccessFile> writeByte(int value);
+    virtual int writeByteSync(int value);
+    virtual Future<RandomAccessFile> writeFrom(List<int> buffer, int end, int start);
+    virtual void writeFromSync(List<int> buffer, int end, int start);
+    virtual Future<RandomAccessFile> writeString(Encoding encoding, String stringValue);
+    virtual void writeStringSync(Encoding encoding, String stringValue);
+    virtual Future<int> position();
+    virtual int positionSync();
+    virtual Future<RandomAccessFile> setPosition(int position);
+    virtual void setPositionSync(int position);
+    virtual Future<RandomAccessFile> truncate(int length);
+    virtual void truncateSync(int length);
+    virtual Future<int> length();
+    virtual int lengthSync();
+    virtual Future<RandomAccessFile> flush();
+    virtual void flushSync();
+    virtual Future<RandomAccessFile> lock(int end, FileLock mode, int start);
+    virtual void lockSync(int end, FileLock mode, int start);
+    virtual Future<RandomAccessFile> unlock(int end, int start);
+    virtual void unlockSync(int end, int start);
+    virtual String toString();
+    virtual String path();
 private:
 
 };
+using RandomAccessFile = std::shared_ptr<RandomAccessFileCls>;
 
-class FileSystemException {
+class FileSystemExceptionCls : public ObjectCls {
 public:
     String message;
 
@@ -198,12 +138,13 @@ public:
     OSError osError;
 
 
-     FileSystemException(String message, OSError osError, String path);
-
-    String toString();
+     FileSystemExceptionCls(String message, OSError osError, String path);
+    virtual String toString();
 
 private:
 
 };
+using FileSystemException = std::shared_ptr<FileSystemExceptionCls>;
+
 
 #endif

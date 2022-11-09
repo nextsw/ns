@@ -1,13 +1,13 @@
-#ifndef BOX_BORDER_H
-#define BOX_BORDER_H
-#include <memory>
+#ifndef PACKAGES_FLUTTER_SRC_PAINTING_BOX_BORDER
+#define PACKAGES_FLUTTER_SRC_PAINTING_BOX_BORDER
+#include <base.hpp>
 
-#include <flutter/foundation.hpp>
+#include <dart/core/core.hpp>
+#include <packages/flutter/lib/foundation.hpp>
 #include "basic_types.hpp"
 #include "border_radius.hpp"
 #include "borders.hpp"
 #include "edge_insets.hpp"
-
 
 
 enum BoxShape{
@@ -15,27 +15,22 @@ enum BoxShape{
     circle,
 } // end BoxShape
 
-class BoxBorder : ShapeBorder {
+class BoxBorderCls : public ShapeBorderCls {
 public:
 
-     BoxBorder();
-
-    BorderSide top();
-
-    BorderSide bottom();
-
-    bool isUniform();
-
-    BoxBorder add(ShapeBorder other, bool reversed);
+     BoxBorderCls();
+    virtual BorderSide top();
+    virtual BorderSide bottom();
+    virtual bool isUniform();
+    virtual BoxBorder add(ShapeBorder other, bool reversed);
 
     static BoxBorder lerp(BoxBorder a, BoxBorder b, double t);
 
-    Path getInnerPath(Rect rect, TextDirection textDirection);
+    virtual Path getInnerPath(Rect rect, TextDirection textDirection);
 
-    Path getOuterPath(Rect rect, TextDirection textDirection);
+    virtual Path getOuterPath(Rect rect, TextDirection textDirection);
 
-    void paint(BorderRadius borderRadius, Canvas canvas, Rect rect, BoxShape shape, TextDirection textDirection);
-
+    virtual void paint(BorderRadius borderRadius, Canvas canvas, Rect rect, BoxShape shape, TextDirection textDirection) override;
 private:
 
     static void _paintUniformBorderWithRadius(BorderRadius borderRadius, Canvas canvas, Rect rect, BorderSide side);
@@ -45,8 +40,9 @@ private:
     static void _paintUniformBorderWithRectangle(Canvas canvas, Rect rect, BorderSide side);
 
 };
+using BoxBorder = std::shared_ptr<BoxBorderCls>;
 
-class Border : BoxBorder {
+class BorderCls : public BoxBorderCls {
 public:
     BorderSide top;
 
@@ -57,51 +53,52 @@ public:
     BorderSide left;
 
 
-     Border(BorderSide bottom, BorderSide left, BorderSide right, BorderSide top);
+     BorderCls(BorderSide bottom, BorderSide left, BorderSide right, BorderSide top);
 
-    void  fromBorderSide(BorderSide side);
+    virtual void  fromBorderSide(BorderSide side);
 
-    void  symmetric(BorderSide horizontal, BorderSide vertical);
+    virtual void  symmetric(BorderSide horizontal, BorderSide vertical);
 
-    void  all(Color color, StrokeAlign strokeAlign, BorderStyle style, double width);
+    virtual void  all(Color color, StrokeAlign strokeAlign, BorderStyle style, double width);
 
     static Border merge(Border a, Border b);
 
-    EdgeInsetsGeometry dimensions();
+    virtual EdgeInsetsGeometry dimensions();
 
-    bool isUniform();
+    virtual bool isUniform();
 
-    Border add(ShapeBorder other, bool reversed);
+    virtual Border add(ShapeBorder other, bool reversed);
 
-    Border scale(double t);
+    virtual Border scale(double t);
 
-    ShapeBorder lerpFrom(ShapeBorder a, double t);
+    virtual ShapeBorder lerpFrom(ShapeBorder a, double t);
 
-    ShapeBorder lerpTo(ShapeBorder b, double t);
+    virtual ShapeBorder lerpTo(ShapeBorder b, double t);
 
     static Border lerp(Border a, Border b, double t);
 
-    void paint(BorderRadius borderRadius, Canvas canvas, Rect rect, BoxShape shape, TextDirection textDirection);
+    virtual void paint(BorderRadius borderRadius, Canvas canvas, Rect rect, BoxShape shape, TextDirection textDirection);
 
-    bool ==(Object other);
+    virtual bool operator==(Object other);
 
-    int hashCode();
+    virtual int hashCode();
 
-    String toString();
+    virtual String toString();
 
 private:
 
-    bool _colorIsUniform();
+    virtual bool _colorIsUniform();
 
-    bool _widthIsUniform();
+    virtual bool _widthIsUniform();
 
-    bool _styleIsUniform();
+    virtual bool _styleIsUniform();
 
-    bool _strokeAlignIsUniform();
+    virtual bool _strokeAlignIsUniform();
 
 };
+using Border = std::shared_ptr<BorderCls>;
 
-class BorderDirectional : BoxBorder {
+class BorderDirectionalCls : public BoxBorderCls {
 public:
     BorderSide top;
 
@@ -112,36 +109,38 @@ public:
     BorderSide bottom;
 
 
-     BorderDirectional(BorderSide bottom, BorderSide end, BorderSide start, BorderSide top);
+     BorderDirectionalCls(BorderSide bottom, BorderSide end, BorderSide start, BorderSide top);
 
     static BorderDirectional merge(BorderDirectional a, BorderDirectional b);
 
-    EdgeInsetsGeometry dimensions();
+    virtual EdgeInsetsGeometry dimensions();
 
-    bool isUniform();
+    virtual bool isUniform();
 
-    BoxBorder add(ShapeBorder other, bool reversed);
+    virtual BoxBorder add(ShapeBorder other, bool reversed);
 
-    BorderDirectional scale(double t);
+    virtual BorderDirectional scale(double t);
 
-    ShapeBorder lerpFrom(ShapeBorder a, double t);
+    virtual ShapeBorder lerpFrom(ShapeBorder a, double t);
 
-    ShapeBorder lerpTo(ShapeBorder b, double t);
+    virtual ShapeBorder lerpTo(ShapeBorder b, double t);
 
     static BorderDirectional lerp(BorderDirectional a, BorderDirectional b, double t);
 
-    void paint(BorderRadius borderRadius, Canvas canvas, Rect rect, BoxShape shape, TextDirection textDirection);
+    virtual void paint(BorderRadius borderRadius, Canvas canvas, Rect rect, BoxShape shape, TextDirection textDirection);
 
-    bool ==(Object other);
+    virtual bool operator==(Object other);
 
-    int hashCode();
+    virtual int hashCode();
 
-    String toString();
+    virtual String toString();
 
 private:
 
-    bool _strokeAlignIsUniform();
+    virtual bool _strokeAlignIsUniform();
 
 };
+using BorderDirectional = std::shared_ptr<BorderDirectionalCls>;
+
 
 #endif

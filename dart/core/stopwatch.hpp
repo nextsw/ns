@@ -1,32 +1,30 @@
-#ifndef STOPWATCH_H
-#define STOPWATCH_H
-#include <memory>
+#ifndef DART_CORE_STOPWATCH
+#define DART_CORE_STOPWATCH
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
 
 
-
-
-class Stopwatch {
+class StopwatchCls : public ObjectCls {
 public:
 
-     Stopwatch();
+     StopwatchCls();
 
-    int frequency();
+    virtual int frequency();
 
-    void start();
+    virtual void start();
 
-    void stop();
+    virtual void stop();
 
-    void reset();
+    virtual void reset();
 
-    int elapsedTicks();
+    virtual int elapsedTicks();
 
-    Duration elapsed();
+    virtual Duration elapsed();
 
-    external int elapsedMicroseconds();
-
-    external int elapsedMilliseconds();
-
-    bool isRunning();
+    extern int elapsedMicroseconds();
+    extern int elapsedMilliseconds();
+    virtual bool isRunning();
 
 private:
     static int _frequency;
@@ -36,10 +34,10 @@ private:
     int _stop;
 
 
-    external static int _initTicker();
-
-    external static int _now();
-
+    extern static int _initTicker();
+    extern static int _now();
 };
+using Stopwatch = std::shared_ptr<StopwatchCls>;
+
 
 #endif

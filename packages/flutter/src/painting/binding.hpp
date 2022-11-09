@@ -1,39 +1,39 @@
-#ifndef BINDING_H
-#define BINDING_H
-#include <memory>
+#ifndef PACKAGES_FLUTTER_SRC_PAINTING_BINDING
+#define PACKAGES_FLUTTER_SRC_PAINTING_BINDING
+#include <base.hpp>
 
-#include <ui/ui.hpp>
-#include <flutter/foundation.hpp>
-#include <flutter/services.hpp>
+#include <dart/core/core.hpp>
+#include <dart/ui/ui.hpp>
+#include <packages/flutter/lib/foundation.hpp>
+#include <packages/flutter/flutter.hpp>
 #include "image_cache.hpp"
 #include "shader_warm_up.hpp"
 
 
-
-class PaintingBinding {
+class PaintingBindingCls : public ObjectCls {
 public:
     static ShaderWarmUp shaderWarmUp;
 
 
-    void initInstances();
+    virtual void initInstances();
 
     static PaintingBinding instance();
 
-    ImageCache imageCache();
+    virtual ImageCache imageCache();
 
-    ImageCache createImageCache();
+    virtual ImageCache createImageCache();
 
-    Future<Codec> instantiateImageCodec(bool allowUpscaling, Uint8List bytes, int cacheHeight, int cacheWidth);
+    virtual Future<Codec> instantiateImageCodec(bool allowUpscaling, Uint8List bytes, int cacheHeight, int cacheWidth);
 
-    Future<Codec> instantiateImageCodecFromBuffer(bool allowUpscaling, ImmutableBuffer buffer, int cacheHeight, int cacheWidth);
+    virtual Future<Codec> instantiateImageCodecFromBuffer(bool allowUpscaling, ImmutableBuffer buffer, int cacheHeight, int cacheWidth);
 
-    void evict(String asset);
+    virtual void evict(String asset);
 
-    void handleMemoryPressure();
+    virtual void handleMemoryPressure();
 
-    Listenable systemFonts();
+    virtual Listenable systemFonts();
 
-    Future<void> handleSystemMessage(Object systemMessage);
+    virtual Future<void> handleSystemMessage(Object systemMessage);
 
 private:
     static PaintingBinding _instance;
@@ -44,22 +44,25 @@ private:
 
 
 };
+using PaintingBinding = std::shared_ptr<PaintingBindingCls>;
 
-class _SystemFontsNotifier : Listenable {
+class _SystemFontsNotifierCls : public ListenableCls {
 public:
 
-    void notifyListeners();
+    virtual void notifyListeners();
 
-    void addListener(VoidCallback listener);
+    virtual void addListener(VoidCallback listener);
 
-    void removeListener(VoidCallback listener);
+    virtual void removeListener(VoidCallback listener);
 
 private:
     Set<VoidCallback> _systemFontsCallbacks;
 
 
 };
+using _SystemFontsNotifier = std::shared_ptr<_SystemFontsNotifierCls>;
 ImageCache imageCache();
+
 
 
 #endif

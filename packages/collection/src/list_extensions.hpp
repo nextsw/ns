@@ -1,9 +1,10 @@
-#ifndef LIST_EXTENSIONS_H
-#define LIST_EXTENSIONS_H
-#include <memory>
+#ifndef PACKAGES_COLLECTION_SRC_LIST_EXTENSIONS
+#define PACKAGES_COLLECTION_SRC_LIST_EXTENSIONS
+#include <base.hpp>
 
-#include <collection/collection.hpp>
-#include <math/math.hpp>
+#include <dart/core/core.hpp>
+#include <dart/collection/collection.hpp>
+#include <dart/math/math.hpp>
 #include "algorithms.hpp"
 #include "algorithms.hpp"
 #include "equality.hpp"

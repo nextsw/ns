@@ -1,215 +1,253 @@
 #include "compositing.hpp"
-Future<Image> Scene::toImage(int height, int width) {
+Future<Image> SceneCls::toImage(int height, int width) {
     if (width <= 0 || height <= 0) {
         ;
     }
-    return _futurize();
+    return _futurize([=] (_Callback<Image> callback)     {
+        _toImage(width, height, [=] (_Image image) {
+        if (image == nullptr) {
+            callback(nullptr);
+        } else {
+            callback(ImageCls->_(image, image->width, image->height));
+        }
+    });
+    });
 }
 
-void _EngineLayerWrapper::dispose() {
+void _EngineLayerWrapperCls::dispose() {
     assert(_nativeLayer != nullptr, "Object disposed");
-    _nativeLayer!.dispose();
-    assert(());
+    _nativeLayer!->dispose();
+    assert([=] () {
+        _nativeLayer = nullptr;
+        return true;
+    }());
 }
 
-void _EngineLayerWrapper::_(EngineLayer nativeLayer)
+void _EngineLayerWrapperCls::_(EngineLayer nativeLayer)
 
-bool _EngineLayerWrapper::_debugCheckNotUsedAsOldLayer() {
+bool _EngineLayerWrapperCls::_debugCheckNotUsedAsOldLayer() {
     assert(!_debugWasUsedAsOldLayer, "Layer $runtimeType was previously used as oldLayer.\nOnce a layer is used as oldLayer, it may not be used again. Instead, after calling one of the SceneBuilder.push* methods and passing an oldLayer to it, use the layer returned by the method as oldLayer in subsequent frames.");
     return true;
 }
 
-void TransformEngineLayer::_(EngineLayer nativeLayer)
+void TransformEngineLayerCls::_(EngineLayer nativeLayer)
 
-void OffsetEngineLayer::_(EngineLayer nativeLayer)
+void OffsetEngineLayerCls::_(EngineLayer nativeLayer)
 
-void ClipRectEngineLayer::_(EngineLayer nativeLayer)
+void ClipRectEngineLayerCls::_(EngineLayer nativeLayer)
 
-void ClipRRectEngineLayer::_(EngineLayer nativeLayer)
+void ClipRRectEngineLayerCls::_(EngineLayer nativeLayer)
 
-void ClipPathEngineLayer::_(EngineLayer nativeLayer)
+void ClipPathEngineLayerCls::_(EngineLayer nativeLayer)
 
-void OpacityEngineLayer::_(EngineLayer nativeLayer)
+void OpacityEngineLayerCls::_(EngineLayer nativeLayer)
 
-void ColorFilterEngineLayer::_(EngineLayer nativeLayer)
+void ColorFilterEngineLayerCls::_(EngineLayer nativeLayer)
 
-void ImageFilterEngineLayer::_(EngineLayer nativeLayer)
+void ImageFilterEngineLayerCls::_(EngineLayer nativeLayer)
 
-void BackdropFilterEngineLayer::_(EngineLayer nativeLayer)
+void BackdropFilterEngineLayerCls::_(EngineLayer nativeLayer)
 
-void ShaderMaskEngineLayer::_(EngineLayer nativeLayer)
+void ShaderMaskEngineLayerCls::_(EngineLayer nativeLayer)
 
-void PhysicalShapeEngineLayer::_(EngineLayer nativeLayer)
+void PhysicalShapeEngineLayerCls::_(EngineLayer nativeLayer)
 
-SceneBuilder::SceneBuilder() {
+SceneBuilderCls::SceneBuilderCls() {
     {
         _constructor();
     }
 }
 
-TransformEngineLayer SceneBuilder::pushTransform(Float64List matrix4, TransformEngineLayer oldLayer) {
+TransformEngineLayer SceneBuilderCls::pushTransform(Float64List matrix4, TransformEngineLayer oldLayer) {
     assert(_matrix4IsValid(matrix4));
     assert(_debugCheckCanBeUsedAsOldLayer(oldLayer, "pushTransform"));
-    EngineLayer engineLayer = EngineLayer._();
-    _pushTransform(engineLayer, matrix4, oldLayer?._nativeLayer);
-    TransformEngineLayer layer = TransformEngineLayer._(engineLayer);
+    EngineLayer engineLayer = EngineLayerCls->_();
+    _pushTransform(engineLayer, matrix4, oldLayer?->_nativeLayer);
+    TransformEngineLayer layer = TransformEngineLayerCls->_(engineLayer);
     assert(_debugPushLayer(layer));
     return layer;
 }
 
-OffsetEngineLayer SceneBuilder::pushOffset(double dx, double dy, OffsetEngineLayer oldLayer) {
+OffsetEngineLayer SceneBuilderCls::pushOffset(double dx, double dy, OffsetEngineLayer oldLayer) {
     assert(_debugCheckCanBeUsedAsOldLayer(oldLayer, "pushOffset"));
-    EngineLayer engineLayer = EngineLayer._();
-    _pushOffset(engineLayer, dx, dy, oldLayer?._nativeLayer);
-    OffsetEngineLayer layer = OffsetEngineLayer._(engineLayer);
+    EngineLayer engineLayer = EngineLayerCls->_();
+    _pushOffset(engineLayer, dx, dy, oldLayer?->_nativeLayer);
+    OffsetEngineLayer layer = OffsetEngineLayerCls->_(engineLayer);
     assert(_debugPushLayer(layer));
     return layer;
 }
 
-ClipRectEngineLayer SceneBuilder::pushClipRect(Clip clipBehavior, ClipRectEngineLayer oldLayer, Rect rect) {
+ClipRectEngineLayer SceneBuilderCls::pushClipRect(Clip clipBehavior, ClipRectEngineLayer oldLayer, Rect rect) {
     assert(clipBehavior != nullptr);
-    assert(clipBehavior != Clip.none);
+    assert(clipBehavior != ClipCls::none);
     assert(_debugCheckCanBeUsedAsOldLayer(oldLayer, "pushClipRect"));
-    EngineLayer engineLayer = EngineLayer._();
-    _pushClipRect(engineLayer, rect.left, rect.right, rect.top, rect.bottom, clipBehavior.index, oldLayer?._nativeLayer);
-    ClipRectEngineLayer layer = ClipRectEngineLayer._(engineLayer);
+    EngineLayer engineLayer = EngineLayerCls->_();
+    _pushClipRect(engineLayer, rect->left, rect->right, rect->top, rect->bottom, clipBehavior->index, oldLayer?->_nativeLayer);
+    ClipRectEngineLayer layer = ClipRectEngineLayerCls->_(engineLayer);
     assert(_debugPushLayer(layer));
     return layer;
 }
 
-ClipRRectEngineLayer SceneBuilder::pushClipRRect(Clip clipBehavior, ClipRRectEngineLayer oldLayer, RRect rrect) {
+ClipRRectEngineLayer SceneBuilderCls::pushClipRRect(Clip clipBehavior, ClipRRectEngineLayer oldLayer, RRect rrect) {
     assert(clipBehavior != nullptr);
-    assert(clipBehavior != Clip.none);
+    assert(clipBehavior != ClipCls::none);
     assert(_debugCheckCanBeUsedAsOldLayer(oldLayer, "pushClipRRect"));
-    EngineLayer engineLayer = EngineLayer._();
-    _pushClipRRect(engineLayer, rrect._getValue32(), clipBehavior.index, oldLayer?._nativeLayer);
-    ClipRRectEngineLayer layer = ClipRRectEngineLayer._(engineLayer);
+    EngineLayer engineLayer = EngineLayerCls->_();
+    _pushClipRRect(engineLayer, rrect->_getValue32(), clipBehavior->index, oldLayer?->_nativeLayer);
+    ClipRRectEngineLayer layer = ClipRRectEngineLayerCls->_(engineLayer);
     assert(_debugPushLayer(layer));
     return layer;
 }
 
-ClipPathEngineLayer SceneBuilder::pushClipPath(Clip clipBehavior, ClipPathEngineLayer oldLayer, Path path) {
+ClipPathEngineLayer SceneBuilderCls::pushClipPath(Clip clipBehavior, ClipPathEngineLayer oldLayer, Path path) {
     assert(clipBehavior != nullptr);
-    assert(clipBehavior != Clip.none);
+    assert(clipBehavior != ClipCls::none);
     assert(_debugCheckCanBeUsedAsOldLayer(oldLayer, "pushClipPath"));
-    EngineLayer engineLayer = EngineLayer._();
-    _pushClipPath(engineLayer, path, clipBehavior.index, oldLayer?._nativeLayer);
-    ClipPathEngineLayer layer = ClipPathEngineLayer._(engineLayer);
+    EngineLayer engineLayer = EngineLayerCls->_();
+    _pushClipPath(engineLayer, path, clipBehavior->index, oldLayer?->_nativeLayer);
+    ClipPathEngineLayer layer = ClipPathEngineLayerCls->_(engineLayer);
     assert(_debugPushLayer(layer));
     return layer;
 }
 
-OpacityEngineLayer SceneBuilder::pushOpacity(int alpha, Offset offset, OpacityEngineLayer oldLayer) {
+OpacityEngineLayer SceneBuilderCls::pushOpacity(int alpha, Offset offset, OpacityEngineLayer oldLayer) {
     assert(_debugCheckCanBeUsedAsOldLayer(oldLayer, "pushOpacity"));
-    EngineLayer engineLayer = EngineLayer._();
-    _pushOpacity(engineLayer, alpha, offset!.dx, offset.dy, oldLayer?._nativeLayer);
-    OpacityEngineLayer layer = OpacityEngineLayer._(engineLayer);
+    EngineLayer engineLayer = EngineLayerCls->_();
+    _pushOpacity(engineLayer, alpha, offset!->dx, offset->dy, oldLayer?->_nativeLayer);
+    OpacityEngineLayer layer = OpacityEngineLayerCls->_(engineLayer);
     assert(_debugPushLayer(layer));
     return layer;
 }
 
-ColorFilterEngineLayer SceneBuilder::pushColorFilter(ColorFilter filter, ColorFilterEngineLayer oldLayer) {
+ColorFilterEngineLayer SceneBuilderCls::pushColorFilter(ColorFilter filter, ColorFilterEngineLayer oldLayer) {
     assert(filter != nullptr);
     assert(_debugCheckCanBeUsedAsOldLayer(oldLayer, "pushColorFilter"));
-    _ColorFilter nativeFilter = filter._toNativeColorFilter()!;
+    _ColorFilter nativeFilter = filter->_toNativeColorFilter()!;
     assert(nativeFilter != nullptr);
-    EngineLayer engineLayer = EngineLayer._();
-    _pushColorFilter(engineLayer, nativeFilter, oldLayer?._nativeLayer);
-    ColorFilterEngineLayer layer = ColorFilterEngineLayer._(engineLayer);
+    EngineLayer engineLayer = EngineLayerCls->_();
+    _pushColorFilter(engineLayer, nativeFilter, oldLayer?->_nativeLayer);
+    ColorFilterEngineLayer layer = ColorFilterEngineLayerCls->_(engineLayer);
     assert(_debugPushLayer(layer));
     return layer;
 }
 
-ImageFilterEngineLayer SceneBuilder::pushImageFilter(ImageFilter filter, ImageFilterEngineLayer oldLayer) {
+ImageFilterEngineLayer SceneBuilderCls::pushImageFilter(ImageFilter filter, ImageFilterEngineLayer oldLayer) {
     assert(filter != nullptr);
     assert(_debugCheckCanBeUsedAsOldLayer(oldLayer, "pushImageFilter"));
-    _ImageFilter nativeFilter = filter._toNativeImageFilter();
+    _ImageFilter nativeFilter = filter->_toNativeImageFilter();
     assert(nativeFilter != nullptr);
-    EngineLayer engineLayer = EngineLayer._();
-    _pushImageFilter(engineLayer, nativeFilter, oldLayer?._nativeLayer);
-    ImageFilterEngineLayer layer = ImageFilterEngineLayer._(engineLayer);
+    EngineLayer engineLayer = EngineLayerCls->_();
+    _pushImageFilter(engineLayer, nativeFilter, oldLayer?->_nativeLayer);
+    ImageFilterEngineLayer layer = ImageFilterEngineLayerCls->_(engineLayer);
     assert(_debugPushLayer(layer));
     return layer;
 }
 
-BackdropFilterEngineLayer SceneBuilder::pushBackdropFilter(BlendMode blendMode, ImageFilter filter, BackdropFilterEngineLayer oldLayer) {
+BackdropFilterEngineLayer SceneBuilderCls::pushBackdropFilter(BlendMode blendMode, ImageFilter filter, BackdropFilterEngineLayer oldLayer) {
     assert(_debugCheckCanBeUsedAsOldLayer(oldLayer, "pushBackdropFilter"));
-    EngineLayer engineLayer = EngineLayer._();
-    _pushBackdropFilter(engineLayer, filter._toNativeImageFilter(), blendMode.index, oldLayer?._nativeLayer);
-    BackdropFilterEngineLayer layer = BackdropFilterEngineLayer._(engineLayer);
+    EngineLayer engineLayer = EngineLayerCls->_();
+    _pushBackdropFilter(engineLayer, filter->_toNativeImageFilter(), blendMode->index, oldLayer?->_nativeLayer);
+    BackdropFilterEngineLayer layer = BackdropFilterEngineLayerCls->_(engineLayer);
     assert(_debugPushLayer(layer));
     return layer;
 }
 
-ShaderMaskEngineLayer SceneBuilder::pushShaderMask(BlendMode blendMode, FilterQuality filterQuality, Rect maskRect, ShaderMaskEngineLayer oldLayer, Shader shader) {
+ShaderMaskEngineLayer SceneBuilderCls::pushShaderMask(BlendMode blendMode, FilterQuality filterQuality, Rect maskRect, ShaderMaskEngineLayer oldLayer, Shader shader) {
     assert(_debugCheckCanBeUsedAsOldLayer(oldLayer, "pushShaderMask"));
-    EngineLayer engineLayer = EngineLayer._();
-    _pushShaderMask(engineLayer, shader, maskRect.left, maskRect.right, maskRect.top, maskRect.bottom, blendMode.index, filterQuality.index, oldLayer?._nativeLayer);
-    ShaderMaskEngineLayer layer = ShaderMaskEngineLayer._(engineLayer);
+    EngineLayer engineLayer = EngineLayerCls->_();
+    _pushShaderMask(engineLayer, shader, maskRect->left, maskRect->right, maskRect->top, maskRect->bottom, blendMode->index, filterQuality->index, oldLayer?->_nativeLayer);
+    ShaderMaskEngineLayer layer = ShaderMaskEngineLayerCls->_(engineLayer);
     assert(_debugPushLayer(layer));
     return layer;
 }
 
-PhysicalShapeEngineLayer SceneBuilder::pushPhysicalShape(Clip clipBehavior, Color color, double elevation, PhysicalShapeEngineLayer oldLayer, Path path, Color shadowColor) {
+PhysicalShapeEngineLayer SceneBuilderCls::pushPhysicalShape(Clip clipBehavior, Color color, double elevation, PhysicalShapeEngineLayer oldLayer, Path path, Color shadowColor) {
     assert(_debugCheckCanBeUsedAsOldLayer(oldLayer, "pushPhysicalShape"));
-    EngineLayer engineLayer = EngineLayer._();
-    _pushPhysicalShape(engineLayer, path, elevation, color.value, shadowColor?.value ?? 0xFF000000, clipBehavior.index, oldLayer?._nativeLayer);
-    PhysicalShapeEngineLayer layer = PhysicalShapeEngineLayer._(engineLayer);
+    EngineLayer engineLayer = EngineLayerCls->_();
+    _pushPhysicalShape(engineLayer, path, elevation, color->value, shadowColor?->value ?? 0xFF000000, clipBehavior->index, oldLayer?->_nativeLayer);
+    PhysicalShapeEngineLayer layer = PhysicalShapeEngineLayerCls->_(engineLayer);
     assert(_debugPushLayer(layer));
     return layer;
 }
 
-void SceneBuilder::pop() {
-    if (_layerStack.isNotEmpty) {
-        _layerStack.removeLast();
+void SceneBuilderCls::pop() {
+    if (_layerStack->isNotEmpty) {
+        _layerStack->removeLast();
     }
     _pop();
 }
 
-void SceneBuilder::addRetained(EngineLayer retainedLayer) {
+void SceneBuilderCls::addRetained(EngineLayer retainedLayer) {
     assert(retainedLayer is _EngineLayerWrapper);
-    assert(());
-    _EngineLayerWrapper wrapper = (;
-    _addRetained(wrapper._nativeLayer!);
+    assert([=] () {
+        _EngineLayerWrapper layer = ((_EngineLayerWrapper)retainedLayer);
+        assert(layer->_nativeLayer != nullptr);
+        InlineMethod;
+        recursivelyCheckChildrenUsedOnce(layer);
+        return true;
+    }());
+    _EngineLayerWrapper wrapper = ((_EngineLayerWrapper)retainedLayer);
+    _addRetained(wrapper->_nativeLayer!);
 }
 
-void SceneBuilder::addPerformanceOverlay(Rect bounds, int enabledOptions) {
-    _addPerformanceOverlay(enabledOptions, bounds.left, bounds.right, bounds.top, bounds.bottom);
+void SceneBuilderCls::addPerformanceOverlay(Rect bounds, int enabledOptions) {
+    _addPerformanceOverlay(enabledOptions, bounds->left, bounds->right, bounds->top, bounds->bottom);
 }
 
-void SceneBuilder::addPicture(bool isComplexHint, Offset offset, Picture picture, bool willChangeHint) {
-    assert(!picture.debugDisposed);
+void SceneBuilderCls::addPicture(bool isComplexHint, Offset offset, Picture picture, bool willChangeHint) {
+    assert(!picture->debugDisposed);
     int hints = (isComplexHint? 1 : 0) | (willChangeHint? 2 : 0);
-    _addPicture(offset.dx, offset.dy, picture, hints);
+    _addPicture(offset->dx, offset->dy, picture, hints);
 }
 
-void SceneBuilder::addTexture(FilterQuality filterQuality, bool freeze, double height, Offset offset, int textureId, double width) {
+void SceneBuilderCls::addTexture(FilterQuality filterQuality, bool freeze, double height, Offset offset, int textureId, double width) {
     assert(offset != nullptr, "Offset argument was null");
-    _addTexture(offset.dx, offset.dy, width, height, textureId, freeze, filterQuality.index);
+    _addTexture(offset->dx, offset->dy, width, height, textureId, freeze, filterQuality->index);
 }
 
-void SceneBuilder::addPlatformView(double height, Offset offset, int viewId, double width) {
+void SceneBuilderCls::addPlatformView(double height, Offset offset, int viewId, double width) {
     assert(offset != nullptr, "Offset argument was null");
-    _addPlatformView(offset.dx, offset.dy, width, height, viewId);
+    _addPlatformView(offset->dx, offset->dy, width, height, viewId);
 }
 
-Scene SceneBuilder::build() {
-    Scene scene = Scene._();
+Scene SceneBuilderCls::build() {
+    Scene scene = SceneCls->_();
     _build(scene);
     return scene;
 }
 
-bool SceneBuilder::_debugCheckUsedOnce(EngineLayer layer, String usage) {
-    assert(());
+bool SceneBuilderCls::_debugCheckUsedOnce(EngineLayer layer, String usage) {
+    assert([=] () {
+        assert(!_usedLayers->containsKey(layer), "Layer ${layer.runtimeType} already used.\nThe layer is already being used as ${_usedLayers[layer]} in this scene.\nA layer may only be used once in a given scene.");
+        _usedLayers[layer] = usage;
+        return true;
+    }());
     return true;
 }
 
-bool SceneBuilder::_debugCheckCanBeUsedAsOldLayer(_EngineLayerWrapper layer, String methodName) {
-    assert(());
+bool SceneBuilderCls::_debugCheckCanBeUsedAsOldLayer(_EngineLayerWrapper layer, String methodName) {
+    assert([=] () {
+        if (layer == nullptr) {
+            return true;
+        }
+        assert(layer->_nativeLayer != nullptr, "Object disposed");
+        layer->_debugCheckNotUsedAsOldLayer();
+        assert(_debugCheckUsedOnce(layer, "oldLayer in $methodName"));
+        layer->_debugWasUsedAsOldLayer = true;
+        return true;
+    }());
     return true;
 }
 
-bool SceneBuilder::_debugPushLayer(_EngineLayerWrapper newLayer) {
-    assert(());
+bool SceneBuilderCls::_debugPushLayer(_EngineLayerWrapper newLayer) {
+    assert([=] () {
+        if (_layerStack->isNotEmpty) {
+            _EngineLayerWrapper currentLayer = _layerStack->last;
+            currentLayer->_debugChildren = makeList();
+            currentLayer->_debugChildren!->add(newLayer);
+        }
+        _layerStack->add(newLayer);
+        return true;
+    }());
     return true;
 }

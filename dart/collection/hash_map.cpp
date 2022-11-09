@@ -4,31 +4,33 @@ bool _defaultEquals(Object a, Object b) {
 }
 
 int _defaultHashCode(Object a) {
-    return a.hashCode;
+    return a->hashCode;
 }
 
-void HashMap::from(Map<dynamic, dynamic> other) {
-    HashMap<K, V> result = <K, V>HashMap();
-    other.forEach();
+template<typename K, typename V> void HashMapCls<K, V>::from(Map<dynamic, dynamic> other) {
+    HashMap<K, V> result = <K, V>make<HashMapCls>();
+    other->forEach([=] (dynamic k,dynamic v) {
+        result[((K)k)] = ((V)v);
+    });
     return result;
 }
 
-void HashMap::of(Map<K, V> other) {
-    return ;
+template<typename K, typename V> void HashMapCls<K, V>::of(Map<K, V> other) {
+    return _c1;
 }
 
-void HashMap::fromIterable(Iterable iterable, FunctionType key, FunctionType value) {
-    HashMap<K, V> map = <K, V>HashMap();
-    MapBase._fillMapWithMappedIterable(map, iterable, key, value);
+template<typename K, typename V> void HashMapCls<K, V>::fromIterable(Iterable iterable, K key(dynamic element) , V value(dynamic element) ) {
+    auto _c1 = <K, V>make<HashMapCls>();_c1.addAll(other);HashMap<K, V> map = <K, V>make<HashMapCls>();
+    MapBaseCls->_fillMapWithMappedIterable(map, iterable, key, value);
     return map;
 }
 
-void HashMap::fromIterables(Iterable<K> keys, Iterable<V> values) {
-    HashMap<K, V> map = <K, V>HashMap();
-    MapBase._fillMapWithIterables(map, keys, values);
+template<typename K, typename V> void HashMapCls<K, V>::fromIterables(Iterable<K> keys, Iterable<V> values) {
+    HashMap<K, V> map = <K, V>make<HashMapCls>();
+    MapBaseCls->_fillMapWithIterables(map, keys, values);
     return map;
 }
 
-void HashMap::fromEntries(Iterable<MapEntry<K, V>> entries) {
-    return ;
+template<typename K, typename V> void HashMapCls<K, V>::fromEntries(Iterable<MapEntry<K, V>> entries) {
+    return _c1;
 }

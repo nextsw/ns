@@ -1,70 +1,64 @@
 #include "latin1.hpp"
-Latin1Codec::Latin1Codec(bool allowInvalid) {
+Latin1CodecCls::Latin1CodecCls(bool allowInvalid) {
     {
         _allowInvalid = allowInvalid;
     }
 }
 
-String Latin1Codec::name() {
+String Latin1CodecCls::name() {
     return "iso-8859-1";
 }
 
-Uint8List Latin1Codec::encode(String source) {
-    return encoder.convert(source);
+Uint8List Latin1CodecCls::encode(String source) {
+    return encoder->convert(source);
 }
 
-String Latin1Codec::decode(bool allowInvalid, List<int> bytes) {
+String Latin1CodecCls::decode(bool allowInvalid, List<int> bytes) {
     if (allowInvalid ?? _allowInvalid) {
-        return const Latin1Decoder(true).convert(bytes);
+        return make<Latin1DecoderCls>(true)->convert(bytes);
     } else {
-        return const Latin1Decoder(false).convert(bytes);
+        return make<Latin1DecoderCls>(false)->convert(bytes);
     }
 }
 
-Latin1Encoder Latin1Codec::encoder() {
-    return const Latin1Encoder();
+Latin1Encoder Latin1CodecCls::encoder() {
+    return make<Latin1EncoderCls>();
 }
 
-Latin1Decoder Latin1Codec::decoder() {
-    return _allowInvalid? const Latin1Decoder(true) : const Latin1Decoder(false);
+Latin1Decoder Latin1CodecCls::decoder() {
+    return _allowInvalid? make<Latin1DecoderCls>(true) : make<Latin1DecoderCls>(false);
 }
 
-Latin1Encoder::Latin1Encoder() {
-    {
-        super(_latin1Mask);
-    }
+Latin1EncoderCls::Latin1EncoderCls() {
 }
 
-Latin1Decoder::Latin1Decoder(bool allowInvalid) {
-    {
-        super(allowInvalid, _latin1Mask);
-    }
+Latin1DecoderCls::Latin1DecoderCls(bool allowInvalid) {
 }
 
-ByteConversionSink Latin1Decoder::startChunkedConversion(Sink<String> sink) {
+ByteConversionSink Latin1DecoderCls::startChunkedConversion(Sink<String> sink) {
     StringConversionSink stringSink;
     if (sink is StringConversionSink) {
         stringSink = sink;
     } else {
-        stringSink = StringConversionSink.from(sink);
+        stringSink = StringConversionSinkCls->from(sink);
     }
     if (!_allowInvalid)     {
-        return _Latin1DecoderSink(stringSink);
+        return make<_Latin1DecoderSinkCls>(stringSink);
     }
-    return _Latin1AllowInvalidDecoderSink(stringSink);
+    return make<_Latin1AllowInvalidDecoderSinkCls>(stringSink);
 }
 
-void _Latin1DecoderSink::close() {
-    _sink!.close();
+void _Latin1DecoderSinkCls::close() {
+    _sink!->close();
     _sink = nullptr;
 }
 
-void _Latin1DecoderSink::add(List<int> source) {
-    addSlice(source, 0, source.length, false);
+void _Latin1DecoderSinkCls::add(List<int> source) {
+    addSlice(source, 0, source->length, false);
 }
 
-void _Latin1DecoderSink::addSlice(int end, bool isLast, List<int> source, int start) {
-    RangeError.checkValidRange(start, end, source.length);
+void _Latin1DecoderSinkCls::addSlice(int end, bool isLast, List<int> source, int start) {
+    RangeErrorCls->checkValidRange(start, end, source->length);
     if (start == end)     {
         return;
     }
@@ -74,14 +68,14 @@ void _Latin1DecoderSink::addSlice(int end, bool isLast, List<int> source, int st
     _addSliceToSink(source, start, end, isLast);
 }
 
-void _Latin1DecoderSink::_addSliceToSink(int end, bool isLast, List<int> source, int start) {
-    _sink!.add(String.fromCharCodes(source, start, end));
+void _Latin1DecoderSinkCls::_addSliceToSink(int end, bool isLast, List<int> source, int start) {
+    _sink!->add(StringCls->fromCharCodes(source, start, end));
     if (isLast)     {
         close();
     }
 }
 
-void _Latin1DecoderSink::_checkValidLatin1(int end, List<int> source, int start) {
+void _Latin1DecoderSinkCls::_checkValidLatin1(int end, List<int> source, int start) {
     auto mask = 0;
     for (;  < end; i++) {
         mask = source[i];
@@ -92,7 +86,7 @@ void _Latin1DecoderSink::_checkValidLatin1(int end, List<int> source, int start)
     _reportInvalidLatin1(source, start, end);
 }
 
-void _Latin1DecoderSink::_reportInvalidLatin1(int end, List<int> source, int start) {
+void _Latin1DecoderSinkCls::_reportInvalidLatin1(int end, List<int> source, int start) {
     for (;  < end; i++) {
         auto char = source[i];
         if ( < 0 || char > _latin1Mask) {
@@ -102,15 +96,15 @@ void _Latin1DecoderSink::_reportInvalidLatin1(int end, List<int> source, int sta
     assert(false);
 }
 
-void _Latin1AllowInvalidDecoderSink::addSlice(int end, bool isLast, List<int> source, int start) {
-    RangeError.checkValidRange(start, end, source.length);
+void _Latin1AllowInvalidDecoderSinkCls::addSlice(int end, bool isLast, List<int> source, int start) {
+    RangeErrorCls->checkValidRange(start, end, source->length);
     for (;  < end; i++) {
         auto char = source[i];
         if (char > _latin1Mask ||  < 0) {
             if (i > start)             {
                 _addSliceToSink(source, start, i, false);
             }
-            _addSliceToSink(const , 0, 1, false);
+            _addSliceToSink(makeList(ArrayItem), 0, 1, false);
             start = i + 1;
         }
     }
@@ -122,8 +116,5 @@ void _Latin1AllowInvalidDecoderSink::addSlice(int end, bool isLast, List<int> so
     }
 }
 
-_Latin1AllowInvalidDecoderSink::_Latin1AllowInvalidDecoderSink(StringConversionSink sink) {
-    {
-        super(sink);
-    }
+_Latin1AllowInvalidDecoderSinkCls::_Latin1AllowInvalidDecoderSinkCls(StringConversionSink sink) {
 }

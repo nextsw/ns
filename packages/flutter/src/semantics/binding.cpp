@@ -1,28 +1,33 @@
 #include "binding.hpp"
-void SemanticsBinding::initInstances() {
-    super.initInstances();
+void SemanticsBindingCls::initInstances() {
+    super->initInstances();
     _instance = this;
-    _accessibilityFeatures = platformDispatcher.accessibilityFeatures;
+    _accessibilityFeatures = platformDispatcher->accessibilityFeatures;
 }
 
-SemanticsBinding SemanticsBinding::instance() {
-    return BindingBase.checkInstance(_instance);
+SemanticsBinding SemanticsBindingCls::instance() {
+    return BindingBaseCls->checkInstance(_instance);
 }
 
-void SemanticsBinding::handleAccessibilityFeaturesChanged() {
-    _accessibilityFeatures = platformDispatcher.accessibilityFeatures;
+void SemanticsBindingCls::handleAccessibilityFeaturesChanged() {
+    _accessibilityFeatures = platformDispatcher->accessibilityFeatures;
 }
 
-SemanticsUpdateBuilder SemanticsBinding::createSemanticsUpdateBuilder() {
-    return ui.SemanticsUpdateBuilder();
+SemanticsUpdateBuilder SemanticsBindingCls::createSemanticsUpdateBuilder() {
+    return ui->make<SemanticsUpdateBuilderCls>();
 }
 
-AccessibilityFeatures SemanticsBinding::accessibilityFeatures() {
+AccessibilityFeatures SemanticsBindingCls::accessibilityFeatures() {
     return _accessibilityFeatures;
 }
 
-bool SemanticsBinding::disableAnimations() {
-    bool value = _accessibilityFeatures.disableAnimations;
-    assert(());
+bool SemanticsBindingCls::disableAnimations() {
+    bool value = _accessibilityFeatures->disableAnimations;
+    assert([=] () {
+        if (debugSemanticsDisableAnimations != nullptr) {
+            value = debugSemanticsDisableAnimations!;
+        }
+        return true;
+    }());
     return value;
 }

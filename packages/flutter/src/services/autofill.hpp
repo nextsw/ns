@@ -1,157 +1,157 @@
-#ifndef AUTOFILL_H
-#define AUTOFILL_H
-#include <memory>
+#ifndef PACKAGES_FLUTTER_SRC_SERVICES_AUTOFILL
+#define PACKAGES_FLUTTER_SRC_SERVICES_AUTOFILL
+#include <base.hpp>
 #include "text_input.hpp"
 
-#include <flutter/foundation.hpp>
+#include <dart/core/core.hpp>
+#include <packages/flutter/lib/foundation.hpp>
 #include "text_input.hpp"
 
 
-
-class AutofillHints {
+class AutofillHintsCls : public ObjectCls {
 public:
-    static const String addressCity;
+    static String addressCity;
 
-    static const String addressCityAndState;
+    static String addressCityAndState;
 
-    static const String addressState;
+    static String addressState;
 
-    static const String birthday;
+    static String birthday;
 
-    static const String birthdayDay;
+    static String birthdayDay;
 
-    static const String birthdayMonth;
+    static String birthdayMonth;
 
-    static const String birthdayYear;
+    static String birthdayYear;
 
-    static const String countryCode;
+    static String countryCode;
 
-    static const String countryName;
+    static String countryName;
 
-    static const String creditCardExpirationDate;
+    static String creditCardExpirationDate;
 
-    static const String creditCardExpirationDay;
+    static String creditCardExpirationDay;
 
-    static const String creditCardExpirationMonth;
+    static String creditCardExpirationMonth;
 
-    static const String creditCardExpirationYear;
+    static String creditCardExpirationYear;
 
-    static const String creditCardFamilyName;
+    static String creditCardFamilyName;
 
-    static const String creditCardGivenName;
+    static String creditCardGivenName;
 
-    static const String creditCardMiddleName;
+    static String creditCardMiddleName;
 
-    static const String creditCardName;
+    static String creditCardName;
 
-    static const String creditCardNumber;
+    static String creditCardNumber;
 
-    static const String creditCardSecurityCode;
+    static String creditCardSecurityCode;
 
-    static const String creditCardType;
+    static String creditCardType;
 
-    static const String email;
+    static String email;
 
-    static const String familyName;
+    static String familyName;
 
-    static const String fullStreetAddress;
+    static String fullStreetAddress;
 
-    static const String gender;
+    static String gender;
 
-    static const String givenName;
+    static String givenName;
 
-    static const String impp;
+    static String impp;
 
-    static const String jobTitle;
+    static String jobTitle;
 
-    static const String language;
+    static String language;
 
-    static const String location;
+    static String location;
 
-    static const String middleInitial;
+    static String middleInitial;
 
-    static const String middleName;
+    static String middleName;
 
-    static const String name;
+    static String name;
 
-    static const String namePrefix;
+    static String namePrefix;
 
-    static const String nameSuffix;
+    static String nameSuffix;
 
-    static const String newPassword;
+    static String newPassword;
 
-    static const String newUsername;
+    static String newUsername;
 
-    static const String nickname;
+    static String nickname;
 
-    static const String oneTimeCode;
+    static String oneTimeCode;
 
-    static const String organizationName;
+    static String organizationName;
 
-    static const String password;
+    static String password;
 
-    static const String photo;
+    static String photo;
 
-    static const String postalAddress;
+    static String postalAddress;
 
-    static const String postalAddressExtended;
+    static String postalAddressExtended;
 
-    static const String postalAddressExtendedPostalCode;
+    static String postalAddressExtendedPostalCode;
 
-    static const String postalCode;
+    static String postalCode;
 
-    static const String streetAddressLevel1;
+    static String streetAddressLevel1;
 
-    static const String streetAddressLevel2;
+    static String streetAddressLevel2;
 
-    static const String streetAddressLevel3;
+    static String streetAddressLevel3;
 
-    static const String streetAddressLevel4;
+    static String streetAddressLevel4;
 
-    static const String streetAddressLine1;
+    static String streetAddressLine1;
 
-    static const String streetAddressLine2;
+    static String streetAddressLine2;
 
-    static const String streetAddressLine3;
+    static String streetAddressLine3;
 
-    static const String sublocality;
+    static String sublocality;
 
-    static const String telephoneNumber;
+    static String telephoneNumber;
 
-    static const String telephoneNumberAreaCode;
+    static String telephoneNumberAreaCode;
 
-    static const String telephoneNumberCountryCode;
+    static String telephoneNumberCountryCode;
 
-    static const String telephoneNumberDevice;
+    static String telephoneNumberDevice;
 
-    static const String telephoneNumberExtension;
+    static String telephoneNumberExtension;
 
-    static const String telephoneNumberLocal;
+    static String telephoneNumberLocal;
 
-    static const String telephoneNumberLocalPrefix;
+    static String telephoneNumberLocalPrefix;
 
-    static const String telephoneNumberLocalSuffix;
+    static String telephoneNumberLocalSuffix;
 
-    static const String telephoneNumberNational;
+    static String telephoneNumberNational;
 
-    static const String transactionAmount;
+    static String transactionAmount;
 
-    static const String transactionCurrency;
+    static String transactionCurrency;
 
-    static const String url;
+    static String url;
 
-    static const String username;
+    static String username;
 
 
 private:
 
-    void  _();
-
+    virtual void  _();
 };
+using AutofillHints = std::shared_ptr<AutofillHintsCls>;
 
-class AutofillConfiguration {
+class AutofillConfigurationCls : public ObjectCls {
 public:
-    static const AutofillConfiguration disabled;
+    static AutofillConfiguration disabled;
 
     bool enabled;
 
@@ -164,62 +164,62 @@ public:
     String hintText;
 
 
-     AutofillConfiguration(List<String> autofillHints, TextEditingValue currentEditingValue, String hintText, String uniqueIdentifier);
+     AutofillConfigurationCls(List<String> autofillHints, TextEditingValue currentEditingValue, String hintText, String uniqueIdentifier);
 
-    Map<String, dynamic> toJson();
+    virtual Map<String, dynamic> toJson();
 
 private:
 
-    void  _(List<String> autofillHints, TextEditingValue currentEditingValue, bool enabled, String hintText, String uniqueIdentifier);
+    virtual void  _(List<String> autofillHints, TextEditingValue currentEditingValue, bool enabled, String hintText, String uniqueIdentifier);
 
 };
+using AutofillConfiguration = std::shared_ptr<AutofillConfigurationCls>;
 
-class AutofillClient {
+class AutofillClientCls : public ObjectCls {
 public:
 
-    String autofillId();
-
-    TextInputConfiguration textInputConfiguration();
-
-    void autofill(TextEditingValue newEditingValue);
-
+    virtual String autofillId();
+    virtual TextInputConfiguration textInputConfiguration();
+    virtual void autofill(TextEditingValue newEditingValue);
 private:
 
 };
+using AutofillClient = std::shared_ptr<AutofillClientCls>;
 
-class AutofillScope {
+class AutofillScopeCls : public ObjectCls {
 public:
 
-    AutofillClient getAutofillClient(String autofillId);
-
-    Iterable<AutofillClient> autofillClients();
-
-    TextInputConnection attach(TextInputConfiguration configuration, TextInputClient trigger);
-
+    virtual AutofillClient getAutofillClient(String autofillId);
+    virtual Iterable<AutofillClient> autofillClients();
+    virtual TextInputConnection attach(TextInputConfiguration configuration, TextInputClient trigger);
 private:
 
 };
+using AutofillScope = std::shared_ptr<AutofillScopeCls>;
 
-class _AutofillScopeTextInputConfiguration : TextInputConfiguration {
+class _AutofillScopeTextInputConfigurationCls : public TextInputConfigurationCls {
 public:
     Iterable<TextInputConfiguration> allConfigurations;
 
 
-    Map<String, dynamic> toJson();
+    virtual Map<String, dynamic> toJson();
 
 private:
 
-     _AutofillScopeTextInputConfiguration(Iterable<TextInputConfiguration> allConfigurations, TextInputConfiguration currentClientConfiguration);
+     _AutofillScopeTextInputConfigurationCls(Iterable<TextInputConfiguration> allConfigurations, TextInputConfiguration currentClientConfiguration);
 
 };
+using _AutofillScopeTextInputConfiguration = std::shared_ptr<_AutofillScopeTextInputConfigurationCls>;
 
-class AutofillScopeMixin {
+class AutofillScopeMixinCls : public ObjectCls {
 public:
 
-    TextInputConnection attach(TextInputConfiguration configuration, TextInputClient trigger);
+    virtual TextInputConnection attach(TextInputConfiguration configuration, TextInputClient trigger);
 
 private:
 
 };
+using AutofillScopeMixin = std::shared_ptr<AutofillScopeMixinCls>;
+
 
 #endif

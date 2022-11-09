@@ -1,19 +1,19 @@
-#ifndef _NETWORK_IMAGE_IO_H
-#define _NETWORK_IMAGE_IO_H
-#include <memory>
+#ifndef PACKAGES_FLUTTER_SRC_PAINTING__NETWORK_IMAGE_IO
+#define PACKAGES_FLUTTER_SRC_PAINTING__NETWORK_IMAGE_IO
+#include <base.hpp>
 
-#include <async/async.hpp>
-#include <io/io.hpp>
-#include <ui/ui.hpp>
-#include <flutter/foundation.hpp>
+#include <dart/core/core.hpp>
+#include <dart/async/async.hpp>
+#include <dart/io/io.hpp>
+#include <dart/ui/ui.hpp>
+#include <packages/flutter/lib/foundation.hpp>
 #include "binding.hpp"
 #include "debug.hpp"
 #include "image_provider.hpp"
 #include "image_stream.hpp"
 
 
-
-class NetworkImage : ImageProvider<NetworkImage> {
+class NetworkImageCls : public ImageProviderCls<NetworkImage> {
 public:
     String url;
 
@@ -22,19 +22,19 @@ public:
     Map<String, String> headers;
 
 
-     NetworkImage(Map<String, String> headers, double scale, String url);
+     NetworkImageCls(Map<String, String> headers, double scale, String url);
 
-    Future<NetworkImage> obtainKey(ImageConfiguration configuration);
+    virtual Future<NetworkImage> obtainKey(ImageConfiguration configuration);
 
-    ImageStreamCompleter load(DecoderCallback decode, NetworkImage key);
+    virtual ImageStreamCompleter load(DecoderCallback decode, NetworkImage key);
 
-    ImageStreamCompleter loadBuffer(DecoderBufferCallback decode, NetworkImage key);
+    virtual ImageStreamCompleter loadBuffer(DecoderBufferCallback decode, NetworkImage key);
 
-    bool ==(Object other);
+    virtual bool operator==(Object other);
 
-    int hashCode();
+    virtual int hashCode();
 
-    String toString();
+    virtual String toString();
 
 private:
     static HttpClient _sharedHttpClient;
@@ -42,8 +42,10 @@ private:
 
     static HttpClient _httpClient();
 
-    Future<Codec> _loadAsync(StreamController<ImageChunkEvent> chunkEvents, DecoderBufferCallback decode, DecoderCallback decodeDepreacted, NetworkImage key);
+    virtual Future<Codec> _loadAsync(StreamController<ImageChunkEvent> chunkEvents, DecoderBufferCallback decode, DecoderCallback decodeDepreacted, NetworkImage key);
 
 };
+using NetworkImage = std::shared_ptr<NetworkImageCls>;
+
 
 #endif

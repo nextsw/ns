@@ -1,15 +1,15 @@
 #include "box_border.hpp"
-BoxBorder BoxBorder::add(ShapeBorder other, bool reversed) {
+BoxBorder BoxBorderCls::add(ShapeBorder other, bool reversed) {
     return nullptr;
 }
 
-BoxBorder BoxBorder::lerp(BoxBorder a, BoxBorder b, double t) {
+BoxBorder BoxBorderCls::lerp(BoxBorder a, BoxBorder b, double t) {
     assert(t != nullptr);
     if ((a is Border) && (b is Border)) {
-        return Border.lerp(a, b, t);
+        return BorderCls->lerp(a, b, t);
     }
     if ((a is BorderDirectional) && (b is BorderDirectional)) {
-        return BorderDirectional.lerp(a, b, t);
+        return BorderDirectionalCls->lerp(a, b, t);
     }
     if (b is Border && a is BorderDirectional) {
         BoxBorder c = b;
@@ -18,76 +18,76 @@ BoxBorder BoxBorder::lerp(BoxBorder a, BoxBorder b, double t) {
         t = 1.0 - t;
     }
     if (a is Border && b is BorderDirectional) {
-        if (b.start == BorderSide.none && b.end == BorderSide.none) {
-            return Border(BorderSide.lerp(a.top, b.top, t), BorderSide.lerp(a.right, BorderSide.none, t), BorderSide.lerp(a.bottom, b.bottom, t), BorderSide.lerp(a.left, BorderSide.none, t));
+        if (b->start == BorderSideCls::none && b->end == BorderSideCls::none) {
+            return make<BorderCls>(BorderSideCls->lerp(a->top, b->top, t), BorderSideCls->lerp(a->right, BorderSideCls::none, t), BorderSideCls->lerp(a->bottom, b->bottom, t), BorderSideCls->lerp(a->left, BorderSideCls::none, t));
         }
-        if (a.left == BorderSide.none && a.right == BorderSide.none) {
-            return BorderDirectional(BorderSide.lerp(a.top, b.top, t), BorderSide.lerp(BorderSide.none, b.start, t), BorderSide.lerp(BorderSide.none, b.end, t), BorderSide.lerp(a.bottom, b.bottom, t));
+        if (a->left == BorderSideCls::none && a->right == BorderSideCls::none) {
+            return make<BorderDirectionalCls>(BorderSideCls->lerp(a->top, b->top, t), BorderSideCls->lerp(BorderSideCls::none, b->start, t), BorderSideCls->lerp(BorderSideCls::none, b->end, t), BorderSideCls->lerp(a->bottom, b->bottom, t));
         }
         if ( < 0.5) {
-            return Border(BorderSide.lerp(a.top, b.top, t), BorderSide.lerp(a.right, BorderSide.none, t * 2.0), BorderSide.lerp(a.bottom, b.bottom, t), BorderSide.lerp(a.left, BorderSide.none, t * 2.0));
+            return make<BorderCls>(BorderSideCls->lerp(a->top, b->top, t), BorderSideCls->lerp(a->right, BorderSideCls::none, t * 2.0), BorderSideCls->lerp(a->bottom, b->bottom, t), BorderSideCls->lerp(a->left, BorderSideCls::none, t * 2.0));
         }
-        return BorderDirectional(BorderSide.lerp(a.top, b.top, t), BorderSide.lerp(BorderSide.none, b.start, (t - 0.5) * 2.0), BorderSide.lerp(BorderSide.none, b.end, (t - 0.5) * 2.0), BorderSide.lerp(a.bottom, b.bottom, t));
+        return make<BorderDirectionalCls>(BorderSideCls->lerp(a->top, b->top, t), BorderSideCls->lerp(BorderSideCls::none, b->start, (t - 0.5) * 2.0), BorderSideCls->lerp(BorderSideCls::none, b->end, (t - 0.5) * 2.0), BorderSideCls->lerp(a->bottom, b->bottom, t));
     }
     ;
 }
 
-Path BoxBorder::getInnerPath(Rect rect, TextDirection textDirection) {
+Path BoxBorderCls::getInnerPath(Rect rect, TextDirection textDirection) {
     assert(textDirection != nullptr, "The textDirection argument to $runtimeType.getInnerPath must not be null.");
-    return ;
+    auto _c1 = make<PathCls>();_c1.addRect(dimensions->resolve(textDirection)->deflateRect(rect));return _c1;
 }
 
-Path BoxBorder::getOuterPath(Rect rect, TextDirection textDirection) {
+Path BoxBorderCls::getOuterPath(Rect rect, TextDirection textDirection) {
     assert(textDirection != nullptr, "The textDirection argument to $runtimeType.getOuterPath must not be null.");
-    return ;
+    auto _c1 = make<PathCls>();_c1.addRect(rect);return _c1;
 }
 
-void BoxBorder::_paintUniformBorderWithRadius(BorderRadius borderRadius, Canvas canvas, Rect rect, BorderSide side) {
-    assert(side.style != BorderStyle.none);
-    Paint paint = ;
-    double width = side.width;
+void BoxBorderCls::_paintUniformBorderWithRadius(BorderRadius borderRadius, Canvas canvas, Rect rect, BorderSide side) {
+    assert(side->style != BorderStyleCls::none);
+    auto _c1 = make<PaintCls>();_c1.color = side->color;Paint paint = _c1;
+    double width = side->width;
     if (width == 0.0) {
-        ;
-        canvas.drawRRect(borderRadius.toRRect(rect), paint);
+            auto _c2 = paint;    _c2.style = auto _c3 = PaintingStyleCls::stroke;    _c3.strokeWidth = 0.0;    _c3;_c2;
+        canvas->drawRRect(borderRadius->toRRect(rect), paint);
     } else {
-        if (side.strokeAlign == StrokeAlign.inside) {
-            RRect outer = borderRadius.toRRect(rect);
-            RRect inner = outer.deflate(width);
-            canvas.drawDRRect(outer, inner, paint);
+        if (side->strokeAlign == StrokeAlignCls::inside) {
+            RRect outer = borderRadius->toRRect(rect);
+            RRect inner = outer->deflate(width);
+            canvas->drawDRRect(outer, inner, paint);
         } else {
             Rect inner;
             Rect outer;
-            if (side.strokeAlign == StrokeAlign.center) {
-                inner = rect.deflate(width / 2);
-                outer = rect.inflate(width / 2);
+            if (side->strokeAlign == StrokeAlignCls::center) {
+                inner = rect->deflate(width / 2);
+                outer = rect->inflate(width / 2);
             } else {
                 inner = rect;
-                outer = rect.inflate(width);
+                outer = rect->inflate(width);
             }
-            canvas.drawDRRect(borderRadius.toRRect(outer), borderRadius.toRRect(inner), paint);
+            canvas->drawDRRect(borderRadius->toRRect(outer), borderRadius->toRRect(inner), paint);
         }
     }
 }
 
-void BoxBorder::_paintUniformBorderWithCircle(Canvas canvas, Rect rect, BorderSide side) {
-    assert(side.style != BorderStyle.none);
-    double width = side.width;
-    Paint paint = side.toPaint();
+void BoxBorderCls::_paintUniformBorderWithCircle(Canvas canvas, Rect rect, BorderSide side) {
+    assert(side->style != BorderStyleCls::none);
+    double width = side->width;
+    Paint paint = side->toPaint();
     double radius;
     ;
-    canvas.drawCircle(rect.center, radius, paint);
+    canvas->drawCircle(rect->center, radius, paint);
 }
 
-void BoxBorder::_paintUniformBorderWithRectangle(Canvas canvas, Rect rect, BorderSide side) {
-    assert(side.style != BorderStyle.none);
-    double width = side.width;
-    Paint paint = side.toPaint();
+void BoxBorderCls::_paintUniformBorderWithRectangle(Canvas canvas, Rect rect, BorderSide side) {
+    assert(side->style != BorderStyleCls::none);
+    double width = side->width;
+    Paint paint = side->toPaint();
     Rect rectToBeDrawn;
     ;
-    canvas.drawRect(rectToBeDrawn, paint);
+    canvas->drawRect(rectToBeDrawn, paint);
 }
 
-Border::Border(BorderSide bottom, BorderSide left, BorderSide right, BorderSide top) {
+BorderCls::BorderCls(BorderSide bottom, BorderSide left, BorderSide right, BorderSide top) {
     {
         assert(top != nullptr);
         assert(right != nullptr);
@@ -96,128 +96,143 @@ Border::Border(BorderSide bottom, BorderSide left, BorderSide right, BorderSide 
     }
 }
 
-void Border::fromBorderSide(BorderSide side)
+void BorderCls::fromBorderSide(BorderSide side)
 
-void Border::symmetric(BorderSide horizontal, BorderSide vertical)
+void BorderCls::symmetric(BorderSide horizontal, BorderSide vertical)
 
-void Border::all(Color color, StrokeAlign strokeAlign, BorderStyle style, double width) {
-    BorderSide side = BorderSide(color, width, style, strokeAlign);
-    return Border.fromBorderSide(side);
+void BorderCls::all(Color color, StrokeAlign strokeAlign, BorderStyle style, double width) {
+    BorderSide side = make<BorderSideCls>(color, width, style, strokeAlign);
+    return BorderCls->fromBorderSide(side);
 }
 
-Border Border::merge(Border a, Border b) {
+Border BorderCls::merge(Border a, Border b) {
     assert(a != nullptr);
     assert(b != nullptr);
-    assert(BorderSide.canMerge(a.top, b.top));
-    assert(BorderSide.canMerge(a.right, b.right));
-    assert(BorderSide.canMerge(a.bottom, b.bottom));
-    assert(BorderSide.canMerge(a.left, b.left));
-    return Border(BorderSide.merge(a.top, b.top), BorderSide.merge(a.right, b.right), BorderSide.merge(a.bottom, b.bottom), BorderSide.merge(a.left, b.left));
+    assert(BorderSideCls->canMerge(a->top, b->top));
+    assert(BorderSideCls->canMerge(a->right, b->right));
+    assert(BorderSideCls->canMerge(a->bottom, b->bottom));
+    assert(BorderSideCls->canMerge(a->left, b->left));
+    return make<BorderCls>(BorderSideCls->merge(a->top, b->top), BorderSideCls->merge(a->right, b->right), BorderSideCls->merge(a->bottom, b->bottom), BorderSideCls->merge(a->left, b->left));
 }
 
-EdgeInsetsGeometry Border::dimensions() {
+EdgeInsetsGeometry BorderCls::dimensions() {
     if (isUniform) {
         ;
     }
-    return EdgeInsets.fromLTRB(left.width, top.width, right.width, bottom.width);
+    return EdgeInsetsCls->fromLTRB(left->width, top->width, right->width, bottom->width);
 }
 
-bool Border::isUniform() {
+bool BorderCls::isUniform() {
     return _colorIsUniform && _widthIsUniform && _styleIsUniform && _strokeAlignIsUniform;
 }
 
-Border Border::add(ShapeBorder other, bool reversed) {
-    if (other is Border && BorderSide.canMerge(top, other.top) && BorderSide.canMerge(right, other.right) && BorderSide.canMerge(bottom, other.bottom) && BorderSide.canMerge(left, other.left)) {
-        return Border.merge(this, other);
+Border BorderCls::add(ShapeBorder other, bool reversed) {
+    if (other is Border && BorderSideCls->canMerge(top, other->top) && BorderSideCls->canMerge(right, other->right) && BorderSideCls->canMerge(bottom, other->bottom) && BorderSideCls->canMerge(left, other->left)) {
+        return BorderCls->merge(this, other);
     }
     return nullptr;
 }
 
-Border Border::scale(double t) {
-    return Border(top.scale(t), right.scale(t), bottom.scale(t), left.scale(t));
+Border BorderCls::scale(double t) {
+    return make<BorderCls>(top->scale(t), right->scale(t), bottom->scale(t), left->scale(t));
 }
 
-ShapeBorder Border::lerpFrom(ShapeBorder a, double t) {
+ShapeBorder BorderCls::lerpFrom(ShapeBorder a, double t) {
     if (a is Border) {
-        return Border.lerp(a, this, t);
+        return BorderCls->lerp(a, this, t);
     }
-    return super.lerpFrom(a, t);
+    return super->lerpFrom(a, t);
 }
 
-ShapeBorder Border::lerpTo(ShapeBorder b, double t) {
+ShapeBorder BorderCls::lerpTo(ShapeBorder b, double t) {
     if (b is Border) {
-        return Border.lerp(this, b, t);
+        return BorderCls->lerp(this, b, t);
     }
-    return super.lerpTo(b, t);
+    return super->lerpTo(b, t);
 }
 
-Border Border::lerp(Border a, Border b, double t) {
+Border BorderCls::lerp(Border a, Border b, double t) {
     assert(t != nullptr);
     if (a == nullptr && b == nullptr) {
         return nullptr;
     }
     if (a == nullptr) {
-        return b!.scale(t);
+        return b!->scale(t);
     }
     if (b == nullptr) {
-        return a.scale(1.0 - t);
+        return a->scale(1.0 - t);
     }
-    return Border(BorderSide.lerp(a.top, b.top, t), BorderSide.lerp(a.right, b.right, t), BorderSide.lerp(a.bottom, b.bottom, t), BorderSide.lerp(a.left, b.left, t));
+    return make<BorderCls>(BorderSideCls->lerp(a->top, b->top, t), BorderSideCls->lerp(a->right, b->right, t), BorderSideCls->lerp(a->bottom, b->bottom, t), BorderSideCls->lerp(a->left, b->left, t));
 }
 
-void Border::paint(BorderRadius borderRadius, Canvas canvas, Rect rect, BoxShape shape, TextDirection textDirection) {
+void BorderCls::paint(BorderRadius borderRadius, Canvas canvas, Rect rect, BoxShape shape, TextDirection textDirection) {
     if (isUniform) {
         ;
     }
-    assert(());
-    assert(());
-    assert(());
+    assert([=] () {
+        if (borderRadius != nullptr) {
+            ;
+        }
+        return true;
+    }());
+    assert([=] () {
+        if (shape != BoxShapeCls::rectangle) {
+            ;
+        }
+        return true;
+    }());
+    assert([=] () {
+        if (!_strokeAlignIsUniform || top->strokeAlign != StrokeAlignCls::inside) {
+            ;
+        }
+        return true;
+    }());
     paintBorder(canvas, recttop, right, bottom, left);
 }
 
-bool Border::==(Object other) {
+bool BorderCls::==(Object other) {
     if (identical(this, other)) {
         return true;
     }
-    if (other.runtimeType != runtimeType) {
+    if (other->runtimeType != runtimeType) {
         return false;
     }
-    return other is Border && other.top == top && other.right == right && other.bottom == bottom && other.left == left;
+    return other is Border && other->top == top && other->right == right && other->bottom == bottom && other->left == left;
 }
 
-int Border::hashCode() {
-    return Object.hash(top, right, bottom, left);
+int BorderCls::hashCode() {
+    return ObjectCls->hash(top, right, bottom, left);
 }
 
-String Border::toString() {
+String BorderCls::toString() {
     if (isUniform) {
         return "${objectRuntimeType(this, 'Border')}.all($top)";
     }
-    List<String> arguments = ;
+    List<String> list1 = make<ListCls<>>();if (top != BorderSideCls::none) {    list1.add(ArrayItem);}if (right != BorderSideCls::none) {    list1.add(ArrayItem);}if (bottom != BorderSideCls::none) {    list1.add(ArrayItem);}if (left != BorderSideCls::none) {    list1.add(ArrayItem);}List<String> arguments = list1;
     return "${objectRuntimeType(this, 'Border')}(${arguments.join(", ")})";
 }
 
-bool Border::_colorIsUniform() {
-    Color topColor = top.color;
-    return right.color == topColor && bottom.color == topColor && left.color == topColor;
+bool BorderCls::_colorIsUniform() {
+    Color topColor = top->color;
+    return right->color == topColor && bottom->color == topColor && left->color == topColor;
 }
 
-bool Border::_widthIsUniform() {
-    double topWidth = top.width;
-    return right.width == topWidth && bottom.width == topWidth && left.width == topWidth;
+bool BorderCls::_widthIsUniform() {
+    double topWidth = top->width;
+    return right->width == topWidth && bottom->width == topWidth && left->width == topWidth;
 }
 
-bool Border::_styleIsUniform() {
-    BorderStyle topStyle = top.style;
-    return right.style == topStyle && bottom.style == topStyle && left.style == topStyle;
+bool BorderCls::_styleIsUniform() {
+    BorderStyle topStyle = top->style;
+    return right->style == topStyle && bottom->style == topStyle && left->style == topStyle;
 }
 
-bool Border::_strokeAlignIsUniform() {
-    StrokeAlign topStrokeAlign = top.strokeAlign;
-    return right.strokeAlign == topStrokeAlign && bottom.strokeAlign == topStrokeAlign && left.strokeAlign == topStrokeAlign;
+bool BorderCls::_strokeAlignIsUniform() {
+    StrokeAlign topStrokeAlign = top->strokeAlign;
+    return right->strokeAlign == topStrokeAlign && bottom->strokeAlign == topStrokeAlign && left->strokeAlign == topStrokeAlign;
 }
 
-BorderDirectional::BorderDirectional(BorderSide bottom, BorderSide end, BorderSide start, BorderSide top) {
+BorderDirectionalCls::BorderDirectionalCls(BorderSide bottom, BorderSide end, BorderSide start, BorderSide top) {
     {
         assert(top != nullptr);
         assert(start != nullptr);
@@ -226,34 +241,34 @@ BorderDirectional::BorderDirectional(BorderSide bottom, BorderSide end, BorderSi
     }
 }
 
-BorderDirectional BorderDirectional::merge(BorderDirectional a, BorderDirectional b) {
+BorderDirectional BorderDirectionalCls::merge(BorderDirectional a, BorderDirectional b) {
     assert(a != nullptr);
     assert(b != nullptr);
-    assert(BorderSide.canMerge(a.top, b.top));
-    assert(BorderSide.canMerge(a.start, b.start));
-    assert(BorderSide.canMerge(a.end, b.end));
-    assert(BorderSide.canMerge(a.bottom, b.bottom));
-    return BorderDirectional(BorderSide.merge(a.top, b.top), BorderSide.merge(a.start, b.start), BorderSide.merge(a.end, b.end), BorderSide.merge(a.bottom, b.bottom));
+    assert(BorderSideCls->canMerge(a->top, b->top));
+    assert(BorderSideCls->canMerge(a->start, b->start));
+    assert(BorderSideCls->canMerge(a->end, b->end));
+    assert(BorderSideCls->canMerge(a->bottom, b->bottom));
+    return make<BorderDirectionalCls>(BorderSideCls->merge(a->top, b->top), BorderSideCls->merge(a->start, b->start), BorderSideCls->merge(a->end, b->end), BorderSideCls->merge(a->bottom, b->bottom));
 }
 
-EdgeInsetsGeometry BorderDirectional::dimensions() {
+EdgeInsetsGeometry BorderDirectionalCls::dimensions() {
     if (isUniform) {
         ;
     }
-    return EdgeInsetsDirectional.fromSTEB(start.width, top.width, end.width, bottom.width);
+    return EdgeInsetsDirectionalCls->fromSTEB(start->width, top->width, end->width, bottom->width);
 }
 
-bool BorderDirectional::isUniform() {
-    Color topColor = top.color;
-    if (start.color != topColor || end.color != topColor || bottom.color != topColor) {
+bool BorderDirectionalCls::isUniform() {
+    Color topColor = top->color;
+    if (start->color != topColor || end->color != topColor || bottom->color != topColor) {
         return false;
     }
-    double topWidth = top.width;
-    if (start.width != topWidth || end.width != topWidth || bottom.width != topWidth) {
+    double topWidth = top->width;
+    if (start->width != topWidth || end->width != topWidth || bottom->width != topWidth) {
         return false;
     }
-    BorderStyle topStyle = top.style;
-    if (start.style != topStyle || end.style != topStyle || bottom.style != topStyle) {
+    BorderStyle topStyle = top->style;
+    if (start->style != topStyle || end->style != topStyle || bottom->style != topStyle) {
         return false;
     }
     if (_strokeAlignIsUniform == false) {
@@ -262,99 +277,99 @@ bool BorderDirectional::isUniform() {
     return true;
 }
 
-BoxBorder BorderDirectional::add(ShapeBorder other, bool reversed) {
+BoxBorder BorderDirectionalCls::add(ShapeBorder other, bool reversed) {
     if (other is BorderDirectional) {
         BorderDirectional typedOther = other;
-        if (BorderSide.canMerge(top, typedOther.top) && BorderSide.canMerge(start, typedOther.start) && BorderSide.canMerge(end, typedOther.end) && BorderSide.canMerge(bottom, typedOther.bottom)) {
-            return BorderDirectional.merge(this, typedOther);
+        if (BorderSideCls->canMerge(top, typedOther->top) && BorderSideCls->canMerge(start, typedOther->start) && BorderSideCls->canMerge(end, typedOther->end) && BorderSideCls->canMerge(bottom, typedOther->bottom)) {
+            return BorderDirectionalCls->merge(this, typedOther);
         }
         return nullptr;
     }
     if (other is Border) {
         Border typedOther = other;
-        if (!BorderSide.canMerge(typedOther.top, top) || !BorderSide.canMerge(typedOther.bottom, bottom)) {
+        if (!BorderSideCls->canMerge(typedOther->top, top) || !BorderSideCls->canMerge(typedOther->bottom, bottom)) {
             return nullptr;
         }
-        if (start != BorderSide.none || end != BorderSide.none) {
-            if (typedOther.left != BorderSide.none || typedOther.right != BorderSide.none) {
+        if (start != BorderSideCls::none || end != BorderSideCls::none) {
+            if (typedOther->left != BorderSideCls::none || typedOther->right != BorderSideCls::none) {
                 return nullptr;
             }
-            assert(typedOther.left == BorderSide.none);
-            assert(typedOther.right == BorderSide.none);
-            return BorderDirectional(BorderSide.merge(typedOther.top, top), start, end, BorderSide.merge(typedOther.bottom, bottom));
+            assert(typedOther->left == BorderSideCls::none);
+            assert(typedOther->right == BorderSideCls::none);
+            return make<BorderDirectionalCls>(BorderSideCls->merge(typedOther->top, top), start, end, BorderSideCls->merge(typedOther->bottom, bottom));
         }
-        assert(start == BorderSide.none);
-        assert(end == BorderSide.none);
-        return Border(BorderSide.merge(typedOther.top, top), typedOther.right, BorderSide.merge(typedOther.bottom, bottom), typedOther.left);
+        assert(start == BorderSideCls::none);
+        assert(end == BorderSideCls::none);
+        return make<BorderCls>(BorderSideCls->merge(typedOther->top, top), typedOther->right, BorderSideCls->merge(typedOther->bottom, bottom), typedOther->left);
     }
     return nullptr;
 }
 
-BorderDirectional BorderDirectional::scale(double t) {
-    return BorderDirectional(top.scale(t), start.scale(t), end.scale(t), bottom.scale(t));
+BorderDirectional BorderDirectionalCls::scale(double t) {
+    return make<BorderDirectionalCls>(top->scale(t), start->scale(t), end->scale(t), bottom->scale(t));
 }
 
-ShapeBorder BorderDirectional::lerpFrom(ShapeBorder a, double t) {
+ShapeBorder BorderDirectionalCls::lerpFrom(ShapeBorder a, double t) {
     if (a is BorderDirectional) {
-        return BorderDirectional.lerp(a, this, t);
+        return BorderDirectionalCls->lerp(a, this, t);
     }
-    return super.lerpFrom(a, t);
+    return super->lerpFrom(a, t);
 }
 
-ShapeBorder BorderDirectional::lerpTo(ShapeBorder b, double t) {
+ShapeBorder BorderDirectionalCls::lerpTo(ShapeBorder b, double t) {
     if (b is BorderDirectional) {
-        return BorderDirectional.lerp(this, b, t);
+        return BorderDirectionalCls->lerp(this, b, t);
     }
-    return super.lerpTo(b, t);
+    return super->lerpTo(b, t);
 }
 
-BorderDirectional BorderDirectional::lerp(BorderDirectional a, BorderDirectional b, double t) {
+BorderDirectional BorderDirectionalCls::lerp(BorderDirectional a, BorderDirectional b, double t) {
     assert(t != nullptr);
     if (a == nullptr && b == nullptr) {
         return nullptr;
     }
     if (a == nullptr) {
-        return b!.scale(t);
+        return b!->scale(t);
     }
     if (b == nullptr) {
-        return a.scale(1.0 - t);
+        return a->scale(1.0 - t);
     }
-    return BorderDirectional(BorderSide.lerp(a.top, b.top, t), BorderSide.lerp(a.end, b.end, t), BorderSide.lerp(a.bottom, b.bottom, t), BorderSide.lerp(a.start, b.start, t));
+    return make<BorderDirectionalCls>(BorderSideCls->lerp(a->top, b->top, t), BorderSideCls->lerp(a->end, b->end, t), BorderSideCls->lerp(a->bottom, b->bottom, t), BorderSideCls->lerp(a->start, b->start, t));
 }
 
-void BorderDirectional::paint(BorderRadius borderRadius, Canvas canvas, Rect rect, BoxShape shape, TextDirection textDirection) {
+void BorderDirectionalCls::paint(BorderRadius borderRadius, Canvas canvas, Rect rect, BoxShape shape, TextDirection textDirection) {
     if (isUniform) {
         ;
     }
     assert(borderRadius == nullptr, "A borderRadius can only be given for uniform borders.");
-    assert(shape == BoxShape.rectangle, "A border can only be drawn as a circle if it is uniform.");
-    assert(_strokeAlignIsUniform && top.strokeAlign == StrokeAlign.inside, "A Border can only draw strokeAlign different than StrokeAlign.inside on uniform borders.");
+    assert(shape == BoxShapeCls::rectangle, "A border can only be drawn as a circle if it is uniform.");
+    assert(_strokeAlignIsUniform && top->strokeAlign == StrokeAlignCls::inside, "A Border can only draw strokeAlign different than StrokeAlign.inside on uniform borders.");
     BorderSide left, right;
     assert(textDirection != nullptr, "Non-uniform BorderDirectional objects require a TextDirection when painting.");
     ;
     paintBorder(canvas, recttop, left, bottom, right);
 }
 
-bool BorderDirectional::==(Object other) {
+bool BorderDirectionalCls::==(Object other) {
     if (identical(this, other)) {
         return true;
     }
-    if (other.runtimeType != runtimeType) {
+    if (other->runtimeType != runtimeType) {
         return false;
     }
-    return other is BorderDirectional && other.top == top && other.start == start && other.end == end && other.bottom == bottom;
+    return other is BorderDirectional && other->top == top && other->start == start && other->end == end && other->bottom == bottom;
 }
 
-int BorderDirectional::hashCode() {
-    return Object.hash(top, start, end, bottom);
+int BorderDirectionalCls::hashCode() {
+    return ObjectCls->hash(top, start, end, bottom);
 }
 
-String BorderDirectional::toString() {
-    List<String> arguments = ;
+String BorderDirectionalCls::toString() {
+    List<String> list1 = make<ListCls<>>();if (top != BorderSideCls::none) {    list1.add(ArrayItem);}if (start != BorderSideCls::none) {    list1.add(ArrayItem);}if (end != BorderSideCls::none) {    list1.add(ArrayItem);}if (bottom != BorderSideCls::none) {    list1.add(ArrayItem);}List<String> arguments = list1;
     return "${objectRuntimeType(this, 'BorderDirectional')}(${arguments.join(", ")})";
 }
 
-bool BorderDirectional::_strokeAlignIsUniform() {
-    StrokeAlign topStrokeAlign = top.strokeAlign;
-    return start.strokeAlign == topStrokeAlign && bottom.strokeAlign == topStrokeAlign && end.strokeAlign == topStrokeAlign;
+bool BorderDirectionalCls::_strokeAlignIsUniform() {
+    StrokeAlign topStrokeAlign = top->strokeAlign;
+    return start->strokeAlign == topStrokeAlign && bottom->strokeAlign == topStrokeAlign && end->strokeAlign == topStrokeAlign;
 }

@@ -1,3 +1,3 @@
 #include "characters.hpp"
-Characters::Characters(String string) {
+CharactersCls::CharactersCls(String stringValue) {
 }

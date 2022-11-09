@@ -1,84 +1,90 @@
 #include "hit_test.hpp"
-String HitTestEntry::toString() {
+template<typename T : HitTestTarget> String HitTestEntryCls<T>::toString() {
     return "${describeIdentity(this)}($target)";
 }
 
-Matrix4 HitTestEntry::transform() {
+template<typename T : HitTestTarget> Matrix4 HitTestEntryCls<T>::transform() {
     return _transform;
 }
 
-Matrix4 _MatrixTransformPart::multiply(Matrix4 rhs) {
-    return matrix.multiplied(rhs);
+Matrix4 _MatrixTransformPartCls::multiply(Matrix4 rhs) {
+    return matrix->multiplied(rhs);
 }
 
-Matrix4 _OffsetTransformPart::multiply(Matrix4 rhs) {
-    return ;
+Matrix4 _OffsetTransformPartCls::multiply(Matrix4 rhs) {
+    auto _c1 = rhs->clone();_c1.leftTranslate(offset->dx, offset->dy);return _c1;
 }
 
-HitTestResult::HitTestResult() {
+HitTestResultCls::HitTestResultCls() {
     {
-        _path = ;
-        _transforms = ;
-        _localTransforms = ;
+        _path = makeList();
+        _transforms = makeList(ArrayItem);
+        _localTransforms = makeList();
     }
 }
 
-void HitTestResult::wrap(HitTestResult result)
+void HitTestResultCls::wrap(HitTestResult result)
 
-Iterable<HitTestEntry> HitTestResult::path() {
+Iterable<HitTestEntry> HitTestResultCls::path() {
     return _path;
 }
 
-void HitTestResult::add(HitTestEntry entry) {
-    assert(entry._transform == nullptr);
-    entry._transform = _lastTransform;
-    _path.add(entry);
+void HitTestResultCls::add(HitTestEntry entry) {
+    assert(entry->_transform == nullptr);
+    entry->_transform = _lastTransform;
+    _path->add(entry);
 }
 
-void HitTestResult::pushTransform(Matrix4 transform) {
+void HitTestResultCls::pushTransform(Matrix4 transform) {
     assert(transform != nullptr);
-    assert(_debugVectorMoreOrLessEquals(transform.getRow(2), Vector4(0, 0, 1, 0)) && _debugVectorMoreOrLessEquals(transform.getColumn(2), Vector4(0, 0, 1, 0)), "The third row and third column of a transform matrix for pointer events must be Vector4(0, 0, 1, 0) to ensure that a transformed point is directly under the pointing device. Did you forget to run the paint matrix through PointerEvent.removePerspectiveTransform? The provided matrix is:\n$transform");
-    _localTransforms.add(_MatrixTransformPart(transform));
+    assert(_debugVectorMoreOrLessEquals(transform->getRow(2), make<Vector4Cls>(0, 0, 1, 0)) && _debugVectorMoreOrLessEquals(transform->getColumn(2), make<Vector4Cls>(0, 0, 1, 0)), "The third row and third column of a transform matrix for pointer events must be Vector4(0, 0, 1, 0) to ensure that a transformed point is directly under the pointing device. Did you forget to run the paint matrix through PointerEvent.removePerspectiveTransform? The provided matrix is:\n$transform");
+    _localTransforms->add(make<_MatrixTransformPartCls>(transform));
 }
 
-void HitTestResult::pushOffset(Offset offset) {
+void HitTestResultCls::pushOffset(Offset offset) {
     assert(offset != nullptr);
-    _localTransforms.add(_OffsetTransformPart(offset));
+    _localTransforms->add(make<_OffsetTransformPartCls>(offset));
 }
 
-void HitTestResult::popTransform() {
-    if (_localTransforms.isNotEmpty) {
-        _localTransforms.removeLast();
+void HitTestResultCls::popTransform() {
+    if (_localTransforms->isNotEmpty) {
+        _localTransforms->removeLast();
     } else {
-        _transforms.removeLast();
+        _transforms->removeLast();
     }
-    assert(_transforms.isNotEmpty);
+    assert(_transforms->isNotEmpty);
 }
 
-String HitTestResult::toString() {
+String HitTestResultCls::toString() {
     return "HitTestResult(${_path.isEmpty ? "<empty path>" : _path.join(", ")})";
 }
 
-void HitTestResult::_globalizeTransforms() {
-    if (_localTransforms.isEmpty) {
+void HitTestResultCls::_globalizeTransforms() {
+    if (_localTransforms->isEmpty) {
         return;
     }
-    Matrix4 last = _transforms.last;
+    Matrix4 last = _transforms->last;
     for (_TransformPart part : _localTransforms) {
-        last = part.multiply(last);
-        _transforms.add(last);
+        last = part->multiply(last);
+        _transforms->add(last);
     }
-    _localTransforms.clear();
+    _localTransforms->clear();
 }
 
-Matrix4 HitTestResult::_lastTransform() {
+Matrix4 HitTestResultCls::_lastTransform() {
     _globalizeTransforms();
-    assert(_localTransforms.isEmpty);
-    return _transforms.last;
+    assert(_localTransforms->isEmpty);
+    return _transforms->last;
 }
 
-bool HitTestResult::_debugVectorMoreOrLessEquals(Vector4 a, Vector4 b, double epsilon) {
+bool HitTestResultCls::_debugVectorMoreOrLessEquals(Vector4 a, Vector4 b, double epsilon) {
     bool result = true;
-    assert(());
+    assert([=] () {
+        Vector4 difference = a - b;
+        result = difference->storage->every([=] (double component)         {
+            component->abs() < epsilon;
+        });
+        return true;
+    }());
     return result;
 }

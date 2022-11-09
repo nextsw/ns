@@ -1,22 +1,24 @@
-#ifndef EQUALITY_SET_H
-#define EQUALITY_SET_H
-#include <memory>
+#ifndef PACKAGES_COLLECTION_SRC_EQUALITY_SET
+#define PACKAGES_COLLECTION_SRC_EQUALITY_SET
+#include <base.hpp>
 
-#include <collection/collection.hpp>
+#include <dart/core/core.hpp>
+#include <dart/collection/collection.hpp>
 #include "equality.hpp"
 #include "wrappers.hpp"
 
 
-
-class EqualitySet<E> : DelegatingSet<E> {
+template<typename E> class EqualitySetCls : public DelegatingSetCls<E> {
 public:
 
-     EqualitySet(Equality<E> equality);
+     EqualitySetCls(Equality<E> equality);
 
-    void  from(Equality<E> equality, Iterable<E> other);
+    virtual void  from(Equality<E> equality, Iterable<E> other);
 
 private:
 
 };
+template<typename E> using EqualitySet = std::shared_ptr<EqualitySetCls<E>>;
+
 
 #endif

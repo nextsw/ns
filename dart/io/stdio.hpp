@@ -1,78 +1,71 @@
-#ifndef STDIO_H
-#define STDIO_H
-#include <memory>
+#ifndef DART_IO_STDIO
+#define DART_IO_STDIO
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
+
+int _stdioHandleTypeTerminal;
+
+int _stdioHandleTypePipe;
+
+int _stdioHandleTypeFile;
+
+int _stdioHandleTypeSocket;
+
+int _stdioHandleTypeOther;
+
+int _stdioHandleTypeError;
 
 
-
-const int _stdioHandleTypeTerminal;
-
-const int _stdioHandleTypePipe;
-
-const int _stdioHandleTypeFile;
-
-const int _stdioHandleTypeSocket;
-
-const int _stdioHandleTypeOther;
-
-const int _stdioHandleTypeError;
-
-
-class _StdStream : Stream<List<int>> {
+class _StdStreamCls : public StreamCls<List<int>> {
 public:
 
-    StreamSubscription<List<int>> listen(bool cancelOnError, FunctionType onData, FunctionType onDone, FunctionType onError);
+    virtual StreamSubscription<List<int>> listen(bool cancelOnError, void onData(List<int> event) , void onDone() , void  onError() );
 
 private:
     Stream<List<int>> _stream;
 
 
-     _StdStream(Stream<List<int>> _stream);
-
+     _StdStreamCls(Stream<List<int>> _stream);
 };
+using _StdStream = std::shared_ptr<_StdStreamCls>;
 
-class Stdin : _StdStream {
+class StdinCls : public _StdStreamCls {
 public:
 
-    String readLineSync(Encoding encoding, bool retainNewlines);
+    virtual String readLineSync(Encoding encoding, bool retainNewlines);
 
-    external bool echoMode();
-
-    external void  echoMode(bool echoMode);
-
-    external bool echoNewlineMode();
-
-    external void  echoNewlineMode(bool echoNewlineMode);
-
-    external bool lineMode();
-
-    external void  lineMode(bool lineMode);
-
-    external bool supportsAnsiEscapes();
-
-    external int readByteSync();
-
-    bool hasTerminal();
+    extern bool echoMode();
+    extern void  echoMode(bool echoMode);
+    extern bool echoNewlineMode();
+    extern void  echoNewlineMode(bool echoNewlineMode);
+    extern bool lineMode();
+    extern void  lineMode(bool lineMode);
+    extern bool supportsAnsiEscapes();
+    extern int readByteSync();
+    virtual bool hasTerminal();
 
 private:
     int _fd;
 
 
-    void  _(int _fd, Stream<List<int>> stream);
+    virtual void  _(int _fd, Stream<List<int>> stream);
 
 };
+using Stdin = std::shared_ptr<StdinCls>;
 
-class Stdout : _StdSink {
+class StdoutCls : public _StdSinkCls {
 public:
 
-    bool hasTerminal();
+    virtual bool hasTerminal();
 
-    int terminalColumns();
+    virtual int terminalColumns();
 
-    int terminalLines();
+    virtual int terminalLines();
 
-    bool supportsAnsiEscapes();
+    virtual bool supportsAnsiEscapes();
 
-    IOSink nonBlocking();
+    virtual IOSink nonBlocking();
 
 private:
     int _fd;
@@ -80,118 +73,116 @@ private:
     IOSink _nonBlocking;
 
 
-    void  _(int _fd, IOSink sink);
+    virtual void  _(int _fd, IOSink sink);
 
-    external bool _hasTerminal(int fd);
-
-    external int _terminalColumns(int fd);
-
-    external int _terminalLines(int fd);
-
-    external static bool _supportsAnsiEscapes(int fd);
-
+    extern bool _hasTerminal(int fd);
+    extern int _terminalColumns(int fd);
+    extern int _terminalLines(int fd);
+    extern static bool _supportsAnsiEscapes(int fd);
 };
+using Stdout = std::shared_ptr<StdoutCls>;
 
-class StdoutException {
+class StdoutExceptionCls : public ObjectCls {
 public:
     String message;
 
     OSError osError;
 
 
-     StdoutException(String message, OSError osError);
-
-    String toString();
+     StdoutExceptionCls(String message, OSError osError);
+    virtual String toString();
 
 private:
 
 };
+using StdoutException = std::shared_ptr<StdoutExceptionCls>;
 
-class StdinException {
+class StdinExceptionCls : public ObjectCls {
 public:
     String message;
 
     OSError osError;
 
 
-     StdinException(String message, OSError osError);
-
-    String toString();
+     StdinExceptionCls(String message, OSError osError);
+    virtual String toString();
 
 private:
 
 };
+using StdinException = std::shared_ptr<StdinExceptionCls>;
 
-class _StdConsumer {
+class _StdConsumerCls : public ObjectCls {
 public:
 
-    Future addStream(Stream<List<int>> stream);
+    virtual Future addStream(Stream<List<int>> stream);
 
-    Future close();
+    virtual Future close();
 
 private:
     auto  _file;
 
 
-     _StdConsumer(int fd);
+     _StdConsumerCls(int fd);
 
 };
+using _StdConsumer = std::shared_ptr<_StdConsumerCls>;
 
-class _StdSink {
+class _StdSinkCls : public ObjectCls {
 public:
 
-    Encoding encoding();
+    virtual Encoding encoding();
 
-    void encoding(Encoding encoding);
+    virtual void encoding(Encoding encoding);
 
-    void write(Object object);
+    virtual void write(Object object);
 
-    void writeln(Object object);
+    virtual void writeln(Object object);
 
-    void writeAll(Iterable objects, String sep);
+    virtual void writeAll(Iterable objects, String sep);
 
-    void add(List<int> data);
+    virtual void add(List<int> data);
 
-    void addError(error , StackTrace stackTrace);
+    virtual void addError(error , StackTrace stackTrace);
 
-    void writeCharCode(int charCode);
+    virtual void writeCharCode(int charCode);
 
-    Future addStream(Stream<List<int>> stream);
+    virtual Future addStream(Stream<List<int>> stream);
 
-    Future flush();
+    virtual Future flush();
 
-    Future close();
+    virtual Future close();
 
-    Future done();
+    virtual Future done();
 
 private:
     IOSink _sink;
 
 
-     _StdSink(IOSink _sink);
-
+     _StdSinkCls(IOSink _sink);
 };
+using _StdSink = std::shared_ptr<_StdSinkCls>;
 
-class StdioType {
+class StdioTypeCls : public ObjectCls {
 public:
-    static const StdioType terminal;
+    static StdioType terminal;
 
-    static const StdioType pipe;
+    static StdioType pipe;
 
-    static const StdioType file;
+    static StdioType file;
 
-    static const StdioType other;
+    static StdioType other;
 
     String name;
 
 
-    String toString();
+    virtual String toString();
 
 private:
 
-    void  _(String name);
-
+    virtual void  _(String name);
 };
+using StdioType = std::shared_ptr<StdioTypeCls>;
 Stdin _stdin;
 
 Stdout _stdout;
@@ -215,19 +206,17 @@ Stdout stderr();
 StdioType stdioType(object );
 
 
-class _StdIOUtils {
+class _StdIOUtilsCls : public ObjectCls {
 public:
 
 private:
 
-    external static void  _getStdioOutputStream(int fd);
-
-    external static Stdin _getStdioInputStream(int fd);
-
-    external static int _socketType(Socket socket);
-
-    external static void  _getStdioHandleType(int fd);
-
+    extern static void  _getStdioOutputStream(int fd);
+    extern static Stdin _getStdioInputStream(int fd);
+    extern static int _socketType(Socket socket);
+    extern static void  _getStdioHandleType(int fd);
 };
+using _StdIOUtils = std::shared_ptr<_StdIOUtilsCls>;
+
 
 #endif

@@ -1,58 +1,57 @@
-#ifndef TWEEN_H
-#define TWEEN_H
-#include <memory>
-#include <ui.hpp>
+#ifndef PACKAGES_FLUTTER_SRC_ANIMATION_TWEEN
+#define PACKAGES_FLUTTER_SRC_ANIMATION_TWEEN
+#include <base.hpp>
+#include <dart/ui/ui.hpp>
 #include "animation.hpp"
 #include "curves.hpp"
 
-#include <ui/ui.hpp>
-#include <flutter/foundation.hpp>
+#include <dart/core/core.hpp>
+#include <dart/ui/ui.hpp>
+#include <packages/flutter/lib/foundation.hpp>
 #include "animations.hpp"
 
 
-
-class Animatable<T> {
+template<typename T> class AnimatableCls : public ObjectCls {
 public:
 
-     Animatable();
+     AnimatableCls();
+    virtual T transform(double t);
+    virtual T evaluate(Animation<double> animation);
 
-    T transform(double t);
+    virtual Animation<T> animate(Animation<double> parent);
 
-    T evaluate(Animation<double> animation);
-
-    Animation<T> animate(Animation<double> parent);
-
-    Animatable<T> chain(Animatable<double> parent);
+    virtual Animatable<T> chain(Animatable<double> parent);
 
 private:
 
 };
+template<typename T> using Animatable = std::shared_ptr<AnimatableCls<T>>;
 
-class _AnimatedEvaluation<T> : Animation<T> {
+template<typename T> class _AnimatedEvaluationCls : public AnimationCls<T> {
 public:
     Animation<double> parent;
 
 
-    T value();
+    virtual T value();
 
-    String toString();
+    virtual String toString();
 
-    String toStringDetails();
+    virtual String toStringDetails();
 
 private:
     Animatable<T> _evaluatable;
 
 
-     _AnimatedEvaluation(Animatable<T> _evaluatable, Animation<double> parent);
-
+     _AnimatedEvaluationCls(Animatable<T> _evaluatable, Animation<double> parent);
 };
+template<typename T> using _AnimatedEvaluation = std::shared_ptr<_AnimatedEvaluationCls<T>>;
 
-class _ChainedEvaluation<T> : Animatable<T> {
+template<typename T> class _ChainedEvaluationCls : public AnimatableCls<T> {
 public:
 
-    T transform(double t);
+    virtual T transform(double t);
 
-    String toString();
+    virtual String toString();
 
 private:
     Animatable<double> _parent;
@@ -60,123 +59,127 @@ private:
     Animatable<T> _evaluatable;
 
 
-     _ChainedEvaluation(Animatable<T> _evaluatable, Animatable<double> _parent);
-
+     _ChainedEvaluationCls(Animatable<T> _evaluatable, Animatable<double> _parent);
 };
+template<typename T> using _ChainedEvaluation = std::shared_ptr<_ChainedEvaluationCls<T>>;
 
-class Tween<T extends Object> : Animatable<T> {
+template<typename T : Object> class TweenCls : public AnimatableCls<T> {
 public:
     T begin;
 
     T end;
 
 
-     Tween(T begin, T end);
+     TweenCls(T begin, T end);
+    virtual T lerp(double t);
 
-    T lerp(double t);
+    virtual T transform(double t);
 
-    T transform(double t);
-
-    String toString();
+    virtual String toString();
 
 private:
 
 };
+template<typename T : Object> using Tween = std::shared_ptr<TweenCls<T : Object>>;
 
-class ReverseTween<T extends Object> : Tween<T> {
+template<typename T : Object> class ReverseTweenCls : public TweenCls<T> {
 public:
     Tween<T> parent;
 
 
-     ReverseTween(Tween<T> parent);
+     ReverseTweenCls(Tween<T> parent);
 
-    T lerp(double t);
+    virtual T lerp(double t);
 
 private:
 
 };
+template<typename T : Object> using ReverseTween = std::shared_ptr<ReverseTweenCls<T : Object>>;
 
-class ColorTween : Tween<Color> {
+class ColorTweenCls : public TweenCls<Color> {
 public:
 
-     ColorTween(Unknown, Unknown);
-
-    Color lerp(double t);
+     ColorTweenCls(Unknown begin, Unknown end);
+    virtual Color lerp(double t);
 
 private:
 
 };
+using ColorTween = std::shared_ptr<ColorTweenCls>;
 
-class SizeTween : Tween<Size> {
+class SizeTweenCls : public TweenCls<Size> {
 public:
 
-     SizeTween(Unknown, Unknown);
-
-    Size lerp(double t);
+     SizeTweenCls(Unknown begin, Unknown end);
+    virtual Size lerp(double t);
 
 private:
 
 };
+using SizeTween = std::shared_ptr<SizeTweenCls>;
 
-class RectTween : Tween<Rect> {
+class RectTweenCls : public TweenCls<Rect> {
 public:
 
-     RectTween(Unknown, Unknown);
-
-    Rect lerp(double t);
+     RectTweenCls(Unknown begin, Unknown end);
+    virtual Rect lerp(double t);
 
 private:
 
 };
+using RectTween = std::shared_ptr<RectTweenCls>;
 
-class IntTween : Tween<int> {
+class IntTweenCls : public TweenCls<int> {
 public:
 
-     IntTween(Unknown, Unknown);
-
-    int lerp(double t);
+     IntTweenCls(Unknown begin, Unknown end);
+    virtual int lerp(double t);
 
 private:
 
 };
+using IntTween = std::shared_ptr<IntTweenCls>;
 
-class StepTween : Tween<int> {
+class StepTweenCls : public TweenCls<int> {
 public:
 
-     StepTween(Unknown, Unknown);
-
-    int lerp(double t);
+     StepTweenCls(Unknown begin, Unknown end);
+    virtual int lerp(double t);
 
 private:
 
 };
+using StepTween = std::shared_ptr<StepTweenCls>;
 
-class ConstantTween<T> : Tween<T> {
+template<typename T> class ConstantTweenCls : public TweenCls<T> {
 public:
 
-     ConstantTween(T value);
+     ConstantTweenCls(T value);
 
-    T lerp(double t);
+    virtual T lerp(double t);
 
-    String toString();
+    virtual String toString();
 
 private:
 
 };
+template<typename T> using ConstantTween = std::shared_ptr<ConstantTweenCls<T>>;
 
-class CurveTween : Animatable<double> {
+class CurveTweenCls : public AnimatableCls<double> {
 public:
     Curve curve;
 
 
-     CurveTween(Curve curve);
+     CurveTweenCls(Curve curve);
 
-    double transform(double t);
+    virtual double transform(double t);
 
-    String toString();
+    virtual String toString();
 
 private:
 
 };
+using CurveTween = std::shared_ptr<CurveTweenCls>;
+
 
 #endif

@@ -1,15 +1,16 @@
-#ifndef CORE_H
-#define CORE_H
-#include <memory>
-#include <async.hpp>
-#include <async.hpp>
+#ifndef DART_CORE_CORE
+#define DART_CORE_CORE
+#include <base.hpp>
+#include <dart/async/async.hpp>
+#include <dart/async/async.hpp>
 
-#include <collection/collection.hpp>
-#include <internal/internal.hpp>
-#include <internal/internal.hpp>
-#include <convert/convert.hpp>
-#include <math/math.hpp>
-#include <typed_data/typed_data.hpp>
+#include <dart/collection/collection.hpp>
+#include <dart/internal/internal.hpp>
+#include <dart/internal/internal.hpp>
+#include <dart/convert/convert.hpp>
+#include <dart/math/math.hpp>
+#include <dart/typed_data/typed_data.hpp>
+
 
 // Parts
 #include "annotations.hpp"
@@ -47,6 +48,5 @@
 #include "type.hpp"
 #include "uri.hpp"
 #include "weak.hpp"
-
 
 #endif

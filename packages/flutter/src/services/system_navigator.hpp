@@ -1,12 +1,12 @@
-#ifndef SYSTEM_NAVIGATOR_H
-#define SYSTEM_NAVIGATOR_H
-#include <memory>
+#ifndef PACKAGES_FLUTTER_SRC_SERVICES_SYSTEM_NAVIGATOR
+#define PACKAGES_FLUTTER_SRC_SERVICES_SYSTEM_NAVIGATOR
+#include <base.hpp>
 
+#include <dart/core/core.hpp>
 #include "system_channels.hpp"
 
 
-
-class SystemNavigator {
+class SystemNavigatorCls : public ObjectCls {
 public:
 
     static Future<void> pop(bool animated);
@@ -21,8 +21,9 @@ public:
 
 private:
 
-    void  _();
-
+    virtual void  _();
 };
+using SystemNavigator = std::shared_ptr<SystemNavigatorCls>;
+
 
 #endif

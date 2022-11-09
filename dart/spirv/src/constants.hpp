@@ -1,254 +1,254 @@
-#ifndef CONSTANTS_H
-#define CONSTANTS_H
-#include <memory>
+#ifndef DART_SPIRV_SRC_CONSTANTS
+#define DART_SPIRV_SRC_CONSTANTS
+#include <base.hpp>
 
+#include <dart/core/core.hpp>
 
+int _magicNumber;
 
-const int _magicNumber;
+int _originLowerLeft;
 
-const int _originLowerLeft;
+int _addressingModelLogical;
 
-const int _addressingModelLogical;
+int _memoryModelGLSL450;
 
-const int _memoryModelGLSL450;
+int _capabilityMatrix;
 
-const int _capabilityMatrix;
+int _capabilityShader;
 
-const int _capabilityShader;
+int _storageClassUniformConstant;
 
-const int _storageClassUniformConstant;
+int _storageClassInput;
 
-const int _storageClassInput;
+int _storageClassOutput;
 
-const int _storageClassOutput;
+int _storageClassFunction;
 
-const int _storageClassFunction;
+int _decorationBuiltIn;
 
-const int _decorationBuiltIn;
+int _decorationLocation;
 
-const int _decorationLocation;
+int _builtinFragCoord;
 
-const int _builtinFragCoord;
+int _dim2D;
 
-const int _dim2D;
+int _opSource;
 
-const int _opSource;
+int _opSourceExtension;
 
-const int _opSourceExtension;
+int _opName;
 
-const int _opName;
+int _opMemberName;
 
-const int _opMemberName;
+int _opString;
 
-const int _opString;
+int _opLine;
 
-const int _opLine;
+int _opExtInstImport;
 
-const int _opExtInstImport;
+int _opExtInst;
 
-const int _opExtInst;
+int _opMemoryModel;
 
-const int _opMemoryModel;
+int _opEntryPoint;
 
-const int _opEntryPoint;
+int _opExecutionMode;
 
-const int _opExecutionMode;
+int _opCapability;
 
-const int _opCapability;
+int _opTypeVoid;
 
-const int _opTypeVoid;
+int _opTypeBool;
 
-const int _opTypeBool;
+int _opTypeInt;
 
-const int _opTypeInt;
+int _opTypeFloat;
 
-const int _opTypeFloat;
+int _opTypeVector;
 
-const int _opTypeVector;
+int _opTypeMatrix;
 
-const int _opTypeMatrix;
+int _opTypeImage;
 
-const int _opTypeImage;
+int _opTypeSampledImage;
 
-const int _opTypeSampledImage;
+int _opTypePointer;
 
-const int _opTypePointer;
+int _opTypeFunction;
 
-const int _opTypeFunction;
+int _opConstantTrue;
 
-const int _opConstantTrue;
+int _opConstantFalse;
 
-const int _opConstantFalse;
+int _opConstant;
 
-const int _opConstant;
+int _opConstantComposite;
 
-const int _opConstantComposite;
+int _opFunction;
 
-const int _opFunction;
+int _opFunctionParameter;
 
-const int _opFunctionParameter;
+int _opFunctionEnd;
 
-const int _opFunctionEnd;
+int _opFunctionCall;
 
-const int _opFunctionCall;
+int _opVariable;
 
-const int _opVariable;
+int _opLoad;
 
-const int _opLoad;
+int _opStore;
 
-const int _opStore;
+int _opAccessChain;
 
-const int _opAccessChain;
+int _opDecorate;
 
-const int _opDecorate;
+int _opVectorShuffle;
 
-const int _opVectorShuffle;
+int _opCompositeConstruct;
 
-const int _opCompositeConstruct;
+int _opCompositeExtract;
 
-const int _opCompositeExtract;
+int _opImageSampleImplicitLod;
 
-const int _opImageSampleImplicitLod;
+int _opImageQuerySize;
 
-const int _opImageQuerySize;
+int _opConvertFToS;
 
-const int _opConvertFToS;
+int _opConvertSToF;
 
-const int _opConvertSToF;
+int _opFNegate;
 
-const int _opFNegate;
+int _opFAdd;
 
-const int _opFAdd;
+int _opFSub;
 
-const int _opFSub;
+int _opFMul;
 
-const int _opFMul;
+int _opFDiv;
 
-const int _opFDiv;
+int _opFMod;
 
-const int _opFMod;
+int _opVectorTimesScalar;
 
-const int _opVectorTimesScalar;
+int _opMatrixTimesScalar;
 
-const int _opMatrixTimesScalar;
+int _opVectorTimesMatrix;
 
-const int _opVectorTimesMatrix;
+int _opMatrixTimesVector;
 
-const int _opMatrixTimesVector;
+int _opMatrixTimesMatrix;
 
-const int _opMatrixTimesMatrix;
+int _opDot;
 
-const int _opDot;
+int _opFOrdEqual;
 
-const int _opFOrdEqual;
+int _opFUnordNotEqual;
 
-const int _opFUnordNotEqual;
+int _opFOrdLessThan;
 
-const int _opFOrdLessThan;
+int _opFOrdGreaterThan;
 
-const int _opFOrdGreaterThan;
+int _opFOrdLessThanEqual;
 
-const int _opFOrdLessThanEqual;
+int _opFOrdGreaterThanEqual;
 
-const int _opFOrdGreaterThanEqual;
+int _opLogicalEqual;
 
-const int _opLogicalEqual;
+int _opLogicalNotEqual;
 
-const int _opLogicalNotEqual;
+int _opLogicalOr;
 
-const int _opLogicalOr;
+int _opLogicalAnd;
 
-const int _opLogicalAnd;
+int _opLogicalNot;
 
-const int _opLogicalNot;
+int _opSelect;
 
-const int _opSelect;
+int _opLoopMerge;
 
-const int _opLoopMerge;
+int _opSelectionMerge;
 
-const int _opSelectionMerge;
+int _opLabel;
 
-const int _opLabel;
+int _opBranch;
 
-const int _opBranch;
+int _opBranchConditional;
 
-const int _opBranchConditional;
+int _opReturn;
 
-const int _opReturn;
+int _opReturnValue;
 
-const int _opReturnValue;
+String _glslStd450;
 
-const String _glslStd450;
+int _glslStd450FAbs;
 
-const int _glslStd450FAbs;
+int _glslStd450FSign;
 
-const int _glslStd450FSign;
+int _glslStd450Floor;
 
-const int _glslStd450Floor;
+int _glslStd450Ceil;
 
-const int _glslStd450Ceil;
+int _glslStd450Fract;
 
-const int _glslStd450Fract;
+int _glslStd450Radians;
 
-const int _glslStd450Radians;
+int _glslStd450Degrees;
 
-const int _glslStd450Degrees;
+int _glslStd450Sin;
 
-const int _glslStd450Sin;
+int _glslStd450Cos;
 
-const int _glslStd450Cos;
+int _glslStd450Tan;
 
-const int _glslStd450Tan;
+int _glslStd450Asin;
 
-const int _glslStd450Asin;
+int _glslStd450Acos;
 
-const int _glslStd450Acos;
+int _glslStd450Atan;
 
-const int _glslStd450Atan;
+int _glslStd450Atan2;
 
-const int _glslStd450Atan2;
+int _glslStd450Pow;
 
-const int _glslStd450Pow;
+int _glslStd450Exp;
 
-const int _glslStd450Exp;
+int _glslStd450Log;
 
-const int _glslStd450Log;
+int _glslStd450Exp2;
 
-const int _glslStd450Exp2;
+int _glslStd450Log2;
 
-const int _glslStd450Log2;
+int _glslStd450Sqrt;
 
-const int _glslStd450Sqrt;
+int _glslStd450InverseSqrt;
 
-const int _glslStd450InverseSqrt;
+int _glslStd450FMin;
 
-const int _glslStd450FMin;
+int _glslStd450FMax;
 
-const int _glslStd450FMax;
+int _glslStd450FClamp;
 
-const int _glslStd450FClamp;
+int _glslStd450FMix;
 
-const int _glslStd450FMix;
+int _glslStd450Step;
 
-const int _glslStd450Step;
+int _glslStd450SmoothStep;
 
-const int _glslStd450SmoothStep;
+int _glslStd450Length;
 
-const int _glslStd450Length;
+int _glslStd450Distance;
 
-const int _glslStd450Distance;
+int _glslStd450Cross;
 
-const int _glslStd450Cross;
+int _glslStd450Normalize;
 
-const int _glslStd450Normalize;
+int _glslStd450FaceForward;
 
-const int _glslStd450FaceForward;
+int _glslStd450Reflect;
 
-const int _glslStd450Reflect;
+Map<int, String> _glslStd450OpNames;
 
-const Map<int, String> _glslStd450OpNames;
-
-const Map<int, int> _glslStd450OpArgc;
+Map<int, int> _glslStd450OpArgc;
 
 
 enum _Operator{
@@ -268,13 +268,14 @@ enum _Operator{
     lessThanEqual,
     greaterThanEqual,
 } // end _Operator
-const Set<_Operator> _compoundAssignmentOperators;
+Set<_Operator> _compoundAssignmentOperators;
 
-const Map<_Operator, String> _operatorStrings;
+Map<_Operator, String> _operatorStrings;
 
 String _operatorString(_Operator op);
 
 bool _isCompoundAssignment(_Operator op);
+
 
 
 #endif

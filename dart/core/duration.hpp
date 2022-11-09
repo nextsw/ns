@@ -1,95 +1,96 @@
-#ifndef DURATION_H
-#define DURATION_H
-#include <memory>
+#ifndef DART_CORE_DURATION
+#define DART_CORE_DURATION
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
 
 
-
-
-class Duration {
+class DurationCls : public ObjectCls {
 public:
-    static const int microsecondsPerMillisecond;
+    static int microsecondsPerMillisecond;
 
-    static const int millisecondsPerSecond;
+    static int millisecondsPerSecond;
 
-    static const int secondsPerMinute;
+    static int secondsPerMinute;
 
-    static const int minutesPerHour;
+    static int minutesPerHour;
 
-    static const int hoursPerDay;
+    static int hoursPerDay;
 
-    static const int microsecondsPerSecond;
+    static int microsecondsPerSecond;
 
-    static const int microsecondsPerMinute;
+    static int microsecondsPerMinute;
 
-    static const int microsecondsPerHour;
+    static int microsecondsPerHour;
 
-    static const int microsecondsPerDay;
+    static int microsecondsPerDay;
 
-    static const int millisecondsPerMinute;
+    static int millisecondsPerMinute;
 
-    static const int millisecondsPerHour;
+    static int millisecondsPerHour;
 
-    static const int millisecondsPerDay;
+    static int millisecondsPerDay;
 
-    static const int secondsPerHour;
+    static int secondsPerHour;
 
-    static const int secondsPerDay;
+    static int secondsPerDay;
 
-    static const int minutesPerDay;
+    static int minutesPerDay;
 
-    static const Duration zero;
+    static Duration zero;
 
 
-     Duration(int days, int hours, int microseconds, int milliseconds, int minutes, int seconds);
+     DurationCls(int days, int hours, int microseconds, int milliseconds, int minutes, int seconds);
 
-    Duration +(Duration other);
+    virtual Duration operator+(Duration other);
 
-    Duration -(Duration other);
+    virtual Duration operator-(Duration other);
 
-    Duration *(num factor);
+    virtual Duration operator*(num factor);
 
-    Duration ~/(int quotient);
+    virtual Duration operator~/(int quotient);
 
-    bool <(Duration other);
+    virtual bool operator<(Duration other);
 
-    bool >(Duration other);
+    virtual bool operator>(Duration other);
 
-    bool <=(Duration other);
+    virtual bool operator<=(Duration other);
 
-    bool >=(Duration other);
+    virtual bool operator>=(Duration other);
 
-    int inDays();
+    virtual int inDays();
 
-    int inHours();
+    virtual int inHours();
 
-    int inMinutes();
+    virtual int inMinutes();
 
-    int inSeconds();
+    virtual int inSeconds();
 
-    int inMilliseconds();
+    virtual int inMilliseconds();
 
-    int inMicroseconds();
+    virtual int inMicroseconds();
 
-    bool ==(Object other);
+    virtual bool operator==(Object other);
 
-    int hashCode();
+    virtual int hashCode();
 
-    int compareTo(Duration other);
+    virtual int compareTo(Duration other);
 
-    String toString();
+    virtual String toString();
 
-    bool isNegative();
+    virtual bool isNegative();
 
-    Duration abs();
+    virtual Duration abs();
 
-    Duration -();
+    virtual Duration operator-();
 
 private:
     int _duration;
 
 
-    void  _microseconds(int _duration);
-
+    virtual void  _microseconds(int _duration);
 };
+using Duration = std::shared_ptr<DurationCls>;
+
 
 #endif

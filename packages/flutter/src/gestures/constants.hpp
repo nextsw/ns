@@ -1,48 +1,49 @@
-#ifndef CONSTANTS_H
-#define CONSTANTS_H
-#include <memory>
+#ifndef PACKAGES_FLUTTER_SRC_GESTURES_CONSTANTS
+#define PACKAGES_FLUTTER_SRC_GESTURES_CONSTANTS
+#include <base.hpp>
 
+#include <dart/core/core.hpp>
 
+Duration kPressTimeout;
 
-const Duration kPressTimeout;
+Duration kHoverTapTimeout;
 
-const Duration kHoverTapTimeout;
+double kHoverTapSlop;
 
-const double kHoverTapSlop;
+Duration kLongPressTimeout;
 
-const Duration kLongPressTimeout;
+Duration kDoubleTapTimeout;
 
-const Duration kDoubleTapTimeout;
+Duration kDoubleTapMinTime;
 
-const Duration kDoubleTapMinTime;
+double kDoubleTapTouchSlop;
 
-const double kDoubleTapTouchSlop;
+double kDoubleTapSlop;
 
-const double kDoubleTapSlop;
+Duration kZoomControlsTimeout;
 
-const Duration kZoomControlsTimeout;
+double kTouchSlop;
 
-const double kTouchSlop;
+double kPagingTouchSlop;
 
-const double kPagingTouchSlop;
+double kPanSlop;
 
-const double kPanSlop;
+double kScaleSlop;
 
-const double kScaleSlop;
+double kWindowTouchSlop;
 
-const double kWindowTouchSlop;
+double kMinFlingVelocity;
 
-const double kMinFlingVelocity;
+double kMaxFlingVelocity;
 
-const double kMaxFlingVelocity;
+Duration kJumpTapTimeout;
 
-const Duration kJumpTapTimeout;
+double kPrecisePointerHitSlop;
 
-const double kPrecisePointerHitSlop;
+double kPrecisePointerPanSlop;
 
-const double kPrecisePointerPanSlop;
+double kPrecisePointerScaleSlop;
 
-const double kPrecisePointerScaleSlop;
 
 
 #endif

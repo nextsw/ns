@@ -1,127 +1,144 @@
 #include "asset_bundle.hpp"
-Future<ImmutableBuffer> AssetBundle::loadBuffer(String key) {
+Future<ImmutableBuffer> AssetBundleCls::loadBuffer(String key) {
     ByteData data = await load(key);
-    return ui.ImmutableBuffer.fromUint8List(data.buffer.asUint8List());
+    return ui->ImmutableBufferCls->fromUint8List(data->buffer->asUint8List());
 }
 
-Future<String> AssetBundle::loadString(bool cache, String key) {
+Future<String> AssetBundleCls::loadString(bool cache, String key) {
     ByteData data = await load(key);
     if (data == nullptr) {
         ;
     }
-    if (data.lengthInBytes < 50 * 1024) {
-        return utf8.decode(data.buffer.asUint8List());
+    if (data->lengthInBytes < 50 * 1024) {
+        return utf8->decode(data->buffer->asUint8List());
     }
     return compute(_utf8decode, data"UTF8 decode for "$key"");
 }
 
-void AssetBundle::evict(String key) {
+void AssetBundleCls::evict(String key) {
 }
 
-void AssetBundle::clear() {
+void AssetBundleCls::clear() {
 }
 
-String AssetBundle::toString() {
+String AssetBundleCls::toString() {
     return "${describeIdentity(this)}()";
 }
 
-String AssetBundle::_utf8decode(ByteData data) {
-    return utf8.decode(data.buffer.asUint8List());
+String AssetBundleCls::_utf8decode(ByteData data) {
+    return utf8->decode(data->buffer->asUint8List());
 }
 
-NetworkAssetBundle::NetworkAssetBundle(Uri baseUrl) {
+NetworkAssetBundleCls::NetworkAssetBundleCls(Uri baseUrl) {
     {
         _baseUrl = baseUrl;
-        _httpClient = HttpClient();
+        _httpClient = make<HttpClientCls>();
     }
 }
 
-Future<ByteData> NetworkAssetBundle::load(String key) {
-    HttpClientRequest request = await _httpClient.getUrl(_urlFromKey(key));
-    HttpClientResponse response = await request.close();
-    if (response.statusCode != HttpStatus.ok) {
+Future<ByteData> NetworkAssetBundleCls::load(String key) {
+    HttpClientRequest request = await _httpClient->getUrl(_urlFromKey(key));
+    HttpClientResponse response = await request->close();
+    if (response->statusCode != HttpStatusCls::ok) {
         ;
     }
     Uint8List bytes = await consolidateHttpClientResponseBytes(response);
-    return bytes.buffer.asByteData();
+    return bytes->buffer->asByteData();
 }
 
-Future<T> NetworkAssetBundle::loadStructuredData<T>(String key, FunctionType parser) {
+Future<T> NetworkAssetBundleCls::loadStructuredDatatemplate<typename T> (String key, Future<T> parser(String value) ) {
     assert(key != nullptr);
     assert(parser != nullptr);
     return parser(await loadString(key));
 }
 
-String NetworkAssetBundle::toString() {
+String NetworkAssetBundleCls::toString() {
     return "${describeIdentity(this)}($_baseUrl)";
 }
 
-Uri NetworkAssetBundle::_urlFromKey(String key) {
-    return _baseUrl.resolve(key);
+Uri NetworkAssetBundleCls::_urlFromKey(String key) {
+    return _baseUrl->resolve(key);
 }
 
-Future<String> CachingAssetBundle::loadString(bool cache, String key) {
+Future<String> CachingAssetBundleCls::loadString(bool cache, String key) {
     if (cache) {
-        return _stringCache.putIfAbsent(key, );
+        return _stringCache->putIfAbsent(key, [=] ()         {
+            super->loadString(key);
+        });
     }
-    return super.loadString(key);
+    return super->loadString(key);
 }
 
-Future<T> CachingAssetBundle::loadStructuredData<T>(String key, FunctionType parser) {
+Future<T> CachingAssetBundleCls::loadStructuredDatatemplate<typename T> (String key, Future<T> parser(String value) ) {
     assert(key != nullptr);
     assert(parser != nullptr);
-    if (_structuredDataCache.containsKey(key)) {
-        return (;
+    if (_structuredDataCache->containsKey(key)) {
+        return ((Future<T>)_structuredDataCache[key]!);
     }
     Completer<T> completer;
     Future<T> result;
-    loadString(keyfalse).<T>then(parser).<void>then();
+    loadString(keyfalse)-><T>then(parser)-><void>then([=] (T value) {
+        result = <T>make<SynchronousFutureCls>(value);
+        _structuredDataCache[key] = result!;
+        if (completer != nullptr) {
+            completer->complete(value);
+        }
+    });
     if (result != nullptr) {
         return result!;
     }
-    completer = <T>Completer();
-    _structuredDataCache[key] = completer.future;
-    return completer.future;
+    completer = <T>make<CompleterCls>();
+    _structuredDataCache[key] = completer->future;
+    return completer->future;
 }
 
-void CachingAssetBundle::evict(String key) {
-    _stringCache.remove(key);
-    _structuredDataCache.remove(key);
+void CachingAssetBundleCls::evict(String key) {
+    _stringCache->remove(key);
+    _structuredDataCache->remove(key);
 }
 
-void CachingAssetBundle::clear() {
-    _stringCache.clear();
-    _structuredDataCache.clear();
+void CachingAssetBundleCls::clear() {
+    _stringCache->clear();
+    _structuredDataCache->clear();
 }
 
-Future<ImmutableBuffer> CachingAssetBundle::loadBuffer(String key) {
+Future<ImmutableBuffer> CachingAssetBundleCls::loadBuffer(String key) {
     ByteData data = await load(key);
-    return ui.ImmutableBuffer.fromUint8List(data.buffer.asUint8List());
+    return ui->ImmutableBufferCls->fromUint8List(data->buffer->asUint8List());
 }
 
-Future<ByteData> PlatformAssetBundle::load(String key) {
-    Uint8List encoded = utf8.encoder.convert(Uri(Uri.encodeFull(key)).path);
-    ByteData asset = await ServicesBinding.instance.defaultBinaryMessenger.send("flutter/assets", encoded.buffer.asByteData());
+Future<ByteData> PlatformAssetBundleCls::load(String key) {
+    Uint8List encoded = utf8->encoder->convert(make<UriCls>(UriCls->encodeFull(key))->path);
+    ByteData asset = await ServicesBindingCls::instance->defaultBinaryMessenger->send("flutter/assets", encoded->buffer->asByteData());
     if (asset == nullptr) {
         ;
     }
     return asset;
 }
 
-Future<ImmutableBuffer> PlatformAssetBundle::loadBuffer(String key) {
+Future<ImmutableBuffer> PlatformAssetBundleCls::loadBuffer(String key) {
     if (kIsWeb) {
         ByteData bytes = await load(key);
-        return ui.ImmutableBuffer.fromUint8List(bytes.buffer.asUint8List());
+        return ui->ImmutableBufferCls->fromUint8List(bytes->buffer->asUint8List());
     }
     bool debugUsePlatformChannel = false;
-    assert(());
+    assert([=] () {
+        if (PlatformCls::environment->containsKey("UNIT_TEST_ASSETS")) {
+            debugUsePlatformChannel = true;
+        }
+        return true;
+    }());
     if (debugUsePlatformChannel) {
         ByteData bytes = await load(key);
-        return ui.ImmutableBuffer.fromUint8List(bytes.buffer.asUint8List());
+        return ui->ImmutableBufferCls->fromUint8List(bytes->buffer->asUint8List());
     }
-    ;
+    try {
+        return await ui->ImmutableBufferCls->fromAsset(key);
+    } catch (Exception null) {
+        ;
+    };
 }
 
 AssetBundle _initRootBundle() {
-    return PlatformAssetBundle();
+    return make<PlatformAssetBundleCls>();
 }

@@ -1,110 +1,110 @@
 #include "vector3.hpp"
-Float64List Vector3::storage() {
+Float64List Vector3Cls::storage() {
     return _v3storage;
 }
 
-void Vector3::min(Vector3 a, Vector3 b, Vector3 result) {
-    ;
+void Vector3Cls::min(Vector3 a, Vector3 b, Vector3 result) {
+    auto _c1 = result;_c1.x = auto _c2 = math->min(a->x, b->x);_c2.y = auto _c3 = math->min(a->y, b->y);_c3.z = math->min(a->z, b->z);_c3;_c2;_c1;
 }
 
-void Vector3::max(Vector3 a, Vector3 b, Vector3 result) {
-    ;
+void Vector3Cls::max(Vector3 a, Vector3 b, Vector3 result) {
+    auto _c1 = result;_c1.x = auto _c2 = math->max(a->x, b->x);_c2.y = auto _c3 = math->max(a->y, b->y);_c3.z = math->max(a->z, b->z);_c3;_c2;_c1;
 }
 
-void Vector3::mix(double a, Vector3 max, Vector3 min, Vector3 result) {
-    ;
+void Vector3Cls::mix(double a, Vector3 max, Vector3 min, Vector3 result) {
+    auto _c1 = result;_c1.x = auto _c2 = min->x + a * (max->x - min->x);_c2.y = auto _c3 = min->y + a * (max->y - min->y);_c3.z = min->z + a * (max->z - min->z);_c3;_c2;_c1;
 }
 
-Vector3::Vector3(double x, double y, double z) {
+Vector3Cls::Vector3Cls(double x, double y, double z) {
 }
 
-void Vector3::array(List<double> array, int offset) {
-    return ;
+void Vector3Cls::array(List<double> array, int offset) {
+    return _c1;
 }
 
-void Vector3::zero()
+void Vector3Cls::zero()
 
-void Vector3::all(double value) {
-    return ;
+void Vector3Cls::all(double value) {
+    return _c1;
 }
 
-void Vector3::copy(Vector3 other) {
-    return ;
+void Vector3Cls::copy(Vector3 other) {
+    return _c1;
 }
 
-void Vector3::fromBuffer(ByteBuffer buffer, int offset)
+void Vector3Cls::fromBuffer(ByteBuffer buffer, int offset)
 
-void Vector3::random(Random rng) {
-    rng = math.Random();
-    return Vector3(rng.nextDouble(), rng.nextDouble(), rng.nextDouble());
+void Vector3Cls::random(Random rng) {
+    auto _c1 = Vector3Cls->zero();_c1.copyFromArray(array, offset);auto _c1 = Vector3Cls->zero();_c1.splat(value);auto _c1 = Vector3Cls->zero();_c1.setFrom(other);rng = math->make<RandomCls>();
+    return make<Vector3Cls>(rng->nextDouble(), rng->nextDouble(), rng->nextDouble());
 }
 
-void Vector3::setValues(double x, double y, double z) {
+void Vector3Cls::setValues(double x, double y, double z) {
     _v3storage[0] = x;
     _v3storage[1] = y;
     _v3storage[2] = z;
 }
 
-void Vector3::setZero() {
+void Vector3Cls::setZero() {
     _v3storage[2] = 0.0;
     _v3storage[1] = 0.0;
     _v3storage[0] = 0.0;
 }
 
-void Vector3::setFrom(Vector3 other) {
-    Unknown otherStorage = other._v3storage;
+void Vector3Cls::setFrom(Vector3 other) {
+    Unknown otherStorage = other->_v3storage;
     _v3storage[0] = otherStorage[0];
     _v3storage[1] = otherStorage[1];
     _v3storage[2] = otherStorage[2];
 }
 
-void Vector3::splat(double arg) {
+void Vector3Cls::splat(double arg) {
     _v3storage[2] = arg;
     _v3storage[1] = arg;
     _v3storage[0] = arg;
 }
 
-String Vector3::toString() {
+String Vector3Cls::toString() {
     return "[${storage[0]},${storage[1]},${storage[2]}]";
 }
 
-bool Vector3::==(Object other) {
-    return (other is Vector3) && (_v3storage[0] == other._v3storage[0]) && (_v3storage[1] == other._v3storage[1]) && (_v3storage[2] == other._v3storage[2]);
+bool Vector3Cls::==(Object other) {
+    return (other is Vector3) && (_v3storage[0] == other->_v3storage[0]) && (_v3storage[1] == other->_v3storage[1]) && (_v3storage[2] == other->_v3storage[2]);
 }
 
-int Vector3::hashCode() {
-    return Object.hashAll(_v3storage);
+int Vector3Cls::hashCode() {
+    return ObjectCls->hashAll(_v3storage);
 }
 
-Vector3 Vector3::-() {
-    return ;
+Vector3 Vector3Cls::-() {
+    return _c1;
 }
 
-Vector3 Vector3::-(Vector3 other) {
-    return ;
+Vector3 Vector3Cls::-(Vector3 other) {
+    return _c1;
 }
 
-Vector3 Vector3::+(Vector3 other) {
-    return ;
+Vector3 Vector3Cls::+(Vector3 other) {
+    return _c1;
 }
 
-Vector3 Vector3::/(double scale) {
+Vector3 Vector3Cls::/(double scale) {
     return scaled(1.0 / scale);
 }
 
-Vector3 Vector3::*(double scale) {
+Vector3 Vector3Cls::*(double scale) {
     return scaled(scale);
 }
 
-double Vector3::[](int i) {
+double Vector3Cls::[](int i) {
     return _v3storage[i];
 }
 
-void Vector3::[]=(int i, double v) {
-    _v3storage[i] = v;
+void Vector3Cls::[]=(int i, double v) {
+    auto _c1 = clone();_c1.negate();auto _c1 = clone();_c1.sub(other);auto _c1 = clone();_c1.add(other);_v3storage[i] = v;
 }
 
-void Vector3::length(double value) {
+void Vector3Cls::length(double value) {
     if (value == 0.0) {
         setZero();
     } else {
@@ -119,11 +119,11 @@ void Vector3::length(double value) {
     }
 }
 
-double Vector3::length() {
-    return math.sqrt(length2);
+double Vector3Cls::length() {
+    return math->sqrt(length2);
 }
 
-double Vector3::length2() {
+double Vector3Cls::length2() {
     double sum;
     sum = _v3storage[0] * _v3storage[0];
     sum = _v3storage[1] * _v3storage[1];
@@ -131,7 +131,7 @@ double Vector3::length2() {
     return sum;
 }
 
-double Vector3::normalize() {
+double Vector3Cls::normalize() {
     Unknown l = length;
     if (l == 0.0) {
         return 0.0;
@@ -143,49 +143,49 @@ double Vector3::normalize() {
     return l;
 }
 
-double Vector3::normalizeLength() {
+double Vector3Cls::normalizeLength() {
     return normalize();
 }
 
-Vector3 Vector3::normalized() {
-    return ;
+Vector3 Vector3Cls::normalized() {
+    return _c1;
 }
 
-Vector3 Vector3::normalizeInto(Vector3 out) {
-    ;
+Vector3 Vector3Cls::normalizeInto(Vector3 out) {
+    auto _c1 = Vector3Cls->copy(this);_c1.normalize();auto _c1 = out;_c1.auto _c2 = setFrom(this);_c2.normalize();_c2;_c1;
     return out;
 }
 
-double Vector3::distanceTo(Vector3 arg) {
-    return math.sqrt(distanceToSquared(arg));
+double Vector3Cls::distanceTo(Vector3 arg) {
+    return math->sqrt(distanceToSquared(arg));
 }
 
-double Vector3::distanceToSquared(Vector3 arg) {
-    Unknown argStorage = arg._v3storage;
+double Vector3Cls::distanceToSquared(Vector3 arg) {
+    Unknown argStorage = arg->_v3storage;
     Unknown dx = _v3storage[0] - argStorage[0];
     Unknown dy = _v3storage[1] - argStorage[1];
     Unknown dz = _v3storage[2] - argStorage[2];
     return dx * dx + dy * dy + dz * dz;
 }
 
-double Vector3::angleTo(Vector3 other) {
-    Unknown otherStorage = other._v3storage;
+double Vector3Cls::angleTo(Vector3 other) {
+    Unknown otherStorage = other->_v3storage;
     if (_v3storage[0] == otherStorage[0] && _v3storage[1] == otherStorage[1] && _v3storage[2] == otherStorage[2]) {
         return 0.0;
     }
-    Unknown d = dot(other) / (length * other.length);
-    return math.acos(d.clamp(-1.0, 1.0));
+    Unknown d = dot(other) / (length * other->length);
+    return math->acos(d->clamp(-1.0, 1.0));
 }
 
-double Vector3::angleToSigned(Vector3 normal, Vector3 other) {
+double Vector3Cls::angleToSigned(Vector3 normal, Vector3 other) {
     Unknown angle = angleTo(other);
     Unknown c = cross(other);
-    Unknown d = c.dot(normal);
+    Unknown d = c->dot(normal);
     return  < 0.0? -angle : angle;
 }
 
-double Vector3::dot(Vector3 other) {
-    Unknown otherStorage = other._v3storage;
+double Vector3Cls::dot(Vector3 other) {
+    Unknown otherStorage = other->_v3storage;
     double sum;
     sum = _v3storage[0] * otherStorage[0];
     sum = _v3storage[1] * otherStorage[1];
@@ -193,8 +193,8 @@ double Vector3::dot(Vector3 other) {
     return sum;
 }
 
-void Vector3::postmultiply(Matrix3 arg) {
-    Unknown argStorage = arg.storage;
+void Vector3Cls::postmultiply(Matrix3 arg) {
+    Unknown argStorage = arg->storage;
     Unknown v0 = _v3storage[0];
     Unknown v1 = _v3storage[1];
     Unknown v2 = _v3storage[2];
@@ -203,42 +203,42 @@ void Vector3::postmultiply(Matrix3 arg) {
     _v3storage[2] = v0 * argStorage[6] + v1 * argStorage[7] + v2 * argStorage[8];
 }
 
-Vector3 Vector3::cross(Vector3 other) {
+Vector3 Vector3Cls::cross(Vector3 other) {
     Unknown _x = _v3storage[0];
     Unknown _y = _v3storage[1];
     Unknown _z = _v3storage[2];
-    Unknown otherStorage = other._v3storage;
+    Unknown otherStorage = other->_v3storage;
     Unknown ox = otherStorage[0];
     Unknown oy = otherStorage[1];
     Unknown oz = otherStorage[2];
-    return Vector3(_y * oz - _z * oy, _z * ox - _x * oz, _x * oy - _y * ox);
+    return make<Vector3Cls>(_y * oz - _z * oy, _z * ox - _x * oz, _x * oy - _y * ox);
 }
 
-Vector3 Vector3::crossInto(Vector3 other, Vector3 out) {
+Vector3 Vector3Cls::crossInto(Vector3 other, Vector3 out) {
     Unknown x = _v3storage[0];
     Unknown y = _v3storage[1];
     Unknown z = _v3storage[2];
-    Unknown otherStorage = other._v3storage;
+    Unknown otherStorage = other->_v3storage;
     Unknown ox = otherStorage[0];
     Unknown oy = otherStorage[1];
     Unknown oz = otherStorage[2];
-    Unknown outStorage = out._v3storage;
+    Unknown outStorage = out->_v3storage;
     outStorage[0] = y * oz - z * oy;
     outStorage[1] = z * ox - x * oz;
     outStorage[2] = x * oy - y * ox;
     return out;
 }
 
-void Vector3::reflect(Vector3 normal) {
-    sub(normal.scaled(2.0 * normal.dot(this)));
+void Vector3Cls::reflect(Vector3 normal) {
+    sub(normal->scaled(2.0 * normal->dot(this)));
 }
 
-Vector3 Vector3::reflected(Vector3 normal) {
-    return ;
+Vector3 Vector3Cls::reflected(Vector3 normal) {
+    return _c1;
 }
 
-void Vector3::applyProjection(Matrix4 arg) {
-    Unknown argStorage = arg.storage;
+void Vector3Cls::applyProjection(Matrix4 arg) {
+    auto _c1 = clone();_c1.reflect(normal);Unknown argStorage = arg->storage;
     Unknown x = _v3storage[0];
     Unknown y = _v3storage[1];
     Unknown z = _v3storage[2];
@@ -248,12 +248,12 @@ void Vector3::applyProjection(Matrix4 arg) {
     _v3storage[2] = (argStorage[2] * x + argStorage[6] * y + argStorage[10] * z + argStorage[14]) * d;
 }
 
-void Vector3::applyAxisAngle(double angle, Vector3 axis) {
-    applyQuaternion(Quaternion.axisAngle(axis, angle));
+void Vector3Cls::applyAxisAngle(double angle, Vector3 axis) {
+    applyQuaternion(QuaternionCls->axisAngle(axis, angle));
 }
 
-void Vector3::applyQuaternion(Quaternion arg) {
-    Unknown argStorage = arg._qStorage;
+void Vector3Cls::applyQuaternion(Quaternion arg) {
+    Unknown argStorage = arg->_qStorage;
     Unknown v0 = _v3storage[0];
     Unknown v1 = _v3storage[1];
     Unknown v2 = _v3storage[2];
@@ -270,8 +270,8 @@ void Vector3::applyQuaternion(Quaternion arg) {
     _v3storage[2] = iz * qw + iw * -qz + ix * -qy - iy * -qx;
 }
 
-void Vector3::applyMatrix3(Matrix3 arg) {
-    Unknown argStorage = arg.storage;
+void Vector3Cls::applyMatrix3(Matrix3 arg) {
+    Unknown argStorage = arg->storage;
     Unknown v0 = _v3storage[0];
     Unknown v1 = _v3storage[1];
     Unknown v2 = _v3storage[2];
@@ -280,8 +280,8 @@ void Vector3::applyMatrix3(Matrix3 arg) {
     _v3storage[2] = argStorage[2] * v0 + argStorage[5] * v1 + argStorage[8] * v2;
 }
 
-void Vector3::applyMatrix4(Matrix4 arg) {
-    Unknown argStorage = arg.storage;
+void Vector3Cls::applyMatrix4(Matrix4 arg) {
+    Unknown argStorage = arg->storage;
     Unknown v0 = _v3storage[0];
     Unknown v1 = _v3storage[1];
     Unknown v2 = _v3storage[2];
@@ -290,1797 +290,1797 @@ void Vector3::applyMatrix4(Matrix4 arg) {
     _v3storage[2] = argStorage[2] * v0 + argStorage[6] * v1 + argStorage[10] * v2 + argStorage[14];
 }
 
-double Vector3::relativeError(Vector3 correct) {
-    Unknown correct_norm = correct.length;
-    Unknown diff_norm = (this - correct).length;
+double Vector3Cls::relativeError(Vector3 correct) {
+    Unknown correct_norm = correct->length;
+    Unknown diff_norm = (this - correct)->length;
     return diff_norm / correct_norm;
 }
 
-double Vector3::absoluteError(Vector3 correct) {
-    return (this - correct).length;
+double Vector3Cls::absoluteError(Vector3 correct) {
+    return (this - correct)->length;
 }
 
-bool Vector3::isInfinite() {
+bool Vector3Cls::isInfinite() {
     auto is_infinite = false;
-    is_infinite = is_infinite || _v3storage[0].isInfinite;
-    is_infinite = is_infinite || _v3storage[1].isInfinite;
-    is_infinite = is_infinite || _v3storage[2].isInfinite;
+    is_infinite = is_infinite || _v3storage[0]->isInfinite;
+    is_infinite = is_infinite || _v3storage[1]->isInfinite;
+    is_infinite = is_infinite || _v3storage[2]->isInfinite;
     return is_infinite;
 }
 
-bool Vector3::isNaN() {
+bool Vector3Cls::isNaN() {
     auto isNan = false;
-    isNan = isNan || _v3storage[0].isNaN;
-    isNan = isNan || _v3storage[1].isNaN;
-    isNan = isNan || _v3storage[2].isNaN;
+    isNan = isNan || _v3storage[0]->isNaN;
+    isNan = isNan || _v3storage[1]->isNaN;
+    isNan = isNan || _v3storage[2]->isNaN;
     return isNan;
 }
 
-void Vector3::add(Vector3 arg) {
-    Unknown argStorage = arg._v3storage;
+void Vector3Cls::add(Vector3 arg) {
+    Unknown argStorage = arg->_v3storage;
     _v3storage[0] = _v3storage[0] + argStorage[0];
     _v3storage[1] = _v3storage[1] + argStorage[1];
     _v3storage[2] = _v3storage[2] + argStorage[2];
 }
 
-void Vector3::addScaled(Vector3 arg, double factor) {
-    Unknown argStorage = arg._v3storage;
+void Vector3Cls::addScaled(Vector3 arg, double factor) {
+    Unknown argStorage = arg->_v3storage;
     _v3storage[0] = _v3storage[0] + argStorage[0] * factor;
     _v3storage[1] = _v3storage[1] + argStorage[1] * factor;
     _v3storage[2] = _v3storage[2] + argStorage[2] * factor;
 }
 
-void Vector3::sub(Vector3 arg) {
-    Unknown argStorage = arg._v3storage;
+void Vector3Cls::sub(Vector3 arg) {
+    Unknown argStorage = arg->_v3storage;
     _v3storage[0] = _v3storage[0] - argStorage[0];
     _v3storage[1] = _v3storage[1] - argStorage[1];
     _v3storage[2] = _v3storage[2] - argStorage[2];
 }
 
-void Vector3::multiply(Vector3 arg) {
-    Unknown argStorage = arg._v3storage;
+void Vector3Cls::multiply(Vector3 arg) {
+    Unknown argStorage = arg->_v3storage;
     _v3storage[0] = _v3storage[0] * argStorage[0];
     _v3storage[1] = _v3storage[1] * argStorage[1];
     _v3storage[2] = _v3storage[2] * argStorage[2];
 }
 
-void Vector3::divide(Vector3 arg) {
-    Unknown argStorage = arg._v3storage;
+void Vector3Cls::divide(Vector3 arg) {
+    Unknown argStorage = arg->_v3storage;
     _v3storage[0] = _v3storage[0] / argStorage[0];
     _v3storage[1] = _v3storage[1] / argStorage[1];
     _v3storage[2] = _v3storage[2] / argStorage[2];
 }
 
-void Vector3::scale(double arg) {
+void Vector3Cls::scale(double arg) {
     _v3storage[2] = _v3storage[2] * arg;
     _v3storage[1] = _v3storage[1] * arg;
     _v3storage[0] = _v3storage[0] * arg;
 }
 
-Vector3 Vector3::scaled(double arg) {
-    return ;
+Vector3 Vector3Cls::scaled(double arg) {
+    return _c1;
 }
 
-void Vector3::negate() {
-    _v3storage[2] = -_v3storage[2];
+void Vector3Cls::negate() {
+    auto _c1 = clone();_c1.scale(arg);_v3storage[2] = -_v3storage[2];
     _v3storage[1] = -_v3storage[1];
     _v3storage[0] = -_v3storage[0];
 }
 
-void Vector3::absolute() {
-    _v3storage[0] = _v3storage[0].abs();
-    _v3storage[1] = _v3storage[1].abs();
-    _v3storage[2] = _v3storage[2].abs();
+void Vector3Cls::absolute() {
+    _v3storage[0] = _v3storage[0]->abs();
+    _v3storage[1] = _v3storage[1]->abs();
+    _v3storage[2] = _v3storage[2]->abs();
 }
 
-void Vector3::clamp(Vector3 max, Vector3 min) {
-    Unknown minStorage = min.storage;
-    Unknown maxStorage = max.storage;
-    _v3storage[0] = _v3storage[0].clamp(minStorage[0], maxStorage[0]).toDouble();
-    _v3storage[1] = _v3storage[1].clamp(minStorage[1], maxStorage[1]).toDouble();
-    _v3storage[2] = _v3storage[2].clamp(minStorage[2], maxStorage[2]).toDouble();
+void Vector3Cls::clamp(Vector3 max, Vector3 min) {
+    Unknown minStorage = min->storage;
+    Unknown maxStorage = max->storage;
+    _v3storage[0] = _v3storage[0]->clamp(minStorage[0], maxStorage[0])->toDouble();
+    _v3storage[1] = _v3storage[1]->clamp(minStorage[1], maxStorage[1])->toDouble();
+    _v3storage[2] = _v3storage[2]->clamp(minStorage[2], maxStorage[2])->toDouble();
 }
 
-void Vector3::clampScalar(double max, double min) {
-    _v3storage[0] = _v3storage[0].clamp(min, max).toDouble();
-    _v3storage[1] = _v3storage[1].clamp(min, max).toDouble();
-    _v3storage[2] = _v3storage[2].clamp(min, max).toDouble();
+void Vector3Cls::clampScalar(double max, double min) {
+    _v3storage[0] = _v3storage[0]->clamp(min, max)->toDouble();
+    _v3storage[1] = _v3storage[1]->clamp(min, max)->toDouble();
+    _v3storage[2] = _v3storage[2]->clamp(min, max)->toDouble();
 }
 
-void Vector3::floor() {
-    _v3storage[0] = _v3storage[0].floorToDouble();
-    _v3storage[1] = _v3storage[1].floorToDouble();
-    _v3storage[2] = _v3storage[2].floorToDouble();
+void Vector3Cls::floor() {
+    _v3storage[0] = _v3storage[0]->floorToDouble();
+    _v3storage[1] = _v3storage[1]->floorToDouble();
+    _v3storage[2] = _v3storage[2]->floorToDouble();
 }
 
-void Vector3::ceil() {
-    _v3storage[0] = _v3storage[0].ceilToDouble();
-    _v3storage[1] = _v3storage[1].ceilToDouble();
-    _v3storage[2] = _v3storage[2].ceilToDouble();
+void Vector3Cls::ceil() {
+    _v3storage[0] = _v3storage[0]->ceilToDouble();
+    _v3storage[1] = _v3storage[1]->ceilToDouble();
+    _v3storage[2] = _v3storage[2]->ceilToDouble();
 }
 
-void Vector3::round() {
-    _v3storage[0] = _v3storage[0].roundToDouble();
-    _v3storage[1] = _v3storage[1].roundToDouble();
-    _v3storage[2] = _v3storage[2].roundToDouble();
+void Vector3Cls::round() {
+    _v3storage[0] = _v3storage[0]->roundToDouble();
+    _v3storage[1] = _v3storage[1]->roundToDouble();
+    _v3storage[2] = _v3storage[2]->roundToDouble();
 }
 
-void Vector3::roundToZero() {
-    _v3storage[0] = _v3storage[0] < 0.0? _v3storage[0].ceilToDouble() : _v3storage[0].floorToDouble();
-    _v3storage[1] = _v3storage[1] < 0.0? _v3storage[1].ceilToDouble() : _v3storage[1].floorToDouble();
-    _v3storage[2] = _v3storage[2] < 0.0? _v3storage[2].ceilToDouble() : _v3storage[2].floorToDouble();
+void Vector3Cls::roundToZero() {
+    _v3storage[0] = _v3storage[0] < 0.0? _v3storage[0]->ceilToDouble() : _v3storage[0]->floorToDouble();
+    _v3storage[1] = _v3storage[1] < 0.0? _v3storage[1]->ceilToDouble() : _v3storage[1]->floorToDouble();
+    _v3storage[2] = _v3storage[2] < 0.0? _v3storage[2]->ceilToDouble() : _v3storage[2]->floorToDouble();
 }
 
-Vector3 Vector3::clone() {
-    return Vector3.copy(this);
+Vector3 Vector3Cls::clone() {
+    return Vector3Cls->copy(this);
 }
 
-Vector3 Vector3::copyInto(Vector3 arg) {
-    Unknown argStorage = arg._v3storage;
+Vector3 Vector3Cls::copyInto(Vector3 arg) {
+    Unknown argStorage = arg->_v3storage;
     argStorage[0] = _v3storage[0];
     argStorage[1] = _v3storage[1];
     argStorage[2] = _v3storage[2];
     return arg;
 }
 
-void Vector3::copyIntoArray(List<double> array, int offset) {
+void Vector3Cls::copyIntoArray(List<double> array, int offset) {
     array[offset + 2] = _v3storage[2];
     array[offset + 1] = _v3storage[1];
     array[offset + 0] = _v3storage[0];
 }
 
-void Vector3::copyFromArray(List<double> array, int offset) {
+void Vector3Cls::copyFromArray(List<double> array, int offset) {
     _v3storage[2] = array[offset + 2];
     _v3storage[1] = array[offset + 1];
     _v3storage[0] = array[offset + 0];
 }
 
-void Vector3::xy(Vector2 arg) {
-    Unknown argStorage = arg._v2storage;
+void Vector3Cls::xy(Vector2 arg) {
+    Unknown argStorage = arg->_v2storage;
     _v3storage[0] = argStorage[0];
     _v3storage[1] = argStorage[1];
 }
 
-void Vector3::xz(Vector2 arg) {
-    Unknown argStorage = arg._v2storage;
+void Vector3Cls::xz(Vector2 arg) {
+    Unknown argStorage = arg->_v2storage;
     _v3storage[0] = argStorage[0];
     _v3storage[2] = argStorage[1];
 }
 
-void Vector3::yx(Vector2 arg) {
-    Unknown argStorage = arg._v2storage;
+void Vector3Cls::yx(Vector2 arg) {
+    Unknown argStorage = arg->_v2storage;
     _v3storage[1] = argStorage[0];
     _v3storage[0] = argStorage[1];
 }
 
-void Vector3::yz(Vector2 arg) {
-    Unknown argStorage = arg._v2storage;
+void Vector3Cls::yz(Vector2 arg) {
+    Unknown argStorage = arg->_v2storage;
     _v3storage[1] = argStorage[0];
     _v3storage[2] = argStorage[1];
 }
 
-void Vector3::zx(Vector2 arg) {
-    Unknown argStorage = arg._v2storage;
+void Vector3Cls::zx(Vector2 arg) {
+    Unknown argStorage = arg->_v2storage;
     _v3storage[2] = argStorage[0];
     _v3storage[0] = argStorage[1];
 }
 
-void Vector3::zy(Vector2 arg) {
-    Unknown argStorage = arg._v2storage;
+void Vector3Cls::zy(Vector2 arg) {
+    Unknown argStorage = arg->_v2storage;
     _v3storage[2] = argStorage[0];
     _v3storage[1] = argStorage[1];
 }
 
-void Vector3::xyz(Vector3 arg) {
-    Unknown argStorage = arg._v3storage;
+void Vector3Cls::xyz(Vector3 arg) {
+    Unknown argStorage = arg->_v3storage;
     _v3storage[0] = argStorage[0];
     _v3storage[1] = argStorage[1];
     _v3storage[2] = argStorage[2];
 }
 
-void Vector3::xzy(Vector3 arg) {
-    Unknown argStorage = arg._v3storage;
+void Vector3Cls::xzy(Vector3 arg) {
+    Unknown argStorage = arg->_v3storage;
     _v3storage[0] = argStorage[0];
     _v3storage[2] = argStorage[1];
     _v3storage[1] = argStorage[2];
 }
 
-void Vector3::yxz(Vector3 arg) {
-    Unknown argStorage = arg._v3storage;
+void Vector3Cls::yxz(Vector3 arg) {
+    Unknown argStorage = arg->_v3storage;
     _v3storage[1] = argStorage[0];
     _v3storage[0] = argStorage[1];
     _v3storage[2] = argStorage[2];
 }
 
-void Vector3::yzx(Vector3 arg) {
-    Unknown argStorage = arg._v3storage;
+void Vector3Cls::yzx(Vector3 arg) {
+    Unknown argStorage = arg->_v3storage;
     _v3storage[1] = argStorage[0];
     _v3storage[2] = argStorage[1];
     _v3storage[0] = argStorage[2];
 }
 
-void Vector3::zxy(Vector3 arg) {
-    Unknown argStorage = arg._v3storage;
+void Vector3Cls::zxy(Vector3 arg) {
+    Unknown argStorage = arg->_v3storage;
     _v3storage[2] = argStorage[0];
     _v3storage[0] = argStorage[1];
     _v3storage[1] = argStorage[2];
 }
 
-void Vector3::zyx(Vector3 arg) {
-    Unknown argStorage = arg._v3storage;
+void Vector3Cls::zyx(Vector3 arg) {
+    Unknown argStorage = arg->_v3storage;
     _v3storage[2] = argStorage[0];
     _v3storage[1] = argStorage[1];
     _v3storage[0] = argStorage[2];
 }
 
-void Vector3::r(double arg) {
+void Vector3Cls::r(double arg) {
     return x = arg;
 }
 
-void Vector3::g(double arg) {
+void Vector3Cls::g(double arg) {
     return y = arg;
 }
 
-void Vector3::b(double arg) {
+void Vector3Cls::b(double arg) {
     return z = arg;
 }
 
-void Vector3::s(double arg) {
+void Vector3Cls::s(double arg) {
     return x = arg;
 }
 
-void Vector3::t(double arg) {
+void Vector3Cls::t(double arg) {
     return y = arg;
 }
 
-void Vector3::p(double arg) {
+void Vector3Cls::p(double arg) {
     return z = arg;
 }
 
-void Vector3::x(double arg) {
+void Vector3Cls::x(double arg) {
     return _v3storage[0] = arg;
 }
 
-void Vector3::y(double arg) {
+void Vector3Cls::y(double arg) {
     return _v3storage[1] = arg;
 }
 
-void Vector3::z(double arg) {
+void Vector3Cls::z(double arg) {
     return _v3storage[2] = arg;
 }
 
-void Vector3::rg(Vector2 arg) {
+void Vector3Cls::rg(Vector2 arg) {
     return xy = arg;
 }
 
-void Vector3::rb(Vector2 arg) {
+void Vector3Cls::rb(Vector2 arg) {
     return xz = arg;
 }
 
-void Vector3::gr(Vector2 arg) {
+void Vector3Cls::gr(Vector2 arg) {
     return yx = arg;
 }
 
-void Vector3::gb(Vector2 arg) {
+void Vector3Cls::gb(Vector2 arg) {
     return yz = arg;
 }
 
-void Vector3::br(Vector2 arg) {
+void Vector3Cls::br(Vector2 arg) {
     return zx = arg;
 }
 
-void Vector3::bg(Vector2 arg) {
+void Vector3Cls::bg(Vector2 arg) {
     return zy = arg;
 }
 
-void Vector3::rgb(Vector3 arg) {
+void Vector3Cls::rgb(Vector3 arg) {
     return xyz = arg;
 }
 
-void Vector3::rbg(Vector3 arg) {
+void Vector3Cls::rbg(Vector3 arg) {
     return xzy = arg;
 }
 
-void Vector3::grb(Vector3 arg) {
+void Vector3Cls::grb(Vector3 arg) {
     return yxz = arg;
 }
 
-void Vector3::gbr(Vector3 arg) {
+void Vector3Cls::gbr(Vector3 arg) {
     return yzx = arg;
 }
 
-void Vector3::brg(Vector3 arg) {
+void Vector3Cls::brg(Vector3 arg) {
     return zxy = arg;
 }
 
-void Vector3::bgr(Vector3 arg) {
+void Vector3Cls::bgr(Vector3 arg) {
     return zyx = arg;
 }
 
-void Vector3::st(Vector2 arg) {
+void Vector3Cls::st(Vector2 arg) {
     return xy = arg;
 }
 
-void Vector3::sp(Vector2 arg) {
+void Vector3Cls::sp(Vector2 arg) {
     return xz = arg;
 }
 
-void Vector3::ts(Vector2 arg) {
+void Vector3Cls::ts(Vector2 arg) {
     return yx = arg;
 }
 
-void Vector3::tp(Vector2 arg) {
+void Vector3Cls::tp(Vector2 arg) {
     return yz = arg;
 }
 
-void Vector3::ps(Vector2 arg) {
+void Vector3Cls::ps(Vector2 arg) {
     return zx = arg;
 }
 
-void Vector3::pt(Vector2 arg) {
+void Vector3Cls::pt(Vector2 arg) {
     return zy = arg;
 }
 
-void Vector3::stp(Vector3 arg) {
+void Vector3Cls::stp(Vector3 arg) {
     return xyz = arg;
 }
 
-void Vector3::spt(Vector3 arg) {
+void Vector3Cls::spt(Vector3 arg) {
     return xzy = arg;
 }
 
-void Vector3::tsp(Vector3 arg) {
+void Vector3Cls::tsp(Vector3 arg) {
     return yxz = arg;
 }
 
-void Vector3::tps(Vector3 arg) {
+void Vector3Cls::tps(Vector3 arg) {
     return yzx = arg;
 }
 
-void Vector3::pst(Vector3 arg) {
+void Vector3Cls::pst(Vector3 arg) {
     return zxy = arg;
 }
 
-void Vector3::pts(Vector3 arg) {
+void Vector3Cls::pts(Vector3 arg) {
     return zyx = arg;
 }
 
-Vector2 Vector3::xx() {
-    return Vector2(_v3storage[0], _v3storage[0]);
+Vector2 Vector3Cls::xx() {
+    return make<Vector2Cls>(_v3storage[0], _v3storage[0]);
 }
 
-Vector2 Vector3::xy() {
-    return Vector2(_v3storage[0], _v3storage[1]);
+Vector2 Vector3Cls::xy() {
+    return make<Vector2Cls>(_v3storage[0], _v3storage[1]);
 }
 
-Vector2 Vector3::xz() {
-    return Vector2(_v3storage[0], _v3storage[2]);
+Vector2 Vector3Cls::xz() {
+    return make<Vector2Cls>(_v3storage[0], _v3storage[2]);
 }
 
-Vector2 Vector3::yx() {
-    return Vector2(_v3storage[1], _v3storage[0]);
+Vector2 Vector3Cls::yx() {
+    return make<Vector2Cls>(_v3storage[1], _v3storage[0]);
 }
 
-Vector2 Vector3::yy() {
-    return Vector2(_v3storage[1], _v3storage[1]);
+Vector2 Vector3Cls::yy() {
+    return make<Vector2Cls>(_v3storage[1], _v3storage[1]);
 }
 
-Vector2 Vector3::yz() {
-    return Vector2(_v3storage[1], _v3storage[2]);
+Vector2 Vector3Cls::yz() {
+    return make<Vector2Cls>(_v3storage[1], _v3storage[2]);
 }
 
-Vector2 Vector3::zx() {
-    return Vector2(_v3storage[2], _v3storage[0]);
+Vector2 Vector3Cls::zx() {
+    return make<Vector2Cls>(_v3storage[2], _v3storage[0]);
 }
 
-Vector2 Vector3::zy() {
-    return Vector2(_v3storage[2], _v3storage[1]);
+Vector2 Vector3Cls::zy() {
+    return make<Vector2Cls>(_v3storage[2], _v3storage[1]);
 }
 
-Vector2 Vector3::zz() {
-    return Vector2(_v3storage[2], _v3storage[2]);
+Vector2 Vector3Cls::zz() {
+    return make<Vector2Cls>(_v3storage[2], _v3storage[2]);
 }
 
-Vector3 Vector3::xxx() {
-    return Vector3(_v3storage[0], _v3storage[0], _v3storage[0]);
+Vector3 Vector3Cls::xxx() {
+    return make<Vector3Cls>(_v3storage[0], _v3storage[0], _v3storage[0]);
 }
 
-Vector3 Vector3::xxy() {
-    return Vector3(_v3storage[0], _v3storage[0], _v3storage[1]);
+Vector3 Vector3Cls::xxy() {
+    return make<Vector3Cls>(_v3storage[0], _v3storage[0], _v3storage[1]);
 }
 
-Vector3 Vector3::xxz() {
-    return Vector3(_v3storage[0], _v3storage[0], _v3storage[2]);
+Vector3 Vector3Cls::xxz() {
+    return make<Vector3Cls>(_v3storage[0], _v3storage[0], _v3storage[2]);
 }
 
-Vector3 Vector3::xyx() {
-    return Vector3(_v3storage[0], _v3storage[1], _v3storage[0]);
+Vector3 Vector3Cls::xyx() {
+    return make<Vector3Cls>(_v3storage[0], _v3storage[1], _v3storage[0]);
 }
 
-Vector3 Vector3::xyy() {
-    return Vector3(_v3storage[0], _v3storage[1], _v3storage[1]);
+Vector3 Vector3Cls::xyy() {
+    return make<Vector3Cls>(_v3storage[0], _v3storage[1], _v3storage[1]);
 }
 
-Vector3 Vector3::xyz() {
-    return Vector3(_v3storage[0], _v3storage[1], _v3storage[2]);
+Vector3 Vector3Cls::xyz() {
+    return make<Vector3Cls>(_v3storage[0], _v3storage[1], _v3storage[2]);
 }
 
-Vector3 Vector3::xzx() {
-    return Vector3(_v3storage[0], _v3storage[2], _v3storage[0]);
+Vector3 Vector3Cls::xzx() {
+    return make<Vector3Cls>(_v3storage[0], _v3storage[2], _v3storage[0]);
 }
 
-Vector3 Vector3::xzy() {
-    return Vector3(_v3storage[0], _v3storage[2], _v3storage[1]);
+Vector3 Vector3Cls::xzy() {
+    return make<Vector3Cls>(_v3storage[0], _v3storage[2], _v3storage[1]);
 }
 
-Vector3 Vector3::xzz() {
-    return Vector3(_v3storage[0], _v3storage[2], _v3storage[2]);
+Vector3 Vector3Cls::xzz() {
+    return make<Vector3Cls>(_v3storage[0], _v3storage[2], _v3storage[2]);
 }
 
-Vector3 Vector3::yxx() {
-    return Vector3(_v3storage[1], _v3storage[0], _v3storage[0]);
+Vector3 Vector3Cls::yxx() {
+    return make<Vector3Cls>(_v3storage[1], _v3storage[0], _v3storage[0]);
 }
 
-Vector3 Vector3::yxy() {
-    return Vector3(_v3storage[1], _v3storage[0], _v3storage[1]);
+Vector3 Vector3Cls::yxy() {
+    return make<Vector3Cls>(_v3storage[1], _v3storage[0], _v3storage[1]);
 }
 
-Vector3 Vector3::yxz() {
-    return Vector3(_v3storage[1], _v3storage[0], _v3storage[2]);
+Vector3 Vector3Cls::yxz() {
+    return make<Vector3Cls>(_v3storage[1], _v3storage[0], _v3storage[2]);
 }
 
-Vector3 Vector3::yyx() {
-    return Vector3(_v3storage[1], _v3storage[1], _v3storage[0]);
+Vector3 Vector3Cls::yyx() {
+    return make<Vector3Cls>(_v3storage[1], _v3storage[1], _v3storage[0]);
 }
 
-Vector3 Vector3::yyy() {
-    return Vector3(_v3storage[1], _v3storage[1], _v3storage[1]);
+Vector3 Vector3Cls::yyy() {
+    return make<Vector3Cls>(_v3storage[1], _v3storage[1], _v3storage[1]);
 }
 
-Vector3 Vector3::yyz() {
-    return Vector3(_v3storage[1], _v3storage[1], _v3storage[2]);
+Vector3 Vector3Cls::yyz() {
+    return make<Vector3Cls>(_v3storage[1], _v3storage[1], _v3storage[2]);
 }
 
-Vector3 Vector3::yzx() {
-    return Vector3(_v3storage[1], _v3storage[2], _v3storage[0]);
+Vector3 Vector3Cls::yzx() {
+    return make<Vector3Cls>(_v3storage[1], _v3storage[2], _v3storage[0]);
 }
 
-Vector3 Vector3::yzy() {
-    return Vector3(_v3storage[1], _v3storage[2], _v3storage[1]);
+Vector3 Vector3Cls::yzy() {
+    return make<Vector3Cls>(_v3storage[1], _v3storage[2], _v3storage[1]);
 }
 
-Vector3 Vector3::yzz() {
-    return Vector3(_v3storage[1], _v3storage[2], _v3storage[2]);
+Vector3 Vector3Cls::yzz() {
+    return make<Vector3Cls>(_v3storage[1], _v3storage[2], _v3storage[2]);
 }
 
-Vector3 Vector3::zxx() {
-    return Vector3(_v3storage[2], _v3storage[0], _v3storage[0]);
+Vector3 Vector3Cls::zxx() {
+    return make<Vector3Cls>(_v3storage[2], _v3storage[0], _v3storage[0]);
 }
 
-Vector3 Vector3::zxy() {
-    return Vector3(_v3storage[2], _v3storage[0], _v3storage[1]);
+Vector3 Vector3Cls::zxy() {
+    return make<Vector3Cls>(_v3storage[2], _v3storage[0], _v3storage[1]);
 }
 
-Vector3 Vector3::zxz() {
-    return Vector3(_v3storage[2], _v3storage[0], _v3storage[2]);
+Vector3 Vector3Cls::zxz() {
+    return make<Vector3Cls>(_v3storage[2], _v3storage[0], _v3storage[2]);
 }
 
-Vector3 Vector3::zyx() {
-    return Vector3(_v3storage[2], _v3storage[1], _v3storage[0]);
+Vector3 Vector3Cls::zyx() {
+    return make<Vector3Cls>(_v3storage[2], _v3storage[1], _v3storage[0]);
 }
 
-Vector3 Vector3::zyy() {
-    return Vector3(_v3storage[2], _v3storage[1], _v3storage[1]);
+Vector3 Vector3Cls::zyy() {
+    return make<Vector3Cls>(_v3storage[2], _v3storage[1], _v3storage[1]);
 }
 
-Vector3 Vector3::zyz() {
-    return Vector3(_v3storage[2], _v3storage[1], _v3storage[2]);
+Vector3 Vector3Cls::zyz() {
+    return make<Vector3Cls>(_v3storage[2], _v3storage[1], _v3storage[2]);
 }
 
-Vector3 Vector3::zzx() {
-    return Vector3(_v3storage[2], _v3storage[2], _v3storage[0]);
+Vector3 Vector3Cls::zzx() {
+    return make<Vector3Cls>(_v3storage[2], _v3storage[2], _v3storage[0]);
 }
 
-Vector3 Vector3::zzy() {
-    return Vector3(_v3storage[2], _v3storage[2], _v3storage[1]);
+Vector3 Vector3Cls::zzy() {
+    return make<Vector3Cls>(_v3storage[2], _v3storage[2], _v3storage[1]);
 }
 
-Vector3 Vector3::zzz() {
-    return Vector3(_v3storage[2], _v3storage[2], _v3storage[2]);
+Vector3 Vector3Cls::zzz() {
+    return make<Vector3Cls>(_v3storage[2], _v3storage[2], _v3storage[2]);
 }
 
-Vector4 Vector3::xxxx() {
-    return Vector4(_v3storage[0], _v3storage[0], _v3storage[0], _v3storage[0]);
+Vector4 Vector3Cls::xxxx() {
+    return make<Vector4Cls>(_v3storage[0], _v3storage[0], _v3storage[0], _v3storage[0]);
 }
 
-Vector4 Vector3::xxxy() {
-    return Vector4(_v3storage[0], _v3storage[0], _v3storage[0], _v3storage[1]);
+Vector4 Vector3Cls::xxxy() {
+    return make<Vector4Cls>(_v3storage[0], _v3storage[0], _v3storage[0], _v3storage[1]);
 }
 
-Vector4 Vector3::xxxz() {
-    return Vector4(_v3storage[0], _v3storage[0], _v3storage[0], _v3storage[2]);
+Vector4 Vector3Cls::xxxz() {
+    return make<Vector4Cls>(_v3storage[0], _v3storage[0], _v3storage[0], _v3storage[2]);
 }
 
-Vector4 Vector3::xxyx() {
-    return Vector4(_v3storage[0], _v3storage[0], _v3storage[1], _v3storage[0]);
+Vector4 Vector3Cls::xxyx() {
+    return make<Vector4Cls>(_v3storage[0], _v3storage[0], _v3storage[1], _v3storage[0]);
 }
 
-Vector4 Vector3::xxyy() {
-    return Vector4(_v3storage[0], _v3storage[0], _v3storage[1], _v3storage[1]);
+Vector4 Vector3Cls::xxyy() {
+    return make<Vector4Cls>(_v3storage[0], _v3storage[0], _v3storage[1], _v3storage[1]);
 }
 
-Vector4 Vector3::xxyz() {
-    return Vector4(_v3storage[0], _v3storage[0], _v3storage[1], _v3storage[2]);
+Vector4 Vector3Cls::xxyz() {
+    return make<Vector4Cls>(_v3storage[0], _v3storage[0], _v3storage[1], _v3storage[2]);
 }
 
-Vector4 Vector3::xxzx() {
-    return Vector4(_v3storage[0], _v3storage[0], _v3storage[2], _v3storage[0]);
+Vector4 Vector3Cls::xxzx() {
+    return make<Vector4Cls>(_v3storage[0], _v3storage[0], _v3storage[2], _v3storage[0]);
 }
 
-Vector4 Vector3::xxzy() {
-    return Vector4(_v3storage[0], _v3storage[0], _v3storage[2], _v3storage[1]);
+Vector4 Vector3Cls::xxzy() {
+    return make<Vector4Cls>(_v3storage[0], _v3storage[0], _v3storage[2], _v3storage[1]);
 }
 
-Vector4 Vector3::xxzz() {
-    return Vector4(_v3storage[0], _v3storage[0], _v3storage[2], _v3storage[2]);
+Vector4 Vector3Cls::xxzz() {
+    return make<Vector4Cls>(_v3storage[0], _v3storage[0], _v3storage[2], _v3storage[2]);
 }
 
-Vector4 Vector3::xyxx() {
-    return Vector4(_v3storage[0], _v3storage[1], _v3storage[0], _v3storage[0]);
+Vector4 Vector3Cls::xyxx() {
+    return make<Vector4Cls>(_v3storage[0], _v3storage[1], _v3storage[0], _v3storage[0]);
 }
 
-Vector4 Vector3::xyxy() {
-    return Vector4(_v3storage[0], _v3storage[1], _v3storage[0], _v3storage[1]);
+Vector4 Vector3Cls::xyxy() {
+    return make<Vector4Cls>(_v3storage[0], _v3storage[1], _v3storage[0], _v3storage[1]);
 }
 
-Vector4 Vector3::xyxz() {
-    return Vector4(_v3storage[0], _v3storage[1], _v3storage[0], _v3storage[2]);
+Vector4 Vector3Cls::xyxz() {
+    return make<Vector4Cls>(_v3storage[0], _v3storage[1], _v3storage[0], _v3storage[2]);
 }
 
-Vector4 Vector3::xyyx() {
-    return Vector4(_v3storage[0], _v3storage[1], _v3storage[1], _v3storage[0]);
+Vector4 Vector3Cls::xyyx() {
+    return make<Vector4Cls>(_v3storage[0], _v3storage[1], _v3storage[1], _v3storage[0]);
 }
 
-Vector4 Vector3::xyyy() {
-    return Vector4(_v3storage[0], _v3storage[1], _v3storage[1], _v3storage[1]);
+Vector4 Vector3Cls::xyyy() {
+    return make<Vector4Cls>(_v3storage[0], _v3storage[1], _v3storage[1], _v3storage[1]);
 }
 
-Vector4 Vector3::xyyz() {
-    return Vector4(_v3storage[0], _v3storage[1], _v3storage[1], _v3storage[2]);
+Vector4 Vector3Cls::xyyz() {
+    return make<Vector4Cls>(_v3storage[0], _v3storage[1], _v3storage[1], _v3storage[2]);
 }
 
-Vector4 Vector3::xyzx() {
-    return Vector4(_v3storage[0], _v3storage[1], _v3storage[2], _v3storage[0]);
+Vector4 Vector3Cls::xyzx() {
+    return make<Vector4Cls>(_v3storage[0], _v3storage[1], _v3storage[2], _v3storage[0]);
 }
 
-Vector4 Vector3::xyzy() {
-    return Vector4(_v3storage[0], _v3storage[1], _v3storage[2], _v3storage[1]);
+Vector4 Vector3Cls::xyzy() {
+    return make<Vector4Cls>(_v3storage[0], _v3storage[1], _v3storage[2], _v3storage[1]);
 }
 
-Vector4 Vector3::xyzz() {
-    return Vector4(_v3storage[0], _v3storage[1], _v3storage[2], _v3storage[2]);
+Vector4 Vector3Cls::xyzz() {
+    return make<Vector4Cls>(_v3storage[0], _v3storage[1], _v3storage[2], _v3storage[2]);
 }
 
-Vector4 Vector3::xzxx() {
-    return Vector4(_v3storage[0], _v3storage[2], _v3storage[0], _v3storage[0]);
+Vector4 Vector3Cls::xzxx() {
+    return make<Vector4Cls>(_v3storage[0], _v3storage[2], _v3storage[0], _v3storage[0]);
 }
 
-Vector4 Vector3::xzxy() {
-    return Vector4(_v3storage[0], _v3storage[2], _v3storage[0], _v3storage[1]);
+Vector4 Vector3Cls::xzxy() {
+    return make<Vector4Cls>(_v3storage[0], _v3storage[2], _v3storage[0], _v3storage[1]);
 }
 
-Vector4 Vector3::xzxz() {
-    return Vector4(_v3storage[0], _v3storage[2], _v3storage[0], _v3storage[2]);
+Vector4 Vector3Cls::xzxz() {
+    return make<Vector4Cls>(_v3storage[0], _v3storage[2], _v3storage[0], _v3storage[2]);
 }
 
-Vector4 Vector3::xzyx() {
-    return Vector4(_v3storage[0], _v3storage[2], _v3storage[1], _v3storage[0]);
+Vector4 Vector3Cls::xzyx() {
+    return make<Vector4Cls>(_v3storage[0], _v3storage[2], _v3storage[1], _v3storage[0]);
 }
 
-Vector4 Vector3::xzyy() {
-    return Vector4(_v3storage[0], _v3storage[2], _v3storage[1], _v3storage[1]);
+Vector4 Vector3Cls::xzyy() {
+    return make<Vector4Cls>(_v3storage[0], _v3storage[2], _v3storage[1], _v3storage[1]);
 }
 
-Vector4 Vector3::xzyz() {
-    return Vector4(_v3storage[0], _v3storage[2], _v3storage[1], _v3storage[2]);
+Vector4 Vector3Cls::xzyz() {
+    return make<Vector4Cls>(_v3storage[0], _v3storage[2], _v3storage[1], _v3storage[2]);
 }
 
-Vector4 Vector3::xzzx() {
-    return Vector4(_v3storage[0], _v3storage[2], _v3storage[2], _v3storage[0]);
+Vector4 Vector3Cls::xzzx() {
+    return make<Vector4Cls>(_v3storage[0], _v3storage[2], _v3storage[2], _v3storage[0]);
 }
 
-Vector4 Vector3::xzzy() {
-    return Vector4(_v3storage[0], _v3storage[2], _v3storage[2], _v3storage[1]);
+Vector4 Vector3Cls::xzzy() {
+    return make<Vector4Cls>(_v3storage[0], _v3storage[2], _v3storage[2], _v3storage[1]);
 }
 
-Vector4 Vector3::xzzz() {
-    return Vector4(_v3storage[0], _v3storage[2], _v3storage[2], _v3storage[2]);
+Vector4 Vector3Cls::xzzz() {
+    return make<Vector4Cls>(_v3storage[0], _v3storage[2], _v3storage[2], _v3storage[2]);
 }
 
-Vector4 Vector3::yxxx() {
-    return Vector4(_v3storage[1], _v3storage[0], _v3storage[0], _v3storage[0]);
+Vector4 Vector3Cls::yxxx() {
+    return make<Vector4Cls>(_v3storage[1], _v3storage[0], _v3storage[0], _v3storage[0]);
 }
 
-Vector4 Vector3::yxxy() {
-    return Vector4(_v3storage[1], _v3storage[0], _v3storage[0], _v3storage[1]);
+Vector4 Vector3Cls::yxxy() {
+    return make<Vector4Cls>(_v3storage[1], _v3storage[0], _v3storage[0], _v3storage[1]);
 }
 
-Vector4 Vector3::yxxz() {
-    return Vector4(_v3storage[1], _v3storage[0], _v3storage[0], _v3storage[2]);
+Vector4 Vector3Cls::yxxz() {
+    return make<Vector4Cls>(_v3storage[1], _v3storage[0], _v3storage[0], _v3storage[2]);
 }
 
-Vector4 Vector3::yxyx() {
-    return Vector4(_v3storage[1], _v3storage[0], _v3storage[1], _v3storage[0]);
+Vector4 Vector3Cls::yxyx() {
+    return make<Vector4Cls>(_v3storage[1], _v3storage[0], _v3storage[1], _v3storage[0]);
 }
 
-Vector4 Vector3::yxyy() {
-    return Vector4(_v3storage[1], _v3storage[0], _v3storage[1], _v3storage[1]);
+Vector4 Vector3Cls::yxyy() {
+    return make<Vector4Cls>(_v3storage[1], _v3storage[0], _v3storage[1], _v3storage[1]);
 }
 
-Vector4 Vector3::yxyz() {
-    return Vector4(_v3storage[1], _v3storage[0], _v3storage[1], _v3storage[2]);
+Vector4 Vector3Cls::yxyz() {
+    return make<Vector4Cls>(_v3storage[1], _v3storage[0], _v3storage[1], _v3storage[2]);
 }
 
-Vector4 Vector3::yxzx() {
-    return Vector4(_v3storage[1], _v3storage[0], _v3storage[2], _v3storage[0]);
+Vector4 Vector3Cls::yxzx() {
+    return make<Vector4Cls>(_v3storage[1], _v3storage[0], _v3storage[2], _v3storage[0]);
 }
 
-Vector4 Vector3::yxzy() {
-    return Vector4(_v3storage[1], _v3storage[0], _v3storage[2], _v3storage[1]);
+Vector4 Vector3Cls::yxzy() {
+    return make<Vector4Cls>(_v3storage[1], _v3storage[0], _v3storage[2], _v3storage[1]);
 }
 
-Vector4 Vector3::yxzz() {
-    return Vector4(_v3storage[1], _v3storage[0], _v3storage[2], _v3storage[2]);
+Vector4 Vector3Cls::yxzz() {
+    return make<Vector4Cls>(_v3storage[1], _v3storage[0], _v3storage[2], _v3storage[2]);
 }
 
-Vector4 Vector3::yyxx() {
-    return Vector4(_v3storage[1], _v3storage[1], _v3storage[0], _v3storage[0]);
+Vector4 Vector3Cls::yyxx() {
+    return make<Vector4Cls>(_v3storage[1], _v3storage[1], _v3storage[0], _v3storage[0]);
 }
 
-Vector4 Vector3::yyxy() {
-    return Vector4(_v3storage[1], _v3storage[1], _v3storage[0], _v3storage[1]);
+Vector4 Vector3Cls::yyxy() {
+    return make<Vector4Cls>(_v3storage[1], _v3storage[1], _v3storage[0], _v3storage[1]);
 }
 
-Vector4 Vector3::yyxz() {
-    return Vector4(_v3storage[1], _v3storage[1], _v3storage[0], _v3storage[2]);
+Vector4 Vector3Cls::yyxz() {
+    return make<Vector4Cls>(_v3storage[1], _v3storage[1], _v3storage[0], _v3storage[2]);
 }
 
-Vector4 Vector3::yyyx() {
-    return Vector4(_v3storage[1], _v3storage[1], _v3storage[1], _v3storage[0]);
+Vector4 Vector3Cls::yyyx() {
+    return make<Vector4Cls>(_v3storage[1], _v3storage[1], _v3storage[1], _v3storage[0]);
 }
 
-Vector4 Vector3::yyyy() {
-    return Vector4(_v3storage[1], _v3storage[1], _v3storage[1], _v3storage[1]);
+Vector4 Vector3Cls::yyyy() {
+    return make<Vector4Cls>(_v3storage[1], _v3storage[1], _v3storage[1], _v3storage[1]);
 }
 
-Vector4 Vector3::yyyz() {
-    return Vector4(_v3storage[1], _v3storage[1], _v3storage[1], _v3storage[2]);
+Vector4 Vector3Cls::yyyz() {
+    return make<Vector4Cls>(_v3storage[1], _v3storage[1], _v3storage[1], _v3storage[2]);
 }
 
-Vector4 Vector3::yyzx() {
-    return Vector4(_v3storage[1], _v3storage[1], _v3storage[2], _v3storage[0]);
+Vector4 Vector3Cls::yyzx() {
+    return make<Vector4Cls>(_v3storage[1], _v3storage[1], _v3storage[2], _v3storage[0]);
 }
 
-Vector4 Vector3::yyzy() {
-    return Vector4(_v3storage[1], _v3storage[1], _v3storage[2], _v3storage[1]);
+Vector4 Vector3Cls::yyzy() {
+    return make<Vector4Cls>(_v3storage[1], _v3storage[1], _v3storage[2], _v3storage[1]);
 }
 
-Vector4 Vector3::yyzz() {
-    return Vector4(_v3storage[1], _v3storage[1], _v3storage[2], _v3storage[2]);
+Vector4 Vector3Cls::yyzz() {
+    return make<Vector4Cls>(_v3storage[1], _v3storage[1], _v3storage[2], _v3storage[2]);
 }
 
-Vector4 Vector3::yzxx() {
-    return Vector4(_v3storage[1], _v3storage[2], _v3storage[0], _v3storage[0]);
+Vector4 Vector3Cls::yzxx() {
+    return make<Vector4Cls>(_v3storage[1], _v3storage[2], _v3storage[0], _v3storage[0]);
 }
 
-Vector4 Vector3::yzxy() {
-    return Vector4(_v3storage[1], _v3storage[2], _v3storage[0], _v3storage[1]);
+Vector4 Vector3Cls::yzxy() {
+    return make<Vector4Cls>(_v3storage[1], _v3storage[2], _v3storage[0], _v3storage[1]);
 }
 
-Vector4 Vector3::yzxz() {
-    return Vector4(_v3storage[1], _v3storage[2], _v3storage[0], _v3storage[2]);
+Vector4 Vector3Cls::yzxz() {
+    return make<Vector4Cls>(_v3storage[1], _v3storage[2], _v3storage[0], _v3storage[2]);
 }
 
-Vector4 Vector3::yzyx() {
-    return Vector4(_v3storage[1], _v3storage[2], _v3storage[1], _v3storage[0]);
+Vector4 Vector3Cls::yzyx() {
+    return make<Vector4Cls>(_v3storage[1], _v3storage[2], _v3storage[1], _v3storage[0]);
 }
 
-Vector4 Vector3::yzyy() {
-    return Vector4(_v3storage[1], _v3storage[2], _v3storage[1], _v3storage[1]);
+Vector4 Vector3Cls::yzyy() {
+    return make<Vector4Cls>(_v3storage[1], _v3storage[2], _v3storage[1], _v3storage[1]);
 }
 
-Vector4 Vector3::yzyz() {
-    return Vector4(_v3storage[1], _v3storage[2], _v3storage[1], _v3storage[2]);
+Vector4 Vector3Cls::yzyz() {
+    return make<Vector4Cls>(_v3storage[1], _v3storage[2], _v3storage[1], _v3storage[2]);
 }
 
-Vector4 Vector3::yzzx() {
-    return Vector4(_v3storage[1], _v3storage[2], _v3storage[2], _v3storage[0]);
+Vector4 Vector3Cls::yzzx() {
+    return make<Vector4Cls>(_v3storage[1], _v3storage[2], _v3storage[2], _v3storage[0]);
 }
 
-Vector4 Vector3::yzzy() {
-    return Vector4(_v3storage[1], _v3storage[2], _v3storage[2], _v3storage[1]);
+Vector4 Vector3Cls::yzzy() {
+    return make<Vector4Cls>(_v3storage[1], _v3storage[2], _v3storage[2], _v3storage[1]);
 }
 
-Vector4 Vector3::yzzz() {
-    return Vector4(_v3storage[1], _v3storage[2], _v3storage[2], _v3storage[2]);
+Vector4 Vector3Cls::yzzz() {
+    return make<Vector4Cls>(_v3storage[1], _v3storage[2], _v3storage[2], _v3storage[2]);
 }
 
-Vector4 Vector3::zxxx() {
-    return Vector4(_v3storage[2], _v3storage[0], _v3storage[0], _v3storage[0]);
+Vector4 Vector3Cls::zxxx() {
+    return make<Vector4Cls>(_v3storage[2], _v3storage[0], _v3storage[0], _v3storage[0]);
 }
 
-Vector4 Vector3::zxxy() {
-    return Vector4(_v3storage[2], _v3storage[0], _v3storage[0], _v3storage[1]);
+Vector4 Vector3Cls::zxxy() {
+    return make<Vector4Cls>(_v3storage[2], _v3storage[0], _v3storage[0], _v3storage[1]);
 }
 
-Vector4 Vector3::zxxz() {
-    return Vector4(_v3storage[2], _v3storage[0], _v3storage[0], _v3storage[2]);
+Vector4 Vector3Cls::zxxz() {
+    return make<Vector4Cls>(_v3storage[2], _v3storage[0], _v3storage[0], _v3storage[2]);
 }
 
-Vector4 Vector3::zxyx() {
-    return Vector4(_v3storage[2], _v3storage[0], _v3storage[1], _v3storage[0]);
+Vector4 Vector3Cls::zxyx() {
+    return make<Vector4Cls>(_v3storage[2], _v3storage[0], _v3storage[1], _v3storage[0]);
 }
 
-Vector4 Vector3::zxyy() {
-    return Vector4(_v3storage[2], _v3storage[0], _v3storage[1], _v3storage[1]);
+Vector4 Vector3Cls::zxyy() {
+    return make<Vector4Cls>(_v3storage[2], _v3storage[0], _v3storage[1], _v3storage[1]);
 }
 
-Vector4 Vector3::zxyz() {
-    return Vector4(_v3storage[2], _v3storage[0], _v3storage[1], _v3storage[2]);
+Vector4 Vector3Cls::zxyz() {
+    return make<Vector4Cls>(_v3storage[2], _v3storage[0], _v3storage[1], _v3storage[2]);
 }
 
-Vector4 Vector3::zxzx() {
-    return Vector4(_v3storage[2], _v3storage[0], _v3storage[2], _v3storage[0]);
+Vector4 Vector3Cls::zxzx() {
+    return make<Vector4Cls>(_v3storage[2], _v3storage[0], _v3storage[2], _v3storage[0]);
 }
 
-Vector4 Vector3::zxzy() {
-    return Vector4(_v3storage[2], _v3storage[0], _v3storage[2], _v3storage[1]);
+Vector4 Vector3Cls::zxzy() {
+    return make<Vector4Cls>(_v3storage[2], _v3storage[0], _v3storage[2], _v3storage[1]);
 }
 
-Vector4 Vector3::zxzz() {
-    return Vector4(_v3storage[2], _v3storage[0], _v3storage[2], _v3storage[2]);
+Vector4 Vector3Cls::zxzz() {
+    return make<Vector4Cls>(_v3storage[2], _v3storage[0], _v3storage[2], _v3storage[2]);
 }
 
-Vector4 Vector3::zyxx() {
-    return Vector4(_v3storage[2], _v3storage[1], _v3storage[0], _v3storage[0]);
+Vector4 Vector3Cls::zyxx() {
+    return make<Vector4Cls>(_v3storage[2], _v3storage[1], _v3storage[0], _v3storage[0]);
 }
 
-Vector4 Vector3::zyxy() {
-    return Vector4(_v3storage[2], _v3storage[1], _v3storage[0], _v3storage[1]);
+Vector4 Vector3Cls::zyxy() {
+    return make<Vector4Cls>(_v3storage[2], _v3storage[1], _v3storage[0], _v3storage[1]);
 }
 
-Vector4 Vector3::zyxz() {
-    return Vector4(_v3storage[2], _v3storage[1], _v3storage[0], _v3storage[2]);
+Vector4 Vector3Cls::zyxz() {
+    return make<Vector4Cls>(_v3storage[2], _v3storage[1], _v3storage[0], _v3storage[2]);
 }
 
-Vector4 Vector3::zyyx() {
-    return Vector4(_v3storage[2], _v3storage[1], _v3storage[1], _v3storage[0]);
+Vector4 Vector3Cls::zyyx() {
+    return make<Vector4Cls>(_v3storage[2], _v3storage[1], _v3storage[1], _v3storage[0]);
 }
 
-Vector4 Vector3::zyyy() {
-    return Vector4(_v3storage[2], _v3storage[1], _v3storage[1], _v3storage[1]);
+Vector4 Vector3Cls::zyyy() {
+    return make<Vector4Cls>(_v3storage[2], _v3storage[1], _v3storage[1], _v3storage[1]);
 }
 
-Vector4 Vector3::zyyz() {
-    return Vector4(_v3storage[2], _v3storage[1], _v3storage[1], _v3storage[2]);
+Vector4 Vector3Cls::zyyz() {
+    return make<Vector4Cls>(_v3storage[2], _v3storage[1], _v3storage[1], _v3storage[2]);
 }
 
-Vector4 Vector3::zyzx() {
-    return Vector4(_v3storage[2], _v3storage[1], _v3storage[2], _v3storage[0]);
+Vector4 Vector3Cls::zyzx() {
+    return make<Vector4Cls>(_v3storage[2], _v3storage[1], _v3storage[2], _v3storage[0]);
 }
 
-Vector4 Vector3::zyzy() {
-    return Vector4(_v3storage[2], _v3storage[1], _v3storage[2], _v3storage[1]);
+Vector4 Vector3Cls::zyzy() {
+    return make<Vector4Cls>(_v3storage[2], _v3storage[1], _v3storage[2], _v3storage[1]);
 }
 
-Vector4 Vector3::zyzz() {
-    return Vector4(_v3storage[2], _v3storage[1], _v3storage[2], _v3storage[2]);
+Vector4 Vector3Cls::zyzz() {
+    return make<Vector4Cls>(_v3storage[2], _v3storage[1], _v3storage[2], _v3storage[2]);
 }
 
-Vector4 Vector3::zzxx() {
-    return Vector4(_v3storage[2], _v3storage[2], _v3storage[0], _v3storage[0]);
+Vector4 Vector3Cls::zzxx() {
+    return make<Vector4Cls>(_v3storage[2], _v3storage[2], _v3storage[0], _v3storage[0]);
 }
 
-Vector4 Vector3::zzxy() {
-    return Vector4(_v3storage[2], _v3storage[2], _v3storage[0], _v3storage[1]);
+Vector4 Vector3Cls::zzxy() {
+    return make<Vector4Cls>(_v3storage[2], _v3storage[2], _v3storage[0], _v3storage[1]);
 }
 
-Vector4 Vector3::zzxz() {
-    return Vector4(_v3storage[2], _v3storage[2], _v3storage[0], _v3storage[2]);
+Vector4 Vector3Cls::zzxz() {
+    return make<Vector4Cls>(_v3storage[2], _v3storage[2], _v3storage[0], _v3storage[2]);
 }
 
-Vector4 Vector3::zzyx() {
-    return Vector4(_v3storage[2], _v3storage[2], _v3storage[1], _v3storage[0]);
+Vector4 Vector3Cls::zzyx() {
+    return make<Vector4Cls>(_v3storage[2], _v3storage[2], _v3storage[1], _v3storage[0]);
 }
 
-Vector4 Vector3::zzyy() {
-    return Vector4(_v3storage[2], _v3storage[2], _v3storage[1], _v3storage[1]);
+Vector4 Vector3Cls::zzyy() {
+    return make<Vector4Cls>(_v3storage[2], _v3storage[2], _v3storage[1], _v3storage[1]);
 }
 
-Vector4 Vector3::zzyz() {
-    return Vector4(_v3storage[2], _v3storage[2], _v3storage[1], _v3storage[2]);
+Vector4 Vector3Cls::zzyz() {
+    return make<Vector4Cls>(_v3storage[2], _v3storage[2], _v3storage[1], _v3storage[2]);
 }
 
-Vector4 Vector3::zzzx() {
-    return Vector4(_v3storage[2], _v3storage[2], _v3storage[2], _v3storage[0]);
+Vector4 Vector3Cls::zzzx() {
+    return make<Vector4Cls>(_v3storage[2], _v3storage[2], _v3storage[2], _v3storage[0]);
 }
 
-Vector4 Vector3::zzzy() {
-    return Vector4(_v3storage[2], _v3storage[2], _v3storage[2], _v3storage[1]);
+Vector4 Vector3Cls::zzzy() {
+    return make<Vector4Cls>(_v3storage[2], _v3storage[2], _v3storage[2], _v3storage[1]);
 }
 
-Vector4 Vector3::zzzz() {
-    return Vector4(_v3storage[2], _v3storage[2], _v3storage[2], _v3storage[2]);
+Vector4 Vector3Cls::zzzz() {
+    return make<Vector4Cls>(_v3storage[2], _v3storage[2], _v3storage[2], _v3storage[2]);
 }
 
-double Vector3::r() {
+double Vector3Cls::r() {
     return x;
 }
 
-double Vector3::g() {
+double Vector3Cls::g() {
     return y;
 }
 
-double Vector3::b() {
+double Vector3Cls::b() {
     return z;
 }
 
-double Vector3::s() {
+double Vector3Cls::s() {
     return x;
 }
 
-double Vector3::t() {
+double Vector3Cls::t() {
     return y;
 }
 
-double Vector3::p() {
+double Vector3Cls::p() {
     return z;
 }
 
-double Vector3::x() {
+double Vector3Cls::x() {
     return _v3storage[0];
 }
 
-double Vector3::y() {
+double Vector3Cls::y() {
     return _v3storage[1];
 }
 
-double Vector3::z() {
+double Vector3Cls::z() {
     return _v3storage[2];
 }
 
-Vector2 Vector3::rr() {
+Vector2 Vector3Cls::rr() {
     return xx;
 }
 
-Vector2 Vector3::rg() {
+Vector2 Vector3Cls::rg() {
     return xy;
 }
 
-Vector2 Vector3::rb() {
+Vector2 Vector3Cls::rb() {
     return xz;
 }
 
-Vector2 Vector3::gr() {
+Vector2 Vector3Cls::gr() {
     return yx;
 }
 
-Vector2 Vector3::gg() {
+Vector2 Vector3Cls::gg() {
     return yy;
 }
 
-Vector2 Vector3::gb() {
+Vector2 Vector3Cls::gb() {
     return yz;
 }
 
-Vector2 Vector3::br() {
+Vector2 Vector3Cls::br() {
     return zx;
 }
 
-Vector2 Vector3::bg() {
+Vector2 Vector3Cls::bg() {
     return zy;
 }
 
-Vector2 Vector3::bb() {
+Vector2 Vector3Cls::bb() {
     return zz;
 }
 
-Vector3 Vector3::rrr() {
+Vector3 Vector3Cls::rrr() {
     return xxx;
 }
 
-Vector3 Vector3::rrg() {
+Vector3 Vector3Cls::rrg() {
     return xxy;
 }
 
-Vector3 Vector3::rrb() {
+Vector3 Vector3Cls::rrb() {
     return xxz;
 }
 
-Vector3 Vector3::rgr() {
+Vector3 Vector3Cls::rgr() {
     return xzx;
 }
 
-Vector3 Vector3::rgg() {
+Vector3 Vector3Cls::rgg() {
     return xyy;
 }
 
-Vector3 Vector3::rgb() {
+Vector3 Vector3Cls::rgb() {
     return xyz;
 }
 
-Vector3 Vector3::rbr() {
+Vector3 Vector3Cls::rbr() {
     return xzx;
 }
 
-Vector3 Vector3::rbg() {
+Vector3 Vector3Cls::rbg() {
     return xzy;
 }
 
-Vector3 Vector3::rbb() {
+Vector3 Vector3Cls::rbb() {
     return xzz;
 }
 
-Vector3 Vector3::grr() {
+Vector3 Vector3Cls::grr() {
     return yxx;
 }
 
-Vector3 Vector3::grg() {
+Vector3 Vector3Cls::grg() {
     return yxy;
 }
 
-Vector3 Vector3::grb() {
+Vector3 Vector3Cls::grb() {
     return yxz;
 }
 
-Vector3 Vector3::ggr() {
+Vector3 Vector3Cls::ggr() {
     return yyx;
 }
 
-Vector3 Vector3::ggg() {
+Vector3 Vector3Cls::ggg() {
     return yyy;
 }
 
-Vector3 Vector3::ggb() {
+Vector3 Vector3Cls::ggb() {
     return yyz;
 }
 
-Vector3 Vector3::gbr() {
+Vector3 Vector3Cls::gbr() {
     return yxz;
 }
 
-Vector3 Vector3::gbg() {
+Vector3 Vector3Cls::gbg() {
     return yzy;
 }
 
-Vector3 Vector3::gbb() {
+Vector3 Vector3Cls::gbb() {
     return yzz;
 }
 
-Vector3 Vector3::brr() {
+Vector3 Vector3Cls::brr() {
     return zxx;
 }
 
-Vector3 Vector3::brg() {
+Vector3 Vector3Cls::brg() {
     return zxy;
 }
 
-Vector3 Vector3::brb() {
+Vector3 Vector3Cls::brb() {
     return zxz;
 }
 
-Vector3 Vector3::bgr() {
+Vector3 Vector3Cls::bgr() {
     return zyx;
 }
 
-Vector3 Vector3::bgg() {
+Vector3 Vector3Cls::bgg() {
     return zyy;
 }
 
-Vector3 Vector3::bgb() {
+Vector3 Vector3Cls::bgb() {
     return zyz;
 }
 
-Vector3 Vector3::bbr() {
+Vector3 Vector3Cls::bbr() {
     return zzx;
 }
 
-Vector3 Vector3::bbg() {
+Vector3 Vector3Cls::bbg() {
     return zzy;
 }
 
-Vector3 Vector3::bbb() {
+Vector3 Vector3Cls::bbb() {
     return zzz;
 }
 
-Vector4 Vector3::rrrr() {
+Vector4 Vector3Cls::rrrr() {
     return xxxx;
 }
 
-Vector4 Vector3::rrrg() {
+Vector4 Vector3Cls::rrrg() {
     return xxxy;
 }
 
-Vector4 Vector3::rrrb() {
+Vector4 Vector3Cls::rrrb() {
     return xxxz;
 }
 
-Vector4 Vector3::rrgr() {
+Vector4 Vector3Cls::rrgr() {
     return xxyx;
 }
 
-Vector4 Vector3::rrgg() {
+Vector4 Vector3Cls::rrgg() {
     return xxyy;
 }
 
-Vector4 Vector3::rrgb() {
+Vector4 Vector3Cls::rrgb() {
     return xxyz;
 }
 
-Vector4 Vector3::rrbr() {
+Vector4 Vector3Cls::rrbr() {
     return xxzx;
 }
 
-Vector4 Vector3::rrbg() {
+Vector4 Vector3Cls::rrbg() {
     return xxzy;
 }
 
-Vector4 Vector3::rrbb() {
+Vector4 Vector3Cls::rrbb() {
     return xxzz;
 }
 
-Vector4 Vector3::rgrr() {
+Vector4 Vector3Cls::rgrr() {
     return xyxx;
 }
 
-Vector4 Vector3::rgrg() {
+Vector4 Vector3Cls::rgrg() {
     return xyxy;
 }
 
-Vector4 Vector3::rgrb() {
+Vector4 Vector3Cls::rgrb() {
     return xyxz;
 }
 
-Vector4 Vector3::rggr() {
+Vector4 Vector3Cls::rggr() {
     return xyyx;
 }
 
-Vector4 Vector3::rggg() {
+Vector4 Vector3Cls::rggg() {
     return xyyy;
 }
 
-Vector4 Vector3::rggb() {
+Vector4 Vector3Cls::rggb() {
     return xyyz;
 }
 
-Vector4 Vector3::rgbr() {
+Vector4 Vector3Cls::rgbr() {
     return xyzx;
 }
 
-Vector4 Vector3::rgbg() {
+Vector4 Vector3Cls::rgbg() {
     return xyzy;
 }
 
-Vector4 Vector3::rgbb() {
+Vector4 Vector3Cls::rgbb() {
     return xyzz;
 }
 
-Vector4 Vector3::rbrr() {
+Vector4 Vector3Cls::rbrr() {
     return xzxx;
 }
 
-Vector4 Vector3::rbrg() {
+Vector4 Vector3Cls::rbrg() {
     return xzxy;
 }
 
-Vector4 Vector3::rbrb() {
+Vector4 Vector3Cls::rbrb() {
     return xzxz;
 }
 
-Vector4 Vector3::rbgr() {
+Vector4 Vector3Cls::rbgr() {
     return xzyx;
 }
 
-Vector4 Vector3::rbgg() {
+Vector4 Vector3Cls::rbgg() {
     return xzyy;
 }
 
-Vector4 Vector3::rbgb() {
+Vector4 Vector3Cls::rbgb() {
     return xzyz;
 }
 
-Vector4 Vector3::rbbr() {
+Vector4 Vector3Cls::rbbr() {
     return xzzx;
 }
 
-Vector4 Vector3::rbbg() {
+Vector4 Vector3Cls::rbbg() {
     return xzzy;
 }
 
-Vector4 Vector3::rbbb() {
+Vector4 Vector3Cls::rbbb() {
     return xzzz;
 }
 
-Vector4 Vector3::grrr() {
+Vector4 Vector3Cls::grrr() {
     return yxxx;
 }
 
-Vector4 Vector3::grrg() {
+Vector4 Vector3Cls::grrg() {
     return yxxy;
 }
 
-Vector4 Vector3::grrb() {
+Vector4 Vector3Cls::grrb() {
     return yxxz;
 }
 
-Vector4 Vector3::grgr() {
+Vector4 Vector3Cls::grgr() {
     return yxyx;
 }
 
-Vector4 Vector3::grgg() {
+Vector4 Vector3Cls::grgg() {
     return yxyy;
 }
 
-Vector4 Vector3::grgb() {
+Vector4 Vector3Cls::grgb() {
     return yxyz;
 }
 
-Vector4 Vector3::grbr() {
+Vector4 Vector3Cls::grbr() {
     return yxzx;
 }
 
-Vector4 Vector3::grbg() {
+Vector4 Vector3Cls::grbg() {
     return yxzy;
 }
 
-Vector4 Vector3::grbb() {
+Vector4 Vector3Cls::grbb() {
     return yxzz;
 }
 
-Vector4 Vector3::ggrr() {
+Vector4 Vector3Cls::ggrr() {
     return yyxx;
 }
 
-Vector4 Vector3::ggrg() {
+Vector4 Vector3Cls::ggrg() {
     return yyxy;
 }
 
-Vector4 Vector3::ggrb() {
+Vector4 Vector3Cls::ggrb() {
     return yyxz;
 }
 
-Vector4 Vector3::gggr() {
+Vector4 Vector3Cls::gggr() {
     return yyyx;
 }
 
-Vector4 Vector3::gggg() {
+Vector4 Vector3Cls::gggg() {
     return yyyy;
 }
 
-Vector4 Vector3::gggb() {
+Vector4 Vector3Cls::gggb() {
     return yyyz;
 }
 
-Vector4 Vector3::ggbr() {
+Vector4 Vector3Cls::ggbr() {
     return yyzx;
 }
 
-Vector4 Vector3::ggbg() {
+Vector4 Vector3Cls::ggbg() {
     return yyzy;
 }
 
-Vector4 Vector3::ggbb() {
+Vector4 Vector3Cls::ggbb() {
     return yyzz;
 }
 
-Vector4 Vector3::gbrr() {
+Vector4 Vector3Cls::gbrr() {
     return yzxx;
 }
 
-Vector4 Vector3::gbrg() {
+Vector4 Vector3Cls::gbrg() {
     return yzxy;
 }
 
-Vector4 Vector3::gbrb() {
+Vector4 Vector3Cls::gbrb() {
     return yzxz;
 }
 
-Vector4 Vector3::gbgr() {
+Vector4 Vector3Cls::gbgr() {
     return yzyx;
 }
 
-Vector4 Vector3::gbgg() {
+Vector4 Vector3Cls::gbgg() {
     return yzyy;
 }
 
-Vector4 Vector3::gbgb() {
+Vector4 Vector3Cls::gbgb() {
     return yzyz;
 }
 
-Vector4 Vector3::gbbr() {
+Vector4 Vector3Cls::gbbr() {
     return yzzx;
 }
 
-Vector4 Vector3::gbbg() {
+Vector4 Vector3Cls::gbbg() {
     return yzzy;
 }
 
-Vector4 Vector3::gbbb() {
+Vector4 Vector3Cls::gbbb() {
     return yzzz;
 }
 
-Vector4 Vector3::brrr() {
+Vector4 Vector3Cls::brrr() {
     return zxxx;
 }
 
-Vector4 Vector3::brrg() {
+Vector4 Vector3Cls::brrg() {
     return zxxy;
 }
 
-Vector4 Vector3::brrb() {
+Vector4 Vector3Cls::brrb() {
     return zxxz;
 }
 
-Vector4 Vector3::brgr() {
+Vector4 Vector3Cls::brgr() {
     return zxyx;
 }
 
-Vector4 Vector3::brgg() {
+Vector4 Vector3Cls::brgg() {
     return zxyy;
 }
 
-Vector4 Vector3::brgb() {
+Vector4 Vector3Cls::brgb() {
     return zxyz;
 }
 
-Vector4 Vector3::brbr() {
+Vector4 Vector3Cls::brbr() {
     return zxzx;
 }
 
-Vector4 Vector3::brbg() {
+Vector4 Vector3Cls::brbg() {
     return zxzy;
 }
 
-Vector4 Vector3::brbb() {
+Vector4 Vector3Cls::brbb() {
     return zxzz;
 }
 
-Vector4 Vector3::bgrr() {
+Vector4 Vector3Cls::bgrr() {
     return zyxx;
 }
 
-Vector4 Vector3::bgrg() {
+Vector4 Vector3Cls::bgrg() {
     return zyxy;
 }
 
-Vector4 Vector3::bgrb() {
+Vector4 Vector3Cls::bgrb() {
     return zyxz;
 }
 
-Vector4 Vector3::bggr() {
+Vector4 Vector3Cls::bggr() {
     return zyyx;
 }
 
-Vector4 Vector3::bggg() {
+Vector4 Vector3Cls::bggg() {
     return zyyy;
 }
 
-Vector4 Vector3::bggb() {
+Vector4 Vector3Cls::bggb() {
     return zyyz;
 }
 
-Vector4 Vector3::bgbr() {
+Vector4 Vector3Cls::bgbr() {
     return zyzx;
 }
 
-Vector4 Vector3::bgbg() {
+Vector4 Vector3Cls::bgbg() {
     return zyzy;
 }
 
-Vector4 Vector3::bgbb() {
+Vector4 Vector3Cls::bgbb() {
     return zyzz;
 }
 
-Vector4 Vector3::bbrr() {
+Vector4 Vector3Cls::bbrr() {
     return zzxx;
 }
 
-Vector4 Vector3::bbrg() {
+Vector4 Vector3Cls::bbrg() {
     return zzxy;
 }
 
-Vector4 Vector3::bbrb() {
+Vector4 Vector3Cls::bbrb() {
     return zzxz;
 }
 
-Vector4 Vector3::bbgr() {
+Vector4 Vector3Cls::bbgr() {
     return zzyx;
 }
 
-Vector4 Vector3::bbgg() {
+Vector4 Vector3Cls::bbgg() {
     return zzyy;
 }
 
-Vector4 Vector3::bbgb() {
+Vector4 Vector3Cls::bbgb() {
     return zzyz;
 }
 
-Vector4 Vector3::bbbr() {
+Vector4 Vector3Cls::bbbr() {
     return zzzx;
 }
 
-Vector4 Vector3::bbbg() {
+Vector4 Vector3Cls::bbbg() {
     return zzzy;
 }
 
-Vector4 Vector3::bbbb() {
+Vector4 Vector3Cls::bbbb() {
     return zzzz;
 }
 
-Vector2 Vector3::ss() {
+Vector2 Vector3Cls::ss() {
     return xx;
 }
 
-Vector2 Vector3::st() {
+Vector2 Vector3Cls::st() {
     return xy;
 }
 
-Vector2 Vector3::sp() {
+Vector2 Vector3Cls::sp() {
     return xz;
 }
 
-Vector2 Vector3::ts() {
+Vector2 Vector3Cls::ts() {
     return yx;
 }
 
-Vector2 Vector3::tt() {
+Vector2 Vector3Cls::tt() {
     return yy;
 }
 
-Vector2 Vector3::tp() {
+Vector2 Vector3Cls::tp() {
     return yz;
 }
 
-Vector2 Vector3::ps() {
+Vector2 Vector3Cls::ps() {
     return zx;
 }
 
-Vector2 Vector3::pt() {
+Vector2 Vector3Cls::pt() {
     return zy;
 }
 
-Vector2 Vector3::pp() {
+Vector2 Vector3Cls::pp() {
     return zz;
 }
 
-Vector3 Vector3::sss() {
+Vector3 Vector3Cls::sss() {
     return xxx;
 }
 
-Vector3 Vector3::sst() {
+Vector3 Vector3Cls::sst() {
     return xxy;
 }
 
-Vector3 Vector3::ssp() {
+Vector3 Vector3Cls::ssp() {
     return xxz;
 }
 
-Vector3 Vector3::sts() {
+Vector3 Vector3Cls::sts() {
     return xyx;
 }
 
-Vector3 Vector3::stt() {
+Vector3 Vector3Cls::stt() {
     return xyy;
 }
 
-Vector3 Vector3::stp() {
+Vector3 Vector3Cls::stp() {
     return xyz;
 }
 
-Vector3 Vector3::sps() {
+Vector3 Vector3Cls::sps() {
     return xzx;
 }
 
-Vector3 Vector3::spt() {
+Vector3 Vector3Cls::spt() {
     return xzy;
 }
 
-Vector3 Vector3::spp() {
+Vector3 Vector3Cls::spp() {
     return xzz;
 }
 
-Vector3 Vector3::tss() {
+Vector3 Vector3Cls::tss() {
     return yxx;
 }
 
-Vector3 Vector3::tst() {
+Vector3 Vector3Cls::tst() {
     return yxy;
 }
 
-Vector3 Vector3::tsp() {
+Vector3 Vector3Cls::tsp() {
     return yxz;
 }
 
-Vector3 Vector3::tts() {
+Vector3 Vector3Cls::tts() {
     return yyx;
 }
 
-Vector3 Vector3::ttt() {
+Vector3 Vector3Cls::ttt() {
     return yyy;
 }
 
-Vector3 Vector3::ttp() {
+Vector3 Vector3Cls::ttp() {
     return yyz;
 }
 
-Vector3 Vector3::tps() {
+Vector3 Vector3Cls::tps() {
     return yzx;
 }
 
-Vector3 Vector3::tpt() {
+Vector3 Vector3Cls::tpt() {
     return yzy;
 }
 
-Vector3 Vector3::tpp() {
+Vector3 Vector3Cls::tpp() {
     return yzz;
 }
 
-Vector3 Vector3::pss() {
+Vector3 Vector3Cls::pss() {
     return zxx;
 }
 
-Vector3 Vector3::pst() {
+Vector3 Vector3Cls::pst() {
     return zxy;
 }
 
-Vector3 Vector3::psp() {
+Vector3 Vector3Cls::psp() {
     return zxz;
 }
 
-Vector3 Vector3::pts() {
+Vector3 Vector3Cls::pts() {
     return zyx;
 }
 
-Vector3 Vector3::ptt() {
+Vector3 Vector3Cls::ptt() {
     return zyy;
 }
 
-Vector3 Vector3::ptp() {
+Vector3 Vector3Cls::ptp() {
     return zyz;
 }
 
-Vector3 Vector3::pps() {
+Vector3 Vector3Cls::pps() {
     return zzx;
 }
 
-Vector3 Vector3::ppt() {
+Vector3 Vector3Cls::ppt() {
     return zzy;
 }
 
-Vector3 Vector3::ppp() {
+Vector3 Vector3Cls::ppp() {
     return zzz;
 }
 
-Vector4 Vector3::ssss() {
+Vector4 Vector3Cls::ssss() {
     return xxxx;
 }
 
-Vector4 Vector3::ssst() {
+Vector4 Vector3Cls::ssst() {
     return xxxy;
 }
 
-Vector4 Vector3::sssp() {
+Vector4 Vector3Cls::sssp() {
     return xxxz;
 }
 
-Vector4 Vector3::ssts() {
+Vector4 Vector3Cls::ssts() {
     return xxyx;
 }
 
-Vector4 Vector3::sstt() {
+Vector4 Vector3Cls::sstt() {
     return xxyy;
 }
 
-Vector4 Vector3::sstp() {
+Vector4 Vector3Cls::sstp() {
     return xxyz;
 }
 
-Vector4 Vector3::ssps() {
+Vector4 Vector3Cls::ssps() {
     return xxzx;
 }
 
-Vector4 Vector3::sspt() {
+Vector4 Vector3Cls::sspt() {
     return xxzy;
 }
 
-Vector4 Vector3::sspp() {
+Vector4 Vector3Cls::sspp() {
     return xxzz;
 }
 
-Vector4 Vector3::stss() {
+Vector4 Vector3Cls::stss() {
     return xyxx;
 }
 
-Vector4 Vector3::stst() {
+Vector4 Vector3Cls::stst() {
     return xyxy;
 }
 
-Vector4 Vector3::stsp() {
+Vector4 Vector3Cls::stsp() {
     return xyxz;
 }
 
-Vector4 Vector3::stts() {
+Vector4 Vector3Cls::stts() {
     return xyyx;
 }
 
-Vector4 Vector3::sttt() {
+Vector4 Vector3Cls::sttt() {
     return xyyy;
 }
 
-Vector4 Vector3::sttp() {
+Vector4 Vector3Cls::sttp() {
     return xyyz;
 }
 
-Vector4 Vector3::stps() {
+Vector4 Vector3Cls::stps() {
     return xyzx;
 }
 
-Vector4 Vector3::stpt() {
+Vector4 Vector3Cls::stpt() {
     return xyzy;
 }
 
-Vector4 Vector3::stpp() {
+Vector4 Vector3Cls::stpp() {
     return xyzz;
 }
 
-Vector4 Vector3::spss() {
+Vector4 Vector3Cls::spss() {
     return xzxx;
 }
 
-Vector4 Vector3::spst() {
+Vector4 Vector3Cls::spst() {
     return xzxy;
 }
 
-Vector4 Vector3::spsp() {
+Vector4 Vector3Cls::spsp() {
     return xzxz;
 }
 
-Vector4 Vector3::spts() {
+Vector4 Vector3Cls::spts() {
     return xzyx;
 }
 
-Vector4 Vector3::sptt() {
+Vector4 Vector3Cls::sptt() {
     return xzyy;
 }
 
-Vector4 Vector3::sptp() {
+Vector4 Vector3Cls::sptp() {
     return xzyz;
 }
 
-Vector4 Vector3::spps() {
+Vector4 Vector3Cls::spps() {
     return xzzx;
 }
 
-Vector4 Vector3::sppt() {
+Vector4 Vector3Cls::sppt() {
     return xzzy;
 }
 
-Vector4 Vector3::sppp() {
+Vector4 Vector3Cls::sppp() {
     return xzzz;
 }
 
-Vector4 Vector3::tsss() {
+Vector4 Vector3Cls::tsss() {
     return yxxx;
 }
 
-Vector4 Vector3::tsst() {
+Vector4 Vector3Cls::tsst() {
     return yxxy;
 }
 
-Vector4 Vector3::tssp() {
+Vector4 Vector3Cls::tssp() {
     return yxxz;
 }
 
-Vector4 Vector3::tsts() {
+Vector4 Vector3Cls::tsts() {
     return yxyx;
 }
 
-Vector4 Vector3::tstt() {
+Vector4 Vector3Cls::tstt() {
     return yxyy;
 }
 
-Vector4 Vector3::tstp() {
+Vector4 Vector3Cls::tstp() {
     return yxyz;
 }
 
-Vector4 Vector3::tsps() {
+Vector4 Vector3Cls::tsps() {
     return yxzx;
 }
 
-Vector4 Vector3::tspt() {
+Vector4 Vector3Cls::tspt() {
     return yxzy;
 }
 
-Vector4 Vector3::tspp() {
+Vector4 Vector3Cls::tspp() {
     return yxzz;
 }
 
-Vector4 Vector3::ttss() {
+Vector4 Vector3Cls::ttss() {
     return yyxx;
 }
 
-Vector4 Vector3::ttst() {
+Vector4 Vector3Cls::ttst() {
     return yyxy;
 }
 
-Vector4 Vector3::ttsp() {
+Vector4 Vector3Cls::ttsp() {
     return yyxz;
 }
 
-Vector4 Vector3::ttts() {
+Vector4 Vector3Cls::ttts() {
     return yyyx;
 }
 
-Vector4 Vector3::tttt() {
+Vector4 Vector3Cls::tttt() {
     return yyyy;
 }
 
-Vector4 Vector3::tttp() {
+Vector4 Vector3Cls::tttp() {
     return yyyz;
 }
 
-Vector4 Vector3::ttps() {
+Vector4 Vector3Cls::ttps() {
     return yyzx;
 }
 
-Vector4 Vector3::ttpt() {
+Vector4 Vector3Cls::ttpt() {
     return yyzy;
 }
 
-Vector4 Vector3::ttpp() {
+Vector4 Vector3Cls::ttpp() {
     return yyzz;
 }
 
-Vector4 Vector3::tpss() {
+Vector4 Vector3Cls::tpss() {
     return yzxx;
 }
 
-Vector4 Vector3::tpst() {
+Vector4 Vector3Cls::tpst() {
     return yzxy;
 }
 
-Vector4 Vector3::tpsp() {
+Vector4 Vector3Cls::tpsp() {
     return yzxz;
 }
 
-Vector4 Vector3::tpts() {
+Vector4 Vector3Cls::tpts() {
     return yzyx;
 }
 
-Vector4 Vector3::tptt() {
+Vector4 Vector3Cls::tptt() {
     return yzyy;
 }
 
-Vector4 Vector3::tptp() {
+Vector4 Vector3Cls::tptp() {
     return yzyz;
 }
 
-Vector4 Vector3::tpps() {
+Vector4 Vector3Cls::tpps() {
     return yzzx;
 }
 
-Vector4 Vector3::tppt() {
+Vector4 Vector3Cls::tppt() {
     return yzzy;
 }
 
-Vector4 Vector3::tppp() {
+Vector4 Vector3Cls::tppp() {
     return yzzz;
 }
 
-Vector4 Vector3::psss() {
+Vector4 Vector3Cls::psss() {
     return zxxx;
 }
 
-Vector4 Vector3::psst() {
+Vector4 Vector3Cls::psst() {
     return zxxy;
 }
 
-Vector4 Vector3::pssp() {
+Vector4 Vector3Cls::pssp() {
     return zxxz;
 }
 
-Vector4 Vector3::psts() {
+Vector4 Vector3Cls::psts() {
     return zxyx;
 }
 
-Vector4 Vector3::pstt() {
+Vector4 Vector3Cls::pstt() {
     return zxyy;
 }
 
-Vector4 Vector3::pstp() {
+Vector4 Vector3Cls::pstp() {
     return zxyz;
 }
 
-Vector4 Vector3::psps() {
+Vector4 Vector3Cls::psps() {
     return zxzx;
 }
 
-Vector4 Vector3::pspt() {
+Vector4 Vector3Cls::pspt() {
     return zxzy;
 }
 
-Vector4 Vector3::pspp() {
+Vector4 Vector3Cls::pspp() {
     return zxzz;
 }
 
-Vector4 Vector3::ptss() {
+Vector4 Vector3Cls::ptss() {
     return zyxx;
 }
 
-Vector4 Vector3::ptst() {
+Vector4 Vector3Cls::ptst() {
     return zyxy;
 }
 
-Vector4 Vector3::ptsp() {
+Vector4 Vector3Cls::ptsp() {
     return zyxz;
 }
 
-Vector4 Vector3::ptts() {
+Vector4 Vector3Cls::ptts() {
     return zyyx;
 }
 
-Vector4 Vector3::pttt() {
+Vector4 Vector3Cls::pttt() {
     return zyyy;
 }
 
-Vector4 Vector3::pttp() {
+Vector4 Vector3Cls::pttp() {
     return zyyz;
 }
 
-Vector4 Vector3::ptps() {
+Vector4 Vector3Cls::ptps() {
     return zyzx;
 }
 
-Vector4 Vector3::ptpt() {
+Vector4 Vector3Cls::ptpt() {
     return zyzy;
 }
 
-Vector4 Vector3::ptpp() {
+Vector4 Vector3Cls::ptpp() {
     return zyzz;
 }
 
-Vector4 Vector3::ppss() {
+Vector4 Vector3Cls::ppss() {
     return zzxx;
 }
 
-Vector4 Vector3::ppst() {
+Vector4 Vector3Cls::ppst() {
     return zzxy;
 }
 
-Vector4 Vector3::ppsp() {
+Vector4 Vector3Cls::ppsp() {
     return zzxz;
 }
 
-Vector4 Vector3::ppts() {
+Vector4 Vector3Cls::ppts() {
     return zzyx;
 }
 
-Vector4 Vector3::pptt() {
+Vector4 Vector3Cls::pptt() {
     return zzyy;
 }
 
-Vector4 Vector3::pptp() {
+Vector4 Vector3Cls::pptp() {
     return zzyz;
 }
 
-Vector4 Vector3::ppps() {
+Vector4 Vector3Cls::ppps() {
     return zzzx;
 }
 
-Vector4 Vector3::pppt() {
+Vector4 Vector3Cls::pppt() {
     return zzzy;
 }
 
-Vector4 Vector3::pppp() {
+Vector4 Vector3Cls::pppp() {
     return zzzz;
 }

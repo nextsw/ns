@@ -1,119 +1,133 @@
 #include "hooks.hpp"
 void _updateWindowMetrics(double devicePixelRatio, List<double> displayFeaturesBounds, List<int> displayFeaturesState, List<int> displayFeaturesType, double height, Object id, double physicalTouchSlop, double systemGestureInsetBottom, double systemGestureInsetLeft, double systemGestureInsetRight, double systemGestureInsetTop, double viewInsetBottom, double viewInsetLeft, double viewInsetRight, double viewInsetTop, double viewPaddingBottom, double viewPaddingLeft, double viewPaddingRight, double viewPaddingTop, double width) {
-    PlatformDispatcher.instance._updateWindowMetrics(id, devicePixelRatio, width, height, viewPaddingTop, viewPaddingRight, viewPaddingBottom, viewPaddingLeft, viewInsetTop, viewInsetRight, viewInsetBottom, viewInsetLeft, systemGestureInsetTop, systemGestureInsetRight, systemGestureInsetBottom, systemGestureInsetLeft, physicalTouchSlop, displayFeaturesBounds, displayFeaturesType, displayFeaturesState);
+    PlatformDispatcherCls::instance->_updateWindowMetrics(id, devicePixelRatio, width, height, viewPaddingTop, viewPaddingRight, viewPaddingBottom, viewPaddingLeft, viewInsetTop, viewInsetRight, viewInsetBottom, viewInsetLeft, systemGestureInsetTop, systemGestureInsetRight, systemGestureInsetBottom, systemGestureInsetLeft, physicalTouchSlop, displayFeaturesBounds, displayFeaturesType, displayFeaturesState);
 }
 
 _LocaleClosure _getLocaleClosure() {
-    return PlatformDispatcher.instance._localeClosure;
+    return PlatformDispatcherCls::instance->_localeClosure;
 }
 
 void _updateLocales(List<String> locales) {
-    PlatformDispatcher.instance._updateLocales(locales);
+    PlatformDispatcherCls::instance->_updateLocales(locales);
 }
 
 void _updateUserSettingsData(String jsonData) {
-    PlatformDispatcher.instance._updateUserSettingsData(jsonData);
+    PlatformDispatcherCls::instance->_updateUserSettingsData(jsonData);
 }
 
 void _updateLifecycleState(String state) {
-    PlatformDispatcher.instance._updateLifecycleState(state);
+    PlatformDispatcherCls::instance->_updateLifecycleState(state);
 }
 
 void _updateSemanticsEnabled(bool enabled) {
-    PlatformDispatcher.instance._updateSemanticsEnabled(enabled);
+    PlatformDispatcherCls::instance->_updateSemanticsEnabled(enabled);
 }
 
 void _updateAccessibilityFeatures(int values) {
-    PlatformDispatcher.instance._updateAccessibilityFeatures(values);
+    PlatformDispatcherCls::instance->_updateAccessibilityFeatures(values);
 }
 
 void _dispatchPlatformMessage(ByteData data, String name, int responseId) {
-    PlatformDispatcher.instance._dispatchPlatformMessage(name, data, responseId);
+    PlatformDispatcherCls::instance->_dispatchPlatformMessage(name, data, responseId);
 }
 
 void _dispatchPointerDataPacket(ByteData packet) {
-    PlatformDispatcher.instance._dispatchPointerDataPacket(packet);
+    PlatformDispatcherCls::instance->_dispatchPointerDataPacket(packet);
 }
 
 void _dispatchSemanticsAction(int action, ByteData args, int id) {
-    PlatformDispatcher.instance._dispatchSemanticsAction(id, action, args);
+    PlatformDispatcherCls::instance->_dispatchSemanticsAction(id, action, args);
 }
 
 void _beginFrame(int frameNumber, int microseconds) {
-    PlatformDispatcher.instance._beginFrame(microseconds);
-    PlatformDispatcher.instance._updateFrameData(frameNumber);
+    PlatformDispatcherCls::instance->_beginFrame(microseconds);
+    PlatformDispatcherCls::instance->_updateFrameData(frameNumber);
 }
 
 void _reportTimings(List<int> timings) {
-    PlatformDispatcher.instance._reportTimings(timings);
+    PlatformDispatcherCls::instance->_reportTimings(timings);
 }
 
 void _drawFrame() {
-    PlatformDispatcher.instance._drawFrame();
+    PlatformDispatcherCls::instance->_drawFrame();
 }
 
 bool _onError(Object error, StackTrace stackTrace) {
-    return PlatformDispatcher.instance._dispatchError(error, stackTrace ?? StackTrace.empty);
+    return PlatformDispatcherCls::instance->_dispatchError(error, stackTrace ?? StackTraceCls::empty);
 }
 
-void _runMain(List<String> args, FunctionType startMainIsolateFunction, FunctionType userMainFunction) {
-    startMainIsolateFunction(, nullptr);
+void _runMain(List<String> args, void  startMainIsolateFunction() , void  userMainFunction() ) {
+    startMainIsolateFunction([=] () {
+        if (userMainFunction is _ListStringArgFunction) {
+            userMainFunction(args);
+        } else {
+            userMainFunction();
+        }
+    }, nullptr);
 }
 
-void _invoke(FunctionType callback, Zone zone) {
+void _invoke(void callback() , Zone zone) {
     if (callback == nullptr) {
         return;
     }
     assert(zone != nullptr);
-    if (identical(zone, Zone.current)) {
+    if (identical(zone, ZoneCls::current)) {
         callback();
     } else {
-        zone.runGuarded(callback);
+        zone->runGuarded(callback);
     }
 }
 
-void _invoke1<A>(A arg, FunctionType callback, Zone zone) {
+void _invoke1template<typename A> (A arg, void callback(A a) , Zone zone) {
     if (callback == nullptr) {
         return;
     }
     assert(zone != nullptr);
-    if (identical(zone, Zone.current)) {
+    if (identical(zone, ZoneCls::current)) {
         callback(arg);
     } else {
-        zone.<A>runUnaryGuarded(callback, arg);
+        zone-><A>runUnaryGuarded(callback, arg);
     }
 }
 
-void _invoke2<A1, A2>(A1 arg1, A2 arg2, FunctionType callback, Zone zone) {
+void _invoke2template<typename A1, typename A2> (A1 arg1, A2 arg2, void callback(A1 a1, A2 a2) , Zone zone) {
     if (callback == nullptr) {
         return;
     }
     assert(zone != nullptr);
-    if (identical(zone, Zone.current)) {
+    if (identical(zone, ZoneCls::current)) {
         callback(arg1, arg2);
     } else {
-        zone.runGuarded();
+        zone->runGuarded([=] () {
+            callback(arg1, arg2);
+        });
     }
 }
 
-void _invoke3<A1, A2, A3>(A1 arg1, A2 arg2, A3 arg3, FunctionType callback, Zone zone) {
+void _invoke3template<typename A1, typename A2, typename A3> (A1 arg1, A2 arg2, A3 arg3, void callback(A1 a1, A2 a2, A3 a3) , Zone zone) {
     if (callback == nullptr) {
         return;
     }
     assert(zone != nullptr);
-    if (identical(zone, Zone.current)) {
+    if (identical(zone, ZoneCls::current)) {
         callback(arg1, arg2, arg3);
     } else {
-        zone.runGuarded();
+        zone->runGuarded([=] () {
+            callback(arg1, arg2, arg3);
+        });
     }
 }
 
 bool _isLoopback(String host) {
-    if (host.isEmpty) {
+    if (host->isEmpty) {
         return false;
     }
     if ("localhost" == host) {
         return true;
     }
-    ;
+    try {
+        return make<InternetAddressCls>(host)->isLoopback;
+    } catch (ArgumentError null) {
+        return false;
+    };
 }

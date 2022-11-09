@@ -6,30 +6,30 @@ Offset positionDependentBox(Size childSize, double margin, bool preferBelow, Siz
     assert(verticalOffset != nullptr);
     assert(preferBelow != nullptr);
     assert(margin != nullptr);
-    bool fitsBelow = target.dy + verticalOffset + childSize.height <= size.height - margin;
-    bool fitsAbove = target.dy - verticalOffset - childSize.height >= margin;
+    bool fitsBelow = target->dy + verticalOffset + childSize->height <= size->height - margin;
+    bool fitsAbove = target->dy - verticalOffset - childSize->height >= margin;
     bool tooltipBelow = preferBelow? fitsBelow || !fitsAbove : !(fitsAbove || !fitsBelow);
     double y;
     if (tooltipBelow) {
-        y = math.min(target.dy + verticalOffset, size.height - margin);
+        y = math->min(target->dy + verticalOffset, size->height - margin);
     } else {
-        y = math.max(target.dy - verticalOffset - childSize.height, margin);
+        y = math->max(target->dy - verticalOffset - childSize->height, margin);
     }
     double x;
-    if (size.width - margin * 2.0 < childSize.width) {
-        x = (size.width - childSize.width) / 2.0;
+    if (size->width - margin * 2.0 < childSize->width) {
+        x = (size->width - childSize->width) / 2.0;
     } else {
-        double normalizedTargetX = clampDouble(target.dx, margin, size.width - margin);
-        double edge = margin + childSize.width / 2.0;
+        double normalizedTargetX = clampDouble(target->dx, margin, size->width - margin);
+        double edge = margin + childSize->width / 2.0;
         if ( < edge) {
             x = margin;
         } else         {
-            if (normalizedTargetX > size.width - edge) {
-            x = size.width - margin - childSize.width;
+            if (normalizedTargetX > size->width - edge) {
+            x = size->width - margin - childSize->width;
         } else {
-            x = normalizedTargetX - childSize.width / 2.0;
+            x = normalizedTargetX - childSize->width / 2.0;
         }
 ;
         }    }
-    return Offset(x, y);
+    return make<OffsetCls>(x, y);
 }

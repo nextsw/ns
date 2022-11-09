@@ -1,39 +1,41 @@
-#ifndef PLANE_H
-#define PLANE_H
-#include <memory>
+#ifndef PACKAGES_VECTOR_MATH_SRC_VECTOR_MATH_64_PLANE
+#define PACKAGES_VECTOR_MATH_SRC_VECTOR_MATH_64_PLANE
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
 
 
-
-
-class Plane {
+class PlaneCls : public ObjectCls {
 public:
     double constant;
 
 
     static void intersection(Plane a, Plane b, Plane c, Vector3 result);
 
-    Vector3 normal();
+    virtual Vector3 normal();
 
-     Plane();
+     PlaneCls();
 
-    void  copy(Plane other);
+    virtual void  copy(Plane other);
 
-    void  components(double constant, double x, double y, double z);
+    virtual void  components(double constant, double x, double y, double z);
 
-    void  normalconstant(double constant, Vector3 normal_);
+    virtual void  normalconstant(double constant, Vector3 normal_);
 
-    void copyFrom(Plane o);
+    virtual void copyFrom(Plane o);
 
-    void setFromComponents(double w, double x, double y, double z);
+    virtual void setFromComponents(double w, double x, double y, double z);
 
-    void normalize();
+    virtual void normalize();
 
-    double distanceToVector3(Vector3 point);
+    virtual double distanceToVector3(Vector3 point);
 
 private:
     Vector3 _normal;
 
 
 };
+using Plane = std::shared_ptr<PlaneCls>;
+
 
 #endif

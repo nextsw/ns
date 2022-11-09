@@ -1,22 +1,22 @@
 #include "io_sink.hpp"
-IOSink::IOSink(Encoding encoding, StreamConsumer<List<int>> target) {
+IOSinkCls::IOSinkCls(Encoding encoding, StreamConsumer<List<int>> target) {
 }
 
-void _StreamSinkImpl::add(T data) {
+template<typename T> void _StreamSinkImplCls<T>::add(T data) {
     if (_isClosed) {
         ;
     }
-    _controller.add(data);
+    _controller->add(data);
 }
 
-void _StreamSinkImpl::addError(error , StackTrace stackTrace) {
+template<typename T> void _StreamSinkImplCls<T>::addError(error , StackTrace stackTrace) {
     if (_isClosed) {
         ;
     }
-    _controller.addError(error, stackTrace);
+    _controller->addError(error, stackTrace);
 }
 
-Future _StreamSinkImpl::addStream(Stream<T> stream) {
+template<typename T> Future _StreamSinkImplCls<T>::addStream(Stream<T> stream) {
     if (_isBound) {
         ;
     }
@@ -24,32 +24,38 @@ Future _StreamSinkImpl::addStream(Stream<T> stream) {
         return done;
     }
     _isBound = true;
-    auto future = _controllerCompleter == nullptr? _target.addStream(stream) : _controllerCompleter!.future.then();
-    _controllerInstance?.close();
-    return future.whenComplete();
+    auto future = _controllerCompleter == nullptr? _target->addStream(stream) : _controllerCompleter!->future->then([=] () {
+    _target->addStream(stream);
+});
+    _controllerInstance?->close();
+    return future->whenComplete([=] () {
+        _isBound = false;
+    });
 }
 
-Future _StreamSinkImpl::flush() {
+template<typename T> Future _StreamSinkImplCls<T>::flush() {
     if (_isBound) {
         ;
     }
     if (_controllerInstance == nullptr)     {
-        return Future.value(this);
+        return FutureCls->value(this);
     }
     _isBound = true;
-    auto future = _controllerCompleter!.future;
-    _controllerInstance!.close();
-    return future.whenComplete();
+    auto future = _controllerCompleter!->future;
+    _controllerInstance!->close();
+    return future->whenComplete([=] () {
+        _isBound = false;
+    });
 }
 
-Future _StreamSinkImpl::close() {
+template<typename T> Future _StreamSinkImplCls<T>::close() {
     if (_isBound) {
         ;
     }
     if (!_isClosed) {
         _isClosed = true;
         if (_controllerInstance != nullptr) {
-            _controllerInstance!.close();
+            _controllerInstance!->close();
         } else {
             _closeTarget();
         }
@@ -57,28 +63,28 @@ Future _StreamSinkImpl::close() {
     return done;
 }
 
-Future _StreamSinkImpl::done() {
-    return _doneCompleter.future;
+template<typename T> Future _StreamSinkImplCls<T>::done() {
+    return _doneCompleter->future;
 }
 
-void _StreamSinkImpl::_closeTarget() {
-    _target.close().then(_completeDoneValue_completeDoneError);
+template<typename T> void _StreamSinkImplCls<T>::_closeTarget() {
+    _target->close()->then(_completeDoneValue_completeDoneError);
 }
 
-void _StreamSinkImpl::_completeDoneValue(value ) {
-    if (!_doneCompleter.isCompleted) {
-        _doneCompleter.complete(value);
+template<typename T> void _StreamSinkImplCls<T>::_completeDoneValue(value ) {
+    if (!_doneCompleter->isCompleted) {
+        _doneCompleter->complete(value);
     }
 }
 
-void _StreamSinkImpl::_completeDoneError(error , StackTrace stackTrace) {
-    if (!_doneCompleter.isCompleted) {
+template<typename T> void _StreamSinkImplCls<T>::_completeDoneError(error , StackTrace stackTrace) {
+    if (!_doneCompleter->isCompleted) {
         _hasError = true;
-        _doneCompleter.completeError(error, stackTrace);
+        _doneCompleter->completeError(error, stackTrace);
     }
 }
 
-StreamController<T> _StreamSinkImpl::_controller() {
+template<typename T> StreamController<T> _StreamSinkImplCls<T>::_controller() {
     if (_isBound) {
         ;
     }
@@ -86,61 +92,74 @@ StreamController<T> _StreamSinkImpl::_controller() {
         ;
     }
     if (_controllerInstance == nullptr) {
-        _controllerInstance = <T>StreamController(true);
-        _controllerCompleter = Completer();
-        _target.addStream(_controller.stream).then();
+        _controllerInstance = <T>make<StreamControllerCls>(true);
+        _controllerCompleter = make<CompleterCls>();
+        _target->addStream(_controller->stream)->then([=] () {
+            if (_isBound) {
+                _controllerCompleter!->complete(this);
+                _controllerCompleter = nullptr;
+                _controllerInstance = nullptr;
+            } else {
+                _closeTarget();
+            }
+        }[=] (Unknown  error,Unknown  stackTrace) {
+            if (_isBound) {
+                _controllerCompleter!->completeError(error, stackTrace);
+                _controllerCompleter = nullptr;
+                _controllerInstance = nullptr;
+            } else {
+                _completeDoneError(error, stackTrace);
+            }
+        });
     }
     return _controllerInstance!;
 }
 
-Encoding _IOSinkImpl::encoding() {
+Encoding _IOSinkImplCls::encoding() {
     return _encoding;
 }
 
-void _IOSinkImpl::encoding(Encoding value) {
+void _IOSinkImplCls::encoding(Encoding value) {
     if (!_encodingMutable) {
         ;
     }
     _encoding = value;
 }
 
-void _IOSinkImpl::write(Object obj) {
+void _IOSinkImplCls::write(Object obj) {
     String string = "$obj";
-    if (string.isEmpty)     {
+    if (stringValue->isEmpty)     {
         return;
     }
-    add(_encoding.encode(string));
+    add(_encoding->encode(stringValue));
 }
 
-void _IOSinkImpl::writeAll(Iterable objects, String separator) {
-    Iterator iterator = objects.iterator;
-    if (!iterator.moveNext())     {
+void _IOSinkImplCls::writeAll(Iterable objects, String separator) {
+    Iterator iterator = objects->iterator;
+    if (!iterator->moveNext())     {
         return;
     }
-    if (separator.isEmpty) {
+    if (separator->isEmpty) {
         do {
-            write(iterator.current);
-        } while (iterator.moveNext());
+            write(iterator->current);
+        } while (iterator->moveNext());
     } else {
-        write(iterator.current);
-        while (iterator.moveNext()) {
+        write(iterator->current);
+        while (iterator->moveNext()) {
             write(separator);
-            write(iterator.current);
+            write(iterator->current);
         }
     }
 }
 
-void _IOSinkImpl::writeln(Object object) {
+void _IOSinkImplCls::writeln(Object object) {
     write(object);
     write("\n");
 }
 
-void _IOSinkImpl::writeCharCode(int charCode) {
-    write(String.fromCharCode(charCode));
+void _IOSinkImplCls::writeCharCode(int charCode) {
+    write(StringCls->fromCharCode(charCode));
 }
 
-_IOSinkImpl::_IOSinkImpl(Encoding _encoding, StreamConsumer<List<int>> target) {
-    {
-        super(target);
-    }
+_IOSinkImplCls::_IOSinkImplCls(Encoding _encoding, StreamConsumer<List<int>> target) {
 }

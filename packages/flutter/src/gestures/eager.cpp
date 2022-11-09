@@ -1,16 +1,16 @@
 #include "eager.hpp"
-void EagerGestureRecognizer::addAllowedPointer(PointerDownEvent event) {
-    super.addAllowedPointer(event);
-    resolve(GestureDisposition.accepted);
-    stopTrackingPointer(event.pointer);
+void EagerGestureRecognizerCls::addAllowedPointer(PointerDownEvent event) {
+    super->addAllowedPointer(event);
+    resolve(GestureDispositionCls::accepted);
+    stopTrackingPointer(event->pointer);
 }
 
-String EagerGestureRecognizer::debugDescription() {
+String EagerGestureRecognizerCls::debugDescription() {
     return "eager";
 }
 
-void EagerGestureRecognizer::didStopTrackingLastPointer(int pointer) {
+void EagerGestureRecognizerCls::didStopTrackingLastPointer(int pointer) {
 }
 
-void EagerGestureRecognizer::handleEvent(PointerEvent event) {
+void EagerGestureRecognizerCls::handleEvent(PointerEvent event) {
 }

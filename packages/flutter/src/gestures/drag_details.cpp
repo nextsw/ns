@@ -1,45 +1,45 @@
 #include "drag_details.hpp"
-DragDownDetails::DragDownDetails(Offset globalPosition, Offset localPosition) {
+DragDownDetailsCls::DragDownDetailsCls(Offset globalPosition, Offset localPosition) {
     {
         assert(globalPosition != nullptr);
         localPosition = localPosition ?? globalPosition;
     }
 }
 
-String DragDownDetails::toString() {
+String DragDownDetailsCls::toString() {
     return "${objectRuntimeType(this, 'DragDownDetails')}($globalPosition)";
 }
 
-DragStartDetails::DragStartDetails(Offset globalPosition, PointerDeviceKind kind, Offset localPosition, Duration sourceTimeStamp) {
+DragStartDetailsCls::DragStartDetailsCls(Offset globalPosition, PointerDeviceKind kind, Offset localPosition, Duration sourceTimeStamp) {
     {
         assert(globalPosition != nullptr);
         localPosition = localPosition ?? globalPosition;
     }
 }
 
-String DragStartDetails::toString() {
+String DragStartDetailsCls::toString() {
     return "${objectRuntimeType(this, 'DragStartDetails')}($globalPosition)";
 }
 
-DragUpdateDetails::DragUpdateDetails(Offset delta, Offset globalPosition, Offset localPosition, double primaryDelta, Duration sourceTimeStamp) {
+DragUpdateDetailsCls::DragUpdateDetailsCls(Offset delta, Offset globalPosition, Offset localPosition, double primaryDelta, Duration sourceTimeStamp) {
     {
         assert(delta != nullptr);
-        assert(primaryDelta == nullptr || (primaryDelta == delta.dx && delta.dy == 0.0) || (primaryDelta == delta.dy && delta.dx == 0.0));
+        assert(primaryDelta == nullptr || (primaryDelta == delta->dx && delta->dy == 0.0) || (primaryDelta == delta->dy && delta->dx == 0.0));
         localPosition = localPosition ?? globalPosition;
     }
 }
 
-String DragUpdateDetails::toString() {
+String DragUpdateDetailsCls::toString() {
     return "${objectRuntimeType(this, 'DragUpdateDetails')}($delta)";
 }
 
-DragEndDetails::DragEndDetails(double primaryVelocity, Velocity velocity) {
+DragEndDetailsCls::DragEndDetailsCls(double primaryVelocity, Velocity velocity) {
     {
         assert(velocity != nullptr);
-        assert(primaryVelocity == nullptr || primaryVelocity == velocity.pixelsPerSecond.dx || primaryVelocity == velocity.pixelsPerSecond.dy);
+        assert(primaryVelocity == nullptr || primaryVelocity == velocity->pixelsPerSecond->dx || primaryVelocity == velocity->pixelsPerSecond->dy);
     }
 }
 
-String DragEndDetails::toString() {
+String DragEndDetailsCls::toString() {
     return "${objectRuntimeType(this, 'DragEndDetails')}($velocity)";
 }

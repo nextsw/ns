@@ -1,12 +1,12 @@
 #include "utils.hpp"
 int defaultCompare(Object value1, Object value2) {
-    return (().compareTo(value2);
+    return (((Comparable<Object>)value1))->compareTo(value2);
 }
 
-T identity<T>(T value) {
+T identitytemplate<typename T> (T value) {
     return value;
 }
 
-int compareComparable<T extends Comparable<T>>(T a, T b) {
-    return a.compareTo(b);
+int compareComparabletemplate<typename T : Comparable<T>> (T a, T b) {
+    return a->compareTo(b);
 }

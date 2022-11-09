@@ -1,14 +1,15 @@
-#ifndef UTILS_H
-#define UTILS_H
-#include <memory>
+#ifndef PACKAGES_COLLECTION_SRC_UTILS
+#define PACKAGES_COLLECTION_SRC_UTILS
+#include <base.hpp>
 
-
+#include <dart/core/core.hpp>
 
 int defaultCompare(Object value1, Object value2);
 
-T identity<T>(T value);
+template<typename T>  T identity(T value);
 
-int compareComparable<T extends Comparable<T>>(T a, T b);
+template<typename T : Comparable<T>>  int compareComparable(T a, T b);
+
 
 
 #endif

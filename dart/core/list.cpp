@@ -1,16 +1,16 @@
 #include "list.hpp"
-List<T> List::castFrom<S, T>(List<S> source) {
-    return <S, T>CastList(source);
+template<typename E> List<T> ListCls<E>::castFromtemplate<typename S, typename T> (List<S> source) {
+    return <S, T>make<CastListCls>(source);
 }
 
-void List::copyRange<T>(int at, int end, List<T> source, int start, List<T> target) {
+template<typename E> void ListCls<E>::copyRangetemplate<typename T> (int at, int end, List<T> source, int start, List<T> target) {
     start = 0;
-    end = RangeError.checkValidRange(start, end, source.length);
+    end = RangeErrorCls->checkValidRange(start, end, source->length);
     if (end == nullptr) {
         ;
     }
     int length = end - start;
-    if (target.length < at + length) {
+    if (target->length < at + length) {
         ;
     }
     if (!identical(source, target) || start >= at) {
@@ -24,10 +24,10 @@ void List::copyRange<T>(int at, int end, List<T> source, int start, List<T> targ
     }
 }
 
-void List::writeIterable<T>(int at, Iterable<T> source, List<T> target) {
-    RangeError.checkValueInInterval(at, 0, target.length, "at");
+template<typename E> void ListCls<E>::writeIterabletemplate<typename T> (int at, Iterable<T> source, List<T> target) {
+    RangeErrorCls->checkValueInInterval(at, 0, target->length, "at");
     int index = at;
-    int targetLength = target.length;
+    int targetLength = target->length;
     for (auto element : source) {
         if (index == targetLength) {
             ;

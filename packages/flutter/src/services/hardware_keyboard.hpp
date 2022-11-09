@@ -1,27 +1,27 @@
-#ifndef HARDWARE_KEYBOARD_H
-#define HARDWARE_KEYBOARD_H
-#include <memory>
-#include <ui.hpp>
-#include <flutter/foundation.hpp>
+#ifndef PACKAGES_FLUTTER_SRC_SERVICES_HARDWARE_KEYBOARD
+#define PACKAGES_FLUTTER_SRC_SERVICES_HARDWARE_KEYBOARD
+#include <base.hpp>
+#include <dart/ui/ui.hpp>
+#include <packages/flutter/lib/foundation.hpp>
 #include "keyboard_key.g.hpp"
 #include "raw_keyboard.hpp"
 
-#include <ui/ui.hpp>
-#include <flutter/foundation.hpp>
+#include <dart/core/core.hpp>
+#include <dart/ui/ui.hpp>
+#include <packages/flutter/lib/foundation.hpp>
 #include "binding.hpp"
 #include "raw_keyboard.hpp"
 
 
-
-class KeyboardLockMode {
+class KeyboardLockModeCls : public ObjectCls {
 public:
     LogicalKeyboardKey logicalKey;
 
-    static const KeyboardLockMode numLock;
+    static KeyboardLockMode numLock;
 
-    static const KeyboardLockMode scrollLock;
+    static KeyboardLockMode scrollLock;
 
-    static const KeyboardLockMode capsLock;
+    static KeyboardLockMode capsLock;
 
 
     static KeyboardLockMode findLockByLogicalKey(LogicalKeyboardKey logicalKey);
@@ -30,11 +30,11 @@ private:
     static Map<int, KeyboardLockMode> _knownLockModes;
 
 
-    void  _(LogicalKeyboardKey logicalKey);
-
+    virtual void  _(LogicalKeyboardKey logicalKey);
 };
+using KeyboardLockMode = std::shared_ptr<KeyboardLockModeCls>;
 
-class KeyEvent {
+class KeyEventCls : public ObjectCls {
 public:
     PhysicalKeyboardKey physicalKey;
 
@@ -47,61 +47,61 @@ public:
     bool synthesized;
 
 
-     KeyEvent(String character, LogicalKeyboardKey logicalKey, PhysicalKeyboardKey physicalKey, bool synthesized, Duration timeStamp);
-
-    void debugFillProperties(DiagnosticPropertiesBuilder properties);
+     KeyEventCls(String character, LogicalKeyboardKey logicalKey, PhysicalKeyboardKey physicalKey, bool synthesized, Duration timeStamp);
+    virtual void debugFillProperties(DiagnosticPropertiesBuilder properties);
 
 private:
 
 };
+using KeyEvent = std::shared_ptr<KeyEventCls>;
 
-class KeyDownEvent : KeyEvent {
+class KeyDownEventCls : public KeyEventCls {
 public:
 
-     KeyDownEvent(Unknown, Unknown, Unknown, Unknown, Unknown);
-
+     KeyDownEventCls(Unknown character, Unknown logicalKey, Unknown physicalKey, Unknown synthesized, Unknown timeStamp);
 private:
 
 };
+using KeyDownEvent = std::shared_ptr<KeyDownEventCls>;
 
-class KeyUpEvent : KeyEvent {
+class KeyUpEventCls : public KeyEventCls {
 public:
 
-     KeyUpEvent(Unknown, Unknown, Unknown, Unknown);
-
+     KeyUpEventCls(Unknown logicalKey, Unknown physicalKey, Unknown synthesized, Unknown timeStamp);
 private:
 
 };
+using KeyUpEvent = std::shared_ptr<KeyUpEventCls>;
 
-class KeyRepeatEvent : KeyEvent {
+class KeyRepeatEventCls : public KeyEventCls {
 public:
 
-     KeyRepeatEvent(Unknown, Unknown, Unknown, Unknown);
-
+     KeyRepeatEventCls(Unknown character, Unknown logicalKey, Unknown physicalKey, Unknown timeStamp);
 private:
 
 };
+using KeyRepeatEvent = std::shared_ptr<KeyRepeatEventCls>;
 
-class HardwareKeyboard {
+class HardwareKeyboardCls : public ObjectCls {
 public:
 
     static HardwareKeyboard instance();
 
-    Set<PhysicalKeyboardKey> physicalKeysPressed();
+    virtual Set<PhysicalKeyboardKey> physicalKeysPressed();
 
-    Set<LogicalKeyboardKey> logicalKeysPressed();
+    virtual Set<LogicalKeyboardKey> logicalKeysPressed();
 
-    LogicalKeyboardKey lookUpLayout(PhysicalKeyboardKey physicalKey);
+    virtual LogicalKeyboardKey lookUpLayout(PhysicalKeyboardKey physicalKey);
 
-    Set<KeyboardLockMode> lockModesEnabled();
+    virtual Set<KeyboardLockMode> lockModesEnabled();
 
-    void addHandler(KeyEventCallback handler);
+    virtual void addHandler(KeyEventCallback handler);
 
-    void removeHandler(KeyEventCallback handler);
+    virtual void removeHandler(KeyEventCallback handler);
 
-    bool handleKeyEvent(KeyEvent event);
+    virtual bool handleKeyEvent(KeyEvent event);
 
-    void clearState();
+    virtual void clearState();
 
 private:
     Map<PhysicalKeyboardKey, LogicalKeyboardKey> _pressedKeys;
@@ -115,44 +115,44 @@ private:
     List<KeyEventCallback> _modifiedHandlers;
 
 
-    void _assertEventIsRegular(KeyEvent event);
+    virtual void _assertEventIsRegular(KeyEvent event);
 
-    bool _dispatchKeyEvent(KeyEvent event);
+    virtual bool _dispatchKeyEvent(KeyEvent event);
 
 };
+using HardwareKeyboard = std::shared_ptr<HardwareKeyboardCls>;
 
 enum KeyDataTransitMode{
     rawKeyData,
     keyDataThenRawKeyData,
 } // end KeyDataTransitMode
 
-class KeyMessage {
+class KeyMessageCls : public ObjectCls {
 public:
     List<KeyEvent> events;
 
     RawKeyEvent rawEvent;
 
 
-     KeyMessage(List<KeyEvent> events, RawKeyEvent rawEvent);
-
-    String toString();
+     KeyMessageCls(List<KeyEvent> events, RawKeyEvent rawEvent);
+    virtual String toString();
 
 private:
 
 };
+using KeyMessage = std::shared_ptr<KeyMessageCls>;
 
-class KeyEventManager {
+class KeyEventManagerCls : public ObjectCls {
 public:
     KeyMessageHandler keyMessageHandler;
 
 
-     KeyEventManager(HardwareKeyboard _hardwareKeyboard, RawKeyboard _rawKeyboard);
+     KeyEventManagerCls(HardwareKeyboard _hardwareKeyboard, RawKeyboard _rawKeyboard);
+    virtual bool handleKeyData(KeyData data);
 
-    bool handleKeyData(KeyData data);
+    virtual Future<Map<String, dynamic>> handleRawKeyMessage(dynamic message);
 
-    Future<Map<String, dynamic>> handleRawKeyMessage(dynamic message);
-
-    void clearState();
+    virtual void clearState();
 
 private:
     HardwareKeyboard _hardwareKeyboard;
@@ -166,12 +166,14 @@ private:
     Set<PhysicalKeyboardKey> _skippedRawKeysPressed;
 
 
-    bool _dispatchKeyMessage(List<KeyEvent> keyEvents, RawKeyEvent rawEvent);
+    virtual bool _dispatchKeyMessage(List<KeyEvent> keyEvents, RawKeyEvent rawEvent);
 
-    void _convertRawEventAndStore(RawKeyEvent rawEvent);
+    virtual void _convertRawEventAndStore(RawKeyEvent rawEvent);
 
     static KeyEvent _eventFromData(KeyData keyData);
 
 };
+using KeyEventManager = std::shared_ptr<KeyEventManagerCls>;
+
 
 #endif

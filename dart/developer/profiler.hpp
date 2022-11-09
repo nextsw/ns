@@ -1,83 +1,81 @@
-#ifndef PROFILER_H
-#define PROFILER_H
-#include <memory>
+#ifndef DART_DEVELOPER_PROFILER
+#define DART_DEVELOPER_PROFILER
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
 
 
-
-
-class UserTag {
+class UserTagCls : public ObjectCls {
 public:
-    static const auto  MAX_USER_TAGS;
+    static auto  MAX_USER_TAGS;
 
 
-    external  UserTag(String label);
-
-    String label();
-
-    UserTag makeCurrent();
-
-    external static UserTag defaultTag();
-
+    extern  UserTagCls(String label);
+    virtual String label();
+    virtual UserTag makeCurrent();
+    extern static UserTag defaultTag();
 private:
 
 };
-external UserTag getCurrentTag();
+using UserTag = std::shared_ptr<UserTagCls>;
+extern UserTag getCurrentTag();
 
-
-class Metric {
+class MetricCls : public ObjectCls {
 public:
     String name;
 
     String description;
 
 
-     Metric(String description, String name);
+     MetricCls(String description, String name);
 
 private:
 
-    Map _toJSON();
-
+    virtual Map _toJSON();
 };
+using Metric = std::shared_ptr<MetricCls>;
 
-class Gauge : Metric {
+class GaugeCls : public MetricCls {
 public:
     double min;
 
     double max;
 
 
-    double value();
+    virtual double value();
 
-    void  value(double v);
+    virtual void  value(double v);
 
-     Gauge(String description, double max, double min, String name);
+     GaugeCls(String description, double max, double min, String name);
 
 private:
     double _value;
 
 
-    Map _toJSON();
+    virtual Map _toJSON();
 
 };
+using Gauge = std::shared_ptr<GaugeCls>;
 
-class Counter : Metric {
+class CounterCls : public MetricCls {
 public:
 
-     Counter(String description, String name);
+     CounterCls(String description, String name);
 
-    double value();
+    virtual double value();
 
-    void  value(double v);
+    virtual void  value(double v);
 
 private:
     double _value;
 
 
-    Map _toJSON();
+    virtual Map _toJSON();
 
 };
+using Counter = std::shared_ptr<CounterCls>;
 
-class Metrics {
+class MetricsCls : public ObjectCls {
 public:
 
     static void register(Metric metric);
@@ -93,5 +91,7 @@ private:
     static String _printMetrics();
 
 };
+using Metrics = std::shared_ptr<MetricsCls>;
+
 
 #endif

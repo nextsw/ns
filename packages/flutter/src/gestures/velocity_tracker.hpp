@@ -1,42 +1,43 @@
-#ifndef VELOCITY_TRACKER_H
-#define VELOCITY_TRACKER_H
-#include <memory>
-#include <ui.hpp>
+#ifndef PACKAGES_FLUTTER_SRC_GESTURES_VELOCITY_TRACKER
+#define PACKAGES_FLUTTER_SRC_GESTURES_VELOCITY_TRACKER
+#include <base.hpp>
+#include <dart/ui/ui.hpp>
 
-#include <flutter/foundation.hpp>
+#include <dart/core/core.hpp>
+#include <packages/flutter/lib/foundation.hpp>
 #include "events.hpp"
 #include "lsq_solver.hpp"
 
 
-
-class Velocity {
+class VelocityCls : public ObjectCls {
 public:
-    static const Velocity zero;
+    static Velocity zero;
 
     Offset pixelsPerSecond;
 
 
-     Velocity(Offset pixelsPerSecond);
+     VelocityCls(Offset pixelsPerSecond);
 
-    Velocity -();
+    virtual Velocity operator-();
 
-    Velocity -(Velocity other);
+    virtual Velocity operator-(Velocity other);
 
-    Velocity +(Velocity other);
+    virtual Velocity operator+(Velocity other);
 
-    Velocity clampMagnitude(double maxValue, double minValue);
+    virtual Velocity clampMagnitude(double maxValue, double minValue);
 
-    bool ==(Object other);
+    virtual bool operator==(Object other);
 
-    int hashCode();
+    virtual int hashCode();
 
-    String toString();
+    virtual String toString();
 
 private:
 
 };
+using Velocity = std::shared_ptr<VelocityCls>;
 
-class VelocityEstimate {
+class VelocityEstimateCls : public ObjectCls {
 public:
     Offset pixelsPerSecond;
 
@@ -47,50 +48,51 @@ public:
     Offset offset;
 
 
-     VelocityEstimate(double confidence, Duration duration, Offset offset, Offset pixelsPerSecond);
+     VelocityEstimateCls(double confidence, Duration duration, Offset offset, Offset pixelsPerSecond);
 
-    String toString();
+    virtual String toString();
 
 private:
 
 };
+using VelocityEstimate = std::shared_ptr<VelocityEstimateCls>;
 
-class _PointAtTime {
+class _PointAtTimeCls : public ObjectCls {
 public:
     Duration time;
 
     Offset point;
 
 
-    String toString();
+    virtual String toString();
 
 private:
 
-     _PointAtTime(Offset point, Duration time);
+     _PointAtTimeCls(Offset point, Duration time);
 
 };
+using _PointAtTime = std::shared_ptr<_PointAtTimeCls>;
 
-class VelocityTracker {
+class VelocityTrackerCls : public ObjectCls {
 public:
     PointerDeviceKind kind;
 
 
-    void  withKind(PointerDeviceKind kind);
+    virtual void  withKind(PointerDeviceKind kind);
+    virtual void addPosition(Offset position, Duration time);
 
-    void addPosition(Offset position, Duration time);
+    virtual VelocityEstimate getVelocityEstimate();
 
-    VelocityEstimate getVelocityEstimate();
-
-    Velocity getVelocity();
+    virtual Velocity getVelocity();
 
 private:
-    static const int _assumePointerMoveStoppedMilliseconds;
+    static int _assumePointerMoveStoppedMilliseconds;
 
-    static const int _historySize;
+    static int _historySize;
 
-    static const int _horizonMilliseconds;
+    static int _horizonMilliseconds;
 
-    static const int _minSampleSize;
+    static int _minSampleSize;
 
     List<_PointAtTime> _samples;
 
@@ -98,24 +100,27 @@ private:
 
 
 };
+using VelocityTracker = std::shared_ptr<VelocityTrackerCls>;
 
-class IOSScrollViewFlingVelocityTracker : VelocityTracker {
+class IOSScrollViewFlingVelocityTrackerCls : public VelocityTrackerCls {
 public:
 
-     IOSScrollViewFlingVelocityTracker(Unknown);
+     IOSScrollViewFlingVelocityTrackerCls(Unknown kind);
 
-    void addPosition(Offset position, Duration time);
+    virtual void addPosition(Offset position, Duration time);
 
-    VelocityEstimate getVelocityEstimate();
+    virtual VelocityEstimate getVelocityEstimate();
 
 private:
-    static const int _sampleSize;
+    static int _sampleSize;
 
     List<_PointAtTime> _touchSamples;
 
 
-    Offset _previousVelocityAt(int index);
+    virtual Offset _previousVelocityAt(int index);
 
 };
+using IOSScrollViewFlingVelocityTracker = std::shared_ptr<IOSScrollViewFlingVelocityTrackerCls>;
+
 
 #endif

@@ -1,113 +1,113 @@
 #include "animations.hpp"
-void _AlwaysCompleteAnimation::addListener(VoidCallback listener) {
+void _AlwaysCompleteAnimationCls::addListener(VoidCallback listener) {
 }
 
-void _AlwaysCompleteAnimation::removeListener(VoidCallback listener) {
+void _AlwaysCompleteAnimationCls::removeListener(VoidCallback listener) {
 }
 
-void _AlwaysCompleteAnimation::addStatusListener(AnimationStatusListener listener) {
+void _AlwaysCompleteAnimationCls::addStatusListener(AnimationStatusListener listener) {
 }
 
-void _AlwaysCompleteAnimation::removeStatusListener(AnimationStatusListener listener) {
+void _AlwaysCompleteAnimationCls::removeStatusListener(AnimationStatusListener listener) {
 }
 
-AnimationStatus _AlwaysCompleteAnimation::status() {
-    return AnimationStatus.completed;
+AnimationStatus _AlwaysCompleteAnimationCls::status() {
+    return AnimationStatusCls::completed;
 }
 
-double _AlwaysCompleteAnimation::value() {
+double _AlwaysCompleteAnimationCls::value() {
     return 1.0;
 }
 
-String _AlwaysCompleteAnimation::toString() {
+String _AlwaysCompleteAnimationCls::toString() {
     return "kAlwaysCompleteAnimation";
 }
 
-void _AlwaysDismissedAnimation::addListener(VoidCallback listener) {
+void _AlwaysDismissedAnimationCls::addListener(VoidCallback listener) {
 }
 
-void _AlwaysDismissedAnimation::removeListener(VoidCallback listener) {
+void _AlwaysDismissedAnimationCls::removeListener(VoidCallback listener) {
 }
 
-void _AlwaysDismissedAnimation::addStatusListener(AnimationStatusListener listener) {
+void _AlwaysDismissedAnimationCls::addStatusListener(AnimationStatusListener listener) {
 }
 
-void _AlwaysDismissedAnimation::removeStatusListener(AnimationStatusListener listener) {
+void _AlwaysDismissedAnimationCls::removeStatusListener(AnimationStatusListener listener) {
 }
 
-AnimationStatus _AlwaysDismissedAnimation::status() {
-    return AnimationStatus.dismissed;
+AnimationStatus _AlwaysDismissedAnimationCls::status() {
+    return AnimationStatusCls::dismissed;
 }
 
-double _AlwaysDismissedAnimation::value() {
+double _AlwaysDismissedAnimationCls::value() {
     return 0.0;
 }
 
-String _AlwaysDismissedAnimation::toString() {
+String _AlwaysDismissedAnimationCls::toString() {
     return "kAlwaysDismissedAnimation";
 }
 
-void AlwaysStoppedAnimation::addListener(VoidCallback listener) {
+template<typename T> void AlwaysStoppedAnimationCls<T>::addListener(VoidCallback listener) {
 }
 
-void AlwaysStoppedAnimation::removeListener(VoidCallback listener) {
+template<typename T> void AlwaysStoppedAnimationCls<T>::removeListener(VoidCallback listener) {
 }
 
-void AlwaysStoppedAnimation::addStatusListener(AnimationStatusListener listener) {
+template<typename T> void AlwaysStoppedAnimationCls<T>::addStatusListener(AnimationStatusListener listener) {
 }
 
-void AlwaysStoppedAnimation::removeStatusListener(AnimationStatusListener listener) {
+template<typename T> void AlwaysStoppedAnimationCls<T>::removeStatusListener(AnimationStatusListener listener) {
 }
 
-AnimationStatus AlwaysStoppedAnimation::status() {
-    return AnimationStatus.forward;
+template<typename T> AnimationStatus AlwaysStoppedAnimationCls<T>::status() {
+    return AnimationStatusCls::forward;
 }
 
-String AlwaysStoppedAnimation::toStringDetails() {
+template<typename T> String AlwaysStoppedAnimationCls<T>::toStringDetails() {
     return "${super.toStringDetails()} $value; paused";
 }
 
-void AnimationWithParentMixin::addListener(VoidCallback listener) {
-    return parent.addListener(listener);
+template<typename T> void AnimationWithParentMixinCls<T>::addListener(VoidCallback listener) {
+    return parent->addListener(listener);
 }
 
-void AnimationWithParentMixin::removeListener(VoidCallback listener) {
-    return parent.removeListener(listener);
+template<typename T> void AnimationWithParentMixinCls<T>::removeListener(VoidCallback listener) {
+    return parent->removeListener(listener);
 }
 
-void AnimationWithParentMixin::addStatusListener(AnimationStatusListener listener) {
-    return parent.addStatusListener(listener);
+template<typename T> void AnimationWithParentMixinCls<T>::addStatusListener(AnimationStatusListener listener) {
+    return parent->addStatusListener(listener);
 }
 
-void AnimationWithParentMixin::removeStatusListener(AnimationStatusListener listener) {
-    return parent.removeStatusListener(listener);
+template<typename T> void AnimationWithParentMixinCls<T>::removeStatusListener(AnimationStatusListener listener) {
+    return parent->removeStatusListener(listener);
 }
 
-AnimationStatus AnimationWithParentMixin::status() {
-    return parent.status;
+template<typename T> AnimationStatus AnimationWithParentMixinCls<T>::status() {
+    return parent->status;
 }
 
-ProxyAnimation::ProxyAnimation(Animation<double> animation) {
+ProxyAnimationCls::ProxyAnimationCls(Animation<double> animation) {
     {
         _parent = animation;
         if (_parent == nullptr) {
-            _status = AnimationStatus.dismissed;
+            _status = AnimationStatusCls::dismissed;
             _value = 0.0;
         }
     }
 }
 
-Animation<double> ProxyAnimation::parent() {
+Animation<double> ProxyAnimationCls::parent() {
     return _parent;
 }
 
-void ProxyAnimation::parent(Animation<double> value) {
+void ProxyAnimationCls::parent(Animation<double> value) {
     if (value == _parent) {
         return;
     }
     if (_parent != nullptr) {
-        _status = _parent!.status;
-        _value = _parent!.value;
+        _status = _parent!->status;
+        _value = _parent!->value;
         if (isListening) {
             didStopListening();
         }
@@ -117,121 +117,128 @@ void ProxyAnimation::parent(Animation<double> value) {
         if (isListening) {
             didStartListening();
         }
-        if (_value != _parent!.value) {
+        if (_value != _parent!->value) {
             notifyListeners();
         }
-        if (_status != _parent!.status) {
-            notifyStatusListeners(_parent!.status);
+        if (_status != _parent!->status) {
+            notifyStatusListeners(_parent!->status);
         }
         _status = nullptr;
         _value = nullptr;
     }
 }
 
-void ProxyAnimation::didStartListening() {
+void ProxyAnimationCls::didStartListening() {
     if (_parent != nullptr) {
-        _parent!.addListener(notifyListeners);
-        _parent!.addStatusListener(notifyStatusListeners);
+        _parent!->addListener(notifyListeners);
+        _parent!->addStatusListener(notifyStatusListeners);
     }
 }
 
-void ProxyAnimation::didStopListening() {
+void ProxyAnimationCls::didStopListening() {
     if (_parent != nullptr) {
-        _parent!.removeListener(notifyListeners);
-        _parent!.removeStatusListener(notifyStatusListeners);
+        _parent!->removeListener(notifyListeners);
+        _parent!->removeStatusListener(notifyStatusListeners);
     }
 }
 
-AnimationStatus ProxyAnimation::status() {
-    return _parent != nullptr? _parent!.status : _status!;
+AnimationStatus ProxyAnimationCls::status() {
+    return _parent != nullptr? _parent!->status : _status!;
 }
 
-double ProxyAnimation::value() {
-    return _parent != nullptr? _parent!.value : _value!;
+double ProxyAnimationCls::value() {
+    return _parent != nullptr? _parent!->value : _value!;
 }
 
-String ProxyAnimation::toString() {
+String ProxyAnimationCls::toString() {
     if (parent == nullptr) {
         return "${objectRuntimeType(this, 'ProxyAnimation')}(null; ${super.toStringDetails()} ${value.toStringAsFixed(3)})";
     }
     return "$parent\u27A9${objectRuntimeType(this, 'ProxyAnimation')}";
 }
 
-ReverseAnimation::ReverseAnimation(Animation<double> parent) {
+ReverseAnimationCls::ReverseAnimationCls(Animation<double> parent) {
     {
         assert(parent != nullptr);
     }
 }
 
-void ReverseAnimation::addListener(VoidCallback listener) {
+void ReverseAnimationCls::addListener(VoidCallback listener) {
     didRegisterListener();
-    parent.addListener(listener);
+    parent->addListener(listener);
 }
 
-void ReverseAnimation::removeListener(VoidCallback listener) {
-    parent.removeListener(listener);
+void ReverseAnimationCls::removeListener(VoidCallback listener) {
+    parent->removeListener(listener);
     didUnregisterListener();
 }
 
-void ReverseAnimation::didStartListening() {
-    parent.addStatusListener(_statusChangeHandler);
+void ReverseAnimationCls::didStartListening() {
+    parent->addStatusListener(_statusChangeHandler);
 }
 
-void ReverseAnimation::didStopListening() {
-    parent.removeStatusListener(_statusChangeHandler);
+void ReverseAnimationCls::didStopListening() {
+    parent->removeStatusListener(_statusChangeHandler);
 }
 
-AnimationStatus ReverseAnimation::status() {
-    return _reverseStatus(parent.status);
+AnimationStatus ReverseAnimationCls::status() {
+    return _reverseStatus(parent->status);
 }
 
-double ReverseAnimation::value() {
-    return 1.0 - parent.value;
+double ReverseAnimationCls::value() {
+    return 1.0 - parent->value;
 }
 
-String ReverseAnimation::toString() {
+String ReverseAnimationCls::toString() {
     return "$parent\u27AA${objectRuntimeType(this, 'ReverseAnimation')}";
 }
 
-void ReverseAnimation::_statusChangeHandler(AnimationStatus status) {
+void ReverseAnimationCls::_statusChangeHandler(AnimationStatus status) {
     notifyStatusListeners(_reverseStatus(status));
 }
 
-AnimationStatus ReverseAnimation::_reverseStatus(AnimationStatus status) {
+AnimationStatus ReverseAnimationCls::_reverseStatus(AnimationStatus status) {
     assert(status != nullptr);
     ;
 }
 
-CurvedAnimation::CurvedAnimation(Curve curve, Animation<double> parent, Curve reverseCurve) {
+CurvedAnimationCls::CurvedAnimationCls(Curve curve, Animation<double> parent, Curve reverseCurve) {
     {
         assert(parent != nullptr);
         assert(curve != nullptr);
     }
     {
-        _updateCurveDirection(parent.status);
-        parent.addStatusListener(_updateCurveDirection);
+        _updateCurveDirection(parent->status);
+        parent->addStatusListener(_updateCurveDirection);
     }
 }
 
-void CurvedAnimation::dispose() {
+void CurvedAnimationCls::dispose() {
     isDisposed = true;
-    parent.removeStatusListener(_updateCurveDirection);
+    parent->removeStatusListener(_updateCurveDirection);
 }
 
-double CurvedAnimation::value() {
+double CurvedAnimationCls::value() {
     Curve activeCurve = _useForwardCurve? curve : reverseCurve;
-    double t = parent.value;
+    double t = parent->value;
     if (activeCurve == nullptr) {
         return t;
     }
     if (t == 0.0 || t == 1.0) {
-        assert(());
+        assert([=] () {
+            double transformedValue = activeCurve->transform(t);
+            double roundedTransformedValue = transformedValue->round()->toDouble();
+            if (roundedTransformedValue != t) {
+                ;
+            }
+            return true;
+        }());
         return t;
     }
-    return activeCurve.transform(t);
+    return activeCurve->transform(t);
 }
 
-String CurvedAnimation::toString() {
+String CurvedAnimationCls::toString() {
     if (reverseCurve == nullptr) {
         return "$parent\u27A9$curve";
     }
@@ -241,71 +248,71 @@ String CurvedAnimation::toString() {
     return "$parent\u27A9$curve/$reverseCurve\u2092\u2099";
 }
 
-void CurvedAnimation::_updateCurveDirection(AnimationStatus status) {
+void CurvedAnimationCls::_updateCurveDirection(AnimationStatus status) {
     ;
 }
 
-bool CurvedAnimation::_useForwardCurve() {
-    return reverseCurve == nullptr || (_curveDirection ?? parent.status) != AnimationStatus.reverse;
+bool CurvedAnimationCls::_useForwardCurve() {
+    return reverseCurve == nullptr || (_curveDirection ?? parent->status) != AnimationStatusCls::reverse;
 }
 
-TrainHoppingAnimation::TrainHoppingAnimation(Animation<double> _currentTrain, Animation<double> _nextTrain, VoidCallback onSwitchedTrain) {
+TrainHoppingAnimationCls::TrainHoppingAnimationCls(Animation<double> _currentTrain, Animation<double> _nextTrain, VoidCallback onSwitchedTrain) {
     {
         assert(_currentTrain != nullptr);
     }
     {
         if (_nextTrain != nullptr) {
-            if (_currentTrain!.value == _nextTrain!.value) {
+            if (_currentTrain!->value == _nextTrain!->value) {
                 _currentTrain = _nextTrain;
                 _nextTrain = nullptr;
             } else             {
-                if (_currentTrain!.value > _nextTrain!.value) {
-                _mode = _TrainHoppingMode.maximize;
+                if (_currentTrain!->value > _nextTrain!->value) {
+                _mode = _TrainHoppingModeCls::maximize;
             } else {
-                assert(_currentTrain!.value < _nextTrain!.value);
-                _mode = _TrainHoppingMode.minimize;
+                assert(_currentTrain!->value < _nextTrain!->value);
+                _mode = _TrainHoppingModeCls::minimize;
             }
 ;
             }        }
-        _currentTrain!.addStatusListener(_statusChangeHandler);
-        _currentTrain!.addListener(_valueChangeHandler);
-        _nextTrain?.addListener(_valueChangeHandler);
+        _currentTrain!->addStatusListener(_statusChangeHandler);
+        _currentTrain!->addListener(_valueChangeHandler);
+        _nextTrain?->addListener(_valueChangeHandler);
         assert(_mode != nullptr || _nextTrain == nullptr);
     }
 }
 
-Animation<double> TrainHoppingAnimation::currentTrain() {
+Animation<double> TrainHoppingAnimationCls::currentTrain() {
     return _currentTrain;
 }
 
-AnimationStatus TrainHoppingAnimation::status() {
-    return _currentTrain!.status;
+AnimationStatus TrainHoppingAnimationCls::status() {
+    return _currentTrain!->status;
 }
 
-double TrainHoppingAnimation::value() {
-    return _currentTrain!.value;
+double TrainHoppingAnimationCls::value() {
+    return _currentTrain!->value;
 }
 
-void TrainHoppingAnimation::dispose() {
+void TrainHoppingAnimationCls::dispose() {
     assert(_currentTrain != nullptr);
-    _currentTrain!.removeStatusListener(_statusChangeHandler);
-    _currentTrain!.removeListener(_valueChangeHandler);
+    _currentTrain!->removeStatusListener(_statusChangeHandler);
+    _currentTrain!->removeListener(_valueChangeHandler);
     _currentTrain = nullptr;
-    _nextTrain?.removeListener(_valueChangeHandler);
+    _nextTrain?->removeListener(_valueChangeHandler);
     _nextTrain = nullptr;
     clearListeners();
     clearStatusListeners();
-    super.dispose();
+    super->dispose();
 }
 
-String TrainHoppingAnimation::toString() {
+String TrainHoppingAnimationCls::toString() {
     if (_nextTrain != nullptr) {
         return "$currentTrain\u27A9${objectRuntimeType(this, 'TrainHoppingAnimation')}(next: $_nextTrain)";
     }
     return "$currentTrain\u27A9${objectRuntimeType(this, 'TrainHoppingAnimation')}(no next)";
 }
 
-void TrainHoppingAnimation::_statusChangeHandler(AnimationStatus status) {
+void TrainHoppingAnimationCls::_statusChangeHandler(AnimationStatus status) {
     assert(_currentTrain != nullptr);
     if (status != _lastStatus) {
         notifyListeners();
@@ -314,18 +321,18 @@ void TrainHoppingAnimation::_statusChangeHandler(AnimationStatus status) {
     assert(_lastStatus != nullptr);
 }
 
-void TrainHoppingAnimation::_valueChangeHandler() {
+void TrainHoppingAnimationCls::_valueChangeHandler() {
     assert(_currentTrain != nullptr);
     bool hop = false;
     if (_nextTrain != nullptr) {
         assert(_mode != nullptr);
         ;
         if (hop) {
-            ;
+                    auto _c1 = _currentTrain!;        _c1.auto _c2 = removeStatusListener(_statusChangeHandler);        _c2.removeListener(_valueChangeHandler);        _c2;_c1;
             _currentTrain = _nextTrain;
             _nextTrain = nullptr;
-            _currentTrain!.addStatusListener(_statusChangeHandler);
-            _statusChangeHandler(_currentTrain!.status);
+            _currentTrain!->addStatusListener(_statusChangeHandler);
+            _statusChangeHandler(_currentTrain!->status);
         }
     }
     double newValue = value;
@@ -339,78 +346,69 @@ void TrainHoppingAnimation::_valueChangeHandler() {
     }
 }
 
-CompoundAnimation::CompoundAnimation(Animation<T> first, Animation<T> next) {
+template<typename T> CompoundAnimationCls<T>::CompoundAnimationCls(Animation<T> first, Animation<T> next) {
     {
         assert(first != nullptr);
         assert(next != nullptr);
     }
 }
 
-void CompoundAnimation::didStartListening() {
-    first.addListener(_maybeNotifyListeners);
-    first.addStatusListener(_maybeNotifyStatusListeners);
-    next.addListener(_maybeNotifyListeners);
-    next.addStatusListener(_maybeNotifyStatusListeners);
+template<typename T> void CompoundAnimationCls<T>::didStartListening() {
+    first->addListener(_maybeNotifyListeners);
+    first->addStatusListener(_maybeNotifyStatusListeners);
+    next->addListener(_maybeNotifyListeners);
+    next->addStatusListener(_maybeNotifyStatusListeners);
 }
 
-void CompoundAnimation::didStopListening() {
-    first.removeListener(_maybeNotifyListeners);
-    first.removeStatusListener(_maybeNotifyStatusListeners);
-    next.removeListener(_maybeNotifyListeners);
-    next.removeStatusListener(_maybeNotifyStatusListeners);
+template<typename T> void CompoundAnimationCls<T>::didStopListening() {
+    first->removeListener(_maybeNotifyListeners);
+    first->removeStatusListener(_maybeNotifyStatusListeners);
+    next->removeListener(_maybeNotifyListeners);
+    next->removeStatusListener(_maybeNotifyStatusListeners);
 }
 
-AnimationStatus CompoundAnimation::status() {
-    if (next.status == AnimationStatus.forward || next.status == AnimationStatus.reverse) {
-        return next.status;
+template<typename T> AnimationStatus CompoundAnimationCls<T>::status() {
+    if (next->status == AnimationStatusCls::forward || next->status == AnimationStatusCls::reverse) {
+        return next->status;
     }
-    return first.status;
+    return first->status;
 }
 
-String CompoundAnimation::toString() {
+template<typename T> String CompoundAnimationCls<T>::toString() {
     return "${objectRuntimeType(this, 'CompoundAnimation')}($first, $next)";
 }
 
-void CompoundAnimation::_maybeNotifyStatusListeners(AnimationStatus _) {
+template<typename T> void CompoundAnimationCls<T>::_maybeNotifyStatusListeners(AnimationStatus _) {
     if (status != _lastStatus) {
         _lastStatus = status;
         notifyStatusListeners(status);
     }
 }
 
-void CompoundAnimation::_maybeNotifyListeners() {
+template<typename T> void CompoundAnimationCls<T>::_maybeNotifyListeners() {
     if (value != _lastValue) {
         _lastValue = value;
         notifyListeners();
     }
 }
 
-AnimationMean::AnimationMean(Animation<double> left, Animation<double> right) {
-    {
-        super(left, right);
-    }
+AnimationMeanCls::AnimationMeanCls(Animation<double> left, Animation<double> right) {
 }
 
-double AnimationMean::value() {
-    return (first.value + next.value) / 2.0;
+double AnimationMeanCls::value() {
+    return (first->value + next->value) / 2.0;
 }
 
-AnimationMax::AnimationMax(Animation<T> first, Animation<T> next) {
-    {
-        super(first, next);
-    }
+template<typename T : num> AnimationMaxCls<T>::AnimationMaxCls(Animation<T> first, Animation<T> next) {
 }
 
-T AnimationMax::value() {
-    return math.max(first.value, next.value);
+template<typename T : num> T AnimationMaxCls<T>::value() {
+    return math->max(first->value, next->value);
 }
 
-AnimationMin::AnimationMin(Animation<T> first, Animation<T> next) {
-    {
-        super(first, next);
-    }
+template<typename T : num> AnimationMinCls<T>::AnimationMinCls(Animation<T> first, Animation<T> next) {
 }
 
-T AnimationMin::value() {
-    return math.min(first.value, next.value);
+template<typename T : num> T AnimationMinCls<T>::value() {
+    return math->min(first->value, next->value);
 }

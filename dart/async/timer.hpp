@@ -1,31 +1,28 @@
-#ifndef TIMER_H
-#define TIMER_H
-#include <memory>
+#ifndef DART_ASYNC_TIMER
+#define DART_ASYNC_TIMER
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
 
 
-
-
-class Timer {
+class TimerCls : public ObjectCls {
 public:
 
-     Timer(FunctionType callback, Duration duration);
+     TimerCls(void callback() , Duration duration);
 
-    void  periodic(FunctionType callback, Duration duration);
+    virtual void  periodic(void callback(Timer timer) , Duration duration);
 
-    static void run(FunctionType callback);
+    static void run(void callback() );
 
-    void cancel();
-
-    int tick();
-
-    bool isActive();
-
+    virtual void cancel();
+    virtual int tick();
+    virtual bool isActive();
 private:
 
-    external static Timer _createTimer(FunctionType callback, Duration duration);
-
-    external static Timer _createPeriodicTimer(FunctionType callback, Duration duration);
-
+    extern static Timer _createTimer(void callback() , Duration duration);
+    extern static Timer _createPeriodicTimer(void callback(Timer timer) , Duration duration);
 };
+using Timer = std::shared_ptr<TimerCls>;
+
 
 #endif

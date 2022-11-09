@@ -1,4 +1,4 @@
 #include "future.hpp"
-void FutureOr::_() {
+template<typename T> void FutureOrCls<T>::_() {
     ;
 }

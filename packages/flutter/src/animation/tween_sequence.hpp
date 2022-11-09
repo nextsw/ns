@@ -1,20 +1,20 @@
-#ifndef TWEEN_SEQUENCE_H
-#define TWEEN_SEQUENCE_H
-#include <memory>
+#ifndef PACKAGES_FLUTTER_SRC_ANIMATION_TWEEN_SEQUENCE
+#define PACKAGES_FLUTTER_SRC_ANIMATION_TWEEN_SEQUENCE
+#include <base.hpp>
 #include "tween.hpp"
 
+#include <dart/core/core.hpp>
 #include "tween.hpp"
 
 
-
-class TweenSequence<T> : Animatable<T> {
+template<typename T> class TweenSequenceCls : public AnimatableCls<T> {
 public:
 
-     TweenSequence(List<TweenSequenceItem<T>> items);
+     TweenSequenceCls(List<TweenSequenceItem<T>> items);
 
-    T transform(double t);
+    virtual T transform(double t);
 
-    String toString();
+    virtual String toString();
 
 private:
     List<TweenSequenceItem<T>> _items;
@@ -22,51 +22,56 @@ private:
     List<_Interval> _intervals;
 
 
-    T _evaluateAt(int index, double t);
+    virtual T _evaluateAt(int index, double t);
 
 };
+template<typename T> using TweenSequence = std::shared_ptr<TweenSequenceCls<T>>;
 
-class FlippedTweenSequence : TweenSequence<double> {
+class FlippedTweenSequenceCls : public TweenSequenceCls<double> {
 public:
 
-     FlippedTweenSequence(Unknown);
+     FlippedTweenSequenceCls(Unknown items);
 
-    double transform(double t);
+    virtual double transform(double t);
 
 private:
 
 };
+using FlippedTweenSequence = std::shared_ptr<FlippedTweenSequenceCls>;
 
-class TweenSequenceItem<T> {
+template<typename T> class TweenSequenceItemCls : public ObjectCls {
 public:
     Animatable<T> tween;
 
     double weight;
 
 
-     TweenSequenceItem(Animatable<T> tween, double weight);
+     TweenSequenceItemCls(Animatable<T> tween, double weight);
 
 private:
 
 };
+template<typename T> using TweenSequenceItem = std::shared_ptr<TweenSequenceItemCls<T>>;
 
-class _Interval {
+class _IntervalCls : public ObjectCls {
 public:
     double start;
 
     double end;
 
 
-    bool contains(double t);
+    virtual bool contains(double t);
 
-    double value(double t);
+    virtual double value(double t);
 
-    String toString();
+    virtual String toString();
 
 private:
 
-     _Interval(double end, double start);
+     _IntervalCls(double end, double start);
 
 };
+using _Interval = std::shared_ptr<_IntervalCls>;
+
 
 #endif

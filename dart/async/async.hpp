@@ -1,9 +1,11 @@
-#ifndef ASYNC_H
-#define ASYNC_H
-#include <memory>
+#ifndef DART_ASYNC_ASYNC
+#define DART_ASYNC_ASYNC
+#include <base.hpp>
 
-#include <collection/collection.hpp>
-#include <internal/internal.hpp>
+#include <dart/core/core.hpp>
+#include <dart/collection/collection.hpp>
+#include <dart/internal/internal.hpp>
+
 
 // Parts
 #include "async_error.hpp"
@@ -19,6 +21,5 @@
 #include "stream_transformers.hpp"
 #include "timer.hpp"
 #include "zone.hpp"
-
 
 #endif

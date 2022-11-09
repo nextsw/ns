@@ -1,131 +1,132 @@
-#ifndef QUATERNION_H
-#define QUATERNION_H
-#include <memory>
+#ifndef PACKAGES_VECTOR_MATH_SRC_VECTOR_MATH_64_QUATERNION
+#define PACKAGES_VECTOR_MATH_SRC_VECTOR_MATH_64_QUATERNION
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
 
 
-
-
-class Quaternion {
+class QuaternionCls : public ObjectCls {
 public:
 
-    Float64List storage();
+    virtual Float64List storage();
 
-    double x();
+    virtual double x();
 
-    void  x(double x);
+    virtual void  x(double x);
 
-    double y();
+    virtual double y();
 
-    void  y(double y);
+    virtual void  y(double y);
 
-    double z();
+    virtual double z();
 
-    void  z(double z);
+    virtual void  z(double z);
 
-    double w();
+    virtual double w();
 
-    void  w(double w);
+    virtual void  w(double w);
 
-     Quaternion(double w, double x, double y, double z);
+     QuaternionCls(double w, double x, double y, double z);
 
-    void  fromRotation(Matrix3 rotationMatrix);
+    virtual void  fromRotation(Matrix3 rotationMatrix);
 
-    void  axisAngle(double angle, Vector3 axis);
+    virtual void  axisAngle(double angle, Vector3 axis);
 
-    void  fromTwoVectors(Vector3 a, Vector3 b);
+    virtual void  fromTwoVectors(Vector3 a, Vector3 b);
 
-    void  copy(Quaternion original);
+    virtual void  copy(Quaternion original);
 
-    void  random(Random rn);
+    virtual void  random(Random rn);
 
-    void  identity();
+    virtual void  identity();
 
-    void  dq(Vector3 omega, Quaternion q);
+    virtual void  dq(Vector3 omega, Quaternion q);
 
-    void  euler(double pitch, double roll, double yaw);
+    virtual void  euler(double pitch, double roll, double yaw);
 
-    void  fromFloat64List(Float64List _qStorage);
+    virtual void  fromFloat64List(Float64List _qStorage);
+    virtual void  fromBuffer(ByteBuffer buffer, int offset);
 
-    void  fromBuffer(ByteBuffer buffer, int offset);
+    virtual Quaternion clone();
 
-    Quaternion clone();
+    virtual void setFrom(Quaternion source);
 
-    void setFrom(Quaternion source);
+    virtual void setValues(double w, double x, double y, double z);
 
-    void setValues(double w, double x, double y, double z);
+    virtual void setAxisAngle(Vector3 axis, double radians);
 
-    void setAxisAngle(Vector3 axis, double radians);
+    virtual void setFromRotation(Matrix3 rotationMatrix);
 
-    void setFromRotation(Matrix3 rotationMatrix);
+    virtual void setFromTwoVectors(Vector3 a, Vector3 b);
 
-    void setFromTwoVectors(Vector3 a, Vector3 b);
+    virtual void setRandom(Random rn);
 
-    void setRandom(Random rn);
+    virtual void setDQ(Vector3 omega, Quaternion q);
 
-    void setDQ(Vector3 omega, Quaternion q);
+    virtual void setEuler(double pitch, double roll, double yaw);
 
-    void setEuler(double pitch, double roll, double yaw);
+    virtual double normalize();
 
-    double normalize();
+    virtual void conjugate();
 
-    void conjugate();
+    virtual void inverse();
 
-    void inverse();
+    virtual Quaternion normalized();
 
-    Quaternion normalized();
+    virtual Quaternion conjugated();
 
-    Quaternion conjugated();
+    virtual Quaternion inverted();
 
-    Quaternion inverted();
+    virtual double radians();
 
-    double radians();
+    virtual Vector3 axis();
 
-    Vector3 axis();
+    virtual double length2();
 
-    double length2();
+    virtual double length();
 
-    double length();
+    virtual Vector3 rotated(Vector3 v);
 
-    Vector3 rotated(Vector3 v);
+    virtual Vector3 rotate(Vector3 v);
 
-    Vector3 rotate(Vector3 v);
+    virtual void add(Quaternion arg);
 
-    void add(Quaternion arg);
+    virtual void sub(Quaternion arg);
 
-    void sub(Quaternion arg);
+    virtual void scale(double scale);
 
-    void scale(double scale);
+    virtual Quaternion scaled(double scale);
 
-    Quaternion scaled(double scale);
+    virtual Quaternion operator*(Quaternion other);
 
-    Quaternion *(Quaternion other);
+    virtual Quaternion operator+(Quaternion other);
 
-    Quaternion +(Quaternion other);
+    virtual Quaternion operator-(Quaternion other);
 
-    Quaternion -(Quaternion other);
+    virtual Quaternion operator-();
 
-    Quaternion -();
+    virtual double operator[](int i);
 
-    double [](int i);
+    virtual void operator[]=(double arg, int i);
 
-    void []=(double arg, int i);
+    virtual Matrix3 asRotationMatrix();
 
-    Matrix3 asRotationMatrix();
+    virtual Matrix3 copyRotationInto(Matrix3 rotationMatrix);
 
-    Matrix3 copyRotationInto(Matrix3 rotationMatrix);
+    virtual String toString();
 
-    String toString();
+    virtual double relativeError(Quaternion correct);
 
-    double relativeError(Quaternion correct);
-
-    double absoluteError(Quaternion correct);
+    virtual double absoluteError(Quaternion correct);
 
 private:
     Float64List _qStorage;
 
 
-    void  _();
+    virtual void  _();
 
 };
+using Quaternion = std::shared_ptr<QuaternionCls>;
+
 
 #endif

@@ -1,111 +1,111 @@
-#ifndef ITERABLE_H
-#define ITERABLE_H
-#include <memory>
+#ifndef DART_CORE_ITERABLE
+#define DART_CORE_ITERABLE
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
 
 
-
-
-class Iterable<E> {
+template<typename E> class IterableCls : public ObjectCls {
 public:
 
-     Iterable();
+     IterableCls();
+    virtual void  generate(int count, E generator(int index) );
 
-    void  generate(int count, FunctionType generator);
+    virtual void  empty();
+    template<typename S, typename T>  static Iterable<T> castFrom(Iterable<S> source);
 
-    void  empty();
+    virtual Iterator<E> iterator();
+    template<typename R>  virtual Iterable<R> cast();
 
-    static Iterable<T> castFrom<S, T>(Iterable<S> source);
+    virtual Iterable<E> followedBy(Iterable<E> other);
 
-    Iterator<E> iterator();
+    template<typename T>  virtual Iterable<T> map(T toElement(E e) );
 
-    Iterable<R> cast<R>();
+    virtual Iterable<E> where(bool test(E element) );
 
-    Iterable<E> followedBy(Iterable<E> other);
+    template<typename T>  virtual Iterable<T> whereType();
 
-    Iterable<T> map<T>(FunctionType toElement);
+    template<typename T>  virtual Iterable<T> expand(Iterable<T> toElements(E element) );
 
-    Iterable<E> where(FunctionType test);
+    virtual bool contains(Object element);
 
-    Iterable<T> whereType<T>();
+    virtual void forEach(void action(E element) );
 
-    Iterable<T> expand<T>(FunctionType toElements);
+    virtual E reduce(E combine(E element, E value) );
 
-    bool contains(Object element);
+    template<typename T>  virtual T fold(T combine(E element, T previousValue) , T initialValue);
 
-    void forEach(FunctionType action);
+    virtual bool every(bool test(E element) );
 
-    E reduce(FunctionType combine);
+    virtual String join(String separator);
 
-    T fold<T>(FunctionType combine, T initialValue);
+    virtual bool any(bool test(E element) );
 
-    bool every(FunctionType test);
+    virtual List<E> toList(bool growable);
 
-    String join(String separator);
+    virtual Set<E> toSet();
 
-    bool any(FunctionType test);
+    virtual int length();
 
-    List<E> toList(bool growable);
+    virtual bool isEmpty();
 
-    Set<E> toSet();
+    virtual bool isNotEmpty();
 
-    int length();
+    virtual Iterable<E> take(int count);
 
-    bool isEmpty();
+    virtual Iterable<E> takeWhile(bool test(E value) );
 
-    bool isNotEmpty();
+    virtual Iterable<E> skip(int count);
 
-    Iterable<E> take(int count);
+    virtual Iterable<E> skipWhile(bool test(E value) );
 
-    Iterable<E> takeWhile(FunctionType test);
+    virtual E first();
 
-    Iterable<E> skip(int count);
+    virtual E last();
 
-    Iterable<E> skipWhile(FunctionType test);
+    virtual E single();
 
-    E first();
+    virtual E firstWhere(E orElse() , bool test(E element) );
 
-    E last();
+    virtual E lastWhere(E orElse() , bool test(E element) );
 
-    E single();
+    virtual E singleWhere(E orElse() , bool test(E element) );
 
-    E firstWhere(FunctionType orElse, FunctionType test);
+    virtual E elementAt(int index);
 
-    E lastWhere(FunctionType orElse, FunctionType test);
-
-    E singleWhere(FunctionType orElse, FunctionType test);
-
-    E elementAt(int index);
-
-    String toString();
+    virtual String toString();
 
 private:
 
 };
+template<typename E> using Iterable = std::shared_ptr<IterableCls<E>>;
 
-class _GeneratorIterable<E> : ListIterable<E> {
+template<typename E> class _GeneratorIterableCls : public ListIterableCls<E> {
 public:
     int length;
 
 
-    E elementAt(int index);
+    virtual E elementAt(int index);
 
 private:
-    FunctionType _generator;
+    E Function(int ) _generator;
 
 
-     _GeneratorIterable(FunctionType generator, int length);
+     _GeneratorIterableCls(E generator(int index) , int length);
 
     static int _id(int n);
 
 };
+template<typename E> using _GeneratorIterable = std::shared_ptr<_GeneratorIterableCls<E>>;
 
-class BidirectionalIterator<E> {
+template<typename E> class BidirectionalIteratorCls : public ObjectCls {
 public:
 
-    bool movePrevious();
-
+    virtual bool movePrevious();
 private:
 
 };
+template<typename E> using BidirectionalIterator = std::shared_ptr<BidirectionalIteratorCls<E>>;
+
 
 #endif

@@ -1,194 +1,187 @@
-#ifndef ALIGNMENT_H
-#define ALIGNMENT_H
-#include <memory>
+#ifndef PACKAGES_FLUTTER_SRC_PAINTING_ALIGNMENT
+#define PACKAGES_FLUTTER_SRC_PAINTING_ALIGNMENT
+#include <base.hpp>
 
-#include <ui/ui.hpp>
-#include <flutter/foundation.hpp>
+#include <dart/core/core.hpp>
+#include <dart/ui/ui.hpp>
+#include <packages/flutter/lib/foundation.hpp>
 #include "basic_types.hpp"
 
 
-
-class AlignmentGeometry {
+class AlignmentGeometryCls : public ObjectCls {
 public:
 
-     AlignmentGeometry();
+     AlignmentGeometryCls();
+    virtual AlignmentGeometry add(AlignmentGeometry other);
 
-    AlignmentGeometry add(AlignmentGeometry other);
-
-    AlignmentGeometry -();
-
-    AlignmentGeometry *(double other);
-
-    AlignmentGeometry /(double other);
-
-    AlignmentGeometry ~/(double other);
-
-    AlignmentGeometry %(double other);
-
+    virtual AlignmentGeometry operator-();
+    virtual AlignmentGeometry operator*(double other);
+    virtual AlignmentGeometry operator/(double other);
+    virtual AlignmentGeometry operator~/(double other);
+    virtual AlignmentGeometry operator%(double other);
     static AlignmentGeometry lerp(AlignmentGeometry a, AlignmentGeometry b, double t);
 
-    Alignment resolve(TextDirection direction);
+    virtual Alignment resolve(TextDirection direction);
+    virtual String toString();
 
-    String toString();
+    virtual bool operator==(Object other);
 
-    bool ==(Object other);
-
-    int hashCode();
+    virtual int hashCode();
 
 private:
 
-    double _x();
-
-    double _start();
-
-    double _y();
-
+    virtual double _x();
+    virtual double _start();
+    virtual double _y();
 };
+using AlignmentGeometry = std::shared_ptr<AlignmentGeometryCls>;
 
-class Alignment : AlignmentGeometry {
+class AlignmentCls : public AlignmentGeometryCls {
 public:
     double x;
 
     double y;
 
-    static const Alignment topLeft;
+    static Alignment topLeft;
 
-    static const Alignment topCenter;
+    static Alignment topCenter;
 
-    static const Alignment topRight;
+    static Alignment topRight;
 
-    static const Alignment centerLeft;
+    static Alignment centerLeft;
 
-    static const Alignment center;
+    static Alignment center;
 
-    static const Alignment centerRight;
+    static Alignment centerRight;
 
-    static const Alignment bottomLeft;
+    static Alignment bottomLeft;
 
-    static const Alignment bottomCenter;
+    static Alignment bottomCenter;
 
-    static const Alignment bottomRight;
+    static Alignment bottomRight;
 
 
-     Alignment(double x, double y);
+     AlignmentCls(double x, double y);
 
-    AlignmentGeometry add(AlignmentGeometry other);
+    virtual AlignmentGeometry add(AlignmentGeometry other);
 
-    Alignment -(Alignment other);
+    virtual Alignment operator-(Alignment other);
 
-    Alignment +(Alignment other);
+    virtual Alignment operator+(Alignment other);
 
-    Alignment -();
+    virtual Alignment operator-();
 
-    Alignment *(double other);
+    virtual Alignment operator*(double other);
 
-    Alignment /(double other);
+    virtual Alignment operator/(double other);
 
-    Alignment ~/(double other);
+    virtual Alignment operator~/(double other);
 
-    Alignment %(double other);
+    virtual Alignment operator%(double other);
 
-    Offset alongOffset(Offset other);
+    virtual Offset alongOffset(Offset other);
 
-    Offset alongSize(Size other);
+    virtual Offset alongSize(Size other);
 
-    Offset withinRect(Rect rect);
+    virtual Offset withinRect(Rect rect);
 
-    Rect inscribe(Rect rect, Size size);
+    virtual Rect inscribe(Rect rect, Size size);
 
     static Alignment lerp(Alignment a, Alignment b, double t);
 
-    Alignment resolve(TextDirection direction);
+    virtual Alignment resolve(TextDirection direction);
 
-    String toString();
+    virtual String toString();
 
 private:
 
-    double _x();
+    virtual double _x();
 
-    double _start();
+    virtual double _start();
 
-    double _y();
+    virtual double _y();
 
     static String _stringify(double x, double y);
 
 };
+using Alignment = std::shared_ptr<AlignmentCls>;
 
-class AlignmentDirectional : AlignmentGeometry {
+class AlignmentDirectionalCls : public AlignmentGeometryCls {
 public:
     double start;
 
     double y;
 
-    static const AlignmentDirectional topStart;
+    static AlignmentDirectional topStart;
 
-    static const AlignmentDirectional topCenter;
+    static AlignmentDirectional topCenter;
 
-    static const AlignmentDirectional topEnd;
+    static AlignmentDirectional topEnd;
 
-    static const AlignmentDirectional centerStart;
+    static AlignmentDirectional centerStart;
 
-    static const AlignmentDirectional center;
+    static AlignmentDirectional center;
 
-    static const AlignmentDirectional centerEnd;
+    static AlignmentDirectional centerEnd;
 
-    static const AlignmentDirectional bottomStart;
+    static AlignmentDirectional bottomStart;
 
-    static const AlignmentDirectional bottomCenter;
+    static AlignmentDirectional bottomCenter;
 
-    static const AlignmentDirectional bottomEnd;
+    static AlignmentDirectional bottomEnd;
 
 
-     AlignmentDirectional(double start, double y);
+     AlignmentDirectionalCls(double start, double y);
 
-    AlignmentGeometry add(AlignmentGeometry other);
+    virtual AlignmentGeometry add(AlignmentGeometry other);
 
-    AlignmentDirectional -(AlignmentDirectional other);
+    virtual AlignmentDirectional operator-(AlignmentDirectional other);
 
-    AlignmentDirectional +(AlignmentDirectional other);
+    virtual AlignmentDirectional operator+(AlignmentDirectional other);
 
-    AlignmentDirectional -();
+    virtual AlignmentDirectional operator-();
 
-    AlignmentDirectional *(double other);
+    virtual AlignmentDirectional operator*(double other);
 
-    AlignmentDirectional /(double other);
+    virtual AlignmentDirectional operator/(double other);
 
-    AlignmentDirectional ~/(double other);
+    virtual AlignmentDirectional operator~/(double other);
 
-    AlignmentDirectional %(double other);
+    virtual AlignmentDirectional operator%(double other);
 
     static AlignmentDirectional lerp(AlignmentDirectional a, AlignmentDirectional b, double t);
 
-    Alignment resolve(TextDirection direction);
+    virtual Alignment resolve(TextDirection direction);
 
-    String toString();
+    virtual String toString();
 
 private:
 
-    double _x();
+    virtual double _x();
 
-    double _start();
+    virtual double _start();
 
-    double _y();
+    virtual double _y();
 
     static String _stringify(double start, double y);
 
 };
+using AlignmentDirectional = std::shared_ptr<AlignmentDirectionalCls>;
 
-class _MixedAlignment : AlignmentGeometry {
+class _MixedAlignmentCls : public AlignmentGeometryCls {
 public:
 
-    _MixedAlignment -();
+    virtual _MixedAlignment operator-();
 
-    _MixedAlignment *(double other);
+    virtual _MixedAlignment operator*(double other);
 
-    _MixedAlignment /(double other);
+    virtual _MixedAlignment operator/(double other);
 
-    _MixedAlignment ~/(double other);
+    virtual _MixedAlignment operator~/(double other);
 
-    _MixedAlignment %(double other);
+    virtual _MixedAlignment operator%(double other);
 
-    Alignment resolve(TextDirection direction);
+    virtual Alignment resolve(TextDirection direction);
 
 private:
     double _x;
@@ -198,27 +191,29 @@ private:
     double _y;
 
 
-     _MixedAlignment(double _start, double _x, double _y);
-
+     _MixedAlignmentCls(double _start, double _x, double _y);
 };
+using _MixedAlignment = std::shared_ptr<_MixedAlignmentCls>;
 
-class TextAlignVertical {
+class TextAlignVerticalCls : public ObjectCls {
 public:
     double y;
 
-    static const TextAlignVertical top;
+    static TextAlignVertical top;
 
-    static const TextAlignVertical center;
+    static TextAlignVertical center;
 
-    static const TextAlignVertical bottom;
+    static TextAlignVertical bottom;
 
 
-     TextAlignVertical(double y);
+     TextAlignVerticalCls(double y);
 
-    String toString();
+    virtual String toString();
 
 private:
 
 };
+using TextAlignVertical = std::shared_ptr<TextAlignVerticalCls>;
+
 
 #endif

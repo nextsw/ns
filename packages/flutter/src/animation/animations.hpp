@@ -1,128 +1,128 @@
-#ifndef ANIMATIONS_H
-#define ANIMATIONS_H
-#include <memory>
-#include <ui.hpp>
+#ifndef PACKAGES_FLUTTER_SRC_ANIMATION_ANIMATIONS
+#define PACKAGES_FLUTTER_SRC_ANIMATION_ANIMATIONS
+#include <base.hpp>
+#include <dart/ui/ui.hpp>
 #include "animation.hpp"
 #include "curves.hpp"
 
-#include <math/math.hpp>
-#include <flutter/foundation.hpp>
+#include <dart/core/core.hpp>
+#include <dart/math/math.hpp>
+#include <packages/flutter/lib/foundation.hpp>
 #include "animation.hpp"
 #include "curves.hpp"
 #include "listener_helpers.hpp"
 
 
-
-class _AlwaysCompleteAnimation : Animation<double> {
+class _AlwaysCompleteAnimationCls : public AnimationCls<double> {
 public:
 
-    void addListener(VoidCallback listener);
+    virtual void addListener(VoidCallback listener);
 
-    void removeListener(VoidCallback listener);
+    virtual void removeListener(VoidCallback listener);
 
-    void addStatusListener(AnimationStatusListener listener);
+    virtual void addStatusListener(AnimationStatusListener listener);
 
-    void removeStatusListener(AnimationStatusListener listener);
+    virtual void removeStatusListener(AnimationStatusListener listener);
 
-    AnimationStatus status();
+    virtual AnimationStatus status();
 
-    double value();
+    virtual double value();
 
-    String toString();
+    virtual String toString();
 
 private:
 
-     _AlwaysCompleteAnimation();
-
+     _AlwaysCompleteAnimationCls();
 };
-const Animation<double> kAlwaysCompleteAnimation;
+using _AlwaysCompleteAnimation = std::shared_ptr<_AlwaysCompleteAnimationCls>;
+Animation<double> kAlwaysCompleteAnimation;
 
 
-class _AlwaysDismissedAnimation : Animation<double> {
+class _AlwaysDismissedAnimationCls : public AnimationCls<double> {
 public:
 
-    void addListener(VoidCallback listener);
+    virtual void addListener(VoidCallback listener);
 
-    void removeListener(VoidCallback listener);
+    virtual void removeListener(VoidCallback listener);
 
-    void addStatusListener(AnimationStatusListener listener);
+    virtual void addStatusListener(AnimationStatusListener listener);
 
-    void removeStatusListener(AnimationStatusListener listener);
+    virtual void removeStatusListener(AnimationStatusListener listener);
 
-    AnimationStatus status();
+    virtual AnimationStatus status();
 
-    double value();
+    virtual double value();
 
-    String toString();
+    virtual String toString();
 
 private:
 
-     _AlwaysDismissedAnimation();
-
+     _AlwaysDismissedAnimationCls();
 };
-const Animation<double> kAlwaysDismissedAnimation;
+using _AlwaysDismissedAnimation = std::shared_ptr<_AlwaysDismissedAnimationCls>;
+Animation<double> kAlwaysDismissedAnimation;
 
 
-class AlwaysStoppedAnimation<T> : Animation<T> {
+template<typename T> class AlwaysStoppedAnimationCls : public AnimationCls<T> {
 public:
     T value;
 
 
-     AlwaysStoppedAnimation(T value);
+     AlwaysStoppedAnimationCls(T value);
+    virtual void addListener(VoidCallback listener);
 
-    void addListener(VoidCallback listener);
+    virtual void removeListener(VoidCallback listener);
 
-    void removeListener(VoidCallback listener);
+    virtual void addStatusListener(AnimationStatusListener listener);
 
-    void addStatusListener(AnimationStatusListener listener);
+    virtual void removeStatusListener(AnimationStatusListener listener);
 
-    void removeStatusListener(AnimationStatusListener listener);
+    virtual AnimationStatus status();
 
-    AnimationStatus status();
-
-    String toStringDetails();
-
-private:
-
-};
-
-class AnimationWithParentMixin<T> {
-public:
-
-    Animation<T> parent();
-
-    void addListener(VoidCallback listener);
-
-    void removeListener(VoidCallback listener);
-
-    void addStatusListener(AnimationStatusListener listener);
-
-    void removeStatusListener(AnimationStatusListener listener);
-
-    AnimationStatus status();
+    virtual String toStringDetails();
 
 private:
 
 };
+template<typename T> using AlwaysStoppedAnimation = std::shared_ptr<AlwaysStoppedAnimationCls<T>>;
 
-class ProxyAnimation : Animation<double> {
+template<typename T> class AnimationWithParentMixinCls : public ObjectCls {
 public:
 
-     ProxyAnimation(Animation<double> animation);
+    virtual Animation<T> parent();
+    virtual void addListener(VoidCallback listener);
 
-    Animation<double> parent();
+    virtual void removeListener(VoidCallback listener);
 
-    void  parent(Animation<double> value);
+    virtual void addStatusListener(AnimationStatusListener listener);
 
-    void didStartListening();
+    virtual void removeStatusListener(AnimationStatusListener listener);
 
-    void didStopListening();
+    virtual AnimationStatus status();
 
-    AnimationStatus status();
+private:
 
-    double value();
+};
+template<typename T> using AnimationWithParentMixin = std::shared_ptr<AnimationWithParentMixinCls<T>>;
 
-    String toString();
+class ProxyAnimationCls : public AnimationCls<double> {
+public:
+
+     ProxyAnimationCls(Animation<double> animation);
+
+    virtual Animation<double> parent();
+
+    virtual void  parent(Animation<double> value);
+
+    virtual void didStartListening();
+
+    virtual void didStopListening();
+
+    virtual AnimationStatus status();
+
+    virtual double value();
+
+    virtual String toString();
 
 private:
     AnimationStatus _status;
@@ -133,37 +133,39 @@ private:
 
 
 };
+using ProxyAnimation = std::shared_ptr<ProxyAnimationCls>;
 
-class ReverseAnimation : Animation<double> {
+class ReverseAnimationCls : public AnimationCls<double> {
 public:
     Animation<double> parent;
 
 
-     ReverseAnimation(Animation<double> parent);
+     ReverseAnimationCls(Animation<double> parent);
 
-    void addListener(VoidCallback listener);
+    virtual void addListener(VoidCallback listener);
 
-    void removeListener(VoidCallback listener);
+    virtual void removeListener(VoidCallback listener);
 
-    void didStartListening();
+    virtual void didStartListening();
 
-    void didStopListening();
+    virtual void didStopListening();
 
-    AnimationStatus status();
+    virtual AnimationStatus status();
 
-    double value();
+    virtual double value();
 
-    String toString();
+    virtual String toString();
 
 private:
 
-    void _statusChangeHandler(AnimationStatus status);
+    virtual void _statusChangeHandler(AnimationStatus status);
 
-    AnimationStatus _reverseStatus(AnimationStatus status);
+    virtual AnimationStatus _reverseStatus(AnimationStatus status);
 
 };
+using ReverseAnimation = std::shared_ptr<ReverseAnimationCls>;
 
-class CurvedAnimation : Animation<double> {
+class CurvedAnimationCls : public AnimationCls<double> {
 public:
     Animation<double> parent;
 
@@ -174,45 +176,46 @@ public:
     bool isDisposed;
 
 
-     CurvedAnimation(Curve curve, Animation<double> parent, Curve reverseCurve);
+     CurvedAnimationCls(Curve curve, Animation<double> parent, Curve reverseCurve);
 
-    void dispose();
+    virtual void dispose();
 
-    double value();
+    virtual double value();
 
-    String toString();
+    virtual String toString();
 
 private:
     AnimationStatus _curveDirection;
 
 
-    void _updateCurveDirection(AnimationStatus status);
+    virtual void _updateCurveDirection(AnimationStatus status);
 
-    bool _useForwardCurve();
+    virtual bool _useForwardCurve();
 
 };
+using CurvedAnimation = std::shared_ptr<CurvedAnimationCls>;
 
 enum _TrainHoppingMode{
     minimize,
     maximize,
 } // end _TrainHoppingMode
 
-class TrainHoppingAnimation : Animation<double> {
+class TrainHoppingAnimationCls : public AnimationCls<double> {
 public:
     VoidCallback onSwitchedTrain;
 
 
-     TrainHoppingAnimation(Animation<double> _currentTrain, Animation<double> _nextTrain, VoidCallback onSwitchedTrain);
+     TrainHoppingAnimationCls(Animation<double> _currentTrain, Animation<double> _nextTrain, VoidCallback onSwitchedTrain);
 
-    Animation<double> currentTrain();
+    virtual Animation<double> currentTrain();
 
-    AnimationStatus status();
+    virtual AnimationStatus status();
 
-    double value();
+    virtual double value();
 
-    void dispose();
+    virtual void dispose();
 
-    String toString();
+    virtual String toString();
 
 private:
     Animation<double> _currentTrain;
@@ -226,28 +229,29 @@ private:
     double _lastValue;
 
 
-    void _statusChangeHandler(AnimationStatus status);
+    virtual void _statusChangeHandler(AnimationStatus status);
 
-    void _valueChangeHandler();
+    virtual void _valueChangeHandler();
 
 };
+using TrainHoppingAnimation = std::shared_ptr<TrainHoppingAnimationCls>;
 
-class CompoundAnimation<T> : Animation<T> {
+template<typename T> class CompoundAnimationCls : public AnimationCls<T> {
 public:
     Animation<T> first;
 
     Animation<T> next;
 
 
-     CompoundAnimation(Animation<T> first, Animation<T> next);
+     CompoundAnimationCls(Animation<T> first, Animation<T> next);
 
-    void didStartListening();
+    virtual void didStartListening();
 
-    void didStopListening();
+    virtual void didStopListening();
 
-    AnimationStatus status();
+    virtual AnimationStatus status();
 
-    String toString();
+    virtual String toString();
 
 private:
     AnimationStatus _lastStatus;
@@ -255,43 +259,48 @@ private:
     T _lastValue;
 
 
-    void _maybeNotifyStatusListeners(AnimationStatus _);
+    virtual void _maybeNotifyStatusListeners(AnimationStatus _);
 
-    void _maybeNotifyListeners();
+    virtual void _maybeNotifyListeners();
 
 };
+template<typename T> using CompoundAnimation = std::shared_ptr<CompoundAnimationCls<T>>;
 
-class AnimationMean : CompoundAnimation<double> {
+class AnimationMeanCls : public CompoundAnimationCls<double> {
 public:
 
-     AnimationMean(Animation<double> left, Animation<double> right);
+     AnimationMeanCls(Animation<double> left, Animation<double> right);
 
-    double value();
+    virtual double value();
 
 private:
 
 };
+using AnimationMean = std::shared_ptr<AnimationMeanCls>;
 
-class AnimationMax<T extends num> : CompoundAnimation<T> {
+template<typename T : num> class AnimationMaxCls : public CompoundAnimationCls<T> {
 public:
 
-     AnimationMax(Animation<T> first, Animation<T> next);
+     AnimationMaxCls(Animation<T> first, Animation<T> next);
 
-    T value();
+    virtual T value();
 
 private:
 
 };
+template<typename T : num> using AnimationMax = std::shared_ptr<AnimationMaxCls<T : num>>;
 
-class AnimationMin<T extends num> : CompoundAnimation<T> {
+template<typename T : num> class AnimationMinCls : public CompoundAnimationCls<T> {
 public:
 
-     AnimationMin(Animation<T> first, Animation<T> next);
+     AnimationMinCls(Animation<T> first, Animation<T> next);
 
-    T value();
+    virtual T value();
 
 private:
 
 };
+template<typename T : num> using AnimationMin = std::shared_ptr<AnimationMinCls<T : num>>;
+
 
 #endif

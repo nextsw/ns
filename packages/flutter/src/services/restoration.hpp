@@ -1,36 +1,36 @@
-#ifndef RESTORATION_H
-#define RESTORATION_H
-#include <memory>
-#include <typed_data.hpp>
+#ifndef PACKAGES_FLUTTER_SRC_SERVICES_RESTORATION
+#define PACKAGES_FLUTTER_SRC_SERVICES_RESTORATION
+#include <base.hpp>
+#include <dart/typed_data/typed_data.hpp>
 
-#include <async/async.hpp>
-#include <flutter/foundation.hpp>
-#include <flutter/scheduler.hpp>
+#include <dart/core/core.hpp>
+#include <dart/async/async.hpp>
+#include <packages/flutter/lib/foundation.hpp>
+#include <packages/flutter/flutter.hpp>
 #include "message_codecs.hpp"
 #include "system_channels.hpp"
 
 
-
-class RestorationManager : ChangeNotifier {
+class RestorationManagerCls : public ChangeNotifierCls {
 public:
 
-     RestorationManager();
+     RestorationManagerCls();
 
-    void initChannels();
+    virtual void initChannels();
 
-    Future<RestorationBucket> rootBucket();
+    virtual Future<RestorationBucket> rootBucket();
 
-    bool isReplacing();
+    virtual bool isReplacing();
 
-    void handleRestorationUpdateFromEngine(Uint8List data, bool enabled);
+    virtual void handleRestorationUpdateFromEngine(Uint8List data, bool enabled);
 
-    Future<void> sendToEngine(Uint8List encodedData);
+    virtual Future<void> sendToEngine(Uint8List encodedData);
 
-    void scheduleSerializationFor(RestorationBucket bucket);
+    virtual void scheduleSerializationFor(RestorationBucket bucket);
 
-    void unscheduleSerializationFor(RestorationBucket bucket);
+    virtual void unscheduleSerializationFor(RestorationBucket bucket);
 
-    void flushData();
+    virtual void flushData();
 
 private:
     RestorationBucket _rootBucket;
@@ -48,59 +48,60 @@ private:
     Set<RestorationBucket> _bucketsNeedingSerialization;
 
 
-    Future<void> _getRootBucketFromEngine();
+    virtual Future<void> _getRootBucketFromEngine();
 
-    void _parseAndHandleRestorationUpdateFromEngine(Map<Object, Object> update);
+    virtual void _parseAndHandleRestorationUpdateFromEngine(Map<Object, Object> update);
 
-    Future<void> _methodHandler(MethodCall call);
+    virtual Future<void> _methodHandler(MethodCall call);
 
-    Map<Object, Object> _decodeRestorationData(Uint8List data);
+    virtual Map<Object, Object> _decodeRestorationData(Uint8List data);
 
-    Uint8List _encodeRestorationData(Map<Object, Object> data);
+    virtual Uint8List _encodeRestorationData(Map<Object, Object> data);
 
-    void _doSerialization();
+    virtual void _doSerialization();
 
 };
+using RestorationManager = std::shared_ptr<RestorationManagerCls>;
 
-class RestorationBucket {
+class RestorationBucketCls : public ObjectCls {
 public:
 
-    void  empty(Object debugOwner, String restorationId);
+    virtual void  empty(Object debugOwner, String restorationId);
 
-    void  root(RestorationManager manager, Map<Object, Object> rawData);
+    virtual void  root(RestorationManager manager, Map<Object, Object> rawData);
 
-    void  child(Object debugOwner, RestorationBucket parent, String restorationId);
+    virtual void  child(Object debugOwner, RestorationBucket parent, String restorationId);
 
-    Object debugOwner();
+    virtual Object debugOwner();
 
-    bool isReplacing();
+    virtual bool isReplacing();
 
-    String restorationId();
+    virtual String restorationId();
 
-    P read<P>(String restorationId);
+    template<typename P>  virtual P read(String restorationId);
 
-    void write<P>(String restorationId, P value);
+    template<typename P>  virtual void write(String restorationId, P value);
 
-    P remove<P>(String restorationId);
+    template<typename P>  virtual P remove(String restorationId);
 
-    bool contains(String restorationId);
+    virtual bool contains(String restorationId);
 
-    RestorationBucket claimChild(Object debugOwner, String restorationId);
+    virtual RestorationBucket claimChild(Object debugOwner, String restorationId);
 
-    void adoptChild(RestorationBucket child);
+    virtual void adoptChild(RestorationBucket child);
 
-    void finalize();
+    virtual void finalize();
 
-    void rename(String newRestorationId);
+    virtual void rename(String newRestorationId);
 
-    void dispose();
+    virtual void dispose();
 
-    String toString();
+    virtual String toString();
 
 private:
-    static const String _childrenMapKey;
+    static String _childrenMapKey;
 
-    static const String _valuesMapKey;
+    static String _valuesMapKey;
 
     Map<Object, Object> _rawData;
 
@@ -121,32 +122,34 @@ private:
     bool _debugDisposed;
 
 
-    Map<Object, Object> _rawChildren();
+    virtual Map<Object, Object> _rawChildren();
 
-    Map<Object, Object> _rawValues();
+    virtual Map<Object, Object> _rawValues();
 
-    void _dropChild(RestorationBucket child);
+    virtual void _dropChild(RestorationBucket child);
 
-    void _markNeedsSerialization();
+    virtual void _markNeedsSerialization();
 
-    void _recursivelyUpdateManager(RestorationBucket bucket);
+    virtual void _recursivelyUpdateManager(RestorationBucket bucket);
 
-    void _updateManager(RestorationManager newManager);
+    virtual void _updateManager(RestorationManager newManager);
 
-    bool _debugAssertIntegrity();
+    virtual bool _debugAssertIntegrity();
 
-    void _removeChildData(RestorationBucket child);
+    virtual void _removeChildData(RestorationBucket child);
 
-    void _addChildData(RestorationBucket child);
+    virtual void _addChildData(RestorationBucket child);
 
-    void _finalizeAddChildData(RestorationBucket child);
+    virtual void _finalizeAddChildData(RestorationBucket child);
 
-    void _visitChildren(bool concurrentModification, _BucketVisitor visitor);
+    virtual void _visitChildren(bool concurrentModification, _BucketVisitor visitor);
 
-    bool _debugAssertNotDisposed();
+    virtual bool _debugAssertNotDisposed();
 
 };
+using RestorationBucket = std::shared_ptr<RestorationBucketCls>;
 bool debugIsSerializableForRestoration(Object object);
+
 
 
 #endif

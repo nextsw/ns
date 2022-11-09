@@ -1,36 +1,37 @@
-#ifndef DEFERRED_LOAD_H
-#define DEFERRED_LOAD_H
-#include <memory>
+#ifndef DART_ASYNC_DEFERRED_LOAD
+#define DART_ASYNC_DEFERRED_LOAD
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
 
 
-
-
-class DeferredLibrary {
+class DeferredLibraryCls : public ObjectCls {
 public:
     String libraryName;
 
     String uri;
 
 
-     DeferredLibrary(String libraryName, String uri);
-
-    external Future<Null> load();
-
+     DeferredLibraryCls(String libraryName, String uri);
+    extern Future<Null> load();
 private:
 
 };
+using DeferredLibrary = std::shared_ptr<DeferredLibraryCls>;
 
-class DeferredLoadException {
+class DeferredLoadExceptionCls : public ObjectCls {
 public:
 
-     DeferredLoadException(String message);
+     DeferredLoadExceptionCls(String message);
 
-    String toString();
+    virtual String toString();
 
 private:
     String _s;
 
 
 };
+using DeferredLoadException = std::shared_ptr<DeferredLoadExceptionCls>;
+
 
 #endif

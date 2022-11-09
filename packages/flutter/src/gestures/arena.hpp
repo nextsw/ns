@@ -1,11 +1,11 @@
-#ifndef ARENA_H
-#define ARENA_H
-#include <memory>
+#ifndef PACKAGES_FLUTTER_SRC_GESTURES_ARENA
+#define PACKAGES_FLUTTER_SRC_GESTURES_ARENA
+#include <base.hpp>
 
-#include <async/async.hpp>
-#include <flutter/foundation.hpp>
+#include <dart/core/core.hpp>
+#include <dart/async/async.hpp>
+#include <packages/flutter/lib/foundation.hpp>
 #include "debug.hpp"
-
 
 
 enum GestureDisposition{
@@ -13,21 +13,20 @@ enum GestureDisposition{
     rejected,
 } // end GestureDisposition
 
-class GestureArenaMember {
+class GestureArenaMemberCls : public ObjectCls {
 public:
 
-    void acceptGesture(int pointer);
-
-    void rejectGesture(int pointer);
-
+    virtual void acceptGesture(int pointer);
+    virtual void rejectGesture(int pointer);
 private:
 
 };
+using GestureArenaMember = std::shared_ptr<GestureArenaMemberCls>;
 
-class GestureArenaEntry {
+class GestureArenaEntryCls : public ObjectCls {
 public:
 
-    void resolve(GestureDisposition disposition);
+    virtual void resolve(GestureDisposition disposition);
 
 private:
     GestureArenaManager _arena;
@@ -37,11 +36,11 @@ private:
     GestureArenaMember _member;
 
 
-    void  _(GestureArenaManager _arena, GestureArenaMember _member, int _pointer);
-
+    virtual void  _(GestureArenaManager _arena, GestureArenaMember _member, int _pointer);
 };
+using GestureArenaEntry = std::shared_ptr<GestureArenaEntryCls>;
 
-class _GestureArena {
+class _GestureArenaCls : public ObjectCls {
 public:
     List<GestureArenaMember> members;
 
@@ -54,41 +53,44 @@ public:
     GestureArenaMember eagerWinner;
 
 
-    void add(GestureArenaMember member);
+    virtual void add(GestureArenaMember member);
 
-    String toString();
+    virtual String toString();
 
 private:
 
 };
+using _GestureArena = std::shared_ptr<_GestureArenaCls>;
 
-class GestureArenaManager {
+class GestureArenaManagerCls : public ObjectCls {
 public:
 
-    GestureArenaEntry add(GestureArenaMember member, int pointer);
+    virtual GestureArenaEntry add(GestureArenaMember member, int pointer);
 
-    void close(int pointer);
+    virtual void close(int pointer);
 
-    void sweep(int pointer);
+    virtual void sweep(int pointer);
 
-    void hold(int pointer);
+    virtual void hold(int pointer);
 
-    void release(int pointer);
+    virtual void release(int pointer);
 
 private:
     Map<int, _GestureArena> _arenas;
 
 
-    void _resolve(GestureDisposition disposition, GestureArenaMember member, int pointer);
+    virtual void _resolve(GestureDisposition disposition, GestureArenaMember member, int pointer);
 
-    void _tryToResolveArena(int pointer, _GestureArena state);
+    virtual void _tryToResolveArena(int pointer, _GestureArena state);
 
-    void _resolveByDefault(int pointer, _GestureArena state);
+    virtual void _resolveByDefault(int pointer, _GestureArena state);
 
-    void _resolveInFavorOf(GestureArenaMember member, int pointer, _GestureArena state);
+    virtual void _resolveInFavorOf(GestureArenaMember member, int pointer, _GestureArena state);
 
-    bool _debugLogDiagnostic(String message, int pointer, _GestureArena state);
+    virtual bool _debugLogDiagnostic(String message, int pointer, _GestureArena state);
 
 };
+using GestureArenaManager = std::shared_ptr<GestureArenaManagerCls>;
+
 
 #endif

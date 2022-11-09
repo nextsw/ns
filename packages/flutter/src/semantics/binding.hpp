@@ -1,28 +1,28 @@
-#ifndef BINDING_H
-#define BINDING_H
-#include <memory>
-#include <ui.hpp>
+#ifndef PACKAGES_FLUTTER_SRC_SEMANTICS_BINDING
+#define PACKAGES_FLUTTER_SRC_SEMANTICS_BINDING
+#include <base.hpp>
+#include <dart/ui/ui.hpp>
 
-#include <ui/ui.hpp>
-#include <flutter/foundation.hpp>
+#include <dart/core/core.hpp>
+#include <dart/ui/ui.hpp>
+#include <packages/flutter/lib/foundation.hpp>
 #include "debug.hpp"
 
 
-
-class SemanticsBinding {
+class SemanticsBindingCls : public ObjectCls {
 public:
 
-    void initInstances();
+    virtual void initInstances();
 
     static SemanticsBinding instance();
 
-    void handleAccessibilityFeaturesChanged();
+    virtual void handleAccessibilityFeaturesChanged();
 
-    SemanticsUpdateBuilder createSemanticsUpdateBuilder();
+    virtual SemanticsUpdateBuilder createSemanticsUpdateBuilder();
 
-    AccessibilityFeatures accessibilityFeatures();
+    virtual AccessibilityFeatures accessibilityFeatures();
 
-    bool disableAnimations();
+    virtual bool disableAnimations();
 
 private:
     static SemanticsBinding _instance;
@@ -31,5 +31,7 @@ private:
 
 
 };
+using SemanticsBinding = std::shared_ptr<SemanticsBindingCls>;
+
 
 #endif

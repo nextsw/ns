@@ -1,19 +1,21 @@
-#ifndef IO_H
-#define IO_H
-#include <memory>
-#include <_http.hpp>
-#include <_internal.hpp>
-#include <_internal.hpp>
+#ifndef DART_IO_IO
+#define DART_IO_IO
+#include <base.hpp>
+#include <dart/http/http.hpp>
+#include <dart/internal/internal.hpp>
+#include <dart/internal/internal.hpp>
 
-#include <async/async.hpp>
-#include <internal/internal.hpp>
-#include <collection/collection.hpp>
-#include <convert/convert.hpp>
-#include <developer/developer.hpp>
-#include <http/http.hpp>
-#include <isolate/isolate.hpp>
-#include <math/math.hpp>
-#include <typed_data/typed_data.hpp>
+#include <dart/core/core.hpp>
+#include <dart/async/async.hpp>
+#include <dart/internal/internal.hpp>
+#include <dart/collection/collection.hpp>
+#include <dart/convert/convert.hpp>
+#include <dart/developer/developer.hpp>
+#include <dart/http/http.hpp>
+#include <dart/isolate/isolate.hpp>
+#include <dart/math/math.hpp>
+#include <dart/typed_data/typed_data.hpp>
+
 
 // Parts
 #include "common.hpp"
@@ -43,6 +45,5 @@
 #include "stdio.hpp"
 #include "string_transformer.hpp"
 #include "sync_socket.hpp"
-
 
 #endif

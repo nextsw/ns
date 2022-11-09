@@ -1,29 +1,30 @@
-#ifndef COMBINED_ITERABLE_H
-#define COMBINED_ITERABLE_H
-#include <memory>
+#ifndef PACKAGES_COLLECTION_SRC_COMBINED_WRAPPERS_COMBINED_ITERABLE
+#define PACKAGES_COLLECTION_SRC_COMBINED_WRAPPERS_COMBINED_ITERABLE
+#include <base.hpp>
 
-#include <collection/collection.hpp>
+#include <dart/core/core.hpp>
+#include <dart/collection/collection.hpp>
 #include "combined_iterator.hpp"
 
 
-
-class CombinedIterableView<T> : IterableBase<T> {
+template<typename T> class CombinedIterableViewCls : public IterableBaseCls<T> {
 public:
 
-     CombinedIterableView(Iterable<Iterable<T>> _iterables);
+     CombinedIterableViewCls(Iterable<Iterable<T>> _iterables);
+    virtual Iterator<T> iterator();
 
-    Iterator<T> iterator();
+    virtual bool contains(Object element);
 
-    bool contains(Object element);
+    virtual bool isEmpty();
 
-    bool isEmpty();
-
-    int length();
+    virtual int length();
 
 private:
     Iterable<Iterable<T>> _iterables;
 
 
 };
+template<typename T> using CombinedIterableView = std::shared_ptr<CombinedIterableViewCls<T>>;
+
 
 #endif

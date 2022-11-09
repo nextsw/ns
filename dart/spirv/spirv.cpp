@@ -1,10 +1,10 @@
 #include "spirv.hpp"
-String TranspileException::toString() {
+String TranspileExceptionCls::toString() {
     return "$op: $message";
 }
 
 TranspileResult transpile(ByteBuffer spirv, TargetLanguage target) {
-    _Transpiler t = _Transpiler(spirv.asUint32List(), target);
-    t.transpile();
-    return TranspileResult._(t.src.toString(), t.uniformFloatCount, t.samplerCount, target);
+    _Transpiler t = make<_TranspilerCls>(spirv->asUint32List(), target);
+    t->transpile();
+    return TranspileResultCls->_(t->src->toString(), t->uniformFloatCount, t->samplerCount, target);
 }

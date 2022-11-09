@@ -1,17 +1,18 @@
-#ifndef RECOGNIZER_H
-#define RECOGNIZER_H
-#include <memory>
-#include <ui.hpp>
-#include <flutter/foundation.hpp>
-#include <vector_math/vector_math_64.hpp>
+#ifndef PACKAGES_FLUTTER_SRC_GESTURES_RECOGNIZER
+#define PACKAGES_FLUTTER_SRC_GESTURES_RECOGNIZER
+#include <base.hpp>
+#include <dart/ui/ui.hpp>
+#include <packages/flutter/lib/foundation.hpp>
+#include <packages/vector_math/vector_math.hpp>
 #include "arena.hpp"
 #include "events.hpp"
 #include "gesture_settings.hpp"
 #include "team.hpp"
 
-#include <async/async.hpp>
-#include <collection/collection.hpp>
-#include <flutter/foundation.hpp>
+#include <dart/core/core.hpp>
+#include <dart/async/async.hpp>
+#include <dart/collection/collection.hpp>
+#include <packages/flutter/lib/foundation.hpp>
 #include "arena.hpp"
 #include "binding.hpp"
 #include "constants.hpp"
@@ -21,46 +22,44 @@
 #include "team.hpp"
 
 
-
 enum DragStartBehavior{
     down,
     start,
 } // end DragStartBehavior
 
-class GestureRecognizer : GestureArenaMember {
+class GestureRecognizerCls : public GestureArenaMemberCls {
 public:
     Object debugOwner;
 
     DeviceGestureSettings gestureSettings;
 
 
-     GestureRecognizer(Object debugOwner, PointerDeviceKind kind, Set<PointerDeviceKind> supportedDevices);
+     GestureRecognizerCls(Object debugOwner, PointerDeviceKind kind, Set<PointerDeviceKind> supportedDevices);
 
-    void addPointerPanZoom(PointerPanZoomStartEvent event);
+    virtual void addPointerPanZoom(PointerPanZoomStartEvent event);
 
-    void addAllowedPointerPanZoom(PointerPanZoomStartEvent event);
+    virtual void addAllowedPointerPanZoom(PointerPanZoomStartEvent event);
 
-    void addPointer(PointerDownEvent event);
+    virtual void addPointer(PointerDownEvent event);
 
-    void addAllowedPointer(PointerDownEvent event);
+    virtual void addAllowedPointer(PointerDownEvent event);
 
-    void handleNonAllowedPointer(PointerDownEvent event);
+    virtual void handleNonAllowedPointer(PointerDownEvent event);
 
-    bool isPointerAllowed(PointerDownEvent event);
+    virtual bool isPointerAllowed(PointerDownEvent event);
 
-    void handleNonAllowedPointerPanZoom(PointerPanZoomStartEvent event);
+    virtual void handleNonAllowedPointerPanZoom(PointerPanZoomStartEvent event);
 
-    bool isPointerPanZoomAllowed(PointerPanZoomStartEvent event);
+    virtual bool isPointerPanZoomAllowed(PointerPanZoomStartEvent event);
 
-    PointerDeviceKind getKindForPointer(int pointer);
+    virtual PointerDeviceKind getKindForPointer(int pointer);
 
-    void dispose();
+    virtual void dispose();
 
-    String debugDescription();
+    virtual String debugDescription();
+    template<typename T>  virtual T invokeCallback(RecognizerCallback<T> callback, String debugReport() , String name);
 
-    T invokeCallback<T>(RecognizerCallback<T> callback, FunctionType debugReport, String name);
-
-    void debugFillProperties(DiagnosticPropertiesBuilder properties);
+    virtual void debugFillProperties(DiagnosticPropertiesBuilder properties);
 
 private:
     Set<PointerDeviceKind> _supportedDevices;
@@ -69,39 +68,37 @@ private:
 
 
 };
+using GestureRecognizer = std::shared_ptr<GestureRecognizerCls>;
 
-class OneSequenceGestureRecognizer : GestureRecognizer {
+class OneSequenceGestureRecognizerCls : public GestureRecognizerCls {
 public:
 
-     OneSequenceGestureRecognizer(Unknown, Unknown, Unknown);
+     OneSequenceGestureRecognizerCls(Unknown debugOwner, Unknown kind, Unknown supportedDevices);
+    virtual void addAllowedPointer(PointerDownEvent event);
 
-    void addAllowedPointer(PointerDownEvent event);
+    virtual void handleNonAllowedPointer(PointerDownEvent event);
 
-    void handleNonAllowedPointer(PointerDownEvent event);
+    virtual void handleEvent(PointerEvent event);
+    virtual void acceptGesture(int pointer);
 
-    void handleEvent(PointerEvent event);
+    virtual void rejectGesture(int pointer);
 
-    void acceptGesture(int pointer);
+    virtual void didStopTrackingLastPointer(int pointer);
+    virtual void resolve(GestureDisposition disposition);
 
-    void rejectGesture(int pointer);
+    virtual void resolvePointer(GestureDisposition disposition, int pointer);
 
-    void didStopTrackingLastPointer(int pointer);
+    virtual void dispose();
 
-    void resolve(GestureDisposition disposition);
+    virtual GestureArenaTeam team();
 
-    void resolvePointer(GestureDisposition disposition, int pointer);
+    virtual void  team(GestureArenaTeam value);
 
-    void dispose();
+    virtual void startTrackingPointer(int pointer, Matrix4 transform);
 
-    GestureArenaTeam team();
+    virtual void stopTrackingPointer(int pointer);
 
-    void  team(GestureArenaTeam value);
-
-    void startTrackingPointer(int pointer, Matrix4 transform);
-
-    void stopTrackingPointer(int pointer);
-
-    void stopTrackingIfPointerNoLongerDown(PointerEvent event);
+    virtual void stopTrackingIfPointerNoLongerDown(PointerEvent event);
 
 private:
     Map<int, GestureArenaEntry> _entries;
@@ -111,9 +108,10 @@ private:
     GestureArenaTeam _team;
 
 
-    GestureArenaEntry _addPointerToArena(int pointer);
+    virtual GestureArenaEntry _addPointerToArena(int pointer);
 
 };
+using OneSequenceGestureRecognizer = std::shared_ptr<OneSequenceGestureRecognizerCls>;
 
 enum GestureRecognizerState{
     ready,
@@ -121,7 +119,7 @@ enum GestureRecognizerState{
     defunct,
 } // end GestureRecognizerState
 
-class PrimaryPointerGestureRecognizer : OneSequenceGestureRecognizer {
+class PrimaryPointerGestureRecognizerCls : public OneSequenceGestureRecognizerCls {
 public:
     Duration deadline;
 
@@ -130,35 +128,34 @@ public:
     double postAcceptSlopTolerance;
 
 
-     PrimaryPointerGestureRecognizer(Duration deadline, Unknown, Unknown, double postAcceptSlopTolerance, double preAcceptSlopTolerance, Unknown);
+     PrimaryPointerGestureRecognizerCls(Duration deadline, Unknown debugOwner, Unknown kind, double postAcceptSlopTolerance, double preAcceptSlopTolerance, Unknown supportedDevices);
 
-    GestureRecognizerState state();
+    virtual GestureRecognizerState state();
 
-    int primaryPointer();
+    virtual int primaryPointer();
 
-    OffsetPair initialPosition();
+    virtual OffsetPair initialPosition();
 
-    void addAllowedPointer(PointerDownEvent event);
+    virtual void addAllowedPointer(PointerDownEvent event);
 
-    void handleNonAllowedPointer(PointerDownEvent event);
+    virtual void handleNonAllowedPointer(PointerDownEvent event);
 
-    void handleEvent(PointerEvent event);
+    virtual void handleEvent(PointerEvent event);
 
-    void handlePrimaryPointer(PointerEvent event);
+    virtual void handlePrimaryPointer(PointerEvent event);
+    virtual void didExceedDeadline();
 
-    void didExceedDeadline();
+    virtual void didExceedDeadlineWithEvent(PointerDownEvent event);
 
-    void didExceedDeadlineWithEvent(PointerDownEvent event);
+    virtual void acceptGesture(int pointer);
 
-    void acceptGesture(int pointer);
+    virtual void rejectGesture(int pointer);
 
-    void rejectGesture(int pointer);
+    virtual void didStopTrackingLastPointer(int pointer);
 
-    void didStopTrackingLastPointer(int pointer);
+    virtual void dispose();
 
-    void dispose();
-
-    void debugFillProperties(DiagnosticPropertiesBuilder properties);
+    virtual void debugFillProperties(DiagnosticPropertiesBuilder properties);
 
 private:
     GestureRecognizerState _state;
@@ -172,35 +169,37 @@ private:
     Timer _timer;
 
 
-    void _stopTimer();
+    virtual void _stopTimer();
 
-    double _getGlobalDistance(PointerEvent event);
+    virtual double _getGlobalDistance(PointerEvent event);
 
 };
+using PrimaryPointerGestureRecognizer = std::shared_ptr<PrimaryPointerGestureRecognizerCls>;
 
-class OffsetPair {
+class OffsetPairCls : public ObjectCls {
 public:
-    static const OffsetPair zero;
+    static OffsetPair zero;
 
     Offset local;
 
     Offset global;
 
 
-     OffsetPair(Offset global, Offset local);
+     OffsetPairCls(Offset global, Offset local);
+    virtual void  fromEventPosition(PointerEvent event);
 
-    void  fromEventPosition(PointerEvent event);
+    virtual void  fromEventDelta(PointerEvent event);
 
-    void  fromEventDelta(PointerEvent event);
+    virtual OffsetPair operator+(OffsetPair other);
 
-    OffsetPair +(OffsetPair other);
+    virtual OffsetPair operator-(OffsetPair other);
 
-    OffsetPair -(OffsetPair other);
-
-    String toString();
+    virtual String toString();
 
 private:
 
 };
+using OffsetPair = std::shared_ptr<OffsetPairCls>;
+
 
 #endif

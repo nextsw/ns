@@ -1,11 +1,11 @@
-#ifndef SERVICE_H
-#define SERVICE_H
-#include <memory>
+#ifndef DART_DEVELOPER_SERVICE
+#define DART_DEVELOPER_SERVICE
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
 
 
-
-
-class ServiceProtocolInfo {
+class ServiceProtocolInfoCls : public ObjectCls {
 public:
     int majorVersion;
 
@@ -14,17 +14,17 @@ public:
     Uri serverUri;
 
 
-    Uri serverWebSocketUri();
+    virtual Uri serverWebSocketUri();
 
-     ServiceProtocolInfo(Uri serverUri);
-
-    String toString();
+     ServiceProtocolInfoCls(Uri serverUri);
+    virtual String toString();
 
 private:
 
 };
+using ServiceProtocolInfo = std::shared_ptr<ServiceProtocolInfoCls>;
 
-class Service {
+class ServiceCls : public ObjectCls {
 public:
 
     static Future<ServiceProtocolInfo> getInfo();
@@ -36,15 +36,12 @@ public:
 private:
 
 };
-external void _getServerInfo(SendPort sendPort);
-
-external void _webServerControl(bool enable, SendPort sendPort, bool silenceOutput);
-
-external int _getServiceMajorVersion();
-
-external int _getServiceMinorVersion();
-
-external String _getIsolateIDFromSendPort(SendPort sendPort);
+using Service = std::shared_ptr<ServiceCls>;
+extern void _getServerInfo(SendPort sendPort);
+extern void _webServerControl(bool enable, SendPort sendPort, bool silenceOutput);
+extern int _getServiceMajorVersion();
+extern int _getServiceMinorVersion();
+extern String _getIsolateIDFromSendPort(SendPort sendPort);
 
 
 #endif

@@ -1,13 +1,13 @@
 #include "stdio.hpp"
-StreamSubscription<List<int>> _StdStream::listen(bool cancelOnError, FunctionType onData, FunctionType onDone, FunctionType onError) {
-    return _stream.listen(onDataonError, onDone, cancelOnError);
+StreamSubscription<List<int>> _StdStreamCls::listen(bool cancelOnError, void onData(List<int> event) , void onDone() , void  onError() ) {
+    return _stream->listen(onDataonError, onDone, cancelOnError);
 }
 
-String Stdin::readLineSync(Encoding encoding, bool retainNewlines) {
-    const CR = 13;
-    const LF = 10;
-    List<int> line = ;
-    bool crIsNewline = Platform.isWindows && (stdioType(stdin) == StdioType.terminal) && !lineMode;
+String StdinCls::readLineSync(Encoding encoding, bool retainNewlines) {
+    CRCls = 13;
+    LFCls = 10;
+    List<int> line = makeList();
+    bool crIsNewline = PlatformCls::isWindows && (stdioType(stdin) == StdioTypeCls::terminal) && !lineMode;
     if (retainNewlines) {
         int byte;
         do {
@@ -15,9 +15,9 @@ String Stdin::readLineSync(Encoding encoding, bool retainNewlines) {
             if ( < 0) {
                                 break;
             }
-            line.add(byte);
-        } while (byte != LF && !(byte == CR && crIsNewline));
-        if (line.isEmpty) {
+            line->add(byte);
+        } while (byte != LFCls && !(byte == CRCls && crIsNewline));
+        if (line->isEmpty) {
             return nullptr;
         }
     } else     {
@@ -25,148 +25,159 @@ String Stdin::readLineSync(Encoding encoding, bool retainNewlines) {
         while (true) {
             int byte = readByteSync();
             if ( < 0) {
-                if (line.isEmpty)                 {
+                if (line->isEmpty)                 {
                     return nullptr;
                 }
                                 break;
             }
-            if (byte == LF || byte == CR)             {
+            if (byte == LFCls || byte == CRCls)             {
                             break;
             }
-            line.add(byte);
+            line->add(byte);
         }
     } else {
-        ;
+        outer:;
         while (true) {
             int byte = readByteSync();
-            if (byte == LF)             {
+            if (byte == LFCls)             {
                             break;
             }
-            if (byte == CR) {
+            if (byte == CRCls) {
                 do {
                     byte = readByteSync();
-                    if (byte == LF)                     {
+                    if (byte == LFCls)                     {
                                             break outer;
                     }
-                    line.add(CR);
-                } while (byte == CR);
+                    line->add(CRCls);
+                } while (byte == CRCls);
             }
             if ( < 0) {
-                if (line.isEmpty)                 {
+                if (line->isEmpty)                 {
                     return nullptr;
                 }
                                 break;
             }
-            line.add(byte);
+            line->add(byte);
         }
     }
 ;
-    }    return encoding.decode(line);
+    }    return encoding->decode(line);
 }
 
-bool Stdin::hasTerminal() {
-    ;
+bool StdinCls::hasTerminal() {
+    try {
+        return stdioType(this) == StdioTypeCls::terminal;
+    } catch (FileSystemException _) {
+        return false;
+    };
 }
 
-void Stdin::_(int _fd, Stream<List<int>> stream)
+void StdinCls::_(int _fd, Stream<List<int>> stream)
 
-bool Stdout::hasTerminal() {
+bool StdoutCls::hasTerminal() {
     return _hasTerminal(_fd);
 }
 
-int Stdout::terminalColumns() {
+int StdoutCls::terminalColumns() {
     return _terminalColumns(_fd);
 }
 
-int Stdout::terminalLines() {
+int StdoutCls::terminalLines() {
     return _terminalLines(_fd);
 }
 
-bool Stdout::supportsAnsiEscapes() {
+bool StdoutCls::supportsAnsiEscapes() {
     return _supportsAnsiEscapes(_fd);
 }
 
-IOSink Stdout::nonBlocking() {
-    return _nonBlocking ??= IOSink(_FileStreamConsumer.fromStdio(_fd));
+IOSink StdoutCls::nonBlocking() {
+    return _nonBlocking ??= make<IOSinkCls>(_FileStreamConsumerCls->fromStdio(_fd));
 }
 
-void Stdout::_(int _fd, IOSink sink)
+void StdoutCls::_(int _fd, IOSink sink)
 
-String StdoutException::toString() {
+String StdoutExceptionCls::toString() {
     return "StdoutException: $message${osError == null ? "" : ", $osError"}";
 }
 
-String StdinException::toString() {
+String StdinExceptionCls::toString() {
     return "StdinException: $message${osError == null ? "" : ", $osError"}";
 }
 
-Future _StdConsumer::addStream(Stream<List<int>> stream) {
-    auto completer = Completer();
+Future _StdConsumerCls::addStream(Stream<List<int>> stream) {
+    auto completer = make<CompleterCls>();
     auto sub;
-    sub = stream.listen(completer.completeError, completer.complete, true);
-    return completer.future;
+    sub = stream->listen([=] (Unknown  data) {
+        try {
+            _file->writeFromSync(data);
+        } catch (Unknown e) {
+            sub->cancel();
+            completer->completeError(e, s);
+        };
+    }completer->completeError, completer->complete, true);
+    return completer->future;
 }
 
-Future _StdConsumer::close() {
-    _file.closeSync();
-    return Future.value();
+Future _StdConsumerCls::close() {
+    _file->closeSync();
+    return FutureCls->value();
 }
 
-_StdConsumer::_StdConsumer(int fd) {
+_StdConsumerCls::_StdConsumerCls(int fd) {
     {
-        _file = _File._openStdioSync(fd);
+        _file = _FileCls->_openStdioSync(fd);
     }
 }
 
-Encoding _StdSink::encoding() {
-    return _sink.encoding;
+Encoding _StdSinkCls::encoding() {
+    return _sink->encoding;
 }
 
-void _StdSink::encoding(Encoding encoding) {
-    _sink.encoding = encoding;
+void _StdSinkCls::encoding(Encoding encoding) {
+    _sink->encoding = encoding;
 }
 
-void _StdSink::write(Object object) {
-    _sink.write(object);
+void _StdSinkCls::write(Object object) {
+    _sink->write(object);
 }
 
-void _StdSink::writeln(Object object) {
-    _sink.writeln(object);
+void _StdSinkCls::writeln(Object object) {
+    _sink->writeln(object);
 }
 
-void _StdSink::writeAll(Iterable objects, String sep) {
-    _sink.writeAll(objects, sep);
+void _StdSinkCls::writeAll(Iterable objects, String sep) {
+    _sink->writeAll(objects, sep);
 }
 
-void _StdSink::add(List<int> data) {
-    _sink.add(data);
+void _StdSinkCls::add(List<int> data) {
+    _sink->add(data);
 }
 
-void _StdSink::addError(error , StackTrace stackTrace) {
-    _sink.addError(error, stackTrace);
+void _StdSinkCls::addError(error , StackTrace stackTrace) {
+    _sink->addError(error, stackTrace);
 }
 
-void _StdSink::writeCharCode(int charCode) {
-    _sink.writeCharCode(charCode);
+void _StdSinkCls::writeCharCode(int charCode) {
+    _sink->writeCharCode(charCode);
 }
 
-Future _StdSink::addStream(Stream<List<int>> stream) {
-    return _sink.addStream(stream);
+Future _StdSinkCls::addStream(Stream<List<int>> stream) {
+    return _sink->addStream(stream);
 }
 
-Future _StdSink::flush() {
-    return _sink.flush();
+Future _StdSinkCls::flush() {
+    return _sink->flush();
 }
 
-Future _StdSink::close() {
-    return _sink.close();
+Future _StdSinkCls::close() {
+    return _sink->close();
 }
 
-Future _StdSink::done() {
-    return _sink.done;
+Future _StdSinkCls::done() {
+    return _sink->done;
 }
 
-String StdioType::toString() {
+String StdioTypeCls::toString() {
     return "StdioType: $name";
 }
 
@@ -177,24 +188,24 @@ void _setStdioFDs(int stderr, int stdin, int stdout) {
 }
 
 Stdin stdin() {
-    return IOOverrides.current?.stdin ?? _stdin;
+    return IOOverridesCls::current?->stdin ?? _stdin;
 }
 
 Stdout stdout() {
-    return IOOverrides.current?.stdout ?? _stdout;
+    return IOOverridesCls::current?->stdout ?? _stdout;
 }
 
 Stdout stderr() {
-    return IOOverrides.current?.stderr ?? _stderr;
+    return IOOverridesCls::current?->stderr ?? _stderr;
 }
 
 StdioType stdioType(object ) {
     if (object is _StdStream) {
-        object = object._stream;
+        object = object->_stream;
     } else     {
         if (object == stdout || object == stderr) {
         int stdiofd = object == stdout? _stdoutFD : _stderrFD;
-        Unknown type = _StdIOUtils._getStdioHandleType(stdiofd);
+        Unknown type = _StdIOUtilsCls->_getStdioHandleType(stdiofd);
         if (type is OSError) {
             ;
         }
@@ -202,17 +213,22 @@ StdioType stdioType(object ) {
     }
 ;
     }    if (object is _FileStream) {
-        return StdioType.file;
+        return StdioTypeCls::file;
     }
     if (object is Socket) {
-        int socketType = _StdIOUtils._socketType(object);
+        int socketType = _StdIOUtilsCls->_socketType(object);
         if (socketType == nullptr)         {
-            return StdioType.other;
+            return StdioTypeCls::other;
         }
         ;
     }
     if (object is _IOSinkImpl) {
-        ;
+        try {
+            if (object->_target is _FileStreamConsumer) {
+                return StdioTypeCls::file;
+            }
+        } catch (Unknown e) {
+        };
     }
-    return StdioType.other;
+    return StdioTypeCls::other;
 }

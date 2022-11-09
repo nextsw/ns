@@ -1,116 +1,123 @@
 #include "tween.hpp"
-T Animatable::evaluate(Animation<double> animation) {
-    return transform(animation.value);
+template<typename T> T AnimatableCls<T>::evaluate(Animation<double> animation) {
+    return transform(animation->value);
 }
 
-Animation<T> Animatable::animate(Animation<double> parent) {
-    return <T>_AnimatedEvaluation(parent, this);
+template<typename T> Animation<T> AnimatableCls<T>::animate(Animation<double> parent) {
+    return <T>make<_AnimatedEvaluationCls>(parent, this);
 }
 
-Animatable<T> Animatable::chain(Animatable<double> parent) {
-    return <T>_ChainedEvaluation(parent, this);
+template<typename T> Animatable<T> AnimatableCls<T>::chain(Animatable<double> parent) {
+    return <T>make<_ChainedEvaluationCls>(parent, this);
 }
 
-T _AnimatedEvaluation::value() {
-    return _evaluatable.evaluate(parent);
+template<typename T> T _AnimatedEvaluationCls<T>::value() {
+    return _evaluatable->evaluate(parent);
 }
 
-String _AnimatedEvaluation::toString() {
+template<typename T> String _AnimatedEvaluationCls<T>::toString() {
     return "$parent\u27A9$_evaluatable\u27A9$value";
 }
 
-String _AnimatedEvaluation::toStringDetails() {
+template<typename T> String _AnimatedEvaluationCls<T>::toStringDetails() {
     return "${super.toStringDetails()} $_evaluatable";
 }
 
-T _ChainedEvaluation::transform(double t) {
-    return _evaluatable.transform(_parent.transform(t));
+template<typename T> T _ChainedEvaluationCls<T>::transform(double t) {
+    return _evaluatable->transform(_parent->transform(t));
 }
 
-String _ChainedEvaluation::toString() {
+template<typename T> String _ChainedEvaluationCls<T>::toString() {
     return "$_parent\u27A9$_evaluatable";
 }
 
-T Tween::lerp(double t) {
+template<typename T : Object> T TweenCls<T>::lerp(double t) {
     assert(begin != nullptr);
     assert(end != nullptr);
-    assert(());
-    return (;
+    assert([=] () {
+        dynamic result;
+        try {
+            result = (((dynamic)begin)) + ((((dynamic)end)) - (((dynamic)begin))) * t;
+            ((T)result);
+            return true;
+        } catch (NoSuchMethodError null) {
+            ;
+        } catch (TypeError null) {
+            ;
+        };
+    }());
+    return ((T)(((dynamic)begin)) + ((((dynamic)end)) - (((dynamic)begin))) * t);
 }
 
-T Tween::transform(double t) {
+template<typename T : Object> T TweenCls<T>::transform(double t) {
     if (t == 0.0) {
-        return (;
+        return ((T)begin);
     }
     if (t == 1.0) {
-        return (;
+        return ((T)end);
     }
     return lerp(t);
 }
 
-String Tween::toString() {
+template<typename T : Object> String TweenCls<T>::toString() {
     return "${objectRuntimeType(this, 'Animatable')}($begin \u2192 $end)";
 }
 
-ReverseTween::ReverseTween(Tween<T> parent) {
+template<typename T : Object> ReverseTweenCls<T>::ReverseTweenCls(Tween<T> parent) {
     {
         assert(parent != nullptr);
-        super(parent.end, parent.begin);
     }
 }
 
-T ReverseTween::lerp(double t) {
-    return parent.lerp(1.0 - t);
+template<typename T : Object> T ReverseTweenCls<T>::lerp(double t) {
+    return parent->lerp(1.0 - t);
 }
 
-Color ColorTween::lerp(double t) {
-    return Color.lerp(begin, end, t);
+Color ColorTweenCls::lerp(double t) {
+    return ColorCls->lerp(begin, end, t);
 }
 
-Size SizeTween::lerp(double t) {
-    return Size.lerp(begin, end, t);
+Size SizeTweenCls::lerp(double t) {
+    return SizeCls->lerp(begin, end, t);
 }
 
-Rect RectTween::lerp(double t) {
-    return Rect.lerp(begin, end, t);
+Rect RectTweenCls::lerp(double t) {
+    return RectCls->lerp(begin, end, t);
 }
 
-int IntTween::lerp(double t) {
-    return (begin! + (end! - begin!) * t).round();
+int IntTweenCls::lerp(double t) {
+    return (begin! + (end! - begin!) * t)->round();
 }
 
-int StepTween::lerp(double t) {
-    return (begin! + (end! - begin!) * t).floor();
+int StepTweenCls::lerp(double t) {
+    return (begin! + (end! - begin!) * t)->floor();
 }
 
-ConstantTween::ConstantTween(T value) {
-    {
-        super(value, value);
-    }
+template<typename T> ConstantTweenCls<T>::ConstantTweenCls(T value) {
 }
 
-T ConstantTween::lerp(double t) {
-    return (;
+template<typename T> T ConstantTweenCls<T>::lerp(double t) {
+    return ((T)begin);
 }
 
-String ConstantTween::toString() {
+template<typename T> String ConstantTweenCls<T>::toString() {
     return "${objectRuntimeType(this, 'ConstantTween')}(value: $begin)";
 }
 
-CurveTween::CurveTween(Curve curve) {
+CurveTweenCls::CurveTweenCls(Curve curve) {
     {
         assert(curve != nullptr);
     }
 }
 
-double CurveTween::transform(double t) {
+double CurveTweenCls::transform(double t) {
     if (t == 0.0 || t == 1.0) {
-        assert(curve.transform(t).round() == t);
+        assert(curve->transform(t)->round() == t);
         return t;
     }
-    return curve.transform(t);
+    return curve->transform(t);
 }
 
-String CurveTween::toString() {
+String CurveTweenCls::toString() {
     return "${objectRuntimeType(this, 'CurveTween')}(curve: $curve)";
 }

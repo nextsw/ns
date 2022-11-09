@@ -1,10 +1,12 @@
-#ifndef COLLECTION_H
-#define COLLECTION_H
-#include <memory>
-#include <_internal.hpp>
+#ifndef DART_COLLECTION_COLLECTION
+#define DART_COLLECTION_COLLECTION
+#include <base.hpp>
+#include <dart/internal/internal.hpp>
 
-#include <internal/internal.hpp>
-#include <math/math.hpp>
+#include <dart/core/core.hpp>
+#include <dart/internal/internal.hpp>
+#include <dart/math/math.hpp>
+
 
 // Parts
 #include "collections.hpp"
@@ -20,6 +22,5 @@
 #include "queue.hpp"
 #include "set.hpp"
 #include "splay_tree.hpp"
-
 
 #endif

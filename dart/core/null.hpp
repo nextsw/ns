@@ -1,21 +1,22 @@
-#ifndef NULL_H
-#define NULL_H
-#include <memory>
+#ifndef DART_CORE_NULL
+#define DART_CORE_NULL
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
 
 
-
-
-class Null {
+class NullCls : public ObjectCls {
 public:
 
-    external int hashCode();
-
-    String toString();
+    extern int hashCode();
+    virtual String toString();
 
 private:
 
-    void  _uninstantiable();
+    virtual void  _uninstantiable();
 
 };
+using Null = std::shared_ptr<NullCls>;
+
 
 #endif

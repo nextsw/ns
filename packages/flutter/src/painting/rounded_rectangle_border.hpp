@@ -1,9 +1,10 @@
-#ifndef ROUNDED_RECTANGLE_BORDER_H
-#define ROUNDED_RECTANGLE_BORDER_H
-#include <memory>
+#ifndef PACKAGES_FLUTTER_SRC_PAINTING_ROUNDED_RECTANGLE_BORDER
+#define PACKAGES_FLUTTER_SRC_PAINTING_ROUNDED_RECTANGLE_BORDER
+#include <base.hpp>
 
-#include <ui/ui.hpp>
-#include <flutter/foundation.hpp>
+#include <dart/core/core.hpp>
+#include <dart/ui/ui.hpp>
+#include <packages/flutter/lib/foundation.hpp>
 #include "basic_types.hpp"
 #include "border_radius.hpp"
 #include "borders.hpp"
@@ -11,77 +12,79 @@
 #include "edge_insets.hpp"
 
 
-
-class RoundedRectangleBorder : OutlinedBorder {
+class RoundedRectangleBorderCls : public OutlinedBorderCls {
 public:
     BorderRadiusGeometry borderRadius;
 
 
-     RoundedRectangleBorder(BorderRadiusGeometry borderRadius, Unknown);
+     RoundedRectangleBorderCls(BorderRadiusGeometry borderRadius, Unknown side);
 
-    EdgeInsetsGeometry dimensions();
+    virtual EdgeInsetsGeometry dimensions();
 
-    ShapeBorder scale(double t);
+    virtual ShapeBorder scale(double t);
 
-    ShapeBorder lerpFrom(ShapeBorder a, double t);
+    virtual ShapeBorder lerpFrom(ShapeBorder a, double t);
 
-    ShapeBorder lerpTo(ShapeBorder b, double t);
+    virtual ShapeBorder lerpTo(ShapeBorder b, double t);
 
-    RoundedRectangleBorder copyWith(BorderRadiusGeometry borderRadius, BorderSide side);
+    virtual RoundedRectangleBorder copyWith(BorderRadiusGeometry borderRadius, BorderSide side);
 
-    Path getInnerPath(Rect rect, TextDirection textDirection);
+    virtual Path getInnerPath(Rect rect, TextDirection textDirection);
 
-    Path getOuterPath(Rect rect, TextDirection textDirection);
+    virtual Path getOuterPath(Rect rect, TextDirection textDirection);
 
-    void paint(Canvas canvas, Rect rect, TextDirection textDirection);
+    virtual void paint(Canvas canvas, Rect rect, TextDirection textDirection);
 
-    bool ==(Object other);
+    virtual bool operator==(Object other);
 
-    int hashCode();
+    virtual int hashCode();
 
-    String toString();
+    virtual String toString();
 
 private:
 
 };
+using RoundedRectangleBorder = std::shared_ptr<RoundedRectangleBorderCls>;
 
-class _RoundedRectangleToCircleBorder : OutlinedBorder {
+class _RoundedRectangleToCircleBorderCls : public OutlinedBorderCls {
 public:
     BorderRadiusGeometry borderRadius;
 
     double circleness;
 
 
-    EdgeInsetsGeometry dimensions();
+    virtual EdgeInsetsGeometry dimensions();
 
-    ShapeBorder scale(double t);
+    virtual ShapeBorder scale(double t);
 
-    ShapeBorder lerpFrom(ShapeBorder a, double t);
+    virtual ShapeBorder lerpFrom(ShapeBorder a, double t);
 
-    ShapeBorder lerpTo(ShapeBorder b, double t);
+    virtual ShapeBorder lerpTo(ShapeBorder b, double t);
 
-    Path getInnerPath(Rect rect, TextDirection textDirection);
+    virtual Path getInnerPath(Rect rect, TextDirection textDirection);
 
-    Path getOuterPath(Rect rect, TextDirection textDirection);
+    virtual Path getOuterPath(Rect rect, TextDirection textDirection);
 
-    _RoundedRectangleToCircleBorder copyWith(BorderRadiusGeometry borderRadius, double circleness, BorderSide side);
+    virtual _RoundedRectangleToCircleBorder copyWith(BorderRadiusGeometry borderRadius, double circleness, BorderSide side);
 
-    void paint(Canvas canvas, Rect rect, TextDirection textDirection);
+    virtual void paint(Canvas canvas, Rect rect, TextDirection textDirection);
 
-    bool ==(Object other);
+    virtual bool operator==(Object other);
 
-    int hashCode();
+    virtual int hashCode();
 
-    String toString();
+    virtual String toString();
 
 private:
 
-     _RoundedRectangleToCircleBorder(BorderRadiusGeometry borderRadius, double circleness, Unknown);
+     _RoundedRectangleToCircleBorderCls(BorderRadiusGeometry borderRadius, double circleness, Unknown side);
 
-    Rect _adjustRect(Rect rect);
+    virtual Rect _adjustRect(Rect rect);
 
-    BorderRadius _adjustBorderRadius(Rect rect, TextDirection textDirection);
+    virtual BorderRadius _adjustBorderRadius(Rect rect, TextDirection textDirection);
 
 };
+using _RoundedRectangleToCircleBorder = std::shared_ptr<_RoundedRectangleToCircleBorderCls>;
+
 
 #endif

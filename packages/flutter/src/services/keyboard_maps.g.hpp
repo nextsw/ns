@@ -1,58 +1,59 @@
-#ifndef KEYBOARD_MAPS.G_H
-#define KEYBOARD_MAPS.G_H
-#include <memory>
+#ifndef PACKAGES_FLUTTER_SRC_SERVICES_KEYBOARD_MAPS.G
+#define PACKAGES_FLUTTER_SRC_SERVICES_KEYBOARD_MAPS.G
+#include <base.hpp>
 #include "keyboard_key.g.hpp"
 
+#include <dart/core/core.hpp>
 #include "keyboard_key.g.hpp"
 
+Map<int, LogicalKeyboardKey> kAndroidToLogicalKey;
 
-const Map<int, LogicalKeyboardKey> kAndroidToLogicalKey;
+Map<int, PhysicalKeyboardKey> kAndroidToPhysicalKey;
 
-const Map<int, PhysicalKeyboardKey> kAndroidToPhysicalKey;
+Map<int, LogicalKeyboardKey> kAndroidNumPadMap;
 
-const Map<int, LogicalKeyboardKey> kAndroidNumPadMap;
+Map<int, LogicalKeyboardKey> kFuchsiaToLogicalKey;
 
-const Map<int, LogicalKeyboardKey> kFuchsiaToLogicalKey;
+Map<int, PhysicalKeyboardKey> kFuchsiaToPhysicalKey;
 
-const Map<int, PhysicalKeyboardKey> kFuchsiaToPhysicalKey;
+Map<int, PhysicalKeyboardKey> kMacOsToPhysicalKey;
 
-const Map<int, PhysicalKeyboardKey> kMacOsToPhysicalKey;
+Map<int, LogicalKeyboardKey> kMacOsNumPadMap;
 
-const Map<int, LogicalKeyboardKey> kMacOsNumPadMap;
+Map<int, LogicalKeyboardKey> kMacOsFunctionKeyMap;
 
-const Map<int, LogicalKeyboardKey> kMacOsFunctionKeyMap;
+Map<int, LogicalKeyboardKey> kMacOsToLogicalKey;
 
-const Map<int, LogicalKeyboardKey> kMacOsToLogicalKey;
+Map<int, PhysicalKeyboardKey> kIosToPhysicalKey;
 
-const Map<int, PhysicalKeyboardKey> kIosToPhysicalKey;
+Map<int, LogicalKeyboardKey> kIosNumPadMap;
 
-const Map<int, LogicalKeyboardKey> kIosNumPadMap;
+Map<int, LogicalKeyboardKey> kIosToLogicalKey;
 
-const Map<int, LogicalKeyboardKey> kIosToLogicalKey;
+Map<int, LogicalKeyboardKey> kGlfwToLogicalKey;
 
-const Map<int, LogicalKeyboardKey> kGlfwToLogicalKey;
+Map<int, LogicalKeyboardKey> kGlfwNumpadMap;
 
-const Map<int, LogicalKeyboardKey> kGlfwNumpadMap;
+Map<int, LogicalKeyboardKey> kGtkToLogicalKey;
 
-const Map<int, LogicalKeyboardKey> kGtkToLogicalKey;
+Map<int, LogicalKeyboardKey> kGtkNumpadMap;
 
-const Map<int, LogicalKeyboardKey> kGtkNumpadMap;
+Map<int, PhysicalKeyboardKey> kLinuxToPhysicalKey;
 
-const Map<int, PhysicalKeyboardKey> kLinuxToPhysicalKey;
+Map<String, LogicalKeyboardKey> kWebToLogicalKey;
 
-const Map<String, LogicalKeyboardKey> kWebToLogicalKey;
+Map<String, PhysicalKeyboardKey> kWebToPhysicalKey;
 
-const Map<String, PhysicalKeyboardKey> kWebToPhysicalKey;
+Map<String, LogicalKeyboardKey> kWebNumPadMap;
 
-const Map<String, LogicalKeyboardKey> kWebNumPadMap;
+Map<String, List<LogicalKeyboardKey>> kWebLocationMap;
 
-const Map<String, List<LogicalKeyboardKey>> kWebLocationMap;
+Map<int, LogicalKeyboardKey> kWindowsToLogicalKey;
 
-const Map<int, LogicalKeyboardKey> kWindowsToLogicalKey;
+Map<int, PhysicalKeyboardKey> kWindowsToPhysicalKey;
 
-const Map<int, PhysicalKeyboardKey> kWindowsToPhysicalKey;
+Map<int, LogicalKeyboardKey> kWindowsNumPadMap;
 
-const Map<int, LogicalKeyboardKey> kWindowsNumPadMap;
 
 
 #endif

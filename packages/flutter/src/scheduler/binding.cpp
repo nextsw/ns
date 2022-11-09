@@ -8,266 +8,409 @@ void timeDilation(double value) {
     if (_timeDilation == value) {
         return;
     }
-    SchedulerBinding._instance?.resetEpoch();
+    SchedulerBindingCls::_instance?->resetEpoch();
     _timeDilation = value;
 }
 
-void _TaskEntry::run() {
+template<typename T> void _TaskEntryCls<T>::run() {
     if (!kReleaseMode) {
-        Timeline.timeSync(debugLabel ?? "Scheduled Task", flow != nullptr? Flow.step(flow!.id) : nullptr);
+        TimelineCls->timeSync(debugLabel ?? "Scheduled Task", [=] () {
+            completer->complete(task());
+        }flow != nullptr? FlowCls->step(flow!->id) : nullptr);
     } else {
-        completer.complete(task());
+        completer->complete(task());
     }
 }
 
-_TaskEntry::_TaskEntry(String debugLabel, Flow flow, int priority, TaskCallback<T> task) {
+template<typename T> _TaskEntryCls<T>::_TaskEntryCls(String debugLabel, Flow flow, int priority, TaskCallback<T> task) {
     {
-        assert(());
+        assert([=] () {
+            debugStack = StackTraceCls::current;
+            return true;
+        }());
     }
 }
 
-_FrameCallbackEntry::_FrameCallbackEntry(FrameCallback callback, bool rescheduling) {
+_FrameCallbackEntryCls::_FrameCallbackEntryCls(FrameCallback callback, bool rescheduling) {
     {
-        assert(());
+        assert([=] () {
+            if (rescheduling) {
+                assert([=] () {
+                    if (debugCurrentCallbackStack == nullptr) {
+                        ;
+                    }
+                    return true;
+                }());
+                debugStack = debugCurrentCallbackStack;
+            } else {
+                debugStack = StackTraceCls::current;
+            }
+            return true;
+        }());
     }
 }
 
-void SchedulerBinding::initInstances() {
-    super.initInstances();
+void SchedulerBindingCls::initInstances() {
+    super->initInstances();
     _instance = this;
     if (!kReleaseMode) {
-        addTimingsCallback();
+        addTimingsCallback([=] (List<FrameTiming> timings) {
+            timings->forEach(_profileFramePostEvent);
+        });
     }
 }
 
-SchedulerBinding SchedulerBinding::instance() {
-    return BindingBase.checkInstance(_instance);
+SchedulerBinding SchedulerBindingCls::instance() {
+    return BindingBaseCls->checkInstance(_instance);
 }
 
-void SchedulerBinding::addTimingsCallback(TimingsCallback callback) {
-    _timingsCallbacks.add(callback);
-    if (_timingsCallbacks.length == 1) {
-        assert(platformDispatcher.onReportTimings == nullptr);
-        platformDispatcher.onReportTimings = _executeTimingsCallbacks;
+void SchedulerBindingCls::addTimingsCallback(TimingsCallback callback) {
+    _timingsCallbacks->add(callback);
+    if (_timingsCallbacks->length == 1) {
+        assert(platformDispatcher->onReportTimings == nullptr);
+        platformDispatcher->onReportTimings = _executeTimingsCallbacks;
     }
-    assert(platformDispatcher.onReportTimings == _executeTimingsCallbacks);
+    assert(platformDispatcher->onReportTimings == _executeTimingsCallbacks);
 }
 
-void SchedulerBinding::removeTimingsCallback(TimingsCallback callback) {
-    assert(_timingsCallbacks.contains(callback));
-    _timingsCallbacks.remove(callback);
-    if (_timingsCallbacks.isEmpty) {
-        platformDispatcher.onReportTimings = nullptr;
+void SchedulerBindingCls::removeTimingsCallback(TimingsCallback callback) {
+    assert(_timingsCallbacks->contains(callback));
+    _timingsCallbacks->remove(callback);
+    if (_timingsCallbacks->isEmpty) {
+        platformDispatcher->onReportTimings = nullptr;
     }
 }
 
-void SchedulerBinding::initServiceExtensions() {
-    super.initServiceExtensions();
+void SchedulerBindingCls::initServiceExtensions() {
+    super->initServiceExtensions();
     if (!kReleaseMode) {
-        registerNumericServiceExtension("timeDilation", , );
+        registerNumericServiceExtension("timeDilation", [=] ()         {
+            timeDilation;
+        }, [=] (double value) {
+            timeDilation = value;
+        });
     }
 }
 
-AppLifecycleState SchedulerBinding::lifecycleState() {
+AppLifecycleState SchedulerBindingCls::lifecycleState() {
     return _lifecycleState;
 }
 
-void SchedulerBinding::handleAppLifecycleStateChanged(AppLifecycleState state) {
+void SchedulerBindingCls::handleAppLifecycleStateChanged(AppLifecycleState state) {
     assert(state != nullptr);
     _lifecycleState = state;
     ;
 }
 
-Future<T> SchedulerBinding::scheduleTask<T>(String debugLabel, Flow flow, Priority priority, TaskCallback<T> task) {
-    bool isFirstTask = _taskQueue.isEmpty;
-    _TaskEntry<T> entry = <T>_TaskEntry(task, priority.value, debugLabel, flow);
-    _taskQueue.add(entry);
+Future<T> SchedulerBindingCls::scheduleTasktemplate<typename T> (String debugLabel, Flow flow, Priority priority, TaskCallback<T> task) {
+    bool isFirstTask = _taskQueue->isEmpty;
+    _TaskEntry<T> entry = <T>make<_TaskEntryCls>(task, priority->value, debugLabel, flow);
+    _taskQueue->add(entry);
     if (isFirstTask && !locked) {
         _ensureEventLoopCallback();
     }
-    return entry.completer.future;
+    return entry->completer->future;
 }
 
-void SchedulerBinding::unlocked() {
-    super.unlocked();
-    if (_taskQueue.isNotEmpty) {
+void SchedulerBindingCls::unlocked() {
+    super->unlocked();
+    if (_taskQueue->isNotEmpty) {
         _ensureEventLoopCallback();
     }
 }
 
-bool SchedulerBinding::handleEventLoopCallback() {
-    if (_taskQueue.isEmpty || locked) {
+bool SchedulerBindingCls::handleEventLoopCallback() {
+    if (_taskQueue->isEmpty || locked) {
         return false;
     }
-    _TaskEntry<dynamic> entry = _taskQueue.first;
-    if (schedulingStrategy(entry.priority, this)) {
-        ;
-        return _taskQueue.isNotEmpty;
+    _TaskEntry<dynamic> entry = _taskQueue->first;
+    if (schedulingStrategy(entry->priority, this)) {
+        try {
+            _taskQueue->removeFirst();
+            entry->run();
+        } catch (Unknown exception) {
+            StackTrace callbackStack;
+            assert([=] () {
+                callbackStack = entry->debugStack;
+                return true;
+            }());
+            FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(exception, exceptionStack, "scheduler library", make<ErrorDescriptionCls>("during a task callback"), (callbackStack == nullptr)? nullptr : [=] () {
+                return makeList(ArrayItem);
+            }));
+        };
+        return _taskQueue->isNotEmpty;
     }
     return false;
 }
 
-int SchedulerBinding::transientCallbackCount() {
-    return _transientCallbacks.length;
+int SchedulerBindingCls::transientCallbackCount() {
+    return _transientCallbacks->length;
 }
 
-int SchedulerBinding::scheduleFrameCallback(FrameCallback callback, bool rescheduling) {
+int SchedulerBindingCls::scheduleFrameCallback(FrameCallback callback, bool rescheduling) {
     scheduleFrame();
     _nextFrameCallbackId = 1;
-    _transientCallbacks[_nextFrameCallbackId] = _FrameCallbackEntry(callbackrescheduling);
+    _transientCallbacks[_nextFrameCallbackId] = make<_FrameCallbackEntryCls>(callbackrescheduling);
     return _nextFrameCallbackId;
 }
 
-void SchedulerBinding::cancelFrameCallbackWithId(int id) {
+void SchedulerBindingCls::cancelFrameCallbackWithId(int id) {
     assert(id > 0);
-    _transientCallbacks.remove(id);
-    _removedIds.add(id);
+    _transientCallbacks->remove(id);
+    _removedIds->add(id);
 }
 
-bool SchedulerBinding::debugAssertNoTransientCallbacks(String reason) {
-    assert(());
+bool SchedulerBindingCls::debugAssertNoTransientCallbacks(String reason) {
+    assert([=] () {
+        if (transientCallbackCount > 0) {
+            int count = transientCallbackCount;
+            Map<int, _FrameCallbackEntry> callbacks = <int, _FrameCallbackEntry>of(_transientCallbacks);
+                    List<DiagnosticsNode> list1 = make<ListCls<>>();        if (count == 1) {            list1.add(ArrayItem);        } else {            list1.add(ArrayItem);        }for (int id : callbacks->keys)             {                        ;                    }        {            list1.add(ArrayItem);        }FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(reason, "scheduler library", [=] ()             {
+                list1;
+            }));
+        }
+        return true;
+    }());
     return true;
 }
 
-void SchedulerBinding::debugPrintTransientCallbackRegistrationStack() {
-    assert(());
+void SchedulerBindingCls::debugPrintTransientCallbackRegistrationStack() {
+    assert([=] () {
+        if (_FrameCallbackEntryCls::debugCurrentCallbackStack != nullptr) {
+            debugPrint("When the current transient callback was registered, this was the stack:");
+            debugPrint(FlutterErrorCls->defaultStackFilter(FlutterErrorCls->demangleStackTrace(_FrameCallbackEntryCls::debugCurrentCallbackStack!)->toString()->trimRight()->split("\n"))->join("\n"));
+        } else {
+            debugPrint("No transient callback is currently executing.");
+        }
+        return true;
+    }());
 }
 
-void SchedulerBinding::addPersistentFrameCallback(FrameCallback callback) {
-    _persistentCallbacks.add(callback);
+void SchedulerBindingCls::addPersistentFrameCallback(FrameCallback callback) {
+    _persistentCallbacks->add(callback);
 }
 
-void SchedulerBinding::addPostFrameCallback(FrameCallback callback) {
-    _postFrameCallbacks.add(callback);
+void SchedulerBindingCls::addPostFrameCallback(FrameCallback callback) {
+    _postFrameCallbacks->add(callback);
 }
 
-Future<void> SchedulerBinding::endOfFrame() {
+Future<void> SchedulerBindingCls::endOfFrame() {
     if (_nextFrameCompleter == nullptr) {
-        if (schedulerPhase == SchedulerPhase.idle) {
+        if (schedulerPhase == SchedulerPhaseCls::idle) {
             scheduleFrame();
         }
-        _nextFrameCompleter = <void>Completer();
-        addPostFrameCallback();
+        _nextFrameCompleter = <void>make<CompleterCls>();
+        addPostFrameCallback([=] (Duration timeStamp) {
+            _nextFrameCompleter!->complete();
+            _nextFrameCompleter = nullptr;
+        });
     }
-    return _nextFrameCompleter!.future;
+    return _nextFrameCompleter!->future;
 }
 
-bool SchedulerBinding::hasScheduledFrame() {
+bool SchedulerBindingCls::hasScheduledFrame() {
     return _hasScheduledFrame;
 }
 
-SchedulerPhase SchedulerBinding::schedulerPhase() {
+SchedulerPhase SchedulerBindingCls::schedulerPhase() {
     return _schedulerPhase;
 }
 
-bool SchedulerBinding::framesEnabled() {
+bool SchedulerBindingCls::framesEnabled() {
     return _framesEnabled;
 }
 
-void SchedulerBinding::ensureFrameCallbacksRegistered() {
-    platformDispatcher.onBeginFrame = _handleBeginFrame;
-    platformDispatcher.onDrawFrame = _handleDrawFrame;
+void SchedulerBindingCls::ensureFrameCallbacksRegistered() {
+    platformDispatcher->onBeginFrame = _handleBeginFrame;
+    platformDispatcher->onDrawFrame = _handleDrawFrame;
 }
 
-void SchedulerBinding::ensureVisualUpdate() {
+void SchedulerBindingCls::ensureVisualUpdate() {
     ;
 }
 
-void SchedulerBinding::scheduleFrame() {
+void SchedulerBindingCls::scheduleFrame() {
     if (_hasScheduledFrame || !framesEnabled) {
         return;
     }
-    assert(());
+    assert([=] () {
+        if (debugPrintScheduleFrameStacks) {
+            debugPrintStack("scheduleFrame() called. Current phase is $schedulerPhase.");
+        }
+        return true;
+    }());
     ensureFrameCallbacksRegistered();
-    platformDispatcher.scheduleFrame();
+    platformDispatcher->scheduleFrame();
     _hasScheduledFrame = true;
 }
 
-void SchedulerBinding::scheduleForcedFrame() {
+void SchedulerBindingCls::scheduleForcedFrame() {
     if (_hasScheduledFrame) {
         return;
     }
-    assert(());
+    assert([=] () {
+        if (debugPrintScheduleFrameStacks) {
+            debugPrintStack("scheduleForcedFrame() called. Current phase is $schedulerPhase.");
+        }
+        return true;
+    }());
     ensureFrameCallbacksRegistered();
-    platformDispatcher.scheduleFrame();
+    platformDispatcher->scheduleFrame();
     _hasScheduledFrame = true;
 }
 
-void SchedulerBinding::scheduleWarmUpFrame() {
-    if (_warmUpFrame || schedulerPhase != SchedulerPhase.idle) {
+void SchedulerBindingCls::scheduleWarmUpFrame() {
+    if (_warmUpFrame || schedulerPhase != SchedulerPhaseCls::idle) {
         return;
     }
     _warmUpFrame = true;
-    TimelineTask timelineTask = ;
+    auto _c1 = make<TimelineTaskCls>();_c1.start("Warm-up frame");TimelineTask timelineTask = _c1;
     bool hadScheduledFrame = _hasScheduledFrame;
-    Timer.run();
-    Timer.run();
-    lockEvents();
+    TimerCls->run([=] () {
+        assert(_warmUpFrame);
+        handleBeginFrame(nullptr);
+    });
+    TimerCls->run([=] () {
+        assert(_warmUpFrame);
+        handleDrawFrame();
+        resetEpoch();
+        _warmUpFrame = false;
+        if (hadScheduledFrame) {
+            scheduleFrame();
+        }
+    });
+    lockEvents([=] () {
+        await await endOfFrame;
+        timelineTask->finish();
+    });
 }
 
-void SchedulerBinding::resetEpoch() {
+void SchedulerBindingCls::resetEpoch() {
     _epochStart = _adjustForEpoch(_lastRawTimeStamp);
     _firstRawTimeStampInEpoch = nullptr;
 }
 
-Duration SchedulerBinding::currentFrameTimeStamp() {
+Duration SchedulerBindingCls::currentFrameTimeStamp() {
     assert(_currentFrameTimeStamp != nullptr);
     return _currentFrameTimeStamp!;
 }
 
-Duration SchedulerBinding::currentSystemFrameTimeStamp() {
+Duration SchedulerBindingCls::currentSystemFrameTimeStamp() {
     assert(_lastRawTimeStamp != nullptr);
     return _lastRawTimeStamp;
 }
 
-void SchedulerBinding::handleBeginFrame(Duration rawTimeStamp) {
-    _frameTimelineTask?.start("Frame");
+void SchedulerBindingCls::handleBeginFrame(Duration rawTimeStamp) {
+    _frameTimelineTask?->start("Frame");
     _firstRawTimeStampInEpoch = rawTimeStamp;
     _currentFrameTimeStamp = _adjustForEpoch(rawTimeStamp ?? _lastRawTimeStamp);
     if (rawTimeStamp != nullptr) {
         _lastRawTimeStamp = rawTimeStamp;
     }
-    assert(());
-    assert(schedulerPhase == SchedulerPhase.idle);
+    assert([=] () {
+        _debugFrameNumber = 1;
+        if (debugPrintBeginFrameBanner || debugPrintEndFrameBanner) {
+            StringBuffer frameTimeStampDescription = make<StringBufferCls>();
+            if (rawTimeStamp != nullptr) {
+                _debugDescribeTimeStamp(_currentFrameTimeStamp!, frameTimeStampDescription);
+            } else {
+                frameTimeStampDescription->write("(warm-up frame)");
+            }
+            _debugBanner = "▄▄▄▄▄▄▄▄ Frame ${_debugFrameNumber.toString().padRight(7)}   ${frameTimeStampDescription.toString().padLeft(18)} ▄▄▄▄▄▄▄▄";
+            if (debugPrintBeginFrameBanner) {
+                debugPrint(_debugBanner);
+            }
+        }
+        return true;
+    }());
+    assert(schedulerPhase == SchedulerPhaseCls::idle);
     _hasScheduledFrame = false;
-    ;
+    try {
+        _frameTimelineTask?->start("Animate");
+        _schedulerPhase = SchedulerPhaseCls::transientCallbacks;
+        Map<int, _FrameCallbackEntry> callbacks = _transientCallbacks;
+        _transientCallbacks = makeMap(makeList(), makeList();
+        callbacks->forEach([=] (int id,_FrameCallbackEntry callbackEntry) {
+            if (!_removedIds->contains(id)) {
+                _invokeFrameCallback(callbackEntry->callback, _currentFrameTimeStamp!, callbackEntry->debugStack);
+            }
+        });
+        _removedIds->clear();
+    } finally {
+        _schedulerPhase = SchedulerPhaseCls::midFrameMicrotasks;
+    };
 }
 
-void SchedulerBinding::handleDrawFrame() {
-    assert(_schedulerPhase == SchedulerPhase.midFrameMicrotasks);
-    _frameTimelineTask?.finish();
-    ;
+void SchedulerBindingCls::handleDrawFrame() {
+    assert(_schedulerPhase == SchedulerPhaseCls::midFrameMicrotasks);
+    _frameTimelineTask?->finish();
+    try {
+        _schedulerPhase = SchedulerPhaseCls::persistentCallbacks;
+        for (FrameCallback callback : _persistentCallbacks) {
+            _invokeFrameCallback(callback, _currentFrameTimeStamp!);
+        }
+        _schedulerPhase = SchedulerPhaseCls::postFrameCallbacks;
+        List<FrameCallback> localPostFrameCallbacks = <FrameCallback>of(_postFrameCallbacks);
+        _postFrameCallbacks->clear();
+        for (FrameCallback callback : localPostFrameCallbacks) {
+            _invokeFrameCallback(callback, _currentFrameTimeStamp!);
+        }
+    } finally {
+        _schedulerPhase = SchedulerPhaseCls::idle;
+        _frameTimelineTask?->finish();
+        assert([=] () {
+            if (debugPrintEndFrameBanner) {
+                debugPrint("▀" * _debugBanner!->length);
+            }
+            _debugBanner = nullptr;
+            return true;
+        }());
+        _currentFrameTimeStamp = nullptr;
+    };
 }
 
-void SchedulerBinding::_executeTimingsCallbacks(List<FrameTiming> timings) {
+void SchedulerBindingCls::_executeTimingsCallbacks(List<FrameTiming> timings) {
     List<TimingsCallback> clonedCallbacks = <TimingsCallback>of(_timingsCallbacks);
     for (TimingsCallback callback : clonedCallbacks) {
-        ;
+        try {
+            if (_timingsCallbacks->contains(callback)) {
+                callback(timings);
+            }
+        } catch (Unknown exception) {
+            InformationCollector collector;
+            assert([=] () {
+                collector = [=] ()                 {
+                    makeList(ArrayItem);
+                };
+                return true;
+            }());
+            FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(exception, stack, make<ErrorDescriptionCls>("while executing callbacks for FrameTiming"), collector));
+        };
     }
 }
 
-int SchedulerBinding::_taskSorter(_TaskEntry<dynamic> e1, _TaskEntry<dynamic> e2) {
-    return -e1.priority.compareTo(e2.priority);
+int SchedulerBindingCls::_taskSorter(_TaskEntry<dynamic> e1, _TaskEntry<dynamic> e2) {
+    return -e1->priority->compareTo(e2->priority);
 }
 
-void SchedulerBinding::_ensureEventLoopCallback() {
+void SchedulerBindingCls::_ensureEventLoopCallback() {
     assert(!locked);
-    assert(_taskQueue.isNotEmpty);
+    assert(_taskQueue->isNotEmpty);
     if (_hasRequestedAnEventLoopCallback) {
         return;
     }
     _hasRequestedAnEventLoopCallback = true;
-    Timer.run(_runTasks);
+    TimerCls->run(_runTasks);
 }
 
-void SchedulerBinding::_runTasks() {
+void SchedulerBindingCls::_runTasks() {
     _hasRequestedAnEventLoopCallback = false;
     if (handleEventLoopCallback()) {
         _ensureEventLoopCallback();
     }
 }
 
-void SchedulerBinding::_setFramesEnabledState(bool enabled) {
+void SchedulerBindingCls::_setFramesEnabledState(bool enabled) {
     if (_framesEnabled == enabled) {
         return;
     }
@@ -277,12 +420,12 @@ void SchedulerBinding::_setFramesEnabledState(bool enabled) {
     }
 }
 
-Duration SchedulerBinding::_adjustForEpoch(Duration rawTimeStamp) {
-    Duration rawDurationSinceEpoch = _firstRawTimeStampInEpoch == nullptr? Duration.zero : rawTimeStamp - _firstRawTimeStampInEpoch!;
-    return Duration((rawDurationSinceEpoch.inMicroseconds / timeDilation).round() + _epochStart.inMicroseconds);
+Duration SchedulerBindingCls::_adjustForEpoch(Duration rawTimeStamp) {
+    Duration rawDurationSinceEpoch = _firstRawTimeStampInEpoch == nullptr? DurationCls::zero : rawTimeStamp - _firstRawTimeStampInEpoch!;
+    return make<DurationCls>((rawDurationSinceEpoch->inMicroseconds / timeDilation)->round() + _epochStart->inMicroseconds);
 }
 
-void SchedulerBinding::_handleBeginFrame(Duration rawTimeStamp) {
+void SchedulerBindingCls::_handleBeginFrame(Duration rawTimeStamp) {
     if (_warmUpFrame) {
         assert(!_rescheduleAfterWarmUpFrame);
         _rescheduleAfterWarmUpFrame = true;
@@ -291,51 +434,66 @@ void SchedulerBinding::_handleBeginFrame(Duration rawTimeStamp) {
     handleBeginFrame(rawTimeStamp);
 }
 
-void SchedulerBinding::_handleDrawFrame() {
+void SchedulerBindingCls::_handleDrawFrame() {
     if (_rescheduleAfterWarmUpFrame) {
         _rescheduleAfterWarmUpFrame = false;
-        addPostFrameCallback();
+        addPostFrameCallback([=] (Duration timeStamp) {
+            _hasScheduledFrame = false;
+            scheduleFrame();
+        });
         return;
     }
     handleDrawFrame();
 }
 
-void SchedulerBinding::_profileFramePostEvent(FrameTiming frameTiming) {
-    postEvent("Flutter.Frame", );
+void SchedulerBindingCls::_profileFramePostEvent(FrameTiming frameTiming) {
+    Map<String, dynamic> map1 = make<MapCls<>>();map1.set("number", frameTiming->frameNumber);map1.set("startTime", frameTiming->timestampInMicroseconds(FramePhaseCls::buildStart));map1.set("elapsed", frameTiming->totalSpan->inMicroseconds);map1.set("build", frameTiming->buildDuration->inMicroseconds);map1.set("raster", frameTiming->rasterDuration->inMicroseconds);map1.set("vsyncOverhead", frameTiming->vsyncOverhead->inMicroseconds);postEvent("Flutter.Frame", list1);
 }
 
-void SchedulerBinding::_debugDescribeTimeStamp(StringBuffer buffer, Duration timeStamp) {
-    if (timeStamp.inDays > 0) {
-        buffer.write("${timeStamp.inDays}d ");
+void SchedulerBindingCls::_debugDescribeTimeStamp(StringBuffer buffer, Duration timeStamp) {
+    if (timeStamp->inDays > 0) {
+        buffer->write("${timeStamp.inDays}d ");
     }
-    if (timeStamp.inHours > 0) {
-        buffer.write("${timeStamp.inHours - timeStamp.inDays * Duration.hoursPerDay}h ");
+    if (timeStamp->inHours > 0) {
+        buffer->write("${timeStamp.inHours - timeStamp.inDays * Duration.hoursPerDay}h ");
     }
-    if (timeStamp.inMinutes > 0) {
-        buffer.write("${timeStamp.inMinutes - timeStamp.inHours * Duration.minutesPerHour}m ");
+    if (timeStamp->inMinutes > 0) {
+        buffer->write("${timeStamp.inMinutes - timeStamp.inHours * Duration.minutesPerHour}m ");
     }
-    if (timeStamp.inSeconds > 0) {
-        buffer.write("${timeStamp.inSeconds - timeStamp.inMinutes * Duration.secondsPerMinute}s ");
+    if (timeStamp->inSeconds > 0) {
+        buffer->write("${timeStamp.inSeconds - timeStamp.inMinutes * Duration.secondsPerMinute}s ");
     }
-    buffer.write("${timeStamp.inMilliseconds - timeStamp.inSeconds * Duration.millisecondsPerSecond}");
-    int microseconds = timeStamp.inMicroseconds - timeStamp.inMilliseconds * Duration.microsecondsPerMillisecond;
+    buffer->write("${timeStamp.inMilliseconds - timeStamp.inSeconds * Duration.millisecondsPerSecond}");
+    int microseconds = timeStamp->inMicroseconds - timeStamp->inMilliseconds * DurationCls::microsecondsPerMillisecond;
     if (microseconds > 0) {
-        buffer.write(".${microseconds.toString().padLeft(3, "0")}");
+        buffer->write(".${microseconds.toString().padLeft(3, "0")}");
     }
-    buffer.write("ms");
+    buffer->write("ms");
 }
 
-void SchedulerBinding::_invokeFrameCallback(FrameCallback callback, StackTrace callbackStack, Duration timeStamp) {
+void SchedulerBindingCls::_invokeFrameCallback(FrameCallback callback, StackTrace callbackStack, Duration timeStamp) {
     assert(callback != nullptr);
-    assert(_FrameCallbackEntry.debugCurrentCallbackStack == nullptr);
-    assert(());
-    ;
-    assert(());
+    assert(_FrameCallbackEntryCls::debugCurrentCallbackStack == nullptr);
+    assert([=] () {
+        _FrameCallbackEntryCls::debugCurrentCallbackStack = callbackStack;
+        return true;
+    }());
+    try {
+        callback(timeStamp);
+    } catch (Unknown exception) {
+        FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(exception, exceptionStack, "scheduler library", make<ErrorDescriptionCls>("during a scheduler callback"), (callbackStack == nullptr)? nullptr : [=] () {
+            return makeList(ArrayItem);
+        }));
+    };
+    assert([=] () {
+        _FrameCallbackEntryCls::debugCurrentCallbackStack = nullptr;
+        return true;
+    }());
 }
 
 bool defaultSchedulingStrategy(int priority, SchedulerBinding scheduler) {
-    if (scheduler.transientCallbackCount > 0) {
-        return priority >= Priority.animation.value;
+    if (scheduler->transientCallbackCount > 0) {
+        return priority >= PriorityCls::animation->value;
     }
     return true;
 }

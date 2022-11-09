@@ -1,21 +1,21 @@
 #include "timer.hpp"
-Timer::Timer(FunctionType callback, Duration duration) {
+TimerCls::TimerCls(void callback() , Duration duration) {
     {
-        if (Zone.current == Zone.root) {
-            return Zone.current.createTimer(duration, callback);
+        if (ZoneCls::current == ZoneCls::root) {
+            return ZoneCls::current->createTimer(duration, callback);
         }
-        return Zone.current.createTimer(duration, Zone.current.bindCallbackGuarded(callback));
+        return ZoneCls::current->createTimer(duration, ZoneCls::current->bindCallbackGuarded(callback));
     }
 }
 
-void Timer::periodic(FunctionType callback, Duration duration) {
-    if (Zone.current == Zone.root) {
-        return Zone.current.createPeriodicTimer(duration, callback);
+void TimerCls::periodic(void callback(Timer timer) , Duration duration) {
+    if (ZoneCls::current == ZoneCls::root) {
+        return ZoneCls::current->createPeriodicTimer(duration, callback);
     }
-    auto boundCallback = Zone.current.<Timer>bindUnaryCallbackGuarded(callback);
-    return Zone.current.createPeriodicTimer(duration, boundCallback);
+    auto boundCallback = ZoneCls::current-><Timer>bindUnaryCallbackGuarded(callback);
+    return ZoneCls::current->createPeriodicTimer(duration, boundCallback);
 }
 
-void Timer::run(FunctionType callback) {
-    Timer(Duration.zero, callback);
+void TimerCls::run(void callback() ) {
+    make<TimerCls>(DurationCls::zero, callback);
 }

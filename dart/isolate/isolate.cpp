@@ -1,30 +1,39 @@
 #include "isolate.hpp"
-String IsolateSpawnException::toString() {
+String IsolateSpawnExceptionCls::toString() {
     return "IsolateSpawnException: $message";
 }
 
-Capability Isolate::pause(Capability resumeCapability) {
-    resumeCapability = Capability();
+Capability IsolateCls::pause(Capability resumeCapability) {
+    resumeCapability = make<CapabilityCls>();
     _pause(resumeCapability);
     return resumeCapability;
 }
 
-Stream Isolate::errors() {
-    StreamController controller = StreamController.broadcast(true);
+Stream IsolateCls::errors() {
+    StreamController controller = StreamControllerCls->broadcast(true);
     RawReceivePort port;
-    ;
-    controller.onListen = ;
-    controller.onCancel = ;
-    return controller.stream;
+    InlineMethod;
+    controller->onListen = [=] () {
+        RawReceivePort receivePort = make<RawReceivePortCls>(handleError);
+        port = receivePort;
+        this->addErrorListener(receivePort->sendPort);
+    };
+    controller->onCancel = [=] () {
+        auto listenPort = port!;
+        port = nullptr;
+        this->removeErrorListener(listenPort->sendPort);
+        listenPort->close();
+    };
+    return controller->stream;
 }
 
-RemoteError::RemoteError(String description, String stackDescription) {
+RemoteErrorCls::RemoteErrorCls(String description, String stackDescription) {
     {
         _description = description;
-        stackTrace = StackTrace.fromString(stackDescription);
+        stackTrace = StackTraceCls->fromString(stackDescription);
     }
 }
 
-String RemoteError::toString() {
+String RemoteErrorCls::toString() {
     return _description;
 }

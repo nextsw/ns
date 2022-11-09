@@ -1,6 +1,6 @@
-#ifndef COLLECTION_H
-#define COLLECTION_H
-#include <memory>
+#ifndef PACKAGES_COLLECTION_COLLECTION
+#define PACKAGES_COLLECTION_COLLECTION
+#include <base.hpp>
 #include "src/algorithms.hpp"
 #include "src/boollist.hpp"
 #include "src/canonicalized_map.hpp"
@@ -22,6 +22,7 @@
 #include "src/unmodifiable_wrappers.hpp"
 #include "src/wrappers.hpp"
 
+#include <dart/core/core.hpp>
 
 
 

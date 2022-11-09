@@ -1,35 +1,37 @@
-#ifndef SPHERE_H
-#define SPHERE_H
-#include <memory>
+#ifndef PACKAGES_VECTOR_MATH_SRC_VECTOR_MATH_64_SPHERE
+#define PACKAGES_VECTOR_MATH_SRC_VECTOR_MATH_64_SPHERE
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
 
 
-
-
-class Sphere {
+class SphereCls : public ObjectCls {
 public:
     double radius;
 
 
-    Vector3 center();
+    virtual Vector3 center();
 
-     Sphere();
+     SphereCls();
 
-    void  copy(Sphere other);
+    virtual void  copy(Sphere other);
 
-    void  centerRadius(Vector3 center, double radius);
+    virtual void  centerRadius(Vector3 center, double radius);
 
-    void copyFrom(Sphere other);
+    virtual void copyFrom(Sphere other);
 
-    bool containsVector3(Vector3 other);
+    virtual bool containsVector3(Vector3 other);
 
-    bool intersectsWithVector3(Vector3 other);
+    virtual bool intersectsWithVector3(Vector3 other);
 
-    bool intersectsWithSphere(Sphere other);
+    virtual bool intersectsWithSphere(Sphere other);
 
 private:
     Vector3 _center;
 
 
 };
+using Sphere = std::shared_ptr<SphereCls>;
+
 
 #endif

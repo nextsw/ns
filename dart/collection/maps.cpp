@@ -1,18 +1,35 @@
 #include "maps.hpp"
-string MapBase::mapToString(Map<Object, Object> m) {
+template<typename K, typename V> String MapBaseCls<K, V>::mapToString(Map<Object, Object> m) {
     if (_isToStringVisiting(m)) {
         return "{...}";
     }
-    auto result = StringBuffer();
-    ;
-    return result.toString();
+    auto result = make<StringBufferCls>();
+    try {
+        _toStringVisiting->add(m);
+        result->write("{");
+        bool first = true;
+        m->forEach([=] (Object k,Object v) {
+            if (!first) {
+                result->write(", ");
+            }
+            first = false;
+            result->write(k);
+            result->write(": ");
+            result->write(v);
+        });
+        result->write("}");
+    } finally {
+        assert(identical(_toStringVisiting->last, m));
+        _toStringVisiting->removeLast();
+    };
+    return result->toString();
 }
 
-Object MapBase::_id(Object x) {
+template<typename K, typename V> Object MapBaseCls<K, V>::_id(Object x) {
     return x;
 }
 
-void MapBase::_fillMapWithMappedIterable(Iterable<Object> iterable, FunctionType key, Map<Object, Object> map, FunctionType value) {
+template<typename K, typename V> void MapBaseCls<K, V>::_fillMapWithMappedIterable(Iterable<Object> iterable, Object key(Object element) , Map<Object, Object> map, Object value(Object element) ) {
     key = _id;
     value = _id;
     if (key == nullptr)     {
@@ -26,36 +43,38 @@ void MapBase::_fillMapWithMappedIterable(Iterable<Object> iterable, FunctionType
     }
 }
 
-void MapBase::_fillMapWithIterables(Iterable<Object> keys, Map<Object, Object> map, Iterable<Object> values) {
-    Iterator<Object> keyIterator = keys.iterator;
-    Iterator<Object> valueIterator = values.iterator;
-    bool hasNextKey = keyIterator.moveNext();
-    bool hasNextValue = valueIterator.moveNext();
+template<typename K, typename V> void MapBaseCls<K, V>::_fillMapWithIterables(Iterable<Object> keys, Map<Object, Object> map, Iterable<Object> values) {
+    Iterator<Object> keyIterator = keys->iterator;
+    Iterator<Object> valueIterator = values->iterator;
+    bool hasNextKey = keyIterator->moveNext();
+    bool hasNextValue = valueIterator->moveNext();
     while (hasNextKey && hasNextValue) {
-        map[keyIterator.current] = valueIterator.current;
-        hasNextKey = keyIterator.moveNext();
-        hasNextValue = valueIterator.moveNext();
+        map[keyIterator->current] = valueIterator->current;
+        hasNextKey = keyIterator->moveNext();
+        hasNextValue = valueIterator->moveNext();
     }
     if (hasNextKey || hasNextValue) {
         ;
     }
 }
 
-Map<RK, RV> MapMixin::cast<RK, RV>() {
-    return Map.<K, V, RK, RV>castFrom(this);
+template<typename K, typename V> Map<RK, RV> MapMixinCls<K, V>::casttemplate<typename RK, typename RV> () {
+    return MapCls-><K, V, RK, RV>castFrom(this);
 }
 
-void MapMixin::forEach(FunctionType action) {
+template<typename K, typename V> void MapMixinCls<K, V>::forEach(void action(K key, V value) ) {
     for (K key : keys) {
-        action(key, ();
+        action(key, ((V)this[key]));
     }
 }
 
-void MapMixin::addAll(Map<K, V> other) {
-    other.forEach();
+template<typename K, typename V> void MapMixinCls<K, V>::addAll(Map<K, V> other) {
+    other->forEach([=] (K key,V value) {
+        this[key] = value;
+    });
 }
 
-bool MapMixin::containsValue(Object value) {
+template<typename K, typename V> bool MapMixinCls<K, V>::containsValue(Object value) {
     for (K key : keys) {
         if (this[key] == value)         {
             return true;
@@ -64,16 +83,16 @@ bool MapMixin::containsValue(Object value) {
     return false;
 }
 
-V MapMixin::putIfAbsent(FunctionType ifAbsent, K key) {
+template<typename K, typename V> V MapMixinCls<K, V>::putIfAbsent(V ifAbsent() , K key) {
     if (containsKey(key)) {
-        return (;
+        return ((V)this[key]);
     }
     return this[key] = ifAbsent();
 }
 
-V MapMixin::update(FunctionType ifAbsent, K key, FunctionType update) {
-    if (this.containsKey(key)) {
-        return this[key] = update(();
+template<typename K, typename V> V MapMixinCls<K, V>::update(V ifAbsent() , K key, V update(V value) ) {
+    if (this->containsKey(key)) {
+        return this[key] = update(((V)this[key]));
     }
     if (ifAbsent != nullptr) {
         return this[key] = ifAbsent();
@@ -81,251 +100,250 @@ V MapMixin::update(FunctionType ifAbsent, K key, FunctionType update) {
     ;
 }
 
-void MapMixin::updateAll(FunctionType update) {
-    for (auto key : this.keys) {
-        this[key] = update(key, ();
+template<typename K, typename V> void MapMixinCls<K, V>::updateAll(V update(K key, V value) ) {
+    for (auto key : this->keys) {
+        this[key] = update(key, ((V)this[key]));
     }
 }
 
-Iterable<MapEntry<K, V>> MapMixin::entries() {
-    return keys.map();
+template<typename K, typename V> Iterable<MapEntry<K, V>> MapMixinCls<K, V>::entries() {
+    return keys->map([=] (K key)     {
+        <K, V>make<MapEntryCls>(key, ((V)this[key]));
+    });
 }
 
-Map<K2, V2> MapMixin::map<K2, V2>(FunctionType transform) {
-    auto result = ;
-    for (auto key : this.keys) {
-        auto entry = transform(key, ();
-        result[entry.key] = entry.value;
+template<typename K, typename V> Map<K2, V2> MapMixinCls<K, V>::maptemplate<typename K2, typename V2> (MapEntry<K2, V2> transform(K key, V value) ) {
+    auto result = makeMap(makeList(), makeList();
+    for (auto key : this->keys) {
+        auto entry = transform(key, ((V)this[key]));
+        result[entry->key] = entry->value;
     }
     return result;
 }
 
-void MapMixin::addEntries(Iterable<MapEntry<K, V>> newEntries) {
+template<typename K, typename V> void MapMixinCls<K, V>::addEntries(Iterable<MapEntry<K, V>> newEntries) {
     for (auto entry : newEntries) {
-        this[entry.key] = entry.value;
+        this[entry->key] = entry->value;
     }
 }
 
-void MapMixin::removeWhere(FunctionType test) {
-    auto keysToRemove = ;
+template<typename K, typename V> void MapMixinCls<K, V>::removeWhere(bool test(K key, V value) ) {
+    auto keysToRemove = makeList();
     for (auto key : keys) {
-        if (test(key, ())         {
-            keysToRemove.add(key);
+        if (test(key, ((V)this[key])))         {
+            keysToRemove->add(key);
         }
     }
     for (auto key : keysToRemove) {
-        this.remove(key);
+        this->remove(key);
     }
 }
 
-bool MapMixin::containsKey(Object key) {
-    return keys.contains(key);
+template<typename K, typename V> bool MapMixinCls<K, V>::containsKey(Object key) {
+    return keys->contains(key);
 }
 
-int MapMixin::length() {
-    return keys.length;
+template<typename K, typename V> int MapMixinCls<K, V>::length() {
+    return keys->length;
 }
 
-bool MapMixin::isEmpty() {
-    return keys.isEmpty;
+template<typename K, typename V> bool MapMixinCls<K, V>::isEmpty() {
+    return keys->isEmpty;
 }
 
-bool MapMixin::isNotEmpty() {
-    return keys.isNotEmpty;
+template<typename K, typename V> bool MapMixinCls<K, V>::isNotEmpty() {
+    return keys->isNotEmpty;
 }
 
-Iterable<V> MapMixin::values() {
-    return <K, V>_MapBaseValueIterable(this);
+template<typename K, typename V> Iterable<V> MapMixinCls<K, V>::values() {
+    return <K, V>make<_MapBaseValueIterableCls>(this);
 }
 
-String MapMixin::toString() {
-    return MapBase.mapToString(this);
+template<typename K, typename V> String MapMixinCls<K, V>::toString() {
+    return MapBaseCls->mapToString(this);
 }
 
-int _MapBaseValueIterable::length() {
-    return _map.length;
+template<typename K, typename V> int _MapBaseValueIterableCls<K, V>::length() {
+    return _map->length;
 }
 
-bool _MapBaseValueIterable::isEmpty() {
-    return _map.isEmpty;
+template<typename K, typename V> bool _MapBaseValueIterableCls<K, V>::isEmpty() {
+    return _map->isEmpty;
 }
 
-bool _MapBaseValueIterable::isNotEmpty() {
-    return _map.isNotEmpty;
+template<typename K, typename V> bool _MapBaseValueIterableCls<K, V>::isNotEmpty() {
+    return _map->isNotEmpty;
 }
 
-V _MapBaseValueIterable::first() {
-    return (;
+template<typename K, typename V> V _MapBaseValueIterableCls<K, V>::first() {
+    return ((V)_map[_map->keys->first]);
 }
 
-V _MapBaseValueIterable::single() {
-    return (;
+template<typename K, typename V> V _MapBaseValueIterableCls<K, V>::single() {
+    return ((V)_map[_map->keys->single]);
 }
 
-V _MapBaseValueIterable::last() {
-    return (;
+template<typename K, typename V> V _MapBaseValueIterableCls<K, V>::last() {
+    return ((V)_map[_map->keys->last]);
 }
 
-Iterator<V> _MapBaseValueIterable::iterator() {
-    return <K, V>_MapBaseValueIterator(_map);
+template<typename K, typename V> Iterator<V> _MapBaseValueIterableCls<K, V>::iterator() {
+    return <K, V>make<_MapBaseValueIteratorCls>(_map);
 }
 
-bool _MapBaseValueIterator::moveNext() {
-    if (_keys.moveNext()) {
-        _current = _map[_keys.current];
+template<typename K, typename V> bool _MapBaseValueIteratorCls<K, V>::moveNext() {
+    if (_keys->moveNext()) {
+        _current = _map[_keys->current];
         return true;
     }
     _current = nullptr;
     return false;
 }
 
-V _MapBaseValueIterator::current() {
-    return (;
+template<typename K, typename V> V _MapBaseValueIteratorCls<K, V>::current() {
+    return ((V)_current);
 }
 
-_MapBaseValueIterator::_MapBaseValueIterator(Map<K, V> map) {
+template<typename K, typename V> _MapBaseValueIteratorCls<K, V>::_MapBaseValueIteratorCls(Map<K, V> map) {
     {
         _map = map;
-        _keys = map.keys.iterator;
+        _keys = map->keys->iterator;
     }
 }
 
-void _UnmodifiableMapMixin::[]=(K key, V value) {
+template<typename K, typename V> void _UnmodifiableMapMixinCls<K, V>::[]=(K key, V value) {
     ;
 }
 
-void _UnmodifiableMapMixin::addAll(Map<K, V> other) {
+template<typename K, typename V> void _UnmodifiableMapMixinCls<K, V>::addAll(Map<K, V> other) {
     ;
 }
 
-void _UnmodifiableMapMixin::addEntries(Iterable<MapEntry<K, V>> entries) {
+template<typename K, typename V> void _UnmodifiableMapMixinCls<K, V>::addEntries(Iterable<MapEntry<K, V>> entries) {
     ;
 }
 
-void _UnmodifiableMapMixin::clear() {
+template<typename K, typename V> void _UnmodifiableMapMixinCls<K, V>::clear() {
     ;
 }
 
-V _UnmodifiableMapMixin::remove(Object key) {
+template<typename K, typename V> V _UnmodifiableMapMixinCls<K, V>::remove(Object key) {
     ;
 }
 
-void _UnmodifiableMapMixin::removeWhere(FunctionType test) {
+template<typename K, typename V> void _UnmodifiableMapMixinCls<K, V>::removeWhere(bool test(K key, V value) ) {
     ;
 }
 
-V _UnmodifiableMapMixin::putIfAbsent(FunctionType ifAbsent, K key) {
+template<typename K, typename V> V _UnmodifiableMapMixinCls<K, V>::putIfAbsent(V ifAbsent() , K key) {
     ;
 }
 
-V _UnmodifiableMapMixin::update(FunctionType ifAbsent, K key, FunctionType update) {
+template<typename K, typename V> V _UnmodifiableMapMixinCls<K, V>::update(V ifAbsent() , K key, V update(V value) ) {
     ;
 }
 
-void _UnmodifiableMapMixin::updateAll(FunctionType update) {
+template<typename K, typename V> void _UnmodifiableMapMixinCls<K, V>::updateAll(V update(K key, V value) ) {
     ;
 }
 
-MapView::MapView(Map<K, V> map) {
+template<typename K, typename V> MapViewCls<K, V>::MapViewCls(Map<K, V> map) {
     {
         _map = map;
     }
 }
 
-Map<RK, RV> MapView::cast<RK, RV>() {
-    return _map.<RK, RV>cast();
+template<typename K, typename V> Map<RK, RV> MapViewCls<K, V>::casttemplate<typename RK, typename RV> () {
+    return _map-><RK, RV>cast();
 }
 
-V MapView::[](Object key) {
+template<typename K, typename V> V MapViewCls<K, V>::[](Object key) {
     return _map[key];
 }
 
-void MapView::[]=(K key, V value) {
+template<typename K, typename V> void MapViewCls<K, V>::[]=(K key, V value) {
     _map[key] = value;
 }
 
-void MapView::addAll(Map<K, V> other) {
-    _map.addAll(other);
+template<typename K, typename V> void MapViewCls<K, V>::addAll(Map<K, V> other) {
+    _map->addAll(other);
 }
 
-void MapView::clear() {
-    _map.clear();
+template<typename K, typename V> void MapViewCls<K, V>::clear() {
+    _map->clear();
 }
 
-V MapView::putIfAbsent(FunctionType ifAbsent, K key) {
-    return _map.putIfAbsent(key, ifAbsent);
+template<typename K, typename V> V MapViewCls<K, V>::putIfAbsent(V ifAbsent() , K key) {
+    return _map->putIfAbsent(key, ifAbsent);
 }
 
-bool MapView::containsKey(Object key) {
-    return _map.containsKey(key);
+template<typename K, typename V> bool MapViewCls<K, V>::containsKey(Object key) {
+    return _map->containsKey(key);
 }
 
-bool MapView::containsValue(Object value) {
-    return _map.containsValue(value);
+template<typename K, typename V> bool MapViewCls<K, V>::containsValue(Object value) {
+    return _map->containsValue(value);
 }
 
-void MapView::forEach(FunctionType action) {
-    _map.forEach(action);
+template<typename K, typename V> void MapViewCls<K, V>::forEach(void action(K key, V value) ) {
+    _map->forEach(action);
 }
 
-bool MapView::isEmpty() {
-    return _map.isEmpty;
+template<typename K, typename V> bool MapViewCls<K, V>::isEmpty() {
+    return _map->isEmpty;
 }
 
-bool MapView::isNotEmpty() {
-    return _map.isNotEmpty;
+template<typename K, typename V> bool MapViewCls<K, V>::isNotEmpty() {
+    return _map->isNotEmpty;
 }
 
-int MapView::length() {
-    return _map.length;
+template<typename K, typename V> int MapViewCls<K, V>::length() {
+    return _map->length;
 }
 
-Iterable<K> MapView::keys() {
-    return _map.keys;
+template<typename K, typename V> Iterable<K> MapViewCls<K, V>::keys() {
+    return _map->keys;
 }
 
-V MapView::remove(Object key) {
-    return _map.remove(key);
+template<typename K, typename V> V MapViewCls<K, V>::remove(Object key) {
+    return _map->remove(key);
 }
 
-String MapView::toString() {
-    return _map.toString();
+template<typename K, typename V> String MapViewCls<K, V>::toString() {
+    return _map->toString();
 }
 
-Iterable<V> MapView::values() {
-    return _map.values;
+template<typename K, typename V> Iterable<V> MapViewCls<K, V>::values() {
+    return _map->values;
 }
 
-Iterable<MapEntry<K, V>> MapView::entries() {
-    return _map.entries;
+template<typename K, typename V> Iterable<MapEntry<K, V>> MapViewCls<K, V>::entries() {
+    return _map->entries;
 }
 
-void MapView::addEntries(Iterable<MapEntry<K, V>> entries) {
-    _map.addEntries(entries);
+template<typename K, typename V> void MapViewCls<K, V>::addEntries(Iterable<MapEntry<K, V>> entries) {
+    _map->addEntries(entries);
 }
 
-Map<K2, V2> MapView::map<K2, V2>(FunctionType transform) {
-    return _map.<K2, V2>map(transform);
+template<typename K, typename V> Map<K2, V2> MapViewCls<K, V>::maptemplate<typename K2, typename V2> (MapEntry<K2, V2> transform(K key, V value) ) {
+    return _map-><K2, V2>map(transform);
 }
 
-V MapView::update(FunctionType ifAbsent, K key, FunctionType update) {
-    return _map.update(key, updateifAbsent);
+template<typename K, typename V> V MapViewCls<K, V>::update(V ifAbsent() , K key, V update(V value) ) {
+    return _map->update(key, updateifAbsent);
 }
 
-void MapView::updateAll(FunctionType update) {
-    _map.updateAll(update);
+template<typename K, typename V> void MapViewCls<K, V>::updateAll(V update(K key, V value) ) {
+    _map->updateAll(update);
 }
 
-void MapView::removeWhere(FunctionType test) {
-    _map.removeWhere(test);
+template<typename K, typename V> void MapViewCls<K, V>::removeWhere(bool test(K key, V value) ) {
+    _map->removeWhere(test);
 }
 
-UnmodifiableMapView::UnmodifiableMapView(Map<K, V> map) {
-    {
-        super(map);
-    }
+template<typename K, typename V> UnmodifiableMapViewCls<K, V>::UnmodifiableMapViewCls(Map<K, V> map) {
 }
 
-Map<RK, RV> UnmodifiableMapView::cast<RK, RV>() {
-    return <RK, RV>UnmodifiableMapView(_map.<RK, RV>cast());
+template<typename K, typename V> Map<RK, RV> UnmodifiableMapViewCls<K, V>::casttemplate<typename RK, typename RV> () {
+    return <RK, RV>make<UnmodifiableMapViewCls>(_map-><RK, RV>cast());
 }

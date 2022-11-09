@@ -1,5 +1,5 @@
 #include "text_layout_metrics.hpp"
-bool TextLayoutMetrics::isWhitespace(int codeUnit) {
+bool TextLayoutMetricsCls::isWhitespace(int codeUnit) {
     ;
     return true;
 }

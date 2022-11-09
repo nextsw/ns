@@ -1,4 +1,4 @@
 #include "simulation.hpp"
-String Simulation::toString() {
+String SimulationCls::toString() {
     return objectRuntimeType(this, "Simulation");
 }

@@ -1,22 +1,24 @@
-#ifndef EQUALITY_MAP_H
-#define EQUALITY_MAP_H
-#include <memory>
+#ifndef PACKAGES_COLLECTION_SRC_EQUALITY_MAP
+#define PACKAGES_COLLECTION_SRC_EQUALITY_MAP
+#include <base.hpp>
 
-#include <collection/collection.hpp>
+#include <dart/core/core.hpp>
+#include <dart/collection/collection.hpp>
 #include "equality.hpp"
 #include "wrappers.hpp"
 
 
-
-class EqualityMap<K, V> : DelegatingMap<K, V> {
+template<typename K, typename V> class EqualityMapCls : public DelegatingMapCls<K, V> {
 public:
 
-     EqualityMap(Equality<K> equality);
+     EqualityMapCls(Equality<K> equality);
 
-    void  from(Equality<K> equality, Map<K, V> other);
+    virtual void  from(Equality<K> equality, Map<K, V> other);
 
 private:
 
 };
+template<typename K, typename V> using EqualityMap = std::shared_ptr<EqualityMapCls<K, V>>;
+
 
 #endif

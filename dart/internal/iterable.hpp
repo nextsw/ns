@@ -1,19 +1,19 @@
-#ifndef ITERABLE_H
-#define ITERABLE_H
-#include <memory>
+#ifndef DART_INTERNAL_ITERABLE
+#define DART_INTERNAL_ITERABLE
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
 
 
-
-
-class EfficientLengthIterable<T> : Iterable<T> {
+template<typename T> class EfficientLengthIterableCls : public IterableCls<T> {
 public:
 
-     EfficientLengthIterable();
-
-    int length();
-
+     EfficientLengthIterableCls();
+    virtual int length() override;
 private:
 
 };
+template<typename T> using EfficientLengthIterable = std::shared_ptr<EfficientLengthIterableCls<T>>;
+
 
 #endif

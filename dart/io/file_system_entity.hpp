@@ -1,42 +1,42 @@
-#ifndef FILE_SYSTEM_ENTITY_H
-#define FILE_SYSTEM_ENTITY_H
-#include <memory>
+#ifndef DART_IO_FILE_SYSTEM_ENTITY
+#define DART_IO_FILE_SYSTEM_ENTITY
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
 
 
-
-
-class FileSystemEntityType {
+class FileSystemEntityTypeCls : public ObjectCls {
 public:
-    static const auto  file;
+    static auto  file;
 
-    static const auto  directory;
+    static auto  directory;
 
-    static const auto  link;
+    static auto  link;
 
-    static const auto  unixDomainSock;
+    static auto  unixDomainSock;
 
-    static const auto  pipe;
+    static auto  pipe;
 
-    static const auto  notFound;
+    static auto  notFound;
 
-    static const auto  NOT_FOUND;
+    static auto  NOT_FOUND;
 
 
-    String toString();
+    virtual String toString();
 
 private:
-    static const auto  _typeList;
+    static auto  _typeList;
 
     int _type;
 
 
-    void  _internal(int _type);
-
+    virtual void  _internal(int _type);
     static FileSystemEntityType _lookup(int type);
 
 };
+using FileSystemEntityType = std::shared_ptr<FileSystemEntityTypeCls>;
 
-class FileStat {
+class FileStatCls : public ObjectCls {
 public:
     DateTime changed;
 
@@ -55,73 +55,66 @@ public:
 
     static Future<FileStat> stat(String path);
 
-    String toString();
+    virtual String toString();
 
-    String modeString();
+    virtual String modeString();
 
 private:
-    static const auto  _type;
+    static auto  _type;
 
-    static const auto  _changedTime;
+    static auto  _changedTime;
 
-    static const auto  _modifiedTime;
+    static auto  _modifiedTime;
 
-    static const auto  _accessedTime;
+    static auto  _accessedTime;
 
-    static const auto  _mode;
+    static auto  _mode;
 
-    static const auto  _size;
+    static auto  _size;
 
     static auto  _epoch;
 
     static auto  _notFound;
 
 
-    void  _internal(DateTime accessed, DateTime changed, int mode, DateTime modified, int size, FileSystemEntityType type);
-
-    external static void  _statSync(_Namespace namespace, String path);
-
+    virtual void  _internal(DateTime accessed, DateTime changed, int mode, DateTime modified, int size, FileSystemEntityType type);
+    extern static void  _statSync(_Namespace namespace, String path);
     static FileStat _statSyncInternal(String path);
 
     static Future<FileStat> _stat(String path);
 
 };
+using FileStat = std::shared_ptr<FileStatCls>;
 
-class FileSystemEntity {
+class FileSystemEntityCls : public ObjectCls {
 public:
 
-    String path();
+    virtual String path();
+    virtual Uri uri();
 
-    Uri uri();
+    virtual Future<bool> exists();
+    virtual bool existsSync();
+    virtual Future<FileSystemEntity> rename(String newPath);
+    virtual FileSystemEntity renameSync(String newPath);
+    virtual Future<String> resolveSymbolicLinks();
 
-    Future<bool> exists();
+    virtual String resolveSymbolicLinksSync();
 
-    bool existsSync();
+    virtual Future<FileStat> stat();
 
-    Future<FileSystemEntity> rename(String newPath);
+    virtual FileStat statSync();
 
-    FileSystemEntity renameSync(String newPath);
+    virtual Future<FileSystemEntity> delete(bool recursive);
 
-    Future<String> resolveSymbolicLinks();
+    virtual void deleteSync(bool recursive);
 
-    String resolveSymbolicLinksSync();
-
-    Future<FileStat> stat();
-
-    FileStat statSync();
-
-    Future<FileSystemEntity> delete(bool recursive);
-
-    void deleteSync(bool recursive);
-
-    Stream<FileSystemEvent> watch(int events, bool recursive);
+    virtual Stream<FileSystemEvent> watch(int events, bool recursive);
 
     static Future<bool> identical(String path1, String path2);
 
-    bool isAbsolute();
+    virtual bool isAbsolute();
 
-    FileSystemEntity absolute();
-
+    virtual FileSystemEntity absolute();
     static bool identicalSync(String path1, String path2);
 
     static bool isWatchSupported();
@@ -144,33 +137,29 @@ public:
 
     static String parentOf(String path);
 
-    Directory parent();
+    virtual Directory parent();
 
 private:
-    static const auto  _backslashChar;
+    static auto  _backslashChar;
 
-    static const auto  _slashChar;
+    static auto  _slashChar;
 
-    static const auto  _colonChar;
+    static auto  _colonChar;
 
     static RegExp _absoluteWindowsPathPattern;
 
     static RegExp _parentRegExp;
 
 
-    String _path();
-
-    Uint8List _rawPath();
-
-    Future<FileSystemEntity> _delete(bool recursive);
-
-    void _deleteSync(bool recursive);
-
+    virtual String _path();
+    virtual Uint8List _rawPath();
+    virtual Future<FileSystemEntity> _delete(bool recursive);
+    virtual void _deleteSync(bool recursive);
     static Future<bool> _identical(String path1, String path2);
 
     static bool _isAbsolute(String path);
 
-    String _absolutePath();
+    virtual String _absolutePath();
 
     static int _windowsDriveLetter(String path);
 
@@ -188,12 +177,9 @@ private:
 
     static bool _isLinkRawSync(rawPath );
 
-    external static void  _getTypeNative(bool followLinks, _Namespace namespace, Uint8List rawPath);
-
-    external static void  _identicalNative(_Namespace namespace, String path1, String path2);
-
-    external static void  _resolveSymbolicLinks(_Namespace namespace, Uint8List path);
-
+    extern static void  _getTypeNative(bool followLinks, _Namespace namespace, Uint8List rawPath);
+    extern static void  _identicalNative(_Namespace namespace, String path1, String path2);
+    extern static void  _resolveSymbolicLinks(_Namespace namespace, Uint8List path);
     static FileSystemEntityType _getTypeSyncHelper(bool followLinks, Uint8List rawPath);
 
     static FileSystemEntityType _getTypeSync(bool followLinks, Uint8List rawPath);
@@ -209,18 +195,19 @@ private:
     static String _ensureTrailingPathSeparators(String path);
 
 };
+using FileSystemEntity = std::shared_ptr<FileSystemEntityCls>;
 
-class FileSystemEvent {
+class FileSystemEventCls : public ObjectCls {
 public:
-    static const int create;
+    static int create;
 
-    static const int modify;
+    static int modify;
 
-    static const int delete;
+    static int delete;
 
-    static const int move;
+    static int move;
 
-    static const int all;
+    static int all;
 
     int type;
 
@@ -230,74 +217,78 @@ public:
 
 
 private:
-    static const int _modifyAttributes;
+    static int _modifyAttributes;
 
-    static const int _deleteSelf;
+    static int _deleteSelf;
 
-    static const int _isDir;
+    static int _isDir;
 
 
-    void  _(bool isDirectory, String path, int type);
-
+    virtual void  _(bool isDirectory, String path, int type);
 };
+using FileSystemEvent = std::shared_ptr<FileSystemEventCls>;
 
-class FileSystemCreateEvent : FileSystemEvent {
+class FileSystemCreateEventCls : public FileSystemEventCls {
 public:
 
-    String toString();
+    virtual String toString();
 
 private:
 
-    void  _(path , isDirectory );
+    virtual void  _(path , isDirectory );
 
 };
+using FileSystemCreateEvent = std::shared_ptr<FileSystemCreateEventCls>;
 
-class FileSystemModifyEvent : FileSystemEvent {
+class FileSystemModifyEventCls : public FileSystemEventCls {
 public:
     bool contentChanged;
 
 
-    String toString();
+    virtual String toString();
 
 private:
 
-    void  _(path , isDirectory , bool contentChanged);
+    virtual void  _(path , isDirectory , bool contentChanged);
 
 };
+using FileSystemModifyEvent = std::shared_ptr<FileSystemModifyEventCls>;
 
-class FileSystemDeleteEvent : FileSystemEvent {
+class FileSystemDeleteEventCls : public FileSystemEventCls {
 public:
 
-    String toString();
+    virtual String toString();
 
 private:
 
-    void  _(path , isDirectory );
+    virtual void  _(path , isDirectory );
 
 };
+using FileSystemDeleteEvent = std::shared_ptr<FileSystemDeleteEventCls>;
 
-class FileSystemMoveEvent : FileSystemEvent {
+class FileSystemMoveEventCls : public FileSystemEventCls {
 public:
     String destination;
 
 
-    String toString();
+    virtual String toString();
 
 private:
 
-    void  _(path , isDirectory , String destination);
+    virtual void  _(path , isDirectory , String destination);
 
 };
+using FileSystemMoveEvent = std::shared_ptr<FileSystemMoveEventCls>;
 
-class _FileSystemWatcher {
+class _FileSystemWatcherCls : public ObjectCls {
 public:
 
-    external static bool isSupported();
-
+    extern static bool isSupported();
 private:
 
-    external static Stream<FileSystemEvent> _watch(int events, String path, bool recursive);
-
+    extern static Stream<FileSystemEvent> _watch(int events, String path, bool recursive);
 };
+using _FileSystemWatcher = std::shared_ptr<_FileSystemWatcherCls>;
+
 
 #endif

@@ -1,17 +1,19 @@
-#ifndef UI_H
-#define UI_H
-#include <memory>
+#ifndef DART_UI_UI
+#define DART_UI_UI
+#include <base.hpp>
 
-#include <spirv/spirv.hpp>
-#include <async/async.hpp>
-#include <collection/collection.hpp>
-#include <convert/convert.hpp>
-#include <developer/developer.hpp>
-#include <io/io.hpp>
-#include <isolate/isolate.hpp>
-#include <math/math.hpp>
-#include <nativewrappers/nativewrappers.hpp>
-#include <typed_data/typed_data.hpp>
+#include <dart/core/core.hpp>
+#include <dart/spirv/spirv.hpp>
+#include <dart/async/async.hpp>
+#include <dart/collection/collection.hpp>
+#include <dart/convert/convert.hpp>
+#include <dart/developer/developer.hpp>
+#include <dart/io/io.hpp>
+#include <dart/isolate/isolate.hpp>
+#include <dart/math/math.hpp>
+#include <dart/nativewrappers/nativewrappers.hpp>
+#include <dart/typed_data/typed_data.hpp>
+
 
 // Parts
 #include "annotations.hpp"
@@ -31,6 +33,5 @@
 #include "semantics.hpp"
 #include "text.hpp"
 #include "window.hpp"
-
 
 #endif

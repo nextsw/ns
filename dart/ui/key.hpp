@@ -1,8 +1,8 @@
-#ifndef KEY_H
-#define KEY_H
-#include <memory>
+#ifndef DART_UI_KEY
+#define DART_UI_KEY
+#include <base.hpp>
 
-
+#include <dart/core/core.hpp>
 
 
 enum KeyEventType{
@@ -11,7 +11,7 @@ enum KeyEventType{
     repeat,
 } // end KeyEventType
 
-class KeyData {
+class KeyDataCls : public ObjectCls {
 public:
     Duration timeStamp;
 
@@ -26,24 +26,25 @@ public:
     bool synthesized;
 
 
-     KeyData(String character, int logical, int physical, bool synthesized, Duration timeStamp, KeyEventType type);
+     KeyDataCls(String character, int logical, int physical, bool synthesized, Duration timeStamp, KeyEventType type);
+    virtual String toString();
 
-    String toString();
-
-    String toStringFull();
+    virtual String toStringFull();
 
 private:
 
     static int _nonValueBits(int n);
 
-    String _logicalToString();
+    virtual String _logicalToString();
 
-    String _escapeCharacter();
+    virtual String _escapeCharacter();
 
-    String _quotedCharCode();
+    virtual String _quotedCharCode();
 
     static String _typeToString(KeyEventType type);
 
 };
+using KeyData = std::shared_ptr<KeyDataCls>;
+
 
 #endif

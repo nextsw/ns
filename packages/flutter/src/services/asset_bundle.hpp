@@ -1,51 +1,50 @@
-#ifndef ASSET_BUNDLE_H
-#define ASSET_BUNDLE_H
-#include <memory>
-#include <typed_data.hpp>
-#include <ui.hpp>
+#ifndef PACKAGES_FLUTTER_SRC_SERVICES_ASSET_BUNDLE
+#define PACKAGES_FLUTTER_SRC_SERVICES_ASSET_BUNDLE
+#include <base.hpp>
+#include <dart/typed_data/typed_data.hpp>
+#include <dart/ui/ui.hpp>
 
-#include <async/async.hpp>
-#include <convert/convert.hpp>
-#include <io/io.hpp>
-#include <ui/ui.hpp>
-#include <flutter/foundation.hpp>
+#include <dart/core/core.hpp>
+#include <dart/async/async.hpp>
+#include <dart/convert/convert.hpp>
+#include <dart/io/io.hpp>
+#include <dart/ui/ui.hpp>
+#include <packages/flutter/lib/foundation.hpp>
 #include "binding.hpp"
 
 
-
-class AssetBundle {
+class AssetBundleCls : public ObjectCls {
 public:
 
-    Future<ByteData> load(String key);
+    virtual Future<ByteData> load(String key);
+    virtual Future<ImmutableBuffer> loadBuffer(String key);
 
-    Future<ImmutableBuffer> loadBuffer(String key);
+    virtual Future<String> loadString(bool cache, String key);
 
-    Future<String> loadString(bool cache, String key);
+    template<typename T>  virtual Future<T> loadStructuredData(String key, Future<T> parser(String value) );
+    virtual void evict(String key);
 
-    Future<T> loadStructuredData<T>(String key, FunctionType parser);
+    virtual void clear();
 
-    void evict(String key);
-
-    void clear();
-
-    String toString();
+    virtual String toString();
 
 private:
 
     static String _utf8decode(ByteData data);
 
 };
+using AssetBundle = std::shared_ptr<AssetBundleCls>;
 
-class NetworkAssetBundle : AssetBundle {
+class NetworkAssetBundleCls : public AssetBundleCls {
 public:
 
-     NetworkAssetBundle(Uri baseUrl);
+     NetworkAssetBundleCls(Uri baseUrl);
 
-    Future<ByteData> load(String key);
+    virtual Future<ByteData> load(String key);
 
-    Future<T> loadStructuredData<T>(String key, FunctionType parser);
+    template<typename T>  virtual Future<T> loadStructuredData(String key, Future<T> parser(String value) );
 
-    String toString();
+    virtual String toString();
 
 private:
     Uri _baseUrl;
@@ -53,22 +52,23 @@ private:
     HttpClient _httpClient;
 
 
-    Uri _urlFromKey(String key);
+    virtual Uri _urlFromKey(String key);
 
 };
+using NetworkAssetBundle = std::shared_ptr<NetworkAssetBundleCls>;
 
-class CachingAssetBundle : AssetBundle {
+class CachingAssetBundleCls : public AssetBundleCls {
 public:
 
-    Future<String> loadString(bool cache, String key);
+    virtual Future<String> loadString(bool cache, String key);
 
-    Future<T> loadStructuredData<T>(String key, FunctionType parser);
+    template<typename T>  virtual Future<T> loadStructuredData(String key, Future<T> parser(String value) );
 
-    void evict(String key);
+    virtual void evict(String key);
 
-    void clear();
+    virtual void clear();
 
-    Future<ImmutableBuffer> loadBuffer(String key);
+    virtual Future<ImmutableBuffer> loadBuffer(String key);
 
 private:
     Map<String, Future<String>> _stringCache;
@@ -77,20 +77,23 @@ private:
 
 
 };
+using CachingAssetBundle = std::shared_ptr<CachingAssetBundleCls>;
 
-class PlatformAssetBundle : CachingAssetBundle {
+class PlatformAssetBundleCls : public CachingAssetBundleCls {
 public:
 
-    Future<ByteData> load(String key);
+    virtual Future<ByteData> load(String key);
 
-    Future<ImmutableBuffer> loadBuffer(String key);
+    virtual Future<ImmutableBuffer> loadBuffer(String key);
 
 private:
 
 };
+using PlatformAssetBundle = std::shared_ptr<PlatformAssetBundleCls>;
 AssetBundle _initRootBundle();
 
 AssetBundle rootBundle;
+
 
 
 #endif

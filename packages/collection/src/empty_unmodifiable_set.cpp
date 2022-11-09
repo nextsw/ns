@@ -1,56 +1,56 @@
 #include "empty_unmodifiable_set.hpp"
-Iterator<E> EmptyUnmodifiableSet::iterator() {
-    return <E>empty().iterator;
+template<typename E> Iterator<E> EmptyUnmodifiableSetCls<E>::iterator() {
+    return <E>empty()->iterator;
 }
 
-int EmptyUnmodifiableSet::length() {
+template<typename E> int EmptyUnmodifiableSetCls<E>::length() {
     return 0;
 }
 
-EmptyUnmodifiableSet<T> EmptyUnmodifiableSet::cast<T>() {
-    return <T>EmptyUnmodifiableSet();
+template<typename E> EmptyUnmodifiableSet<T> EmptyUnmodifiableSetCls<E>::casttemplate<typename T> () {
+    return <T>make<EmptyUnmodifiableSetCls>();
 }
 
-bool EmptyUnmodifiableSet::contains(Object element) {
+template<typename E> bool EmptyUnmodifiableSetCls<E>::contains(Object element) {
     return false;
 }
 
-bool EmptyUnmodifiableSet::containsAll(Iterable<Object> other) {
-    return other.isEmpty;
+template<typename E> bool EmptyUnmodifiableSetCls<E>::containsAll(Iterable<Object> other) {
+    return other->isEmpty;
 }
 
-Iterable<E> EmptyUnmodifiableSet::followedBy(Iterable<E> other) {
-    return DelegatingIterable(other);
+template<typename E> Iterable<E> EmptyUnmodifiableSetCls<E>::followedBy(Iterable<E> other) {
+    return make<DelegatingIterableCls>(other);
 }
 
-E EmptyUnmodifiableSet::lookup(Object element) {
+template<typename E> E EmptyUnmodifiableSetCls<E>::lookup(Object element) {
     return nullptr;
 }
 
-EmptyUnmodifiableSet<T> EmptyUnmodifiableSet::retype<T>() {
-    return <T>EmptyUnmodifiableSet();
+template<typename E> EmptyUnmodifiableSet<T> EmptyUnmodifiableSetCls<E>::retypetemplate<typename T> () {
+    return <T>make<EmptyUnmodifiableSetCls>();
 }
 
-E EmptyUnmodifiableSet::singleWhere(FunctionType orElse, FunctionType test) {
+template<typename E> E EmptyUnmodifiableSetCls<E>::singleWhere(E orElse() , bool test(E ) ) {
     return orElse != nullptr? orElse() : ;
 }
 
-Iterable<T> EmptyUnmodifiableSet::whereType<T>() {
-    return Iterable.empty();
+template<typename E> Iterable<T> EmptyUnmodifiableSetCls<E>::whereTypetemplate<typename T> () {
+    return IterableCls->empty();
 }
 
-Set<E> EmptyUnmodifiableSet::toSet() {
-    return ;
+template<typename E> Set<E> EmptyUnmodifiableSetCls<E>::toSet() {
+    return makeMap(makeList(), makeList();
 }
 
-Set<E> EmptyUnmodifiableSet::union(Set<E> other) {
-    return Set.of(other);
+template<typename E> Set<E> EmptyUnmodifiableSetCls<E>::union(Set<E> other) {
+    return SetCls->of(other);
 }
 
-Set<E> EmptyUnmodifiableSet::intersection(Set<Object> other) {
-    return ;
+template<typename E> Set<E> EmptyUnmodifiableSetCls<E>::intersection(Set<Object> other) {
+    return makeMap(makeList(), makeList();
 }
 
-Set<E> EmptyUnmodifiableSet::difference(Set<Object> other) {
-    return ;
+template<typename E> Set<E> EmptyUnmodifiableSetCls<E>::difference(Set<Object> other) {
+    return makeMap(makeList(), makeList();
 }

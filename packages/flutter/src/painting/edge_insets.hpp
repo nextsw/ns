@@ -1,81 +1,69 @@
-#ifndef EDGE_INSETS_H
-#define EDGE_INSETS_H
-#include <memory>
+#ifndef PACKAGES_FLUTTER_SRC_PAINTING_EDGE_INSETS
+#define PACKAGES_FLUTTER_SRC_PAINTING_EDGE_INSETS
+#include <base.hpp>
 
-#include <ui/ui.hpp>
-#include <flutter/foundation.hpp>
+#include <dart/core/core.hpp>
+#include <dart/ui/ui.hpp>
+#include <packages/flutter/lib/foundation.hpp>
 #include "basic_types.hpp"
 
 
-
-class EdgeInsetsGeometry {
+class EdgeInsetsGeometryCls : public ObjectCls {
 public:
-    static const EdgeInsetsGeometry infinity;
+    static EdgeInsetsGeometry infinity;
 
 
-     EdgeInsetsGeometry();
+     EdgeInsetsGeometryCls();
+    virtual bool isNonNegative();
 
-    bool isNonNegative();
+    virtual double horizontal();
 
-    double horizontal();
+    virtual double vertical();
 
-    double vertical();
+    virtual double along(Axis axis);
 
-    double along(Axis axis);
+    virtual Size collapsedSize();
 
-    Size collapsedSize();
+    virtual EdgeInsetsGeometry flipped();
 
-    EdgeInsetsGeometry flipped();
+    virtual Size inflateSize(Size size);
 
-    Size inflateSize(Size size);
+    virtual Size deflateSize(Size size);
 
-    Size deflateSize(Size size);
+    virtual EdgeInsetsGeometry subtract(EdgeInsetsGeometry other);
 
-    EdgeInsetsGeometry subtract(EdgeInsetsGeometry other);
+    virtual EdgeInsetsGeometry add(EdgeInsetsGeometry other);
 
-    EdgeInsetsGeometry add(EdgeInsetsGeometry other);
+    virtual EdgeInsetsGeometry clamp(EdgeInsetsGeometry max, EdgeInsetsGeometry min);
 
-    EdgeInsetsGeometry clamp(EdgeInsetsGeometry max, EdgeInsetsGeometry min);
-
-    EdgeInsetsGeometry -();
-
-    EdgeInsetsGeometry *(double other);
-
-    EdgeInsetsGeometry /(double other);
-
-    EdgeInsetsGeometry ~/(double other);
-
-    EdgeInsetsGeometry %(double other);
-
+    virtual EdgeInsetsGeometry operator-();
+    virtual EdgeInsetsGeometry operator*(double other);
+    virtual EdgeInsetsGeometry operator/(double other);
+    virtual EdgeInsetsGeometry operator~/(double other);
+    virtual EdgeInsetsGeometry operator%(double other);
     static EdgeInsetsGeometry lerp(EdgeInsetsGeometry a, EdgeInsetsGeometry b, double t);
 
-    EdgeInsets resolve(TextDirection direction);
+    virtual EdgeInsets resolve(TextDirection direction);
+    virtual String toString();
 
-    String toString();
+    virtual bool operator==(Object other);
 
-    bool ==(Object other);
-
-    int hashCode();
+    virtual int hashCode();
 
 private:
 
-    double _bottom();
-
-    double _end();
-
-    double _left();
-
-    double _right();
-
-    double _start();
-
-    double _top();
-
+    virtual double _bottom();
+    virtual double _end();
+    virtual double _left();
+    virtual double _right();
+    virtual double _start();
+    virtual double _top();
 };
+using EdgeInsetsGeometry = std::shared_ptr<EdgeInsetsGeometryCls>;
 
-class EdgeInsets : EdgeInsetsGeometry {
+class EdgeInsetsCls : public EdgeInsetsGeometryCls {
 public:
-    static const EdgeInsets zero;
+    static EdgeInsets zero;
 
     double left;
 
@@ -86,75 +74,74 @@ public:
     double bottom;
 
 
-    void  fromLTRB(double bottom, double left, double right, double top);
+    virtual void  fromLTRB(double bottom, double left, double right, double top);
+    virtual void  all(double value);
 
-    void  all(double value);
+    virtual void  only(double bottom, double left, double right, double top);
+    virtual void  symmetric(double horizontal, double vertical);
 
-    void  only(double bottom, double left, double right, double top);
+    virtual void  fromWindowPadding(double devicePixelRatio, WindowPadding padding);
 
-    void  symmetric(double horizontal, double vertical);
+    virtual Offset topLeft();
 
-    void  fromWindowPadding(double devicePixelRatio, WindowPadding padding);
+    virtual Offset topRight();
 
-    Offset topLeft();
+    virtual Offset bottomLeft();
 
-    Offset topRight();
+    virtual Offset bottomRight();
 
-    Offset bottomLeft();
+    virtual EdgeInsets flipped();
 
-    Offset bottomRight();
+    virtual Rect inflateRect(Rect rect);
 
-    EdgeInsets flipped();
+    virtual Rect deflateRect(Rect rect);
 
-    Rect inflateRect(Rect rect);
+    virtual EdgeInsetsGeometry subtract(EdgeInsetsGeometry other);
 
-    Rect deflateRect(Rect rect);
+    virtual EdgeInsetsGeometry add(EdgeInsetsGeometry other);
 
-    EdgeInsetsGeometry subtract(EdgeInsetsGeometry other);
+    virtual EdgeInsetsGeometry clamp(EdgeInsetsGeometry max, EdgeInsetsGeometry min);
 
-    EdgeInsetsGeometry add(EdgeInsetsGeometry other);
+    virtual EdgeInsets operator-(EdgeInsets other);
 
-    EdgeInsetsGeometry clamp(EdgeInsetsGeometry max, EdgeInsetsGeometry min);
+    virtual EdgeInsets operator+(EdgeInsets other);
 
-    EdgeInsets -(EdgeInsets other);
+    virtual EdgeInsets operator-();
 
-    EdgeInsets +(EdgeInsets other);
+    virtual EdgeInsets operator*(double other);
 
-    EdgeInsets -();
+    virtual EdgeInsets operator/(double other);
 
-    EdgeInsets *(double other);
+    virtual EdgeInsets operator~/(double other);
 
-    EdgeInsets /(double other);
-
-    EdgeInsets ~/(double other);
-
-    EdgeInsets %(double other);
+    virtual EdgeInsets operator%(double other);
 
     static EdgeInsets lerp(EdgeInsets a, EdgeInsets b, double t);
 
-    EdgeInsets resolve(TextDirection direction);
+    virtual EdgeInsets resolve(TextDirection direction);
 
-    EdgeInsets copyWith(double bottom, double left, double right, double top);
+    virtual EdgeInsets copyWith(double bottom, double left, double right, double top);
 
 private:
 
-    double _left();
+    virtual double _left();
 
-    double _top();
+    virtual double _top();
 
-    double _right();
+    virtual double _right();
 
-    double _bottom();
+    virtual double _bottom();
 
-    double _start();
+    virtual double _start();
 
-    double _end();
+    virtual double _end();
 
 };
+using EdgeInsets = std::shared_ptr<EdgeInsetsCls>;
 
-class EdgeInsetsDirectional : EdgeInsetsGeometry {
+class EdgeInsetsDirectionalCls : public EdgeInsetsGeometryCls {
 public:
-    static const EdgeInsetsDirectional zero;
+    static EdgeInsetsDirectional zero;
 
     double start;
 
@@ -165,72 +152,70 @@ public:
     double bottom;
 
 
-    void  fromSTEB(double bottom, double end, double start, double top);
+    virtual void  fromSTEB(double bottom, double end, double start, double top);
+    virtual void  only(double bottom, double end, double start, double top);
+    virtual void  all(double value);
 
-    void  only(double bottom, double end, double start, double top);
+    virtual bool isNonNegative();
 
-    void  all(double value);
+    virtual EdgeInsetsDirectional flipped();
 
-    bool isNonNegative();
+    virtual EdgeInsetsGeometry subtract(EdgeInsetsGeometry other);
 
-    EdgeInsetsDirectional flipped();
+    virtual EdgeInsetsGeometry add(EdgeInsetsGeometry other);
 
-    EdgeInsetsGeometry subtract(EdgeInsetsGeometry other);
+    virtual EdgeInsetsDirectional operator-(EdgeInsetsDirectional other);
 
-    EdgeInsetsGeometry add(EdgeInsetsGeometry other);
+    virtual EdgeInsetsDirectional operator+(EdgeInsetsDirectional other);
 
-    EdgeInsetsDirectional -(EdgeInsetsDirectional other);
+    virtual EdgeInsetsDirectional operator-();
 
-    EdgeInsetsDirectional +(EdgeInsetsDirectional other);
+    virtual EdgeInsetsDirectional operator*(double other);
 
-    EdgeInsetsDirectional -();
+    virtual EdgeInsetsDirectional operator/(double other);
 
-    EdgeInsetsDirectional *(double other);
+    virtual EdgeInsetsDirectional operator~/(double other);
 
-    EdgeInsetsDirectional /(double other);
-
-    EdgeInsetsDirectional ~/(double other);
-
-    EdgeInsetsDirectional %(double other);
+    virtual EdgeInsetsDirectional operator%(double other);
 
     static EdgeInsetsDirectional lerp(EdgeInsetsDirectional a, EdgeInsetsDirectional b, double t);
 
-    EdgeInsets resolve(TextDirection direction);
+    virtual EdgeInsets resolve(TextDirection direction);
 
 private:
 
-    double _start();
+    virtual double _start();
 
-    double _top();
+    virtual double _top();
 
-    double _end();
+    virtual double _end();
 
-    double _bottom();
+    virtual double _bottom();
 
-    double _left();
+    virtual double _left();
 
-    double _right();
+    virtual double _right();
 
 };
+using EdgeInsetsDirectional = std::shared_ptr<EdgeInsetsDirectionalCls>;
 
-class _MixedEdgeInsets : EdgeInsetsGeometry {
+class _MixedEdgeInsetsCls : public EdgeInsetsGeometryCls {
 public:
 
-    void  fromLRSETB(double _bottom, double _end, double _left, double _right, double _start, double _top);
+    virtual void  fromLRSETB(double _bottom, double _end, double _left, double _right, double _start, double _top);
+    virtual bool isNonNegative();
 
-    bool isNonNegative();
+    virtual _MixedEdgeInsets operator-();
 
-    _MixedEdgeInsets -();
+    virtual _MixedEdgeInsets operator*(double other);
 
-    _MixedEdgeInsets *(double other);
+    virtual _MixedEdgeInsets operator/(double other);
 
-    _MixedEdgeInsets /(double other);
+    virtual _MixedEdgeInsets operator~/(double other);
 
-    _MixedEdgeInsets ~/(double other);
+    virtual _MixedEdgeInsets operator%(double other);
 
-    _MixedEdgeInsets %(double other);
-
-    EdgeInsets resolve(TextDirection direction);
+    virtual EdgeInsets resolve(TextDirection direction);
 
 private:
     double _left;
@@ -247,5 +232,7 @@ private:
 
 
 };
+using _MixedEdgeInsets = std::shared_ptr<_MixedEdgeInsetsCls>;
+
 
 #endif

@@ -1,26 +1,26 @@
-#ifndef CLIPBOARD_H
-#define CLIPBOARD_H
-#include <memory>
+#ifndef PACKAGES_FLUTTER_SRC_SERVICES_CLIPBOARD
+#define PACKAGES_FLUTTER_SRC_SERVICES_CLIPBOARD
+#include <base.hpp>
 
-#include <flutter/foundation.hpp>
+#include <dart/core/core.hpp>
+#include <packages/flutter/lib/foundation.hpp>
 #include "system_channels.hpp"
 
 
-
-class ClipboardData {
+class ClipboardDataCls : public ObjectCls {
 public:
     String text;
 
 
-     ClipboardData(String text);
-
+     ClipboardDataCls(String text);
 private:
 
 };
+using ClipboardData = std::shared_ptr<ClipboardDataCls>;
 
-class Clipboard {
+class ClipboardCls : public ObjectCls {
 public:
-    static const String kTextPlain;
+    static String kTextPlain;
 
 
     static Future<void> setData(ClipboardData data);
@@ -31,8 +31,9 @@ public:
 
 private:
 
-    void  _();
-
+    virtual void  _();
 };
+using Clipboard = std::shared_ptr<ClipboardCls>;
+
 
 #endif

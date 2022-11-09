@@ -1,38 +1,38 @@
 #include "linked_list.hpp"
-void LinkedList::addFirst(E entry) {
-    _insertBefore(_first, entrytrue);
+template<typename E : LinkedListEntry<E>> void LinkedListCls<E>::addFirst(E entry) {
+    auto _c1 = <E>make<LinkedHashSetCls>();_c1.addAll(elements);_insertBefore(_first, entrytrue);
     _first = entry;
 }
 
-void LinkedList::add(E entry) {
+template<typename E : LinkedListEntry<E>> void LinkedListCls<E>::add(E entry) {
     _insertBefore(_first, entryfalse);
 }
 
-void LinkedList::addAll(Iterable<E> entries) {
-    entries.forEach(add);
+template<typename E : LinkedListEntry<E>> void LinkedListCls<E>::addAll(Iterable<E> entries) {
+    entries->forEach(add);
 }
 
-bool LinkedList::remove(E entry) {
-    if (entry._list != this)     {
+template<typename E : LinkedListEntry<E>> bool LinkedListCls<E>::remove(E entry) {
+    if (entry->_list != this)     {
         return false;
     }
     _unlink(entry);
     return true;
 }
 
-bool LinkedList::contains(Object entry) {
-    return entry is LinkedListEntry && identical(this, entry.list);
+template<typename E : LinkedListEntry<E>> bool LinkedListCls<E>::contains(Object entry) {
+    return entry is LinkedListEntry && identical(this, entry->list);
 }
 
-Iterator<E> LinkedList::iterator() {
-    return <E>_LinkedListIterator(this);
+template<typename E : LinkedListEntry<E>> Iterator<E> LinkedListCls<E>::iterator() {
+    return <E>make<_LinkedListIteratorCls>(this);
 }
 
-int LinkedList::length() {
+template<typename E : LinkedListEntry<E>> int LinkedListCls<E>::length() {
     return _length;
 }
 
-void LinkedList::clear() {
+template<typename E : LinkedListEntry<E>> void LinkedListCls<E>::clear() {
     _modificationCount++;
     if (isEmpty)     {
         return;
@@ -40,28 +40,28 @@ void LinkedList::clear() {
     E next = _first!;
     do {
         E entry = next;
-        next = entry._next!;
-        entry._next = entry._previous = entry._list = nullptr;
+        next = entry->_next!;
+        entry->_next = entry->_previous = entry->_list = nullptr;
     } while (!identical(next, _first));
     _first = nullptr;
     _length = 0;
 }
 
-E LinkedList::first() {
+template<typename E : LinkedListEntry<E>> E LinkedListCls<E>::first() {
     if (isEmpty) {
         ;
     }
     return _first!;
 }
 
-E LinkedList::last() {
+template<typename E : LinkedListEntry<E>> E LinkedListCls<E>::last() {
     if (isEmpty) {
         ;
     }
-    return _first!._previous!;
+    return _first!->_previous!;
 }
 
-E LinkedList::single() {
+template<typename E : LinkedListEntry<E>> E LinkedListCls<E>::single() {
     if (isEmpty) {
         ;
     }
@@ -71,7 +71,7 @@ E LinkedList::single() {
     return _first!;
 }
 
-void LinkedList::forEach(FunctionType action) {
+template<typename E : LinkedListEntry<E>> void LinkedListCls<E>::forEach(void action(E entry) ) {
     int modificationCount = _modificationCount;
     if (isEmpty)     {
         return;
@@ -82,45 +82,45 @@ void LinkedList::forEach(FunctionType action) {
         if (modificationCount != _modificationCount) {
             ;
         }
-        current = current._next!;
+        current = current->_next!;
     } while (!identical(current, _first));
 }
 
-bool LinkedList::isEmpty() {
+template<typename E : LinkedListEntry<E>> bool LinkedListCls<E>::isEmpty() {
     return _length == 0;
 }
 
-void LinkedList::_insertBefore(E entry, E newEntry, bool updateFirst) {
-    if (newEntry.list != nullptr) {
+template<typename E : LinkedListEntry<E>> void LinkedListCls<E>::_insertBefore(E entry, E newEntry, bool updateFirst) {
+    if (newEntry->list != nullptr) {
         ;
     }
     _modificationCount++;
-    newEntry._list = this;
+    newEntry->_list = this;
     if (isEmpty) {
         assert(entry == nullptr);
-        newEntry._previous = newEntry._next = newEntry;
+        newEntry->_previous = newEntry->_next = newEntry;
         _first = newEntry;
         _length++;
         return;
     }
-    E predecessor = entry!._previous!;
+    E predecessor = entry!->_previous!;
     E successor = entry;
-    newEntry._previous = predecessor;
-    newEntry._next = successor;
-    predecessor._next = newEntry;
-    successor._previous = newEntry;
+    newEntry->_previous = predecessor;
+    newEntry->_next = successor;
+    predecessor->_next = newEntry;
+    successor->_previous = newEntry;
     if (updateFirst && identical(entry, _first)) {
         _first = newEntry;
     }
     _length++;
 }
 
-void LinkedList::_unlink(E entry) {
+template<typename E : LinkedListEntry<E>> void LinkedListCls<E>::_unlink(E entry) {
     _modificationCount++;
-    entry._next!._previous = entry._previous;
-    E next = entry._previous!._next = entry._next;
+    entry->_next!->_previous = entry->_previous;
+    E next = entry->_previous!->_next = entry->_next;
     _length--;
-    entry._list = entry._next = entry._previous = nullptr;
+    entry->_list = entry->_next = entry->_previous = nullptr;
     if (isEmpty) {
         _first = nullptr;
     } else     {
@@ -130,59 +130,59 @@ void LinkedList::_unlink(E entry) {
 ;
     }}
 
-E _LinkedListIterator::current() {
-    return (;
+template<typename E : LinkedListEntry<E>> E _LinkedListIteratorCls<E>::current() {
+    return ((E)_current);
 }
 
-bool _LinkedListIterator::moveNext() {
-    if (_modificationCount != _list._modificationCount) {
+template<typename E : LinkedListEntry<E>> bool _LinkedListIteratorCls<E>::moveNext() {
+    if (_modificationCount != _list->_modificationCount) {
         ;
     }
-    if (_list.isEmpty || (_visitedFirst && identical(_next, _list.first))) {
+    if (_list->isEmpty || (_visitedFirst && identical(_next, _list->first))) {
         _current = nullptr;
         return false;
     }
     _visitedFirst = true;
     _current = _next;
-    _next = _next!._next;
+    _next = _next!->_next;
     return true;
 }
 
-_LinkedListIterator::_LinkedListIterator(LinkedList<E> list) {
+template<typename E : LinkedListEntry<E>> _LinkedListIteratorCls<E>::_LinkedListIteratorCls(LinkedList<E> list) {
     {
         _list = list;
-        _modificationCount = list._modificationCount;
-        _next = list._first;
+        _modificationCount = list->_modificationCount;
+        _next = list->_first;
         _visitedFirst = false;
     }
 }
 
-LinkedList<E> LinkedListEntry::list() {
+template<typename E : LinkedListEntry<E>> LinkedList<E> LinkedListEntryCls<E>::list() {
     return _list;
 }
 
-void LinkedListEntry::unlink() {
-    _list!._unlink(();
+template<typename E : LinkedListEntry<E>> void LinkedListEntryCls<E>::unlink() {
+    _list!->_unlink(((E)this));
 }
 
-E LinkedListEntry::next() {
-    if (_list == nullptr || identical(_list!.first, _next))     {
+template<typename E : LinkedListEntry<E>> E LinkedListEntryCls<E>::next() {
+    if (_list == nullptr || identical(_list!->first, _next))     {
         return nullptr;
     }
     return _next;
 }
 
-E LinkedListEntry::previous() {
-    if (_list == nullptr || identical(this, _list!.first))     {
+template<typename E : LinkedListEntry<E>> E LinkedListEntryCls<E>::previous() {
+    if (_list == nullptr || identical(this, _list!->first))     {
         return nullptr;
     }
     return _previous;
 }
 
-void LinkedListEntry::insertAfter(E entry) {
-    _list!._insertBefore(_next, entryfalse);
+template<typename E : LinkedListEntry<E>> void LinkedListEntryCls<E>::insertAfter(E entry) {
+    _list!->_insertBefore(_next, entryfalse);
 }
 
-void LinkedListEntry::insertBefore(E entry) {
-    _list!._insertBefore((, entrytrue);
+template<typename E : LinkedListEntry<E>> void LinkedListEntryCls<E>::insertBefore(E entry) {
+    _list!->_insertBefore(((E)this), entrytrue);
 }

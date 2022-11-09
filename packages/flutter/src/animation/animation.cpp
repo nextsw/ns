@@ -1,22 +1,22 @@
 #include "animation.hpp"
-bool Animation::isDismissed() {
-    return status == AnimationStatus.dismissed;
+template<typename T> bool AnimationCls<T>::isDismissed() {
+    return status == AnimationStatusCls::dismissed;
 }
 
-bool Animation::isCompleted() {
-    return status == AnimationStatus.completed;
+template<typename T> bool AnimationCls<T>::isCompleted() {
+    return status == AnimationStatusCls::completed;
 }
 
-Animation<U> Animation::drive<U>(Animatable<U> child) {
+template<typename T> Animation<U> AnimationCls<T>::drivetemplate<typename U> (Animatable<U> child) {
     assert(this is Animation<double>);
-    return child.animate(();
+    return child->animate(((Animation<double>)this));
 }
 
-String Animation::toString() {
+template<typename T> String AnimationCls<T>::toString() {
     return "${describeIdentity(this)}(${toStringDetails()})";
 }
 
-String Animation::toStringDetails() {
+template<typename T> String AnimationCls<T>::toStringDetails() {
     assert(status != nullptr);
     ;
 }

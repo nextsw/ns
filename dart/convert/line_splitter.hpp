@@ -1,37 +1,37 @@
-#ifndef LINE_SPLITTER_H
-#define LINE_SPLITTER_H
-#include <memory>
+#ifndef DART_CONVERT_LINE_SPLITTER
+#define DART_CONVERT_LINE_SPLITTER
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
+
+int _LF;
+
+int _CR;
 
 
-
-const int _LF;
-
-const int _CR;
-
-
-class LineSplitter : StreamTransformerBase<String, String> {
+class LineSplitterCls : public StreamTransformerBaseCls<String, String> {
 public:
 
-     LineSplitter();
-
+     LineSplitterCls();
     static Iterable<String> split(int end, String lines, int start);
 
-    List<String> convert(String data);
+    virtual List<String> convert(String data);
 
-    StringConversionSink startChunkedConversion(Sink<String> sink);
+    virtual StringConversionSink startChunkedConversion(Sink<String> sink);
 
-    Stream<String> bind(Stream<String> stream);
+    virtual Stream<String> bind(Stream<String> stream);
 
 private:
 
 };
+using LineSplitter = std::shared_ptr<LineSplitterCls>;
 
-class _LineSplitterSink : StringConversionSinkBase {
+class _LineSplitterSinkCls : public StringConversionSinkBaseCls {
 public:
 
-    void addSlice(String chunk, int end, bool isLast, int start);
+    virtual void addSlice(String chunk, int end, bool isLast, int start);
 
-    void close();
+    virtual void close();
 
 private:
     StringConversionSink _sink;
@@ -41,23 +41,25 @@ private:
     bool _skipLeadingLF;
 
 
-     _LineSplitterSink(StringConversionSink _sink);
-
-    void _addLines(int end, String lines, int start);
+     _LineSplitterSinkCls(StringConversionSink _sink);
+    virtual void _addLines(int end, String lines, int start);
 
 };
+using _LineSplitterSink = std::shared_ptr<_LineSplitterSinkCls>;
 
-class _LineSplitterEventSink : _LineSplitterSink {
+class _LineSplitterEventSinkCls : public _LineSplitterSinkCls {
 public:
 
-    void addError(Object o, StackTrace stackTrace);
+    virtual void addError(Object o, StackTrace stackTrace);
 
 private:
     EventSink<String> _eventSink;
 
 
-     _LineSplitterEventSink(EventSink<String> eventSink);
+     _LineSplitterEventSinkCls(EventSink<String> eventSink);
 
 };
+using _LineSplitterEventSink = std::shared_ptr<_LineSplitterEventSinkCls>;
+
 
 #endif

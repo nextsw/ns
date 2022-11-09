@@ -1,64 +1,50 @@
-#ifndef BORDER_RADIUS_H
-#define BORDER_RADIUS_H
-#include <memory>
+#ifndef PACKAGES_FLUTTER_SRC_PAINTING_BORDER_RADIUS
+#define PACKAGES_FLUTTER_SRC_PAINTING_BORDER_RADIUS
+#include <base.hpp>
 
-#include <flutter/foundation.hpp>
+#include <dart/core/core.hpp>
+#include <packages/flutter/lib/foundation.hpp>
 #include "basic_types.hpp"
 
 
-
-class BorderRadiusGeometry {
+class BorderRadiusGeometryCls : public ObjectCls {
 public:
 
-     BorderRadiusGeometry();
+     BorderRadiusGeometryCls();
+    virtual BorderRadiusGeometry subtract(BorderRadiusGeometry other);
 
-    BorderRadiusGeometry subtract(BorderRadiusGeometry other);
+    virtual BorderRadiusGeometry add(BorderRadiusGeometry other);
 
-    BorderRadiusGeometry add(BorderRadiusGeometry other);
-
-    BorderRadiusGeometry -();
-
-    BorderRadiusGeometry *(double other);
-
-    BorderRadiusGeometry /(double other);
-
-    BorderRadiusGeometry ~/(double other);
-
-    BorderRadiusGeometry %(double other);
-
+    virtual BorderRadiusGeometry operator-();
+    virtual BorderRadiusGeometry operator*(double other);
+    virtual BorderRadiusGeometry operator/(double other);
+    virtual BorderRadiusGeometry operator~/(double other);
+    virtual BorderRadiusGeometry operator%(double other);
     static BorderRadiusGeometry lerp(BorderRadiusGeometry a, BorderRadiusGeometry b, double t);
 
-    BorderRadius resolve(TextDirection direction);
+    virtual BorderRadius resolve(TextDirection direction);
+    virtual String toString();
 
-    String toString();
+    virtual bool operator==(Object other);
 
-    bool ==(Object other);
-
-    int hashCode();
+    virtual int hashCode();
 
 private:
 
-    Radius _topLeft();
-
-    Radius _topRight();
-
-    Radius _bottomLeft();
-
-    Radius _bottomRight();
-
-    Radius _topStart();
-
-    Radius _topEnd();
-
-    Radius _bottomStart();
-
-    Radius _bottomEnd();
-
+    virtual Radius _topLeft();
+    virtual Radius _topRight();
+    virtual Radius _bottomLeft();
+    virtual Radius _bottomRight();
+    virtual Radius _topStart();
+    virtual Radius _topEnd();
+    virtual Radius _bottomStart();
+    virtual Radius _bottomEnd();
 };
+using BorderRadiusGeometry = std::shared_ptr<BorderRadiusGeometryCls>;
 
-class BorderRadius : BorderRadiusGeometry {
+class BorderRadiusCls : public BorderRadiusGeometryCls {
 public:
-    static const BorderRadius zero;
+    static BorderRadius zero;
 
     Radius topLeft;
 
@@ -69,65 +55,65 @@ public:
     Radius bottomRight;
 
 
-    void  all(Radius radius);
+    virtual void  all(Radius radius);
 
-    void  circular(double radius);
+    virtual void  circular(double radius);
 
-    void  vertical(Radius bottom, Radius top);
+    virtual void  vertical(Radius bottom, Radius top);
 
-    void  horizontal(Radius left, Radius right);
+    virtual void  horizontal(Radius left, Radius right);
 
-    void  only(Radius bottomLeft, Radius bottomRight, Radius topLeft, Radius topRight);
+    virtual void  only(Radius bottomLeft, Radius bottomRight, Radius topLeft, Radius topRight);
+    virtual BorderRadius copyWith(Radius bottomLeft, Radius bottomRight, Radius topLeft, Radius topRight);
 
-    BorderRadius copyWith(Radius bottomLeft, Radius bottomRight, Radius topLeft, Radius topRight);
+    virtual RRect toRRect(Rect rect);
 
-    RRect toRRect(Rect rect);
+    virtual BorderRadiusGeometry subtract(BorderRadiusGeometry other);
 
-    BorderRadiusGeometry subtract(BorderRadiusGeometry other);
+    virtual BorderRadiusGeometry add(BorderRadiusGeometry other);
 
-    BorderRadiusGeometry add(BorderRadiusGeometry other);
+    virtual BorderRadius operator-(BorderRadius other);
 
-    BorderRadius -(BorderRadius other);
+    virtual BorderRadius operator+(BorderRadius other);
 
-    BorderRadius +(BorderRadius other);
+    virtual BorderRadius operator-();
 
-    BorderRadius -();
+    virtual BorderRadius operator*(double other);
 
-    BorderRadius *(double other);
+    virtual BorderRadius operator/(double other);
 
-    BorderRadius /(double other);
+    virtual BorderRadius operator~/(double other);
 
-    BorderRadius ~/(double other);
-
-    BorderRadius %(double other);
+    virtual BorderRadius operator%(double other);
 
     static BorderRadius lerp(BorderRadius a, BorderRadius b, double t);
 
-    BorderRadius resolve(TextDirection direction);
+    virtual BorderRadius resolve(TextDirection direction);
 
 private:
 
-    Radius _topLeft();
+    virtual Radius _topLeft();
 
-    Radius _topRight();
+    virtual Radius _topRight();
 
-    Radius _bottomLeft();
+    virtual Radius _bottomLeft();
 
-    Radius _bottomRight();
+    virtual Radius _bottomRight();
 
-    Radius _topStart();
+    virtual Radius _topStart();
 
-    Radius _topEnd();
+    virtual Radius _topEnd();
 
-    Radius _bottomStart();
+    virtual Radius _bottomStart();
 
-    Radius _bottomEnd();
+    virtual Radius _bottomEnd();
 
 };
+using BorderRadius = std::shared_ptr<BorderRadiusCls>;
 
-class BorderRadiusDirectional : BorderRadiusGeometry {
+class BorderRadiusDirectionalCls : public BorderRadiusGeometryCls {
 public:
-    static const BorderRadiusDirectional zero;
+    static BorderRadiusDirectional zero;
 
     Radius topStart;
 
@@ -138,72 +124,72 @@ public:
     Radius bottomEnd;
 
 
-    void  all(Radius radius);
+    virtual void  all(Radius radius);
 
-    void  circular(double radius);
+    virtual void  circular(double radius);
 
-    void  vertical(Radius bottom, Radius top);
+    virtual void  vertical(Radius bottom, Radius top);
 
-    void  horizontal(Radius end, Radius start);
+    virtual void  horizontal(Radius end, Radius start);
 
-    void  only(Radius bottomEnd, Radius bottomStart, Radius topEnd, Radius topStart);
+    virtual void  only(Radius bottomEnd, Radius bottomStart, Radius topEnd, Radius topStart);
+    virtual BorderRadiusGeometry subtract(BorderRadiusGeometry other);
 
-    BorderRadiusGeometry subtract(BorderRadiusGeometry other);
+    virtual BorderRadiusGeometry add(BorderRadiusGeometry other);
 
-    BorderRadiusGeometry add(BorderRadiusGeometry other);
+    virtual BorderRadiusDirectional operator-(BorderRadiusDirectional other);
 
-    BorderRadiusDirectional -(BorderRadiusDirectional other);
+    virtual BorderRadiusDirectional operator+(BorderRadiusDirectional other);
 
-    BorderRadiusDirectional +(BorderRadiusDirectional other);
+    virtual BorderRadiusDirectional operator-();
 
-    BorderRadiusDirectional -();
+    virtual BorderRadiusDirectional operator*(double other);
 
-    BorderRadiusDirectional *(double other);
+    virtual BorderRadiusDirectional operator/(double other);
 
-    BorderRadiusDirectional /(double other);
+    virtual BorderRadiusDirectional operator~/(double other);
 
-    BorderRadiusDirectional ~/(double other);
-
-    BorderRadiusDirectional %(double other);
+    virtual BorderRadiusDirectional operator%(double other);
 
     static BorderRadiusDirectional lerp(BorderRadiusDirectional a, BorderRadiusDirectional b, double t);
 
-    BorderRadius resolve(TextDirection direction);
+    virtual BorderRadius resolve(TextDirection direction);
 
 private:
 
-    Radius _topStart();
+    virtual Radius _topStart();
 
-    Radius _topEnd();
+    virtual Radius _topEnd();
 
-    Radius _bottomStart();
+    virtual Radius _bottomStart();
 
-    Radius _bottomEnd();
+    virtual Radius _bottomEnd();
 
-    Radius _topLeft();
+    virtual Radius _topLeft();
 
-    Radius _topRight();
+    virtual Radius _topRight();
 
-    Radius _bottomLeft();
+    virtual Radius _bottomLeft();
 
-    Radius _bottomRight();
+    virtual Radius _bottomRight();
 
 };
+using BorderRadiusDirectional = std::shared_ptr<BorderRadiusDirectionalCls>;
 
-class _MixedBorderRadius : BorderRadiusGeometry {
+class _MixedBorderRadiusCls : public BorderRadiusGeometryCls {
 public:
 
-    _MixedBorderRadius -();
+    virtual _MixedBorderRadius operator-();
 
-    _MixedBorderRadius *(double other);
+    virtual _MixedBorderRadius operator*(double other);
 
-    _MixedBorderRadius /(double other);
+    virtual _MixedBorderRadius operator/(double other);
 
-    _MixedBorderRadius ~/(double other);
+    virtual _MixedBorderRadius operator~/(double other);
 
-    _MixedBorderRadius %(double other);
+    virtual _MixedBorderRadius operator%(double other);
 
-    BorderRadius resolve(TextDirection direction);
+    virtual BorderRadius resolve(TextDirection direction);
 
 private:
     Radius _topLeft;
@@ -223,8 +209,9 @@ private:
     Radius _bottomEnd;
 
 
-     _MixedBorderRadius(Radius _bottomEnd, Radius _bottomLeft, Radius _bottomRight, Radius _bottomStart, Radius _topEnd, Radius _topLeft, Radius _topRight, Radius _topStart);
-
+     _MixedBorderRadiusCls(Radius _bottomEnd, Radius _bottomLeft, Radius _bottomRight, Radius _bottomStart, Radius _topEnd, Radius _topLeft, Radius _topRight, Radius _topStart);
 };
+using _MixedBorderRadius = std::shared_ptr<_MixedBorderRadiusCls>;
+
 
 #endif

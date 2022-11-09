@@ -1,55 +1,46 @@
-#ifndef IO_SINK_H
-#define IO_SINK_H
-#include <memory>
+#ifndef DART_IO_IO_SINK
+#define DART_IO_IO_SINK
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
 
 
-
-
-class IOSink {
+class IOSinkCls : public ObjectCls {
 public:
     Encoding encoding;
 
 
-     IOSink(Encoding encoding, StreamConsumer<List<int>> target);
+     IOSinkCls(Encoding encoding, StreamConsumer<List<int>> target);
 
-    void add(List<int> data);
-
-    void write(Object object);
-
-    void writeAll(Iterable objects, String separator);
-
-    void writeln(Object object);
-
-    void writeCharCode(int charCode);
-
-    void addError(error , StackTrace stackTrace);
-
-    Future addStream(Stream<List<int>> stream);
-
-    Future flush();
-
-    Future close();
-
-    Future done();
-
+    virtual void add(List<int> data);
+    virtual void write(Object object);
+    virtual void writeAll(Iterable objects, String separator);
+    virtual void writeln(Object object);
+    virtual void writeCharCode(int charCode);
+    virtual void addError(error , StackTrace stackTrace);
+    virtual Future addStream(Stream<List<int>> stream);
+    virtual Future flush();
+    virtual Future close();
+    virtual Future done();
 private:
 
 };
+using IOSink = std::shared_ptr<IOSinkCls>;
 
-class _StreamSinkImpl<T> {
+template<typename T> class _StreamSinkImplCls : public ObjectCls {
 public:
 
-    void add(T data);
+    virtual void add(T data);
 
-    void addError(error , StackTrace stackTrace);
+    virtual void addError(error , StackTrace stackTrace);
 
-    Future addStream(Stream<T> stream);
+    virtual Future addStream(Stream<T> stream);
 
-    Future flush();
+    virtual Future flush();
 
-    Future close();
+    virtual Future close();
 
-    Future done();
+    virtual Future done();
 
 private:
     StreamConsumer<T> _target;
@@ -67,32 +58,32 @@ private:
     bool _hasError;
 
 
-     _StreamSinkImpl(StreamConsumer<T> _target);
+     _StreamSinkImplCls(StreamConsumer<T> _target);
+    virtual void _closeTarget();
 
-    void _closeTarget();
+    virtual void _completeDoneValue(value );
 
-    void _completeDoneValue(value );
+    virtual void _completeDoneError(error , StackTrace stackTrace);
 
-    void _completeDoneError(error , StackTrace stackTrace);
-
-    StreamController<T> _controller();
+    virtual StreamController<T> _controller();
 
 };
+template<typename T> using _StreamSinkImpl = std::shared_ptr<_StreamSinkImplCls<T>>;
 
-class _IOSinkImpl : _StreamSinkImpl<List<int>> {
+class _IOSinkImplCls : public _StreamSinkImplCls<List<int>> {
 public:
 
-    Encoding encoding();
+    virtual Encoding encoding();
 
-    void encoding(Encoding value);
+    virtual void encoding(Encoding value);
 
-    void write(Object obj);
+    virtual void write(Object obj);
 
-    void writeAll(Iterable objects, String separator);
+    virtual void writeAll(Iterable objects, String separator);
 
-    void writeln(Object object);
+    virtual void writeln(Object object);
 
-    void writeCharCode(int charCode);
+    virtual void writeCharCode(int charCode);
 
 private:
     Encoding _encoding;
@@ -100,8 +91,10 @@ private:
     bool _encodingMutable;
 
 
-     _IOSinkImpl(Encoding _encoding, StreamConsumer<List<int>> target);
+     _IOSinkImplCls(Encoding _encoding, StreamConsumer<List<int>> target);
 
 };
+using _IOSinkImpl = std::shared_ptr<_IOSinkImplCls>;
+
 
 #endif

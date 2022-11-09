@@ -1,164 +1,149 @@
-#ifndef QUEUE_H
-#define QUEUE_H
-#include <memory>
+#ifndef DART_COLLECTION_QUEUE
+#define DART_COLLECTION_QUEUE
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
 
 
-
-
-class Queue<E> {
+template<typename E> class QueueCls : public ObjectCls {
 public:
 
-     Queue();
+     QueueCls();
+    virtual void  from(Iterable elements);
+    virtual void  of(Iterable<E> elements);
+    template<typename S, typename T>  static Queue<T> castFrom(Queue<S> source);
 
-    void  from(Iterable elements);
-
-    void  of(Iterable<E> elements);
-
-    static Queue<T> castFrom<S, T>(Queue<S> source);
-
-    Queue<R> cast<R>();
-
-    E removeFirst();
-
-    E removeLast();
-
-    void addFirst(E value);
-
-    void addLast(E value);
-
-    void add(E value);
-
-    bool remove(Object value);
-
-    void addAll(Iterable<E> iterable);
-
-    void removeWhere(FunctionType test);
-
-    void retainWhere(FunctionType test);
-
-    void clear();
-
+    template<typename R>  virtual Queue<R> cast();
+    virtual E removeFirst();
+    virtual E removeLast();
+    virtual void addFirst(E value);
+    virtual void addLast(E value);
+    virtual void add(E value);
+    virtual bool remove(Object value);
+    virtual void addAll(Iterable<E> iterable);
+    virtual void removeWhere(bool test(E element) );
+    virtual void retainWhere(bool test(E element) );
+    virtual void clear();
 private:
 
 };
+template<typename E> using Queue = std::shared_ptr<QueueCls<E>>;
 
-class _DoubleLinkedQueueEntry<E> {
+template<typename E> class _DoubleLinkedQueueEntryCls : public ObjectCls {
 public:
 
-    E element();
-
+    virtual E element();
 private:
     _DoubleLinkedQueueEntry<E> _previousLink;
 
     _DoubleLinkedQueueEntry<E> _nextLink;
 
 
-    void _link(_DoubleLinkedQueueEntry<E> next, _DoubleLinkedQueueEntry<E> previous);
+    virtual void _link(_DoubleLinkedQueueEntry<E> next, _DoubleLinkedQueueEntry<E> previous);
 
-    void _unlink();
+    virtual void _unlink();
 
-    _DoubleLinkedQueueElement<E> _asNonSentinelEntry();
+    virtual _DoubleLinkedQueueElement<E> _asNonSentinelEntry();
+    virtual void _append(E element, DoubleLinkedQueue<E> queue);
 
-    void _append(E element, DoubleLinkedQueue<E> queue);
+    virtual void _prepend(E element, DoubleLinkedQueue<E> queue);
 
-    void _prepend(E element, DoubleLinkedQueue<E> queue);
-
-    E _remove();
-
+    virtual E _remove();
 };
+template<typename E> using _DoubleLinkedQueueEntry = std::shared_ptr<_DoubleLinkedQueueEntryCls<E>>;
 
-class _DoubleLinkedQueueElement<E> : _DoubleLinkedQueueEntry<E> {
+template<typename E> class _DoubleLinkedQueueElementCls : public _DoubleLinkedQueueEntryCls<E> {
 public:
     E element;
 
 
-    void append(E e);
+    virtual void append(E e);
 
-    void prepend(E e);
+    virtual void prepend(E e);
 
-    E remove();
+    virtual E remove();
 
-    DoubleLinkedQueueEntry<E> previousEntry();
+    virtual DoubleLinkedQueueEntry<E> previousEntry();
 
-    DoubleLinkedQueueEntry<E> nextEntry();
+    virtual DoubleLinkedQueueEntry<E> nextEntry();
 
 private:
     DoubleLinkedQueue<E> _queue;
 
 
-     _DoubleLinkedQueueElement(DoubleLinkedQueue<E> _queue, E element);
+     _DoubleLinkedQueueElementCls(DoubleLinkedQueue<E> _queue, E element);
+    virtual E _remove();
 
-    E _remove();
-
-    _DoubleLinkedQueueElement<E> _asNonSentinelEntry();
+    virtual _DoubleLinkedQueueElement<E> _asNonSentinelEntry();
 
 };
+template<typename E> using _DoubleLinkedQueueElement = std::shared_ptr<_DoubleLinkedQueueElementCls<E>>;
 
-class _DoubleLinkedQueueSentinel<E> : _DoubleLinkedQueueEntry<E> {
+template<typename E> class _DoubleLinkedQueueSentinelCls : public _DoubleLinkedQueueEntryCls<E> {
 public:
 
-    E element();
+    virtual E element();
 
 private:
 
-     _DoubleLinkedQueueSentinel();
+     _DoubleLinkedQueueSentinelCls();
 
-    Null _asNonSentinelEntry();
+    virtual Null _asNonSentinelEntry();
 
-    E _remove();
+    virtual E _remove();
 
 };
+template<typename E> using _DoubleLinkedQueueSentinel = std::shared_ptr<_DoubleLinkedQueueSentinelCls<E>>;
 
-class DoubleLinkedQueue<E> : Iterable<E> {
+template<typename E> class DoubleLinkedQueueCls : public IterableCls<E> {
 public:
 
-     DoubleLinkedQueue();
+     DoubleLinkedQueueCls();
+    virtual void  from(Iterable<dynamic> elements);
 
-    void  from(Iterable<dynamic> elements);
+    virtual void  of(Iterable<E> elements);
 
-    void  of(Iterable<E> elements);
+    template<typename R>  virtual Queue<R> cast();
 
-    Queue<R> cast<R>();
+    virtual int length();
 
-    int length();
+    virtual void addLast(E value);
 
-    void addLast(E value);
+    virtual void addFirst(E value);
 
-    void addFirst(E value);
+    virtual void add(E value);
 
-    void add(E value);
+    virtual void addAll(Iterable<E> iterable);
 
-    void addAll(Iterable<E> iterable);
+    virtual E removeLast();
 
-    E removeLast();
+    virtual E removeFirst();
 
-    E removeFirst();
+    virtual bool remove(Object o);
 
-    bool remove(Object o);
+    virtual void removeWhere(bool test(E element) );
 
-    void removeWhere(FunctionType test);
+    virtual void retainWhere(bool test(E element) );
 
-    void retainWhere(FunctionType test);
+    virtual E first();
 
-    E first();
+    virtual E last();
 
-    E last();
+    virtual E single();
 
-    E single();
+    virtual DoubleLinkedQueueEntry<E> firstEntry();
 
-    DoubleLinkedQueueEntry<E> firstEntry();
+    virtual DoubleLinkedQueueEntry<E> lastEntry();
 
-    DoubleLinkedQueueEntry<E> lastEntry();
+    virtual bool isEmpty();
 
-    bool isEmpty();
+    virtual void clear();
 
-    void clear();
+    virtual void forEachEntry(void action(DoubleLinkedQueueEntry<E> element) );
 
-    void forEachEntry(FunctionType action);
+    virtual _DoubleLinkedQueueIterator<E> iterator();
 
-    _DoubleLinkedQueueIterator<E> iterator();
-
-    String toString();
+    virtual String toString();
 
 private:
     _DoubleLinkedQueueSentinel<E> _sentinel;
@@ -166,16 +151,17 @@ private:
     int _elementCount;
 
 
-    void _filter(bool removeMatching, FunctionType test);
+    virtual void _filter(bool removeMatching, bool test(E element) );
 
 };
+template<typename E> using DoubleLinkedQueue = std::shared_ptr<DoubleLinkedQueueCls<E>>;
 
-class _DoubleLinkedQueueIterator<E> {
+template<typename E> class _DoubleLinkedQueueIteratorCls : public ObjectCls {
 public:
 
-    bool moveNext();
+    virtual bool moveNext();
 
-    E current();
+    virtual E current();
 
 private:
     DoubleLinkedQueue<E> _queue;
@@ -185,63 +171,64 @@ private:
     E _current;
 
 
-     _DoubleLinkedQueueIterator(DoubleLinkedQueue<E> _queue);
+     _DoubleLinkedQueueIteratorCls(DoubleLinkedQueue<E> _queue);
 
 };
+template<typename E> using _DoubleLinkedQueueIterator = std::shared_ptr<_DoubleLinkedQueueIteratorCls<E>>;
 
-class ListQueue<E> : ListIterable<E> {
+template<typename E> class ListQueueCls : public ListIterableCls<E> {
 public:
 
-     ListQueue(int initialCapacity);
+     ListQueueCls(int initialCapacity);
 
-    void  from(Iterable<dynamic> elements);
+    virtual void  from(Iterable<dynamic> elements);
 
-    void  of(Iterable<E> elements);
+    virtual void  of(Iterable<E> elements);
 
-    Queue<R> cast<R>();
+    template<typename R>  virtual Queue<R> cast();
 
-    Iterator<E> iterator();
+    virtual Iterator<E> iterator();
 
-    void forEach(FunctionType f);
+    virtual void forEach(void f(E element) );
 
-    bool isEmpty();
+    virtual bool isEmpty();
 
-    int length();
+    virtual int length();
 
-    E first();
+    virtual E first();
 
-    E last();
+    virtual E last();
 
-    E single();
+    virtual E single();
 
-    E elementAt(int index);
+    virtual E elementAt(int index);
 
-    List<E> toList(bool growable);
+    virtual List<E> toList(bool growable);
 
-    void add(E value);
+    virtual void add(E value);
 
-    void addAll(Iterable<E> elements);
+    virtual void addAll(Iterable<E> elements);
 
-    bool remove(Object value);
+    virtual bool remove(Object value);
 
-    void removeWhere(FunctionType test);
+    virtual void removeWhere(bool test(E element) );
 
-    void retainWhere(FunctionType test);
+    virtual void retainWhere(bool test(E element) );
 
-    void clear();
+    virtual void clear();
 
-    String toString();
+    virtual String toString();
 
-    void addLast(E value);
+    virtual void addLast(E value);
 
-    void addFirst(E value);
+    virtual void addFirst(E value);
 
-    E removeFirst();
+    virtual E removeFirst();
 
-    E removeLast();
+    virtual E removeLast();
 
 private:
-    static const int _INITIAL_CAPACITY;
+    static int _INITIAL_CAPACITY;
 
     List<E> _table;
 
@@ -254,32 +241,33 @@ private:
 
     static int _calculateCapacity(int initialCapacity);
 
-    void _filterWhere(bool removeMatching, FunctionType test);
+    virtual void _filterWhere(bool removeMatching, bool test(E element) );
 
     static bool _isPowerOf2(int number);
 
     static int _nextPowerOf2(int number);
 
-    void _checkModification(int expectedModificationCount);
+    virtual void _checkModification(int expectedModificationCount);
 
-    void _add(E element);
+    virtual void _add(E element);
 
-    int _remove(int offset);
+    virtual int _remove(int offset);
 
-    void _grow();
+    virtual void _grow();
 
-    int _writeToList(List<E> target);
+    virtual int _writeToList(List<E> target);
 
-    void _preGrow(int newElementCount);
+    virtual void _preGrow(int newElementCount);
 
 };
+template<typename E> using ListQueue = std::shared_ptr<ListQueueCls<E>>;
 
-class _ListQueueIterator<E> {
+template<typename E> class _ListQueueIteratorCls : public ObjectCls {
 public:
 
-    E current();
+    virtual E current();
 
-    bool moveNext();
+    virtual bool moveNext();
 
 private:
     ListQueue<E> _queue;
@@ -293,8 +281,10 @@ private:
     E _current;
 
 
-     _ListQueueIterator(ListQueue<E> queue);
+     _ListQueueIteratorCls(ListQueue<E> queue);
 
 };
+template<typename E> using _ListQueueIterator = std::shared_ptr<_ListQueueIteratorCls<E>>;
+
 
 #endif

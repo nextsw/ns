@@ -1,28 +1,31 @@
 #include "file_impl.hpp"
-void _FileStream::forStdin()
+void _FileStreamCls::forStdin()
 
-StreamSubscription<Uint8List> _FileStream::listen(bool cancelOnError, FunctionType onData, FunctionType onDone, FunctionType onError) {
-    _controller = <Uint8List>StreamController(true, _start, _readBlock, );
-    return _controller.stream.listen(onDataonError, onDone, cancelOnError);
+StreamSubscription<Uint8List> _FileStreamCls::listen(bool cancelOnError, void onData(Uint8List event) , void onDone() , void  onError() ) {
+    _controller = <Uint8List>make<StreamControllerCls>(true, _start, _readBlock, [=] () {
+        _unsubscribed = true;
+        return _closeFile();
+    });
+    return _controller->stream->listen(onDataonError, onDone, cancelOnError);
 }
 
-_FileStream::_FileStream(int _end, String _path, int position) {
+_FileStreamCls::_FileStreamCls(int _end, String _path, int position) {
     {
         _position = position ?? 0;
     }
 }
 
-Future _FileStream::_closeFile() {
+Future _FileStreamCls::_closeFile() {
     if (_readInProgress || _closed) {
-        return _closeCompleter.future;
+        return _closeCompleter->future;
     }
     _closed = true;
-    ;
-    _openedFile.close().catchError(_controller.addError).whenComplete(done);
-    return _closeCompleter.future;
+    InlineMethod;
+    _openedFile->close()->catchError(_controller->addError)->whenComplete(done);
+    return _closeCompleter->future;
 }
 
-void _FileStream::_readBlock() {
+void _FileStreamCls::_readBlock() {
     if (_readInProgress)     {
         return;
     }
@@ -38,299 +41,465 @@ void _FileStream::_readBlock() {
         if ( < 0) {
             _readInProgress = false;
             if (!_unsubscribed) {
-                _controller.addError(RangeError("Bad end position: $end"));
+                _controller->addError(make<RangeErrorCls>("Bad end position: $end"));
                 _closeFile();
                 _unsubscribed = true;
             }
             return;
         }
     }
-    _openedFile.read(readBytes).then().catchError();
+    _openedFile->read(readBytes)->then([=] (Unknown  block) {
+        _readInProgress = false;
+        if (_unsubscribed) {
+            _closeFile();
+            return;
+        }
+        _position = block->length;
+        if (block->length < readBytes || (_end != nullptr && _position == _end)) {
+            _atEnd = true;
+        }
+        if (!_atEnd && !_controller->isPaused) {
+            _readBlock();
+        }
+        _controller->add(block);
+        if (_atEnd) {
+            _closeFile();
+        }
+    })->catchError([=] (Unknown  e,Unknown  s) {
+        if (!_unsubscribed) {
+            _controller->addError(e, s);
+            _closeFile();
+            _unsubscribed = true;
+        }
+    });
 }
 
-void _FileStream::_start() {
+void _FileStreamCls::_start() {
     if ( < 0) {
-        _controller.addError(RangeError("Bad start position: $_position"));
-        _controller.close();
-        _closeCompleter.complete();
+        _controller->addError(make<RangeErrorCls>("Bad start position: $_position"));
+        _controller->close();
+        _closeCompleter->complete();
         return;
     }
-    ;
-    ;
-    ;
+    InlineMethod;
+    InlineMethod;
+    InlineMethod;
     Unknown path = _path;
     if (path != nullptr) {
-        File(path).open(FileMode.read).then(onOpenFileopenFailed);
+        make<FileCls>(path)->open(FileModeCls::read)->then(onOpenFileopenFailed);
     } else {
-        ;
+        try {
+            onOpenFile(_FileCls->_openStdioSync(0));
+        } catch (Unknown e) {
+            openFailed(e, s);
+        };
     }
 }
 
-void _FileStreamConsumer::fromStdio(int fd)
+void _FileStreamConsumerCls::fromStdio(int fd)
 
-Future<File> _FileStreamConsumer::addStream(Stream<List<int>> stream) {
+Future<File> _FileStreamConsumerCls::addStream(Stream<List<int>> stream) {
     Completer<File> completer = <File>sync();
-    _openFuture.then().catchError(completer.completeError);
-    return completer.future;
+    _openFuture->then([=] (Unknown  openedFile) {
+        StreamSubscription<List<int>> _subscription;
+        InlineMethod;
+        _subscription = stream->listen([=] (Unknown  d) {
+            _subscription->pause();
+            try {
+                openedFile->writeFrom(d, 0, d->length)->then([=] ()                 {
+                    _subscription->resume();
+                }error);
+            } catch (Unknown e) {
+                error(e, stackTrace);
+            };
+        }[=] () {
+            completer->complete(_file);
+        }, error, true);
+    })->catchError(completer->completeError);
+    return completer->future;
 }
 
-Future<File> _FileStreamConsumer::close() {
-    return _openFuture.then().then();
+Future<File> _FileStreamConsumerCls::close() {
+    return _openFuture->then([=] (Unknown  openedFile)     {
+        openedFile->close();
+    })->then([=] ()     {
+        _file;
+    });
 }
 
-_FileStreamConsumer::_FileStreamConsumer(File file, FileMode mode) {
+_FileStreamConsumerCls::_FileStreamConsumerCls(File file, FileMode mode) {
     {
         _file = file;
-        _openFuture = file.open(mode);
+        _openFuture = file->open(mode);
     }
 }
 
-void _File::fromRawPath(Uint8List rawPath)
+void _FileCls::fromRawPath(Uint8List rawPath)
 
-String _File::path() {
+String _FileCls::path() {
     return _path;
 }
 
-Future<bool> _File::exists() {
-    return _dispatchWithNamespace(_IOService.fileExists, ).then();
+Future<bool> _FileCls::exists() {
+    return _dispatchWithNamespace(_IOServiceCls::fileExists, makeList(ArrayItem, ArrayItem))->then([=] (Unknown  response) {
+        if (_isErrorResponse(response)) {
+            ;
+        }
+        return response;
+    });
 }
 
-bool _File::existsSync() {
-    auto result = _exists(_Namespace._namespace, _rawPath);
+bool _FileCls::existsSync() {
+    auto result = _exists(_NamespaceCls::_namespace, _rawPath);
     throwIfError(result, "Cannot check existence of file", path);
     return result;
 }
 
-File _File::absolute() {
-    return File(_absolutePath);
+File _FileCls::absolute() {
+    return make<FileCls>(_absolutePath);
 }
 
-Future<File> _File::create(bool recursive) {
-    auto result = recursive? parent.create(true) : Future.value(nullptr);
-    return result.then().then();
+Future<File> _FileCls::create(bool recursive) {
+    auto result = recursive? parent->create(true) : FutureCls->value(nullptr);
+    return result->then([=] ()     {
+        _dispatchWithNamespace(_IOServiceCls::fileCreate, makeList(ArrayItem, ArrayItem));
+    })->then([=] (Unknown  response) {
+        if (_isErrorResponse(response)) {
+            ;
+        }
+        return this;
+    });
 }
 
-void _File::createSync(bool recursive) {
+void _FileCls::createSync(bool recursive) {
     if (recursive) {
-        parent.createSync(true);
+        parent->createSync(true);
     }
-    auto result = _create(_Namespace._namespace, _rawPath);
+    auto result = _create(_NamespaceCls::_namespace, _rawPath);
     throwIfError(result, "Cannot create file", path);
 }
 
-Future<File> _File::rename(String newPath) {
-    return _dispatchWithNamespace(_IOService.fileRename, ).then();
+Future<File> _FileCls::rename(String newPath) {
+    return _dispatchWithNamespace(_IOServiceCls::fileRename, makeList(ArrayItem, ArrayItem, ArrayItem))->then([=] (Unknown  response) {
+        if (_isErrorResponse(response)) {
+            ;
+        }
+        return make<FileCls>(newPath);
+    });
 }
 
-File _File::renameSync(String newPath) {
-    auto result = _rename(_Namespace._namespace, _rawPath, newPath);
+File _FileCls::renameSync(String newPath) {
+    auto result = _rename(_NamespaceCls::_namespace, _rawPath, newPath);
     throwIfError(result, "Cannot rename file to '$newPath'", path);
-    return File(newPath);
+    return make<FileCls>(newPath);
 }
 
-Future<File> _File::copy(String newPath) {
-    return _dispatchWithNamespace(_IOService.fileCopy, ).then();
+Future<File> _FileCls::copy(String newPath) {
+    return _dispatchWithNamespace(_IOServiceCls::fileCopy, makeList(ArrayItem, ArrayItem, ArrayItem))->then([=] (Unknown  response) {
+        if (_isErrorResponse(response)) {
+            ;
+        }
+        return make<FileCls>(newPath);
+    });
 }
 
-File _File::copySync(String newPath) {
-    auto result = _copy(_Namespace._namespace, _rawPath, newPath);
+File _FileCls::copySync(String newPath) {
+    auto result = _copy(_NamespaceCls::_namespace, _rawPath, newPath);
     throwIfError(result, "Cannot copy file to '$newPath'", path);
-    return File(newPath);
+    return make<FileCls>(newPath);
 }
 
-Future<RandomAccessFile> _File::open(FileMode mode) {
-    if (mode != FileMode.read && mode != FileMode.write && mode != FileMode.append && mode != FileMode.writeOnly && mode != FileMode.writeOnlyAppend) {
-        return Future.error(ArgumentError("Invalid file mode for this operation"));
+Future<RandomAccessFile> _FileCls::open(FileMode mode) {
+    if (mode != FileModeCls::read && mode != FileModeCls::write && mode != FileModeCls::append && mode != FileModeCls::writeOnly && mode != FileModeCls::writeOnlyAppend) {
+        return FutureCls->error(make<ArgumentErrorCls>("Invalid file mode for this operation"));
     }
-    return _dispatchWithNamespace(_IOService.fileOpen, ).then();
+    return _dispatchWithNamespace(_IOServiceCls::fileOpen, makeList(ArrayItem, ArrayItem, ArrayItem))->then([=] (Unknown  response) {
+        if (_isErrorResponse(response)) {
+            ;
+        }
+        return make<_RandomAccessFileCls>(response, path);
+    });
 }
 
-Future<int> _File::length() {
-    return _dispatchWithNamespace(_IOService.fileLengthFromPath, ).then();
+Future<int> _FileCls::length() {
+    return _dispatchWithNamespace(_IOServiceCls::fileLengthFromPath, makeList(ArrayItem, ArrayItem))->then([=] (Unknown  response) {
+        if (_isErrorResponse(response)) {
+            ;
+        }
+        return response;
+    });
 }
 
-int _File::lengthSync() {
-    auto result = _lengthFromPath(_Namespace._namespace, _rawPath);
+int _FileCls::lengthSync() {
+    auto result = _lengthFromPath(_NamespaceCls::_namespace, _rawPath);
     throwIfError(result, "Cannot retrieve length of file", path);
     return result;
 }
 
-Future<DateTime> _File::lastAccessed() {
-    return _dispatchWithNamespace(_IOService.fileLastAccessed, ).then();
+Future<DateTime> _FileCls::lastAccessed() {
+    return _dispatchWithNamespace(_IOServiceCls::fileLastAccessed, makeList(ArrayItem, ArrayItem))->then([=] (Unknown  response) {
+        if (_isErrorResponse(response)) {
+            ;
+        }
+        return DateTimeCls->fromMillisecondsSinceEpoch(response);
+    });
 }
 
-DateTime _File::lastAccessedSync() {
-    auto ms = _lastAccessed(_Namespace._namespace, _rawPath);
+DateTime _FileCls::lastAccessedSync() {
+    auto ms = _lastAccessed(_NamespaceCls::_namespace, _rawPath);
     throwIfError(ms, "Cannot retrieve access time", path);
-    return DateTime.fromMillisecondsSinceEpoch(ms);
+    return DateTimeCls->fromMillisecondsSinceEpoch(ms);
 }
 
-Future _File::setLastAccessed(DateTime time) {
-    int millis = time.millisecondsSinceEpoch;
-    return _dispatchWithNamespace(_IOService.fileSetLastAccessed, ).then();
+Future _FileCls::setLastAccessed(DateTime time) {
+    int millis = time->millisecondsSinceEpoch;
+    return _dispatchWithNamespace(_IOServiceCls::fileSetLastAccessed, makeList(ArrayItem, ArrayItem, ArrayItem))->then([=] (Unknown  response) {
+        if (_isErrorResponse(response)) {
+            ;
+        }
+        return nullptr;
+    });
 }
 
-void _File::setLastAccessedSync(DateTime time) {
-    int millis = time.millisecondsSinceEpoch;
-    auto result = _setLastAccessed(_Namespace._namespace, _rawPath, millis);
+void _FileCls::setLastAccessedSync(DateTime time) {
+    int millis = time->millisecondsSinceEpoch;
+    auto result = _setLastAccessed(_NamespaceCls::_namespace, _rawPath, millis);
     if (result is OSError) {
         ;
     }
 }
 
-Future<DateTime> _File::lastModified() {
-    return _dispatchWithNamespace(_IOService.fileLastModified, ).then();
+Future<DateTime> _FileCls::lastModified() {
+    return _dispatchWithNamespace(_IOServiceCls::fileLastModified, makeList(ArrayItem, ArrayItem))->then([=] (Unknown  response) {
+        if (_isErrorResponse(response)) {
+            ;
+        }
+        return DateTimeCls->fromMillisecondsSinceEpoch(response);
+    });
 }
 
-DateTime _File::lastModifiedSync() {
-    auto ms = _lastModified(_Namespace._namespace, _rawPath);
+DateTime _FileCls::lastModifiedSync() {
+    auto ms = _lastModified(_NamespaceCls::_namespace, _rawPath);
     throwIfError(ms, "Cannot retrieve modification time", path);
-    return DateTime.fromMillisecondsSinceEpoch(ms);
+    return DateTimeCls->fromMillisecondsSinceEpoch(ms);
 }
 
-Future _File::setLastModified(DateTime time) {
-    int millis = time.millisecondsSinceEpoch;
-    return _dispatchWithNamespace(_IOService.fileSetLastModified, ).then();
+Future _FileCls::setLastModified(DateTime time) {
+    int millis = time->millisecondsSinceEpoch;
+    return _dispatchWithNamespace(_IOServiceCls::fileSetLastModified, makeList(ArrayItem, ArrayItem, ArrayItem))->then([=] (Unknown  response) {
+        if (_isErrorResponse(response)) {
+            ;
+        }
+        return nullptr;
+    });
 }
 
-void _File::setLastModifiedSync(DateTime time) {
-    int millis = time.millisecondsSinceEpoch;
-    auto result = _setLastModified(_Namespace._namespace, _rawPath, millis);
+void _FileCls::setLastModifiedSync(DateTime time) {
+    int millis = time->millisecondsSinceEpoch;
+    auto result = _setLastModified(_NamespaceCls::_namespace, _rawPath, millis);
     if (result is OSError) {
         ;
     }
 }
 
-RandomAccessFile _File::openSync(FileMode mode) {
-    if (mode != FileMode.read && mode != FileMode.write && mode != FileMode.append && mode != FileMode.writeOnly && mode != FileMode.writeOnlyAppend) {
+RandomAccessFile _FileCls::openSync(FileMode mode) {
+    if (mode != FileModeCls::read && mode != FileModeCls::write && mode != FileModeCls::append && mode != FileModeCls::writeOnly && mode != FileModeCls::writeOnlyAppend) {
         ;
     }
-    auto id = _open(_Namespace._namespace, _rawPath, mode._mode);
+    auto id = _open(_NamespaceCls::_namespace, _rawPath, mode->_mode);
     throwIfError(id, "Cannot open file", path);
-    return _RandomAccessFile(id, _path);
+    return make<_RandomAccessFileCls>(id, _path);
 }
 
-Stream<List<int>> _File::openRead(int end, int start) {
-    return _FileStream(path, start, end);
+Stream<List<int>> _FileCls::openRead(int end, int start) {
+    return make<_FileStreamCls>(path, start, end);
 }
 
-IOSink _File::openWrite(Encoding encoding, FileMode mode) {
-    if (mode != FileMode.write && mode != FileMode.append && mode != FileMode.writeOnly && mode != FileMode.writeOnlyAppend) {
+IOSink _FileCls::openWrite(Encoding encoding, FileMode mode) {
+    if (mode != FileModeCls::write && mode != FileModeCls::append && mode != FileModeCls::writeOnly && mode != FileModeCls::writeOnlyAppend) {
         ;
     }
-    auto consumer = _FileStreamConsumer(this, mode);
-    return IOSink(consumerencoding);
+    auto consumer = make<_FileStreamConsumerCls>(this, mode);
+    return make<IOSinkCls>(consumerencoding);
 }
 
-Future<Uint8List> _File::readAsBytes() {
-    ;
-    return open().then();
+Future<Uint8List> _FileCls::readAsBytes() {
+    InlineMethod;
+    return open()->then([=] (Unknown  file) {
+        return file->length()->then([=] (Unknown  length) {
+            if (length == 0) {
+                return readDataChunked(file);
+            }
+            return file->read(length);
+        })->whenComplete(file->close);
+    });
 }
 
-Uint8List _File::readAsBytesSync() {
+Uint8List _FileCls::readAsBytesSync() {
     auto opened = openSync();
-    ;
+    try {
+        Uint8List data;
+        auto length = opened->lengthSync();
+        if (length == 0) {
+            auto builder = make<BytesBuilderCls>(false);
+            do {
+                data = opened->readSync(_blockSize);
+                if (data->length > 0)                 {
+                    builder->add(data);
+                }
+            } while (data->length > 0);
+            data = builder->takeBytes();
+        } else {
+            data = opened->readSync(length);
+        }
+        return data;
+    } finally {
+        opened->closeSync();
+    };
 }
 
-Future<String> _File::readAsString(Encoding encoding) {
-    auto stack = StackTrace.current;
-    return readAsBytes().then();
+Future<String> _FileCls::readAsString(Encoding encoding) {
+    auto stack = StackTraceCls::current;
+    return readAsBytes()->then([=] (Unknown  bytes) {
+        try {
+            return _tryDecode(bytes, encoding);
+        } catch (Unknown e) {
+            return FutureCls->error(e, stack);
+        };
+    });
 }
 
-String _File::readAsStringSync(Encoding encoding) {
+String _FileCls::readAsStringSync(Encoding encoding) {
     return _tryDecode(readAsBytesSync(), encoding);
 }
 
-Future<List<String>> _File::readAsLines(Encoding encoding) {
-    return readAsString(encoding).then(const LineSplitter().convert);
+Future<List<String>> _FileCls::readAsLines(Encoding encoding) {
+    return readAsString(encoding)->then(make<LineSplitterCls>()->convert);
 }
 
-List<String> _File::readAsLinesSync(Encoding encoding) {
-    return const LineSplitter().convert(readAsStringSync(encoding));
+List<String> _FileCls::readAsLinesSync(Encoding encoding) {
+    return make<LineSplitterCls>()->convert(readAsStringSync(encoding));
 }
 
-Future<File> _File::writeAsBytes(List<int> bytes, bool flush, FileMode mode) {
-    return open(mode).then();
+Future<File> _FileCls::writeAsBytes(List<int> bytes, bool flush, FileMode mode) {
+    return open(mode)->then([=] (Unknown  file) {
+        return file->writeFrom(bytes, 0, bytes->length)-><File>then([=] () {
+            if (flush)             {
+                return file->flush()->then([=] ()             {
+                this;
+            });
+            }
+            return this;
+        })->whenComplete(file->close);
+    });
 }
 
-void _File::writeAsBytesSync(List<int> bytes, bool flush, FileMode mode) {
+void _FileCls::writeAsBytesSync(List<int> bytes, bool flush, FileMode mode) {
     RandomAccessFile opened = openSync(mode);
-    ;
+    try {
+        opened->writeFromSync(bytes, 0, bytes->length);
+        if (flush)         {
+            opened->flushSync();
+        }
+    } finally {
+        opened->closeSync();
+    };
 }
 
-Future<File> _File::writeAsString(String contents, Encoding encoding, bool flush, FileMode mode) {
-    ;
+Future<File> _FileCls::writeAsString(String contents, Encoding encoding, bool flush, FileMode mode) {
+    try {
+        return writeAsBytes(encoding->encode(contents)mode, flush);
+    } catch (Unknown e) {
+        return FutureCls->error(e);
+    };
 }
 
-void _File::writeAsStringSync(String contents, Encoding encoding, bool flush, FileMode mode) {
-    writeAsBytesSync(encoding.encode(contents)mode, flush);
+void _FileCls::writeAsStringSync(String contents, Encoding encoding, bool flush, FileMode mode) {
+    writeAsBytesSync(encoding->encode(contents)mode, flush);
 }
 
-String _File::toString() {
+String _FileCls::toString() {
     return "File: '$path'";
 }
 
-void _File::throwIfError(String msg, String path, Object result) {
+void _FileCls::throwIfError(String msg, String path, Object result) {
     if (result is OSError) {
         ;
     }
 }
 
-_File::_File(String path) {
+_FileCls::_FileCls(String path) {
     {
         _path = _checkNotNull(path, "path");
-        _rawPath = FileSystemEntity._toUtf8Array(path);
+        _rawPath = FileSystemEntityCls->_toUtf8Array(path);
     }
 }
 
-int _File::_namespacePointer() {
-    return _Namespace._namespacePointer;
+int _FileCls::_namespacePointer() {
+    return _NamespaceCls::_namespacePointer;
 }
 
-Future _File::_dispatchWithNamespace(List data, int request) {
+Future _FileCls::_dispatchWithNamespace(List data, int request) {
     data[0] = _namespacePointer();
-    return _IOService._dispatch(request, data);
+    return _IOServiceCls->_dispatch(request, data);
 }
 
-Future<File> _File::_delete(bool recursive) {
+Future<File> _FileCls::_delete(bool recursive) {
     if (recursive) {
-        return Directory(path).delete(true).then();
+        return make<DirectoryCls>(path)->delete(true)->then([=] ()         {
+            this;
+        });
     }
-    return _dispatchWithNamespace(_IOService.fileDelete, ).then();
+    return _dispatchWithNamespace(_IOServiceCls::fileDelete, makeList(ArrayItem, ArrayItem))->then([=] (Unknown  response) {
+        if (_isErrorResponse(response)) {
+            ;
+        }
+        return this;
+    });
 }
 
-void _File::_deleteSync(bool recursive) {
+void _FileCls::_deleteSync(bool recursive) {
     if (recursive) {
-        return Directory.fromRawPath(_rawPath).deleteSync(true);
+        return DirectoryCls->fromRawPath(_rawPath)->deleteSync(true);
     }
-    auto result = _deleteNative(_Namespace._namespace, _rawPath);
+    auto result = _deleteNative(_NamespaceCls::_namespace, _rawPath);
     throwIfError(result, "Cannot delete file", path);
 }
 
-RandomAccessFile _File::_openStdioSync(int fd) {
+RandomAccessFile _FileCls::_openStdioSync(int fd) {
     auto id = _openStdio(fd);
     if (id == 0) {
         ;
     }
-    return _RandomAccessFile(id, "");
+    return make<_RandomAccessFileCls>(id, "");
 }
 
-String _File::_tryDecode(List<int> bytes, Encoding encoding) {
-    ;
+String _FileCls::_tryDecode(List<int> bytes, Encoding encoding) {
+    try {
+        return encoding->decode(bytes);
+    } catch (Unknown _) {
+        ;
+    };
 }
 
-T _File::_checkNotNull<T>(String name, T t) {
-    ArgumentError.checkNotNull(t, name);
+T _FileCls::_checkNotNulltemplate<typename T> (String name, T t) {
+    ArgumentErrorCls->checkNotNull(t, name);
     return t;
 }
 
-Future<void> _RandomAccessFile::close() {
-    return _dispatch(_IOService.fileClose, true).then();
+Future<void> _RandomAccessFileCls::close() {
+    return _dispatch(_IOServiceCls::fileClose, makeList(ArrayItem)true)->then([=] (Unknown  result) {
+        if (result == -1) {
+            ;
+        }
+        closed = closed || (result == 0);
+        _maybePerformCleanup();
+    });
 }
 
-void _RandomAccessFile::closeSync() {
+void _RandomAccessFileCls::closeSync() {
     _checkAvailable();
-    auto id = _ops.close();
+    auto id = _ops->close();
     if (id == -1) {
         ;
     }
@@ -338,285 +507,360 @@ void _RandomAccessFile::closeSync() {
     _maybePerformCleanup();
 }
 
-Future<int> _RandomAccessFile::readByte() {
-    return _dispatch(_IOService.fileReadByte, ).then();
+Future<int> _RandomAccessFileCls::readByte() {
+    return _dispatch(_IOServiceCls::fileReadByte, makeList(ArrayItem))->then([=] (Unknown  response) {
+        if (_isErrorResponse(response)) {
+            ;
+        }
+        _resourceInfo->addRead(1);
+        return response;
+    });
 }
 
-int _RandomAccessFile::readByteSync() {
+int _RandomAccessFileCls::readByteSync() {
     _checkAvailable();
-    auto result = _ops.readByte();
+    auto result = _ops->readByte();
     if (result is OSError) {
         ;
     }
-    _resourceInfo.addRead(1);
+    _resourceInfo->addRead(1);
     return result;
 }
 
-Future<Uint8List> _RandomAccessFile::read(int bytes) {
-    ArgumentError.checkNotNull(bytes, "bytes");
-    return _dispatch(_IOService.fileRead, ).then();
+Future<Uint8List> _RandomAccessFileCls::read(int bytes) {
+    ArgumentErrorCls->checkNotNull(bytes, "bytes");
+    return _dispatch(_IOServiceCls::fileRead, makeList(ArrayItem, ArrayItem))->then([=] (Unknown  response) {
+        if (_isErrorResponse(response)) {
+            ;
+        }
+        _resourceInfo->addRead(response[1]->length);
+        Uint8List result = response[1];
+        return result;
+    });
 }
 
-Uint8List _RandomAccessFile::readSync(int bytes) {
-    ArgumentError.checkNotNull(bytes, "bytes");
+Uint8List _RandomAccessFileCls::readSync(int bytes) {
+    ArgumentErrorCls->checkNotNull(bytes, "bytes");
     _checkAvailable();
-    auto result = _ops.read(bytes);
+    auto result = _ops->read(bytes);
     if (result is OSError) {
         ;
     }
-    _resourceInfo.addRead(result.length);
+    _resourceInfo->addRead(result->length);
     return result;
 }
 
-Future<int> _RandomAccessFile::readInto(List<int> buffer, int end, int start) {
-    ArgumentError.checkNotNull(buffer, "buffer");
-    end = RangeError.checkValidRange(start, end, buffer.length);
+Future<int> _RandomAccessFileCls::readInto(List<int> buffer, int end, int start) {
+    ArgumentErrorCls->checkNotNull(buffer, "buffer");
+    end = RangeErrorCls->checkValidRange(start, end, buffer->length);
     if (end == start) {
-        return Future.value(0);
+        return FutureCls->value(0);
     }
     int length = end - start;
-    return _dispatch(_IOService.fileReadInto, ).then();
+    return _dispatch(_IOServiceCls::fileReadInto, makeList(ArrayItem, ArrayItem))->then([=] (Unknown  response) {
+        if (_isErrorResponse(response)) {
+            ;
+        }
+        int read = response[1];
+        List<int> data = response[2];
+        buffer->setRange(start, start + read, data);
+        _resourceInfo->addRead(read);
+        return read;
+    });
 }
 
-int _RandomAccessFile::readIntoSync(List<int> buffer, int end, int start) {
-    ArgumentError.checkNotNull(buffer, "buffer");
+int _RandomAccessFileCls::readIntoSync(List<int> buffer, int end, int start) {
+    ArgumentErrorCls->checkNotNull(buffer, "buffer");
     _checkAvailable();
-    end = RangeError.checkValidRange(start, end, buffer.length);
+    end = RangeErrorCls->checkValidRange(start, end, buffer->length);
     if (end == start) {
         return 0;
     }
-    auto result = _ops.readInto(buffer, start, end);
+    auto result = _ops->readInto(buffer, start, end);
     if (result is OSError) {
         ;
     }
-    _resourceInfo.addRead(result);
+    _resourceInfo->addRead(result);
     return result;
 }
 
-Future<RandomAccessFile> _RandomAccessFile::writeByte(int value) {
-    ArgumentError.checkNotNull(value, "value");
-    return _dispatch(_IOService.fileWriteByte, ).then();
+Future<RandomAccessFile> _RandomAccessFileCls::writeByte(int value) {
+    ArgumentErrorCls->checkNotNull(value, "value");
+    return _dispatch(_IOServiceCls::fileWriteByte, makeList(ArrayItem, ArrayItem))->then([=] (Unknown  response) {
+        if (_isErrorResponse(response)) {
+            ;
+        }
+        _resourceInfo->addWrite(1);
+        return this;
+    });
 }
 
-int _RandomAccessFile::writeByteSync(int value) {
+int _RandomAccessFileCls::writeByteSync(int value) {
     _checkAvailable();
-    ArgumentError.checkNotNull(value, "value");
-    auto result = _ops.writeByte(value);
+    ArgumentErrorCls->checkNotNull(value, "value");
+    auto result = _ops->writeByte(value);
     if (result is OSError) {
         ;
     }
-    _resourceInfo.addWrite(1);
+    _resourceInfo->addWrite(1);
     return result;
 }
 
-Future<RandomAccessFile> _RandomAccessFile::writeFrom(List<int> buffer, int end, int start) {
-    ArgumentError.checkNotNull(buffer, "buffer");
-    ArgumentError.checkNotNull(start, "start");
-    end = RangeError.checkValidRange(start, end, buffer.length);
+Future<RandomAccessFile> _RandomAccessFileCls::writeFrom(List<int> buffer, int end, int start) {
+    ArgumentErrorCls->checkNotNull(buffer, "buffer");
+    ArgumentErrorCls->checkNotNull(start, "start");
+    end = RangeErrorCls->checkValidRange(start, end, buffer->length);
     if (end == start) {
-        return Future.value(this);
+        return FutureCls->value(this);
     }
     _BufferAndStart result;
-    ;
+    try {
+        result = _ensureFastAndSerializableByteData(buffer, start, end);
+    } catch (Unknown e) {
+        return FutureCls->error(e);
+    };
     List request = <dynamic>filled(4, nullptr);
     request[0] = nullptr;
-    request[1] = result.buffer;
-    request[2] = result.start;
-    request[3] = end - (start - result.start);
-    return _dispatch(_IOService.fileWriteFrom, request).then();
+    request[1] = result->buffer;
+    request[2] = result->start;
+    request[3] = end - (start - result->start);
+    return _dispatch(_IOServiceCls::fileWriteFrom, request)->then([=] (Unknown  response) {
+        if (_isErrorResponse(response)) {
+            ;
+        }
+        _resourceInfo->addWrite(end! - (start - result->start));
+        return this;
+    });
 }
 
-void _RandomAccessFile::writeFromSync(List<int> buffer, int end, int start) {
+void _RandomAccessFileCls::writeFromSync(List<int> buffer, int end, int start) {
     _checkAvailable();
-    ArgumentError.checkNotNull(buffer, "buffer");
-    ArgumentError.checkNotNull(start, "start");
-    end = RangeError.checkValidRange(start, end, buffer.length);
+    ArgumentErrorCls->checkNotNull(buffer, "buffer");
+    ArgumentErrorCls->checkNotNull(start, "start");
+    end = RangeErrorCls->checkValidRange(start, end, buffer->length);
     if (end == start) {
         return;
     }
     _BufferAndStart bufferAndStart = _ensureFastAndSerializableByteData(buffer, start, end);
-    auto result = _ops.writeFrom(bufferAndStart.buffer, bufferAndStart.start, end - (start - bufferAndStart.start));
+    auto result = _ops->writeFrom(bufferAndStart->buffer, bufferAndStart->start, end - (start - bufferAndStart->start));
     if (result is OSError) {
         ;
     }
-    _resourceInfo.addWrite(end - (start - bufferAndStart.start));
+    _resourceInfo->addWrite(end - (start - bufferAndStart->start));
 }
 
-Future<RandomAccessFile> _RandomAccessFile::writeString(Encoding encoding, String string) {
-    ArgumentError.checkNotNull(encoding, "encoding");
-    auto data = encoding.encode(string);
-    return writeFrom(data, 0, data.length);
+Future<RandomAccessFile> _RandomAccessFileCls::writeString(Encoding encoding, String stringValue) {
+    ArgumentErrorCls->checkNotNull(encoding, "encoding");
+    auto data = encoding->encode(stringValue);
+    return writeFrom(data, 0, data->length);
 }
 
-void _RandomAccessFile::writeStringSync(Encoding encoding, String string) {
-    ArgumentError.checkNotNull(encoding, "encoding");
-    auto data = encoding.encode(string);
-    writeFromSync(data, 0, data.length);
+void _RandomAccessFileCls::writeStringSync(Encoding encoding, String stringValue) {
+    ArgumentErrorCls->checkNotNull(encoding, "encoding");
+    auto data = encoding->encode(stringValue);
+    writeFromSync(data, 0, data->length);
 }
 
-Future<int> _RandomAccessFile::position() {
-    return _dispatch(_IOService.filePosition, ).then();
+Future<int> _RandomAccessFileCls::position() {
+    return _dispatch(_IOServiceCls::filePosition, makeList(ArrayItem))->then([=] (Unknown  response) {
+        if (_isErrorResponse(response)) {
+            ;
+        }
+        return response;
+    });
 }
 
-int _RandomAccessFile::positionSync() {
+int _RandomAccessFileCls::positionSync() {
     _checkAvailable();
-    auto result = _ops.position();
+    auto result = _ops->position();
     if (result is OSError) {
         ;
     }
     return result;
 }
 
-Future<RandomAccessFile> _RandomAccessFile::setPosition(int position) {
-    return _dispatch(_IOService.fileSetPosition, ).then();
+Future<RandomAccessFile> _RandomAccessFileCls::setPosition(int position) {
+    return _dispatch(_IOServiceCls::fileSetPosition, makeList(ArrayItem, ArrayItem))->then([=] (Unknown  response) {
+        if (_isErrorResponse(response)) {
+            ;
+        }
+        return this;
+    });
 }
 
-void _RandomAccessFile::setPositionSync(int position) {
+void _RandomAccessFileCls::setPositionSync(int position) {
     _checkAvailable();
-    auto result = _ops.setPosition(position);
+    auto result = _ops->setPosition(position);
     if (result is OSError) {
         ;
     }
 }
 
-Future<RandomAccessFile> _RandomAccessFile::truncate(int length) {
-    return _dispatch(_IOService.fileTruncate, ).then();
+Future<RandomAccessFile> _RandomAccessFileCls::truncate(int length) {
+    return _dispatch(_IOServiceCls::fileTruncate, makeList(ArrayItem, ArrayItem))->then([=] (Unknown  response) {
+        if (_isErrorResponse(response)) {
+            ;
+        }
+        return this;
+    });
 }
 
-void _RandomAccessFile::truncateSync(int length) {
+void _RandomAccessFileCls::truncateSync(int length) {
     _checkAvailable();
-    auto result = _ops.truncate(length);
+    auto result = _ops->truncate(length);
     if (result is OSError) {
         ;
     }
 }
 
-Future<int> _RandomAccessFile::length() {
-    return _dispatch(_IOService.fileLength, ).then();
+Future<int> _RandomAccessFileCls::length() {
+    return _dispatch(_IOServiceCls::fileLength, makeList(ArrayItem))->then([=] (Unknown  response) {
+        if (_isErrorResponse(response)) {
+            ;
+        }
+        return response;
+    });
 }
 
-int _RandomAccessFile::lengthSync() {
+int _RandomAccessFileCls::lengthSync() {
     _checkAvailable();
-    auto result = _ops.length();
+    auto result = _ops->length();
     if (result is OSError) {
         ;
     }
     return result;
 }
 
-Future<RandomAccessFile> _RandomAccessFile::flush() {
-    return _dispatch(_IOService.fileFlush, ).then();
+Future<RandomAccessFile> _RandomAccessFileCls::flush() {
+    return _dispatch(_IOServiceCls::fileFlush, makeList(ArrayItem))->then([=] (Unknown  response) {
+        if (_isErrorResponse(response)) {
+            ;
+        }
+        return this;
+    });
 }
 
-void _RandomAccessFile::flushSync() {
+void _RandomAccessFileCls::flushSync() {
     _checkAvailable();
-    auto result = _ops.flush();
+    auto result = _ops->flush();
     if (result is OSError) {
         ;
     }
 }
 
-Future<RandomAccessFile> _RandomAccessFile::lock(int end, FileLock mode, int start) {
-    ArgumentError.checkNotNull(mode, "mode");
-    ArgumentError.checkNotNull(start, "start");
-    ArgumentError.checkNotNull(end, "end");
+Future<RandomAccessFile> _RandomAccessFileCls::lock(int end, FileLock mode, int start) {
+    ArgumentErrorCls->checkNotNull(mode, "mode");
+    ArgumentErrorCls->checkNotNull(start, "start");
+    ArgumentErrorCls->checkNotNull(end, "end");
     if (( < 0) || ( < -1) || ((end != -1) && (start >= end))) {
         ;
     }
     int lock = _fileLockValue(mode);
-    return _dispatch(_IOService.fileLock, ).then();
+    return _dispatch(_IOServiceCls::fileLock, makeList(ArrayItem, ArrayItem, ArrayItem, ArrayItem))->then([=] (Unknown  response) {
+        if (_isErrorResponse(response)) {
+            ;
+        }
+        return this;
+    });
 }
 
-Future<RandomAccessFile> _RandomAccessFile::unlock(int end, int start) {
-    ArgumentError.checkNotNull(start, "start");
-    ArgumentError.checkNotNull(end, "end");
+Future<RandomAccessFile> _RandomAccessFileCls::unlock(int end, int start) {
+    ArgumentErrorCls->checkNotNull(start, "start");
+    ArgumentErrorCls->checkNotNull(end, "end");
     if (start == end) {
         ;
     }
-    return _dispatch(_IOService.fileLock, ).then();
+    return _dispatch(_IOServiceCls::fileLock, makeList(ArrayItem, ArrayItem, ArrayItem, ArrayItem))->then([=] (Unknown  response) {
+        if (_isErrorResponse(response)) {
+            ;
+        }
+        return this;
+    });
 }
 
-void _RandomAccessFile::lockSync(int end, FileLock mode, int start) {
+void _RandomAccessFileCls::lockSync(int end, FileLock mode, int start) {
     _checkAvailable();
-    ArgumentError.checkNotNull(mode, "mode");
-    ArgumentError.checkNotNull(start, "start");
-    ArgumentError.checkNotNull(end, "end");
+    ArgumentErrorCls->checkNotNull(mode, "mode");
+    ArgumentErrorCls->checkNotNull(start, "start");
+    ArgumentErrorCls->checkNotNull(end, "end");
     if (( < 0) || ( < -1) || ((end != -1) && (start >= end))) {
         ;
     }
     int lock = _fileLockValue(mode);
-    auto result = _ops.lock(lock, start, end);
+    auto result = _ops->lock(lock, start, end);
     if (result is OSError) {
         ;
     }
 }
 
-void _RandomAccessFile::unlockSync(int end, int start) {
+void _RandomAccessFileCls::unlockSync(int end, int start) {
     _checkAvailable();
-    ArgumentError.checkNotNull(start, "start");
-    ArgumentError.checkNotNull(end, "end");
+    ArgumentErrorCls->checkNotNull(start, "start");
+    ArgumentErrorCls->checkNotNull(end, "end");
     if (start == end) {
         ;
     }
-    auto result = _ops.lock(lockUnlock, start, end);
+    auto result = _ops->lock(lockUnlock, start, end);
     if (result is OSError) {
         ;
     }
 }
 
-int _RandomAccessFile::fd() {
-    return _ops.fd;
+int _RandomAccessFileCls::fd() {
+    return _ops->fd;
 }
 
-_RandomAccessFile::_RandomAccessFile(String path, int pointer) {
+_RandomAccessFileCls::_RandomAccessFileCls(String path, int pointer) {
     {
-        _ops = _RandomAccessFileOps(pointer);
+        _ops = make<_RandomAccessFileOpsCls>(pointer);
     }
     {
-        _resourceInfo = _FileResourceInfo(this);
+        _resourceInfo = make<_FileResourceInfoCls>(this);
         _maybeConnectHandler();
     }
 }
 
-void _RandomAccessFile::_maybePerformCleanup() {
+void _RandomAccessFileCls::_maybePerformCleanup() {
     if (closed) {
-        _FileResourceInfo.fileClosed(_resourceInfo);
+        _FileResourceInfoCls->fileClosed(_resourceInfo);
     }
 }
 
-void _RandomAccessFile::_maybeConnectHandler() {
+void _RandomAccessFileCls::_maybeConnectHandler() {
     if (!_connectedResourceHandler) {
-        registerExtension("ext.dart.io.getOpenFiles", _FileResourceInfo.getOpenFiles);
-        registerExtension("ext.dart.io.getOpenFileById", _FileResourceInfo.getOpenFileInfoMapByID);
+        registerExtension("ext.dart.io.getOpenFiles", _FileResourceInfoCls::getOpenFiles);
+        registerExtension("ext.dart.io.getOpenFileById", _FileResourceInfoCls::getOpenFileInfoMapByID);
         _connectedResourceHandler = true;
     }
 }
 
-int _RandomAccessFile::_fileLockValue(FileLock fl) {
-    return fl._type;
+int _RandomAccessFileCls::_fileLockValue(FileLock fl) {
+    return fl->_type;
 }
 
-int _RandomAccessFile::_pointer() {
-    return _ops.getPointer();
+int _RandomAccessFileCls::_pointer() {
+    return _ops->getPointer();
 }
 
-Future _RandomAccessFile::_dispatch(List data, bool markClosed, int request) {
+Future _RandomAccessFileCls::_dispatch(List data, bool markClosed, int request) {
     if (closed) {
-        return Future.error(FileSystemException("File closed", path));
+        return FutureCls->error(make<FileSystemExceptionCls>("File closed", path));
     }
     if (_asyncDispatched) {
         auto msg = "An async operation is currently pending";
-        return Future.error(FileSystemException(msg, path));
+        return FutureCls->error(make<FileSystemExceptionCls>(msg, path));
     }
     if (markClosed) {
         closed = true;
     }
     _asyncDispatched = true;
     data[0] = _pointer();
-    return _IOService._dispatch(request, data).whenComplete();
+    return _IOServiceCls->_dispatch(request, data)->whenComplete([=] () {
+        _asyncDispatched = false;
+    });
 }
 
-void _RandomAccessFile::_checkAvailable() {
+void _RandomAccessFileCls::_checkAvailable() {
     if (_asyncDispatched) {
         ;
     }

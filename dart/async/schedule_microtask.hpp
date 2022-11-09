@@ -1,11 +1,11 @@
-#ifndef SCHEDULE_MICROTASK_H
-#define SCHEDULE_MICROTASK_H
-#include <memory>
+#ifndef DART_ASYNC_SCHEDULE_MICROTASK
+#define DART_ASYNC_SCHEDULE_MICROTASK
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
 
 
-
-
-class _AsyncCallbackEntry {
+class _AsyncCallbackEntryCls : public ObjectCls {
 public:
     _AsyncCallback callback;
 
@@ -14,9 +14,9 @@ public:
 
 private:
 
-     _AsyncCallbackEntry(_AsyncCallback callback);
-
+     _AsyncCallbackEntryCls(_AsyncCallback callback);
 };
+using _AsyncCallbackEntry = std::shared_ptr<_AsyncCallbackEntryCls>;
 _AsyncCallbackEntry _nextCallback;
 
 _AsyncCallbackEntry _lastCallback;
@@ -33,16 +33,17 @@ void _scheduleAsyncCallback(_AsyncCallback callback);
 
 void _schedulePriorityAsyncCallback(_AsyncCallback callback);
 
-void scheduleMicrotask(FunctionType callback);
+void scheduleMicrotask(void callback() );
 
 
-class _AsyncRun {
+class _AsyncRunCls : public ObjectCls {
 public:
 
 private:
 
-    external static void _scheduleImmediate(FunctionType callback);
-
+    extern static void _scheduleImmediate(void callback() );
 };
+using _AsyncRun = std::shared_ptr<_AsyncRunCls>;
+
 
 #endif

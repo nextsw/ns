@@ -1,66 +1,66 @@
 #include "box_decoration.hpp"
-BoxDecoration::BoxDecoration(BlendMode backgroundBlendMode, BoxBorder border, BorderRadiusGeometry borderRadius, List<BoxShadow> boxShadow, Color color, Gradient gradient, DecorationImage image, BoxShape shape) {
+BoxDecorationCls::BoxDecorationCls(BlendMode backgroundBlendMode, BoxBorder border, BorderRadiusGeometry borderRadius, List<BoxShadow> boxShadow, Color color, Gradient gradient, DecorationImage image, BoxShape shape) {
     {
         assert(shape != nullptr);
         assert(backgroundBlendMode == nullptr || color != nullptr || gradient != nullptr, "backgroundBlendMode applies to BoxDecoration's background color or gradient, but no color or gradient was provided.");
     }
 }
 
-BoxDecoration BoxDecoration::copyWith(BlendMode backgroundBlendMode, BoxBorder border, BorderRadiusGeometry borderRadius, List<BoxShadow> boxShadow, Color color, Gradient gradient, DecorationImage image, BoxShape shape) {
-    return BoxDecoration(color ?? this.color, image ?? this.image, border ?? this.border, borderRadius ?? this.borderRadius, boxShadow ?? this.boxShadow, gradient ?? this.gradient, backgroundBlendMode ?? this.backgroundBlendMode, shape ?? this.shape);
+BoxDecoration BoxDecorationCls::copyWith(BlendMode backgroundBlendMode, BoxBorder border, BorderRadiusGeometry borderRadius, List<BoxShadow> boxShadow, Color color, Gradient gradient, DecorationImage image, BoxShape shape) {
+    return make<BoxDecorationCls>(color ?? this->color, image ?? this->image, border ?? this->border, borderRadius ?? this->borderRadius, boxShadow ?? this->boxShadow, gradient ?? this->gradient, backgroundBlendMode ?? this->backgroundBlendMode, shape ?? this->shape);
 }
 
-bool BoxDecoration::debugAssertIsValid() {
-    assert(shape != BoxShape.circle || borderRadius == nullptr);
-    return super.debugAssertIsValid();
+bool BoxDecorationCls::debugAssertIsValid() {
+    assert(shape != BoxShapeCls::circle || borderRadius == nullptr);
+    return super->debugAssertIsValid();
 }
 
-EdgeInsetsGeometry BoxDecoration::padding() {
-    return border?.dimensions;
+EdgeInsetsGeometry BoxDecorationCls::padding() {
+    return border?->dimensions;
 }
 
-Path BoxDecoration::getClipPath(Rect rect, TextDirection textDirection) {
+Path BoxDecorationCls::getClipPath(Rect rect, TextDirection textDirection) {
     ;
 }
 
-BoxDecoration BoxDecoration::scale(double factor) {
-    return BoxDecoration(Color.lerp(nullptr, color, factor), image, BoxBorder.lerp(nullptr, border, factor), BorderRadiusGeometry.lerp(nullptr, borderRadius, factor), BoxShadow.lerpList(nullptr, boxShadow, factor), gradient?.scale(factor), shape);
+BoxDecoration BoxDecorationCls::scale(double factor) {
+    return make<BoxDecorationCls>(ColorCls->lerp(nullptr, color, factor), image, BoxBorderCls->lerp(nullptr, border, factor), BorderRadiusGeometryCls->lerp(nullptr, borderRadius, factor), BoxShadowCls->lerpList(nullptr, boxShadow, factor), gradient?->scale(factor), shape);
 }
 
-bool BoxDecoration::isComplex() {
+bool BoxDecorationCls::isComplex() {
     return boxShadow != nullptr;
 }
 
-BoxDecoration BoxDecoration::lerpFrom(Decoration a, double t) {
+BoxDecoration BoxDecorationCls::lerpFrom(Decoration a, double t) {
     if (a == nullptr) {
         return scale(t);
     }
     if (a is BoxDecoration) {
-        return BoxDecoration.lerp(a, this, t);
+        return BoxDecorationCls->lerp(a, this, t);
     }
-    return (;
+    return ((BoxDecoration)super->lerpFrom(a, t));
 }
 
-BoxDecoration BoxDecoration::lerpTo(Decoration b, double t) {
+BoxDecoration BoxDecorationCls::lerpTo(Decoration b, double t) {
     if (b == nullptr) {
         return scale(1.0 - t);
     }
     if (b is BoxDecoration) {
-        return BoxDecoration.lerp(this, b, t);
+        return BoxDecorationCls->lerp(this, b, t);
     }
-    return (;
+    return ((BoxDecoration)super->lerpTo(b, t));
 }
 
-BoxDecoration BoxDecoration::lerp(BoxDecoration a, BoxDecoration b, double t) {
+BoxDecoration BoxDecorationCls::lerp(BoxDecoration a, BoxDecoration b, double t) {
     assert(t != nullptr);
     if (a == nullptr && b == nullptr) {
         return nullptr;
     }
     if (a == nullptr) {
-        return b!.scale(t);
+        return b!->scale(t);
     }
     if (b == nullptr) {
-        return a.scale(1.0 - t);
+        return a->scale(1.0 - t);
     }
     if (t == 0.0) {
         return a;
@@ -68,86 +68,85 @@ BoxDecoration BoxDecoration::lerp(BoxDecoration a, BoxDecoration b, double t) {
     if (t == 1.0) {
         return b;
     }
-    return BoxDecoration(Color.lerp(a.color, b.color, t),  < 0.5? a.image : b.image, BoxBorder.lerp(a.border, b.border, t), BorderRadiusGeometry.lerp(a.borderRadius, b.borderRadius, t), BoxShadow.lerpList(a.boxShadow, b.boxShadow, t), Gradient.lerp(a.gradient, b.gradient, t),  < 0.5? a.shape : b.shape);
+    return make<BoxDecorationCls>(ColorCls->lerp(a->color, b->color, t),  < 0.5? a->image : b->image, BoxBorderCls->lerp(a->border, b->border, t), BorderRadiusGeometryCls->lerp(a->borderRadius, b->borderRadius, t), BoxShadowCls->lerpList(a->boxShadow, b->boxShadow, t), GradientCls->lerp(a->gradient, b->gradient, t),  < 0.5? a->shape : b->shape);
 }
 
-bool BoxDecoration::==(Object other) {
+bool BoxDecorationCls::==(Object other) {
     if (identical(this, other)) {
         return true;
     }
-    if (other.runtimeType != runtimeType) {
+    if (other->runtimeType != runtimeType) {
         return false;
     }
-    return other is BoxDecoration && other.color == color && other.image == image && other.border == border && other.borderRadius == borderRadius && <BoxShadow>listEquals(other.boxShadow, boxShadow) && other.gradient == gradient && other.backgroundBlendMode == backgroundBlendMode && other.shape == shape;
+    return other is BoxDecoration && other->color == color && other->image == image && other->border == border && other->borderRadius == borderRadius && <BoxShadow>listEquals(other->boxShadow, boxShadow) && other->gradient == gradient && other->backgroundBlendMode == backgroundBlendMode && other->shape == shape;
 }
 
-int BoxDecoration::hashCode() {
-    return Object.hash(color, image, border, borderRadius, boxShadow == nullptr? nullptr : Object.hashAll(boxShadow!), gradient, backgroundBlendMode, shape);
+int BoxDecorationCls::hashCode() {
+    return ObjectCls->hash(color, image, border, borderRadius, boxShadow == nullptr? nullptr : ObjectCls->hashAll(boxShadow!), gradient, backgroundBlendMode, shape);
 }
 
-void BoxDecoration::debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    ;
-    properties.add(ColorProperty("color", colornullptr));
-    properties.add(<DecorationImage>DiagnosticsProperty("image", imagenullptr));
-    properties.add(<BoxBorder>DiagnosticsProperty("border", bordernullptr));
-    properties.add(<BorderRadiusGeometry>DiagnosticsProperty("borderRadius", borderRadiusnullptr));
-    properties.add(<BoxShadow>IterableProperty("boxShadow", boxShadownullptr, DiagnosticsTreeStyle.whitespace));
-    properties.add(<Gradient>DiagnosticsProperty("gradient", gradientnullptr));
-    properties.add(<BoxShape>EnumProperty("shape", shapeBoxShape.rectangle));
+void BoxDecorationCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super->debugFillProperties(properties);
+    auto _c1 = properties;_c1.defaultDiagnosticsTreeStyle = auto _c2 = DiagnosticsTreeStyleCls::whitespace;_c2.emptyBodyDescription = "<no decorations specified>";_c2;_c1;
+    properties->add(make<ColorPropertyCls>("color", colornullptr));
+    properties->add(<DecorationImage>make<DiagnosticsPropertyCls>("image", imagenullptr));
+    properties->add(<BoxBorder>make<DiagnosticsPropertyCls>("border", bordernullptr));
+    properties->add(<BorderRadiusGeometry>make<DiagnosticsPropertyCls>("borderRadius", borderRadiusnullptr));
+    properties->add(<BoxShadow>make<IterablePropertyCls>("boxShadow", boxShadownullptr, DiagnosticsTreeStyleCls::whitespace));
+    properties->add(<Gradient>make<DiagnosticsPropertyCls>("gradient", gradientnullptr));
+    properties->add(<BoxShape>make<EnumPropertyCls>("shape", shapeBoxShapeCls::rectangle));
 }
 
-bool BoxDecoration::hitTest(Offset position, Size size, TextDirection textDirection) {
+bool BoxDecorationCls::hitTest(Offset position, Size size, TextDirection textDirection) {
     assert(shape != nullptr);
-    assert((Offset.zero & size).contains(position));
+    assert((OffsetCls::zero & size)->contains(position));
     ;
 }
 
-BoxPainter BoxDecoration::createBoxPainter(VoidCallback onChanged) {
+BoxPainter BoxDecorationCls::createBoxPainter(VoidCallback onChanged) {
     assert(onChanged != nullptr || image == nullptr);
-    return _BoxDecorationPainter(this, onChanged);
+    return make<_BoxDecorationPainterCls>(this, onChanged);
 }
 
-void _BoxDecorationPainter::dispose() {
-    _imagePainter?.dispose();
-    super.dispose();
+void _BoxDecorationPainterCls::dispose() {
+    _imagePainter?->dispose();
+    super->dispose();
 }
 
-void _BoxDecorationPainter::paint(Canvas canvas, ImageConfiguration configuration, Offset offset) {
+void _BoxDecorationPainterCls::paint(Canvas canvas, ImageConfiguration configuration, Offset offset) {
     assert(configuration != nullptr);
-    assert(configuration.size != nullptr);
-    Rect rect = offset & configuration.size!;
-    TextDirection textDirection = configuration.textDirection;
+    assert(configuration->size != nullptr);
+    Rect rect = offset & configuration->size!;
+    TextDirection textDirection = configuration->textDirection;
     _paintShadows(canvas, rect, textDirection);
     _paintBackgroundColor(canvas, rect, textDirection);
     _paintBackgroundImage(canvas, rect, configuration);
-    _decoration.border?.paint(canvas, rect_decoration.shape, _decoration.borderRadius?.resolve(textDirection), configuration.textDirection);
+    _decoration->border?->paint(canvas, rect_decoration->shape, _decoration->borderRadius?->resolve(textDirection), configuration->textDirection);
 }
 
-String _BoxDecorationPainter::toString() {
+String _BoxDecorationPainterCls::toString() {
     return "BoxPainter for $_decoration";
 }
 
-_BoxDecorationPainter::_BoxDecorationPainter(BoxDecoration _decoration, VoidCallback onChanged) {
+_BoxDecorationPainterCls::_BoxDecorationPainterCls(BoxDecoration _decoration, VoidCallback onChanged) {
     {
         assert(_decoration != nullptr);
-        super(onChanged);
     }
 }
 
-Paint _BoxDecorationPainter::_getBackgroundPaint(Rect rect, TextDirection textDirection) {
+Paint _BoxDecorationPainterCls::_getBackgroundPaint(Rect rect, TextDirection textDirection) {
     assert(rect != nullptr);
-    assert(_decoration.gradient != nullptr || _rectForCachedBackgroundPaint == nullptr);
-    if (_cachedBackgroundPaint == nullptr || (_decoration.gradient != nullptr && _rectForCachedBackgroundPaint != rect)) {
-        Paint paint = Paint();
-        if (_decoration.backgroundBlendMode != nullptr) {
-            paint.blendMode = _decoration.backgroundBlendMode!;
+    assert(_decoration->gradient != nullptr || _rectForCachedBackgroundPaint == nullptr);
+    if (_cachedBackgroundPaint == nullptr || (_decoration->gradient != nullptr && _rectForCachedBackgroundPaint != rect)) {
+        Paint paint = make<PaintCls>();
+        if (_decoration->backgroundBlendMode != nullptr) {
+            paint->blendMode = _decoration->backgroundBlendMode!;
         }
-        if (_decoration.color != nullptr) {
-            paint.color = _decoration.color!;
+        if (_decoration->color != nullptr) {
+            paint->color = _decoration->color!;
         }
-        if (_decoration.gradient != nullptr) {
-            paint.shader = _decoration.gradient!.createShader(recttextDirection);
+        if (_decoration->gradient != nullptr) {
+            paint->shader = _decoration->gradient!->createShader(recttextDirection);
             _rectForCachedBackgroundPaint = rect;
         }
         _cachedBackgroundPaint = paint;
@@ -155,33 +154,33 @@ Paint _BoxDecorationPainter::_getBackgroundPaint(Rect rect, TextDirection textDi
     return _cachedBackgroundPaint!;
 }
 
-void _BoxDecorationPainter::_paintBox(Canvas canvas, Paint paint, Rect rect, TextDirection textDirection) {
+void _BoxDecorationPainterCls::_paintBox(Canvas canvas, Paint paint, Rect rect, TextDirection textDirection) {
     ;
 }
 
-void _BoxDecorationPainter::_paintShadows(Canvas canvas, Rect rect, TextDirection textDirection) {
-    if (_decoration.boxShadow == nullptr) {
+void _BoxDecorationPainterCls::_paintShadows(Canvas canvas, Rect rect, TextDirection textDirection) {
+    if (_decoration->boxShadow == nullptr) {
         return;
     }
-    for (BoxShadow boxShadow : _decoration.boxShadow!) {
-        Paint paint = boxShadow.toPaint();
-        Rect bounds = rect.shift(boxShadow.offset).inflate(boxShadow.spreadRadius);
+    for (BoxShadow boxShadow : _decoration->boxShadow!) {
+        Paint paint = boxShadow->toPaint();
+        Rect bounds = rect->shift(boxShadow->offset)->inflate(boxShadow->spreadRadius);
         _paintBox(canvas, bounds, paint, textDirection);
     }
 }
 
-void _BoxDecorationPainter::_paintBackgroundColor(Canvas canvas, Rect rect, TextDirection textDirection) {
-    if (_decoration.color != nullptr || _decoration.gradient != nullptr) {
+void _BoxDecorationPainterCls::_paintBackgroundColor(Canvas canvas, Rect rect, TextDirection textDirection) {
+    if (_decoration->color != nullptr || _decoration->gradient != nullptr) {
         _paintBox(canvas, rect, _getBackgroundPaint(rect, textDirection), textDirection);
     }
 }
 
-void _BoxDecorationPainter::_paintBackgroundImage(Canvas canvas, ImageConfiguration configuration, Rect rect) {
-    if (_decoration.image == nullptr) {
+void _BoxDecorationPainterCls::_paintBackgroundImage(Canvas canvas, ImageConfiguration configuration, Rect rect) {
+    if (_decoration->image == nullptr) {
         return;
     }
-    _imagePainter = _decoration.image!.createPainter(onChanged!);
+    _imagePainter = _decoration->image!->createPainter(onChanged!);
     Path clipPath;
     ;
-    _imagePainter!.paint(canvas, rect, clipPath, configuration);
+    _imagePainter!->paint(canvas, rect, clipPath, configuration);
 }

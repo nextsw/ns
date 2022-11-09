@@ -1,24 +1,24 @@
 #include "gesture_settings.hpp"
-void DeviceGestureSettings::fromWindow(FlutterView window) {
-    double physicalTouchSlop = window.viewConfiguration.gestureSettings.physicalTouchSlop;
-    return DeviceGestureSettings(physicalTouchSlop == nullptr? nullptr : physicalTouchSlop / window.devicePixelRatio);
+void DeviceGestureSettingsCls::fromWindow(FlutterView window) {
+    double physicalTouchSlop = window->viewConfiguration->gestureSettings->physicalTouchSlop;
+    return make<DeviceGestureSettingsCls>(physicalTouchSlop == nullptr? nullptr : physicalTouchSlop / window->devicePixelRatio);
 }
 
-double DeviceGestureSettings::panSlop() {
+double DeviceGestureSettingsCls::panSlop() {
     return touchSlop != nullptr? (touchSlop! * 2) : nullptr;
 }
 
-int DeviceGestureSettings::hashCode() {
-    return Object.hash(touchSlop, 23);
+int DeviceGestureSettingsCls::hashCode() {
+    return ObjectCls->hash(touchSlop, 23);
 }
 
-bool DeviceGestureSettings::==(Object other) {
-    if (other.runtimeType != runtimeType) {
+bool DeviceGestureSettingsCls::==(Object other) {
+    if (other->runtimeType != runtimeType) {
         return false;
     }
-    return other is DeviceGestureSettings && other.touchSlop == touchSlop;
+    return other is DeviceGestureSettings && other->touchSlop == touchSlop;
 }
 
-String DeviceGestureSettings::toString() {
+String DeviceGestureSettingsCls::toString() {
     return "DeviceGestureSettings(touchSlop: $touchSlop)";
 }

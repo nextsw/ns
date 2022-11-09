@@ -1,278 +1,278 @@
 #include "queue.hpp"
-Queue<T> Queue::castFrom<S, T>(Queue<S> source) {
-    return <S, T>CastQueue(source);
+template<typename E> Queue<T> QueueCls<E>::castFromtemplate<typename S, typename T> (Queue<S> source) {
+    return <S, T>make<CastQueueCls>(source);
 }
 
-void _DoubleLinkedQueueEntry::_link(_DoubleLinkedQueueEntry<E> next, _DoubleLinkedQueueEntry<E> previous) {
+template<typename E> void _DoubleLinkedQueueEntryCls<E>::_link(_DoubleLinkedQueueEntry<E> next, _DoubleLinkedQueueEntry<E> previous) {
     _nextLink = next;
     _previousLink = previous;
-    previous?._nextLink = this;
-    next?._previousLink = this;
+    previous?->_nextLink = this;
+    next?->_previousLink = this;
 }
 
-void _DoubleLinkedQueueEntry::_unlink() {
-    _previousLink?._nextLink = _nextLink;
-    _nextLink?._previousLink = _previousLink;
+template<typename E> void _DoubleLinkedQueueEntryCls<E>::_unlink() {
+    _previousLink?->_nextLink = _nextLink;
+    _nextLink?->_previousLink = _previousLink;
     _previousLink = _nextLink = nullptr;
 }
 
-void _DoubleLinkedQueueEntry::_append(E element, DoubleLinkedQueue<E> queue) {
-    <E>_DoubleLinkedQueueElement(element, queue)._link(this, _nextLink);
+template<typename E> void _DoubleLinkedQueueEntryCls<E>::_append(E element, DoubleLinkedQueue<E> queue) {
+    <E>make<_DoubleLinkedQueueElementCls>(element, queue)->_link(this, _nextLink);
 }
 
-void _DoubleLinkedQueueEntry::_prepend(E element, DoubleLinkedQueue<E> queue) {
-    <E>_DoubleLinkedQueueElement(element, queue)._link(_previousLink, this);
+template<typename E> void _DoubleLinkedQueueEntryCls<E>::_prepend(E element, DoubleLinkedQueue<E> queue) {
+    <E>make<_DoubleLinkedQueueElementCls>(element, queue)->_link(_previousLink, this);
 }
 
-void _DoubleLinkedQueueElement::append(E e) {
+template<typename E> void _DoubleLinkedQueueElementCls<E>::append(E e) {
     _append(e, _queue);
-    _queue?._elementCount++;
+    _queue?->_elementCount++;
 }
 
-void _DoubleLinkedQueueElement::prepend(E e) {
+template<typename E> void _DoubleLinkedQueueElementCls<E>::prepend(E e) {
     _prepend(e, _queue);
-    _queue?._elementCount++;
+    _queue?->_elementCount++;
 }
 
-E _DoubleLinkedQueueElement::remove() {
-    _queue?._elementCount--;
+template<typename E> E _DoubleLinkedQueueElementCls<E>::remove() {
+    _queue?->_elementCount--;
     return _remove();
 }
 
-DoubleLinkedQueueEntry<E> _DoubleLinkedQueueElement::previousEntry() {
-    return _previousLink?._asNonSentinelEntry();
+template<typename E> DoubleLinkedQueueEntry<E> _DoubleLinkedQueueElementCls<E>::previousEntry() {
+    return _previousLink?->_asNonSentinelEntry();
 }
 
-DoubleLinkedQueueEntry<E> _DoubleLinkedQueueElement::nextEntry() {
-    return _nextLink?._asNonSentinelEntry();
+template<typename E> DoubleLinkedQueueEntry<E> _DoubleLinkedQueueElementCls<E>::nextEntry() {
+    return _nextLink?->_asNonSentinelEntry();
 }
 
-E _DoubleLinkedQueueElement::_remove() {
+template<typename E> E _DoubleLinkedQueueElementCls<E>::_remove() {
     _queue = nullptr;
     _unlink();
     return element;
 }
 
-_DoubleLinkedQueueElement<E> _DoubleLinkedQueueElement::_asNonSentinelEntry() {
+template<typename E> _DoubleLinkedQueueElement<E> _DoubleLinkedQueueElementCls<E>::_asNonSentinelEntry() {
     return this;
 }
 
-E _DoubleLinkedQueueSentinel::element() {
+template<typename E> E _DoubleLinkedQueueSentinelCls<E>::element() {
     ;
 }
 
-_DoubleLinkedQueueSentinel::_DoubleLinkedQueueSentinel() {
+template<typename E> _DoubleLinkedQueueSentinelCls<E>::_DoubleLinkedQueueSentinelCls() {
     {
         _previousLink = this;
         _nextLink = this;
     }
 }
 
-Null _DoubleLinkedQueueSentinel::_asNonSentinelEntry() {
+template<typename E> Null _DoubleLinkedQueueSentinelCls<E>::_asNonSentinelEntry() {
     return nullptr;
 }
 
-E _DoubleLinkedQueueSentinel::_remove() {
+template<typename E> E _DoubleLinkedQueueSentinelCls<E>::_remove() {
     ;
 }
 
-void DoubleLinkedQueue::from(Iterable<dynamic> elements) {
-    DoubleLinkedQueue<E> list = <E>DoubleLinkedQueue();
+template<typename E> void DoubleLinkedQueueCls<E>::from(Iterable<dynamic> elements) {
+    DoubleLinkedQueue<E> list = <E>make<DoubleLinkedQueueCls>();
     for (auto e : elements) {
-        list.addLast(();
+        list->addLast(((E)e));
     }
     return list;
 }
 
-void DoubleLinkedQueue::of(Iterable<E> elements) {
-    return ;
+template<typename E> void DoubleLinkedQueueCls<E>::of(Iterable<E> elements) {
+    return _c1;
 }
 
-Queue<R> DoubleLinkedQueue::cast<R>() {
-    return Queue.<E, R>castFrom(this);
+template<typename E> Queue<R> DoubleLinkedQueueCls<E>::casttemplate<typename R> () {
+    return QueueCls-><E, R>castFrom(this);
 }
 
-int DoubleLinkedQueue::length() {
+template<typename E> int DoubleLinkedQueueCls<E>::length() {
     return _elementCount;
 }
 
-void DoubleLinkedQueue::addLast(E value) {
-    _sentinel._prepend(value, this);
+template<typename E> void DoubleLinkedQueueCls<E>::addLast(E value) {
+    auto _c1 = <E>make<DoubleLinkedQueueCls>();_c1.addAll(elements);_sentinel->_prepend(value, this);
     _elementCount++;
 }
 
-void DoubleLinkedQueue::addFirst(E value) {
-    _sentinel._append(value, this);
+template<typename E> void DoubleLinkedQueueCls<E>::addFirst(E value) {
+    _sentinel->_append(value, this);
     _elementCount++;
 }
 
-void DoubleLinkedQueue::add(E value) {
-    _sentinel._prepend(value, this);
+template<typename E> void DoubleLinkedQueueCls<E>::add(E value) {
+    _sentinel->_prepend(value, this);
     _elementCount++;
 }
 
-void DoubleLinkedQueue::addAll(Iterable<E> iterable) {
+template<typename E> void DoubleLinkedQueueCls<E>::addAll(Iterable<E> iterable) {
     for (E value : iterable) {
-        _sentinel._prepend(value, this);
+        _sentinel->_prepend(value, this);
         _elementCount++;
     }
 }
 
-E DoubleLinkedQueue::removeLast() {
-    E result = _sentinel._previousLink!._remove();
+template<typename E> E DoubleLinkedQueueCls<E>::removeLast() {
+    E result = _sentinel->_previousLink!->_remove();
     _elementCount--;
     return result;
 }
 
-E DoubleLinkedQueue::removeFirst() {
-    E result = _sentinel._nextLink!._remove();
+template<typename E> E DoubleLinkedQueueCls<E>::removeFirst() {
+    E result = _sentinel->_nextLink!->_remove();
     _elementCount--;
     return result;
 }
 
-bool DoubleLinkedQueue::remove(Object o) {
-    _DoubleLinkedQueueEntry<E> entry = _sentinel._nextLink!;
+template<typename E> bool DoubleLinkedQueueCls<E>::remove(Object o) {
+    _DoubleLinkedQueueEntry<E> entry = _sentinel->_nextLink!;
     while (true) {
-        auto elementEntry = entry._asNonSentinelEntry();
+        auto elementEntry = entry->_asNonSentinelEntry();
         if (elementEntry == nullptr)         {
             return false;
         }
-        bool equals = (elementEntry.element == o);
-        if (!identical(this, elementEntry._queue)) {
+        bool equals = (elementEntry->element == o);
+        if (!identical(this, elementEntry->_queue)) {
             ;
         }
         if (equals) {
-            entry._remove();
+            entry->_remove();
             _elementCount--;
             return true;
         }
-        entry = entry._nextLink!;
+        entry = entry->_nextLink!;
     }
 }
 
-void DoubleLinkedQueue::removeWhere(FunctionType test) {
+template<typename E> void DoubleLinkedQueueCls<E>::removeWhere(bool test(E element) ) {
     _filter(test, true);
 }
 
-void DoubleLinkedQueue::retainWhere(FunctionType test) {
+template<typename E> void DoubleLinkedQueueCls<E>::retainWhere(bool test(E element) ) {
     _filter(test, false);
 }
 
-E DoubleLinkedQueue::first() {
-    return _sentinel._nextLink!.element;
+template<typename E> E DoubleLinkedQueueCls<E>::first() {
+    return _sentinel->_nextLink!->element;
 }
 
-E DoubleLinkedQueue::last() {
-    return _sentinel._previousLink!.element;
+template<typename E> E DoubleLinkedQueueCls<E>::last() {
+    return _sentinel->_previousLink!->element;
 }
 
-E DoubleLinkedQueue::single() {
-    if (identical(_sentinel._nextLink, _sentinel._previousLink)) {
-        return _sentinel._nextLink!.element;
+template<typename E> E DoubleLinkedQueueCls<E>::single() {
+    if (identical(_sentinel->_nextLink, _sentinel->_previousLink)) {
+        return _sentinel->_nextLink!->element;
     }
     ;
 }
 
-DoubleLinkedQueueEntry<E> DoubleLinkedQueue::firstEntry() {
-    return _sentinel._nextLink!._asNonSentinelEntry();
+template<typename E> DoubleLinkedQueueEntry<E> DoubleLinkedQueueCls<E>::firstEntry() {
+    return _sentinel->_nextLink!->_asNonSentinelEntry();
 }
 
-DoubleLinkedQueueEntry<E> DoubleLinkedQueue::lastEntry() {
-    return _sentinel._previousLink!._asNonSentinelEntry();
+template<typename E> DoubleLinkedQueueEntry<E> DoubleLinkedQueueCls<E>::lastEntry() {
+    return _sentinel->_previousLink!->_asNonSentinelEntry();
 }
 
-bool DoubleLinkedQueue::isEmpty() {
-    return identical(_sentinel._nextLink, _sentinel);
+template<typename E> bool DoubleLinkedQueueCls<E>::isEmpty() {
+    return identical(_sentinel->_nextLink, _sentinel);
 }
 
-void DoubleLinkedQueue::clear() {
-    auto cursor = _sentinel._nextLink!;
+template<typename E> void DoubleLinkedQueueCls<E>::clear() {
+    auto cursor = _sentinel->_nextLink!;
     while (true) {
-        auto entry = cursor._asNonSentinelEntry();
+        auto entry = cursor->_asNonSentinelEntry();
         if (entry == nullptr)         {
                     break;
         }
-        cursor = cursor._nextLink!;
-        ;
+        cursor = cursor->_nextLink!;
+            auto _c1 = entry;    _c1._nextLink = auto _c2 = nullptr;    _c2._previousLink = auto _c3 = nullptr;    _c3._queue = nullptr;    _c3;    _c2;_c1;
     }
-    _sentinel._nextLink = _sentinel;
-    _sentinel._previousLink = _sentinel;
+    _sentinel->_nextLink = _sentinel;
+    _sentinel->_previousLink = _sentinel;
     _elementCount = 0;
 }
 
-void DoubleLinkedQueue::forEachEntry(FunctionType action) {
-    auto cursor = _sentinel._nextLink!;
+template<typename E> void DoubleLinkedQueueCls<E>::forEachEntry(void action(DoubleLinkedQueueEntry<E> element) ) {
+    auto cursor = _sentinel->_nextLink!;
     while (true) {
-        auto element = cursor._asNonSentinelEntry();
+        auto element = cursor->_asNonSentinelEntry();
         if (element == nullptr)         {
                     break;
         }
-        if (!identical(element._queue, this)) {
+        if (!identical(element->_queue, this)) {
             ;
         }
-        cursor = cursor._nextLink!;
+        cursor = cursor->_nextLink!;
         action(element);
-        if (identical(this, element._queue)) {
-            cursor = element._nextLink!;
+        if (identical(this, element->_queue)) {
+            cursor = element->_nextLink!;
         }
     }
 }
 
-_DoubleLinkedQueueIterator<E> DoubleLinkedQueue::iterator() {
-    return <E>_DoubleLinkedQueueIterator(this);
+template<typename E> _DoubleLinkedQueueIterator<E> DoubleLinkedQueueCls<E>::iterator() {
+    return <E>make<_DoubleLinkedQueueIteratorCls>(this);
 }
 
-String DoubleLinkedQueue::toString() {
-    return IterableBase.iterableToFullString(this, "{", "}");
+template<typename E> String DoubleLinkedQueueCls<E>::toString() {
+    return IterableBaseCls->iterableToFullString(this, "{", "}");
 }
 
-void DoubleLinkedQueue::_filter(bool removeMatching, FunctionType test) {
-    _DoubleLinkedQueueEntry<E> entry = _sentinel._nextLink!;
+template<typename E> void DoubleLinkedQueueCls<E>::_filter(bool removeMatching, bool test(E element) ) {
+    _DoubleLinkedQueueEntry<E> entry = _sentinel->_nextLink!;
     while (true) {
-        auto elementEntry = entry._asNonSentinelEntry();
+        auto elementEntry = entry->_asNonSentinelEntry();
         if (elementEntry == nullptr)         {
             return;
         }
-        bool matches = test(elementEntry.element);
-        if (!identical(this, elementEntry._queue)) {
+        bool matches = test(elementEntry->element);
+        if (!identical(this, elementEntry->_queue)) {
             ;
         }
-        auto next = entry._nextLink!;
+        auto next = entry->_nextLink!;
         if (identical(removeMatching, matches)) {
-            elementEntry._remove();
+            elementEntry->_remove();
             _elementCount--;
         }
         entry = next;
     }
 }
 
-bool _DoubleLinkedQueueIterator::moveNext() {
-    auto nextElement = _nextEntry?._asNonSentinelEntry();
+template<typename E> bool _DoubleLinkedQueueIteratorCls<E>::moveNext() {
+    auto nextElement = _nextEntry?->_asNonSentinelEntry();
     if (nextElement == nullptr) {
         _current = nullptr;
         _nextEntry = nullptr;
         _queue = nullptr;
         return false;
     }
-    if (!identical(_queue, nextElement._queue)) {
+    if (!identical(_queue, nextElement->_queue)) {
         ;
     }
-    _current = nextElement.element;
-    _nextEntry = nextElement._nextLink;
+    _current = nextElement->element;
+    _nextEntry = nextElement->_nextLink;
     return true;
 }
 
-E _DoubleLinkedQueueIterator::current() {
-    return (;
+template<typename E> E _DoubleLinkedQueueIteratorCls<E>::current() {
+    return ((E)_current);
 }
 
-_DoubleLinkedQueueIterator::_DoubleLinkedQueueIterator(DoubleLinkedQueue<E> _queue) {
+template<typename E> _DoubleLinkedQueueIteratorCls<E>::_DoubleLinkedQueueIteratorCls(DoubleLinkedQueue<E> _queue) {
     {
-        _nextEntry = _queue._sentinel._nextLink;
+        _nextEntry = _queue->_sentinel->_nextLink;
     }
 }
 
-ListQueue::ListQueue(int initialCapacity) {
+template<typename E> ListQueueCls<E>::ListQueueCls(int initialCapacity) {
     {
         _head = 0;
         _tail = 0;
@@ -280,121 +280,121 @@ ListQueue::ListQueue(int initialCapacity) {
     }
 }
 
-void ListQueue::from(Iterable<dynamic> elements) {
+template<typename E> void ListQueueCls<E>::from(Iterable<dynamic> elements) {
     if (elements is List<dynamic>) {
-        int length = elements.length;
-        ListQueue<E> queue = <E>ListQueue(length + 1);
-        assert(queue._table.length > length);
+        int length = elements->length;
+        ListQueue<E> queue = <E>make<ListQueueCls>(length + 1);
+        assert(queue->_table->length > length);
         for (;  < length; i++) {
-            queue._table[i] = (;
+            queue->_table[i] = ((E)elements[i]);
         }
-        queue._tail = length;
+        queue->_tail = length;
         return queue;
     } else {
-        int capacity = _INITIAL_CAPACITY;
+        int capacity = _INITIAL_CAPACITYCls;
         if (elements is EfficientLengthIterable) {
-            capacity = elements.length;
+            capacity = elements->length;
         }
-        ListQueue<E> result = <E>ListQueue(capacity);
+        ListQueue<E> result = <E>make<ListQueueCls>(capacity);
         for (auto element : elements) {
-            result.addLast(();
+            result->addLast(((E)element));
         }
         return result;
     }
 }
 
-void ListQueue::of(Iterable<E> elements) {
-    return ;
+template<typename E> void ListQueueCls<E>::of(Iterable<E> elements) {
+    return _c1;
 }
 
-Queue<R> ListQueue::cast<R>() {
-    return Queue.<E, R>castFrom(this);
+template<typename E> Queue<R> ListQueueCls<E>::casttemplate<typename R> () {
+    return QueueCls-><E, R>castFrom(this);
 }
 
-Iterator<E> ListQueue::iterator() {
-    return <E>_ListQueueIterator(this);
+template<typename E> Iterator<E> ListQueueCls<E>::iterator() {
+    return <E>make<_ListQueueIteratorCls>(this);
 }
 
-void ListQueue::forEach(FunctionType f) {
-    int modificationCount = _modificationCount;
-    for (; i != _tail; i = (i + 1) & (_table.length - 1)) {
-        f(();
+template<typename E> void ListQueueCls<E>::forEach(void f(E element) ) {
+    auto _c1 = <E>make<ListQueueCls>();_c1.addAll(elements);int modificationCount = _modificationCount;
+    for (; i != _tail; i = (i + 1) & (_table->length - 1)) {
+        f(((E)_table[i]));
         _checkModification(modificationCount);
     }
 }
 
-bool ListQueue::isEmpty() {
+template<typename E> bool ListQueueCls<E>::isEmpty() {
     return _head == _tail;
 }
 
-int ListQueue::length() {
-    return (_tail - _head) & (_table.length - 1);
+template<typename E> int ListQueueCls<E>::length() {
+    return (_tail - _head) & (_table->length - 1);
 }
 
-E ListQueue::first() {
+template<typename E> E ListQueueCls<E>::first() {
     if (_head == _tail)     {
         ;
     }
-    return (;
+    return ((E)_table[_head]);
 }
 
-E ListQueue::last() {
+template<typename E> E ListQueueCls<E>::last() {
     if (_head == _tail)     {
         ;
     }
-    return (;
+    return ((E)_table[(_tail - 1) & (_table->length - 1)]);
 }
 
-E ListQueue::single() {
+template<typename E> E ListQueueCls<E>::single() {
     if (_head == _tail)     {
         ;
     }
     if (length > 1)     {
         ;
     }
-    return (;
+    return ((E)_table[_head]);
 }
 
-E ListQueue::elementAt(int index) {
-    RangeError.checkValidIndex(index, this);
-    return (;
+template<typename E> E ListQueueCls<E>::elementAt(int index) {
+    RangeErrorCls->checkValidIndex(index, this);
+    return ((E)_table[(_head + index) & (_table->length - 1)]);
 }
 
-List<E> ListQueue::toList(bool growable) {
-    int mask = _table.length - 1;
+template<typename E> List<E> ListQueueCls<E>::toList(bool growable) {
+    int mask = _table->length - 1;
     int length = (_tail - _head) & mask;
     if (length == 0)     {
         return <E>empty(growable);
     }
     auto list = <E>filled(length, firstgrowable);
     for (;  < length; i++) {
-        list[i] = (;
+        list[i] = ((E)_table[(_head + i) & mask]);
     }
     return list;
 }
 
-void ListQueue::add(E value) {
+template<typename E> void ListQueueCls<E>::add(E value) {
     _add(value);
 }
 
-void ListQueue::addAll(Iterable<E> elements) {
+template<typename E> void ListQueueCls<E>::addAll(Iterable<E> elements) {
     if (elements is List<E>) {
         List<E> list = elements;
-        int addCount = list.length;
-        int length = this.length;
-        if (length + addCount >= _table.length) {
+        int addCount = list->length;
+        int length = this->length;
+        if (length + addCount >= _table->length) {
             _preGrow(length + addCount);
-            _table.setRange(length, length + addCount, list, 0);
+            _table->setRange(length, length + addCount, list, 0);
             _tail = addCount;
         } else {
-            int endSpace = _table.length - _tail;
+            int endSpace = _table->length - _tail;
             if ( < endSpace) {
-                _table.setRange(_tail, _tail + addCount, list, 0);
+                _table->setRange(_tail, _tail + addCount, list, 0);
                 _tail = addCount;
             } else {
                 int preSpace = addCount - endSpace;
-                _table.setRange(_tail, _tail + endSpace, list, 0);
-                _table.setRange(0, preSpace, list, endSpace);
+                _table->setRange(_tail, _tail + endSpace, list, 0);
+                _table->setRange(0, preSpace, list, endSpace);
                 _tail = preSpace;
             }
         }
@@ -406,8 +406,8 @@ void ListQueue::addAll(Iterable<E> elements) {
     }
 }
 
-bool ListQueue::remove(Object value) {
-    for (; i != _tail; i = (i + 1) & (_table.length - 1)) {
+template<typename E> bool ListQueueCls<E>::remove(Object value) {
+    for (; i != _tail; i = (i + 1) & (_table->length - 1)) {
         E element = _table[i];
         if (element == value) {
             _remove(i);
@@ -418,17 +418,17 @@ bool ListQueue::remove(Object value) {
     return false;
 }
 
-void ListQueue::removeWhere(FunctionType test) {
+template<typename E> void ListQueueCls<E>::removeWhere(bool test(E element) ) {
     _filterWhere(test, true);
 }
 
-void ListQueue::retainWhere(FunctionType test) {
+template<typename E> void ListQueueCls<E>::retainWhere(bool test(E element) ) {
     _filterWhere(test, false);
 }
 
-void ListQueue::clear() {
+template<typename E> void ListQueueCls<E>::clear() {
     if (_head != _tail) {
-        for (; i != _tail; i = (i + 1) & (_table.length - 1)) {
+        for (; i != _tail; i = (i + 1) & (_table->length - 1)) {
             _table[i] = nullptr;
         }
         _head = _tail = 0;
@@ -436,16 +436,16 @@ void ListQueue::clear() {
     }
 }
 
-String ListQueue::toString() {
-    return IterableBase.iterableToFullString(this, "{", "}");
+template<typename E> String ListQueueCls<E>::toString() {
+    return IterableBaseCls->iterableToFullString(this, "{", "}");
 }
 
-void ListQueue::addLast(E value) {
+template<typename E> void ListQueueCls<E>::addLast(E value) {
     _add(value);
 }
 
-void ListQueue::addFirst(E value) {
-    _head = (_head - 1) & (_table.length - 1);
+template<typename E> void ListQueueCls<E>::addFirst(E value) {
+    _head = (_head - 1) & (_table->length - 1);
     _table[_head] = value;
     if (_head == _tail)     {
         _grow();
@@ -453,31 +453,31 @@ void ListQueue::addFirst(E value) {
     _modificationCount++;
 }
 
-E ListQueue::removeFirst() {
+template<typename E> E ListQueueCls<E>::removeFirst() {
     if (_head == _tail)     {
         ;
     }
     _modificationCount++;
-    E result = (;
+    E result = ((E)_table[_head]);
     _table[_head] = nullptr;
-    _head = (_head + 1) & (_table.length - 1);
+    _head = (_head + 1) & (_table->length - 1);
     return result;
 }
 
-E ListQueue::removeLast() {
+template<typename E> E ListQueueCls<E>::removeLast() {
     if (_head == _tail)     {
         ;
     }
     _modificationCount++;
-    _tail = (_tail - 1) & (_table.length - 1);
-    E result = (;
+    _tail = (_tail - 1) & (_table->length - 1);
+    E result = ((E)_table[_tail]);
     _table[_tail] = nullptr;
     return result;
 }
 
-int ListQueue::_calculateCapacity(int initialCapacity) {
-    if (initialCapacity == nullptr ||  < _INITIAL_CAPACITY) {
-        return _INITIAL_CAPACITY;
+template<typename E> int ListQueueCls<E>::_calculateCapacity(int initialCapacity) {
+    if (initialCapacity == nullptr ||  < _INITIAL_CAPACITYCls) {
+        return _INITIAL_CAPACITYCls;
     } else     {
         if (!_isPowerOf2(initialCapacity)) {
         return _nextPowerOf2(initialCapacity);
@@ -487,27 +487,27 @@ int ListQueue::_calculateCapacity(int initialCapacity) {
     return initialCapacity;
 }
 
-void ListQueue::_filterWhere(bool removeMatching, FunctionType test) {
+template<typename E> void ListQueueCls<E>::_filterWhere(bool removeMatching, bool test(E element) ) {
     int modificationCount = _modificationCount;
     int i = _head;
     while (i != _tail) {
-        E element = (;
+        E element = ((E)_table[i]);
         bool remove = identical(removeMatching, test(element));
         _checkModification(modificationCount);
         if (remove) {
             i = _remove(i);
             modificationCount = ++_modificationCount;
         } else {
-            i = (i + 1) & (_table.length - 1);
+            i = (i + 1) & (_table->length - 1);
         }
     }
 }
 
-bool ListQueue::_isPowerOf2(int number) {
+template<typename E> bool ListQueueCls<E>::_isPowerOf2(int number) {
     return (number & (number - 1)) == 0;
 }
 
-int ListQueue::_nextPowerOf2(int number) {
+template<typename E> int ListQueueCls<E>::_nextPowerOf2(int number) {
     assert(number > 0);
     number = (number << 1) - 1;
     for (; ; ) {
@@ -519,23 +519,23 @@ int ListQueue::_nextPowerOf2(int number) {
     }
 }
 
-void ListQueue::_checkModification(int expectedModificationCount) {
+template<typename E> void ListQueueCls<E>::_checkModification(int expectedModificationCount) {
     if (expectedModificationCount != _modificationCount) {
         ;
     }
 }
 
-void ListQueue::_add(E element) {
+template<typename E> void ListQueueCls<E>::_add(E element) {
     _table[_tail] = element;
-    _tail = (_tail + 1) & (_table.length - 1);
+    _tail = (_tail + 1) & (_table->length - 1);
     if (_head == _tail)     {
         _grow();
     }
     _modificationCount++;
 }
 
-int ListQueue::_remove(int offset) {
-    int mask = _table.length - 1;
+template<typename E> int ListQueueCls<E>::_remove(int offset) {
+    int mask = _table->length - 1;
     int startDistance = (offset - _head) & mask;
     int endDistance = (_tail - offset) & mask;
     if ( < endDistance) {
@@ -561,31 +561,31 @@ int ListQueue::_remove(int offset) {
     }
 }
 
-void ListQueue::_grow() {
-    List<E> newTable = <E>filled(_table.length * 2, nullptr);
-    int split = _table.length - _head;
-    newTable.setRange(0, split, _table, _head);
-    newTable.setRange(split, split + _head, _table, 0);
+template<typename E> void ListQueueCls<E>::_grow() {
+    List<E> newTable = <E>filled(_table->length * 2, nullptr);
+    int split = _table->length - _head;
+    newTable->setRange(0, split, _table, _head);
+    newTable->setRange(split, split + _head, _table, 0);
     _head = 0;
-    _tail = _table.length;
+    _tail = _table->length;
     _table = newTable;
 }
 
-int ListQueue::_writeToList(List<E> target) {
-    assert(target.length >= length);
+template<typename E> int ListQueueCls<E>::_writeToList(List<E> target) {
+    assert(target->length >= length);
     if (_head <= _tail) {
         int length = _tail - _head;
-        target.setRange(0, length, _table, _head);
+        target->setRange(0, length, _table, _head);
         return length;
     } else {
-        int firstPartSize = _table.length - _head;
-        target.setRange(0, firstPartSize, _table, _head);
-        target.setRange(firstPartSize, firstPartSize + _tail, _table, 0);
+        int firstPartSize = _table->length - _head;
+        target->setRange(0, firstPartSize, _table, _head);
+        target->setRange(firstPartSize, firstPartSize + _tail, _table, 0);
         return _tail + firstPartSize;
     }
 }
 
-void ListQueue::_preGrow(int newElementCount) {
+template<typename E> void ListQueueCls<E>::_preGrow(int newElementCount) {
     assert(newElementCount >= length);
     newElementCount = newElementCount >> 1;
     int newCapacity = _nextPowerOf2(newElementCount);
@@ -595,26 +595,26 @@ void ListQueue::_preGrow(int newElementCount) {
     _head = 0;
 }
 
-E _ListQueueIterator::current() {
-    return (;
+template<typename E> E _ListQueueIteratorCls<E>::current() {
+    return ((E)_current);
 }
 
-bool _ListQueueIterator::moveNext() {
-    _queue._checkModification(_modificationCount);
+template<typename E> bool _ListQueueIteratorCls<E>::moveNext() {
+    _queue->_checkModification(_modificationCount);
     if (_position == _end) {
         _current = nullptr;
         return false;
     }
-    _current = _queue._table[_position];
-    _position = (_position + 1) & (_queue._table.length - 1);
+    _current = _queue->_table[_position];
+    _position = (_position + 1) & (_queue->_table->length - 1);
     return true;
 }
 
-_ListQueueIterator::_ListQueueIterator(ListQueue<E> queue) {
+template<typename E> _ListQueueIteratorCls<E>::_ListQueueIteratorCls(ListQueue<E> queue) {
     {
         _queue = queue;
-        _end = queue._tail;
-        _modificationCount = queue._modificationCount;
-        _position = queue._head;
+        _end = queue->_tail;
+        _modificationCount = queue->_modificationCount;
+        _position = queue->_head;
     }
 }

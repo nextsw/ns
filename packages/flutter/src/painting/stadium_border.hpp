@@ -1,9 +1,10 @@
-#ifndef STADIUM_BORDER_H
-#define STADIUM_BORDER_H
-#include <memory>
+#ifndef PACKAGES_FLUTTER_SRC_PAINTING_STADIUM_BORDER
+#define PACKAGES_FLUTTER_SRC_PAINTING_STADIUM_BORDER
+#include <base.hpp>
 
-#include <ui/ui.hpp>
-#include <flutter/foundation.hpp>
+#include <dart/core/core.hpp>
+#include <dart/ui/ui.hpp>
+#include <packages/flutter/lib/foundation.hpp>
 #include "basic_types.hpp"
 #include "border_radius.hpp"
 #include "borders.hpp"
@@ -12,110 +13,113 @@
 #include "rounded_rectangle_border.hpp"
 
 
-
-class StadiumBorder : OutlinedBorder {
+class StadiumBorderCls : public OutlinedBorderCls {
 public:
 
-     StadiumBorder(Unknown);
+     StadiumBorderCls(Unknown side);
 
-    EdgeInsetsGeometry dimensions();
+    virtual EdgeInsetsGeometry dimensions();
 
-    ShapeBorder scale(double t);
+    virtual ShapeBorder scale(double t);
 
-    ShapeBorder lerpFrom(ShapeBorder a, double t);
+    virtual ShapeBorder lerpFrom(ShapeBorder a, double t);
 
-    ShapeBorder lerpTo(ShapeBorder b, double t);
+    virtual ShapeBorder lerpTo(ShapeBorder b, double t);
 
-    StadiumBorder copyWith(BorderSide side);
+    virtual StadiumBorder copyWith(BorderSide side);
 
-    Path getInnerPath(Rect rect, TextDirection textDirection);
+    virtual Path getInnerPath(Rect rect, TextDirection textDirection);
 
-    Path getOuterPath(Rect rect, TextDirection textDirection);
+    virtual Path getOuterPath(Rect rect, TextDirection textDirection);
 
-    void paint(Canvas canvas, Rect rect, TextDirection textDirection);
+    virtual void paint(Canvas canvas, Rect rect, TextDirection textDirection);
 
-    bool ==(Object other);
+    virtual bool operator==(Object other);
 
-    int hashCode();
+    virtual int hashCode();
 
-    String toString();
+    virtual String toString();
 
 private:
 
 };
+using StadiumBorder = std::shared_ptr<StadiumBorderCls>;
 
-class _StadiumToCircleBorder : OutlinedBorder {
+class _StadiumToCircleBorderCls : public OutlinedBorderCls {
 public:
     double circleness;
 
 
-    EdgeInsetsGeometry dimensions();
+    virtual EdgeInsetsGeometry dimensions();
 
-    ShapeBorder scale(double t);
+    virtual ShapeBorder scale(double t);
 
-    ShapeBorder lerpFrom(ShapeBorder a, double t);
+    virtual ShapeBorder lerpFrom(ShapeBorder a, double t);
 
-    ShapeBorder lerpTo(ShapeBorder b, double t);
+    virtual ShapeBorder lerpTo(ShapeBorder b, double t);
 
-    Path getInnerPath(Rect rect, TextDirection textDirection);
+    virtual Path getInnerPath(Rect rect, TextDirection textDirection);
 
-    Path getOuterPath(Rect rect, TextDirection textDirection);
+    virtual Path getOuterPath(Rect rect, TextDirection textDirection);
 
-    _StadiumToCircleBorder copyWith(double circleness, BorderSide side);
+    virtual _StadiumToCircleBorder copyWith(double circleness, BorderSide side);
 
-    void paint(Canvas canvas, Rect rect, TextDirection textDirection);
+    virtual void paint(Canvas canvas, Rect rect, TextDirection textDirection);
 
-    bool ==(Object other);
+    virtual bool operator==(Object other);
 
-    int hashCode();
+    virtual int hashCode();
 
-    String toString();
+    virtual String toString();
 
 private:
 
-     _StadiumToCircleBorder(double circleness, Unknown);
+     _StadiumToCircleBorderCls(double circleness, Unknown side);
 
-    Rect _adjustRect(Rect rect);
+    virtual Rect _adjustRect(Rect rect);
 
-    BorderRadius _adjustBorderRadius(Rect rect);
+    virtual BorderRadius _adjustBorderRadius(Rect rect);
 
 };
+using _StadiumToCircleBorder = std::shared_ptr<_StadiumToCircleBorderCls>;
 
-class _StadiumToRoundedRectangleBorder : OutlinedBorder {
+class _StadiumToRoundedRectangleBorderCls : public OutlinedBorderCls {
 public:
     BorderRadius borderRadius;
 
     double rectness;
 
 
-    EdgeInsetsGeometry dimensions();
+    virtual EdgeInsetsGeometry dimensions();
 
-    ShapeBorder scale(double t);
+    virtual ShapeBorder scale(double t);
 
-    ShapeBorder lerpFrom(ShapeBorder a, double t);
+    virtual ShapeBorder lerpFrom(ShapeBorder a, double t);
 
-    ShapeBorder lerpTo(ShapeBorder b, double t);
+    virtual ShapeBorder lerpTo(ShapeBorder b, double t);
 
-    Path getInnerPath(Rect rect, TextDirection textDirection);
+    virtual Path getInnerPath(Rect rect, TextDirection textDirection);
 
-    Path getOuterPath(Rect rect, TextDirection textDirection);
+    virtual Path getOuterPath(Rect rect, TextDirection textDirection);
 
-    _StadiumToRoundedRectangleBorder copyWith(BorderRadius borderRadius, double rectness, BorderSide side);
+    virtual _StadiumToRoundedRectangleBorder copyWith(BorderRadius borderRadius, double rectness, BorderSide side);
 
-    void paint(Canvas canvas, Rect rect, TextDirection textDirection);
+    virtual void paint(Canvas canvas, Rect rect, TextDirection textDirection);
 
-    bool ==(Object other);
+    virtual bool operator==(Object other);
 
-    int hashCode();
+    virtual int hashCode();
 
-    String toString();
+    virtual String toString();
 
 private:
 
-     _StadiumToRoundedRectangleBorder(BorderRadius borderRadius, double rectness, Unknown);
+     _StadiumToRoundedRectangleBorderCls(BorderRadius borderRadius, double rectness, Unknown side);
 
-    BorderRadius _adjustBorderRadius(Rect rect);
+    virtual BorderRadius _adjustBorderRadius(Rect rect);
 
 };
+using _StadiumToRoundedRectangleBorder = std::shared_ptr<_StadiumToRoundedRectangleBorderCls>;
+
 
 #endif

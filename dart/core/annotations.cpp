@@ -1,12 +1,12 @@
 #include "annotations.hpp"
-String Deprecated::expires() {
+String DeprecatedCls::expires() {
     return message;
 }
 
-String Deprecated::toString() {
+String DeprecatedCls::toString() {
     return "Deprecated feature: $message";
 }
 
-String Provisional::message() {
+String ProvisionalCls::message() {
     return nullptr;
 }

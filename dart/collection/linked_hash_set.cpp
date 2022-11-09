@@ -1,12 +1,12 @@
 #include "linked_hash_set.hpp"
-void LinkedHashSet::from(Iterable<dynamic> elements) {
-    LinkedHashSet<E> result = <E>LinkedHashSet();
+template<typename E> void LinkedHashSetCls<E>::from(Iterable<dynamic> elements) {
+    auto _c1 = <K, V>make<LinkedHashMapCls>();_c1.addEntries(entries);LinkedHashSet<E> result = <E>make<LinkedHashSetCls>();
     for (auto element : elements) {
-        result.add(();
+        result->add(((E)element));
     }
     return result;
 }
 
-void LinkedHashSet::of(Iterable<E> elements) {
-    return ;
+template<typename E> void LinkedHashSetCls<E>::of(Iterable<E> elements) {
+    return _c1;
 }

@@ -1,103 +1,104 @@
-#ifndef IO_SERVICE_H
-#define IO_SERVICE_H
-#include <memory>
+#ifndef DART_IO_IO_SERVICE
+#define DART_IO_IO_SERVICE
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
 
 
-
-
-class _IOService {
+class _IOServiceCls : public ObjectCls {
 public:
-    static const int fileExists;
+    static int fileExists;
 
-    static const int fileCreate;
+    static int fileCreate;
 
-    static const int fileDelete;
+    static int fileDelete;
 
-    static const int fileRename;
+    static int fileRename;
 
-    static const int fileCopy;
+    static int fileCopy;
 
-    static const int fileOpen;
+    static int fileOpen;
 
-    static const int fileResolveSymbolicLinks;
+    static int fileResolveSymbolicLinks;
 
-    static const int fileClose;
+    static int fileClose;
 
-    static const int filePosition;
+    static int filePosition;
 
-    static const int fileSetPosition;
+    static int fileSetPosition;
 
-    static const int fileTruncate;
+    static int fileTruncate;
 
-    static const int fileLength;
+    static int fileLength;
 
-    static const int fileLengthFromPath;
+    static int fileLengthFromPath;
 
-    static const int fileLastAccessed;
+    static int fileLastAccessed;
 
-    static const int fileSetLastAccessed;
+    static int fileSetLastAccessed;
 
-    static const int fileLastModified;
+    static int fileLastModified;
 
-    static const int fileSetLastModified;
+    static int fileSetLastModified;
 
-    static const int fileFlush;
+    static int fileFlush;
 
-    static const int fileReadByte;
+    static int fileReadByte;
 
-    static const int fileWriteByte;
+    static int fileWriteByte;
 
-    static const int fileRead;
+    static int fileRead;
 
-    static const int fileReadInto;
+    static int fileReadInto;
 
-    static const int fileWriteFrom;
+    static int fileWriteFrom;
 
-    static const int fileCreateLink;
+    static int fileCreateLink;
 
-    static const int fileDeleteLink;
+    static int fileDeleteLink;
 
-    static const int fileRenameLink;
+    static int fileRenameLink;
 
-    static const int fileLinkTarget;
+    static int fileLinkTarget;
 
-    static const int fileType;
+    static int fileType;
 
-    static const int fileIdentical;
+    static int fileIdentical;
 
-    static const int fileStat;
+    static int fileStat;
 
-    static const int fileLock;
+    static int fileLock;
 
-    static const int socketLookup;
+    static int socketLookup;
 
-    static const int socketListInterfaces;
+    static int socketListInterfaces;
 
-    static const int socketReverseLookup;
+    static int socketReverseLookup;
 
-    static const int directoryCreate;
+    static int directoryCreate;
 
-    static const int directoryDelete;
+    static int directoryDelete;
 
-    static const int directoryExists;
+    static int directoryExists;
 
-    static const int directoryCreateTemp;
+    static int directoryCreateTemp;
 
-    static const int directoryListStart;
+    static int directoryListStart;
 
-    static const int directoryListNext;
+    static int directoryListNext;
 
-    static const int directoryListStop;
+    static int directoryListStop;
 
-    static const int directoryRename;
+    static int directoryRename;
 
-    static const int sslProcessFilter;
+    static int sslProcessFilter;
 
 
 private:
 
-    external static Future _dispatch(List data, int request);
-
+    extern static Future _dispatch(List data, int request);
 };
+using _IOService = std::shared_ptr<_IOServiceCls>;
+
 
 #endif

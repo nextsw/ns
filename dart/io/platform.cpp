@@ -1,52 +1,52 @@
 #include "platform.hpp"
-int Platform::numberOfProcessors() {
+int PlatformCls::numberOfProcessors() {
     return _numberOfProcessors;
 }
 
-String Platform::pathSeparator() {
+String PlatformCls::pathSeparator() {
     return _pathSeparator;
 }
 
-String Platform::localeName() {
-    return _Platform.localeName();
+String PlatformCls::localeName() {
+    return _PlatformCls->localeName();
 }
 
-String Platform::operatingSystem() {
+String PlatformCls::operatingSystem() {
     return _operatingSystem;
 }
 
-String Platform::operatingSystemVersion() {
+String PlatformCls::operatingSystemVersion() {
     return _operatingSystemVersion;
 }
 
-String Platform::localHostname() {
+String PlatformCls::localHostname() {
     return _localHostname;
 }
 
-Map<String, String> Platform::environment() {
-    return _Platform.environment;
+Map<String, String> PlatformCls::environment() {
+    return _PlatformCls::environment;
 }
 
-String Platform::executable() {
-    return _Platform.executable;
+String PlatformCls::executable() {
+    return _PlatformCls::executable;
 }
 
-String Platform::resolvedExecutable() {
-    return _Platform.resolvedExecutable;
+String PlatformCls::resolvedExecutable() {
+    return _PlatformCls::resolvedExecutable;
 }
 
-Uri Platform::script() {
-    return _Platform.script;
+Uri PlatformCls::script() {
+    return _PlatformCls::script;
 }
 
-List<String> Platform::executableArguments() {
-    return _Platform.executableArguments;
+List<String> PlatformCls::executableArguments() {
+    return _PlatformCls::executableArguments;
 }
 
-String Platform::packageConfig() {
-    return _Platform.packageConfig;
+String PlatformCls::packageConfig() {
+    return _PlatformCls::packageConfig;
 }
 
-String Platform::version() {
+String PlatformCls::version() {
     return _version;
 }

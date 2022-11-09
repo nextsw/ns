@@ -1,27 +1,25 @@
-#ifndef BINARY_MESSENGER_H
-#define BINARY_MESSENGER_H
-#include <memory>
-#include <typed_data.hpp>
-#include <ui.hpp>
+#ifndef PACKAGES_FLUTTER_SRC_SERVICES_BINARY_MESSENGER
+#define PACKAGES_FLUTTER_SRC_SERVICES_BINARY_MESSENGER
+#include <base.hpp>
+#include <dart/typed_data/typed_data.hpp>
+#include <dart/ui/ui.hpp>
 
-#include <typed_data/typed_data.hpp>
-#include <ui/ui.hpp>
+#include <dart/core/core.hpp>
+#include <dart/typed_data/typed_data.hpp>
+#include <dart/ui/ui.hpp>
 
 
-
-class BinaryMessenger {
+class BinaryMessengerCls : public ObjectCls {
 public:
 
-     BinaryMessenger();
-
-    Future<void> handlePlatformMessage(PlatformMessageResponseCallback callback, String channel, ByteData data);
-
-    Future<ByteData> send(String channel, ByteData message);
-
-    void setMessageHandler(String channel, MessageHandler handler);
-
+     BinaryMessengerCls();
+    virtual Future<void> handlePlatformMessage(PlatformMessageResponseCallback callback, String channel, ByteData data);
+    virtual Future<ByteData> send(String channel, ByteData message);
+    virtual void setMessageHandler(String channel, MessageHandler handler);
 private:
 
 };
+using BinaryMessenger = std::shared_ptr<BinaryMessengerCls>;
+
 
 #endif

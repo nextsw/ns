@@ -1,177 +1,172 @@
-#ifndef STRING_CONVERSION_H
-#define STRING_CONVERSION_H
-#include <memory>
+#ifndef DART_CONVERT_STRING_CONVERSION
+#define DART_CONVERT_STRING_CONVERSION
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
 
 
-
-
-class StringConversionSink : ChunkedConversionSink<String> {
+class StringConversionSinkCls : public ChunkedConversionSinkCls<String> {
 public:
 
-     StringConversionSink();
-
-    void  withCallback(FunctionType callback);
-
-    void  from(Sink<String> sink);
-
-    void  fromStringSink(StringSink sink);
-
-    void addSlice(String chunk, int end, bool isLast, int start);
-
-    ByteConversionSink asUtf8Sink(bool allowMalformed);
-
-    ClosableStringSink asStringSink();
-
+     StringConversionSinkCls();
+    virtual void  withCallback(void callback(String accumulated) ) override;
+    virtual void  from(Sink<String> sink);
+    virtual void  fromStringSink(StringSink sink);
+    virtual void addSlice(String chunk, int end, bool isLast, int start);
+    virtual ByteConversionSink asUtf8Sink(bool allowMalformed);
+    virtual ClosableStringSink asStringSink();
 private:
 
 };
+using StringConversionSink = std::shared_ptr<StringConversionSinkCls>;
 
-class ClosableStringSink : StringSink {
+class ClosableStringSinkCls : public StringSinkCls {
 public:
 
-    void  fromStringSink(FunctionType onClose, StringSink sink);
-
-    void close();
-
+    virtual void  fromStringSink(void onClose() , StringSink sink);
+    virtual void close();
 private:
 
 };
+using ClosableStringSink = std::shared_ptr<ClosableStringSinkCls>;
 
-class _ClosableStringSink {
+class _ClosableStringSinkCls : public ObjectCls {
 public:
 
-    void close();
+    virtual void close();
 
-    void writeCharCode(int charCode);
+    virtual void writeCharCode(int charCode);
 
-    void write(Object o);
+    virtual void write(Object o);
 
-    void writeln(Object o);
+    virtual void writeln(Object o);
 
-    void writeAll(Iterable objects, String separator);
+    virtual void writeAll(Iterable objects, String separator);
 
 private:
-    FunctionType _callback;
+    void Function() _callback;
 
     StringSink _sink;
 
 
-     _ClosableStringSink(FunctionType _callback, StringSink _sink);
-
+     _ClosableStringSinkCls(void Function() _callback, StringSink _sink);
 };
+using _ClosableStringSink = std::shared_ptr<_ClosableStringSinkCls>;
 
-class _StringConversionSinkAsStringSinkAdapter {
+class _StringConversionSinkAsStringSinkAdapterCls : public ObjectCls {
 public:
 
-    void close();
+    virtual void close();
 
-    void writeCharCode(int charCode);
+    virtual void writeCharCode(int charCode);
 
-    void write(Object o);
+    virtual void write(Object o);
 
-    void writeln(Object o);
+    virtual void writeln(Object o);
 
-    void writeAll(Iterable objects, String separator);
+    virtual void writeAll(Iterable objects, String separator);
 
 private:
-    static const auto  _MIN_STRING_SIZE;
+    static auto  _MIN_STRING_SIZE;
 
     StringBuffer _buffer;
 
     StringConversionSink _chunkedSink;
 
 
-     _StringConversionSinkAsStringSinkAdapter(StringConversionSink _chunkedSink);
+     _StringConversionSinkAsStringSinkAdapterCls(StringConversionSink _chunkedSink);
 
-    void _flush();
+    virtual void _flush();
 
 };
+using _StringConversionSinkAsStringSinkAdapter = std::shared_ptr<_StringConversionSinkAsStringSinkAdapterCls>;
 
-class StringConversionSinkBase : StringConversionSinkMixin {
+class StringConversionSinkBaseCls : public StringConversionSinkMixinCls {
 public:
 
 private:
 
 };
+using StringConversionSinkBase = std::shared_ptr<StringConversionSinkBaseCls>;
 
-class StringConversionSinkMixin {
+class StringConversionSinkMixinCls : public ObjectCls {
 public:
 
-    void addSlice(int end, bool isLast, int start, String str);
+    virtual void addSlice(int end, bool isLast, int start, String str);
+    virtual void close();
+    virtual void add(String str);
 
-    void close();
+    virtual ByteConversionSink asUtf8Sink(bool allowMalformed);
 
-    void add(String str);
-
-    ByteConversionSink asUtf8Sink(bool allowMalformed);
-
-    ClosableStringSink asStringSink();
+    virtual ClosableStringSink asStringSink();
 
 private:
 
 };
+using StringConversionSinkMixin = std::shared_ptr<StringConversionSinkMixinCls>;
 
-class _StringSinkConversionSink<TStringSink extends StringSink> : StringConversionSinkBase {
+template<typename TStringSink : StringSink> class _StringSinkConversionSinkCls : public StringConversionSinkBaseCls {
 public:
 
-    void close();
+    virtual void close();
 
-    void addSlice(int end, bool isLast, int start, String str);
+    virtual void addSlice(int end, bool isLast, int start, String str);
 
-    void add(String str);
+    virtual void add(String str);
 
-    ByteConversionSink asUtf8Sink(bool allowMalformed);
+    virtual ByteConversionSink asUtf8Sink(bool allowMalformed);
 
-    ClosableStringSink asStringSink();
+    virtual ClosableStringSink asStringSink();
 
 private:
     TStringSink _stringSink;
 
 
-     _StringSinkConversionSink(TStringSink _stringSink);
-
+     _StringSinkConversionSinkCls(TStringSink _stringSink);
 };
+template<typename TStringSink : StringSink> using _StringSinkConversionSink = std::shared_ptr<_StringSinkConversionSinkCls<TStringSink : StringSink>>;
 
-class _StringCallbackSink : _StringSinkConversionSink<StringBuffer> {
+class _StringCallbackSinkCls : public _StringSinkConversionSinkCls<StringBuffer> {
 public:
 
-    void close();
+    virtual void close();
 
-    ByteConversionSink asUtf8Sink(bool allowMalformed);
+    virtual ByteConversionSink asUtf8Sink(bool allowMalformed);
 
 private:
-    FunctionType _callback;
+    void Function(String ) _callback;
 
 
-     _StringCallbackSink(FunctionType _callback);
+     _StringCallbackSinkCls(void Function(String ) _callback);
 
 };
+using _StringCallbackSink = std::shared_ptr<_StringCallbackSinkCls>;
 
-class _StringAdapterSink : StringConversionSinkBase {
+class _StringAdapterSinkCls : public StringConversionSinkBaseCls {
 public:
 
-    void add(String str);
+    virtual void add(String str);
 
-    void addSlice(int end, bool isLast, int start, String str);
+    virtual void addSlice(int end, bool isLast, int start, String str);
 
-    void close();
+    virtual void close();
 
 private:
     Sink<String> _sink;
 
 
-     _StringAdapterSink(Sink<String> _sink);
-
+     _StringAdapterSinkCls(Sink<String> _sink);
 };
+using _StringAdapterSink = std::shared_ptr<_StringAdapterSinkCls>;
 
-class _Utf8StringSinkAdapter : ByteConversionSink {
+class _Utf8StringSinkAdapterCls : public ByteConversionSinkCls {
 public:
 
-    void close();
+    virtual void close();
 
-    void add(List<int> chunk);
+    virtual void add(List<int> chunk);
 
-    void addSlice(List<int> codeUnits, int endIndex, bool isLast, int startIndex);
+    virtual void addSlice(List<int> codeUnits, int endIndex, bool isLast, int startIndex);
 
 private:
     _Utf8Decoder _decoder;
@@ -181,18 +176,19 @@ private:
     StringSink _stringSink;
 
 
-     _Utf8StringSinkAdapter(Sink<Object> _sink, StringSink _stringSink, bool allowMalformed);
+     _Utf8StringSinkAdapterCls(Sink<Object> _sink, StringSink _stringSink, bool allowMalformed);
 
 };
+using _Utf8StringSinkAdapter = std::shared_ptr<_Utf8StringSinkAdapterCls>;
 
-class _Utf8ConversionSink : ByteConversionSink {
+class _Utf8ConversionSinkCls : public ByteConversionSinkCls {
 public:
 
-    void close();
+    virtual void close();
 
-    void add(List<int> chunk);
+    virtual void add(List<int> chunk);
 
-    void addSlice(List<int> chunk, int endIndex, bool isLast, int startIndex);
+    virtual void addSlice(List<int> chunk, int endIndex, bool isLast, int startIndex);
 
 private:
     _Utf8Decoder _decoder;
@@ -202,10 +198,12 @@ private:
     StringBuffer _buffer;
 
 
-     _Utf8ConversionSink(bool allowMalformed, StringConversionSink sink);
+     _Utf8ConversionSinkCls(bool allowMalformed, StringConversionSink sink);
 
-    void  _(StringConversionSink _chunkedSink, bool allowMalformed, StringBuffer stringBuffer);
+    virtual void  _(StringConversionSink _chunkedSink, bool allowMalformed, StringBuffer stringBuffer);
 
 };
+using _Utf8ConversionSink = std::shared_ptr<_Utf8ConversionSinkCls>;
+
 
 #endif

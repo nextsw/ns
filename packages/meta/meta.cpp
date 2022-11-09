@@ -1,5 +1,5 @@
 #include "meta.hpp"
-UseResult::UseResult(String reason) {
+UseResultCls::UseResultCls(String reason) {
     {
         parameterDefined = nullptr;
     }

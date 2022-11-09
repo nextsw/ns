@@ -1,19 +1,19 @@
-#ifndef BINDING_H
-#define BINDING_H
-#include <memory>
-#include <developer.hpp>
-#include <ui.hpp>
+#ifndef PACKAGES_FLUTTER_SRC_SCHEDULER_BINDING
+#define PACKAGES_FLUTTER_SRC_SCHEDULER_BINDING
+#include <base.hpp>
+#include <dart/developer/developer.hpp>
+#include <dart/ui/ui.hpp>
 #include "priority.hpp"
 
-#include <async/async.hpp>
-#include <collection/collection.hpp>
-#include <developer/developer.hpp>
-#include <ui/ui.hpp>
-#include <collection/collection.hpp>
-#include <flutter/foundation.hpp>
+#include <dart/core/core.hpp>
+#include <dart/async/async.hpp>
+#include <dart/collection/collection.hpp>
+#include <dart/developer/developer.hpp>
+#include <dart/ui/ui.hpp>
+#include <packages/collection/collection.hpp>
+#include <packages/flutter/lib/foundation.hpp>
 #include "debug.hpp"
 #include "priority.hpp"
-
 
 double timeDilation();
 
@@ -22,7 +22,7 @@ double _timeDilation;
 void  timeDilation(double value);
 
 
-class _TaskEntry<T> {
+template<typename T> class _TaskEntryCls : public ObjectCls {
 public:
     TaskCallback<T> task;
 
@@ -37,15 +37,16 @@ public:
     Completer<T> completer;
 
 
-    void run();
+    virtual void run();
 
 private:
 
-     _TaskEntry(String debugLabel, Flow flow, int priority, TaskCallback<T> task);
+     _TaskEntryCls(String debugLabel, Flow flow, int priority, TaskCallback<T> task);
 
 };
+template<typename T> using _TaskEntry = std::shared_ptr<_TaskEntryCls<T>>;
 
-class _FrameCallbackEntry {
+class _FrameCallbackEntryCls : public ObjectCls {
 public:
     FrameCallback callback;
 
@@ -56,9 +57,10 @@ public:
 
 private:
 
-     _FrameCallbackEntry(FrameCallback callback, bool rescheduling);
+     _FrameCallbackEntryCls(FrameCallback callback, bool rescheduling);
 
 };
+using _FrameCallbackEntry = std::shared_ptr<_FrameCallbackEntryCls>;
 
 enum SchedulerPhase{
     idle,
@@ -68,72 +70,72 @@ enum SchedulerPhase{
     postFrameCallbacks,
 } // end SchedulerPhase
 
-class SchedulerBinding {
+class SchedulerBindingCls : public ObjectCls {
 public:
     SchedulingStrategy schedulingStrategy;
 
 
-    void initInstances();
+    virtual void initInstances();
 
     static SchedulerBinding instance();
 
-    void addTimingsCallback(TimingsCallback callback);
+    virtual void addTimingsCallback(TimingsCallback callback);
 
-    void removeTimingsCallback(TimingsCallback callback);
+    virtual void removeTimingsCallback(TimingsCallback callback);
 
-    void initServiceExtensions();
+    virtual void initServiceExtensions();
 
-    AppLifecycleState lifecycleState();
+    virtual AppLifecycleState lifecycleState();
 
-    void handleAppLifecycleStateChanged(AppLifecycleState state);
+    virtual void handleAppLifecycleStateChanged(AppLifecycleState state);
 
-    Future<T> scheduleTask<T>(String debugLabel, Flow flow, Priority priority, TaskCallback<T> task);
+    template<typename T>  virtual Future<T> scheduleTask(String debugLabel, Flow flow, Priority priority, TaskCallback<T> task);
 
-    void unlocked();
+    virtual void unlocked();
 
-    bool handleEventLoopCallback();
+    virtual bool handleEventLoopCallback();
 
-    int transientCallbackCount();
+    virtual int transientCallbackCount();
 
-    int scheduleFrameCallback(FrameCallback callback, bool rescheduling);
+    virtual int scheduleFrameCallback(FrameCallback callback, bool rescheduling);
 
-    void cancelFrameCallbackWithId(int id);
+    virtual void cancelFrameCallbackWithId(int id);
 
-    bool debugAssertNoTransientCallbacks(String reason);
+    virtual bool debugAssertNoTransientCallbacks(String reason);
 
     static void debugPrintTransientCallbackRegistrationStack();
 
-    void addPersistentFrameCallback(FrameCallback callback);
+    virtual void addPersistentFrameCallback(FrameCallback callback);
 
-    void addPostFrameCallback(FrameCallback callback);
+    virtual void addPostFrameCallback(FrameCallback callback);
 
-    Future<void> endOfFrame();
+    virtual Future<void> endOfFrame();
 
-    bool hasScheduledFrame();
+    virtual bool hasScheduledFrame();
 
-    SchedulerPhase schedulerPhase();
+    virtual SchedulerPhase schedulerPhase();
 
-    bool framesEnabled();
+    virtual bool framesEnabled();
 
-    void ensureFrameCallbacksRegistered();
+    virtual void ensureFrameCallbacksRegistered();
 
-    void ensureVisualUpdate();
+    virtual void ensureVisualUpdate();
 
-    void scheduleFrame();
+    virtual void scheduleFrame();
 
-    void scheduleForcedFrame();
+    virtual void scheduleForcedFrame();
 
-    void scheduleWarmUpFrame();
+    virtual void scheduleWarmUpFrame();
 
-    void resetEpoch();
+    virtual void resetEpoch();
 
-    Duration currentFrameTimeStamp();
+    virtual Duration currentFrameTimeStamp();
 
-    Duration currentSystemFrameTimeStamp();
+    virtual Duration currentSystemFrameTimeStamp();
 
-    void handleBeginFrame(Duration rawTimeStamp);
+    virtual void handleBeginFrame(Duration rawTimeStamp);
 
-    void handleDrawFrame();
+    virtual void handleDrawFrame();
 
 private:
     static SchedulerBinding _instance;
@@ -183,30 +185,32 @@ private:
     TimelineTask _frameTimelineTask;
 
 
-    void _executeTimingsCallbacks(List<FrameTiming> timings);
+    virtual void _executeTimingsCallbacks(List<FrameTiming> timings);
 
     static int _taskSorter(_TaskEntry<dynamic> e1, _TaskEntry<dynamic> e2);
 
-    void _ensureEventLoopCallback();
+    virtual void _ensureEventLoopCallback();
 
-    void _runTasks();
+    virtual void _runTasks();
 
-    void _setFramesEnabledState(bool enabled);
+    virtual void _setFramesEnabledState(bool enabled);
 
-    Duration _adjustForEpoch(Duration rawTimeStamp);
+    virtual Duration _adjustForEpoch(Duration rawTimeStamp);
 
-    void _handleBeginFrame(Duration rawTimeStamp);
+    virtual void _handleBeginFrame(Duration rawTimeStamp);
 
-    void _handleDrawFrame();
+    virtual void _handleDrawFrame();
 
-    void _profileFramePostEvent(FrameTiming frameTiming);
+    virtual void _profileFramePostEvent(FrameTiming frameTiming);
 
     static void _debugDescribeTimeStamp(StringBuffer buffer, Duration timeStamp);
 
-    void _invokeFrameCallback(FrameCallback callback, StackTrace callbackStack, Duration timeStamp);
+    virtual void _invokeFrameCallback(FrameCallback callback, StackTrace callbackStack, Duration timeStamp);
 
 };
+using SchedulerBinding = std::shared_ptr<SchedulerBindingCls>;
 bool defaultSchedulingStrategy(int priority, SchedulerBinding scheduler);
+
 
 
 #endif

@@ -1,46 +1,47 @@
-#ifndef ERRORS_H
-#define ERRORS_H
-#include <memory>
+#ifndef DART_INTERNAL_ERRORS
+#define DART_INTERNAL_ERRORS
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
 
 
-
-
-class LateError : Error {
+class LateErrorCls : public ErrorCls {
 public:
 
-     LateError(String _message);
+     LateErrorCls(String _message);
+    virtual void  fieldADI(String fieldName);
 
-    void  fieldADI(String fieldName);
+    virtual void  localADI(String localName);
 
-    void  localADI(String localName);
+    virtual void  fieldNI(String fieldName);
 
-    void  fieldNI(String fieldName);
+    virtual void  localNI(String localName);
 
-    void  localNI(String localName);
+    virtual void  fieldAI(String fieldName);
 
-    void  fieldAI(String fieldName);
+    virtual void  localAI(String localName);
 
-    void  localAI(String localName);
-
-    String toString();
+    virtual String toString();
 
 private:
     String _message;
 
 
 };
+using LateError = std::shared_ptr<LateErrorCls>;
 
-class ReachabilityError : Error {
+class ReachabilityErrorCls : public ErrorCls {
 public:
 
-     ReachabilityError(String _message);
-
-    String toString();
+     ReachabilityErrorCls(String _message);
+    virtual String toString();
 
 private:
     String _message;
 
 
 };
+using ReachabilityError = std::shared_ptr<ReachabilityErrorCls>;
+
 
 #endif

@@ -1,10 +1,11 @@
-#ifndef ANNOTATIONS_H
-#define ANNOTATIONS_H
-#include <memory>
+#ifndef DART_UI_ANNOTATIONS
+#define DART_UI_ANNOTATIONS
+#include <base.hpp>
 
+#include <dart/core/core.hpp>
 
+auto  keepToString;
 
-const auto  keepToString;
 
 
 #endif

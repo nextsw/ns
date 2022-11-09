@@ -1,25 +1,24 @@
-#ifndef SYMBOL_H
-#define SYMBOL_H
-#include <memory>
+#ifndef DART_CORE_SYMBOL
+#define DART_CORE_SYMBOL
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
 
 
-
-
-class Symbol {
+class SymbolCls : public ObjectCls {
 public:
-    static const Symbol unaryMinus;
+    static Symbol unaryMinus;
 
-    static const Symbol empty;
+    static Symbol empty;
 
 
-     Symbol(String name);
-
-    int hashCode();
-
-    bool ==(Object other);
-
+     SymbolCls(String name);
+    virtual int hashCode();
+    virtual bool operator==(Object other);
 private:
 
 };
+using Symbol = std::shared_ptr<SymbolCls>;
+
 
 #endif

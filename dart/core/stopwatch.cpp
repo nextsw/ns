@@ -1,15 +1,15 @@
 #include "stopwatch.hpp"
-Stopwatch::Stopwatch() {
+StopwatchCls::StopwatchCls() {
     {
-        _frequency;
+            Set<E> set1 = make<SetCls<>>();    for (auto _x1 : elements) {    {        set1.add(_x1);    }_frequency;
     }
 }
 
-int Stopwatch::frequency() {
+int StopwatchCls::frequency() {
     return _frequency;
 }
 
-void Stopwatch::start() {
+void StopwatchCls::start() {
     int stop = _stop;
     if (stop != nullptr) {
         _start = _now() - stop;
@@ -17,22 +17,22 @@ void Stopwatch::start() {
     }
 }
 
-void Stopwatch::stop() {
+void StopwatchCls::stop() {
     _stop = _now();
 }
 
-void Stopwatch::reset() {
+void StopwatchCls::reset() {
     _start = _stop ?? _now();
 }
 
-int Stopwatch::elapsedTicks() {
+int StopwatchCls::elapsedTicks() {
     return (_stop ?? _now()) - _start;
 }
 
-Duration Stopwatch::elapsed() {
-    return Duration(elapsedMicroseconds);
+Duration StopwatchCls::elapsed() {
+    return make<DurationCls>(elapsedMicroseconds);
 }
 
-bool Stopwatch::isRunning() {
+bool StopwatchCls::isRunning() {
     return _stop == nullptr;
 }

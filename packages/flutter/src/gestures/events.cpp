@@ -15,28 +15,28 @@ bool isSingleButton(int buttons) {
     return buttons != 0 && (smallestButton(buttons) == buttons);
 }
 
-Offset PointerEvent::localPosition() {
+Offset PointerEventCls::localPosition() {
     return position;
 }
 
-Offset PointerEvent::localDelta() {
+Offset PointerEventCls::localDelta() {
     return delta;
 }
 
-double PointerEvent::distanceMin() {
+double PointerEventCls::distanceMin() {
     return 0.0;
 }
 
-Offset PointerEvent::transformPosition(Offset position, Matrix4 transform) {
+Offset PointerEventCls::transformPosition(Offset position, Matrix4 transform) {
     if (transform == nullptr) {
         return position;
     }
-    Vector3 position3 = Vector3(position.dx, position.dy, 0.0);
-    Vector3 transformed3 = transform.perspectiveTransform(position3);
-    return Offset(transformed3.x, transformed3.y);
+    Vector3 position3 = make<Vector3Cls>(position->dx, position->dy, 0.0);
+    Vector3 transformed3 = transform->perspectiveTransform(position3);
+    return make<OffsetCls>(transformed3->x, transformed3->y);
 }
 
-Offset PointerEvent::transformDeltaViaPositions(Matrix4 transform, Offset transformedEndPosition, Offset untransformedDelta, Offset untransformedEndPosition) {
+Offset PointerEventCls::transformDeltaViaPositions(Matrix4 transform, Offset transformedEndPosition, Offset untransformedDelta, Offset untransformedEndPosition) {
     if (transform == nullptr) {
         return untransformedDelta;
     }
@@ -45,383 +45,359 @@ Offset PointerEvent::transformDeltaViaPositions(Matrix4 transform, Offset transf
     return transformedEndPosition - transformedStartPosition;
 }
 
-Matrix4 PointerEvent::removePerspectiveTransform(Matrix4 transform) {
-    Vector4 vector = Vector4(0, 0, 1, 0);
-    return ;
+Matrix4 PointerEventCls::removePerspectiveTransform(Matrix4 transform) {
+    Vector4 vector = make<Vector4Cls>(0, 0, 1, 0);
+    auto _c1 = transform->clone();_c1.auto _c2 = setColumn(2, vector);_c2.setRow(2, vector);_c2;return _c1;
 }
 
-void _PointerEventDescription::debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties.add(<Offset>DiagnosticsProperty("position", position));
-    properties.add(<Offset>DiagnosticsProperty("localPosition", localPositionposition, DiagnosticLevel.debug));
-    properties.add(<Offset>DiagnosticsProperty("delta", deltaOffset.zero, DiagnosticLevel.debug));
-    properties.add(<Offset>DiagnosticsProperty("localDelta", localDeltadelta, DiagnosticLevel.debug));
-    properties.add(<Duration>DiagnosticsProperty("timeStamp", timeStampDuration.zero, DiagnosticLevel.debug));
-    properties.add(IntProperty("pointer", pointerDiagnosticLevel.debug));
-    properties.add(<PointerDeviceKind>EnumProperty("kind", kindDiagnosticLevel.debug));
-    properties.add(IntProperty("device", device0, DiagnosticLevel.debug));
-    properties.add(IntProperty("buttons", buttons0, DiagnosticLevel.debug));
-    properties.add(<bool>DiagnosticsProperty("down", downDiagnosticLevel.debug));
-    properties.add(DoubleProperty("pressure", pressure1.0, DiagnosticLevel.debug));
-    properties.add(DoubleProperty("pressureMin", pressureMin1.0, DiagnosticLevel.debug));
-    properties.add(DoubleProperty("pressureMax", pressureMax1.0, DiagnosticLevel.debug));
-    properties.add(DoubleProperty("distance", distance0.0, DiagnosticLevel.debug));
-    properties.add(DoubleProperty("distanceMin", distanceMin0.0, DiagnosticLevel.debug));
-    properties.add(DoubleProperty("distanceMax", distanceMax0.0, DiagnosticLevel.debug));
-    properties.add(DoubleProperty("size", size0.0, DiagnosticLevel.debug));
-    properties.add(DoubleProperty("radiusMajor", radiusMajor0.0, DiagnosticLevel.debug));
-    properties.add(DoubleProperty("radiusMinor", radiusMinor0.0, DiagnosticLevel.debug));
-    properties.add(DoubleProperty("radiusMin", radiusMin0.0, DiagnosticLevel.debug));
-    properties.add(DoubleProperty("radiusMax", radiusMax0.0, DiagnosticLevel.debug));
-    properties.add(DoubleProperty("orientation", orientation0.0, DiagnosticLevel.debug));
-    properties.add(DoubleProperty("tilt", tilt0.0, DiagnosticLevel.debug));
-    properties.add(IntProperty("platformData", platformData0, DiagnosticLevel.debug));
-    properties.add(FlagProperty("obscured"obscured, "obscured", DiagnosticLevel.debug));
-    properties.add(FlagProperty("synthesized"synthesized, "synthesized", DiagnosticLevel.debug));
-    properties.add(IntProperty("embedderId", embedderId0, DiagnosticLevel.debug));
+void _PointerEventDescriptionCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super->debugFillProperties(properties);
+    properties->add(<Offset>make<DiagnosticsPropertyCls>("position", position));
+    properties->add(<Offset>make<DiagnosticsPropertyCls>("localPosition", localPositionposition, DiagnosticLevelCls::debug));
+    properties->add(<Offset>make<DiagnosticsPropertyCls>("delta", deltaOffsetCls::zero, DiagnosticLevelCls::debug));
+    properties->add(<Offset>make<DiagnosticsPropertyCls>("localDelta", localDeltadelta, DiagnosticLevelCls::debug));
+    properties->add(<Duration>make<DiagnosticsPropertyCls>("timeStamp", timeStampDurationCls::zero, DiagnosticLevelCls::debug));
+    properties->add(make<IntPropertyCls>("pointer", pointerDiagnosticLevelCls::debug));
+    properties->add(<PointerDeviceKind>make<EnumPropertyCls>("kind", kindDiagnosticLevelCls::debug));
+    properties->add(make<IntPropertyCls>("device", device0, DiagnosticLevelCls::debug));
+    properties->add(make<IntPropertyCls>("buttons", buttons0, DiagnosticLevelCls::debug));
+    properties->add(<bool>make<DiagnosticsPropertyCls>("down", downDiagnosticLevelCls::debug));
+    properties->add(make<DoublePropertyCls>("pressure", pressure1.0, DiagnosticLevelCls::debug));
+    properties->add(make<DoublePropertyCls>("pressureMin", pressureMin1.0, DiagnosticLevelCls::debug));
+    properties->add(make<DoublePropertyCls>("pressureMax", pressureMax1.0, DiagnosticLevelCls::debug));
+    properties->add(make<DoublePropertyCls>("distance", distance0.0, DiagnosticLevelCls::debug));
+    properties->add(make<DoublePropertyCls>("distanceMin", distanceMin0.0, DiagnosticLevelCls::debug));
+    properties->add(make<DoublePropertyCls>("distanceMax", distanceMax0.0, DiagnosticLevelCls::debug));
+    properties->add(make<DoublePropertyCls>("size", size0.0, DiagnosticLevelCls::debug));
+    properties->add(make<DoublePropertyCls>("radiusMajor", radiusMajor0.0, DiagnosticLevelCls::debug));
+    properties->add(make<DoublePropertyCls>("radiusMinor", radiusMinor0.0, DiagnosticLevelCls::debug));
+    properties->add(make<DoublePropertyCls>("radiusMin", radiusMin0.0, DiagnosticLevelCls::debug));
+    properties->add(make<DoublePropertyCls>("radiusMax", radiusMax0.0, DiagnosticLevelCls::debug));
+    properties->add(make<DoublePropertyCls>("orientation", orientation0.0, DiagnosticLevelCls::debug));
+    properties->add(make<DoublePropertyCls>("tilt", tilt0.0, DiagnosticLevelCls::debug));
+    properties->add(make<IntPropertyCls>("platformData", platformData0, DiagnosticLevelCls::debug));
+    properties->add(make<FlagPropertyCls>("obscured"obscured, "obscured", DiagnosticLevelCls::debug));
+    properties->add(make<FlagPropertyCls>("synthesized"synthesized, "synthesized", DiagnosticLevelCls::debug));
+    properties->add(make<IntPropertyCls>("embedderId", embedderId0, DiagnosticLevelCls::debug));
 }
 
-String _PointerEventDescription::toStringFull() {
-    return toString(DiagnosticLevel.fine);
+String _PointerEventDescriptionCls::toStringFull() {
+    return toString(DiagnosticLevelCls::fine);
 }
 
-int _TransformedPointerEvent::embedderId() {
-    return original.embedderId;
+int _TransformedPointerEventCls::embedderId() {
+    return original->embedderId;
 }
 
-Duration _TransformedPointerEvent::timeStamp() {
-    return original.timeStamp;
+Duration _TransformedPointerEventCls::timeStamp() {
+    return original->timeStamp;
 }
 
-int _TransformedPointerEvent::pointer() {
-    return original.pointer;
+int _TransformedPointerEventCls::pointer() {
+    return original->pointer;
 }
 
-PointerDeviceKind _TransformedPointerEvent::kind() {
-    return original.kind;
+PointerDeviceKind _TransformedPointerEventCls::kind() {
+    return original->kind;
 }
 
-int _TransformedPointerEvent::device() {
-    return original.device;
+int _TransformedPointerEventCls::device() {
+    return original->device;
 }
 
-Offset _TransformedPointerEvent::position() {
-    return original.position;
+Offset _TransformedPointerEventCls::position() {
+    return original->position;
 }
 
-Offset _TransformedPointerEvent::delta() {
-    return original.delta;
+Offset _TransformedPointerEventCls::delta() {
+    return original->delta;
 }
 
-int _TransformedPointerEvent::buttons() {
-    return original.buttons;
+int _TransformedPointerEventCls::buttons() {
+    return original->buttons;
 }
 
-bool _TransformedPointerEvent::down() {
-    return original.down;
+bool _TransformedPointerEventCls::down() {
+    return original->down;
 }
 
-bool _TransformedPointerEvent::obscured() {
-    return original.obscured;
+bool _TransformedPointerEventCls::obscured() {
+    return original->obscured;
 }
 
-double _TransformedPointerEvent::pressure() {
-    return original.pressure;
+double _TransformedPointerEventCls::pressure() {
+    return original->pressure;
 }
 
-double _TransformedPointerEvent::pressureMin() {
-    return original.pressureMin;
+double _TransformedPointerEventCls::pressureMin() {
+    return original->pressureMin;
 }
 
-double _TransformedPointerEvent::pressureMax() {
-    return original.pressureMax;
+double _TransformedPointerEventCls::pressureMax() {
+    return original->pressureMax;
 }
 
-double _TransformedPointerEvent::distance() {
-    return original.distance;
+double _TransformedPointerEventCls::distance() {
+    return original->distance;
 }
 
-double _TransformedPointerEvent::distanceMin() {
+double _TransformedPointerEventCls::distanceMin() {
     return 0.0;
 }
 
-double _TransformedPointerEvent::distanceMax() {
-    return original.distanceMax;
+double _TransformedPointerEventCls::distanceMax() {
+    return original->distanceMax;
 }
 
-double _TransformedPointerEvent::size() {
-    return original.size;
+double _TransformedPointerEventCls::size() {
+    return original->size;
 }
 
-double _TransformedPointerEvent::radiusMajor() {
-    return original.radiusMajor;
+double _TransformedPointerEventCls::radiusMajor() {
+    return original->radiusMajor;
 }
 
-double _TransformedPointerEvent::radiusMinor() {
-    return original.radiusMinor;
+double _TransformedPointerEventCls::radiusMinor() {
+    return original->radiusMinor;
 }
 
-double _TransformedPointerEvent::radiusMin() {
-    return original.radiusMin;
+double _TransformedPointerEventCls::radiusMin() {
+    return original->radiusMin;
 }
 
-double _TransformedPointerEvent::radiusMax() {
-    return original.radiusMax;
+double _TransformedPointerEventCls::radiusMax() {
+    return original->radiusMax;
 }
 
-double _TransformedPointerEvent::orientation() {
-    return original.orientation;
+double _TransformedPointerEventCls::orientation() {
+    return original->orientation;
 }
 
-double _TransformedPointerEvent::tilt() {
-    return original.tilt;
+double _TransformedPointerEventCls::tilt() {
+    return original->tilt;
 }
 
-int _TransformedPointerEvent::platformData() {
-    return original.platformData;
+int _TransformedPointerEventCls::platformData() {
+    return original->platformData;
 }
 
-bool _TransformedPointerEvent::synthesized() {
-    return original.synthesized;
+bool _TransformedPointerEventCls::synthesized() {
+    return original->synthesized;
 }
 
-PointerAddedEvent _CopyPointerAddedEvent::copyWith(int buttons, Offset delta, int device, double distance, double distanceMax, int embedderId, PointerDeviceKind kind, bool obscured, double orientation, int pointer, Offset position, double pressure, double pressureMax, double pressureMin, double radiusMajor, double radiusMax, double radiusMin, double radiusMinor, double size, bool synthesized, double tilt, Duration timeStamp) {
-    return PointerAddedEvent(timeStamp ?? this.timeStamp, kind ?? this.kind, device ?? this.device, position ?? this.position, obscured ?? this.obscured, pressureMin ?? this.pressureMin, pressureMax ?? this.pressureMax, distance ?? this.distance, distanceMax ?? this.distanceMax, radiusMin ?? this.radiusMin, radiusMax ?? this.radiusMax, orientation ?? this.orientation, tilt ?? this.tilt, embedderId ?? this.embedderId).transformed(transform);
+PointerAddedEvent _CopyPointerAddedEventCls::copyWith(int buttons, Offset delta, int device, double distance, double distanceMax, int embedderId, PointerDeviceKind kind, bool obscured, double orientation, int pointer, Offset position, double pressure, double pressureMax, double pressureMin, double radiusMajor, double radiusMax, double radiusMin, double radiusMinor, double size, bool synthesized, double tilt, Duration timeStamp) {
+    return make<PointerAddedEventCls>(timeStamp ?? this->timeStamp, kind ?? this->kind, device ?? this->device, position ?? this->position, obscured ?? this->obscured, pressureMin ?? this->pressureMin, pressureMax ?? this->pressureMax, distance ?? this->distance, distanceMax ?? this->distanceMax, radiusMin ?? this->radiusMin, radiusMax ?? this->radiusMax, orientation ?? this->orientation, tilt ?? this->tilt, embedderId ?? this->embedderId)->transformed(transform);
 }
 
-PointerAddedEvent::PointerAddedEvent(Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown) {
-    {
-        super(0.0);
-    }
+PointerAddedEventCls::PointerAddedEventCls(Unknown device, Unknown distance, Unknown distanceMax, Unknown embedderId, Unknown kind, Unknown obscured, Unknown orientation, Unknown pointer, Unknown position, Unknown pressureMax, Unknown pressureMin, Unknown radiusMax, Unknown radiusMin, Unknown tilt, Unknown timeStamp) {
 }
 
-PointerAddedEvent PointerAddedEvent::transformed(Matrix4 transform) {
-    if (transform == nullptr || transform == this.transform) {
+PointerAddedEvent PointerAddedEventCls::transformed(Matrix4 transform) {
+    if (transform == nullptr || transform == this->transform) {
         return this;
     }
-    return _TransformedPointerAddedEvent(( ?? this, transform);
+    return make<_TransformedPointerAddedEventCls>(((PointerAddedEvent)original) ?? this, transform);
 }
 
-PointerAddedEvent _TransformedPointerAddedEvent::transformed(Matrix4 transform) {
-    return original.transformed(transform);
+PointerAddedEvent _TransformedPointerAddedEventCls::transformed(Matrix4 transform) {
+    return original->transformed(transform);
 }
 
-_TransformedPointerAddedEvent::_TransformedPointerAddedEvent(PointerAddedEvent original, Matrix4 transform) {
+_TransformedPointerAddedEventCls::_TransformedPointerAddedEventCls(PointerAddedEvent original, Matrix4 transform) {
     {
         assert(original != nullptr);
         assert(transform != nullptr);
     }
 }
 
-PointerRemovedEvent _CopyPointerRemovedEvent::copyWith(int buttons, Offset delta, int device, double distance, double distanceMax, int embedderId, PointerDeviceKind kind, bool obscured, double orientation, int pointer, Offset position, double pressure, double pressureMax, double pressureMin, double radiusMajor, double radiusMax, double radiusMin, double radiusMinor, double size, bool synthesized, double tilt, Duration timeStamp) {
-    return PointerRemovedEvent(timeStamp ?? this.timeStamp, kind ?? this.kind, device ?? this.device, position ?? this.position, obscured ?? this.obscured, pressureMin ?? this.pressureMin, pressureMax ?? this.pressureMax, distanceMax ?? this.distanceMax, radiusMin ?? this.radiusMin, radiusMax ?? this.radiusMax, embedderId ?? this.embedderId).transformed(transform);
+PointerRemovedEvent _CopyPointerRemovedEventCls::copyWith(int buttons, Offset delta, int device, double distance, double distanceMax, int embedderId, PointerDeviceKind kind, bool obscured, double orientation, int pointer, Offset position, double pressure, double pressureMax, double pressureMin, double radiusMajor, double radiusMax, double radiusMin, double radiusMinor, double size, bool synthesized, double tilt, Duration timeStamp) {
+    return make<PointerRemovedEventCls>(timeStamp ?? this->timeStamp, kind ?? this->kind, device ?? this->device, position ?? this->position, obscured ?? this->obscured, pressureMin ?? this->pressureMin, pressureMax ?? this->pressureMax, distanceMax ?? this->distanceMax, radiusMin ?? this->radiusMin, radiusMax ?? this->radiusMax, embedderId ?? this->embedderId)->transformed(transform);
 }
 
-PointerRemovedEvent::PointerRemovedEvent(Unknown, Unknown, Unknown, Unknown, Unknown, PointerRemovedEvent original, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown) {
-    {
-        super(0.0);
-    }
+PointerRemovedEventCls::PointerRemovedEventCls(Unknown device, Unknown distanceMax, Unknown embedderId, Unknown kind, Unknown obscured, PointerRemovedEvent original, Unknown pointer, Unknown position, Unknown pressureMax, Unknown pressureMin, Unknown radiusMax, Unknown radiusMin, Unknown timeStamp) {
 }
 
-PointerRemovedEvent PointerRemovedEvent::transformed(Matrix4 transform) {
-    if (transform == nullptr || transform == this.transform) {
+PointerRemovedEvent PointerRemovedEventCls::transformed(Matrix4 transform) {
+    if (transform == nullptr || transform == this->transform) {
         return this;
     }
-    return _TransformedPointerRemovedEvent(( ?? this, transform);
+    return make<_TransformedPointerRemovedEventCls>(((PointerRemovedEvent)original) ?? this, transform);
 }
 
-PointerRemovedEvent _TransformedPointerRemovedEvent::transformed(Matrix4 transform) {
-    return original.transformed(transform);
+PointerRemovedEvent _TransformedPointerRemovedEventCls::transformed(Matrix4 transform) {
+    return original->transformed(transform);
 }
 
-_TransformedPointerRemovedEvent::_TransformedPointerRemovedEvent(PointerRemovedEvent original, Matrix4 transform) {
+_TransformedPointerRemovedEventCls::_TransformedPointerRemovedEventCls(PointerRemovedEvent original, Matrix4 transform) {
     {
         assert(original != nullptr);
         assert(transform != nullptr);
     }
 }
 
-PointerHoverEvent _CopyPointerHoverEvent::copyWith(int buttons, Offset delta, int device, double distance, double distanceMax, int embedderId, PointerDeviceKind kind, bool obscured, double orientation, int pointer, Offset position, double pressure, double pressureMax, double pressureMin, double radiusMajor, double radiusMax, double radiusMin, double radiusMinor, double size, bool synthesized, double tilt, Duration timeStamp) {
-    return PointerHoverEvent(timeStamp ?? this.timeStamp, kind ?? this.kind, device ?? this.device, position ?? this.position, delta ?? this.delta, buttons ?? this.buttons, obscured ?? this.obscured, pressureMin ?? this.pressureMin, pressureMax ?? this.pressureMax, distance ?? this.distance, distanceMax ?? this.distanceMax, size ?? this.size, radiusMajor ?? this.radiusMajor, radiusMinor ?? this.radiusMinor, radiusMin ?? this.radiusMin, radiusMax ?? this.radiusMax, orientation ?? this.orientation, tilt ?? this.tilt, synthesized ?? this.synthesized, embedderId ?? this.embedderId).transformed(transform);
+PointerHoverEvent _CopyPointerHoverEventCls::copyWith(int buttons, Offset delta, int device, double distance, double distanceMax, int embedderId, PointerDeviceKind kind, bool obscured, double orientation, int pointer, Offset position, double pressure, double pressureMax, double pressureMin, double radiusMajor, double radiusMax, double radiusMin, double radiusMinor, double size, bool synthesized, double tilt, Duration timeStamp) {
+    return make<PointerHoverEventCls>(timeStamp ?? this->timeStamp, kind ?? this->kind, device ?? this->device, position ?? this->position, delta ?? this->delta, buttons ?? this->buttons, obscured ?? this->obscured, pressureMin ?? this->pressureMin, pressureMax ?? this->pressureMax, distance ?? this->distance, distanceMax ?? this->distanceMax, size ?? this->size, radiusMajor ?? this->radiusMajor, radiusMinor ?? this->radiusMinor, radiusMin ?? this->radiusMin, radiusMax ?? this->radiusMax, orientation ?? this->orientation, tilt ?? this->tilt, synthesized ?? this->synthesized, embedderId ?? this->embedderId)->transformed(transform);
 }
 
-PointerHoverEvent::PointerHoverEvent(Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown) {
-    {
-        super(false, 0.0);
-    }
+PointerHoverEventCls::PointerHoverEventCls(Unknown buttons, Unknown delta, Unknown device, Unknown distance, Unknown distanceMax, Unknown embedderId, Unknown kind, Unknown obscured, Unknown orientation, Unknown pointer, Unknown position, Unknown pressureMax, Unknown pressureMin, Unknown radiusMajor, Unknown radiusMax, Unknown radiusMin, Unknown radiusMinor, Unknown size, Unknown synthesized, Unknown tilt, Unknown timeStamp) {
 }
 
-PointerHoverEvent PointerHoverEvent::transformed(Matrix4 transform) {
-    if (transform == nullptr || transform == this.transform) {
+PointerHoverEvent PointerHoverEventCls::transformed(Matrix4 transform) {
+    if (transform == nullptr || transform == this->transform) {
         return this;
     }
-    return _TransformedPointerHoverEvent(( ?? this, transform);
+    return make<_TransformedPointerHoverEventCls>(((PointerHoverEvent)original) ?? this, transform);
 }
 
-PointerHoverEvent _TransformedPointerHoverEvent::transformed(Matrix4 transform) {
-    return original.transformed(transform);
+PointerHoverEvent _TransformedPointerHoverEventCls::transformed(Matrix4 transform) {
+    return original->transformed(transform);
 }
 
-_TransformedPointerHoverEvent::_TransformedPointerHoverEvent(PointerHoverEvent original, Matrix4 transform) {
+_TransformedPointerHoverEventCls::_TransformedPointerHoverEventCls(PointerHoverEvent original, Matrix4 transform) {
     {
         assert(original != nullptr);
         assert(transform != nullptr);
     }
 }
 
-PointerEnterEvent _CopyPointerEnterEvent::copyWith(int buttons, Offset delta, int device, double distance, double distanceMax, int embedderId, PointerDeviceKind kind, bool obscured, double orientation, int pointer, Offset position, double pressure, double pressureMax, double pressureMin, double radiusMajor, double radiusMax, double radiusMin, double radiusMinor, double size, bool synthesized, double tilt, Duration timeStamp) {
-    return PointerEnterEvent(timeStamp ?? this.timeStamp, kind ?? this.kind, device ?? this.device, position ?? this.position, delta ?? this.delta, buttons ?? this.buttons, obscured ?? this.obscured, pressureMin ?? this.pressureMin, pressureMax ?? this.pressureMax, distance ?? this.distance, distanceMax ?? this.distanceMax, size ?? this.size, radiusMajor ?? this.radiusMajor, radiusMinor ?? this.radiusMinor, radiusMin ?? this.radiusMin, radiusMax ?? this.radiusMax, orientation ?? this.orientation, tilt ?? this.tilt, synthesized ?? this.synthesized, embedderId ?? this.embedderId).transformed(transform);
+PointerEnterEvent _CopyPointerEnterEventCls::copyWith(int buttons, Offset delta, int device, double distance, double distanceMax, int embedderId, PointerDeviceKind kind, bool obscured, double orientation, int pointer, Offset position, double pressure, double pressureMax, double pressureMin, double radiusMajor, double radiusMax, double radiusMin, double radiusMinor, double size, bool synthesized, double tilt, Duration timeStamp) {
+    return make<PointerEnterEventCls>(timeStamp ?? this->timeStamp, kind ?? this->kind, device ?? this->device, position ?? this->position, delta ?? this->delta, buttons ?? this->buttons, obscured ?? this->obscured, pressureMin ?? this->pressureMin, pressureMax ?? this->pressureMax, distance ?? this->distance, distanceMax ?? this->distanceMax, size ?? this->size, radiusMajor ?? this->radiusMajor, radiusMinor ?? this->radiusMinor, radiusMin ?? this->radiusMin, radiusMax ?? this->radiusMax, orientation ?? this->orientation, tilt ?? this->tilt, synthesized ?? this->synthesized, embedderId ?? this->embedderId)->transformed(transform);
 }
 
-PointerEnterEvent::PointerEnterEvent(Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown) {
-    {
-        super(0.0);
-    }
+PointerEnterEventCls::PointerEnterEventCls(Unknown buttons, Unknown delta, Unknown device, Unknown distance, Unknown distanceMax, Unknown down, Unknown embedderId, Unknown kind, Unknown obscured, Unknown orientation, Unknown pointer, Unknown position, Unknown pressureMax, Unknown pressureMin, Unknown radiusMajor, Unknown radiusMax, Unknown radiusMin, Unknown radiusMinor, Unknown size, Unknown synthesized, Unknown tilt, Unknown timeStamp) {
 }
 
-void PointerEnterEvent::fromMouseEvent(PointerEvent event) {
-    return PointerEnterEvent(event.timeStamp, event.pointer, event.kind, event.device, event.position, event.delta, event.buttons, event.obscured, event.pressureMin, event.pressureMax, event.distance, event.distanceMax, event.size, event.radiusMajor, event.radiusMinor, event.radiusMin, event.radiusMax, event.orientation, event.tilt, event.down, event.synthesized).transformed(event.transform);
+void PointerEnterEventCls::fromMouseEvent(PointerEvent event) {
+    return make<PointerEnterEventCls>(event->timeStamp, event->pointer, event->kind, event->device, event->position, event->delta, event->buttons, event->obscured, event->pressureMin, event->pressureMax, event->distance, event->distanceMax, event->size, event->radiusMajor, event->radiusMinor, event->radiusMin, event->radiusMax, event->orientation, event->tilt, event->down, event->synthesized)->transformed(event->transform);
 }
 
-PointerEnterEvent PointerEnterEvent::transformed(Matrix4 transform) {
-    if (transform == nullptr || transform == this.transform) {
+PointerEnterEvent PointerEnterEventCls::transformed(Matrix4 transform) {
+    if (transform == nullptr || transform == this->transform) {
         return this;
     }
-    return _TransformedPointerEnterEvent(( ?? this, transform);
+    return make<_TransformedPointerEnterEventCls>(((PointerEnterEvent)original) ?? this, transform);
 }
 
-PointerEnterEvent _TransformedPointerEnterEvent::transformed(Matrix4 transform) {
-    return original.transformed(transform);
+PointerEnterEvent _TransformedPointerEnterEventCls::transformed(Matrix4 transform) {
+    return original->transformed(transform);
 }
 
-_TransformedPointerEnterEvent::_TransformedPointerEnterEvent(PointerEnterEvent original, Matrix4 transform) {
+_TransformedPointerEnterEventCls::_TransformedPointerEnterEventCls(PointerEnterEvent original, Matrix4 transform) {
     {
         assert(original != nullptr);
         assert(transform != nullptr);
     }
 }
 
-PointerExitEvent _CopyPointerExitEvent::copyWith(int buttons, Offset delta, int device, double distance, double distanceMax, int embedderId, PointerDeviceKind kind, bool obscured, double orientation, int pointer, Offset position, double pressure, double pressureMax, double pressureMin, double radiusMajor, double radiusMax, double radiusMin, double radiusMinor, double size, bool synthesized, double tilt, Duration timeStamp) {
-    return PointerExitEvent(timeStamp ?? this.timeStamp, kind ?? this.kind, device ?? this.device, position ?? this.position, delta ?? this.delta, buttons ?? this.buttons, obscured ?? this.obscured, pressureMin ?? this.pressureMin, pressureMax ?? this.pressureMax, distance ?? this.distance, distanceMax ?? this.distanceMax, size ?? this.size, radiusMajor ?? this.radiusMajor, radiusMinor ?? this.radiusMinor, radiusMin ?? this.radiusMin, radiusMax ?? this.radiusMax, orientation ?? this.orientation, tilt ?? this.tilt, synthesized ?? this.synthesized, embedderId ?? this.embedderId).transformed(transform);
+PointerExitEvent _CopyPointerExitEventCls::copyWith(int buttons, Offset delta, int device, double distance, double distanceMax, int embedderId, PointerDeviceKind kind, bool obscured, double orientation, int pointer, Offset position, double pressure, double pressureMax, double pressureMin, double radiusMajor, double radiusMax, double radiusMin, double radiusMinor, double size, bool synthesized, double tilt, Duration timeStamp) {
+    return make<PointerExitEventCls>(timeStamp ?? this->timeStamp, kind ?? this->kind, device ?? this->device, position ?? this->position, delta ?? this->delta, buttons ?? this->buttons, obscured ?? this->obscured, pressureMin ?? this->pressureMin, pressureMax ?? this->pressureMax, distance ?? this->distance, distanceMax ?? this->distanceMax, size ?? this->size, radiusMajor ?? this->radiusMajor, radiusMinor ?? this->radiusMinor, radiusMin ?? this->radiusMin, radiusMax ?? this->radiusMax, orientation ?? this->orientation, tilt ?? this->tilt, synthesized ?? this->synthesized, embedderId ?? this->embedderId)->transformed(transform);
 }
 
-PointerExitEvent::PointerExitEvent(Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown) {
-    {
-        super(0.0);
-    }
+PointerExitEventCls::PointerExitEventCls(Unknown buttons, Unknown delta, Unknown device, Unknown distance, Unknown distanceMax, Unknown down, Unknown embedderId, Unknown kind, Unknown obscured, Unknown orientation, Unknown pointer, Unknown position, Unknown pressureMax, Unknown pressureMin, Unknown radiusMajor, Unknown radiusMax, Unknown radiusMin, Unknown radiusMinor, Unknown size, Unknown synthesized, Unknown tilt, Unknown timeStamp) {
 }
 
-void PointerExitEvent::fromMouseEvent(PointerEvent event) {
-    return PointerExitEvent(event.timeStamp, event.pointer, event.kind, event.device, event.position, event.delta, event.buttons, event.obscured, event.pressureMin, event.pressureMax, event.distance, event.distanceMax, event.size, event.radiusMajor, event.radiusMinor, event.radiusMin, event.radiusMax, event.orientation, event.tilt, event.down, event.synthesized).transformed(event.transform);
+void PointerExitEventCls::fromMouseEvent(PointerEvent event) {
+    return make<PointerExitEventCls>(event->timeStamp, event->pointer, event->kind, event->device, event->position, event->delta, event->buttons, event->obscured, event->pressureMin, event->pressureMax, event->distance, event->distanceMax, event->size, event->radiusMajor, event->radiusMinor, event->radiusMin, event->radiusMax, event->orientation, event->tilt, event->down, event->synthesized)->transformed(event->transform);
 }
 
-PointerExitEvent PointerExitEvent::transformed(Matrix4 transform) {
-    if (transform == nullptr || transform == this.transform) {
+PointerExitEvent PointerExitEventCls::transformed(Matrix4 transform) {
+    if (transform == nullptr || transform == this->transform) {
         return this;
     }
-    return _TransformedPointerExitEvent(( ?? this, transform);
+    return make<_TransformedPointerExitEventCls>(((PointerExitEvent)original) ?? this, transform);
 }
 
-PointerExitEvent _TransformedPointerExitEvent::transformed(Matrix4 transform) {
-    return original.transformed(transform);
+PointerExitEvent _TransformedPointerExitEventCls::transformed(Matrix4 transform) {
+    return original->transformed(transform);
 }
 
-_TransformedPointerExitEvent::_TransformedPointerExitEvent(PointerExitEvent original, Matrix4 transform) {
+_TransformedPointerExitEventCls::_TransformedPointerExitEventCls(PointerExitEvent original, Matrix4 transform) {
     {
         assert(original != nullptr);
         assert(transform != nullptr);
     }
 }
 
-PointerDownEvent _CopyPointerDownEvent::copyWith(int buttons, Offset delta, int device, double distance, double distanceMax, int embedderId, PointerDeviceKind kind, bool obscured, double orientation, int pointer, Offset position, double pressure, double pressureMax, double pressureMin, double radiusMajor, double radiusMax, double radiusMin, double radiusMinor, double size, bool synthesized, double tilt, Duration timeStamp) {
-    return PointerDownEvent(timeStamp ?? this.timeStamp, pointer ?? this.pointer, kind ?? this.kind, device ?? this.device, position ?? this.position, buttons ?? this.buttons, obscured ?? this.obscured, pressure ?? this.pressure, pressureMin ?? this.pressureMin, pressureMax ?? this.pressureMax, distanceMax ?? this.distanceMax, size ?? this.size, radiusMajor ?? this.radiusMajor, radiusMinor ?? this.radiusMinor, radiusMin ?? this.radiusMin, radiusMax ?? this.radiusMax, orientation ?? this.orientation, tilt ?? this.tilt, embedderId ?? this.embedderId).transformed(transform);
+PointerDownEvent _CopyPointerDownEventCls::copyWith(int buttons, Offset delta, int device, double distance, double distanceMax, int embedderId, PointerDeviceKind kind, bool obscured, double orientation, int pointer, Offset position, double pressure, double pressureMax, double pressureMin, double radiusMajor, double radiusMax, double radiusMin, double radiusMinor, double size, bool synthesized, double tilt, Duration timeStamp) {
+    return make<PointerDownEventCls>(timeStamp ?? this->timeStamp, pointer ?? this->pointer, kind ?? this->kind, device ?? this->device, position ?? this->position, buttons ?? this->buttons, obscured ?? this->obscured, pressure ?? this->pressure, pressureMin ?? this->pressureMin, pressureMax ?? this->pressureMax, distanceMax ?? this->distanceMax, size ?? this->size, radiusMajor ?? this->radiusMajor, radiusMinor ?? this->radiusMinor, radiusMin ?? this->radiusMin, radiusMax ?? this->radiusMax, orientation ?? this->orientation, tilt ?? this->tilt, embedderId ?? this->embedderId)->transformed(transform);
 }
 
-PointerDownEvent::PointerDownEvent(Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown) {
-    {
-        super(true, 0.0);
-    }
+PointerDownEventCls::PointerDownEventCls(Unknown buttons, Unknown device, Unknown distanceMax, Unknown embedderId, Unknown kind, Unknown obscured, Unknown orientation, Unknown pointer, Unknown position, Unknown pressure, Unknown pressureMax, Unknown pressureMin, Unknown radiusMajor, Unknown radiusMax, Unknown radiusMin, Unknown radiusMinor, Unknown size, Unknown tilt, Unknown timeStamp) {
 }
 
-PointerDownEvent PointerDownEvent::transformed(Matrix4 transform) {
-    if (transform == nullptr || transform == this.transform) {
+PointerDownEvent PointerDownEventCls::transformed(Matrix4 transform) {
+    if (transform == nullptr || transform == this->transform) {
         return this;
     }
-    return _TransformedPointerDownEvent(( ?? this, transform);
+    return make<_TransformedPointerDownEventCls>(((PointerDownEvent)original) ?? this, transform);
 }
 
-PointerDownEvent _TransformedPointerDownEvent::transformed(Matrix4 transform) {
-    return original.transformed(transform);
+PointerDownEvent _TransformedPointerDownEventCls::transformed(Matrix4 transform) {
+    return original->transformed(transform);
 }
 
-_TransformedPointerDownEvent::_TransformedPointerDownEvent(PointerDownEvent original, Matrix4 transform) {
+_TransformedPointerDownEventCls::_TransformedPointerDownEventCls(PointerDownEvent original, Matrix4 transform) {
     {
         assert(original != nullptr);
         assert(transform != nullptr);
     }
 }
 
-PointerMoveEvent _CopyPointerMoveEvent::copyWith(int buttons, Offset delta, int device, double distance, double distanceMax, int embedderId, PointerDeviceKind kind, bool obscured, double orientation, int pointer, Offset position, double pressure, double pressureMax, double pressureMin, double radiusMajor, double radiusMax, double radiusMin, double radiusMinor, double size, bool synthesized, double tilt, Duration timeStamp) {
-    return PointerMoveEvent(timeStamp ?? this.timeStamp, pointer ?? this.pointer, kind ?? this.kind, device ?? this.device, position ?? this.position, delta ?? this.delta, buttons ?? this.buttons, obscured ?? this.obscured, pressure ?? this.pressure, pressureMin ?? this.pressureMin, pressureMax ?? this.pressureMax, distanceMax ?? this.distanceMax, size ?? this.size, radiusMajor ?? this.radiusMajor, radiusMinor ?? this.radiusMinor, radiusMin ?? this.radiusMin, radiusMax ?? this.radiusMax, orientation ?? this.orientation, tilt ?? this.tilt, synthesized ?? this.synthesized, embedderId ?? this.embedderId).transformed(transform);
+PointerMoveEvent _CopyPointerMoveEventCls::copyWith(int buttons, Offset delta, int device, double distance, double distanceMax, int embedderId, PointerDeviceKind kind, bool obscured, double orientation, int pointer, Offset position, double pressure, double pressureMax, double pressureMin, double radiusMajor, double radiusMax, double radiusMin, double radiusMinor, double size, bool synthesized, double tilt, Duration timeStamp) {
+    return make<PointerMoveEventCls>(timeStamp ?? this->timeStamp, pointer ?? this->pointer, kind ?? this->kind, device ?? this->device, position ?? this->position, delta ?? this->delta, buttons ?? this->buttons, obscured ?? this->obscured, pressure ?? this->pressure, pressureMin ?? this->pressureMin, pressureMax ?? this->pressureMax, distanceMax ?? this->distanceMax, size ?? this->size, radiusMajor ?? this->radiusMajor, radiusMinor ?? this->radiusMinor, radiusMin ?? this->radiusMin, radiusMax ?? this->radiusMax, orientation ?? this->orientation, tilt ?? this->tilt, synthesized ?? this->synthesized, embedderId ?? this->embedderId)->transformed(transform);
 }
 
-PointerMoveEvent::PointerMoveEvent(Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown) {
-    {
-        super(true, 0.0);
-    }
+PointerMoveEventCls::PointerMoveEventCls(Unknown buttons, Unknown delta, Unknown device, Unknown distanceMax, Unknown embedderId, Unknown kind, Unknown obscured, Unknown orientation, Unknown platformData, Unknown pointer, Unknown position, Unknown pressure, Unknown pressureMax, Unknown pressureMin, Unknown radiusMajor, Unknown radiusMax, Unknown radiusMin, Unknown radiusMinor, Unknown size, Unknown synthesized, Unknown tilt, Unknown timeStamp) {
 }
 
-PointerMoveEvent PointerMoveEvent::transformed(Matrix4 transform) {
-    if (transform == nullptr || transform == this.transform) {
+PointerMoveEvent PointerMoveEventCls::transformed(Matrix4 transform) {
+    if (transform == nullptr || transform == this->transform) {
         return this;
     }
-    return _TransformedPointerMoveEvent(( ?? this, transform);
+    return make<_TransformedPointerMoveEventCls>(((PointerMoveEvent)original) ?? this, transform);
 }
 
-PointerMoveEvent _TransformedPointerMoveEvent::transformed(Matrix4 transform) {
-    return original.transformed(transform);
+PointerMoveEvent _TransformedPointerMoveEventCls::transformed(Matrix4 transform) {
+    return original->transformed(transform);
 }
 
-_TransformedPointerMoveEvent::_TransformedPointerMoveEvent(PointerMoveEvent original, Matrix4 transform) {
+_TransformedPointerMoveEventCls::_TransformedPointerMoveEventCls(PointerMoveEvent original, Matrix4 transform) {
     {
         assert(original != nullptr);
         assert(transform != nullptr);
     }
 }
 
-PointerUpEvent _CopyPointerUpEvent::copyWith(int buttons, Offset delta, int device, double distance, double distanceMax, int embedderId, PointerDeviceKind kind, Offset localPosition, bool obscured, double orientation, int pointer, Offset position, double pressure, double pressureMax, double pressureMin, double radiusMajor, double radiusMax, double radiusMin, double radiusMinor, double size, bool synthesized, double tilt, Duration timeStamp) {
-    return PointerUpEvent(timeStamp ?? this.timeStamp, pointer ?? this.pointer, kind ?? this.kind, device ?? this.device, position ?? this.position, buttons ?? this.buttons, obscured ?? this.obscured, pressure ?? this.pressure, pressureMin ?? this.pressureMin, pressureMax ?? this.pressureMax, distance ?? this.distance, distanceMax ?? this.distanceMax, size ?? this.size, radiusMajor ?? this.radiusMajor, radiusMinor ?? this.radiusMinor, radiusMin ?? this.radiusMin, radiusMax ?? this.radiusMax, orientation ?? this.orientation, tilt ?? this.tilt, embedderId ?? this.embedderId).transformed(transform);
+PointerUpEvent _CopyPointerUpEventCls::copyWith(int buttons, Offset delta, int device, double distance, double distanceMax, int embedderId, PointerDeviceKind kind, Offset localPosition, bool obscured, double orientation, int pointer, Offset position, double pressure, double pressureMax, double pressureMin, double radiusMajor, double radiusMax, double radiusMin, double radiusMinor, double size, bool synthesized, double tilt, Duration timeStamp) {
+    return make<PointerUpEventCls>(timeStamp ?? this->timeStamp, pointer ?? this->pointer, kind ?? this->kind, device ?? this->device, position ?? this->position, buttons ?? this->buttons, obscured ?? this->obscured, pressure ?? this->pressure, pressureMin ?? this->pressureMin, pressureMax ?? this->pressureMax, distance ?? this->distance, distanceMax ?? this->distanceMax, size ?? this->size, radiusMajor ?? this->radiusMajor, radiusMinor ?? this->radiusMinor, radiusMin ?? this->radiusMin, radiusMax ?? this->radiusMax, orientation ?? this->orientation, tilt ?? this->tilt, embedderId ?? this->embedderId)->transformed(transform);
 }
 
-PointerUpEvent::PointerUpEvent(Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown) {
-    {
-        super(false);
-    }
+PointerUpEventCls::PointerUpEventCls(Unknown buttons, Unknown device, Unknown distance, Unknown distanceMax, Unknown embedderId, Unknown kind, Unknown obscured, Unknown orientation, Unknown pointer, Unknown position, Unknown pressure, Unknown pressureMax, Unknown pressureMin, Unknown radiusMajor, Unknown radiusMax, Unknown radiusMin, Unknown radiusMinor, Unknown size, Unknown tilt, Unknown timeStamp) {
 }
 
-PointerUpEvent PointerUpEvent::transformed(Matrix4 transform) {
-    if (transform == nullptr || transform == this.transform) {
+PointerUpEvent PointerUpEventCls::transformed(Matrix4 transform) {
+    if (transform == nullptr || transform == this->transform) {
         return this;
     }
-    return _TransformedPointerUpEvent(( ?? this, transform);
+    return make<_TransformedPointerUpEventCls>(((PointerUpEvent)original) ?? this, transform);
 }
 
-PointerUpEvent _TransformedPointerUpEvent::transformed(Matrix4 transform) {
-    return original.transformed(transform);
+PointerUpEvent _TransformedPointerUpEventCls::transformed(Matrix4 transform) {
+    return original->transformed(transform);
 }
 
-_TransformedPointerUpEvent::_TransformedPointerUpEvent(PointerUpEvent original, Matrix4 transform) {
+_TransformedPointerUpEventCls::_TransformedPointerUpEventCls(PointerUpEvent original, Matrix4 transform) {
     {
         assert(original != nullptr);
         assert(transform != nullptr);
     }
 }
 
-PointerScrollEvent _CopyPointerScrollEvent::copyWith(int buttons, Offset delta, int device, double distance, double distanceMax, int embedderId, PointerDeviceKind kind, bool obscured, double orientation, int pointer, Offset position, double pressure, double pressureMax, double pressureMin, double radiusMajor, double radiusMax, double radiusMin, double radiusMinor, double size, bool synthesized, double tilt, Duration timeStamp) {
-    return PointerScrollEvent(timeStamp ?? this.timeStamp, kind ?? this.kind, device ?? this.device, position ?? this.position, scrollDelta, embedderId ?? this.embedderId).transformed(transform);
+PointerScrollEvent _CopyPointerScrollEventCls::copyWith(int buttons, Offset delta, int device, double distance, double distanceMax, int embedderId, PointerDeviceKind kind, bool obscured, double orientation, int pointer, Offset position, double pressure, double pressureMax, double pressureMin, double radiusMajor, double radiusMax, double radiusMin, double radiusMinor, double size, bool synthesized, double tilt, Duration timeStamp) {
+    return make<PointerScrollEventCls>(timeStamp ?? this->timeStamp, kind ?? this->kind, device ?? this->device, position ?? this->position, scrollDelta, embedderId ?? this->embedderId)->transformed(transform);
 }
 
-PointerScrollEvent::PointerScrollEvent(Unknown, Unknown, Unknown, Unknown, Offset scrollDelta, Unknown) {
+PointerScrollEventCls::PointerScrollEventCls(Unknown device, Unknown embedderId, Unknown kind, Unknown position, Offset scrollDelta, Unknown timeStamp) {
     {
         assert(timeStamp != nullptr);
         assert(kind != nullptr);
@@ -431,43 +407,43 @@ PointerScrollEvent::PointerScrollEvent(Unknown, Unknown, Unknown, Unknown, Offse
     }
 }
 
-PointerScrollEvent PointerScrollEvent::transformed(Matrix4 transform) {
-    if (transform == nullptr || transform == this.transform) {
+PointerScrollEvent PointerScrollEventCls::transformed(Matrix4 transform) {
+    if (transform == nullptr || transform == this->transform) {
         return this;
     }
-    return _TransformedPointerScrollEvent(( ?? this, transform);
+    return make<_TransformedPointerScrollEventCls>(((PointerScrollEvent)original) ?? this, transform);
 }
 
-void PointerScrollEvent::debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties.add(<Offset>DiagnosticsProperty("scrollDelta", scrollDelta));
+void PointerScrollEventCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super->debugFillProperties(properties);
+    properties->add(<Offset>make<DiagnosticsPropertyCls>("scrollDelta", scrollDelta));
 }
 
-Offset _TransformedPointerScrollEvent::scrollDelta() {
-    return original.scrollDelta;
+Offset _TransformedPointerScrollEventCls::scrollDelta() {
+    return original->scrollDelta;
 }
 
-PointerScrollEvent _TransformedPointerScrollEvent::transformed(Matrix4 transform) {
-    return original.transformed(transform);
+PointerScrollEvent _TransformedPointerScrollEventCls::transformed(Matrix4 transform) {
+    return original->transformed(transform);
 }
 
-void _TransformedPointerScrollEvent::debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties.add(<Offset>DiagnosticsProperty("scrollDelta", scrollDelta));
+void _TransformedPointerScrollEventCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super->debugFillProperties(properties);
+    properties->add(<Offset>make<DiagnosticsPropertyCls>("scrollDelta", scrollDelta));
 }
 
-_TransformedPointerScrollEvent::_TransformedPointerScrollEvent(PointerScrollEvent original, Matrix4 transform) {
+_TransformedPointerScrollEventCls::_TransformedPointerScrollEventCls(PointerScrollEvent original, Matrix4 transform) {
     {
         assert(original != nullptr);
         assert(transform != nullptr);
     }
 }
 
-PointerPanZoomStartEvent _CopyPointerPanZoomStartEvent::copyWith(int buttons, Offset delta, int device, double distance, double distanceMax, int embedderId, PointerDeviceKind kind, bool obscured, double orientation, int pointer, Offset position, double pressure, double pressureMax, double pressureMin, double radiusMajor, double radiusMax, double radiusMin, double radiusMinor, double size, bool synthesized, double tilt, Duration timeStamp) {
-    return PointerPanZoomStartEvent(timeStamp ?? this.timeStamp, kind ?? this.kind, device ?? this.device, position ?? this.position, embedderId ?? this.embedderId).transformed(transform);
+PointerPanZoomStartEvent _CopyPointerPanZoomStartEventCls::copyWith(int buttons, Offset delta, int device, double distance, double distanceMax, int embedderId, PointerDeviceKind kind, bool obscured, double orientation, int pointer, Offset position, double pressure, double pressureMax, double pressureMin, double radiusMajor, double radiusMax, double radiusMin, double radiusMinor, double size, bool synthesized, double tilt, Duration timeStamp) {
+    return make<PointerPanZoomStartEventCls>(timeStamp ?? this->timeStamp, kind ?? this->kind, device ?? this->device, position ?? this->position, embedderId ?? this->embedderId)->transformed(transform);
 }
 
-PointerPanZoomStartEvent::PointerPanZoomStartEvent(Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown) {
+PointerPanZoomStartEventCls::PointerPanZoomStartEventCls(Unknown device, Unknown embedderId, Unknown kind, Unknown pointer, Unknown position, Unknown synthesized, Unknown timeStamp) {
     {
         assert(timeStamp != nullptr);
         assert(kind != nullptr);
@@ -479,29 +455,29 @@ PointerPanZoomStartEvent::PointerPanZoomStartEvent(Unknown, Unknown, Unknown, Un
     }
 }
 
-PointerPanZoomStartEvent PointerPanZoomStartEvent::transformed(Matrix4 transform) {
-    if (transform == nullptr || transform == this.transform) {
+PointerPanZoomStartEvent PointerPanZoomStartEventCls::transformed(Matrix4 transform) {
+    if (transform == nullptr || transform == this->transform) {
         return this;
     }
-    return _TransformedPointerPanZoomStartEvent(( ?? this, transform);
+    return make<_TransformedPointerPanZoomStartEventCls>(((PointerPanZoomStartEvent)original) ?? this, transform);
 }
 
-PointerPanZoomStartEvent _TransformedPointerPanZoomStartEvent::transformed(Matrix4 transform) {
-    return original.transformed(transform);
+PointerPanZoomStartEvent _TransformedPointerPanZoomStartEventCls::transformed(Matrix4 transform) {
+    return original->transformed(transform);
 }
 
-_TransformedPointerPanZoomStartEvent::_TransformedPointerPanZoomStartEvent(PointerPanZoomStartEvent original, Matrix4 transform) {
+_TransformedPointerPanZoomStartEventCls::_TransformedPointerPanZoomStartEventCls(PointerPanZoomStartEvent original, Matrix4 transform) {
     {
         assert(original != nullptr);
         assert(transform != nullptr);
     }
 }
 
-PointerPanZoomUpdateEvent _CopyPointerPanZoomUpdateEvent::copyWith(int buttons, Offset delta, int device, double distance, double distanceMax, int embedderId, PointerDeviceKind kind, Offset localPan, Offset localPanDelta, bool obscured, double orientation, Offset pan, Offset panDelta, int pointer, Offset position, double pressure, double pressureMax, double pressureMin, double radiusMajor, double radiusMax, double radiusMin, double radiusMinor, double rotation, double scale, double size, bool synthesized, double tilt, Duration timeStamp) {
-    return PointerPanZoomUpdateEvent(timeStamp ?? this.timeStamp, kind ?? this.kind, device ?? this.device, position ?? this.position, embedderId ?? this.embedderId, pan ?? this.pan, panDelta ?? this.panDelta, scale ?? this.scale, rotation ?? this.rotation).transformed(transform);
+PointerPanZoomUpdateEvent _CopyPointerPanZoomUpdateEventCls::copyWith(int buttons, Offset delta, int device, double distance, double distanceMax, int embedderId, PointerDeviceKind kind, Offset localPan, Offset localPanDelta, bool obscured, double orientation, Offset pan, Offset panDelta, int pointer, Offset position, double pressure, double pressureMax, double pressureMin, double radiusMajor, double radiusMax, double radiusMin, double radiusMinor, double rotation, double scale, double size, bool synthesized, double tilt, Duration timeStamp) {
+    return make<PointerPanZoomUpdateEventCls>(timeStamp ?? this->timeStamp, kind ?? this->kind, device ?? this->device, position ?? this->position, embedderId ?? this->embedderId, pan ?? this->pan, panDelta ?? this->panDelta, scale ?? this->scale, rotation ?? this->rotation)->transformed(transform);
 }
 
-PointerPanZoomUpdateEvent::PointerPanZoomUpdateEvent(Unknown, Unknown, Unknown, Offset pan, Offset panDelta, Unknown, Unknown, double rotation, double scale, Unknown, Unknown) {
+PointerPanZoomUpdateEventCls::PointerPanZoomUpdateEventCls(Unknown device, Unknown embedderId, Unknown kind, Offset pan, Offset panDelta, Unknown pointer, Unknown position, double rotation, double scale, Unknown synthesized, Unknown timeStamp) {
     {
         assert(timeStamp != nullptr);
         assert(kind != nullptr);
@@ -517,53 +493,53 @@ PointerPanZoomUpdateEvent::PointerPanZoomUpdateEvent(Unknown, Unknown, Unknown, 
     }
 }
 
-Offset PointerPanZoomUpdateEvent::localPan() {
+Offset PointerPanZoomUpdateEventCls::localPan() {
     return pan;
 }
 
-Offset PointerPanZoomUpdateEvent::localPanDelta() {
+Offset PointerPanZoomUpdateEventCls::localPanDelta() {
     return panDelta;
 }
 
-PointerPanZoomUpdateEvent PointerPanZoomUpdateEvent::transformed(Matrix4 transform) {
-    if (transform == nullptr || transform == this.transform) {
+PointerPanZoomUpdateEvent PointerPanZoomUpdateEventCls::transformed(Matrix4 transform) {
+    if (transform == nullptr || transform == this->transform) {
         return this;
     }
-    return _TransformedPointerPanZoomUpdateEvent(( ?? this, transform);
+    return make<_TransformedPointerPanZoomUpdateEventCls>(((PointerPanZoomUpdateEvent)original) ?? this, transform);
 }
 
-Offset _TransformedPointerPanZoomUpdateEvent::pan() {
-    return original.pan;
+Offset _TransformedPointerPanZoomUpdateEventCls::pan() {
+    return original->pan;
 }
 
-Offset _TransformedPointerPanZoomUpdateEvent::panDelta() {
-    return original.panDelta;
+Offset _TransformedPointerPanZoomUpdateEventCls::panDelta() {
+    return original->panDelta;
 }
 
-double _TransformedPointerPanZoomUpdateEvent::scale() {
-    return original.scale;
+double _TransformedPointerPanZoomUpdateEventCls::scale() {
+    return original->scale;
 }
 
-double _TransformedPointerPanZoomUpdateEvent::rotation() {
-    return original.rotation;
+double _TransformedPointerPanZoomUpdateEventCls::rotation() {
+    return original->rotation;
 }
 
-PointerPanZoomUpdateEvent _TransformedPointerPanZoomUpdateEvent::transformed(Matrix4 transform) {
-    return original.transformed(transform);
+PointerPanZoomUpdateEvent _TransformedPointerPanZoomUpdateEventCls::transformed(Matrix4 transform) {
+    return original->transformed(transform);
 }
 
-_TransformedPointerPanZoomUpdateEvent::_TransformedPointerPanZoomUpdateEvent(PointerPanZoomUpdateEvent original, Matrix4 transform) {
+_TransformedPointerPanZoomUpdateEventCls::_TransformedPointerPanZoomUpdateEventCls(PointerPanZoomUpdateEvent original, Matrix4 transform) {
     {
         assert(original != nullptr);
         assert(transform != nullptr);
     }
 }
 
-PointerPanZoomEndEvent _CopyPointerPanZoomEndEvent::copyWith(int buttons, Offset delta, int device, double distance, double distanceMax, int embedderId, PointerDeviceKind kind, bool obscured, double orientation, int pointer, Offset position, double pressure, double pressureMax, double pressureMin, double radiusMajor, double radiusMax, double radiusMin, double radiusMinor, double size, bool synthesized, double tilt, Duration timeStamp) {
-    return PointerPanZoomEndEvent(timeStamp ?? this.timeStamp, kind ?? this.kind, device ?? this.device, position ?? this.position, embedderId ?? this.embedderId).transformed(transform);
+PointerPanZoomEndEvent _CopyPointerPanZoomEndEventCls::copyWith(int buttons, Offset delta, int device, double distance, double distanceMax, int embedderId, PointerDeviceKind kind, bool obscured, double orientation, int pointer, Offset position, double pressure, double pressureMax, double pressureMin, double radiusMajor, double radiusMax, double radiusMin, double radiusMinor, double size, bool synthesized, double tilt, Duration timeStamp) {
+    return make<PointerPanZoomEndEventCls>(timeStamp ?? this->timeStamp, kind ?? this->kind, device ?? this->device, position ?? this->position, embedderId ?? this->embedderId)->transformed(transform);
 }
 
-PointerPanZoomEndEvent::PointerPanZoomEndEvent(Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown) {
+PointerPanZoomEndEventCls::PointerPanZoomEndEventCls(Unknown device, Unknown embedderId, Unknown kind, Unknown pointer, Unknown position, Unknown synthesized, Unknown timeStamp) {
     {
         assert(timeStamp != nullptr);
         assert(kind != nullptr);
@@ -575,39 +551,36 @@ PointerPanZoomEndEvent::PointerPanZoomEndEvent(Unknown, Unknown, Unknown, Unknow
     }
 }
 
-PointerPanZoomEndEvent PointerPanZoomEndEvent::transformed(Matrix4 transform) {
-    if (transform == nullptr || transform == this.transform) {
+PointerPanZoomEndEvent PointerPanZoomEndEventCls::transformed(Matrix4 transform) {
+    if (transform == nullptr || transform == this->transform) {
         return this;
     }
-    return _TransformedPointerPanZoomEndEvent(( ?? this, transform);
+    return make<_TransformedPointerPanZoomEndEventCls>(((PointerPanZoomEndEvent)original) ?? this, transform);
 }
 
-PointerPanZoomEndEvent _TransformedPointerPanZoomEndEvent::transformed(Matrix4 transform) {
-    return original.transformed(transform);
+PointerPanZoomEndEvent _TransformedPointerPanZoomEndEventCls::transformed(Matrix4 transform) {
+    return original->transformed(transform);
 }
 
-_TransformedPointerPanZoomEndEvent::_TransformedPointerPanZoomEndEvent(PointerPanZoomEndEvent original, Matrix4 transform) {
+_TransformedPointerPanZoomEndEventCls::_TransformedPointerPanZoomEndEventCls(PointerPanZoomEndEvent original, Matrix4 transform) {
     {
         assert(original != nullptr);
         assert(transform != nullptr);
     }
 }
 
-PointerCancelEvent _CopyPointerCancelEvent::copyWith(int buttons, Offset delta, int device, double distance, double distanceMax, int embedderId, PointerDeviceKind kind, bool obscured, double orientation, int pointer, Offset position, double pressure, double pressureMax, double pressureMin, double radiusMajor, double radiusMax, double radiusMin, double radiusMinor, double size, bool synthesized, double tilt, Duration timeStamp) {
-    return PointerCancelEvent(timeStamp ?? this.timeStamp, pointer ?? this.pointer, kind ?? this.kind, device ?? this.device, position ?? this.position, buttons ?? this.buttons, obscured ?? this.obscured, pressureMin ?? this.pressureMin, pressureMax ?? this.pressureMax, distance ?? this.distance, distanceMax ?? this.distanceMax, size ?? this.size, radiusMajor ?? this.radiusMajor, radiusMinor ?? this.radiusMinor, radiusMin ?? this.radiusMin, radiusMax ?? this.radiusMax, orientation ?? this.orientation, tilt ?? this.tilt, embedderId ?? this.embedderId).transformed(transform);
+PointerCancelEvent _CopyPointerCancelEventCls::copyWith(int buttons, Offset delta, int device, double distance, double distanceMax, int embedderId, PointerDeviceKind kind, bool obscured, double orientation, int pointer, Offset position, double pressure, double pressureMax, double pressureMin, double radiusMajor, double radiusMax, double radiusMin, double radiusMinor, double size, bool synthesized, double tilt, Duration timeStamp) {
+    return make<PointerCancelEventCls>(timeStamp ?? this->timeStamp, pointer ?? this->pointer, kind ?? this->kind, device ?? this->device, position ?? this->position, buttons ?? this->buttons, obscured ?? this->obscured, pressureMin ?? this->pressureMin, pressureMax ?? this->pressureMax, distance ?? this->distance, distanceMax ?? this->distanceMax, size ?? this->size, radiusMajor ?? this->radiusMajor, radiusMinor ?? this->radiusMinor, radiusMin ?? this->radiusMin, radiusMax ?? this->radiusMax, orientation ?? this->orientation, tilt ?? this->tilt, embedderId ?? this->embedderId)->transformed(transform);
 }
 
-PointerCancelEvent::PointerCancelEvent(Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown, Unknown) {
-    {
-        super(false, 0.0);
-    }
+PointerCancelEventCls::PointerCancelEventCls(Unknown buttons, Unknown device, Unknown distance, Unknown distanceMax, Unknown embedderId, Unknown kind, Unknown obscured, Unknown orientation, Unknown pointer, Unknown position, Unknown pressureMax, Unknown pressureMin, Unknown radiusMajor, Unknown radiusMax, Unknown radiusMin, Unknown radiusMinor, Unknown size, Unknown tilt, Unknown timeStamp) {
 }
 
-PointerCancelEvent PointerCancelEvent::transformed(Matrix4 transform) {
-    if (transform == nullptr || transform == this.transform) {
+PointerCancelEvent PointerCancelEventCls::transformed(Matrix4 transform) {
+    if (transform == nullptr || transform == this->transform) {
         return this;
     }
-    return _TransformedPointerCancelEvent(( ?? this, transform);
+    return make<_TransformedPointerCancelEventCls>(((PointerCancelEvent)original) ?? this, transform);
 }
 
 double computeHitSlop(PointerDeviceKind kind, DeviceGestureSettings settings) {
@@ -622,11 +595,11 @@ double computeScaleSlop(PointerDeviceKind kind) {
     ;
 }
 
-PointerCancelEvent _TransformedPointerCancelEvent::transformed(Matrix4 transform) {
-    return original.transformed(transform);
+PointerCancelEvent _TransformedPointerCancelEventCls::transformed(Matrix4 transform) {
+    return original->transformed(transform);
 }
 
-_TransformedPointerCancelEvent::_TransformedPointerCancelEvent(PointerCancelEvent original, Matrix4 transform) {
+_TransformedPointerCancelEventCls::_TransformedPointerCancelEventCls(PointerCancelEvent original, Matrix4 transform) {
     {
         assert(original != nullptr);
         assert(transform != nullptr);

@@ -1,193 +1,242 @@
 #include "binding.hpp"
-DateTime SamplingClock::now() {
-    return DateTime.now();
+DateTime SamplingClockCls::now() {
+    return DateTimeCls->now();
 }
 
-Stopwatch SamplingClock::stopwatch() {
-    return Stopwatch();
+Stopwatch SamplingClockCls::stopwatch() {
+    return make<StopwatchCls>();
 }
 
-void _Resampler::addOrDispatch(PointerEvent event) {
-    SchedulerBinding scheduler = SchedulerBinding.instance;
+void _ResamplerCls::addOrDispatch(PointerEvent event) {
+    SchedulerBinding scheduler = SchedulerBindingCls::instance;
     assert(scheduler != nullptr);
-    if (event.kind == PointerDeviceKind.touch) {
-        _lastEventTime = event.timeStamp;
-        PointerEventResampler resampler = _resamplers.putIfAbsent(event.device, );
-        resampler.addEvent(event);
+    if (event->kind == PointerDeviceKindCls::touch) {
+        _lastEventTime = event->timeStamp;
+        PointerEventResampler resampler = _resamplers->putIfAbsent(event->device, [=] () {
+    make<PointerEventResamplerCls>();
+});
+        resampler->addEvent(event);
     } else {
         _handlePointerEvent(event);
     }
 }
 
-void _Resampler::sample(SamplingClock clock, Duration samplingOffset) {
-    SchedulerBinding scheduler = SchedulerBinding.instance;
+void _ResamplerCls::sample(SamplingClock clock, Duration samplingOffset) {
+    SchedulerBinding scheduler = SchedulerBindingCls::instance;
     assert(scheduler != nullptr);
-    if (_frameTime == Duration.zero) {
-        _frameTime = Duration(clock.now().millisecondsSinceEpoch);
-        _frameTimeAge = ;
+    if (_frameTime == DurationCls::zero) {
+        _frameTime = make<DurationCls>(clock->now()->millisecondsSinceEpoch);
+            auto _c1 = clock->stopwatch();    _c1.start();_frameTimeAge = _c1;
     }
-    if (_timer?.isActive != true) {
-        _timer = Timer.periodic(_samplingInterval, );
+    if (_timer?->isActive != true) {
+        _timer = TimerCls->periodic(_samplingInterval, [=] ()         {
+            _onSampleTimeChanged();
+        });
     }
-    int samplingIntervalUs = _samplingInterval.inMicroseconds;
-    int elapsedIntervals = _frameTimeAge.elapsedMicroseconds ~/ samplingIntervalUs;
+    int samplingIntervalUs = _samplingInterval->inMicroseconds;
+    int elapsedIntervals = _frameTimeAge->elapsedMicroseconds ~/ samplingIntervalUs;
     int elapsedUs = elapsedIntervals * samplingIntervalUs;
-    Duration frameTime = _frameTime + Duration(elapsedUs);
+    Duration frameTime = _frameTime + make<DurationCls>(elapsedUs);
     Duration sampleTime = frameTime + samplingOffset;
     Duration nextSampleTime = sampleTime + _samplingInterval;
-    for (PointerEventResampler resampler : _resamplers.values) {
-        resampler.sample(sampleTime, nextSampleTime, _handlePointerEvent);
+    for (PointerEventResampler resampler : _resamplers->values) {
+        resampler->sample(sampleTime, nextSampleTime, _handlePointerEvent);
     }
-    _resamplers.removeWhere();
+    _resamplers->removeWhere([=] (int key,PointerEventResampler resampler) {
+        return !resampler->hasPendingEvents && !resampler->isDown;
+    });
     _lastSampleTime = sampleTime;
-    if (_resamplers.isEmpty) {
-        _timer!.cancel();
+    if (_resamplers->isEmpty) {
+        _timer!->cancel();
         return;
     }
     if (!_frameCallbackScheduled) {
         _frameCallbackScheduled = true;
-        scheduler.addPostFrameCallback();
+        scheduler->addPostFrameCallback([=] () {
+            _frameCallbackScheduled = false;
+            _frameTime = scheduler->currentSystemFrameTimeStamp;
+            _frameTimeAge->reset();
+            _timer?->cancel();
+            _timer = TimerCls->periodic(_samplingInterval, [=] ()             {
+                _onSampleTimeChanged();
+            });
+            _onSampleTimeChanged();
+        });
     }
 }
 
-void _Resampler::stop() {
-    for (PointerEventResampler resampler : _resamplers.values) {
-        resampler.stop(_handlePointerEvent);
+void _ResamplerCls::stop() {
+    for (PointerEventResampler resampler : _resamplers->values) {
+        resampler->stop(_handlePointerEvent);
     }
-    _resamplers.clear();
-    _frameTime = Duration.zero;
-    _timer?.cancel();
+    _resamplers->clear();
+    _frameTime = DurationCls::zero;
+    _timer?->cancel();
 }
 
-void _Resampler::_onSampleTimeChanged() {
-    assert(());
+void _ResamplerCls::_onSampleTimeChanged() {
+    assert([=] () {
+        if (debugPrintResamplingMargin) {
+            Duration resamplingMargin = _lastEventTime - _lastSampleTime;
+            debugPrint("$resamplingMargin");
+        }
+        return true;
+    }());
     _handleSampleTimeChanged();
 }
 
-void GestureBinding::initInstances() {
-    super.initInstances();
+void GestureBindingCls::initInstances() {
+    super->initInstances();
     _instance = this;
-    platformDispatcher.onPointerDataPacket = _handlePointerDataPacket;
+    platformDispatcher->onPointerDataPacket = _handlePointerDataPacket;
 }
 
-GestureBinding GestureBinding::instance() {
-    return BindingBase.checkInstance(_instance);
+GestureBinding GestureBindingCls::instance() {
+    return BindingBaseCls->checkInstance(_instance);
 }
 
-void GestureBinding::unlocked() {
-    super.unlocked();
+void GestureBindingCls::unlocked() {
+    super->unlocked();
     _flushPointerEventQueue();
 }
 
-void GestureBinding::cancelPointer(int pointer) {
-    if (_pendingPointerEvents.isEmpty && !locked) {
+void GestureBindingCls::cancelPointer(int pointer) {
+    if (_pendingPointerEvents->isEmpty && !locked) {
         scheduleMicrotask(_flushPointerEventQueue);
     }
-    _pendingPointerEvents.addFirst(PointerCancelEvent(pointer));
+    _pendingPointerEvents->addFirst(make<PointerCancelEventCls>(pointer));
 }
 
-void GestureBinding::handlePointerEvent(PointerEvent event) {
+void GestureBindingCls::handlePointerEvent(PointerEvent event) {
     assert(!locked);
     if (resamplingEnabled) {
-        _resampler.addOrDispatch(event);
-        _resampler.sample(samplingOffset, _samplingClock);
+        _resampler->addOrDispatch(event);
+        _resampler->sample(samplingOffset, _samplingClock);
         return;
     }
-    _resampler.stop();
+    _resampler->stop();
     _handlePointerEventImmediately(event);
 }
 
-void GestureBinding::hitTest(Offset position, HitTestResult result) {
-    result.add(HitTestEntry(this));
+void GestureBindingCls::hitTest(Offset position, HitTestResult result) {
+    result->add(make<HitTestEntryCls>(this));
 }
 
-void GestureBinding::dispatchEvent(PointerEvent event, HitTestResult hitTestResult) {
+void GestureBindingCls::dispatchEvent(PointerEvent event, HitTestResult hitTestResult) {
     assert(!locked);
     if (hitTestResult == nullptr) {
         assert(event is PointerAddedEvent || event is PointerRemovedEvent);
-        ;
+        try {
+            pointerRouter->route(event);
+        } catch (Unknown exception) {
+            FlutterErrorCls->reportError(make<FlutterErrorDetailsForPointerEventDispatcherCls>(exception, stack, "gesture library", make<ErrorDescriptionCls>("while dispatching a non-hit-tested pointer event"), event, [=] ()             {
+                makeList(ArrayItem);
+            }));
+        };
         return;
     }
-    for (HitTestEntry entry : hitTestResult.path) {
-        ;
+    for (HitTestEntry entry : hitTestResult->path) {
+        try {
+            entry->target->handleEvent(event->transformed(entry->transform), entry);
+        } catch (Unknown exception) {
+            FlutterErrorCls->reportError(make<FlutterErrorDetailsForPointerEventDispatcherCls>(exception, stack, "gesture library", make<ErrorDescriptionCls>("while dispatching a pointer event"), event, entry, [=] ()             {
+                makeList(ArrayItem, ArrayItem);
+            }));
+        };
     }
 }
 
-void GestureBinding::handleEvent(HitTestEntry entry, PointerEvent event) {
-    pointerRouter.route(event);
+void GestureBindingCls::handleEvent(HitTestEntry entry, PointerEvent event) {
+    pointerRouter->route(event);
     if (event is PointerDownEvent || event is PointerPanZoomStartEvent) {
-        gestureArena.close(event.pointer);
+        gestureArena->close(event->pointer);
     } else     {
         if (event is PointerUpEvent || event is PointerPanZoomEndEvent) {
-        gestureArena.sweep(event.pointer);
+        gestureArena->sweep(event->pointer);
     } else     {
         if (event is PointerSignalEvent) {
-        pointerSignalResolver.resolve(event);
+        pointerSignalResolver->resolve(event);
     }
 ;
     };
     }}
 
-void GestureBinding::resetGestureBinding() {
-    _hitTests.clear();
+void GestureBindingCls::resetGestureBinding() {
+    _hitTests->clear();
 }
 
-SamplingClock GestureBinding::debugSamplingClock() {
+SamplingClock GestureBindingCls::debugSamplingClock() {
     return nullptr;
 }
 
-void GestureBinding::_handlePointerDataPacket(PointerDataPacket packet) {
-    _pendingPointerEvents.addAll(PointerEventConverter.expand(packet.data, window.devicePixelRatio));
+void GestureBindingCls::_handlePointerDataPacket(PointerDataPacket packet) {
+    _pendingPointerEvents->addAll(PointerEventConverterCls->expand(packet->data, window->devicePixelRatio));
     if (!locked) {
         _flushPointerEventQueue();
     }
 }
 
-void GestureBinding::_flushPointerEventQueue() {
+void GestureBindingCls::_flushPointerEventQueue() {
     assert(!locked);
-    while (_pendingPointerEvents.isNotEmpty) {
-        handlePointerEvent(_pendingPointerEvents.removeFirst());
+    while (_pendingPointerEvents->isNotEmpty) {
+        handlePointerEvent(_pendingPointerEvents->removeFirst());
     }
 }
 
-void GestureBinding::_handlePointerEventImmediately(PointerEvent event) {
+void GestureBindingCls::_handlePointerEventImmediately(PointerEvent event) {
     HitTestResult hitTestResult;
     if (event is PointerDownEvent || event is PointerSignalEvent || event is PointerHoverEvent || event is PointerPanZoomStartEvent) {
-        assert(!_hitTests.containsKey(event.pointer));
-        hitTestResult = HitTestResult();
-        hitTest(hitTestResult, event.position);
+        assert(!_hitTests->containsKey(event->pointer));
+        hitTestResult = make<HitTestResultCls>();
+        hitTest(hitTestResult, event->position);
         if (event is PointerDownEvent || event is PointerPanZoomStartEvent) {
-            _hitTests[event.pointer] = hitTestResult;
+            _hitTests[event->pointer] = hitTestResult;
         }
-        assert(());
+        assert([=] () {
+            if (debugPrintHitTestResults) {
+                debugPrint("$event: $hitTestResult");
+            }
+            return true;
+        }());
     } else     {
         if (event is PointerUpEvent || event is PointerCancelEvent || event is PointerPanZoomEndEvent) {
-        hitTestResult = _hitTests.remove(event.pointer);
+        hitTestResult = _hitTests->remove(event->pointer);
     } else     {
-        if (event.down || event is PointerPanZoomUpdateEvent) {
-        hitTestResult = _hitTests[event.pointer];
+        if (event->down || event is PointerPanZoomUpdateEvent) {
+        hitTestResult = _hitTests[event->pointer];
     }
 ;
     };
-    }    assert(());
+    }    assert([=] () {
+        if (debugPrintMouseHoverEvents && event is PointerHoverEvent) {
+            debugPrint("$event");
+        }
+        return true;
+    }());
     if (hitTestResult != nullptr || event is PointerAddedEvent || event is PointerRemovedEvent) {
-        assert(event.position != nullptr);
+        assert(event->position != nullptr);
         dispatchEvent(event, hitTestResult);
     }
 }
 
-void GestureBinding::_handleSampleTimeChanged() {
+void GestureBindingCls::_handleSampleTimeChanged() {
     if (!locked) {
         if (resamplingEnabled) {
-            _resampler.sample(samplingOffset, _samplingClock);
+            _resampler->sample(samplingOffset, _samplingClock);
         } else {
-            _resampler.stop();
+            _resampler->stop();
         }
     }
 }
 
-SamplingClock GestureBinding::_samplingClock() {
-    SamplingClock value = SamplingClock();
-    assert(());
+SamplingClock GestureBindingCls::_samplingClock() {
+    SamplingClock value = make<SamplingClockCls>();
+    assert([=] () {
+        SamplingClock debugValue = debugSamplingClock;
+        if (debugValue != nullptr) {
+            value = debugValue;
+        }
+        return true;
+    }());
     return value;
 }

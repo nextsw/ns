@@ -1,16 +1,24 @@
 #include "combined_iterable.hpp"
-Iterator<T> CombinedIterableView::iterator() {
-    return <T>CombinedIterator(_iterables.map().iterator);
+template<typename T> Iterator<T> CombinedIterableViewCls<T>::iterator() {
+    return <T>make<CombinedIteratorCls>(_iterables->map([=] (Unknown  i)     {
+        i->iterator;
+    })->iterator);
 }
 
-bool CombinedIterableView::contains(Object element) {
-    return _iterables.any();
+template<typename T> bool CombinedIterableViewCls<T>::contains(Object element) {
+    return _iterables->any([=] (Unknown  i)     {
+        i->contains(element);
+    });
 }
 
-bool CombinedIterableView::isEmpty() {
-    return _iterables.every();
+template<typename T> bool CombinedIterableViewCls<T>::isEmpty() {
+    return _iterables->every([=] (Unknown  i)     {
+        i->isEmpty;
+    });
 }
 
-int CombinedIterableView::length() {
-    return _iterables.fold(0, );
+template<typename T> int CombinedIterableViewCls<T>::length() {
+    return _iterables->fold(0, [=] (Unknown  length,Unknown  i)     {
+        length + i->length;
+    });
 }

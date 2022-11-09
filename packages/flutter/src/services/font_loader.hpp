@@ -1,25 +1,25 @@
-#ifndef FONT_LOADER_H
-#define FONT_LOADER_H
-#include <memory>
-#include <typed_data.hpp>
+#ifndef PACKAGES_FLUTTER_SRC_SERVICES_FONT_LOADER
+#define PACKAGES_FLUTTER_SRC_SERVICES_FONT_LOADER
+#include <base.hpp>
+#include <dart/typed_data/typed_data.hpp>
 
-#include <ui/ui.hpp>
-#include <flutter/foundation.hpp>
+#include <dart/core/core.hpp>
+#include <dart/ui/ui.hpp>
+#include <packages/flutter/lib/foundation.hpp>
 
 
-
-class FontLoader {
+class FontLoaderCls : public ObjectCls {
 public:
     String family;
 
 
-     FontLoader(String family);
+     FontLoaderCls(String family);
 
-    void addFont(Future<ByteData> bytes);
+    virtual void addFont(Future<ByteData> bytes);
 
-    Future<void> load();
+    virtual Future<void> load();
 
-    Future<void> loadFont(String family, Uint8List list);
+    virtual Future<void> loadFont(String family, Uint8List list);
 
 private:
     bool _loaded;
@@ -28,5 +28,7 @@ private:
 
 
 };
+using FontLoader = std::shared_ptr<FontLoaderCls>;
+
 
 #endif

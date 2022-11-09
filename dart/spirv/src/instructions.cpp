@@ -1,45 +1,45 @@
 #include "instructions.hpp"
-_BlockContext _BlockContext::child(int continueBlock, int loopHeader, int loopMerge, int merge) {
-    return _BlockContext(out, indent + 1, merge ?? this.merge, continueBlock ?? this.continueBlock, loopHeader ?? this.loopHeader, loopMerge ?? this.loopMerge);
+_BlockContext _BlockContextCls::child(int continueBlock, int loopHeader, int loopMerge, int merge) {
+    return make<_BlockContextCls>(out, indent + 1, merge ?? this->merge, continueBlock ?? this->continueBlock, loopHeader ?? this->loopHeader, loopMerge ?? this->loopMerge);
 }
 
-void _BlockContext::writeIndent() {
-    out.write("  " * indent);
+void _BlockContextCls::writeIndent() {
+    out->write("  " * indent);
 }
 
-_Transpiler _Block::transpiler() {
-    return function.transpiler;
+_Transpiler _BlockCls::transpiler() {
+    return function->transpiler;
 }
 
-bool _Block::hasSelectionStructure() {
+bool _BlockCls::hasSelectionStructure() {
     return mergeBlock != 0 && continueBlock == 0;
 }
 
-bool _Block::hasLoopStructure() {
+bool _BlockCls::hasLoopStructure() {
     return continueBlock != 0;
 }
 
-void _Block::write(_BlockContext ctx) {
+void _BlockCls::write(_BlockContext ctx) {
     for (_Instruction inst : instructions) {
         if (inst is _Store) {
-            _Variable v = function.variables[inst.pointer];
-            if (v != nullptr && inst.shouldDeclare && v.liftToBlock != 0) {
-                function.block(v.liftToBlock).loopInitializer = inst;
+            _Variable v = function->variables[inst->pointer];
+            if (v != nullptr && inst->shouldDeclare && v->liftToBlock != 0) {
+                function->block(v->liftToBlock)->loopInitializer = inst;
                 continue;
             }
         }
-        if (!inst.isResult) {
-            ctx.writeIndent();
-            inst.write(transpiler, ctx.out);
-            ctx.out.writeln(";");
+        if (!inst->isResult) {
+            ctx->writeIndent();
+            inst->write(transpiler, ctx->out);
+            ctx->out->writeln(";");
         } else         {
-            if (inst.refCount > 1) {
-            ctx.writeIndent();
-            String typeString = transpiler.resolveType(inst.type);
-            String nameString = transpiler.resolveName(inst.id);
-            ctx.out.write("$typeString $nameString = ");
-            inst.write(transpiler, ctx.out);
-            ctx.out.writeln(";");
+            if (inst->refCount > 1) {
+            ctx->writeIndent();
+            String typeString = transpiler->resolveType(inst->type);
+            String nameString = transpiler->resolveName(inst->id);
+            ctx->out->write("$typeString $nameString = ");
+            inst->write(transpiler, ctx->out);
+            ctx->out->writeln(";");
         }
 ;
         }    }
@@ -51,44 +51,44 @@ void _Block::write(_BlockContext ctx) {
     }
 ;
     }    if (mergeBlock != 0) {
-        function.block(mergeBlock).write(ctx);
+        function->block(mergeBlock)->write(ctx);
     } else     {
         if (branch != 0) {
-        if (branch == ctx.merge) {
+        if (branch == ctx->merge) {
             return;
         }
-        if (branch == ctx.continueBlock) {
-            if (ctx.merge != ctx.loopMerge) {
-                ctx.writeIndent();
-                ctx.out.writeln("continue;");
+        if (branch == ctx->continueBlock) {
+            if (ctx->merge != ctx->loopMerge) {
+                ctx->writeIndent();
+                ctx->out->writeln("continue;");
             }
             return;
         }
-        if (branch == ctx.loopMerge) {
-            ctx.writeIndent();
-            ctx.out.writeln("break;");
+        if (branch == ctx->loopMerge) {
+            ctx->writeIndent();
+            ctx->out->writeln("break;");
         }
-        function.block(branch).write(ctx);
+        function->block(branch)->write(ctx);
     }
 ;
     }}
 
-void _Block::_add(_Instruction i) {
-    instructions.add(i);
+void _BlockCls::_add(_Instruction i) {
+    instructions->add(i);
 }
 
-void _Block::_writeContinue(_BlockContext ctx) {
-    List<_CompoundAssignment> assignments = instructions.<_CompoundAssignment>whereType().toList();
-    if (assignments.isEmpty) {
+void _BlockCls::_writeContinue(_BlockContext ctx) {
+    List<_CompoundAssignment> assignments = instructions-><_CompoundAssignment>whereType()->toList();
+    if (assignments->isEmpty) {
         ;
     }
-    if (assignments.length > 1) {
+    if (assignments->length > 1) {
         ;
     }
-    assignments[0].write(transpiler, ctx.out);
+    assignments[0]->write(transpiler, ctx->out);
 }
 
-void _Block::_preprocess() {
+void _BlockCls::_preprocess() {
     if (scanned) {
         return;
     }
@@ -96,55 +96,55 @@ void _Block::_preprocess() {
     if (hasLoopStructure) {
         int conditionId = condition;
         if (condition == 0) {
-            _Block branchBlock = function.block(branch);
-            if (!branchBlock._isSimple() || branchBlock.condition == 0) {
+            _Block branchBlock = function->block(branch);
+            if (!branchBlock->_isSimple() || branchBlock->condition == 0) {
                 ;
             }
-            conditionId = branchBlock.condition;
+            conditionId = branchBlock->condition;
         }
-        List<_Variable> deps = function.variableDeps(conditionId);
-        if (deps.length != 1) {
+        List<_Variable> deps = function->variableDeps(conditionId);
+        if (deps->length != 1) {
             ;
         }
-        deps[0].liftToBlock = id;
+        deps[0]->liftToBlock = id;
     }
     if (branch != 0) {
-        function.block(branch)._preprocess();
+        function->block(branch)->_preprocess();
     }
     if (condition != 0) {
         if (truthyBlock != 0) {
-            function.block(truthyBlock)._preprocess();
+            function->block(truthyBlock)->_preprocess();
         }
         if (falseyBlock != 0) {
-            function.block(falseyBlock)._preprocess();
+            function->block(falseyBlock)->_preprocess();
         }
     }
     if (mergeBlock != 0) {
-        function.block(mergeBlock)._preprocess();
+        function->block(mergeBlock)->_preprocess();
     }
 }
 
-void _Block::_writeSelectionStructure(_BlockContext ctx) {
-    _BlockContext childCtx = ctx.child(mergeBlock);
-    ctx.writeIndent();
-    String conditionString = transpiler.resolveResult(condition);
-    ctx.out.writeln("if ($conditionString) {");
-    function.block(truthyBlock).write(childCtx);
+void _BlockCls::_writeSelectionStructure(_BlockContext ctx) {
+    _BlockContext childCtx = ctx->child(mergeBlock);
+    ctx->writeIndent();
+    String conditionString = transpiler->resolveResult(condition);
+    ctx->out->writeln("if ($conditionString) {");
+    function->block(truthyBlock)->write(childCtx);
     if (falseyBlock != 0 && falseyBlock != mergeBlock) {
-        ctx.writeIndent();
-        ctx.out.writeln("} else {");
-        function.block(falseyBlock).write(childCtx);
+        ctx->writeIndent();
+        ctx->out->writeln("} else {");
+        function->block(falseyBlock)->write(childCtx);
     }
-    ctx.writeIndent();
-    ctx.out.writeln("}");
+    ctx->writeIndent();
+    ctx->out->writeln("}");
 }
 
-void _Block::_writeLoopStructure(_BlockContext ctx) {
-    _BlockContext childCtx = ctx.child(mergeBlock, continueBlock, id, mergeBlock);
+void _BlockCls::_writeLoopStructure(_BlockContext ctx) {
+    _BlockContext childCtx = ctx->child(mergeBlock, continueBlock, id, mergeBlock);
     String conditionString;
     int loopBody = 0;
     if (condition != 0) {
-        conditionString = transpiler.resolveResult(condition);
+        conditionString = transpiler->resolveResult(condition);
         if (truthyBlock == mergeBlock) {
             conditionString = "!" + conditionString;
             loopBody = falseyBlock;
@@ -154,242 +154,242 @@ void _Block::_writeLoopStructure(_BlockContext ctx) {
         }
 ;
         }    } else {
-        _Block branchBlock = function.block(branch);
-        if (!branchBlock._isSimple() || branchBlock.condition == 0) {
+        _Block branchBlock = function->block(branch);
+        if (!branchBlock->_isSimple() || branchBlock->condition == 0) {
             ;
         }
-        conditionString = transpiler.resolveResult(branchBlock.condition);
-        if (branchBlock.truthyBlock == mergeBlock) {
+        conditionString = transpiler->resolveResult(branchBlock->condition);
+        if (branchBlock->truthyBlock == mergeBlock) {
             conditionString = "!" + conditionString;
-            loopBody = branchBlock.falseyBlock;
+            loopBody = branchBlock->falseyBlock;
         } else         {
-            if (branchBlock.falseyBlock == mergeBlock) {
-            loopBody = branchBlock.truthyBlock;
+            if (branchBlock->falseyBlock == mergeBlock) {
+            loopBody = branchBlock->truthyBlock;
         }
 ;
         }    }
     if (loopBody == 0) {
         ;
     }
-    ctx.writeIndent();
-    ctx.out.write("for(");
-    loopInitializer!.write(transpiler, ctx.out);
-    ctx.out.write("; ");
-    ctx.out.write(conditionString);
-    ctx.out.write("; ");
-    function.block(continueBlock)._writeContinue(ctx);
-    ctx.out.writeln(") {");
-    function.block(loopBody).write(childCtx);
-    ctx.writeIndent();
-    ctx.out.writeln("}");
+    ctx->writeIndent();
+    ctx->out->write("for(");
+    loopInitializer!->write(transpiler, ctx->out);
+    ctx->out->write("; ");
+    ctx->out->write(conditionString);
+    ctx->out->write("; ");
+    function->block(continueBlock)->_writeContinue(ctx);
+    ctx->out->writeln(") {");
+    function->block(loopBody)->write(childCtx);
+    ctx->writeIndent();
+    ctx->out->writeln("}");
 }
 
-bool _Block::_isSimple() {
+bool _BlockCls::_isSimple() {
     int statements = 0;
     for (_Instruction inst : instructions) {
-        if (!inst.isResult) {
+        if (!inst->isResult) {
             return false;
         }
-        if (inst.refCount > 1) {
+        if (inst->refCount > 1) {
             statements++;
         }
     }
     return statements == 0;
 }
 
-int _Instruction::type() {
+int _InstructionCls::type() {
     return 0;
 }
 
-int _Instruction::id() {
+int _InstructionCls::id() {
     return 0;
 }
 
-bool _Instruction::isResult() {
+bool _InstructionCls::isResult() {
     return id != 0;
 }
 
-List<int> _Instruction::deps() {
-    return ;
+List<int> _InstructionCls::deps() {
+    return makeList();
 }
 
-List<int> _FunctionCall::deps() {
+List<int> _FunctionCallCls::deps() {
     return args;
 }
 
-void _FunctionCall::write(StringBuffer out, _Transpiler t) {
-    out.write("$function(");
-    for (;  < args.length; i++) {
-        out.write(t.resolveResult(args[i]));
-        if ( < args.length - 1) {
-            out.write(", ");
+void _FunctionCallCls::write(StringBuffer out, _Transpiler t) {
+    out->write("$function(");
+    for (;  < args->length; i++) {
+        out->write(t->resolveResult(args[i]));
+        if ( < args->length - 1) {
+            out->write(", ");
         }
     }
-    out.write(")");
+    out->write(")");
 }
 
-void _Return::write(StringBuffer out, _Transpiler t) {
-    out.write("return");
+void _ReturnCls::write(StringBuffer out, _Transpiler t) {
+    out->write("return");
 }
 
-List<int> _Select::deps() {
-    return ;
+List<int> _SelectCls::deps() {
+    return makeList(ArrayItem, ArrayItem, ArrayItem);
 }
 
-void _Select::write(StringBuffer out, _Transpiler t) {
-    String aName = t.resolveResult(a);
-    String bName = t.resolveResult(b);
-    String conditionName = t.resolveResult(condition);
-    out.write("$conditionName ? $aName : $bName");
+void _SelectCls::write(StringBuffer out, _Transpiler t) {
+    String aName = t->resolveResult(a);
+    String bName = t->resolveResult(b);
+    String conditionName = t->resolveResult(condition);
+    out->write("$conditionName ? $aName : $bName");
 }
 
-void _CompoundAssignment::write(StringBuffer out, _Transpiler t) {
-    String pointerName = t.resolveResult(pointer);
-    String objectName = t.resolveResult(object);
+void _CompoundAssignmentCls::write(StringBuffer out, _Transpiler t) {
+    String pointerName = t->resolveResult(pointer);
+    String objectName = t->resolveResult(object);
     String operatorString = _operatorString(op);
-    out.write("$pointerName $operatorString= $objectName");
+    out->write("$pointerName $operatorString= $objectName");
 }
 
-List<int> _Store::deps() {
-    return ;
+List<int> _StoreCls::deps() {
+    return makeList(ArrayItem, ArrayItem);
 }
 
-void _Store::write(StringBuffer out, _Transpiler t) {
-    String pointerName = t.resolveResult(pointer);
+void _StoreCls::write(StringBuffer out, _Transpiler t) {
+    String pointerName = t->resolveResult(pointer);
     if (selfModifyObject > 0) {
-        String objectName = t.resolveResult(selfModifyObject);
-        out.write("$pointerName $selfModifyOperator $objectName");
+        String objectName = t->resolveResult(selfModifyObject);
+        out->write("$pointerName $selfModifyOperator $objectName");
     } else {
-        String objectName = t.resolveResult(object);
+        String objectName = t->resolveResult(object);
         if (shouldDeclare) {
-            String typeString = t.resolveType(declarationType);
-            out.write("$typeString ");
+            String typeString = t->resolveType(declarationType);
+            out->write("$typeString ");
         }
-        out.write("$pointerName = $objectName");
+        out->write("$pointerName = $objectName");
     }
 }
 
-List<int> _AccessChain::deps() {
-    return ;
+List<int> _AccessChainCls::deps() {
+    return list1;
 }
 
-void _AccessChain::write(StringBuffer out, _Transpiler t) {
-    out.write(t.resolveResult(base));
-    for (;  < indices.length; i++) {
-        String indexString = t.resolveResult(indices[i]);
-        out.write("[$indexString]");
+void _AccessChainCls::write(StringBuffer out, _Transpiler t) {
+    List<int> list1 = make<ListCls<>>();list1.add(ArrayItem);for (auto _x1 : indices) {{    list1.add(_x1);}out->write(t->resolveResult(base));
+    for (;  < indices->length; i++) {
+        String indexString = t->resolveResult(indices[i]);
+        out->write("[$indexString]");
     }
 }
 
-List<int> _VectorShuffle::deps() {
-    return ;
+List<int> _VectorShuffleCls::deps() {
+    return makeList(ArrayItem);
 }
 
-void _VectorShuffle::write(StringBuffer out, _Transpiler t) {
-    String typeString = t.resolveType(type);
-    String vectorString = t.resolveName(vector);
-    out.write("$typeString(");
-    for (;  < indices.length; i++) {
+void _VectorShuffleCls::write(StringBuffer out, _Transpiler t) {
+    String typeString = t->resolveType(type);
+    String vectorString = t->resolveName(vector);
+    out->write("$typeString(");
+    for (;  < indices->length; i++) {
         int index = indices[i];
-        out.write("$vectorString[$index]");
-        if ( < indices.length - 1) {
-            out.write(", ");
+        out->write("$vectorString[$index]");
+        if ( < indices->length - 1) {
+            out->write(", ");
         }
     }
-    out.write(")");
+    out->write(")");
 }
 
-List<int> _CompositeConstruct::deps() {
+List<int> _CompositeConstructCls::deps() {
     return components;
 }
 
-void _CompositeConstruct::write(StringBuffer out, _Transpiler t) {
-    String typeString = t.resolveType(type);
-    out.write("$typeString(");
-    for (;  < components.length; i++) {
-        out.write(t.resolveResult(components[i]));
-        if ( < components.length - 1) {
-            out.write(", ");
+void _CompositeConstructCls::write(StringBuffer out, _Transpiler t) {
+    String typeString = t->resolveType(type);
+    out->write("$typeString(");
+    for (;  < components->length; i++) {
+        out->write(t->resolveResult(components[i]));
+        if ( < components->length - 1) {
+            out->write(", ");
         }
     }
-    out.write(")");
+    out->write(")");
 }
 
-List<int> _CompositeExtract::deps() {
-    return ;
+List<int> _CompositeExtractCls::deps() {
+    return makeList(ArrayItem);
 }
 
-void _CompositeExtract::write(StringBuffer out, _Transpiler t) {
-    out.write(t.resolveResult(src));
-    for (;  < indices.length; i++) {
-        out.write("[${indices[i]}]");
+void _CompositeExtractCls::write(StringBuffer out, _Transpiler t) {
+    out->write(t->resolveResult(src));
+    for (;  < indices->length; i++) {
+        out->write("[${indices[i]}]");
     }
 }
 
-List<int> _ImageSampleImplicitLod::deps() {
-    return ;
+List<int> _ImageSampleImplicitLodCls::deps() {
+    return makeList(ArrayItem);
 }
 
-void _ImageSampleImplicitLod::write(StringBuffer out, _Transpiler t) {
-    String sampledImageString = t.resolveName(sampledImage);
-    String coordinateString = t.resolveResult(coordinate);
-    if (t.target == TargetLanguage.sksl) {
-        out.write("$sampledImageString.eval(${sampledImageString}_size * $coordinateString)");
+void _ImageSampleImplicitLodCls::write(StringBuffer out, _Transpiler t) {
+    String sampledImageString = t->resolveName(sampledImage);
+    String coordinateString = t->resolveResult(coordinate);
+    if (t->target == TargetLanguageCls::sksl) {
+        out->write("$sampledImageString.eval(${sampledImageString}_size * $coordinateString)");
     } else {
-        out.write("texture($sampledImageString, $coordinateString)");
+        out->write("texture($sampledImageString, $coordinateString)");
     }
 }
 
-List<int> _UnaryOperator::deps() {
-    return ;
+List<int> _UnaryOperatorCls::deps() {
+    return makeList(ArrayItem);
 }
 
-void _UnaryOperator::write(StringBuffer out, _Transpiler t) {
-    out.write(_operatorString(op));
-    out.write(t.resolveResult(operand));
+void _UnaryOperatorCls::write(StringBuffer out, _Transpiler t) {
+    out->write(_operatorString(op));
+    out->write(t->resolveResult(operand));
 }
 
-List<int> _ReturnValue::deps() {
-    return ;
+List<int> _ReturnValueCls::deps() {
+    return makeList(ArrayItem);
 }
 
-void _ReturnValue::write(StringBuffer out, _Transpiler t) {
-    String valueString = t.resolveResult(value);
-    out.write("return $valueString");
+void _ReturnValueCls::write(StringBuffer out, _Transpiler t) {
+    String valueString = t->resolveResult(value);
+    out->write("return $valueString");
 }
 
-List<int> _BinaryOperator::deps() {
-    return ;
+List<int> _BinaryOperatorCls::deps() {
+    return makeList(ArrayItem, ArrayItem);
 }
 
-void _BinaryOperator::write(StringBuffer out, _Transpiler t) {
-    String aStr = t.resolveResult(a);
-    String bStr = t.resolveResult(b);
+void _BinaryOperatorCls::write(StringBuffer out, _Transpiler t) {
+    String aStr = t->resolveResult(a);
+    String bStr = t->resolveResult(b);
     String opString = _operatorString(op);
-    out.write("$aStr $opString $bStr");
+    out->write("$aStr $opString $bStr");
 }
 
-List<int> _BuiltinFunction::deps() {
+List<int> _BuiltinFunctionCls::deps() {
     return args;
 }
 
-void _BuiltinFunction::write(StringBuffer out, _Transpiler t) {
-    out.write("$function(");
-    for (;  < args.length; i++) {
-        out.write(t.resolveResult(args[i]));
-        if ( < args.length - 1) {
-            out.write(", ");
+void _BuiltinFunctionCls::write(StringBuffer out, _Transpiler t) {
+    out->write("$function(");
+    for (;  < args->length; i++) {
+        out->write(t->resolveResult(args[i]));
+        if ( < args->length - 1) {
+            out->write(", ");
         }
     }
-    out.write(")");
+    out->write(")");
 }
 
-List<int> _TypeCast::deps() {
-    return ;
+List<int> _TypeCastCls::deps() {
+    return makeList(ArrayItem);
 }
 
-void _TypeCast::write(StringBuffer out, _Transpiler t) {
-    String typeString = t.resolveType(type);
-    String valueString = t.resolveResult(value);
-    out.write("$typeString($valueString)");
+void _TypeCastCls::write(StringBuffer out, _Transpiler t) {
+    String typeString = t->resolveType(type);
+    String valueString = t->resolveResult(value);
+    out->write("$typeString($valueString)");
 }

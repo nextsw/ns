@@ -1,25 +1,24 @@
-#ifndef HASH_SET_H
-#define HASH_SET_H
-#include <memory>
+#ifndef DART_COLLECTION_HASH_SET
+#define DART_COLLECTION_HASH_SET
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
 
 
-
-
-class HashSet<E> {
+template<typename E> class HashSetCls : public ObjectCls {
 public:
 
-    external  HashSet(FunctionType equals, FunctionType hashCode, FunctionType isValidKey);
+    extern  HashSetCls(bool equals(E , E ) , int hashCode(E ) , bool isValidKey(dynamic ) );
+    extern void  identity();
+    virtual void  from(Iterable<dynamic> elements);
 
-    external void  identity();
+    virtual void  of(Iterable<E> elements);
 
-    void  from(Iterable<dynamic> elements);
-
-    void  of(Iterable<E> elements);
-
-    Iterator<E> iterator();
-
+    virtual Iterator<E> iterator();
 private:
 
 };
+template<typename E> using HashSet = std::shared_ptr<HashSetCls<E>>;
+
 
 #endif

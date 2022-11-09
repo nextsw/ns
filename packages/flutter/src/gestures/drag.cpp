@@ -1,9 +1,9 @@
 #include "drag.hpp"
-void Drag::update(DragUpdateDetails details) {
+void DragCls::update(DragUpdateDetails details) {
 }
 
-void Drag::end(DragEndDetails details) {
+void DragCls::end(DragEndDetails details) {
 }
 
-void Drag::cancel() {
+void DragCls::cancel() {
 }

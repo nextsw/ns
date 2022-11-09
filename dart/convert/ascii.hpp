@@ -1,67 +1,69 @@
-#ifndef ASCII_H
-#define ASCII_H
-#include <memory>
+#ifndef DART_CONVERT_ASCII
+#define DART_CONVERT_ASCII
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
+
+AsciiCodec ascii;
+
+int _asciiMask;
 
 
-
-const AsciiCodec ascii;
-
-const int _asciiMask;
-
-
-class AsciiCodec : Encoding {
+class AsciiCodecCls : public EncodingCls {
 public:
 
-     AsciiCodec(bool allowInvalid);
+     AsciiCodecCls(bool allowInvalid);
 
-    String name();
+    virtual String name();
 
-    Uint8List encode(String source);
+    virtual Uint8List encode(String source);
 
-    String decode(bool allowInvalid, List<int> bytes);
+    virtual String decode(bool allowInvalid, List<int> bytes);
 
-    AsciiEncoder encoder();
+    virtual AsciiEncoder encoder();
 
-    AsciiDecoder decoder();
+    virtual AsciiDecoder decoder();
 
 private:
     bool _allowInvalid;
 
 
 };
+using AsciiCodec = std::shared_ptr<AsciiCodecCls>;
 
-class _UnicodeSubsetEncoder : Converter<String, List<int>> {
+class _UnicodeSubsetEncoderCls : public ConverterCls<String, List<int>> {
 public:
 
-    Uint8List convert(int end, int start, String string);
+    virtual Uint8List convert(int end, int start, String stringValue);
 
-    StringConversionSink startChunkedConversion(Sink<List<int>> sink);
+    virtual StringConversionSink startChunkedConversion(Sink<List<int>> sink);
 
-    Stream<List<int>> bind(Stream<String> stream);
+    virtual Stream<List<int>> bind(Stream<String> stream);
 
 private:
     int _subsetMask;
 
 
-     _UnicodeSubsetEncoder(int _subsetMask);
-
+     _UnicodeSubsetEncoderCls(int _subsetMask);
 };
+using _UnicodeSubsetEncoder = std::shared_ptr<_UnicodeSubsetEncoderCls>;
 
-class AsciiEncoder : _UnicodeSubsetEncoder {
+class AsciiEncoderCls : public _UnicodeSubsetEncoderCls {
 public:
 
-     AsciiEncoder();
+     AsciiEncoderCls();
 
 private:
 
 };
+using AsciiEncoder = std::shared_ptr<AsciiEncoderCls>;
 
-class _UnicodeSubsetEncoderSink : StringConversionSinkBase {
+class _UnicodeSubsetEncoderSinkCls : public StringConversionSinkBaseCls {
 public:
 
-    void close();
+    virtual void close();
 
-    void addSlice(int end, bool isLast, String source, int start);
+    virtual void addSlice(int end, bool isLast, String source, int start);
 
 private:
     ByteConversionSink _sink;
@@ -69,18 +71,17 @@ private:
     int _subsetMask;
 
 
-     _UnicodeSubsetEncoderSink(ByteConversionSink _sink, int _subsetMask);
-
+     _UnicodeSubsetEncoderSinkCls(ByteConversionSink _sink, int _subsetMask);
 };
+using _UnicodeSubsetEncoderSink = std::shared_ptr<_UnicodeSubsetEncoderSinkCls>;
 
-class _UnicodeSubsetDecoder : Converter<List<int>, String> {
+class _UnicodeSubsetDecoderCls : public ConverterCls<List<int>, String> {
 public:
 
-    String convert(List<int> bytes, int end, int start);
+    virtual String convert(List<int> bytes, int end, int start);
 
-    ByteConversionSink startChunkedConversion(Sink<String> sink);
-
-    Stream<String> bind(Stream<List<int>> stream);
+    virtual ByteConversionSink startChunkedConversion(Sink<String> sink) override;
+    virtual Stream<String> bind(Stream<List<int>> stream);
 
 private:
     bool _allowInvalid;
@@ -88,55 +89,57 @@ private:
     int _subsetMask;
 
 
-     _UnicodeSubsetDecoder(bool _allowInvalid, int _subsetMask);
-
-    String _convertInvalid(List<int> bytes, int end, int start);
+     _UnicodeSubsetDecoderCls(bool _allowInvalid, int _subsetMask);
+    virtual String _convertInvalid(List<int> bytes, int end, int start);
 
 };
+using _UnicodeSubsetDecoder = std::shared_ptr<_UnicodeSubsetDecoderCls>;
 
-class AsciiDecoder : _UnicodeSubsetDecoder {
+class AsciiDecoderCls : public _UnicodeSubsetDecoderCls {
 public:
 
-     AsciiDecoder(bool allowInvalid);
+     AsciiDecoderCls(bool allowInvalid);
 
-    ByteConversionSink startChunkedConversion(Sink<String> sink);
+    virtual ByteConversionSink startChunkedConversion(Sink<String> sink);
 
 private:
 
 };
+using AsciiDecoder = std::shared_ptr<AsciiDecoderCls>;
 
-class _ErrorHandlingAsciiDecoderSink : ByteConversionSinkBase {
+class _ErrorHandlingAsciiDecoderSinkCls : public ByteConversionSinkBaseCls {
 public:
 
-    void close();
+    virtual void close();
 
-    void add(List<int> source);
+    virtual void add(List<int> source);
 
-    void addSlice(int end, bool isLast, List<int> source, int start);
+    virtual void addSlice(int end, bool isLast, List<int> source, int start);
 
 private:
     ByteConversionSink _utf8Sink;
 
 
-     _ErrorHandlingAsciiDecoderSink(ByteConversionSink _utf8Sink);
-
+     _ErrorHandlingAsciiDecoderSinkCls(ByteConversionSink _utf8Sink);
 };
+using _ErrorHandlingAsciiDecoderSink = std::shared_ptr<_ErrorHandlingAsciiDecoderSinkCls>;
 
-class _SimpleAsciiDecoderSink : ByteConversionSinkBase {
+class _SimpleAsciiDecoderSinkCls : public ByteConversionSinkBaseCls {
 public:
 
-    void close();
+    virtual void close();
 
-    void add(List<int> source);
+    virtual void add(List<int> source);
 
-    void addSlice(int end, bool isLast, List<int> source, int start);
+    virtual void addSlice(int end, bool isLast, List<int> source, int start);
 
 private:
     Sink _sink;
 
 
-     _SimpleAsciiDecoderSink(Sink _sink);
-
+     _SimpleAsciiDecoderSinkCls(Sink _sink);
 };
+using _SimpleAsciiDecoderSink = std::shared_ptr<_SimpleAsciiDecoderSinkCls>;
+
 
 #endif

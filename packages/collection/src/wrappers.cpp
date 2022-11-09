@@ -1,638 +1,645 @@
 #include "wrappers.hpp"
-bool _DelegatingIterableBase::any(FunctionType test) {
-    return _base.any(test);
+template<typename E> bool _DelegatingIterableBaseCls<E>::any(bool test(E ) ) {
+    return _base->any(test);
 }
 
-Iterable<T> _DelegatingIterableBase::cast<T>() {
-    return _base.<T>cast();
+template<typename E> Iterable<T> _DelegatingIterableBaseCls<E>::casttemplate<typename T> () {
+    return _base-><T>cast();
 }
 
-bool _DelegatingIterableBase::contains(Object element) {
-    return _base.contains(element);
+template<typename E> bool _DelegatingIterableBaseCls<E>::contains(Object element) {
+    return _base->contains(element);
 }
 
-E _DelegatingIterableBase::elementAt(int index) {
-    return _base.elementAt(index);
+template<typename E> E _DelegatingIterableBaseCls<E>::elementAt(int index) {
+    return _base->elementAt(index);
 }
 
-bool _DelegatingIterableBase::every(FunctionType test) {
-    return _base.every(test);
+template<typename E> bool _DelegatingIterableBaseCls<E>::every(bool test(E ) ) {
+    return _base->every(test);
 }
 
-Iterable<T> _DelegatingIterableBase::expand<T>(FunctionType f) {
-    return _base.expand(f);
+template<typename E> Iterable<T> _DelegatingIterableBaseCls<E>::expandtemplate<typename T> (Iterable<T> f(E ) ) {
+    return _base->expand(f);
 }
 
-E _DelegatingIterableBase::first() {
-    return _base.first;
+template<typename E> E _DelegatingIterableBaseCls<E>::first() {
+    return _base->first;
 }
 
-E _DelegatingIterableBase::firstWhere(FunctionType orElse, FunctionType test) {
-    return _base.firstWhere(testorElse);
+template<typename E> E _DelegatingIterableBaseCls<E>::firstWhere(E orElse() , bool test(E ) ) {
+    return _base->firstWhere(testorElse);
 }
 
-T _DelegatingIterableBase::fold<T>(FunctionType combine, T initialValue) {
-    return _base.fold(initialValue, combine);
+template<typename E> T _DelegatingIterableBaseCls<E>::foldtemplate<typename T> (T combine(E element, T previousValue) , T initialValue) {
+    return _base->fold(initialValue, combine);
 }
 
-Iterable<E> _DelegatingIterableBase::followedBy(Iterable<E> other) {
-    return _base.followedBy(other);
+template<typename E> Iterable<E> _DelegatingIterableBaseCls<E>::followedBy(Iterable<E> other) {
+    return _base->followedBy(other);
 }
 
-void _DelegatingIterableBase::forEach(FunctionType f) {
-    return _base.forEach(f);
+template<typename E> void _DelegatingIterableBaseCls<E>::forEach(void f(E ) ) {
+    return _base->forEach(f);
 }
 
-bool _DelegatingIterableBase::isEmpty() {
-    return _base.isEmpty;
+template<typename E> bool _DelegatingIterableBaseCls<E>::isEmpty() {
+    return _base->isEmpty;
 }
 
-bool _DelegatingIterableBase::isNotEmpty() {
-    return _base.isNotEmpty;
+template<typename E> bool _DelegatingIterableBaseCls<E>::isNotEmpty() {
+    return _base->isNotEmpty;
 }
 
-Iterator<E> _DelegatingIterableBase::iterator() {
-    return _base.iterator;
+template<typename E> Iterator<E> _DelegatingIterableBaseCls<E>::iterator() {
+    return _base->iterator;
 }
 
-String _DelegatingIterableBase::join(String separator) {
-    return _base.join(separator);
+template<typename E> String _DelegatingIterableBaseCls<E>::join(String separator) {
+    return _base->join(separator);
 }
 
-E _DelegatingIterableBase::last() {
-    return _base.last;
+template<typename E> E _DelegatingIterableBaseCls<E>::last() {
+    return _base->last;
 }
 
-E _DelegatingIterableBase::lastWhere(FunctionType orElse, FunctionType test) {
-    return _base.lastWhere(testorElse);
+template<typename E> E _DelegatingIterableBaseCls<E>::lastWhere(E orElse() , bool test(E ) ) {
+    return _base->lastWhere(testorElse);
 }
 
-int _DelegatingIterableBase::length() {
-    return _base.length;
+template<typename E> int _DelegatingIterableBaseCls<E>::length() {
+    return _base->length;
 }
 
-Iterable<T> _DelegatingIterableBase::map<T>(FunctionType f) {
-    return _base.map(f);
+template<typename E> Iterable<T> _DelegatingIterableBaseCls<E>::maptemplate<typename T> (T f(E ) ) {
+    return _base->map(f);
 }
 
-E _DelegatingIterableBase::reduce(FunctionType combine) {
-    return _base.reduce(combine);
+template<typename E> E _DelegatingIterableBaseCls<E>::reduce(E combine(E element, E value) ) {
+    return _base->reduce(combine);
 }
 
-Iterable<T> _DelegatingIterableBase::retype<T>() {
+template<typename E> Iterable<T> _DelegatingIterableBaseCls<E>::retypetemplate<typename T> () {
     return <T>cast();
 }
 
-E _DelegatingIterableBase::single() {
-    return _base.single;
+template<typename E> E _DelegatingIterableBaseCls<E>::single() {
+    return _base->single;
 }
 
-E _DelegatingIterableBase::singleWhere(FunctionType orElse, FunctionType test) {
-    return _base.singleWhere(testorElse);
+template<typename E> E _DelegatingIterableBaseCls<E>::singleWhere(E orElse() , bool test(E ) ) {
+    return _base->singleWhere(testorElse);
 }
 
-Iterable<E> _DelegatingIterableBase::skip(int n) {
-    return _base.skip(n);
+template<typename E> Iterable<E> _DelegatingIterableBaseCls<E>::skip(int n) {
+    return _base->skip(n);
 }
 
-Iterable<E> _DelegatingIterableBase::skipWhile(FunctionType test) {
-    return _base.skipWhile(test);
+template<typename E> Iterable<E> _DelegatingIterableBaseCls<E>::skipWhile(bool test(E ) ) {
+    return _base->skipWhile(test);
 }
 
-Iterable<E> _DelegatingIterableBase::take(int n) {
-    return _base.take(n);
+template<typename E> Iterable<E> _DelegatingIterableBaseCls<E>::take(int n) {
+    return _base->take(n);
 }
 
-Iterable<E> _DelegatingIterableBase::takeWhile(FunctionType test) {
-    return _base.takeWhile(test);
+template<typename E> Iterable<E> _DelegatingIterableBaseCls<E>::takeWhile(bool test(E ) ) {
+    return _base->takeWhile(test);
 }
 
-List<E> _DelegatingIterableBase::toList(bool growable) {
-    return _base.toList(growable);
+template<typename E> List<E> _DelegatingIterableBaseCls<E>::toList(bool growable) {
+    return _base->toList(growable);
 }
 
-Set<E> _DelegatingIterableBase::toSet() {
-    return _base.toSet();
+template<typename E> Set<E> _DelegatingIterableBaseCls<E>::toSet() {
+    return _base->toSet();
 }
 
-Iterable<E> _DelegatingIterableBase::where(FunctionType test) {
-    return _base.where(test);
+template<typename E> Iterable<E> _DelegatingIterableBaseCls<E>::where(bool test(E ) ) {
+    return _base->where(test);
 }
 
-Iterable<T> _DelegatingIterableBase::whereType<T>() {
-    return _base.<T>whereType();
+template<typename E> Iterable<T> _DelegatingIterableBaseCls<E>::whereTypetemplate<typename T> () {
+    return _base-><T>whereType();
 }
 
-String _DelegatingIterableBase::toString() {
-    return _base.toString();
+template<typename E> String _DelegatingIterableBaseCls<E>::toString() {
+    return _base->toString();
 }
 
-DelegatingIterable::DelegatingIterable(Iterable<E> base) {
+template<typename E> DelegatingIterableCls<E>::DelegatingIterableCls(Iterable<E> base) {
     {
         _base = base;
     }
 }
 
-Iterable<E> DelegatingIterable::typed<E>(Iterable base) {
-    return base.<E>cast();
+template<typename E> Iterable<E> DelegatingIterableCls<E>::typedtemplate<typename E> (Iterable base) {
+    return base-><E>cast();
 }
 
-DelegatingList::DelegatingList(List<E> base) {
+template<typename E> DelegatingListCls<E>::DelegatingListCls(List<E> base) {
     {
         _base = base;
     }
 }
 
-List<E> DelegatingList::typed<E>(List base) {
-    return base.<E>cast();
+template<typename E> List<E> DelegatingListCls<E>::typedtemplate<typename E> (List base) {
+    return base-><E>cast();
 }
 
-E DelegatingList::[](int index) {
+template<typename E> E DelegatingListCls<E>::[](int index) {
     return _base[index];
 }
 
-void DelegatingList::[]=(int index, E value) {
+template<typename E> void DelegatingListCls<E>::[]=(int index, E value) {
     _base[index] = value;
 }
 
-List<E> DelegatingList::+(List<E> other) {
+template<typename E> List<E> DelegatingListCls<E>::+(List<E> other) {
     return _base + other;
 }
 
-void DelegatingList::add(E value) {
-    _base.add(value);
+template<typename E> void DelegatingListCls<E>::add(E value) {
+    _base->add(value);
 }
 
-void DelegatingList::addAll(Iterable<E> iterable) {
-    _base.addAll(iterable);
+template<typename E> void DelegatingListCls<E>::addAll(Iterable<E> iterable) {
+    _base->addAll(iterable);
 }
 
-Map<int, E> DelegatingList::asMap() {
-    return _base.asMap();
+template<typename E> Map<int, E> DelegatingListCls<E>::asMap() {
+    return _base->asMap();
 }
 
-List<T> DelegatingList::cast<T>() {
-    return _base.<T>cast();
+template<typename E> List<T> DelegatingListCls<E>::casttemplate<typename T> () {
+    return _base-><T>cast();
 }
 
-void DelegatingList::clear() {
-    _base.clear();
+template<typename E> void DelegatingListCls<E>::clear() {
+    _base->clear();
 }
 
-void DelegatingList::fillRange(int end, E fillValue, int start) {
-    _base.fillRange(start, end, fillValue);
+template<typename E> void DelegatingListCls<E>::fillRange(int end, E fillValue, int start) {
+    _base->fillRange(start, end, fillValue);
 }
 
-void DelegatingList::first(E value) {
+template<typename E> void DelegatingListCls<E>::first(E value) {
     if (isEmpty)     {
         ;
     }
     this[0] = value;
 }
 
-Iterable<E> DelegatingList::getRange(int end, int start) {
-    return _base.getRange(start, end);
+template<typename E> Iterable<E> DelegatingListCls<E>::getRange(int end, int start) {
+    return _base->getRange(start, end);
 }
 
-int DelegatingList::indexOf(E element, int start) {
-    return _base.indexOf(element, start);
+template<typename E> int DelegatingListCls<E>::indexOf(E element, int start) {
+    return _base->indexOf(element, start);
 }
 
-int DelegatingList::indexWhere(int start, FunctionType test) {
-    return _base.indexWhere(test, start);
+template<typename E> int DelegatingListCls<E>::indexWhere(int start, bool test(E ) ) {
+    return _base->indexWhere(test, start);
 }
 
-void DelegatingList::insert(E element, int index) {
-    _base.insert(index, element);
+template<typename E> void DelegatingListCls<E>::insert(E element, int index) {
+    _base->insert(index, element);
 }
 
-void DelegatingList::insertAll(int index, Iterable<E> iterable) {
-    _base.insertAll(index, iterable);
+template<typename E> void DelegatingListCls<E>::insertAll(int index, Iterable<E> iterable) {
+    _base->insertAll(index, iterable);
 }
 
-void DelegatingList::last(E value) {
+template<typename E> void DelegatingListCls<E>::last(E value) {
     if (isEmpty)     {
         ;
     }
     this[length - 1] = value;
 }
 
-int DelegatingList::lastIndexOf(E element, int start) {
-    return _base.lastIndexOf(element, start);
+template<typename E> int DelegatingListCls<E>::lastIndexOf(E element, int start) {
+    return _base->lastIndexOf(element, start);
 }
 
-int DelegatingList::lastIndexWhere(int start, FunctionType test) {
-    return _base.lastIndexWhere(test, start);
+template<typename E> int DelegatingListCls<E>::lastIndexWhere(int start, bool test(E ) ) {
+    return _base->lastIndexWhere(test, start);
 }
 
-void DelegatingList::length(int newLength) {
-    _base.length = newLength;
+template<typename E> void DelegatingListCls<E>::length(int newLength) {
+    _base->length = newLength;
 }
 
-bool DelegatingList::remove(Object value) {
-    return _base.remove(value);
+template<typename E> bool DelegatingListCls<E>::remove(Object value) {
+    return _base->remove(value);
 }
 
-E DelegatingList::removeAt(int index) {
-    return _base.removeAt(index);
+template<typename E> E DelegatingListCls<E>::removeAt(int index) {
+    return _base->removeAt(index);
 }
 
-E DelegatingList::removeLast() {
-    return _base.removeLast();
+template<typename E> E DelegatingListCls<E>::removeLast() {
+    return _base->removeLast();
 }
 
-void DelegatingList::removeRange(int end, int start) {
-    _base.removeRange(start, end);
+template<typename E> void DelegatingListCls<E>::removeRange(int end, int start) {
+    _base->removeRange(start, end);
 }
 
-void DelegatingList::removeWhere(FunctionType test) {
-    _base.removeWhere(test);
+template<typename E> void DelegatingListCls<E>::removeWhere(bool test(E ) ) {
+    _base->removeWhere(test);
 }
 
-void DelegatingList::replaceRange(int end, Iterable<E> iterable, int start) {
-    _base.replaceRange(start, end, iterable);
+template<typename E> void DelegatingListCls<E>::replaceRange(int end, Iterable<E> iterable, int start) {
+    _base->replaceRange(start, end, iterable);
 }
 
-void DelegatingList::retainWhere(FunctionType test) {
-    _base.retainWhere(test);
+template<typename E> void DelegatingListCls<E>::retainWhere(bool test(E ) ) {
+    _base->retainWhere(test);
 }
 
-List<T> DelegatingList::retype<T>() {
+template<typename E> List<T> DelegatingListCls<E>::retypetemplate<typename T> () {
     return <T>cast();
 }
 
-Iterable<E> DelegatingList::reversed() {
-    return _base.reversed;
+template<typename E> Iterable<E> DelegatingListCls<E>::reversed() {
+    return _base->reversed;
 }
 
-void DelegatingList::setAll(int index, Iterable<E> iterable) {
-    _base.setAll(index, iterable);
+template<typename E> void DelegatingListCls<E>::setAll(int index, Iterable<E> iterable) {
+    _base->setAll(index, iterable);
 }
 
-void DelegatingList::setRange(int end, Iterable<E> iterable, int skipCount, int start) {
-    _base.setRange(start, end, iterable, skipCount);
+template<typename E> void DelegatingListCls<E>::setRange(int end, Iterable<E> iterable, int skipCount, int start) {
+    _base->setRange(start, end, iterable, skipCount);
 }
 
-void DelegatingList::shuffle(Random random) {
-    _base.shuffle(random);
+template<typename E> void DelegatingListCls<E>::shuffle(Random random) {
+    _base->shuffle(random);
 }
 
-void DelegatingList::sort(FunctionType compare) {
-    _base.sort(compare);
+template<typename E> void DelegatingListCls<E>::sort(int compare(E , E ) ) {
+    _base->sort(compare);
 }
 
-List<E> DelegatingList::sublist(int end, int start) {
-    return _base.sublist(start, end);
+template<typename E> List<E> DelegatingListCls<E>::sublist(int end, int start) {
+    return _base->sublist(start, end);
 }
 
-DelegatingSet::DelegatingSet(Set<E> base) {
+template<typename E> DelegatingSetCls<E>::DelegatingSetCls(Set<E> base) {
     {
         _base = base;
     }
 }
 
-Set<E> DelegatingSet::typed<E>(Set base) {
-    return base.<E>cast();
+template<typename E> Set<E> DelegatingSetCls<E>::typedtemplate<typename E> (Set base) {
+    return base-><E>cast();
 }
 
-bool DelegatingSet::add(E value) {
-    return _base.add(value);
+template<typename E> bool DelegatingSetCls<E>::add(E value) {
+    return _base->add(value);
 }
 
-void DelegatingSet::addAll(Iterable<E> elements) {
-    _base.addAll(elements);
+template<typename E> void DelegatingSetCls<E>::addAll(Iterable<E> elements) {
+    _base->addAll(elements);
 }
 
-Set<T> DelegatingSet::cast<T>() {
-    return _base.<T>cast();
+template<typename E> Set<T> DelegatingSetCls<E>::casttemplate<typename T> () {
+    return _base-><T>cast();
 }
 
-void DelegatingSet::clear() {
-    _base.clear();
+template<typename E> void DelegatingSetCls<E>::clear() {
+    _base->clear();
 }
 
-bool DelegatingSet::containsAll(Iterable<Object> other) {
-    return _base.containsAll(other);
+template<typename E> bool DelegatingSetCls<E>::containsAll(Iterable<Object> other) {
+    return _base->containsAll(other);
 }
 
-Set<E> DelegatingSet::difference(Set<Object> other) {
-    return _base.difference(other);
+template<typename E> Set<E> DelegatingSetCls<E>::difference(Set<Object> other) {
+    return _base->difference(other);
 }
 
-Set<E> DelegatingSet::intersection(Set<Object> other) {
-    return _base.intersection(other);
+template<typename E> Set<E> DelegatingSetCls<E>::intersection(Set<Object> other) {
+    return _base->intersection(other);
 }
 
-E DelegatingSet::lookup(Object element) {
-    return _base.lookup(element);
+template<typename E> E DelegatingSetCls<E>::lookup(Object element) {
+    return _base->lookup(element);
 }
 
-bool DelegatingSet::remove(Object value) {
-    return _base.remove(value);
+template<typename E> bool DelegatingSetCls<E>::remove(Object value) {
+    return _base->remove(value);
 }
 
-void DelegatingSet::removeAll(Iterable<Object> elements) {
-    _base.removeAll(elements);
+template<typename E> void DelegatingSetCls<E>::removeAll(Iterable<Object> elements) {
+    _base->removeAll(elements);
 }
 
-void DelegatingSet::removeWhere(FunctionType test) {
-    _base.removeWhere(test);
+template<typename E> void DelegatingSetCls<E>::removeWhere(bool test(E ) ) {
+    _base->removeWhere(test);
 }
 
-void DelegatingSet::retainAll(Iterable<Object> elements) {
-    _base.retainAll(elements);
+template<typename E> void DelegatingSetCls<E>::retainAll(Iterable<Object> elements) {
+    _base->retainAll(elements);
 }
 
-Set<T> DelegatingSet::retype<T>() {
+template<typename E> Set<T> DelegatingSetCls<E>::retypetemplate<typename T> () {
     return <T>cast();
 }
 
-void DelegatingSet::retainWhere(FunctionType test) {
-    _base.retainWhere(test);
+template<typename E> void DelegatingSetCls<E>::retainWhere(bool test(E ) ) {
+    _base->retainWhere(test);
 }
 
-Set<E> DelegatingSet::union(Set<E> other) {
-    return _base.union(other);
+template<typename E> Set<E> DelegatingSetCls<E>::union(Set<E> other) {
+    return _base->union(other);
 }
 
-Set<E> DelegatingSet::toSet() {
-    return <E>DelegatingSet(_base.toSet());
+template<typename E> Set<E> DelegatingSetCls<E>::toSet() {
+    return <E>make<DelegatingSetCls>(_base->toSet());
 }
 
-DelegatingQueue::DelegatingQueue(Queue<E> queue) {
+template<typename E> DelegatingQueueCls<E>::DelegatingQueueCls(Queue<E> queue) {
     {
         _base = queue;
     }
 }
 
-Queue<E> DelegatingQueue::typed<E>(Queue base) {
-    return base.<E>cast();
+template<typename E> Queue<E> DelegatingQueueCls<E>::typedtemplate<typename E> (Queue base) {
+    return base-><E>cast();
 }
 
-void DelegatingQueue::add(E value) {
-    _base.add(value);
+template<typename E> void DelegatingQueueCls<E>::add(E value) {
+    _base->add(value);
 }
 
-void DelegatingQueue::addAll(Iterable<E> iterable) {
-    _base.addAll(iterable);
+template<typename E> void DelegatingQueueCls<E>::addAll(Iterable<E> iterable) {
+    _base->addAll(iterable);
 }
 
-void DelegatingQueue::addFirst(E value) {
-    _base.addFirst(value);
+template<typename E> void DelegatingQueueCls<E>::addFirst(E value) {
+    _base->addFirst(value);
 }
 
-void DelegatingQueue::addLast(E value) {
-    _base.addLast(value);
+template<typename E> void DelegatingQueueCls<E>::addLast(E value) {
+    _base->addLast(value);
 }
 
-Queue<T> DelegatingQueue::cast<T>() {
-    return _base.<T>cast();
+template<typename E> Queue<T> DelegatingQueueCls<E>::casttemplate<typename T> () {
+    return _base-><T>cast();
 }
 
-void DelegatingQueue::clear() {
-    _base.clear();
+template<typename E> void DelegatingQueueCls<E>::clear() {
+    _base->clear();
 }
 
-bool DelegatingQueue::remove(Object object) {
-    return _base.remove(object);
+template<typename E> bool DelegatingQueueCls<E>::remove(Object object) {
+    return _base->remove(object);
 }
 
-void DelegatingQueue::removeWhere(FunctionType test) {
-    _base.removeWhere(test);
+template<typename E> void DelegatingQueueCls<E>::removeWhere(bool test(E ) ) {
+    _base->removeWhere(test);
 }
 
-void DelegatingQueue::retainWhere(FunctionType test) {
-    _base.retainWhere(test);
+template<typename E> void DelegatingQueueCls<E>::retainWhere(bool test(E ) ) {
+    _base->retainWhere(test);
 }
 
-Queue<T> DelegatingQueue::retype<T>() {
+template<typename E> Queue<T> DelegatingQueueCls<E>::retypetemplate<typename T> () {
     return <T>cast();
 }
 
-E DelegatingQueue::removeFirst() {
-    return _base.removeFirst();
+template<typename E> E DelegatingQueueCls<E>::removeFirst() {
+    return _base->removeFirst();
 }
 
-E DelegatingQueue::removeLast() {
-    return _base.removeLast();
+template<typename E> E DelegatingQueueCls<E>::removeLast() {
+    return _base->removeLast();
 }
 
-DelegatingMap::DelegatingMap(Map<K, V> base) {
+template<typename K, typename V> DelegatingMapCls<K, V>::DelegatingMapCls(Map<K, V> base) {
     {
         _base = base;
     }
 }
 
-Map<K, V> DelegatingMap::typed<K, V>(Map base) {
-    return base.<K, V>cast();
+template<typename K, typename V> Map<K, V> DelegatingMapCls<K, V>::typedtemplate<typename K, typename V> (Map base) {
+    return base-><K, V>cast();
 }
 
-V DelegatingMap::[](Object key) {
+template<typename K, typename V> V DelegatingMapCls<K, V>::[](Object key) {
     return _base[key];
 }
 
-void DelegatingMap::[]=(K key, V value) {
+template<typename K, typename V> void DelegatingMapCls<K, V>::[]=(K key, V value) {
     _base[key] = value;
 }
 
-void DelegatingMap::addAll(Map<K, V> other) {
-    _base.addAll(other);
+template<typename K, typename V> void DelegatingMapCls<K, V>::addAll(Map<K, V> other) {
+    _base->addAll(other);
 }
 
-void DelegatingMap::addEntries(Iterable<MapEntry<K, V>> entries) {
-    _base.addEntries(entries);
+template<typename K, typename V> void DelegatingMapCls<K, V>::addEntries(Iterable<MapEntry<K, V>> entries) {
+    _base->addEntries(entries);
 }
 
-void DelegatingMap::clear() {
-    _base.clear();
+template<typename K, typename V> void DelegatingMapCls<K, V>::clear() {
+    _base->clear();
 }
 
-Map<K2, V2> DelegatingMap::cast<K2, V2>() {
-    return _base.<K2, V2>cast();
+template<typename K, typename V> Map<K2, V2> DelegatingMapCls<K, V>::casttemplate<typename K2, typename V2> () {
+    return _base-><K2, V2>cast();
 }
 
-bool DelegatingMap::containsKey(Object key) {
-    return _base.containsKey(key);
+template<typename K, typename V> bool DelegatingMapCls<K, V>::containsKey(Object key) {
+    return _base->containsKey(key);
 }
 
-bool DelegatingMap::containsValue(Object value) {
-    return _base.containsValue(value);
+template<typename K, typename V> bool DelegatingMapCls<K, V>::containsValue(Object value) {
+    return _base->containsValue(value);
 }
 
-Iterable<MapEntry<K, V>> DelegatingMap::entries() {
-    return _base.entries;
+template<typename K, typename V> Iterable<MapEntry<K, V>> DelegatingMapCls<K, V>::entries() {
+    return _base->entries;
 }
 
-void DelegatingMap::forEach(FunctionType f) {
-    _base.forEach(f);
+template<typename K, typename V> void DelegatingMapCls<K, V>::forEach(void f(K , V ) ) {
+    _base->forEach(f);
 }
 
-bool DelegatingMap::isEmpty() {
-    return _base.isEmpty;
+template<typename K, typename V> bool DelegatingMapCls<K, V>::isEmpty() {
+    return _base->isEmpty;
 }
 
-bool DelegatingMap::isNotEmpty() {
-    return _base.isNotEmpty;
+template<typename K, typename V> bool DelegatingMapCls<K, V>::isNotEmpty() {
+    return _base->isNotEmpty;
 }
 
-Iterable<K> DelegatingMap::keys() {
-    return _base.keys;
+template<typename K, typename V> Iterable<K> DelegatingMapCls<K, V>::keys() {
+    return _base->keys;
 }
 
-int DelegatingMap::length() {
-    return _base.length;
+template<typename K, typename V> int DelegatingMapCls<K, V>::length() {
+    return _base->length;
 }
 
-Map<K2, V2> DelegatingMap::map<K2, V2>(FunctionType transform) {
-    return _base.map(transform);
+template<typename K, typename V> Map<K2, V2> DelegatingMapCls<K, V>::maptemplate<typename K2, typename V2> (MapEntry<K2, V2> transform(K , V ) ) {
+    return _base->map(transform);
 }
 
-V DelegatingMap::putIfAbsent(FunctionType ifAbsent, K key) {
-    return _base.putIfAbsent(key, ifAbsent);
+template<typename K, typename V> V DelegatingMapCls<K, V>::putIfAbsent(V ifAbsent() , K key) {
+    return _base->putIfAbsent(key, ifAbsent);
 }
 
-V DelegatingMap::remove(Object key) {
-    return _base.remove(key);
+template<typename K, typename V> V DelegatingMapCls<K, V>::remove(Object key) {
+    return _base->remove(key);
 }
 
-void DelegatingMap::removeWhere(FunctionType test) {
-    return _base.removeWhere(test);
+template<typename K, typename V> void DelegatingMapCls<K, V>::removeWhere(bool test(K , V ) ) {
+    return _base->removeWhere(test);
 }
 
-Map<K2, V2> DelegatingMap::retype<K2, V2>() {
+template<typename K, typename V> Map<K2, V2> DelegatingMapCls<K, V>::retypetemplate<typename K2, typename V2> () {
     return <K2, V2>cast();
 }
 
-Iterable<V> DelegatingMap::values() {
-    return _base.values;
+template<typename K, typename V> Iterable<V> DelegatingMapCls<K, V>::values() {
+    return _base->values;
 }
 
-String DelegatingMap::toString() {
-    return _base.toString();
+template<typename K, typename V> String DelegatingMapCls<K, V>::toString() {
+    return _base->toString();
 }
 
-V DelegatingMap::update(FunctionType ifAbsent, K key, FunctionType update) {
-    return _base.update(key, updateifAbsent);
+template<typename K, typename V> V DelegatingMapCls<K, V>::update(V ifAbsent() , K key, V update(V ) ) {
+    return _base->update(key, updateifAbsent);
 }
 
-void DelegatingMap::updateAll(FunctionType update) {
-    return _base.updateAll(update);
+template<typename K, typename V> void DelegatingMapCls<K, V>::updateAll(V update(K , V ) ) {
+    return _base->updateAll(update);
 }
 
-Set<T> MapKeySet::cast<T>() {
+template<typename E> Set<T> MapKeySetCls<E>::casttemplate<typename T> () {
     if (this is MapKeySet<T>) {
-        return (;
+        return ((MapKeySet<T>)this);
     }
-    return Set.<E, T>castFrom(this);
+    return SetCls-><E, T>castFrom(this);
 }
 
-bool MapKeySet::contains(Object element) {
-    return _baseMap.containsKey(element);
+template<typename E> bool MapKeySetCls<E>::contains(Object element) {
+    return _baseMap->containsKey(element);
 }
 
-bool MapKeySet::isEmpty() {
-    return _baseMap.isEmpty;
+template<typename E> bool MapKeySetCls<E>::isEmpty() {
+    return _baseMap->isEmpty;
 }
 
-bool MapKeySet::isNotEmpty() {
-    return _baseMap.isNotEmpty;
+template<typename E> bool MapKeySetCls<E>::isNotEmpty() {
+    return _baseMap->isNotEmpty;
 }
 
-int MapKeySet::length() {
-    return _baseMap.length;
+template<typename E> int MapKeySetCls<E>::length() {
+    return _baseMap->length;
 }
 
-String MapKeySet::toString() {
-    return SetBase.setToString(this);
+template<typename E> String MapKeySetCls<E>::toString() {
+    return SetBaseCls->setToString(this);
 }
 
-bool MapKeySet::containsAll(Iterable<Object> other) {
-    return other.every(contains);
+template<typename E> bool MapKeySetCls<E>::containsAll(Iterable<Object> other) {
+    return other->every(contains);
 }
 
-Set<E> MapKeySet::difference(Set<Object> other) {
-    return where().toSet();
+template<typename E> Set<E> MapKeySetCls<E>::difference(Set<Object> other) {
+    return where([=] (Unknown  element)     {
+        !other->contains(element);
+    })->toSet();
 }
 
-Set<E> MapKeySet::intersection(Set<Object> other) {
-    return where(other.contains).toSet();
+template<typename E> Set<E> MapKeySetCls<E>::intersection(Set<Object> other) {
+    return where(other->contains)->toSet();
 }
 
-E MapKeySet::lookup(Object element) {
+template<typename E> E MapKeySetCls<E>::lookup(Object element) {
     return ;
 }
 
-Set<T> MapKeySet::retype<T>() {
-    return Set.<E, T>castFrom(this);
+template<typename E> Set<T> MapKeySetCls<E>::retypetemplate<typename T> () {
+    return SetCls-><E, T>castFrom(this);
 }
 
-Set<E> MapKeySet::union(Set<E> other) {
-    return ;
+template<typename E> Set<E> MapKeySetCls<E>::union(Set<E> other) {
+    return _c1;
 }
 
-Iterable<E> MapKeySet::_base() {
-    return _baseMap.keys;
+template<typename E> Iterable<E> MapKeySetCls<E>::_base() {
+    return _baseMap->keys;
 }
 
-Set<T> MapValueSet::cast<T>() {
+template<typename K, typename V> Set<T> MapValueSetCls<K, V>::casttemplate<typename T> () {
     if (this is Set<T>) {
-        return (;
+            auto _c1 = toSet();    _c1.addAll(other);return ((Set<T>)this);
     }
-    return Set.<V, T>castFrom(this);
+    return SetCls-><V, T>castFrom(this);
 }
 
-bool MapValueSet::contains(Object element) {
+template<typename K, typename V> bool MapValueSetCls<K, V>::contains(Object element) {
     if (element is! V)     {
         return false;
     }
     auto key = _keyForValue(element);
-    return _baseMap.containsKey(key);
+    return _baseMap->containsKey(key);
 }
 
-bool MapValueSet::isEmpty() {
-    return _baseMap.isEmpty;
+template<typename K, typename V> bool MapValueSetCls<K, V>::isEmpty() {
+    return _baseMap->isEmpty;
 }
 
-bool MapValueSet::isNotEmpty() {
-    return _baseMap.isNotEmpty;
+template<typename K, typename V> bool MapValueSetCls<K, V>::isNotEmpty() {
+    return _baseMap->isNotEmpty;
 }
 
-int MapValueSet::length() {
-    return _baseMap.length;
+template<typename K, typename V> int MapValueSetCls<K, V>::length() {
+    return _baseMap->length;
 }
 
-String MapValueSet::toString() {
-    return toSet().toString();
+template<typename K, typename V> String MapValueSetCls<K, V>::toString() {
+    return toSet()->toString();
 }
 
-bool MapValueSet::add(V value) {
+template<typename K, typename V> bool MapValueSetCls<K, V>::add(V value) {
     auto key = _keyForValue(value);
     auto result = false;
-    _baseMap.putIfAbsent(key, );
+    _baseMap->putIfAbsent(key, [=] () {
+        result = true;
+        return value;
+    });
     return result;
 }
 
-void MapValueSet::addAll(Iterable<V> elements) {
-    return elements.forEach(add);
+template<typename K, typename V> void MapValueSetCls<K, V>::addAll(Iterable<V> elements) {
+    return elements->forEach(add);
 }
 
-void MapValueSet::clear() {
-    return _baseMap.clear();
+template<typename K, typename V> void MapValueSetCls<K, V>::clear() {
+    return _baseMap->clear();
 }
 
-bool MapValueSet::containsAll(Iterable<Object> other) {
-    return other.every(contains);
+template<typename K, typename V> bool MapValueSetCls<K, V>::containsAll(Iterable<Object> other) {
+    return other->every(contains);
 }
 
-Set<V> MapValueSet::difference(Set<Object> other) {
-    return where().toSet();
+template<typename K, typename V> Set<V> MapValueSetCls<K, V>::difference(Set<Object> other) {
+    return where([=] (Unknown  element)     {
+        !other->contains(element);
+    })->toSet();
 }
 
-Set<V> MapValueSet::intersection(Set<Object> other) {
-    return where(other.contains).toSet();
+template<typename K, typename V> Set<V> MapValueSetCls<K, V>::intersection(Set<Object> other) {
+    return where(other->contains)->toSet();
 }
 
-V MapValueSet::lookup(Object element) {
+template<typename K, typename V> V MapValueSetCls<K, V>::lookup(Object element) {
     if (element is! V)     {
         return nullptr;
     }
@@ -640,57 +647,67 @@ V MapValueSet::lookup(Object element) {
     return _baseMap[key];
 }
 
-bool MapValueSet::remove(Object element) {
+template<typename K, typename V> bool MapValueSetCls<K, V>::remove(Object element) {
     if (element is! V)     {
         return false;
     }
     auto key = _keyForValue(element);
-    if (!_baseMap.containsKey(key))     {
+    if (!_baseMap->containsKey(key))     {
         return false;
     }
-    _baseMap.remove(key);
+    _baseMap->remove(key);
     return true;
 }
 
-void MapValueSet::removeAll(Iterable<Object> elements) {
-    return elements.forEach(remove);
+template<typename K, typename V> void MapValueSetCls<K, V>::removeAll(Iterable<Object> elements) {
+    return elements->forEach(remove);
 }
 
-void MapValueSet::removeWhere(FunctionType test) {
-    auto toRemove = ;
-    _baseMap.forEach();
-    toRemove.forEach(_baseMap.remove);
+template<typename K, typename V> void MapValueSetCls<K, V>::removeWhere(bool test(V ) ) {
+    auto toRemove = makeList();
+    _baseMap->forEach([=] (Unknown  key,Unknown  value) {
+        if (test(value))         {
+            toRemove->add(key);
+        }
+    });
+    toRemove->forEach(_baseMap->remove);
 }
 
-void MapValueSet::retainAll(Iterable<Object> elements) {
+template<typename K, typename V> void MapValueSetCls<K, V>::retainAll(Iterable<Object> elements) {
     auto valuesToRetain = <V>identity();
     for (auto element : elements) {
         if (element is! V)         {
             continue;
         }
         auto key = _keyForValue(element);
-        if (!_baseMap.containsKey(key))         {
+        if (!_baseMap->containsKey(key))         {
             continue;
         }
-        valuesToRetain.add(_baseMap[key] ?? ();
+        valuesToRetain->add(_baseMap[key] ?? ((V)nullptr));
     }
-    auto keysToRemove = ;
-    _baseMap.forEach();
-    keysToRemove.forEach(_baseMap.remove);
+    auto keysToRemove = makeList();
+    _baseMap->forEach([=] (Unknown  k,Unknown  v) {
+        if (!valuesToRetain->contains(v))         {
+            keysToRemove->add(k);
+        }
+    });
+    keysToRemove->forEach(_baseMap->remove);
 }
 
-void MapValueSet::retainWhere(FunctionType test) {
-    return removeWhere();
+template<typename K, typename V> void MapValueSetCls<K, V>::retainWhere(bool test(V ) ) {
+    return removeWhere([=] (Unknown  element)     {
+        !test(element);
+    });
 }
 
-Set<T> MapValueSet::retype<T>() {
-    return Set.<V, T>castFrom(this);
+template<typename K, typename V> Set<T> MapValueSetCls<K, V>::retypetemplate<typename T> () {
+    return SetCls-><V, T>castFrom(this);
 }
 
-Set<V> MapValueSet::union(Set<V> other) {
-    return ;
+template<typename K, typename V> Set<V> MapValueSetCls<K, V>::union(Set<V> other) {
+    return _c1;
 }
 
-Iterable<V> MapValueSet::_base() {
-    return _baseMap.values;
+template<typename K, typename V> Iterable<V> MapValueSetCls<K, V>::_base() {
+    return _baseMap->values;
 }

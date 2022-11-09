@@ -1,55 +1,43 @@
-#ifndef DIRECTORY_H
-#define DIRECTORY_H
-#include <memory>
+#ifndef DART_IO_DIRECTORY
+#define DART_IO_DIRECTORY
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
 
 
-
-
-class Directory {
+class DirectoryCls : public ObjectCls {
 public:
 
-    String path();
+    virtual String path();
+     DirectoryCls(String path);
 
-     Directory(String path);
+    virtual void  fromRawPath(Uint8List path);
 
-    void  fromRawPath(Uint8List path);
-
-    void  fromUri(Uri uri);
+    virtual void  fromUri(Uri uri);
 
     static Directory current();
 
-    Uri uri();
-
+    virtual Uri uri();
     static void current(path );
 
-    Future<Directory> create(bool recursive);
-
-    void createSync(bool recursive);
-
+    virtual Future<Directory> create(bool recursive);
+    virtual void createSync(bool recursive);
     static Directory systemTemp();
 
-    Future<Directory> createTemp(String prefix);
-
-    Directory createTempSync(String prefix);
-
-    Future<String> resolveSymbolicLinks();
-
-    String resolveSymbolicLinksSync();
-
-    Future<Directory> rename(String newPath);
-
-    Directory renameSync(String newPath);
-
-    Directory absolute();
-
-    Stream<FileSystemEntity> list(bool followLinks, bool recursive);
-
-    List<FileSystemEntity> listSync(bool followLinks, bool recursive);
-
-    String toString();
-
+    virtual Future<Directory> createTemp(String prefix);
+    virtual Directory createTempSync(String prefix);
+    virtual Future<String> resolveSymbolicLinks();
+    virtual String resolveSymbolicLinksSync();
+    virtual Future<Directory> rename(String newPath);
+    virtual Directory renameSync(String newPath);
+    virtual Directory absolute();
+    virtual Stream<FileSystemEntity> list(bool followLinks, bool recursive);
+    virtual List<FileSystemEntity> listSync(bool followLinks, bool recursive);
+    virtual String toString();
 private:
 
 };
+using Directory = std::shared_ptr<DirectoryCls>;
+
 
 #endif

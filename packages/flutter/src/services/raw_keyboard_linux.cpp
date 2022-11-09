@@ -1,83 +1,83 @@
 #include "raw_keyboard_linux.hpp"
-RawKeyEventDataLinux::RawKeyEventDataLinux(bool isDown, int keyCode, KeyHelper keyHelper, int modifiers, int scanCode, int specifiedLogicalKey, int unicodeScalarValues) {
+RawKeyEventDataLinuxCls::RawKeyEventDataLinuxCls(bool isDown, int keyCode, KeyHelper keyHelper, int modifiers, int scanCode, int specifiedLogicalKey, int unicodeScalarValues) {
     {
         assert(scanCode != nullptr);
         assert(unicodeScalarValues != nullptr);
-        assert((unicodeScalarValues & ~LogicalKeyboardKey.valueMask) == 0);
+        assert((unicodeScalarValues & ~LogicalKeyboardKeyCls->valueMask) == 0);
         assert(keyCode != nullptr);
         assert(modifiers != nullptr);
         assert(keyHelper != nullptr);
     }
 }
 
-String RawKeyEventDataLinux::keyLabel() {
-    return unicodeScalarValues == 0? "" : String.fromCharCode(unicodeScalarValues);
+String RawKeyEventDataLinuxCls::keyLabel() {
+    return unicodeScalarValues == 0? "" : StringCls->fromCharCode(unicodeScalarValues);
 }
 
-PhysicalKeyboardKey RawKeyEventDataLinux::physicalKey() {
-    return kLinuxToPhysicalKey[scanCode] ?? PhysicalKeyboardKey(LogicalKeyboardKey.webPlane + scanCode);
+PhysicalKeyboardKey RawKeyEventDataLinuxCls::physicalKey() {
+    return kLinuxToPhysicalKey[scanCode] ?? make<PhysicalKeyboardKeyCls>(LogicalKeyboardKeyCls::webPlane + scanCode);
 }
 
-LogicalKeyboardKey RawKeyEventDataLinux::logicalKey() {
+LogicalKeyboardKey RawKeyEventDataLinuxCls::logicalKey() {
     if (specifiedLogicalKey != nullptr) {
         int key = specifiedLogicalKey!;
-        return LogicalKeyboardKey.findKeyByKeyId(key) ?? LogicalKeyboardKey(key);
+        return LogicalKeyboardKeyCls->findKeyByKeyId(key) ?? make<LogicalKeyboardKeyCls>(key);
     }
-    LogicalKeyboardKey numPadKey = keyHelper.numpadKey(keyCode);
+    LogicalKeyboardKey numPadKey = keyHelper->numpadKey(keyCode);
     if (numPadKey != nullptr) {
         return numPadKey;
     }
-    if (keyLabel.isNotEmpty && !LogicalKeyboardKey.isControlCharacter(keyLabel)) {
-        int keyId = LogicalKeyboardKey.unicodePlane | (unicodeScalarValues & LogicalKeyboardKey.valueMask);
-        return LogicalKeyboardKey.findKeyByKeyId(keyId) ?? LogicalKeyboardKey(keyId);
+    if (keyLabel->isNotEmpty && !LogicalKeyboardKeyCls->isControlCharacter(keyLabel)) {
+        int keyId = LogicalKeyboardKeyCls::unicodePlane | (unicodeScalarValues & LogicalKeyboardKeyCls::valueMask);
+        return LogicalKeyboardKeyCls->findKeyByKeyId(keyId) ?? make<LogicalKeyboardKeyCls>(keyId);
     }
-    LogicalKeyboardKey newKey = keyHelper.logicalKey(keyCode);
+    LogicalKeyboardKey newKey = keyHelper->logicalKey(keyCode);
     if (newKey != nullptr) {
         return newKey;
     }
-    return LogicalKeyboardKey(keyCode | keyHelper.platformPlane);
+    return make<LogicalKeyboardKeyCls>(keyCode | keyHelper->platformPlane);
 }
 
-bool RawKeyEventDataLinux::isModifierPressed(ModifierKey key, KeyboardSide side) {
-    return keyHelper.isModifierPressed(key, modifiersside, keyCode, isDown);
+bool RawKeyEventDataLinuxCls::isModifierPressed(ModifierKey key, KeyboardSide side) {
+    return keyHelper->isModifierPressed(key, modifiersside, keyCode, isDown);
 }
 
-KeyboardSide RawKeyEventDataLinux::getModifierSide(ModifierKey key) {
-    return keyHelper.getModifierSide(key);
+KeyboardSide RawKeyEventDataLinuxCls::getModifierSide(ModifierKey key) {
+    return keyHelper->getModifierSide(key);
 }
 
-void RawKeyEventDataLinux::debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties.add(<String>DiagnosticsProperty("toolkit", keyHelper.debugToolkit));
-    properties.add(<int>DiagnosticsProperty("unicodeScalarValues", unicodeScalarValues));
-    properties.add(<int>DiagnosticsProperty("scanCode", scanCode));
-    properties.add(<int>DiagnosticsProperty("keyCode", keyCode));
-    properties.add(<int>DiagnosticsProperty("modifiers", modifiers));
-    properties.add(<bool>DiagnosticsProperty("isDown", isDown));
-    properties.add(<int>DiagnosticsProperty("specifiedLogicalKey", specifiedLogicalKeynullptr));
+void RawKeyEventDataLinuxCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super->debugFillProperties(properties);
+    properties->add(<String>make<DiagnosticsPropertyCls>("toolkit", keyHelper->debugToolkit));
+    properties->add(<int>make<DiagnosticsPropertyCls>("unicodeScalarValues", unicodeScalarValues));
+    properties->add(<int>make<DiagnosticsPropertyCls>("scanCode", scanCode));
+    properties->add(<int>make<DiagnosticsPropertyCls>("keyCode", keyCode));
+    properties->add(<int>make<DiagnosticsPropertyCls>("modifiers", modifiers));
+    properties->add(<bool>make<DiagnosticsPropertyCls>("isDown", isDown));
+    properties->add(<int>make<DiagnosticsPropertyCls>("specifiedLogicalKey", specifiedLogicalKeynullptr));
 }
 
-bool RawKeyEventDataLinux::==(Object other) {
+bool RawKeyEventDataLinuxCls::==(Object other) {
     if (identical(this, other)) {
         return true;
     }
-    if (other.runtimeType != runtimeType) {
+    if (other->runtimeType != runtimeType) {
         return false;
     }
-    return other is RawKeyEventDataLinux && other.keyHelper.runtimeType == keyHelper.runtimeType && other.unicodeScalarValues == unicodeScalarValues && other.scanCode == scanCode && other.keyCode == keyCode && other.modifiers == modifiers && other.isDown == isDown;
+    return other is RawKeyEventDataLinux && other->keyHelper->runtimeType == keyHelper->runtimeType && other->unicodeScalarValues == unicodeScalarValues && other->scanCode == scanCode && other->keyCode == keyCode && other->modifiers == modifiers && other->isDown == isDown;
 }
 
-int RawKeyEventDataLinux::hashCode() {
-    return Object.hash(keyHelper.runtimeType, unicodeScalarValues, scanCode, keyCode, modifiers, isDown);
+int RawKeyEventDataLinuxCls::hashCode() {
+    return ObjectCls->hash(keyHelper->runtimeType, unicodeScalarValues, scanCode, keyCode, modifiers, isDown);
 }
 
-KeyHelper::KeyHelper(String toolkit) {
+KeyHelperCls::KeyHelperCls(String toolkit) {
     {
         if (toolkit == "glfw") {
-            return GLFWKeyHelper();
+            return make<GLFWKeyHelperCls>();
         } else         {
             if (toolkit == "gtk") {
-            return GtkKeyHelper();
+            return make<GtkKeyHelperCls>();
         } else {
             ;
         }
@@ -85,32 +85,32 @@ KeyHelper::KeyHelper(String toolkit) {
         }    }
 }
 
-String GLFWKeyHelper::debugToolkit() {
+String GLFWKeyHelperCls::debugToolkit() {
     return "GLFW";
 }
 
-bool GLFWKeyHelper::isModifierPressed(bool isDown, ModifierKey key, int keyCode, int modifiers, KeyboardSide side) {
+bool GLFWKeyHelperCls::isModifierPressed(bool isDown, ModifierKey key, int keyCode, int modifiers, KeyboardSide side) {
     modifiers = _mergeModifiers(modifiers, keyCode, isDown);
     ;
 }
 
-KeyboardSide GLFWKeyHelper::getModifierSide(ModifierKey key) {
-    return KeyboardSide.all;
+KeyboardSide GLFWKeyHelperCls::getModifierSide(ModifierKey key) {
+    return KeyboardSideCls::all;
 }
 
-LogicalKeyboardKey GLFWKeyHelper::numpadKey(int keyCode) {
+LogicalKeyboardKey GLFWKeyHelperCls::numpadKey(int keyCode) {
     return kGlfwNumpadMap[keyCode];
 }
 
-LogicalKeyboardKey GLFWKeyHelper::logicalKey(int keyCode) {
+LogicalKeyboardKey GLFWKeyHelperCls::logicalKey(int keyCode) {
     return kGlfwToLogicalKey[keyCode];
 }
 
-int GLFWKeyHelper::platformPlane() {
-    return LogicalKeyboardKey.glfwPlane;
+int GLFWKeyHelperCls::platformPlane() {
+    return LogicalKeyboardKeyCls::glfwPlane;
 }
 
-int GLFWKeyHelper::_mergeModifiers(bool isDown, int keyCode, int modifiers) {
+int GLFWKeyHelperCls::_mergeModifiers(bool isDown, int keyCode, int modifiers) {
     int shiftLeftKeyCode = 340;
     int shiftRightKeyCode = 344;
     int controlLeftKeyCode = 341;
@@ -126,32 +126,32 @@ int GLFWKeyHelper::_mergeModifiers(bool isDown, int keyCode, int modifiers) {
     return isDown? modifiers | modifierChange : modifiers & ~modifierChange;
 }
 
-String GtkKeyHelper::debugToolkit() {
+String GtkKeyHelperCls::debugToolkit() {
     return "GTK";
 }
 
-bool GtkKeyHelper::isModifierPressed(bool isDown, ModifierKey key, int keyCode, int modifiers, KeyboardSide side) {
+bool GtkKeyHelperCls::isModifierPressed(bool isDown, ModifierKey key, int keyCode, int modifiers, KeyboardSide side) {
     modifiers = _mergeModifiers(modifiers, keyCode, isDown);
     ;
 }
 
-KeyboardSide GtkKeyHelper::getModifierSide(ModifierKey key) {
-    return KeyboardSide.all;
+KeyboardSide GtkKeyHelperCls::getModifierSide(ModifierKey key) {
+    return KeyboardSideCls::all;
 }
 
-LogicalKeyboardKey GtkKeyHelper::numpadKey(int keyCode) {
+LogicalKeyboardKey GtkKeyHelperCls::numpadKey(int keyCode) {
     return kGtkNumpadMap[keyCode];
 }
 
-LogicalKeyboardKey GtkKeyHelper::logicalKey(int keyCode) {
+LogicalKeyboardKey GtkKeyHelperCls::logicalKey(int keyCode) {
     return kGtkToLogicalKey[keyCode];
 }
 
-int GtkKeyHelper::platformPlane() {
-    return LogicalKeyboardKey.gtkPlane;
+int GtkKeyHelperCls::platformPlane() {
+    return LogicalKeyboardKeyCls::gtkPlane;
 }
 
-int GtkKeyHelper::_mergeModifiers(bool isDown, int keyCode, int modifiers) {
+int GtkKeyHelperCls::_mergeModifiers(bool isDown, int keyCode, int modifiers) {
     int shiftLeftKeyCode = 0xffe1;
     int shiftRightKeyCode = 0xffe2;
     int controlLeftKeyCode = 0xffe3;

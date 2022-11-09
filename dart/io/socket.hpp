@@ -1,162 +1,136 @@
-#ifndef SOCKET_H
-#define SOCKET_H
-#include <memory>
+#ifndef DART_IO_SOCKET
+#define DART_IO_SOCKET
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
 
 
-
-
-class InternetAddressType {
+class InternetAddressTypeCls : public ObjectCls {
 public:
-    static const InternetAddressType IPv4;
+    static InternetAddressType IPv4;
 
-    static const InternetAddressType IPv6;
+    static InternetAddressType IPv6;
 
-    static const InternetAddressType unix;
+    static InternetAddressType unix;
 
-    static const InternetAddressType any;
+    static InternetAddressType any;
 
 
-    String name();
+    virtual String name();
 
-    String toString();
+    virtual String toString();
 
 private:
     int _value;
 
 
-    void  _(int _value);
-
-    void  _from(int value);
+    virtual void  _(int _value);
+    virtual void  _from(int value);
 
 };
+using InternetAddressType = std::shared_ptr<InternetAddressTypeCls>;
 
-class InternetAddress {
+class InternetAddressCls : public ObjectCls {
 public:
 
-    external static InternetAddress loopbackIPv4();
-
-    external static InternetAddress loopbackIPv6();
-
-    external static InternetAddress anyIPv4();
-
-    external static InternetAddress anyIPv6();
-
-    InternetAddressType type();
-
-    String address();
-
-    String host();
-
-    Uint8List rawAddress();
-
-    bool isLoopback();
-
-    bool isLinkLocal();
-
-    bool isMulticast();
-
-    external  InternetAddress(String address, InternetAddressType type);
-
-    external void  fromRawAddress(Uint8List rawAddress, InternetAddressType type);
-
-    Future<InternetAddress> reverse();
-
-    external static Future<List<InternetAddress>> lookup(String host, InternetAddressType type);
-
-    external static InternetAddress tryParse(String address);
-
+    extern static InternetAddress loopbackIPv4();
+    extern static InternetAddress loopbackIPv6();
+    extern static InternetAddress anyIPv4();
+    extern static InternetAddress anyIPv6();
+    virtual InternetAddressType type();
+    virtual String address();
+    virtual String host();
+    virtual Uint8List rawAddress();
+    virtual bool isLoopback();
+    virtual bool isLinkLocal();
+    virtual bool isMulticast();
+    extern  InternetAddressCls(String address, InternetAddressType type);
+    extern void  fromRawAddress(Uint8List rawAddress, InternetAddressType type);
+    virtual Future<InternetAddress> reverse();
+    extern static Future<List<InternetAddress>> lookup(String host, InternetAddressType type);
+    extern static InternetAddress tryParse(String address);
 private:
 
-    external static InternetAddress _cloneWithNewHost(InternetAddress address, String host);
-
+    extern static InternetAddress _cloneWithNewHost(InternetAddress address, String host);
 };
+using InternetAddress = std::shared_ptr<InternetAddressCls>;
 
-class NetworkInterface {
+class NetworkInterfaceCls : public ObjectCls {
 public:
 
-    String name();
-
-    int index();
-
-    List<InternetAddress> addresses();
-
-    external static bool listSupported();
-
-    external static Future<List<NetworkInterface>> list(bool includeLinkLocal, bool includeLoopback, InternetAddressType type);
-
+    virtual String name();
+    virtual int index();
+    virtual List<InternetAddress> addresses();
+    extern static bool listSupported();
+    extern static Future<List<NetworkInterface>> list(bool includeLinkLocal, bool includeLoopback, InternetAddressType type);
 private:
 
 };
+using NetworkInterface = std::shared_ptr<NetworkInterfaceCls>;
 
-class RawServerSocket {
+class RawServerSocketCls : public ObjectCls {
 public:
 
-    external static Future<RawServerSocket> bind(address , int backlog, int port, bool shared, bool v6Only);
-
-    int port();
-
-    InternetAddress address();
-
-    Future<RawServerSocket> close();
-
+    extern static Future<RawServerSocket> bind(address , int backlog, int port, bool shared, bool v6Only);
+    virtual int port();
+    virtual InternetAddress address();
+    virtual Future<RawServerSocket> close();
 private:
 
 };
+using RawServerSocket = std::shared_ptr<RawServerSocketCls>;
 
-class ServerSocket {
+class ServerSocketCls : public ObjectCls {
 public:
 
     static Future<ServerSocket> bind(address , int backlog, int port, bool shared, bool v6Only);
 
-    int port();
-
-    InternetAddress address();
-
-    Future<ServerSocket> close();
-
+    virtual int port();
+    virtual InternetAddress address();
+    virtual Future<ServerSocket> close();
 private:
 
-    external static Future<ServerSocket> _bind(address , int backlog, int port, bool shared, bool v6Only);
-
+    extern static Future<ServerSocket> _bind(address , int backlog, int port, bool shared, bool v6Only);
 };
+using ServerSocket = std::shared_ptr<ServerSocketCls>;
 
-class SocketDirection {
+class SocketDirectionCls : public ObjectCls {
 public:
-    static const SocketDirection receive;
+    static SocketDirection receive;
 
-    static const SocketDirection send;
+    static SocketDirection send;
 
-    static const SocketDirection both;
+    static SocketDirection both;
 
 
 private:
     auto  _value;
 
 
-    void  _(Unknown _value);
-
+    virtual void  _(Unknown _value);
 };
+using SocketDirection = std::shared_ptr<SocketDirectionCls>;
 
-class SocketOption {
+class SocketOptionCls : public ObjectCls {
 public:
-    static const SocketOption tcpNoDelay;
+    static SocketOption tcpNoDelay;
 
 
 private:
-    static const SocketOption _ipMulticastLoop;
+    static SocketOption _ipMulticastLoop;
 
-    static const SocketOption _ipMulticastHops;
+    static SocketOption _ipMulticastHops;
 
-    static const SocketOption _ipMulticastIf;
+    static SocketOption _ipMulticastIf;
 
-    static const SocketOption _ipBroadcast;
+    static SocketOption _ipBroadcast;
 
     auto  _value;
 
 
-    void  _(Unknown _value);
-
+    virtual void  _(Unknown _value);
 };
+using SocketOption = std::shared_ptr<SocketOptionCls>;
 
 enum _RawSocketOptions{
     SOL_SOCKET,
@@ -168,7 +142,7 @@ enum _RawSocketOptions{
     IPPROTO_UDP,
 } // end _RawSocketOptions
 
-class RawSocketOption {
+class RawSocketOptionCls : public ObjectCls {
 public:
     int level;
 
@@ -177,11 +151,10 @@ public:
     Uint8List value;
 
 
-     RawSocketOption(int level, int option, Uint8List value);
+     RawSocketOptionCls(int level, int option, Uint8List value);
+    virtual void  fromInt(int level, int option, int value);
 
-    void  fromInt(int level, int option, int value);
-
-    void  fromBool(int level, int option, bool value);
+    virtual void  fromBool(int level, int option, bool value);
 
     static int levelSocket();
 
@@ -199,125 +172,100 @@ public:
 
 private:
 
-    external static int _getOptionValue(int key);
-
+    extern static int _getOptionValue(int key);
 };
+using RawSocketOption = std::shared_ptr<RawSocketOptionCls>;
 
-class RawSocketEvent {
+class RawSocketEventCls : public ObjectCls {
 public:
-    static const RawSocketEvent read;
+    static RawSocketEvent read;
 
-    static const RawSocketEvent write;
+    static RawSocketEvent write;
 
-    static const RawSocketEvent readClosed;
+    static RawSocketEvent readClosed;
 
-    static const RawSocketEvent closed;
+    static RawSocketEvent closed;
 
 
-    String toString();
+    virtual String toString();
 
 private:
     int _value;
 
 
-    void  _(int _value);
-
+    virtual void  _(int _value);
 };
+using RawSocketEvent = std::shared_ptr<RawSocketEventCls>;
 
-class ConnectionTask<S> {
+template<typename S> class ConnectionTaskCls : public ObjectCls {
 public:
     Future<S> socket;
 
 
-    void cancel();
+    virtual void cancel();
 
 private:
-    FunctionType _onCancel;
+    void Function() _onCancel;
 
 
-    void  _(FunctionType onCancel, Future<S> socket);
+    virtual void  _(void onCancel() , Future<S> socket);
 
 };
+template<typename S> using ConnectionTask = std::shared_ptr<ConnectionTaskCls<S>>;
 
-class RawSocket {
+class RawSocketCls : public ObjectCls {
 public:
     bool readEventsEnabled;
 
     bool writeEventsEnabled;
 
 
-    external static Future<RawSocket> connect(host , sourceAddress , int port, int sourcePort, Duration timeout);
-
-    external static Future<ConnectionTask<RawSocket>> startConnect(host , sourceAddress , int port, int sourcePort);
-
-    int available();
-
-    Uint8List read(int len);
-
-    SocketMessage readMessage(int count);
-
-    int write(List<int> buffer, int count, int offset);
-
-    int sendMessage(List<SocketControlMessage> controlMessages, int count, List<int> data, int offset);
-
-    int port();
-
-    int remotePort();
-
-    InternetAddress address();
-
-    InternetAddress remoteAddress();
-
-    Future<RawSocket> close();
-
-    void shutdown(SocketDirection direction);
-
-    bool setOption(bool enabled, SocketOption option);
-
-    Uint8List getRawOption(RawSocketOption option);
-
-    void setRawOption(RawSocketOption option);
-
+    extern static Future<RawSocket> connect(host , sourceAddress , int port, int sourcePort, Duration timeout);
+    extern static Future<ConnectionTask<RawSocket>> startConnect(host , sourceAddress , int port, int sourcePort);
+    virtual int available();
+    virtual Uint8List read(int len);
+    virtual SocketMessage readMessage(int count);
+    virtual int write(List<int> buffer, int count, int offset);
+    virtual int sendMessage(List<SocketControlMessage> controlMessages, int count, List<int> data, int offset);
+    virtual int port();
+    virtual int remotePort();
+    virtual InternetAddress address();
+    virtual InternetAddress remoteAddress();
+    virtual Future<RawSocket> close();
+    virtual void shutdown(SocketDirection direction);
+    virtual bool setOption(bool enabled, SocketOption option);
+    virtual Uint8List getRawOption(RawSocketOption option);
+    virtual void setRawOption(RawSocketOption option);
 private:
 
 };
+using RawSocket = std::shared_ptr<RawSocketCls>;
 
-class Socket {
+class SocketCls : public ObjectCls {
 public:
 
     static Future<Socket> connect(host , sourceAddress , int port, int sourcePort, Duration timeout);
 
     static Future<ConnectionTask<Socket>> startConnect(host , sourceAddress , int port, int sourcePort);
 
-    void destroy();
-
-    bool setOption(bool enabled, SocketOption option);
-
-    Uint8List getRawOption(RawSocketOption option);
-
-    void setRawOption(RawSocketOption option);
-
-    int port();
-
-    int remotePort();
-
-    InternetAddress address();
-
-    InternetAddress remoteAddress();
-
-    Future close();
-
-    Future done();
-
+    virtual void destroy();
+    virtual bool setOption(bool enabled, SocketOption option);
+    virtual Uint8List getRawOption(RawSocketOption option);
+    virtual void setRawOption(RawSocketOption option);
+    virtual int port();
+    virtual int remotePort();
+    virtual InternetAddress address();
+    virtual InternetAddress remoteAddress();
+    virtual Future close();
+    virtual Future done();
 private:
 
-    external static Future<Socket> _connect(host , sourceAddress , int port, int sourcePort, Duration timeout);
-
-    external static Future<ConnectionTask<Socket>> _startConnect(host , sourceAddress , int port, int sourcePort);
-
+    extern static Future<Socket> _connect(host , sourceAddress , int port, int sourcePort, Duration timeout);
+    extern static Future<ConnectionTask<Socket>> _startConnect(host , sourceAddress , int port, int sourcePort);
 };
+using Socket = std::shared_ptr<SocketCls>;
 
-class Datagram {
+class DatagramCls : public ObjectCls {
 public:
     Uint8List data;
 
@@ -326,70 +274,57 @@ public:
     int port;
 
 
-     Datagram(InternetAddress address, Uint8List data, int port);
-
+     DatagramCls(InternetAddress address, Uint8List data, int port);
 private:
 
 };
+using Datagram = std::shared_ptr<DatagramCls>;
 
-class ResourceHandle {
+class ResourceHandleCls : public ObjectCls {
 public:
 
-    external void  fromFile(RandomAccessFile file);
-
-    external void  fromSocket(Socket socket);
-
-    external void  fromRawSocket(RawSocket socket);
-
-    external void  fromRawDatagramSocket(RawDatagramSocket socket);
-
-    external void  fromStdin(Stdin stdin);
-
-    external void  fromStdout(Stdout stdout);
-
-    RandomAccessFile toFile();
-
-    Socket toSocket();
-
-    RawSocket toRawSocket();
-
-    RawDatagramSocket toRawDatagramSocket();
-
+    extern void  fromFile(RandomAccessFile file);
+    extern void  fromSocket(Socket socket);
+    extern void  fromRawSocket(RawSocket socket);
+    extern void  fromRawDatagramSocket(RawDatagramSocket socket);
+    extern void  fromStdin(Stdin stdin);
+    extern void  fromStdout(Stdout stdout);
+    virtual RandomAccessFile toFile();
+    virtual Socket toSocket();
+    virtual RawSocket toRawSocket();
+    virtual RawDatagramSocket toRawDatagramSocket();
 private:
 
 };
+using ResourceHandle = std::shared_ptr<ResourceHandleCls>;
 
-class SocketControlMessage {
+class SocketControlMessageCls : public ObjectCls {
 public:
 
-    external void  fromHandles(List<ResourceHandle> handles);
-
-    List<ResourceHandle> extractHandles();
-
-    int level();
-
-    int type();
-
-    Uint8List data();
-
+    extern void  fromHandles(List<ResourceHandle> handles);
+    virtual List<ResourceHandle> extractHandles();
+    virtual int level();
+    virtual int type();
+    virtual Uint8List data();
 private:
 
 };
+using SocketControlMessage = std::shared_ptr<SocketControlMessageCls>;
 
-class SocketMessage {
+class SocketMessageCls : public ObjectCls {
 public:
     Uint8List data;
 
     List<SocketControlMessage> controlMessages;
 
 
-     SocketMessage(List<SocketControlMessage> controlMessages, Uint8List data);
-
+     SocketMessageCls(List<SocketControlMessage> controlMessages, Uint8List data);
 private:
 
 };
+using SocketMessage = std::shared_ptr<SocketMessageCls>;
 
-class RawDatagramSocket : Stream<RawSocketEvent> {
+class RawDatagramSocketCls : public StreamCls<RawSocketEvent> {
 public:
     bool readEventsEnabled;
 
@@ -404,31 +339,22 @@ public:
     bool broadcastEnabled;
 
 
-    external static Future<RawDatagramSocket> bind(host , int port, bool reuseAddress, bool reusePort, int ttl);
-
-    int port();
-
-    InternetAddress address();
-
-    void close();
-
-    int send(InternetAddress address, List<int> buffer, int port);
-
-    Datagram receive();
-
-    void joinMulticast(InternetAddress group, NetworkInterface interface);
-
-    void leaveMulticast(InternetAddress group, NetworkInterface interface);
-
-    Uint8List getRawOption(RawSocketOption option);
-
-    void setRawOption(RawSocketOption option);
-
+    extern static Future<RawDatagramSocket> bind(host , int port, bool reuseAddress, bool reusePort, int ttl);
+    virtual int port();
+    virtual InternetAddress address();
+    virtual void close();
+    virtual int send(InternetAddress address, List<int> buffer, int port);
+    virtual Datagram receive();
+    virtual void joinMulticast(InternetAddress group, NetworkInterface interface);
+    virtual void leaveMulticast(InternetAddress group, NetworkInterface interface);
+    virtual Uint8List getRawOption(RawSocketOption option);
+    virtual void setRawOption(RawSocketOption option);
 private:
 
 };
+using RawDatagramSocket = std::shared_ptr<RawDatagramSocketCls>;
 
-class SocketException {
+class SocketExceptionCls : public ObjectCls {
 public:
     String message;
 
@@ -439,14 +365,15 @@ public:
     int port;
 
 
-     SocketException(InternetAddress address, String message, OSError osError, int port);
+     SocketExceptionCls(InternetAddress address, String message, OSError osError, int port);
+    virtual void  closed();
 
-    void  closed();
-
-    String toString();
+    virtual String toString();
 
 private:
 
 };
+using SocketException = std::shared_ptr<SocketExceptionCls>;
+
 
 #endif

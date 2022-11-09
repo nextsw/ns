@@ -1,48 +1,48 @@
 #include "velocity_tracker.hpp"
-Velocity::Velocity(Offset pixelsPerSecond) {
+VelocityCls::VelocityCls(Offset pixelsPerSecond) {
     {
         assert(pixelsPerSecond != nullptr);
     }
 }
 
-Velocity Velocity::-() {
-    return Velocity(-pixelsPerSecond);
+Velocity VelocityCls::-() {
+    return make<VelocityCls>(-pixelsPerSecond);
 }
 
-Velocity Velocity::-(Velocity other) {
-    return Velocity(pixelsPerSecond - other.pixelsPerSecond);
+Velocity VelocityCls::-(Velocity other) {
+    return make<VelocityCls>(pixelsPerSecond - other->pixelsPerSecond);
 }
 
-Velocity Velocity::+(Velocity other) {
-    return Velocity(pixelsPerSecond + other.pixelsPerSecond);
+Velocity VelocityCls::+(Velocity other) {
+    return make<VelocityCls>(pixelsPerSecond + other->pixelsPerSecond);
 }
 
-Velocity Velocity::clampMagnitude(double maxValue, double minValue) {
+Velocity VelocityCls::clampMagnitude(double maxValue, double minValue) {
     assert(minValue != nullptr && minValue >= 0.0);
     assert(maxValue != nullptr && maxValue >= 0.0 && maxValue >= minValue);
-    double valueSquared = pixelsPerSecond.distanceSquared;
+    double valueSquared = pixelsPerSecond->distanceSquared;
     if (valueSquared > maxValue * maxValue) {
-        return Velocity((pixelsPerSecond / pixelsPerSecond.distance) * maxValue);
+        return make<VelocityCls>((pixelsPerSecond / pixelsPerSecond->distance) * maxValue);
     }
     if ( < minValue * minValue) {
-        return Velocity((pixelsPerSecond / pixelsPerSecond.distance) * minValue);
+        return make<VelocityCls>((pixelsPerSecond / pixelsPerSecond->distance) * minValue);
     }
     return this;
 }
 
-bool Velocity::==(Object other) {
-    return other is Velocity && other.pixelsPerSecond == pixelsPerSecond;
+bool VelocityCls::==(Object other) {
+    return other is Velocity && other->pixelsPerSecond == pixelsPerSecond;
 }
 
-int Velocity::hashCode() {
-    return pixelsPerSecond.hashCode;
+int VelocityCls::hashCode() {
+    return pixelsPerSecond->hashCode;
 }
 
-String Velocity::toString() {
+String VelocityCls::toString() {
     return "Velocity(${pixelsPerSecond.dx.toStringAsFixed(1)}, ${pixelsPerSecond.dy.toStringAsFixed(1)})";
 }
 
-VelocityEstimate::VelocityEstimate(double confidence, Duration duration, Offset offset, Offset pixelsPerSecond) {
+VelocityEstimateCls::VelocityEstimateCls(double confidence, Duration duration, Offset offset, Offset pixelsPerSecond) {
     {
         assert(pixelsPerSecond != nullptr);
         assert(confidence != nullptr);
@@ -51,34 +51,34 @@ VelocityEstimate::VelocityEstimate(double confidence, Duration duration, Offset 
     }
 }
 
-String VelocityEstimate::toString() {
+String VelocityEstimateCls::toString() {
     return "VelocityEstimate(${pixelsPerSecond.dx.toStringAsFixed(1)}, ${pixelsPerSecond.dy.toStringAsFixed(1)}; offset: $offset, duration: $duration, confidence: ${confidence.toStringAsFixed(1)})";
 }
 
-String _PointAtTime::toString() {
+String _PointAtTimeCls::toString() {
     return "_PointAtTime($point at $time)";
 }
 
-_PointAtTime::_PointAtTime(Offset point, Duration time) {
+_PointAtTimeCls::_PointAtTimeCls(Offset point, Duration time) {
     {
         assert(point != nullptr);
         assert(time != nullptr);
     }
 }
 
-void VelocityTracker::addPosition(Offset position, Duration time) {
+void VelocityTrackerCls::addPosition(Offset position, Duration time) {
     _index = 1;
     if (_index == _historySize) {
         _index = 0;
     }
-    _samples[_index] = _PointAtTime(position, time);
+    _samples[_index] = make<_PointAtTimeCls>(position, time);
 }
 
-VelocityEstimate VelocityTracker::getVelocityEstimate() {
-    List<double> x = ;
-    List<double> y = ;
-    List<double> w = ;
-    List<double> time = ;
+VelocityEstimate VelocityTrackerCls::getVelocityEstimate() {
+    List<double> x = makeList();
+    List<double> y = makeList();
+    List<double> w = makeList();
+    List<double> time = makeList();
     int sampleCount = 0;
     int index = _index;
     _PointAtTime newestSample = _samples[index];
@@ -92,56 +92,62 @@ VelocityEstimate VelocityTracker::getVelocityEstimate() {
         if (sample == nullptr) {
                         break;
         }
-        double age = (newestSample.time - sample.time).inMicroseconds.toDouble() / 1000;
-        double delta = (sample.time - previousSample.time).inMicroseconds.abs().toDouble() / 1000;
+        double age = (newestSample->time - sample->time)->inMicroseconds->toDouble() / 1000;
+        double delta = (sample->time - previousSample->time)->inMicroseconds->abs()->toDouble() / 1000;
         previousSample = sample;
         if (age > _horizonMilliseconds || delta > _assumePointerMoveStoppedMilliseconds) {
                         break;
         }
         oldestSample = sample;
-        Offset position = sample.point;
-        x.add(position.dx);
-        y.add(position.dy);
-        w.add(1.0);
-        time.add(-age);
+        Offset position = sample->point;
+        x->add(position->dx);
+        y->add(position->dy);
+        w->add(1.0);
+        time->add(-age);
         index = (index == 0? _historySize : index) - 1;
         sampleCount = 1;
     } while ( < _historySize);
     if (sampleCount >= _minSampleSize) {
-        LeastSquaresSolver xSolver = LeastSquaresSolver(time, x, w);
-        PolynomialFit xFit = xSolver.solve(2);
+        LeastSquaresSolver xSolver = make<LeastSquaresSolverCls>(time, x, w);
+        PolynomialFit xFit = xSolver->solve(2);
         if (xFit != nullptr) {
-            LeastSquaresSolver ySolver = LeastSquaresSolver(time, y, w);
-            PolynomialFit yFit = ySolver.solve(2);
+            LeastSquaresSolver ySolver = make<LeastSquaresSolverCls>(time, y, w);
+            PolynomialFit yFit = ySolver->solve(2);
             if (yFit != nullptr) {
-                return VelocityEstimate(Offset(xFit.coefficients[1] * 1000, yFit.coefficients[1] * 1000), xFit.confidence * yFit.confidence, newestSample.time - oldestSample.time, newestSample.point - oldestSample.point);
+                return make<VelocityEstimateCls>(make<OffsetCls>(xFit->coefficients[1] * 1000, yFit->coefficients[1] * 1000), xFit->confidence * yFit->confidence, newestSample->time - oldestSample->time, newestSample->point - oldestSample->point);
             }
         }
     }
-    return VelocityEstimate(Offset.zero, 1.0, newestSample.time - oldestSample.time, newestSample.point - oldestSample.point);
+    return make<VelocityEstimateCls>(OffsetCls::zero, 1.0, newestSample->time - oldestSample->time, newestSample->point - oldestSample->point);
 }
 
-Velocity VelocityTracker::getVelocity() {
+Velocity VelocityTrackerCls::getVelocity() {
     VelocityEstimate estimate = getVelocityEstimate();
-    if (estimate == nullptr || estimate.pixelsPerSecond == Offset.zero) {
-        return Velocity.zero;
+    if (estimate == nullptr || estimate->pixelsPerSecond == OffsetCls::zero) {
+        return VelocityCls::zero;
     }
-    return Velocity(estimate.pixelsPerSecond);
+    return make<VelocityCls>(estimate->pixelsPerSecond);
 }
 
-IOSScrollViewFlingVelocityTracker::IOSScrollViewFlingVelocityTracker(Unknown) {
+IOSScrollViewFlingVelocityTrackerCls::IOSScrollViewFlingVelocityTrackerCls(Unknown kind) {
     {
-        super.withKind();
+        super->withKind();
     }
 }
 
-void IOSScrollViewFlingVelocityTracker::addPosition(Offset position, Duration time) {
-    assert(());
+void IOSScrollViewFlingVelocityTrackerCls::addPosition(Offset position, Duration time) {
+    assert([=] () {
+        _PointAtTime previousPoint = _touchSamples[_index];
+        if (previousPoint == nullptr || previousPoint->time <= time) {
+            return true;
+        }
+        ;
+    }());
     _index = (_index + 1) % _sampleSize;
-    _touchSamples[_index] = _PointAtTime(position, time);
+    _touchSamples[_index] = make<_PointAtTimeCls>(position, time);
 }
 
-VelocityEstimate IOSScrollViewFlingVelocityTracker::getVelocityEstimate() {
+VelocityEstimate IOSScrollViewFlingVelocityTrackerCls::getVelocityEstimate() {
     Offset estimatedVelocity = _previousVelocityAt(-2) * 0.6 + _previousVelocityAt(-1) * 0.35 + _previousVelocityAt(0) * 0.05;
     _PointAtTime newestSample = _touchSamples[_index];
     _PointAtTime oldestNonNullSample;
@@ -153,21 +159,21 @@ VelocityEstimate IOSScrollViewFlingVelocityTracker::getVelocityEstimate() {
     }
     if (oldestNonNullSample == nullptr || newestSample == nullptr) {
         assert(false, "There must be at least 1 point in _touchSamples: $_touchSamples");
-        return const VelocityEstimate(Offset.zero, 0.0, Duration.zero, Offset.zero);
+        return make<VelocityEstimateCls>(OffsetCls::zero, 0.0, DurationCls::zero, OffsetCls::zero);
     } else {
-        return VelocityEstimate(estimatedVelocity, 1.0, newestSample.time - oldestNonNullSample.time, newestSample.point - oldestNonNullSample.point);
+        return make<VelocityEstimateCls>(estimatedVelocity, 1.0, newestSample->time - oldestNonNullSample->time, newestSample->point - oldestNonNullSample->point);
     }
 }
 
-Offset IOSScrollViewFlingVelocityTracker::_previousVelocityAt(int index) {
+Offset IOSScrollViewFlingVelocityTrackerCls::_previousVelocityAt(int index) {
     int endIndex = (_index + index) % _sampleSize;
     int startIndex = (_index + index - 1) % _sampleSize;
     _PointAtTime end = _touchSamples[endIndex];
     _PointAtTime start = _touchSamples[startIndex];
     if (end == nullptr || start == nullptr) {
-        return Offset.zero;
+        return OffsetCls::zero;
     }
-    int dt = (end.time - start.time).inMicroseconds;
+    int dt = (end->time - start->time)->inMicroseconds;
     assert(dt >= 0);
-    return dt > 0? (end.point - start.point) * 1000 / (dt.toDouble() / 1000) : Offset.zero;
+    return dt > 0? (end->point - start->point) * 1000 / (dt->toDouble() / 1000) : OffsetCls::zero;
 }

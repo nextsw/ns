@@ -1,20 +1,20 @@
-#ifndef ANIMATION_CONTROLLER_H
-#define ANIMATION_CONTROLLER_H
-#include <memory>
-#include <flutter/physics.hpp>
-#include <flutter/scheduler.hpp>
+#ifndef PACKAGES_FLUTTER_SRC_ANIMATION_ANIMATION_CONTROLLER
+#define PACKAGES_FLUTTER_SRC_ANIMATION_ANIMATION_CONTROLLER
+#include <base.hpp>
+#include <packages/flutter/flutter.hpp>
+#include <packages/flutter/flutter.hpp>
 #include "animation.hpp"
 #include "curves.hpp"
 
-#include <ui/ui.hpp>
-#include <flutter/foundation.hpp>
-#include <flutter/physics.hpp>
-#include <flutter/scheduler.hpp>
-#include <flutter/semantics.hpp>
+#include <dart/core/core.hpp>
+#include <dart/ui/ui.hpp>
+#include <packages/flutter/lib/foundation.hpp>
+#include <packages/flutter/flutter.hpp>
+#include <packages/flutter/flutter.hpp>
+#include <packages/flutter/flutter.hpp>
 #include "animation.hpp"
 #include "curves.hpp"
 #include "listener_helpers.hpp"
-
 
 
 enum _AnimationDirection{
@@ -23,7 +23,7 @@ enum _AnimationDirection{
 } // end _AnimationDirection
 SpringDescription _kFlingSpringDescription;
 
-const Tolerance _kFlingTolerance;
+Tolerance _kFlingTolerance;
 
 
 enum AnimationBehavior{
@@ -31,7 +31,7 @@ enum AnimationBehavior{
     preserve,
 } // end AnimationBehavior
 
-class AnimationController : Animation<double> {
+class AnimationControllerCls : public AnimationCls<double> {
 public:
     double lowerBound;
 
@@ -46,47 +46,47 @@ public:
     Duration reverseDuration;
 
 
-     AnimationController(AnimationBehavior animationBehavior, String debugLabel, Duration duration, double lowerBound, Duration reverseDuration, double upperBound, double value, TickerProvider vsync);
+     AnimationControllerCls(AnimationBehavior animationBehavior, String debugLabel, Duration duration, double lowerBound, Duration reverseDuration, double upperBound, double value, TickerProvider vsync);
 
-    void  unbounded(AnimationBehavior animationBehavior, String debugLabel, Duration duration, Duration reverseDuration, double value, TickerProvider vsync);
+    virtual void  unbounded(AnimationBehavior animationBehavior, String debugLabel, Duration duration, Duration reverseDuration, double value, TickerProvider vsync);
 
-    Animation<double> view();
+    virtual Animation<double> view();
 
-    void resync(TickerProvider vsync);
+    virtual void resync(TickerProvider vsync);
 
-    double value();
+    virtual double value();
 
-    void  value(double newValue);
+    virtual void  value(double newValue);
 
-    void reset();
+    virtual void reset();
 
-    double velocity();
+    virtual double velocity();
 
-    Duration lastElapsedDuration();
+    virtual Duration lastElapsedDuration();
 
-    bool isAnimating();
+    virtual bool isAnimating();
 
-    AnimationStatus status();
+    virtual AnimationStatus status();
 
-    TickerFuture forward(double from);
+    virtual TickerFuture forward(double from);
 
-    TickerFuture reverse(double from);
+    virtual TickerFuture reverse(double from);
 
-    TickerFuture animateTo(Curve curve, Duration duration, double target);
+    virtual TickerFuture animateTo(Curve curve, Duration duration, double target);
 
-    TickerFuture animateBack(Curve curve, Duration duration, double target);
+    virtual TickerFuture animateBack(Curve curve, Duration duration, double target);
 
-    TickerFuture repeat(double max, double min, Duration period, bool reverse);
+    virtual TickerFuture repeat(double max, double min, Duration period, bool reverse);
 
-    TickerFuture fling(AnimationBehavior animationBehavior, SpringDescription springDescription, double velocity);
+    virtual TickerFuture fling(AnimationBehavior animationBehavior, SpringDescription springDescription, double velocity);
 
-    TickerFuture animateWith(Simulation simulation);
+    virtual TickerFuture animateWith(Simulation simulation);
 
-    void stop(bool canceled);
+    virtual void stop(bool canceled);
 
-    void dispose();
+    virtual void dispose();
 
-    String toStringDetails();
+    virtual String toStringDetails();
 
 private:
     Ticker _ticker;
@@ -104,28 +104,29 @@ private:
     AnimationStatus _lastReportedStatus;
 
 
-    void _internalSetValue(double newValue);
+    virtual void _internalSetValue(double newValue);
 
-    TickerFuture _animateToInternal(Curve curve, Duration duration, double target);
+    virtual TickerFuture _animateToInternal(Curve curve, Duration duration, double target);
 
-    void _directionSetter(_AnimationDirection direction);
+    virtual void _directionSetter(_AnimationDirection direction);
 
-    TickerFuture _startSimulation(Simulation simulation);
+    virtual TickerFuture _startSimulation(Simulation simulation);
 
-    void _checkStatusChanged();
+    virtual void _checkStatusChanged();
 
-    void _tick(Duration elapsed);
+    virtual void _tick(Duration elapsed);
 
 };
+using AnimationController = std::shared_ptr<AnimationControllerCls>;
 
-class _InterpolationSimulation : Simulation {
+class _InterpolationSimulationCls : public SimulationCls {
 public:
 
-    double x(double timeInSeconds);
+    virtual double x(double timeInSeconds);
 
-    double dx(double timeInSeconds);
+    virtual double dx(double timeInSeconds);
 
-    bool isDone(double timeInSeconds);
+    virtual bool isDone(double timeInSeconds);
 
 private:
     double _durationInSeconds;
@@ -137,11 +138,12 @@ private:
     Curve _curve;
 
 
-     _InterpolationSimulation(double _begin, Curve _curve, double _end, Duration duration, double scale);
+     _InterpolationSimulationCls(double _begin, Curve _curve, double _end, Duration duration, double scale);
 
 };
+using _InterpolationSimulation = std::shared_ptr<_InterpolationSimulationCls>;
 
-class _RepeatingSimulation : Simulation {
+class _RepeatingSimulationCls : public SimulationCls {
 public:
     double min;
 
@@ -152,11 +154,11 @@ public:
     _DirectionSetter directionSetter;
 
 
-    double x(double timeInSeconds);
+    virtual double x(double timeInSeconds);
 
-    double dx(double timeInSeconds);
+    virtual double dx(double timeInSeconds);
 
-    bool isDone(double timeInSeconds);
+    virtual bool isDone(double timeInSeconds);
 
 private:
     double _periodInSeconds;
@@ -164,8 +166,10 @@ private:
     double _initialT;
 
 
-     _RepeatingSimulation(_DirectionSetter directionSetter, double initialValue, double max, double min, Duration period, bool reverse);
+     _RepeatingSimulationCls(_DirectionSetter directionSetter, double initialValue, double max, double min, Duration period, bool reverse);
 
 };
+using _RepeatingSimulation = std::shared_ptr<_RepeatingSimulationCls>;
+
 
 #endif

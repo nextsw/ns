@@ -1,106 +1,100 @@
-#ifndef SET_H
-#define SET_H
-#include <memory>
+#ifndef DART_COLLECTION_SET
+#define DART_COLLECTION_SET
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
 
 
-
-
-class SetMixin<E> {
+template<typename E> class SetMixinCls : public ObjectCls {
 public:
 
-    bool add(E value);
+    virtual bool add(E value);
+    virtual bool contains(Object element);
+    virtual E lookup(Object element);
+    virtual bool remove(Object value);
+    virtual Iterator<E> iterator();
+    virtual Set<E> toSet();
+    virtual int length();
+    virtual bool isEmpty();
 
-    bool contains(Object element);
+    virtual bool isNotEmpty();
 
-    E lookup(Object element);
+    template<typename R>  virtual Set<R> cast();
 
-    bool remove(Object value);
+    virtual Iterable<E> followedBy(Iterable<E> other);
 
-    Iterator<E> iterator();
+    template<typename T>  virtual Iterable<T> whereType();
 
-    Set<E> toSet();
+    virtual void clear();
 
-    int length();
+    virtual void addAll(Iterable<E> elements);
 
-    bool isEmpty();
+    virtual void removeAll(Iterable<Object> elements);
 
-    bool isNotEmpty();
+    virtual void retainAll(Iterable<Object> elements);
 
-    Set<R> cast<R>();
+    virtual void removeWhere(bool test(E element) );
 
-    Iterable<E> followedBy(Iterable<E> other);
+    virtual void retainWhere(bool test(E element) );
 
-    Iterable<T> whereType<T>();
+    virtual bool containsAll(Iterable<Object> other);
 
-    void clear();
+    virtual Set<E> union(Set<E> other);
 
-    void addAll(Iterable<E> elements);
+    virtual Set<E> intersection(Set<Object> other);
 
-    void removeAll(Iterable<Object> elements);
+    virtual Set<E> difference(Set<Object> other);
 
-    void retainAll(Iterable<Object> elements);
+    virtual List<E> toList(bool growable);
 
-    void removeWhere(FunctionType test);
+    template<typename T>  virtual Iterable<T> map(T f(E element) );
 
-    void retainWhere(FunctionType test);
+    virtual E single();
 
-    bool containsAll(Iterable<Object> other);
+    virtual String toString();
 
-    Set<E> union(Set<E> other);
+    virtual Iterable<E> where(bool f(E element) );
 
-    Set<E> intersection(Set<Object> other);
+    template<typename T>  virtual Iterable<T> expand(Iterable<T> f(E element) );
 
-    Set<E> difference(Set<Object> other);
+    virtual void forEach(void f(E element) );
 
-    List<E> toList(bool growable);
+    virtual E reduce(E combine(E element, E value) );
 
-    Iterable<T> map<T>(FunctionType f);
+    template<typename T>  virtual T fold(T combine(E element, T previousValue) , T initialValue);
 
-    E single();
+    virtual bool every(bool f(E element) );
 
-    String toString();
+    virtual String join(String separator);
 
-    Iterable<E> where(FunctionType f);
+    virtual bool any(bool test(E element) );
 
-    Iterable<T> expand<T>(FunctionType f);
+    virtual Iterable<E> take(int n);
 
-    void forEach(FunctionType f);
+    virtual Iterable<E> takeWhile(bool test(E value) );
 
-    E reduce(FunctionType combine);
+    virtual Iterable<E> skip(int n);
 
-    T fold<T>(FunctionType combine, T initialValue);
+    virtual Iterable<E> skipWhile(bool test(E value) );
 
-    bool every(FunctionType f);
+    virtual E first();
 
-    String join(String separator);
+    virtual E last();
 
-    bool any(FunctionType test);
+    virtual E firstWhere(E orElse() , bool test(E value) );
 
-    Iterable<E> take(int n);
+    virtual E lastWhere(E orElse() , bool test(E value) );
 
-    Iterable<E> takeWhile(FunctionType test);
+    virtual E singleWhere(E orElse() , bool test(E value) );
 
-    Iterable<E> skip(int n);
-
-    Iterable<E> skipWhile(FunctionType test);
-
-    E first();
-
-    E last();
-
-    E firstWhere(FunctionType orElse, FunctionType test);
-
-    E lastWhere(FunctionType orElse, FunctionType test);
-
-    E singleWhere(FunctionType orElse, FunctionType test);
-
-    E elementAt(int index);
+    virtual E elementAt(int index);
 
 private:
 
 };
+template<typename E> using SetMixin = std::shared_ptr<SetMixinCls<E>>;
 
-class SetBase<E> {
+template<typename E> class SetBaseCls : public ObjectCls {
 public:
 
     static String setToString(Set set);
@@ -108,95 +102,97 @@ public:
 private:
 
 };
+template<typename E> using SetBase = std::shared_ptr<SetBaseCls<E>>;
 
-class _SetBase<E> {
+template<typename E> class _SetBaseCls : public ObjectCls {
 public:
 
-    Set<R> cast<R>();
+    template<typename R>  virtual Set<R> cast();
 
-    Set<E> difference(Set<Object> other);
+    virtual Set<E> difference(Set<Object> other);
 
-    Set<E> intersection(Set<Object> other);
+    virtual Set<E> intersection(Set<Object> other);
 
-    Set<E> toSet();
+    virtual Set<E> toSet();
 
 private:
 
-     _SetBase();
-
-    Set<E> _newSet();
-
-    Set<R> _newSimilarSet<R>();
-
+     _SetBaseCls();
+    virtual Set<E> _newSet();
+    template<typename R>  virtual Set<R> _newSimilarSet();
 };
+template<typename E> using _SetBase = std::shared_ptr<_SetBaseCls<E>>;
 
-class _UnmodifiableSetMixin<E> {
+template<typename E> class _UnmodifiableSetMixinCls : public ObjectCls {
 public:
 
-    bool add(E value);
+    virtual bool add(E value);
 
-    void clear();
+    virtual void clear();
 
-    void addAll(Iterable<E> elements);
+    virtual void addAll(Iterable<E> elements);
 
-    void removeAll(Iterable<Object> elements);
+    virtual void removeAll(Iterable<Object> elements);
 
-    void retainAll(Iterable<Object> elements);
+    virtual void retainAll(Iterable<Object> elements);
 
-    void removeWhere(FunctionType test);
+    virtual void removeWhere(bool test(E element) );
 
-    void retainWhere(FunctionType test);
+    virtual void retainWhere(bool test(E element) );
 
-    bool remove(Object value);
+    virtual bool remove(Object value);
 
 private:
 
     static Never _throwUnmodifiable();
 
 };
+template<typename E> using _UnmodifiableSetMixin = std::shared_ptr<_UnmodifiableSetMixinCls<E>>;
 
-class _UnmodifiableSet<E> : _SetBase<E> {
+template<typename E> class _UnmodifiableSetCls : public _SetBaseCls<E> {
 public:
 
-    bool contains(Object element);
+    virtual bool contains(Object element);
 
-    Iterator<E> iterator();
+    virtual Iterator<E> iterator();
 
-    int length();
+    virtual int length();
 
-    E lookup(Object element);
+    virtual E lookup(Object element);
 
 private:
     Map<E, Null> _map;
 
 
-     _UnmodifiableSet(Map<E, Null> _map);
+     _UnmodifiableSetCls(Map<E, Null> _map);
+    virtual Set<E> _newSet();
 
-    Set<E> _newSet();
-
-    Set<R> _newSimilarSet<R>();
+    template<typename R>  virtual Set<R> _newSimilarSet();
 
 };
+template<typename E> using _UnmodifiableSet = std::shared_ptr<_UnmodifiableSetCls<E>>;
 
-class UnmodifiableSetView<E> : SetBase<E> {
+template<typename E> class UnmodifiableSetViewCls : public SetBaseCls<E> {
 public:
 
-     UnmodifiableSetView(Set<E> source);
+     UnmodifiableSetViewCls(Set<E> source);
 
-    bool contains(Object element);
+    virtual bool contains(Object element);
 
-    E lookup(Object element);
+    virtual E lookup(Object element);
 
-    int length();
+    virtual int length();
 
-    Iterator<E> iterator();
+    virtual Iterator<E> iterator();
 
-    Set<E> toSet();
+    virtual Set<E> toSet();
 
 private:
     Set<E> _source;
 
 
 };
+template<typename E> using UnmodifiableSetView = std::shared_ptr<UnmodifiableSetViewCls<E>>;
+
 
 #endif

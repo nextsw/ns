@@ -1,13 +1,13 @@
-#ifndef DEFERRED_COMPONENT_H
-#define DEFERRED_COMPONENT_H
-#include <memory>
+#ifndef PACKAGES_FLUTTER_SRC_SERVICES_DEFERRED_COMPONENT
+#define PACKAGES_FLUTTER_SRC_SERVICES_DEFERRED_COMPONENT
+#include <base.hpp>
 
-#include <async/async.hpp>
+#include <dart/core/core.hpp>
+#include <dart/async/async.hpp>
 #include "system_channels.hpp"
 
 
-
-class DeferredComponent {
+class DeferredComponentCls : public ObjectCls {
 public:
 
     static Future<void> installDeferredComponent(String componentName);
@@ -16,8 +16,9 @@ public:
 
 private:
 
-    void  _();
-
+    virtual void  _();
 };
+using DeferredComponent = std::shared_ptr<DeferredComponentCls>;
+
 
 #endif

@@ -1,18 +1,18 @@
-#ifndef TEXT_SPAN_H
-#define TEXT_SPAN_H
-#include <memory>
+#ifndef PACKAGES_FLUTTER_SRC_PAINTING_TEXT_SPAN
+#define PACKAGES_FLUTTER_SRC_PAINTING_TEXT_SPAN
+#include <base.hpp>
 
-#include <ui/ui.hpp>
-#include <flutter/foundation.hpp>
-#include <flutter/gestures.hpp>
-#include <flutter/services.hpp>
+#include <dart/core/core.hpp>
+#include <dart/ui/ui.hpp>
+#include <packages/flutter/lib/foundation.hpp>
+#include <packages/flutter/flutter.hpp>
+#include <packages/flutter/flutter.hpp>
 #include "basic_types.hpp"
 #include "inline_span.hpp"
 #include "text_painter.hpp"
 
 
-
-class TextSpan : InlineSpan {
+class TextSpanCls : public InlineSpanCls {
 public:
     String text;
 
@@ -33,44 +33,46 @@ public:
     bool spellOut;
 
 
-     TextSpan(List<InlineSpan> children, Locale locale, MouseCursor mouseCursor, PointerEnterEventListener onEnter, PointerExitEventListener onExit, GestureRecognizer recognizer, String semanticsLabel, bool spellOut, Unknown, String text);
+     TextSpanCls(List<InlineSpan> children, Locale locale, MouseCursor mouseCursor, PointerEnterEventListener onEnter, PointerExitEventListener onExit, GestureRecognizer recognizer, String semanticsLabel, bool spellOut, Unknown style, String text);
 
-    MouseCursor cursor();
+    virtual MouseCursor cursor();
 
-    bool validForMouseTracker();
+    virtual bool validForMouseTracker();
 
-    void handleEvent(HitTestEntry entry, PointerEvent event);
+    virtual void handleEvent(HitTestEntry entry, PointerEvent event);
 
-    void build(ParagraphBuilder builder, List<PlaceholderDimensions> dimensions, double textScaleFactor);
+    virtual void build(ParagraphBuilder builder, List<PlaceholderDimensions> dimensions, double textScaleFactor);
 
-    bool visitChildren(InlineSpanVisitor visitor);
+    virtual bool visitChildren(InlineSpanVisitor visitor);
 
-    InlineSpan getSpanForPositionVisitor(Accumulator offset, TextPosition position);
+    virtual InlineSpan getSpanForPositionVisitor(Accumulator offset, TextPosition position);
 
-    void computeToPlainText(StringBuffer buffer, bool includePlaceholders, bool includeSemanticsLabels);
+    virtual void computeToPlainText(StringBuffer buffer, bool includePlaceholders, bool includeSemanticsLabels);
 
-    void computeSemanticsInformation(List<InlineSpanSemanticsInformation> collector, Locale inheritedLocale, bool inheritedSpellOut);
+    virtual void computeSemanticsInformation(List<InlineSpanSemanticsInformation> collector, Locale inheritedLocale, bool inheritedSpellOut);
 
-    int codeUnitAtVisitor(int index, Accumulator offset);
+    virtual int codeUnitAtVisitor(int index, Accumulator offset);
 
-    void describeSemantics(Accumulator offset, List<dynamic> semanticsElements, List<int> semanticsOffsets);
+    virtual void describeSemantics(Accumulator offset, List<dynamic> semanticsElements, List<int> semanticsOffsets);
 
-    bool debugAssertIsValid();
+    virtual bool debugAssertIsValid();
 
-    RenderComparison compareTo(InlineSpan other);
+    virtual RenderComparison compareTo(InlineSpan other);
 
-    bool ==(Object other);
+    virtual bool operator==(Object other);
 
-    int hashCode();
+    virtual int hashCode();
 
-    String toStringShort();
+    virtual String toStringShort();
 
-    void debugFillProperties(DiagnosticPropertiesBuilder properties);
+    virtual void debugFillProperties(DiagnosticPropertiesBuilder properties);
 
-    List<DiagnosticsNode> debugDescribeChildren();
+    virtual List<DiagnosticsNode> debugDescribeChildren();
 
 private:
 
 };
+using TextSpan = std::shared_ptr<TextSpanCls>;
+
 
 #endif

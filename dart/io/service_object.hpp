@@ -1,31 +1,30 @@
-#ifndef SERVICE_OBJECT_H
-#define SERVICE_OBJECT_H
-#include <memory>
+#ifndef DART_IO_SERVICE_OBJECT
+#define DART_IO_SERVICE_OBJECT
+#include <base.hpp>
 
-
+#include <dart/core/core.hpp>
 
 int _nextServiceId;
 
 
-class _ServiceObject {
+class _ServiceObjectCls : public ObjectCls {
 public:
 
 private:
     int __serviceId;
 
 
-    int _serviceId();
+    virtual int _serviceId();
 
-    Map _toJSON(bool ref);
+    virtual Map _toJSON(bool ref);
+    virtual String _servicePath();
 
-    String _servicePath();
-
-    String _serviceTypePath();
-
-    String _serviceTypeName();
-
-    String _serviceType(bool ref);
+    virtual String _serviceTypePath();
+    virtual String _serviceTypeName();
+    virtual String _serviceType(bool ref);
 
 };
+using _ServiceObject = std::shared_ptr<_ServiceObjectCls>;
+
 
 #endif

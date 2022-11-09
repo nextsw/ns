@@ -1,8 +1,8 @@
-#ifndef OPENGL_H
-#define OPENGL_H
-#include <memory>
+#ifndef PACKAGES_VECTOR_MATH_SRC_VECTOR_MATH_64_OPENGL
+#define PACKAGES_VECTOR_MATH_SRC_VECTOR_MATH_64_OPENGL
+#include <base.hpp>
 
-
+#include <dart/core/core.hpp>
 
 void setRotationMatrix(Vector3 forwardDirection, Matrix4 rotationMatrix, Vector3 upDirection);
 
@@ -35,6 +35,7 @@ Matrix4 makePlaneReflection(Vector3 planeNormal, Vector3 planePoint);
 bool unproject(Matrix4 cameraMatrix, Vector3 pickWorld, num pickX, num pickY, num pickZ, num viewportHeight, num viewportWidth, num viewportX, num viewportY);
 
 bool pickRay(Matrix4 cameraMatrix, num pickX, num pickY, Vector3 rayFar, Vector3 rayNear, num viewportHeight, num viewportWidth, num viewportX, num viewportY);
+
 
 
 #endif

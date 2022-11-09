@@ -1,32 +1,33 @@
-#ifndef GESTURE_SETTINGS_H
-#define GESTURE_SETTINGS_H
-#include <memory>
-#include <ui.hpp>
+#ifndef PACKAGES_FLUTTER_SRC_GESTURES_GESTURE_SETTINGS
+#define PACKAGES_FLUTTER_SRC_GESTURES_GESTURE_SETTINGS
+#include <base.hpp>
+#include <dart/ui/ui.hpp>
 
-#include <ui/ui.hpp>
-#include <flutter/foundation.hpp>
+#include <dart/core/core.hpp>
+#include <dart/ui/ui.hpp>
+#include <packages/flutter/lib/foundation.hpp>
 
 
-
-class DeviceGestureSettings {
+class DeviceGestureSettingsCls : public ObjectCls {
 public:
     double touchSlop;
 
 
-     DeviceGestureSettings(double touchSlop);
+     DeviceGestureSettingsCls(double touchSlop);
+    virtual void  fromWindow(FlutterView window);
 
-    void  fromWindow(FlutterView window);
+    virtual double panSlop();
 
-    double panSlop();
+    virtual int hashCode();
 
-    int hashCode();
+    virtual bool operator==(Object other);
 
-    bool ==(Object other);
-
-    String toString();
+    virtual String toString();
 
 private:
 
 };
+using DeviceGestureSettings = std::shared_ptr<DeviceGestureSettingsCls>;
+
 
 #endif

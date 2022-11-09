@@ -1,43 +1,43 @@
 #include "byte_conversion.hpp"
-void ByteConversionSinkBase::addSlice(List<int> chunk, int end, bool isLast, int start) {
-    add(chunk.sublist(start, end));
+void ByteConversionSinkBaseCls::addSlice(List<int> chunk, int end, bool isLast, int start) {
+    add(chunk->sublist(start, end));
     if (isLast)     {
         close();
     }
 }
 
-void _ByteAdapterSink::add(List<int> chunk) {
-    _sink.add(chunk);
+void _ByteAdapterSinkCls::add(List<int> chunk) {
+    _sink->add(chunk);
 }
 
-void _ByteAdapterSink::close() {
-    _sink.close();
+void _ByteAdapterSinkCls::close() {
+    _sink->close();
 }
 
-void _ByteCallbackSink::add(Iterable<int> chunk) {
-    auto freeCount = _buffer.length - _bufferIndex;
-    if (chunk.length > freeCount) {
-        auto oldLength = _buffer.length;
-        auto newLength = _roundToPowerOf2(chunk.length + oldLength) * 2;
-        auto grown = Uint8List(newLength);
-        grown.setRange(0, _buffer.length, _buffer);
+void _ByteCallbackSinkCls::add(Iterable<int> chunk) {
+    auto freeCount = _buffer->length - _bufferIndex;
+    if (chunk->length > freeCount) {
+        auto oldLength = _buffer->length;
+        auto newLength = _roundToPowerOf2(chunk->length + oldLength) * 2;
+        auto grown = make<Uint8ListCls>(newLength);
+        grown->setRange(0, _buffer->length, _buffer);
         _buffer = grown;
     }
-    _buffer.setRange(_bufferIndex, _bufferIndex + chunk.length, chunk);
-    _bufferIndex = chunk.length;
+    _buffer->setRange(_bufferIndex, _bufferIndex + chunk->length, chunk);
+    _bufferIndex = chunk->length;
 }
 
-void _ByteCallbackSink::close() {
-    _callback(_buffer.sublist(0, _bufferIndex));
+void _ByteCallbackSinkCls::close() {
+    _callback(_buffer->sublist(0, _bufferIndex));
 }
 
-_ByteCallbackSink::_ByteCallbackSink(FunctionType callback) {
+_ByteCallbackSinkCls::_ByteCallbackSinkCls(void callback(List<int> accumulated) ) {
     {
         _callback = callback;
     }
 }
 
-int _ByteCallbackSink::_roundToPowerOf2(int v) {
+int _ByteCallbackSinkCls::_roundToPowerOf2(int v) {
     assert(v > 0);
     v--;
     v = v >> 1;

@@ -4,5 +4,5 @@ String _operatorString(_Operator op) {
 }
 
 bool _isCompoundAssignment(_Operator op) {
-    return _compoundAssignmentOperators.contains(op);
+    return _compoundAssignmentOperators->contains(op);
 }

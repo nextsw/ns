@@ -1,49 +1,50 @@
-#ifndef SYSTEM_CHANNELS_H
-#define SYSTEM_CHANNELS_H
-#include <memory>
+#ifndef PACKAGES_FLUTTER_SRC_SERVICES_SYSTEM_CHANNELS
+#define PACKAGES_FLUTTER_SRC_SERVICES_SYSTEM_CHANNELS
+#include <base.hpp>
 #include "platform_channel.hpp"
 
-#include <ui/ui.hpp>
+#include <dart/core/core.hpp>
+#include <dart/ui/ui.hpp>
 #include "message_codecs.hpp"
 #include "platform_channel.hpp"
 
 
-
-class SystemChannels {
+class SystemChannelsCls : public ObjectCls {
 public:
-    static const MethodChannel navigation;
+    static MethodChannel navigation;
 
-    static const MethodChannel platform;
+    static MethodChannel platform;
 
-    static const MethodChannel textInput;
+    static MethodChannel textInput;
 
-    static const BasicMessageChannel<Object> keyEvent;
+    static BasicMessageChannel<Object> keyEvent;
 
-    static const BasicMessageChannel<String> lifecycle;
+    static BasicMessageChannel<String> lifecycle;
 
-    static const BasicMessageChannel<Object> system;
+    static BasicMessageChannel<Object> system;
 
-    static const BasicMessageChannel<Object> accessibility;
+    static BasicMessageChannel<Object> accessibility;
 
-    static const MethodChannel platform_views;
+    static MethodChannel platform_views;
 
-    static const MethodChannel skia;
+    static MethodChannel skia;
 
-    static const MethodChannel mouseCursor;
+    static MethodChannel mouseCursor;
 
-    static const MethodChannel restoration;
+    static MethodChannel restoration;
 
-    static const MethodChannel deferredComponent;
+    static MethodChannel deferredComponent;
 
-    static const MethodChannel localization;
+    static MethodChannel localization;
 
-    static const MethodChannel menu;
+    static MethodChannel menu;
 
 
 private:
 
-    void  _();
-
+    virtual void  _();
 };
+using SystemChannels = std::shared_ptr<SystemChannelsCls>;
+
 
 #endif

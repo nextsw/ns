@@ -1,13 +1,13 @@
-#ifndef FORCE_PRESS_H
-#define FORCE_PRESS_H
-#include <memory>
-#include <ui.hpp>
+#ifndef PACKAGES_FLUTTER_SRC_GESTURES_FORCE_PRESS
+#define PACKAGES_FLUTTER_SRC_GESTURES_FORCE_PRESS
+#include <base.hpp>
+#include <dart/ui/ui.hpp>
 #include "events.hpp"
 
-#include <flutter/foundation.hpp>
+#include <dart/core/core.hpp>
+#include <packages/flutter/lib/foundation.hpp>
 #include "events.hpp"
 #include "recognizer.hpp"
-
 
 
 enum _ForceState{
@@ -18,7 +18,7 @@ enum _ForceState{
     peaked,
 } // end _ForceState
 
-class ForcePressDetails {
+class ForcePressDetailsCls : public ObjectCls {
 public:
     Offset globalPosition;
 
@@ -27,13 +27,14 @@ public:
     double pressure;
 
 
-     ForcePressDetails(Offset globalPosition, Offset localPosition, double pressure);
+     ForcePressDetailsCls(Offset globalPosition, Offset localPosition, double pressure);
 
 private:
 
 };
+using ForcePressDetails = std::shared_ptr<ForcePressDetailsCls>;
 
-class ForcePressGestureRecognizer : OneSequenceGestureRecognizer {
+class ForcePressGestureRecognizerCls : public OneSequenceGestureRecognizerCls {
 public:
     GestureForcePressStartCallback onStart;
 
@@ -50,19 +51,19 @@ public:
     GestureForceInterpolation interpolation;
 
 
-     ForcePressGestureRecognizer(Unknown, GestureForceInterpolation interpolation, Unknown, double peakPressure, double startPressure, Unknown);
+     ForcePressGestureRecognizerCls(Unknown debugOwner, GestureForceInterpolation interpolation, Unknown kind, double peakPressure, double startPressure, Unknown supportedDevices);
 
-    void addAllowedPointer(PointerDownEvent event);
+    virtual void addAllowedPointer(PointerDownEvent event);
 
-    void handleEvent(PointerEvent event);
+    virtual void handleEvent(PointerEvent event);
 
-    void acceptGesture(int pointer);
+    virtual void acceptGesture(int pointer);
 
-    void didStopTrackingLastPointer(int pointer);
+    virtual void didStopTrackingLastPointer(int pointer);
 
-    void rejectGesture(int pointer);
+    virtual void rejectGesture(int pointer);
 
-    String debugDescription();
+    virtual String debugDescription();
 
 private:
     OffsetPair _lastPosition;
@@ -75,5 +76,7 @@ private:
     static double _inverseLerp(double max, double min, double t);
 
 };
+using ForcePressGestureRecognizer = std::shared_ptr<ForcePressGestureRecognizerCls>;
+
 
 #endif

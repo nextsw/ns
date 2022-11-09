@@ -1,11 +1,11 @@
-#ifndef SPLAY_TREE_H
-#define SPLAY_TREE_H
-#include <memory>
+#ifndef DART_COLLECTION_SPLAY_TREE
+#define DART_COLLECTION_SPLAY_TREE
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
 
 
-
-
-class _SplayTreeNode<K, Node extends _SplayTreeNode<K, Node>> {
+template<typename K, typename Node : _SplayTreeNode<K, Node>> class _SplayTreeNodeCls : public ObjectCls {
 public:
     K key;
 
@@ -16,35 +16,37 @@ private:
     Node _right;
 
 
-     _SplayTreeNode(K key);
-
+     _SplayTreeNodeCls(K key);
 };
+template<typename K, typename Node : _SplayTreeNode<K, Node>> using _SplayTreeNode = std::shared_ptr<_SplayTreeNodeCls<K, Node : _SplayTreeNode<K, Node>>>;
 
-class _SplayTreeSetNode<K> : _SplayTreeNode<K, _SplayTreeSetNode<K>> {
+template<typename K> class _SplayTreeSetNodeCls : public _SplayTreeNodeCls<K, _SplayTreeSetNode<K>> {
 public:
 
 private:
 
-     _SplayTreeSetNode(K key);
+     _SplayTreeSetNodeCls(K key);
 
 };
+template<typename K> using _SplayTreeSetNode = std::shared_ptr<_SplayTreeSetNodeCls<K>>;
 
-class _SplayTreeMapNode<K, V> : _SplayTreeNode<K, _SplayTreeMapNode<K, V>> {
+template<typename K, typename V> class _SplayTreeMapNodeCls : public _SplayTreeNodeCls<K, _SplayTreeMapNode<K, V>> {
 public:
     V value;
 
 
-    String toString();
+    virtual String toString();
 
 private:
 
-     _SplayTreeMapNode(K key, V value);
+     _SplayTreeMapNodeCls(K key, V value);
 
-    _SplayTreeMapNode<K, V> _replaceValue(V value);
+    virtual _SplayTreeMapNode<K, V> _replaceValue(V value);
 
 };
+template<typename K, typename V> using _SplayTreeMapNode = std::shared_ptr<_SplayTreeMapNodeCls<K, V>>;
 
-class _SplayTree<K, Node extends _SplayTreeNode<K, Node>> {
+template<typename K, typename Node : _SplayTreeNode<K, Node>> class _SplayTreeCls : public ObjectCls {
 public:
 
 private:
@@ -55,92 +57,89 @@ private:
     int _splayCount;
 
 
-    Node _root();
+    virtual Node _root();
+    virtual void  _root(Node newValue);
+    virtual Comparator<K> _compare();
+    virtual _Predicate _validKey();
+    virtual int _splay(K key);
 
-    void  _root(Node newValue);
+    virtual Node _splayMin(Node node);
 
-    Comparator<K> _compare();
+    virtual Node _splayMax(Node node);
 
-    _Predicate _validKey();
+    virtual Node _remove(K key);
 
-    int _splay(K key);
+    virtual void _addNewRoot(int comp, Node node);
 
-    Node _splayMin(Node node);
+    virtual Node _first();
 
-    Node _splayMax(Node node);
+    virtual Node _last();
 
-    Node _remove(K key);
+    virtual void _clear();
 
-    void _addNewRoot(int comp, Node node);
-
-    Node _first();
-
-    Node _last();
-
-    void _clear();
-
-    bool _containsKey(Object key);
+    virtual bool _containsKey(Object key);
 
 };
+template<typename K, typename Node : _SplayTreeNode<K, Node>> using _SplayTree = std::shared_ptr<_SplayTreeCls<K, Node : _SplayTreeNode<K, Node>>>;
 int _dynamicCompare(dynamic a, dynamic b);
 
-Comparator<K> _defaultCompare<K>();
+template<typename K>  Comparator<K> _defaultCompare();
 
 
-class SplayTreeMap<K, V> : _SplayTree<K, _SplayTreeMapNode<K, V>> {
+template<typename K, typename V> class SplayTreeMapCls : public _SplayTreeCls<K, _SplayTreeMapNode<K, V>> {
 public:
 
-     SplayTreeMap(FunctionType compare, FunctionType isValidKey);
+     SplayTreeMapCls(int compare(K key1, K key2) , bool isValidKey(dynamic potentialKey) );
 
-    void  from(FunctionType compare, FunctionType isValidKey, Map<dynamic, dynamic> other);
+    virtual void  from(int compare(K key1, K key2) , bool isValidKey(dynamic potentialKey) , Map<dynamic, dynamic> other);
 
-    void  of(FunctionType compare, FunctionType isValidKey, Map<K, V> other);
+    virtual void  of(int compare(K key1, K key2) , bool isValidKey(dynamic potentialKey) , Map<K, V> other);
 
-    void  fromIterable(FunctionType compare, FunctionType isValidKey, Iterable iterable, FunctionType key, FunctionType value);
+    virtual void  fromIterable(int compare(K key1, K key2) , bool isValidKey(dynamic potentialKey) , Iterable iterable, K key(dynamic element) , V value(dynamic element) );
 
-    void  fromIterables(FunctionType compare, FunctionType isValidKey, Iterable<K> keys, Iterable<V> values);
+    virtual void  fromIterables(int compare(K key1, K key2) , bool isValidKey(dynamic potentialKey) , Iterable<K> keys, Iterable<V> values);
 
-    V [](Object key);
+    virtual V operator[](Object key);
 
-    V remove(Object key);
+    virtual V remove(Object key);
 
-    void []=(K key, V value);
+    virtual void operator[]=(K key, V value);
 
-    V putIfAbsent(FunctionType ifAbsent, K key);
+    virtual V putIfAbsent(V ifAbsent() , K key);
 
-    V update(FunctionType ifAbsent, K key, FunctionType update);
+    virtual V update(V ifAbsent() , K key, V update(V value) );
 
-    void updateAll(FunctionType update);
+    virtual void updateAll(V update(K key, V value) );
 
-    void addAll(Map<K, V> other);
+    virtual void addAll(Map<K, V> other);
 
-    bool isEmpty();
+    virtual bool isEmpty();
 
-    bool isNotEmpty();
+    virtual bool isNotEmpty();
 
-    void forEach(FunctionType f);
+    virtual void forEach(void f(K key, V value) );
 
-    int length();
+    virtual int length();
 
-    void clear();
+    virtual void clear();
 
-    bool containsKey(Object key);
+    virtual bool containsKey(Object key);
 
-    bool containsValue(Object value);
+    virtual bool containsValue(Object value);
 
-    Iterable<K> keys();
+    virtual Iterable<K> keys();
 
-    Iterable<V> values();
+    virtual Iterable<V> values();
 
-    Iterable<MapEntry<K, V>> entries();
+    virtual Iterable<MapEntry<K, V>> entries();
 
-    K firstKey();
+    virtual K firstKey();
 
-    K lastKey();
+    virtual K lastKey();
 
-    K lastKeyBefore(K key);
+    virtual K lastKeyBefore(K key);
 
-    K firstKeyAfter(K key);
+    virtual K firstKeyAfter(K key);
 
 private:
     _SplayTreeMapNode<K, V> _root;
@@ -151,13 +150,14 @@ private:
 
 
 };
+template<typename K, typename V> using SplayTreeMap = std::shared_ptr<SplayTreeMapCls<K, V>>;
 
-class _SplayTreeIterator<K, Node extends _SplayTreeNode<K, Node>, T> {
+template<typename K, typename Node : _SplayTreeNode<K, Node>, typename T> class _SplayTreeIteratorCls : public ObjectCls {
 public:
 
-    T current();
+    virtual T current();
 
-    bool moveNext();
+    virtual bool moveNext();
 
 private:
     _SplayTree<K, Node> _tree;
@@ -169,156 +169,159 @@ private:
     int _splayCount;
 
 
-     _SplayTreeIterator(_SplayTree<K, Node> tree);
+     _SplayTreeIteratorCls(_SplayTree<K, Node> tree);
 
-    void _rebuildPath(K key);
+    virtual void _rebuildPath(K key);
 
-    void _findLeftMostDescendent(Node node);
+    virtual void _findLeftMostDescendent(Node node);
 
-    T _getValue(Node node);
-
+    virtual T _getValue(Node node);
 };
+template<typename K, typename Node : _SplayTreeNode<K, Node>, typename T> using _SplayTreeIterator = std::shared_ptr<_SplayTreeIteratorCls<K, Node : _SplayTreeNode<K, Node>, T>>;
 
-class _SplayTreeKeyIterable<K, Node extends _SplayTreeNode<K, Node>> : EfficientLengthIterable<K> {
+template<typename K, typename Node : _SplayTreeNode<K, Node>> class _SplayTreeKeyIterableCls : public EfficientLengthIterableCls<K> {
 public:
 
-    int length();
+    virtual int length();
 
-    bool isEmpty();
+    virtual bool isEmpty();
 
-    Iterator<K> iterator();
+    virtual Iterator<K> iterator();
 
-    bool contains(Object o);
+    virtual bool contains(Object o);
 
-    Set<K> toSet();
+    virtual Set<K> toSet();
 
 private:
     _SplayTree<K, Node> _tree;
 
 
-     _SplayTreeKeyIterable(_SplayTree<K, Node> _tree);
-
+     _SplayTreeKeyIterableCls(_SplayTree<K, Node> _tree);
 };
+template<typename K, typename Node : _SplayTreeNode<K, Node>> using _SplayTreeKeyIterable = std::shared_ptr<_SplayTreeKeyIterableCls<K, Node : _SplayTreeNode<K, Node>>>;
 
-class _SplayTreeValueIterable<K, V> : EfficientLengthIterable<V> {
+template<typename K, typename V> class _SplayTreeValueIterableCls : public EfficientLengthIterableCls<V> {
 public:
 
-    int length();
+    virtual int length();
 
-    bool isEmpty();
+    virtual bool isEmpty();
 
-    Iterator<V> iterator();
+    virtual Iterator<V> iterator();
 
 private:
     SplayTreeMap<K, V> _map;
 
 
-     _SplayTreeValueIterable(SplayTreeMap<K, V> _map);
-
+     _SplayTreeValueIterableCls(SplayTreeMap<K, V> _map);
 };
+template<typename K, typename V> using _SplayTreeValueIterable = std::shared_ptr<_SplayTreeValueIterableCls<K, V>>;
 
-class _SplayTreeMapEntryIterable<K, V> : EfficientLengthIterable<MapEntry<K, V>> {
+template<typename K, typename V> class _SplayTreeMapEntryIterableCls : public EfficientLengthIterableCls<MapEntry<K, V>> {
 public:
 
-    int length();
+    virtual int length();
 
-    bool isEmpty();
+    virtual bool isEmpty();
 
-    Iterator<MapEntry<K, V>> iterator();
+    virtual Iterator<MapEntry<K, V>> iterator();
 
 private:
     SplayTreeMap<K, V> _map;
 
 
-     _SplayTreeMapEntryIterable(SplayTreeMap<K, V> _map);
-
+     _SplayTreeMapEntryIterableCls(SplayTreeMap<K, V> _map);
 };
+template<typename K, typename V> using _SplayTreeMapEntryIterable = std::shared_ptr<_SplayTreeMapEntryIterableCls<K, V>>;
 
-class _SplayTreeKeyIterator<K, Node extends _SplayTreeNode<K, Node>> : _SplayTreeIterator<K, Node, K> {
+template<typename K, typename Node : _SplayTreeNode<K, Node>> class _SplayTreeKeyIteratorCls : public _SplayTreeIteratorCls<K, Node, K> {
 public:
 
 private:
 
-     _SplayTreeKeyIterator(_SplayTree<K, Node> map);
+     _SplayTreeKeyIteratorCls(_SplayTree<K, Node> map);
 
-    K _getValue(Node node);
+    virtual K _getValue(Node node);
 
 };
+template<typename K, typename Node : _SplayTreeNode<K, Node>> using _SplayTreeKeyIterator = std::shared_ptr<_SplayTreeKeyIteratorCls<K, Node : _SplayTreeNode<K, Node>>>;
 
-class _SplayTreeValueIterator<K, V> : _SplayTreeIterator<K, _SplayTreeMapNode<K, V>, V> {
+template<typename K, typename V> class _SplayTreeValueIteratorCls : public _SplayTreeIteratorCls<K, _SplayTreeMapNode<K, V>, V> {
 public:
 
 private:
 
-     _SplayTreeValueIterator(SplayTreeMap<K, V> map);
+     _SplayTreeValueIteratorCls(SplayTreeMap<K, V> map);
 
-    V _getValue(_SplayTreeMapNode<K, V> node);
+    virtual V _getValue(_SplayTreeMapNode<K, V> node);
 
 };
+template<typename K, typename V> using _SplayTreeValueIterator = std::shared_ptr<_SplayTreeValueIteratorCls<K, V>>;
 
-class _SplayTreeMapEntryIterator<K, V> : _SplayTreeIterator<K, _SplayTreeMapNode<K, V>, MapEntry<K, V>> {
+template<typename K, typename V> class _SplayTreeMapEntryIteratorCls : public _SplayTreeIteratorCls<K, _SplayTreeMapNode<K, V>, MapEntry<K, V>> {
 public:
 
 private:
 
-     _SplayTreeMapEntryIterator(SplayTreeMap<K, V> tree);
+     _SplayTreeMapEntryIteratorCls(SplayTreeMap<K, V> tree);
 
-    MapEntry<K, V> _getValue(_SplayTreeMapNode<K, V> node);
+    virtual MapEntry<K, V> _getValue(_SplayTreeMapNode<K, V> node);
 
-    void _replaceValue(V value);
+    virtual void _replaceValue(V value);
 
 };
+template<typename K, typename V> using _SplayTreeMapEntryIterator = std::shared_ptr<_SplayTreeMapEntryIteratorCls<K, V>>;
 
-class SplayTreeSet<E> : _SplayTree<E, _SplayTreeSetNode<E>> {
+template<typename E> class SplayTreeSetCls : public _SplayTreeCls<E, _SplayTreeSetNode<E>> {
 public:
 
-     SplayTreeSet(FunctionType compare, FunctionType isValidKey);
+     SplayTreeSetCls(int compare(E key1, E key2) , bool isValidKey(dynamic potentialKey) );
 
-    void  from(FunctionType compare, Iterable elements, FunctionType isValidKey);
+    virtual void  from(int compare(E key1, E key2) , Iterable elements, bool isValidKey(dynamic potentialKey) );
 
-    void  of(FunctionType compare, Iterable<E> elements, FunctionType isValidKey);
+    virtual void  of(int compare(E key1, E key2) , Iterable<E> elements, bool isValidKey(dynamic potentialKey) );
 
-    Set<R> cast<R>();
+    template<typename R>  virtual Set<R> cast();
 
-    Iterator<E> iterator();
+    virtual Iterator<E> iterator();
 
-    int length();
+    virtual int length();
 
-    bool isEmpty();
+    virtual bool isEmpty();
 
-    bool isNotEmpty();
+    virtual bool isNotEmpty();
 
-    E first();
+    virtual E first();
 
-    E last();
+    virtual E last();
 
-    E single();
+    virtual E single();
 
-    bool contains(Object element);
+    virtual bool contains(Object element);
 
-    bool add(E element);
+    virtual bool add(E element);
 
-    bool remove(Object object);
+    virtual bool remove(Object object);
 
-    void addAll(Iterable<E> elements);
+    virtual void addAll(Iterable<E> elements);
 
-    void removeAll(Iterable<Object> elements);
+    virtual void removeAll(Iterable<Object> elements);
 
-    void retainAll(Iterable<Object> elements);
+    virtual void retainAll(Iterable<Object> elements);
 
-    E lookup(Object object);
+    virtual E lookup(Object object);
 
-    Set<E> intersection(Set<Object> other);
+    virtual Set<E> intersection(Set<Object> other);
 
-    Set<E> difference(Set<Object> other);
+    virtual Set<E> difference(Set<Object> other);
 
-    Set<E> union(Set<E> other);
+    virtual Set<E> union(Set<E> other);
 
-    void clear();
+    virtual void clear();
 
-    Set<E> toSet();
+    virtual Set<E> toSet();
 
-    String toString();
+    virtual String toString();
 
 private:
     _SplayTreeSetNode<E> _root;
@@ -328,14 +331,16 @@ private:
     _Predicate _validKey;
 
 
-    Set<T> _newSet<T>();
+    template<typename T>  virtual Set<T> _newSet();
 
-    bool _add(E element);
+    virtual bool _add(E element);
 
-    SplayTreeSet<E> _clone();
+    virtual SplayTreeSet<E> _clone();
 
-    _SplayTreeSetNode<E> _copyNode<Node extends _SplayTreeNode<E, Node>>(Node node);
+    template<typename Node : _SplayTreeNode<E, Node>>  virtual _SplayTreeSetNode<E> _copyNode(Node node);
 
 };
+template<typename E> using SplayTreeSet = std::shared_ptr<SplayTreeSetCls<E>>;
+
 
 #endif

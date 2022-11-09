@@ -1,82 +1,82 @@
-#ifndef ITERABLE_H
-#define ITERABLE_H
-#include <memory>
+#ifndef DART_COLLECTION_ITERABLE
+#define DART_COLLECTION_ITERABLE
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
 
 
-
-
-class IterableMixin<E> {
+template<typename E> class IterableMixinCls : public ObjectCls {
 public:
 
-    Iterable<R> cast<R>();
+    template<typename R>  virtual Iterable<R> cast();
 
-    Iterable<T> map<T>(FunctionType toElement);
+    template<typename T>  virtual Iterable<T> map(T toElement(E element) );
 
-    Iterable<E> where(FunctionType test);
+    virtual Iterable<E> where(bool test(E element) );
 
-    Iterable<T> whereType<T>();
+    template<typename T>  virtual Iterable<T> whereType();
 
-    Iterable<T> expand<T>(FunctionType toElements);
+    template<typename T>  virtual Iterable<T> expand(Iterable<T> toElements(E element) );
 
-    Iterable<E> followedBy(Iterable<E> other);
+    virtual Iterable<E> followedBy(Iterable<E> other);
 
-    bool contains(Object element);
+    virtual bool contains(Object element);
 
-    void forEach(FunctionType action);
+    virtual void forEach(void action(E element) );
 
-    E reduce(FunctionType combine);
+    virtual E reduce(E combine(E element, E value) );
 
-    T fold<T>(FunctionType combine, T initialValue);
+    template<typename T>  virtual T fold(T combine(E element, T previousValue) , T initialValue);
 
-    bool every(FunctionType test);
+    virtual bool every(bool test(E element) );
 
-    String join(String separator);
+    virtual String join(String separator);
 
-    bool any(FunctionType test);
+    virtual bool any(bool test(E element) );
 
-    List<E> toList(bool growable);
+    virtual List<E> toList(bool growable);
 
-    Set<E> toSet();
+    virtual Set<E> toSet();
 
-    int length();
+    virtual int length();
 
-    bool isEmpty();
+    virtual bool isEmpty();
 
-    bool isNotEmpty();
+    virtual bool isNotEmpty();
 
-    Iterable<E> take(int count);
+    virtual Iterable<E> take(int count);
 
-    Iterable<E> takeWhile(FunctionType test);
+    virtual Iterable<E> takeWhile(bool test(E value) );
 
-    Iterable<E> skip(int count);
+    virtual Iterable<E> skip(int count);
 
-    Iterable<E> skipWhile(FunctionType test);
+    virtual Iterable<E> skipWhile(bool test(E value) );
 
-    E first();
+    virtual E first();
 
-    E last();
+    virtual E last();
 
-    E single();
+    virtual E single();
 
-    E firstWhere(FunctionType orElse, FunctionType test);
+    virtual E firstWhere(E orElse() , bool test(E value) );
 
-    E lastWhere(FunctionType orElse, FunctionType test);
+    virtual E lastWhere(E orElse() , bool test(E value) );
 
-    E singleWhere(FunctionType orElse, FunctionType test);
+    virtual E singleWhere(E orElse() , bool test(E element) );
 
-    E elementAt(int index);
+    virtual E elementAt(int index);
 
-    String toString();
+    virtual String toString();
 
 private:
 
 };
+template<typename E> using IterableMixin = std::shared_ptr<IterableMixinCls<E>>;
 
-class IterableBase<E> : Iterable<E> {
+template<typename E> class IterableBaseCls : public IterableCls<E> {
 public:
 
-     IterableBase();
-
+     IterableBaseCls();
     static String iterableToShortString(Iterable iterable, String leftDelimiter, String rightDelimiter);
 
     static String iterableToFullString(Iterable iterable, String leftDelimiter, String rightDelimiter);
@@ -84,11 +84,13 @@ public:
 private:
 
 };
+template<typename E> using IterableBase = std::shared_ptr<IterableBaseCls<E>>;
 List<Object> _toStringVisiting;
 
 bool _isToStringVisiting(Object o);
 
 void _iterablePartsToStrings(Iterable<Object> iterable, List<String> parts);
+
 
 
 #endif

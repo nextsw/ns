@@ -1,20 +1,20 @@
 #include "haptic_feedback.hpp"
-Future<void> HapticFeedback::vibrate() {
-    await await SystemChannels.platform.<void>invokeMethod("HapticFeedback.vibrate");
+Future<void> HapticFeedbackCls::vibrate() {
+    await await SystemChannelsCls::platform-><void>invokeMethod("HapticFeedback.vibrate");
 }
 
-Future<void> HapticFeedback::lightImpact() {
-    await await SystemChannels.platform.<void>invokeMethod("HapticFeedback.vibrate", "HapticFeedbackType.lightImpact");
+Future<void> HapticFeedbackCls::lightImpact() {
+    await await SystemChannelsCls::platform-><void>invokeMethod("HapticFeedback.vibrate", "HapticFeedbackType.lightImpact");
 }
 
-Future<void> HapticFeedback::mediumImpact() {
-    await await SystemChannels.platform.<void>invokeMethod("HapticFeedback.vibrate", "HapticFeedbackType.mediumImpact");
+Future<void> HapticFeedbackCls::mediumImpact() {
+    await await SystemChannelsCls::platform-><void>invokeMethod("HapticFeedback.vibrate", "HapticFeedbackType.mediumImpact");
 }
 
-Future<void> HapticFeedback::heavyImpact() {
-    await await SystemChannels.platform.<void>invokeMethod("HapticFeedback.vibrate", "HapticFeedbackType.heavyImpact");
+Future<void> HapticFeedbackCls::heavyImpact() {
+    await await SystemChannelsCls::platform-><void>invokeMethod("HapticFeedback.vibrate", "HapticFeedbackType.heavyImpact");
 }
 
-Future<void> HapticFeedback::selectionClick() {
-    await await SystemChannels.platform.<void>invokeMethod("HapticFeedback.vibrate", "HapticFeedbackType.selectionClick");
+Future<void> HapticFeedbackCls::selectionClick() {
+    await await SystemChannelsCls::platform-><void>invokeMethod("HapticFeedback.vibrate", "HapticFeedbackType.selectionClick");
 }

@@ -1,281 +1,281 @@
 #include "overrides.hpp"
-IOOverrides IOOverrides::current() {
-    return Zone.current[_ioOverridesToken] ?? _global;
+IOOverrides IOOverridesCls::current() {
+    return ZoneCls::current[_ioOverridesToken] ?? _global;
 }
 
-void IOOverrides::global(IOOverrides overrides) {
+void IOOverridesCls::global(IOOverrides overrides) {
     _global = overrides;
 }
 
-R IOOverrides::runZoned<R>(FunctionType body, FunctionType createDirectory, FunctionType createFile, FunctionType createLink, FunctionType fsWatch, FunctionType fsWatchIsSupported, FunctionType fseGetType, FunctionType fseGetTypeSync, FunctionType fseIdentical, FunctionType fseIdenticalSync, FunctionType getCurrentDirectory, FunctionType getSystemTempDirectory, FunctionType serverSocketBind, FunctionType setCurrentDirectory, FunctionType socketConnect, FunctionType socketStartConnect, FunctionType stat, FunctionType statSync, FunctionType stderr, FunctionType stdin, FunctionType stdout) {
-    IOOverrides overrides = _IOOverridesScope(createDirectory, getCurrentDirectory, setCurrentDirectory, getSystemTempDirectory, createFile, stat, statSync, fseIdentical, fseIdenticalSync, fseGetType, fseGetTypeSync, fsWatch, fsWatchIsSupported, createLink, socketConnect, socketStartConnect, serverSocketBind, stdin, stdout, stderr);
-    return <R>_asyncRunZoned(body);
+R IOOverridesCls::runZonedtemplate<typename R> (R body() , Directory createDirectory(String ) , File createFile(String ) , Link createLink(String ) , Stream<FileSystemEvent> fsWatch(String , int , bool ) , bool fsWatchIsSupported() , Future<FileSystemEntityType> fseGetType(String , bool ) , FileSystemEntityType fseGetTypeSync(String , bool ) , Future<bool> fseIdentical(String , String ) , bool fseIdenticalSync(String , String ) , Directory getCurrentDirectory() , Directory getSystemTempDirectory() , Future<ServerSocket> serverSocketBind(dynamic , int , int backlog, bool shared, bool v6Only) , void setCurrentDirectory(String ) , Future<Socket> socketConnect(dynamic , int , dynamic sourceAddress, int sourcePort, Duration timeout) , Future<ConnectionTask<Socket>> socketStartConnect(dynamic , int , dynamic sourceAddress, int sourcePort) , Future<FileStat> stat(String ) , FileStat statSync(String ) , Stdout stderr() , Stdin stdin() , Stdout stdout() ) {
+    IOOverrides overrides = make<_IOOverridesScopeCls>(createDirectory, getCurrentDirectory, setCurrentDirectory, getSystemTempDirectory, createFile, stat, statSync, fseIdentical, fseIdenticalSync, fseGetType, fseGetTypeSync, fsWatch, fsWatchIsSupported, createLink, socketConnect, socketStartConnect, serverSocketBind, stdin, stdout, stderr);
+    map1.set(_ioOverridesToken, overrides);return <R>_asyncRunZoned(bodylist1);
 }
 
-R IOOverrides::runWithIOOverrides<R>(FunctionType body, IOOverrides overrides) {
-    return <R>_asyncRunZoned(body);
+R IOOverridesCls::runWithIOOverridestemplate<typename R> (R body() , IOOverrides overrides) {
+    map1.set(_ioOverridesToken, overrides);return <R>_asyncRunZoned(bodylist1);
 }
 
-Directory IOOverrides::createDirectory(String path) {
-    return _Directory(path);
+Directory IOOverridesCls::createDirectory(String path) {
+    return make<_DirectoryCls>(path);
 }
 
-Directory IOOverrides::getCurrentDirectory() {
-    return _Directory.current;
+Directory IOOverridesCls::getCurrentDirectory() {
+    return _DirectoryCls::current;
 }
 
-void IOOverrides::setCurrentDirectory(String path) {
-    _Directory.current = path;
+void IOOverridesCls::setCurrentDirectory(String path) {
+    _DirectoryCls::current = path;
 }
 
-Directory IOOverrides::getSystemTempDirectory() {
-    return _Directory.systemTemp;
+Directory IOOverridesCls::getSystemTempDirectory() {
+    return _DirectoryCls::systemTemp;
 }
 
-File IOOverrides::createFile(String path) {
-    return _File(path);
+File IOOverridesCls::createFile(String path) {
+    return make<_FileCls>(path);
 }
 
-Future<FileStat> IOOverrides::stat(String path) {
-    return FileStat._stat(path);
+Future<FileStat> IOOverridesCls::stat(String path) {
+    return FileStatCls->_stat(path);
 }
 
-FileStat IOOverrides::statSync(String path) {
-    return FileStat._statSyncInternal(path);
+FileStat IOOverridesCls::statSync(String path) {
+    return FileStatCls->_statSyncInternal(path);
 }
 
-Future<bool> IOOverrides::fseIdentical(String path1, String path2) {
-    return FileSystemEntity._identical(path1, path2);
+Future<bool> IOOverridesCls::fseIdentical(String path1, String path2) {
+    return FileSystemEntityCls->_identical(path1, path2);
 }
 
-bool IOOverrides::fseIdenticalSync(String path1, String path2) {
-    return FileSystemEntity._identicalSync(path1, path2);
+bool IOOverridesCls::fseIdenticalSync(String path1, String path2) {
+    return FileSystemEntityCls->_identicalSync(path1, path2);
 }
 
-Future<FileSystemEntityType> IOOverrides::fseGetType(bool followLinks, String path) {
-    return FileSystemEntity._getTypeRequest(utf8.encoder.convert(path), followLinks);
+Future<FileSystemEntityType> IOOverridesCls::fseGetType(bool followLinks, String path) {
+    return FileSystemEntityCls->_getTypeRequest(utf8->encoder->convert(path), followLinks);
 }
 
-FileSystemEntityType IOOverrides::fseGetTypeSync(bool followLinks, String path) {
-    return FileSystemEntity._getTypeSyncHelper(utf8.encoder.convert(path), followLinks);
+FileSystemEntityType IOOverridesCls::fseGetTypeSync(bool followLinks, String path) {
+    return FileSystemEntityCls->_getTypeSyncHelper(utf8->encoder->convert(path), followLinks);
 }
 
-Stream<FileSystemEvent> IOOverrides::fsWatch(int events, String path, bool recursive) {
-    return _FileSystemWatcher._watch(path, events, recursive);
+Stream<FileSystemEvent> IOOverridesCls::fsWatch(int events, String path, bool recursive) {
+    return _FileSystemWatcherCls->_watch(path, events, recursive);
 }
 
-bool IOOverrides::fsWatchIsSupported() {
-    return _FileSystemWatcher.isSupported;
+bool IOOverridesCls::fsWatchIsSupported() {
+    return _FileSystemWatcherCls::isSupported;
 }
 
-Link IOOverrides::createLink(String path) {
-    return _Link(path);
+Link IOOverridesCls::createLink(String path) {
+    return make<_LinkCls>(path);
 }
 
-Future<Socket> IOOverrides::socketConnect(host , sourceAddress , int port, int sourcePort, Duration timeout) {
-    return Socket._connect(host, portsourceAddress, sourcePort, timeout);
+Future<Socket> IOOverridesCls::socketConnect(host , sourceAddress , int port, int sourcePort, Duration timeout) {
+    return SocketCls->_connect(host, portsourceAddress, sourcePort, timeout);
 }
 
-Future<ConnectionTask<Socket>> IOOverrides::socketStartConnect(host , sourceAddress , int port, int sourcePort) {
-    return Socket._startConnect(host, portsourceAddress, sourcePort);
+Future<ConnectionTask<Socket>> IOOverridesCls::socketStartConnect(host , sourceAddress , int port, int sourcePort) {
+    return SocketCls->_startConnect(host, portsourceAddress, sourcePort);
 }
 
-Future<ServerSocket> IOOverrides::serverSocketBind(address , int backlog, int port, bool shared, bool v6Only) {
-    return ServerSocket._bind(address, portbacklog, v6Only, shared);
+Future<ServerSocket> IOOverridesCls::serverSocketBind(address , int backlog, int port, bool shared, bool v6Only) {
+    return ServerSocketCls->_bind(address, portbacklog, v6Only, shared);
 }
 
-Stdin IOOverrides::stdin() {
+Stdin IOOverridesCls::stdin() {
     return _stdin;
 }
 
-Stdout IOOverrides::stdout() {
+Stdout IOOverridesCls::stdout() {
     return _stdout;
 }
 
-Stdout IOOverrides::stderr() {
+Stdout IOOverridesCls::stderr() {
     return _stderr;
 }
 
-Directory _IOOverridesScope::createDirectory(String path) {
+Directory _IOOverridesScopeCls::createDirectory(String path) {
     if (_createDirectory != nullptr)     {
         return _createDirectory!(path);
     }
     if (_previous != nullptr)     {
-        return _previous!.createDirectory(path);
+        return _previous!->createDirectory(path);
     }
-    return super.createDirectory(path);
+    return super->createDirectory(path);
 }
 
-Directory _IOOverridesScope::getCurrentDirectory() {
+Directory _IOOverridesScopeCls::getCurrentDirectory() {
     if (_getCurrentDirectory != nullptr)     {
         return _getCurrentDirectory!();
     }
     if (_previous != nullptr)     {
-        return _previous!.getCurrentDirectory();
+        return _previous!->getCurrentDirectory();
     }
-    return super.getCurrentDirectory();
+    return super->getCurrentDirectory();
 }
 
-void _IOOverridesScope::setCurrentDirectory(String path) {
+void _IOOverridesScopeCls::setCurrentDirectory(String path) {
     if (_setCurrentDirectory != nullptr)     {
         _setCurrentDirectory!(path);
     } else     {
         if (_previous != nullptr)     {
-        _previous!.setCurrentDirectory(path);
+        _previous!->setCurrentDirectory(path);
     } else     {
-        super.setCurrentDirectory(path);
+        super->setCurrentDirectory(path);
     }
 ;
     }}
 
-Directory _IOOverridesScope::getSystemTempDirectory() {
+Directory _IOOverridesScopeCls::getSystemTempDirectory() {
     if (_getSystemTempDirectory != nullptr)     {
         return _getSystemTempDirectory!();
     }
     if (_previous != nullptr)     {
-        return _previous!.getSystemTempDirectory();
+        return _previous!->getSystemTempDirectory();
     }
-    return super.getSystemTempDirectory();
+    return super->getSystemTempDirectory();
 }
 
-File _IOOverridesScope::createFile(String path) {
+File _IOOverridesScopeCls::createFile(String path) {
     if (_createFile != nullptr)     {
         return _createFile!(path);
     }
     if (_previous != nullptr)     {
-        return _previous!.createFile(path);
+        return _previous!->createFile(path);
     }
-    return super.createFile(path);
+    return super->createFile(path);
 }
 
-Future<FileStat> _IOOverridesScope::stat(String path) {
+Future<FileStat> _IOOverridesScopeCls::stat(String path) {
     if (_stat != nullptr)     {
         return _stat!(path);
     }
     if (_previous != nullptr)     {
-        return _previous!.stat(path);
+        return _previous!->stat(path);
     }
-    return super.stat(path);
+    return super->stat(path);
 }
 
-FileStat _IOOverridesScope::statSync(String path) {
+FileStat _IOOverridesScopeCls::statSync(String path) {
     if (_stat != nullptr)     {
         return _statSync!(path);
     }
     if (_previous != nullptr)     {
-        return _previous!.statSync(path);
+        return _previous!->statSync(path);
     }
-    return super.statSync(path);
+    return super->statSync(path);
 }
 
-Future<bool> _IOOverridesScope::fseIdentical(String path1, String path2) {
+Future<bool> _IOOverridesScopeCls::fseIdentical(String path1, String path2) {
     if (_fseIdentical != nullptr)     {
         return _fseIdentical!(path1, path2);
     }
     if (_previous != nullptr)     {
-        return _previous!.fseIdentical(path1, path2);
+        return _previous!->fseIdentical(path1, path2);
     }
-    return super.fseIdentical(path1, path2);
+    return super->fseIdentical(path1, path2);
 }
 
-bool _IOOverridesScope::fseIdenticalSync(String path1, String path2) {
+bool _IOOverridesScopeCls::fseIdenticalSync(String path1, String path2) {
     if (_fseIdenticalSync != nullptr)     {
         return _fseIdenticalSync!(path1, path2);
     }
     if (_previous != nullptr)     {
-        return _previous!.fseIdenticalSync(path1, path2);
+        return _previous!->fseIdenticalSync(path1, path2);
     }
-    return super.fseIdenticalSync(path1, path2);
+    return super->fseIdenticalSync(path1, path2);
 }
 
-Future<FileSystemEntityType> _IOOverridesScope::fseGetType(bool followLinks, String path) {
+Future<FileSystemEntityType> _IOOverridesScopeCls::fseGetType(bool followLinks, String path) {
     if (_fseGetType != nullptr)     {
         return _fseGetType!(path, followLinks);
     }
     if (_previous != nullptr)     {
-        return _previous!.fseGetType(path, followLinks);
+        return _previous!->fseGetType(path, followLinks);
     }
-    return super.fseGetType(path, followLinks);
+    return super->fseGetType(path, followLinks);
 }
 
-FileSystemEntityType _IOOverridesScope::fseGetTypeSync(bool followLinks, String path) {
+FileSystemEntityType _IOOverridesScopeCls::fseGetTypeSync(bool followLinks, String path) {
     if (_fseGetTypeSync != nullptr)     {
         return _fseGetTypeSync!(path, followLinks);
     }
     if (_previous != nullptr)     {
-        return _previous!.fseGetTypeSync(path, followLinks);
+        return _previous!->fseGetTypeSync(path, followLinks);
     }
-    return super.fseGetTypeSync(path, followLinks);
+    return super->fseGetTypeSync(path, followLinks);
 }
 
-Stream<FileSystemEvent> _IOOverridesScope::fsWatch(int events, String path, bool recursive) {
+Stream<FileSystemEvent> _IOOverridesScopeCls::fsWatch(int events, String path, bool recursive) {
     if (_fsWatch != nullptr)     {
         return _fsWatch!(path, events, recursive);
     }
     if (_previous != nullptr)     {
-        return _previous!.fsWatch(path, events, recursive);
+        return _previous!->fsWatch(path, events, recursive);
     }
-    return super.fsWatch(path, events, recursive);
+    return super->fsWatch(path, events, recursive);
 }
 
-bool _IOOverridesScope::fsWatchIsSupported() {
+bool _IOOverridesScopeCls::fsWatchIsSupported() {
     if (_fsWatchIsSupported != nullptr)     {
         return _fsWatchIsSupported!();
     }
     if (_previous != nullptr)     {
-        return _previous!.fsWatchIsSupported();
+        return _previous!->fsWatchIsSupported();
     }
-    return super.fsWatchIsSupported();
+    return super->fsWatchIsSupported();
 }
 
-Link _IOOverridesScope::createLink(String path) {
+Link _IOOverridesScopeCls::createLink(String path) {
     if (_createLink != nullptr)     {
         return _createLink!(path);
     }
     if (_previous != nullptr)     {
-        return _previous!.createLink(path);
+        return _previous!->createLink(path);
     }
-    return super.createLink(path);
+    return super->createLink(path);
 }
 
-Future<Socket> _IOOverridesScope::socketConnect(host , sourceAddress , int port, int sourcePort, Duration timeout) {
+Future<Socket> _IOOverridesScopeCls::socketConnect(host , sourceAddress , int port, int sourcePort, Duration timeout) {
     if (_socketConnect != nullptr) {
         return _socketConnect!(host, portsourceAddress, timeout);
     }
     if (_previous != nullptr) {
-        return _previous!.socketConnect(host, portsourceAddress, sourcePort, timeout);
+        return _previous!->socketConnect(host, portsourceAddress, sourcePort, timeout);
     }
-    return super.socketConnect(host, portsourceAddress, sourcePort, timeout);
+    return super->socketConnect(host, portsourceAddress, sourcePort, timeout);
 }
 
-Future<ConnectionTask<Socket>> _IOOverridesScope::socketStartConnect(host , sourceAddress , int port, int sourcePort) {
+Future<ConnectionTask<Socket>> _IOOverridesScopeCls::socketStartConnect(host , sourceAddress , int port, int sourcePort) {
     if (_socketStartConnect != nullptr) {
         return _socketStartConnect!(host, portsourceAddress, sourcePort);
     }
     if (_previous != nullptr) {
-        return _previous!.socketStartConnect(host, portsourceAddress, sourcePort);
+        return _previous!->socketStartConnect(host, portsourceAddress, sourcePort);
     }
-    return super.socketStartConnect(host, portsourceAddress, sourcePort);
+    return super->socketStartConnect(host, portsourceAddress, sourcePort);
 }
 
-Future<ServerSocket> _IOOverridesScope::serverSocketBind(address , int backlog, int port, bool shared, bool v6Only) {
+Future<ServerSocket> _IOOverridesScopeCls::serverSocketBind(address , int backlog, int port, bool shared, bool v6Only) {
     if (_serverSocketBind != nullptr) {
         return _serverSocketBind!(address, portbacklog, v6Only, shared);
     }
     if (_previous != nullptr) {
-        return _previous!.serverSocketBind(address, portbacklog, v6Only, shared);
+        return _previous!->serverSocketBind(address, portbacklog, v6Only, shared);
     }
-    return super.serverSocketBind(address, portbacklog, v6Only, shared);
+    return super->serverSocketBind(address, portbacklog, v6Only, shared);
 }
 
-Stdin _IOOverridesScope::stdin() {
-    return _stdin?.call() ?? _previous?.stdin ?? super.stdin;
+Stdin _IOOverridesScopeCls::stdin() {
+    return _stdin?->call() ?? _previous?->stdin ?? super->stdin;
 }
 
-Stdout _IOOverridesScope::stdout() {
-    return _stdout?.call() ?? _previous?.stdout ?? super.stdout;
+Stdout _IOOverridesScopeCls::stdout() {
+    return _stdout?->call() ?? _previous?->stdout ?? super->stdout;
 }
 
-Stdout _IOOverridesScope::stderr() {
-    return _stderr?.call() ?? _previous?.stderr ?? super.stderr;
+Stdout _IOOverridesScopeCls::stderr() {
+    return _stderr?->call() ?? _previous?->stderr ?? super->stderr;
 }

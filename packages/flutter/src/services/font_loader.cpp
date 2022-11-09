@@ -1,27 +1,33 @@
 #include "font_loader.hpp"
-FontLoader::FontLoader(String family) {
+FontLoaderCls::FontLoaderCls(String family) {
     {
         _loaded = false;
-        _fontFutures = ;
+        _fontFutures = makeList();
     }
 }
 
-void FontLoader::addFont(Future<ByteData> bytes) {
+void FontLoaderCls::addFont(Future<ByteData> bytes) {
     if (_loaded) {
         ;
     }
-    _fontFutures.add(bytes.then());
+    _fontFutures->add(bytes->then([=] (ByteData data)     {
+        Uint8ListCls->view(data->buffer, data->offsetInBytes, data->lengthInBytes);
+    }));
 }
 
-Future<void> FontLoader::load() {
+Future<void> FontLoaderCls::load() {
     if (_loaded) {
         ;
     }
     _loaded = true;
-    Iterable<Future<void>> loadFutures = _fontFutures.map();
-    await await Future.wait(loadFutures.toList());
+    Iterable<Future<void>> loadFutures = _fontFutures->map([=] (Future<Uint8List> f) {
+    f-><void>then([=] (Uint8List list) {
+    loadFont(list, family);
+});
+});
+    await await FutureCls->wait(loadFutures->toList());
 }
 
-Future<void> FontLoader::loadFont(String family, Uint8List list) {
+Future<void> FontLoaderCls::loadFont(String family, Uint8List list) {
     return loadFontFromList(listfamily);
 }

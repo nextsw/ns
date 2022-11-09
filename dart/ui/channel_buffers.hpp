@@ -1,14 +1,14 @@
-#ifndef CHANNEL_BUFFERS_H
-#define CHANNEL_BUFFERS_H
-#include <memory>
+#ifndef DART_UI_CHANNEL_BUFFERS
+#define DART_UI_CHANNEL_BUFFERS
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
 
 
-
-
-class _ChannelCallbackRecord {
+class _ChannelCallbackRecordCls : public ObjectCls {
 public:
 
-    void invoke(PlatformMessageResponseCallback callbackArg, ByteData dataArg);
+    virtual void invoke(PlatformMessageResponseCallback callbackArg, ByteData dataArg);
 
 private:
     ChannelCallback _callback;
@@ -16,16 +16,17 @@ private:
     Zone _zone;
 
 
-     _ChannelCallbackRecord(ChannelCallback _callback);
+     _ChannelCallbackRecordCls(ChannelCallback _callback);
 
 };
+using _ChannelCallbackRecord = std::shared_ptr<_ChannelCallbackRecordCls>;
 
-class _StoredMessage {
+class _StoredMessageCls : public ObjectCls {
 public:
     ByteData data;
 
 
-    void invoke(ByteData dataArg);
+    virtual void invoke(ByteData dataArg);
 
 private:
     PlatformMessageResponseCallback _callback;
@@ -33,28 +34,29 @@ private:
     Zone _zone;
 
 
-     _StoredMessage(PlatformMessageResponseCallback _callback, ByteData data);
+     _StoredMessageCls(PlatformMessageResponseCallback _callback, ByteData data);
 
 };
+using _StoredMessage = std::shared_ptr<_StoredMessageCls>;
 
-class _Channel {
+class _ChannelCls : public ObjectCls {
 public:
     bool debugEnableDiscardWarnings;
 
 
-    int length();
+    virtual int length();
 
-    int capacity();
+    virtual int capacity();
 
-    void  capacity(int newSize);
+    virtual void  capacity(int newSize);
 
-    bool push(_StoredMessage message);
+    virtual bool push(_StoredMessage message);
 
-    _StoredMessage pop();
+    virtual _StoredMessage pop();
 
-    void setListener(ChannelCallback callback);
+    virtual void setListener(ChannelCallback callback);
 
-    void clearListener();
+    virtual void clearListener();
 
 private:
     ListQueue<_StoredMessage> _queue;
@@ -66,45 +68,47 @@ private:
     _ChannelCallbackRecord _channelCallbackRecord;
 
 
-     _Channel(int _capacity);
+     _ChannelCls(int _capacity);
 
-    bool _dropOverflowMessages(int lengthLimit);
+    virtual bool _dropOverflowMessages(int lengthLimit);
 
-    void _drain();
+    virtual void _drain();
 
-    void _drainStep();
+    virtual void _drainStep();
 
 };
+using _Channel = std::shared_ptr<_ChannelCls>;
 
-class ChannelBuffers {
+class ChannelBuffersCls : public ObjectCls {
 public:
-    static const int kDefaultBufferSize;
+    static int kDefaultBufferSize;
 
-    static const String kControlChannelName;
+    static String kControlChannelName;
 
 
-     ChannelBuffers();
+     ChannelBuffersCls();
+    virtual void push(PlatformMessageResponseCallback callback, ByteData data, String name);
 
-    void push(PlatformMessageResponseCallback callback, ByteData data, String name);
+    virtual void setListener(ChannelCallback callback, String name);
 
-    void setListener(ChannelCallback callback, String name);
+    virtual void clearListener(String name);
 
-    void clearListener(String name);
+    virtual Future<void> drain(DrainChannelCallback callback, String name);
 
-    Future<void> drain(DrainChannelCallback callback, String name);
+    virtual void handleMessage(ByteData data);
 
-    void handleMessage(ByteData data);
+    virtual void resize(String name, int newSize);
 
-    void resize(String name, int newSize);
-
-    void allowOverflow(bool allowed, String name);
+    virtual void allowOverflow(bool allowed, String name);
 
 private:
     Map<String, _Channel> _channels;
 
 
 };
+using ChannelBuffers = std::shared_ptr<ChannelBuffersCls>;
 ChannelBuffers channelBuffers;
+
 
 
 #endif

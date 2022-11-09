@@ -1,18 +1,18 @@
 #include "collections.hpp"
-UnmodifiableListView::UnmodifiableListView(Iterable<E> source) {
+template<typename E> UnmodifiableListViewCls<E>::UnmodifiableListViewCls(Iterable<E> source) {
     {
         _source = source;
     }
 }
 
-List<R> UnmodifiableListView::cast<R>() {
-    return UnmodifiableListView(_source.<R>cast());
+template<typename E> List<R> UnmodifiableListViewCls<E>::casttemplate<typename R> () {
+    return make<UnmodifiableListViewCls>(_source-><R>cast());
 }
 
-int UnmodifiableListView::length() {
-    return _source.length;
+template<typename E> int UnmodifiableListViewCls<E>::length() {
+    return _source->length;
 }
 
-E UnmodifiableListView::[](int index) {
-    return _source.elementAt(index);
+template<typename E> E UnmodifiableListViewCls<E>::[](int index) {
+    return _source->elementAt(index);
 }

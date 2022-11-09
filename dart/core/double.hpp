@@ -1,67 +1,48 @@
-#ifndef DOUBLE_H
-#define DOUBLE_H
-#include <memory>
+#ifndef DART_CORE_DOUBLE
+#define DART_CORE_DOUBLE
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
 
 
-
-
-class double : num {
+class doubleCls : public numCls {
 public:
-    static const double nan;
+    static double nan;
 
-    static const double infinity;
+    static double infinity;
 
-    static const double negativeInfinity;
+    static double negativeInfinity;
 
-    static const double minPositive;
+    static double minPositive;
 
-    static const double maxFinite;
+    static double maxFinite;
 
 
-    double remainder(num other);
-
-    double +(num other);
-
-    double -(num other);
-
-    double *(num other);
-
-    double %(num other);
-
-    double /(num other);
-
-    int ~/(num other);
-
-    double -();
-
-    double abs();
-
-    double sign();
-
-    int round();
-
-    int floor();
-
-    int ceil();
-
-    int truncate();
-
-    double roundToDouble();
-
-    double floorToDouble();
-
-    double ceilToDouble();
-
-    double truncateToDouble();
-
-    String toString();
-
-    external static double parse(FunctionType onError, String source);
-
-    external static double tryParse(String source);
-
+    virtual double remainder(num other) override;
+    virtual double operator+(num other) override;
+    virtual double operator-(num other) override;
+    virtual double operator*(num other) override;
+    virtual double operator%(num other) override;
+    virtual double operator/(num other) override;
+    virtual int operator~/(num other) override;
+    virtual double operator-() override;
+    virtual double abs() override;
+    virtual double sign() override;
+    virtual int round() override;
+    virtual int floor() override;
+    virtual int ceil() override;
+    virtual int truncate() override;
+    virtual double roundToDouble() override;
+    virtual double floorToDouble() override;
+    virtual double ceilToDouble() override;
+    virtual double truncateToDouble() override;
+    virtual String toString() override;
+    extern static double parse(double onError(String source) , String source) override;
+    extern static double tryParse(String source) override;
 private:
 
 };
+using double = std::shared_ptr<doubleCls>;
+
 
 #endif

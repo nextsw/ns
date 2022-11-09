@@ -1,26 +1,20 @@
 #include "splay_tree.hpp"
-_SplayTreeSetNode::_SplayTreeSetNode(K key) {
-    {
-        super(key);
-    }
+template<typename K> _SplayTreeSetNodeCls<K>::_SplayTreeSetNodeCls(K key) {
 }
 
-String _SplayTreeMapNode::toString() {
+template<typename K, typename V> String _SplayTreeMapNodeCls<K, V>::toString() {
     return "MapEntry($key: $value)";
 }
 
-_SplayTreeMapNode::_SplayTreeMapNode(K key, V value) {
-    {
-        super(key);
-    }
+template<typename K, typename V> _SplayTreeMapNodeCls<K, V>::_SplayTreeMapNodeCls(K key, V value) {
 }
 
-_SplayTreeMapNode<K, V> _SplayTreeMapNode::_replaceValue(V value) {
-    return ;
+template<typename K, typename V> _SplayTreeMapNode<K, V> _SplayTreeMapNodeCls<K, V>::_replaceValue(V value) {
+    return _c1;
 }
 
-int _SplayTree::_splay(K key) {
-    auto root = _root;
+template<typename K, typename Node : _SplayTreeNode<K, Node>> int _SplayTreeCls<K, Node>::_splay(K key) {
+    auto _c1 = <K, V>make<_SplayTreeMapNodeCls>(key, value);_c1._left = auto _c2 = _left;_c2._right = _right;_c2;auto root = _root;
     if (root == nullptr) {
         _compare(key, key);
         return -1;
@@ -33,18 +27,18 @@ int _SplayTree::_splay(K key) {
     auto compare = _compare;
     int comp;
     while (true) {
-        comp = compare(current.key, key);
+        comp = compare(current->key, key);
         if (comp > 0) {
-            auto currentLeft = current._left;
+            auto currentLeft = current->_left;
             if (currentLeft == nullptr)             {
                             break;
             }
-            comp = compare(currentLeft.key, key);
+            comp = compare(currentLeft->key, key);
             if (comp > 0) {
-                current._left = currentLeft._right;
-                currentLeft._right = current;
+                current->_left = currentLeft->_right;
+                currentLeft->_right = current;
                 current = currentLeft;
-                currentLeft = current._left;
+                currentLeft = current->_left;
                 if (currentLeft == nullptr)                 {
                                     break;
                 }
@@ -52,22 +46,22 @@ int _SplayTree::_splay(K key) {
             if (right == nullptr) {
                 newTreeRight = current;
             } else {
-                right._left = current;
+                right->_left = current;
             }
             right = current;
             current = currentLeft;
         } else         {
             if ( < 0) {
-            auto currentRight = current._right;
+            auto currentRight = current->_right;
             if (currentRight == nullptr)             {
                             break;
             }
-            comp = compare(currentRight.key, key);
+            comp = compare(currentRight->key, key);
             if ( < 0) {
-                current._right = currentRight._left;
-                currentRight._left = current;
+                current->_right = currentRight->_left;
+                currentRight->_left = current;
                 current = currentRight;
-                currentRight = current._right;
+                currentRight = current->_right;
                 if (currentRight == nullptr)                 {
                                     break;
                 }
@@ -75,7 +69,7 @@ int _SplayTree::_splay(K key) {
             if (left == nullptr) {
                 newTreeLeft = current;
             } else {
-                left._right = current;
+                left->_right = current;
             }
             left = current;
             current = currentRight;
@@ -85,12 +79,12 @@ int _SplayTree::_splay(K key) {
 ;
         }    }
     if (left != nullptr) {
-        left._right = current._left;
-        current._left = newTreeLeft;
+        left->_right = current->_left;
+        current->_left = newTreeLeft;
     }
     if (right != nullptr) {
-        right._left = current._right;
-        current._right = newTreeRight;
+        right->_left = current->_right;
+        current->_right = newTreeRight;
     }
     if (!identical(_root, current)) {
         _root = current;
@@ -99,33 +93,33 @@ int _SplayTree::_splay(K key) {
     return comp;
 }
 
-Node _SplayTree::_splayMin(Node node) {
+template<typename K, typename Node : _SplayTreeNode<K, Node>> Node _SplayTreeCls<K, Node>::_splayMin(Node node) {
     auto current = node;
-    auto nextLeft = current._left;
+    auto nextLeft = current->_left;
     while (nextLeft != nullptr) {
         auto left = nextLeft;
-        current._left = left._right;
-        left._right = current;
+        current->_left = left->_right;
+        left->_right = current;
         current = left;
-        nextLeft = current._left;
+        nextLeft = current->_left;
     }
     return current;
 }
 
-Node _SplayTree::_splayMax(Node node) {
+template<typename K, typename Node : _SplayTreeNode<K, Node>> Node _SplayTreeCls<K, Node>::_splayMax(Node node) {
     auto current = node;
-    auto nextRight = current._right;
+    auto nextRight = current->_right;
     while (nextRight != nullptr) {
         auto right = nextRight;
-        current._right = right._left;
-        right._left = current;
+        current->_right = right->_left;
+        right->_left = current;
         current = right;
-        nextRight = current._right;
+        nextRight = current->_right;
     }
     return current;
 }
 
-Node _SplayTree::_remove(K key) {
+template<typename K, typename Node : _SplayTreeNode<K, Node>> Node _SplayTreeCls<K, Node>::_remove(K key) {
     if (_root == nullptr)     {
         return nullptr;
     }
@@ -135,21 +129,21 @@ Node _SplayTree::_remove(K key) {
     }
     auto root = _root!;
     auto result = root;
-    auto left = root._left;
+    auto left = root->_left;
     _count--;
     if (left == nullptr) {
-        _root = root._right;
+        _root = root->_right;
     } else {
-        auto right = root._right;
+        auto right = root->_right;
         root = _splayMax(left);
-        root._right = right;
+        root->_right = right;
         _root = root;
     }
     _modificationCount++;
     return result;
 }
 
-void _SplayTree::_addNewRoot(int comp, Node node) {
+template<typename K, typename Node : _SplayTreeNode<K, Node>> void _SplayTreeCls<K, Node>::_addNewRoot(int comp, Node node) {
     _count++;
     _modificationCount++;
     auto root = _root;
@@ -158,18 +152,18 @@ void _SplayTree::_addNewRoot(int comp, Node node) {
         return;
     }
     if ( < 0) {
-        node._left = root;
-        node._right = root._right;
-        root._right = nullptr;
+        node->_left = root;
+        node->_right = root->_right;
+        root->_right = nullptr;
     } else {
-        node._right = root;
-        node._left = root._left;
-        root._left = nullptr;
+        node->_right = root;
+        node->_left = root->_left;
+        root->_left = nullptr;
     }
     _root = node;
 }
 
-Node _SplayTree::_first() {
+template<typename K, typename Node : _SplayTreeNode<K, Node>> Node _SplayTreeCls<K, Node>::_first() {
     auto root = _root;
     if (root == nullptr)     {
         return nullptr;
@@ -178,7 +172,7 @@ Node _SplayTree::_first() {
     return _root;
 }
 
-Node _SplayTree::_last() {
+template<typename K, typename Node : _SplayTreeNode<K, Node>> Node _SplayTreeCls<K, Node>::_last() {
     auto root = _root;
     if (root == nullptr)     {
         return nullptr;
@@ -187,98 +181,102 @@ Node _SplayTree::_last() {
     return _root;
 }
 
-void _SplayTree::_clear() {
+template<typename K, typename Node : _SplayTreeNode<K, Node>> void _SplayTreeCls<K, Node>::_clear() {
     _root = nullptr;
     _count = 0;
     _modificationCount++;
 }
 
-bool _SplayTree::_containsKey(Object key) {
-    return _validKey(key) && _splay(() == 0;
+template<typename K, typename Node : _SplayTreeNode<K, Node>> bool _SplayTreeCls<K, Node>::_containsKey(Object key) {
+    return _validKey(key) && _splay(((dynamic)key)) == 0;
 }
 
 int _dynamicCompare(dynamic a, dynamic b) {
-    return Comparable.compare(a, b);
+    return ComparableCls->compare(a, b);
 }
 
-Comparator<K> _defaultCompare<K>() {
-    Object compare = Comparable.compare;
+Comparator<K> _defaultComparetemplate<typename K> () {
+    Object compare = ComparableCls::compare;
     if (compare is Comparator<K>) {
         return compare;
     }
     return _dynamicCompare;
 }
 
-SplayTreeMap::SplayTreeMap(FunctionType compare, FunctionType isValidKey) {
+template<typename K, typename V> SplayTreeMapCls<K, V>::SplayTreeMapCls(int compare(K key1, K key2) , bool isValidKey(dynamic potentialKey) ) {
     {
         _compare = compare ?? <K>_defaultCompare();
-        _validKey = isValidKey ?? ();
+        _validKey = isValidKey ?? ([=] (dynamic a)         {
+            a is K;
+        });
     }
 }
 
-void SplayTreeMap::from(FunctionType compare, FunctionType isValidKey, Map<dynamic, dynamic> other) {
+template<typename K, typename V> void SplayTreeMapCls<K, V>::from(int compare(K key1, K key2) , bool isValidKey(dynamic potentialKey) , Map<dynamic, dynamic> other) {
     if (other is Map<K, V>) {
         return <K, V>of(other, compare, isValidKey);
     }
-    SplayTreeMap<K, V> result = <K, V>SplayTreeMap(compare, isValidKey);
-    other.forEach();
+    SplayTreeMap<K, V> result = <K, V>make<SplayTreeMapCls>(compare, isValidKey);
+    other->forEach([=] (dynamic k,dynamic v) {
+        result[k] = v;
+    });
     return result;
 }
 
-void SplayTreeMap::of(FunctionType compare, FunctionType isValidKey, Map<K, V> other) {
-    return ;
+template<typename K, typename V> void SplayTreeMapCls<K, V>::of(int compare(K key1, K key2) , bool isValidKey(dynamic potentialKey) , Map<K, V> other) {
+    return _c1;
 }
 
-void SplayTreeMap::fromIterable(FunctionType compare, FunctionType isValidKey, Iterable iterable, FunctionType key, FunctionType value) {
-    SplayTreeMap<K, V> map = <K, V>SplayTreeMap(compare, isValidKey);
-    MapBase._fillMapWithMappedIterable(map, iterable, key, value);
+template<typename K, typename V> void SplayTreeMapCls<K, V>::fromIterable(int compare(K key1, K key2) , bool isValidKey(dynamic potentialKey) , Iterable iterable, K key(dynamic element) , V value(dynamic element) ) {
+    auto _c1 = <K, V>make<SplayTreeMapCls>(compare, isValidKey);_c1.addAll(other);SplayTreeMap<K, V> map = <K, V>make<SplayTreeMapCls>(compare, isValidKey);
+    MapBaseCls->_fillMapWithMappedIterable(map, iterable, key, value);
     return map;
 }
 
-void SplayTreeMap::fromIterables(FunctionType compare, FunctionType isValidKey, Iterable<K> keys, Iterable<V> values) {
-    SplayTreeMap<K, V> map = <K, V>SplayTreeMap(compare, isValidKey);
-    MapBase._fillMapWithIterables(map, keys, values);
+template<typename K, typename V> void SplayTreeMapCls<K, V>::fromIterables(int compare(K key1, K key2) , bool isValidKey(dynamic potentialKey) , Iterable<K> keys, Iterable<V> values) {
+    SplayTreeMap<K, V> map = <K, V>make<SplayTreeMapCls>(compare, isValidKey);
+    MapBaseCls->_fillMapWithIterables(map, keys, values);
     return map;
 }
 
-V SplayTreeMap::[](Object key) {
+template<typename K, typename V> V SplayTreeMapCls<K, V>::[](Object key) {
     if (!_validKey(key))     {
         return nullptr;
     }
     if (_root != nullptr) {
-        int comp = _splay(();
+        int comp = _splay(((dynamic)key));
         if (comp == 0) {
-            return _root!.value;
+            return _root!->value;
         }
     }
     return nullptr;
 }
 
-V SplayTreeMap::remove(Object key) {
+template<typename K, typename V> V SplayTreeMapCls<K, V>::remove(Object key) {
     if (!_validKey(key))     {
         return nullptr;
     }
-    _SplayTreeMapNode<K, V> mapRoot = _remove(();
+    _SplayTreeMapNode<K, V> mapRoot = _remove(((dynamic)key));
     if (mapRoot != nullptr)     {
-        return mapRoot.value;
+        return mapRoot->value;
     }
     return nullptr;
 }
 
-void SplayTreeMap::[]=(K key, V value) {
+template<typename K, typename V> void SplayTreeMapCls<K, V>::[]=(K key, V value) {
     int comp = _splay(key);
     if (comp == 0) {
-        _root = _root!._replaceValue(value);
+        _root = _root!->_replaceValue(value);
         _splayCount = 1;
         return;
     }
-    _addNewRoot(_SplayTreeMapNode(key, value), comp);
+    _addNewRoot(make<_SplayTreeMapNodeCls>(key, value), comp);
 }
 
-V SplayTreeMap::putIfAbsent(FunctionType ifAbsent, K key) {
+template<typename K, typename V> V SplayTreeMapCls<K, V>::putIfAbsent(V ifAbsent() , K key) {
     int comp = _splay(key);
     if (comp == 0) {
-        return _root!.value;
+        return _root!->value;
     }
     int modificationCount = _modificationCount;
     int splayCount = _splayCount;
@@ -290,23 +288,23 @@ V SplayTreeMap::putIfAbsent(FunctionType ifAbsent, K key) {
         comp = _splay(key);
         assert(comp != 0);
     }
-    _addNewRoot(_SplayTreeMapNode(key, value), comp);
+    _addNewRoot(make<_SplayTreeMapNodeCls>(key, value), comp);
     return value;
 }
 
-V SplayTreeMap::update(FunctionType ifAbsent, K key, FunctionType update) {
+template<typename K, typename V> V SplayTreeMapCls<K, V>::update(V ifAbsent() , K key, V update(V value) ) {
     auto comp = _splay(key);
     if (comp == 0) {
         auto modificationCount = _modificationCount;
         auto splayCount = _splayCount;
-        auto newValue = update(_root!.value);
+        auto newValue = update(_root!->value);
         if (modificationCount != _modificationCount) {
             ;
         }
         if (splayCount != _splayCount) {
             _splay(key);
         }
-        _root = _root!._replaceValue(newValue);
+        _root = _root!->_replaceValue(newValue);
         _splayCount = 1;
         return newValue;
     }
@@ -320,90 +318,92 @@ V SplayTreeMap::update(FunctionType ifAbsent, K key, FunctionType update) {
         if (splayCount != _splayCount) {
             comp = _splay(key);
         }
-        _addNewRoot(_SplayTreeMapNode(key, newValue), comp);
+        _addNewRoot(make<_SplayTreeMapNodeCls>(key, newValue), comp);
         return newValue;
     }
     ;
 }
 
-void SplayTreeMap::updateAll(FunctionType update) {
+template<typename K, typename V> void SplayTreeMapCls<K, V>::updateAll(V update(K key, V value) ) {
     auto root = _root;
     if (root == nullptr)     {
         return;
     }
-    auto iterator = _SplayTreeMapEntryIterator(this);
-    while (iterator.moveNext()) {
-        auto node = iterator.current;
-        auto newValue = update(node.key, node.value);
-        iterator._replaceValue(newValue);
+    auto iterator = make<_SplayTreeMapEntryIteratorCls>(this);
+    while (iterator->moveNext()) {
+        auto node = iterator->current;
+        auto newValue = update(node->key, node->value);
+        iterator->_replaceValue(newValue);
     }
 }
 
-void SplayTreeMap::addAll(Map<K, V> other) {
-    other.forEach();
+template<typename K, typename V> void SplayTreeMapCls<K, V>::addAll(Map<K, V> other) {
+    other->forEach([=] (K key,V value) {
+        this[key] = value;
+    });
 }
 
-bool SplayTreeMap::isEmpty() {
+template<typename K, typename V> bool SplayTreeMapCls<K, V>::isEmpty() {
     return (_root == nullptr);
 }
 
-bool SplayTreeMap::isNotEmpty() {
+template<typename K, typename V> bool SplayTreeMapCls<K, V>::isNotEmpty() {
     return !isEmpty;
 }
 
-void SplayTreeMap::forEach(FunctionType f) {
-    Iterator<MapEntry<K, V>> nodes = <K, V>_SplayTreeMapEntryIterator(this);
-    while (nodes.moveNext()) {
-        MapEntry<K, V> node = nodes.current;
-        f(node.key, node.value);
+template<typename K, typename V> void SplayTreeMapCls<K, V>::forEach(void f(K key, V value) ) {
+    Iterator<MapEntry<K, V>> nodes = <K, V>make<_SplayTreeMapEntryIteratorCls>(this);
+    while (nodes->moveNext()) {
+        MapEntry<K, V> node = nodes->current;
+        f(node->key, node->value);
     }
 }
 
-int SplayTreeMap::length() {
+template<typename K, typename V> int SplayTreeMapCls<K, V>::length() {
     return _count;
 }
 
-void SplayTreeMap::clear() {
+template<typename K, typename V> void SplayTreeMapCls<K, V>::clear() {
     _clear();
 }
 
-bool SplayTreeMap::containsKey(Object key) {
+template<typename K, typename V> bool SplayTreeMapCls<K, V>::containsKey(Object key) {
     return _containsKey(key);
 }
 
-bool SplayTreeMap::containsValue(Object value) {
+template<typename K, typename V> bool SplayTreeMapCls<K, V>::containsValue(Object value) {
     int initialSplayCount = _splayCount;
-    ;
+    InlineMethod;
     return visit(_root);
 }
 
-Iterable<K> SplayTreeMap::keys() {
-    return <K, _SplayTreeMapNode<K, V>>_SplayTreeKeyIterable(this);
+template<typename K, typename V> Iterable<K> SplayTreeMapCls<K, V>::keys() {
+    return <K, _SplayTreeMapNode<K, V>>make<_SplayTreeKeyIterableCls>(this);
 }
 
-Iterable<V> SplayTreeMap::values() {
-    return <K, V>_SplayTreeValueIterable(this);
+template<typename K, typename V> Iterable<V> SplayTreeMapCls<K, V>::values() {
+    return <K, V>make<_SplayTreeValueIterableCls>(this);
 }
 
-Iterable<MapEntry<K, V>> SplayTreeMap::entries() {
-    return <K, V>_SplayTreeMapEntryIterable(this);
+template<typename K, typename V> Iterable<MapEntry<K, V>> SplayTreeMapCls<K, V>::entries() {
+    return <K, V>make<_SplayTreeMapEntryIterableCls>(this);
 }
 
-K SplayTreeMap::firstKey() {
+template<typename K, typename V> K SplayTreeMapCls<K, V>::firstKey() {
     if (_root == nullptr)     {
         return nullptr;
     }
-    return _first!.key;
+    return _first!->key;
 }
 
-K SplayTreeMap::lastKey() {
+template<typename K, typename V> K SplayTreeMapCls<K, V>::lastKey() {
     if (_root == nullptr)     {
         return nullptr;
     }
-    return _last!.key;
+    return _last!->key;
 }
 
-K SplayTreeMap::lastKeyBefore(K key) {
+template<typename K, typename V> K SplayTreeMapCls<K, V>::lastKeyBefore(K key) {
     if (key == nullptr)     {
         ;
     }
@@ -412,21 +412,21 @@ K SplayTreeMap::lastKeyBefore(K key) {
     }
     int comp = _splay(key);
     if ( < 0)     {
-        return _root!.key;
+        return _root!->key;
     }
-    _SplayTreeMapNode<K, V> node = _root!._left;
+    _SplayTreeMapNode<K, V> node = _root!->_left;
     if (node == nullptr)     {
         return nullptr;
     }
-    auto nodeRight = node._right;
+    auto nodeRight = node->_right;
     while (nodeRight != nullptr) {
         node = nodeRight;
-        nodeRight = node._right;
+        nodeRight = node->_right;
     }
-    return node!.key;
+    return node!->key;
 }
 
-K SplayTreeMap::firstKeyAfter(K key) {
+template<typename K, typename V> K SplayTreeMapCls<K, V>::firstKeyAfter(K key) {
     if (key == nullptr)     {
         ;
     }
@@ -435,372 +435,367 @@ K SplayTreeMap::firstKeyAfter(K key) {
     }
     int comp = _splay(key);
     if (comp > 0)     {
-        return _root!.key;
+        return _root!->key;
     }
-    _SplayTreeMapNode<K, V> node = _root!._right;
+    _SplayTreeMapNode<K, V> node = _root!->_right;
     if (node == nullptr)     {
         return nullptr;
     }
-    auto nodeLeft = node._left;
+    auto nodeLeft = node->_left;
     while (nodeLeft != nullptr) {
         node = nodeLeft;
-        nodeLeft = node._left;
+        nodeLeft = node->_left;
     }
-    return node!.key;
+    return node!->key;
 }
 
-T _SplayTreeIterator::current() {
-    if (_path.isEmpty)     {
-        return (;
+template<typename K, typename Node : _SplayTreeNode<K, Node>, typename T> T _SplayTreeIteratorCls<K, Node, T>::current() {
+    if (_path->isEmpty)     {
+        return ((T)nullptr);
     }
-    auto node = _path.last;
+    auto node = _path->last;
     return _getValue(node);
 }
 
-bool _SplayTreeIterator::moveNext() {
-    if (_modificationCount != _tree._modificationCount) {
+template<typename K, typename Node : _SplayTreeNode<K, Node>, typename T> bool _SplayTreeIteratorCls<K, Node, T>::moveNext() {
+    if (_modificationCount != _tree->_modificationCount) {
         if (_modificationCount == nullptr) {
-            _modificationCount = _tree._modificationCount;
-            auto node = _tree._root;
+            _modificationCount = _tree->_modificationCount;
+            auto node = _tree->_root;
             while (node != nullptr) {
-                _path.add(node);
-                node = node._left;
+                _path->add(node);
+                node = node->_left;
             }
-            return _path.isNotEmpty;
+            return _path->isNotEmpty;
         }
         ;
     }
-    if (_path.isEmpty)     {
+    if (_path->isEmpty)     {
         return false;
     }
-    if (_splayCount != _tree._splayCount) {
-        _rebuildPath(_path.last.key);
+    if (_splayCount != _tree->_splayCount) {
+        _rebuildPath(_path->last->key);
     }
-    auto node = _path.last;
-    auto next = node._right;
+    auto node = _path->last;
+    auto next = node->_right;
     if (next != nullptr) {
         while (next != nullptr) {
-            _path.add(next);
-            next = next._left;
+            _path->add(next);
+            next = next->_left;
         }
         return true;
     }
-    _path.removeLast();
-    while (_path.isNotEmpty && identical(_path.last._right, node)) {
-        node = _path.removeLast();
+    _path->removeLast();
+    while (_path->isNotEmpty && identical(_path->last->_right, node)) {
+        node = _path->removeLast();
     }
-    return _path.isNotEmpty;
+    return _path->isNotEmpty;
 }
 
-_SplayTreeIterator::_SplayTreeIterator(_SplayTree<K, Node> tree) {
+template<typename K, typename Node : _SplayTreeNode<K, Node>, typename T> _SplayTreeIteratorCls<K, Node, T>::_SplayTreeIteratorCls(_SplayTree<K, Node> tree) {
     {
         _tree = tree;
-        _splayCount = tree._splayCount;
+        _splayCount = tree->_splayCount;
     }
 }
 
-void _SplayTreeIterator::_rebuildPath(K key) {
-    _path.clear();
-    _tree._splay(key);
-    _path.add(_tree._root!);
-    _splayCount = _tree._splayCount;
+template<typename K, typename Node : _SplayTreeNode<K, Node>, typename T> void _SplayTreeIteratorCls<K, Node, T>::_rebuildPath(K key) {
+    _path->clear();
+    _tree->_splay(key);
+    _path->add(_tree->_root!);
+    _splayCount = _tree->_splayCount;
 }
 
-void _SplayTreeIterator::_findLeftMostDescendent(Node node) {
+template<typename K, typename Node : _SplayTreeNode<K, Node>, typename T> void _SplayTreeIteratorCls<K, Node, T>::_findLeftMostDescendent(Node node) {
     while (node != nullptr) {
-        _path.add(node);
-        node = node._left;
+        _path->add(node);
+        node = node->_left;
     }
 }
 
-int _SplayTreeKeyIterable::length() {
-    return _tree._count;
+template<typename K, typename Node : _SplayTreeNode<K, Node>> int _SplayTreeKeyIterableCls<K, Node>::length() {
+    return _tree->_count;
 }
 
-bool _SplayTreeKeyIterable::isEmpty() {
-    return _tree._count == 0;
+template<typename K, typename Node : _SplayTreeNode<K, Node>> bool _SplayTreeKeyIterableCls<K, Node>::isEmpty() {
+    return _tree->_count == 0;
 }
 
-Iterator<K> _SplayTreeKeyIterable::iterator() {
-    return <K, Node>_SplayTreeKeyIterator(_tree);
+template<typename K, typename Node : _SplayTreeNode<K, Node>> Iterator<K> _SplayTreeKeyIterableCls<K, Node>::iterator() {
+    return <K, Node>make<_SplayTreeKeyIteratorCls>(_tree);
 }
 
-bool _SplayTreeKeyIterable::contains(Object o) {
-    return _tree._containsKey(o);
+template<typename K, typename Node : _SplayTreeNode<K, Node>> bool _SplayTreeKeyIterableCls<K, Node>::contains(Object o) {
+    return _tree->_containsKey(o);
 }
 
-Set<K> _SplayTreeKeyIterable::toSet() {
-    SplayTreeSet<K> set = <K>SplayTreeSet(_tree._compare, _tree._validKey);
-    set._count = _tree._count;
-    set._root = set.<Node>_copyNode(_tree._root);
+template<typename K, typename Node : _SplayTreeNode<K, Node>> Set<K> _SplayTreeKeyIterableCls<K, Node>::toSet() {
+    SplayTreeSet<K> set = <K>make<SplayTreeSetCls>(_tree->_compare, _tree->_validKey);
+    set->_count = _tree->_count;
+    set->_root = set-><Node>_copyNode(_tree->_root);
     return set;
 }
 
-int _SplayTreeValueIterable::length() {
-    return _map._count;
+template<typename K, typename V> int _SplayTreeValueIterableCls<K, V>::length() {
+    return _map->_count;
 }
 
-bool _SplayTreeValueIterable::isEmpty() {
-    return _map._count == 0;
+template<typename K, typename V> bool _SplayTreeValueIterableCls<K, V>::isEmpty() {
+    return _map->_count == 0;
 }
 
-Iterator<V> _SplayTreeValueIterable::iterator() {
-    return <K, V>_SplayTreeValueIterator(_map);
+template<typename K, typename V> Iterator<V> _SplayTreeValueIterableCls<K, V>::iterator() {
+    return <K, V>make<_SplayTreeValueIteratorCls>(_map);
 }
 
-int _SplayTreeMapEntryIterable::length() {
-    return _map._count;
+template<typename K, typename V> int _SplayTreeMapEntryIterableCls<K, V>::length() {
+    return _map->_count;
 }
 
-bool _SplayTreeMapEntryIterable::isEmpty() {
-    return _map._count == 0;
+template<typename K, typename V> bool _SplayTreeMapEntryIterableCls<K, V>::isEmpty() {
+    return _map->_count == 0;
 }
 
-Iterator<MapEntry<K, V>> _SplayTreeMapEntryIterable::iterator() {
-    return <K, V>_SplayTreeMapEntryIterator(_map);
+template<typename K, typename V> Iterator<MapEntry<K, V>> _SplayTreeMapEntryIterableCls<K, V>::iterator() {
+    return <K, V>make<_SplayTreeMapEntryIteratorCls>(_map);
 }
 
-_SplayTreeKeyIterator::_SplayTreeKeyIterator(_SplayTree<K, Node> map) {
-    {
-        super(map);
-    }
+template<typename K, typename Node : _SplayTreeNode<K, Node>> _SplayTreeKeyIteratorCls<K, Node>::_SplayTreeKeyIteratorCls(_SplayTree<K, Node> map) {
 }
 
-K _SplayTreeKeyIterator::_getValue(Node node) {
-    return node.key;
+template<typename K, typename Node : _SplayTreeNode<K, Node>> K _SplayTreeKeyIteratorCls<K, Node>::_getValue(Node node) {
+    return node->key;
 }
 
-_SplayTreeValueIterator::_SplayTreeValueIterator(SplayTreeMap<K, V> map) {
-    {
-        super(map);
-    }
+template<typename K, typename V> _SplayTreeValueIteratorCls<K, V>::_SplayTreeValueIteratorCls(SplayTreeMap<K, V> map) {
 }
 
-V _SplayTreeValueIterator::_getValue(_SplayTreeMapNode<K, V> node) {
-    return node.value;
+template<typename K, typename V> V _SplayTreeValueIteratorCls<K, V>::_getValue(_SplayTreeMapNode<K, V> node) {
+    return node->value;
 }
 
-_SplayTreeMapEntryIterator::_SplayTreeMapEntryIterator(SplayTreeMap<K, V> tree) {
-    {
-        super(tree);
-    }
+template<typename K, typename V> _SplayTreeMapEntryIteratorCls<K, V>::_SplayTreeMapEntryIteratorCls(SplayTreeMap<K, V> tree) {
 }
 
-MapEntry<K, V> _SplayTreeMapEntryIterator::_getValue(_SplayTreeMapNode<K, V> node) {
+template<typename K, typename V> MapEntry<K, V> _SplayTreeMapEntryIteratorCls<K, V>::_getValue(_SplayTreeMapNode<K, V> node) {
     return node;
 }
 
-void _SplayTreeMapEntryIterator::_replaceValue(V value) {
-    assert(_path.isNotEmpty);
-    if (_modificationCount != _tree._modificationCount) {
+template<typename K, typename V> void _SplayTreeMapEntryIteratorCls<K, V>::_replaceValue(V value) {
+    assert(_path->isNotEmpty);
+    if (_modificationCount != _tree->_modificationCount) {
         ;
     }
-    if (_splayCount != _tree._splayCount) {
-        _rebuildPath(_path.last.key);
+    if (_splayCount != _tree->_splayCount) {
+        _rebuildPath(_path->last->key);
     }
-    auto last = _path.removeLast();
-    auto newLast = last._replaceValue(value);
-    if (_path.isEmpty) {
-        _tree._root = newLast;
+    auto last = _path->removeLast();
+    auto newLast = last->_replaceValue(value);
+    if (_path->isEmpty) {
+        _tree->_root = newLast;
     } else {
-        auto parent = _path.last;
-        if (identical(last, parent._left)) {
-            parent._left = newLast;
+        auto parent = _path->last;
+        if (identical(last, parent->_left)) {
+            parent->_left = newLast;
         } else {
-            assert(identical(last, parent._right));
-            parent._right = newLast;
+            assert(identical(last, parent->_right));
+            parent->_right = newLast;
         }
     }
-    _path.add(newLast);
-    _splayCount = ++_tree._splayCount;
+    _path->add(newLast);
+    _splayCount = ++_tree->_splayCount;
 }
 
-SplayTreeSet::SplayTreeSet(FunctionType compare, FunctionType isValidKey) {
+template<typename E> SplayTreeSetCls<E>::SplayTreeSetCls(int compare(E key1, E key2) , bool isValidKey(dynamic potentialKey) ) {
     {
         _compare = compare ?? <E>_defaultCompare();
-        _validKey = isValidKey ?? ();
+        _validKey = isValidKey ?? ([=] (dynamic v)         {
+            v is E;
+        });
     }
 }
 
-void SplayTreeSet::from(FunctionType compare, Iterable elements, FunctionType isValidKey) {
+template<typename E> void SplayTreeSetCls<E>::from(int compare(E key1, E key2) , Iterable elements, bool isValidKey(dynamic potentialKey) ) {
     if (elements is Iterable<E>) {
         return <E>of(elements, compare, isValidKey);
     }
-    SplayTreeSet<E> result = <E>SplayTreeSet(compare, isValidKey);
+    SplayTreeSet<E> result = <E>make<SplayTreeSetCls>(compare, isValidKey);
     for (auto element : elements) {
-        result.add(();
+        result->add(((dynamic)element));
     }
     return result;
 }
 
-void SplayTreeSet::of(FunctionType compare, Iterable<E> elements, FunctionType isValidKey) {
-    return ;
+template<typename E> void SplayTreeSetCls<E>::of(int compare(E key1, E key2) , Iterable<E> elements, bool isValidKey(dynamic potentialKey) ) {
+    return _c1;
 }
 
-Set<R> SplayTreeSet::cast<R>() {
-    return Set.<E, R>castFrom(this_newSet);
+template<typename E> Set<R> SplayTreeSetCls<E>::casttemplate<typename R> () {
+    return SetCls-><E, R>castFrom(this_newSet);
 }
 
-Iterator<E> SplayTreeSet::iterator() {
-    return <E, _SplayTreeSetNode<E>>_SplayTreeKeyIterator(this);
+template<typename E> Iterator<E> SplayTreeSetCls<E>::iterator() {
+    return <E, _SplayTreeSetNode<E>>make<_SplayTreeKeyIteratorCls>(this);
 }
 
-int SplayTreeSet::length() {
+template<typename E> int SplayTreeSetCls<E>::length() {
     return _count;
 }
 
-bool SplayTreeSet::isEmpty() {
+template<typename E> bool SplayTreeSetCls<E>::isEmpty() {
     return _root == nullptr;
 }
 
-bool SplayTreeSet::isNotEmpty() {
+template<typename E> bool SplayTreeSetCls<E>::isNotEmpty() {
     return _root != nullptr;
 }
 
-E SplayTreeSet::first() {
+template<typename E> E SplayTreeSetCls<E>::first() {
+    auto _c1 = make<SplayTreeSetCls>(compare, isValidKey);_c1.addAll(elements);if (_count == 0)     {
+        ;
+    }
+    return _first!->key;
+}
+
+template<typename E> E SplayTreeSetCls<E>::last() {
     if (_count == 0)     {
         ;
     }
-    return _first!.key;
+    return _last!->key;
 }
 
-E SplayTreeSet::last() {
-    if (_count == 0)     {
-        ;
-    }
-    return _last!.key;
-}
-
-E SplayTreeSet::single() {
+template<typename E> E SplayTreeSetCls<E>::single() {
     if (_count == 0)     {
         ;
     }
     if (_count > 1)     {
         ;
     }
-    return _root!.key;
+    return _root!->key;
 }
 
-bool SplayTreeSet::contains(Object element) {
-    return _validKey(element) && _splay(() == 0;
+template<typename E> bool SplayTreeSetCls<E>::contains(Object element) {
+    return _validKey(element) && _splay(((E)element)) == 0;
 }
 
-bool SplayTreeSet::add(E element) {
+template<typename E> bool SplayTreeSetCls<E>::add(E element) {
     return _add(element);
 }
 
-bool SplayTreeSet::remove(Object object) {
+template<typename E> bool SplayTreeSetCls<E>::remove(Object object) {
     if (!_validKey(object))     {
         return false;
     }
-    return _remove(() != nullptr;
+    return _remove(((E)object)) != nullptr;
 }
 
-void SplayTreeSet::addAll(Iterable<E> elements) {
+template<typename E> void SplayTreeSetCls<E>::addAll(Iterable<E> elements) {
     for (E element : elements) {
         _add(element);
     }
 }
 
-void SplayTreeSet::removeAll(Iterable<Object> elements) {
+template<typename E> void SplayTreeSetCls<E>::removeAll(Iterable<Object> elements) {
     for (Object element : elements) {
         if (_validKey(element))         {
-            _remove(();
+            _remove(((E)element));
         }
     }
 }
 
-void SplayTreeSet::retainAll(Iterable<Object> elements) {
-    SplayTreeSet<E> retainSet = <E>SplayTreeSet(_compare, _validKey);
+template<typename E> void SplayTreeSetCls<E>::retainAll(Iterable<Object> elements) {
+    SplayTreeSet<E> retainSet = <E>make<SplayTreeSetCls>(_compare, _validKey);
     int modificationCount = _modificationCount;
     for (Object object : elements) {
         if (modificationCount != _modificationCount) {
             ;
         }
-        if (_validKey(object) && _splay(() == 0) {
-            retainSet.add(_root!.key);
+        if (_validKey(object) && _splay(((E)object)) == 0) {
+            retainSet->add(_root!->key);
         }
     }
-    if (retainSet._count != _count) {
-        _root = retainSet._root;
-        _count = retainSet._count;
+    if (retainSet->_count != _count) {
+        _root = retainSet->_root;
+        _count = retainSet->_count;
         _modificationCount++;
     }
 }
 
-E SplayTreeSet::lookup(Object object) {
+template<typename E> E SplayTreeSetCls<E>::lookup(Object object) {
     if (!_validKey(object))     {
         return nullptr;
     }
-    int comp = _splay(();
+    int comp = _splay(((E)object));
     if (comp != 0)     {
         return nullptr;
     }
-    return _root!.key;
+    return _root!->key;
 }
 
-Set<E> SplayTreeSet::intersection(Set<Object> other) {
-    Set<E> result = <E>SplayTreeSet(_compare, _validKey);
+template<typename E> Set<E> SplayTreeSetCls<E>::intersection(Set<Object> other) {
+    Set<E> result = <E>make<SplayTreeSetCls>(_compare, _validKey);
     for (E element : this) {
-        if (other.contains(element))         {
-            result.add(element);
+        if (other->contains(element))         {
+            result->add(element);
         }
     }
     return result;
 }
 
-Set<E> SplayTreeSet::difference(Set<Object> other) {
-    Set<E> result = <E>SplayTreeSet(_compare, _validKey);
+template<typename E> Set<E> SplayTreeSetCls<E>::difference(Set<Object> other) {
+    Set<E> result = <E>make<SplayTreeSetCls>(_compare, _validKey);
     for (E element : this) {
-        if (!other.contains(element))         {
-            result.add(element);
+        if (!other->contains(element))         {
+            result->add(element);
         }
     }
     return result;
 }
 
-Set<E> SplayTreeSet::union(Set<E> other) {
-    return ;
+template<typename E> Set<E> SplayTreeSetCls<E>::union(Set<E> other) {
+    auto _c1 = _clone();_c1.addAll(other);return _c1;
 }
 
-void SplayTreeSet::clear() {
+template<typename E> void SplayTreeSetCls<E>::clear() {
     _clear();
 }
 
-Set<E> SplayTreeSet::toSet() {
+template<typename E> Set<E> SplayTreeSetCls<E>::toSet() {
     return _clone();
 }
 
-String SplayTreeSet::toString() {
-    return IterableBase.iterableToFullString(this, "{", "}");
+template<typename E> String SplayTreeSetCls<E>::toString() {
+    return IterableBaseCls->iterableToFullString(this, "{", "}");
 }
 
-Set<T> SplayTreeSet::_newSet<T>() {
-    return <T>SplayTreeSet(, _validKey);
+template<typename E> Set<T> SplayTreeSetCls<E>::_newSettemplate<typename T> () {
+    return <T>make<SplayTreeSetCls>([=] (T a,T b)     {
+        _compare(((E)a), ((E)b));
+    }, _validKey);
 }
 
-bool SplayTreeSet::_add(E element) {
+template<typename E> bool SplayTreeSetCls<E>::_add(E element) {
     int compare = _splay(element);
     if (compare == 0)     {
         return false;
     }
-    _addNewRoot(_SplayTreeSetNode(element), compare);
+    _addNewRoot(make<_SplayTreeSetNodeCls>(element), compare);
     return true;
 }
 
-SplayTreeSet<E> SplayTreeSet::_clone() {
-    auto set = <E>SplayTreeSet(_compare, _validKey);
-    set._count = _count;
-    set._root = <_SplayTreeSetNode<E>>_copyNode(_root);
+template<typename E> SplayTreeSet<E> SplayTreeSetCls<E>::_clone() {
+    auto set = <E>make<SplayTreeSetCls>(_compare, _validKey);
+    set->_count = _count;
+    set->_root = <_SplayTreeSetNode<E>>_copyNode(_root);
     return set;
 }
 
-_SplayTreeSetNode<E> SplayTreeSet::_copyNode<Node extends _SplayTreeNode<E, Node>>(Node node) {
+template<typename E> _SplayTreeSetNode<E> SplayTreeSetCls<E>::_copyNodetemplate<typename Node : _SplayTreeNode<E, Node>> (Node node) {
     if (node == nullptr)     {
         return nullptr;
     }
-    ;
-    auto result = <E>_SplayTreeSetNode(node.key);
+    InlineMethod;
+    auto result = <E>make<_SplayTreeSetNodeCls>(node->key);
     copyChildren(node, result);
     return result;
 }

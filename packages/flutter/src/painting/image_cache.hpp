@@ -1,48 +1,48 @@
-#ifndef IMAGE_CACHE_H
-#define IMAGE_CACHE_H
-#include <memory>
+#ifndef PACKAGES_FLUTTER_SRC_PAINTING_IMAGE_CACHE
+#define PACKAGES_FLUTTER_SRC_PAINTING_IMAGE_CACHE
+#include <base.hpp>
 
-#include <developer/developer.hpp>
-#include <flutter/foundation.hpp>
-#include <flutter/scheduler.hpp>
+#include <dart/core/core.hpp>
+#include <dart/developer/developer.hpp>
+#include <packages/flutter/lib/foundation.hpp>
+#include <packages/flutter/flutter.hpp>
 #include "image_stream.hpp"
 
+int _kDefaultSize;
 
-const int _kDefaultSize;
-
-const int _kDefaultSizeBytes;
+int _kDefaultSizeBytes;
 
 
-class ImageCache {
+class ImageCacheCls : public ObjectCls {
 public:
 
-    int maximumSize();
+    virtual int maximumSize();
 
-    void  maximumSize(int value);
+    virtual void  maximumSize(int value);
 
-    int currentSize();
+    virtual int currentSize();
 
-    int maximumSizeBytes();
+    virtual int maximumSizeBytes();
 
-    void  maximumSizeBytes(int value);
+    virtual void  maximumSizeBytes(int value);
 
-    int currentSizeBytes();
+    virtual int currentSizeBytes();
 
-    void clear();
+    virtual void clear();
 
-    bool evict(bool includeLive, Object key);
+    virtual bool evict(bool includeLive, Object key);
 
-    ImageStreamCompleter putIfAbsent(Object key, FunctionType loader, ImageErrorListener onError);
+    virtual ImageStreamCompleter putIfAbsent(Object key, ImageStreamCompleter loader() , ImageErrorListener onError);
 
-    ImageCacheStatus statusForKey(Object key);
+    virtual ImageCacheStatus statusForKey(Object key);
 
-    bool containsKey(Object key);
+    virtual bool containsKey(Object key);
 
-    int liveImageCount();
+    virtual int liveImageCount();
 
-    int pendingImageCount();
+    virtual int pendingImageCount();
 
-    void clearLiveImages();
+    virtual void clearLiveImages();
 
 private:
     Map<Object, _PendingImage> _pendingImages;
@@ -58,15 +58,16 @@ private:
     int _currentSizeBytes;
 
 
-    void _touch(_CachedImage image, Object key, TimelineTask timelineTask);
+    virtual void _touch(_CachedImage image, Object key, TimelineTask timelineTask);
 
-    void _trackLiveImage(ImageStreamCompleter completer, Object key, int sizeBytes);
+    virtual void _trackLiveImage(ImageStreamCompleter completer, Object key, int sizeBytes);
 
-    void _checkCacheSize(TimelineTask timelineTask);
+    virtual void _checkCacheSize(TimelineTask timelineTask);
 
 };
+using ImageCache = std::shared_ptr<ImageCacheCls>;
 
-class ImageCacheStatus {
+class ImageCacheStatusCls : public ObjectCls {
 public:
     bool pending;
 
@@ -75,23 +76,24 @@ public:
     bool live;
 
 
-    bool tracked();
+    virtual bool tracked();
 
-    bool untracked();
+    virtual bool untracked();
 
-    bool ==(Object other);
+    virtual bool operator==(Object other);
 
-    int hashCode();
+    virtual int hashCode();
 
-    String toString();
+    virtual String toString();
 
 private:
 
-    void  _(bool keepAlive, bool live, bool pending);
+    virtual void  _(bool keepAlive, bool live, bool pending);
 
 };
+using ImageCacheStatus = std::shared_ptr<ImageCacheStatusCls>;
 
-class _CachedImageBase {
+class _CachedImageBaseCls : public ObjectCls {
 public:
     ImageStreamCompleter completer;
 
@@ -100,51 +102,54 @@ public:
     ImageStreamCompleterHandle handle;
 
 
-    void dispose();
+    virtual void dispose();
 
 private:
 
-     _CachedImageBase(ImageStreamCompleter completer, int sizeBytes);
+     _CachedImageBaseCls(ImageStreamCompleter completer, int sizeBytes);
 
 };
+using _CachedImageBase = std::shared_ptr<_CachedImageBaseCls>;
 
-class _CachedImage : _CachedImageBase {
+class _CachedImageCls : public _CachedImageBaseCls {
 public:
 
 private:
 
-     _CachedImage(Unknown, Unknown);
-
+     _CachedImageCls(Unknown completer, Unknown sizeBytes);
 };
+using _CachedImage = std::shared_ptr<_CachedImageCls>;
 
-class _LiveImage : _CachedImageBase {
+class _LiveImageCls : public _CachedImageBaseCls {
 public:
 
-    void dispose();
+    virtual void dispose();
 
-    String toString();
+    virtual String toString();
 
 private:
     VoidCallback _handleRemove;
 
 
-     _LiveImage(ImageStreamCompleter completer, VoidCallback handleRemove, int sizeBytes);
+     _LiveImageCls(ImageStreamCompleter completer, VoidCallback handleRemove, int sizeBytes);
 
 };
+using _LiveImage = std::shared_ptr<_LiveImageCls>;
 
-class _PendingImage {
+class _PendingImageCls : public ObjectCls {
 public:
     ImageStreamCompleter completer;
 
     ImageStreamListener listener;
 
 
-    void removeListener();
+    virtual void removeListener();
 
 private:
 
-     _PendingImage(ImageStreamCompleter completer, ImageStreamListener listener);
-
+     _PendingImageCls(ImageStreamCompleter completer, ImageStreamListener listener);
 };
+using _PendingImage = std::shared_ptr<_PendingImageCls>;
+
 
 #endif

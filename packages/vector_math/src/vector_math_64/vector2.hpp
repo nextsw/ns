@@ -1,14 +1,14 @@
-#ifndef VECTOR2_H
-#define VECTOR2_H
-#include <memory>
+#ifndef PACKAGES_VECTOR_MATH_SRC_VECTOR_MATH_64_VECTOR2
+#define PACKAGES_VECTOR_MATH_SRC_VECTOR_MATH_64_VECTOR2
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
 
 
-
-
-class Vector2 {
+class Vector2Cls : public ObjectCls {
 public:
 
-    Float64List storage();
+    virtual Float64List storage();
 
     static void min(Vector2 a, Vector2 b, Vector2 result);
 
@@ -16,338 +16,339 @@ public:
 
     static void mix(double a, Vector2 max, Vector2 min, Vector2 result);
 
-     Vector2(double x, double y);
+     Vector2Cls(double x, double y);
 
-    void  array(List<double> array, int offset);
+    virtual void  array(List<double> array, int offset);
 
-    void  zero();
+    virtual void  zero();
 
-    void  all(double value);
+    virtual void  all(double value);
 
-    void  copy(Vector2 other);
+    virtual void  copy(Vector2 other);
 
-    void  fromFloat64List(Float64List _v2storage);
+    virtual void  fromFloat64List(Float64List _v2storage);
+    virtual void  fromBuffer(ByteBuffer buffer, int offset);
 
-    void  fromBuffer(ByteBuffer buffer, int offset);
+    virtual void  random(Random rng);
 
-    void  random(Random rng);
+    virtual void setValues(double x_, double y_);
 
-    void setValues(double x_, double y_);
+    virtual void setZero();
 
-    void setZero();
+    virtual void setFrom(Vector2 other);
 
-    void setFrom(Vector2 other);
+    virtual void splat(double arg);
 
-    void splat(double arg);
+    virtual String toString();
 
-    String toString();
+    virtual bool operator==(Object other);
 
-    bool ==(Object other);
+    virtual int hashCode();
 
-    int hashCode();
+    virtual Vector2 operator-();
 
-    Vector2 -();
+    virtual Vector2 operator-(Vector2 other);
 
-    Vector2 -(Vector2 other);
+    virtual Vector2 operator+(Vector2 other);
 
-    Vector2 +(Vector2 other);
+    virtual Vector2 operator/(double scale);
 
-    Vector2 /(double scale);
+    virtual Vector2 operator*(double scale);
 
-    Vector2 *(double scale);
+    virtual double operator[](int i);
 
-    double [](int i);
+    virtual void operator[]=(int i, double v);
 
-    void []=(int i, double v);
+    virtual void  length(double value);
 
-    void  length(double value);
+    virtual double length();
 
-    double length();
+    virtual double length2();
 
-    double length2();
+    virtual double normalize();
 
-    double normalize();
+    virtual double normalizeLength();
 
-    double normalizeLength();
+    virtual Vector2 normalized();
 
-    Vector2 normalized();
+    virtual Vector2 normalizeInto(Vector2 out);
 
-    Vector2 normalizeInto(Vector2 out);
+    virtual double distanceTo(Vector2 arg);
 
-    double distanceTo(Vector2 arg);
+    virtual double distanceToSquared(Vector2 arg);
 
-    double distanceToSquared(Vector2 arg);
+    virtual double angleTo(Vector2 other);
 
-    double angleTo(Vector2 other);
+    virtual double angleToSigned(Vector2 other);
 
-    double angleToSigned(Vector2 other);
+    virtual double dot(Vector2 other);
 
-    double dot(Vector2 other);
+    virtual void postmultiply(Matrix2 arg);
 
-    void postmultiply(Matrix2 arg);
+    virtual double cross(Vector2 other);
 
-    double cross(Vector2 other);
+    virtual Vector2 scaleOrthogonalInto(Vector2 out, double scale);
 
-    Vector2 scaleOrthogonalInto(Vector2 out, double scale);
+    virtual void reflect(Vector2 normal);
 
-    void reflect(Vector2 normal);
+    virtual Vector2 reflected(Vector2 normal);
 
-    Vector2 reflected(Vector2 normal);
+    virtual double relativeError(Vector2 correct);
 
-    double relativeError(Vector2 correct);
+    virtual double absoluteError(Vector2 correct);
 
-    double absoluteError(Vector2 correct);
+    virtual bool isInfinite();
 
-    bool isInfinite();
+    virtual bool isNaN();
 
-    bool isNaN();
+    virtual void add(Vector2 arg);
 
-    void add(Vector2 arg);
+    virtual void addScaled(Vector2 arg, double factor);
 
-    void addScaled(Vector2 arg, double factor);
+    virtual void sub(Vector2 arg);
 
-    void sub(Vector2 arg);
+    virtual void multiply(Vector2 arg);
 
-    void multiply(Vector2 arg);
+    virtual void divide(Vector2 arg);
 
-    void divide(Vector2 arg);
+    virtual void scale(double arg);
 
-    void scale(double arg);
+    virtual Vector2 scaled(double arg);
 
-    Vector2 scaled(double arg);
+    virtual void negate();
 
-    void negate();
+    virtual void absolute();
 
-    void absolute();
+    virtual void clamp(Vector2 max, Vector2 min);
 
-    void clamp(Vector2 max, Vector2 min);
+    virtual void clampScalar(double max, double min);
 
-    void clampScalar(double max, double min);
+    virtual void floor();
 
-    void floor();
+    virtual void ceil();
 
-    void ceil();
+    virtual void round();
 
-    void round();
+    virtual void roundToZero();
 
-    void roundToZero();
+    virtual Vector2 clone();
 
-    Vector2 clone();
+    virtual Vector2 copyInto(Vector2 arg);
 
-    Vector2 copyInto(Vector2 arg);
+    virtual void copyIntoArray(List<double> array, int offset);
 
-    void copyIntoArray(List<double> array, int offset);
+    virtual void copyFromArray(List<double> array, int offset);
 
-    void copyFromArray(List<double> array, int offset);
+    virtual void  xy(Vector2 arg);
 
-    void  xy(Vector2 arg);
+    virtual void  yx(Vector2 arg);
 
-    void  yx(Vector2 arg);
+    virtual void  r(double arg);
 
-    void  r(double arg);
+    virtual void  g(double arg);
 
-    void  g(double arg);
+    virtual void  s(double arg);
 
-    void  s(double arg);
+    virtual void  t(double arg);
 
-    void  t(double arg);
+    virtual void  x(double arg);
 
-    void  x(double arg);
+    virtual void  y(double arg);
 
-    void  y(double arg);
+    virtual void  rg(Vector2 arg);
 
-    void  rg(Vector2 arg);
+    virtual void  gr(Vector2 arg);
 
-    void  gr(Vector2 arg);
+    virtual void  st(Vector2 arg);
 
-    void  st(Vector2 arg);
+    virtual void  ts(Vector2 arg);
 
-    void  ts(Vector2 arg);
+    virtual Vector2 xx();
 
-    Vector2 xx();
+    virtual Vector2 xy();
 
-    Vector2 xy();
+    virtual Vector2 yx();
 
-    Vector2 yx();
+    virtual Vector2 yy();
 
-    Vector2 yy();
+    virtual Vector3 xxx();
 
-    Vector3 xxx();
+    virtual Vector3 xxy();
 
-    Vector3 xxy();
+    virtual Vector3 xyx();
 
-    Vector3 xyx();
+    virtual Vector3 xyy();
 
-    Vector3 xyy();
+    virtual Vector3 yxx();
 
-    Vector3 yxx();
+    virtual Vector3 yxy();
 
-    Vector3 yxy();
+    virtual Vector3 yyx();
 
-    Vector3 yyx();
+    virtual Vector3 yyy();
 
-    Vector3 yyy();
+    virtual Vector4 xxxx();
 
-    Vector4 xxxx();
+    virtual Vector4 xxxy();
 
-    Vector4 xxxy();
+    virtual Vector4 xxyx();
 
-    Vector4 xxyx();
+    virtual Vector4 xxyy();
 
-    Vector4 xxyy();
+    virtual Vector4 xyxx();
 
-    Vector4 xyxx();
+    virtual Vector4 xyxy();
 
-    Vector4 xyxy();
+    virtual Vector4 xyyx();
 
-    Vector4 xyyx();
+    virtual Vector4 xyyy();
 
-    Vector4 xyyy();
+    virtual Vector4 yxxx();
 
-    Vector4 yxxx();
+    virtual Vector4 yxxy();
 
-    Vector4 yxxy();
+    virtual Vector4 yxyx();
 
-    Vector4 yxyx();
+    virtual Vector4 yxyy();
 
-    Vector4 yxyy();
+    virtual Vector4 yyxx();
 
-    Vector4 yyxx();
+    virtual Vector4 yyxy();
 
-    Vector4 yyxy();
+    virtual Vector4 yyyx();
 
-    Vector4 yyyx();
+    virtual Vector4 yyyy();
 
-    Vector4 yyyy();
+    virtual double r();
 
-    double r();
+    virtual double g();
 
-    double g();
+    virtual double s();
 
-    double s();
+    virtual double t();
 
-    double t();
+    virtual double x();
 
-    double x();
+    virtual double y();
 
-    double y();
+    virtual Vector2 rr();
 
-    Vector2 rr();
+    virtual Vector2 rg();
 
-    Vector2 rg();
+    virtual Vector2 gr();
 
-    Vector2 gr();
+    virtual Vector2 gg();
 
-    Vector2 gg();
+    virtual Vector3 rrr();
 
-    Vector3 rrr();
+    virtual Vector3 rrg();
 
-    Vector3 rrg();
+    virtual Vector3 rgr();
 
-    Vector3 rgr();
+    virtual Vector3 rgg();
 
-    Vector3 rgg();
+    virtual Vector3 grr();
 
-    Vector3 grr();
+    virtual Vector3 grg();
 
-    Vector3 grg();
+    virtual Vector3 ggr();
 
-    Vector3 ggr();
+    virtual Vector3 ggg();
 
-    Vector3 ggg();
+    virtual Vector4 rrrr();
 
-    Vector4 rrrr();
+    virtual Vector4 rrrg();
 
-    Vector4 rrrg();
+    virtual Vector4 rrgr();
 
-    Vector4 rrgr();
+    virtual Vector4 rrgg();
 
-    Vector4 rrgg();
+    virtual Vector4 rgrr();
 
-    Vector4 rgrr();
+    virtual Vector4 rgrg();
 
-    Vector4 rgrg();
+    virtual Vector4 rggr();
 
-    Vector4 rggr();
+    virtual Vector4 rggg();
 
-    Vector4 rggg();
+    virtual Vector4 grrr();
 
-    Vector4 grrr();
+    virtual Vector4 grrg();
 
-    Vector4 grrg();
+    virtual Vector4 grgr();
 
-    Vector4 grgr();
+    virtual Vector4 grgg();
 
-    Vector4 grgg();
+    virtual Vector4 ggrr();
 
-    Vector4 ggrr();
+    virtual Vector4 ggrg();
 
-    Vector4 ggrg();
+    virtual Vector4 gggr();
 
-    Vector4 gggr();
+    virtual Vector4 gggg();
 
-    Vector4 gggg();
+    virtual Vector2 ss();
 
-    Vector2 ss();
+    virtual Vector2 st();
 
-    Vector2 st();
+    virtual Vector2 ts();
 
-    Vector2 ts();
+    virtual Vector2 tt();
 
-    Vector2 tt();
+    virtual Vector3 sss();
 
-    Vector3 sss();
+    virtual Vector3 sst();
 
-    Vector3 sst();
+    virtual Vector3 sts();
 
-    Vector3 sts();
+    virtual Vector3 stt();
 
-    Vector3 stt();
+    virtual Vector3 tss();
 
-    Vector3 tss();
+    virtual Vector3 tst();
 
-    Vector3 tst();
+    virtual Vector3 tts();
 
-    Vector3 tts();
+    virtual Vector3 ttt();
 
-    Vector3 ttt();
+    virtual Vector4 ssss();
 
-    Vector4 ssss();
+    virtual Vector4 ssst();
 
-    Vector4 ssst();
+    virtual Vector4 ssts();
 
-    Vector4 ssts();
+    virtual Vector4 sstt();
 
-    Vector4 sstt();
+    virtual Vector4 stss();
 
-    Vector4 stss();
+    virtual Vector4 stst();
 
-    Vector4 stst();
+    virtual Vector4 stts();
 
-    Vector4 stts();
+    virtual Vector4 sttt();
 
-    Vector4 sttt();
+    virtual Vector4 tsss();
 
-    Vector4 tsss();
+    virtual Vector4 tsst();
 
-    Vector4 tsst();
+    virtual Vector4 tsts();
 
-    Vector4 tsts();
+    virtual Vector4 tstt();
 
-    Vector4 tstt();
+    virtual Vector4 ttss();
 
-    Vector4 ttss();
+    virtual Vector4 ttst();
 
-    Vector4 ttst();
+    virtual Vector4 ttts();
 
-    Vector4 ttts();
-
-    Vector4 tttt();
+    virtual Vector4 tttt();
 
 private:
     Float64List _v2storage;
 
 
 };
+using Vector2 = std::shared_ptr<Vector2Cls>;
+
 
 #endif

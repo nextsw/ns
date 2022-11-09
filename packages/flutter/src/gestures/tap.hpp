@@ -1,21 +1,21 @@
-#ifndef TAP_H
-#define TAP_H
-#include <memory>
-#include <ui.hpp>
-#include <flutter/foundation.hpp>
-#include <vector_math/vector_math_64.hpp>
+#ifndef PACKAGES_FLUTTER_SRC_GESTURES_TAP
+#define PACKAGES_FLUTTER_SRC_GESTURES_TAP
+#include <base.hpp>
+#include <dart/ui/ui.hpp>
+#include <packages/flutter/lib/foundation.hpp>
+#include <packages/vector_math/vector_math.hpp>
 #include "arena.hpp"
 #include "events.hpp"
 
-#include <flutter/foundation.hpp>
+#include <dart/core/core.hpp>
+#include <packages/flutter/lib/foundation.hpp>
 #include "arena.hpp"
 #include "constants.hpp"
 #include "events.hpp"
 #include "recognizer.hpp"
 
 
-
-class TapDownDetails {
+class TapDownDetailsCls : public ObjectCls {
 public:
     Offset globalPosition;
 
@@ -24,13 +24,14 @@ public:
     Offset localPosition;
 
 
-     TapDownDetails(Offset globalPosition, PointerDeviceKind kind, Offset localPosition);
+     TapDownDetailsCls(Offset globalPosition, PointerDeviceKind kind, Offset localPosition);
 
 private:
 
 };
+using TapDownDetails = std::shared_ptr<TapDownDetailsCls>;
 
-class TapUpDetails {
+class TapUpDetailsCls : public ObjectCls {
 public:
     Offset globalPosition;
 
@@ -39,40 +40,38 @@ public:
     PointerDeviceKind kind;
 
 
-     TapUpDetails(Offset globalPosition, PointerDeviceKind kind, Offset localPosition);
+     TapUpDetailsCls(Offset globalPosition, PointerDeviceKind kind, Offset localPosition);
 
 private:
 
 };
+using TapUpDetails = std::shared_ptr<TapUpDetailsCls>;
 
-class BaseTapGestureRecognizer : PrimaryPointerGestureRecognizer {
+class BaseTapGestureRecognizerCls : public PrimaryPointerGestureRecognizerCls {
 public:
 
-     BaseTapGestureRecognizer(Unknown, Unknown);
+     BaseTapGestureRecognizerCls(Unknown debugOwner, Unknown supportedDevices);
 
-    void handleTapDown(PointerDownEvent down);
+    virtual void handleTapDown(PointerDownEvent down);
+    virtual void handleTapUp(PointerDownEvent down, PointerUpEvent up);
+    virtual void handleTapCancel(PointerCancelEvent cancel, PointerDownEvent down, String reason);
+    virtual void addAllowedPointer(PointerDownEvent event);
 
-    void handleTapUp(PointerDownEvent down, PointerUpEvent up);
+    virtual void startTrackingPointer(int pointer, Matrix4 transform);
 
-    void handleTapCancel(PointerCancelEvent cancel, PointerDownEvent down, String reason);
+    virtual void handlePrimaryPointer(PointerEvent event);
 
-    void addAllowedPointer(PointerDownEvent event);
+    virtual void resolve(GestureDisposition disposition);
 
-    void startTrackingPointer(int pointer, Matrix4 transform);
+    virtual void didExceedDeadline();
 
-    void handlePrimaryPointer(PointerEvent event);
+    virtual void acceptGesture(int pointer);
 
-    void resolve(GestureDisposition disposition);
+    virtual void rejectGesture(int pointer);
 
-    void didExceedDeadline();
+    virtual String debugDescription();
 
-    void acceptGesture(int pointer);
-
-    void rejectGesture(int pointer);
-
-    String debugDescription();
-
-    void debugFillProperties(DiagnosticPropertiesBuilder properties);
+    virtual void debugFillProperties(DiagnosticPropertiesBuilder properties);
 
 private:
     bool _sentTapDown;
@@ -84,17 +83,18 @@ private:
     PointerUpEvent _up;
 
 
-    void _checkDown();
+    virtual void _checkDown();
 
-    void _checkUp();
+    virtual void _checkUp();
 
-    void _checkCancel(PointerCancelEvent event, String note);
+    virtual void _checkCancel(PointerCancelEvent event, String note);
 
-    void _reset();
+    virtual void _reset();
 
 };
+using BaseTapGestureRecognizer = std::shared_ptr<BaseTapGestureRecognizerCls>;
 
-class TapGestureRecognizer : BaseTapGestureRecognizer {
+class TapGestureRecognizerCls : public BaseTapGestureRecognizerCls {
 public:
     GestureTapDownCallback onTapDown;
 
@@ -119,20 +119,21 @@ public:
     GestureTapCancelCallback onTertiaryTapCancel;
 
 
-     TapGestureRecognizer(Unknown, Unknown);
+     TapGestureRecognizerCls(Unknown debugOwner, Unknown supportedDevices);
+    virtual bool isPointerAllowed(PointerDownEvent event);
 
-    bool isPointerAllowed(PointerDownEvent event);
+    virtual void handleTapDown(PointerDownEvent down);
 
-    void handleTapDown(PointerDownEvent down);
+    virtual void handleTapUp(PointerDownEvent down, PointerUpEvent up);
 
-    void handleTapUp(PointerDownEvent down, PointerUpEvent up);
+    virtual void handleTapCancel(PointerCancelEvent cancel, PointerDownEvent down, String reason);
 
-    void handleTapCancel(PointerCancelEvent cancel, PointerDownEvent down, String reason);
-
-    String debugDescription();
+    virtual String debugDescription();
 
 private:
 
 };
+using TapGestureRecognizer = std::shared_ptr<TapGestureRecognizerCls>;
+
 
 #endif

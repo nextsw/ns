@@ -4,10 +4,10 @@ int runeToLowerCase(int rune) {
     if (rune > utf16BmpUpperBound) {
         return rune;
     }
-    return String.fromCharCode(rune).toLowerCase().codeUnitAt(0);
+    return StringCls->fromCharCode(rune)->toLowerCase()->codeUnitAt(0);
 }
 
-RawKeyEventDataMacOs::RawKeyEventDataMacOs(String characters, String charactersIgnoringModifiers, int keyCode, int modifiers, int specifiedLogicalKey) {
+RawKeyEventDataMacOsCls::RawKeyEventDataMacOsCls(String characters, String charactersIgnoringModifiers, int keyCode, int modifiers, int specifiedLogicalKey) {
     {
         assert(characters != nullptr);
         assert(charactersIgnoringModifiers != nullptr);
@@ -16,18 +16,18 @@ RawKeyEventDataMacOs::RawKeyEventDataMacOs(String characters, String charactersI
     }
 }
 
-String RawKeyEventDataMacOs::keyLabel() {
+String RawKeyEventDataMacOsCls::keyLabel() {
     return charactersIgnoringModifiers;
 }
 
-PhysicalKeyboardKey RawKeyEventDataMacOs::physicalKey() {
-    return kMacOsToPhysicalKey[keyCode] ?? PhysicalKeyboardKey(LogicalKeyboardKey.windowsPlane + keyCode);
+PhysicalKeyboardKey RawKeyEventDataMacOsCls::physicalKey() {
+    return kMacOsToPhysicalKey[keyCode] ?? make<PhysicalKeyboardKeyCls>(LogicalKeyboardKeyCls::windowsPlane + keyCode);
 }
 
-LogicalKeyboardKey RawKeyEventDataMacOs::logicalKey() {
+LogicalKeyboardKey RawKeyEventDataMacOsCls::logicalKey() {
     if (specifiedLogicalKey != nullptr) {
         int key = specifiedLogicalKey!;
-        return LogicalKeyboardKey.findKeyByKeyId(key) ?? LogicalKeyboardKey(key);
+        return LogicalKeyboardKeyCls->findKeyByKeyId(key) ?? make<LogicalKeyboardKeyCls>(key);
     }
     LogicalKeyboardKey numPadKey = kMacOsNumPadMap[keyCode];
     if (numPadKey != nullptr) {
@@ -38,20 +38,20 @@ LogicalKeyboardKey RawKeyEventDataMacOs::logicalKey() {
         return knownKey;
     }
     int character;
-    if (keyLabel.isNotEmpty) {
-        List<int> codePoints = keyLabel.runes.toList();
-        if (codePoints.length == 1 && !LogicalKeyboardKey.isControlCharacter(keyLabel) && !_isUnprintableKey(keyLabel)) {
+    if (keyLabel->isNotEmpty) {
+        List<int> codePoints = keyLabel->runes->toList();
+        if (codePoints->length == 1 && !LogicalKeyboardKeyCls->isControlCharacter(keyLabel) && !_isUnprintableKey(keyLabel)) {
             character = runeToLowerCase(codePoints[0]);
         }
     }
     if (character != nullptr) {
-        int keyId = LogicalKeyboardKey.unicodePlane | (character & LogicalKeyboardKey.valueMask);
-        return LogicalKeyboardKey.findKeyByKeyId(keyId) ?? LogicalKeyboardKey(keyId);
+        int keyId = LogicalKeyboardKeyCls::unicodePlane | (character & LogicalKeyboardKeyCls::valueMask);
+        return LogicalKeyboardKeyCls->findKeyByKeyId(keyId) ?? make<LogicalKeyboardKeyCls>(keyId);
     }
-    return LogicalKeyboardKey(keyCode | LogicalKeyboardKey.macosPlane);
+    return make<LogicalKeyboardKeyCls>(keyCode | LogicalKeyboardKeyCls::macosPlane);
 }
 
-bool RawKeyEventDataMacOs::isModifierPressed(ModifierKey key, KeyboardSide side) {
+bool RawKeyEventDataMacOsCls::isModifierPressed(ModifierKey key, KeyboardSide side) {
     int independentModifier = modifiers & deviceIndependentMask;
     bool result;
     ;
@@ -59,39 +59,39 @@ bool RawKeyEventDataMacOs::isModifierPressed(ModifierKey key, KeyboardSide side)
     return result;
 }
 
-KeyboardSide RawKeyEventDataMacOs::getModifierSide(ModifierKey key) {
+KeyboardSide RawKeyEventDataMacOsCls::getModifierSide(ModifierKey key) {
+    InlineMethod;
     ;
-    ;
 }
 
-bool RawKeyEventDataMacOs::shouldDispatchEvent() {
-    return logicalKey != LogicalKeyboardKey.fn;
+bool RawKeyEventDataMacOsCls::shouldDispatchEvent() {
+    return logicalKey != LogicalKeyboardKeyCls::fn;
 }
 
-void RawKeyEventDataMacOs::debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties.add(<String>DiagnosticsProperty("characters", characters));
-    properties.add(<String>DiagnosticsProperty("charactersIgnoringModifiers", charactersIgnoringModifiers));
-    properties.add(<int>DiagnosticsProperty("keyCode", keyCode));
-    properties.add(<int>DiagnosticsProperty("modifiers", modifiers));
-    properties.add(<int>DiagnosticsProperty("specifiedLogicalKey", specifiedLogicalKeynullptr));
+void RawKeyEventDataMacOsCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super->debugFillProperties(properties);
+    properties->add(<String>make<DiagnosticsPropertyCls>("characters", characters));
+    properties->add(<String>make<DiagnosticsPropertyCls>("charactersIgnoringModifiers", charactersIgnoringModifiers));
+    properties->add(<int>make<DiagnosticsPropertyCls>("keyCode", keyCode));
+    properties->add(<int>make<DiagnosticsPropertyCls>("modifiers", modifiers));
+    properties->add(<int>make<DiagnosticsPropertyCls>("specifiedLogicalKey", specifiedLogicalKeynullptr));
 }
 
-bool RawKeyEventDataMacOs::==(Object other) {
+bool RawKeyEventDataMacOsCls::==(Object other) {
     if (identical(this, other)) {
         return true;
     }
-    if (other.runtimeType != runtimeType) {
+    if (other->runtimeType != runtimeType) {
         return false;
     }
-    return other is RawKeyEventDataMacOs && other.characters == characters && other.charactersIgnoringModifiers == charactersIgnoringModifiers && other.keyCode == keyCode && other.modifiers == modifiers;
+    return other is RawKeyEventDataMacOs && other->characters == characters && other->charactersIgnoringModifiers == charactersIgnoringModifiers && other->keyCode == keyCode && other->modifiers == modifiers;
 }
 
-int RawKeyEventDataMacOs::hashCode() {
-    return Object.hash(characters, charactersIgnoringModifiers, keyCode, modifiers);
+int RawKeyEventDataMacOsCls::hashCode() {
+    return ObjectCls->hash(characters, charactersIgnoringModifiers, keyCode, modifiers);
 }
 
-bool RawKeyEventDataMacOs::_isLeftRightModifierPressed(int anyMask, int leftMask, int rightMask, KeyboardSide side) {
+bool RawKeyEventDataMacOsCls::_isLeftRightModifierPressed(int anyMask, int leftMask, int rightMask, KeyboardSide side) {
     if (modifiers & anyMask == 0) {
         return false;
     }
@@ -99,10 +99,10 @@ bool RawKeyEventDataMacOs::_isLeftRightModifierPressed(int anyMask, int leftMask
     ;
 }
 
-bool RawKeyEventDataMacOs::_isUnprintableKey(String label) {
-    if (label.length != 1) {
+bool RawKeyEventDataMacOsCls::_isUnprintableKey(String label) {
+    if (label->length != 1) {
         return false;
     }
-    int codeUnit = label.codeUnitAt(0);
+    int codeUnit = label->codeUnitAt(0);
     return codeUnit >= 0xF700 && codeUnit <= 0xF8FF;
 }

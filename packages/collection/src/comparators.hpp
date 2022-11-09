@@ -1,24 +1,24 @@
-#ifndef COMPARATORS_H
-#define COMPARATORS_H
-#include <memory>
+#ifndef PACKAGES_COLLECTION_SRC_COMPARATORS
+#define PACKAGES_COLLECTION_SRC_COMPARATORS
+#include <base.hpp>
 
+#include <dart/core/core.hpp>
 
+int _zero;
 
-const int _zero;
+int _upperCaseA;
 
-const int _upperCaseA;
+int _upperCaseZ;
 
-const int _upperCaseZ;
+int _lowerCaseA;
 
-const int _lowerCaseA;
+int _lowerCaseZ;
 
-const int _lowerCaseZ;
-
-const int _asciiCaseBit;
+int _asciiCaseBit;
 
 bool equalsIgnoreAsciiCase(String a, String b);
 
-int hashIgnoreAsciiCase(String string);
+int hashIgnoreAsciiCase(String stringValue);
 
 int compareAsciiUpperCase(String a, String b);
 
@@ -38,7 +38,8 @@ int _compareDigitCount(String a, String b, int i, int j);
 
 bool _isDigit(int charCode);
 
-bool _isNonZeroNumberSuffix(int index, String string);
+bool _isNonZeroNumberSuffix(int index, String stringValue);
+
 
 
 #endif

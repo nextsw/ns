@@ -1,28 +1,28 @@
-#ifndef POINTER_ROUTER_H
-#define POINTER_ROUTER_H
-#include <memory>
-#include <vector_math/vector_math_64.hpp>
+#ifndef PACKAGES_FLUTTER_SRC_GESTURES_POINTER_ROUTER
+#define PACKAGES_FLUTTER_SRC_GESTURES_POINTER_ROUTER
+#include <base.hpp>
+#include <packages/vector_math/vector_math.hpp>
 #include "events.hpp"
 
-#include <flutter/foundation.hpp>
+#include <dart/core/core.hpp>
+#include <packages/flutter/lib/foundation.hpp>
 #include "events.hpp"
 
 
-
-class PointerRouter {
+class PointerRouterCls : public ObjectCls {
 public:
 
-    void addRoute(int pointer, PointerRoute route, Matrix4 transform);
+    virtual void addRoute(int pointer, PointerRoute route, Matrix4 transform);
 
-    void removeRoute(int pointer, PointerRoute route);
+    virtual void removeRoute(int pointer, PointerRoute route);
 
-    void addGlobalRoute(PointerRoute route, Matrix4 transform);
+    virtual void addGlobalRoute(PointerRoute route, Matrix4 transform);
 
-    void removeGlobalRoute(PointerRoute route);
+    virtual void removeGlobalRoute(PointerRoute route);
 
-    int debugGlobalRouteCount();
+    virtual int debugGlobalRouteCount();
 
-    void route(PointerEvent event);
+    virtual void route(PointerEvent event);
 
 private:
     Map<int, Map<PointerRoute, Matrix4>> _routeMap;
@@ -30,10 +30,12 @@ private:
     Map<PointerRoute, Matrix4> _globalRoutes;
 
 
-    void _dispatch(PointerEvent event, PointerRoute route, Matrix4 transform);
+    virtual void _dispatch(PointerEvent event, PointerRoute route, Matrix4 transform);
 
-    void _dispatchEventToRoutes(Map<PointerRoute, Matrix4> copiedRoutes, PointerEvent event, Map<PointerRoute, Matrix4> referenceRoutes);
+    virtual void _dispatchEventToRoutes(Map<PointerRoute, Matrix4> copiedRoutes, PointerEvent event, Map<PointerRoute, Matrix4> referenceRoutes);
 
 };
+using PointerRouter = std::shared_ptr<PointerRouterCls>;
+
 
 #endif

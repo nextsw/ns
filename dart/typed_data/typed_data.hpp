@@ -1,91 +1,71 @@
-#ifndef TYPED_DATA_H
-#define TYPED_DATA_H
-#include <memory>
-#include <_internal.hpp>
+#ifndef DART_TYPED_DATA_TYPED_DATA
+#define DART_TYPED_DATA_TYPED_DATA
+#include <base.hpp>
+#include <dart/internal/internal.hpp>
 
-#include <internal/internal.hpp>
-
-// Parts
-#include "unmodifiable_typed_data.hpp"
+#include <dart/core/core.hpp>
+#include <dart/internal/internal.hpp>
 
 
-class ByteBuffer {
+class ByteBufferCls : public ObjectCls {
 public:
 
-    int lengthInBytes();
-
-    Uint8List asUint8List(int length, int offsetInBytes);
-
-    Int8List asInt8List(int length, int offsetInBytes);
-
-    Uint8ClampedList asUint8ClampedList(int length, int offsetInBytes);
-
-    Uint16List asUint16List(int length, int offsetInBytes);
-
-    Int16List asInt16List(int length, int offsetInBytes);
-
-    Uint32List asUint32List(int length, int offsetInBytes);
-
-    Int32List asInt32List(int length, int offsetInBytes);
-
-    Uint64List asUint64List(int length, int offsetInBytes);
-
-    Int64List asInt64List(int length, int offsetInBytes);
-
-    Int32x4List asInt32x4List(int length, int offsetInBytes);
-
-    Float32List asFloat32List(int length, int offsetInBytes);
-
-    Float64List asFloat64List(int length, int offsetInBytes);
-
-    Float32x4List asFloat32x4List(int length, int offsetInBytes);
-
-    Float64x2List asFloat64x2List(int length, int offsetInBytes);
-
-    ByteData asByteData(int length, int offsetInBytes);
-
+    virtual int lengthInBytes();
+    virtual Uint8List asUint8List(int length, int offsetInBytes);
+    virtual Int8List asInt8List(int length, int offsetInBytes);
+    virtual Uint8ClampedList asUint8ClampedList(int length, int offsetInBytes);
+    virtual Uint16List asUint16List(int length, int offsetInBytes);
+    virtual Int16List asInt16List(int length, int offsetInBytes);
+    virtual Uint32List asUint32List(int length, int offsetInBytes);
+    virtual Int32List asInt32List(int length, int offsetInBytes);
+    virtual Uint64List asUint64List(int length, int offsetInBytes);
+    virtual Int64List asInt64List(int length, int offsetInBytes);
+    virtual Int32x4List asInt32x4List(int length, int offsetInBytes);
+    virtual Float32List asFloat32List(int length, int offsetInBytes);
+    virtual Float64List asFloat64List(int length, int offsetInBytes);
+    virtual Float32x4List asFloat32x4List(int length, int offsetInBytes);
+    virtual Float64x2List asFloat64x2List(int length, int offsetInBytes);
+    virtual ByteData asByteData(int length, int offsetInBytes);
 private:
 
 };
+using ByteBuffer = std::shared_ptr<ByteBufferCls>;
 
-class TypedData {
+class TypedDataCls : public ObjectCls {
 public:
 
-    int elementSizeInBytes();
-
-    int offsetInBytes();
-
-    int lengthInBytes();
-
-    ByteBuffer buffer();
-
+    virtual int elementSizeInBytes();
+    virtual int offsetInBytes();
+    virtual int lengthInBytes();
+    virtual ByteBuffer buffer();
 private:
 
 };
+using TypedData = std::shared_ptr<TypedDataCls>;
 
-class _TypedIntList : TypedData {
+class _TypedIntListCls : public TypedDataCls {
 public:
 
-    List<int> +(List<int> other);
-
+    virtual List<int> operator+(List<int> other);
 private:
 
 };
+using _TypedIntList = std::shared_ptr<_TypedIntListCls>;
 
-class _TypedFloatList : TypedData {
+class _TypedFloatListCls : public TypedDataCls {
 public:
 
-    List<double> +(List<double> other);
-
+    virtual List<double> operator+(List<double> other);
 private:
 
 };
+using _TypedFloatList = std::shared_ptr<_TypedFloatListCls>;
 
-class Endian {
+class EndianCls : public ObjectCls {
 public:
-    static const Endian big;
+    static Endian big;
 
-    static const Endian little;
+    static Endian little;
 
     static Endian host;
 
@@ -94,1546 +74,1417 @@ private:
     bool _littleEndian;
 
 
-    void  _(bool _littleEndian);
-
+    virtual void  _(bool _littleEndian);
 };
+using Endian = std::shared_ptr<EndianCls>;
 
-class ByteData {
+class ByteDataCls : public ObjectCls {
 public:
 
-    external  ByteData(int length);
+    extern  ByteDataCls(int length);
+    virtual void  view(ByteBuffer buffer, int length, int offsetInBytes);
 
-    void  view(ByteBuffer buffer, int length, int offsetInBytes);
+    virtual void  sublistView(TypedData data, int end, int start);
 
-    void  sublistView(TypedData data, int end, int start);
-
-    int getInt8(int byteOffset);
-
-    void setInt8(int byteOffset, int value);
-
-    int getUint8(int byteOffset);
-
-    void setUint8(int byteOffset, int value);
-
-    int getInt16(int byteOffset, Endian endian);
-
-    void setInt16(int byteOffset, Endian endian, int value);
-
-    int getUint16(int byteOffset, Endian endian);
-
-    void setUint16(int byteOffset, Endian endian, int value);
-
-    int getInt32(int byteOffset, Endian endian);
-
-    void setInt32(int byteOffset, Endian endian, int value);
-
-    int getUint32(int byteOffset, Endian endian);
-
-    void setUint32(int byteOffset, Endian endian, int value);
-
-    int getInt64(int byteOffset, Endian endian);
-
-    void setInt64(int byteOffset, Endian endian, int value);
-
-    int getUint64(int byteOffset, Endian endian);
-
-    void setUint64(int byteOffset, Endian endian, int value);
-
-    double getFloat32(int byteOffset, Endian endian);
-
-    void setFloat32(int byteOffset, Endian endian, double value);
-
-    double getFloat64(int byteOffset, Endian endian);
-
-    void setFloat64(int byteOffset, Endian endian, double value);
-
+    virtual int getInt8(int byteOffset);
+    virtual void setInt8(int byteOffset, int value);
+    virtual int getUint8(int byteOffset);
+    virtual void setUint8(int byteOffset, int value);
+    virtual int getInt16(int byteOffset, Endian endian);
+    virtual void setInt16(int byteOffset, Endian endian, int value);
+    virtual int getUint16(int byteOffset, Endian endian);
+    virtual void setUint16(int byteOffset, Endian endian, int value);
+    virtual int getInt32(int byteOffset, Endian endian);
+    virtual void setInt32(int byteOffset, Endian endian, int value);
+    virtual int getUint32(int byteOffset, Endian endian);
+    virtual void setUint32(int byteOffset, Endian endian, int value);
+    virtual int getInt64(int byteOffset, Endian endian);
+    virtual void setInt64(int byteOffset, Endian endian, int value);
+    virtual int getUint64(int byteOffset, Endian endian);
+    virtual void setUint64(int byteOffset, Endian endian, int value);
+    virtual double getFloat32(int byteOffset, Endian endian);
+    virtual void setFloat32(int byteOffset, Endian endian, double value);
+    virtual double getFloat64(int byteOffset, Endian endian);
+    virtual void setFloat64(int byteOffset, Endian endian, double value);
 private:
 
 };
+using ByteData = std::shared_ptr<ByteDataCls>;
 
-class Int8List {
+class Int8ListCls : public ObjectCls {
 public:
-    static const int bytesPerElement;
+    static int bytesPerElement;
 
 
-    external  Int8List(int length);
+    extern  Int8ListCls(int length);
+    extern void  fromList(List<int> elements);
+    virtual void  view(ByteBuffer buffer, int length, int offsetInBytes);
 
-    external void  fromList(List<int> elements);
+    virtual void  sublistView(TypedData data, int end, int start);
 
-    void  view(ByteBuffer buffer, int length, int offsetInBytes);
-
-    void  sublistView(TypedData data, int end, int start);
-
-    Int8List sublist(int end, int start);
-
+    virtual Int8List sublist(int end, int start);
 private:
 
 };
+using Int8List = std::shared_ptr<Int8ListCls>;
 
-class Uint8List {
+class Uint8ListCls : public ObjectCls {
 public:
-    static const int bytesPerElement;
+    static int bytesPerElement;
 
 
-    external  Uint8List(int length);
+    extern  Uint8ListCls(int length);
+    extern void  fromList(List<int> elements);
+    virtual void  view(ByteBuffer buffer, int length, int offsetInBytes);
 
-    external void  fromList(List<int> elements);
+    virtual void  sublistView(TypedData data, int end, int start);
 
-    void  view(ByteBuffer buffer, int length, int offsetInBytes);
-
-    void  sublistView(TypedData data, int end, int start);
-
-    List<int> +(List<int> other);
-
-    Uint8List sublist(int end, int start);
-
+    virtual List<int> operator+(List<int> other);
+    virtual Uint8List sublist(int end, int start);
 private:
 
 };
+using Uint8List = std::shared_ptr<Uint8ListCls>;
 
-class Uint8ClampedList {
+class Uint8ClampedListCls : public ObjectCls {
 public:
-    static const int bytesPerElement;
+    static int bytesPerElement;
 
 
-    external  Uint8ClampedList(int length);
+    extern  Uint8ClampedListCls(int length);
+    extern void  fromList(List<int> elements);
+    virtual void  view(ByteBuffer buffer, int length, int offsetInBytes);
 
-    external void  fromList(List<int> elements);
+    virtual void  sublistView(TypedData data, int end, int start);
 
-    void  view(ByteBuffer buffer, int length, int offsetInBytes);
-
-    void  sublistView(TypedData data, int end, int start);
-
-    Uint8ClampedList sublist(int end, int start);
-
+    virtual Uint8ClampedList sublist(int end, int start);
 private:
 
 };
+using Uint8ClampedList = std::shared_ptr<Uint8ClampedListCls>;
 
-class Int16List {
+class Int16ListCls : public ObjectCls {
 public:
-    static const int bytesPerElement;
+    static int bytesPerElement;
 
 
-    external  Int16List(int length);
+    extern  Int16ListCls(int length);
+    extern void  fromList(List<int> elements);
+    virtual void  view(ByteBuffer buffer, int length, int offsetInBytes);
 
-    external void  fromList(List<int> elements);
+    virtual void  sublistView(TypedData data, int end, int start);
 
-    void  view(ByteBuffer buffer, int length, int offsetInBytes);
-
-    void  sublistView(TypedData data, int end, int start);
-
-    Int16List sublist(int end, int start);
-
+    virtual Int16List sublist(int end, int start);
 private:
 
 };
+using Int16List = std::shared_ptr<Int16ListCls>;
 
-class Uint16List {
+class Uint16ListCls : public ObjectCls {
 public:
-    static const int bytesPerElement;
+    static int bytesPerElement;
 
 
-    external  Uint16List(int length);
+    extern  Uint16ListCls(int length);
+    extern void  fromList(List<int> elements);
+    virtual void  view(ByteBuffer buffer, int length, int offsetInBytes);
 
-    external void  fromList(List<int> elements);
+    virtual void  sublistView(TypedData data, int end, int start);
 
-    void  view(ByteBuffer buffer, int length, int offsetInBytes);
-
-    void  sublistView(TypedData data, int end, int start);
-
-    Uint16List sublist(int end, int start);
-
+    virtual Uint16List sublist(int end, int start);
 private:
 
 };
+using Uint16List = std::shared_ptr<Uint16ListCls>;
 
-class Int32List {
+class Int32ListCls : public ObjectCls {
 public:
-    static const int bytesPerElement;
+    static int bytesPerElement;
 
 
-    external  Int32List(int length);
+    extern  Int32ListCls(int length);
+    extern void  fromList(List<int> elements);
+    virtual void  view(ByteBuffer buffer, int length, int offsetInBytes);
 
-    external void  fromList(List<int> elements);
+    virtual void  sublistView(TypedData data, int end, int start);
 
-    void  view(ByteBuffer buffer, int length, int offsetInBytes);
-
-    void  sublistView(TypedData data, int end, int start);
-
-    Int32List sublist(int end, int start);
-
+    virtual Int32List sublist(int end, int start);
 private:
 
 };
+using Int32List = std::shared_ptr<Int32ListCls>;
 
-class Uint32List {
+class Uint32ListCls : public ObjectCls {
 public:
-    static const int bytesPerElement;
+    static int bytesPerElement;
 
 
-    external  Uint32List(int length);
+    extern  Uint32ListCls(int length);
+    extern void  fromList(List<int> elements);
+    virtual void  view(ByteBuffer buffer, int length, int offsetInBytes);
 
-    external void  fromList(List<int> elements);
+    virtual void  sublistView(TypedData data, int end, int start);
 
-    void  view(ByteBuffer buffer, int length, int offsetInBytes);
-
-    void  sublistView(TypedData data, int end, int start);
-
-    Uint32List sublist(int end, int start);
-
+    virtual Uint32List sublist(int end, int start);
 private:
 
 };
+using Uint32List = std::shared_ptr<Uint32ListCls>;
 
-class Int64List {
+class Int64ListCls : public ObjectCls {
 public:
-    static const int bytesPerElement;
+    static int bytesPerElement;
 
 
-    external  Int64List(int length);
+    extern  Int64ListCls(int length);
+    extern void  fromList(List<int> elements);
+    virtual void  view(ByteBuffer buffer, int length, int offsetInBytes);
 
-    external void  fromList(List<int> elements);
+    virtual void  sublistView(TypedData data, int end, int start);
 
-    void  view(ByteBuffer buffer, int length, int offsetInBytes);
-
-    void  sublistView(TypedData data, int end, int start);
-
-    Int64List sublist(int end, int start);
-
+    virtual Int64List sublist(int end, int start);
 private:
 
 };
+using Int64List = std::shared_ptr<Int64ListCls>;
 
-class Uint64List {
+class Uint64ListCls : public ObjectCls {
 public:
-    static const int bytesPerElement;
+    static int bytesPerElement;
 
 
-    external  Uint64List(int length);
+    extern  Uint64ListCls(int length);
+    extern void  fromList(List<int> elements);
+    virtual void  view(ByteBuffer buffer, int length, int offsetInBytes);
 
-    external void  fromList(List<int> elements);
+    virtual void  sublistView(TypedData data, int end, int start);
 
-    void  view(ByteBuffer buffer, int length, int offsetInBytes);
-
-    void  sublistView(TypedData data, int end, int start);
-
-    Uint64List sublist(int end, int start);
-
+    virtual Uint64List sublist(int end, int start);
 private:
 
 };
+using Uint64List = std::shared_ptr<Uint64ListCls>;
 
-class Float32List {
+class Float32ListCls : public ObjectCls {
 public:
-    static const int bytesPerElement;
+    static int bytesPerElement;
 
 
-    external  Float32List(int length);
+    extern  Float32ListCls(int length);
+    extern void  fromList(List<double> elements);
+    virtual void  view(ByteBuffer buffer, int length, int offsetInBytes);
 
-    external void  fromList(List<double> elements);
+    virtual void  sublistView(TypedData data, int end, int start);
 
-    void  view(ByteBuffer buffer, int length, int offsetInBytes);
-
-    void  sublistView(TypedData data, int end, int start);
-
-    Float32List sublist(int end, int start);
-
+    virtual Float32List sublist(int end, int start);
 private:
 
 };
+using Float32List = std::shared_ptr<Float32ListCls>;
 
-class Float64List {
+class Float64ListCls : public ObjectCls {
 public:
-    static const int bytesPerElement;
+    static int bytesPerElement;
 
 
-    external  Float64List(int length);
+    extern  Float64ListCls(int length);
+    extern void  fromList(List<double> elements);
+    virtual void  view(ByteBuffer buffer, int length, int offsetInBytes);
 
-    external void  fromList(List<double> elements);
+    virtual void  sublistView(TypedData data, int end, int start);
 
-    void  view(ByteBuffer buffer, int length, int offsetInBytes);
-
-    void  sublistView(TypedData data, int end, int start);
-
-    Float64List sublist(int end, int start);
-
+    virtual Float64List sublist(int end, int start);
 private:
 
 };
+using Float64List = std::shared_ptr<Float64ListCls>;
 
-class Float32x4List {
+class Float32x4ListCls : public ObjectCls {
 public:
-    static const int bytesPerElement;
+    static int bytesPerElement;
 
 
-    external  Float32x4List(int length);
+    extern  Float32x4ListCls(int length);
+    extern void  fromList(List<Float32x4> elements);
+    virtual void  view(ByteBuffer buffer, int length, int offsetInBytes);
 
-    external void  fromList(List<Float32x4> elements);
+    virtual void  sublistView(TypedData data, int end, int start);
 
-    void  view(ByteBuffer buffer, int length, int offsetInBytes);
-
-    void  sublistView(TypedData data, int end, int start);
-
-    List<Float32x4> +(List<Float32x4> other);
-
-    Float32x4List sublist(int end, int start);
-
+    virtual List<Float32x4> operator+(List<Float32x4> other);
+    virtual Float32x4List sublist(int end, int start);
 private:
 
 };
+using Float32x4List = std::shared_ptr<Float32x4ListCls>;
 
-class Int32x4List {
+class Int32x4ListCls : public ObjectCls {
 public:
-    static const int bytesPerElement;
+    static int bytesPerElement;
 
 
-    external  Int32x4List(int length);
+    extern  Int32x4ListCls(int length);
+    extern void  fromList(List<Int32x4> elements);
+    virtual void  view(ByteBuffer buffer, int length, int offsetInBytes);
 
-    external void  fromList(List<Int32x4> elements);
+    virtual void  sublistView(TypedData data, int end, int start);
 
-    void  view(ByteBuffer buffer, int length, int offsetInBytes);
-
-    void  sublistView(TypedData data, int end, int start);
-
-    List<Int32x4> +(List<Int32x4> other);
-
-    Int32x4List sublist(int end, int start);
-
+    virtual List<Int32x4> operator+(List<Int32x4> other);
+    virtual Int32x4List sublist(int end, int start);
 private:
 
 };
+using Int32x4List = std::shared_ptr<Int32x4ListCls>;
 
-class Float64x2List {
+class Float64x2ListCls : public ObjectCls {
 public:
-    static const int bytesPerElement;
+    static int bytesPerElement;
 
 
-    external  Float64x2List(int length);
+    extern  Float64x2ListCls(int length);
+    extern void  fromList(List<Float64x2> elements);
+    virtual List<Float64x2> operator+(List<Float64x2> other);
+    virtual void  view(ByteBuffer buffer, int length, int offsetInBytes);
 
-    external void  fromList(List<Float64x2> elements);
+    virtual void  sublistView(TypedData data, int end, int start);
 
-    List<Float64x2> +(List<Float64x2> other);
-
-    void  view(ByteBuffer buffer, int length, int offsetInBytes);
-
-    void  sublistView(TypedData data, int end, int start);
-
-    Float64x2List sublist(int end, int start);
-
+    virtual Float64x2List sublist(int end, int start);
 private:
 
 };
+using Float64x2List = std::shared_ptr<Float64x2ListCls>;
 
-class Float32x4 {
+class Float32x4Cls : public ObjectCls {
 public:
-    static const int xxxx;
+    static int xxxx;
 
-    static const int xxxy;
+    static int xxxy;
 
-    static const int xxxz;
+    static int xxxz;
 
-    static const int xxxw;
+    static int xxxw;
 
-    static const int xxyx;
+    static int xxyx;
 
-    static const int xxyy;
+    static int xxyy;
 
-    static const int xxyz;
+    static int xxyz;
 
-    static const int xxyw;
+    static int xxyw;
 
-    static const int xxzx;
+    static int xxzx;
 
-    static const int xxzy;
+    static int xxzy;
 
-    static const int xxzz;
+    static int xxzz;
 
-    static const int xxzw;
+    static int xxzw;
 
-    static const int xxwx;
+    static int xxwx;
 
-    static const int xxwy;
+    static int xxwy;
 
-    static const int xxwz;
+    static int xxwz;
 
-    static const int xxww;
+    static int xxww;
 
-    static const int xyxx;
+    static int xyxx;
 
-    static const int xyxy;
+    static int xyxy;
 
-    static const int xyxz;
+    static int xyxz;
 
-    static const int xyxw;
+    static int xyxw;
 
-    static const int xyyx;
+    static int xyyx;
 
-    static const int xyyy;
+    static int xyyy;
 
-    static const int xyyz;
+    static int xyyz;
 
-    static const int xyyw;
+    static int xyyw;
 
-    static const int xyzx;
+    static int xyzx;
 
-    static const int xyzy;
+    static int xyzy;
 
-    static const int xyzz;
+    static int xyzz;
 
-    static const int xyzw;
+    static int xyzw;
 
-    static const int xywx;
+    static int xywx;
 
-    static const int xywy;
+    static int xywy;
 
-    static const int xywz;
+    static int xywz;
 
-    static const int xyww;
+    static int xyww;
 
-    static const int xzxx;
+    static int xzxx;
 
-    static const int xzxy;
+    static int xzxy;
 
-    static const int xzxz;
+    static int xzxz;
 
-    static const int xzxw;
+    static int xzxw;
 
-    static const int xzyx;
+    static int xzyx;
 
-    static const int xzyy;
+    static int xzyy;
 
-    static const int xzyz;
+    static int xzyz;
 
-    static const int xzyw;
+    static int xzyw;
 
-    static const int xzzx;
+    static int xzzx;
 
-    static const int xzzy;
+    static int xzzy;
 
-    static const int xzzz;
+    static int xzzz;
 
-    static const int xzzw;
+    static int xzzw;
 
-    static const int xzwx;
+    static int xzwx;
 
-    static const int xzwy;
+    static int xzwy;
 
-    static const int xzwz;
+    static int xzwz;
 
-    static const int xzww;
+    static int xzww;
 
-    static const int xwxx;
+    static int xwxx;
 
-    static const int xwxy;
+    static int xwxy;
 
-    static const int xwxz;
+    static int xwxz;
 
-    static const int xwxw;
+    static int xwxw;
 
-    static const int xwyx;
+    static int xwyx;
 
-    static const int xwyy;
+    static int xwyy;
 
-    static const int xwyz;
+    static int xwyz;
 
-    static const int xwyw;
+    static int xwyw;
 
-    static const int xwzx;
+    static int xwzx;
 
-    static const int xwzy;
+    static int xwzy;
 
-    static const int xwzz;
+    static int xwzz;
 
-    static const int xwzw;
+    static int xwzw;
 
-    static const int xwwx;
+    static int xwwx;
 
-    static const int xwwy;
+    static int xwwy;
 
-    static const int xwwz;
+    static int xwwz;
 
-    static const int xwww;
+    static int xwww;
 
-    static const int yxxx;
+    static int yxxx;
 
-    static const int yxxy;
+    static int yxxy;
 
-    static const int yxxz;
+    static int yxxz;
 
-    static const int yxxw;
+    static int yxxw;
 
-    static const int yxyx;
+    static int yxyx;
 
-    static const int yxyy;
+    static int yxyy;
 
-    static const int yxyz;
+    static int yxyz;
 
-    static const int yxyw;
+    static int yxyw;
 
-    static const int yxzx;
+    static int yxzx;
 
-    static const int yxzy;
+    static int yxzy;
 
-    static const int yxzz;
+    static int yxzz;
 
-    static const int yxzw;
+    static int yxzw;
 
-    static const int yxwx;
+    static int yxwx;
 
-    static const int yxwy;
+    static int yxwy;
 
-    static const int yxwz;
+    static int yxwz;
 
-    static const int yxww;
+    static int yxww;
 
-    static const int yyxx;
+    static int yyxx;
 
-    static const int yyxy;
+    static int yyxy;
 
-    static const int yyxz;
+    static int yyxz;
 
-    static const int yyxw;
+    static int yyxw;
 
-    static const int yyyx;
+    static int yyyx;
 
-    static const int yyyy;
+    static int yyyy;
 
-    static const int yyyz;
+    static int yyyz;
 
-    static const int yyyw;
+    static int yyyw;
 
-    static const int yyzx;
+    static int yyzx;
 
-    static const int yyzy;
+    static int yyzy;
 
-    static const int yyzz;
+    static int yyzz;
 
-    static const int yyzw;
+    static int yyzw;
 
-    static const int yywx;
+    static int yywx;
 
-    static const int yywy;
+    static int yywy;
 
-    static const int yywz;
+    static int yywz;
 
-    static const int yyww;
+    static int yyww;
 
-    static const int yzxx;
+    static int yzxx;
 
-    static const int yzxy;
+    static int yzxy;
 
-    static const int yzxz;
+    static int yzxz;
 
-    static const int yzxw;
+    static int yzxw;
 
-    static const int yzyx;
+    static int yzyx;
 
-    static const int yzyy;
+    static int yzyy;
 
-    static const int yzyz;
+    static int yzyz;
 
-    static const int yzyw;
+    static int yzyw;
 
-    static const int yzzx;
+    static int yzzx;
 
-    static const int yzzy;
+    static int yzzy;
 
-    static const int yzzz;
+    static int yzzz;
 
-    static const int yzzw;
+    static int yzzw;
 
-    static const int yzwx;
+    static int yzwx;
 
-    static const int yzwy;
+    static int yzwy;
 
-    static const int yzwz;
+    static int yzwz;
 
-    static const int yzww;
+    static int yzww;
 
-    static const int ywxx;
+    static int ywxx;
 
-    static const int ywxy;
+    static int ywxy;
 
-    static const int ywxz;
+    static int ywxz;
 
-    static const int ywxw;
+    static int ywxw;
 
-    static const int ywyx;
+    static int ywyx;
 
-    static const int ywyy;
+    static int ywyy;
 
-    static const int ywyz;
+    static int ywyz;
 
-    static const int ywyw;
+    static int ywyw;
 
-    static const int ywzx;
+    static int ywzx;
 
-    static const int ywzy;
+    static int ywzy;
 
-    static const int ywzz;
+    static int ywzz;
 
-    static const int ywzw;
+    static int ywzw;
 
-    static const int ywwx;
+    static int ywwx;
 
-    static const int ywwy;
+    static int ywwy;
 
-    static const int ywwz;
+    static int ywwz;
 
-    static const int ywww;
+    static int ywww;
 
-    static const int zxxx;
+    static int zxxx;
 
-    static const int zxxy;
+    static int zxxy;
 
-    static const int zxxz;
+    static int zxxz;
 
-    static const int zxxw;
+    static int zxxw;
 
-    static const int zxyx;
+    static int zxyx;
 
-    static const int zxyy;
+    static int zxyy;
 
-    static const int zxyz;
+    static int zxyz;
 
-    static const int zxyw;
+    static int zxyw;
 
-    static const int zxzx;
+    static int zxzx;
 
-    static const int zxzy;
+    static int zxzy;
 
-    static const int zxzz;
+    static int zxzz;
 
-    static const int zxzw;
+    static int zxzw;
 
-    static const int zxwx;
+    static int zxwx;
 
-    static const int zxwy;
+    static int zxwy;
 
-    static const int zxwz;
+    static int zxwz;
 
-    static const int zxww;
+    static int zxww;
 
-    static const int zyxx;
+    static int zyxx;
 
-    static const int zyxy;
+    static int zyxy;
 
-    static const int zyxz;
+    static int zyxz;
 
-    static const int zyxw;
+    static int zyxw;
 
-    static const int zyyx;
+    static int zyyx;
 
-    static const int zyyy;
+    static int zyyy;
 
-    static const int zyyz;
+    static int zyyz;
 
-    static const int zyyw;
+    static int zyyw;
 
-    static const int zyzx;
+    static int zyzx;
 
-    static const int zyzy;
+    static int zyzy;
 
-    static const int zyzz;
+    static int zyzz;
 
-    static const int zyzw;
+    static int zyzw;
 
-    static const int zywx;
+    static int zywx;
 
-    static const int zywy;
+    static int zywy;
 
-    static const int zywz;
+    static int zywz;
 
-    static const int zyww;
+    static int zyww;
 
-    static const int zzxx;
+    static int zzxx;
 
-    static const int zzxy;
+    static int zzxy;
 
-    static const int zzxz;
+    static int zzxz;
 
-    static const int zzxw;
+    static int zzxw;
 
-    static const int zzyx;
+    static int zzyx;
 
-    static const int zzyy;
+    static int zzyy;
 
-    static const int zzyz;
+    static int zzyz;
 
-    static const int zzyw;
+    static int zzyw;
 
-    static const int zzzx;
+    static int zzzx;
 
-    static const int zzzy;
+    static int zzzy;
 
-    static const int zzzz;
+    static int zzzz;
 
-    static const int zzzw;
+    static int zzzw;
 
-    static const int zzwx;
+    static int zzwx;
 
-    static const int zzwy;
+    static int zzwy;
 
-    static const int zzwz;
+    static int zzwz;
 
-    static const int zzww;
+    static int zzww;
 
-    static const int zwxx;
+    static int zwxx;
 
-    static const int zwxy;
+    static int zwxy;
 
-    static const int zwxz;
+    static int zwxz;
 
-    static const int zwxw;
+    static int zwxw;
 
-    static const int zwyx;
+    static int zwyx;
 
-    static const int zwyy;
+    static int zwyy;
 
-    static const int zwyz;
+    static int zwyz;
 
-    static const int zwyw;
+    static int zwyw;
 
-    static const int zwzx;
+    static int zwzx;
 
-    static const int zwzy;
+    static int zwzy;
 
-    static const int zwzz;
+    static int zwzz;
 
-    static const int zwzw;
+    static int zwzw;
 
-    static const int zwwx;
+    static int zwwx;
 
-    static const int zwwy;
+    static int zwwy;
 
-    static const int zwwz;
+    static int zwwz;
 
-    static const int zwww;
+    static int zwww;
 
-    static const int wxxx;
+    static int wxxx;
 
-    static const int wxxy;
+    static int wxxy;
 
-    static const int wxxz;
+    static int wxxz;
 
-    static const int wxxw;
+    static int wxxw;
 
-    static const int wxyx;
+    static int wxyx;
 
-    static const int wxyy;
+    static int wxyy;
 
-    static const int wxyz;
+    static int wxyz;
 
-    static const int wxyw;
+    static int wxyw;
 
-    static const int wxzx;
+    static int wxzx;
 
-    static const int wxzy;
+    static int wxzy;
 
-    static const int wxzz;
+    static int wxzz;
 
-    static const int wxzw;
+    static int wxzw;
 
-    static const int wxwx;
+    static int wxwx;
 
-    static const int wxwy;
+    static int wxwy;
 
-    static const int wxwz;
+    static int wxwz;
 
-    static const int wxww;
+    static int wxww;
 
-    static const int wyxx;
+    static int wyxx;
 
-    static const int wyxy;
+    static int wyxy;
 
-    static const int wyxz;
+    static int wyxz;
 
-    static const int wyxw;
+    static int wyxw;
 
-    static const int wyyx;
+    static int wyyx;
 
-    static const int wyyy;
+    static int wyyy;
 
-    static const int wyyz;
+    static int wyyz;
 
-    static const int wyyw;
+    static int wyyw;
 
-    static const int wyzx;
+    static int wyzx;
 
-    static const int wyzy;
+    static int wyzy;
 
-    static const int wyzz;
+    static int wyzz;
 
-    static const int wyzw;
+    static int wyzw;
 
-    static const int wywx;
+    static int wywx;
 
-    static const int wywy;
+    static int wywy;
 
-    static const int wywz;
+    static int wywz;
 
-    static const int wyww;
+    static int wyww;
 
-    static const int wzxx;
+    static int wzxx;
 
-    static const int wzxy;
+    static int wzxy;
 
-    static const int wzxz;
+    static int wzxz;
 
-    static const int wzxw;
+    static int wzxw;
 
-    static const int wzyx;
+    static int wzyx;
 
-    static const int wzyy;
+    static int wzyy;
 
-    static const int wzyz;
+    static int wzyz;
 
-    static const int wzyw;
+    static int wzyw;
 
-    static const int wzzx;
+    static int wzzx;
 
-    static const int wzzy;
+    static int wzzy;
 
-    static const int wzzz;
+    static int wzzz;
 
-    static const int wzzw;
+    static int wzzw;
 
-    static const int wzwx;
+    static int wzwx;
 
-    static const int wzwy;
+    static int wzwy;
 
-    static const int wzwz;
+    static int wzwz;
 
-    static const int wzww;
+    static int wzww;
 
-    static const int wwxx;
+    static int wwxx;
 
-    static const int wwxy;
+    static int wwxy;
 
-    static const int wwxz;
+    static int wwxz;
 
-    static const int wwxw;
+    static int wwxw;
 
-    static const int wwyx;
+    static int wwyx;
 
-    static const int wwyy;
+    static int wwyy;
 
-    static const int wwyz;
+    static int wwyz;
 
-    static const int wwyw;
+    static int wwyw;
 
-    static const int wwzx;
+    static int wwzx;
 
-    static const int wwzy;
+    static int wwzy;
 
-    static const int wwzz;
+    static int wwzz;
 
-    static const int wwzw;
+    static int wwzw;
 
-    static const int wwwx;
+    static int wwwx;
 
-    static const int wwwy;
+    static int wwwy;
 
-    static const int wwwz;
+    static int wwwz;
 
-    static const int wwww;
+    static int wwww;
 
 
-    external  Float32x4(double w, double x, double y, double z);
-
-    external void  splat(double v);
-
-    external void  zero();
-
-    external void  fromInt32x4Bits(Int32x4 x);
-
-    external void  fromFloat64x2(Float64x2 v);
-
-    Float32x4 +(Float32x4 other);
-
-    Float32x4 -();
-
-    Float32x4 -(Float32x4 other);
-
-    Float32x4 *(Float32x4 other);
-
-    Float32x4 /(Float32x4 other);
-
-    Int32x4 lessThan(Float32x4 other);
-
-    Int32x4 lessThanOrEqual(Float32x4 other);
-
-    Int32x4 greaterThan(Float32x4 other);
-
-    Int32x4 greaterThanOrEqual(Float32x4 other);
-
-    Int32x4 equal(Float32x4 other);
-
-    Int32x4 notEqual(Float32x4 other);
-
-    Float32x4 scale(double s);
-
-    Float32x4 abs();
-
-    Float32x4 clamp(Float32x4 lowerLimit, Float32x4 upperLimit);
-
-    double x();
-
-    double y();
-
-    double z();
-
-    double w();
-
-    int signMask();
-
-    Float32x4 shuffle(int mask);
-
-    Float32x4 shuffleMix(int mask, Float32x4 other);
-
-    Float32x4 withX(double x);
-
-    Float32x4 withY(double y);
-
-    Float32x4 withZ(double z);
-
-    Float32x4 withW(double w);
-
-    Float32x4 min(Float32x4 other);
-
-    Float32x4 max(Float32x4 other);
-
-    Float32x4 sqrt();
-
-    Float32x4 reciprocal();
-
-    Float32x4 reciprocalSqrt();
-
+    extern  Float32x4Cls(double w, double x, double y, double z);
+    extern void  splat(double v);
+    extern void  zero();
+    extern void  fromInt32x4Bits(Int32x4 x);
+    extern void  fromFloat64x2(Float64x2 v);
+    virtual Float32x4 operator+(Float32x4 other);
+    virtual Float32x4 operator-();
+    virtual Float32x4 operator-(Float32x4 other);
+    virtual Float32x4 operator*(Float32x4 other);
+    virtual Float32x4 operator/(Float32x4 other);
+    virtual Int32x4 lessThan(Float32x4 other);
+    virtual Int32x4 lessThanOrEqual(Float32x4 other);
+    virtual Int32x4 greaterThan(Float32x4 other);
+    virtual Int32x4 greaterThanOrEqual(Float32x4 other);
+    virtual Int32x4 equal(Float32x4 other);
+    virtual Int32x4 notEqual(Float32x4 other);
+    virtual Float32x4 scale(double s);
+    virtual Float32x4 abs();
+    virtual Float32x4 clamp(Float32x4 lowerLimit, Float32x4 upperLimit);
+    virtual double x();
+    virtual double y();
+    virtual double z();
+    virtual double w();
+    virtual int signMask();
+    virtual Float32x4 shuffle(int mask);
+    virtual Float32x4 shuffleMix(int mask, Float32x4 other);
+    virtual Float32x4 withX(double x);
+    virtual Float32x4 withY(double y);
+    virtual Float32x4 withZ(double z);
+    virtual Float32x4 withW(double w);
+    virtual Float32x4 min(Float32x4 other);
+    virtual Float32x4 max(Float32x4 other);
+    virtual Float32x4 sqrt();
+    virtual Float32x4 reciprocal();
+    virtual Float32x4 reciprocalSqrt();
 private:
 
 };
+using Float32x4 = std::shared_ptr<Float32x4Cls>;
 
-class Int32x4 {
+class Int32x4Cls : public ObjectCls {
 public:
-    static const int xxxx;
+    static int xxxx;
 
-    static const int xxxy;
+    static int xxxy;
 
-    static const int xxxz;
+    static int xxxz;
 
-    static const int xxxw;
+    static int xxxw;
 
-    static const int xxyx;
+    static int xxyx;
 
-    static const int xxyy;
+    static int xxyy;
 
-    static const int xxyz;
+    static int xxyz;
 
-    static const int xxyw;
+    static int xxyw;
 
-    static const int xxzx;
+    static int xxzx;
 
-    static const int xxzy;
+    static int xxzy;
 
-    static const int xxzz;
+    static int xxzz;
 
-    static const int xxzw;
+    static int xxzw;
 
-    static const int xxwx;
+    static int xxwx;
 
-    static const int xxwy;
+    static int xxwy;
 
-    static const int xxwz;
+    static int xxwz;
 
-    static const int xxww;
+    static int xxww;
 
-    static const int xyxx;
+    static int xyxx;
 
-    static const int xyxy;
+    static int xyxy;
 
-    static const int xyxz;
+    static int xyxz;
 
-    static const int xyxw;
+    static int xyxw;
 
-    static const int xyyx;
+    static int xyyx;
 
-    static const int xyyy;
+    static int xyyy;
 
-    static const int xyyz;
+    static int xyyz;
 
-    static const int xyyw;
+    static int xyyw;
 
-    static const int xyzx;
+    static int xyzx;
 
-    static const int xyzy;
+    static int xyzy;
 
-    static const int xyzz;
+    static int xyzz;
 
-    static const int xyzw;
+    static int xyzw;
 
-    static const int xywx;
+    static int xywx;
 
-    static const int xywy;
+    static int xywy;
 
-    static const int xywz;
+    static int xywz;
 
-    static const int xyww;
+    static int xyww;
 
-    static const int xzxx;
+    static int xzxx;
 
-    static const int xzxy;
+    static int xzxy;
 
-    static const int xzxz;
+    static int xzxz;
 
-    static const int xzxw;
+    static int xzxw;
 
-    static const int xzyx;
+    static int xzyx;
 
-    static const int xzyy;
+    static int xzyy;
 
-    static const int xzyz;
+    static int xzyz;
 
-    static const int xzyw;
+    static int xzyw;
 
-    static const int xzzx;
+    static int xzzx;
 
-    static const int xzzy;
+    static int xzzy;
 
-    static const int xzzz;
+    static int xzzz;
 
-    static const int xzzw;
+    static int xzzw;
 
-    static const int xzwx;
+    static int xzwx;
 
-    static const int xzwy;
+    static int xzwy;
 
-    static const int xzwz;
+    static int xzwz;
 
-    static const int xzww;
+    static int xzww;
 
-    static const int xwxx;
+    static int xwxx;
 
-    static const int xwxy;
+    static int xwxy;
 
-    static const int xwxz;
+    static int xwxz;
 
-    static const int xwxw;
+    static int xwxw;
 
-    static const int xwyx;
+    static int xwyx;
 
-    static const int xwyy;
+    static int xwyy;
 
-    static const int xwyz;
+    static int xwyz;
 
-    static const int xwyw;
+    static int xwyw;
 
-    static const int xwzx;
+    static int xwzx;
 
-    static const int xwzy;
+    static int xwzy;
 
-    static const int xwzz;
+    static int xwzz;
 
-    static const int xwzw;
+    static int xwzw;
 
-    static const int xwwx;
+    static int xwwx;
 
-    static const int xwwy;
+    static int xwwy;
 
-    static const int xwwz;
+    static int xwwz;
 
-    static const int xwww;
+    static int xwww;
 
-    static const int yxxx;
+    static int yxxx;
 
-    static const int yxxy;
+    static int yxxy;
 
-    static const int yxxz;
+    static int yxxz;
 
-    static const int yxxw;
+    static int yxxw;
 
-    static const int yxyx;
+    static int yxyx;
 
-    static const int yxyy;
+    static int yxyy;
 
-    static const int yxyz;
+    static int yxyz;
 
-    static const int yxyw;
+    static int yxyw;
 
-    static const int yxzx;
+    static int yxzx;
 
-    static const int yxzy;
+    static int yxzy;
 
-    static const int yxzz;
+    static int yxzz;
 
-    static const int yxzw;
+    static int yxzw;
 
-    static const int yxwx;
+    static int yxwx;
 
-    static const int yxwy;
+    static int yxwy;
 
-    static const int yxwz;
+    static int yxwz;
 
-    static const int yxww;
+    static int yxww;
 
-    static const int yyxx;
+    static int yyxx;
 
-    static const int yyxy;
+    static int yyxy;
 
-    static const int yyxz;
+    static int yyxz;
 
-    static const int yyxw;
+    static int yyxw;
 
-    static const int yyyx;
+    static int yyyx;
 
-    static const int yyyy;
+    static int yyyy;
 
-    static const int yyyz;
+    static int yyyz;
 
-    static const int yyyw;
+    static int yyyw;
 
-    static const int yyzx;
+    static int yyzx;
 
-    static const int yyzy;
+    static int yyzy;
 
-    static const int yyzz;
+    static int yyzz;
 
-    static const int yyzw;
+    static int yyzw;
 
-    static const int yywx;
+    static int yywx;
 
-    static const int yywy;
+    static int yywy;
 
-    static const int yywz;
+    static int yywz;
 
-    static const int yyww;
+    static int yyww;
 
-    static const int yzxx;
+    static int yzxx;
 
-    static const int yzxy;
+    static int yzxy;
 
-    static const int yzxz;
+    static int yzxz;
 
-    static const int yzxw;
+    static int yzxw;
 
-    static const int yzyx;
+    static int yzyx;
 
-    static const int yzyy;
+    static int yzyy;
 
-    static const int yzyz;
+    static int yzyz;
 
-    static const int yzyw;
+    static int yzyw;
 
-    static const int yzzx;
+    static int yzzx;
 
-    static const int yzzy;
+    static int yzzy;
 
-    static const int yzzz;
+    static int yzzz;
 
-    static const int yzzw;
+    static int yzzw;
 
-    static const int yzwx;
+    static int yzwx;
 
-    static const int yzwy;
+    static int yzwy;
 
-    static const int yzwz;
+    static int yzwz;
 
-    static const int yzww;
+    static int yzww;
 
-    static const int ywxx;
+    static int ywxx;
 
-    static const int ywxy;
+    static int ywxy;
 
-    static const int ywxz;
+    static int ywxz;
 
-    static const int ywxw;
+    static int ywxw;
 
-    static const int ywyx;
+    static int ywyx;
 
-    static const int ywyy;
+    static int ywyy;
 
-    static const int ywyz;
+    static int ywyz;
 
-    static const int ywyw;
+    static int ywyw;
 
-    static const int ywzx;
+    static int ywzx;
 
-    static const int ywzy;
+    static int ywzy;
 
-    static const int ywzz;
+    static int ywzz;
 
-    static const int ywzw;
+    static int ywzw;
 
-    static const int ywwx;
+    static int ywwx;
 
-    static const int ywwy;
+    static int ywwy;
 
-    static const int ywwz;
+    static int ywwz;
 
-    static const int ywww;
+    static int ywww;
 
-    static const int zxxx;
+    static int zxxx;
 
-    static const int zxxy;
+    static int zxxy;
 
-    static const int zxxz;
+    static int zxxz;
 
-    static const int zxxw;
+    static int zxxw;
 
-    static const int zxyx;
+    static int zxyx;
 
-    static const int zxyy;
+    static int zxyy;
 
-    static const int zxyz;
+    static int zxyz;
 
-    static const int zxyw;
+    static int zxyw;
 
-    static const int zxzx;
+    static int zxzx;
 
-    static const int zxzy;
+    static int zxzy;
 
-    static const int zxzz;
+    static int zxzz;
 
-    static const int zxzw;
+    static int zxzw;
 
-    static const int zxwx;
+    static int zxwx;
 
-    static const int zxwy;
+    static int zxwy;
 
-    static const int zxwz;
+    static int zxwz;
 
-    static const int zxww;
+    static int zxww;
 
-    static const int zyxx;
+    static int zyxx;
 
-    static const int zyxy;
+    static int zyxy;
 
-    static const int zyxz;
+    static int zyxz;
 
-    static const int zyxw;
+    static int zyxw;
 
-    static const int zyyx;
+    static int zyyx;
 
-    static const int zyyy;
+    static int zyyy;
 
-    static const int zyyz;
+    static int zyyz;
 
-    static const int zyyw;
+    static int zyyw;
 
-    static const int zyzx;
+    static int zyzx;
 
-    static const int zyzy;
+    static int zyzy;
 
-    static const int zyzz;
+    static int zyzz;
 
-    static const int zyzw;
+    static int zyzw;
 
-    static const int zywx;
+    static int zywx;
 
-    static const int zywy;
+    static int zywy;
 
-    static const int zywz;
+    static int zywz;
 
-    static const int zyww;
+    static int zyww;
 
-    static const int zzxx;
+    static int zzxx;
 
-    static const int zzxy;
+    static int zzxy;
 
-    static const int zzxz;
+    static int zzxz;
 
-    static const int zzxw;
+    static int zzxw;
 
-    static const int zzyx;
+    static int zzyx;
 
-    static const int zzyy;
+    static int zzyy;
 
-    static const int zzyz;
+    static int zzyz;
 
-    static const int zzyw;
+    static int zzyw;
 
-    static const int zzzx;
+    static int zzzx;
 
-    static const int zzzy;
+    static int zzzy;
 
-    static const int zzzz;
+    static int zzzz;
 
-    static const int zzzw;
+    static int zzzw;
 
-    static const int zzwx;
+    static int zzwx;
 
-    static const int zzwy;
+    static int zzwy;
 
-    static const int zzwz;
+    static int zzwz;
 
-    static const int zzww;
+    static int zzww;
 
-    static const int zwxx;
+    static int zwxx;
 
-    static const int zwxy;
+    static int zwxy;
 
-    static const int zwxz;
+    static int zwxz;
 
-    static const int zwxw;
+    static int zwxw;
 
-    static const int zwyx;
+    static int zwyx;
 
-    static const int zwyy;
+    static int zwyy;
 
-    static const int zwyz;
+    static int zwyz;
 
-    static const int zwyw;
+    static int zwyw;
 
-    static const int zwzx;
+    static int zwzx;
 
-    static const int zwzy;
+    static int zwzy;
 
-    static const int zwzz;
+    static int zwzz;
 
-    static const int zwzw;
+    static int zwzw;
 
-    static const int zwwx;
+    static int zwwx;
 
-    static const int zwwy;
+    static int zwwy;
 
-    static const int zwwz;
+    static int zwwz;
 
-    static const int zwww;
+    static int zwww;
 
-    static const int wxxx;
+    static int wxxx;
 
-    static const int wxxy;
+    static int wxxy;
 
-    static const int wxxz;
+    static int wxxz;
 
-    static const int wxxw;
+    static int wxxw;
 
-    static const int wxyx;
+    static int wxyx;
 
-    static const int wxyy;
+    static int wxyy;
 
-    static const int wxyz;
+    static int wxyz;
 
-    static const int wxyw;
+    static int wxyw;
 
-    static const int wxzx;
+    static int wxzx;
 
-    static const int wxzy;
+    static int wxzy;
 
-    static const int wxzz;
+    static int wxzz;
 
-    static const int wxzw;
+    static int wxzw;
 
-    static const int wxwx;
+    static int wxwx;
 
-    static const int wxwy;
+    static int wxwy;
 
-    static const int wxwz;
+    static int wxwz;
 
-    static const int wxww;
+    static int wxww;
 
-    static const int wyxx;
+    static int wyxx;
 
-    static const int wyxy;
+    static int wyxy;
 
-    static const int wyxz;
+    static int wyxz;
 
-    static const int wyxw;
+    static int wyxw;
 
-    static const int wyyx;
+    static int wyyx;
 
-    static const int wyyy;
+    static int wyyy;
 
-    static const int wyyz;
+    static int wyyz;
 
-    static const int wyyw;
+    static int wyyw;
 
-    static const int wyzx;
+    static int wyzx;
 
-    static const int wyzy;
+    static int wyzy;
 
-    static const int wyzz;
+    static int wyzz;
 
-    static const int wyzw;
+    static int wyzw;
 
-    static const int wywx;
+    static int wywx;
 
-    static const int wywy;
+    static int wywy;
 
-    static const int wywz;
+    static int wywz;
 
-    static const int wyww;
+    static int wyww;
 
-    static const int wzxx;
+    static int wzxx;
 
-    static const int wzxy;
+    static int wzxy;
 
-    static const int wzxz;
+    static int wzxz;
 
-    static const int wzxw;
+    static int wzxw;
 
-    static const int wzyx;
+    static int wzyx;
 
-    static const int wzyy;
+    static int wzyy;
 
-    static const int wzyz;
+    static int wzyz;
 
-    static const int wzyw;
+    static int wzyw;
 
-    static const int wzzx;
+    static int wzzx;
 
-    static const int wzzy;
+    static int wzzy;
 
-    static const int wzzz;
+    static int wzzz;
 
-    static const int wzzw;
+    static int wzzw;
 
-    static const int wzwx;
+    static int wzwx;
 
-    static const int wzwy;
+    static int wzwy;
 
-    static const int wzwz;
+    static int wzwz;
 
-    static const int wzww;
+    static int wzww;
 
-    static const int wwxx;
+    static int wwxx;
 
-    static const int wwxy;
+    static int wwxy;
 
-    static const int wwxz;
+    static int wwxz;
 
-    static const int wwxw;
+    static int wwxw;
 
-    static const int wwyx;
+    static int wwyx;
 
-    static const int wwyy;
+    static int wwyy;
 
-    static const int wwyz;
+    static int wwyz;
 
-    static const int wwyw;
+    static int wwyw;
 
-    static const int wwzx;
+    static int wwzx;
 
-    static const int wwzy;
+    static int wwzy;
 
-    static const int wwzz;
+    static int wwzz;
 
-    static const int wwzw;
+    static int wwzw;
 
-    static const int wwwx;
+    static int wwwx;
 
-    static const int wwwy;
+    static int wwwy;
 
-    static const int wwwz;
+    static int wwwz;
 
-    static const int wwww;
+    static int wwww;
 
 
-    external  Int32x4(int w, int x, int y, int z);
-
-    external void  bool(bool w, bool x, bool y, bool z);
-
-    external void  fromFloat32x4Bits(Float32x4 x);
-
-    Int32x4 |(Int32x4 other);
-
-    Int32x4 &(Int32x4 other);
-
-    Int32x4 ^(Int32x4 other);
-
-    Int32x4 +(Int32x4 other);
-
-    Int32x4 -(Int32x4 other);
-
-    int x();
-
-    int y();
-
-    int z();
-
-    int w();
-
-    int signMask();
-
-    Int32x4 shuffle(int mask);
-
-    Int32x4 shuffleMix(int mask, Int32x4 other);
-
-    Int32x4 withX(int x);
-
-    Int32x4 withY(int y);
-
-    Int32x4 withZ(int z);
-
-    Int32x4 withW(int w);
-
-    bool flagX();
-
-    bool flagY();
-
-    bool flagZ();
-
-    bool flagW();
-
-    Int32x4 withFlagX(bool x);
-
-    Int32x4 withFlagY(bool y);
-
-    Int32x4 withFlagZ(bool z);
-
-    Int32x4 withFlagW(bool w);
-
-    Float32x4 select(Float32x4 falseValue, Float32x4 trueValue);
-
+    extern  Int32x4Cls(int w, int x, int y, int z);
+    extern void  boolValue(bool w, bool x, bool y, bool z);
+    extern void  fromFloat32x4Bits(Float32x4 x);
+    virtual Int32x4 operator|(Int32x4 other);
+    virtual Int32x4 operator&(Int32x4 other);
+    virtual Int32x4 operator^(Int32x4 other);
+    virtual Int32x4 operator+(Int32x4 other);
+    virtual Int32x4 operator-(Int32x4 other);
+    virtual int x();
+    virtual int y();
+    virtual int z();
+    virtual int w();
+    virtual int signMask();
+    virtual Int32x4 shuffle(int mask);
+    virtual Int32x4 shuffleMix(int mask, Int32x4 other);
+    virtual Int32x4 withX(int x);
+    virtual Int32x4 withY(int y);
+    virtual Int32x4 withZ(int z);
+    virtual Int32x4 withW(int w);
+    virtual bool flagX();
+    virtual bool flagY();
+    virtual bool flagZ();
+    virtual bool flagW();
+    virtual Int32x4 withFlagX(bool x);
+    virtual Int32x4 withFlagY(bool y);
+    virtual Int32x4 withFlagZ(bool z);
+    virtual Int32x4 withFlagW(bool w);
+    virtual Float32x4 select(Float32x4 falseValue, Float32x4 trueValue);
 private:
 
 };
+using Int32x4 = std::shared_ptr<Int32x4Cls>;
 
-class Float64x2 {
+class Float64x2Cls : public ObjectCls {
 public:
 
-    external  Float64x2(double x, double y);
-
-    external void  splat(double v);
-
-    external void  zero();
-
-    external void  fromFloat32x4(Float32x4 v);
-
-    Float64x2 +(Float64x2 other);
-
-    Float64x2 -();
-
-    Float64x2 -(Float64x2 other);
-
-    Float64x2 *(Float64x2 other);
-
-    Float64x2 /(Float64x2 other);
-
-    Float64x2 scale(double s);
-
-    Float64x2 abs();
-
-    Float64x2 clamp(Float64x2 lowerLimit, Float64x2 upperLimit);
-
-    double x();
-
-    double y();
-
-    int signMask();
-
-    Float64x2 withX(double x);
-
-    Float64x2 withY(double y);
-
-    Float64x2 min(Float64x2 other);
-
-    Float64x2 max(Float64x2 other);
-
-    Float64x2 sqrt();
-
+    extern  Float64x2Cls(double x, double y);
+    extern void  splat(double v);
+    extern void  zero();
+    extern void  fromFloat32x4(Float32x4 v);
+    virtual Float64x2 operator+(Float64x2 other);
+    virtual Float64x2 operator-();
+    virtual Float64x2 operator-(Float64x2 other);
+    virtual Float64x2 operator*(Float64x2 other);
+    virtual Float64x2 operator/(Float64x2 other);
+    virtual Float64x2 scale(double s);
+    virtual Float64x2 abs();
+    virtual Float64x2 clamp(Float64x2 lowerLimit, Float64x2 upperLimit);
+    virtual double x();
+    virtual double y();
+    virtual int signMask();
+    virtual Float64x2 withX(double x);
+    virtual Float64x2 withY(double y);
+    virtual Float64x2 min(Float64x2 other);
+    virtual Float64x2 max(Float64x2 other);
+    virtual Float64x2 sqrt();
 private:
 
 };
+using Float64x2 = std::shared_ptr<Float64x2Cls>;
+
+// Parts
+#include "unmodifiable_typed_data.hpp"
 
 #endif

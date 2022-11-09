@@ -1,49 +1,51 @@
-#ifndef BEVELED_RECTANGLE_BORDER_H
-#define BEVELED_RECTANGLE_BORDER_H
-#include <memory>
+#ifndef PACKAGES_FLUTTER_SRC_PAINTING_BEVELED_RECTANGLE_BORDER
+#define PACKAGES_FLUTTER_SRC_PAINTING_BEVELED_RECTANGLE_BORDER
+#include <base.hpp>
 
-#include <math/math.hpp>
-#include <flutter/foundation.hpp>
+#include <dart/core/core.hpp>
+#include <dart/math/math.hpp>
+#include <packages/flutter/lib/foundation.hpp>
 #include "basic_types.hpp"
 #include "border_radius.hpp"
 #include "borders.hpp"
 #include "edge_insets.hpp"
 
 
-
-class BeveledRectangleBorder : OutlinedBorder {
+class BeveledRectangleBorderCls : public OutlinedBorderCls {
 public:
     BorderRadiusGeometry borderRadius;
 
 
-     BeveledRectangleBorder(BorderRadiusGeometry borderRadius, Unknown);
+     BeveledRectangleBorderCls(BorderRadiusGeometry borderRadius, Unknown side);
 
-    EdgeInsetsGeometry dimensions();
+    virtual EdgeInsetsGeometry dimensions();
 
-    ShapeBorder scale(double t);
+    virtual ShapeBorder scale(double t);
 
-    ShapeBorder lerpFrom(ShapeBorder a, double t);
+    virtual ShapeBorder lerpFrom(ShapeBorder a, double t);
 
-    ShapeBorder lerpTo(ShapeBorder b, double t);
+    virtual ShapeBorder lerpTo(ShapeBorder b, double t);
 
-    BeveledRectangleBorder copyWith(BorderRadiusGeometry borderRadius, BorderSide side);
+    virtual BeveledRectangleBorder copyWith(BorderRadiusGeometry borderRadius, BorderSide side);
 
-    Path getInnerPath(Rect rect, TextDirection textDirection);
+    virtual Path getInnerPath(Rect rect, TextDirection textDirection);
 
-    Path getOuterPath(Rect rect, TextDirection textDirection);
+    virtual Path getOuterPath(Rect rect, TextDirection textDirection);
 
-    void paint(Canvas canvas, Rect rect, TextDirection textDirection);
+    virtual void paint(Canvas canvas, Rect rect, TextDirection textDirection);
 
-    bool ==(Object other);
+    virtual bool operator==(Object other);
 
-    int hashCode();
+    virtual int hashCode();
 
-    String toString();
+    virtual String toString();
 
 private:
 
-    Path _getPath(RRect rrect);
+    virtual Path _getPath(RRect rrect);
 
 };
+using BeveledRectangleBorder = std::shared_ptr<BeveledRectangleBorderCls>;
+
 
 #endif

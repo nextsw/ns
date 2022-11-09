@@ -1,411 +1,416 @@
-#ifndef WRAPPERS_H
-#define WRAPPERS_H
-#include <memory>
+#ifndef PACKAGES_COLLECTION_SRC_WRAPPERS
+#define PACKAGES_COLLECTION_SRC_WRAPPERS
+#include <base.hpp>
 
-#include <collection/collection.hpp>
-#include <math/math.hpp>
+#include <dart/core/core.hpp>
+#include <dart/collection/collection.hpp>
+#include <dart/math/math.hpp>
 #include "unmodifiable_wrappers.hpp"
 
 
-
-class _DelegatingIterableBase<E> {
+template<typename E> class _DelegatingIterableBaseCls : public ObjectCls {
 public:
 
-    bool any(FunctionType test);
+    virtual bool any(bool test(E ) );
 
-    Iterable<T> cast<T>();
+    template<typename T>  virtual Iterable<T> cast();
 
-    bool contains(Object element);
+    virtual bool contains(Object element);
 
-    E elementAt(int index);
+    virtual E elementAt(int index);
 
-    bool every(FunctionType test);
+    virtual bool every(bool test(E ) );
 
-    Iterable<T> expand<T>(FunctionType f);
+    template<typename T>  virtual Iterable<T> expand(Iterable<T> f(E ) );
 
-    E first();
+    virtual E first();
 
-    E firstWhere(FunctionType orElse, FunctionType test);
+    virtual E firstWhere(E orElse() , bool test(E ) );
 
-    T fold<T>(FunctionType combine, T initialValue);
+    template<typename T>  virtual T fold(T combine(E element, T previousValue) , T initialValue);
 
-    Iterable<E> followedBy(Iterable<E> other);
+    virtual Iterable<E> followedBy(Iterable<E> other);
 
-    void forEach(FunctionType f);
+    virtual void forEach(void f(E ) );
 
-    bool isEmpty();
+    virtual bool isEmpty();
 
-    bool isNotEmpty();
+    virtual bool isNotEmpty();
 
-    Iterator<E> iterator();
+    virtual Iterator<E> iterator();
 
-    String join(String separator);
+    virtual String join(String separator);
 
-    E last();
+    virtual E last();
 
-    E lastWhere(FunctionType orElse, FunctionType test);
+    virtual E lastWhere(E orElse() , bool test(E ) );
 
-    int length();
+    virtual int length();
 
-    Iterable<T> map<T>(FunctionType f);
+    template<typename T>  virtual Iterable<T> map(T f(E ) );
 
-    E reduce(FunctionType combine);
+    virtual E reduce(E combine(E element, E value) );
 
-    Iterable<T> retype<T>();
+    template<typename T>  virtual Iterable<T> retype();
 
-    E single();
+    virtual E single();
 
-    E singleWhere(FunctionType orElse, FunctionType test);
+    virtual E singleWhere(E orElse() , bool test(E ) );
 
-    Iterable<E> skip(int n);
+    virtual Iterable<E> skip(int n);
 
-    Iterable<E> skipWhile(FunctionType test);
+    virtual Iterable<E> skipWhile(bool test(E ) );
 
-    Iterable<E> take(int n);
+    virtual Iterable<E> take(int n);
 
-    Iterable<E> takeWhile(FunctionType test);
+    virtual Iterable<E> takeWhile(bool test(E ) );
 
-    List<E> toList(bool growable);
+    virtual List<E> toList(bool growable);
 
-    Set<E> toSet();
+    virtual Set<E> toSet();
 
-    Iterable<E> where(FunctionType test);
+    virtual Iterable<E> where(bool test(E ) );
 
-    Iterable<T> whereType<T>();
+    template<typename T>  virtual Iterable<T> whereType();
 
-    String toString();
+    virtual String toString();
 
 private:
 
-    Iterable<E> _base();
-
-     _DelegatingIterableBase();
-
+    virtual Iterable<E> _base();
+     _DelegatingIterableBaseCls();
 };
+template<typename E> using _DelegatingIterableBase = std::shared_ptr<_DelegatingIterableBaseCls<E>>;
 
-class DelegatingIterable<E> : _DelegatingIterableBase<E> {
+template<typename E> class DelegatingIterableCls : public _DelegatingIterableBaseCls<E> {
 public:
 
-     DelegatingIterable(Iterable<E> base);
+     DelegatingIterableCls(Iterable<E> base);
 
-    static Iterable<E> typed<E>(Iterable base);
+    template<typename E>  static Iterable<E> typed(Iterable base);
 
 private:
     Iterable<E> _base;
 
 
 };
+template<typename E> using DelegatingIterable = std::shared_ptr<DelegatingIterableCls<E>>;
 
-class DelegatingList<E> : _DelegatingIterableBase<E> {
+template<typename E> class DelegatingListCls : public _DelegatingIterableBaseCls<E> {
 public:
 
-     DelegatingList(List<E> base);
+     DelegatingListCls(List<E> base);
 
-    static List<E> typed<E>(List base);
+    template<typename E>  static List<E> typed(List base);
 
-    E [](int index);
+    virtual E operator[](int index);
 
-    void []=(int index, E value);
+    virtual void operator[]=(int index, E value);
 
-    List<E> +(List<E> other);
+    virtual List<E> operator+(List<E> other);
 
-    void add(E value);
+    virtual void add(E value);
 
-    void addAll(Iterable<E> iterable);
+    virtual void addAll(Iterable<E> iterable);
 
-    Map<int, E> asMap();
+    virtual Map<int, E> asMap();
 
-    List<T> cast<T>();
+    template<typename T>  virtual List<T> cast();
 
-    void clear();
+    virtual void clear();
 
-    void fillRange(int end, E fillValue, int start);
+    virtual void fillRange(int end, E fillValue, int start);
 
-    void  first(E value);
+    virtual void  first(E value);
 
-    Iterable<E> getRange(int end, int start);
+    virtual Iterable<E> getRange(int end, int start);
 
-    int indexOf(E element, int start);
+    virtual int indexOf(E element, int start);
 
-    int indexWhere(int start, FunctionType test);
+    virtual int indexWhere(int start, bool test(E ) );
 
-    void insert(E element, int index);
+    virtual void insert(E element, int index);
 
-    void insertAll(int index, Iterable<E> iterable);
+    virtual void insertAll(int index, Iterable<E> iterable);
 
-    void  last(E value);
+    virtual void  last(E value);
 
-    int lastIndexOf(E element, int start);
+    virtual int lastIndexOf(E element, int start);
 
-    int lastIndexWhere(int start, FunctionType test);
+    virtual int lastIndexWhere(int start, bool test(E ) );
 
-    void  length(int newLength);
+    virtual void  length(int newLength);
 
-    bool remove(Object value);
+    virtual bool remove(Object value);
 
-    E removeAt(int index);
+    virtual E removeAt(int index);
 
-    E removeLast();
+    virtual E removeLast();
 
-    void removeRange(int end, int start);
+    virtual void removeRange(int end, int start);
 
-    void removeWhere(FunctionType test);
+    virtual void removeWhere(bool test(E ) );
 
-    void replaceRange(int end, Iterable<E> iterable, int start);
+    virtual void replaceRange(int end, Iterable<E> iterable, int start);
 
-    void retainWhere(FunctionType test);
+    virtual void retainWhere(bool test(E ) );
 
-    List<T> retype<T>();
+    template<typename T>  virtual List<T> retype();
 
-    Iterable<E> reversed();
+    virtual Iterable<E> reversed();
 
-    void setAll(int index, Iterable<E> iterable);
+    virtual void setAll(int index, Iterable<E> iterable);
 
-    void setRange(int end, Iterable<E> iterable, int skipCount, int start);
+    virtual void setRange(int end, Iterable<E> iterable, int skipCount, int start);
 
-    void shuffle(Random random);
+    virtual void shuffle(Random random);
 
-    void sort(FunctionType compare);
+    virtual void sort(int compare(E , E ) );
 
-    List<E> sublist(int end, int start);
+    virtual List<E> sublist(int end, int start);
 
 private:
     List<E> _base;
 
 
 };
+template<typename E> using DelegatingList = std::shared_ptr<DelegatingListCls<E>>;
 
-class DelegatingSet<E> : _DelegatingIterableBase<E> {
+template<typename E> class DelegatingSetCls : public _DelegatingIterableBaseCls<E> {
 public:
 
-     DelegatingSet(Set<E> base);
+     DelegatingSetCls(Set<E> base);
 
-    static Set<E> typed<E>(Set base);
+    template<typename E>  static Set<E> typed(Set base);
 
-    bool add(E value);
+    virtual bool add(E value);
 
-    void addAll(Iterable<E> elements);
+    virtual void addAll(Iterable<E> elements);
 
-    Set<T> cast<T>();
+    template<typename T>  virtual Set<T> cast();
 
-    void clear();
+    virtual void clear();
 
-    bool containsAll(Iterable<Object> other);
+    virtual bool containsAll(Iterable<Object> other);
 
-    Set<E> difference(Set<Object> other);
+    virtual Set<E> difference(Set<Object> other);
 
-    Set<E> intersection(Set<Object> other);
+    virtual Set<E> intersection(Set<Object> other);
 
-    E lookup(Object element);
+    virtual E lookup(Object element);
 
-    bool remove(Object value);
+    virtual bool remove(Object value);
 
-    void removeAll(Iterable<Object> elements);
+    virtual void removeAll(Iterable<Object> elements);
 
-    void removeWhere(FunctionType test);
+    virtual void removeWhere(bool test(E ) );
 
-    void retainAll(Iterable<Object> elements);
+    virtual void retainAll(Iterable<Object> elements);
 
-    Set<T> retype<T>();
+    template<typename T>  virtual Set<T> retype();
 
-    void retainWhere(FunctionType test);
+    virtual void retainWhere(bool test(E ) );
 
-    Set<E> union(Set<E> other);
+    virtual Set<E> union(Set<E> other);
 
-    Set<E> toSet();
+    virtual Set<E> toSet();
 
 private:
     Set<E> _base;
 
 
 };
+template<typename E> using DelegatingSet = std::shared_ptr<DelegatingSetCls<E>>;
 
-class DelegatingQueue<E> : _DelegatingIterableBase<E> {
+template<typename E> class DelegatingQueueCls : public _DelegatingIterableBaseCls<E> {
 public:
 
-     DelegatingQueue(Queue<E> queue);
+     DelegatingQueueCls(Queue<E> queue);
 
-    static Queue<E> typed<E>(Queue base);
+    template<typename E>  static Queue<E> typed(Queue base);
 
-    void add(E value);
+    virtual void add(E value);
 
-    void addAll(Iterable<E> iterable);
+    virtual void addAll(Iterable<E> iterable);
 
-    void addFirst(E value);
+    virtual void addFirst(E value);
 
-    void addLast(E value);
+    virtual void addLast(E value);
 
-    Queue<T> cast<T>();
+    template<typename T>  virtual Queue<T> cast();
 
-    void clear();
+    virtual void clear();
 
-    bool remove(Object object);
+    virtual bool remove(Object object);
 
-    void removeWhere(FunctionType test);
+    virtual void removeWhere(bool test(E ) );
 
-    void retainWhere(FunctionType test);
+    virtual void retainWhere(bool test(E ) );
 
-    Queue<T> retype<T>();
+    template<typename T>  virtual Queue<T> retype();
 
-    E removeFirst();
+    virtual E removeFirst();
 
-    E removeLast();
+    virtual E removeLast();
 
 private:
     Queue<E> _base;
 
 
 };
+template<typename E> using DelegatingQueue = std::shared_ptr<DelegatingQueueCls<E>>;
 
-class DelegatingMap<K, V> {
+template<typename K, typename V> class DelegatingMapCls : public ObjectCls {
 public:
 
-     DelegatingMap(Map<K, V> base);
+     DelegatingMapCls(Map<K, V> base);
 
-    static Map<K, V> typed<K, V>(Map base);
+    template<typename K, typename V>  static Map<K, V> typed(Map base);
 
-    V [](Object key);
+    virtual V operator[](Object key);
 
-    void []=(K key, V value);
+    virtual void operator[]=(K key, V value);
 
-    void addAll(Map<K, V> other);
+    virtual void addAll(Map<K, V> other);
 
-    void addEntries(Iterable<MapEntry<K, V>> entries);
+    virtual void addEntries(Iterable<MapEntry<K, V>> entries);
 
-    void clear();
+    virtual void clear();
 
-    Map<K2, V2> cast<K2, V2>();
+    template<typename K2, typename V2>  virtual Map<K2, V2> cast();
 
-    bool containsKey(Object key);
+    virtual bool containsKey(Object key);
 
-    bool containsValue(Object value);
+    virtual bool containsValue(Object value);
 
-    Iterable<MapEntry<K, V>> entries();
+    virtual Iterable<MapEntry<K, V>> entries();
 
-    void forEach(FunctionType f);
+    virtual void forEach(void f(K , V ) );
 
-    bool isEmpty();
+    virtual bool isEmpty();
 
-    bool isNotEmpty();
+    virtual bool isNotEmpty();
 
-    Iterable<K> keys();
+    virtual Iterable<K> keys();
 
-    int length();
+    virtual int length();
 
-    Map<K2, V2> map<K2, V2>(FunctionType transform);
+    template<typename K2, typename V2>  virtual Map<K2, V2> map(MapEntry<K2, V2> transform(K , V ) );
 
-    V putIfAbsent(FunctionType ifAbsent, K key);
+    virtual V putIfAbsent(V ifAbsent() , K key);
 
-    V remove(Object key);
+    virtual V remove(Object key);
 
-    void removeWhere(FunctionType test);
+    virtual void removeWhere(bool test(K , V ) );
 
-    Map<K2, V2> retype<K2, V2>();
+    template<typename K2, typename V2>  virtual Map<K2, V2> retype();
 
-    Iterable<V> values();
+    virtual Iterable<V> values();
 
-    String toString();
+    virtual String toString();
 
-    V update(FunctionType ifAbsent, K key, FunctionType update);
+    virtual V update(V ifAbsent() , K key, V update(V ) );
 
-    void updateAll(FunctionType update);
+    virtual void updateAll(V update(K , V ) );
 
 private:
     Map<K, V> _base;
 
 
 };
+template<typename K, typename V> using DelegatingMap = std::shared_ptr<DelegatingMapCls<K, V>>;
 
-class MapKeySet<E> : _DelegatingIterableBase<E> {
+template<typename E> class MapKeySetCls : public _DelegatingIterableBaseCls<E> {
 public:
 
-     MapKeySet(Map<E, dynamic> _baseMap);
+     MapKeySetCls(Map<E, dynamic> _baseMap);
+    template<typename T>  virtual Set<T> cast();
 
-    Set<T> cast<T>();
+    virtual bool contains(Object element);
 
-    bool contains(Object element);
+    virtual bool isEmpty();
 
-    bool isEmpty();
+    virtual bool isNotEmpty();
 
-    bool isNotEmpty();
+    virtual int length();
 
-    int length();
+    virtual String toString();
 
-    String toString();
+    virtual bool containsAll(Iterable<Object> other);
 
-    bool containsAll(Iterable<Object> other);
+    virtual Set<E> difference(Set<Object> other);
 
-    Set<E> difference(Set<Object> other);
+    virtual Set<E> intersection(Set<Object> other);
 
-    Set<E> intersection(Set<Object> other);
+    virtual E lookup(Object element);
 
-    E lookup(Object element);
+    template<typename T>  virtual Set<T> retype();
 
-    Set<T> retype<T>();
-
-    Set<E> union(Set<E> other);
+    virtual Set<E> union(Set<E> other);
 
 private:
     Map<E, dynamic> _baseMap;
 
 
-    Iterable<E> _base();
+    virtual Iterable<E> _base();
 
 };
+template<typename E> using MapKeySet = std::shared_ptr<MapKeySetCls<E>>;
 
-class MapValueSet<K, V> : _DelegatingIterableBase<V> {
+template<typename K, typename V> class MapValueSetCls : public _DelegatingIterableBaseCls<V> {
 public:
 
-     MapValueSet(Map<K, V> _baseMap, FunctionType _keyForValue);
+     MapValueSetCls(Map<K, V> _baseMap, K Function(V ) _keyForValue);
+    template<typename T>  virtual Set<T> cast();
 
-    Set<T> cast<T>();
+    virtual bool contains(Object element);
 
-    bool contains(Object element);
+    virtual bool isEmpty();
 
-    bool isEmpty();
+    virtual bool isNotEmpty();
 
-    bool isNotEmpty();
+    virtual int length();
 
-    int length();
+    virtual String toString();
 
-    String toString();
+    virtual bool add(V value);
 
-    bool add(V value);
+    virtual void addAll(Iterable<V> elements);
 
-    void addAll(Iterable<V> elements);
+    virtual void clear();
 
-    void clear();
+    virtual bool containsAll(Iterable<Object> other);
 
-    bool containsAll(Iterable<Object> other);
+    virtual Set<V> difference(Set<Object> other);
 
-    Set<V> difference(Set<Object> other);
+    virtual Set<V> intersection(Set<Object> other);
 
-    Set<V> intersection(Set<Object> other);
+    virtual V lookup(Object element);
 
-    V lookup(Object element);
+    virtual bool remove(Object element);
 
-    bool remove(Object element);
+    virtual void removeAll(Iterable<Object> elements);
 
-    void removeAll(Iterable<Object> elements);
+    virtual void removeWhere(bool test(V ) );
 
-    void removeWhere(FunctionType test);
+    virtual void retainAll(Iterable<Object> elements);
 
-    void retainAll(Iterable<Object> elements);
+    virtual void retainWhere(bool test(V ) );
 
-    void retainWhere(FunctionType test);
+    template<typename T>  virtual Set<T> retype();
 
-    Set<T> retype<T>();
-
-    Set<V> union(Set<V> other);
+    virtual Set<V> union(Set<V> other);
 
 private:
     Map<K, V> _baseMap;
 
-    FunctionType _keyForValue;
+    K Function(V ) _keyForValue;
 
 
-    Iterable<V> _base();
+    virtual Iterable<V> _base();
 
 };
+template<typename K, typename V> using MapValueSet = std::shared_ptr<MapValueSetCls<K, V>>;
+
 
 #endif

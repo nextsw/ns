@@ -1,5 +1,5 @@
 #include "natives.hpp"
-void DartPluginRegistrant::ensureInitialized() {
+void DartPluginRegistrantCls::ensureInitialized() {
     if (!_wasInitialized) {
         _wasInitialized = true;
         _ensureInitialized();
@@ -7,20 +7,23 @@ void DartPluginRegistrant::ensureInitialized() {
 }
 
 void _print(String arg) {
-    _Logger._printString(arg);
+    _LoggerCls->_printString(arg);
 }
 
 void _printDebug(String arg) {
-    _Logger._printDebugString(arg);
+    _LoggerCls->_printDebugString(arg);
 }
 
 Future<ServiceExtensionResponse> _scheduleFrame(String method, Map<String, String> parameters) {
-    PlatformDispatcher.instance.scheduleFrame();
-    return developer.ServiceExtensionResponse.result(json.encode());
+    PlatformDispatcherCls::instance->scheduleFrame();
+    Map<String, String> map1 = make<MapCls<>>();map1.set("type", "Success");return developer->ServiceExtensionResponseCls->result(json->encode(list1));
 }
 
 void _setupHooks() {
-    assert(());
+    assert([=] () {
+        developer->registerExtension("ext.ui.window.scheduleFrame", _scheduleFrame);
+        return true;
+    }());
 }
 
 List<int> saveCompilationTrace() {

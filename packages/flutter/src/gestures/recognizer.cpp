@@ -1,13 +1,13 @@
 #include "recognizer.hpp"
-GestureRecognizer::GestureRecognizer(Object debugOwner, PointerDeviceKind kind, Set<PointerDeviceKind> supportedDevices) {
+GestureRecognizerCls::GestureRecognizerCls(Object debugOwner, PointerDeviceKind kind, Set<PointerDeviceKind> supportedDevices) {
     {
         assert(kind == nullptr || supportedDevices == nullptr);
-        _supportedDevices = kind == nullptr? supportedDevices : ;
+        _supportedDevices = kind == nullptr? supportedDevices : makeSet(ArrayItem);
     }
 }
 
-void GestureRecognizer::addPointerPanZoom(PointerPanZoomStartEvent event) {
-    _pointerToKind[event.pointer] = event.kind;
+void GestureRecognizerCls::addPointerPanZoom(PointerPanZoomStartEvent event) {
+    _pointerToKind[event->pointer] = event->kind;
     if (isPointerPanZoomAllowed(event)) {
         addAllowedPointerPanZoom(event);
     } else {
@@ -15,11 +15,11 @@ void GestureRecognizer::addPointerPanZoom(PointerPanZoomStartEvent event) {
     }
 }
 
-void GestureRecognizer::addAllowedPointerPanZoom(PointerPanZoomStartEvent event) {
+void GestureRecognizerCls::addAllowedPointerPanZoom(PointerPanZoomStartEvent event) {
 }
 
-void GestureRecognizer::addPointer(PointerDownEvent event) {
-    _pointerToKind[event.pointer] = event.kind;
+void GestureRecognizerCls::addPointer(PointerDownEvent event) {
+    _pointerToKind[event->pointer] = event->kind;
     if (isPointerAllowed(event)) {
         addAllowedPointer(event);
     } else {
@@ -27,169 +27,190 @@ void GestureRecognizer::addPointer(PointerDownEvent event) {
     }
 }
 
-void GestureRecognizer::addAllowedPointer(PointerDownEvent event) {
+void GestureRecognizerCls::addAllowedPointer(PointerDownEvent event) {
 }
 
-void GestureRecognizer::handleNonAllowedPointer(PointerDownEvent event) {
+void GestureRecognizerCls::handleNonAllowedPointer(PointerDownEvent event) {
 }
 
-bool GestureRecognizer::isPointerAllowed(PointerDownEvent event) {
-    return _supportedDevices == nullptr || _supportedDevices!.contains(event.kind);
+bool GestureRecognizerCls::isPointerAllowed(PointerDownEvent event) {
+    return _supportedDevices == nullptr || _supportedDevices!->contains(event->kind);
 }
 
-void GestureRecognizer::handleNonAllowedPointerPanZoom(PointerPanZoomStartEvent event) {
+void GestureRecognizerCls::handleNonAllowedPointerPanZoom(PointerPanZoomStartEvent event) {
 }
 
-bool GestureRecognizer::isPointerPanZoomAllowed(PointerPanZoomStartEvent event) {
-    return _supportedDevices == nullptr || _supportedDevices!.contains(event.kind);
+bool GestureRecognizerCls::isPointerPanZoomAllowed(PointerPanZoomStartEvent event) {
+    return _supportedDevices == nullptr || _supportedDevices!->contains(event->kind);
 }
 
-PointerDeviceKind GestureRecognizer::getKindForPointer(int pointer) {
-    assert(_pointerToKind.containsKey(pointer));
+PointerDeviceKind GestureRecognizerCls::getKindForPointer(int pointer) {
+    assert(_pointerToKind->containsKey(pointer));
     return _pointerToKind[pointer]!;
 }
 
-void GestureRecognizer::dispose() {
+void GestureRecognizerCls::dispose() {
 }
 
-T GestureRecognizer::invokeCallback<T>(RecognizerCallback<T> callback, FunctionType debugReport, String name) {
+T GestureRecognizerCls::invokeCallbacktemplate<typename T> (RecognizerCallback<T> callback, String debugReport() , String name) {
     assert(callback != nullptr);
     T result;
-    ;
+    try {
+        assert([=] () {
+            if (debugPrintRecognizerCallbacksTrace) {
+                String report = debugReport != nullptr? debugReport() : nullptr;
+                String prefix = debugPrintGestureArenaDiagnostics? "${' ' * 19}❙ " : "";
+                debugPrint("$prefix$this calling $name callback.${ (report?.isNotEmpty ?? false) ? " $report" : "" }");
+            }
+            return true;
+        }());
+        result = callback();
+    } catch (Unknown exception) {
+        InformationCollector collector;
+        assert([=] () {
+            collector = [=] ()             {
+                makeList(ArrayItem, ArrayItem);
+            };
+            return true;
+        }());
+        FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(exception, stack, "gesture", make<ErrorDescriptionCls>("while handling a gesture"), collector));
+    };
     return result;
 }
 
-void GestureRecognizer::debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties.add(<Object>DiagnosticsProperty("debugOwner", debugOwnernullptr));
+void GestureRecognizerCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super->debugFillProperties(properties);
+    properties->add(<Object>make<DiagnosticsPropertyCls>("debugOwner", debugOwnernullptr));
 }
 
-void OneSequenceGestureRecognizer::addAllowedPointer(PointerDownEvent event) {
-    startTrackingPointer(event.pointer, event.transform);
+void OneSequenceGestureRecognizerCls::addAllowedPointer(PointerDownEvent event) {
+    startTrackingPointer(event->pointer, event->transform);
 }
 
-void OneSequenceGestureRecognizer::handleNonAllowedPointer(PointerDownEvent event) {
-    resolve(GestureDisposition.rejected);
+void OneSequenceGestureRecognizerCls::handleNonAllowedPointer(PointerDownEvent event) {
+    resolve(GestureDispositionCls::rejected);
 }
 
-void OneSequenceGestureRecognizer::acceptGesture(int pointer) {
+void OneSequenceGestureRecognizerCls::acceptGesture(int pointer) {
 }
 
-void OneSequenceGestureRecognizer::rejectGesture(int pointer) {
+void OneSequenceGestureRecognizerCls::rejectGesture(int pointer) {
 }
 
-void OneSequenceGestureRecognizer::resolve(GestureDisposition disposition) {
-    List<GestureArenaEntry> localEntries = <GestureArenaEntry>of(_entries.values);
-    _entries.clear();
+void OneSequenceGestureRecognizerCls::resolve(GestureDisposition disposition) {
+    List<GestureArenaEntry> localEntries = <GestureArenaEntry>of(_entries->values);
+    _entries->clear();
     for (GestureArenaEntry entry : localEntries) {
-        entry.resolve(disposition);
+        entry->resolve(disposition);
     }
 }
 
-void OneSequenceGestureRecognizer::resolvePointer(GestureDisposition disposition, int pointer) {
+void OneSequenceGestureRecognizerCls::resolvePointer(GestureDisposition disposition, int pointer) {
     GestureArenaEntry entry = _entries[pointer];
     if (entry != nullptr) {
-        _entries.remove(pointer);
-        entry.resolve(disposition);
+        _entries->remove(pointer);
+        entry->resolve(disposition);
     }
 }
 
-void OneSequenceGestureRecognizer::dispose() {
-    resolve(GestureDisposition.rejected);
+void OneSequenceGestureRecognizerCls::dispose() {
+    resolve(GestureDispositionCls::rejected);
     for (int pointer : _trackedPointers) {
-        GestureBinding.instance.pointerRouter.removeRoute(pointer, handleEvent);
+        GestureBindingCls::instance->pointerRouter->removeRoute(pointer, handleEvent);
     }
-    _trackedPointers.clear();
-    assert(_entries.isEmpty);
-    super.dispose();
+    _trackedPointers->clear();
+    assert(_entries->isEmpty);
+    super->dispose();
 }
 
-GestureArenaTeam OneSequenceGestureRecognizer::team() {
+GestureArenaTeam OneSequenceGestureRecognizerCls::team() {
     return _team;
 }
 
-void OneSequenceGestureRecognizer::team(GestureArenaTeam value) {
+void OneSequenceGestureRecognizerCls::team(GestureArenaTeam value) {
     assert(value != nullptr);
-    assert(_entries.isEmpty);
-    assert(_trackedPointers.isEmpty);
+    assert(_entries->isEmpty);
+    assert(_trackedPointers->isEmpty);
     assert(_team == nullptr);
     _team = value;
 }
 
-void OneSequenceGestureRecognizer::startTrackingPointer(int pointer, Matrix4 transform) {
-    GestureBinding.instance.pointerRouter.addRoute(pointer, handleEvent, transform);
-    _trackedPointers.add(pointer);
-    assert(!_entries.containsValue(pointer));
+void OneSequenceGestureRecognizerCls::startTrackingPointer(int pointer, Matrix4 transform) {
+    GestureBindingCls::instance->pointerRouter->addRoute(pointer, handleEvent, transform);
+    _trackedPointers->add(pointer);
+    assert(!_entries->containsValue(pointer));
     _entries[pointer] = _addPointerToArena(pointer);
 }
 
-void OneSequenceGestureRecognizer::stopTrackingPointer(int pointer) {
-    if (_trackedPointers.contains(pointer)) {
-        GestureBinding.instance.pointerRouter.removeRoute(pointer, handleEvent);
-        _trackedPointers.remove(pointer);
-        if (_trackedPointers.isEmpty) {
+void OneSequenceGestureRecognizerCls::stopTrackingPointer(int pointer) {
+    if (_trackedPointers->contains(pointer)) {
+        GestureBindingCls::instance->pointerRouter->removeRoute(pointer, handleEvent);
+        _trackedPointers->remove(pointer);
+        if (_trackedPointers->isEmpty) {
             didStopTrackingLastPointer(pointer);
         }
     }
 }
 
-void OneSequenceGestureRecognizer::stopTrackingIfPointerNoLongerDown(PointerEvent event) {
+void OneSequenceGestureRecognizerCls::stopTrackingIfPointerNoLongerDown(PointerEvent event) {
     if (event is PointerUpEvent || event is PointerCancelEvent || event is PointerPanZoomEndEvent) {
-        stopTrackingPointer(event.pointer);
+        stopTrackingPointer(event->pointer);
     }
 }
 
-GestureArenaEntry OneSequenceGestureRecognizer::_addPointerToArena(int pointer) {
+GestureArenaEntry OneSequenceGestureRecognizerCls::_addPointerToArena(int pointer) {
     if (_team != nullptr) {
-        return _team!.add(pointer, this);
+        return _team!->add(pointer, this);
     }
-    return GestureBinding.instance.gestureArena.add(pointer, this);
+    return GestureBindingCls::instance->gestureArena->add(pointer, this);
 }
 
-PrimaryPointerGestureRecognizer::PrimaryPointerGestureRecognizer(Duration deadline, Unknown, Unknown, double postAcceptSlopTolerance, double preAcceptSlopTolerance, Unknown) {
+PrimaryPointerGestureRecognizerCls::PrimaryPointerGestureRecognizerCls(Duration deadline, Unknown debugOwner, Unknown kind, double postAcceptSlopTolerance, double preAcceptSlopTolerance, Unknown supportedDevices) {
     {
         assert(preAcceptSlopTolerance == nullptr || preAcceptSlopTolerance >= 0, "The preAcceptSlopTolerance must be positive or null");
         assert(postAcceptSlopTolerance == nullptr || postAcceptSlopTolerance >= 0, "The postAcceptSlopTolerance must be positive or null");
     }
 }
 
-GestureRecognizerState PrimaryPointerGestureRecognizer::state() {
+GestureRecognizerState PrimaryPointerGestureRecognizerCls::state() {
     return _state;
 }
 
-int PrimaryPointerGestureRecognizer::primaryPointer() {
+int PrimaryPointerGestureRecognizerCls::primaryPointer() {
     return _primaryPointer;
 }
 
-OffsetPair PrimaryPointerGestureRecognizer::initialPosition() {
+OffsetPair PrimaryPointerGestureRecognizerCls::initialPosition() {
     return _initialPosition;
 }
 
-void PrimaryPointerGestureRecognizer::addAllowedPointer(PointerDownEvent event) {
-    super.addAllowedPointer(event);
-    if (state == GestureRecognizerState.ready) {
-        _state = GestureRecognizerState.possible;
-        _primaryPointer = event.pointer;
-        _initialPosition = OffsetPair(event.localPosition, event.position);
+void PrimaryPointerGestureRecognizerCls::addAllowedPointer(PointerDownEvent event) {
+    super->addAllowedPointer(event);
+    if (state == GestureRecognizerStateCls::ready) {
+        _state = GestureRecognizerStateCls::possible;
+        _primaryPointer = event->pointer;
+        _initialPosition = make<OffsetPairCls>(event->localPosition, event->position);
         if (deadline != nullptr) {
-            _timer = Timer(deadline!, );
+            _timer = make<TimerCls>(deadline!, [=] ()             {
+                didExceedDeadlineWithEvent(event);
+            });
         }
     }
 }
 
-void PrimaryPointerGestureRecognizer::handleNonAllowedPointer(PointerDownEvent event) {
+void PrimaryPointerGestureRecognizerCls::handleNonAllowedPointer(PointerDownEvent event) {
     if (!_gestureAccepted) {
-        super.handleNonAllowedPointer(event);
+        super->handleNonAllowedPointer(event);
     }
 }
 
-void PrimaryPointerGestureRecognizer::handleEvent(PointerEvent event) {
-    assert(state != GestureRecognizerState.ready);
-    if (state == GestureRecognizerState.possible && event.pointer == primaryPointer) {
+void PrimaryPointerGestureRecognizerCls::handleEvent(PointerEvent event) {
+    assert(state != GestureRecognizerStateCls::ready);
+    if (state == GestureRecognizerStateCls::possible && event->pointer == primaryPointer) {
         bool isPreAcceptSlopPastTolerance = !_gestureAccepted && preAcceptSlopTolerance != nullptr && _getGlobalDistance(event) > preAcceptSlopTolerance!;
         bool isPostAcceptSlopPastTolerance = _gestureAccepted && postAcceptSlopTolerance != nullptr && _getGlobalDistance(event) > postAcceptSlopTolerance!;
         if (event is PointerMoveEvent && (isPreAcceptSlopPastTolerance || isPostAcceptSlopPastTolerance)) {
-            resolve(GestureDisposition.rejected);
+            resolve(GestureDispositionCls::rejected);
             stopTrackingPointer(primaryPointer!);
         } else {
             handlePrimaryPointer(event);
@@ -198,74 +219,74 @@ void PrimaryPointerGestureRecognizer::handleEvent(PointerEvent event) {
     stopTrackingIfPointerNoLongerDown(event);
 }
 
-void PrimaryPointerGestureRecognizer::didExceedDeadline() {
+void PrimaryPointerGestureRecognizerCls::didExceedDeadline() {
     assert(deadline == nullptr);
 }
 
-void PrimaryPointerGestureRecognizer::didExceedDeadlineWithEvent(PointerDownEvent event) {
+void PrimaryPointerGestureRecognizerCls::didExceedDeadlineWithEvent(PointerDownEvent event) {
     didExceedDeadline();
 }
 
-void PrimaryPointerGestureRecognizer::acceptGesture(int pointer) {
+void PrimaryPointerGestureRecognizerCls::acceptGesture(int pointer) {
     if (pointer == primaryPointer) {
         _stopTimer();
         _gestureAccepted = true;
     }
 }
 
-void PrimaryPointerGestureRecognizer::rejectGesture(int pointer) {
-    if (pointer == primaryPointer && state == GestureRecognizerState.possible) {
+void PrimaryPointerGestureRecognizerCls::rejectGesture(int pointer) {
+    if (pointer == primaryPointer && state == GestureRecognizerStateCls::possible) {
         _stopTimer();
-        _state = GestureRecognizerState.defunct;
+        _state = GestureRecognizerStateCls::defunct;
     }
 }
 
-void PrimaryPointerGestureRecognizer::didStopTrackingLastPointer(int pointer) {
-    assert(state != GestureRecognizerState.ready);
+void PrimaryPointerGestureRecognizerCls::didStopTrackingLastPointer(int pointer) {
+    assert(state != GestureRecognizerStateCls::ready);
     _stopTimer();
-    _state = GestureRecognizerState.ready;
+    _state = GestureRecognizerStateCls::ready;
     _initialPosition = nullptr;
     _gestureAccepted = false;
 }
 
-void PrimaryPointerGestureRecognizer::dispose() {
+void PrimaryPointerGestureRecognizerCls::dispose() {
     _stopTimer();
-    super.dispose();
+    super->dispose();
 }
 
-void PrimaryPointerGestureRecognizer::debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties.add(<GestureRecognizerState>EnumProperty("state", state));
+void PrimaryPointerGestureRecognizerCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super->debugFillProperties(properties);
+    properties->add(<GestureRecognizerState>make<EnumPropertyCls>("state", state));
 }
 
-void PrimaryPointerGestureRecognizer::_stopTimer() {
+void PrimaryPointerGestureRecognizerCls::_stopTimer() {
     if (_timer != nullptr) {
-        _timer!.cancel();
+        _timer!->cancel();
         _timer = nullptr;
     }
 }
 
-double PrimaryPointerGestureRecognizer::_getGlobalDistance(PointerEvent event) {
-    Offset offset = event.position - initialPosition!.global;
-    return offset.distance;
+double PrimaryPointerGestureRecognizerCls::_getGlobalDistance(PointerEvent event) {
+    Offset offset = event->position - initialPosition!->global;
+    return offset->distance;
 }
 
-void OffsetPair::fromEventPosition(PointerEvent event) {
-    return OffsetPair(event.localPosition, event.position);
+void OffsetPairCls::fromEventPosition(PointerEvent event) {
+    return make<OffsetPairCls>(event->localPosition, event->position);
 }
 
-void OffsetPair::fromEventDelta(PointerEvent event) {
-    return OffsetPair(event.localDelta, event.delta);
+void OffsetPairCls::fromEventDelta(PointerEvent event) {
+    return make<OffsetPairCls>(event->localDelta, event->delta);
 }
 
-OffsetPair OffsetPair::+(OffsetPair other) {
-    return OffsetPair(local + other.local, global + other.global);
+OffsetPair OffsetPairCls::+(OffsetPair other) {
+    return make<OffsetPairCls>(local + other->local, global + other->global);
 }
 
-OffsetPair OffsetPair::-(OffsetPair other) {
-    return OffsetPair(local - other.local, global - other.global);
+OffsetPair OffsetPairCls::-(OffsetPair other) {
+    return make<OffsetPairCls>(local - other->local, global - other->global);
 }
 
-String OffsetPair::toString() {
+String OffsetPairCls::toString() {
     return "${objectRuntimeType(this, 'OffsetPair')}(local: $local, global: $global)";
 }

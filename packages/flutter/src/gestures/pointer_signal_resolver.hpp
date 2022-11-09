@@ -1,21 +1,21 @@
-#ifndef POINTER_SIGNAL_RESOLVER_H
-#define POINTER_SIGNAL_RESOLVER_H
-#include <memory>
+#ifndef PACKAGES_FLUTTER_SRC_GESTURES_POINTER_SIGNAL_RESOLVER
+#define PACKAGES_FLUTTER_SRC_GESTURES_POINTER_SIGNAL_RESOLVER
+#include <base.hpp>
 #include "events.hpp"
 
-#include <flutter/foundation.hpp>
+#include <dart/core/core.hpp>
+#include <packages/flutter/lib/foundation.hpp>
 #include "events.hpp"
-
 
 bool _isSameEvent(PointerSignalEvent event1, PointerSignalEvent event2);
 
 
-class PointerSignalResolver {
+class PointerSignalResolverCls : public ObjectCls {
 public:
 
-    void register(PointerSignalResolvedCallback callback, PointerSignalEvent event);
+    virtual void register(PointerSignalResolvedCallback callback, PointerSignalEvent event);
 
-    void resolve(PointerSignalEvent event);
+    virtual void resolve(PointerSignalEvent event);
 
 private:
     PointerSignalResolvedCallback _firstRegisteredCallback;
@@ -24,5 +24,7 @@ private:
 
 
 };
+using PointerSignalResolver = std::shared_ptr<PointerSignalResolverCls>;
+
 
 #endif

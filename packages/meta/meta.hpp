@@ -1,239 +1,240 @@
-#ifndef META_H
-#define META_H
-#include <memory>
+#ifndef PACKAGES_META_META
+#define PACKAGES_META_META
+#include <base.hpp>
 
+#include <dart/core/core.hpp>
 #include "meta_meta.hpp"
 
+_AlwaysThrows alwaysThrows;
 
-const _AlwaysThrows alwaysThrows;
+_Checked checked;
 
-const _Checked checked;
+_DoNotStore doNotStore;
 
-const _DoNotStore doNotStore;
+_Experimental experimental;
 
-const _Experimental experimental;
+_Factory factory;
 
-const _Factory factory;
+Immutable immutable;
 
-const Immutable immutable;
+_Internal internal;
 
-const _Internal internal;
+_IsTest isTest;
 
-const _IsTest isTest;
+_IsTestGroup isTestGroup;
 
-const _IsTestGroup isTestGroup;
+_Literal literal;
 
-const _Literal literal;
+_MustCallSuper mustCallSuper;
 
-const _MustCallSuper mustCallSuper;
+_NonVirtual nonVirtual;
 
-const _NonVirtual nonVirtual;
+_OptionalTypeArgs optionalTypeArgs;
 
-const _OptionalTypeArgs optionalTypeArgs;
+_Protected protected;
 
-const _Protected protected;
+Required required;
 
-const Required required;
+_Sealed sealed;
 
-const _Sealed sealed;
+UseResult useResult;
 
-const UseResult useResult;
+_Virtual virtual;
 
-const _Virtual virtual;
+_VisibleForOverriding visibleForOverriding;
 
-const _VisibleForOverriding visibleForOverriding;
-
-const _VisibleForTesting visibleForTesting;
+_VisibleForTesting visibleForTesting;
 
 
-class Immutable {
+class ImmutableCls : public ObjectCls {
 public:
     String reason;
 
 
-     Immutable(String reason);
-
+     ImmutableCls(String reason);
 private:
 
 };
+using Immutable = std::shared_ptr<ImmutableCls>;
 
-class Required {
+class RequiredCls : public ObjectCls {
 public:
     String reason;
 
 
-     Required(String reason);
-
+     RequiredCls(String reason);
 private:
 
 };
+using Required = std::shared_ptr<RequiredCls>;
 
-class UseResult {
+class UseResultCls : public ObjectCls {
 public:
     String reason;
 
     String parameterDefined;
 
 
-     UseResult(String reason);
+     UseResultCls(String reason);
 
-    void  unless(String parameterDefined, String reason);
-
+    virtual void  unless(String parameterDefined, String reason);
 private:
 
 };
+using UseResult = std::shared_ptr<UseResultCls>;
 
-class _AlwaysThrows {
+class _AlwaysThrowsCls : public ObjectCls {
 public:
 
 private:
 
-     _AlwaysThrows();
-
+     _AlwaysThrowsCls();
 };
+using _AlwaysThrows = std::shared_ptr<_AlwaysThrowsCls>;
 
-class _Checked {
+class _CheckedCls : public ObjectCls {
 public:
 
 private:
 
-     _Checked();
-
+     _CheckedCls();
 };
+using _Checked = std::shared_ptr<_CheckedCls>;
 
-class _DoNotStore {
+class _DoNotStoreCls : public ObjectCls {
 public:
 
 private:
 
-     _DoNotStore();
-
+     _DoNotStoreCls();
 };
+using _DoNotStore = std::shared_ptr<_DoNotStoreCls>;
 
-class _Experimental {
+class _ExperimentalCls : public ObjectCls {
 public:
 
 private:
 
-     _Experimental();
-
+     _ExperimentalCls();
 };
+using _Experimental = std::shared_ptr<_ExperimentalCls>;
 
-class _Factory {
+class _FactoryCls : public ObjectCls {
 public:
 
 private:
 
-     _Factory();
-
+     _FactoryCls();
 };
+using _Factory = std::shared_ptr<_FactoryCls>;
 
-class _Internal {
+class _InternalCls : public ObjectCls {
 public:
 
 private:
 
-     _Internal();
-
+     _InternalCls();
 };
+using _Internal = std::shared_ptr<_InternalCls>;
 
-class _IsTest {
+class _IsTestCls : public ObjectCls {
 public:
 
 private:
 
-     _IsTest();
-
+     _IsTestCls();
 };
+using _IsTest = std::shared_ptr<_IsTestCls>;
 
-class _IsTestGroup {
+class _IsTestGroupCls : public ObjectCls {
 public:
 
 private:
 
-     _IsTestGroup();
-
+     _IsTestGroupCls();
 };
+using _IsTestGroup = std::shared_ptr<_IsTestGroupCls>;
 
-class _Literal {
+class _LiteralCls : public ObjectCls {
 public:
 
 private:
 
-     _Literal();
-
+     _LiteralCls();
 };
+using _Literal = std::shared_ptr<_LiteralCls>;
 
-class _MustCallSuper {
+class _MustCallSuperCls : public ObjectCls {
 public:
 
 private:
 
-     _MustCallSuper();
-
+     _MustCallSuperCls();
 };
+using _MustCallSuper = std::shared_ptr<_MustCallSuperCls>;
 
-class _NonVirtual {
+class _NonVirtualCls : public ObjectCls {
 public:
 
 private:
 
-     _NonVirtual();
-
+     _NonVirtualCls();
 };
+using _NonVirtual = std::shared_ptr<_NonVirtualCls>;
 
-class _OptionalTypeArgs {
+class _OptionalTypeArgsCls : public ObjectCls {
 public:
 
 private:
 
-     _OptionalTypeArgs();
-
+     _OptionalTypeArgsCls();
 };
+using _OptionalTypeArgs = std::shared_ptr<_OptionalTypeArgsCls>;
 
-class _Protected {
+class _ProtectedCls : public ObjectCls {
 public:
 
 private:
 
-     _Protected();
-
+     _ProtectedCls();
 };
+using _Protected = std::shared_ptr<_ProtectedCls>;
 
-class _Sealed {
+class _SealedCls : public ObjectCls {
 public:
 
 private:
 
-     _Sealed();
-
+     _SealedCls();
 };
+using _Sealed = std::shared_ptr<_SealedCls>;
 
-class _Virtual {
+class _VirtualCls : public ObjectCls {
 public:
 
 private:
 
-     _Virtual();
-
+     _VirtualCls();
 };
+using _Virtual = std::shared_ptr<_VirtualCls>;
 
-class _VisibleForOverriding {
+class _VisibleForOverridingCls : public ObjectCls {
 public:
 
 private:
 
-     _VisibleForOverriding();
-
+     _VisibleForOverridingCls();
 };
+using _VisibleForOverriding = std::shared_ptr<_VisibleForOverridingCls>;
 
-class _VisibleForTesting {
+class _VisibleForTestingCls : public ObjectCls {
 public:
 
 private:
 
-     _VisibleForTesting();
-
+     _VisibleForTestingCls();
 };
+using _VisibleForTesting = std::shared_ptr<_VisibleForTestingCls>;
+
 
 #endif

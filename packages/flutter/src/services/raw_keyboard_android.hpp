@@ -1,19 +1,19 @@
-#ifndef RAW_KEYBOARD_ANDROID_H
-#define RAW_KEYBOARD_ANDROID_H
-#include <memory>
-#include <flutter/foundation.hpp>
+#ifndef PACKAGES_FLUTTER_SRC_SERVICES_RAW_KEYBOARD_ANDROID
+#define PACKAGES_FLUTTER_SRC_SERVICES_RAW_KEYBOARD_ANDROID
+#include <base.hpp>
+#include <packages/flutter/lib/foundation.hpp>
 #include "keyboard_key.g.hpp"
 #include "raw_keyboard.hpp"
 
-#include <flutter/foundation.hpp>
+#include <dart/core/core.hpp>
+#include <packages/flutter/lib/foundation.hpp>
 #include "keyboard_maps.g.hpp"
 #include "raw_keyboard.hpp"
 
+int _kCombiningCharacterMask;
 
-const int _kCombiningCharacterMask;
 
-
-class RawKeyEventDataAndroid : RawKeyEventData {
+class RawKeyEventDataAndroidCls : public RawKeyEventDataCls {
 public:
     int flags;
 
@@ -37,67 +37,69 @@ public:
 
     int repeatCount;
 
-    static const int modifierNone;
+    static int modifierNone;
 
-    static const int modifierAlt;
+    static int modifierAlt;
 
-    static const int modifierLeftAlt;
+    static int modifierLeftAlt;
 
-    static const int modifierRightAlt;
+    static int modifierRightAlt;
 
-    static const int modifierShift;
+    static int modifierShift;
 
-    static const int modifierLeftShift;
+    static int modifierLeftShift;
 
-    static const int modifierRightShift;
+    static int modifierRightShift;
 
-    static const int modifierSym;
+    static int modifierSym;
 
-    static const int modifierFunction;
+    static int modifierFunction;
 
-    static const int modifierControl;
+    static int modifierControl;
 
-    static const int modifierLeftControl;
+    static int modifierLeftControl;
 
-    static const int modifierRightControl;
+    static int modifierRightControl;
 
-    static const int modifierMeta;
+    static int modifierMeta;
 
-    static const int modifierLeftMeta;
+    static int modifierLeftMeta;
 
-    static const int modifierRightMeta;
+    static int modifierRightMeta;
 
-    static const int modifierCapsLock;
+    static int modifierCapsLock;
 
-    static const int modifierNumLock;
+    static int modifierNumLock;
 
-    static const int modifierScrollLock;
+    static int modifierScrollLock;
 
 
-     RawKeyEventDataAndroid(int codePoint, int deviceId, int eventSource, int flags, int keyCode, int metaState, int plainCodePoint, int productId, int repeatCount, int scanCode, int vendorId);
+     RawKeyEventDataAndroidCls(int codePoint, int deviceId, int eventSource, int flags, int keyCode, int metaState, int plainCodePoint, int productId, int repeatCount, int scanCode, int vendorId);
 
-    String keyLabel();
+    virtual String keyLabel();
 
-    PhysicalKeyboardKey physicalKey();
+    virtual PhysicalKeyboardKey physicalKey();
 
-    LogicalKeyboardKey logicalKey();
+    virtual LogicalKeyboardKey logicalKey();
 
-    bool isModifierPressed(ModifierKey key, KeyboardSide side);
+    virtual bool isModifierPressed(ModifierKey key, KeyboardSide side);
 
-    KeyboardSide getModifierSide(ModifierKey key);
+    virtual KeyboardSide getModifierSide(ModifierKey key);
 
-    void debugFillProperties(DiagnosticPropertiesBuilder properties);
+    virtual void debugFillProperties(DiagnosticPropertiesBuilder properties);
 
-    bool ==(Object other);
+    virtual bool operator==(Object other);
 
-    int hashCode();
+    virtual int hashCode();
 
 private:
-    static const int _sourceJoystick;
+    static int _sourceJoystick;
 
 
-    bool _isLeftRightModifierPressed(int anyMask, int leftMask, int rightMask, KeyboardSide side);
+    virtual bool _isLeftRightModifierPressed(int anyMask, int leftMask, int rightMask, KeyboardSide side);
 
 };
+using RawKeyEventDataAndroid = std::shared_ptr<RawKeyEventDataAndroidCls>;
+
 
 #endif

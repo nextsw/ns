@@ -1,109 +1,103 @@
 #include "broadcast_stream_controller.hpp"
-bool _BroadcastStream::isBroadcast() {
+template<typename T> bool _BroadcastStreamCls<T>::isBroadcast() {
     return true;
 }
 
-_BroadcastStream::_BroadcastStream(_StreamControllerLifecycle<T> controller) {
-    {
-        super(controller);
-    }
+template<typename T> _BroadcastStreamCls<T>::_BroadcastStreamCls(_StreamControllerLifecycle<T> controller) {
 }
 
-_BroadcastSubscription::_BroadcastSubscription(bool cancelOnError, _StreamControllerLifecycle<T> controller, FunctionType onData, FunctionType onDone, FunctionType onError) {
-    {
-        super(controller, onData, onError, onDone, cancelOnError);
-    }
+template<typename T> _BroadcastSubscriptionCls<T>::_BroadcastSubscriptionCls(bool cancelOnError, _StreamControllerLifecycle<T> controller, void onData(T data) , void onDone() , void  onError() ) {
     {
         _next = _previous = this;
     }
 }
 
-bool _BroadcastSubscription::_expectsEvent(int eventId) {
-    return (_eventState & _STATE_EVENT_ID) == eventId;
+template<typename T> bool _BroadcastSubscriptionCls<T>::_expectsEvent(int eventId) {
+    return (_eventState & _STATE_EVENT_IDCls) == eventId;
 }
 
-void _BroadcastSubscription::_toggleEventId() {
-    _eventState = _STATE_EVENT_ID;
+template<typename T> void _BroadcastSubscriptionCls<T>::_toggleEventId() {
+    _eventState = _STATE_EVENT_IDCls;
 }
 
-bool _BroadcastSubscription::_isFiring() {
-    return (_eventState & _STATE_FIRING) != 0;
+template<typename T> bool _BroadcastSubscriptionCls<T>::_isFiring() {
+    return (_eventState & _STATE_FIRINGCls) != 0;
 }
 
-void _BroadcastSubscription::_setRemoveAfterFiring() {
+template<typename T> void _BroadcastSubscriptionCls<T>::_setRemoveAfterFiring() {
     assert(_isFiring);
-    _eventState = _STATE_REMOVE_AFTER_FIRING;
+    _eventState = _STATE_REMOVE_AFTER_FIRINGCls;
 }
 
-bool _BroadcastSubscription::_removeAfterFiring() {
-    return (_eventState & _STATE_REMOVE_AFTER_FIRING) != 0;
+template<typename T> bool _BroadcastSubscriptionCls<T>::_removeAfterFiring() {
+    return (_eventState & _STATE_REMOVE_AFTER_FIRINGCls) != 0;
 }
 
-void _BroadcastSubscription::_onPause() {
+template<typename T> void _BroadcastSubscriptionCls<T>::_onPause() {
 }
 
-void _BroadcastSubscription::_onResume() {
+template<typename T> void _BroadcastSubscriptionCls<T>::_onResume() {
 }
 
-FunctionType _BroadcastStreamController::onPause() {
+template<typename T> void Function() _BroadcastStreamControllerCls<T>::onPause() {
     ;
 }
 
-void _BroadcastStreamController::onPause(FunctionType onPauseHandler) {
+template<typename T> void _BroadcastStreamControllerCls<T>::onPause(void onPauseHandler() ) {
     ;
 }
 
-FunctionType _BroadcastStreamController::onResume() {
+template<typename T> void Function() _BroadcastStreamControllerCls<T>::onResume() {
     ;
 }
 
-void _BroadcastStreamController::onResume(FunctionType onResumeHandler) {
+template<typename T> void _BroadcastStreamControllerCls<T>::onResume(void onResumeHandler() ) {
     ;
 }
 
-Stream<T> _BroadcastStreamController::stream() {
-    return <T>_BroadcastStream(this);
+template<typename T> Stream<T> _BroadcastStreamControllerCls<T>::stream() {
+    return <T>make<_BroadcastStreamCls>(this);
 }
 
-StreamSink<T> _BroadcastStreamController::sink() {
-    return <T>_StreamSinkWrapper(this);
+template<typename T> StreamSink<T> _BroadcastStreamControllerCls<T>::sink() {
+    return <T>make<_StreamSinkWrapperCls>(this);
 }
 
-bool _BroadcastStreamController::isClosed() {
-    return (_state & _STATE_CLOSED) != 0;
+template<typename T> bool _BroadcastStreamControllerCls<T>::isClosed() {
+    return (_state & _STATE_CLOSEDCls) != 0;
 }
 
-bool _BroadcastStreamController::isPaused() {
+template<typename T> bool _BroadcastStreamControllerCls<T>::isPaused() {
     return false;
 }
 
-bool _BroadcastStreamController::hasListener() {
+template<typename T> bool _BroadcastStreamControllerCls<T>::hasListener() {
     return !_isEmpty;
 }
 
-void _BroadcastStreamController::add(T data) {
+template<typename T> void _BroadcastStreamControllerCls<T>::add(T data) {
     if (!_mayAddEvent)     {
         ;
     }
     _sendData(data);
 }
 
-void _BroadcastStreamController::addError(Object error, StackTrace stackTrace) {
+template<typename T> void _BroadcastStreamControllerCls<T>::addError(Object error, StackTrace stackTrace) {
     checkNotNullable(error, "error");
     if (!_mayAddEvent)     {
         ;
     }
-    AsyncError replacement = Zone.current.errorCallback(error, stackTrace);
+    AsyncError replacement = ZoneCls::current->errorCallback(error, stackTrace);
     if (replacement != nullptr) {
-        error = replacement.error;
-        stackTrace = replacement.stackTrace;
+        error = replacement->error;
+        stackTrace = replacement->stackTrace;
     } else {
-        stackTrace = AsyncError.defaultStackTrace(error);
+        stackTrace = AsyncErrorCls->defaultStackTrace(error);
     }
     _sendError(error, stackTrace);
 }
 
-Future _BroadcastStreamController::close() {
+template<typename T> Future _BroadcastStreamControllerCls<T>::close() {
     if (isClosed) {
         assert(_doneFuture != nullptr);
         return _doneFuture!;
@@ -111,94 +105,94 @@ Future _BroadcastStreamController::close() {
     if (!_mayAddEvent)     {
         ;
     }
-    _state = _STATE_CLOSED;
+    _state = _STATE_CLOSEDCls;
     Future doneFuture = _ensureDoneFuture();
     _sendDone();
     return doneFuture;
 }
 
-Future<void> _BroadcastStreamController::done() {
+template<typename T> Future<void> _BroadcastStreamControllerCls<T>::done() {
     return _ensureDoneFuture();
 }
 
-Future _BroadcastStreamController::addStream(bool cancelOnError, Stream<T> stream) {
+template<typename T> Future _BroadcastStreamControllerCls<T>::addStream(bool cancelOnError, Stream<T> stream) {
     if (!_mayAddEvent)     {
         ;
     }
-    _state = _STATE_ADDSTREAM;
-    auto addStreamState = _AddStreamState(this, stream, cancelOnError ?? false);
+    _state = _STATE_ADDSTREAMCls;
+    auto addStreamState = make<_AddStreamStateCls>(this, stream, cancelOnError ?? false);
     _addStreamState = addStreamState;
-    return addStreamState.addStreamFuture;
+    return addStreamState->addStreamFuture;
 }
 
-_BroadcastStreamController::_BroadcastStreamController(FunctionType onCancel, FunctionType onListen) {
+template<typename T> _BroadcastStreamControllerCls<T>::_BroadcastStreamControllerCls(FutureOr<void> Function() onCancel, void Function() onListen) {
     {
-        _state = _STATE_INITIAL;
+        _state = _STATE_INITIALCls;
     }
 }
 
-bool _BroadcastStreamController::_hasOneListener() {
+template<typename T> bool _BroadcastStreamControllerCls<T>::_hasOneListener() {
     assert(!_isEmpty);
     return identical(_firstSubscription, _lastSubscription);
 }
 
-bool _BroadcastStreamController::_isFiring() {
-    return (_state & _STATE_FIRING) != 0;
+template<typename T> bool _BroadcastStreamControllerCls<T>::_isFiring() {
+    return (_state & _STATE_FIRINGCls) != 0;
 }
 
-bool _BroadcastStreamController::_isAddingStream() {
-    return (_state & _STATE_ADDSTREAM) != 0;
+template<typename T> bool _BroadcastStreamControllerCls<T>::_isAddingStream() {
+    return (_state & _STATE_ADDSTREAMCls) != 0;
 }
 
-bool _BroadcastStreamController::_mayAddEvent() {
-    return ( < _STATE_CLOSED);
+template<typename T> bool _BroadcastStreamControllerCls<T>::_mayAddEvent() {
+    return ( < _STATE_CLOSEDCls);
 }
 
-_Future<void> _BroadcastStreamController::_ensureDoneFuture() {
-    return _doneFuture ??= <void>_Future();
+template<typename T> _Future<void> _BroadcastStreamControllerCls<T>::_ensureDoneFuture() {
+    return _doneFuture ??= <void>make<_FutureCls>();
 }
 
-bool _BroadcastStreamController::_isEmpty() {
+template<typename T> bool _BroadcastStreamControllerCls<T>::_isEmpty() {
     return _firstSubscription == nullptr;
 }
 
-void _BroadcastStreamController::_addListener(_BroadcastSubscription<T> subscription) {
-    assert(identical(subscription._next, subscription));
-    subscription._eventState = (_state & _STATE_EVENT_ID);
+template<typename T> void _BroadcastStreamControllerCls<T>::_addListener(_BroadcastSubscription<T> subscription) {
+    assert(identical(subscription->_next, subscription));
+    subscription->_eventState = (_state & _STATE_EVENT_IDCls);
     _BroadcastSubscription<T> oldLast = _lastSubscription;
     _lastSubscription = subscription;
-    subscription._next = nullptr;
-    subscription._previous = oldLast;
+    subscription->_next = nullptr;
+    subscription->_previous = oldLast;
     if (oldLast == nullptr) {
         _firstSubscription = subscription;
     } else {
-        oldLast._next = subscription;
+        oldLast->_next = subscription;
     }
 }
 
-void _BroadcastStreamController::_removeListener(_BroadcastSubscription<T> subscription) {
-    assert(identical(subscription._controller, this));
-    assert(!identical(subscription._next, subscription));
-    _BroadcastSubscription<T> previous = subscription._previous;
-    _BroadcastSubscription<T> next = subscription._next;
+template<typename T> void _BroadcastStreamControllerCls<T>::_removeListener(_BroadcastSubscription<T> subscription) {
+    assert(identical(subscription->_controller, this));
+    assert(!identical(subscription->_next, subscription));
+    _BroadcastSubscription<T> previous = subscription->_previous;
+    _BroadcastSubscription<T> next = subscription->_next;
     if (previous == nullptr) {
         _firstSubscription = next;
     } else {
-        previous._next = next;
+        previous->_next = next;
     }
     if (next == nullptr) {
         _lastSubscription = previous;
     } else {
-        next._previous = previous;
+        next->_previous = previous;
     }
-    subscription._next = subscription._previous = subscription;
+    subscription->_next = subscription->_previous = subscription;
 }
 
-StreamSubscription<T> _BroadcastStreamController::_subscribe(bool cancelOnError, FunctionType onData, FunctionType onDone, FunctionType onError) {
+template<typename T> StreamSubscription<T> _BroadcastStreamControllerCls<T>::_subscribe(bool cancelOnError, void onData(T data) , void onDone() , void  onError() ) {
     if (isClosed) {
-        return <T>_DoneStreamSubscription(onDone);
+        return <T>make<_DoneStreamSubscriptionCls>(onDone);
     }
-    auto subscription = <T>_BroadcastSubscription(this, onData, onError, onDone, cancelOnError);
+    auto subscription = <T>make<_BroadcastSubscriptionCls>(this, onData, onError, onDone, cancelOnError);
     _addListener(subscription);
     if (identical(_firstSubscription, _lastSubscription)) {
         _runGuarded(onListen);
@@ -206,13 +200,13 @@ StreamSubscription<T> _BroadcastStreamController::_subscribe(bool cancelOnError,
     return subscription;
 }
 
-Future<void> _BroadcastStreamController::_recordCancel(StreamSubscription<T> sub) {
-    _BroadcastSubscription<T> subscription = (;
-    if (identical(subscription._next, subscription))     {
+template<typename T> Future<void> _BroadcastStreamControllerCls<T>::_recordCancel(StreamSubscription<T> sub) {
+    _BroadcastSubscription<T> subscription = ((_BroadcastSubscription<T>)sub);
+    if (identical(subscription->_next, subscription))     {
         return nullptr;
     }
-    if (subscription._isFiring) {
-        subscription._setRemoveAfterFiring();
+    if (subscription->_isFiring) {
+        subscription->_setRemoveAfterFiring();
     } else {
         _removeListener(subscription);
         if (!_isFiring && _isEmpty) {
@@ -222,171 +216,171 @@ Future<void> _BroadcastStreamController::_recordCancel(StreamSubscription<T> sub
     return nullptr;
 }
 
-void _BroadcastStreamController::_recordPause(StreamSubscription<T> subscription) {
+template<typename T> void _BroadcastStreamControllerCls<T>::_recordPause(StreamSubscription<T> subscription) {
 }
 
-void _BroadcastStreamController::_recordResume(StreamSubscription<T> subscription) {
+template<typename T> void _BroadcastStreamControllerCls<T>::_recordResume(StreamSubscription<T> subscription) {
 }
 
-Error _BroadcastStreamController::_addEventError() {
+template<typename T> Error _BroadcastStreamControllerCls<T>::_addEventError() {
     if (isClosed) {
-        return StateError("Cannot add new events after calling close");
+        return make<StateErrorCls>("Cannot add new events after calling close");
     }
     assert(_isAddingStream);
-    return StateError("Cannot add new events while doing an addStream");
+    return make<StateErrorCls>("Cannot add new events while doing an addStream");
 }
 
-void _BroadcastStreamController::_add(T data) {
+template<typename T> void _BroadcastStreamControllerCls<T>::_add(T data) {
     _sendData(data);
 }
 
-void _BroadcastStreamController::_addError(Object error, StackTrace stackTrace) {
+template<typename T> void _BroadcastStreamControllerCls<T>::_addError(Object error, StackTrace stackTrace) {
     _sendError(error, stackTrace);
 }
 
-void _BroadcastStreamController::_close() {
+template<typename T> void _BroadcastStreamControllerCls<T>::_close() {
     assert(_isAddingStream);
     _AddStreamState addState = _addStreamState!;
     _addStreamState = nullptr;
-    _state = ~_STATE_ADDSTREAM;
-    addState.complete();
+    _state = ~_STATE_ADDSTREAMCls;
+    addState->complete();
 }
 
-void _BroadcastStreamController::_forEachListener(FunctionType action) {
+template<typename T> void _BroadcastStreamControllerCls<T>::_forEachListener(void action(_BufferingStreamSubscription<T> subscription) ) {
     if (_isFiring) {
         ;
     }
     if (_isEmpty)     {
         return;
     }
-    int id = (_state & _STATE_EVENT_ID);
-    _state = _STATE_EVENT_ID | _STATE_FIRING;
+    int id = (_state & _STATE_EVENT_IDCls);
+    _state = _STATE_EVENT_IDCls | _STATE_FIRINGCls;
     _BroadcastSubscription<T> subscription = _firstSubscription;
     while (subscription != nullptr) {
-        if (subscription._expectsEvent(id)) {
-            subscription._eventState = _BroadcastSubscription._STATE_FIRING;
+        if (subscription->_expectsEvent(id)) {
+            subscription->_eventState = _BroadcastSubscriptionCls::_STATE_FIRINGCls;
             action(subscription);
-            subscription._toggleEventId();
-            _BroadcastSubscription<T> next = subscription._next;
-            if (subscription._removeAfterFiring) {
+            subscription->_toggleEventId();
+            _BroadcastSubscription<T> next = subscription->_next;
+            if (subscription->_removeAfterFiring) {
                 _removeListener(subscription);
             }
-            subscription._eventState = ~_BroadcastSubscription._STATE_FIRING;
+            subscription->_eventState = ~_BroadcastSubscriptionCls->_STATE_FIRINGCls;
             subscription = next;
         } else {
-            subscription = subscription._next;
+            subscription = subscription->_next;
         }
     }
-    _state = ~_STATE_FIRING;
+    _state = ~_STATE_FIRINGCls;
     if (_isEmpty) {
         _callOnCancel();
     }
 }
 
-void _BroadcastStreamController::_callOnCancel() {
+template<typename T> void _BroadcastStreamControllerCls<T>::_callOnCancel() {
     assert(_isEmpty);
     if (isClosed) {
         auto doneFuture = _doneFuture!;
-        if (doneFuture._mayComplete) {
-            doneFuture._asyncComplete(nullptr);
+        if (doneFuture->_mayComplete) {
+            doneFuture->_asyncComplete(nullptr);
         }
     }
     _runGuarded(onCancel);
 }
 
-_SyncBroadcastStreamController::_SyncBroadcastStreamController(FunctionType onCancel, FunctionType onListen) {
-    {
-        super(onListen, onCancel);
-    }
+template<typename T> _SyncBroadcastStreamControllerCls<T>::_SyncBroadcastStreamControllerCls(void onCancel() , void onListen() ) {
 }
 
-bool _SyncBroadcastStreamController::_mayAddEvent() {
-    return super._mayAddEvent && !_isFiring;
+template<typename T> bool _SyncBroadcastStreamControllerCls<T>::_mayAddEvent() {
+    return super->_mayAddEvent && !_isFiring;
 }
 
-void _SyncBroadcastStreamController::_addEventError() {
+template<typename T> void _SyncBroadcastStreamControllerCls<T>::_addEventError() {
     if (_isFiring) {
-        return StateError("Cannot fire new event. Controller is already firing an event");
+        return make<StateErrorCls>("Cannot fire new event. Controller is already firing an event");
     }
-    return super._addEventError();
+    return super->_addEventError();
 }
 
-void _SyncBroadcastStreamController::_sendData(T data) {
+template<typename T> void _SyncBroadcastStreamControllerCls<T>::_sendData(T data) {
     if (_isEmpty)     {
         return;
     }
     if (_hasOneListener) {
-        _state = _BroadcastStreamController._STATE_FIRING;
-        _BroadcastSubscription<T> firstSubscription = (;
-        firstSubscription._add(data);
-        _state = ~_BroadcastStreamController._STATE_FIRING;
+        _state = _BroadcastStreamControllerCls::_STATE_FIRINGCls;
+        _BroadcastSubscription<T> firstSubscription = ((dynamic)_firstSubscription);
+        firstSubscription->_add(data);
+        _state = ~_BroadcastStreamControllerCls->_STATE_FIRINGCls;
         if (_isEmpty) {
             _callOnCancel();
         }
         return;
     }
-    _forEachListener();
+    _forEachListener([=] (_BufferingStreamSubscription<T> subscription) {
+        subscription->_add(data);
+    });
 }
 
-void _SyncBroadcastStreamController::_sendError(Object error, StackTrace stackTrace) {
+template<typename T> void _SyncBroadcastStreamControllerCls<T>::_sendError(Object error, StackTrace stackTrace) {
     if (_isEmpty)     {
         return;
     }
-    _forEachListener();
+    _forEachListener([=] (_BufferingStreamSubscription<T> subscription) {
+        subscription->_addError(error, stackTrace);
+    });
 }
 
-void _SyncBroadcastStreamController::_sendDone() {
+template<typename T> void _SyncBroadcastStreamControllerCls<T>::_sendDone() {
     if (!_isEmpty) {
-        _forEachListener();
+        _forEachListener([=] (_BufferingStreamSubscription<T> subscription) {
+            subscription->_close();
+        });
     } else {
-        assert(_doneFuture != nullptr && _doneFuture!._mayComplete);
-        _doneFuture!._asyncComplete(nullptr);
+        assert(_doneFuture != nullptr && _doneFuture!->_mayComplete);
+        _doneFuture!->_asyncComplete(nullptr);
     }
 }
 
-_AsyncBroadcastStreamController::_AsyncBroadcastStreamController(FunctionType onCancel, FunctionType onListen) {
-    {
-        super(onListen, onCancel);
+template<typename T> _AsyncBroadcastStreamControllerCls<T>::_AsyncBroadcastStreamControllerCls(void onCancel() , void onListen() ) {
+}
+
+template<typename T> void _AsyncBroadcastStreamControllerCls<T>::_sendData(T data) {
+    for (; subscription != nullptr; subscription = subscription->_next) {
+        subscription->_addPending(<T>make<_DelayedDataCls>(data));
     }
 }
 
-void _AsyncBroadcastStreamController::_sendData(T data) {
-    for (; subscription != nullptr; subscription = subscription._next) {
-        subscription._addPending(<T>_DelayedData(data));
+template<typename T> void _AsyncBroadcastStreamControllerCls<T>::_sendError(Object error, StackTrace stackTrace) {
+    for (; subscription != nullptr; subscription = subscription->_next) {
+        subscription->_addPending(make<_DelayedErrorCls>(error, stackTrace));
     }
 }
 
-void _AsyncBroadcastStreamController::_sendError(Object error, StackTrace stackTrace) {
-    for (; subscription != nullptr; subscription = subscription._next) {
-        subscription._addPending(_DelayedError(error, stackTrace));
-    }
-}
-
-void _AsyncBroadcastStreamController::_sendDone() {
+template<typename T> void _AsyncBroadcastStreamControllerCls<T>::_sendDone() {
     if (!_isEmpty) {
-        for (; subscription != nullptr; subscription = subscription._next) {
-            subscription._addPending(const _DelayedDone());
+        for (; subscription != nullptr; subscription = subscription->_next) {
+            subscription->_addPending(make<_DelayedDoneCls>());
         }
     } else {
-        assert(_doneFuture != nullptr && _doneFuture!._mayComplete);
-        _doneFuture!._asyncComplete(nullptr);
+        assert(_doneFuture != nullptr && _doneFuture!->_mayComplete);
+        _doneFuture!->_asyncComplete(nullptr);
     }
 }
 
-void _AsBroadcastStreamController::add(T data) {
+template<typename T> void _AsBroadcastStreamControllerCls<T>::add(T data) {
     if (!isClosed && _isFiring) {
-        _addPendingEvent(<T>_DelayedData(data));
+        _addPendingEvent(<T>make<_DelayedDataCls>(data));
         return;
     }
-    super.add(data);
+    super->add(data);
     _flushPending();
 }
 
-void _AsBroadcastStreamController::addError(Object error, StackTrace stackTrace) {
+template<typename T> void _AsBroadcastStreamControllerCls<T>::addError(Object error, StackTrace stackTrace) {
     checkNotNullable(error, "error");
-    stackTrace = AsyncError.defaultStackTrace(error);
+    stackTrace = AsyncErrorCls->defaultStackTrace(error);
     if (!isClosed && _isFiring) {
-        _addPendingEvent(_DelayedError(error, stackTrace));
+        _addPendingEvent(make<_DelayedErrorCls>(error, stackTrace));
         return;
     }
     if (!_mayAddEvent)     {
@@ -396,46 +390,43 @@ void _AsBroadcastStreamController::addError(Object error, StackTrace stackTrace)
     _flushPending();
 }
 
-Future _AsBroadcastStreamController::close() {
+template<typename T> Future _AsBroadcastStreamControllerCls<T>::close() {
     if (!isClosed && _isFiring) {
-        _addPendingEvent(const _DelayedDone());
-        _state = _BroadcastStreamController._STATE_CLOSED;
-        return super.done;
+        _addPendingEvent(make<_DelayedDoneCls>());
+        _state = _BroadcastStreamControllerCls::_STATE_CLOSEDCls;
+        return super->done;
     }
-    Future result = super.close();
+    Future result = super->close();
     assert(!_hasPending);
     return result;
 }
 
-_AsBroadcastStreamController::_AsBroadcastStreamController(FunctionType onCancel, FunctionType onListen) {
-    {
-        super(onListen, onCancel);
-    }
+template<typename T> _AsBroadcastStreamControllerCls<T>::_AsBroadcastStreamControllerCls(void onCancel() , void onListen() ) {
 }
 
-bool _AsBroadcastStreamController::_hasPending() {
+template<typename T> bool _AsBroadcastStreamControllerCls<T>::_hasPending() {
     auto pending = _pending;
-    return pending != nullptr && !pending.isEmpty;
+    return pending != nullptr && !pending->isEmpty;
 }
 
-void _AsBroadcastStreamController::_addPendingEvent(_DelayedEvent event) {
-    (_pending ??= <T>_PendingEvents()).add(event);
+template<typename T> void _AsBroadcastStreamControllerCls<T>::_addPendingEvent(_DelayedEvent event) {
+    (_pending ??= <T>make<_PendingEventsCls>())->add(event);
 }
 
-void _AsBroadcastStreamController::_flushPending() {
+template<typename T> void _AsBroadcastStreamControllerCls<T>::_flushPending() {
     auto pending = _pending;
     if (pending != nullptr) {
-        while (!pending.isEmpty) {
-            pending.handleNext(this);
+        while (!pending->isEmpty) {
+            pending->handleNext(this);
         }
     }
 }
 
-void _AsBroadcastStreamController::_callOnCancel() {
+template<typename T> void _AsBroadcastStreamControllerCls<T>::_callOnCancel() {
     auto pending = _pending;
     if (pending != nullptr) {
-        pending.clear();
+        pending->clear();
         _pending = nullptr;
     }
-    super._callOnCancel();
+    super->_callOnCancel();
 }

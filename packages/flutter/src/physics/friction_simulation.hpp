@@ -1,32 +1,32 @@
-#ifndef FRICTION_SIMULATION_H
-#define FRICTION_SIMULATION_H
-#include <memory>
+#ifndef PACKAGES_FLUTTER_SRC_PHYSICS_FRICTION_SIMULATION
+#define PACKAGES_FLUTTER_SRC_PHYSICS_FRICTION_SIMULATION
+#include <base.hpp>
 #include "tolerance.hpp"
 
-#include <math/math.hpp>
-#include <flutter/foundation.hpp>
+#include <dart/core/core.hpp>
+#include <dart/math/math.hpp>
+#include <packages/flutter/lib/foundation.hpp>
 #include "simulation.hpp"
 
 
-
-class FrictionSimulation : Simulation {
+class FrictionSimulationCls : public SimulationCls {
 public:
 
-     FrictionSimulation(double drag, double position, Unknown, double velocity);
+     FrictionSimulationCls(double drag, double position, Unknown tolerance, double velocity);
 
-    void  through(double endPosition, double endVelocity, double startPosition, double startVelocity);
+    virtual void  through(double endPosition, double endVelocity, double startPosition, double startVelocity);
 
-    double x(double time);
+    virtual double x(double time);
 
-    double dx(double time);
+    virtual double dx(double time);
 
-    double finalX();
+    virtual double finalX();
 
-    double timeAtX(double x);
+    virtual double timeAtX(double x);
 
-    bool isDone(double time);
+    virtual bool isDone(double time);
 
-    String toString();
+    virtual String toString();
 
 private:
     double _drag;
@@ -41,17 +41,18 @@ private:
     static double _dragFor(double endPosition, double endVelocity, double startPosition, double startVelocity);
 
 };
+using FrictionSimulation = std::shared_ptr<FrictionSimulationCls>;
 
-class BoundedFrictionSimulation : FrictionSimulation {
+class BoundedFrictionSimulationCls : public FrictionSimulationCls {
 public:
 
-     BoundedFrictionSimulation(double _maxX, double _minX, Unknown, Unknown, Unknown);
+     BoundedFrictionSimulationCls(double _maxX, double _minX, Unknown drag, Unknown position, Unknown velocity);
 
-    double x(double time);
+    virtual double x(double time);
 
-    bool isDone(double time);
+    virtual bool isDone(double time);
 
-    String toString();
+    virtual String toString();
 
 private:
     double _minX;
@@ -60,5 +61,7 @@ private:
 
 
 };
+using BoundedFrictionSimulation = std::shared_ptr<BoundedFrictionSimulationCls>;
+
 
 #endif

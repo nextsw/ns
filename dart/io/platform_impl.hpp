@@ -1,11 +1,11 @@
-#ifndef PLATFORM_IMPL_H
-#define PLATFORM_IMPL_H
-#include <memory>
+#ifndef DART_IO_PLATFORM_IMPL
+#define DART_IO_PLATFORM_IMPL
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
 
 
-
-
-class _Platform {
+class _PlatformCls : public ObjectCls {
 public:
     static String executable;
 
@@ -35,88 +35,78 @@ public:
     static String version();
 
 private:
-    static FunctionType _localeClosure;
+    static String Function() _localeClosure;
 
     static auto _environmentCache;
 
     static String _cachedOSVersion;
 
 
-    external static int _numberOfProcessors();
-
-    external static String _pathSeparator();
-
-    external static String _operatingSystem();
-
-    external static void  _operatingSystemVersion();
-
-    external static void  _localHostname();
-
-    external static void  _executable();
-
-    external static void  _resolvedExecutable();
-
-    external static void  _environment();
-
-    external static List<String> _executableArguments();
-
-    external static String _packageConfig();
-
-    external static String _version();
-
-    external static String _localeName();
-
-    external static Uri _script();
-
+    extern static int _numberOfProcessors();
+    extern static String _pathSeparator();
+    extern static String _operatingSystem();
+    extern static void  _operatingSystemVersion();
+    extern static void  _localHostname();
+    extern static void  _executable();
+    extern static void  _resolvedExecutable();
+    extern static void  _environment();
+    extern static List<String> _executableArguments();
+    extern static String _packageConfig();
+    extern static String _version();
+    extern static String _localeName();
+    extern static Uri _script();
 };
+using _Platform = std::shared_ptr<_PlatformCls>;
 
-class _CaseInsensitiveStringMap<V> : MapBase<String, V> {
+template<typename V> class _CaseInsensitiveStringMapCls : public MapBaseCls<String, V> {
 public:
 
-    bool containsKey(Object key);
+    virtual bool containsKey(Object key);
 
-    bool containsValue(Object value);
+    virtual bool containsValue(Object value);
 
-    V [](Object key);
+    virtual V operator[](Object key);
 
-    void []=(String key, V value);
+    virtual void operator[]=(String key, V value);
 
-    V putIfAbsent(FunctionType ifAbsent, String key);
+    virtual V putIfAbsent(V ifAbsent() , String key);
 
-    void addAll(Map<String, V> other);
+    virtual void addAll(Map<String, V> other);
 
-    V remove(Object key);
+    virtual V remove(Object key);
 
-    void clear();
+    virtual void clear();
 
-    void forEach(FunctionType f);
+    virtual void forEach(void f(String key, V value) );
 
-    Iterable<String> keys();
+    virtual Iterable<String> keys();
 
-    Iterable<V> values();
+    virtual Iterable<V> values();
 
-    int length();
+    virtual int length();
 
-    bool isEmpty();
+    virtual bool isEmpty();
 
-    bool isNotEmpty();
+    virtual bool isNotEmpty();
 
-    Iterable<MapEntry<String, V>> entries();
+    virtual Iterable<MapEntry<String, V>> entries();
 
-    Map<K2, V2> map<K2, V2>(FunctionType transform);
+    template<typename K2, typename V2>  virtual Map<K2, V2> map(MapEntry<K2, V2> transform(String key, V value) );
 
-    V update(FunctionType ifAbsent, String key, FunctionType update);
+    virtual V update(V ifAbsent() , String key, V update(V value) );
 
-    void updateAll(FunctionType update);
+    virtual void updateAll(V update(String key, V value) );
 
-    void removeWhere(FunctionType test);
+    virtual void removeWhere(bool test(String key, V value) );
 
-    String toString();
+    virtual String toString();
 
 private:
     Map<String, V> _map;
 
 
 };
+template<typename V> using _CaseInsensitiveStringMap = std::shared_ptr<_CaseInsensitiveStringMapCls<V>>;
+
 
 #endif

@@ -1,24 +1,24 @@
-#ifndef LSQ_SOLVER_H
-#define LSQ_SOLVER_H
-#include <memory>
+#ifndef PACKAGES_FLUTTER_SRC_GESTURES_LSQ_SOLVER
+#define PACKAGES_FLUTTER_SRC_GESTURES_LSQ_SOLVER
+#include <base.hpp>
 
-#include <math/math.hpp>
-#include <flutter/foundation.hpp>
+#include <dart/core/core.hpp>
+#include <dart/math/math.hpp>
+#include <packages/flutter/lib/foundation.hpp>
 
 
-
-class _Vector {
+class _VectorCls : public ObjectCls {
 public:
 
-    void  fromVOL(int length, int offset, List<double> values);
+    virtual void  fromVOL(int length, int offset, List<double> values);
 
-    double [](int i);
+    virtual double operator[](int i);
 
-    void []=(int i, double value);
+    virtual void operator[]=(int i, double value);
 
-    double *(_Vector a);
+    virtual double operator*(_Vector a);
 
-    double norm();
+    virtual double norm();
 
 private:
     int _offset;
@@ -28,18 +28,19 @@ private:
     List<double> _elements;
 
 
-     _Vector(int size);
+     _VectorCls(int size);
 
 };
+using _Vector = std::shared_ptr<_VectorCls>;
 
-class _Matrix {
+class _MatrixCls : public ObjectCls {
 public:
 
-    double get(int col, int row);
+    virtual double get(int col, int row);
 
-    void set(int col, int row, double value);
+    virtual void set(int col, int row, double value);
 
-    _Vector getRow(int row);
+    virtual _Vector getRow(int row);
 
 private:
     int _columns;
@@ -47,24 +48,26 @@ private:
     List<double> _elements;
 
 
-     _Matrix(int cols, int rows);
+     _MatrixCls(int cols, int rows);
 
 };
+using _Matrix = std::shared_ptr<_MatrixCls>;
 
-class PolynomialFit {
+class PolynomialFitCls : public ObjectCls {
 public:
     List<double> coefficients;
 
     double confidence;
 
 
-     PolynomialFit(int degree);
+     PolynomialFitCls(int degree);
 
 private:
 
 };
+using PolynomialFit = std::shared_ptr<PolynomialFitCls>;
 
-class LeastSquaresSolver {
+class LeastSquaresSolverCls : public ObjectCls {
 public:
     List<double> x;
 
@@ -73,12 +76,14 @@ public:
     List<double> w;
 
 
-     LeastSquaresSolver(List<double> w, List<double> x, List<double> y);
+     LeastSquaresSolverCls(List<double> w, List<double> x, List<double> y);
 
-    PolynomialFit solve(int degree);
+    virtual PolynomialFit solve(int degree);
 
 private:
 
 };
+using LeastSquaresSolver = std::shared_ptr<LeastSquaresSolverCls>;
+
 
 #endif

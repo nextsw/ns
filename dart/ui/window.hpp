@@ -1,205 +1,204 @@
-#ifndef WINDOW_H
-#define WINDOW_H
-#include <memory>
+#ifndef DART_UI_WINDOW
+#define DART_UI_WINDOW
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
 
 
-
-
-class FlutterView {
+class FlutterViewCls : public ObjectCls {
 public:
 
-    PlatformDispatcher platformDispatcher();
+    virtual PlatformDispatcher platformDispatcher();
+    virtual ViewConfiguration viewConfiguration();
+    virtual double devicePixelRatio();
 
-    ViewConfiguration viewConfiguration();
+    virtual Rect physicalGeometry();
 
-    double devicePixelRatio();
+    virtual Size physicalSize();
 
-    Rect physicalGeometry();
+    virtual WindowPadding viewInsets();
 
-    Size physicalSize();
+    virtual WindowPadding viewPadding();
 
-    WindowPadding viewInsets();
+    virtual WindowPadding systemGestureInsets();
 
-    WindowPadding viewPadding();
+    virtual WindowPadding padding();
 
-    WindowPadding systemGestureInsets();
+    virtual List<DisplayFeature> displayFeatures();
 
-    WindowPadding padding();
-
-    List<DisplayFeature> displayFeatures();
-
-    void render(Scene scene);
+    virtual void render(Scene scene);
 
 private:
 
-    void _render(Scene scene, FlutterView view);
-
+    virtual void _render(Scene scene, FlutterView view);
 };
+using FlutterView = std::shared_ptr<FlutterViewCls>;
 
-class FlutterWindow : FlutterView {
+class FlutterWindowCls : public FlutterViewCls {
 public:
     PlatformDispatcher platformDispatcher;
 
 
-    ViewConfiguration viewConfiguration();
+    virtual ViewConfiguration viewConfiguration();
 
 private:
     Object _windowId;
 
 
-    void  _(Object _windowId, PlatformDispatcher platformDispatcher);
-
+    virtual void  _(Object _windowId, PlatformDispatcher platformDispatcher);
 };
+using FlutterWindow = std::shared_ptr<FlutterWindowCls>;
 
-class SingletonFlutterWindow : FlutterWindow {
+class SingletonFlutterWindowCls : public FlutterWindowCls {
 public:
 
-    VoidCallback onMetricsChanged();
+    virtual VoidCallback onMetricsChanged();
 
-    void  onMetricsChanged(VoidCallback callback);
+    virtual void  onMetricsChanged(VoidCallback callback);
 
-    Locale locale();
+    virtual Locale locale();
 
-    List<Locale> locales();
+    virtual List<Locale> locales();
 
-    Locale computePlatformResolvedLocale(List<Locale> supportedLocales);
+    virtual Locale computePlatformResolvedLocale(List<Locale> supportedLocales);
 
-    VoidCallback onLocaleChanged();
+    virtual VoidCallback onLocaleChanged();
 
-    void  onLocaleChanged(VoidCallback callback);
+    virtual void  onLocaleChanged(VoidCallback callback);
 
-    String initialLifecycleState();
+    virtual String initialLifecycleState();
 
-    double textScaleFactor();
+    virtual double textScaleFactor();
 
-    bool nativeSpellCheckServiceDefined();
+    virtual bool nativeSpellCheckServiceDefined();
 
-    bool brieflyShowPassword();
+    virtual bool brieflyShowPassword();
 
-    bool alwaysUse24HourFormat();
+    virtual bool alwaysUse24HourFormat();
 
-    VoidCallback onTextScaleFactorChanged();
+    virtual VoidCallback onTextScaleFactorChanged();
 
-    void  onTextScaleFactorChanged(VoidCallback callback);
+    virtual void  onTextScaleFactorChanged(VoidCallback callback);
 
-    Brightness platformBrightness();
+    virtual Brightness platformBrightness();
 
-    VoidCallback onPlatformBrightnessChanged();
+    virtual VoidCallback onPlatformBrightnessChanged();
 
-    void  onPlatformBrightnessChanged(VoidCallback callback);
+    virtual void  onPlatformBrightnessChanged(VoidCallback callback);
 
-    String systemFontFamily();
+    virtual String systemFontFamily();
 
-    VoidCallback onSystemFontFamilyChanged();
+    virtual VoidCallback onSystemFontFamilyChanged();
 
-    void  onSystemFontFamilyChanged(VoidCallback callback);
+    virtual void  onSystemFontFamilyChanged(VoidCallback callback);
 
-    FrameCallback onBeginFrame();
+    virtual FrameCallback onBeginFrame();
 
-    void  onBeginFrame(FrameCallback callback);
+    virtual void  onBeginFrame(FrameCallback callback);
 
-    VoidCallback onDrawFrame();
+    virtual VoidCallback onDrawFrame();
 
-    void  onDrawFrame(VoidCallback callback);
+    virtual void  onDrawFrame(VoidCallback callback);
 
-    TimingsCallback onReportTimings();
+    virtual TimingsCallback onReportTimings();
 
-    void  onReportTimings(TimingsCallback callback);
+    virtual void  onReportTimings(TimingsCallback callback);
 
-    PointerDataPacketCallback onPointerDataPacket();
+    virtual PointerDataPacketCallback onPointerDataPacket();
 
-    void  onPointerDataPacket(PointerDataPacketCallback callback);
+    virtual void  onPointerDataPacket(PointerDataPacketCallback callback);
 
-    KeyDataCallback onKeyData();
+    virtual KeyDataCallback onKeyData();
 
-    void  onKeyData(KeyDataCallback callback);
+    virtual void  onKeyData(KeyDataCallback callback);
 
-    String defaultRouteName();
+    virtual String defaultRouteName();
 
-    void scheduleFrame();
+    virtual void scheduleFrame();
 
-    bool semanticsEnabled();
+    virtual bool semanticsEnabled();
 
-    VoidCallback onSemanticsEnabledChanged();
+    virtual VoidCallback onSemanticsEnabledChanged();
 
-    void  onSemanticsEnabledChanged(VoidCallback callback);
+    virtual void  onSemanticsEnabledChanged(VoidCallback callback);
 
-    FrameData frameData();
+    virtual FrameData frameData();
 
-    VoidCallback onFrameDataChanged();
+    virtual VoidCallback onFrameDataChanged();
 
-    void  onFrameDataChanged(VoidCallback callback);
+    virtual void  onFrameDataChanged(VoidCallback callback);
 
-    SemanticsActionCallback onSemanticsAction();
+    virtual SemanticsActionCallback onSemanticsAction();
 
-    void  onSemanticsAction(SemanticsActionCallback callback);
+    virtual void  onSemanticsAction(SemanticsActionCallback callback);
 
-    AccessibilityFeatures accessibilityFeatures();
+    virtual AccessibilityFeatures accessibilityFeatures();
 
-    VoidCallback onAccessibilityFeaturesChanged();
+    virtual VoidCallback onAccessibilityFeaturesChanged();
 
-    void  onAccessibilityFeaturesChanged(VoidCallback callback);
+    virtual void  onAccessibilityFeaturesChanged(VoidCallback callback);
 
-    void updateSemantics(SemanticsUpdate update);
+    virtual void updateSemantics(SemanticsUpdate update);
 
-    void sendPlatformMessage(PlatformMessageResponseCallback callback, ByteData data, String name);
+    virtual void sendPlatformMessage(PlatformMessageResponseCallback callback, ByteData data, String name);
 
-    PlatformMessageCallback onPlatformMessage();
+    virtual PlatformMessageCallback onPlatformMessage();
 
-    void  onPlatformMessage(PlatformMessageCallback callback);
+    virtual void  onPlatformMessage(PlatformMessageCallback callback);
 
-    void setIsolateDebugName(String name);
+    virtual void setIsolateDebugName(String name);
 
 private:
 
-    void  _(PlatformDispatcher platformDispatcher, Object windowId);
+    virtual void  _(PlatformDispatcher platformDispatcher, Object windowId);
 
 };
+using SingletonFlutterWindow = std::shared_ptr<SingletonFlutterWindowCls>;
 
-class AccessibilityFeatures {
+class AccessibilityFeaturesCls : public ObjectCls {
 public:
 
-    bool accessibleNavigation();
+    virtual bool accessibleNavigation();
 
-    bool invertColors();
+    virtual bool invertColors();
 
-    bool disableAnimations();
+    virtual bool disableAnimations();
 
-    bool boldText();
+    virtual bool boldText();
 
-    bool reduceMotion();
+    virtual bool reduceMotion();
 
-    bool highContrast();
+    virtual bool highContrast();
 
-    bool onOffSwitchLabels();
+    virtual bool onOffSwitchLabels();
 
-    String toString();
+    virtual String toString();
 
-    bool ==(Object other);
+    virtual bool operator==(Object other);
 
-    int hashCode();
+    virtual int hashCode();
 
 private:
-    static const int _kAccessibleNavigationIndex;
+    static int _kAccessibleNavigationIndex;
 
-    static const int _kInvertColorsIndex;
+    static int _kInvertColorsIndex;
 
-    static const int _kDisableAnimationsIndex;
+    static int _kDisableAnimationsIndex;
 
-    static const int _kBoldTextIndex;
+    static int _kBoldTextIndex;
 
-    static const int _kReduceMotionIndex;
+    static int _kReduceMotionIndex;
 
-    static const int _kHighContrastIndex;
+    static int _kHighContrastIndex;
 
-    static const int _kOnOffSwitchLabelsIndex;
+    static int _kOnOffSwitchLabelsIndex;
 
     int _index;
 
 
-    void  _(int _index);
-
+    virtual void  _(int _index);
 };
+using AccessibilityFeatures = std::shared_ptr<AccessibilityFeaturesCls>;
 
 enum Brightness{
     dark,
@@ -208,36 +207,37 @@ enum Brightness{
 SingletonFlutterWindow window;
 
 
-class FrameData {
+class FrameDataCls : public ObjectCls {
 public:
     int frameNumber;
 
 
 private:
 
-    void  _(int frameNumber);
-
+    virtual void  _(int frameNumber);
 };
+using FrameData = std::shared_ptr<FrameDataCls>;
 
-class GestureSettings {
+class GestureSettingsCls : public ObjectCls {
 public:
     double physicalTouchSlop;
 
     double physicalDoubleTapSlop;
 
 
-     GestureSettings(double physicalDoubleTapSlop, double physicalTouchSlop);
+     GestureSettingsCls(double physicalDoubleTapSlop, double physicalTouchSlop);
+    virtual GestureSettings copyWith(double physicalDoubleTapSlop, double physicalTouchSlop);
 
-    GestureSettings copyWith(double physicalDoubleTapSlop, double physicalTouchSlop);
+    virtual bool operator==(Object other);
 
-    bool ==(Object other);
+    virtual int hashCode();
 
-    int hashCode();
-
-    String toString();
+    virtual String toString();
 
 private:
 
 };
+using GestureSettings = std::shared_ptr<GestureSettingsCls>;
+
 
 #endif

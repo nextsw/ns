@@ -1,67 +1,66 @@
-#ifndef ERRORS_H
-#define ERRORS_H
-#include <memory>
+#ifndef DART_CORE_ERRORS
+#define DART_CORE_ERRORS
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
 
 
-
-
-class Error {
+class ErrorCls : public ObjectCls {
 public:
 
-     Error();
-
+     ErrorCls();
     static String safeToString(Object object);
 
-    external StackTrace stackTrace();
-
+    extern StackTrace stackTrace();
     static Never throwWithStackTrace(Object error, StackTrace stackTrace);
 
 private:
 
-    external static String _stringToSafeString(String string);
-
-    external static String _objectToString(Object object);
-
-    external static Never _throw(Object error, StackTrace stackTrace);
-
+    extern static String _stringToSafeString(String stringValue);
+    extern static String _objectToString(Object object);
+    extern static Never _throw(Object error, StackTrace stackTrace);
 };
+using Error = std::shared_ptr<ErrorCls>;
 
-class AssertionError : Error {
+class AssertionErrorCls : public ErrorCls {
 public:
     Object message;
 
 
-     AssertionError(Object message);
-
-    String toString();
+     AssertionErrorCls(Object message);
+    virtual String toString();
 
 private:
 
 };
+using AssertionError = std::shared_ptr<AssertionErrorCls>;
 
-class TypeError : Error {
+class TypeErrorCls : public ErrorCls {
 public:
 
 private:
 
 };
+using TypeError = std::shared_ptr<TypeErrorCls>;
 
-class CastError : Error {
+class CastErrorCls : public ErrorCls {
 public:
 
 private:
 
 };
+using CastError = std::shared_ptr<CastErrorCls>;
 
-class NullThrownError : Error {
+class NullThrownErrorCls : public ErrorCls {
 public:
 
-     NullThrownError();
-
-    String toString();
+     NullThrownErrorCls();
+    virtual String toString();
 
 private:
 
 };
+using NullThrownError = std::shared_ptr<NullThrownErrorCls>;
+
 
 #endif

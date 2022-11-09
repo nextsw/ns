@@ -1,48 +1,49 @@
-#ifndef DATA_TRANSFORMER_H
-#define DATA_TRANSFORMER_H
-#include <memory>
+#ifndef DART_IO_DATA_TRANSFORMER
+#define DART_IO_DATA_TRANSFORMER
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
 
 
-
-
-class ZLibOption {
+class ZLibOptionCls : public ObjectCls {
 public:
-    static const int minWindowBits;
+    static int minWindowBits;
 
-    static const int maxWindowBits;
+    static int maxWindowBits;
 
-    static const int defaultWindowBits;
+    static int defaultWindowBits;
 
-    static const int minLevel;
+    static int minLevel;
 
-    static const int maxLevel;
+    static int maxLevel;
 
-    static const int defaultLevel;
+    static int defaultLevel;
 
-    static const int minMemLevel;
+    static int minMemLevel;
 
-    static const int maxMemLevel;
+    static int maxMemLevel;
 
-    static const int defaultMemLevel;
+    static int defaultMemLevel;
 
-    static const int strategyFiltered;
+    static int strategyFiltered;
 
-    static const int strategyHuffmanOnly;
+    static int strategyHuffmanOnly;
 
-    static const int strategyRle;
+    static int strategyRle;
 
-    static const int strategyFixed;
+    static int strategyFixed;
 
-    static const int strategyDefault;
+    static int strategyDefault;
 
 
 private:
 
 };
-const ZLibCodec zlib;
+using ZLibOption = std::shared_ptr<ZLibOptionCls>;
+ZLibCodec zlib;
 
 
-class ZLibCodec : Codec<List<int>, List<int>> {
+class ZLibCodecCls : public CodecCls<List<int>, List<int>> {
 public:
     bool gzip;
 
@@ -59,50 +60,22 @@ public:
     List<int> dictionary;
 
 
-     ZLibCodec(List<int> dictionary, bool gzip, int level, int memLevel, bool raw, int strategy, int windowBits);
+     ZLibCodecCls(List<int> dictionary, bool gzip, int level, int memLevel, bool raw, int strategy, int windowBits);
 
-    ZLibEncoder encoder();
+    virtual ZLibEncoder encoder();
 
-    ZLibDecoder decoder();
-
-private:
-
-    void  _default();
-
-};
-const GZipCodec gzip;
-
-
-class GZipCodec : Codec<List<int>, List<int>> {
-public:
-    bool gzip;
-
-    int level;
-
-    int memLevel;
-
-    int strategy;
-
-    int windowBits;
-
-    List<int> dictionary;
-
-    bool raw;
-
-
-     GZipCodec(List<int> dictionary, bool gzip, int level, int memLevel, bool raw, int strategy, int windowBits);
-
-    ZLibEncoder encoder();
-
-    ZLibDecoder decoder();
+    virtual ZLibDecoder decoder();
 
 private:
 
-    void  _default();
+    virtual void  _default();
 
 };
+using ZLibCodec = std::shared_ptr<ZLibCodecCls>;
+GZipCodec gzip;
 
-class ZLibEncoder : Converter<List<int>, List<int>> {
+
+class GZipCodecCls : public CodecCls<List<int>, List<int>> {
 public:
     bool gzip;
 
@@ -119,17 +92,48 @@ public:
     bool raw;
 
 
-     ZLibEncoder(List<int> dictionary, bool gzip, int level, int memLevel, bool raw, int strategy, int windowBits);
+     GZipCodecCls(List<int> dictionary, bool gzip, int level, int memLevel, bool raw, int strategy, int windowBits);
 
-    List<int> convert(List<int> bytes);
+    virtual ZLibEncoder encoder();
 
-    ByteConversionSink startChunkedConversion(Sink<List<int>> sink);
+    virtual ZLibDecoder decoder();
+
+private:
+
+    virtual void  _default();
+
+};
+using GZipCodec = std::shared_ptr<GZipCodecCls>;
+
+class ZLibEncoderCls : public ConverterCls<List<int>, List<int>> {
+public:
+    bool gzip;
+
+    int level;
+
+    int memLevel;
+
+    int strategy;
+
+    int windowBits;
+
+    List<int> dictionary;
+
+    bool raw;
+
+
+     ZLibEncoderCls(List<int> dictionary, bool gzip, int level, int memLevel, bool raw, int strategy, int windowBits);
+
+    virtual List<int> convert(List<int> bytes);
+
+    virtual ByteConversionSink startChunkedConversion(Sink<List<int>> sink);
 
 private:
 
 };
+using ZLibEncoder = std::shared_ptr<ZLibEncoderCls>;
 
-class ZLibDecoder : Converter<List<int>, List<int>> {
+class ZLibDecoderCls : public ConverterCls<List<int>, List<int>> {
 public:
     int windowBits;
 
@@ -138,76 +142,77 @@ public:
     bool raw;
 
 
-     ZLibDecoder(List<int> dictionary, bool raw, int windowBits);
+     ZLibDecoderCls(List<int> dictionary, bool raw, int windowBits);
 
-    List<int> convert(List<int> bytes);
+    virtual List<int> convert(List<int> bytes);
 
-    ByteConversionSink startChunkedConversion(Sink<List<int>> sink);
+    virtual ByteConversionSink startChunkedConversion(Sink<List<int>> sink);
 
 private:
 
 };
+using ZLibDecoder = std::shared_ptr<ZLibDecoderCls>;
 
-class RawZLibFilter {
+class RawZLibFilterCls : public ObjectCls {
 public:
 
-    void  deflateFilter(List<int> dictionary, bool gzip, int level, int memLevel, bool raw, int strategy, int windowBits);
+    virtual void  deflateFilter(List<int> dictionary, bool gzip, int level, int memLevel, bool raw, int strategy, int windowBits);
 
-    void  inflateFilter(List<int> dictionary, bool raw, int windowBits);
+    virtual void  inflateFilter(List<int> dictionary, bool raw, int windowBits);
 
-    void process(List<int> data, int end, int start);
-
-    List<int> processed(bool end, bool flush);
-
+    virtual void process(List<int> data, int end, int start);
+    virtual List<int> processed(bool end, bool flush);
 private:
 
-    external static RawZLibFilter _makeZLibDeflateFilter(List<int> dictionary, bool gzip, int level, int memLevel, bool raw, int strategy, int windowBits);
-
-    external static RawZLibFilter _makeZLibInflateFilter(List<int> dictionary, bool raw, int windowBits);
-
+    extern static RawZLibFilter _makeZLibDeflateFilter(List<int> dictionary, bool gzip, int level, int memLevel, bool raw, int strategy, int windowBits);
+    extern static RawZLibFilter _makeZLibInflateFilter(List<int> dictionary, bool raw, int windowBits);
 };
+using RawZLibFilter = std::shared_ptr<RawZLibFilterCls>;
 
-class _BufferSink : ByteConversionSink {
+class _BufferSinkCls : public ByteConversionSinkCls {
 public:
     BytesBuilder builder;
 
 
-    void add(List<int> chunk);
+    virtual void add(List<int> chunk);
 
-    void addSlice(List<int> chunk, int end, bool isLast, int start);
+    virtual void addSlice(List<int> chunk, int end, bool isLast, int start);
 
-    void close();
+    virtual void close();
 
 private:
 
 };
+using _BufferSink = std::shared_ptr<_BufferSinkCls>;
 
-class _ZLibEncoderSink : _FilterSink {
+class _ZLibEncoderSinkCls : public _FilterSinkCls {
 public:
 
 private:
 
-    void  _(List<int> dictionary, bool gzip, int level, int memLevel, bool raw, ByteConversionSink sink, int strategy, int windowBits);
+    virtual void  _(List<int> dictionary, bool gzip, int level, int memLevel, bool raw, ByteConversionSink sink, int strategy, int windowBits);
 
 };
+using _ZLibEncoderSink = std::shared_ptr<_ZLibEncoderSinkCls>;
 
-class _ZLibDecoderSink : _FilterSink {
+class _ZLibDecoderSinkCls : public _FilterSinkCls {
 public:
 
 private:
 
-    void  _(List<int> dictionary, bool raw, ByteConversionSink sink, int windowBits);
+    virtual void  _(List<int> dictionary, bool raw, ByteConversionSink sink, int windowBits);
 
 };
+using _ZLibDecoderSink = std::shared_ptr<_ZLibDecoderSinkCls>;
 
-class _FilterSink : ByteConversionSink {
+class _FilterSinkCls : public ByteConversionSinkCls {
 public:
 
-    void add(List<int> data);
+    virtual void add(List<int> data);
 
-    void addSlice(List<int> data, int end, bool isLast, int start);
+    virtual void addSlice(List<int> data, int end, bool isLast, int start);
 
-    void close();
+    virtual void close();
 
 private:
     RawZLibFilter _filter;
@@ -219,9 +224,9 @@ private:
     bool _empty;
 
 
-     _FilterSink(RawZLibFilter _filter, ByteConversionSink _sink);
-
+     _FilterSinkCls(RawZLibFilter _filter, ByteConversionSink _sink);
 };
+using _FilterSink = std::shared_ptr<_FilterSinkCls>;
 void _validateZLibWindowBits(int windowBits);
 
 void _validateZLibeLevel(int level);
@@ -229,6 +234,7 @@ void _validateZLibeLevel(int level);
 void _validateZLibMemLevel(int memLevel);
 
 void _validateZLibStrategy(int strategy);
+
 
 
 #endif

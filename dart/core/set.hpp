@@ -1,61 +1,42 @@
-#ifndef SET_H
-#define SET_H
-#include <memory>
+#ifndef DART_CORE_SET
+#define DART_CORE_SET
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
 
 
-
-
-class Set<E> : EfficientLengthIterable<E> {
+template<typename E> class SetCls : public EfficientLengthIterableCls<E> {
 public:
 
-     Set();
+     SetCls();
+    virtual void  identity();
+    virtual void  from(Iterable elements);
+    virtual void  of(Iterable<E> elements);
+    virtual void  unmodifiable(Iterable<E> elements);
 
-    void  identity();
+    template<typename S, typename T>  static Set<T> castFrom(<R>Set<R> newSet() , Set<S> source);
 
-    void  from(Iterable elements);
-
-    void  of(Iterable<E> elements);
-
-    void  unmodifiable(Iterable<E> elements);
-
-    static Set<T> castFrom<S, T>(FunctionType newSet, Set<S> source);
-
-    Set<R> cast<R>();
-
-    Iterator<E> iterator();
-
-    bool contains(Object value);
-
-    bool add(E value);
-
-    void addAll(Iterable<E> elements);
-
-    bool remove(Object value);
-
-    E lookup(Object object);
-
-    void removeAll(Iterable<Object> elements);
-
-    void retainAll(Iterable<Object> elements);
-
-    void removeWhere(FunctionType test);
-
-    void retainWhere(FunctionType test);
-
-    bool containsAll(Iterable<Object> other);
-
-    Set<E> intersection(Set<Object> other);
-
-    Set<E> union(Set<E> other);
-
-    Set<E> difference(Set<Object> other);
-
-    void clear();
-
-    Set<E> toSet();
-
+<R>    template<typename R>  virtual Set<R> cast();
+    virtual Iterator<E> iterator();
+    virtual bool contains(Object value);
+    virtual bool add(E value);
+    virtual void addAll(Iterable<E> elements);
+    virtual bool remove(Object value);
+    virtual E lookup(Object object);
+    virtual void removeAll(Iterable<Object> elements);
+    virtual void retainAll(Iterable<Object> elements);
+    virtual void removeWhere(bool test(E element) );
+    virtual void retainWhere(bool test(E element) );
+    virtual bool containsAll(Iterable<Object> other);
+    virtual Set<E> intersection(Set<Object> other);
+    virtual Set<E> union(Set<E> other);
+    virtual Set<E> difference(Set<Object> other);
+    virtual void clear();
+    virtual Set<E> toSet();
 private:
 
 };
+template<typename E> using Set = std::shared_ptr<SetCls<E>>;
+
 
 #endif

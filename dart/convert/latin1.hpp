@@ -1,87 +1,92 @@
-#ifndef LATIN1_H
-#define LATIN1_H
-#include <memory>
+#ifndef DART_CONVERT_LATIN1
+#define DART_CONVERT_LATIN1
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
+
+Latin1Codec latin1;
+
+int _latin1Mask;
 
 
-
-const Latin1Codec latin1;
-
-const int _latin1Mask;
-
-
-class Latin1Codec : Encoding {
+class Latin1CodecCls : public EncodingCls {
 public:
 
-     Latin1Codec(bool allowInvalid);
+     Latin1CodecCls(bool allowInvalid);
 
-    String name();
+    virtual String name();
 
-    Uint8List encode(String source);
+    virtual Uint8List encode(String source);
 
-    String decode(bool allowInvalid, List<int> bytes);
+    virtual String decode(bool allowInvalid, List<int> bytes);
 
-    Latin1Encoder encoder();
+    virtual Latin1Encoder encoder();
 
-    Latin1Decoder decoder();
+    virtual Latin1Decoder decoder();
 
 private:
     bool _allowInvalid;
 
 
 };
+using Latin1Codec = std::shared_ptr<Latin1CodecCls>;
 
-class Latin1Encoder : _UnicodeSubsetEncoder {
+class Latin1EncoderCls : public _UnicodeSubsetEncoderCls {
 public:
 
-     Latin1Encoder();
+     Latin1EncoderCls();
 
 private:
 
 };
+using Latin1Encoder = std::shared_ptr<Latin1EncoderCls>;
 
-class Latin1Decoder : _UnicodeSubsetDecoder {
+class Latin1DecoderCls : public _UnicodeSubsetDecoderCls {
 public:
 
-     Latin1Decoder(bool allowInvalid);
+     Latin1DecoderCls(bool allowInvalid);
 
-    ByteConversionSink startChunkedConversion(Sink<String> sink);
+    virtual ByteConversionSink startChunkedConversion(Sink<String> sink);
 
 private:
 
 };
+using Latin1Decoder = std::shared_ptr<Latin1DecoderCls>;
 
-class _Latin1DecoderSink : ByteConversionSinkBase {
+class _Latin1DecoderSinkCls : public ByteConversionSinkBaseCls {
 public:
 
-    void close();
+    virtual void close();
 
-    void add(List<int> source);
+    virtual void add(List<int> source);
 
-    void addSlice(int end, bool isLast, List<int> source, int start);
+    virtual void addSlice(int end, bool isLast, List<int> source, int start);
 
 private:
     StringConversionSink _sink;
 
 
-     _Latin1DecoderSink(StringConversionSink _sink);
-
-    void _addSliceToSink(int end, bool isLast, List<int> source, int start);
+     _Latin1DecoderSinkCls(StringConversionSink _sink);
+    virtual void _addSliceToSink(int end, bool isLast, List<int> source, int start);
 
     static void _checkValidLatin1(int end, List<int> source, int start);
 
     static void _reportInvalidLatin1(int end, List<int> source, int start);
 
 };
+using _Latin1DecoderSink = std::shared_ptr<_Latin1DecoderSinkCls>;
 
-class _Latin1AllowInvalidDecoderSink : _Latin1DecoderSink {
+class _Latin1AllowInvalidDecoderSinkCls : public _Latin1DecoderSinkCls {
 public:
 
-    void addSlice(int end, bool isLast, List<int> source, int start);
+    virtual void addSlice(int end, bool isLast, List<int> source, int start);
 
 private:
 
-     _Latin1AllowInvalidDecoderSink(StringConversionSink sink);
+     _Latin1AllowInvalidDecoderSinkCls(StringConversionSink sink);
 
 };
+using _Latin1AllowInvalidDecoderSink = std::shared_ptr<_Latin1AllowInvalidDecoderSinkCls>;
+
 
 #endif

@@ -1,13 +1,14 @@
-#ifndef IMAGE_PROVIDER_H
-#define IMAGE_PROVIDER_H
-#include <memory>
+#ifndef PACKAGES_FLUTTER_SRC_PAINTING_IMAGE_PROVIDER
+#define PACKAGES_FLUTTER_SRC_PAINTING_IMAGE_PROVIDER
+#include <base.hpp>
 
-#include <async/async.hpp>
-#include <io/io.hpp>
-#include <ui/ui.hpp>
-#include <ui/ui.hpp>
-#include <flutter/foundation.hpp>
-#include <flutter/services.hpp>
+#include <dart/core/core.hpp>
+#include <dart/async/async.hpp>
+#include <dart/io/io.hpp>
+#include <dart/ui/ui.hpp>
+#include <dart/ui/ui.hpp>
+#include <packages/flutter/lib/foundation.hpp>
+#include <packages/flutter/flutter.hpp>
 #include "_network_image_io.hpp"
 
 

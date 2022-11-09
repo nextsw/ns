@@ -1,12 +1,12 @@
-#ifndef PRINT_H
-#define PRINT_H
-#include <memory>
+#ifndef DART_INTERNAL_PRINT
+#define DART_INTERNAL_PRINT
+#include <base.hpp>
 
+#include <dart/core/core.hpp>
 
+void Function(String ) printToZone;
 
-FunctionType printToZone;
-
-external void printToConsole(String line);
+extern void printToConsole(String line);
 
 
 #endif

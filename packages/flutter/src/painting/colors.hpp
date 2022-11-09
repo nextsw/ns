@@ -1,18 +1,18 @@
-#ifndef COLORS_H
-#define COLORS_H
-#include <memory>
+#ifndef PACKAGES_FLUTTER_SRC_PAINTING_COLORS
+#define PACKAGES_FLUTTER_SRC_PAINTING_COLORS
+#include <base.hpp>
 
-#include <math/math.hpp>
-#include <ui/ui.hpp>
-#include <flutter/foundation.hpp>
-
+#include <dart/core/core.hpp>
+#include <dart/math/math.hpp>
+#include <dart/ui/ui.hpp>
+#include <packages/flutter/lib/foundation.hpp>
 
 double _getHue(double blue, double delta, double green, double max, double red);
 
 Color _colorFromHue(double alpha, double chroma, double hue, double match, double secondary);
 
 
-class HSVColor {
+class HSVColorCls : public ObjectCls {
 public:
     double alpha;
 
@@ -23,35 +23,36 @@ public:
     double value;
 
 
-    void  fromAHSV(double alpha, double hue, double saturation, double value);
+    virtual void  fromAHSV(double alpha, double hue, double saturation, double value);
 
-    void  fromColor(Color color);
+    virtual void  fromColor(Color color);
 
-    HSVColor withAlpha(double alpha);
+    virtual HSVColor withAlpha(double alpha);
 
-    HSVColor withHue(double hue);
+    virtual HSVColor withHue(double hue);
 
-    HSVColor withSaturation(double saturation);
+    virtual HSVColor withSaturation(double saturation);
 
-    HSVColor withValue(double value);
+    virtual HSVColor withValue(double value);
 
-    Color toColor();
+    virtual Color toColor();
 
     static HSVColor lerp(HSVColor a, HSVColor b, double t);
 
-    bool ==(Object other);
+    virtual bool operator==(Object other);
 
-    int hashCode();
+    virtual int hashCode();
 
-    String toString();
+    virtual String toString();
 
 private:
 
-    HSVColor _scaleAlpha(double factor);
+    virtual HSVColor _scaleAlpha(double factor);
 
 };
+using HSVColor = std::shared_ptr<HSVColorCls>;
 
-class HSLColor {
+class HSLColorCls : public ObjectCls {
 public:
     double alpha;
 
@@ -62,64 +63,67 @@ public:
     double lightness;
 
 
-    void  fromAHSL(double alpha, double hue, double lightness, double saturation);
+    virtual void  fromAHSL(double alpha, double hue, double lightness, double saturation);
 
-    void  fromColor(Color color);
+    virtual void  fromColor(Color color);
 
-    HSLColor withAlpha(double alpha);
+    virtual HSLColor withAlpha(double alpha);
 
-    HSLColor withHue(double hue);
+    virtual HSLColor withHue(double hue);
 
-    HSLColor withSaturation(double saturation);
+    virtual HSLColor withSaturation(double saturation);
 
-    HSLColor withLightness(double lightness);
+    virtual HSLColor withLightness(double lightness);
 
-    Color toColor();
+    virtual Color toColor();
 
     static HSLColor lerp(HSLColor a, HSLColor b, double t);
 
-    bool ==(Object other);
+    virtual bool operator==(Object other);
 
-    int hashCode();
+    virtual int hashCode();
 
-    String toString();
+    virtual String toString();
 
 private:
 
-    HSLColor _scaleAlpha(double factor);
+    virtual HSLColor _scaleAlpha(double factor);
 
 };
+using HSLColor = std::shared_ptr<HSLColorCls>;
 
-class ColorSwatch<T> : Color {
+template<typename T> class ColorSwatchCls : public ColorCls {
 public:
 
-     ColorSwatch(Map<T, Color> _swatch, Unknown);
+     ColorSwatchCls(Map<T, Color> _swatch, Unknown primary);
+    virtual Color operator[](T index);
 
-    Color [](T index);
+    virtual bool operator==(Object other);
 
-    bool ==(Object other);
+    virtual int hashCode();
 
-    int hashCode();
+    virtual String toString();
 
-    String toString();
-
-    static ColorSwatch<T> lerp<T>(ColorSwatch<T> a, ColorSwatch<T> b, double t);
+    template<typename T>  static ColorSwatch<T> lerp(ColorSwatch<T> a, ColorSwatch<T> b, double t);
 
 private:
     Map<T, Color> _swatch;
 
 
 };
+template<typename T> using ColorSwatch = std::shared_ptr<ColorSwatchCls<T>>;
 
-class ColorProperty : DiagnosticsProperty<Color> {
+class ColorPropertyCls : public DiagnosticsPropertyCls<Color> {
 public:
 
-     ColorProperty(Unknown, Unknown, String name, Unknown, Unknown, Unknown);
+     ColorPropertyCls(Unknown defaultValue, Unknown level, String name, Unknown showName, Unknown style, Unknown value);
 
-    Map<String, Object> toJsonMap(DiagnosticsSerializationDelegate delegate);
+    virtual Map<String, Object> toJsonMap(DiagnosticsSerializationDelegate delegate);
 
 private:
 
 };
+using ColorProperty = std::shared_ptr<ColorPropertyCls>;
+
 
 #endif

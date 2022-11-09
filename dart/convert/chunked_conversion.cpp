@@ -1,28 +1,28 @@
 #include "chunked_conversion.hpp"
-void _SimpleCallbackSink::add(T chunk) {
-    _accumulated.add(chunk);
+template<typename T> void _SimpleCallbackSinkCls<T>::add(T chunk) {
+    _accumulated->add(chunk);
 }
 
-void _SimpleCallbackSink::close() {
+template<typename T> void _SimpleCallbackSinkCls<T>::close() {
     _callback(_accumulated);
 }
 
-void _ConverterStreamEventSink::add(S o) {
-    _chunkedSink.add(o);
+template<typename S, typename T> void _ConverterStreamEventSinkCls<S, T>::add(S o) {
+    _chunkedSink->add(o);
 }
 
-void _ConverterStreamEventSink::addError(Object error, StackTrace stackTrace) {
+template<typename S, typename T> void _ConverterStreamEventSinkCls<S, T>::addError(Object error, StackTrace stackTrace) {
     checkNotNullable(error, "error");
-    _eventSink.addError(error, stackTrace);
+    _eventSink->addError(error, stackTrace);
 }
 
-void _ConverterStreamEventSink::close() {
-    _chunkedSink.close();
+template<typename S, typename T> void _ConverterStreamEventSinkCls<S, T>::close() {
+    _chunkedSink->close();
 }
 
-_ConverterStreamEventSink::_ConverterStreamEventSink(Converter<S, T> converter, EventSink<T> sink) {
+template<typename S, typename T> _ConverterStreamEventSinkCls<S, T>::_ConverterStreamEventSinkCls(Converter<S, T> converter, EventSink<T> sink) {
     {
         _eventSink = sink;
-        _chunkedSink = converter.startChunkedConversion(sink);
+        _chunkedSink = converter->startChunkedConversion(sink);
     }
 }

@@ -1,34 +1,33 @@
-#ifndef COMBINED_LIST_H
-#define COMBINED_LIST_H
-#include <memory>
+#ifndef PACKAGES_COLLECTION_SRC_COMBINED_WRAPPERS_COMBINED_LIST
+#define PACKAGES_COLLECTION_SRC_COMBINED_WRAPPERS_COMBINED_LIST
+#include <base.hpp>
 
-#include <collection/collection.hpp>
+#include <dart/core/core.hpp>
+#include <dart/collection/collection.hpp>
 #include "combined_iterator.hpp"
 
 
-
-class CombinedListView<T> : ListBase<T> {
+template<typename T> class CombinedListViewCls : public ListBaseCls<T> {
 public:
 
-     CombinedListView(List<List<T>> _lists);
+     CombinedListViewCls(List<List<T>> _lists);
+    virtual Iterator<T> iterator();
 
-    Iterator<T> iterator();
+    virtual void  length(int length);
 
-    void  length(int length);
+    virtual int length();
 
-    int length();
+    virtual T operator[](int index);
 
-    T [](int index);
+    virtual void operator[]=(int index, T value);
 
-    void []=(int index, T value);
+    virtual void clear();
 
-    void clear();
+    virtual bool remove(Object element);
 
-    bool remove(Object element);
+    virtual void removeWhere(bool test(T ) );
 
-    void removeWhere(FunctionType test);
-
-    void retainWhere(FunctionType test);
+    virtual void retainWhere(bool test(T ) );
 
 private:
     List<List<T>> _lists;
@@ -37,5 +36,7 @@ private:
     static Never _throw();
 
 };
+template<typename T> using CombinedListView = std::shared_ptr<CombinedListViewCls<T>>;
+
 
 #endif

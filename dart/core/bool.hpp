@@ -1,29 +1,28 @@
-#ifndef BOOL_H
-#define BOOL_H
-#include <memory>
+#ifndef DART_CORE_BOOL
+#define DART_CORE_BOOL
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
 
 
-
-
-class bool {
+class boolCls : public ObjectCls {
 public:
 
-    external void  fromEnvironment(bool defaultValue, String name);
+    extern void  fromEnvironment(bool defaultValue, String name);
+    extern void  hasEnvironment(String name);
+    extern int hashCode();
+    virtual bool operator&(bool other);
 
-    external void  hasEnvironment(String name);
+    virtual bool operator|(bool other);
 
-    external int hashCode();
+    virtual bool operator^(bool other);
 
-    bool &(bool other);
-
-    bool |(bool other);
-
-    bool ^(bool other);
-
-    String toString();
+    virtual String toString();
 
 private:
 
 };
+using bool = std::shared_ptr<boolCls>;
+
 
 #endif

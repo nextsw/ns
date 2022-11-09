@@ -1,46 +1,51 @@
 #include "text_span.hpp"
-TextSpan::TextSpan(List<InlineSpan> children, Locale locale, MouseCursor mouseCursor, PointerEnterEventListener onEnter, PointerExitEventListener onExit, GestureRecognizer recognizer, String semanticsLabel, bool spellOut, Unknown, String text) {
+TextSpanCls::TextSpanCls(List<InlineSpan> children, Locale locale, MouseCursor mouseCursor, PointerEnterEventListener onEnter, PointerExitEventListener onExit, GestureRecognizer recognizer, String semanticsLabel, bool spellOut, Unknown style, String text) {
     {
-        mouseCursor = mouseCursor ?? (recognizer == nullptr? MouseCursor.defer : SystemMouseCursors.click);
+        mouseCursor = mouseCursor ?? (recognizer == nullptr? MouseCursorCls::defer : SystemMouseCursorsCls::click);
         assert(!(text == nullptr && semanticsLabel != nullptr));
     }
 }
 
-MouseCursor TextSpan::cursor() {
+MouseCursor TextSpanCls::cursor() {
     return mouseCursor;
 }
 
-bool TextSpan::validForMouseTracker() {
+bool TextSpanCls::validForMouseTracker() {
     return true;
 }
 
-void TextSpan::handleEvent(HitTestEntry entry, PointerEvent event) {
+void TextSpanCls::handleEvent(HitTestEntry entry, PointerEvent event) {
     if (event is PointerDownEvent) {
-        recognizer?.addPointer(event);
+        recognizer?->addPointer(event);
     }
 }
 
-void TextSpan::build(ParagraphBuilder builder, List<PlaceholderDimensions> dimensions, double textScaleFactor) {
+void TextSpanCls::build(ParagraphBuilder builder, List<PlaceholderDimensions> dimensions, double textScaleFactor) {
     assert(debugAssertIsValid());
     bool hasStyle = style != nullptr;
     if (hasStyle) {
-        builder.pushStyle(style!.getTextStyle(textScaleFactor));
+        builder->pushStyle(style!->getTextStyle(textScaleFactor));
     }
     if (text != nullptr) {
-        ;
+        try {
+            builder->addText(text!);
+        } catch (ArgumentError exception) {
+            FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(exception, stack, "painting library", make<ErrorDescriptionCls>("while building a TextSpan")));
+            builder->addText("\uFFFD");
+        };
     }
     if (children != nullptr) {
         for (InlineSpan child : children!) {
             assert(child != nullptr);
-            child.build(buildertextScaleFactor, dimensions);
+            child->build(buildertextScaleFactor, dimensions);
         }
     }
     if (hasStyle) {
-        builder.pop();
+        builder->pop();
     }
 }
 
-bool TextSpan::visitChildren(InlineSpanVisitor visitor) {
+bool TextSpanCls::visitChildren(InlineSpanVisitor visitor) {
     if (text != nullptr) {
         if (!visitor(this)) {
             return false;
@@ -48,7 +53,7 @@ bool TextSpan::visitChildren(InlineSpanVisitor visitor) {
     }
     if (children != nullptr) {
         for (InlineSpan child : children!) {
-            if (!child.visitChildren(visitor)) {
+            if (!child->visitChildren(visitor)) {
                 return false;
             }
         }
@@ -56,109 +61,119 @@ bool TextSpan::visitChildren(InlineSpanVisitor visitor) {
     return true;
 }
 
-InlineSpan TextSpan::getSpanForPositionVisitor(Accumulator offset, TextPosition position) {
+InlineSpan TextSpanCls::getSpanForPositionVisitor(Accumulator offset, TextPosition position) {
     if (text == nullptr) {
         return nullptr;
     }
-    TextAffinity affinity = position.affinity;
-    int targetOffset = position.offset;
-    int endOffset = offset.value + text!.length;
-    if (offset.value == targetOffset && affinity == TextAffinity.downstream || offset.value < targetOffset &&  < endOffset || endOffset == targetOffset && affinity == TextAffinity.upstream) {
+    TextAffinity affinity = position->affinity;
+    int targetOffset = position->offset;
+    int endOffset = offset->value + text!->length;
+    if (offset->value == targetOffset && affinity == TextAffinityCls::downstream || offset->value < targetOffset &&  < endOffset || endOffset == targetOffset && affinity == TextAffinityCls::upstream) {
         return this;
     }
-    offset.increment(text!.length);
+    offset->increment(text!->length);
     return nullptr;
 }
 
-void TextSpan::computeToPlainText(StringBuffer buffer, bool includePlaceholders, bool includeSemanticsLabels) {
+void TextSpanCls::computeToPlainText(StringBuffer buffer, bool includePlaceholders, bool includeSemanticsLabels) {
     assert(debugAssertIsValid());
     if (semanticsLabel != nullptr && includeSemanticsLabels) {
-        buffer.write(semanticsLabel);
+        buffer->write(semanticsLabel);
     } else     {
         if (text != nullptr) {
-        buffer.write(text);
+        buffer->write(text);
     }
 ;
     }    if (children != nullptr) {
         for (InlineSpan child : children!) {
-            child.computeToPlainText(bufferincludeSemanticsLabels, includePlaceholders);
+            child->computeToPlainText(bufferincludeSemanticsLabels, includePlaceholders);
         }
     }
 }
 
-void TextSpan::computeSemanticsInformation(List<InlineSpanSemanticsInformation> collector, Locale inheritedLocale, bool inheritedSpellOut) {
+void TextSpanCls::computeSemanticsInformation(List<InlineSpanSemanticsInformation> collector, Locale inheritedLocale, bool inheritedSpellOut) {
     assert(debugAssertIsValid());
     Locale effectiveLocale = locale ?? inheritedLocale;
     bool effectiveSpellOut = spellOut ?? inheritedSpellOut;
     if (text != nullptr) {
-        int textLength = semanticsLabel?.length ?? text!.length;
-        collector.add(InlineSpanSemanticsInformation(text!, semanticsLabel, recognizer));
+        int textLength = semanticsLabel?->length ?? text!->length;
+            List<StringAttribute> list1 = make<ListCls<>>();    if (effectiveSpellOut && textLength > 0) {        list1.add(ArrayItem);    }if (effectiveLocale != nullptr && textLength > 0) {        list1.add(ArrayItem);    }collector->add(make<InlineSpanSemanticsInformationCls>(text!list1, semanticsLabel, recognizer));
     }
     if (children != nullptr) {
         for (InlineSpan child : children!) {
             if (child is TextSpan) {
-                child.computeSemanticsInformation(collectoreffectiveLocale, effectiveSpellOut);
+                child->computeSemanticsInformation(collectoreffectiveLocale, effectiveSpellOut);
             } else {
-                child.computeSemanticsInformation(collector);
+                child->computeSemanticsInformation(collector);
             }
         }
     }
 }
 
-int TextSpan::codeUnitAtVisitor(int index, Accumulator offset) {
+int TextSpanCls::codeUnitAtVisitor(int index, Accumulator offset) {
     if (text == nullptr) {
         return nullptr;
     }
-    if (index - offset.value < text!.length) {
-        return text!.codeUnitAt(index - offset.value);
+    if (index - offset->value < text!->length) {
+        return text!->codeUnitAt(index - offset->value);
     }
-    offset.increment(text!.length);
+    offset->increment(text!->length);
     return nullptr;
 }
 
-void TextSpan::describeSemantics(Accumulator offset, List<dynamic> semanticsElements, List<int> semanticsOffsets) {
+void TextSpanCls::describeSemantics(Accumulator offset, List<dynamic> semanticsElements, List<int> semanticsOffsets) {
     if (recognizer != nullptr && (recognizer is TapGestureRecognizer || recognizer is LongPressGestureRecognizer)) {
-        int length = semanticsLabel?.length ?? text!.length;
-        semanticsOffsets.add(offset.value);
-        semanticsOffsets.add(offset.value + length);
-        semanticsElements.add(recognizer);
+        int length = semanticsLabel?->length ?? text!->length;
+        semanticsOffsets->add(offset->value);
+        semanticsOffsets->add(offset->value + length);
+        semanticsElements->add(recognizer);
     }
-    offset.increment(text != nullptr? text!.length : 0);
+    offset->increment(text != nullptr? text!->length : 0);
 }
 
-bool TextSpan::debugAssertIsValid() {
-    assert(());
-    return super.debugAssertIsValid();
+bool TextSpanCls::debugAssertIsValid() {
+    assert([=] () {
+        if (children != nullptr) {
+            for (InlineSpan child : children!) {
+                if (child == nullptr) {
+                    ;
+                }
+                assert(child->debugAssertIsValid());
+            }
+        }
+        return true;
+    }());
+    return super->debugAssertIsValid();
 }
 
-RenderComparison TextSpan::compareTo(InlineSpan other) {
+RenderComparison TextSpanCls::compareTo(InlineSpan other) {
     if (identical(this, other)) {
-        return RenderComparison.identical;
+        return RenderComparisonCls::identical;
     }
-    if (other.runtimeType != runtimeType) {
-        return RenderComparison.layout;
+    if (other->runtimeType != runtimeType) {
+        return RenderComparisonCls::layout;
     }
-    TextSpan textSpan = (;
-    if (textSpan.text != text || children?.length != textSpan.children?.length || (style == nullptr) != (textSpan.style == nullptr)) {
-        return RenderComparison.layout;
+    TextSpan textSpan = ((TextSpan)other);
+    if (textSpan->text != text || children?->length != textSpan->children?->length || (style == nullptr) != (textSpan->style == nullptr)) {
+        return RenderComparisonCls::layout;
     }
-    RenderComparison result = recognizer == textSpan.recognizer? RenderComparison.identical : RenderComparison.metadata;
+    RenderComparison result = recognizer == textSpan->recognizer? RenderComparisonCls::identical : RenderComparisonCls::metadata;
     if (style != nullptr) {
-        RenderComparison candidate = style!.compareTo(textSpan.style!);
-        if (candidate.index > result.index) {
+        RenderComparison candidate = style!->compareTo(textSpan->style!);
+        if (candidate->index > result->index) {
             result = candidate;
         }
-        if (result == RenderComparison.layout) {
+        if (result == RenderComparisonCls::layout) {
             return result;
         }
     }
     if (children != nullptr) {
-        for (;  < children!.length; index = 1) {
-            RenderComparison candidate = children![index].compareTo(textSpan.children![index]);
-            if (candidate.index > result.index) {
+        for (;  < children!->length; index = 1) {
+            RenderComparison candidate = children![index]->compareTo(textSpan->children![index]);
+            if (candidate->index > result->index) {
                 result = candidate;
             }
-            if (result == RenderComparison.layout) {
+            if (result == RenderComparisonCls::layout) {
                 return result;
             }
         }
@@ -166,44 +181,50 @@ RenderComparison TextSpan::compareTo(InlineSpan other) {
     return result;
 }
 
-bool TextSpan::==(Object other) {
+bool TextSpanCls::==(Object other) {
     if (identical(this, other)) {
         return true;
     }
-    if (other.runtimeType != runtimeType) {
+    if (other->runtimeType != runtimeType) {
         return false;
     }
     if (super != other) {
         return false;
     }
-    return other is TextSpan && other.text == text && other.recognizer == recognizer && other.semanticsLabel == semanticsLabel && onEnter == other.onEnter && onExit == other.onExit && mouseCursor == other.mouseCursor && <InlineSpan>listEquals(other.children, children);
+    return other is TextSpan && other->text == text && other->recognizer == recognizer && other->semanticsLabel == semanticsLabel && onEnter == other->onEnter && onExit == other->onExit && mouseCursor == other->mouseCursor && <InlineSpan>listEquals(other->children, children);
 }
 
-int TextSpan::hashCode() {
-    return Object.hash(super.hashCode, text, recognizer, semanticsLabel, onEnter, onExit, mouseCursor, children == nullptr? nullptr : Object.hashAll(children!));
+int TextSpanCls::hashCode() {
+    return ObjectCls->hash(super->hashCode, text, recognizer, semanticsLabel, onEnter, onExit, mouseCursor, children == nullptr? nullptr : ObjectCls->hashAll(children!));
 }
 
-String TextSpan::toStringShort() {
+String TextSpanCls::toStringShort() {
     return objectRuntimeType(this, "TextSpan");
 }
 
-void TextSpan::debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties.add(StringProperty("text", textfalse, nullptr));
+void TextSpanCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super->debugFillProperties(properties);
+    properties->add(make<StringPropertyCls>("text", textfalse, nullptr));
     if (style == nullptr && text == nullptr && children == nullptr) {
-        properties.add(DiagnosticsNode.message("(empty)"));
+        properties->add(DiagnosticsNodeCls->message("(empty)"));
     }
-    properties.add(<GestureRecognizer>DiagnosticsProperty("recognizer", recognizerrecognizer?.runtimeType.toString(), nullptr));
-    properties.add(<FunctionType>FlagsSummary("callbacks", ));
-    properties.add(<MouseCursor>DiagnosticsProperty("mouseCursor", cursorMouseCursor.defer));
+    properties->add(<GestureRecognizer>make<DiagnosticsPropertyCls>("recognizer", recognizerrecognizer?->runtimeType->toString(), nullptr));
+    Map<String, void  Function()> map1 = make<MapCls<>>();map1.set("enter", onEnter);map1.set("exit", onExit);properties->add(<void  Function()>make<FlagsSummaryCls>("callbacks", list1));
+    properties->add(<MouseCursor>make<DiagnosticsPropertyCls>("mouseCursor", cursorMouseCursorCls::defer));
     if (semanticsLabel != nullptr) {
-        properties.add(StringProperty("semanticsLabel", semanticsLabel));
+        properties->add(make<StringPropertyCls>("semanticsLabel", semanticsLabel));
     }
 }
 
-List<DiagnosticsNode> TextSpan::debugDescribeChildren() {
+List<DiagnosticsNode> TextSpanCls::debugDescribeChildren() {
     if (children == nullptr) {
-        return const ;
+        return makeList();
     }
-    return children!.<DiagnosticsNode>map().toList();
+    return children!-><DiagnosticsNode>map([=] (InlineSpan child) {
+        if (child != nullptr) {
+            return child->toDiagnosticsNode();
+        } else {
+            return DiagnosticsNodeCls->message("<null child>");
+        }
+    })->toList();
 }

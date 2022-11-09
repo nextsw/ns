@@ -1,8 +1,8 @@
 #include "null.hpp"
-String Null::toString() {
+String NullCls::toString() {
     return "null";
 }
 
-void Null::_uninstantiable() {
-    ;
+void NullCls::_uninstantiable() {
+    auto _c1 = makeMap(makeList(), makeList();_c1.addEntries(entries);;
 }

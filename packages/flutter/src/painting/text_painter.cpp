@@ -1,18 +1,18 @@
 #include "text_painter.hpp"
-PlaceholderDimensions::PlaceholderDimensions(PlaceholderAlignment alignment, TextBaseline baseline, double baselineOffset, Size size) {
+PlaceholderDimensionsCls::PlaceholderDimensionsCls(PlaceholderAlignment alignment, TextBaseline baseline, double baselineOffset, Size size) {
     {
         assert(size != nullptr);
         assert(alignment != nullptr);
     }
 }
 
-String PlaceholderDimensions::toString() {
+String PlaceholderDimensionsCls::toString() {
     return "PlaceholderDimensions($size, $baseline)";
 }
 
-TextPainter::TextPainter(String ellipsis, Locale locale, int maxLines, StrutStyle strutStyle, InlineSpan text, TextAlign textAlign, TextDirection textDirection, TextHeightBehavior textHeightBehavior, double textScaleFactor, TextWidthBasis textWidthBasis) {
+TextPainterCls::TextPainterCls(String ellipsis, Locale locale, int maxLines, StrutStyle strutStyle, InlineSpan text, TextAlign textAlign, TextDirection textDirection, TextHeightBehavior textHeightBehavior, double textScaleFactor, TextWidthBasis textWidthBasis) {
     {
-        assert(text == nullptr || text.debugAssertIsValid());
+        assert(text == nullptr || text->debugAssertIsValid());
         assert(textAlign != nullptr);
         assert(textScaleFactor != nullptr);
         assert(maxLines == nullptr || maxLines > 0);
@@ -30,41 +30,41 @@ TextPainter::TextPainter(String ellipsis, Locale locale, int maxLines, StrutStyl
     }
 }
 
-void TextPainter::markNeedsLayout() {
+void TextPainterCls::markNeedsLayout() {
     _paragraph = nullptr;
     _lineMetricsCache = nullptr;
     _previousCaretPosition = nullptr;
     _previousCaretPrototype = nullptr;
 }
 
-InlineSpan TextPainter::text() {
+InlineSpan TextPainterCls::text() {
     return _text;
 }
 
-void TextPainter::text(InlineSpan value) {
-    assert(value == nullptr || value.debugAssertIsValid());
+void TextPainterCls::text(InlineSpan value) {
+    assert(value == nullptr || value->debugAssertIsValid());
     if (_text == value) {
         return;
     }
-    if (_text?.style != value?.style) {
+    if (_text?->style != value?->style) {
         _layoutTemplate = nullptr;
     }
-    RenderComparison comparison = value == nullptr? RenderComparison.layout : _text?.compareTo(value) ?? RenderComparison.layout;
+    RenderComparison comparison = value == nullptr? RenderComparisonCls::layout : _text?->compareTo(value) ?? RenderComparisonCls::layout;
     _text = value;
-    if (comparison.index >= RenderComparison.layout.index) {
+    if (comparison->index >= RenderComparisonCls::layout->index) {
         markNeedsLayout();
     } else     {
-        if (comparison.index >= RenderComparison.paint.index) {
+        if (comparison->index >= RenderComparisonCls::paint->index) {
         _rebuildParagraphForPaint = true;
     }
 ;
     }}
 
-TextAlign TextPainter::textAlign() {
+TextAlign TextPainterCls::textAlign() {
     return _textAlign;
 }
 
-void TextPainter::textAlign(TextAlign value) {
+void TextPainterCls::textAlign(TextAlign value) {
     assert(value != nullptr);
     if (_textAlign == value) {
         return;
@@ -73,11 +73,11 @@ void TextPainter::textAlign(TextAlign value) {
     markNeedsLayout();
 }
 
-TextDirection TextPainter::textDirection() {
+TextDirection TextPainterCls::textDirection() {
     return _textDirection;
 }
 
-void TextPainter::textDirection(TextDirection value) {
+void TextPainterCls::textDirection(TextDirection value) {
     if (_textDirection == value) {
         return;
     }
@@ -86,11 +86,11 @@ void TextPainter::textDirection(TextDirection value) {
     _layoutTemplate = nullptr;
 }
 
-double TextPainter::textScaleFactor() {
+double TextPainterCls::textScaleFactor() {
     return _textScaleFactor;
 }
 
-void TextPainter::textScaleFactor(double value) {
+void TextPainterCls::textScaleFactor(double value) {
     assert(value != nullptr);
     if (_textScaleFactor == value) {
         return;
@@ -100,12 +100,12 @@ void TextPainter::textScaleFactor(double value) {
     _layoutTemplate = nullptr;
 }
 
-String TextPainter::ellipsis() {
+String TextPainterCls::ellipsis() {
     return _ellipsis;
 }
 
-void TextPainter::ellipsis(String value) {
-    assert(value == nullptr || value.isNotEmpty);
+void TextPainterCls::ellipsis(String value) {
+    assert(value == nullptr || value->isNotEmpty);
     if (_ellipsis == value) {
         return;
     }
@@ -113,11 +113,11 @@ void TextPainter::ellipsis(String value) {
     markNeedsLayout();
 }
 
-Locale TextPainter::locale() {
+Locale TextPainterCls::locale() {
     return _locale;
 }
 
-void TextPainter::locale(Locale value) {
+void TextPainterCls::locale(Locale value) {
     if (_locale == value) {
         return;
     }
@@ -125,11 +125,11 @@ void TextPainter::locale(Locale value) {
     markNeedsLayout();
 }
 
-int TextPainter::maxLines() {
+int TextPainterCls::maxLines() {
     return _maxLines;
 }
 
-void TextPainter::maxLines(int value) {
+void TextPainterCls::maxLines(int value) {
     assert(value == nullptr || value > 0);
     if (_maxLines == value) {
         return;
@@ -138,11 +138,11 @@ void TextPainter::maxLines(int value) {
     markNeedsLayout();
 }
 
-StrutStyle TextPainter::strutStyle() {
+StrutStyle TextPainterCls::strutStyle() {
     return _strutStyle;
 }
 
-void TextPainter::strutStyle(StrutStyle value) {
+void TextPainterCls::strutStyle(StrutStyle value) {
     if (_strutStyle == value) {
         return;
     }
@@ -150,11 +150,11 @@ void TextPainter::strutStyle(StrutStyle value) {
     markNeedsLayout();
 }
 
-TextWidthBasis TextPainter::textWidthBasis() {
+TextWidthBasis TextPainterCls::textWidthBasis() {
     return _textWidthBasis;
 }
 
-void TextPainter::textWidthBasis(TextWidthBasis value) {
+void TextPainterCls::textWidthBasis(TextWidthBasis value) {
     assert(value != nullptr);
     if (_textWidthBasis == value) {
         return;
@@ -163,11 +163,11 @@ void TextPainter::textWidthBasis(TextWidthBasis value) {
     markNeedsLayout();
 }
 
-TextHeightBehavior TextPainter::textHeightBehavior() {
+TextHeightBehavior TextPainterCls::textHeightBehavior() {
     return _textHeightBehavior;
 }
 
-void TextPainter::textHeightBehavior(TextHeightBehavior value) {
+void TextPainterCls::textHeightBehavior(TextHeightBehavior value) {
     if (_textHeightBehavior == value) {
         return;
     }
@@ -175,64 +175,73 @@ void TextPainter::textHeightBehavior(TextHeightBehavior value) {
     markNeedsLayout();
 }
 
-List<TextBox> TextPainter::inlinePlaceholderBoxes() {
+List<TextBox> TextPainterCls::inlinePlaceholderBoxes() {
     return _inlinePlaceholderBoxes;
 }
 
-List<double> TextPainter::inlinePlaceholderScales() {
+List<double> TextPainterCls::inlinePlaceholderScales() {
     return _inlinePlaceholderScales;
 }
 
-void TextPainter::setPlaceholderDimensions(List<PlaceholderDimensions> value) {
-    if (value == nullptr || value.isEmpty || listEquals(value, _placeholderDimensions)) {
+void TextPainterCls::setPlaceholderDimensions(List<PlaceholderDimensions> value) {
+    if (value == nullptr || value->isEmpty || listEquals(value, _placeholderDimensions)) {
         return;
     }
-    assert(() == value.length);
+    assert([=] () {
+        int placeholderCount = 0;
+        text!->visitChildren([=] (InlineSpan span) {
+            if (span is PlaceholderSpan) {
+                placeholderCount = 1;
+            }
+            return true;
+        });
+        return placeholderCount;
+    }() == value->length);
     _placeholderDimensions = value;
     markNeedsLayout();
 }
 
-double TextPainter::preferredLineHeight() {
-    return (_layoutTemplate ??= _createLayoutTemplate()).height;
+double TextPainterCls::preferredLineHeight() {
+    return (_layoutTemplate ??= _createLayoutTemplate())->height;
 }
 
-double TextPainter::minIntrinsicWidth() {
+double TextPainterCls::minIntrinsicWidth() {
     assert(!_debugNeedsLayout);
-    return _applyFloatingPointHack(_paragraph!.minIntrinsicWidth);
+    return _applyFloatingPointHack(_paragraph!->minIntrinsicWidth);
 }
 
-double TextPainter::maxIntrinsicWidth() {
+double TextPainterCls::maxIntrinsicWidth() {
     assert(!_debugNeedsLayout);
-    return _applyFloatingPointHack(_paragraph!.maxIntrinsicWidth);
+    return _applyFloatingPointHack(_paragraph!->maxIntrinsicWidth);
 }
 
-double TextPainter::width() {
+double TextPainterCls::width() {
     assert(!_debugNeedsLayout);
-    return _applyFloatingPointHack(textWidthBasis == TextWidthBasis.longestLine? _paragraph!.longestLine : _paragraph!.width);
+    return _applyFloatingPointHack(textWidthBasis == TextWidthBasisCls::longestLine? _paragraph!->longestLine : _paragraph!->width);
 }
 
-double TextPainter::height() {
+double TextPainterCls::height() {
     assert(!_debugNeedsLayout);
-    return _applyFloatingPointHack(_paragraph!.height);
+    return _applyFloatingPointHack(_paragraph!->height);
 }
 
-Size TextPainter::size() {
+Size TextPainterCls::size() {
     assert(!_debugNeedsLayout);
-    return Size(width, height);
+    return make<SizeCls>(width, height);
 }
 
-double TextPainter::computeDistanceToActualBaseline(TextBaseline baseline) {
+double TextPainterCls::computeDistanceToActualBaseline(TextBaseline baseline) {
     assert(!_debugNeedsLayout);
     assert(baseline != nullptr);
     ;
 }
 
-bool TextPainter::didExceedMaxLines() {
+bool TextPainterCls::didExceedMaxLines() {
     assert(!_debugNeedsLayout);
-    return _paragraph!.didExceedMaxLines;
+    return _paragraph!->didExceedMaxLines;
 }
 
-void TextPainter::layout(double maxWidth, double minWidth) {
+void TextPainterCls::layout(double maxWidth, double minWidth) {
     assert(text != nullptr, "TextPainter.text must be set to a non-null value before using the TextPainter.");
     assert(textDirection != nullptr, "TextPainter.textDirection must be set to a non-null value before using the TextPainter.");
     if (_paragraph != nullptr && minWidth == _lastMinWidth && maxWidth == _lastMaxWidth) {
@@ -247,10 +256,10 @@ void TextPainter::layout(double maxWidth, double minWidth) {
     _previousCaretPosition = nullptr;
     _previousCaretPrototype = nullptr;
     _layoutParagraph(minWidth, maxWidth);
-    _inlinePlaceholderBoxes = _paragraph!.getBoxesForPlaceholders();
+    _inlinePlaceholderBoxes = _paragraph!->getBoxesForPlaceholders();
 }
 
-void TextPainter::paint(Canvas canvas, Offset offset) {
+void TextPainterCls::paint(Canvas canvas, Offset offset) {
     double minWidth = _lastMinWidth;
     double maxWidth = _lastMaxWidth;
     if (_paragraph == nullptr || minWidth == nullptr || maxWidth == nullptr) {
@@ -258,204 +267,207 @@ void TextPainter::paint(Canvas canvas, Offset offset) {
     }
     if (_rebuildParagraphForPaint) {
         Size debugSize;
-        assert(());
+        assert([=] () {
+            debugSize = size;
+            return true;
+        }());
         _createParagraph();
         _layoutParagraph(minWidth, maxWidth);
         assert(debugSize == size);
     }
-    canvas.drawParagraph(_paragraph!, offset);
+    canvas->drawParagraph(_paragraph!, offset);
 }
 
-int TextPainter::getOffsetAfter(int offset) {
-    int nextCodeUnit = _text!.codeUnitAt(offset);
+int TextPainterCls::getOffsetAfter(int offset) {
+    int nextCodeUnit = _text!->codeUnitAt(offset);
     if (nextCodeUnit == nullptr) {
         return nullptr;
     }
     return _isUtf16Surrogate(nextCodeUnit)? offset + 2 : offset + 1;
 }
 
-int TextPainter::getOffsetBefore(int offset) {
-    int prevCodeUnit = _text!.codeUnitAt(offset - 1);
+int TextPainterCls::getOffsetBefore(int offset) {
+    int prevCodeUnit = _text!->codeUnitAt(offset - 1);
     if (prevCodeUnit == nullptr) {
         return nullptr;
     }
     return _isUtf16Surrogate(prevCodeUnit)? offset - 2 : offset - 1;
 }
 
-Offset TextPainter::getOffsetForCaret(Rect caretPrototype, TextPosition position) {
+Offset TextPainterCls::getOffsetForCaret(Rect caretPrototype, TextPosition position) {
     _computeCaretMetrics(position, caretPrototype);
-    return _caretMetrics.offset;
+    return _caretMetrics->offset;
 }
 
-double TextPainter::getFullHeightForCaret(Rect caretPrototype, TextPosition position) {
+double TextPainterCls::getFullHeightForCaret(Rect caretPrototype, TextPosition position) {
     _computeCaretMetrics(position, caretPrototype);
-    return _caretMetrics.fullHeight;
+    return _caretMetrics->fullHeight;
 }
 
-List<TextBox> TextPainter::getBoxesForSelection(BoxHeightStyle boxHeightStyle, BoxWidthStyle boxWidthStyle, TextSelection selection) {
+List<TextBox> TextPainterCls::getBoxesForSelection(BoxHeightStyle boxHeightStyle, BoxWidthStyle boxWidthStyle, TextSelection selection) {
     assert(!_debugNeedsLayout);
     assert(boxHeightStyle != nullptr);
     assert(boxWidthStyle != nullptr);
-    return _paragraph!.getBoxesForRange(selection.start, selection.endboxHeightStyle, boxWidthStyle);
+    return _paragraph!->getBoxesForRange(selection->start, selection->endboxHeightStyle, boxWidthStyle);
 }
 
-TextPosition TextPainter::getPositionForOffset(Offset offset) {
+TextPosition TextPainterCls::getPositionForOffset(Offset offset) {
     assert(!_debugNeedsLayout);
-    return _paragraph!.getPositionForOffset(offset);
+    return _paragraph!->getPositionForOffset(offset);
 }
 
-TextRange TextPainter::getWordBoundary(TextPosition position) {
+TextRange TextPainterCls::getWordBoundary(TextPosition position) {
     assert(!_debugNeedsLayout);
-    return _paragraph!.getWordBoundary(position);
+    return _paragraph!->getWordBoundary(position);
 }
 
-TextRange TextPainter::getLineBoundary(TextPosition position) {
+TextRange TextPainterCls::getLineBoundary(TextPosition position) {
     assert(!_debugNeedsLayout);
-    return _paragraph!.getLineBoundary(position);
+    return _paragraph!->getLineBoundary(position);
 }
 
-List<LineMetrics> TextPainter::computeLineMetrics() {
+List<LineMetrics> TextPainterCls::computeLineMetrics() {
     assert(!_debugNeedsLayout);
-    return _lineMetricsCache ??= _paragraph!.computeLineMetrics();
+    return _lineMetricsCache ??= _paragraph!->computeLineMetrics();
 }
 
-bool TextPainter::_debugNeedsLayout() {
+bool TextPainterCls::_debugNeedsLayout() {
     return _paragraph == nullptr;
 }
 
-ParagraphStyle TextPainter::_createParagraphStyle(TextDirection defaultTextDirection) {
+ParagraphStyle TextPainterCls::_createParagraphStyle(TextDirection defaultTextDirection) {
     assert(textAlign != nullptr);
     assert(textDirection != nullptr || defaultTextDirection != nullptr, "TextPainter.textDirection must be set to a non-null value before using the TextPainter.");
-    return _text!.style?.getParagraphStyle(textAlign, textDirection ?? defaultTextDirection, textScaleFactor, _maxLines, _textHeightBehavior, _ellipsis, _locale, _strutStyle) ?? ui.ParagraphStyle(textAlign, textDirection ?? defaultTextDirection, _kDefaultFontSize * textScaleFactor, maxLines, _textHeightBehavior, ellipsis, locale);
+    return _text!->style?->getParagraphStyle(textAlign, textDirection ?? defaultTextDirection, textScaleFactor, _maxLines, _textHeightBehavior, _ellipsis, _locale, _strutStyle) ?? ui->make<ParagraphStyleCls>(textAlign, textDirection ?? defaultTextDirection, _kDefaultFontSize * textScaleFactor, maxLines, _textHeightBehavior, ellipsis, locale);
 }
 
-Paragraph TextPainter::_createLayoutTemplate() {
-    ParagraphBuilder builder = ui.ParagraphBuilder(_createParagraphStyle(TextDirection.rtl));
-    TextStyle textStyle = text?.style?.getTextStyle(textScaleFactor);
+Paragraph TextPainterCls::_createLayoutTemplate() {
+    ParagraphBuilder builder = ui->make<ParagraphBuilderCls>(_createParagraphStyle(TextDirectionCls::rtl));
+    TextStyle textStyle = text?->style?->getTextStyle(textScaleFactor);
     if (textStyle != nullptr) {
-        builder.pushStyle(textStyle);
+        builder->pushStyle(textStyle);
     }
-    builder.addText(" ");
-    return ;
+    builder->addText(" ");
+    auto _c1 = builder->build();_c1.layout(ui->make<ParagraphConstraintsCls>(double->infinity));return _c1;
 }
 
-double TextPainter::_applyFloatingPointHack(double layoutValue) {
-    return layoutValue.ceilToDouble();
+double TextPainterCls::_applyFloatingPointHack(double layoutValue) {
+    return layoutValue->ceilToDouble();
 }
 
-void TextPainter::_createParagraph() {
+void TextPainterCls::_createParagraph() {
     assert(_paragraph == nullptr || _rebuildParagraphForPaint);
-    InlineSpan text = this.text;
+    InlineSpan text = this->text;
     if (text == nullptr) {
         ;
     }
-    ParagraphBuilder builder = ui.ParagraphBuilder(_createParagraphStyle());
-    text.build(buildertextScaleFactor, _placeholderDimensions);
-    _inlinePlaceholderScales = builder.placeholderScales;
-    _paragraph = builder.build();
+    ParagraphBuilder builder = ui->make<ParagraphBuilderCls>(_createParagraphStyle());
+    text->build(buildertextScaleFactor, _placeholderDimensions);
+    _inlinePlaceholderScales = builder->placeholderScales;
+    _paragraph = builder->build();
     _rebuildParagraphForPaint = false;
 }
 
-void TextPainter::_layoutParagraph(double maxWidth, double minWidth) {
-    _paragraph!.layout(ui.ParagraphConstraints(maxWidth));
+void TextPainterCls::_layoutParagraph(double maxWidth, double minWidth) {
+    _paragraph!->layout(ui->make<ParagraphConstraintsCls>(maxWidth));
     if (minWidth != maxWidth) {
         double newWidth;
         ;
         newWidth = clampDouble(newWidth, minWidth, maxWidth);
-        if (newWidth != _applyFloatingPointHack(_paragraph!.width)) {
-            _paragraph!.layout(ui.ParagraphConstraints(newWidth));
+        if (newWidth != _applyFloatingPointHack(_paragraph!->width)) {
+            _paragraph!->layout(ui->make<ParagraphConstraintsCls>(newWidth));
         }
     }
 }
 
-bool TextPainter::_isUtf16Surrogate(int value) {
+bool TextPainterCls::_isUtf16Surrogate(int value) {
     return value & 0xF800 == 0xD800;
 }
 
-bool TextPainter::_isUnicodeDirectionality(int value) {
+bool TextPainterCls::_isUnicodeDirectionality(int value) {
     return value == 0x200F || value == 0x200E;
 }
 
-Rect TextPainter::_getRectFromUpstream(Rect caretPrototype, int offset) {
-    String flattenedText = _text!.toPlainText(false);
-    int prevCodeUnit = _text!.codeUnitAt(max(0, offset - 1));
+Rect TextPainterCls::_getRectFromUpstream(Rect caretPrototype, int offset) {
+    String flattenedText = _text!->toPlainText(false);
+    int prevCodeUnit = _text!->codeUnitAt(max(0, offset - 1));
     if (prevCodeUnit == nullptr) {
         return nullptr;
     }
     int NEWLINE_CODE_UNIT = 10;
-    bool needsSearch = _isUtf16Surrogate(prevCodeUnit) || _text!.codeUnitAt(offset) == _zwjUtf16 || _isUnicodeDirectionality(prevCodeUnit);
+    bool needsSearch = _isUtf16Surrogate(prevCodeUnit) || _text!->codeUnitAt(offset) == _zwjUtf16 || _isUnicodeDirectionality(prevCodeUnit);
     int graphemeClusterLength = needsSearch? 2 : 1;
-    List<TextBox> boxes = ;
-    while (boxes.isEmpty) {
+    List<TextBox> boxes = makeList();
+    while (boxes->isEmpty) {
         int prevRuneOffset = offset - graphemeClusterLength;
-        boxes = _paragraph!.getBoxesForRange(prevRuneOffset, offsetui.BoxHeightStyle.strut);
-        if (boxes.isEmpty) {
-            if (!needsSearch && prevCodeUnit == NEWLINE_CODE_UNIT) {
+        boxes = _paragraph!->getBoxesForRange(prevRuneOffset, offsetui->BoxHeightStyleCls::strut);
+        if (boxes->isEmpty) {
+            if (!needsSearch && prevCodeUnit == NEWLINE_CODE_UNITCls) {
                                 break;
             }
-            if ( < -flattenedText.length) {
+            if ( < -flattenedText->length) {
                                 break;
             }
             graphemeClusterLength = 2;
             continue;
         }
-        TextBox box = boxes.first;
-        if (prevCodeUnit == NEWLINE_CODE_UNIT) {
-            return Rect.fromLTRB(_emptyOffset.dx, box.bottom, _emptyOffset.dx, box.bottom + box.bottom - box.top);
+        TextBox box = boxes->first;
+        if (prevCodeUnit == NEWLINE_CODE_UNITCls) {
+            return RectCls->fromLTRB(_emptyOffset->dx, box->bottom, _emptyOffset->dx, box->bottom + box->bottom - box->top);
         }
-        double caretEnd = box.end;
-        double dx = box.direction == TextDirection.rtl? caretEnd - caretPrototype.width : caretEnd;
-        return Rect.fromLTRB(clampDouble(dx, 0, _paragraph!.width), box.top, clampDouble(dx, 0, _paragraph!.width), box.bottom);
+        double caretEnd = box->end;
+        double dx = box->direction == TextDirectionCls::rtl? caretEnd - caretPrototype->width : caretEnd;
+        return RectCls->fromLTRB(clampDouble(dx, 0, _paragraph!->width), box->top, clampDouble(dx, 0, _paragraph!->width), box->bottom);
     }
     return nullptr;
 }
 
-Rect TextPainter::_getRectFromDownstream(Rect caretPrototype, int offset) {
-    String flattenedText = _text!.toPlainText(false);
-    int nextCodeUnit = _text!.codeUnitAt(min(offset, flattenedText.length - 1));
+Rect TextPainterCls::_getRectFromDownstream(Rect caretPrototype, int offset) {
+    String flattenedText = _text!->toPlainText(false);
+    int nextCodeUnit = _text!->codeUnitAt(min(offset, flattenedText->length - 1));
     if (nextCodeUnit == nullptr) {
         return nullptr;
     }
     bool needsSearch = _isUtf16Surrogate(nextCodeUnit) || nextCodeUnit == _zwjUtf16 || _isUnicodeDirectionality(nextCodeUnit);
     int graphemeClusterLength = needsSearch? 2 : 1;
-    List<TextBox> boxes = ;
-    while (boxes.isEmpty) {
+    List<TextBox> boxes = makeList();
+    while (boxes->isEmpty) {
         int nextRuneOffset = offset + graphemeClusterLength;
-        boxes = _paragraph!.getBoxesForRange(offset, nextRuneOffsetui.BoxHeightStyle.strut);
-        if (boxes.isEmpty) {
+        boxes = _paragraph!->getBoxesForRange(offset, nextRuneOffsetui->BoxHeightStyleCls::strut);
+        if (boxes->isEmpty) {
             if (!needsSearch) {
                                 break;
             }
-            if (nextRuneOffset >= flattenedText.length << 1) {
+            if (nextRuneOffset >= flattenedText->length << 1) {
                                 break;
             }
             graphemeClusterLength = 2;
             continue;
         }
-        TextBox box = boxes.last;
-        double caretStart = box.start;
-        double dx = box.direction == TextDirection.rtl? caretStart - caretPrototype.width : caretStart;
-        return Rect.fromLTRB(clampDouble(dx, 0, _paragraph!.width), box.top, clampDouble(dx, 0, _paragraph!.width), box.bottom);
+        TextBox box = boxes->last;
+        double caretStart = box->start;
+        double dx = box->direction == TextDirectionCls::rtl? caretStart - caretPrototype->width : caretStart;
+        return RectCls->fromLTRB(clampDouble(dx, 0, _paragraph!->width), box->top, clampDouble(dx, 0, _paragraph!->width), box->bottom);
     }
     return nullptr;
 }
 
-Offset TextPainter::_emptyOffset() {
+Offset TextPainterCls::_emptyOffset() {
     assert(!_debugNeedsLayout);
     assert(textAlign != nullptr);
     ;
 }
 
-void TextPainter::_computeCaretMetrics(Rect caretPrototype, TextPosition position) {
+void TextPainterCls::_computeCaretMetrics(Rect caretPrototype, TextPosition position) {
     assert(!_debugNeedsLayout);
     if (position == _previousCaretPosition && caretPrototype == _previousCaretPrototype) {
         return;
     }
-    int offset = position.offset;
-    assert(position.affinity != nullptr);
+    int offset = position->offset;
+    assert(position->affinity != nullptr);
     Rect rect;
     ;
-    _caretMetrics = _CaretMetrics(rect != nullptr? Offset(rect.left, rect.top) : _emptyOffset, rect != nullptr? rect.bottom - rect.top : nullptr);
+    _caretMetrics = make<_CaretMetricsCls>(rect != nullptr? make<OffsetCls>(rect->left, rect->top) : _emptyOffset, rect != nullptr? rect->bottom - rect->top : nullptr);
     _previousCaretPosition = position;
     _previousCaretPrototype = caretPrototype;
 }

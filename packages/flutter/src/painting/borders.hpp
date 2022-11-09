@@ -1,13 +1,13 @@
-#ifndef BORDERS_H
-#define BORDERS_H
-#include <memory>
+#ifndef PACKAGES_FLUTTER_SRC_PAINTING_BORDERS
+#define PACKAGES_FLUTTER_SRC_PAINTING_BORDERS
+#include <base.hpp>
 
-#include <math/math.hpp>
-#include <ui/ui.hpp>
-#include <flutter/foundation.hpp>
+#include <dart/core/core.hpp>
+#include <dart/math/math.hpp>
+#include <dart/ui/ui.hpp>
+#include <packages/flutter/lib/foundation.hpp>
 #include "basic_types.hpp"
 #include "edge_insets.hpp"
-
 
 
 enum BorderStyle{
@@ -21,7 +21,7 @@ enum StrokeAlign{
     outside,
 } // end StrokeAlign
 
-class BorderSide {
+class BorderSideCls : public ObjectCls {
 public:
     Color color;
 
@@ -29,122 +29,119 @@ public:
 
     BorderStyle style;
 
-    static const BorderSide none;
+    static BorderSide none;
 
     StrokeAlign strokeAlign;
 
 
-     BorderSide(Color color, StrokeAlign strokeAlign, BorderStyle style, double width);
+     BorderSideCls(Color color, StrokeAlign strokeAlign, BorderStyle style, double width);
 
     static BorderSide merge(BorderSide a, BorderSide b);
 
-    BorderSide copyWith(Color color, BorderStyle style, double width);
+    virtual BorderSide copyWith(Color color, BorderStyle style, double width);
 
-    BorderSide scale(double t);
+    virtual BorderSide scale(double t);
 
-    Paint toPaint();
+    virtual Paint toPaint();
 
     static bool canMerge(BorderSide a, BorderSide b);
 
     static BorderSide lerp(BorderSide a, BorderSide b, double t);
 
-    bool ==(Object other);
+    virtual bool operator==(Object other);
 
-    int hashCode();
+    virtual int hashCode();
 
-    String toString();
+    virtual String toString();
 
 private:
 
 };
+using BorderSide = std::shared_ptr<BorderSideCls>;
 
-class ShapeBorder {
+class ShapeBorderCls : public ObjectCls {
 public:
 
-     ShapeBorder();
+     ShapeBorderCls();
+    virtual EdgeInsetsGeometry dimensions();
+    virtual ShapeBorder add(ShapeBorder other, bool reversed);
 
-    EdgeInsetsGeometry dimensions();
+    virtual ShapeBorder operator+(ShapeBorder other);
 
-    ShapeBorder add(ShapeBorder other, bool reversed);
+    virtual ShapeBorder scale(double t);
+    virtual ShapeBorder lerpFrom(ShapeBorder a, double t);
 
-    ShapeBorder +(ShapeBorder other);
-
-    ShapeBorder scale(double t);
-
-    ShapeBorder lerpFrom(ShapeBorder a, double t);
-
-    ShapeBorder lerpTo(ShapeBorder b, double t);
+    virtual ShapeBorder lerpTo(ShapeBorder b, double t);
 
     static ShapeBorder lerp(ShapeBorder a, ShapeBorder b, double t);
 
-    Path getOuterPath(Rect rect, TextDirection textDirection);
-
-    Path getInnerPath(Rect rect, TextDirection textDirection);
-
-    void paint(Canvas canvas, Rect rect, TextDirection textDirection);
-
-    String toString();
+    virtual Path getOuterPath(Rect rect, TextDirection textDirection);
+    virtual Path getInnerPath(Rect rect, TextDirection textDirection);
+    virtual void paint(Canvas canvas, Rect rect, TextDirection textDirection);
+    virtual String toString();
 
 private:
 
 };
+using ShapeBorder = std::shared_ptr<ShapeBorderCls>;
 
-class OutlinedBorder : ShapeBorder {
+class OutlinedBorderCls : public ShapeBorderCls {
 public:
     BorderSide side;
 
 
-     OutlinedBorder(BorderSide side);
+     OutlinedBorderCls(BorderSide side);
 
-    OutlinedBorder copyWith(BorderSide side);
+    virtual OutlinedBorder copyWith(BorderSide side);
+    virtual ShapeBorder scale(double t) override;
+    virtual ShapeBorder lerpFrom(ShapeBorder a, double t);
 
-    ShapeBorder scale(double t);
-
-    ShapeBorder lerpFrom(ShapeBorder a, double t);
-
-    ShapeBorder lerpTo(ShapeBorder b, double t);
+    virtual ShapeBorder lerpTo(ShapeBorder b, double t);
 
     static OutlinedBorder lerp(OutlinedBorder a, OutlinedBorder b, double t);
 
 private:
 
 };
+using OutlinedBorder = std::shared_ptr<OutlinedBorderCls>;
 
-class _CompoundBorder : ShapeBorder {
+class _CompoundBorderCls : public ShapeBorderCls {
 public:
     List<ShapeBorder> borders;
 
 
-    EdgeInsetsGeometry dimensions();
+    virtual EdgeInsetsGeometry dimensions();
 
-    ShapeBorder add(ShapeBorder other, bool reversed);
+    virtual ShapeBorder add(ShapeBorder other, bool reversed);
 
-    ShapeBorder scale(double t);
+    virtual ShapeBorder scale(double t);
 
-    ShapeBorder lerpFrom(ShapeBorder a, double t);
+    virtual ShapeBorder lerpFrom(ShapeBorder a, double t);
 
-    ShapeBorder lerpTo(ShapeBorder b, double t);
+    virtual ShapeBorder lerpTo(ShapeBorder b, double t);
 
     static _CompoundBorder lerp(ShapeBorder a, ShapeBorder b, double t);
 
-    Path getInnerPath(Rect rect, TextDirection textDirection);
+    virtual Path getInnerPath(Rect rect, TextDirection textDirection);
 
-    Path getOuterPath(Rect rect, TextDirection textDirection);
+    virtual Path getOuterPath(Rect rect, TextDirection textDirection);
 
-    void paint(Canvas canvas, Rect rect, TextDirection textDirection);
+    virtual void paint(Canvas canvas, Rect rect, TextDirection textDirection);
 
-    bool ==(Object other);
+    virtual bool operator==(Object other);
 
-    int hashCode();
+    virtual int hashCode();
 
-    String toString();
+    virtual String toString();
 
 private:
 
-     _CompoundBorder(List<ShapeBorder> borders);
+     _CompoundBorderCls(List<ShapeBorder> borders);
 
 };
+using _CompoundBorder = std::shared_ptr<_CompoundBorderCls>;
 void paintBorder(BorderSide bottom, Canvas canvas, BorderSide left, Rect rect, BorderSide right, BorderSide top);
+
 
 
 #endif

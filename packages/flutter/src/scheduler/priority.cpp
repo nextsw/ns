@@ -1,15 +1,15 @@
 #include "priority.hpp"
-int Priority::value() {
+int PriorityCls::value() {
     return _value;
 }
 
-Priority Priority::+(int offset) {
-    if (offset.abs() > kMaxOffset) {
-        offset = kMaxOffset * offset.sign;
+Priority PriorityCls::+(int offset) {
+    if (offset->abs() > kMaxOffset) {
+        offset = kMaxOffset * offset->sign;
     }
-    return Priority._(_value + offset);
+    return PriorityCls->_(_value + offset);
 }
 
-Priority Priority::-(int offset) {
+Priority PriorityCls::-(int offset) {
     return this + (-offset);
 }

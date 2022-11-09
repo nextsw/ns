@@ -1,127 +1,117 @@
-#ifndef STREAM_CONTROLLER_H
-#define STREAM_CONTROLLER_H
-#include <memory>
+#ifndef DART_ASYNC_STREAM_CONTROLLER
+#define DART_ASYNC_STREAM_CONTROLLER
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
 
 
-
-
-class StreamController<T> {
+template<typename T> class StreamControllerCls : public ObjectCls {
 public:
-    FunctionType onListen;
+    void Function() onListen;
 
-    FunctionType onPause;
+    void Function() onPause;
 
-    FunctionType onResume;
+    void Function() onResume;
 
-    FunctionType onCancel;
+    FutureOr<void> Function() onCancel;
 
 
-    Stream<T> stream();
+    virtual Stream<T> stream();
+     StreamControllerCls(FutureOr<void> onCancel() , void onListen() , void onPause() , void onResume() , bool sync);
 
-     StreamController(FunctionType onCancel, FunctionType onListen, FunctionType onPause, FunctionType onResume, bool sync);
+    virtual void  broadcast(void onCancel() , void onListen() , bool sync);
 
-    void  broadcast(FunctionType onCancel, FunctionType onListen, bool sync);
-
-    StreamSink<T> sink();
-
-    bool isClosed();
-
-    bool isPaused();
-
-    bool hasListener();
-
-    void add(T event);
-
-    void addError(Object error, StackTrace stackTrace);
-
-    Future close();
-
-    Future done();
-
-    Future addStream(bool cancelOnError, Stream<T> source);
-
+    virtual StreamSink<T> sink();
+    virtual bool isClosed();
+    virtual bool isPaused();
+    virtual bool hasListener();
+    virtual void add(T event);
+    virtual void addError(Object error, StackTrace stackTrace);
+    virtual Future close();
+    virtual Future done();
+    virtual Future addStream(bool cancelOnError, Stream<T> source);
 private:
 
 };
+template<typename T> using StreamController = std::shared_ptr<StreamControllerCls<T>>;
 
-class SynchronousStreamController<T> {
+template<typename T> class SynchronousStreamControllerCls : public ObjectCls {
 public:
 
-    void add(T data);
-
-    void addError(Object error, StackTrace stackTrace);
-
-    Future close();
-
+    virtual void add(T data);
+    virtual void addError(Object error, StackTrace stackTrace);
+    virtual Future close();
 private:
 
 };
+template<typename T> using SynchronousStreamController = std::shared_ptr<SynchronousStreamControllerCls<T>>;
 
-class _StreamControllerLifecycle<T> {
+template<typename T> class _StreamControllerLifecycleCls : public ObjectCls {
 public:
 
 private:
 
-    StreamSubscription<T> _subscribe(bool cancelOnError, FunctionType onData, FunctionType onDone, FunctionType onError);
+    virtual StreamSubscription<T> _subscribe(bool cancelOnError, void onData(T data) , void onDone() , void  onError() );
+    virtual void _recordPause(StreamSubscription<T> subscription);
 
-    void _recordPause(StreamSubscription<T> subscription);
+    virtual void _recordResume(StreamSubscription<T> subscription);
 
-    void _recordResume(StreamSubscription<T> subscription);
-
-    Future<void> _recordCancel(StreamSubscription<T> subscription);
+    virtual Future<void> _recordCancel(StreamSubscription<T> subscription);
 
 };
+template<typename T> using _StreamControllerLifecycle = std::shared_ptr<_StreamControllerLifecycleCls<T>>;
 
-class _StreamControllerBase<T> {
+template<typename T> class _StreamControllerBaseCls : public ObjectCls {
 public:
 
 private:
 
 };
+template<typename T> using _StreamControllerBase = std::shared_ptr<_StreamControllerBaseCls<T>>;
 
-class _StreamController<T> {
+template<typename T> class _StreamControllerCls : public ObjectCls {
 public:
-    FunctionType onListen;
+    void Function() onListen;
 
-    FunctionType onPause;
+    void Function() onPause;
 
-    FunctionType onResume;
+    void Function() onResume;
 
-    FunctionType onCancel;
+    FutureOr<void> Function() onCancel;
 
 
-    Stream<T> stream();
+    virtual Stream<T> stream();
 
-    StreamSink<T> sink();
+    virtual StreamSink<T> sink();
 
-    bool hasListener();
+    virtual bool hasListener();
 
-    bool isClosed();
+    virtual bool isClosed();
 
-    bool isPaused();
+    virtual bool isPaused();
 
-    Future addStream(bool cancelOnError, Stream<T> source);
+    virtual Future addStream(bool cancelOnError, Stream<T> source);
 
-    Future<void> done();
+    virtual Future<void> done();
 
-    void add(T value);
+    virtual void add(T value);
 
-    void addError(Object error, StackTrace stackTrace);
+    virtual void addError(Object error, StackTrace stackTrace);
 
-    Future close();
+    virtual Future close();
 
 private:
-    static const int _STATE_INITIAL;
+    static int _STATE_INITIAL;
 
-    static const int _STATE_SUBSCRIBED;
+    static int _STATE_SUBSCRIBED;
 
-    static const int _STATE_CANCELED;
+    static int _STATE_CANCELED;
 
-    static const int _STATE_SUBSCRIPTION_MASK;
+    static int _STATE_SUBSCRIPTION_MASK;
 
-    static const int _STATE_CLOSED;
+    static int _STATE_CLOSED;
 
-    static const int _STATE_ADDSTREAM;
+    static int _STATE_ADDSTREAM;
 
     Object _varData;
 
@@ -130,142 +120,147 @@ private:
     _Future<void> _doneFuture;
 
 
-     _StreamController(FunctionType onCancel, FunctionType onListen, FunctionType onPause, FunctionType onResume);
+     _StreamControllerCls(FutureOr<void> Function() onCancel, void Function() onListen, void Function() onPause, void Function() onResume);
+    virtual bool _isCanceled();
 
-    bool _isCanceled();
+    virtual bool _isInitialState();
 
-    bool _isInitialState();
+    virtual bool _isAddingStream();
 
-    bool _isAddingStream();
+    virtual bool _mayAddEvent();
 
-    bool _mayAddEvent();
+    virtual _PendingEvents<T> _pendingEvents();
 
-    _PendingEvents<T> _pendingEvents();
+    virtual _PendingEvents<T> _ensurePendingEvents();
 
-    _PendingEvents<T> _ensurePendingEvents();
+    virtual _ControllerSubscription<T> _subscription();
 
-    _ControllerSubscription<T> _subscription();
+    virtual Error _badEventState();
 
-    Error _badEventState();
+    virtual Future<void> _ensureDoneFuture();
 
-    Future<void> _ensureDoneFuture();
+    virtual void _closeUnchecked();
 
-    void _closeUnchecked();
+    virtual void _add(T value);
 
-    void _add(T value);
+    virtual void _addError(Object error, StackTrace stackTrace);
 
-    void _addError(Object error, StackTrace stackTrace);
+    virtual void _close();
 
-    void _close();
+    virtual StreamSubscription<T> _subscribe(bool cancelOnError, void onData(T data) , void onDone() , void  onError() );
 
-    StreamSubscription<T> _subscribe(bool cancelOnError, FunctionType onData, FunctionType onDone, FunctionType onError);
+    virtual Future<void> _recordCancel(StreamSubscription<T> subscription);
 
-    Future<void> _recordCancel(StreamSubscription<T> subscription);
+    virtual void _recordPause(StreamSubscription<T> subscription);
 
-    void _recordPause(StreamSubscription<T> subscription);
-
-    void _recordResume(StreamSubscription<T> subscription);
+    virtual void _recordResume(StreamSubscription<T> subscription);
 
 };
+template<typename T> using _StreamController = std::shared_ptr<_StreamControllerCls<T>>;
 
-class _SyncStreamControllerDispatch<T> {
+template<typename T> class _SyncStreamControllerDispatchCls : public ObjectCls {
 public:
 
 private:
 
-    void _sendData(T data);
+    virtual void _sendData(T data);
 
-    void _sendError(Object error, StackTrace stackTrace);
+    virtual void _sendError(Object error, StackTrace stackTrace);
 
-    void _sendDone();
+    virtual void _sendDone();
 
 };
+template<typename T> using _SyncStreamControllerDispatch = std::shared_ptr<_SyncStreamControllerDispatchCls<T>>;
 
-class _AsyncStreamControllerDispatch<T> {
+template<typename T> class _AsyncStreamControllerDispatchCls : public ObjectCls {
 public:
 
 private:
 
-    void _sendData(T data);
+    virtual void _sendData(T data);
 
-    void _sendError(Object error, StackTrace stackTrace);
+    virtual void _sendError(Object error, StackTrace stackTrace);
 
-    void _sendDone();
-
-};
-
-class _AsyncStreamController<T> {
-public:
-
-private:
+    virtual void _sendDone();
 
 };
+template<typename T> using _AsyncStreamControllerDispatch = std::shared_ptr<_AsyncStreamControllerDispatchCls<T>>;
 
-class _SyncStreamController<T> {
+template<typename T> class _AsyncStreamControllerCls : public ObjectCls {
 public:
 
 private:
 
 };
-void _runGuarded(FunctionType notificationHandler);
+template<typename T> using _AsyncStreamController = std::shared_ptr<_AsyncStreamControllerCls<T>>;
 
-
-class _ControllerStream<T> : _StreamImpl<T> {
+template<typename T> class _SyncStreamControllerCls : public ObjectCls {
 public:
-
-    int hashCode();
-
-    bool ==(Object other);
 
 private:
-    _StreamControllerLifecycle<T> _controller;
-
-
-     _ControllerStream(_StreamControllerLifecycle<T> _controller);
-
-    StreamSubscription<T> _createSubscription(bool cancelOnError, FunctionType onData, FunctionType onDone, FunctionType onError);
 
 };
+template<typename T> using _SyncStreamController = std::shared_ptr<_SyncStreamControllerCls<T>>;
+void _runGuarded(void notificationHandler() );
 
-class _ControllerSubscription<T> : _BufferingStreamSubscription<T> {
+
+template<typename T> class _ControllerStreamCls : public _StreamImplCls<T> {
 public:
+
+    virtual int hashCode();
+
+    virtual bool operator==(Object other);
 
 private:
     _StreamControllerLifecycle<T> _controller;
 
 
-     _ControllerSubscription(_StreamControllerLifecycle<T> _controller, bool cancelOnError, FunctionType onData, FunctionType onDone, FunctionType onError);
-
-    Future<void> _onCancel();
-
-    void _onPause();
-
-    void _onResume();
+     _ControllerStreamCls(_StreamControllerLifecycle<T> _controller);
+    virtual StreamSubscription<T> _createSubscription(bool cancelOnError, void onData(T data) , void onDone() , void  onError() );
 
 };
+template<typename T> using _ControllerStream = std::shared_ptr<_ControllerStreamCls<T>>;
 
-class _StreamSinkWrapper<T> {
+template<typename T> class _ControllerSubscriptionCls : public _BufferingStreamSubscriptionCls<T> {
 public:
 
-    void add(T data);
+private:
+    _StreamControllerLifecycle<T> _controller;
 
-    void addError(Object error, StackTrace stackTrace);
 
-    Future close();
+     _ControllerSubscriptionCls(_StreamControllerLifecycle<T> _controller, bool cancelOnError, void onData(T data) , void onDone() , void  onError() );
 
-    Future addStream(Stream<T> source);
+    virtual Future<void> _onCancel();
 
-    Future done();
+    virtual void _onPause();
+
+    virtual void _onResume();
+
+};
+template<typename T> using _ControllerSubscription = std::shared_ptr<_ControllerSubscriptionCls<T>>;
+
+template<typename T> class _StreamSinkWrapperCls : public ObjectCls {
+public:
+
+    virtual void add(T data);
+
+    virtual void addError(Object error, StackTrace stackTrace);
+
+    virtual Future close();
+
+    virtual Future addStream(Stream<T> source);
+
+    virtual Future done();
 
 private:
     StreamController _target;
 
 
-     _StreamSinkWrapper(StreamController _target);
-
+     _StreamSinkWrapperCls(StreamController _target);
 };
+template<typename T> using _StreamSinkWrapper = std::shared_ptr<_StreamSinkWrapperCls<T>>;
 
-class _AddStreamState<T> {
+template<typename T> class _AddStreamStateCls : public ObjectCls {
 public:
     _Future addStreamFuture;
 
@@ -274,29 +269,32 @@ public:
 
     static void  makeErrorHandler(_EventSink controller);
 
-    void pause();
+    virtual void pause();
 
-    void resume();
+    virtual void resume();
 
-    Future<void> cancel();
+    virtual Future<void> cancel();
 
-    void complete();
+    virtual void complete();
 
 private:
 
-     _AddStreamState(bool cancelOnError, _EventSink<T> controller, Stream<T> source);
+     _AddStreamStateCls(bool cancelOnError, _EventSink<T> controller, Stream<T> source);
 
 };
+template<typename T> using _AddStreamState = std::shared_ptr<_AddStreamStateCls<T>>;
 
-class _StreamControllerAddStreamState<T> : _AddStreamState<T> {
+template<typename T> class _StreamControllerAddStreamStateCls : public _AddStreamStateCls<T> {
 public:
     auto varData;
 
 
 private:
 
-     _StreamControllerAddStreamState(bool cancelOnError, _StreamController<T> controller, Stream<T> source, auto varData);
+     _StreamControllerAddStreamStateCls(bool cancelOnError, _StreamController<T> controller, Stream<T> source, auto varData);
 
 };
+template<typename T> using _StreamControllerAddStreamState = std::shared_ptr<_StreamControllerAddStreamStateCls<T>>;
+
 
 #endif

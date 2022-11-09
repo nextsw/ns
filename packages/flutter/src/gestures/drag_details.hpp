@@ -1,30 +1,31 @@
-#ifndef DRAG_DETAILS_H
-#define DRAG_DETAILS_H
-#include <memory>
-#include <ui.hpp>
+#ifndef PACKAGES_FLUTTER_SRC_GESTURES_DRAG_DETAILS
+#define PACKAGES_FLUTTER_SRC_GESTURES_DRAG_DETAILS
+#include <base.hpp>
+#include <dart/ui/ui.hpp>
 #include "velocity_tracker.hpp"
 
-#include <flutter/foundation.hpp>
+#include <dart/core/core.hpp>
+#include <packages/flutter/lib/foundation.hpp>
 #include "velocity_tracker.hpp"
 
 
-
-class DragDownDetails {
+class DragDownDetailsCls : public ObjectCls {
 public:
     Offset globalPosition;
 
     Offset localPosition;
 
 
-     DragDownDetails(Offset globalPosition, Offset localPosition);
+     DragDownDetailsCls(Offset globalPosition, Offset localPosition);
 
-    String toString();
+    virtual String toString();
 
 private:
 
 };
+using DragDownDetails = std::shared_ptr<DragDownDetailsCls>;
 
-class DragStartDetails {
+class DragStartDetailsCls : public ObjectCls {
 public:
     Duration sourceTimeStamp;
 
@@ -35,15 +36,16 @@ public:
     PointerDeviceKind kind;
 
 
-     DragStartDetails(Offset globalPosition, PointerDeviceKind kind, Offset localPosition, Duration sourceTimeStamp);
+     DragStartDetailsCls(Offset globalPosition, PointerDeviceKind kind, Offset localPosition, Duration sourceTimeStamp);
 
-    String toString();
+    virtual String toString();
 
 private:
 
 };
+using DragStartDetails = std::shared_ptr<DragStartDetailsCls>;
 
-class DragUpdateDetails {
+class DragUpdateDetailsCls : public ObjectCls {
 public:
     Duration sourceTimeStamp;
 
@@ -56,27 +58,30 @@ public:
     Offset localPosition;
 
 
-     DragUpdateDetails(Offset delta, Offset globalPosition, Offset localPosition, double primaryDelta, Duration sourceTimeStamp);
+     DragUpdateDetailsCls(Offset delta, Offset globalPosition, Offset localPosition, double primaryDelta, Duration sourceTimeStamp);
 
-    String toString();
+    virtual String toString();
 
 private:
 
 };
+using DragUpdateDetails = std::shared_ptr<DragUpdateDetailsCls>;
 
-class DragEndDetails {
+class DragEndDetailsCls : public ObjectCls {
 public:
     Velocity velocity;
 
     double primaryVelocity;
 
 
-     DragEndDetails(double primaryVelocity, Velocity velocity);
+     DragEndDetailsCls(double primaryVelocity, Velocity velocity);
 
-    String toString();
+    virtual String toString();
 
 private:
 
 };
+using DragEndDetails = std::shared_ptr<DragEndDetailsCls>;
+
 
 #endif

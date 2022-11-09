@@ -1,9 +1,10 @@
-#ifndef ITERABLE_EXTENSIONS_H
-#define ITERABLE_EXTENSIONS_H
-#include <memory>
+#ifndef PACKAGES_COLLECTION_SRC_ITERABLE_EXTENSIONS
+#define PACKAGES_COLLECTION_SRC_ITERABLE_EXTENSIONS
+#include <base.hpp>
 
-#include <math/math.hpp>
-#include <collection/src/utils.hpp>
+#include <dart/core/core.hpp>
+#include <dart/math/math.hpp>
+#include <packages/collection/src/utils.hpp>
 #include "algorithms.hpp"
 
 

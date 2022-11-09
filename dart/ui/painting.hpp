@@ -1,8 +1,8 @@
-#ifndef PAINTING_H
-#define PAINTING_H
-#include <memory>
+#ifndef DART_UI_PAINTING
+#define DART_UI_PAINTING
+#include <base.hpp>
 
-
+#include <dart/core/core.hpp>
 
 bool _rectIsValid(Rect rect);
 
@@ -17,38 +17,38 @@ bool _radiusIsValid(Radius radius);
 Color _scaleAlpha(Color a, double factor);
 
 
-class Color {
+class ColorCls : public ObjectCls {
 public:
     int value;
 
 
-     Color(int value);
+     ColorCls(int value);
 
-    void  fromARGB(int a, int b, int g, int r);
+    virtual void  fromARGB(int a, int b, int g, int r);
 
-    void  fromRGBO(int b, int g, double opacity, int r);
+    virtual void  fromRGBO(int b, int g, double opacity, int r);
 
-    int alpha();
+    virtual int alpha();
 
-    double opacity();
+    virtual double opacity();
 
-    int red();
+    virtual int red();
 
-    int green();
+    virtual int green();
 
-    int blue();
+    virtual int blue();
 
-    Color withAlpha(int a);
+    virtual Color withAlpha(int a);
 
-    Color withOpacity(double opacity);
+    virtual Color withOpacity(double opacity);
 
-    Color withRed(int r);
+    virtual Color withRed(int r);
 
-    Color withGreen(int g);
+    virtual Color withGreen(int g);
 
-    Color withBlue(int b);
+    virtual Color withBlue(int b);
 
-    double computeLuminance();
+    virtual double computeLuminance();
 
     static Color lerp(Color a, Color b, double t);
 
@@ -56,17 +56,18 @@ public:
 
     static int getAlphaFromOpacity(double opacity);
 
-    bool ==(Object other);
+    virtual bool operator==(Object other);
 
-    int hashCode();
+    virtual int hashCode();
 
-    String toString();
+    virtual String toString();
 
 private:
 
     static double _linearizeColorComponent(double component);
 
 };
+using Color = std::shared_ptr<ColorCls>;
 
 enum BlendMode{
     clear,
@@ -131,156 +132,157 @@ enum Clip{
     antiAliasWithSaveLayer,
 } // end Clip
 
-class Paint {
+class PaintCls : public ObjectCls {
 public:
     static bool enableDithering;
 
 
-     Paint();
+     PaintCls();
 
-    bool isAntiAlias();
+    virtual bool isAntiAlias();
 
-    void  isAntiAlias(bool value);
+    virtual void  isAntiAlias(bool value);
 
-    Color color();
+    virtual Color color();
 
-    void  color(Color value);
+    virtual void  color(Color value);
 
-    BlendMode blendMode();
+    virtual BlendMode blendMode();
 
-    void  blendMode(BlendMode value);
+    virtual void  blendMode(BlendMode value);
 
-    PaintingStyle style();
+    virtual PaintingStyle style();
 
-    void  style(PaintingStyle value);
+    virtual void  style(PaintingStyle value);
 
-    double strokeWidth();
+    virtual double strokeWidth();
 
-    void  strokeWidth(double value);
+    virtual void  strokeWidth(double value);
 
-    StrokeCap strokeCap();
+    virtual StrokeCap strokeCap();
 
-    void  strokeCap(StrokeCap value);
+    virtual void  strokeCap(StrokeCap value);
 
-    StrokeJoin strokeJoin();
+    virtual StrokeJoin strokeJoin();
 
-    void  strokeJoin(StrokeJoin value);
+    virtual void  strokeJoin(StrokeJoin value);
 
-    double strokeMiterLimit();
+    virtual double strokeMiterLimit();
 
-    void  strokeMiterLimit(double value);
+    virtual void  strokeMiterLimit(double value);
 
-    MaskFilter maskFilter();
+    virtual MaskFilter maskFilter();
 
-    void  maskFilter(MaskFilter value);
+    virtual void  maskFilter(MaskFilter value);
 
-    FilterQuality filterQuality();
+    virtual FilterQuality filterQuality();
 
-    void  filterQuality(FilterQuality value);
+    virtual void  filterQuality(FilterQuality value);
 
-    Shader shader();
+    virtual Shader shader();
 
-    void  shader(Shader value);
+    virtual void  shader(Shader value);
 
-    ColorFilter colorFilter();
+    virtual ColorFilter colorFilter();
 
-    void  colorFilter(ColorFilter value);
+    virtual void  colorFilter(ColorFilter value);
 
-    ImageFilter imageFilter();
+    virtual ImageFilter imageFilter();
 
-    void  imageFilter(ImageFilter value);
+    virtual void  imageFilter(ImageFilter value);
 
-    bool invertColors();
+    virtual bool invertColors();
 
-    void  invertColors(bool value);
+    virtual void  invertColors(bool value);
 
-    String toString();
+    virtual String toString();
 
 private:
     ByteData _data;
 
-    static const int _kIsAntiAliasIndex;
+    static int _kIsAntiAliasIndex;
 
-    static const int _kColorIndex;
+    static int _kColorIndex;
 
-    static const int _kBlendModeIndex;
+    static int _kBlendModeIndex;
 
-    static const int _kStyleIndex;
+    static int _kStyleIndex;
 
-    static const int _kStrokeWidthIndex;
+    static int _kStrokeWidthIndex;
 
-    static const int _kStrokeCapIndex;
+    static int _kStrokeCapIndex;
 
-    static const int _kStrokeJoinIndex;
+    static int _kStrokeJoinIndex;
 
-    static const int _kStrokeMiterLimitIndex;
+    static int _kStrokeMiterLimitIndex;
 
-    static const int _kFilterQualityIndex;
+    static int _kFilterQualityIndex;
 
-    static const int _kMaskFilterIndex;
+    static int _kMaskFilterIndex;
 
-    static const int _kMaskFilterBlurStyleIndex;
+    static int _kMaskFilterBlurStyleIndex;
 
-    static const int _kMaskFilterSigmaIndex;
+    static int _kMaskFilterSigmaIndex;
 
-    static const int _kInvertColorIndex;
+    static int _kInvertColorIndex;
 
-    static const int _kDitherIndex;
+    static int _kDitherIndex;
 
-    static const int _kIsAntiAliasOffset;
+    static int _kIsAntiAliasOffset;
 
-    static const int _kColorOffset;
+    static int _kColorOffset;
 
-    static const int _kBlendModeOffset;
+    static int _kBlendModeOffset;
 
-    static const int _kStyleOffset;
+    static int _kStyleOffset;
 
-    static const int _kStrokeWidthOffset;
+    static int _kStrokeWidthOffset;
 
-    static const int _kStrokeCapOffset;
+    static int _kStrokeCapOffset;
 
-    static const int _kStrokeJoinOffset;
+    static int _kStrokeJoinOffset;
 
-    static const int _kStrokeMiterLimitOffset;
+    static int _kStrokeMiterLimitOffset;
 
-    static const int _kFilterQualityOffset;
+    static int _kFilterQualityOffset;
 
-    static const int _kMaskFilterOffset;
+    static int _kMaskFilterOffset;
 
-    static const int _kMaskFilterBlurStyleOffset;
+    static int _kMaskFilterBlurStyleOffset;
 
-    static const int _kMaskFilterSigmaOffset;
+    static int _kMaskFilterSigmaOffset;
 
-    static const int _kInvertColorOffset;
+    static int _kInvertColorOffset;
 
-    static const int _kDitherOffset;
+    static int _kDitherOffset;
 
-    static const int _kDataByteCount;
+    static int _kDataByteCount;
 
     List<Object> _objects;
 
-    static const int _kShaderIndex;
+    static int _kShaderIndex;
 
-    static const int _kColorFilterIndex;
+    static int _kColorFilterIndex;
 
-    static const int _kImageFilterIndex;
+    static int _kImageFilterIndex;
 
-    static const int _kObjectCount;
+    static int _kObjectCount;
 
-    static const int _kColorDefault;
+    static int _kColorDefault;
 
     static int _kBlendModeDefault;
 
-    static const double _kStrokeMiterLimitDefault;
+    static double _kStrokeMiterLimitDefault;
 
 
-    List<Object> _ensureObjectsInitialized();
+    virtual List<Object> _ensureObjectsInitialized();
 
-    bool _dither();
+    virtual bool _dither();
 
-    void  _dither(bool value);
+    virtual void  _dither(bool value);
 
 };
+using Paint = std::shared_ptr<PaintCls>;
 
 enum ImageByteFormat{
     rawRgba,
@@ -294,26 +296,26 @@ enum PixelFormat{
     bgra8888,
 } // end PixelFormat
 
-class Image {
+class ImageCls : public ObjectCls {
 public:
     int width;
 
     int height;
 
 
-    void dispose();
+    virtual void dispose();
 
-    bool debugDisposed();
+    virtual bool debugDisposed();
 
-    Future<ByteData> toByteData(ImageByteFormat format);
+    virtual Future<ByteData> toByteData(ImageByteFormat format);
 
-    List<StackTrace> debugGetOpenHandleStackTraces();
+    virtual List<StackTrace> debugGetOpenHandleStackTraces();
 
-    Image clone();
+    virtual Image clone();
 
-    bool isCloneOf(Image other);
+    virtual bool isCloneOf(Image other);
 
-    String toString();
+    virtual String toString();
 
 private:
     _Image _image;
@@ -323,22 +325,21 @@ private:
     bool _disposed;
 
 
-    void  _(_Image _image, int height, int width);
+    virtual void  _(_Image _image, int height, int width);
 
 };
+using Image = std::shared_ptr<ImageCls>;
 
-class _Image : NativeFieldWrapperClass1 {
+class _ImageCls : public NativeFieldWrapperClass1Cls {
 public:
 
-    int width();
+    virtual int width();
+    virtual int height();
+    virtual Future<ByteData> toByteData(ImageByteFormat format);
 
-    int height();
+    virtual void dispose();
 
-    Future<ByteData> toByteData(ImageByteFormat format);
-
-    void dispose();
-
-    String toString();
+    virtual String toString();
 
 private:
     bool _disposed;
@@ -346,15 +347,13 @@ private:
     Set<Image> _handles;
 
 
-    void  _();
-
-    String _toByteData(_Callback<Uint8List> callback, int format);
-
-    void _dispose();
-
+    virtual void  _();
+    virtual String _toByteData(_Callback<Uint8List> callback, int format);
+    virtual void _dispose();
 };
+using _Image = std::shared_ptr<_ImageCls>;
 
-class FrameInfo {
+class FrameInfoCls : public ObjectCls {
 public:
     Duration duration;
 
@@ -363,36 +362,32 @@ public:
 
 private:
 
-    void  _(Duration duration, Image image);
-
+    virtual void  _(Duration duration, Image image);
 };
+using FrameInfo = std::shared_ptr<FrameInfoCls>;
 
-class Codec : NativeFieldWrapperClass1 {
+class CodecCls : public NativeFieldWrapperClass1Cls {
 public:
 
-    int frameCount();
+    virtual int frameCount();
 
-    int repetitionCount();
+    virtual int repetitionCount();
 
-    Future<FrameInfo> getNextFrame();
+    virtual Future<FrameInfo> getNextFrame();
 
-    void dispose();
-
+    virtual void dispose();
 private:
     int _cachedFrameCount;
 
     int _cachedRepetitionCount;
 
 
-    void  _();
-
-    int _frameCount();
-
-    int _repetitionCount();
-
-    String _getNextFrame(FunctionType callback);
-
+    virtual void  _();
+    virtual int _frameCount();
+    virtual int _repetitionCount();
+    virtual String _getNextFrame(void callback(_Image , int ) );
 };
+using Codec = std::shared_ptr<CodecCls>;
 Future<Codec> instantiateImageCodec(bool allowUpscaling, Uint8List list, int targetHeight, int targetWidth);
 
 Future<Codec> instantiateImageCodecFromBuffer(bool allowUpscaling, ImmutableBuffer buffer, int targetHeight, int targetWidth);
@@ -417,168 +412,136 @@ enum PathOperation{
     reverseDifference,
 } // end PathOperation
 
-class EngineLayer : NativeFieldWrapperClass1 {
+class EngineLayerCls : public NativeFieldWrapperClass1Cls {
 public:
 
-    void dispose();
-
+    virtual void dispose();
 private:
 
-    void  _();
-
+    virtual void  _();
 };
+using EngineLayer = std::shared_ptr<EngineLayerCls>;
 
-class Path : NativeFieldWrapperClass1 {
+class PathCls : public NativeFieldWrapperClass1Cls {
 public:
 
-     Path();
+     PathCls();
 
-    void  from(Path source);
+    virtual void  from(Path source);
 
-    PathFillType fillType();
+    virtual PathFillType fillType();
 
-    void  fillType(PathFillType value);
+    virtual void  fillType(PathFillType value);
 
-    void moveTo(double x, double y);
+    virtual void moveTo(double x, double y);
+    virtual void relativeMoveTo(double dx, double dy);
+    virtual void lineTo(double x, double y);
+    virtual void relativeLineTo(double dx, double dy);
+    virtual void quadraticBezierTo(double x1, double x2, double y1, double y2);
+    virtual void relativeQuadraticBezierTo(double x1, double x2, double y1, double y2);
+    virtual void cubicTo(double x1, double x2, double x3, double y1, double y2, double y3);
+    virtual void relativeCubicTo(double x1, double x2, double x3, double y1, double y2, double y3);
+    virtual void conicTo(double w, double x1, double x2, double y1, double y2);
+    virtual void relativeConicTo(double w, double x1, double x2, double y1, double y2);
+    virtual void arcTo(bool forceMoveTo, Rect rect, double startAngle, double sweepAngle);
 
-    void relativeMoveTo(double dx, double dy);
+    virtual void arcToPoint(Offset arcEnd, bool clockwise, bool largeArc, Radius radius, double rotation);
 
-    void lineTo(double x, double y);
+    virtual void relativeArcToPoint(Offset arcEndDelta, bool clockwise, bool largeArc, Radius radius, double rotation);
 
-    void relativeLineTo(double dx, double dy);
+    virtual void addRect(Rect rect);
 
-    void quadraticBezierTo(double x1, double x2, double y1, double y2);
+    virtual void addOval(Rect oval);
 
-    void relativeQuadraticBezierTo(double x1, double x2, double y1, double y2);
+    virtual void addArc(Rect oval, double startAngle, double sweepAngle);
 
-    void cubicTo(double x1, double x2, double x3, double y1, double y2, double y3);
+    virtual void addPolygon(bool close, List<Offset> points);
 
-    void relativeCubicTo(double x1, double x2, double x3, double y1, double y2, double y3);
+    virtual void addRRect(RRect rrect);
 
-    void conicTo(double w, double x1, double x2, double y1, double y2);
+    virtual void addPath(Float64List matrix4, Offset offset, Path path);
 
-    void relativeConicTo(double w, double x1, double x2, double y1, double y2);
+    virtual void extendWithPath(Float64List matrix4, Offset offset, Path path);
 
-    void arcTo(bool forceMoveTo, Rect rect, double startAngle, double sweepAngle);
+    virtual void close();
+    virtual void reset();
+    virtual bool contains(Offset point);
 
-    void arcToPoint(Offset arcEnd, bool clockwise, bool largeArc, Radius radius, double rotation);
+    virtual Path shift(Offset offset);
 
-    void relativeArcToPoint(Offset arcEndDelta, bool clockwise, bool largeArc, Radius radius, double rotation);
+    virtual Path transform(Float64List matrix4);
 
-    void addRect(Rect rect);
-
-    void addOval(Rect oval);
-
-    void addArc(Rect oval, double startAngle, double sweepAngle);
-
-    void addPolygon(bool close, List<Offset> points);
-
-    void addRRect(RRect rrect);
-
-    void addPath(Float64List matrix4, Offset offset, Path path);
-
-    void extendWithPath(Float64List matrix4, Offset offset, Path path);
-
-    void close();
-
-    void reset();
-
-    bool contains(Offset point);
-
-    Path shift(Offset offset);
-
-    Path transform(Float64List matrix4);
-
-    Rect getBounds();
+    virtual Rect getBounds();
 
     static Path combine(PathOperation operation, Path path1, Path path2);
 
-    PathMetrics computeMetrics(bool forceClosed);
+    virtual PathMetrics computeMetrics(bool forceClosed);
 
 private:
 
-    void _constructor();
-
-    void  _();
-
-    void _clone(Path outPath);
-
-    int _getFillType();
-
-    void _setFillType(int fillType);
-
-    void _arcTo(double bottom, bool forceMoveTo, double left, double right, double startAngle, double sweepAngle, double top);
-
-    void _arcToPoint(double arcEndX, double arcEndY, bool clockwise, bool largeArc, double radiusX, double radiusY, double rotation);
-
-    void _relativeArcToPoint(double arcEndX, double arcEndY, bool clockwise, bool largeArc, double radiusX, double radiusY, double rotation);
-
-    void _addRect(double bottom, double left, double right, double top);
-
-    void _addOval(double bottom, double left, double right, double top);
-
-    void _addArc(double bottom, double left, double right, double startAngle, double sweepAngle, double top);
-
-    void _addPolygon(bool close, Float32List points);
-
-    void _addRRect(Float32List rrect);
-
-    void _addPath(double dx, double dy, Path path);
-
-    void _addPathWithMatrix(double dx, double dy, Float64List matrix, Path path);
-
-    void _extendWithPath(double dx, double dy, Path path);
-
-    void _extendWithPathAndMatrix(double dx, double dy, Float64List matrix, Path path);
-
-    bool _contains(double x, double y);
-
-    void _shift(double dx, double dy, Path outPath);
-
-    void _transform(Float64List matrix4, Path outPath);
-
-    Float32List _getBounds();
-
-    bool _op(int operation, Path path1, Path path2);
-
+    virtual void _constructor();
+    virtual void  _();
+    virtual void _clone(Path outPath);
+    virtual int _getFillType();
+    virtual void _setFillType(int fillType);
+    virtual void _arcTo(double bottom, bool forceMoveTo, double left, double right, double startAngle, double sweepAngle, double top);
+    virtual void _arcToPoint(double arcEndX, double arcEndY, bool clockwise, bool largeArc, double radiusX, double radiusY, double rotation);
+    virtual void _relativeArcToPoint(double arcEndX, double arcEndY, bool clockwise, bool largeArc, double radiusX, double radiusY, double rotation);
+    virtual void _addRect(double bottom, double left, double right, double top);
+    virtual void _addOval(double bottom, double left, double right, double top);
+    virtual void _addArc(double bottom, double left, double right, double startAngle, double sweepAngle, double top);
+    virtual void _addPolygon(bool close, Float32List points);
+    virtual void _addRRect(Float32List rrect);
+    virtual void _addPath(double dx, double dy, Path path);
+    virtual void _addPathWithMatrix(double dx, double dy, Float64List matrix, Path path);
+    virtual void _extendWithPath(double dx, double dy, Path path);
+    virtual void _extendWithPathAndMatrix(double dx, double dy, Float64List matrix, Path path);
+    virtual bool _contains(double x, double y);
+    virtual void _shift(double dx, double dy, Path outPath);
+    virtual void _transform(Float64List matrix4, Path outPath);
+    virtual Float32List _getBounds();
+    virtual bool _op(int operation, Path path1, Path path2);
 };
+using Path = std::shared_ptr<PathCls>;
 
-class Tangent {
+class TangentCls : public ObjectCls {
 public:
     Offset position;
 
     Offset vector;
 
 
-     Tangent(Offset position, Offset vector);
+     TangentCls(Offset position, Offset vector);
 
-    void  fromAngle(double angle, Offset position);
+    virtual void  fromAngle(double angle, Offset position);
 
-    double angle();
+    virtual double angle();
 
 private:
 
 };
+using Tangent = std::shared_ptr<TangentCls>;
 
-class PathMetrics : IterableBase<PathMetric> {
+class PathMetricsCls : public IterableBaseCls<PathMetric> {
 public:
 
-    Iterator<PathMetric> iterator();
+    virtual Iterator<PathMetric> iterator();
 
 private:
     Iterator<PathMetric> _iterator;
 
 
-    void  _(bool forceClosed, Path path);
+    virtual void  _(bool forceClosed, Path path);
 
 };
+using PathMetrics = std::shared_ptr<PathMetricsCls>;
 
-class PathMetricIterator {
+class PathMetricIteratorCls : public ObjectCls {
 public:
 
-    PathMetric current();
+    virtual PathMetric current();
 
-    bool moveNext();
+    virtual bool moveNext();
 
 private:
     PathMetric _pathMetric;
@@ -586,11 +549,12 @@ private:
     _PathMeasure _pathMeasure;
 
 
-    void  _(_PathMeasure _pathMeasure);
+    virtual void  _(_PathMeasure _pathMeasure);
 
 };
+using PathMetricIterator = std::shared_ptr<PathMetricIteratorCls>;
 
-class PathMetric {
+class PathMetricCls : public ObjectCls {
 public:
     double length;
 
@@ -599,52 +563,48 @@ public:
     int contourIndex;
 
 
-    Tangent getTangentForOffset(double distance);
+    virtual Tangent getTangentForOffset(double distance);
 
-    Path extractPath(double end, double start, bool startWithMoveTo);
+    virtual Path extractPath(double end, double start, bool startWithMoveTo);
 
-    String toString();
+    virtual String toString();
 
 private:
     _PathMeasure _measure;
 
 
-    void  _(_PathMeasure _measure);
+    virtual void  _(_PathMeasure _measure);
 
 };
+using PathMetric = std::shared_ptr<PathMetricCls>;
 
-class _PathMeasure : NativeFieldWrapperClass1 {
+class _PathMeasureCls : public NativeFieldWrapperClass1Cls {
 public:
     int currentContourIndex;
 
 
-    double length(int contourIndex);
+    virtual double length(int contourIndex);
 
-    Tangent getTangentForOffset(int contourIndex, double distance);
+    virtual Tangent getTangentForOffset(int contourIndex, double distance);
 
-    Path extractPath(int contourIndex, double end, double start, bool startWithMoveTo);
+    virtual Path extractPath(int contourIndex, double end, double start, bool startWithMoveTo);
 
-    bool isClosed(int contourIndex);
+    virtual bool isClosed(int contourIndex);
 
 private:
 
-     _PathMeasure(bool forceClosed, Path path);
+     _PathMeasureCls(bool forceClosed, Path path);
 
-    void _constructor(bool forceClosed, Path path);
+    virtual void _constructor(bool forceClosed, Path path);
+    virtual double _length(int contourIndex);
+    virtual Float32List _getPosTan(int contourIndex, double distance);
+    virtual void _extractPath(int contourIndex, double end, Path outPath, double start, bool startWithMoveTo);
+    virtual bool _isClosed(int contourIndex);
+    virtual bool _nextContour();
 
-    double _length(int contourIndex);
-
-    Float32List _getPosTan(int contourIndex, double distance);
-
-    void _extractPath(int contourIndex, double end, Path outPath, double start, bool startWithMoveTo);
-
-    bool _isClosed(int contourIndex);
-
-    bool _nextContour();
-
-    bool _nativeNextContour();
-
+    virtual bool _nativeNextContour();
 };
+using _PathMeasure = std::shared_ptr<_PathMeasureCls>;
 
 enum BlurStyle{
     normal,
@@ -653,45 +613,46 @@ enum BlurStyle{
     inner,
 } // end BlurStyle
 
-class MaskFilter {
+class MaskFilterCls : public ObjectCls {
 public:
 
-    void  blur(double _sigma, BlurStyle _style);
+    virtual void  blur(double _sigma, BlurStyle _style);
 
-    bool ==(Object other);
+    virtual bool operator==(Object other);
 
-    int hashCode();
+    virtual int hashCode();
 
-    String toString();
+    virtual String toString();
 
 private:
     BlurStyle _style;
 
     double _sigma;
 
-    static const int _TypeNone;
+    static int _TypeNone;
 
-    static const int _TypeBlur;
+    static int _TypeBlur;
 
 
 };
+using MaskFilter = std::shared_ptr<MaskFilterCls>;
 
-class ColorFilter {
+class ColorFilterCls : public ObjectCls {
 public:
 
-    void  mode(BlendMode blendMode, Color color);
+    virtual void  mode(BlendMode blendMode, Color color);
 
-    void  matrix(List<double> matrix);
+    virtual void  matrix(List<double> matrix);
 
-    void  linearToSrgbGamma();
+    virtual void  linearToSrgbGamma();
 
-    void  srgbToLinearGamma();
+    virtual void  srgbToLinearGamma();
 
-    bool ==(Object other);
+    virtual bool operator==(Object other);
 
-    int hashCode();
+    virtual int hashCode();
 
-    String toString();
+    virtual String toString();
 
 private:
     Color _color;
@@ -702,72 +663,68 @@ private:
 
     int _type;
 
-    static const int _kTypeMode;
+    static int _kTypeMode;
 
-    static const int _kTypeMatrix;
+    static int _kTypeMatrix;
 
-    static const int _kTypeLinearToSrgbGamma;
+    static int _kTypeLinearToSrgbGamma;
 
-    static const int _kTypeSrgbToLinearGamma;
+    static int _kTypeSrgbToLinearGamma;
 
 
-    _ImageFilter _toNativeImageFilter();
+    virtual _ImageFilter _toNativeImageFilter();
 
-    _ColorFilter _toNativeColorFilter();
+    virtual _ColorFilter _toNativeColorFilter();
 
-    String _shortDescription();
+    virtual String _shortDescription();
 
 };
+using ColorFilter = std::shared_ptr<ColorFilterCls>;
 
-class _ColorFilter : NativeFieldWrapperClass1 {
+class _ColorFilterCls : public NativeFieldWrapperClass1Cls {
 public:
     ColorFilter creator;
 
 
-    void  mode(ColorFilter creator);
+    virtual void  mode(ColorFilter creator);
 
-    void  matrix(ColorFilter creator);
+    virtual void  matrix(ColorFilter creator);
 
-    void  linearToSrgbGamma(ColorFilter creator);
+    virtual void  linearToSrgbGamma(ColorFilter creator);
 
-    void  srgbToLinearGamma(ColorFilter creator);
+    virtual void  srgbToLinearGamma(ColorFilter creator);
 
 private:
 
-    void _constructor();
-
-    void _initMode(int blendMode, int color);
-
-    void _initMatrix(Float32List matrix);
-
-    void _initLinearToSrgbGamma();
-
-    void _initSrgbToLinearGamma();
-
+    virtual void _constructor();
+    virtual void _initMode(int blendMode, int color);
+    virtual void _initMatrix(Float32List matrix);
+    virtual void _initLinearToSrgbGamma();
+    virtual void _initSrgbToLinearGamma();
 };
+using _ColorFilter = std::shared_ptr<_ColorFilterCls>;
 
-class ImageFilter {
+class ImageFilterCls : public ObjectCls {
 public:
 
-    void  blur(double sigmaX, double sigmaY, TileMode tileMode);
+    virtual void  blur(double sigmaX, double sigmaY, TileMode tileMode);
 
-    void  dilate(double radiusX, double radiusY);
+    virtual void  dilate(double radiusX, double radiusY);
 
-    void  erode(double radiusX, double radiusY);
+    virtual void  erode(double radiusX, double radiusY);
 
-    void  matrix(FilterQuality filterQuality, Float64List matrix4);
+    virtual void  matrix(FilterQuality filterQuality, Float64List matrix4);
 
-    void  compose(ImageFilter inner, ImageFilter outer);
+    virtual void  compose(ImageFilter inner, ImageFilter outer);
 
 private:
 
-    _ImageFilter _toNativeImageFilter();
-
-    String _shortDescription();
-
+    virtual _ImageFilter _toNativeImageFilter();
+    virtual String _shortDescription();
 };
+using ImageFilter = std::shared_ptr<ImageFilterCls>;
 
-class _MatrixImageFilter {
+class _MatrixImageFilterCls : public ObjectCls {
 public:
     Float64List data;
 
@@ -776,23 +733,23 @@ public:
     _ImageFilter nativeFilter;
 
 
-    String toString();
+    virtual String toString();
 
-    bool ==(Object other);
+    virtual bool operator==(Object other);
 
-    int hashCode();
+    virtual int hashCode();
 
 private:
 
-     _MatrixImageFilter(Float64List data, FilterQuality filterQuality);
+     _MatrixImageFilterCls(Float64List data, FilterQuality filterQuality);
+    virtual _ImageFilter _toNativeImageFilter();
 
-    _ImageFilter _toNativeImageFilter();
-
-    String _shortDescription();
+    virtual String _shortDescription();
 
 };
+using _MatrixImageFilter = std::shared_ptr<_MatrixImageFilterCls>;
 
-class _GaussianBlurImageFilter {
+class _GaussianBlurImageFilterCls : public ObjectCls {
 public:
     double sigmaX;
 
@@ -803,25 +760,25 @@ public:
     _ImageFilter nativeFilter;
 
 
-    String toString();
+    virtual String toString();
 
-    bool ==(Object other);
+    virtual bool operator==(Object other);
 
-    int hashCode();
+    virtual int hashCode();
 
 private:
 
-     _GaussianBlurImageFilter(double sigmaX, double sigmaY, TileMode tileMode);
+     _GaussianBlurImageFilterCls(double sigmaX, double sigmaY, TileMode tileMode);
+    virtual _ImageFilter _toNativeImageFilter();
 
-    _ImageFilter _toNativeImageFilter();
+    virtual String _modeString();
 
-    String _modeString();
-
-    String _shortDescription();
+    virtual String _shortDescription();
 
 };
+using _GaussianBlurImageFilter = std::shared_ptr<_GaussianBlurImageFilterCls>;
 
-class _DilateImageFilter {
+class _DilateImageFilterCls : public ObjectCls {
 public:
     double radiusX;
 
@@ -830,23 +787,23 @@ public:
     _ImageFilter nativeFilter;
 
 
-    String toString();
+    virtual String toString();
 
-    bool ==(Object other);
+    virtual bool operator==(Object other);
 
-    int hashCode();
+    virtual int hashCode();
 
 private:
 
-     _DilateImageFilter(double radiusX, double radiusY);
+     _DilateImageFilterCls(double radiusX, double radiusY);
+    virtual _ImageFilter _toNativeImageFilter();
 
-    _ImageFilter _toNativeImageFilter();
-
-    String _shortDescription();
+    virtual String _shortDescription();
 
 };
+using _DilateImageFilter = std::shared_ptr<_DilateImageFilterCls>;
 
-class _ErodeImageFilter {
+class _ErodeImageFilterCls : public ObjectCls {
 public:
     double radiusX;
 
@@ -855,23 +812,23 @@ public:
     _ImageFilter nativeFilter;
 
 
-    String toString();
+    virtual String toString();
 
-    bool ==(Object other);
+    virtual bool operator==(Object other);
 
-    int hashCode();
+    virtual int hashCode();
 
 private:
 
-     _ErodeImageFilter(double radiusX, double radiusY);
+     _ErodeImageFilterCls(double radiusX, double radiusY);
+    virtual _ImageFilter _toNativeImageFilter();
 
-    _ImageFilter _toNativeImageFilter();
-
-    String _shortDescription();
+    virtual String _shortDescription();
 
 };
+using _ErodeImageFilter = std::shared_ptr<_ErodeImageFilterCls>;
 
-class _ComposeImageFilter {
+class _ComposeImageFilterCls : public ObjectCls {
 public:
     ImageFilter innerFilter;
 
@@ -880,65 +837,59 @@ public:
     _ImageFilter nativeFilter;
 
 
-    String toString();
+    virtual String toString();
 
-    bool ==(Object other);
+    virtual bool operator==(Object other);
 
-    int hashCode();
+    virtual int hashCode();
 
 private:
 
-     _ComposeImageFilter(ImageFilter innerFilter, ImageFilter outerFilter);
+     _ComposeImageFilterCls(ImageFilter innerFilter, ImageFilter outerFilter);
+    virtual _ImageFilter _toNativeImageFilter();
 
-    _ImageFilter _toNativeImageFilter();
-
-    String _shortDescription();
+    virtual String _shortDescription();
 
 };
+using _ComposeImageFilter = std::shared_ptr<_ComposeImageFilterCls>;
 
-class _ImageFilter : NativeFieldWrapperClass1 {
+class _ImageFilterCls : public NativeFieldWrapperClass1Cls {
 public:
     ImageFilter creator;
 
 
-    void  blur(_GaussianBlurImageFilter filter);
+    virtual void  blur(_GaussianBlurImageFilter filter);
 
-    void  dilate(_DilateImageFilter filter);
+    virtual void  dilate(_DilateImageFilter filter);
 
-    void  erode(_ErodeImageFilter filter);
+    virtual void  erode(_ErodeImageFilter filter);
 
-    void  matrix(_MatrixImageFilter filter);
+    virtual void  matrix(_MatrixImageFilter filter);
 
-    void  fromColorFilter(ColorFilter filter);
+    virtual void  fromColorFilter(ColorFilter filter);
 
-    void  composed(_ComposeImageFilter filter);
+    virtual void  composed(_ComposeImageFilter filter);
 
 private:
 
-    void _constructor();
-
-    void _initBlur(double sigmaX, double sigmaY, int tileMode);
-
-    void _initDilate(double radiusX, double radiusY);
-
-    void _initErode(double radiusX, double radiusY);
-
-    void _initMatrix(int filterQuality, Float64List matrix4);
-
-    void _initColorFilter(_ColorFilter colorFilter);
-
-    void _initComposed(_ImageFilter innerFilter, _ImageFilter outerFilter);
-
+    virtual void _constructor();
+    virtual void _initBlur(double sigmaX, double sigmaY, int tileMode);
+    virtual void _initDilate(double radiusX, double radiusY);
+    virtual void _initErode(double radiusX, double radiusY);
+    virtual void _initMatrix(int filterQuality, Float64List matrix4);
+    virtual void _initColorFilter(_ColorFilter colorFilter);
+    virtual void _initComposed(_ImageFilter innerFilter, _ImageFilter outerFilter);
 };
+using _ImageFilter = std::shared_ptr<_ImageFilterCls>;
 
-class Shader : NativeFieldWrapperClass1 {
+class ShaderCls : public NativeFieldWrapperClass1Cls {
 public:
 
 private:
 
-    void  _();
-
+    virtual void  _();
 };
+using Shader = std::shared_ptr<ShaderCls>;
 
 enum TileMode{
     clamp,
@@ -953,50 +904,45 @@ Float32List _encodePointList(List<Offset> points);
 Float32List _encodeTwoPoints(Offset pointA, Offset pointB);
 
 
-class Gradient : Shader {
+class GradientCls : public ShaderCls {
 public:
 
-    void  linear(List<double> colorStops, List<Color> colors, Offset from, Float64List matrix4, TileMode tileMode, Offset to);
+    virtual void  linear(List<double> colorStops, List<Color> colors, Offset from, Float64List matrix4, TileMode tileMode, Offset to);
 
-    void  radial(Offset center, List<double> colorStops, List<Color> colors, Offset focal, double focalRadius, Float64List matrix4, double radius, TileMode tileMode);
+    virtual void  radial(Offset center, List<double> colorStops, List<Color> colors, Offset focal, double focalRadius, Float64List matrix4, double radius, TileMode tileMode);
 
-    void  sweep(Offset center, List<double> colorStops, List<Color> colors, double endAngle, Float64List matrix4, double startAngle, TileMode tileMode);
+    virtual void  sweep(Offset center, List<double> colorStops, List<Color> colors, double endAngle, Float64List matrix4, double startAngle, TileMode tileMode);
 
 private:
 
-    void _constructor();
-
-    void _initLinear(Float32List colorStops, Int32List colors, Float32List endPoints, Float64List matrix4, int tileMode);
-
-    void _initRadial(double centerX, double centerY, Float32List colorStops, Int32List colors, Float64List matrix4, double radius, int tileMode);
-
-    void _initConical(Float32List colorStops, Int32List colors, double endRadius, double endX, double endY, Float64List matrix4, double startRadius, double startX, double startY, int tileMode);
-
-    void _initSweep(double centerX, double centerY, Float32List colorStops, Int32List colors, double endAngle, Float64List matrix, double startAngle, int tileMode);
-
+    virtual void _constructor();
+    virtual void _initLinear(Float32List colorStops, Int32List colors, Float32List endPoints, Float64List matrix4, int tileMode);
+    virtual void _initRadial(double centerX, double centerY, Float32List colorStops, Int32List colors, Float64List matrix4, double radius, int tileMode);
+    virtual void _initConical(Float32List colorStops, Int32List colors, double endRadius, double endX, double endY, Float64List matrix4, double startRadius, double startX, double startY, int tileMode);
+    virtual void _initSweep(double centerX, double centerY, Float32List colorStops, Int32List colors, double endAngle, Float64List matrix, double startAngle, int tileMode);
     static void _validateColorStops(List<double> colorStops, List<Color> colors);
 
 };
+using Gradient = std::shared_ptr<GradientCls>;
 
-class ImageShader : Shader {
+class ImageShaderCls : public ShaderCls {
 public:
 
-     ImageShader(FilterQuality filterQuality, Image image, Float64List matrix4, TileMode tmx, TileMode tmy);
+     ImageShaderCls(FilterQuality filterQuality, Image image, Float64List matrix4, TileMode tmx, TileMode tmy);
 
 private:
 
-    void _constructor();
-
-    String _initWithImage(int filterQualityIndex, _Image image, Float64List matrix4, int tmx, int tmy);
-
+    virtual void _constructor();
+    virtual String _initWithImage(int filterQualityIndex, _Image image, Float64List matrix4, int tmx, int tmy);
 };
+using ImageShader = std::shared_ptr<ImageShaderCls>;
 
-class FragmentProgram : NativeFieldWrapperClass1 {
+class FragmentProgramCls : public NativeFieldWrapperClass1Cls {
 public:
 
     static Future<FragmentProgram> compile(bool debugPrint, ByteBuffer spirv);
 
-    Shader shader(Float32List floatUniforms, List<ImageShader> samplerUniforms);
+    virtual Shader shader(Float32List floatUniforms, List<ImageShader> samplerUniforms);
 
 private:
     int _uniformFloatCount;
@@ -1004,22 +950,20 @@ private:
     int _samplerCount;
 
 
-    void  _(bool debugPrint, ByteBuffer spirv);
+    virtual void  _(bool debugPrint, ByteBuffer spirv);
 
-    void _constructor();
-
-    void _init(bool debugPrint, String sksl);
-
-    void _shader(Float32List floatUniforms, List<ImageShader> samplerUniforms, _FragmentShader shader);
-
+    virtual void _constructor();
+    virtual void _init(bool debugPrint, String sksl);
+    virtual void _shader(Float32List floatUniforms, List<ImageShader> samplerUniforms, _FragmentShader shader);
 };
+using FragmentProgram = std::shared_ptr<FragmentProgramCls>;
 
-class _FragmentShader : Shader {
+class _FragmentShaderCls : public ShaderCls {
 public:
 
-    bool ==(Object other);
+    virtual bool operator==(Object other);
 
-    int hashCode();
+    virtual int hashCode();
 
 private:
     FragmentProgram _builder;
@@ -1029,9 +973,10 @@ private:
     List<ImageShader> _samplerUniforms;
 
 
-     _FragmentShader(FragmentProgram _builder, Float32List _floatUniforms, List<ImageShader> _samplerUniforms);
+     _FragmentShaderCls(FragmentProgram _builder, Float32List _floatUniforms, List<ImageShader> _samplerUniforms);
 
 };
+using _FragmentShader = std::shared_ptr<_FragmentShaderCls>;
 
 enum VertexMode{
     triangles,
@@ -1039,18 +984,18 @@ enum VertexMode{
     triangleFan,
 } // end VertexMode
 
-class Vertices : NativeFieldWrapperClass1 {
+class VerticesCls : public NativeFieldWrapperClass1Cls {
 public:
 
-     Vertices(List<Color> colors, List<int> indices, VertexMode mode, List<Offset> positions, List<Offset> textureCoordinates);
+     VerticesCls(List<Color> colors, List<int> indices, VertexMode mode, List<Offset> positions, List<Offset> textureCoordinates);
 
-    void  raw(Int32List colors, Uint16List indices, VertexMode mode, Float32List positions, Float32List textureCoordinates);
+    virtual void  raw(Int32List colors, Uint16List indices, VertexMode mode, Float32List positions, Float32List textureCoordinates);
 
 private:
 
-    bool _init(Int32List colors, Uint16List indices, int mode, Vertices outVertices, Float32List positions, Float32List textureCoordinates);
-
+    virtual bool _init(Int32List colors, Uint16List indices, int mode, Vertices outVertices, Float32List positions, Float32List textureCoordinates);
 };
+using Vertices = std::shared_ptr<VerticesCls>;
 
 enum PointMode{
     points,
@@ -1063,190 +1008,152 @@ enum ClipOp{
     intersect,
 } // end ClipOp
 
-class Canvas : NativeFieldWrapperClass1 {
+class CanvasCls : public NativeFieldWrapperClass1Cls {
 public:
 
-     Canvas(Rect cullRect, PictureRecorder recorder);
+     CanvasCls(Rect cullRect, PictureRecorder recorder);
 
-    void save();
+    virtual void save();
+    virtual void saveLayer(Rect bounds, Paint paint);
 
-    void saveLayer(Rect bounds, Paint paint);
+    virtual void restore();
+    virtual int getSaveCount();
+    virtual void translate(double dx, double dy);
+    virtual void scale(double sx, double sy);
 
-    void restore();
+    virtual void rotate(double radians);
+    virtual void skew(double sx, double sy);
+    virtual void transform(Float64List matrix4);
 
-    int getSaveCount();
+    virtual Float64List getTransform();
 
-    void translate(double dx, double dy);
+    virtual void clipRect(ClipOp clipOp, bool doAntiAlias, Rect rect);
 
-    void scale(double sx, double sy);
+    virtual void clipRRect(bool doAntiAlias, RRect rrect);
 
-    void rotate(double radians);
+    virtual void clipPath(bool doAntiAlias, Path path);
 
-    void skew(double sx, double sy);
+    virtual Rect getLocalClipBounds();
 
-    void transform(Float64List matrix4);
+    virtual Rect getDestinationClipBounds();
 
-    Float64List getTransform();
+    virtual void drawColor(BlendMode blendMode, Color color);
 
-    void clipRect(ClipOp clipOp, bool doAntiAlias, Rect rect);
+    virtual void drawLine(Offset p1, Offset p2, Paint paint);
 
-    void clipRRect(bool doAntiAlias, RRect rrect);
+    virtual void drawPaint(Paint paint);
 
-    void clipPath(bool doAntiAlias, Path path);
+    virtual void drawRect(Paint paint, Rect rect);
 
-    Rect getLocalClipBounds();
+    virtual void drawRRect(Paint paint, RRect rrect);
 
-    Rect getDestinationClipBounds();
+    virtual void drawDRRect(RRect inner, RRect outer, Paint paint);
 
-    void drawColor(BlendMode blendMode, Color color);
+    virtual void drawOval(Paint paint, Rect rect);
 
-    void drawLine(Offset p1, Offset p2, Paint paint);
+    virtual void drawCircle(Offset c, Paint paint, double radius);
 
-    void drawPaint(Paint paint);
+    virtual void drawArc(Paint paint, Rect rect, double startAngle, double sweepAngle, bool useCenter);
 
-    void drawRect(Paint paint, Rect rect);
+    virtual void drawPath(Paint paint, Path path);
 
-    void drawRRect(Paint paint, RRect rrect);
+    virtual void drawImage(Image image, Offset offset, Paint paint);
 
-    void drawDRRect(RRect inner, RRect outer, Paint paint);
+    virtual void drawImageRect(Rect dst, Image image, Paint paint, Rect src);
 
-    void drawOval(Paint paint, Rect rect);
+    virtual void drawImageNine(Rect center, Rect dst, Image image, Paint paint);
 
-    void drawCircle(Offset c, Paint paint, double radius);
+    virtual void drawPicture(Picture picture);
 
-    void drawArc(Paint paint, Rect rect, double startAngle, double sweepAngle, bool useCenter);
+    virtual void drawParagraph(Offset offset, Paragraph paragraph);
 
-    void drawPath(Paint paint, Path path);
+    virtual void drawPoints(Paint paint, PointMode pointMode, List<Offset> points);
 
-    void drawImage(Image image, Offset offset, Paint paint);
+    virtual void drawRawPoints(Paint paint, PointMode pointMode, Float32List points);
 
-    void drawImageRect(Rect dst, Image image, Paint paint, Rect src);
+    virtual void drawVertices(BlendMode blendMode, Paint paint, Vertices vertices);
 
-    void drawImageNine(Rect center, Rect dst, Image image, Paint paint);
+    virtual void drawAtlas(Image atlas, BlendMode blendMode, List<Color> colors, Rect cullRect, Paint paint, List<Rect> rects, List<RSTransform> transforms);
 
-    void drawPicture(Picture picture);
+    virtual void drawRawAtlas(Image atlas, BlendMode blendMode, Int32List colors, Rect cullRect, Paint paint, Float32List rects, Float32List rstTransforms);
 
-    void drawParagraph(Offset offset, Paragraph paragraph);
-
-    void drawPoints(Paint paint, PointMode pointMode, List<Offset> points);
-
-    void drawRawPoints(Paint paint, PointMode pointMode, Float32List points);
-
-    void drawVertices(BlendMode blendMode, Paint paint, Vertices vertices);
-
-    void drawAtlas(Image atlas, BlendMode blendMode, List<Color> colors, Rect cullRect, Paint paint, List<Rect> rects, List<RSTransform> transforms);
-
-    void drawRawAtlas(Image atlas, BlendMode blendMode, Int32List colors, Rect cullRect, Paint paint, Float32List rects, Float32List rstTransforms);
-
-    void drawShadow(Color color, double elevation, Path path, bool transparentOccluder);
+    virtual void drawShadow(Color color, double elevation, Path path, bool transparentOccluder);
 
 private:
     PictureRecorder _recorder;
 
 
-    void _constructor(double bottom, double left, PictureRecorder recorder, double right, double top);
-
-    void _saveLayerWithoutBounds(ByteData paintData, List<Object> paintObjects);
-
-    void _saveLayer(double bottom, double left, ByteData paintData, List<Object> paintObjects, double right, double top);
-
-    void _scale(double sx, double sy);
-
-    void _transform(Float64List matrix4);
-
-    void _getTransform(Float64List matrix4);
-
-    void _clipRect(double bottom, int clipOp, bool doAntiAlias, double left, double right, double top);
-
-    void _clipRRect(bool doAntiAlias, Float32List rrect);
-
-    void _clipPath(bool doAntiAlias, Path path);
-
-    void _getLocalClipBounds(Float64List bounds);
-
-    void _getDestinationClipBounds(Float64List bounds);
-
-    void _drawColor(int blendMode, int color);
-
-    void _drawLine(ByteData paintData, List<Object> paintObjects, double x1, double x2, double y1, double y2);
-
-    void _drawPaint(ByteData paintData, List<Object> paintObjects);
-
-    void _drawRect(double bottom, double left, ByteData paintData, List<Object> paintObjects, double right, double top);
-
-    void _drawRRect(ByteData paintData, List<Object> paintObjects, Float32List rrect);
-
-    void _drawDRRect(Float32List inner, Float32List outer, ByteData paintData, List<Object> paintObjects);
-
-    void _drawOval(double bottom, double left, ByteData paintData, List<Object> paintObjects, double right, double top);
-
-    void _drawCircle(ByteData paintData, List<Object> paintObjects, double radius, double x, double y);
-
-    void _drawArc(double bottom, double left, ByteData paintData, List<Object> paintObjects, double right, double startAngle, double sweepAngle, double top, bool useCenter);
-
-    void _drawPath(ByteData paintData, List<Object> paintObjects, Path path);
-
-    String _drawImage(int filterQualityIndex, _Image image, ByteData paintData, List<Object> paintObjects, double x, double y);
-
-    String _drawImageRect(double dstBottom, double dstLeft, double dstRight, double dstTop, int filterQualityIndex, _Image image, ByteData paintData, List<Object> paintObjects, double srcBottom, double srcLeft, double srcRight, double srcTop);
-
-    String _drawImageNine(double centerBottom, double centerLeft, double centerRight, double centerTop, double dstBottom, double dstLeft, double dstRight, double dstTop, int filterQualityIndex, _Image image, ByteData paintData, List<Object> paintObjects);
-
-    void _drawPicture(Picture picture);
-
-    void _drawPoints(ByteData paintData, List<Object> paintObjects, int pointMode, Float32List points);
-
-    void _drawVertices(int blendMode, ByteData paintData, List<Object> paintObjects, Vertices vertices);
-
-    String _drawAtlas(_Image atlas, int blendMode, Int32List colors, Float32List cullRect, int filterQualityIndex, ByteData paintData, List<Object> paintObjects, Float32List rects, Float32List rstTransforms);
-
-    void _drawShadow(int color, double elevation, Path path, bool transparentOccluder);
-
+    virtual void _constructor(double bottom, double left, PictureRecorder recorder, double right, double top);
+    virtual void _saveLayerWithoutBounds(ByteData paintData, List<Object> paintObjects);
+    virtual void _saveLayer(double bottom, double left, ByteData paintData, List<Object> paintObjects, double right, double top);
+    virtual void _scale(double sx, double sy);
+    virtual void _transform(Float64List matrix4);
+    virtual void _getTransform(Float64List matrix4);
+    virtual void _clipRect(double bottom, int clipOp, bool doAntiAlias, double left, double right, double top);
+    virtual void _clipRRect(bool doAntiAlias, Float32List rrect);
+    virtual void _clipPath(bool doAntiAlias, Path path);
+    virtual void _getLocalClipBounds(Float64List bounds);
+    virtual void _getDestinationClipBounds(Float64List bounds);
+    virtual void _drawColor(int blendMode, int color);
+    virtual void _drawLine(ByteData paintData, List<Object> paintObjects, double x1, double x2, double y1, double y2);
+    virtual void _drawPaint(ByteData paintData, List<Object> paintObjects);
+    virtual void _drawRect(double bottom, double left, ByteData paintData, List<Object> paintObjects, double right, double top);
+    virtual void _drawRRect(ByteData paintData, List<Object> paintObjects, Float32List rrect);
+    virtual void _drawDRRect(Float32List inner, Float32List outer, ByteData paintData, List<Object> paintObjects);
+    virtual void _drawOval(double bottom, double left, ByteData paintData, List<Object> paintObjects, double right, double top);
+    virtual void _drawCircle(ByteData paintData, List<Object> paintObjects, double radius, double x, double y);
+    virtual void _drawArc(double bottom, double left, ByteData paintData, List<Object> paintObjects, double right, double startAngle, double sweepAngle, double top, bool useCenter);
+    virtual void _drawPath(ByteData paintData, List<Object> paintObjects, Path path);
+    virtual String _drawImage(int filterQualityIndex, _Image image, ByteData paintData, List<Object> paintObjects, double x, double y);
+    virtual String _drawImageRect(double dstBottom, double dstLeft, double dstRight, double dstTop, int filterQualityIndex, _Image image, ByteData paintData, List<Object> paintObjects, double srcBottom, double srcLeft, double srcRight, double srcTop);
+    virtual String _drawImageNine(double centerBottom, double centerLeft, double centerRight, double centerTop, double dstBottom, double dstLeft, double dstRight, double dstTop, int filterQualityIndex, _Image image, ByteData paintData, List<Object> paintObjects);
+    virtual void _drawPicture(Picture picture);
+    virtual void _drawPoints(ByteData paintData, List<Object> paintObjects, int pointMode, Float32List points);
+    virtual void _drawVertices(int blendMode, ByteData paintData, List<Object> paintObjects, Vertices vertices);
+    virtual String _drawAtlas(_Image atlas, int blendMode, Int32List colors, Float32List cullRect, int filterQualityIndex, ByteData paintData, List<Object> paintObjects, Float32List rects, Float32List rstTransforms);
+    virtual void _drawShadow(int color, double elevation, Path path, bool transparentOccluder);
 };
+using Canvas = std::shared_ptr<CanvasCls>;
 
-class Picture : NativeFieldWrapperClass1 {
+class PictureCls : public NativeFieldWrapperClass1Cls {
 public:
 
-    Future<Image> toImage(int height, int width);
+    virtual Future<Image> toImage(int height, int width);
 
-    void dispose();
+    virtual void dispose();
 
-    bool debugDisposed();
+    virtual bool debugDisposed();
 
-    int approximateBytesUsed();
-
+    virtual int approximateBytesUsed();
 private:
     bool _disposed;
 
 
-    void  _();
-
-    String _toImage(_Callback<_Image> callback, int height, int width);
-
-    void _dispose();
-
+    virtual void  _();
+    virtual String _toImage(_Callback<_Image> callback, int height, int width);
+    virtual void _dispose();
 };
+using Picture = std::shared_ptr<PictureCls>;
 
-class PictureRecorder : NativeFieldWrapperClass1 {
+class PictureRecorderCls : public NativeFieldWrapperClass1Cls {
 public:
 
-     PictureRecorder();
+     PictureRecorderCls();
 
-    bool isRecording();
+    virtual bool isRecording();
 
-    Picture endRecording();
+    virtual Picture endRecording();
 
 private:
     Canvas _canvas;
 
 
-    void _constructor();
-
-    void _endRecording(Picture outPicture);
-
+    virtual void _constructor();
+    virtual void _endRecording(Picture outPicture);
 };
+using PictureRecorder = std::shared_ptr<PictureRecorderCls>;
 
-class Shadow {
+class ShadowCls : public ObjectCls {
 public:
     Color color;
 
@@ -1255,56 +1162,57 @@ public:
     double blurRadius;
 
 
-     Shadow(double blurRadius, Color color, Offset offset);
+     ShadowCls(double blurRadius, Color color, Offset offset);
 
     static double convertRadiusToSigma(double radius);
 
-    double blurSigma();
+    virtual double blurSigma();
 
-    Paint toPaint();
+    virtual Paint toPaint();
 
-    Shadow scale(double factor);
+    virtual Shadow scale(double factor);
 
     static Shadow lerp(Shadow a, Shadow b, double t);
 
     static List<Shadow> lerpList(List<Shadow> a, List<Shadow> b, double t);
 
-    bool ==(Object other);
+    virtual bool operator==(Object other);
 
-    int hashCode();
+    virtual int hashCode();
 
-    String toString();
+    virtual String toString();
 
 private:
-    static const int _kColorDefault;
+    static int _kColorDefault;
 
-    static const int _kBytesPerShadow;
+    static int _kBytesPerShadow;
 
-    static const int _kColorOffset;
+    static int _kColorOffset;
 
-    static const int _kXOffset;
+    static int _kXOffset;
 
-    static const int _kYOffset;
+    static int _kYOffset;
 
-    static const int _kBlurOffset;
+    static int _kBlurOffset;
 
 
     static ByteData _encodeShadows(List<Shadow> shadows);
 
 };
+using Shadow = std::shared_ptr<ShadowCls>;
 
-class ImmutableBuffer : NativeFieldWrapperClass1 {
+class ImmutableBufferCls : public NativeFieldWrapperClass1Cls {
 public:
 
     static Future<ImmutableBuffer> fromUint8List(Uint8List list);
 
     static Future<ImmutableBuffer> fromAsset(String assetKey);
 
-    int length();
+    virtual int length();
 
-    bool debugDisposed();
+    virtual bool debugDisposed();
 
-    void dispose();
+    virtual void dispose();
 
 private:
     int _length;
@@ -1312,32 +1220,28 @@ private:
     bool _debugDisposed;
 
 
-    void  _(int _length);
-
-    void _init(_Callback<void> callback, Uint8List list);
-
-    String _initFromAsset(String assetKey, _Callback<int> callback);
-
-    void _dispose();
-
+    virtual void  _(int _length);
+    virtual void _init(_Callback<void> callback, Uint8List list);
+    virtual String _initFromAsset(String assetKey, _Callback<int> callback);
+    virtual void _dispose();
 };
+using ImmutableBuffer = std::shared_ptr<ImmutableBufferCls>;
 
-class ImageDescriptor : NativeFieldWrapperClass1 {
+class ImageDescriptorCls : public NativeFieldWrapperClass1Cls {
 public:
 
     static Future<ImageDescriptor> encoded(ImmutableBuffer buffer);
 
-    void  raw(ImmutableBuffer buffer, int height, PixelFormat pixelFormat, int rowBytes, int width);
+    virtual void  raw(ImmutableBuffer buffer, int height, PixelFormat pixelFormat, int rowBytes, int width);
 
-    int width();
+    virtual int width();
 
-    int height();
+    virtual int height();
 
-    int bytesPerPixel();
+    virtual int bytesPerPixel();
 
-    void dispose();
-
-    Future<Codec> instantiateCodec(int targetHeight, int targetWidth);
+    virtual void dispose();
+    virtual Future<Codec> instantiateCodec(int targetHeight, int targetWidth);
 
 private:
     int _width;
@@ -1347,37 +1251,32 @@ private:
     int _bytesPerPixel;
 
 
-    void  _();
-
-    String _initEncoded(ImmutableBuffer buffer, _Callback<void> callback);
-
-    void _initRaw(ImmutableBuffer buffer, int height, ImageDescriptor outDescriptor, int pixelFormat, int rowBytes, int width);
-
-    int _getWidth();
-
-    int _getHeight();
-
-    int _getBytesPerPixel();
-
-    void _instantiateCodec(Codec outCodec, int targetHeight, int targetWidth);
-
+    virtual void  _();
+    virtual String _initEncoded(ImmutableBuffer buffer, _Callback<void> callback);
+    virtual void _initRaw(ImmutableBuffer buffer, int height, ImageDescriptor outDescriptor, int pixelFormat, int rowBytes, int width);
+    virtual int _getWidth();
+    virtual int _getHeight();
+    virtual int _getBytesPerPixel();
+    virtual void _instantiateCodec(Codec outCodec, int targetHeight, int targetWidth);
 };
-Future<T> _futurize<T>(_Callbacker<T> callbacker);
+using ImageDescriptor = std::shared_ptr<ImageDescriptorCls>;
+template<typename T>  Future<T> _futurize(_Callbacker<T> callbacker);
 
 
-class PictureRasterizationException {
+class PictureRasterizationExceptionCls : public ObjectCls {
 public:
     String message;
 
     StackTrace stack;
 
 
-    String toString();
+    virtual String toString();
 
 private:
 
-    void  _(String message, StackTrace stack);
-
+    virtual void  _(String message, StackTrace stack);
 };
+using PictureRasterizationException = std::shared_ptr<PictureRasterizationExceptionCls>;
+
 
 #endif

@@ -1,305 +1,303 @@
-#ifndef SEMANTICS_H
-#define SEMANTICS_H
-#include <memory>
+#ifndef DART_UI_SEMANTICS
+#define DART_UI_SEMANTICS
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
 
 
-
-
-class SemanticsAction {
+class SemanticsActionCls : public ObjectCls {
 public:
     int index;
 
-    static const SemanticsAction tap;
+    static SemanticsAction tap;
 
-    static const SemanticsAction longPress;
+    static SemanticsAction longPress;
 
-    static const SemanticsAction scrollLeft;
+    static SemanticsAction scrollLeft;
 
-    static const SemanticsAction scrollRight;
+    static SemanticsAction scrollRight;
 
-    static const SemanticsAction scrollUp;
+    static SemanticsAction scrollUp;
 
-    static const SemanticsAction scrollDown;
+    static SemanticsAction scrollDown;
 
-    static const SemanticsAction increase;
+    static SemanticsAction increase;
 
-    static const SemanticsAction decrease;
+    static SemanticsAction decrease;
 
-    static const SemanticsAction showOnScreen;
+    static SemanticsAction showOnScreen;
 
-    static const SemanticsAction moveCursorForwardByCharacter;
+    static SemanticsAction moveCursorForwardByCharacter;
 
-    static const SemanticsAction moveCursorBackwardByCharacter;
+    static SemanticsAction moveCursorBackwardByCharacter;
 
-    static const SemanticsAction setText;
+    static SemanticsAction setText;
 
-    static const SemanticsAction setSelection;
+    static SemanticsAction setSelection;
 
-    static const SemanticsAction copy;
+    static SemanticsAction copy;
 
-    static const SemanticsAction cut;
+    static SemanticsAction cut;
 
-    static const SemanticsAction paste;
+    static SemanticsAction paste;
 
-    static const SemanticsAction didGainAccessibilityFocus;
+    static SemanticsAction didGainAccessibilityFocus;
 
-    static const SemanticsAction didLoseAccessibilityFocus;
+    static SemanticsAction didLoseAccessibilityFocus;
 
-    static const SemanticsAction customAction;
+    static SemanticsAction customAction;
 
-    static const SemanticsAction dismiss;
+    static SemanticsAction dismiss;
 
-    static const SemanticsAction moveCursorForwardByWord;
+    static SemanticsAction moveCursorForwardByWord;
 
-    static const SemanticsAction moveCursorBackwardByWord;
+    static SemanticsAction moveCursorBackwardByWord;
 
-    static const Map<int, SemanticsAction> values;
+    static Map<int, SemanticsAction> values;
 
 
-    String toString();
+    virtual String toString();
 
 private:
-    static const int _kTapIndex;
+    static int _kTapIndex;
 
-    static const int _kLongPressIndex;
+    static int _kLongPressIndex;
 
-    static const int _kScrollLeftIndex;
+    static int _kScrollLeftIndex;
 
-    static const int _kScrollRightIndex;
+    static int _kScrollRightIndex;
 
-    static const int _kScrollUpIndex;
+    static int _kScrollUpIndex;
 
-    static const int _kScrollDownIndex;
+    static int _kScrollDownIndex;
 
-    static const int _kIncreaseIndex;
+    static int _kIncreaseIndex;
 
-    static const int _kDecreaseIndex;
+    static int _kDecreaseIndex;
 
-    static const int _kShowOnScreenIndex;
+    static int _kShowOnScreenIndex;
 
-    static const int _kMoveCursorForwardByCharacterIndex;
+    static int _kMoveCursorForwardByCharacterIndex;
 
-    static const int _kMoveCursorBackwardByCharacterIndex;
+    static int _kMoveCursorBackwardByCharacterIndex;
 
-    static const int _kSetSelectionIndex;
+    static int _kSetSelectionIndex;
 
-    static const int _kCopyIndex;
+    static int _kCopyIndex;
 
-    static const int _kCutIndex;
+    static int _kCutIndex;
 
-    static const int _kPasteIndex;
+    static int _kPasteIndex;
 
-    static const int _kDidGainAccessibilityFocusIndex;
+    static int _kDidGainAccessibilityFocusIndex;
 
-    static const int _kDidLoseAccessibilityFocusIndex;
+    static int _kDidLoseAccessibilityFocusIndex;
 
-    static const int _kCustomActionIndex;
+    static int _kCustomActionIndex;
 
-    static const int _kDismissIndex;
+    static int _kDismissIndex;
 
-    static const int _kMoveCursorForwardByWordIndex;
+    static int _kMoveCursorForwardByWordIndex;
 
-    static const int _kMoveCursorBackwardByWordIndex;
+    static int _kMoveCursorBackwardByWordIndex;
 
-    static const int _kSetTextIndex;
+    static int _kSetTextIndex;
 
 
-    void  _(int index);
+    virtual void  _(int index);
 
 };
+using SemanticsAction = std::shared_ptr<SemanticsActionCls>;
 
-class SemanticsFlag {
+class SemanticsFlagCls : public ObjectCls {
 public:
     int index;
 
-    static const SemanticsFlag hasCheckedState;
+    static SemanticsFlag hasCheckedState;
 
-    static const SemanticsFlag isChecked;
+    static SemanticsFlag isChecked;
 
-    static const SemanticsFlag isSelected;
+    static SemanticsFlag isSelected;
 
-    static const SemanticsFlag isButton;
+    static SemanticsFlag isButton;
 
-    static const SemanticsFlag isTextField;
+    static SemanticsFlag isTextField;
 
-    static const SemanticsFlag isSlider;
+    static SemanticsFlag isSlider;
 
-    static const SemanticsFlag isKeyboardKey;
+    static SemanticsFlag isKeyboardKey;
 
-    static const SemanticsFlag isReadOnly;
+    static SemanticsFlag isReadOnly;
 
-    static const SemanticsFlag isLink;
+    static SemanticsFlag isLink;
 
-    static const SemanticsFlag isFocusable;
+    static SemanticsFlag isFocusable;
 
-    static const SemanticsFlag isFocused;
+    static SemanticsFlag isFocused;
 
-    static const SemanticsFlag hasEnabledState;
+    static SemanticsFlag hasEnabledState;
 
-    static const SemanticsFlag isEnabled;
+    static SemanticsFlag isEnabled;
 
-    static const SemanticsFlag isInMutuallyExclusiveGroup;
+    static SemanticsFlag isInMutuallyExclusiveGroup;
 
-    static const SemanticsFlag isHeader;
+    static SemanticsFlag isHeader;
 
-    static const SemanticsFlag isObscured;
+    static SemanticsFlag isObscured;
 
-    static const SemanticsFlag isMultiline;
+    static SemanticsFlag isMultiline;
 
-    static const SemanticsFlag scopesRoute;
+    static SemanticsFlag scopesRoute;
 
-    static const SemanticsFlag namesRoute;
+    static SemanticsFlag namesRoute;
 
-    static const SemanticsFlag isHidden;
+    static SemanticsFlag isHidden;
 
-    static const SemanticsFlag isImage;
+    static SemanticsFlag isImage;
 
-    static const SemanticsFlag isLiveRegion;
+    static SemanticsFlag isLiveRegion;
 
-    static const SemanticsFlag hasToggledState;
+    static SemanticsFlag hasToggledState;
 
-    static const SemanticsFlag isToggled;
+    static SemanticsFlag isToggled;
 
-    static const SemanticsFlag hasImplicitScrolling;
+    static SemanticsFlag hasImplicitScrolling;
 
-    static const Map<int, SemanticsFlag> values;
+    static Map<int, SemanticsFlag> values;
 
 
-    String toString();
+    virtual String toString();
 
 private:
-    static const int _kHasCheckedStateIndex;
+    static int _kHasCheckedStateIndex;
 
-    static const int _kIsCheckedIndex;
+    static int _kIsCheckedIndex;
 
-    static const int _kIsSelectedIndex;
+    static int _kIsSelectedIndex;
 
-    static const int _kIsButtonIndex;
+    static int _kIsButtonIndex;
 
-    static const int _kIsTextFieldIndex;
+    static int _kIsTextFieldIndex;
 
-    static const int _kIsFocusedIndex;
+    static int _kIsFocusedIndex;
 
-    static const int _kHasEnabledStateIndex;
+    static int _kHasEnabledStateIndex;
 
-    static const int _kIsEnabledIndex;
+    static int _kIsEnabledIndex;
 
-    static const int _kIsInMutuallyExclusiveGroupIndex;
+    static int _kIsInMutuallyExclusiveGroupIndex;
 
-    static const int _kIsHeaderIndex;
+    static int _kIsHeaderIndex;
 
-    static const int _kIsObscuredIndex;
+    static int _kIsObscuredIndex;
 
-    static const int _kScopesRouteIndex;
+    static int _kScopesRouteIndex;
 
-    static const int _kNamesRouteIndex;
+    static int _kNamesRouteIndex;
 
-    static const int _kIsHiddenIndex;
+    static int _kIsHiddenIndex;
 
-    static const int _kIsImageIndex;
+    static int _kIsImageIndex;
 
-    static const int _kIsLiveRegionIndex;
+    static int _kIsLiveRegionIndex;
 
-    static const int _kHasToggledStateIndex;
+    static int _kHasToggledStateIndex;
 
-    static const int _kIsToggledIndex;
+    static int _kIsToggledIndex;
 
-    static const int _kHasImplicitScrollingIndex;
+    static int _kHasImplicitScrollingIndex;
 
-    static const int _kIsMultilineIndex;
+    static int _kIsMultilineIndex;
 
-    static const int _kIsReadOnlyIndex;
+    static int _kIsReadOnlyIndex;
 
-    static const int _kIsFocusableIndex;
+    static int _kIsFocusableIndex;
 
-    static const int _kIsLinkIndex;
+    static int _kIsLinkIndex;
 
-    static const int _kIsSliderIndex;
+    static int _kIsSliderIndex;
 
-    static const int _kIsKeyboardKeyIndex;
+    static int _kIsKeyboardKeyIndex;
 
 
-    void  _(int index);
+    virtual void  _(int index);
 
 };
+using SemanticsFlag = std::shared_ptr<SemanticsFlagCls>;
 
-class StringAttribute : NativeFieldWrapperClass1 {
+class StringAttributeCls : public NativeFieldWrapperClass1Cls {
 public:
     TextRange range;
 
 
-    StringAttribute copy(TextRange range);
-
+    virtual StringAttribute copy(TextRange range);
 private:
 
-    void  _(TextRange range);
-
+    virtual void  _(TextRange range);
 };
+using StringAttribute = std::shared_ptr<StringAttributeCls>;
 
-class SpellOutStringAttribute : StringAttribute {
+class SpellOutStringAttributeCls : public StringAttributeCls {
 public:
 
-     SpellOutStringAttribute(TextRange range);
+     SpellOutStringAttributeCls(TextRange range);
 
-    StringAttribute copy(TextRange range);
+    virtual StringAttribute copy(TextRange range);
 
-    String toString();
+    virtual String toString();
 
 private:
 
-    void _initSpellOutStringAttribute(int end, SpellOutStringAttribute instance, int start);
-
+    virtual void _initSpellOutStringAttribute(int end, SpellOutStringAttribute instance, int start);
 };
+using SpellOutStringAttribute = std::shared_ptr<SpellOutStringAttributeCls>;
 
-class LocaleStringAttribute : StringAttribute {
+class LocaleStringAttributeCls : public StringAttributeCls {
 public:
     Locale locale;
 
 
-     LocaleStringAttribute(Locale locale, TextRange range);
+     LocaleStringAttributeCls(Locale locale, TextRange range);
 
-    StringAttribute copy(TextRange range);
+    virtual StringAttribute copy(TextRange range);
 
-    String toString();
+    virtual String toString();
 
 private:
 
-    void _initLocaleStringAttribute(int end, LocaleStringAttribute instance, String locale, int start);
-
+    virtual void _initLocaleStringAttribute(int end, LocaleStringAttribute instance, String locale, int start);
 };
+using LocaleStringAttribute = std::shared_ptr<LocaleStringAttributeCls>;
 
-class SemanticsUpdateBuilder : NativeFieldWrapperClass1 {
+class SemanticsUpdateBuilderCls : public NativeFieldWrapperClass1Cls {
 public:
 
-     SemanticsUpdateBuilder();
+     SemanticsUpdateBuilderCls();
 
-    void updateNode(int actions, Int32List additionalActions, Int32List childrenInHitTestOrder, Int32List childrenInTraversalOrder, int currentValueLength, String decreasedValue, List<StringAttribute> decreasedValueAttributes, double elevation, int flags, String hint, List<StringAttribute> hintAttributes, int id, String increasedValue, List<StringAttribute> increasedValueAttributes, String label, List<StringAttribute> labelAttributes, int maxValueLength, int platformViewId, Rect rect, int scrollChildren, double scrollExtentMax, double scrollExtentMin, int scrollIndex, double scrollPosition, TextDirection textDirection, int textSelectionBase, int textSelectionExtent, double thickness, String tooltip, Float64List transform, String value, List<StringAttribute> valueAttributes);
+    virtual void updateNode(int actions, Int32List additionalActions, Int32List childrenInHitTestOrder, Int32List childrenInTraversalOrder, int currentValueLength, String decreasedValue, List<StringAttribute> decreasedValueAttributes, double elevation, int flags, String hint, List<StringAttribute> hintAttributes, int id, String increasedValue, List<StringAttribute> increasedValueAttributes, String label, List<StringAttribute> labelAttributes, int maxValueLength, int platformViewId, Rect rect, int scrollChildren, double scrollExtentMax, double scrollExtentMin, int scrollIndex, double scrollPosition, TextDirection textDirection, int textSelectionBase, int textSelectionExtent, double thickness, String tooltip, Float64List transform, String value, List<StringAttribute> valueAttributes);
 
-    void updateCustomAction(String hint, int id, String label, int overrideId);
+    virtual void updateCustomAction(String hint, int id, String label, int overrideId);
 
-    SemanticsUpdate build();
+    virtual SemanticsUpdate build();
 
 private:
 
-    void _constructor();
-
-    void _updateNode(int actions, Int32List additionalActions, double bottom, Int32List childrenInHitTestOrder, Int32List childrenInTraversalOrder, int currentValueLength, String decreasedValue, List<StringAttribute> decreasedValueAttributes, double elevation, int flags, String hint, List<StringAttribute> hintAttributes, int id, String increasedValue, List<StringAttribute> increasedValueAttributes, String label, List<StringAttribute> labelAttributes, double left, int maxValueLength, int platformViewId, double right, int scrollChildren, double scrollExtentMax, double scrollExtentMin, int scrollIndex, double scrollPosition, int textDirection, int textSelectionBase, int textSelectionExtent, double thickness, String tooltip, double top, Float64List transform, String value, List<StringAttribute> valueAttributes);
-
-    void _updateCustomAction(String hint, int id, String label, int overrideId);
-
-    void _build(SemanticsUpdate outSemanticsUpdate);
-
+    virtual void _constructor();
+    virtual void _updateNode(int actions, Int32List additionalActions, double bottom, Int32List childrenInHitTestOrder, Int32List childrenInTraversalOrder, int currentValueLength, String decreasedValue, List<StringAttribute> decreasedValueAttributes, double elevation, int flags, String hint, List<StringAttribute> hintAttributes, int id, String increasedValue, List<StringAttribute> increasedValueAttributes, String label, List<StringAttribute> labelAttributes, double left, int maxValueLength, int platformViewId, double right, int scrollChildren, double scrollExtentMax, double scrollExtentMin, int scrollIndex, double scrollPosition, int textDirection, int textSelectionBase, int textSelectionExtent, double thickness, String tooltip, double top, Float64List transform, String value, List<StringAttribute> valueAttributes);
+    virtual void _updateCustomAction(String hint, int id, String label, int overrideId);
+    virtual void _build(SemanticsUpdate outSemanticsUpdate);
 };
+using SemanticsUpdateBuilder = std::shared_ptr<SemanticsUpdateBuilderCls>;
 
-class SemanticsUpdate : NativeFieldWrapperClass1 {
+class SemanticsUpdateCls : public NativeFieldWrapperClass1Cls {
 public:
 
-    void dispose();
-
+    virtual void dispose();
 private:
 
-    void  _();
-
+    virtual void  _();
 };
+using SemanticsUpdate = std::shared_ptr<SemanticsUpdateCls>;
+
 
 #endif

@@ -1,32 +1,32 @@
-#ifndef TRIANGLE_H
-#define TRIANGLE_H
-#include <memory>
+#ifndef PACKAGES_VECTOR_MATH_SRC_VECTOR_MATH_64_TRIANGLE
+#define PACKAGES_VECTOR_MATH_SRC_VECTOR_MATH_64_TRIANGLE
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
 
 
-
-
-class Triangle {
+class TriangleCls : public ObjectCls {
 public:
 
-    Vector3 point0();
+    virtual Vector3 point0();
 
-    Vector3 point1();
+    virtual Vector3 point1();
 
-    Vector3 point2();
+    virtual Vector3 point2();
 
-     Triangle();
+     TriangleCls();
 
-    void  copy(Triangle other);
+    virtual void  copy(Triangle other);
 
-    void  points(Vector3 point0, Vector3 point1, Vector3 point2);
+    virtual void  points(Vector3 point0, Vector3 point1, Vector3 point2);
 
-    void copyFrom(Triangle other);
+    virtual void copyFrom(Triangle other);
 
-    void copyNormalInto(Vector3 normal);
+    virtual void copyNormalInto(Vector3 normal);
 
-    void transform(Matrix4 t);
+    virtual void transform(Matrix4 t);
 
-    void translate(Vector3 offset);
+    virtual void translate(Vector3 offset);
 
 private:
     Vector3 _point0;
@@ -37,5 +37,7 @@ private:
 
 
 };
+using Triangle = std::shared_ptr<TriangleCls>;
+
 
 #endif

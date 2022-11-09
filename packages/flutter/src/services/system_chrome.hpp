@@ -1,15 +1,15 @@
-#ifndef SYSTEM_CHROME_H
-#define SYSTEM_CHROME_H
-#include <memory>
-#include <ui.hpp>
+#ifndef PACKAGES_FLUTTER_SRC_SERVICES_SYSTEM_CHROME
+#define PACKAGES_FLUTTER_SRC_SERVICES_SYSTEM_CHROME
+#include <base.hpp>
+#include <dart/ui/ui.hpp>
 #include "binding.hpp"
 
-#include <async/async.hpp>
-#include <ui/ui.hpp>
-#include <flutter/foundation.hpp>
+#include <dart/core/core.hpp>
+#include <dart/async/async.hpp>
+#include <dart/ui/ui.hpp>
+#include <packages/flutter/lib/foundation.hpp>
 #include "binding.hpp"
 #include "system_channels.hpp"
-
 
 
 enum DeviceOrientation{
@@ -19,18 +19,18 @@ enum DeviceOrientation{
     landscapeRight,
 } // end DeviceOrientation
 
-class ApplicationSwitcherDescription {
+class ApplicationSwitcherDescriptionCls : public ObjectCls {
 public:
     String label;
 
     int primaryColor;
 
 
-     ApplicationSwitcherDescription(String label, int primaryColor);
-
+     ApplicationSwitcherDescriptionCls(String label, int primaryColor);
 private:
 
 };
+using ApplicationSwitcherDescription = std::shared_ptr<ApplicationSwitcherDescriptionCls>;
 
 enum SystemUiOverlay{
     top,
@@ -45,7 +45,7 @@ enum SystemUiMode{
     manual,
 } // end SystemUiMode
 
-class SystemUiOverlayStyle {
+class SystemUiOverlayStyleCls : public ObjectCls {
 public:
     Color systemNavigationBarColor;
 
@@ -63,30 +63,30 @@ public:
 
     bool systemStatusBarContrastEnforced;
 
-    static const SystemUiOverlayStyle light;
+    static SystemUiOverlayStyle light;
 
-    static const SystemUiOverlayStyle dark;
+    static SystemUiOverlayStyle dark;
 
 
-     SystemUiOverlayStyle(Brightness statusBarBrightness, Color statusBarColor, Brightness statusBarIconBrightness, Color systemNavigationBarColor, bool systemNavigationBarContrastEnforced, Color systemNavigationBarDividerColor, Brightness systemNavigationBarIconBrightness, bool systemStatusBarContrastEnforced);
+     SystemUiOverlayStyleCls(Brightness statusBarBrightness, Color statusBarColor, Brightness statusBarIconBrightness, Color systemNavigationBarColor, bool systemNavigationBarContrastEnforced, Color systemNavigationBarDividerColor, Brightness systemNavigationBarIconBrightness, bool systemStatusBarContrastEnforced);
+    virtual String toString();
 
-    String toString();
+    virtual SystemUiOverlayStyle copyWith(Brightness statusBarBrightness, Color statusBarColor, Brightness statusBarIconBrightness, Color systemNavigationBarColor, bool systemNavigationBarContrastEnforced, Color systemNavigationBarDividerColor, Brightness systemNavigationBarIconBrightness, bool systemStatusBarContrastEnforced);
 
-    SystemUiOverlayStyle copyWith(Brightness statusBarBrightness, Color statusBarColor, Brightness statusBarIconBrightness, Color systemNavigationBarColor, bool systemNavigationBarContrastEnforced, Color systemNavigationBarDividerColor, Brightness systemNavigationBarIconBrightness, bool systemStatusBarContrastEnforced);
+    virtual int hashCode();
 
-    int hashCode();
-
-    bool ==(Object other);
+    virtual bool operator==(Object other);
 
 private:
 
-    Map<String, dynamic> _toMap();
+    virtual Map<String, dynamic> _toMap();
 
 };
+using SystemUiOverlayStyle = std::shared_ptr<SystemUiOverlayStyleCls>;
 List<String> _stringify(List<dynamic> list);
 
 
-class SystemChrome {
+class SystemChromeCls : public ObjectCls {
 public:
 
     static Future<void> setPreferredOrientations(List<DeviceOrientation> orientations);
@@ -111,8 +111,9 @@ private:
     static SystemUiOverlayStyle _latestStyle;
 
 
-    void  _();
-
+    virtual void  _();
 };
+using SystemChrome = std::shared_ptr<SystemChromeCls>;
+
 
 #endif

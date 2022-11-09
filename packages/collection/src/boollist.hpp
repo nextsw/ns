@@ -1,92 +1,94 @@
-#ifndef BOOLLIST_H
-#define BOOLLIST_H
-#include <memory>
+#ifndef PACKAGES_COLLECTION_SRC_BOOLLIST
+#define PACKAGES_COLLECTION_SRC_BOOLLIST
+#include <base.hpp>
 
-#include <collection/collection.hpp>
-#include <typed_data/typed_data.hpp>
+#include <dart/core/core.hpp>
+#include <dart/collection/collection.hpp>
+#include <dart/typed_data/typed_data.hpp>
 #include "unmodifiable_wrappers.hpp"
 
 
-
-class BoolList {
+class BoolListCls : public ObjectCls {
 public:
 
-     BoolList(bool fill, bool growable, int length);
+     BoolListCls(bool fill, bool growable, int length);
 
-    void  empty(int capacity, bool growable);
+    virtual void  empty(int capacity, bool growable);
 
-    void  generate(FunctionType generator, bool growable, int length);
+    virtual void  generate(bool generator(int ) , bool growable, int length);
 
-    void  of(Iterable<bool> elements, bool growable);
+    virtual void  of(Iterable<bool> elements, bool growable);
 
-    int length();
+    virtual int length();
 
-    bool [](int index);
+    virtual bool operator[](int index);
 
-    void []=(int index, bool value);
+    virtual void operator[]=(int index, bool value);
 
-    void fillRange(int end, bool fill, int start);
+    virtual void fillRange(int end, bool fill, int start);
 
-    Iterator<bool> iterator();
+    virtual Iterator<bool> iterator();
 
 private:
-    static const int _entryShift;
+    static int _entryShift;
 
-    static const int _bitsPerEntry;
+    static int _bitsPerEntry;
 
-    static const int _entrySignBitIndex;
+    static int _entrySignBitIndex;
 
     int _length;
 
     Uint32List _data;
 
 
-    void  _(Uint32List _data, int _length);
+    virtual void  _(Uint32List _data, int _length);
+    virtual void  _selectType(bool growable, int length);
 
-    void  _selectType(bool growable, int length);
-
-    void _setBit(int index, bool value);
+    virtual void _setBit(int index, bool value);
 
     static int _lengthInWords(int bitLength);
 
 };
+using BoolList = std::shared_ptr<BoolListCls>;
 
-class _GrowableBoolList : BoolList {
+class _GrowableBoolListCls : public BoolListCls {
 public:
 
-    void  length(int length);
+    virtual void  length(int length);
 
 private:
-    static const int _growthFactor;
+    static int _growthFactor;
 
 
-    void  _withCapacity(int capacity, int length);
+    virtual void  _withCapacity(int capacity, int length);
 
-     _GrowableBoolList(int length);
+     _GrowableBoolListCls(int length);
 
-    void _expand(int length);
+    virtual void _expand(int length);
 
-    void _shrink(int length);
+    virtual void _shrink(int length);
 
 };
+using _GrowableBoolList = std::shared_ptr<_GrowableBoolListCls>;
 
-class _NonGrowableBoolList : BoolList {
+class _NonGrowableBoolListCls : public BoolListCls {
 public:
 
 private:
 
-    void  _withCapacity(int capacity, int length);
+    virtual void  _withCapacity(int capacity, int length);
 
-     _NonGrowableBoolList(int length);
+     _NonGrowableBoolListCls(int length);
 
 };
+using _NonGrowableBoolList = std::shared_ptr<_NonGrowableBoolListCls>;
 
-class _BoolListIterator {
+class _BoolListIteratorCls : public ObjectCls {
 public:
 
-    bool current();
+    virtual bool current();
 
-    bool moveNext();
+    virtual bool moveNext();
 
 private:
     bool _current;
@@ -98,8 +100,10 @@ private:
     BoolList _boolList;
 
 
-     _BoolListIterator(BoolList _boolList);
+     _BoolListIteratorCls(BoolList _boolList);
 
 };
+using _BoolListIterator = std::shared_ptr<_BoolListIteratorCls>;
+
 
 #endif

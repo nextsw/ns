@@ -1,23 +1,19 @@
-#ifndef ENCODING_H
-#define ENCODING_H
-#include <memory>
+#ifndef DART_CONVERT_ENCODING
+#define DART_CONVERT_ENCODING
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
 
 
-
-
-class Encoding : Codec<String, List<int>> {
+class EncodingCls : public CodecCls<String, List<int>> {
 public:
 
-     Encoding();
+     EncodingCls();
+    virtual Converter<String, List<int>> encoder();
+    virtual Converter<List<int>, String> decoder();
+    virtual Future<String> decodeStream(Stream<List<int>> byteStream);
 
-    Converter<String, List<int>> encoder();
-
-    Converter<List<int>, String> decoder();
-
-    Future<String> decodeStream(Stream<List<int>> byteStream);
-
-    String name();
-
+    virtual String name();
     static Encoding getByName(String name);
 
 private:
@@ -25,5 +21,7 @@ private:
 
 
 };
+using Encoding = std::shared_ptr<EncodingCls>;
+
 
 #endif

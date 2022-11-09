@@ -1,18 +1,18 @@
-#ifndef DEBUG_H
-#define DEBUG_H
-#include <memory>
+#ifndef PACKAGES_FLUTTER_SRC_PAINTING_DEBUG
+#define PACKAGES_FLUTTER_SRC_PAINTING_DEBUG
+#include <base.hpp>
 
-#include <io/io.hpp>
-#include <ui/ui.hpp>
-#include <flutter/foundation.hpp>
-
+#include <dart/core/core.hpp>
+#include <dart/io/io.hpp>
+#include <dart/ui/ui.hpp>
+#include <packages/flutter/lib/foundation.hpp>
 
 bool debugDisableShadows;
 
 HttpClientProvider debugNetworkImageHttpClientProvider;
 
 
-class ImageSizeInfo {
+class ImageSizeInfoCls : public ObjectCls {
 public:
     String source;
 
@@ -21,30 +21,30 @@ public:
     Size imageSize;
 
 
-     ImageSizeInfo(Size displaySize, Size imageSize, String source);
+     ImageSizeInfoCls(Size displaySize, Size imageSize, String source);
+    virtual int displaySizeInBytes();
 
-    int displaySizeInBytes();
+    virtual int decodedSizeInBytes();
 
-    int decodedSizeInBytes();
+    virtual Map<String, Object> toJson();
 
-    Map<String, Object> toJson();
+    virtual bool operator==(Object other);
 
-    bool ==(Object other);
+    virtual int hashCode();
 
-    int hashCode();
-
-    String toString();
+    virtual String toString();
 
 private:
 
-    int _sizeToBytes(Size size);
+    virtual int _sizeToBytes(Size size);
 
 };
+using ImageSizeInfo = std::shared_ptr<ImageSizeInfoCls>;
 PaintImageCallback debugOnPaintImage;
 
 bool debugInvertOversizedImages;
 
-const int _imageOverheadAllowanceDefault;
+int _imageOverheadAllowanceDefault;
 
 int debugImageOverheadAllowance;
 
@@ -57,6 +57,7 @@ bool _defaultPictureCapture(Picture picture);
 ShaderWarmUpImageCallback debugCaptureShaderWarmUpImage;
 
 bool _defaultImageCapture(Image image);
+
 
 
 #endif

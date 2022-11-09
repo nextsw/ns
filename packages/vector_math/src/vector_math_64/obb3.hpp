@@ -1,52 +1,52 @@
-#ifndef OBB3_H
-#define OBB3_H
-#include <memory>
+#ifndef PACKAGES_VECTOR_MATH_SRC_VECTOR_MATH_64_OBB3
+#define PACKAGES_VECTOR_MATH_SRC_VECTOR_MATH_64_OBB3
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
 
 
-
-
-class Obb3 {
+class Obb3Cls : public ObjectCls {
 public:
 
-    Vector3 center();
+    virtual Vector3 center();
 
-    Vector3 halfExtents();
+    virtual Vector3 halfExtents();
 
-    Vector3 axis0();
+    virtual Vector3 axis0();
 
-    Vector3 axis1();
+    virtual Vector3 axis1();
 
-    Vector3 axis2();
+    virtual Vector3 axis2();
 
-     Obb3();
+     Obb3Cls();
 
-    void  copy(Obb3 other);
+    virtual void  copy(Obb3 other);
 
-    void  centerExtentsAxes(Vector3 axis0, Vector3 axis1, Vector3 axis2, Vector3 center, Vector3 halfExtents);
+    virtual void  centerExtentsAxes(Vector3 axis0, Vector3 axis1, Vector3 axis2, Vector3 center, Vector3 halfExtents);
 
-    void copyFrom(Obb3 other);
+    virtual void copyFrom(Obb3 other);
 
-    void copyInto(Obb3 other);
+    virtual void copyInto(Obb3 other);
 
-    void resetRotation();
+    virtual void resetRotation();
 
-    void translate(Vector3 offset);
+    virtual void translate(Vector3 offset);
 
-    void rotate(Matrix3 t);
+    virtual void rotate(Matrix3 t);
 
-    void transform(Matrix4 t);
+    virtual void transform(Matrix4 t);
 
-    void copyCorner(Vector3 corner, int cornerIndex);
+    virtual void copyCorner(Vector3 corner, int cornerIndex);
 
-    void closestPointTo(Vector3 p, Vector3 q);
+    virtual void closestPointTo(Vector3 p, Vector3 q);
 
-    bool intersectsWithObb3(double epsilon, Obb3 other);
+    virtual bool intersectsWithObb3(double epsilon, Obb3 other);
 
-    bool intersectsWithTriangle(Triangle other, IntersectionResult result);
+    virtual bool intersectsWithTriangle(Triangle other, IntersectionResult result);
 
-    bool intersectsWithVector3(Vector3 other);
+    virtual bool intersectsWithVector3(Vector3 other);
 
-    bool intersectsWithQuad(Quad other, IntersectionResult result);
+    virtual bool intersectsWithQuad(Quad other, IntersectionResult result);
 
 private:
     Vector3 _center;
@@ -79,5 +79,7 @@ private:
 
 
 };
+using Obb3 = std::shared_ptr<Obb3Cls>;
+
 
 #endif

@@ -1,33 +1,31 @@
-#ifndef ISOLATE_H
-#define ISOLATE_H
-#include <memory>
+#ifndef DART_ISOLATE_ISOLATE
+#define DART_ISOLATE_ISOLATE
+#include <base.hpp>
 
-#include <internal/internal.hpp>
-#include <async/async.hpp>
-#include <typed_data/typed_data.hpp>
-
-// Parts
-#include "capability.hpp"
+#include <dart/core/core.hpp>
+#include <dart/internal/internal.hpp>
+#include <dart/async/async.hpp>
+#include <dart/typed_data/typed_data.hpp>
 
 
-class IsolateSpawnException {
+class IsolateSpawnExceptionCls : public ObjectCls {
 public:
     String message;
 
 
-     IsolateSpawnException(String message);
-
-    String toString();
+     IsolateSpawnExceptionCls(String message);
+    virtual String toString();
 
 private:
 
 };
+using IsolateSpawnException = std::shared_ptr<IsolateSpawnExceptionCls>;
 
-class Isolate {
+class IsolateCls : public ObjectCls {
 public:
-    static const int immediate;
+    static int immediate;
 
-    static const int beforeNextEvent;
+    static int beforeNextEvent;
 
     SendPort controlPort;
 
@@ -36,117 +34,95 @@ public:
     Capability terminateCapability;
 
 
-    external String debugName();
+    extern String debugName();
+     IsolateCls(SendPort controlPort, Capability pauseCapability, Capability terminateCapability);
+    extern static Isolate current();
+    extern static Future<Uri> packageConfig();
+    extern static Future<Uri> resolvePackageUri(Uri packageUri);
+    template<typename T>  extern static Future<Isolate> spawn(String debugName, void entryPoint(T message) , bool errorsAreFatal, T message, SendPort onError, SendPort onExit, bool paused);
+    extern static Future<Isolate> spawnUri(List<String> args, bool automaticPackageResolution, bool checked, String debugName, Map<String, String> environment, bool errorsAreFatal, auto message, SendPort onError, SendPort onExit, Uri packageConfig, Uri packageRoot, bool paused, Uri uri);
+    virtual Capability pause(Capability resumeCapability);
 
-     Isolate(SendPort controlPort, Capability pauseCapability, Capability terminateCapability);
+    extern void resume(Capability resumeCapability);
+    extern void addOnExitListener(Object response, SendPort responsePort);
+    extern void removeOnExitListener(SendPort responsePort);
+    extern void setErrorsFatal(bool errorsAreFatal);
+    extern void kill(int priority);
+    extern void ping(int priority, Object response, SendPort responsePort);
+    extern void addErrorListener(SendPort port);
+    extern void removeErrorListener(SendPort port);
+    virtual Stream errors();
 
-    external static Isolate current();
-
-    external static Future<Uri> packageConfig();
-
-    external static Future<Uri> resolvePackageUri(Uri packageUri);
-
-    external static Future<Isolate> spawn<T>(String debugName, FunctionType entryPoint, bool errorsAreFatal, T message, SendPort onError, SendPort onExit, bool paused);
-
-    external static Future<Isolate> spawnUri(List<String> args, bool automaticPackageResolution, bool checked, String debugName, Map<String, String> environment, bool errorsAreFatal, auto message, SendPort onError, SendPort onExit, Uri packageConfig, Uri packageRoot, bool paused, Uri uri);
-
-    Capability pause(Capability resumeCapability);
-
-    external void resume(Capability resumeCapability);
-
-    external void addOnExitListener(Object response, SendPort responsePort);
-
-    external void removeOnExitListener(SendPort responsePort);
-
-    external void setErrorsFatal(bool errorsAreFatal);
-
-    external void kill(int priority);
-
-    external void ping(int priority, Object response, SendPort responsePort);
-
-    external void addErrorListener(SendPort port);
-
-    external void removeErrorListener(SendPort port);
-
-    Stream errors();
-
-    external static Never exit(SendPort finalMessagePort, Object message);
-
+    extern static Never exit(SendPort finalMessagePort, Object message);
 private:
 
-    external void _pause(Capability resumeCapability);
-
+    extern void _pause(Capability resumeCapability);
 };
+using Isolate = std::shared_ptr<IsolateCls>;
 
-class SendPort {
+class SendPortCls : public ObjectCls {
 public:
 
-    void send(Object message);
-
-    bool ==(auto other);
-
-    int hashCode();
-
+    virtual void send(Object message);
+    virtual bool operator==(auto other);
+    virtual int hashCode();
 private:
 
 };
+using SendPort = std::shared_ptr<SendPortCls>;
 
-class ReceivePort {
+class ReceivePortCls : public ObjectCls {
 public:
 
-    external  ReceivePort(String debugName);
-
-    external void  fromRawReceivePort(RawReceivePort rawPort);
-
-    StreamSubscription<dynamic> listen(bool cancelOnError, FunctionType onData, FunctionType onDone, FunctionType onError);
-
-    void close();
-
-    SendPort sendPort();
-
+    extern  ReceivePortCls(String debugName);
+    extern void  fromRawReceivePort(RawReceivePort rawPort);
+    virtual StreamSubscription<dynamic> listen(bool cancelOnError, void onData(auto message) , void onDone() , void  onError() );
+    virtual void close();
+    virtual SendPort sendPort();
 private:
 
 };
+using ReceivePort = std::shared_ptr<ReceivePortCls>;
 
-class RawReceivePort {
+class RawReceivePortCls : public ObjectCls {
 public:
 
-    external  RawReceivePort(String debugName, FunctionType handler);
-
-    void handler(FunctionType newHandler);
-
-    void close();
-
-    SendPort sendPort();
-
+    extern  RawReceivePortCls(String debugName, void  handler() );
+    virtual void handler(void  newHandler() );
+    virtual void close();
+    virtual SendPort sendPort();
 private:
 
 };
+using RawReceivePort = std::shared_ptr<RawReceivePortCls>;
 
-class RemoteError {
+class RemoteErrorCls : public ObjectCls {
 public:
     StackTrace stackTrace;
 
 
-     RemoteError(String description, String stackDescription);
+     RemoteErrorCls(String description, String stackDescription);
 
-    String toString();
+    virtual String toString();
 
 private:
     String _description;
 
 
 };
+using RemoteError = std::shared_ptr<RemoteErrorCls>;
 
-class TransferableTypedData {
+class TransferableTypedDataCls : public ObjectCls {
 public:
 
-    external void  fromList(List<TypedData> list);
-
-    ByteBuffer materialize();
-
+    extern void  fromList(List<TypedData> list);
+    virtual ByteBuffer materialize();
 private:
 
 };
+using TransferableTypedData = std::shared_ptr<TransferableTypedDataCls>;
+
+// Parts
+#include "capability.hpp"
 
 #endif

@@ -1,51 +1,52 @@
-#ifndef ANNOTATIONS_H
-#define ANNOTATIONS_H
-#include <memory>
+#ifndef DART_CORE_ANNOTATIONS
+#define DART_CORE_ANNOTATIONS
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
 
 
-
-
-class Deprecated {
+class DeprecatedCls : public ObjectCls {
 public:
     String message;
 
 
-     Deprecated(String message);
+     DeprecatedCls(String message);
+    virtual String expires();
 
-    String expires();
-
-    String toString();
+    virtual String toString();
 
 private:
 
 };
-const Deprecated deprecated;
+using Deprecated = std::shared_ptr<DeprecatedCls>;
+Deprecated deprecated;
 
 
-class _Override {
+class _OverrideCls : public ObjectCls {
 public:
 
 private:
 
-     _Override();
-
+     _OverrideCls();
 };
-const Object override;
+using _Override = std::shared_ptr<_OverrideCls>;
+Object override;
 
 
-class Provisional {
+class ProvisionalCls : public ObjectCls {
 public:
 
-    String message();
+    virtual String message();
 
-     Provisional(String message);
-
+     ProvisionalCls(String message);
 private:
 
 };
-const Null provisional;
+using Provisional = std::shared_ptr<ProvisionalCls>;
+Null provisional;
 
-const Null proxy;
+Null proxy;
+
 
 
 #endif

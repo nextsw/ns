@@ -1,19 +1,19 @@
-#ifndef LONG_PRESS_H
-#define LONG_PRESS_H
-#include <memory>
-#include <ui.hpp>
+#ifndef PACKAGES_FLUTTER_SRC_GESTURES_LONG_PRESS
+#define PACKAGES_FLUTTER_SRC_GESTURES_LONG_PRESS
+#include <base.hpp>
+#include <dart/ui/ui.hpp>
 #include "arena.hpp"
 #include "events.hpp"
 #include "velocity_tracker.hpp"
 
+#include <dart/core/core.hpp>
 #include "constants.hpp"
 #include "events.hpp"
 #include "recognizer.hpp"
 #include "velocity_tracker.hpp"
 
 
-
-class LongPressDownDetails {
+class LongPressDownDetailsCls : public ObjectCls {
 public:
     Offset globalPosition;
 
@@ -22,26 +22,28 @@ public:
     Offset localPosition;
 
 
-     LongPressDownDetails(Offset globalPosition, PointerDeviceKind kind, Offset localPosition);
+     LongPressDownDetailsCls(Offset globalPosition, PointerDeviceKind kind, Offset localPosition);
 
 private:
 
 };
+using LongPressDownDetails = std::shared_ptr<LongPressDownDetailsCls>;
 
-class LongPressStartDetails {
+class LongPressStartDetailsCls : public ObjectCls {
 public:
     Offset globalPosition;
 
     Offset localPosition;
 
 
-     LongPressStartDetails(Offset globalPosition, Offset localPosition);
+     LongPressStartDetailsCls(Offset globalPosition, Offset localPosition);
 
 private:
 
 };
+using LongPressStartDetails = std::shared_ptr<LongPressStartDetailsCls>;
 
-class LongPressMoveUpdateDetails {
+class LongPressMoveUpdateDetailsCls : public ObjectCls {
 public:
     Offset globalPosition;
 
@@ -52,13 +54,14 @@ public:
     Offset localOffsetFromOrigin;
 
 
-     LongPressMoveUpdateDetails(Offset globalPosition, Offset localOffsetFromOrigin, Offset localPosition, Offset offsetFromOrigin);
+     LongPressMoveUpdateDetailsCls(Offset globalPosition, Offset localOffsetFromOrigin, Offset localPosition, Offset offsetFromOrigin);
 
 private:
 
 };
+using LongPressMoveUpdateDetails = std::shared_ptr<LongPressMoveUpdateDetailsCls>;
 
-class LongPressEndDetails {
+class LongPressEndDetailsCls : public ObjectCls {
 public:
     Offset globalPosition;
 
@@ -67,13 +70,14 @@ public:
     Velocity velocity;
 
 
-     LongPressEndDetails(Offset globalPosition, Offset localPosition, Velocity velocity);
+     LongPressEndDetailsCls(Offset globalPosition, Offset localPosition, Velocity velocity);
 
 private:
 
 };
+using LongPressEndDetails = std::shared_ptr<LongPressEndDetailsCls>;
 
-class LongPressGestureRecognizer : PrimaryPointerGestureRecognizer {
+class LongPressGestureRecognizerCls : public PrimaryPointerGestureRecognizerCls {
 public:
     GestureLongPressDownCallback onLongPressDown;
 
@@ -118,19 +122,19 @@ public:
     GestureLongPressEndCallback onTertiaryLongPressEnd;
 
 
-     LongPressGestureRecognizer(Unknown, Duration duration, Unknown, Unknown, Unknown);
+     LongPressGestureRecognizerCls(Unknown debugOwner, Duration duration, Unknown kind, Unknown postAcceptSlopTolerance, Unknown supportedDevices);
 
-    bool isPointerAllowed(PointerDownEvent event);
+    virtual bool isPointerAllowed(PointerDownEvent event);
 
-    void didExceedDeadline();
+    virtual void didExceedDeadline();
 
-    void handlePrimaryPointer(PointerEvent event);
+    virtual void handlePrimaryPointer(PointerEvent event);
 
-    void resolve(GestureDisposition disposition);
+    virtual void resolve(GestureDisposition disposition);
 
-    void acceptGesture(int pointer);
+    virtual void acceptGesture(int pointer);
 
-    String debugDescription();
+    virtual String debugDescription();
 
 private:
     bool _longPressAccepted;
@@ -142,18 +146,20 @@ private:
     VelocityTracker _velocityTracker;
 
 
-    void _checkLongPressDown(PointerDownEvent event);
+    virtual void _checkLongPressDown(PointerDownEvent event);
 
-    void _checkLongPressCancel();
+    virtual void _checkLongPressCancel();
 
-    void _checkLongPressStart();
+    virtual void _checkLongPressStart();
 
-    void _checkLongPressMoveUpdate(PointerEvent event);
+    virtual void _checkLongPressMoveUpdate(PointerEvent event);
 
-    void _checkLongPressEnd(PointerEvent event);
+    virtual void _checkLongPressEnd(PointerEvent event);
 
-    void _reset();
+    virtual void _reset();
 
 };
+using LongPressGestureRecognizer = std::shared_ptr<LongPressGestureRecognizerCls>;
+
 
 #endif

@@ -1,16 +1,17 @@
-#ifndef TEXT_INPUT_H
-#define TEXT_INPUT_H
-#include <memory>
-#include <ui.hpp>
-#include <vector_math/vector_math_64.hpp>
+#ifndef PACKAGES_FLUTTER_SRC_SERVICES_TEXT_INPUT
+#define PACKAGES_FLUTTER_SRC_SERVICES_TEXT_INPUT
+#include <base.hpp>
+#include <dart/ui/ui.hpp>
+#include <packages/vector_math/vector_math.hpp>
 #include "autofill.hpp"
 #include "text_editing.hpp"
 
-#include <async/async.hpp>
-#include <io/io.hpp>
-#include <ui/ui.hpp>
-#include <flutter/foundation.hpp>
-#include <vector_math/vector_math_64.hpp>
+#include <dart/core/core.hpp>
+#include <dart/async/async.hpp>
+#include <dart/io/io.hpp>
+#include <dart/ui/ui.hpp>
+#include <packages/flutter/lib/foundation.hpp>
+#include <packages/vector_math/vector_math.hpp>
 #include "autofill.hpp"
 #include "clipboard.hpp"
 #include "message_codec.hpp"
@@ -18,7 +19,6 @@
 #include "system_channels.hpp"
 #include "text_editing.hpp"
 #include "text_editing_delta.hpp"
-
 
 
 enum SmartDashesType{
@@ -31,7 +31,7 @@ enum SmartQuotesType{
     enabled,
 } // end SmartQuotesType
 
-class TextInputType {
+class TextInputTypeCls : public ObjectCls {
 public:
     int index;
 
@@ -39,50 +39,51 @@ public:
 
     bool decimal;
 
-    static const TextInputType text;
+    static TextInputType text;
 
-    static const TextInputType multiline;
+    static TextInputType multiline;
 
-    static const TextInputType number;
+    static TextInputType number;
 
-    static const TextInputType phone;
+    static TextInputType phone;
 
-    static const TextInputType datetime;
+    static TextInputType datetime;
 
-    static const TextInputType emailAddress;
+    static TextInputType emailAddress;
 
-    static const TextInputType url;
+    static TextInputType url;
 
-    static const TextInputType visiblePassword;
+    static TextInputType visiblePassword;
 
-    static const TextInputType name;
+    static TextInputType name;
 
-    static const TextInputType streetAddress;
+    static TextInputType streetAddress;
 
-    static const TextInputType none;
+    static TextInputType none;
 
-    static const List<TextInputType> values;
+    static List<TextInputType> values;
 
 
-    void  numberWithOptions(bool decimal, bool signed);
+    virtual void  numberWithOptions(bool decimal, bool signed);
 
-    Map<String, dynamic> toJson();
+    virtual Map<String, dynamic> toJson();
 
-    String toString();
+    virtual String toString();
 
-    bool ==(Object other);
+    virtual bool operator==(Object other);
 
-    int hashCode();
+    virtual int hashCode();
 
 private:
-    static const List<String> _names;
+    static List<String> _names;
 
 
-    void  _(int index);
+    virtual void  _(int index);
 
-    String _name();
+    virtual String _name();
 
 };
+using TextInputType = std::shared_ptr<TextInputTypeCls>;
 
 enum TextInputAction{
     none,
@@ -107,7 +108,7 @@ enum TextCapitalization{
     none,
 } // end TextCapitalization
 
-class TextInputConfiguration {
+class TextInputConfigurationCls : public ObjectCls {
 public:
     TextInputType inputType;
 
@@ -140,15 +141,16 @@ public:
     bool enableDeltaModel;
 
 
-     TextInputConfiguration(String actionLabel, bool autocorrect, AutofillConfiguration autofillConfiguration, bool enableDeltaModel, bool enableIMEPersonalizedLearning, bool enableInteractiveSelection, bool enableSuggestions, TextInputAction inputAction, TextInputType inputType, Brightness keyboardAppearance, bool obscureText, bool readOnly, SmartDashesType smartDashesType, SmartQuotesType smartQuotesType, TextCapitalization textCapitalization);
+     TextInputConfigurationCls(String actionLabel, bool autocorrect, AutofillConfiguration autofillConfiguration, bool enableDeltaModel, bool enableIMEPersonalizedLearning, bool enableInteractiveSelection, bool enableSuggestions, TextInputAction inputAction, TextInputType inputType, Brightness keyboardAppearance, bool obscureText, bool readOnly, SmartDashesType smartDashesType, SmartQuotesType smartQuotesType, TextCapitalization textCapitalization);
 
-    TextInputConfiguration copyWith(String actionLabel, bool autocorrect, AutofillConfiguration autofillConfiguration, bool enableDeltaModel, bool enableIMEPersonalizedLearning, bool enableInteractiveSelection, bool enableSuggestions, TextInputAction inputAction, TextInputType inputType, Brightness keyboardAppearance, bool obscureText, bool readOnly, SmartDashesType smartDashesType, SmartQuotesType smartQuotesType, TextCapitalization textCapitalization);
+    virtual TextInputConfiguration copyWith(String actionLabel, bool autocorrect, AutofillConfiguration autofillConfiguration, bool enableDeltaModel, bool enableIMEPersonalizedLearning, bool enableInteractiveSelection, bool enableSuggestions, TextInputAction inputAction, TextInputType inputType, Brightness keyboardAppearance, bool obscureText, bool readOnly, SmartDashesType smartDashesType, SmartQuotesType smartQuotesType, TextCapitalization textCapitalization);
 
-    Map<String, dynamic> toJson();
+    virtual Map<String, dynamic> toJson();
 
 private:
 
 };
+using TextInputConfiguration = std::shared_ptr<TextInputConfigurationCls>;
 TextAffinity _toTextAffinity(String affinity);
 
 
@@ -158,20 +160,21 @@ enum FloatingCursorDragState{
     End,
 } // end FloatingCursorDragState
 
-class RawFloatingCursorPoint {
+class RawFloatingCursorPointCls : public ObjectCls {
 public:
     Offset offset;
 
     FloatingCursorDragState state;
 
 
-     RawFloatingCursorPoint(Offset offset, FloatingCursorDragState state);
+     RawFloatingCursorPointCls(Offset offset, FloatingCursorDragState state);
 
 private:
 
 };
+using RawFloatingCursorPoint = std::shared_ptr<RawFloatingCursorPointCls>;
 
-class TextEditingValue {
+class TextEditingValueCls : public ObjectCls {
 public:
     String text;
 
@@ -179,32 +182,33 @@ public:
 
     TextRange composing;
 
-    static const TextEditingValue empty;
+    static TextEditingValue empty;
 
 
-     TextEditingValue(TextRange composing, TextSelection selection, String text);
+     TextEditingValueCls(TextRange composing, TextSelection selection, String text);
 
-    void  fromJSON(Map<String, dynamic> encoded);
+    virtual void  fromJSON(Map<String, dynamic> encoded);
 
-    TextEditingValue copyWith(TextRange composing, TextSelection selection, String text);
+    virtual TextEditingValue copyWith(TextRange composing, TextSelection selection, String text);
 
-    bool isComposingRangeValid();
+    virtual bool isComposingRangeValid();
 
-    TextEditingValue replaced(TextRange replacementRange, String replacementString);
+    virtual TextEditingValue replaced(TextRange replacementRange, String replacementString);
 
-    Map<String, dynamic> toJSON();
+    virtual Map<String, dynamic> toJSON();
 
-    String toString();
+    virtual String toString();
 
-    bool ==(Object other);
+    virtual bool operator==(Object other);
 
-    int hashCode();
+    virtual int hashCode();
 
 private:
 
     static bool _textRangeIsValid(TextRange range, String text);
 
 };
+using TextEditingValue = std::shared_ptr<TextEditingValueCls>;
 
 enum SelectionChangedCause{
     tap,
@@ -217,139 +221,122 @@ enum SelectionChangedCause{
     scribble,
 } // end SelectionChangedCause
 
-class TextSelectionDelegate {
+class TextSelectionDelegateCls : public ObjectCls {
 public:
 
-    TextEditingValue textEditingValue();
+    virtual TextEditingValue textEditingValue();
+    virtual void userUpdateTextEditingValue(SelectionChangedCause cause, TextEditingValue value);
+    virtual void hideToolbar(bool hideHandles);
+    virtual void bringIntoView(TextPosition position);
+    virtual bool cutEnabled();
 
-    void userUpdateTextEditingValue(SelectionChangedCause cause, TextEditingValue value);
+    virtual bool copyEnabled();
 
-    void hideToolbar(bool hideHandles);
+    virtual bool pasteEnabled();
 
-    void bringIntoView(TextPosition position);
+    virtual bool selectAllEnabled();
 
-    bool cutEnabled();
+    virtual void cutSelection(SelectionChangedCause cause);
+    virtual Future<void> pasteText(SelectionChangedCause cause);
+    virtual void selectAll(SelectionChangedCause cause);
+    virtual void copySelection(SelectionChangedCause cause);
+private:
 
-    bool copyEnabled();
+};
+using TextSelectionDelegate = std::shared_ptr<TextSelectionDelegateCls>;
 
-    bool pasteEnabled();
+class TextInputClientCls : public ObjectCls {
+public:
 
-    bool selectAllEnabled();
+    virtual TextEditingValue currentTextEditingValue();
+    virtual AutofillScope currentAutofillScope();
+    virtual void updateEditingValue(TextEditingValue value);
+    virtual void performAction(TextInputAction action);
+    virtual void performPrivateCommand(String action, Map<String, dynamic> data);
+    virtual void updateFloatingCursor(RawFloatingCursorPoint point);
+    virtual void showAutocorrectionPromptRect(int end, int start);
+    virtual void connectionClosed();
+    virtual void showToolbar();
 
-    void cutSelection(SelectionChangedCause cause);
+    virtual void insertTextPlaceholder(Size size);
 
-    Future<void> pasteText(SelectionChangedCause cause);
-
-    void selectAll(SelectionChangedCause cause);
-
-    void copySelection(SelectionChangedCause cause);
+    virtual void removeTextPlaceholder();
 
 private:
 
 };
+using TextInputClient = std::shared_ptr<TextInputClientCls>;
 
-class TextInputClient {
+class ScribbleClientCls : public ObjectCls {
 public:
 
-    TextEditingValue currentTextEditingValue();
-
-    AutofillScope currentAutofillScope();
-
-    void updateEditingValue(TextEditingValue value);
-
-    void performAction(TextInputAction action);
-
-    void performPrivateCommand(String action, Map<String, dynamic> data);
-
-    void updateFloatingCursor(RawFloatingCursorPoint point);
-
-    void showAutocorrectionPromptRect(int end, int start);
-
-    void connectionClosed();
-
-    void showToolbar();
-
-    void insertTextPlaceholder(Size size);
-
-    void removeTextPlaceholder();
-
+    virtual String elementIdentifier();
+    virtual void onScribbleFocus(Offset offset);
+    virtual bool isInScribbleRect(Rect rect);
+    virtual Rect bounds();
 private:
 
 };
+using ScribbleClient = std::shared_ptr<ScribbleClientCls>;
 
-class ScribbleClient {
-public:
-
-    String elementIdentifier();
-
-    void onScribbleFocus(Offset offset);
-
-    bool isInScribbleRect(Rect rect);
-
-    Rect bounds();
-
-private:
-
-};
-
-class SelectionRect {
+class SelectionRectCls : public ObjectCls {
 public:
     int position;
 
     Rect bounds;
 
 
-     SelectionRect(Rect bounds, int position);
+     SelectionRectCls(Rect bounds, int position);
+    virtual bool operator==(Object other);
 
-    bool ==(Object other);
+    virtual int hashCode();
 
-    int hashCode();
-
-    String toString();
+    virtual String toString();
 
 private:
 
 };
+using SelectionRect = std::shared_ptr<SelectionRectCls>;
 
-class DeltaTextInputClient {
+class DeltaTextInputClientCls : public ObjectCls {
 public:
 
-    void updateEditingValueWithDeltas(List<TextEditingDelta> textEditingDeltas);
-
+    virtual void updateEditingValueWithDeltas(List<TextEditingDelta> textEditingDeltas);
 private:
 
 };
+using DeltaTextInputClient = std::shared_ptr<DeltaTextInputClientCls>;
 
-class TextInputConnection {
+class TextInputConnectionCls : public ObjectCls {
 public:
 
     static void debugResetId(int to);
 
-    bool attached();
+    virtual bool attached();
 
-    bool scribbleInProgress();
+    virtual bool scribbleInProgress();
 
-    void show();
+    virtual void show();
 
-    void requestAutofill();
+    virtual void requestAutofill();
 
-    void updateConfig(TextInputConfiguration configuration);
+    virtual void updateConfig(TextInputConfiguration configuration);
 
-    void setEditingState(TextEditingValue value);
+    virtual void setEditingState(TextEditingValue value);
 
-    void setEditableSizeAndTransform(Size editableBoxSize, Matrix4 transform);
+    virtual void setEditableSizeAndTransform(Size editableBoxSize, Matrix4 transform);
 
-    void setComposingRect(Rect rect);
+    virtual void setComposingRect(Rect rect);
 
-    void setCaretRect(Rect rect);
+    virtual void setCaretRect(Rect rect);
 
-    void setSelectionRects(List<SelectionRect> selectionRects);
+    virtual void setSelectionRects(List<SelectionRect> selectionRects);
 
-    void setStyle(String fontFamily, double fontSize, FontWeight fontWeight, TextAlign textAlign, TextDirection textDirection);
+    virtual void setStyle(String fontFamily, double fontSize, FontWeight fontWeight, TextAlign textAlign, TextDirection textDirection);
 
-    void close();
+    virtual void close();
 
-    void connectionClosedReceived();
+    virtual void connectionClosedReceived();
 
 private:
     Size _cachedSize;
@@ -369,9 +356,10 @@ private:
     TextInputClient _client;
 
 
-    void  _(TextInputClient _client);
+    virtual void  _(TextInputClient _client);
 
 };
+using TextInputConnection = std::shared_ptr<TextInputConnectionCls>;
 TextInputAction _toTextInputAction(String action);
 
 FloatingCursorDragState _toTextCursorAction(String state);
@@ -379,7 +367,7 @@ FloatingCursorDragState _toTextCursorAction(String state);
 RawFloatingCursorPoint _toTextPoint(Map<String, dynamic> encoded, FloatingCursorDragState state);
 
 
-class TextInput {
+class TextInputCls : public ObjectCls {
 public:
 
     static void setChannel(MethodChannel newChannel);
@@ -390,7 +378,7 @@ public:
 
     static Map<String, ScribbleClient> scribbleClients();
 
-    bool scribbleInProgress();
+    virtual bool scribbleInProgress();
 
     static void finishAutofillContext(bool shouldSave);
 
@@ -401,9 +389,9 @@ public:
 private:
     static TextInput _instance;
 
-    static const List<TextInputAction> _androidSupportedInputActions;
+    static List<TextInputAction> _androidSupportedInputActions;
 
-    static const List<TextInputAction> _iOSSupportedInputActions;
+    static List<TextInputAction> _iOSSupportedInputActions;
 
     MethodChannel _channel;
 
@@ -418,38 +406,40 @@ private:
     bool _hidePending;
 
 
-    void  _();
+    virtual void  _();
 
-    void _attach(TextInputConfiguration configuration, TextInputConnection connection);
+    virtual void _attach(TextInputConfiguration configuration, TextInputConnection connection);
 
     static bool _debugEnsureInputActionWorksOnPlatform(TextInputAction inputAction);
 
-    Future<dynamic> _loudlyHandleTextInputInvocation(MethodCall call);
+    virtual Future<dynamic> _loudlyHandleTextInputInvocation(MethodCall call);
 
-    Future<dynamic> _handleTextInputInvocation(MethodCall methodCall);
+    virtual Future<dynamic> _handleTextInputInvocation(MethodCall methodCall);
 
-    void _scheduleHide();
+    virtual void _scheduleHide();
 
-    void _clearClient();
+    virtual void _clearClient();
 
-    void _updateConfig(TextInputConfiguration configuration);
+    virtual void _updateConfig(TextInputConfiguration configuration);
 
-    void _setEditingState(TextEditingValue value);
+    virtual void _setEditingState(TextEditingValue value);
 
-    void _show();
+    virtual void _show();
 
-    void _requestAutofill();
+    virtual void _requestAutofill();
 
-    void _setEditableSizeAndTransform(Map<String, dynamic> args);
+    virtual void _setEditableSizeAndTransform(Map<String, dynamic> args);
 
-    void _setComposingTextRect(Map<String, dynamic> args);
+    virtual void _setComposingTextRect(Map<String, dynamic> args);
 
-    void _setCaretRect(Map<String, dynamic> args);
+    virtual void _setCaretRect(Map<String, dynamic> args);
 
-    void _setSelectionRects(List<List<num>> args);
+    virtual void _setSelectionRects(List<List<num>> args);
 
-    void _setStyle(Map<String, dynamic> args);
+    virtual void _setStyle(Map<String, dynamic> args);
 
 };
+using TextInput = std::shared_ptr<TextInputCls>;
+
 
 #endif

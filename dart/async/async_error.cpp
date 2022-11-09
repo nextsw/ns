@@ -1,21 +1,21 @@
 #include "async_error.hpp"
-AsyncError::AsyncError(Object error, StackTrace stackTrace) {
+AsyncErrorCls::AsyncErrorCls(Object error, StackTrace stackTrace) {
     {
         error = checkNotNullable(error, "error");
         stackTrace = stackTrace ?? defaultStackTrace(error);
     }
 }
 
-StackTrace AsyncError::defaultStackTrace(Object error) {
+StackTrace AsyncErrorCls::defaultStackTrace(Object error) {
     if (error is Error) {
-        auto stackTrace = error.stackTrace;
+        auto stackTrace = error->stackTrace;
         if (stackTrace != nullptr)         {
             return stackTrace;
         }
     }
-    return StackTrace.empty;
+    return StackTraceCls::empty;
 }
 
-String AsyncError::toString() {
+String AsyncErrorCls::toString() {
     return "$error";
 }

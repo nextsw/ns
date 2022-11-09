@@ -1,20 +1,20 @@
 #include "clipboard.hpp"
-Future<void> Clipboard::setData(ClipboardData data) {
-    await await SystemChannels.platform.<void>invokeMethod("Clipboard.setData", );
+Future<void> ClipboardCls::setData(ClipboardData data) {
+    Map<String, dynamic> map1 = make<MapCls<>>();map1.set("text", data->text);await await SystemChannelsCls::platform-><void>invokeMethod("Clipboard.setData", list1);
 }
 
-Future<ClipboardData> Clipboard::getData(String format) {
-    Map<String, dynamic> result = await SystemChannels.platform.invokeMethod("Clipboard.getData", format);
+Future<ClipboardData> ClipboardCls::getData(String format) {
+    Map<String, dynamic> result = await SystemChannelsCls::platform->invokeMethod("Clipboard.getData", format);
     if (result == nullptr) {
         return nullptr;
     }
-    return ClipboardData(();
+    return make<ClipboardDataCls>(((String)result["text"]));
 }
 
-Future<bool> Clipboard::hasStrings() {
-    Map<String, dynamic> result = await SystemChannels.platform.invokeMethod("Clipboard.hasStrings", Clipboard.kTextPlain);
+Future<bool> ClipboardCls::hasStrings() {
+    Map<String, dynamic> result = await SystemChannelsCls::platform->invokeMethod("Clipboard.hasStrings", ClipboardCls::kTextPlain);
     if (result == nullptr) {
         return false;
     }
-    return (;
+    return ((bool)result["value"]);
 }

@@ -1,44 +1,44 @@
 #include "iterable.hpp"
-void Iterable::generate(int count, FunctionType generator) {
+template<typename E> void IterableCls<E>::generate(int count, E generator(int index) ) {
     if (count <= 0)     {
-        return <E>EmptyIterable();
+        return <E>make<EmptyIterableCls>();
     }
-    return <E>_GeneratorIterable(count, generator);
+    return <E>make<_GeneratorIterableCls>(count, generator);
 }
 
-Iterable<T> Iterable::castFrom<S, T>(Iterable<S> source) {
-    return <S, T>CastIterable(source);
+template<typename E> Iterable<T> IterableCls<E>::castFromtemplate<typename S, typename T> (Iterable<S> source) {
+    return <S, T>make<CastIterableCls>(source);
 }
 
-Iterable<R> Iterable::cast<R>() {
-    return Iterable.<E, R>castFrom(this);
+template<typename E> Iterable<R> IterableCls<E>::casttemplate<typename R> () {
+    return IterableCls-><E, R>castFrom(this);
 }
 
-Iterable<E> Iterable::followedBy(Iterable<E> other) {
+template<typename E> Iterable<E> IterableCls<E>::followedBy(Iterable<E> other) {
     auto self = this;
     if (self is EfficientLengthIterable<E>) {
         return <E>firstEfficient(self, other);
     }
-    return <E>FollowedByIterable(this, other);
+    return <E>make<FollowedByIterableCls>(this, other);
 }
 
-Iterable<T> Iterable::map<T>(FunctionType toElement) {
-    return <E, T>MappedIterable(this, toElement);
+template<typename E> Iterable<T> IterableCls<E>::maptemplate<typename T> (T toElement(E e) ) {
+    return <E, T>make<MappedIterableCls>(this, toElement);
 }
 
-Iterable<E> Iterable::where(FunctionType test) {
-    return <E>WhereIterable(this, test);
+template<typename E> Iterable<E> IterableCls<E>::where(bool test(E element) ) {
+    return <E>make<WhereIterableCls>(this, test);
 }
 
-Iterable<T> Iterable::whereType<T>() {
-    return <T>WhereTypeIterable(this);
+template<typename E> Iterable<T> IterableCls<E>::whereTypetemplate<typename T> () {
+    return <T>make<WhereTypeIterableCls>(this);
 }
 
-Iterable<T> Iterable::expand<T>(FunctionType toElements) {
-    return <E, T>ExpandIterable(this, toElements);
+template<typename E> Iterable<T> IterableCls<E>::expandtemplate<typename T> (Iterable<T> toElements(E element) ) {
+    return <E, T>make<ExpandIterableCls>(this, toElements);
 }
 
-bool Iterable::contains(Object element) {
+template<typename E> bool IterableCls<E>::contains(Object element) {
     for (E e : this) {
         if (e == element)         {
             return true;
@@ -47,25 +47,25 @@ bool Iterable::contains(Object element) {
     return false;
 }
 
-void Iterable::forEach(FunctionType action) {
+template<typename E> void IterableCls<E>::forEach(void action(E element) ) {
     for (E element : this)     {
         action(element);
     }
 }
 
-E Iterable::reduce(FunctionType combine) {
-    Iterator<E> iterator = this.iterator;
-    if (!iterator.moveNext()) {
+template<typename E> E IterableCls<E>::reduce(E combine(E element, E value) ) {
+    Iterator<E> iterator = this->iterator;
+    if (!iterator->moveNext()) {
         ;
     }
-    E value = iterator.current;
-    while (iterator.moveNext()) {
-        value = combine(value, iterator.current);
+    E value = iterator->current;
+    while (iterator->moveNext()) {
+        value = combine(value, iterator->current);
     }
     return value;
 }
 
-T Iterable::fold<T>(FunctionType combine, T initialValue) {
+template<typename E> T IterableCls<E>::foldtemplate<typename T> (T combine(E element, T previousValue) , T initialValue) {
     auto value = initialValue;
     for (E element : this)     {
         value = combine(value, element);
@@ -73,7 +73,7 @@ T Iterable::fold<T>(FunctionType combine, T initialValue) {
     return value;
 }
 
-bool Iterable::every(FunctionType test) {
+template<typename E> bool IterableCls<E>::every(bool test(E element) ) {
     for (E element : this) {
         if (!test(element))         {
             return false;
@@ -82,27 +82,27 @@ bool Iterable::every(FunctionType test) {
     return true;
 }
 
-String Iterable::join(String separator) {
-    Iterator<E> iterator = this.iterator;
-    if (!iterator.moveNext())     {
+template<typename E> String IterableCls<E>::join(String separator) {
+    Iterator<E> iterator = this->iterator;
+    if (!iterator->moveNext())     {
         return "";
     }
-    StringBuffer buffer = StringBuffer();
+    StringBuffer buffer = make<StringBufferCls>();
     if (separator == nullptr || separator == "") {
         do {
-            buffer.write(iterator.current.toString());
-        } while (iterator.moveNext());
+            buffer->write(iterator->current->toString());
+        } while (iterator->moveNext());
     } else {
-        buffer.write(iterator.current.toString());
-        while (iterator.moveNext()) {
-            buffer.write(separator);
-            buffer.write(iterator.current.toString());
+        buffer->write(iterator->current->toString());
+        while (iterator->moveNext()) {
+            buffer->write(separator);
+            buffer->write(iterator->current->toString());
         }
     }
-    return buffer.toString();
+    return buffer->toString();
 }
 
-bool Iterable::any(FunctionType test) {
+template<typename E> bool IterableCls<E>::any(bool test(E element) ) {
     for (E element : this) {
         if (test(element))         {
             return true;
@@ -111,81 +111,81 @@ bool Iterable::any(FunctionType test) {
     return false;
 }
 
-List<E> Iterable::toList(bool growable) {
+template<typename E> List<E> IterableCls<E>::toList(bool growable) {
     return <E>of(thisgrowable);
 }
 
-Set<E> Iterable::toSet() {
+template<typename E> Set<E> IterableCls<E>::toSet() {
     return <E>of(this);
 }
 
-int Iterable::length() {
+template<typename E> int IterableCls<E>::length() {
     assert(this is! EfficientLengthIterable);
     int count = 0;
     Iterator it = iterator;
-    while (it.moveNext()) {
+    while (it->moveNext()) {
         count++;
     }
     return count;
 }
 
-bool Iterable::isEmpty() {
-    return !iterator.moveNext();
+template<typename E> bool IterableCls<E>::isEmpty() {
+    return !iterator->moveNext();
 }
 
-bool Iterable::isNotEmpty() {
+template<typename E> bool IterableCls<E>::isNotEmpty() {
     return !isEmpty;
 }
 
-Iterable<E> Iterable::take(int count) {
-    return <E>TakeIterable(this, count);
+template<typename E> Iterable<E> IterableCls<E>::take(int count) {
+    return <E>make<TakeIterableCls>(this, count);
 }
 
-Iterable<E> Iterable::takeWhile(FunctionType test) {
-    return <E>TakeWhileIterable(this, test);
+template<typename E> Iterable<E> IterableCls<E>::takeWhile(bool test(E value) ) {
+    return <E>make<TakeWhileIterableCls>(this, test);
 }
 
-Iterable<E> Iterable::skip(int count) {
-    return <E>SkipIterable(this, count);
+template<typename E> Iterable<E> IterableCls<E>::skip(int count) {
+    return <E>make<SkipIterableCls>(this, count);
 }
 
-Iterable<E> Iterable::skipWhile(FunctionType test) {
-    return <E>SkipWhileIterable(this, test);
+template<typename E> Iterable<E> IterableCls<E>::skipWhile(bool test(E value) ) {
+    return <E>make<SkipWhileIterableCls>(this, test);
 }
 
-E Iterable::first() {
+template<typename E> E IterableCls<E>::first() {
     Iterator<E> it = iterator;
-    if (!it.moveNext()) {
+    if (!it->moveNext()) {
         ;
     }
-    return it.current;
+    return it->current;
 }
 
-E Iterable::last() {
+template<typename E> E IterableCls<E>::last() {
     Iterator<E> it = iterator;
-    if (!it.moveNext()) {
+    if (!it->moveNext()) {
         ;
     }
     E result;
     do {
-        result = it.current;
-    } while (it.moveNext());
+        result = it->current;
+    } while (it->moveNext());
     return result;
 }
 
-E Iterable::single() {
+template<typename E> E IterableCls<E>::single() {
     Iterator<E> it = iterator;
-    if (!it.moveNext())     {
+    if (!it->moveNext())     {
         ;
     }
-    E result = it.current;
-    if (it.moveNext())     {
+    E result = it->current;
+    if (it->moveNext())     {
         ;
     }
     return result;
 }
 
-E Iterable::firstWhere(FunctionType orElse, FunctionType test) {
+template<typename E> E IterableCls<E>::firstWhere(E orElse() , bool test(E element) ) {
     for (E element : this) {
         if (test(element))         {
             return element;
@@ -197,7 +197,7 @@ E Iterable::firstWhere(FunctionType orElse, FunctionType test) {
     ;
 }
 
-E Iterable::lastWhere(FunctionType orElse, FunctionType test) {
+template<typename E> E IterableCls<E>::lastWhere(E orElse() , bool test(E element) ) {
     E result;
     bool foundMatching = false;
     for (E element : this) {
@@ -215,7 +215,7 @@ E Iterable::lastWhere(FunctionType orElse, FunctionType test) {
     ;
 }
 
-E Iterable::singleWhere(FunctionType orElse, FunctionType test) {
+template<typename E> E IterableCls<E>::singleWhere(E orElse() , bool test(E element) ) {
     E result;
     bool foundMatching = false;
     for (E element : this) {
@@ -236,8 +236,8 @@ E Iterable::singleWhere(FunctionType orElse, FunctionType test) {
     ;
 }
 
-E Iterable::elementAt(int index) {
-    RangeError.checkNotNegative(index, "index");
+template<typename E> E IterableCls<E>::elementAt(int index) {
+    RangeErrorCls->checkNotNegative(index, "index");
     int elementIndex = 0;
     for (E element : this) {
         if (index == elementIndex)         {
@@ -248,21 +248,21 @@ E Iterable::elementAt(int index) {
     ;
 }
 
-String Iterable::toString() {
-    return IterableBase.iterableToShortString(this, "(", ")");
+template<typename E> String IterableCls<E>::toString() {
+    return IterableBaseCls->iterableToShortString(this, "(", ")");
 }
 
-E _GeneratorIterable::elementAt(int index) {
-    RangeError.checkValidIndex(index, this);
+template<typename E> E _GeneratorIterableCls<E>::elementAt(int index) {
+    RangeErrorCls->checkValidIndex(index, this);
     return _generator(index);
 }
 
-_GeneratorIterable::_GeneratorIterable(FunctionType generator, int length) {
+template<typename E> _GeneratorIterableCls<E>::_GeneratorIterableCls(E generator(int index) , int length) {
     {
-        _generator = generator ?? (();
+        _generator = generator ?? (((E Function(int ))_id));
     }
 }
 
-int _GeneratorIterable::_id(int n) {
+template<typename E> int _GeneratorIterableCls<E>::_id(int n) {
     return n;
 }

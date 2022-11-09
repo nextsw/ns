@@ -1,25 +1,22 @@
-#ifndef RANDOM_H
-#define RANDOM_H
-#include <memory>
+#ifndef DART_MATH_RANDOM
+#define DART_MATH_RANDOM
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
 
 
-
-
-class Random {
+class RandomCls : public ObjectCls {
 public:
 
-    external  Random(int seed);
-
-    external void  secure();
-
-    int nextInt(int max);
-
-    double nextDouble();
-
-    bool nextBool();
-
+    extern  RandomCls(int seed);
+    extern void  secure();
+    virtual int nextInt(int max);
+    virtual double nextDouble();
+    virtual bool nextBool();
 private:
 
 };
+using Random = std::shared_ptr<RandomCls>;
+
 
 #endif

@@ -1,34 +1,35 @@
-#ifndef PRIORITY_H
-#define PRIORITY_H
-#include <memory>
+#ifndef PACKAGES_FLUTTER_SRC_SCHEDULER_PRIORITY
+#define PACKAGES_FLUTTER_SRC_SCHEDULER_PRIORITY
+#include <base.hpp>
 
-#include <flutter/foundation.hpp>
+#include <dart/core/core.hpp>
+#include <packages/flutter/lib/foundation.hpp>
 
 
-
-class Priority {
+class PriorityCls : public ObjectCls {
 public:
-    static const Priority idle;
+    static Priority idle;
 
-    static const Priority animation;
+    static Priority animation;
 
-    static const Priority touch;
+    static Priority touch;
 
-    static const int kMaxOffset;
+    static int kMaxOffset;
 
 
-    int value();
+    virtual int value();
 
-    Priority +(int offset);
+    virtual Priority operator+(int offset);
 
-    Priority -(int offset);
+    virtual Priority operator-(int offset);
 
 private:
     int _value;
 
 
-    void  _(int _value);
-
+    virtual void  _(int _value);
 };
+using Priority = std::shared_ptr<PriorityCls>;
+
 
 #endif

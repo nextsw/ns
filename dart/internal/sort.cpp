@@ -1,24 +1,24 @@
 #include "sort.hpp"
-void Sort::sort<E>(List<E> a, FunctionType compare) {
-    _doSort(a, 0, a.length - 1, compare);
+void SortCls::sorttemplate<typename E> (List<E> a, int compare(E a, E b) ) {
+    _doSort(a, 0, a->length - 1, compare);
 }
 
-void Sort::sortRange<E>(List<E> a, FunctionType compare, int from, int to) {
-    if (( < 0) || (to > a.length) || ( < from)) {
+void SortCls::sortRangetemplate<typename E> (List<E> a, int compare(E a, E b) , int from, int to) {
+    if (( < 0) || (to > a->length) || ( < from)) {
         ;
     }
     _doSort(a, from, to - 1, compare);
 }
 
-void Sort::_doSort<E>(List<E> a, FunctionType compare, int left, int right) {
-    if ((right - left) <= _INSERTION_SORT_THRESHOLD) {
+void SortCls::_doSorttemplate<typename E> (List<E> a, int compare(E a, E b) , int left, int right) {
+    if ((right - left) <= _INSERTION_SORT_THRESHOLDCls) {
         _insertionSort(a, left, right, compare);
     } else {
         _dualPivotQuicksort(a, left, right, compare);
     }
 }
 
-void Sort::_insertionSort<E>(List<E> a, FunctionType compare, int left, int right) {
+void SortCls::_insertionSorttemplate<typename E> (List<E> a, int compare(E a, E b) , int left, int right) {
     for (; i <= right; i++) {
         auto el = a[i];
         int j = i;
@@ -30,8 +30,8 @@ void Sort::_insertionSort<E>(List<E> a, FunctionType compare, int left, int righ
     }
 }
 
-void Sort::_dualPivotQuicksort<E>(List<E> a, FunctionType compare, int left, int right) {
-    assert(right - left > _INSERTION_SORT_THRESHOLD);
+void SortCls::_dualPivotQuicksorttemplate<typename E> (List<E> a, int compare(E a, E b) , int left, int right) {
+    assert(right - left > _INSERTION_SORT_THRESHOLDCls);
     int sixth = (right - left + 1) ~/ 6;
     int index1 = left + sixth;
     int index5 = right - sixth;

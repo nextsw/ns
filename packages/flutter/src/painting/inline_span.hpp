@@ -1,35 +1,35 @@
-#ifndef INLINE_SPAN_H
-#define INLINE_SPAN_H
-#include <memory>
+#ifndef PACKAGES_FLUTTER_SRC_PAINTING_INLINE_SPAN
+#define PACKAGES_FLUTTER_SRC_PAINTING_INLINE_SPAN
+#include <base.hpp>
 
-#include <ui/ui.hpp>
-#include <flutter/foundation.hpp>
-#include <flutter/gestures.hpp>
+#include <dart/core/core.hpp>
+#include <dart/ui/ui.hpp>
+#include <packages/flutter/lib/foundation.hpp>
+#include <packages/flutter/flutter.hpp>
 #include "basic_types.hpp"
 #include "text_painter.hpp"
 #include "text_span.hpp"
 #include "text_style.hpp"
 
 
-
-class Accumulator {
+class AccumulatorCls : public ObjectCls {
 public:
 
-     Accumulator(int _value);
+     AccumulatorCls(int _value);
+    virtual int value();
 
-    int value();
-
-    void increment(int addend);
+    virtual void increment(int addend);
 
 private:
     int _value;
 
 
 };
+using Accumulator = std::shared_ptr<AccumulatorCls>;
 
-class InlineSpanSemanticsInformation {
+class InlineSpanSemanticsInformationCls : public ObjectCls {
 public:
-    static const InlineSpanSemanticsInformation placeholder;
+    static InlineSpanSemanticsInformation placeholder;
 
     String text;
 
@@ -44,59 +44,54 @@ public:
     List<StringAttribute> stringAttributes;
 
 
-     InlineSpanSemanticsInformation(bool isPlaceholder, GestureRecognizer recognizer, String semanticsLabel, List<StringAttribute> stringAttributes, String text);
+     InlineSpanSemanticsInformationCls(bool isPlaceholder, GestureRecognizer recognizer, String semanticsLabel, List<StringAttribute> stringAttributes, String text);
 
-    bool ==(Object other);
+    virtual bool operator==(Object other);
 
-    int hashCode();
+    virtual int hashCode();
 
-    String toString();
+    virtual String toString();
 
 private:
 
 };
+using InlineSpanSemanticsInformation = std::shared_ptr<InlineSpanSemanticsInformationCls>;
 List<InlineSpanSemanticsInformation> combineSemanticsInfo(List<InlineSpanSemanticsInformation> infoList);
 
 
-class InlineSpan : DiagnosticableTree {
+class InlineSpanCls : public DiagnosticableTreeCls {
 public:
     TextStyle style;
 
 
-     InlineSpan(TextStyle style);
+     InlineSpanCls(TextStyle style);
+    virtual void build(ParagraphBuilder builder, List<PlaceholderDimensions> dimensions, double textScaleFactor);
+    virtual bool visitChildren(InlineSpanVisitor visitor);
+    virtual InlineSpan getSpanForPosition(TextPosition position);
 
-    void build(ParagraphBuilder builder, List<PlaceholderDimensions> dimensions, double textScaleFactor);
+    virtual InlineSpan getSpanForPositionVisitor(Accumulator offset, TextPosition position);
+    virtual String toPlainText(bool includePlaceholders, bool includeSemanticsLabels);
 
-    bool visitChildren(InlineSpanVisitor visitor);
+    virtual List<InlineSpanSemanticsInformation> getSemanticsInformation();
 
-    InlineSpan getSpanForPosition(TextPosition position);
+    virtual void computeSemanticsInformation(List<InlineSpanSemanticsInformation> collector);
+    virtual void computeToPlainText(StringBuffer buffer, bool includePlaceholders, bool includeSemanticsLabels);
+    virtual int codeUnitAt(int index);
 
-    InlineSpan getSpanForPositionVisitor(Accumulator offset, TextPosition position);
+    virtual int codeUnitAtVisitor(int index, Accumulator offset);
+    virtual bool debugAssertIsValid();
 
-    String toPlainText(bool includePlaceholders, bool includeSemanticsLabels);
+    virtual RenderComparison compareTo(InlineSpan other);
+    virtual bool operator==(Object other);
 
-    List<InlineSpanSemanticsInformation> getSemanticsInformation();
+    virtual int hashCode();
 
-    void computeSemanticsInformation(List<InlineSpanSemanticsInformation> collector);
-
-    void computeToPlainText(StringBuffer buffer, bool includePlaceholders, bool includeSemanticsLabels);
-
-    int codeUnitAt(int index);
-
-    int codeUnitAtVisitor(int index, Accumulator offset);
-
-    bool debugAssertIsValid();
-
-    RenderComparison compareTo(InlineSpan other);
-
-    bool ==(Object other);
-
-    int hashCode();
-
-    void debugFillProperties(DiagnosticPropertiesBuilder properties);
+    virtual void debugFillProperties(DiagnosticPropertiesBuilder properties);
 
 private:
 
 };
+using InlineSpan = std::shared_ptr<InlineSpanCls>;
+
 
 #endif

@@ -1,39 +1,41 @@
-#ifndef POINT_H
-#define POINT_H
-#include <memory>
+#ifndef DART_MATH_POINT
+#define DART_MATH_POINT
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
 
 
-
-
-class Point<T extends num> {
+template<typename T : num> class PointCls : public ObjectCls {
 public:
     T x;
 
     T y;
 
 
-     Point(T x, T y);
+     PointCls(T x, T y);
 
-    String toString();
+    virtual String toString();
 
-    bool ==(Object other);
+    virtual bool operator==(Object other);
 
-    int hashCode();
+    virtual int hashCode();
 
-    Point<T> +(Point<T> other);
+    virtual Point<T> operator+(Point<T> other);
 
-    Point<T> -(Point<T> other);
+    virtual Point<T> operator-(Point<T> other);
 
-    Point<T> *(num factor);
+    virtual Point<T> operator*(num factor);
 
-    double magnitude();
+    virtual double magnitude();
 
-    double distanceTo(Point<T> other);
+    virtual double distanceTo(Point<T> other);
 
-    T squaredDistanceTo(Point<T> other);
+    virtual T squaredDistanceTo(Point<T> other);
 
 private:
 
 };
+template<typename T : num> using Point = std::shared_ptr<PointCls<T : num>>;
+
 
 #endif

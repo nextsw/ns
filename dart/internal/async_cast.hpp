@@ -1,92 +1,94 @@
-#ifndef ASYNC_CAST_H
-#define ASYNC_CAST_H
-#include <memory>
+#ifndef DART_INTERNAL_ASYNC_CAST
+#define DART_INTERNAL_ASYNC_CAST
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
 
 
-
-
-class CastStream<S, T> : Stream<T> {
+template<typename S, typename T> class CastStreamCls : public StreamCls<T> {
 public:
 
-     CastStream(Stream<S> _source);
+     CastStreamCls(Stream<S> _source);
+    virtual bool isBroadcast();
 
-    bool isBroadcast();
+    virtual StreamSubscription<T> listen(bool cancelOnError, void onData(T data) , void onDone() , void  onError() );
 
-    StreamSubscription<T> listen(bool cancelOnError, FunctionType onData, FunctionType onDone, FunctionType onError);
-
-    Stream<R> cast<R>();
+    template<typename R>  virtual Stream<R> cast();
 
 private:
     Stream<S> _source;
 
 
 };
+template<typename S, typename T> using CastStream = std::shared_ptr<CastStreamCls<S, T>>;
 
-class CastStreamSubscription<S, T> {
+template<typename S, typename T> class CastStreamSubscriptionCls : public ObjectCls {
 public:
 
-     CastStreamSubscription(StreamSubscription<S> _source);
+     CastStreamSubscriptionCls(StreamSubscription<S> _source);
 
-    Future cancel();
+    virtual Future cancel();
 
-    void onData(FunctionType handleData);
+    virtual void onData(void handleData(T data) );
 
-    void onError(FunctionType handleError);
+    virtual void onError(void  handleError() );
 
-    void onDone(FunctionType handleDone);
+    virtual void onDone(void handleDone() );
 
-    void pause(Future resumeSignal);
+    virtual void pause(Future resumeSignal);
 
-    void resume();
+    virtual void resume();
 
-    bool isPaused();
+    virtual bool isPaused();
 
-    Future<E> asFuture<E>(E futureValue);
+    template<typename E>  virtual Future<E> asFuture(E futureValue);
 
 private:
     StreamSubscription<S> _source;
 
     Zone _zone;
 
-    FunctionType _handleData;
+    void Function(T ) _handleData;
 
-    FunctionType _handleError;
+    void  Function() _handleError;
 
 
-    void _onData(S data);
+    virtual void _onData(S data);
 
 };
+template<typename S, typename T> using CastStreamSubscription = std::shared_ptr<CastStreamSubscriptionCls<S, T>>;
 
-class CastStreamTransformer<SS, ST, TS, TT> : StreamTransformerBase<TS, TT> {
+template<typename SS, typename ST, typename TS, typename TT> class CastStreamTransformerCls : public StreamTransformerBaseCls<TS, TT> {
 public:
 
-     CastStreamTransformer(StreamTransformer<SS, ST> _source);
+     CastStreamTransformerCls(StreamTransformer<SS, ST> _source);
+    template<typename RS, typename RT>  virtual StreamTransformer<RS, RT> cast();
 
-    StreamTransformer<RS, RT> cast<RS, RT>();
-
-    Stream<TT> bind(Stream<TS> stream);
+    virtual Stream<TT> bind(Stream<TS> stream);
 
 private:
     StreamTransformer<SS, ST> _source;
 
 
 };
+template<typename SS, typename ST, typename TS, typename TT> using CastStreamTransformer = std::shared_ptr<CastStreamTransformerCls<SS, ST, TS, TT>>;
 
-class CastConverter<SS, ST, TS, TT> : Converter<TS, TT> {
+template<typename SS, typename ST, typename TS, typename TT> class CastConverterCls : public ConverterCls<TS, TT> {
 public:
 
-     CastConverter(Converter<SS, ST> _source);
+     CastConverterCls(Converter<SS, ST> _source);
+    virtual TT convert(TS input);
 
-    TT convert(TS input);
+    virtual Stream<TT> bind(Stream<TS> stream);
 
-    Stream<TT> bind(Stream<TS> stream);
-
-    Converter<RS, RT> cast<RS, RT>();
+    template<typename RS, typename RT>  virtual Converter<RS, RT> cast();
 
 private:
     Converter<SS, ST> _source;
 
 
 };
+template<typename SS, typename ST, typename TS, typename TT> using CastConverter = std::shared_ptr<CastConverterCls<SS, ST, TS, TT>>;
+
 
 #endif

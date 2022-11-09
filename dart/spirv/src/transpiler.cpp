@@ -1,82 +1,86 @@
 #include "transpiler.hpp"
-void _Transpiler::transpile() {
+void _TranspilerCls::transpile() {
     parseHeader();
     writeHeader();
-    while ( < spirv.length) {
+    while ( < spirv->length) {
         int lastPosition = position;
         parseInstruction();
         assert(position > lastPosition);
     }
-    if (uniformDeclarations.isNotEmpty) {
-        src.writeln();
-        List<int> locations = uniformDeclarations.keys.toList();
-        locations.sort();
+    if (uniformDeclarations->isNotEmpty) {
+        src->writeln();
+        List<int> locations = uniformDeclarations->keys->toList();
+        locations->sort([=] (int a,int b)         {
+            a - b;
+        });
         for (int location : locations) {
-            src.writeln(uniformDeclarations[location]);
+            src->writeln(uniformDeclarations[location]);
         }
     }
-    if (samplerSizeDeclarations.isNotEmpty) {
-        src.writeln();
-        List<int> locations = samplerSizeDeclarations.keys.toList();
-        locations.sort();
+    if (samplerSizeDeclarations->isNotEmpty) {
+        src->writeln();
+        List<int> locations = samplerSizeDeclarations->keys->toList();
+        locations->sort([=] (int a,int b)         {
+            a - b;
+        });
         for (int location : locations) {
-            src.writeln(samplerSizeDeclarations[location]);
+            src->writeln(samplerSizeDeclarations[location]);
         }
     }
-    src.writeln();
-    Set<int> visited = ;
+    src->writeln();
+    Set<int> visited = makeSet();
     writeFunctionAndDeps(visited, entryPoint);
 }
 
-TranspileException _Transpiler::failure(String why) {
-    return TranspileException._(currentOp, why);
+TranspileException _TranspilerCls::failure(String why) {
+    return TranspileExceptionCls->_(currentOp, why);
 }
 
-void _Transpiler::collectDeps(Set<int> collectedDeps, int id) {
-    if (alias.containsKey(id)) {
+void _TranspilerCls::collectDeps(Set<int> collectedDeps, int id) {
+    if (alias->containsKey(id)) {
         id = alias[id]!;
-        collectedDeps.add(id);
+        collectedDeps->add(id);
     }
     _Instruction result = results[id];
     if (result == nullptr) {
         return;
     }
-    for (int i : result.deps) {
-        if (!collectedDeps.contains(i)) {
-            collectedDeps.add(i);
+    for (int i : result->deps) {
+        if (!collectedDeps->contains(i)) {
+            collectedDeps->add(i);
             collectDeps(collectedDeps, i);
         }
     }
 }
 
-void _Transpiler::writeFunctionAndDeps(int function, Set<int> visited) {
-    if (visited.contains(function)) {
+void _TranspilerCls::writeFunctionAndDeps(int function, Set<int> visited) {
+    if (visited->contains(function)) {
         return;
     }
-    visited.add(function);
+    visited->add(function);
     _Function f = functions[function]!;
-    for (int dep : f.deps) {
+    for (int dep : f->deps) {
         writeFunctionAndDeps(visited, dep);
     }
-    f.write(src);
+    f->write(src);
 }
 
-void _Transpiler::writeHeader() {
+void _TranspilerCls::writeHeader() {
     ;
 }
 
-int _Transpiler::resolveId(int id) {
-    if (alias.containsKey(id)) {
+int _TranspilerCls::resolveId(int id) {
+    if (alias->containsKey(id)) {
         return alias[id]!;
     }
     return id;
 }
 
-String _Transpiler::resolveName(int id) {
-    if (alias.containsKey(id)) {
+String _TranspilerCls::resolveName(int id) {
+    if (alias->containsKey(id)) {
         return resolveName(alias[id]!);
     }
-    if (nameOverloads.containsKey(id)) {
+    if (nameOverloads->containsKey(id)) {
         return nameOverloads[id]!;
     } else     {
         if (constantTrue > 0 && id == constantTrue) {
@@ -88,7 +92,7 @@ String _Transpiler::resolveName(int id) {
 ;
     };
     }    if (id == colorOutput) {
-        if (target == TargetLanguage.glslES) {
+        if (target == TargetLanguageCls::glslES) {
             return _glslESColorName;
         } else {
             return _colorVariableName;
@@ -97,7 +101,7 @@ String _Transpiler::resolveName(int id) {
         if (id == entryPoint) {
         return _mainFunctionName;
     } else     {
-        if (id == fragCoord && target != TargetLanguage.sksl) {
+        if (id == fragCoord && target != TargetLanguageCls::sksl) {
         return _glslFragCoord;
     }
 ;
@@ -105,7 +109,7 @@ String _Transpiler::resolveName(int id) {
     }    return "i$id";
 }
 
-String _Transpiler::resolveType(int type) {
+String _TranspilerCls::resolveType(int type) {
     _Type t = types[type];
     if (t == nullptr) {
         ;
@@ -113,22 +117,22 @@ String _Transpiler::resolveType(int type) {
     return _typeName(t, target);
 }
 
-String _Transpiler::resolveResult(int name) {
-    if (alias.containsKey(name)) {
+String _TranspilerCls::resolveResult(int name) {
+    if (alias->containsKey(name)) {
         return resolveResult(alias[name]!);
     }
     _Instruction res = results[name];
-    if (res != nullptr && res.refCount <= 1) {
-        StringBuffer buf = StringBuffer();
-        buf.write("(");
-        res.write(this, buf);
-        buf.write(")");
-        return buf.toString();
+    if (res != nullptr && res->refCount <= 1) {
+        StringBuffer buf = make<StringBufferCls>();
+        buf->write("(");
+        res->write(this, buf);
+        buf->write(")");
+        return buf->toString();
     }
     return resolveName(name);
 }
 
-int _Transpiler::readWord() {
+int _TranspilerCls::readWord() {
     if (nextPosition != 0 && position > nextPosition) {
         ;
     }
@@ -137,45 +141,45 @@ int _Transpiler::readWord() {
     return word;
 }
 
-void _Transpiler::parseHeader() {
+void _TranspilerCls::parseHeader() {
     if (spirv[0] != _magicNumber) {
         ;
     }
     position = 5;
 }
 
-String _Transpiler::readStringLiteral() {
-    List<int> literal = ;
+String _TranspilerCls::readStringLiteral() {
+    List<int> literal = makeList();
     while ( < nextPosition) {
         int word = readWord();
         for (;  < 4; i++) {
             int octet = (word >> (i * 8)) & 0xFF;
             if (octet == 0) {
-                return utf8.decode(literal);
+                return utf8->decode(literal);
             }
-            literal.add(octet);
+            literal->add(octet);
         }
     }
     ;
 }
 
-void _Transpiler::ref(int id) {
+void _TranspilerCls::ref(int id) {
     int a = alias[id];
     if (a != nullptr) {
         ref(a);
         return;
     }
-    results[id]?.refCount++;
+    results[id]?->refCount++;
 }
 
-void _Transpiler::addToCurrentBlock(_Instruction inst) {
-    if (inst.isResult) {
-        results[inst.id] = inst;
+void _TranspilerCls::addToCurrentBlock(_Instruction inst) {
+    if (inst->isResult) {
+        results[inst->id] = inst;
     }
-    currentBlock!._add(inst);
+    currentBlock!->_add(inst);
 }
 
-void _Transpiler::parseInstruction() {
+void _TranspilerCls::parseInstruction() {
     int word = readWord();
     currentOp = word & 0xFFFF;
     nextPosition = position + (word >> 16) - 1;
@@ -183,15 +187,15 @@ void _Transpiler::parseInstruction() {
     position = nextPosition;
 }
 
-void _Transpiler::typeCast() {
+void _TranspilerCls::typeCast() {
     int type = readWord();
     int name = readWord();
     int value = readWord();
     ref(value);
-    addToCurrentBlock(_TypeCast(type, name, value));
+    addToCurrentBlock(make<_TypeCastCls>(type, name, value));
 }
 
-void _Transpiler::opExtInstImport() {
+void _TranspilerCls::opExtInstImport() {
     glslExtImport = readWord();
     String ext = readStringLiteral();
     if (ext != _glslStd450) {
@@ -199,7 +203,7 @@ void _Transpiler::opExtInstImport() {
     }
 }
 
-void _Transpiler::opExtInst() {
+void _TranspilerCls::opExtInst() {
     int type = readWord();
     int id = readWord();
     int set = readWord();
@@ -209,7 +213,7 @@ void _Transpiler::opExtInst() {
     parseGLSLInst(id, type);
 }
 
-void _Transpiler::opMemoryModel() {
+void _TranspilerCls::opMemoryModel() {
     if (readWord() != _addressingModelLogical) {
         ;
     }
@@ -218,12 +222,12 @@ void _Transpiler::opMemoryModel() {
     }
 }
 
-void _Transpiler::opEntryPoint() {
+void _TranspilerCls::opEntryPoint() {
     position++;
     entryPoint = readWord();
 }
 
-void _Transpiler::opExecutionMode() {
+void _TranspilerCls::opExecutionMode() {
     position++;
     int executionMode = readWord();
     if (executionMode != _originLowerLeft) {
@@ -231,22 +235,22 @@ void _Transpiler::opExecutionMode() {
     }
 }
 
-void _Transpiler::opCapability() {
+void _TranspilerCls::opCapability() {
     int capability = readWord();
     ;
 }
 
-void _Transpiler::opTypeVoid() {
-    types[readWord()] = _Type._void;
+void _TranspilerCls::opTypeVoid() {
+    types[readWord()] = _TypeCls::_void;
 }
 
-void _Transpiler::opTypeBool() {
-    types[readWord()] = _Type._bool;
+void _TranspilerCls::opTypeBool() {
+    types[readWord()] = _TypeCls::_bool;
 }
 
-void _Transpiler::opTypeInt() {
+void _TranspilerCls::opTypeInt() {
     int id = readWord();
-    types[id] = _Type._int;
+    types[id] = _TypeCls::_int;
     intType = id;
     int width = readWord();
     if (width != 32) {
@@ -254,9 +258,9 @@ void _Transpiler::opTypeInt() {
     }
 }
 
-void _Transpiler::opTypeFloat() {
+void _TranspilerCls::opTypeFloat() {
     int id = readWord();
-    types[id] = _Type.float;
+    types[id] = _TypeCls::float;
     floatType = id;
     int width = readWord();
     if (width != 32) {
@@ -264,7 +268,7 @@ void _Transpiler::opTypeFloat() {
     }
 }
 
-void _Transpiler::opTypeVector() {
+void _TranspilerCls::opTypeVector() {
     int id = readWord();
     _Type t;
     int componentType = readWord();
@@ -276,12 +280,12 @@ void _Transpiler::opTypeVector() {
     types[id] = t;
 }
 
-void _Transpiler::opTypeMatrix() {
+void _TranspilerCls::opTypeMatrix() {
     int id = readWord();
     _Type t;
     int columnType = readWord();
     int columnCount = readWord();
-    _Type expected = _Type.float2;
+    _Type expected = _TypeCls::float2;
     ;
     if (types[columnType] != expected) {
         ;
@@ -289,13 +293,13 @@ void _Transpiler::opTypeMatrix() {
     types[id] = t;
 }
 
-void _Transpiler::opTypeImage() {
+void _TranspilerCls::opTypeImage() {
     if (imageType != 0) {
         ;
     }
     int id = readWord();
     int sampledType = readWord();
-    if (types[sampledType] != _Type.float) {
+    if (types[sampledType] != _TypeCls::float) {
         ;
     }
     int dimensionality = readWord();
@@ -321,7 +325,7 @@ void _Transpiler::opTypeImage() {
     imageType = id;
 }
 
-void _Transpiler::opTypeSampledImage() {
+void _TranspilerCls::opTypeSampledImage() {
     if (sampledImageType != 0) {
         ;
     }
@@ -334,10 +338,10 @@ void _Transpiler::opTypeSampledImage() {
         ;
     }
     sampledImageType = id;
-    types[id] = _Type.sampledImage;
+    types[id] = _TypeCls::sampledImage;
 }
 
-void _Transpiler::opTypePointer() {
+void _TranspilerCls::opTypePointer() {
     int id = readWord();
     position++;
     _Type t = types[readWord()];
@@ -347,7 +351,7 @@ void _Transpiler::opTypePointer() {
     types[id] = t;
 }
 
-void _Transpiler::opTypeFunction() {
+void _TranspilerCls::opTypeFunction() {
     int id = readWord();
     int returnType = readWord();
     int paramCount = nextPosition - position;
@@ -355,47 +359,47 @@ void _Transpiler::opTypeFunction() {
     for (;  < paramCount; i++) {
         params[i] = readWord();
     }
-    functionTypes[id] = _FunctionType(returnType, params);
+    functionTypes[id] = make<_FunctionTypeCls>(returnType, params);
 }
 
-void _Transpiler::opConstantTrue() {
+void _TranspilerCls::opConstantTrue() {
     position++;
     constantTrue = readWord();
 }
 
-void _Transpiler::opConstantFalse() {
+void _TranspilerCls::opConstantFalse() {
     position++;
     constantFalse = readWord();
 }
 
-void _Transpiler::opConstant() {
+void _TranspilerCls::opConstant() {
     int type = readWord();
     String id = resolveName(readWord());
     int value = readWord();
     String valueString = "$value";
-    if (types[type] == _Type.float) {
-        double v = Int32List.fromList().buffer.asByteData().getFloat32(0, Endian.little);
+    if (types[type] == _TypeCls::float) {
+        double v = Int32ListCls->fromList(makeList(ArrayItem))->buffer->asByteData()->getFloat32(0, EndianCls::little);
         valueString = "$v";
     }
     String typeName = resolveType(type);
-    src.writeln("const $typeName $id = $valueString;");
+    src->writeln("const $typeName $id = $valueString;");
 }
 
-void _Transpiler::opConstantComposite() {
+void _TranspilerCls::opConstantComposite() {
     String type = resolveType(readWord());
     String id = resolveName(readWord());
-    src.write("const $type $id = $type(");
+    src->write("const $type $id = $type(");
     int count = nextPosition - position;
     for (;  < count; i++) {
-        src.write(resolveName(readWord()));
+        src->write(resolveName(readWord()));
         if ( < count - 1) {
-            src.write(", ");
+            src->write(", ");
         }
     }
-    src.writeln(");");
+    src->writeln(");");
 }
 
-void _Transpiler::opFunction() {
+void _TranspilerCls::opFunction() {
     int returnType = readWord();
     int id = readWord();
     position++;
@@ -404,42 +408,42 @@ void _Transpiler::opFunction() {
     if (functionType == nullptr) {
         ;
     }
-    if (returnType != functionType.returnType) {
+    if (returnType != functionType->returnType) {
         ;
     }
-    _Function f = _Function(this, functionType, id);
+    _Function f = make<_FunctionCls>(this, functionType, id);
     functions[id] = f;
     currentFunction = f;
 }
 
-void _Transpiler::opFunctionParameter() {
+void _TranspilerCls::opFunctionParameter() {
     int type = readWord();
     int id = readWord();
     _Function f = currentFunction!;
-    f.declareParam(id, type);
+    f->declareParam(id, type);
 }
 
-void _Transpiler::opFunctionEnd() {
+void _TranspilerCls::opFunctionEnd() {
     currentFunction = nullptr;
     currentBlock = nullptr;
 }
 
-void _Transpiler::opFunctionCall() {
+void _TranspilerCls::opFunctionCall() {
     int type = readWord();
     int name = readWord();
     int functionId = readWord();
     String functionName = resolveName(functionId);
-    currentFunction!.deps.add(functionId);
+    currentFunction!->deps->add(functionId);
     List<int> args = <int>filled(nextPosition - position, 0);
-    for (;  < args.length; i++) {
+    for (;  < args->length; i++) {
         int id = readWord();
         ref(id);
         args[i] = id;
     }
-    addToCurrentBlock(_FunctionCall(type, name, functionName, args));
+    addToCurrentBlock(make<_FunctionCallCls>(type, name, functionName, args));
 }
 
-void _Transpiler::opVariable() {
+void _TranspilerCls::opVariable() {
     int typeId = readWord();
     String type = resolveType(typeId);
     int id = readWord();
@@ -448,14 +452,14 @@ void _Transpiler::opVariable() {
     ;
 }
 
-void _Transpiler::opLoad() {
+void _TranspilerCls::opLoad() {
     position++;
     int id = readWord();
     int pointer = readWord();
     alias[id] = pointer;
 }
 
-void _Transpiler::opSelect() {
+void _TranspilerCls::opSelect() {
     int type = readWord();
     int name = readWord();
     int condition = readWord();
@@ -464,169 +468,169 @@ void _Transpiler::opSelect() {
     ref(condition);
     ref(a);
     ref(b);
-    addToCurrentBlock(_Select(type, name, condition, a, b));
+    addToCurrentBlock(make<_SelectCls>(type, name, condition, a, b));
 }
 
-void _Transpiler::opStore() {
+void _TranspilerCls::opStore() {
     int pointer = readWord();
     int object = readWord();
     ref(object);
-    _Variable v = currentFunction!.variable(pointer);
-    if (v != nullptr && !v.initialized) {
-        addToCurrentBlock(_Store(pointer, objecttrue, v.type));
-        v.initialized = true;
+    _Variable v = currentFunction!->variable(pointer);
+    if (v != nullptr && !v->initialized) {
+        addToCurrentBlock(make<_StoreCls>(pointer, objecttrue, v->type));
+        v->initialized = true;
         return;
     }
     _Instruction objInstruction = results[object];
-    if (objInstruction is _BinaryOperator && resolveId(objInstruction.a) == pointer && _isCompoundAssignment(objInstruction.op)) {
-        addToCurrentBlock(_CompoundAssignment(pointer, objInstruction.op, objInstruction.b));
+    if (objInstruction is _BinaryOperator && resolveId(objInstruction->a) == pointer && _isCompoundAssignment(objInstruction->op)) {
+        addToCurrentBlock(make<_CompoundAssignmentCls>(pointer, objInstruction->op, objInstruction->b));
         return;
     }
-    addToCurrentBlock(_Store(pointer, object));
+    addToCurrentBlock(make<_StoreCls>(pointer, object));
 }
 
-void _Transpiler::opAccessChain() {
+void _TranspilerCls::opAccessChain() {
     int type = readWord();
     int id = readWord();
     int base = readWord();
     ref(base);
     List<int> indices = <int>filled(nextPosition - position, 0);
-    for (;  < indices.length; i++) {
+    for (;  < indices->length; i++) {
         int id = readWord();
         ref(id);
         indices[i] = id;
     }
-    addToCurrentBlock(_AccessChain(type, id, base, indices));
+    addToCurrentBlock(make<_AccessChainCls>(type, id, base, indices));
 }
 
-void _Transpiler::opDecorate() {
+void _TranspilerCls::opDecorate() {
     int target = readWord();
     int decoration = readWord();
     ;
 }
 
-void _Transpiler::opVectorShuffle() {
+void _TranspilerCls::opVectorShuffle() {
     int type = readWord();
     int name = readWord();
     int vector = readWord();
     position++;
     List<int> indices = <int>filled(nextPosition - position, 0);
-    for (;  < indices.length; i++) {
+    for (;  < indices->length; i++) {
         ref(vector);
         int id = readWord();
         indices[i] = id;
     }
-    addToCurrentBlock(_VectorShuffle(type, name, vector, indices));
+    addToCurrentBlock(make<_VectorShuffleCls>(type, name, vector, indices));
 }
 
-void _Transpiler::opCompositeConstruct() {
+void _TranspilerCls::opCompositeConstruct() {
     int type = readWord();
     int name = readWord();
     List<int> components = <int>filled(nextPosition - position, 0);
-    for (;  < components.length; i++) {
+    for (;  < components->length; i++) {
         int id = readWord();
         ref(id);
         components[i] = id;
     }
-    addToCurrentBlock(_CompositeConstruct(type, name, components));
+    addToCurrentBlock(make<_CompositeConstructCls>(type, name, components));
 }
 
-void _Transpiler::opCompositeExtract() {
+void _TranspilerCls::opCompositeExtract() {
     int type = readWord();
     int name = readWord();
     int src = readWord();
     ref(src);
     List<int> indices = <int>filled(nextPosition - position, 0);
-    for (;  < indices.length; i++) {
+    for (;  < indices->length; i++) {
         int index = readWord();
         indices[i] = index;
     }
-    addToCurrentBlock(_CompositeExtract(type, name, src, indices));
+    addToCurrentBlock(make<_CompositeExtractCls>(type, name, src, indices));
 }
 
-void _Transpiler::opImageSampleImplicitLod() {
+void _TranspilerCls::opImageSampleImplicitLod() {
     int type = readWord();
     int name = readWord();
     int sampledImage = readWord();
     int coordinate = readWord();
     ref(coordinate);
-    addToCurrentBlock(_ImageSampleImplicitLod(type, name, sampledImage, coordinate));
+    addToCurrentBlock(make<_ImageSampleImplicitLodCls>(type, name, sampledImage, coordinate));
 }
 
-void _Transpiler::opLabel() {
+void _TranspilerCls::opLabel() {
     int id = readWord();
-    currentBlock = currentFunction!.addBlock(id);
+    currentBlock = currentFunction!->addBlock(id);
 }
 
-void _Transpiler::opBranch() {
-    currentBlock!.branch = readWord();
+void _TranspilerCls::opBranch() {
+    currentBlock!->branch = readWord();
     currentBlock = nullptr;
 }
 
-void _Transpiler::opBranchConditional() {
+void _TranspilerCls::opBranchConditional() {
     _Block b = currentBlock!;
-    b.condition = readWord();
-    b.truthyBlock = readWord();
-    b.falseyBlock = readWord();
+    b->condition = readWord();
+    b->truthyBlock = readWord();
+    b->falseyBlock = readWord();
 }
 
-void _Transpiler::opLoopMerge() {
+void _TranspilerCls::opLoopMerge() {
     _Block b = currentBlock!;
-    b.mergeBlock = readWord();
-    b.continueBlock = readWord();
+    b->mergeBlock = readWord();
+    b->continueBlock = readWord();
 }
 
-void _Transpiler::opSelectionMerge() {
-    currentBlock!.mergeBlock = readWord();
+void _TranspilerCls::opSelectionMerge() {
+    currentBlock!->mergeBlock = readWord();
 }
 
-void _Transpiler::opReturn() {
-    if (currentFunction!.name == entryPoint) {
+void _TranspilerCls::opReturn() {
+    if (currentFunction!->name == entryPoint) {
         return;
     } else {
-        addToCurrentBlock(_Return());
+        addToCurrentBlock(make<_ReturnCls>());
     }
 }
 
-void _Transpiler::opReturnValue() {
+void _TranspilerCls::opReturnValue() {
     int value = readWord();
     ref(value);
-    addToCurrentBlock(_ReturnValue(value));
+    addToCurrentBlock(make<_ReturnValueCls>(value));
 }
 
-void _Transpiler::parseUnaryOperator(_Operator op) {
+void _TranspilerCls::parseUnaryOperator(_Operator op) {
     int type = readWord();
     int name = readWord();
     int operand = readWord();
     ref(operand);
-    addToCurrentBlock(_UnaryOperator(type, name, op, operand));
+    addToCurrentBlock(make<_UnaryOperatorCls>(type, name, op, operand));
 }
 
-void _Transpiler::parseOperatorInst(_Operator op) {
+void _TranspilerCls::parseOperatorInst(_Operator op) {
     int type = readWord();
     int name = readWord();
     int a = readWord();
     int b = readWord();
     ref(a);
     ref(b);
-    addToCurrentBlock(_BinaryOperator(type, name, op, a, b));
+    addToCurrentBlock(make<_BinaryOperatorCls>(type, name, op, a, b));
 }
 
-void _Transpiler::parseBuiltinFunction(String functionName) {
+void _TranspilerCls::parseBuiltinFunction(String functionName) {
     int type = readWord();
     int name = readWord();
     List<int> args = <int>filled(nextPosition - position, 0);
-    for (;  < args.length; i++) {
+    for (;  < args->length; i++) {
         int id = readWord();
         ref(id);
         args[i] = id;
     }
-    addToCurrentBlock(_BuiltinFunction(type, name, functionName, args));
+    addToCurrentBlock(make<_BuiltinFunctionCls>(type, name, functionName, args));
 }
 
-void _Transpiler::parseGLSLInst(int id, int type) {
+void _TranspilerCls::parseGLSLInst(int id, int type) {
     int inst = readWord();
-    if (inst == _glslStd450Atan2 && target == TargetLanguage.sksl) {
+    if (inst == _glslStd450Atan2 && target == TargetLanguageCls::sksl) {
         inst = _glslStd450Atan;
     }
     String opName = _glslStd450OpNames[inst];
@@ -640,5 +644,5 @@ void _Transpiler::parseGLSLInst(int id, int type) {
         ref(id);
         args[i] = id;
     }
-    addToCurrentBlock(_BuiltinFunction(type, id, opName, args));
+    addToCurrentBlock(make<_BuiltinFunctionCls>(type, id, opName, args));
 }

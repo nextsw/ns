@@ -1,42 +1,42 @@
-#ifndef FRUSTUM_H
-#define FRUSTUM_H
-#include <memory>
+#ifndef PACKAGES_VECTOR_MATH_SRC_VECTOR_MATH_64_FRUSTUM
+#define PACKAGES_VECTOR_MATH_SRC_VECTOR_MATH_64_FRUSTUM
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
 
 
-
-
-class Frustum {
+class FrustumCls : public ObjectCls {
 public:
 
-    Plane plane0();
+    virtual Plane plane0();
 
-    Plane plane1();
+    virtual Plane plane1();
 
-    Plane plane2();
+    virtual Plane plane2();
 
-    Plane plane3();
+    virtual Plane plane3();
 
-    Plane plane4();
+    virtual Plane plane4();
 
-    Plane plane5();
+    virtual Plane plane5();
 
-     Frustum();
+     FrustumCls();
 
-    void  copy(Frustum other);
+    virtual void  copy(Frustum other);
 
-    void  matrix(Matrix4 matrix);
+    virtual void  matrix(Matrix4 matrix);
 
-    void copyFrom(Frustum other);
+    virtual void copyFrom(Frustum other);
 
-    void setFromMatrix(Matrix4 matrix);
+    virtual void setFromMatrix(Matrix4 matrix);
 
-    bool containsVector3(Vector3 point);
+    virtual bool containsVector3(Vector3 point);
 
-    bool intersectsWithAabb3(Aabb3 aabb);
+    virtual bool intersectsWithAabb3(Aabb3 aabb);
 
-    bool intersectsWithSphere(Sphere sphere);
+    virtual bool intersectsWithSphere(Sphere sphere);
 
-    void calculateCorners(Vector3 corner0, Vector3 corner1, Vector3 corner2, Vector3 corner3, Vector3 corner4, Vector3 corner5, Vector3 corner6, Vector3 corner7);
+    virtual void calculateCorners(Vector3 corner0, Vector3 corner1, Vector3 corner2, Vector3 corner3, Vector3 corner4, Vector3 corner5, Vector3 corner6, Vector3 corner7);
 
 private:
     Plane _plane0;
@@ -52,8 +52,10 @@ private:
     Plane _plane5;
 
 
-    bool _intersectsWithAabb3CheckPlane(Aabb3 aabb, Plane plane);
+    virtual bool _intersectsWithAabb3CheckPlane(Aabb3 aabb, Plane plane);
 
 };
+using Frustum = std::shared_ptr<FrustumCls>;
+
 
 #endif

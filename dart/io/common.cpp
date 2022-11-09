@@ -8,32 +8,32 @@ void _exceptionFromResponse(response , String message, String path) {
     ;
 }
 
-String IOException::toString() {
+String IOExceptionCls::toString() {
     return "IOException";
 }
 
-String OSError::toString() {
-    StringBuffer sb = StringBuffer();
-    sb.write("OS Error");
-    if (message.isNotEmpty) {
-        ;
+String OSErrorCls::toString() {
+    StringBuffer sb = make<StringBufferCls>();
+    sb->write("OS Error");
+    if (message->isNotEmpty) {
+            auto _c1 = sb;    _c1.auto _c2 = write(": ");    _c2.write(message);    _c2;_c1;
         if (errorCode != noErrorCode) {
-            ;
+                    auto _c3 = sb;        _c3.auto _c4 = write(", errno = ");        _c4.write(errorCode->toString());        _c4;_c3;
         }
     } else     {
         if (errorCode != noErrorCode) {
-        ;
+            auto _c5 = sb;    _c5.auto _c6 = write(": errno = ");    _c6.write(errorCode->toString());    _c6;_c5;
     }
 ;
-    }    return sb.toString();
+    }    return sb->toString();
 }
 
 _BufferAndStart _ensureFastAndSerializableByteData(List<int> buffer, int end, int start) {
     if (_isDirectIOCapableTypedList(buffer)) {
-        return _BufferAndStart(buffer, start);
+        return make<_BufferAndStartCls>(buffer, start);
     }
     int length = end - start;
-    auto newBuffer = Uint8List(length);
-    newBuffer.setRange(0, length, buffer, start);
-    return _BufferAndStart(newBuffer, 0);
+    auto newBuffer = make<Uint8ListCls>(length);
+    newBuffer->setRange(0, length, buffer, start);
+    return make<_BufferAndStartCls>(newBuffer, 0);
 }

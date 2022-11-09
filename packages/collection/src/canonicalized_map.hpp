@@ -1,8 +1,9 @@
-#ifndef CANONICALIZED_MAP_H
-#define CANONICALIZED_MAP_H
-#include <memory>
+#ifndef PACKAGES_COLLECTION_SRC_CANONICALIZED_MAP
+#define PACKAGES_COLLECTION_SRC_CANONICALIZED_MAP
+#include <base.hpp>
 
-#include <collection/collection.hpp>
+#include <dart/core/core.hpp>
+#include <dart/collection/collection.hpp>
 
 
 

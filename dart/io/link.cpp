@@ -1,119 +1,145 @@
 #include "link.hpp"
-Link::Link(String path) {
+LinkCls::LinkCls(String path) {
     {
-        IOOverrides overrides = IOOverrides.current;
+        IOOverrides overrides = IOOverridesCls::current;
         if (overrides == nullptr) {
-            return _Link(path);
+            return make<_LinkCls>(path);
         }
-        return overrides.createLink(path);
+        return overrides->createLink(path);
     }
 }
 
-void Link::fromRawPath(Uint8List rawPath) {
-    return _Link.fromRawPath(rawPath);
+void LinkCls::fromRawPath(Uint8List rawPath) {
+    return _LinkCls->fromRawPath(rawPath);
 }
 
-void Link::fromUri(Uri uri) {
-    return Link(uri.toFilePath());
+void LinkCls::fromUri(Uri uri) {
+    return make<LinkCls>(uri->toFilePath());
 }
 
-void _Link::fromRawPath(Uint8List rawPath)
+void _LinkCls::fromRawPath(Uint8List rawPath)
 
-String _Link::path() {
+String _LinkCls::path() {
     return _path;
 }
 
-String _Link::toString() {
+String _LinkCls::toString() {
     return "Link: '$path'";
 }
 
-Future<bool> _Link::exists() {
-    return FileSystemEntity._isLinkRaw(_rawPath);
+Future<bool> _LinkCls::exists() {
+    return FileSystemEntityCls->_isLinkRaw(_rawPath);
 }
 
-bool _Link::existsSync() {
-    return FileSystemEntity._isLinkRawSync(_rawPath);
+bool _LinkCls::existsSync() {
+    return FileSystemEntityCls->_isLinkRawSync(_rawPath);
 }
 
-Link _Link::absolute() {
-    return isAbsolute? this : _Link(_absolutePath);
+Link _LinkCls::absolute() {
+    return isAbsolute? this : make<_LinkCls>(_absolutePath);
 }
 
-Future<Link> _Link::create(bool recursive, String target) {
-    auto result = recursive? parent.create(true) : Future.value(nullptr);
-    return result.then().then();
+Future<Link> _LinkCls::create(bool recursive, String target) {
+    auto result = recursive? parent->create(true) : FutureCls->value(nullptr);
+    return result->then([=] ()     {
+        _FileCls->_dispatchWithNamespace(_IOServiceCls::fileCreateLink, makeList(ArrayItem, ArrayItem, ArrayItem));
+    })->then([=] (Unknown  response) {
+        if (_isErrorResponse(response)) {
+            ;
+        }
+        return this;
+    });
 }
 
-void _Link::createSync(bool recursive, String target) {
+void _LinkCls::createSync(bool recursive, String target) {
     if (recursive) {
-        parent.createSync(true);
+        parent->createSync(true);
     }
-    auto result = _File._createLink(_Namespace._namespace, _rawPath, target);
+    auto result = _FileCls->_createLink(_NamespaceCls::_namespace, _rawPath, target);
     throwIfError(result, "Cannot create link", path);
 }
 
-void _Link::updateSync(String target) {
+void _LinkCls::updateSync(String target) {
     deleteSync();
     createSync(target);
 }
 
-Future<Link> _Link::update(String target) {
-    return delete().<Link>then();
+Future<Link> _LinkCls::update(String target) {
+    return delete()-><Link>then([=] ()     {
+        create(target);
+    });
 }
 
-Future<Link> _Link::rename(String newPath) {
-    return _File._dispatchWithNamespace(_IOService.fileRenameLink, ).then();
+Future<Link> _LinkCls::rename(String newPath) {
+    return _FileCls->_dispatchWithNamespace(_IOServiceCls::fileRenameLink, makeList(ArrayItem, ArrayItem, ArrayItem))->then([=] (Unknown  response) {
+        if (_isErrorResponse(response)) {
+            ;
+        }
+        return make<LinkCls>(newPath);
+    });
 }
 
-Link _Link::renameSync(String newPath) {
-    auto result = _File._renameLink(_Namespace._namespace, _rawPath, newPath);
+Link _LinkCls::renameSync(String newPath) {
+    auto result = _FileCls->_renameLink(_NamespaceCls::_namespace, _rawPath, newPath);
     throwIfError(result, "Cannot rename link '$path' to '$newPath'");
-    return Link(newPath);
+    return make<LinkCls>(newPath);
 }
 
-Future<String> _Link::target() {
-    return _File._dispatchWithNamespace(_IOService.fileLinkTarget, ).then();
+Future<String> _LinkCls::target() {
+    return _FileCls->_dispatchWithNamespace(_IOServiceCls::fileLinkTarget, makeList(ArrayItem, ArrayItem))->then([=] (Unknown  response) {
+        if (_isErrorResponse(response)) {
+            ;
+        }
+        return response;
+    });
 }
 
-String _Link::targetSync() {
-    auto result = _File._linkTarget(_Namespace._namespace, _rawPath);
+String _LinkCls::targetSync() {
+    auto result = _FileCls->_linkTarget(_NamespaceCls::_namespace, _rawPath);
     throwIfError(result, "Cannot read link", path);
     return result;
 }
 
-void _Link::throwIfError(String msg, String path, Object result) {
+void _LinkCls::throwIfError(String msg, String path, Object result) {
     if (result is OSError) {
         ;
     }
 }
 
-_Link::_Link(String path) {
+_LinkCls::_LinkCls(String path) {
     {
         _path = path;
-        _rawPath = FileSystemEntity._toUtf8Array(path);
+        _rawPath = FileSystemEntityCls->_toUtf8Array(path);
     }
 }
 
-Future<Link> _Link::_delete(bool recursive) {
+Future<Link> _LinkCls::_delete(bool recursive) {
     if (recursive) {
-        return Directory.fromRawPath(_rawPath).delete(true).then();
+        return DirectoryCls->fromRawPath(_rawPath)->delete(true)->then([=] ()         {
+            this;
+        });
     }
-    return _File._dispatchWithNamespace(_IOService.fileDeleteLink, ).then();
+    return _FileCls->_dispatchWithNamespace(_IOServiceCls::fileDeleteLink, makeList(ArrayItem, ArrayItem))->then([=] (Unknown  response) {
+        if (_isErrorResponse(response)) {
+            ;
+        }
+        return this;
+    });
 }
 
-void _Link::_deleteSync(bool recursive) {
+void _LinkCls::_deleteSync(bool recursive) {
     if (recursive) {
-        return Directory.fromRawPath(_rawPath).deleteSync(true);
+        return DirectoryCls->fromRawPath(_rawPath)->deleteSync(true);
     }
-    auto result = _File._deleteLinkNative(_Namespace._namespace, _rawPath);
+    auto result = _FileCls->_deleteLinkNative(_NamespaceCls::_namespace, _rawPath);
     throwIfError(result, "Cannot delete link", path);
 }
 
-bool _Link::_isErrorResponse(response ) {
+bool _LinkCls::_isErrorResponse(response ) {
     return response is List && response[0] != _successResponse;
 }
 
-void _Link::_exceptionFromResponse(response , String message, String path) {
+void _LinkCls::_exceptionFromResponse(response , String message, String path) {
     assert(_isErrorResponse(response));
     ;
 }

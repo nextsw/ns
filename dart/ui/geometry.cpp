@@ -1,118 +1,115 @@
 #include "geometry.hpp"
-OffsetBase::OffsetBase(double _dx, double _dy) {
+OffsetBaseCls::OffsetBaseCls(double _dx, double _dy) {
     {
         assert(_dx != nullptr);
         assert(_dy != nullptr);
     }
 }
 
-bool OffsetBase::isInfinite() {
-    return _dx >= double.infinity || _dy >= double.infinity;
+bool OffsetBaseCls::isInfinite() {
+    return _dx >= double->infinity || _dy >= double->infinity;
 }
 
-bool OffsetBase::isFinite() {
-    return _dx.isFinite && _dy.isFinite;
+bool OffsetBaseCls::isFinite() {
+    return _dx->isFinite && _dy->isFinite;
 }
 
-bool OffsetBase::<(OffsetBase other) {
-    return  < other._dx &&  < other._dy;
+bool OffsetBaseCls::<(OffsetBase other) {
+    return  < other->_dx &&  < other->_dy;
 }
 
-bool OffsetBase::<=(OffsetBase other) {
-    return _dx <= other._dx && _dy <= other._dy;
+bool OffsetBaseCls::<=(OffsetBase other) {
+    return _dx <= other->_dx && _dy <= other->_dy;
 }
 
-bool OffsetBase::>(OffsetBase other) {
-    return _dx > other._dx && _dy > other._dy;
+bool OffsetBaseCls::>(OffsetBase other) {
+    return _dx > other->_dx && _dy > other->_dy;
 }
 
-bool OffsetBase::>=(OffsetBase other) {
-    return _dx >= other._dx && _dy >= other._dy;
+bool OffsetBaseCls::>=(OffsetBase other) {
+    return _dx >= other->_dx && _dy >= other->_dy;
 }
 
-bool OffsetBase::==(Object other) {
-    return other is OffsetBase && other._dx == _dx && other._dy == _dy;
+bool OffsetBaseCls::==(Object other) {
+    return other is OffsetBase && other->_dx == _dx && other->_dy == _dy;
 }
 
-int OffsetBase::hashCode() {
-    return Object.hash(_dx, _dy);
+int OffsetBaseCls::hashCode() {
+    return ObjectCls->hash(_dx, _dy);
 }
 
-String OffsetBase::toString() {
+String OffsetBaseCls::toString() {
     return "OffsetBase(${_dx.toStringAsFixed(1)}, ${_dy.toStringAsFixed(1)})";
 }
 
-Offset::Offset(double dx, double dy) {
-    {
-        super(dx, dy);
-    }
+OffsetCls::OffsetCls(double dx, double dy) {
 }
 
-void Offset::fromDirection(double direction, double distance) {
-    return Offset(distance * math.cos(direction), distance * math.sin(direction));
+void OffsetCls::fromDirection(double direction, double distance) {
+    return make<OffsetCls>(distance * math->cos(direction), distance * math->sin(direction));
 }
 
-double Offset::dx() {
+double OffsetCls::dx() {
     return _dx;
 }
 
-double Offset::dy() {
+double OffsetCls::dy() {
     return _dy;
 }
 
-double Offset::distance() {
-    return math.sqrt(dx * dx + dy * dy);
+double OffsetCls::distance() {
+    return math->sqrt(dx * dx + dy * dy);
 }
 
-double Offset::distanceSquared() {
+double OffsetCls::distanceSquared() {
     return dx * dx + dy * dy;
 }
 
-double Offset::direction() {
-    return math.atan2(dy, dx);
+double OffsetCls::direction() {
+    return math->atan2(dy, dx);
 }
 
-Offset Offset::scale(double scaleX, double scaleY) {
-    return Offset(dx * scaleX, dy * scaleY);
+Offset OffsetCls::scale(double scaleX, double scaleY) {
+    return make<OffsetCls>(dx * scaleX, dy * scaleY);
 }
 
-Offset Offset::translate(double translateX, double translateY) {
-    return Offset(dx + translateX, dy + translateY);
+Offset OffsetCls::translate(double translateX, double translateY) {
+    return make<OffsetCls>(dx + translateX, dy + translateY);
 }
 
-Offset Offset::-() {
-    return Offset(-dx, -dy);
+Offset OffsetCls::-() {
+    return make<OffsetCls>(-dx, -dy);
 }
 
-Offset Offset::-(Offset other) {
-    return Offset(dx - other.dx, dy - other.dy);
+Offset OffsetCls::-(Offset other) {
+    return make<OffsetCls>(dx - other->dx, dy - other->dy);
 }
 
-Offset Offset::+(Offset other) {
-    return Offset(dx + other.dx, dy + other.dy);
+Offset OffsetCls::+(Offset other) {
+    return make<OffsetCls>(dx + other->dx, dy + other->dy);
 }
 
-Offset Offset::*(double operand) {
-    return Offset(dx * operand, dy * operand);
+Offset OffsetCls::*(double operand) {
+    return make<OffsetCls>(dx * operand, dy * operand);
 }
 
-Offset Offset::/(double operand) {
-    return Offset(dx / operand, dy / operand);
+Offset OffsetCls::/(double operand) {
+    return make<OffsetCls>(dx / operand, dy / operand);
 }
 
-Offset Offset::~/(double operand) {
-    return Offset((dx ~/ operand).toDouble(), (dy ~/ operand).toDouble());
+Offset OffsetCls::~/(double operand) {
+    return make<OffsetCls>((dx ~/ operand)->toDouble(), (dy ~/ operand)->toDouble());
 }
 
-Offset Offset::%(double operand) {
-    return Offset(dx % operand, dy % operand);
+Offset OffsetCls::%(double operand) {
+    return make<OffsetCls>(dx % operand, dy % operand);
 }
 
-Rect Offset::&(Size other) {
-    return Rect.fromLTWH(dx, dy, other.width, other.height);
+Rect OffsetCls::&(Size other) {
+    return RectCls->fromLTWH(dx, dy, other->width, other->height);
 }
 
-Offset Offset::lerp(Offset a, Offset b, double t) {
+Offset OffsetCls::lerp(Offset a, Offset b, double t) {
     assert(t != nullptr);
     if (b == nullptr) {
         if (a == nullptr) {
@@ -124,147 +121,144 @@ Offset Offset::lerp(Offset a, Offset b, double t) {
         if (a == nullptr) {
             return b * t;
         } else {
-            return Offset(_lerpDouble(a.dx, b.dx, t), _lerpDouble(a.dy, b.dy, t));
+            return make<OffsetCls>(_lerpDouble(a->dx, b->dx, t), _lerpDouble(a->dy, b->dy, t));
         }
     }
 }
 
-bool Offset::==(Object other) {
-    return other is Offset && other.dx == dx && other.dy == dy;
+bool OffsetCls::==(Object other) {
+    return other is Offset && other->dx == dx && other->dy == dy;
 }
 
-int Offset::hashCode() {
-    return Object.hash(dx, dy);
+int OffsetCls::hashCode() {
+    return ObjectCls->hash(dx, dy);
 }
 
-String Offset::toString() {
+String OffsetCls::toString() {
     return "Offset(${dx.toStringAsFixed(1)}, ${dy.toStringAsFixed(1)})";
 }
 
-Size::Size(double height, double width) {
-    {
-        super(width, height);
-    }
+SizeCls::SizeCls(double height, double width) {
 }
 
-void Size::copy(Size source)
+void SizeCls::copy(Size source)
 
-void Size::square(double dimension)
+void SizeCls::square(double dimension)
 
-void Size::fromWidth(double width)
+void SizeCls::fromWidth(double width)
 
-void Size::fromHeight(double height)
+void SizeCls::fromHeight(double height)
 
-void Size::fromRadius(double radius)
+void SizeCls::fromRadius(double radius)
 
-double Size::width() {
+double SizeCls::width() {
     return _dx;
 }
 
-double Size::height() {
+double SizeCls::height() {
     return _dy;
 }
 
-double Size::aspectRatio() {
+double SizeCls::aspectRatio() {
     if (height != 0.0)     {
         return width / height;
     }
     if (width > 0.0)     {
-        return double.infinity;
+        return double->infinity;
     }
     if ( < 0.0)     {
-        return double.negativeInfinity;
+        return double->negativeInfinity;
     }
     return 0.0;
 }
 
-bool Size::isEmpty() {
+bool SizeCls::isEmpty() {
     return width <= 0.0 || height <= 0.0;
 }
 
-OffsetBase Size::-(OffsetBase other) {
+OffsetBase SizeCls::-(OffsetBase other) {
     if (other is Size)     {
-        return Offset(width - other.width, height - other.height);
+        return make<OffsetCls>(width - other->width, height - other->height);
     }
     if (other is Offset)     {
-        return Size(width - other.dx, height - other.dy);
+        return make<SizeCls>(width - other->dx, height - other->dy);
     }
     ;
 }
 
-Size Size::+(Offset other) {
-    return Size(width + other.dx, height + other.dy);
+Size SizeCls::+(Offset other) {
+    return make<SizeCls>(width + other->dx, height + other->dy);
 }
 
-Size Size::*(double operand) {
-    return Size(width * operand, height * operand);
+Size SizeCls::*(double operand) {
+    return make<SizeCls>(width * operand, height * operand);
 }
 
-Size Size::/(double operand) {
-    return Size(width / operand, height / operand);
+Size SizeCls::/(double operand) {
+    return make<SizeCls>(width / operand, height / operand);
 }
 
-Size Size::~/(double operand) {
-    return Size((width ~/ operand).toDouble(), (height ~/ operand).toDouble());
+Size SizeCls::~/(double operand) {
+    return make<SizeCls>((width ~/ operand)->toDouble(), (height ~/ operand)->toDouble());
 }
 
-Size Size::%(double operand) {
-    return Size(width % operand, height % operand);
+Size SizeCls::%(double operand) {
+    return make<SizeCls>(width % operand, height % operand);
 }
 
-double Size::shortestSide() {
-    return math.min(width.abs(), height.abs());
+double SizeCls::shortestSide() {
+    return math->min(width->abs(), height->abs());
 }
 
-double Size::longestSide() {
-    return math.max(width.abs(), height.abs());
+double SizeCls::longestSide() {
+    return math->max(width->abs(), height->abs());
 }
 
-Offset Size::topLeft(Offset origin) {
+Offset SizeCls::topLeft(Offset origin) {
     return origin;
 }
 
-Offset Size::topCenter(Offset origin) {
-    return Offset(origin.dx + width / 2.0, origin.dy);
+Offset SizeCls::topCenter(Offset origin) {
+    return make<OffsetCls>(origin->dx + width / 2.0, origin->dy);
 }
 
-Offset Size::topRight(Offset origin) {
-    return Offset(origin.dx + width, origin.dy);
+Offset SizeCls::topRight(Offset origin) {
+    return make<OffsetCls>(origin->dx + width, origin->dy);
 }
 
-Offset Size::centerLeft(Offset origin) {
-    return Offset(origin.dx, origin.dy + height / 2.0);
+Offset SizeCls::centerLeft(Offset origin) {
+    return make<OffsetCls>(origin->dx, origin->dy + height / 2.0);
 }
 
-Offset Size::center(Offset origin) {
-    return Offset(origin.dx + width / 2.0, origin.dy + height / 2.0);
+Offset SizeCls::center(Offset origin) {
+    return make<OffsetCls>(origin->dx + width / 2.0, origin->dy + height / 2.0);
 }
 
-Offset Size::centerRight(Offset origin) {
-    return Offset(origin.dx + width, origin.dy + height / 2.0);
+Offset SizeCls::centerRight(Offset origin) {
+    return make<OffsetCls>(origin->dx + width, origin->dy + height / 2.0);
 }
 
-Offset Size::bottomLeft(Offset origin) {
-    return Offset(origin.dx, origin.dy + height);
+Offset SizeCls::bottomLeft(Offset origin) {
+    return make<OffsetCls>(origin->dx, origin->dy + height);
 }
 
-Offset Size::bottomCenter(Offset origin) {
-    return Offset(origin.dx + width / 2.0, origin.dy + height);
+Offset SizeCls::bottomCenter(Offset origin) {
+    return make<OffsetCls>(origin->dx + width / 2.0, origin->dy + height);
 }
 
-Offset Size::bottomRight(Offset origin) {
-    return Offset(origin.dx + width, origin.dy + height);
+Offset SizeCls::bottomRight(Offset origin) {
+    return make<OffsetCls>(origin->dx + width, origin->dy + height);
 }
 
-bool Size::contains(Offset offset) {
-    return offset.dx >= 0.0 && offset.dx < width && offset.dy >= 0.0 && offset.dy < height;
+bool SizeCls::contains(Offset offset) {
+    return offset->dx >= 0.0 && offset->dx < width && offset->dy >= 0.0 && offset->dy < height;
 }
 
-Size Size::flipped() {
-    return Size(height, width);
+Size SizeCls::flipped() {
+    return make<SizeCls>(height, width);
 }
 
-Size Size::lerp(Size a, Size b, double t) {
+Size SizeCls::lerp(Size a, Size b, double t) {
     assert(t != nullptr);
     if (b == nullptr) {
         if (a == nullptr) {
@@ -276,181 +270,181 @@ Size Size::lerp(Size a, Size b, double t) {
         if (a == nullptr) {
             return b * t;
         } else {
-            return Size(_lerpDouble(a.width, b.width, t), _lerpDouble(a.height, b.height, t));
+            return make<SizeCls>(_lerpDouble(a->width, b->width, t), _lerpDouble(a->height, b->height, t));
         }
     }
 }
 
-bool Size::==(Object other) {
-    return other is Size && other._dx == _dx && other._dy == _dy;
+bool SizeCls::==(Object other) {
+    return other is Size && other->_dx == _dx && other->_dy == _dy;
 }
 
-int Size::hashCode() {
-    return Object.hash(_dx, _dy);
+int SizeCls::hashCode() {
+    return ObjectCls->hash(_dx, _dy);
 }
 
-String Size::toString() {
+String SizeCls::toString() {
     return "Size(${width.toStringAsFixed(1)}, ${height.toStringAsFixed(1)})";
 }
 
-void Rect::fromLTRB(double bottom, double left, double right, double top)
+void RectCls::fromLTRB(double bottom, double left, double right, double top)
 
-void Rect::fromLTWH(double height, double left, double top, double width)
+void RectCls::fromLTWH(double height, double left, double top, double width)
 
-void Rect::fromCircle(Offset center, double radius)
+void RectCls::fromCircle(Offset center, double radius)
 
-void Rect::fromCenter(Offset center, double height, double width)
+void RectCls::fromCenter(Offset center, double height, double width)
 
-void Rect::fromPoints(Offset a, Offset b)
+void RectCls::fromPoints(Offset a, Offset b)
 
-double Rect::width() {
+double RectCls::width() {
     return right - left;
 }
 
-double Rect::height() {
+double RectCls::height() {
     return bottom - top;
 }
 
-Size Rect::size() {
-    return Size(width, height);
+Size RectCls::size() {
+    return make<SizeCls>(width, height);
 }
 
-bool Rect::hasNaN() {
-    return left.isNaN || top.isNaN || right.isNaN || bottom.isNaN;
+bool RectCls::hasNaN() {
+    return left->isNaN || top->isNaN || right->isNaN || bottom->isNaN;
 }
 
-bool Rect::isInfinite() {
-    return left >= double.infinity || top >= double.infinity || right >= double.infinity || bottom >= double.infinity;
+bool RectCls::isInfinite() {
+    return left >= double->infinity || top >= double->infinity || right >= double->infinity || bottom >= double->infinity;
 }
 
-bool Rect::isFinite() {
-    return left.isFinite && top.isFinite && right.isFinite && bottom.isFinite;
+bool RectCls::isFinite() {
+    return left->isFinite && top->isFinite && right->isFinite && bottom->isFinite;
 }
 
-bool Rect::isEmpty() {
+bool RectCls::isEmpty() {
     return left >= right || top >= bottom;
 }
 
-Rect Rect::shift(Offset offset) {
-    return Rect.fromLTRB(left + offset.dx, top + offset.dy, right + offset.dx, bottom + offset.dy);
+Rect RectCls::shift(Offset offset) {
+    return RectCls->fromLTRB(left + offset->dx, top + offset->dy, right + offset->dx, bottom + offset->dy);
 }
 
-Rect Rect::translate(double translateX, double translateY) {
-    return Rect.fromLTRB(left + translateX, top + translateY, right + translateX, bottom + translateY);
+Rect RectCls::translate(double translateX, double translateY) {
+    return RectCls->fromLTRB(left + translateX, top + translateY, right + translateX, bottom + translateY);
 }
 
-Rect Rect::inflate(double delta) {
-    return Rect.fromLTRB(left - delta, top - delta, right + delta, bottom + delta);
+Rect RectCls::inflate(double delta) {
+    return RectCls->fromLTRB(left - delta, top - delta, right + delta, bottom + delta);
 }
 
-Rect Rect::deflate(double delta) {
+Rect RectCls::deflate(double delta) {
     return inflate(-delta);
 }
 
-Rect Rect::intersect(Rect other) {
-    return Rect.fromLTRB(math.max(left, other.left), math.max(top, other.top), math.min(right, other.right), math.min(bottom, other.bottom));
+Rect RectCls::intersect(Rect other) {
+    return RectCls->fromLTRB(math->max(left, other->left), math->max(top, other->top), math->min(right, other->right), math->min(bottom, other->bottom));
 }
 
-Rect Rect::expandToInclude(Rect other) {
-    return Rect.fromLTRB(math.min(left, other.left), math.min(top, other.top), math.max(right, other.right), math.max(bottom, other.bottom));
+Rect RectCls::expandToInclude(Rect other) {
+    return RectCls->fromLTRB(math->min(left, other->left), math->min(top, other->top), math->max(right, other->right), math->max(bottom, other->bottom));
 }
 
-bool Rect::overlaps(Rect other) {
-    if (right <= other.left || other.right <= left)     {
+bool RectCls::overlaps(Rect other) {
+    if (right <= other->left || other->right <= left)     {
         return false;
     }
-    if (bottom <= other.top || other.bottom <= top)     {
+    if (bottom <= other->top || other->bottom <= top)     {
         return false;
     }
     return true;
 }
 
-double Rect::shortestSide() {
-    return math.min(width.abs(), height.abs());
+double RectCls::shortestSide() {
+    return math->min(width->abs(), height->abs());
 }
 
-double Rect::longestSide() {
-    return math.max(width.abs(), height.abs());
+double RectCls::longestSide() {
+    return math->max(width->abs(), height->abs());
 }
 
-Offset Rect::topLeft() {
-    return Offset(left, top);
+Offset RectCls::topLeft() {
+    return make<OffsetCls>(left, top);
 }
 
-Offset Rect::topCenter() {
-    return Offset(left + width / 2.0, top);
+Offset RectCls::topCenter() {
+    return make<OffsetCls>(left + width / 2.0, top);
 }
 
-Offset Rect::topRight() {
-    return Offset(right, top);
+Offset RectCls::topRight() {
+    return make<OffsetCls>(right, top);
 }
 
-Offset Rect::centerLeft() {
-    return Offset(left, top + height / 2.0);
+Offset RectCls::centerLeft() {
+    return make<OffsetCls>(left, top + height / 2.0);
 }
 
-Offset Rect::center() {
-    return Offset(left + width / 2.0, top + height / 2.0);
+Offset RectCls::center() {
+    return make<OffsetCls>(left + width / 2.0, top + height / 2.0);
 }
 
-Offset Rect::centerRight() {
-    return Offset(right, top + height / 2.0);
+Offset RectCls::centerRight() {
+    return make<OffsetCls>(right, top + height / 2.0);
 }
 
-Offset Rect::bottomLeft() {
-    return Offset(left, bottom);
+Offset RectCls::bottomLeft() {
+    return make<OffsetCls>(left, bottom);
 }
 
-Offset Rect::bottomCenter() {
-    return Offset(left + width / 2.0, bottom);
+Offset RectCls::bottomCenter() {
+    return make<OffsetCls>(left + width / 2.0, bottom);
 }
 
-Offset Rect::bottomRight() {
-    return Offset(right, bottom);
+Offset RectCls::bottomRight() {
+    return make<OffsetCls>(right, bottom);
 }
 
-bool Rect::contains(Offset offset) {
-    return offset.dx >= left && offset.dx < right && offset.dy >= top && offset.dy < bottom;
+bool RectCls::contains(Offset offset) {
+    return offset->dx >= left && offset->dx < right && offset->dy >= top && offset->dy < bottom;
 }
 
-Rect Rect::lerp(Rect a, Rect b, double t) {
+Rect RectCls::lerp(Rect a, Rect b, double t) {
     assert(t != nullptr);
     if (b == nullptr) {
         if (a == nullptr) {
             return nullptr;
         } else {
             double k = 1.0 - t;
-            return Rect.fromLTRB(a.left * k, a.top * k, a.right * k, a.bottom * k);
+            return RectCls->fromLTRB(a->left * k, a->top * k, a->right * k, a->bottom * k);
         }
     } else {
         if (a == nullptr) {
-            return Rect.fromLTRB(b.left * t, b.top * t, b.right * t, b.bottom * t);
+            return RectCls->fromLTRB(b->left * t, b->top * t, b->right * t, b->bottom * t);
         } else {
-            return Rect.fromLTRB(_lerpDouble(a.left, b.left, t), _lerpDouble(a.top, b.top, t), _lerpDouble(a.right, b.right, t), _lerpDouble(a.bottom, b.bottom, t));
+            return RectCls->fromLTRB(_lerpDouble(a->left, b->left, t), _lerpDouble(a->top, b->top, t), _lerpDouble(a->right, b->right, t), _lerpDouble(a->bottom, b->bottom, t));
         }
     }
 }
 
-bool Rect::==(Object other) {
+bool RectCls::==(Object other) {
     if (identical(this, other))     {
         return true;
     }
-    if (runtimeType != other.runtimeType)     {
+    if (runtimeType != other->runtimeType)     {
         return false;
     }
-    return other is Rect && other.left == left && other.top == top && other.right == right && other.bottom == bottom;
+    return other is Rect && other->left == left && other->top == top && other->right == right && other->bottom == bottom;
 }
 
-int Rect::hashCode() {
-    return Object.hash(left, top, right, bottom);
+int RectCls::hashCode() {
+    return ObjectCls->hash(left, top, right, bottom);
 }
 
-String Rect::toString() {
+String RectCls::toString() {
     return "Rect.fromLTRB(${left.toStringAsFixed(1)}, ${top.toStringAsFixed(1)}, ${right.toStringAsFixed(1)}, ${bottom.toStringAsFixed(1)})";
 }
 
-Float32List Rect::_getValue32() {
-    Float32List result = Float32List(4);
+Float32List RectCls::_getValue32() {
+    Float32List result = make<Float32ListCls>(4);
     result[0] = left;
     result[1] = top;
     result[2] = right;
@@ -458,207 +452,207 @@ Float32List Rect::_getValue32() {
     return result;
 }
 
-void Radius::circular(double radius)
+void RadiusCls::circular(double radius)
 
-Radius Radius::-() {
-    return Radius.elliptical(-x, -y);
+Radius RadiusCls::-() {
+    return RadiusCls->elliptical(-x, -y);
 }
 
-Radius Radius::-(Radius other) {
-    return Radius.elliptical(x - other.x, y - other.y);
+Radius RadiusCls::-(Radius other) {
+    return RadiusCls->elliptical(x - other->x, y - other->y);
 }
 
-Radius Radius::+(Radius other) {
-    return Radius.elliptical(x + other.x, y + other.y);
+Radius RadiusCls::+(Radius other) {
+    return RadiusCls->elliptical(x + other->x, y + other->y);
 }
 
-Radius Radius::*(double operand) {
-    return Radius.elliptical(x * operand, y * operand);
+Radius RadiusCls::*(double operand) {
+    return RadiusCls->elliptical(x * operand, y * operand);
 }
 
-Radius Radius::/(double operand) {
-    return Radius.elliptical(x / operand, y / operand);
+Radius RadiusCls::/(double operand) {
+    return RadiusCls->elliptical(x / operand, y / operand);
 }
 
-Radius Radius::~/(double operand) {
-    return Radius.elliptical((x ~/ operand).toDouble(), (y ~/ operand).toDouble());
+Radius RadiusCls::~/(double operand) {
+    return RadiusCls->elliptical((x ~/ operand)->toDouble(), (y ~/ operand)->toDouble());
 }
 
-Radius Radius::%(double operand) {
-    return Radius.elliptical(x % operand, y % operand);
+Radius RadiusCls::%(double operand) {
+    return RadiusCls->elliptical(x % operand, y % operand);
 }
 
-Radius Radius::lerp(Radius a, Radius b, double t) {
+Radius RadiusCls::lerp(Radius a, Radius b, double t) {
     assert(t != nullptr);
     if (b == nullptr) {
         if (a == nullptr) {
             return nullptr;
         } else {
             double k = 1.0 - t;
-            return Radius.elliptical(a.x * k, a.y * k);
+            return RadiusCls->elliptical(a->x * k, a->y * k);
         }
     } else {
         if (a == nullptr) {
-            return Radius.elliptical(b.x * t, b.y * t);
+            return RadiusCls->elliptical(b->x * t, b->y * t);
         } else {
-            return Radius.elliptical(_lerpDouble(a.x, b.x, t), _lerpDouble(a.y, b.y, t));
+            return RadiusCls->elliptical(_lerpDouble(a->x, b->x, t), _lerpDouble(a->y, b->y, t));
         }
     }
 }
 
-bool Radius::==(Object other) {
+bool RadiusCls::==(Object other) {
     if (identical(this, other))     {
         return true;
     }
-    if (runtimeType != other.runtimeType)     {
+    if (runtimeType != other->runtimeType)     {
         return false;
     }
-    return other is Radius && other.x == x && other.y == y;
+    return other is Radius && other->x == x && other->y == y;
 }
 
-int Radius::hashCode() {
-    return Object.hash(x, y);
+int RadiusCls::hashCode() {
+    return ObjectCls->hash(x, y);
 }
 
-String Radius::toString() {
+String RadiusCls::toString() {
     return x == y? "Radius.circular(${x.toStringAsFixed(1)})" : "Radius.elliptical(${x.toStringAsFixed(1)}, ${y.toStringAsFixed(1)})";
 }
 
-void RRect::fromLTRBXY(double bottom, double left, double radiusX, double radiusY, double right, double top)
+void RRectCls::fromLTRBXY(double bottom, double left, double radiusX, double radiusY, double right, double top)
 
-void RRect::fromLTRBR(double bottom, double left, Radius radius, double right, double top)
+void RRectCls::fromLTRBR(double bottom, double left, Radius radius, double right, double top)
 
-void RRect::fromRectXY(double radiusX, double radiusY, Rect rect)
+void RRectCls::fromRectXY(double radiusX, double radiusY, Rect rect)
 
-void RRect::fromRectAndRadius(Radius radius, Rect rect)
+void RRectCls::fromRectAndRadius(Radius radius, Rect rect)
 
-void RRect::fromLTRBAndCorners(double bottom, Radius bottomLeft, Radius bottomRight, double left, double right, double top, Radius topLeft, Radius topRight)
+void RRectCls::fromLTRBAndCorners(double bottom, Radius bottomLeft, Radius bottomRight, double left, double right, double top, Radius topLeft, Radius topRight)
 
-void RRect::fromRectAndCorners(Radius bottomLeft, Radius bottomRight, Rect rect, Radius topLeft, Radius topRight)
+void RRectCls::fromRectAndCorners(Radius bottomLeft, Radius bottomRight, Rect rect, Radius topLeft, Radius topRight)
 
-Radius RRect::tlRadius() {
-    return Radius.elliptical(tlRadiusX, tlRadiusY);
+Radius RRectCls::tlRadius() {
+    return RadiusCls->elliptical(tlRadiusX, tlRadiusY);
 }
 
-Radius RRect::trRadius() {
-    return Radius.elliptical(trRadiusX, trRadiusY);
+Radius RRectCls::trRadius() {
+    return RadiusCls->elliptical(trRadiusX, trRadiusY);
 }
 
-Radius RRect::brRadius() {
-    return Radius.elliptical(brRadiusX, brRadiusY);
+Radius RRectCls::brRadius() {
+    return RadiusCls->elliptical(brRadiusX, brRadiusY);
 }
 
-Radius RRect::blRadius() {
-    return Radius.elliptical(blRadiusX, blRadiusY);
+Radius RRectCls::blRadius() {
+    return RadiusCls->elliptical(blRadiusX, blRadiusY);
 }
 
-RRect RRect::shift(Offset offset) {
-    return RRect._raw(left + offset.dx, top + offset.dy, right + offset.dx, bottom + offset.dy, tlRadiusX, tlRadiusY, trRadiusX, trRadiusY, blRadiusX, blRadiusY, brRadiusX, brRadiusY);
+RRect RRectCls::shift(Offset offset) {
+    return RRectCls->_raw(left + offset->dx, top + offset->dy, right + offset->dx, bottom + offset->dy, tlRadiusX, tlRadiusY, trRadiusX, trRadiusY, blRadiusX, blRadiusY, brRadiusX, brRadiusY);
 }
 
-RRect RRect::inflate(double delta) {
-    return RRect._raw(left - delta, top - delta, right + delta, bottom + delta, tlRadiusX + delta, tlRadiusY + delta, trRadiusX + delta, trRadiusY + delta, blRadiusX + delta, blRadiusY + delta, brRadiusX + delta, brRadiusY + delta);
+RRect RRectCls::inflate(double delta) {
+    return RRectCls->_raw(left - delta, top - delta, right + delta, bottom + delta, tlRadiusX + delta, tlRadiusY + delta, trRadiusX + delta, trRadiusY + delta, blRadiusX + delta, blRadiusY + delta, brRadiusX + delta, brRadiusY + delta);
 }
 
-RRect RRect::deflate(double delta) {
+RRect RRectCls::deflate(double delta) {
     return inflate(-delta);
 }
 
-double RRect::width() {
+double RRectCls::width() {
     return right - left;
 }
 
-double RRect::height() {
+double RRectCls::height() {
     return bottom - top;
 }
 
-Rect RRect::outerRect() {
-    return Rect.fromLTRB(left, top, right, bottom);
+Rect RRectCls::outerRect() {
+    return RectCls->fromLTRB(left, top, right, bottom);
 }
 
-Rect RRect::safeInnerRect() {
+Rect RRectCls::safeInnerRect() {
     double kInsetFactor = 0.29289321881;
-    double leftRadius = math.max(blRadiusX, tlRadiusX);
-    double topRadius = math.max(tlRadiusY, trRadiusY);
-    double rightRadius = math.max(trRadiusX, brRadiusX);
-    double bottomRadius = math.max(brRadiusY, blRadiusY);
-    return Rect.fromLTRB(left + leftRadius * kInsetFactor, top + topRadius * kInsetFactor, right - rightRadius * kInsetFactor, bottom - bottomRadius * kInsetFactor);
+    double leftRadius = math->max(blRadiusX, tlRadiusX);
+    double topRadius = math->max(tlRadiusY, trRadiusY);
+    double rightRadius = math->max(trRadiusX, brRadiusX);
+    double bottomRadius = math->max(brRadiusY, blRadiusY);
+    return RectCls->fromLTRB(left + leftRadius * kInsetFactor, top + topRadius * kInsetFactor, right - rightRadius * kInsetFactor, bottom - bottomRadius * kInsetFactor);
 }
 
-Rect RRect::middleRect() {
-    double leftRadius = math.max(blRadiusX, tlRadiusX);
-    double topRadius = math.max(tlRadiusY, trRadiusY);
-    double rightRadius = math.max(trRadiusX, brRadiusX);
-    double bottomRadius = math.max(brRadiusY, blRadiusY);
-    return Rect.fromLTRB(left + leftRadius, top + topRadius, right - rightRadius, bottom - bottomRadius);
+Rect RRectCls::middleRect() {
+    double leftRadius = math->max(blRadiusX, tlRadiusX);
+    double topRadius = math->max(tlRadiusY, trRadiusY);
+    double rightRadius = math->max(trRadiusX, brRadiusX);
+    double bottomRadius = math->max(brRadiusY, blRadiusY);
+    return RectCls->fromLTRB(left + leftRadius, top + topRadius, right - rightRadius, bottom - bottomRadius);
 }
 
-Rect RRect::wideMiddleRect() {
-    double topRadius = math.max(tlRadiusY, trRadiusY);
-    double bottomRadius = math.max(brRadiusY, blRadiusY);
-    return Rect.fromLTRB(left, top + topRadius, right, bottom - bottomRadius);
+Rect RRectCls::wideMiddleRect() {
+    double topRadius = math->max(tlRadiusY, trRadiusY);
+    double bottomRadius = math->max(brRadiusY, blRadiusY);
+    return RectCls->fromLTRB(left, top + topRadius, right, bottom - bottomRadius);
 }
 
-Rect RRect::tallMiddleRect() {
-    double leftRadius = math.max(blRadiusX, tlRadiusX);
-    double rightRadius = math.max(trRadiusX, brRadiusX);
-    return Rect.fromLTRB(left + leftRadius, top, right - rightRadius, bottom);
+Rect RRectCls::tallMiddleRect() {
+    double leftRadius = math->max(blRadiusX, tlRadiusX);
+    double rightRadius = math->max(trRadiusX, brRadiusX);
+    return RectCls->fromLTRB(left + leftRadius, top, right - rightRadius, bottom);
 }
 
-bool RRect::isEmpty() {
+bool RRectCls::isEmpty() {
     return left >= right || top >= bottom;
 }
 
-bool RRect::isFinite() {
-    return left.isFinite && top.isFinite && right.isFinite && bottom.isFinite;
+bool RRectCls::isFinite() {
+    return left->isFinite && top->isFinite && right->isFinite && bottom->isFinite;
 }
 
-bool RRect::isRect() {
+bool RRectCls::isRect() {
     return (tlRadiusX == 0.0 || tlRadiusY == 0.0) && (trRadiusX == 0.0 || trRadiusY == 0.0) && (blRadiusX == 0.0 || blRadiusY == 0.0) && (brRadiusX == 0.0 || brRadiusY == 0.0);
 }
 
-bool RRect::isStadium() {
+bool RRectCls::isStadium() {
     return tlRadius == trRadius && trRadius == brRadius && brRadius == blRadius && (width <= 2.0 * tlRadiusX || height <= 2.0 * tlRadiusY);
 }
 
-bool RRect::isEllipse() {
+bool RRectCls::isEllipse() {
     return tlRadius == trRadius && trRadius == brRadius && brRadius == blRadius && width <= 2.0 * tlRadiusX && height <= 2.0 * tlRadiusY;
 }
 
-bool RRect::isCircle() {
+bool RRectCls::isCircle() {
     return width == height && isEllipse;
 }
 
-double RRect::shortestSide() {
-    return math.min(width.abs(), height.abs());
+double RRectCls::shortestSide() {
+    return math->min(width->abs(), height->abs());
 }
 
-double RRect::longestSide() {
-    return math.max(width.abs(), height.abs());
+double RRectCls::longestSide() {
+    return math->max(width->abs(), height->abs());
 }
 
-bool RRect::hasNaN() {
-    return left.isNaN || top.isNaN || right.isNaN || bottom.isNaN || trRadiusX.isNaN || trRadiusY.isNaN || tlRadiusX.isNaN || tlRadiusY.isNaN || brRadiusX.isNaN || brRadiusY.isNaN || blRadiusX.isNaN || blRadiusY.isNaN;
+bool RRectCls::hasNaN() {
+    return left->isNaN || top->isNaN || right->isNaN || bottom->isNaN || trRadiusX->isNaN || trRadiusY->isNaN || tlRadiusX->isNaN || tlRadiusY->isNaN || brRadiusX->isNaN || brRadiusY->isNaN || blRadiusX->isNaN || blRadiusY->isNaN;
 }
 
-Offset RRect::center() {
-    return Offset(left + width / 2.0, top + height / 2.0);
+Offset RRectCls::center() {
+    return make<OffsetCls>(left + width / 2.0, top + height / 2.0);
 }
 
-RRect RRect::scaleRadii() {
+RRect RRectCls::scaleRadii() {
     double scale = 1.0;
     scale = _getMin(scale, blRadiusY, tlRadiusY, height);
     scale = _getMin(scale, tlRadiusX, trRadiusX, width);
     scale = _getMin(scale, trRadiusY, brRadiusY, height);
     scale = _getMin(scale, brRadiusX, blRadiusX, width);
     if ( < 1.0) {
-        return RRect._raw(top, left, right, bottom, tlRadiusX * scale, tlRadiusY * scale, trRadiusX * scale, trRadiusY * scale, blRadiusX * scale, blRadiusY * scale, brRadiusX * scale, brRadiusY * scale);
+        return RRectCls->_raw(top, left, right, bottom, tlRadiusX * scale, tlRadiusY * scale, trRadiusX * scale, trRadiusY * scale, blRadiusX * scale, blRadiusY * scale, brRadiusX * scale, brRadiusY * scale);
     }
-    return RRect._raw(top, left, right, bottom, tlRadiusX, tlRadiusY, trRadiusX, trRadiusY, blRadiusX, blRadiusY, brRadiusX, brRadiusY);
+    return RRectCls->_raw(top, left, right, bottom, tlRadiusX, tlRadiusY, trRadiusX, trRadiusY, blRadiusX, blRadiusY, brRadiusX, brRadiusY);
 }
 
-bool RRect::contains(Offset point) {
-    if (point.dx < left || point.dx >= right || point.dy < top || point.dy >= bottom)     {
+bool RRectCls::contains(Offset point) {
+    if (point->dx < left || point->dx >= right || point->dy < top || point->dy >= bottom)     {
         return false;
     }
     RRect scaled = scaleRadii();
@@ -666,29 +660,29 @@ bool RRect::contains(Offset point) {
     double y;
     double radiusX;
     double radiusY;
-    if (point.dx < left + scaled.tlRadiusX && point.dy < top + scaled.tlRadiusY) {
-        x = point.dx - left - scaled.tlRadiusX;
-        y = point.dy - top - scaled.tlRadiusY;
-        radiusX = scaled.tlRadiusX;
-        radiusY = scaled.tlRadiusY;
+    if (point->dx < left + scaled->tlRadiusX && point->dy < top + scaled->tlRadiusY) {
+        x = point->dx - left - scaled->tlRadiusX;
+        y = point->dy - top - scaled->tlRadiusY;
+        radiusX = scaled->tlRadiusX;
+        radiusY = scaled->tlRadiusY;
     } else     {
-        if (point.dx > right - scaled.trRadiusX && point.dy < top + scaled.trRadiusY) {
-        x = point.dx - right + scaled.trRadiusX;
-        y = point.dy - top - scaled.trRadiusY;
-        radiusX = scaled.trRadiusX;
-        radiusY = scaled.trRadiusY;
+        if (point->dx > right - scaled->trRadiusX && point->dy < top + scaled->trRadiusY) {
+        x = point->dx - right + scaled->trRadiusX;
+        y = point->dy - top - scaled->trRadiusY;
+        radiusX = scaled->trRadiusX;
+        radiusY = scaled->trRadiusY;
     } else     {
-        if (point.dx > right - scaled.brRadiusX && point.dy > bottom - scaled.brRadiusY) {
-        x = point.dx - right + scaled.brRadiusX;
-        y = point.dy - bottom + scaled.brRadiusY;
-        radiusX = scaled.brRadiusX;
-        radiusY = scaled.brRadiusY;
+        if (point->dx > right - scaled->brRadiusX && point->dy > bottom - scaled->brRadiusY) {
+        x = point->dx - right + scaled->brRadiusX;
+        y = point->dy - bottom + scaled->brRadiusY;
+        radiusX = scaled->brRadiusX;
+        radiusY = scaled->brRadiusY;
     } else     {
-        if (point.dx < left + scaled.blRadiusX && point.dy > bottom - scaled.blRadiusY) {
-        x = point.dx - left - scaled.blRadiusX;
-        y = point.dy - bottom + scaled.blRadiusY;
-        radiusX = scaled.blRadiusX;
-        radiusY = scaled.blRadiusY;
+        if (point->dx < left + scaled->blRadiusX && point->dy > bottom - scaled->blRadiusY) {
+        x = point->dx - left - scaled->blRadiusX;
+        y = point->dy - bottom + scaled->blRadiusY;
+        radiusX = scaled->blRadiusX;
+        radiusY = scaled->blRadiusY;
     } else {
         return true;
     }
@@ -703,42 +697,42 @@ bool RRect::contains(Offset point) {
     return true;
 }
 
-RRect RRect::lerp(RRect a, RRect b, double t) {
+RRect RRectCls::lerp(RRect a, RRect b, double t) {
     assert(t != nullptr);
     if (b == nullptr) {
         if (a == nullptr) {
             return nullptr;
         } else {
             double k = 1.0 - t;
-            return RRect._raw(a.left * k, a.top * k, a.right * k, a.bottom * k, a.tlRadiusX * k, a.tlRadiusY * k, a.trRadiusX * k, a.trRadiusY * k, a.brRadiusX * k, a.brRadiusY * k, a.blRadiusX * k, a.blRadiusY * k);
+            return RRectCls->_raw(a->left * k, a->top * k, a->right * k, a->bottom * k, a->tlRadiusX * k, a->tlRadiusY * k, a->trRadiusX * k, a->trRadiusY * k, a->brRadiusX * k, a->brRadiusY * k, a->blRadiusX * k, a->blRadiusY * k);
         }
     } else {
         if (a == nullptr) {
-            return RRect._raw(b.left * t, b.top * t, b.right * t, b.bottom * t, b.tlRadiusX * t, b.tlRadiusY * t, b.trRadiusX * t, b.trRadiusY * t, b.brRadiusX * t, b.brRadiusY * t, b.blRadiusX * t, b.blRadiusY * t);
+            return RRectCls->_raw(b->left * t, b->top * t, b->right * t, b->bottom * t, b->tlRadiusX * t, b->tlRadiusY * t, b->trRadiusX * t, b->trRadiusY * t, b->brRadiusX * t, b->brRadiusY * t, b->blRadiusX * t, b->blRadiusY * t);
         } else {
-            return RRect._raw(_lerpDouble(a.left, b.left, t), _lerpDouble(a.top, b.top, t), _lerpDouble(a.right, b.right, t), _lerpDouble(a.bottom, b.bottom, t), _lerpDouble(a.tlRadiusX, b.tlRadiusX, t), _lerpDouble(a.tlRadiusY, b.tlRadiusY, t), _lerpDouble(a.trRadiusX, b.trRadiusX, t), _lerpDouble(a.trRadiusY, b.trRadiusY, t), _lerpDouble(a.brRadiusX, b.brRadiusX, t), _lerpDouble(a.brRadiusY, b.brRadiusY, t), _lerpDouble(a.blRadiusX, b.blRadiusX, t), _lerpDouble(a.blRadiusY, b.blRadiusY, t));
+            return RRectCls->_raw(_lerpDouble(a->left, b->left, t), _lerpDouble(a->top, b->top, t), _lerpDouble(a->right, b->right, t), _lerpDouble(a->bottom, b->bottom, t), _lerpDouble(a->tlRadiusX, b->tlRadiusX, t), _lerpDouble(a->tlRadiusY, b->tlRadiusY, t), _lerpDouble(a->trRadiusX, b->trRadiusX, t), _lerpDouble(a->trRadiusY, b->trRadiusY, t), _lerpDouble(a->brRadiusX, b->brRadiusX, t), _lerpDouble(a->brRadiusY, b->brRadiusY, t), _lerpDouble(a->blRadiusX, b->blRadiusX, t), _lerpDouble(a->blRadiusY, b->blRadiusY, t));
         }
     }
 }
 
-bool RRect::==(Object other) {
+bool RRectCls::==(Object other) {
     if (identical(this, other))     {
         return true;
     }
-    if (runtimeType != other.runtimeType)     {
+    if (runtimeType != other->runtimeType)     {
         return false;
     }
-    return other is RRect && other.left == left && other.top == top && other.right == right && other.bottom == bottom && other.tlRadiusX == tlRadiusX && other.tlRadiusY == tlRadiusY && other.trRadiusX == trRadiusX && other.trRadiusY == trRadiusY && other.blRadiusX == blRadiusX && other.blRadiusY == blRadiusY && other.brRadiusX == brRadiusX && other.brRadiusY == brRadiusY;
+    return other is RRect && other->left == left && other->top == top && other->right == right && other->bottom == bottom && other->tlRadiusX == tlRadiusX && other->tlRadiusY == tlRadiusY && other->trRadiusX == trRadiusX && other->trRadiusY == trRadiusY && other->blRadiusX == blRadiusX && other->blRadiusY == blRadiusY && other->brRadiusX == brRadiusX && other->brRadiusY == brRadiusY;
 }
 
-int RRect::hashCode() {
-    return Object.hash(left, top, right, bottom, tlRadiusX, tlRadiusY, trRadiusX, trRadiusY, blRadiusX, blRadiusY, brRadiusX, brRadiusY);
+int RRectCls::hashCode() {
+    return ObjectCls->hash(left, top, right, bottom, tlRadiusX, tlRadiusY, trRadiusX, trRadiusY, blRadiusX, blRadiusY, brRadiusX, brRadiusY);
 }
 
-String RRect::toString() {
+String RRectCls::toString() {
     String rect = "${left.toStringAsFixed(1)}, ${top.toStringAsFixed(1)}, ${right.toStringAsFixed(1)}, ${bottom.toStringAsFixed(1)}";
     if (tlRadius == trRadius && trRadius == brRadius && brRadius == blRadius) {
-        if (tlRadius.x == tlRadius.y)         {
+        if (tlRadius->x == tlRadius->y)         {
             return "RRect.fromLTRBR($rect, ${tlRadius.x.toStringAsFixed(1)})";
         }
         return "RRect.fromLTRBXY($rect, ${tlRadius.x.toStringAsFixed(1)}, ${tlRadius.y.toStringAsFixed(1)})";
@@ -746,10 +740,10 @@ String RRect::toString() {
     return "RRect.fromLTRBAndCorners($rect, topLeft: $tlRadius, topRight: $trRadius, bottomRight: $brRadius, bottomLeft: $blRadius)";
 }
 
-void RRect::_raw(double blRadiusX, double blRadiusY, double bottom, double brRadiusX, double brRadiusY, double left, double right, double tlRadiusX, double tlRadiusY, double top, double trRadiusX, double trRadiusY)
+void RRectCls::_raw(double blRadiusX, double blRadiusY, double bottom, double brRadiusX, double brRadiusY, double left, double right, double tlRadiusX, double tlRadiusY, double top, double trRadiusX, double trRadiusY)
 
-Float32List RRect::_getValue32() {
-    Float32List result = Float32List(12);
+Float32List RRectCls::_getValue32() {
+    Float32List result = make<Float32ListCls>(12);
     result[0] = left;
     result[1] = top;
     result[2] = right;
@@ -765,40 +759,40 @@ Float32List RRect::_getValue32() {
     return result;
 }
 
-double RRect::_getMin(double limit, double min, double radius1, double radius2) {
+double RRectCls::_getMin(double limit, double min, double radius1, double radius2) {
     double sum = radius1 + radius2;
     if (sum > limit && sum != 0.0)     {
-        return math.min(min, limit / sum);
+        return math->min(min, limit / sum);
     }
     return min;
 }
 
-RSTransform::RSTransform(double scos, double ssin, double tx, double ty) {
+RSTransformCls::RSTransformCls(double scos, double ssin, double tx, double ty) {
     {
-        ;
+            auto _c1 = _value;    _c1[0] =auto _c2 = scos;    _c2[1] =auto _c3 = ssin;    _c3[2] =auto _c4 = tx;    _c4[3] =ty;    _c4;    _c3;    _c2;_c1;
     }
 }
 
-void RSTransform::fromComponents(double anchorX, double anchorY, double rotation, double scale, double translateX, double translateY) {
-    double scos = math.cos(rotation) * scale;
-    double ssin = math.sin(rotation) * scale;
+void RSTransformCls::fromComponents(double anchorX, double anchorY, double rotation, double scale, double translateX, double translateY) {
+    double scos = math->cos(rotation) * scale;
+    double ssin = math->sin(rotation) * scale;
     double tx = translateX + -scos * anchorX + ssin * anchorY;
     double ty = translateY + -ssin * anchorX - scos * anchorY;
-    return RSTransform(scos, ssin, tx, ty);
+    return make<RSTransformCls>(scos, ssin, tx, ty);
 }
 
-double RSTransform::scos() {
+double RSTransformCls::scos() {
     return _value[0];
 }
 
-double RSTransform::ssin() {
+double RSTransformCls::ssin() {
     return _value[1];
 }
 
-double RSTransform::tx() {
+double RSTransformCls::tx() {
     return _value[2];
 }
 
-double RSTransform::ty() {
+double RSTransformCls::ty() {
     return _value[3];
 }

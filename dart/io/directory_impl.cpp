@@ -1,37 +1,37 @@
 #include "directory_impl.hpp"
-void _Directory::fromRawPath(Uint8List rawPath)
+void _DirectoryCls::fromRawPath(Uint8List rawPath)
 
-String _Directory::path() {
+String _DirectoryCls::path() {
     return _path;
 }
 
-Directory _Directory::current() {
-    auto result = _current(_Namespace._namespace);
+Directory _DirectoryCls::current() {
+    auto result = _current(_NamespaceCls::_namespace);
     if (result is OSError) {
         ;
     }
-    return _Directory(result);
+    return make<_DirectoryCls>(result);
 }
 
-void _Directory::current(path ) {
+void _DirectoryCls::current(path ) {
     Uint8List _rawPath;
     if (path is _Directory) {
-        _rawPath = path._rawPath;
+        _rawPath = path->_rawPath;
     } else     {
         if (path is Directory) {
-        _rawPath = FileSystemEntity._toUtf8Array(path.path);
+        _rawPath = FileSystemEntityCls->_toUtf8Array(path->path);
     } else     {
         if (path is String) {
-        _rawPath = FileSystemEntity._toUtf8Array(path);
+        _rawPath = FileSystemEntityCls->_toUtf8Array(path);
     } else {
         ;
     }
 ;
     };
-    }    if (!_EmbedderConfig._mayChdir) {
+    }    if (!_EmbedderConfigCls->_mayChdir) {
         ;
     }
-    auto result = _setCurrent(_Namespace._namespace, _rawPath);
+    auto result = _setCurrent(_NamespaceCls::_namespace, _rawPath);
     if (result is ArgumentError)     {
         ;
     }
@@ -40,174 +40,223 @@ void _Directory::current(path ) {
     }
 }
 
-Uri _Directory::uri() {
-    return Uri.directory(path);
+Uri _DirectoryCls::uri() {
+    return UriCls->directory(path);
 }
 
-Future<bool> _Directory::exists() {
-    return _File._dispatchWithNamespace(_IOService.directoryExists, ).then();
+Future<bool> _DirectoryCls::exists() {
+    return _FileCls->_dispatchWithNamespace(_IOServiceCls::directoryExists, makeList(ArrayItem, ArrayItem))->then([=] (Unknown  response) {
+        if (_isErrorResponse(response)) {
+            ;
+        }
+        return response == 1;
+    });
 }
 
-bool _Directory::existsSync() {
-    auto result = _exists(_Namespace._namespace, _rawPath);
+bool _DirectoryCls::existsSync() {
+    auto result = _exists(_NamespaceCls::_namespace, _rawPath);
     if (result is OSError) {
         ;
     }
     return (result == 1);
 }
 
-Directory _Directory::absolute() {
-    return Directory(_absolutePath);
+Directory _DirectoryCls::absolute() {
+    return make<DirectoryCls>(_absolutePath);
 }
 
-Future<Directory> _Directory::create(bool recursive) {
+Future<Directory> _DirectoryCls::create(bool recursive) {
     if (recursive) {
-        return exists().then();
+        return exists()->then([=] (Unknown  exists) {
+            if (exists)             {
+                return this;
+            }
+            if (path != parent->path) {
+                return parent->create(true)->then([=] () {
+                    return create();
+                });
+            } else {
+                return create();
+            }
+        });
     } else {
-        return _File._dispatchWithNamespace(_IOService.directoryCreate, ).then();
+        return _FileCls->_dispatchWithNamespace(_IOServiceCls::directoryCreate, makeList(ArrayItem, ArrayItem))->then([=] (Unknown  response) {
+            if (_isErrorResponse(response)) {
+                ;
+            }
+            return this;
+        });
     }
 }
 
-void _Directory::createSync(bool recursive) {
+void _DirectoryCls::createSync(bool recursive) {
     if (recursive) {
         if (existsSync())         {
             return;
         }
-        if (path != parent.path) {
-            parent.createSync(true);
+        if (path != parent->path) {
+            parent->createSync(true);
         }
     }
-    auto result = _create(_Namespace._namespace, _rawPath);
+    auto result = _create(_NamespaceCls::_namespace, _rawPath);
     if (result is OSError) {
         ;
     }
 }
 
-Directory _Directory::systemTemp() {
-    return Directory(_systemTemp(_Namespace._namespace));
+Directory _DirectoryCls::systemTemp() {
+    return make<DirectoryCls>(_systemTemp(_NamespaceCls::_namespace));
 }
 
-Future<Directory> _Directory::createTemp(String prefix) {
+Future<Directory> _DirectoryCls::createTemp(String prefix) {
     prefix = "";
     if (path == "") {
         ;
     }
     String fullPrefix;
-    if (path.endsWith("/") || (Platform.isWindows && path.endsWith("\\"))) {
+    if (path->endsWith("/") || (PlatformCls::isWindows && path->endsWith("\\"))) {
         fullPrefix = "$path$prefix";
     } else {
         fullPrefix = "$path${Platform.pathSeparator}$prefix";
     }
-    return _File._dispatchWithNamespace(_IOService.directoryCreateTemp, ).then();
+    return _FileCls->_dispatchWithNamespace(_IOServiceCls::directoryCreateTemp, makeList(ArrayItem, ArrayItem))->then([=] (Unknown  response) {
+        if (_isErrorResponse(response)) {
+            ;
+        }
+        return make<DirectoryCls>(response);
+    });
 }
 
-Directory _Directory::createTempSync(String prefix) {
+Directory _DirectoryCls::createTempSync(String prefix) {
     prefix = "";
     if (path == "") {
         ;
     }
     String fullPrefix;
-    if (path.endsWith("/") || (Platform.isWindows && path.endsWith("\\"))) {
+    if (path->endsWith("/") || (PlatformCls::isWindows && path->endsWith("\\"))) {
         fullPrefix = "$path$prefix";
     } else {
         fullPrefix = "$path${Platform.pathSeparator}$prefix";
     }
-    auto result = _createTemp(_Namespace._namespace, FileSystemEntity._toUtf8Array(fullPrefix));
+    auto result = _createTemp(_NamespaceCls::_namespace, FileSystemEntityCls->_toUtf8Array(fullPrefix));
     if (result is OSError) {
         ;
     }
-    return Directory(result);
+    return make<DirectoryCls>(result);
 }
 
-Future<Directory> _Directory::rename(String newPath) {
-    return _File._dispatchWithNamespace(_IOService.directoryRename, ).then();
+Future<Directory> _DirectoryCls::rename(String newPath) {
+    return _FileCls->_dispatchWithNamespace(_IOServiceCls::directoryRename, makeList(ArrayItem, ArrayItem, ArrayItem))->then([=] (Unknown  response) {
+        if (_isErrorResponse(response)) {
+            ;
+        }
+        return make<DirectoryCls>(newPath);
+    });
 }
 
-Directory _Directory::renameSync(String newPath) {
-    ArgumentError.checkNotNull(newPath, "newPath");
-    auto result = _rename(_Namespace._namespace, _rawPath, newPath);
+Directory _DirectoryCls::renameSync(String newPath) {
+    ArgumentErrorCls->checkNotNull(newPath, "newPath");
+    auto result = _rename(_NamespaceCls::_namespace, _rawPath, newPath);
     if (result is OSError) {
         ;
     }
-    return Directory(newPath);
+    return make<DirectoryCls>(newPath);
 }
 
-Stream<FileSystemEntity> _Directory::list(bool followLinks, bool recursive) {
-    return _AsyncDirectoryLister(FileSystemEntity._toUtf8Array(FileSystemEntity._ensureTrailingPathSeparators(path)), recursive, followLinks).stream;
+Stream<FileSystemEntity> _DirectoryCls::list(bool followLinks, bool recursive) {
+    return make<_AsyncDirectoryListerCls>(FileSystemEntityCls->_toUtf8Array(FileSystemEntityCls->_ensureTrailingPathSeparators(path)), recursive, followLinks)->stream;
 }
 
-List<FileSystemEntity> _Directory::listSync(bool followLinks, bool recursive) {
-    ArgumentError.checkNotNull(recursive, "recursive");
-    ArgumentError.checkNotNull(followLinks, "followLinks");
-    auto result = ;
-    _fillWithDirectoryListing(_Namespace._namespace, result, FileSystemEntity._toUtf8Array(FileSystemEntity._ensureTrailingPathSeparators(path)), recursive, followLinks);
+List<FileSystemEntity> _DirectoryCls::listSync(bool followLinks, bool recursive) {
+    ArgumentErrorCls->checkNotNull(recursive, "recursive");
+    ArgumentErrorCls->checkNotNull(followLinks, "followLinks");
+    auto result = makeList();
+    _fillWithDirectoryListing(_NamespaceCls::_namespace, result, FileSystemEntityCls->_toUtf8Array(FileSystemEntityCls->_ensureTrailingPathSeparators(path)), recursive, followLinks);
     return result;
 }
 
-String _Directory::toString() {
+String _DirectoryCls::toString() {
     return "Directory: '$path'";
 }
 
-_Directory::_Directory(String path) {
+_DirectoryCls::_DirectoryCls(String path) {
     {
         _path = _checkNotNull(path, "path");
-        _rawPath = FileSystemEntity._toUtf8Array(path);
+        _rawPath = FileSystemEntityCls->_toUtf8Array(path);
     }
 }
 
-Future<Directory> _Directory::_delete(bool recursive) {
-    return _File._dispatchWithNamespace(_IOService.directoryDelete, ).then();
+Future<Directory> _DirectoryCls::_delete(bool recursive) {
+    return _FileCls->_dispatchWithNamespace(_IOServiceCls::directoryDelete, makeList(ArrayItem, ArrayItem, ArrayItem))->then([=] (Unknown  response) {
+        if (_isErrorResponse(response)) {
+            ;
+        }
+        return this;
+    });
 }
 
-void _Directory::_deleteSync(bool recursive) {
-    auto result = _deleteNative(_Namespace._namespace, _rawPath, recursive);
+void _DirectoryCls::_deleteSync(bool recursive) {
+    auto result = _deleteNative(_NamespaceCls::_namespace, _rawPath, recursive);
     if (result is OSError) {
         ;
     }
 }
 
-bool _Directory::_isErrorResponse(response ) {
+bool _DirectoryCls::_isErrorResponse(response ) {
     return response is List && response[0] != _successResponse;
 }
 
-void _Directory::_exceptionOrErrorFromResponse(response , String message) {
+void _DirectoryCls::_exceptionOrErrorFromResponse(response , String message) {
     assert(_isErrorResponse(response));
     ;
 }
 
-T _Directory::_checkNotNull<T>(String name, T t) {
-    ArgumentError.checkNotNull(t, name);
+T _DirectoryCls::_checkNotNulltemplate<typename T> (String name, T t) {
+    ArgumentErrorCls->checkNotNull(t, name);
     return t;
 }
 
-Stream<FileSystemEntity> _AsyncDirectoryLister::stream() {
-    return controller.stream;
+Stream<FileSystemEntity> _AsyncDirectoryListerCls::stream() {
+    return controller->stream;
 }
 
-void _AsyncDirectoryLister::onListen() {
-    _File._dispatchWithNamespace(_IOService.directoryListStart, ).then();
+void _AsyncDirectoryListerCls::onListen() {
+    _FileCls->_dispatchWithNamespace(_IOServiceCls::directoryListStart, makeList(ArrayItem, ArrayItem, ArrayItem, ArrayItem))->then([=] (Unknown  response) {
+        if (response is int) {
+            _ops = make<_AsyncDirectoryListerOpsCls>(response);
+            next();
+        } else         {
+            if (response is Error) {
+            controller->addError(response, response->stackTrace);
+            close();
+        } else {
+            error(response);
+            close();
+        }
+;
+        }    });
 }
 
-void _AsyncDirectoryLister::onResume() {
+void _AsyncDirectoryListerCls::onResume() {
     if (!nextRunning) {
         next();
     }
 }
 
-Future _AsyncDirectoryLister::onCancel() {
+Future _AsyncDirectoryListerCls::onCancel() {
     canceled = true;
     if (!nextRunning) {
         close();
     }
-    return closeCompleter.future;
+    return closeCompleter->future;
 }
 
-void _AsyncDirectoryLister::next() {
+void _AsyncDirectoryListerCls::next() {
     if (canceled) {
         close();
         return;
     }
-    if (controller.isPaused || nextRunning) {
+    if (controller->isPaused || nextRunning) {
         return;
     }
     auto pointer = _pointer();
@@ -215,10 +264,22 @@ void _AsyncDirectoryLister::next() {
         return;
     }
     nextRunning = true;
-    _IOService._dispatch(_IOService.directoryListNext, ).then();
+    _IOServiceCls->_dispatch(_IOServiceCls::directoryListNext, makeList(ArrayItem))->then([=] (Unknown  result) {
+        nextRunning = false;
+        if (result is List) {
+            next();
+            assert(result->length % 2 == 0);
+            for (;  < result->length; i++) {
+                assert(i % 2 == 0);
+                ;
+            }
+        } else {
+            controller->addError(make<FileSystemExceptionCls>("Internal error"));
+        }
+    });
 }
 
-void _AsyncDirectoryLister::close() {
+void _AsyncDirectoryListerCls::close() {
     if (closed) {
         return;
     }
@@ -230,45 +291,45 @@ void _AsyncDirectoryLister::close() {
     if (pointer == nullptr) {
         _cleanup();
     } else {
-        _IOService._dispatch(_IOService.directoryListStop, ).whenComplete(_cleanup);
+        _IOServiceCls->_dispatch(_IOServiceCls::directoryListStop, makeList(ArrayItem))->whenComplete(_cleanup);
     }
 }
 
-void _AsyncDirectoryLister::error(message ) {
+void _AsyncDirectoryListerCls::error(message ) {
     auto errorType = message[responseError][_errorResponseErrorType];
     if (errorType == _illegalArgumentResponse) {
-        controller.addError(ArgumentError());
+        controller->addError(make<ArgumentErrorCls>());
     } else     {
         if (errorType == _osErrorResponse) {
         auto responseErrorInfo = message[responseError];
-        auto err = OSError(responseErrorInfo[_osErrorResponseMessage], responseErrorInfo[_osErrorResponseErrorCode]);
+        auto err = make<OSErrorCls>(responseErrorInfo[_osErrorResponseMessage], responseErrorInfo[_osErrorResponseErrorCode]);
         auto errorPath = message[responsePath];
         if (errorPath == nullptr) {
-            errorPath = utf8.decode(rawPathtrue);
+            errorPath = utf8->decode(rawPathtrue);
         } else         {
             if (errorPath is Uint8List) {
-            errorPath = utf8.decode(message[responsePath]true);
+            errorPath = utf8->decode(message[responsePath]true);
         }
 ;
-        }        controller.addError(FileSystemException("Directory listing failed", errorPath, err));
+        }        controller->addError(make<FileSystemExceptionCls>("Directory listing failed", errorPath, err));
     } else {
-        controller.addError(FileSystemException("Internal error"));
+        controller->addError(make<FileSystemExceptionCls>("Internal error"));
     }
 ;
     }}
 
-_AsyncDirectoryLister::_AsyncDirectoryLister(bool followLinks, Uint8List rawPath, bool recursive) {
+_AsyncDirectoryListerCls::_AsyncDirectoryListerCls(bool followLinks, Uint8List rawPath, bool recursive) {
     {
-        ;
+            auto _c1 = controller;    _c1.onListen = auto _c2 = onListen;    _c2.onResume = auto _c3 = onResume;    _c3.onCancel = onCancel;    _c3;    _c2;_c1;
     }
 }
 
-int _AsyncDirectoryLister::_pointer() {
-    return _ops?.getPointer();
+int _AsyncDirectoryListerCls::_pointer() {
+    return _ops?->getPointer();
 }
 
-void _AsyncDirectoryLister::_cleanup() {
-    controller.close();
-    closeCompleter.complete();
+void _AsyncDirectoryListerCls::_cleanup() {
+    controller->close();
+    closeCompleter->complete();
     _ops = nullptr;
 }

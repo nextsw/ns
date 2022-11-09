@@ -1,49 +1,49 @@
 #include "plane.hpp"
-void Plane::intersection(Plane a, Plane b, Plane c, Vector3 result) {
-    Unknown cross = Vector3.zero();
-    b.normal.crossInto(c.normal, cross);
-    Unknown f = -a.normal.dot(cross);
-    Unknown v1 = cross.scaled(a.constant);
-    c.normal.crossInto(a.normal, cross);
-    Unknown v2 = cross.scaled(b.constant);
-    a.normal.crossInto(b.normal, cross);
-    Unknown v3 = cross.scaled(c.constant);
-    ;
+void PlaneCls::intersection(Plane a, Plane b, Plane c, Vector3 result) {
+    Unknown cross = Vector3Cls->zero();
+    b->normal->crossInto(c->normal, cross);
+    Unknown f = -a->normal->dot(cross);
+    Unknown v1 = cross->scaled(a->constant);
+    c->normal->crossInto(a->normal, cross);
+    Unknown v2 = cross->scaled(b->constant);
+    a->normal->crossInto(b->normal, cross);
+    Unknown v3 = cross->scaled(c->constant);
+    auto _c1 = result;_c1.x = auto _c2 = (v1->x + v2->x + v3->x) / f;_c2.y = auto _c3 = (v1->y + v2->y + v3->y) / f;_c3.z = (v1->z + v2->z + v3->z) / f;_c3;_c2;_c1;
 }
 
-Vector3 Plane::normal() {
+Vector3 PlaneCls::normal() {
     return _normal;
 }
 
-Plane::Plane() {
+PlaneCls::PlaneCls() {
     {
-        _normal = Vector3.zero();
+        _normal = Vector3Cls->zero();
         constant = 0.0;
     }
 }
 
-void Plane::copy(Plane other)
+void PlaneCls::copy(Plane other)
 
-void Plane::components(double constant, double x, double y, double z)
+void PlaneCls::components(double constant, double x, double y, double z)
 
-void Plane::normalconstant(double constant, Vector3 normal_)
+void PlaneCls::normalconstant(double constant, Vector3 normal_)
 
-void Plane::copyFrom(Plane o) {
-    _normal.setFrom(o._normal);
-    constant = o.constant;
+void PlaneCls::copyFrom(Plane o) {
+    _normal->setFrom(o->_normal);
+    constant = o->constant;
 }
 
-void Plane::setFromComponents(double w, double x, double y, double z) {
-    _normal.setValues(x, y, z);
+void PlaneCls::setFromComponents(double w, double x, double y, double z) {
+    _normal->setValues(x, y, z);
     constant = w;
 }
 
-void Plane::normalize() {
-    Unknown inverseLength = 1.0 / normal.length;
-    _normal.scale(inverseLength);
+void PlaneCls::normalize() {
+    Unknown inverseLength = 1.0 / normal->length;
+    _normal->scale(inverseLength);
     constant = inverseLength;
 }
 
-double Plane::distanceToVector3(Vector3 point) {
-    return _normal.dot(point) + constant;
+double PlaneCls::distanceToVector3(Vector3 point) {
+    return _normal->dot(point) + constant;
 }

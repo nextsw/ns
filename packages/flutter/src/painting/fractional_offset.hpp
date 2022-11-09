@@ -1,65 +1,67 @@
-#ifndef FRACTIONAL_OFFSET_H
-#define FRACTIONAL_OFFSET_H
-#include <memory>
+#ifndef PACKAGES_FLUTTER_SRC_PAINTING_FRACTIONAL_OFFSET
+#define PACKAGES_FLUTTER_SRC_PAINTING_FRACTIONAL_OFFSET
+#include <base.hpp>
 
-#include <ui/ui.hpp>
-#include <flutter/foundation.hpp>
+#include <dart/core/core.hpp>
+#include <dart/ui/ui.hpp>
+#include <packages/flutter/lib/foundation.hpp>
 #include "alignment.hpp"
 #include "basic_types.hpp"
 
 
-
-class FractionalOffset : Alignment {
+class FractionalOffsetCls : public AlignmentCls {
 public:
-    static const FractionalOffset topLeft;
+    static FractionalOffset topLeft;
 
-    static const FractionalOffset topCenter;
+    static FractionalOffset topCenter;
 
-    static const FractionalOffset topRight;
+    static FractionalOffset topRight;
 
-    static const FractionalOffset centerLeft;
+    static FractionalOffset centerLeft;
 
-    static const FractionalOffset center;
+    static FractionalOffset center;
 
-    static const FractionalOffset centerRight;
+    static FractionalOffset centerRight;
 
-    static const FractionalOffset bottomLeft;
+    static FractionalOffset bottomLeft;
 
-    static const FractionalOffset bottomCenter;
+    static FractionalOffset bottomCenter;
 
-    static const FractionalOffset bottomRight;
+    static FractionalOffset bottomRight;
 
 
-     FractionalOffset(double dx, double dy);
+     FractionalOffsetCls(double dx, double dy);
 
-    void  fromOffsetAndSize(Offset offset, Size size);
+    virtual void  fromOffsetAndSize(Offset offset, Size size);
 
-    void  fromOffsetAndRect(Offset offset, Rect rect);
+    virtual void  fromOffsetAndRect(Offset offset, Rect rect);
 
-    double dx();
+    virtual double dx();
 
-    double dy();
+    virtual double dy();
 
-    Alignment -(Alignment other);
+    virtual Alignment operator-(Alignment other);
 
-    Alignment +(Alignment other);
+    virtual Alignment operator+(Alignment other);
 
-    FractionalOffset -();
+    virtual FractionalOffset operator-();
 
-    FractionalOffset *(double other);
+    virtual FractionalOffset operator*(double other);
 
-    FractionalOffset /(double other);
+    virtual FractionalOffset operator/(double other);
 
-    FractionalOffset ~/(double other);
+    virtual FractionalOffset operator~/(double other);
 
-    FractionalOffset %(double other);
+    virtual FractionalOffset operator%(double other);
 
     static FractionalOffset lerp(FractionalOffset a, FractionalOffset b, double t);
 
-    String toString();
+    virtual String toString();
 
 private:
 
 };
+using FractionalOffset = std::shared_ptr<FractionalOffsetCls>;
+
 
 #endif

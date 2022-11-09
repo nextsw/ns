@@ -1,20 +1,20 @@
-#ifndef TEXT_PAINTER_H
-#define TEXT_PAINTER_H
-#include <memory>
-#include <flutter/services.hpp>
+#ifndef PACKAGES_FLUTTER_SRC_PAINTING_TEXT_PAINTER
+#define PACKAGES_FLUTTER_SRC_PAINTING_TEXT_PAINTER
+#include <base.hpp>
+#include <packages/flutter/flutter.hpp>
 
-#include <math/math.hpp>
-#include <ui/ui.hpp>
-#include <flutter/foundation.hpp>
-#include <flutter/services.hpp>
+#include <dart/core/core.hpp>
+#include <dart/math/math.hpp>
+#include <dart/ui/ui.hpp>
+#include <packages/flutter/lib/foundation.hpp>
+#include <packages/flutter/flutter.hpp>
 #include "basic_types.hpp"
 #include "inline_span.hpp"
 #include "placeholder_span.hpp"
 #include "strut_style.hpp"
 #include "text_span.hpp"
 
-
-const double _kDefaultFontSize;
+double _kDefaultFontSize;
 
 
 enum TextOverflow{
@@ -24,9 +24,9 @@ enum TextOverflow{
     visible,
 } // end TextOverflow
 
-class PlaceholderDimensions {
+class PlaceholderDimensionsCls : public ObjectCls {
 public:
-    static const PlaceholderDimensions empty;
+    static PlaceholderDimensions empty;
 
     Size size;
 
@@ -37,20 +37,21 @@ public:
     TextBaseline baseline;
 
 
-     PlaceholderDimensions(PlaceholderAlignment alignment, TextBaseline baseline, double baselineOffset, Size size);
+     PlaceholderDimensionsCls(PlaceholderAlignment alignment, TextBaseline baseline, double baselineOffset, Size size);
 
-    String toString();
+    virtual String toString();
 
 private:
 
 };
+using PlaceholderDimensions = std::shared_ptr<PlaceholderDimensionsCls>;
 
 enum TextWidthBasis{
     parent,
     longestLine,
 } // end TextWidthBasis
 
-class _CaretMetrics {
+class _CaretMetricsCls : public ObjectCls {
 public:
     Offset offset;
 
@@ -59,100 +60,100 @@ public:
 
 private:
 
-     _CaretMetrics(double fullHeight, Offset offset);
-
+     _CaretMetricsCls(double fullHeight, Offset offset);
 };
+using _CaretMetrics = std::shared_ptr<_CaretMetricsCls>;
 
-class TextPainter {
+class TextPainterCls : public ObjectCls {
 public:
 
-     TextPainter(String ellipsis, Locale locale, int maxLines, StrutStyle strutStyle, InlineSpan text, TextAlign textAlign, TextDirection textDirection, TextHeightBehavior textHeightBehavior, double textScaleFactor, TextWidthBasis textWidthBasis);
+     TextPainterCls(String ellipsis, Locale locale, int maxLines, StrutStyle strutStyle, InlineSpan text, TextAlign textAlign, TextDirection textDirection, TextHeightBehavior textHeightBehavior, double textScaleFactor, TextWidthBasis textWidthBasis);
 
-    void markNeedsLayout();
+    virtual void markNeedsLayout();
 
-    InlineSpan text();
+    virtual InlineSpan text();
 
-    void  text(InlineSpan value);
+    virtual void  text(InlineSpan value);
 
-    TextAlign textAlign();
+    virtual TextAlign textAlign();
 
-    void  textAlign(TextAlign value);
+    virtual void  textAlign(TextAlign value);
 
-    TextDirection textDirection();
+    virtual TextDirection textDirection();
 
-    void  textDirection(TextDirection value);
+    virtual void  textDirection(TextDirection value);
 
-    double textScaleFactor();
+    virtual double textScaleFactor();
 
-    void  textScaleFactor(double value);
+    virtual void  textScaleFactor(double value);
 
-    String ellipsis();
+    virtual String ellipsis();
 
-    void  ellipsis(String value);
+    virtual void  ellipsis(String value);
 
-    Locale locale();
+    virtual Locale locale();
 
-    void  locale(Locale value);
+    virtual void  locale(Locale value);
 
-    int maxLines();
+    virtual int maxLines();
 
-    void  maxLines(int value);
+    virtual void  maxLines(int value);
 
-    StrutStyle strutStyle();
+    virtual StrutStyle strutStyle();
 
-    void  strutStyle(StrutStyle value);
+    virtual void  strutStyle(StrutStyle value);
 
-    TextWidthBasis textWidthBasis();
+    virtual TextWidthBasis textWidthBasis();
 
-    void  textWidthBasis(TextWidthBasis value);
+    virtual void  textWidthBasis(TextWidthBasis value);
 
-    TextHeightBehavior textHeightBehavior();
+    virtual TextHeightBehavior textHeightBehavior();
 
-    void  textHeightBehavior(TextHeightBehavior value);
+    virtual void  textHeightBehavior(TextHeightBehavior value);
 
-    List<TextBox> inlinePlaceholderBoxes();
+    virtual List<TextBox> inlinePlaceholderBoxes();
 
-    List<double> inlinePlaceholderScales();
+    virtual List<double> inlinePlaceholderScales();
 
-    void setPlaceholderDimensions(List<PlaceholderDimensions> value);
+    virtual void setPlaceholderDimensions(List<PlaceholderDimensions> value);
 
-    double preferredLineHeight();
+    virtual double preferredLineHeight();
 
-    double minIntrinsicWidth();
+    virtual double minIntrinsicWidth();
 
-    double maxIntrinsicWidth();
+    virtual double maxIntrinsicWidth();
 
-    double width();
+    virtual double width();
 
-    double height();
+    virtual double height();
 
-    Size size();
+    virtual Size size();
 
-    double computeDistanceToActualBaseline(TextBaseline baseline);
+    virtual double computeDistanceToActualBaseline(TextBaseline baseline);
 
-    bool didExceedMaxLines();
+    virtual bool didExceedMaxLines();
 
-    void layout(double maxWidth, double minWidth);
+    virtual void layout(double maxWidth, double minWidth);
 
-    void paint(Canvas canvas, Offset offset);
+    virtual void paint(Canvas canvas, Offset offset);
 
-    int getOffsetAfter(int offset);
+    virtual int getOffsetAfter(int offset);
 
-    int getOffsetBefore(int offset);
+    virtual int getOffsetBefore(int offset);
 
-    Offset getOffsetForCaret(Rect caretPrototype, TextPosition position);
+    virtual Offset getOffsetForCaret(Rect caretPrototype, TextPosition position);
 
-    double getFullHeightForCaret(Rect caretPrototype, TextPosition position);
+    virtual double getFullHeightForCaret(Rect caretPrototype, TextPosition position);
 
-    List<TextBox> getBoxesForSelection(BoxHeightStyle boxHeightStyle, BoxWidthStyle boxWidthStyle, TextSelection selection);
+    virtual List<TextBox> getBoxesForSelection(BoxHeightStyle boxHeightStyle, BoxWidthStyle boxWidthStyle, TextSelection selection);
 
-    TextPosition getPositionForOffset(Offset offset);
+    virtual TextPosition getPositionForOffset(Offset offset);
 
-    TextRange getWordBoundary(TextPosition position);
+    virtual TextRange getWordBoundary(TextPosition position);
 
-    TextRange getLineBoundary(TextPosition position);
+    virtual TextRange getLineBoundary(TextPosition position);
 
-    List<LineMetrics> computeLineMetrics();
+    virtual List<LineMetrics> computeLineMetrics();
 
 private:
     Paragraph _paragraph;
@@ -191,7 +192,7 @@ private:
 
     double _lastMaxWidth;
 
-    static const int _zwjUtf16;
+    static int _zwjUtf16;
 
     _CaretMetrics _caretMetrics;
 
@@ -202,30 +203,32 @@ private:
     List<LineMetrics> _lineMetricsCache;
 
 
-    bool _debugNeedsLayout();
+    virtual bool _debugNeedsLayout();
 
-    ParagraphStyle _createParagraphStyle(TextDirection defaultTextDirection);
+    virtual ParagraphStyle _createParagraphStyle(TextDirection defaultTextDirection);
 
-    Paragraph _createLayoutTemplate();
+    virtual Paragraph _createLayoutTemplate();
 
-    double _applyFloatingPointHack(double layoutValue);
+    virtual double _applyFloatingPointHack(double layoutValue);
 
-    void _createParagraph();
+    virtual void _createParagraph();
 
-    void _layoutParagraph(double maxWidth, double minWidth);
+    virtual void _layoutParagraph(double maxWidth, double minWidth);
 
     static bool _isUtf16Surrogate(int value);
 
     static bool _isUnicodeDirectionality(int value);
 
-    Rect _getRectFromUpstream(Rect caretPrototype, int offset);
+    virtual Rect _getRectFromUpstream(Rect caretPrototype, int offset);
 
-    Rect _getRectFromDownstream(Rect caretPrototype, int offset);
+    virtual Rect _getRectFromDownstream(Rect caretPrototype, int offset);
 
-    Offset _emptyOffset();
+    virtual Offset _emptyOffset();
 
-    void _computeCaretMetrics(Rect caretPrototype, TextPosition position);
+    virtual void _computeCaretMetrics(Rect caretPrototype, TextPosition position);
 
 };
+using TextPainter = std::shared_ptr<TextPainterCls>;
+
 
 #endif

@@ -1,12 +1,12 @@
 #include "map.hpp"
-Map<K2, V2> Map::castFrom<K, V, K2, V2>(Map<K, V> source) {
-    return <K, V, K2, V2>CastMap(source);
+template<typename K, typename V> Map<K2, V2> MapCls<K, V>::castFromtemplate<typename K, typename V, typename K2, typename V2> (Map<K, V> source) {
+    return <K, V, K2, V2>make<CastMapCls>(source);
 }
 
-void Map::fromEntries(Iterable<MapEntry<K, V>> entries) {
-    return ;
+template<typename K, typename V> void MapCls<K, V>::fromEntries(Iterable<MapEntry<K, V>> entries) {
+    return _c1;
 }
 
-String MapEntry::toString() {
+template<typename K, typename V> String MapEntryCls<K, V>::toString() {
     return "MapEntry($key: $value)";
 }

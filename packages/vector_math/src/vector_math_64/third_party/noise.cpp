@@ -1,23 +1,29 @@
 #include "noise.hpp"
-SimplexNoise::SimplexNoise(Random r) {
+SimplexNoiseCls::SimplexNoiseCls(Random r) {
     {
-        r = math.Random();
-        Unknown p = <int>generate(256, false);
-        _perm = <int>generate(p.length * 2, false);
-        _permMod12 = <int>generate(_perm.length, false);
+        r = math->make<RandomCls>();
+        Unknown p = <int>generate(256, [=] () {
+    r!->nextInt(256);
+}false);
+        _perm = <int>generate(p->length * 2, [=] (int i)         {
+            p[i % p->length];
+        }false);
+        _permMod12 = <int>generate(_perm->length, [=] (int i)         {
+            _perm[i] % 12;
+        }false);
     }
 }
 
-double SimplexNoise::noise2D(double xin, double yin) {
+double SimplexNoiseCls::noise2D(double xin, double yin) {
     double n0, n1, n2;
-    Unknown s = (xin + yin) * _F2;
-    Unknown i = (xin + s).floor();
-    Unknown j = (yin + s).floor();
-    Unknown t = (i + j) * _G2;
+    Unknown s = (xin + yin) * _F2Cls;
+    Unknown i = (xin + s)->floor();
+    Unknown j = (yin + s)->floor();
+    Unknown t = (i + j) * _G2Cls;
     Unknown X0 = i - t;
     Unknown Y0 = j - t;
-    Unknown x0 = xin - X0;
-    Unknown y0 = yin - Y0;
+    Unknown x0 = xin - X0Cls;
+    Unknown y0 = yin - Y0Cls;
     int i1, j1;
     if (x0 > y0) {
         i1 = 1;
@@ -26,10 +32,10 @@ double SimplexNoise::noise2D(double xin, double yin) {
         i1 = 0;
         j1 = 1;
     }
-    Unknown x1 = x0 - i1 + _G2;
-    Unknown y1 = y0 - j1 + _G2;
-    Unknown x2 = x0 - 1.0 + 2.0 * _G2;
-    Unknown y2 = y0 - 1.0 + 2.0 * _G2;
+    Unknown x1 = x0 - i1 + _G2Cls;
+    Unknown y1 = y0 - j1 + _G2Cls;
+    Unknown x2 = x0 - 1.0 + 2.0 * _G2Cls;
+    Unknown y2 = y0 - 1.0 + 2.0 * _G2Cls;
     Unknown ii = i & 255;
     Unknown jj = j & 255;
     Unknown gi0 = _permMod12[ii + _perm[jj]];
@@ -59,19 +65,19 @@ double SimplexNoise::noise2D(double xin, double yin) {
     return 70.0 * (n0 + n1 + n2);
 }
 
-double SimplexNoise::noise3D(double xin, double yin, double zin) {
+double SimplexNoiseCls::noise3D(double xin, double yin, double zin) {
     double n0, n1, n2, n3;
     Unknown s = (xin + yin + zin) * _f3;
-    Unknown i = (xin + s).floor();
-    Unknown j = (yin + s).floor();
-    Unknown k = (zin + s).floor();
+    Unknown i = (xin + s)->floor();
+    Unknown j = (yin + s)->floor();
+    Unknown k = (zin + s)->floor();
     Unknown t = (i + j + k) * _g3;
     Unknown X0 = i - t;
     Unknown Y0 = j - t;
     Unknown Z0 = k - t;
-    Unknown x0 = xin - X0;
-    Unknown y0 = yin - Y0;
-    Unknown z0 = zin - Z0;
+    Unknown x0 = xin - X0Cls;
+    Unknown y0 = yin - Y0Cls;
+    Unknown z0 = zin - Z0Cls;
     int i1, j1, k1;
     int i2, j2, k2;
     if (x0 >= y0) {
@@ -172,22 +178,22 @@ double SimplexNoise::noise3D(double xin, double yin, double zin) {
     return 32.0 * (n0 + n1 + n2 + n3);
 }
 
-double SimplexNoise::noise4D(double w, double x, double y, double z) {
+double SimplexNoiseCls::noise4D(double w, double x, double y, double z) {
     double n0, n1, n2, n3, n4;
-    Unknown s = (x + y + z + w) * _F4;
-    Unknown i = (x + s).floor();
-    Unknown j = (y + s).floor();
-    Unknown k = (z + s).floor();
-    Unknown l = (w + s).floor();
-    Unknown t = (i + j + k + l) * _G4;
+    Unknown s = (x + y + z + w) * _F4Cls;
+    Unknown i = (x + s)->floor();
+    Unknown j = (y + s)->floor();
+    Unknown k = (z + s)->floor();
+    Unknown l = (w + s)->floor();
+    Unknown t = (i + j + k + l) * _G4Cls;
     Unknown X0 = i - t;
     Unknown Y0 = j - t;
     Unknown Z0 = k - t;
     Unknown W0 = l - t;
-    Unknown x0 = x - X0;
-    Unknown y0 = y - Y0;
-    Unknown z0 = z - Z0;
-    Unknown w0 = w - W0;
+    Unknown x0 = x - X0Cls;
+    Unknown y0 = y - Y0Cls;
+    Unknown z0 = z - Z0Cls;
+    Unknown w0 = w - W0Cls;
     auto rankx = 0;
     auto ranky = 0;
     auto rankz = 0;
@@ -237,22 +243,22 @@ double SimplexNoise::noise4D(double w, double x, double y, double z) {
     j3 = ranky >= 1? 1 : 0;
     k3 = rankz >= 1? 1 : 0;
     l3 = rankw >= 1? 1 : 0;
-    Unknown x1 = x0 - i1 + _G4;
-    Unknown y1 = y0 - j1 + _G4;
-    Unknown z1 = z0 - k1 + _G4;
-    Unknown w1 = w0 - l1 + _G4;
-    Unknown x2 = x0 - i2 + 2.0 * _G4;
-    Unknown y2 = y0 - j2 + 2.0 * _G4;
-    Unknown z2 = z0 - k2 + 2.0 * _G4;
-    Unknown w2 = w0 - l2 + 2.0 * _G4;
-    Unknown x3 = x0 - i3 + 3.0 * _G4;
-    Unknown y3 = y0 - j3 + 3.0 * _G4;
-    Unknown z3 = z0 - k3 + 3.0 * _G4;
-    Unknown w3 = w0 - l3 + 3.0 * _G4;
-    Unknown x4 = x0 - 1.0 + 4.0 * _G4;
-    Unknown y4 = y0 - 1.0 + 4.0 * _G4;
-    Unknown z4 = z0 - 1.0 + 4.0 * _G4;
-    Unknown w4 = w0 - 1.0 + 4.0 * _G4;
+    Unknown x1 = x0 - i1 + _G4Cls;
+    Unknown y1 = y0 - j1 + _G4Cls;
+    Unknown z1 = z0 - k1 + _G4Cls;
+    Unknown w1 = w0 - l1 + _G4Cls;
+    Unknown x2 = x0 - i2 + 2.0 * _G4Cls;
+    Unknown y2 = y0 - j2 + 2.0 * _G4Cls;
+    Unknown z2 = z0 - k2 + 2.0 * _G4Cls;
+    Unknown w2 = w0 - l2 + 2.0 * _G4Cls;
+    Unknown x3 = x0 - i3 + 3.0 * _G4Cls;
+    Unknown y3 = y0 - j3 + 3.0 * _G4Cls;
+    Unknown z3 = z0 - k3 + 3.0 * _G4Cls;
+    Unknown w3 = w0 - l3 + 3.0 * _G4Cls;
+    Unknown x4 = x0 - 1.0 + 4.0 * _G4Cls;
+    Unknown y4 = y0 - 1.0 + 4.0 * _G4Cls;
+    Unknown z4 = z0 - 1.0 + 4.0 * _G4Cls;
+    Unknown w4 = w0 - 1.0 + 4.0 * _G4Cls;
     Unknown ii = i & 255;
     Unknown jj = j & 255;
     Unknown kk = k & 255;
@@ -300,14 +306,14 @@ double SimplexNoise::noise4D(double w, double x, double y, double z) {
     return 27.0 * (n0 + n1 + n2 + n3 + n4);
 }
 
-double SimplexNoise::_dot2(List<double> g, double x, double y) {
+double SimplexNoiseCls::_dot2(List<double> g, double x, double y) {
     return g[0] * x + g[1] * y;
 }
 
-double SimplexNoise::_dot3(List<double> g, double x, double y, double z) {
+double SimplexNoiseCls::_dot3(List<double> g, double x, double y, double z) {
     return g[0] * x + g[1] * y + g[2] * z;
 }
 
-double SimplexNoise::_dot4(List<double> g, double w, double x, double y, double z) {
+double SimplexNoiseCls::_dot4(List<double> g, double w, double x, double y, double z) {
     return g[0] * x + g[1] * y + g[2] * z + g[3] * w;
 }

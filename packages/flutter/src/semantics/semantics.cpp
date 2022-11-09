@@ -1,9 +1,9 @@
 #include "semantics.hpp"
-String SemanticsTag::toString() {
+String SemanticsTagCls::toString() {
     return "${objectRuntimeType(this, 'SemanticsTag')}($name)";
 }
 
-CustomSemanticsAction::CustomSemanticsAction(String label) {
+CustomSemanticsActionCls::CustomSemanticsActionCls(String label) {
     {
         assert(label != nullptr);
         assert(label != "");
@@ -12,24 +12,24 @@ CustomSemanticsAction::CustomSemanticsAction(String label) {
     }
 }
 
-void CustomSemanticsAction::overridingAction(SemanticsAction action, String hint)
+void CustomSemanticsActionCls::overridingAction(SemanticsAction action, String hint)
 
-int CustomSemanticsAction::hashCode() {
-    return Object.hash(label, hint, action);
+int CustomSemanticsActionCls::hashCode() {
+    return ObjectCls->hash(label, hint, action);
 }
 
-bool CustomSemanticsAction::==(Object other) {
-    if (other.runtimeType != runtimeType) {
+bool CustomSemanticsActionCls::==(Object other) {
+    if (other->runtimeType != runtimeType) {
         return false;
     }
-    return other is CustomSemanticsAction && other.label == label && other.hint == hint && other.action == action;
+    return other is CustomSemanticsAction && other->label == label && other->hint == hint && other->action == action;
 }
 
-String CustomSemanticsAction::toString() {
+String CustomSemanticsActionCls::toString() {
     return "CustomSemanticsAction(${_ids[this]}, label:$label, hint:$hint, action:$action)";
 }
 
-int CustomSemanticsAction::getIdentifier(CustomSemanticsAction action) {
+int CustomSemanticsActionCls::getIdentifier(CustomSemanticsAction action) {
     int result = _ids[action];
     if (result == nullptr) {
         result = _nextId++;
@@ -39,75 +39,80 @@ int CustomSemanticsAction::getIdentifier(CustomSemanticsAction action) {
     return result;
 }
 
-CustomSemanticsAction CustomSemanticsAction::getAction(int id) {
+CustomSemanticsAction CustomSemanticsActionCls::getAction(int id) {
     return _actions[id];
 }
 
-AttributedString::AttributedString(List<StringAttribute> attributes, String string) {
+AttributedStringCls::AttributedStringCls(List<StringAttribute> attributes, String string) {
     {
-        assert(string.isNotEmpty || attributes.isEmpty);
-        assert(());
+        assert(stringValue->isNotEmpty || attributes->isEmpty);
+        assert([=] () {
+            for (StringAttribute attribute : attributes) {
+                assert(stringValue->length >= attribute->range->start && stringValue->length >= attribute->range->end, "The range in $attribute is outside of the string $string");
+            }
+            return true;
+        }());
     }
 }
 
-AttributedString AttributedString::+(AttributedString other) {
-    if (string.isEmpty) {
+AttributedString AttributedStringCls::+(AttributedString other) {
+    if (stringValue->isEmpty) {
         return other;
     }
-    if (other.string.isEmpty) {
+    if (other->stringValue->isEmpty) {
         return this;
     }
-    String newString = string + other.string;
+    String newString = stringValue + other->stringValue;
     List<StringAttribute> newAttributes = <StringAttribute>of(attributes);
-    if (other.attributes.isNotEmpty) {
-        int offset = string.length;
-        for (StringAttribute attribute : other.attributes) {
-            TextRange newRange = TextRange(attribute.range.start + offset, attribute.range.end + offset);
-            StringAttribute adjustedAttribute = attribute.copy(newRange);
-            newAttributes.add(adjustedAttribute);
+    if (other->attributes->isNotEmpty) {
+        int offset = stringValue->length;
+        for (StringAttribute attribute : other->attributes) {
+            TextRange newRange = make<TextRangeCls>(attribute->range->start + offset, attribute->range->end + offset);
+            StringAttribute adjustedAttribute = attribute->copy(newRange);
+            newAttributes->add(adjustedAttribute);
         }
     }
-    return AttributedString(newStringnewAttributes);
+    return make<AttributedStringCls>(newStringnewAttributes);
 }
 
-bool AttributedString::==(Object other) {
-    return other.runtimeType == runtimeType && other is AttributedString && other.string == string && <StringAttribute>listEquals(other.attributes, attributes);
+bool AttributedStringCls::==(Object other) {
+    return other->runtimeType == runtimeType && other is AttributedString && other->stringValue == stringValue && <StringAttribute>listEquals(other->attributes, attributes);
 }
 
-int AttributedString::hashCode() {
-    return Object.hash(string, attributes);
+int AttributedStringCls::hashCode() {
+    return ObjectCls->hash(stringValue, attributes);
 }
 
-String AttributedString::toString() {
+String AttributedStringCls::toString() {
     return "${objectRuntimeType(this, 'AttributedString')}('$string', attributes: $attributes)";
 }
 
-AttributedStringProperty::AttributedStringProperty(Unknown, Unknown, Unknown, String name, Unknown, bool showWhenEmpty, Unknown) {
+AttributedStringPropertyCls::AttributedStringPropertyCls(Unknown defaultValue, Unknown description, Unknown level, String name, Unknown showName, bool showWhenEmpty, Unknown value) {
     {
         assert(showName != nullptr);
         assert(level != nullptr);
     }
 }
 
-bool AttributedStringProperty::isInteresting() {
-    return super.isInteresting && (showWhenEmpty || (value != nullptr && value!.string.isNotEmpty));
+bool AttributedStringPropertyCls::isInteresting() {
+    return super->isInteresting && (showWhenEmpty || (value != nullptr && value!->stringValue->isNotEmpty));
 }
 
-String AttributedStringProperty::valueToString(TextTreeConfiguration parentConfiguration) {
+String AttributedStringPropertyCls::valueToString(TextTreeConfiguration parentConfiguration) {
     if (value == nullptr) {
         return "null";
     }
-    String text = value!.string;
-    if (parentConfiguration != nullptr && !parentConfiguration.lineBreakProperties) {
-        text = text.replaceAll("\n", "\n");
+    String text = value!->stringValue;
+    if (parentConfiguration != nullptr && !parentConfiguration->lineBreakProperties) {
+        text = text->replaceAll("\n", "\n");
     }
-    if (value!.attributes.isEmpty) {
+    if (value!->attributes->isEmpty) {
         return ""$text"";
     }
     return ""$text" ${value!.attributes}";
 }
 
-SemanticsData::SemanticsData(int actions, AttributedString attributedDecreasedValue, AttributedString attributedHint, AttributedString attributedIncreasedValue, AttributedString attributedLabel, AttributedString attributedValue, int currentValueLength, List<int> customSemanticsActionIds, double elevation, int flags, int maxValueLength, int platformViewId, Rect rect, int scrollChildCount, double scrollExtentMax, double scrollExtentMin, int scrollIndex, double scrollPosition, Set<SemanticsTag> tags, TextDirection textDirection, TextSelection textSelection, double thickness, String tooltip, Matrix4 transform) {
+SemanticsDataCls::SemanticsDataCls(int actions, AttributedString attributedDecreasedValue, AttributedString attributedHint, AttributedString attributedIncreasedValue, AttributedString attributedLabel, AttributedString attributedValue, int currentValueLength, List<int> customSemanticsActionIds, double elevation, int flags, int maxValueLength, int platformViewId, Rect rect, int scrollChildCount, double scrollExtentMax, double scrollExtentMin, int scrollIndex, double scrollPosition, Set<SemanticsTag> tags, TextDirection textDirection, TextSelection textSelection, double thickness, String tooltip, Matrix4 transform) {
     {
         assert(flags != nullptr);
         assert(actions != nullptr);
@@ -117,96 +122,98 @@ SemanticsData::SemanticsData(int actions, AttributedString attributedDecreasedVa
         assert(attributedIncreasedValue != nullptr);
         assert(attributedHint != nullptr);
         assert(tooltip == "" || textDirection != nullptr, "A SemanticsData object with tooltip "$tooltip" had a null textDirection.");
-        assert(attributedLabel.string == "" || textDirection != nullptr, "A SemanticsData object with label "${attributedLabel.string}" had a null textDirection.");
-        assert(attributedValue.string == "" || textDirection != nullptr, "A SemanticsData object with value "${attributedValue.string}" had a null textDirection.");
-        assert(attributedDecreasedValue.string == "" || textDirection != nullptr, "A SemanticsData object with decreasedValue "${attributedDecreasedValue.string}" had a null textDirection.");
-        assert(attributedIncreasedValue.string == "" || textDirection != nullptr, "A SemanticsData object with increasedValue "${attributedIncreasedValue.string}" had a null textDirection.");
-        assert(attributedHint.string == "" || textDirection != nullptr, "A SemanticsData object with hint "${attributedHint.string}" had a null textDirection.");
+        assert(attributedLabel->stringValue == "" || textDirection != nullptr, "A SemanticsData object with label "${attributedLabel.string}" had a null textDirection.");
+        assert(attributedValue->stringValue == "" || textDirection != nullptr, "A SemanticsData object with value "${attributedValue.string}" had a null textDirection.");
+        assert(attributedDecreasedValue->stringValue == "" || textDirection != nullptr, "A SemanticsData object with decreasedValue "${attributedDecreasedValue.string}" had a null textDirection.");
+        assert(attributedIncreasedValue->stringValue == "" || textDirection != nullptr, "A SemanticsData object with increasedValue "${attributedIncreasedValue.string}" had a null textDirection.");
+        assert(attributedHint->stringValue == "" || textDirection != nullptr, "A SemanticsData object with hint "${attributedHint.string}" had a null textDirection.");
         assert(rect != nullptr);
     }
 }
 
-String SemanticsData::label() {
-    return attributedLabel.string;
+String SemanticsDataCls::label() {
+    return attributedLabel->stringValue;
 }
 
-String SemanticsData::value() {
-    return attributedValue.string;
+String SemanticsDataCls::value() {
+    return attributedValue->stringValue;
 }
 
-String SemanticsData::increasedValue() {
-    return attributedIncreasedValue.string;
+String SemanticsDataCls::increasedValue() {
+    return attributedIncreasedValue->stringValue;
 }
 
-String SemanticsData::decreasedValue() {
-    return attributedDecreasedValue.string;
+String SemanticsDataCls::decreasedValue() {
+    return attributedDecreasedValue->stringValue;
 }
 
-String SemanticsData::hint() {
-    return attributedHint.string;
+String SemanticsDataCls::hint() {
+    return attributedHint->stringValue;
 }
 
-bool SemanticsData::hasFlag(SemanticsFlag flag) {
-    return (flags & flag.index) != 0;
+bool SemanticsDataCls::hasFlag(SemanticsFlag flag) {
+    return (flags & flag->index) != 0;
 }
 
-bool SemanticsData::hasAction(SemanticsAction action) {
-    return (actions & action.index) != 0;
+bool SemanticsDataCls::hasAction(SemanticsAction action) {
+    return (actions & action->index) != 0;
 }
 
-String SemanticsData::toStringShort() {
+String SemanticsDataCls::toStringShort() {
     return objectRuntimeType(this, "SemanticsData");
 }
 
-void SemanticsData::debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties.add(<Rect>DiagnosticsProperty("rect", rectfalse));
-    properties.add(TransformProperty("transform", transformfalse, nullptr));
-    properties.add(DoubleProperty("elevation", elevation0.0));
-    properties.add(DoubleProperty("thickness", thickness0.0));
-    List<String> actionSummary = ;
-    List<String> customSemanticsActionSummary = customSemanticsActionIds!.<String>map().toList();
-    properties.add(<String>IterableProperty("actions", actionSummarynullptr));
-    properties.add(<String>IterableProperty("customActions", customSemanticsActionSummarynullptr));
-    List<String> flagSummary = ;
-    properties.add(<String>IterableProperty("flags", flagSummarynullptr));
-    properties.add(AttributedStringProperty("label", attributedLabel));
-    properties.add(AttributedStringProperty("value", attributedValue));
-    properties.add(AttributedStringProperty("increasedValue", attributedIncreasedValue));
-    properties.add(AttributedStringProperty("decreasedValue", attributedDecreasedValue));
-    properties.add(AttributedStringProperty("hint", attributedHint));
-    properties.add(StringProperty("tooltip", tooltip""));
-    properties.add(<TextDirection>EnumProperty("textDirection", textDirectionnullptr));
-    if (textSelection?.isValid ?? false) {
-        properties.add(MessageProperty("textSelection", "[${textSelection!.start}, ${textSelection!.end}]"));
+void SemanticsDataCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super->debugFillProperties(properties);
+    properties->add(<Rect>make<DiagnosticsPropertyCls>("rect", rectfalse));
+    properties->add(make<TransformPropertyCls>("transform", transformfalse, nullptr));
+    properties->add(make<DoublePropertyCls>("elevation", elevation0.0));
+    properties->add(make<DoublePropertyCls>("thickness", thickness0.0));
+    List<String> list1 = make<ListCls<>>();for (SemanticsAction action : SemanticsActionCls::values->values) {    ;}{    list1.add(ArrayItem);}List<String> actionSummary = list1;
+    List<String> customSemanticsActionSummary = customSemanticsActionIds!-><String>map([=] (int actionId) {
+    CustomSemanticsActionCls->getAction(actionId)!->label;
+})->toList();
+    properties->add(<String>make<IterablePropertyCls>("actions", actionSummarynullptr));
+    properties->add(<String>make<IterablePropertyCls>("customActions", customSemanticsActionSummarynullptr));
+    List<String> list2 = make<ListCls<>>();for (SemanticsFlag flag : SemanticsFlagCls::values->values) {    ;}{    list2.add(ArrayItem);}List<String> flagSummary = list2;
+    properties->add(<String>make<IterablePropertyCls>("flags", flagSummarynullptr));
+    properties->add(make<AttributedStringPropertyCls>("label", attributedLabel));
+    properties->add(make<AttributedStringPropertyCls>("value", attributedValue));
+    properties->add(make<AttributedStringPropertyCls>("increasedValue", attributedIncreasedValue));
+    properties->add(make<AttributedStringPropertyCls>("decreasedValue", attributedDecreasedValue));
+    properties->add(make<AttributedStringPropertyCls>("hint", attributedHint));
+    properties->add(make<StringPropertyCls>("tooltip", tooltip""));
+    properties->add(<TextDirection>make<EnumPropertyCls>("textDirection", textDirectionnullptr));
+    if (textSelection?->isValid ?? false) {
+        properties->add(make<MessagePropertyCls>("textSelection", "[${textSelection!.start}, ${textSelection!.end}]"));
     }
-    properties.add(IntProperty("platformViewId", platformViewIdnullptr));
-    properties.add(IntProperty("maxValueLength", maxValueLengthnullptr));
-    properties.add(IntProperty("currentValueLength", currentValueLengthnullptr));
-    properties.add(IntProperty("scrollChildren", scrollChildCountnullptr));
-    properties.add(IntProperty("scrollIndex", scrollIndexnullptr));
-    properties.add(DoubleProperty("scrollExtentMin", scrollExtentMinnullptr));
-    properties.add(DoubleProperty("scrollPosition", scrollPositionnullptr));
-    properties.add(DoubleProperty("scrollExtentMax", scrollExtentMaxnullptr));
+    properties->add(make<IntPropertyCls>("platformViewId", platformViewIdnullptr));
+    properties->add(make<IntPropertyCls>("maxValueLength", maxValueLengthnullptr));
+    properties->add(make<IntPropertyCls>("currentValueLength", currentValueLengthnullptr));
+    properties->add(make<IntPropertyCls>("scrollChildren", scrollChildCountnullptr));
+    properties->add(make<IntPropertyCls>("scrollIndex", scrollIndexnullptr));
+    properties->add(make<DoublePropertyCls>("scrollExtentMin", scrollExtentMinnullptr));
+    properties->add(make<DoublePropertyCls>("scrollPosition", scrollPositionnullptr));
+    properties->add(make<DoublePropertyCls>("scrollExtentMax", scrollExtentMaxnullptr));
 }
 
-bool SemanticsData::==(Object other) {
-    return other is SemanticsData && other.flags == flags && other.actions == actions && other.attributedLabel == attributedLabel && other.attributedValue == attributedValue && other.attributedIncreasedValue == attributedIncreasedValue && other.attributedDecreasedValue == attributedDecreasedValue && other.attributedHint == attributedHint && other.tooltip == tooltip && other.textDirection == textDirection && other.rect == rect && setEquals(other.tags, tags) && other.scrollChildCount == scrollChildCount && other.scrollIndex == scrollIndex && other.textSelection == textSelection && other.scrollPosition == scrollPosition && other.scrollExtentMax == scrollExtentMax && other.scrollExtentMin == scrollExtentMin && other.platformViewId == platformViewId && other.maxValueLength == maxValueLength && other.currentValueLength == currentValueLength && other.transform == transform && other.elevation == elevation && other.thickness == thickness && _sortedListsEqual(other.customSemanticsActionIds, customSemanticsActionIds);
+bool SemanticsDataCls::==(Object other) {
+    return other is SemanticsData && other->flags == flags && other->actions == actions && other->attributedLabel == attributedLabel && other->attributedValue == attributedValue && other->attributedIncreasedValue == attributedIncreasedValue && other->attributedDecreasedValue == attributedDecreasedValue && other->attributedHint == attributedHint && other->tooltip == tooltip && other->textDirection == textDirection && other->rect == rect && setEquals(other->tags, tags) && other->scrollChildCount == scrollChildCount && other->scrollIndex == scrollIndex && other->textSelection == textSelection && other->scrollPosition == scrollPosition && other->scrollExtentMax == scrollExtentMax && other->scrollExtentMin == scrollExtentMin && other->platformViewId == platformViewId && other->maxValueLength == maxValueLength && other->currentValueLength == currentValueLength && other->transform == transform && other->elevation == elevation && other->thickness == thickness && _sortedListsEqual(other->customSemanticsActionIds, customSemanticsActionIds);
 }
 
-int SemanticsData::hashCode() {
-    return Object.hash(flags, actions, attributedLabel, attributedValue, attributedIncreasedValue, attributedDecreasedValue, attributedHint, tooltip, textDirection, rect, tags, textSelection, scrollChildCount, scrollIndex, scrollPosition, scrollExtentMax, scrollExtentMin, platformViewId, maxValueLength, Object.hash(currentValueLength, transform, elevation, thickness, customSemanticsActionIds == nullptr? nullptr : Object.hashAll(customSemanticsActionIds!)));
+int SemanticsDataCls::hashCode() {
+    return ObjectCls->hash(flags, actions, attributedLabel, attributedValue, attributedIncreasedValue, attributedDecreasedValue, attributedHint, tooltip, textDirection, rect, tags, textSelection, scrollChildCount, scrollIndex, scrollPosition, scrollExtentMax, scrollExtentMin, platformViewId, maxValueLength, ObjectCls->hash(currentValueLength, transform, elevation, thickness, customSemanticsActionIds == nullptr? nullptr : ObjectCls->hashAll(customSemanticsActionIds!)));
 }
 
-bool SemanticsData::_sortedListsEqual(List<int> left, List<int> right) {
+bool SemanticsDataCls::_sortedListsEqual(List<int> left, List<int> right) {
     if (left == nullptr && right == nullptr) {
         return true;
     }
     if (left != nullptr && right != nullptr) {
-        if (left.length != right.length) {
+        if (left->length != right->length) {
             return false;
         }
-        for (;  < left.length; i++) {
+        for (;  < left->length; i++) {
             if (left[i] != right[i]) {
                 return false;
             }
@@ -216,39 +223,39 @@ bool SemanticsData::_sortedListsEqual(List<int> left, List<int> right) {
     return false;
 }
 
-List<DiagnosticsNode> _SemanticsDiagnosticableNode::getChildren() {
-    return value.debugDescribeChildren(childOrder);
+List<DiagnosticsNode> _SemanticsDiagnosticableNodeCls::getChildren() {
+    return value->debugDescribeChildren(childOrder);
 }
 
-SemanticsHintOverrides::SemanticsHintOverrides(String onLongPressHint, String onTapHint) {
+SemanticsHintOverridesCls::SemanticsHintOverridesCls(String onLongPressHint, String onTapHint) {
     {
         assert(onTapHint != "");
         assert(onLongPressHint != "");
     }
 }
 
-bool SemanticsHintOverrides::isNotEmpty() {
+bool SemanticsHintOverridesCls::isNotEmpty() {
     return onTapHint != nullptr || onLongPressHint != nullptr;
 }
 
-int SemanticsHintOverrides::hashCode() {
-    return Object.hash(onTapHint, onLongPressHint);
+int SemanticsHintOverridesCls::hashCode() {
+    return ObjectCls->hash(onTapHint, onLongPressHint);
 }
 
-bool SemanticsHintOverrides::==(Object other) {
-    if (other.runtimeType != runtimeType) {
+bool SemanticsHintOverridesCls::==(Object other) {
+    if (other->runtimeType != runtimeType) {
         return false;
     }
-    return other is SemanticsHintOverrides && other.onTapHint == onTapHint && other.onLongPressHint == onLongPressHint;
+    return other is SemanticsHintOverrides && other->onTapHint == onTapHint && other->onLongPressHint == onLongPressHint;
 }
 
-void SemanticsHintOverrides::debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties.add(StringProperty("onTapHint", onTapHintnullptr));
-    properties.add(StringProperty("onLongPressHint", onLongPressHintnullptr));
+void SemanticsHintOverridesCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super->debugFillProperties(properties);
+    properties->add(make<StringPropertyCls>("onTapHint", onTapHintnullptr));
+    properties->add(make<StringPropertyCls>("onLongPressHint", onLongPressHintnullptr));
 }
 
-SemanticsProperties::SemanticsProperties(AttributedString attributedDecreasedValue, AttributedString attributedHint, AttributedString attributedIncreasedValue, AttributedString attributedLabel, AttributedString attributedValue, bool button, bool checked, int currentValueLength, Map<CustomSemanticsAction, VoidCallback> customSemanticsActions, String decreasedValue, bool enabled, bool focusable, bool focused, bool header, bool hidden, String hint, SemanticsHintOverrides hintOverrides, bool image, bool inMutuallyExclusiveGroup, String increasedValue, bool keyboardKey, String label, bool link, bool liveRegion, int maxValueLength, bool multiline, bool namesRoute, bool obscured, VoidCallback onCopy, VoidCallback onCut, VoidCallback onDecrease, VoidCallback onDidGainAccessibilityFocus, VoidCallback onDidLoseAccessibilityFocus, VoidCallback onDismiss, VoidCallback onIncrease, VoidCallback onLongPress, MoveCursorHandler onMoveCursorBackwardByCharacter, MoveCursorHandler onMoveCursorBackwardByWord, MoveCursorHandler onMoveCursorForwardByCharacter, MoveCursorHandler onMoveCursorForwardByWord, VoidCallback onPaste, VoidCallback onScrollDown, VoidCallback onScrollLeft, VoidCallback onScrollRight, VoidCallback onScrollUp, SetSelectionHandler onSetSelection, SetTextHandler onSetText, VoidCallback onTap, bool readOnly, bool scopesRoute, bool selected, bool slider, SemanticsSortKey sortKey, SemanticsTag tagForChildren, TextDirection textDirection, bool textField, bool toggled, String tooltip, String value) {
+SemanticsPropertiesCls::SemanticsPropertiesCls(AttributedString attributedDecreasedValue, AttributedString attributedHint, AttributedString attributedIncreasedValue, AttributedString attributedLabel, AttributedString attributedValue, bool button, bool checked, int currentValueLength, Map<CustomSemanticsAction, VoidCallback> customSemanticsActions, String decreasedValue, bool enabled, bool focusable, bool focused, bool header, bool hidden, String hint, SemanticsHintOverrides hintOverrides, bool image, bool inMutuallyExclusiveGroup, String increasedValue, bool keyboardKey, String label, bool link, bool liveRegion, int maxValueLength, bool multiline, bool namesRoute, bool obscured, VoidCallback onCopy, VoidCallback onCut, VoidCallback onDecrease, VoidCallback onDidGainAccessibilityFocus, VoidCallback onDidLoseAccessibilityFocus, VoidCallback onDismiss, VoidCallback onIncrease, VoidCallback onLongPress, MoveCursorHandler onMoveCursorBackwardByCharacter, MoveCursorHandler onMoveCursorBackwardByWord, MoveCursorHandler onMoveCursorForwardByCharacter, MoveCursorHandler onMoveCursorForwardByWord, VoidCallback onPaste, VoidCallback onScrollDown, VoidCallback onScrollLeft, VoidCallback onScrollRight, VoidCallback onScrollUp, SetSelectionHandler onSetSelection, SetTextHandler onSetText, VoidCallback onTap, bool readOnly, bool scopesRoute, bool selected, bool slider, SemanticsSortKey sortKey, SemanticsTag tagForChildren, TextDirection textDirection, bool textField, bool toggled, String tooltip, String value) {
     {
         assert(label == nullptr || attributedLabel == nullptr, "Only one of label or attributedLabel should be provided");
         assert(value == nullptr || attributedValue == nullptr, "Only one of value or attributedValue should be provided");
@@ -258,82 +265,82 @@ SemanticsProperties::SemanticsProperties(AttributedString attributedDecreasedVal
     }
 }
 
-void SemanticsProperties::debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties.add(<bool>DiagnosticsProperty("checked", checkednullptr));
-    properties.add(<bool>DiagnosticsProperty("selected", selectednullptr));
-    properties.add(StringProperty("label", labelnullptr));
-    properties.add(AttributedStringProperty("attributedLabel", attributedLabelnullptr));
-    properties.add(StringProperty("value", valuenullptr));
-    properties.add(AttributedStringProperty("attributedValue", attributedValuenullptr));
-    properties.add(StringProperty("increasedValue", valuenullptr));
-    properties.add(AttributedStringProperty("attributedIncreasedValue", attributedIncreasedValuenullptr));
-    properties.add(StringProperty("decreasedValue", valuenullptr));
-    properties.add(AttributedStringProperty("attributedDecreasedValue", attributedDecreasedValuenullptr));
-    properties.add(StringProperty("hint", hintnullptr));
-    properties.add(AttributedStringProperty("attributedHint", attributedHintnullptr));
-    properties.add(StringProperty("tooltip", tooltip));
-    properties.add(<TextDirection>EnumProperty("textDirection", textDirectionnullptr));
-    properties.add(<SemanticsSortKey>DiagnosticsProperty("sortKey", sortKeynullptr));
-    properties.add(<SemanticsHintOverrides>DiagnosticsProperty("hintOverrides", hintOverridesnullptr));
+void SemanticsPropertiesCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super->debugFillProperties(properties);
+    properties->add(<bool>make<DiagnosticsPropertyCls>("checked", checkednullptr));
+    properties->add(<bool>make<DiagnosticsPropertyCls>("selected", selectednullptr));
+    properties->add(make<StringPropertyCls>("label", labelnullptr));
+    properties->add(make<AttributedStringPropertyCls>("attributedLabel", attributedLabelnullptr));
+    properties->add(make<StringPropertyCls>("value", valuenullptr));
+    properties->add(make<AttributedStringPropertyCls>("attributedValue", attributedValuenullptr));
+    properties->add(make<StringPropertyCls>("increasedValue", valuenullptr));
+    properties->add(make<AttributedStringPropertyCls>("attributedIncreasedValue", attributedIncreasedValuenullptr));
+    properties->add(make<StringPropertyCls>("decreasedValue", valuenullptr));
+    properties->add(make<AttributedStringPropertyCls>("attributedDecreasedValue", attributedDecreasedValuenullptr));
+    properties->add(make<StringPropertyCls>("hint", hintnullptr));
+    properties->add(make<AttributedStringPropertyCls>("attributedHint", attributedHintnullptr));
+    properties->add(make<StringPropertyCls>("tooltip", tooltip));
+    properties->add(<TextDirection>make<EnumPropertyCls>("textDirection", textDirectionnullptr));
+    properties->add(<SemanticsSortKey>make<DiagnosticsPropertyCls>("sortKey", sortKeynullptr));
+    properties->add(<SemanticsHintOverrides>make<DiagnosticsPropertyCls>("hintOverrides", hintOverridesnullptr));
 }
 
-String SemanticsProperties::toStringShort() {
+String SemanticsPropertiesCls::toStringShort() {
     return objectRuntimeType(this, "SemanticsProperties");
 }
 
 void debugResetSemanticsIdCounter() {
-    SemanticsNode._lastIdentifier = 0;
+    SemanticsNodeCls::_lastIdentifier = 0;
 }
 
-SemanticsNode::SemanticsNode(Key key, VoidCallback showOnScreen) {
+SemanticsNodeCls::SemanticsNodeCls(Key key, VoidCallback showOnScreen) {
     {
         _id = _generateNewId();
         _showOnScreen = showOnScreen;
     }
 }
 
-void SemanticsNode::root(Key key, SemanticsOwner owner, VoidCallback showOnScreen) {
+void SemanticsNodeCls::root(Key key, SemanticsOwner owner, VoidCallback showOnScreen) {
     attach(owner);
 }
 
-int SemanticsNode::id() {
+int SemanticsNodeCls::id() {
     return _id;
 }
 
-Matrix4 SemanticsNode::transform() {
+Matrix4 SemanticsNodeCls::transform() {
     return _transform;
 }
 
-void SemanticsNode::transform(Matrix4 value) {
-    if (!MatrixUtils.matrixEquals(_transform, value)) {
-        _transform = value == nullptr || MatrixUtils.isIdentity(value)? nullptr : value;
+void SemanticsNodeCls::transform(Matrix4 value) {
+    if (!MatrixUtilsCls->matrixEquals(_transform, value)) {
+        _transform = value == nullptr || MatrixUtilsCls->isIdentity(value)? nullptr : value;
         _markDirty();
     }
 }
 
-Rect SemanticsNode::rect() {
+Rect SemanticsNodeCls::rect() {
     return _rect;
 }
 
-void SemanticsNode::rect(Rect value) {
+void SemanticsNodeCls::rect(Rect value) {
     assert(value != nullptr);
-    assert(value.isFinite, "$this (with $owner) tried to set a non-finite rect.");
+    assert(value->isFinite, "$this (with $owner) tried to set a non-finite rect.");
     if (_rect != value) {
         _rect = value;
         _markDirty();
     }
 }
 
-bool SemanticsNode::isInvisible() {
-    return !isMergedIntoParent && rect.isEmpty;
+bool SemanticsNodeCls::isInvisible() {
+    return !isMergedIntoParent && rect->isEmpty;
 }
 
-bool SemanticsNode::isMergedIntoParent() {
+bool SemanticsNodeCls::isMergedIntoParent() {
     return _isMergedIntoParent;
 }
 
-void SemanticsNode::isMergedIntoParent(bool value) {
+void SemanticsNodeCls::isMergedIntoParent(bool value) {
     assert(value != nullptr);
     if (_isMergedIntoParent == value) {
         return;
@@ -342,23 +349,23 @@ void SemanticsNode::isMergedIntoParent(bool value) {
     _markDirty();
 }
 
-bool SemanticsNode::isPartOfNodeMerging() {
+bool SemanticsNodeCls::isPartOfNodeMerging() {
     return mergeAllDescendantsIntoThisNode || isMergedIntoParent;
 }
 
-bool SemanticsNode::mergeAllDescendantsIntoThisNode() {
+bool SemanticsNodeCls::mergeAllDescendantsIntoThisNode() {
     return _mergeAllDescendantsIntoThisNode;
 }
 
-bool SemanticsNode::hasChildren() {
-    return _children?.isNotEmpty ?? false;
+bool SemanticsNodeCls::hasChildren() {
+    return _children?->isNotEmpty ?? false;
 }
 
-int SemanticsNode::childrenCount() {
-    return hasChildren? _children!.length : 0;
+int SemanticsNodeCls::childrenCount() {
+    return hasChildren? _children!->length : 0;
 }
 
-void SemanticsNode::visitChildren(SemanticsNodeVisitor visitor) {
+void SemanticsNodeCls::visitChildren(SemanticsNodeVisitor visitor) {
     if (_children != nullptr) {
         for (SemanticsNode child : _children!) {
             if (!visitor(child)) {
@@ -368,204 +375,204 @@ void SemanticsNode::visitChildren(SemanticsNodeVisitor visitor) {
     }
 }
 
-SemanticsOwner SemanticsNode::owner() {
-    return (;
+SemanticsOwner SemanticsNodeCls::owner() {
+    return ((SemanticsOwner)super->owner);
 }
 
-SemanticsNode SemanticsNode::parent() {
-    return (;
+SemanticsNode SemanticsNodeCls::parent() {
+    return ((SemanticsNode)super->parent);
 }
 
-void SemanticsNode::redepthChildren() {
-    _children?.forEach(redepthChild);
+void SemanticsNodeCls::redepthChildren() {
+    _children?->forEach(redepthChild);
 }
 
-void SemanticsNode::attach(SemanticsOwner owner) {
-    super.attach(owner);
-    while (owner._nodes.containsKey(id)) {
+void SemanticsNodeCls::attach(SemanticsOwner owner) {
+    super->attach(owner);
+    while (owner->_nodes->containsKey(id)) {
         _id = _generateNewId();
     }
-    owner._nodes[id] = this;
-    owner._detachedNodes.remove(this);
+    owner->_nodes[id] = this;
+    owner->_detachedNodes->remove(this);
     if (_dirty) {
         _dirty = false;
         _markDirty();
     }
     if (_children != nullptr) {
         for (SemanticsNode child : _children!) {
-            child.attach(owner);
+            child->attach(owner);
         }
     }
 }
 
-void SemanticsNode::detach() {
-    assert(owner!._nodes.containsKey(id));
-    assert(!owner!._detachedNodes.contains(this));
-    owner!._nodes.remove(id);
-    owner!._detachedNodes.add(this);
-    super.detach();
+void SemanticsNodeCls::detach() {
+    assert(owner!->_nodes->containsKey(id));
+    assert(!owner!->_detachedNodes->contains(this));
+    owner!->_nodes->remove(id);
+    owner!->_detachedNodes->add(this);
+    super->detach();
     assert(owner == nullptr);
     if (_children != nullptr) {
         for (SemanticsNode child : _children!) {
-            if (child.parent == this) {
-                child.detach();
+            if (child->parent == this) {
+                child->detach();
             }
         }
     }
     _markDirty();
 }
 
-bool SemanticsNode::isTagged(SemanticsTag tag) {
-    return tags != nullptr && tags!.contains(tag);
+bool SemanticsNodeCls::isTagged(SemanticsTag tag) {
+    return tags != nullptr && tags!->contains(tag);
 }
 
-bool SemanticsNode::hasFlag(SemanticsFlag flag) {
-    return _flags & flag.index != 0;
+bool SemanticsNodeCls::hasFlag(SemanticsFlag flag) {
+    return _flags & flag->index != 0;
 }
 
-String SemanticsNode::label() {
-    return _attributedLabel.string;
+String SemanticsNodeCls::label() {
+    return _attributedLabel->stringValue;
 }
 
-AttributedString SemanticsNode::attributedLabel() {
+AttributedString SemanticsNodeCls::attributedLabel() {
     return _attributedLabel;
 }
 
-String SemanticsNode::value() {
-    return _attributedValue.string;
+String SemanticsNodeCls::value() {
+    return _attributedValue->stringValue;
 }
 
-AttributedString SemanticsNode::attributedValue() {
+AttributedString SemanticsNodeCls::attributedValue() {
     return _attributedValue;
 }
 
-String SemanticsNode::increasedValue() {
-    return _attributedIncreasedValue.string;
+String SemanticsNodeCls::increasedValue() {
+    return _attributedIncreasedValue->stringValue;
 }
 
-AttributedString SemanticsNode::attributedIncreasedValue() {
+AttributedString SemanticsNodeCls::attributedIncreasedValue() {
     return _attributedIncreasedValue;
 }
 
-String SemanticsNode::decreasedValue() {
-    return _attributedDecreasedValue.string;
+String SemanticsNodeCls::decreasedValue() {
+    return _attributedDecreasedValue->stringValue;
 }
 
-AttributedString SemanticsNode::attributedDecreasedValue() {
+AttributedString SemanticsNodeCls::attributedDecreasedValue() {
     return _attributedDecreasedValue;
 }
 
-String SemanticsNode::hint() {
-    return _attributedHint.string;
+String SemanticsNodeCls::hint() {
+    return _attributedHint->stringValue;
 }
 
-AttributedString SemanticsNode::attributedHint() {
+AttributedString SemanticsNodeCls::attributedHint() {
     return _attributedHint;
 }
 
-String SemanticsNode::tooltip() {
+String SemanticsNodeCls::tooltip() {
     return _tooltip;
 }
 
-double SemanticsNode::elevation() {
+double SemanticsNodeCls::elevation() {
     return _elevation;
 }
 
-double SemanticsNode::thickness() {
+double SemanticsNodeCls::thickness() {
     return _thickness;
 }
 
-SemanticsHintOverrides SemanticsNode::hintOverrides() {
+SemanticsHintOverrides SemanticsNodeCls::hintOverrides() {
     return _hintOverrides;
 }
 
-TextDirection SemanticsNode::textDirection() {
+TextDirection SemanticsNodeCls::textDirection() {
     return _textDirection;
 }
 
-SemanticsSortKey SemanticsNode::sortKey() {
+SemanticsSortKey SemanticsNodeCls::sortKey() {
     return _sortKey;
 }
 
-TextSelection SemanticsNode::textSelection() {
+TextSelection SemanticsNodeCls::textSelection() {
     return _textSelection;
 }
 
-bool SemanticsNode::isMultiline() {
+bool SemanticsNodeCls::isMultiline() {
     return _isMultiline;
 }
 
-int SemanticsNode::scrollChildCount() {
+int SemanticsNodeCls::scrollChildCount() {
     return _scrollChildCount;
 }
 
-int SemanticsNode::scrollIndex() {
+int SemanticsNodeCls::scrollIndex() {
     return _scrollIndex;
 }
 
-double SemanticsNode::scrollPosition() {
+double SemanticsNodeCls::scrollPosition() {
     return _scrollPosition;
 }
 
-double SemanticsNode::scrollExtentMax() {
+double SemanticsNodeCls::scrollExtentMax() {
     return _scrollExtentMax;
 }
 
-double SemanticsNode::scrollExtentMin() {
+double SemanticsNodeCls::scrollExtentMin() {
     return _scrollExtentMin;
 }
 
-int SemanticsNode::platformViewId() {
+int SemanticsNodeCls::platformViewId() {
     return _platformViewId;
 }
 
-int SemanticsNode::maxValueLength() {
+int SemanticsNodeCls::maxValueLength() {
     return _maxValueLength;
 }
 
-int SemanticsNode::currentValueLength() {
+int SemanticsNodeCls::currentValueLength() {
     return _currentValueLength;
 }
 
-void SemanticsNode::updateWith(List<SemanticsNode> childrenInInversePaintOrder, SemanticsConfiguration config) {
+void SemanticsNodeCls::updateWith(List<SemanticsNode> childrenInInversePaintOrder, SemanticsConfiguration config) {
     config = _kEmptyConfig;
     if (_isDifferentFromCurrentSemanticAnnotation(config)) {
         _markDirty();
     }
-    assert(config.platformViewId == nullptr || childrenInInversePaintOrder == nullptr || childrenInInversePaintOrder.isEmpty, "SemanticsNodes with children must not specify a platformViewId.");
-    _attributedLabel = config.attributedLabel;
-    _attributedValue = config.attributedValue;
-    _attributedIncreasedValue = config.attributedIncreasedValue;
-    _attributedDecreasedValue = config.attributedDecreasedValue;
-    _attributedHint = config.attributedHint;
-    _tooltip = config.tooltip;
-    _hintOverrides = config.hintOverrides;
-    _elevation = config.elevation;
-    _thickness = config.thickness;
-    _flags = config._flags;
-    _textDirection = config.textDirection;
-    _sortKey = config.sortKey;
-    _actions = <SemanticsAction, SemanticsActionHandler>of(config._actions);
-    _customSemanticsActions = <CustomSemanticsAction, VoidCallback>of(config._customSemanticsActions);
-    _actionsAsBits = config._actionsAsBits;
-    _textSelection = config._textSelection;
-    _isMultiline = config.isMultiline;
-    _scrollPosition = config._scrollPosition;
-    _scrollExtentMax = config._scrollExtentMax;
-    _scrollExtentMin = config._scrollExtentMin;
-    _mergeAllDescendantsIntoThisNode = config.isMergingSemanticsOfDescendants;
-    _scrollChildCount = config.scrollChildCount;
-    _scrollIndex = config.scrollIndex;
-    indexInParent = config.indexInParent;
-    _platformViewId = config._platformViewId;
-    _maxValueLength = config._maxValueLength;
-    _currentValueLength = config._currentValueLength;
-    _replaceChildren(childrenInInversePaintOrder ?? const );
-    assert(!_canPerformAction(SemanticsAction.increase) || (value == "") == (increasedValue == ""), "A SemanticsNode with action "increase" needs to be annotated with either both "value" and "increasedValue" or neither");
-    assert(!_canPerformAction(SemanticsAction.decrease) || (value == "") == (decreasedValue == ""), "A SemanticsNode with action "increase" needs to be annotated with either both "value" and "decreasedValue" or neither");
+    assert(config->platformViewId == nullptr || childrenInInversePaintOrder == nullptr || childrenInInversePaintOrder->isEmpty, "SemanticsNodes with children must not specify a platformViewId.");
+    _attributedLabel = config->attributedLabel;
+    _attributedValue = config->attributedValue;
+    _attributedIncreasedValue = config->attributedIncreasedValue;
+    _attributedDecreasedValue = config->attributedDecreasedValue;
+    _attributedHint = config->attributedHint;
+    _tooltip = config->tooltip;
+    _hintOverrides = config->hintOverrides;
+    _elevation = config->elevation;
+    _thickness = config->thickness;
+    _flags = config->_flags;
+    _textDirection = config->textDirection;
+    _sortKey = config->sortKey;
+    _actions = <SemanticsAction, SemanticsActionHandler>of(config->_actions);
+    _customSemanticsActions = <CustomSemanticsAction, VoidCallback>of(config->_customSemanticsActions);
+    _actionsAsBits = config->_actionsAsBits;
+    _textSelection = config->_textSelection;
+    _isMultiline = config->isMultiline;
+    _scrollPosition = config->_scrollPosition;
+    _scrollExtentMax = config->_scrollExtentMax;
+    _scrollExtentMin = config->_scrollExtentMin;
+    _mergeAllDescendantsIntoThisNode = config->isMergingSemanticsOfDescendants;
+    _scrollChildCount = config->scrollChildCount;
+    _scrollIndex = config->scrollIndex;
+    indexInParent = config->indexInParent;
+    _platformViewId = config->_platformViewId;
+    _maxValueLength = config->_maxValueLength;
+    _currentValueLength = config->_currentValueLength;
+    _replaceChildren(childrenInInversePaintOrder ?? makeList());
+    assert(!_canPerformAction(SemanticsActionCls::increase) || (value == "") == (increasedValue == ""), "A SemanticsNode with action "increase" needs to be annotated with either both "value" and "increasedValue" or neither");
+    assert(!_canPerformAction(SemanticsActionCls::decrease) || (value == "") == (decreasedValue == ""), "A SemanticsNode with action "increase" needs to be annotated with either both "value" and "decreasedValue" or neither");
 }
 
-SemanticsData SemanticsNode::getSemanticsData() {
+SemanticsData SemanticsNodeCls::getSemanticsData() {
     int flags = _flags;
     int actions = _actionsAsBits;
     AttributedString attributedLabel = _attributedLabel;
@@ -587,140 +594,240 @@ SemanticsData SemanticsNode::getSemanticsData() {
     int currentValueLength = _currentValueLength;
     double elevation = _elevation;
     double thickness = _thickness;
-    Set<int> customSemanticsActionIds = ;
-    for (CustomSemanticsAction action : _customSemanticsActions.keys) {
-        customSemanticsActionIds.add(CustomSemanticsAction.getIdentifier(action));
+    Set<int> customSemanticsActionIds = makeSet();
+    for (CustomSemanticsAction action : _customSemanticsActions->keys) {
+        customSemanticsActionIds->add(CustomSemanticsActionCls->getIdentifier(action));
     }
     if (hintOverrides != nullptr) {
-        if (hintOverrides!.onTapHint != nullptr) {
-            CustomSemanticsAction action = CustomSemanticsAction.overridingAction(hintOverrides!.onTapHint!, SemanticsAction.tap);
-            customSemanticsActionIds.add(CustomSemanticsAction.getIdentifier(action));
+        if (hintOverrides!->onTapHint != nullptr) {
+            CustomSemanticsAction action = CustomSemanticsActionCls->overridingAction(hintOverrides!->onTapHint!, SemanticsActionCls::tap);
+            customSemanticsActionIds->add(CustomSemanticsActionCls->getIdentifier(action));
         }
-        if (hintOverrides!.onLongPressHint != nullptr) {
-            CustomSemanticsAction action = CustomSemanticsAction.overridingAction(hintOverrides!.onLongPressHint!, SemanticsAction.longPress);
-            customSemanticsActionIds.add(CustomSemanticsAction.getIdentifier(action));
+        if (hintOverrides!->onLongPressHint != nullptr) {
+            CustomSemanticsAction action = CustomSemanticsActionCls->overridingAction(hintOverrides!->onLongPressHint!, SemanticsActionCls::longPress);
+            customSemanticsActionIds->add(CustomSemanticsActionCls->getIdentifier(action));
         }
     }
     if (mergeAllDescendantsIntoThisNode) {
-        _visitDescendants();
+        _visitDescendants([=] (SemanticsNode node) {
+            assert(node->isMergedIntoParent);
+            flags = node->_flags;
+            actions = node->_actionsAsBits;
+            textDirection = node->_textDirection;
+            textSelection = node->_textSelection;
+            scrollChildCount = node->_scrollChildCount;
+            scrollIndex = node->_scrollIndex;
+            scrollPosition = node->_scrollPosition;
+            scrollExtentMax = node->_scrollExtentMax;
+            scrollExtentMin = node->_scrollExtentMin;
+            platformViewId = node->_platformViewId;
+            maxValueLength = node->_maxValueLength;
+            currentValueLength = node->_currentValueLength;
+            if (attributedValue == nullptr || attributedValue->stringValue == "") {
+                attributedValue = node->_attributedValue;
+            }
+            if (attributedIncreasedValue == nullptr || attributedIncreasedValue->stringValue == "") {
+                attributedIncreasedValue = node->_attributedIncreasedValue;
+            }
+            if (attributedDecreasedValue == nullptr || attributedDecreasedValue->stringValue == "") {
+                attributedDecreasedValue = node->_attributedDecreasedValue;
+            }
+            if (tooltip == "") {
+                tooltip = node->_tooltip;
+            }
+            if (node->tags != nullptr) {
+                mergedTags = makeSet();
+                mergedTags!->addAll(node->tags!);
+            }
+            for (CustomSemanticsAction action : _customSemanticsActions->keys) {
+                customSemanticsActionIds->add(CustomSemanticsActionCls->getIdentifier(action));
+            }
+            if (node->hintOverrides != nullptr) {
+                if (node->hintOverrides!->onTapHint != nullptr) {
+                    CustomSemanticsAction action = CustomSemanticsActionCls->overridingAction(node->hintOverrides!->onTapHint!, SemanticsActionCls::tap);
+                    customSemanticsActionIds->add(CustomSemanticsActionCls->getIdentifier(action));
+                }
+                if (node->hintOverrides!->onLongPressHint != nullptr) {
+                    CustomSemanticsAction action = CustomSemanticsActionCls->overridingAction(node->hintOverrides!->onLongPressHint!, SemanticsActionCls::longPress);
+                    customSemanticsActionIds->add(CustomSemanticsActionCls->getIdentifier(action));
+                }
+            }
+            attributedLabel = _concatAttributedString(attributedLabel, textDirection, node->_attributedLabel, node->_textDirection);
+            attributedHint = _concatAttributedString(attributedHint, textDirection, node->_attributedHint, node->_textDirection);
+            thickness = math->max(thickness, node->_thickness + node->_elevation);
+            return true;
+        });
     }
-    return SemanticsData(flags, actions, attributedLabel, attributedValue, attributedIncreasedValue, attributedDecreasedValue, attributedHint, tooltip, textDirection, rect, transform, elevation, thickness, mergedTags, textSelection, scrollChildCount, scrollIndex, scrollPosition, scrollExtentMax, scrollExtentMin, platformViewId, maxValueLength, currentValueLength, );
+    auto _c1 = customSemanticsActionIds->toList();_c1.sort();return make<SemanticsDataCls>(flags, actions, attributedLabel, attributedValue, attributedIncreasedValue, attributedDecreasedValue, attributedHint, tooltip, textDirection, rect, transform, elevation, thickness, mergedTags, textSelection, scrollChildCount, scrollIndex, scrollPosition, scrollExtentMax, scrollExtentMin, platformViewId, maxValueLength, currentValueLength, _c1);
 }
 
-void SemanticsNode::sendEvent(SemanticsEvent event) {
+void SemanticsNodeCls::sendEvent(SemanticsEvent event) {
     if (!attached) {
         return;
     }
-    SystemChannels.accessibility.send(event.toMap(id));
+    SystemChannelsCls::accessibility->send(event->toMap(id));
 }
 
-String SemanticsNode::toStringShort() {
+String SemanticsNodeCls::toStringShort() {
     return "${objectRuntimeType(this, 'SemanticsNode')}#$id";
 }
 
-void SemanticsNode::debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
+void SemanticsNodeCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super->debugFillProperties(properties);
     bool hideOwner = true;
     if (_dirty) {
-        bool inDirtyNodes = owner != nullptr && owner!._dirtyNodes.contains(this);
-        properties.add(FlagProperty("inDirtyNodes"inDirtyNodes, "dirty", "STALE"));
+        bool inDirtyNodes = owner != nullptr && owner!->_dirtyNodes->contains(this);
+        properties->add(make<FlagPropertyCls>("inDirtyNodes"inDirtyNodes, "dirty", "STALE"));
         hideOwner = inDirtyNodes;
     }
-    properties.add(<SemanticsOwner>DiagnosticsProperty("owner", ownerhideOwner? DiagnosticLevel.hidden : DiagnosticLevel.info));
-    properties.add(FlagProperty("isMergedIntoParent"isMergedIntoParent, "merged up ⬆️"));
-    properties.add(FlagProperty("mergeAllDescendantsIntoThisNode"mergeAllDescendantsIntoThisNode, "merge boundary ⛔️"));
-    Offset offset = transform != nullptr? MatrixUtils.getAsTranslation(transform!) : nullptr;
+    properties->add(<SemanticsOwner>make<DiagnosticsPropertyCls>("owner", ownerhideOwner? DiagnosticLevelCls::hidden : DiagnosticLevelCls::info));
+    properties->add(make<FlagPropertyCls>("isMergedIntoParent"isMergedIntoParent, "merged up ⬆️"));
+    properties->add(make<FlagPropertyCls>("mergeAllDescendantsIntoThisNode"mergeAllDescendantsIntoThisNode, "merge boundary ⛔️"));
+    Offset offset = transform != nullptr? MatrixUtilsCls->getAsTranslation(transform!) : nullptr;
     if (offset != nullptr) {
-        properties.add(<Rect>DiagnosticsProperty("rect", rect.shift(offset)false));
+        properties->add(<Rect>make<DiagnosticsPropertyCls>("rect", rect->shift(offset)false));
     } else {
-        double scale = transform != nullptr? MatrixUtils.getAsScale(transform!) : nullptr;
+        double scale = transform != nullptr? MatrixUtilsCls->getAsScale(transform!) : nullptr;
         String description;
         if (scale != nullptr) {
             description = "$rect scaled by ${scale.toStringAsFixed(1)}x";
         } else         {
-            if (transform != nullptr && !MatrixUtils.isIdentity(transform!)) {
-            String matrix = transform.toString().split("\n").take(4).<String>map().join("; ");
+            if (transform != nullptr && !MatrixUtilsCls->isIdentity(transform!)) {
+            String matrix = transform->toString()->split("\n")->take(4)-><String>map([=] (String line) {
+    line->substring(4);
+})->join("; ");
             description = "$rect with transform [$matrix]";
         }
 ;
-        }        properties.add(<Rect>DiagnosticsProperty("rect", rectdescription, false));
+        }        properties->add(<Rect>make<DiagnosticsPropertyCls>("rect", rectdescription, false));
     }
-    properties.add(<String>IterableProperty("tags", tags?.map()nullptr));
-    List<String> actions = ;
-    List<String> customSemanticsActions = _customSemanticsActions.keys.<String>map().toList();
-    properties.add(<String>IterableProperty("actions", actionsnullptr));
-    properties.add(<String>IterableProperty("customActions", customSemanticsActionsnullptr));
-    List<String> flags = SemanticsFlag.values.values.where().map().toList();
-    properties.add(<String>IterableProperty("flags", flagsnullptr));
-    properties.add(FlagProperty("isInvisible"isInvisible, "invisible"));
-    properties.add(FlagProperty("isHidden"hasFlag(SemanticsFlag.isHidden), "HIDDEN"));
-    properties.add(AttributedStringProperty("label", _attributedLabel));
-    properties.add(AttributedStringProperty("value", _attributedValue));
-    properties.add(AttributedStringProperty("increasedValue", _attributedIncreasedValue));
-    properties.add(AttributedStringProperty("decreasedValue", _attributedDecreasedValue));
-    properties.add(AttributedStringProperty("hint", _attributedHint));
-    properties.add(StringProperty("tooltip", _tooltip""));
-    properties.add(<TextDirection>EnumProperty("textDirection", _textDirectionnullptr));
-    properties.add(<SemanticsSortKey>DiagnosticsProperty("sortKey", sortKeynullptr));
-    if (_textSelection?.isValid ?? false) {
-        properties.add(MessageProperty("text selection", "[${_textSelection!.start}, ${_textSelection!.end}]"));
+    properties->add(<String>make<IterablePropertyCls>("tags", tags?->map([=] (SemanticsTag tag)     {
+        tag->name;
+    })nullptr));
+    auto _c1 = _actions->keys-><String>map([=] (SemanticsAction action) {    describeEnum(action);})->toList();_c1.sort();List<String> actions = _c1;
+    List<String> customSemanticsActions = _customSemanticsActions->keys-><String>map([=] (CustomSemanticsAction action) {
+    action->label;
+})->toList();
+    properties->add(<String>make<IterablePropertyCls>("actions", actionsnullptr));
+    properties->add(<String>make<IterablePropertyCls>("customActions", customSemanticsActionsnullptr));
+    List<String> flags = SemanticsFlagCls::values->values->where([=] (SemanticsFlag flag) {
+    hasFlag(flag);
+})->map([=] (SemanticsFlag flag) {
+    flag->toString()->substring("SemanticsFlag."->length);
+})->toList();
+    properties->add(<String>make<IterablePropertyCls>("flags", flagsnullptr));
+    properties->add(make<FlagPropertyCls>("isInvisible"isInvisible, "invisible"));
+    properties->add(make<FlagPropertyCls>("isHidden"hasFlag(SemanticsFlagCls::isHidden), "HIDDEN"));
+    properties->add(make<AttributedStringPropertyCls>("label", _attributedLabel));
+    properties->add(make<AttributedStringPropertyCls>("value", _attributedValue));
+    properties->add(make<AttributedStringPropertyCls>("increasedValue", _attributedIncreasedValue));
+    properties->add(make<AttributedStringPropertyCls>("decreasedValue", _attributedDecreasedValue));
+    properties->add(make<AttributedStringPropertyCls>("hint", _attributedHint));
+    properties->add(make<StringPropertyCls>("tooltip", _tooltip""));
+    properties->add(<TextDirection>make<EnumPropertyCls>("textDirection", _textDirectionnullptr));
+    properties->add(<SemanticsSortKey>make<DiagnosticsPropertyCls>("sortKey", sortKeynullptr));
+    if (_textSelection?->isValid ?? false) {
+        properties->add(make<MessagePropertyCls>("text selection", "[${_textSelection!.start}, ${_textSelection!.end}]"));
     }
-    properties.add(IntProperty("platformViewId", platformViewIdnullptr));
-    properties.add(IntProperty("maxValueLength", maxValueLengthnullptr));
-    properties.add(IntProperty("currentValueLength", currentValueLengthnullptr));
-    properties.add(IntProperty("scrollChildren", scrollChildCountnullptr));
-    properties.add(IntProperty("scrollIndex", scrollIndexnullptr));
-    properties.add(DoubleProperty("scrollExtentMin", scrollExtentMinnullptr));
-    properties.add(DoubleProperty("scrollPosition", scrollPositionnullptr));
-    properties.add(DoubleProperty("scrollExtentMax", scrollExtentMaxnullptr));
-    properties.add(DoubleProperty("elevation", elevation0.0));
-    properties.add(DoubleProperty("thickness", thickness0.0));
+    properties->add(make<IntPropertyCls>("platformViewId", platformViewIdnullptr));
+    properties->add(make<IntPropertyCls>("maxValueLength", maxValueLengthnullptr));
+    properties->add(make<IntPropertyCls>("currentValueLength", currentValueLengthnullptr));
+    properties->add(make<IntPropertyCls>("scrollChildren", scrollChildCountnullptr));
+    properties->add(make<IntPropertyCls>("scrollIndex", scrollIndexnullptr));
+    properties->add(make<DoublePropertyCls>("scrollExtentMin", scrollExtentMinnullptr));
+    properties->add(make<DoublePropertyCls>("scrollPosition", scrollPositionnullptr));
+    properties->add(make<DoublePropertyCls>("scrollExtentMax", scrollExtentMaxnullptr));
+    properties->add(make<DoublePropertyCls>("elevation", elevation0.0));
+    properties->add(make<DoublePropertyCls>("thickness", thickness0.0));
 }
 
-String SemanticsNode::toStringDeep(DebugSemanticsDumpOrder childOrder, DiagnosticLevel minLevel, String prefixLineOne, String prefixOtherLines) {
+String SemanticsNodeCls::toStringDeep(DebugSemanticsDumpOrder childOrder, DiagnosticLevel minLevel, String prefixLineOne, String prefixOtherLines) {
     assert(childOrder != nullptr);
-    return toDiagnosticsNode(childOrder).toStringDeep(prefixLineOne, prefixOtherLines, minLevel);
+    return toDiagnosticsNode(childOrder)->toStringDeep(prefixLineOne, prefixOtherLines, minLevel);
 }
 
-DiagnosticsNode SemanticsNode::toDiagnosticsNode(DebugSemanticsDumpOrder childOrder, String name, DiagnosticsTreeStyle style) {
-    return _SemanticsDiagnosticableNode(name, this, style, childOrder);
+DiagnosticsNode SemanticsNodeCls::toDiagnosticsNode(DebugSemanticsDumpOrder childOrder, String name, DiagnosticsTreeStyle style) {
+    return make<_SemanticsDiagnosticableNodeCls>(name, this, style, childOrder);
 }
 
-List<DiagnosticsNode> SemanticsNode::debugDescribeChildren(DebugSemanticsDumpOrder childOrder) {
-    return debugListChildrenInOrder(childOrder).<DiagnosticsNode>map().toList();
+List<DiagnosticsNode> SemanticsNodeCls::debugDescribeChildren(DebugSemanticsDumpOrder childOrder) {
+    return debugListChildrenInOrder(childOrder)-><DiagnosticsNode>map([=] (SemanticsNode node)     {
+        node->toDiagnosticsNode(childOrder);
+    })->toList();
 }
 
-List<SemanticsNode> SemanticsNode::debugListChildrenInOrder(DebugSemanticsDumpOrder childOrder) {
+List<SemanticsNode> SemanticsNodeCls::debugListChildrenInOrder(DebugSemanticsDumpOrder childOrder) {
     assert(childOrder != nullptr);
     if (_children == nullptr) {
-        return const ;
+        return makeList();
     }
     ;
 }
 
-int SemanticsNode::_generateNewId() {
+int SemanticsNodeCls::_generateNewId() {
     _lastIdentifier = (_lastIdentifier + 1) % _maxFrameworkAccessibilityIdentifier;
     return _lastIdentifier;
 }
 
-void SemanticsNode::_replaceChildren(List<SemanticsNode> newChildren) {
-    assert(!newChildren.any());
-    assert(());
-    assert(());
+void SemanticsNodeCls::_replaceChildren(List<SemanticsNode> newChildren) {
+    assert(!newChildren->any([=] (SemanticsNode child)     {
+        child == this;
+    }));
+    assert([=] () {
+        if (identical(newChildren, _children)) {
+            List<DiagnosticsNode> mutationErrors = makeList();
+            if (newChildren->length != _debugPreviousSnapshot->length) {
+                mutationErrors->add(make<ErrorDescriptionCls>("The list's length has changed from ${_debugPreviousSnapshot.length} to ${newChildren.length}."));
+            } else {
+                for (;  < newChildren->length; i++) {
+                    if (!identical(newChildren[i], _debugPreviousSnapshot[i])) {
+                        if (mutationErrors->isNotEmpty) {
+                            mutationErrors->add(make<ErrorSpacerCls>());
+                        }
+                        mutationErrors->add(make<ErrorDescriptionCls>("Child node at position $i was replaced:"));
+                        mutationErrors->add(newChildren[i]->toDiagnosticsNode("Previous child", DiagnosticsTreeStyleCls::singleLine));
+                        mutationErrors->add(_debugPreviousSnapshot[i]->toDiagnosticsNode("New child", DiagnosticsTreeStyleCls::singleLine));
+                    }
+                }
+            }
+            if (mutationErrors->isNotEmpty) {
+                ;
+            }
+        }
+        assert(!newChildren->any([=] (SemanticsNode node)         {
+            node->isMergedIntoParent;
+        }) || isPartOfNodeMerging);
+        _debugPreviousSnapshot = <SemanticsNode>of(newChildren);
+        SemanticsNode ancestor = this;
+        while (ancestor->parent is SemanticsNode) {
+            ancestor = ancestor->parent!;
+        }
+        assert(!newChildren->any([=] (SemanticsNode child)         {
+            child == ancestor;
+        }));
+        return true;
+    }());
+    assert([=] () {
+        Set<SemanticsNode> seenChildren = makeSet();
+        for (SemanticsNode child : newChildren) {
+            assert(seenChildren->add(child));
+        }
+        return true;
+    }());
     if (_children != nullptr) {
         for (SemanticsNode child : _children!) {
-            child._dead = true;
+            child->_dead = true;
         }
     }
     for (SemanticsNode child : newChildren) {
-        assert(!child.isInvisible, "Child $child is invisible and should not be added as a child of $this.");
-        child._dead = false;
+        assert(!child->isInvisible, "Child $child is invisible and should not be added as a child of $this.");
+        child->_dead = false;
     }
     bool sawChange = false;
     if (_children != nullptr) {
         for (SemanticsNode child : _children!) {
-            if (child._dead) {
-                if (child.parent == this) {
+            if (child->_dead) {
+                if (child->parent == this) {
                     dropChild(child);
                 }
                 sawChange = true;
@@ -728,20 +835,20 @@ void SemanticsNode::_replaceChildren(List<SemanticsNode> newChildren) {
         }
     }
     for (SemanticsNode child : newChildren) {
-        if (child.parent != this) {
-            if (child.parent != nullptr) {
-                child.parent?.dropChild(child);
+        if (child->parent != this) {
+            if (child->parent != nullptr) {
+                child->parent?->dropChild(child);
             }
-            assert(!child.attached);
+            assert(!child->attached);
             adoptChild(child);
             sawChange = true;
         }
     }
     if (!sawChange && _children != nullptr) {
         assert(newChildren != nullptr);
-        assert(newChildren.length == _children!.length);
-        for (;  < _children!.length; i++) {
-            if (_children![i].id != newChildren[i].id) {
+        assert(newChildren->length == _children!->length);
+        for (;  < _children!->length; i++) {
+            if (_children![i]->id != newChildren[i]->id) {
                 sawChange = true;
                                 break;
             }
@@ -753,10 +860,10 @@ void SemanticsNode::_replaceChildren(List<SemanticsNode> newChildren) {
     }
 }
 
-bool SemanticsNode::_visitDescendants(SemanticsNodeVisitor visitor) {
+bool SemanticsNodeCls::_visitDescendants(SemanticsNodeVisitor visitor) {
     if (_children != nullptr) {
         for (SemanticsNode child : _children!) {
-            if (!visitor(child) || !child._visitDescendants(visitor)) {
+            if (!visitor(child) || !child->_visitDescendants(visitor)) {
                 return false;
             }
         }
@@ -764,30 +871,30 @@ bool SemanticsNode::_visitDescendants(SemanticsNodeVisitor visitor) {
     return true;
 }
 
-void SemanticsNode::_markDirty() {
+void SemanticsNodeCls::_markDirty() {
     if (_dirty) {
         return;
     }
     _dirty = true;
     if (attached) {
-        assert(!owner!._detachedNodes.contains(this));
-        owner!._dirtyNodes.add(this);
+        assert(!owner!->_detachedNodes->contains(this));
+        owner!->_dirtyNodes->add(this);
     }
 }
 
-bool SemanticsNode::_isDifferentFromCurrentSemanticAnnotation(SemanticsConfiguration config) {
-    return _attributedLabel != config.attributedLabel || _attributedHint != config.attributedHint || _elevation != config.elevation || _thickness != config.thickness || _attributedValue != config.attributedValue || _attributedIncreasedValue != config.attributedIncreasedValue || _attributedDecreasedValue != config.attributedDecreasedValue || _tooltip != config.tooltip || _flags != config._flags || _textDirection != config.textDirection || _sortKey != config._sortKey || _textSelection != config._textSelection || _scrollPosition != config._scrollPosition || _scrollExtentMax != config._scrollExtentMax || _scrollExtentMin != config._scrollExtentMin || _actionsAsBits != config._actionsAsBits || indexInParent != config.indexInParent || platformViewId != config.platformViewId || _maxValueLength != config._maxValueLength || _currentValueLength != config._currentValueLength || _mergeAllDescendantsIntoThisNode != config.isMergingSemanticsOfDescendants;
+bool SemanticsNodeCls::_isDifferentFromCurrentSemanticAnnotation(SemanticsConfiguration config) {
+    return _attributedLabel != config->attributedLabel || _attributedHint != config->attributedHint || _elevation != config->elevation || _thickness != config->thickness || _attributedValue != config->attributedValue || _attributedIncreasedValue != config->attributedIncreasedValue || _attributedDecreasedValue != config->attributedDecreasedValue || _tooltip != config->tooltip || _flags != config->_flags || _textDirection != config->textDirection || _sortKey != config->_sortKey || _textSelection != config->_textSelection || _scrollPosition != config->_scrollPosition || _scrollExtentMax != config->_scrollExtentMax || _scrollExtentMin != config->_scrollExtentMin || _actionsAsBits != config->_actionsAsBits || indexInParent != config->indexInParent || platformViewId != config->platformViewId || _maxValueLength != config->_maxValueLength || _currentValueLength != config->_currentValueLength || _mergeAllDescendantsIntoThisNode != config->isMergingSemanticsOfDescendants;
 }
 
-bool SemanticsNode::_canPerformAction(SemanticsAction action) {
-    return _actions.containsKey(action);
+bool SemanticsNodeCls::_canPerformAction(SemanticsAction action) {
+    return _actions->containsKey(action);
 }
 
-Float64List SemanticsNode::_initIdentityTransform() {
-    return Matrix4.identity().storage;
+Float64List SemanticsNodeCls::_initIdentityTransform() {
+    return Matrix4Cls->identity()->storage;
 }
 
-void SemanticsNode::_addToUpdate(SemanticsUpdateBuilder builder, Set<int> customSemanticsActionIdsUpdate) {
+void SemanticsNodeCls::_addToUpdate(SemanticsUpdateBuilder builder, Set<int> customSemanticsActionIdsUpdate) {
     assert(_dirty);
     SemanticsData data = getSemanticsData();
     Int32List childrenInTraversalOrder;
@@ -796,35 +903,35 @@ void SemanticsNode::_addToUpdate(SemanticsUpdateBuilder builder, Set<int> custom
         childrenInTraversalOrder = _kEmptyChildList;
         childrenInHitTestOrder = _kEmptyChildList;
     } else {
-        int childCount = _children!.length;
+        int childCount = _children!->length;
         List<SemanticsNode> sortedChildren = _childrenInTraversalOrder();
-        childrenInTraversalOrder = Int32List(childCount);
+        childrenInTraversalOrder = make<Int32ListCls>(childCount);
         for (;  < childCount; i = 1) {
-            childrenInTraversalOrder[i] = sortedChildren[i].id;
+            childrenInTraversalOrder[i] = sortedChildren[i]->id;
         }
-        childrenInHitTestOrder = Int32List(childCount);
+        childrenInHitTestOrder = make<Int32ListCls>(childCount);
         for (; i >= 0; i = 1) {
-            childrenInHitTestOrder[i] = _children![childCount - i - 1].id;
+            childrenInHitTestOrder[i] = _children![childCount - i - 1]->id;
         }
     }
     Int32List customSemanticsActionIds;
-    if (data.customSemanticsActionIds?.isNotEmpty ?? false) {
-        customSemanticsActionIds = Int32List(data.customSemanticsActionIds!.length);
-        for (;  < data.customSemanticsActionIds!.length; i++) {
-            customSemanticsActionIds[i] = data.customSemanticsActionIds![i];
-            customSemanticsActionIdsUpdate.add(data.customSemanticsActionIds![i]);
+    if (data->customSemanticsActionIds?->isNotEmpty ?? false) {
+        customSemanticsActionIds = make<Int32ListCls>(data->customSemanticsActionIds!->length);
+        for (;  < data->customSemanticsActionIds!->length; i++) {
+            customSemanticsActionIds[i] = data->customSemanticsActionIds![i];
+            customSemanticsActionIdsUpdate->add(data->customSemanticsActionIds![i]);
         }
     }
-    builder.updateNode(id, data.flags, data.actions, data.rect, data.attributedLabel.string, data.attributedLabel.attributes, data.attributedValue.string, data.attributedValue.attributes, data.attributedIncreasedValue.string, data.attributedIncreasedValue.attributes, data.attributedDecreasedValue.string, data.attributedDecreasedValue.attributes, data.attributedHint.string, data.attributedHint.attributes, data.tooltip, data.textDirection, data.textSelection != nullptr? data.textSelection!.baseOffset : -1, data.textSelection != nullptr? data.textSelection!.extentOffset : -1, data.platformViewId ?? -1, data.maxValueLength ?? -1, data.currentValueLength ?? -1, data.scrollChildCount ?? 0, data.scrollIndex ?? 0, data.scrollPosition ?? double.nan, data.scrollExtentMax ?? double.nan, data.scrollExtentMin ?? double.nan, data.transform?.storage ?? _kIdentityTransform, data.elevation, data.thickness, childrenInTraversalOrder, childrenInHitTestOrder, customSemanticsActionIds ?? _kEmptyCustomSemanticsActionsList);
+    builder->updateNode(id, data->flags, data->actions, data->rect, data->attributedLabel->stringValue, data->attributedLabel->attributes, data->attributedValue->stringValue, data->attributedValue->attributes, data->attributedIncreasedValue->stringValue, data->attributedIncreasedValue->attributes, data->attributedDecreasedValue->stringValue, data->attributedDecreasedValue->attributes, data->attributedHint->stringValue, data->attributedHint->attributes, data->tooltip, data->textDirection, data->textSelection != nullptr? data->textSelection!->baseOffset : -1, data->textSelection != nullptr? data->textSelection!->extentOffset : -1, data->platformViewId ?? -1, data->maxValueLength ?? -1, data->currentValueLength ?? -1, data->scrollChildCount ?? 0, data->scrollIndex ?? 0, data->scrollPosition ?? double->nan, data->scrollExtentMax ?? double->nan, data->scrollExtentMin ?? double->nan, data->transform?->storage ?? _kIdentityTransform, data->elevation, data->thickness, childrenInTraversalOrder, childrenInHitTestOrder, customSemanticsActionIds ?? _kEmptyCustomSemanticsActionsList);
     _dirty = false;
 }
 
-List<SemanticsNode> SemanticsNode::_childrenInTraversalOrder() {
+List<SemanticsNode> SemanticsNodeCls::_childrenInTraversalOrder() {
     TextDirection inheritedTextDirection = textDirection;
     SemanticsNode ancestor = parent;
     while (inheritedTextDirection == nullptr && ancestor != nullptr) {
-        inheritedTextDirection = ancestor.textDirection;
-        ancestor = ancestor.parent;
+        inheritedTextDirection = ancestor->textDirection;
+        ancestor = ancestor->parent;
     }
     List<SemanticsNode> childrenInDefaultOrder;
     if (inheritedTextDirection != nullptr) {
@@ -832,232 +939,248 @@ List<SemanticsNode> SemanticsNode::_childrenInTraversalOrder() {
     } else {
         childrenInDefaultOrder = _children;
     }
-    List<_TraversalSortNode> everythingSorted = ;
-    List<_TraversalSortNode> sortNodes = ;
+    List<_TraversalSortNode> everythingSorted = makeList();
+    List<_TraversalSortNode> sortNodes = makeList();
     SemanticsSortKey lastSortKey;
-    for (;  < childrenInDefaultOrder!.length; position = 1) {
+    for (;  < childrenInDefaultOrder!->length; position = 1) {
         SemanticsNode child = childrenInDefaultOrder[position];
-        SemanticsSortKey sortKey = child.sortKey;
-        lastSortKey = position > 0? childrenInDefaultOrder[position - 1].sortKey : nullptr;
-        bool isCompatibleWithPreviousSortKey = position == 0 || sortKey.runtimeType == lastSortKey.runtimeType && (sortKey == nullptr || sortKey.name == lastSortKey!.name);
-        if (!isCompatibleWithPreviousSortKey && sortNodes.isNotEmpty) {
+        SemanticsSortKey sortKey = child->sortKey;
+        lastSortKey = position > 0? childrenInDefaultOrder[position - 1]->sortKey : nullptr;
+        bool isCompatibleWithPreviousSortKey = position == 0 || sortKey->runtimeType == lastSortKey->runtimeType && (sortKey == nullptr || sortKey->name == lastSortKey!->name);
+        if (!isCompatibleWithPreviousSortKey && sortNodes->isNotEmpty) {
             if (lastSortKey != nullptr) {
-                sortNodes.sort();
+                sortNodes->sort();
             }
-            everythingSorted.addAll(sortNodes);
-            sortNodes.clear();
+            everythingSorted->addAll(sortNodes);
+            sortNodes->clear();
         }
-        sortNodes.add(_TraversalSortNode(child, sortKey, position));
+        sortNodes->add(make<_TraversalSortNodeCls>(child, sortKey, position));
     }
     if (lastSortKey != nullptr) {
-        sortNodes.sort();
+        sortNodes->sort();
     }
-    everythingSorted.addAll(sortNodes);
-    return everythingSorted.<SemanticsNode>map().toList();
+    everythingSorted->addAll(sortNodes);
+    return everythingSorted-><SemanticsNode>map([=] (_TraversalSortNode sortNode)     {
+        sortNode->node;
+    })->toList();
 }
 
-int _BoxEdge::compareTo(_BoxEdge other) {
-    return offset.compareTo(other.offset);
+int _BoxEdgeCls::compareTo(_BoxEdge other) {
+    return offset->compareTo(other->offset);
 }
 
-_BoxEdge::_BoxEdge(bool isLeadingEdge, SemanticsNode node, double offset) {
+_BoxEdgeCls::_BoxEdgeCls(bool isLeadingEdge, SemanticsNode node, double offset) {
     {
         assert(isLeadingEdge != nullptr);
         assert(offset != nullptr);
-        assert(offset.isFinite);
+        assert(offset->isFinite);
         assert(node != nullptr);
     }
 }
 
-int _SemanticsSortGroup::compareTo(_SemanticsSortGroup other) {
-    return startOffset.compareTo(other.startOffset);
+int _SemanticsSortGroupCls::compareTo(_SemanticsSortGroup other) {
+    return startOffset->compareTo(other->startOffset);
 }
 
-List<SemanticsNode> _SemanticsSortGroup::sortedWithinVerticalGroup() {
-    List<_BoxEdge> edges = ;
+List<SemanticsNode> _SemanticsSortGroupCls::sortedWithinVerticalGroup() {
+    List<_BoxEdge> edges = makeList();
     for (SemanticsNode child : nodes) {
-        Rect childRect = child.rect.deflate(0.1);
-        edges.add(_BoxEdge(true, _pointInParentCoordinates(child, childRect.topLeft).dx, child));
-        edges.add(_BoxEdge(false, _pointInParentCoordinates(child, childRect.bottomRight).dx, child));
+        Rect childRect = child->rect->deflate(0.1);
+        edges->add(make<_BoxEdgeCls>(true, _pointInParentCoordinates(child, childRect->topLeft)->dx, child));
+        edges->add(make<_BoxEdgeCls>(false, _pointInParentCoordinates(child, childRect->bottomRight)->dx, child));
     }
-    edges.sort();
-    List<_SemanticsSortGroup> horizontalGroups = ;
+    edges->sort();
+    List<_SemanticsSortGroup> horizontalGroups = makeList();
     _SemanticsSortGroup group;
     int depth = 0;
     for (_BoxEdge edge : edges) {
-        if (edge.isLeadingEdge) {
+        if (edge->isLeadingEdge) {
             depth = 1;
-            group = _SemanticsSortGroup(edge.offset, textDirection);
-            group.nodes.add(edge.node);
+            group = make<_SemanticsSortGroupCls>(edge->offset, textDirection);
+            group->nodes->add(edge->node);
         } else {
             depth = 1;
         }
         if (depth == 0) {
-            horizontalGroups.add(group!);
+            horizontalGroups->add(group!);
             group = nullptr;
         }
     }
-    horizontalGroups.sort();
-    if (textDirection == TextDirection.rtl) {
-        horizontalGroups = horizontalGroups.reversed.toList();
+    horizontalGroups->sort();
+    if (textDirection == TextDirectionCls::rtl) {
+        horizontalGroups = horizontalGroups->reversed->toList();
     }
-    return horizontalGroups.expand().toList();
+    return horizontalGroups->expand([=] (_SemanticsSortGroup group)     {
+        group->sortedWithinKnot();
+    })->toList();
 }
 
-List<SemanticsNode> _SemanticsSortGroup::sortedWithinKnot() {
-    if (nodes.length <= 1) {
+List<SemanticsNode> _SemanticsSortGroupCls::sortedWithinKnot() {
+    if (nodes->length <= 1) {
         return nodes;
     }
-    Map<int, SemanticsNode> nodeMap = ;
-    Map<int, int> edges = ;
+    Map<int, SemanticsNode> nodeMap = makeMap(makeList(), makeList();
+    Map<int, int> edges = makeMap(makeList(), makeList();
     for (SemanticsNode node : nodes) {
-        nodeMap[node.id] = node;
-        Offset center = _pointInParentCoordinates(node, node.rect.center);
+        nodeMap[node->id] = node;
+        Offset center = _pointInParentCoordinates(node, node->rect->center);
         for (SemanticsNode nextNode : nodes) {
-            if (identical(node, nextNode) || edges[nextNode.id] == node.id) {
+            if (identical(node, nextNode) || edges[nextNode->id] == node->id) {
                 continue;
             }
-            Offset nextCenter = _pointInParentCoordinates(nextNode, nextNode.rect.center);
+            Offset nextCenter = _pointInParentCoordinates(nextNode, nextNode->rect->center);
             Offset centerDelta = nextCenter - center;
-            double direction = centerDelta.direction;
-            bool isLtrAndForward = textDirection == TextDirection.ltr && -math.pi / 4 < direction &&  < 3 * math.pi / 4;
-            bool isRtlAndForward = textDirection == TextDirection.rtl && ( < -3 * math.pi / 4 || direction > 3 * math.pi / 4);
+            double direction = centerDelta->direction;
+            bool isLtrAndForward = textDirection == TextDirectionCls::ltr && -math->pi / 4 < direction &&  < 3 * math->pi / 4;
+            bool isRtlAndForward = textDirection == TextDirectionCls::rtl && ( < -3 * math->pi / 4 || direction > 3 * math->pi / 4);
             if (isLtrAndForward || isRtlAndForward) {
-                edges[node.id] = nextNode.id;
+                edges[node->id] = nextNode->id;
             }
         }
     }
-    List<int> sortedIds = ;
-    Set<int> visitedIds = ;
-    List<SemanticsNode> startNodes = ;
-    ;
-    startNodes.<int>map().forEach(search);
-    return sortedIds.<SemanticsNode>map().toList().reversed.toList();
+    List<int> sortedIds = makeList();
+    Set<int> visitedIds = makeSet();
+    });List<SemanticsNode> startNodes = auto _c1 = nodes->toList();_c1.sort([=] (SemanticsNode a,SemanticsNode b) {    Offset aTopLeft = _pointInParentCoordinates(a, a->rect->topLeft);    Offset bTopLeft = _pointInParentCoordinates(b, b->rect->topLeft);    int verticalDiff = aTopLeft->dy->compareTo(bTopLeft->dy);    }        if (verticalDiff != 0) {            return -verticalDiff;    return -aTopLeft->dx->compareTo(bTopLeft->dx);_c1;
+    InlineMethod;
+    startNodes-><int>map([=] (SemanticsNode node)     {
+        node->id;
+    })->forEach(search);
+    return sortedIds-><SemanticsNode>map([=] (int id)     {
+        nodeMap[id]!;
+    })->toList()->reversed->toList();
 }
 
-_SemanticsSortGroup::_SemanticsSortGroup(double startOffset, TextDirection textDirection) {
+_SemanticsSortGroupCls::_SemanticsSortGroupCls(double startOffset, TextDirection textDirection) {
     {
         assert(startOffset != nullptr);
     }
 }
 
 Offset _pointInParentCoordinates(SemanticsNode node, Offset point) {
-    if (node.transform == nullptr) {
+    if (node->transform == nullptr) {
         return point;
     }
-    Vector3 vector = Vector3(point.dx, point.dy, 0.0);
-    node.transform!.transform3(vector);
-    return Offset(vector.x, vector.y);
+    Vector3 vector = make<Vector3Cls>(point->dx, point->dy, 0.0);
+    node->transform!->transform3(vector);
+    return make<OffsetCls>(vector->x, vector->y);
 }
 
 List<SemanticsNode> _childrenInDefaultOrder(List<SemanticsNode> children, TextDirection textDirection) {
-    List<_BoxEdge> edges = ;
+    List<_BoxEdge> edges = makeList();
     for (SemanticsNode child : children) {
-        assert(child.rect.isFinite);
-        Rect childRect = child.rect.deflate(0.1);
-        edges.add(_BoxEdge(true, _pointInParentCoordinates(child, childRect.topLeft).dy, child));
-        edges.add(_BoxEdge(false, _pointInParentCoordinates(child, childRect.bottomRight).dy, child));
+        assert(child->rect->isFinite);
+        Rect childRect = child->rect->deflate(0.1);
+        edges->add(make<_BoxEdgeCls>(true, _pointInParentCoordinates(child, childRect->topLeft)->dy, child));
+        edges->add(make<_BoxEdgeCls>(false, _pointInParentCoordinates(child, childRect->bottomRight)->dy, child));
     }
-    edges.sort();
-    List<_SemanticsSortGroup> verticalGroups = ;
+    edges->sort();
+    List<_SemanticsSortGroup> verticalGroups = makeList();
     _SemanticsSortGroup group;
     int depth = 0;
     for (_BoxEdge edge : edges) {
-        if (edge.isLeadingEdge) {
+        if (edge->isLeadingEdge) {
             depth = 1;
-            group = _SemanticsSortGroup(edge.offset, textDirection);
-            group.nodes.add(edge.node);
+            group = make<_SemanticsSortGroupCls>(edge->offset, textDirection);
+            group->nodes->add(edge->node);
         } else {
             depth = 1;
         }
         if (depth == 0) {
-            verticalGroups.add(group!);
+            verticalGroups->add(group!);
             group = nullptr;
         }
     }
-    verticalGroups.sort();
-    return verticalGroups.expand().toList();
+    verticalGroups->sort();
+    return verticalGroups->expand([=] (_SemanticsSortGroup group)     {
+        group->sortedWithinVerticalGroup();
+    })->toList();
 }
 
-int _TraversalSortNode::compareTo(_TraversalSortNode other) {
-    if (sortKey == nullptr || other.sortKey == nullptr) {
-        return position - other.position;
+int _TraversalSortNodeCls::compareTo(_TraversalSortNode other) {
+    if (sortKey == nullptr || other->sortKey == nullptr) {
+        return position - other->position;
     }
-    return sortKey!.compareTo(other.sortKey!);
+    return sortKey!->compareTo(other->sortKey!);
 }
 
-_TraversalSortNode::_TraversalSortNode(SemanticsNode node, int position, SemanticsSortKey sortKey) {
+_TraversalSortNodeCls::_TraversalSortNodeCls(SemanticsNode node, int position, SemanticsSortKey sortKey) {
     {
         assert(node != nullptr);
         assert(position != nullptr);
     }
 }
 
-SemanticsNode SemanticsOwner::rootSemanticsNode() {
+SemanticsNode SemanticsOwnerCls::rootSemanticsNode() {
     return _nodes[0];
 }
 
-void SemanticsOwner::dispose() {
-    _dirtyNodes.clear();
-    _nodes.clear();
-    _detachedNodes.clear();
-    super.dispose();
+void SemanticsOwnerCls::dispose() {
+    _dirtyNodes->clear();
+    _nodes->clear();
+    _detachedNodes->clear();
+    super->dispose();
 }
 
-void SemanticsOwner::sendSemanticsUpdate() {
-    if (_dirtyNodes.isEmpty) {
+void SemanticsOwnerCls::sendSemanticsUpdate() {
+    if (_dirtyNodes->isEmpty) {
         return;
     }
-    Set<int> customSemanticsActionIds = ;
-    List<SemanticsNode> visitedNodes = ;
-    while (_dirtyNodes.isNotEmpty) {
-        List<SemanticsNode> localDirtyNodes = _dirtyNodes.where().toList();
-        _dirtyNodes.clear();
-        _detachedNodes.clear();
-        localDirtyNodes.sort();
-        visitedNodes.addAll(localDirtyNodes);
+    Set<int> customSemanticsActionIds = makeSet();
+    List<SemanticsNode> visitedNodes = makeList();
+    while (_dirtyNodes->isNotEmpty) {
+        List<SemanticsNode> localDirtyNodes = _dirtyNodes->where([=] (SemanticsNode node) {
+    !_detachedNodes->contains(node);
+})->toList();
+        _dirtyNodes->clear();
+        _detachedNodes->clear();
+        localDirtyNodes->sort([=] (SemanticsNode a,SemanticsNode b)         {
+            a->depth - b->depth;
+        });
+        visitedNodes->addAll(localDirtyNodes);
         for (SemanticsNode node : localDirtyNodes) {
-            assert(node._dirty);
-            assert(node.parent == nullptr || !node.parent!.isPartOfNodeMerging || node.isMergedIntoParent);
-            if (node.isPartOfNodeMerging) {
-                assert(node.mergeAllDescendantsIntoThisNode || node.parent != nullptr);
-                if (node.parent != nullptr && node.parent!.isPartOfNodeMerging) {
-                    node.parent!._markDirty();
-                    node._dirty = false;
+            assert(node->_dirty);
+            assert(node->parent == nullptr || !node->parent!->isPartOfNodeMerging || node->isMergedIntoParent);
+            if (node->isPartOfNodeMerging) {
+                assert(node->mergeAllDescendantsIntoThisNode || node->parent != nullptr);
+                if (node->parent != nullptr && node->parent!->isPartOfNodeMerging) {
+                    node->parent!->_markDirty();
+                    node->_dirty = false;
                 }
             }
         }
     }
-    visitedNodes.sort();
-    SemanticsUpdateBuilder builder = SemanticsBinding.instance.createSemanticsUpdateBuilder();
+    visitedNodes->sort([=] (SemanticsNode a,SemanticsNode b)     {
+        a->depth - b->depth;
+    });
+    SemanticsUpdateBuilder builder = SemanticsBindingCls::instance->createSemanticsUpdateBuilder();
     for (SemanticsNode node : visitedNodes) {
-        assert(node.parent?._dirty != true);
-        if (node._dirty && node.attached) {
-            node._addToUpdate(builder, customSemanticsActionIds);
+        assert(node->parent?->_dirty != true);
+        if (node->_dirty && node->attached) {
+            node->_addToUpdate(builder, customSemanticsActionIds);
         }
     }
-    _dirtyNodes.clear();
+    _dirtyNodes->clear();
     for (int actionId : customSemanticsActionIds) {
-        CustomSemanticsAction action = CustomSemanticsAction.getAction(actionId)!;
-        builder.updateCustomAction(actionId, action.label, action.hint, action.action?.index ?? -1);
+        CustomSemanticsAction action = CustomSemanticsActionCls->getAction(actionId)!;
+        builder->updateCustomAction(actionId, action->label, action->hint, action->action?->index ?? -1);
     }
-    SemanticsBinding.instance.platformDispatcher.updateSemantics(builder.build());
+    SemanticsBindingCls::instance->platformDispatcher->updateSemantics(builder->build());
     notifyListeners();
 }
 
-void SemanticsOwner::performAction(SemanticsAction action, Object args, int id) {
+void SemanticsOwnerCls::performAction(SemanticsAction action, Object args, int id) {
     assert(action != nullptr);
     SemanticsActionHandler handler = _getSemanticsActionHandlerForId(id, action);
     if (handler != nullptr) {
         handler(args);
         return;
     }
-    if (action == SemanticsAction.showOnScreen && _nodes[id]!._showOnScreen != nullptr) {
-        _nodes[id]!._showOnScreen!();
+    if (action == SemanticsActionCls::showOnScreen && _nodes[id]!->_showOnScreen != nullptr) {
+        _nodes[id]!->_showOnScreen!();
     }
 }
 
-void SemanticsOwner::performActionAt(SemanticsAction action, Object args, Offset position) {
+void SemanticsOwnerCls::performActionAt(SemanticsAction action, Object args, Offset position) {
     assert(action != nullptr);
     SemanticsNode node = rootSemanticsNode;
     if (node == nullptr) {
@@ -1069,284 +1192,317 @@ void SemanticsOwner::performActionAt(SemanticsAction action, Object args, Offset
     }
 }
 
-String SemanticsOwner::toString() {
+String SemanticsOwnerCls::toString() {
     return describeIdentity(this);
 }
 
-SemanticsActionHandler SemanticsOwner::_getSemanticsActionHandlerForId(SemanticsAction action, int id) {
+SemanticsActionHandler SemanticsOwnerCls::_getSemanticsActionHandlerForId(SemanticsAction action, int id) {
     SemanticsNode result = _nodes[id];
-    if (result != nullptr && result.isPartOfNodeMerging && !result._canPerformAction(action)) {
-        result._visitDescendants();
+    if (result != nullptr && result->isPartOfNodeMerging && !result->_canPerformAction(action)) {
+        result->_visitDescendants([=] (SemanticsNode node) {
+            if (node->_canPerformAction(action)) {
+                result = node;
+                return false;
+            }
+            return true;
+        });
     }
-    if (result == nullptr || !result!._canPerformAction(action)) {
+    if (result == nullptr || !result!->_canPerformAction(action)) {
         return nullptr;
     }
-    return result!._actions[action];
+    return result!->_actions[action];
 }
 
-SemanticsActionHandler SemanticsOwner::_getSemanticsActionHandlerForPosition(SemanticsAction action, SemanticsNode node, Offset position) {
-    if (node.transform != nullptr) {
-        Matrix4 inverse = Matrix4.identity();
-        if (inverse.copyInverse(node.transform!) == 0.0) {
+SemanticsActionHandler SemanticsOwnerCls::_getSemanticsActionHandlerForPosition(SemanticsAction action, SemanticsNode node, Offset position) {
+    if (node->transform != nullptr) {
+        Matrix4 inverse = Matrix4Cls->identity();
+        if (inverse->copyInverse(node->transform!) == 0.0) {
             return nullptr;
         }
-        position = MatrixUtils.transformPoint(inverse, position);
+        position = MatrixUtilsCls->transformPoint(inverse, position);
     }
-    if (!node.rect.contains(position)) {
+    if (!node->rect->contains(position)) {
         return nullptr;
     }
-    if (node.mergeAllDescendantsIntoThisNode) {
+    if (node->mergeAllDescendantsIntoThisNode) {
         SemanticsNode result;
-        node._visitDescendants();
-        return result?._actions[action];
+        node->_visitDescendants([=] (SemanticsNode child) {
+            if (child->_canPerformAction(action)) {
+                result = child;
+                return false;
+            }
+            return true;
+        });
+        return result?->_actions[action];
     }
-    if (node.hasChildren) {
-        for (SemanticsNode child : node._children!.reversed) {
+    if (node->hasChildren) {
+        for (SemanticsNode child : node->_children!->reversed) {
             SemanticsActionHandler handler = _getSemanticsActionHandlerForPosition(child, position, action);
             if (handler != nullptr) {
                 return handler;
             }
         }
     }
-    return node._actions[action];
+    return node->_actions[action];
 }
 
-bool SemanticsConfiguration::isSemanticBoundary() {
+bool SemanticsConfigurationCls::isSemanticBoundary() {
     return _isSemanticBoundary;
 }
 
-void SemanticsConfiguration::isSemanticBoundary(bool value) {
+void SemanticsConfigurationCls::isSemanticBoundary(bool value) {
     assert(!isMergingSemanticsOfDescendants || value);
     _isSemanticBoundary = value;
 }
 
-bool SemanticsConfiguration::hasBeenAnnotated() {
+bool SemanticsConfigurationCls::hasBeenAnnotated() {
     return _hasBeenAnnotated;
 }
 
-VoidCallback SemanticsConfiguration::onTap() {
+VoidCallback SemanticsConfigurationCls::onTap() {
     return _onTap;
 }
 
-void SemanticsConfiguration::onTap(VoidCallback value) {
-    _addArgumentlessAction(SemanticsAction.tap, value!);
+void SemanticsConfigurationCls::onTap(VoidCallback value) {
+    _addArgumentlessAction(SemanticsActionCls::tap, value!);
     _onTap = value;
 }
 
-VoidCallback SemanticsConfiguration::onLongPress() {
+VoidCallback SemanticsConfigurationCls::onLongPress() {
     return _onLongPress;
 }
 
-void SemanticsConfiguration::onLongPress(VoidCallback value) {
-    _addArgumentlessAction(SemanticsAction.longPress, value!);
+void SemanticsConfigurationCls::onLongPress(VoidCallback value) {
+    _addArgumentlessAction(SemanticsActionCls::longPress, value!);
     _onLongPress = value;
 }
 
-VoidCallback SemanticsConfiguration::onScrollLeft() {
+VoidCallback SemanticsConfigurationCls::onScrollLeft() {
     return _onScrollLeft;
 }
 
-void SemanticsConfiguration::onScrollLeft(VoidCallback value) {
-    _addArgumentlessAction(SemanticsAction.scrollLeft, value!);
+void SemanticsConfigurationCls::onScrollLeft(VoidCallback value) {
+    _addArgumentlessAction(SemanticsActionCls::scrollLeft, value!);
     _onScrollLeft = value;
 }
 
-VoidCallback SemanticsConfiguration::onDismiss() {
+VoidCallback SemanticsConfigurationCls::onDismiss() {
     return _onDismiss;
 }
 
-void SemanticsConfiguration::onDismiss(VoidCallback value) {
-    _addArgumentlessAction(SemanticsAction.dismiss, value!);
+void SemanticsConfigurationCls::onDismiss(VoidCallback value) {
+    _addArgumentlessAction(SemanticsActionCls::dismiss, value!);
     _onDismiss = value;
 }
 
-VoidCallback SemanticsConfiguration::onScrollRight() {
+VoidCallback SemanticsConfigurationCls::onScrollRight() {
     return _onScrollRight;
 }
 
-void SemanticsConfiguration::onScrollRight(VoidCallback value) {
-    _addArgumentlessAction(SemanticsAction.scrollRight, value!);
+void SemanticsConfigurationCls::onScrollRight(VoidCallback value) {
+    _addArgumentlessAction(SemanticsActionCls::scrollRight, value!);
     _onScrollRight = value;
 }
 
-VoidCallback SemanticsConfiguration::onScrollUp() {
+VoidCallback SemanticsConfigurationCls::onScrollUp() {
     return _onScrollUp;
 }
 
-void SemanticsConfiguration::onScrollUp(VoidCallback value) {
-    _addArgumentlessAction(SemanticsAction.scrollUp, value!);
+void SemanticsConfigurationCls::onScrollUp(VoidCallback value) {
+    _addArgumentlessAction(SemanticsActionCls::scrollUp, value!);
     _onScrollUp = value;
 }
 
-VoidCallback SemanticsConfiguration::onScrollDown() {
+VoidCallback SemanticsConfigurationCls::onScrollDown() {
     return _onScrollDown;
 }
 
-void SemanticsConfiguration::onScrollDown(VoidCallback value) {
-    _addArgumentlessAction(SemanticsAction.scrollDown, value!);
+void SemanticsConfigurationCls::onScrollDown(VoidCallback value) {
+    _addArgumentlessAction(SemanticsActionCls::scrollDown, value!);
     _onScrollDown = value;
 }
 
-VoidCallback SemanticsConfiguration::onIncrease() {
+VoidCallback SemanticsConfigurationCls::onIncrease() {
     return _onIncrease;
 }
 
-void SemanticsConfiguration::onIncrease(VoidCallback value) {
-    _addArgumentlessAction(SemanticsAction.increase, value!);
+void SemanticsConfigurationCls::onIncrease(VoidCallback value) {
+    _addArgumentlessAction(SemanticsActionCls::increase, value!);
     _onIncrease = value;
 }
 
-VoidCallback SemanticsConfiguration::onDecrease() {
+VoidCallback SemanticsConfigurationCls::onDecrease() {
     return _onDecrease;
 }
 
-void SemanticsConfiguration::onDecrease(VoidCallback value) {
-    _addArgumentlessAction(SemanticsAction.decrease, value!);
+void SemanticsConfigurationCls::onDecrease(VoidCallback value) {
+    _addArgumentlessAction(SemanticsActionCls::decrease, value!);
     _onDecrease = value;
 }
 
-VoidCallback SemanticsConfiguration::onCopy() {
+VoidCallback SemanticsConfigurationCls::onCopy() {
     return _onCopy;
 }
 
-void SemanticsConfiguration::onCopy(VoidCallback value) {
-    _addArgumentlessAction(SemanticsAction.copy, value!);
+void SemanticsConfigurationCls::onCopy(VoidCallback value) {
+    _addArgumentlessAction(SemanticsActionCls::copy, value!);
     _onCopy = value;
 }
 
-VoidCallback SemanticsConfiguration::onCut() {
+VoidCallback SemanticsConfigurationCls::onCut() {
     return _onCut;
 }
 
-void SemanticsConfiguration::onCut(VoidCallback value) {
-    _addArgumentlessAction(SemanticsAction.cut, value!);
+void SemanticsConfigurationCls::onCut(VoidCallback value) {
+    _addArgumentlessAction(SemanticsActionCls::cut, value!);
     _onCut = value;
 }
 
-VoidCallback SemanticsConfiguration::onPaste() {
+VoidCallback SemanticsConfigurationCls::onPaste() {
     return _onPaste;
 }
 
-void SemanticsConfiguration::onPaste(VoidCallback value) {
-    _addArgumentlessAction(SemanticsAction.paste, value!);
+void SemanticsConfigurationCls::onPaste(VoidCallback value) {
+    _addArgumentlessAction(SemanticsActionCls::paste, value!);
     _onPaste = value;
 }
 
-VoidCallback SemanticsConfiguration::onShowOnScreen() {
+VoidCallback SemanticsConfigurationCls::onShowOnScreen() {
     return _onShowOnScreen;
 }
 
-void SemanticsConfiguration::onShowOnScreen(VoidCallback value) {
-    _addArgumentlessAction(SemanticsAction.showOnScreen, value!);
+void SemanticsConfigurationCls::onShowOnScreen(VoidCallback value) {
+    _addArgumentlessAction(SemanticsActionCls::showOnScreen, value!);
     _onShowOnScreen = value;
 }
 
-MoveCursorHandler SemanticsConfiguration::onMoveCursorForwardByCharacter() {
+MoveCursorHandler SemanticsConfigurationCls::onMoveCursorForwardByCharacter() {
     return _onMoveCursorForwardByCharacter;
 }
 
-void SemanticsConfiguration::onMoveCursorForwardByCharacter(MoveCursorHandler value) {
+void SemanticsConfigurationCls::onMoveCursorForwardByCharacter(MoveCursorHandler value) {
     assert(value != nullptr);
-    _addAction(SemanticsAction.moveCursorForwardByCharacter, );
+    _addAction(SemanticsActionCls::moveCursorForwardByCharacter, [=] (Object args) {
+        bool extendSelection = ((bool)args!);
+        value!(extendSelection);
+    });
     _onMoveCursorForwardByCharacter = value;
 }
 
-MoveCursorHandler SemanticsConfiguration::onMoveCursorBackwardByCharacter() {
+MoveCursorHandler SemanticsConfigurationCls::onMoveCursorBackwardByCharacter() {
     return _onMoveCursorBackwardByCharacter;
 }
 
-void SemanticsConfiguration::onMoveCursorBackwardByCharacter(MoveCursorHandler value) {
+void SemanticsConfigurationCls::onMoveCursorBackwardByCharacter(MoveCursorHandler value) {
     assert(value != nullptr);
-    _addAction(SemanticsAction.moveCursorBackwardByCharacter, );
+    _addAction(SemanticsActionCls::moveCursorBackwardByCharacter, [=] (Object args) {
+        bool extendSelection = ((bool)args!);
+        value!(extendSelection);
+    });
     _onMoveCursorBackwardByCharacter = value;
 }
 
-MoveCursorHandler SemanticsConfiguration::onMoveCursorForwardByWord() {
+MoveCursorHandler SemanticsConfigurationCls::onMoveCursorForwardByWord() {
     return _onMoveCursorForwardByWord;
 }
 
-void SemanticsConfiguration::onMoveCursorForwardByWord(MoveCursorHandler value) {
+void SemanticsConfigurationCls::onMoveCursorForwardByWord(MoveCursorHandler value) {
     assert(value != nullptr);
-    _addAction(SemanticsAction.moveCursorForwardByWord, );
+    _addAction(SemanticsActionCls::moveCursorForwardByWord, [=] (Object args) {
+        bool extendSelection = ((bool)args!);
+        value!(extendSelection);
+    });
     _onMoveCursorForwardByCharacter = value;
 }
 
-MoveCursorHandler SemanticsConfiguration::onMoveCursorBackwardByWord() {
+MoveCursorHandler SemanticsConfigurationCls::onMoveCursorBackwardByWord() {
     return _onMoveCursorBackwardByWord;
 }
 
-void SemanticsConfiguration::onMoveCursorBackwardByWord(MoveCursorHandler value) {
+void SemanticsConfigurationCls::onMoveCursorBackwardByWord(MoveCursorHandler value) {
     assert(value != nullptr);
-    _addAction(SemanticsAction.moveCursorBackwardByWord, );
+    _addAction(SemanticsActionCls::moveCursorBackwardByWord, [=] (Object args) {
+        bool extendSelection = ((bool)args!);
+        value!(extendSelection);
+    });
     _onMoveCursorBackwardByCharacter = value;
 }
 
-SetSelectionHandler SemanticsConfiguration::onSetSelection() {
+SetSelectionHandler SemanticsConfigurationCls::onSetSelection() {
     return _onSetSelection;
 }
 
-void SemanticsConfiguration::onSetSelection(SetSelectionHandler value) {
+void SemanticsConfigurationCls::onSetSelection(SetSelectionHandler value) {
     assert(value != nullptr);
-    _addAction(SemanticsAction.setSelection, );
+    _addAction(SemanticsActionCls::setSelection, [=] (Object args) {
+        assert(args != nullptr && args is Map);
+        Map<String, int> selection = (((Map<dynamic, dynamic>)args!))-><String, int>cast();
+        assert(selection != nullptr && selection["base"] != nullptr && selection["extent"] != nullptr);
+        value!(make<TextSelectionCls>(selection["base"]!, selection["extent"]!));
+    });
     _onSetSelection = value;
 }
 
-SetTextHandler SemanticsConfiguration::onSetText() {
+SetTextHandler SemanticsConfigurationCls::onSetText() {
     return _onSetText;
 }
 
-void SemanticsConfiguration::onSetText(SetTextHandler value) {
+void SemanticsConfigurationCls::onSetText(SetTextHandler value) {
     assert(value != nullptr);
-    _addAction(SemanticsAction.setText, );
+    _addAction(SemanticsActionCls::setText, [=] (Object args) {
+        assert(args != nullptr && args is String);
+        String text = ((String)args!);
+        value!(text);
+    });
     _onSetText = value;
 }
 
-VoidCallback SemanticsConfiguration::onDidGainAccessibilityFocus() {
+VoidCallback SemanticsConfigurationCls::onDidGainAccessibilityFocus() {
     return _onDidGainAccessibilityFocus;
 }
 
-void SemanticsConfiguration::onDidGainAccessibilityFocus(VoidCallback value) {
-    _addArgumentlessAction(SemanticsAction.didGainAccessibilityFocus, value!);
+void SemanticsConfigurationCls::onDidGainAccessibilityFocus(VoidCallback value) {
+    _addArgumentlessAction(SemanticsActionCls::didGainAccessibilityFocus, value!);
     _onDidGainAccessibilityFocus = value;
 }
 
-VoidCallback SemanticsConfiguration::onDidLoseAccessibilityFocus() {
+VoidCallback SemanticsConfigurationCls::onDidLoseAccessibilityFocus() {
     return _onDidLoseAccessibilityFocus;
 }
 
-void SemanticsConfiguration::onDidLoseAccessibilityFocus(VoidCallback value) {
-    _addArgumentlessAction(SemanticsAction.didLoseAccessibilityFocus, value!);
+void SemanticsConfigurationCls::onDidLoseAccessibilityFocus(VoidCallback value) {
+    _addArgumentlessAction(SemanticsActionCls::didLoseAccessibilityFocus, value!);
     _onDidLoseAccessibilityFocus = value;
 }
 
-SemanticsActionHandler SemanticsConfiguration::getActionHandler(SemanticsAction action) {
+SemanticsActionHandler SemanticsConfigurationCls::getActionHandler(SemanticsAction action) {
     return _actions[action];
 }
 
-SemanticsSortKey SemanticsConfiguration::sortKey() {
+SemanticsSortKey SemanticsConfigurationCls::sortKey() {
     return _sortKey;
 }
 
-void SemanticsConfiguration::sortKey(SemanticsSortKey value) {
+void SemanticsConfigurationCls::sortKey(SemanticsSortKey value) {
     assert(value != nullptr);
     _sortKey = value;
     _hasBeenAnnotated = true;
 }
 
-int SemanticsConfiguration::indexInParent() {
+int SemanticsConfigurationCls::indexInParent() {
     return _indexInParent;
 }
 
-void SemanticsConfiguration::indexInParent(int value) {
+void SemanticsConfigurationCls::indexInParent(int value) {
     _indexInParent = value;
     _hasBeenAnnotated = true;
 }
 
-int SemanticsConfiguration::scrollChildCount() {
+int SemanticsConfigurationCls::scrollChildCount() {
     return _scrollChildCount;
 }
 
-void SemanticsConfiguration::scrollChildCount(int value) {
+void SemanticsConfigurationCls::scrollChildCount(int value) {
     if (value == scrollChildCount) {
         return;
     }
@@ -1354,11 +1510,11 @@ void SemanticsConfiguration::scrollChildCount(int value) {
     _hasBeenAnnotated = true;
 }
 
-int SemanticsConfiguration::scrollIndex() {
+int SemanticsConfigurationCls::scrollIndex() {
     return _scrollIndex;
 }
 
-void SemanticsConfiguration::scrollIndex(int value) {
+void SemanticsConfigurationCls::scrollIndex(int value) {
     if (value == scrollIndex) {
         return;
     }
@@ -1366,11 +1522,11 @@ void SemanticsConfiguration::scrollIndex(int value) {
     _hasBeenAnnotated = true;
 }
 
-int SemanticsConfiguration::platformViewId() {
+int SemanticsConfigurationCls::platformViewId() {
     return _platformViewId;
 }
 
-void SemanticsConfiguration::platformViewId(int value) {
+void SemanticsConfigurationCls::platformViewId(int value) {
     if (value == platformViewId) {
         return;
     }
@@ -1378,11 +1534,11 @@ void SemanticsConfiguration::platformViewId(int value) {
     _hasBeenAnnotated = true;
 }
 
-int SemanticsConfiguration::maxValueLength() {
+int SemanticsConfigurationCls::maxValueLength() {
     return _maxValueLength;
 }
 
-void SemanticsConfiguration::maxValueLength(int value) {
+void SemanticsConfigurationCls::maxValueLength(int value) {
     if (value == maxValueLength) {
         return;
     }
@@ -1390,11 +1546,11 @@ void SemanticsConfiguration::maxValueLength(int value) {
     _hasBeenAnnotated = true;
 }
 
-int SemanticsConfiguration::currentValueLength() {
+int SemanticsConfigurationCls::currentValueLength() {
     return _currentValueLength;
 }
 
-void SemanticsConfiguration::currentValueLength(int value) {
+void SemanticsConfigurationCls::currentValueLength(int value) {
     if (value == currentValueLength) {
         return;
     }
@@ -1402,136 +1558,136 @@ void SemanticsConfiguration::currentValueLength(int value) {
     _hasBeenAnnotated = true;
 }
 
-bool SemanticsConfiguration::isMergingSemanticsOfDescendants() {
+bool SemanticsConfigurationCls::isMergingSemanticsOfDescendants() {
     return _isMergingSemanticsOfDescendants;
 }
 
-void SemanticsConfiguration::isMergingSemanticsOfDescendants(bool value) {
+void SemanticsConfigurationCls::isMergingSemanticsOfDescendants(bool value) {
     assert(isSemanticBoundary);
     _isMergingSemanticsOfDescendants = value;
     _hasBeenAnnotated = true;
 }
 
-Map<CustomSemanticsAction, VoidCallback> SemanticsConfiguration::customSemanticsActions() {
+Map<CustomSemanticsAction, VoidCallback> SemanticsConfigurationCls::customSemanticsActions() {
     return _customSemanticsActions;
 }
 
-void SemanticsConfiguration::customSemanticsActions(Map<CustomSemanticsAction, VoidCallback> value) {
+void SemanticsConfigurationCls::customSemanticsActions(Map<CustomSemanticsAction, VoidCallback> value) {
     _hasBeenAnnotated = true;
-    _actionsAsBits = SemanticsAction.customAction.index;
+    _actionsAsBits = SemanticsActionCls::customAction->index;
     _customSemanticsActions = value;
-    _actions[SemanticsAction.customAction] = _onCustomSemanticsAction;
+    _actions[SemanticsActionCls::customAction] = _onCustomSemanticsAction;
 }
 
-String SemanticsConfiguration::label() {
-    return _attributedLabel.string;
+String SemanticsConfigurationCls::label() {
+    return _attributedLabel->stringValue;
 }
 
-void SemanticsConfiguration::label(String label) {
+void SemanticsConfigurationCls::label(String label) {
     assert(label != nullptr);
-    _attributedLabel = AttributedString(label);
+    _attributedLabel = make<AttributedStringCls>(label);
     _hasBeenAnnotated = true;
 }
 
-AttributedString SemanticsConfiguration::attributedLabel() {
+AttributedString SemanticsConfigurationCls::attributedLabel() {
     return _attributedLabel;
 }
 
-void SemanticsConfiguration::attributedLabel(AttributedString attributedLabel) {
+void SemanticsConfigurationCls::attributedLabel(AttributedString attributedLabel) {
     _attributedLabel = attributedLabel;
     _hasBeenAnnotated = true;
 }
 
-String SemanticsConfiguration::value() {
-    return _attributedValue.string;
+String SemanticsConfigurationCls::value() {
+    return _attributedValue->stringValue;
 }
 
-void SemanticsConfiguration::value(String value) {
+void SemanticsConfigurationCls::value(String value) {
     assert(value != nullptr);
-    _attributedValue = AttributedString(value);
+    _attributedValue = make<AttributedStringCls>(value);
     _hasBeenAnnotated = true;
 }
 
-AttributedString SemanticsConfiguration::attributedValue() {
+AttributedString SemanticsConfigurationCls::attributedValue() {
     return _attributedValue;
 }
 
-void SemanticsConfiguration::attributedValue(AttributedString attributedValue) {
+void SemanticsConfigurationCls::attributedValue(AttributedString attributedValue) {
     _attributedValue = attributedValue;
     _hasBeenAnnotated = true;
 }
 
-String SemanticsConfiguration::increasedValue() {
-    return _attributedIncreasedValue.string;
+String SemanticsConfigurationCls::increasedValue() {
+    return _attributedIncreasedValue->stringValue;
 }
 
-void SemanticsConfiguration::increasedValue(String increasedValue) {
+void SemanticsConfigurationCls::increasedValue(String increasedValue) {
     assert(increasedValue != nullptr);
-    _attributedIncreasedValue = AttributedString(increasedValue);
+    _attributedIncreasedValue = make<AttributedStringCls>(increasedValue);
     _hasBeenAnnotated = true;
 }
 
-AttributedString SemanticsConfiguration::attributedIncreasedValue() {
+AttributedString SemanticsConfigurationCls::attributedIncreasedValue() {
     return _attributedIncreasedValue;
 }
 
-void SemanticsConfiguration::attributedIncreasedValue(AttributedString attributedIncreasedValue) {
+void SemanticsConfigurationCls::attributedIncreasedValue(AttributedString attributedIncreasedValue) {
     _attributedIncreasedValue = attributedIncreasedValue;
     _hasBeenAnnotated = true;
 }
 
-String SemanticsConfiguration::decreasedValue() {
-    return _attributedDecreasedValue.string;
+String SemanticsConfigurationCls::decreasedValue() {
+    return _attributedDecreasedValue->stringValue;
 }
 
-void SemanticsConfiguration::decreasedValue(String decreasedValue) {
+void SemanticsConfigurationCls::decreasedValue(String decreasedValue) {
     assert(decreasedValue != nullptr);
-    _attributedDecreasedValue = AttributedString(decreasedValue);
+    _attributedDecreasedValue = make<AttributedStringCls>(decreasedValue);
     _hasBeenAnnotated = true;
 }
 
-AttributedString SemanticsConfiguration::attributedDecreasedValue() {
+AttributedString SemanticsConfigurationCls::attributedDecreasedValue() {
     return _attributedDecreasedValue;
 }
 
-void SemanticsConfiguration::attributedDecreasedValue(AttributedString attributedDecreasedValue) {
+void SemanticsConfigurationCls::attributedDecreasedValue(AttributedString attributedDecreasedValue) {
     _attributedDecreasedValue = attributedDecreasedValue;
     _hasBeenAnnotated = true;
 }
 
-String SemanticsConfiguration::hint() {
-    return _attributedHint.string;
+String SemanticsConfigurationCls::hint() {
+    return _attributedHint->stringValue;
 }
 
-void SemanticsConfiguration::hint(String hint) {
+void SemanticsConfigurationCls::hint(String hint) {
     assert(hint != nullptr);
-    _attributedHint = AttributedString(hint);
+    _attributedHint = make<AttributedStringCls>(hint);
     _hasBeenAnnotated = true;
 }
 
-AttributedString SemanticsConfiguration::attributedHint() {
+AttributedString SemanticsConfigurationCls::attributedHint() {
     return _attributedHint;
 }
 
-void SemanticsConfiguration::attributedHint(AttributedString attributedHint) {
+void SemanticsConfigurationCls::attributedHint(AttributedString attributedHint) {
     _attributedHint = attributedHint;
     _hasBeenAnnotated = true;
 }
 
-String SemanticsConfiguration::tooltip() {
+String SemanticsConfigurationCls::tooltip() {
     return _tooltip;
 }
 
-void SemanticsConfiguration::tooltip(String tooltip) {
+void SemanticsConfigurationCls::tooltip(String tooltip) {
     _tooltip = tooltip;
     _hasBeenAnnotated = true;
 }
 
-SemanticsHintOverrides SemanticsConfiguration::hintOverrides() {
+SemanticsHintOverrides SemanticsConfigurationCls::hintOverrides() {
     return _hintOverrides;
 }
 
-void SemanticsConfiguration::hintOverrides(SemanticsHintOverrides value) {
+void SemanticsConfigurationCls::hintOverrides(SemanticsHintOverrides value) {
     if (value == nullptr) {
         return;
     }
@@ -1539,11 +1695,11 @@ void SemanticsConfiguration::hintOverrides(SemanticsHintOverrides value) {
     _hasBeenAnnotated = true;
 }
 
-double SemanticsConfiguration::elevation() {
+double SemanticsConfigurationCls::elevation() {
     return _elevation;
 }
 
-void SemanticsConfiguration::elevation(double value) {
+void SemanticsConfigurationCls::elevation(double value) {
     assert(value != nullptr && value >= 0.0);
     if (value == _elevation) {
         return;
@@ -1552,11 +1708,11 @@ void SemanticsConfiguration::elevation(double value) {
     _hasBeenAnnotated = true;
 }
 
-double SemanticsConfiguration::thickness() {
+double SemanticsConfigurationCls::thickness() {
     return _thickness;
 }
 
-void SemanticsConfiguration::thickness(double value) {
+void SemanticsConfigurationCls::thickness(double value) {
     assert(value != nullptr && value >= 0.0);
     if (value == _thickness) {
         return;
@@ -1565,326 +1721,329 @@ void SemanticsConfiguration::thickness(double value) {
     _hasBeenAnnotated = true;
 }
 
-bool SemanticsConfiguration::scopesRoute() {
-    return _hasFlag(SemanticsFlag.scopesRoute);
+bool SemanticsConfigurationCls::scopesRoute() {
+    return _hasFlag(SemanticsFlagCls::scopesRoute);
 }
 
-void SemanticsConfiguration::scopesRoute(bool value) {
-    _setFlag(SemanticsFlag.scopesRoute, value);
+void SemanticsConfigurationCls::scopesRoute(bool value) {
+    _setFlag(SemanticsFlagCls::scopesRoute, value);
 }
 
-bool SemanticsConfiguration::namesRoute() {
-    return _hasFlag(SemanticsFlag.namesRoute);
+bool SemanticsConfigurationCls::namesRoute() {
+    return _hasFlag(SemanticsFlagCls::namesRoute);
 }
 
-void SemanticsConfiguration::namesRoute(bool value) {
-    _setFlag(SemanticsFlag.namesRoute, value);
+void SemanticsConfigurationCls::namesRoute(bool value) {
+    _setFlag(SemanticsFlagCls::namesRoute, value);
 }
 
-bool SemanticsConfiguration::isImage() {
-    return _hasFlag(SemanticsFlag.isImage);
+bool SemanticsConfigurationCls::isImage() {
+    return _hasFlag(SemanticsFlagCls::isImage);
 }
 
-void SemanticsConfiguration::isImage(bool value) {
-    _setFlag(SemanticsFlag.isImage, value);
+void SemanticsConfigurationCls::isImage(bool value) {
+    _setFlag(SemanticsFlagCls::isImage, value);
 }
 
-bool SemanticsConfiguration::liveRegion() {
-    return _hasFlag(SemanticsFlag.isLiveRegion);
+bool SemanticsConfigurationCls::liveRegion() {
+    return _hasFlag(SemanticsFlagCls::isLiveRegion);
 }
 
-void SemanticsConfiguration::liveRegion(bool value) {
-    _setFlag(SemanticsFlag.isLiveRegion, value);
+void SemanticsConfigurationCls::liveRegion(bool value) {
+    _setFlag(SemanticsFlagCls::isLiveRegion, value);
 }
 
-TextDirection SemanticsConfiguration::textDirection() {
+TextDirection SemanticsConfigurationCls::textDirection() {
     return _textDirection;
 }
 
-void SemanticsConfiguration::textDirection(TextDirection textDirection) {
+void SemanticsConfigurationCls::textDirection(TextDirection textDirection) {
     _textDirection = textDirection;
     _hasBeenAnnotated = true;
 }
 
-bool SemanticsConfiguration::isSelected() {
-    return _hasFlag(SemanticsFlag.isSelected);
+bool SemanticsConfigurationCls::isSelected() {
+    return _hasFlag(SemanticsFlagCls::isSelected);
 }
 
-void SemanticsConfiguration::isSelected(bool value) {
-    _setFlag(SemanticsFlag.isSelected, value);
+void SemanticsConfigurationCls::isSelected(bool value) {
+    _setFlag(SemanticsFlagCls::isSelected, value);
 }
 
-bool SemanticsConfiguration::isEnabled() {
-    return _hasFlag(SemanticsFlag.hasEnabledState)? _hasFlag(SemanticsFlag.isEnabled) : nullptr;
+bool SemanticsConfigurationCls::isEnabled() {
+    return _hasFlag(SemanticsFlagCls::hasEnabledState)? _hasFlag(SemanticsFlagCls::isEnabled) : nullptr;
 }
 
-void SemanticsConfiguration::isEnabled(bool value) {
-    _setFlag(SemanticsFlag.hasEnabledState, true);
-    _setFlag(SemanticsFlag.isEnabled, value!);
+void SemanticsConfigurationCls::isEnabled(bool value) {
+    _setFlag(SemanticsFlagCls::hasEnabledState, true);
+    _setFlag(SemanticsFlagCls::isEnabled, value!);
 }
 
-bool SemanticsConfiguration::isChecked() {
-    return _hasFlag(SemanticsFlag.hasCheckedState)? _hasFlag(SemanticsFlag.isChecked) : nullptr;
+bool SemanticsConfigurationCls::isChecked() {
+    return _hasFlag(SemanticsFlagCls::hasCheckedState)? _hasFlag(SemanticsFlagCls::isChecked) : nullptr;
 }
 
-void SemanticsConfiguration::isChecked(bool value) {
-    _setFlag(SemanticsFlag.hasCheckedState, true);
-    _setFlag(SemanticsFlag.isChecked, value!);
+void SemanticsConfigurationCls::isChecked(bool value) {
+    _setFlag(SemanticsFlagCls::hasCheckedState, true);
+    _setFlag(SemanticsFlagCls::isChecked, value!);
 }
 
-bool SemanticsConfiguration::isToggled() {
-    return _hasFlag(SemanticsFlag.hasToggledState)? _hasFlag(SemanticsFlag.isToggled) : nullptr;
+bool SemanticsConfigurationCls::isToggled() {
+    return _hasFlag(SemanticsFlagCls::hasToggledState)? _hasFlag(SemanticsFlagCls::isToggled) : nullptr;
 }
 
-void SemanticsConfiguration::isToggled(bool value) {
-    _setFlag(SemanticsFlag.hasToggledState, true);
-    _setFlag(SemanticsFlag.isToggled, value!);
+void SemanticsConfigurationCls::isToggled(bool value) {
+    _setFlag(SemanticsFlagCls::hasToggledState, true);
+    _setFlag(SemanticsFlagCls::isToggled, value!);
 }
 
-bool SemanticsConfiguration::isInMutuallyExclusiveGroup() {
-    return _hasFlag(SemanticsFlag.isInMutuallyExclusiveGroup);
+bool SemanticsConfigurationCls::isInMutuallyExclusiveGroup() {
+    return _hasFlag(SemanticsFlagCls::isInMutuallyExclusiveGroup);
 }
 
-void SemanticsConfiguration::isInMutuallyExclusiveGroup(bool value) {
-    _setFlag(SemanticsFlag.isInMutuallyExclusiveGroup, value);
+void SemanticsConfigurationCls::isInMutuallyExclusiveGroup(bool value) {
+    _setFlag(SemanticsFlagCls::isInMutuallyExclusiveGroup, value);
 }
 
-bool SemanticsConfiguration::isFocusable() {
-    return _hasFlag(SemanticsFlag.isFocusable);
+bool SemanticsConfigurationCls::isFocusable() {
+    return _hasFlag(SemanticsFlagCls::isFocusable);
 }
 
-void SemanticsConfiguration::isFocusable(bool value) {
-    _setFlag(SemanticsFlag.isFocusable, value);
+void SemanticsConfigurationCls::isFocusable(bool value) {
+    _setFlag(SemanticsFlagCls::isFocusable, value);
 }
 
-bool SemanticsConfiguration::isFocused() {
-    return _hasFlag(SemanticsFlag.isFocused);
+bool SemanticsConfigurationCls::isFocused() {
+    return _hasFlag(SemanticsFlagCls::isFocused);
 }
 
-void SemanticsConfiguration::isFocused(bool value) {
-    _setFlag(SemanticsFlag.isFocused, value);
+void SemanticsConfigurationCls::isFocused(bool value) {
+    _setFlag(SemanticsFlagCls::isFocused, value);
 }
 
-bool SemanticsConfiguration::isButton() {
-    return _hasFlag(SemanticsFlag.isButton);
+bool SemanticsConfigurationCls::isButton() {
+    return _hasFlag(SemanticsFlagCls::isButton);
 }
 
-void SemanticsConfiguration::isButton(bool value) {
-    _setFlag(SemanticsFlag.isButton, value);
+void SemanticsConfigurationCls::isButton(bool value) {
+    _setFlag(SemanticsFlagCls::isButton, value);
 }
 
-bool SemanticsConfiguration::isLink() {
-    return _hasFlag(SemanticsFlag.isLink);
+bool SemanticsConfigurationCls::isLink() {
+    return _hasFlag(SemanticsFlagCls::isLink);
 }
 
-void SemanticsConfiguration::isLink(bool value) {
-    _setFlag(SemanticsFlag.isLink, value);
+void SemanticsConfigurationCls::isLink(bool value) {
+    _setFlag(SemanticsFlagCls::isLink, value);
 }
 
-bool SemanticsConfiguration::isHeader() {
-    return _hasFlag(SemanticsFlag.isHeader);
+bool SemanticsConfigurationCls::isHeader() {
+    return _hasFlag(SemanticsFlagCls::isHeader);
 }
 
-void SemanticsConfiguration::isHeader(bool value) {
-    _setFlag(SemanticsFlag.isHeader, value);
+void SemanticsConfigurationCls::isHeader(bool value) {
+    _setFlag(SemanticsFlagCls::isHeader, value);
 }
 
-bool SemanticsConfiguration::isSlider() {
-    return _hasFlag(SemanticsFlag.isSlider);
+bool SemanticsConfigurationCls::isSlider() {
+    return _hasFlag(SemanticsFlagCls::isSlider);
 }
 
-void SemanticsConfiguration::isSlider(bool value) {
-    _setFlag(SemanticsFlag.isSlider, value);
+void SemanticsConfigurationCls::isSlider(bool value) {
+    _setFlag(SemanticsFlagCls::isSlider, value);
 }
 
-bool SemanticsConfiguration::isKeyboardKey() {
-    return _hasFlag(SemanticsFlag.isKeyboardKey);
+bool SemanticsConfigurationCls::isKeyboardKey() {
+    return _hasFlag(SemanticsFlagCls::isKeyboardKey);
 }
 
-void SemanticsConfiguration::isKeyboardKey(bool value) {
-    _setFlag(SemanticsFlag.isKeyboardKey, value);
+void SemanticsConfigurationCls::isKeyboardKey(bool value) {
+    _setFlag(SemanticsFlagCls::isKeyboardKey, value);
 }
 
-bool SemanticsConfiguration::isHidden() {
-    return _hasFlag(SemanticsFlag.isHidden);
+bool SemanticsConfigurationCls::isHidden() {
+    return _hasFlag(SemanticsFlagCls::isHidden);
 }
 
-void SemanticsConfiguration::isHidden(bool value) {
-    _setFlag(SemanticsFlag.isHidden, value);
+void SemanticsConfigurationCls::isHidden(bool value) {
+    _setFlag(SemanticsFlagCls::isHidden, value);
 }
 
-bool SemanticsConfiguration::isTextField() {
-    return _hasFlag(SemanticsFlag.isTextField);
+bool SemanticsConfigurationCls::isTextField() {
+    return _hasFlag(SemanticsFlagCls::isTextField);
 }
 
-void SemanticsConfiguration::isTextField(bool value) {
-    _setFlag(SemanticsFlag.isTextField, value);
+void SemanticsConfigurationCls::isTextField(bool value) {
+    _setFlag(SemanticsFlagCls::isTextField, value);
 }
 
-bool SemanticsConfiguration::isReadOnly() {
-    return _hasFlag(SemanticsFlag.isReadOnly);
+bool SemanticsConfigurationCls::isReadOnly() {
+    return _hasFlag(SemanticsFlagCls::isReadOnly);
 }
 
-void SemanticsConfiguration::isReadOnly(bool value) {
-    _setFlag(SemanticsFlag.isReadOnly, value);
+void SemanticsConfigurationCls::isReadOnly(bool value) {
+    _setFlag(SemanticsFlagCls::isReadOnly, value);
 }
 
-bool SemanticsConfiguration::isObscured() {
-    return _hasFlag(SemanticsFlag.isObscured);
+bool SemanticsConfigurationCls::isObscured() {
+    return _hasFlag(SemanticsFlagCls::isObscured);
 }
 
-void SemanticsConfiguration::isObscured(bool value) {
-    _setFlag(SemanticsFlag.isObscured, value);
+void SemanticsConfigurationCls::isObscured(bool value) {
+    _setFlag(SemanticsFlagCls::isObscured, value);
 }
 
-bool SemanticsConfiguration::isMultiline() {
-    return _hasFlag(SemanticsFlag.isMultiline);
+bool SemanticsConfigurationCls::isMultiline() {
+    return _hasFlag(SemanticsFlagCls::isMultiline);
 }
 
-void SemanticsConfiguration::isMultiline(bool value) {
-    _setFlag(SemanticsFlag.isMultiline, value);
+void SemanticsConfigurationCls::isMultiline(bool value) {
+    _setFlag(SemanticsFlagCls::isMultiline, value);
 }
 
-bool SemanticsConfiguration::hasImplicitScrolling() {
-    return _hasFlag(SemanticsFlag.hasImplicitScrolling);
+bool SemanticsConfigurationCls::hasImplicitScrolling() {
+    return _hasFlag(SemanticsFlagCls::hasImplicitScrolling);
 }
 
-void SemanticsConfiguration::hasImplicitScrolling(bool value) {
-    _setFlag(SemanticsFlag.hasImplicitScrolling, value);
+void SemanticsConfigurationCls::hasImplicitScrolling(bool value) {
+    _setFlag(SemanticsFlagCls::hasImplicitScrolling, value);
 }
 
-TextSelection SemanticsConfiguration::textSelection() {
+TextSelection SemanticsConfigurationCls::textSelection() {
     return _textSelection;
 }
 
-void SemanticsConfiguration::textSelection(TextSelection value) {
+void SemanticsConfigurationCls::textSelection(TextSelection value) {
     assert(value != nullptr);
     _textSelection = value;
     _hasBeenAnnotated = true;
 }
 
-double SemanticsConfiguration::scrollPosition() {
+double SemanticsConfigurationCls::scrollPosition() {
     return _scrollPosition;
 }
 
-void SemanticsConfiguration::scrollPosition(double value) {
+void SemanticsConfigurationCls::scrollPosition(double value) {
     assert(value != nullptr);
     _scrollPosition = value;
     _hasBeenAnnotated = true;
 }
 
-double SemanticsConfiguration::scrollExtentMax() {
+double SemanticsConfigurationCls::scrollExtentMax() {
     return _scrollExtentMax;
 }
 
-void SemanticsConfiguration::scrollExtentMax(double value) {
+void SemanticsConfigurationCls::scrollExtentMax(double value) {
     assert(value != nullptr);
     _scrollExtentMax = value;
     _hasBeenAnnotated = true;
 }
 
-double SemanticsConfiguration::scrollExtentMin() {
+double SemanticsConfigurationCls::scrollExtentMin() {
     return _scrollExtentMin;
 }
 
-void SemanticsConfiguration::scrollExtentMin(double value) {
+void SemanticsConfigurationCls::scrollExtentMin(double value) {
     assert(value != nullptr);
     _scrollExtentMin = value;
     _hasBeenAnnotated = true;
 }
 
-Iterable<SemanticsTag> SemanticsConfiguration::tagsForChildren() {
+Iterable<SemanticsTag> SemanticsConfigurationCls::tagsForChildren() {
     return _tagsForChildren;
 }
 
-void SemanticsConfiguration::addTagForChildren(SemanticsTag tag) {
-    _tagsForChildren = ;
-    _tagsForChildren!.add(tag);
+void SemanticsConfigurationCls::addTagForChildren(SemanticsTag tag) {
+    _tagsForChildren = makeSet();
+    _tagsForChildren!->add(tag);
 }
 
-bool SemanticsConfiguration::isCompatibleWith(SemanticsConfiguration other) {
-    if (other == nullptr || !other.hasBeenAnnotated || !hasBeenAnnotated) {
+bool SemanticsConfigurationCls::isCompatibleWith(SemanticsConfiguration other) {
+    if (other == nullptr || !other->hasBeenAnnotated || !hasBeenAnnotated) {
         return true;
     }
-    if (_actionsAsBits & other._actionsAsBits != 0) {
+    if (_actionsAsBits & other->_actionsAsBits != 0) {
         return false;
     }
-    if ((_flags & other._flags) != 0) {
+    if ((_flags & other->_flags) != 0) {
         return false;
     }
-    if (_platformViewId != nullptr && other._platformViewId != nullptr) {
+    if (_platformViewId != nullptr && other->_platformViewId != nullptr) {
         return false;
     }
-    if (_maxValueLength != nullptr && other._maxValueLength != nullptr) {
+    if (_maxValueLength != nullptr && other->_maxValueLength != nullptr) {
         return false;
     }
-    if (_currentValueLength != nullptr && other._currentValueLength != nullptr) {
+    if (_currentValueLength != nullptr && other->_currentValueLength != nullptr) {
         return false;
     }
-    if (_attributedValue != nullptr && _attributedValue.string.isNotEmpty && other._attributedValue != nullptr && other._attributedValue.string.isNotEmpty) {
+    if (_attributedValue != nullptr && _attributedValue->stringValue->isNotEmpty && other->_attributedValue != nullptr && other->_attributedValue->stringValue->isNotEmpty) {
         return false;
     }
     return true;
 }
 
-void SemanticsConfiguration::absorb(SemanticsConfiguration child) {
+void SemanticsConfigurationCls::absorb(SemanticsConfiguration child) {
     assert(!explicitChildNodes);
-    if (!child.hasBeenAnnotated) {
+    if (!child->hasBeenAnnotated) {
         return;
     }
-    _actions.addAll(child._actions);
-    _customSemanticsActions.addAll(child._customSemanticsActions);
-    _actionsAsBits = child._actionsAsBits;
-    _flags = child._flags;
-    _textSelection = child._textSelection;
-    _scrollPosition = child._scrollPosition;
-    _scrollExtentMax = child._scrollExtentMax;
-    _scrollExtentMin = child._scrollExtentMin;
-    _hintOverrides = child._hintOverrides;
-    _indexInParent = child.indexInParent;
-    _scrollIndex = child._scrollIndex;
-    _scrollChildCount = child._scrollChildCount;
-    _platformViewId = child._platformViewId;
-    _maxValueLength = child._maxValueLength;
-    _currentValueLength = child._currentValueLength;
-    textDirection = child.textDirection;
-    _sortKey = child._sortKey;
-    _attributedLabel = _concatAttributedString(_attributedLabel, textDirection, child._attributedLabel, child.textDirection);
-    if (_attributedValue == nullptr || _attributedValue.string == "") {
-        _attributedValue = child._attributedValue;
+    _actions->addAll(child->_actions);
+    _customSemanticsActions->addAll(child->_customSemanticsActions);
+    _actionsAsBits = child->_actionsAsBits;
+    _flags = child->_flags;
+    _textSelection = child->_textSelection;
+    _scrollPosition = child->_scrollPosition;
+    _scrollExtentMax = child->_scrollExtentMax;
+    _scrollExtentMin = child->_scrollExtentMin;
+    _hintOverrides = child->_hintOverrides;
+    _indexInParent = child->indexInParent;
+    _scrollIndex = child->_scrollIndex;
+    _scrollChildCount = child->_scrollChildCount;
+    _platformViewId = child->_platformViewId;
+    _maxValueLength = child->_maxValueLength;
+    _currentValueLength = child->_currentValueLength;
+    textDirection = child->textDirection;
+    _sortKey = child->_sortKey;
+    _attributedLabel = _concatAttributedString(_attributedLabel, textDirection, child->_attributedLabel, child->textDirection);
+    if (_attributedValue == nullptr || _attributedValue->stringValue == "") {
+        _attributedValue = child->_attributedValue;
     }
-    if (_attributedIncreasedValue == nullptr || _attributedIncreasedValue.string == "") {
-        _attributedIncreasedValue = child._attributedIncreasedValue;
+    if (_attributedIncreasedValue == nullptr || _attributedIncreasedValue->stringValue == "") {
+        _attributedIncreasedValue = child->_attributedIncreasedValue;
     }
-    if (_attributedDecreasedValue == nullptr || _attributedDecreasedValue.string == "") {
-        _attributedDecreasedValue = child._attributedDecreasedValue;
+    if (_attributedDecreasedValue == nullptr || _attributedDecreasedValue->stringValue == "") {
+        _attributedDecreasedValue = child->_attributedDecreasedValue;
     }
-    _attributedHint = _concatAttributedString(_attributedHint, textDirection, child._attributedHint, child.textDirection);
+    _attributedHint = _concatAttributedString(_attributedHint, textDirection, child->_attributedHint, child->textDirection);
     if (_tooltip == "") {
-        _tooltip = child._tooltip;
+        _tooltip = child->_tooltip;
     }
-    _thickness = math.max(_thickness, child._thickness + child._elevation);
-    _hasBeenAnnotated = _hasBeenAnnotated || child._hasBeenAnnotated;
+    _thickness = math->max(_thickness, child->_thickness + child->_elevation);
+    _hasBeenAnnotated = _hasBeenAnnotated || child->_hasBeenAnnotated;
 }
 
-SemanticsConfiguration SemanticsConfiguration::copy() {
-    return ;
+SemanticsConfiguration SemanticsConfigurationCls::copy() {
+    auto _c1 = make<SemanticsConfigurationCls>();_c1._isSemanticBoundary = auto _c2 = _isSemanticBoundary;_c2.explicitChildNodes = auto _c3 = explicitChildNodes;_c3.isBlockingSemanticsOfPreviouslyPaintedNodes = auto _c4 = isBlockingSemanticsOfPreviouslyPaintedNodes;_c4._hasBeenAnnotated = auto _c5 = _hasBeenAnnotated;_c5._isMergingSemanticsOfDescendants = auto _c6 = _isMergingSemanticsOfDescendants;_c6._textDirection = auto _c7 = _textDirection;_c7._sortKey = auto _c8 = _sortKey;_c8._attributedLabel = auto _c9 = _attributedLabel;_c9._attributedIncreasedValue = auto _c10 = _attributedIncreasedValue;_c10._attributedValue = auto _c11 = _attributedValue;_c11._attributedDecreasedValue = auto _c12 = _attributedDecreasedValue;_c12._attributedHint = auto _c13 = _attributedHint;_c13._hintOverrides = auto _c14 = _hintOverrides;_c14._tooltip = auto _c15 = _tooltip;_c15._elevation = auto _c16 = _elevation;_c16._thickness = auto _c17 = _thickness;_c17._flags = auto _c18 = _flags;_c18._tagsForChildren = auto _c19 = _tagsForChildren;_c19._textSelection = auto _c20 = _textSelection;_c20._scrollPosition = auto _c21 = _scrollPosition;_c21._scrollExtentMax = auto _c22 = _scrollExtentMax;_c22._scrollExtentMin = auto _c23 = _scrollExtentMin;_c23._actionsAsBits = auto _c24 = _actionsAsBits;_c24._indexInParent = auto _c25 = indexInParent;_c25._scrollIndex = auto _c26 = _scrollIndex;_c26._scrollChildCount = auto _c27 = _scrollChildCount;_c27._platformViewId = auto _c28 = _platformViewId;_c28._maxValueLength = auto _c29 = _maxValueLength;_c29._currentValueLength = auto _c30 = _currentValueLength;_c30.auto _c31 = _actions->addAll(_actions);_c31._customSemanticsActions->addAll(_customSemanticsActions);_c31;_c30;_c29;_c28;_c27;_c26;_c25;_c24;_c23;_c22;_c21;_c20;_c19;_c18;_c17;_c16;_c15;_c14;_c13;_c12;_c11;_c10;_c9;_c8;_c7;_c6;_c5;_c4;_c3;_c2;return _c1;
 }
 
-void SemanticsConfiguration::_addAction(SemanticsAction action, SemanticsActionHandler handler) {
+void SemanticsConfigurationCls::_addAction(SemanticsAction action, SemanticsActionHandler handler) {
     assert(handler != nullptr);
     _actions[action] = handler;
-    _actionsAsBits = action.index;
+    _actionsAsBits = action->index;
     _hasBeenAnnotated = true;
 }
 
-void SemanticsConfiguration::_addArgumentlessAction(SemanticsAction action, VoidCallback handler) {
+void SemanticsConfigurationCls::_addArgumentlessAction(SemanticsAction action, VoidCallback handler) {
     assert(handler != nullptr);
-    _addAction(action, );
+    _addAction(action, [=] (Object args) {
+        assert(args == nullptr);
+        handler();
+    });
 }
 
-void SemanticsConfiguration::_onCustomSemanticsAction(Object args) {
-    CustomSemanticsAction action = CustomSemanticsAction.getAction(();
+void SemanticsConfigurationCls::_onCustomSemanticsAction(Object args) {
+    CustomSemanticsAction action = CustomSemanticsActionCls->getAction(((int)args!));
     if (action == nullptr) {
         return;
     }
@@ -1894,69 +2053,69 @@ void SemanticsConfiguration::_onCustomSemanticsAction(Object args) {
     }
 }
 
-void SemanticsConfiguration::_setFlag(SemanticsFlag flag, bool value) {
+void SemanticsConfigurationCls::_setFlag(SemanticsFlag flag, bool value) {
     if (value) {
-        _flags = flag.index;
+        _flags = flag->index;
     } else {
-        _flags = ~flag.index;
+        _flags = ~flag->index;
     }
     _hasBeenAnnotated = true;
 }
 
-bool SemanticsConfiguration::_hasFlag(SemanticsFlag flag) {
-    return (_flags & flag.index) != 0;
+bool SemanticsConfigurationCls::_hasFlag(SemanticsFlag flag) {
+    return (_flags & flag->index) != 0;
 }
 
 AttributedString _concatAttributedString(AttributedString otherAttributedString, TextDirection otherTextDirection, AttributedString thisAttributedString, TextDirection thisTextDirection) {
-    if (otherAttributedString.string.isEmpty) {
+    if (otherAttributedString->stringValue->isEmpty) {
         return thisAttributedString;
     }
     if (thisTextDirection != otherTextDirection && otherTextDirection != nullptr) {
         ;
     }
-    if (thisAttributedString.string.isEmpty) {
+    if (thisAttributedString->stringValue->isEmpty) {
         return otherAttributedString;
     }
-    return thisAttributedString + AttributedString("\n") + otherAttributedString;
+    return thisAttributedString + make<AttributedStringCls>("\n") + otherAttributedString;
 }
 
-int SemanticsSortKey::compareTo(SemanticsSortKey other) {
-    assert(runtimeType == other.runtimeType, "Semantics sort keys can only be compared to other sort keys of the same type.");
-    if (name == other.name) {
+int SemanticsSortKeyCls::compareTo(SemanticsSortKey other) {
+    assert(runtimeType == other->runtimeType, "Semantics sort keys can only be compared to other sort keys of the same type.");
+    if (name == other->name) {
         return doCompare(other);
     }
-    if (name == nullptr && other.name != nullptr) {
+    if (name == nullptr && other->name != nullptr) {
         return -1;
     } else     {
-        if (name != nullptr && other.name == nullptr) {
+        if (name != nullptr && other->name == nullptr) {
         return 1;
     }
 ;
-    }    return name!.compareTo(other.name!);
+    }    return name!->compareTo(other->name!);
 }
 
-void SemanticsSortKey::debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties.add(StringProperty("name", namenullptr));
+void SemanticsSortKeyCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super->debugFillProperties(properties);
+    properties->add(make<StringPropertyCls>("name", namenullptr));
 }
 
-OrdinalSortKey::OrdinalSortKey(Unknown, double order) {
+OrdinalSortKeyCls::OrdinalSortKeyCls(Unknown name, double order) {
     {
         assert(order != nullptr);
-        assert(order != double.nan);
-        assert(order > double.negativeInfinity);
-        assert( < double.infinity);
+        assert(order != double->nan);
+        assert(order > double->negativeInfinity);
+        assert( < double->infinity);
     }
 }
 
-int OrdinalSortKey::doCompare(OrdinalSortKey other) {
-    if (other.order == nullptr || order == nullptr || other.order == order) {
+int OrdinalSortKeyCls::doCompare(OrdinalSortKey other) {
+    if (other->order == nullptr || order == nullptr || other->order == order) {
         return 0;
     }
-    return order.compareTo(other.order);
+    return order->compareTo(other->order);
 }
 
-void OrdinalSortKey::debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties.add(DoubleProperty("order", ordernullptr));
+void OrdinalSortKeyCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super->debugFillProperties(properties);
+    properties->add(make<DoublePropertyCls>("order", ordernullptr));
 }

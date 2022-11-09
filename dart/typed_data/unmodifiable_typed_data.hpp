@@ -1,321 +1,337 @@
-#ifndef UNMODIFIABLE_TYPED_DATA_H
-#define UNMODIFIABLE_TYPED_DATA_H
-#include <memory>
+#ifndef DART_TYPED_DATA_UNMODIFIABLE_TYPED_DATA
+#define DART_TYPED_DATA_UNMODIFIABLE_TYPED_DATA
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
 
 
-
-
-class UnmodifiableByteBufferView {
+class UnmodifiableByteBufferViewCls : public ObjectCls {
 public:
 
-     UnmodifiableByteBufferView(ByteBuffer data);
+     UnmodifiableByteBufferViewCls(ByteBuffer data);
 
-    int lengthInBytes();
+    virtual int lengthInBytes();
 
-    Uint8List asUint8List(int length, int offsetInBytes);
+    virtual Uint8List asUint8List(int length, int offsetInBytes);
 
-    Int8List asInt8List(int length, int offsetInBytes);
+    virtual Int8List asInt8List(int length, int offsetInBytes);
 
-    Uint8ClampedList asUint8ClampedList(int length, int offsetInBytes);
+    virtual Uint8ClampedList asUint8ClampedList(int length, int offsetInBytes);
 
-    Uint16List asUint16List(int length, int offsetInBytes);
+    virtual Uint16List asUint16List(int length, int offsetInBytes);
 
-    Int16List asInt16List(int length, int offsetInBytes);
+    virtual Int16List asInt16List(int length, int offsetInBytes);
 
-    Uint32List asUint32List(int length, int offsetInBytes);
+    virtual Uint32List asUint32List(int length, int offsetInBytes);
 
-    Int32List asInt32List(int length, int offsetInBytes);
+    virtual Int32List asInt32List(int length, int offsetInBytes);
 
-    Uint64List asUint64List(int length, int offsetInBytes);
+    virtual Uint64List asUint64List(int length, int offsetInBytes);
 
-    Int64List asInt64List(int length, int offsetInBytes);
+    virtual Int64List asInt64List(int length, int offsetInBytes);
 
-    Int32x4List asInt32x4List(int length, int offsetInBytes);
+    virtual Int32x4List asInt32x4List(int length, int offsetInBytes);
 
-    Float32List asFloat32List(int length, int offsetInBytes);
+    virtual Float32List asFloat32List(int length, int offsetInBytes);
 
-    Float64List asFloat64List(int length, int offsetInBytes);
+    virtual Float64List asFloat64List(int length, int offsetInBytes);
 
-    Float32x4List asFloat32x4List(int length, int offsetInBytes);
+    virtual Float32x4List asFloat32x4List(int length, int offsetInBytes);
 
-    Float64x2List asFloat64x2List(int length, int offsetInBytes);
+    virtual Float64x2List asFloat64x2List(int length, int offsetInBytes);
 
-    ByteData asByteData(int length, int offsetInBytes);
+    virtual ByteData asByteData(int length, int offsetInBytes);
 
 private:
     ByteBuffer _data;
 
 
 };
+using UnmodifiableByteBufferView = std::shared_ptr<UnmodifiableByteBufferViewCls>;
 
-class UnmodifiableByteDataView {
+class UnmodifiableByteDataViewCls : public ObjectCls {
 public:
 
-     UnmodifiableByteDataView(ByteData data);
+     UnmodifiableByteDataViewCls(ByteData data);
 
-    int getInt8(int byteOffset);
+    virtual int getInt8(int byteOffset);
 
-    void setInt8(int byteOffset, int value);
+    virtual void setInt8(int byteOffset, int value);
 
-    int getUint8(int byteOffset);
+    virtual int getUint8(int byteOffset);
 
-    void setUint8(int byteOffset, int value);
+    virtual void setUint8(int byteOffset, int value);
 
-    int getInt16(int byteOffset, Endian endian);
+    virtual int getInt16(int byteOffset, Endian endian);
 
-    void setInt16(int byteOffset, Endian endian, int value);
+    virtual void setInt16(int byteOffset, Endian endian, int value);
 
-    int getUint16(int byteOffset, Endian endian);
+    virtual int getUint16(int byteOffset, Endian endian);
 
-    void setUint16(int byteOffset, Endian endian, int value);
+    virtual void setUint16(int byteOffset, Endian endian, int value);
 
-    int getInt32(int byteOffset, Endian endian);
+    virtual int getInt32(int byteOffset, Endian endian);
 
-    void setInt32(int byteOffset, Endian endian, int value);
+    virtual void setInt32(int byteOffset, Endian endian, int value);
 
-    int getUint32(int byteOffset, Endian endian);
+    virtual int getUint32(int byteOffset, Endian endian);
 
-    void setUint32(int byteOffset, Endian endian, int value);
+    virtual void setUint32(int byteOffset, Endian endian, int value);
 
-    int getInt64(int byteOffset, Endian endian);
+    virtual int getInt64(int byteOffset, Endian endian);
 
-    void setInt64(int byteOffset, Endian endian, int value);
+    virtual void setInt64(int byteOffset, Endian endian, int value);
 
-    int getUint64(int byteOffset, Endian endian);
+    virtual int getUint64(int byteOffset, Endian endian);
 
-    void setUint64(int byteOffset, Endian endian, int value);
+    virtual void setUint64(int byteOffset, Endian endian, int value);
 
-    double getFloat32(int byteOffset, Endian endian);
+    virtual double getFloat32(int byteOffset, Endian endian);
 
-    void setFloat32(int byteOffset, Endian endian, double value);
+    virtual void setFloat32(int byteOffset, Endian endian, double value);
 
-    double getFloat64(int byteOffset, Endian endian);
+    virtual double getFloat64(int byteOffset, Endian endian);
 
-    void setFloat64(int byteOffset, Endian endian, double value);
+    virtual void setFloat64(int byteOffset, Endian endian, double value);
 
-    int elementSizeInBytes();
+    virtual int elementSizeInBytes();
 
-    int offsetInBytes();
+    virtual int offsetInBytes();
 
-    int lengthInBytes();
+    virtual int lengthInBytes();
 
-    ByteBuffer buffer();
+    virtual ByteBuffer buffer();
 
 private:
     ByteData _data;
 
 
-    void _unsupported();
+    virtual void _unsupported();
 
 };
+using UnmodifiableByteDataView = std::shared_ptr<UnmodifiableByteDataViewCls>;
 
-class _UnmodifiableListMixin<N, L extends List<N>, TD extends TypedData> {
+template<typename N, typename L : List<N>, typename TD : TypedData> class _UnmodifiableListMixinCls : public ObjectCls {
 public:
 
-    int length();
+    virtual int length();
 
-    N [](int index);
+    virtual N operator[](int index);
 
-    int elementSizeInBytes();
+    virtual int elementSizeInBytes();
 
-    int offsetInBytes();
+    virtual int offsetInBytes();
 
-    int lengthInBytes();
+    virtual int lengthInBytes();
 
-    ByteBuffer buffer();
+    virtual ByteBuffer buffer();
 
-    L sublist(int end, int start);
+    virtual L sublist(int end, int start);
 
 private:
 
-    L _list();
+    virtual L _list();
+    virtual TD _data();
 
-    TD _data();
-
-    L _createList(int length);
-
+    virtual L _createList(int length);
 };
+template<typename N, typename L : List<N>, typename TD : TypedData> using _UnmodifiableListMixin = std::shared_ptr<_UnmodifiableListMixinCls<N, L : List<N>, TD : TypedData>>;
 
-class UnmodifiableUint8ListView : UnmodifiableListBase<int> {
+class UnmodifiableUint8ListViewCls : public UnmodifiableListBaseCls<int> {
 public:
 
-     UnmodifiableUint8ListView(Uint8List list);
+     UnmodifiableUint8ListViewCls(Uint8List list);
 
 private:
     Uint8List _list;
 
 
-    Uint8List _createList(int length);
+    virtual Uint8List _createList(int length);
 
 };
+using UnmodifiableUint8ListView = std::shared_ptr<UnmodifiableUint8ListViewCls>;
 
-class UnmodifiableInt8ListView : UnmodifiableListBase<int> {
+class UnmodifiableInt8ListViewCls : public UnmodifiableListBaseCls<int> {
 public:
 
-     UnmodifiableInt8ListView(Int8List list);
+     UnmodifiableInt8ListViewCls(Int8List list);
 
 private:
     Int8List _list;
 
 
-    Int8List _createList(int length);
+    virtual Int8List _createList(int length);
 
 };
+using UnmodifiableInt8ListView = std::shared_ptr<UnmodifiableInt8ListViewCls>;
 
-class UnmodifiableUint8ClampedListView : UnmodifiableListBase<int> {
+class UnmodifiableUint8ClampedListViewCls : public UnmodifiableListBaseCls<int> {
 public:
 
-     UnmodifiableUint8ClampedListView(Uint8ClampedList list);
+     UnmodifiableUint8ClampedListViewCls(Uint8ClampedList list);
 
 private:
     Uint8ClampedList _list;
 
 
-    Uint8ClampedList _createList(int length);
+    virtual Uint8ClampedList _createList(int length);
 
 };
+using UnmodifiableUint8ClampedListView = std::shared_ptr<UnmodifiableUint8ClampedListViewCls>;
 
-class UnmodifiableUint16ListView : UnmodifiableListBase<int> {
+class UnmodifiableUint16ListViewCls : public UnmodifiableListBaseCls<int> {
 public:
 
-     UnmodifiableUint16ListView(Uint16List list);
+     UnmodifiableUint16ListViewCls(Uint16List list);
 
 private:
     Uint16List _list;
 
 
-    Uint16List _createList(int length);
+    virtual Uint16List _createList(int length);
 
 };
+using UnmodifiableUint16ListView = std::shared_ptr<UnmodifiableUint16ListViewCls>;
 
-class UnmodifiableInt16ListView : UnmodifiableListBase<int> {
+class UnmodifiableInt16ListViewCls : public UnmodifiableListBaseCls<int> {
 public:
 
-     UnmodifiableInt16ListView(Int16List list);
+     UnmodifiableInt16ListViewCls(Int16List list);
 
 private:
     Int16List _list;
 
 
-    Int16List _createList(int length);
+    virtual Int16List _createList(int length);
 
 };
+using UnmodifiableInt16ListView = std::shared_ptr<UnmodifiableInt16ListViewCls>;
 
-class UnmodifiableUint32ListView : UnmodifiableListBase<int> {
+class UnmodifiableUint32ListViewCls : public UnmodifiableListBaseCls<int> {
 public:
 
-     UnmodifiableUint32ListView(Uint32List list);
+     UnmodifiableUint32ListViewCls(Uint32List list);
 
 private:
     Uint32List _list;
 
 
-    Uint32List _createList(int length);
+    virtual Uint32List _createList(int length);
 
 };
+using UnmodifiableUint32ListView = std::shared_ptr<UnmodifiableUint32ListViewCls>;
 
-class UnmodifiableInt32ListView : UnmodifiableListBase<int> {
+class UnmodifiableInt32ListViewCls : public UnmodifiableListBaseCls<int> {
 public:
 
-     UnmodifiableInt32ListView(Int32List list);
+     UnmodifiableInt32ListViewCls(Int32List list);
 
 private:
     Int32List _list;
 
 
-    Int32List _createList(int length);
+    virtual Int32List _createList(int length);
 
 };
+using UnmodifiableInt32ListView = std::shared_ptr<UnmodifiableInt32ListViewCls>;
 
-class UnmodifiableUint64ListView : UnmodifiableListBase<int> {
+class UnmodifiableUint64ListViewCls : public UnmodifiableListBaseCls<int> {
 public:
 
-     UnmodifiableUint64ListView(Uint64List list);
+     UnmodifiableUint64ListViewCls(Uint64List list);
 
 private:
     Uint64List _list;
 
 
-    Uint64List _createList(int length);
+    virtual Uint64List _createList(int length);
 
 };
+using UnmodifiableUint64ListView = std::shared_ptr<UnmodifiableUint64ListViewCls>;
 
-class UnmodifiableInt64ListView : UnmodifiableListBase<int> {
+class UnmodifiableInt64ListViewCls : public UnmodifiableListBaseCls<int> {
 public:
 
-     UnmodifiableInt64ListView(Int64List list);
+     UnmodifiableInt64ListViewCls(Int64List list);
 
 private:
     Int64List _list;
 
 
-    Int64List _createList(int length);
+    virtual Int64List _createList(int length);
 
 };
+using UnmodifiableInt64ListView = std::shared_ptr<UnmodifiableInt64ListViewCls>;
 
-class UnmodifiableInt32x4ListView : UnmodifiableListBase<Int32x4> {
+class UnmodifiableInt32x4ListViewCls : public UnmodifiableListBaseCls<Int32x4> {
 public:
 
-     UnmodifiableInt32x4ListView(Int32x4List list);
+     UnmodifiableInt32x4ListViewCls(Int32x4List list);
 
 private:
     Int32x4List _list;
 
 
-    Int32x4List _createList(int length);
+    virtual Int32x4List _createList(int length);
 
 };
+using UnmodifiableInt32x4ListView = std::shared_ptr<UnmodifiableInt32x4ListViewCls>;
 
-class UnmodifiableFloat32x4ListView : UnmodifiableListBase<Float32x4> {
+class UnmodifiableFloat32x4ListViewCls : public UnmodifiableListBaseCls<Float32x4> {
 public:
 
-     UnmodifiableFloat32x4ListView(Float32x4List list);
+     UnmodifiableFloat32x4ListViewCls(Float32x4List list);
 
 private:
     Float32x4List _list;
 
 
-    Float32x4List _createList(int length);
+    virtual Float32x4List _createList(int length);
 
 };
+using UnmodifiableFloat32x4ListView = std::shared_ptr<UnmodifiableFloat32x4ListViewCls>;
 
-class UnmodifiableFloat64x2ListView : UnmodifiableListBase<Float64x2> {
+class UnmodifiableFloat64x2ListViewCls : public UnmodifiableListBaseCls<Float64x2> {
 public:
 
-     UnmodifiableFloat64x2ListView(Float64x2List list);
+     UnmodifiableFloat64x2ListViewCls(Float64x2List list);
 
 private:
     Float64x2List _list;
 
 
-    Float64x2List _createList(int length);
+    virtual Float64x2List _createList(int length);
 
 };
+using UnmodifiableFloat64x2ListView = std::shared_ptr<UnmodifiableFloat64x2ListViewCls>;
 
-class UnmodifiableFloat32ListView : UnmodifiableListBase<double> {
+class UnmodifiableFloat32ListViewCls : public UnmodifiableListBaseCls<double> {
 public:
 
-     UnmodifiableFloat32ListView(Float32List list);
+     UnmodifiableFloat32ListViewCls(Float32List list);
 
 private:
     Float32List _list;
 
 
-    Float32List _createList(int length);
+    virtual Float32List _createList(int length);
 
 };
+using UnmodifiableFloat32ListView = std::shared_ptr<UnmodifiableFloat32ListViewCls>;
 
-class UnmodifiableFloat64ListView : UnmodifiableListBase<double> {
+class UnmodifiableFloat64ListViewCls : public UnmodifiableListBaseCls<double> {
 public:
 
-     UnmodifiableFloat64ListView(Float64List list);
+     UnmodifiableFloat64ListViewCls(Float64List list);
 
 private:
     Float64List _list;
 
 
-    Float64List _createList(int length);
+    virtual Float64List _createList(int length);
 
 };
+using UnmodifiableFloat64ListView = std::shared_ptr<UnmodifiableFloat64ListViewCls>;
+
 
 #endif

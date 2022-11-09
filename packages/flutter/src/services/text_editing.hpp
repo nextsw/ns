@@ -1,14 +1,14 @@
-#ifndef TEXT_EDITING_H
-#define TEXT_EDITING_H
-#include <memory>
-#include <ui.hpp>
+#ifndef PACKAGES_FLUTTER_SRC_SERVICES_TEXT_EDITING
+#define PACKAGES_FLUTTER_SRC_SERVICES_TEXT_EDITING
+#include <base.hpp>
+#include <dart/ui/ui.hpp>
 
-#include <ui/ui.hpp>
-#include <flutter/foundation.hpp>
+#include <dart/core/core.hpp>
+#include <dart/ui/ui.hpp>
+#include <packages/flutter/lib/foundation.hpp>
 
 
-
-class TextSelection : TextRange {
+class TextSelectionCls : public TextRangeCls {
 public:
     int baseOffset;
 
@@ -19,30 +19,32 @@ public:
     bool isDirectional;
 
 
-     TextSelection(TextAffinity affinity, int baseOffset, int extentOffset, bool isDirectional);
+     TextSelectionCls(TextAffinity affinity, int baseOffset, int extentOffset, bool isDirectional);
 
-    void  collapsed(TextAffinity affinity, int offset);
+    virtual void  collapsed(TextAffinity affinity, int offset);
 
-    void  fromPosition(TextPosition position);
+    virtual void  fromPosition(TextPosition position);
 
-    TextPosition base();
+    virtual TextPosition base();
 
-    TextPosition extent();
+    virtual TextPosition extent();
 
-    String toString();
+    virtual String toString();
 
-    bool ==(Object other);
+    virtual bool operator==(Object other);
 
-    int hashCode();
+    virtual int hashCode();
 
-    TextSelection copyWith(TextAffinity affinity, int baseOffset, int extentOffset, bool isDirectional);
+    virtual TextSelection copyWith(TextAffinity affinity, int baseOffset, int extentOffset, bool isDirectional);
 
-    TextSelection expandTo(bool extentAtIndex, TextPosition position);
+    virtual TextSelection expandTo(bool extentAtIndex, TextPosition position);
 
-    TextSelection extendTo(TextPosition position);
+    virtual TextSelection extendTo(TextPosition position);
 
 private:
 
 };
+using TextSelection = std::shared_ptr<TextSelectionCls>;
+
 
 #endif

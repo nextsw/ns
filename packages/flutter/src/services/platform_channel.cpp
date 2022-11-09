@@ -1,49 +1,53 @@
 #include "platform_channel.hpp"
-Future<void> _ProfiledBinaryMessenger::handlePlatformMessage(PlatformMessageResponseCallback callback, String channel, ByteData data) {
-    return proxy.handlePlatformMessage(channel, data, callback);
+Future<void> _ProfiledBinaryMessengerCls::handlePlatformMessage(PlatformMessageResponseCallback callback, String channel, ByteData data) {
+    return proxy->handlePlatformMessage(channel, data, callback);
 }
 
-Future<ByteData> _ProfiledBinaryMessenger::sendWithPostfix(String channel, ByteData message, String postfix) {
-    TimelineTask task = TimelineTask();
+Future<ByteData> _ProfiledBinaryMessengerCls::sendWithPostfix(String channel, ByteData message, String postfix) {
+    TimelineTask task = make<TimelineTaskCls>();
     _debugRecordUpStream(channelTypeName, "$channel$postfix", codecTypeName, message);
-    task.start("Platform Channel send $channel$postfix");
+    task->start("Platform Channel send $channel$postfix");
     ByteData result;
-    ;
+    try {
+        result = await proxy->send(channel, message);
+    } finally {
+        task->finish();
+    };
     _debugRecordDownStream(channelTypeName, "$channel$postfix", codecTypeName, result);
     return result;
 }
 
-Future<ByteData> _ProfiledBinaryMessenger::send(String channel, ByteData message) {
+Future<ByteData> _ProfiledBinaryMessengerCls::send(String channel, ByteData message) {
     return sendWithPostfix(channel, "", message);
 }
 
-void _ProfiledBinaryMessenger::setMessageHandler(String channel, MessageHandler handler) {
-    proxy.setMessageHandler(channel, handler);
+void _ProfiledBinaryMessengerCls::setMessageHandler(String channel, MessageHandler handler) {
+    proxy->setMessageHandler(channel, handler);
 }
 
-int _PlatformChannelStats::upBytes() {
+int _PlatformChannelStatsCls::upBytes() {
     return _upBytes;
 }
 
-void _PlatformChannelStats::addUpStream(int bytes) {
+void _PlatformChannelStatsCls::addUpStream(int bytes) {
     _upCount = 1;
     _upBytes = bytes;
 }
 
-int _PlatformChannelStats::downBytes() {
+int _PlatformChannelStatsCls::downBytes() {
     return _downBytes;
 }
 
-void _PlatformChannelStats::addDownStream(int bytes) {
+void _PlatformChannelStatsCls::addDownStream(int bytes) {
     _downCount = 1;
     _downBytes = bytes;
 }
 
-double _PlatformChannelStats::averageUpPayload() {
+double _PlatformChannelStatsCls::averageUpPayload() {
     return _upBytes / _upCount;
 }
 
-double _PlatformChannelStats::averageDownPayload() {
+double _PlatformChannelStatsCls::averageDownPayload() {
     return _downBytes / _downCount;
 }
 
@@ -52,31 +56,33 @@ Future<void> _debugLaunchProfilePlatformChannels() {
         _debugProfilePlatformChannelsIsRunning = true;
         await await <dynamic>delayed(_debugProfilePlatformChannelsRate);
         _debugProfilePlatformChannelsIsRunning = false;
-        StringBuffer log = StringBuffer();
-        log.writeln("Platform Channel Stats:");
-        List<_PlatformChannelStats> allStats = _debugProfilePlatformChannelsStats.values.toList();
-        allStats.sort();
+        StringBuffer log = make<StringBufferCls>();
+        log->writeln("Platform Channel Stats:");
+        List<_PlatformChannelStats> allStats = _debugProfilePlatformChannelsStats->values->toList();
+        allStats->sort([=] (_PlatformChannelStats x,_PlatformChannelStats y)         {
+            (y->upBytes + y->downBytes) - (x->upBytes + x->downBytes);
+        });
         for (_PlatformChannelStats stats : allStats) {
-            log.writeln("  (name:"${stats.channel}" type:"${stats.type}" codec:"${stats.codec}" upBytes:${stats.upBytes} upBytes_avg:${stats.averageUpPayload.toStringAsFixed(1)} downBytes:${stats.downBytes} downBytes_avg:${stats.averageDownPayload.toStringAsFixed(1)})");
+            log->writeln("  (name:"${stats.channel}" type:"${stats.type}" codec:"${stats.codec}" upBytes:${stats.upBytes} upBytes_avg:${stats.averageUpPayload.toStringAsFixed(1)} downBytes:${stats.downBytes} downBytes_avg:${stats.averageDownPayload.toStringAsFixed(1)})");
         }
-        debugPrint(log.toString());
-        _debugProfilePlatformChannelsStats.clear();
+        debugPrint(log->toString());
+        _debugProfilePlatformChannelsStats->clear();
     }
 }
 
 void _debugRecordUpStream(ByteData bytes, String channelTypeName, String codecTypeName, String name) {
-    _PlatformChannelStats stats = _debugProfilePlatformChannelsStats[name] ??= _PlatformChannelStats(name, codecTypeName, channelTypeName);
-    stats.addUpStream(bytes?.lengthInBytes ?? 0);
+    _PlatformChannelStats stats = _debugProfilePlatformChannelsStats[name] ??= make<_PlatformChannelStatsCls>(name, codecTypeName, channelTypeName);
+    stats->addUpStream(bytes?->lengthInBytes ?? 0);
     _debugLaunchProfilePlatformChannels();
 }
 
 void _debugRecordDownStream(ByteData bytes, String channelTypeName, String codecTypeName, String name) {
-    _PlatformChannelStats stats = _debugProfilePlatformChannelsStats[name] ??= _PlatformChannelStats(name, codecTypeName, channelTypeName);
-    stats.addDownStream(bytes?.lengthInBytes ?? 0);
+    _PlatformChannelStats stats = _debugProfilePlatformChannelsStats[name] ??= make<_PlatformChannelStatsCls>(name, codecTypeName, channelTypeName);
+    stats->addDownStream(bytes?->lengthInBytes ?? 0);
     _debugLaunchProfilePlatformChannels();
 }
 
-BasicMessageChannel::BasicMessageChannel(BinaryMessenger binaryMessenger, MessageCodec<T> codec, String name) {
+template<typename T> BasicMessageChannelCls<T>::BasicMessageChannelCls(BinaryMessenger binaryMessenger, MessageCodec<T> codec, String name) {
     {
         assert(name != nullptr);
         assert(codec != nullptr);
@@ -84,24 +90,26 @@ BasicMessageChannel::BasicMessageChannel(BinaryMessenger binaryMessenger, Messag
     }
 }
 
-BinaryMessenger BasicMessageChannel::binaryMessenger() {
-    BinaryMessenger result = _binaryMessenger ?? ServicesBinding.instance.defaultBinaryMessenger;
-    return !kReleaseMode && debugProfilePlatformChannels? _debugBinaryMessengers[this] ??= _ProfiledBinaryMessenger(result, runtimeType.toString(), codec.runtimeType.toString()) : result;
+template<typename T> BinaryMessenger BasicMessageChannelCls<T>::binaryMessenger() {
+    BinaryMessenger result = _binaryMessenger ?? ServicesBindingCls::instance->defaultBinaryMessenger;
+    return !kReleaseMode && debugProfilePlatformChannels? _debugBinaryMessengers[this] ??= make<_ProfiledBinaryMessengerCls>(result, runtimeType->toString(), codec->runtimeType->toString()) : result;
 }
 
-Future<T> BasicMessageChannel::send(T message) {
-    return codec.decodeMessage(await binaryMessenger.send(name, codec.encodeMessage(message)));
+template<typename T> Future<T> BasicMessageChannelCls<T>::send(T message) {
+    return codec->decodeMessage(await binaryMessenger->send(name, codec->encodeMessage(message)));
 }
 
-void BasicMessageChannel::setMessageHandler(FunctionType handler) {
+template<typename T> void BasicMessageChannelCls<T>::setMessageHandler(Future<T> handler(T message) ) {
     if (handler == nullptr) {
-        binaryMessenger.setMessageHandler(name, nullptr);
+        binaryMessenger->setMessageHandler(name, nullptr);
     } else {
-        binaryMessenger.setMessageHandler(name, );
+        binaryMessenger->setMessageHandler(name, [=] (ByteData message) {
+            return codec->encodeMessage(await handler(codec->decodeMessage(message)));
+        });
     }
 }
 
-MethodChannel::MethodChannel(BinaryMessenger binaryMessenger, MethodCodec codec, String name) {
+MethodChannelCls::MethodChannelCls(BinaryMessenger binaryMessenger, MethodCodec codec, String name) {
     {
         assert(name != nullptr);
         assert(codec != nullptr);
@@ -109,53 +117,63 @@ MethodChannel::MethodChannel(BinaryMessenger binaryMessenger, MethodCodec codec,
     }
 }
 
-BinaryMessenger MethodChannel::binaryMessenger() {
-    BinaryMessenger result = _binaryMessenger ?? ServicesBinding.instance.defaultBinaryMessenger;
-    return !kReleaseMode && debugProfilePlatformChannels? _debugBinaryMessengers[this] ??= _ProfiledBinaryMessenger(result, runtimeType.toString(), codec.runtimeType.toString()) : result;
+BinaryMessenger MethodChannelCls::binaryMessenger() {
+    BinaryMessenger result = _binaryMessenger ?? ServicesBindingCls::instance->defaultBinaryMessenger;
+    return !kReleaseMode && debugProfilePlatformChannels? _debugBinaryMessengers[this] ??= make<_ProfiledBinaryMessengerCls>(result, runtimeType->toString(), codec->runtimeType->toString()) : result;
 }
 
-Future<T> MethodChannel::invokeMethod<T>(dynamic arguments, String method) {
+Future<T> MethodChannelCls::invokeMethodtemplate<typename T> (dynamic arguments, String method) {
     return <T>_invokeMethod(methodfalse, arguments);
 }
 
-Future<List<T>> MethodChannel::invokeListMethod<T>(dynamic arguments, String method) {
+Future<List<T>> MethodChannelCls::invokeListMethodtemplate<typename T> (dynamic arguments, String method) {
     List<dynamic> result = await <List<dynamic>>invokeMethod(method, arguments);
-    return result?.<T>cast();
+    return result?-><T>cast();
 }
 
-Future<Map<K, V>> MethodChannel::invokeMapMethod<K, V>(dynamic arguments, String method) {
+Future<Map<K, V>> MethodChannelCls::invokeMapMethodtemplate<typename K, typename V> (dynamic arguments, String method) {
     Map<dynamic, dynamic> result = await <Map<dynamic, dynamic>>invokeMethod(method, arguments);
-    return result?.<K, V>cast();
+    return result?-><K, V>cast();
 }
 
-void MethodChannel::setMethodCallHandler(FunctionType handler) {
-    assert(_binaryMessenger != nullptr || ServicesBinding.instance != nullptr, "Cannot set the method call handler before the binary messenger has been initialized. This happens when you call setMethodCallHandler() before the WidgetsFlutterBinding has been initialized. You can fix this by either calling WidgetsFlutterBinding.ensureInitialized() before this or by passing a custom BinaryMessenger instance to MethodChannel().");
-    binaryMessenger.setMessageHandler(name, handler == nullptr? nullptr : );
+void MethodChannelCls::setMethodCallHandler(Future<dynamic> handler(MethodCall call) ) {
+    assert(_binaryMessenger != nullptr || ServicesBindingCls::instance != nullptr, "Cannot set the method call handler before the binary messenger has been initialized. This happens when you call setMethodCallHandler() before the WidgetsFlutterBinding has been initialized. You can fix this by either calling WidgetsFlutterBinding.ensureInitialized() before this or by passing a custom BinaryMessenger instance to MethodChannel().");
+    binaryMessenger->setMessageHandler(name, handler == nullptr? nullptr : [=] (ByteData message)     {
+        _handleAsMethodCall(message, handler);
+    });
 }
 
-Future<T> MethodChannel::_invokeMethod<T>(dynamic arguments, String method, bool missingOk) {
+Future<T> MethodChannelCls::_invokeMethodtemplate<typename T> (dynamic arguments, String method, bool missingOk) {
     assert(method != nullptr);
-    ByteData input = codec.encodeMethodCall(MethodCall(method, arguments));
-    ByteData result = !kReleaseMode && debugProfilePlatformChannels? await (().sendWithPostfix(name, "#$method", input) : await binaryMessenger.send(name, input);
+    ByteData input = codec->encodeMethodCall(make<MethodCallCls>(method, arguments));
+    ByteData result = !kReleaseMode && debugProfilePlatformChannels? await (((_ProfiledBinaryMessenger)binaryMessenger))->sendWithPostfix(name, "#$method", input) : await binaryMessenger->send(name, input);
     if (result == nullptr) {
         if (missingOk) {
             return nullptr;
         }
         ;
     }
-    return (;
+    return ((T)codec->decodeEnvelope(result));
 }
 
-Future<ByteData> MethodChannel::_handleAsMethodCall(FunctionType handler, ByteData message) {
-    MethodCall call = codec.decodeMethodCall(message);
-    ;
+Future<ByteData> MethodChannelCls::_handleAsMethodCall(Future<dynamic> handler(MethodCall call) , ByteData message) {
+    MethodCall call = codec->decodeMethodCall(message);
+    try {
+        return codec->encodeSuccessEnvelope(await handler(call));
+    } catch (PlatformException e) {
+        return codec->encodeErrorEnvelope(e->code, e->message, e->details);
+    } catch (MissingPluginException null) {
+        return nullptr;
+    } catch (Unknown error) {
+        return codec->encodeErrorEnvelope("error", error->toString());
+    };
 }
 
-Future<T> OptionalMethodChannel::invokeMethod<T>(dynamic arguments, String method) {
-    return super.<T>_invokeMethod(methodtrue, arguments);
+Future<T> OptionalMethodChannelCls::invokeMethodtemplate<typename T> (dynamic arguments, String method) {
+    return super-><T>_invokeMethod(methodtrue, arguments);
 }
 
-EventChannel::EventChannel(BinaryMessenger binaryMessenger, MethodCodec codec, String name) {
+EventChannelCls::EventChannelCls(BinaryMessenger binaryMessenger, MethodCodec codec, String name) {
     {
         assert(name != nullptr);
         assert(codec != nullptr);
@@ -163,13 +181,38 @@ EventChannel::EventChannel(BinaryMessenger binaryMessenger, MethodCodec codec, S
     }
 }
 
-BinaryMessenger EventChannel::binaryMessenger() {
-    return _binaryMessenger ?? ServicesBinding.instance.defaultBinaryMessenger;
+BinaryMessenger EventChannelCls::binaryMessenger() {
+    return _binaryMessenger ?? ServicesBindingCls::instance->defaultBinaryMessenger;
 }
 
-Stream<dynamic> EventChannel::receiveBroadcastStream(dynamic arguments) {
-    MethodChannel methodChannel = MethodChannel(name, codec);
+Stream<dynamic> EventChannelCls::receiveBroadcastStream(dynamic arguments) {
+    MethodChannel methodChannel = make<MethodChannelCls>(name, codec);
     StreamController<dynamic> controller;
-    controller = <dynamic>broadcast(, );
-    return controller.stream;
+    controller = <dynamic>broadcast([=] () {
+        binaryMessenger->setMessageHandler(name, [=] (ByteData reply) {
+            if (reply == nullptr) {
+                controller->close();
+            } else {
+                try {
+                    controller->add(codec->decodeEnvelope(reply));
+                } catch (PlatformException e) {
+                    controller->addError(e);
+                };
+            }
+            return nullptr;
+        });
+        try {
+            await await methodChannel-><void>invokeMethod("listen", arguments);
+        } catch (Unknown exception) {
+            FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(exception, stack, "services library", make<ErrorDescriptionCls>("while activating platform stream on channel $name")));
+        };
+    }, [=] () {
+        binaryMessenger->setMessageHandler(name, nullptr);
+        try {
+            await await methodChannel-><void>invokeMethod("cancel", arguments);
+        } catch (Unknown exception) {
+            FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(exception, stack, "services library", make<ErrorDescriptionCls>("while de-activating platform stream on channel $name")));
+        };
+    });
+    return controller->stream;
 }

@@ -1,9 +1,10 @@
-#ifndef FUNCTIONS_H
-#define FUNCTIONS_H
-#include <memory>
+#ifndef PACKAGES_COLLECTION_SRC_FUNCTIONS
+#define PACKAGES_COLLECTION_SRC_FUNCTIONS
+#include <base.hpp>
 
-#include <collection/collection.hpp>
-#include <math/math.hpp>
+#include <dart/core/core.hpp>
+#include <dart/collection/collection.hpp>
+#include <dart/math/math.hpp>
 #include "utils.hpp"
 
 

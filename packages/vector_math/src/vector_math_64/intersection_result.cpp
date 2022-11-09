@@ -1,4 +1,4 @@
 #include "intersection_result.hpp"
-double IntersectionResult::depth() {
+double IntersectionResultCls::depth() {
     return _depth;
 }

@@ -1,48 +1,38 @@
-#ifndef REGEXP_H
-#define REGEXP_H
-#include <memory>
+#ifndef DART_CORE_REGEXP
+#define DART_CORE_REGEXP
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
 
 
-
-
-class RegExp {
+class RegExpCls : public ObjectCls {
 public:
 
-    external  RegExp(bool caseSensitive, bool dotAll, bool multiLine, String source, bool unicode);
-
-    external static String escape(String text);
-
-    RegExpMatch firstMatch(String input);
-
-    Iterable<RegExpMatch> allMatches(String input, int start);
-
-    bool hasMatch(String input);
-
-    String stringMatch(String input);
-
-    String pattern();
-
-    bool isMultiLine();
-
-    bool isCaseSensitive();
-
-    bool isUnicode();
-
-    bool isDotAll();
-
+    extern  RegExpCls(bool caseSensitive, bool dotAll, bool multiLine, String source, bool unicode);
+    extern static String escape(String text);
+    virtual RegExpMatch firstMatch(String input);
+    virtual Iterable<RegExpMatch> allMatches(String input, int start);
+    virtual bool hasMatch(String input);
+    virtual String stringMatch(String input);
+    virtual String pattern();
+    virtual bool isMultiLine();
+    virtual bool isCaseSensitive();
+    virtual bool isUnicode();
+    virtual bool isDotAll();
 private:
 
 };
+using RegExp = std::shared_ptr<RegExpCls>;
 
-class RegExpMatch {
+class RegExpMatchCls : public ObjectCls {
 public:
 
-    String namedGroup(String name);
-
-    Iterable<String> groupNames();
-
+    virtual String namedGroup(String name);
+    virtual Iterable<String> groupNames();
 private:
 
 };
+using RegExpMatch = std::shared_ptr<RegExpMatchCls>;
+
 
 #endif

@@ -1,17 +1,18 @@
-#ifndef CAPABILITY_H
-#define CAPABILITY_H
-#include <memory>
+#ifndef DART_ISOLATE_CAPABILITY
+#define DART_ISOLATE_CAPABILITY
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
 
 
-
-
-class Capability {
+class CapabilityCls : public ObjectCls {
 public:
 
-    external  Capability();
-
+    extern  CapabilityCls();
 private:
 
 };
+using Capability = std::shared_ptr<CapabilityCls>;
+
 
 #endif

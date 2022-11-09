@@ -1,12 +1,12 @@
-#ifndef ANIMATION_H
-#define ANIMATION_H
-#include <memory>
-#include <ui.hpp>
+#ifndef PACKAGES_FLUTTER_SRC_ANIMATION_ANIMATION
+#define PACKAGES_FLUTTER_SRC_ANIMATION_ANIMATION
+#include <base.hpp>
+#include <dart/ui/ui.hpp>
 #include "tween.hpp"
 
-#include <flutter/foundation.hpp>
+#include <dart/core/core.hpp>
+#include <packages/flutter/lib/foundation.hpp>
 #include "tween.hpp"
-
 
 
 enum AnimationStatus{
@@ -16,35 +16,30 @@ enum AnimationStatus{
     completed,
 } // end AnimationStatus
 
-class Animation<T> : Listenable {
+template<typename T> class AnimationCls : public ListenableCls {
 public:
 
-     Animation();
+     AnimationCls();
+    virtual void addListener(VoidCallback listener) override;
+    virtual void removeListener(VoidCallback listener) override;
+    virtual void addStatusListener(AnimationStatusListener listener);
+    virtual void removeStatusListener(AnimationStatusListener listener);
+    virtual AnimationStatus status();
+    virtual T value();
+    virtual bool isDismissed();
 
-    void addListener(VoidCallback listener);
+    virtual bool isCompleted();
 
-    void removeListener(VoidCallback listener);
+    template<typename U>  virtual Animation<U> drive(Animatable<U> child);
 
-    void addStatusListener(AnimationStatusListener listener);
+    virtual String toString();
 
-    void removeStatusListener(AnimationStatusListener listener);
-
-    AnimationStatus status();
-
-    T value();
-
-    bool isDismissed();
-
-    bool isCompleted();
-
-    Animation<U> drive<U>(Animatable<U> child);
-
-    String toString();
-
-    String toStringDetails();
+    virtual String toStringDetails();
 
 private:
 
 };
+template<typename T> using Animation = std::shared_ptr<AnimationCls<T>>;
+
 
 #endif

@@ -1,118 +1,118 @@
 #include "socket.hpp"
-String InternetAddressType::name() {
-    return const [_value + 1];
+String InternetAddressTypeCls::name() {
+    return makeList(ArrayItem, ArrayItem, ArrayItem, ArrayItem)[_value + 1];
 }
 
-String InternetAddressType::toString() {
+String InternetAddressTypeCls::toString() {
     return "InternetAddressType: $name";
 }
 
-void InternetAddressType::_from(int value) {
-    if (value == IPv4._value)     {
-        return IPv4;
+void InternetAddressTypeCls::_from(int value) {
+    if (value == IPv4Cls::_value)     {
+        return IPv4Cls;
     }
-    if (value == IPv6._value)     {
-        return IPv6;
+    if (value == IPv6Cls::_value)     {
+        return IPv6Cls;
     }
-    if (value == unix._value)     {
+    if (value == unix->_value)     {
         return unix;
     }
     ;
 }
 
-Future<ServerSocket> ServerSocket::bind(address , int backlog, int port, bool shared, bool v6Only) {
-    IOOverrides overrides = IOOverrides.current;
+Future<ServerSocket> ServerSocketCls::bind(address , int backlog, int port, bool shared, bool v6Only) {
+    IOOverrides overrides = IOOverridesCls::current;
     if (overrides == nullptr) {
-        return ServerSocket._bind(address, portbacklog, v6Only, shared);
+        return ServerSocketCls->_bind(address, portbacklog, v6Only, shared);
     }
-    return overrides.serverSocketBind(address, portbacklog, v6Only, shared);
+    return overrides->serverSocketBind(address, portbacklog, v6Only, shared);
 }
 
-void RawSocketOption::fromInt(int level, int option, int value) {
-    Uint8List list = Uint8List(4);
-    Unknown buffer = ByteData.view(list.buffer, list.offsetInBytes);
-    buffer.setInt32(0, value, Endian.host);
-    return RawSocketOption(level, option, list);
+void RawSocketOptionCls::fromInt(int level, int option, int value) {
+    Uint8List list = make<Uint8ListCls>(4);
+    Unknown buffer = ByteDataCls->view(list->buffer, list->offsetInBytes);
+    buffer->setInt32(0, value, EndianCls::host);
+    return make<RawSocketOptionCls>(level, option, list);
 }
 
-void RawSocketOption::fromBool(int level, int option, bool value) {
-    return RawSocketOption.fromInt(level, option, value? 1 : 0);
+void RawSocketOptionCls::fromBool(int level, int option, bool value) {
+    return RawSocketOptionCls->fromInt(level, option, value? 1 : 0);
 }
 
-int RawSocketOption::levelSocket() {
-    return _getOptionValue(_RawSocketOptions.SOL_SOCKET.index);
+int RawSocketOptionCls::levelSocket() {
+    return _getOptionValue(_RawSocketOptionsCls::SOL_SOCKETCls::index);
 }
 
-int RawSocketOption::levelIPv4() {
-    return _getOptionValue(_RawSocketOptions.IPPROTO_IP.index);
+int RawSocketOptionCls::levelIPv4() {
+    return _getOptionValue(_RawSocketOptionsCls::IPPROTO_IPCls::index);
 }
 
-int RawSocketOption::IPv4MulticastInterface() {
-    return _getOptionValue(_RawSocketOptions.IP_MULTICAST_IF.index);
+int RawSocketOptionCls::IPv4MulticastInterface() {
+    return _getOptionValue(_RawSocketOptionsCls::IP_MULTICAST_IFCls::index);
 }
 
-int RawSocketOption::levelIPv6() {
-    return _getOptionValue(_RawSocketOptions.IPPROTO_IPV6.index);
+int RawSocketOptionCls::levelIPv6() {
+    return _getOptionValue(_RawSocketOptionsCls::IPPROTO_IPV6Cls::index);
 }
 
-int RawSocketOption::IPv6MulticastInterface() {
-    return _getOptionValue(_RawSocketOptions.IPV6_MULTICAST_IF.index);
+int RawSocketOptionCls::IPv6MulticastInterface() {
+    return _getOptionValue(_RawSocketOptionsCls::IPV6_MULTICAST_IFCls::index);
 }
 
-int RawSocketOption::levelTcp() {
-    return _getOptionValue(_RawSocketOptions.IPPROTO_TCP.index);
+int RawSocketOptionCls::levelTcp() {
+    return _getOptionValue(_RawSocketOptionsCls::IPPROTO_TCPCls::index);
 }
 
-int RawSocketOption::levelUdp() {
-    return _getOptionValue(_RawSocketOptions.IPPROTO_UDP.index);
+int RawSocketOptionCls::levelUdp() {
+    return _getOptionValue(_RawSocketOptionsCls::IPPROTO_UDPCls::index);
 }
 
-String RawSocketEvent::toString() {
-    return const [_value];
+String RawSocketEventCls::toString() {
+    return makeList(ArrayItem, ArrayItem, ArrayItem, ArrayItem)[_value];
 }
 
-void ConnectionTask::cancel() {
+template<typename S> void ConnectionTaskCls<S>::cancel() {
     _onCancel();
 }
 
-void ConnectionTask::_(FunctionType onCancel, Future<S> socket)
+template<typename S> void ConnectionTaskCls<S>::_(void onCancel() , Future<S> socket)
 
-Future<Socket> Socket::connect(host , sourceAddress , int port, int sourcePort, Duration timeout) {
-    IOOverrides overrides = IOOverrides.current;
+Future<Socket> SocketCls::connect(host , sourceAddress , int port, int sourcePort, Duration timeout) {
+    IOOverrides overrides = IOOverridesCls::current;
     if (overrides == nullptr) {
-        return Socket._connect(host, portsourceAddress, sourcePort, timeout);
+        return SocketCls->_connect(host, portsourceAddress, sourcePort, timeout);
     }
-    return overrides.socketConnect(host, portsourceAddress, sourcePort, timeout);
+    return overrides->socketConnect(host, portsourceAddress, sourcePort, timeout);
 }
 
-Future<ConnectionTask<Socket>> Socket::startConnect(host , sourceAddress , int port, int sourcePort) {
-    IOOverrides overrides = IOOverrides.current;
+Future<ConnectionTask<Socket>> SocketCls::startConnect(host , sourceAddress , int port, int sourcePort) {
+    IOOverrides overrides = IOOverridesCls::current;
     if (overrides == nullptr) {
-        return Socket._startConnect(host, portsourceAddress, sourcePort);
+        return SocketCls->_startConnect(host, portsourceAddress, sourcePort);
     }
-    return overrides.socketStartConnect(host, portsourceAddress, sourcePort);
+    return overrides->socketStartConnect(host, portsourceAddress, sourcePort);
 }
 
-void SocketException::closed()
+void SocketExceptionCls::closed()
 
-String SocketException::toString() {
-    StringBuffer sb = StringBuffer();
-    sb.write("SocketException");
-    if (message.isNotEmpty) {
-        sb.write(": $message");
+String SocketExceptionCls::toString() {
+    StringBuffer sb = make<StringBufferCls>();
+    sb->write("SocketException");
+    if (message->isNotEmpty) {
+        sb->write(": $message");
         if (osError != nullptr) {
-            sb.write(" ($osError)");
+            sb->write(" ($osError)");
         }
     } else     {
         if (osError != nullptr) {
-        sb.write(": $osError");
+        sb->write(": $osError");
     }
 ;
     }    if (address != nullptr) {
-        sb.write(", address = ${address!.host}");
+        sb->write(", address = ${address!.host}");
     }
     if (port != nullptr) {
-        sb.write(", port = $port");
+        sb->write(", port = $port");
     }
-    return sb.toString();
+    return sb->toString();
 }

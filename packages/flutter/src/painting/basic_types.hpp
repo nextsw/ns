@@ -1,11 +1,11 @@
-#ifndef BASIC_TYPES_H
-#define BASIC_TYPES_H
-#include <memory>
-#include <ui.hpp>
-#include <flutter/foundation.hpp>
+#ifndef PACKAGES_FLUTTER_SRC_PAINTING_BASIC_TYPES
+#define PACKAGES_FLUTTER_SRC_PAINTING_BASIC_TYPES
+#include <base.hpp>
+#include <dart/ui/ui.hpp>
+#include <packages/flutter/lib/foundation.hpp>
 
-#include <ui/ui.hpp>
-
+#include <dart/core/core.hpp>
+#include <dart/ui/ui.hpp>
 
 
 enum RenderComparison{
@@ -40,6 +40,7 @@ AxisDirection textDirectionToAxisDirection(TextDirection textDirection);
 AxisDirection flipAxisDirection(AxisDirection axisDirection);
 
 bool axisDirectionIsReversed(AxisDirection axisDirection);
+
 
 
 #endif

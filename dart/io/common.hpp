@@ -1,55 +1,56 @@
-#ifndef COMMON_H
-#define COMMON_H
-#include <memory>
+#ifndef DART_IO_COMMON
+#define DART_IO_COMMON
+#include <base.hpp>
 
+#include <dart/core/core.hpp>
 
+int _successResponse;
 
-const int _successResponse;
+int _illegalArgumentResponse;
 
-const int _illegalArgumentResponse;
+int _osErrorResponse;
 
-const int _osErrorResponse;
+int _fileClosedResponse;
 
-const int _fileClosedResponse;
+int _errorResponseErrorType;
 
-const int _errorResponseErrorType;
+int _osErrorResponseErrorCode;
 
-const int _osErrorResponseErrorCode;
-
-const int _osErrorResponseMessage;
+int _osErrorResponseMessage;
 
 bool _isErrorResponse(response );
 
 void  _exceptionFromResponse(response , String message, String path);
 
 
-class IOException {
+class IOExceptionCls : public ObjectCls {
 public:
 
-    String toString();
+    virtual String toString();
 
 private:
 
 };
+using IOException = std::shared_ptr<IOExceptionCls>;
 
-class OSError {
+class OSErrorCls : public ObjectCls {
 public:
-    static const int noErrorCode;
+    static int noErrorCode;
 
     String message;
 
     int errorCode;
 
 
-     OSError(int errorCode, String message);
-
-    String toString();
+     OSErrorCls(int errorCode, String message);
+    virtual String toString();
 
 private:
 
 };
+using OSError = std::shared_ptr<OSErrorCls>;
 
-class _BufferAndStart {
+class _BufferAndStartCls : public ObjectCls {
 public:
     List<int> buffer;
 
@@ -58,21 +59,21 @@ public:
 
 private:
 
-     _BufferAndStart(List<int> buffer, int start);
-
+     _BufferAndStartCls(List<int> buffer, int start);
 };
+using _BufferAndStart = std::shared_ptr<_BufferAndStartCls>;
 _BufferAndStart _ensureFastAndSerializableByteData(List<int> buffer, int end, int start);
 
-external bool _isDirectIOCapableTypedList(List<int> buffer);
+extern bool _isDirectIOCapableTypedList(List<int> buffer);
 
-
-class _IOCrypto {
+class _IOCryptoCls : public ObjectCls {
 public:
 
-    external static Uint8List getRandomBytes(int count);
-
+    extern static Uint8List getRandomBytes(int count);
 private:
 
 };
+using _IOCrypto = std::shared_ptr<_IOCryptoCls>;
+
 
 #endif

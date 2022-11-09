@@ -1,41 +1,41 @@
 #include "codec.hpp"
-T Codec::encode(S input) {
-    return encoder.convert(input);
+template<typename S, typename T> T CodecCls<S, T>::encode(S input) {
+    return encoder->convert(input);
 }
 
-S Codec::decode(T encoded) {
-    return decoder.convert(encoded);
+template<typename S, typename T> S CodecCls<S, T>::decode(T encoded) {
+    return decoder->convert(encoded);
 }
 
-Codec<S, R> Codec::fuse<R>(Codec<T, R> other) {
-    return <S, T, R>_FusedCodec(this, other);
+template<typename S, typename T> Codec<S, R> CodecCls<S, T>::fusetemplate<typename R> (Codec<T, R> other) {
+    return <S, T, R>make<_FusedCodecCls>(this, other);
 }
 
-Codec<T, S> Codec::inverted() {
-    return <T, S>_InvertedCodec(this);
+template<typename S, typename T> Codec<T, S> CodecCls<S, T>::inverted() {
+    return <T, S>make<_InvertedCodecCls>(this);
 }
 
-Converter<S, T> _FusedCodec::encoder() {
-    return _first.encoder.<T>fuse(_second.encoder);
+template<typename S, typename M, typename T> Converter<S, T> _FusedCodecCls<S, M, T>::encoder() {
+    return _first->encoder-><T>fuse(_second->encoder);
 }
 
-Converter<T, S> _FusedCodec::decoder() {
-    return _second.decoder.<S>fuse(_first.decoder);
+template<typename S, typename M, typename T> Converter<T, S> _FusedCodecCls<S, M, T>::decoder() {
+    return _second->decoder-><S>fuse(_first->decoder);
 }
 
-Converter<T, S> _InvertedCodec::encoder() {
-    return _codec.decoder;
+template<typename T, typename S> Converter<T, S> _InvertedCodecCls<T, S>::encoder() {
+    return _codec->decoder;
 }
 
-Converter<S, T> _InvertedCodec::decoder() {
-    return _codec.encoder;
+template<typename T, typename S> Converter<S, T> _InvertedCodecCls<T, S>::decoder() {
+    return _codec->encoder;
 }
 
-Codec<S, T> _InvertedCodec::inverted() {
+template<typename T, typename S> Codec<S, T> _InvertedCodecCls<T, S>::inverted() {
     return _codec;
 }
 
-_InvertedCodec::_InvertedCodec(Codec<S, T> codec) {
+template<typename T, typename S> _InvertedCodecCls<T, S>::_InvertedCodecCls(Codec<S, T> codec) {
     {
         _codec = codec;
     }

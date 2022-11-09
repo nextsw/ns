@@ -1,28 +1,28 @@
-#ifndef STREAM_TRANSFORMERS_H
-#define STREAM_TRANSFORMERS_H
-#include <memory>
+#ifndef DART_ASYNC_STREAM_TRANSFORMERS
+#define DART_ASYNC_STREAM_TRANSFORMERS
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
 
 
-
-
-class _EventSinkWrapper<T> {
+template<typename T> class _EventSinkWrapperCls : public ObjectCls {
 public:
 
-    void add(T data);
+    virtual void add(T data);
 
-    void addError(Object error, StackTrace stackTrace);
+    virtual void addError(Object error, StackTrace stackTrace);
 
-    void close();
+    virtual void close();
 
 private:
     _EventSink<T> _sink;
 
 
-     _EventSinkWrapper(_EventSink<T> _sink);
-
+     _EventSinkWrapperCls(_EventSink<T> _sink);
 };
+template<typename T> using _EventSinkWrapper = std::shared_ptr<_EventSinkWrapperCls<T>>;
 
-class _SinkTransformerStreamSubscription<S, T> : _BufferingStreamSubscription<T> {
+template<typename S, typename T> class _SinkTransformerStreamSubscriptionCls : public _BufferingStreamSubscriptionCls<T> {
 public:
 
 private:
@@ -31,47 +31,48 @@ private:
     StreamSubscription<S> _subscription;
 
 
-     _SinkTransformerStreamSubscription(bool cancelOnError, _SinkMapper<S, T> mapper, FunctionType onData, FunctionType onDone, FunctionType onError, Stream<S> source);
+     _SinkTransformerStreamSubscriptionCls(bool cancelOnError, _SinkMapper<S, T> mapper, void onData(T data) , void onDone() , void  onError() , Stream<S> source);
 
-    void _add(T data);
+    virtual void _add(T data);
 
-    void _addError(Object error, StackTrace stackTrace);
+    virtual void _addError(Object error, StackTrace stackTrace);
 
-    void _close();
+    virtual void _close();
 
-    void _onPause();
+    virtual void _onPause();
 
-    void _onResume();
+    virtual void _onResume();
 
-    Future<void> _onCancel();
+    virtual Future<void> _onCancel();
 
-    void _handleData(S data);
+    virtual void _handleData(S data);
 
-    void _handleError(Object error, StackTrace stackTrace);
+    virtual void _handleError(Object error, StackTrace stackTrace);
 
-    void _handleDone();
+    virtual void _handleDone();
 
 };
+template<typename S, typename T> using _SinkTransformerStreamSubscription = std::shared_ptr<_SinkTransformerStreamSubscriptionCls<S, T>>;
 
-class _StreamSinkTransformer<S, T> : StreamTransformerBase<S, T> {
+template<typename S, typename T> class _StreamSinkTransformerCls : public StreamTransformerBaseCls<S, T> {
 public:
 
-    Stream<T> bind(Stream<S> stream);
+    virtual Stream<T> bind(Stream<S> stream);
 
 private:
     _SinkMapper<S, T> _sinkMapper;
 
 
-     _StreamSinkTransformer(_SinkMapper<S, T> _sinkMapper);
-
+     _StreamSinkTransformerCls(_SinkMapper<S, T> _sinkMapper);
 };
+template<typename S, typename T> using _StreamSinkTransformer = std::shared_ptr<_StreamSinkTransformerCls<S, T>>;
 
-class _BoundSinkStream<S, T> : Stream<T> {
+template<typename S, typename T> class _BoundSinkStreamCls : public StreamCls<T> {
 public:
 
-    bool isBroadcast();
+    virtual bool isBroadcast();
 
-    StreamSubscription<T> listen(bool cancelOnError, FunctionType onData, FunctionType onDone, FunctionType onError);
+    virtual StreamSubscription<T> listen(bool cancelOnError, void onData(T event) , void onDone() , void  onError() );
 
 private:
     _SinkMapper<S, T> _sinkMapper;
@@ -79,18 +80,18 @@ private:
     Stream<S> _stream;
 
 
-     _BoundSinkStream(_SinkMapper<S, T> _sinkMapper, Stream<S> _stream);
-
+     _BoundSinkStreamCls(_SinkMapper<S, T> _sinkMapper, Stream<S> _stream);
 };
+template<typename S, typename T> using _BoundSinkStream = std::shared_ptr<_BoundSinkStreamCls<S, T>>;
 
-class _HandlerEventSink<S, T> {
+template<typename S, typename T> class _HandlerEventSinkCls : public ObjectCls {
 public:
 
-    void add(S data);
+    virtual void add(S data);
 
-    void addError(Object error, StackTrace stackTrace);
+    virtual void addError(Object error, StackTrace stackTrace);
 
-    void close();
+    virtual void close();
 
 private:
     _TransformDataHandler<S, T> _handleData;
@@ -102,53 +103,54 @@ private:
     EventSink<T> _sink;
 
 
-     _HandlerEventSink(_TransformDataHandler<S, T> _handleData, _TransformDoneHandler<T> _handleDone, _TransformErrorHandler<T> _handleError, EventSink<T> _sink);
-
+     _HandlerEventSinkCls(_TransformDataHandler<S, T> _handleData, _TransformDoneHandler<T> _handleDone, _TransformErrorHandler<T> _handleError, EventSink<T> _sink);
 };
+template<typename S, typename T> using _HandlerEventSink = std::shared_ptr<_HandlerEventSinkCls<S, T>>;
 
-class _StreamHandlerTransformer<S, T> : _StreamSinkTransformer<S, T> {
+template<typename S, typename T> class _StreamHandlerTransformerCls : public _StreamSinkTransformerCls<S, T> {
 public:
 
-    Stream<T> bind(Stream<S> stream);
+    virtual Stream<T> bind(Stream<S> stream);
 
 private:
 
-     _StreamHandlerTransformer(FunctionType handleData, FunctionType handleDone, FunctionType handleError);
+     _StreamHandlerTransformerCls(void handleData(S data, EventSink<T> sink) , void handleDone(EventSink<T> sink) , void handleError(Object error, EventSink<T> sink, StackTrace stackTrace) );
 
 };
+template<typename S, typename T> using _StreamHandlerTransformer = std::shared_ptr<_StreamHandlerTransformerCls<S, T>>;
 
-class _StreamBindTransformer<S, T> : StreamTransformerBase<S, T> {
+template<typename S, typename T> class _StreamBindTransformerCls : public StreamTransformerBaseCls<S, T> {
 public:
 
-    Stream<T> bind(Stream<S> stream);
+    virtual Stream<T> bind(Stream<S> stream);
 
 private:
-    FunctionType _bind;
+    Stream<T> Function(Stream<S> ) _bind;
 
 
-     _StreamBindTransformer(FunctionType _bind);
-
+     _StreamBindTransformerCls(Stream<T> Function(Stream<S> ) _bind);
 };
+template<typename S, typename T> using _StreamBindTransformer = std::shared_ptr<_StreamBindTransformerCls<S, T>>;
 
-class _StreamSubscriptionTransformer<S, T> : StreamTransformerBase<S, T> {
+template<typename S, typename T> class _StreamSubscriptionTransformerCls : public StreamTransformerBaseCls<S, T> {
 public:
 
-    Stream<T> bind(Stream<S> stream);
+    virtual Stream<T> bind(Stream<S> stream);
 
 private:
     _SubscriptionTransformer<S, T> _onListen;
 
 
-     _StreamSubscriptionTransformer(_SubscriptionTransformer<S, T> _onListen);
-
+     _StreamSubscriptionTransformerCls(_SubscriptionTransformer<S, T> _onListen);
 };
+template<typename S, typename T> using _StreamSubscriptionTransformer = std::shared_ptr<_StreamSubscriptionTransformerCls<S, T>>;
 
-class _BoundSubscriptionStream<S, T> : Stream<T> {
+template<typename S, typename T> class _BoundSubscriptionStreamCls : public StreamCls<T> {
 public:
 
-    bool isBroadcast();
+    virtual bool isBroadcast();
 
-    StreamSubscription<T> listen(bool cancelOnError, FunctionType onData, FunctionType onDone, FunctionType onError);
+    virtual StreamSubscription<T> listen(bool cancelOnError, void onData(T event) , void onDone() , void  onError() );
 
 private:
     _SubscriptionTransformer<S, T> _onListen;
@@ -156,8 +158,9 @@ private:
     Stream<S> _stream;
 
 
-     _BoundSubscriptionStream(_SubscriptionTransformer<S, T> _onListen, Stream<S> _stream);
-
+     _BoundSubscriptionStreamCls(_SubscriptionTransformer<S, T> _onListen, Stream<S> _stream);
 };
+template<typename S, typename T> using _BoundSubscriptionStream = std::shared_ptr<_BoundSubscriptionStreamCls<S, T>>;
+
 
 #endif

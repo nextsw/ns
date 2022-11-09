@@ -1,11 +1,11 @@
-#ifndef COLORS_H
-#define COLORS_H
-#include <memory>
+#ifndef PACKAGES_VECTOR_MATH_SRC_VECTOR_MATH_64_COLORS
+#define PACKAGES_VECTOR_MATH_SRC_VECTOR_MATH_64_COLORS
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
 
 
-
-
-class Colors {
+class ColorsCls : public ObjectCls {
 public:
 
     static void fromRgba(int a, int b, int g, int r, Vector4 result);
@@ -320,8 +320,9 @@ private:
 
     static double _hueToRgb(double p, double q, double t);
 
-    void  _();
-
+    virtual void  _();
 };
+using Colors = std::shared_ptr<ColorsCls>;
+
 
 #endif

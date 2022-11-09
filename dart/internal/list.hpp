@@ -1,166 +1,170 @@
-#ifndef LIST_H
-#define LIST_H
-#include <memory>
+#ifndef DART_INTERNAL_LIST
+#define DART_INTERNAL_LIST
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
 
 
-
-
-class FixedLengthListMixin<E> {
+template<typename E> class FixedLengthListMixinCls : public ObjectCls {
 public:
 
-    void  length(int newLength);
+    virtual void  length(int newLength);
 
-    void add(E value);
+    virtual void add(E value);
 
-    void insert(int index, E value);
+    virtual void insert(int index, E value);
 
-    void insertAll(int at, Iterable<E> iterable);
+    virtual void insertAll(int at, Iterable<E> iterable);
 
-    void addAll(Iterable<E> iterable);
+    virtual void addAll(Iterable<E> iterable);
 
-    bool remove(Object element);
+    virtual bool remove(Object element);
 
-    void removeWhere(FunctionType test);
+    virtual void removeWhere(bool test(E element) );
 
-    void retainWhere(FunctionType test);
+    virtual void retainWhere(bool test(E element) );
 
-    void clear();
+    virtual void clear();
 
-    E removeAt(int index);
+    virtual E removeAt(int index);
 
-    E removeLast();
+    virtual E removeLast();
 
-    void removeRange(int end, int start);
+    virtual void removeRange(int end, int start);
 
-    void replaceRange(int end, Iterable<E> iterable, int start);
+    virtual void replaceRange(int end, Iterable<E> iterable, int start);
 
 private:
 
 };
+template<typename E> using FixedLengthListMixin = std::shared_ptr<FixedLengthListMixinCls<E>>;
 
-class UnmodifiableListMixin<E> {
+template<typename E> class UnmodifiableListMixinCls : public ObjectCls {
 public:
 
-    void []=(int index, E value);
+    virtual void operator[]=(int index, E value);
 
-    void  length(int newLength);
+    virtual void  length(int newLength);
 
-    void  first(E element);
+    virtual void  first(E element);
 
-    void  last(E element);
+    virtual void  last(E element);
 
-    void setAll(int at, Iterable<E> iterable);
+    virtual void setAll(int at, Iterable<E> iterable);
 
-    void add(E value);
+    virtual void add(E value);
 
-    void insert(E element, int index);
+    virtual void insert(E element, int index);
 
-    void insertAll(int at, Iterable<E> iterable);
+    virtual void insertAll(int at, Iterable<E> iterable);
 
-    void addAll(Iterable<E> iterable);
+    virtual void addAll(Iterable<E> iterable);
 
-    bool remove(Object element);
+    virtual bool remove(Object element);
 
-    void removeWhere(FunctionType test);
+    virtual void removeWhere(bool test(E element) );
 
-    void retainWhere(FunctionType test);
+    virtual void retainWhere(bool test(E element) );
 
-    void sort(Comparator<E> compare);
+    virtual void sort(Comparator<E> compare);
 
-    void shuffle(Random random);
+    virtual void shuffle(Random random);
 
-    void clear();
+    virtual void clear();
 
-    E removeAt(int index);
+    virtual E removeAt(int index);
 
-    E removeLast();
+    virtual E removeLast();
 
-    void setRange(int end, Iterable<E> iterable, int skipCount, int start);
+    virtual void setRange(int end, Iterable<E> iterable, int skipCount, int start);
 
-    void removeRange(int end, int start);
+    virtual void removeRange(int end, int start);
 
-    void replaceRange(int end, Iterable<E> iterable, int start);
+    virtual void replaceRange(int end, Iterable<E> iterable, int start);
 
-    void fillRange(int end, E fillValue, int start);
+    virtual void fillRange(int end, E fillValue, int start);
 
 private:
 
 };
+template<typename E> using UnmodifiableListMixin = std::shared_ptr<UnmodifiableListMixinCls<E>>;
 
-class FixedLengthListBase<E> {
-public:
-
-private:
-
-};
-
-class UnmodifiableListBase<E> {
+template<typename E> class FixedLengthListBaseCls : public ObjectCls {
 public:
 
 private:
 
 };
+template<typename E> using FixedLengthListBase = std::shared_ptr<FixedLengthListBaseCls<E>>;
 
-class _ListIndicesIterable : ListIterable<int> {
+template<typename E> class UnmodifiableListBaseCls : public ObjectCls {
 public:
 
-    int length();
+private:
 
-    int elementAt(int index);
+};
+template<typename E> using UnmodifiableListBase = std::shared_ptr<UnmodifiableListBaseCls<E>>;
+
+class _ListIndicesIterableCls : public ListIterableCls<int> {
+public:
+
+    virtual int length();
+
+    virtual int elementAt(int index);
 
 private:
     List _backedList;
 
 
-     _ListIndicesIterable(List _backedList);
-
+     _ListIndicesIterableCls(List _backedList);
 };
+using _ListIndicesIterable = std::shared_ptr<_ListIndicesIterableCls>;
 
-class ListMapView<E> : UnmodifiableMapBase<int, E> {
+template<typename E> class ListMapViewCls : public UnmodifiableMapBaseCls<int, E> {
 public:
 
-     ListMapView(List<E> _values);
+     ListMapViewCls(List<E> _values);
+    virtual E operator[](Object key);
 
-    E [](Object key);
+    virtual int length();
 
-    int length();
+    virtual Iterable<E> values();
 
-    Iterable<E> values();
+    virtual Iterable<int> keys();
 
-    Iterable<int> keys();
+    virtual bool isEmpty();
 
-    bool isEmpty();
+    virtual bool isNotEmpty();
 
-    bool isNotEmpty();
+    virtual bool containsValue(Object value);
 
-    bool containsValue(Object value);
+    virtual bool containsKey(Object key);
 
-    bool containsKey(Object key);
-
-    void forEach(FunctionType f);
+    virtual void forEach(void f(int key, E value) );
 
 private:
     List<E> _values;
 
 
 };
+template<typename E> using ListMapView = std::shared_ptr<ListMapViewCls<E>>;
 
-class ReversedListIterable<E> : ListIterable<E> {
+template<typename E> class ReversedListIterableCls : public ListIterableCls<E> {
 public:
 
-     ReversedListIterable(Iterable<E> _source);
+     ReversedListIterableCls(Iterable<E> _source);
+    virtual int length();
 
-    int length();
-
-    E elementAt(int index);
+    virtual E elementAt(int index);
 
 private:
     Iterable<E> _source;
 
 
 };
+template<typename E> using ReversedListIterable = std::shared_ptr<ReversedListIterableCls<E>>;
 
-class UnmodifiableListError {
+class UnmodifiableListErrorCls : public ObjectCls {
 public:
 
     static UnsupportedError add();
@@ -174,8 +178,9 @@ public:
 private:
 
 };
+using UnmodifiableListError = std::shared_ptr<UnmodifiableListErrorCls>;
 
-class NonGrowableListError {
+class NonGrowableListErrorCls : public ObjectCls {
 public:
 
     static UnsupportedError add();
@@ -187,9 +192,9 @@ public:
 private:
 
 };
-external List<T> makeListFixedLength<T>(List<T> growableList);
-
-external List<T> makeFixedListUnmodifiable<T>(List<T> fixedLengthList);
+using NonGrowableListError = std::shared_ptr<NonGrowableListErrorCls>;
+template<typename T>  extern List<T> makeListFixedLength(List<T> growableList);
+template<typename T>  extern List<T> makeFixedListUnmodifiable(List<T> fixedLengthList);
 
 
 #endif

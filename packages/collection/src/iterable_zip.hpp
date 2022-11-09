@@ -1,30 +1,31 @@
-#ifndef ITERABLE_ZIP_H
-#define ITERABLE_ZIP_H
-#include <memory>
+#ifndef PACKAGES_COLLECTION_SRC_ITERABLE_ZIP
+#define PACKAGES_COLLECTION_SRC_ITERABLE_ZIP
+#include <base.hpp>
 
-#include <collection/collection.hpp>
+#include <dart/core/core.hpp>
+#include <dart/collection/collection.hpp>
 
 
-
-class IterableZip<T> : IterableBase<List<T>> {
+template<typename T> class IterableZipCls : public IterableBaseCls<List<T>> {
 public:
 
-     IterableZip(Iterable<Iterable<T>> iterables);
+     IterableZipCls(Iterable<Iterable<T>> iterables);
 
-    Iterator<List<T>> iterator();
+    virtual Iterator<List<T>> iterator();
 
 private:
     Iterable<Iterable<T>> _iterables;
 
 
 };
+template<typename T> using IterableZip = std::shared_ptr<IterableZipCls<T>>;
 
-class _IteratorZip<T> {
+template<typename T> class _IteratorZipCls : public ObjectCls {
 public:
 
-    bool moveNext();
+    virtual bool moveNext();
 
-    List<T> current();
+    virtual List<T> current();
 
 private:
     List<Iterator<T>> _iterators;
@@ -32,8 +33,10 @@ private:
     List<T> _current;
 
 
-     _IteratorZip(List<Iterator<T>> iterators);
+     _IteratorZipCls(List<Iterator<T>> iterators);
 
 };
+template<typename T> using _IteratorZip = std::shared_ptr<_IteratorZipCls<T>>;
+
 
 #endif

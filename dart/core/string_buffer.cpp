@@ -1,8 +1,8 @@
 #include "string_buffer.hpp"
-bool StringBuffer::isEmpty() {
+bool StringBufferCls::isEmpty() {
     return length == 0;
 }
 
-bool StringBuffer::isNotEmpty() {
+bool StringBufferCls::isNotEmpty() {
     return !isEmpty;
 }

@@ -1,11 +1,11 @@
-#ifndef EMBEDDER_CONFIG_H
-#define EMBEDDER_CONFIG_H
-#include <memory>
+#ifndef DART_IO_EMBEDDER_CONFIG
+#define DART_IO_EMBEDDER_CONFIG
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
 
 
-
-
-class _EmbedderConfig {
+class _EmbedderConfigCls : public ObjectCls {
 public:
 
 private:
@@ -23,5 +23,7 @@ private:
 
 
 };
+using _EmbedderConfig = std::shared_ptr<_EmbedderConfigCls>;
+
 
 #endif

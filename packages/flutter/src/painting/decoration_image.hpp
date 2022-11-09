@@ -1,11 +1,12 @@
-#ifndef DECORATION_IMAGE_H
-#define DECORATION_IMAGE_H
-#include <memory>
+#ifndef PACKAGES_FLUTTER_SRC_PAINTING_DECORATION_IMAGE
+#define PACKAGES_FLUTTER_SRC_PAINTING_DECORATION_IMAGE
+#include <base.hpp>
 
-#include <developer/developer.hpp>
-#include <ui/ui.hpp>
-#include <flutter/foundation.hpp>
-#include <flutter/scheduler.hpp>
+#include <dart/core/core.hpp>
+#include <dart/developer/developer.hpp>
+#include <dart/ui/ui.hpp>
+#include <packages/flutter/lib/foundation.hpp>
+#include <packages/flutter/flutter.hpp>
 #include "alignment.hpp"
 #include "basic_types.hpp"
 #include "binding.hpp"
@@ -16,7 +17,6 @@
 #include "image_stream.hpp"
 
 
-
 enum ImageRepeat{
     repeat,
     repeatX,
@@ -24,7 +24,7 @@ enum ImageRepeat{
     noRepeat,
 } // end ImageRepeat
 
-class DecorationImage {
+class DecorationImageCls : public ObjectCls {
 public:
     ImageProvider image;
 
@@ -53,28 +53,29 @@ public:
     bool isAntiAlias;
 
 
-     DecorationImage(AlignmentGeometry alignment, Rect centerSlice, ColorFilter colorFilter, FilterQuality filterQuality, BoxFit fit, ImageProvider image, bool invertColors, bool isAntiAlias, bool matchTextDirection, ImageErrorListener onError, double opacity, ImageRepeat repeat, double scale);
+     DecorationImageCls(AlignmentGeometry alignment, Rect centerSlice, ColorFilter colorFilter, FilterQuality filterQuality, BoxFit fit, ImageProvider image, bool invertColors, bool isAntiAlias, bool matchTextDirection, ImageErrorListener onError, double opacity, ImageRepeat repeat, double scale);
 
-    DecorationImagePainter createPainter(VoidCallback onChanged);
+    virtual DecorationImagePainter createPainter(VoidCallback onChanged);
 
-    bool ==(Object other);
+    virtual bool operator==(Object other);
 
-    int hashCode();
+    virtual int hashCode();
 
-    String toString();
+    virtual String toString();
 
 private:
 
 };
+using DecorationImage = std::shared_ptr<DecorationImageCls>;
 
-class DecorationImagePainter {
+class DecorationImagePainterCls : public ObjectCls {
 public:
 
-    void paint(Canvas canvas, Path clipPath, ImageConfiguration configuration, Rect rect);
+    virtual void paint(Canvas canvas, Path clipPath, ImageConfiguration configuration, Rect rect);
 
-    void dispose();
+    virtual void dispose();
 
-    String toString();
+    virtual String toString();
 
 private:
     DecorationImage _details;
@@ -86,11 +87,12 @@ private:
     ImageInfo _image;
 
 
-    void  _(DecorationImage _details, VoidCallback _onChanged);
+    virtual void  _(DecorationImage _details, VoidCallback _onChanged);
 
-    void _handleImage(bool synchronousCall, ImageInfo value);
+    virtual void _handleImage(bool synchronousCall, ImageInfo value);
 
 };
+using DecorationImagePainter = std::shared_ptr<DecorationImagePainterCls>;
 Map<String, ImageSizeInfo> _pendingImageSizeInfo;
 
 Set<ImageSizeInfo> _lastFrameImageSizeInfo;
@@ -102,6 +104,7 @@ void paintImage(Alignment alignment, Canvas canvas, Rect centerSlice, ColorFilte
 Iterable<Rect> _generateImageTileRects(Rect fundamentalRect, Rect outputRect, ImageRepeat repeat);
 
 Rect _scaleRect(Rect rect, double scale);
+
 
 
 #endif

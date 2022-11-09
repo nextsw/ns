@@ -1,28 +1,29 @@
-#ifndef EAGER_H
-#define EAGER_H
-#include <memory>
-#include <ui.hpp>
+#ifndef PACKAGES_FLUTTER_SRC_GESTURES_EAGER
+#define PACKAGES_FLUTTER_SRC_GESTURES_EAGER
+#include <base.hpp>
+#include <dart/ui/ui.hpp>
 #include "events.hpp"
 
+#include <dart/core/core.hpp>
 #include "recognizer.hpp"
 
 
-
-class EagerGestureRecognizer : OneSequenceGestureRecognizer {
+class EagerGestureRecognizerCls : public OneSequenceGestureRecognizerCls {
 public:
 
-     EagerGestureRecognizer(Unknown, Unknown);
+     EagerGestureRecognizerCls(Unknown kind, Unknown supportedDevices);
+    virtual void addAllowedPointer(PointerDownEvent event);
 
-    void addAllowedPointer(PointerDownEvent event);
+    virtual String debugDescription();
 
-    String debugDescription();
+    virtual void didStopTrackingLastPointer(int pointer);
 
-    void didStopTrackingLastPointer(int pointer);
-
-    void handleEvent(PointerEvent event);
+    virtual void handleEvent(PointerEvent event);
 
 private:
 
 };
+using EagerGestureRecognizer = std::shared_ptr<EagerGestureRecognizerCls>;
+
 
 #endif

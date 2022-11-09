@@ -1,53 +1,53 @@
 #include "process.hpp"
 Never exit(int code) {
-    ArgumentError.checkNotNull(code, "code");
-    if (!_EmbedderConfig._mayExit) {
+    ArgumentErrorCls->checkNotNull(code, "code");
+    if (!_EmbedderConfigCls->_mayExit) {
         ;
     }
-    _ProcessUtils._exit(code);
+    _ProcessUtilsCls->_exit(code);
 }
 
 void exitCode(int code) {
-    ArgumentError.checkNotNull(code, "code");
-    _ProcessUtils._setExitCode(code);
+    ArgumentErrorCls->checkNotNull(code, "code");
+    _ProcessUtilsCls->_setExitCode(code);
 }
 
 int exitCode() {
-    return _ProcessUtils._getExitCode();
+    return _ProcessUtilsCls->_getExitCode();
 }
 
 void sleep(Duration duration) {
-    int milliseconds = duration.inMilliseconds;
+    int milliseconds = duration->inMilliseconds;
     if ( < 0) {
         ;
     }
-    if (!_EmbedderConfig._maySleep) {
+    if (!_EmbedderConfigCls->_maySleep) {
         ;
     }
-    _ProcessUtils._sleep(milliseconds);
+    _ProcessUtilsCls->_sleep(milliseconds);
 }
 
 int pid() {
-    return _ProcessUtils._pid(nullptr);
+    return _ProcessUtilsCls->_pid(nullptr);
 }
 
-List<ProcessStartMode> ProcessStartMode::values() {
-    return const ;
+List<ProcessStartMode> ProcessStartModeCls::values() {
+    return makeList(ArrayItem, ArrayItem, ArrayItem, ArrayItem);
 }
 
-String ProcessStartMode::toString() {
-    return const [_mode];
+String ProcessStartModeCls::toString() {
+    return makeList(ArrayItem, ArrayItem, ArrayItem, ArrayItem)[_mode];
 }
 
-String ProcessSignal::toString() {
+String ProcessSignalCls::toString() {
     return _name;
 }
 
-Stream<ProcessSignal> ProcessSignal::watch() {
-    return _ProcessUtils._watchSignal(this);
+Stream<ProcessSignal> ProcessSignalCls::watch() {
+    return _ProcessUtilsCls->_watchSignal(this);
 }
 
-String SignalException::toString() {
+String SignalExceptionCls::toString() {
     auto msg = "";
     if (osError != nullptr) {
         msg = ", osError: $osError";
@@ -55,7 +55,7 @@ String SignalException::toString() {
     return "SignalException: $message$msg";
 }
 
-String ProcessException::toString() {
-    auto args = arguments.join(" ");
+String ProcessExceptionCls::toString() {
+    auto args = arguments->join(" ");
     return "ProcessException: $message\n  Command: $executable $args";
 }

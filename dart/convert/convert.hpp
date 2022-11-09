@@ -1,10 +1,12 @@
-#ifndef CONVERT_H
-#define CONVERT_H
-#include <memory>
+#ifndef DART_CONVERT_CONVERT
+#define DART_CONVERT_CONVERT
+#include <base.hpp>
 
-#include <async/async.hpp>
-#include <typed_data/typed_data.hpp>
-#include <internal/internal.hpp>
+#include <dart/core/core.hpp>
+#include <dart/async/async.hpp>
+#include <dart/typed_data/typed_data.hpp>
+#include <dart/internal/internal.hpp>
+
 
 // Parts
 #include "ascii.hpp"
@@ -20,6 +22,5 @@
 #include "line_splitter.hpp"
 #include "string_conversion.hpp"
 #include "utf.hpp"
-
 
 #endif

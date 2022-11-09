@@ -1,37 +1,39 @@
 #include "combined_map.hpp"
-V CombinedMapView::[](Object key) {
+template<typename K, typename V> V CombinedMapViewCls<K, V>::[](Object key) {
     for (auto map : _maps) {
         auto value = map[key];
-        if (value != nullptr || map.containsKey(value)) {
+        if (value != nullptr || map->containsKey(value)) {
             return value;
         }
     }
     return nullptr;
 }
 
-Iterable<K> CombinedMapView::keys() {
-    return _DeduplicatingIterableView(CombinedIterableView(_maps.map()));
+template<typename K, typename V> Iterable<K> CombinedMapViewCls<K, V>::keys() {
+    return make<_DeduplicatingIterableViewCls>(make<CombinedIterableViewCls>(_maps->map([=] (Unknown  m)     {
+        m->keys;
+    })));
 }
 
-Iterator<T> _DeduplicatingIterableView::iterator() {
-    return _DeduplicatingIterator(_iterable.iterator);
+template<typename T> Iterator<T> _DeduplicatingIterableViewCls<T>::iterator() {
+    return make<_DeduplicatingIteratorCls>(_iterable->iterator);
 }
 
-bool _DeduplicatingIterableView::contains(Object element) {
-    return _iterable.contains(element);
+template<typename T> bool _DeduplicatingIterableViewCls<T>::contains(Object element) {
+    return _iterable->contains(element);
 }
 
-bool _DeduplicatingIterableView::isEmpty() {
-    return _iterable.isEmpty;
+template<typename T> bool _DeduplicatingIterableViewCls<T>::isEmpty() {
+    return _iterable->isEmpty;
 }
 
-T _DeduplicatingIterator::current() {
-    return _iterator.current;
+template<typename T> T _DeduplicatingIteratorCls<T>::current() {
+    return _iterator->current;
 }
 
-bool _DeduplicatingIterator::moveNext() {
-    while (_iterator.moveNext()) {
-        if (_emitted.add(current)) {
+template<typename T> bool _DeduplicatingIteratorCls<T>::moveNext() {
+    while (_iterator->moveNext()) {
+        if (_emitted->add(current)) {
             return true;
         }
     }

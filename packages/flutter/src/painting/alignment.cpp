@@ -1,9 +1,9 @@
 #include "alignment.hpp"
-AlignmentGeometry AlignmentGeometry::add(AlignmentGeometry other) {
-    return _MixedAlignment(_x + other._x, _start + other._start, _y + other._y);
+AlignmentGeometry AlignmentGeometryCls::add(AlignmentGeometry other) {
+    return make<_MixedAlignmentCls>(_x + other->_x, _start + other->_start, _y + other->_y);
 }
 
-AlignmentGeometry AlignmentGeometry::lerp(AlignmentGeometry a, AlignmentGeometry b, double t) {
+AlignmentGeometry AlignmentGeometryCls::lerp(AlignmentGeometry a, AlignmentGeometry b, double t) {
     assert(t != nullptr);
     if (a == nullptr && b == nullptr) {
         return nullptr;
@@ -15,133 +15,133 @@ AlignmentGeometry AlignmentGeometry::lerp(AlignmentGeometry a, AlignmentGeometry
         return a * (1.0 - t);
     }
     if (a is Alignment && b is Alignment) {
-        return Alignment.lerp(a, b, t);
+        return AlignmentCls->lerp(a, b, t);
     }
     if (a is AlignmentDirectional && b is AlignmentDirectional) {
-        return AlignmentDirectional.lerp(a, b, t);
+        return AlignmentDirectionalCls->lerp(a, b, t);
     }
-    return _MixedAlignment(ui.lerpDouble(a._x, b._x, t)!, ui.lerpDouble(a._start, b._start, t)!, ui.lerpDouble(a._y, b._y, t)!);
+    return make<_MixedAlignmentCls>(ui->lerpDouble(a->_x, b->_x, t)!, ui->lerpDouble(a->_start, b->_start, t)!, ui->lerpDouble(a->_y, b->_y, t)!);
 }
 
-String AlignmentGeometry::toString() {
+String AlignmentGeometryCls::toString() {
     if (_start == 0.0) {
-        return Alignment._stringify(_x, _y);
+        return AlignmentCls->_stringify(_x, _y);
     }
     if (_x == 0.0) {
-        return AlignmentDirectional._stringify(_start, _y);
+        return AlignmentDirectionalCls->_stringify(_start, _y);
     }
     return "${Alignment._stringify(_x, _y)} + ${AlignmentDirectional._stringify(_start, 0.0)}";
 }
 
-bool AlignmentGeometry::==(Object other) {
-    return other is AlignmentGeometry && other._x == _x && other._start == _start && other._y == _y;
+bool AlignmentGeometryCls::==(Object other) {
+    return other is AlignmentGeometry && other->_x == _x && other->_start == _start && other->_y == _y;
 }
 
-int AlignmentGeometry::hashCode() {
-    return Object.hash(_x, _start, _y);
+int AlignmentGeometryCls::hashCode() {
+    return ObjectCls->hash(_x, _start, _y);
 }
 
-Alignment::Alignment(double x, double y) {
+AlignmentCls::AlignmentCls(double x, double y) {
     {
         assert(x != nullptr);
         assert(y != nullptr);
     }
 }
 
-AlignmentGeometry Alignment::add(AlignmentGeometry other) {
+AlignmentGeometry AlignmentCls::add(AlignmentGeometry other) {
     if (other is Alignment) {
         return this + other;
     }
-    return super.add(other);
+    return super->add(other);
 }
 
-Alignment Alignment::-(Alignment other) {
-    return Alignment(x - other.x, y - other.y);
+Alignment AlignmentCls::-(Alignment other) {
+    return make<AlignmentCls>(x - other->x, y - other->y);
 }
 
-Alignment Alignment::+(Alignment other) {
-    return Alignment(x + other.x, y + other.y);
+Alignment AlignmentCls::+(Alignment other) {
+    return make<AlignmentCls>(x + other->x, y + other->y);
 }
 
-Alignment Alignment::-() {
-    return Alignment(-x, -y);
+Alignment AlignmentCls::-() {
+    return make<AlignmentCls>(-x, -y);
 }
 
-Alignment Alignment::*(double other) {
-    return Alignment(x * other, y * other);
+Alignment AlignmentCls::*(double other) {
+    return make<AlignmentCls>(x * other, y * other);
 }
 
-Alignment Alignment::/(double other) {
-    return Alignment(x / other, y / other);
+Alignment AlignmentCls::/(double other) {
+    return make<AlignmentCls>(x / other, y / other);
 }
 
-Alignment Alignment::~/(double other) {
-    return Alignment((x ~/ other).toDouble(), (y ~/ other).toDouble());
+Alignment AlignmentCls::~/(double other) {
+    return make<AlignmentCls>((x ~/ other)->toDouble(), (y ~/ other)->toDouble());
 }
 
-Alignment Alignment::%(double other) {
-    return Alignment(x % other, y % other);
+Alignment AlignmentCls::%(double other) {
+    return make<AlignmentCls>(x % other, y % other);
 }
 
-Offset Alignment::alongOffset(Offset other) {
-    double centerX = other.dx / 2.0;
-    double centerY = other.dy / 2.0;
-    return Offset(centerX + x * centerX, centerY + y * centerY);
+Offset AlignmentCls::alongOffset(Offset other) {
+    double centerX = other->dx / 2.0;
+    double centerY = other->dy / 2.0;
+    return make<OffsetCls>(centerX + x * centerX, centerY + y * centerY);
 }
 
-Offset Alignment::alongSize(Size other) {
-    double centerX = other.width / 2.0;
-    double centerY = other.height / 2.0;
-    return Offset(centerX + x * centerX, centerY + y * centerY);
+Offset AlignmentCls::alongSize(Size other) {
+    double centerX = other->width / 2.0;
+    double centerY = other->height / 2.0;
+    return make<OffsetCls>(centerX + x * centerX, centerY + y * centerY);
 }
 
-Offset Alignment::withinRect(Rect rect) {
-    double halfWidth = rect.width / 2.0;
-    double halfHeight = rect.height / 2.0;
-    return Offset(rect.left + halfWidth + x * halfWidth, rect.top + halfHeight + y * halfHeight);
+Offset AlignmentCls::withinRect(Rect rect) {
+    double halfWidth = rect->width / 2.0;
+    double halfHeight = rect->height / 2.0;
+    return make<OffsetCls>(rect->left + halfWidth + x * halfWidth, rect->top + halfHeight + y * halfHeight);
 }
 
-Rect Alignment::inscribe(Rect rect, Size size) {
-    double halfWidthDelta = (rect.width - size.width) / 2.0;
-    double halfHeightDelta = (rect.height - size.height) / 2.0;
-    return Rect.fromLTWH(rect.left + halfWidthDelta + x * halfWidthDelta, rect.top + halfHeightDelta + y * halfHeightDelta, size.width, size.height);
+Rect AlignmentCls::inscribe(Rect rect, Size size) {
+    double halfWidthDelta = (rect->width - size->width) / 2.0;
+    double halfHeightDelta = (rect->height - size->height) / 2.0;
+    return RectCls->fromLTWH(rect->left + halfWidthDelta + x * halfWidthDelta, rect->top + halfHeightDelta + y * halfHeightDelta, size->width, size->height);
 }
 
-Alignment Alignment::lerp(Alignment a, Alignment b, double t) {
+Alignment AlignmentCls::lerp(Alignment a, Alignment b, double t) {
     assert(t != nullptr);
     if (a == nullptr && b == nullptr) {
         return nullptr;
     }
     if (a == nullptr) {
-        return Alignment(ui.lerpDouble(0.0, b!.x, t)!, ui.lerpDouble(0.0, b.y, t)!);
+        return make<AlignmentCls>(ui->lerpDouble(0.0, b!->x, t)!, ui->lerpDouble(0.0, b->y, t)!);
     }
     if (b == nullptr) {
-        return Alignment(ui.lerpDouble(a.x, 0.0, t)!, ui.lerpDouble(a.y, 0.0, t)!);
+        return make<AlignmentCls>(ui->lerpDouble(a->x, 0.0, t)!, ui->lerpDouble(a->y, 0.0, t)!);
     }
-    return Alignment(ui.lerpDouble(a.x, b.x, t)!, ui.lerpDouble(a.y, b.y, t)!);
+    return make<AlignmentCls>(ui->lerpDouble(a->x, b->x, t)!, ui->lerpDouble(a->y, b->y, t)!);
 }
 
-Alignment Alignment::resolve(TextDirection direction) {
+Alignment AlignmentCls::resolve(TextDirection direction) {
     return this;
 }
 
-String Alignment::toString() {
+String AlignmentCls::toString() {
     return _stringify(x, y);
 }
 
-double Alignment::_x() {
+double AlignmentCls::_x() {
     return x;
 }
 
-double Alignment::_start() {
+double AlignmentCls::_start() {
     return 0.0;
 }
 
-double Alignment::_y() {
+double AlignmentCls::_y() {
     return y;
 }
 
-String Alignment::_stringify(double x, double y) {
+String AlignmentCls::_stringify(double x, double y) {
     if (x == -1.0 && y == -1.0) {
         return "Alignment.topLeft";
     }
@@ -172,84 +172,84 @@ String Alignment::_stringify(double x, double y) {
     return "Alignment(${x.toStringAsFixed(1)}, ${y.toStringAsFixed(1)})";
 }
 
-AlignmentDirectional::AlignmentDirectional(double start, double y) {
+AlignmentDirectionalCls::AlignmentDirectionalCls(double start, double y) {
     {
         assert(start != nullptr);
         assert(y != nullptr);
     }
 }
 
-AlignmentGeometry AlignmentDirectional::add(AlignmentGeometry other) {
+AlignmentGeometry AlignmentDirectionalCls::add(AlignmentGeometry other) {
     if (other is AlignmentDirectional) {
         return this + other;
     }
-    return super.add(other);
+    return super->add(other);
 }
 
-AlignmentDirectional AlignmentDirectional::-(AlignmentDirectional other) {
-    return AlignmentDirectional(start - other.start, y - other.y);
+AlignmentDirectional AlignmentDirectionalCls::-(AlignmentDirectional other) {
+    return make<AlignmentDirectionalCls>(start - other->start, y - other->y);
 }
 
-AlignmentDirectional AlignmentDirectional::+(AlignmentDirectional other) {
-    return AlignmentDirectional(start + other.start, y + other.y);
+AlignmentDirectional AlignmentDirectionalCls::+(AlignmentDirectional other) {
+    return make<AlignmentDirectionalCls>(start + other->start, y + other->y);
 }
 
-AlignmentDirectional AlignmentDirectional::-() {
-    return AlignmentDirectional(-start, -y);
+AlignmentDirectional AlignmentDirectionalCls::-() {
+    return make<AlignmentDirectionalCls>(-start, -y);
 }
 
-AlignmentDirectional AlignmentDirectional::*(double other) {
-    return AlignmentDirectional(start * other, y * other);
+AlignmentDirectional AlignmentDirectionalCls::*(double other) {
+    return make<AlignmentDirectionalCls>(start * other, y * other);
 }
 
-AlignmentDirectional AlignmentDirectional::/(double other) {
-    return AlignmentDirectional(start / other, y / other);
+AlignmentDirectional AlignmentDirectionalCls::/(double other) {
+    return make<AlignmentDirectionalCls>(start / other, y / other);
 }
 
-AlignmentDirectional AlignmentDirectional::~/(double other) {
-    return AlignmentDirectional((start ~/ other).toDouble(), (y ~/ other).toDouble());
+AlignmentDirectional AlignmentDirectionalCls::~/(double other) {
+    return make<AlignmentDirectionalCls>((start ~/ other)->toDouble(), (y ~/ other)->toDouble());
 }
 
-AlignmentDirectional AlignmentDirectional::%(double other) {
-    return AlignmentDirectional(start % other, y % other);
+AlignmentDirectional AlignmentDirectionalCls::%(double other) {
+    return make<AlignmentDirectionalCls>(start % other, y % other);
 }
 
-AlignmentDirectional AlignmentDirectional::lerp(AlignmentDirectional a, AlignmentDirectional b, double t) {
+AlignmentDirectional AlignmentDirectionalCls::lerp(AlignmentDirectional a, AlignmentDirectional b, double t) {
     assert(t != nullptr);
     if (a == nullptr && b == nullptr) {
         return nullptr;
     }
     if (a == nullptr) {
-        return AlignmentDirectional(ui.lerpDouble(0.0, b!.start, t)!, ui.lerpDouble(0.0, b.y, t)!);
+        return make<AlignmentDirectionalCls>(ui->lerpDouble(0.0, b!->start, t)!, ui->lerpDouble(0.0, b->y, t)!);
     }
     if (b == nullptr) {
-        return AlignmentDirectional(ui.lerpDouble(a.start, 0.0, t)!, ui.lerpDouble(a.y, 0.0, t)!);
+        return make<AlignmentDirectionalCls>(ui->lerpDouble(a->start, 0.0, t)!, ui->lerpDouble(a->y, 0.0, t)!);
     }
-    return AlignmentDirectional(ui.lerpDouble(a.start, b.start, t)!, ui.lerpDouble(a.y, b.y, t)!);
+    return make<AlignmentDirectionalCls>(ui->lerpDouble(a->start, b->start, t)!, ui->lerpDouble(a->y, b->y, t)!);
 }
 
-Alignment AlignmentDirectional::resolve(TextDirection direction) {
+Alignment AlignmentDirectionalCls::resolve(TextDirection direction) {
     assert(direction != nullptr, "Cannot resolve $runtimeType without a TextDirection.");
     ;
 }
 
-String AlignmentDirectional::toString() {
+String AlignmentDirectionalCls::toString() {
     return _stringify(start, y);
 }
 
-double AlignmentDirectional::_x() {
+double AlignmentDirectionalCls::_x() {
     return 0.0;
 }
 
-double AlignmentDirectional::_start() {
+double AlignmentDirectionalCls::_start() {
     return start;
 }
 
-double AlignmentDirectional::_y() {
+double AlignmentDirectionalCls::_y() {
     return y;
 }
 
-String AlignmentDirectional::_stringify(double start, double y) {
+String AlignmentDirectionalCls::_stringify(double start, double y) {
     if (start == -1.0 && y == -1.0) {
         return "AlignmentDirectional.topStart";
     }
@@ -280,38 +280,38 @@ String AlignmentDirectional::_stringify(double start, double y) {
     return "AlignmentDirectional(${start.toStringAsFixed(1)}, ${y.toStringAsFixed(1)})";
 }
 
-_MixedAlignment _MixedAlignment::-() {
-    return _MixedAlignment(-_x, -_start, -_y);
+_MixedAlignment _MixedAlignmentCls::-() {
+    return make<_MixedAlignmentCls>(-_x, -_start, -_y);
 }
 
-_MixedAlignment _MixedAlignment::*(double other) {
-    return _MixedAlignment(_x * other, _start * other, _y * other);
+_MixedAlignment _MixedAlignmentCls::*(double other) {
+    return make<_MixedAlignmentCls>(_x * other, _start * other, _y * other);
 }
 
-_MixedAlignment _MixedAlignment::/(double other) {
-    return _MixedAlignment(_x / other, _start / other, _y / other);
+_MixedAlignment _MixedAlignmentCls::/(double other) {
+    return make<_MixedAlignmentCls>(_x / other, _start / other, _y / other);
 }
 
-_MixedAlignment _MixedAlignment::~/(double other) {
-    return _MixedAlignment((_x ~/ other).toDouble(), (_start ~/ other).toDouble(), (_y ~/ other).toDouble());
+_MixedAlignment _MixedAlignmentCls::~/(double other) {
+    return make<_MixedAlignmentCls>((_x ~/ other)->toDouble(), (_start ~/ other)->toDouble(), (_y ~/ other)->toDouble());
 }
 
-_MixedAlignment _MixedAlignment::%(double other) {
-    return _MixedAlignment(_x % other, _start % other, _y % other);
+_MixedAlignment _MixedAlignmentCls::%(double other) {
+    return make<_MixedAlignmentCls>(_x % other, _start % other, _y % other);
 }
 
-Alignment _MixedAlignment::resolve(TextDirection direction) {
+Alignment _MixedAlignmentCls::resolve(TextDirection direction) {
     assert(direction != nullptr, "Cannot resolve $runtimeType without a TextDirection.");
     ;
 }
 
-TextAlignVertical::TextAlignVertical(double y) {
+TextAlignVerticalCls::TextAlignVerticalCls(double y) {
     {
         assert(y != nullptr);
         assert(y >= -1.0 && y <= 1.0);
     }
 }
 
-String TextAlignVertical::toString() {
+String TextAlignVerticalCls::toString() {
     return "${objectRuntimeType(this, 'TextAlignVertical')}(y: $y)";
 }

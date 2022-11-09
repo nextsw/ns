@@ -1,14 +1,14 @@
-#ifndef TOLERANCE_H
-#define TOLERANCE_H
-#include <memory>
+#ifndef PACKAGES_FLUTTER_SRC_PHYSICS_TOLERANCE
+#define PACKAGES_FLUTTER_SRC_PHYSICS_TOLERANCE
+#include <base.hpp>
 
-#include <flutter/foundation.hpp>
+#include <dart/core/core.hpp>
+#include <packages/flutter/lib/foundation.hpp>
 
 
-
-class Tolerance {
+class ToleranceCls : public ObjectCls {
 public:
-    static const Tolerance defaultTolerance;
+    static Tolerance defaultTolerance;
 
     double distance;
 
@@ -17,14 +17,15 @@ public:
     double velocity;
 
 
-     Tolerance(double distance, double time, double velocity);
-
-    String toString();
+     ToleranceCls(double distance, double time, double velocity);
+    virtual String toString();
 
 private:
-    static const double _epsilonDefault;
+    static double _epsilonDefault;
 
 
 };
+using Tolerance = std::shared_ptr<ToleranceCls>;
+
 
 #endif

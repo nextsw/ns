@@ -1,74 +1,72 @@
-#ifndef BYTE_CONVERSION_H
-#define BYTE_CONVERSION_H
-#include <memory>
+#ifndef DART_CONVERT_BYTE_CONVERSION
+#define DART_CONVERT_BYTE_CONVERSION
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
 
 
-
-
-class ByteConversionSink : ChunkedConversionSink<List<int>> {
+class ByteConversionSinkCls : public ChunkedConversionSinkCls<List<int>> {
 public:
 
-     ByteConversionSink();
+     ByteConversionSinkCls();
+    virtual void  withCallback(void callback(List<int> accumulated) ) override;
+    virtual void  from(Sink<List<int>> sink);
+    virtual void addSlice(List<int> chunk, int end, bool isLast, int start);
+private:
 
-    void  withCallback(FunctionType callback);
+};
+using ByteConversionSink = std::shared_ptr<ByteConversionSinkCls>;
 
-    void  from(Sink<List<int>> sink);
+class ByteConversionSinkBaseCls : public ByteConversionSinkCls {
+public:
 
-    void addSlice(List<int> chunk, int end, bool isLast, int start);
+    virtual void add(List<int> chunk);
+    virtual void close();
+    virtual void addSlice(List<int> chunk, int end, bool isLast, int start);
 
 private:
 
 };
+using ByteConversionSinkBase = std::shared_ptr<ByteConversionSinkBaseCls>;
 
-class ByteConversionSinkBase : ByteConversionSink {
+class _ByteAdapterSinkCls : public ByteConversionSinkBaseCls {
 public:
 
-    void add(List<int> chunk);
+    virtual void add(List<int> chunk);
 
-    void close();
-
-    void addSlice(List<int> chunk, int end, bool isLast, int start);
-
-private:
-
-};
-
-class _ByteAdapterSink : ByteConversionSinkBase {
-public:
-
-    void add(List<int> chunk);
-
-    void close();
+    virtual void close();
 
 private:
     Sink<List<int>> _sink;
 
 
-     _ByteAdapterSink(Sink<List<int>> _sink);
-
+     _ByteAdapterSinkCls(Sink<List<int>> _sink);
 };
+using _ByteAdapterSink = std::shared_ptr<_ByteAdapterSinkCls>;
 
-class _ByteCallbackSink : ByteConversionSinkBase {
+class _ByteCallbackSinkCls : public ByteConversionSinkBaseCls {
 public:
 
-    void add(Iterable<int> chunk);
+    virtual void add(Iterable<int> chunk);
 
-    void close();
+    virtual void close();
 
 private:
-    static const auto  _INITIAL_BUFFER_SIZE;
+    static auto  _INITIAL_BUFFER_SIZE;
 
-    FunctionType _callback;
+    void Function(List<int> ) _callback;
 
     List<int> _buffer;
 
     int _bufferIndex;
 
 
-     _ByteCallbackSink(FunctionType callback);
+     _ByteCallbackSinkCls(void callback(List<int> accumulated) );
 
     static int _roundToPowerOf2(int v);
 
 };
+using _ByteCallbackSink = std::shared_ptr<_ByteCallbackSinkCls>;
+
 
 #endif

@@ -1,14 +1,14 @@
-#ifndef VECTOR3_H
-#define VECTOR3_H
-#include <memory>
+#ifndef PACKAGES_VECTOR_MATH_SRC_VECTOR_MATH_64_VECTOR3
+#define PACKAGES_VECTOR_MATH_SRC_VECTOR_MATH_64_VECTOR3
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
 
 
-
-
-class Vector3 {
+class Vector3Cls : public ObjectCls {
 public:
 
-    Float64List storage();
+    virtual Float64List storage();
 
     static void min(Vector3 a, Vector3 b, Vector3 result);
 
@@ -16,954 +16,955 @@ public:
 
     static void mix(double a, Vector3 max, Vector3 min, Vector3 result);
 
-     Vector3(double x, double y, double z);
+     Vector3Cls(double x, double y, double z);
 
-    void  array(List<double> array, int offset);
+    virtual void  array(List<double> array, int offset);
 
-    void  zero();
+    virtual void  zero();
 
-    void  all(double value);
+    virtual void  all(double value);
 
-    void  copy(Vector3 other);
+    virtual void  copy(Vector3 other);
 
-    void  fromFloat64List(Float64List _v3storage);
+    virtual void  fromFloat64List(Float64List _v3storage);
+    virtual void  fromBuffer(ByteBuffer buffer, int offset);
 
-    void  fromBuffer(ByteBuffer buffer, int offset);
+    virtual void  random(Random rng);
 
-    void  random(Random rng);
+    virtual void setValues(double x, double y, double z);
 
-    void setValues(double x, double y, double z);
+    virtual void setZero();
 
-    void setZero();
+    virtual void setFrom(Vector3 other);
 
-    void setFrom(Vector3 other);
+    virtual void splat(double arg);
 
-    void splat(double arg);
+    virtual String toString();
 
-    String toString();
+    virtual bool operator==(Object other);
 
-    bool ==(Object other);
+    virtual int hashCode();
 
-    int hashCode();
+    virtual Vector3 operator-();
 
-    Vector3 -();
+    virtual Vector3 operator-(Vector3 other);
 
-    Vector3 -(Vector3 other);
+    virtual Vector3 operator+(Vector3 other);
 
-    Vector3 +(Vector3 other);
+    virtual Vector3 operator/(double scale);
 
-    Vector3 /(double scale);
+    virtual Vector3 operator*(double scale);
 
-    Vector3 *(double scale);
+    virtual double operator[](int i);
 
-    double [](int i);
+    virtual void operator[]=(int i, double v);
 
-    void []=(int i, double v);
+    virtual void  length(double value);
 
-    void  length(double value);
+    virtual double length();
 
-    double length();
+    virtual double length2();
 
-    double length2();
+    virtual double normalize();
 
-    double normalize();
+    virtual double normalizeLength();
 
-    double normalizeLength();
+    virtual Vector3 normalized();
 
-    Vector3 normalized();
+    virtual Vector3 normalizeInto(Vector3 out);
 
-    Vector3 normalizeInto(Vector3 out);
+    virtual double distanceTo(Vector3 arg);
 
-    double distanceTo(Vector3 arg);
+    virtual double distanceToSquared(Vector3 arg);
 
-    double distanceToSquared(Vector3 arg);
+    virtual double angleTo(Vector3 other);
 
-    double angleTo(Vector3 other);
+    virtual double angleToSigned(Vector3 normal, Vector3 other);
 
-    double angleToSigned(Vector3 normal, Vector3 other);
+    virtual double dot(Vector3 other);
 
-    double dot(Vector3 other);
+    virtual void postmultiply(Matrix3 arg);
 
-    void postmultiply(Matrix3 arg);
+    virtual Vector3 cross(Vector3 other);
 
-    Vector3 cross(Vector3 other);
+    virtual Vector3 crossInto(Vector3 other, Vector3 out);
 
-    Vector3 crossInto(Vector3 other, Vector3 out);
+    virtual void reflect(Vector3 normal);
 
-    void reflect(Vector3 normal);
+    virtual Vector3 reflected(Vector3 normal);
 
-    Vector3 reflected(Vector3 normal);
+    virtual void applyProjection(Matrix4 arg);
 
-    void applyProjection(Matrix4 arg);
+    virtual void applyAxisAngle(double angle, Vector3 axis);
 
-    void applyAxisAngle(double angle, Vector3 axis);
+    virtual void applyQuaternion(Quaternion arg);
 
-    void applyQuaternion(Quaternion arg);
+    virtual void applyMatrix3(Matrix3 arg);
 
-    void applyMatrix3(Matrix3 arg);
+    virtual void applyMatrix4(Matrix4 arg);
 
-    void applyMatrix4(Matrix4 arg);
+    virtual double relativeError(Vector3 correct);
 
-    double relativeError(Vector3 correct);
+    virtual double absoluteError(Vector3 correct);
 
-    double absoluteError(Vector3 correct);
+    virtual bool isInfinite();
 
-    bool isInfinite();
+    virtual bool isNaN();
 
-    bool isNaN();
+    virtual void add(Vector3 arg);
 
-    void add(Vector3 arg);
+    virtual void addScaled(Vector3 arg, double factor);
 
-    void addScaled(Vector3 arg, double factor);
+    virtual void sub(Vector3 arg);
 
-    void sub(Vector3 arg);
+    virtual void multiply(Vector3 arg);
 
-    void multiply(Vector3 arg);
+    virtual void divide(Vector3 arg);
 
-    void divide(Vector3 arg);
+    virtual void scale(double arg);
 
-    void scale(double arg);
+    virtual Vector3 scaled(double arg);
 
-    Vector3 scaled(double arg);
+    virtual void negate();
 
-    void negate();
+    virtual void absolute();
 
-    void absolute();
+    virtual void clamp(Vector3 max, Vector3 min);
 
-    void clamp(Vector3 max, Vector3 min);
+    virtual void clampScalar(double max, double min);
 
-    void clampScalar(double max, double min);
+    virtual void floor();
 
-    void floor();
+    virtual void ceil();
 
-    void ceil();
+    virtual void round();
 
-    void round();
+    virtual void roundToZero();
 
-    void roundToZero();
+    virtual Vector3 clone();
 
-    Vector3 clone();
+    virtual Vector3 copyInto(Vector3 arg);
 
-    Vector3 copyInto(Vector3 arg);
+    virtual void copyIntoArray(List<double> array, int offset);
 
-    void copyIntoArray(List<double> array, int offset);
+    virtual void copyFromArray(List<double> array, int offset);
 
-    void copyFromArray(List<double> array, int offset);
+    virtual void  xy(Vector2 arg);
 
-    void  xy(Vector2 arg);
+    virtual void  xz(Vector2 arg);
 
-    void  xz(Vector2 arg);
+    virtual void  yx(Vector2 arg);
 
-    void  yx(Vector2 arg);
+    virtual void  yz(Vector2 arg);
 
-    void  yz(Vector2 arg);
+    virtual void  zx(Vector2 arg);
 
-    void  zx(Vector2 arg);
+    virtual void  zy(Vector2 arg);
 
-    void  zy(Vector2 arg);
+    virtual void  xyz(Vector3 arg);
 
-    void  xyz(Vector3 arg);
+    virtual void  xzy(Vector3 arg);
 
-    void  xzy(Vector3 arg);
+    virtual void  yxz(Vector3 arg);
 
-    void  yxz(Vector3 arg);
+    virtual void  yzx(Vector3 arg);
 
-    void  yzx(Vector3 arg);
+    virtual void  zxy(Vector3 arg);
 
-    void  zxy(Vector3 arg);
+    virtual void  zyx(Vector3 arg);
 
-    void  zyx(Vector3 arg);
+    virtual void  r(double arg);
 
-    void  r(double arg);
+    virtual void  g(double arg);
 
-    void  g(double arg);
+    virtual void  b(double arg);
 
-    void  b(double arg);
+    virtual void  s(double arg);
 
-    void  s(double arg);
+    virtual void  t(double arg);
 
-    void  t(double arg);
+    virtual void  p(double arg);
 
-    void  p(double arg);
+    virtual void  x(double arg);
 
-    void  x(double arg);
+    virtual void  y(double arg);
 
-    void  y(double arg);
+    virtual void  z(double arg);
 
-    void  z(double arg);
+    virtual void  rg(Vector2 arg);
 
-    void  rg(Vector2 arg);
+    virtual void  rb(Vector2 arg);
 
-    void  rb(Vector2 arg);
+    virtual void  gr(Vector2 arg);
 
-    void  gr(Vector2 arg);
+    virtual void  gb(Vector2 arg);
 
-    void  gb(Vector2 arg);
+    virtual void  br(Vector2 arg);
 
-    void  br(Vector2 arg);
+    virtual void  bg(Vector2 arg);
 
-    void  bg(Vector2 arg);
+    virtual void  rgb(Vector3 arg);
 
-    void  rgb(Vector3 arg);
+    virtual void  rbg(Vector3 arg);
 
-    void  rbg(Vector3 arg);
+    virtual void  grb(Vector3 arg);
 
-    void  grb(Vector3 arg);
+    virtual void  gbr(Vector3 arg);
 
-    void  gbr(Vector3 arg);
+    virtual void  brg(Vector3 arg);
 
-    void  brg(Vector3 arg);
+    virtual void  bgr(Vector3 arg);
 
-    void  bgr(Vector3 arg);
+    virtual void  st(Vector2 arg);
 
-    void  st(Vector2 arg);
+    virtual void  sp(Vector2 arg);
 
-    void  sp(Vector2 arg);
+    virtual void  ts(Vector2 arg);
 
-    void  ts(Vector2 arg);
+    virtual void  tp(Vector2 arg);
 
-    void  tp(Vector2 arg);
+    virtual void  ps(Vector2 arg);
 
-    void  ps(Vector2 arg);
+    virtual void  pt(Vector2 arg);
 
-    void  pt(Vector2 arg);
+    virtual void  stp(Vector3 arg);
 
-    void  stp(Vector3 arg);
+    virtual void  spt(Vector3 arg);
 
-    void  spt(Vector3 arg);
+    virtual void  tsp(Vector3 arg);
 
-    void  tsp(Vector3 arg);
+    virtual void  tps(Vector3 arg);
 
-    void  tps(Vector3 arg);
+    virtual void  pst(Vector3 arg);
 
-    void  pst(Vector3 arg);
+    virtual void  pts(Vector3 arg);
 
-    void  pts(Vector3 arg);
+    virtual Vector2 xx();
 
-    Vector2 xx();
+    virtual Vector2 xy();
 
-    Vector2 xy();
+    virtual Vector2 xz();
 
-    Vector2 xz();
+    virtual Vector2 yx();
 
-    Vector2 yx();
+    virtual Vector2 yy();
 
-    Vector2 yy();
+    virtual Vector2 yz();
 
-    Vector2 yz();
+    virtual Vector2 zx();
 
-    Vector2 zx();
+    virtual Vector2 zy();
 
-    Vector2 zy();
+    virtual Vector2 zz();
 
-    Vector2 zz();
+    virtual Vector3 xxx();
 
-    Vector3 xxx();
+    virtual Vector3 xxy();
 
-    Vector3 xxy();
+    virtual Vector3 xxz();
 
-    Vector3 xxz();
+    virtual Vector3 xyx();
 
-    Vector3 xyx();
+    virtual Vector3 xyy();
 
-    Vector3 xyy();
+    virtual Vector3 xyz();
 
-    Vector3 xyz();
+    virtual Vector3 xzx();
 
-    Vector3 xzx();
+    virtual Vector3 xzy();
 
-    Vector3 xzy();
+    virtual Vector3 xzz();
 
-    Vector3 xzz();
+    virtual Vector3 yxx();
 
-    Vector3 yxx();
+    virtual Vector3 yxy();
 
-    Vector3 yxy();
+    virtual Vector3 yxz();
 
-    Vector3 yxz();
+    virtual Vector3 yyx();
 
-    Vector3 yyx();
+    virtual Vector3 yyy();
 
-    Vector3 yyy();
+    virtual Vector3 yyz();
 
-    Vector3 yyz();
+    virtual Vector3 yzx();
 
-    Vector3 yzx();
+    virtual Vector3 yzy();
 
-    Vector3 yzy();
+    virtual Vector3 yzz();
 
-    Vector3 yzz();
+    virtual Vector3 zxx();
 
-    Vector3 zxx();
+    virtual Vector3 zxy();
 
-    Vector3 zxy();
+    virtual Vector3 zxz();
 
-    Vector3 zxz();
+    virtual Vector3 zyx();
 
-    Vector3 zyx();
+    virtual Vector3 zyy();
 
-    Vector3 zyy();
+    virtual Vector3 zyz();
 
-    Vector3 zyz();
+    virtual Vector3 zzx();
 
-    Vector3 zzx();
+    virtual Vector3 zzy();
 
-    Vector3 zzy();
+    virtual Vector3 zzz();
 
-    Vector3 zzz();
+    virtual Vector4 xxxx();
 
-    Vector4 xxxx();
+    virtual Vector4 xxxy();
 
-    Vector4 xxxy();
+    virtual Vector4 xxxz();
 
-    Vector4 xxxz();
+    virtual Vector4 xxyx();
 
-    Vector4 xxyx();
+    virtual Vector4 xxyy();
 
-    Vector4 xxyy();
+    virtual Vector4 xxyz();
 
-    Vector4 xxyz();
+    virtual Vector4 xxzx();
 
-    Vector4 xxzx();
+    virtual Vector4 xxzy();
 
-    Vector4 xxzy();
+    virtual Vector4 xxzz();
 
-    Vector4 xxzz();
+    virtual Vector4 xyxx();
 
-    Vector4 xyxx();
+    virtual Vector4 xyxy();
 
-    Vector4 xyxy();
+    virtual Vector4 xyxz();
 
-    Vector4 xyxz();
+    virtual Vector4 xyyx();
 
-    Vector4 xyyx();
+    virtual Vector4 xyyy();
 
-    Vector4 xyyy();
+    virtual Vector4 xyyz();
 
-    Vector4 xyyz();
+    virtual Vector4 xyzx();
 
-    Vector4 xyzx();
+    virtual Vector4 xyzy();
 
-    Vector4 xyzy();
+    virtual Vector4 xyzz();
 
-    Vector4 xyzz();
+    virtual Vector4 xzxx();
 
-    Vector4 xzxx();
+    virtual Vector4 xzxy();
 
-    Vector4 xzxy();
+    virtual Vector4 xzxz();
 
-    Vector4 xzxz();
+    virtual Vector4 xzyx();
 
-    Vector4 xzyx();
+    virtual Vector4 xzyy();
 
-    Vector4 xzyy();
+    virtual Vector4 xzyz();
 
-    Vector4 xzyz();
+    virtual Vector4 xzzx();
 
-    Vector4 xzzx();
+    virtual Vector4 xzzy();
 
-    Vector4 xzzy();
+    virtual Vector4 xzzz();
 
-    Vector4 xzzz();
+    virtual Vector4 yxxx();
 
-    Vector4 yxxx();
+    virtual Vector4 yxxy();
 
-    Vector4 yxxy();
+    virtual Vector4 yxxz();
 
-    Vector4 yxxz();
+    virtual Vector4 yxyx();
 
-    Vector4 yxyx();
+    virtual Vector4 yxyy();
 
-    Vector4 yxyy();
+    virtual Vector4 yxyz();
 
-    Vector4 yxyz();
+    virtual Vector4 yxzx();
 
-    Vector4 yxzx();
+    virtual Vector4 yxzy();
 
-    Vector4 yxzy();
+    virtual Vector4 yxzz();
 
-    Vector4 yxzz();
+    virtual Vector4 yyxx();
 
-    Vector4 yyxx();
+    virtual Vector4 yyxy();
 
-    Vector4 yyxy();
+    virtual Vector4 yyxz();
 
-    Vector4 yyxz();
+    virtual Vector4 yyyx();
 
-    Vector4 yyyx();
+    virtual Vector4 yyyy();
 
-    Vector4 yyyy();
+    virtual Vector4 yyyz();
 
-    Vector4 yyyz();
+    virtual Vector4 yyzx();
 
-    Vector4 yyzx();
+    virtual Vector4 yyzy();
 
-    Vector4 yyzy();
+    virtual Vector4 yyzz();
 
-    Vector4 yyzz();
+    virtual Vector4 yzxx();
 
-    Vector4 yzxx();
+    virtual Vector4 yzxy();
 
-    Vector4 yzxy();
+    virtual Vector4 yzxz();
 
-    Vector4 yzxz();
+    virtual Vector4 yzyx();
 
-    Vector4 yzyx();
+    virtual Vector4 yzyy();
 
-    Vector4 yzyy();
+    virtual Vector4 yzyz();
 
-    Vector4 yzyz();
+    virtual Vector4 yzzx();
 
-    Vector4 yzzx();
+    virtual Vector4 yzzy();
 
-    Vector4 yzzy();
+    virtual Vector4 yzzz();
 
-    Vector4 yzzz();
+    virtual Vector4 zxxx();
 
-    Vector4 zxxx();
+    virtual Vector4 zxxy();
 
-    Vector4 zxxy();
+    virtual Vector4 zxxz();
 
-    Vector4 zxxz();
+    virtual Vector4 zxyx();
 
-    Vector4 zxyx();
+    virtual Vector4 zxyy();
 
-    Vector4 zxyy();
+    virtual Vector4 zxyz();
 
-    Vector4 zxyz();
+    virtual Vector4 zxzx();
 
-    Vector4 zxzx();
+    virtual Vector4 zxzy();
 
-    Vector4 zxzy();
+    virtual Vector4 zxzz();
 
-    Vector4 zxzz();
+    virtual Vector4 zyxx();
 
-    Vector4 zyxx();
+    virtual Vector4 zyxy();
 
-    Vector4 zyxy();
+    virtual Vector4 zyxz();
 
-    Vector4 zyxz();
+    virtual Vector4 zyyx();
 
-    Vector4 zyyx();
+    virtual Vector4 zyyy();
 
-    Vector4 zyyy();
+    virtual Vector4 zyyz();
 
-    Vector4 zyyz();
+    virtual Vector4 zyzx();
 
-    Vector4 zyzx();
+    virtual Vector4 zyzy();
 
-    Vector4 zyzy();
+    virtual Vector4 zyzz();
 
-    Vector4 zyzz();
+    virtual Vector4 zzxx();
 
-    Vector4 zzxx();
+    virtual Vector4 zzxy();
 
-    Vector4 zzxy();
+    virtual Vector4 zzxz();
 
-    Vector4 zzxz();
+    virtual Vector4 zzyx();
 
-    Vector4 zzyx();
+    virtual Vector4 zzyy();
 
-    Vector4 zzyy();
+    virtual Vector4 zzyz();
 
-    Vector4 zzyz();
+    virtual Vector4 zzzx();
 
-    Vector4 zzzx();
+    virtual Vector4 zzzy();
 
-    Vector4 zzzy();
+    virtual Vector4 zzzz();
 
-    Vector4 zzzz();
+    virtual double r();
 
-    double r();
+    virtual double g();
 
-    double g();
+    virtual double b();
 
-    double b();
+    virtual double s();
 
-    double s();
+    virtual double t();
 
-    double t();
+    virtual double p();
 
-    double p();
+    virtual double x();
 
-    double x();
+    virtual double y();
 
-    double y();
+    virtual double z();
 
-    double z();
+    virtual Vector2 rr();
 
-    Vector2 rr();
+    virtual Vector2 rg();
 
-    Vector2 rg();
+    virtual Vector2 rb();
 
-    Vector2 rb();
+    virtual Vector2 gr();
 
-    Vector2 gr();
+    virtual Vector2 gg();
 
-    Vector2 gg();
+    virtual Vector2 gb();
 
-    Vector2 gb();
+    virtual Vector2 br();
 
-    Vector2 br();
+    virtual Vector2 bg();
 
-    Vector2 bg();
+    virtual Vector2 bb();
 
-    Vector2 bb();
+    virtual Vector3 rrr();
 
-    Vector3 rrr();
+    virtual Vector3 rrg();
 
-    Vector3 rrg();
+    virtual Vector3 rrb();
 
-    Vector3 rrb();
+    virtual Vector3 rgr();
 
-    Vector3 rgr();
+    virtual Vector3 rgg();
 
-    Vector3 rgg();
+    virtual Vector3 rgb();
 
-    Vector3 rgb();
+    virtual Vector3 rbr();
 
-    Vector3 rbr();
+    virtual Vector3 rbg();
 
-    Vector3 rbg();
+    virtual Vector3 rbb();
 
-    Vector3 rbb();
+    virtual Vector3 grr();
 
-    Vector3 grr();
+    virtual Vector3 grg();
 
-    Vector3 grg();
+    virtual Vector3 grb();
 
-    Vector3 grb();
+    virtual Vector3 ggr();
 
-    Vector3 ggr();
+    virtual Vector3 ggg();
 
-    Vector3 ggg();
+    virtual Vector3 ggb();
 
-    Vector3 ggb();
+    virtual Vector3 gbr();
 
-    Vector3 gbr();
+    virtual Vector3 gbg();
 
-    Vector3 gbg();
+    virtual Vector3 gbb();
 
-    Vector3 gbb();
+    virtual Vector3 brr();
 
-    Vector3 brr();
+    virtual Vector3 brg();
 
-    Vector3 brg();
+    virtual Vector3 brb();
 
-    Vector3 brb();
+    virtual Vector3 bgr();
 
-    Vector3 bgr();
+    virtual Vector3 bgg();
 
-    Vector3 bgg();
+    virtual Vector3 bgb();
 
-    Vector3 bgb();
+    virtual Vector3 bbr();
 
-    Vector3 bbr();
+    virtual Vector3 bbg();
 
-    Vector3 bbg();
+    virtual Vector3 bbb();
 
-    Vector3 bbb();
+    virtual Vector4 rrrr();
 
-    Vector4 rrrr();
+    virtual Vector4 rrrg();
 
-    Vector4 rrrg();
+    virtual Vector4 rrrb();
 
-    Vector4 rrrb();
+    virtual Vector4 rrgr();
 
-    Vector4 rrgr();
+    virtual Vector4 rrgg();
 
-    Vector4 rrgg();
+    virtual Vector4 rrgb();
 
-    Vector4 rrgb();
+    virtual Vector4 rrbr();
 
-    Vector4 rrbr();
+    virtual Vector4 rrbg();
 
-    Vector4 rrbg();
+    virtual Vector4 rrbb();
 
-    Vector4 rrbb();
+    virtual Vector4 rgrr();
 
-    Vector4 rgrr();
+    virtual Vector4 rgrg();
 
-    Vector4 rgrg();
+    virtual Vector4 rgrb();
 
-    Vector4 rgrb();
+    virtual Vector4 rggr();
 
-    Vector4 rggr();
+    virtual Vector4 rggg();
 
-    Vector4 rggg();
+    virtual Vector4 rggb();
 
-    Vector4 rggb();
+    virtual Vector4 rgbr();
 
-    Vector4 rgbr();
+    virtual Vector4 rgbg();
 
-    Vector4 rgbg();
+    virtual Vector4 rgbb();
 
-    Vector4 rgbb();
+    virtual Vector4 rbrr();
 
-    Vector4 rbrr();
+    virtual Vector4 rbrg();
 
-    Vector4 rbrg();
+    virtual Vector4 rbrb();
 
-    Vector4 rbrb();
+    virtual Vector4 rbgr();
 
-    Vector4 rbgr();
+    virtual Vector4 rbgg();
 
-    Vector4 rbgg();
+    virtual Vector4 rbgb();
 
-    Vector4 rbgb();
+    virtual Vector4 rbbr();
 
-    Vector4 rbbr();
+    virtual Vector4 rbbg();
 
-    Vector4 rbbg();
+    virtual Vector4 rbbb();
 
-    Vector4 rbbb();
+    virtual Vector4 grrr();
 
-    Vector4 grrr();
+    virtual Vector4 grrg();
 
-    Vector4 grrg();
+    virtual Vector4 grrb();
 
-    Vector4 grrb();
+    virtual Vector4 grgr();
 
-    Vector4 grgr();
+    virtual Vector4 grgg();
 
-    Vector4 grgg();
+    virtual Vector4 grgb();
 
-    Vector4 grgb();
+    virtual Vector4 grbr();
 
-    Vector4 grbr();
+    virtual Vector4 grbg();
 
-    Vector4 grbg();
+    virtual Vector4 grbb();
 
-    Vector4 grbb();
+    virtual Vector4 ggrr();
 
-    Vector4 ggrr();
+    virtual Vector4 ggrg();
 
-    Vector4 ggrg();
+    virtual Vector4 ggrb();
 
-    Vector4 ggrb();
+    virtual Vector4 gggr();
 
-    Vector4 gggr();
+    virtual Vector4 gggg();
 
-    Vector4 gggg();
+    virtual Vector4 gggb();
 
-    Vector4 gggb();
+    virtual Vector4 ggbr();
 
-    Vector4 ggbr();
+    virtual Vector4 ggbg();
 
-    Vector4 ggbg();
+    virtual Vector4 ggbb();
 
-    Vector4 ggbb();
+    virtual Vector4 gbrr();
 
-    Vector4 gbrr();
+    virtual Vector4 gbrg();
 
-    Vector4 gbrg();
+    virtual Vector4 gbrb();
 
-    Vector4 gbrb();
+    virtual Vector4 gbgr();
 
-    Vector4 gbgr();
+    virtual Vector4 gbgg();
 
-    Vector4 gbgg();
+    virtual Vector4 gbgb();
 
-    Vector4 gbgb();
+    virtual Vector4 gbbr();
 
-    Vector4 gbbr();
+    virtual Vector4 gbbg();
 
-    Vector4 gbbg();
+    virtual Vector4 gbbb();
 
-    Vector4 gbbb();
+    virtual Vector4 brrr();
 
-    Vector4 brrr();
+    virtual Vector4 brrg();
 
-    Vector4 brrg();
+    virtual Vector4 brrb();
 
-    Vector4 brrb();
+    virtual Vector4 brgr();
 
-    Vector4 brgr();
+    virtual Vector4 brgg();
 
-    Vector4 brgg();
+    virtual Vector4 brgb();
 
-    Vector4 brgb();
+    virtual Vector4 brbr();
 
-    Vector4 brbr();
+    virtual Vector4 brbg();
 
-    Vector4 brbg();
+    virtual Vector4 brbb();
 
-    Vector4 brbb();
+    virtual Vector4 bgrr();
 
-    Vector4 bgrr();
+    virtual Vector4 bgrg();
 
-    Vector4 bgrg();
+    virtual Vector4 bgrb();
 
-    Vector4 bgrb();
+    virtual Vector4 bggr();
 
-    Vector4 bggr();
+    virtual Vector4 bggg();
 
-    Vector4 bggg();
+    virtual Vector4 bggb();
 
-    Vector4 bggb();
+    virtual Vector4 bgbr();
 
-    Vector4 bgbr();
+    virtual Vector4 bgbg();
 
-    Vector4 bgbg();
+    virtual Vector4 bgbb();
 
-    Vector4 bgbb();
+    virtual Vector4 bbrr();
 
-    Vector4 bbrr();
+    virtual Vector4 bbrg();
 
-    Vector4 bbrg();
+    virtual Vector4 bbrb();
 
-    Vector4 bbrb();
+    virtual Vector4 bbgr();
 
-    Vector4 bbgr();
+    virtual Vector4 bbgg();
 
-    Vector4 bbgg();
+    virtual Vector4 bbgb();
 
-    Vector4 bbgb();
+    virtual Vector4 bbbr();
 
-    Vector4 bbbr();
+    virtual Vector4 bbbg();
 
-    Vector4 bbbg();
+    virtual Vector4 bbbb();
 
-    Vector4 bbbb();
+    virtual Vector2 ss();
 
-    Vector2 ss();
+    virtual Vector2 st();
 
-    Vector2 st();
+    virtual Vector2 sp();
 
-    Vector2 sp();
+    virtual Vector2 ts();
 
-    Vector2 ts();
+    virtual Vector2 tt();
 
-    Vector2 tt();
+    virtual Vector2 tp();
 
-    Vector2 tp();
+    virtual Vector2 ps();
 
-    Vector2 ps();
+    virtual Vector2 pt();
 
-    Vector2 pt();
+    virtual Vector2 pp();
 
-    Vector2 pp();
+    virtual Vector3 sss();
 
-    Vector3 sss();
+    virtual Vector3 sst();
 
-    Vector3 sst();
+    virtual Vector3 ssp();
 
-    Vector3 ssp();
+    virtual Vector3 sts();
 
-    Vector3 sts();
+    virtual Vector3 stt();
 
-    Vector3 stt();
+    virtual Vector3 stp();
 
-    Vector3 stp();
+    virtual Vector3 sps();
 
-    Vector3 sps();
+    virtual Vector3 spt();
 
-    Vector3 spt();
+    virtual Vector3 spp();
 
-    Vector3 spp();
+    virtual Vector3 tss();
 
-    Vector3 tss();
+    virtual Vector3 tst();
 
-    Vector3 tst();
+    virtual Vector3 tsp();
 
-    Vector3 tsp();
+    virtual Vector3 tts();
 
-    Vector3 tts();
+    virtual Vector3 ttt();
 
-    Vector3 ttt();
+    virtual Vector3 ttp();
 
-    Vector3 ttp();
+    virtual Vector3 tps();
 
-    Vector3 tps();
+    virtual Vector3 tpt();
 
-    Vector3 tpt();
+    virtual Vector3 tpp();
 
-    Vector3 tpp();
+    virtual Vector3 pss();
 
-    Vector3 pss();
+    virtual Vector3 pst();
 
-    Vector3 pst();
+    virtual Vector3 psp();
 
-    Vector3 psp();
+    virtual Vector3 pts();
 
-    Vector3 pts();
+    virtual Vector3 ptt();
 
-    Vector3 ptt();
+    virtual Vector3 ptp();
 
-    Vector3 ptp();
+    virtual Vector3 pps();
 
-    Vector3 pps();
+    virtual Vector3 ppt();
 
-    Vector3 ppt();
+    virtual Vector3 ppp();
 
-    Vector3 ppp();
+    virtual Vector4 ssss();
 
-    Vector4 ssss();
+    virtual Vector4 ssst();
 
-    Vector4 ssst();
+    virtual Vector4 sssp();
 
-    Vector4 sssp();
+    virtual Vector4 ssts();
 
-    Vector4 ssts();
+    virtual Vector4 sstt();
 
-    Vector4 sstt();
+    virtual Vector4 sstp();
 
-    Vector4 sstp();
+    virtual Vector4 ssps();
 
-    Vector4 ssps();
+    virtual Vector4 sspt();
 
-    Vector4 sspt();
+    virtual Vector4 sspp();
 
-    Vector4 sspp();
+    virtual Vector4 stss();
 
-    Vector4 stss();
+    virtual Vector4 stst();
 
-    Vector4 stst();
+    virtual Vector4 stsp();
 
-    Vector4 stsp();
+    virtual Vector4 stts();
 
-    Vector4 stts();
+    virtual Vector4 sttt();
 
-    Vector4 sttt();
+    virtual Vector4 sttp();
 
-    Vector4 sttp();
+    virtual Vector4 stps();
 
-    Vector4 stps();
+    virtual Vector4 stpt();
 
-    Vector4 stpt();
+    virtual Vector4 stpp();
 
-    Vector4 stpp();
+    virtual Vector4 spss();
 
-    Vector4 spss();
+    virtual Vector4 spst();
 
-    Vector4 spst();
+    virtual Vector4 spsp();
 
-    Vector4 spsp();
+    virtual Vector4 spts();
 
-    Vector4 spts();
+    virtual Vector4 sptt();
 
-    Vector4 sptt();
+    virtual Vector4 sptp();
 
-    Vector4 sptp();
+    virtual Vector4 spps();
 
-    Vector4 spps();
+    virtual Vector4 sppt();
 
-    Vector4 sppt();
+    virtual Vector4 sppp();
 
-    Vector4 sppp();
+    virtual Vector4 tsss();
 
-    Vector4 tsss();
+    virtual Vector4 tsst();
 
-    Vector4 tsst();
+    virtual Vector4 tssp();
 
-    Vector4 tssp();
+    virtual Vector4 tsts();
 
-    Vector4 tsts();
+    virtual Vector4 tstt();
 
-    Vector4 tstt();
+    virtual Vector4 tstp();
 
-    Vector4 tstp();
+    virtual Vector4 tsps();
 
-    Vector4 tsps();
+    virtual Vector4 tspt();
 
-    Vector4 tspt();
+    virtual Vector4 tspp();
 
-    Vector4 tspp();
+    virtual Vector4 ttss();
 
-    Vector4 ttss();
+    virtual Vector4 ttst();
 
-    Vector4 ttst();
+    virtual Vector4 ttsp();
 
-    Vector4 ttsp();
+    virtual Vector4 ttts();
 
-    Vector4 ttts();
+    virtual Vector4 tttt();
 
-    Vector4 tttt();
+    virtual Vector4 tttp();
 
-    Vector4 tttp();
+    virtual Vector4 ttps();
 
-    Vector4 ttps();
+    virtual Vector4 ttpt();
 
-    Vector4 ttpt();
+    virtual Vector4 ttpp();
 
-    Vector4 ttpp();
+    virtual Vector4 tpss();
 
-    Vector4 tpss();
+    virtual Vector4 tpst();
 
-    Vector4 tpst();
+    virtual Vector4 tpsp();
 
-    Vector4 tpsp();
+    virtual Vector4 tpts();
 
-    Vector4 tpts();
+    virtual Vector4 tptt();
 
-    Vector4 tptt();
+    virtual Vector4 tptp();
 
-    Vector4 tptp();
+    virtual Vector4 tpps();
 
-    Vector4 tpps();
+    virtual Vector4 tppt();
 
-    Vector4 tppt();
+    virtual Vector4 tppp();
 
-    Vector4 tppp();
+    virtual Vector4 psss();
 
-    Vector4 psss();
+    virtual Vector4 psst();
 
-    Vector4 psst();
+    virtual Vector4 pssp();
 
-    Vector4 pssp();
+    virtual Vector4 psts();
 
-    Vector4 psts();
+    virtual Vector4 pstt();
 
-    Vector4 pstt();
+    virtual Vector4 pstp();
 
-    Vector4 pstp();
+    virtual Vector4 psps();
 
-    Vector4 psps();
+    virtual Vector4 pspt();
 
-    Vector4 pspt();
+    virtual Vector4 pspp();
 
-    Vector4 pspp();
+    virtual Vector4 ptss();
 
-    Vector4 ptss();
+    virtual Vector4 ptst();
 
-    Vector4 ptst();
+    virtual Vector4 ptsp();
 
-    Vector4 ptsp();
+    virtual Vector4 ptts();
 
-    Vector4 ptts();
+    virtual Vector4 pttt();
 
-    Vector4 pttt();
+    virtual Vector4 pttp();
 
-    Vector4 pttp();
+    virtual Vector4 ptps();
 
-    Vector4 ptps();
+    virtual Vector4 ptpt();
 
-    Vector4 ptpt();
+    virtual Vector4 ptpp();
 
-    Vector4 ptpp();
+    virtual Vector4 ppss();
 
-    Vector4 ppss();
+    virtual Vector4 ppst();
 
-    Vector4 ppst();
+    virtual Vector4 ppsp();
 
-    Vector4 ppsp();
+    virtual Vector4 ppts();
 
-    Vector4 ppts();
+    virtual Vector4 pptt();
 
-    Vector4 pptt();
+    virtual Vector4 pptp();
 
-    Vector4 pptp();
+    virtual Vector4 ppps();
 
-    Vector4 ppps();
+    virtual Vector4 pppt();
 
-    Vector4 pppt();
-
-    Vector4 pppp();
+    virtual Vector4 pppp();
 
 private:
     Float64List _v3storage;
 
 
 };
+using Vector3 = std::shared_ptr<Vector3Cls>;
+
 
 #endif

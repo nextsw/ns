@@ -1,16 +1,16 @@
-#ifndef SPRING_SIMULATION_H
-#define SPRING_SIMULATION_H
-#include <memory>
+#ifndef PACKAGES_FLUTTER_SRC_PHYSICS_SPRING_SIMULATION
+#define PACKAGES_FLUTTER_SRC_PHYSICS_SPRING_SIMULATION
+#include <base.hpp>
 #include "tolerance.hpp"
 
-#include <math/math.hpp>
-#include <flutter/foundation.hpp>
+#include <dart/core/core.hpp>
+#include <dart/math/math.hpp>
+#include <packages/flutter/lib/foundation.hpp>
 #include "simulation.hpp"
 #include "utils.hpp"
 
 
-
-class SpringDescription {
+class SpringDescriptionCls : public ObjectCls {
 public:
     double mass;
 
@@ -19,15 +19,15 @@ public:
     double damping;
 
 
-     SpringDescription(double damping, double mass, double stiffness);
+     SpringDescriptionCls(double damping, double mass, double stiffness);
+    virtual void  withDampingRatio(double mass, double ratio, double stiffness);
 
-    void  withDampingRatio(double mass, double ratio, double stiffness);
-
-    String toString();
+    virtual String toString();
 
 private:
 
 };
+using SpringDescription = std::shared_ptr<SpringDescriptionCls>;
 
 enum SpringType{
     criticallyDamped,
@@ -35,20 +35,20 @@ enum SpringType{
     overDamped,
 } // end SpringType
 
-class SpringSimulation : Simulation {
+class SpringSimulationCls : public SimulationCls {
 public:
 
-     SpringSimulation(double end, SpringDescription spring, double start, Unknown, double velocity);
+     SpringSimulationCls(double end, SpringDescription spring, double start, Unknown tolerance, double velocity);
 
-    SpringType type();
+    virtual SpringType type();
 
-    double x(double time);
+    virtual double x(double time);
 
-    double dx(double time);
+    virtual double dx(double time);
 
-    bool isDone(double time);
+    virtual bool isDone(double time);
 
-    String toString();
+    virtual String toString();
 
 private:
     double _endPosition;
@@ -57,31 +57,31 @@ private:
 
 
 };
+using SpringSimulation = std::shared_ptr<SpringSimulationCls>;
 
-class ScrollSpringSimulation : SpringSimulation {
+class ScrollSpringSimulationCls : public SpringSimulationCls {
 public:
 
-     ScrollSpringSimulation(Unknown, Unknown, Unknown, Unknown, Unknown);
-
-    double x(double time);
+     ScrollSpringSimulationCls(Unknown end, Unknown spring, Unknown start, Unknown tolerance, Unknown velocity);
+    virtual double x(double time);
 
 private:
 
 };
+using ScrollSpringSimulation = std::shared_ptr<ScrollSpringSimulationCls>;
 
-class _SpringSolution {
+class _SpringSolutionCls : public ObjectCls {
 public:
 
-    double x(double time);
-
-    double dx(double time);
-
-    SpringType type();
-
+    virtual double x(double time);
+    virtual double dx(double time);
+    virtual SpringType type();
 private:
 
-     _SpringSolution(double initialPosition, double initialVelocity, SpringDescription spring);
+     _SpringSolutionCls(double initialPosition, double initialVelocity, SpringDescription spring);
 
 };
+using _SpringSolution = std::shared_ptr<_SpringSolutionCls>;
+
 
 #endif

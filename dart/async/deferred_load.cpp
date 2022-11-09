@@ -1,10 +1,10 @@
 #include "deferred_load.hpp"
-DeferredLoadException::DeferredLoadException(String message) {
+DeferredLoadExceptionCls::DeferredLoadExceptionCls(String message) {
     {
         _s = message;
     }
 }
 
-String DeferredLoadException::toString() {
+String DeferredLoadExceptionCls::toString() {
     return "DeferredLoadException: '$_s'";
 }

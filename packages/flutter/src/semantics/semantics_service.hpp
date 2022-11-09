@@ -1,15 +1,15 @@
-#ifndef SEMANTICS_SERVICE_H
-#define SEMANTICS_SERVICE_H
-#include <memory>
-#include <ui.hpp>
+#ifndef PACKAGES_FLUTTER_SRC_SEMANTICS_SEMANTICS_SERVICE
+#define PACKAGES_FLUTTER_SRC_SEMANTICS_SEMANTICS_SERVICE
+#include <base.hpp>
+#include <dart/ui/ui.hpp>
 
-#include <ui/ui.hpp>
-#include <flutter/services.hpp>
+#include <dart/core/core.hpp>
+#include <dart/ui/ui.hpp>
+#include <packages/flutter/flutter.hpp>
 #include "semantics_event.hpp"
 
 
-
-class SemanticsService {
+class SemanticsServiceCls : public ObjectCls {
 public:
 
     static Future<void> announce(String message, TextDirection textDirection);
@@ -18,8 +18,9 @@ public:
 
 private:
 
-    void  _();
-
+    virtual void  _();
 };
+using SemanticsService = std::shared_ptr<SemanticsServiceCls>;
+
 
 #endif

@@ -1,88 +1,92 @@
 #include "gradient.hpp"
 Color _sample(List<Color> colors, List<double> stops, double t) {
     assert(colors != nullptr);
-    assert(colors.isNotEmpty);
+    assert(colors->isNotEmpty);
     assert(stops != nullptr);
-    assert(stops.isNotEmpty);
+    assert(stops->isNotEmpty);
     assert(t != nullptr);
-    if (t <= stops.first) {
-        return colors.first;
+    if (t <= stops->first) {
+        return colors->first;
     }
-    if (t >= stops.last) {
-        return colors.last;
+    if (t >= stops->last) {
+        return colors->last;
     }
-    int index = stops.lastIndexWhere();
+    int index = stops->lastIndexWhere([=] (double s) {
+    s <= t;
+});
     assert(index != -1);
-    return Color.lerp(colors[index], colors[index + 1], (t - stops[index]) / (stops[index + 1] - stops[index]))!;
+    return ColorCls->lerp(colors[index], colors[index + 1], (t - stops[index]) / (stops[index + 1] - stops[index]))!;
 }
 
 _ColorsAndStops _interpolateColorsAndStops(List<Color> aColors, List<double> aStops, List<Color> bColors, List<double> bStops, double t) {
-    assert(aColors.length >= 2);
-    assert(bColors.length >= 2);
-    assert(aStops.length == aColors.length);
-    assert(bStops.length == bColors.length);
-    SplayTreeSet<double> stops = ;
-    List<double> interpolatedStops = stops.toList(false);
-    List<Color> interpolatedColors = interpolatedStops.<Color>map().toList(false);
-    return _ColorsAndStops(interpolatedColors, interpolatedStops);
+    assert(aColors->length >= 2);
+    assert(bColors->length >= 2);
+    assert(aStops->length == aColors->length);
+    assert(bStops->length == bColors->length);
+    auto _c1 = <double>make<SplayTreeSetCls>();_c1.auto _c2 = addAll(aStops);_c2.addAll(bStops);_c2;SplayTreeSet<double> stops = _c1;
+    List<double> interpolatedStops = stops->toList(false);
+    List<Color> interpolatedColors = interpolatedStops-><Color>map([=] (double stop) {
+    ColorCls->lerp(_sample(aColors, aStops, stop), _sample(bColors, bStops, stop), t)!;
+})->toList(false);
+    return make<_ColorsAndStopsCls>(interpolatedColors, interpolatedStops);
 }
 
-Matrix4 GradientRotation::transform(Rect bounds, TextDirection textDirection) {
+Matrix4 GradientRotationCls::transform(Rect bounds, TextDirection textDirection) {
     assert(bounds != nullptr);
-    double sinRadians = math.sin(radians);
-    double oneMinusCosRadians = 1 - math.cos(radians);
-    Offset center = bounds.center;
-    double originX = sinRadians * center.dy + oneMinusCosRadians * center.dx;
-    double originY = -sinRadians * center.dx + oneMinusCosRadians * center.dy;
-    return ;
+    double sinRadians = math->sin(radians);
+    double oneMinusCosRadians = 1 - math->cos(radians);
+    Offset center = bounds->center;
+    double originX = sinRadians * center->dy + oneMinusCosRadians * center->dx;
+    double originY = -sinRadians * center->dx + oneMinusCosRadians * center->dy;
+    auto _c1 = Matrix4Cls->identity();_c1.auto _c2 = translate(originX, originY);_c2.rotateZ(radians);_c2;return _c1;
 }
 
-bool GradientRotation::==(Object other) {
+bool GradientRotationCls::==(Object other) {
     if (identical(this, other)) {
         return true;
     }
-    if (other.runtimeType != runtimeType) {
+    if (other->runtimeType != runtimeType) {
         return false;
     }
-    return other is GradientRotation && other.radians == radians;
+    return other is GradientRotation && other->radians == radians;
 }
 
-int GradientRotation::hashCode() {
-    return radians.hashCode;
+int GradientRotationCls::hashCode() {
+    return radians->hashCode;
 }
 
-String GradientRotation::toString() {
+String GradientRotationCls::toString() {
     return "${objectRuntimeType(this, 'GradientRotation')}(radians: ${debugFormatDouble(radians)})";
 }
 
-Gradient::Gradient(List<Color> colors, List<double> stops, GradientTransform transform) {
+GradientCls::GradientCls(List<Color> colors, List<double> stops, GradientTransform transform) {
     {
         assert(colors != nullptr);
     }
 }
 
-Gradient Gradient::lerpFrom(Gradient a, double t) {
+Gradient GradientCls::lerpFrom(Gradient a, double t) {
     if (a == nullptr) {
         return scale(t);
     }
     return nullptr;
 }
 
-Gradient Gradient::lerpTo(Gradient b, double t) {
+Gradient GradientCls::lerpTo(Gradient b, double t) {
     if (b == nullptr) {
         return scale(1.0 - t);
     }
     return nullptr;
 }
 
-Gradient Gradient::lerp(Gradient a, Gradient b, double t) {
+Gradient GradientCls::lerp(Gradient a, Gradient b, double t) {
     assert(t != nullptr);
     Gradient result;
     if (b != nullptr) {
-        result = b.lerpFrom(a, t);
+        result = b->lerpFrom(a, t);
     }
     if (result == nullptr && a != nullptr) {
-        result = a.lerpTo(b, t);
+        result = a->lerpTo(b, t);
     }
     if (result != nullptr) {
         return result;
@@ -91,23 +95,25 @@ Gradient Gradient::lerp(Gradient a, Gradient b, double t) {
         return nullptr;
     }
     assert(a != nullptr && b != nullptr);
-    return  < 0.5? a!.scale(1.0 - (t * 2.0)) : b!.scale((t - 0.5) * 2.0);
+    return  < 0.5? a!->scale(1.0 - (t * 2.0)) : b!->scale((t - 0.5) * 2.0);
 }
 
-List<double> Gradient::_impliedStops() {
+List<double> GradientCls::_impliedStops() {
     if (stops != nullptr) {
         return stops!;
     }
-    assert(colors.length >= 2, "colors list must have at least two colors");
-    double separation = 1.0 / (colors.length - 1);
-    return <double>generate(colors.length, false);
+    assert(colors->length >= 2, "colors list must have at least two colors");
+    double separation = 1.0 / (colors->length - 1);
+    return <double>generate(colors->length, [=] (int index)     {
+        index * separation;
+    }false);
 }
 
-Float64List Gradient::_resolveTransform(Rect bounds, TextDirection textDirection) {
-    return transform?.transform(boundstextDirection)?.storage;
+Float64List GradientCls::_resolveTransform(Rect bounds, TextDirection textDirection) {
+    return transform?->transform(boundstextDirection)?->storage;
 }
 
-LinearGradient::LinearGradient(AlignmentGeometry begin, Unknown, AlignmentGeometry end, Unknown, TileMode tileMode, Unknown) {
+LinearGradientCls::LinearGradientCls(AlignmentGeometry begin, Unknown colors, AlignmentGeometry end, Unknown stops, TileMode tileMode, Unknown transform) {
     {
         assert(begin != nullptr);
         assert(end != nullptr);
@@ -115,63 +121,65 @@ LinearGradient::LinearGradient(AlignmentGeometry begin, Unknown, AlignmentGeomet
     }
 }
 
-Shader LinearGradient::createShader(Rect rect, TextDirection textDirection) {
-    return ui.Gradient.linear(begin.resolve(textDirection).withinRect(rect), end.resolve(textDirection).withinRect(rect), colors, _impliedStops(), tileMode, _resolveTransform(rect, textDirection));
+Shader LinearGradientCls::createShader(Rect rect, TextDirection textDirection) {
+    return ui->GradientCls->linear(begin->resolve(textDirection)->withinRect(rect), end->resolve(textDirection)->withinRect(rect), colors, _impliedStops(), tileMode, _resolveTransform(rect, textDirection));
 }
 
-LinearGradient LinearGradient::scale(double factor) {
-    return LinearGradient(begin, end, colors.<Color>map().toList(), stops, tileMode);
+LinearGradient LinearGradientCls::scale(double factor) {
+    return make<LinearGradientCls>(begin, end, colors-><Color>map([=] (Color color)     {
+        ColorCls->lerp(nullptr, color, factor)!;
+    })->toList(), stops, tileMode);
 }
 
-Gradient LinearGradient::lerpFrom(Gradient a, double t) {
+Gradient LinearGradientCls::lerpFrom(Gradient a, double t) {
     if (a == nullptr || (a is LinearGradient)) {
-        return LinearGradient.lerp((, this, t);
+        return LinearGradientCls->lerp(((LinearGradient)a), this, t);
     }
-    return super.lerpFrom(a, t);
+    return super->lerpFrom(a, t);
 }
 
-Gradient LinearGradient::lerpTo(Gradient b, double t) {
+Gradient LinearGradientCls::lerpTo(Gradient b, double t) {
     if (b == nullptr || (b is LinearGradient)) {
-        return LinearGradient.lerp(this, (, t);
+        return LinearGradientCls->lerp(this, ((LinearGradient)b), t);
     }
-    return super.lerpTo(b, t);
+    return super->lerpTo(b, t);
 }
 
-LinearGradient LinearGradient::lerp(LinearGradient a, LinearGradient b, double t) {
+LinearGradient LinearGradientCls::lerp(LinearGradient a, LinearGradient b, double t) {
     assert(t != nullptr);
     if (a == nullptr && b == nullptr) {
         return nullptr;
     }
     if (a == nullptr) {
-        return b!.scale(t);
+        return b!->scale(t);
     }
     if (b == nullptr) {
-        return a.scale(1.0 - t);
+        return a->scale(1.0 - t);
     }
-    _ColorsAndStops interpolated = _interpolateColorsAndStops(a.colors, a._impliedStops(), b.colors, b._impliedStops(), t);
-    return LinearGradient(AlignmentGeometry.lerp(a.begin, b.begin, t)!, AlignmentGeometry.lerp(a.end, b.end, t)!, interpolated.colors, interpolated.stops,  < 0.5? a.tileMode : b.tileMode);
+    _ColorsAndStops interpolated = _interpolateColorsAndStops(a->colors, a->_impliedStops(), b->colors, b->_impliedStops(), t);
+    return make<LinearGradientCls>(AlignmentGeometryCls->lerp(a->begin, b->begin, t)!, AlignmentGeometryCls->lerp(a->end, b->end, t)!, interpolated->colors, interpolated->stops,  < 0.5? a->tileMode : b->tileMode);
 }
 
-bool LinearGradient::==(Object other) {
+bool LinearGradientCls::==(Object other) {
     if (identical(this, other)) {
         return true;
     }
-    if (other.runtimeType != runtimeType) {
+    if (other->runtimeType != runtimeType) {
         return false;
     }
-    return other is LinearGradient && other.begin == begin && other.end == end && other.tileMode == tileMode && other.transform == transform && <Color>listEquals(other.colors, colors) && <double>listEquals(other.stops, stops);
+    return other is LinearGradient && other->begin == begin && other->end == end && other->tileMode == tileMode && other->transform == transform && <Color>listEquals(other->colors, colors) && <double>listEquals(other->stops, stops);
 }
 
-int LinearGradient::hashCode() {
-    return Object.hash(begin, end, tileMode, transform, Object.hashAll(colors), stops == nullptr? nullptr : Object.hashAll(stops!));
+int LinearGradientCls::hashCode() {
+    return ObjectCls->hash(begin, end, tileMode, transform, ObjectCls->hashAll(colors), stops == nullptr? nullptr : ObjectCls->hashAll(stops!));
 }
 
-String LinearGradient::toString() {
-    List<String> description = ;
+String LinearGradientCls::toString() {
+    List<String> list1 = make<ListCls<>>();list1.add(ArrayItem);list1.add(ArrayItem);list1.add(ArrayItem);if (stops != nullptr) {    list1.add(ArrayItem);}list1.add(ArrayItem);if (transform != nullptr) {    list1.add(ArrayItem);}List<String> description = list1;
     return "${objectRuntimeType(this, 'LinearGradient')}(${description.join(', ')})";
 }
 
-RadialGradient::RadialGradient(AlignmentGeometry center, Unknown, AlignmentGeometry focal, double focalRadius, double radius, Unknown, TileMode tileMode, Unknown) {
+RadialGradientCls::RadialGradientCls(AlignmentGeometry center, Unknown colors, AlignmentGeometry focal, double focalRadius, double radius, Unknown stops, TileMode tileMode, Unknown transform) {
     {
         assert(center != nullptr);
         assert(radius != nullptr);
@@ -180,63 +188,65 @@ RadialGradient::RadialGradient(AlignmentGeometry center, Unknown, AlignmentGeome
     }
 }
 
-Shader RadialGradient::createShader(Rect rect, TextDirection textDirection) {
-    return ui.Gradient.radial(center.resolve(textDirection).withinRect(rect), radius * rect.shortestSide, colors, _impliedStops(), tileMode, _resolveTransform(rect, textDirection), focal == nullptr? nullptr : focal!.resolve(textDirection).withinRect(rect), focalRadius * rect.shortestSide);
+Shader RadialGradientCls::createShader(Rect rect, TextDirection textDirection) {
+    return ui->GradientCls->radial(center->resolve(textDirection)->withinRect(rect), radius * rect->shortestSide, colors, _impliedStops(), tileMode, _resolveTransform(rect, textDirection), focal == nullptr? nullptr : focal!->resolve(textDirection)->withinRect(rect), focalRadius * rect->shortestSide);
 }
 
-RadialGradient RadialGradient::scale(double factor) {
-    return RadialGradient(center, radius, colors.<Color>map().toList(), stops, tileMode, focal, focalRadius);
+RadialGradient RadialGradientCls::scale(double factor) {
+    return make<RadialGradientCls>(center, radius, colors-><Color>map([=] (Color color)     {
+        ColorCls->lerp(nullptr, color, factor)!;
+    })->toList(), stops, tileMode, focal, focalRadius);
 }
 
-Gradient RadialGradient::lerpFrom(Gradient a, double t) {
+Gradient RadialGradientCls::lerpFrom(Gradient a, double t) {
     if (a == nullptr || (a is RadialGradient)) {
-        return RadialGradient.lerp((, this, t);
+        return RadialGradientCls->lerp(((RadialGradient)a), this, t);
     }
-    return super.lerpFrom(a, t);
+    return super->lerpFrom(a, t);
 }
 
-Gradient RadialGradient::lerpTo(Gradient b, double t) {
+Gradient RadialGradientCls::lerpTo(Gradient b, double t) {
     if (b == nullptr || (b is RadialGradient)) {
-        return RadialGradient.lerp(this, (, t);
+        return RadialGradientCls->lerp(this, ((RadialGradient)b), t);
     }
-    return super.lerpTo(b, t);
+    return super->lerpTo(b, t);
 }
 
-RadialGradient RadialGradient::lerp(RadialGradient a, RadialGradient b, double t) {
+RadialGradient RadialGradientCls::lerp(RadialGradient a, RadialGradient b, double t) {
     assert(t != nullptr);
     if (a == nullptr && b == nullptr) {
         return nullptr;
     }
     if (a == nullptr) {
-        return b!.scale(t);
+        return b!->scale(t);
     }
     if (b == nullptr) {
-        return a.scale(1.0 - t);
+        return a->scale(1.0 - t);
     }
-    _ColorsAndStops interpolated = _interpolateColorsAndStops(a.colors, a._impliedStops(), b.colors, b._impliedStops(), t);
-    return RadialGradient(AlignmentGeometry.lerp(a.center, b.center, t)!, math.max(0.0, ui.lerpDouble(a.radius, b.radius, t)!), interpolated.colors, interpolated.stops,  < 0.5? a.tileMode : b.tileMode, AlignmentGeometry.lerp(a.focal, b.focal, t), math.max(0.0, ui.lerpDouble(a.focalRadius, b.focalRadius, t)!));
+    _ColorsAndStops interpolated = _interpolateColorsAndStops(a->colors, a->_impliedStops(), b->colors, b->_impliedStops(), t);
+    return make<RadialGradientCls>(AlignmentGeometryCls->lerp(a->center, b->center, t)!, math->max(0.0, ui->lerpDouble(a->radius, b->radius, t)!), interpolated->colors, interpolated->stops,  < 0.5? a->tileMode : b->tileMode, AlignmentGeometryCls->lerp(a->focal, b->focal, t), math->max(0.0, ui->lerpDouble(a->focalRadius, b->focalRadius, t)!));
 }
 
-bool RadialGradient::==(Object other) {
+bool RadialGradientCls::==(Object other) {
     if (identical(this, other)) {
         return true;
     }
-    if (other.runtimeType != runtimeType) {
+    if (other->runtimeType != runtimeType) {
         return false;
     }
-    return other is RadialGradient && other.center == center && other.radius == radius && other.tileMode == tileMode && other.transform == transform && <Color>listEquals(other.colors, colors) && <double>listEquals(other.stops, stops) && other.focal == focal && other.focalRadius == focalRadius;
+    return other is RadialGradient && other->center == center && other->radius == radius && other->tileMode == tileMode && other->transform == transform && <Color>listEquals(other->colors, colors) && <double>listEquals(other->stops, stops) && other->focal == focal && other->focalRadius == focalRadius;
 }
 
-int RadialGradient::hashCode() {
-    return Object.hash(center, radius, tileMode, transform, Object.hashAll(colors), stops == nullptr? nullptr : Object.hashAll(stops!), focal, focalRadius);
+int RadialGradientCls::hashCode() {
+    return ObjectCls->hash(center, radius, tileMode, transform, ObjectCls->hashAll(colors), stops == nullptr? nullptr : ObjectCls->hashAll(stops!), focal, focalRadius);
 }
 
-String RadialGradient::toString() {
-    List<String> description = ;
+String RadialGradientCls::toString() {
+    List<String> list1 = make<ListCls<>>();list1.add(ArrayItem);list1.add(ArrayItem);list1.add(ArrayItem);if (stops != nullptr) {    list1.add(ArrayItem);}list1.add(ArrayItem);if (focal != nullptr) {    list1.add(ArrayItem);}list1.add(ArrayItem);if (transform != nullptr) {    list1.add(ArrayItem);}List<String> description = list1;
     return "${objectRuntimeType(this, 'RadialGradient')}(${description.join(', ')})";
 }
 
-SweepGradient::SweepGradient(AlignmentGeometry center, Unknown, double endAngle, double startAngle, Unknown, TileMode tileMode, Unknown) {
+SweepGradientCls::SweepGradientCls(AlignmentGeometry center, Unknown colors, double endAngle, double startAngle, Unknown stops, TileMode tileMode, Unknown transform) {
     {
         assert(center != nullptr);
         assert(startAngle != nullptr);
@@ -245,58 +255,60 @@ SweepGradient::SweepGradient(AlignmentGeometry center, Unknown, double endAngle,
     }
 }
 
-Shader SweepGradient::createShader(Rect rect, TextDirection textDirection) {
-    return ui.Gradient.sweep(center.resolve(textDirection).withinRect(rect), colors, _impliedStops(), tileMode, startAngle, endAngle, _resolveTransform(rect, textDirection));
+Shader SweepGradientCls::createShader(Rect rect, TextDirection textDirection) {
+    return ui->GradientCls->sweep(center->resolve(textDirection)->withinRect(rect), colors, _impliedStops(), tileMode, startAngle, endAngle, _resolveTransform(rect, textDirection));
 }
 
-SweepGradient SweepGradient::scale(double factor) {
-    return SweepGradient(center, startAngle, endAngle, colors.<Color>map().toList(), stops, tileMode);
+SweepGradient SweepGradientCls::scale(double factor) {
+    return make<SweepGradientCls>(center, startAngle, endAngle, colors-><Color>map([=] (Color color)     {
+        ColorCls->lerp(nullptr, color, factor)!;
+    })->toList(), stops, tileMode);
 }
 
-Gradient SweepGradient::lerpFrom(Gradient a, double t) {
+Gradient SweepGradientCls::lerpFrom(Gradient a, double t) {
     if (a == nullptr || (a is SweepGradient)) {
-        return SweepGradient.lerp((, this, t);
+        return SweepGradientCls->lerp(((SweepGradient)a), this, t);
     }
-    return super.lerpFrom(a, t);
+    return super->lerpFrom(a, t);
 }
 
-Gradient SweepGradient::lerpTo(Gradient b, double t) {
+Gradient SweepGradientCls::lerpTo(Gradient b, double t) {
     if (b == nullptr || (b is SweepGradient)) {
-        return SweepGradient.lerp(this, (, t);
+        return SweepGradientCls->lerp(this, ((SweepGradient)b), t);
     }
-    return super.lerpTo(b, t);
+    return super->lerpTo(b, t);
 }
 
-SweepGradient SweepGradient::lerp(SweepGradient a, SweepGradient b, double t) {
+SweepGradient SweepGradientCls::lerp(SweepGradient a, SweepGradient b, double t) {
     assert(t != nullptr);
     if (a == nullptr && b == nullptr) {
         return nullptr;
     }
     if (a == nullptr) {
-        return b!.scale(t);
+        return b!->scale(t);
     }
     if (b == nullptr) {
-        return a.scale(1.0 - t);
+        return a->scale(1.0 - t);
     }
-    _ColorsAndStops interpolated = _interpolateColorsAndStops(a.colors, a._impliedStops(), b.colors, b._impliedStops(), t);
-    return SweepGradient(AlignmentGeometry.lerp(a.center, b.center, t)!, math.max(0.0, ui.lerpDouble(a.startAngle, b.startAngle, t)!), math.max(0.0, ui.lerpDouble(a.endAngle, b.endAngle, t)!), interpolated.colors, interpolated.stops,  < 0.5? a.tileMode : b.tileMode);
+    _ColorsAndStops interpolated = _interpolateColorsAndStops(a->colors, a->_impliedStops(), b->colors, b->_impliedStops(), t);
+    return make<SweepGradientCls>(AlignmentGeometryCls->lerp(a->center, b->center, t)!, math->max(0.0, ui->lerpDouble(a->startAngle, b->startAngle, t)!), math->max(0.0, ui->lerpDouble(a->endAngle, b->endAngle, t)!), interpolated->colors, interpolated->stops,  < 0.5? a->tileMode : b->tileMode);
 }
 
-bool SweepGradient::==(Object other) {
+bool SweepGradientCls::==(Object other) {
     if (identical(this, other)) {
         return true;
     }
-    if (other.runtimeType != runtimeType) {
+    if (other->runtimeType != runtimeType) {
         return false;
     }
-    return other is SweepGradient && other.center == center && other.startAngle == startAngle && other.endAngle == endAngle && other.tileMode == tileMode && other.transform == transform && <Color>listEquals(other.colors, colors) && <double>listEquals(other.stops, stops);
+    return other is SweepGradient && other->center == center && other->startAngle == startAngle && other->endAngle == endAngle && other->tileMode == tileMode && other->transform == transform && <Color>listEquals(other->colors, colors) && <double>listEquals(other->stops, stops);
 }
 
-int SweepGradient::hashCode() {
-    return Object.hash(center, startAngle, endAngle, tileMode, transform, Object.hashAll(colors), stops == nullptr? nullptr : Object.hashAll(stops!));
+int SweepGradientCls::hashCode() {
+    return ObjectCls->hash(center, startAngle, endAngle, tileMode, transform, ObjectCls->hashAll(colors), stops == nullptr? nullptr : ObjectCls->hashAll(stops!));
 }
 
-String SweepGradient::toString() {
-    List<String> description = ;
+String SweepGradientCls::toString() {
+    List<String> list1 = make<ListCls<>>();list1.add(ArrayItem);list1.add(ArrayItem);list1.add(ArrayItem);list1.add(ArrayItem);if (stops != nullptr) {    list1.add(ArrayItem);}list1.add(ArrayItem);if (transform != nullptr) {    list1.add(ArrayItem);}List<String> description = list1;
     return "${objectRuntimeType(this, 'SweepGradient')}(${description.join(', ')})";
 }

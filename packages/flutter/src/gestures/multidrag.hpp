@@ -1,14 +1,15 @@
-#ifndef MULTIDRAG_H
-#define MULTIDRAG_H
-#include <memory>
-#include <ui.hpp>
+#ifndef PACKAGES_FLUTTER_SRC_GESTURES_MULTIDRAG
+#define PACKAGES_FLUTTER_SRC_GESTURES_MULTIDRAG
+#include <base.hpp>
+#include <dart/ui/ui.hpp>
 #include "arena.hpp"
 #include "drag.hpp"
 #include "events.hpp"
 #include "gesture_settings.hpp"
 
-#include <async/async.hpp>
-#include <flutter/foundation.hpp>
+#include <dart/core/core.hpp>
+#include <dart/async/async.hpp>
+#include <packages/flutter/lib/foundation.hpp>
 #include "arena.hpp"
 #include "binding.hpp"
 #include "constants.hpp"
@@ -19,8 +20,7 @@
 #include "velocity_tracker.hpp"
 
 
-
-class MultiDragPointerState {
+class MultiDragPointerStateCls : public ObjectCls {
 public:
     DeviceGestureSettings gestureSettings;
 
@@ -29,19 +29,18 @@ public:
     PointerDeviceKind kind;
 
 
-     MultiDragPointerState(DeviceGestureSettings gestureSettings, Offset initialPosition, PointerDeviceKind kind);
+     MultiDragPointerStateCls(DeviceGestureSettings gestureSettings, Offset initialPosition, PointerDeviceKind kind);
 
-    Offset pendingDelta();
+    virtual Offset pendingDelta();
 
-    void resolve(GestureDisposition disposition);
+    virtual void resolve(GestureDisposition disposition);
 
-    void checkForResolutionAfterMove();
+    virtual void checkForResolutionAfterMove();
 
-    void accepted(GestureMultiDragStartCallback starter);
+    virtual void accepted(GestureMultiDragStartCallback starter);
+    virtual void rejected();
 
-    void rejected();
-
-    void dispose();
+    virtual void dispose();
 
 private:
     VelocityTracker _velocityTracker;
@@ -55,133 +54,133 @@ private:
     GestureArenaEntry _arenaEntry;
 
 
-    void _setArenaEntry(GestureArenaEntry entry);
+    virtual void _setArenaEntry(GestureArenaEntry entry);
 
-    void _move(PointerMoveEvent event);
+    virtual void _move(PointerMoveEvent event);
 
-    void _startDrag(Drag client);
+    virtual void _startDrag(Drag client);
 
-    void _up();
+    virtual void _up();
 
-    void _cancel();
+    virtual void _cancel();
 
 };
+using MultiDragPointerState = std::shared_ptr<MultiDragPointerStateCls>;
 
-class MultiDragGestureRecognizer : GestureRecognizer {
+class MultiDragGestureRecognizerCls : public GestureRecognizerCls {
 public:
     GestureMultiDragStartCallback onStart;
 
 
-     MultiDragGestureRecognizer(Unknown, Unknown, Unknown);
+     MultiDragGestureRecognizerCls(Unknown debugOwner, Unknown kind, Unknown supportedDevices);
+    virtual void addAllowedPointer(PointerDownEvent event);
 
-    void addAllowedPointer(PointerDownEvent event);
+    virtual MultiDragPointerState createNewPointerState(PointerDownEvent event);
+    virtual void acceptGesture(int pointer);
 
-    MultiDragPointerState createNewPointerState(PointerDownEvent event);
+    virtual void rejectGesture(int pointer);
 
-    void acceptGesture(int pointer);
-
-    void rejectGesture(int pointer);
-
-    void dispose();
+    virtual void dispose();
 
 private:
     Map<int, MultiDragPointerState> _pointers;
 
 
-    void _handleEvent(PointerEvent event);
+    virtual void _handleEvent(PointerEvent event);
 
-    Drag _startDrag(Offset initialPosition, int pointer);
+    virtual Drag _startDrag(Offset initialPosition, int pointer);
 
-    void _removeState(int pointer);
+    virtual void _removeState(int pointer);
 
 };
+using MultiDragGestureRecognizer = std::shared_ptr<MultiDragGestureRecognizerCls>;
 
-class _ImmediatePointerState : MultiDragPointerState {
+class _ImmediatePointerStateCls : public MultiDragPointerStateCls {
 public:
 
-    void checkForResolutionAfterMove();
+    virtual void checkForResolutionAfterMove();
 
-    void accepted(GestureMultiDragStartCallback starter);
+    virtual void accepted(GestureMultiDragStartCallback starter);
 
 private:
 
-     _ImmediatePointerState(Unknown, Unknown, Unknown);
-
+     _ImmediatePointerStateCls(Unknown deviceGestureSettings, Unknown initialPosition, Unknown kind);
 };
+using _ImmediatePointerState = std::shared_ptr<_ImmediatePointerStateCls>;
 
-class ImmediateMultiDragGestureRecognizer : MultiDragGestureRecognizer {
+class ImmediateMultiDragGestureRecognizerCls : public MultiDragGestureRecognizerCls {
 public:
 
-     ImmediateMultiDragGestureRecognizer(Unknown, Unknown, Unknown);
+     ImmediateMultiDragGestureRecognizerCls(Unknown debugOwner, Unknown kind, Unknown supportedDevices);
+    virtual MultiDragPointerState createNewPointerState(PointerDownEvent event);
 
-    MultiDragPointerState createNewPointerState(PointerDownEvent event);
-
-    String debugDescription();
-
-private:
-
-};
-
-class _HorizontalPointerState : MultiDragPointerState {
-public:
-
-    void checkForResolutionAfterMove();
-
-    void accepted(GestureMultiDragStartCallback starter);
-
-private:
-
-     _HorizontalPointerState(Unknown, Unknown, Unknown);
-
-};
-
-class HorizontalMultiDragGestureRecognizer : MultiDragGestureRecognizer {
-public:
-
-     HorizontalMultiDragGestureRecognizer(Unknown, Unknown, Unknown);
-
-    MultiDragPointerState createNewPointerState(PointerDownEvent event);
-
-    String debugDescription();
+    virtual String debugDescription();
 
 private:
 
 };
+using ImmediateMultiDragGestureRecognizer = std::shared_ptr<ImmediateMultiDragGestureRecognizerCls>;
 
-class _VerticalPointerState : MultiDragPointerState {
+class _HorizontalPointerStateCls : public MultiDragPointerStateCls {
 public:
 
-    void checkForResolutionAfterMove();
+    virtual void checkForResolutionAfterMove();
 
-    void accepted(GestureMultiDragStartCallback starter);
+    virtual void accepted(GestureMultiDragStartCallback starter);
 
 private:
 
-     _VerticalPointerState(Unknown, Unknown, Unknown);
-
+     _HorizontalPointerStateCls(Unknown deviceGestureSettings, Unknown initialPosition, Unknown kind);
 };
+using _HorizontalPointerState = std::shared_ptr<_HorizontalPointerStateCls>;
 
-class VerticalMultiDragGestureRecognizer : MultiDragGestureRecognizer {
+class HorizontalMultiDragGestureRecognizerCls : public MultiDragGestureRecognizerCls {
 public:
 
-     VerticalMultiDragGestureRecognizer(Unknown, Unknown, Unknown);
+     HorizontalMultiDragGestureRecognizerCls(Unknown debugOwner, Unknown kind, Unknown supportedDevices);
+    virtual MultiDragPointerState createNewPointerState(PointerDownEvent event);
 
-    MultiDragPointerState createNewPointerState(PointerDownEvent event);
-
-    String debugDescription();
+    virtual String debugDescription();
 
 private:
 
 };
+using HorizontalMultiDragGestureRecognizer = std::shared_ptr<HorizontalMultiDragGestureRecognizerCls>;
 
-class _DelayedPointerState : MultiDragPointerState {
+class _VerticalPointerStateCls : public MultiDragPointerStateCls {
 public:
 
-    void accepted(GestureMultiDragStartCallback starter);
+    virtual void checkForResolutionAfterMove();
 
-    void checkForResolutionAfterMove();
+    virtual void accepted(GestureMultiDragStartCallback starter);
 
-    void dispose();
+private:
+
+     _VerticalPointerStateCls(Unknown deviceGestureSettings, Unknown initialPosition, Unknown kind);
+};
+using _VerticalPointerState = std::shared_ptr<_VerticalPointerStateCls>;
+
+class VerticalMultiDragGestureRecognizerCls : public MultiDragGestureRecognizerCls {
+public:
+
+     VerticalMultiDragGestureRecognizerCls(Unknown debugOwner, Unknown kind, Unknown supportedDevices);
+    virtual MultiDragPointerState createNewPointerState(PointerDownEvent event);
+
+    virtual String debugDescription();
+
+private:
+
+};
+using VerticalMultiDragGestureRecognizer = std::shared_ptr<VerticalMultiDragGestureRecognizerCls>;
+
+class _DelayedPointerStateCls : public MultiDragPointerStateCls {
+public:
+
+    virtual void accepted(GestureMultiDragStartCallback starter);
+
+    virtual void checkForResolutionAfterMove();
+
+    virtual void dispose();
 
 private:
     Timer _timer;
@@ -189,27 +188,30 @@ private:
     GestureMultiDragStartCallback _starter;
 
 
-     _DelayedPointerState(Duration delay, DeviceGestureSettings deviceGestureSettings, Offset initialPosition, PointerDeviceKind kind);
+     _DelayedPointerStateCls(Duration delay, DeviceGestureSettings deviceGestureSettings, Offset initialPosition, PointerDeviceKind kind);
 
-    void _delayPassed();
+    virtual void _delayPassed();
 
-    void _ensureTimerStopped();
+    virtual void _ensureTimerStopped();
 
 };
+using _DelayedPointerState = std::shared_ptr<_DelayedPointerStateCls>;
 
-class DelayedMultiDragGestureRecognizer : MultiDragGestureRecognizer {
+class DelayedMultiDragGestureRecognizerCls : public MultiDragGestureRecognizerCls {
 public:
     Duration delay;
 
 
-     DelayedMultiDragGestureRecognizer(Unknown, Duration delay, Unknown, Unknown);
+     DelayedMultiDragGestureRecognizerCls(Unknown debugOwner, Duration delay, Unknown kind, Unknown supportedDevices);
 
-    MultiDragPointerState createNewPointerState(PointerDownEvent event);
+    virtual MultiDragPointerState createNewPointerState(PointerDownEvent event);
 
-    String debugDescription();
+    virtual String debugDescription();
 
 private:
 
 };
+using DelayedMultiDragGestureRecognizer = std::shared_ptr<DelayedMultiDragGestureRecognizerCls>;
+
 
 #endif

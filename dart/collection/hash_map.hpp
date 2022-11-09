@@ -1,33 +1,33 @@
-#ifndef HASH_MAP_H
-#define HASH_MAP_H
-#include <memory>
+#ifndef DART_COLLECTION_HASH_MAP
+#define DART_COLLECTION_HASH_MAP
+#include <base.hpp>
 
-
+#include <dart/core/core.hpp>
 
 bool _defaultEquals(Object a, Object b);
 
 int _defaultHashCode(Object a);
 
 
-class HashMap<K, V> {
+template<typename K, typename V> class HashMapCls : public ObjectCls {
 public:
 
-    external  HashMap(FunctionType equals, FunctionType hashCode, FunctionType isValidKey);
+    extern  HashMapCls(bool equals(K , K ) , int hashCode(K ) , bool isValidKey(dynamic ) );
+    extern void  identity();
+    virtual void  from(Map<dynamic, dynamic> other);
 
-    external void  identity();
+    virtual void  of(Map<K, V> other);
 
-    void  from(Map<dynamic, dynamic> other);
+    virtual void  fromIterable(Iterable iterable, K key(dynamic element) , V value(dynamic element) );
 
-    void  of(Map<K, V> other);
+    virtual void  fromIterables(Iterable<K> keys, Iterable<V> values);
 
-    void  fromIterable(Iterable iterable, FunctionType key, FunctionType value);
-
-    void  fromIterables(Iterable<K> keys, Iterable<V> values);
-
-    void  fromEntries(Iterable<MapEntry<K, V>> entries);
+    virtual void  fromEntries(Iterable<MapEntry<K, V>> entries);
 
 private:
 
 };
+template<typename K, typename V> using HashMap = std::shared_ptr<HashMapCls<K, V>>;
+
 
 #endif

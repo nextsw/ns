@@ -1,11 +1,11 @@
-#ifndef NATIVES_H
-#define NATIVES_H
-#include <memory>
+#ifndef DART_UI_NATIVES
+#define DART_UI_NATIVES
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
 
 
-
-
-class DartPluginRegistrant {
+class DartPluginRegistrantCls : public ObjectCls {
 public:
 
     static void ensureInitialized();
@@ -15,24 +15,23 @@ private:
 
 
     static void _ensureInitialized();
-
 };
+using DartPluginRegistrant = std::shared_ptr<DartPluginRegistrantCls>;
 void _print(String arg);
 
 void _printDebug(String arg);
 
 
-class _Logger {
+class _LoggerCls : public ObjectCls {
 public:
 
 private:
 
     static void _printString(String s);
-
     static void _printDebugString(String s);
-
 };
-const Endian _kFakeHostEndian;
+using _Logger = std::shared_ptr<_LoggerCls>;
+Endian _kFakeHostEndian;
 
 Future<ServiceExtensionResponse> _scheduleFrame(String method, Map<String, String> parameters);
 
@@ -40,17 +39,15 @@ void _setupHooks();
 
 List<int> saveCompilationTrace();
 
-void _scheduleMicrotask(FunctionType callback);
-
-int _getCallbackHandle(FunctionType closure);
-
-FunctionType _getCallbackFromHandle(int handle);
-
+void _scheduleMicrotask(void callback() );
+int _getCallbackHandle(void  closure() );
+void  Function() _getCallbackFromHandle(int handle);
 _PrintClosure _getPrintClosure();
 
 _ScheduleImmediateClosure _getScheduleMicrotaskClosure();
 
 bool _impellerEnabled;
+
 
 
 #endif

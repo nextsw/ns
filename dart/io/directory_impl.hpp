@@ -1,48 +1,48 @@
-#ifndef DIRECTORY_IMPL_H
-#define DIRECTORY_IMPL_H
-#include <memory>
+#ifndef DART_IO_DIRECTORY_IMPL
+#define DART_IO_DIRECTORY_IMPL
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
 
 
-
-
-class _Directory : FileSystemEntity {
+class _DirectoryCls : public FileSystemEntityCls {
 public:
 
-    void  fromRawPath(Uint8List rawPath);
+    virtual void  fromRawPath(Uint8List rawPath);
 
-    String path();
+    virtual String path();
 
     static Directory current();
 
     static void current(path );
 
-    Uri uri();
+    virtual Uri uri();
 
-    Future<bool> exists();
+    virtual Future<bool> exists();
 
-    bool existsSync();
+    virtual bool existsSync();
 
-    Directory absolute();
+    virtual Directory absolute();
 
-    Future<Directory> create(bool recursive);
+    virtual Future<Directory> create(bool recursive);
 
-    void createSync(bool recursive);
+    virtual void createSync(bool recursive);
 
     static Directory systemTemp();
 
-    Future<Directory> createTemp(String prefix);
+    virtual Future<Directory> createTemp(String prefix);
 
-    Directory createTempSync(String prefix);
+    virtual Directory createTempSync(String prefix);
 
-    Future<Directory> rename(String newPath);
+    virtual Future<Directory> rename(String newPath);
 
-    Directory renameSync(String newPath);
+    virtual Directory renameSync(String newPath);
 
-    Stream<FileSystemEntity> list(bool followLinks, bool recursive);
+    virtual Stream<FileSystemEntity> list(bool followLinks, bool recursive);
 
-    List<FileSystemEntity> listSync(bool followLinks, bool recursive);
+    virtual List<FileSystemEntity> listSync(bool followLinks, bool recursive);
 
-    String toString();
+    virtual String toString();
 
 private:
     String _path;
@@ -50,68 +50,59 @@ private:
     Uint8List _rawPath;
 
 
-     _Directory(String path);
+     _DirectoryCls(String path);
 
-    external static void  _current(_Namespace namespace);
+    extern static void  _current(_Namespace namespace);
+    extern static void  _setCurrent(_Namespace namespace, Uint8List rawPath);
+    extern static void  _createTemp(_Namespace namespace, Uint8List rawPath);
+    extern static String _systemTemp(_Namespace namespace);
+    extern static void  _exists(_Namespace namespace, Uint8List rawPath);
+    extern static void  _create(_Namespace namespace, Uint8List rawPath);
+    extern static void  _deleteNative(_Namespace namespace, Uint8List rawPath, bool recursive);
+    extern static void  _rename(_Namespace namespace, String newPath, Uint8List rawPath);
+    extern static void _fillWithDirectoryListing(bool followLinks, List<FileSystemEntity> list, _Namespace namespace, Uint8List rawPath, bool recursive);
+    virtual Future<Directory> _delete(bool recursive);
 
-    external static void  _setCurrent(_Namespace namespace, Uint8List rawPath);
+    virtual void _deleteSync(bool recursive);
 
-    external static void  _createTemp(_Namespace namespace, Uint8List rawPath);
+    virtual bool _isErrorResponse(response );
 
-    external static String _systemTemp(_Namespace namespace);
+    virtual void  _exceptionOrErrorFromResponse(response , String message);
 
-    external static void  _exists(_Namespace namespace, Uint8List rawPath);
-
-    external static void  _create(_Namespace namespace, Uint8List rawPath);
-
-    external static void  _deleteNative(_Namespace namespace, Uint8List rawPath, bool recursive);
-
-    external static void  _rename(_Namespace namespace, String newPath, Uint8List rawPath);
-
-    external static void _fillWithDirectoryListing(bool followLinks, List<FileSystemEntity> list, _Namespace namespace, Uint8List rawPath, bool recursive);
-
-    Future<Directory> _delete(bool recursive);
-
-    void _deleteSync(bool recursive);
-
-    bool _isErrorResponse(response );
-
-    void  _exceptionOrErrorFromResponse(response , String message);
-
-    static T _checkNotNull<T>(String name, T t);
+    template<typename T>  static T _checkNotNull(String name, T t);
 
 };
+using _Directory = std::shared_ptr<_DirectoryCls>;
 
-class _AsyncDirectoryListerOps {
+class _AsyncDirectoryListerOpsCls : public ObjectCls {
 public:
 
-    int getPointer();
-
+    virtual int getPointer();
 private:
 
-    external  _AsyncDirectoryListerOps(int pointer);
-
+    extern  _AsyncDirectoryListerOpsCls(int pointer);
 };
+using _AsyncDirectoryListerOps = std::shared_ptr<_AsyncDirectoryListerOpsCls>;
 
-class _AsyncDirectoryLister {
+class _AsyncDirectoryListerCls : public ObjectCls {
 public:
-    static const int listFile;
+    static int listFile;
 
-    static const int listDirectory;
+    static int listDirectory;
 
-    static const int listLink;
+    static int listLink;
 
-    static const int listError;
+    static int listError;
 
-    static const int listDone;
+    static int listDone;
 
-    static const int responseType;
+    static int responseType;
 
-    static const int responsePath;
+    static int responsePath;
 
-    static const int responseComplete;
+    static int responseComplete;
 
-    static const int responseError;
+    static int responseError;
 
     Uint8List rawPath;
 
@@ -130,30 +121,32 @@ public:
     Completer closeCompleter;
 
 
-    Stream<FileSystemEntity> stream();
+    virtual Stream<FileSystemEntity> stream();
 
-    void onListen();
+    virtual void onListen();
 
-    void onResume();
+    virtual void onResume();
 
-    Future onCancel();
+    virtual Future onCancel();
 
-    void next();
+    virtual void next();
 
-    void close();
+    virtual void close();
 
-    void error(message );
+    virtual void error(message );
 
 private:
     _AsyncDirectoryListerOps _ops;
 
 
-     _AsyncDirectoryLister(bool followLinks, Uint8List rawPath, bool recursive);
+     _AsyncDirectoryListerCls(bool followLinks, Uint8List rawPath, bool recursive);
 
-    int _pointer();
+    virtual int _pointer();
 
-    void _cleanup();
+    virtual void _cleanup();
 
 };
+using _AsyncDirectoryLister = std::shared_ptr<_AsyncDirectoryListerCls>;
+
 
 #endif

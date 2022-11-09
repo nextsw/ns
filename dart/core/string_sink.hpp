@@ -1,23 +1,21 @@
-#ifndef STRING_SINK_H
-#define STRING_SINK_H
-#include <memory>
+#ifndef DART_CORE_STRING_SINK
+#define DART_CORE_STRING_SINK
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
 
 
-
-
-class StringSink {
+class StringSinkCls : public ObjectCls {
 public:
 
-    void write(Object object);
-
-    void writeAll(Iterable<dynamic> objects, String separator);
-
-    void writeln(Object object);
-
-    void writeCharCode(int charCode);
-
+    virtual void write(Object object);
+    virtual void writeAll(Iterable<dynamic> objects, String separator);
+    virtual void writeln(Object object);
+    virtual void writeCharCode(int charCode);
 private:
 
 };
+using StringSink = std::shared_ptr<StringSinkCls>;
+
 
 #endif

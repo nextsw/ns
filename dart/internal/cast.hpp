@@ -1,275 +1,277 @@
-#ifndef CAST_H
-#define CAST_H
-#include <memory>
+#ifndef DART_INTERNAL_CAST
+#define DART_INTERNAL_CAST
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
 
 
-
-
-class _CastIterableBase<S, T> : Iterable<T> {
+template<typename S, typename T> class _CastIterableBaseCls : public IterableCls<T> {
 public:
 
-    Iterator<T> iterator();
+    virtual Iterator<T> iterator();
 
-    int length();
+    virtual int length();
 
-    bool isEmpty();
+    virtual bool isEmpty();
 
-    bool isNotEmpty();
+    virtual bool isNotEmpty();
 
-    Iterable<T> skip(int count);
+    virtual Iterable<T> skip(int count);
 
-    Iterable<T> take(int count);
+    virtual Iterable<T> take(int count);
 
-    T elementAt(int index);
+    virtual T elementAt(int index);
 
-    T first();
+    virtual T first();
 
-    T last();
+    virtual T last();
 
-    T single();
+    virtual T single();
 
-    bool contains(Object other);
+    virtual bool contains(Object other);
 
-    T lastWhere(FunctionType orElse, FunctionType test);
+    virtual T lastWhere(T orElse() , bool test(T element) );
 
-    String toString();
+    virtual String toString();
 
 private:
 
-    Iterable<S> _source();
-
+    virtual Iterable<S> _source();
 };
+template<typename S, typename T> using _CastIterableBase = std::shared_ptr<_CastIterableBaseCls<S, T>>;
 
-class CastIterator<S, T> {
+template<typename S, typename T> class CastIteratorCls : public ObjectCls {
 public:
 
-     CastIterator(Iterator<S> _source);
+     CastIteratorCls(Iterator<S> _source);
+    virtual bool moveNext();
 
-    bool moveNext();
-
-    T current();
+    virtual T current();
 
 private:
     Iterator<S> _source;
 
 
 };
+template<typename S, typename T> using CastIterator = std::shared_ptr<CastIteratorCls<S, T>>;
 
-class CastIterable<S, T> : _CastIterableBase<S, T> {
+template<typename S, typename T> class CastIterableCls : public _CastIterableBaseCls<S, T> {
 public:
 
-     CastIterable(Iterable<S> source);
+     CastIterableCls(Iterable<S> source);
 
-    Iterable<R> cast<R>();
+    template<typename R>  virtual Iterable<R> cast();
 
 private:
     Iterable<S> _source;
 
 
-    void  _(Iterable<S> _source);
-
+    virtual void  _(Iterable<S> _source);
 };
+template<typename S, typename T> using CastIterable = std::shared_ptr<CastIterableCls<S, T>>;
 
-class _EfficientLengthCastIterable<S, T> : CastIterable<S, T> {
+template<typename S, typename T> class _EfficientLengthCastIterableCls : public CastIterableCls<S, T> {
 public:
 
 private:
 
-     _EfficientLengthCastIterable(EfficientLengthIterable<S> source);
+     _EfficientLengthCastIterableCls(EfficientLengthIterable<S> source);
 
 };
+template<typename S, typename T> using _EfficientLengthCastIterable = std::shared_ptr<_EfficientLengthCastIterableCls<S, T>>;
 
-class _CastListBase<S, T> : _CastIterableBase<S, T> {
+template<typename S, typename T> class _CastListBaseCls : public _CastIterableBaseCls<S, T> {
 public:
 
-    T [](int index);
+    virtual T operator[](int index);
 
-    void []=(int index, T value);
+    virtual void operator[]=(int index, T value);
 
-    void length(int length);
+    virtual void length(int length);
 
-    void add(T value);
+    virtual void add(T value);
 
-    void addAll(Iterable<T> values);
+    virtual void addAll(Iterable<T> values);
 
-    void sort(FunctionType compare);
+    virtual void sort(int compare(T v1, T v2) );
 
-    void shuffle(Random random);
+    virtual void shuffle(Random random);
 
-    void insert(T element, int index);
+    virtual void insert(T element, int index);
 
-    void insertAll(Iterable<T> elements, int index);
+    virtual void insertAll(Iterable<T> elements, int index);
 
-    void setAll(Iterable<T> elements, int index);
+    virtual void setAll(Iterable<T> elements, int index);
 
-    bool remove(Object value);
+    virtual bool remove(Object value);
 
-    T removeAt(int index);
+    virtual T removeAt(int index);
 
-    T removeLast();
+    virtual T removeLast();
 
-    void removeWhere(FunctionType test);
+    virtual void removeWhere(bool test(T element) );
 
-    void retainWhere(FunctionType test);
+    virtual void retainWhere(bool test(T element) );
 
-    Iterable<T> getRange(int end, int start);
+    virtual Iterable<T> getRange(int end, int start);
 
-    void setRange(int end, Iterable<T> iterable, int skipCount, int start);
+    virtual void setRange(int end, Iterable<T> iterable, int skipCount, int start);
 
-    void removeRange(int end, int start);
+    virtual void removeRange(int end, int start);
 
-    void fillRange(int end, T fillValue, int start);
+    virtual void fillRange(int end, T fillValue, int start);
 
-    void replaceRange(int end, Iterable<T> replacement, int start);
+    virtual void replaceRange(int end, Iterable<T> replacement, int start);
 
 private:
 
-    List<S> _source();
-
+    virtual List<S> _source() override;
 };
+template<typename S, typename T> using _CastListBase = std::shared_ptr<_CastListBaseCls<S, T>>;
 
-class CastList<S, T> : _CastListBase<S, T> {
+template<typename S, typename T> class CastListCls : public _CastListBaseCls<S, T> {
 public:
 
-     CastList(List<S> _source);
-
-    List<R> cast<R>();
+     CastListCls(List<S> _source);
+    template<typename R>  virtual List<R> cast();
 
 private:
     List<S> _source;
 
 
 };
+template<typename S, typename T> using CastList = std::shared_ptr<CastListCls<S, T>>;
 
-class CastSet<S, T> : _CastIterableBase<S, T> {
+template<typename S, typename T> class CastSetCls : public _CastIterableBaseCls<S, T> {
 public:
 
-     CastSet(FunctionType _emptySet, Set<S> _source);
+     CastSetCls(<R>Set<R> Function() _emptySet, Set<S> _source);
+    template<typename R>  virtual Set<R> cast();
 
-    Set<R> cast<R>();
+    virtual bool add(T value);
 
-    bool add(T value);
+    virtual void addAll(Iterable<T> elements);
 
-    void addAll(Iterable<T> elements);
+    virtual bool remove(Object object);
 
-    bool remove(Object object);
+    virtual void removeAll(Iterable<Object> objects);
 
-    void removeAll(Iterable<Object> objects);
+    virtual void retainAll(Iterable<Object> objects);
 
-    void retainAll(Iterable<Object> objects);
+    virtual void removeWhere(bool test(T element) );
 
-    void removeWhere(FunctionType test);
+    virtual void retainWhere(bool test(T element) );
 
-    void retainWhere(FunctionType test);
+    virtual bool containsAll(Iterable<Object> objects);
 
-    bool containsAll(Iterable<Object> objects);
+    virtual Set<T> intersection(Set<Object> other);
 
-    Set<T> intersection(Set<Object> other);
+    virtual Set<T> difference(Set<Object> other);
 
-    Set<T> difference(Set<Object> other);
+    virtual Set<T> union(Set<T> other);
 
-    Set<T> union(Set<T> other);
+    virtual void clear();
 
-    void clear();
+    virtual Set<T> toSet();
 
-    Set<T> toSet();
-
-    T lookup(Object key);
+    virtual T lookup(Object key);
 
 private:
     Set<S> _source;
 
-    FunctionType _emptySet;
+    <R>Set<R> Function() _emptySet;
 
 
-    Set<T> _conditionalAdd(Set<Object> other, bool otherContains);
+    virtual Set<T> _conditionalAdd(Set<Object> other, bool otherContains);
 
-    Set<T> _clone();
+    virtual Set<T> _clone();
 
 };
+template<typename S, typename T> using CastSet = std::shared_ptr<CastSetCls<S, T>>;
 
-class CastMap<SK, SV, K, V> : MapBase<K, V> {
+template<typename SK, typename SV, typename K, typename V> class CastMapCls : public MapBaseCls<K, V> {
 public:
 
-     CastMap(Map<SK, SV> _source);
+     CastMapCls(Map<SK, SV> _source);
+    template<typename RK, typename RV>  virtual Map<RK, RV> cast();
 
-    Map<RK, RV> cast<RK, RV>();
+    virtual bool containsValue(Object value);
 
-    bool containsValue(Object value);
+    virtual bool containsKey(Object key);
 
-    bool containsKey(Object key);
+    virtual V operator[](Object key);
 
-    V [](Object key);
+    virtual void operator[]=(K key, V value);
 
-    void []=(K key, V value);
+    virtual V putIfAbsent(V ifAbsent() , K key);
 
-    V putIfAbsent(FunctionType ifAbsent, K key);
+    virtual void addAll(Map<K, V> other);
 
-    void addAll(Map<K, V> other);
+    virtual V remove(Object key);
 
-    V remove(Object key);
+    virtual void clear();
 
-    void clear();
+    virtual void forEach(void f(K key, V value) );
 
-    void forEach(FunctionType f);
+    virtual Iterable<K> keys();
 
-    Iterable<K> keys();
+    virtual Iterable<V> values();
 
-    Iterable<V> values();
+    virtual int length();
 
-    int length();
+    virtual bool isEmpty();
 
-    bool isEmpty();
+    virtual bool isNotEmpty();
 
-    bool isNotEmpty();
+    virtual V update(V ifAbsent() , K key, V update(V value) );
 
-    V update(FunctionType ifAbsent, K key, FunctionType update);
+    virtual void updateAll(V update(K key, V value) );
 
-    void updateAll(FunctionType update);
+    virtual Iterable<MapEntry<K, V>> entries();
 
-    Iterable<MapEntry<K, V>> entries();
+    virtual void addEntries(Iterable<MapEntry<K, V>> entries);
 
-    void addEntries(Iterable<MapEntry<K, V>> entries);
-
-    void removeWhere(FunctionType test);
+    virtual void removeWhere(bool test(K key, V value) );
 
 private:
     Map<SK, SV> _source;
 
 
 };
+template<typename SK, typename SV, typename K, typename V> using CastMap = std::shared_ptr<CastMapCls<SK, SV, K, V>>;
 
-class CastQueue<S, T> : _CastIterableBase<S, T> {
+template<typename S, typename T> class CastQueueCls : public _CastIterableBaseCls<S, T> {
 public:
 
-     CastQueue(Queue<S> _source);
+     CastQueueCls(Queue<S> _source);
+    template<typename R>  virtual Queue<R> cast();
 
-    Queue<R> cast<R>();
+    virtual T removeFirst();
 
-    T removeFirst();
+    virtual T removeLast();
 
-    T removeLast();
+    virtual void add(T value);
 
-    void add(T value);
+    virtual void addFirst(T value);
 
-    void addFirst(T value);
+    virtual void addLast(T value);
 
-    void addLast(T value);
+    virtual bool remove(Object other);
 
-    bool remove(Object other);
+    virtual void addAll(Iterable<T> elements);
 
-    void addAll(Iterable<T> elements);
+    virtual void removeWhere(bool test(T element) );
 
-    void removeWhere(FunctionType test);
+    virtual void retainWhere(bool test(T element) );
 
-    void retainWhere(FunctionType test);
-
-    void clear();
+    virtual void clear();
 
 private:
     Queue<S> _source;
 
 
 };
+template<typename S, typename T> using CastQueue = std::shared_ptr<CastQueueCls<S, T>>;
+
 
 #endif

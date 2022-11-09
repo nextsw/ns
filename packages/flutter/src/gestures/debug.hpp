@@ -1,9 +1,9 @@
-#ifndef DEBUG_H
-#define DEBUG_H
-#include <memory>
+#ifndef PACKAGES_FLUTTER_SRC_GESTURES_DEBUG
+#define PACKAGES_FLUTTER_SRC_GESTURES_DEBUG
+#include <base.hpp>
 
-#include <flutter/foundation.hpp>
-
+#include <dart/core/core.hpp>
+#include <packages/flutter/lib/foundation.hpp>
 
 bool debugPrintHitTestResults;
 
@@ -16,6 +16,7 @@ bool debugPrintRecognizerCallbacksTrace;
 bool debugPrintResamplingMargin;
 
 bool debugAssertAllGesturesVarsUnset(String reason);
+
 
 
 #endif

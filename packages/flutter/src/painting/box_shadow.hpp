@@ -1,40 +1,41 @@
-#ifndef BOX_SHADOW_H
-#define BOX_SHADOW_H
-#include <memory>
+#ifndef PACKAGES_FLUTTER_SRC_PAINTING_BOX_SHADOW
+#define PACKAGES_FLUTTER_SRC_PAINTING_BOX_SHADOW
+#include <base.hpp>
 
-#include <math/math.hpp>
-#include <ui/ui.hpp>
-#include <flutter/foundation.hpp>
+#include <dart/core/core.hpp>
+#include <dart/math/math.hpp>
+#include <dart/ui/ui.hpp>
+#include <packages/flutter/lib/foundation.hpp>
 #include "basic_types.hpp"
 #include "debug.hpp"
 
 
-
-class BoxShadow : Shadow {
+class BoxShadowCls : public ShadowCls {
 public:
     double spreadRadius;
 
     BlurStyle blurStyle;
 
 
-     BoxShadow(Unknown, BlurStyle blurStyle, Unknown, Unknown, double spreadRadius);
+     BoxShadowCls(Unknown blurRadius, BlurStyle blurStyle, Unknown color, Unknown offset, double spreadRadius);
+    virtual Paint toPaint();
 
-    Paint toPaint();
-
-    BoxShadow scale(double factor);
+    virtual BoxShadow scale(double factor);
 
     static BoxShadow lerp(BoxShadow a, BoxShadow b, double t);
 
     static List<BoxShadow> lerpList(List<BoxShadow> a, List<BoxShadow> b, double t);
 
-    bool ==(Object other);
+    virtual bool operator==(Object other);
 
-    int hashCode();
+    virtual int hashCode();
 
-    String toString();
+    virtual String toString();
 
 private:
 
 };
+using BoxShadow = std::shared_ptr<BoxShadowCls>;
+
 
 #endif

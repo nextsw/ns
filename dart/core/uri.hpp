@@ -1,42 +1,43 @@
-#ifndef URI_H
-#define URI_H
-#include <memory>
+#ifndef DART_CORE_URI
+#define DART_CORE_URI
+#include <base.hpp>
 
+#include <dart/core/core.hpp>
 
+int _SPACE;
 
-const int _SPACE;
+int _PERCENT;
 
-const int _PERCENT;
+int _AMPERSAND;
 
-const int _AMPERSAND;
+int _PLUS;
 
-const int _PLUS;
+int _DOT;
 
-const int _DOT;
+int _SLASH;
 
-const int _SLASH;
+int _COLON;
 
-const int _COLON;
+int _EQUALS;
 
-const int _EQUALS;
+int _UPPER_CASE_A;
 
-const int _UPPER_CASE_A;
+int _UPPER_CASE_Z;
 
-const int _UPPER_CASE_Z;
+int _LEFT_BRACKET;
 
-const int _LEFT_BRACKET;
+int _BACKSLASH;
 
-const int _BACKSLASH;
+int _RIGHT_BRACKET;
 
-const int _RIGHT_BRACKET;
+int _LOWER_CASE_A;
 
-const int _LOWER_CASE_A;
+int _LOWER_CASE_F;
 
-const int _LOWER_CASE_F;
+int _LOWER_CASE_Z;
 
-const int _LOWER_CASE_Z;
+String _hexDigits;
 
-const String _hexDigits;
 
 
 #endif

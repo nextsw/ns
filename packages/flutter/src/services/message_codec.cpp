@@ -1,24 +1,24 @@
 #include "message_codec.hpp"
-MethodCall::MethodCall(dynamic arguments, String method) {
+MethodCallCls::MethodCallCls(dynamic arguments, String method) {
     {
         assert(method != nullptr);
     }
 }
 
-String MethodCall::toString() {
+String MethodCallCls::toString() {
     return "${objectRuntimeType(this, 'MethodCall')}($method, $arguments)";
 }
 
-PlatformException::PlatformException(String code, dynamic details, String message, String stacktrace) {
+PlatformExceptionCls::PlatformExceptionCls(String code, dynamic details, String message, String stacktrace) {
     {
         assert(code != nullptr);
     }
 }
 
-String PlatformException::toString() {
+String PlatformExceptionCls::toString() {
     return "PlatformException($code, $message, $details, $stacktrace)";
 }
 
-String MissingPluginException::toString() {
+String MissingPluginExceptionCls::toString() {
     return "MissingPluginException($message)";
 }

@@ -1,8 +1,8 @@
-#ifndef TYPES_H
-#define TYPES_H
-#include <memory>
+#ifndef DART_SPIRV_SRC_TYPES
+#define DART_SPIRV_SRC_TYPES
+#include <base.hpp>
 
-
+#include <dart/core/core.hpp>
 
 
 enum _Type{
@@ -19,7 +19,7 @@ enum _Type{
     sampledImage,
 } // end _Type
 
-class _FunctionType {
+class _FunctionTypeCls : public ObjectCls {
 public:
     int returnType;
 
@@ -28,16 +28,17 @@ public:
 
 private:
 
-     _FunctionType(List<int> params, int returnType);
-
+     _FunctionTypeCls(List<int> params, int returnType);
 };
+using _FunctionType = std::shared_ptr<_FunctionTypeCls>;
 String _typeName(_Type t, TargetLanguage target);
 
-const Map<_Type, String> _skslTypeNames;
+Map<_Type, String> _skslTypeNames;
 
-const Map<_Type, String> _glslTypeNames;
+Map<_Type, String> _glslTypeNames;
 
-const Map<_Type, int> _typeFloatCounts;
+Map<_Type, int> _typeFloatCounts;
+
 
 
 #endif

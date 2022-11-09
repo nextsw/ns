@@ -1,27 +1,27 @@
-#ifndef PLATFORM_CHANNEL_H
-#define PLATFORM_CHANNEL_H
-#include <memory>
+#ifndef PACKAGES_FLUTTER_SRC_SERVICES_PLATFORM_CHANNEL
+#define PACKAGES_FLUTTER_SRC_SERVICES_PLATFORM_CHANNEL
+#include <base.hpp>
 #include "binary_messenger.hpp"
 #include "message_codec.hpp"
 
-#include <async/async.hpp>
-#include <developer/developer.hpp>
-#include <flutter/foundation.hpp>
+#include <dart/core/core.hpp>
+#include <dart/async/async.hpp>
+#include <dart/developer/developer.hpp>
+#include <packages/flutter/lib/foundation.hpp>
 #include "binary_messenger.hpp"
 #include "binding.hpp"
 #include "debug.hpp"
 #include "message_codec.hpp"
 #include "message_codecs.hpp"
 
-
 bool _debugProfilePlatformChannelsIsRunning;
 
-const Duration _debugProfilePlatformChannelsRate;
+Duration _debugProfilePlatformChannelsRate;
 
 Expando<BinaryMessenger> _debugBinaryMessengers;
 
 
-class _ProfiledBinaryMessenger {
+class _ProfiledBinaryMessengerCls : public ObjectCls {
 public:
     BinaryMessenger proxy;
 
@@ -30,21 +30,21 @@ public:
     String codecTypeName;
 
 
-    Future<void> handlePlatformMessage(PlatformMessageResponseCallback callback, String channel, ByteData data);
+    virtual Future<void> handlePlatformMessage(PlatformMessageResponseCallback callback, String channel, ByteData data);
 
-    Future<ByteData> sendWithPostfix(String channel, ByteData message, String postfix);
+    virtual Future<ByteData> sendWithPostfix(String channel, ByteData message, String postfix);
 
-    Future<ByteData> send(String channel, ByteData message);
+    virtual Future<ByteData> send(String channel, ByteData message);
 
-    void setMessageHandler(String channel, MessageHandler handler);
+    virtual void setMessageHandler(String channel, MessageHandler handler);
 
 private:
 
-     _ProfiledBinaryMessenger(String channelTypeName, String codecTypeName, BinaryMessenger proxy);
-
+     _ProfiledBinaryMessengerCls(String channelTypeName, String codecTypeName, BinaryMessenger proxy);
 };
+using _ProfiledBinaryMessenger = std::shared_ptr<_ProfiledBinaryMessengerCls>;
 
-class _PlatformChannelStats {
+class _PlatformChannelStatsCls : public ObjectCls {
 public:
     String channel;
 
@@ -53,17 +53,17 @@ public:
     String type;
 
 
-    int upBytes();
+    virtual int upBytes();
 
-    void addUpStream(int bytes);
+    virtual void addUpStream(int bytes);
 
-    int downBytes();
+    virtual int downBytes();
 
-    void addDownStream(int bytes);
+    virtual void addDownStream(int bytes);
 
-    double averageUpPayload();
+    virtual double averageUpPayload();
 
-    double averageDownPayload();
+    virtual double averageDownPayload();
 
 private:
     int _upCount;
@@ -75,9 +75,9 @@ private:
     int _downBytes;
 
 
-     _PlatformChannelStats(String channel, String codec, String type);
-
+     _PlatformChannelStatsCls(String channel, String codec, String type);
 };
+using _PlatformChannelStats = std::shared_ptr<_PlatformChannelStatsCls>;
 Map<String, _PlatformChannelStats> _debugProfilePlatformChannelsStats;
 
 Future<void> _debugLaunchProfilePlatformChannels();
@@ -87,84 +87,88 @@ void _debugRecordUpStream(ByteData bytes, String channelTypeName, String codecTy
 void _debugRecordDownStream(ByteData bytes, String channelTypeName, String codecTypeName, String name);
 
 
-class BasicMessageChannel<T> {
+template<typename T> class BasicMessageChannelCls : public ObjectCls {
 public:
     String name;
 
     MessageCodec<T> codec;
 
 
-     BasicMessageChannel(BinaryMessenger binaryMessenger, MessageCodec<T> codec, String name);
+     BasicMessageChannelCls(BinaryMessenger binaryMessenger, MessageCodec<T> codec, String name);
 
-    BinaryMessenger binaryMessenger();
+    virtual BinaryMessenger binaryMessenger();
 
-    Future<T> send(T message);
+    virtual Future<T> send(T message);
 
-    void setMessageHandler(FunctionType handler);
+    virtual void setMessageHandler(Future<T> handler(T message) );
 
 private:
     BinaryMessenger _binaryMessenger;
 
 
 };
+template<typename T> using BasicMessageChannel = std::shared_ptr<BasicMessageChannelCls<T>>;
 
-class MethodChannel {
+class MethodChannelCls : public ObjectCls {
 public:
     String name;
 
     MethodCodec codec;
 
 
-     MethodChannel(BinaryMessenger binaryMessenger, MethodCodec codec, String name);
+     MethodChannelCls(BinaryMessenger binaryMessenger, MethodCodec codec, String name);
 
-    BinaryMessenger binaryMessenger();
+    virtual BinaryMessenger binaryMessenger();
 
-    Future<T> invokeMethod<T>(dynamic arguments, String method);
+    template<typename T>  virtual Future<T> invokeMethod(dynamic arguments, String method);
 
-    Future<List<T>> invokeListMethod<T>(dynamic arguments, String method);
+    template<typename T>  virtual Future<List<T>> invokeListMethod(dynamic arguments, String method);
 
-    Future<Map<K, V>> invokeMapMethod<K, V>(dynamic arguments, String method);
+    template<typename K, typename V>  virtual Future<Map<K, V>> invokeMapMethod(dynamic arguments, String method);
 
-    void setMethodCallHandler(FunctionType handler);
+    virtual void setMethodCallHandler(Future<dynamic> handler(MethodCall call) );
 
 private:
     BinaryMessenger _binaryMessenger;
 
 
-    Future<T> _invokeMethod<T>(dynamic arguments, String method, bool missingOk);
+    template<typename T>  virtual Future<T> _invokeMethod(dynamic arguments, String method, bool missingOk);
 
-    Future<ByteData> _handleAsMethodCall(FunctionType handler, ByteData message);
+    virtual Future<ByteData> _handleAsMethodCall(Future<dynamic> handler(MethodCall call) , ByteData message);
 
 };
+using MethodChannel = std::shared_ptr<MethodChannelCls>;
 
-class OptionalMethodChannel : MethodChannel {
+class OptionalMethodChannelCls : public MethodChannelCls {
 public:
 
-     OptionalMethodChannel(Unknown, Unknown, Unknown);
-
-    Future<T> invokeMethod<T>(dynamic arguments, String method);
+     OptionalMethodChannelCls(Unknown binaryMessenger, Unknown codec, Unknown name);
+    template<typename T>  virtual Future<T> invokeMethod(dynamic arguments, String method);
 
 private:
 
 };
+using OptionalMethodChannel = std::shared_ptr<OptionalMethodChannelCls>;
 
-class EventChannel {
+class EventChannelCls : public ObjectCls {
 public:
     String name;
 
     MethodCodec codec;
 
 
-     EventChannel(BinaryMessenger binaryMessenger, MethodCodec codec, String name);
+     EventChannelCls(BinaryMessenger binaryMessenger, MethodCodec codec, String name);
 
-    BinaryMessenger binaryMessenger();
+    virtual BinaryMessenger binaryMessenger();
 
-    Stream<dynamic> receiveBroadcastStream(dynamic arguments);
+    virtual Stream<dynamic> receiveBroadcastStream(dynamic arguments);
 
 private:
     BinaryMessenger _binaryMessenger;
 
 
 };
+using EventChannel = std::shared_ptr<EventChannelCls>;
+
 
 #endif

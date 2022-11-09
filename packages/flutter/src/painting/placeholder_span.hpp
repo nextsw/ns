@@ -1,9 +1,10 @@
-#ifndef PLACEHOLDER_SPAN_H
-#define PLACEHOLDER_SPAN_H
-#include <memory>
+#ifndef PACKAGES_FLUTTER_SRC_PAINTING_PLACEHOLDER_SPAN
+#define PACKAGES_FLUTTER_SRC_PAINTING_PLACEHOLDER_SPAN
+#include <base.hpp>
 
-#include <ui/ui.hpp>
-#include <flutter/foundation.hpp>
+#include <dart/core/core.hpp>
+#include <dart/ui/ui.hpp>
+#include <packages/flutter/lib/foundation.hpp>
 #include "basic_types.hpp"
 #include "inline_span.hpp"
 #include "text_painter.hpp"
@@ -11,28 +12,28 @@
 #include "text_style.hpp"
 
 
-
-class PlaceholderSpan : InlineSpan {
+class PlaceholderSpanCls : public InlineSpanCls {
 public:
-    static const int placeholderCodeUnit;
+    static int placeholderCodeUnit;
 
     PlaceholderAlignment alignment;
 
     TextBaseline baseline;
 
 
-     PlaceholderSpan(PlaceholderAlignment alignment, TextBaseline baseline, Unknown);
+     PlaceholderSpanCls(PlaceholderAlignment alignment, TextBaseline baseline, Unknown style);
+    virtual void computeToPlainText(StringBuffer buffer, bool includePlaceholders, bool includeSemanticsLabels);
 
-    void computeToPlainText(StringBuffer buffer, bool includePlaceholders, bool includeSemanticsLabels);
+    virtual void computeSemanticsInformation(List<InlineSpanSemanticsInformation> collector);
 
-    void computeSemanticsInformation(List<InlineSpanSemanticsInformation> collector);
+    virtual void describeSemantics(Accumulator offset, List<dynamic> semanticsElements, List<int> semanticsOffsets);
 
-    void describeSemantics(Accumulator offset, List<dynamic> semanticsElements, List<int> semanticsOffsets);
-
-    void debugFillProperties(DiagnosticPropertiesBuilder properties);
+    virtual void debugFillProperties(DiagnosticPropertiesBuilder properties);
 
 private:
 
 };
+using PlaceholderSpan = std::shared_ptr<PlaceholderSpanCls>;
+
 
 #endif

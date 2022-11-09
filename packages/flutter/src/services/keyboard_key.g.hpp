@@ -1,972 +1,971 @@
-#ifndef KEYBOARD_KEY.G_H
-#define KEYBOARD_KEY.G_H
-#include <memory>
-#include <flutter/foundation.hpp>
+#ifndef PACKAGES_FLUTTER_SRC_SERVICES_KEYBOARD_KEY.G
+#define PACKAGES_FLUTTER_SRC_SERVICES_KEYBOARD_KEY.G
+#include <base.hpp>
+#include <packages/flutter/lib/foundation.hpp>
 
-#include <flutter/foundation.hpp>
+#include <dart/core/core.hpp>
+#include <packages/flutter/lib/foundation.hpp>
 
 
-
-class KeyboardKey {
+class KeyboardKeyCls : public ObjectCls {
 public:
 
-     KeyboardKey();
-
+     KeyboardKeyCls();
 private:
 
 };
+using KeyboardKey = std::shared_ptr<KeyboardKeyCls>;
 
-class LogicalKeyboardKey : KeyboardKey {
+class LogicalKeyboardKeyCls : public KeyboardKeyCls {
 public:
     int keyId;
 
-    static const int valueMask;
+    static int valueMask;
 
-    static const int planeMask;
+    static int planeMask;
 
-    static const int unicodePlane;
+    static int unicodePlane;
 
-    static const int unprintablePlane;
+    static int unprintablePlane;
 
-    static const int flutterPlane;
+    static int flutterPlane;
 
-    static const int startOfPlatformPlanes;
+    static int startOfPlatformPlanes;
 
-    static const int androidPlane;
+    static int androidPlane;
 
-    static const int fuchsiaPlane;
+    static int fuchsiaPlane;
 
-    static const int iosPlane;
+    static int iosPlane;
 
-    static const int macosPlane;
+    static int macosPlane;
 
-    static const int gtkPlane;
+    static int gtkPlane;
 
-    static const int windowsPlane;
+    static int windowsPlane;
 
-    static const int webPlane;
+    static int webPlane;
 
-    static const int glfwPlane;
+    static int glfwPlane;
 
-    static const LogicalKeyboardKey space;
+    static LogicalKeyboardKey space;
 
-    static const LogicalKeyboardKey exclamation;
+    static LogicalKeyboardKey exclamation;
 
-    static const LogicalKeyboardKey quote;
+    static LogicalKeyboardKey quote;
 
-    static const LogicalKeyboardKey numberSign;
+    static LogicalKeyboardKey numberSign;
 
-    static const LogicalKeyboardKey dollar;
+    static LogicalKeyboardKey dollar;
 
-    static const LogicalKeyboardKey percent;
+    static LogicalKeyboardKey percent;
 
-    static const LogicalKeyboardKey ampersand;
+    static LogicalKeyboardKey ampersand;
 
-    static const LogicalKeyboardKey quoteSingle;
+    static LogicalKeyboardKey quoteSingle;
 
-    static const LogicalKeyboardKey parenthesisLeft;
+    static LogicalKeyboardKey parenthesisLeft;
 
-    static const LogicalKeyboardKey parenthesisRight;
+    static LogicalKeyboardKey parenthesisRight;
 
-    static const LogicalKeyboardKey asterisk;
+    static LogicalKeyboardKey asterisk;
 
-    static const LogicalKeyboardKey add;
+    static LogicalKeyboardKey add;
 
-    static const LogicalKeyboardKey comma;
+    static LogicalKeyboardKey comma;
 
-    static const LogicalKeyboardKey minus;
+    static LogicalKeyboardKey minus;
 
-    static const LogicalKeyboardKey period;
+    static LogicalKeyboardKey period;
 
-    static const LogicalKeyboardKey slash;
+    static LogicalKeyboardKey slash;
 
-    static const LogicalKeyboardKey digit0;
+    static LogicalKeyboardKey digit0;
 
-    static const LogicalKeyboardKey digit1;
+    static LogicalKeyboardKey digit1;
 
-    static const LogicalKeyboardKey digit2;
+    static LogicalKeyboardKey digit2;
 
-    static const LogicalKeyboardKey digit3;
+    static LogicalKeyboardKey digit3;
 
-    static const LogicalKeyboardKey digit4;
+    static LogicalKeyboardKey digit4;
 
-    static const LogicalKeyboardKey digit5;
+    static LogicalKeyboardKey digit5;
 
-    static const LogicalKeyboardKey digit6;
+    static LogicalKeyboardKey digit6;
 
-    static const LogicalKeyboardKey digit7;
+    static LogicalKeyboardKey digit7;
 
-    static const LogicalKeyboardKey digit8;
+    static LogicalKeyboardKey digit8;
 
-    static const LogicalKeyboardKey digit9;
+    static LogicalKeyboardKey digit9;
 
-    static const LogicalKeyboardKey colon;
+    static LogicalKeyboardKey colon;
 
-    static const LogicalKeyboardKey semicolon;
+    static LogicalKeyboardKey semicolon;
 
-    static const LogicalKeyboardKey less;
+    static LogicalKeyboardKey less;
 
-    static const LogicalKeyboardKey equal;
+    static LogicalKeyboardKey equal;
 
-    static const LogicalKeyboardKey greater;
+    static LogicalKeyboardKey greater;
 
-    static const LogicalKeyboardKey question;
+    static LogicalKeyboardKey question;
 
-    static const LogicalKeyboardKey at;
+    static LogicalKeyboardKey at;
 
-    static const LogicalKeyboardKey bracketLeft;
+    static LogicalKeyboardKey bracketLeft;
 
-    static const LogicalKeyboardKey backslash;
+    static LogicalKeyboardKey backslash;
 
-    static const LogicalKeyboardKey bracketRight;
+    static LogicalKeyboardKey bracketRight;
 
-    static const LogicalKeyboardKey caret;
+    static LogicalKeyboardKey caret;
 
-    static const LogicalKeyboardKey underscore;
+    static LogicalKeyboardKey underscore;
 
-    static const LogicalKeyboardKey backquote;
+    static LogicalKeyboardKey backquote;
 
-    static const LogicalKeyboardKey keyA;
+    static LogicalKeyboardKey keyA;
 
-    static const LogicalKeyboardKey keyB;
+    static LogicalKeyboardKey keyB;
 
-    static const LogicalKeyboardKey keyC;
+    static LogicalKeyboardKey keyC;
 
-    static const LogicalKeyboardKey keyD;
+    static LogicalKeyboardKey keyD;
 
-    static const LogicalKeyboardKey keyE;
+    static LogicalKeyboardKey keyE;
 
-    static const LogicalKeyboardKey keyF;
+    static LogicalKeyboardKey keyF;
 
-    static const LogicalKeyboardKey keyG;
+    static LogicalKeyboardKey keyG;
 
-    static const LogicalKeyboardKey keyH;
+    static LogicalKeyboardKey keyH;
 
-    static const LogicalKeyboardKey keyI;
+    static LogicalKeyboardKey keyI;
 
-    static const LogicalKeyboardKey keyJ;
+    static LogicalKeyboardKey keyJ;
 
-    static const LogicalKeyboardKey keyK;
+    static LogicalKeyboardKey keyK;
 
-    static const LogicalKeyboardKey keyL;
+    static LogicalKeyboardKey keyL;
 
-    static const LogicalKeyboardKey keyM;
+    static LogicalKeyboardKey keyM;
 
-    static const LogicalKeyboardKey keyN;
+    static LogicalKeyboardKey keyN;
 
-    static const LogicalKeyboardKey keyO;
+    static LogicalKeyboardKey keyO;
 
-    static const LogicalKeyboardKey keyP;
+    static LogicalKeyboardKey keyP;
 
-    static const LogicalKeyboardKey keyQ;
+    static LogicalKeyboardKey keyQ;
 
-    static const LogicalKeyboardKey keyR;
+    static LogicalKeyboardKey keyR;
 
-    static const LogicalKeyboardKey keyS;
+    static LogicalKeyboardKey keyS;
 
-    static const LogicalKeyboardKey keyT;
+    static LogicalKeyboardKey keyT;
 
-    static const LogicalKeyboardKey keyU;
+    static LogicalKeyboardKey keyU;
 
-    static const LogicalKeyboardKey keyV;
+    static LogicalKeyboardKey keyV;
 
-    static const LogicalKeyboardKey keyW;
+    static LogicalKeyboardKey keyW;
 
-    static const LogicalKeyboardKey keyX;
+    static LogicalKeyboardKey keyX;
 
-    static const LogicalKeyboardKey keyY;
+    static LogicalKeyboardKey keyY;
 
-    static const LogicalKeyboardKey keyZ;
+    static LogicalKeyboardKey keyZ;
 
-    static const LogicalKeyboardKey braceLeft;
+    static LogicalKeyboardKey braceLeft;
 
-    static const LogicalKeyboardKey bar;
+    static LogicalKeyboardKey bar;
 
-    static const LogicalKeyboardKey braceRight;
+    static LogicalKeyboardKey braceRight;
 
-    static const LogicalKeyboardKey tilde;
+    static LogicalKeyboardKey tilde;
 
-    static const LogicalKeyboardKey unidentified;
+    static LogicalKeyboardKey unidentified;
 
-    static const LogicalKeyboardKey backspace;
+    static LogicalKeyboardKey backspace;
 
-    static const LogicalKeyboardKey tab;
+    static LogicalKeyboardKey tab;
 
-    static const LogicalKeyboardKey enter;
+    static LogicalKeyboardKey enter;
 
-    static const LogicalKeyboardKey escape;
+    static LogicalKeyboardKey escape;
 
-    static const LogicalKeyboardKey delete;
+    static LogicalKeyboardKey delete;
 
-    static const LogicalKeyboardKey accel;
+    static LogicalKeyboardKey accel;
 
-    static const LogicalKeyboardKey altGraph;
+    static LogicalKeyboardKey altGraph;
 
-    static const LogicalKeyboardKey capsLock;
+    static LogicalKeyboardKey capsLock;
 
-    static const LogicalKeyboardKey fn;
+    static LogicalKeyboardKey fn;
 
-    static const LogicalKeyboardKey fnLock;
+    static LogicalKeyboardKey fnLock;
 
-    static const LogicalKeyboardKey hyper;
+    static LogicalKeyboardKey hyper;
 
-    static const LogicalKeyboardKey numLock;
+    static LogicalKeyboardKey numLock;
 
-    static const LogicalKeyboardKey scrollLock;
+    static LogicalKeyboardKey scrollLock;
 
-    static const LogicalKeyboardKey superKey;
+    static LogicalKeyboardKey superKey;
 
-    static const LogicalKeyboardKey symbol;
+    static LogicalKeyboardKey symbol;
 
-    static const LogicalKeyboardKey symbolLock;
+    static LogicalKeyboardKey symbolLock;
 
-    static const LogicalKeyboardKey shiftLevel5;
+    static LogicalKeyboardKey shiftLevel5;
 
-    static const LogicalKeyboardKey arrowDown;
+    static LogicalKeyboardKey arrowDown;
 
-    static const LogicalKeyboardKey arrowLeft;
+    static LogicalKeyboardKey arrowLeft;
 
-    static const LogicalKeyboardKey arrowRight;
+    static LogicalKeyboardKey arrowRight;
 
-    static const LogicalKeyboardKey arrowUp;
+    static LogicalKeyboardKey arrowUp;
 
-    static const LogicalKeyboardKey end;
+    static LogicalKeyboardKey end;
 
-    static const LogicalKeyboardKey home;
+    static LogicalKeyboardKey home;
 
-    static const LogicalKeyboardKey pageDown;
+    static LogicalKeyboardKey pageDown;
 
-    static const LogicalKeyboardKey pageUp;
+    static LogicalKeyboardKey pageUp;
 
-    static const LogicalKeyboardKey clear;
+    static LogicalKeyboardKey clear;
 
-    static const LogicalKeyboardKey copy;
+    static LogicalKeyboardKey copy;
 
-    static const LogicalKeyboardKey crSel;
+    static LogicalKeyboardKey crSel;
 
-    static const LogicalKeyboardKey cut;
+    static LogicalKeyboardKey cut;
 
-    static const LogicalKeyboardKey eraseEof;
+    static LogicalKeyboardKey eraseEof;
 
-    static const LogicalKeyboardKey exSel;
+    static LogicalKeyboardKey exSel;
 
-    static const LogicalKeyboardKey insert;
+    static LogicalKeyboardKey insert;
 
-    static const LogicalKeyboardKey paste;
+    static LogicalKeyboardKey paste;
 
-    static const LogicalKeyboardKey redo;
+    static LogicalKeyboardKey redo;
 
-    static const LogicalKeyboardKey undo;
+    static LogicalKeyboardKey undo;
 
-    static const LogicalKeyboardKey accept;
+    static LogicalKeyboardKey accept;
 
-    static const LogicalKeyboardKey again;
+    static LogicalKeyboardKey again;
 
-    static const LogicalKeyboardKey attn;
+    static LogicalKeyboardKey attn;
 
-    static const LogicalKeyboardKey cancel;
+    static LogicalKeyboardKey cancel;
 
-    static const LogicalKeyboardKey contextMenu;
+    static LogicalKeyboardKey contextMenu;
 
-    static const LogicalKeyboardKey execute;
+    static LogicalKeyboardKey execute;
 
-    static const LogicalKeyboardKey find;
+    static LogicalKeyboardKey find;
 
-    static const LogicalKeyboardKey help;
+    static LogicalKeyboardKey help;
 
-    static const LogicalKeyboardKey pause;
+    static LogicalKeyboardKey pause;
 
-    static const LogicalKeyboardKey play;
+    static LogicalKeyboardKey play;
 
-    static const LogicalKeyboardKey props;
+    static LogicalKeyboardKey props;
 
-    static const LogicalKeyboardKey select;
+    static LogicalKeyboardKey select;
 
-    static const LogicalKeyboardKey zoomIn;
+    static LogicalKeyboardKey zoomIn;
 
-    static const LogicalKeyboardKey zoomOut;
+    static LogicalKeyboardKey zoomOut;
 
-    static const LogicalKeyboardKey brightnessDown;
+    static LogicalKeyboardKey brightnessDown;
 
-    static const LogicalKeyboardKey brightnessUp;
+    static LogicalKeyboardKey brightnessUp;
 
-    static const LogicalKeyboardKey camera;
+    static LogicalKeyboardKey camera;
 
-    static const LogicalKeyboardKey eject;
+    static LogicalKeyboardKey eject;
 
-    static const LogicalKeyboardKey logOff;
+    static LogicalKeyboardKey logOff;
 
-    static const LogicalKeyboardKey power;
+    static LogicalKeyboardKey power;
 
-    static const LogicalKeyboardKey powerOff;
+    static LogicalKeyboardKey powerOff;
 
-    static const LogicalKeyboardKey printScreen;
+    static LogicalKeyboardKey printScreen;
 
-    static const LogicalKeyboardKey hibernate;
+    static LogicalKeyboardKey hibernate;
 
-    static const LogicalKeyboardKey standby;
+    static LogicalKeyboardKey standby;
 
-    static const LogicalKeyboardKey wakeUp;
+    static LogicalKeyboardKey wakeUp;
 
-    static const LogicalKeyboardKey allCandidates;
+    static LogicalKeyboardKey allCandidates;
 
-    static const LogicalKeyboardKey alphanumeric;
+    static LogicalKeyboardKey alphanumeric;
 
-    static const LogicalKeyboardKey codeInput;
+    static LogicalKeyboardKey codeInput;
 
-    static const LogicalKeyboardKey compose;
+    static LogicalKeyboardKey compose;
 
-    static const LogicalKeyboardKey convert;
+    static LogicalKeyboardKey convert;
 
-    static const LogicalKeyboardKey finalMode;
+    static LogicalKeyboardKey finalMode;
 
-    static const LogicalKeyboardKey groupFirst;
+    static LogicalKeyboardKey groupFirst;
 
-    static const LogicalKeyboardKey groupLast;
+    static LogicalKeyboardKey groupLast;
 
-    static const LogicalKeyboardKey groupNext;
+    static LogicalKeyboardKey groupNext;
 
-    static const LogicalKeyboardKey groupPrevious;
+    static LogicalKeyboardKey groupPrevious;
 
-    static const LogicalKeyboardKey modeChange;
+    static LogicalKeyboardKey modeChange;
 
-    static const LogicalKeyboardKey nextCandidate;
+    static LogicalKeyboardKey nextCandidate;
 
-    static const LogicalKeyboardKey nonConvert;
+    static LogicalKeyboardKey nonConvert;
 
-    static const LogicalKeyboardKey previousCandidate;
+    static LogicalKeyboardKey previousCandidate;
 
-    static const LogicalKeyboardKey process;
+    static LogicalKeyboardKey process;
 
-    static const LogicalKeyboardKey singleCandidate;
+    static LogicalKeyboardKey singleCandidate;
 
-    static const LogicalKeyboardKey hangulMode;
+    static LogicalKeyboardKey hangulMode;
 
-    static const LogicalKeyboardKey hanjaMode;
+    static LogicalKeyboardKey hanjaMode;
 
-    static const LogicalKeyboardKey junjaMode;
+    static LogicalKeyboardKey junjaMode;
 
-    static const LogicalKeyboardKey eisu;
+    static LogicalKeyboardKey eisu;
 
-    static const LogicalKeyboardKey hankaku;
+    static LogicalKeyboardKey hankaku;
 
-    static const LogicalKeyboardKey hiragana;
+    static LogicalKeyboardKey hiragana;
 
-    static const LogicalKeyboardKey hiraganaKatakana;
+    static LogicalKeyboardKey hiraganaKatakana;
 
-    static const LogicalKeyboardKey kanaMode;
+    static LogicalKeyboardKey kanaMode;
 
-    static const LogicalKeyboardKey kanjiMode;
+    static LogicalKeyboardKey kanjiMode;
 
-    static const LogicalKeyboardKey katakana;
+    static LogicalKeyboardKey katakana;
 
-    static const LogicalKeyboardKey romaji;
+    static LogicalKeyboardKey romaji;
 
-    static const LogicalKeyboardKey zenkaku;
+    static LogicalKeyboardKey zenkaku;
 
-    static const LogicalKeyboardKey zenkakuHankaku;
+    static LogicalKeyboardKey zenkakuHankaku;
 
-    static const LogicalKeyboardKey f1;
+    static LogicalKeyboardKey f1;
 
-    static const LogicalKeyboardKey f2;
+    static LogicalKeyboardKey f2;
 
-    static const LogicalKeyboardKey f3;
+    static LogicalKeyboardKey f3;
 
-    static const LogicalKeyboardKey f4;
+    static LogicalKeyboardKey f4;
 
-    static const LogicalKeyboardKey f5;
+    static LogicalKeyboardKey f5;
 
-    static const LogicalKeyboardKey f6;
+    static LogicalKeyboardKey f6;
 
-    static const LogicalKeyboardKey f7;
+    static LogicalKeyboardKey f7;
 
-    static const LogicalKeyboardKey f8;
+    static LogicalKeyboardKey f8;
 
-    static const LogicalKeyboardKey f9;
+    static LogicalKeyboardKey f9;
 
-    static const LogicalKeyboardKey f10;
+    static LogicalKeyboardKey f10;
 
-    static const LogicalKeyboardKey f11;
+    static LogicalKeyboardKey f11;
 
-    static const LogicalKeyboardKey f12;
+    static LogicalKeyboardKey f12;
 
-    static const LogicalKeyboardKey f13;
+    static LogicalKeyboardKey f13;
 
-    static const LogicalKeyboardKey f14;
+    static LogicalKeyboardKey f14;
 
-    static const LogicalKeyboardKey f15;
+    static LogicalKeyboardKey f15;
 
-    static const LogicalKeyboardKey f16;
+    static LogicalKeyboardKey f16;
 
-    static const LogicalKeyboardKey f17;
+    static LogicalKeyboardKey f17;
 
-    static const LogicalKeyboardKey f18;
+    static LogicalKeyboardKey f18;
 
-    static const LogicalKeyboardKey f19;
+    static LogicalKeyboardKey f19;
 
-    static const LogicalKeyboardKey f20;
+    static LogicalKeyboardKey f20;
 
-    static const LogicalKeyboardKey f21;
+    static LogicalKeyboardKey f21;
 
-    static const LogicalKeyboardKey f22;
+    static LogicalKeyboardKey f22;
 
-    static const LogicalKeyboardKey f23;
+    static LogicalKeyboardKey f23;
 
-    static const LogicalKeyboardKey f24;
+    static LogicalKeyboardKey f24;
 
-    static const LogicalKeyboardKey soft1;
+    static LogicalKeyboardKey soft1;
 
-    static const LogicalKeyboardKey soft2;
+    static LogicalKeyboardKey soft2;
 
-    static const LogicalKeyboardKey soft3;
+    static LogicalKeyboardKey soft3;
 
-    static const LogicalKeyboardKey soft4;
+    static LogicalKeyboardKey soft4;
 
-    static const LogicalKeyboardKey soft5;
+    static LogicalKeyboardKey soft5;
 
-    static const LogicalKeyboardKey soft6;
+    static LogicalKeyboardKey soft6;
 
-    static const LogicalKeyboardKey soft7;
+    static LogicalKeyboardKey soft7;
 
-    static const LogicalKeyboardKey soft8;
+    static LogicalKeyboardKey soft8;
 
-    static const LogicalKeyboardKey close;
+    static LogicalKeyboardKey close;
 
-    static const LogicalKeyboardKey mailForward;
+    static LogicalKeyboardKey mailForward;
 
-    static const LogicalKeyboardKey mailReply;
+    static LogicalKeyboardKey mailReply;
 
-    static const LogicalKeyboardKey mailSend;
+    static LogicalKeyboardKey mailSend;
 
-    static const LogicalKeyboardKey mediaPlayPause;
+    static LogicalKeyboardKey mediaPlayPause;
 
-    static const LogicalKeyboardKey mediaStop;
+    static LogicalKeyboardKey mediaStop;
 
-    static const LogicalKeyboardKey mediaTrackNext;
+    static LogicalKeyboardKey mediaTrackNext;
 
-    static const LogicalKeyboardKey mediaTrackPrevious;
+    static LogicalKeyboardKey mediaTrackPrevious;
 
-    static const LogicalKeyboardKey newKey;
+    static LogicalKeyboardKey newKey;
 
-    static const LogicalKeyboardKey open;
+    static LogicalKeyboardKey open;
 
-    static const LogicalKeyboardKey print;
+    static LogicalKeyboardKey print;
 
-    static const LogicalKeyboardKey save;
+    static LogicalKeyboardKey save;
 
-    static const LogicalKeyboardKey spellCheck;
+    static LogicalKeyboardKey spellCheck;
 
-    static const LogicalKeyboardKey audioVolumeDown;
+    static LogicalKeyboardKey audioVolumeDown;
 
-    static const LogicalKeyboardKey audioVolumeUp;
+    static LogicalKeyboardKey audioVolumeUp;
 
-    static const LogicalKeyboardKey audioVolumeMute;
+    static LogicalKeyboardKey audioVolumeMute;
 
-    static const LogicalKeyboardKey launchApplication2;
+    static LogicalKeyboardKey launchApplication2;
 
-    static const LogicalKeyboardKey launchCalendar;
+    static LogicalKeyboardKey launchCalendar;
 
-    static const LogicalKeyboardKey launchMail;
+    static LogicalKeyboardKey launchMail;
 
-    static const LogicalKeyboardKey launchMediaPlayer;
+    static LogicalKeyboardKey launchMediaPlayer;
 
-    static const LogicalKeyboardKey launchMusicPlayer;
+    static LogicalKeyboardKey launchMusicPlayer;
 
-    static const LogicalKeyboardKey launchApplication1;
+    static LogicalKeyboardKey launchApplication1;
 
-    static const LogicalKeyboardKey launchScreenSaver;
+    static LogicalKeyboardKey launchScreenSaver;
 
-    static const LogicalKeyboardKey launchSpreadsheet;
+    static LogicalKeyboardKey launchSpreadsheet;
 
-    static const LogicalKeyboardKey launchWebBrowser;
+    static LogicalKeyboardKey launchWebBrowser;
 
-    static const LogicalKeyboardKey launchWebCam;
+    static LogicalKeyboardKey launchWebCam;
 
-    static const LogicalKeyboardKey launchWordProcessor;
+    static LogicalKeyboardKey launchWordProcessor;
 
-    static const LogicalKeyboardKey launchContacts;
+    static LogicalKeyboardKey launchContacts;
 
-    static const LogicalKeyboardKey launchPhone;
+    static LogicalKeyboardKey launchPhone;
 
-    static const LogicalKeyboardKey launchAssistant;
+    static LogicalKeyboardKey launchAssistant;
 
-    static const LogicalKeyboardKey launchControlPanel;
+    static LogicalKeyboardKey launchControlPanel;
 
-    static const LogicalKeyboardKey browserBack;
+    static LogicalKeyboardKey browserBack;
 
-    static const LogicalKeyboardKey browserFavorites;
+    static LogicalKeyboardKey browserFavorites;
 
-    static const LogicalKeyboardKey browserForward;
+    static LogicalKeyboardKey browserForward;
 
-    static const LogicalKeyboardKey browserHome;
+    static LogicalKeyboardKey browserHome;
 
-    static const LogicalKeyboardKey browserRefresh;
+    static LogicalKeyboardKey browserRefresh;
 
-    static const LogicalKeyboardKey browserSearch;
+    static LogicalKeyboardKey browserSearch;
 
-    static const LogicalKeyboardKey browserStop;
+    static LogicalKeyboardKey browserStop;
 
-    static const LogicalKeyboardKey audioBalanceLeft;
+    static LogicalKeyboardKey audioBalanceLeft;
 
-    static const LogicalKeyboardKey audioBalanceRight;
+    static LogicalKeyboardKey audioBalanceRight;
 
-    static const LogicalKeyboardKey audioBassBoostDown;
+    static LogicalKeyboardKey audioBassBoostDown;
 
-    static const LogicalKeyboardKey audioBassBoostUp;
+    static LogicalKeyboardKey audioBassBoostUp;
 
-    static const LogicalKeyboardKey audioFaderFront;
+    static LogicalKeyboardKey audioFaderFront;
 
-    static const LogicalKeyboardKey audioFaderRear;
+    static LogicalKeyboardKey audioFaderRear;
 
-    static const LogicalKeyboardKey audioSurroundModeNext;
+    static LogicalKeyboardKey audioSurroundModeNext;
 
-    static const LogicalKeyboardKey avrInput;
+    static LogicalKeyboardKey avrInput;
 
-    static const LogicalKeyboardKey avrPower;
+    static LogicalKeyboardKey avrPower;
 
-    static const LogicalKeyboardKey channelDown;
+    static LogicalKeyboardKey channelDown;
 
-    static const LogicalKeyboardKey channelUp;
+    static LogicalKeyboardKey channelUp;
 
-    static const LogicalKeyboardKey colorF0Red;
+    static LogicalKeyboardKey colorF0Red;
 
-    static const LogicalKeyboardKey colorF1Green;
+    static LogicalKeyboardKey colorF1Green;
 
-    static const LogicalKeyboardKey colorF2Yellow;
+    static LogicalKeyboardKey colorF2Yellow;
 
-    static const LogicalKeyboardKey colorF3Blue;
+    static LogicalKeyboardKey colorF3Blue;
 
-    static const LogicalKeyboardKey colorF4Grey;
+    static LogicalKeyboardKey colorF4Grey;
 
-    static const LogicalKeyboardKey colorF5Brown;
+    static LogicalKeyboardKey colorF5Brown;
 
-    static const LogicalKeyboardKey closedCaptionToggle;
+    static LogicalKeyboardKey closedCaptionToggle;
 
-    static const LogicalKeyboardKey dimmer;
+    static LogicalKeyboardKey dimmer;
 
-    static const LogicalKeyboardKey displaySwap;
+    static LogicalKeyboardKey displaySwap;
 
-    static const LogicalKeyboardKey exit;
+    static LogicalKeyboardKey exit;
 
-    static const LogicalKeyboardKey favoriteClear0;
+    static LogicalKeyboardKey favoriteClear0;
 
-    static const LogicalKeyboardKey favoriteClear1;
+    static LogicalKeyboardKey favoriteClear1;
 
-    static const LogicalKeyboardKey favoriteClear2;
+    static LogicalKeyboardKey favoriteClear2;
 
-    static const LogicalKeyboardKey favoriteClear3;
+    static LogicalKeyboardKey favoriteClear3;
 
-    static const LogicalKeyboardKey favoriteRecall0;
+    static LogicalKeyboardKey favoriteRecall0;
 
-    static const LogicalKeyboardKey favoriteRecall1;
+    static LogicalKeyboardKey favoriteRecall1;
 
-    static const LogicalKeyboardKey favoriteRecall2;
+    static LogicalKeyboardKey favoriteRecall2;
 
-    static const LogicalKeyboardKey favoriteRecall3;
+    static LogicalKeyboardKey favoriteRecall3;
 
-    static const LogicalKeyboardKey favoriteStore0;
+    static LogicalKeyboardKey favoriteStore0;
 
-    static const LogicalKeyboardKey favoriteStore1;
+    static LogicalKeyboardKey favoriteStore1;
 
-    static const LogicalKeyboardKey favoriteStore2;
+    static LogicalKeyboardKey favoriteStore2;
 
-    static const LogicalKeyboardKey favoriteStore3;
+    static LogicalKeyboardKey favoriteStore3;
 
-    static const LogicalKeyboardKey guide;
+    static LogicalKeyboardKey guide;
 
-    static const LogicalKeyboardKey guideNextDay;
+    static LogicalKeyboardKey guideNextDay;
 
-    static const LogicalKeyboardKey guidePreviousDay;
+    static LogicalKeyboardKey guidePreviousDay;
 
-    static const LogicalKeyboardKey info;
+    static LogicalKeyboardKey info;
 
-    static const LogicalKeyboardKey instantReplay;
+    static LogicalKeyboardKey instantReplay;
 
-    static const LogicalKeyboardKey link;
+    static LogicalKeyboardKey link;
 
-    static const LogicalKeyboardKey listProgram;
+    static LogicalKeyboardKey listProgram;
 
-    static const LogicalKeyboardKey liveContent;
+    static LogicalKeyboardKey liveContent;
 
-    static const LogicalKeyboardKey lock;
+    static LogicalKeyboardKey lock;
 
-    static const LogicalKeyboardKey mediaApps;
+    static LogicalKeyboardKey mediaApps;
 
-    static const LogicalKeyboardKey mediaFastForward;
+    static LogicalKeyboardKey mediaFastForward;
 
-    static const LogicalKeyboardKey mediaLast;
+    static LogicalKeyboardKey mediaLast;
 
-    static const LogicalKeyboardKey mediaPause;
+    static LogicalKeyboardKey mediaPause;
 
-    static const LogicalKeyboardKey mediaPlay;
+    static LogicalKeyboardKey mediaPlay;
 
-    static const LogicalKeyboardKey mediaRecord;
+    static LogicalKeyboardKey mediaRecord;
 
-    static const LogicalKeyboardKey mediaRewind;
+    static LogicalKeyboardKey mediaRewind;
 
-    static const LogicalKeyboardKey mediaSkip;
+    static LogicalKeyboardKey mediaSkip;
 
-    static const LogicalKeyboardKey nextFavoriteChannel;
+    static LogicalKeyboardKey nextFavoriteChannel;
 
-    static const LogicalKeyboardKey nextUserProfile;
+    static LogicalKeyboardKey nextUserProfile;
 
-    static const LogicalKeyboardKey onDemand;
+    static LogicalKeyboardKey onDemand;
 
-    static const LogicalKeyboardKey pInPDown;
+    static LogicalKeyboardKey pInPDown;
 
-    static const LogicalKeyboardKey pInPMove;
+    static LogicalKeyboardKey pInPMove;
 
-    static const LogicalKeyboardKey pInPToggle;
+    static LogicalKeyboardKey pInPToggle;
 
-    static const LogicalKeyboardKey pInPUp;
+    static LogicalKeyboardKey pInPUp;
 
-    static const LogicalKeyboardKey playSpeedDown;
+    static LogicalKeyboardKey playSpeedDown;
 
-    static const LogicalKeyboardKey playSpeedReset;
+    static LogicalKeyboardKey playSpeedReset;
 
-    static const LogicalKeyboardKey playSpeedUp;
+    static LogicalKeyboardKey playSpeedUp;
 
-    static const LogicalKeyboardKey randomToggle;
+    static LogicalKeyboardKey randomToggle;
 
-    static const LogicalKeyboardKey rcLowBattery;
+    static LogicalKeyboardKey rcLowBattery;
 
-    static const LogicalKeyboardKey recordSpeedNext;
+    static LogicalKeyboardKey recordSpeedNext;
 
-    static const LogicalKeyboardKey rfBypass;
+    static LogicalKeyboardKey rfBypass;
 
-    static const LogicalKeyboardKey scanChannelsToggle;
+    static LogicalKeyboardKey scanChannelsToggle;
 
-    static const LogicalKeyboardKey screenModeNext;
+    static LogicalKeyboardKey screenModeNext;
 
-    static const LogicalKeyboardKey settings;
+    static LogicalKeyboardKey settings;
 
-    static const LogicalKeyboardKey splitScreenToggle;
+    static LogicalKeyboardKey splitScreenToggle;
 
-    static const LogicalKeyboardKey stbInput;
+    static LogicalKeyboardKey stbInput;
 
-    static const LogicalKeyboardKey stbPower;
+    static LogicalKeyboardKey stbPower;
 
-    static const LogicalKeyboardKey subtitle;
+    static LogicalKeyboardKey subtitle;
 
-    static const LogicalKeyboardKey teletext;
+    static LogicalKeyboardKey teletext;
 
-    static const LogicalKeyboardKey tv;
+    static LogicalKeyboardKey tv;
 
-    static const LogicalKeyboardKey tvInput;
+    static LogicalKeyboardKey tvInput;
 
-    static const LogicalKeyboardKey tvPower;
+    static LogicalKeyboardKey tvPower;
 
-    static const LogicalKeyboardKey videoModeNext;
+    static LogicalKeyboardKey videoModeNext;
 
-    static const LogicalKeyboardKey wink;
+    static LogicalKeyboardKey wink;
 
-    static const LogicalKeyboardKey zoomToggle;
+    static LogicalKeyboardKey zoomToggle;
 
-    static const LogicalKeyboardKey dvr;
+    static LogicalKeyboardKey dvr;
 
-    static const LogicalKeyboardKey mediaAudioTrack;
+    static LogicalKeyboardKey mediaAudioTrack;
 
-    static const LogicalKeyboardKey mediaSkipBackward;
+    static LogicalKeyboardKey mediaSkipBackward;
 
-    static const LogicalKeyboardKey mediaSkipForward;
+    static LogicalKeyboardKey mediaSkipForward;
 
-    static const LogicalKeyboardKey mediaStepBackward;
+    static LogicalKeyboardKey mediaStepBackward;
 
-    static const LogicalKeyboardKey mediaStepForward;
+    static LogicalKeyboardKey mediaStepForward;
 
-    static const LogicalKeyboardKey mediaTopMenu;
+    static LogicalKeyboardKey mediaTopMenu;
 
-    static const LogicalKeyboardKey navigateIn;
+    static LogicalKeyboardKey navigateIn;
 
-    static const LogicalKeyboardKey navigateNext;
+    static LogicalKeyboardKey navigateNext;
 
-    static const LogicalKeyboardKey navigateOut;
+    static LogicalKeyboardKey navigateOut;
 
-    static const LogicalKeyboardKey navigatePrevious;
+    static LogicalKeyboardKey navigatePrevious;
 
-    static const LogicalKeyboardKey pairing;
+    static LogicalKeyboardKey pairing;
 
-    static const LogicalKeyboardKey mediaClose;
+    static LogicalKeyboardKey mediaClose;
 
-    static const LogicalKeyboardKey audioBassBoostToggle;
+    static LogicalKeyboardKey audioBassBoostToggle;
 
-    static const LogicalKeyboardKey audioTrebleDown;
+    static LogicalKeyboardKey audioTrebleDown;
 
-    static const LogicalKeyboardKey audioTrebleUp;
+    static LogicalKeyboardKey audioTrebleUp;
 
-    static const LogicalKeyboardKey microphoneToggle;
+    static LogicalKeyboardKey microphoneToggle;
 
-    static const LogicalKeyboardKey microphoneVolumeDown;
+    static LogicalKeyboardKey microphoneVolumeDown;
 
-    static const LogicalKeyboardKey microphoneVolumeUp;
+    static LogicalKeyboardKey microphoneVolumeUp;
 
-    static const LogicalKeyboardKey microphoneVolumeMute;
+    static LogicalKeyboardKey microphoneVolumeMute;
 
-    static const LogicalKeyboardKey speechCorrectionList;
+    static LogicalKeyboardKey speechCorrectionList;
 
-    static const LogicalKeyboardKey speechInputToggle;
+    static LogicalKeyboardKey speechInputToggle;
 
-    static const LogicalKeyboardKey appSwitch;
+    static LogicalKeyboardKey appSwitch;
 
-    static const LogicalKeyboardKey call;
+    static LogicalKeyboardKey call;
 
-    static const LogicalKeyboardKey cameraFocus;
+    static LogicalKeyboardKey cameraFocus;
 
-    static const LogicalKeyboardKey endCall;
+    static LogicalKeyboardKey endCall;
 
-    static const LogicalKeyboardKey goBack;
+    static LogicalKeyboardKey goBack;
 
-    static const LogicalKeyboardKey goHome;
+    static LogicalKeyboardKey goHome;
 
-    static const LogicalKeyboardKey headsetHook;
+    static LogicalKeyboardKey headsetHook;
 
-    static const LogicalKeyboardKey lastNumberRedial;
+    static LogicalKeyboardKey lastNumberRedial;
 
-    static const LogicalKeyboardKey notification;
+    static LogicalKeyboardKey notification;
 
-    static const LogicalKeyboardKey mannerMode;
+    static LogicalKeyboardKey mannerMode;
 
-    static const LogicalKeyboardKey voiceDial;
+    static LogicalKeyboardKey voiceDial;
 
-    static const LogicalKeyboardKey tv3DMode;
+    static LogicalKeyboardKey tv3DMode;
 
-    static const LogicalKeyboardKey tvAntennaCable;
+    static LogicalKeyboardKey tvAntennaCable;
 
-    static const LogicalKeyboardKey tvAudioDescription;
+    static LogicalKeyboardKey tvAudioDescription;
 
-    static const LogicalKeyboardKey tvAudioDescriptionMixDown;
+    static LogicalKeyboardKey tvAudioDescriptionMixDown;
 
-    static const LogicalKeyboardKey tvAudioDescriptionMixUp;
+    static LogicalKeyboardKey tvAudioDescriptionMixUp;
 
-    static const LogicalKeyboardKey tvContentsMenu;
+    static LogicalKeyboardKey tvContentsMenu;
 
-    static const LogicalKeyboardKey tvDataService;
+    static LogicalKeyboardKey tvDataService;
 
-    static const LogicalKeyboardKey tvInputComponent1;
+    static LogicalKeyboardKey tvInputComponent1;
 
-    static const LogicalKeyboardKey tvInputComponent2;
+    static LogicalKeyboardKey tvInputComponent2;
 
-    static const LogicalKeyboardKey tvInputComposite1;
+    static LogicalKeyboardKey tvInputComposite1;
 
-    static const LogicalKeyboardKey tvInputComposite2;
+    static LogicalKeyboardKey tvInputComposite2;
 
-    static const LogicalKeyboardKey tvInputHDMI1;
+    static LogicalKeyboardKey tvInputHDMI1;
 
-    static const LogicalKeyboardKey tvInputHDMI2;
+    static LogicalKeyboardKey tvInputHDMI2;
 
-    static const LogicalKeyboardKey tvInputHDMI3;
+    static LogicalKeyboardKey tvInputHDMI3;
 
-    static const LogicalKeyboardKey tvInputHDMI4;
+    static LogicalKeyboardKey tvInputHDMI4;
 
-    static const LogicalKeyboardKey tvInputVGA1;
+    static LogicalKeyboardKey tvInputVGA1;
 
-    static const LogicalKeyboardKey tvMediaContext;
+    static LogicalKeyboardKey tvMediaContext;
 
-    static const LogicalKeyboardKey tvNetwork;
+    static LogicalKeyboardKey tvNetwork;
 
-    static const LogicalKeyboardKey tvNumberEntry;
+    static LogicalKeyboardKey tvNumberEntry;
 
-    static const LogicalKeyboardKey tvRadioService;
+    static LogicalKeyboardKey tvRadioService;
 
-    static const LogicalKeyboardKey tvSatellite;
+    static LogicalKeyboardKey tvSatellite;
 
-    static const LogicalKeyboardKey tvSatelliteBS;
+    static LogicalKeyboardKey tvSatelliteBS;
 
-    static const LogicalKeyboardKey tvSatelliteCS;
+    static LogicalKeyboardKey tvSatelliteCS;
 
-    static const LogicalKeyboardKey tvSatelliteToggle;
+    static LogicalKeyboardKey tvSatelliteToggle;
 
-    static const LogicalKeyboardKey tvTerrestrialAnalog;
+    static LogicalKeyboardKey tvTerrestrialAnalog;
 
-    static const LogicalKeyboardKey tvTerrestrialDigital;
+    static LogicalKeyboardKey tvTerrestrialDigital;
 
-    static const LogicalKeyboardKey tvTimer;
+    static LogicalKeyboardKey tvTimer;
 
-    static const LogicalKeyboardKey key11;
+    static LogicalKeyboardKey key11;
 
-    static const LogicalKeyboardKey key12;
+    static LogicalKeyboardKey key12;
 
-    static const LogicalKeyboardKey suspend;
+    static LogicalKeyboardKey suspend;
 
-    static const LogicalKeyboardKey resume;
+    static LogicalKeyboardKey resume;
 
-    static const LogicalKeyboardKey sleep;
+    static LogicalKeyboardKey sleep;
 
-    static const LogicalKeyboardKey abort;
+    static LogicalKeyboardKey abort;
 
-    static const LogicalKeyboardKey lang1;
+    static LogicalKeyboardKey lang1;
 
-    static const LogicalKeyboardKey lang2;
+    static LogicalKeyboardKey lang2;
 
-    static const LogicalKeyboardKey lang3;
+    static LogicalKeyboardKey lang3;
 
-    static const LogicalKeyboardKey lang4;
+    static LogicalKeyboardKey lang4;
 
-    static const LogicalKeyboardKey lang5;
+    static LogicalKeyboardKey lang5;
 
-    static const LogicalKeyboardKey intlBackslash;
+    static LogicalKeyboardKey intlBackslash;
 
-    static const LogicalKeyboardKey intlRo;
+    static LogicalKeyboardKey intlRo;
 
-    static const LogicalKeyboardKey intlYen;
+    static LogicalKeyboardKey intlYen;
 
-    static const LogicalKeyboardKey controlLeft;
+    static LogicalKeyboardKey controlLeft;
 
-    static const LogicalKeyboardKey controlRight;
+    static LogicalKeyboardKey controlRight;
 
-    static const LogicalKeyboardKey shiftLeft;
+    static LogicalKeyboardKey shiftLeft;
 
-    static const LogicalKeyboardKey shiftRight;
+    static LogicalKeyboardKey shiftRight;
 
-    static const LogicalKeyboardKey altLeft;
+    static LogicalKeyboardKey altLeft;
 
-    static const LogicalKeyboardKey altRight;
+    static LogicalKeyboardKey altRight;
 
-    static const LogicalKeyboardKey metaLeft;
+    static LogicalKeyboardKey metaLeft;
 
-    static const LogicalKeyboardKey metaRight;
+    static LogicalKeyboardKey metaRight;
 
-    static const LogicalKeyboardKey control;
+    static LogicalKeyboardKey control;
 
-    static const LogicalKeyboardKey shift;
+    static LogicalKeyboardKey shift;
 
-    static const LogicalKeyboardKey alt;
+    static LogicalKeyboardKey alt;
 
-    static const LogicalKeyboardKey meta;
+    static LogicalKeyboardKey meta;
 
-    static const LogicalKeyboardKey numpadEnter;
+    static LogicalKeyboardKey numpadEnter;
 
-    static const LogicalKeyboardKey numpadParenLeft;
+    static LogicalKeyboardKey numpadParenLeft;
 
-    static const LogicalKeyboardKey numpadParenRight;
+    static LogicalKeyboardKey numpadParenRight;
 
-    static const LogicalKeyboardKey numpadMultiply;
+    static LogicalKeyboardKey numpadMultiply;
 
-    static const LogicalKeyboardKey numpadAdd;
+    static LogicalKeyboardKey numpadAdd;
 
-    static const LogicalKeyboardKey numpadComma;
+    static LogicalKeyboardKey numpadComma;
 
-    static const LogicalKeyboardKey numpadSubtract;
+    static LogicalKeyboardKey numpadSubtract;
 
-    static const LogicalKeyboardKey numpadDecimal;
+    static LogicalKeyboardKey numpadDecimal;
 
-    static const LogicalKeyboardKey numpadDivide;
+    static LogicalKeyboardKey numpadDivide;
 
-    static const LogicalKeyboardKey numpad0;
+    static LogicalKeyboardKey numpad0;
 
-    static const LogicalKeyboardKey numpad1;
+    static LogicalKeyboardKey numpad1;
 
-    static const LogicalKeyboardKey numpad2;
+    static LogicalKeyboardKey numpad2;
 
-    static const LogicalKeyboardKey numpad3;
+    static LogicalKeyboardKey numpad3;
 
-    static const LogicalKeyboardKey numpad4;
+    static LogicalKeyboardKey numpad4;
 
-    static const LogicalKeyboardKey numpad5;
+    static LogicalKeyboardKey numpad5;
 
-    static const LogicalKeyboardKey numpad6;
+    static LogicalKeyboardKey numpad6;
 
-    static const LogicalKeyboardKey numpad7;
+    static LogicalKeyboardKey numpad7;
 
-    static const LogicalKeyboardKey numpad8;
+    static LogicalKeyboardKey numpad8;
 
-    static const LogicalKeyboardKey numpad9;
+    static LogicalKeyboardKey numpad9;
 
-    static const LogicalKeyboardKey numpadEqual;
+    static LogicalKeyboardKey numpadEqual;
 
-    static const LogicalKeyboardKey gameButton1;
+    static LogicalKeyboardKey gameButton1;
 
-    static const LogicalKeyboardKey gameButton2;
+    static LogicalKeyboardKey gameButton2;
 
-    static const LogicalKeyboardKey gameButton3;
+    static LogicalKeyboardKey gameButton3;
 
-    static const LogicalKeyboardKey gameButton4;
+    static LogicalKeyboardKey gameButton4;
 
-    static const LogicalKeyboardKey gameButton5;
+    static LogicalKeyboardKey gameButton5;
 
-    static const LogicalKeyboardKey gameButton6;
+    static LogicalKeyboardKey gameButton6;
 
-    static const LogicalKeyboardKey gameButton7;
+    static LogicalKeyboardKey gameButton7;
 
-    static const LogicalKeyboardKey gameButton8;
+    static LogicalKeyboardKey gameButton8;
 
-    static const LogicalKeyboardKey gameButton9;
+    static LogicalKeyboardKey gameButton9;
 
-    static const LogicalKeyboardKey gameButton10;
+    static LogicalKeyboardKey gameButton10;
 
-    static const LogicalKeyboardKey gameButton11;
+    static LogicalKeyboardKey gameButton11;
 
-    static const LogicalKeyboardKey gameButton12;
+    static LogicalKeyboardKey gameButton12;
 
-    static const LogicalKeyboardKey gameButton13;
+    static LogicalKeyboardKey gameButton13;
 
-    static const LogicalKeyboardKey gameButton14;
+    static LogicalKeyboardKey gameButton14;
 
-    static const LogicalKeyboardKey gameButton15;
+    static LogicalKeyboardKey gameButton15;
 
-    static const LogicalKeyboardKey gameButton16;
+    static LogicalKeyboardKey gameButton16;
 
-    static const LogicalKeyboardKey gameButtonA;
+    static LogicalKeyboardKey gameButtonA;
 
-    static const LogicalKeyboardKey gameButtonB;
+    static LogicalKeyboardKey gameButtonB;
 
-    static const LogicalKeyboardKey gameButtonC;
+    static LogicalKeyboardKey gameButtonC;
 
-    static const LogicalKeyboardKey gameButtonLeft1;
+    static LogicalKeyboardKey gameButtonLeft1;
 
-    static const LogicalKeyboardKey gameButtonLeft2;
+    static LogicalKeyboardKey gameButtonLeft2;
 
-    static const LogicalKeyboardKey gameButtonMode;
+    static LogicalKeyboardKey gameButtonMode;
 
-    static const LogicalKeyboardKey gameButtonRight1;
+    static LogicalKeyboardKey gameButtonRight1;
 
-    static const LogicalKeyboardKey gameButtonRight2;
+    static LogicalKeyboardKey gameButtonRight2;
 
-    static const LogicalKeyboardKey gameButtonSelect;
+    static LogicalKeyboardKey gameButtonSelect;
 
-    static const LogicalKeyboardKey gameButtonStart;
+    static LogicalKeyboardKey gameButtonStart;
 
-    static const LogicalKeyboardKey gameButtonThumbLeft;
+    static LogicalKeyboardKey gameButtonThumbLeft;
 
-    static const LogicalKeyboardKey gameButtonThumbRight;
+    static LogicalKeyboardKey gameButtonThumbRight;
 
-    static const LogicalKeyboardKey gameButtonX;
+    static LogicalKeyboardKey gameButtonX;
 
-    static const LogicalKeyboardKey gameButtonY;
+    static LogicalKeyboardKey gameButtonY;
 
-    static const LogicalKeyboardKey gameButtonZ;
+    static LogicalKeyboardKey gameButtonZ;
 
 
-     LogicalKeyboardKey(int keyId);
+     LogicalKeyboardKeyCls(int keyId);
+    virtual String keyLabel();
 
-    String keyLabel();
+    virtual String debugName();
 
-    String debugName();
+    virtual int hashCode();
 
-    int hashCode();
-
-    bool ==(Object other);
+    virtual bool operator==(Object other);
 
     static LogicalKeyboardKey findKeyByKeyId(int keyId);
 
     static bool isControlCharacter(String label);
 
-    bool isAutogenerated();
+    virtual bool isAutogenerated();
 
-    Set<LogicalKeyboardKey> synonyms();
+    virtual Set<LogicalKeyboardKey> synonyms();
 
     static Set<LogicalKeyboardKey> collapseSynonyms(Set<LogicalKeyboardKey> input);
 
-    void debugFillProperties(DiagnosticPropertiesBuilder properties);
+    virtual void debugFillProperties(DiagnosticPropertiesBuilder properties);
 
     static Iterable<LogicalKeyboardKey> knownLogicalKeys();
 
 private:
-    static const Map<int, LogicalKeyboardKey> _knownLogicalKeys;
+    static Map<int, LogicalKeyboardKey> _knownLogicalKeys;
 
     static Map<LogicalKeyboardKey, LogicalKeyboardKey> _synonyms;
 
-    static const Map<int, String> _keyLabels;
+    static Map<int, String> _keyLabels;
 
 
     static int _nonValueBits(int n);
@@ -974,570 +973,572 @@ private:
     static String _unicodeKeyLabel(int keyId);
 
 };
+using LogicalKeyboardKey = std::shared_ptr<LogicalKeyboardKeyCls>;
 
-class PhysicalKeyboardKey : KeyboardKey {
+class PhysicalKeyboardKeyCls : public KeyboardKeyCls {
 public:
     int usbHidUsage;
 
-    static const PhysicalKeyboardKey hyper;
+    static PhysicalKeyboardKey hyper;
 
-    static const PhysicalKeyboardKey superKey;
+    static PhysicalKeyboardKey superKey;
 
-    static const PhysicalKeyboardKey fn;
+    static PhysicalKeyboardKey fn;
 
-    static const PhysicalKeyboardKey fnLock;
+    static PhysicalKeyboardKey fnLock;
 
-    static const PhysicalKeyboardKey suspend;
+    static PhysicalKeyboardKey suspend;
 
-    static const PhysicalKeyboardKey resume;
+    static PhysicalKeyboardKey resume;
 
-    static const PhysicalKeyboardKey turbo;
+    static PhysicalKeyboardKey turbo;
 
-    static const PhysicalKeyboardKey privacyScreenToggle;
+    static PhysicalKeyboardKey privacyScreenToggle;
 
-    static const PhysicalKeyboardKey microphoneMuteToggle;
+    static PhysicalKeyboardKey microphoneMuteToggle;
 
-    static const PhysicalKeyboardKey sleep;
+    static PhysicalKeyboardKey sleep;
 
-    static const PhysicalKeyboardKey wakeUp;
+    static PhysicalKeyboardKey wakeUp;
 
-    static const PhysicalKeyboardKey displayToggleIntExt;
+    static PhysicalKeyboardKey displayToggleIntExt;
 
-    static const PhysicalKeyboardKey gameButton1;
+    static PhysicalKeyboardKey gameButton1;
 
-    static const PhysicalKeyboardKey gameButton2;
+    static PhysicalKeyboardKey gameButton2;
 
-    static const PhysicalKeyboardKey gameButton3;
+    static PhysicalKeyboardKey gameButton3;
 
-    static const PhysicalKeyboardKey gameButton4;
+    static PhysicalKeyboardKey gameButton4;
 
-    static const PhysicalKeyboardKey gameButton5;
+    static PhysicalKeyboardKey gameButton5;
 
-    static const PhysicalKeyboardKey gameButton6;
+    static PhysicalKeyboardKey gameButton6;
 
-    static const PhysicalKeyboardKey gameButton7;
+    static PhysicalKeyboardKey gameButton7;
 
-    static const PhysicalKeyboardKey gameButton8;
+    static PhysicalKeyboardKey gameButton8;
 
-    static const PhysicalKeyboardKey gameButton9;
+    static PhysicalKeyboardKey gameButton9;
 
-    static const PhysicalKeyboardKey gameButton10;
+    static PhysicalKeyboardKey gameButton10;
 
-    static const PhysicalKeyboardKey gameButton11;
+    static PhysicalKeyboardKey gameButton11;
 
-    static const PhysicalKeyboardKey gameButton12;
+    static PhysicalKeyboardKey gameButton12;
 
-    static const PhysicalKeyboardKey gameButton13;
+    static PhysicalKeyboardKey gameButton13;
 
-    static const PhysicalKeyboardKey gameButton14;
+    static PhysicalKeyboardKey gameButton14;
 
-    static const PhysicalKeyboardKey gameButton15;
+    static PhysicalKeyboardKey gameButton15;
 
-    static const PhysicalKeyboardKey gameButton16;
+    static PhysicalKeyboardKey gameButton16;
 
-    static const PhysicalKeyboardKey gameButtonA;
+    static PhysicalKeyboardKey gameButtonA;
 
-    static const PhysicalKeyboardKey gameButtonB;
+    static PhysicalKeyboardKey gameButtonB;
 
-    static const PhysicalKeyboardKey gameButtonC;
+    static PhysicalKeyboardKey gameButtonC;
 
-    static const PhysicalKeyboardKey gameButtonLeft1;
+    static PhysicalKeyboardKey gameButtonLeft1;
 
-    static const PhysicalKeyboardKey gameButtonLeft2;
+    static PhysicalKeyboardKey gameButtonLeft2;
 
-    static const PhysicalKeyboardKey gameButtonMode;
+    static PhysicalKeyboardKey gameButtonMode;
 
-    static const PhysicalKeyboardKey gameButtonRight1;
+    static PhysicalKeyboardKey gameButtonRight1;
 
-    static const PhysicalKeyboardKey gameButtonRight2;
+    static PhysicalKeyboardKey gameButtonRight2;
 
-    static const PhysicalKeyboardKey gameButtonSelect;
+    static PhysicalKeyboardKey gameButtonSelect;
 
-    static const PhysicalKeyboardKey gameButtonStart;
+    static PhysicalKeyboardKey gameButtonStart;
 
-    static const PhysicalKeyboardKey gameButtonThumbLeft;
+    static PhysicalKeyboardKey gameButtonThumbLeft;
 
-    static const PhysicalKeyboardKey gameButtonThumbRight;
+    static PhysicalKeyboardKey gameButtonThumbRight;
 
-    static const PhysicalKeyboardKey gameButtonX;
+    static PhysicalKeyboardKey gameButtonX;
 
-    static const PhysicalKeyboardKey gameButtonY;
+    static PhysicalKeyboardKey gameButtonY;
 
-    static const PhysicalKeyboardKey gameButtonZ;
+    static PhysicalKeyboardKey gameButtonZ;
 
-    static const PhysicalKeyboardKey usbReserved;
+    static PhysicalKeyboardKey usbReserved;
 
-    static const PhysicalKeyboardKey usbErrorRollOver;
+    static PhysicalKeyboardKey usbErrorRollOver;
 
-    static const PhysicalKeyboardKey usbPostFail;
+    static PhysicalKeyboardKey usbPostFail;
 
-    static const PhysicalKeyboardKey usbErrorUndefined;
+    static PhysicalKeyboardKey usbErrorUndefined;
 
-    static const PhysicalKeyboardKey keyA;
+    static PhysicalKeyboardKey keyA;
 
-    static const PhysicalKeyboardKey keyB;
+    static PhysicalKeyboardKey keyB;
 
-    static const PhysicalKeyboardKey keyC;
+    static PhysicalKeyboardKey keyC;
 
-    static const PhysicalKeyboardKey keyD;
+    static PhysicalKeyboardKey keyD;
 
-    static const PhysicalKeyboardKey keyE;
+    static PhysicalKeyboardKey keyE;
 
-    static const PhysicalKeyboardKey keyF;
+    static PhysicalKeyboardKey keyF;
 
-    static const PhysicalKeyboardKey keyG;
+    static PhysicalKeyboardKey keyG;
 
-    static const PhysicalKeyboardKey keyH;
+    static PhysicalKeyboardKey keyH;
 
-    static const PhysicalKeyboardKey keyI;
+    static PhysicalKeyboardKey keyI;
 
-    static const PhysicalKeyboardKey keyJ;
+    static PhysicalKeyboardKey keyJ;
 
-    static const PhysicalKeyboardKey keyK;
+    static PhysicalKeyboardKey keyK;
 
-    static const PhysicalKeyboardKey keyL;
+    static PhysicalKeyboardKey keyL;
 
-    static const PhysicalKeyboardKey keyM;
+    static PhysicalKeyboardKey keyM;
 
-    static const PhysicalKeyboardKey keyN;
+    static PhysicalKeyboardKey keyN;
 
-    static const PhysicalKeyboardKey keyO;
+    static PhysicalKeyboardKey keyO;
 
-    static const PhysicalKeyboardKey keyP;
+    static PhysicalKeyboardKey keyP;
 
-    static const PhysicalKeyboardKey keyQ;
+    static PhysicalKeyboardKey keyQ;
 
-    static const PhysicalKeyboardKey keyR;
+    static PhysicalKeyboardKey keyR;
 
-    static const PhysicalKeyboardKey keyS;
+    static PhysicalKeyboardKey keyS;
 
-    static const PhysicalKeyboardKey keyT;
+    static PhysicalKeyboardKey keyT;
 
-    static const PhysicalKeyboardKey keyU;
+    static PhysicalKeyboardKey keyU;
 
-    static const PhysicalKeyboardKey keyV;
+    static PhysicalKeyboardKey keyV;
 
-    static const PhysicalKeyboardKey keyW;
+    static PhysicalKeyboardKey keyW;
 
-    static const PhysicalKeyboardKey keyX;
+    static PhysicalKeyboardKey keyX;
 
-    static const PhysicalKeyboardKey keyY;
+    static PhysicalKeyboardKey keyY;
 
-    static const PhysicalKeyboardKey keyZ;
+    static PhysicalKeyboardKey keyZ;
 
-    static const PhysicalKeyboardKey digit1;
+    static PhysicalKeyboardKey digit1;
 
-    static const PhysicalKeyboardKey digit2;
+    static PhysicalKeyboardKey digit2;
 
-    static const PhysicalKeyboardKey digit3;
+    static PhysicalKeyboardKey digit3;
 
-    static const PhysicalKeyboardKey digit4;
+    static PhysicalKeyboardKey digit4;
 
-    static const PhysicalKeyboardKey digit5;
+    static PhysicalKeyboardKey digit5;
 
-    static const PhysicalKeyboardKey digit6;
+    static PhysicalKeyboardKey digit6;
 
-    static const PhysicalKeyboardKey digit7;
+    static PhysicalKeyboardKey digit7;
 
-    static const PhysicalKeyboardKey digit8;
+    static PhysicalKeyboardKey digit8;
 
-    static const PhysicalKeyboardKey digit9;
+    static PhysicalKeyboardKey digit9;
 
-    static const PhysicalKeyboardKey digit0;
+    static PhysicalKeyboardKey digit0;
 
-    static const PhysicalKeyboardKey enter;
+    static PhysicalKeyboardKey enter;
 
-    static const PhysicalKeyboardKey escape;
+    static PhysicalKeyboardKey escape;
 
-    static const PhysicalKeyboardKey backspace;
+    static PhysicalKeyboardKey backspace;
 
-    static const PhysicalKeyboardKey tab;
+    static PhysicalKeyboardKey tab;
 
-    static const PhysicalKeyboardKey space;
+    static PhysicalKeyboardKey space;
 
-    static const PhysicalKeyboardKey minus;
+    static PhysicalKeyboardKey minus;
 
-    static const PhysicalKeyboardKey equal;
+    static PhysicalKeyboardKey equal;
 
-    static const PhysicalKeyboardKey bracketLeft;
+    static PhysicalKeyboardKey bracketLeft;
 
-    static const PhysicalKeyboardKey bracketRight;
+    static PhysicalKeyboardKey bracketRight;
 
-    static const PhysicalKeyboardKey backslash;
+    static PhysicalKeyboardKey backslash;
 
-    static const PhysicalKeyboardKey semicolon;
+    static PhysicalKeyboardKey semicolon;
 
-    static const PhysicalKeyboardKey quote;
+    static PhysicalKeyboardKey quote;
 
-    static const PhysicalKeyboardKey backquote;
+    static PhysicalKeyboardKey backquote;
 
-    static const PhysicalKeyboardKey comma;
+    static PhysicalKeyboardKey comma;
 
-    static const PhysicalKeyboardKey period;
+    static PhysicalKeyboardKey period;
 
-    static const PhysicalKeyboardKey slash;
+    static PhysicalKeyboardKey slash;
 
-    static const PhysicalKeyboardKey capsLock;
+    static PhysicalKeyboardKey capsLock;
 
-    static const PhysicalKeyboardKey f1;
+    static PhysicalKeyboardKey f1;
 
-    static const PhysicalKeyboardKey f2;
+    static PhysicalKeyboardKey f2;
 
-    static const PhysicalKeyboardKey f3;
+    static PhysicalKeyboardKey f3;
 
-    static const PhysicalKeyboardKey f4;
+    static PhysicalKeyboardKey f4;
 
-    static const PhysicalKeyboardKey f5;
+    static PhysicalKeyboardKey f5;
 
-    static const PhysicalKeyboardKey f6;
+    static PhysicalKeyboardKey f6;
 
-    static const PhysicalKeyboardKey f7;
+    static PhysicalKeyboardKey f7;
 
-    static const PhysicalKeyboardKey f8;
+    static PhysicalKeyboardKey f8;
 
-    static const PhysicalKeyboardKey f9;
+    static PhysicalKeyboardKey f9;
 
-    static const PhysicalKeyboardKey f10;
+    static PhysicalKeyboardKey f10;
 
-    static const PhysicalKeyboardKey f11;
+    static PhysicalKeyboardKey f11;
 
-    static const PhysicalKeyboardKey f12;
+    static PhysicalKeyboardKey f12;
 
-    static const PhysicalKeyboardKey printScreen;
+    static PhysicalKeyboardKey printScreen;
 
-    static const PhysicalKeyboardKey scrollLock;
+    static PhysicalKeyboardKey scrollLock;
 
-    static const PhysicalKeyboardKey pause;
+    static PhysicalKeyboardKey pause;
 
-    static const PhysicalKeyboardKey insert;
+    static PhysicalKeyboardKey insert;
 
-    static const PhysicalKeyboardKey home;
+    static PhysicalKeyboardKey home;
 
-    static const PhysicalKeyboardKey pageUp;
+    static PhysicalKeyboardKey pageUp;
 
-    static const PhysicalKeyboardKey delete;
+    static PhysicalKeyboardKey delete;
 
-    static const PhysicalKeyboardKey end;
+    static PhysicalKeyboardKey end;
 
-    static const PhysicalKeyboardKey pageDown;
+    static PhysicalKeyboardKey pageDown;
 
-    static const PhysicalKeyboardKey arrowRight;
+    static PhysicalKeyboardKey arrowRight;
 
-    static const PhysicalKeyboardKey arrowLeft;
+    static PhysicalKeyboardKey arrowLeft;
 
-    static const PhysicalKeyboardKey arrowDown;
+    static PhysicalKeyboardKey arrowDown;
 
-    static const PhysicalKeyboardKey arrowUp;
+    static PhysicalKeyboardKey arrowUp;
 
-    static const PhysicalKeyboardKey numLock;
+    static PhysicalKeyboardKey numLock;
 
-    static const PhysicalKeyboardKey numpadDivide;
+    static PhysicalKeyboardKey numpadDivide;
 
-    static const PhysicalKeyboardKey numpadMultiply;
+    static PhysicalKeyboardKey numpadMultiply;
 
-    static const PhysicalKeyboardKey numpadSubtract;
+    static PhysicalKeyboardKey numpadSubtract;
 
-    static const PhysicalKeyboardKey numpadAdd;
+    static PhysicalKeyboardKey numpadAdd;
 
-    static const PhysicalKeyboardKey numpadEnter;
+    static PhysicalKeyboardKey numpadEnter;
 
-    static const PhysicalKeyboardKey numpad1;
+    static PhysicalKeyboardKey numpad1;
 
-    static const PhysicalKeyboardKey numpad2;
+    static PhysicalKeyboardKey numpad2;
 
-    static const PhysicalKeyboardKey numpad3;
+    static PhysicalKeyboardKey numpad3;
 
-    static const PhysicalKeyboardKey numpad4;
+    static PhysicalKeyboardKey numpad4;
 
-    static const PhysicalKeyboardKey numpad5;
+    static PhysicalKeyboardKey numpad5;
 
-    static const PhysicalKeyboardKey numpad6;
+    static PhysicalKeyboardKey numpad6;
 
-    static const PhysicalKeyboardKey numpad7;
+    static PhysicalKeyboardKey numpad7;
 
-    static const PhysicalKeyboardKey numpad8;
+    static PhysicalKeyboardKey numpad8;
 
-    static const PhysicalKeyboardKey numpad9;
+    static PhysicalKeyboardKey numpad9;
 
-    static const PhysicalKeyboardKey numpad0;
+    static PhysicalKeyboardKey numpad0;
 
-    static const PhysicalKeyboardKey numpadDecimal;
+    static PhysicalKeyboardKey numpadDecimal;
 
-    static const PhysicalKeyboardKey intlBackslash;
+    static PhysicalKeyboardKey intlBackslash;
 
-    static const PhysicalKeyboardKey contextMenu;
+    static PhysicalKeyboardKey contextMenu;
 
-    static const PhysicalKeyboardKey power;
+    static PhysicalKeyboardKey power;
 
-    static const PhysicalKeyboardKey numpadEqual;
+    static PhysicalKeyboardKey numpadEqual;
 
-    static const PhysicalKeyboardKey f13;
+    static PhysicalKeyboardKey f13;
 
-    static const PhysicalKeyboardKey f14;
+    static PhysicalKeyboardKey f14;
 
-    static const PhysicalKeyboardKey f15;
+    static PhysicalKeyboardKey f15;
 
-    static const PhysicalKeyboardKey f16;
+    static PhysicalKeyboardKey f16;
 
-    static const PhysicalKeyboardKey f17;
+    static PhysicalKeyboardKey f17;
 
-    static const PhysicalKeyboardKey f18;
+    static PhysicalKeyboardKey f18;
 
-    static const PhysicalKeyboardKey f19;
+    static PhysicalKeyboardKey f19;
 
-    static const PhysicalKeyboardKey f20;
+    static PhysicalKeyboardKey f20;
 
-    static const PhysicalKeyboardKey f21;
+    static PhysicalKeyboardKey f21;
 
-    static const PhysicalKeyboardKey f22;
+    static PhysicalKeyboardKey f22;
 
-    static const PhysicalKeyboardKey f23;
+    static PhysicalKeyboardKey f23;
 
-    static const PhysicalKeyboardKey f24;
+    static PhysicalKeyboardKey f24;
 
-    static const PhysicalKeyboardKey open;
+    static PhysicalKeyboardKey open;
 
-    static const PhysicalKeyboardKey help;
+    static PhysicalKeyboardKey help;
 
-    static const PhysicalKeyboardKey select;
+    static PhysicalKeyboardKey select;
 
-    static const PhysicalKeyboardKey again;
+    static PhysicalKeyboardKey again;
 
-    static const PhysicalKeyboardKey undo;
+    static PhysicalKeyboardKey undo;
 
-    static const PhysicalKeyboardKey cut;
+    static PhysicalKeyboardKey cut;
 
-    static const PhysicalKeyboardKey copy;
+    static PhysicalKeyboardKey copy;
 
-    static const PhysicalKeyboardKey paste;
+    static PhysicalKeyboardKey paste;
 
-    static const PhysicalKeyboardKey find;
+    static PhysicalKeyboardKey find;
 
-    static const PhysicalKeyboardKey audioVolumeMute;
+    static PhysicalKeyboardKey audioVolumeMute;
 
-    static const PhysicalKeyboardKey audioVolumeUp;
+    static PhysicalKeyboardKey audioVolumeUp;
 
-    static const PhysicalKeyboardKey audioVolumeDown;
+    static PhysicalKeyboardKey audioVolumeDown;
 
-    static const PhysicalKeyboardKey numpadComma;
+    static PhysicalKeyboardKey numpadComma;
 
-    static const PhysicalKeyboardKey intlRo;
+    static PhysicalKeyboardKey intlRo;
 
-    static const PhysicalKeyboardKey kanaMode;
+    static PhysicalKeyboardKey kanaMode;
 
-    static const PhysicalKeyboardKey intlYen;
+    static PhysicalKeyboardKey intlYen;
 
-    static const PhysicalKeyboardKey convert;
+    static PhysicalKeyboardKey convert;
 
-    static const PhysicalKeyboardKey nonConvert;
+    static PhysicalKeyboardKey nonConvert;
 
-    static const PhysicalKeyboardKey lang1;
+    static PhysicalKeyboardKey lang1;
 
-    static const PhysicalKeyboardKey lang2;
+    static PhysicalKeyboardKey lang2;
 
-    static const PhysicalKeyboardKey lang3;
+    static PhysicalKeyboardKey lang3;
 
-    static const PhysicalKeyboardKey lang4;
+    static PhysicalKeyboardKey lang4;
 
-    static const PhysicalKeyboardKey lang5;
+    static PhysicalKeyboardKey lang5;
 
-    static const PhysicalKeyboardKey abort;
+    static PhysicalKeyboardKey abort;
 
-    static const PhysicalKeyboardKey props;
+    static PhysicalKeyboardKey props;
 
-    static const PhysicalKeyboardKey numpadParenLeft;
+    static PhysicalKeyboardKey numpadParenLeft;
 
-    static const PhysicalKeyboardKey numpadParenRight;
+    static PhysicalKeyboardKey numpadParenRight;
 
-    static const PhysicalKeyboardKey numpadBackspace;
+    static PhysicalKeyboardKey numpadBackspace;
 
-    static const PhysicalKeyboardKey numpadMemoryStore;
+    static PhysicalKeyboardKey numpadMemoryStore;
 
-    static const PhysicalKeyboardKey numpadMemoryRecall;
+    static PhysicalKeyboardKey numpadMemoryRecall;
 
-    static const PhysicalKeyboardKey numpadMemoryClear;
+    static PhysicalKeyboardKey numpadMemoryClear;
 
-    static const PhysicalKeyboardKey numpadMemoryAdd;
+    static PhysicalKeyboardKey numpadMemoryAdd;
 
-    static const PhysicalKeyboardKey numpadMemorySubtract;
+    static PhysicalKeyboardKey numpadMemorySubtract;
 
-    static const PhysicalKeyboardKey numpadSignChange;
+    static PhysicalKeyboardKey numpadSignChange;
 
-    static const PhysicalKeyboardKey numpadClear;
+    static PhysicalKeyboardKey numpadClear;
 
-    static const PhysicalKeyboardKey numpadClearEntry;
+    static PhysicalKeyboardKey numpadClearEntry;
 
-    static const PhysicalKeyboardKey controlLeft;
+    static PhysicalKeyboardKey controlLeft;
 
-    static const PhysicalKeyboardKey shiftLeft;
+    static PhysicalKeyboardKey shiftLeft;
 
-    static const PhysicalKeyboardKey altLeft;
+    static PhysicalKeyboardKey altLeft;
 
-    static const PhysicalKeyboardKey metaLeft;
+    static PhysicalKeyboardKey metaLeft;
 
-    static const PhysicalKeyboardKey controlRight;
+    static PhysicalKeyboardKey controlRight;
 
-    static const PhysicalKeyboardKey shiftRight;
+    static PhysicalKeyboardKey shiftRight;
 
-    static const PhysicalKeyboardKey altRight;
+    static PhysicalKeyboardKey altRight;
 
-    static const PhysicalKeyboardKey metaRight;
+    static PhysicalKeyboardKey metaRight;
 
-    static const PhysicalKeyboardKey info;
+    static PhysicalKeyboardKey info;
 
-    static const PhysicalKeyboardKey closedCaptionToggle;
+    static PhysicalKeyboardKey closedCaptionToggle;
 
-    static const PhysicalKeyboardKey brightnessUp;
+    static PhysicalKeyboardKey brightnessUp;
 
-    static const PhysicalKeyboardKey brightnessDown;
+    static PhysicalKeyboardKey brightnessDown;
 
-    static const PhysicalKeyboardKey brightnessToggle;
+    static PhysicalKeyboardKey brightnessToggle;
 
-    static const PhysicalKeyboardKey brightnessMinimum;
+    static PhysicalKeyboardKey brightnessMinimum;
 
-    static const PhysicalKeyboardKey brightnessMaximum;
+    static PhysicalKeyboardKey brightnessMaximum;
 
-    static const PhysicalKeyboardKey brightnessAuto;
+    static PhysicalKeyboardKey brightnessAuto;
 
-    static const PhysicalKeyboardKey kbdIllumUp;
+    static PhysicalKeyboardKey kbdIllumUp;
 
-    static const PhysicalKeyboardKey kbdIllumDown;
+    static PhysicalKeyboardKey kbdIllumDown;
 
-    static const PhysicalKeyboardKey mediaLast;
+    static PhysicalKeyboardKey mediaLast;
 
-    static const PhysicalKeyboardKey launchPhone;
+    static PhysicalKeyboardKey launchPhone;
 
-    static const PhysicalKeyboardKey programGuide;
+    static PhysicalKeyboardKey programGuide;
 
-    static const PhysicalKeyboardKey exit;
+    static PhysicalKeyboardKey exit;
 
-    static const PhysicalKeyboardKey channelUp;
+    static PhysicalKeyboardKey channelUp;
 
-    static const PhysicalKeyboardKey channelDown;
+    static PhysicalKeyboardKey channelDown;
 
-    static const PhysicalKeyboardKey mediaPlay;
+    static PhysicalKeyboardKey mediaPlay;
 
-    static const PhysicalKeyboardKey mediaPause;
+    static PhysicalKeyboardKey mediaPause;
 
-    static const PhysicalKeyboardKey mediaRecord;
+    static PhysicalKeyboardKey mediaRecord;
 
-    static const PhysicalKeyboardKey mediaFastForward;
+    static PhysicalKeyboardKey mediaFastForward;
 
-    static const PhysicalKeyboardKey mediaRewind;
+    static PhysicalKeyboardKey mediaRewind;
 
-    static const PhysicalKeyboardKey mediaTrackNext;
+    static PhysicalKeyboardKey mediaTrackNext;
 
-    static const PhysicalKeyboardKey mediaTrackPrevious;
+    static PhysicalKeyboardKey mediaTrackPrevious;
 
-    static const PhysicalKeyboardKey mediaStop;
+    static PhysicalKeyboardKey mediaStop;
 
-    static const PhysicalKeyboardKey eject;
+    static PhysicalKeyboardKey eject;
 
-    static const PhysicalKeyboardKey mediaPlayPause;
+    static PhysicalKeyboardKey mediaPlayPause;
 
-    static const PhysicalKeyboardKey speechInputToggle;
+    static PhysicalKeyboardKey speechInputToggle;
 
-    static const PhysicalKeyboardKey bassBoost;
+    static PhysicalKeyboardKey bassBoost;
 
-    static const PhysicalKeyboardKey mediaSelect;
+    static PhysicalKeyboardKey mediaSelect;
 
-    static const PhysicalKeyboardKey launchWordProcessor;
+    static PhysicalKeyboardKey launchWordProcessor;
 
-    static const PhysicalKeyboardKey launchSpreadsheet;
+    static PhysicalKeyboardKey launchSpreadsheet;
 
-    static const PhysicalKeyboardKey launchMail;
+    static PhysicalKeyboardKey launchMail;
 
-    static const PhysicalKeyboardKey launchContacts;
+    static PhysicalKeyboardKey launchContacts;
 
-    static const PhysicalKeyboardKey launchCalendar;
+    static PhysicalKeyboardKey launchCalendar;
 
-    static const PhysicalKeyboardKey launchApp2;
+    static PhysicalKeyboardKey launchApp2;
 
-    static const PhysicalKeyboardKey launchApp1;
+    static PhysicalKeyboardKey launchApp1;
 
-    static const PhysicalKeyboardKey launchInternetBrowser;
+    static PhysicalKeyboardKey launchInternetBrowser;
 
-    static const PhysicalKeyboardKey logOff;
+    static PhysicalKeyboardKey logOff;
 
-    static const PhysicalKeyboardKey lockScreen;
+    static PhysicalKeyboardKey lockScreen;
 
-    static const PhysicalKeyboardKey launchControlPanel;
+    static PhysicalKeyboardKey launchControlPanel;
 
-    static const PhysicalKeyboardKey selectTask;
+    static PhysicalKeyboardKey selectTask;
 
-    static const PhysicalKeyboardKey launchDocuments;
+    static PhysicalKeyboardKey launchDocuments;
 
-    static const PhysicalKeyboardKey spellCheck;
+    static PhysicalKeyboardKey spellCheck;
 
-    static const PhysicalKeyboardKey launchKeyboardLayout;
+    static PhysicalKeyboardKey launchKeyboardLayout;
 
-    static const PhysicalKeyboardKey launchScreenSaver;
+    static PhysicalKeyboardKey launchScreenSaver;
 
-    static const PhysicalKeyboardKey launchAudioBrowser;
+    static PhysicalKeyboardKey launchAudioBrowser;
 
-    static const PhysicalKeyboardKey launchAssistant;
+    static PhysicalKeyboardKey launchAssistant;
 
-    static const PhysicalKeyboardKey newKey;
+    static PhysicalKeyboardKey newKey;
 
-    static const PhysicalKeyboardKey close;
+    static PhysicalKeyboardKey close;
 
-    static const PhysicalKeyboardKey save;
+    static PhysicalKeyboardKey save;
 
-    static const PhysicalKeyboardKey print;
+    static PhysicalKeyboardKey print;
 
-    static const PhysicalKeyboardKey browserSearch;
+    static PhysicalKeyboardKey browserSearch;
 
-    static const PhysicalKeyboardKey browserHome;
+    static PhysicalKeyboardKey browserHome;
 
-    static const PhysicalKeyboardKey browserBack;
+    static PhysicalKeyboardKey browserBack;
 
-    static const PhysicalKeyboardKey browserForward;
+    static PhysicalKeyboardKey browserForward;
 
-    static const PhysicalKeyboardKey browserStop;
+    static PhysicalKeyboardKey browserStop;
 
-    static const PhysicalKeyboardKey browserRefresh;
+    static PhysicalKeyboardKey browserRefresh;
 
-    static const PhysicalKeyboardKey browserFavorites;
+    static PhysicalKeyboardKey browserFavorites;
 
-    static const PhysicalKeyboardKey zoomIn;
+    static PhysicalKeyboardKey zoomIn;
 
-    static const PhysicalKeyboardKey zoomOut;
+    static PhysicalKeyboardKey zoomOut;
 
-    static const PhysicalKeyboardKey zoomToggle;
+    static PhysicalKeyboardKey zoomToggle;
 
-    static const PhysicalKeyboardKey redo;
+    static PhysicalKeyboardKey redo;
 
-    static const PhysicalKeyboardKey mailReply;
+    static PhysicalKeyboardKey mailReply;
 
-    static const PhysicalKeyboardKey mailForward;
+    static PhysicalKeyboardKey mailForward;
 
-    static const PhysicalKeyboardKey mailSend;
+    static PhysicalKeyboardKey mailSend;
 
-    static const PhysicalKeyboardKey keyboardLayoutSelect;
+    static PhysicalKeyboardKey keyboardLayoutSelect;
 
-    static const PhysicalKeyboardKey showAllWindows;
+    static PhysicalKeyboardKey showAllWindows;
 
 
-     PhysicalKeyboardKey(int usbHidUsage);
+     PhysicalKeyboardKeyCls(int usbHidUsage);
+    virtual String debugName();
 
-    String debugName();
+    virtual int hashCode();
 
-    int hashCode();
-
-    bool ==(Object other);
+    virtual bool operator==(Object other);
 
     static PhysicalKeyboardKey findKeyByCode(int usageCode);
 
-    void debugFillProperties(DiagnosticPropertiesBuilder properties);
+    virtual void debugFillProperties(DiagnosticPropertiesBuilder properties);
 
     static Iterable<PhysicalKeyboardKey> knownPhysicalKeys();
 
 private:
-    static const Map<int, PhysicalKeyboardKey> _knownPhysicalKeys;
+    static Map<int, PhysicalKeyboardKey> _knownPhysicalKeys;
 
-    static const Map<int, String> _debugNames;
+    static Map<int, String> _debugNames;
 
 
 };
+using PhysicalKeyboardKey = std::shared_ptr<PhysicalKeyboardKeyCls>;
+
 
 #endif

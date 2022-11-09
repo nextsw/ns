@@ -1,13 +1,13 @@
-#ifndef TIMELINE_H
-#define TIMELINE_H
-#include <memory>
+#ifndef DART_DEVELOPER_TIMELINE
+#define DART_DEVELOPER_TIMELINE
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
+
+bool _hasTimeline;
 
 
-
-const bool _hasTimeline;
-
-
-class Flow {
+class FlowCls : public ObjectCls {
 public:
     int id;
 
@@ -19,20 +19,20 @@ public:
     static Flow end(int id);
 
 private:
-    static const int _begin;
+    static int _begin;
 
-    static const int _step;
+    static int _step;
 
-    static const int _end;
+    static int _end;
 
     int _type;
 
 
-    void  _(int _type, int id);
-
+    virtual void  _(int _type, int id);
 };
+using Flow = std::shared_ptr<FlowCls>;
 
-class Timeline {
+class TimelineCls : public ObjectCls {
 public:
 
     static void startSync(Map arguments, Flow flow, String name);
@@ -41,7 +41,7 @@ public:
 
     static void instantSync(Map arguments, String name);
 
-    static T timeSync<T>(Map arguments, Flow flow, TimelineSyncFunction<T> function, String name);
+    template<typename T>  static T timeSync(Map arguments, Flow flow, TimelineSyncFunction<T> function, String name);
 
     static int now();
 
@@ -50,24 +50,25 @@ private:
 
 
 };
+using Timeline = std::shared_ptr<TimelineCls>;
 
-class TimelineTask {
+class TimelineTaskCls : public ObjectCls {
 public:
 
-     TimelineTask(String filterKey, TimelineTask parent);
+     TimelineTaskCls(String filterKey, TimelineTask parent);
 
-    void  withTaskId(String filterKey, int taskId);
+    virtual void  withTaskId(String filterKey, int taskId);
 
-    void start(Map arguments, String name);
+    virtual void start(Map arguments, String name);
 
-    void instant(Map arguments, String name);
+    virtual void instant(Map arguments, String name);
 
-    void finish(Map arguments);
+    virtual void finish(Map arguments);
 
-    int pass();
+    virtual int pass();
 
 private:
-    static const String _kFilterKey;
+    static String _kFilterKey;
 
     TimelineTask _parent;
 
@@ -79,8 +80,9 @@ private:
 
 
 };
+using TimelineTask = std::shared_ptr<TimelineTaskCls>;
 
-class _AsyncBlock {
+class _AsyncBlockCls : public ObjectCls {
 public:
     String category;
 
@@ -91,15 +93,15 @@ private:
     int _taskId;
 
 
-    void  _(int _taskId, String name);
+    virtual void  _(int _taskId, String name);
+    virtual void _start(Map arguments);
 
-    void _start(Map arguments);
-
-    void _finish(Map arguments);
+    virtual void _finish(Map arguments);
 
 };
+using _AsyncBlock = std::shared_ptr<_AsyncBlockCls>;
 
-class _SyncBlock {
+class _SyncBlockCls : public ObjectCls {
 public:
     String category;
 
@@ -110,30 +112,25 @@ public:
     Flow flow;
 
 
-    void finish();
+    virtual void finish();
 
 private:
     String _jsonArguments;
 
 
-    void  _(Map arguments, Flow flow, String name);
-
-    void _startSync();
+    virtual void  _(Map arguments, Flow flow, String name);
+    virtual void _startSync();
 
 };
+using _SyncBlock = std::shared_ptr<_SyncBlockCls>;
 String _argumentsAsJson(Map arguments);
 
-external bool _isDartStreamEnabled();
-
-external int _getNextAsyncId();
-
-external int _getTraceClock();
-
-external void _reportTaskEvent(String argumentsAsJson, String category, String name, String phase, int taskId);
-
-external void _reportFlowEvent(String argumentsAsJson, String category, int id, String name, int type);
-
-external void _reportInstantEvent(String argumentsAsJson, String category, String name);
+extern bool _isDartStreamEnabled();
+extern int _getNextAsyncId();
+extern int _getTraceClock();
+extern void _reportTaskEvent(String argumentsAsJson, String category, String name, String phase, int taskId);
+extern void _reportFlowEvent(String argumentsAsJson, String category, int id, String name, int type);
+extern void _reportInstantEvent(String argumentsAsJson, String category, String name);
 
 
 #endif

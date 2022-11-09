@@ -1,30 +1,31 @@
-#ifndef ALGORITHMS_H
-#define ALGORITHMS_H
-#include <memory>
+#ifndef PACKAGES_COLLECTION_SRC_ALGORITHMS
+#define PACKAGES_COLLECTION_SRC_ALGORITHMS
+#include <base.hpp>
 
-#include <math/math.hpp>
+#include <dart/core/core.hpp>
+#include <dart/math/math.hpp>
 #include "utils.hpp"
 
+template<typename E>  int binarySearch(int compare(E , E ) , List<E> sortedList, E value);
 
-int binarySearch<E>(FunctionType compare, List<E> sortedList, E value);
+template<typename E, typename K>  int binarySearchBy(int compare(K , K ) , int end, K keyOf(E element) , List<E> sortedList, int start, E value);
 
-int binarySearchBy<E, K>(FunctionType compare, int end, FunctionType keyOf, List<E> sortedList, int start, E value);
+template<typename E>  int lowerBound(int compare(E , E ) , List<E> sortedList, E value);
 
-int lowerBound<E>(FunctionType compare, List<E> sortedList, E value);
-
-int lowerBoundBy<E, K>(FunctionType compare, int end, FunctionType keyOf, List<E> sortedList, int start, E value);
+template<typename E, typename K>  int lowerBoundBy(int compare(K , K ) , int end, K keyOf(E element) , List<E> sortedList, int start, E value);
 
 void shuffle(List elements, int end, Random random, int start);
 
-void reverse<E>(List<E> elements, int end, int start);
+template<typename E>  void reverse(List<E> elements, int end, int start);
 
-void _reverse<E>(List<E> elements, int end, int start);
+template<typename E>  void _reverse(List<E> elements, int end, int start);
 
-void insertionSort<E>(FunctionType compare, List<E> elements, int end, int start);
+template<typename E>  void insertionSort(int compare(E , E ) , List<E> elements, int end, int start);
 
-void insertionSortBy<E, K>(FunctionType compare, List<E> elements, int end, FunctionType keyOf, int start);
+template<typename E, typename K>  void insertionSortBy(int compare(K a, K b) , List<E> elements, int end, K keyOf(E element) , int start);
 
-const int _mergeSortLimit;
+int _mergeSortLimit;
+
 
 
 #endif

@@ -1,49 +1,45 @@
-#ifndef WEAK_H
-#define WEAK_H
-#include <memory>
+#ifndef DART_CORE_WEAK
+#define DART_CORE_WEAK
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
 
 
-
-
-class Expando<T extends Object> {
+template<typename T : Object> class ExpandoCls : public ObjectCls {
 public:
     String name;
 
 
-    external  Expando(String name);
+    extern  ExpandoCls(String name);
+    virtual String toString();
 
-    String toString();
-
-    external T [](Object object);
-
-    external void []=(Object object, T value);
-
+    extern T operator[](Object object);
+    extern void operator[]=(Object object, T value);
 private:
 
 };
+template<typename T : Object> using Expando = std::shared_ptr<ExpandoCls<T : Object>>;
 
-class WeakReference<T extends Object> {
+template<typename T : Object> class WeakReferenceCls : public ObjectCls {
 public:
 
-    external  WeakReference(T target);
-
-    T target();
-
+    extern  WeakReferenceCls(T target);
+    virtual T target();
 private:
 
 };
+template<typename T : Object> using WeakReference = std::shared_ptr<WeakReferenceCls<T : Object>>;
 
-class Finalizer<T> {
+template<typename T> class FinalizerCls : public ObjectCls {
 public:
 
-    external  Finalizer(FunctionType callback);
-
-    void attach(Object detach, T finalizationToken, Object value);
-
-    void detach(Object detach);
-
+    extern  FinalizerCls(void callback(T ) );
+    virtual void attach(Object detach, T finalizationToken, Object value);
+    virtual void detach(Object detach);
 private:
 
 };
+template<typename T> using Finalizer = std::shared_ptr<FinalizerCls<T>>;
+
 
 #endif

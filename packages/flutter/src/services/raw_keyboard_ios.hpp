@@ -1,19 +1,19 @@
-#ifndef RAW_KEYBOARD_IOS_H
-#define RAW_KEYBOARD_IOS_H
-#include <memory>
-#include <flutter/foundation.hpp>
+#ifndef PACKAGES_FLUTTER_SRC_SERVICES_RAW_KEYBOARD_IOS
+#define PACKAGES_FLUTTER_SRC_SERVICES_RAW_KEYBOARD_IOS
+#include <base.hpp>
+#include <packages/flutter/lib/foundation.hpp>
 #include "keyboard_key.g.hpp"
 #include "raw_keyboard.hpp"
 
-#include <flutter/foundation.hpp>
+#include <dart/core/core.hpp>
+#include <packages/flutter/lib/foundation.hpp>
 #include "keyboard_maps.g.hpp"
 #include "raw_keyboard.hpp"
 
+Map<String, LogicalKeyboardKey> _kIosToLogicalMap;
 
-const Map<String, LogicalKeyboardKey> _kIosToLogicalMap;
 
-
-class RawKeyEventDataIos : RawKeyEventData {
+class RawKeyEventDataIosCls : public RawKeyEventDataCls {
 public:
     String characters;
 
@@ -23,65 +23,67 @@ public:
 
     int modifiers;
 
-    static const int modifierCapsLock;
+    static int modifierCapsLock;
 
-    static const int modifierShift;
+    static int modifierShift;
 
-    static const int modifierLeftShift;
+    static int modifierLeftShift;
 
-    static const int modifierRightShift;
+    static int modifierRightShift;
 
-    static const int modifierControl;
+    static int modifierControl;
 
-    static const int modifierLeftControl;
+    static int modifierLeftControl;
 
-    static const int modifierRightControl;
+    static int modifierRightControl;
 
-    static const int modifierOption;
+    static int modifierOption;
 
-    static const int modifierLeftOption;
+    static int modifierLeftOption;
 
-    static const int modifierRightOption;
+    static int modifierRightOption;
 
-    static const int modifierCommand;
+    static int modifierCommand;
 
-    static const int modifierLeftCommand;
+    static int modifierLeftCommand;
 
-    static const int modifierRightCommand;
+    static int modifierRightCommand;
 
-    static const int modifierNumericPad;
+    static int modifierNumericPad;
 
-    static const int modifierHelp;
+    static int modifierHelp;
 
-    static const int modifierFunction;
+    static int modifierFunction;
 
-    static const int deviceIndependentMask;
+    static int deviceIndependentMask;
 
 
-     RawKeyEventDataIos(String characters, String charactersIgnoringModifiers, int keyCode, int modifiers);
+     RawKeyEventDataIosCls(String characters, String charactersIgnoringModifiers, int keyCode, int modifiers);
 
-    String keyLabel();
+    virtual String keyLabel();
 
-    PhysicalKeyboardKey physicalKey();
+    virtual PhysicalKeyboardKey physicalKey();
 
-    LogicalKeyboardKey logicalKey();
+    virtual LogicalKeyboardKey logicalKey();
 
-    bool isModifierPressed(ModifierKey key, KeyboardSide side);
+    virtual bool isModifierPressed(ModifierKey key, KeyboardSide side);
 
-    KeyboardSide getModifierSide(ModifierKey key);
+    virtual KeyboardSide getModifierSide(ModifierKey key);
 
-    void debugFillProperties(DiagnosticPropertiesBuilder properties);
+    virtual void debugFillProperties(DiagnosticPropertiesBuilder properties);
 
-    bool ==(Object other);
+    virtual bool operator==(Object other);
 
-    int hashCode();
+    virtual int hashCode();
 
 private:
 
     static bool _isUnprintableKey(String label);
 
-    bool _isLeftRightModifierPressed(int anyMask, int leftMask, int rightMask, KeyboardSide side);
+    virtual bool _isLeftRightModifierPressed(int anyMask, int leftMask, int rightMask, KeyboardSide side);
 
 };
+using RawKeyEventDataIos = std::shared_ptr<RawKeyEventDataIosCls>;
+
 
 #endif

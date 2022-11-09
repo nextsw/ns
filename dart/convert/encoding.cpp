@@ -1,11 +1,15 @@
 #include "encoding.hpp"
-Future<String> Encoding::decodeStream(Stream<List<int>> byteStream) {
-    return decoder.bind(byteStream).fold(StringBuffer(), ).then();
+Future<String> EncodingCls::decodeStream(Stream<List<int>> byteStream) {
+    auto _c1 = buffer;_c1.write(stringValue);return decoder->bind(byteStream)->fold(make<StringBufferCls>(), [=] (StringBuffer buffer,String string)     {
+        _c1;
+    })->then([=] (StringBuffer buffer)     {
+        buffer->toString();
+    });
 }
 
-Encoding Encoding::getByName(String name) {
+Encoding EncodingCls::getByName(String name) {
     if (name == nullptr)     {
         return nullptr;
     }
-    return _nameToEncoding[name.toLowerCase()];
+    return _nameToEncoding[name->toLowerCase()];
 }

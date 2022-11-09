@@ -1,47 +1,47 @@
-#ifndef NETWORK_PROFILING_H
-#define NETWORK_PROFILING_H
-#include <memory>
+#ifndef DART_IO_NETWORK_PROFILING
+#define DART_IO_NETWORK_PROFILING
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
+
+int _versionMajor;
+
+int _versionMinor;
+
+String _tcpSocket;
+
+String _udpSocket;
 
 
-
-const int _versionMajor;
-
-const int _versionMinor;
-
-const String _tcpSocket;
-
-const String _udpSocket;
-
-
-class _NetworkProfiling {
+class _NetworkProfilingCls : public ObjectCls {
 public:
 
     static String getVersion();
 
 private:
-    static const auto  _kGetHttpEnableTimelineLogging;
+    static auto  _kGetHttpEnableTimelineLogging;
 
-    static const auto  _kSetHttpEnableTimelineLogging;
+    static auto  _kSetHttpEnableTimelineLogging;
 
-    static const auto  _kHttpEnableTimelineLogging;
+    static auto  _kHttpEnableTimelineLogging;
 
-    static const auto  _kGetHttpProfileRPC;
+    static auto  _kGetHttpProfileRPC;
 
-    static const auto  _kGetHttpProfileRequestRPC;
+    static auto  _kGetHttpProfileRequestRPC;
 
-    static const auto  _kClearHttpProfileRPC;
+    static auto  _kClearHttpProfileRPC;
 
-    static const auto  _kClearSocketProfileRPC;
+    static auto  _kClearSocketProfileRPC;
 
-    static const auto  _kGetSocketProfileRPC;
+    static auto  _kGetSocketProfileRPC;
 
-    static const auto  _kSocketProfilingEnabledRPC;
+    static auto  _kSocketProfilingEnabledRPC;
 
-    static const auto  _kPauseSocketProfilingRPC;
+    static auto  _kPauseSocketProfilingRPC;
 
-    static const auto  _kStartSocketProfilingRPC;
+    static auto  _kStartSocketProfilingRPC;
 
-    static const auto  _kGetVersionRPC;
+    static auto  _kGetVersionRPC;
 
 
     static void _registerServiceExtension();
@@ -49,6 +49,7 @@ private:
     static Future<ServiceExtensionResponse> _serviceExtensionHandler(String method, Map<String, String> parameters);
 
 };
+using _NetworkProfiling = std::shared_ptr<_NetworkProfilingCls>;
 String _success();
 
 String _invalidArgument(String argument, dynamic value);
@@ -64,7 +65,7 @@ String _getHttpProfileRequest(Map<String, String> parameters);
 String _socketProfilingEnabled(Map<String, String> parameters);
 
 
-class _SocketProfile {
+class _SocketProfileCls : public ObjectCls {
 public:
 
     static void  enableSocketProfiling(bool enabled);
@@ -84,7 +85,7 @@ public:
     static String clear();
 
 private:
-    static const auto  _kType;
+    static auto  _kType;
 
     static bool _enableSocketProfiling;
 
@@ -92,6 +93,7 @@ private:
 
 
 };
+using _SocketProfile = std::shared_ptr<_SocketProfileCls>;
 
 enum _SocketProfileType{
     startTime,
@@ -103,7 +105,7 @@ enum _SocketProfileType{
     writeBytes,
 } // end _SocketProfileType
 
-class _SocketStatistic {
+class _SocketStatisticCls : public ObjectCls {
 public:
     int id;
 
@@ -126,14 +128,15 @@ public:
     int lastReadTime;
 
 
-    Map<String, dynamic> toMap();
+    virtual Map<String, dynamic> toMap();
 
 private:
 
-     _SocketStatistic(int id);
-
-    void _setIfNotNull(Map<String, dynamic> json, String key, Object value);
+     _SocketStatisticCls(int id);
+    virtual void _setIfNotNull(Map<String, dynamic> json, String key, Object value);
 
 };
+using _SocketStatistic = std::shared_ptr<_SocketStatisticCls>;
+
 
 #endif

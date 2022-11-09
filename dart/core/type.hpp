@@ -1,21 +1,20 @@
-#ifndef TYPE_H
-#define TYPE_H
-#include <memory>
+#ifndef DART_CORE_TYPE
+#define DART_CORE_TYPE
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
 
 
-
-
-class Type {
+class TypeCls : public ObjectCls {
 public:
 
-    int hashCode();
-
-    bool ==(Object other);
-
-    String toString();
-
+    virtual int hashCode();
+    virtual bool operator==(Object other);
+    virtual String toString();
 private:
 
 };
+using Type = std::shared_ptr<TypeCls>;
+
 
 #endif

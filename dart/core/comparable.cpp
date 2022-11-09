@@ -1,4 +1,4 @@
 #include "comparable.hpp"
-int Comparable::compare(Comparable a, Comparable b) {
-    return a.compareTo(b);
+template<typename T> int ComparableCls<T>::compare(Comparable a, Comparable b) {
+    return a->compareTo(b);
 }

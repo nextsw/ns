@@ -1,28 +1,30 @@
-#ifndef UNION_SET_CONTROLLER_H
-#define UNION_SET_CONTROLLER_H
-#include <memory>
+#ifndef PACKAGES_COLLECTION_SRC_UNION_SET_CONTROLLER
+#define PACKAGES_COLLECTION_SRC_UNION_SET_CONTROLLER
+#include <base.hpp>
 
+#include <dart/core/core.hpp>
 #include "union_set.hpp"
 
 
-
-class UnionSetController<E> {
+template<typename E> class UnionSetControllerCls : public ObjectCls {
 public:
     UnionSet<E> set;
 
 
-     UnionSetController(bool disjoint);
+     UnionSetControllerCls(bool disjoint);
 
-    void add(Set<E> component);
+    virtual void add(Set<E> component);
 
-    bool remove(Set<E> component);
+    virtual bool remove(Set<E> component);
 
 private:
     Set<Set<E>> _sets;
 
 
-    void  _(Set<Set<E>> _sets, bool disjoint);
+    virtual void  _(Set<Set<E>> _sets, bool disjoint);
 
 };
+template<typename E> using UnionSetController = std::shared_ptr<UnionSetControllerCls<E>>;
+
 
 #endif

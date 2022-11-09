@@ -1,17 +1,19 @@
-#ifndef FUTURE_H
-#define FUTURE_H
-#include <memory>
+#ifndef DART_ASYNC_FUTURE
+#define DART_ASYNC_FUTURE
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
 
 
-
-
-class FutureOr<T> {
+template<typename T> class FutureOrCls : public ObjectCls {
 public:
 
 private:
 
-    void  _();
+    virtual void  _();
 
 };
+template<typename T> using FutureOr = std::shared_ptr<FutureOrCls<T>>;
+
 
 #endif

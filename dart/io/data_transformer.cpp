@@ -1,5 +1,5 @@
 #include "data_transformer.hpp"
-ZLibCodec::ZLibCodec(List<int> dictionary, bool gzip, int level, int memLevel, bool raw, int strategy, int windowBits) {
+ZLibCodecCls::ZLibCodecCls(List<int> dictionary, bool gzip, int level, int memLevel, bool raw, int strategy, int windowBits) {
     {
         _validateZLibeLevel(level);
         _validateZLibMemLevel(memLevel);
@@ -8,17 +8,17 @@ ZLibCodec::ZLibCodec(List<int> dictionary, bool gzip, int level, int memLevel, b
     }
 }
 
-ZLibEncoder ZLibCodec::encoder() {
-    return ZLibEncoder(false, level, windowBits, memLevel, strategy, dictionary, raw);
+ZLibEncoder ZLibCodecCls::encoder() {
+    return make<ZLibEncoderCls>(false, level, windowBits, memLevel, strategy, dictionary, raw);
 }
 
-ZLibDecoder ZLibCodec::decoder() {
-    return ZLibDecoder(windowBits, dictionary, raw);
+ZLibDecoder ZLibCodecCls::decoder() {
+    return make<ZLibDecoderCls>(windowBits, dictionary, raw);
 }
 
-void ZLibCodec::_default()
+void ZLibCodecCls::_default()
 
-GZipCodec::GZipCodec(List<int> dictionary, bool gzip, int level, int memLevel, bool raw, int strategy, int windowBits) {
+GZipCodecCls::GZipCodecCls(List<int> dictionary, bool gzip, int level, int memLevel, bool raw, int strategy, int windowBits) {
     {
         _validateZLibeLevel(level);
         _validateZLibMemLevel(memLevel);
@@ -27,17 +27,17 @@ GZipCodec::GZipCodec(List<int> dictionary, bool gzip, int level, int memLevel, b
     }
 }
 
-ZLibEncoder GZipCodec::encoder() {
-    return ZLibEncoder(true, level, windowBits, memLevel, strategy, dictionary, raw);
+ZLibEncoder GZipCodecCls::encoder() {
+    return make<ZLibEncoderCls>(true, level, windowBits, memLevel, strategy, dictionary, raw);
 }
 
-ZLibDecoder GZipCodec::decoder() {
-    return ZLibDecoder(windowBits, dictionary, raw);
+ZLibDecoder GZipCodecCls::decoder() {
+    return make<ZLibDecoderCls>(windowBits, dictionary, raw);
 }
 
-void GZipCodec::_default()
+void GZipCodecCls::_default()
 
-ZLibEncoder::ZLibEncoder(List<int> dictionary, bool gzip, int level, int memLevel, bool raw, int strategy, int windowBits) {
+ZLibEncoderCls::ZLibEncoderCls(List<int> dictionary, bool gzip, int level, int memLevel, bool raw, int strategy, int windowBits) {
     {
         _validateZLibeLevel(level);
         _validateZLibMemLevel(memLevel);
@@ -46,115 +46,141 @@ ZLibEncoder::ZLibEncoder(List<int> dictionary, bool gzip, int level, int memLeve
     }
 }
 
-List<int> ZLibEncoder::convert(List<int> bytes) {
-    _BufferSink sink = _BufferSink();
-    ;
-    return sink.builder.takeBytes();
+List<int> ZLibEncoderCls::convert(List<int> bytes) {
+    _BufferSink sink = make<_BufferSinkCls>();
+    auto _c1 = startChunkedConversion(sink);_c1.auto _c2 = add(bytes);_c2.close();_c2;_c1;
+    return sink->builder->takeBytes();
 }
 
-ByteConversionSink ZLibEncoder::startChunkedConversion(Sink<List<int>> sink) {
+ByteConversionSink ZLibEncoderCls::startChunkedConversion(Sink<List<int>> sink) {
     if (sink is! ByteConversionSink) {
-        sink = ByteConversionSink.from(sink);
+        sink = ByteConversionSinkCls->from(sink);
     }
-    return _ZLibEncoderSink._(sink, gzip, level, windowBits, memLevel, strategy, dictionary, raw);
+    return _ZLibEncoderSinkCls->_(sink, gzip, level, windowBits, memLevel, strategy, dictionary, raw);
 }
 
-ZLibDecoder::ZLibDecoder(List<int> dictionary, bool raw, int windowBits) {
+ZLibDecoderCls::ZLibDecoderCls(List<int> dictionary, bool raw, int windowBits) {
     {
         _validateZLibWindowBits(windowBits);
     }
 }
 
-List<int> ZLibDecoder::convert(List<int> bytes) {
-    _BufferSink sink = _BufferSink();
-    ;
-    return sink.builder.takeBytes();
+List<int> ZLibDecoderCls::convert(List<int> bytes) {
+    _BufferSink sink = make<_BufferSinkCls>();
+    auto _c1 = startChunkedConversion(sink);_c1.auto _c2 = add(bytes);_c2.close();_c2;_c1;
+    return sink->builder->takeBytes();
 }
 
-ByteConversionSink ZLibDecoder::startChunkedConversion(Sink<List<int>> sink) {
+ByteConversionSink ZLibDecoderCls::startChunkedConversion(Sink<List<int>> sink) {
     if (sink is! ByteConversionSink) {
-        sink = ByteConversionSink.from(sink);
+        sink = ByteConversionSinkCls->from(sink);
     }
-    return _ZLibDecoderSink._(sink, windowBits, dictionary, raw);
+    return _ZLibDecoderSinkCls->_(sink, windowBits, dictionary, raw);
 }
 
-void RawZLibFilter::deflateFilter(List<int> dictionary, bool gzip, int level, int memLevel, bool raw, int strategy, int windowBits) {
+void RawZLibFilterCls::deflateFilter(List<int> dictionary, bool gzip, int level, int memLevel, bool raw, int strategy, int windowBits) {
     return _makeZLibDeflateFilter(gzip, level, windowBits, memLevel, strategy, dictionary, raw);
 }
 
-void RawZLibFilter::inflateFilter(List<int> dictionary, bool raw, int windowBits) {
+void RawZLibFilterCls::inflateFilter(List<int> dictionary, bool raw, int windowBits) {
     return _makeZLibInflateFilter(windowBits, dictionary, raw);
 }
 
-void _BufferSink::add(List<int> chunk) {
-    builder.add(chunk);
+void _BufferSinkCls::add(List<int> chunk) {
+    builder->add(chunk);
 }
 
-void _BufferSink::addSlice(List<int> chunk, int end, bool isLast, int start) {
+void _BufferSinkCls::addSlice(List<int> chunk, int end, bool isLast, int start) {
     if (chunk is Uint8List) {
         Uint8List list = chunk;
-        builder.add(Uint8List.view(list.buffer, list.offsetInBytes + start, end - start));
+        builder->add(Uint8ListCls->view(list->buffer, list->offsetInBytes + start, end - start));
     } else {
-        builder.add(chunk.sublist(start, end));
+        builder->add(chunk->sublist(start, end));
     }
 }
 
-void _BufferSink::close() {
+void _BufferSinkCls::close() {
 }
 
-void _ZLibEncoderSink::_(List<int> dictionary, bool gzip, int level, int memLevel, bool raw, ByteConversionSink sink, int strategy, int windowBits)
+void _ZLibEncoderSinkCls::_(List<int> dictionary, bool gzip, int level, int memLevel, bool raw, ByteConversionSink sink, int strategy, int windowBits)
 
-void _ZLibDecoderSink::_(List<int> dictionary, bool raw, ByteConversionSink sink, int windowBits)
+void _ZLibDecoderSinkCls::_(List<int> dictionary, bool raw, ByteConversionSink sink, int windowBits)
 
-void _FilterSink::add(List<int> data) {
-    addSlice(data, 0, data.length, false);
+void _FilterSinkCls::add(List<int> data) {
+    addSlice(data, 0, data->length, false);
 }
 
-void _FilterSink::addSlice(List<int> data, int end, bool isLast, int start) {
-    ArgumentError.checkNotNull(end, "end");
+void _FilterSinkCls::addSlice(List<int> data, int end, bool isLast, int start) {
+    ArgumentErrorCls->checkNotNull(end, "end");
     if (_closed)     {
         return;
     }
-    RangeError.checkValidRange(start, end, data.length);
-    ;
+    RangeErrorCls->checkValidRange(start, end, data->length);
+    try {
+        _empty = false;
+        _BufferAndStart bufferAndStart = _ensureFastAndSerializableByteData(data, start, end);
+        _filter->process(bufferAndStart->buffer, bufferAndStart->start, end - (start - bufferAndStart->start));
+        List<int> out;
+        while (true) {
+            Unknown out = _filter->processed(false);
+            if (out == nullptr)             {
+                            break;
+            }
+            _sink->add(out);
+        }
+    } catch (Unknown e) {
+        _closed = true;
+        throw;
+    };
     if (isLast)     {
         close();
     }
 }
 
-void _FilterSink::close() {
+void _FilterSinkCls::close() {
     if (_closed)     {
         return;
     }
     if (_empty)     {
-        _filter.process(const , 0, 0);
+        _filter->process(makeList(), 0, 0);
     }
-    ;
+    try {
+        while (true) {
+            Unknown out = _filter->processed(true);
+            if (out == nullptr)             {
+                            break;
+            }
+            _sink->add(out);
+        }
+    } catch (Unknown e) {
+        _closed = true;
+        ;
+    };
     _closed = true;
-    _sink.close();
+    _sink->close();
 }
 
 void _validateZLibWindowBits(int windowBits) {
-    if (ZLibOption.minWindowBits > windowBits || ZLibOption.maxWindowBits < windowBits) {
+    if (ZLibOptionCls::minWindowBits > windowBits || ZLibOptionCls::maxWindowBits < windowBits) {
         ;
     }
 }
 
 void _validateZLibeLevel(int level) {
-    if (ZLibOption.minLevel > level || ZLibOption.maxLevel < level) {
+    if (ZLibOptionCls::minLevel > level || ZLibOptionCls::maxLevel < level) {
         ;
     }
 }
 
 void _validateZLibMemLevel(int memLevel) {
-    if (ZLibOption.minMemLevel > memLevel || ZLibOption.maxMemLevel < memLevel) {
+    if (ZLibOptionCls::minMemLevel > memLevel || ZLibOptionCls::maxMemLevel < memLevel) {
         ;
     }
 }
 
 void _validateZLibStrategy(int strategy) {
-    const strategies = const ;
-    if (strategies.indexOf(strategy) == -1) {
+    strategies = makeList(ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem);
+    if (strategies->indexOf(strategy) == -1) {
         ;
     }
 }

@@ -1,98 +1,100 @@
 #include "painting.hpp"
 bool _rectIsValid(Rect rect) {
     assert(rect != nullptr, "Rect argument was null.");
-    assert(!rect.hasNaN, "Rect argument contained a NaN value.");
+    assert(!rect->hasNaN, "Rect argument contained a NaN value.");
     return true;
 }
 
 bool _rrectIsValid(RRect rrect) {
     assert(rrect != nullptr, "RRect argument was null.");
-    assert(!rrect.hasNaN, "RRect argument contained a NaN value.");
+    assert(!rrect->hasNaN, "RRect argument contained a NaN value.");
     return true;
 }
 
 bool _offsetIsValid(Offset offset) {
     assert(offset != nullptr, "Offset argument was null.");
-    assert(!offset.dx.isNaN && !offset.dy.isNaN, "Offset argument contained a NaN value.");
+    assert(!offset->dx->isNaN && !offset->dy->isNaN, "Offset argument contained a NaN value.");
     return true;
 }
 
 bool _matrix4IsValid(Float64List matrix4) {
     assert(matrix4 != nullptr, "Matrix4 argument was null.");
-    assert(matrix4.length == 16, "Matrix4 must have 16 entries.");
-    assert(matrix4.every(), "Matrix4 entries must be finite.");
+    assert(matrix4->length == 16, "Matrix4 must have 16 entries.");
+    assert(matrix4->every([=] (double value)     {
+        value->isFinite;
+    }), "Matrix4 entries must be finite.");
     return true;
 }
 
 bool _radiusIsValid(Radius radius) {
     assert(radius != nullptr, "Radius argument was null.");
-    assert(!radius.x.isNaN && !radius.y.isNaN, "Radius argument contained a NaN value.");
+    assert(!radius->x->isNaN && !radius->y->isNaN, "Radius argument contained a NaN value.");
     return true;
 }
 
 Color _scaleAlpha(Color a, double factor) {
-    return a.withAlpha((a.alpha * factor).round().clamp(0, 255));
+    return a->withAlpha((a->alpha * factor)->round()->clamp(0, 255));
 }
 
-Color::Color(int value) {
+ColorCls::ColorCls(int value) {
     {
         value = value & 0xFFFFFFFF;
     }
 }
 
-void Color::fromARGB(int a, int b, int g, int r)
+void ColorCls::fromARGB(int a, int b, int g, int r)
 
-void Color::fromRGBO(int b, int g, double opacity, int r)
+void ColorCls::fromRGBO(int b, int g, double opacity, int r)
 
-int Color::alpha() {
+int ColorCls::alpha() {
     return (0xff000000 & value) >> 24;
 }
 
-double Color::opacity() {
+double ColorCls::opacity() {
     return alpha / 0xFF;
 }
 
-int Color::red() {
+int ColorCls::red() {
     return (0x00ff0000 & value) >> 16;
 }
 
-int Color::green() {
+int ColorCls::green() {
     return (0x0000ff00 & value) >> 8;
 }
 
-int Color::blue() {
+int ColorCls::blue() {
     return (0x000000ff & value) >> 0;
 }
 
-Color Color::withAlpha(int a) {
-    return Color.fromARGB(a, red, green, blue);
+Color ColorCls::withAlpha(int a) {
+    return ColorCls->fromARGB(a, red, green, blue);
 }
 
-Color Color::withOpacity(double opacity) {
+Color ColorCls::withOpacity(double opacity) {
     assert(opacity >= 0.0 && opacity <= 1.0);
-    return withAlpha((255.0 * opacity).round());
+    return withAlpha((255.0 * opacity)->round());
 }
 
-Color Color::withRed(int r) {
-    return Color.fromARGB(alpha, r, green, blue);
+Color ColorCls::withRed(int r) {
+    return ColorCls->fromARGB(alpha, r, green, blue);
 }
 
-Color Color::withGreen(int g) {
-    return Color.fromARGB(alpha, red, g, blue);
+Color ColorCls::withGreen(int g) {
+    return ColorCls->fromARGB(alpha, red, g, blue);
 }
 
-Color Color::withBlue(int b) {
-    return Color.fromARGB(alpha, red, green, b);
+Color ColorCls::withBlue(int b) {
+    return ColorCls->fromARGB(alpha, red, green, b);
 }
 
-double Color::computeLuminance() {
+double ColorCls::computeLuminance() {
     double R = _linearizeColorComponent(red / 0xFF);
     double G = _linearizeColorComponent(green / 0xFF);
     double B = _linearizeColorComponent(blue / 0xFF);
-    return 0.2126 * R + 0.7152 * G + 0.0722 * B;
+    return 0.2126 * RCls + 0.7152 * GCls + 0.0722 * BCls;
 }
 
-Color Color::lerp(Color a, Color b, double t) {
+Color ColorCls::lerp(Color a, Color b, double t) {
     assert(t != nullptr);
     if (b == nullptr) {
         if (a == nullptr) {
@@ -104,59 +106,59 @@ Color Color::lerp(Color a, Color b, double t) {
         if (a == nullptr) {
             return _scaleAlpha(b, t);
         } else {
-            return Color.fromARGB(_clampInt(_lerpInt(a.alpha, b.alpha, t).toInt(), 0, 255), _clampInt(_lerpInt(a.red, b.red, t).toInt(), 0, 255), _clampInt(_lerpInt(a.green, b.green, t).toInt(), 0, 255), _clampInt(_lerpInt(a.blue, b.blue, t).toInt(), 0, 255));
+            return ColorCls->fromARGB(_clampInt(_lerpInt(a->alpha, b->alpha, t)->toInt(), 0, 255), _clampInt(_lerpInt(a->red, b->red, t)->toInt(), 0, 255), _clampInt(_lerpInt(a->green, b->green, t)->toInt(), 0, 255), _clampInt(_lerpInt(a->blue, b->blue, t)->toInt(), 0, 255));
         }
     }
 }
 
-Color Color::alphaBlend(Color background, Color foreground) {
-    int alpha = foreground.alpha;
+Color ColorCls::alphaBlend(Color background, Color foreground) {
+    int alpha = foreground->alpha;
     if (alpha == 0x00) {
         return background;
     }
     int invAlpha = 0xff - alpha;
-    int backAlpha = background.alpha;
+    int backAlpha = background->alpha;
     if (backAlpha == 0xff) {
-        return Color.fromARGB(0xff, (alpha * foreground.red + invAlpha * background.red) ~/ 0xff, (alpha * foreground.green + invAlpha * background.green) ~/ 0xff, (alpha * foreground.blue + invAlpha * background.blue) ~/ 0xff);
+        return ColorCls->fromARGB(0xff, (alpha * foreground->red + invAlpha * background->red) ~/ 0xff, (alpha * foreground->green + invAlpha * background->green) ~/ 0xff, (alpha * foreground->blue + invAlpha * background->blue) ~/ 0xff);
     } else {
         backAlpha = (backAlpha * invAlpha) ~/ 0xff;
         int outAlpha = alpha + backAlpha;
         assert(outAlpha != 0x00);
-        return Color.fromARGB(outAlpha, (foreground.red * alpha + background.red * backAlpha) ~/ outAlpha, (foreground.green * alpha + background.green * backAlpha) ~/ outAlpha, (foreground.blue * alpha + background.blue * backAlpha) ~/ outAlpha);
+        return ColorCls->fromARGB(outAlpha, (foreground->red * alpha + background->red * backAlpha) ~/ outAlpha, (foreground->green * alpha + background->green * backAlpha) ~/ outAlpha, (foreground->blue * alpha + background->blue * backAlpha) ~/ outAlpha);
     }
 }
 
-int Color::getAlphaFromOpacity(double opacity) {
+int ColorCls::getAlphaFromOpacity(double opacity) {
     assert(opacity != nullptr);
-    return (opacity.clamp(0.0, 1.0) * 255).round();
+    return (opacity->clamp(0.0, 1.0) * 255)->round();
 }
 
-bool Color::==(Object other) {
+bool ColorCls::==(Object other) {
     if (identical(this, other))     {
         return true;
     }
-    if (other.runtimeType != runtimeType)     {
+    if (other->runtimeType != runtimeType)     {
         return false;
     }
-    return other is Color && other.value == value;
+    return other is Color && other->value == value;
 }
 
-int Color::hashCode() {
-    return value.hashCode;
+int ColorCls::hashCode() {
+    return value->hashCode;
 }
 
-String Color::toString() {
+String ColorCls::toString() {
     return "Color(0x${value.toRadixString(16).padLeft(8, '0')})";
 }
 
-double Color::_linearizeColorComponent(double component) {
+double ColorCls::_linearizeColorComponent(double component) {
     if (component <= 0.03928)     {
         return component / 12.92;
     }
-    return (;
+    return ((double)math->pow((component + 0.055) / 1.055, 2.4));
 }
 
-Paint::Paint() {
+PaintCls::PaintCls() {
     {
         if (enableDithering) {
             _dither = true;
@@ -164,129 +166,129 @@ Paint::Paint() {
     }
 }
 
-bool Paint::isAntiAlias() {
-    return _data.getInt32(_kIsAntiAliasOffset, _kFakeHostEndian) == 0;
+bool PaintCls::isAntiAlias() {
+    return _data->getInt32(_kIsAntiAliasOffset, _kFakeHostEndian) == 0;
 }
 
-void Paint::isAntiAlias(bool value) {
+void PaintCls::isAntiAlias(bool value) {
     int encoded = value? 0 : 1;
-    _data.setInt32(_kIsAntiAliasOffset, encoded, _kFakeHostEndian);
+    _data->setInt32(_kIsAntiAliasOffset, encoded, _kFakeHostEndian);
 }
 
-Color Paint::color() {
-    int encoded = _data.getInt32(_kColorOffset, _kFakeHostEndian);
-    return Color(encoded ^ _kColorDefault);
+Color PaintCls::color() {
+    int encoded = _data->getInt32(_kColorOffset, _kFakeHostEndian);
+    return make<ColorCls>(encoded ^ _kColorDefault);
 }
 
-void Paint::color(Color value) {
+void PaintCls::color(Color value) {
     assert(value != nullptr);
-    int encoded = value.value ^ _kColorDefault;
-    _data.setInt32(_kColorOffset, encoded, _kFakeHostEndian);
+    int encoded = value->value ^ _kColorDefault;
+    _data->setInt32(_kColorOffset, encoded, _kFakeHostEndian);
 }
 
-BlendMode Paint::blendMode() {
-    int encoded = _data.getInt32(_kBlendModeOffset, _kFakeHostEndian);
-    return BlendMode.values[encoded ^ _kBlendModeDefault];
+BlendMode PaintCls::blendMode() {
+    int encoded = _data->getInt32(_kBlendModeOffset, _kFakeHostEndian);
+    return BlendModeCls::values[encoded ^ _kBlendModeDefault];
 }
 
-void Paint::blendMode(BlendMode value) {
+void PaintCls::blendMode(BlendMode value) {
     assert(value != nullptr);
-    int encoded = value.index ^ _kBlendModeDefault;
-    _data.setInt32(_kBlendModeOffset, encoded, _kFakeHostEndian);
+    int encoded = value->index ^ _kBlendModeDefault;
+    _data->setInt32(_kBlendModeOffset, encoded, _kFakeHostEndian);
 }
 
-PaintingStyle Paint::style() {
-    return PaintingStyle.values[_data.getInt32(_kStyleOffset, _kFakeHostEndian)];
+PaintingStyle PaintCls::style() {
+    return PaintingStyleCls::values[_data->getInt32(_kStyleOffset, _kFakeHostEndian)];
 }
 
-void Paint::style(PaintingStyle value) {
+void PaintCls::style(PaintingStyle value) {
     assert(value != nullptr);
-    int encoded = value.index;
-    _data.setInt32(_kStyleOffset, encoded, _kFakeHostEndian);
+    int encoded = value->index;
+    _data->setInt32(_kStyleOffset, encoded, _kFakeHostEndian);
 }
 
-double Paint::strokeWidth() {
-    return _data.getFloat32(_kStrokeWidthOffset, _kFakeHostEndian);
+double PaintCls::strokeWidth() {
+    return _data->getFloat32(_kStrokeWidthOffset, _kFakeHostEndian);
 }
 
-void Paint::strokeWidth(double value) {
+void PaintCls::strokeWidth(double value) {
     assert(value != nullptr);
     double encoded = value;
-    _data.setFloat32(_kStrokeWidthOffset, encoded, _kFakeHostEndian);
+    _data->setFloat32(_kStrokeWidthOffset, encoded, _kFakeHostEndian);
 }
 
-StrokeCap Paint::strokeCap() {
-    return StrokeCap.values[_data.getInt32(_kStrokeCapOffset, _kFakeHostEndian)];
+StrokeCap PaintCls::strokeCap() {
+    return StrokeCapCls::values[_data->getInt32(_kStrokeCapOffset, _kFakeHostEndian)];
 }
 
-void Paint::strokeCap(StrokeCap value) {
+void PaintCls::strokeCap(StrokeCap value) {
     assert(value != nullptr);
-    int encoded = value.index;
-    _data.setInt32(_kStrokeCapOffset, encoded, _kFakeHostEndian);
+    int encoded = value->index;
+    _data->setInt32(_kStrokeCapOffset, encoded, _kFakeHostEndian);
 }
 
-StrokeJoin Paint::strokeJoin() {
-    return StrokeJoin.values[_data.getInt32(_kStrokeJoinOffset, _kFakeHostEndian)];
+StrokeJoin PaintCls::strokeJoin() {
+    return StrokeJoinCls::values[_data->getInt32(_kStrokeJoinOffset, _kFakeHostEndian)];
 }
 
-void Paint::strokeJoin(StrokeJoin value) {
+void PaintCls::strokeJoin(StrokeJoin value) {
     assert(value != nullptr);
-    int encoded = value.index;
-    _data.setInt32(_kStrokeJoinOffset, encoded, _kFakeHostEndian);
+    int encoded = value->index;
+    _data->setInt32(_kStrokeJoinOffset, encoded, _kFakeHostEndian);
 }
 
-double Paint::strokeMiterLimit() {
-    return _data.getFloat32(_kStrokeMiterLimitOffset, _kFakeHostEndian);
+double PaintCls::strokeMiterLimit() {
+    return _data->getFloat32(_kStrokeMiterLimitOffset, _kFakeHostEndian);
 }
 
-void Paint::strokeMiterLimit(double value) {
+void PaintCls::strokeMiterLimit(double value) {
     assert(value != nullptr);
     double encoded = value - _kStrokeMiterLimitDefault;
-    _data.setFloat32(_kStrokeMiterLimitOffset, encoded, _kFakeHostEndian);
+    _data->setFloat32(_kStrokeMiterLimitOffset, encoded, _kFakeHostEndian);
 }
 
-MaskFilter Paint::maskFilter() {
+MaskFilter PaintCls::maskFilter() {
     ;
     return nullptr;
 }
 
-void Paint::maskFilter(MaskFilter value) {
+void PaintCls::maskFilter(MaskFilter value) {
     if (value == nullptr) {
-        _data.setInt32(_kMaskFilterOffset, MaskFilter._TypeNone, _kFakeHostEndian);
-        _data.setInt32(_kMaskFilterBlurStyleOffset, 0, _kFakeHostEndian);
-        _data.setFloat32(_kMaskFilterSigmaOffset, 0.0, _kFakeHostEndian);
+        _data->setInt32(_kMaskFilterOffset, MaskFilterCls::_TypeNoneCls, _kFakeHostEndian);
+        _data->setInt32(_kMaskFilterBlurStyleOffset, 0, _kFakeHostEndian);
+        _data->setFloat32(_kMaskFilterSigmaOffset, 0.0, _kFakeHostEndian);
     } else {
-        _data.setInt32(_kMaskFilterOffset, MaskFilter._TypeBlur, _kFakeHostEndian);
-        _data.setInt32(_kMaskFilterBlurStyleOffset, value._style.index, _kFakeHostEndian);
-        _data.setFloat32(_kMaskFilterSigmaOffset, value._sigma, _kFakeHostEndian);
+        _data->setInt32(_kMaskFilterOffset, MaskFilterCls::_TypeBlurCls, _kFakeHostEndian);
+        _data->setInt32(_kMaskFilterBlurStyleOffset, value->_style->index, _kFakeHostEndian);
+        _data->setFloat32(_kMaskFilterSigmaOffset, value->_sigma, _kFakeHostEndian);
     }
 }
 
-FilterQuality Paint::filterQuality() {
-    return FilterQuality.values[_data.getInt32(_kFilterQualityOffset, _kFakeHostEndian)];
+FilterQuality PaintCls::filterQuality() {
+    return FilterQualityCls::values[_data->getInt32(_kFilterQualityOffset, _kFakeHostEndian)];
 }
 
-void Paint::filterQuality(FilterQuality value) {
+void PaintCls::filterQuality(FilterQuality value) {
     assert(value != nullptr);
-    int encoded = value.index;
-    _data.setInt32(_kFilterQualityOffset, encoded, _kFakeHostEndian);
+    int encoded = value->index;
+    _data->setInt32(_kFilterQualityOffset, encoded, _kFakeHostEndian);
 }
 
-Shader Paint::shader() {
-    return (;
+Shader PaintCls::shader() {
+    return ((Shader)_objects?[_kShaderIndex]);
 }
 
-void Paint::shader(Shader value) {
+void PaintCls::shader(Shader value) {
     _ensureObjectsInitialized()[_kShaderIndex] = value;
 }
 
-ColorFilter Paint::colorFilter() {
-    _ColorFilter nativeFilter = (;
-    return nativeFilter?.creator;
+ColorFilter PaintCls::colorFilter() {
+    _ColorFilter nativeFilter = ((_ColorFilter)_objects?[_kColorFilterIndex]);
+    return nativeFilter?->creator;
 }
 
-void Paint::colorFilter(ColorFilter value) {
-    _ColorFilter nativeFilter = value?._toNativeColorFilter();
+void PaintCls::colorFilter(ColorFilter value) {
+    _ColorFilter nativeFilter = value?->_toNativeColorFilter();
     if (nativeFilter == nullptr) {
         if (_objects != nullptr) {
             _objects![_kColorFilterIndex] = nullptr;
@@ -296,211 +298,232 @@ void Paint::colorFilter(ColorFilter value) {
     }
 }
 
-ImageFilter Paint::imageFilter() {
-    _ImageFilter nativeFilter = (;
-    return nativeFilter?.creator;
+ImageFilter PaintCls::imageFilter() {
+    _ImageFilter nativeFilter = ((_ImageFilter)_objects?[_kImageFilterIndex]);
+    return nativeFilter?->creator;
 }
 
-void Paint::imageFilter(ImageFilter value) {
+void PaintCls::imageFilter(ImageFilter value) {
     if (value == nullptr) {
         if (_objects != nullptr) {
             _objects![_kImageFilterIndex] = nullptr;
         }
     } else {
         List<Object> objects = _ensureObjectsInitialized();
-        _ImageFilter imageFilter = (;
-        if (imageFilter?.creator != value) {
-            objects[_kImageFilterIndex] = value._toNativeImageFilter();
+        _ImageFilter imageFilter = ((_ImageFilter)objects[_kImageFilterIndex]);
+        if (imageFilter?->creator != value) {
+            objects[_kImageFilterIndex] = value->_toNativeImageFilter();
         }
     }
 }
 
-bool Paint::invertColors() {
-    return _data.getInt32(_kInvertColorOffset, _kFakeHostEndian) == 1;
+bool PaintCls::invertColors() {
+    return _data->getInt32(_kInvertColorOffset, _kFakeHostEndian) == 1;
 }
 
-void Paint::invertColors(bool value) {
-    _data.setInt32(_kInvertColorOffset, value? 1 : 0, _kFakeHostEndian);
+void PaintCls::invertColors(bool value) {
+    _data->setInt32(_kInvertColorOffset, value? 1 : 0, _kFakeHostEndian);
 }
 
-String Paint::toString() {
-    if (const bool.fromEnvironment("dart.vm.product"false)) {
-        return super.toString();
+String PaintCls::toString() {
+    if (boolValue->fromEnvironment("dart.vm.product"false)) {
+        return super->toString();
     }
-    StringBuffer result = StringBuffer();
+    StringBuffer result = make<StringBufferCls>();
     String semicolon = "";
-    result.write("Paint(");
-    if (style == PaintingStyle.stroke) {
-        result.write("$style");
+    result->write("Paint(");
+    if (style == PaintingStyleCls::stroke) {
+        result->write("$style");
         if (strokeWidth != 0.0)         {
-            result.write(" ${strokeWidth.toStringAsFixed(1)}");
+            result->write(" ${strokeWidth.toStringAsFixed(1)}");
         } else         {
-            result.write(" hairline");
+            result->write(" hairline");
         }
-        if (strokeCap != StrokeCap.butt)         {
-            result.write(" $strokeCap");
+        if (strokeCap != StrokeCapCls::butt)         {
+            result->write(" $strokeCap");
         }
-        if (strokeJoin == StrokeJoin.miter) {
+        if (strokeJoin == StrokeJoinCls::miter) {
             if (strokeMiterLimit != _kStrokeMiterLimitDefault)             {
-                result.write(" $strokeJoin up to ${strokeMiterLimit.toStringAsFixed(1)}");
+                result->write(" $strokeJoin up to ${strokeMiterLimit.toStringAsFixed(1)}");
             }
         } else {
-            result.write(" $strokeJoin");
+            result->write(" $strokeJoin");
         }
         semicolon = "; ";
     }
     if (isAntiAlias != true) {
-        result.write("${semicolon}antialias off");
+        result->write("${semicolon}antialias off");
         semicolon = "; ";
     }
-    if (color != const Color(_kColorDefault)) {
-        result.write("$semicolon$color");
+    if (color != make<ColorCls>(_kColorDefault)) {
+        result->write("$semicolon$color");
         semicolon = "; ";
     }
-    if (blendMode.index != _kBlendModeDefault) {
-        result.write("$semicolon$blendMode");
+    if (blendMode->index != _kBlendModeDefault) {
+        result->write("$semicolon$blendMode");
         semicolon = "; ";
     }
     if (colorFilter != nullptr) {
-        result.write("${semicolon}colorFilter: $colorFilter");
+        result->write("${semicolon}colorFilter: $colorFilter");
         semicolon = "; ";
     }
     if (maskFilter != nullptr) {
-        result.write("${semicolon}maskFilter: $maskFilter");
+        result->write("${semicolon}maskFilter: $maskFilter");
         semicolon = "; ";
     }
-    if (filterQuality != FilterQuality.none) {
-        result.write("${semicolon}filterQuality: $filterQuality");
+    if (filterQuality != FilterQualityCls::none) {
+        result->write("${semicolon}filterQuality: $filterQuality");
         semicolon = "; ";
     }
     if (shader != nullptr) {
-        result.write("${semicolon}shader: $shader");
+        result->write("${semicolon}shader: $shader");
         semicolon = "; ";
     }
     if (imageFilter != nullptr) {
-        result.write("${semicolon}imageFilter: $imageFilter");
+        result->write("${semicolon}imageFilter: $imageFilter");
         semicolon = "; ";
     }
     if (invertColors)     {
-        result.write("${semicolon}invert: $invertColors");
+        result->write("${semicolon}invert: $invertColors");
     }
     if (_dither)     {
-        result.write("${semicolon}dither: $_dither");
+        result->write("${semicolon}dither: $_dither");
     }
-    result.write(")");
-    return result.toString();
+    result->write(")");
+    return result->toString();
 }
 
-List<Object> Paint::_ensureObjectsInitialized() {
+List<Object> PaintCls::_ensureObjectsInitialized() {
     return _objects ??= <Object>filled(_kObjectCount, nullptrfalse);
 }
 
-bool Paint::_dither() {
-    return _data.getInt32(_kDitherOffset, _kFakeHostEndian) == 1;
+bool PaintCls::_dither() {
+    return _data->getInt32(_kDitherOffset, _kFakeHostEndian) == 1;
 }
 
-void Paint::_dither(bool value) {
-    _data.setInt32(_kDitherOffset, value? 1 : 0, _kFakeHostEndian);
+void PaintCls::_dither(bool value) {
+    _data->setInt32(_kDitherOffset, value? 1 : 0, _kFakeHostEndian);
 }
 
-void Image::dispose() {
-    assert(!_disposed && !_image._disposed);
-    assert(_image._handles.contains(this));
+void ImageCls::dispose() {
+    assert(!_disposed && !_image->_disposed);
+    assert(_image->_handles->contains(this));
     _disposed = true;
-    bool removed = _image._handles.remove(this);
+    bool removed = _image->_handles->remove(this);
     assert(removed);
-    if (_image._handles.isEmpty) {
-        _image.dispose();
+    if (_image->_handles->isEmpty) {
+        _image->dispose();
     }
 }
 
-bool Image::debugDisposed() {
+bool ImageCls::debugDisposed() {
     bool disposed;
-    assert(());
+    assert([=] () {
+        disposed = _disposed;
+        return true;
+    }());
     return disposed ?? ();
 }
 
-Future<ByteData> Image::toByteData(ImageByteFormat format) {
-    assert(!_disposed && !_image._disposed);
-    return _image.toByteData(format);
+Future<ByteData> ImageCls::toByteData(ImageByteFormat format) {
+    assert(!_disposed && !_image->_disposed);
+    return _image->toByteData(format);
 }
 
-List<StackTrace> Image::debugGetOpenHandleStackTraces() {
+List<StackTrace> ImageCls::debugGetOpenHandleStackTraces() {
     List<StackTrace> stacks;
-    assert(());
+    assert([=] () {
+        stacks = _image->_handles->map([=] (Image handle)         {
+            handle->_debugStack!;
+        })->toList();
+        return true;
+    }());
     return stacks;
 }
 
-Image Image::clone() {
+Image ImageCls::clone() {
     if (_disposed) {
         ;
     }
-    assert(!_image._disposed);
-    return Image._(_image, width, height);
+    assert(!_image->_disposed);
+    return ImageCls->_(_image, width, height);
 }
 
-bool Image::isCloneOf(Image other) {
-    return other._image == _image;
+bool ImageCls::isCloneOf(Image other) {
+    return other->_image == _image;
 }
 
-String Image::toString() {
-    return _image.toString();
+String ImageCls::toString() {
+    return _image->toString();
 }
 
-void Image::_(_Image _image, int height, int width) {
-    assert(());
-    _image._handles.add(this);
+void ImageCls::_(_Image _image, int height, int width) {
+    assert([=] () {
+        _debugStack = StackTraceCls::current;
+        return true;
+    }());
+    _image->_handles->add(this);
 }
 
-Future<ByteData> _Image::toByteData(ImageByteFormat format) {
-    return _futurize();
+Future<ByteData> _ImageCls::toByteData(ImageByteFormat format) {
+    return _futurize([=] (_Callback<ByteData> callback) {
+        return _toByteData(format->index, [=] (Uint8List encoded) {
+            callback(encoded!->buffer->asByteData());
+        });
+    });
 }
 
-void _Image::dispose() {
+void _ImageCls::dispose() {
     assert(!_disposed);
-    assert(_handles.isEmpty, "Attempted to dispose of an Image object that has ${_handles.length} open handles.\nIf you see this, it is a bug in dart:ui. Please file an issue at https://github.com/flutter/flutter/issues/new.");
+    assert(_handles->isEmpty, "Attempted to dispose of an Image object that has ${_handles.length} open handles.\nIf you see this, it is a bug in dart:ui. Please file an issue at https://github.com/flutter/flutter/issues/new.");
     _disposed = true;
     _dispose();
 }
 
-String _Image::toString() {
+String _ImageCls::toString() {
     return "[$width\u00D7$height]";
 }
 
-int Codec::frameCount() {
+int CodecCls::frameCount() {
     return _cachedFrameCount ??= _frameCount;
 }
 
-int Codec::repetitionCount() {
+int CodecCls::repetitionCount() {
     return _cachedRepetitionCount ??= _repetitionCount;
 }
 
-Future<FrameInfo> Codec::getNextFrame() {
+Future<FrameInfo> CodecCls::getNextFrame() {
     Completer<FrameInfo> completer = <FrameInfo>sync();
-    String error = _getNextFrame();
+    String error = _getNextFrame([=] (_Image image,int durationMilliseconds) {
+    if (image == nullptr) {
+        completer->completeError(make<ExceptionCls>("Codec failed to produce an image, possibly due to invalid image data."));
+    } else {
+        completer->complete(FrameInfoCls->_(ImageCls->_(image, image->width, image->height), make<DurationCls>(durationMilliseconds)));
+    }
+});
     if (error != nullptr) {
         ;
     }
-    return completer.future;
+    return completer->future;
 }
 
 Future<Codec> instantiateImageCodec(bool allowUpscaling, Uint8List list, int targetHeight, int targetWidth) {
-    ImmutableBuffer buffer = await ImmutableBuffer.fromUint8List(list);
+    ImmutableBuffer buffer = await ImmutableBufferCls->fromUint8List(list);
     return instantiateImageCodecFromBuffer(buffertargetWidth, targetHeight, allowUpscaling);
 }
 
 Future<Codec> instantiateImageCodecFromBuffer(bool allowUpscaling, ImmutableBuffer buffer, int targetHeight, int targetWidth) {
-    ImageDescriptor descriptor = await ImageDescriptor.encoded(buffer);
+    ImageDescriptor descriptor = await ImageDescriptorCls->encoded(buffer);
     if (!allowUpscaling) {
-        if (targetWidth != nullptr && targetWidth > descriptor.width) {
-            targetWidth = descriptor.width;
+        if (targetWidth != nullptr && targetWidth > descriptor->width) {
+            targetWidth = descriptor->width;
         }
-        if (targetHeight != nullptr && targetHeight > descriptor.height) {
-            targetHeight = descriptor.height;
+        if (targetHeight != nullptr && targetHeight > descriptor->height) {
+            targetHeight = descriptor->height;
         }
     }
-    buffer.dispose();
-    return descriptor.instantiateCodec(targetWidth, targetHeight);
+    buffer->dispose();
+    return descriptor->instantiateCodec(targetWidth, targetHeight);
 }
 
 void decodeImageFromList(ImageDecoderCallback callback, Uint8List list) {
@@ -509,8 +532,8 @@ void decodeImageFromList(ImageDecoderCallback callback, Uint8List list) {
 
 Future<void> _decodeImageFromListAsync(ImageDecoderCallback callback, Uint8List list) {
     Codec codec = await instantiateImageCodec(list);
-    FrameInfo frameInfo = await codec.getNextFrame();
-    callback(frameInfo.image);
+    FrameInfo frameInfo = await codec->getNextFrame();
+    callback(frameInfo->image);
 }
 
 void decodeImageFromPixels(bool allowUpscaling, ImageDecoderCallback callback, PixelFormat format, int height, Uint8List pixels, int rowBytes, int targetHeight, int targetWidth, int width) {
@@ -520,153 +543,172 @@ void decodeImageFromPixels(bool allowUpscaling, ImageDecoderCallback callback, P
     if (targetHeight != nullptr) {
         assert(allowUpscaling || targetHeight <= height);
     }
-    ImmutableBuffer.fromUint8List(pixels).then();
+    ImmutableBufferCls->fromUint8List(pixels)->then([=] (ImmutableBuffer buffer) {
+        ImageDescriptor descriptor = ImageDescriptorCls->raw(bufferwidth, height, rowBytes, format);
+        if (!allowUpscaling) {
+            if (targetWidth != nullptr && targetWidth! > descriptor->width) {
+                targetWidth = descriptor->width;
+            }
+            if (targetHeight != nullptr && targetHeight! > descriptor->height) {
+                targetHeight = descriptor->height;
+            }
+        }
+        descriptor->instantiateCodec(targetWidth, targetHeight)->then([=] (Codec codec) {
+            Future<FrameInfo> frameInfo = codec->getNextFrame();
+            codec->dispose();
+            return frameInfo;
+        })->then([=] (FrameInfo frameInfo) {
+            buffer->dispose();
+            descriptor->dispose();
+            return callback(frameInfo->image);
+        });
+    });
 }
 
-Path::Path() {
+PathCls::PathCls() {
     {
         _constructor();
     }
 }
 
-void Path::from(Path source) {
-    Path clonedPath = Path._();
-    source._clone(clonedPath);
+void PathCls::from(Path source) {
+    Path clonedPath = PathCls->_();
+    source->_clone(clonedPath);
     return clonedPath;
 }
 
-PathFillType Path::fillType() {
-    return PathFillType.values[_getFillType()];
+PathFillType PathCls::fillType() {
+    return PathFillTypeCls::values[_getFillType()];
 }
 
-void Path::fillType(PathFillType value) {
-    return _setFillType(value.index);
+void PathCls::fillType(PathFillType value) {
+    return _setFillType(value->index);
 }
 
-void Path::arcTo(bool forceMoveTo, Rect rect, double startAngle, double sweepAngle) {
+void PathCls::arcTo(bool forceMoveTo, Rect rect, double startAngle, double sweepAngle) {
     assert(_rectIsValid(rect));
-    _arcTo(rect.left, rect.top, rect.right, rect.bottom, startAngle, sweepAngle, forceMoveTo);
+    _arcTo(rect->left, rect->top, rect->right, rect->bottom, startAngle, sweepAngle, forceMoveTo);
 }
 
-void Path::arcToPoint(Offset arcEnd, bool clockwise, bool largeArc, Radius radius, double rotation) {
+void PathCls::arcToPoint(Offset arcEnd, bool clockwise, bool largeArc, Radius radius, double rotation) {
     assert(_offsetIsValid(arcEnd));
     assert(_radiusIsValid(radius));
-    _arcToPoint(arcEnd.dx, arcEnd.dy, radius.x, radius.y, rotation, largeArc, clockwise);
+    _arcToPoint(arcEnd->dx, arcEnd->dy, radius->x, radius->y, rotation, largeArc, clockwise);
 }
 
-void Path::relativeArcToPoint(Offset arcEndDelta, bool clockwise, bool largeArc, Radius radius, double rotation) {
+void PathCls::relativeArcToPoint(Offset arcEndDelta, bool clockwise, bool largeArc, Radius radius, double rotation) {
     assert(_offsetIsValid(arcEndDelta));
     assert(_radiusIsValid(radius));
-    _relativeArcToPoint(arcEndDelta.dx, arcEndDelta.dy, radius.x, radius.y, rotation, largeArc, clockwise);
+    _relativeArcToPoint(arcEndDelta->dx, arcEndDelta->dy, radius->x, radius->y, rotation, largeArc, clockwise);
 }
 
-void Path::addRect(Rect rect) {
+void PathCls::addRect(Rect rect) {
     assert(_rectIsValid(rect));
-    _addRect(rect.left, rect.top, rect.right, rect.bottom);
+    _addRect(rect->left, rect->top, rect->right, rect->bottom);
 }
 
-void Path::addOval(Rect oval) {
+void PathCls::addOval(Rect oval) {
     assert(_rectIsValid(oval));
-    _addOval(oval.left, oval.top, oval.right, oval.bottom);
+    _addOval(oval->left, oval->top, oval->right, oval->bottom);
 }
 
-void Path::addArc(Rect oval, double startAngle, double sweepAngle) {
+void PathCls::addArc(Rect oval, double startAngle, double sweepAngle) {
     assert(_rectIsValid(oval));
-    _addArc(oval.left, oval.top, oval.right, oval.bottom, startAngle, sweepAngle);
+    _addArc(oval->left, oval->top, oval->right, oval->bottom, startAngle, sweepAngle);
 }
 
-void Path::addPolygon(bool close, List<Offset> points) {
+void PathCls::addPolygon(bool close, List<Offset> points) {
     assert(points != nullptr);
     _addPolygon(_encodePointList(points), close);
 }
 
-void Path::addRRect(RRect rrect) {
+void PathCls::addRRect(RRect rrect) {
     assert(_rrectIsValid(rrect));
-    _addRRect(rrect._getValue32());
+    _addRRect(rrect->_getValue32());
 }
 
-void Path::addPath(Float64List matrix4, Offset offset, Path path) {
+void PathCls::addPath(Float64List matrix4, Offset offset, Path path) {
     assert(path != nullptr);
     assert(_offsetIsValid(offset));
     if (matrix4 != nullptr) {
         assert(_matrix4IsValid(matrix4));
-        _addPathWithMatrix(path, offset.dx, offset.dy, matrix4);
+        _addPathWithMatrix(path, offset->dx, offset->dy, matrix4);
     } else {
-        _addPath(path, offset.dx, offset.dy);
+        _addPath(path, offset->dx, offset->dy);
     }
 }
 
-void Path::extendWithPath(Float64List matrix4, Offset offset, Path path) {
+void PathCls::extendWithPath(Float64List matrix4, Offset offset, Path path) {
     assert(path != nullptr);
     assert(_offsetIsValid(offset));
     if (matrix4 != nullptr) {
         assert(_matrix4IsValid(matrix4));
-        _extendWithPathAndMatrix(path, offset.dx, offset.dy, matrix4);
+        _extendWithPathAndMatrix(path, offset->dx, offset->dy, matrix4);
     } else {
-        _extendWithPath(path, offset.dx, offset.dy);
+        _extendWithPath(path, offset->dx, offset->dy);
     }
 }
 
-bool Path::contains(Offset point) {
+bool PathCls::contains(Offset point) {
     assert(_offsetIsValid(point));
-    return _contains(point.dx, point.dy);
+    return _contains(point->dx, point->dy);
 }
 
-Path Path::shift(Offset offset) {
+Path PathCls::shift(Offset offset) {
     assert(_offsetIsValid(offset));
-    Path path = Path._();
-    _shift(path, offset.dx, offset.dy);
+    Path path = PathCls->_();
+    _shift(path, offset->dx, offset->dy);
     return path;
 }
 
-Path Path::transform(Float64List matrix4) {
+Path PathCls::transform(Float64List matrix4) {
     assert(_matrix4IsValid(matrix4));
-    Path path = Path._();
+    Path path = PathCls->_();
     _transform(path, matrix4);
     return path;
 }
 
-Rect Path::getBounds() {
+Rect PathCls::getBounds() {
     Float32List rect = _getBounds();
-    return Rect.fromLTRB(rect[0], rect[1], rect[2], rect[3]);
+    return RectCls->fromLTRB(rect[0], rect[1], rect[2], rect[3]);
 }
 
-Path Path::combine(PathOperation operation, Path path1, Path path2) {
+Path PathCls::combine(PathOperation operation, Path path1, Path path2) {
     assert(path1 != nullptr);
     assert(path2 != nullptr);
-    Path path = Path();
-    if (path._op(path1, path2, operation.index)) {
+    Path path = make<PathCls>();
+    if (path->_op(path1, path2, operation->index)) {
         return path;
     }
     ;
 }
 
-PathMetrics Path::computeMetrics(bool forceClosed) {
-    return PathMetrics._(this, forceClosed);
+PathMetrics PathCls::computeMetrics(bool forceClosed) {
+    return PathMetricsCls->_(this, forceClosed);
 }
 
-Tangent::Tangent(Offset position, Offset vector) {
+TangentCls::TangentCls(Offset position, Offset vector) {
     {
         assert(position != nullptr);
         assert(vector != nullptr);
     }
 }
 
-void Tangent::fromAngle(double angle, Offset position) {
-    return Tangent(position, Offset(math.cos(angle), math.sin(angle)));
+void TangentCls::fromAngle(double angle, Offset position) {
+    return make<TangentCls>(position, make<OffsetCls>(math->cos(angle), math->sin(angle)));
 }
 
-double Tangent::angle() {
-    return -math.atan2(vector.dy, vector.dx);
+double TangentCls::angle() {
+    return -math->atan2(vector->dy, vector->dx);
 }
 
-Iterator<PathMetric> PathMetrics::iterator() {
+Iterator<PathMetric> PathMetricsCls::iterator() {
     return _iterator;
 }
 
-void PathMetrics::_(bool forceClosed, Path path)
+void PathMetricsCls::_(bool forceClosed, Path path)
 
-PathMetric PathMetricIterator::current() {
+PathMetric PathMetricIteratorCls::current() {
     PathMetric currentMetric = _pathMetric;
     if (currentMetric == nullptr) {
         ;
@@ -674,65 +716,65 @@ PathMetric PathMetricIterator::current() {
     return currentMetric;
 }
 
-bool PathMetricIterator::moveNext() {
-    if (_pathMeasure._nextContour()) {
-        _pathMetric = PathMetric._(_pathMeasure);
+bool PathMetricIteratorCls::moveNext() {
+    if (_pathMeasure->_nextContour()) {
+        _pathMetric = PathMetricCls->_(_pathMeasure);
         return true;
     }
     _pathMetric = nullptr;
     return false;
 }
 
-void PathMetricIterator::_(_PathMeasure _pathMeasure)
+void PathMetricIteratorCls::_(_PathMeasure _pathMeasure)
 
-Tangent PathMetric::getTangentForOffset(double distance) {
-    return _measure.getTangentForOffset(contourIndex, distance);
+Tangent PathMetricCls::getTangentForOffset(double distance) {
+    return _measure->getTangentForOffset(contourIndex, distance);
 }
 
-Path PathMetric::extractPath(double end, double start, bool startWithMoveTo) {
-    return _measure.extractPath(contourIndex, start, endstartWithMoveTo);
+Path PathMetricCls::extractPath(double end, double start, bool startWithMoveTo) {
+    return _measure->extractPath(contourIndex, start, endstartWithMoveTo);
 }
 
-String PathMetric::toString() {
+String PathMetricCls::toString() {
     return "$runtimeType{length: $length, isClosed: $isClosed, contourIndex:$contourIndex}";
 }
 
-void PathMetric::_(_PathMeasure _measure)
+void PathMetricCls::_(_PathMeasure _measure)
 
-double _PathMeasure::length(int contourIndex) {
+double _PathMeasureCls::length(int contourIndex) {
     assert(contourIndex <= currentContourIndex, "Iterator must be advanced before index $contourIndex can be used.");
     return _length(contourIndex);
 }
 
-Tangent _PathMeasure::getTangentForOffset(int contourIndex, double distance) {
+Tangent _PathMeasureCls::getTangentForOffset(int contourIndex, double distance) {
     assert(contourIndex <= currentContourIndex, "Iterator must be advanced before index $contourIndex can be used.");
     Float32List posTan = _getPosTan(contourIndex, distance);
     if (posTan[0] == 0.0) {
         return nullptr;
     } else {
-        return Tangent(Offset(posTan[1], posTan[2]), Offset(posTan[3], posTan[4]));
+        return make<TangentCls>(make<OffsetCls>(posTan[1], posTan[2]), make<OffsetCls>(posTan[3], posTan[4]));
     }
 }
 
-Path _PathMeasure::extractPath(int contourIndex, double end, double start, bool startWithMoveTo) {
+Path _PathMeasureCls::extractPath(int contourIndex, double end, double start, bool startWithMoveTo) {
     assert(contourIndex <= currentContourIndex, "Iterator must be advanced before index $contourIndex can be used.");
-    Path path = Path._();
+    Path path = PathCls->_();
     _extractPath(path, contourIndex, start, endstartWithMoveTo);
     return path;
 }
 
-bool _PathMeasure::isClosed(int contourIndex) {
+bool _PathMeasureCls::isClosed(int contourIndex) {
     assert(contourIndex <= currentContourIndex, "Iterator must be advanced before index $contourIndex can be used.");
     return _isClosed(contourIndex);
 }
 
-_PathMeasure::_PathMeasure(bool forceClosed, Path path) {
+_PathMeasureCls::_PathMeasureCls(bool forceClosed, Path path) {
     {
         _constructor(path, forceClosed);
     }
 }
 
-bool _PathMeasure::_nextContour() {
+bool _PathMeasureCls::_nextContour() {
     bool next = _nativeNextContour();
     if (next) {
         currentContourIndex++;
@@ -740,283 +782,283 @@ bool _PathMeasure::_nextContour() {
     return next;
 }
 
-void MaskFilter::blur(double _sigma, BlurStyle _style)
+void MaskFilterCls::blur(double _sigma, BlurStyle _style)
 
-bool MaskFilter::==(Object other) {
-    return other is MaskFilter && other._style == _style && other._sigma == _sigma;
+bool MaskFilterCls::==(Object other) {
+    return other is MaskFilter && other->_style == _style && other->_sigma == _sigma;
 }
 
-int MaskFilter::hashCode() {
-    return Object.hash(_style, _sigma);
+int MaskFilterCls::hashCode() {
+    return ObjectCls->hash(_style, _sigma);
 }
 
-String MaskFilter::toString() {
+String MaskFilterCls::toString() {
     return "MaskFilter.blur($_style, ${_sigma.toStringAsFixed(1)})";
 }
 
-void ColorFilter::mode(BlendMode blendMode, Color color)
+void ColorFilterCls::mode(BlendMode blendMode, Color color)
 
-void ColorFilter::matrix(List<double> matrix)
+void ColorFilterCls::matrix(List<double> matrix)
 
-void ColorFilter::linearToSrgbGamma()
+void ColorFilterCls::linearToSrgbGamma()
 
-void ColorFilter::srgbToLinearGamma()
+void ColorFilterCls::srgbToLinearGamma()
 
-bool ColorFilter::==(Object other) {
-    if (other.runtimeType != runtimeType)     {
+bool ColorFilterCls::==(Object other) {
+    if (other->runtimeType != runtimeType)     {
         return false;
     }
-    return other is ColorFilter && other._type == _type && <double>_listEquals(other._matrix, _matrix) && other._color == _color && other._blendMode == _blendMode;
+    return other is ColorFilter && other->_type == _type && <double>_listEquals(other->_matrix, _matrix) && other->_color == _color && other->_blendMode == _blendMode;
 }
 
-int ColorFilter::hashCode() {
-    return Object.hash(_color, _blendMode, _matrix == nullptr? nullptr : Object.hashAll(_matrix!), _type);
+int ColorFilterCls::hashCode() {
+    return ObjectCls->hash(_color, _blendMode, _matrix == nullptr? nullptr : ObjectCls->hashAll(_matrix!), _type);
 }
 
-String ColorFilter::toString() {
+String ColorFilterCls::toString() {
     ;
 }
 
-_ImageFilter ColorFilter::_toNativeImageFilter() {
-    return _ImageFilter.fromColorFilter(this);
+_ImageFilter ColorFilterCls::_toNativeImageFilter() {
+    return _ImageFilterCls->fromColorFilter(this);
 }
 
-_ColorFilter ColorFilter::_toNativeColorFilter() {
+_ColorFilter ColorFilterCls::_toNativeColorFilter() {
     ;
 }
 
-String ColorFilter::_shortDescription() {
+String ColorFilterCls::_shortDescription() {
     ;
 }
 
-void _ColorFilter::mode(ColorFilter creator) {
+void _ColorFilterCls::mode(ColorFilter creator) {
     _constructor();
-    _initMode(creator._color!.value, creator._blendMode!.index);
+    _initMode(creator->_color!->value, creator->_blendMode!->index);
 }
 
-void _ColorFilter::matrix(ColorFilter creator) {
+void _ColorFilterCls::matrix(ColorFilter creator) {
     _constructor();
-    _initMatrix(Float32List.fromList(creator._matrix!));
+    _initMatrix(Float32ListCls->fromList(creator->_matrix!));
 }
 
-void _ColorFilter::linearToSrgbGamma(ColorFilter creator) {
+void _ColorFilterCls::linearToSrgbGamma(ColorFilter creator) {
     _constructor();
     _initLinearToSrgbGamma();
 }
 
-void _ColorFilter::srgbToLinearGamma(ColorFilter creator) {
+void _ColorFilterCls::srgbToLinearGamma(ColorFilter creator) {
     _constructor();
     _initSrgbToLinearGamma();
 }
 
-void ImageFilter::blur(double sigmaX, double sigmaY, TileMode tileMode) {
+void ImageFilterCls::blur(double sigmaX, double sigmaY, TileMode tileMode) {
     assert(sigmaX != nullptr);
     assert(sigmaY != nullptr);
     assert(tileMode != nullptr);
-    return _GaussianBlurImageFilter(sigmaX, sigmaY, tileMode);
+    return make<_GaussianBlurImageFilterCls>(sigmaX, sigmaY, tileMode);
 }
 
-void ImageFilter::dilate(double radiusX, double radiusY) {
+void ImageFilterCls::dilate(double radiusX, double radiusY) {
     assert(radiusX != nullptr);
     assert(radiusY != nullptr);
-    return _DilateImageFilter(radiusX, radiusY);
+    return make<_DilateImageFilterCls>(radiusX, radiusY);
 }
 
-void ImageFilter::erode(double radiusX, double radiusY) {
+void ImageFilterCls::erode(double radiusX, double radiusY) {
     assert(radiusX != nullptr);
     assert(radiusY != nullptr);
-    return _ErodeImageFilter(radiusX, radiusY);
+    return make<_ErodeImageFilterCls>(radiusX, radiusY);
 }
 
-void ImageFilter::matrix(FilterQuality filterQuality, Float64List matrix4) {
+void ImageFilterCls::matrix(FilterQuality filterQuality, Float64List matrix4) {
     assert(matrix4 != nullptr);
     assert(filterQuality != nullptr);
-    if (matrix4.length != 16)     {
+    if (matrix4->length != 16)     {
         ;
     }
-    return _MatrixImageFilter(Float64List.fromList(matrix4), filterQuality);
+    return make<_MatrixImageFilterCls>(Float64ListCls->fromList(matrix4), filterQuality);
 }
 
-void ImageFilter::compose(ImageFilter inner, ImageFilter outer) {
+void ImageFilterCls::compose(ImageFilter inner, ImageFilter outer) {
     assert(inner != nullptr && outer != nullptr);
-    return _ComposeImageFilter(inner, outer);
+    return make<_ComposeImageFilterCls>(inner, outer);
 }
 
-String _MatrixImageFilter::toString() {
+String _MatrixImageFilterCls::toString() {
     return "ImageFilter.matrix($data, $filterQuality)";
 }
 
-bool _MatrixImageFilter::==(Object other) {
-    if (other.runtimeType != runtimeType)     {
+bool _MatrixImageFilterCls::==(Object other) {
+    if (other->runtimeType != runtimeType)     {
         return false;
     }
-    return other is _MatrixImageFilter && other.filterQuality == filterQuality && <double>_listEquals(other.data, data);
+    return other is _MatrixImageFilter && other->filterQuality == filterQuality && <double>_listEquals(other->data, data);
 }
 
-int _MatrixImageFilter::hashCode() {
-    return Object.hash(filterQuality, Object.hashAll(data));
+int _MatrixImageFilterCls::hashCode() {
+    return ObjectCls->hash(filterQuality, ObjectCls->hashAll(data));
 }
 
-_ImageFilter _MatrixImageFilter::_toNativeImageFilter() {
+_ImageFilter _MatrixImageFilterCls::_toNativeImageFilter() {
     return nativeFilter;
 }
 
-String _MatrixImageFilter::_shortDescription() {
+String _MatrixImageFilterCls::_shortDescription() {
     return "matrix($data, $filterQuality)";
 }
 
-String _GaussianBlurImageFilter::toString() {
+String _GaussianBlurImageFilterCls::toString() {
     return "ImageFilter.blur($sigmaX, $sigmaY, $_modeString)";
 }
 
-bool _GaussianBlurImageFilter::==(Object other) {
-    if (other.runtimeType != runtimeType)     {
+bool _GaussianBlurImageFilterCls::==(Object other) {
+    if (other->runtimeType != runtimeType)     {
         return false;
     }
-    return other is _GaussianBlurImageFilter && other.sigmaX == sigmaX && other.sigmaY == sigmaY && other.tileMode == tileMode;
+    return other is _GaussianBlurImageFilter && other->sigmaX == sigmaX && other->sigmaY == sigmaY && other->tileMode == tileMode;
 }
 
-int _GaussianBlurImageFilter::hashCode() {
-    return Object.hash(sigmaX, sigmaY);
+int _GaussianBlurImageFilterCls::hashCode() {
+    return ObjectCls->hash(sigmaX, sigmaY);
 }
 
-_ImageFilter _GaussianBlurImageFilter::_toNativeImageFilter() {
+_ImageFilter _GaussianBlurImageFilterCls::_toNativeImageFilter() {
     return nativeFilter;
 }
 
-String _GaussianBlurImageFilter::_modeString() {
+String _GaussianBlurImageFilterCls::_modeString() {
     ;
 }
 
-String _GaussianBlurImageFilter::_shortDescription() {
+String _GaussianBlurImageFilterCls::_shortDescription() {
     return "blur($sigmaX, $sigmaY, $_modeString)";
 }
 
-String _DilateImageFilter::toString() {
+String _DilateImageFilterCls::toString() {
     return "ImageFilter.dilate($radiusX, $radiusY)";
 }
 
-bool _DilateImageFilter::==(Object other) {
-    if (other.runtimeType != runtimeType)     {
+bool _DilateImageFilterCls::==(Object other) {
+    if (other->runtimeType != runtimeType)     {
         return false;
     }
-    return other is _DilateImageFilter && other.radiusX == radiusX && other.radiusY == radiusY;
+    return other is _DilateImageFilter && other->radiusX == radiusX && other->radiusY == radiusY;
 }
 
-int _DilateImageFilter::hashCode() {
-    return Object.hash(radiusX, radiusY);
+int _DilateImageFilterCls::hashCode() {
+    return ObjectCls->hash(radiusX, radiusY);
 }
 
-_ImageFilter _DilateImageFilter::_toNativeImageFilter() {
+_ImageFilter _DilateImageFilterCls::_toNativeImageFilter() {
     return nativeFilter;
 }
 
-String _DilateImageFilter::_shortDescription() {
+String _DilateImageFilterCls::_shortDescription() {
     return "dilate($radiusX, $radiusY)";
 }
 
-String _ErodeImageFilter::toString() {
+String _ErodeImageFilterCls::toString() {
     return "ImageFilter.erode($radiusX, $radiusY)";
 }
 
-bool _ErodeImageFilter::==(Object other) {
-    if (other.runtimeType != runtimeType)     {
+bool _ErodeImageFilterCls::==(Object other) {
+    if (other->runtimeType != runtimeType)     {
         return false;
     }
-    return other is _ErodeImageFilter && other.radiusX == radiusX && other.radiusY == radiusY;
+    return other is _ErodeImageFilter && other->radiusX == radiusX && other->radiusY == radiusY;
 }
 
-int _ErodeImageFilter::hashCode() {
+int _ErodeImageFilterCls::hashCode() {
     return hashValues(radiusX, radiusY);
 }
 
-_ImageFilter _ErodeImageFilter::_toNativeImageFilter() {
+_ImageFilter _ErodeImageFilterCls::_toNativeImageFilter() {
     return nativeFilter;
 }
 
-String _ErodeImageFilter::_shortDescription() {
+String _ErodeImageFilterCls::_shortDescription() {
     return "erode($radiusX, $radiusY)";
 }
 
-String _ComposeImageFilter::toString() {
+String _ComposeImageFilterCls::toString() {
     return "ImageFilter.compose(source -> $_shortDescription -> result)";
 }
 
-bool _ComposeImageFilter::==(Object other) {
-    if (other.runtimeType != runtimeType)     {
+bool _ComposeImageFilterCls::==(Object other) {
+    if (other->runtimeType != runtimeType)     {
         return false;
     }
-    return other is _ComposeImageFilter && other.innerFilter == innerFilter && other.outerFilter == outerFilter;
+    return other is _ComposeImageFilter && other->innerFilter == innerFilter && other->outerFilter == outerFilter;
 }
 
-int _ComposeImageFilter::hashCode() {
-    return Object.hash(innerFilter, outerFilter);
+int _ComposeImageFilterCls::hashCode() {
+    return ObjectCls->hash(innerFilter, outerFilter);
 }
 
-_ImageFilter _ComposeImageFilter::_toNativeImageFilter() {
+_ImageFilter _ComposeImageFilterCls::_toNativeImageFilter() {
     return nativeFilter;
 }
 
-String _ComposeImageFilter::_shortDescription() {
+String _ComposeImageFilterCls::_shortDescription() {
     return "${innerFilter._shortDescription} -> ${outerFilter._shortDescription}";
 }
 
-void _ImageFilter::blur(_GaussianBlurImageFilter filter) {
+void _ImageFilterCls::blur(_GaussianBlurImageFilter filter) {
     _constructor();
-    _initBlur(filter.sigmaX, filter.sigmaY, filter.tileMode.index);
+    _initBlur(filter->sigmaX, filter->sigmaY, filter->tileMode->index);
 }
 
-void _ImageFilter::dilate(_DilateImageFilter filter) {
+void _ImageFilterCls::dilate(_DilateImageFilter filter) {
     _constructor();
-    _initDilate(filter.radiusX, filter.radiusY);
+    _initDilate(filter->radiusX, filter->radiusY);
 }
 
-void _ImageFilter::erode(_ErodeImageFilter filter) {
+void _ImageFilterCls::erode(_ErodeImageFilter filter) {
     _constructor();
-    _initErode(filter.radiusX, filter.radiusY);
+    _initErode(filter->radiusX, filter->radiusY);
 }
 
-void _ImageFilter::matrix(_MatrixImageFilter filter) {
-    if (filter.data.length != 16)     {
+void _ImageFilterCls::matrix(_MatrixImageFilter filter) {
+    if (filter->data->length != 16)     {
         ;
     }
     _constructor();
-    _initMatrix(filter.data, filter.filterQuality.index);
+    _initMatrix(filter->data, filter->filterQuality->index);
 }
 
-void _ImageFilter::fromColorFilter(ColorFilter filter) {
+void _ImageFilterCls::fromColorFilter(ColorFilter filter) {
     _constructor();
-    _ColorFilter nativeFilter = filter._toNativeColorFilter();
+    _ColorFilter nativeFilter = filter->_toNativeColorFilter();
     _initColorFilter(nativeFilter!);
 }
 
-void _ImageFilter::composed(_ComposeImageFilter filter) {
+void _ImageFilterCls::composed(_ComposeImageFilter filter) {
     _constructor();
-    _ImageFilter nativeFilterInner = filter.innerFilter._toNativeImageFilter();
-    _ImageFilter nativeFilterOuter = filter.outerFilter._toNativeImageFilter();
+    _ImageFilter nativeFilterInner = filter->innerFilter->_toNativeImageFilter();
+    _ImageFilter nativeFilterOuter = filter->outerFilter->_toNativeImageFilter();
     _initComposed(nativeFilterOuter, nativeFilterInner);
 }
 
 Int32List _encodeColorList(List<Color> colors) {
-    int colorCount = colors.length;
-    Int32List result = Int32List(colorCount);
+    int colorCount = colors->length;
+    Int32List result = make<Int32ListCls>(colorCount);
     for (;  < colorCount; ++i)     {
-        result[i] = colors[i].value;
+        result[i] = colors[i]->value;
     }
     return result;
 }
 
 Float32List _encodePointList(List<Offset> points) {
     assert(points != nullptr);
-    int pointCount = points.length;
-    Float32List result = Float32List(pointCount * 2);
+    int pointCount = points->length;
+    Float32List result = make<Float32ListCls>(pointCount * 2);
     for (;  < pointCount; ++i) {
         int xIndex = i * 2;
         int yIndex = xIndex + 1;
         Offset point = points[i];
         assert(_offsetIsValid(point));
-        result[xIndex] = point.dx;
-        result[yIndex] = point.dy;
+        result[xIndex] = point->dx;
+        result[yIndex] = point->dy;
     }
     return result;
 }
@@ -1024,387 +1066,393 @@ Float32List _encodePointList(List<Offset> points) {
 Float32List _encodeTwoPoints(Offset pointA, Offset pointB) {
     assert(_offsetIsValid(pointA));
     assert(_offsetIsValid(pointB));
-    Float32List result = Float32List(4);
-    result[0] = pointA.dx;
-    result[1] = pointA.dy;
-    result[2] = pointB.dx;
-    result[3] = pointB.dy;
+    Float32List result = make<Float32ListCls>(4);
+    result[0] = pointA->dx;
+    result[1] = pointA->dy;
+    result[2] = pointB->dx;
+    result[3] = pointB->dy;
     return result;
 }
 
-void Gradient::linear(List<double> colorStops, List<Color> colors, Offset from, Float64List matrix4, TileMode tileMode, Offset to) {
+void GradientCls::linear(List<double> colorStops, List<Color> colors, Offset from, Float64List matrix4, TileMode tileMode, Offset to) {
     _validateColorStops(colors, colorStops);
     Float32List endPointsBuffer = _encodeTwoPoints(from, to);
     Int32List colorsBuffer = _encodeColorList(colors);
-    Float32List colorStopsBuffer = colorStops == nullptr? nullptr : Float32List.fromList(colorStops);
+    Float32List colorStopsBuffer = colorStops == nullptr? nullptr : Float32ListCls->fromList(colorStops);
     _constructor();
-    _initLinear(endPointsBuffer, colorsBuffer, colorStopsBuffer, tileMode.index, matrix4);
+    _initLinear(endPointsBuffer, colorsBuffer, colorStopsBuffer, tileMode->index, matrix4);
 }
 
-void Gradient::radial(Offset center, List<double> colorStops, List<Color> colors, Offset focal, double focalRadius, Float64List matrix4, double radius, TileMode tileMode) {
+void GradientCls::radial(Offset center, List<double> colorStops, List<Color> colors, Offset focal, double focalRadius, Float64List matrix4, double radius, TileMode tileMode) {
     _validateColorStops(colors, colorStops);
     Int32List colorsBuffer = _encodeColorList(colors);
-    Float32List colorStopsBuffer = colorStops == nullptr? nullptr : Float32List.fromList(colorStops);
+    Float32List colorStopsBuffer = colorStops == nullptr? nullptr : Float32ListCls->fromList(colorStops);
     if (focal == nullptr || (focal == center && focalRadius == 0.0)) {
         _constructor();
-        _initRadial(center.dx, center.dy, radius, colorsBuffer, colorStopsBuffer, tileMode.index, matrix4);
+        _initRadial(center->dx, center->dy, radius, colorsBuffer, colorStopsBuffer, tileMode->index, matrix4);
     } else {
-        assert(center != Offset.zero || focal != Offset.zero);
+        assert(center != OffsetCls::zero || focal != OffsetCls::zero);
         _constructor();
-        _initConical(focal.dx, focal.dy, focalRadius, center.dx, center.dy, radius, colorsBuffer, colorStopsBuffer, tileMode.index, matrix4);
+        _initConical(focal->dx, focal->dy, focalRadius, center->dx, center->dy, radius, colorsBuffer, colorStopsBuffer, tileMode->index, matrix4);
     }
 }
 
-void Gradient::sweep(Offset center, List<double> colorStops, List<Color> colors, double endAngle, Float64List matrix4, double startAngle, TileMode tileMode) {
+void GradientCls::sweep(Offset center, List<double> colorStops, List<Color> colors, double endAngle, Float64List matrix4, double startAngle, TileMode tileMode) {
     _validateColorStops(colors, colorStops);
     Int32List colorsBuffer = _encodeColorList(colors);
-    Float32List colorStopsBuffer = colorStops == nullptr? nullptr : Float32List.fromList(colorStops);
+    Float32List colorStopsBuffer = colorStops == nullptr? nullptr : Float32ListCls->fromList(colorStops);
     _constructor();
-    _initSweep(center.dx, center.dy, colorsBuffer, colorStopsBuffer, tileMode.index, startAngle, endAngle, matrix4);
+    _initSweep(center->dx, center->dy, colorsBuffer, colorStopsBuffer, tileMode->index, startAngle, endAngle, matrix4);
 }
 
-void Gradient::_validateColorStops(List<double> colorStops, List<Color> colors) {
+void GradientCls::_validateColorStops(List<double> colorStops, List<Color> colors) {
     if (colorStops == nullptr) {
-        if (colors.length != 2)         {
+        if (colors->length != 2)         {
             ;
         }
     } else {
-        if (colors.length != colorStops.length)         {
+        if (colors->length != colorStops->length)         {
             ;
         }
     }
 }
 
-ImageShader::ImageShader(FilterQuality filterQuality, Image image, Float64List matrix4, TileMode tmx, TileMode tmy) {
+ImageShaderCls::ImageShaderCls(FilterQuality filterQuality, Image image, Float64List matrix4, TileMode tmx, TileMode tmy) {
     {
         assert(image != nullptr);
         assert(tmx != nullptr);
         assert(tmy != nullptr);
         assert(matrix4 != nullptr);
-        super._();
+        super->_();
     }
     {
-        if (matrix4.length != 16)         {
+        if (matrix4->length != 16)         {
             ;
         }
         _constructor();
-        String error = _initWithImage(image._image, tmx.index, tmy.index, filterQuality?.index ?? -1, matrix4);
+        String error = _initWithImage(image->_image, tmx->index, tmy->index, filterQuality?->index ?? -1, matrix4);
         if (error != nullptr) {
             ;
         }
     }
 }
 
-Future<FragmentProgram> FragmentProgram::compile(bool debugPrint, ByteBuffer spirv) {
-    return <FragmentProgram>microtask();
+Future<FragmentProgram> FragmentProgramCls::compile(bool debugPrint, ByteBuffer spirv) {
+    return <FragmentProgram>microtask([=] ()     {
+        FragmentProgramCls->_(spirv, debugPrint);
+    });
 }
 
-Shader FragmentProgram::shader(Float32List floatUniforms, List<ImageShader> samplerUniforms) {
+Shader FragmentProgramCls::shader(Float32List floatUniforms, List<ImageShader> samplerUniforms) {
     if (floatUniforms == nullptr) {
-        floatUniforms = Float32List(_uniformFloatCount);
+        floatUniforms = make<Float32ListCls>(_uniformFloatCount);
     }
-    if (floatUniforms.length != _uniformFloatCount) {
+    if (floatUniforms->length != _uniformFloatCount) {
         ;
     }
-    if (_samplerCount > 0 && (samplerUniforms == nullptr || samplerUniforms.length != _samplerCount)) {
+    if (_samplerCount > 0 && (samplerUniforms == nullptr || samplerUniforms->length != _samplerCount)) {
         ;
     }
     if (samplerUniforms == nullptr) {
-        samplerUniforms = ;
+        samplerUniforms = makeList();
     } else {
-        samplerUniforms = ;
+            List<ImageShader> list1 = make<ListCls<>>();    for (auto _x1 : samplerUniforms) {    {        list1.add(_x1);    }samplerUniforms = list1;
     }
-    _FragmentShader shader = _FragmentShader(this, Float32List.fromList(floatUniforms), samplerUniforms);
+    _FragmentShader shader = make<_FragmentShaderCls>(this, Float32ListCls->fromList(floatUniforms), samplerUniforms);
     _shader(shader, floatUniforms, samplerUniforms);
     return shader;
 }
 
-void FragmentProgram::_(bool debugPrint, ByteBuffer spirv) {
+void FragmentProgramCls::_(bool debugPrint, ByteBuffer spirv) {
     _constructor();
-    TranspileResult result = spv.transpile(spirv, spv.TargetLanguage.sksl);
-    _init(result.src, debugPrint);
-    _uniformFloatCount = result.uniformFloatCount;
-    _samplerCount = result.samplerCount;
+    TranspileResult result = spv->transpile(spirv, spv->TargetLanguageCls::sksl);
+    _init(result->src, debugPrint);
+    _uniformFloatCount = result->uniformFloatCount;
+    _samplerCount = result->samplerCount;
 }
 
-bool _FragmentShader::==(Object other) {
+bool _FragmentShaderCls::==(Object other) {
     if (identical(this, other))     {
         return true;
     }
-    if (other.runtimeType != runtimeType)     {
+    if (other->runtimeType != runtimeType)     {
         return false;
     }
-    return other is _FragmentShader && other._builder == _builder && <double>_listEquals(other._floatUniforms, _floatUniforms) && <ImageShader>_listEquals(other._samplerUniforms, _samplerUniforms);
+    return other is _FragmentShader && other->_builder == _builder && <double>_listEquals(other->_floatUniforms, _floatUniforms) && <ImageShader>_listEquals(other->_samplerUniforms, _samplerUniforms);
 }
 
-int _FragmentShader::hashCode() {
-    return Object.hash(_builder, Object.hashAll(_floatUniforms), Object.hashAll(_samplerUniforms));
+int _FragmentShaderCls::hashCode() {
+    return ObjectCls->hash(_builder, ObjectCls->hashAll(_floatUniforms), ObjectCls->hashAll(_samplerUniforms));
 }
 
-_FragmentShader::_FragmentShader(FragmentProgram _builder, Float32List _floatUniforms, List<ImageShader> _samplerUniforms) {
+_FragmentShaderCls::_FragmentShaderCls(FragmentProgram _builder, Float32List _floatUniforms, List<ImageShader> _samplerUniforms) {
     {
-        super._();
+        super->_();
     }
 }
 
-Vertices::Vertices(List<Color> colors, List<int> indices, VertexMode mode, List<Offset> positions, List<Offset> textureCoordinates) {
+VerticesCls::VerticesCls(List<Color> colors, List<int> indices, VertexMode mode, List<Offset> positions, List<Offset> textureCoordinates) {
     {
         assert(mode != nullptr);
         assert(positions != nullptr);
     }
     {
-        if (textureCoordinates != nullptr && textureCoordinates.length != positions.length)         {
+        if (textureCoordinates != nullptr && textureCoordinates->length != positions->length)         {
             ;
         }
-        if (colors != nullptr && colors.length != positions.length)         {
+        if (colors != nullptr && colors->length != positions->length)         {
             ;
         }
-        if (indices != nullptr && indices.any())         {
+        if (indices != nullptr && indices->any([=] (int i)         {
+             < 0 || i >= positions->length;
+        }))         {
             ;
         }
         Float32List encodedPositions = _encodePointList(positions);
         Float32List encodedTextureCoordinates = (textureCoordinates != nullptr)? _encodePointList(textureCoordinates) : nullptr;
         Int32List encodedColors = colors != nullptr? _encodeColorList(colors) : nullptr;
-        Uint16List encodedIndices = indices != nullptr? Uint16List.fromList(indices) : nullptr;
-        if (!_init(this, mode.index, encodedPositions, encodedTextureCoordinates, encodedColors, encodedIndices))         {
+        Uint16List encodedIndices = indices != nullptr? Uint16ListCls->fromList(indices) : nullptr;
+        if (!_init(this, mode->index, encodedPositions, encodedTextureCoordinates, encodedColors, encodedIndices))         {
             ;
         }
     }
 }
 
-void Vertices::raw(Int32List colors, Uint16List indices, VertexMode mode, Float32List positions, Float32List textureCoordinates) {
-    if (textureCoordinates != nullptr && textureCoordinates.length != positions.length)     {
+void VerticesCls::raw(Int32List colors, Uint16List indices, VertexMode mode, Float32List positions, Float32List textureCoordinates) {
+    if (textureCoordinates != nullptr && textureCoordinates->length != positions->length)     {
         ;
     }
-    if (colors != nullptr && colors.length * 2 != positions.length)     {
+    if (colors != nullptr && colors->length * 2 != positions->length)     {
         ;
     }
-    if (indices != nullptr && indices.any())     {
+    if (indices != nullptr && indices->any([=] (int i)     {
+         < 0 || i >= positions->length;
+    }))     {
         ;
     }
-    if (!_init(this, mode.index, positions, textureCoordinates, colors, indices))     {
+    if (!_init(this, mode->index, positions, textureCoordinates, colors, indices))     {
         ;
     }
 }
 
-Canvas::Canvas(Rect cullRect, PictureRecorder recorder) {
+CanvasCls::CanvasCls(Rect cullRect, PictureRecorder recorder) {
     {
         assert(recorder != nullptr);
     }
     {
-        if (recorder.isRecording)         {
+        if (recorder->isRecording)         {
             ;
         }
         _recorder = recorder;
-        _recorder!._canvas = this;
-        cullRect = Rect.largest;
-        _constructor(recorder, cullRect.left, cullRect.top, cullRect.right, cullRect.bottom);
+        _recorder!->_canvas = this;
+        cullRect = RectCls::largest;
+        _constructor(recorder, cullRect->left, cullRect->top, cullRect->right, cullRect->bottom);
     }
 }
 
-void Canvas::saveLayer(Rect bounds, Paint paint) {
+void CanvasCls::saveLayer(Rect bounds, Paint paint) {
     assert(paint != nullptr);
     if (bounds == nullptr) {
-        _saveLayerWithoutBounds(paint._objects, paint._data);
+        _saveLayerWithoutBounds(paint->_objects, paint->_data);
     } else {
         assert(_rectIsValid(bounds));
-        _saveLayer(bounds.left, bounds.top, bounds.right, bounds.bottom, paint._objects, paint._data);
+        _saveLayer(bounds->left, bounds->top, bounds->right, bounds->bottom, paint->_objects, paint->_data);
     }
 }
 
-void Canvas::scale(double sx, double sy) {
+void CanvasCls::scale(double sx, double sy) {
     return _scale(sx, sy ?? sx);
 }
 
-void Canvas::transform(Float64List matrix4) {
+void CanvasCls::transform(Float64List matrix4) {
     assert(matrix4 != nullptr);
-    if (matrix4.length != 16)     {
+    if (matrix4->length != 16)     {
         ;
     }
     _transform(matrix4);
 }
 
-Float64List Canvas::getTransform() {
-    Float64List matrix4 = Float64List(16);
+Float64List CanvasCls::getTransform() {
+    Float64List matrix4 = make<Float64ListCls>(16);
     _getTransform(matrix4);
     return matrix4;
 }
 
-void Canvas::clipRect(ClipOp clipOp, bool doAntiAlias, Rect rect) {
+void CanvasCls::clipRect(ClipOp clipOp, bool doAntiAlias, Rect rect) {
     assert(_rectIsValid(rect));
     assert(clipOp != nullptr);
     assert(doAntiAlias != nullptr);
-    _clipRect(rect.left, rect.top, rect.right, rect.bottom, clipOp.index, doAntiAlias);
+    _clipRect(rect->left, rect->top, rect->right, rect->bottom, clipOp->index, doAntiAlias);
 }
 
-void Canvas::clipRRect(bool doAntiAlias, RRect rrect) {
+void CanvasCls::clipRRect(bool doAntiAlias, RRect rrect) {
     assert(_rrectIsValid(rrect));
     assert(doAntiAlias != nullptr);
-    _clipRRect(rrect._getValue32(), doAntiAlias);
+    _clipRRect(rrect->_getValue32(), doAntiAlias);
 }
 
-void Canvas::clipPath(bool doAntiAlias, Path path) {
+void CanvasCls::clipPath(bool doAntiAlias, Path path) {
     assert(path != nullptr);
     assert(doAntiAlias != nullptr);
     _clipPath(path, doAntiAlias);
 }
 
-Rect Canvas::getLocalClipBounds() {
-    Float64List bounds = Float64List(4);
+Rect CanvasCls::getLocalClipBounds() {
+    Float64List bounds = make<Float64ListCls>(4);
     _getLocalClipBounds(bounds);
-    return Rect.fromLTRB(bounds[0], bounds[1], bounds[2], bounds[3]);
+    return RectCls->fromLTRB(bounds[0], bounds[1], bounds[2], bounds[3]);
 }
 
-Rect Canvas::getDestinationClipBounds() {
-    Float64List bounds = Float64List(4);
+Rect CanvasCls::getDestinationClipBounds() {
+    Float64List bounds = make<Float64ListCls>(4);
     _getDestinationClipBounds(bounds);
-    return Rect.fromLTRB(bounds[0], bounds[1], bounds[2], bounds[3]);
+    return RectCls->fromLTRB(bounds[0], bounds[1], bounds[2], bounds[3]);
 }
 
-void Canvas::drawColor(BlendMode blendMode, Color color) {
+void CanvasCls::drawColor(BlendMode blendMode, Color color) {
     assert(color != nullptr);
     assert(blendMode != nullptr);
-    _drawColor(color.value, blendMode.index);
+    _drawColor(color->value, blendMode->index);
 }
 
-void Canvas::drawLine(Offset p1, Offset p2, Paint paint) {
+void CanvasCls::drawLine(Offset p1, Offset p2, Paint paint) {
     assert(_offsetIsValid(p1));
     assert(_offsetIsValid(p2));
     assert(paint != nullptr);
-    _drawLine(p1.dx, p1.dy, p2.dx, p2.dy, paint._objects, paint._data);
+    _drawLine(p1->dx, p1->dy, p2->dx, p2->dy, paint->_objects, paint->_data);
 }
 
-void Canvas::drawPaint(Paint paint) {
+void CanvasCls::drawPaint(Paint paint) {
     assert(paint != nullptr);
-    _drawPaint(paint._objects, paint._data);
+    _drawPaint(paint->_objects, paint->_data);
 }
 
-void Canvas::drawRect(Paint paint, Rect rect) {
+void CanvasCls::drawRect(Paint paint, Rect rect) {
     assert(_rectIsValid(rect));
     assert(paint != nullptr);
-    _drawRect(rect.left, rect.top, rect.right, rect.bottom, paint._objects, paint._data);
+    _drawRect(rect->left, rect->top, rect->right, rect->bottom, paint->_objects, paint->_data);
 }
 
-void Canvas::drawRRect(Paint paint, RRect rrect) {
+void CanvasCls::drawRRect(Paint paint, RRect rrect) {
     assert(_rrectIsValid(rrect));
     assert(paint != nullptr);
-    _drawRRect(rrect._getValue32(), paint._objects, paint._data);
+    _drawRRect(rrect->_getValue32(), paint->_objects, paint->_data);
 }
 
-void Canvas::drawDRRect(RRect inner, RRect outer, Paint paint) {
+void CanvasCls::drawDRRect(RRect inner, RRect outer, Paint paint) {
     assert(_rrectIsValid(outer));
     assert(_rrectIsValid(inner));
     assert(paint != nullptr);
-    _drawDRRect(outer._getValue32(), inner._getValue32(), paint._objects, paint._data);
+    _drawDRRect(outer->_getValue32(), inner->_getValue32(), paint->_objects, paint->_data);
 }
 
-void Canvas::drawOval(Paint paint, Rect rect) {
+void CanvasCls::drawOval(Paint paint, Rect rect) {
     assert(_rectIsValid(rect));
     assert(paint != nullptr);
-    _drawOval(rect.left, rect.top, rect.right, rect.bottom, paint._objects, paint._data);
+    _drawOval(rect->left, rect->top, rect->right, rect->bottom, paint->_objects, paint->_data);
 }
 
-void Canvas::drawCircle(Offset c, Paint paint, double radius) {
+void CanvasCls::drawCircle(Offset c, Paint paint, double radius) {
     assert(_offsetIsValid(c));
     assert(paint != nullptr);
-    _drawCircle(c.dx, c.dy, radius, paint._objects, paint._data);
+    _drawCircle(c->dx, c->dy, radius, paint->_objects, paint->_data);
 }
 
-void Canvas::drawArc(Paint paint, Rect rect, double startAngle, double sweepAngle, bool useCenter) {
+void CanvasCls::drawArc(Paint paint, Rect rect, double startAngle, double sweepAngle, bool useCenter) {
     assert(_rectIsValid(rect));
     assert(paint != nullptr);
-    _drawArc(rect.left, rect.top, rect.right, rect.bottom, startAngle, sweepAngle, useCenter, paint._objects, paint._data);
+    _drawArc(rect->left, rect->top, rect->right, rect->bottom, startAngle, sweepAngle, useCenter, paint->_objects, paint->_data);
 }
 
-void Canvas::drawPath(Paint paint, Path path) {
+void CanvasCls::drawPath(Paint paint, Path path) {
     assert(path != nullptr);
     assert(paint != nullptr);
-    _drawPath(path, paint._objects, paint._data);
+    _drawPath(path, paint->_objects, paint->_data);
 }
 
-void Canvas::drawImage(Image image, Offset offset, Paint paint) {
+void CanvasCls::drawImage(Image image, Offset offset, Paint paint) {
     assert(image != nullptr);
     assert(_offsetIsValid(offset));
     assert(paint != nullptr);
-    String error = _drawImage(image._image, offset.dx, offset.dy, paint._objects, paint._data, paint.filterQuality.index);
+    String error = _drawImage(image->_image, offset->dx, offset->dy, paint->_objects, paint->_data, paint->filterQuality->index);
     if (error != nullptr) {
         ;
     }
 }
 
-void Canvas::drawImageRect(Rect dst, Image image, Paint paint, Rect src) {
+void CanvasCls::drawImageRect(Rect dst, Image image, Paint paint, Rect src) {
     assert(image != nullptr);
     assert(_rectIsValid(src));
     assert(_rectIsValid(dst));
     assert(paint != nullptr);
-    String error = _drawImageRect(image._image, src.left, src.top, src.right, src.bottom, dst.left, dst.top, dst.right, dst.bottom, paint._objects, paint._data, paint.filterQuality.index);
+    String error = _drawImageRect(image->_image, src->left, src->top, src->right, src->bottom, dst->left, dst->top, dst->right, dst->bottom, paint->_objects, paint->_data, paint->filterQuality->index);
     if (error != nullptr) {
         ;
     }
 }
 
-void Canvas::drawImageNine(Rect center, Rect dst, Image image, Paint paint) {
+void CanvasCls::drawImageNine(Rect center, Rect dst, Image image, Paint paint) {
     assert(image != nullptr);
     assert(_rectIsValid(center));
     assert(_rectIsValid(dst));
     assert(paint != nullptr);
-    String error = _drawImageNine(image._image, center.left, center.top, center.right, center.bottom, dst.left, dst.top, dst.right, dst.bottom, paint._objects, paint._data, paint.filterQuality.index);
+    String error = _drawImageNine(image->_image, center->left, center->top, center->right, center->bottom, dst->left, dst->top, dst->right, dst->bottom, paint->_objects, paint->_data, paint->filterQuality->index);
     if (error != nullptr) {
         ;
     }
 }
 
-void Canvas::drawPicture(Picture picture) {
+void CanvasCls::drawPicture(Picture picture) {
     assert(picture != nullptr);
     _drawPicture(picture);
 }
 
-void Canvas::drawParagraph(Offset offset, Paragraph paragraph) {
+void CanvasCls::drawParagraph(Offset offset, Paragraph paragraph) {
     assert(paragraph != nullptr);
     assert(_offsetIsValid(offset));
-    assert(!paragraph._needsLayout);
-    paragraph._paint(this, offset.dx, offset.dy);
+    assert(!paragraph->_needsLayout);
+    paragraph->_paint(this, offset->dx, offset->dy);
 }
 
-void Canvas::drawPoints(Paint paint, PointMode pointMode, List<Offset> points) {
+void CanvasCls::drawPoints(Paint paint, PointMode pointMode, List<Offset> points) {
     assert(pointMode != nullptr);
     assert(points != nullptr);
     assert(paint != nullptr);
-    _drawPoints(paint._objects, paint._data, pointMode.index, _encodePointList(points));
+    _drawPoints(paint->_objects, paint->_data, pointMode->index, _encodePointList(points));
 }
 
-void Canvas::drawRawPoints(Paint paint, PointMode pointMode, Float32List points) {
+void CanvasCls::drawRawPoints(Paint paint, PointMode pointMode, Float32List points) {
     assert(pointMode != nullptr);
     assert(points != nullptr);
     assert(paint != nullptr);
-    if (points.length % 2 != 0)     {
+    if (points->length % 2 != 0)     {
         ;
     }
-    _drawPoints(paint._objects, paint._data, pointMode.index, points);
+    _drawPoints(paint->_objects, paint->_data, pointMode->index, points);
 }
 
-void Canvas::drawVertices(BlendMode blendMode, Paint paint, Vertices vertices) {
+void CanvasCls::drawVertices(BlendMode blendMode, Paint paint, Vertices vertices) {
     assert(vertices != nullptr);
     assert(paint != nullptr);
     assert(blendMode != nullptr);
-    _drawVertices(vertices, blendMode.index, paint._objects, paint._data);
+    _drawVertices(vertices, blendMode->index, paint->_objects, paint->_data);
 }
 
-void Canvas::drawAtlas(Image atlas, BlendMode blendMode, List<Color> colors, Rect cullRect, Paint paint, List<Rect> rects, List<RSTransform> transforms) {
+void CanvasCls::drawAtlas(Image atlas, BlendMode blendMode, List<Color> colors, Rect cullRect, Paint paint, List<Rect> rects, List<RSTransform> transforms) {
     assert(atlas != nullptr);
     assert(transforms != nullptr);
     assert(rects != nullptr);
-    assert(colors == nullptr || colors.isEmpty || blendMode != nullptr);
+    assert(colors == nullptr || colors->isEmpty || blendMode != nullptr);
     assert(paint != nullptr);
-    int rectCount = rects.length;
-    if (transforms.length != rectCount)     {
+    int rectCount = rects->length;
+    if (transforms->length != rectCount)     {
         ;
     }
-    if (colors != nullptr && colors.isNotEmpty && colors.length != rectCount)     {
+    if (colors != nullptr && colors->isNotEmpty && colors->length != rectCount)     {
         ;
     }
-    Float32List rstTransformBuffer = Float32List(rectCount * 4);
-    Float32List rectBuffer = Float32List(rectCount * 4);
+    Float32List rstTransformBuffer = make<Float32ListCls>(rectCount * 4);
+    Float32List rectBuffer = make<Float32ListCls>(rectCount * 4);
     for (;  < rectCount; ++i) {
         int index0 = i * 4;
         int index1 = index0 + 1;
@@ -1413,96 +1461,110 @@ void Canvas::drawAtlas(Image atlas, BlendMode blendMode, List<Color> colors, Rec
         RSTransform rstTransform = transforms[i];
         Rect rect = rects[i];
         assert(_rectIsValid(rect));
-        rstTransformBuffer[index0] = rstTransform.scos;
-        rstTransformBuffer[index1] = rstTransform.ssin;
-        rstTransformBuffer[index2] = rstTransform.tx;
-        rstTransformBuffer[index3] = rstTransform.ty;
-        rectBuffer[index0] = rect.left;
-        rectBuffer[index1] = rect.top;
-        rectBuffer[index2] = rect.right;
-        rectBuffer[index3] = rect.bottom;
+        rstTransformBuffer[index0] = rstTransform->scos;
+        rstTransformBuffer[index1] = rstTransform->ssin;
+        rstTransformBuffer[index2] = rstTransform->tx;
+        rstTransformBuffer[index3] = rstTransform->ty;
+        rectBuffer[index0] = rect->left;
+        rectBuffer[index1] = rect->top;
+        rectBuffer[index2] = rect->right;
+        rectBuffer[index3] = rect->bottom;
     }
-    Int32List colorBuffer = (colors == nullptr || colors.isEmpty)? nullptr : _encodeColorList(colors);
-    Float32List cullRectBuffer = cullRect?._getValue32();
-    int qualityIndex = paint.filterQuality.index;
-    String error = _drawAtlas(paint._objects, paint._data, qualityIndex, atlas._image, rstTransformBuffer, rectBuffer, colorBuffer, (blendMode ?? BlendMode.src).index, cullRectBuffer);
+    Int32List colorBuffer = (colors == nullptr || colors->isEmpty)? nullptr : _encodeColorList(colors);
+    Float32List cullRectBuffer = cullRect?->_getValue32();
+    int qualityIndex = paint->filterQuality->index;
+    String error = _drawAtlas(paint->_objects, paint->_data, qualityIndex, atlas->_image, rstTransformBuffer, rectBuffer, colorBuffer, (blendMode ?? BlendModeCls::src)->index, cullRectBuffer);
     if (error != nullptr) {
         ;
     }
 }
 
-void Canvas::drawRawAtlas(Image atlas, BlendMode blendMode, Int32List colors, Rect cullRect, Paint paint, Float32List rects, Float32List rstTransforms) {
+void CanvasCls::drawRawAtlas(Image atlas, BlendMode blendMode, Int32List colors, Rect cullRect, Paint paint, Float32List rects, Float32List rstTransforms) {
     assert(atlas != nullptr);
     assert(rstTransforms != nullptr);
     assert(rects != nullptr);
     assert(colors == nullptr || blendMode != nullptr);
     assert(paint != nullptr);
-    int rectCount = rects.length;
-    if (rstTransforms.length != rectCount)     {
+    int rectCount = rects->length;
+    if (rstTransforms->length != rectCount)     {
         ;
     }
     if (rectCount % 4 != 0)     {
         ;
     }
-    if (colors != nullptr && colors.length * 4 != rectCount)     {
+    if (colors != nullptr && colors->length * 4 != rectCount)     {
         ;
     }
-    int qualityIndex = paint.filterQuality.index;
-    String error = _drawAtlas(paint._objects, paint._data, qualityIndex, atlas._image, rstTransforms, rects, colors, (blendMode ?? BlendMode.src).index, cullRect?._getValue32());
+    int qualityIndex = paint->filterQuality->index;
+    String error = _drawAtlas(paint->_objects, paint->_data, qualityIndex, atlas->_image, rstTransforms, rects, colors, (blendMode ?? BlendModeCls::src)->index, cullRect?->_getValue32());
     if (error != nullptr) {
         ;
     }
 }
 
-void Canvas::drawShadow(Color color, double elevation, Path path, bool transparentOccluder) {
+void CanvasCls::drawShadow(Color color, double elevation, Path path, bool transparentOccluder) {
     assert(path != nullptr);
     assert(color != nullptr);
     assert(transparentOccluder != nullptr);
-    _drawShadow(path, color.value, elevation, transparentOccluder);
+    _drawShadow(path, color->value, elevation, transparentOccluder);
 }
 
-Future<Image> Picture::toImage(int height, int width) {
+Future<Image> PictureCls::toImage(int height, int width) {
     assert(!_disposed);
     if (width <= 0 || height <= 0)     {
         ;
     }
-    return _futurize();
+    return _futurize([=] (_Callback<Image> callback)     {
+        _toImage(width, height, [=] (_Image image) {
+        if (image == nullptr) {
+            callback(nullptr);
+        } else {
+            callback(ImageCls->_(image, image->width, image->height));
+        }
+    });
+    });
 }
 
-void Picture::dispose() {
+void PictureCls::dispose() {
     assert(!_disposed);
-    assert(());
+    assert([=] () {
+        _disposed = true;
+        return true;
+    }());
     _dispose();
 }
 
-bool Picture::debugDisposed() {
+bool PictureCls::debugDisposed() {
     bool disposed;
-    assert(());
+    assert([=] () {
+        disposed = _disposed;
+        return true;
+    }());
     return disposed ?? ();
 }
 
-PictureRecorder::PictureRecorder() {
+PictureRecorderCls::PictureRecorderCls() {
     {
         _constructor();
     }
 }
 
-bool PictureRecorder::isRecording() {
+bool PictureRecorderCls::isRecording() {
     return _canvas != nullptr;
 }
 
-Picture PictureRecorder::endRecording() {
+Picture PictureRecorderCls::endRecording() {
     if (_canvas == nullptr)     {
         ;
     }
-    Picture picture = Picture._();
+    Picture picture = PictureCls->_();
     _endRecording(picture);
-    _canvas!._recorder = nullptr;
+    _canvas!->_recorder = nullptr;
     _canvas = nullptr;
     return picture;
 }
 
-Shadow::Shadow(double blurRadius, Color color, Offset offset) {
+ShadowCls::ShadowCls(double blurRadius, Color color, Offset offset) {
     {
         assert(color != nullptr, "Text shadow color was null.");
         assert(offset != nullptr, "Text shadow offset was null.");
@@ -1510,147 +1572,166 @@ Shadow::Shadow(double blurRadius, Color color, Offset offset) {
     }
 }
 
-double Shadow::convertRadiusToSigma(double radius) {
+double ShadowCls::convertRadiusToSigma(double radius) {
     return radius > 0? radius * 0.57735 + 0.5 : 0;
 }
 
-double Shadow::blurSigma() {
+double ShadowCls::blurSigma() {
     return convertRadiusToSigma(blurRadius);
 }
 
-Paint Shadow::toPaint() {
-    return ;
+Paint ShadowCls::toPaint() {
+    auto _c1 = make<PaintCls>();_c1.color = auto _c2 = color;_c2.maskFilter = MaskFilterCls->blur(BlurStyleCls::normal, blurSigma);_c2;return _c1;
 }
 
-Shadow Shadow::scale(double factor) {
-    return Shadow(color, offset * factor, blurRadius * factor);
+Shadow ShadowCls::scale(double factor) {
+    return make<ShadowCls>(color, offset * factor, blurRadius * factor);
 }
 
-Shadow Shadow::lerp(Shadow a, Shadow b, double t) {
+Shadow ShadowCls::lerp(Shadow a, Shadow b, double t) {
     assert(t != nullptr);
     if (b == nullptr) {
         if (a == nullptr) {
             return nullptr;
         } else {
-            return a.scale(1.0 - t);
+            return a->scale(1.0 - t);
         }
     } else {
         if (a == nullptr) {
-            return b.scale(t);
+            return b->scale(t);
         } else {
-            return Shadow(Color.lerp(a.color, b.color, t)!, Offset.lerp(a.offset, b.offset, t)!, _lerpDouble(a.blurRadius, b.blurRadius, t));
+            return make<ShadowCls>(ColorCls->lerp(a->color, b->color, t)!, OffsetCls->lerp(a->offset, b->offset, t)!, _lerpDouble(a->blurRadius, b->blurRadius, t));
         }
     }
 }
 
-List<Shadow> Shadow::lerpList(List<Shadow> a, List<Shadow> b, double t) {
+List<Shadow> ShadowCls::lerpList(List<Shadow> a, List<Shadow> b, double t) {
     assert(t != nullptr);
     if (a == nullptr && b == nullptr)     {
         return nullptr;
     }
-    a = ;
-    b = ;
-    List<Shadow> result = ;
-    int commonLength = math.min(a.length, b.length);
+    a = makeList();
+    b = makeList();
+    List<Shadow> result = makeList();
+    int commonLength = math->min(a->length, b->length);
     for (;  < commonLength; i = 1)     {
-        result.add(Shadow.lerp(a[i], b[i], t)!);
+        result->add(ShadowCls->lerp(a[i], b[i], t)!);
     }
-    for (;  < a.length; i = 1)     {
-        result.add(a[i].scale(1.0 - t));
+    for (;  < a->length; i = 1)     {
+        result->add(a[i]->scale(1.0 - t));
     }
-    for (;  < b.length; i = 1)     {
-        result.add(b[i].scale(t));
+    for (;  < b->length; i = 1)     {
+        result->add(b[i]->scale(t));
     }
     return result;
 }
 
-bool Shadow::==(Object other) {
+bool ShadowCls::==(Object other) {
     if (identical(this, other))     {
         return true;
     }
-    return other is Shadow && other.color == color && other.offset == offset && other.blurRadius == blurRadius;
+    return other is Shadow && other->color == color && other->offset == offset && other->blurRadius == blurRadius;
 }
 
-int Shadow::hashCode() {
-    return Object.hash(color, offset, blurRadius);
+int ShadowCls::hashCode() {
+    return ObjectCls->hash(color, offset, blurRadius);
 }
 
-String Shadow::toString() {
+String ShadowCls::toString() {
     return "TextShadow($color, $offset, $blurRadius)";
 }
 
-ByteData Shadow::_encodeShadows(List<Shadow> shadows) {
+ByteData ShadowCls::_encodeShadows(List<Shadow> shadows) {
     if (shadows == nullptr)     {
-        return ByteData(0);
+        return make<ByteDataCls>(0);
     }
-    int byteCount = shadows.length * _kBytesPerShadow;
-    ByteData shadowsData = ByteData(byteCount);
+    int byteCount = shadows->length * _kBytesPerShadow;
+    ByteData shadowsData = make<ByteDataCls>(byteCount);
     int shadowOffset = 0;
-    for (;  < shadows.length; ++shadowIndex) {
+    for (;  < shadows->length; ++shadowIndex) {
         Shadow shadow = shadows[shadowIndex];
         if (shadow != nullptr) {
             shadowOffset = shadowIndex * _kBytesPerShadow;
-            shadowsData.setInt32(_kColorOffset + shadowOffset, shadow.color.value ^ Shadow._kColorDefault, _kFakeHostEndian);
-            shadowsData.setFloat32(_kXOffset + shadowOffset, shadow.offset.dx, _kFakeHostEndian);
-            shadowsData.setFloat32(_kYOffset + shadowOffset, shadow.offset.dy, _kFakeHostEndian);
-            double blurSigma = Shadow.convertRadiusToSigma(shadow.blurRadius);
-            shadowsData.setFloat32(_kBlurOffset + shadowOffset, blurSigma, _kFakeHostEndian);
+            shadowsData->setInt32(_kColorOffset + shadowOffset, shadow->color->value ^ ShadowCls::_kColorDefault, _kFakeHostEndian);
+            shadowsData->setFloat32(_kXOffset + shadowOffset, shadow->offset->dx, _kFakeHostEndian);
+            shadowsData->setFloat32(_kYOffset + shadowOffset, shadow->offset->dy, _kFakeHostEndian);
+            double blurSigma = ShadowCls->convertRadiusToSigma(shadow->blurRadius);
+            shadowsData->setFloat32(_kBlurOffset + shadowOffset, blurSigma, _kFakeHostEndian);
         }
     }
     return shadowsData;
 }
 
-Future<ImmutableBuffer> ImmutableBuffer::fromUint8List(Uint8List list) {
-    ImmutableBuffer instance = ImmutableBuffer._(list.length);
-    return _futurize().then();
+Future<ImmutableBuffer> ImmutableBufferCls::fromUint8List(Uint8List list) {
+    ImmutableBuffer instance = ImmutableBufferCls->_(list->length);
+    return _futurize([=] (_Callback<void> callback) {
+        instance->_init(list, callback);
+    })->then([=] ()     {
+        instance;
+    });
 }
 
-Future<ImmutableBuffer> ImmutableBuffer::fromAsset(String assetKey) {
-    String encodedKey = Uri(Uri.encodeFull(assetKey)).path;
-    ImmutableBuffer instance = ImmutableBuffer._(0);
-    return _futurize().then();
+Future<ImmutableBuffer> ImmutableBufferCls::fromAsset(String assetKey) {
+    String encodedKey = make<UriCls>(UriCls->encodeFull(assetKey))->path;
+    ImmutableBuffer instance = ImmutableBufferCls->_(0);
+    auto _c1 = instance;_c1._length = length;return _futurize([=] (_Callback<int> callback) {
+        return instance->_initFromAsset(encodedKey, callback);
+    })->then([=] (int length)     {
+        _c1;
+    });
 }
 
-int ImmutableBuffer::length() {
+int ImmutableBufferCls::length() {
     return _length;
 }
 
-bool ImmutableBuffer::debugDisposed() {
+bool ImmutableBufferCls::debugDisposed() {
     bool disposed;
-    assert(());
+    assert([=] () {
+        disposed = _debugDisposed;
+        return true;
+    }());
     return disposed;
 }
 
-void ImmutableBuffer::dispose() {
-    assert(());
+void ImmutableBufferCls::dispose() {
+    assert([=] () {
+        assert(!_debugDisposed);
+        _debugDisposed = true;
+        return true;
+    }());
     _dispose();
 }
 
-Future<ImageDescriptor> ImageDescriptor::encoded(ImmutableBuffer buffer) {
-    ImageDescriptor descriptor = ImageDescriptor._();
-    return _futurize().then();
+Future<ImageDescriptor> ImageDescriptorCls::encoded(ImmutableBuffer buffer) {
+    ImageDescriptor descriptor = ImageDescriptorCls->_();
+    return _futurize([=] (_Callback<void> callback) {
+        return descriptor->_initEncoded(buffer, callback);
+    })->then([=] ()     {
+        descriptor;
+    });
 }
 
-void ImageDescriptor::raw(ImmutableBuffer buffer, int height, PixelFormat pixelFormat, int rowBytes, int width) {
+void ImageDescriptorCls::raw(ImmutableBuffer buffer, int height, PixelFormat pixelFormat, int rowBytes, int width) {
     _width = width;
     _height = height;
     _bytesPerPixel = 4;
-    _initRaw(this, buffer, width, height, rowBytes ?? -1, pixelFormat.index);
+    _initRaw(this, buffer, width, height, rowBytes ?? -1, pixelFormat->index);
 }
 
-int ImageDescriptor::width() {
+int ImageDescriptorCls::width() {
     return _width ??= _getWidth();
 }
 
-int ImageDescriptor::height() {
+int ImageDescriptorCls::height() {
     return _height ??= _getHeight();
 }
 
-int ImageDescriptor::bytesPerPixel() {
+int ImageDescriptorCls::bytesPerPixel() {
     return _bytesPerPixel ??= _getBytesPerPixel();
 }
 
-Future<Codec> ImageDescriptor::instantiateCodec(int targetHeight, int targetWidth) {
+Future<Codec> ImageDescriptorCls::instantiateCodec(int targetHeight, int targetWidth) {
     if (targetWidth != nullptr && targetWidth <= 0) {
         targetWidth = nullptr;
     }
@@ -1662,7 +1743,7 @@ Future<Codec> ImageDescriptor::instantiateCodec(int targetHeight, int targetWidt
         targetHeight = height;
     } else     {
         if (targetWidth == nullptr && targetHeight != nullptr) {
-        targetWidth = (targetHeight * (width / height)).round();
+        targetWidth = (targetHeight * (width / height))->round();
         targetHeight = targetHeight;
     } else     {
         if (targetHeight == nullptr && targetWidth != nullptr) {
@@ -1673,28 +1754,38 @@ Future<Codec> ImageDescriptor::instantiateCodec(int targetHeight, int targetWidt
     };
     }    assert(targetWidth != nullptr);
     assert(targetHeight != nullptr);
-    Codec codec = Codec._();
+    Codec codec = CodecCls->_();
     _instantiateCodec(codec, targetWidth!, targetHeight!);
     return codec;
 }
 
-Future<T> _futurize<T>(_Callbacker<T> callbacker) {
+Future<T> _futurizetemplate<typename T> (_Callbacker<T> callbacker) {
     Completer<T> completer = <T>sync();
     bool sync = true;
-    String error = callbacker();
+    String error = callbacker([=] (T t) {
+    if (t == nullptr) {
+        if (sync) {
+            ;
+        } else {
+            completer->completeError(make<ExceptionCls>("operation failed"));
+        }
+    } else {
+        completer->complete(t);
+    }
+});
     sync = false;
     if (error != nullptr)     {
         ;
     }
-    return completer.future;
+    return completer->future;
 }
 
-String PictureRasterizationException::toString() {
-    StringBuffer buffer = StringBuffer("Failed to rasterize a picture: $message.");
+String PictureRasterizationExceptionCls::toString() {
+    StringBuffer buffer = make<StringBufferCls>("Failed to rasterize a picture: $message.");
     if (stack != nullptr) {
-        buffer.writeln();
-        buffer.writeln("The callstack when the image was created was:");
-        buffer.writeln(stack!.toString());
+        buffer->writeln();
+        buffer->writeln("The callstack when the image was created was:");
+        buffer->writeln(stack!->toString());
     }
-    return buffer.toString();
+    return buffer->toString();
 }

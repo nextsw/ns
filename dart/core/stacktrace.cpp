@@ -1,4 +1,4 @@
 #include "stacktrace.hpp"
-String _StringStackTrace::toString() {
+String _StringStackTraceCls::toString() {
     return _stackTrace;
 }

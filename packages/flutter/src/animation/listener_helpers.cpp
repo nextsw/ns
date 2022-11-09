@@ -1,5 +1,5 @@
 #include "listener_helpers.hpp"
-void AnimationLazyListenerMixin::didRegisterListener() {
+void AnimationLazyListenerMixinCls::didRegisterListener() {
     assert(_listenerCounter >= 0);
     if (_listenerCounter == 0) {
         didStartListening();
@@ -7,7 +7,7 @@ void AnimationLazyListenerMixin::didRegisterListener() {
     _listenerCounter = 1;
 }
 
-void AnimationLazyListenerMixin::didUnregisterListener() {
+void AnimationLazyListenerMixinCls::didUnregisterListener() {
     assert(_listenerCounter >= 1);
     _listenerCounter = 1;
     if (_listenerCounter == 0) {
@@ -15,63 +15,87 @@ void AnimationLazyListenerMixin::didUnregisterListener() {
     }
 }
 
-bool AnimationLazyListenerMixin::isListening() {
+bool AnimationLazyListenerMixinCls::isListening() {
     return _listenerCounter > 0;
 }
 
-void AnimationEagerListenerMixin::didRegisterListener() {
+void AnimationEagerListenerMixinCls::didRegisterListener() {
 }
 
-void AnimationEagerListenerMixin::didUnregisterListener() {
+void AnimationEagerListenerMixinCls::didUnregisterListener() {
 }
 
-void AnimationEagerListenerMixin::dispose() {
+void AnimationEagerListenerMixinCls::dispose() {
 }
 
-void AnimationLocalListenersMixin::addListener(VoidCallback listener) {
+void AnimationLocalListenersMixinCls::addListener(VoidCallback listener) {
     didRegisterListener();
-    _listeners.add(listener);
+    _listeners->add(listener);
 }
 
-void AnimationLocalListenersMixin::removeListener(VoidCallback listener) {
-    bool removed = _listeners.remove(listener);
+void AnimationLocalListenersMixinCls::removeListener(VoidCallback listener) {
+    bool removed = _listeners->remove(listener);
     if (removed) {
         didUnregisterListener();
     }
 }
 
-void AnimationLocalListenersMixin::clearListeners() {
-    _listeners.clear();
+void AnimationLocalListenersMixinCls::clearListeners() {
+    _listeners->clear();
 }
 
-void AnimationLocalListenersMixin::notifyListeners() {
-    List<VoidCallback> localListeners = _listeners.toList(false);
+void AnimationLocalListenersMixinCls::notifyListeners() {
+    List<VoidCallback> localListeners = _listeners->toList(false);
     for (VoidCallback listener : localListeners) {
         InformationCollector collector;
-        assert(());
-        ;
+        assert([=] () {
+            collector = [=] ()             {
+                makeList(ArrayItem);
+            };
+            return true;
+        }());
+        try {
+            if (_listeners->contains(listener)) {
+                listener();
+            }
+        } catch (Unknown exception) {
+            FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(exception, stack, "animation library", make<ErrorDescriptionCls>("while notifying listeners for $runtimeType"), collector));
+        };
     }
 }
 
-void AnimationLocalStatusListenersMixin::addStatusListener(AnimationStatusListener listener) {
+void AnimationLocalStatusListenersMixinCls::addStatusListener(AnimationStatusListener listener) {
     didRegisterListener();
-    _statusListeners.add(listener);
+    _statusListeners->add(listener);
 }
 
-void AnimationLocalStatusListenersMixin::removeStatusListener(AnimationStatusListener listener) {
-    bool removed = _statusListeners.remove(listener);
+void AnimationLocalStatusListenersMixinCls::removeStatusListener(AnimationStatusListener listener) {
+    bool removed = _statusListeners->remove(listener);
     if (removed) {
         didUnregisterListener();
     }
 }
 
-void AnimationLocalStatusListenersMixin::clearStatusListeners() {
-    _statusListeners.clear();
+void AnimationLocalStatusListenersMixinCls::clearStatusListeners() {
+    _statusListeners->clear();
 }
 
-void AnimationLocalStatusListenersMixin::notifyStatusListeners(AnimationStatus status) {
-    List<AnimationStatusListener> localListeners = _statusListeners.toList(false);
+void AnimationLocalStatusListenersMixinCls::notifyStatusListeners(AnimationStatus status) {
+    List<AnimationStatusListener> localListeners = _statusListeners->toList(false);
     for (AnimationStatusListener listener : localListeners) {
-        ;
+        try {
+            if (_statusListeners->contains(listener)) {
+                listener(status);
+            }
+        } catch (Unknown exception) {
+            InformationCollector collector;
+            assert([=] () {
+                collector = [=] ()                 {
+                    makeList(ArrayItem);
+                };
+                return true;
+            }());
+            FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(exception, stack, "animation library", make<ErrorDescriptionCls>("while notifying status listeners for $runtimeType"), collector));
+        };
     }
 }

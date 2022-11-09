@@ -1,5 +1,5 @@
 #include "force_press.hpp"
-ForcePressDetails::ForcePressDetails(Offset globalPosition, Offset localPosition, double pressure) {
+ForcePressDetailsCls::ForcePressDetailsCls(Offset globalPosition, Offset localPosition, double pressure) {
     {
         assert(globalPosition != nullptr);
         assert(pressure != nullptr);
@@ -7,7 +7,7 @@ ForcePressDetails::ForcePressDetails(Offset globalPosition, Offset localPosition
     }
 }
 
-ForcePressGestureRecognizer::ForcePressGestureRecognizer(Unknown, GestureForceInterpolation interpolation, Unknown, double peakPressure, double startPressure, Unknown) {
+ForcePressGestureRecognizerCls::ForcePressGestureRecognizerCls(Unknown debugOwner, GestureForceInterpolation interpolation, Unknown kind, double peakPressure, double startPressure, Unknown supportedDevices) {
     {
         assert(startPressure != nullptr);
         assert(peakPressure != nullptr);
@@ -16,92 +16,102 @@ ForcePressGestureRecognizer::ForcePressGestureRecognizer(Unknown, GestureForceIn
     }
 }
 
-void ForcePressGestureRecognizer::addAllowedPointer(PointerDownEvent event) {
-    if (event.pressureMax <= 1.0) {
-        resolve(GestureDisposition.rejected);
+void ForcePressGestureRecognizerCls::addAllowedPointer(PointerDownEvent event) {
+    if (event->pressureMax <= 1.0) {
+        resolve(GestureDispositionCls::rejected);
     } else {
-        super.addAllowedPointer(event);
-        if (_state == _ForceState.ready) {
-            _state = _ForceState.possible;
-            _lastPosition = OffsetPair.fromEventPosition(event);
+        super->addAllowedPointer(event);
+        if (_state == _ForceStateCls::ready) {
+            _state = _ForceStateCls::possible;
+            _lastPosition = OffsetPairCls->fromEventPosition(event);
         }
     }
 }
 
-void ForcePressGestureRecognizer::handleEvent(PointerEvent event) {
-    assert(_state != _ForceState.ready);
+void ForcePressGestureRecognizerCls::handleEvent(PointerEvent event) {
+    assert(_state != _ForceStateCls::ready);
     if (event is PointerMoveEvent || event is PointerDownEvent) {
-        double pressure = interpolation(event.pressureMin, event.pressureMax, event.pressure);
-        assert((pressure >= 0.0 && pressure <= 1.0) || pressure.isNaN);
-        _lastPosition = OffsetPair.fromEventPosition(event);
+        double pressure = interpolation(event->pressureMin, event->pressureMax, event->pressure);
+        assert((pressure >= 0.0 && pressure <= 1.0) || pressure->isNaN);
+        _lastPosition = OffsetPairCls->fromEventPosition(event);
         _lastPressure = pressure;
-        if (_state == _ForceState.possible) {
+        if (_state == _ForceStateCls::possible) {
             if (pressure > startPressure) {
-                _state = _ForceState.started;
-                resolve(GestureDisposition.accepted);
+                _state = _ForceStateCls::started;
+                resolve(GestureDispositionCls::accepted);
             } else             {
-                if (event.delta.distanceSquared > computeHitSlop(event.kind, gestureSettings)) {
-                resolve(GestureDisposition.rejected);
+                if (event->delta->distanceSquared > computeHitSlop(event->kind, gestureSettings)) {
+                resolve(GestureDispositionCls::rejected);
             }
 ;
             }        }
-        if (pressure > startPressure && _state == _ForceState.accepted) {
-            _state = _ForceState.started;
+        if (pressure > startPressure && _state == _ForceStateCls::accepted) {
+            _state = _ForceStateCls::started;
             if (onStart != nullptr) {
-                <void>invokeCallback("onStart", );
+                <void>invokeCallback("onStart", [=] ()                 {
+                    onStart!(make<ForcePressDetailsCls>(pressure, _lastPosition->global, _lastPosition->local));
+                });
             }
         }
-        if (onPeak != nullptr && pressure > peakPressure && (_state == _ForceState.started)) {
-            _state = _ForceState.peaked;
+        if (onPeak != nullptr && pressure > peakPressure && (_state == _ForceStateCls::started)) {
+            _state = _ForceStateCls::peaked;
             if (onPeak != nullptr) {
-                <void>invokeCallback("onPeak", );
+                <void>invokeCallback("onPeak", [=] ()                 {
+                    onPeak!(make<ForcePressDetailsCls>(pressure, event->position, event->localPosition));
+                });
             }
         }
-        if (onUpdate != nullptr && !pressure.isNaN && (_state == _ForceState.started || _state == _ForceState.peaked)) {
+        if (onUpdate != nullptr && !pressure->isNaN && (_state == _ForceStateCls::started || _state == _ForceStateCls::peaked)) {
             if (onUpdate != nullptr) {
-                <void>invokeCallback("onUpdate", );
+                <void>invokeCallback("onUpdate", [=] ()                 {
+                    onUpdate!(make<ForcePressDetailsCls>(pressure, event->position, event->localPosition));
+                });
             }
         }
     }
     stopTrackingIfPointerNoLongerDown(event);
 }
 
-void ForcePressGestureRecognizer::acceptGesture(int pointer) {
-    if (_state == _ForceState.possible) {
-        _state = _ForceState.accepted;
+void ForcePressGestureRecognizerCls::acceptGesture(int pointer) {
+    if (_state == _ForceStateCls::possible) {
+        _state = _ForceStateCls::accepted;
     }
-    if (onStart != nullptr && _state == _ForceState.started) {
-        <void>invokeCallback("onStart", );
+    if (onStart != nullptr && _state == _ForceStateCls::started) {
+        <void>invokeCallback("onStart", [=] ()         {
+            onStart!(make<ForcePressDetailsCls>(_lastPressure, _lastPosition->global, _lastPosition->local));
+        });
     }
 }
 
-void ForcePressGestureRecognizer::didStopTrackingLastPointer(int pointer) {
-    bool wasAccepted = _state == _ForceState.started || _state == _ForceState.peaked;
-    if (_state == _ForceState.possible) {
-        resolve(GestureDisposition.rejected);
+void ForcePressGestureRecognizerCls::didStopTrackingLastPointer(int pointer) {
+    bool wasAccepted = _state == _ForceStateCls::started || _state == _ForceStateCls::peaked;
+    if (_state == _ForceStateCls::possible) {
+        resolve(GestureDispositionCls::rejected);
         return;
     }
     if (wasAccepted && onEnd != nullptr) {
         if (onEnd != nullptr) {
-            <void>invokeCallback("onEnd", );
+            <void>invokeCallback("onEnd", [=] ()             {
+                onEnd!(make<ForcePressDetailsCls>(0.0, _lastPosition->global, _lastPosition->local));
+            });
         }
     }
-    _state = _ForceState.ready;
+    _state = _ForceStateCls::ready;
 }
 
-void ForcePressGestureRecognizer::rejectGesture(int pointer) {
+void ForcePressGestureRecognizerCls::rejectGesture(int pointer) {
     stopTrackingPointer(pointer);
     didStopTrackingLastPointer(pointer);
 }
 
-String ForcePressGestureRecognizer::debugDescription() {
+String ForcePressGestureRecognizerCls::debugDescription() {
     return "force press";
 }
 
-double ForcePressGestureRecognizer::_inverseLerp(double max, double min, double t) {
+double ForcePressGestureRecognizerCls::_inverseLerp(double max, double min, double t) {
     assert(min <= max);
     double value = (t - min) / (max - min);
-    if (!value.isNaN) {
+    if (!value->isNaN) {
         value = clampDouble(value, 0.0, 1.0);
     }
     return value;

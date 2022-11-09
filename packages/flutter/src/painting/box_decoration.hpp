@@ -1,9 +1,10 @@
-#ifndef BOX_DECORATION_H
-#define BOX_DECORATION_H
-#include <memory>
+#ifndef PACKAGES_FLUTTER_SRC_PAINTING_BOX_DECORATION
+#define PACKAGES_FLUTTER_SRC_PAINTING_BOX_DECORATION
+#include <base.hpp>
 
-#include <math/math.hpp>
-#include <flutter/foundation.hpp>
+#include <dart/core/core.hpp>
+#include <dart/math/math.hpp>
+#include <packages/flutter/lib/foundation.hpp>
 #include "basic_types.hpp"
 #include "border_radius.hpp"
 #include "box_border.hpp"
@@ -16,8 +17,7 @@
 #include "image_provider.hpp"
 
 
-
-class BoxDecoration : Decoration {
+class BoxDecorationCls : public DecorationCls {
 public:
     Color color;
 
@@ -36,48 +36,49 @@ public:
     BoxShape shape;
 
 
-     BoxDecoration(BlendMode backgroundBlendMode, BoxBorder border, BorderRadiusGeometry borderRadius, List<BoxShadow> boxShadow, Color color, Gradient gradient, DecorationImage image, BoxShape shape);
+     BoxDecorationCls(BlendMode backgroundBlendMode, BoxBorder border, BorderRadiusGeometry borderRadius, List<BoxShadow> boxShadow, Color color, Gradient gradient, DecorationImage image, BoxShape shape);
 
-    BoxDecoration copyWith(BlendMode backgroundBlendMode, BoxBorder border, BorderRadiusGeometry borderRadius, List<BoxShadow> boxShadow, Color color, Gradient gradient, DecorationImage image, BoxShape shape);
+    virtual BoxDecoration copyWith(BlendMode backgroundBlendMode, BoxBorder border, BorderRadiusGeometry borderRadius, List<BoxShadow> boxShadow, Color color, Gradient gradient, DecorationImage image, BoxShape shape);
 
-    bool debugAssertIsValid();
+    virtual bool debugAssertIsValid();
 
-    EdgeInsetsGeometry padding();
+    virtual EdgeInsetsGeometry padding();
 
-    Path getClipPath(Rect rect, TextDirection textDirection);
+    virtual Path getClipPath(Rect rect, TextDirection textDirection);
 
-    BoxDecoration scale(double factor);
+    virtual BoxDecoration scale(double factor);
 
-    bool isComplex();
+    virtual bool isComplex();
 
-    BoxDecoration lerpFrom(Decoration a, double t);
+    virtual BoxDecoration lerpFrom(Decoration a, double t);
 
-    BoxDecoration lerpTo(Decoration b, double t);
+    virtual BoxDecoration lerpTo(Decoration b, double t);
 
     static BoxDecoration lerp(BoxDecoration a, BoxDecoration b, double t);
 
-    bool ==(Object other);
+    virtual bool operator==(Object other);
 
-    int hashCode();
+    virtual int hashCode();
 
-    void debugFillProperties(DiagnosticPropertiesBuilder properties);
+    virtual void debugFillProperties(DiagnosticPropertiesBuilder properties);
 
-    bool hitTest(Offset position, Size size, TextDirection textDirection);
+    virtual bool hitTest(Offset position, Size size, TextDirection textDirection);
 
-    BoxPainter createBoxPainter(VoidCallback onChanged);
+    virtual BoxPainter createBoxPainter(VoidCallback onChanged);
 
 private:
 
 };
+using BoxDecoration = std::shared_ptr<BoxDecorationCls>;
 
-class _BoxDecorationPainter : BoxPainter {
+class _BoxDecorationPainterCls : public BoxPainterCls {
 public:
 
-    void dispose();
+    virtual void dispose();
 
-    void paint(Canvas canvas, ImageConfiguration configuration, Offset offset);
+    virtual void paint(Canvas canvas, ImageConfiguration configuration, Offset offset);
 
-    String toString();
+    virtual String toString();
 
 private:
     BoxDecoration _decoration;
@@ -89,18 +90,20 @@ private:
     DecorationImagePainter _imagePainter;
 
 
-     _BoxDecorationPainter(BoxDecoration _decoration, VoidCallback onChanged);
+     _BoxDecorationPainterCls(BoxDecoration _decoration, VoidCallback onChanged);
 
-    Paint _getBackgroundPaint(Rect rect, TextDirection textDirection);
+    virtual Paint _getBackgroundPaint(Rect rect, TextDirection textDirection);
 
-    void _paintBox(Canvas canvas, Paint paint, Rect rect, TextDirection textDirection);
+    virtual void _paintBox(Canvas canvas, Paint paint, Rect rect, TextDirection textDirection);
 
-    void _paintShadows(Canvas canvas, Rect rect, TextDirection textDirection);
+    virtual void _paintShadows(Canvas canvas, Rect rect, TextDirection textDirection);
 
-    void _paintBackgroundColor(Canvas canvas, Rect rect, TextDirection textDirection);
+    virtual void _paintBackgroundColor(Canvas canvas, Rect rect, TextDirection textDirection);
 
-    void _paintBackgroundImage(Canvas canvas, ImageConfiguration configuration, Rect rect);
+    virtual void _paintBackgroundImage(Canvas canvas, ImageConfiguration configuration, Rect rect);
 
 };
+using _BoxDecorationPainter = std::shared_ptr<_BoxDecorationPainterCls>;
+
 
 #endif

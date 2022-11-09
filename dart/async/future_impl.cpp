@@ -1,125 +1,132 @@
 #include "future_impl.hpp"
-void _Completer::completeError(Object error, StackTrace stackTrace) {
+template<typename T> void _CompleterCls<T>::completeError(Object error, StackTrace stackTrace) {
     checkNotNullable(error, "error");
-    if (!future._mayComplete)     {
+    if (!future->_mayComplete)     {
         ;
     }
-    AsyncError replacement = Zone.current.errorCallback(error, stackTrace);
+    AsyncError replacement = ZoneCls::current->errorCallback(error, stackTrace);
     if (replacement != nullptr) {
-        error = replacement.error;
-        stackTrace = replacement.stackTrace;
+        error = replacement->error;
+        stackTrace = replacement->stackTrace;
     } else {
-        stackTrace = AsyncError.defaultStackTrace(error);
+        stackTrace = AsyncErrorCls->defaultStackTrace(error);
     }
     _completeError(error, stackTrace);
 }
 
-bool _Completer::isCompleted() {
-    return !future._mayComplete;
+template<typename T> bool _CompleterCls<T>::isCompleted() {
+    return !future->_mayComplete;
 }
 
-void _AsyncCompleter::complete(FutureOr<T> value) {
-    if (!future._mayComplete)     {
+template<typename T> void _AsyncCompleterCls<T>::complete(FutureOr<T> value) {
+    if (!future->_mayComplete)     {
         ;
     }
-    future._asyncComplete(value == nullptr? ( : value);
+    future->_asyncComplete(value == nullptr? ((dynamic)value) : value);
 }
 
-void _AsyncCompleter::_completeError(Object error, StackTrace stackTrace) {
-    future._asyncCompleteError(error, stackTrace);
+template<typename T> void _AsyncCompleterCls<T>::_completeError(Object error, StackTrace stackTrace) {
+    future->_asyncCompleteError(error, stackTrace);
 }
 
-void _SyncCompleter::complete(FutureOr<T> value) {
-    if (!future._mayComplete)     {
+template<typename T> void _SyncCompleterCls<T>::complete(FutureOr<T> value) {
+    if (!future->_mayComplete)     {
         ;
     }
-    future._complete(value == nullptr? ( : value);
+    future->_complete(value == nullptr? ((dynamic)value) : value);
 }
 
-void _SyncCompleter::_completeError(Object error, StackTrace stackTrace) {
-    future._completeError(error, stackTrace);
+template<typename T> void _SyncCompleterCls<T>::_completeError(Object error, StackTrace stackTrace) {
+    future->_completeError(error, stackTrace);
 }
 
-void _FutureListener::then(FunctionType errorCallback, FunctionType onValue, _Future<T> result)
+template<typename S, typename T> void _FutureListenerCls<S, T>::then(void  errorCallback() , FutureOr<T> onValue(S ) , _Future<T> result)
 
-void _FutureListener::thenAwait(FunctionType errorCallback, FunctionType onValue, _Future<T> result)
+template<typename S, typename T> void _FutureListenerCls<S, T>::thenAwait(void  errorCallback() , FutureOr<T> onValue(S ) , _Future<T> result)
 
-void _FutureListener::catchError(FunctionType callback, FunctionType errorCallback, _Future<T> result)
+template<typename S, typename T> void _FutureListenerCls<S, T>::catchError(void  Function() callback, void  Function() errorCallback, _Future<T> result)
 
-void _FutureListener::whenComplete(FunctionType callback, _Future<T> result)
+template<typename S, typename T> void _FutureListenerCls<S, T>::whenComplete(void  Function() callback, _Future<T> result)
 
-bool _FutureListener::handlesValue() {
+template<typename S, typename T> bool _FutureListenerCls<S, T>::handlesValue() {
     return (state & maskValue != 0);
 }
 
-bool _FutureListener::handlesError() {
+template<typename S, typename T> bool _FutureListenerCls<S, T>::handlesError() {
     return (state & maskError != 0);
 }
 
-bool _FutureListener::hasErrorTest() {
+template<typename S, typename T> bool _FutureListenerCls<S, T>::hasErrorTest() {
     return (state & maskType == stateCatchErrorTest);
 }
 
-bool _FutureListener::handlesComplete() {
+template<typename S, typename T> bool _FutureListenerCls<S, T>::handlesComplete() {
     return (state & maskType == stateWhenComplete);
 }
 
-bool _FutureListener::hasErrorCallback() {
+template<typename S, typename T> bool _FutureListenerCls<S, T>::hasErrorCallback() {
     assert(handlesError);
     return _onError != nullptr;
 }
 
-FutureOr<T> _FutureListener::handleValue(S sourceResult) {
-    return _zone.<FutureOr<T>, S>runUnary(_onValue, sourceResult);
+template<typename S, typename T> FutureOr<T> _FutureListenerCls<S, T>::handleValue(S sourceResult) {
+    return _zone-><FutureOr<T>, S>runUnary(_onValue, sourceResult);
 }
 
-bool _FutureListener::matchesErrorTest(AsyncError asyncError) {
+template<typename S, typename T> bool _FutureListenerCls<S, T>::matchesErrorTest(AsyncError asyncError) {
     if (!hasErrorTest)     {
         return true;
     }
-    return _zone.<bool, Object>runUnary(_errorTest, asyncError.error);
+    return _zone-><bool, Object>runUnary(_errorTest, asyncError->error);
 }
 
-FutureOr<T> _FutureListener::handleError(AsyncError asyncError) {
+template<typename S, typename T> FutureOr<T> _FutureListenerCls<S, T>::handleError(AsyncError asyncError) {
     assert(handlesError && hasErrorCallback);
-    auto errorCallback = this.errorCallback;
+    auto errorCallback = this->errorCallback;
     dynamic result;
-    if (errorCallback is FunctionType) {
-        result = _zone.<dynamic, Object, StackTrace>runBinary(errorCallback, asyncError.error, asyncError.stackTrace);
+    if (errorCallback is dynamic Function(Object , StackTrace )) {
+        result = _zone-><dynamic, Object, StackTrace>runBinary(errorCallback, asyncError->error, asyncError->stackTrace);
     } else {
-        result = _zone.<dynamic, Object>runUnary((, asyncError.error);
+        result = _zone-><dynamic, Object>runUnary(((dynamic)errorCallback), asyncError->error);
     }
-    ;
+    try {
+        return result;
+    } catch (TypeError null) {
+        if (handlesValue) {
+            ;
+        }
+        ;
+    };
 }
 
-dynamic _FutureListener::handleWhenComplete() {
+template<typename S, typename T> dynamic _FutureListenerCls<S, T>::handleWhenComplete() {
     assert(!handlesError);
-    return _zone.run(_whenCompleteAction);
+    return _zone->run(_whenCompleteAction);
 }
 
-bool _FutureListener::shouldChain(Future<dynamic> value) {
+template<typename S, typename T> bool _FutureListenerCls<S, T>::shouldChain(Future<dynamic> value) {
     return value is Future<T> || value is! T;
 }
 
-_Zone _FutureListener::_zone() {
-    return result._zone;
+template<typename S, typename T> _Zone _FutureListenerCls<S, T>::_zone() {
+    return result->_zone;
 }
 
-FunctionType _FutureListener::_onValue() {
+template<typename S, typename T> FutureOr<T> Function(S ) _FutureListenerCls<S, T>::_onValue() {
     assert(handlesValue);
-    return <FunctionType>unsafeCast(callback);
+    return <FutureOr<T> Function(S )>unsafeCast(callback);
 }
 
-FunctionType _FutureListener::_onError() {
+template<typename S, typename T> void  Function() _FutureListenerCls<S, T>::_onError() {
     return errorCallback;
 }
 
-FunctionType _FutureListener::_errorTest() {
+template<typename S, typename T> bool Function(Object ) _FutureListenerCls<S, T>::_errorTest() {
     assert(hasErrorTest);
-    return <FunctionType>unsafeCast(callback);
+    return <bool Function(Object )>unsafeCast(callback);
 }
 
-FunctionType _FutureListener::_whenCompleteAction() {
+template<typename S, typename T> dynamic Function() _FutureListenerCls<S, T>::_whenCompleteAction() {
     assert(handlesComplete);
-    return <FunctionType>unsafeCast(callback);
+    return <dynamic Function()>unsafeCast(callback);
 }

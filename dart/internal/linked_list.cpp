@@ -1,97 +1,97 @@
 #include "linked_list.hpp"
-T LinkedList::first() {
-    return (;
+template<typename T : LinkedListEntry<T>> T LinkedListCls<T>::first() {
+    return ((T)_first);
 }
 
-T LinkedList::last() {
-    return (;
+template<typename T : LinkedListEntry<T>> T LinkedListCls<T>::last() {
+    return ((T)_last);
 }
 
-bool LinkedList::isEmpty() {
+template<typename T : LinkedListEntry<T>> bool LinkedListCls<T>::isEmpty() {
     return length == 0;
 }
 
-void LinkedList::add(T newLast) {
-    assert(newLast._next == nullptr && newLast._previous == nullptr);
+template<typename T : LinkedListEntry<T>> void LinkedListCls<T>::add(T newLast) {
+    assert(newLast->_next == nullptr && newLast->_previous == nullptr);
     if (_last != nullptr) {
-        assert(_last!._next == nullptr);
-        _last!._next = newLast;
+        assert(_last!->_next == nullptr);
+        _last!->_next = newLast;
     } else {
         _first = newLast;
     }
-    newLast._previous = _last;
+    newLast->_previous = _last;
     _last = newLast;
-    _last!._list = this;
+    _last!->_list = this;
     length++;
 }
 
-void LinkedList::addFirst(T newFirst) {
+template<typename T : LinkedListEntry<T>> void LinkedListCls<T>::addFirst(T newFirst) {
     if (_first != nullptr) {
-        assert(_first!._previous == nullptr);
-        _first!._previous = newFirst;
+        assert(_first!->_previous == nullptr);
+        _first!->_previous = newFirst;
     } else {
         _last = newFirst;
     }
-    newFirst._next = _first;
+    newFirst->_next = _first;
     _first = newFirst;
-    _first!._list = this;
+    _first!->_list = this;
     length++;
 }
 
-void LinkedList::remove(T node) {
-    if (node._list != this)     {
+template<typename T : LinkedListEntry<T>> void LinkedListCls<T>::remove(T node) {
+    if (node->_list != this)     {
         return;
     }
     length--;
-    if (node._previous == nullptr) {
+    if (node->_previous == nullptr) {
         assert(identical(node, _first));
-        _first = node._next;
+        _first = node->_next;
     } else {
-        node._previous!._next = node._next;
+        node->_previous!->_next = node->_next;
     }
-    if (node._next == nullptr) {
+    if (node->_next == nullptr) {
         assert(identical(node, _last));
-        _last = node._previous;
+        _last = node->_previous;
     } else {
-        node._next!._previous = node._previous;
+        node->_next!->_previous = node->_previous;
     }
-    node._next = node._previous = nullptr;
-    node._list = nullptr;
+    node->_next = node->_previous = nullptr;
+    node->_list = nullptr;
 }
 
-Iterator<T> LinkedList::iterator() {
-    return <T>_LinkedListIterator(this);
+template<typename T : LinkedListEntry<T>> Iterator<T> LinkedListCls<T>::iterator() {
+    return <T>make<_LinkedListIteratorCls>(this);
 }
 
-void LinkedListEntry::unlink() {
-    _list?.remove(();
+template<typename T : LinkedListEntry<T>> void LinkedListEntryCls<T>::unlink() {
+    _list?->remove(((T)this));
 }
 
-T _LinkedListIterator::current() {
-    return (;
+template<typename T : LinkedListEntry<T>> T _LinkedListIteratorCls<T>::current() {
+    return ((T)_current);
 }
 
-bool _LinkedListIterator::moveNext() {
+template<typename T : LinkedListEntry<T>> bool _LinkedListIteratorCls<T>::moveNext() {
     if (_current == nullptr) {
         auto list = _list;
         if (list == nullptr)         {
             return false;
         }
-        assert(list.length > 0);
-        _current = list.first;
+        assert(list->length > 0);
+        _current = list->first;
         _list = nullptr;
         return true;
     }
-    _current = _current!._next;
+    _current = _current!->_next;
     return _current != nullptr;
 }
 
-_LinkedListIterator::_LinkedListIterator(LinkedList<T> list) {
+template<typename T : LinkedListEntry<T>> _LinkedListIteratorCls<T>::_LinkedListIteratorCls(LinkedList<T> list) {
     {
         _list = list;
     }
     {
-        if (list.length == 0)         {
+        if (list->length == 0)         {
             _list = nullptr;
         }
     }

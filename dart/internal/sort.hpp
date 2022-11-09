@@ -1,27 +1,29 @@
-#ifndef SORT_H
-#define SORT_H
-#include <memory>
+#ifndef DART_INTERNAL_SORT
+#define DART_INTERNAL_SORT
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
 
 
-
-
-class Sort {
+class SortCls : public ObjectCls {
 public:
 
-    static void sort<E>(List<E> a, FunctionType compare);
+    template<typename E>  static void sort(List<E> a, int compare(E a, E b) );
 
-    static void sortRange<E>(List<E> a, FunctionType compare, int from, int to);
+    template<typename E>  static void sortRange(List<E> a, int compare(E a, E b) , int from, int to);
 
 private:
-    static const int _INSERTION_SORT_THRESHOLD;
+    static int _INSERTION_SORT_THRESHOLD;
 
 
-    static void _doSort<E>(List<E> a, FunctionType compare, int left, int right);
+    template<typename E>  static void _doSort(List<E> a, int compare(E a, E b) , int left, int right);
 
-    static void _insertionSort<E>(List<E> a, FunctionType compare, int left, int right);
+    template<typename E>  static void _insertionSort(List<E> a, int compare(E a, E b) , int left, int right);
 
-    static void _dualPivotQuicksort<E>(List<E> a, FunctionType compare, int left, int right);
+    template<typename E>  static void _dualPivotQuicksort(List<E> a, int compare(E a, E b) , int left, int right);
 
 };
+using Sort = std::shared_ptr<SortCls>;
+
 
 #endif

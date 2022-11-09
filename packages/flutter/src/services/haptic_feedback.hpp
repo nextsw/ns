@@ -1,12 +1,12 @@
-#ifndef HAPTIC_FEEDBACK_H
-#define HAPTIC_FEEDBACK_H
-#include <memory>
+#ifndef PACKAGES_FLUTTER_SRC_SERVICES_HAPTIC_FEEDBACK
+#define PACKAGES_FLUTTER_SRC_SERVICES_HAPTIC_FEEDBACK
+#include <base.hpp>
 
+#include <dart/core/core.hpp>
 #include "system_channels.hpp"
 
 
-
-class HapticFeedback {
+class HapticFeedbackCls : public ObjectCls {
 public:
 
     static Future<void> vibrate();
@@ -21,8 +21,9 @@ public:
 
 private:
 
-    void  _();
-
+    virtual void  _();
 };
+using HapticFeedback = std::shared_ptr<HapticFeedbackCls>;
+
 
 #endif

@@ -1,11 +1,11 @@
-#ifndef EXTENSION_H
-#define EXTENSION_H
-#include <memory>
+#ifndef DART_DEVELOPER_EXTENSION
+#define DART_DEVELOPER_EXTENSION
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
 
 
-
-
-class ServiceExtensionResponse {
+class ServiceExtensionResponseCls : public ObjectCls {
 public:
     String result;
 
@@ -13,28 +13,28 @@ public:
 
     String errorDetail;
 
-    static const auto  kInvalidParams;
+    static auto  kInvalidParams;
 
-    static const auto  kExtensionError;
+    static auto  kExtensionError;
 
-    static const auto  kExtensionErrorMax;
+    static auto  kExtensionErrorMax;
 
-    static const auto  kExtensionErrorMin;
+    static auto  kExtensionErrorMin;
 
-    static const auto  invalidParams;
+    static auto  invalidParams;
 
-    static const auto  extensionError;
+    static auto  extensionError;
 
-    static const auto  extensionErrorMax;
+    static auto  extensionErrorMax;
 
-    static const auto  extensionErrorMin;
+    static auto  extensionErrorMin;
 
 
-    void  result(String result);
+    virtual void  result(String result);
 
-    void  error(int errorCode, String errorDetail);
+    virtual void  error(int errorCode, String errorDetail);
 
-    bool isError();
+    virtual bool isError();
 
 private:
 
@@ -42,20 +42,18 @@ private:
 
     static void  _validateErrorCode(int errorCode);
 
-    String _toString();
+    virtual String _toString();
 
 };
+using ServiceExtensionResponse = std::shared_ptr<ServiceExtensionResponseCls>;
 void registerExtension(ServiceExtensionHandler handler, String method);
 
-external bool extensionStreamHasListener();
-
+extern bool extensionStreamHasListener();
 void postEvent(Map eventData, String eventKind);
 
-external void _postEvent(String eventData, String eventKind);
-
-external ServiceExtensionHandler _lookupExtension(String method);
-
-external void  _registerExtension(ServiceExtensionHandler handler, String method);
+extern void _postEvent(String eventData, String eventKind);
+extern ServiceExtensionHandler _lookupExtension(String method);
+extern void  _registerExtension(ServiceExtensionHandler handler, String method);
 
 
 #endif

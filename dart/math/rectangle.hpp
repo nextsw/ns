@@ -1,56 +1,52 @@
-#ifndef RECTANGLE_H
-#define RECTANGLE_H
-#include <memory>
+#ifndef DART_MATH_RECTANGLE
+#define DART_MATH_RECTANGLE
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
 
 
-
-
-class _RectangleBase<T extends num> {
+template<typename T : num> class _RectangleBaseCls : public ObjectCls {
 public:
 
-    T left();
+    virtual T left();
+    virtual T top();
+    virtual T width();
+    virtual T height();
+    virtual T right();
 
-    T top();
+    virtual T bottom();
 
-    T width();
+    virtual String toString();
 
-    T height();
+    virtual bool operator==(Object other);
 
-    T right();
+    virtual int hashCode();
 
-    T bottom();
+    virtual Rectangle<T> intersection(Rectangle<T> other);
 
-    String toString();
+    virtual bool intersects(Rectangle<num> other);
 
-    bool ==(Object other);
+    virtual Rectangle<T> boundingBox(Rectangle<T> other);
 
-    int hashCode();
+    virtual bool containsRectangle(Rectangle<num> another);
 
-    Rectangle<T> intersection(Rectangle<T> other);
+    virtual bool containsPoint(Point<num> another);
 
-    bool intersects(Rectangle<num> other);
+    virtual Point<T> topLeft();
 
-    Rectangle<T> boundingBox(Rectangle<T> other);
+    virtual Point<T> topRight();
 
-    bool containsRectangle(Rectangle<num> another);
+    virtual Point<T> bottomRight();
 
-    bool containsPoint(Point<num> another);
-
-    Point<T> topLeft();
-
-    Point<T> topRight();
-
-    Point<T> bottomRight();
-
-    Point<T> bottomLeft();
+    virtual Point<T> bottomLeft();
 
 private:
 
-     _RectangleBase();
-
+     _RectangleBaseCls();
 };
+template<typename T : num> using _RectangleBase = std::shared_ptr<_RectangleBaseCls<T : num>>;
 
-class Rectangle<T extends num> : _RectangleBase<T> {
+template<typename T : num> class RectangleCls : public _RectangleBaseCls<T> {
 public:
     T left;
 
@@ -61,32 +57,33 @@ public:
     T height;
 
 
-     Rectangle(T height, T left, T top, T width);
+     RectangleCls(T height, T left, T top, T width);
 
-    void  fromPoints(Point<T> a, Point<T> b);
+    virtual void  fromPoints(Point<T> a, Point<T> b);
 
 private:
 
 };
+template<typename T : num> using Rectangle = std::shared_ptr<RectangleCls<T : num>>;
 
-class MutableRectangle<T extends num> : _RectangleBase<T> {
+template<typename T : num> class MutableRectangleCls : public _RectangleBaseCls<T> {
 public:
     T left;
 
     T top;
 
 
-     MutableRectangle(T height, T left, T top, T width);
+     MutableRectangleCls(T height, T left, T top, T width);
 
-    void  fromPoints(Point<T> a, Point<T> b);
+    virtual void  fromPoints(Point<T> a, Point<T> b);
 
-    T width();
+    virtual T width();
 
-    void  width(T width);
+    virtual void  width(T width);
 
-    T height();
+    virtual T height();
 
-    void  height(T height);
+    virtual void  height(T height);
 
 private:
     T _width;
@@ -95,7 +92,9 @@ private:
 
 
 };
-T _clampToZero<T extends num>(T value);
+template<typename T : num> using MutableRectangle = std::shared_ptr<MutableRectangleCls<T : num>>;
+template<typename T : num>  T _clampToZero(T value);
+
 
 
 #endif

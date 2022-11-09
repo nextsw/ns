@@ -1,92 +1,77 @@
-#ifndef PRIORITY_QUEUE_H
-#define PRIORITY_QUEUE_H
-#include <memory>
+#ifndef PACKAGES_COLLECTION_SRC_PRIORITY_QUEUE
+#define PACKAGES_COLLECTION_SRC_PRIORITY_QUEUE
+#include <base.hpp>
 
-#include <collection/collection.hpp>
+#include <dart/core/core.hpp>
+#include <dart/collection/collection.hpp>
 #include "utils.hpp"
 
 
-
-class PriorityQueue<E> {
+template<typename E> class PriorityQueueCls : public ObjectCls {
 public:
 
-     PriorityQueue(FunctionType comparison);
-
-    int length();
-
-    bool isEmpty();
-
-    bool isNotEmpty();
-
-    bool contains(E object);
-
-    Iterable<E> unorderedElements();
-
-    void add(E element);
-
-    void addAll(Iterable<E> elements);
-
-    E first();
-
-    E removeFirst();
-
-    bool remove(E element);
-
-    Iterable<E> removeAll();
-
-    void clear();
-
-    List<E> toList();
-
-    List<E> toUnorderedList();
-
-    Set<E> toSet();
-
+     PriorityQueueCls(int comparison(E , E ) );
+    virtual int length();
+    virtual bool isEmpty();
+    virtual bool isNotEmpty();
+    virtual bool contains(E object);
+    virtual Iterable<E> unorderedElements();
+    virtual void add(E element);
+    virtual void addAll(Iterable<E> elements);
+    virtual E first();
+    virtual E removeFirst();
+    virtual bool remove(E element);
+    virtual Iterable<E> removeAll();
+    virtual void clear();
+    virtual List<E> toList();
+    virtual List<E> toUnorderedList();
+    virtual Set<E> toSet();
 private:
 
 };
+template<typename E> using PriorityQueue = std::shared_ptr<PriorityQueueCls<E>>;
 
-class HeapPriorityQueue<E> {
+template<typename E> class HeapPriorityQueueCls : public ObjectCls {
 public:
     Comparator<E> comparison;
 
 
-     HeapPriorityQueue(FunctionType comparison);
+     HeapPriorityQueueCls(int comparison(E , E ) );
 
-    void add(E element);
+    virtual void add(E element);
 
-    void addAll(Iterable<E> elements);
+    virtual void addAll(Iterable<E> elements);
 
-    void clear();
+    virtual void clear();
 
-    bool contains(E object);
+    virtual bool contains(E object);
 
-    Iterable<E> unorderedElements();
+    virtual Iterable<E> unorderedElements();
 
-    E first();
+    virtual E first();
 
-    bool isEmpty();
+    virtual bool isEmpty();
 
-    bool isNotEmpty();
+    virtual bool isNotEmpty();
 
-    int length();
+    virtual int length();
 
-    bool remove(E element);
+    virtual bool remove(E element);
 
-    Iterable<E> removeAll();
+    virtual Iterable<E> removeAll();
 
-    E removeFirst();
+    virtual E removeFirst();
 
-    List<E> toList();
+    virtual List<E> toList();
 
-    Set<E> toSet();
+    virtual Set<E> toSet();
 
-    List<E> toUnorderedList();
+    virtual List<E> toUnorderedList();
 
-    String toString();
+    virtual String toString();
 
 private:
-    static const int _initialCapacity;
+    static int _initialCapacity;
 
     List<E> _queue;
 
@@ -95,43 +80,44 @@ private:
     int _modificationCount;
 
 
-    E _elementAt(int index);
+    virtual E _elementAt(int index);
 
-    List<E> _toUnorderedList();
+    virtual List<E> _toUnorderedList();
 
-    void _add(E element);
+    virtual void _add(E element);
 
-    int _locate(E object);
+    virtual int _locate(E object);
 
-    E _removeLast();
+    virtual E _removeLast();
 
-    void _bubbleUp(E element, int index);
+    virtual void _bubbleUp(E element, int index);
 
-    void _bubbleDown(E element, int index);
+    virtual void _bubbleDown(E element, int index);
 
-    void _grow();
+    virtual void _grow();
 
 };
+template<typename E> using HeapPriorityQueue = std::shared_ptr<HeapPriorityQueueCls<E>>;
 
-class _UnorderedElementsIterable<E> : Iterable<E> {
+template<typename E> class _UnorderedElementsIterableCls : public IterableCls<E> {
 public:
 
-    Iterator<E> iterator();
+    virtual Iterator<E> iterator();
 
 private:
     HeapPriorityQueue<E> _queue;
 
 
-     _UnorderedElementsIterable(HeapPriorityQueue<E> _queue);
-
+     _UnorderedElementsIterableCls(HeapPriorityQueue<E> _queue);
 };
+template<typename E> using _UnorderedElementsIterable = std::shared_ptr<_UnorderedElementsIterableCls<E>>;
 
-class _UnorderedElementsIterator<E> {
+template<typename E> class _UnorderedElementsIteratorCls : public ObjectCls {
 public:
 
-    bool moveNext();
+    virtual bool moveNext();
 
-    E current();
+    virtual E current();
 
 private:
     HeapPriorityQueue<E> _queue;
@@ -143,8 +129,10 @@ private:
     int _index;
 
 
-     _UnorderedElementsIterator(HeapPriorityQueue<E> _queue);
+     _UnorderedElementsIteratorCls(HeapPriorityQueue<E> _queue);
 
 };
+template<typename E> using _UnorderedElementsIterator = std::shared_ptr<_UnorderedElementsIteratorCls<E>>;
+
 
 #endif

@@ -1,14 +1,14 @@
-#ifndef MATRIX4_H
-#define MATRIX4_H
-#include <memory>
+#ifndef PACKAGES_VECTOR_MATH_SRC_VECTOR_MATH_64_MATRIX4
+#define PACKAGES_VECTOR_MATH_SRC_VECTOR_MATH_64_MATRIX4
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
 
 
-
-
-class Matrix4 {
+class Matrix4Cls : public ObjectCls {
 public:
 
-    Float64List storage();
+    virtual Float64List storage();
 
     static void solve2(Matrix4 A, Vector2 b, Vector2 x);
 
@@ -18,239 +18,238 @@ public:
 
     static Matrix4 tryInvert(Matrix4 other);
 
-    int index(int col, int row);
+    virtual int index(int col, int row);
 
-    double entry(int col, int row);
+    virtual double entry(int col, int row);
 
-    void setEntry(int col, int row, double v);
+    virtual void setEntry(int col, int row, double v);
 
-     Matrix4(double arg0, double arg1, double arg10, double arg11, double arg12, double arg13, double arg14, double arg15, double arg2, double arg3, double arg4, double arg5, double arg6, double arg7, double arg8, double arg9);
+     Matrix4Cls(double arg0, double arg1, double arg10, double arg11, double arg12, double arg13, double arg14, double arg15, double arg2, double arg3, double arg4, double arg5, double arg6, double arg7, double arg8, double arg9);
 
-    void  fromList(List<double> values);
+    virtual void  fromList(List<double> values);
 
-    void  zero();
+    virtual void  zero();
 
-    void  identity();
+    virtual void  identity();
 
-    void  copy(Matrix4 other);
+    virtual void  copy(Matrix4 other);
 
-    void  inverted(Matrix4 other);
+    virtual void  inverted(Matrix4 other);
 
-    void  columns(Vector4 arg0, Vector4 arg1, Vector4 arg2, Vector4 arg3);
+    virtual void  columns(Vector4 arg0, Vector4 arg1, Vector4 arg2, Vector4 arg3);
 
-    void  outer(Vector4 u, Vector4 v);
+    virtual void  outer(Vector4 u, Vector4 v);
 
-    void  rotationX(double radians);
+    virtual void  rotationX(double radians);
 
-    void  rotationY(double radians);
+    virtual void  rotationY(double radians);
 
-    void  rotationZ(double radians);
+    virtual void  rotationZ(double radians);
 
-    void  translation(Vector3 translation);
+    virtual void  translation(Vector3 translation);
 
-    void  translationValues(double x, double y, double z);
+    virtual void  translationValues(double x, double y, double z);
 
-    void  diagonal3(Vector3 scale);
+    virtual void  diagonal3(Vector3 scale);
 
-    void  diagonal3Values(double x, double y, double z);
+    virtual void  diagonal3Values(double x, double y, double z);
 
-    void  skewX(double alpha);
+    virtual void  skewX(double alpha);
 
-    void  skewY(double beta);
+    virtual void  skewY(double beta);
 
-    void  skew(double alpha, double beta);
+    virtual void  skew(double alpha, double beta);
 
-    void  fromFloat64List(Float64List _m4storage);
+    virtual void  fromFloat64List(Float64List _m4storage);
+    virtual void  fromBuffer(ByteBuffer buffer, int offset);
 
-    void  fromBuffer(ByteBuffer buffer, int offset);
+    virtual void  compose(Quaternion rotation, Vector3 scale, Vector3 translation);
 
-    void  compose(Quaternion rotation, Vector3 scale, Vector3 translation);
+    virtual void splatDiagonal(double arg);
 
-    void splatDiagonal(double arg);
+    virtual void setValues(double arg0, double arg1, double arg10, double arg11, double arg12, double arg13, double arg14, double arg15, double arg2, double arg3, double arg4, double arg5, double arg6, double arg7, double arg8, double arg9);
 
-    void setValues(double arg0, double arg1, double arg10, double arg11, double arg12, double arg13, double arg14, double arg15, double arg2, double arg3, double arg4, double arg5, double arg6, double arg7, double arg8, double arg9);
+    virtual void setColumns(Vector4 arg0, Vector4 arg1, Vector4 arg2, Vector4 arg3);
 
-    void setColumns(Vector4 arg0, Vector4 arg1, Vector4 arg2, Vector4 arg3);
+    virtual void setFrom(Matrix4 arg);
 
-    void setFrom(Matrix4 arg);
+    virtual void setFromTranslationRotation(Vector3 arg0, Quaternion arg1);
 
-    void setFromTranslationRotation(Vector3 arg0, Quaternion arg1);
+    virtual void setFromTranslationRotationScale(Quaternion rotation, Vector3 scale, Vector3 translation);
 
-    void setFromTranslationRotationScale(Quaternion rotation, Vector3 scale, Vector3 translation);
+    virtual void setUpper2x2(Matrix2 arg);
 
-    void setUpper2x2(Matrix2 arg);
+    virtual void setDiagonal(Vector4 arg);
 
-    void setDiagonal(Vector4 arg);
+    virtual void setOuter(Vector4 u, Vector4 v);
 
-    void setOuter(Vector4 u, Vector4 v);
+    virtual String toString();
 
-    String toString();
+    virtual int dimension();
 
-    int dimension();
+    virtual double operator[](int i);
 
-    double [](int i);
+    virtual void operator[]=(int i, double v);
 
-    void []=(int i, double v);
+    virtual bool operator==(Object other);
 
-    bool ==(Object other);
+    virtual int hashCode();
 
-    int hashCode();
+    virtual Vector4 row0();
 
-    Vector4 row0();
+    virtual Vector4 row1();
 
-    Vector4 row1();
+    virtual Vector4 row2();
 
-    Vector4 row2();
+    virtual Vector4 row3();
 
-    Vector4 row3();
+    virtual void  row0(Vector4 arg);
 
-    void  row0(Vector4 arg);
+    virtual void  row1(Vector4 arg);
 
-    void  row1(Vector4 arg);
+    virtual void  row2(Vector4 arg);
 
-    void  row2(Vector4 arg);
+    virtual void  row3(Vector4 arg);
 
-    void  row3(Vector4 arg);
+    virtual void setRow(Vector4 arg, int row);
 
-    void setRow(Vector4 arg, int row);
+    virtual Vector4 getRow(int row);
 
-    Vector4 getRow(int row);
+    virtual void setColumn(Vector4 arg, int column);
 
-    void setColumn(Vector4 arg, int column);
+    virtual Vector4 getColumn(int column);
 
-    Vector4 getColumn(int column);
+    virtual Matrix4 clone();
 
-    Matrix4 clone();
+    virtual Matrix4 copyInto(Matrix4 arg);
 
-    Matrix4 copyInto(Matrix4 arg);
+    virtual Matrix4 operator-();
 
-    Matrix4 -();
+    virtual dynamic operator*(dynamic arg);
 
-    dynamic *(dynamic arg);
+    virtual Matrix4 operator+(Matrix4 arg);
 
-    Matrix4 +(Matrix4 arg);
+    virtual Matrix4 operator-(Matrix4 arg);
 
-    Matrix4 -(Matrix4 arg);
+    virtual void translate(dynamic x, double y, double z);
 
-    void translate(dynamic x, double y, double z);
+    virtual void leftTranslate(dynamic x, double y, double z);
 
-    void leftTranslate(dynamic x, double y, double z);
+    virtual void rotate(double angle, Vector3 axis);
 
-    void rotate(double angle, Vector3 axis);
+    virtual void rotateX(double angle);
 
-    void rotateX(double angle);
+    virtual void rotateY(double angle);
 
-    void rotateY(double angle);
+    virtual void rotateZ(double angle);
 
-    void rotateZ(double angle);
+    virtual void scale(dynamic x, double y, double z);
 
-    void scale(dynamic x, double y, double z);
+    virtual Matrix4 scaled(dynamic x, double y, double z);
 
-    Matrix4 scaled(dynamic x, double y, double z);
+    virtual void setZero();
 
-    void setZero();
+    virtual void setIdentity();
 
-    void setIdentity();
+    virtual Matrix4 transposed();
 
-    Matrix4 transposed();
+    virtual void transpose();
 
-    void transpose();
+    virtual Matrix4 absolute();
 
-    Matrix4 absolute();
+    virtual double determinant();
 
-    double determinant();
+    virtual double dotRow(int i, Vector4 v);
 
-    double dotRow(int i, Vector4 v);
+    virtual double dotColumn(int j, Vector4 v);
 
-    double dotColumn(int j, Vector4 v);
+    virtual double trace();
 
-    double trace();
+    virtual double infinityNorm();
 
-    double infinityNorm();
+    virtual double relativeError(Matrix4 correct);
 
-    double relativeError(Matrix4 correct);
+    virtual double absoluteError(Matrix4 correct);
 
-    double absoluteError(Matrix4 correct);
+    virtual Vector3 getTranslation();
 
-    Vector3 getTranslation();
+    virtual void setTranslation(Vector3 t);
 
-    void setTranslation(Vector3 t);
+    virtual void setTranslationRaw(double x, double y, double z);
 
-    void setTranslationRaw(double x, double y, double z);
+    virtual Matrix3 getRotation();
 
-    Matrix3 getRotation();
+    virtual void copyRotation(Matrix3 rotation);
 
-    void copyRotation(Matrix3 rotation);
+    virtual void setRotation(Matrix3 r);
 
-    void setRotation(Matrix3 r);
+    virtual Matrix3 getNormalMatrix();
 
-    Matrix3 getNormalMatrix();
+    virtual double getMaxScaleOnAxis();
 
-    double getMaxScaleOnAxis();
+    virtual void transposeRotation();
 
-    void transposeRotation();
+    virtual double invert();
 
-    double invert();
+    virtual double copyInverse(Matrix4 arg);
 
-    double copyInverse(Matrix4 arg);
+    virtual double invertRotation();
 
-    double invertRotation();
+    virtual void setRotationX(double radians);
 
-    void setRotationX(double radians);
+    virtual void setRotationY(double radians);
 
-    void setRotationY(double radians);
+    virtual void setRotationZ(double radians);
 
-    void setRotationZ(double radians);
+    virtual void scaleAdjoint(double scale);
 
-    void scaleAdjoint(double scale);
+    virtual Vector3 absoluteRotate(Vector3 arg);
 
-    Vector3 absoluteRotate(Vector3 arg);
+    virtual void add(Matrix4 o);
 
-    void add(Matrix4 o);
+    virtual void sub(Matrix4 o);
 
-    void sub(Matrix4 o);
+    virtual void negate();
 
-    void negate();
+    virtual void multiply(Matrix4 arg);
 
-    void multiply(Matrix4 arg);
+    virtual Matrix4 multiplied(Matrix4 arg);
 
-    Matrix4 multiplied(Matrix4 arg);
+    virtual void transposeMultiply(Matrix4 arg);
 
-    void transposeMultiply(Matrix4 arg);
+    virtual void multiplyTranspose(Matrix4 arg);
 
-    void multiplyTranspose(Matrix4 arg);
+    virtual void decompose(Quaternion rotation, Vector3 scale, Vector3 translation);
 
-    void decompose(Quaternion rotation, Vector3 scale, Vector3 translation);
+    virtual Vector3 rotate3(Vector3 arg);
 
-    Vector3 rotate3(Vector3 arg);
+    virtual Vector3 rotated3(Vector3 arg, Vector3 out);
 
-    Vector3 rotated3(Vector3 arg, Vector3 out);
+    virtual Vector3 transform3(Vector3 arg);
 
-    Vector3 transform3(Vector3 arg);
+    virtual Vector3 transformed3(Vector3 arg, Vector3 out);
 
-    Vector3 transformed3(Vector3 arg, Vector3 out);
+    virtual Vector4 transform(Vector4 arg);
 
-    Vector4 transform(Vector4 arg);
+    virtual Vector3 perspectiveTransform(Vector3 arg);
 
-    Vector3 perspectiveTransform(Vector3 arg);
+    virtual Vector4 transformed(Vector4 arg, Vector4 out);
 
-    Vector4 transformed(Vector4 arg, Vector4 out);
+    virtual void copyIntoArray(List<num> array, int offset);
 
-    void copyIntoArray(List<num> array, int offset);
+    virtual void copyFromArray(List<double> array, int offset);
 
-    void copyFromArray(List<double> array, int offset);
+    virtual List<double> applyToVector3Array(List<double> array, int offset);
 
-    List<double> applyToVector3Array(List<double> array, int offset);
+    virtual Vector3 right();
 
-    Vector3 right();
+    virtual Vector3 up();
 
-    Vector3 up();
+    virtual Vector3 forward();
 
-    Vector3 forward();
+    virtual bool isIdentity();
 
-    bool isIdentity();
-
-    bool isZero();
+    virtual bool isZero();
 
 private:
     Float64List _m4storage;
@@ -263,5 +262,7 @@ private:
 
 
 };
+using Matrix4 = std::shared_ptr<Matrix4Cls>;
+
 
 #endif

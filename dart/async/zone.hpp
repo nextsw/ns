@@ -1,11 +1,11 @@
-#ifndef ZONE_H
-#define ZONE_H
-#include <memory>
+#ifndef DART_ASYNC_ZONE
+#define DART_ASYNC_ZONE
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
 
 
-
-
-class _ZoneFunction<T extends FunctionType> {
+template<typename T : void  Function()> class _ZoneFunctionCls : public ObjectCls {
 public:
     _Zone zone;
 
@@ -14,48 +14,35 @@ public:
 
 private:
 
-     _ZoneFunction(T function, _Zone zone);
-
+     _ZoneFunctionCls(T function, _Zone zone);
 };
+template<typename T : void  Function()> using _ZoneFunction = std::shared_ptr<_ZoneFunctionCls<T : void  Function()>>;
 
-class ZoneSpecification {
+class ZoneSpecificationCls : public ObjectCls {
 public:
 
-     ZoneSpecification(CreatePeriodicTimerHandler createPeriodicTimer, CreateTimerHandler createTimer, ErrorCallbackHandler errorCallback, ForkHandler fork, HandleUncaughtErrorHandler handleUncaughtError, PrintHandler print, RegisterBinaryCallbackHandler registerBinaryCallback, RegisterCallbackHandler registerCallback, RegisterUnaryCallbackHandler registerUnaryCallback, RunHandler run, RunBinaryHandler runBinary, RunUnaryHandler runUnary, ScheduleMicrotaskHandler scheduleMicrotask);
+     ZoneSpecificationCls(CreatePeriodicTimerHandler createPeriodicTimer, CreateTimerHandler createTimer, ErrorCallbackHandler errorCallback, ForkHandler fork, HandleUncaughtErrorHandler handleUncaughtError, PrintHandler print, RegisterBinaryCallbackHandler registerBinaryCallback, RegisterCallbackHandler registerCallback, RegisterUnaryCallbackHandler registerUnaryCallback, RunHandler run, RunBinaryHandler runBinary, RunUnaryHandler runUnary, ScheduleMicrotaskHandler scheduleMicrotask);
+    virtual void  from(CreatePeriodicTimerHandler createPeriodicTimer, CreateTimerHandler createTimer, ErrorCallbackHandler errorCallback, ForkHandler fork, HandleUncaughtErrorHandler handleUncaughtError, ZoneSpecification other, PrintHandler print, RegisterBinaryCallbackHandler registerBinaryCallback, RegisterCallbackHandler registerCallback, RegisterUnaryCallbackHandler registerUnaryCallback, RunHandler run, RunBinaryHandler runBinary, RunUnaryHandler runUnary, ScheduleMicrotaskHandler scheduleMicrotask);
 
-    void  from(CreatePeriodicTimerHandler createPeriodicTimer, CreateTimerHandler createTimer, ErrorCallbackHandler errorCallback, ForkHandler fork, HandleUncaughtErrorHandler handleUncaughtError, ZoneSpecification other, PrintHandler print, RegisterBinaryCallbackHandler registerBinaryCallback, RegisterCallbackHandler registerCallback, RegisterUnaryCallbackHandler registerUnaryCallback, RunHandler run, RunBinaryHandler runBinary, RunUnaryHandler runUnary, ScheduleMicrotaskHandler scheduleMicrotask);
-
-    HandleUncaughtErrorHandler handleUncaughtError();
-
-    RunHandler run();
-
-    RunUnaryHandler runUnary();
-
-    RunBinaryHandler runBinary();
-
-    RegisterCallbackHandler registerCallback();
-
-    RegisterUnaryCallbackHandler registerUnaryCallback();
-
-    RegisterBinaryCallbackHandler registerBinaryCallback();
-
-    ErrorCallbackHandler errorCallback();
-
-    ScheduleMicrotaskHandler scheduleMicrotask();
-
-    CreateTimerHandler createTimer();
-
-    CreatePeriodicTimerHandler createPeriodicTimer();
-
-    PrintHandler print();
-
-    ForkHandler fork();
-
+    virtual HandleUncaughtErrorHandler handleUncaughtError();
+    virtual RunHandler run();
+    virtual RunUnaryHandler runUnary();
+    virtual RunBinaryHandler runBinary();
+    virtual RegisterCallbackHandler registerCallback();
+    virtual RegisterUnaryCallbackHandler registerUnaryCallback();
+    virtual RegisterBinaryCallbackHandler registerBinaryCallback();
+    virtual ErrorCallbackHandler errorCallback();
+    virtual ScheduleMicrotaskHandler scheduleMicrotask();
+    virtual CreateTimerHandler createTimer();
+    virtual CreatePeriodicTimerHandler createPeriodicTimer();
+    virtual PrintHandler print();
+    virtual ForkHandler fork();
 private:
 
 };
+using ZoneSpecification = std::shared_ptr<ZoneSpecificationCls>;
 
-class _ZoneSpecification {
+class _ZoneSpecificationCls : public ObjectCls {
 public:
     HandleUncaughtErrorHandler handleUncaughtError;
 
@@ -86,250 +73,195 @@ public:
 
 private:
 
-     _ZoneSpecification(CreatePeriodicTimerHandler createPeriodicTimer, CreateTimerHandler createTimer, ErrorCallbackHandler errorCallback, ForkHandler fork, HandleUncaughtErrorHandler handleUncaughtError, PrintHandler print, RegisterBinaryCallbackHandler registerBinaryCallback, RegisterCallbackHandler registerCallback, RegisterUnaryCallbackHandler registerUnaryCallback, RunHandler run, RunBinaryHandler runBinary, RunUnaryHandler runUnary, ScheduleMicrotaskHandler scheduleMicrotask);
-
+     _ZoneSpecificationCls(CreatePeriodicTimerHandler createPeriodicTimer, CreateTimerHandler createTimer, ErrorCallbackHandler errorCallback, ForkHandler fork, HandleUncaughtErrorHandler handleUncaughtError, PrintHandler print, RegisterBinaryCallbackHandler registerBinaryCallback, RegisterCallbackHandler registerCallback, RegisterUnaryCallbackHandler registerUnaryCallback, RunHandler run, RunBinaryHandler runBinary, RunUnaryHandler runUnary, ScheduleMicrotaskHandler scheduleMicrotask);
 };
+using _ZoneSpecification = std::shared_ptr<_ZoneSpecificationCls>;
 
-class ZoneDelegate {
+class ZoneDelegateCls : public ObjectCls {
 public:
 
-    void handleUncaughtError(Object error, StackTrace stackTrace, Zone zone);
-
-    R run<R>(FunctionType f, Zone zone);
-
-    R runUnary<R, T>(T arg, FunctionType f, Zone zone);
-
-    R runBinary<R, T1, T2>(T1 arg1, T2 arg2, FunctionType f, Zone zone);
-
-    ZoneCallback<R> registerCallback<R>(FunctionType f, Zone zone);
-
-    ZoneUnaryCallback<R, T> registerUnaryCallback<R, T>(FunctionType f, Zone zone);
-
-    ZoneBinaryCallback<R, T1, T2> registerBinaryCallback<R, T1, T2>(FunctionType f, Zone zone);
-
-    AsyncError errorCallback(Object error, StackTrace stackTrace, Zone zone);
-
-    void scheduleMicrotask(FunctionType f, Zone zone);
-
-    Timer createTimer(Duration duration, FunctionType f, Zone zone);
-
-    Timer createPeriodicTimer(FunctionType f, Duration period, Zone zone);
-
-    void print(String line, Zone zone);
-
-    Zone fork(ZoneSpecification specification, Zone zone, Map zoneValues);
-
+    virtual void handleUncaughtError(Object error, StackTrace stackTrace, Zone zone);
+    template<typename R>  virtual R run(R f() , Zone zone);
+    template<typename R, typename T>  virtual R runUnary(T arg, R f(T arg) , Zone zone);
+    template<typename R, typename T1, typename T2>  virtual R runBinary(T1 arg1, T2 arg2, R f(T1 arg1, T2 arg2) , Zone zone);
+    template<typename R>  virtual ZoneCallback<R> registerCallback(R f() , Zone zone);
+    template<typename R, typename T>  virtual ZoneUnaryCallback<R, T> registerUnaryCallback(R f(T arg) , Zone zone);
+    template<typename R, typename T1, typename T2>  virtual ZoneBinaryCallback<R, T1, T2> registerBinaryCallback(R f(T1 arg1, T2 arg2) , Zone zone);
+    virtual AsyncError errorCallback(Object error, StackTrace stackTrace, Zone zone);
+    virtual void scheduleMicrotask(void f() , Zone zone);
+    virtual Timer createTimer(Duration duration, void f() , Zone zone);
+    virtual Timer createPeriodicTimer(void f(Timer timer) , Duration period, Zone zone);
+    virtual void print(String line, Zone zone);
+    virtual Zone fork(ZoneSpecification specification, Zone zone, Map zoneValues);
 private:
 
 };
+using ZoneDelegate = std::shared_ptr<ZoneDelegateCls>;
 
-class Zone {
+class ZoneCls : public ObjectCls {
 public:
-    static const Zone root;
+    static Zone root;
 
 
     static Zone current();
 
-    void handleUncaughtError(Object error, StackTrace stackTrace);
-
-    Zone parent();
-
-    Zone errorZone();
-
-    bool inSameErrorZone(Zone otherZone);
-
-    Zone fork(ZoneSpecification specification, Map<Object, Object> zoneValues);
-
-    R run<R>(FunctionType action);
-
-    R runUnary<R, T>(FunctionType action, T argument);
-
-    R runBinary<R, T1, T2>(FunctionType action, T1 argument1, T2 argument2);
-
-    void runGuarded(FunctionType action);
-
-    void runUnaryGuarded<T>(FunctionType action, T argument);
-
-    void runBinaryGuarded<T1, T2>(FunctionType action, T1 argument1, T2 argument2);
-
-    ZoneCallback<R> registerCallback<R>(FunctionType callback);
-
-    ZoneUnaryCallback<R, T> registerUnaryCallback<R, T>(FunctionType callback);
-
-    ZoneBinaryCallback<R, T1, T2> registerBinaryCallback<R, T1, T2>(FunctionType callback);
-
-    ZoneCallback<R> bindCallback<R>(FunctionType callback);
-
-    ZoneUnaryCallback<R, T> bindUnaryCallback<R, T>(FunctionType callback);
-
-    ZoneBinaryCallback<R, T1, T2> bindBinaryCallback<R, T1, T2>(FunctionType callback);
-
-    FunctionType bindCallbackGuarded(FunctionType callback);
-
-    FunctionType bindUnaryCallbackGuarded<T>(FunctionType callback);
-
-    FunctionType bindBinaryCallbackGuarded<T1, T2>(FunctionType callback);
-
-    AsyncError errorCallback(Object error, StackTrace stackTrace);
-
-    void scheduleMicrotask(FunctionType callback);
-
-    Timer createTimer(FunctionType callback, Duration duration);
-
-    Timer createPeriodicTimer(FunctionType callback, Duration period);
-
-    void print(String line);
-
-    dynamic [](Object key);
-
+    virtual void handleUncaughtError(Object error, StackTrace stackTrace);
+    virtual Zone parent();
+    virtual Zone errorZone();
+    virtual bool inSameErrorZone(Zone otherZone);
+    virtual Zone fork(ZoneSpecification specification, Map<Object, Object> zoneValues);
+    template<typename R>  virtual R run(R action() );
+    template<typename R, typename T>  virtual R runUnary(R action(T argument) , T argument);
+    template<typename R, typename T1, typename T2>  virtual R runBinary(R action(T1 argument1, T2 argument2) , T1 argument1, T2 argument2);
+    virtual void runGuarded(void action() );
+    template<typename T>  virtual void runUnaryGuarded(void action(T argument) , T argument);
+    template<typename T1, typename T2>  virtual void runBinaryGuarded(void action(T1 argument1, T2 argument2) , T1 argument1, T2 argument2);
+    template<typename R>  virtual ZoneCallback<R> registerCallback(R callback() );
+    template<typename R, typename T>  virtual ZoneUnaryCallback<R, T> registerUnaryCallback(R callback(T arg) );
+    template<typename R, typename T1, typename T2>  virtual ZoneBinaryCallback<R, T1, T2> registerBinaryCallback(R callback(T1 arg1, T2 arg2) );
+    template<typename R>  virtual ZoneCallback<R> bindCallback(R callback() );
+    template<typename R, typename T>  virtual ZoneUnaryCallback<R, T> bindUnaryCallback(R callback(T argument) );
+    template<typename R, typename T1, typename T2>  virtual ZoneBinaryCallback<R, T1, T2> bindBinaryCallback(R callback(T1 argument1, T2 argument2) );
+    virtual void Function() bindCallbackGuarded(void callback() );
+    template<typename T>  virtual void Function(T ) bindUnaryCallbackGuarded(void callback(T argument) );
+    template<typename T1, typename T2>  virtual void Function(T1 , T2 ) bindBinaryCallbackGuarded(void callback(T1 argument1, T2 argument2) );
+    virtual AsyncError errorCallback(Object error, StackTrace stackTrace);
+    virtual void scheduleMicrotask(void callback() );
+    virtual Timer createTimer(void callback() , Duration duration);
+    virtual Timer createPeriodicTimer(void callback(Timer timer) , Duration period);
+    virtual void print(String line);
+    virtual dynamic operator[](Object key);
 private:
     static _Zone _current;
 
 
-    void  _();
-
+    virtual void  _();
     static _Zone _enter(_Zone zone);
 
     static void _leave(_Zone previous);
 
 };
+using Zone = std::shared_ptr<ZoneCls>;
 
-class _ZoneDelegate {
+class _ZoneDelegateCls : public ObjectCls {
 public:
 
-    void handleUncaughtError(Object error, StackTrace stackTrace, Zone zone);
+    virtual void handleUncaughtError(Object error, StackTrace stackTrace, Zone zone);
 
-    R run<R>(FunctionType f, Zone zone);
+    template<typename R>  virtual R run(R f() , Zone zone);
 
-    R runUnary<R, T>(T arg, FunctionType f, Zone zone);
+    template<typename R, typename T>  virtual R runUnary(T arg, R f(T arg) , Zone zone);
 
-    R runBinary<R, T1, T2>(T1 arg1, T2 arg2, FunctionType f, Zone zone);
+    template<typename R, typename T1, typename T2>  virtual R runBinary(T1 arg1, T2 arg2, R f(T1 arg1, T2 arg2) , Zone zone);
 
-    ZoneCallback<R> registerCallback<R>(FunctionType f, Zone zone);
+    template<typename R>  virtual ZoneCallback<R> registerCallback(R f() , Zone zone);
 
-    ZoneUnaryCallback<R, T> registerUnaryCallback<R, T>(FunctionType f, Zone zone);
+    template<typename R, typename T>  virtual ZoneUnaryCallback<R, T> registerUnaryCallback(R f(T arg) , Zone zone);
 
-    ZoneBinaryCallback<R, T1, T2> registerBinaryCallback<R, T1, T2>(FunctionType f, Zone zone);
+    template<typename R, typename T1, typename T2>  virtual ZoneBinaryCallback<R, T1, T2> registerBinaryCallback(R f(T1 arg1, T2 arg2) , Zone zone);
 
-    AsyncError errorCallback(Object error, StackTrace stackTrace, Zone zone);
+    virtual AsyncError errorCallback(Object error, StackTrace stackTrace, Zone zone);
 
-    void scheduleMicrotask(f , Zone zone);
+    virtual void scheduleMicrotask(f , Zone zone);
 
-    Timer createTimer(Duration duration, FunctionType f, Zone zone);
+    virtual Timer createTimer(Duration duration, void f() , Zone zone);
 
-    Timer createPeriodicTimer(FunctionType f, Duration period, Zone zone);
+    virtual Timer createPeriodicTimer(void f(Timer timer) , Duration period, Zone zone);
 
-    void print(String line, Zone zone);
+    virtual void print(String line, Zone zone);
 
-    Zone fork(ZoneSpecification specification, Zone zone, Map<Object, Object> zoneValues);
+    virtual Zone fork(ZoneSpecification specification, Zone zone, Map<Object, Object> zoneValues);
 
 private:
     _Zone _delegationTarget;
 
 
-     _ZoneDelegate(_Zone _delegationTarget);
-
+     _ZoneDelegateCls(_Zone _delegationTarget);
 };
+using _ZoneDelegate = std::shared_ptr<_ZoneDelegateCls>;
 
-class _Zone {
+class _ZoneCls : public ObjectCls {
 public:
 
-    _Zone parent();
-
-    bool inSameErrorZone(Zone otherZone);
+    virtual _Zone parent();
+    virtual bool inSameErrorZone(Zone otherZone);
 
 private:
 
-     _Zone();
-
-    _ZoneFunction<RunHandler> _run();
-
-    _ZoneFunction<RunUnaryHandler> _runUnary();
-
-    _ZoneFunction<RunBinaryHandler> _runBinary();
-
-    _ZoneFunction<RegisterCallbackHandler> _registerCallback();
-
-    _ZoneFunction<RegisterUnaryCallbackHandler> _registerUnaryCallback();
-
-    _ZoneFunction<RegisterBinaryCallbackHandler> _registerBinaryCallback();
-
-    _ZoneFunction<ErrorCallbackHandler> _errorCallback();
-
-    _ZoneFunction<ScheduleMicrotaskHandler> _scheduleMicrotask();
-
-    _ZoneFunction<CreateTimerHandler> _createTimer();
-
-    _ZoneFunction<CreatePeriodicTimerHandler> _createPeriodicTimer();
-
-    _ZoneFunction<PrintHandler> _print();
-
-    _ZoneFunction<ForkHandler> _fork();
-
-    _ZoneFunction<HandleUncaughtErrorHandler> _handleUncaughtError();
-
-    ZoneDelegate _delegate();
-
-    ZoneDelegate _parentDelegate();
-
-    Map<Object, Object> _map();
-
-    void _processUncaughtError(Object error, StackTrace stackTrace, Zone zone);
+     _ZoneCls();
+    virtual _ZoneFunction<RunHandler> _run();
+    virtual _ZoneFunction<RunUnaryHandler> _runUnary();
+    virtual _ZoneFunction<RunBinaryHandler> _runBinary();
+    virtual _ZoneFunction<RegisterCallbackHandler> _registerCallback();
+    virtual _ZoneFunction<RegisterUnaryCallbackHandler> _registerUnaryCallback();
+    virtual _ZoneFunction<RegisterBinaryCallbackHandler> _registerBinaryCallback();
+    virtual _ZoneFunction<ErrorCallbackHandler> _errorCallback();
+    virtual _ZoneFunction<ScheduleMicrotaskHandler> _scheduleMicrotask();
+    virtual _ZoneFunction<CreateTimerHandler> _createTimer();
+    virtual _ZoneFunction<CreatePeriodicTimerHandler> _createPeriodicTimer();
+    virtual _ZoneFunction<PrintHandler> _print();
+    virtual _ZoneFunction<ForkHandler> _fork();
+    virtual _ZoneFunction<HandleUncaughtErrorHandler> _handleUncaughtError();
+    virtual ZoneDelegate _delegate();
+    virtual ZoneDelegate _parentDelegate();
+    virtual Map<Object, Object> _map();
+    virtual void _processUncaughtError(Object error, StackTrace stackTrace, Zone zone);
 
 };
+using _Zone = std::shared_ptr<_ZoneCls>;
 
-class _CustomZone : _Zone {
+class _CustomZoneCls : public _ZoneCls {
 public:
     _Zone parent;
 
 
-    Zone errorZone();
+    virtual Zone errorZone();
 
-    void runGuarded(FunctionType f);
+    virtual void runGuarded(void f() );
 
-    void runUnaryGuarded<T>(T arg, FunctionType f);
+    template<typename T>  virtual void runUnaryGuarded(T arg, void f(T arg) );
 
-    void runBinaryGuarded<T1, T2>(T1 arg1, T2 arg2, FunctionType f);
+    template<typename T1, typename T2>  virtual void runBinaryGuarded(T1 arg1, T2 arg2, void f(T1 arg1, T2 arg2) );
 
-    ZoneCallback<R> bindCallback<R>(FunctionType f);
+    template<typename R>  virtual ZoneCallback<R> bindCallback(R f() );
 
-    ZoneUnaryCallback<R, T> bindUnaryCallback<R, T>(FunctionType f);
+    template<typename R, typename T>  virtual ZoneUnaryCallback<R, T> bindUnaryCallback(R f(T arg) );
 
-    ZoneBinaryCallback<R, T1, T2> bindBinaryCallback<R, T1, T2>(FunctionType f);
+    template<typename R, typename T1, typename T2>  virtual ZoneBinaryCallback<R, T1, T2> bindBinaryCallback(R f(T1 arg1, T2 arg2) );
 
-    FunctionType bindCallbackGuarded(FunctionType f);
+    virtual void Function() bindCallbackGuarded(void f() );
 
-    FunctionType bindUnaryCallbackGuarded<T>(FunctionType f);
+    template<typename T>  virtual void Function(T ) bindUnaryCallbackGuarded(void f(T arg) );
 
-    FunctionType bindBinaryCallbackGuarded<T1, T2>(FunctionType f);
+    template<typename T1, typename T2>  virtual void Function(T1 , T2 ) bindBinaryCallbackGuarded(void f(T1 arg1, T2 arg2) );
 
-    dynamic [](Object key);
+    virtual dynamic operator[](Object key);
 
-    void handleUncaughtError(Object error, StackTrace stackTrace);
+    virtual void handleUncaughtError(Object error, StackTrace stackTrace);
 
-    Zone fork(ZoneSpecification specification, Map<Object, Object> zoneValues);
+    virtual Zone fork(ZoneSpecification specification, Map<Object, Object> zoneValues);
 
-    R run<R>(FunctionType f);
+    template<typename R>  virtual R run(R f() );
 
-    R runUnary<R, T>(T arg, FunctionType f);
+    template<typename R, typename T>  virtual R runUnary(T arg, R f(T arg) );
 
-    R runBinary<R, T1, T2>(T1 arg1, T2 arg2, FunctionType f);
+    template<typename R, typename T1, typename T2>  virtual R runBinary(T1 arg1, T2 arg2, R f(T1 arg1, T2 arg2) );
 
-    ZoneCallback<R> registerCallback<R>(FunctionType callback);
+    template<typename R>  virtual ZoneCallback<R> registerCallback(R callback() );
 
-    ZoneUnaryCallback<R, T> registerUnaryCallback<R, T>(FunctionType callback);
+    template<typename R, typename T>  virtual ZoneUnaryCallback<R, T> registerUnaryCallback(R callback(T arg) );
 
-    ZoneBinaryCallback<R, T1, T2> registerBinaryCallback<R, T1, T2>(FunctionType callback);
+    template<typename R, typename T1, typename T2>  virtual ZoneBinaryCallback<R, T1, T2> registerBinaryCallback(R callback(T1 arg1, T2 arg2) );
 
-    AsyncError errorCallback(Object error, StackTrace stackTrace);
+    virtual AsyncError errorCallback(Object error, StackTrace stackTrace);
 
-    void scheduleMicrotask(FunctionType f);
+    virtual void scheduleMicrotask(void f() );
 
-    Timer createTimer(Duration duration, FunctionType f);
+    virtual Timer createTimer(Duration duration, void f() );
 
-    Timer createPeriodicTimer(Duration duration, FunctionType f);
+    virtual Timer createPeriodicTimer(Duration duration, void f(Timer timer) );
 
-    void print(String line);
+    virtual void print(String line);
 
 private:
     _ZoneFunction<RunHandler> _run;
@@ -363,36 +295,37 @@ private:
     Map<Object, Object> _map;
 
 
-    ZoneDelegate _delegate();
+    virtual ZoneDelegate _delegate();
 
-    ZoneDelegate _parentDelegate();
+    virtual ZoneDelegate _parentDelegate();
 
-     _CustomZone(Map<Object, Object> _map, _Zone parent, ZoneSpecification specification);
+     _CustomZoneCls(Map<Object, Object> _map, _Zone parent, ZoneSpecification specification);
 
 };
+using _CustomZone = std::shared_ptr<_CustomZoneCls>;
 void _rootHandleUncaughtError(Object error, ZoneDelegate parent, Zone self, StackTrace stackTrace, Zone zone);
 
 void _rootHandleError(Object error, StackTrace stackTrace);
 
-R _rootRun<R>(FunctionType f, ZoneDelegate parent, Zone self, Zone zone);
+template<typename R>  R _rootRun(R f() , ZoneDelegate parent, Zone self, Zone zone);
 
-R _rootRunUnary<R, T>(T arg, FunctionType f, ZoneDelegate parent, Zone self, Zone zone);
+template<typename R, typename T>  R _rootRunUnary(T arg, R f(T arg) , ZoneDelegate parent, Zone self, Zone zone);
 
-R _rootRunBinary<R, T1, T2>(T1 arg1, T2 arg2, FunctionType f, ZoneDelegate parent, Zone self, Zone zone);
+template<typename R, typename T1, typename T2>  R _rootRunBinary(T1 arg1, T2 arg2, R f(T1 arg1, T2 arg2) , ZoneDelegate parent, Zone self, Zone zone);
 
-ZoneCallback<R> _rootRegisterCallback<R>(FunctionType f, ZoneDelegate parent, Zone self, Zone zone);
+template<typename R>  ZoneCallback<R> _rootRegisterCallback(R f() , ZoneDelegate parent, Zone self, Zone zone);
 
-ZoneUnaryCallback<R, T> _rootRegisterUnaryCallback<R, T>(FunctionType f, ZoneDelegate parent, Zone self, Zone zone);
+template<typename R, typename T>  ZoneUnaryCallback<R, T> _rootRegisterUnaryCallback(R f(T arg) , ZoneDelegate parent, Zone self, Zone zone);
 
-ZoneBinaryCallback<R, T1, T2> _rootRegisterBinaryCallback<R, T1, T2>(FunctionType f, ZoneDelegate parent, Zone self, Zone zone);
+template<typename R, typename T1, typename T2>  ZoneBinaryCallback<R, T1, T2> _rootRegisterBinaryCallback(R f(T1 arg1, T2 arg2) , ZoneDelegate parent, Zone self, Zone zone);
 
 AsyncError _rootErrorCallback(Object error, ZoneDelegate parent, Zone self, StackTrace stackTrace, Zone zone);
 
-void _rootScheduleMicrotask(FunctionType f, ZoneDelegate parent, Zone self, Zone zone);
+void _rootScheduleMicrotask(void f() , ZoneDelegate parent, Zone self, Zone zone);
 
-Timer _rootCreateTimer(FunctionType callback, Duration duration, ZoneDelegate parent, Zone self, Zone zone);
+Timer _rootCreateTimer(void callback() , Duration duration, ZoneDelegate parent, Zone self, Zone zone);
 
-Timer _rootCreatePeriodicTimer(FunctionType callback, Duration duration, ZoneDelegate parent, Zone self, Zone zone);
+Timer _rootCreatePeriodicTimer(void callback(Timer timer) , Duration duration, ZoneDelegate parent, Zone self, Zone zone);
 
 void _rootPrint(String line, ZoneDelegate parent, Zone self, Zone zone);
 
@@ -401,58 +334,58 @@ void _printToZone(String line);
 Zone _rootFork(ZoneDelegate parent, Zone self, ZoneSpecification specification, Zone zone, Map<Object, Object> zoneValues);
 
 
-class _RootZone : _Zone {
+class _RootZoneCls : public _ZoneCls {
 public:
 
-    _Zone parent();
+    virtual _Zone parent();
 
-    Zone errorZone();
+    virtual Zone errorZone();
 
-    void runGuarded(FunctionType f);
+    virtual void runGuarded(void f() );
 
-    void runUnaryGuarded<T>(T arg, FunctionType f);
+    template<typename T>  virtual void runUnaryGuarded(T arg, void f(T arg) );
 
-    void runBinaryGuarded<T1, T2>(T1 arg1, T2 arg2, FunctionType f);
+    template<typename T1, typename T2>  virtual void runBinaryGuarded(T1 arg1, T2 arg2, void f(T1 arg1, T2 arg2) );
 
-    ZoneCallback<R> bindCallback<R>(FunctionType f);
+    template<typename R>  virtual ZoneCallback<R> bindCallback(R f() );
 
-    ZoneUnaryCallback<R, T> bindUnaryCallback<R, T>(FunctionType f);
+    template<typename R, typename T>  virtual ZoneUnaryCallback<R, T> bindUnaryCallback(R f(T arg) );
 
-    ZoneBinaryCallback<R, T1, T2> bindBinaryCallback<R, T1, T2>(FunctionType f);
+    template<typename R, typename T1, typename T2>  virtual ZoneBinaryCallback<R, T1, T2> bindBinaryCallback(R f(T1 arg1, T2 arg2) );
 
-    FunctionType bindCallbackGuarded(FunctionType f);
+    virtual void Function() bindCallbackGuarded(void f() );
 
-    FunctionType bindUnaryCallbackGuarded<T>(FunctionType f);
+    template<typename T>  virtual void Function(T ) bindUnaryCallbackGuarded(void f(T arg) );
 
-    FunctionType bindBinaryCallbackGuarded<T1, T2>(FunctionType f);
+    template<typename T1, typename T2>  virtual void Function(T1 , T2 ) bindBinaryCallbackGuarded(void f(T1 arg1, T2 arg2) );
 
-    dynamic [](Object key);
+    virtual dynamic operator[](Object key);
 
-    void handleUncaughtError(Object error, StackTrace stackTrace);
+    virtual void handleUncaughtError(Object error, StackTrace stackTrace);
 
-    Zone fork(ZoneSpecification specification, Map<Object, Object> zoneValues);
+    virtual Zone fork(ZoneSpecification specification, Map<Object, Object> zoneValues);
 
-    R run<R>(FunctionType f);
+    template<typename R>  virtual R run(R f() );
 
-    R runUnary<R, T>(T arg, FunctionType f);
+    template<typename R, typename T>  virtual R runUnary(T arg, R f(T arg) );
 
-    R runBinary<R, T1, T2>(T1 arg1, T2 arg2, FunctionType f);
+    template<typename R, typename T1, typename T2>  virtual R runBinary(T1 arg1, T2 arg2, R f(T1 arg1, T2 arg2) );
 
-    ZoneCallback<R> registerCallback<R>(FunctionType f);
+    template<typename R>  virtual ZoneCallback<R> registerCallback(R f() );
 
-    ZoneUnaryCallback<R, T> registerUnaryCallback<R, T>(FunctionType f);
+    template<typename R, typename T>  virtual ZoneUnaryCallback<R, T> registerUnaryCallback(R f(T arg) );
 
-    ZoneBinaryCallback<R, T1, T2> registerBinaryCallback<R, T1, T2>(FunctionType f);
+    template<typename R, typename T1, typename T2>  virtual ZoneBinaryCallback<R, T1, T2> registerBinaryCallback(R f(T1 arg1, T2 arg2) );
 
-    AsyncError errorCallback(Object error, StackTrace stackTrace);
+    virtual AsyncError errorCallback(Object error, StackTrace stackTrace);
 
-    void scheduleMicrotask(FunctionType f);
+    virtual void scheduleMicrotask(void f() );
 
-    Timer createTimer(Duration duration, FunctionType f);
+    virtual Timer createTimer(Duration duration, void f() );
 
-    Timer createPeriodicTimer(Duration duration, FunctionType f);
+    virtual Timer createPeriodicTimer(Duration duration, void f(Timer timer) );
 
-    void print(String line);
+    virtual void print(String line);
 
 private:
     static auto  _rootMap;
@@ -460,48 +393,49 @@ private:
     static ZoneDelegate _rootDelegate;
 
 
-     _RootZone();
+     _RootZoneCls();
+    virtual _ZoneFunction<RunHandler> _run();
 
-    _ZoneFunction<RunHandler> _run();
+    virtual _ZoneFunction<RunUnaryHandler> _runUnary();
 
-    _ZoneFunction<RunUnaryHandler> _runUnary();
+    virtual _ZoneFunction<RunBinaryHandler> _runBinary();
 
-    _ZoneFunction<RunBinaryHandler> _runBinary();
+    virtual _ZoneFunction<RegisterCallbackHandler> _registerCallback();
 
-    _ZoneFunction<RegisterCallbackHandler> _registerCallback();
+    virtual _ZoneFunction<RegisterUnaryCallbackHandler> _registerUnaryCallback();
 
-    _ZoneFunction<RegisterUnaryCallbackHandler> _registerUnaryCallback();
+    virtual _ZoneFunction<RegisterBinaryCallbackHandler> _registerBinaryCallback();
 
-    _ZoneFunction<RegisterBinaryCallbackHandler> _registerBinaryCallback();
+    virtual _ZoneFunction<ErrorCallbackHandler> _errorCallback();
 
-    _ZoneFunction<ErrorCallbackHandler> _errorCallback();
+    virtual _ZoneFunction<ScheduleMicrotaskHandler> _scheduleMicrotask();
 
-    _ZoneFunction<ScheduleMicrotaskHandler> _scheduleMicrotask();
+    virtual _ZoneFunction<CreateTimerHandler> _createTimer();
 
-    _ZoneFunction<CreateTimerHandler> _createTimer();
+    virtual _ZoneFunction<CreatePeriodicTimerHandler> _createPeriodicTimer();
 
-    _ZoneFunction<CreatePeriodicTimerHandler> _createPeriodicTimer();
+    virtual _ZoneFunction<PrintHandler> _print();
 
-    _ZoneFunction<PrintHandler> _print();
+    virtual _ZoneFunction<ForkHandler> _fork();
 
-    _ZoneFunction<ForkHandler> _fork();
+    virtual _ZoneFunction<HandleUncaughtErrorHandler> _handleUncaughtError();
 
-    _ZoneFunction<HandleUncaughtErrorHandler> _handleUncaughtError();
+    virtual Map<Object, Object> _map();
 
-    Map<Object, Object> _map();
+    virtual ZoneDelegate _delegate();
 
-    ZoneDelegate _delegate();
-
-    ZoneDelegate _parentDelegate();
+    virtual ZoneDelegate _parentDelegate();
 
 };
-const _Zone _rootZone;
+using _RootZone = std::shared_ptr<_RootZoneCls>;
+_Zone _rootZone;
 
-R runZoned<R>(FunctionType body, FunctionType onError, ZoneSpecification zoneSpecification, Map<Object, Object> zoneValues);
+template<typename R>  R runZoned(R body() , void  onError() , ZoneSpecification zoneSpecification, Map<Object, Object> zoneValues);
 
-R runZonedGuarded<R>(FunctionType body, FunctionType onError, ZoneSpecification zoneSpecification, Map<Object, Object> zoneValues);
+template<typename R>  R runZonedGuarded(R body() , void onError(Object error, StackTrace stack) , ZoneSpecification zoneSpecification, Map<Object, Object> zoneValues);
 
-R _runZoned<R>(FunctionType body, ZoneSpecification specification, Map<Object, Object> zoneValues);
+template<typename R>  R _runZoned(R body() , ZoneSpecification specification, Map<Object, Object> zoneValues);
+
 
 
 #endif

@@ -1,50 +1,47 @@
-#ifndef CHUNKED_CONVERSION_H
-#define CHUNKED_CONVERSION_H
-#include <memory>
+#ifndef DART_CONVERT_CHUNKED_CONVERSION
+#define DART_CONVERT_CHUNKED_CONVERSION
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
 
 
-
-
-class ChunkedConversionSink<T> {
+template<typename T> class ChunkedConversionSinkCls : public ObjectCls {
 public:
 
-     ChunkedConversionSink();
-
-    void  withCallback(FunctionType callback);
-
-    void add(T chunk);
-
-    void close();
-
+     ChunkedConversionSinkCls();
+    virtual void  withCallback(void callback(List<T> accumulated) );
+    virtual void add(T chunk);
+    virtual void close();
 private:
 
 };
+template<typename T> using ChunkedConversionSink = std::shared_ptr<ChunkedConversionSinkCls<T>>;
 
-class _SimpleCallbackSink<T> : ChunkedConversionSink<T> {
+template<typename T> class _SimpleCallbackSinkCls : public ChunkedConversionSinkCls<T> {
 public:
 
-    void add(T chunk);
+    virtual void add(T chunk);
 
-    void close();
+    virtual void close();
 
 private:
-    FunctionType _callback;
+    void Function(List<T> ) _callback;
 
     List<T> _accumulated;
 
 
-     _SimpleCallbackSink(FunctionType _callback);
-
+     _SimpleCallbackSinkCls(void Function(List<T> ) _callback);
 };
+template<typename T> using _SimpleCallbackSink = std::shared_ptr<_SimpleCallbackSinkCls<T>>;
 
-class _ConverterStreamEventSink<S, T> {
+template<typename S, typename T> class _ConverterStreamEventSinkCls : public ObjectCls {
 public:
 
-    void add(S o);
+    virtual void add(S o);
 
-    void addError(Object error, StackTrace stackTrace);
+    virtual void addError(Object error, StackTrace stackTrace);
 
-    void close();
+    virtual void close();
 
 private:
     EventSink<T> _eventSink;
@@ -52,8 +49,10 @@ private:
     Sink<S> _chunkedSink;
 
 
-     _ConverterStreamEventSink(Converter<S, T> converter, EventSink<T> sink);
+     _ConverterStreamEventSinkCls(Converter<S, T> converter, EventSink<T> sink);
 
 };
+template<typename S, typename T> using _ConverterStreamEventSink = std::shared_ptr<_ConverterStreamEventSinkCls<S, T>>;
+
 
 #endif

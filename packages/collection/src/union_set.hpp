@@ -1,28 +1,28 @@
-#ifndef UNION_SET_H
-#define UNION_SET_H
-#include <memory>
+#ifndef PACKAGES_COLLECTION_SRC_UNION_SET
+#define PACKAGES_COLLECTION_SRC_UNION_SET
+#include <base.hpp>
 
-#include <collection/collection.hpp>
+#include <dart/core/core.hpp>
+#include <dart/collection/collection.hpp>
 #include "unmodifiable_wrappers.hpp"
 
 
-
-class UnionSet<E> : SetBase<E> {
+template<typename E> class UnionSetCls : public SetBaseCls<E> {
 public:
 
-     UnionSet(bool disjoint, Set<Set<E>> sets);
+     UnionSetCls(bool disjoint, Set<Set<E>> sets);
 
-    void  from(bool disjoint, Iterable<Set<E>> sets);
+    virtual void  from(bool disjoint, Iterable<Set<E>> sets);
 
-    int length();
+    virtual int length();
 
-    Iterator<E> iterator();
+    virtual Iterator<E> iterator();
 
-    bool contains(Object element);
+    virtual bool contains(Object element);
 
-    E lookup(Object element);
+    virtual E lookup(Object element);
 
-    Set<E> toSet();
+    virtual Set<E> toSet();
 
 private:
     Set<Set<E>> _sets;
@@ -30,8 +30,10 @@ private:
     bool _disjoint;
 
 
-    Iterable<E> _iterable();
+    virtual Iterable<E> _iterable();
 
 };
+template<typename E> using UnionSet = std::shared_ptr<UnionSetCls<E>>;
+
 
 #endif

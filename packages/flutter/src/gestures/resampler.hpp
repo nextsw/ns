@@ -1,27 +1,27 @@
-#ifndef RESAMPLER_H
-#define RESAMPLER_H
-#include <memory>
+#ifndef PACKAGES_FLUTTER_SRC_GESTURES_RESAMPLER
+#define PACKAGES_FLUTTER_SRC_GESTURES_RESAMPLER
+#include <base.hpp>
 #include "events.hpp"
 
-#include <collection/collection.hpp>
+#include <dart/core/core.hpp>
+#include <dart/collection/collection.hpp>
 #include "events.hpp"
 
 
-
-class PointerEventResampler {
+class PointerEventResamplerCls : public ObjectCls {
 public:
 
-    void addEvent(PointerEvent event);
+    virtual void addEvent(PointerEvent event);
 
-    void sample(HandleEventCallback callback, Duration nextSampleTime, Duration sampleTime);
+    virtual void sample(HandleEventCallback callback, Duration nextSampleTime, Duration sampleTime);
 
-    void stop(HandleEventCallback callback);
+    virtual void stop(HandleEventCallback callback);
 
-    bool hasPendingEvents();
+    virtual bool hasPendingEvents();
 
-    bool isTracked();
+    virtual bool isTracked();
 
-    bool isDown();
+    virtual bool isDown();
 
 private:
     Queue<PointerEvent> _queuedEvents;
@@ -41,20 +41,22 @@ private:
     int _hasButtons;
 
 
-    PointerEvent _toHoverEvent(int buttons, Offset delta, PointerEvent event, Offset position, Duration timeStamp);
+    virtual PointerEvent _toHoverEvent(int buttons, Offset delta, PointerEvent event, Offset position, Duration timeStamp);
 
-    PointerEvent _toMoveEvent(int buttons, Offset delta, PointerEvent event, int pointerIdentifier, Offset position, Duration timeStamp);
+    virtual PointerEvent _toMoveEvent(int buttons, Offset delta, PointerEvent event, int pointerIdentifier, Offset position, Duration timeStamp);
 
-    PointerEvent _toMoveOrHoverEvent(int buttons, Offset delta, PointerEvent event, bool isDown, int pointerIdentifier, Offset position, Duration timeStamp);
+    virtual PointerEvent _toMoveOrHoverEvent(int buttons, Offset delta, PointerEvent event, bool isDown, int pointerIdentifier, Offset position, Duration timeStamp);
 
-    Offset _positionAt(Duration sampleTime);
+    virtual Offset _positionAt(Duration sampleTime);
 
-    void _processPointerEvents(Duration sampleTime);
+    virtual void _processPointerEvents(Duration sampleTime);
 
-    void _dequeueAndSampleNonHoverOrMovePointerEventsUntil(HandleEventCallback callback, Duration nextSampleTime, Duration sampleTime);
+    virtual void _dequeueAndSampleNonHoverOrMovePointerEventsUntil(HandleEventCallback callback, Duration nextSampleTime, Duration sampleTime);
 
-    void _samplePointerPosition(HandleEventCallback callback, Duration sampleTime);
+    virtual void _samplePointerPosition(HandleEventCallback callback, Duration sampleTime);
 
 };
+using PointerEventResampler = std::shared_ptr<PointerEventResamplerCls>;
+
 
 #endif

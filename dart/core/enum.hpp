@@ -1,26 +1,25 @@
-#ifndef ENUM_H
-#define ENUM_H
-#include <memory>
+#ifndef DART_CORE_ENUM
+#define DART_CORE_ENUM
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
 
 
-
-
-class Enum {
+class EnumCls : public ObjectCls {
 public:
 
-    int index();
+    virtual int index();
+    template<typename T : Enum>  static int compareByIndex(T value1, T value2);
 
-    static int compareByIndex<T extends Enum>(T value1, T value2);
-
-    static int compareByName<T extends Enum>(T value1, T value2);
+    template<typename T : Enum>  static int compareByName(T value1, T value2);
 
 private:
 
-    String _name();
-
+    virtual String _name();
 };
+using Enum = std::shared_ptr<EnumCls>;
 
-class _Enum {
+class _EnumCls : public ObjectCls {
 public:
     int index;
 
@@ -29,28 +28,31 @@ private:
     String _name;
 
 
-     _Enum(String _name, int index);
-
+     _EnumCls(String _name, int index);
 };
+using _Enum = std::shared_ptr<_EnumCls>;
 
-class EnumName {
+class EnumNameCls : public ObjectCls {
 public:
 
-    String name();
+    virtual String name();
 
 private:
 
 };
+using EnumName = std::shared_ptr<EnumNameCls>;
 
-class EnumByName<T extends Enum> {
+template<typename T : Enum> class EnumByNameCls : public ObjectCls {
 public:
 
-    T byName(String name);
+    virtual T byName(String name);
 
-    Map<String, T> asNameMap();
+    virtual Map<String, T> asNameMap();
 
 private:
 
 };
+template<typename T : Enum> using EnumByName = std::shared_ptr<EnumByNameCls<T : Enum>>;
+
 
 #endif

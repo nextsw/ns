@@ -1,27 +1,27 @@
-#ifndef SHADER_WARM_UP_H
-#define SHADER_WARM_UP_H
-#include <memory>
+#ifndef PACKAGES_FLUTTER_SRC_PAINTING_SHADER_WARM_UP
+#define PACKAGES_FLUTTER_SRC_PAINTING_SHADER_WARM_UP
+#include <base.hpp>
 
-#include <developer/developer.hpp>
-#include <ui/ui.hpp>
-#include <flutter/foundation.hpp>
+#include <dart/core/core.hpp>
+#include <dart/developer/developer.hpp>
+#include <dart/ui/ui.hpp>
+#include <packages/flutter/lib/foundation.hpp>
 #include "debug.hpp"
 
 
-
-class ShaderWarmUp {
+class ShaderWarmUpCls : public ObjectCls {
 public:
 
-     ShaderWarmUp();
+     ShaderWarmUpCls();
+    virtual Size size();
 
-    Size size();
-
-    Future<void> warmUpOnCanvas(Canvas canvas);
-
-    Future<void> execute();
+    virtual Future<void> warmUpOnCanvas(Canvas canvas);
+    virtual Future<void> execute();
 
 private:
 
 };
+using ShaderWarmUp = std::shared_ptr<ShaderWarmUpCls>;
+
 
 #endif

@@ -1,90 +1,90 @@
-#ifndef AABB3_H
-#define AABB3_H
-#include <memory>
+#ifndef PACKAGES_VECTOR_MATH_SRC_VECTOR_MATH_64_AABB3
+#define PACKAGES_VECTOR_MATH_SRC_VECTOR_MATH_64_AABB3
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
 
 
-
-
-class Aabb3 {
+class Aabb3Cls : public ObjectCls {
 public:
 
-    Vector3 min();
+    virtual Vector3 min();
 
-    Vector3 max();
+    virtual Vector3 max();
 
-    Vector3 center();
+    virtual Vector3 center();
 
-     Aabb3();
+     Aabb3Cls();
 
-    void  copy(Aabb3 other);
+    virtual void  copy(Aabb3 other);
 
-    void  minMax(Vector3 max, Vector3 min);
+    virtual void  minMax(Vector3 max, Vector3 min);
 
-    void  fromSphere(Sphere sphere);
+    virtual void  fromSphere(Sphere sphere);
 
-    void  fromTriangle(Triangle triangle);
+    virtual void  fromTriangle(Triangle triangle);
 
-    void  fromQuad(Quad quad);
+    virtual void  fromQuad(Quad quad);
 
-    void  fromObb3(Obb3 obb);
+    virtual void  fromObb3(Obb3 obb);
 
-    void  fromRay(double limitMax, double limitMin, Ray ray);
+    virtual void  fromRay(double limitMax, double limitMin, Ray ray);
 
-    void  centerAndHalfExtents(Vector3 center, Vector3 halfExtents);
+    virtual void  centerAndHalfExtents(Vector3 center, Vector3 halfExtents);
 
-    void  fromBuffer(ByteBuffer buffer, int offset);
+    virtual void  fromBuffer(ByteBuffer buffer, int offset);
 
-    void setCenterAndHalfExtents(Vector3 center, Vector3 halfExtents);
+    virtual void setCenterAndHalfExtents(Vector3 center, Vector3 halfExtents);
 
-    void setSphere(Sphere sphere);
+    virtual void setSphere(Sphere sphere);
 
-    void setTriangle(Triangle triangle);
+    virtual void setTriangle(Triangle triangle);
 
-    void setQuad(Quad quad);
+    virtual void setQuad(Quad quad);
 
-    void setObb3(Obb3 obb);
+    virtual void setObb3(Obb3 obb);
 
-    void setRay(double limitMax, double limitMin, Ray ray);
+    virtual void setRay(double limitMax, double limitMin, Ray ray);
 
-    void copyCenterAndHalfExtents(Vector3 center, Vector3 halfExtents);
+    virtual void copyCenterAndHalfExtents(Vector3 center, Vector3 halfExtents);
 
-    void copyCenter(Vector3 center);
+    virtual void copyCenter(Vector3 center);
 
-    void copyFrom(Aabb3 other);
+    virtual void copyFrom(Aabb3 other);
 
-    void transform(Matrix4 t);
+    virtual void transform(Matrix4 t);
 
-    void rotate(Matrix4 t);
+    virtual void rotate(Matrix4 t);
 
-    Aabb3 transformed(Aabb3 out, Matrix4 t);
+    virtual Aabb3 transformed(Aabb3 out, Matrix4 t);
 
-    Aabb3 rotated(Aabb3 out, Matrix4 t);
+    virtual Aabb3 rotated(Aabb3 out, Matrix4 t);
 
-    void getPN(Vector3 outN, Vector3 outP, Vector3 planeNormal);
+    virtual void getPN(Vector3 outN, Vector3 outP, Vector3 planeNormal);
 
-    void hull(Aabb3 other);
+    virtual void hull(Aabb3 other);
 
-    void hullPoint(Vector3 point);
+    virtual void hullPoint(Vector3 point);
 
-    bool containsAabb3(Aabb3 other);
+    virtual bool containsAabb3(Aabb3 other);
 
-    bool containsSphere(Sphere other);
+    virtual bool containsSphere(Sphere other);
 
-    bool containsVector3(Vector3 other);
+    virtual bool containsVector3(Vector3 other);
 
-    bool containsTriangle(Triangle other);
+    virtual bool containsTriangle(Triangle other);
 
-    bool intersectsWithAabb3(Aabb3 other);
+    virtual bool intersectsWithAabb3(Aabb3 other);
 
-    bool intersectsWithSphere(Sphere other);
+    virtual bool intersectsWithSphere(Sphere other);
 
-    bool intersectsWithVector3(Vector3 other);
+    virtual bool intersectsWithVector3(Vector3 other);
 
-    bool intersectsWithTriangle(double epsilon, Triangle other, IntersectionResult result);
+    virtual bool intersectsWithTriangle(double epsilon, Triangle other, IntersectionResult result);
 
-    bool intersectsWithPlane(Plane other, IntersectionResult result);
+    virtual bool intersectsWithPlane(Plane other, IntersectionResult result);
 
-    bool intersectsWithQuad(Quad other, IntersectionResult result);
+    virtual bool intersectsWithQuad(Quad other, IntersectionResult result);
 
 private:
     Vector3 _min;
@@ -124,8 +124,10 @@ private:
     static auto  _quadTriangle1;
 
 
-    void _updateCenterAndHalfExtents();
+    virtual void _updateCenterAndHalfExtents();
 
 };
+using Aabb3 = std::shared_ptr<Aabb3Cls>;
+
 
 #endif

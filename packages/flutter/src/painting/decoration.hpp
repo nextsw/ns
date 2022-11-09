@@ -1,56 +1,55 @@
-#ifndef DECORATION_H
-#define DECORATION_H
-#include <memory>
+#ifndef PACKAGES_FLUTTER_SRC_PAINTING_DECORATION
+#define PACKAGES_FLUTTER_SRC_PAINTING_DECORATION
+#include <base.hpp>
 
-#include <flutter/foundation.hpp>
+#include <dart/core/core.hpp>
+#include <packages/flutter/lib/foundation.hpp>
 #include "basic_types.hpp"
 #include "edge_insets.hpp"
 #include "image_provider.hpp"
 
 
-
-class Decoration {
+class DecorationCls : public ObjectCls {
 public:
 
-     Decoration();
+     DecorationCls();
+    virtual String toStringShort();
 
-    String toStringShort();
+    virtual bool debugAssertIsValid();
 
-    bool debugAssertIsValid();
+    virtual EdgeInsetsGeometry padding();
 
-    EdgeInsetsGeometry padding();
+    virtual bool isComplex();
 
-    bool isComplex();
+    virtual Decoration lerpFrom(Decoration a, double t);
 
-    Decoration lerpFrom(Decoration a, double t);
-
-    Decoration lerpTo(Decoration b, double t);
+    virtual Decoration lerpTo(Decoration b, double t);
 
     static Decoration lerp(Decoration a, Decoration b, double t);
 
-    bool hitTest(Offset position, Size size, TextDirection textDirection);
+    virtual bool hitTest(Offset position, Size size, TextDirection textDirection);
 
-    BoxPainter createBoxPainter(VoidCallback onChanged);
-
-    Path getClipPath(Rect rect, TextDirection textDirection);
+    virtual BoxPainter createBoxPainter(VoidCallback onChanged);
+    virtual Path getClipPath(Rect rect, TextDirection textDirection);
 
 private:
 
 };
+using Decoration = std::shared_ptr<DecorationCls>;
 
-class BoxPainter {
+class BoxPainterCls : public ObjectCls {
 public:
     VoidCallback onChanged;
 
 
-     BoxPainter(VoidCallback onChanged);
-
-    void paint(Canvas canvas, ImageConfiguration configuration, Offset offset);
-
-    void dispose();
+     BoxPainterCls(VoidCallback onChanged);
+    virtual void paint(Canvas canvas, ImageConfiguration configuration, Offset offset);
+    virtual void dispose();
 
 private:
 
 };
+using BoxPainter = std::shared_ptr<BoxPainterCls>;
+
 
 #endif

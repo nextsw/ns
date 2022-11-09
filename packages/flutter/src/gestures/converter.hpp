@@ -1,27 +1,28 @@
-#ifndef CONVERTER_H
-#define CONVERTER_H
-#include <memory>
-#include <ui.hpp>
+#ifndef PACKAGES_FLUTTER_SRC_GESTURES_CONVERTER
+#define PACKAGES_FLUTTER_SRC_GESTURES_CONVERTER
+#include <base.hpp>
+#include <dart/ui/ui.hpp>
 #include "events.hpp"
 
-#include <ui/ui.hpp>
+#include <dart/core/core.hpp>
+#include <dart/ui/ui.hpp>
 #include "events.hpp"
-
 
 int _synthesiseDownButtons(int buttons, PointerDeviceKind kind);
 
 
-class PointerEventConverter {
+class PointerEventConverterCls : public ObjectCls {
 public:
 
     static Iterable<PointerEvent> expand(Iterable<PointerData> data, double devicePixelRatio);
 
 private:
 
-    void  _();
-
+    virtual void  _();
     static double _toLogicalPixels(double devicePixelRatio, double physicalPixels);
 
 };
+using PointerEventConverter = std::shared_ptr<PointerEventConverterCls>;
+
 
 #endif

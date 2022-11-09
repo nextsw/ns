@@ -1,17 +1,18 @@
-#ifndef BINDING_H
-#define BINDING_H
-#include <memory>
-#include <ui.hpp>
+#ifndef PACKAGES_FLUTTER_SRC_SERVICES_BINDING
+#define PACKAGES_FLUTTER_SRC_SERVICES_BINDING
+#include <base.hpp>
+#include <dart/ui/ui.hpp>
 #include "binary_messenger.hpp"
 #include "hardware_keyboard.hpp"
 #include "restoration.hpp"
 
-#include <async/async.hpp>
-#include <convert/convert.hpp>
-#include <io/io.hpp>
-#include <ui/ui.hpp>
-#include <flutter/foundation.hpp>
-#include <flutter/scheduler.hpp>
+#include <dart/core/core.hpp>
+#include <dart/async/async.hpp>
+#include <dart/convert/convert.hpp>
+#include <dart/io/io.hpp>
+#include <dart/ui/ui.hpp>
+#include <packages/flutter/lib/foundation.hpp>
+#include <packages/flutter/flutter.hpp>
 #include "asset_bundle.hpp"
 #include "binary_messenger.hpp"
 #include "hardware_keyboard.hpp"
@@ -21,41 +22,40 @@
 #include "text_input.hpp"
 
 
-
-class ServicesBinding {
+class ServicesBindingCls : public ObjectCls {
 public:
 
-    void initInstances();
+    virtual void initInstances();
 
     static ServicesBinding instance();
 
-    HardwareKeyboard keyboard();
+    virtual HardwareKeyboard keyboard();
 
-    KeyEventManager keyEventManager();
+    virtual KeyEventManager keyEventManager();
 
-    BinaryMessenger defaultBinaryMessenger();
+    virtual BinaryMessenger defaultBinaryMessenger();
 
-    ChannelBuffers channelBuffers();
+    virtual ChannelBuffers channelBuffers();
 
-    BinaryMessenger createBinaryMessenger();
+    virtual BinaryMessenger createBinaryMessenger();
 
-    void handleMemoryPressure();
+    virtual void handleMemoryPressure();
 
-    Future<void> handleSystemMessage(Object systemMessage);
+    virtual Future<void> handleSystemMessage(Object systemMessage);
 
-    void initLicenses();
+    virtual void initLicenses();
 
-    void initServiceExtensions();
+    virtual void initServiceExtensions();
 
-    void evict(String asset);
+    virtual void evict(String asset);
 
-    void readInitialLifecycleStateFromNativeWindow();
+    virtual void readInitialLifecycleStateFromNativeWindow();
 
-    RestorationManager restorationManager();
+    virtual RestorationManager restorationManager();
 
-    RestorationManager createRestorationManager();
+    virtual RestorationManager createRestorationManager();
 
-    void setSystemUiChangeCallback(SystemUiChangeCallback callback);
+    virtual void setSystemUiChangeCallback(SystemUiChangeCallback callback);
 
 private:
     static ServicesBinding _instance;
@@ -71,33 +71,35 @@ private:
     SystemUiChangeCallback _systemUiChangeCallback;
 
 
-    void _initKeyboard();
+    virtual void _initKeyboard();
 
-    Stream<LicenseEntry> _addLicenses();
+    virtual Stream<LicenseEntry> _addLicenses();
 
     static List<LicenseEntry> _parseLicenses(String rawLicenses);
 
-    Future<String> _handleLifecycleMessage(String message);
+    virtual Future<String> _handleLifecycleMessage(String message);
 
-    Future<void> _handlePlatformMessage(MethodCall methodCall);
+    virtual Future<void> _handlePlatformMessage(MethodCall methodCall);
 
     static AppLifecycleState _parseAppLifecycleMessage(String message);
 
 };
+using ServicesBinding = std::shared_ptr<ServicesBindingCls>;
 
-class _DefaultBinaryMessenger : BinaryMessenger {
+class _DefaultBinaryMessengerCls : public BinaryMessengerCls {
 public:
 
-    Future<void> handlePlatformMessage(PlatformMessageResponseCallback callback, String channel, ByteData message);
+    virtual Future<void> handlePlatformMessage(PlatformMessageResponseCallback callback, String channel, ByteData message);
 
-    Future<ByteData> send(String channel, ByteData message);
+    virtual Future<ByteData> send(String channel, ByteData message);
 
-    void setMessageHandler(String channel, MessageHandler handler);
+    virtual void setMessageHandler(String channel, MessageHandler handler);
 
 private:
 
-    void  _();
-
+    virtual void  _();
 };
+using _DefaultBinaryMessenger = std::shared_ptr<_DefaultBinaryMessengerCls>;
+
 
 #endif

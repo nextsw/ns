@@ -1,42 +1,35 @@
-#ifndef PATTERN_H
-#define PATTERN_H
-#include <memory>
+#ifndef DART_CORE_PATTERN
+#define DART_CORE_PATTERN
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
 
 
-
-
-class Pattern {
+class PatternCls : public ObjectCls {
 public:
 
-    Iterable<Match> allMatches(int start, String string);
-
-    Match matchAsPrefix(int start, String string);
-
+    virtual Iterable<Match> allMatches(int start, String stringValue);
+    virtual Match matchAsPrefix(int start, String stringValue);
 private:
 
 };
+using Pattern = std::shared_ptr<PatternCls>;
 
-class Match {
+class MatchCls : public ObjectCls {
 public:
 
-    int start();
-
-    int end();
-
-    String group(int group);
-
-    String [](int group);
-
-    List<String> groups(List<int> groupIndices);
-
-    int groupCount();
-
-    String input();
-
-    Pattern pattern();
-
+    virtual int start();
+    virtual int end();
+    virtual String group(int group);
+    virtual String operator[](int group);
+    virtual List<String> groups(List<int> groupIndices);
+    virtual int groupCount();
+    virtual String input();
+    virtual Pattern pattern();
 private:
 
 };
+using Match = std::shared_ptr<MatchCls>;
+
 
 #endif

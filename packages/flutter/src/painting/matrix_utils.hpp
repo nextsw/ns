@@ -1,14 +1,14 @@
-#ifndef MATRIX_UTILS_H
-#define MATRIX_UTILS_H
-#include <memory>
+#ifndef PACKAGES_FLUTTER_SRC_PAINTING_MATRIX_UTILS
+#define PACKAGES_FLUTTER_SRC_PAINTING_MATRIX_UTILS
+#include <base.hpp>
 
-#include <flutter/foundation.hpp>
-#include <vector_math/vector_math_64.hpp>
+#include <dart/core/core.hpp>
+#include <packages/flutter/lib/foundation.hpp>
+#include <packages/vector_math/vector_math.hpp>
 #include "basic_types.hpp"
 
 
-
-class MatrixUtils {
+class MatrixUtilsCls : public ObjectCls {
 public:
 
     static Offset getAsTranslation(Matrix4 transform);
@@ -33,8 +33,7 @@ private:
     static Float64List _minMax;
 
 
-    void  _();
-
+    virtual void  _();
     static Rect _safeTransformRect(Rect rect, Matrix4 transform);
 
     static void _accumulate(bool first, bool isAffine, Float64List m, double x, double y);
@@ -44,18 +43,21 @@ private:
     static double _max4(double a, double b, double c, double d);
 
 };
+using MatrixUtils = std::shared_ptr<MatrixUtilsCls>;
 List<String> debugDescribeTransform(Matrix4 transform);
 
 
-class TransformProperty : DiagnosticsProperty<Matrix4> {
+class TransformPropertyCls : public DiagnosticsPropertyCls<Matrix4> {
 public:
 
-     TransformProperty(Unknown, Unknown, String name, Unknown, Unknown);
+     TransformPropertyCls(Unknown defaultValue, Unknown level, String name, Unknown showName, Unknown value);
 
-    String valueToString(TextTreeConfiguration parentConfiguration);
+    virtual String valueToString(TextTreeConfiguration parentConfiguration);
 
 private:
 
 };
+using TransformProperty = std::shared_ptr<TransformPropertyCls>;
+
 
 #endif

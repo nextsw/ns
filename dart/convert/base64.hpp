@@ -1,12 +1,12 @@
-#ifndef BASE64_H
-#define BASE64_H
-#include <memory>
+#ifndef DART_CONVERT_BASE64
+#define DART_CONVERT_BASE64
+#include <base.hpp>
 
+#include <dart/core/core.hpp>
 
+Base64Codec base64;
 
-const Base64Codec base64;
-
-const Base64Codec base64Url;
+Base64Codec base64Url;
 
 String base64Encode(List<int> bytes);
 
@@ -14,23 +14,23 @@ String base64UrlEncode(List<int> bytes);
 
 Uint8List base64Decode(String source);
 
-const int _paddingChar;
+int _paddingChar;
 
 
-class Base64Codec : Codec<List<int>, String> {
+class Base64CodecCls : public CodecCls<List<int>, String> {
 public:
 
-     Base64Codec();
+     Base64CodecCls();
 
-    void  urlSafe();
+    virtual void  urlSafe();
 
-    Base64Encoder encoder();
+    virtual Base64Encoder encoder();
 
-    Base64Decoder decoder();
+    virtual Base64Decoder decoder();
 
-    Uint8List decode(String encoded);
+    virtual Uint8List decode(String encoded);
 
-    String normalize(int end, String source, int start);
+    virtual String normalize(int end, String source, int start);
 
 private:
     Base64Encoder _encoder;
@@ -39,52 +39,54 @@ private:
     static void _checkPadding(int firstPadding, int length, int paddingCount, String source, int sourceEnd, int sourceIndex);
 
 };
+using Base64Codec = std::shared_ptr<Base64CodecCls>;
 
-class Base64Encoder : Converter<List<int>, String> {
+class Base64EncoderCls : public ConverterCls<List<int>, String> {
 public:
 
-     Base64Encoder();
+     Base64EncoderCls();
 
-    void  urlSafe();
+    virtual void  urlSafe();
 
-    String convert(List<int> input);
+    virtual String convert(List<int> input);
 
-    ByteConversionSink startChunkedConversion(Sink<String> sink);
+    virtual ByteConversionSink startChunkedConversion(Sink<String> sink);
 
 private:
     bool _urlSafe;
 
 
 };
+using Base64Encoder = std::shared_ptr<Base64EncoderCls>;
 
-class _Base64Encoder {
+class _Base64EncoderCls : public ObjectCls {
 public:
 
-    Uint8List createBuffer(int bufferLength);
+    virtual Uint8List createBuffer(int bufferLength);
 
-    Uint8List encode(List<int> bytes, int end, bool isLast, int start);
+    virtual Uint8List encode(List<int> bytes, int end, bool isLast, int start);
 
     static int encodeChunk(String alphabet, List<int> bytes, int end, bool isLast, Uint8List output, int outputIndex, int start, int state);
 
     static void writeFinalChunk(String alphabet, int bits, int count, Uint8List output, int outputIndex);
 
 private:
-    static const String _base64Alphabet;
+    static String _base64Alphabet;
 
-    static const String _base64UrlAlphabet;
+    static String _base64UrlAlphabet;
 
-    static const int _valueShift;
+    static int _valueShift;
 
-    static const int _countMask;
+    static int _countMask;
 
-    static const int _sixBitMask;
+    static int _sixBitMask;
 
     int _state;
 
     String _alphabet;
 
 
-     _Base64Encoder(bool urlSafe);
+     _Base64EncoderCls(bool urlSafe);
 
     static int _encodeState(int bits, int count);
 
@@ -93,36 +95,38 @@ private:
     static int _stateCount(int state);
 
 };
+using _Base64Encoder = std::shared_ptr<_Base64EncoderCls>;
 
-class _BufferCachingBase64Encoder : _Base64Encoder {
+class _BufferCachingBase64EncoderCls : public _Base64EncoderCls {
 public:
     Uint8List bufferCache;
 
 
-    Uint8List createBuffer(int bufferLength);
+    virtual Uint8List createBuffer(int bufferLength);
 
 private:
 
-     _BufferCachingBase64Encoder(bool urlSafe);
+     _BufferCachingBase64EncoderCls(bool urlSafe);
 
 };
+using _BufferCachingBase64Encoder = std::shared_ptr<_BufferCachingBase64EncoderCls>;
 
-class _Base64EncoderSink : ByteConversionSinkBase {
+class _Base64EncoderSinkCls : public ByteConversionSinkBaseCls {
 public:
 
-    void add(List<int> source);
+    virtual void add(List<int> source);
 
-    void close();
+    virtual void close();
 
-    void addSlice(int end, bool isLast, List<int> source, int start);
+    virtual void addSlice(int end, bool isLast, List<int> source, int start);
 
 private:
 
-    void _add(int end, bool isLast, List<int> source, int start);
-
+    virtual void _add(int end, bool isLast, List<int> source, int start);
 };
+using _Base64EncoderSink = std::shared_ptr<_Base64EncoderSinkCls>;
 
-class _AsciiBase64EncoderSink : _Base64EncoderSink {
+class _AsciiBase64EncoderSinkCls : public _Base64EncoderSinkCls {
 public:
 
 private:
@@ -131,13 +135,14 @@ private:
     _Base64Encoder _encoder;
 
 
-     _AsciiBase64EncoderSink(Sink<String> _sink, bool urlSafe);
+     _AsciiBase64EncoderSinkCls(Sink<String> _sink, bool urlSafe);
 
-    void _add(int end, bool isLast, List<int> source, int start);
+    virtual void _add(int end, bool isLast, List<int> source, int start);
 
 };
+using _AsciiBase64EncoderSink = std::shared_ptr<_AsciiBase64EncoderSinkCls>;
 
-class _Utf8Base64EncoderSink : _Base64EncoderSink {
+class _Utf8Base64EncoderSinkCls : public _Base64EncoderSinkCls {
 public:
 
 private:
@@ -146,54 +151,55 @@ private:
     _Base64Encoder _encoder;
 
 
-     _Utf8Base64EncoderSink(ByteConversionSink _sink, bool urlSafe);
+     _Utf8Base64EncoderSinkCls(ByteConversionSink _sink, bool urlSafe);
 
-    void _add(int end, bool isLast, List<int> source, int start);
+    virtual void _add(int end, bool isLast, List<int> source, int start);
 
 };
+using _Utf8Base64EncoderSink = std::shared_ptr<_Utf8Base64EncoderSinkCls>;
 
-class Base64Decoder : Converter<String, List<int>> {
+class Base64DecoderCls : public ConverterCls<String, List<int>> {
 public:
 
-     Base64Decoder();
+     Base64DecoderCls();
+    virtual Uint8List convert(int end, String input, int start);
 
-    Uint8List convert(int end, String input, int start);
-
-    StringConversionSink startChunkedConversion(Sink<List<int>> sink);
+    virtual StringConversionSink startChunkedConversion(Sink<List<int>> sink);
 
 private:
 
 };
+using Base64Decoder = std::shared_ptr<Base64DecoderCls>;
 
-class _Base64Decoder {
+class _Base64DecoderCls : public ObjectCls {
 public:
 
-    Uint8List decode(int end, String input, int start);
+    virtual Uint8List decode(int end, String input, int start);
 
-    void close(int end, String input);
+    virtual void close(int end, String input);
 
     static int decodeChunk(int end, String input, int outIndex, Uint8List output, int start, int state);
 
 private:
-    static const int _valueShift;
+    static int _valueShift;
 
-    static const int _countMask;
+    static int _countMask;
 
-    static const int _invalid;
+    static int _invalid;
 
-    static const int _padding;
+    static int _padding;
 
-    static const int __;
+    static int __;
 
-    static const int _p;
+    static int _p;
 
     static List<int> _inverseAlphabet;
 
-    static const int _char_percent;
+    static int _char_percent;
 
-    static const int _char_3;
+    static int _char_3;
 
-    static const int _char_d;
+    static int _char_d;
 
     int _state;
 
@@ -219,15 +225,16 @@ private:
     static int _checkPadding(int end, String input, int start, int state);
 
 };
+using _Base64Decoder = std::shared_ptr<_Base64DecoderCls>;
 
-class _Base64DecoderSink : StringConversionSinkBase {
+class _Base64DecoderSinkCls : public StringConversionSinkBaseCls {
 public:
 
-    void add(String string);
+    virtual void add(String stringValue);
 
-    void close();
+    virtual void close();
 
-    void addSlice(int end, bool isLast, int start, String string);
+    virtual void addSlice(int end, bool isLast, int start, String stringValue);
 
 private:
     Sink<List<int>> _sink;
@@ -235,8 +242,9 @@ private:
     _Base64Decoder _decoder;
 
 
-     _Base64DecoderSink(Sink<List<int>> _sink);
-
+     _Base64DecoderSinkCls(Sink<List<int>> _sink);
 };
+using _Base64DecoderSink = std::shared_ptr<_Base64DecoderSinkCls>;
+
 
 #endif

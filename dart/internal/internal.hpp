@@ -1,42 +1,28 @@
-#ifndef INTERNAL_H
-#define INTERNAL_H
-#include <memory>
+#ifndef DART_INTERNAL_INTERNAL
+#define DART_INTERNAL_INTERNAL
+#include <base.hpp>
 
-#include <collection/collection.hpp>
-#include <async/async.hpp>
-#include <convert/convert.hpp>
-#include <core/core.hpp>
-#include <core/core.hpp>
-#include <math/math.hpp>
-#include <typed_data/typed_data.hpp>
+#include <dart/core/core.hpp>
+#include <dart/collection/collection.hpp>
+#include <dart/async/async.hpp>
+#include <dart/convert/convert.hpp>
+#include <dart/core/core.hpp>
+#include <dart/core/core.hpp>
+#include <dart/math/math.hpp>
+#include <dart/typed_data/typed_data.hpp>
 
-// Parts
-#include "async_cast.hpp"
-#include "bytes_builder.hpp"
-#include "cast.hpp"
-#include "errors.hpp"
-#include "iterable.hpp"
-#include "list.hpp"
-#include "linked_list.hpp"
-#include "print.hpp"
-#include "sort.hpp"
-#include "symbol.hpp"
-
-external bool typeAcceptsNull<T>();
-
-external T unsafeCast<T>(dynamic value);
-
-const auto  POWERS_OF_TEN;
+template<typename T>  extern bool typeAcceptsNull();
+template<typename T>  extern T unsafeCast(dynamic value);
+auto  POWERS_OF_TEN;
 
 
-class CodeUnits : UnmodifiableListBase<int> {
+class CodeUnitsCls : public UnmodifiableListBaseCls<int> {
 public:
 
-     CodeUnits(String _string);
+     CodeUnitsCls(String _string);
+    virtual int length();
 
-    int length();
-
-    int [](int i);
+    virtual int operator[](int i);
 
     static String stringOf(CodeUnits u);
 
@@ -45,17 +31,18 @@ private:
 
 
 };
+using CodeUnits = std::shared_ptr<CodeUnitsCls>;
 
-class ExternalName {
+class ExternalNameCls : public ObjectCls {
 public:
     String name;
 
 
-     ExternalName(String name);
-
+     ExternalNameCls(String name);
 private:
 
 };
+using ExternalName = std::shared_ptr<ExternalNameCls>;
 int hexDigitValue(int char);
 
 int parseHexByte(int index, String source);
@@ -63,7 +50,7 @@ int parseHexByte(int index, String source);
 Future<Null> nullFuture;
 
 
-class SystemHash {
+class SystemHashCls : public ObjectCls {
 public:
 
     static int combine(int hash, int value);
@@ -113,285 +100,285 @@ public:
 private:
 
 };
+using SystemHash = std::shared_ptr<SystemHashCls>;
 
-class SentinelValue {
+class SentinelValueCls : public ObjectCls {
 public:
     int id;
 
 
-     SentinelValue(int id);
-
+     SentinelValueCls(int id);
 private:
 
 };
-const Object sentinelValue;
+using SentinelValue = std::shared_ptr<SentinelValueCls>;
+Object sentinelValue;
 
-external Object extractTypeArguments<T>(FunctionType extract, T instance);
+template<typename T>  extern Object extractTypeArguments(void  extract() , T instance);
 
-
-class Since {
+class SinceCls : public ObjectCls {
 public:
     String version;
 
 
-     Since(String version);
-
+     SinceCls(String version);
 private:
 
 };
-T checkNotNullable<T extends Object>(String name, T value);
+using Since = std::shared_ptr<SinceCls>;
+template<typename T : Object>  T checkNotNullable(String name, T value);
 
 
-class NotNullableError<T> : Error {
+template<typename T> class NotNullableErrorCls : public ErrorCls {
 public:
 
-     NotNullableError(String _name);
-
-    String toString();
+     NotNullableErrorCls(String _name);
+    virtual String toString();
 
 private:
     String _name;
 
 
 };
-T valueOfNonNullableParamWithDefault<T extends Object>(T defaultVal, T value);
+template<typename T> using NotNullableError = std::shared_ptr<NotNullableErrorCls<T>>;
+template<typename T : Object>  T valueOfNonNullableParamWithDefault(T defaultVal, T value);
 
 
-class HttpStatus {
+class HttpStatusCls : public ObjectCls {
 public:
-    static const int continue_;
+    static int continue_;
 
-    static const int switchingProtocols;
+    static int switchingProtocols;
 
-    static const int processing;
+    static int processing;
 
-    static const int ok;
+    static int ok;
 
-    static const int created;
+    static int created;
 
-    static const int accepted;
+    static int accepted;
 
-    static const int nonAuthoritativeInformation;
+    static int nonAuthoritativeInformation;
 
-    static const int noContent;
+    static int noContent;
 
-    static const int resetContent;
+    static int resetContent;
 
-    static const int partialContent;
+    static int partialContent;
 
-    static const int multiStatus;
+    static int multiStatus;
 
-    static const int alreadyReported;
+    static int alreadyReported;
 
-    static const int imUsed;
+    static int imUsed;
 
-    static const int multipleChoices;
+    static int multipleChoices;
 
-    static const int movedPermanently;
+    static int movedPermanently;
 
-    static const int found;
+    static int found;
 
-    static const int movedTemporarily;
+    static int movedTemporarily;
 
-    static const int seeOther;
+    static int seeOther;
 
-    static const int notModified;
+    static int notModified;
 
-    static const int useProxy;
+    static int useProxy;
 
-    static const int temporaryRedirect;
+    static int temporaryRedirect;
 
-    static const int permanentRedirect;
+    static int permanentRedirect;
 
-    static const int badRequest;
+    static int badRequest;
 
-    static const int unauthorized;
+    static int unauthorized;
 
-    static const int paymentRequired;
+    static int paymentRequired;
 
-    static const int forbidden;
+    static int forbidden;
 
-    static const int notFound;
+    static int notFound;
 
-    static const int methodNotAllowed;
+    static int methodNotAllowed;
 
-    static const int notAcceptable;
+    static int notAcceptable;
 
-    static const int proxyAuthenticationRequired;
+    static int proxyAuthenticationRequired;
 
-    static const int requestTimeout;
+    static int requestTimeout;
 
-    static const int conflict;
+    static int conflict;
 
-    static const int gone;
+    static int gone;
 
-    static const int lengthRequired;
+    static int lengthRequired;
 
-    static const int preconditionFailed;
+    static int preconditionFailed;
 
-    static const int requestEntityTooLarge;
+    static int requestEntityTooLarge;
 
-    static const int requestUriTooLong;
+    static int requestUriTooLong;
 
-    static const int unsupportedMediaType;
+    static int unsupportedMediaType;
 
-    static const int requestedRangeNotSatisfiable;
+    static int requestedRangeNotSatisfiable;
 
-    static const int expectationFailed;
+    static int expectationFailed;
 
-    static const int misdirectedRequest;
+    static int misdirectedRequest;
 
-    static const int unprocessableEntity;
+    static int unprocessableEntity;
 
-    static const int locked;
+    static int locked;
 
-    static const int failedDependency;
+    static int failedDependency;
 
-    static const int upgradeRequired;
+    static int upgradeRequired;
 
-    static const int preconditionRequired;
+    static int preconditionRequired;
 
-    static const int tooManyRequests;
+    static int tooManyRequests;
 
-    static const int requestHeaderFieldsTooLarge;
+    static int requestHeaderFieldsTooLarge;
 
-    static const int connectionClosedWithoutResponse;
+    static int connectionClosedWithoutResponse;
 
-    static const int unavailableForLegalReasons;
+    static int unavailableForLegalReasons;
 
-    static const int clientClosedRequest;
+    static int clientClosedRequest;
 
-    static const int internalServerError;
+    static int internalServerError;
 
-    static const int notImplemented;
+    static int notImplemented;
 
-    static const int badGateway;
+    static int badGateway;
 
-    static const int serviceUnavailable;
+    static int serviceUnavailable;
 
-    static const int gatewayTimeout;
+    static int gatewayTimeout;
 
-    static const int httpVersionNotSupported;
+    static int httpVersionNotSupported;
 
-    static const int variantAlsoNegotiates;
+    static int variantAlsoNegotiates;
 
-    static const int insufficientStorage;
+    static int insufficientStorage;
 
-    static const int loopDetected;
+    static int loopDetected;
 
-    static const int notExtended;
+    static int notExtended;
 
-    static const int networkAuthenticationRequired;
+    static int networkAuthenticationRequired;
 
-    static const int networkConnectTimeoutError;
+    static int networkConnectTimeoutError;
 
-    static const int CONTINUE;
+    static int CONTINUE;
 
-    static const int SWITCHING_PROTOCOLS;
+    static int SWITCHING_PROTOCOLS;
 
-    static const int OK;
+    static int OK;
 
-    static const int CREATED;
+    static int CREATED;
 
-    static const int ACCEPTED;
+    static int ACCEPTED;
 
-    static const int NON_AUTHORITATIVE_INFORMATION;
+    static int NON_AUTHORITATIVE_INFORMATION;
 
-    static const int NO_CONTENT;
+    static int NO_CONTENT;
 
-    static const int RESET_CONTENT;
+    static int RESET_CONTENT;
 
-    static const int PARTIAL_CONTENT;
+    static int PARTIAL_CONTENT;
 
-    static const int MULTIPLE_CHOICES;
+    static int MULTIPLE_CHOICES;
 
-    static const int MOVED_PERMANENTLY;
+    static int MOVED_PERMANENTLY;
 
-    static const int FOUND;
+    static int FOUND;
 
-    static const int MOVED_TEMPORARILY;
+    static int MOVED_TEMPORARILY;
 
-    static const int SEE_OTHER;
+    static int SEE_OTHER;
 
-    static const int NOT_MODIFIED;
+    static int NOT_MODIFIED;
 
-    static const int USE_PROXY;
+    static int USE_PROXY;
 
-    static const int TEMPORARY_REDIRECT;
+    static int TEMPORARY_REDIRECT;
 
-    static const int BAD_REQUEST;
+    static int BAD_REQUEST;
 
-    static const int UNAUTHORIZED;
+    static int UNAUTHORIZED;
 
-    static const int PAYMENT_REQUIRED;
+    static int PAYMENT_REQUIRED;
 
-    static const int FORBIDDEN;
+    static int FORBIDDEN;
 
-    static const int NOT_FOUND;
+    static int NOT_FOUND;
 
-    static const int METHOD_NOT_ALLOWED;
+    static int METHOD_NOT_ALLOWED;
 
-    static const int NOT_ACCEPTABLE;
+    static int NOT_ACCEPTABLE;
 
-    static const int PROXY_AUTHENTICATION_REQUIRED;
+    static int PROXY_AUTHENTICATION_REQUIRED;
 
-    static const int REQUEST_TIMEOUT;
+    static int REQUEST_TIMEOUT;
 
-    static const int CONFLICT;
+    static int CONFLICT;
 
-    static const int GONE;
+    static int GONE;
 
-    static const int LENGTH_REQUIRED;
+    static int LENGTH_REQUIRED;
 
-    static const int PRECONDITION_FAILED;
+    static int PRECONDITION_FAILED;
 
-    static const int REQUEST_ENTITY_TOO_LARGE;
+    static int REQUEST_ENTITY_TOO_LARGE;
 
-    static const int REQUEST_URI_TOO_LONG;
+    static int REQUEST_URI_TOO_LONG;
 
-    static const int UNSUPPORTED_MEDIA_TYPE;
+    static int UNSUPPORTED_MEDIA_TYPE;
 
-    static const int REQUESTED_RANGE_NOT_SATISFIABLE;
+    static int REQUESTED_RANGE_NOT_SATISFIABLE;
 
-    static const int EXPECTATION_FAILED;
+    static int EXPECTATION_FAILED;
 
-    static const int UPGRADE_REQUIRED;
+    static int UPGRADE_REQUIRED;
 
-    static const int INTERNAL_SERVER_ERROR;
+    static int INTERNAL_SERVER_ERROR;
 
-    static const int NOT_IMPLEMENTED;
+    static int NOT_IMPLEMENTED;
 
-    static const int BAD_GATEWAY;
+    static int BAD_GATEWAY;
 
-    static const int SERVICE_UNAVAILABLE;
+    static int SERVICE_UNAVAILABLE;
 
-    static const int GATEWAY_TIMEOUT;
+    static int GATEWAY_TIMEOUT;
 
-    static const int HTTP_VERSION_NOT_SUPPORTED;
+    static int HTTP_VERSION_NOT_SUPPORTED;
 
-    static const int NETWORK_CONNECT_TIMEOUT_ERROR;
+    static int NETWORK_CONNECT_TIMEOUT_ERROR;
 
 
 private:
 
 };
+using HttpStatus = std::shared_ptr<HttpStatusCls>;
 
-class DoubleLinkedQueueEntry<E> {
+template<typename E> class DoubleLinkedQueueEntryCls : public ObjectCls {
 public:
     E element;
 
 
-     DoubleLinkedQueueEntry(E element);
+     DoubleLinkedQueueEntryCls(E element);
+    virtual void append(E e);
 
-    void append(E e);
+    virtual void prepend(E e);
 
-    void prepend(E e);
+    virtual E remove();
 
-    E remove();
+    virtual DoubleLinkedQueueEntry<E> previousEntry();
 
-    DoubleLinkedQueueEntry<E> previousEntry();
-
-    DoubleLinkedQueueEntry<E> nextEntry();
+    virtual DoubleLinkedQueueEntry<E> nextEntry();
 
 private:
     DoubleLinkedQueueEntry<E> _previousLink;
@@ -399,8 +386,21 @@ private:
     DoubleLinkedQueueEntry<E> _nextLink;
 
 
-    void _link(DoubleLinkedQueueEntry<E> next, DoubleLinkedQueueEntry<E> previous);
+    virtual void _link(DoubleLinkedQueueEntry<E> next, DoubleLinkedQueueEntry<E> previous);
 
 };
+template<typename E> using DoubleLinkedQueueEntry = std::shared_ptr<DoubleLinkedQueueEntryCls<E>>;
+
+// Parts
+#include "async_cast.hpp"
+#include "bytes_builder.hpp"
+#include "cast.hpp"
+#include "errors.hpp"
+#include "iterable.hpp"
+#include "list.hpp"
+#include "linked_list.hpp"
+#include "print.hpp"
+#include "sort.hpp"
+#include "symbol.hpp"
 
 #endif

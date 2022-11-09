@@ -1,34 +1,34 @@
-#ifndef SECURE_SERVER_SOCKET_H
-#define SECURE_SERVER_SOCKET_H
-#include <memory>
+#ifndef DART_IO_SECURE_SERVER_SOCKET
+#define DART_IO_SECURE_SERVER_SOCKET
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
 
 
-
-
-class SecureServerSocket : Stream<SecureSocket> {
+class SecureServerSocketCls : public StreamCls<SecureSocket> {
 public:
 
     static Future<SecureServerSocket> bind(address , int backlog, SecurityContext context, int port, bool requestClientCertificate, bool requireClientCertificate, bool shared, List<String> supportedProtocols, bool v6Only);
 
-    StreamSubscription<SecureSocket> listen(bool cancelOnError, FunctionType onData, FunctionType onDone, FunctionType onError);
+    virtual StreamSubscription<SecureSocket> listen(bool cancelOnError, void onData(SecureSocket socket) , void onDone() , void  onError() );
 
-    int port();
+    virtual int port();
 
-    InternetAddress address();
+    virtual InternetAddress address();
 
-    Future<SecureServerSocket> close();
+    virtual Future<SecureServerSocket> close();
 
 private:
     RawSecureServerSocket _socket;
 
 
-    void  _(RawSecureServerSocket _socket);
-
-    void _owner(owner );
+    virtual void  _(RawSecureServerSocket _socket);
+    virtual void _owner(owner );
 
 };
+using SecureServerSocket = std::shared_ptr<SecureServerSocketCls>;
 
-class RawSecureServerSocket : Stream<RawSecureSocket> {
+class RawSecureServerSocketCls : public StreamCls<RawSecureSocket> {
 public:
     bool requestClientCertificate;
 
@@ -39,13 +39,13 @@ public:
 
     static Future<RawSecureServerSocket> bind(address , int backlog, SecurityContext context, int port, bool requestClientCertificate, bool requireClientCertificate, bool shared, List<String> supportedProtocols, bool v6Only);
 
-    StreamSubscription<RawSecureSocket> listen(bool cancelOnError, FunctionType onData, FunctionType onDone, FunctionType onError);
+    virtual StreamSubscription<RawSecureSocket> listen(bool cancelOnError, void onData(RawSecureSocket s) , void onDone() , void  onError() );
 
-    int port();
+    virtual int port();
 
-    InternetAddress address();
+    virtual InternetAddress address();
 
-    Future<RawSecureServerSocket> close();
+    virtual Future<RawSecureServerSocket> close();
 
 private:
     RawServerSocket _socket;
@@ -59,16 +59,18 @@ private:
     bool _closed;
 
 
-    void  _(SecurityContext _context, RawServerSocket _socket, bool requestClientCertificate, bool requireClientCertificate, List<String> supportedProtocols);
+    virtual void  _(SecurityContext _context, RawServerSocket _socket, bool requestClientCertificate, bool requireClientCertificate, List<String> supportedProtocols);
 
-    void _onData(RawSocket connection);
+    virtual void _onData(RawSocket connection);
 
-    void _onPauseStateChange();
+    virtual void _onPauseStateChange();
 
-    void _onSubscriptionStateChange();
+    virtual void _onSubscriptionStateChange();
 
-    void _owner(owner );
+    virtual void _owner(owner );
 
 };
+using RawSecureServerSocket = std::shared_ptr<RawSecureServerSocketCls>;
+
 
 #endif

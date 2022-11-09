@@ -1,149 +1,150 @@
-#ifndef MESSAGE_CODECS_H
-#define MESSAGE_CODECS_H
-#include <memory>
-#include <typed_data.hpp>
-#include <flutter/foundation.hpp>
+#ifndef PACKAGES_FLUTTER_SRC_SERVICES_MESSAGE_CODECS
+#define PACKAGES_FLUTTER_SRC_SERVICES_MESSAGE_CODECS
+#include <base.hpp>
+#include <dart/typed_data/typed_data.hpp>
+#include <packages/flutter/lib/foundation.hpp>
 #include "message_codec.hpp"
 
-#include <convert/convert.hpp>
-#include <typed_data/typed_data.hpp>
-#include <flutter/foundation.hpp>
+#include <dart/core/core.hpp>
+#include <dart/convert/convert.hpp>
+#include <dart/typed_data/typed_data.hpp>
+#include <packages/flutter/lib/foundation.hpp>
 #include "message_codec.hpp"
 
+int _writeBufferStartCapacity;
 
-const int _writeBufferStartCapacity;
 
-
-class BinaryCodec {
+class BinaryCodecCls : public ObjectCls {
 public:
 
-     BinaryCodec();
+     BinaryCodecCls();
+    virtual ByteData decodeMessage(ByteData message);
 
-    ByteData decodeMessage(ByteData message);
-
-    ByteData encodeMessage(ByteData message);
+    virtual ByteData encodeMessage(ByteData message);
 
 private:
 
 };
+using BinaryCodec = std::shared_ptr<BinaryCodecCls>;
 
-class StringCodec {
+class StringCodecCls : public ObjectCls {
 public:
 
-     StringCodec();
+     StringCodecCls();
+    virtual String decodeMessage(ByteData message);
 
-    String decodeMessage(ByteData message);
-
-    ByteData encodeMessage(String message);
+    virtual ByteData encodeMessage(String message);
 
 private:
 
 };
+using StringCodec = std::shared_ptr<StringCodecCls>;
 
-class JSONMessageCodec {
+class JSONMessageCodecCls : public ObjectCls {
 public:
 
-     JSONMessageCodec();
+     JSONMessageCodecCls();
+    virtual ByteData encodeMessage(Object message);
 
-    ByteData encodeMessage(Object message);
-
-    dynamic decodeMessage(ByteData message);
+    virtual dynamic decodeMessage(ByteData message);
 
 private:
 
 };
+using JSONMessageCodec = std::shared_ptr<JSONMessageCodecCls>;
 
-class JSONMethodCodec {
+class JSONMethodCodecCls : public ObjectCls {
 public:
 
-     JSONMethodCodec();
+     JSONMethodCodecCls();
+    virtual ByteData encodeMethodCall(MethodCall methodCall);
 
-    ByteData encodeMethodCall(MethodCall methodCall);
+    virtual MethodCall decodeMethodCall(ByteData methodCall);
 
-    MethodCall decodeMethodCall(ByteData methodCall);
+    virtual dynamic decodeEnvelope(ByteData envelope);
 
-    dynamic decodeEnvelope(ByteData envelope);
+    virtual ByteData encodeSuccessEnvelope(Object result);
 
-    ByteData encodeSuccessEnvelope(Object result);
-
-    ByteData encodeErrorEnvelope(String code, Object details, String message);
+    virtual ByteData encodeErrorEnvelope(String code, Object details, String message);
 
 private:
 
 };
+using JSONMethodCodec = std::shared_ptr<JSONMethodCodecCls>;
 
-class StandardMessageCodec {
+class StandardMessageCodecCls : public ObjectCls {
 public:
 
-     StandardMessageCodec();
+     StandardMessageCodecCls();
+    virtual ByteData encodeMessage(Object message);
 
-    ByteData encodeMessage(Object message);
+    virtual dynamic decodeMessage(ByteData message);
 
-    dynamic decodeMessage(ByteData message);
+    virtual void writeValue(WriteBuffer buffer, Object value);
 
-    void writeValue(WriteBuffer buffer, Object value);
+    virtual Object readValue(ReadBuffer buffer);
 
-    Object readValue(ReadBuffer buffer);
+    virtual Object readValueOfType(ReadBuffer buffer, int type);
 
-    Object readValueOfType(ReadBuffer buffer, int type);
+    virtual void writeSize(WriteBuffer buffer, int value);
 
-    void writeSize(WriteBuffer buffer, int value);
-
-    int readSize(ReadBuffer buffer);
+    virtual int readSize(ReadBuffer buffer);
 
 private:
-    static const int _valueNull;
+    static int _valueNull;
 
-    static const int _valueTrue;
+    static int _valueTrue;
 
-    static const int _valueFalse;
+    static int _valueFalse;
 
-    static const int _valueInt32;
+    static int _valueInt32;
 
-    static const int _valueInt64;
+    static int _valueInt64;
 
-    static const int _valueLargeInt;
+    static int _valueLargeInt;
 
-    static const int _valueFloat64;
+    static int _valueFloat64;
 
-    static const int _valueString;
+    static int _valueString;
 
-    static const int _valueUint8List;
+    static int _valueUint8List;
 
-    static const int _valueInt32List;
+    static int _valueInt32List;
 
-    static const int _valueInt64List;
+    static int _valueInt64List;
 
-    static const int _valueFloat64List;
+    static int _valueFloat64List;
 
-    static const int _valueList;
+    static int _valueList;
 
-    static const int _valueMap;
+    static int _valueMap;
 
-    static const int _valueFloat32List;
+    static int _valueFloat32List;
 
 
 };
+using StandardMessageCodec = std::shared_ptr<StandardMessageCodecCls>;
 
-class StandardMethodCodec {
+class StandardMethodCodecCls : public ObjectCls {
 public:
     StandardMessageCodec messageCodec;
 
 
-     StandardMethodCodec(StandardMessageCodec messageCodec);
+     StandardMethodCodecCls(StandardMessageCodec messageCodec);
+    virtual ByteData encodeMethodCall(MethodCall methodCall);
 
-    ByteData encodeMethodCall(MethodCall methodCall);
+    virtual MethodCall decodeMethodCall(ByteData methodCall);
 
-    MethodCall decodeMethodCall(ByteData methodCall);
+    virtual ByteData encodeSuccessEnvelope(Object result);
 
-    ByteData encodeSuccessEnvelope(Object result);
+    virtual ByteData encodeErrorEnvelope(String code, Object details, String message);
 
-    ByteData encodeErrorEnvelope(String code, Object details, String message);
-
-    dynamic decodeEnvelope(ByteData envelope);
+    virtual dynamic decodeEnvelope(ByteData envelope);
 
 private:
 
 };
+using StandardMethodCodec = std::shared_ptr<StandardMethodCodecCls>;
+
 
 #endif

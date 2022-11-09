@@ -1,33 +1,34 @@
-#ifndef EXCEPTIONS_H
-#define EXCEPTIONS_H
-#include <memory>
+#ifndef DART_CORE_EXCEPTIONS
+#define DART_CORE_EXCEPTIONS
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
 
 
-
-
-class Exception {
+class ExceptionCls : public ObjectCls {
 public:
 
-     Exception(auto message);
+     ExceptionCls(auto message);
 
 private:
 
 };
+using Exception = std::shared_ptr<ExceptionCls>;
 
-class _Exception {
+class _ExceptionCls : public ObjectCls {
 public:
     dynamic message;
 
 
-    String toString();
+    virtual String toString();
 
 private:
 
-     _Exception(dynamic message);
-
+     _ExceptionCls(dynamic message);
 };
+using _Exception = std::shared_ptr<_ExceptionCls>;
 
-class FormatException {
+class FormatExceptionCls : public ObjectCls {
 public:
     String message;
 
@@ -36,27 +37,28 @@ public:
     int offset;
 
 
-     FormatException(String message, int offset, dynamic source);
-
-    String toString();
+     FormatExceptionCls(String message, int offset, dynamic source);
+    virtual String toString();
 
 private:
 
 };
+using FormatException = std::shared_ptr<FormatExceptionCls>;
 
-class IntegerDivisionByZeroException {
+class IntegerDivisionByZeroExceptionCls : public ObjectCls {
 public:
 
-    String message();
+    virtual String message();
 
-    StackTrace stackTrace();
+    virtual StackTrace stackTrace();
 
-     IntegerDivisionByZeroException();
-
-    String toString();
+     IntegerDivisionByZeroExceptionCls();
+    virtual String toString();
 
 private:
 
 };
+using IntegerDivisionByZeroException = std::shared_ptr<IntegerDivisionByZeroExceptionCls>;
+
 
 #endif

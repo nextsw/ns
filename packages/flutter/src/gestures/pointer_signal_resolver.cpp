@@ -1,9 +1,9 @@
 #include "pointer_signal_resolver.hpp"
 bool _isSameEvent(PointerSignalEvent event1, PointerSignalEvent event2) {
-    return (event1.original ?? event1) == (event2.original ?? event2);
+    return (event1->original ?? event1) == (event2->original ?? event2);
 }
 
-void PointerSignalResolver::register(PointerSignalResolvedCallback callback, PointerSignalEvent event) {
+void PointerSignalResolverCls::register(PointerSignalResolvedCallback callback, PointerSignalEvent event) {
     assert(event != nullptr);
     assert(callback != nullptr);
     assert(_currentEvent == nullptr || _isSameEvent(_currentEvent!, event));
@@ -14,13 +14,24 @@ void PointerSignalResolver::register(PointerSignalResolvedCallback callback, Poi
     _firstRegisteredCallback = callback;
 }
 
-void PointerSignalResolver::resolve(PointerSignalEvent event) {
+void PointerSignalResolverCls::resolve(PointerSignalEvent event) {
     if (_firstRegisteredCallback == nullptr) {
         assert(_currentEvent == nullptr);
         return;
     }
     assert(_isSameEvent(_currentEvent!, event));
-    ;
+    try {
+        _firstRegisteredCallback!(_currentEvent!);
+    } catch (Unknown exception) {
+        InformationCollector collector;
+        assert([=] () {
+            collector = [=] ()             {
+                makeList(ArrayItem);
+            };
+            return true;
+        }());
+        FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(exception, stack, "gesture library", make<ErrorDescriptionCls>("while resolving a PointerSignalEvent"), collector));
+    };
     _firstRegisteredCallback = nullptr;
     _currentEvent = nullptr;
 }

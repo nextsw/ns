@@ -1,17 +1,17 @@
-#ifndef TEAM_H
-#define TEAM_H
-#include <memory>
+#ifndef PACKAGES_FLUTTER_SRC_GESTURES_TEAM
+#define PACKAGES_FLUTTER_SRC_GESTURES_TEAM
+#include <base.hpp>
 #include "arena.hpp"
 
+#include <dart/core/core.hpp>
 #include "arena.hpp"
 #include "binding.hpp"
 
 
-
-class _CombiningGestureArenaEntry {
+class _CombiningGestureArenaEntryCls : public ObjectCls {
 public:
 
-    void resolve(GestureDisposition disposition);
+    virtual void resolve(GestureDisposition disposition);
 
 private:
     _CombiningGestureArenaMember _combiner;
@@ -19,16 +19,16 @@ private:
     GestureArenaMember _member;
 
 
-     _CombiningGestureArenaEntry(_CombiningGestureArenaMember _combiner, GestureArenaMember _member);
-
+     _CombiningGestureArenaEntryCls(_CombiningGestureArenaMember _combiner, GestureArenaMember _member);
 };
+using _CombiningGestureArenaEntry = std::shared_ptr<_CombiningGestureArenaEntryCls>;
 
-class _CombiningGestureArenaMember : GestureArenaMember {
+class _CombiningGestureArenaMemberCls : public GestureArenaMemberCls {
 public:
 
-    void acceptGesture(int pointer);
+    virtual void acceptGesture(int pointer);
 
-    void rejectGesture(int pointer);
+    virtual void rejectGesture(int pointer);
 
 private:
     GestureArenaTeam _owner;
@@ -44,27 +44,29 @@ private:
     GestureArenaEntry _entry;
 
 
-     _CombiningGestureArenaMember(GestureArenaTeam _owner, int _pointer);
+     _CombiningGestureArenaMemberCls(GestureArenaTeam _owner, int _pointer);
+    virtual void _close();
 
-    void _close();
+    virtual GestureArenaEntry _add(GestureArenaMember member, int pointer);
 
-    GestureArenaEntry _add(GestureArenaMember member, int pointer);
-
-    void _resolve(GestureDisposition disposition, GestureArenaMember member);
+    virtual void _resolve(GestureDisposition disposition, GestureArenaMember member);
 
 };
+using _CombiningGestureArenaMember = std::shared_ptr<_CombiningGestureArenaMemberCls>;
 
-class GestureArenaTeam {
+class GestureArenaTeamCls : public ObjectCls {
 public:
     GestureArenaMember captain;
 
 
-    GestureArenaEntry add(GestureArenaMember member, int pointer);
+    virtual GestureArenaEntry add(GestureArenaMember member, int pointer);
 
 private:
     Map<int, _CombiningGestureArenaMember> _combiners;
 
 
 };
+using GestureArenaTeam = std::shared_ptr<GestureArenaTeamCls>;
+
 
 #endif

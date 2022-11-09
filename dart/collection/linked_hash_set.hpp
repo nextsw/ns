@@ -1,27 +1,25 @@
-#ifndef LINKED_HASH_SET_H
-#define LINKED_HASH_SET_H
-#include <memory>
+#ifndef DART_COLLECTION_LINKED_HASH_SET
+#define DART_COLLECTION_LINKED_HASH_SET
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
 
 
-
-
-class LinkedHashSet<E> {
+template<typename E> class LinkedHashSetCls : public ObjectCls {
 public:
 
-    external  LinkedHashSet(FunctionType equals, FunctionType hashCode, FunctionType isValidKey);
+    extern  LinkedHashSetCls(bool equals(E , E ) , int hashCode(E ) , bool isValidKey(dynamic ) );
+    extern void  identity();
+    virtual void  from(Iterable<dynamic> elements);
 
-    external void  identity();
+    virtual void  of(Iterable<E> elements);
 
-    void  from(Iterable<dynamic> elements);
-
-    void  of(Iterable<E> elements);
-
-    void forEach(FunctionType action);
-
-    Iterator<E> iterator();
-
+    virtual void forEach(void action(E element) );
+    virtual Iterator<E> iterator();
 private:
 
 };
+template<typename E> using LinkedHashSet = std::shared_ptr<LinkedHashSetCls<E>>;
+
 
 #endif

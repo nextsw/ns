@@ -1,22 +1,22 @@
 #include "errors.hpp"
-void LateError::fieldADI(String fieldName)
+void LateErrorCls::fieldADI(String fieldName)
 
-void LateError::localADI(String localName)
+void LateErrorCls::localADI(String localName)
 
-void LateError::fieldNI(String fieldName)
+void LateErrorCls::fieldNI(String fieldName)
 
-void LateError::localNI(String localName)
+void LateErrorCls::localNI(String localName)
 
-void LateError::fieldAI(String fieldName)
+void LateErrorCls::fieldAI(String fieldName)
 
-void LateError::localAI(String localName)
+void LateErrorCls::localAI(String localName)
 
-String LateError::toString() {
+String LateErrorCls::toString() {
     auto message = _message;
     return (message != nullptr)? "LateInitializationError: $message" : "LateInitializationError";
 }
 
-String ReachabilityError::toString() {
+String ReachabilityErrorCls::toString() {
     auto message = _message;
     return (message != nullptr)? "ReachabilityError: $message" : "ReachabilityError";
 }

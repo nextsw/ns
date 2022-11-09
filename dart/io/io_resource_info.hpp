@@ -1,24 +1,22 @@
-#ifndef IO_RESOURCE_INFO_H
-#define IO_RESOURCE_INFO_H
-#include <memory>
+#ifndef DART_IO_IO_RESOURCE_INFO
+#define DART_IO_IO_RESOURCE_INFO
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
 
 
-
-
-class _IOResourceInfo {
+class _IOResourceInfoCls : public ObjectCls {
 public:
     String type;
 
     int id;
 
 
-    String name();
-
+    virtual String name();
     static int timestamp();
 
-    Map<String, dynamic> fullValueMap();
-
-    Map<String, dynamic> referenceValueMap();
+    virtual Map<String, dynamic> fullValueMap();
+    virtual Map<String, dynamic> referenceValueMap();
 
     static int getNextID();
 
@@ -30,11 +28,12 @@ private:
     static auto  _startTime;
 
 
-     _IOResourceInfo(String type);
+     _IOResourceInfoCls(String type);
 
 };
+using _IOResourceInfo = std::shared_ptr<_IOResourceInfoCls>;
 
-class _ReadWriteResourceInfo : _IOResourceInfo {
+class _ReadWriteResourceInfoCls : public _IOResourceInfoCls {
 public:
     int readBytes;
 
@@ -49,21 +48,22 @@ public:
     int lastWriteTime;
 
 
-    void addRead(int bytes);
+    virtual void addRead(int bytes);
 
-    void didRead();
+    virtual void didRead();
 
-    void addWrite(int bytes);
+    virtual void addWrite(int bytes);
 
-    Map<String, dynamic> fullValueMap();
+    virtual Map<String, dynamic> fullValueMap();
 
 private:
 
-     _ReadWriteResourceInfo(String type);
+     _ReadWriteResourceInfoCls(String type);
 
 };
+using _ReadWriteResourceInfo = std::shared_ptr<_ReadWriteResourceInfoCls>;
 
-class _FileResourceInfo : _ReadWriteResourceInfo {
+class _FileResourceInfoCls : public _ReadWriteResourceInfoCls {
 public:
     auto  file;
 
@@ -78,21 +78,22 @@ public:
 
     static Future<ServiceExtensionResponse> getOpenFiles(function , params );
 
-    Map<String, dynamic> fileInfoMap();
+    virtual Map<String, dynamic> fileInfoMap();
 
     static Future<ServiceExtensionResponse> getOpenFileInfoMapByID(function , params );
 
-    String name();
+    virtual String name();
 
 private:
-    static const String _type;
+    static String _type;
 
 
-     _FileResourceInfo(Unknown file);
+     _FileResourceInfoCls(Unknown file);
 
 };
+using _FileResourceInfo = std::shared_ptr<_FileResourceInfoCls>;
 
-class _SpawnedProcessResourceInfo : _IOResourceInfo {
+class _SpawnedProcessResourceInfoCls : public _IOResourceInfoCls {
 public:
     auto  process;
 
@@ -101,11 +102,11 @@ public:
     static Map<int, _SpawnedProcessResourceInfo> startedProcesses;
 
 
-    String name();
+    virtual String name();
 
-    void stopped();
+    virtual void stopped();
 
-    Map<String, dynamic> fullValueMap();
+    virtual Map<String, dynamic> fullValueMap();
 
     static void  processStarted(_SpawnedProcessResourceInfo info);
 
@@ -118,11 +119,13 @@ public:
     static Future<ServiceExtensionResponse> getProcessInfoMapById(String function, Map<String, String> params);
 
 private:
-    static const String _type;
+    static String _type;
 
 
-     _SpawnedProcessResourceInfo(Unknown process);
+     _SpawnedProcessResourceInfoCls(Unknown process);
 
 };
+using _SpawnedProcessResourceInfo = std::shared_ptr<_SpawnedProcessResourceInfoCls>;
+
 
 #endif

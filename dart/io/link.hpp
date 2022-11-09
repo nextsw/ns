@@ -1,75 +1,65 @@
-#ifndef LINK_H
-#define LINK_H
-#include <memory>
+#ifndef DART_IO_LINK
+#define DART_IO_LINK
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
 
 
-
-
-class Link {
+class LinkCls : public ObjectCls {
 public:
 
-     Link(String path);
+     LinkCls(String path);
 
-    void  fromRawPath(Uint8List rawPath);
+    virtual void  fromRawPath(Uint8List rawPath);
 
-    void  fromUri(Uri uri);
+    virtual void  fromUri(Uri uri);
 
-    Future<Link> create(bool recursive, String target);
-
-    void createSync(bool recursive, String target);
-
-    void updateSync(String target);
-
-    Future<Link> update(String target);
-
-    Future<String> resolveSymbolicLinks();
-
-    String resolveSymbolicLinksSync();
-
-    Future<Link> rename(String newPath);
-
-    Link renameSync(String newPath);
-
-    Link absolute();
-
-    Future<String> target();
-
-    String targetSync();
-
+    virtual Future<Link> create(bool recursive, String target);
+    virtual void createSync(bool recursive, String target);
+    virtual void updateSync(String target);
+    virtual Future<Link> update(String target);
+    virtual Future<String> resolveSymbolicLinks();
+    virtual String resolveSymbolicLinksSync();
+    virtual Future<Link> rename(String newPath);
+    virtual Link renameSync(String newPath);
+    virtual Link absolute();
+    virtual Future<String> target();
+    virtual String targetSync();
 private:
 
 };
+using Link = std::shared_ptr<LinkCls>;
 
-class _Link : FileSystemEntity {
+class _LinkCls : public FileSystemEntityCls {
 public:
 
-    void  fromRawPath(Uint8List rawPath);
+    virtual void  fromRawPath(Uint8List rawPath);
 
-    String path();
+    virtual String path();
 
-    String toString();
+    virtual String toString();
 
-    Future<bool> exists();
+    virtual Future<bool> exists();
 
-    bool existsSync();
+    virtual bool existsSync();
 
-    Link absolute();
+    virtual Link absolute();
 
-    Future<Link> create(bool recursive, String target);
+    virtual Future<Link> create(bool recursive, String target);
 
-    void createSync(bool recursive, String target);
+    virtual void createSync(bool recursive, String target);
 
-    void updateSync(String target);
+    virtual void updateSync(String target);
 
-    Future<Link> update(String target);
+    virtual Future<Link> update(String target);
 
-    Future<Link> rename(String newPath);
+    virtual Future<Link> rename(String newPath);
 
-    Link renameSync(String newPath);
+    virtual Link renameSync(String newPath);
 
-    Future<String> target();
+    virtual Future<String> target();
 
-    String targetSync();
+    virtual String targetSync();
 
     static void  throwIfError(String msg, String path, Object result);
 
@@ -79,16 +69,18 @@ private:
     Uint8List _rawPath;
 
 
-     _Link(String path);
+     _LinkCls(String path);
 
-    Future<Link> _delete(bool recursive);
+    virtual Future<Link> _delete(bool recursive);
 
-    void _deleteSync(bool recursive);
+    virtual void _deleteSync(bool recursive);
 
-    bool _isErrorResponse(response );
+    virtual bool _isErrorResponse(response );
 
-    void  _exceptionFromResponse(response , String message, String path);
+    virtual void  _exceptionFromResponse(response , String message, String path);
 
 };
+using _Link = std::shared_ptr<_LinkCls>;
+
 
 #endif

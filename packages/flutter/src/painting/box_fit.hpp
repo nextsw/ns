@@ -1,11 +1,11 @@
-#ifndef BOX_FIT_H
-#define BOX_FIT_H
-#include <memory>
+#ifndef PACKAGES_FLUTTER_SRC_PAINTING_BOX_FIT
+#define PACKAGES_FLUTTER_SRC_PAINTING_BOX_FIT
+#include <base.hpp>
 
-#include <math/math.hpp>
-#include <flutter/foundation.hpp>
+#include <dart/core/core.hpp>
+#include <dart/math/math.hpp>
+#include <packages/flutter/lib/foundation.hpp>
 #include "basic_types.hpp"
-
 
 
 enum BoxFit{
@@ -18,19 +18,20 @@ enum BoxFit{
     scaleDown,
 } // end BoxFit
 
-class FittedSizes {
+class FittedSizesCls : public ObjectCls {
 public:
     Size source;
 
     Size destination;
 
 
-     FittedSizes(Size destination, Size source);
-
+     FittedSizesCls(Size destination, Size source);
 private:
 
 };
+using FittedSizes = std::shared_ptr<FittedSizesCls>;
 FittedSizes applyBoxFit(BoxFit fit, Size inputSize, Size outputSize);
+
 
 
 #endif

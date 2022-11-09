@@ -1,29 +1,29 @@
-#ifndef LINKED_HASH_MAP_H
-#define LINKED_HASH_MAP_H
-#include <memory>
+#ifndef DART_COLLECTION_LINKED_HASH_MAP
+#define DART_COLLECTION_LINKED_HASH_MAP
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
 
 
-
-
-class LinkedHashMap<K, V> {
+template<typename K, typename V> class LinkedHashMapCls : public ObjectCls {
 public:
 
-    external  LinkedHashMap(FunctionType equals, FunctionType hashCode, FunctionType isValidKey);
+    extern  LinkedHashMapCls(bool equals(K , K ) , int hashCode(K ) , bool isValidKey(dynamic ) );
+    extern void  identity();
+    virtual void  from(Map<dynamic, dynamic> other);
 
-    external void  identity();
+    virtual void  of(Map<K, V> other);
 
-    void  from(Map<dynamic, dynamic> other);
+    virtual void  fromIterable(Iterable iterable, K key(dynamic element) , V value(dynamic element) );
 
-    void  of(Map<K, V> other);
+    virtual void  fromIterables(Iterable<K> keys, Iterable<V> values);
 
-    void  fromIterable(Iterable iterable, FunctionType key, FunctionType value);
-
-    void  fromIterables(Iterable<K> keys, Iterable<V> values);
-
-    void  fromEntries(Iterable<MapEntry<K, V>> entries);
+    virtual void  fromEntries(Iterable<MapEntry<K, V>> entries);
 
 private:
 
 };
+template<typename K, typename V> using LinkedHashMap = std::shared_ptr<LinkedHashMapCls<K, V>>;
+
 
 #endif

@@ -1,60 +1,59 @@
-#ifndef TICKER_H
-#define TICKER_H
-#include <memory>
-#include <ui.hpp>
-#include <flutter/foundation.hpp>
+#ifndef PACKAGES_FLUTTER_SRC_SCHEDULER_TICKER
+#define PACKAGES_FLUTTER_SRC_SCHEDULER_TICKER
+#include <base.hpp>
+#include <dart/ui/ui.hpp>
+#include <packages/flutter/lib/foundation.hpp>
 
-#include <async/async.hpp>
-#include <flutter/foundation.hpp>
+#include <dart/core/core.hpp>
+#include <dart/async/async.hpp>
+#include <packages/flutter/lib/foundation.hpp>
 #include "binding.hpp"
 
 
-
-class TickerProvider {
+class TickerProviderCls : public ObjectCls {
 public:
 
-     TickerProvider();
-
-    Ticker createTicker(TickerCallback onTick);
-
+     TickerProviderCls();
+    virtual Ticker createTicker(TickerCallback onTick);
 private:
 
 };
+using TickerProvider = std::shared_ptr<TickerProviderCls>;
 
-class Ticker {
+class TickerCls : public ObjectCls {
 public:
     String debugLabel;
 
 
-     Ticker(TickerCallback _onTick, String debugLabel);
+     TickerCls(TickerCallback _onTick, String debugLabel);
 
-    bool muted();
+    virtual bool muted();
 
-    void  muted(bool value);
+    virtual void  muted(bool value);
 
-    bool isTicking();
+    virtual bool isTicking();
 
-    bool isActive();
+    virtual bool isActive();
 
-    TickerFuture start();
+    virtual TickerFuture start();
 
-    DiagnosticsNode describeForError(String name);
+    virtual DiagnosticsNode describeForError(String name);
 
-    void stop(bool canceled);
+    virtual void stop(bool canceled);
 
-    bool scheduled();
+    virtual bool scheduled();
 
-    bool shouldScheduleTick();
+    virtual bool shouldScheduleTick();
 
-    void scheduleTick(bool rescheduling);
+    virtual void scheduleTick(bool rescheduling);
 
-    void unscheduleTick();
+    virtual void unscheduleTick();
 
-    void absorbTicker(Ticker originalTicker);
+    virtual void absorbTicker(Ticker originalTicker);
 
-    void dispose();
+    virtual void dispose();
 
-    String toString(bool debugIncludeStack);
+    virtual String toString(bool debugIncludeStack);
 
 private:
     TickerFuture _future;
@@ -70,30 +69,31 @@ private:
     StackTrace _debugCreationStack;
 
 
-    void _tick(Duration timeStamp);
+    virtual void _tick(Duration timeStamp);
 
 };
+using Ticker = std::shared_ptr<TickerCls>;
 
-class TickerFuture {
+class TickerFutureCls : public ObjectCls {
 public:
 
-    void  complete();
+    virtual void  complete();
 
-    void whenCompleteOrCancel(VoidCallback callback);
+    virtual void whenCompleteOrCancel(VoidCallback callback);
 
-    Future<void> orCancel();
+    virtual Future<void> orCancel();
 
-    Stream<void> asStream();
+    virtual Stream<void> asStream();
 
-    Future<void> catchError(FunctionType onError, FunctionType test);
+    virtual Future<void> catchError(void  onError() , bool test(Object ) );
 
-    Future<R> then<R>(FunctionType onError, FunctionType onValue);
+    template<typename R>  virtual Future<R> then(void  onError() , FutureOr<R> onValue(void value) );
 
-    Future<void> timeout(FunctionType onTimeout, Duration timeLimit);
+    virtual Future<void> timeout(FutureOr<void> onTimeout() , Duration timeLimit);
 
-    Future<void> whenComplete(FunctionType action);
+    virtual Future<void> whenComplete(dynamic action() );
 
-    String toString();
+    virtual String toString();
 
 private:
     Completer<void> _primaryCompleter;
@@ -103,25 +103,26 @@ private:
     bool _completed;
 
 
-    void  _();
+    virtual void  _();
+    virtual void _complete();
 
-    void _complete();
-
-    void _cancel(Ticker ticker);
+    virtual void _cancel(Ticker ticker);
 
 };
+using TickerFuture = std::shared_ptr<TickerFutureCls>;
 
-class TickerCanceled {
+class TickerCanceledCls : public ObjectCls {
 public:
     Ticker ticker;
 
 
-     TickerCanceled(Ticker ticker);
-
-    String toString();
+     TickerCanceledCls(Ticker ticker);
+    virtual String toString();
 
 private:
 
 };
+using TickerCanceled = std::shared_ptr<TickerCanceledCls>;
+
 
 #endif

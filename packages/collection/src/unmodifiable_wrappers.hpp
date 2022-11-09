@@ -1,91 +1,119 @@
-#ifndef UNMODIFIABLE_WRAPPERS_H
-#define UNMODIFIABLE_WRAPPERS_H
-#include <memory>
-#include <collection.hpp>
+#ifndef PACKAGES_COLLECTION_SRC_UNMODIFIABLE_WRAPPERS
+#define PACKAGES_COLLECTION_SRC_UNMODIFIABLE_WRAPPERS
+#include <base.hpp>
+#include <dart/collection/collection.hpp>
 
+#include <dart/core/core.hpp>
 #include "empty_unmodifiable_set.hpp"
 #include "wrappers.hpp"
 
 
-
-class NonGrowableListView<E> : DelegatingList<E> {
+template<typename E> class NonGrowableListViewCls : public DelegatingListCls<E> {
 public:
 
-     NonGrowableListView(List<E> listBase);
+     NonGrowableListViewCls(List<E> listBase);
 
 private:
 
 };
+template<typename E> using NonGrowableListView = std::shared_ptr<NonGrowableListViewCls<E>>;
 
-class NonGrowableListMixin<E> {
+template<typename E> class NonGrowableListMixinCls : public ObjectCls {
 public:
 
-    void  length(int newLength);
+    virtual void  length(int newLength);
 
-    bool add(E value);
+    virtual bool add(E value);
 
-    void addAll(Iterable<E> iterable);
+    virtual void addAll(Iterable<E> iterable);
 
-    void insert(E element, int index);
+    virtual void insert(E element, int index);
 
-    void insertAll(int index, Iterable<E> iterable);
+    virtual void insertAll(int index, Iterable<E> iterable);
 
-    bool remove(Object value);
+    virtual bool remove(Object value);
 
-    E removeAt(int index);
+    virtual E removeAt(int index);
 
-    E removeLast();
+    virtual E removeLast();
 
-    void removeWhere(FunctionType test);
+    virtual void removeWhere(bool test(E ) );
 
-    void retainWhere(FunctionType test);
+    virtual void retainWhere(bool test(E ) );
 
-    void removeRange(int end, int start);
+    virtual void removeRange(int end, int start);
 
-    void replaceRange(int end, Iterable<E> iterable, int start);
+    virtual void replaceRange(int end, Iterable<E> iterable, int start);
 
-    void clear();
-
-private:
-
-    static Never _throw();
-
-};
-
-class UnmodifiableSetView<E> : DelegatingSet<E> {
-public:
-
-     UnmodifiableSetView(Set<E> setBase);
-
-    void  empty();
-
-private:
-
-};
-
-class UnmodifiableSetMixin<E> {
-public:
-
-    bool add(E value);
-
-    void addAll(Iterable<E> elements);
-
-    bool remove(Object value);
-
-    void removeAll(Iterable elements);
-
-    void retainAll(Iterable elements);
-
-    void removeWhere(FunctionType test);
-
-    void retainWhere(FunctionType test);
-
-    void clear();
+    virtual void clear();
 
 private:
 
     static Never _throw();
 
 };
+template<typename E> using NonGrowableListMixin = std::shared_ptr<NonGrowableListMixinCls<E>>;
+
+template<typename E> class UnmodifiableSetViewCls : public DelegatingSetCls<E> {
+public:
+
+     UnmodifiableSetViewCls(Set<E> setBase);
+
+    virtual void  empty();
+private:
+
+};
+template<typename E> using UnmodifiableSetView = std::shared_ptr<UnmodifiableSetViewCls<E>>;
+
+template<typename E> class UnmodifiableSetMixinCls : public ObjectCls {
+public:
+
+    virtual bool add(E value);
+
+    virtual void addAll(Iterable<E> elements);
+
+    virtual bool remove(Object value);
+
+    virtual void removeAll(Iterable elements);
+
+    virtual void retainAll(Iterable elements);
+
+    virtual void removeWhere(bool test(E ) );
+
+    virtual void retainWhere(bool test(E ) );
+
+    virtual void clear();
+
+private:
+
+    static Never _throw();
+
+};
+template<typename E> using UnmodifiableSetMixin = std::shared_ptr<UnmodifiableSetMixinCls<E>>;
+
+template<typename K, typename V> class UnmodifiableMapMixinCls : public ObjectCls {
+public:
+
+    virtual void operator[]=(K key, V value);
+
+    virtual V putIfAbsent(V ifAbsent() , K key);
+
+    virtual void addAll(Map<K, V> other);
+
+    virtual V remove(Object key);
+
+    virtual void clear();
+
+    virtual void  first(_ );
+
+    virtual void  last(_ );
+
+private:
+
+    static Never _throw();
+
+};
+template<typename K, typename V> using UnmodifiableMapMixin = std::shared_ptr<UnmodifiableMapMixinCls<K, V>>;
+
 
 #endif

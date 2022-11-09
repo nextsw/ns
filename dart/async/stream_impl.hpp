@@ -1,79 +1,75 @@
-#ifndef STREAM_IMPL_H
-#define STREAM_IMPL_H
-#include <memory>
+#ifndef DART_ASYNC_STREAM_IMPL
+#define DART_ASYNC_STREAM_IMPL
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
 
 
-
-
-class _EventSink<T> {
+template<typename T> class _EventSinkCls : public ObjectCls {
 public:
 
 private:
 
-    void _add(T data);
-
-    void _addError(Object error, StackTrace stackTrace);
-
-    void _close();
-
+    virtual void _add(T data);
+    virtual void _addError(Object error, StackTrace stackTrace);
+    virtual void _close();
 };
+template<typename T> using _EventSink = std::shared_ptr<_EventSinkCls<T>>;
 
-class _EventDispatch<T> {
+template<typename T> class _EventDispatchCls : public ObjectCls {
 public:
 
 private:
 
-    void _sendData(T data);
-
-    void _sendError(Object error, StackTrace stackTrace);
-
-    void _sendDone();
-
+    virtual void _sendData(T data);
+    virtual void _sendError(Object error, StackTrace stackTrace);
+    virtual void _sendDone();
 };
+template<typename T> using _EventDispatch = std::shared_ptr<_EventDispatchCls<T>>;
 
-class _BufferingStreamSubscription<T> {
+template<typename T> class _BufferingStreamSubscriptionCls : public ObjectCls {
 public:
 
-    void  zoned(Zone _zone, bool cancelOnError, FunctionType onData, FunctionType onDone, FunctionType onError);
+    virtual void  zoned(Zone _zone, bool cancelOnError, void onData(T data) , void onDone() , void  onError() );
 
-    void onData(FunctionType handleData);
+    virtual void onData(void handleData(T event) );
 
-    void onError(FunctionType handleError);
+    virtual void onError(void  handleError() );
 
-    void onDone(FunctionType handleDone);
+    virtual void onDone(void handleDone() );
 
-    void pause(Future<void> resumeSignal);
+    virtual void pause(Future<void> resumeSignal);
 
-    void resume();
+    virtual void resume();
 
-    Future cancel();
+    virtual Future cancel();
 
-    Future<E> asFuture<E>(E futureValue);
+    template<typename E>  virtual Future<E> asFuture(E futureValue);
 
-    bool isPaused();
+    virtual bool isPaused();
 
 private:
-    static const int _STATE_CANCEL_ON_ERROR;
+    static int _STATE_CANCEL_ON_ERROR;
 
-    static const int _STATE_CLOSED;
+    static int _STATE_CLOSED;
 
-    static const int _STATE_INPUT_PAUSED;
+    static int _STATE_INPUT_PAUSED;
 
-    static const int _STATE_CANCELED;
+    static int _STATE_CANCELED;
 
-    static const int _STATE_WAIT_FOR_CANCEL;
+    static int _STATE_WAIT_FOR_CANCEL;
 
-    static const int _STATE_IN_CALLBACK;
+    static int _STATE_IN_CALLBACK;
 
-    static const int _STATE_HAS_PENDING;
+    static int _STATE_HAS_PENDING;
 
-    static const int _STATE_PAUSE_COUNT;
+    static int _STATE_PAUSE_COUNT;
 
-    FunctionType _onData;
+    void Function(T ) _onData;
 
-    FunctionType _onError;
+    void  Function() _onError;
 
-    FunctionType _onDone;
+    void Function() _onDone;
 
     Zone _zone;
 
@@ -84,78 +80,80 @@ private:
     _PendingEvents<T> _pending;
 
 
-     _BufferingStreamSubscription(bool cancelOnError, FunctionType onData, FunctionType onDone, FunctionType onError);
+     _BufferingStreamSubscriptionCls(bool cancelOnError, void onData(T data) , void onDone() , void  onError() );
 
-    void _setPendingEvents(_PendingEvents<T> pendingEvents);
+    virtual void _setPendingEvents(_PendingEvents<T> pendingEvents);
 
-    static FunctionType _registerDataHandler<T>(FunctionType handleData, Zone zone);
+    template<typename T>  static void Function(T ) _registerDataHandler(void handleData(T ) , Zone zone);
 
-    static FunctionType _registerErrorHandler(FunctionType handleError, Zone zone);
+    static void  Function() _registerErrorHandler(void  handleError() , Zone zone);
 
-    static FunctionType _registerDoneHandler(FunctionType handleDone, Zone zone);
+    static void Function() _registerDoneHandler(void handleDone() , Zone zone);
 
-    bool _isInputPaused();
+    virtual bool _isInputPaused();
 
-    bool _isClosed();
+    virtual bool _isClosed();
 
-    bool _isCanceled();
+    virtual bool _isCanceled();
 
-    bool _waitsForCancel();
+    virtual bool _waitsForCancel();
 
-    bool _inCallback();
+    virtual bool _inCallback();
 
-    bool _hasPending();
+    virtual bool _hasPending();
 
-    bool _isPaused();
+    virtual bool _isPaused();
 
-    bool _canFire();
+    virtual bool _canFire();
 
-    bool _mayResumeInput();
+    virtual bool _mayResumeInput();
 
-    bool _cancelOnError();
+    virtual bool _cancelOnError();
 
-    void _cancel();
+    virtual void _cancel();
 
-    void _decrementPauseCount();
+    virtual void _decrementPauseCount();
 
-    void _add(T data);
+    virtual void _add(T data);
 
-    void _addError(Object error, StackTrace stackTrace);
+    virtual void _addError(Object error, StackTrace stackTrace);
 
-    void _close();
+    virtual void _close();
 
-    void _onPause();
+    virtual void _onPause();
 
-    void _onResume();
+    virtual void _onResume();
 
-    Future<void> _onCancel();
+    virtual Future<void> _onCancel();
 
-    void _addPending(_DelayedEvent event);
+    virtual void _addPending(_DelayedEvent event);
 
-    void _sendData(T data);
+    virtual void _sendData(T data);
 
-    void _sendError(Object error, StackTrace stackTrace);
+    virtual void _sendError(Object error, StackTrace stackTrace);
 
-    void _sendDone();
+    virtual void _sendDone();
 
-    void _guardCallback(FunctionType callback);
+    virtual void _guardCallback(void callback() );
 
-    void _checkState(bool wasInputPaused);
+    virtual void _checkState(bool wasInputPaused);
 
 };
+template<typename T> using _BufferingStreamSubscription = std::shared_ptr<_BufferingStreamSubscriptionCls<T>>;
 
-class _StreamImpl<T> : Stream<T> {
+template<typename T> class _StreamImplCls : public StreamCls<T> {
 public:
 
-    StreamSubscription<T> listen(bool cancelOnError, FunctionType onData, FunctionType onDone, FunctionType onError);
+    virtual StreamSubscription<T> listen(bool cancelOnError, void onData(T data) , void onDone() , void  onError() );
 
 private:
 
-    StreamSubscription<T> _createSubscription(bool cancelOnError, FunctionType onData, FunctionType onDone, FunctionType onError);
+    virtual StreamSubscription<T> _createSubscription(bool cancelOnError, void onData(T data) , void onDone() , void  onError() );
 
-    void _onListen(StreamSubscription subscription);
+    virtual void _onListen(StreamSubscription subscription);
 
 };
+template<typename T> using _StreamImpl = std::shared_ptr<_StreamImplCls<T>>;
 void _nullDataHandler(dynamic value);
 
 void _nullErrorHandler(Object error, StackTrace stackTrace);
@@ -163,146 +161,148 @@ void _nullErrorHandler(Object error, StackTrace stackTrace);
 void _nullDoneHandler();
 
 
-class _DelayedEvent<T> {
+template<typename T> class _DelayedEventCls : public ObjectCls {
 public:
     _DelayedEvent next;
 
 
-    void perform(_EventDispatch<T> dispatch);
-
+    virtual void perform(_EventDispatch<T> dispatch);
 private:
 
 };
+template<typename T> using _DelayedEvent = std::shared_ptr<_DelayedEventCls<T>>;
 
-class _DelayedData<T> : _DelayedEvent<T> {
+template<typename T> class _DelayedDataCls : public _DelayedEventCls<T> {
 public:
     T value;
 
 
-    void perform(_EventDispatch<T> dispatch);
+    virtual void perform(_EventDispatch<T> dispatch);
 
 private:
 
-     _DelayedData(T value);
-
+     _DelayedDataCls(T value);
 };
+template<typename T> using _DelayedData = std::shared_ptr<_DelayedDataCls<T>>;
 
-class _DelayedError : _DelayedEvent {
+class _DelayedErrorCls : public _DelayedEventCls {
 public:
     Object error;
 
     StackTrace stackTrace;
 
 
-    void perform(_EventDispatch dispatch);
+    virtual void perform(_EventDispatch dispatch);
 
 private:
 
-     _DelayedError(Object error, StackTrace stackTrace);
-
+     _DelayedErrorCls(Object error, StackTrace stackTrace);
 };
+using _DelayedError = std::shared_ptr<_DelayedErrorCls>;
 
-class _DelayedDone {
+class _DelayedDoneCls : public ObjectCls {
 public:
 
-    void perform(_EventDispatch dispatch);
+    virtual void perform(_EventDispatch dispatch);
 
-    _DelayedEvent next();
+    virtual _DelayedEvent next();
 
-    void next(_DelayedEvent _);
+    virtual void next(_DelayedEvent _);
 
 private:
 
-     _DelayedDone();
-
+     _DelayedDoneCls();
 };
+using _DelayedDone = std::shared_ptr<_DelayedDoneCls>;
 
-class _PendingEvents<T> {
+template<typename T> class _PendingEventsCls : public ObjectCls {
 public:
-    static const int stateUnscheduled;
+    static int stateUnscheduled;
 
-    static const int stateScheduled;
+    static int stateScheduled;
 
-    static const int stateCanceled;
+    static int stateCanceled;
 
     _DelayedEvent firstPendingEvent;
 
     _DelayedEvent lastPendingEvent;
 
 
-    bool isScheduled();
+    virtual bool isScheduled();
 
-    void schedule(_EventDispatch<T> dispatch);
+    virtual void schedule(_EventDispatch<T> dispatch);
 
-    void cancelSchedule();
+    virtual void cancelSchedule();
 
-    bool isEmpty();
+    virtual bool isEmpty();
 
-    void add(_DelayedEvent event);
+    virtual void add(_DelayedEvent event);
 
-    void handleNext(_EventDispatch<T> dispatch);
+    virtual void handleNext(_EventDispatch<T> dispatch);
 
-    void clear();
+    virtual void clear();
 
 private:
     int _state;
 
 
-    bool _eventScheduled();
+    virtual bool _eventScheduled();
 
 };
+template<typename T> using _PendingEvents = std::shared_ptr<_PendingEventsCls<T>>;
 
-class _DoneStreamSubscription<T> {
+template<typename T> class _DoneStreamSubscriptionCls : public ObjectCls {
 public:
 
-    bool isPaused();
+    virtual bool isPaused();
 
-    void onData(FunctionType handleData);
+    virtual void onData(void handleData(T data) );
 
-    void onError(FunctionType handleError);
+    virtual void onError(void  handleError() );
 
-    void onDone(FunctionType handleDone);
+    virtual void onDone(void handleDone() );
 
-    void pause(Future<void> resumeSignal);
+    virtual void pause(Future<void> resumeSignal);
 
-    void resume();
+    virtual void resume();
 
-    Future cancel();
+    virtual Future cancel();
 
-    Future<E> asFuture<E>(E futureValue);
+    template<typename E>  virtual Future<E> asFuture(E futureValue);
 
 private:
-    static const int _DONE_SENT;
+    static int _DONE_SENT;
 
-    static const int _SCHEDULED;
+    static int _SCHEDULED;
 
-    static const int _PAUSED;
+    static int _PAUSED;
 
     Zone _zone;
 
     int _state;
 
-    FunctionType _onDone;
+    void Function() _onDone;
 
 
-     _DoneStreamSubscription(FunctionType _onDone);
+     _DoneStreamSubscriptionCls(void Function() _onDone);
 
-    bool _isSent();
+    virtual bool _isSent();
 
-    bool _isScheduled();
+    virtual bool _isScheduled();
 
-    void _schedule();
+    virtual void _schedule();
 
-    void _sendDone();
+    virtual void _sendDone();
 
 };
+template<typename T> using _DoneStreamSubscription = std::shared_ptr<_DoneStreamSubscriptionCls<T>>;
 
-class _AsBroadcastStream<T> : Stream<T> {
+template<typename T> class _AsBroadcastStreamCls : public StreamCls<T> {
 public:
 
-    bool isBroadcast();
+    virtual bool isBroadcast();
 
-    StreamSubscription<T> listen(bool cancelOnError, FunctionType onData, FunctionType onDone, FunctionType onError);
+    virtual StreamSubscription<T> listen(bool cancelOnError, void onData(T data) , void onDone() , void  onError() );
 
 private:
     Stream<T> _source;
@@ -318,57 +318,58 @@ private:
     StreamSubscription<T> _subscription;
 
 
-     _AsBroadcastStream(Stream<T> _source, FunctionType onCancelHandler, FunctionType onListenHandler);
+     _AsBroadcastStreamCls(Stream<T> _source, void onCancelHandler(StreamSubscription<T> subscription) , void onListenHandler(StreamSubscription<T> subscription) );
 
-    void _onCancel();
+    virtual void _onCancel();
 
-    void _onListen();
+    virtual void _onListen();
 
-    void _cancelSubscription();
+    virtual void _cancelSubscription();
 
-    void _pauseSubscription(Future<void> resumeSignal);
+    virtual void _pauseSubscription(Future<void> resumeSignal);
 
-    void _resumeSubscription();
+    virtual void _resumeSubscription();
 
-    bool _isSubscriptionPaused();
+    virtual bool _isSubscriptionPaused();
 
 };
+template<typename T> using _AsBroadcastStream = std::shared_ptr<_AsBroadcastStreamCls<T>>;
 
-class _BroadcastSubscriptionWrapper<T> {
+template<typename T> class _BroadcastSubscriptionWrapperCls : public ObjectCls {
 public:
 
-    void onData(FunctionType handleData);
+    virtual void onData(void handleData(T data) );
 
-    void onError(FunctionType handleError);
+    virtual void onError(void  handleError() );
 
-    void onDone(FunctionType handleDone);
+    virtual void onDone(void handleDone() );
 
-    void pause(Future<void> resumeSignal);
+    virtual void pause(Future<void> resumeSignal);
 
-    void resume();
+    virtual void resume();
 
-    Future cancel();
+    virtual Future cancel();
 
-    bool isPaused();
+    virtual bool isPaused();
 
-    Future<E> asFuture<E>(E futureValue);
+    template<typename E>  virtual Future<E> asFuture(E futureValue);
 
 private:
     _AsBroadcastStream _stream;
 
 
-     _BroadcastSubscriptionWrapper(_AsBroadcastStream _stream);
-
+     _BroadcastSubscriptionWrapperCls(_AsBroadcastStream _stream);
 };
+template<typename T> using _BroadcastSubscriptionWrapper = std::shared_ptr<_BroadcastSubscriptionWrapperCls<T>>;
 
-class _StreamIterator<T> {
+template<typename T> class _StreamIteratorCls : public ObjectCls {
 public:
 
-    T current();
+    virtual T current();
 
-    Future<bool> moveNext();
+    virtual Future<bool> moveNext();
 
-    Future cancel();
+    virtual Future cancel();
 
 private:
     StreamSubscription<T> _subscription;
@@ -378,61 +379,65 @@ private:
     bool _hasValue;
 
 
-     _StreamIterator(Stream<T> stream);
+     _StreamIteratorCls(Stream<T> stream);
 
-    Future<bool> _initializeOrDone();
+    virtual Future<bool> _initializeOrDone();
 
-    void _onData(T data);
+    virtual void _onData(T data);
 
-    void _onError(Object error, StackTrace stackTrace);
+    virtual void _onError(Object error, StackTrace stackTrace);
 
-    void _onDone();
+    virtual void _onDone();
 
 };
+template<typename T> using _StreamIterator = std::shared_ptr<_StreamIteratorCls<T>>;
 
-class _EmptyStream<T> : Stream<T> {
+template<typename T> class _EmptyStreamCls : public StreamCls<T> {
 public:
 
-    bool isBroadcast();
+    virtual bool isBroadcast();
 
-    StreamSubscription<T> listen(bool cancelOnError, FunctionType onData, FunctionType onDone, FunctionType onError);
+    virtual StreamSubscription<T> listen(bool cancelOnError, void onData(T data) , void onDone() , void  onError() );
 
 private:
 
-     _EmptyStream();
+     _EmptyStreamCls();
 
 };
+template<typename T> using _EmptyStream = std::shared_ptr<_EmptyStreamCls<T>>;
 
-class _MultiStream<T> : Stream<T> {
+template<typename T> class _MultiStreamCls : public StreamCls<T> {
 public:
     bool isBroadcast;
 
 
-    StreamSubscription<T> listen(bool cancelOnError, FunctionType onData, FunctionType onDone, FunctionType onError);
+    virtual StreamSubscription<T> listen(bool cancelOnError, void onData(T event) , void onDone() , void  onError() );
 
 private:
-    FunctionType _onListen;
+    void Function(MultiStreamController<T> ) _onListen;
 
 
-     _MultiStream(FunctionType _onListen, bool isBroadcast);
-
+     _MultiStreamCls(void Function(MultiStreamController<T> ) _onListen, bool isBroadcast);
 };
+template<typename T> using _MultiStream = std::shared_ptr<_MultiStreamCls<T>>;
 
-class _MultiStreamController<T> : _AsyncStreamController<T> {
+template<typename T> class _MultiStreamControllerCls : public _AsyncStreamControllerCls<T> {
 public:
 
-    void addSync(T data);
+    virtual void addSync(T data);
 
-    void addErrorSync(Object error, StackTrace stackTrace);
+    virtual void addErrorSync(Object error, StackTrace stackTrace);
 
-    void closeSync();
+    virtual void closeSync();
 
-    Stream<T> stream();
+    virtual Stream<T> stream();
 
 private:
 
-     _MultiStreamController();
+     _MultiStreamControllerCls();
 
 };
+template<typename T> using _MultiStreamController = std::shared_ptr<_MultiStreamControllerCls<T>>;
+
 
 #endif

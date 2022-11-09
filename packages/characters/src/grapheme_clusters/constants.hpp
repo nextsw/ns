@@ -1,88 +1,89 @@
-#ifndef CONSTANTS_H
-#define CONSTANTS_H
-#include <memory>
+#ifndef PACKAGES_CHARACTERS_SRC_GRAPHEME_CLUSTERS_CONSTANTS
+#define PACKAGES_CHARACTERS_SRC_GRAPHEME_CLUSTERS_CONSTANTS
+#include <base.hpp>
 
+#include <dart/core/core.hpp>
 
+int categoryCR;
 
-const int categoryCR;
+int categoryZWJ;
 
-const int categoryZWJ;
+int categoryControl;
 
-const int categoryControl;
+int categoryOther;
 
-const int categoryOther;
+int categoryExtend;
 
-const int categoryExtend;
+int categorySpacingMark;
 
-const int categorySpacingMark;
+int categoryRegionalIndicator;
 
-const int categoryRegionalIndicator;
+int categoryPictographic;
 
-const int categoryPictographic;
+int categoryLF;
 
-const int categoryLF;
+int categoryPrepend;
 
-const int categoryPrepend;
+int categoryL;
 
-const int categoryL;
+int categoryV;
 
-const int categoryV;
+int categoryT;
 
-const int categoryT;
+int categoryLV;
 
-const int categoryLV;
+int categoryLVT;
 
-const int categoryLVT;
+int categoryEoT;
 
-const int categoryEoT;
+int stateSoT;
 
-const int stateSoT;
+int stateBreak;
 
-const int stateBreak;
+int stateCR;
 
-const int stateCR;
+int stateOther;
 
-const int stateOther;
+int statePrepend;
 
-const int statePrepend;
+int stateL;
 
-const int stateL;
+int stateV;
 
-const int stateV;
+int stateT;
 
-const int stateT;
+int statePictographic;
 
-const int statePictographic;
+int statePictographicZWJ;
 
-const int statePictographicZWJ;
+int stateRegionalSingle;
 
-const int stateRegionalSingle;
+int stateSoTNoBreak;
 
-const int stateSoTNoBreak;
+int stateNoBreak;
 
-const int stateNoBreak;
+int categorySoT;
 
-const int categorySoT;
+int stateEoT;
 
-const int stateEoT;
+int stateLF;
 
-const int stateLF;
+int stateExtend;
 
-const int stateExtend;
+int stateZWJPictographic;
 
-const int stateZWJPictographic;
+int stateEoTNoBreak;
 
-const int stateEoTNoBreak;
+int stateRegionalEven;
 
-const int stateRegionalEven;
+int stateRegionalOdd;
 
-const int stateRegionalOdd;
+int stateLookaheadMin;
 
-const int stateLookaheadMin;
+int stateRegionalLookahead;
 
-const int stateRegionalLookahead;
+int stateZWJPictographicLookahead;
 
-const int stateZWJPictographicLookahead;
 
 
 #endif

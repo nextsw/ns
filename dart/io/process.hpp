@@ -1,28 +1,23 @@
-#ifndef PROCESS_H
-#define PROCESS_H
-#include <memory>
+#ifndef DART_IO_PROCESS
+#define DART_IO_PROCESS
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
 
 
-
-
-class _ProcessUtils {
+class _ProcessUtilsCls : public ObjectCls {
 public:
 
 private:
 
-    external static Never _exit(int status);
-
-    external static void _setExitCode(int status);
-
-    external static int _getExitCode();
-
-    external static void _sleep(int millis);
-
-    external static int _pid(Process process);
-
-    external static Stream<ProcessSignal> _watchSignal(ProcessSignal signal);
-
+    extern static Never _exit(int status);
+    extern static void _setExitCode(int status);
+    extern static int _getExitCode();
+    extern static void _sleep(int millis);
+    extern static int _pid(Process process);
+    extern static Stream<ProcessSignal> _watchSignal(ProcessSignal signal);
 };
+using _ProcessUtils = std::shared_ptr<_ProcessUtilsCls>;
 Never exit(int code);
 
 void exitCode(int code);
@@ -34,68 +29,58 @@ void sleep(Duration duration);
 int pid();
 
 
-class ProcessInfo {
+class ProcessInfoCls : public ObjectCls {
 public:
 
-    external static int currentRss();
-
-    external static int maxRss();
-
+    extern static int currentRss();
+    extern static int maxRss();
 private:
 
 };
+using ProcessInfo = std::shared_ptr<ProcessInfoCls>;
 
-class ProcessStartMode {
+class ProcessStartModeCls : public ObjectCls {
 public:
-    static const auto  normal;
+    static auto  normal;
 
-    static const auto  inheritStdio;
+    static auto  inheritStdio;
 
-    static const auto  detached;
+    static auto  detached;
 
-    static const auto  detachedWithStdio;
+    static auto  detachedWithStdio;
 
 
     static List<ProcessStartMode> values();
 
-    String toString();
+    virtual String toString();
 
 private:
     int _mode;
 
 
-    void  _internal(int _mode);
-
+    virtual void  _internal(int _mode);
 };
+using ProcessStartMode = std::shared_ptr<ProcessStartModeCls>;
 
-class Process {
+class ProcessCls : public ObjectCls {
 public:
 
-    Future<int> exitCode();
-
-    external static Future<Process> start(List<String> arguments, Map<String, String> environment, String executable, bool includeParentEnvironment, ProcessStartMode mode, bool runInShell, String workingDirectory);
-
-    external static Future<ProcessResult> run(List<String> arguments, Map<String, String> environment, String executable, bool includeParentEnvironment, bool runInShell, Encoding stderrEncoding, Encoding stdoutEncoding, String workingDirectory);
-
-    external static ProcessResult runSync(List<String> arguments, Map<String, String> environment, String executable, bool includeParentEnvironment, bool runInShell, Encoding stderrEncoding, Encoding stdoutEncoding, String workingDirectory);
-
-    external static bool killPid(int pid, ProcessSignal signal);
-
-    Stream<List<int>> stdout();
-
-    Stream<List<int>> stderr();
-
-    IOSink stdin();
-
-    int pid();
-
-    bool kill(ProcessSignal signal);
-
+    virtual Future<int> exitCode();
+    extern static Future<Process> start(List<String> arguments, Map<String, String> environment, String executable, bool includeParentEnvironment, ProcessStartMode mode, bool runInShell, String workingDirectory);
+    extern static Future<ProcessResult> run(List<String> arguments, Map<String, String> environment, String executable, bool includeParentEnvironment, bool runInShell, Encoding stderrEncoding, Encoding stdoutEncoding, String workingDirectory);
+    extern static ProcessResult runSync(List<String> arguments, Map<String, String> environment, String executable, bool includeParentEnvironment, bool runInShell, Encoding stderrEncoding, Encoding stdoutEncoding, String workingDirectory);
+    extern static bool killPid(int pid, ProcessSignal signal);
+    virtual Stream<List<int>> stdout();
+    virtual Stream<List<int>> stderr();
+    virtual IOSink stdin();
+    virtual int pid();
+    virtual bool kill(ProcessSignal signal);
 private:
 
 };
+using Process = std::shared_ptr<ProcessCls>;
 
-class ProcessResult {
+class ProcessResultCls : public ObjectCls {
 public:
     int exitCode;
 
@@ -106,76 +91,76 @@ public:
     int pid;
 
 
-     ProcessResult(int exitCode, int pid, Unknown stderr, Unknown stdout);
-
+     ProcessResultCls(int exitCode, int pid, Unknown stderr, Unknown stdout);
 private:
 
 };
+using ProcessResult = std::shared_ptr<ProcessResultCls>;
 
-class ProcessSignal {
+class ProcessSignalCls : public ObjectCls {
 public:
-    static const ProcessSignal sighup;
+    static ProcessSignal sighup;
 
-    static const ProcessSignal sigint;
+    static ProcessSignal sigint;
 
-    static const ProcessSignal sigquit;
+    static ProcessSignal sigquit;
 
-    static const ProcessSignal sigill;
+    static ProcessSignal sigill;
 
-    static const ProcessSignal sigtrap;
+    static ProcessSignal sigtrap;
 
-    static const ProcessSignal sigabrt;
+    static ProcessSignal sigabrt;
 
-    static const ProcessSignal sigbus;
+    static ProcessSignal sigbus;
 
-    static const ProcessSignal sigfpe;
+    static ProcessSignal sigfpe;
 
-    static const ProcessSignal sigkill;
+    static ProcessSignal sigkill;
 
-    static const ProcessSignal sigusr1;
+    static ProcessSignal sigusr1;
 
-    static const ProcessSignal sigsegv;
+    static ProcessSignal sigsegv;
 
-    static const ProcessSignal sigusr2;
+    static ProcessSignal sigusr2;
 
-    static const ProcessSignal sigpipe;
+    static ProcessSignal sigpipe;
 
-    static const ProcessSignal sigalrm;
+    static ProcessSignal sigalrm;
 
-    static const ProcessSignal sigterm;
+    static ProcessSignal sigterm;
 
-    static const ProcessSignal sigchld;
+    static ProcessSignal sigchld;
 
-    static const ProcessSignal sigcont;
+    static ProcessSignal sigcont;
 
-    static const ProcessSignal sigstop;
+    static ProcessSignal sigstop;
 
-    static const ProcessSignal sigtstp;
+    static ProcessSignal sigtstp;
 
-    static const ProcessSignal sigttin;
+    static ProcessSignal sigttin;
 
-    static const ProcessSignal sigttou;
+    static ProcessSignal sigttou;
 
-    static const ProcessSignal sigurg;
+    static ProcessSignal sigurg;
 
-    static const ProcessSignal sigxcpu;
+    static ProcessSignal sigxcpu;
 
-    static const ProcessSignal sigxfsz;
+    static ProcessSignal sigxfsz;
 
-    static const ProcessSignal sigvtalrm;
+    static ProcessSignal sigvtalrm;
 
-    static const ProcessSignal sigprof;
+    static ProcessSignal sigprof;
 
-    static const ProcessSignal sigwinch;
+    static ProcessSignal sigwinch;
 
-    static const ProcessSignal sigpoll;
+    static ProcessSignal sigpoll;
 
-    static const ProcessSignal sigsys;
+    static ProcessSignal sigsys;
 
 
-    String toString();
+    virtual String toString();
 
-    Stream<ProcessSignal> watch();
+    virtual Stream<ProcessSignal> watch();
 
 private:
     int _signalNumber;
@@ -183,26 +168,26 @@ private:
     String _name;
 
 
-    void  _(String _name, int _signalNumber);
-
+    virtual void  _(String _name, int _signalNumber);
 };
+using ProcessSignal = std::shared_ptr<ProcessSignalCls>;
 
-class SignalException {
+class SignalExceptionCls : public ObjectCls {
 public:
     String message;
 
     auto  osError;
 
 
-     SignalException(String message, Unknown osError);
-
-    String toString();
+     SignalExceptionCls(String message, Unknown osError);
+    virtual String toString();
 
 private:
 
 };
+using SignalException = std::shared_ptr<SignalExceptionCls>;
 
-class ProcessException {
+class ProcessExceptionCls : public ObjectCls {
 public:
     String executable;
 
@@ -213,12 +198,13 @@ public:
     int errorCode;
 
 
-     ProcessException(List<String> arguments, int errorCode, String executable, String message);
-
-    String toString();
+     ProcessExceptionCls(List<String> arguments, int errorCode, String executable, String message);
+    virtual String toString();
 
 private:
 
 };
+using ProcessException = std::shared_ptr<ProcessExceptionCls>;
+
 
 #endif

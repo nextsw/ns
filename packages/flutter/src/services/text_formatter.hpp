@@ -1,14 +1,14 @@
-#ifndef TEXT_FORMATTER_H
-#define TEXT_FORMATTER_H
-#include <memory>
-#include <flutter/foundation.hpp>
+#ifndef PACKAGES_FLUTTER_SRC_SERVICES_TEXT_FORMATTER
+#define PACKAGES_FLUTTER_SRC_SERVICES_TEXT_FORMATTER
+#include <base.hpp>
+#include <packages/flutter/lib/foundation.hpp>
 #include "text_input.hpp"
 
-#include <math/math.hpp>
-#include <characters/characters.hpp>
-#include <flutter/foundation.hpp>
+#include <dart/core/core.hpp>
+#include <dart/math/math.hpp>
+#include <packages/characters/characters.hpp>
+#include <packages/flutter/lib/foundation.hpp>
 #include "text_input.hpp"
-
 
 
 enum MaxLengthEnforcement{
@@ -17,31 +17,32 @@ enum MaxLengthEnforcement{
     truncateAfterCompositionEnds,
 } // end MaxLengthEnforcement
 
-class TextInputFormatter {
+class TextInputFormatterCls : public ObjectCls {
 public:
 
-    TextEditingValue formatEditUpdate(TextEditingValue newValue, TextEditingValue oldValue);
-
+    virtual TextEditingValue formatEditUpdate(TextEditingValue newValue, TextEditingValue oldValue);
     static TextInputFormatter withFunction(TextInputFormatFunction formatFunction);
 
 private:
 
 };
+using TextInputFormatter = std::shared_ptr<TextInputFormatterCls>;
 
-class _SimpleTextInputFormatter : TextInputFormatter {
+class _SimpleTextInputFormatterCls : public TextInputFormatterCls {
 public:
     TextInputFormatFunction formatFunction;
 
 
-    TextEditingValue formatEditUpdate(TextEditingValue newValue, TextEditingValue oldValue);
+    virtual TextEditingValue formatEditUpdate(TextEditingValue newValue, TextEditingValue oldValue);
 
 private:
 
-     _SimpleTextInputFormatter(TextInputFormatFunction formatFunction);
+     _SimpleTextInputFormatterCls(TextInputFormatFunction formatFunction);
 
 };
+using _SimpleTextInputFormatter = std::shared_ptr<_SimpleTextInputFormatterCls>;
 
-class _MutableTextRange {
+class _MutableTextRangeCls : public ObjectCls {
 public:
     int base;
 
@@ -54,11 +55,11 @@ public:
 
 private:
 
-     _MutableTextRange(int base, int extent);
-
+     _MutableTextRangeCls(int base, int extent);
 };
+using _MutableTextRange = std::shared_ptr<_MutableTextRangeCls>;
 
-class _TextEditingValueAccumulator {
+class _TextEditingValueAccumulatorCls : public ObjectCls {
 public:
     TextEditingValue inputValue;
 
@@ -71,15 +72,16 @@ public:
     bool debugFinalized;
 
 
-    TextEditingValue finalize();
+    virtual TextEditingValue finalize();
 
 private:
 
-     _TextEditingValueAccumulator(TextEditingValue inputValue);
+     _TextEditingValueAccumulatorCls(TextEditingValue inputValue);
 
 };
+using _TextEditingValueAccumulator = std::shared_ptr<_TextEditingValueAccumulatorCls>;
 
-class FilteringTextInputFormatter : TextInputFormatter {
+class FilteringTextInputFormatterCls : public TextInputFormatterCls {
 public:
     Pattern filterPattern;
 
@@ -92,37 +94,40 @@ public:
     static TextInputFormatter digitsOnly;
 
 
-     FilteringTextInputFormatter(bool allow, Pattern filterPattern, String replacementString);
+     FilteringTextInputFormatterCls(bool allow, Pattern filterPattern, String replacementString);
 
-    void  allow(Pattern filterPattern, String replacementString);
+    virtual void  allow(Pattern filterPattern, String replacementString);
 
-    void  deny(Pattern filterPattern, String replacementString);
+    virtual void  deny(Pattern filterPattern, String replacementString);
 
-    TextEditingValue formatEditUpdate(TextEditingValue newValue, TextEditingValue oldValue);
+    virtual TextEditingValue formatEditUpdate(TextEditingValue newValue, TextEditingValue oldValue);
 
 private:
 
-    void _processRegion(bool isBannedRegion, int regionEnd, int regionStart, _TextEditingValueAccumulator state);
+    virtual void _processRegion(bool isBannedRegion, int regionEnd, int regionStart, _TextEditingValueAccumulator state);
 
 };
+using FilteringTextInputFormatter = std::shared_ptr<FilteringTextInputFormatterCls>;
 
-class LengthLimitingTextInputFormatter : TextInputFormatter {
+class LengthLimitingTextInputFormatterCls : public TextInputFormatterCls {
 public:
     int maxLength;
 
     MaxLengthEnforcement maxLengthEnforcement;
 
 
-     LengthLimitingTextInputFormatter(int maxLength, MaxLengthEnforcement maxLengthEnforcement);
+     LengthLimitingTextInputFormatterCls(int maxLength, MaxLengthEnforcement maxLengthEnforcement);
 
     static MaxLengthEnforcement getDefaultMaxLengthEnforcement(TargetPlatform platform);
 
     static TextEditingValue truncate(int maxLength, TextEditingValue value);
 
-    TextEditingValue formatEditUpdate(TextEditingValue newValue, TextEditingValue oldValue);
+    virtual TextEditingValue formatEditUpdate(TextEditingValue newValue, TextEditingValue oldValue);
 
 private:
 
 };
+using LengthLimitingTextInputFormatter = std::shared_ptr<LengthLimitingTextInputFormatterCls>;
+
 
 #endif

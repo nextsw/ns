@@ -1,74 +1,74 @@
 #include "binding.hpp"
-void PaintingBinding::initInstances() {
-    super.initInstances();
+void PaintingBindingCls::initInstances() {
+    super->initInstances();
     _instance = this;
     _imageCache = createImageCache();
-    shaderWarmUp?.execute();
+    shaderWarmUp?->execute();
 }
 
-PaintingBinding PaintingBinding::instance() {
-    return BindingBase.checkInstance(_instance);
+PaintingBinding PaintingBindingCls::instance() {
+    return BindingBaseCls->checkInstance(_instance);
 }
 
-ImageCache PaintingBinding::imageCache() {
+ImageCache PaintingBindingCls::imageCache() {
     return _imageCache;
 }
 
-ImageCache PaintingBinding::createImageCache() {
-    return ImageCache();
+ImageCache PaintingBindingCls::createImageCache() {
+    return make<ImageCacheCls>();
 }
 
-Future<Codec> PaintingBinding::instantiateImageCodec(bool allowUpscaling, Uint8List bytes, int cacheHeight, int cacheWidth) {
+Future<Codec> PaintingBindingCls::instantiateImageCodec(bool allowUpscaling, Uint8List bytes, int cacheHeight, int cacheWidth) {
     assert(cacheWidth == nullptr || cacheWidth > 0);
     assert(cacheHeight == nullptr || cacheHeight > 0);
     assert(allowUpscaling != nullptr);
-    return ui.instantiateImageCodec(bytescacheWidth, cacheHeight, allowUpscaling);
+    return ui->instantiateImageCodec(bytescacheWidth, cacheHeight, allowUpscaling);
 }
 
-Future<Codec> PaintingBinding::instantiateImageCodecFromBuffer(bool allowUpscaling, ImmutableBuffer buffer, int cacheHeight, int cacheWidth) {
+Future<Codec> PaintingBindingCls::instantiateImageCodecFromBuffer(bool allowUpscaling, ImmutableBuffer buffer, int cacheHeight, int cacheWidth) {
     assert(cacheWidth == nullptr || cacheWidth > 0);
     assert(cacheHeight == nullptr || cacheHeight > 0);
     assert(allowUpscaling != nullptr);
-    return ui.instantiateImageCodecFromBuffer(buffercacheWidth, cacheHeight, allowUpscaling);
+    return ui->instantiateImageCodecFromBuffer(buffercacheWidth, cacheHeight, allowUpscaling);
 }
 
-void PaintingBinding::evict(String asset) {
-    super.evict(asset);
-    imageCache.clear();
-    imageCache.clearLiveImages();
+void PaintingBindingCls::evict(String asset) {
+    super->evict(asset);
+    imageCache->clear();
+    imageCache->clearLiveImages();
 }
 
-void PaintingBinding::handleMemoryPressure() {
-    super.handleMemoryPressure();
-    imageCache.clear();
+void PaintingBindingCls::handleMemoryPressure() {
+    super->handleMemoryPressure();
+    imageCache->clear();
 }
 
-Listenable PaintingBinding::systemFonts() {
+Listenable PaintingBindingCls::systemFonts() {
     return _systemFonts;
 }
 
-Future<void> PaintingBinding::handleSystemMessage(Object systemMessage) {
-    await await super.handleSystemMessage(systemMessage);
-    Map<String, dynamic> message = (;
-    String type = (;
+Future<void> PaintingBindingCls::handleSystemMessage(Object systemMessage) {
+    await await super->handleSystemMessage(systemMessage);
+    Map<String, dynamic> message = ((Map<String, dynamic>)systemMessage);
+    String type = ((String)message["type"]);
     ;
     return;
 }
 
-void _SystemFontsNotifier::notifyListeners() {
+void _SystemFontsNotifierCls::notifyListeners() {
     for (VoidCallback callback : _systemFontsCallbacks) {
         callback();
     }
 }
 
-void _SystemFontsNotifier::addListener(VoidCallback listener) {
-    _systemFontsCallbacks.add(listener);
+void _SystemFontsNotifierCls::addListener(VoidCallback listener) {
+    _systemFontsCallbacks->add(listener);
 }
 
-void _SystemFontsNotifier::removeListener(VoidCallback listener) {
-    _systemFontsCallbacks.remove(listener);
+void _SystemFontsNotifierCls::removeListener(VoidCallback listener) {
+    _systemFontsCallbacks->remove(listener);
 }
 
 ImageCache imageCache() {
-    return PaintingBinding.instance.imageCache;
+    return PaintingBindingCls::instance->imageCache;
 }

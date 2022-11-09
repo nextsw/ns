@@ -1,78 +1,66 @@
-#ifndef SECURE_SOCKET_H
-#define SECURE_SOCKET_H
-#include <memory>
+#ifndef DART_IO_SECURE_SOCKET
+#define DART_IO_SECURE_SOCKET
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
 
 
-
-
-class SecureSocket {
+class SecureSocketCls : public ObjectCls {
 public:
 
-    static Future<SecureSocket> connect(host , SecurityContext context, FunctionType keyLog, FunctionType onBadCertificate, int port, List<String> supportedProtocols, Duration timeout);
+    static Future<SecureSocket> connect(host , SecurityContext context, void keyLog(String line) , bool onBadCertificate(X509Certificate certificate) , int port, List<String> supportedProtocols, Duration timeout);
 
-    static Future<ConnectionTask<SecureSocket>> startConnect(host , SecurityContext context, FunctionType keyLog, FunctionType onBadCertificate, int port, List<String> supportedProtocols);
+    static Future<ConnectionTask<SecureSocket>> startConnect(host , SecurityContext context, void keyLog(String line) , bool onBadCertificate(X509Certificate certificate) , int port, List<String> supportedProtocols);
 
-    static Future<SecureSocket> secure(host , SecurityContext context, FunctionType keyLog, FunctionType onBadCertificate, Socket socket, List<String> supportedProtocols);
+    static Future<SecureSocket> secure(host , SecurityContext context, void keyLog(String line) , bool onBadCertificate(X509Certificate certificate) , Socket socket, List<String> supportedProtocols);
 
     static Future<SecureSocket> secureServer(List<int> bufferedData, SecurityContext context, bool requestClientCertificate, bool requireClientCertificate, Socket socket, List<String> supportedProtocols);
 
-    X509Certificate peerCertificate();
-
-    String selectedProtocol();
-
-    void renegotiate(bool requestClientCertificate, bool requireClientCertificate, bool useSessionCache);
-
+    virtual X509Certificate peerCertificate();
+    virtual String selectedProtocol();
+    virtual void renegotiate(bool requestClientCertificate, bool requireClientCertificate, bool useSessionCache);
 private:
 
-    external void  _(RawSecureSocket rawSocket);
-
+    extern void  _(RawSecureSocket rawSocket);
 };
+using SecureSocket = std::shared_ptr<SecureSocketCls>;
 
-class RawSecureSocket {
+class RawSecureSocketCls : public ObjectCls {
 public:
 
-    static Future<RawSecureSocket> connect(host , SecurityContext context, FunctionType keyLog, FunctionType onBadCertificate, int port, List<String> supportedProtocols, Duration timeout);
+    static Future<RawSecureSocket> connect(host , SecurityContext context, void keyLog(String line) , bool onBadCertificate(X509Certificate certificate) , int port, List<String> supportedProtocols, Duration timeout);
 
-    static Future<ConnectionTask<RawSecureSocket>> startConnect(host , SecurityContext context, FunctionType keyLog, FunctionType onBadCertificate, int port, List<String> supportedProtocols);
+    static Future<ConnectionTask<RawSecureSocket>> startConnect(host , SecurityContext context, void keyLog(String line) , bool onBadCertificate(X509Certificate certificate) , int port, List<String> supportedProtocols);
 
-    static Future<RawSecureSocket> secure(host , SecurityContext context, FunctionType keyLog, FunctionType onBadCertificate, RawSocket socket, StreamSubscription<RawSocketEvent> subscription, List<String> supportedProtocols);
+    static Future<RawSecureSocket> secure(host , SecurityContext context, void keyLog(String line) , bool onBadCertificate(X509Certificate certificate) , RawSocket socket, StreamSubscription<RawSocketEvent> subscription, List<String> supportedProtocols);
 
     static Future<RawSecureSocket> secureServer(List<int> bufferedData, SecurityContext context, bool requestClientCertificate, bool requireClientCertificate, RawSocket socket, StreamSubscription<RawSocketEvent> subscription, List<String> supportedProtocols);
 
-    void renegotiate(bool requestClientCertificate, bool requireClientCertificate, bool useSessionCache);
-
-    X509Certificate peerCertificate();
-
-    String selectedProtocol();
-
+    virtual void renegotiate(bool requestClientCertificate, bool requireClientCertificate, bool useSessionCache);
+    virtual X509Certificate peerCertificate();
+    virtual String selectedProtocol();
 private:
 
 };
+using RawSecureSocket = std::shared_ptr<RawSecureSocketCls>;
 
-class X509Certificate {
+class X509CertificateCls : public ObjectCls {
 public:
 
-    Uint8List der();
-
-    String pem();
-
-    Uint8List sha1();
-
-    String subject();
-
-    String issuer();
-
-    DateTime startValidity();
-
-    DateTime endValidity();
-
+    virtual Uint8List der();
+    virtual String pem();
+    virtual Uint8List sha1();
+    virtual String subject();
+    virtual String issuer();
+    virtual DateTime startValidity();
+    virtual DateTime endValidity();
 private:
 
-    external void  _();
-
+    extern void  _();
 };
+using X509Certificate = std::shared_ptr<X509CertificateCls>;
 
-class _FilterStatus {
+class _FilterStatusCls : public ObjectCls {
 public:
     bool progress;
 
@@ -91,27 +79,27 @@ public:
 
 private:
 
-     _FilterStatus();
-
+     _FilterStatusCls();
 };
+using _FilterStatus = std::shared_ptr<_FilterStatusCls>;
 
-class _RawSecureSocket : Stream<RawSocketEvent> {
+class _RawSecureSocketCls : public StreamCls<RawSocketEvent> {
 public:
-    static const int handshakeStatus;
+    static int handshakeStatus;
 
-    static const int connectedStatus;
+    static int connectedStatus;
 
-    static const int closedStatus;
+    static int closedStatus;
 
-    static const int readPlaintextId;
+    static int readPlaintextId;
 
-    static const int writePlaintextId;
+    static int writePlaintextId;
 
-    static const int readEncryptedId;
+    static int readEncryptedId;
 
-    static const int writeEncryptedId;
+    static int writeEncryptedId;
 
-    static const int bufferCount;
+    static int bufferCount;
 
     InternetAddress address;
 
@@ -123,56 +111,56 @@ public:
 
     bool requireClientCertificate;
 
-    FunctionType onBadCertificate;
+    bool Function(X509Certificate certificate) onBadCertificate;
 
-    FunctionType keyLog;
+    void Function(String line) keyLog;
 
     ReceivePort keyLogPort;
 
 
-    static Future<_RawSecureSocket> connect(List<int> bufferedData, SecurityContext context, dynamic host, bool isServer, FunctionType keyLog, FunctionType onBadCertificate, bool requestClientCertificate, int requestedPort, bool requireClientCertificate, RawSocket socket, StreamSubscription<RawSocketEvent> subscription, List<String> supportedProtocols);
+    static Future<_RawSecureSocket> connect(List<int> bufferedData, SecurityContext context, dynamic host, bool isServer, void keyLog(String line) , bool onBadCertificate(X509Certificate certificate) , bool requestClientCertificate, int requestedPort, bool requireClientCertificate, RawSocket socket, StreamSubscription<RawSocketEvent> subscription, List<String> supportedProtocols);
 
-    StreamSubscription<RawSocketEvent> listen(bool cancelOnError, FunctionType onData, FunctionType onDone, FunctionType onError);
+    virtual StreamSubscription<RawSocketEvent> listen(bool cancelOnError, void onData(RawSocketEvent data) , void onDone() , void  onError() );
 
-    int port();
+    virtual int port();
 
-    InternetAddress remoteAddress();
+    virtual InternetAddress remoteAddress();
 
-    int remotePort();
+    virtual int remotePort();
 
-    int available();
+    virtual int available();
 
-    Future<RawSecureSocket> close();
+    virtual Future<RawSecureSocket> close();
 
-    void shutdown(SocketDirection direction);
+    virtual void shutdown(SocketDirection direction);
 
-    bool writeEventsEnabled();
+    virtual bool writeEventsEnabled();
 
-    void writeEventsEnabled(bool value);
+    virtual void writeEventsEnabled(bool value);
 
-    bool readEventsEnabled();
+    virtual bool readEventsEnabled();
 
-    void readEventsEnabled(bool value);
+    virtual void readEventsEnabled(bool value);
 
-    Uint8List read(int length);
+    virtual Uint8List read(int length);
 
-    SocketMessage readMessage(int count);
+    virtual SocketMessage readMessage(int count);
 
-    int write(int bytes, List<int> data, int offset);
+    virtual int write(int bytes, List<int> data, int offset);
 
-    int sendMessage(List<SocketControlMessage> controlMessages, int count, List<int> data, int offset);
+    virtual int sendMessage(List<SocketControlMessage> controlMessages, int count, List<int> data, int offset);
 
-    X509Certificate peerCertificate();
+    virtual X509Certificate peerCertificate();
 
-    String selectedProtocol();
+    virtual String selectedProtocol();
 
-    bool setOption(bool enabled, SocketOption option);
+    virtual bool setOption(bool enabled, SocketOption option);
 
-    Uint8List getRawOption(RawSocketOption option);
+    virtual Uint8List getRawOption(RawSocketOption option);
 
-    void setRawOption(RawSocketOption option);
+    virtual void setRawOption(RawSocketOption option);
 
-    void renegotiate(bool requestClientCertificate, bool requireClientCertificate, bool useSessionCache);
+    virtual void renegotiate(bool requestClientCertificate, bool requireClientCertificate, bool useSessionCache);
 
 private:
     RawSocket _socket;
@@ -222,61 +210,62 @@ private:
 
     static bool _isBufferEncrypted(int identifier);
 
-     _RawSecureSocket(List<int> _bufferedData, RawSocket _socket, InternetAddress address, SecurityContext context, bool isServer, FunctionType keyLog, FunctionType onBadCertificate, bool requestClientCertificate, int requestedPort, bool requireClientCertificate, StreamSubscription<RawSocketEvent> subscription, List<String> supportedProtocols);
+     _RawSecureSocketCls(List<int> _bufferedData, RawSocket _socket, InternetAddress address, SecurityContext context, bool isServer, void Function(String line) keyLog, bool Function(X509Certificate certificate) onBadCertificate, bool requestClientCertificate, int requestedPort, bool requireClientCertificate, StreamSubscription<RawSocketEvent> subscription, List<String> supportedProtocols);
 
     static void _verifyFields(host , bool requestClientCertificate, int requestedPort, bool requireClientCertificate);
 
-    void _owner(owner );
+    virtual void _owner(owner );
 
-    void _completeCloseCompleter(RawSocket dummy);
+    virtual void _completeCloseCompleter(RawSocket dummy);
 
-    void _close();
+    virtual void _close();
 
     static int _fixOffset(int offset);
 
-    bool _onBadCertificateWrapper(X509Certificate certificate);
+    virtual bool _onBadCertificateWrapper(X509Certificate certificate);
 
-    void _eventDispatcher(RawSocketEvent event);
+    virtual void _eventDispatcher(RawSocketEvent event);
 
-    void _readHandler();
+    virtual void _readHandler();
 
-    void _writeHandler();
+    virtual void _writeHandler();
 
-    void _doneHandler();
+    virtual void _doneHandler();
 
-    void _reportError(e , StackTrace stackTrace);
+    virtual void _reportError(e , StackTrace stackTrace);
 
-    void _closeHandler();
+    virtual void _closeHandler();
 
-    Future<void> _secureHandshake();
+    virtual Future<void> _secureHandshake();
 
-    void _secureHandshakeCompleteHandler();
+    virtual void _secureHandshakeCompleteHandler();
 
-    void _onPauseStateChange();
+    virtual void _onPauseStateChange();
 
-    void _onSubscriptionStateChange();
+    virtual void _onSubscriptionStateChange();
 
-    Future<void> _scheduleFilter();
+    virtual Future<void> _scheduleFilter();
 
-    Future<void> _tryFilter();
+    virtual Future<void> _tryFilter();
 
-    List<int> _readSocketOrBufferedData(int bytes);
+    virtual List<int> _readSocketOrBufferedData(int bytes);
 
-    void _readSocket();
+    virtual void _readSocket();
 
-    void _writeSocket();
+    virtual void _writeSocket();
 
-    void  _scheduleReadEvent();
+    virtual void  _scheduleReadEvent();
 
-    void  _sendReadEvent();
+    virtual void  _sendReadEvent();
 
-    void  _sendWriteEvent();
+    virtual void  _sendWriteEvent();
 
-    Future<_FilterStatus> _pushAllFilterStages();
+    virtual Future<_FilterStatus> _pushAllFilterStages();
 
 };
+using _RawSecureSocket = std::shared_ptr<_RawSecureSocketCls>;
 
-class _ExternalBuffer {
+class _ExternalBufferCls : public ObjectCls {
 public:
     List<int> data;
 
@@ -287,70 +276,58 @@ public:
     int size;
 
 
-    void advanceStart(int bytes);
+    virtual void advanceStart(int bytes);
 
-    void advanceEnd(int bytes);
+    virtual void advanceEnd(int bytes);
 
-    bool isEmpty();
+    virtual bool isEmpty();
 
-    int length();
+    virtual int length();
 
-    int linearLength();
+    virtual int linearLength();
 
-    int free();
+    virtual int free();
 
-    int linearFree();
+    virtual int linearFree();
 
-    Uint8List read(int bytes);
+    virtual Uint8List read(int bytes);
 
-    int write(int bytes, List<int> inputData, int offset);
+    virtual int write(int bytes, List<int> inputData, int offset);
 
-    int writeFromSource(FunctionType getData);
+    virtual int writeFromSource(List<int> getData(int requested) );
 
-    bool readToSocket(RawSocket socket);
+    virtual bool readToSocket(RawSocket socket);
 
 private:
 
-     _ExternalBuffer(int size);
+     _ExternalBufferCls(int size);
 
 };
+using _ExternalBuffer = std::shared_ptr<_ExternalBufferCls>;
 
-class _SecureFilter {
+class _SecureFilterCls : public ObjectCls {
 public:
 
-    void connect(SecurityContext context, String hostName, bool isServer, Uint8List protocols, bool requestClientCertificate, bool requireClientCertificate);
-
-    void destroy();
-
-    Future<bool> handshake();
-
-    String selectedProtocol();
-
-    void rehandshake();
-
-    void init();
-
-    X509Certificate peerCertificate();
-
-    int processBuffer(int bufferIndex);
-
-    void registerBadCertificateCallback(FunctionType callback);
-
-    void registerHandshakeCompleteCallback(FunctionType handshakeCompleteHandler);
-
-    void registerKeyLogPort(SendPort port);
-
-    List<_ExternalBuffer> buffers();
-
+    virtual void connect(SecurityContext context, String hostName, bool isServer, Uint8List protocols, bool requestClientCertificate, bool requireClientCertificate);
+    virtual void destroy();
+    virtual Future<bool> handshake();
+    virtual String selectedProtocol();
+    virtual void rehandshake();
+    virtual void init();
+    virtual X509Certificate peerCertificate();
+    virtual int processBuffer(int bufferIndex);
+    virtual void registerBadCertificateCallback(void  callback() );
+    virtual void registerHandshakeCompleteCallback(void  handshakeCompleteHandler() );
+    virtual void registerKeyLogPort(SendPort port);
+    virtual List<_ExternalBuffer> buffers();
 private:
 
-    external void  _();
-
-    int _pointer();
-
+    extern void  _();
+    virtual int _pointer();
 };
+using _SecureFilter = std::shared_ptr<_SecureFilterCls>;
 
-class TlsException {
+class TlsExceptionCls : public ObjectCls {
 public:
     String type;
 
@@ -359,32 +336,35 @@ public:
     OSError osError;
 
 
-     TlsException(String message, OSError osError);
+     TlsExceptionCls(String message, OSError osError);
 
-    String toString();
+    virtual String toString();
 
 private:
 
-    void  _(String message, OSError osError, String type);
-
+    virtual void  _(String message, OSError osError, String type);
 };
+using TlsException = std::shared_ptr<TlsExceptionCls>;
 
-class HandshakeException : TlsException {
+class HandshakeExceptionCls : public TlsExceptionCls {
 public:
 
-     HandshakeException(String message, OSError osError);
+     HandshakeExceptionCls(String message, OSError osError);
 
 private:
 
 };
+using HandshakeException = std::shared_ptr<HandshakeExceptionCls>;
 
-class CertificateException : TlsException {
+class CertificateExceptionCls : public TlsExceptionCls {
 public:
 
-     CertificateException(String message, OSError osError);
+     CertificateExceptionCls(String message, OSError osError);
 
 private:
 
 };
+using CertificateException = std::shared_ptr<CertificateExceptionCls>;
+
 
 #endif

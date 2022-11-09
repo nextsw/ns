@@ -1,352 +1,352 @@
 #include "unmodifiable_typed_data.hpp"
-UnmodifiableByteBufferView::UnmodifiableByteBufferView(ByteBuffer data) {
+UnmodifiableByteBufferViewCls::UnmodifiableByteBufferViewCls(ByteBuffer data) {
     {
         _data = data;
     }
 }
 
-int UnmodifiableByteBufferView::lengthInBytes() {
-    return _data.lengthInBytes;
+int UnmodifiableByteBufferViewCls::lengthInBytes() {
+    return _data->lengthInBytes;
 }
 
-Uint8List UnmodifiableByteBufferView::asUint8List(int length, int offsetInBytes) {
-    return UnmodifiableUint8ListView(_data.asUint8List(offsetInBytes, length));
+Uint8List UnmodifiableByteBufferViewCls::asUint8List(int length, int offsetInBytes) {
+    return make<UnmodifiableUint8ListViewCls>(_data->asUint8List(offsetInBytes, length));
 }
 
-Int8List UnmodifiableByteBufferView::asInt8List(int length, int offsetInBytes) {
-    return UnmodifiableInt8ListView(_data.asInt8List(offsetInBytes, length));
+Int8List UnmodifiableByteBufferViewCls::asInt8List(int length, int offsetInBytes) {
+    return make<UnmodifiableInt8ListViewCls>(_data->asInt8List(offsetInBytes, length));
 }
 
-Uint8ClampedList UnmodifiableByteBufferView::asUint8ClampedList(int length, int offsetInBytes) {
-    return UnmodifiableUint8ClampedListView(_data.asUint8ClampedList(offsetInBytes, length));
+Uint8ClampedList UnmodifiableByteBufferViewCls::asUint8ClampedList(int length, int offsetInBytes) {
+    return make<UnmodifiableUint8ClampedListViewCls>(_data->asUint8ClampedList(offsetInBytes, length));
 }
 
-Uint16List UnmodifiableByteBufferView::asUint16List(int length, int offsetInBytes) {
-    return UnmodifiableUint16ListView(_data.asUint16List(offsetInBytes, length));
+Uint16List UnmodifiableByteBufferViewCls::asUint16List(int length, int offsetInBytes) {
+    return make<UnmodifiableUint16ListViewCls>(_data->asUint16List(offsetInBytes, length));
 }
 
-Int16List UnmodifiableByteBufferView::asInt16List(int length, int offsetInBytes) {
-    return UnmodifiableInt16ListView(_data.asInt16List(offsetInBytes, length));
+Int16List UnmodifiableByteBufferViewCls::asInt16List(int length, int offsetInBytes) {
+    return make<UnmodifiableInt16ListViewCls>(_data->asInt16List(offsetInBytes, length));
 }
 
-Uint32List UnmodifiableByteBufferView::asUint32List(int length, int offsetInBytes) {
-    return UnmodifiableUint32ListView(_data.asUint32List(offsetInBytes, length));
+Uint32List UnmodifiableByteBufferViewCls::asUint32List(int length, int offsetInBytes) {
+    return make<UnmodifiableUint32ListViewCls>(_data->asUint32List(offsetInBytes, length));
 }
 
-Int32List UnmodifiableByteBufferView::asInt32List(int length, int offsetInBytes) {
-    return UnmodifiableInt32ListView(_data.asInt32List(offsetInBytes, length));
+Int32List UnmodifiableByteBufferViewCls::asInt32List(int length, int offsetInBytes) {
+    return make<UnmodifiableInt32ListViewCls>(_data->asInt32List(offsetInBytes, length));
 }
 
-Uint64List UnmodifiableByteBufferView::asUint64List(int length, int offsetInBytes) {
-    return UnmodifiableUint64ListView(_data.asUint64List(offsetInBytes, length));
+Uint64List UnmodifiableByteBufferViewCls::asUint64List(int length, int offsetInBytes) {
+    return make<UnmodifiableUint64ListViewCls>(_data->asUint64List(offsetInBytes, length));
 }
 
-Int64List UnmodifiableByteBufferView::asInt64List(int length, int offsetInBytes) {
-    return UnmodifiableInt64ListView(_data.asInt64List(offsetInBytes, length));
+Int64List UnmodifiableByteBufferViewCls::asInt64List(int length, int offsetInBytes) {
+    return make<UnmodifiableInt64ListViewCls>(_data->asInt64List(offsetInBytes, length));
 }
 
-Int32x4List UnmodifiableByteBufferView::asInt32x4List(int length, int offsetInBytes) {
-    return UnmodifiableInt32x4ListView(_data.asInt32x4List(offsetInBytes, length));
+Int32x4List UnmodifiableByteBufferViewCls::asInt32x4List(int length, int offsetInBytes) {
+    return make<UnmodifiableInt32x4ListViewCls>(_data->asInt32x4List(offsetInBytes, length));
 }
 
-Float32List UnmodifiableByteBufferView::asFloat32List(int length, int offsetInBytes) {
-    return UnmodifiableFloat32ListView(_data.asFloat32List(offsetInBytes, length));
+Float32List UnmodifiableByteBufferViewCls::asFloat32List(int length, int offsetInBytes) {
+    return make<UnmodifiableFloat32ListViewCls>(_data->asFloat32List(offsetInBytes, length));
 }
 
-Float64List UnmodifiableByteBufferView::asFloat64List(int length, int offsetInBytes) {
-    return UnmodifiableFloat64ListView(_data.asFloat64List(offsetInBytes, length));
+Float64List UnmodifiableByteBufferViewCls::asFloat64List(int length, int offsetInBytes) {
+    return make<UnmodifiableFloat64ListViewCls>(_data->asFloat64List(offsetInBytes, length));
 }
 
-Float32x4List UnmodifiableByteBufferView::asFloat32x4List(int length, int offsetInBytes) {
-    return UnmodifiableFloat32x4ListView(_data.asFloat32x4List(offsetInBytes, length));
+Float32x4List UnmodifiableByteBufferViewCls::asFloat32x4List(int length, int offsetInBytes) {
+    return make<UnmodifiableFloat32x4ListViewCls>(_data->asFloat32x4List(offsetInBytes, length));
 }
 
-Float64x2List UnmodifiableByteBufferView::asFloat64x2List(int length, int offsetInBytes) {
-    return UnmodifiableFloat64x2ListView(_data.asFloat64x2List(offsetInBytes, length));
+Float64x2List UnmodifiableByteBufferViewCls::asFloat64x2List(int length, int offsetInBytes) {
+    return make<UnmodifiableFloat64x2ListViewCls>(_data->asFloat64x2List(offsetInBytes, length));
 }
 
-ByteData UnmodifiableByteBufferView::asByteData(int length, int offsetInBytes) {
-    return UnmodifiableByteDataView(_data.asByteData(offsetInBytes, length));
+ByteData UnmodifiableByteBufferViewCls::asByteData(int length, int offsetInBytes) {
+    return make<UnmodifiableByteDataViewCls>(_data->asByteData(offsetInBytes, length));
 }
 
-UnmodifiableByteDataView::UnmodifiableByteDataView(ByteData data) {
+UnmodifiableByteDataViewCls::UnmodifiableByteDataViewCls(ByteData data) {
     {
         _data = data;
     }
 }
 
-int UnmodifiableByteDataView::getInt8(int byteOffset) {
-    return _data.getInt8(byteOffset);
+int UnmodifiableByteDataViewCls::getInt8(int byteOffset) {
+    return _data->getInt8(byteOffset);
 }
 
-void UnmodifiableByteDataView::setInt8(int byteOffset, int value) {
+void UnmodifiableByteDataViewCls::setInt8(int byteOffset, int value) {
     return _unsupported();
 }
 
-int UnmodifiableByteDataView::getUint8(int byteOffset) {
-    return _data.getUint8(byteOffset);
+int UnmodifiableByteDataViewCls::getUint8(int byteOffset) {
+    return _data->getUint8(byteOffset);
 }
 
-void UnmodifiableByteDataView::setUint8(int byteOffset, int value) {
+void UnmodifiableByteDataViewCls::setUint8(int byteOffset, int value) {
     return _unsupported();
 }
 
-int UnmodifiableByteDataView::getInt16(int byteOffset, Endian endian) {
-    return _data.getInt16(byteOffset, endian);
+int UnmodifiableByteDataViewCls::getInt16(int byteOffset, Endian endian) {
+    return _data->getInt16(byteOffset, endian);
 }
 
-void UnmodifiableByteDataView::setInt16(int byteOffset, Endian endian, int value) {
+void UnmodifiableByteDataViewCls::setInt16(int byteOffset, Endian endian, int value) {
     return _unsupported();
 }
 
-int UnmodifiableByteDataView::getUint16(int byteOffset, Endian endian) {
-    return _data.getUint16(byteOffset, endian);
+int UnmodifiableByteDataViewCls::getUint16(int byteOffset, Endian endian) {
+    return _data->getUint16(byteOffset, endian);
 }
 
-void UnmodifiableByteDataView::setUint16(int byteOffset, Endian endian, int value) {
+void UnmodifiableByteDataViewCls::setUint16(int byteOffset, Endian endian, int value) {
     return _unsupported();
 }
 
-int UnmodifiableByteDataView::getInt32(int byteOffset, Endian endian) {
-    return _data.getInt32(byteOffset, endian);
+int UnmodifiableByteDataViewCls::getInt32(int byteOffset, Endian endian) {
+    return _data->getInt32(byteOffset, endian);
 }
 
-void UnmodifiableByteDataView::setInt32(int byteOffset, Endian endian, int value) {
+void UnmodifiableByteDataViewCls::setInt32(int byteOffset, Endian endian, int value) {
     return _unsupported();
 }
 
-int UnmodifiableByteDataView::getUint32(int byteOffset, Endian endian) {
-    return _data.getUint32(byteOffset, endian);
+int UnmodifiableByteDataViewCls::getUint32(int byteOffset, Endian endian) {
+    return _data->getUint32(byteOffset, endian);
 }
 
-void UnmodifiableByteDataView::setUint32(int byteOffset, Endian endian, int value) {
+void UnmodifiableByteDataViewCls::setUint32(int byteOffset, Endian endian, int value) {
     return _unsupported();
 }
 
-int UnmodifiableByteDataView::getInt64(int byteOffset, Endian endian) {
-    return _data.getInt64(byteOffset, endian);
+int UnmodifiableByteDataViewCls::getInt64(int byteOffset, Endian endian) {
+    return _data->getInt64(byteOffset, endian);
 }
 
-void UnmodifiableByteDataView::setInt64(int byteOffset, Endian endian, int value) {
+void UnmodifiableByteDataViewCls::setInt64(int byteOffset, Endian endian, int value) {
     return _unsupported();
 }
 
-int UnmodifiableByteDataView::getUint64(int byteOffset, Endian endian) {
-    return _data.getUint64(byteOffset, endian);
+int UnmodifiableByteDataViewCls::getUint64(int byteOffset, Endian endian) {
+    return _data->getUint64(byteOffset, endian);
 }
 
-void UnmodifiableByteDataView::setUint64(int byteOffset, Endian endian, int value) {
+void UnmodifiableByteDataViewCls::setUint64(int byteOffset, Endian endian, int value) {
     return _unsupported();
 }
 
-double UnmodifiableByteDataView::getFloat32(int byteOffset, Endian endian) {
-    return _data.getFloat32(byteOffset, endian);
+double UnmodifiableByteDataViewCls::getFloat32(int byteOffset, Endian endian) {
+    return _data->getFloat32(byteOffset, endian);
 }
 
-void UnmodifiableByteDataView::setFloat32(int byteOffset, Endian endian, double value) {
+void UnmodifiableByteDataViewCls::setFloat32(int byteOffset, Endian endian, double value) {
     return _unsupported();
 }
 
-double UnmodifiableByteDataView::getFloat64(int byteOffset, Endian endian) {
-    return _data.getFloat64(byteOffset, endian);
+double UnmodifiableByteDataViewCls::getFloat64(int byteOffset, Endian endian) {
+    return _data->getFloat64(byteOffset, endian);
 }
 
-void UnmodifiableByteDataView::setFloat64(int byteOffset, Endian endian, double value) {
+void UnmodifiableByteDataViewCls::setFloat64(int byteOffset, Endian endian, double value) {
     return _unsupported();
 }
 
-int UnmodifiableByteDataView::elementSizeInBytes() {
-    return _data.elementSizeInBytes;
+int UnmodifiableByteDataViewCls::elementSizeInBytes() {
+    return _data->elementSizeInBytes;
 }
 
-int UnmodifiableByteDataView::offsetInBytes() {
-    return _data.offsetInBytes;
+int UnmodifiableByteDataViewCls::offsetInBytes() {
+    return _data->offsetInBytes;
 }
 
-int UnmodifiableByteDataView::lengthInBytes() {
-    return _data.lengthInBytes;
+int UnmodifiableByteDataViewCls::lengthInBytes() {
+    return _data->lengthInBytes;
 }
 
-ByteBuffer UnmodifiableByteDataView::buffer() {
-    return UnmodifiableByteBufferView(_data.buffer);
+ByteBuffer UnmodifiableByteDataViewCls::buffer() {
+    return make<UnmodifiableByteBufferViewCls>(_data->buffer);
 }
 
-void UnmodifiableByteDataView::_unsupported() {
+void UnmodifiableByteDataViewCls::_unsupported() {
     ;
 }
 
-int _UnmodifiableListMixin::length() {
-    return _list.length;
+template<typename N, typename L : List<N>, typename TD : TypedData> int _UnmodifiableListMixinCls<N, L, TD>::length() {
+    return _list->length;
 }
 
-N _UnmodifiableListMixin::[](int index) {
+template<typename N, typename L : List<N>, typename TD : TypedData> N _UnmodifiableListMixinCls<N, L, TD>::[](int index) {
     return _list[index];
 }
 
-int _UnmodifiableListMixin::elementSizeInBytes() {
-    return _data.elementSizeInBytes;
+template<typename N, typename L : List<N>, typename TD : TypedData> int _UnmodifiableListMixinCls<N, L, TD>::elementSizeInBytes() {
+    return _data->elementSizeInBytes;
 }
 
-int _UnmodifiableListMixin::offsetInBytes() {
-    return _data.offsetInBytes;
+template<typename N, typename L : List<N>, typename TD : TypedData> int _UnmodifiableListMixinCls<N, L, TD>::offsetInBytes() {
+    return _data->offsetInBytes;
 }
 
-int _UnmodifiableListMixin::lengthInBytes() {
-    return _data.lengthInBytes;
+template<typename N, typename L : List<N>, typename TD : TypedData> int _UnmodifiableListMixinCls<N, L, TD>::lengthInBytes() {
+    return _data->lengthInBytes;
 }
 
-ByteBuffer _UnmodifiableListMixin::buffer() {
-    return UnmodifiableByteBufferView(_data.buffer);
+template<typename N, typename L : List<N>, typename TD : TypedData> ByteBuffer _UnmodifiableListMixinCls<N, L, TD>::buffer() {
+    return make<UnmodifiableByteBufferViewCls>(_data->buffer);
 }
 
-L _UnmodifiableListMixin::sublist(int end, int start) {
-    int endIndex = RangeError.checkValidRange(start, end!, length);
+template<typename N, typename L : List<N>, typename TD : TypedData> L _UnmodifiableListMixinCls<N, L, TD>::sublist(int end, int start) {
+    int endIndex = RangeErrorCls->checkValidRange(start, end!, length);
     int sublistLength = endIndex - start;
     L result = _createList(sublistLength);
-    result.setRange(0, sublistLength, _list, start);
+    result->setRange(0, sublistLength, _list, start);
     return result;
 }
 
-TD _UnmodifiableListMixin::_data() {
-    return (();
+template<typename N, typename L : List<N>, typename TD : TypedData> TD _UnmodifiableListMixinCls<N, L, TD>::_data() {
+    return (((TD)_list));
 }
 
-UnmodifiableUint8ListView::UnmodifiableUint8ListView(Uint8List list) {
+UnmodifiableUint8ListViewCls::UnmodifiableUint8ListViewCls(Uint8List list) {
     {
         _list = list;
     }
 }
 
-Uint8List UnmodifiableUint8ListView::_createList(int length) {
-    return Uint8List(length);
+Uint8List UnmodifiableUint8ListViewCls::_createList(int length) {
+    return make<Uint8ListCls>(length);
 }
 
-UnmodifiableInt8ListView::UnmodifiableInt8ListView(Int8List list) {
+UnmodifiableInt8ListViewCls::UnmodifiableInt8ListViewCls(Int8List list) {
     {
         _list = list;
     }
 }
 
-Int8List UnmodifiableInt8ListView::_createList(int length) {
-    return Int8List(length);
+Int8List UnmodifiableInt8ListViewCls::_createList(int length) {
+    return make<Int8ListCls>(length);
 }
 
-UnmodifiableUint8ClampedListView::UnmodifiableUint8ClampedListView(Uint8ClampedList list) {
+UnmodifiableUint8ClampedListViewCls::UnmodifiableUint8ClampedListViewCls(Uint8ClampedList list) {
     {
         _list = list;
     }
 }
 
-Uint8ClampedList UnmodifiableUint8ClampedListView::_createList(int length) {
-    return Uint8ClampedList(length);
+Uint8ClampedList UnmodifiableUint8ClampedListViewCls::_createList(int length) {
+    return make<Uint8ClampedListCls>(length);
 }
 
-UnmodifiableUint16ListView::UnmodifiableUint16ListView(Uint16List list) {
+UnmodifiableUint16ListViewCls::UnmodifiableUint16ListViewCls(Uint16List list) {
     {
         _list = list;
     }
 }
 
-Uint16List UnmodifiableUint16ListView::_createList(int length) {
-    return Uint16List(length);
+Uint16List UnmodifiableUint16ListViewCls::_createList(int length) {
+    return make<Uint16ListCls>(length);
 }
 
-UnmodifiableInt16ListView::UnmodifiableInt16ListView(Int16List list) {
+UnmodifiableInt16ListViewCls::UnmodifiableInt16ListViewCls(Int16List list) {
     {
         _list = list;
     }
 }
 
-Int16List UnmodifiableInt16ListView::_createList(int length) {
-    return Int16List(length);
+Int16List UnmodifiableInt16ListViewCls::_createList(int length) {
+    return make<Int16ListCls>(length);
 }
 
-UnmodifiableUint32ListView::UnmodifiableUint32ListView(Uint32List list) {
+UnmodifiableUint32ListViewCls::UnmodifiableUint32ListViewCls(Uint32List list) {
     {
         _list = list;
     }
 }
 
-Uint32List UnmodifiableUint32ListView::_createList(int length) {
-    return Uint32List(length);
+Uint32List UnmodifiableUint32ListViewCls::_createList(int length) {
+    return make<Uint32ListCls>(length);
 }
 
-UnmodifiableInt32ListView::UnmodifiableInt32ListView(Int32List list) {
+UnmodifiableInt32ListViewCls::UnmodifiableInt32ListViewCls(Int32List list) {
     {
         _list = list;
     }
 }
 
-Int32List UnmodifiableInt32ListView::_createList(int length) {
-    return Int32List(length);
+Int32List UnmodifiableInt32ListViewCls::_createList(int length) {
+    return make<Int32ListCls>(length);
 }
 
-UnmodifiableUint64ListView::UnmodifiableUint64ListView(Uint64List list) {
+UnmodifiableUint64ListViewCls::UnmodifiableUint64ListViewCls(Uint64List list) {
     {
         _list = list;
     }
 }
 
-Uint64List UnmodifiableUint64ListView::_createList(int length) {
-    return Uint64List(length);
+Uint64List UnmodifiableUint64ListViewCls::_createList(int length) {
+    return make<Uint64ListCls>(length);
 }
 
-UnmodifiableInt64ListView::UnmodifiableInt64ListView(Int64List list) {
+UnmodifiableInt64ListViewCls::UnmodifiableInt64ListViewCls(Int64List list) {
     {
         _list = list;
     }
 }
 
-Int64List UnmodifiableInt64ListView::_createList(int length) {
-    return Int64List(length);
+Int64List UnmodifiableInt64ListViewCls::_createList(int length) {
+    return make<Int64ListCls>(length);
 }
 
-UnmodifiableInt32x4ListView::UnmodifiableInt32x4ListView(Int32x4List list) {
+UnmodifiableInt32x4ListViewCls::UnmodifiableInt32x4ListViewCls(Int32x4List list) {
     {
         _list = list;
     }
 }
 
-Int32x4List UnmodifiableInt32x4ListView::_createList(int length) {
-    return Int32x4List(length);
+Int32x4List UnmodifiableInt32x4ListViewCls::_createList(int length) {
+    return make<Int32x4ListCls>(length);
 }
 
-UnmodifiableFloat32x4ListView::UnmodifiableFloat32x4ListView(Float32x4List list) {
+UnmodifiableFloat32x4ListViewCls::UnmodifiableFloat32x4ListViewCls(Float32x4List list) {
     {
         _list = list;
     }
 }
 
-Float32x4List UnmodifiableFloat32x4ListView::_createList(int length) {
-    return Float32x4List(length);
+Float32x4List UnmodifiableFloat32x4ListViewCls::_createList(int length) {
+    return make<Float32x4ListCls>(length);
 }
 
-UnmodifiableFloat64x2ListView::UnmodifiableFloat64x2ListView(Float64x2List list) {
+UnmodifiableFloat64x2ListViewCls::UnmodifiableFloat64x2ListViewCls(Float64x2List list) {
     {
         _list = list;
     }
 }
 
-Float64x2List UnmodifiableFloat64x2ListView::_createList(int length) {
-    return Float64x2List(length);
+Float64x2List UnmodifiableFloat64x2ListViewCls::_createList(int length) {
+    return make<Float64x2ListCls>(length);
 }
 
-UnmodifiableFloat32ListView::UnmodifiableFloat32ListView(Float32List list) {
+UnmodifiableFloat32ListViewCls::UnmodifiableFloat32ListViewCls(Float32List list) {
     {
         _list = list;
     }
 }
 
-Float32List UnmodifiableFloat32ListView::_createList(int length) {
-    return Float32List(length);
+Float32List UnmodifiableFloat32ListViewCls::_createList(int length) {
+    return make<Float32ListCls>(length);
 }
 
-UnmodifiableFloat64ListView::UnmodifiableFloat64ListView(Float64List list) {
+UnmodifiableFloat64ListViewCls::UnmodifiableFloat64ListViewCls(Float64List list) {
     {
         _list = list;
     }
 }
 
-Float64List UnmodifiableFloat64ListView::_createList(int length) {
-    return Float64List(length);
+Float64List UnmodifiableFloat64ListViewCls::_createList(int length) {
+    return make<Float64ListCls>(length);
 }

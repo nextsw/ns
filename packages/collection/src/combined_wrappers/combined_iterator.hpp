@@ -1,23 +1,25 @@
-#ifndef COMBINED_ITERATOR_H
-#define COMBINED_ITERATOR_H
-#include <memory>
+#ifndef PACKAGES_COLLECTION_SRC_COMBINED_WRAPPERS_COMBINED_ITERATOR
+#define PACKAGES_COLLECTION_SRC_COMBINED_WRAPPERS_COMBINED_ITERATOR
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
 
 
-
-
-class CombinedIterator<T> {
+template<typename T> class CombinedIteratorCls : public ObjectCls {
 public:
 
-     CombinedIterator(Iterator<Iterator<T>> iterators);
+     CombinedIteratorCls(Iterator<Iterator<T>> iterators);
 
-    T current();
+    virtual T current();
 
-    bool moveNext();
+    virtual bool moveNext();
 
 private:
     Iterator<Iterator<T>> _iterators;
 
 
 };
+template<typename T> using CombinedIterator = std::shared_ptr<CombinedIteratorCls<T>>;
+
 
 #endif

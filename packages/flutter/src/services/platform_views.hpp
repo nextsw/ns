@@ -1,35 +1,35 @@
-#ifndef PLATFORM_VIEWS_H
-#define PLATFORM_VIEWS_H
-#include <memory>
-#include <ui.hpp>
-#include <flutter/gestures.hpp>
+#ifndef PACKAGES_FLUTTER_SRC_SERVICES_PLATFORM_VIEWS
+#define PACKAGES_FLUTTER_SRC_SERVICES_PLATFORM_VIEWS
+#include <base.hpp>
+#include <dart/ui/ui.hpp>
+#include <packages/flutter/flutter.hpp>
 #include "message_codec.hpp"
 
-#include <async/async.hpp>
-#include <ui/ui.hpp>
-#include <flutter/foundation.hpp>
-#include <flutter/gestures.hpp>
+#include <dart/core/core.hpp>
+#include <dart/async/async.hpp>
+#include <dart/ui/ui.hpp>
+#include <packages/flutter/lib/foundation.hpp>
+#include <packages/flutter/flutter.hpp>
 #include "message_codec.hpp"
 #include "system_channels.hpp"
-
 
 PlatformViewsRegistry platformViewsRegistry;
 
 
-class PlatformViewsRegistry {
+class PlatformViewsRegistryCls : public ObjectCls {
 public:
 
-    int getNextPlatformViewId();
+    virtual int getNextPlatformViewId();
 
 private:
     int _nextPlatformViewId;
 
 
-    void  _instance();
-
+    virtual void  _instance();
 };
+using PlatformViewsRegistry = std::shared_ptr<PlatformViewsRegistryCls>;
 
-class PlatformViewsService {
+class PlatformViewsServiceCls : public ObjectCls {
 public:
 
     static AndroidViewController initAndroidView(dynamic creationParams, MessageCodec<dynamic> creationParamsCodec, int id, TextDirection layoutDirection, VoidCallback onFocus, String viewType);
@@ -48,40 +48,42 @@ private:
     Map<int, VoidCallback> _focusCallbacks;
 
 
-    void  _();
+    virtual void  _();
 
-    Future<void> _onMethodCall(MethodCall call);
+    virtual Future<void> _onMethodCall(MethodCall call);
 
 };
+using PlatformViewsService = std::shared_ptr<PlatformViewsServiceCls>;
 
-class AndroidPointerProperties {
+class AndroidPointerPropertiesCls : public ObjectCls {
 public:
     int id;
 
     int toolType;
 
-    static const int kToolTypeUnknown;
+    static int kToolTypeUnknown;
 
-    static const int kToolTypeFinger;
+    static int kToolTypeFinger;
 
-    static const int kToolTypeStylus;
+    static int kToolTypeStylus;
 
-    static const int kToolTypeMouse;
+    static int kToolTypeMouse;
 
-    static const int kToolTypeEraser;
+    static int kToolTypeEraser;
 
 
-     AndroidPointerProperties(int id, int toolType);
+     AndroidPointerPropertiesCls(int id, int toolType);
 
-    String toString();
+    virtual String toString();
 
 private:
 
-    List<int> _asList();
+    virtual List<int> _asList();
 
 };
+using AndroidPointerProperties = std::shared_ptr<AndroidPointerPropertiesCls>;
 
-class AndroidPointerCoords {
+class AndroidPointerCoordsCls : public ObjectCls {
 public:
     double orientation;
 
@@ -102,17 +104,18 @@ public:
     double y;
 
 
-     AndroidPointerCoords(double orientation, double pressure, double size, double toolMajor, double toolMinor, double touchMajor, double touchMinor, double x, double y);
+     AndroidPointerCoordsCls(double orientation, double pressure, double size, double toolMajor, double toolMinor, double touchMajor, double touchMinor, double x, double y);
 
-    String toString();
+    virtual String toString();
 
 private:
 
-    List<double> _asList();
+    virtual List<double> _asList();
 
 };
+using AndroidPointerCoords = std::shared_ptr<AndroidPointerCoordsCls>;
 
-class AndroidMotionEvent {
+class AndroidMotionEventCls : public ObjectCls {
 public:
     int downTime;
 
@@ -145,15 +148,16 @@ public:
     int motionEventId;
 
 
-     AndroidMotionEvent(int action, int buttonState, int deviceId, int downTime, int edgeFlags, int eventTime, int flags, int metaState, int motionEventId, List<AndroidPointerCoords> pointerCoords, int pointerCount, List<AndroidPointerProperties> pointerProperties, int source, double xPrecision, double yPrecision);
+     AndroidMotionEventCls(int action, int buttonState, int deviceId, int downTime, int edgeFlags, int eventTime, int flags, int metaState, int motionEventId, List<AndroidPointerCoords> pointerCoords, int pointerCount, List<AndroidPointerProperties> pointerProperties, int source, double xPrecision, double yPrecision);
 
-    String toString();
+    virtual String toString();
 
 private:
 
-    List<dynamic> _asList(int viewId);
+    virtual List<dynamic> _asList(int viewId);
 
 };
+using AndroidMotionEvent = std::shared_ptr<AndroidMotionEventCls>;
 
 enum _AndroidViewState{
     waitingForSize,
@@ -162,7 +166,7 @@ enum _AndroidViewState{
     disposed,
 } // end _AndroidViewState
 
-class _AndroidMotionEventConverter {
+class _AndroidMotionEventConverterCls : public ObjectCls {
 public:
     Map<int, AndroidPointerCoords> pointerPositions;
 
@@ -173,88 +177,86 @@ public:
     int downTimeMillis;
 
 
-    PointTransformer pointTransformer();
+    virtual PointTransformer pointTransformer();
 
-    void  pointTransformer(PointTransformer transformer);
+    virtual void  pointTransformer(PointTransformer transformer);
 
-    void handlePointerDownEvent(PointerDownEvent event);
+    virtual void handlePointerDownEvent(PointerDownEvent event);
 
-    void updatePointerPositions(PointerEvent event);
+    virtual void updatePointerPositions(PointerEvent event);
 
-    void handlePointerUpEvent(PointerUpEvent event);
+    virtual void handlePointerUpEvent(PointerUpEvent event);
 
-    void handlePointerCancelEvent(PointerCancelEvent event);
+    virtual void handlePointerCancelEvent(PointerCancelEvent event);
 
-    AndroidMotionEvent toAndroidMotionEvent(PointerEvent event);
+    virtual AndroidMotionEvent toAndroidMotionEvent(PointerEvent event);
 
-    AndroidPointerProperties propertiesFor(PointerEvent event, int pointerId);
+    virtual AndroidPointerProperties propertiesFor(PointerEvent event, int pointerId);
 
-    bool isSinglePointerAction(PointerEvent event);
+    virtual bool isSinglePointerAction(PointerEvent event);
 
 private:
     PointTransformer _pointTransformer;
 
 
-     _AndroidMotionEventConverter();
-
-    void _remove(int pointer);
+     _AndroidMotionEventConverterCls();
+    virtual void _remove(int pointer);
 
 };
+using _AndroidMotionEventConverter = std::shared_ptr<_AndroidMotionEventConverterCls>;
 
-class AndroidViewController : PlatformViewController {
+class AndroidViewControllerCls : public PlatformViewControllerCls {
 public:
-    static const int kActionDown;
+    static int kActionDown;
 
-    static const int kActionUp;
+    static int kActionUp;
 
-    static const int kActionMove;
+    static int kActionMove;
 
-    static const int kActionCancel;
+    static int kActionCancel;
 
-    static const int kActionPointerDown;
+    static int kActionPointerDown;
 
-    static const int kActionPointerUp;
+    static int kActionPointerUp;
 
-    static const int kAndroidLayoutDirectionLtr;
+    static int kAndroidLayoutDirectionLtr;
 
-    static const int kAndroidLayoutDirectionRtl;
+    static int kAndroidLayoutDirectionRtl;
 
     int viewId;
 
 
     static int pointerAction(int action, int pointerId);
 
-    bool awaitingCreation();
+    virtual bool awaitingCreation();
 
-    Future<void> create(Size size);
+    virtual Future<void> create(Size size);
 
-    Future<Size> setSize(Size size);
+    virtual Future<Size> setSize(Size size);
 
-    Future<void> setOffset(Offset off);
+    virtual Future<void> setOffset(Offset off);
+    virtual int textureId();
+    virtual Future<void> sendMotionEvent(AndroidMotionEvent event);
 
-    int textureId();
+    virtual PointTransformer pointTransformer();
 
-    Future<void> sendMotionEvent(AndroidMotionEvent event);
+    virtual void  pointTransformer(PointTransformer transformer);
 
-    PointTransformer pointTransformer();
+    virtual bool isCreated();
 
-    void  pointTransformer(PointTransformer transformer);
+    virtual void addOnPlatformViewCreatedListener(PlatformViewCreatedCallback listener);
 
-    bool isCreated();
+    virtual void removeOnPlatformViewCreatedListener(PlatformViewCreatedCallback listener);
 
-    void addOnPlatformViewCreatedListener(PlatformViewCreatedCallback listener);
+    virtual List<PlatformViewCreatedCallback> createdCallbacks();
 
-    void removeOnPlatformViewCreatedListener(PlatformViewCreatedCallback listener);
+    virtual Future<void> setLayoutDirection(TextDirection layoutDirection);
 
-    List<PlatformViewCreatedCallback> createdCallbacks();
+    virtual Future<void> dispatchPointerEvent(PointerEvent event);
 
-    Future<void> setLayoutDirection(TextDirection layoutDirection);
+    virtual Future<void> clearFocus();
 
-    Future<void> dispatchPointerEvent(PointerEvent event);
-
-    Future<void> clearFocus();
-
-    Future<void> dispose();
+    virtual Future<void> dispose();
 
 private:
     String _viewType;
@@ -272,56 +274,55 @@ private:
     List<PlatformViewCreatedCallback> _platformViewCreatedCallbacks;
 
 
-    void  _(dynamic creationParams, MessageCodec<dynamic> creationParamsCodec, TextDirection layoutDirection, int viewId, String viewType);
+    virtual void  _(dynamic creationParams, MessageCodec<dynamic> creationParamsCodec, TextDirection layoutDirection, int viewId, String viewType);
 
     static int _getAndroidDirection(TextDirection direction);
 
-    Future<void> _sendDisposeMessage();
-
-    bool _createRequiresSize();
-
-    Future<void> _sendCreateMessage(Size size);
-
-    Future<Size> _sendResizeMessage(Size size);
-
+    virtual Future<void> _sendDisposeMessage();
+    virtual bool _createRequiresSize();
+    virtual Future<void> _sendCreateMessage(Size size);
+    virtual Future<Size> _sendResizeMessage(Size size);
 };
+using AndroidViewController = std::shared_ptr<AndroidViewControllerCls>;
 
-class SurfaceAndroidViewController : TextureAndroidViewController {
+class SurfaceAndroidViewControllerCls : public TextureAndroidViewControllerCls {
 public:
 
 private:
 
-    void  _(Unknown, Unknown, Unknown, Unknown, Unknown);
+    virtual void  _(Unknown creationParams, Unknown creationParamsCodec, Unknown layoutDirection, Unknown viewId, Unknown viewType);
 
 };
+using SurfaceAndroidViewController = std::shared_ptr<SurfaceAndroidViewControllerCls>;
 
-class ExpensiveAndroidViewController : AndroidViewController {
+class ExpensiveAndroidViewControllerCls : public AndroidViewControllerCls {
 public:
 
-    int textureId();
+    virtual int textureId();
 
-    Future<void> setOffset(Offset off);
+    virtual Future<void> setOffset(Offset off);
 
 private:
 
-    void  _(Unknown, Unknown, Unknown, Unknown, Unknown);
+    virtual void  _(Unknown creationParams, Unknown creationParamsCodec, Unknown layoutDirection, Unknown viewId, Unknown viewType);
 
-    bool _createRequiresSize();
+    virtual bool _createRequiresSize();
 
-    Future<void> _sendCreateMessage(Size size);
+    virtual Future<void> _sendCreateMessage(Size size);
 
-    Future<void> _sendDisposeMessage();
+    virtual Future<void> _sendDisposeMessage();
 
-    Future<Size> _sendResizeMessage(Size size);
+    virtual Future<Size> _sendResizeMessage(Size size);
 
 };
+using ExpensiveAndroidViewController = std::shared_ptr<ExpensiveAndroidViewControllerCls>;
 
-class TextureAndroidViewController : AndroidViewController {
+class TextureAndroidViewControllerCls : public AndroidViewControllerCls {
 public:
 
-    int textureId();
+    virtual int textureId();
 
-    Future<void> setOffset(Offset off);
+    virtual Future<void> setOffset(Offset off);
 
 private:
     int _textureId;
@@ -329,30 +330,31 @@ private:
     Offset _off;
 
 
-    void  _(Unknown, Unknown, Unknown, Unknown, Unknown);
+    virtual void  _(Unknown creationParams, Unknown creationParamsCodec, Unknown layoutDirection, Unknown viewId, Unknown viewType);
 
-    Future<Size> _sendResizeMessage(Size size);
+    virtual Future<Size> _sendResizeMessage(Size size);
 
-    bool _createRequiresSize();
+    virtual bool _createRequiresSize();
 
-    Future<void> _sendCreateMessage(Size size);
+    virtual Future<void> _sendCreateMessage(Size size);
 
-    Future<void> _sendDisposeMessage();
+    virtual Future<void> _sendDisposeMessage();
 
 };
+using TextureAndroidViewController = std::shared_ptr<TextureAndroidViewControllerCls>;
 
-class UiKitViewController {
+class UiKitViewControllerCls : public ObjectCls {
 public:
     int id;
 
 
-    Future<void> setLayoutDirection(TextDirection layoutDirection);
+    virtual Future<void> setLayoutDirection(TextDirection layoutDirection);
 
-    Future<void> acceptGesture();
+    virtual Future<void> acceptGesture();
 
-    Future<void> rejectGesture();
+    virtual Future<void> rejectGesture();
 
-    Future<void> dispose();
+    virtual Future<void> dispose();
 
 private:
     bool _debugDisposed;
@@ -360,27 +362,26 @@ private:
     TextDirection _layoutDirection;
 
 
-    void  _(int id, TextDirection layoutDirection);
+    virtual void  _(int id, TextDirection layoutDirection);
 
 };
+using UiKitViewController = std::shared_ptr<UiKitViewControllerCls>;
 
-class PlatformViewController {
+class PlatformViewControllerCls : public ObjectCls {
 public:
 
-    int viewId();
+    virtual int viewId();
+    virtual bool awaitingCreation();
 
-    bool awaitingCreation();
+    virtual Future<void> dispatchPointerEvent(PointerEvent event);
+    virtual Future<void> create(Size size);
 
-    Future<void> dispatchPointerEvent(PointerEvent event);
-
-    Future<void> create(Size size);
-
-    Future<void> dispose();
-
-    Future<void> clearFocus();
-
+    virtual Future<void> dispose();
+    virtual Future<void> clearFocus();
 private:
 
 };
+using PlatformViewController = std::shared_ptr<PlatformViewControllerCls>;
+
 
 #endif

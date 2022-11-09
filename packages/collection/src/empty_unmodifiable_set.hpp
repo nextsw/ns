@@ -1,47 +1,48 @@
-#ifndef EMPTY_UNMODIFIABLE_SET_H
-#define EMPTY_UNMODIFIABLE_SET_H
-#include <memory>
+#ifndef PACKAGES_COLLECTION_SRC_EMPTY_UNMODIFIABLE_SET
+#define PACKAGES_COLLECTION_SRC_EMPTY_UNMODIFIABLE_SET
+#include <base.hpp>
 
-#include <collection/collection.hpp>
-#include <collection/collection.hpp>
+#include <dart/core/core.hpp>
+#include <dart/collection/collection.hpp>
+#include <packages/collection/collection.hpp>
 
 
-
-class EmptyUnmodifiableSet<E> : IterableBase<E> {
+template<typename E> class EmptyUnmodifiableSetCls : public IterableBaseCls<E> {
 public:
 
-     EmptyUnmodifiableSet();
+     EmptyUnmodifiableSetCls();
+    virtual Iterator<E> iterator();
 
-    Iterator<E> iterator();
+    virtual int length();
 
-    int length();
+    template<typename T>  virtual EmptyUnmodifiableSet<T> cast();
 
-    EmptyUnmodifiableSet<T> cast<T>();
+    virtual bool contains(Object element);
 
-    bool contains(Object element);
+    virtual bool containsAll(Iterable<Object> other);
 
-    bool containsAll(Iterable<Object> other);
+    virtual Iterable<E> followedBy(Iterable<E> other);
 
-    Iterable<E> followedBy(Iterable<E> other);
+    virtual E lookup(Object element);
 
-    E lookup(Object element);
+    template<typename T>  virtual EmptyUnmodifiableSet<T> retype();
 
-    EmptyUnmodifiableSet<T> retype<T>();
+    virtual E singleWhere(E orElse() , bool test(E ) );
 
-    E singleWhere(FunctionType orElse, FunctionType test);
+    template<typename T>  virtual Iterable<T> whereType();
 
-    Iterable<T> whereType<T>();
+    virtual Set<E> toSet();
 
-    Set<E> toSet();
+    virtual Set<E> union(Set<E> other);
 
-    Set<E> union(Set<E> other);
+    virtual Set<E> intersection(Set<Object> other);
 
-    Set<E> intersection(Set<Object> other);
-
-    Set<E> difference(Set<Object> other);
+    virtual Set<E> difference(Set<Object> other);
 
 private:
 
 };
+template<typename E> using EmptyUnmodifiableSet = std::shared_ptr<EmptyUnmodifiableSetCls<E>>;
+
 
 #endif

@@ -1,0 +1,150 @@
+#ifndef PACKAGES_FLUTTER_LIB_SRC_WIDGETS_ANIMATED_LIST
+#define PACKAGES_FLUTTER_LIB_SRC_WIDGETS_ANIMATED_LIST
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
+#include <packages/flutter/lib/foundation.hpp>
+#include "basic.hpp"
+#include "framework.hpp"
+#include "scroll_controller.hpp"
+#include "scroll_physics.hpp"
+#include "scroll_view.hpp"
+#include "sliver.hpp"
+#include "ticker_provider.hpp"
+
+Duration _kDuration;
+
+
+class _ActiveItemCls : public ObjectCls {
+public:
+    AnimationController controller;
+
+    AnimatedListRemovedItemBuilder removedItemBuilder;
+
+    int itemIndex;
+
+
+    virtual void  incoming(AnimationController controller, int itemIndex);
+
+    virtual void  outgoing(AnimationController controller, int itemIndex, AnimatedListRemovedItemBuilder removedItemBuilder);
+    virtual void  index(int itemIndex);
+
+    virtual int compareTo(_ActiveItem other);
+
+private:
+
+};
+using _ActiveItem = std::shared_ptr<_ActiveItemCls>;
+
+class AnimatedListCls : public StatefulWidgetCls {
+public:
+    AnimatedListItemBuilder itemBuilder;
+
+    int initialItemCount;
+
+    Axis scrollDirection;
+
+    bool reverse;
+
+    ScrollController controller;
+
+    bool primary;
+
+    ScrollPhysics physics;
+
+    bool shrinkWrap;
+
+    EdgeInsetsGeometry padding;
+
+    Clip clipBehavior;
+
+
+     AnimatedListCls(Clip clipBehavior, ScrollController controller, int initialItemCount, AnimatedListItemBuilder itemBuilder, Unknown key, EdgeInsetsGeometry padding, ScrollPhysics physics, bool primary, bool reverse, Axis scrollDirection, bool shrinkWrap);
+
+    static AnimatedListState of(BuildContext context);
+
+    static AnimatedListState maybeOf(BuildContext context);
+
+    virtual AnimatedListState createState();
+
+private:
+
+};
+using AnimatedList = std::shared_ptr<AnimatedListCls>;
+
+class AnimatedListStateCls : public StateCls<AnimatedList> {
+public:
+
+    virtual void insertItem(Duration duration, int index);
+
+    virtual void removeItem(AnimatedListRemovedItemBuilder builder, Duration duration, int index);
+
+    virtual Widget build(BuildContext context);
+
+private:
+    GlobalKey<SliverAnimatedListState> _sliverAnimatedListKey;
+
+
+};
+using AnimatedListState = std::shared_ptr<AnimatedListStateCls>;
+
+class SliverAnimatedListCls : public StatefulWidgetCls {
+public:
+    AnimatedListItemBuilder itemBuilder;
+
+    ChildIndexGetter findChildIndexCallback;
+
+    int initialItemCount;
+
+
+     SliverAnimatedListCls(ChildIndexGetter findChildIndexCallback, int initialItemCount, AnimatedListItemBuilder itemBuilder, Unknown key);
+
+    virtual SliverAnimatedListState createState();
+
+    static SliverAnimatedListState of(BuildContext context);
+
+    static SliverAnimatedListState maybeOf(BuildContext context);
+
+private:
+
+};
+using SliverAnimatedList = std::shared_ptr<SliverAnimatedListCls>;
+
+class SliverAnimatedListStateCls : public StateCls<SliverAnimatedList> {
+public:
+
+    virtual void initState();
+
+    virtual void dispose();
+
+    virtual void insertItem(Duration duration, int index);
+
+    virtual void removeItem(AnimatedListRemovedItemBuilder builder, Duration duration, int index);
+
+    virtual Widget build(BuildContext context);
+
+private:
+    List<_ActiveItem> _incomingItems;
+
+    List<_ActiveItem> _outgoingItems;
+
+    int _itemsCount;
+
+
+    virtual _ActiveItem _removeActiveItemAt(int itemIndex, List<_ActiveItem> items);
+
+    virtual _ActiveItem _activeItemAt(int itemIndex, List<_ActiveItem> items);
+
+    virtual int _indexToItemIndex(int index);
+
+    virtual int _itemIndexToIndex(int itemIndex);
+
+    virtual SliverChildDelegate _createDelegate();
+
+    virtual Widget _itemBuilder(BuildContext context, int itemIndex);
+
+};
+using SliverAnimatedListState = std::shared_ptr<SliverAnimatedListStateCls>;
+
+
+#endif

@@ -1,5 +1,10 @@
 #include "debug.hpp"
 bool debugAssertAllSchedulerVarsUnset(String reason) {
-    assert(());
+    assert([=] () {
+        if (debugPrintBeginFrameBanner || debugPrintEndFrameBanner) {
+            ;
+        }
+        return true;
+    }());
     return true;
 }

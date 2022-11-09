@@ -1,17 +1,17 @@
-#ifndef RAW_KEYBOARD_FUCHSIA_H
-#define RAW_KEYBOARD_FUCHSIA_H
-#include <memory>
-#include <flutter/foundation.hpp>
+#ifndef PACKAGES_FLUTTER_SRC_SERVICES_RAW_KEYBOARD_FUCHSIA
+#define PACKAGES_FLUTTER_SRC_SERVICES_RAW_KEYBOARD_FUCHSIA
+#include <base.hpp>
+#include <packages/flutter/lib/foundation.hpp>
 #include "keyboard_key.g.hpp"
 #include "raw_keyboard.hpp"
 
-#include <flutter/foundation.hpp>
+#include <dart/core/core.hpp>
+#include <packages/flutter/lib/foundation.hpp>
 #include "keyboard_maps.g.hpp"
 #include "raw_keyboard.hpp"
 
 
-
-class RawKeyEventDataFuchsia : RawKeyEventData {
+class RawKeyEventDataFuchsiaCls : public RawKeyEventDataCls {
 public:
     int hidUsage;
 
@@ -19,57 +19,59 @@ public:
 
     int modifiers;
 
-    static const int modifierNone;
+    static int modifierNone;
 
-    static const int modifierCapsLock;
+    static int modifierCapsLock;
 
-    static const int modifierLeftShift;
+    static int modifierLeftShift;
 
-    static const int modifierRightShift;
+    static int modifierRightShift;
 
-    static const int modifierShift;
+    static int modifierShift;
 
-    static const int modifierLeftControl;
+    static int modifierLeftControl;
 
-    static const int modifierRightControl;
+    static int modifierRightControl;
 
-    static const int modifierControl;
+    static int modifierControl;
 
-    static const int modifierLeftAlt;
+    static int modifierLeftAlt;
 
-    static const int modifierRightAlt;
+    static int modifierRightAlt;
 
-    static const int modifierAlt;
+    static int modifierAlt;
 
-    static const int modifierLeftMeta;
+    static int modifierLeftMeta;
 
-    static const int modifierRightMeta;
+    static int modifierRightMeta;
 
-    static const int modifierMeta;
+    static int modifierMeta;
 
 
-     RawKeyEventDataFuchsia(int codePoint, int hidUsage, int modifiers);
+     RawKeyEventDataFuchsiaCls(int codePoint, int hidUsage, int modifiers);
 
-    String keyLabel();
+    virtual String keyLabel();
 
-    LogicalKeyboardKey logicalKey();
+    virtual LogicalKeyboardKey logicalKey();
 
-    PhysicalKeyboardKey physicalKey();
+    virtual PhysicalKeyboardKey physicalKey();
 
-    bool isModifierPressed(ModifierKey key, KeyboardSide side);
+    virtual bool isModifierPressed(ModifierKey key, KeyboardSide side);
 
-    KeyboardSide getModifierSide(ModifierKey key);
+    virtual KeyboardSide getModifierSide(ModifierKey key);
 
-    void debugFillProperties(DiagnosticPropertiesBuilder properties);
+    virtual void debugFillProperties(DiagnosticPropertiesBuilder properties);
 
-    bool ==(Object other);
+    virtual bool operator==(Object other);
 
-    int hashCode();
+    virtual int hashCode();
 
 private:
 
-    bool _isLeftRightModifierPressed(int anyMask, int leftMask, int rightMask, KeyboardSide side);
+    virtual bool _isLeftRightModifierPressed(int anyMask, int leftMask, int rightMask, KeyboardSide side);
 
 };
+using RawKeyEventDataFuchsia = std::shared_ptr<RawKeyEventDataFuchsiaCls>;
+
 
 #endif

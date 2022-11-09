@@ -1,20 +1,20 @@
-#ifndef META_META_H
-#define META_META_H
-#include <memory>
+#ifndef PACKAGES_META_META_META
+#define PACKAGES_META_META_META
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
 
 
-
-
-class Target {
+class TargetCls : public ObjectCls {
 public:
     Set<TargetKind> kinds;
 
 
-     Target(Set<TargetKind> kinds);
-
+     TargetCls(Set<TargetKind> kinds);
 private:
 
 };
+using Target = std::shared_ptr<TargetCls>;
 
 enum TargetKind{
     classType,
@@ -33,13 +33,15 @@ enum TargetKind{
     typedefType,
 } // end TargetKind
 
-class TargetKindExtension {
+class TargetKindExtensionCls : public ObjectCls {
 public:
 
-    String displayString();
+    virtual String displayString();
 
 private:
 
 };
+using TargetKindExtension = std::shared_ptr<TargetKindExtensionCls>;
+
 
 #endif

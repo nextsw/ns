@@ -1,11 +1,11 @@
-#ifndef PLATFORM_H
-#define PLATFORM_H
-#include <memory>
+#ifndef DART_IO_PLATFORM
+#define DART_IO_PLATFORM
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
 
 
-
-
-class Platform {
+class PlatformCls : public ObjectCls {
 public:
     static bool isLinux;
 
@@ -61,5 +61,7 @@ private:
 
 
 };
+using Platform = std::shared_ptr<PlatformCls>;
+
 
 #endif

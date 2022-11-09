@@ -1,5 +1,5 @@
 #include "raw_keyboard_fuchsia.hpp"
-RawKeyEventDataFuchsia::RawKeyEventDataFuchsia(int codePoint, int hidUsage, int modifiers) {
+RawKeyEventDataFuchsiaCls::RawKeyEventDataFuchsiaCls(int codePoint, int hidUsage, int modifiers) {
     {
         assert(hidUsage != nullptr);
         assert(codePoint != nullptr);
@@ -7,58 +7,58 @@ RawKeyEventDataFuchsia::RawKeyEventDataFuchsia(int codePoint, int hidUsage, int 
     }
 }
 
-String RawKeyEventDataFuchsia::keyLabel() {
-    return codePoint == 0? "" : String.fromCharCode(codePoint);
+String RawKeyEventDataFuchsiaCls::keyLabel() {
+    return codePoint == 0? "" : StringCls->fromCharCode(codePoint);
 }
 
-LogicalKeyboardKey RawKeyEventDataFuchsia::logicalKey() {
+LogicalKeyboardKey RawKeyEventDataFuchsiaCls::logicalKey() {
     if (codePoint != 0) {
-        int flutterId = LogicalKeyboardKey.unicodePlane | codePoint & LogicalKeyboardKey.valueMask;
-        return kFuchsiaToLogicalKey[flutterId] ?? LogicalKeyboardKey(LogicalKeyboardKey.unicodePlane | codePoint & LogicalKeyboardKey.valueMask);
+        int flutterId = LogicalKeyboardKeyCls::unicodePlane | codePoint & LogicalKeyboardKeyCls::valueMask;
+        return kFuchsiaToLogicalKey[flutterId] ?? make<LogicalKeyboardKeyCls>(LogicalKeyboardKeyCls::unicodePlane | codePoint & LogicalKeyboardKeyCls::valueMask);
     }
-    LogicalKeyboardKey newKey = kFuchsiaToLogicalKey[hidUsage | LogicalKeyboardKey.fuchsiaPlane];
+    LogicalKeyboardKey newKey = kFuchsiaToLogicalKey[hidUsage | LogicalKeyboardKeyCls::fuchsiaPlane];
     if (newKey != nullptr) {
         return newKey;
     }
-    return LogicalKeyboardKey(hidUsage | LogicalKeyboardKey.fuchsiaPlane);
+    return make<LogicalKeyboardKeyCls>(hidUsage | LogicalKeyboardKeyCls::fuchsiaPlane);
 }
 
-PhysicalKeyboardKey RawKeyEventDataFuchsia::physicalKey() {
-    return kFuchsiaToPhysicalKey[hidUsage] ?? PhysicalKeyboardKey(LogicalKeyboardKey.fuchsiaPlane + hidUsage);
+PhysicalKeyboardKey RawKeyEventDataFuchsiaCls::physicalKey() {
+    return kFuchsiaToPhysicalKey[hidUsage] ?? make<PhysicalKeyboardKeyCls>(LogicalKeyboardKeyCls::fuchsiaPlane + hidUsage);
 }
 
-bool RawKeyEventDataFuchsia::isModifierPressed(ModifierKey key, KeyboardSide side) {
+bool RawKeyEventDataFuchsiaCls::isModifierPressed(ModifierKey key, KeyboardSide side) {
     assert(side != nullptr);
     ;
 }
 
-KeyboardSide RawKeyEventDataFuchsia::getModifierSide(ModifierKey key) {
-    ;
+KeyboardSide RawKeyEventDataFuchsiaCls::getModifierSide(ModifierKey key) {
+    InlineMethod;
     ;
 }
 
-void RawKeyEventDataFuchsia::debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties.add(<int>DiagnosticsProperty("hidUsage", hidUsage));
-    properties.add(<int>DiagnosticsProperty("codePoint", codePoint));
-    properties.add(<int>DiagnosticsProperty("modifiers", modifiers));
+void RawKeyEventDataFuchsiaCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super->debugFillProperties(properties);
+    properties->add(<int>make<DiagnosticsPropertyCls>("hidUsage", hidUsage));
+    properties->add(<int>make<DiagnosticsPropertyCls>("codePoint", codePoint));
+    properties->add(<int>make<DiagnosticsPropertyCls>("modifiers", modifiers));
 }
 
-bool RawKeyEventDataFuchsia::==(Object other) {
+bool RawKeyEventDataFuchsiaCls::==(Object other) {
     if (identical(this, other)) {
         return true;
     }
-    if (other.runtimeType != runtimeType) {
+    if (other->runtimeType != runtimeType) {
         return false;
     }
-    return other is RawKeyEventDataFuchsia && other.hidUsage == hidUsage && other.codePoint == codePoint && other.modifiers == modifiers;
+    return other is RawKeyEventDataFuchsia && other->hidUsage == hidUsage && other->codePoint == codePoint && other->modifiers == modifiers;
 }
 
-int RawKeyEventDataFuchsia::hashCode() {
-    return Object.hash(hidUsage, codePoint, modifiers);
+int RawKeyEventDataFuchsiaCls::hashCode() {
+    return ObjectCls->hash(hidUsage, codePoint, modifiers);
 }
 
-bool RawKeyEventDataFuchsia::_isLeftRightModifierPressed(int anyMask, int leftMask, int rightMask, KeyboardSide side) {
+bool RawKeyEventDataFuchsiaCls::_isLeftRightModifierPressed(int anyMask, int leftMask, int rightMask, KeyboardSide side) {
     if (modifiers & anyMask == 0) {
         return false;
     }

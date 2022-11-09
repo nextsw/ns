@@ -1,90 +1,104 @@
 #include "stream_transformers.hpp"
-void _EventSinkWrapper::add(T data) {
-    _sink._add(data);
+template<typename T> void _EventSinkWrapperCls<T>::add(T data) {
+    _sink->_add(data);
 }
 
-void _EventSinkWrapper::addError(Object error, StackTrace stackTrace) {
-    _sink._addError(error, stackTrace ?? AsyncError.defaultStackTrace(error));
+template<typename T> void _EventSinkWrapperCls<T>::addError(Object error, StackTrace stackTrace) {
+    _sink->_addError(error, stackTrace ?? AsyncErrorCls->defaultStackTrace(error));
 }
 
-void _EventSinkWrapper::close() {
-    _sink._close();
+template<typename T> void _EventSinkWrapperCls<T>::close() {
+    _sink->_close();
 }
 
-_SinkTransformerStreamSubscription::_SinkTransformerStreamSubscription(bool cancelOnError, _SinkMapper<S, T> mapper, FunctionType onData, FunctionType onDone, FunctionType onError, Stream<S> source) {
+template<typename S, typename T> _SinkTransformerStreamSubscriptionCls<S, T>::_SinkTransformerStreamSubscriptionCls(bool cancelOnError, _SinkMapper<S, T> mapper, void onData(T data) , void onDone() , void  onError() , Stream<S> source) {
     {
-        super(onData, onError, onDone, cancelOnError);
-    }
-    {
-        _transformerSink = mapper(<T>_EventSinkWrapper(this));
-        _subscription = source.listen(_handleData_handleError, _handleDone);
+        _transformerSink = mapper(<T>make<_EventSinkWrapperCls>(this));
+        _subscription = source->listen(_handleData_handleError, _handleDone);
     }
 }
 
-void _SinkTransformerStreamSubscription::_add(T data) {
+template<typename S, typename T> void _SinkTransformerStreamSubscriptionCls<S, T>::_add(T data) {
     if (_isClosed) {
         ;
     }
-    super._add(data);
+    super->_add(data);
 }
 
-void _SinkTransformerStreamSubscription::_addError(Object error, StackTrace stackTrace) {
+template<typename S, typename T> void _SinkTransformerStreamSubscriptionCls<S, T>::_addError(Object error, StackTrace stackTrace) {
     if (_isClosed) {
         ;
     }
-    super._addError(error, stackTrace);
+    super->_addError(error, stackTrace);
 }
 
-void _SinkTransformerStreamSubscription::_close() {
+template<typename S, typename T> void _SinkTransformerStreamSubscriptionCls<S, T>::_close() {
     if (_isClosed) {
         ;
     }
-    super._close();
+    super->_close();
 }
 
-void _SinkTransformerStreamSubscription::_onPause() {
-    _subscription?.pause();
+template<typename S, typename T> void _SinkTransformerStreamSubscriptionCls<S, T>::_onPause() {
+    _subscription?->pause();
 }
 
-void _SinkTransformerStreamSubscription::_onResume() {
-    _subscription?.resume();
+template<typename S, typename T> void _SinkTransformerStreamSubscriptionCls<S, T>::_onResume() {
+    _subscription?->resume();
 }
 
-Future<void> _SinkTransformerStreamSubscription::_onCancel() {
+template<typename S, typename T> Future<void> _SinkTransformerStreamSubscriptionCls<S, T>::_onCancel() {
     auto subscription = _subscription;
     if (subscription != nullptr) {
         _subscription = nullptr;
-        return subscription.cancel();
+        return subscription->cancel();
     }
     return nullptr;
 }
 
-void _SinkTransformerStreamSubscription::_handleData(S data) {
-    ;
+template<typename S, typename T> void _SinkTransformerStreamSubscriptionCls<S, T>::_handleData(S data) {
+    try {
+        _transformerSink->add(data);
+    } catch (Unknown e) {
+        _addError(e, s);
+    };
 }
 
-void _SinkTransformerStreamSubscription::_handleError(Object error, StackTrace stackTrace) {
-    ;
+template<typename S, typename T> void _SinkTransformerStreamSubscriptionCls<S, T>::_handleError(Object error, StackTrace stackTrace) {
+    try {
+        _transformerSink->addError(error, stackTrace);
+    } catch (Unknown e) {
+        if (identical(e, error)) {
+            _addError(error, stackTrace);
+        } else {
+            _addError(e, s);
+        }
+    };
 }
 
-void _SinkTransformerStreamSubscription::_handleDone() {
-    ;
+template<typename S, typename T> void _SinkTransformerStreamSubscriptionCls<S, T>::_handleDone() {
+    try {
+        _subscription = nullptr;
+        _transformerSink->close();
+    } catch (Unknown e) {
+        _addError(e, s);
+    };
 }
 
-Stream<T> _StreamSinkTransformer::bind(Stream<S> stream) {
-    return <S, T>_BoundSinkStream(stream, _sinkMapper);
+template<typename S, typename T> Stream<T> _StreamSinkTransformerCls<S, T>::bind(Stream<S> stream) {
+    return <S, T>make<_BoundSinkStreamCls>(stream, _sinkMapper);
 }
 
-bool _BoundSinkStream::isBroadcast() {
-    return _stream.isBroadcast;
+template<typename S, typename T> bool _BoundSinkStreamCls<S, T>::isBroadcast() {
+    return _stream->isBroadcast;
 }
 
-StreamSubscription<T> _BoundSinkStream::listen(bool cancelOnError, FunctionType onData, FunctionType onDone, FunctionType onError) {
-    StreamSubscription<T> subscription = <S, T>_SinkTransformerStreamSubscription(_stream, _sinkMapper, onData, onError, onDone, cancelOnError ?? false);
+template<typename S, typename T> StreamSubscription<T> _BoundSinkStreamCls<S, T>::listen(bool cancelOnError, void onData(T event) , void onDone() , void  onError() ) {
+    StreamSubscription<T> subscription = <S, T>make<_SinkTransformerStreamSubscriptionCls>(_stream, _sinkMapper, onData, onError, onDone, cancelOnError ?? false);
     return subscription;
 }
 
-void _HandlerEventSink::add(S data) {
+template<typename S, typename T> void _HandlerEventSinkCls<S, T>::add(S data) {
     auto sink = _sink;
     if (sink == nullptr) {
         ;
@@ -93,26 +107,26 @@ void _HandlerEventSink::add(S data) {
     if (handleData != nullptr) {
         handleData(data, sink);
     } else {
-        sink.add(();
+        sink->add(((T)data));
     }
 }
 
-void _HandlerEventSink::addError(Object error, StackTrace stackTrace) {
+template<typename S, typename T> void _HandlerEventSinkCls<S, T>::addError(Object error, StackTrace stackTrace) {
     checkNotNullable(error, "error");
     auto sink = _sink;
     if (sink == nullptr) {
         ;
     }
     auto handleError = _handleError;
-    stackTrace = AsyncError.defaultStackTrace(error);
+    stackTrace = AsyncErrorCls->defaultStackTrace(error);
     if (handleError != nullptr) {
         handleError(error, stackTrace, sink);
     } else {
-        sink.addError(error, stackTrace);
+        sink->addError(error, stackTrace);
     }
 }
 
-void _HandlerEventSink::close() {
+template<typename S, typename T> void _HandlerEventSinkCls<S, T>::close() {
     auto sink = _sink;
     if (sink == nullptr)     {
         return;
@@ -122,36 +136,33 @@ void _HandlerEventSink::close() {
     if (handleDone != nullptr) {
         handleDone(sink);
     } else {
-        sink.close();
+        sink->close();
     }
 }
 
-Stream<T> _StreamHandlerTransformer::bind(Stream<S> stream) {
-    return super.bind(stream);
+template<typename S, typename T> Stream<T> _StreamHandlerTransformerCls<S, T>::bind(Stream<S> stream) {
+    return super->bind(stream);
 }
 
-_StreamHandlerTransformer::_StreamHandlerTransformer(FunctionType handleData, FunctionType handleDone, FunctionType handleError) {
-    {
-        super();
-    }
+template<typename S, typename T> _StreamHandlerTransformerCls<S, T>::_StreamHandlerTransformerCls(void handleData(S data, EventSink<T> sink) , void handleDone(EventSink<T> sink) , void handleError(Object error, EventSink<T> sink, StackTrace stackTrace) ) {
 }
 
-Stream<T> _StreamBindTransformer::bind(Stream<S> stream) {
+template<typename S, typename T> Stream<T> _StreamBindTransformerCls<S, T>::bind(Stream<S> stream) {
     return _bind(stream);
 }
 
-Stream<T> _StreamSubscriptionTransformer::bind(Stream<S> stream) {
-    return <S, T>_BoundSubscriptionStream(stream, _onListen);
+template<typename S, typename T> Stream<T> _StreamSubscriptionTransformerCls<S, T>::bind(Stream<S> stream) {
+    return <S, T>make<_BoundSubscriptionStreamCls>(stream, _onListen);
 }
 
-bool _BoundSubscriptionStream::isBroadcast() {
-    return _stream.isBroadcast;
+template<typename S, typename T> bool _BoundSubscriptionStreamCls<S, T>::isBroadcast() {
+    return _stream->isBroadcast;
 }
 
-StreamSubscription<T> _BoundSubscriptionStream::listen(bool cancelOnError, FunctionType onData, FunctionType onDone, FunctionType onError) {
+template<typename S, typename T> StreamSubscription<T> _BoundSubscriptionStreamCls<S, T>::listen(bool cancelOnError, void onData(T event) , void onDone() , void  onError() ) {
     StreamSubscription<T> result = _onListen(_stream, cancelOnError ?? false);
-    result.onData(onData);
-    result.onError(onError);
-    result.onDone(onDone);
+    result->onData(onData);
+    result->onError(onError);
+    result->onDone(onDone);
     return result;
 }

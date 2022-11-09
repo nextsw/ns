@@ -1,19 +1,19 @@
-#ifndef ITERATOR_H
-#define ITERATOR_H
-#include <memory>
+#ifndef DART_CORE_ITERATOR
+#define DART_CORE_ITERATOR
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
 
 
-
-
-class Iterator<E> {
+template<typename E> class IteratorCls : public ObjectCls {
 public:
 
-    bool moveNext();
-
-    E current();
-
+    virtual bool moveNext();
+    virtual E current();
 private:
 
 };
+template<typename E> using Iterator = std::shared_ptr<IteratorCls<E>>;
+
 
 #endif

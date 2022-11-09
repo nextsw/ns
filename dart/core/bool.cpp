@@ -1,16 +1,16 @@
 #include "bool.hpp"
-bool bool::&(bool other) {
+bool boolCls::&(bool other) {
     return other && this;
 }
 
-bool bool::|(bool other) {
+bool boolCls::|(bool other) {
     return other || this;
 }
 
-bool bool::^(bool other) {
+bool boolCls::^(bool other) {
     return !other == this;
 }
 
-String bool::toString() {
+String boolCls::toString() {
     return this? "true" : "false";
 }

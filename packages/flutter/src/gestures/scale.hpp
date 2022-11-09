@@ -1,17 +1,17 @@
-#ifndef SCALE_H
-#define SCALE_H
-#include <memory>
-#include <ui.hpp>
+#ifndef PACKAGES_FLUTTER_SRC_GESTURES_SCALE
+#define PACKAGES_FLUTTER_SRC_GESTURES_SCALE
+#include <base.hpp>
+#include <dart/ui/ui.hpp>
 #include "events.hpp"
 #include "recognizer.hpp"
 #include "velocity_tracker.hpp"
 
-#include <math/math.hpp>
+#include <dart/core/core.hpp>
+#include <dart/math/math.hpp>
 #include "constants.hpp"
 #include "events.hpp"
 #include "recognizer.hpp"
 #include "velocity_tracker.hpp"
-
 
 
 enum _ScaleState{
@@ -21,7 +21,7 @@ enum _ScaleState{
     started,
 } // end _ScaleState
 
-class _PointerPanZoomData {
+class _PointerPanZoomDataCls : public ObjectCls {
 public:
     Offset focalPoint;
 
@@ -30,15 +30,15 @@ public:
     double rotation;
 
 
-    String toString();
+    virtual String toString();
 
 private:
 
-     _PointerPanZoomData(Offset focalPoint, double rotation, double scale);
-
+     _PointerPanZoomDataCls(Offset focalPoint, double rotation, double scale);
 };
+using _PointerPanZoomData = std::shared_ptr<_PointerPanZoomDataCls>;
 
-class ScaleStartDetails {
+class ScaleStartDetailsCls : public ObjectCls {
 public:
     Offset focalPoint;
 
@@ -47,15 +47,16 @@ public:
     int pointerCount;
 
 
-     ScaleStartDetails(Offset focalPoint, Offset localFocalPoint, int pointerCount);
+     ScaleStartDetailsCls(Offset focalPoint, Offset localFocalPoint, int pointerCount);
 
-    String toString();
+    virtual String toString();
 
 private:
 
 };
+using ScaleStartDetails = std::shared_ptr<ScaleStartDetailsCls>;
 
-class ScaleUpdateDetails {
+class ScaleUpdateDetailsCls : public ObjectCls {
 public:
     Offset focalPointDelta;
 
@@ -74,32 +75,34 @@ public:
     int pointerCount;
 
 
-     ScaleUpdateDetails(Offset focalPoint, Offset focalPointDelta, double horizontalScale, Offset localFocalPoint, int pointerCount, double rotation, double scale, double verticalScale);
+     ScaleUpdateDetailsCls(Offset focalPoint, Offset focalPointDelta, double horizontalScale, Offset localFocalPoint, int pointerCount, double rotation, double scale, double verticalScale);
 
-    String toString();
+    virtual String toString();
 
 private:
 
 };
+using ScaleUpdateDetails = std::shared_ptr<ScaleUpdateDetailsCls>;
 
-class ScaleEndDetails {
+class ScaleEndDetailsCls : public ObjectCls {
 public:
     Velocity velocity;
 
     int pointerCount;
 
 
-     ScaleEndDetails(int pointerCount, Velocity velocity);
+     ScaleEndDetailsCls(int pointerCount, Velocity velocity);
 
-    String toString();
+    virtual String toString();
 
 private:
 
 };
+using ScaleEndDetails = std::shared_ptr<ScaleEndDetailsCls>;
 bool _isFlingGesture(Velocity velocity);
 
 
-class _LineBetweenPointers {
+class _LineBetweenPointersCls : public ObjectCls {
 public:
     Offset pointerStartLocation;
 
@@ -112,11 +115,12 @@ public:
 
 private:
 
-     _LineBetweenPointers(int pointerEndId, Offset pointerEndLocation, int pointerStartId, Offset pointerStartLocation);
+     _LineBetweenPointersCls(int pointerEndId, Offset pointerEndLocation, int pointerStartId, Offset pointerStartLocation);
 
 };
+using _LineBetweenPointers = std::shared_ptr<_LineBetweenPointersCls>;
 
-class ScaleGestureRecognizer : OneSequenceGestureRecognizer {
+class ScaleGestureRecognizerCls : public OneSequenceGestureRecognizerCls {
 public:
     DragStartBehavior dragStartBehavior;
 
@@ -127,25 +131,25 @@ public:
     GestureScaleEndCallback onEnd;
 
 
-     ScaleGestureRecognizer(Unknown, DragStartBehavior dragStartBehavior, Unknown, Unknown);
+     ScaleGestureRecognizerCls(Unknown debugOwner, DragStartBehavior dragStartBehavior, Unknown kind, Unknown supportedDevices);
 
-    void addAllowedPointer(PointerDownEvent event);
+    virtual void addAllowedPointer(PointerDownEvent event);
 
-    bool isPointerPanZoomAllowed(PointerPanZoomStartEvent event);
+    virtual bool isPointerPanZoomAllowed(PointerPanZoomStartEvent event);
 
-    void addAllowedPointerPanZoom(PointerPanZoomStartEvent event);
+    virtual void addAllowedPointerPanZoom(PointerPanZoomStartEvent event);
 
-    void handleEvent(PointerEvent event);
+    virtual void handleEvent(PointerEvent event);
 
-    void acceptGesture(int pointer);
+    virtual void acceptGesture(int pointer);
 
-    void rejectGesture(int pointer);
+    virtual void rejectGesture(int pointer);
 
-    void didStopTrackingLastPointer(int pointer);
+    virtual void didStopTrackingLastPointer(int pointer);
 
-    void dispose();
+    virtual void dispose();
 
-    String debugDescription();
+    virtual String debugDescription();
 
 private:
     _ScaleState _state;
@@ -189,32 +193,34 @@ private:
     double _initialPanZoomRotationFactor;
 
 
-    double _pointerScaleFactor();
+    virtual double _pointerScaleFactor();
 
-    double _pointerHorizontalScaleFactor();
+    virtual double _pointerHorizontalScaleFactor();
 
-    double _pointerVerticalScaleFactor();
+    virtual double _pointerVerticalScaleFactor();
 
-    double _scaleFactor();
+    virtual double _scaleFactor();
 
-    double _horizontalScaleFactor();
+    virtual double _horizontalScaleFactor();
 
-    double _verticalScaleFactor();
+    virtual double _verticalScaleFactor();
 
-    int _pointerCount();
+    virtual int _pointerCount();
 
-    double _computeRotationFactor();
+    virtual double _computeRotationFactor();
 
-    void _update();
+    virtual void _update();
 
-    void _updateLines();
+    virtual void _updateLines();
 
-    bool _reconfigure(int pointer);
+    virtual bool _reconfigure(int pointer);
 
-    void _advanceStateMachine(PointerDeviceKind pointerDeviceKind, bool shouldStartIfAccepted);
+    virtual void _advanceStateMachine(PointerDeviceKind pointerDeviceKind, bool shouldStartIfAccepted);
 
-    void _dispatchOnStartCallbackIfNeeded();
+    virtual void _dispatchOnStartCallbackIfNeeded();
 
 };
+using ScaleGestureRecognizer = std::shared_ptr<ScaleGestureRecognizerCls>;
+
 
 #endif

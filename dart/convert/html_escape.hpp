@@ -1,13 +1,13 @@
-#ifndef HTML_ESCAPE_H
-#define HTML_ESCAPE_H
-#include <memory>
+#ifndef DART_CONVERT_HTML_ESCAPE
+#define DART_CONVERT_HTML_ESCAPE
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
+
+HtmlEscape htmlEscape;
 
 
-
-const HtmlEscape htmlEscape;
-
-
-class HtmlEscapeMode {
+class HtmlEscapeModeCls : public ObjectCls {
 public:
     bool escapeLtGt;
 
@@ -17,50 +17,50 @@ public:
 
     bool escapeSlash;
 
-    static const HtmlEscapeMode unknown;
+    static HtmlEscapeMode unknown;
 
-    static const HtmlEscapeMode attribute;
+    static HtmlEscapeMode attribute;
 
-    static const HtmlEscapeMode sqAttribute;
+    static HtmlEscapeMode sqAttribute;
 
-    static const HtmlEscapeMode element;
+    static HtmlEscapeMode element;
 
 
-     HtmlEscapeMode(bool escapeApos, bool escapeLtGt, bool escapeQuot, bool escapeSlash, String name);
+     HtmlEscapeModeCls(bool escapeApos, bool escapeLtGt, bool escapeQuot, bool escapeSlash, String name);
 
-    String toString();
+    virtual String toString();
 
 private:
     String _name;
 
 
-    void  _(String _name, bool escapeApos, bool escapeLtGt, bool escapeQuot, bool escapeSlash);
-
+    virtual void  _(String _name, bool escapeApos, bool escapeLtGt, bool escapeQuot, bool escapeSlash);
 };
+using HtmlEscapeMode = std::shared_ptr<HtmlEscapeModeCls>;
 
-class HtmlEscape : Converter<String, String> {
+class HtmlEscapeCls : public ConverterCls<String, String> {
 public:
     HtmlEscapeMode mode;
 
 
-     HtmlEscape(HtmlEscapeMode mode);
+     HtmlEscapeCls(HtmlEscapeMode mode);
+    virtual String convert(String text);
 
-    String convert(String text);
-
-    StringConversionSink startChunkedConversion(Sink<String> sink);
+    virtual StringConversionSink startChunkedConversion(Sink<String> sink);
 
 private:
 
-    String _convert(int end, int start, String text);
+    virtual String _convert(int end, int start, String text);
 
 };
+using HtmlEscape = std::shared_ptr<HtmlEscapeCls>;
 
-class _HtmlEscapeSink : StringConversionSinkBase {
+class _HtmlEscapeSinkCls : public StringConversionSinkBaseCls {
 public:
 
-    void addSlice(String chunk, int end, bool isLast, int start);
+    virtual void addSlice(String chunk, int end, bool isLast, int start);
 
-    void close();
+    virtual void close();
 
 private:
     HtmlEscape _escape;
@@ -68,8 +68,9 @@ private:
     StringConversionSink _sink;
 
 
-     _HtmlEscapeSink(HtmlEscape _escape, StringConversionSink _sink);
-
+     _HtmlEscapeSinkCls(HtmlEscape _escape, StringConversionSink _sink);
 };
+using _HtmlEscapeSink = std::shared_ptr<_HtmlEscapeSinkCls>;
+
 
 #endif

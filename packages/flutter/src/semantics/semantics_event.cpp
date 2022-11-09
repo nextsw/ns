@@ -1,60 +1,50 @@
 #include "semantics_event.hpp"
-Map<String, dynamic> SemanticsEvent::toMap(int nodeId) {
-    Map<String, dynamic> event = ;
+Map<String, dynamic> SemanticsEventCls::toMap(int nodeId) {
+    Map<String, dynamic> map1 = make<MapCls<>>();map1.set("type", type);map1.set("data", getDataMap());Map<String, dynamic> event = list1;
     if (nodeId != nullptr) {
         event["nodeId"] = nodeId;
     }
     return event;
 }
 
-String SemanticsEvent::toString() {
-    List<String> pairs = ;
+String SemanticsEventCls::toString() {
+    List<String> pairs = makeList();
     Map<String, dynamic> dataMap = getDataMap();
-    List<String> sortedKeys = ;
+    auto _c1 = dataMap->keys->toList();_c1.sort();List<String> sortedKeys = _c1;
     for (String key : sortedKeys) {
-        pairs.add("$key: ${dataMap[key]}");
+        pairs->add("$key: ${dataMap[key]}");
     }
     return "${objectRuntimeType(this, 'SemanticsEvent')}(${pairs.join(', ')})";
 }
 
-AnnounceSemanticsEvent::AnnounceSemanticsEvent(String message, TextDirection textDirection) {
+AnnounceSemanticsEventCls::AnnounceSemanticsEventCls(String message, TextDirection textDirection) {
     {
         assert(message != nullptr);
         assert(textDirection != nullptr);
-        super("announce");
     }
 }
 
-Map<String, dynamic> AnnounceSemanticsEvent::getDataMap() {
-    return ;
+Map<String, dynamic> AnnounceSemanticsEventCls::getDataMap() {
+    Map<String, dynamic> map1 = make<MapCls<>>();map1.set("message", message);map1.set("textDirection", textDirection->index);return list1;
 }
 
-TooltipSemanticsEvent::TooltipSemanticsEvent(String message) {
-    {
-        super("tooltip");
-    }
+TooltipSemanticsEventCls::TooltipSemanticsEventCls(String message) {
 }
 
-Map<String, dynamic> TooltipSemanticsEvent::getDataMap() {
-    return ;
+Map<String, dynamic> TooltipSemanticsEventCls::getDataMap() {
+    Map<String, dynamic> map1 = make<MapCls<>>();map1.set("message", message);return list1;
 }
 
-LongPressSemanticsEvent::LongPressSemanticsEvent() {
-    {
-        super("longPress");
-    }
+LongPressSemanticsEventCls::LongPressSemanticsEventCls() {
 }
 
-Map<String, dynamic> LongPressSemanticsEvent::getDataMap() {
-    return const ;
+Map<String, dynamic> LongPressSemanticsEventCls::getDataMap() {
+    return makeMap(makeList(), makeList();
 }
 
-TapSemanticEvent::TapSemanticEvent() {
-    {
-        super("tap");
-    }
+TapSemanticEventCls::TapSemanticEventCls() {
 }
 
-Map<String, dynamic> TapSemanticEvent::getDataMap() {
-    return const ;
+Map<String, dynamic> TapSemanticEventCls::getDataMap() {
+    return makeMap(makeList(), makeList();
 }

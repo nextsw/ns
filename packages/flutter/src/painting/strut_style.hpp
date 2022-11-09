@@ -1,17 +1,17 @@
-#ifndef STRUT_STYLE_H
-#define STRUT_STYLE_H
-#include <memory>
+#ifndef PACKAGES_FLUTTER_SRC_PAINTING_STRUT_STYLE
+#define PACKAGES_FLUTTER_SRC_PAINTING_STRUT_STYLE
+#include <base.hpp>
 
-#include <ui/ui.hpp>
-#include <flutter/foundation.hpp>
+#include <dart/core/core.hpp>
+#include <dart/ui/ui.hpp>
+#include <packages/flutter/lib/foundation.hpp>
 #include "basic_types.hpp"
 #include "text_style.hpp"
 
 
-
-class StrutStyle {
+class StrutStyleCls : public ObjectCls {
 public:
-    static const StrutStyle disabled;
+    static StrutStyle disabled;
 
     String fontFamily;
 
@@ -32,23 +32,23 @@ public:
     String debugLabel;
 
 
-     StrutStyle(String debugLabel, String fontFamily, List<String> fontFamilyFallback, double fontSize, FontStyle fontStyle, FontWeight fontWeight, bool forceStrutHeight, double height, double leading, TextLeadingDistribution leadingDistribution, String package);
+     StrutStyleCls(String debugLabel, String fontFamily, List<String> fontFamilyFallback, double fontSize, FontStyle fontStyle, FontWeight fontWeight, bool forceStrutHeight, double height, double leading, TextLeadingDistribution leadingDistribution, String package);
 
-    void  fromTextStyle(String debugLabel, String fontFamily, List<String> fontFamilyFallback, double fontSize, FontStyle fontStyle, FontWeight fontWeight, bool forceStrutHeight, double height, double leading, TextLeadingDistribution leadingDistribution, String package, TextStyle textStyle);
+    virtual void  fromTextStyle(String debugLabel, String fontFamily, List<String> fontFamilyFallback, double fontSize, FontStyle fontStyle, FontWeight fontWeight, bool forceStrutHeight, double height, double leading, TextLeadingDistribution leadingDistribution, String package, TextStyle textStyle);
 
-    List<String> fontFamilyFallback();
+    virtual List<String> fontFamilyFallback();
 
-    RenderComparison compareTo(StrutStyle other);
+    virtual RenderComparison compareTo(StrutStyle other);
 
-    StrutStyle inheritFromTextStyle(TextStyle other);
+    virtual StrutStyle inheritFromTextStyle(TextStyle other);
 
-    bool ==(Object other);
+    virtual bool operator==(Object other);
 
-    int hashCode();
+    virtual int hashCode();
 
-    String toStringShort();
+    virtual String toStringShort();
 
-    void debugFillProperties(String prefix, DiagnosticPropertiesBuilder properties);
+    virtual void debugFillProperties(String prefix, DiagnosticPropertiesBuilder properties);
 
 private:
     List<String> _fontFamilyFallback;
@@ -57,5 +57,7 @@ private:
 
 
 };
+using StrutStyle = std::shared_ptr<StrutStyleCls>;
+
 
 #endif

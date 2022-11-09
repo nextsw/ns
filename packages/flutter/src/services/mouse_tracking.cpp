@@ -1,12 +1,12 @@
 #include "mouse_tracking.hpp"
-MouseTrackerAnnotation::MouseTrackerAnnotation(MouseCursor cursor, PointerEnterEventListener onEnter, PointerExitEventListener onExit, bool validForMouseTracker) {
+MouseTrackerAnnotationCls::MouseTrackerAnnotationCls(MouseCursor cursor, PointerEnterEventListener onEnter, PointerExitEventListener onExit, bool validForMouseTracker) {
     {
         assert(cursor != nullptr);
     }
 }
 
-void MouseTrackerAnnotation::debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties.add(<FunctionType>FlagsSummary("callbacks", "<none>"));
-    properties.add(<MouseCursor>DiagnosticsProperty("cursor", cursorMouseCursor.defer));
+void MouseTrackerAnnotationCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super->debugFillProperties(properties);
+    Map<String, void  Function()> map1 = make<MapCls<>>();map1.set("enter", onEnter);map1.set("exit", onExit);properties->add(<void  Function()>make<FlagsSummaryCls>("callbacks", list1"<none>"));
+    properties->add(<MouseCursor>make<DiagnosticsPropertyCls>("cursor", cursorMouseCursorCls::defer));
 }

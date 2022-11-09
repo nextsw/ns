@@ -1,308 +1,359 @@
 #include "stream_pipe.hpp"
-void _runUserCode<T>(onSuccess , onError , FunctionType userCode) {
-    ;
+void _runUserCodetemplate<typename T> (onSuccess , onError , T userCode() ) {
+    try {
+        onSuccess(userCode());
+    } catch (Unknown e) {
+        AsyncError replacement = ZoneCls::current->errorCallback(e, s);
+        if (replacement == nullptr) {
+            onError(e, s);
+        } else {
+            auto error = replacement->error;
+            auto stackTrace = replacement->stackTrace;
+            onError(error, stackTrace);
+        }
+    };
 }
 
 void _cancelAndError(Object error, _Future future, StackTrace stackTrace, StreamSubscription subscription) {
-    auto cancelFuture = subscription.cancel();
-    if (cancelFuture != nullptr && !identical(cancelFuture, Future._nullFuture)) {
-        cancelFuture.whenComplete();
+    auto cancelFuture = subscription->cancel();
+    if (cancelFuture != nullptr && !identical(cancelFuture, FutureCls::_nullFuture)) {
+        cancelFuture->whenComplete([=] ()         {
+            future->_completeError(error, stackTrace);
+        });
     } else {
-        future._completeError(error, stackTrace);
+        future->_completeError(error, stackTrace);
     }
 }
 
 void _cancelAndErrorWithReplacement(Object error, _Future future, StackTrace stackTrace, StreamSubscription subscription) {
-    AsyncError replacement = Zone.current.errorCallback(error, stackTrace);
+    AsyncError replacement = ZoneCls::current->errorCallback(error, stackTrace);
     if (replacement != nullptr) {
-        error = replacement.error;
-        stackTrace = replacement.stackTrace;
+        error = replacement->error;
+        stackTrace = replacement->stackTrace;
     }
     _cancelAndError(subscription, future, error, stackTrace);
 }
 
-FunctionType _cancelAndErrorClosure(_Future future, StreamSubscription subscription) {
-    return ;
+void Function(Object error, StackTrace stackTrace) _cancelAndErrorClosure(_Future future, StreamSubscription subscription) {
+    return [=] (Object error,StackTrace stackTrace) {
+        _cancelAndError(subscription, future, error, stackTrace);
+    };
 }
 
 void _cancelAndValue(value , _Future future, StreamSubscription subscription) {
-    auto cancelFuture = subscription.cancel();
-    if (cancelFuture != nullptr && !identical(cancelFuture, Future._nullFuture)) {
-        cancelFuture.whenComplete();
+    auto cancelFuture = subscription->cancel();
+    if (cancelFuture != nullptr && !identical(cancelFuture, FutureCls::_nullFuture)) {
+        cancelFuture->whenComplete([=] ()         {
+            future->_complete(value);
+        });
     } else {
-        future._complete(value);
+        future->_complete(value);
     }
 }
 
-bool _ForwardingStream::isBroadcast() {
-    return _source.isBroadcast;
+template<typename S, typename T> bool _ForwardingStreamCls<S, T>::isBroadcast() {
+    return _source->isBroadcast;
 }
 
-StreamSubscription<T> _ForwardingStream::listen(bool cancelOnError, FunctionType onData, FunctionType onDone, FunctionType onError) {
+template<typename S, typename T> StreamSubscription<T> _ForwardingStreamCls<S, T>::listen(bool cancelOnError, void onData(T value) , void onDone() , void  onError() ) {
     return _createSubscription(onData, onError, onDone, cancelOnError ?? false);
 }
 
-StreamSubscription<T> _ForwardingStream::_createSubscription(bool cancelOnError, FunctionType onData, FunctionType onDone, FunctionType onError) {
-    return <S, T>_ForwardingStreamSubscription(this, onData, onError, onDone, cancelOnError);
+template<typename S, typename T> StreamSubscription<T> _ForwardingStreamCls<S, T>::_createSubscription(bool cancelOnError, void onData(T data) , void onDone() , void  onError() ) {
+    return <S, T>make<_ForwardingStreamSubscriptionCls>(this, onData, onError, onDone, cancelOnError);
 }
 
-void _ForwardingStream::_handleError(Object error, _EventSink<T> sink, StackTrace stackTrace) {
-    sink._addError(error, stackTrace);
+template<typename S, typename T> void _ForwardingStreamCls<S, T>::_handleError(Object error, _EventSink<T> sink, StackTrace stackTrace) {
+    sink->_addError(error, stackTrace);
 }
 
-void _ForwardingStream::_handleDone(_EventSink<T> sink) {
-    sink._close();
+template<typename S, typename T> void _ForwardingStreamCls<S, T>::_handleDone(_EventSink<T> sink) {
+    sink->_close();
 }
 
-_ForwardingStreamSubscription::_ForwardingStreamSubscription(_ForwardingStream<S, T> _stream, bool cancelOnError, FunctionType onData, FunctionType onDone, FunctionType onError) {
+template<typename S, typename T> _ForwardingStreamSubscriptionCls<S, T>::_ForwardingStreamSubscriptionCls(_ForwardingStream<S, T> _stream, bool cancelOnError, void onData(T data) , void onDone() , void  onError() ) {
     {
-        super(onData, onError, onDone, cancelOnError);
-    }
-    {
-        _subscription = _stream._source.listen(_handleData_handleError, _handleDone);
+        _subscription = _stream->_source->listen(_handleData_handleError, _handleDone);
     }
 }
 
-void _ForwardingStreamSubscription::_add(T data) {
+template<typename S, typename T> void _ForwardingStreamSubscriptionCls<S, T>::_add(T data) {
     if (_isClosed)     {
         return;
     }
-    super._add(data);
+    super->_add(data);
 }
 
-void _ForwardingStreamSubscription::_addError(Object error, StackTrace stackTrace) {
+template<typename S, typename T> void _ForwardingStreamSubscriptionCls<S, T>::_addError(Object error, StackTrace stackTrace) {
     if (_isClosed)     {
         return;
     }
-    super._addError(error, stackTrace);
+    super->_addError(error, stackTrace);
 }
 
-void _ForwardingStreamSubscription::_onPause() {
-    _subscription?.pause();
+template<typename S, typename T> void _ForwardingStreamSubscriptionCls<S, T>::_onPause() {
+    _subscription?->pause();
 }
 
-void _ForwardingStreamSubscription::_onResume() {
-    _subscription?.resume();
+template<typename S, typename T> void _ForwardingStreamSubscriptionCls<S, T>::_onResume() {
+    _subscription?->resume();
 }
 
-Future<void> _ForwardingStreamSubscription::_onCancel() {
+template<typename S, typename T> Future<void> _ForwardingStreamSubscriptionCls<S, T>::_onCancel() {
     auto subscription = _subscription;
     if (subscription != nullptr) {
         _subscription = nullptr;
-        return subscription.cancel();
+        return subscription->cancel();
     }
     return nullptr;
 }
 
-void _ForwardingStreamSubscription::_handleData(S data) {
-    _stream._handleData(data, this);
+template<typename S, typename T> void _ForwardingStreamSubscriptionCls<S, T>::_handleData(S data) {
+    _stream->_handleData(data, this);
 }
 
-void _ForwardingStreamSubscription::_handleError(error , StackTrace stackTrace) {
-    _stream._handleError(error, stackTrace, this);
+template<typename S, typename T> void _ForwardingStreamSubscriptionCls<S, T>::_handleError(error , StackTrace stackTrace) {
+    _stream->_handleError(error, stackTrace, this);
 }
 
-void _ForwardingStreamSubscription::_handleDone() {
-    _stream._handleDone(this);
+template<typename S, typename T> void _ForwardingStreamSubscriptionCls<S, T>::_handleDone() {
+    _stream->_handleDone(this);
 }
 
 void _addErrorWithReplacement(Object error, _EventSink sink, StackTrace stackTrace) {
-    AsyncError replacement = Zone.current.errorCallback(error, stackTrace);
+    AsyncError replacement = ZoneCls::current->errorCallback(error, stackTrace);
     if (replacement != nullptr) {
-        error = replacement.error;
-        stackTrace = replacement.stackTrace;
+        error = replacement->error;
+        stackTrace = replacement->stackTrace;
     }
-    sink._addError(error, stackTrace);
+    sink->_addError(error, stackTrace);
 }
 
-_WhereStream::_WhereStream(Stream<T> source, FunctionType test) {
+template<typename T> _WhereStreamCls<T>::_WhereStreamCls(Stream<T> source, bool test(T value) ) {
     {
         _test = test;
-        super(source);
     }
 }
 
-void _WhereStream::_handleData(T inputEvent, _EventSink<T> sink) {
+template<typename T> void _WhereStreamCls<T>::_handleData(T inputEvent, _EventSink<T> sink) {
     bool satisfies;
-    ;
+    try {
+        satisfies = _test(inputEvent);
+    } catch (Unknown e) {
+        _addErrorWithReplacement(sink, e, s);
+        return;
+    };
     if (satisfies) {
-        sink._add(inputEvent);
+        sink->_add(inputEvent);
     }
 }
 
-_MapStream::_MapStream(Stream<S> source, FunctionType transform) {
+template<typename S, typename T> _MapStreamCls<S, T>::_MapStreamCls(Stream<S> source, T transform(S event) ) {
     {
-        this._transform = transform;
-        super(source);
+        this->_transform = transform;
     }
 }
 
-void _MapStream::_handleData(S inputEvent, _EventSink<T> sink) {
+template<typename S, typename T> void _MapStreamCls<S, T>::_handleData(S inputEvent, _EventSink<T> sink) {
     T outputEvent;
-    ;
-    sink._add(outputEvent);
+    try {
+        outputEvent = _transform(inputEvent);
+    } catch (Unknown e) {
+        _addErrorWithReplacement(sink, e, s);
+        return;
+    };
+    sink->_add(outputEvent);
 }
 
-_ExpandStream::_ExpandStream(FunctionType expand, Stream<S> source) {
+template<typename S, typename T> _ExpandStreamCls<S, T>::_ExpandStreamCls(Iterable<T> expand(S event) , Stream<S> source) {
     {
-        this._expand = expand;
-        super(source);
+        this->_expand = expand;
     }
 }
 
-void _ExpandStream::_handleData(S inputEvent, _EventSink<T> sink) {
-    ;
+template<typename S, typename T> void _ExpandStreamCls<S, T>::_handleData(S inputEvent, _EventSink<T> sink) {
+    try {
+        for (T value : _expand(inputEvent)) {
+            sink->_add(value);
+        }
+    } catch (Unknown e) {
+        _addErrorWithReplacement(sink, e, s);
+    };
 }
 
-_HandleErrorStream::_HandleErrorStream(FunctionType _onError, FunctionType _test, Stream<T> source) {
-    {
-        super(source);
-    }
+template<typename T> _HandleErrorStreamCls<T>::_HandleErrorStreamCls(void Function(Object , StackTrace ) _onError, bool Function(Object ) _test, Stream<T> source) {
 }
 
-void _HandleErrorStream::_handleData(T data, _EventSink<T> sink) {
-    sink._add(data);
+template<typename T> void _HandleErrorStreamCls<T>::_handleData(T data, _EventSink<T> sink) {
+    sink->_add(data);
 }
 
-void _HandleErrorStream::_handleError(Object error, _EventSink<T> sink, StackTrace stackTrace) {
+template<typename T> void _HandleErrorStreamCls<T>::_handleError(Object error, _EventSink<T> sink, StackTrace stackTrace) {
     bool matches = true;
     auto test = _test;
     if (test != nullptr) {
-        ;
+        try {
+            matches = test(error);
+        } catch (Unknown e) {
+            _addErrorWithReplacement(sink, e, s);
+            return;
+        };
     }
     if (matches) {
-        ;
+        try {
+            _onError(error, stackTrace);
+        } catch (Unknown e) {
+            if (identical(e, error)) {
+                sink->_addError(error, stackTrace);
+            } else {
+                _addErrorWithReplacement(sink, e, s);
+            }
+            return;
+        };
     } else {
-        sink._addError(error, stackTrace);
+        sink->_addError(error, stackTrace);
     }
 }
 
-_TakeStream::_TakeStream(int count, Stream<T> source) {
+template<typename T> _TakeStreamCls<T>::_TakeStreamCls(int count, Stream<T> source) {
     {
-        this._count = count;
-        super(source);
+        this->_count = count;
     }
 }
 
-StreamSubscription<T> _TakeStream::_createSubscription(bool cancelOnError, FunctionType onData, FunctionType onDone, FunctionType onError) {
+template<typename T> StreamSubscription<T> _TakeStreamCls<T>::_createSubscription(bool cancelOnError, void onData(T data) , void onDone() , void  onError() ) {
     if (_count == 0) {
-        _source.listen(nullptr).cancel();
-        return <T>_DoneStreamSubscription(onDone);
+        _source->listen(nullptr)->cancel();
+        return <T>make<_DoneStreamSubscriptionCls>(onDone);
     }
-    return <int, T>_StateStreamSubscription(this, onData, onError, onDone, cancelOnError, _count);
+    return <int, T>make<_StateStreamSubscriptionCls>(this, onData, onError, onDone, cancelOnError, _count);
 }
 
-void _TakeStream::_handleData(T inputEvent, _EventSink<T> sink) {
-    auto subscription = (;
-    int count = subscription._subState;
+template<typename T> void _TakeStreamCls<T>::_handleData(T inputEvent, _EventSink<T> sink) {
+    auto subscription = ((_StateStreamSubscription<int, T>)sink);
+    int count = subscription->_subState;
     if (count > 0) {
-        sink._add(inputEvent);
+        sink->_add(inputEvent);
         count = 1;
-        subscription._subState = count;
+        subscription->_subState = count;
         if (count == 0) {
-            sink._close();
+            sink->_close();
         }
     }
 }
 
-_StateStreamSubscription::_StateStreamSubscription(S _subState, bool cancelOnError, FunctionType onData, FunctionType onDone, FunctionType onError, _ForwardingStream<T, T> stream) {
+template<typename S, typename T> _StateStreamSubscriptionCls<S, T>::_StateStreamSubscriptionCls(S _subState, bool cancelOnError, void onData(T data) , void onDone() , void  onError() , _ForwardingStream<T, T> stream) {
+}
+
+template<typename T> _TakeWhileStreamCls<T>::_TakeWhileStreamCls(Stream<T> source, bool test(T value) ) {
     {
-        super(stream, onData, onError, onDone, cancelOnError);
+        this->_test = test;
     }
 }
 
-_TakeWhileStream::_TakeWhileStream(Stream<T> source, FunctionType test) {
-    {
-        this._test = test;
-        super(source);
-    }
-}
-
-void _TakeWhileStream::_handleData(T inputEvent, _EventSink<T> sink) {
+template<typename T> void _TakeWhileStreamCls<T>::_handleData(T inputEvent, _EventSink<T> sink) {
     bool satisfies;
-    ;
+    try {
+        satisfies = _test(inputEvent);
+    } catch (Unknown e) {
+        _addErrorWithReplacement(sink, e, s);
+        sink->_close();
+        return;
+    };
     if (satisfies) {
-        sink._add(inputEvent);
+        sink->_add(inputEvent);
     } else {
-        sink._close();
+        sink->_close();
     }
 }
 
-_SkipStream::_SkipStream(int count, Stream<T> source) {
+template<typename T> _SkipStreamCls<T>::_SkipStreamCls(int count, Stream<T> source) {
     {
-        this._count = count;
-        super(source);
+        this->_count = count;
     }
     {
-        RangeError.checkNotNegative(count, "count");
+        RangeErrorCls->checkNotNegative(count, "count");
     }
 }
 
-StreamSubscription<T> _SkipStream::_createSubscription(bool cancelOnError, FunctionType onData, FunctionType onDone, FunctionType onError) {
-    return <int, T>_StateStreamSubscription(this, onData, onError, onDone, cancelOnError, _count);
+template<typename T> StreamSubscription<T> _SkipStreamCls<T>::_createSubscription(bool cancelOnError, void onData(T data) , void onDone() , void  onError() ) {
+    return <int, T>make<_StateStreamSubscriptionCls>(this, onData, onError, onDone, cancelOnError, _count);
 }
 
-void _SkipStream::_handleData(T inputEvent, _EventSink<T> sink) {
-    auto subscription = (;
-    int count = subscription._subState;
+template<typename T> void _SkipStreamCls<T>::_handleData(T inputEvent, _EventSink<T> sink) {
+    auto subscription = ((_StateStreamSubscription<int, T>)sink);
+    int count = subscription->_subState;
     if (count > 0) {
-        subscription._subState = count - 1;
+        subscription->_subState = count - 1;
         return;
     }
-    sink._add(inputEvent);
+    sink->_add(inputEvent);
 }
 
-_SkipWhileStream::_SkipWhileStream(Stream<T> source, FunctionType test) {
+template<typename T> _SkipWhileStreamCls<T>::_SkipWhileStreamCls(Stream<T> source, bool test(T value) ) {
     {
-        this._test = test;
-        super(source);
+        this->_test = test;
     }
 }
 
-StreamSubscription<T> _SkipWhileStream::_createSubscription(bool cancelOnError, FunctionType onData, FunctionType onDone, FunctionType onError) {
-    return <bool, T>_StateStreamSubscription(this, onData, onError, onDone, cancelOnError, false);
+template<typename T> StreamSubscription<T> _SkipWhileStreamCls<T>::_createSubscription(bool cancelOnError, void onData(T data) , void onDone() , void  onError() ) {
+    return <bool, T>make<_StateStreamSubscriptionCls>(this, onData, onError, onDone, cancelOnError, false);
 }
 
-void _SkipWhileStream::_handleData(T inputEvent, _EventSink<T> sink) {
-    auto subscription = (;
-    bool hasFailed = subscription._subState;
+template<typename T> void _SkipWhileStreamCls<T>::_handleData(T inputEvent, _EventSink<T> sink) {
+    auto subscription = ((_StateStreamSubscription<bool, T>)sink);
+    bool hasFailed = subscription->_subState;
     if (hasFailed) {
-        sink._add(inputEvent);
+        sink->_add(inputEvent);
         return;
     }
     bool satisfies;
-    ;
+    try {
+        satisfies = _test(inputEvent);
+    } catch (Unknown e) {
+        _addErrorWithReplacement(sink, e, s);
+        subscription->_subState = true;
+        return;
+    };
     if (!satisfies) {
-        subscription._subState = true;
-        sink._add(inputEvent);
+        subscription->_subState = true;
+        sink->_add(inputEvent);
     }
 }
 
-_DistinctStream::_DistinctStream(FunctionType equals, Stream<T> source) {
+template<typename T> _DistinctStreamCls<T>::_DistinctStreamCls(bool equals(T a, T b) , Stream<T> source) {
     {
         _equals = equals;
-        super(source);
     }
 }
 
-StreamSubscription<T> _DistinctStream::_createSubscription(bool cancelOnError, FunctionType onData, FunctionType onDone, FunctionType onError) {
-    return <Object, T>_StateStreamSubscription(this, onData, onError, onDone, cancelOnError, _SENTINEL);
+template<typename T> StreamSubscription<T> _DistinctStreamCls<T>::_createSubscription(bool cancelOnError, void onData(T data) , void onDone() , void  onError() ) {
+    return <Object, T>make<_StateStreamSubscriptionCls>(this, onData, onError, onDone, cancelOnError, _SENTINELCls);
 }
 
-void _DistinctStream::_handleData(T inputEvent, _EventSink<T> sink) {
-    auto subscription = (;
-    auto previous = subscription._subState;
-    if (identical(previous, _SENTINEL)) {
-        subscription._subState = inputEvent;
-        sink._add(inputEvent);
+template<typename T> void _DistinctStreamCls<T>::_handleData(T inputEvent, _EventSink<T> sink) {
+    auto subscription = ((_StateStreamSubscription<Object, T>)sink);
+    auto previous = subscription->_subState;
+    if (identical(previous, _SENTINELCls)) {
+        subscription->_subState = inputEvent;
+        sink->_add(inputEvent);
     } else {
-        T previousEvent = (;
+        T previousEvent = ((T)previous);
         auto equals = _equals;
         bool isEqual;
-        ;
+        try {
+            if (equals == nullptr) {
+                isEqual = (previousEvent == inputEvent);
+            } else {
+                isEqual = equals(previousEvent, inputEvent);
+            }
+        } catch (Unknown e) {
+            _addErrorWithReplacement(sink, e, s);
+            return;
+        };
         if (!isEqual) {
-            sink._add(inputEvent);
-            subscription._subState = inputEvent;
+            sink->_add(inputEvent);
+            subscription->_subState = inputEvent;
         }
     }
 }

@@ -1,33 +1,34 @@
-#ifndef ITERATOR_H
-#define ITERATOR_H
-#include <memory>
+#ifndef DART_COLLECTION_ITERATOR
+#define DART_COLLECTION_ITERATOR
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
 
 
-
-
-class HasNextIterator<E> {
+template<typename E> class HasNextIteratorCls : public ObjectCls {
 public:
 
-     HasNextIterator(Iterator<E> _iterator);
+     HasNextIteratorCls(Iterator<E> _iterator);
+    virtual bool hasNext();
 
-    bool hasNext();
-
-    E next();
+    virtual E next();
 
 private:
-    static const int _HAS_NEXT_AND_NEXT_IN_CURRENT;
+    static int _HAS_NEXT_AND_NEXT_IN_CURRENT;
 
-    static const int _NO_NEXT;
+    static int _NO_NEXT;
 
-    static const int _NOT_MOVED_YET;
+    static int _NOT_MOVED_YET;
 
     Iterator<E> _iterator;
 
     int _state;
 
 
-    void _move();
+    virtual void _move();
 
 };
+template<typename E> using HasNextIterator = std::shared_ptr<HasNextIteratorCls<E>>;
+
 
 #endif

@@ -1,18 +1,18 @@
 #include "extension.hpp"
-void ServiceExtensionResponse::result(String result) {
+void ServiceExtensionResponseCls::result(String result) {
     checkNotNullable(result, "result");
 }
 
-void ServiceExtensionResponse::error(int errorCode, String errorDetail) {
+void ServiceExtensionResponseCls::error(int errorCode, String errorDetail) {
     _validateErrorCode(errorCode);
     checkNotNullable(errorDetail, "errorDetail");
 }
 
-bool ServiceExtensionResponse::isError() {
+bool ServiceExtensionResponseCls::isError() {
     return (errorCode != nullptr) && (errorDetail != nullptr);
 }
 
-String ServiceExtensionResponse::_errorCodeMessage(int errorCode) {
+String ServiceExtensionResponseCls::_errorCodeMessage(int errorCode) {
     _validateErrorCode(errorCode);
     if (errorCode == invalidParams) {
         return "Invalid params";
@@ -20,7 +20,7 @@ String ServiceExtensionResponse::_errorCodeMessage(int errorCode) {
     return "Server error";
 }
 
-void ServiceExtensionResponse::_validateErrorCode(int errorCode) {
+void ServiceExtensionResponseCls::_validateErrorCode(int errorCode) {
     checkNotNullable(errorCode, "errorCode");
     if (errorCode == invalidParams)     {
         return;
@@ -31,13 +31,13 @@ void ServiceExtensionResponse::_validateErrorCode(int errorCode) {
     ;
 }
 
-String ServiceExtensionResponse::_toString() {
-    return result ?? json.encode();
+String ServiceExtensionResponseCls::_toString() {
+    map1.set("code", errorCode!);map1.set("message", _errorCodeMessage(errorCode!));map1.set("data", map2.set("details", errorDetail!);list2);return result ?? json->encode(list1);
 }
 
 void registerExtension(ServiceExtensionHandler handler, String method) {
     checkNotNullable(method, "method");
-    if (!method.startsWith("ext.")) {
+    if (!method->startsWith("ext.")) {
         ;
     }
     if (_lookupExtension(method) != nullptr) {
@@ -53,6 +53,6 @@ void postEvent(Map eventData, String eventKind) {
     }
     checkNotNullable(eventKind, "eventKind");
     checkNotNullable(eventData, "eventData");
-    String eventDataAsString = json.encode(eventData);
+    String eventDataAsString = json->encode(eventData);
     _postEvent(eventKind, eventDataAsString);
 }

@@ -1,8 +1,9 @@
-#ifndef SHAPE_DECORATION_H
-#define SHAPE_DECORATION_H
-#include <memory>
+#ifndef PACKAGES_FLUTTER_SRC_PAINTING_SHAPE_DECORATION
+#define PACKAGES_FLUTTER_SRC_PAINTING_SHAPE_DECORATION
+#include <base.hpp>
 
-#include <flutter/foundation.hpp>
+#include <dart/core/core.hpp>
+#include <packages/flutter/lib/foundation.hpp>
 #include "basic_types.hpp"
 #include "borders.hpp"
 #include "box_border.hpp"
@@ -18,8 +19,7 @@
 #include "rounded_rectangle_border.hpp"
 
 
-
-class ShapeDecoration : Decoration {
+class ShapeDecorationCls : public DecorationCls {
 public:
     Color color;
 
@@ -32,44 +32,45 @@ public:
     ShapeBorder shape;
 
 
-     ShapeDecoration(Color color, Gradient gradient, DecorationImage image, List<BoxShadow> shadows, ShapeBorder shape);
+     ShapeDecorationCls(Color color, Gradient gradient, DecorationImage image, List<BoxShadow> shadows, ShapeBorder shape);
 
-    void  fromBoxDecoration(BoxDecoration source);
+    virtual void  fromBoxDecoration(BoxDecoration source);
 
-    Path getClipPath(Rect rect, TextDirection textDirection);
+    virtual Path getClipPath(Rect rect, TextDirection textDirection);
 
-    EdgeInsetsGeometry padding();
+    virtual EdgeInsetsGeometry padding();
 
-    bool isComplex();
+    virtual bool isComplex();
 
-    ShapeDecoration lerpFrom(Decoration a, double t);
+    virtual ShapeDecoration lerpFrom(Decoration a, double t);
 
-    ShapeDecoration lerpTo(Decoration b, double t);
+    virtual ShapeDecoration lerpTo(Decoration b, double t);
 
     static ShapeDecoration lerp(ShapeDecoration a, ShapeDecoration b, double t);
 
-    bool ==(Object other);
+    virtual bool operator==(Object other);
 
-    int hashCode();
+    virtual int hashCode();
 
-    void debugFillProperties(DiagnosticPropertiesBuilder properties);
+    virtual void debugFillProperties(DiagnosticPropertiesBuilder properties);
 
-    bool hitTest(Offset position, Size size, TextDirection textDirection);
+    virtual bool hitTest(Offset position, Size size, TextDirection textDirection);
 
-    BoxPainter createBoxPainter(VoidCallback onChanged);
+    virtual BoxPainter createBoxPainter(VoidCallback onChanged);
 
 private:
 
 };
+using ShapeDecoration = std::shared_ptr<ShapeDecorationCls>;
 
-class _ShapeDecorationPainter : BoxPainter {
+class _ShapeDecorationPainterCls : public BoxPainterCls {
 public:
 
-    VoidCallback onChanged();
+    virtual VoidCallback onChanged();
 
-    void dispose();
+    virtual void dispose();
 
-    void paint(Canvas canvas, ImageConfiguration configuration, Offset offset);
+    virtual void paint(Canvas canvas, ImageConfiguration configuration, Offset offset);
 
 private:
     ShapeDecoration _decoration;
@@ -93,16 +94,18 @@ private:
     DecorationImagePainter _imagePainter;
 
 
-     _ShapeDecorationPainter(ShapeDecoration _decoration, VoidCallback onChanged);
+     _ShapeDecorationPainterCls(ShapeDecoration _decoration, VoidCallback onChanged);
 
-    void _precache(Rect rect, TextDirection textDirection);
+    virtual void _precache(Rect rect, TextDirection textDirection);
 
-    void _paintShadows(Canvas canvas);
+    virtual void _paintShadows(Canvas canvas);
 
-    void _paintInterior(Canvas canvas);
+    virtual void _paintInterior(Canvas canvas);
 
-    void _paintImage(Canvas canvas, ImageConfiguration configuration);
+    virtual void _paintImage(Canvas canvas, ImageConfiguration configuration);
 
 };
+using _ShapeDecorationPainter = std::shared_ptr<_ShapeDecorationPainterCls>;
+
 
 #endif

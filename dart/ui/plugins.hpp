@@ -1,42 +1,45 @@
-#ifndef PLUGINS_H
-#define PLUGINS_H
-#include <memory>
+#ifndef DART_UI_PLUGINS
+#define DART_UI_PLUGINS
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
 
 
-
-
-class CallbackHandle {
+class CallbackHandleCls : public ObjectCls {
 public:
 
-    void  fromRawHandle(int _handle);
+    virtual void  fromRawHandle(int _handle);
 
-    int toRawHandle();
+    virtual int toRawHandle();
 
-    bool ==(Object other);
+    virtual bool operator==(Object other);
 
-    int hashCode();
+    virtual int hashCode();
 
 private:
     int _handle;
 
 
 };
+using CallbackHandle = std::shared_ptr<CallbackHandleCls>;
 
-class PluginUtilities {
+class PluginUtilitiesCls : public ObjectCls {
 public:
 
-    static CallbackHandle getCallbackHandle(FunctionType callback);
+    static CallbackHandle getCallbackHandle(void  callback() );
 
-    static FunctionType getCallbackFromHandle(CallbackHandle handle);
+    static void  Function() getCallbackFromHandle(CallbackHandle handle);
 
 private:
-    static Map<FunctionType, CallbackHandle> _forwardCache;
+    static Map<void  Function(), CallbackHandle> _forwardCache;
 
-    static Map<CallbackHandle, FunctionType> _backwardCache;
+    static Map<CallbackHandle, void  Function()> _backwardCache;
 
 
-    void  _();
+    virtual void  _();
 
 };
+using PluginUtilities = std::shared_ptr<PluginUtilitiesCls>;
+
 
 #endif

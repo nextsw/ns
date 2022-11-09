@@ -1,50 +1,50 @@
-#ifndef COMBINED_MAP_H
-#define COMBINED_MAP_H
-#include <memory>
+#ifndef PACKAGES_COLLECTION_SRC_COMBINED_WRAPPERS_COMBINED_MAP
+#define PACKAGES_COLLECTION_SRC_COMBINED_WRAPPERS_COMBINED_MAP
+#include <base.hpp>
 
-#include <collection/collection.hpp>
+#include <dart/core/core.hpp>
+#include <dart/collection/collection.hpp>
 #include "combined_iterable.hpp"
 
 
-
-class CombinedMapView<K, V> : UnmodifiableMapBase<K, V> {
+template<typename K, typename V> class CombinedMapViewCls : public UnmodifiableMapBaseCls<K, V> {
 public:
 
-     CombinedMapView(Iterable<Map<K, V>> _maps);
+     CombinedMapViewCls(Iterable<Map<K, V>> _maps);
+    virtual V operator[](Object key);
 
-    V [](Object key);
-
-    Iterable<K> keys();
+    virtual Iterable<K> keys();
 
 private:
     Iterable<Map<K, V>> _maps;
 
 
 };
+template<typename K, typename V> using CombinedMapView = std::shared_ptr<CombinedMapViewCls<K, V>>;
 
-class _DeduplicatingIterableView<T> : IterableBase<T> {
+template<typename T> class _DeduplicatingIterableViewCls : public IterableBaseCls<T> {
 public:
 
-    Iterator<T> iterator();
+    virtual Iterator<T> iterator();
 
-    bool contains(Object element);
+    virtual bool contains(Object element);
 
-    bool isEmpty();
+    virtual bool isEmpty();
 
 private:
     Iterable<T> _iterable;
 
 
-     _DeduplicatingIterableView(Iterable<T> _iterable);
-
+     _DeduplicatingIterableViewCls(Iterable<T> _iterable);
 };
+template<typename T> using _DeduplicatingIterableView = std::shared_ptr<_DeduplicatingIterableViewCls<T>>;
 
-class _DeduplicatingIterator<T> {
+template<typename T> class _DeduplicatingIteratorCls : public ObjectCls {
 public:
 
-    T current();
+    virtual T current();
 
-    bool moveNext();
+    virtual bool moveNext();
 
 private:
     Iterator<T> _iterator;
@@ -52,8 +52,9 @@ private:
     auto  _emitted;
 
 
-     _DeduplicatingIterator(Iterator<T> _iterator);
-
+     _DeduplicatingIteratorCls(Iterator<T> _iterator);
 };
+template<typename T> using _DeduplicatingIterator = std::shared_ptr<_DeduplicatingIteratorCls<T>>;
+
 
 #endif

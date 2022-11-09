@@ -1,11 +1,11 @@
-#ifndef MAPS_H
-#define MAPS_H
-#include <memory>
+#ifndef DART_COLLECTION_MAPS
+#define DART_COLLECTION_MAPS
+#include <base.hpp>
+
+#include <dart/core/core.hpp>
 
 
-
-
-class MapBase<K, V> : MapMixin<K, V> {
+template<typename K, typename V> class MapBaseCls : public MapMixinCls<K, V> {
 public:
 
     static String mapToString(Map<Object, Object> m);
@@ -14,101 +14,99 @@ private:
 
     static Object _id(Object x);
 
-    static void _fillMapWithMappedIterable(Iterable<Object> iterable, FunctionType key, Map<Object, Object> map, FunctionType value);
+    static void _fillMapWithMappedIterable(Iterable<Object> iterable, Object key(Object element) , Map<Object, Object> map, Object value(Object element) );
 
     static void _fillMapWithIterables(Iterable<Object> keys, Map<Object, Object> map, Iterable<Object> values);
 
 };
+template<typename K, typename V> using MapBase = std::shared_ptr<MapBaseCls<K, V>>;
 
-class MapMixin<K, V> {
+template<typename K, typename V> class MapMixinCls : public ObjectCls {
 public:
 
-    Iterable<K> keys();
+    virtual Iterable<K> keys();
+    virtual V operator[](Object key);
+    virtual void  operator[]=(K key, V value);
+    virtual V remove(Object key);
+    virtual void clear();
+    template<typename RK, typename RV>  virtual Map<RK, RV> cast();
 
-    V [](Object key);
+    virtual void forEach(void action(K key, V value) );
 
-    void  []=(K key, V value);
+    virtual void addAll(Map<K, V> other);
 
-    V remove(Object key);
+    virtual bool containsValue(Object value);
 
-    void clear();
+    virtual V putIfAbsent(V ifAbsent() , K key);
 
-    Map<RK, RV> cast<RK, RV>();
+    virtual V update(V ifAbsent() , K key, V update(V value) );
 
-    void forEach(FunctionType action);
+    virtual void updateAll(V update(K key, V value) );
 
-    void addAll(Map<K, V> other);
+    virtual Iterable<MapEntry<K, V>> entries();
 
-    bool containsValue(Object value);
+    template<typename K2, typename V2>  virtual Map<K2, V2> map(MapEntry<K2, V2> transform(K key, V value) );
 
-    V putIfAbsent(FunctionType ifAbsent, K key);
+    virtual void addEntries(Iterable<MapEntry<K, V>> newEntries);
 
-    V update(FunctionType ifAbsent, K key, FunctionType update);
+    virtual void removeWhere(bool test(K key, V value) );
 
-    void updateAll(FunctionType update);
+    virtual bool containsKey(Object key);
 
-    Iterable<MapEntry<K, V>> entries();
+    virtual int length();
 
-    Map<K2, V2> map<K2, V2>(FunctionType transform);
+    virtual bool isEmpty();
 
-    void addEntries(Iterable<MapEntry<K, V>> newEntries);
+    virtual bool isNotEmpty();
 
-    void removeWhere(FunctionType test);
+    virtual Iterable<V> values();
 
-    bool containsKey(Object key);
-
-    int length();
-
-    bool isEmpty();
-
-    bool isNotEmpty();
-
-    Iterable<V> values();
-
-    String toString();
+    virtual String toString();
 
 private:
 
 };
+template<typename K, typename V> using MapMixin = std::shared_ptr<MapMixinCls<K, V>>;
 
-class UnmodifiableMapBase<K, V> {
+template<typename K, typename V> class UnmodifiableMapBaseCls : public ObjectCls {
 public:
 
 private:
 
 };
+template<typename K, typename V> using UnmodifiableMapBase = std::shared_ptr<UnmodifiableMapBaseCls<K, V>>;
 
-class _MapBaseValueIterable<K, V> : EfficientLengthIterable<V> {
+template<typename K, typename V> class _MapBaseValueIterableCls : public EfficientLengthIterableCls<V> {
 public:
 
-    int length();
+    virtual int length();
 
-    bool isEmpty();
+    virtual bool isEmpty();
 
-    bool isNotEmpty();
+    virtual bool isNotEmpty();
 
-    V first();
+    virtual V first();
 
-    V single();
+    virtual V single();
 
-    V last();
+    virtual V last();
 
-    Iterator<V> iterator();
+    virtual Iterator<V> iterator();
 
 private:
     Map<K, V> _map;
 
 
-     _MapBaseValueIterable(Map<K, V> _map);
-
+     _MapBaseValueIterableCls(Map<K, V> _map);
 };
+template<typename K, typename V> using _MapBaseValueIterable = std::shared_ptr<_MapBaseValueIterableCls<K, V>>;
 
-class _MapBaseValueIterator<K, V> {
+template<typename K, typename V> class _MapBaseValueIteratorCls : public ObjectCls {
 public:
 
-    bool moveNext();
+    virtual bool moveNext();
 
-    V current();
+    virtual V current();
 
 private:
     Iterator<K> _keys;
@@ -118,99 +116,104 @@ private:
     V _current;
 
 
-     _MapBaseValueIterator(Map<K, V> map);
+     _MapBaseValueIteratorCls(Map<K, V> map);
 
 };
+template<typename K, typename V> using _MapBaseValueIterator = std::shared_ptr<_MapBaseValueIteratorCls<K, V>>;
 
-class _UnmodifiableMapMixin<K, V> {
+template<typename K, typename V> class _UnmodifiableMapMixinCls : public ObjectCls {
 public:
 
-    void []=(K key, V value);
+    virtual void operator[]=(K key, V value);
 
-    void addAll(Map<K, V> other);
+    virtual void addAll(Map<K, V> other);
 
-    void addEntries(Iterable<MapEntry<K, V>> entries);
+    virtual void addEntries(Iterable<MapEntry<K, V>> entries);
 
-    void clear();
+    virtual void clear();
 
-    V remove(Object key);
+    virtual V remove(Object key);
 
-    void removeWhere(FunctionType test);
+    virtual void removeWhere(bool test(K key, V value) );
 
-    V putIfAbsent(FunctionType ifAbsent, K key);
+    virtual V putIfAbsent(V ifAbsent() , K key);
 
-    V update(FunctionType ifAbsent, K key, FunctionType update);
+    virtual V update(V ifAbsent() , K key, V update(V value) );
 
-    void updateAll(FunctionType update);
+    virtual void updateAll(V update(K key, V value) );
 
 private:
 
 };
+template<typename K, typename V> using _UnmodifiableMapMixin = std::shared_ptr<_UnmodifiableMapMixinCls<K, V>>;
 
-class MapView<K, V> {
+template<typename K, typename V> class MapViewCls : public ObjectCls {
 public:
 
-     MapView(Map<K, V> map);
+     MapViewCls(Map<K, V> map);
 
-    Map<RK, RV> cast<RK, RV>();
+    template<typename RK, typename RV>  virtual Map<RK, RV> cast();
 
-    V [](Object key);
+    virtual V operator[](Object key);
 
-    void []=(K key, V value);
+    virtual void operator[]=(K key, V value);
 
-    void addAll(Map<K, V> other);
+    virtual void addAll(Map<K, V> other);
 
-    void clear();
+    virtual void clear();
 
-    V putIfAbsent(FunctionType ifAbsent, K key);
+    virtual V putIfAbsent(V ifAbsent() , K key);
 
-    bool containsKey(Object key);
+    virtual bool containsKey(Object key);
 
-    bool containsValue(Object value);
+    virtual bool containsValue(Object value);
 
-    void forEach(FunctionType action);
+    virtual void forEach(void action(K key, V value) );
 
-    bool isEmpty();
+    virtual bool isEmpty();
 
-    bool isNotEmpty();
+    virtual bool isNotEmpty();
 
-    int length();
+    virtual int length();
 
-    Iterable<K> keys();
+    virtual Iterable<K> keys();
 
-    V remove(Object key);
+    virtual V remove(Object key);
 
-    String toString();
+    virtual String toString();
 
-    Iterable<V> values();
+    virtual Iterable<V> values();
 
-    Iterable<MapEntry<K, V>> entries();
+    virtual Iterable<MapEntry<K, V>> entries();
 
-    void addEntries(Iterable<MapEntry<K, V>> entries);
+    virtual void addEntries(Iterable<MapEntry<K, V>> entries);
 
-    Map<K2, V2> map<K2, V2>(FunctionType transform);
+    template<typename K2, typename V2>  virtual Map<K2, V2> map(MapEntry<K2, V2> transform(K key, V value) );
 
-    V update(FunctionType ifAbsent, K key, FunctionType update);
+    virtual V update(V ifAbsent() , K key, V update(V value) );
 
-    void updateAll(FunctionType update);
+    virtual void updateAll(V update(K key, V value) );
 
-    void removeWhere(FunctionType test);
+    virtual void removeWhere(bool test(K key, V value) );
 
 private:
     Map<K, V> _map;
 
 
 };
+template<typename K, typename V> using MapView = std::shared_ptr<MapViewCls<K, V>>;
 
-class UnmodifiableMapView<K, V> : MapView<K, V> {
+template<typename K, typename V> class UnmodifiableMapViewCls : public MapViewCls<K, V> {
 public:
 
-     UnmodifiableMapView(Map<K, V> map);
+     UnmodifiableMapViewCls(Map<K, V> map);
 
-    Map<RK, RV> cast<RK, RV>();
+    template<typename RK, typename RV>  virtual Map<RK, RV> cast();
 
 private:
 
 };
+template<typename K, typename V> using UnmodifiableMapView = std::shared_ptr<UnmodifiableMapViewCls<K, V>>;
+
 
 #endif

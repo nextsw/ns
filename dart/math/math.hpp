@@ -1,55 +1,43 @@
-#ifndef MATH_H
-#define MATH_H
-#include <memory>
+#ifndef DART_MATH_MATH
+#define DART_MATH_MATH
+#include <base.hpp>
 
-#include <internal/internal.hpp>
+#include <dart/core/core.hpp>
+#include <dart/internal/internal.hpp>
+
+double e;
+
+double ln10;
+
+double ln2;
+
+double log2e;
+
+double log10e;
+
+double pi;
+
+double sqrt1_2;
+
+double sqrt2;
+
+template<typename T : num>  extern T min(T a, T b);
+template<typename T : num>  extern T max(T a, T b);
+extern double atan2(num a, num b);
+extern num pow(num exponent, num x);
+extern double sin(num radians);
+extern double cos(num radians);
+extern double tan(num radians);
+extern double acos(num x);
+extern double asin(num x);
+extern double atan(num x);
+extern double sqrt(num x);
+extern double exp(num x);
+extern double log(num x);
 
 // Parts
 #include "point.hpp"
 #include "random.hpp"
 #include "rectangle.hpp"
-
-const double e;
-
-const double ln10;
-
-const double ln2;
-
-const double log2e;
-
-const double log10e;
-
-const double pi;
-
-const double sqrt1_2;
-
-const double sqrt2;
-
-external T min<T extends num>(T a, T b);
-
-external T max<T extends num>(T a, T b);
-
-external double atan2(num a, num b);
-
-external num pow(num exponent, num x);
-
-external double sin(num radians);
-
-external double cos(num radians);
-
-external double tan(num radians);
-
-external double acos(num x);
-
-external double asin(num x);
-
-external double atan(num x);
-
-external double sqrt(num x);
-
-external double exp(num x);
-
-external double log(num x);
-
 
 #endif

@@ -1,48 +1,52 @@
 #include "combined_list.hpp"
-Iterator<T> CombinedListView::iterator() {
-    return <T>CombinedIterator(_lists.map().iterator);
+template<typename T> Iterator<T> CombinedListViewCls<T>::iterator() {
+    return <T>make<CombinedIteratorCls>(_lists->map([=] (Unknown  i)     {
+        i->iterator;
+    })->iterator);
 }
 
-void CombinedListView::length(int length) {
+template<typename T> void CombinedListViewCls<T>::length(int length) {
     _throw();
 }
 
-int CombinedListView::length() {
-    return _lists.fold(0, );
+template<typename T> int CombinedListViewCls<T>::length() {
+    return _lists->fold(0, [=] (Unknown  length,Unknown  list)     {
+        length + list->length;
+    });
 }
 
-T CombinedListView::[](int index) {
+template<typename T> T CombinedListViewCls<T>::[](int index) {
     auto initialIndex = index;
-    for (;  < _lists.length; i++) {
+    for (;  < _lists->length; i++) {
         auto list = _lists[i];
-        if ( < list.length) {
+        if ( < list->length) {
             return list[index];
         }
-        index = list.length;
+        index = list->length;
     }
     ;
 }
 
-void CombinedListView::[]=(int index, T value) {
+template<typename T> void CombinedListViewCls<T>::[]=(int index, T value) {
     _throw();
 }
 
-void CombinedListView::clear() {
+template<typename T> void CombinedListViewCls<T>::clear() {
     _throw();
 }
 
-bool CombinedListView::remove(Object element) {
+template<typename T> bool CombinedListViewCls<T>::remove(Object element) {
     _throw();
 }
 
-void CombinedListView::removeWhere(FunctionType test) {
+template<typename T> void CombinedListViewCls<T>::removeWhere(bool test(T ) ) {
     _throw();
 }
 
-void CombinedListView::retainWhere(FunctionType test) {
+template<typename T> void CombinedListViewCls<T>::retainWhere(bool test(T ) ) {
     _throw();
 }
 
-Never CombinedListView::_throw() {
+template<typename T> Never CombinedListViewCls<T>::_throw() {
     ;
 }

@@ -1,21 +1,21 @@
-#ifndef IMAGE_RESOLUTION_H
-#define IMAGE_RESOLUTION_H
-#include <memory>
+#ifndef PACKAGES_FLUTTER_SRC_PAINTING_IMAGE_RESOLUTION
+#define PACKAGES_FLUTTER_SRC_PAINTING_IMAGE_RESOLUTION
+#include <base.hpp>
 
-#include <async/async.hpp>
-#include <collection/collection.hpp>
-#include <convert/convert.hpp>
-#include <flutter/foundation.hpp>
-#include <flutter/services.hpp>
+#include <dart/core/core.hpp>
+#include <dart/async/async.hpp>
+#include <dart/collection/collection.hpp>
+#include <dart/convert/convert.hpp>
+#include <packages/flutter/lib/foundation.hpp>
+#include <packages/flutter/flutter.hpp>
 #include "image_provider.hpp"
 
+String _kAssetManifestFileName;
 
-const String _kAssetManifestFileName;
-
-const double _kLowDprLimit;
+double _kLowDprLimit;
 
 
-class AssetImage : AssetBundleImageProvider {
+class AssetImageCls : public AssetBundleImageProviderCls {
 public:
     String assetName;
 
@@ -24,32 +24,34 @@ public:
     String package;
 
 
-     AssetImage(String assetName, AssetBundle bundle, String package);
+     AssetImageCls(String assetName, AssetBundle bundle, String package);
 
-    String keyName();
+    virtual String keyName();
 
-    Future<AssetBundleImageKey> obtainKey(ImageConfiguration configuration);
+    virtual Future<AssetBundleImageKey> obtainKey(ImageConfiguration configuration);
 
-    bool ==(Object other);
+    virtual bool operator==(Object other);
 
-    int hashCode();
+    virtual int hashCode();
 
-    String toString();
+    virtual String toString();
 
 private:
-    static const double _naturalResolution;
+    static double _naturalResolution;
 
     static RegExp _extractRatioRegExp;
 
 
     static Future<Map<String, List<String>>> _manifestParser(String jsonData);
 
-    String _chooseVariant(List<String> candidates, ImageConfiguration config, String main);
+    virtual String _chooseVariant(List<String> candidates, ImageConfiguration config, String main);
 
-    String _findBestVariant(SplayTreeMap<double, String> candidates, double value);
+    virtual String _findBestVariant(SplayTreeMap<double, String> candidates, double value);
 
-    double _parseScale(String key);
+    virtual double _parseScale(String key);
 
 };
+using AssetImage = std::shared_ptr<AssetImageCls>;
+
 
 #endif

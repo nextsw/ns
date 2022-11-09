@@ -1,17 +1,11 @@
-#ifndef SPIRV_H
-#define SPIRV_H
-#include <memory>
+#ifndef DART_SPIRV_SPIRV
+#define DART_SPIRV_SPIRV
+#include <base.hpp>
 
-#include <convert/convert.hpp>
-#include <math/math.hpp>
-#include <typed_data/typed_data.hpp>
-
-// Parts
-#include "src/constants.hpp"
-#include "src/function.hpp"
-#include "src/instructions.hpp"
-#include "src/transpiler.hpp"
-#include "src/types.hpp"
+#include <dart/core/core.hpp>
+#include <dart/convert/convert.hpp>
+#include <dart/math/math.hpp>
+#include <dart/typed_data/typed_data.hpp>
 
 
 enum TargetLanguage{
@@ -20,7 +14,7 @@ enum TargetLanguage{
     glslES300,
 } // end TargetLanguage
 
-class TranspileResult {
+class TranspileResultCls : public ObjectCls {
 public:
     String src;
 
@@ -33,25 +27,32 @@ public:
 
 private:
 
-    void  _(TargetLanguage language, int samplerCount, String src, int uniformFloatCount);
-
+    virtual void  _(TargetLanguage language, int samplerCount, String src, int uniformFloatCount);
 };
+using TranspileResult = std::shared_ptr<TranspileResultCls>;
 
-class TranspileException {
+class TranspileExceptionCls : public ObjectCls {
 public:
     int op;
 
     String message;
 
 
-    String toString();
+    virtual String toString();
 
 private:
 
-    void  _(String message, int op);
-
+    virtual void  _(String message, int op);
 };
+using TranspileException = std::shared_ptr<TranspileExceptionCls>;
 TranspileResult transpile(ByteBuffer spirv, TargetLanguage target);
 
+
+// Parts
+#include "src/constants.hpp"
+#include "src/function.hpp"
+#include "src/instructions.hpp"
+#include "src/transpiler.hpp"
+#include "src/types.hpp"
 
 #endif

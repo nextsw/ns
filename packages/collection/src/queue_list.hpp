@@ -1,46 +1,46 @@
-#ifndef QUEUE_LIST_H
-#define QUEUE_LIST_H
-#include <memory>
+#ifndef PACKAGES_COLLECTION_SRC_QUEUE_LIST
+#define PACKAGES_COLLECTION_SRC_QUEUE_LIST
+#include <base.hpp>
 
-#include <collection/collection.hpp>
+#include <dart/core/core.hpp>
+#include <dart/collection/collection.hpp>
 
 
-
-class QueueList<E> : Object {
+template<typename E> class QueueListCls : public ObjectCls {
 public:
 
-     QueueList(int initialCapacity);
+     QueueListCls(int initialCapacity);
 
-    void  from(Iterable<E> source);
+    virtual void  from(Iterable<E> source);
 
-    void add(E element);
+    virtual void add(E element);
 
-    void addAll(Iterable<E> iterable);
+    virtual void addAll(Iterable<E> iterable);
 
-    QueueList<T> cast<T>();
+    template<typename T>  virtual QueueList<T> cast();
 
-    QueueList<T> retype<T>();
+    template<typename T>  virtual QueueList<T> retype();
 
-    String toString();
+    virtual String toString();
 
-    void addLast(E element);
+    virtual void addLast(E element);
 
-    void addFirst(E element);
+    virtual void addFirst(E element);
 
-    E removeFirst();
+    virtual E removeFirst();
 
-    E removeLast();
+    virtual E removeLast();
 
-    int length();
+    virtual int length();
 
-    void  length(int value);
+    virtual void  length(int value);
 
-    E [](int index);
+    virtual E operator[](int index);
 
-    void []=(int index, E value);
+    virtual void operator[]=(int index, E value);
 
 private:
-    static const int _initialCapacity;
+    static int _initialCapacity;
 
     List<E> _table;
 
@@ -49,45 +49,47 @@ private:
     int _tail;
 
 
-    static QueueList<T> _castFrom<S, T>(QueueList<S> source);
+    template<typename S, typename T>  static QueueList<T> _castFrom(QueueList<S> source);
 
-    void  _init(int initialCapacity);
+    virtual void  _init(int initialCapacity);
 
-    void  _(int _head, List<E> _table, int _tail);
-
+    virtual void  _(int _head, List<E> _table, int _tail);
     static int _computeInitialCapacity(int initialCapacity);
 
     static bool _isPowerOf2(int number);
 
     static int _nextPowerOf2(int number);
 
-    void _add(E element);
+    virtual void _add(E element);
 
-    void _grow();
+    virtual void _grow();
 
-    int _writeToList(List<E> target);
+    virtual int _writeToList(List<E> target);
 
-    void _preGrow(int newElementCount);
+    virtual void _preGrow(int newElementCount);
 
 };
+template<typename E> using QueueList = std::shared_ptr<QueueListCls<E>>;
 
-class _CastQueueList<S, T> : QueueList<T> {
+template<typename S, typename T> class _CastQueueListCls : public QueueListCls<T> {
 public:
 
 private:
     QueueList<S> _delegate;
 
 
-     _CastQueueList(QueueList<S> _delegate);
+     _CastQueueListCls(QueueList<S> _delegate);
 
-    int _head();
+    virtual int _head();
 
-    void  _head(int value);
+    virtual void  _head(int value);
 
-    int _tail();
+    virtual int _tail();
 
-    void  _tail(int value);
+    virtual void  _tail(int value);
 
 };
+template<typename S, typename T> using _CastQueueList = std::shared_ptr<_CastQueueListCls<S, T>>;
+
 
 #endif
