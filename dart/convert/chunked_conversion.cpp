@@ -12,7 +12,7 @@ template<typename S, typename T> void _ConverterStreamEventSinkCls<S, T>::add(S 
 }
 
 template<typename S, typename T> void _ConverterStreamEventSinkCls<S, T>::addError(Object error, StackTrace stackTrace) {
-    checkNotNullable(error, "error");
+    checkNotNullable(error, __s("error"));
     _eventSink->addError(error, stackTrace);
 }
 

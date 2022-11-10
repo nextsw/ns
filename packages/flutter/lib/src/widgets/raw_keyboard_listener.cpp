@@ -14,7 +14,7 @@ State<RawKeyboardListener> RawKeyboardListenerCls::createState() {
 
 void RawKeyboardListenerCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<FocusNode>make<DiagnosticsPropertyCls>("focusNode", focusNode));
+    properties->add(<FocusNode>make<DiagnosticsPropertyCls>(__s("focusNode"), focusNode));
 }
 
 void _RawKeyboardListenerStateCls::initState() {

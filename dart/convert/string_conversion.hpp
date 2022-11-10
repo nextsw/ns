@@ -105,7 +105,7 @@ private:
 };
 using StringConversionSinkMixin = std::shared_ptr<StringConversionSinkMixinCls>;
 
-template<typename TStringSink : StringSink> class _StringSinkConversionSinkCls : public StringConversionSinkBaseCls {
+template<typename TStringSink> class _StringSinkConversionSinkCls : public StringConversionSinkBaseCls {
 public:
 
     virtual void close();
@@ -124,7 +124,7 @@ private:
 
      _StringSinkConversionSinkCls(TStringSink _stringSink);
 };
-template<typename TStringSink : StringSink> using _StringSinkConversionSink = std::shared_ptr<_StringSinkConversionSinkCls<TStringSink : StringSink>>;
+template<typename TStringSink> using _StringSinkConversionSink = std::shared_ptr<_StringSinkConversionSinkCls<TStringSink>>;
 
 class _StringCallbackSinkCls : public _StringSinkConversionSinkCls<StringBuffer> {
 public:

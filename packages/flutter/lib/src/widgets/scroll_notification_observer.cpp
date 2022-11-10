@@ -66,7 +66,7 @@ bool ScrollNotificationObserverStateCls::_debugAssertNotDisposed() {
 
 void ScrollNotificationObserverStateCls::_notifyListeners(ScrollNotification notification) {
     assert(_debugAssertNotDisposed());
-    if (_listeners!->isEmpty) {
+    if (_listeners!->isEmpty()) {
         return;
     }
     List<_ListenerEntry> localListeners = <_ListenerEntry>of(_listeners!);
@@ -76,7 +76,7 @@ void ScrollNotificationObserverStateCls::_notifyListeners(ScrollNotification not
                 entry->listener(notification);
             }
         } catch (Unknown exception) {
-            FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(exception, stack, "widget library", make<ErrorDescriptionCls>("while dispatching notifications for $runtimeType"), [=] ()             {
+            FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(exception, stack, __s("widget library"), make<ErrorDescriptionCls>(__s("while dispatching notifications for $runtimeType")), [=] ()             {
                 makeList(ArrayItem);
             }));
         };

@@ -48,7 +48,7 @@ void _RootRestorationScopeStateCls::didChangeDependencies() {
     super->didChangeDependencies();
     _ancestorBucket = RestorationScopeCls->of(context);
     _loadRootBucketIfNecessary();
-    _okToRenderBlankContainer = widget->restorationId != nullptr && _needsRootBucketInserted;
+    _okToRenderBlankContainer = widget->restorationId != nullptr && _needsRootBucketInserted();
 }
 
 void _RootRestorationScopeStateCls::didUpdateWidget(RootRestorationScope oldWidget) {
@@ -64,10 +64,10 @@ void _RootRestorationScopeStateCls::dispose() {
 }
 
 Widget _RootRestorationScopeStateCls::build(BuildContext context) {
-    if (_okToRenderBlankContainer! && _isWaitingForRootBucket) {
+    if (_okToRenderBlankContainer! && _isWaitingForRootBucket()) {
         return SizedBoxCls->shrink();
     }
-    return make<UnmanagedRestorationScopeCls>(_ancestorBucket ?? _rootBucket, make<RestorationScopeCls>(widget->restorationId, widget->child));
+    return make<UnmanagedRestorationScopeCls>(_ancestorBucket or _rootBucket, make<RestorationScopeCls>(widget->restorationId, widget->child));
 }
 
 bool _RootRestorationScopeStateCls::_needsRootBucketInserted() {
@@ -75,11 +75,11 @@ bool _RootRestorationScopeStateCls::_needsRootBucketInserted() {
 }
 
 bool _RootRestorationScopeStateCls::_isWaitingForRootBucket() {
-    return widget->restorationId != nullptr && _needsRootBucketInserted && !_rootBucketValid;
+    return widget->restorationId != nullptr && _needsRootBucketInserted() && !_rootBucketValid;
 }
 
 void _RootRestorationScopeStateCls::_loadRootBucketIfNecessary() {
-    if (_isWaitingForRootBucket && !_isLoadingRootBucket) {
+    if (_isWaitingForRootBucket() && !_isLoadingRootBucket) {
         _isLoadingRootBucket = true;
         RendererBindingCls::instance->deferFirstFrame();
         ServicesBindingCls::instance->restorationManager->rootBucket->then([=] (RestorationBucket bucket) {
@@ -102,7 +102,7 @@ void _RootRestorationScopeStateCls::_replaceRootBucket() {
     _rootBucket = nullptr;
     ServicesBindingCls::instance->restorationManager->removeListener(_replaceRootBucket);
     _loadRootBucketIfNecessary();
-    assert(!_isWaitingForRootBucket);
+    assert(!_isWaitingForRootBucket());
 }
 
 template<typename T> bool RestorablePropertyCls<T>::enabled() {
@@ -117,7 +117,7 @@ template<typename T> void RestorablePropertyCls<T>::dispose() {
 }
 
 template<typename T> State RestorablePropertyCls<T>::state() {
-    assert(isRegistered);
+    assert(isRegistered());
     assert(ChangeNotifierCls->debugAssertNotDisposed(this));
     return _owner!;
 }
@@ -143,32 +143,32 @@ template<typename T> void RestorablePropertyCls<T>::_unregister() {
     _owner = nullptr;
 }
 
-template<typename S : StatefulWidget> RestorationBucket RestorationMixinCls<S>::bucket() {
+template<typename S> RestorationBucket RestorationMixinCls<S>::bucket() {
     return _bucket;
 }
 
-template<typename S : StatefulWidget> void RestorationMixinCls<S>::didToggleBucket(RestorationBucket oldBucket) {
-    assert(_bucket?->isReplacing != true);
+template<typename S> void RestorationMixinCls<S>::didToggleBucket(RestorationBucket oldBucket) {
+    assert(_bucket?->isReplacing() != true);
 }
 
-template<typename S : StatefulWidget> void RestorationMixinCls<S>::registerForRestoration(RestorableProperty<Object> property, String restorationId) {
+template<typename S> void RestorationMixinCls<S>::registerForRestoration(RestorableProperty<Object> property, String restorationId) {
     assert(property != nullptr);
-    assert(restorationId != nullptr);
-    assert(property->_restorationId == nullptr || (_debugDoingRestore && property->_restorationId == restorationId), "Property is already registered under ${property._restorationId}.");
-    assert(_debugDoingRestore || !_properties->keys->map([=] (RestorableProperty<Object> r)     {
+    assert(restorationId() != nullptr);
+    assert(property->_restorationId == nullptr || (_debugDoingRestore() && property->_restorationId == restorationId()), __s("Property is already registered under ${property._restorationId}."));
+    assert(_debugDoingRestore() || !_properties->keys()->map([=] (RestorableProperty<Object> r)     {
         r->_restorationId;
-    })->contains(restorationId), ""$restorationId" is already registered to another property.");
-    bool hasSerializedValue = bucket?->contains(restorationId) ?? false;
-    Object initialValue = hasSerializedValue? property->fromPrimitives(bucket!-><Object>read(restorationId)) : property->createDefaultValue();
+    })->contains(restorationId()), __s(""$restorationId" is already registered to another property."));
+    bool hasSerializedValue = bucket()?->contains(restorationId()) or false;
+    Object initialValue = hasSerializedValue? property->fromPrimitives(bucket()!-><Object>read(restorationId())) : property->createDefaultValue();
     if (!property->isRegistered) {
-        property->_register(restorationId, this);
+        property->_register(restorationId(), this);
         InlineMethod;
         property->addListener(listener);
         _properties[property] = listener;
     }
-    assert(property->_restorationId == restorationId && property->_owner == this && _properties->containsKey(property));
+    assert(property->_restorationId == restorationId() && property->_owner == this && _properties->containsKey(property));
     property->initWithValue(initialValue);
-    if (!hasSerializedValue && property->enabled && bucket != nullptr) {
+    if (!hasSerializedValue && property->enabled && bucket() != nullptr) {
         _updateProperty(property);
     }
     assert([=] () {
@@ -177,19 +177,19 @@ template<typename S : StatefulWidget> void RestorationMixinCls<S>::registerForRe
     }());
 }
 
-template<typename S : StatefulWidget> void RestorationMixinCls<S>::unregisterFromRestoration(RestorableProperty<Object> property) {
+template<typename S> void RestorationMixinCls<S>::unregisterFromRestoration(RestorableProperty<Object> property) {
     assert(property != nullptr);
     assert(property->_owner == this);
     _bucket?-><Object>remove(property->_restorationId!);
     _unregister(property);
 }
 
-template<typename S : StatefulWidget> void RestorationMixinCls<S>::didUpdateRestorationId() {
-    if (_currentParent == nullptr || _bucket?->restorationId == restorationId || restorePending) {
+template<typename S> void RestorationMixinCls<S>::didUpdateRestorationId() {
+    if (_currentParent == nullptr || _bucket?->restorationId() == restorationId() || restorePending()) {
         return;
     }
     RestorationBucket oldBucket = _bucket;
-    assert(!restorePending);
+    assert(!restorePending());
     bool didReplaceBucket = _updateBucketIfNecessary(_currentParent, false);
     if (didReplaceBucket) {
         assert(oldBucket != _bucket);
@@ -198,26 +198,26 @@ template<typename S : StatefulWidget> void RestorationMixinCls<S>::didUpdateRest
     }
 }
 
-template<typename S : StatefulWidget> void RestorationMixinCls<S>::didUpdateWidget(S oldWidget) {
+template<typename S> void RestorationMixinCls<S>::didUpdateWidget(S oldWidget) {
     super->didUpdateWidget(oldWidget);
     didUpdateRestorationId();
 }
 
-template<typename S : StatefulWidget> bool RestorationMixinCls<S>::restorePending() {
+template<typename S> bool RestorationMixinCls<S>::restorePending() {
     if (_firstRestorePending) {
         return true;
     }
-    if (restorationId == nullptr) {
+    if (restorationId() == nullptr) {
         return false;
     }
     RestorationBucket potentialNewParent = RestorationScopeCls->of(context);
-    return potentialNewParent != _currentParent && (potentialNewParent?->isReplacing ?? false);
+    return potentialNewParent != _currentParent && (potentialNewParent?->isReplacing or false);
 }
 
-template<typename S : StatefulWidget> void RestorationMixinCls<S>::didChangeDependencies() {
+template<typename S> void RestorationMixinCls<S>::didChangeDependencies() {
     super->didChangeDependencies();
     RestorationBucket oldBucket = _bucket;
-    bool needsRestore = restorePending;
+    bool needsRestore = restorePending();
     _currentParent = RestorationScopeCls->of(context);
     bool didReplaceBucket = _updateBucketIfNecessary(_currentParent, needsRestore);
     if (needsRestore) {
@@ -229,7 +229,7 @@ template<typename S : StatefulWidget> void RestorationMixinCls<S>::didChangeDepe
     }
 }
 
-template<typename S : StatefulWidget> void RestorationMixinCls<S>::dispose() {
+template<typename S> void RestorationMixinCls<S>::dispose() {
     _properties->forEach([=] (RestorableProperty<Object> property,VoidCallback listener) {
         if (!property->_disposed) {
             property->removeListener(listener);
@@ -240,13 +240,13 @@ template<typename S : StatefulWidget> void RestorationMixinCls<S>::dispose() {
     super->dispose();
 }
 
-template<typename S : StatefulWidget> bool RestorationMixinCls<S>::_debugDoingRestore() {
+template<typename S> bool RestorationMixinCls<S>::_debugDoingRestore() {
     return _debugPropertiesWaitingForReregistration != nullptr;
 }
 
-template<typename S : StatefulWidget> void RestorationMixinCls<S>::_doRestore(RestorationBucket oldBucket) {
+template<typename S> void RestorationMixinCls<S>::_doRestore(RestorationBucket oldBucket) {
     assert([=] () {
-        _debugPropertiesWaitingForReregistration = _properties->keys->toList();
+        _debugPropertiesWaitingForReregistration = _properties->keys()->toList();
         return true;
     }());
     restoreState(oldBucket, _firstRestorePending);
@@ -260,44 +260,44 @@ template<typename S : StatefulWidget> void RestorationMixinCls<S>::_doRestore(Re
     }());
 }
 
-template<typename S : StatefulWidget> bool RestorationMixinCls<S>::_updateBucketIfNecessary(RestorationBucket parent, bool restorePending) {
-    if (restorationId == nullptr || parent == nullptr) {
-        bool didReplace = _setNewBucketIfNecessary(nullptr, restorePending);
+template<typename S> bool RestorationMixinCls<S>::_updateBucketIfNecessary(RestorationBucket parent, bool restorePending) {
+    if (restorationId() == nullptr || parent == nullptr) {
+        bool didReplace = _setNewBucketIfNecessary(nullptr, restorePending());
         assert(_bucket == nullptr);
         return didReplace;
     }
-    assert(restorationId != nullptr);
+    assert(restorationId() != nullptr);
     assert(parent != nullptr);
-    if (restorePending || _bucket == nullptr) {
-        RestorationBucket newBucket = parent->claimChild(restorationId!this);
+    if (restorePending() || _bucket == nullptr) {
+        RestorationBucket newBucket = parent->claimChild(restorationId()!this);
         assert(newBucket != nullptr);
-        bool didReplace = _setNewBucketIfNecessary(newBucket, restorePending);
+        bool didReplace = _setNewBucketIfNecessary(newBucket, restorePending());
         assert(_bucket == newBucket);
         return didReplace;
     }
     assert(_bucket != nullptr);
-    assert(!restorePending);
-    _bucket!->rename(restorationId!);
+    assert(!restorePending());
+    _bucket!->rename(restorationId()!);
     parent->adoptChild(_bucket!);
     return false;
 }
 
-template<typename S : StatefulWidget> bool RestorationMixinCls<S>::_setNewBucketIfNecessary(RestorationBucket newBucket, bool restorePending) {
+template<typename S> bool RestorationMixinCls<S>::_setNewBucketIfNecessary(RestorationBucket newBucket, bool restorePending) {
     if (newBucket == _bucket) {
         return false;
     }
     RestorationBucket oldBucket = _bucket;
     _bucket = newBucket;
-    if (!restorePending) {
+    if (!restorePending()) {
         if (_bucket != nullptr) {
-            _properties->keys->forEach(_updateProperty);
+            _properties->keys()->forEach(_updateProperty);
         }
         didToggleBucket(oldBucket);
     }
     return true;
 }
 
-template<typename S : StatefulWidget> void RestorationMixinCls<S>::_updateProperty(RestorableProperty<Object> property) {
+template<typename S> void RestorationMixinCls<S>::_updateProperty(RestorableProperty<Object> property) {
     if (property->enabled) {
         _bucket?->write(property->_restorationId!, property->toPrimitives());
     } else {
@@ -305,7 +305,7 @@ template<typename S : StatefulWidget> void RestorationMixinCls<S>::_updateProper
     }
 }
 
-template<typename S : StatefulWidget> void RestorationMixinCls<S>::_unregister(RestorableProperty<Object> property) {
+template<typename S> void RestorationMixinCls<S>::_unregister(RestorableProperty<Object> property) {
     VoidCallback listener = _properties->remove(property)!;
     assert([=] () {
         _debugPropertiesWaitingForReregistration?->remove(property);

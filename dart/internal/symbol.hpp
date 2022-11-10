@@ -8,15 +8,15 @@
 class SymbolCls : public ObjectCls {
 public:
 
-    extern  SymbolCls(String name);
+     SymbolCls(String name);
     virtual void  unvalidated(String _name);
     virtual bool operator==(Object other);
 
-    extern int hashCode();
-    extern void  toString();
+    int hashCode();
+    void  toString();
     static String getName(Symbol symbol);
 
-    extern static String computeUnmangledName(Symbol symbol);
+    static String computeUnmangledName(Symbol symbol);
 private:
     String _name;
 

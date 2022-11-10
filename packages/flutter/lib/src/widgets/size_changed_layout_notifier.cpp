@@ -13,7 +13,7 @@ void _RenderSizeChangedWithCallbackCls::performLayout() {
     _oldSize = size;
 }
 
-_RenderSizeChangedWithCallbackCls::_RenderSizeChangedWithCallbackCls(RenderBox child, VoidCallback onLayoutChangedCallback) {
+_RenderSizeChangedWithCallbackCls::_RenderSizeChangedWithCallbackCls(RenderBox child, VoidCallback onLayoutChangedCallback) : RenderProxyBox(child) {
     {
         assert(onLayoutChangedCallback != nullptr);
     }

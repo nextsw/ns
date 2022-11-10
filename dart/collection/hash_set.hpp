@@ -8,8 +8,8 @@
 template<typename E> class HashSetCls : public ObjectCls {
 public:
 
-    extern  HashSetCls(bool equals(E , E ) , int hashCode(E ) , bool isValidKey(dynamic ) );
-    extern void  identity();
+     HashSetCls(bool equals(E , E ) , int hashCode(E ) , bool isValidKey(dynamic ) );
+    void  identity();
     virtual void  from(Iterable<dynamic> elements);
 
     virtual void  of(Iterable<E> elements);

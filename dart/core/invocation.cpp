@@ -1,10 +1,10 @@
 #include "invocation.hpp"
 void InvocationCls::method(Symbol memberName, Map<Symbol, Object> namedArguments, Iterable<Object> positionalArguments) {
-    return _InvocationCls->method(memberName, nullptr, positionalArguments, namedArguments);
+    return _InvocationCls->method(memberName(), nullptr, positionalArguments(), namedArguments());
 }
 
 void InvocationCls::genericMethod(Symbol memberName, Map<Symbol, Object> namedArguments, Iterable<Object> positionalArguments, Iterable<Type> typeArguments) {
-    return _InvocationCls->method(memberName, typeArguments, positionalArguments, namedArguments);
+    return _InvocationCls->method(memberName(), typeArguments(), positionalArguments(), namedArguments());
 }
 
 List<Type> InvocationCls::typeArguments() {
@@ -12,7 +12,7 @@ List<Type> InvocationCls::typeArguments() {
 }
 
 bool InvocationCls::isAccessor() {
-    return isGetter || isSetter;
+    return isGetter() || isSetter();
 }
 
 void _InvocationCls::method(Symbol memberName, Map<Symbol, Object> named, Iterable<Object> positional, Iterable<Type> types)
@@ -22,11 +22,11 @@ void _InvocationCls::getter(Symbol memberName)
 void _InvocationCls::setter(Object argument, Symbol memberName)
 
 List<dynamic> _InvocationCls::positionalArguments() {
-    return _positional ?? makeList();
+    return _positional or makeList();
 }
 
 Map<Symbol, dynamic> _InvocationCls::namedArguments() {
-    return _named ?? makeMap(makeList(), makeList();
+    return _named or makeMap(makeList(), makeList();
 }
 
 bool _InvocationCls::isMethod() {

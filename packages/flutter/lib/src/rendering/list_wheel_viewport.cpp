@@ -2,36 +2,36 @@
 RenderListWheelViewportCls::RenderListWheelViewportCls(ListWheelChildManager childManager, List<RenderBox> children, Clip clipBehavior, double diameterRatio, double itemExtent, double magnification, double offAxisFraction, ViewportOffset offset, double overAndUnderCenterOpacity, double perspective, bool renderChildrenOutsideViewport, double squeeze, bool useMagnifier) {
     {
         assert(childManager != nullptr);
-        assert(offset != nullptr);
-        assert(diameterRatio != nullptr);
-        assert(diameterRatio > 0, diameterRatioZeroMessage);
-        assert(perspective != nullptr);
-        assert(perspective > 0);
-        assert(perspective <= 0.01, perspectiveTooHighMessage);
-        assert(offAxisFraction != nullptr);
-        assert(useMagnifier != nullptr);
-        assert(magnification != nullptr);
-        assert(magnification > 0);
-        assert(overAndUnderCenterOpacity != nullptr);
-        assert(overAndUnderCenterOpacity >= 0 && overAndUnderCenterOpacity <= 1);
-        assert(itemExtent != nullptr);
-        assert(squeeze != nullptr);
-        assert(squeeze > 0);
-        assert(itemExtent > 0);
-        assert(renderChildrenOutsideViewport != nullptr);
-        assert(clipBehavior != nullptr);
-        assert(!renderChildrenOutsideViewport || clipBehavior == ClipCls::none, clipBehaviorAndRenderChildrenOutsideViewportConflict);
-        _offset = offset;
-        _diameterRatio = diameterRatio;
-        _perspective = perspective;
-        _offAxisFraction = offAxisFraction;
-        _useMagnifier = useMagnifier;
-        _magnification = magnification;
-        _overAndUnderCenterOpacity = overAndUnderCenterOpacity;
-        _itemExtent = itemExtent;
-        _squeeze = squeeze;
-        _renderChildrenOutsideViewport = renderChildrenOutsideViewport;
-        _clipBehavior = clipBehavior;
+        assert(offset() != nullptr);
+        assert(diameterRatio() != nullptr);
+        assert(diameterRatio() > 0, diameterRatioZeroMessage);
+        assert(perspective() != nullptr);
+        assert(perspective() > 0);
+        assert(perspective() <= 0.01, perspectiveTooHighMessage);
+        assert(offAxisFraction() != nullptr);
+        assert(useMagnifier() != nullptr);
+        assert(magnification() != nullptr);
+        assert(magnification() > 0);
+        assert(overAndUnderCenterOpacity() != nullptr);
+        assert(overAndUnderCenterOpacity() >= 0 && overAndUnderCenterOpacity() <= 1);
+        assert(itemExtent() != nullptr);
+        assert(squeeze() != nullptr);
+        assert(squeeze() > 0);
+        assert(itemExtent() > 0);
+        assert(renderChildrenOutsideViewport() != nullptr);
+        assert(clipBehavior() != nullptr);
+        assert(!renderChildrenOutsideViewport() || clipBehavior() == ClipCls::none, clipBehaviorAndRenderChildrenOutsideViewportConflict);
+        _offset = offset();
+        _diameterRatio = diameterRatio();
+        _perspective = perspective();
+        _offAxisFraction = offAxisFraction();
+        _useMagnifier = useMagnifier();
+        _magnification = magnification();
+        _overAndUnderCenterOpacity = overAndUnderCenterOpacity();
+        _itemExtent = itemExtent();
+        _squeeze = squeeze();
+        _renderChildrenOutsideViewport = renderChildrenOutsideViewport();
+        _clipBehavior = clipBehavior();
     }
     {
         addAll(children);
@@ -177,7 +177,7 @@ bool RenderListWheelViewportCls::renderChildrenOutsideViewport() {
 
 void RenderListWheelViewportCls::renderChildrenOutsideViewport(bool value) {
     assert(value != nullptr);
-    assert(!renderChildrenOutsideViewport || clipBehavior == ClipCls::none, clipBehaviorAndRenderChildrenOutsideViewportConflict);
+    assert(!renderChildrenOutsideViewport() || clipBehavior() == ClipCls::none, clipBehaviorAndRenderChildrenOutsideViewportConflict);
     if (value == _renderChildrenOutsideViewport) {
         return;
     }
@@ -200,7 +200,7 @@ void RenderListWheelViewportCls::clipBehavior(Clip value) {
 }
 
 void RenderListWheelViewportCls::setupParentData(RenderObject child) {
-    if (child->parentData is! ListWheelParentData) {
+    if (!is<ListWheelParentData>(child->parentData)) {
         child->parentData = make<ListWheelParentDataCls>();
     }
 }
@@ -232,17 +232,17 @@ double RenderListWheelViewportCls::computeMaxIntrinsicWidth(double height) {
 }
 
 double RenderListWheelViewportCls::computeMinIntrinsicHeight(double width) {
-    if (childManager->childCount == nullptr) {
+    if (childManager->childCount() == nullptr) {
         return 0.0;
     }
-    return childManager->childCount! * _itemExtent;
+    return childManager->childCount()! * _itemExtent;
 }
 
 double RenderListWheelViewportCls::computeMaxIntrinsicHeight(double width) {
-    if (childManager->childCount == nullptr) {
+    if (childManager->childCount() == nullptr) {
         return 0.0;
     }
-    return childManager->childCount! * _itemExtent;
+    return childManager->childCount()! * _itemExtent;
 }
 
 bool RenderListWheelViewportCls::sizedByParent() {
@@ -255,27 +255,27 @@ Size RenderListWheelViewportCls::computeDryLayout(BoxConstraints constraints) {
 
 int RenderListWheelViewportCls::indexOf(RenderBox child) {
     assert(child != nullptr);
-    ListWheelParentData childParentData = ((ListWheelParentData)child->parentData!);
+    ListWheelParentData childParentData = as<ListWheelParentData>(child->parentData!);
     assert(childParentData->index != nullptr);
     return childParentData->index!;
 }
 
 int RenderListWheelViewportCls::scrollOffsetToIndex(double scrollOffset) {
-    return (scrollOffset / itemExtent)->floor();
+    return (scrollOffset / itemExtent())->floor();
 }
 
 double RenderListWheelViewportCls::indexToScrollOffset(int index) {
-    return index * itemExtent;
+    return index * itemExtent();
 }
 
 void RenderListWheelViewportCls::performLayout() {
-    offset->applyViewportDimension(_viewportExtent);
-    offset->applyContentDimensions(_minEstimatedScrollExtent, _maxEstimatedScrollExtent);
+    offset()->applyViewportDimension(_viewportExtent());
+    offset()->applyContentDimensions(_minEstimatedScrollExtent(), _maxEstimatedScrollExtent());
     double visibleHeight = size->height * _squeeze;
-    if (renderChildrenOutsideViewport) {
+    if (renderChildrenOutsideViewport()) {
         visibleHeight = 2;
     }
-    double firstVisibleOffset = offset->pixels + _itemExtent / 2 - visibleHeight / 2;
+    double firstVisibleOffset = offset()->pixels() + _itemExtent / 2 - visibleHeight / 2;
     double lastVisibleOffset = firstVisibleOffset + visibleHeight;
     int targetFirstIndex = scrollOffsetToIndex(firstVisibleOffset);
     int targetLastIndex = scrollOffsetToIndex(lastVisibleOffset);
@@ -327,29 +327,29 @@ void RenderListWheelViewportCls::performLayout() {
         _createChild(currentLastIndex + 1lastChild);
         _layoutChild(lastChild!, childConstraints, ++currentLastIndex);
     }
-    double minScrollExtent = childManager->childExistsAt(targetFirstIndex - 1)? _minEstimatedScrollExtent : indexToScrollOffset(targetFirstIndex);
-    double maxScrollExtent = childManager->childExistsAt(targetLastIndex + 1)? _maxEstimatedScrollExtent : indexToScrollOffset(targetLastIndex);
-    offset->applyContentDimensions(minScrollExtent, maxScrollExtent);
+    double minScrollExtent = childManager->childExistsAt(targetFirstIndex - 1)? _minEstimatedScrollExtent() : indexToScrollOffset(targetFirstIndex);
+    double maxScrollExtent = childManager->childExistsAt(targetLastIndex + 1)? _maxEstimatedScrollExtent() : indexToScrollOffset(targetLastIndex);
+    offset()->applyContentDimensions(minScrollExtent, maxScrollExtent);
 }
 
 void RenderListWheelViewportCls::paint(PaintingContext context, Offset offset) {
     if (childCount > 0) {
-        if (_shouldClipAtCurrentOffset() && clipBehavior != ClipCls::none) {
-            _clipRectLayer->layer = context->pushClipRect(needsCompositing, offset, OffsetCls::zero & size, _paintVisibleChildrenclipBehavior, _clipRectLayer->layer);
+        if (_shouldClipAtCurrentOffset() && clipBehavior() != ClipCls::none) {
+            _clipRectLayer->layer() = context->pushClipRect(needsCompositing, offset(), OffsetCls::zero & size, _paintVisibleChildrenclipBehavior(), _clipRectLayer->layer());
         } else {
-            _clipRectLayer->layer = nullptr;
-            _paintVisibleChildren(context, offset);
+            _clipRectLayer->layer() = nullptr;
+            _paintVisibleChildren(context, offset());
         }
     }
 }
 
 void RenderListWheelViewportCls::dispose() {
-    _clipRectLayer->layer = nullptr;
+    _clipRectLayer->layer() = nullptr;
     super->dispose();
 }
 
 void RenderListWheelViewportCls::applyPaintTransform(RenderBox child, Matrix4 transform) {
-    ListWheelParentData parentData = ((ListWheelParentData)child->parentData!);
+    ListWheelParentData parentData = as<ListWheelParentData>(child->parentData!);
     transform->translate(0.0, _getUntransformedPaintingCoordinateY(parentData->offset->dy));
 }
 
@@ -368,13 +368,13 @@ RevealedOffset RenderListWheelViewportCls::getOffsetToReveal(double alignment, R
     rect = target->paintBounds;
     RenderObject child = target;
     while (child->parent != this) {
-        child = ((RenderObject)child->parent!);
+        child = as<RenderObject>(child->parent!);
     }
-    ListWheelParentData parentData = ((ListWheelParentData)child->parentData!);
+    ListWheelParentData parentData = as<ListWheelParentData>(child->parentData!);
     double targetOffset = parentData->offset->dy;
     Matrix4 transform = target->getTransformTo(child);
     Rect bounds = MatrixUtilsCls->transformRect(transform, rect);
-    Rect targetRect = bounds->translate(0.0, (size->height - itemExtent) / 2);
+    Rect targetRect = bounds->translate(0.0, (size->height - itemExtent()) / 2);
     return make<RevealedOffsetCls>(targetOffset, targetRect);
 }
 
@@ -382,9 +382,9 @@ void RenderListWheelViewportCls::showOnScreen(Curve curve, RenderObject descenda
     if (descendant != nullptr) {
         RevealedOffset revealedOffset = getOffsetToReveal(descendant, 0.5rect);
         if (duration == DurationCls::zero) {
-            offset->jumpTo(revealedOffset->offset);
+            offset()->jumpTo(revealedOffset->offset);
         } else {
-            offset->animateTo(revealedOffset->offsetduration, curve);
+            offset()->animateTo(revealedOffset->offsetduration, curve);
         }
         rect = revealedOffset->rect;
     }
@@ -403,7 +403,7 @@ double RenderListWheelViewportCls::_viewportExtent() {
 
 double RenderListWheelViewportCls::_minEstimatedScrollExtent() {
     assert(hasSize);
-    if (childManager->childCount == nullptr) {
+    if (childManager->childCount() == nullptr) {
         return double->negativeInfinity;
     }
     return 0.0;
@@ -411,10 +411,10 @@ double RenderListWheelViewportCls::_minEstimatedScrollExtent() {
 
 double RenderListWheelViewportCls::_maxEstimatedScrollExtent() {
     assert(hasSize);
-    if (childManager->childCount == nullptr) {
+    if (childManager->childCount() == nullptr) {
         return double->infinity;
     }
-    return math->max(0.0, (childManager->childCount! - 1) * _itemExtent);
+    return math->max(0.0, (childManager->childCount()! - 1) * _itemExtent);
 }
 
 double RenderListWheelViewportCls::_topScrollMarginExtent() {
@@ -423,7 +423,7 @@ double RenderListWheelViewportCls::_topScrollMarginExtent() {
 }
 
 double RenderListWheelViewportCls::_getUntransformedPaintingCoordinateY(double layoutCoordinateY) {
-    return layoutCoordinateY - _topScrollMarginExtent - offset->pixels;
+    return layoutCoordinateY - _topScrollMarginExtent() - offset()->pixels();
 }
 
 double RenderListWheelViewportCls::_maxVisibleRadian() {
@@ -459,39 +459,39 @@ void RenderListWheelViewportCls::_destroyChild(RenderBox child) {
 
 void RenderListWheelViewportCls::_layoutChild(RenderBox child, BoxConstraints constraints, int index) {
     child->layout(constraintstrue);
-    ListWheelParentData childParentData = ((ListWheelParentData)child->parentData!);
+    ListWheelParentData childParentData = as<ListWheelParentData>(child->parentData!);
     double crossPosition = size->width / 2.0 - child->size->width / 2.0;
     childParentData->offset = make<OffsetCls>(crossPosition, indexToScrollOffset(index));
 }
 
 bool RenderListWheelViewportCls::_shouldClipAtCurrentOffset() {
     double highestUntransformedPaintY = _getUntransformedPaintingCoordinateY(0.0);
-    return  < 0.0 || size->height < highestUntransformedPaintY + _maxEstimatedScrollExtent + _itemExtent;
+    return  < 0.0 || size->height < highestUntransformedPaintY + _maxEstimatedScrollExtent() + _itemExtent;
 }
 
 void RenderListWheelViewportCls::_paintVisibleChildren(PaintingContext context, Offset offset) {
     RenderBox childToPaint = firstChild;
     while (childToPaint != nullptr) {
-        ListWheelParentData childParentData = ((ListWheelParentData)childToPaint->parentData!);
-        _paintTransformedChild(childToPaint, context, offset, childParentData->offset);
+        ListWheelParentData childParentData = as<ListWheelParentData>(childToPaint->parentData!);
+        _paintTransformedChild(childToPaint, context, offset(), childParentData->offset);
         childToPaint = childAfter(childToPaint);
     }
 }
 
 void RenderListWheelViewportCls::_paintTransformedChild(RenderBox child, PaintingContext context, Offset layoutOffset, Offset offset) {
-    Offset untransformedPaintingCoordinates = offset + make<OffsetCls>(layoutOffset->dx, _getUntransformedPaintingCoordinateY(layoutOffset->dy));
+    Offset untransformedPaintingCoordinates = offset() + make<OffsetCls>(layoutOffset->dx, _getUntransformedPaintingCoordinateY(layoutOffset->dy));
     double fractionalY = (untransformedPaintingCoordinates->dy + _itemExtent / 2.0) / size->height;
-    double angle = -(fractionalY - 0.5) * 2.0 * _maxVisibleRadian / squeeze;
+    double angle = -(fractionalY - 0.5) * 2.0 * _maxVisibleRadian() / squeeze();
     if (angle > math->pi / 2.0 ||  < -math->pi / 2.0) {
         return;
     }
     Matrix4 transform = MatrixUtilsCls->createCylindricalProjectionTransform(size->height * _diameterRatio / 2.0, angle, _perspective);
-    Offset offsetToCenter = make<OffsetCls>(untransformedPaintingCoordinates->dx, -_topScrollMarginExtent);
+    Offset offsetToCenter = make<OffsetCls>(untransformedPaintingCoordinates->dx, -_topScrollMarginExtent());
     bool shouldApplyOffCenterDim =  < 1;
-    if (useMagnifier || shouldApplyOffCenterDim) {
-        _paintChildWithMagnifier(context, offset, child, transform, offsetToCenter, untransformedPaintingCoordinates);
+    if (useMagnifier() || shouldApplyOffCenterDim) {
+        _paintChildWithMagnifier(context, offset(), child, transform, offsetToCenter, untransformedPaintingCoordinates);
     } else {
-        _paintChildCylindrically(context, offset, child, transform, offsetToCenter);
+        _paintChildCylindrically(context, offset(), child, transform, offsetToCenter);
     }
 }
 
@@ -504,23 +504,23 @@ void RenderListWheelViewportCls::_paintChildWithMagnifier(RenderBox child, Paint
         Rect centerRect = RectCls->fromLTWH(0.0, magnifierTopLinePosition, size->width, _itemExtent * _magnification);
         Rect topHalfRect = RectCls->fromLTWH(0.0, 0.0, size->width, magnifierTopLinePosition);
         Rect bottomHalfRect = RectCls->fromLTWH(0.0, magnifierBottomLinePosition, size->width, magnifierTopLinePosition);
-        context->pushClipRect(needsCompositing, offset, centerRect, [=] (PaintingContext context,Offset offset) {
-            context->pushTransform(needsCompositing, offset, _magnifyTransform(), [=] (PaintingContext context,Offset offset) {
-                context->paintChild(child, offset + untransformedPaintingCoordinates);
+        context->pushClipRect(needsCompositing, offset(), centerRect, [=] (PaintingContext context,Offset offset) {
+            context->pushTransform(needsCompositing, offset(), _magnifyTransform(), [=] (PaintingContext context,Offset offset) {
+                context->paintChild(child, offset() + untransformedPaintingCoordinates);
             });
         });
-        context->pushClipRect(needsCompositing, offset, untransformedPaintingCoordinates->dy <= magnifierTopLinePosition? topHalfRect : bottomHalfRect, [=] (PaintingContext context,Offset offset) {
-            _paintChildCylindrically(context, offset, child, cylindricalTransform, offsetToCenter);
+        context->pushClipRect(needsCompositing, offset(), untransformedPaintingCoordinates->dy <= magnifierTopLinePosition? topHalfRect : bottomHalfRect, [=] (PaintingContext context,Offset offset) {
+            _paintChildCylindrically(context, offset(), child, cylindricalTransform, offsetToCenter);
         });
     } else {
-        _paintChildCylindrically(context, offset, child, cylindricalTransform, offsetToCenter);
+        _paintChildCylindrically(context, offset(), child, cylindricalTransform, offsetToCenter);
     }
 }
 
 void RenderListWheelViewportCls::_paintChildCylindrically(RenderBox child, PaintingContext context, Matrix4 cylindricalTransform, Offset offset, Offset offsetToCenter) {
     InlineMethod;
     InlineMethod;
-    context->pushTransform(needsCompositing, offset, _centerOriginTransform(cylindricalTransform), overAndUnderCenterOpacity == 1? painter : opacityPainter);
+    context->pushTransform(needsCompositing, offset(), _centerOriginTransform(cylindricalTransform), overAndUnderCenterOpacity() == 1? painter : opacityPainter);
 }
 
 Matrix4 RenderListWheelViewportCls::_magnifyTransform() {

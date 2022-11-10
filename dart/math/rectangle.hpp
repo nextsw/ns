@@ -5,7 +5,7 @@
 #include <dart/core/core.hpp>
 
 
-template<typename T : num> class _RectangleBaseCls : public ObjectCls {
+template<typename T> class _RectangleBaseCls : public ObjectCls {
 public:
 
     virtual T left();
@@ -44,9 +44,9 @@ private:
 
      _RectangleBaseCls();
 };
-template<typename T : num> using _RectangleBase = std::shared_ptr<_RectangleBaseCls<T : num>>;
+template<typename T> using _RectangleBase = std::shared_ptr<_RectangleBaseCls<T>>;
 
-template<typename T : num> class RectangleCls : public _RectangleBaseCls<T> {
+template<typename T> class RectangleCls : public _RectangleBaseCls<T> {
 public:
     T left;
 
@@ -64,9 +64,9 @@ public:
 private:
 
 };
-template<typename T : num> using Rectangle = std::shared_ptr<RectangleCls<T : num>>;
+template<typename T> using Rectangle = std::shared_ptr<RectangleCls<T>>;
 
-template<typename T : num> class MutableRectangleCls : public _RectangleBaseCls<T> {
+template<typename T> class MutableRectangleCls : public _RectangleBaseCls<T> {
 public:
     T left;
 
@@ -92,8 +92,8 @@ private:
 
 
 };
-template<typename T : num> using MutableRectangle = std::shared_ptr<MutableRectangleCls<T : num>>;
-template<typename T : num>  T _clampToZero(T value);
+template<typename T> using MutableRectangle = std::shared_ptr<MutableRectangleCls<T>>;
+template<typename T>  T _clampToZero(T value);
 
 
 

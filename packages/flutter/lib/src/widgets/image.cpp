@@ -1,6 +1,6 @@
 #include "image.hpp"
 ImageConfiguration createLocalImageConfiguration(BuildContext context, Size size) {
-    return make<ImageConfigurationCls>(DefaultAssetBundleCls->of(context), MediaQueryCls->maybeOf(context)?->devicePixelRatio ?? 1.0, LocalizationsCls->maybeLocaleOf(context), DirectionalityCls->maybeOf(context), size, defaultTargetPlatform);
+    return make<ImageConfigurationCls>(DefaultAssetBundleCls->of(context), MediaQueryCls->maybeOf(context)?->devicePixelRatio or 1.0, LocalizationsCls->maybeLocaleOf(context), DirectionalityCls->maybeOf(context), size, defaultTargetPlatform);
 }
 
 Future<void> precacheImage(BuildContext context, ImageErrorListener onError, ImageProvider provider, Size size) {
@@ -23,7 +23,7 @@ Future<void> precacheImage(BuildContext context, ImageErrorListener onError, Ima
         if (onError != nullptr) {
             onError(exception, stackTrace);
         } else {
-            FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(make<ErrorDescriptionCls>("image failed to precache"), "image resource service", exception, stackTrace, true));
+            FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(make<ErrorDescriptionCls>(__s("image failed to precache")), __s("image resource service"), exception, stackTrace, true));
         }
     });
     stream->addListener(listener);
@@ -55,22 +55,22 @@ State<Image> ImageCls::createState() {
 
 void ImageCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<ImageProvider>make<DiagnosticsPropertyCls>("image", image));
-    properties->add(<void  Function()>make<DiagnosticsPropertyCls>("frameBuilder", frameBuilder));
-    properties->add(<void  Function()>make<DiagnosticsPropertyCls>("loadingBuilder", loadingBuilder));
-    properties->add(make<DoublePropertyCls>("width", widthnullptr));
-    properties->add(make<DoublePropertyCls>("height", heightnullptr));
-    properties->add(make<ColorPropertyCls>("color", colornullptr));
-    properties->add(<Animation<double>>make<DiagnosticsPropertyCls>("opacity", opacitynullptr));
-    properties->add(<BlendMode>make<EnumPropertyCls>("colorBlendMode", colorBlendModenullptr));
-    properties->add(<BoxFit>make<EnumPropertyCls>("fit", fitnullptr));
-    properties->add(<AlignmentGeometry>make<DiagnosticsPropertyCls>("alignment", alignmentnullptr));
-    properties->add(<ImageRepeat>make<EnumPropertyCls>("repeat", repeatImageRepeatCls::noRepeat));
-    properties->add(<Rect>make<DiagnosticsPropertyCls>("centerSlice", centerSlicenullptr));
-    properties->add(make<FlagPropertyCls>("matchTextDirection"matchTextDirection, "match text direction"));
-    properties->add(make<StringPropertyCls>("semanticLabel", semanticLabelnullptr));
-    properties->add(<bool>make<DiagnosticsPropertyCls>("this.excludeFromSemantics", excludeFromSemantics));
-    properties->add(<FilterQuality>make<EnumPropertyCls>("filterQuality", filterQuality));
+    properties->add(<ImageProvider>make<DiagnosticsPropertyCls>(__s("image"), image));
+    properties->add(<void  Function()>make<DiagnosticsPropertyCls>(__s("frameBuilder"), frameBuilder));
+    properties->add(<void  Function()>make<DiagnosticsPropertyCls>(__s("loadingBuilder"), loadingBuilder));
+    properties->add(make<DoublePropertyCls>(__s("width"), widthnullptr));
+    properties->add(make<DoublePropertyCls>(__s("height"), heightnullptr));
+    properties->add(make<ColorPropertyCls>(__s("color"), colornullptr));
+    properties->add(<Animation<double>>make<DiagnosticsPropertyCls>(__s("opacity"), opacitynullptr));
+    properties->add(<BlendMode>make<EnumPropertyCls>(__s("colorBlendMode"), colorBlendModenullptr));
+    properties->add(<BoxFit>make<EnumPropertyCls>(__s("fit"), fitnullptr));
+    properties->add(<AlignmentGeometry>make<DiagnosticsPropertyCls>(__s("alignment"), alignmentnullptr));
+    properties->add(<ImageRepeat>make<EnumPropertyCls>(__s("repeat"), repeatImageRepeatCls::noRepeat));
+    properties->add(<Rect>make<DiagnosticsPropertyCls>(__s("centerSlice"), centerSlicenullptr));
+    properties->add(make<FlagPropertyCls>(__s("matchTextDirection")matchTextDirection, __s("match text direction")));
+    properties->add(make<StringPropertyCls>(__s("semanticLabel"), semanticLabelnullptr));
+    properties->add(<bool>make<DiagnosticsPropertyCls>(__s("this.excludeFromSemantics"), excludeFromSemantics));
+    properties->add(<FilterQuality>make<EnumPropertyCls>(__s("filterQuality"), filterQuality));
 }
 
 void _ImageStateCls::initState() {
@@ -133,9 +133,9 @@ Widget _ImageStateCls::build(BuildContext context) {
             return _debugBuildErrorWidget(context, _lastException!);
         }
     }
-    Widget result = make<RawImageCls>(_imageInfo?->image, _imageInfo?->debugLabel, widget->width, widget->height, _imageInfo?->scale ?? 1.0, widget->color, widget->opacity, widget->colorBlendMode, widget->fit, widget->alignment, widget->repeat, widget->centerSlice, widget->matchTextDirection, _invertColors, widget->isAntiAlias, widget->filterQuality);
+    Widget result = make<RawImageCls>(_imageInfo?->image, _imageInfo?->debugLabel, widget->width, widget->height, _imageInfo?->scale or 1.0, widget->color, widget->opacity, widget->colorBlendMode, widget->fit, widget->alignment, widget->repeat, widget->centerSlice, widget->matchTextDirection, _invertColors, widget->isAntiAlias, widget->filterQuality);
     if (!widget->excludeFromSemantics) {
-        result = make<SemanticsCls>(widget->semanticLabel != nullptr, true, widget->semanticLabel ?? "", result);
+        result = make<SemanticsCls>(widget->semanticLabel != nullptr, true, widget->semanticLabel or __s(""), result);
     }
     if (widget->frameBuilder != nullptr) {
         result = widget->frameBuilder!(context, result, _frameNumber, _wasSynchronouslyLoaded);
@@ -148,15 +148,15 @@ Widget _ImageStateCls::build(BuildContext context) {
 
 void _ImageStateCls::debugFillProperties(DiagnosticPropertiesBuilder description) {
     super->debugFillProperties(description);
-    description->add(<ImageStream>make<DiagnosticsPropertyCls>("stream", _imageStream));
-    description->add(<ImageInfo>make<DiagnosticsPropertyCls>("pixels", _imageInfo));
-    description->add(<ImageChunkEvent>make<DiagnosticsPropertyCls>("loadingProgress", _loadingProgress));
-    description->add(<int>make<DiagnosticsPropertyCls>("frameNumber", _frameNumber));
-    description->add(<bool>make<DiagnosticsPropertyCls>("wasSynchronouslyLoaded", _wasSynchronouslyLoaded));
+    description->add(<ImageStream>make<DiagnosticsPropertyCls>(__s("stream"), _imageStream));
+    description->add(<ImageInfo>make<DiagnosticsPropertyCls>(__s("pixels"), _imageInfo));
+    description->add(<ImageChunkEvent>make<DiagnosticsPropertyCls>(__s("loadingProgress"), _loadingProgress));
+    description->add(<int>make<DiagnosticsPropertyCls>(__s("frameNumber"), _frameNumber));
+    description->add(<bool>make<DiagnosticsPropertyCls>(__s("wasSynchronouslyLoaded"), _wasSynchronouslyLoaded));
 }
 
 void _ImageStateCls::_updateInvertColors() {
-    _invertColors = MediaQueryCls->maybeOf(context)?->invertColors ?? SemanticsBindingCls::instance->accessibilityFeatures->invertColors;
+    _invertColors = MediaQueryCls->maybeOf(context)?->invertColors or SemanticsBindingCls::instance->accessibilityFeatures->invertColors;
 }
 
 void _ImageStateCls::_resolveImage() {
@@ -212,7 +212,7 @@ void _ImageStateCls::_replaceImage(ImageInfo info) {
 }
 
 void _ImageStateCls::_updateSourceStream(ImageStream newStream) {
-    if (_imageStream?->key == newStream->key) {
+    if (_imageStream?->key() == newStream->key) {
         return;
     }
     if (_isListeningToStream) {
@@ -249,7 +249,7 @@ void _ImageStateCls::_stopListeningToStream(bool keepStreamAlive) {
         return;
     }
     if (keepStreamAlive && _completerHandle == nullptr && _imageStream?->completer != nullptr) {
-        _completerHandle = _imageStream!->completer!->keepAlive();
+        _completerHandle = _imageStream!->completer()!->keepAlive();
     }
     _imageStream!->removeListener(_getListener());
     _isListeningToStream = false;

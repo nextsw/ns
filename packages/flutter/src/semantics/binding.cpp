@@ -22,7 +22,7 @@ AccessibilityFeatures SemanticsBindingCls::accessibilityFeatures() {
 }
 
 bool SemanticsBindingCls::disableAnimations() {
-    bool value = _accessibilityFeatures->disableAnimations;
+    bool value = _accessibilityFeatures->disableAnimations();
     assert([=] () {
         if (debugSemanticsDisableAnimations != nullptr) {
             value = debugSemanticsDisableAnimations!;

@@ -8,5 +8,5 @@ template<typename K, typename V> void MapCls<K, V>::fromEntries(Iterable<MapEntr
 }
 
 template<typename K, typename V> String MapEntryCls<K, V>::toString() {
-    return "MapEntry($key: $value)";
+    return __s("MapEntry($key: $value)");
 }

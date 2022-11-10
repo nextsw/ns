@@ -14,14 +14,14 @@ ShapeBorder CircleBorderCls::scale(double t) {
 }
 
 ShapeBorder CircleBorderCls::lerpFrom(ShapeBorder a, double t) {
-    if (a is CircleBorder) {
+    if (is<CircleBorder>(a)) {
         return make<CircleBorderCls>(BorderSideCls->lerp(a->side, side, t));
     }
     return super->lerpFrom(a, t);
 }
 
 ShapeBorder CircleBorderCls::lerpTo(ShapeBorder b, double t) {
-    if (b is CircleBorder) {
+    if (is<CircleBorder>(b)) {
         return make<CircleBorderCls>(BorderSideCls->lerp(side, b->side, t));
     }
     return super->lerpTo(b, t);
@@ -39,7 +39,7 @@ Path CircleBorderCls::getOuterPath(Rect rect, TextDirection textDirection) {
 }
 
 CircleBorder CircleBorderCls::copyWith(BorderSide side) {
-    return make<CircleBorderCls>(side ?? this->side);
+    return make<CircleBorderCls>(side or this->side);
 }
 
 void CircleBorderCls::paint(Canvas canvas, Rect rect, TextDirection textDirection) {
@@ -47,16 +47,16 @@ void CircleBorderCls::paint(Canvas canvas, Rect rect, TextDirection textDirectio
 }
 
 bool CircleBorderCls::==(Object other) {
-    if (other->runtimeType != runtimeType) {
+    if (other->runtimeType() != runtimeType) {
         return false;
     }
-    return other is CircleBorder && other->side == side;
+    return is<CircleBorder>(other) && other->side == side;
 }
 
 int CircleBorderCls::hashCode() {
-    return side->hashCode;
+    return side->hashCode();
 }
 
 String CircleBorderCls::toString() {
-    return "${objectRuntimeType(this, 'CircleBorder')}($side)";
+    return __s("${objectRuntimeType(this, 'CircleBorder')}($side)");
 }

@@ -40,7 +40,7 @@ List<_Variable> _FunctionCls::variableDeps(int id) {
 }
 
 void _FunctionCls::write(StringBuffer out) {
-    if (declaredParams != params->length) {
+    if (declaredParams != params->length()) {
         ;
     }
     if (entry == nullptr) {
@@ -48,41 +48,41 @@ void _FunctionCls::write(StringBuffer out) {
     }
     String returnTypeString = transpiler->resolveType(type->returnType);
     if (transpiler->target == TargetLanguageCls::sksl && name == transpiler->entryPoint) {
-        returnTypeString = "half4";
+        returnTypeString = __s("half4");
     }
     String nameString = transpiler->resolveName(name);
-    out->write("$returnTypeString $nameString(");
+    out->write(__s("$returnTypeString $nameString("));
     if (transpiler->target == TargetLanguageCls::sksl && name == transpiler->entryPoint) {
-        String fragParam = "float2 $_fragParamName";
+        String fragParam = __s("float2 $_fragParamName");
         out->write(fragParam);
     }
-    for (;  < params->length; i++) {
+    for (;  < params->length(); i++) {
         String typeString = transpiler->resolveType(type->params[i]);
         String nameString = transpiler->resolveName(params[i]);
-        out->write("$typeString $nameString");
-        if ( < params->length - 1) {
-            out->write(", ");
+        out->write(__s("$typeString $nameString"));
+        if ( < params->length() - 1) {
+            out->write(__s(", "));
         }
     }
-    out->writeln(") {");
+    out->writeln(__s(") {"));
     if (transpiler->target == TargetLanguageCls::sksl && name == transpiler->entryPoint) {
         if (transpiler->fragCoord > 0) {
             String fragName = transpiler->resolveName(transpiler->fragCoord);
-            out->writeln("  float4 $fragName = float4($_fragParamName, 0, 0);");
+            out->writeln(__s("  float4 $fragName = float4($_fragParamName, 0, 0);"));
         }
-        out->writeln("  float4 $_colorVariableName;");
+        out->writeln(__s("  float4 $_colorVariableName;"));
     }
     entry?->_preprocess();
     entry?->write(make<_BlockContextCls>(out, 1));
     if (transpiler->target == TargetLanguageCls::sksl && name == transpiler->entryPoint) {
-        out->writeln("  return $_colorVariableName;");
+        out->writeln(__s("  return $_colorVariableName;"));
     }
-    out->writeln("}");
+    out->writeln(__s("}"));
     out->writeln();
 }
 
 _FunctionCls::_FunctionCls(int name, _Transpiler transpiler, _FunctionType type) {
     {
-        params = <int>filled(type->params->length, 0);
+        params = <int>filled(type->params->length(), 0);
     }
 }

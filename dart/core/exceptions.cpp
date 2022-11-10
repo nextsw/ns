@@ -5,28 +5,28 @@ ExceptionCls::ExceptionCls(auto message) {
 String _ExceptionCls::toString() {
     Object message = this->message;
     if (message == nullptr)     {
-        return "Exception";
+        return __s("Exception");
     }
-    return "Exception: $message";
+    return __s("Exception: $message");
 }
 
 String FormatExceptionCls::toString() {
-    String report = "FormatException";
+    String report = __s("FormatException");
     Object message = this->message;
-    if (message != nullptr && "" != message) {
-        report = "$report: $message";
+    if (message != nullptr && __s("") != message) {
+        report = __s("$report: $message");
     }
     int offset = this->offset;
     Object source = this->source;
-    if (source is String) {
+    if (is<String>(source)) {
         if (offset != nullptr && ( < 0 || offset > source->length)) {
             offset = nullptr;
         }
         if (offset == nullptr) {
             if (source->length > 78) {
-                source = source->substring(0, 75) + "...";
+                source = source->substring(0, 75) + __s("...");
             }
-            return "$report\n$source";
+            return __s("$report\n$source");
         }
         int lineNum = 1;
         int lineStart = 0;
@@ -48,9 +48,9 @@ String FormatExceptionCls::toString() {
 ;
             }        }
         if (lineNum > 1) {
-            report = " (at line $lineNum, character ${offset - lineStart + 1})\n";
+            report = __s(" (at line $lineNum, character ${offset - lineStart + 1})\n");
         } else {
-            report = " (at character ${offset + 1})\n";
+            report = __s(" (at character ${offset + 1})\n");
         }
         int lineEnd = source->length;
         for (;  < source->length; i++) {
@@ -63,37 +63,37 @@ String FormatExceptionCls::toString() {
         int length = lineEnd - lineStart;
         int start = lineStart;
         int end = lineEnd;
-        String prefix = "";
-        String postfix = "";
+        String prefix = __s("");
+        String postfix = __s("");
         if (length > 78) {
             int index = offset - lineStart;
             if ( < 75) {
                 end = start + 75;
-                postfix = "...";
+                postfix = __s("...");
             } else             {
                 if (end -  < 75) {
                 start = end - 75;
-                prefix = "...";
+                prefix = __s("...");
             } else {
                 start = offset - 36;
                 end = offset + 36;
-                prefix = postfix = "...";
+                prefix = postfix = __s("...");
             }
 ;
             }        }
         String slice = source->substring(start, end);
         int markOffset = offset - start + prefix->length;
-        return "$report$prefix$slice$postfix\n${" " * markOffset}^\n";
+        return __s("$report$prefix$slice$postfix\n${" " * markOffset}^\n");
     } else {
         if (offset != nullptr) {
-            report = " (at offset $offset)";
+            report = __s(" (at offset $offset)");
         }
         return report;
     }
 }
 
 String IntegerDivisionByZeroExceptionCls::message() {
-    return "Division resulted in non-finite value";
+    return __s("Division resulted in non-finite value");
 }
 
 StackTrace IntegerDivisionByZeroExceptionCls::stackTrace() {
@@ -101,5 +101,5 @@ StackTrace IntegerDivisionByZeroExceptionCls::stackTrace() {
 }
 
 String IntegerDivisionByZeroExceptionCls::toString() {
-    return "IntegerDivisionByZeroException";
+    return __s("IntegerDivisionByZeroException");
 }

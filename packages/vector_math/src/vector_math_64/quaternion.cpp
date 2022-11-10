@@ -8,7 +8,7 @@ double QuaternionCls::x() {
 }
 
 void QuaternionCls::x(double x) {
-    _qStorage[0] = x;
+    _qStorage[0] = x();
 }
 
 double QuaternionCls::y() {
@@ -16,7 +16,7 @@ double QuaternionCls::y() {
 }
 
 void QuaternionCls::y(double y) {
-    _qStorage[1] = y;
+    _qStorage[1] = y();
 }
 
 double QuaternionCls::z() {
@@ -24,7 +24,7 @@ double QuaternionCls::z() {
 }
 
 void QuaternionCls::z(double z) {
-    _qStorage[2] = z;
+    _qStorage[2] = z();
 }
 
 double QuaternionCls::w() {
@@ -32,7 +32,7 @@ double QuaternionCls::w() {
 }
 
 void QuaternionCls::w(double w) {
-    _qStorage[3] = w;
+    _qStorage[3] = w();
 }
 
 QuaternionCls::QuaternionCls(double w, double x, double y, double z) {
@@ -77,7 +77,7 @@ Quaternion QuaternionCls::clone() {
 }
 
 void QuaternionCls::setFrom(Quaternion source) {
-    auto _c1 = QuaternionCls->_();_c1.setFromRotation(rotationMatrix);auto _c1 = QuaternionCls->_();_c1.setAxisAngle(axis, angle);auto _c1 = QuaternionCls->_();_c1.setFromTwoVectors(a, b);auto _c1 = QuaternionCls->_();_c1.setFrom(original);auto _c1 = QuaternionCls->_();_c1.setRandom(rn);auto _c1 = QuaternionCls->_();_c1[3] =1.0;auto _c1 = QuaternionCls->_();_c1.setDQ(q, omega);auto _c1 = QuaternionCls->_();_c1.setEuler(yaw, pitch, roll);Unknown sourceStorage = source->_qStorage;
+    auto _c1 = QuaternionCls->_();_c1.setFromRotation(rotationMatrix);auto _c1 = QuaternionCls->_();_c1.setAxisAngle(axis(), angle);auto _c1 = QuaternionCls->_();_c1.setFromTwoVectors(a, b);auto _c1 = QuaternionCls->_();_c1.setFrom(original);auto _c1 = QuaternionCls->_();_c1.setRandom(rn);auto _c1 = QuaternionCls->_();_c1[3] =1.0;auto _c1 = QuaternionCls->_();_c1.setDQ(q, omega);auto _c1 = QuaternionCls->_();_c1.setEuler(yaw, pitch, roll);Unknown sourceStorage = source->_qStorage;
     _qStorage[0] = sourceStorage[0];
     _qStorage[1] = sourceStorage[1];
     _qStorage[2] = sourceStorage[2];
@@ -85,23 +85,23 @@ void QuaternionCls::setFrom(Quaternion source) {
 }
 
 void QuaternionCls::setValues(double w, double x, double y, double z) {
-    _qStorage[0] = x;
-    _qStorage[1] = y;
-    _qStorage[2] = z;
-    _qStorage[3] = w;
+    _qStorage[0] = x();
+    _qStorage[1] = y();
+    _qStorage[2] = z();
+    _qStorage[3] = w();
 }
 
 void QuaternionCls::setAxisAngle(Vector3 axis, double radians) {
-    Unknown len = axis->length;
+    Unknown len = axis()->length;
     if (len == 0.0) {
         return;
     }
-    Unknown halfSin = math->sin(radians * 0.5) / len;
-    Unknown axisStorage = axis->storage;
+    Unknown halfSin = math->sin(radians() * 0.5) / len;
+    Unknown axisStorage = axis()->storage();
     _qStorage[0] = axisStorage[0] * halfSin;
     _qStorage[1] = axisStorage[1] * halfSin;
     _qStorage[2] = axisStorage[2] * halfSin;
-    _qStorage[3] = math->cos(radians * 0.5);
+    _qStorage[3] = math->cos(radians() * 0.5);
 }
 
 void QuaternionCls::setFromRotation(Matrix3 rotationMatrix) {
@@ -202,7 +202,7 @@ void QuaternionCls::setEuler(double pitch, double roll, double yaw) {
 }
 
 double QuaternionCls::normalize() {
-    Unknown l = length;
+    Unknown l = length();
     if (l == 0.0) {
         return 0.0;
     }
@@ -221,7 +221,7 @@ void QuaternionCls::conjugate() {
 }
 
 void QuaternionCls::inverse() {
-    Unknown l = 1.0 / length2;
+    Unknown l = 1.0 / length2();
     _qStorage[3] = _qStorage[3] * l;
     _qStorage[2] = -_qStorage[2] * l;
     _qStorage[1] = -_qStorage[1] * l;
@@ -262,7 +262,7 @@ double QuaternionCls::length2() {
 }
 
 double QuaternionCls::length() {
-    return math->sqrt(length2);
+    return math->sqrt(length2());
 }
 
 Vector3 QuaternionCls::rotated(Vector3 v) {
@@ -359,7 +359,7 @@ Matrix3 QuaternionCls::asRotationMatrix() {
 }
 
 Matrix3 QuaternionCls::copyRotationInto(Matrix3 rotationMatrix) {
-    Unknown d = length2;
+    Unknown d = length2();
     assert(d != 0.0);
     Unknown s = 2.0 / d;
     Unknown _x = _qStorage[0];
@@ -392,7 +392,7 @@ Matrix3 QuaternionCls::copyRotationInto(Matrix3 rotationMatrix) {
 }
 
 String QuaternionCls::toString() {
-    return "${_qStorage[0]}, ${_qStorage[1]}, ${_qStorage[2]} @ ${_qStorage[3]}";
+    return __s("${_qStorage[0]}, ${_qStorage[1]}, ${_qStorage[2]} @ ${_qStorage[3]}");
 }
 
 double QuaternionCls::relativeError(Quaternion correct) {
@@ -403,7 +403,7 @@ double QuaternionCls::relativeError(Quaternion correct) {
 }
 
 double QuaternionCls::absoluteError(Quaternion correct) {
-    Unknown this_norm = length;
+    Unknown this_norm = length();
     Unknown correct_norm = correct->length;
     Unknown norm_diff = (this_norm - correct_norm)->abs();
     return norm_diff;

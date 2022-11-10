@@ -78,7 +78,7 @@ private:
 
 
     virtual void  _internal(DateTime accessed, DateTime changed, int mode, DateTime modified, int size, FileSystemEntityType type);
-    extern static void  _statSync(_Namespace namespace, String path);
+    static void  _statSync(_Namespace namespace, String path);
     static FileStat _statSyncInternal(String path);
 
     static Future<FileStat> _stat(String path);
@@ -177,9 +177,9 @@ private:
 
     static bool _isLinkRawSync(rawPath );
 
-    extern static void  _getTypeNative(bool followLinks, _Namespace namespace, Uint8List rawPath);
-    extern static void  _identicalNative(_Namespace namespace, String path1, String path2);
-    extern static void  _resolveSymbolicLinks(_Namespace namespace, Uint8List path);
+    static void  _getTypeNative(bool followLinks, _Namespace namespace, Uint8List rawPath);
+    static void  _identicalNative(_Namespace namespace, String path1, String path2);
+    static void  _resolveSymbolicLinks(_Namespace namespace, Uint8List path);
     static FileSystemEntityType _getTypeSyncHelper(bool followLinks, Uint8List rawPath);
 
     static FileSystemEntityType _getTypeSync(bool followLinks, Uint8List rawPath);
@@ -283,10 +283,10 @@ using FileSystemMoveEvent = std::shared_ptr<FileSystemMoveEventCls>;
 class _FileSystemWatcherCls : public ObjectCls {
 public:
 
-    extern static bool isSupported();
+    static bool isSupported();
 private:
 
-    extern static Stream<FileSystemEvent> _watch(int events, String path, bool recursive);
+    static Stream<FileSystemEvent> _watch(int events, String path, bool recursive);
 };
 using _FileSystemWatcher = std::shared_ptr<_FileSystemWatcherCls>;
 

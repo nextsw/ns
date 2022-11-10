@@ -15,9 +15,9 @@ public:
      SharedAppDataCls(Widget child, Unknown key);
     virtual State<StatefulWidget> createState();
 
-    template<typename K : Object, typename V>  static V getValue(BuildContext context, SharedAppDataInitCallback<V> init, K key);
+    template<typename K, typename V>  static V getValue(BuildContext context, SharedAppDataInitCallback<V> init, K key);
 
-    template<typename K : Object, typename V>  static void setValue(BuildContext context, K key, V value);
+    template<typename K, typename V>  static void setValue(BuildContext context, K key, V value);
 
 private:
 
@@ -33,9 +33,9 @@ public:
 
     virtual Widget build(BuildContext context);
 
-    template<typename K : Object, typename V>  virtual V getValue(SharedAppDataInitCallback<V> init, K key);
+    template<typename K, typename V>  virtual V getValue(SharedAppDataInitCallback<V> init, K key);
 
-    template<typename K : Object, typename V>  virtual void setValue(K key, V value);
+    template<typename K, typename V>  virtual void setValue(K key, V value);
 
 private:
 

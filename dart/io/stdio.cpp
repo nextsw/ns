@@ -7,7 +7,7 @@ String StdinCls::readLineSync(Encoding encoding, bool retainNewlines) {
     CRCls = 13;
     LFCls = 10;
     List<int> line = makeList();
-    bool crIsNewline = PlatformCls::isWindows && (stdioType(stdin) == StdioTypeCls::terminal) && !lineMode;
+    bool crIsNewline = PlatformCls::isWindows && (stdioType(stdin) == StdioTypeCls::terminal) && !lineMode();
     if (retainNewlines) {
         int byte;
         do {
@@ -97,11 +97,11 @@ IOSink StdoutCls::nonBlocking() {
 void StdoutCls::_(int _fd, IOSink sink)
 
 String StdoutExceptionCls::toString() {
-    return "StdoutException: $message${osError == null ? "" : ", $osError"}";
+    return __s("StdoutException: $message${osError == null ? "" : ", $osError"}");
 }
 
 String StdinExceptionCls::toString() {
-    return "StdinException: $message${osError == null ? "" : ", $osError"}";
+    return __s("StdinException: $message${osError == null ? "" : ", $osError"}");
 }
 
 Future _StdConsumerCls::addStream(Stream<List<int>> stream) {
@@ -134,7 +134,7 @@ Encoding _StdSinkCls::encoding() {
 }
 
 void _StdSinkCls::encoding(Encoding encoding) {
-    _sink->encoding = encoding;
+    _sink->encoding = encoding();
 }
 
 void _StdSinkCls::write(Object object) {
@@ -174,11 +174,11 @@ Future _StdSinkCls::close() {
 }
 
 Future _StdSinkCls::done() {
-    return _sink->done;
+    return _sink->done();
 }
 
 String StdioTypeCls::toString() {
-    return "StdioType: $name";
+    return __s("StdioType: $name");
 }
 
 void _setStdioFDs(int stderr, int stdin, int stdout) {
@@ -188,43 +188,43 @@ void _setStdioFDs(int stderr, int stdin, int stdout) {
 }
 
 Stdin stdin() {
-    return IOOverridesCls::current?->stdin ?? _stdin;
+    return IOOverridesCls::current?->stdin or _stdin;
 }
 
 Stdout stdout() {
-    return IOOverridesCls::current?->stdout ?? _stdout;
+    return IOOverridesCls::current?->stdout or _stdout;
 }
 
 Stdout stderr() {
-    return IOOverridesCls::current?->stderr ?? _stderr;
+    return IOOverridesCls::current?->stderr or _stderr;
 }
 
 StdioType stdioType(object ) {
-    if (object is _StdStream) {
+    if (is<_StdStream>(object)) {
         object = object->_stream;
     } else     {
         if (object == stdout || object == stderr) {
         int stdiofd = object == stdout? _stdoutFD : _stderrFD;
         Unknown type = _StdIOUtilsCls->_getStdioHandleType(stdiofd);
-        if (type is OSError) {
+        if (is<OSError>(type)) {
             ;
         }
         ;
     }
 ;
-    }    if (object is _FileStream) {
+    }    if (is<_FileStream>(object)) {
         return StdioTypeCls::file;
     }
-    if (object is Socket) {
+    if (is<Socket>(object)) {
         int socketType = _StdIOUtilsCls->_socketType(object);
         if (socketType == nullptr)         {
             return StdioTypeCls::other;
         }
         ;
     }
-    if (object is _IOSinkImpl) {
+    if (is<_IOSinkImpl>(object)) {
         try {
-            if (object->_target is _FileStreamConsumer) {
+            if (is<_FileStreamConsumer>(object->_target)) {
                 return StdioTypeCls::file;
             }
         } catch (Unknown e) {

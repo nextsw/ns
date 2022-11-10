@@ -42,13 +42,13 @@ RenderComparison WidgetSpanCls::compareTo(InlineSpan other) {
     if (identical(this, other)) {
         return RenderComparisonCls::identical;
     }
-    if (other->runtimeType != runtimeType) {
+    if (other->runtimeType() != runtimeType) {
         return RenderComparisonCls::layout;
     }
     if ((style == nullptr) != (other->style == nullptr)) {
         return RenderComparisonCls::layout;
     }
-    WidgetSpan typedOther = ((WidgetSpan)other);
+    WidgetSpan typedOther = as<WidgetSpan>(other);
     if (child != typedOther->child || alignment != typedOther->alignment) {
         return RenderComparisonCls::layout;
     }
@@ -69,17 +69,17 @@ bool WidgetSpanCls::==(Object other) {
     if (identical(this, other)) {
         return true;
     }
-    if (other->runtimeType != runtimeType) {
+    if (other->runtimeType() != runtimeType) {
         return false;
     }
     if (super != other) {
         return false;
     }
-    return other is WidgetSpan && other->child == child && other->alignment == alignment && other->baseline == baseline;
+    return is<WidgetSpan>(other) && other->child == child && other->alignment == alignment && other->baseline == baseline;
 }
 
 int WidgetSpanCls::hashCode() {
-    return ObjectCls->hash(super->hashCode, child, alignment, baseline);
+    return ObjectCls->hash(super->hashCode(), child, alignment, baseline);
 }
 
 InlineSpan WidgetSpanCls::getSpanForPosition(TextPosition position) {

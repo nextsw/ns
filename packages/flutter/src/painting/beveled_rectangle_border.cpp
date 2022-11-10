@@ -16,7 +16,7 @@ ShapeBorder BeveledRectangleBorderCls::scale(double t) {
 
 ShapeBorder BeveledRectangleBorderCls::lerpFrom(ShapeBorder a, double t) {
     assert(t != nullptr);
-    if (a is BeveledRectangleBorder) {
+    if (is<BeveledRectangleBorder>(a)) {
         return make<BeveledRectangleBorderCls>(BorderSideCls->lerp(a->side, side, t), BorderRadiusGeometryCls->lerp(a->borderRadius, borderRadius, t)!);
     }
     return super->lerpFrom(a, t);
@@ -24,14 +24,14 @@ ShapeBorder BeveledRectangleBorderCls::lerpFrom(ShapeBorder a, double t) {
 
 ShapeBorder BeveledRectangleBorderCls::lerpTo(ShapeBorder b, double t) {
     assert(t != nullptr);
-    if (b is BeveledRectangleBorder) {
+    if (is<BeveledRectangleBorder>(b)) {
         return make<BeveledRectangleBorderCls>(BorderSideCls->lerp(side, b->side, t), BorderRadiusGeometryCls->lerp(borderRadius, b->borderRadius, t)!);
     }
     return super->lerpTo(b, t);
 }
 
 BeveledRectangleBorder BeveledRectangleBorderCls::copyWith(BorderRadiusGeometry borderRadius, BorderSide side) {
-    return make<BeveledRectangleBorderCls>(side ?? this->side, borderRadius ?? this->borderRadius);
+    return make<BeveledRectangleBorderCls>(side or this->side, borderRadius or this->borderRadius);
 }
 
 Path BeveledRectangleBorderCls::getInnerPath(Rect rect, TextDirection textDirection) {
@@ -53,10 +53,10 @@ void BeveledRectangleBorderCls::paint(Canvas canvas, Rect rect, TextDirection te
 }
 
 bool BeveledRectangleBorderCls::==(Object other) {
-    if (other->runtimeType != runtimeType) {
+    if (other->runtimeType() != runtimeType) {
         return false;
     }
-    return other is BeveledRectangleBorder && other->side == side && other->borderRadius == borderRadius;
+    return is<BeveledRectangleBorder>(other) && other->side == side && other->borderRadius == borderRadius;
 }
 
 int BeveledRectangleBorderCls::hashCode() {
@@ -64,7 +64,7 @@ int BeveledRectangleBorderCls::hashCode() {
 }
 
 String BeveledRectangleBorderCls::toString() {
-    return "${objectRuntimeType(this, 'BeveledRectangleBorder')}($side, $borderRadius)";
+    return __s("${objectRuntimeType(this, 'BeveledRectangleBorder')}($side, $borderRadius)");
 }
 
 Path BeveledRectangleBorderCls::_getPath(RRect rrect) {

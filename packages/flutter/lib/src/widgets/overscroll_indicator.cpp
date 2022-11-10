@@ -19,23 +19,23 @@ State<GlowingOverscrollIndicator> GlowingOverscrollIndicatorCls::createState() {
 
 void GlowingOverscrollIndicatorCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<AxisDirection>make<EnumPropertyCls>("axisDirection", axisDirection));
+    properties->add(<AxisDirection>make<EnumPropertyCls>(__s("axisDirection"), axisDirection));
     String showDescription;
     if (showLeading && showTrailing) {
-        showDescription = "both sides";
+        showDescription = __s("both sides");
     } else     {
         if (showLeading) {
-        showDescription = "leading side only";
+        showDescription = __s("leading side only");
     } else     {
         if (showTrailing) {
-        showDescription = "trailing side only";
+        showDescription = __s("trailing side only");
     } else {
-        showDescription = "neither side (!)";
+        showDescription = __s("neither side (!)");
     }
 ;
     };
-    }    properties->add(make<MessagePropertyCls>("show", showDescription));
-    properties->add(make<ColorPropertyCls>("color", colorfalse));
+    }    properties->add(make<MessagePropertyCls>(__s("show"), showDescription));
+    properties->add(make<ColorPropertyCls>(__s("color"), colorfalse));
 }
 
 void _GlowingOverscrollIndicatorStateCls::initState() {
@@ -48,10 +48,10 @@ void _GlowingOverscrollIndicatorStateCls::initState() {
 void _GlowingOverscrollIndicatorStateCls::didUpdateWidget(GlowingOverscrollIndicator oldWidget) {
     super->didUpdateWidget(oldWidget);
     if (oldWidget->color != widget->color || oldWidget->axis != widget->axis) {
-        _leadingController!->color = widget->color;
-        _leadingController!->axis = widget->axis;
-        _trailingController!->color = widget->color;
-        _trailingController!->axis = widget->axis;
+        _leadingController!->color() = widget->color;
+        _leadingController!->axis() = widget->axis;
+        _trailingController!->color() = widget->color;
+        _trailingController!->axis() = widget->axis;
     }
 }
 
@@ -71,7 +71,7 @@ bool _GlowingOverscrollIndicatorStateCls::_handleScrollNotification(ScrollNotifi
     }
     _leadingController!->_paintOffsetScrollPixels = -math->min(notification->metrics->pixels - notification->metrics->minScrollExtent, _leadingController!->_paintOffset);
     _trailingController!->_paintOffsetScrollPixels = -math->min(notification->metrics->maxScrollExtent - notification->metrics->pixels, _trailingController!->_paintOffset);
-    if (notification is OverscrollNotification) {
+    if (is<OverscrollNotification>(notification)) {
         _GlowController controller;
         if (notification->overscroll < 0.0) {
             controller = _leadingController;
@@ -83,7 +83,7 @@ bool _GlowingOverscrollIndicatorStateCls::_handleScrollNotification(ScrollNotifi
         }
 ;
         }        bool isLeading = controller == _leadingController;
-        if (_lastNotificationType is! OverscrollNotification) {
+        if (!is<OverscrollNotification>(_lastNotificationType)) {
             OverscrollIndicatorNotification confirmationNotification = make<OverscrollIndicatorNotificationCls>(isLeading);
             confirmationNotification->dispatch(context);
             _accepted[isLeading] = confirmationNotification->accepted;
@@ -101,7 +101,7 @@ bool _GlowingOverscrollIndicatorStateCls::_handleScrollNotification(ScrollNotifi
                 assert(notification->overscroll != 0.0);
                 if (notification->dragDetails != nullptr) {
                     assert(notification->dragDetails!->globalPosition != nullptr);
-                    RenderBox renderer = ((RenderBox)notification->context!->findRenderObject()!);
+                    RenderBox renderer = as<RenderBox>(notification->context!->findRenderObject()!);
                     assert(renderer != nullptr);
                     assert(renderer->hasSize);
                     Size size = renderer->size;
@@ -111,14 +111,14 @@ bool _GlowingOverscrollIndicatorStateCls::_handleScrollNotification(ScrollNotifi
             }
         }
     } else     {
-        if (notification is ScrollEndNotification || notification is ScrollUpdateNotification) {
-        if ((((dynamic)notification))->dragDetails != nullptr) {
+        if (is<ScrollEndNotification>(notification) || is<ScrollUpdateNotification>(notification)) {
+        if ((as<dynamic>(notification))->dragDetails != nullptr) {
             _leadingController!->scrollEnd();
             _trailingController!->scrollEnd();
         }
     }
 ;
-    }    _lastNotificationType = notification->runtimeType;
+    }    _lastNotificationType = notification->runtimeType();
     return false;
 }
 
@@ -127,8 +127,8 @@ Color _GlowControllerCls::color() {
 }
 
 void _GlowControllerCls::color(Color value) {
-    assert(color != nullptr);
-    if (color == value) {
+    assert(color() != nullptr);
+    if (color() == value) {
         return;
     }
     _color = value;
@@ -140,8 +140,8 @@ Axis _GlowControllerCls::axis() {
 }
 
 void _GlowControllerCls::axis(Axis value) {
-    assert(axis != nullptr);
-    if (axis == value) {
+    assert(axis() != nullptr);
+    if (axis() == value) {
         return;
     }
     _axis = value;
@@ -160,9 +160,9 @@ void _GlowControllerCls::absorbImpact(double velocity) {
     _pullRecedeTimer?->cancel();
     _pullRecedeTimer = nullptr;
     velocity = clampDouble(velocity, _minVelocity, _maxVelocity);
-    _glowOpacityTween->begin = _state == _GlowStateCls::idle? 0.3 : _glowOpacity->value;
+    _glowOpacityTween->begin = _state == _GlowStateCls::idle? 0.3 : _glowOpacity->value();
     _glowOpacityTween->end = clampDouble(velocity * _velocityGlowFactor, _glowOpacityTween->begin!, _maxOpacity);
-    _glowSizeTween->begin = _glowSize->value;
+    _glowSizeTween->begin = _glowSize->value();
     _glowSizeTween->end = math->min(0.025 + 7.5e-7 * velocity * velocity, 1.0);
     _glowController->duration = make<DurationCls>((0.15 + velocity * 0.02)->round());
     _glowController->forward(0.0);
@@ -173,14 +173,14 @@ void _GlowControllerCls::absorbImpact(double velocity) {
 void _GlowControllerCls::pull(double crossAxisOffset, double crossExtent, double extent, double overscroll) {
     _pullRecedeTimer?->cancel();
     _pullDistance = overscroll / 200.0;
-    _glowOpacityTween->begin = _glowOpacity->value;
-    _glowOpacityTween->end = math->min(_glowOpacity->value + overscroll / extent * _pullOpacityGlowFactor, _maxOpacity);
+    _glowOpacityTween->begin = _glowOpacity->value();
+    _glowOpacityTween->end = math->min(_glowOpacity->value() + overscroll / extent * _pullOpacityGlowFactor, _maxOpacity);
     double height = math->min(extent, crossExtent * _widthToHeightFactor);
-    _glowSizeTween->begin = _glowSize->value;
-    _glowSizeTween->end = math->max(1.0 - 1.0 / (0.7 * math->sqrt(_pullDistance * height)), _glowSize->value);
+    _glowSizeTween->begin = _glowSize->value();
+    _glowSizeTween->end = math->max(1.0 - 1.0 / (0.7 * math->sqrt(_pullDistance * height)), _glowSize->value());
     _displacementTarget = crossAxisOffset / crossExtent;
     if (_displacementTarget != _displacement) {
-        if (!_displacementTicker->isTicking) {
+        if (!_displacementTicker->isTicking()) {
             assert(_displacementTickerLastElapsed == nullptr);
             _displacementTicker->start();
         }
@@ -193,8 +193,8 @@ void _GlowControllerCls::pull(double crossAxisOffset, double crossExtent, double
         _glowController->forward(0.0);
         _state = _GlowStateCls::pull;
     } else {
-        if (!_glowController->isAnimating) {
-            assert(_glowController->value == 1.0);
+        if (!_glowController->isAnimating()) {
+            assert(_glowController->value() == 1.0);
             notifyListeners();
         }
     }
@@ -210,16 +210,16 @@ void _GlowControllerCls::scrollEnd() {
 }
 
 void _GlowControllerCls::paint(Canvas canvas, Size size) {
-    if (_glowOpacity->value == 0.0) {
+    if (_glowOpacity->value() == 0.0) {
         return;
     }
     double baseGlowScale = size->width > size->height? size->height / size->width : 1.0;
     double radius = size->width * 3.0 / 2.0;
     double height = math->min(size->height, size->width * _widthToHeightFactor);
-    double scaleY = _glowSize->value * baseGlowScale;
+    double scaleY = _glowSize->value() * baseGlowScale;
     Rect rect = RectCls->fromLTWH(0.0, 0.0, size->width, height);
     Offset center = make<OffsetCls>((size->width / 2.0) * (0.5 + _displacement), height - radius);
-    auto _c1 = make<PaintCls>();_c1.color = color->withOpacity(_glowOpacity->value);Paint paint = _c1;
+    auto _c1 = make<PaintCls>();_c1.color() = color()->withOpacity(_glowOpacity->value());Paint paint = _c1;
     canvas->save();
     canvas->translate(0.0, _paintOffset + _paintOffsetScrollPixels);
     canvas->scale(1.0, scaleY);
@@ -229,16 +229,16 @@ void _GlowControllerCls::paint(Canvas canvas, Size size) {
 }
 
 String _GlowControllerCls::toString() {
-    return "_GlowController(color: $color, axis: ${describeEnum(axis)})";
+    return __s("_GlowController(color: $color, axis: ${describeEnum(axis)})");
 }
 
 _GlowControllerCls::_GlowControllerCls(Axis axis, Color color, TickerProvider vsync) {
     {
         assert(vsync != nullptr);
-        assert(color != nullptr);
-        assert(axis != nullptr);
-        _color = color;
-        _axis = axis;
+        assert(color() != nullptr);
+        assert(axis() != nullptr);
+        _color = color();
+        _axis = axis();
     }
     {
             auto _c1 = make<AnimationControllerCls>(vsync);    _c1.addStatusListener(_changePhase);_glowController = _c1;
@@ -262,9 +262,9 @@ void _GlowControllerCls::_recede(Duration duration) {
     }
     _pullRecedeTimer?->cancel();
     _pullRecedeTimer = nullptr;
-    _glowOpacityTween->begin = _glowOpacity->value;
+    _glowOpacityTween->begin = _glowOpacity->value();
     _glowOpacityTween->end = 0.0;
-    _glowSizeTween->begin = _glowSize->value;
+    _glowSizeTween->begin = _glowSize->value();
     _glowSizeTween->end = 0.0;
     _glowController->duration = duration;
     _glowController->forward(0.0);
@@ -273,8 +273,8 @@ void _GlowControllerCls::_recede(Duration duration) {
 
 void _GlowControllerCls::_tickDisplacement(Duration elapsed) {
     if (_displacementTickerLastElapsed != nullptr) {
-        double t = (elapsed->inMicroseconds - _displacementTickerLastElapsed!->inMicroseconds)->toDouble();
-        _displacement = _displacementTarget - (_displacementTarget - _displacement) * math->pow(2.0, -t / _crossAxisHalfTime->inMicroseconds);
+        double t = (elapsed->inMicroseconds - _displacementTickerLastElapsed!->inMicroseconds())->toDouble();
+        _displacement = _displacementTarget - (_displacementTarget - _displacement) * math->pow(2.0, -t / _crossAxisHalfTime->inMicroseconds());
         notifyListeners();
     }
     if (nearEqual(_displacementTarget, _displacement, ToleranceCls::defaultTolerance->distance)) {
@@ -295,7 +295,7 @@ bool _GlowingOverscrollIndicatorPainterCls::shouldRepaint(_GlowingOverscrollIndi
 }
 
 String _GlowingOverscrollIndicatorPainterCls::toString() {
-    return "_GlowingOverscrollIndicatorPainter($leadingController, $trailingController)";
+    return __s("_GlowingOverscrollIndicatorPainter($leadingController, $trailingController)");
 }
 
 void _GlowingOverscrollIndicatorPainterCls::_paintSide(AxisDirection axisDirection, Canvas canvas, _GlowController controller, GrowthDirection growthDirection, Size size) {
@@ -323,7 +323,7 @@ State<StretchingOverscrollIndicator> StretchingOverscrollIndicatorCls::createSta
 
 void StretchingOverscrollIndicatorCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<AxisDirection>make<EnumPropertyCls>("axisDirection", axisDirection));
+    properties->add(<AxisDirection>make<EnumPropertyCls>(__s("axisDirection"), axisDirection));
 }
 
 void _StretchingOverscrollIndicatorStateCls::dispose() {
@@ -335,12 +335,12 @@ Widget _StretchingOverscrollIndicatorStateCls::build(BuildContext context) {
     Size size = MediaQueryCls->of(context)->size;
     double mainAxisSize;
     return <ScrollNotification>make<NotificationListenerCls>(_handleScrollNotification, make<AnimatedBuilderCls>(_stretchController, [=] (BuildContext context,Widget child) {
-        double stretch = _stretchController->value;
+        double stretch = _stretchController->value();
         double x = 1.0;
         double y = 1.0;
         ;
-        AlignmentDirectional alignment = _getAlignmentForAxisDirection(_lastOverscrollNotification?->overscroll ?? 0.0);
-        double viewportDimension = _lastOverscrollNotification?->metrics->viewportDimension ?? mainAxisSize;
+        AlignmentDirectional alignment = _getAlignmentForAxisDirection(_lastOverscrollNotification?->overscroll or 0.0);
+        double viewportDimension = _lastOverscrollNotification?->metrics->viewportDimension or mainAxisSize;
         Widget transform = make<TransformCls>(alignment, Matrix4Cls->diagonal3Values(x, y, 1.0), widget->child);
         return make<ClipRectCls>(stretch != 0.0 && viewportDimension != mainAxisSize? widget->clipBehavior : ClipCls::none, transform);
     }));
@@ -350,9 +350,9 @@ bool _StretchingOverscrollIndicatorStateCls::_handleScrollNotification(ScrollNot
     if (!widget->notificationPredicate(notification)) {
         return false;
     }
-    if (notification is OverscrollNotification) {
+    if (is<OverscrollNotification>(notification)) {
         _lastOverscrollNotification = notification;
-        if (_lastNotification->runtimeType is! OverscrollNotification) {
+        if (!is<OverscrollNotification>(_lastNotification->runtimeType)) {
             OverscrollIndicatorNotification confirmationNotification = make<OverscrollIndicatorNotificationCls>(notification->overscroll < 0.0);
             confirmationNotification->dispatch(context);
             _accepted = confirmationNotification->accepted;
@@ -366,14 +366,14 @@ bool _StretchingOverscrollIndicatorStateCls::_handleScrollNotification(ScrollNot
                 assert(notification->overscroll != 0.0);
                 if (notification->dragDetails != nullptr) {
                     double viewportDimension = notification->metrics->viewportDimension;
-                    double distanceForPull = (notification->overscroll->abs() / viewportDimension) + _stretchController->pullDistance;
+                    double distanceForPull = (notification->overscroll->abs() / viewportDimension) + _stretchController->pullDistance();
                     double clampedOverscroll = clampDouble(distanceForPull, 0, 1.0);
                     _stretchController->pull(clampedOverscroll);
                 }
             }
         }
     } else     {
-        if (notification is ScrollEndNotification || notification is ScrollUpdateNotification) {
+        if (is<ScrollEndNotification>(notification) || is<ScrollUpdateNotification>(notification)) {
         _stretchController->scrollEnd();
     }
 ;
@@ -390,13 +390,13 @@ double _StretchControllerCls::pullDistance() {
 }
 
 double _StretchControllerCls::value() {
-    return _stretchSize->value;
+    return _stretchSize->value();
 }
 
 void _StretchControllerCls::absorbImpact(double velocity) {
     assert(velocity >= 0.0);
     velocity = clampDouble(velocity, 1, 10000);
-    _stretchSizeTween->begin = _stretchSize->value;
+    _stretchSizeTween->begin = _stretchSize->value();
     _stretchSizeTween->end = math->min(_stretchIntensity + (_flingFriction / velocity), 1.0);
     _stretchController->duration = make<DurationCls>((velocity * 0.02)->round());
     _stretchController->forward(0.0);
@@ -406,7 +406,7 @@ void _StretchControllerCls::absorbImpact(double velocity) {
 void _StretchControllerCls::pull(double normalizedOverscroll) {
     assert(normalizedOverscroll >= 0.0);
     _pullDistance = normalizedOverscroll;
-    _stretchSizeTween->begin = _stretchSize->value;
+    _stretchSizeTween->begin = _stretchSize->value();
     double linearIntensity = _stretchIntensity * _pullDistance;
     double exponentialIntensity = _stretchIntensity * (1 - math->exp(-_pullDistance * _exponentialScalar));
     _stretchSizeTween->end = linearIntensity + exponentialIntensity;
@@ -415,8 +415,8 @@ void _StretchControllerCls::pull(double normalizedOverscroll) {
         _stretchController->forward(0.0);
         _state = _StretchStateCls::pull;
     } else {
-        if (!_stretchController->isAnimating) {
-            assert(_stretchController->value == 1.0);
+        if (!_stretchController->isAnimating()) {
+            assert(_stretchController->value() == 1.0);
             notifyListeners();
         }
     }
@@ -434,7 +434,7 @@ void _StretchControllerCls::dispose() {
 }
 
 String _StretchControllerCls::toString() {
-    return "_StretchController()";
+    return __s("_StretchController()");
 }
 
 _StretchControllerCls::_StretchControllerCls(TickerProvider vsync) {
@@ -456,7 +456,7 @@ void _StretchControllerCls::_recede(Duration duration) {
     if (_state == _StretchStateCls::recede || _state == _StretchStateCls::idle) {
         return;
     }
-    _stretchSizeTween->begin = _stretchSize->value;
+    _stretchSizeTween->begin = _stretchSize->value();
     _stretchSizeTween->end = 0.0;
     _stretchController->duration = duration;
     _stretchController->forward(0.0);
@@ -473,5 +473,5 @@ void OverscrollIndicatorNotificationCls::disallowIndicator() {
 
 void OverscrollIndicatorNotificationCls::debugFillDescription(List<String> description) {
     super->debugFillDescription(description);
-    description->add("side: ${leading ? "leading edge" : "trailing edge"}");
+    description->add(__s("side: ${leading ? "leading edge" : "trailing edge"}"));
 }

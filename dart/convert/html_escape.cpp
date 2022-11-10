@@ -15,7 +15,7 @@ String HtmlEscapeCls::convert(String text) {
 }
 
 StringConversionSink HtmlEscapeCls::startChunkedConversion(Sink<String> sink) {
-    return make<_HtmlEscapeSinkCls>(this, sink is StringConversionSink? sink : StringConversionSinkCls->from(sink));
+    return make<_HtmlEscapeSinkCls>(this, is<StringConversionSink>(sink)? sink : StringConversionSinkCls->from(sink));
 }
 
 String HtmlEscapeCls::_convert(int end, int start, String text) {

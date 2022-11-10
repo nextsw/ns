@@ -105,7 +105,7 @@ Matrix4 _SelectionContainerStateCls::getTransformTo(RenderObject ancestor) {
 }
 
 Size _SelectionContainerStateCls::size() {
-    return (((RenderBox)context->findRenderObject()!))->size;
+    return (as<RenderBox>(context->findRenderObject()!))->size();
 }
 
 void _SelectionContainerStateCls::dispose() {
@@ -136,18 +136,18 @@ bool SelectionRegistrarScopeCls::updateShouldNotify(SelectionRegistrarScope oldW
 void SelectionRegistrarScopeCls::_disabled(Unknown child)
 
 Matrix4 SelectionContainerDelegateCls::getTransformFrom(Selectable child) {
-    assert(_selectionContainerContext?->findRenderObject() != nullptr, "getTransformFrom cannot be called before SelectionContainer is laid out.");
-    return child->getTransformTo(((RenderBox)_selectionContainerContext!->findRenderObject()!));
+    assert(_selectionContainerContext?->findRenderObject() != nullptr, __s("getTransformFrom cannot be called before SelectionContainer is laid out."));
+    return child->getTransformTo(as<RenderBox>(_selectionContainerContext!->findRenderObject()!));
 }
 
 Matrix4 SelectionContainerDelegateCls::getTransformTo(RenderObject ancestor) {
-    assert(_selectionContainerContext?->findRenderObject() != nullptr, "getTransformTo cannot be called before SelectionContainer is laid out.");
-    RenderBox box = ((RenderBox)_selectionContainerContext!->findRenderObject()!);
+    assert(_selectionContainerContext?->findRenderObject() != nullptr, __s("getTransformTo cannot be called before SelectionContainer is laid out."));
+    RenderBox box = as<RenderBox>(_selectionContainerContext!->findRenderObject()!);
     return box->getTransformTo(ancestor);
 }
 
 Size SelectionContainerDelegateCls::containerSize() {
-    assert(_selectionContainerContext?->findRenderObject() != nullptr, "containerSize cannot be called before SelectionContainer is laid out.");
-    RenderBox box = ((RenderBox)_selectionContainerContext!->findRenderObject()!);
+    assert(_selectionContainerContext?->findRenderObject() != nullptr, __s("containerSize cannot be called before SelectionContainer is laid out."));
+    RenderBox box = as<RenderBox>(_selectionContainerContext!->findRenderObject()!);
     return box->size;
 }

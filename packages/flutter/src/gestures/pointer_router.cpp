@@ -30,7 +30,7 @@ void PointerRouterCls::removeGlobalRoute(PointerRoute route) {
 int PointerRouterCls::debugGlobalRouteCount() {
     int count;
     assert([=] () {
-        count = _globalRoutes->length;
+        count = _globalRoutes->length();
         return true;
     }());
     if (count != nullptr) {
@@ -60,7 +60,7 @@ void PointerRouterCls::_dispatch(PointerEvent event, PointerRoute route, Matrix4
             };
             return true;
         }());
-        FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(exception, stack, "gesture library", make<ErrorDescriptionCls>("while routing a pointer event"), collector));
+        FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(exception, stack, __s("gesture library"), make<ErrorDescriptionCls>(__s("while routing a pointer event")), collector));
     };
 }
 

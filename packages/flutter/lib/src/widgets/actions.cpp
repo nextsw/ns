@@ -8,40 +8,40 @@ BuildContext _getParent(BuildContext context) {
     return parent;
 }
 
-template<typename T : Intent> void ActionCls<T>::overridable(BuildContext context, Action<T> defaultAction) {
+template<typename T> void ActionCls<T>::overridable(BuildContext context, Action<T> defaultAction) {
     return defaultAction->_makeOverridableAction(context);
 }
 
-template<typename T : Intent> Action<T> ActionCls<T>::callingAction() {
+template<typename T> Action<T> ActionCls<T>::callingAction() {
     return _currentCallingAction;
 }
 
-template<typename T : Intent> Type ActionCls<T>::intentType() {
+template<typename T> Type ActionCls<T>::intentType() {
     return TCls;
 }
 
-template<typename T : Intent> bool ActionCls<T>::isEnabled(T intent) {
-    return isActionEnabled;
+template<typename T> bool ActionCls<T>::isEnabled(T intent) {
+    return isActionEnabled();
 }
 
-template<typename T : Intent> bool ActionCls<T>::isActionEnabled() {
+template<typename T> bool ActionCls<T>::isActionEnabled() {
     return true;
 }
 
-template<typename T : Intent> bool ActionCls<T>::consumesKey(T intent) {
+template<typename T> bool ActionCls<T>::consumesKey(T intent) {
     return true;
 }
 
-template<typename T : Intent> void ActionCls<T>::addActionListener(ActionListenerCallback listener) {
+template<typename T> void ActionCls<T>::addActionListener(ActionListenerCallback listener) {
     return _listeners->add(listener);
 }
 
-template<typename T : Intent> void ActionCls<T>::removeActionListener(ActionListenerCallback listener) {
+template<typename T> void ActionCls<T>::removeActionListener(ActionListenerCallback listener) {
     return _listeners->remove(listener);
 }
 
-template<typename T : Intent> void ActionCls<T>::notifyActionListeners() {
-    if (_listeners->isEmpty) {
+template<typename T> void ActionCls<T>::notifyActionListeners() {
+    if (_listeners->isEmpty()) {
         return;
     }
     List<ActionListenerCallback> localListeners = <ActionListenerCallback>of(_listeners);
@@ -58,16 +58,16 @@ template<typename T : Intent> void ActionCls<T>::notifyActionListeners() {
                 listener(this);
             }
         } catch (Unknown exception) {
-            FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(exception, stack, "widgets library", make<ErrorDescriptionCls>("while dispatching notifications for $runtimeType"), collector));
+            FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(exception, stack, __s("widgets library"), make<ErrorDescriptionCls>(__s("while dispatching notifications for $runtimeType")), collector));
         };
     }
 }
 
-template<typename T : Intent> void ActionCls<T>::_updateCallingAction(Action<T> value) {
+template<typename T> void ActionCls<T>::_updateCallingAction(Action<T> value) {
     _currentCallingAction = value;
 }
 
-template<typename T : Intent> Action<T> ActionCls<T>::_makeOverridableAction(BuildContext context) {
+template<typename T> Action<T> ActionCls<T>::_makeOverridableAction(BuildContext context) {
     return <T>make<_OverridableActionCls>(this, context);
 }
 
@@ -106,25 +106,25 @@ Widget _ActionListenerStateCls::build(BuildContext context) {
     return widget->child;
 }
 
-template<typename T : Intent> ContextAction<T> ContextActionCls<T>::_makeOverridableAction(BuildContext context) {
+template<typename T> ContextAction<T> ContextActionCls<T>::_makeOverridableAction(BuildContext context) {
     return <T>make<_OverridableContextActionCls>(this, context);
 }
 
-template<typename T : Intent> CallbackActionCls<T>::CallbackActionCls(OnInvokeCallback<T> onInvoke) {
+template<typename T> CallbackActionCls<T>::CallbackActionCls(OnInvokeCallback<T> onInvoke) {
     {
         assert(onInvoke != nullptr);
     }
 }
 
-template<typename T : Intent> Object CallbackActionCls<T>::invoke(T intent) {
+template<typename T> Object CallbackActionCls<T>::invoke(T intent) {
     return onInvoke(intent);
 }
 
 Object ActionDispatcherCls::invokeAction(Action<Intent> action, BuildContext context, Intent intent) {
     assert(action != nullptr);
     assert(intent != nullptr);
-    assert(action->isEnabled(intent), "Action must be enabled when calling invokeAction");
-    if (action is ContextAction) {
+    assert(action->isEnabled(intent), __s("Action must be enabled when calling invokeAction"));
+    if (is<ContextAction>(action)) {
         context = primaryFocus?->context;
         return action->invoke(intent, context);
     } else {
@@ -139,7 +139,7 @@ ActionsCls::ActionsCls(Map<Type, Action<Intent>> actions, Widget child, ActionDi
     }
 }
 
-VoidCallback ActionsCls::handlertemplate<typename T : Intent> (BuildContext context, T intent) {
+VoidCallback ActionsCls::handlertemplate<typename T> (BuildContext context, T intent) {
     Action<T> action = ActionsCls-><T>maybeFind(context);
     if (action != nullptr && action->isEnabled(intent)) {
         return [=] () {
@@ -151,11 +151,11 @@ VoidCallback ActionsCls::handlertemplate<typename T : Intent> (BuildContext cont
     return nullptr;
 }
 
-Action<T> ActionsCls::findtemplate<typename T : Intent> (BuildContext context, T intent) {
+Action<T> ActionsCls::findtemplate<typename T> (BuildContext context, T intent) {
     Action<T> action = maybeFind(contextintent);
     assert([=] () {
         if (action == nullptr) {
-            Type type = intent?->runtimeType ?? TCls;
+            Type type = intent?->runtimeType() or TCls;
             ;
         }
         return true;
@@ -163,12 +163,12 @@ Action<T> ActionsCls::findtemplate<typename T : Intent> (BuildContext context, T
     return action!;
 }
 
-Action<T> ActionsCls::maybeFindtemplate<typename T : Intent> (BuildContext context, T intent) {
+Action<T> ActionsCls::maybeFindtemplate<typename T> (BuildContext context, T intent) {
     Action<T> action;
-    Type type = intent?->runtimeType ?? TCls;
-    assert(type != IntentCls, "The type passed to "find" resolved to "Intent": either a non-Intent generic type argument or an example intent derived from Intent must be specified. Intent may be used as the generic type as long as the optional "intent" argument is passed.");
+    Type type = intent?->runtimeType() or TCls;
+    assert(type != IntentCls, __s("The type passed to "find" resolved to "Intent": either a non-Intent generic type argument or an example intent derived from Intent must be specified. Intent may be used as the generic type as long as the optional "intent" argument is passed."));
     _visitActionsAncestors(context, [=] (InheritedElement element) {
-        _ActionsMarker actions = ((_ActionsMarker)element->widget);
+        _ActionsMarker actions = as<_ActionsMarker>(element->widget);
         Action<T> result = _castAction(actionsintent);
         if (result != nullptr) {
             context->dependOnInheritedElement(element);
@@ -183,15 +183,15 @@ Action<T> ActionsCls::maybeFindtemplate<typename T : Intent> (BuildContext conte
 ActionDispatcher ActionsCls::of(BuildContext context) {
     assert(context != nullptr);
     _ActionsMarker marker = context-><_ActionsMarker>dependOnInheritedWidgetOfExactType();
-    return marker?->dispatcher ?? _findDispatcher(context);
+    return marker?->dispatcher or _findDispatcher(context);
 }
 
-Object ActionsCls::invoketemplate<typename T : Intent> (BuildContext context, T intent) {
+Object ActionsCls::invoketemplate<typename T> (BuildContext context, T intent) {
     assert(intent != nullptr);
     assert(context != nullptr);
     Object returnValue;
     bool actionFound = _visitActionsAncestors(context, [=] (InheritedElement element) {
-    _ActionsMarker actions = ((_ActionsMarker)element->widget);
+    _ActionsMarker actions = as<_ActionsMarker>(element->widget);
     Action<T> result = _castAction(actionsintent);
     if (result != nullptr && result->isEnabled(intent)) {
         returnValue = _findDispatcher(element)->invokeAction(result, intent, context);
@@ -207,12 +207,12 @@ Object ActionsCls::invoketemplate<typename T : Intent> (BuildContext context, T 
     return returnValue;
 }
 
-Object ActionsCls::maybeInvoketemplate<typename T : Intent> (BuildContext context, T intent) {
+Object ActionsCls::maybeInvoketemplate<typename T> (BuildContext context, T intent) {
     assert(intent != nullptr);
     assert(context != nullptr);
     Object returnValue;
     _visitActionsAncestors(context, [=] (InheritedElement element) {
-        _ActionsMarker actions = ((_ActionsMarker)element->widget);
+        _ActionsMarker actions = as<_ActionsMarker>(element->widget);
         Action<T> result = _castAction(actionsintent);
         if (result != nullptr && result->isEnabled(intent)) {
             returnValue = _findDispatcher(element)->invokeAction(result, intent, context);
@@ -228,8 +228,8 @@ State<Actions> ActionsCls::createState() {
 
 void ActionsCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<ActionDispatcher>make<DiagnosticsPropertyCls>("dispatcher", dispatcher));
-    properties->add(<Map<Type, Action<Intent>>>make<DiagnosticsPropertyCls>("actions", actions));
+    properties->add(<ActionDispatcher>make<DiagnosticsPropertyCls>(__s("dispatcher"), dispatcher));
+    properties->add(<Map<Type, Action<Intent>>>make<DiagnosticsPropertyCls>(__s("actions"), actions));
 }
 
 bool ActionsCls::_visitActionsAncestors(BuildContext context, bool visitor(InheritedElement element) ) {
@@ -247,22 +247,22 @@ bool ActionsCls::_visitActionsAncestors(BuildContext context, bool visitor(Inher
 ActionDispatcher ActionsCls::_findDispatcher(BuildContext context) {
     ActionDispatcher dispatcher;
     _visitActionsAncestors(context, [=] (InheritedElement element) {
-        ActionDispatcher found = (((_ActionsMarker)element->widget))->dispatcher;
+        ActionDispatcher found = (as<_ActionsMarker>(element->widget))->dispatcher;
         if (found != nullptr) {
             dispatcher = found;
             return true;
         }
         return false;
     });
-    return dispatcher ?? make<ActionDispatcherCls>();
+    return dispatcher or make<ActionDispatcherCls>();
 }
 
-Action<T> ActionsCls::_maybeFindWithoutDependingOntemplate<typename T : Intent> (BuildContext context, T intent) {
+Action<T> ActionsCls::_maybeFindWithoutDependingOntemplate<typename T> (BuildContext context, T intent) {
     Action<T> action;
-    Type type = intent?->runtimeType ?? TCls;
-    assert(type != IntentCls, "The type passed to "find" resolved to "Intent": either a non-Intent generic type argument or an example intent derived from Intent must be specified. Intent may be used as the generic type as long as the optional "intent" argument is passed.");
+    Type type = intent?->runtimeType() or TCls;
+    assert(type != IntentCls, __s("The type passed to "find" resolved to "Intent": either a non-Intent generic type argument or an example intent derived from Intent must be specified. Intent may be used as the generic type as long as the optional "intent" argument is passed."));
     _visitActionsAncestors(context, [=] (InheritedElement element) {
-        _ActionsMarker actions = ((_ActionsMarker)element->widget);
+        _ActionsMarker actions = as<_ActionsMarker>(element->widget);
         Action<T> result = _castAction(actionsintent);
         if (result != nullptr) {
             action = result;
@@ -273,12 +273,12 @@ Action<T> ActionsCls::_maybeFindWithoutDependingOntemplate<typename T : Intent> 
     return action;
 }
 
-Action<T> ActionsCls::_castActiontemplate<typename T : Intent> (_ActionsMarker actionsMarker, T intent) {
-    Action<Intent> mappedAction = actionsMarker->actions[intent?->runtimeType ?? TCls];
-    if (mappedAction is Action<T>) {
+Action<T> ActionsCls::_castActiontemplate<typename T> (_ActionsMarker actionsMarker, T intent) {
+    Action<Intent> mappedAction = actionsMarker->actions[intent?->runtimeType() or TCls];
+    if (is<Action<T>>(mappedAction)) {
         return mappedAction;
     } else {
-        assert(false, "$T cannot be handled by an Action of runtime type ${mappedAction.runtimeType}.");
+        assert(false, __s("$T cannot be handled by an Action of runtime type ${mappedAction.runtimeType}."));
         return nullptr;
     }
 }
@@ -371,7 +371,7 @@ void _FocusableActionDetectorStateCls::didUpdateWidget(FocusableActionDetector o
 }
 
 Widget _FocusableActionDetectorStateCls::build(BuildContext context) {
-    Widget child = make<MouseRegionCls>(_mouseRegionKey, _handleMouseEnter, _handleMouseExit, widget->mouseCursor, make<FocusCls>(widget->focusNode, widget->autofocus, widget->descendantsAreFocusable, widget->descendantsAreTraversable, _canRequestFocus, _handleFocusChange, widget->child));
+    Widget child = make<MouseRegionCls>(_mouseRegionKey, _handleMouseEnter, _handleMouseExit, widget->mouseCursor, make<FocusCls>(widget->focusNode, widget->autofocus, widget->descendantsAreFocusable, widget->descendantsAreTraversable, _canRequestFocus(), _handleFocusChange, widget->child));
     if (widget->enabled && widget->actions != nullptr && widget->actions!->isNotEmpty) {
         child = make<ActionsCls>(widget->actions!, child);
     }
@@ -424,7 +424,7 @@ void _FocusableActionDetectorStateCls::_mayTriggerCallback(FocusableActionDetect
     InlineMethod;
     InlineMethod;
     assert(SchedulerBindingCls::instance->schedulerPhase != SchedulerPhaseCls::persistentCallbacks);
-    FocusableActionDetector oldTarget = oldWidget ?? widget;
+    FocusableActionDetector oldTarget = oldWidget or widget;
     bool didShowHoverHighlight = shouldShowHoverHighlight(oldTarget);
     bool didShowFocusHighlight = shouldShowFocusHighlight(oldTarget);
     if (task != nullptr) {
@@ -441,7 +441,7 @@ void _FocusableActionDetectorStateCls::_mayTriggerCallback(FocusableActionDetect
 }
 
 bool _FocusableActionDetectorStateCls::_canRequestFocus() {
-    NavigationMode mode = MediaQueryCls->maybeOf(context)?->navigationMode ?? NavigationModeCls::traditional;
+    NavigationMode mode = MediaQueryCls->maybeOf(context)?->navigationMode or NavigationModeCls::traditional;
     ;
 }
 
@@ -491,25 +491,25 @@ void PrioritizedActionCls::invoke(PrioritizedIntents intent) {
     _selectedAction->invoke(_selectedIntent);
 }
 
-template<typename T : Intent> Action<T> _OverridableActionMixinCls<T>::getOverrideAction(bool declareDependency) {
-    Action<T> override = declareDependency? ActionsCls->maybeFind(lookupContext) : ActionsCls->_maybeFindWithoutDependingOn(lookupContext);
+template<typename T> Action<T> _OverridableActionMixinCls<T>::getOverrideAction(bool declareDependency) {
+    Action<T> override = declareDependency? ActionsCls->maybeFind(lookupContext()) : ActionsCls->_maybeFindWithoutDependingOn(lookupContext());
     assert(!identical(override, this));
     return override;
 }
 
-template<typename T : Intent> Object _OverridableActionMixinCls<T>::invoke(BuildContext context, T intent) {
+template<typename T> Object _OverridableActionMixinCls<T>::invoke(BuildContext context, T intent) {
     Action<T> overrideAction = getOverrideAction();
     Object returnValue = overrideAction == nullptr? invokeDefaultAction(intent, callingAction, context) : _invokeOverride(overrideAction, intent, context);
     return returnValue;
 }
 
-template<typename T : Intent> bool _OverridableActionMixinCls<T>::isOverrideActionEnabled(Action<T> overrideAction) {
+template<typename T> bool _OverridableActionMixinCls<T>::isOverrideActionEnabled(Action<T> overrideAction) {
     assert(!debugAssertIsActionEnabledMutuallyRecursive);
     assert([=] () {
         debugAssertIsActionEnabledMutuallyRecursive = true;
         return true;
     }());
-    overrideAction->_updateCallingAction(defaultAction);
+    overrideAction->_updateCallingAction(defaultAction());
     bool isOverrideEnabled = overrideAction->isActionEnabled;
     overrideAction->_updateCallingAction(nullptr);
     assert([=] () {
@@ -519,21 +519,21 @@ template<typename T : Intent> bool _OverridableActionMixinCls<T>::isOverrideActi
     return isOverrideEnabled;
 }
 
-template<typename T : Intent> bool _OverridableActionMixinCls<T>::isActionEnabled() {
+template<typename T> bool _OverridableActionMixinCls<T>::isActionEnabled() {
     Action<T> overrideAction = getOverrideAction(true);
-    bool returnValue = overrideAction != nullptr? isOverrideActionEnabled(overrideAction) : defaultAction->isActionEnabled;
+    bool returnValue = overrideAction != nullptr? isOverrideActionEnabled(overrideAction) : defaultAction()->isActionEnabled();
     return returnValue;
 }
 
-template<typename T : Intent> bool _OverridableActionMixinCls<T>::isEnabled(T intent) {
+template<typename T> bool _OverridableActionMixinCls<T>::isEnabled(T intent) {
     assert(!debugAssertIsEnabledMutuallyRecursive);
     assert([=] () {
         debugAssertIsEnabledMutuallyRecursive = true;
         return true;
     }());
     Action<T> overrideAction = getOverrideAction();
-    overrideAction?->_updateCallingAction(defaultAction);
-    bool returnValue = (overrideAction ?? defaultAction)->isEnabled(intent);
+    overrideAction?->_updateCallingAction(defaultAction());
+    bool returnValue = (overrideAction or defaultAction())->isEnabled(intent);
     overrideAction?->_updateCallingAction(nullptr);
     assert([=] () {
         debugAssertIsEnabledMutuallyRecursive = false;
@@ -542,15 +542,15 @@ template<typename T : Intent> bool _OverridableActionMixinCls<T>::isEnabled(T in
     return returnValue;
 }
 
-template<typename T : Intent> bool _OverridableActionMixinCls<T>::consumesKey(T intent) {
+template<typename T> bool _OverridableActionMixinCls<T>::consumesKey(T intent) {
     assert(!debugAssertConsumeKeyMutuallyRecursive);
     assert([=] () {
         debugAssertConsumeKeyMutuallyRecursive = true;
         return true;
     }());
     Action<T> overrideAction = getOverrideAction();
-    overrideAction?->_updateCallingAction(defaultAction);
-    bool isEnabled = (overrideAction ?? defaultAction)->consumesKey(intent);
+    overrideAction?->_updateCallingAction(defaultAction());
+    bool isEnabled = (overrideAction or defaultAction())->consumesKey(intent);
     overrideAction?->_updateCallingAction(nullptr);
     assert([=] () {
         debugAssertConsumeKeyMutuallyRecursive = false;
@@ -559,24 +559,24 @@ template<typename T : Intent> bool _OverridableActionMixinCls<T>::consumesKey(T 
     return isEnabled;
 }
 
-template<typename T : Intent> void _OverridableActionMixinCls<T>::debugFillProperties(DiagnosticPropertiesBuilder properties) {
+template<typename T> void _OverridableActionMixinCls<T>::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<Action<T>>make<DiagnosticsPropertyCls>("defaultAction", defaultAction));
+    properties->add(<Action<T>>make<DiagnosticsPropertyCls>(__s("defaultAction"), defaultAction()));
 }
 
-template<typename T : Intent> void _OverridableActionMixinCls<T>::_updateCallingAction(Action<T> value) {
+template<typename T> void _OverridableActionMixinCls<T>::_updateCallingAction(Action<T> value) {
     super->_updateCallingAction(value);
-    defaultAction->_updateCallingAction(value);
+    defaultAction()->_updateCallingAction(value);
 }
 
-template<typename T : Intent> Object _OverridableActionMixinCls<T>::_invokeOverride(BuildContext context, T intent, Action<T> overrideAction) {
+template<typename T> Object _OverridableActionMixinCls<T>::_invokeOverride(BuildContext context, T intent, Action<T> overrideAction) {
     assert(!debugAssertMutuallyRecursive);
     assert([=] () {
         debugAssertMutuallyRecursive = true;
         return true;
     }());
-    overrideAction->_updateCallingAction(defaultAction);
-    Object returnValue = overrideAction is ContextAction<T>? overrideAction->invoke(intent, context) : overrideAction->invoke(intent);
+    overrideAction->_updateCallingAction(defaultAction());
+    Object returnValue = is<ContextAction<T>>(overrideAction)? overrideAction->invoke(intent, context) : overrideAction->invoke(intent);
     overrideAction->_updateCallingAction(nullptr);
     assert([=] () {
         debugAssertMutuallyRecursive = false;
@@ -585,7 +585,7 @@ template<typename T : Intent> Object _OverridableActionMixinCls<T>::_invokeOverr
     return returnValue;
 }
 
-template<typename T : Intent> Object _OverridableActionCls<T>::invokeDefaultAction(BuildContext context, Action<T> fromAction, T intent) {
+template<typename T> Object _OverridableActionCls<T>::invokeDefaultAction(BuildContext context, Action<T> fromAction, T intent) {
     if (fromAction == nullptr) {
         return defaultAction->invoke(intent);
     } else {
@@ -594,11 +594,11 @@ template<typename T : Intent> Object _OverridableActionCls<T>::invokeDefaultActi
     }
 }
 
-template<typename T : Intent> ContextAction<T> _OverridableActionCls<T>::_makeOverridableAction(BuildContext context) {
+template<typename T> ContextAction<T> _OverridableActionCls<T>::_makeOverridableAction(BuildContext context) {
     return <T>make<_OverridableActionCls>(defaultAction, context);
 }
 
-template<typename T : Intent> Object _OverridableContextActionCls<T>::invokeDefaultAction(BuildContext context, Action<T> fromAction, T intent) {
+template<typename T> Object _OverridableContextActionCls<T>::invokeDefaultAction(BuildContext context, Action<T> fromAction, T intent) {
     if (fromAction == nullptr) {
         return defaultAction->invoke(intent, context);
     } else {
@@ -607,7 +607,7 @@ template<typename T : Intent> Object _OverridableContextActionCls<T>::invokeDefa
     }
 }
 
-template<typename T : Intent> Object _OverridableContextActionCls<T>::_invokeOverride(BuildContext context, T intent, Action<T> overrideAction) {
+template<typename T> Object _OverridableContextActionCls<T>::_invokeOverride(BuildContext context, T intent, Action<T> overrideAction) {
     assert(context != nullptr);
     assert(!debugAssertMutuallyRecursive);
     assert([=] () {
@@ -616,7 +616,7 @@ template<typename T : Intent> Object _OverridableContextActionCls<T>::_invokeOve
     }());
     Action<T> wrappedDefault = <T>make<_ContextActionToActionAdapterCls>(context!, defaultAction);
     overrideAction->_updateCallingAction(wrappedDefault);
-    Object returnValue = overrideAction is ContextAction<T>? overrideAction->invoke(intent, context) : overrideAction->invoke(intent);
+    Object returnValue = is<ContextAction<T>>(overrideAction)? overrideAction->invoke(intent, context) : overrideAction->invoke(intent);
     overrideAction->_updateCallingAction(nullptr);
     assert([=] () {
         debugAssertMutuallyRecursive = false;
@@ -625,44 +625,44 @@ template<typename T : Intent> Object _OverridableContextActionCls<T>::_invokeOve
     return returnValue;
 }
 
-template<typename T : Intent> ContextAction<T> _OverridableContextActionCls<T>::_makeOverridableAction(BuildContext context) {
+template<typename T> ContextAction<T> _OverridableContextActionCls<T>::_makeOverridableAction(BuildContext context) {
     return <T>make<_OverridableContextActionCls>(defaultAction, context);
 }
 
-template<typename T : Intent> Action<T> _ContextActionToActionAdapterCls<T>::callingAction() {
+template<typename T> Action<T> _ContextActionToActionAdapterCls<T>::callingAction() {
     return action->callingAction;
 }
 
-template<typename T : Intent> bool _ContextActionToActionAdapterCls<T>::isEnabled(T intent) {
+template<typename T> bool _ContextActionToActionAdapterCls<T>::isEnabled(T intent) {
     return action->isEnabled(intent);
 }
 
-template<typename T : Intent> bool _ContextActionToActionAdapterCls<T>::isActionEnabled() {
+template<typename T> bool _ContextActionToActionAdapterCls<T>::isActionEnabled() {
     return action->isActionEnabled;
 }
 
-template<typename T : Intent> bool _ContextActionToActionAdapterCls<T>::consumesKey(T intent) {
+template<typename T> bool _ContextActionToActionAdapterCls<T>::consumesKey(T intent) {
     return action->consumesKey(intent);
 }
 
-template<typename T : Intent> void _ContextActionToActionAdapterCls<T>::addActionListener(ActionListenerCallback listener) {
+template<typename T> void _ContextActionToActionAdapterCls<T>::addActionListener(ActionListenerCallback listener) {
     super->addActionListener(listener);
     action->addActionListener(listener);
 }
 
-template<typename T : Intent> void _ContextActionToActionAdapterCls<T>::removeActionListener(ActionListenerCallback listener) {
+template<typename T> void _ContextActionToActionAdapterCls<T>::removeActionListener(ActionListenerCallback listener) {
     super->removeActionListener(listener);
     action->removeActionListener(listener);
 }
 
-template<typename T : Intent> void _ContextActionToActionAdapterCls<T>::notifyActionListeners() {
+template<typename T> void _ContextActionToActionAdapterCls<T>::notifyActionListeners() {
     return action->notifyActionListeners();
 }
 
-template<typename T : Intent> Object _ContextActionToActionAdapterCls<T>::invoke(T intent) {
+template<typename T> Object _ContextActionToActionAdapterCls<T>::invoke(T intent) {
     return action->invoke(intent, invokeContext);
 }
 
-template<typename T : Intent> void _ContextActionToActionAdapterCls<T>::_updateCallingAction(Action<T> value) {
+template<typename T> void _ContextActionToActionAdapterCls<T>::_updateCallingAction(Action<T> value) {
     action->_updateCallingAction(value);
 }

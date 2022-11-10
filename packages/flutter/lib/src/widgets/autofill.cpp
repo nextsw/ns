@@ -19,7 +19,7 @@ AutofillClient AutofillGroupStateCls::getAutofillClient(String autofillId) {
 }
 
 Iterable<AutofillClient> AutofillGroupStateCls::autofillClients() {
-    return _clients->values->where([=] (AutofillClient client)     {
+    return _clients->values()->where([=] (AutofillClient client)     {
         client->textInputConfiguration->autofillConfiguration->enabled;
     });
 }

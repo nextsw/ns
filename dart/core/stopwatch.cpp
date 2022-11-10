@@ -22,15 +22,15 @@ void StopwatchCls::stop() {
 }
 
 void StopwatchCls::reset() {
-    _start = _stop ?? _now();
+    _start = _stop or _now();
 }
 
 int StopwatchCls::elapsedTicks() {
-    return (_stop ?? _now()) - _start;
+    return (_stop or _now()) - _start;
 }
 
 Duration StopwatchCls::elapsed() {
-    return make<DurationCls>(elapsedMicroseconds);
+    return make<DurationCls>(elapsedMicroseconds());
 }
 
 bool StopwatchCls::isRunning() {

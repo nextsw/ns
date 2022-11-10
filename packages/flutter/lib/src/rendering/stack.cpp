@@ -63,7 +63,7 @@ bool RelativeRectCls::==(Object other) {
     if (identical(this, other)) {
         return true;
     }
-    return other is RelativeRect && other->left == left && other->top == top && other->right == right && other->bottom == bottom;
+    return is<RelativeRect>(other) && other->left == left && other->top == top && other->right == right && other->bottom == bottom;
 }
 
 int RelativeRectCls::hashCode() {
@@ -71,7 +71,7 @@ int RelativeRectCls::hashCode() {
 }
 
 String RelativeRectCls::toString() {
-    return "RelativeRect.fromLTRB(${left.toStringAsFixed(1)}, ${top.toStringAsFixed(1)}, ${right.toStringAsFixed(1)}, ${bottom.toStringAsFixed(1)})";
+    return __s("RelativeRect.fromLTRB(${left.toStringAsFixed(1)}, ${top.toStringAsFixed(1)}, ${right.toStringAsFixed(1)}, ${bottom.toStringAsFixed(1)})");
 }
 
 RelativeRect StackParentDataCls::rect() {
@@ -92,21 +92,21 @@ bool StackParentDataCls::isPositioned() {
 String StackParentDataCls::toString() {
     List<String> list1 = make<ListCls<>>();if (top != nullptr) {    list1.add(ArrayItem);}if (right != nullptr) {    list1.add(ArrayItem);}if (bottom != nullptr) {    list1.add(ArrayItem);}if (left != nullptr) {    list1.add(ArrayItem);}if (width != nullptr) {    list1.add(ArrayItem);}if (height != nullptr) {    list1.add(ArrayItem);}List<String> values = list1;
     if (values->isEmpty) {
-        values->add("not positioned");
+        values->add(__s("not positioned"));
     }
     values->add(super->toString());
-    return values->join("; ");
+    return values->join(__s("; "));
 }
 
 RenderStackCls::RenderStackCls(AlignmentGeometry alignment, List<RenderBox> children, Clip clipBehavior, StackFit fit, TextDirection textDirection) {
     {
-        assert(alignment != nullptr);
-        assert(fit != nullptr);
-        assert(clipBehavior != nullptr);
-        _alignment = alignment;
-        _textDirection = textDirection;
-        _fit = fit;
-        _clipBehavior = clipBehavior;
+        assert(alignment() != nullptr);
+        assert(fit() != nullptr);
+        assert(clipBehavior() != nullptr);
+        _alignment = alignment();
+        _textDirection = textDirection();
+        _fit = fit();
+        _clipBehavior = clipBehavior();
     }
     {
         addAll(children);
@@ -114,7 +114,7 @@ RenderStackCls::RenderStackCls(AlignmentGeometry alignment, List<RenderBox> chil
 }
 
 void RenderStackCls::setupParentData(RenderBox child) {
-    if (child->parentData is! StackParentData) {
+    if (!is<StackParentData>(child->parentData)) {
         child->parentData = make<StackParentDataCls>();
     }
 }
@@ -173,7 +173,7 @@ double RenderStackCls::getIntrinsicDimension(RenderBox firstChild, double mainCh
     double extent = 0.0;
     RenderBox child = firstChild;
     while (child != nullptr) {
-        StackParentData childParentData = ((StackParentData)child->parentData!);
+        StackParentData childParentData = as<StackParentData>(child->parentData!);
         if (!childParentData->isPositioned) {
             extent = math->max(extent, mainChildSizeGetter(child));
         }
@@ -238,7 +238,7 @@ bool RenderStackCls::layoutPositionedChild(Alignment alignment, RenderBox child,
         if (childParentData->right != nullptr) {
         x = size->width - childParentData->right! - child->size->width;
     } else {
-        x = alignment->alongOffset(((Offset)size - child->size))->dx;
+        x = alignment->alongOffset(as<Offset>(size - child->size))->dx;
     }
 ;
     }    if ( < 0.0 || x + child->size->width > size->width) {
@@ -251,7 +251,7 @@ bool RenderStackCls::layoutPositionedChild(Alignment alignment, RenderBox child,
         if (childParentData->bottom != nullptr) {
         y = size->height - childParentData->bottom! - child->size->height;
     } else {
-        y = alignment->alongOffset(((Offset)size - child->size))->dy;
+        y = alignment->alongOffset(as<Offset>(size - child->size))->dy;
     }
 ;
     }    if ( < 0.0 || y + child->size->height > size->height) {
@@ -272,9 +272,9 @@ void RenderStackCls::performLayout() {
     assert(_resolvedAlignment != nullptr);
     RenderBox child = firstChild;
     while (child != nullptr) {
-        StackParentData childParentData = ((StackParentData)child->parentData!);
+        StackParentData childParentData = as<StackParentData>(child->parentData!);
         if (!childParentData->isPositioned) {
-            childParentData->offset = _resolvedAlignment!->alongOffset(((Offset)size - child->size));
+            childParentData->offset = _resolvedAlignment!->alongOffset(as<Offset>(size - child->size));
         } else {
             _hasVisualOverflow = layoutPositionedChild(child, childParentData, size, _resolvedAlignment!) || _hasVisualOverflow;
         }
@@ -292,16 +292,16 @@ void RenderStackCls::paintStack(PaintingContext context, Offset offset) {
 }
 
 void RenderStackCls::paint(PaintingContext context, Offset offset) {
-    if (clipBehavior != ClipCls::none && _hasVisualOverflow) {
-        _clipRectLayer->layer = context->pushClipRect(needsCompositing, offset, OffsetCls::zero & size, paintStackclipBehavior, _clipRectLayer->layer);
+    if (clipBehavior() != ClipCls::none && _hasVisualOverflow) {
+        _clipRectLayer->layer() = context->pushClipRect(needsCompositing, offset, OffsetCls::zero & size, paintStackclipBehavior(), _clipRectLayer->layer());
     } else {
-        _clipRectLayer->layer = nullptr;
+        _clipRectLayer->layer() = nullptr;
         paintStack(context, offset);
     }
 }
 
 void RenderStackCls::dispose() {
-    _clipRectLayer->layer = nullptr;
+    _clipRectLayer->layer() = nullptr;
     super->dispose();
 }
 
@@ -311,17 +311,17 @@ Rect RenderStackCls::describeApproximatePaintClip(RenderObject child) {
 
 void RenderStackCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<AlignmentGeometry>make<DiagnosticsPropertyCls>("alignment", alignment));
-    properties->add(<TextDirection>make<EnumPropertyCls>("textDirection", textDirection));
-    properties->add(<StackFit>make<EnumPropertyCls>("fit", fit));
-    properties->add(<Clip>make<EnumPropertyCls>("clipBehavior", clipBehaviorClipCls::hardEdge));
+    properties->add(<AlignmentGeometry>make<DiagnosticsPropertyCls>(__s("alignment"), alignment()));
+    properties->add(<TextDirection>make<EnumPropertyCls>(__s("textDirection"), textDirection()));
+    properties->add(<StackFit>make<EnumPropertyCls>(__s("fit"), fit()));
+    properties->add(<Clip>make<EnumPropertyCls>(__s("clipBehavior"), clipBehavior()ClipCls::hardEdge));
 }
 
 void RenderStackCls::_resolve() {
     if (_resolvedAlignment != nullptr) {
         return;
     }
-    _resolvedAlignment = alignment->resolve(textDirection);
+    _resolvedAlignment = alignment()->resolve(textDirection());
 }
 
 void RenderStackCls::_markNeedResolution() {
@@ -339,12 +339,12 @@ Size RenderStackCls::_computeSize(BoxConstraints constraints, ChildLayouter layo
     double width = constraints->minWidth;
     double height = constraints->minHeight;
     BoxConstraints nonPositionedConstraints;
-    assert(fit != nullptr);
+    assert(fit() != nullptr);
     ;
     assert(nonPositionedConstraints != nullptr);
     RenderBox child = firstChild;
     while (child != nullptr) {
-        StackParentData childParentData = ((StackParentData)child->parentData!);
+        StackParentData childParentData = as<StackParentData>(child->parentData!);
         if (!childParentData->isPositioned) {
             hasNonPositionedChildren = true;
             Size childSize = layoutChild(child, nonPositionedConstraints);
@@ -367,12 +367,12 @@ Size RenderStackCls::_computeSize(BoxConstraints constraints, ChildLayouter layo
 
 RenderIndexedStackCls::RenderIndexedStackCls(Unknown alignment, Unknown children, int index, Unknown textDirection) {
     {
-        _index = index;
+        _index = index();
     }
 }
 
 void RenderIndexedStackCls::visitChildrenForSemantics(RenderObjectVisitor visitor) {
-    if (index != nullptr && firstChild != nullptr) {
+    if (index() != nullptr && firstChild != nullptr) {
         visitor(_childAtIndex());
     }
 }
@@ -389,12 +389,12 @@ void RenderIndexedStackCls::index(int value) {
 }
 
 bool RenderIndexedStackCls::hitTestChildren(Offset position, BoxHitTestResult result) {
-    if (firstChild == nullptr || index == nullptr) {
+    if (firstChild == nullptr || index() == nullptr) {
         return false;
     }
     assert(position != nullptr);
     RenderBox child = _childAtIndex();
-    StackParentData childParentData = ((StackParentData)child->parentData!);
+    StackParentData childParentData = as<StackParentData>(child->parentData!);
     return result->addWithPaintOffset(childParentData->offset, position, [=] (BoxHitTestResult result,Offset transformed) {
         assert(transformed == position - childParentData->offset);
         return child->hitTest(resulttransformed);
@@ -402,17 +402,17 @@ bool RenderIndexedStackCls::hitTestChildren(Offset position, BoxHitTestResult re
 }
 
 void RenderIndexedStackCls::paintStack(PaintingContext context, Offset offset) {
-    if (firstChild == nullptr || index == nullptr) {
+    if (firstChild == nullptr || index() == nullptr) {
         return;
     }
     RenderBox child = _childAtIndex();
-    StackParentData childParentData = ((StackParentData)child->parentData!);
+    StackParentData childParentData = as<StackParentData>(child->parentData!);
     context->paintChild(child, childParentData->offset + offset);
 }
 
 void RenderIndexedStackCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(make<IntPropertyCls>("index", index));
+    properties->add(make<IntPropertyCls>(__s("index"), index()));
 }
 
 List<DiagnosticsNode> RenderIndexedStackCls::debugDescribeChildren() {
@@ -420,23 +420,23 @@ List<DiagnosticsNode> RenderIndexedStackCls::debugDescribeChildren() {
     int i = 0;
     RenderObject child = firstChild;
     while (child != nullptr) {
-        children->add(child->toDiagnosticsNode("child ${i + 1}", i != index!? DiagnosticsTreeStyleCls::offstage : nullptr));
-        child = (((StackParentData)child->parentData!))->nextSibling;
+        children->add(child->toDiagnosticsNode(__s("child ${i + 1}"), i != index()!? DiagnosticsTreeStyleCls::offstage : nullptr));
+        child = (as<StackParentData>(child->parentData!))->nextSibling;
         i = 1;
     }
     return children;
 }
 
 RenderBox RenderIndexedStackCls::_childAtIndex() {
-    assert(index != nullptr);
+    assert(index() != nullptr);
     RenderBox child = firstChild;
     int i = 0;
-    while (child != nullptr &&  < index!) {
-        StackParentData childParentData = ((StackParentData)child->parentData!);
+    while (child != nullptr &&  < index()!) {
+        StackParentData childParentData = as<StackParentData>(child->parentData!);
         child = childParentData->nextSibling;
         i = 1;
     }
-    assert(i == index);
+    assert(i == index());
     assert(child != nullptr);
     return child!;
 }

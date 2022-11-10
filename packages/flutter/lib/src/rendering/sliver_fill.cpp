@@ -1,14 +1,14 @@
 #include "sliver_fill.hpp"
 RenderSliverFillViewportCls::RenderSliverFillViewportCls(Unknown childManager, double viewportFraction) {
     {
-        assert(viewportFraction != nullptr);
-        assert(viewportFraction > 0.0);
-        _viewportFraction = viewportFraction;
+        assert(viewportFraction() != nullptr);
+        assert(viewportFraction() > 0.0);
+        _viewportFraction = viewportFraction();
     }
 }
 
 double RenderSliverFillViewportCls::itemExtent() {
-    return constraints->viewportMainAxisExtent * viewportFraction;
+    return constraints->viewportMainAxisExtent * viewportFraction();
 }
 
 double RenderSliverFillViewportCls::viewportFraction() {
@@ -48,7 +48,7 @@ void RenderSliverFillRemainingCls::performLayout() {
         extent = math->max(extent, childExtent);
         child!->layout(constraints->asBoxConstraints(extent, extent));
     }
-    assert(extent->isFinite, "The calculated extent for the child of SliverFillRemaining is not finite. This can happen if the child is a scrollable, in which case, the hasScrollBody property of SliverFillRemaining should not be set to false.");
+    assert(extent->isFinite, __s("The calculated extent for the child of SliverFillRemaining is not finite. This can happen if the child is a scrollable, in which case, the hasScrollBody property of SliverFillRemaining should not be set to false."));
     double paintedChildSize = calculatePaintOffset(constraints0.0, extent);
     assert(paintedChildSize->isFinite);
     assert(paintedChildSize >= 0.0);
@@ -69,7 +69,7 @@ void RenderSliverFillRemainingAndOverscrollCls::performLayout() {
         maxExtent = math->max(extent, maxExtent);
         child!->layout(constraints->asBoxConstraints(extent, maxExtent));
     }
-    assert(extent->isFinite, "The calculated extent for the child of SliverFillRemaining is not finite. This can happen if the child is a scrollable, in which case, the hasScrollBody property of SliverFillRemaining should not be set to false.");
+    assert(extent->isFinite, __s("The calculated extent for the child of SliverFillRemaining is not finite. This can happen if the child is a scrollable, in which case, the hasScrollBody property of SliverFillRemaining should not be set to false."));
     double paintedChildSize = calculatePaintOffset(constraints0.0, extent);
     assert(paintedChildSize->isFinite);
     assert(paintedChildSize >= 0.0);

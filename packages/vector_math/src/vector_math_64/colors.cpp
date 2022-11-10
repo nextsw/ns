@@ -51,8 +51,8 @@ String ColorsCls::toHexString(bool alpha, Vector4 input, bool short) {
         Unknown rgb = (r & 0xF)->toRadixString(16) + (g & 0xF)->toRadixString(16) + (b & 0xF)->toRadixString(16);
         return alpha? (a & 0xF)->toRadixString(16) + rgb : rgb;
     } else {
-        Unknown rgb = r->toRadixString(16)->padLeft(2, "0") + g->toRadixString(16)->padLeft(2, "0") + b->toRadixString(16)->padLeft(2, "0");
-        return alpha? a->toRadixString(16)->padLeft(2, "0") + rgb : rgb;
+        Unknown rgb = r->toRadixString(16)->padLeft(2, __s("0")) + g->toRadixString(16)->padLeft(2, __s("0")) + b->toRadixString(16)->padLeft(2, __s("0"));
+        return alpha? a->toRadixString(16)->padLeft(2, __s("0")) + rgb : rgb;
     }
 }
 

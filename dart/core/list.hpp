@@ -8,13 +8,13 @@
 template<typename E> class ListCls : public ObjectCls {
 public:
 
-    extern  ListCls(int length);
-    extern void  filled(E fill, bool growable, int length);
-    extern void  empty(bool growable);
-    extern void  from(Iterable elements, bool growable);
-    extern void  of(Iterable<E> elements, bool growable);
-    extern void  generate(E generator(int index) , bool growable, int length);
-    extern void  unmodifiable(Iterable elements);
+     ListCls(int length);
+    void  filled(E fill, bool growable, int length);
+    void  empty(bool growable);
+    void  from(Iterable elements, bool growable);
+    void  of(Iterable<E> elements, bool growable);
+    void  generate(E generator(int index) , bool growable, int length);
+    void  unmodifiable(Iterable elements);
     template<typename S, typename T>  static List<T> castFrom(List<S> source);
 
     template<typename T>  static void copyRange(int at, int end, List<T> source, int start, List<T> target);

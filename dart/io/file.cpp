@@ -3,9 +3,9 @@ FileCls::FileCls(String path) {
     {
         IOOverrides overrides = IOOverridesCls::current;
         if (overrides == nullptr) {
-            return make<_FileCls>(path);
+            return make<_FileCls>(path());
         }
-        return overrides->createFile(path);
+        return overrides->createFile(path());
     }
 }
 
@@ -19,24 +19,24 @@ void FileCls::fromRawPath(Uint8List rawPath) {
 
 String FileSystemExceptionCls::toString() {
     StringBuffer sb = make<StringBufferCls>();
-    sb->write("FileSystemException");
-    if (message->isNotEmpty) {
-        sb->write(": $message");
+    sb->write(__s("FileSystemException"));
+    if (message->isNotEmpty()) {
+        sb->write(__s(": $message"));
         if (path != nullptr) {
-            sb->write(", path = '$path'");
+            sb->write(__s(", path = '$path'"));
         }
         if (osError != nullptr) {
-            sb->write(" ($osError)");
+            sb->write(__s(" ($osError)"));
         }
     } else     {
         if (osError != nullptr) {
-        sb->write(": $osError");
+        sb->write(__s(": $osError"));
         if (path != nullptr) {
-            sb->write(", path = '$path'");
+            sb->write(__s(", path = '$path'"));
         }
     } else     {
         if (path != nullptr) {
-        sb->write(": $path");
+        sb->write(__s(": $path"));
     }
 ;
     };

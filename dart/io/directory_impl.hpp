@@ -52,15 +52,15 @@ private:
 
      _DirectoryCls(String path);
 
-    extern static void  _current(_Namespace namespace);
-    extern static void  _setCurrent(_Namespace namespace, Uint8List rawPath);
-    extern static void  _createTemp(_Namespace namespace, Uint8List rawPath);
-    extern static String _systemTemp(_Namespace namespace);
-    extern static void  _exists(_Namespace namespace, Uint8List rawPath);
-    extern static void  _create(_Namespace namespace, Uint8List rawPath);
-    extern static void  _deleteNative(_Namespace namespace, Uint8List rawPath, bool recursive);
-    extern static void  _rename(_Namespace namespace, String newPath, Uint8List rawPath);
-    extern static void _fillWithDirectoryListing(bool followLinks, List<FileSystemEntity> list, _Namespace namespace, Uint8List rawPath, bool recursive);
+    static void  _current(_Namespace namespace);
+    static void  _setCurrent(_Namespace namespace, Uint8List rawPath);
+    static void  _createTemp(_Namespace namespace, Uint8List rawPath);
+    static String _systemTemp(_Namespace namespace);
+    static void  _exists(_Namespace namespace, Uint8List rawPath);
+    static void  _create(_Namespace namespace, Uint8List rawPath);
+    static void  _deleteNative(_Namespace namespace, Uint8List rawPath, bool recursive);
+    static void  _rename(_Namespace namespace, String newPath, Uint8List rawPath);
+    static void _fillWithDirectoryListing(bool followLinks, List<FileSystemEntity> list, _Namespace namespace, Uint8List rawPath, bool recursive);
     virtual Future<Directory> _delete(bool recursive);
 
     virtual void _deleteSync(bool recursive);
@@ -80,7 +80,7 @@ public:
     virtual int getPointer();
 private:
 
-    extern  _AsyncDirectoryListerOpsCls(int pointer);
+     _AsyncDirectoryListerOpsCls(int pointer);
 };
 using _AsyncDirectoryListerOps = std::shared_ptr<_AsyncDirectoryListerOpsCls>;
 

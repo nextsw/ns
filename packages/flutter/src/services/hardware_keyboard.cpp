@@ -5,11 +5,11 @@ KeyboardLockMode KeyboardLockModeCls::findLockByLogicalKey(LogicalKeyboardKey lo
 
 void KeyEventCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<PhysicalKeyboardKey>make<DiagnosticsPropertyCls>("physicalKey", physicalKey));
-    properties->add(<LogicalKeyboardKey>make<DiagnosticsPropertyCls>("logicalKey", logicalKey));
-    properties->add(make<StringPropertyCls>("character", character));
-    properties->add(<Duration>make<DiagnosticsPropertyCls>("timeStamp", timeStamp));
-    properties->add(make<FlagPropertyCls>("synthesized"synthesized, "synthesized"));
+    properties->add(<PhysicalKeyboardKey>make<DiagnosticsPropertyCls>(__s("physicalKey"), physicalKey));
+    properties->add(<LogicalKeyboardKey>make<DiagnosticsPropertyCls>(__s("logicalKey"), logicalKey));
+    properties->add(make<StringPropertyCls>(__s("character"), character));
+    properties->add(<Duration>make<DiagnosticsPropertyCls>(__s("timeStamp"), timeStamp));
+    properties->add(make<FlagPropertyCls>(__s("synthesized")synthesized, __s("synthesized")));
 }
 
 HardwareKeyboard HardwareKeyboardCls::instance() {
@@ -17,11 +17,11 @@ HardwareKeyboard HardwareKeyboardCls::instance() {
 }
 
 Set<PhysicalKeyboardKey> HardwareKeyboardCls::physicalKeysPressed() {
-    return _pressedKeys->keys->toSet();
+    return _pressedKeys->keys()->toSet();
 }
 
 Set<LogicalKeyboardKey> HardwareKeyboardCls::logicalKeysPressed() {
-    return _pressedKeys->values->toSet();
+    return _pressedKeys->values()->toSet();
 }
 
 LogicalKeyboardKey HardwareKeyboardCls::lookUpLayout(PhysicalKeyboardKey physicalKey) {
@@ -54,7 +54,7 @@ bool HardwareKeyboardCls::handleKeyEvent(KeyEvent event) {
     _assertEventIsRegular(event);
     PhysicalKeyboardKey physicalKey = event->physicalKey;
     LogicalKeyboardKey logicalKey = event->logicalKey;
-    if (event is KeyDownEvent) {
+    if (is<KeyDownEvent>(event)) {
         _pressedKeys[physicalKey] = logicalKey;
         KeyboardLockMode lockMode = KeyboardLockModeCls->findLockByLogicalKey(event->logicalKey);
         if (lockMode != nullptr) {
@@ -65,10 +65,10 @@ bool HardwareKeyboardCls::handleKeyEvent(KeyEvent event) {
             }
         }
     } else     {
-        if (event is KeyUpEvent) {
+        if (is<KeyUpEvent>(event)) {
         _pressedKeys->remove(physicalKey);
     } else     {
-        if (event is KeyRepeatEvent) {
+        if (is<KeyRepeatEvent>(event)) {
     }
 ;
     };
@@ -84,15 +84,15 @@ void HardwareKeyboardCls::clearState() {
 
 void HardwareKeyboardCls::_assertEventIsRegular(KeyEvent event) {
     assert([=] () {
-        String common = "If this occurs in real application, please report this bug to Flutter. If this occurs in unit tests, please ensure that simulated events follow Flutter's event model as documented in `HardwareKeyboard`. This was the event: ";
-        if (event is KeyDownEvent) {
-            assert(!_pressedKeys->containsKey(event->physicalKey), "A ${event.runtimeType} is dispatched, but the state shows that the physical key is already pressed. $common$event");
+        String common = __s("If this occurs in real application, please report this bug to Flutter. If this occurs in unit tests, please ensure that simulated events follow Flutter's event model as documented in `HardwareKeyboard`. This was the event: ");
+        if (is<KeyDownEvent>(event)) {
+            assert(!_pressedKeys->containsKey(event->physicalKey), __s("A ${event.runtimeType} is dispatched, but the state shows that the physical key is already pressed. $common$event"));
         } else         {
-            if (event is KeyRepeatEvent || event is KeyUpEvent) {
-            assert(_pressedKeys->containsKey(event->physicalKey), "A ${event.runtimeType} is dispatched, but the state shows that the physical key is not pressed. $common$event");
-            assert(_pressedKeys[event->physicalKey] == event->logicalKey, "A ${event.runtimeType} is dispatched, but the state shows that the physical key is pressed on a different logical key. $common$event and the recorded logical key ${_pressedKeys[event.physicalKey]}");
+            if (is<KeyRepeatEvent>(event) || is<KeyUpEvent>(event)) {
+            assert(_pressedKeys->containsKey(event->physicalKey), __s("A ${event.runtimeType} is dispatched, but the state shows that the physical key is not pressed. $common$event"));
+            assert(_pressedKeys[event->physicalKey] == event->logicalKey, __s("A ${event.runtimeType} is dispatched, but the state shows that the physical key is pressed on a different logical key. $common$event and the recorded logical key ${_pressedKeys[event.physicalKey]}"));
         } else {
-            assert(false, "Unexpected key event class ${event.runtimeType}");
+            assert(false, __s("Unexpected key event class ${event.runtimeType}"));
         }
 ;
         }        return true;
@@ -100,7 +100,7 @@ void HardwareKeyboardCls::_assertEventIsRegular(KeyEvent event) {
 }
 
 bool HardwareKeyboardCls::_dispatchKeyEvent(KeyEvent event) {
-    assert(!_duringDispatch, "Nested keyboard dispatching is not supported");
+    assert(!_duringDispatch, __s("Nested keyboard dispatching is not supported"));
     _duringDispatch = true;
     bool handled = false;
     for (KeyEventCallback handler : _handlers) {
@@ -115,7 +115,7 @@ bool HardwareKeyboardCls::_dispatchKeyEvent(KeyEvent event) {
                 };
                 return true;
             }());
-            FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(exception, stack, "services library", make<ErrorDescriptionCls>("while processing a key handler"), collector));
+            FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(exception, stack, __s("services library"), make<ErrorDescriptionCls>(__s("while processing a key handler")), collector));
         };
     }
     _duringDispatch = false;
@@ -127,7 +127,7 @@ bool HardwareKeyboardCls::_dispatchKeyEvent(KeyEvent event) {
 }
 
 String KeyMessageCls::toString() {
-    return "KeyMessage($events)";
+    return __s("KeyMessage($events)");
 }
 
 bool KeyEventManagerCls::handleKeyData(KeyData data) {
@@ -140,9 +140,9 @@ Future<Map<String, dynamic>> KeyEventManagerCls::handleRawKeyMessage(dynamic mes
         _transitMode = KeyDataTransitModeCls::rawKeyData;
         _rawKeyboard->addListener(_convertRawEventAndStore);
     }
-    RawKeyEvent rawEvent = RawKeyEventCls->fromMessage(((Map<String, dynamic>)message));
+    RawKeyEvent rawEvent = RawKeyEventCls->fromMessage(as<Map<String, dynamic>>(message));
     bool shouldDispatch = true;
-    if (rawEvent is RawKeyDownEvent) {
+    if (is<RawKeyDownEvent>(rawEvent)) {
         if (!rawEvent->data->shouldDispatchEvent()) {
             shouldDispatch = false;
             _skippedRawKeysPressed->add(rawEvent->physicalKey);
@@ -150,7 +150,7 @@ Future<Map<String, dynamic>> KeyEventManagerCls::handleRawKeyMessage(dynamic mes
             _skippedRawKeysPressed->remove(rawEvent->physicalKey);
         }
     } else     {
-        if (rawEvent is RawKeyUpEvent) {
+        if (is<RawKeyUpEvent>(rawEvent)) {
         if (_skippedRawKeysPressed->contains(rawEvent->physicalKey)) {
             _skippedRawKeysPressed->remove(rawEvent->physicalKey);
             shouldDispatch = false;
@@ -164,12 +164,12 @@ Future<Map<String, dynamic>> KeyEventManagerCls::handleRawKeyMessage(dynamic mes
             handled = _hardwareKeyboard->handleKeyEvent(event) || handled;
         }
         if (_transitMode == KeyDataTransitModeCls::rawKeyData) {
-            assert(setEquals(_rawKeyboard->physicalKeysPressed, _hardwareKeyboard->physicalKeysPressed), "RawKeyboard reported ${_rawKeyboard.physicalKeysPressed}, while HardwareKeyboard reported ${_hardwareKeyboard.physicalKeysPressed}");
+            assert(setEquals(_rawKeyboard->physicalKeysPressed(), _hardwareKeyboard->physicalKeysPressed()), __s("RawKeyboard reported ${_rawKeyboard.physicalKeysPressed}, while HardwareKeyboard reported ${_hardwareKeyboard.physicalKeysPressed}"));
         }
         handled = _dispatchKeyMessage(_keyEventsSinceLastMessage, rawEvent) || handled;
         _keyEventsSinceLastMessage->clear();
     }
-    Map<String, dynamic> map1 = make<MapCls<>>();map1.set("handled", handled);return list1;
+    Map<String, dynamic> map1 = make<MapCls<>>();map1.set(__s("handled"), handled);return list1;
 }
 
 void KeyEventManagerCls::clearState() {
@@ -194,7 +194,7 @@ bool KeyEventManagerCls::_dispatchKeyMessage(List<KeyEvent> keyEvents, RawKeyEve
                 };
                 return true;
             }());
-            FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(exception, stack, "services library", make<ErrorDescriptionCls>("while processing the key message handler"), collector));
+            FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(exception, stack, __s("services library"), make<ErrorDescriptionCls>(__s("while processing the key message handler")), collector));
         };
     }
     return false;
@@ -203,13 +203,13 @@ bool KeyEventManagerCls::_dispatchKeyMessage(List<KeyEvent> keyEvents, RawKeyEve
 void KeyEventManagerCls::_convertRawEventAndStore(RawKeyEvent rawEvent) {
     PhysicalKeyboardKey physicalKey = rawEvent->physicalKey;
     LogicalKeyboardKey logicalKey = rawEvent->logicalKey;
-    Set<PhysicalKeyboardKey> physicalKeysPressed = _hardwareKeyboard->physicalKeysPressed;
+    Set<PhysicalKeyboardKey> physicalKeysPressed = _hardwareKeyboard->physicalKeysPressed();
     List<KeyEvent> eventAfterwards = makeList();
     KeyEvent mainEvent;
     LogicalKeyboardKey recordedLogicalMain = _hardwareKeyboard->lookUpLayout(physicalKey);
     Duration timeStamp = ServicesBindingCls::instance->currentSystemFrameTimeStamp;
-    String character = rawEvent->character == ""? nullptr : rawEvent->character;
-    if (rawEvent is RawKeyDownEvent) {
+    String character = rawEvent->character == __s("")? nullptr : rawEvent->character;
+    if (is<RawKeyDownEvent>(rawEvent)) {
         if (recordedLogicalMain == nullptr) {
             mainEvent = make<KeyDownEventCls>(physicalKey, logicalKey, character, timeStamp);
             physicalKeysPressed->add(physicalKey);
@@ -218,7 +218,7 @@ void KeyEventManagerCls::_convertRawEventAndStore(RawKeyEvent rawEvent) {
             mainEvent = make<KeyRepeatEventCls>(physicalKey, recordedLogicalMain, character, timeStamp);
         }
     } else {
-        assert(rawEvent is RawKeyUpEvent, "Unexpected subclass of RawKeyEvent: ${rawEvent.runtimeType}");
+        assert(is<RawKeyUpEvent>(rawEvent), __s("Unexpected subclass of RawKeyEvent: ${rawEvent.runtimeType}"));
         if (recordedLogicalMain == nullptr) {
             mainEvent = nullptr;
         } else {
@@ -226,14 +226,14 @@ void KeyEventManagerCls::_convertRawEventAndStore(RawKeyEvent rawEvent) {
             physicalKeysPressed->remove(physicalKey);
         }
     }
-    for (PhysicalKeyboardKey key : physicalKeysPressed->difference(_rawKeyboard->physicalKeysPressed)) {
+    for (PhysicalKeyboardKey key : physicalKeysPressed->difference(_rawKeyboard->physicalKeysPressed())) {
         if (key == physicalKey) {
             eventAfterwards->add(make<KeyUpEventCls>(key, logicalKey, timeStamp, true));
         } else {
             _keyEventsSinceLastMessage->add(make<KeyUpEventCls>(key, _hardwareKeyboard->lookUpLayout(key)!, timeStamp, true));
         }
     }
-    for (PhysicalKeyboardKey key : _rawKeyboard->physicalKeysPressed->difference(physicalKeysPressed)) {
+    for (PhysicalKeyboardKey key : _rawKeyboard->physicalKeysPressed()->difference(physicalKeysPressed)) {
         _keyEventsSinceLastMessage->add(make<KeyDownEventCls>(key, _rawKeyboard->lookUpLayout(key)!, timeStamp, true));
     }
     if (mainEvent != nullptr) {
@@ -243,8 +243,8 @@ void KeyEventManagerCls::_convertRawEventAndStore(RawKeyEvent rawEvent) {
 }
 
 KeyEvent KeyEventManagerCls::_eventFromData(KeyData keyData) {
-    PhysicalKeyboardKey physicalKey = PhysicalKeyboardKeyCls->findKeyByCode(keyData->physical) ?? make<PhysicalKeyboardKeyCls>(keyData->physical);
-    LogicalKeyboardKey logicalKey = LogicalKeyboardKeyCls->findKeyByKeyId(keyData->logical) ?? make<LogicalKeyboardKeyCls>(keyData->logical);
+    PhysicalKeyboardKey physicalKey = PhysicalKeyboardKeyCls->findKeyByCode(keyData->physical) or make<PhysicalKeyboardKeyCls>(keyData->physical);
+    LogicalKeyboardKey logicalKey = LogicalKeyboardKeyCls->findKeyByKeyId(keyData->logical) or make<LogicalKeyboardKeyCls>(keyData->logical);
     Duration timeStamp = keyData->timeStamp;
     ;
 }

@@ -1,6 +1,6 @@
 #include "async_cast.hpp"
 template<typename S, typename T> bool CastStreamCls<S, T>::isBroadcast() {
-    return _source->isBroadcast;
+    return _source->isBroadcast();
 }
 
 template<typename S, typename T> StreamSubscription<T> CastStreamCls<S, T>::listen(bool cancelOnError, void onData(T data) , void onDone() , void  onError() ) {
@@ -30,10 +30,10 @@ template<typename S, typename T> void CastStreamSubscriptionCls<S, T>::onError(v
     if (handleError == nullptr) {
         _handleError = nullptr;
     } else     {
-        if (handleError is void Function(Object , StackTrace )) {
+        if (is<void Function(Object , StackTrace )>(handleError)) {
         _handleError = _zone-><dynamic, Object, StackTrace>registerBinaryCallback(handleError);
     } else     {
-        if (handleError is void Function(Object )) {
+        if (is<void Function(Object )>(handleError)) {
         _handleError = _zone-><dynamic, Object>registerUnaryCallback(handleError);
     } else {
         ;
@@ -55,7 +55,7 @@ template<typename S, typename T> void CastStreamSubscriptionCls<S, T>::resume() 
 }
 
 template<typename S, typename T> bool CastStreamSubscriptionCls<S, T>::isPaused() {
-    return _source->isPaused;
+    return _source->isPaused();
 }
 
 template<typename S, typename T> Future<E> CastStreamSubscriptionCls<S, T>::asFuturetemplate<typename E> (E futureValue) {
@@ -68,16 +68,16 @@ template<typename S, typename T> void CastStreamSubscriptionCls<S, T>::_onData(S
     }
     T targetData;
     try {
-        targetData = ((T)data);
+        targetData = as<T>(data);
     } catch (Unknown error) {
         auto handleError = _handleError;
         if (handleError == nullptr) {
             _zone->handleUncaughtError(error, stack);
         } else         {
-            if (handleError is void Function(Object , StackTrace )) {
+            if (is<void Function(Object , StackTrace )>(handleError)) {
             _zone-><Object, StackTrace>runBinaryGuarded(handleError, error, stack);
         } else {
-            _zone-><Object>runUnaryGuarded(((void Function(Object ))handleError), error);
+            _zone-><Object>runUnaryGuarded(as<void Function(Object )>(handleError), error);
         }
 ;
         }        return;
@@ -94,7 +94,7 @@ template<typename SS, typename ST, typename TS, typename TT> Stream<TT> CastStre
 }
 
 template<typename SS, typename ST, typename TS, typename TT> TT CastConverterCls<SS, ST, TS, TT>::convert(TS input) {
-    return ((TT)_source->convert(((SS)input)));
+    return as<TT>(_source->convert(as<SS>(input)));
 }
 
 template<typename SS, typename ST, typename TS, typename TT> Stream<TT> CastConverterCls<SS, ST, TS, TT>::bind(Stream<TS> stream) {

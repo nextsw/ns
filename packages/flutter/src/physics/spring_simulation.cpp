@@ -2,7 +2,7 @@
 void SpringDescriptionCls::withDampingRatio(double mass, double ratio, double stiffness)
 
 String SpringDescriptionCls::toString() {
-    return "${objectRuntimeType(this, 'SpringDescription')}(mass: ${mass.toStringAsFixed(1)}, stiffness: ${stiffness.toStringAsFixed(1)}, damping: ${damping.toStringAsFixed(1)})";
+    return __s("${objectRuntimeType(this, 'SpringDescription')}(mass: ${mass.toStringAsFixed(1)}, stiffness: ${stiffness.toStringAsFixed(1)}, damping: ${damping.toStringAsFixed(1)})");
 }
 
 SpringSimulationCls::SpringSimulationCls(double end, SpringDescription spring, double start, Unknown tolerance, double velocity) {
@@ -13,7 +13,7 @@ SpringSimulationCls::SpringSimulationCls(double end, SpringDescription spring, d
 }
 
 SpringType SpringSimulationCls::type() {
-    return _solution->type;
+    return _solution->type();
 }
 
 double SpringSimulationCls::x(double time) {
@@ -29,7 +29,7 @@ bool SpringSimulationCls::isDone(double time) {
 }
 
 String SpringSimulationCls::toString() {
-    return "${objectRuntimeType(this, 'SpringSimulation')}(end: ${_endPosition.toStringAsFixed(1)}, $type)";
+    return __s("${objectRuntimeType(this, 'SpringSimulation')}(end: ${_endPosition.toStringAsFixed(1)}, $type)");
 }
 
 double ScrollSpringSimulationCls::x(double time) {

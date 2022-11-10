@@ -164,8 +164,8 @@ public:
     virtual List<int> processed(bool end, bool flush);
 private:
 
-    extern static RawZLibFilter _makeZLibDeflateFilter(List<int> dictionary, bool gzip, int level, int memLevel, bool raw, int strategy, int windowBits);
-    extern static RawZLibFilter _makeZLibInflateFilter(List<int> dictionary, bool raw, int windowBits);
+    static RawZLibFilter _makeZLibDeflateFilter(List<int> dictionary, bool gzip, int level, int memLevel, bool raw, int strategy, int windowBits);
+    static RawZLibFilter _makeZLibInflateFilter(List<int> dictionary, bool raw, int windowBits);
 };
 using RawZLibFilter = std::shared_ptr<RawZLibFilterCls>;
 

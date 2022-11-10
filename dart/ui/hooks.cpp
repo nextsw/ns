@@ -53,12 +53,12 @@ void _drawFrame() {
 }
 
 bool _onError(Object error, StackTrace stackTrace) {
-    return PlatformDispatcherCls::instance->_dispatchError(error, stackTrace ?? StackTraceCls::empty);
+    return PlatformDispatcherCls::instance->_dispatchError(error, stackTrace or StackTraceCls::empty);
 }
 
 void _runMain(List<String> args, void  startMainIsolateFunction() , void  userMainFunction() ) {
     startMainIsolateFunction([=] () {
-        if (userMainFunction is _ListStringArgFunction) {
+        if (is<_ListStringArgFunction>(userMainFunction)) {
             userMainFunction(args);
         } else {
             userMainFunction();
@@ -122,7 +122,7 @@ bool _isLoopback(String host) {
     if (host->isEmpty) {
         return false;
     }
-    if ("localhost" == host) {
+    if (__s("localhost") == host) {
         return true;
     }
     try {

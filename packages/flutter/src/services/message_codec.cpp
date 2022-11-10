@@ -6,7 +6,7 @@ MethodCallCls::MethodCallCls(dynamic arguments, String method) {
 }
 
 String MethodCallCls::toString() {
-    return "${objectRuntimeType(this, 'MethodCall')}($method, $arguments)";
+    return __s("${objectRuntimeType(this, 'MethodCall')}($method, $arguments)");
 }
 
 PlatformExceptionCls::PlatformExceptionCls(String code, dynamic details, String message, String stacktrace) {
@@ -16,9 +16,9 @@ PlatformExceptionCls::PlatformExceptionCls(String code, dynamic details, String 
 }
 
 String PlatformExceptionCls::toString() {
-    return "PlatformException($code, $message, $details, $stacktrace)";
+    return __s("PlatformException($code, $message, $details, $stacktrace)");
 }
 
 String MissingPluginExceptionCls::toString() {
-    return "MissingPluginException($message)";
+    return __s("MissingPluginException($message)");
 }

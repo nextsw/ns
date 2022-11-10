@@ -6,7 +6,7 @@
 
 void Function(String ) printToZone;
 
-extern void printToConsole(String line);
+void printToConsole(String line);
 
 
 #endif

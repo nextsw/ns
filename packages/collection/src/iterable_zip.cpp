@@ -16,20 +16,20 @@ template<typename T> bool _IteratorZipCls<T>::moveNext() {
     if (_iterators->isEmpty)     {
         return false;
     }
-    for (;  < _iterators->length; i++) {
+    for (;  < _iterators->length(); i++) {
         if (!_iterators[i]->moveNext()) {
             _current = nullptr;
             return false;
         }
     }
-    _current = ListCls->generate(_iterators->length, [=] (Unknown  i)     {
-        _iterators[i]->current;
+    _current = ListCls->generate(_iterators->length(), [=] (Unknown  i)     {
+        _iterators[i]->current();
     }false);
     return true;
 }
 
 template<typename T> List<T> _IteratorZipCls<T>::current() {
-    return _current ?? ();
+    return _current or ();
 }
 
 template<typename T> _IteratorZipCls<T>::_IteratorZipCls(List<Iterator<T>> iterators) {

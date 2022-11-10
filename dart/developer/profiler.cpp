@@ -1,7 +1,7 @@
 #include "profiler.hpp"
 MetricCls::MetricCls(String description, String name) {
     {
-        if ((name == "vm") || name->contains("/")) {
+        if ((name == __s("vm")) || name->contains(__s("/"))) {
             ;
         }
     }
@@ -22,13 +22,13 @@ void GaugeCls::value(double v) {
     }    _value = v;
 }
 
-GaugeCls::GaugeCls(String description, double max, double min, String name) {
+GaugeCls::GaugeCls(String description, double max, double min, String name) : Metric(name, description) {
     {
         _value = min;
     }
     {
-        ArgumentErrorCls->checkNotNull(min, "min");
-        ArgumentErrorCls->checkNotNull(max, "max");
+        ArgumentErrorCls->checkNotNull(min, __s("min"));
+        ArgumentErrorCls->checkNotNull(max, __s("max"));
         if (!( < max))         {
             ;
         }
@@ -36,11 +36,11 @@ GaugeCls::GaugeCls(String description, double max, double min, String name) {
 }
 
 Map GaugeCls::_toJSON() {
-    map1.set("type", "Gauge");map1.set("id", "metrics/$name");map1.set("name", name);map1.set("description", description);map1.set("value", value);map1.set("min", min);map1.set("max", max);auto map = list1;
+    map1.set(__s("type"), __s("Gauge"));map1.set(__s("id"), __s("metrics/$name"));map1.set(__s("name"), name);map1.set(__s("description"), description);map1.set(__s("value"), value());map1.set(__s("min"), min);map1.set(__s("max"), max);auto map = list1;
     return map;
 }
 
-CounterCls::CounterCls(String description, String name) {
+CounterCls::CounterCls(String description, String name) : Metric(name, description) {
 }
 
 double CounterCls::value() {
@@ -52,12 +52,12 @@ void CounterCls::value(double v) {
 }
 
 Map CounterCls::_toJSON() {
-    map1.set("type", "Counter");map1.set("id", "metrics/$name");map1.set("name", name);map1.set("description", description);map1.set("value", value);auto map = list1;
+    map1.set(__s("type"), __s("Counter"));map1.set(__s("id"), __s("metrics/$name"));map1.set(__s("name"), name);map1.set(__s("description"), description);map1.set(__s("value"), value());auto map = list1;
     return map;
 }
 
 void MetricsCls::register(Metric metric) {
-    ArgumentErrorCls->checkNotNull(metric, "metric");
+    ArgumentErrorCls->checkNotNull(metric, __s("metric"));
     if (_metrics[metric->name] != nullptr) {
         ;
     }
@@ -65,7 +65,7 @@ void MetricsCls::register(Metric metric) {
 }
 
 void MetricsCls::deregister(Metric metric) {
-    ArgumentErrorCls->checkNotNull(metric, "metric");
+    ArgumentErrorCls->checkNotNull(metric, __s("metric"));
     _metrics->remove(metric->name);
 }
 
@@ -82,6 +82,6 @@ String MetricsCls::_printMetrics() {
     for (auto metric : _metrics->values) {
         metrics->add(metric->_toJSON());
     }
-    map1.set("type", "MetricList");map1.set("metrics", metrics);auto map = list1;
+    map1.set(__s("type"), __s("MetricList"));map1.set(__s("metrics"), metrics);auto map = list1;
     return json->encode(map);
 }

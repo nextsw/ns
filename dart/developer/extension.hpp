@@ -48,12 +48,12 @@ private:
 using ServiceExtensionResponse = std::shared_ptr<ServiceExtensionResponseCls>;
 void registerExtension(ServiceExtensionHandler handler, String method);
 
-extern bool extensionStreamHasListener();
+bool extensionStreamHasListener();
 void postEvent(Map eventData, String eventKind);
 
-extern void _postEvent(String eventData, String eventKind);
-extern ServiceExtensionHandler _lookupExtension(String method);
-extern void  _registerExtension(ServiceExtensionHandler handler, String method);
+void _postEvent(String eventData, String eventKind);
+ServiceExtensionHandler _lookupExtension(String method);
+void  _registerExtension(ServiceExtensionHandler handler, String method);
 
 
 #endif

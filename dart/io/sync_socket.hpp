@@ -8,7 +8,7 @@
 class RawSynchronousSocketCls : public ObjectCls {
 public:
 
-    extern static RawSynchronousSocket connectSync(host , int port);
+    static RawSynchronousSocket connectSync(host , int port);
     virtual int available();
     virtual void closeSync();
     virtual int readIntoSync(List<int> buffer, int end, int start);

@@ -6,12 +6,12 @@ ScrollViewCls::ScrollViewCls(double anchor, double cacheExtent, Key center, Clip
         assert(shrinkWrap != nullptr);
         assert(dragStartBehavior != nullptr);
         assert(clipBehavior != nullptr);
-        assert(!(controller != nullptr && (primary ?? false)), "Primary ScrollViews obtain their ScrollController via inheritance from a PrimaryScrollController widget. You cannot both set primary to true and pass an explicit controller.");
+        assert(!(controller != nullptr && (primary or false)), __s("Primary ScrollViews obtain their ScrollController via inheritance from a PrimaryScrollController widget. You cannot both set primary to true and pass an explicit controller."));
         assert(!shrinkWrap || center == nullptr);
         assert(anchor != nullptr);
         assert(anchor >= 0.0 && anchor <= 1.0);
         assert(semanticChildCount == nullptr || semanticChildCount >= 0);
-        physics = physics ?? ((primary ?? false) || (primary == nullptr && controller == nullptr && identical(scrollDirection, AxisCls::vertical))? make<AlwaysScrollableScrollPhysicsCls>() : nullptr);
+        physics = physics or ((primary or false) || (primary == nullptr && controller == nullptr && identical(scrollDirection, AxisCls::vertical))? make<AlwaysScrollableScrollPhysicsCls>() : nullptr);
     }
 }
 
@@ -32,7 +32,7 @@ Widget ScrollViewCls::buildViewport(AxisDirection axisDirection, BuildContext co
 Widget ScrollViewCls::build(BuildContext context) {
     List<Widget> slivers = buildSlivers(context);
     AxisDirection axisDirection = getDirection(context);
-    bool effectivePrimary = primary ?? controller == nullptr && PrimaryScrollControllerCls->shouldInherit(context, scrollDirection);
+    bool effectivePrimary = primary or controller == nullptr && PrimaryScrollControllerCls->shouldInherit(context, scrollDirection);
     ScrollController scrollController = effectivePrimary? PrimaryScrollControllerCls->of(context) : controller;
     Scrollable scrollable = make<ScrollableCls>(dragStartBehavior, axisDirection, scrollController, physics, scrollBehavior, semanticChildCount, restorationId, [=] (BuildContext context,ViewportOffset offset) {
     return buildViewport(context, offset, axisDirection, slivers);
@@ -53,12 +53,12 @@ Widget ScrollViewCls::build(BuildContext context) {
 
 void ScrollViewCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<Axis>make<EnumPropertyCls>("scrollDirection", scrollDirection));
-    properties->add(make<FlagPropertyCls>("reverse"reverse, "reversed", true));
-    properties->add(<ScrollController>make<DiagnosticsPropertyCls>("controller", controllerfalse, nullptr));
-    properties->add(make<FlagPropertyCls>("primary"primary, "using primary controller", true));
-    properties->add(<ScrollPhysics>make<DiagnosticsPropertyCls>("physics", physicsfalse, nullptr));
-    properties->add(make<FlagPropertyCls>("shrinkWrap"shrinkWrap, "shrink-wrapping", true));
+    properties->add(<Axis>make<EnumPropertyCls>(__s("scrollDirection"), scrollDirection));
+    properties->add(make<FlagPropertyCls>(__s("reverse")reverse, __s("reversed"), true));
+    properties->add(<ScrollController>make<DiagnosticsPropertyCls>(__s("controller"), controllerfalse, nullptr));
+    properties->add(make<FlagPropertyCls>(__s("primary")primary, __s("using primary controller"), true));
+    properties->add(<ScrollPhysics>make<DiagnosticsPropertyCls>(__s("physics"), physicsfalse, nullptr));
+    properties->add(make<FlagPropertyCls>(__s("shrinkWrap")shrinkWrap, __s("shrink-wrapping"), true));
 }
 
 List<Widget> CustomScrollViewCls::buildSlivers(BuildContext context) {
@@ -85,12 +85,12 @@ List<Widget> BoxScrollViewCls::buildSlivers(BuildContext context) {
 
 void BoxScrollViewCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<EdgeInsetsGeometry>make<DiagnosticsPropertyCls>("padding", paddingnullptr));
+    properties->add(<EdgeInsetsGeometry>make<DiagnosticsPropertyCls>(__s("padding"), paddingnullptr));
 }
 
-ListViewCls::ListViewCls(bool addAutomaticKeepAlives, bool addRepaintBoundaries, bool addSemanticIndexes, Unknown cacheExtent, List<Widget> children, Unknown clipBehavior, Unknown controller, Unknown dragStartBehavior, double itemExtent, Unknown key, Unknown keyboardDismissBehavior, Unknown padding, Unknown physics, Unknown primary, Widget prototypeItem, Unknown restorationId, Unknown reverse, Unknown scrollDirection, int semanticChildCount, Unknown shrinkWrap) {
+ListViewCls::ListViewCls(bool addAutomaticKeepAlives, bool addRepaintBoundaries, bool addSemanticIndexes, Unknown cacheExtent, List<Widget> children, Unknown clipBehavior, Unknown controller, Unknown dragStartBehavior, double itemExtent, Unknown key, Unknown keyboardDismissBehavior, Unknown padding, Unknown physics, Unknown primary, Widget prototypeItem, Unknown restorationId, Unknown reverse, Unknown scrollDirection, int semanticChildCount, Unknown shrinkWrap) : BoxScrollView(semanticChildCount or children->length) {
     {
-        assert(itemExtent == nullptr || prototypeItem == nullptr, "You can only pass itemExtent or prototypeItem, not both.");
+        assert(itemExtent == nullptr || prototypeItem == nullptr, __s("You can only pass itemExtent or prototypeItem, not both."));
         childrenDelegate = make<SliverChildListDelegateCls>(childrenaddAutomaticKeepAlives, addRepaintBoundaries, addSemanticIndexes);
     }
 }
@@ -114,14 +114,14 @@ Widget ListViewCls::buildChildLayout(BuildContext context) {
 
 void ListViewCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(make<DoublePropertyCls>("itemExtent", itemExtentnullptr));
+    properties->add(make<DoublePropertyCls>(__s("itemExtent"), itemExtentnullptr));
 }
 
 int ListViewCls::_computeActualChildCount(int itemCount) {
     return math->max(0, itemCount * 2 - 1);
 }
 
-GridViewCls::GridViewCls(bool addAutomaticKeepAlives, bool addRepaintBoundaries, bool addSemanticIndexes, Unknown cacheExtent, List<Widget> children, Unknown clipBehavior, Unknown controller, Unknown dragStartBehavior, SliverGridDelegate gridDelegate, Unknown key, Unknown keyboardDismissBehavior, Unknown padding, Unknown physics, Unknown primary, Unknown restorationId, Unknown reverse, Unknown scrollDirection, int semanticChildCount, Unknown shrinkWrap) {
+GridViewCls::GridViewCls(bool addAutomaticKeepAlives, bool addRepaintBoundaries, bool addSemanticIndexes, Unknown cacheExtent, List<Widget> children, Unknown clipBehavior, Unknown controller, Unknown dragStartBehavior, SliverGridDelegate gridDelegate, Unknown key, Unknown keyboardDismissBehavior, Unknown padding, Unknown physics, Unknown primary, Unknown restorationId, Unknown reverse, Unknown scrollDirection, int semanticChildCount, Unknown shrinkWrap) : BoxScrollView(semanticChildCount or children->length) {
     {
         assert(gridDelegate != nullptr);
         childrenDelegate = make<SliverChildListDelegateCls>(childrenaddAutomaticKeepAlives, addRepaintBoundaries, addSemanticIndexes);

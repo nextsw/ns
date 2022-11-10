@@ -1,6 +1,6 @@
 #include "animated_switcher.hpp"
 String _ChildEntryCls::toString() {
-    return "Entry#${shortHash(this)}($widgetChild)";
+    return __s("Entry#${shortHash(this)}($widgetChild)");
 }
 
 _ChildEntryCls::_ChildEntryCls(Animation<double> animation, AnimationController controller, Widget transition, Widget widgetChild) {
@@ -35,8 +35,8 @@ Widget AnimatedSwitcherCls::defaultLayoutBuilder(Widget currentChild, List<Widge
 
 void AnimatedSwitcherCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(make<IntPropertyCls>("duration", duration->inMilliseconds"ms"));
-    properties->add(make<IntPropertyCls>("reverseDuration", reverseDuration?->inMilliseconds"ms", nullptr));
+    properties->add(make<IntPropertyCls>(__s("duration"), duration->inMilliseconds()__s("ms")));
+    properties->add(make<IntPropertyCls>(__s("reverseDuration"), reverseDuration?->inMilliseconds()__s("ms"), nullptr));
 }
 
 void _AnimatedSwitcherStateCls::initState() {
@@ -136,6 +136,6 @@ void _AnimatedSwitcherStateCls::_rebuildOutgoingWidgetsIfNeeded() {
     _outgoingWidgets = <Widget>unmodifiable(_outgoingEntries-><Widget>map([=] (_ChildEntry entry)     {
         entry->transition;
     }));
-    assert(_outgoingEntries->length == _outgoingWidgets!->length);
+    assert(_outgoingEntries->length == _outgoingWidgets!->length());
     assert(_outgoingEntries->isEmpty || _outgoingEntries->last->transition == _outgoingWidgets!->last);
 }

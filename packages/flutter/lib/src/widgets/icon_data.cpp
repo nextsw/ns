@@ -1,9 +1,9 @@
 #include "icon_data.hpp"
 bool IconDataCls::==(Object other) {
-    if (other->runtimeType != runtimeType) {
+    if (other->runtimeType() != runtimeType) {
         return false;
     }
-    return other is IconData && other->codePoint == codePoint && other->fontFamily == fontFamily && other->fontPackage == fontPackage && other->matchTextDirection == matchTextDirection;
+    return is<IconData>(other) && other->codePoint == codePoint && other->fontFamily == fontFamily && other->fontPackage == fontPackage && other->matchTextDirection == matchTextDirection;
 }
 
 int IconDataCls::hashCode() {
@@ -11,7 +11,7 @@ int IconDataCls::hashCode() {
 }
 
 String IconDataCls::toString() {
-    return "IconData(U+${codePoint.toRadixString(16).toUpperCase().padLeft(5, '0')})";
+    return __s("IconData(U+${codePoint.toRadixString(16).toUpperCase().padLeft(5, '0')})");
 }
 
 IconDataPropertyCls::IconDataPropertyCls(Unknown ifNull, Unknown level, String name, Unknown showName, Unknown style, Unknown value) {
@@ -25,7 +25,7 @@ IconDataPropertyCls::IconDataPropertyCls(Unknown ifNull, Unknown level, String n
 Map<String, Object> IconDataPropertyCls::toJsonMap(DiagnosticsSerializationDelegate delegate) {
     Map<String, Object> json = super->toJsonMap(delegate);
     if (value != nullptr) {
-            Map<String, Object> map1 = make<MapCls<>>();    map1.set("codePoint", value!->codePoint);json["valueProperties"] = list1;
+            Map<String, Object> map1 = make<MapCls<>>();    map1.set(__s("codePoint"), value!->codePoint);json[__s("valueProperties")] = list1;
     }
     return json;
 }

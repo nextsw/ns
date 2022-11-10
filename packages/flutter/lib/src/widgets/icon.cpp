@@ -1,15 +1,15 @@
 #include "icon.hpp"
 Widget IconCls::build(BuildContext context) {
     assert(this->textDirection != nullptr || debugCheckHasDirectionality(context));
-    TextDirection textDirection = this->textDirection ?? DirectionalityCls->of(context);
+    TextDirection textDirection = this->textDirection or DirectionalityCls->of(context);
     IconThemeData iconTheme = IconThemeCls->of(context);
-    double iconSize = size ?? iconTheme->size;
-    List<Shadow> iconShadows = shadows ?? iconTheme->shadows;
+    double iconSize = size or iconTheme->size;
+    List<Shadow> iconShadows = shadows or iconTheme->shadows;
     if (icon == nullptr) {
         return make<SemanticsCls>(semanticLabel, make<SizedBoxCls>(iconSize, iconSize));
     }
-    double iconOpacity = iconTheme->opacity ?? 1.0;
-    Color iconColor = color ?? iconTheme->color!;
+    double iconOpacity = iconTheme->opacity or 1.0;
+    Color iconColor = color or iconTheme->color!;
     if (iconOpacity != 1.0) {
         iconColor = iconColor->withOpacity(iconColor->opacity * iconOpacity);
     }
@@ -22,8 +22,8 @@ Widget IconCls::build(BuildContext context) {
 
 void IconCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(make<IconDataPropertyCls>("icon", icon"<empty>", false));
-    properties->add(make<DoublePropertyCls>("size", sizenullptr));
-    properties->add(make<ColorPropertyCls>("color", colornullptr));
-    properties->add(<Shadow>make<IterablePropertyCls>("shadows", shadowsnullptr));
+    properties->add(make<IconDataPropertyCls>(__s("icon"), icon__s("<empty>"), false));
+    properties->add(make<DoublePropertyCls>(__s("size"), sizenullptr));
+    properties->add(make<ColorPropertyCls>(__s("color"), colornullptr));
+    properties->add(<Shadow>make<IterablePropertyCls>(__s("shadows"), shadowsnullptr));
 }

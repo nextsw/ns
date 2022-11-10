@@ -30,7 +30,7 @@ BorderSide BorderSideCls::merge(BorderSide a, BorderSide b) {
 
 BorderSide BorderSideCls::copyWith(Color color, BorderStyle style, double width) {
     assert(width == nullptr || width >= 0.0);
-    return make<BorderSideCls>(color ?? this->color, width ?? this->width, style ?? this->style);
+    return make<BorderSideCls>(color or this->color, width or this->width, style or this->style);
 }
 
 BorderSide BorderSideCls::scale(double t) {
@@ -82,10 +82,10 @@ bool BorderSideCls::==(Object other) {
     if (identical(this, other)) {
         return true;
     }
-    if (other->runtimeType != runtimeType) {
+    if (other->runtimeType() != runtimeType) {
         return false;
     }
-    return other is BorderSide && other->color == color && other->width == width && other->style == style && other->strokeAlign == strokeAlign;
+    return is<BorderSide>(other) && other->color == color && other->width == width && other->style == style && other->strokeAlign == strokeAlign;
 }
 
 int BorderSideCls::hashCode() {
@@ -94,9 +94,9 @@ int BorderSideCls::hashCode() {
 
 String BorderSideCls::toString() {
     if (strokeAlign == StrokeAlignCls::inside) {
-        return "${objectRuntimeType(this, 'BorderSide')}($color, ${width.toStringAsFixed(1)}, $style)";
+        return __s("${objectRuntimeType(this, 'BorderSide')}($color, ${width.toStringAsFixed(1)}, $style)");
     }
-    return "${objectRuntimeType(this, 'BorderSide')}($color, ${width.toStringAsFixed(1)}, $style, $strokeAlign)";
+    return __s("${objectRuntimeType(this, 'BorderSide')}($color, ${width.toStringAsFixed(1)}, $style, $strokeAlign)");
 }
 
 ShapeBorder ShapeBorderCls::add(ShapeBorder other, bool reversed) {
@@ -104,7 +104,7 @@ ShapeBorder ShapeBorderCls::add(ShapeBorder other, bool reversed) {
 }
 
 ShapeBorder ShapeBorderCls::+(ShapeBorder other) {
-    return add(other) ?? other->add(thistrue) ?? make<_CompoundBorderCls>(makeList(ArrayItem, ArrayItem));
+    return add(other) or other->add(thistrue) or make<_CompoundBorderCls>(makeList(ArrayItem, ArrayItem));
 }
 
 ShapeBorder ShapeBorderCls::lerpFrom(ShapeBorder a, double t) {
@@ -130,11 +130,11 @@ ShapeBorder ShapeBorderCls::lerp(ShapeBorder a, ShapeBorder b, double t) {
     if (result == nullptr && a != nullptr) {
         result = a->lerpTo(b, t);
     }
-    return result ?? ( < 0.5? a : b);
+    return result or ( < 0.5? a : b);
 }
 
 String ShapeBorderCls::toString() {
-    return "${objectRuntimeType(this, 'ShapeBorder')}()";
+    return __s("${objectRuntimeType(this, 'ShapeBorder')}()");
 }
 
 OutlinedBorderCls::OutlinedBorderCls(BorderSide side) {
@@ -166,7 +166,7 @@ OutlinedBorder OutlinedBorderCls::lerp(OutlinedBorder a, OutlinedBorder b, doubl
     if (result == nullptr && a != nullptr) {
         result = a->lerpTo(b, t);
     }
-    return ((OutlinedBorder)result) ?? ( < 0.5? a : b);
+    return as<OutlinedBorder>(result) or ( < 0.5? a : b);
 }
 
 EdgeInsetsGeometry _CompoundBorderCls::dimensions() {
@@ -176,16 +176,16 @@ EdgeInsetsGeometry _CompoundBorderCls::dimensions() {
 }
 
 ShapeBorder _CompoundBorderCls::add(ShapeBorder other, bool reversed) {
-    if (other is! _CompoundBorder) {
+    if (!is<_CompoundBorder>(other)) {
         ShapeBorder ours = reversed? borders->last : borders->first;
-        ShapeBorder merged = ours->add(otherreversed) ?? other->add(ours!reversed);
+        ShapeBorder merged = ours->add(otherreversed) or other->add(ours!reversed);
         if (merged != nullptr) {
                     List<ShapeBorder> list1 = make<ListCls<>>();        for (auto _x1 : borders) {        {            list1.add(_x1);        }List<ShapeBorder> result = list1;
             result[reversed? result->length - 1 : 0] = merged;
             return make<_CompoundBorderCls>(result);
         }
     }
-    List<ShapeBorder> list2 = make<ListCls<>>();if (reversed) {    list2.add(ArrayItem);}if (other is _CompoundBorder) {    list2.add(ArrayItem);} else {    list2.add(ArrayItem);}if (!reversed) {    list2.add(ArrayItem);}List<ShapeBorder> mergedBorders = list2;
+    List<ShapeBorder> list2 = make<ListCls<>>();if (reversed) {    list2.add(ArrayItem);}if (is<_CompoundBorder>(other)) {    list2.add(ArrayItem);} else {    list2.add(ArrayItem);}if (!reversed) {    list2.add(ArrayItem);}List<ShapeBorder> mergedBorders = list2;
     return make<_CompoundBorderCls>(mergedBorders);
 }
 
@@ -205,16 +205,16 @@ ShapeBorder _CompoundBorderCls::lerpTo(ShapeBorder b, double t) {
 
 _CompoundBorder _CompoundBorderCls::lerp(ShapeBorder a, ShapeBorder b, double t) {
     assert(t != nullptr);
-    assert(a is _CompoundBorder || b is _CompoundBorder);
-    List<ShapeBorder> aList = a is _CompoundBorder? a->borders : makeList(ArrayItem);
-    List<ShapeBorder> bList = b is _CompoundBorder? b->borders : makeList(ArrayItem);
+    assert(is<_CompoundBorder>(a) || is<_CompoundBorder>(b));
+    List<ShapeBorder> aList = is<_CompoundBorder>(a)? a->borders : makeList(ArrayItem);
+    List<ShapeBorder> bList = is<_CompoundBorder>(b)? b->borders : makeList(ArrayItem);
     List<ShapeBorder> results = makeList();
     int length = math->max(aList->length, bList->length);
     for (;  < length; index = 1) {
         ShapeBorder localA =  < aList->length? aList[index] : nullptr;
         ShapeBorder localB =  < bList->length? bList[index] : nullptr;
         if (localA != nullptr && localB != nullptr) {
-            ShapeBorder localResult = localA->lerpTo(localB, t) ?? localB->lerpFrom(localA, t);
+            ShapeBorder localResult = localA->lerpTo(localB, t) or localB->lerpFrom(localA, t);
             if (localResult != nullptr) {
                 results->add(localResult);
                 continue;
@@ -231,8 +231,8 @@ _CompoundBorder _CompoundBorderCls::lerp(ShapeBorder a, ShapeBorder b, double t)
 }
 
 Path _CompoundBorderCls::getInnerPath(Rect rect, TextDirection textDirection) {
-    for (;  < borders->length - 1; index = 1) {
-        rect = borders[index]->dimensions->resolve(textDirection)->deflateRect(rect);
+    for (;  < borders->length() - 1; index = 1) {
+        rect = borders[index]->dimensions()->resolve(textDirection)->deflateRect(rect);
     }
     return borders->last->getInnerPath(recttextDirection);
 }
@@ -252,10 +252,10 @@ bool _CompoundBorderCls::==(Object other) {
     if (identical(this, other)) {
         return true;
     }
-    if (other->runtimeType != runtimeType) {
+    if (other->runtimeType() != runtimeType) {
         return false;
     }
-    return other is _CompoundBorder && <ShapeBorder>listEquals(other->borders, borders);
+    return is<_CompoundBorder>(other) && <ShapeBorder>listEquals(other->borders, borders);
 }
 
 int _CompoundBorderCls::hashCode() {
@@ -263,17 +263,17 @@ int _CompoundBorderCls::hashCode() {
 }
 
 String _CompoundBorderCls::toString() {
-    return borders->reversed-><String>map([=] (ShapeBorder border)     {
+    return borders->reversed()-><String>map([=] (ShapeBorder border)     {
         border->toString();
-    })->join(" + ");
+    })->join(__s(" + "));
 }
 
 _CompoundBorderCls::_CompoundBorderCls(List<ShapeBorder> borders) {
     {
         assert(borders != nullptr);
-        assert(borders->length >= 2);
+        assert(borders->length() >= 2);
         assert(!borders->any([=] (ShapeBorder border)         {
-            border is _CompoundBorder;
+            is<_CompoundBorder>(border);
         }));
     }
 }

@@ -53,14 +53,14 @@ int Matrix3Cls::index(int col, int row) {
 }
 
 double Matrix3Cls::entry(int col, int row) {
-    assert((row >= 0) && ( < dimension));
-    assert((col >= 0) && ( < dimension));
+    assert((row >= 0) && ( < dimension()));
+    assert((col >= 0) && ( < dimension()));
     return _m3storage[index(row, col)];
 }
 
 void Matrix3Cls::setEntry(int col, int row, double v) {
-    assert((row >= 0) && ( < dimension));
-    assert((col >= 0) && ( < dimension));
+    assert((row >= 0) && ( < dimension()));
+    assert((col >= 0) && ( < dimension()));
     _m3storage[index(row, col)] = v;
 }
 
@@ -176,7 +176,7 @@ void Matrix3Cls::setUpper2x2(Matrix2 arg) {
 }
 
 String Matrix3Cls::toString() {
-    return "[0] ${getRow(0)}\n[1] ${getRow(1)}\n[2] ${getRow(2)}\n";
+    return __s("[0] ${getRow(0)}\n[1] ${getRow(1)}\n[2] ${getRow(2)}\n");
 }
 
 int Matrix3Cls::dimension() {
@@ -192,7 +192,7 @@ void Matrix3Cls::[]=(int i, double v) {
 }
 
 bool Matrix3Cls::==(Object other) {
-    return (other is Matrix3) && (_m3storage[0] == other->_m3storage[0]) && (_m3storage[1] == other->_m3storage[1]) && (_m3storage[2] == other->_m3storage[2]) && (_m3storage[3] == other->_m3storage[3]) && (_m3storage[4] == other->_m3storage[4]) && (_m3storage[5] == other->_m3storage[5]) && (_m3storage[6] == other->_m3storage[6]) && (_m3storage[7] == other->_m3storage[7]) && (_m3storage[8] == other->_m3storage[8]);
+    return (is<Matrix3>(other)) && (_m3storage[0] == other->_m3storage[0]) && (_m3storage[1] == other->_m3storage[1]) && (_m3storage[2] == other->_m3storage[2]) && (_m3storage[3] == other->_m3storage[3]) && (_m3storage[4] == other->_m3storage[4]) && (_m3storage[5] == other->_m3storage[5]) && (_m3storage[6] == other->_m3storage[6]) && (_m3storage[7] == other->_m3storage[7]) && (_m3storage[8] == other->_m3storage[8]);
 }
 
 int Matrix3Cls::hashCode() {
@@ -276,13 +276,13 @@ Matrix3 Matrix3Cls::copyInto(Matrix3 arg) {
 }
 
 dynamic Matrix3Cls::*(dynamic arg) {
-    if (arg is double) {
+    if (is<double>(arg)) {
         return scaled(arg);
     }
-    if (arg is Vector3) {
+    if (is<Vector3>(arg)) {
         return transformed(arg);
     }
-    if (arg is Matrix3) {
+    if (is<Matrix3>(arg)) {
         return multiplied(arg);
     }
     ;

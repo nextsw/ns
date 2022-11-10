@@ -1,9 +1,9 @@
 #include "framework.hpp"
 bool ObjectKeyCls::==(Object other) {
-    if (other->runtimeType != runtimeType) {
+    if (other->runtimeType() != runtimeType) {
         return false;
     }
-    return other is ObjectKey && identical(other->value, value);
+    return is<ObjectKey>(other) && identical(other->value, value);
 }
 
 int ObjectKeyCls::hashCode() {
@@ -12,83 +12,83 @@ int ObjectKeyCls::hashCode() {
 
 String ObjectKeyCls::toString() {
     if (runtimeType == ObjectKeyCls) {
-        return "[${describeIdentity(value)}]";
+        return __s("[${describeIdentity(value)}]");
     }
-    return "[${objectRuntimeType(this, 'ObjectKey')} ${describeIdentity(value)}]";
+    return __s("[${objectRuntimeType(this, 'ObjectKey')} ${describeIdentity(value)}]");
 }
 
-template<typename T : State<StatefulWidget>> GlobalKeyCls<T>::GlobalKeyCls(String debugLabel) {
+template<typename T> GlobalKeyCls<T>::GlobalKeyCls(String debugLabel) {
 }
 
-template<typename T : State<StatefulWidget>> void GlobalKeyCls<T>::constructor()
+template<typename T> void GlobalKeyCls<T>::constructor()
 
-template<typename T : State<StatefulWidget>> BuildContext GlobalKeyCls<T>::currentContext() {
-    return _currentElement;
+template<typename T> BuildContext GlobalKeyCls<T>::currentContext() {
+    return _currentElement();
 }
 
-template<typename T : State<StatefulWidget>> Widget GlobalKeyCls<T>::currentWidget() {
-    return _currentElement?->widget;
+template<typename T> Widget GlobalKeyCls<T>::currentWidget() {
+    return _currentElement()?->widget();
 }
 
-template<typename T : State<StatefulWidget>> T GlobalKeyCls<T>::currentState() {
-    Element element = _currentElement;
-    if (element is StatefulElement) {
+template<typename T> T GlobalKeyCls<T>::currentState() {
+    Element element = _currentElement();
+    if (is<StatefulElement>(element)) {
         StatefulElement statefulElement = element;
         State state = statefulElement->state;
-        if (state is T) {
+        if (is<T>(state)) {
             return state;
         }
     }
     return nullptr;
 }
 
-template<typename T : State<StatefulWidget>> Element GlobalKeyCls<T>::_currentElement() {
+template<typename T> Element GlobalKeyCls<T>::_currentElement() {
     return WidgetsBindingCls::instance->buildOwner!->_globalKeyRegistry[this];
 }
 
-template<typename T : State<StatefulWidget>> LabeledGlobalKeyCls<T>::LabeledGlobalKeyCls(String _debugLabel) {
+template<typename T> LabeledGlobalKeyCls<T>::LabeledGlobalKeyCls(String _debugLabel) {
     {
         super->constructor();
     }
 }
 
-template<typename T : State<StatefulWidget>> String LabeledGlobalKeyCls<T>::toString() {
-    String label = _debugLabel != nullptr? " $_debugLabel" : "";
+template<typename T> String LabeledGlobalKeyCls<T>::toString() {
+    String label = _debugLabel != nullptr? __s(" $_debugLabel") : __s("");
     if (runtimeType == LabeledGlobalKeyCls) {
-        return "[GlobalKey#${shortHash(this)}$label]";
+        return __s("[GlobalKey#${shortHash(this)}$label]");
     }
-    return "[${describeIdentity(this)}$label]";
+    return __s("[${describeIdentity(this)}$label]");
 }
 
-template<typename T : State<StatefulWidget>> GlobalObjectKeyCls<T>::GlobalObjectKeyCls(Object value) {
+template<typename T> GlobalObjectKeyCls<T>::GlobalObjectKeyCls(Object value) {
     {
         super->constructor();
     }
 }
 
-template<typename T : State<StatefulWidget>> bool GlobalObjectKeyCls<T>::==(Object other) {
-    if (other->runtimeType != runtimeType) {
+template<typename T> bool GlobalObjectKeyCls<T>::==(Object other) {
+    if (other->runtimeType() != runtimeType) {
         return false;
     }
-    return other is GlobalObjectKey<T> && identical(other->value, value);
+    return is<GlobalObjectKey<T>>(other) && identical(other->value, value);
 }
 
-template<typename T : State<StatefulWidget>> int GlobalObjectKeyCls<T>::hashCode() {
+template<typename T> int GlobalObjectKeyCls<T>::hashCode() {
     return identityHashCode(value);
 }
 
-template<typename T : State<StatefulWidget>> String GlobalObjectKeyCls<T>::toString() {
-    String selfType = objectRuntimeType(this, "GlobalObjectKey");
-    String suffix = "<State<StatefulWidget>>";
+template<typename T> String GlobalObjectKeyCls<T>::toString() {
+    String selfType = objectRuntimeType(this, __s("GlobalObjectKey"));
+    String suffix = __s("<State<StatefulWidget>>");
     if (selfType->endsWith(suffix)) {
         selfType = selfType->substring(0, selfType->length - suffix->length);
     }
-    return "[$selfType ${describeIdentity(value)}]";
+    return __s("[$selfType ${describeIdentity(value)}]");
 }
 
 String WidgetCls::toStringShort() {
-    String type = objectRuntimeType(this, "Widget");
-    return key == nullptr? type : "$type-$key";
+    String type = objectRuntimeType(this, __s("Widget"));
+    return key == nullptr? type : __s("$type-$key");
 }
 
 void WidgetCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
@@ -101,15 +101,15 @@ bool WidgetCls::==(Object other) {
 }
 
 int WidgetCls::hashCode() {
-    return super->hashCode;
+    return super->hashCode();
 }
 
 bool WidgetCls::canUpdate(Widget newWidget, Widget oldWidget) {
-    return oldWidget->runtimeType == newWidget->runtimeType && oldWidget->key == newWidget->key;
+    return oldWidget->runtimeType() == newWidget->runtimeType() && oldWidget->key == newWidget->key;
 }
 
 int WidgetCls::_debugConcreteSubtype(Widget widget) {
-    return widget is StatefulWidget? 1 : widget is StatelessWidget? 2 : 0;
+    return is<StatefulWidget>(widget)? 1 : is<StatelessWidget>(widget)? 2 : 0;
 }
 
 StatelessElement StatelessWidgetCls::createElement() {
@@ -120,11 +120,11 @@ StatefulElement StatefulWidgetCls::createElement() {
     return make<StatefulElementCls>(this);
 }
 
-template<typename T : StatefulWidget> T StateCls<T>::widget() {
+template<typename T> T StateCls<T>::widget() {
     return _widget!;
 }
 
-template<typename T : StatefulWidget> BuildContext StateCls<T>::context() {
+template<typename T> BuildContext StateCls<T>::context() {
     assert([=] () {
         if (_element == nullptr) {
             ;
@@ -134,34 +134,34 @@ template<typename T : StatefulWidget> BuildContext StateCls<T>::context() {
     return _element!;
 }
 
-template<typename T : StatefulWidget> bool StateCls<T>::mounted() {
+template<typename T> bool StateCls<T>::mounted() {
     return _element != nullptr;
 }
 
-template<typename T : StatefulWidget> void StateCls<T>::initState() {
+template<typename T> void StateCls<T>::initState() {
     assert(_debugLifecycleState == _StateLifecycleCls::created);
 }
 
-template<typename T : StatefulWidget> void StateCls<T>::didUpdateWidget(T oldWidget) {
+template<typename T> void StateCls<T>::didUpdateWidget(T oldWidget) {
 }
 
-template<typename T : StatefulWidget> void StateCls<T>::reassemble() {
+template<typename T> void StateCls<T>::reassemble() {
 }
 
-template<typename T : StatefulWidget> void StateCls<T>::setState(VoidCallback fn) {
+template<typename T> void StateCls<T>::setState(VoidCallback fn) {
     assert(fn != nullptr);
     assert([=] () {
         if (_debugLifecycleState == _StateLifecycleCls::defunct) {
             ;
         }
-        if (_debugLifecycleState == _StateLifecycleCls::created && !mounted) {
+        if (_debugLifecycleState == _StateLifecycleCls::created && !mounted()) {
             ;
         }
         return true;
     }());
-    Object result = ((dynamic)fn());
+    Object result = as<dynamic>(fn());
     assert([=] () {
-        if (result is Future) {
+        if (is<Future>(result)) {
             ;
         }
         return true;
@@ -169,13 +169,13 @@ template<typename T : StatefulWidget> void StateCls<T>::setState(VoidCallback fn
     _element!->markNeedsBuild();
 }
 
-template<typename T : StatefulWidget> void StateCls<T>::deactivate() {
+template<typename T> void StateCls<T>::deactivate() {
 }
 
-template<typename T : StatefulWidget> void StateCls<T>::activate() {
+template<typename T> void StateCls<T>::activate() {
 }
 
-template<typename T : StatefulWidget> void StateCls<T>::dispose() {
+template<typename T> void StateCls<T>::dispose() {
     assert(_debugLifecycleState == _StateLifecycleCls::ready);
     assert([=] () {
         _debugLifecycleState = _StateLifecycleCls::defunct;
@@ -183,42 +183,42 @@ template<typename T : StatefulWidget> void StateCls<T>::dispose() {
     }());
 }
 
-template<typename T : StatefulWidget> void StateCls<T>::didChangeDependencies() {
+template<typename T> void StateCls<T>::didChangeDependencies() {
 }
 
-template<typename T : StatefulWidget> void StateCls<T>::debugFillProperties(DiagnosticPropertiesBuilder properties) {
+template<typename T> void StateCls<T>::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
     assert([=] () {
-        properties->add(<_StateLifecycle>make<EnumPropertyCls>("lifecycle state", _debugLifecycleState_StateLifecycleCls::ready));
+        properties->add(<_StateLifecycle>make<EnumPropertyCls>(__s("lifecycle state"), _debugLifecycleState_StateLifecycleCls::ready));
         return true;
     }());
-    properties->add(<T>make<ObjectFlagPropertyCls>("_widget", _widget"no widget"));
-    properties->add(<StatefulElement>make<ObjectFlagPropertyCls>("_element", _element"not mounted"));
+    properties->add(<T>make<ObjectFlagPropertyCls>(__s("_widget"), _widget__s("no widget")));
+    properties->add(<StatefulElement>make<ObjectFlagPropertyCls>(__s("_element"), _element__s("not mounted")));
 }
 
-template<typename T : StatefulWidget> bool StateCls<T>::_debugTypesAreRight(Widget widget) {
-    return widget is T;
+template<typename T> bool StateCls<T>::_debugTypesAreRight(Widget widget) {
+    return is<T>(widget());
 }
 
-template<typename T : ParentData> ParentDataElement<T> ParentDataWidgetCls<T>::createElement() {
+template<typename T> ParentDataElement<T> ParentDataWidgetCls<T>::createElement() {
     return <T>make<ParentDataElementCls>(this);
 }
 
-template<typename T : ParentData> bool ParentDataWidgetCls<T>::debugIsValidRenderObject(RenderObject renderObject) {
+template<typename T> bool ParentDataWidgetCls<T>::debugIsValidRenderObject(RenderObject renderObject) {
     assert(TCls != dynamic);
     assert(TCls != ParentDataCls);
-    return renderObject->parentData is T;
+    return is<T>(renderObject->parentData);
 }
 
-template<typename T : ParentData> bool ParentDataWidgetCls<T>::debugCanApplyOutOfTurn() {
+template<typename T> bool ParentDataWidgetCls<T>::debugCanApplyOutOfTurn() {
     return false;
 }
 
-template<typename T : ParentData> Iterable<DiagnosticsNode> ParentDataWidgetCls<T>::_debugDescribeIncorrectParentDataType(DiagnosticsNode ownershipChain, ParentData parentData, RenderObjectWidget parentDataCreator) {
+template<typename T> Iterable<DiagnosticsNode> ParentDataWidgetCls<T>::_debugDescribeIncorrectParentDataType(DiagnosticsNode ownershipChain, ParentData parentData, RenderObjectWidget parentDataCreator) {
     assert(TCls != dynamic);
     assert(TCls != ParentDataCls);
-    assert(debugTypicalAncestorWidgetClass != nullptr);
-    String description = "The ParentDataWidget $this wants to apply ParentData of type $T to a RenderObject";
+    assert(debugTypicalAncestorWidgetClass() != nullptr);
+    String description = __s("The ParentDataWidget $this wants to apply ParentData of type $T to a RenderObject");
     List<DiagnosticsNode> list1 = make<ListCls<>>();if (parentData == nullptr) {    list1.add(ArrayItem);} else {    list1.add(ArrayItem);}list1.add(ArrayItem);if (parentDataCreator != nullptr) {    list1.add(ArrayItem);}if (ownershipChain != nullptr) {    list1.add(ArrayItem);}return list1;
 }
 
@@ -246,7 +246,7 @@ MultiChildRenderObjectWidgetCls::MultiChildRenderObjectWidgetCls(List<Widget> ch
     }
     {
         assert([=] () {
-            for (;  < children->length; index++) {
+            for (;  < children->length(); index++) {
                 if (children[index] == nullptr) {
                     ;
                 }
@@ -291,8 +291,8 @@ void _InactiveElementsCls::_unmount(Element element) {
     assert(element->_lifecycleState == _ElementLifecycleCls::inactive);
     assert([=] () {
         if (debugPrintGlobalKeyedWidgetLifecycle) {
-            if (element->widget->key is GlobalKey) {
-                debugPrint("Discarding $element from inactive elements list.");
+            if (is<GlobalKey>(element->widget->key)) {
+                debugPrint(__s("Discarding $element from inactive elements list."));
             }
         }
         return true;
@@ -330,7 +330,7 @@ void _InactiveElementsCls::_deactivateRecursively(Element element) {
 
 BuildOwnerCls::BuildOwnerCls(FocusManager focusManager, VoidCallback onBuildScheduled) {
     {
-            auto _c1 = make<FocusManagerCls>();    _c1.registerGlobalHandlers();focusManager = focusManager ?? (_c1);
+            auto _c1 = make<FocusManagerCls>();    _c1.registerGlobalHandlers();focusManager = focusManager or (_c1);
     }
 }
 
@@ -339,7 +339,7 @@ void BuildOwnerCls::scheduleBuildFor(Element element) {
     assert(element->owner == this);
     assert([=] () {
         if (debugPrintScheduleBuildForStacks) {
-            debugPrintStack("scheduleBuildFor() called for $element${_dirtyElements.contains(element) ? " (ALREADY IN LIST)" : ""}");
+            debugPrintStack(__s("scheduleBuildFor() called for $element${_dirtyElements.contains(element) ? " (ALREADY IN LIST)" : ""}"));
         }
         if (!element->dirty) {
             ;
@@ -349,9 +349,9 @@ void BuildOwnerCls::scheduleBuildFor(Element element) {
     if (element->_inDirtyList) {
         assert([=] () {
             if (debugPrintScheduleBuildForStacks) {
-                debugPrintStack("BuildOwner.scheduleBuildFor() called; _dirtyElementsNeedsResorting was $_dirtyElementsNeedsResorting (now true); dirty list is: $_dirtyElements");
+                debugPrintStack(__s("BuildOwner.scheduleBuildFor() called; _dirtyElementsNeedsResorting was $_dirtyElementsNeedsResorting (now true); dirty list is: $_dirtyElements"));
             }
-            if (!_debugIsInBuildScope) {
+            if (!_debugIsInBuildScope()) {
                 ;
             }
             return true;
@@ -367,7 +367,7 @@ void BuildOwnerCls::scheduleBuildFor(Element element) {
     element->_inDirtyList = true;
     assert([=] () {
         if (debugPrintScheduleBuildForStacks) {
-            debugPrint("...dirty list is now: $_dirtyElements");
+            debugPrint(__s("...dirty list is now: $_dirtyElements"));
         }
         return true;
     }());
@@ -404,7 +404,7 @@ void BuildOwnerCls::buildScope(VoidCallback callback, Element context) {
     assert(!_debugBuilding);
     assert([=] () {
         if (debugPrintBuildScope) {
-            debugPrint("buildScope called with context $context; dirty list is: $_dirtyElements");
+            debugPrint(__s("buildScope called with context $context; dirty list is: $_dirtyElements"));
         }
         _debugStateLockLevel = 1;
         _debugBuilding = true;
@@ -414,16 +414,16 @@ void BuildOwnerCls::buildScope(VoidCallback callback, Element context) {
         Map<String, String> debugTimelineArguments;
         assert([=] () {
             if (debugEnhanceBuildTimelineArguments) {
-                            Map<String, String> map1 = make<MapCls<>>();            map1.set("dirty count", "${_dirtyElements.length}");            map1.set("dirty list", "$_dirtyElements");            map1.set("lock level", "$_debugStateLockLevel");            map1.set("scope context", "$context");debugTimelineArguments = list1;
+                            Map<String, String> map1 = make<MapCls<>>();            map1.set(__s("dirty count"), __s("${_dirtyElements.length}"));            map1.set(__s("dirty list"), __s("$_dirtyElements"));            map1.set(__s("lock level"), __s("$_debugStateLockLevel"));            map1.set(__s("scope context"), __s("$context"));debugTimelineArguments = list1;
             }
             return true;
         }());
-        TimelineCls->startSync("BUILD"debugTimelineArguments);
+        TimelineCls->startSync(__s("BUILD")debugTimelineArguments);
     }
     try {
         _scheduledFlushDirtyElements = true;
         if (callback != nullptr) {
-            assert(_debugStateLocked);
+            assert(_debugStateLocked());
             Element debugPreviousBuildTarget;
             assert([=] () {
                 context->_debugSetAllowIgnoredCallsToMarkNeedsBuild(true);
@@ -446,7 +446,7 @@ void BuildOwnerCls::buildScope(VoidCallback callback, Element context) {
         }
         _dirtyElements->sort(ElementCls::_sort);
         _dirtyElementsNeedsResorting = false;
-        int dirtyCount = _dirtyElements->length;
+        int dirtyCount = _dirtyElements->length();
         int index = 0;
         while ( < dirtyCount) {
             Element element = _dirtyElements[index];
@@ -467,12 +467,12 @@ void BuildOwnerCls::buildScope(VoidCallback callback, Element context) {
                     }
                     return true;
                 }());
-                TimelineCls->startSync("${element.widget.runtimeType}"debugTimelineArguments);
+                TimelineCls->startSync(__s("${element.widget.runtimeType}")debugTimelineArguments);
             }
             try {
                 element->rebuild();
             } catch (Unknown e) {
-                            List<DiagnosticsNode> list2 = make<ListCls<>>();            if (kDebugMode &&  < _dirtyElements->length) {                list2.add(ArrayItem);            }if ( < _dirtyElements->length) {                list2.add(ArrayItem);            } else {                list2.add(ArrayItem);            }_debugReportException(make<ErrorDescriptionCls>("while rebuilding dirty elements"), e, stack[=] ()                 {
+                            List<DiagnosticsNode> list2 = make<ListCls<>>();            if (kDebugMode &&  < _dirtyElements->length()) {                list2.add(ArrayItem);            }if ( < _dirtyElements->length()) {                list2.add(ArrayItem);            } else {                list2.add(ArrayItem);            }_debugReportException(make<ErrorDescriptionCls>(__s("while rebuilding dirty elements")), e, stack[=] ()                 {
                     list2;
                 });
             };
@@ -480,11 +480,11 @@ void BuildOwnerCls::buildScope(VoidCallback callback, Element context) {
                 TimelineCls->finishSync();
             }
             index = 1;
-            if ( < _dirtyElements->length || _dirtyElementsNeedsResorting!) {
+            if ( < _dirtyElements->length() || _dirtyElementsNeedsResorting!) {
                 _dirtyElements->sort(ElementCls::_sort);
                 _dirtyElementsNeedsResorting = false;
-                dirtyCount = _dirtyElements->length;
-                while (index > 0 && _dirtyElements[index - 1]->dirty) {
+                dirtyCount = _dirtyElements->length();
+                while (index > 0 && _dirtyElements[index - 1]->dirty()) {
                     index = 1;
                 }
             }
@@ -513,7 +513,7 @@ void BuildOwnerCls::buildScope(VoidCallback callback, Element context) {
             _debugBuilding = false;
             _debugStateLockLevel = 1;
             if (debugPrintBuildScope) {
-                debugPrint("buildScope finished");
+                debugPrint(__s("buildScope finished"));
             }
             return true;
         }());
@@ -522,12 +522,12 @@ void BuildOwnerCls::buildScope(VoidCallback callback, Element context) {
 }
 
 int BuildOwnerCls::globalKeyCount() {
-    return _globalKeyRegistry->length;
+    return _globalKeyRegistry->length();
 }
 
 void BuildOwnerCls::finalizeTree() {
     if (!kReleaseMode) {
-        TimelineCls->startSync("FINALIZE TREE");
+        TimelineCls->startSync(__s("FINALIZE TREE"));
     }
     try {
         lockState(_inactiveElements->_unmountAll);
@@ -535,9 +535,9 @@ void BuildOwnerCls::finalizeTree() {
             try {
                 _debugVerifyGlobalKeyReservation();
                 _debugVerifyIllFatedPopulation();
-                if (_debugElementsThatWillNeedToBeRebuiltDueToGlobalKeyShenanigans != nullptr && _debugElementsThatWillNeedToBeRebuiltDueToGlobalKeyShenanigans!->isNotEmpty) {
+                if (_debugElementsThatWillNeedToBeRebuiltDueToGlobalKeyShenanigans != nullptr && _debugElementsThatWillNeedToBeRebuiltDueToGlobalKeyShenanigans!->isNotEmpty()) {
                     Set<GlobalKey> keys = <GlobalKey>make<HashSetCls>();
-                    for (Element element : _debugElementsThatWillNeedToBeRebuiltDueToGlobalKeyShenanigans!->keys) {
+                    for (Element element : _debugElementsThatWillNeedToBeRebuiltDueToGlobalKeyShenanigans!->keys()) {
                         if (element->_lifecycleState != _ElementLifecycleCls::defunct) {
                             keys->addAll(_debugElementsThatWillNeedToBeRebuiltDueToGlobalKeyShenanigans![element]!);
                         }
@@ -560,10 +560,10 @@ void BuildOwnerCls::finalizeTree() {
                             if (count == 1) {
                                 keyLabels->add(key);
                             } else {
-                                keyLabels->add("$key ($count different affected keys had this toString representation)");
+                                keyLabels->add(__s("$key ($count different affected keys had this toString representation)"));
                             }
                         });
-                        Iterable<Element> elements = _debugElementsThatWillNeedToBeRebuiltDueToGlobalKeyShenanigans!->keys;
+                        Iterable<Element> elements = _debugElementsThatWillNeedToBeRebuiltDueToGlobalKeyShenanigans!->keys();
                         Map<String, int> elementStringCount = <String, int>make<HashMapCls>();
                         for (String element : elements-><String>map([=] (Element element)                         {
                             element->toString();
@@ -581,21 +581,21 @@ void BuildOwnerCls::finalizeTree() {
                             if (count == 1) {
                                 elementLabels->add(element);
                             } else {
-                                elementLabels->add("$element ($count different affected elements had this toString representation)");
+                                elementLabels->add(__s("$element ($count different affected elements had this toString representation)"));
                             }
                         });
                         assert(keyLabels->isNotEmpty);
-                        String the = keys->length == 1? " the" : "";
-                        String s = keys->length == 1? "" : "s";
-                        String were = keys->length == 1? "was" : "were";
-                        String their = keys->length == 1? "its" : "their";
-                        String respective = elementLabels->length == 1? "" : " respective";
-                        String those = keys->length == 1? "that" : "those";
-                        String s2 = elementLabels->length == 1? "" : "s";
-                        String those2 = elementLabels->length == 1? "that" : "those";
-                        String they = elementLabels->length == 1? "it" : "they";
-                        String think = elementLabels->length == 1? "thinks" : "think";
-                        String are = elementLabels->length == 1? "is" : "are";
+                        String the = keys->length == 1? __s(" the") : __s("");
+                        String s = keys->length == 1? __s("") : __s("s");
+                        String were = keys->length == 1? __s("was") : __s("were");
+                        String their = keys->length == 1? __s("its") : __s("their");
+                        String respective = elementLabels->length == 1? __s("") : __s(" respective");
+                        String those = keys->length == 1? __s("that") : __s("those");
+                        String s2 = elementLabels->length == 1? __s("") : __s("s");
+                        String those2 = elementLabels->length == 1? __s("that") : __s("those");
+                        String they = elementLabels->length == 1? __s("it") : __s("they");
+                        String think = elementLabels->length == 1? __s("thinks") : __s("think");
+                        String are = elementLabels->length == 1? __s("is") : __s("are");
                         ;
                     }
                 }
@@ -605,7 +605,7 @@ void BuildOwnerCls::finalizeTree() {
             return true;
         }());
     } catch (Unknown e) {
-        _debugReportException(make<ErrorSummaryCls>("while finalizing the widget tree"), e, stack);
+        _debugReportException(make<ErrorSummaryCls>(__s("while finalizing the widget tree")), e, stack);
     } finally {
         if (!kReleaseMode) {
             TimelineCls->finishSync();
@@ -615,7 +615,7 @@ void BuildOwnerCls::finalizeTree() {
 
 void BuildOwnerCls::reassemble(DebugReassembleConfig reassembleConfig, Element root) {
     if (!kReleaseMode) {
-        TimelineCls->startSync("Preparing Hot Reload (widgets)");
+        TimelineCls->startSync(__s("Preparing Hot Reload (widgets)"));
     }
     try {
         assert(root->_parent == nullptr);
@@ -664,7 +664,7 @@ void BuildOwnerCls::_registerGlobalKey(Element element, GlobalKey key) {
             assert(element->widget != nullptr);
             Element oldElement = _globalKeyRegistry[key]!;
             assert(oldElement->widget != nullptr);
-            assert(element->widget->runtimeType != oldElement->widget->runtimeType);
+            assert(element->widget->runtimeType() != oldElement->widget->runtimeType());
             _debugIllFatedElements?->add(oldElement);
         }
         return true;
@@ -678,7 +678,7 @@ void BuildOwnerCls::_unregisterGlobalKey(Element element, GlobalKey key) {
             assert(element->widget != nullptr);
             Element oldElement = _globalKeyRegistry[key]!;
             assert(oldElement->widget != nullptr);
-            assert(element->widget->runtimeType != oldElement->widget->runtimeType);
+            assert(element->widget->runtimeType() != oldElement->widget->runtimeType());
         }
         return true;
     }());
@@ -745,12 +745,12 @@ void BuildOwnerCls::_debugVerifyGlobalKeyReservation() {
 void BuildOwnerCls::_debugVerifyIllFatedPopulation() {
     assert([=] () {
         Map<GlobalKey, Set<Element>> duplicates;
-        for (Element element : _debugIllFatedElements ?? makeSet()) {
+        for (Element element : _debugIllFatedElements or makeSet()) {
             if (element->_lifecycleState != _ElementLifecycleCls::defunct) {
                 assert(element != nullptr);
                 assert(element->widget != nullptr);
                 assert(element->widget->key != nullptr);
-                GlobalKey key = ((GlobalKey)element->widget->key!);
+                GlobalKey key = as<GlobalKey>(element->widget->key!);
                 assert(_globalKeyRegistry->containsKey(key));
                 duplicates = makeMap(makeList(), makeList();
                 Set<Element> elements = duplicates->putIfAbsent(key, [=] () {
@@ -763,12 +763,12 @@ void BuildOwnerCls::_debugVerifyIllFatedPopulation() {
         _debugIllFatedElements?->clear();
         if (duplicates != nullptr) {
             List<DiagnosticsNode> information = makeList();
-            information->add(make<ErrorSummaryCls>("Multiple widgets used the same GlobalKey."));
+            information->add(make<ErrorSummaryCls>(__s("Multiple widgets used the same GlobalKey.")));
             for (GlobalKey key : duplicates->keys) {
                 Set<Element> elements = duplicates[key]!;
-                information->add(ElementCls->describeElements("The key $key was used by ${elements.length} widgets", elements));
+                information->add(ElementCls->describeElements(__s("The key $key was used by ${elements.length} widgets"), elements));
             }
-            information->add(make<ErrorDescriptionCls>("A GlobalKey can only be specified on one widget at a time in the widget tree."));
+            information->add(make<ErrorDescriptionCls>(__s("A GlobalKey can only be specified on one widget at a time in the widget tree.")));
             ;
         }
         return true;
@@ -780,7 +780,7 @@ void NotifiableElementMixinCls::attachNotificationTree() {
 }
 
 void _NotificationNodeCls::dispatchNotification(Notification notification) {
-    if (current?->onNotification(notification) ?? true) {
+    if (current?->onNotification(notification) or true) {
         return;
     }
     parent?->dispatchNotification(notification);
@@ -792,8 +792,8 @@ bool _isProfileBuildsEnabledFor(Widget widget) {
 
 ElementCls::ElementCls(Widget widget) {
     {
-        assert(widget != nullptr);
-        _widget = widget;
+        assert(widget() != nullptr);
+        _widget = widget();
     }
 }
 
@@ -867,18 +867,18 @@ List<DiagnosticsNode> ElementCls::describeMissingAncestor(Type expectedAncestorT
         ancestors->add(element);
         return true;
     });
-    information->add(<Element>make<DiagnosticsPropertyCls>("The specific widget that could not find a $expectedAncestorType ancestor was", thisDiagnosticsTreeStyleCls::errorProperty));
+    information->add(<Element>make<DiagnosticsPropertyCls>(__s("The specific widget that could not find a $expectedAncestorType ancestor was"), thisDiagnosticsTreeStyleCls::errorProperty));
     if (ancestors->isNotEmpty) {
-        information->add(describeElements("The ancestors of this widget were", ancestors));
+        information->add(describeElements(__s("The ancestors of this widget were"), ancestors));
     } else {
-        information->add(make<ErrorDescriptionCls>("This widget is the root of the tree, so it has no ancestors, let alone a "$expectedAncestorType" ancestor."));
+        information->add(make<ErrorDescriptionCls>(__s("This widget is the root of the tree, so it has no ancestors, let alone a "$expectedAncestorType" ancestor.")));
     }
     return information;
 }
 
 DiagnosticsNode ElementCls::describeElements(Iterable<Element> elements, String name) {
     return make<DiagnosticsBlockCls>(name, elements-><DiagnosticsNode>map([=] (Element element)     {
-        <Element>make<DiagnosticsPropertyCls>("", element);
+        <Element>make<DiagnosticsPropertyCls>(__s(""), element);
     })->toList(), true);
 }
 
@@ -903,7 +903,7 @@ void ElementCls::debugVisitOnstageChildren(ElementVisitor visitor) {
 
 void ElementCls::visitChildElements(ElementVisitor visitor) {
     assert([=] () {
-        if (owner == nullptr || !owner!->_debugStateLocked) {
+        if (owner() == nullptr || !owner()!->_debugStateLocked()) {
             return true;
         }
         ;
@@ -946,7 +946,7 @@ Element ElementCls::updateChild(Element child, Object newSlot, Widget newWidget)
                     }
                     return true;
                 }());
-                TimelineCls->startSync("${newWidget.runtimeType}"debugTimelineArguments);
+                TimelineCls->startSync(__s("${newWidget.runtimeType}")debugTimelineArguments);
             }
             child->update(newWidget);
             if (isTimelineTracked) {
@@ -972,9 +972,9 @@ Element ElementCls::updateChild(Element child, Object newSlot, Widget newWidget)
             _debugRemoveGlobalKeyReservation(child);
         }
         Key key = newWidget->key;
-        if (key is GlobalKey) {
-            assert(owner != nullptr);
-            owner!->_debugReserveGlobalKeyFor(this, newChild, key);
+        if (is<GlobalKey>(key)) {
+            assert(owner() != nullptr);
+            owner()!->_debugReserveGlobalKeyFor(this, newChild, key);
         }
         return true;
     }());
@@ -983,28 +983,28 @@ Element ElementCls::updateChild(Element child, Object newSlot, Widget newWidget)
 
 void ElementCls::mount(Object newSlot, Element parent) {
     assert(_lifecycleState == _ElementLifecycleCls::initial);
-    assert(widget != nullptr);
+    assert(widget() != nullptr);
     assert(_parent == nullptr);
     assert(parent == nullptr || parent->_lifecycleState == _ElementLifecycleCls::active);
-    assert(slot == nullptr);
+    assert(slot() == nullptr);
     _parent = parent;
     _slot = newSlot;
     _lifecycleState = _ElementLifecycleCls::active;
-    _depth = _parent != nullptr? _parent!->depth + 1 : 1;
+    _depth = _parent != nullptr? _parent!->depth() + 1 : 1;
     if (parent != nullptr) {
         _owner = parent->owner;
     }
-    assert(owner != nullptr);
-    Key key = widget->key;
-    if (key is GlobalKey) {
-        owner!->_registerGlobalKey(key, this);
+    assert(owner() != nullptr);
+    Key key = widget()->key;
+    if (is<GlobalKey>(key)) {
+        owner()!->_registerGlobalKey(key, this);
     }
     _updateInheritance();
     attachNotificationTree();
 }
 
 void ElementCls::update(Widget newWidget) {
-    assert(_lifecycleState == _ElementLifecycleCls::active && widget != nullptr && newWidget != nullptr && newWidget != widget && depth != nullptr && WidgetCls->canUpdate(widget, newWidget));
+    assert(_lifecycleState == _ElementLifecycleCls::active && widget() != nullptr && newWidget != nullptr && newWidget != widget() && depth() != nullptr && WidgetCls->canUpdate(widget(), newWidget));
     assert([=] () {
         _debugForgottenChildrenWithGlobalKey?->forEach(_debugRemoveGlobalKeyReservation);
         _debugForgottenChildrenWithGlobalKey?->clear();
@@ -1047,11 +1047,11 @@ Element ElementCls::inflateWidget(Object newSlot, Widget newWidget) {
             }
             return true;
         }());
-        TimelineCls->startSync("${newWidget.runtimeType}"debugTimelineArguments);
+        TimelineCls->startSync(__s("${newWidget.runtimeType}")debugTimelineArguments);
     }
     try {
         Key key = newWidget->key;
-        if (key is GlobalKey) {
+        if (is<GlobalKey>(key)) {
             Element newChild = _retakeInactiveElement(key, newWidget);
             if (newChild != nullptr) {
                 assert(newChild->_parent == nullptr);
@@ -1085,11 +1085,11 @@ void ElementCls::deactivateChild(Element child) {
     assert(child->_parent == this);
     child->_parent = nullptr;
     child->detachRenderObject();
-    owner!->_inactiveElements->add(child);
+    owner()!->_inactiveElements->add(child);
     assert([=] () {
         if (debugPrintGlobalKeyedWidgetLifecycle) {
-            if (child->widget->key is GlobalKey) {
-                debugPrint("Deactivated $child (keyed child of $this)");
+            if (is<GlobalKey>(child->widget->key)) {
+                debugPrint(__s("Deactivated $child (keyed child of $this)"));
             }
         }
         return true;
@@ -1098,7 +1098,7 @@ void ElementCls::deactivateChild(Element child) {
 
 void ElementCls::forgetChild(Element child) {
     assert([=] () {
-        if (child->widget->key is GlobalKey) {
+        if (is<GlobalKey>(child->widget->key)) {
             _debugForgottenChildrenWithGlobalKey?->add(child);
         }
         return true;
@@ -1107,9 +1107,9 @@ void ElementCls::forgetChild(Element child) {
 
 void ElementCls::activate() {
     assert(_lifecycleState == _ElementLifecycleCls::inactive);
-    assert(widget != nullptr);
-    assert(owner != nullptr);
-    assert(depth != nullptr);
+    assert(widget() != nullptr);
+    assert(owner() != nullptr);
+    assert(depth() != nullptr);
     bool hadDependencies = (_dependencies != nullptr && _dependencies!->isNotEmpty) || _hadUnsatisfiedDependencies;
     _lifecycleState = _ElementLifecycleCls::active;
     _dependencies?->clear();
@@ -1117,7 +1117,7 @@ void ElementCls::activate() {
     _updateInheritance();
     attachNotificationTree();
     if (_dirty) {
-        owner!->scheduleBuildFor(this);
+        owner()!->scheduleBuildFor(this);
     }
     if (hadDependencies) {
         didChangeDependencies();
@@ -1127,7 +1127,7 @@ void ElementCls::activate() {
 void ElementCls::deactivate() {
     assert(_lifecycleState == _ElementLifecycleCls::active);
     assert(_widget != nullptr);
-    assert(depth != nullptr);
+    assert(depth() != nullptr);
     if (_dependencies != nullptr && _dependencies!->isNotEmpty) {
         for (InheritedElement dependency : _dependencies!) {
             dependency->_dependents->remove(this);
@@ -1144,11 +1144,11 @@ void ElementCls::debugDeactivated() {
 void ElementCls::unmount() {
     assert(_lifecycleState == _ElementLifecycleCls::inactive);
     assert(_widget != nullptr);
-    assert(depth != nullptr);
-    assert(owner != nullptr);
+    assert(depth() != nullptr);
+    assert(owner() != nullptr);
     Key key = _widget?->key;
-    if (key is GlobalKey) {
-        owner!->_unregisterGlobalKey(key, this);
+    if (is<GlobalKey>(key)) {
+        owner()!->_unregisterGlobalKey(key, this);
     }
     _widget = nullptr;
     _dependencies = nullptr;
@@ -1162,7 +1162,7 @@ RenderObject ElementCls::findRenderObject() {
         }
         return true;
     }());
-    return renderObject;
+    return renderObject();
 }
 
 Size ElementCls::size() {
@@ -1170,23 +1170,23 @@ Size ElementCls::size() {
         if (_lifecycleState != _ElementLifecycleCls::active) {
             ;
         }
-        if (owner!->_debugBuilding) {
+        if (owner()!->_debugBuilding) {
             ;
         }
         return true;
     }());
     RenderObject renderObject = findRenderObject();
     assert([=] () {
-        if (renderObject == nullptr) {
+        if (renderObject() == nullptr) {
             ;
         }
-        if (renderObject is RenderSliver) {
+        if (is<RenderSliver>(renderObject())) {
             ;
         }
-        if (renderObject is! RenderBox) {
+        if (!is<RenderBox>(renderObject())) {
             ;
         }
-        RenderBox box = renderObject;
+        RenderBox box = renderObject();
         if (!box->hasSize) {
             ;
         }
@@ -1195,8 +1195,8 @@ Size ElementCls::size() {
         }
         return true;
     }());
-    if (renderObject is RenderBox) {
-        return renderObject->size;
+    if (is<RenderBox>(renderObject())) {
+        return renderObject()->size;
     }
     return nullptr;
 }
@@ -1210,20 +1210,20 @@ InheritedWidget ElementCls::dependOnInheritedElement(InheritedElement ancestor, 
     _dependencies = <InheritedElement>make<HashSetCls>();
     _dependencies!->add(ancestor);
     ancestor->updateDependencies(this, aspect);
-    return ((InheritedWidget)ancestor->widget);
+    return as<InheritedWidget>(ancestor->widget);
 }
 
-T ElementCls::dependOnInheritedWidgetOfExactTypetemplate<typename T : InheritedWidget> (Object aspect) {
+T ElementCls::dependOnInheritedWidgetOfExactTypetemplate<typename T> (Object aspect) {
     assert(_debugCheckStateIsActiveForAncestorLookup());
     InheritedElement ancestor = _inheritedWidgets == nullptr? nullptr : _inheritedWidgets![TCls];
     if (ancestor != nullptr) {
-        return ((T)dependOnInheritedElement(ancestoraspect));
+        return as<T>(dependOnInheritedElement(ancestoraspect));
     }
     _hadUnsatisfiedDependencies = true;
     return nullptr;
 }
 
-InheritedElement ElementCls::getElementForInheritedWidgetOfExactTypetemplate<typename T : InheritedWidget> () {
+InheritedElement ElementCls::getElementForInheritedWidgetOfExactTypetemplate<typename T> () {
     assert(_debugCheckStateIsActiveForAncestorLookup());
     InheritedElement ancestor = _inheritedWidgets == nullptr? nullptr : _inheritedWidgets![TCls];
     return ancestor;
@@ -1233,47 +1233,47 @@ void ElementCls::attachNotificationTree() {
     _notificationTree = _parent?->_notificationTree;
 }
 
-T ElementCls::findAncestorWidgetOfExactTypetemplate<typename T : Widget> () {
+T ElementCls::findAncestorWidgetOfExactTypetemplate<typename T> () {
     assert(_debugCheckStateIsActiveForAncestorLookup());
     Element ancestor = _parent;
-    while (ancestor != nullptr && ancestor->widget->runtimeType != TCls) {
+    while (ancestor != nullptr && ancestor->widget->runtimeType() != TCls) {
         ancestor = ancestor->_parent;
     }
-    return ((T)ancestor?->widget);
+    return as<T>(ancestor?->widget);
 }
 
-T ElementCls::findAncestorStateOfTypetemplate<typename T : State<StatefulWidget>> () {
+T ElementCls::findAncestorStateOfTypetemplate<typename T> () {
     assert(_debugCheckStateIsActiveForAncestorLookup());
     Element ancestor = _parent;
     while (ancestor != nullptr) {
-        if (ancestor is StatefulElement && ancestor->state is T) {
+        if (is<StatefulElement>(ancestor) && is<T>(ancestor->state)) {
                         break;
         }
         ancestor = ancestor->_parent;
     }
-    StatefulElement statefulAncestor = ((StatefulElement)ancestor);
-    return ((T)statefulAncestor?->state);
+    StatefulElement statefulAncestor = as<StatefulElement>(ancestor);
+    return as<T>(statefulAncestor?->state);
 }
 
-T ElementCls::findRootAncestorStateOfTypetemplate<typename T : State<StatefulWidget>> () {
+T ElementCls::findRootAncestorStateOfTypetemplate<typename T> () {
     assert(_debugCheckStateIsActiveForAncestorLookup());
     Element ancestor = _parent;
     StatefulElement statefulAncestor;
     while (ancestor != nullptr) {
-        if (ancestor is StatefulElement && ancestor->state is T) {
+        if (is<StatefulElement>(ancestor) && is<T>(ancestor->state)) {
             statefulAncestor = ancestor;
         }
         ancestor = ancestor->_parent;
     }
-    return ((T)statefulAncestor?->state);
+    return as<T>(statefulAncestor?->state);
 }
 
-T ElementCls::findAncestorRenderObjectOfTypetemplate<typename T : RenderObject> () {
+T ElementCls::findAncestorRenderObjectOfTypetemplate<typename T> () {
     assert(_debugCheckStateIsActiveForAncestorLookup());
     Element ancestor = _parent;
     while (ancestor != nullptr) {
-        if (ancestor is RenderObjectElement && ancestor->renderObject is T) {
-            return ((T)ancestor->renderObject);
+        if (is<RenderObjectElement>(ancestor) && is<T>(ancestor->renderObject)) {
+            return as<T>(ancestor->renderObject);
         }
         ancestor = ancestor->_parent;
     }
@@ -1290,7 +1290,7 @@ void ElementCls::visitAncestorElements(bool visitor(Element element) ) {
 
 void ElementCls::didChangeDependencies() {
     assert(_lifecycleState == _ElementLifecycleCls::active);
-    assert(_debugCheckOwnerBuildTargetExists("didChangeDependencies"));
+    assert(_debugCheckOwnerBuildTargetExists(__s("didChangeDependencies")));
     markNeedsBuild();
 }
 
@@ -1302,9 +1302,9 @@ String ElementCls::debugGetCreatorChain(int limit) {
         node = node->_parent;
     }
     if (node != nullptr) {
-        chain->add("\u22EF");
+        chain->add(__s("\u22EF"));
     }
-    return chain->join(" \u2190 ");
+    return chain->join(__s(" \u2190 "));
 }
 
 List<Element> ElementCls::debugGetDiagnosticChain() {
@@ -1322,7 +1322,7 @@ void ElementCls::dispatchNotification(Notification notification) {
 }
 
 String ElementCls::toStringShort() {
-    return _widget?->toStringShort() ?? "${describeIdentity(this)}(DEFUNCT)";
+    return _widget?->toStringShort() or __s("${describeIdentity(this)}(DEFUNCT)");
 }
 
 DiagnosticsNode ElementCls::toDiagnosticsNode(String name, DiagnosticsTreeStyle style) {
@@ -1333,19 +1333,19 @@ void ElementCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
     properties->defaultDiagnosticsTreeStyle = DiagnosticsTreeStyleCls::dense;
     if (_lifecycleState != _ElementLifecycleCls::initial) {
-        properties->add(<int>make<ObjectFlagPropertyCls>("depth", depth"no depth"));
+        properties->add(<int>make<ObjectFlagPropertyCls>(__s("depth"), depth()__s("no depth")));
     }
-    properties->add(<Widget>make<ObjectFlagPropertyCls>("widget", _widget"no widget"));
-    properties->add(<Key>make<DiagnosticsPropertyCls>("key", _widget?->keyfalse, nullptr, DiagnosticLevelCls::hidden));
+    properties->add(<Widget>make<ObjectFlagPropertyCls>(__s("widget"), _widget__s("no widget")));
+    properties->add(<Key>make<DiagnosticsPropertyCls>(__s("key"), _widget?->keyfalse, nullptr, DiagnosticLevelCls::hidden));
     _widget?->debugFillProperties(properties);
-    properties->add(make<FlagPropertyCls>("dirty"dirty, "dirty"));
+    properties->add(make<FlagPropertyCls>(__s("dirty")dirty(), __s("dirty")));
     Set<InheritedElement> deps = _dependencies;
     if (deps != nullptr && deps->isNotEmpty) {
             auto _c1 = deps->toList();    _c1.sort([=] (InheritedElement a,InheritedElement b) {        a->toStringShort()->compareTo(b->toStringShort());    });List<InheritedElement> sortedDependencies = _c1;
         List<DiagnosticsNode> diagnosticsDependencies = sortedDependencies->map([=] (InheritedElement element) {
     element->widget->toDiagnosticsNode(DiagnosticsTreeStyleCls::sparse);
 })->toList();
-        properties->add(<List<DiagnosticsNode>>make<DiagnosticsPropertyCls>("dependencies", diagnosticsDependencies));
+        properties->add(<List<DiagnosticsNode>>make<DiagnosticsPropertyCls>(__s("dependencies"), diagnosticsDependencies));
     }
 }
 
@@ -1366,36 +1366,36 @@ void ElementCls::markNeedsBuild() {
     if (_lifecycleState != _ElementLifecycleCls::active) {
         return;
     }
-    assert(owner != nullptr);
+    assert(owner() != nullptr);
     assert(_lifecycleState == _ElementLifecycleCls::active);
     assert([=] () {
-        if (owner!->_debugBuilding) {
-            assert(owner!->_debugCurrentBuildTarget != nullptr);
-            assert(owner!->_debugStateLocked);
-            if (_debugIsInScope(owner!->_debugCurrentBuildTarget!)) {
+        if (owner()!->_debugBuilding) {
+            assert(owner()!->_debugCurrentBuildTarget != nullptr);
+            assert(owner()!->_debugStateLocked());
+            if (_debugIsInScope(owner()!->_debugCurrentBuildTarget!)) {
                 return true;
             }
             if (!_debugAllowIgnoredCallsToMarkNeedsBuild) {
                 List<DiagnosticsNode> information = makeList(ArrayItem, ArrayItem, ArrayItem);
-                if (owner!->_debugCurrentBuildTarget != nullptr) {
-                    information->add(owner!->_debugCurrentBuildTarget!->describeWidget("The widget which was currently being built when the offending call was made was"));
+                if (owner()!->_debugCurrentBuildTarget != nullptr) {
+                    information->add(owner()!->_debugCurrentBuildTarget!->describeWidget(__s("The widget which was currently being built when the offending call was made was")));
                 }
                 ;
             }
-            assert(dirty);
+            assert(dirty());
         } else         {
-            if (owner!->_debugStateLocked) {
+            if (owner()!->_debugStateLocked()) {
             assert(!_debugAllowIgnoredCallsToMarkNeedsBuild);
             ;
         }
 ;
         }        return true;
     }());
-    if (dirty) {
+    if (dirty()) {
         return;
     }
     _dirty = true;
-    owner!->scheduleBuildFor(this);
+    owner()!->scheduleBuildFor(this);
 }
 
 void ElementCls::rebuild() {
@@ -1407,26 +1407,26 @@ void ElementCls::rebuild() {
         debugOnRebuildDirtyWidget?->call(this, _debugBuiltOnce);
         if (debugPrintRebuildDirtyWidgets) {
             if (!_debugBuiltOnce) {
-                debugPrint("Building $this");
+                debugPrint(__s("Building $this"));
                 _debugBuiltOnce = true;
             } else {
-                debugPrint("Rebuilding $this");
+                debugPrint(__s("Rebuilding $this"));
             }
         }
         return true;
     }());
     assert(_lifecycleState == _ElementLifecycleCls::active);
-    assert(owner!->_debugStateLocked);
+    assert(owner()!->_debugStateLocked());
     Element debugPreviousBuildTarget;
     assert([=] () {
-        debugPreviousBuildTarget = owner!->_debugCurrentBuildTarget;
-        owner!->_debugCurrentBuildTarget = this;
+        debugPreviousBuildTarget = owner()!->_debugCurrentBuildTarget;
+        owner()!->_debugCurrentBuildTarget = this;
         return true;
     }());
     performRebuild();
     assert([=] () {
-        assert(owner!->_debugCurrentBuildTarget == this);
-        owner!->_debugCurrentBuildTarget = debugPreviousBuildTarget;
+        assert(owner()!->_debugCurrentBuildTarget == this);
+        owner()!->_debugCurrentBuildTarget = debugPreviousBuildTarget;
         return true;
     }());
     assert(!_dirty);
@@ -1445,7 +1445,7 @@ int ElementCls::_sort(Element a, Element b) {
 }
 
 int ElementCls::_debugConcreteSubtype(Element element) {
-    return element is StatefulElement? 1 : element is StatelessElement? 2 : 0;
+    return is<StatefulElement>(element)? 1 : is<StatelessElement>(element)? 2 : 0;
 }
 
 bool ElementCls::_debugIsInScope(Element target) {
@@ -1460,16 +1460,16 @@ bool ElementCls::_debugIsInScope(Element target) {
 }
 
 void ElementCls::_debugRemoveGlobalKeyReservation(Element child) {
-    assert(owner != nullptr);
-    owner!->_debugRemoveGlobalKeyReservationFor(this, child);
+    assert(owner() != nullptr);
+    owner()!->_debugRemoveGlobalKeyReservationFor(this, child);
 }
 
 void ElementCls::_updateSlot(Object newSlot) {
     assert(_lifecycleState == _ElementLifecycleCls::active);
-    assert(widget != nullptr);
+    assert(widget() != nullptr);
     assert(_parent != nullptr);
     assert(_parent!->_lifecycleState == _ElementLifecycleCls::active);
-    assert(depth != nullptr);
+    assert(depth() != nullptr);
     _slot = newSlot;
 }
 
@@ -1493,7 +1493,7 @@ Element ElementCls::_retakeInactiveElement(GlobalKey key, Widget newWidget) {
     }
     assert([=] () {
         if (debugPrintGlobalKeyedWidgetLifecycle) {
-            debugPrint("Attempting to take $element from ${element._parent ?? "inactive elements list"} to put in $this.");
+            debugPrint(__s("Attempting to take $element from ${element._parent ?? "inactive elements list"} to put in $this."));
         }
         return true;
     }());
@@ -1510,7 +1510,7 @@ Element ElementCls::_retakeInactiveElement(GlobalKey key, Widget newWidget) {
         parent->deactivateChild(element);
     }
     assert(element->_parent == nullptr);
-    owner!->_inactiveElements->remove(element);
+    owner()!->_inactiveElements->remove(element);
     return element;
 }
 
@@ -1531,11 +1531,11 @@ void ElementCls::_activateWithParent(Object newSlot, Element parent) {
     _parent = parent;
     assert([=] () {
         if (debugPrintGlobalKeyedWidgetLifecycle) {
-            debugPrint("Reactivating $this (now child of $_parent).");
+            debugPrint(__s("Reactivating $this (now child of $_parent)."));
         }
         return true;
     }());
-    _updateDepth(_parent!->depth);
+    _updateDepth(_parent!->depth());
     _activateRecursively(this);
     attachRenderObject(newSlot);
     assert(_lifecycleState == _ElementLifecycleCls::active);
@@ -1565,7 +1565,7 @@ void ElementCls::_updateInheritance() {
 
 bool ElementCls::_debugCheckOwnerBuildTargetExists(String methodName) {
     assert([=] () {
-        if (owner!->_debugCurrentBuildTarget == nullptr) {
+        if (owner()!->_debugCurrentBuildTarget == nullptr) {
             ;
         }
         return true;
@@ -1581,18 +1581,18 @@ bool ElementCls::_debugSetAllowIgnoredCallsToMarkNeedsBuild(bool value) {
 
 Map<String, Object> _ElementDiagnosticableTreeNodeCls::toJsonMap(DiagnosticsSerializationDelegate delegate) {
     Map<String, Object> json = super->toJsonMap(delegate);
-    Element element = ((Element)value);
+    Element element = as<Element>(value);
     if (!element->debugIsDefunct) {
-        json["widgetRuntimeType"] = element->widget->runtimeType->toString();
+        json[__s("widgetRuntimeType")] = element->widget->runtimeType()->toString();
     }
-    json["stateful"] = stateful;
+    json[__s("stateful")] = stateful;
     return json;
 }
 
-ErrorWidgetCls::ErrorWidgetCls(Object exception) {
+ErrorWidgetCls::ErrorWidgetCls(Object exception) : LeafRenderObjectWidget(make<UniqueKeyCls>()) {
     {
         message = _stringify(exception);
-        _flutterError = exception is FlutterError? exception : nullptr;
+        _flutterError = is<FlutterError>(exception)? exception : nullptr;
     }
 }
 
@@ -1605,20 +1605,20 @@ RenderBox ErrorWidgetCls::createRenderObject(BuildContext context) {
 void ErrorWidgetCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
     if (_flutterError == nullptr) {
-        properties->add(make<StringPropertyCls>("message", messagefalse));
+        properties->add(make<StringPropertyCls>(__s("message"), messagefalse));
     } else {
         properties->add(_flutterError!->toDiagnosticsNode(DiagnosticsTreeStyleCls::whitespace));
     }
 }
 
 Widget ErrorWidgetCls::_defaultErrorWidgetBuilder(FlutterErrorDetails details) {
-    String message = "";
+    String message = __s("");
     assert([=] () {
-        message = "${_stringify(details.exception)}\nSee also: https://flutter.dev/docs/testing/errors";
+        message = __s("${_stringify(details.exception)}\nSee also: https://flutter.dev/docs/testing/errors");
         return true;
     }());
     Object exception = details->exception;
-    return ErrorWidgetCls->withDetails(message, exception is FlutterError? exception : nullptr);
+    return ErrorWidgetCls->withDetails(message, is<FlutterError>(exception)? exception : nullptr);
 }
 
 String ErrorWidgetCls::_stringify(Object exception) {
@@ -1626,7 +1626,7 @@ String ErrorWidgetCls::_stringify(Object exception) {
         return exception->toString();
     } catch (Unknown error) {
     };
-    return "Error";
+    return __s("Error");
 }
 
 bool ComponentElementCls::debugDoingBuild() {
@@ -1657,7 +1657,7 @@ void ComponentElementCls::performRebuild() {
         debugWidgetBuilderValue(widget, built);
     } catch (Unknown e) {
         _debugDoingBuild = false;
-            List<DiagnosticsNode> list1 = make<ListCls<>>();    if (kDebugMode) {        list1.add(ArrayItem);    }built = ErrorWidgetCls->builder(_debugReportException(make<ErrorDescriptionCls>("building $this"), e, stack[=] ()         {
+            List<DiagnosticsNode> list1 = make<ListCls<>>();    if (kDebugMode) {        list1.add(ArrayItem);    }built = ErrorWidgetCls->builder(_debugReportException(make<ErrorDescriptionCls>(__s("building $this")), e, stack[=] ()         {
             list1;
         }));
     } finally {
@@ -1668,7 +1668,7 @@ void ComponentElementCls::performRebuild() {
         _child = updateChild(_child, built, slot);
         assert(_child != nullptr);
     } catch (Unknown e) {
-            List<DiagnosticsNode> list2 = make<ListCls<>>();    if (kDebugMode) {        list2.add(ArrayItem);    }built = ErrorWidgetCls->builder(_debugReportException(make<ErrorDescriptionCls>("building $this"), e, stack[=] ()         {
+            List<DiagnosticsNode> list2 = make<ListCls<>>();    if (kDebugMode) {        list2.add(ArrayItem);    }built = ErrorWidgetCls->builder(_debugReportException(make<ErrorDescriptionCls>(__s("building $this")), e, stack[=] ()         {
             list2;
         }));
         _child = updateChild(nullptr, built, slot);
@@ -1692,7 +1692,7 @@ void ComponentElementCls::_firstBuild() {
 }
 
 Widget StatelessElementCls::build() {
-    return (((StatelessWidget)widget))->build(this);
+    return (as<StatelessWidget>(widget))->build(this);
 }
 
 void StatelessElementCls::update(StatelessWidget newWidget) {
@@ -1702,27 +1702,27 @@ void StatelessElementCls::update(StatelessWidget newWidget) {
     rebuild();
 }
 
-StatefulElementCls::StatefulElementCls(StatefulWidget widget) {
+StatefulElementCls::StatefulElementCls(StatefulWidget widget) : ComponentElement(widget) {
     {
         _state = widget->createState();
     }
     {
         assert([=] () {
-            if (!state->_debugTypesAreRight(widget)) {
+            if (!state()->_debugTypesAreRight(widget)) {
                 ;
             }
             return true;
         }());
-        assert(state->_element == nullptr);
-        state->_element = this;
-        assert(state->_widget == nullptr, "The createState function for $widget returned an old or invalid state instance: ${state._widget}, which is not null, violating the contract for createState.");
-        state->_widget = widget;
-        assert(state->_debugLifecycleState == _StateLifecycleCls::created);
+        assert(state()->_element == nullptr);
+        state()->_element = this;
+        assert(state()->_widget == nullptr, __s("The createState function for $widget returned an old or invalid state instance: ${state._widget}, which is not null, violating the contract for createState."));
+        state()->_widget = widget;
+        assert(state()->_debugLifecycleState == _StateLifecycleCls::created);
     }
 }
 
 Widget StatefulElementCls::build() {
-    return state->build(this);
+    return state()->build(this);
 }
 
 State<StatefulWidget> StatefulElementCls::state() {
@@ -1731,14 +1731,14 @@ State<StatefulWidget> StatefulElementCls::state() {
 
 void StatefulElementCls::reassemble() {
     if (_debugShouldReassemble(_debugReassembleConfig, _widget)) {
-        state->reassemble();
+        state()->reassemble();
     }
     super->reassemble();
 }
 
 void StatefulElementCls::performRebuild() {
     if (_didChangeDependencies) {
-        state->didChangeDependencies();
+        state()->didChangeDependencies();
         _didChangeDependencies = false;
     }
     super->performRebuild();
@@ -1747,14 +1747,14 @@ void StatefulElementCls::performRebuild() {
 void StatefulElementCls::update(StatefulWidget newWidget) {
     super->update(newWidget);
     assert(widget == newWidget);
-    StatefulWidget oldWidget = state->_widget!;
+    StatefulWidget oldWidget = state()->_widget!;
     _dirty = true;
-    state->_widget = ((StatefulWidget)widget);
+    state()->_widget = as<StatefulWidget>(widget);
     try {
         _debugSetAllowIgnoredCallsToMarkNeedsBuild(true);
-        Object debugCheckForReturnedFuture = ((dynamic)state->didUpdateWidget(oldWidget));
+        Object debugCheckForReturnedFuture = as<dynamic>(state()->didUpdateWidget(oldWidget));
         assert([=] () {
-            if (debugCheckForReturnedFuture is Future) {
+            if (is<Future>(debugCheckForReturnedFuture)) {
                 ;
             }
             return true;
@@ -1767,42 +1767,42 @@ void StatefulElementCls::update(StatefulWidget newWidget) {
 
 void StatefulElementCls::activate() {
     super->activate();
-    state->activate();
+    state()->activate();
     assert(_lifecycleState == _ElementLifecycleCls::active);
     markNeedsBuild();
 }
 
 void StatefulElementCls::deactivate() {
-    state->deactivate();
+    state()->deactivate();
     super->deactivate();
 }
 
 void StatefulElementCls::unmount() {
     super->unmount();
-    state->dispose();
+    state()->dispose();
     assert([=] () {
-        if (state->_debugLifecycleState == _StateLifecycleCls::defunct) {
+        if (state()->_debugLifecycleState == _StateLifecycleCls::defunct) {
             return true;
         }
         ;
     }());
-    state->_element = nullptr;
+    state()->_element = nullptr;
     _state = nullptr;
 }
 
 InheritedWidget StatefulElementCls::dependOnInheritedElement(Element ancestor, Object aspect) {
     assert(ancestor != nullptr);
     assert([=] () {
-        Type targetType = ancestor->widget->runtimeType;
-        if (state->_debugLifecycleState == _StateLifecycleCls::created) {
+        Type targetType = ancestor->widget->runtimeType();
+        if (state()->_debugLifecycleState == _StateLifecycleCls::created) {
             ;
         }
-        if (state->_debugLifecycleState == _StateLifecycleCls::defunct) {
+        if (state()->_debugLifecycleState == _StateLifecycleCls::defunct) {
             ;
         }
         return true;
     }());
-    return super->dependOnInheritedElement(((InheritedElement)ancestor)aspect);
+    return super->dependOnInheritedElement(as<InheritedElement>(ancestor)aspect);
 }
 
 void StatefulElementCls::didChangeDependencies() {
@@ -1816,16 +1816,16 @@ DiagnosticsNode StatefulElementCls::toDiagnosticsNode(String name, DiagnosticsTr
 
 void StatefulElementCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<State<StatefulWidget>>make<DiagnosticsPropertyCls>("state", _statenullptr));
+    properties->add(<State<StatefulWidget>>make<DiagnosticsPropertyCls>(__s("state"), _statenullptr));
 }
 
 void StatefulElementCls::_firstBuild() {
-    assert(state->_debugLifecycleState == _StateLifecycleCls::created);
+    assert(state()->_debugLifecycleState == _StateLifecycleCls::created);
     try {
         _debugSetAllowIgnoredCallsToMarkNeedsBuild(true);
-        Object debugCheckForReturnedFuture = ((dynamic)state->initState());
+        Object debugCheckForReturnedFuture = as<dynamic>(state()->initState());
         assert([=] () {
-            if (debugCheckForReturnedFuture is Future) {
+            if (is<Future>(debugCheckForReturnedFuture)) {
                 ;
             }
             return true;
@@ -1834,23 +1834,23 @@ void StatefulElementCls::_firstBuild() {
         _debugSetAllowIgnoredCallsToMarkNeedsBuild(false);
     };
     assert([=] () {
-        state->_debugLifecycleState = _StateLifecycleCls::initialized;
+        state()->_debugLifecycleState = _StateLifecycleCls::initialized;
         return true;
     }());
-    state->didChangeDependencies();
+    state()->didChangeDependencies();
     assert([=] () {
-        state->_debugLifecycleState = _StateLifecycleCls::ready;
+        state()->_debugLifecycleState = _StateLifecycleCls::ready;
         return true;
     }());
     super->_firstBuild();
 }
 
 Widget ProxyElementCls::build() {
-    return (((ProxyWidget)widget))->child;
+    return (as<ProxyWidget>(widget))->child;
 }
 
 void ProxyElementCls::update(ProxyWidget newWidget) {
-    ProxyWidget oldWidget = ((ProxyWidget)widget);
+    ProxyWidget oldWidget = as<ProxyWidget>(widget);
     assert(widget != nullptr);
     assert(widget != newWidget);
     super->update(newWidget);
@@ -1864,25 +1864,25 @@ void ProxyElementCls::updated(ProxyWidget oldWidget) {
     notifyClients(oldWidget);
 }
 
-template<typename T : ParentData> void ParentDataElementCls<T>::applyWidgetOutOfTurn(ParentDataWidget<T> newWidget) {
+template<typename T> void ParentDataElementCls<T>::applyWidgetOutOfTurn(ParentDataWidget<T> newWidget) {
     assert(newWidget != nullptr);
     assert(newWidget->debugCanApplyOutOfTurn());
-    assert(newWidget->child == (((ParentDataWidget<T>)widget))->child);
+    assert(newWidget->child == (as<ParentDataWidget<T>>(widget))->child);
     _applyParentData(newWidget);
 }
 
-template<typename T : ParentData> void ParentDataElementCls<T>::notifyClients(ParentDataWidget<T> oldWidget) {
-    _applyParentData(((ParentDataWidget<T>)widget));
+template<typename T> void ParentDataElementCls<T>::notifyClients(ParentDataWidget<T> oldWidget) {
+    _applyParentData(as<ParentDataWidget<T>>(widget));
 }
 
-template<typename T : ParentData> void ParentDataElementCls<T>::_applyParentData(ParentDataWidget<T> widget) {
+template<typename T> void ParentDataElementCls<T>::_applyParentData(ParentDataWidget<T> widget) {
     InlineMethod;
     visitChildren(applyParentDataToChild);
 }
 
 void InheritedElementCls::debugDeactivated() {
     assert([=] () {
-        assert(_dependents->isEmpty);
+        assert(_dependents->isEmpty());
         return true;
     }());
     super->debugDeactivated();
@@ -1905,14 +1905,14 @@ void InheritedElementCls::notifyDependent(Element dependent, InheritedWidget old
 }
 
 void InheritedElementCls::updated(InheritedWidget oldWidget) {
-    if ((((InheritedWidget)widget))->updateShouldNotify(oldWidget)) {
+    if ((as<InheritedWidget>(widget))->updateShouldNotify(oldWidget)) {
         super->updated(oldWidget);
     }
 }
 
 void InheritedElementCls::notifyClients(InheritedWidget oldWidget) {
-    assert(_debugCheckOwnerBuildTargetExists("notifyClients"));
-    for (Element dependent : _dependents->keys) {
+    assert(_debugCheckOwnerBuildTargetExists(__s("notifyClients")));
+    for (Element dependent : _dependents->keys()) {
         assert([=] () {
             Element ancestor = dependent->_parent;
             while (ancestor != this && ancestor != nullptr) {
@@ -1933,11 +1933,11 @@ void InheritedElementCls::_updateInheritance() {
     } else {
         _inheritedWidgets = <Type, InheritedElement>make<HashMapCls>();
     }
-    _inheritedWidgets![widget->runtimeType] = this;
+    _inheritedWidgets![widget->runtimeType()] = this;
 }
 
 RenderObject RenderObjectElementCls::renderObject() {
-    assert(_renderObject != nullptr, "$runtimeType unmounted");
+    assert(_renderObject != nullptr, __s("$runtimeType unmounted"));
     return _renderObject!;
 }
 
@@ -1951,8 +1951,8 @@ void RenderObjectElementCls::mount(Object newSlot, Element parent) {
         _debugDoingBuild = true;
         return true;
     }());
-    _renderObject = (((RenderObjectWidget)widget))->createRenderObject(this);
-    assert(!_renderObject!->debugDisposed!);
+    _renderObject = (as<RenderObjectWidget>(widget))->createRenderObject(this);
+    assert(!_renderObject!->debugDisposed()!);
     assert([=] () {
         _debugDoingBuild = false;
         return true;
@@ -2084,22 +2084,22 @@ List<Element> RenderObjectElementCls::updateChildren(Set<Element> forgottenChild
         }
     }
     assert(newChildren->every([=] (Element element)     {
-        element is! _NullElement;
+        !is<_NullElement>(element);
     }));
     return newChildren;
 }
 
 void RenderObjectElementCls::deactivate() {
     super->deactivate();
-    assert(!renderObject->attached, "A RenderObject was still attached when attempting to deactivate its RenderObjectElement: $renderObject");
+    assert(!renderObject()->attached, __s("A RenderObject was still attached when attempting to deactivate its RenderObjectElement: $renderObject"));
 }
 
 void RenderObjectElementCls::unmount() {
-    assert(!renderObject->debugDisposed!, "A RenderObject was disposed prior to its owning element being unmounted: $renderObject");
-    RenderObjectWidget oldWidget = ((RenderObjectWidget)widget);
+    assert(!renderObject()->debugDisposed()!, __s("A RenderObject was disposed prior to its owning element being unmounted: $renderObject"));
+    RenderObjectWidget oldWidget = as<RenderObjectWidget>(widget);
     super->unmount();
-    assert(!renderObject->attached, "A RenderObject was still attached when attempting to unmount its RenderObjectElement: $renderObject");
-    oldWidget->didUnmountRenderObject(renderObject);
+    assert(!renderObject()->attached, __s("A RenderObject was still attached when attempting to unmount its RenderObjectElement: $renderObject"));
+    oldWidget->didUnmountRenderObject(renderObject());
     _renderObject!->dispose();
     _renderObject = nullptr;
 }
@@ -2108,16 +2108,16 @@ void RenderObjectElementCls::attachRenderObject(Object newSlot) {
     assert(_ancestorRenderObjectElement == nullptr);
     _slot = newSlot;
     _ancestorRenderObjectElement = _findAncestorRenderObjectElement();
-    _ancestorRenderObjectElement?->insertRenderObjectChild(renderObject, newSlot);
+    _ancestorRenderObjectElement?->insertRenderObjectChild(renderObject(), newSlot);
     ParentDataElement<ParentData> parentDataElement = _findAncestorParentDataElement();
     if (parentDataElement != nullptr) {
-        _updateParentData(((ParentDataWidget<ParentData>)parentDataElement->widget));
+        _updateParentData(as<ParentDataWidget<ParentData>>(parentDataElement->widget));
     }
 }
 
 void RenderObjectElementCls::detachRenderObject() {
     if (_ancestorRenderObjectElement != nullptr) {
-        _ancestorRenderObjectElement!->removeRenderObjectChild(renderObject, slot);
+        _ancestorRenderObjectElement!->removeRenderObjectChild(renderObject(), slot);
         _ancestorRenderObjectElement = nullptr;
     }
     _slot = nullptr;
@@ -2143,22 +2143,22 @@ void RenderObjectElementCls::removeRenderObjectChild(RenderObject child, Object 
 
 void RenderObjectElementCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<RenderObject>make<DiagnosticsPropertyCls>("renderObject", _renderObjectnullptr));
+    properties->add(<RenderObject>make<DiagnosticsPropertyCls>(__s("renderObject"), _renderObjectnullptr));
 }
 
 RenderObjectElement RenderObjectElementCls::_findAncestorRenderObjectElement() {
     Element ancestor = _parent;
-    while (ancestor != nullptr && ancestor is! RenderObjectElement) {
+    while (ancestor != nullptr && !is<RenderObjectElement>(ancestor)) {
         ancestor = ancestor->_parent;
     }
-    return ((RenderObjectElement)ancestor);
+    return as<RenderObjectElement>(ancestor);
 }
 
 ParentDataElement<ParentData> RenderObjectElementCls::_findAncestorParentDataElement() {
     Element ancestor = _parent;
     ParentDataElement<ParentData> result;
-    while (ancestor != nullptr && ancestor is! RenderObjectElement) {
-        if (ancestor is ParentDataElement<ParentData>) {
+    while (ancestor != nullptr && !is<RenderObjectElement>(ancestor)) {
+        if (is<ParentDataElement<ParentData>>(ancestor)) {
             result = ancestor;
                         break;
         }
@@ -2170,9 +2170,9 @@ ParentDataElement<ParentData> RenderObjectElementCls::_findAncestorParentDataEle
         }
         List<ParentDataElement<ParentData>> badAncestors = makeList();
         ancestor = ancestor!->_parent;
-        while (ancestor != nullptr && ancestor is! RenderObjectElement) {
-            if (ancestor is ParentDataElement<ParentData>) {
-                badAncestors->add(((ParentDataElement<ParentData>)ancestor!));
+        while (ancestor != nullptr && !is<RenderObjectElement>(ancestor)) {
+            if (is<ParentDataElement<ParentData>>(ancestor)) {
+                badAncestors->add(as<ParentDataElement<ParentData>>(ancestor!));
             }
             ancestor = ancestor!->_parent;
         }
@@ -2181,7 +2181,7 @@ ParentDataElement<ParentData> RenderObjectElementCls::_findAncestorParentDataEle
             try {
                 ;
             } catch (FlutterError e) {
-                _debugReportException(make<ErrorSummaryCls>("while looking for parent data."), e, e->stackTrace);
+                _debugReportException(make<ErrorSummaryCls>(__s("while looking for parent data.")), e, e->stackTrace);
             };
         }
         return true;
@@ -2191,7 +2191,7 @@ ParentDataElement<ParentData> RenderObjectElementCls::_findAncestorParentDataEle
 
 void RenderObjectElementCls::_debugUpdateRenderObjectOwner() {
     assert([=] () {
-        renderObject->debugCreator = make<DebugCreatorCls>(this);
+        renderObject()->debugCreator = make<DebugCreatorCls>(this);
         return true;
     }());
 }
@@ -2201,7 +2201,7 @@ void RenderObjectElementCls::_performRebuild() {
         _debugDoingBuild = true;
         return true;
     }());
-    (((RenderObjectWidget)widget))->updateRenderObject(this, renderObject);
+    (as<RenderObjectWidget>(widget))->updateRenderObject(this, renderObject());
     assert([=] () {
         _debugDoingBuild = false;
         return true;
@@ -2213,17 +2213,17 @@ void RenderObjectElementCls::_updateParentData(ParentDataWidget<ParentData> pare
     bool applyParentData = true;
     assert([=] () {
         try {
-            if (!parentDataWidget->debugIsValidRenderObject(renderObject)) {
+            if (!parentDataWidget->debugIsValidRenderObject(renderObject())) {
                 applyParentData = false;
                 ;
             }
         } catch (FlutterError e) {
-            _debugReportException(make<ErrorSummaryCls>("while applying parent data."), e, e->stackTrace);
+            _debugReportException(make<ErrorSummaryCls>(__s("while applying parent data.")), e, e->stackTrace);
         };
         return true;
     }());
     if (applyParentData) {
-        parentDataWidget->applyParentData(renderObject);
+        parentDataWidget->applyParentData(renderObject());
     }
 }
 
@@ -2232,7 +2232,7 @@ void RenderObjectElementCls::_updateSlot(Object newSlot) {
     assert(oldSlot != newSlot);
     super->_updateSlot(newSlot);
     assert(slot == newSlot);
-    _ancestorRenderObjectElement!->moveRenderObjectChild(renderObject, oldSlot, slot);
+    _ancestorRenderObjectElement!->moveRenderObjectChild(renderObject(), oldSlot, slot);
 }
 
 void RootRenderObjectElementCls::assignOwner(BuildOwner owner) {
@@ -2280,17 +2280,17 @@ void SingleChildRenderObjectElementCls::forgetChild(Element child) {
 
 void SingleChildRenderObjectElementCls::mount(Object newSlot, Element parent) {
     super->mount(parent, newSlot);
-    _child = updateChild(_child, (((SingleChildRenderObjectWidget)widget))->child, nullptr);
+    _child = updateChild(_child, (as<SingleChildRenderObjectWidget>(widget))->child, nullptr);
 }
 
 void SingleChildRenderObjectElementCls::update(SingleChildRenderObjectWidget newWidget) {
     super->update(newWidget);
     assert(widget == newWidget);
-    _child = updateChild(_child, (((SingleChildRenderObjectWidget)widget))->child, nullptr);
+    _child = updateChild(_child, (as<SingleChildRenderObjectWidget>(widget))->child, nullptr);
 }
 
 void SingleChildRenderObjectElementCls::insertRenderObjectChild(RenderObject child, Object slot) {
-    RenderObjectWithChildMixin<RenderObject> renderObject = ((RenderObjectWithChildMixin<RenderObject>)this->renderObject);
+    RenderObjectWithChildMixin<RenderObject> renderObject = as<RenderObjectWithChildMixin<RenderObject>>(this->renderObject);
     assert(slot == nullptr);
     assert(renderObject->debugValidateChild(child));
     renderObject->child = child;
@@ -2302,7 +2302,7 @@ void SingleChildRenderObjectElementCls::moveRenderObjectChild(RenderObject child
 }
 
 void SingleChildRenderObjectElementCls::removeRenderObjectChild(RenderObject child, Object slot) {
-    RenderObjectWithChildMixin<RenderObject> renderObject = ((RenderObjectWithChildMixin<RenderObject>)this->renderObject);
+    RenderObjectWithChildMixin<RenderObject> renderObject = as<RenderObjectWithChildMixin<RenderObject>>(this->renderObject);
     assert(slot == nullptr);
     assert(renderObject->child == child);
     renderObject->child = nullptr;
@@ -2316,7 +2316,7 @@ MultiChildRenderObjectElementCls::MultiChildRenderObjectElementCls(MultiChildRen
 }
 
 ContainerRenderObjectMixin<RenderObject, ContainerParentDataMixin<RenderObject>> MultiChildRenderObjectElementCls::renderObject() {
-    return ((ContainerRenderObjectMixin<RenderObject, ContainerParentDataMixin<RenderObject>>)super->renderObject);
+    return as<ContainerRenderObjectMixin<RenderObject, ContainerParentDataMixin<RenderObject>>>(super->renderObject);
 }
 
 Iterable<Element> MultiChildRenderObjectElementCls::children() {
@@ -2327,23 +2327,23 @@ Iterable<Element> MultiChildRenderObjectElementCls::children() {
 
 void MultiChildRenderObjectElementCls::insertRenderObjectChild(RenderObject child, IndexedSlot<Element> slot) {
     ContainerRenderObjectMixin<RenderObject, ContainerParentDataMixin<RenderObject>> renderObject = this->renderObject;
-    assert(renderObject->debugValidateChild(child));
-    renderObject->insert(childslot->value?->renderObject);
-    assert(renderObject == this->renderObject);
+    assert(renderObject()->debugValidateChild(child));
+    renderObject()->insert(childslot->value?->renderObject);
+    assert(renderObject() == this->renderObject);
 }
 
 void MultiChildRenderObjectElementCls::moveRenderObjectChild(RenderObject child, IndexedSlot<Element> newSlot, IndexedSlot<Element> oldSlot) {
     ContainerRenderObjectMixin<RenderObject, ContainerParentDataMixin<RenderObject>> renderObject = this->renderObject;
-    assert(child->parent == renderObject);
-    renderObject->move(childnewSlot->value?->renderObject);
-    assert(renderObject == this->renderObject);
+    assert(child->parent == renderObject());
+    renderObject()->move(childnewSlot->value?->renderObject);
+    assert(renderObject() == this->renderObject);
 }
 
 void MultiChildRenderObjectElementCls::removeRenderObjectChild(RenderObject child, Object slot) {
     ContainerRenderObjectMixin<RenderObject, ContainerParentDataMixin<RenderObject>> renderObject = this->renderObject;
-    assert(child->parent == renderObject);
-    renderObject->remove(child);
-    assert(renderObject == this->renderObject);
+    assert(child->parent == renderObject());
+    renderObject()->remove(child);
+    assert(renderObject() == this->renderObject);
 }
 
 void MultiChildRenderObjectElementCls::visitChildren(ElementVisitor visitor) {
@@ -2369,20 +2369,20 @@ Element MultiChildRenderObjectElementCls::inflateWidget(Object newSlot, Widget n
 
 void MultiChildRenderObjectElementCls::mount(Object newSlot, Element parent) {
     super->mount(parent, newSlot);
-    MultiChildRenderObjectWidget multiChildRenderObjectWidget = ((MultiChildRenderObjectWidget)widget);
+    MultiChildRenderObjectWidget multiChildRenderObjectWidget = as<MultiChildRenderObjectWidget>(widget);
     List<Element> children = <Element>filled(multiChildRenderObjectWidget->children->length, _NullElementCls::instance);
     Element previousChild;
-    for (;  < children->length; i = 1) {
+    for (;  < children()->length(); i = 1) {
         Element newChild = inflateWidget(multiChildRenderObjectWidget->children[i], <Element>make<IndexedSlotCls>(i, previousChild));
-        children[i] = newChild;
+        children()[i] = newChild;
         previousChild = newChild;
     }
-    _children = children;
+    _children = children();
 }
 
 void MultiChildRenderObjectElementCls::update(MultiChildRenderObjectWidget newWidget) {
     super->update(newWidget);
-    MultiChildRenderObjectWidget multiChildRenderObjectWidget = ((MultiChildRenderObjectWidget)widget);
+    MultiChildRenderObjectWidget multiChildRenderObjectWidget = as<MultiChildRenderObjectWidget>(widget);
     assert(widget == newWidget);
     assert(!debugChildrenHaveDuplicateKeys(widget, multiChildRenderObjectWidget->children));
     _children = updateChildren(_children, multiChildRenderObjectWidget->children_forgottenChildren);
@@ -2404,19 +2404,19 @@ String DebugCreatorCls::toString() {
 }
 
 FlutterErrorDetails _debugReportException(DiagnosticsNode context, Object exception, InformationCollector informationCollector, StackTrace stack) {
-    FlutterErrorDetails details = make<FlutterErrorDetailsCls>(exception, stack, "widgets library", context, informationCollector);
+    FlutterErrorDetails details = make<FlutterErrorDetailsCls>(exception, stack, __s("widgets library"), context, informationCollector);
     FlutterErrorCls->reportError(details);
     return details;
 }
 
-template<typename T : Element> bool IndexedSlotCls<T>::==(Object other) {
-    if (other->runtimeType != runtimeType) {
+template<typename T> bool IndexedSlotCls<T>::==(Object other) {
+    if (other->runtimeType() != runtimeType) {
         return false;
     }
-    return other is IndexedSlot && index == other->index && value == other->value;
+    return is<IndexedSlot>(other) && index == other->index && value == other->value;
 }
 
-template<typename T : Element> int IndexedSlotCls<T>::hashCode() {
+template<typename T> int IndexedSlotCls<T>::hashCode() {
     return ObjectCls->hash(index, value);
 }
 
@@ -2428,7 +2428,7 @@ void _NullElementCls::performRebuild() {
     return ;
 }
 
-_NullElementCls::_NullElementCls() {
+_NullElementCls::_NullElementCls() : Element(make<_NullWidgetCls>()) {
 }
 
 Element _NullWidgetCls::createElement() {
@@ -2436,5 +2436,5 @@ Element _NullWidgetCls::createElement() {
 }
 
 bool _debugShouldReassemble(DebugReassembleConfig config, Widget widget) {
-    return config == nullptr || config->widgetName == nullptr || widget?->runtimeType->toString() == config->widgetName;
+    return config == nullptr || config->widgetName == nullptr || widget?->runtimeType()->toString() == config->widgetName;
 }

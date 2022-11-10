@@ -20,14 +20,14 @@ void SphereCls::copyFrom(Sphere other) {
 }
 
 bool SphereCls::containsVector3(Vector3 other) {
-    return other->distanceToSquared(center) < radius * radius;
+    return other->distanceToSquared(center()) < radius * radius;
 }
 
 bool SphereCls::intersectsWithVector3(Vector3 other) {
-    return other->distanceToSquared(center) <= radius * radius;
+    return other->distanceToSquared(center()) <= radius * radius;
 }
 
 bool SphereCls::intersectsWithSphere(Sphere other) {
     Unknown radiusSum = radius + other->radius;
-    return other->center->distanceToSquared(center) <= (radiusSum * radiusSum);
+    return other->center->distanceToSquared(center()) <= (radiusSum * radiusSum);
 }

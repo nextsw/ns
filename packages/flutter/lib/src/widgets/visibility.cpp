@@ -7,10 +7,10 @@ VisibilityCls::VisibilityCls(Widget child, Unknown key, bool maintainAnimation, 
         assert(maintainState != nullptr);
         assert(maintainAnimation != nullptr);
         assert(maintainSize != nullptr);
-        assert(maintainState == true || maintainAnimation == false, "Cannot maintain animations if the state is not also maintained.");
-        assert(maintainAnimation == true || maintainSize == false, "Cannot maintain size if animations are not maintained.");
-        assert(maintainSize == true || maintainSemantics == false, "Cannot maintain semantics if size is not maintained.");
-        assert(maintainSize == true || maintainInteractivity == false, "Cannot maintain interactivity if size is not maintained.");
+        assert(maintainState == true || maintainAnimation == false, __s("Cannot maintain animations if the state is not also maintained."));
+        assert(maintainAnimation == true || maintainSize == false, __s("Cannot maintain size if animations are not maintained."));
+        assert(maintainSize == true || maintainSemantics == false, __s("Cannot maintain semantics if size is not maintained."));
+        assert(maintainSize == true || maintainInteractivity == false, __s("Cannot maintain interactivity if size is not maintained."));
     }
 }
 
@@ -39,12 +39,12 @@ Widget VisibilityCls::build(BuildContext context) {
 
 void VisibilityCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(make<FlagPropertyCls>("visible"visible, "hidden", "visible"));
-    properties->add(make<FlagPropertyCls>("maintainState"maintainState, "maintainState"));
-    properties->add(make<FlagPropertyCls>("maintainAnimation"maintainAnimation, "maintainAnimation"));
-    properties->add(make<FlagPropertyCls>("maintainSize"maintainSize, "maintainSize"));
-    properties->add(make<FlagPropertyCls>("maintainSemantics"maintainSemantics, "maintainSemantics"));
-    properties->add(make<FlagPropertyCls>("maintainInteractivity"maintainInteractivity, "maintainInteractivity"));
+    properties->add(make<FlagPropertyCls>(__s("visible")visible, __s("hidden"), __s("visible")));
+    properties->add(make<FlagPropertyCls>(__s("maintainState")maintainState, __s("maintainState")));
+    properties->add(make<FlagPropertyCls>(__s("maintainAnimation")maintainAnimation, __s("maintainAnimation")));
+    properties->add(make<FlagPropertyCls>(__s("maintainSize")maintainSize, __s("maintainSize")));
+    properties->add(make<FlagPropertyCls>(__s("maintainSemantics")maintainSemantics, __s("maintainSemantics")));
+    properties->add(make<FlagPropertyCls>(__s("maintainInteractivity")maintainInteractivity, __s("maintainInteractivity")));
 }
 
 SliverVisibilityCls::SliverVisibilityCls(Unknown key, bool maintainAnimation, bool maintainInteractivity, bool maintainSemantics, bool maintainSize, bool maintainState, Widget replacementSliver, Widget sliver, bool visible) {
@@ -57,10 +57,10 @@ SliverVisibilityCls::SliverVisibilityCls(Unknown key, bool maintainAnimation, bo
         assert(maintainSize != nullptr);
         assert(maintainSemantics != nullptr);
         assert(maintainInteractivity != nullptr);
-        assert(maintainState == true || maintainAnimation == false, "Cannot maintain animations if the state is not also maintained.");
-        assert(maintainAnimation == true || maintainSize == false, "Cannot maintain size if animations are not maintained.");
-        assert(maintainSize == true || maintainSemantics == false, "Cannot maintain semantics if size is not maintained.");
-        assert(maintainSize == true || maintainInteractivity == false, "Cannot maintain interactivity if size is not maintained.");
+        assert(maintainState == true || maintainAnimation == false, __s("Cannot maintain animations if the state is not also maintained."));
+        assert(maintainAnimation == true || maintainSize == false, __s("Cannot maintain size if animations are not maintained."));
+        assert(maintainSize == true || maintainSemantics == false, __s("Cannot maintain semantics if size is not maintained."));
+        assert(maintainSize == true || maintainInteractivity == false, __s("Cannot maintain interactivity if size is not maintained."));
     }
 }
 
@@ -89,10 +89,10 @@ Widget SliverVisibilityCls::build(BuildContext context) {
 
 void SliverVisibilityCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(make<FlagPropertyCls>("visible"visible, "hidden", "visible"));
-    properties->add(make<FlagPropertyCls>("maintainState"maintainState, "maintainState"));
-    properties->add(make<FlagPropertyCls>("maintainAnimation"maintainAnimation, "maintainAnimation"));
-    properties->add(make<FlagPropertyCls>("maintainSize"maintainSize, "maintainSize"));
-    properties->add(make<FlagPropertyCls>("maintainSemantics"maintainSemantics, "maintainSemantics"));
-    properties->add(make<FlagPropertyCls>("maintainInteractivity"maintainInteractivity, "maintainInteractivity"));
+    properties->add(make<FlagPropertyCls>(__s("visible")visible, __s("hidden"), __s("visible")));
+    properties->add(make<FlagPropertyCls>(__s("maintainState")maintainState, __s("maintainState")));
+    properties->add(make<FlagPropertyCls>(__s("maintainAnimation")maintainAnimation, __s("maintainAnimation")));
+    properties->add(make<FlagPropertyCls>(__s("maintainSize")maintainSize, __s("maintainSize")));
+    properties->add(make<FlagPropertyCls>(__s("maintainSemantics")maintainSemantics, __s("maintainSemantics")));
+    properties->add(make<FlagPropertyCls>(__s("maintainInteractivity")maintainInteractivity, __s("maintainInteractivity")));
 }

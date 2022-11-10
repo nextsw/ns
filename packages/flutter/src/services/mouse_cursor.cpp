@@ -15,13 +15,13 @@ MouseCursor MouseCursorManagerCls::debugDeviceActiveCursor(int device) {
 }
 
 void MouseCursorManagerCls::handleDeviceCursorUpdate(Iterable<MouseCursor> cursorCandidates, int device, PointerEvent triggeringEvent) {
-    if (triggeringEvent is PointerRemovedEvent) {
+    if (is<PointerRemovedEvent>(triggeringEvent)) {
         _lastSession->remove(device);
         return;
     }
     MouseCursorSession lastSession = _lastSession[device];
-    MouseCursor nextCursor = _DeferringMouseCursorCls->firstNonDeferred(cursorCandidates) ?? fallbackMouseCursor;
-    assert(nextCursor is! _DeferringMouseCursor);
+    MouseCursor nextCursor = _DeferringMouseCursorCls->firstNonDeferred(cursorCandidates) or fallbackMouseCursor;
+    assert(!is<_DeferringMouseCursor>(nextCursor));
     if (lastSession?->cursor == nextCursor) {
         return;
     }
@@ -40,19 +40,19 @@ MouseCursorSessionCls::MouseCursorSessionCls(MouseCursor cursor, int device) {
 
 String MouseCursorCls::toString(DiagnosticLevel minLevel) {
     String debugDescription = this->debugDescription;
-    if (minLevel->index >= DiagnosticLevelCls::info->index && debugDescription != nullptr) {
-        return debugDescription;
+    if (minLevel->index >= DiagnosticLevelCls::info->index && debugDescription() != nullptr) {
+        return debugDescription();
     }
     return super->toString(minLevel);
 }
 
 MouseCursorSession _DeferringMouseCursorCls::createSession(int device) {
-    assert(false, "_DeferringMouseCursor can not create a session");
+    assert(false, __s("_DeferringMouseCursor can not create a session"));
     ;
 }
 
 String _DeferringMouseCursorCls::debugDescription() {
-    return "defer";
+    return __s("defer");
 }
 
 MouseCursor _DeferringMouseCursorCls::firstNonDeferred(Iterable<MouseCursor> cursors) {
@@ -76,22 +76,22 @@ _NoopMouseCursorSession _NoopMouseCursorCls::createSession(int device) {
 }
 
 String _NoopMouseCursorCls::debugDescription() {
-    return "uncontrolled";
+    return __s("uncontrolled");
 }
 
 SystemMouseCursor _SystemMouseCursorSessionCls::cursor() {
-    return ((SystemMouseCursor)super->cursor);
+    return as<SystemMouseCursor>(super->cursor);
 }
 
 Future<void> _SystemMouseCursorSessionCls::activate() {
-    Map<String, dynamic> map1 = make<MapCls<>>();map1.set("device", device);map1.set("kind", cursor->kind);return SystemChannelsCls::mouseCursor-><void>invokeMethod("activateSystemCursor", list1);
+    Map<String, dynamic> map1 = make<MapCls<>>();map1.set(__s("device"), device);map1.set(__s("kind"), cursor()->kind);return SystemChannelsCls::mouseCursor-><void>invokeMethod(__s("activateSystemCursor"), list1);
 }
 
 void _SystemMouseCursorSessionCls::dispose() {
 }
 
 String SystemMouseCursorCls::debugDescription() {
-    return "${objectRuntimeType(this, 'SystemMouseCursor')}($kind)";
+    return __s("${objectRuntimeType(this, 'SystemMouseCursor')}($kind)");
 }
 
 MouseCursorSession SystemMouseCursorCls::createSession(int device) {
@@ -99,19 +99,19 @@ MouseCursorSession SystemMouseCursorCls::createSession(int device) {
 }
 
 bool SystemMouseCursorCls::==(Object other) {
-    if (other->runtimeType != runtimeType) {
+    if (other->runtimeType() != runtimeType) {
         return false;
     }
-    return other is SystemMouseCursor && other->kind == kind;
+    return is<SystemMouseCursor>(other) && other->kind == kind;
 }
 
 int SystemMouseCursorCls::hashCode() {
-    return kind->hashCode;
+    return kind->hashCode();
 }
 
 void SystemMouseCursorCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<String>make<DiagnosticsPropertyCls>("kind", kindDiagnosticLevelCls::debug));
+    properties->add(<String>make<DiagnosticsPropertyCls>(__s("kind"), kindDiagnosticLevelCls::debug));
 }
 
 void SystemMouseCursorCls::_(String kind)

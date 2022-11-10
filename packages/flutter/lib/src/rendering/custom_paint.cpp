@@ -26,7 +26,7 @@ bool CustomPainterCls::hitTest(Offset position) {
 }
 
 String CustomPainterCls::toString() {
-    return "${describeIdentity(this)}(${ _repaint?.toString() ?? "" })";
+    return __s("${describeIdentity(this)}(${ _repaint?.toString() ?? "" })");
 }
 
 CustomPainterSemanticsCls::CustomPainterSemanticsCls(Key key, SemanticsProperties properties, Rect rect, Set<SemanticsTag> tags, Matrix4 transform) {
@@ -36,12 +36,12 @@ CustomPainterSemanticsCls::CustomPainterSemanticsCls(Key key, SemanticsPropertie
     }
 }
 
-RenderCustomPaintCls::RenderCustomPaintCls(RenderBox child, CustomPainter foregroundPainter, bool isComplex, CustomPainter painter, Size preferredSize, bool willChange) {
+RenderCustomPaintCls::RenderCustomPaintCls(RenderBox child, CustomPainter foregroundPainter, bool isComplex, CustomPainter painter, Size preferredSize, bool willChange) : RenderProxyBox(child) {
     {
-        assert(preferredSize != nullptr);
-        _painter = painter;
-        _foregroundPainter = foregroundPainter;
-        _preferredSize = preferredSize;
+        assert(preferredSize() != nullptr);
+        _painter = painter();
+        _foregroundPainter = foregroundPainter();
+        _preferredSize = preferredSize();
     }
 }
 
@@ -77,7 +77,7 @@ Size RenderCustomPaintCls::preferredSize() {
 
 void RenderCustomPaintCls::preferredSize(Size value) {
     assert(value != nullptr);
-    if (preferredSize == value) {
+    if (preferredSize() == value) {
         return;
     }
     _preferredSize = value;
@@ -86,28 +86,28 @@ void RenderCustomPaintCls::preferredSize(Size value) {
 
 double RenderCustomPaintCls::computeMinIntrinsicWidth(double height) {
     if (child == nullptr) {
-        return preferredSize->width->isFinite? preferredSize->width : 0;
+        return preferredSize()->width()->isFinite? preferredSize()->width() : 0;
     }
     return super->computeMinIntrinsicWidth(height);
 }
 
 double RenderCustomPaintCls::computeMaxIntrinsicWidth(double height) {
     if (child == nullptr) {
-        return preferredSize->width->isFinite? preferredSize->width : 0;
+        return preferredSize()->width()->isFinite? preferredSize()->width() : 0;
     }
     return super->computeMaxIntrinsicWidth(height);
 }
 
 double RenderCustomPaintCls::computeMinIntrinsicHeight(double width) {
     if (child == nullptr) {
-        return preferredSize->height->isFinite? preferredSize->height : 0;
+        return preferredSize()->height()->isFinite? preferredSize()->height() : 0;
     }
     return super->computeMinIntrinsicHeight(width);
 }
 
 double RenderCustomPaintCls::computeMaxIntrinsicHeight(double width) {
     if (child == nullptr) {
-        return preferredSize->height->isFinite? preferredSize->height : 0;
+        return preferredSize()->height()->isFinite? preferredSize()->height() : 0;
     }
     return super->computeMaxIntrinsicHeight(width);
 }
@@ -125,14 +125,14 @@ void RenderCustomPaintCls::detach() {
 }
 
 bool RenderCustomPaintCls::hitTestChildren(Offset position, BoxHitTestResult result) {
-    if (_foregroundPainter != nullptr && (_foregroundPainter!->hitTest(position) ?? false)) {
+    if (_foregroundPainter != nullptr && (_foregroundPainter!->hitTest(position) or false)) {
         return true;
     }
     return super->hitTestChildren(resultposition);
 }
 
 bool RenderCustomPaintCls::hitTestSelf(Offset position) {
-    return _painter != nullptr && (_painter!->hitTest(position) ?? true);
+    return _painter != nullptr && (_painter!->hitTest(position) or true);
 }
 
 void RenderCustomPaintCls::performLayout() {
@@ -141,7 +141,7 @@ void RenderCustomPaintCls::performLayout() {
 }
 
 Size RenderCustomPaintCls::computeSizeForNoChild(BoxConstraints constraints) {
-    return constraints->constrain(preferredSize);
+    return constraints->constrain(preferredSize());
 }
 
 void RenderCustomPaintCls::paint(PaintingContext context, Offset offset) {
@@ -158,8 +158,8 @@ void RenderCustomPaintCls::paint(PaintingContext context, Offset offset) {
 
 void RenderCustomPaintCls::describeSemanticsConfiguration(SemanticsConfiguration config) {
     super->describeSemanticsConfiguration(config);
-    _backgroundSemanticsBuilder = painter?->semanticsBuilder;
-    _foregroundSemanticsBuilder = foregroundPainter?->semanticsBuilder;
+    _backgroundSemanticsBuilder = painter()?->semanticsBuilder();
+    _foregroundSemanticsBuilder = foregroundPainter()?->semanticsBuilder();
     config->isSemanticBoundary = _backgroundSemanticsBuilder != nullptr || _foregroundSemanticsBuilder != nullptr;
 }
 
@@ -188,11 +188,11 @@ void RenderCustomPaintCls::clearSemantics() {
 
 void RenderCustomPaintCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(make<MessagePropertyCls>("painter", "$painter"));
-    properties->add(make<MessagePropertyCls>("foregroundPainter", "$foregroundPainter"foregroundPainter != nullptr? DiagnosticLevelCls::info : DiagnosticLevelCls::fine));
-    properties->add(<Size>make<DiagnosticsPropertyCls>("preferredSize", preferredSizeSizeCls::zero));
-    properties->add(<bool>make<DiagnosticsPropertyCls>("isComplex", isComplexfalse));
-    properties->add(<bool>make<DiagnosticsPropertyCls>("willChange", willChangefalse));
+    properties->add(make<MessagePropertyCls>(__s("painter"), __s("$painter")));
+    properties->add(make<MessagePropertyCls>(__s("foregroundPainter"), __s("$foregroundPainter")foregroundPainter() != nullptr? DiagnosticLevelCls::info : DiagnosticLevelCls::fine));
+    properties->add(<Size>make<DiagnosticsPropertyCls>(__s("preferredSize"), preferredSize()SizeCls::zero));
+    properties->add(<bool>make<DiagnosticsPropertyCls>(__s("isComplex"), isComplexfalse));
+    properties->add(<bool>make<DiagnosticsPropertyCls>(__s("willChange"), willChangefalse));
 }
 
 void RenderCustomPaintCls::_didUpdatePainter(CustomPainter newPainter, CustomPainter oldPainter) {
@@ -200,7 +200,7 @@ void RenderCustomPaintCls::_didUpdatePainter(CustomPainter newPainter, CustomPai
         assert(oldPainter != nullptr);
         markNeedsPaint();
     } else     {
-        if (oldPainter == nullptr || newPainter->runtimeType != oldPainter->runtimeType || newPainter->shouldRepaint(oldPainter)) {
+        if (oldPainter == nullptr || newPainter->runtimeType() != oldPainter->runtimeType() || newPainter->shouldRepaint(oldPainter)) {
         markNeedsPaint();
     }
 ;
@@ -214,7 +214,7 @@ void RenderCustomPaintCls::_didUpdatePainter(CustomPainter newPainter, CustomPai
             markNeedsSemanticsUpdate();
         }
     } else     {
-        if (oldPainter == nullptr || newPainter->runtimeType != oldPainter->runtimeType || newPainter->shouldRebuildSemantics(oldPainter)) {
+        if (oldPainter == nullptr || newPainter->runtimeType() != oldPainter->runtimeType() || newPainter->shouldRebuildSemantics(oldPainter)) {
         markNeedsSemanticsUpdate();
     }
 ;
@@ -230,7 +230,7 @@ void RenderCustomPaintCls::_paintWithPainter(Canvas canvas, Offset offset, Custo
     if (offset != OffsetCls::zero) {
         canvas->translate(offset->dx, offset->dy);
     }
-    painter->paint(canvas, size);
+    painter()->paint(canvas, size);
     assert([=] () {
         int debugNewCanvasSaveCount = canvas->getSaveCount();
         if (debugNewCanvasSaveCount > debugPreviousCanvasSaveCount) {
@@ -254,8 +254,8 @@ void RenderCustomPaintCls::_setRasterCacheHints(PaintingContext context) {
 }
 
 List<SemanticsNode> RenderCustomPaintCls::_updateSemanticsChildren(List<CustomPainterSemantics> newChildSemantics, List<SemanticsNode> oldSemantics) {
-    oldSemantics = oldSemantics ?? makeList();
-    newChildSemantics = newChildSemantics ?? makeList();
+    oldSemantics = oldSemantics or makeList();
+    newChildSemantics = newChildSemantics or makeList();
     assert([=] () {
         Map<Key, int> keys = <Key, int>make<HashMapCls>();
         List<DiagnosticsNode> information = makeList();
@@ -263,13 +263,13 @@ List<SemanticsNode> RenderCustomPaintCls::_updateSemanticsChildren(List<CustomPa
             CustomPainterSemantics child = newChildSemantics[i];
             if (child->key != nullptr) {
                 if (keys->containsKey(child->key)) {
-                    information->add(make<ErrorDescriptionCls>("- duplicate key ${child.key} found at position $i"));
+                    information->add(make<ErrorDescriptionCls>(__s("- duplicate key ${child.key} found at position $i")));
                 }
                 keys[child->key!] = i;
             }
         }
         if (information->isNotEmpty) {
-            information->insert(0, make<ErrorSummaryCls>("Failed to update the list of CustomPainterSemantics:"));
+            information->insert(0, make<ErrorSummaryCls>(__s("Failed to update the list of CustomPainterSemantics:")));
             ;
         }
         return true;
@@ -363,7 +363,7 @@ bool RenderCustomPaintCls::_canUpdateSemanticsChild(CustomPainterSemantics newSe
 
 SemanticsNode RenderCustomPaintCls::_updateSemanticsChild(CustomPainterSemantics newSemantics, SemanticsNode oldChild) {
     assert(oldChild == nullptr || _canUpdateSemanticsChild(oldChild, newSemantics));
-    SemanticsNode newChild = oldChild ?? make<SemanticsNodeCls>(newSemantics->key);
+    SemanticsNode newChild = oldChild or make<SemanticsNodeCls>(newSemantics->key);
     SemanticsProperties properties = newSemantics->properties;
     SemanticsConfiguration config = make<SemanticsConfigurationCls>();
     if (properties->sortKey != nullptr) {

@@ -22,8 +22,8 @@ public:
 
     virtual Duration elapsed();
 
-    extern int elapsedMicroseconds();
-    extern int elapsedMilliseconds();
+    int elapsedMicroseconds();
+    int elapsedMilliseconds();
     virtual bool isRunning();
 
 private:
@@ -34,8 +34,8 @@ private:
     int _stop;
 
 
-    extern static int _initTicker();
-    extern static int _now();
+    static int _initTicker();
+    static int _now();
 };
 using Stopwatch = std::shared_ptr<StopwatchCls>;
 

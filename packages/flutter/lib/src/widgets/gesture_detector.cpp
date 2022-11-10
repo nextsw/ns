@@ -1,21 +1,21 @@
 #include "gesture_detector.hpp"
-template<typename T : GestureRecognizer> bool GestureRecognizerFactoryCls<T>::_debugAssertTypeMatches(Type type) {
-    assert(type == TCls, "GestureRecognizerFactory of type $T was used where type $type was specified.");
+template<typename T> bool GestureRecognizerFactoryCls<T>::_debugAssertTypeMatches(Type type) {
+    assert(type == TCls, __s("GestureRecognizerFactory of type $T was used where type $type was specified."));
     return true;
 }
 
-template<typename T : GestureRecognizer> GestureRecognizerFactoryWithHandlersCls<T>::GestureRecognizerFactoryWithHandlersCls(GestureRecognizerFactoryConstructor<T> _constructor, GestureRecognizerFactoryInitializer<T> _initializer) {
+template<typename T> GestureRecognizerFactoryWithHandlersCls<T>::GestureRecognizerFactoryWithHandlersCls(GestureRecognizerFactoryConstructor<T> _constructor, GestureRecognizerFactoryInitializer<T> _initializer) {
     {
         assert(_constructor != nullptr);
         assert(_initializer != nullptr);
     }
 }
 
-template<typename T : GestureRecognizer> T GestureRecognizerFactoryWithHandlersCls<T>::constructor() {
+template<typename T> T GestureRecognizerFactoryWithHandlersCls<T>::constructor() {
     return _constructor();
 }
 
-template<typename T : GestureRecognizer> void GestureRecognizerFactoryWithHandlersCls<T>::initializer(T instance) {
+template<typename T> void GestureRecognizerFactoryWithHandlersCls<T>::initializer(T instance) {
     return _initializer(instance);
 }
 
@@ -32,7 +32,7 @@ GestureDetectorCls::GestureDetectorCls(HitTestBehavior behavior, Widget child, D
                 if (havePan && haveScale) {
                     ;
                 }
-                String recognizer = havePan? "pan" : "scale";
+                String recognizer = havePan? __s("pan") : __s("scale");
                 if (haveVerticalDrag && haveHorizontalDrag) {
                     ;
                 }
@@ -106,7 +106,7 @@ Widget GestureDetectorCls::build(BuildContext context) {
 
 void GestureDetectorCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<DragStartBehavior>make<EnumPropertyCls>("startBehavior", dragStartBehavior));
+    properties->add(<DragStartBehavior>make<EnumPropertyCls>(__s("startBehavior"), dragStartBehavior));
 }
 
 RawGestureDetectorCls::RawGestureDetectorCls(HitTestBehavior behavior, Widget child, bool excludeFromSemantics, Map<Type, GestureRecognizerFactory> gestures, Unknown key, SemanticsGestureDelegate semantics) {
@@ -122,14 +122,14 @@ RawGestureDetectorState RawGestureDetectorCls::createState() {
 
 void RawGestureDetectorStateCls::initState() {
     super->initState();
-    _semantics = widget->semantics ?? make<_DefaultSemanticsGestureDelegateCls>(this);
+    _semantics = widget->semantics or make<_DefaultSemanticsGestureDelegateCls>(this);
     _syncAll(widget->gestures);
 }
 
 void RawGestureDetectorStateCls::didUpdateWidget(RawGestureDetector oldWidget) {
     super->didUpdateWidget(oldWidget);
     if (!(oldWidget->semantics == nullptr && widget->semantics == nullptr)) {
-        _semantics = widget->semantics ?? make<_DefaultSemanticsGestureDelegateCls>(this);
+        _semantics = widget->semantics or make<_DefaultSemanticsGestureDelegateCls>(this);
     }
     _syncAll(widget->gestures);
 }
@@ -143,7 +143,7 @@ void RawGestureDetectorStateCls::replaceGestureRecognizers(Map<Type, GestureReco
     }());
     _syncAll(gestures);
     if (!widget->excludeFromSemantics) {
-        RenderSemanticsGestureHandler semanticsGestureHandler = ((RenderSemanticsGestureHandler)context->findRenderObject()!);
+        RenderSemanticsGestureHandler semanticsGestureHandler = as<RenderSemanticsGestureHandler>(context->findRenderObject()!);
         _updateSemanticsForRenderObject(semanticsGestureHandler);
     }
 }
@@ -152,7 +152,7 @@ void RawGestureDetectorStateCls::replaceSemanticsActions(Set<SemanticsAction> ac
     if (widget->excludeFromSemantics) {
         return;
     }
-    RenderSemanticsGestureHandler semanticsGestureHandler = ((RenderSemanticsGestureHandler)context->findRenderObject());
+    RenderSemanticsGestureHandler semanticsGestureHandler = as<RenderSemanticsGestureHandler>(context->findRenderObject());
     assert([=] () {
         if (semanticsGestureHandler == nullptr) {
             ;
@@ -163,7 +163,7 @@ void RawGestureDetectorStateCls::replaceSemanticsActions(Set<SemanticsAction> ac
 }
 
 void RawGestureDetectorStateCls::dispose() {
-    for (GestureRecognizer recognizer : _recognizers!->values) {
+    for (GestureRecognizer recognizer : _recognizers!->values()) {
         recognizer->dispose();
     }
     _recognizers = nullptr;
@@ -171,9 +171,9 @@ void RawGestureDetectorStateCls::dispose() {
 }
 
 Widget RawGestureDetectorStateCls::build(BuildContext context) {
-    Widget result = make<ListenerCls>(_handlePointerDown, _handlePointerPanZoomStart, widget->behavior ?? _defaultBehavior, widget->child);
+    Widget result = make<ListenerCls>(_handlePointerDown, _handlePointerPanZoomStart, widget->behavior or _defaultBehavior(), widget->child);
     if (!widget->excludeFromSemantics) {
-        result = make<_GestureSemanticsCls>(widget->behavior ?? _defaultBehavior, _updateSemanticsForRenderObject, result);
+        result = make<_GestureSemanticsCls>(widget->behavior or _defaultBehavior(), _updateSemanticsForRenderObject, result);
     }
     return result;
 }
@@ -181,19 +181,19 @@ Widget RawGestureDetectorStateCls::build(BuildContext context) {
 void RawGestureDetectorStateCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
     if (_recognizers == nullptr) {
-        properties->add(DiagnosticsNodeCls->message("DISPOSED"));
+        properties->add(DiagnosticsNodeCls->message(__s("DISPOSED")));
     } else {
-        List<String> gestures = _recognizers!->values-><String>map([=] (GestureRecognizer recognizer) {
+        List<String> gestures = _recognizers!->values()-><String>map([=] (GestureRecognizer recognizer) {
     recognizer->debugDescription;
 })->toList();
-        properties->add(<String>make<IterablePropertyCls>("gestures", gestures"<none>"));
-        properties->add(<GestureRecognizer>make<IterablePropertyCls>("recognizers", _recognizers!->valuesDiagnosticLevelCls::fine));
-        properties->add(<bool>make<DiagnosticsPropertyCls>("excludeFromSemantics", widget->excludeFromSemanticsfalse));
+        properties->add(<String>make<IterablePropertyCls>(__s("gestures"), gestures__s("<none>")));
+        properties->add(<GestureRecognizer>make<IterablePropertyCls>(__s("recognizers"), _recognizers!->values()DiagnosticLevelCls::fine));
+        properties->add(<bool>make<DiagnosticsPropertyCls>(__s("excludeFromSemantics"), widget->excludeFromSemanticsfalse));
         if (!widget->excludeFromSemantics) {
-            properties->add(<SemanticsGestureDelegate>make<DiagnosticsPropertyCls>("semantics", widget->semanticsnullptr));
+            properties->add(<SemanticsGestureDelegate>make<DiagnosticsPropertyCls>(__s("semantics"), widget->semanticsnullptr));
         }
     }
-    properties->add(<HitTestBehavior>make<EnumPropertyCls>("behavior", widget->behaviornullptr));
+    properties->add(<HitTestBehavior>make<EnumPropertyCls>(__s("behavior"), widget->behaviornullptr));
 }
 
 void RawGestureDetectorStateCls::_syncAll(Map<Type, GestureRecognizerFactory> gestures) {
@@ -204,8 +204,8 @@ void RawGestureDetectorStateCls::_syncAll(Map<Type, GestureRecognizerFactory> ge
         assert(gestures[type] != nullptr);
         assert(gestures[type]!->_debugAssertTypeMatches(type));
         assert(!_recognizers!->containsKey(type));
-        _recognizers![type] = oldRecognizers[type] ?? gestures[type]!->constructor();
-        assert(_recognizers![type]->runtimeType == type, "GestureRecognizerFactory of type $type created a GestureRecognizer of type ${_recognizers![type].runtimeType}. The GestureRecognizerFactory must be specialized with the type of the class that it returns from its constructor method.");
+        _recognizers![type] = oldRecognizers[type] or gestures[type]!->constructor();
+        assert(_recognizers![type]->runtimeType == type, __s("GestureRecognizerFactory of type $type created a GestureRecognizer of type ${_recognizers![type].runtimeType}. The GestureRecognizerFactory must be specialized with the type of the class that it returns from its constructor method."));
         gestures[type]!->initializer(_recognizers![type]!);
     }
     for (Type type : oldRecognizers->keys) {
@@ -217,14 +217,14 @@ void RawGestureDetectorStateCls::_syncAll(Map<Type, GestureRecognizerFactory> ge
 
 void RawGestureDetectorStateCls::_handlePointerDown(PointerDownEvent event) {
     assert(_recognizers != nullptr);
-    for (GestureRecognizer recognizer : _recognizers!->values) {
+    for (GestureRecognizer recognizer : _recognizers!->values()) {
         recognizer->addPointer(event);
     }
 }
 
 void RawGestureDetectorStateCls::_handlePointerPanZoomStart(PointerPanZoomStartEvent event) {
     assert(_recognizers != nullptr);
-    for (GestureRecognizer recognizer : _recognizers!->values) {
+    for (GestureRecognizer recognizer : _recognizers!->values()) {
         recognizer->addPointerPanZoom(event);
     }
 }
@@ -257,7 +257,7 @@ _GestureSemanticsCls::_GestureSemanticsCls(_AssignSemantics assignSemantics, Hit
 }
 
 String SemanticsGestureDelegateCls::toString() {
-    return "${objectRuntimeType(this, 'SemanticsGestureDelegate')}()";
+    return __s("${objectRuntimeType(this, 'SemanticsGestureDelegate')}()");
 }
 
 void _DefaultSemanticsGestureDelegateCls::assignSemantics(RenderSemanticsGestureHandler renderObject) {
@@ -267,7 +267,7 @@ void _DefaultSemanticsGestureDelegateCls::assignSemantics(RenderSemanticsGesture
 }
 
 GestureTapCallback _DefaultSemanticsGestureDelegateCls::_getTapHandler(Map<Type, GestureRecognizer> recognizers) {
-    TapGestureRecognizer tap = ((TapGestureRecognizer)recognizers[TapGestureRecognizerCls]);
+    TapGestureRecognizer tap = as<TapGestureRecognizer>(recognizers[TapGestureRecognizerCls]);
     if (tap == nullptr) {
         return nullptr;
     }
@@ -280,7 +280,7 @@ GestureTapCallback _DefaultSemanticsGestureDelegateCls::_getTapHandler(Map<Type,
 }
 
 GestureLongPressCallback _DefaultSemanticsGestureDelegateCls::_getLongPressHandler(Map<Type, GestureRecognizer> recognizers) {
-    LongPressGestureRecognizer longPress = ((LongPressGestureRecognizer)recognizers[LongPressGestureRecognizerCls]);
+    LongPressGestureRecognizer longPress = as<LongPressGestureRecognizer>(recognizers[LongPressGestureRecognizerCls]);
     if (longPress == nullptr) {
         return nullptr;
     }
@@ -294,8 +294,8 @@ GestureLongPressCallback _DefaultSemanticsGestureDelegateCls::_getLongPressHandl
 }
 
 GestureDragUpdateCallback _DefaultSemanticsGestureDelegateCls::_getHorizontalDragUpdateHandler(Map<Type, GestureRecognizer> recognizers) {
-    HorizontalDragGestureRecognizer horizontal = ((HorizontalDragGestureRecognizer)recognizers[HorizontalDragGestureRecognizerCls]);
-    PanGestureRecognizer pan = ((PanGestureRecognizer)recognizers[PanGestureRecognizerCls]);
+    HorizontalDragGestureRecognizer horizontal = as<HorizontalDragGestureRecognizer>(recognizers[HorizontalDragGestureRecognizerCls]);
+    PanGestureRecognizer pan = as<PanGestureRecognizer>(recognizers[PanGestureRecognizerCls]);
     GestureDragUpdateCallback horizontalHandler = horizontal == nullptr? nullptr : [=] (DragUpdateDetails details) {
     horizontal->onDown?->call(make<DragDownDetailsCls>());
     horizontal->onStart?->call(make<DragStartDetailsCls>());
@@ -322,8 +322,8 @@ GestureDragUpdateCallback _DefaultSemanticsGestureDelegateCls::_getHorizontalDra
 }
 
 GestureDragUpdateCallback _DefaultSemanticsGestureDelegateCls::_getVerticalDragUpdateHandler(Map<Type, GestureRecognizer> recognizers) {
-    VerticalDragGestureRecognizer vertical = ((VerticalDragGestureRecognizer)recognizers[VerticalDragGestureRecognizerCls]);
-    PanGestureRecognizer pan = ((PanGestureRecognizer)recognizers[PanGestureRecognizerCls]);
+    VerticalDragGestureRecognizer vertical = as<VerticalDragGestureRecognizer>(recognizers[VerticalDragGestureRecognizerCls]);
+    PanGestureRecognizer pan = as<PanGestureRecognizer>(recognizers[PanGestureRecognizerCls]);
     GestureDragUpdateCallback verticalHandler = vertical == nullptr? nullptr : [=] (DragUpdateDetails details) {
     vertical->onDown?->call(make<DragDownDetailsCls>());
     vertical->onStart?->call(make<DragStartDetailsCls>());

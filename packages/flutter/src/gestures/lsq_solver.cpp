@@ -56,17 +56,17 @@ PolynomialFitCls::PolynomialFitCls(int degree) {
 
 LeastSquaresSolverCls::LeastSquaresSolverCls(List<double> w, List<double> x, List<double> y) {
     {
-        assert(x->length == y->length);
-        assert(y->length == w->length);
+        assert(x->length() == y->length());
+        assert(y->length() == w->length());
     }
 }
 
 PolynomialFit LeastSquaresSolverCls::solve(int degree) {
-    if (degree > x->length) {
+    if (degree > x->length()) {
         return nullptr;
     }
     PolynomialFit result = make<PolynomialFitCls>(degree);
-    int m = x->length;
+    int m = x->length();
     int n = degree + 1;
     _Matrix a = make<_MatrixCls>(n, m);
     for (;  < m; h = 1) {

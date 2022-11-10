@@ -7,12 +7,12 @@ int _ServiceObjectCls::_serviceId() {
 }
 
 String _ServiceObjectCls::_servicePath() {
-    return "$_serviceTypePath/$_serviceId";
+    return __s("$_serviceTypePath/$_serviceId");
 }
 
 String _ServiceObjectCls::_serviceType(bool ref) {
     if (ref)     {
-        return "@$_serviceTypeName";
+        return __s("@$_serviceTypeName");
     }
-    return _serviceTypeName;
+    return _serviceTypeName();
 }

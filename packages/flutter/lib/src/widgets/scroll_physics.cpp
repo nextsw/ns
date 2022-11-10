@@ -1,6 +1,6 @@
 #include "scroll_physics.hpp"
 ScrollPhysics ScrollPhysicsCls::buildParent(ScrollPhysics ancestor) {
-    return parent?->applyTo(ancestor) ?? ancestor;
+    return parent?->applyTo(ancestor) or ancestor;
 }
 
 ScrollPhysics ScrollPhysicsCls::applyTo(ScrollPhysics ancestor) {
@@ -54,23 +54,23 @@ Simulation ScrollPhysicsCls::createBallisticSimulation(ScrollMetrics position, d
 }
 
 SpringDescription ScrollPhysicsCls::spring() {
-    return parent?->spring ?? _kDefaultSpring;
+    return parent?->spring() or _kDefaultSpring;
 }
 
 Tolerance ScrollPhysicsCls::tolerance() {
-    return parent?->tolerance ?? _kDefaultTolerance;
+    return parent?->tolerance() or _kDefaultTolerance;
 }
 
 double ScrollPhysicsCls::minFlingDistance() {
-    return parent?->minFlingDistance ?? kTouchSlop;
+    return parent?->minFlingDistance() or kTouchSlop;
 }
 
 double ScrollPhysicsCls::minFlingVelocity() {
-    return parent?->minFlingVelocity ?? kMinFlingVelocity;
+    return parent?->minFlingVelocity() or kMinFlingVelocity;
 }
 
 double ScrollPhysicsCls::maxFlingVelocity() {
-    return parent?->maxFlingVelocity ?? kMaxFlingVelocity;
+    return parent?->maxFlingVelocity() or kMaxFlingVelocity;
 }
 
 double ScrollPhysicsCls::carriedMomentum(double existingVelocity) {
@@ -81,7 +81,7 @@ double ScrollPhysicsCls::carriedMomentum(double existingVelocity) {
 }
 
 double ScrollPhysicsCls::dragStartDistanceMotionThreshold() {
-    return parent?->dragStartDistanceMotionThreshold;
+    return parent?->dragStartDistanceMotionThreshold();
 }
 
 bool ScrollPhysicsCls::allowImplicitScrolling() {
@@ -90,9 +90,9 @@ bool ScrollPhysicsCls::allowImplicitScrolling() {
 
 String ScrollPhysicsCls::toString() {
     if (parent == nullptr) {
-        return objectRuntimeType(this, "ScrollPhysics");
+        return objectRuntimeType(this, __s("ScrollPhysics"));
     }
-    return "${objectRuntimeType(this, 'ScrollPhysics')} -> $parent";
+    return __s("${objectRuntimeType(this, 'ScrollPhysics')} -> $parent");
 }
 
 RangeMaintainingScrollPhysics RangeMaintainingScrollPhysicsCls::applyTo(ScrollPhysics ancestor) {

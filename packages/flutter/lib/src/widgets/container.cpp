@@ -18,33 +18,33 @@ void DecoratedBoxCls::debugFillProperties(DiagnosticPropertiesBuilder properties
     super->debugFillProperties(properties);
     String label;
     ;
-    properties->add(<DecorationPosition>make<EnumPropertyCls>("position", positionDiagnosticLevelCls::hidden));
+    properties->add(<DecorationPosition>make<EnumPropertyCls>(__s("position"), positionDiagnosticLevelCls::hidden));
     properties->add(<Decoration>make<DiagnosticsPropertyCls>(label, decoration));
 }
 
 ContainerCls::ContainerCls(AlignmentGeometry alignment, Widget child, Clip clipBehavior, Color color, BoxConstraints constraints, Decoration decoration, Decoration foregroundDecoration, double height, Unknown key, EdgeInsetsGeometry margin, EdgeInsetsGeometry padding, Matrix4 transform, AlignmentGeometry transformAlignment, double width) {
     {
-        assert(margin == nullptr || margin->isNonNegative);
-        assert(padding == nullptr || padding->isNonNegative);
+        assert(margin == nullptr || margin->isNonNegative());
+        assert(padding == nullptr || padding->isNonNegative());
         assert(decoration == nullptr || decoration->debugAssertIsValid());
         assert(constraints == nullptr || constraints->debugAssertIsValid());
         assert(clipBehavior != nullptr);
         assert(decoration != nullptr || clipBehavior == ClipCls::none);
-        assert(color == nullptr || decoration == nullptr, "Cannot provide both a color and a decoration\nTo provide both, use "decoration: BoxDecoration(color: color)".");
-        constraints = (width != nullptr || height != nullptr)? constraints?->tighten(width, height) ?? BoxConstraintsCls->tightFor(width, height) : constraints;
+        assert(color == nullptr || decoration == nullptr, __s("Cannot provide both a color and a decoration\nTo provide both, use "decoration: BoxDecoration(color: color)"."));
+        constraints = (width != nullptr || height != nullptr)? constraints?->tighten(width, height) or BoxConstraintsCls->tightFor(width, height) : constraints;
     }
 }
 
 Widget ContainerCls::build(BuildContext context) {
     Widget current = child;
-    if (child == nullptr && (constraints == nullptr || !constraints!->isTight)) {
+    if (child == nullptr && (constraints == nullptr || !constraints!->isTight())) {
         current = make<LimitedBoxCls>(0.0, 0.0, make<ConstrainedBoxCls>(BoxConstraintsCls->expand()));
     } else     {
         if (alignment != nullptr) {
         current = make<AlignCls>(alignment!, current);
     }
 ;
-    }    EdgeInsetsGeometry effectivePadding = _paddingIncludingDecoration;
+    }    EdgeInsetsGeometry effectivePadding = _paddingIncludingDecoration();
     if (effectivePadding != nullptr) {
         current = make<PaddingCls>(effectivePadding, current);
     }
@@ -75,18 +75,18 @@ Widget ContainerCls::build(BuildContext context) {
 
 void ContainerCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<AlignmentGeometry>make<DiagnosticsPropertyCls>("alignment", alignmentfalse, nullptr));
-    properties->add(<EdgeInsetsGeometry>make<DiagnosticsPropertyCls>("padding", paddingnullptr));
-    properties->add(<Clip>make<DiagnosticsPropertyCls>("clipBehavior", clipBehaviorClipCls::none));
+    properties->add(<AlignmentGeometry>make<DiagnosticsPropertyCls>(__s("alignment"), alignmentfalse, nullptr));
+    properties->add(<EdgeInsetsGeometry>make<DiagnosticsPropertyCls>(__s("padding"), paddingnullptr));
+    properties->add(<Clip>make<DiagnosticsPropertyCls>(__s("clipBehavior"), clipBehaviorClipCls::none));
     if (color != nullptr) {
-        properties->add(<Color>make<DiagnosticsPropertyCls>("bg", color));
+        properties->add(<Color>make<DiagnosticsPropertyCls>(__s("bg"), color));
     } else {
-        properties->add(<Decoration>make<DiagnosticsPropertyCls>("bg", decorationnullptr));
+        properties->add(<Decoration>make<DiagnosticsPropertyCls>(__s("bg"), decorationnullptr));
     }
-    properties->add(<Decoration>make<DiagnosticsPropertyCls>("fg", foregroundDecorationnullptr));
-    properties->add(<BoxConstraints>make<DiagnosticsPropertyCls>("constraints", constraintsnullptr));
-    properties->add(<EdgeInsetsGeometry>make<DiagnosticsPropertyCls>("margin", marginnullptr));
-    properties->add(<Matrix4>has("transform", transform));
+    properties->add(<Decoration>make<DiagnosticsPropertyCls>(__s("fg"), foregroundDecorationnullptr));
+    properties->add(<BoxConstraints>make<DiagnosticsPropertyCls>(__s("constraints"), constraintsnullptr));
+    properties->add(<EdgeInsetsGeometry>make<DiagnosticsPropertyCls>(__s("margin"), marginnullptr));
+    properties->add(<Matrix4>has(__s("transform"), transform));
 }
 
 EdgeInsetsGeometry ContainerCls::_paddingIncludingDecoration() {
@@ -111,6 +111,6 @@ bool _DecorationClipperCls::shouldReclip(_DecorationClipper oldClipper) {
 _DecorationClipperCls::_DecorationClipperCls(Decoration decoration, TextDirection textDirection) {
     {
         assert(decoration != nullptr);
-        textDirection = textDirection ?? TextDirectionCls::ltr;
+        textDirection = textDirection or TextDirectionCls::ltr;
     }
 }

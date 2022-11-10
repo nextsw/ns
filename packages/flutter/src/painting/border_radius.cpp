@@ -1,10 +1,10 @@
 #include "border_radius.hpp"
 BorderRadiusGeometry BorderRadiusGeometryCls::subtract(BorderRadiusGeometry other) {
-    return make<_MixedBorderRadiusCls>(_topLeft - other->_topLeft, _topRight - other->_topRight, _bottomLeft - other->_bottomLeft, _bottomRight - other->_bottomRight, _topStart - other->_topStart, _topEnd - other->_topEnd, _bottomStart - other->_bottomStart, _bottomEnd - other->_bottomEnd);
+    return make<_MixedBorderRadiusCls>(_topLeft() - other->_topLeft, _topRight() - other->_topRight, _bottomLeft() - other->_bottomLeft, _bottomRight() - other->_bottomRight, _topStart() - other->_topStart, _topEnd() - other->_topEnd, _bottomStart() - other->_bottomStart, _bottomEnd() - other->_bottomEnd);
 }
 
 BorderRadiusGeometry BorderRadiusGeometryCls::add(BorderRadiusGeometry other) {
-    return make<_MixedBorderRadiusCls>(_topLeft + other->_topLeft, _topRight + other->_topRight, _bottomLeft + other->_bottomLeft, _bottomRight + other->_bottomRight, _topStart + other->_topStart, _topEnd + other->_topEnd, _bottomStart + other->_bottomStart, _bottomEnd + other->_bottomEnd);
+    return make<_MixedBorderRadiusCls>(_topLeft() + other->_topLeft, _topRight() + other->_topRight, _bottomLeft() + other->_bottomLeft, _bottomRight() + other->_bottomRight, _topStart() + other->_topStart, _topEnd() + other->_topEnd, _bottomStart() + other->_bottomStart, _bottomEnd() + other->_bottomEnd);
 }
 
 BorderRadiusGeometry BorderRadiusGeometryCls::lerp(BorderRadiusGeometry a, BorderRadiusGeometry b, double t) {
@@ -19,86 +19,86 @@ BorderRadiusGeometry BorderRadiusGeometryCls::lerp(BorderRadiusGeometry a, Borde
 
 String BorderRadiusGeometryCls::toString() {
     String visual, logical;
-    if (_topLeft == _topRight && _topRight == _bottomLeft && _bottomLeft == _bottomRight) {
-        if (_topLeft != RadiusCls::zero) {
-            if (_topLeft->x == _topLeft->y) {
-                visual = "BorderRadius.circular(${_topLeft.x.toStringAsFixed(1)})";
+    if (_topLeft() == _topRight() && _topRight() == _bottomLeft() && _bottomLeft() == _bottomRight()) {
+        if (_topLeft() != RadiusCls::zero) {
+            if (_topLeft()->x == _topLeft()->y) {
+                visual = __s("BorderRadius.circular(${_topLeft.x.toStringAsFixed(1)})");
             } else {
-                visual = "BorderRadius.all($_topLeft)";
+                visual = __s("BorderRadius.all($_topLeft)");
             }
         }
     } else {
         StringBuffer result = make<StringBufferCls>();
-        result->write("BorderRadius.only(");
+        result->write(__s("BorderRadius.only("));
         bool comma = false;
-        if (_topLeft != RadiusCls::zero) {
-            result->write("topLeft: $_topLeft");
+        if (_topLeft() != RadiusCls::zero) {
+            result->write(__s("topLeft: $_topLeft"));
             comma = true;
         }
-        if (_topRight != RadiusCls::zero) {
+        if (_topRight() != RadiusCls::zero) {
             if (comma) {
-                result->write(", ");
+                result->write(__s(", "));
             }
-            result->write("topRight: $_topRight");
+            result->write(__s("topRight: $_topRight"));
             comma = true;
         }
-        if (_bottomLeft != RadiusCls::zero) {
+        if (_bottomLeft() != RadiusCls::zero) {
             if (comma) {
-                result->write(", ");
+                result->write(__s(", "));
             }
-            result->write("bottomLeft: $_bottomLeft");
+            result->write(__s("bottomLeft: $_bottomLeft"));
             comma = true;
         }
-        if (_bottomRight != RadiusCls::zero) {
+        if (_bottomRight() != RadiusCls::zero) {
             if (comma) {
-                result->write(", ");
+                result->write(__s(", "));
             }
-            result->write("bottomRight: $_bottomRight");
+            result->write(__s("bottomRight: $_bottomRight"));
         }
-        result->write(")");
+        result->write(__s(")"));
         visual = result->toString();
     }
-    if (_topStart == _topEnd && _topEnd == _bottomEnd && _bottomEnd == _bottomStart) {
-        if (_topStart != RadiusCls::zero) {
-            if (_topStart->x == _topStart->y) {
-                logical = "BorderRadiusDirectional.circular(${_topStart.x.toStringAsFixed(1)})";
+    if (_topStart() == _topEnd() && _topEnd() == _bottomEnd() && _bottomEnd() == _bottomStart()) {
+        if (_topStart() != RadiusCls::zero) {
+            if (_topStart()->x == _topStart()->y) {
+                logical = __s("BorderRadiusDirectional.circular(${_topStart.x.toStringAsFixed(1)})");
             } else {
-                logical = "BorderRadiusDirectional.all($_topStart)";
+                logical = __s("BorderRadiusDirectional.all($_topStart)");
             }
         }
     } else {
         StringBuffer result = make<StringBufferCls>();
-        result->write("BorderRadiusDirectional.only(");
+        result->write(__s("BorderRadiusDirectional.only("));
         bool comma = false;
-        if (_topStart != RadiusCls::zero) {
-            result->write("topStart: $_topStart");
+        if (_topStart() != RadiusCls::zero) {
+            result->write(__s("topStart: $_topStart"));
             comma = true;
         }
-        if (_topEnd != RadiusCls::zero) {
+        if (_topEnd() != RadiusCls::zero) {
             if (comma) {
-                result->write(", ");
+                result->write(__s(", "));
             }
-            result->write("topEnd: $_topEnd");
+            result->write(__s("topEnd: $_topEnd"));
             comma = true;
         }
-        if (_bottomStart != RadiusCls::zero) {
+        if (_bottomStart() != RadiusCls::zero) {
             if (comma) {
-                result->write(", ");
+                result->write(__s(", "));
             }
-            result->write("bottomStart: $_bottomStart");
+            result->write(__s("bottomStart: $_bottomStart"));
             comma = true;
         }
-        if (_bottomEnd != RadiusCls::zero) {
+        if (_bottomEnd() != RadiusCls::zero) {
             if (comma) {
-                result->write(", ");
+                result->write(__s(", "));
             }
-            result->write("bottomEnd: $_bottomEnd");
+            result->write(__s("bottomEnd: $_bottomEnd"));
         }
-        result->write(")");
+        result->write(__s(")"));
         logical = result->toString();
     }
     if (visual != nullptr && logical != nullptr) {
-        return "$visual + $logical";
+        return __s("$visual + $logical");
     }
     if (visual != nullptr) {
         return visual;
@@ -106,21 +106,21 @@ String BorderRadiusGeometryCls::toString() {
     if (logical != nullptr) {
         return logical;
     }
-    return "BorderRadius.zero";
+    return __s("BorderRadius.zero");
 }
 
 bool BorderRadiusGeometryCls::==(Object other) {
     if (identical(this, other)) {
         return true;
     }
-    if (other->runtimeType != runtimeType) {
+    if (other->runtimeType() != runtimeType) {
         return false;
     }
-    return other is BorderRadiusGeometry && other->_topLeft == _topLeft && other->_topRight == _topRight && other->_bottomLeft == _bottomLeft && other->_bottomRight == _bottomRight && other->_topStart == _topStart && other->_topEnd == _topEnd && other->_bottomStart == _bottomStart && other->_bottomEnd == _bottomEnd;
+    return is<BorderRadiusGeometry>(other) && other->_topLeft == _topLeft() && other->_topRight == _topRight() && other->_bottomLeft == _bottomLeft() && other->_bottomRight == _bottomRight() && other->_topStart == _topStart() && other->_topEnd == _topEnd() && other->_bottomStart == _bottomStart() && other->_bottomEnd == _bottomEnd();
 }
 
 int BorderRadiusGeometryCls::hashCode() {
-    return ObjectCls->hash(_topLeft, _topRight, _bottomLeft, _bottomRight, _topStart, _topEnd, _bottomStart, _bottomEnd);
+    return ObjectCls->hash(_topLeft(), _topRight(), _bottomLeft(), _bottomRight(), _topStart(), _topEnd(), _bottomStart(), _bottomEnd());
 }
 
 void BorderRadiusCls::all(Radius radius)
@@ -132,7 +132,7 @@ void BorderRadiusCls::vertical(Radius bottom, Radius top)
 void BorderRadiusCls::horizontal(Radius left, Radius right)
 
 BorderRadius BorderRadiusCls::copyWith(Radius bottomLeft, Radius bottomRight, Radius topLeft, Radius topRight) {
-    return BorderRadiusCls->only(topLeft ?? this->topLeft, topRight ?? this->topRight, bottomLeft ?? this->bottomLeft, bottomRight ?? this->bottomRight);
+    return BorderRadiusCls->only(topLeft or this->topLeft, topRight or this->topRight, bottomLeft or this->bottomLeft, bottomRight or this->bottomRight);
 }
 
 RRect BorderRadiusCls::toRRect(Rect rect) {
@@ -140,14 +140,14 @@ RRect BorderRadiusCls::toRRect(Rect rect) {
 }
 
 BorderRadiusGeometry BorderRadiusCls::subtract(BorderRadiusGeometry other) {
-    if (other is BorderRadius) {
+    if (is<BorderRadius>(other)) {
         return this - other;
     }
     return super->subtract(other);
 }
 
 BorderRadiusGeometry BorderRadiusCls::add(BorderRadiusGeometry other) {
-    if (other is BorderRadius) {
+    if (is<BorderRadius>(other)) {
         return this + other;
     }
     return super->add(other);
@@ -240,14 +240,14 @@ void BorderRadiusDirectionalCls::vertical(Radius bottom, Radius top)
 void BorderRadiusDirectionalCls::horizontal(Radius end, Radius start)
 
 BorderRadiusGeometry BorderRadiusDirectionalCls::subtract(BorderRadiusGeometry other) {
-    if (other is BorderRadiusDirectional) {
+    if (is<BorderRadiusDirectional>(other)) {
         return this - other;
     }
     return super->subtract(other);
 }
 
 BorderRadiusGeometry BorderRadiusDirectionalCls::add(BorderRadiusGeometry other) {
-    if (other is BorderRadiusDirectional) {
+    if (is<BorderRadiusDirectional>(other)) {
         return this + other;
     }
     return super->add(other);

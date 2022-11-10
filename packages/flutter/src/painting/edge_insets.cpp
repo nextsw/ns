@@ -1,14 +1,14 @@
 #include "edge_insets.hpp"
 bool EdgeInsetsGeometryCls::isNonNegative() {
-    return _left >= 0.0 && _right >= 0.0 && _start >= 0.0 && _end >= 0.0 && _top >= 0.0 && _bottom >= 0.0;
+    return _left() >= 0.0 && _right() >= 0.0 && _start() >= 0.0 && _end() >= 0.0 && _top() >= 0.0 && _bottom() >= 0.0;
 }
 
 double EdgeInsetsGeometryCls::horizontal() {
-    return _left + _right + _start + _end;
+    return _left() + _right() + _start() + _end();
 }
 
 double EdgeInsetsGeometryCls::vertical() {
-    return _top + _bottom;
+    return _top() + _bottom();
 }
 
 double EdgeInsetsGeometryCls::along(Axis axis) {
@@ -17,31 +17,31 @@ double EdgeInsetsGeometryCls::along(Axis axis) {
 }
 
 Size EdgeInsetsGeometryCls::collapsedSize() {
-    return make<SizeCls>(horizontal, vertical);
+    return make<SizeCls>(horizontal(), vertical());
 }
 
 EdgeInsetsGeometry EdgeInsetsGeometryCls::flipped() {
-    return _MixedEdgeInsetsCls->fromLRSETB(_right, _left, _end, _start, _bottom, _top);
+    return _MixedEdgeInsetsCls->fromLRSETB(_right(), _left(), _end(), _start(), _bottom(), _top());
 }
 
 Size EdgeInsetsGeometryCls::inflateSize(Size size) {
-    return make<SizeCls>(size->width + horizontal, size->height + vertical);
+    return make<SizeCls>(size->width + horizontal(), size->height + vertical());
 }
 
 Size EdgeInsetsGeometryCls::deflateSize(Size size) {
-    return make<SizeCls>(size->width - horizontal, size->height - vertical);
+    return make<SizeCls>(size->width - horizontal(), size->height - vertical());
 }
 
 EdgeInsetsGeometry EdgeInsetsGeometryCls::subtract(EdgeInsetsGeometry other) {
-    return _MixedEdgeInsetsCls->fromLRSETB(_left - other->_left, _right - other->_right, _start - other->_start, _end - other->_end, _top - other->_top, _bottom - other->_bottom);
+    return _MixedEdgeInsetsCls->fromLRSETB(_left() - other->_left, _right() - other->_right, _start() - other->_start, _end() - other->_end, _top() - other->_top, _bottom() - other->_bottom);
 }
 
 EdgeInsetsGeometry EdgeInsetsGeometryCls::add(EdgeInsetsGeometry other) {
-    return _MixedEdgeInsetsCls->fromLRSETB(_left + other->_left, _right + other->_right, _start + other->_start, _end + other->_end, _top + other->_top, _bottom + other->_bottom);
+    return _MixedEdgeInsetsCls->fromLRSETB(_left() + other->_left, _right() + other->_right, _start() + other->_start, _end() + other->_end, _top() + other->_top, _bottom() + other->_bottom);
 }
 
 EdgeInsetsGeometry EdgeInsetsGeometryCls::clamp(EdgeInsetsGeometry max, EdgeInsetsGeometry min) {
-    return _MixedEdgeInsetsCls->fromLRSETB(clampDouble(_left, min->_left, max->_left), clampDouble(_right, min->_right, max->_right), clampDouble(_start, min->_start, max->_start), clampDouble(_end, min->_end, max->_end), clampDouble(_top, min->_top, max->_top), clampDouble(_bottom, min->_bottom, max->_bottom));
+    return _MixedEdgeInsetsCls->fromLRSETB(clampDouble(_left(), min->_left, max->_left), clampDouble(_right(), min->_right, max->_right), clampDouble(_start(), min->_start, max->_start), clampDouble(_end(), min->_end, max->_end), clampDouble(_top(), min->_top, max->_top), clampDouble(_bottom(), min->_bottom, max->_bottom));
 }
 
 EdgeInsetsGeometry EdgeInsetsGeometryCls::lerp(EdgeInsetsGeometry a, EdgeInsetsGeometry b, double t) {
@@ -55,37 +55,37 @@ EdgeInsetsGeometry EdgeInsetsGeometryCls::lerp(EdgeInsetsGeometry a, EdgeInsetsG
     if (b == nullptr) {
         return a * (1.0 - t);
     }
-    if (a is EdgeInsets && b is EdgeInsets) {
+    if (is<EdgeInsets>(a) && is<EdgeInsets>(b)) {
         return EdgeInsetsCls->lerp(a, b, t);
     }
-    if (a is EdgeInsetsDirectional && b is EdgeInsetsDirectional) {
+    if (is<EdgeInsetsDirectional>(a) && is<EdgeInsetsDirectional>(b)) {
         return EdgeInsetsDirectionalCls->lerp(a, b, t);
     }
     return _MixedEdgeInsetsCls->fromLRSETB(ui->lerpDouble(a->_left, b->_left, t)!, ui->lerpDouble(a->_right, b->_right, t)!, ui->lerpDouble(a->_start, b->_start, t)!, ui->lerpDouble(a->_end, b->_end, t)!, ui->lerpDouble(a->_top, b->_top, t)!, ui->lerpDouble(a->_bottom, b->_bottom, t)!);
 }
 
 String EdgeInsetsGeometryCls::toString() {
-    if (_start == 0.0 && _end == 0.0) {
-        if (_left == 0.0 && _right == 0.0 && _top == 0.0 && _bottom == 0.0) {
-            return "EdgeInsets.zero";
+    if (_start() == 0.0 && _end() == 0.0) {
+        if (_left() == 0.0 && _right() == 0.0 && _top() == 0.0 && _bottom() == 0.0) {
+            return __s("EdgeInsets.zero");
         }
-        if (_left == _right && _right == _top && _top == _bottom) {
-            return "EdgeInsets.all(${_left.toStringAsFixed(1)})";
+        if (_left() == _right() && _right() == _top() && _top() == _bottom()) {
+            return __s("EdgeInsets.all(${_left.toStringAsFixed(1)})");
         }
-        return "EdgeInsets(${_left.toStringAsFixed(1)}, ${_top.toStringAsFixed(1)}, ${_right.toStringAsFixed(1)}, ${_bottom.toStringAsFixed(1)})";
+        return __s("EdgeInsets(${_left.toStringAsFixed(1)}, ${_top.toStringAsFixed(1)}, ${_right.toStringAsFixed(1)}, ${_bottom.toStringAsFixed(1)})");
     }
-    if (_left == 0.0 && _right == 0.0) {
-        return "EdgeInsetsDirectional(${_start.toStringAsFixed(1)}, ${_top.toStringAsFixed(1)}, ${_end.toStringAsFixed(1)}, ${_bottom.toStringAsFixed(1)})";
+    if (_left() == 0.0 && _right() == 0.0) {
+        return __s("EdgeInsetsDirectional(${_start.toStringAsFixed(1)}, ${_top.toStringAsFixed(1)}, ${_end.toStringAsFixed(1)}, ${_bottom.toStringAsFixed(1)})");
     }
-    return "EdgeInsets(${_left.toStringAsFixed(1)}, ${_top.toStringAsFixed(1)}, ${_right.toStringAsFixed(1)}, ${_bottom.toStringAsFixed(1)}) + EdgeInsetsDirectional(${_start.toStringAsFixed(1)}, 0.0, ${_end.toStringAsFixed(1)}, 0.0)";
+    return __s("EdgeInsets(${_left.toStringAsFixed(1)}, ${_top.toStringAsFixed(1)}, ${_right.toStringAsFixed(1)}, ${_bottom.toStringAsFixed(1)}) + EdgeInsetsDirectional(${_start.toStringAsFixed(1)}, 0.0, ${_end.toStringAsFixed(1)}, 0.0)");
 }
 
 bool EdgeInsetsGeometryCls::==(Object other) {
-    return other is EdgeInsetsGeometry && other->_left == _left && other->_right == _right && other->_start == _start && other->_end == _end && other->_top == _top && other->_bottom == _bottom;
+    return is<EdgeInsetsGeometry>(other) && other->_left == _left() && other->_right == _right() && other->_start == _start() && other->_end == _end() && other->_top == _top() && other->_bottom == _bottom();
 }
 
 int EdgeInsetsGeometryCls::hashCode() {
-    return ObjectCls->hash(_left, _right, _start, _end, _top, _bottom);
+    return ObjectCls->hash(_left(), _right(), _start(), _end(), _top(), _bottom());
 }
 
 void EdgeInsetsCls::all(double value)
@@ -123,21 +123,21 @@ Rect EdgeInsetsCls::deflateRect(Rect rect) {
 }
 
 EdgeInsetsGeometry EdgeInsetsCls::subtract(EdgeInsetsGeometry other) {
-    if (other is EdgeInsets) {
+    if (is<EdgeInsets>(other)) {
         return this - other;
     }
     return super->subtract(other);
 }
 
 EdgeInsetsGeometry EdgeInsetsCls::add(EdgeInsetsGeometry other) {
-    if (other is EdgeInsets) {
+    if (is<EdgeInsets>(other)) {
         return this + other;
     }
     return super->add(other);
 }
 
 EdgeInsetsGeometry EdgeInsetsCls::clamp(EdgeInsetsGeometry max, EdgeInsetsGeometry min) {
-    return EdgeInsetsCls->fromLTRB(clampDouble(_left, min->_left, max->_left), clampDouble(_top, min->_top, max->_top), clampDouble(_right, min->_right, max->_right), clampDouble(_bottom, min->_bottom, max->_bottom));
+    return EdgeInsetsCls->fromLTRB(clampDouble(_left(), min->_left, max->_left), clampDouble(_top(), min->_top, max->_top), clampDouble(_right(), min->_right, max->_right), clampDouble(_bottom(), min->_bottom, max->_bottom));
 }
 
 EdgeInsets EdgeInsetsCls::-(EdgeInsets other) {
@@ -187,7 +187,7 @@ EdgeInsets EdgeInsetsCls::resolve(TextDirection direction) {
 }
 
 EdgeInsets EdgeInsetsCls::copyWith(double bottom, double left, double right, double top) {
-    return EdgeInsetsCls->only(left ?? this->left, top ?? this->top, right ?? this->right, bottom ?? this->bottom);
+    return EdgeInsetsCls->only(left or this->left, top or this->top, right or this->right, bottom or this->bottom);
 }
 
 double EdgeInsetsCls::_left() {
@@ -225,14 +225,14 @@ EdgeInsetsDirectional EdgeInsetsDirectionalCls::flipped() {
 }
 
 EdgeInsetsGeometry EdgeInsetsDirectionalCls::subtract(EdgeInsetsGeometry other) {
-    if (other is EdgeInsetsDirectional) {
+    if (is<EdgeInsetsDirectional>(other)) {
         return this - other;
     }
     return super->subtract(other);
 }
 
 EdgeInsetsGeometry EdgeInsetsDirectionalCls::add(EdgeInsetsGeometry other) {
-    if (other is EdgeInsetsDirectional) {
+    if (is<EdgeInsetsDirectional>(other)) {
         return this + other;
     }
     return super->add(other);

@@ -11,8 +11,8 @@
 #include <dart/math/math.hpp>
 #include <dart/typed_data/typed_data.hpp>
 
-template<typename T>  extern bool typeAcceptsNull();
-template<typename T>  extern T unsafeCast(dynamic value);
+template<typename T>  bool typeAcceptsNull();
+template<typename T>  T unsafeCast(dynamic value);
 auto  POWERS_OF_TEN;
 
 
@@ -114,7 +114,7 @@ private:
 using SentinelValue = std::shared_ptr<SentinelValueCls>;
 Object sentinelValue;
 
-template<typename T>  extern Object extractTypeArguments(void  extract() , T instance);
+template<typename T>  Object extractTypeArguments(void  extract() , T instance);
 
 class SinceCls : public ObjectCls {
 public:
@@ -126,7 +126,7 @@ private:
 
 };
 using Since = std::shared_ptr<SinceCls>;
-template<typename T : Object>  T checkNotNullable(String name, T value);
+template<typename T>  T checkNotNullable(String name, T value);
 
 
 template<typename T> class NotNullableErrorCls : public ErrorCls {
@@ -141,7 +141,7 @@ private:
 
 };
 template<typename T> using NotNullableError = std::shared_ptr<NotNullableErrorCls<T>>;
-template<typename T : Object>  T valueOfNonNullableParamWithDefault(T defaultVal, T value);
+template<typename T>  T valueOfNonNullableParamWithDefault(T defaultVal, T value);
 
 
 class HttpStatusCls : public ObjectCls {

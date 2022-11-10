@@ -563,7 +563,7 @@ private:
 
     virtual _TextBoundary _documentBoundary(DirectionalTextEditingIntent intent);
 
-    template<typename T : Intent>  virtual Action<T> _makeOverridable(Action<T> defaultAction);
+    template<typename T>  virtual Action<T> _makeOverridable(Action<T> defaultAction);
 
     virtual void _transposeCharacters(TransposeCharactersIntent intent);
 
@@ -912,7 +912,7 @@ private:
 };
 using _MixedBoundary = std::shared_ptr<_MixedBoundaryCls>;
 
-template<typename T : DirectionalTextEditingIntent> class _DeleteTextActionCls : public ContextActionCls<T> {
+template<typename T> class _DeleteTextActionCls : public ContextActionCls<T> {
 public:
     EditableTextState state;
 
@@ -929,9 +929,9 @@ private:
     virtual TextRange _expandNonCollapsedRange(TextEditingValue value);
 
 };
-template<typename T : DirectionalTextEditingIntent> using _DeleteTextAction = std::shared_ptr<_DeleteTextActionCls<T : DirectionalTextEditingIntent>>;
+template<typename T> using _DeleteTextAction = std::shared_ptr<_DeleteTextActionCls<T>>;
 
-template<typename T : DirectionalCaretMovementIntent> class _UpdateTextSelectionActionCls : public ContextActionCls<T> {
+template<typename T> class _UpdateTextSelectionActionCls : public ContextActionCls<T> {
 public:
     EditableTextState state;
 
@@ -954,7 +954,7 @@ private:
     virtual bool _isAtWordwrapDownstream(TextPosition position);
 
 };
-template<typename T : DirectionalCaretMovementIntent> using _UpdateTextSelectionAction = std::shared_ptr<_UpdateTextSelectionActionCls<T : DirectionalCaretMovementIntent>>;
+template<typename T> using _UpdateTextSelectionAction = std::shared_ptr<_UpdateTextSelectionActionCls<T>>;
 
 class _ExtendSelectionOrCaretPositionActionCls : public ContextActionCls<ExtendSelectionToNextWordBoundaryOrCaretLocationIntent> {
 public:
@@ -973,7 +973,7 @@ private:
 };
 using _ExtendSelectionOrCaretPositionAction = std::shared_ptr<_ExtendSelectionOrCaretPositionActionCls>;
 
-template<typename T : DirectionalCaretMovementIntent> class _UpdateTextSelectionToAdjacentLineActionCls : public ContextActionCls<T> {
+template<typename T> class _UpdateTextSelectionToAdjacentLineActionCls : public ContextActionCls<T> {
 public:
     EditableTextState state;
 
@@ -992,7 +992,7 @@ private:
 
      _UpdateTextSelectionToAdjacentLineActionCls(EditableTextState state);
 };
-template<typename T : DirectionalCaretMovementIntent> using _UpdateTextSelectionToAdjacentLineAction = std::shared_ptr<_UpdateTextSelectionToAdjacentLineActionCls<T : DirectionalCaretMovementIntent>>;
+template<typename T> using _UpdateTextSelectionToAdjacentLineAction = std::shared_ptr<_UpdateTextSelectionToAdjacentLineActionCls<T>>;
 
 class _SelectAllActionCls : public ContextActionCls<SelectAllTextIntent> {
 public:

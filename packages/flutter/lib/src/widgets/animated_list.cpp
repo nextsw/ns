@@ -36,11 +36,11 @@ AnimatedListState AnimatedListCls::createState() {
 }
 
 void AnimatedListStateCls::insertItem(Duration duration, int index) {
-    _sliverAnimatedListKey->currentState!->insertItem(indexduration);
+    _sliverAnimatedListKey->currentState()!->insertItem(indexduration);
 }
 
 void AnimatedListStateCls::removeItem(AnimatedListRemovedItemBuilder builder, Duration duration, int index) {
-    _sliverAnimatedListKey->currentState!->removeItem(index, builderduration);
+    _sliverAnimatedListKey->currentState()!->removeItem(index, builderduration);
 }
 
 Widget AnimatedListStateCls::build(BuildContext context) {
@@ -121,7 +121,7 @@ void SliverAnimatedListStateCls::removeItem(AnimatedListRemovedItemBuilder build
     assert(itemIndex >= 0 &&  < _itemsCount);
     assert(_activeItemAt(_outgoingItems, itemIndex) == nullptr);
     _ActiveItem incomingItem = _removeActiveItemAt(_incomingItems, itemIndex);
-    AnimationController controller = incomingItem?->controller ?? make<AnimationControllerCls>(duration, 1.0, this);
+    AnimationController controller = incomingItem?->controller or make<AnimationControllerCls>(duration, 1.0, this);
     _ActiveItem outgoingItem = _ActiveItemCls->outgoing(controller, itemIndex, builder);
     setState([=] () {
             auto _c1 = _outgoingItems;    _c1.auto _c2 = add(outgoingItem);    _c2.sort();    _c2;_c1;
@@ -193,6 +193,6 @@ Widget SliverAnimatedListStateCls::_itemBuilder(BuildContext context, int itemIn
         return outgoingItem->removedItemBuilder!(context, outgoingItem->controller!->view);
     }
     _ActiveItem incomingItem = _activeItemAt(_incomingItems, itemIndex);
-    Animation<double> animation = incomingItem?->controller?->view ?? kAlwaysCompleteAnimation;
+    Animation<double> animation = incomingItem?->controller?->view or kAlwaysCompleteAnimation;
     return widget->itemBuilder(context, _itemIndexToIndex(itemIndex), animation);
 }

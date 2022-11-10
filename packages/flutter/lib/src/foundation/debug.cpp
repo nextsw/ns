@@ -21,7 +21,7 @@ Future<T> debugInstrumentActiontemplate<typename T> (Future<T> action() , String
             return await action();
         } finally {
             stopwatch->stop();
-            debugPrint("Action "$description" took ${stopwatch.elapsed}");
+            debugPrint(__s("Action "$description" took ${stopwatch.elapsed}"));
         };
     } else {
         return action();
@@ -30,7 +30,7 @@ Future<T> debugInstrumentActiontemplate<typename T> (Future<T> action() , String
 
 String debugFormatDouble(double value) {
     if (value == nullptr) {
-        return "null";
+        return __s("null");
     }
     if (debugDoublePrecision != nullptr) {
         return value->toStringAsPrecision(debugDoublePrecision!);

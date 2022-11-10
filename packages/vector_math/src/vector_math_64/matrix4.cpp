@@ -105,14 +105,14 @@ int Matrix4Cls::index(int col, int row) {
 }
 
 double Matrix4Cls::entry(int col, int row) {
-    assert((row >= 0) && ( < dimension));
-    assert((col >= 0) && ( < dimension));
+    assert((row >= 0) && ( < dimension()));
+    assert((col >= 0) && ( < dimension()));
     return _m4storage[index(row, col)];
 }
 
 void Matrix4Cls::setEntry(int col, int row, double v) {
-    assert((row >= 0) && ( < dimension));
-    assert((col >= 0) && ( < dimension));
+    assert((row >= 0) && ( < dimension()));
+    assert((col >= 0) && ( < dimension()));
     _m4storage[index(row, col)] = v;
 }
 
@@ -359,7 +359,7 @@ void Matrix4Cls::setOuter(Vector4 u, Vector4 v) {
 }
 
 String Matrix4Cls::toString() {
-    return "[0] ${getRow(0)}\n[1] ${getRow(1)}\n[2] ${getRow(2)}\n[3] ${getRow(3)}\n";
+    return __s("[0] ${getRow(0)}\n[1] ${getRow(1)}\n[2] ${getRow(2)}\n[3] ${getRow(3)}\n");
 }
 
 int Matrix4Cls::dimension() {
@@ -375,7 +375,7 @@ void Matrix4Cls::[]=(int i, double v) {
 }
 
 bool Matrix4Cls::==(Object other) {
-    return (other is Matrix4) && (_m4storage[0] == other->_m4storage[0]) && (_m4storage[1] == other->_m4storage[1]) && (_m4storage[2] == other->_m4storage[2]) && (_m4storage[3] == other->_m4storage[3]) && (_m4storage[4] == other->_m4storage[4]) && (_m4storage[5] == other->_m4storage[5]) && (_m4storage[6] == other->_m4storage[6]) && (_m4storage[7] == other->_m4storage[7]) && (_m4storage[8] == other->_m4storage[8]) && (_m4storage[9] == other->_m4storage[9]) && (_m4storage[10] == other->_m4storage[10]) && (_m4storage[11] == other->_m4storage[11]) && (_m4storage[12] == other->_m4storage[12]) && (_m4storage[13] == other->_m4storage[13]) && (_m4storage[14] == other->_m4storage[14]) && (_m4storage[15] == other->_m4storage[15]);
+    return (is<Matrix4>(other)) && (_m4storage[0] == other->_m4storage[0]) && (_m4storage[1] == other->_m4storage[1]) && (_m4storage[2] == other->_m4storage[2]) && (_m4storage[3] == other->_m4storage[3]) && (_m4storage[4] == other->_m4storage[4]) && (_m4storage[5] == other->_m4storage[5]) && (_m4storage[6] == other->_m4storage[6]) && (_m4storage[7] == other->_m4storage[7]) && (_m4storage[8] == other->_m4storage[8]) && (_m4storage[9] == other->_m4storage[9]) && (_m4storage[10] == other->_m4storage[10]) && (_m4storage[11] == other->_m4storage[11]) && (_m4storage[12] == other->_m4storage[12]) && (_m4storage[13] == other->_m4storage[13]) && (_m4storage[14] == other->_m4storage[14]) && (_m4storage[15] == other->_m4storage[15]);
 }
 
 int Matrix4Cls::hashCode() {
@@ -482,16 +482,16 @@ Matrix4 Matrix4Cls::-() {
 }
 
 dynamic Matrix4Cls::*(dynamic arg) {
-    if (arg is double) {
+    if (is<double>(arg)) {
             auto _c1 = clone();    _c1.negate();return scaled(arg);
     }
-    if (arg is Vector4) {
+    if (is<Vector4>(arg)) {
         return transformed(arg);
     }
-    if (arg is Vector3) {
+    if (is<Vector3>(arg)) {
         return transformed3(arg);
     }
-    if (arg is Matrix4) {
+    if (is<Matrix4>(arg)) {
         return multiplied(arg);
     }
     ;
@@ -509,18 +509,18 @@ void Matrix4Cls::translate(dynamic x, double y, double z) {
     auto _c1 = clone();_c1.add(arg);auto _c1 = clone();_c1.sub(arg);double tx;
     double ty;
     double tz;
-    Unknown tw = x is Vector4? x->w : 1.0;
-    if (x is Vector3) {
+    Unknown tw = is<Vector4>(x)? x->w : 1.0;
+    if (is<Vector3>(x)) {
         tx = x->x;
         ty = x->y;
         tz = x->z;
     } else     {
-        if (x is Vector4) {
+        if (is<Vector4>(x)) {
         tx = x->x;
         ty = x->y;
         tz = x->z;
     } else     {
-        if (x is double) {
+        if (is<double>(x)) {
         tx = x;
         ty = y;
         tz = z;
@@ -543,18 +543,18 @@ void Matrix4Cls::leftTranslate(dynamic x, double y, double z) {
     double tx;
     double ty;
     double tz;
-    Unknown tw = x is Vector4? x->w : 1.0;
-    if (x is Vector3) {
+    Unknown tw = is<Vector4>(x)? x->w : 1.0;
+    if (is<Vector3>(x)) {
         tx = x->x;
         ty = x->y;
         tz = x->z;
     } else     {
-        if (x is Vector4) {
+        if (is<Vector4>(x)) {
         tx = x->x;
         ty = x->y;
         tz = x->z;
     } else     {
-        if (x is double) {
+        if (is<double>(x)) {
         tx = x;
         ty = y;
         tz = z;
@@ -692,21 +692,21 @@ void Matrix4Cls::scale(dynamic x, double y, double z) {
     double sx;
     double sy;
     double sz;
-    Unknown sw = x is Vector4? x->w : 1.0;
-    if (x is Vector3) {
+    Unknown sw = is<Vector4>(x)? x->w : 1.0;
+    if (is<Vector3>(x)) {
         sx = x->x;
         sy = x->y;
         sz = x->z;
     } else     {
-        if (x is Vector4) {
+        if (is<Vector4>(x)) {
         sx = x->x;
         sy = x->y;
         sz = x->z;
     } else     {
-        if (x is double) {
+        if (is<double>(x)) {
         sx = x;
-        sy = y ?? x;
-        sz = z ?? x;
+        sy = y or x;
+        sz = z or x;
     } else {
         ;
     }
@@ -1378,9 +1378,9 @@ void Matrix4Cls::multiplyTranspose(Matrix4 arg) {
 
 void Matrix4Cls::decompose(Quaternion rotation, Vector3 scale, Vector3 translation) {
     Unknown v = _decomposeV ??= Vector3Cls->zero();
-    auto _c1 = v;_c1.setValues(_m4storage[0], _m4storage[1], _m4storage[2]);auto sx = (_c1)->length;
-    auto _c2 = v;_c2.setValues(_m4storage[4], _m4storage[5], _m4storage[6]);Unknown sy = (_c2)->length;
-    auto _c3 = v;_c3.setValues(_m4storage[8], _m4storage[9], _m4storage[10]);Unknown sz = (_c3)->length;
+    auto _c1 = v;_c1.setValues(_m4storage[0], _m4storage[1], _m4storage[2]);auto _c2 = v;_c2.setValues(_m4storage[0], _m4storage[1], _m4storage[2]);auto sx = (_c2)->length;
+    auto _c3 = v;_c3.setValues(_m4storage[4], _m4storage[5], _m4storage[6]);auto _c4 = v;_c4.setValues(_m4storage[4], _m4storage[5], _m4storage[6]);Unknown sy = (_c4)->length;
+    auto _c5 = v;_c5.setValues(_m4storage[8], _m4storage[9], _m4storage[10]);auto _c6 = v;_c6.setValues(_m4storage[8], _m4storage[9], _m4storage[10]);Unknown sz = (_c6)->length;
     if (determinant() < 0) {
         sx = -sx;
     }

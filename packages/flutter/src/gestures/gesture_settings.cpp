@@ -13,12 +13,12 @@ int DeviceGestureSettingsCls::hashCode() {
 }
 
 bool DeviceGestureSettingsCls::==(Object other) {
-    if (other->runtimeType != runtimeType) {
+    if (other->runtimeType() != runtimeType) {
         return false;
     }
-    return other is DeviceGestureSettings && other->touchSlop == touchSlop;
+    return is<DeviceGestureSettings>(other) && other->touchSlop == touchSlop;
 }
 
 String DeviceGestureSettingsCls::toString() {
-    return "DeviceGestureSettings(touchSlop: $touchSlop)";
+    return __s("DeviceGestureSettings(touchSlop: $touchSlop)");
 }

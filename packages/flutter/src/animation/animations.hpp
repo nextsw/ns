@@ -278,7 +278,7 @@ private:
 };
 using AnimationMean = std::shared_ptr<AnimationMeanCls>;
 
-template<typename T : num> class AnimationMaxCls : public CompoundAnimationCls<T> {
+template<typename T> class AnimationMaxCls : public CompoundAnimationCls<T> {
 public:
 
      AnimationMaxCls(Animation<T> first, Animation<T> next);
@@ -288,9 +288,9 @@ public:
 private:
 
 };
-template<typename T : num> using AnimationMax = std::shared_ptr<AnimationMaxCls<T : num>>;
+template<typename T> using AnimationMax = std::shared_ptr<AnimationMaxCls<T>>;
 
-template<typename T : num> class AnimationMinCls : public CompoundAnimationCls<T> {
+template<typename T> class AnimationMinCls : public CompoundAnimationCls<T> {
 public:
 
      AnimationMinCls(Animation<T> first, Animation<T> next);
@@ -300,7 +300,7 @@ public:
 private:
 
 };
-template<typename T : num> using AnimationMin = std::shared_ptr<AnimationMinCls<T : num>>;
+template<typename T> using AnimationMin = std::shared_ptr<AnimationMinCls<T>>;
 
 
 #endif

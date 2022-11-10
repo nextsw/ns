@@ -15,7 +15,7 @@ void _AutomaticKeepAliveStateCls::didUpdateWidget(AutomaticKeepAlive oldWidget) 
 
 void _AutomaticKeepAliveStateCls::dispose() {
     if (_handles != nullptr) {
-        for (Listenable handle : _handles!->keys) {
+        for (Listenable handle : _handles!->keys()) {
             handle->removeListener(_handles![handle]!);
         }
     }
@@ -28,8 +28,8 @@ Widget _AutomaticKeepAliveStateCls::build(BuildContext context) {
 
 void _AutomaticKeepAliveStateCls::debugFillProperties(DiagnosticPropertiesBuilder description) {
     super->debugFillProperties(description);
-    description->add(make<FlagPropertyCls>("_keepingAlive"_keepingAlive, "keeping subtree alive"));
-    description->add(<Map<Listenable, VoidCallback>>make<DiagnosticsPropertyCls>("handles", _handles_handles != nullptr? "${_handles!.length} active client${ _handles!.length == 1 ? "" : "s" }" : nullptr, "no notifications ever received"));
+    description->add(make<FlagPropertyCls>(__s("_keepingAlive")_keepingAlive, __s("keeping subtree alive")));
+    description->add(<Map<Listenable, VoidCallback>>make<DiagnosticsPropertyCls>(__s("handles"), _handles_handles != nullptr? __s("${_handles!.length} active client${ _handles!.length == 1 ? "" : "s" }") : nullptr, __s("no notifications ever received")));
 }
 
 void _AutomaticKeepAliveStateCls::_updateChild() {
@@ -63,17 +63,17 @@ bool _AutomaticKeepAliveStateCls::_addClient(KeepAliveNotification notification)
 
 ParentDataElement<KeepAliveParentDataMixin> _AutomaticKeepAliveStateCls::_getChildElement() {
     assert(mounted);
-    Element element = ((Element)context);
+    Element element = as<Element>(context);
     Element childElement;
     element->visitChildren([=] (Element child) {
         childElement = child;
     });
-    assert(childElement == nullptr || childElement is ParentDataElement<KeepAliveParentDataMixin>);
-    return ((ParentDataElement<KeepAliveParentDataMixin>)childElement);
+    assert(childElement == nullptr || is<ParentDataElement<KeepAliveParentDataMixin>>(childElement));
+    return as<ParentDataElement<KeepAliveParentDataMixin>>(childElement);
 }
 
 void _AutomaticKeepAliveStateCls::_updateParentDataOfChild(ParentDataElement<KeepAliveParentDataMixin> childElement) {
-    childElement->applyWidgetOutOfTurn(((ParentDataWidget<KeepAliveParentDataMixin>)build(context)));
+    childElement->applyWidgetOutOfTurn(as<ParentDataWidget<KeepAliveParentDataMixin>>(build(context)));
 }
 
 VoidCallback _AutomaticKeepAliveStateCls::_createCallback(Listenable handle) {
@@ -85,7 +85,7 @@ VoidCallback _AutomaticKeepAliveStateCls::_createCallback(Listenable handle) {
             return true;
         }());
         _handles!->remove(handle);
-        if (_handles!->isEmpty) {
+        if (_handles!->isEmpty()) {
             if (SchedulerBindingCls::instance->schedulerPhase->index < SchedulerPhaseCls::persistentCallbacks->index) {
                 setState([=] () {
                     _keepingAlive = false;
@@ -93,7 +93,7 @@ VoidCallback _AutomaticKeepAliveStateCls::_createCallback(Listenable handle) {
             } else {
                 _keepingAlive = false;
                 scheduleMicrotask([=] () {
-                    if (mounted && _handles!->isEmpty) {
+                    if (mounted && _handles!->isEmpty()) {
                         setState([=] () {
                             assert(!_keepingAlive);
                         });
@@ -114,8 +114,8 @@ void KeepAliveHandleCls::release() {
     notifyListeners();
 }
 
-template<typename T : StatefulWidget> void AutomaticKeepAliveClientMixinCls<T>::updateKeepAlive() {
-    if (wantKeepAlive) {
+template<typename T> void AutomaticKeepAliveClientMixinCls<T>::updateKeepAlive() {
+    if (wantKeepAlive()) {
         if (_keepAliveHandle == nullptr) {
             _ensureKeepAlive();
         }
@@ -126,34 +126,34 @@ template<typename T : StatefulWidget> void AutomaticKeepAliveClientMixinCls<T>::
     }
 }
 
-template<typename T : StatefulWidget> void AutomaticKeepAliveClientMixinCls<T>::initState() {
+template<typename T> void AutomaticKeepAliveClientMixinCls<T>::initState() {
     super->initState();
-    if (wantKeepAlive) {
+    if (wantKeepAlive()) {
         _ensureKeepAlive();
     }
 }
 
-template<typename T : StatefulWidget> void AutomaticKeepAliveClientMixinCls<T>::deactivate() {
+template<typename T> void AutomaticKeepAliveClientMixinCls<T>::deactivate() {
     if (_keepAliveHandle != nullptr) {
         _releaseKeepAlive();
     }
     super->deactivate();
 }
 
-template<typename T : StatefulWidget> Widget AutomaticKeepAliveClientMixinCls<T>::build(BuildContext context) {
-    if (wantKeepAlive && _keepAliveHandle == nullptr) {
+template<typename T> Widget AutomaticKeepAliveClientMixinCls<T>::build(BuildContext context) {
+    if (wantKeepAlive() && _keepAliveHandle == nullptr) {
         _ensureKeepAlive();
     }
     return make<_NullWidgetCls>();
 }
 
-template<typename T : StatefulWidget> void AutomaticKeepAliveClientMixinCls<T>::_ensureKeepAlive() {
+template<typename T> void AutomaticKeepAliveClientMixinCls<T>::_ensureKeepAlive() {
     assert(_keepAliveHandle == nullptr);
     _keepAliveHandle = make<KeepAliveHandleCls>();
     make<KeepAliveNotificationCls>(_keepAliveHandle!)->dispatch(context);
 }
 
-template<typename T : StatefulWidget> void AutomaticKeepAliveClientMixinCls<T>::_releaseKeepAlive() {
+template<typename T> void AutomaticKeepAliveClientMixinCls<T>::_releaseKeepAlive() {
     _keepAliveHandle!->release();
     _keepAliveHandle = nullptr;
 }

@@ -296,7 +296,7 @@ private:
 };
 using StringProperty = std::shared_ptr<StringPropertyCls>;
 
-template<typename T : num> class _NumPropertyCls : public DiagnosticsPropertyCls<T> {
+template<typename T> class _NumPropertyCls : public DiagnosticsPropertyCls<T> {
 public:
     String unit;
 
@@ -312,7 +312,7 @@ private:
 
      _NumPropertyCls(Unknown defaultValue, Unknown ifNull, Unknown level, String name, Unknown showName, Unknown style, Unknown tooltip, String unit, Unknown value);
 };
-template<typename T : num> using _NumProperty = std::shared_ptr<_NumPropertyCls<T : num>>;
+template<typename T> using _NumProperty = std::shared_ptr<_NumPropertyCls<T>>;
 
 class DoublePropertyCls : public _NumPropertyCls<double> {
 public:
@@ -512,7 +512,7 @@ private:
 };
 template<typename T> using DiagnosticsProperty = std::shared_ptr<DiagnosticsPropertyCls<T>>;
 
-template<typename T : Diagnosticable> class DiagnosticableNodeCls : public DiagnosticsNodeCls {
+template<typename T> class DiagnosticableNodeCls : public DiagnosticsNodeCls {
 public:
     T value;
 
@@ -536,7 +536,7 @@ private:
 
 
 };
-template<typename T : Diagnosticable> using DiagnosticableNode = std::shared_ptr<DiagnosticableNodeCls<T : Diagnosticable>>;
+template<typename T> using DiagnosticableNode = std::shared_ptr<DiagnosticableNodeCls<T>>;
 
 class DiagnosticableTreeNodeCls : public DiagnosticableNodeCls<DiagnosticableTree> {
 public:

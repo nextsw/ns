@@ -35,14 +35,14 @@ public:
 
     virtual String readLineSync(Encoding encoding, bool retainNewlines);
 
-    extern bool echoMode();
-    extern void  echoMode(bool echoMode);
-    extern bool echoNewlineMode();
-    extern void  echoNewlineMode(bool echoNewlineMode);
-    extern bool lineMode();
-    extern void  lineMode(bool lineMode);
-    extern bool supportsAnsiEscapes();
-    extern int readByteSync();
+    bool echoMode();
+    void  echoMode(bool echoMode);
+    bool echoNewlineMode();
+    void  echoNewlineMode(bool echoNewlineMode);
+    bool lineMode();
+    void  lineMode(bool lineMode);
+    bool supportsAnsiEscapes();
+    int readByteSync();
     virtual bool hasTerminal();
 
 private:
@@ -75,10 +75,10 @@ private:
 
     virtual void  _(int _fd, IOSink sink);
 
-    extern bool _hasTerminal(int fd);
-    extern int _terminalColumns(int fd);
-    extern int _terminalLines(int fd);
-    extern static bool _supportsAnsiEscapes(int fd);
+    bool _hasTerminal(int fd);
+    int _terminalColumns(int fd);
+    int _terminalLines(int fd);
+    static bool _supportsAnsiEscapes(int fd);
 };
 using Stdout = std::shared_ptr<StdoutCls>;
 
@@ -211,10 +211,10 @@ public:
 
 private:
 
-    extern static void  _getStdioOutputStream(int fd);
-    extern static Stdin _getStdioInputStream(int fd);
-    extern static int _socketType(Socket socket);
-    extern static void  _getStdioHandleType(int fd);
+    static void  _getStdioOutputStream(int fd);
+    static Stdin _getStdioInputStream(int fd);
+    static int _socketType(Socket socket);
+    static void  _getStdioHandleType(int fd);
 };
 using _StdIOUtils = std::shared_ptr<_StdIOUtilsCls>;
 

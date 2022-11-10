@@ -8,8 +8,8 @@
 class RandomCls : public ObjectCls {
 public:
 
-    extern  RandomCls(int seed);
-    extern void  secure();
+     RandomCls(int seed);
+    void  secure();
     virtual int nextInt(int max);
     virtual double nextDouble();
     virtual bool nextBool();

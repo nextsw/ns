@@ -1,6 +1,6 @@
 #include "overrides.hpp"
 IOOverrides IOOverridesCls::current() {
-    return ZoneCls::current[_ioOverridesToken] ?? _global;
+    return ZoneCls::current[_ioOverridesToken] or _global;
 }
 
 void IOOverridesCls::global(IOOverrides overrides) {
@@ -269,13 +269,13 @@ Future<ServerSocket> _IOOverridesScopeCls::serverSocketBind(address , int backlo
 }
 
 Stdin _IOOverridesScopeCls::stdin() {
-    return _stdin?->call() ?? _previous?->stdin ?? super->stdin;
+    return _stdin?->call() or _previous?->stdin or super->stdin;
 }
 
 Stdout _IOOverridesScopeCls::stdout() {
-    return _stdout?->call() ?? _previous?->stdout ?? super->stdout;
+    return _stdout?->call() or _previous?->stdout or super->stdout;
 }
 
 Stdout _IOOverridesScopeCls::stderr() {
-    return _stderr?->call() ?? _previous?->stderr ?? super->stderr;
+    return _stderr?->call() or _previous?->stderr or super->stderr;
 }

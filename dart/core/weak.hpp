@@ -5,35 +5,35 @@
 #include <dart/core/core.hpp>
 
 
-template<typename T : Object> class ExpandoCls : public ObjectCls {
+template<typename T> class ExpandoCls : public ObjectCls {
 public:
     String name;
 
 
-    extern  ExpandoCls(String name);
+     ExpandoCls(String name);
     virtual String toString();
 
-    extern T operator[](Object object);
-    extern void operator[]=(Object object, T value);
+    T operator[](Object object);
+    void operator[]=(Object object, T value);
 private:
 
 };
-template<typename T : Object> using Expando = std::shared_ptr<ExpandoCls<T : Object>>;
+template<typename T> using Expando = std::shared_ptr<ExpandoCls<T>>;
 
-template<typename T : Object> class WeakReferenceCls : public ObjectCls {
+template<typename T> class WeakReferenceCls : public ObjectCls {
 public:
 
-    extern  WeakReferenceCls(T target);
+     WeakReferenceCls(T target);
     virtual T target();
 private:
 
 };
-template<typename T : Object> using WeakReference = std::shared_ptr<WeakReferenceCls<T : Object>>;
+template<typename T> using WeakReference = std::shared_ptr<WeakReferenceCls<T>>;
 
 template<typename T> class FinalizerCls : public ObjectCls {
 public:
 
-    extern  FinalizerCls(void callback(T ) );
+     FinalizerCls(void callback(T ) );
     virtual void attach(Object detach, T finalizationToken, Object value);
     virtual void detach(Object detach);
 private:

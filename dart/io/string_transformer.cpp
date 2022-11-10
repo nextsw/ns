@@ -1,18 +1,18 @@
 #include "string_transformer.hpp"
 String SystemEncodingCls::name() {
-    return "system";
+    return __s("system");
 }
 
 List<int> SystemEncodingCls::encode(String input) {
-    return encoder->convert(input);
+    return encoder()->convert(input);
 }
 
 String SystemEncodingCls::decode(List<int> encoded) {
-    return decoder->convert(encoded);
+    return decoder()->convert(encoded);
 }
 
 Converter<String, List<int>> SystemEncodingCls::encoder() {
-    if (PlatformCls::operatingSystem == "windows") {
+    if (PlatformCls::operatingSystem == __s("windows")) {
         return make<_WindowsCodePageEncoderCls>();
     } else {
         return make<Utf8EncoderCls>();
@@ -20,7 +20,7 @@ Converter<String, List<int>> SystemEncodingCls::encoder() {
 }
 
 Converter<List<int>, String> SystemEncodingCls::decoder() {
-    if (PlatformCls::operatingSystem == "windows") {
+    if (PlatformCls::operatingSystem == __s("windows")) {
         return make<_WindowsCodePageDecoderCls>();
     } else {
         return make<Utf8DecoderCls>();

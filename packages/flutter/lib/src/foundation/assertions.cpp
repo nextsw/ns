@@ -8,11 +8,11 @@ PartialStackFrameCls::PartialStackFrameCls(String className, String method, Patt
 }
 
 bool PartialStackFrameCls::matches(StackFrame stackFrame) {
-    String stackFramePackage = "${stackFrame.packageScheme}:${stackFrame.package}/${stackFrame.packagePath}";
+    String stackFramePackage = __s("${stackFrame.packageScheme}:${stackFrame.package}/${stackFrame.packagePath}");
     if (kIsWeb) {
-        return package->allMatches(stackFramePackage)->isNotEmpty && stackFrame->method == (method->startsWith("_")? "[$method]" : method);
+        return package->allMatches(stackFramePackage)->isNotEmpty() && stackFrame->method == (method->startsWith(__s("_"))? __s("[$method]") : method);
     }
-    return package->allMatches(stackFramePackage)->isNotEmpty && stackFrame->method == method && stackFrame->className == className;
+    return package->allMatches(stackFramePackage)->isNotEmpty() && stackFrame->method == method && stackFrame->className == className;
 }
 
 RepetitiveStackFrameFilterCls::RepetitiveStackFrameFilterCls(List<PartialStackFrame> frames, String replacement) {
@@ -23,24 +23,24 @@ RepetitiveStackFrameFilterCls::RepetitiveStackFrameFilterCls(List<PartialStackFr
 }
 
 int RepetitiveStackFrameFilterCls::numFrames() {
-    return frames->length;
+    return frames->length();
 }
 
 void RepetitiveStackFrameFilterCls::filter(List<String> reasons, List<StackFrame> stackFrames) {
-    for (;  < stackFrames->length - numFrames; index = 1) {
-        if (_matchesFrames(stackFrames->skip(index)->take(numFrames)->toList())) {
-            reasons->setRange(index, index + numFrames, _replacements);
-            index = numFrames - 1;
+    for (;  < stackFrames->length - numFrames(); index = 1) {
+        if (_matchesFrames(stackFrames->skip(index)->take(numFrames())->toList())) {
+            reasons->setRange(index, index + numFrames(), _replacements());
+            index = numFrames() - 1;
         }
     }
 }
 
 List<String> RepetitiveStackFrameFilterCls::_replacements() {
-    return <String>filled(numFrames, replacement);
+    return <String>filled(numFrames(), replacement);
 }
 
 bool RepetitiveStackFrameFilterCls::_matchesFrames(List<StackFrame> stackFrames) {
-    if (stackFrames->length < numFrames) {
+    if (stackFrames->length < numFrames()) {
         return false;
     }
     for (;  < stackFrames->length; index++) {
@@ -56,10 +56,10 @@ List<Object> _ErrorDiagnosticCls::value() {
 }
 
 String _ErrorDiagnosticCls::valueToString(TextTreeConfiguration parentConfiguration) {
-    return value->join();
+    return value()->join();
 }
 
-_ErrorDiagnosticCls::_ErrorDiagnosticCls(DiagnosticLevel level, String message, DiagnosticsTreeStyle style) {
+_ErrorDiagnosticCls::_ErrorDiagnosticCls(DiagnosticLevel level, String message, DiagnosticsTreeStyle style) : DiagnosticsProperty<List<Object>>(nullptr, makeList(ArrayItem)false, false, nullptr, style, level) {
     {
         assert(message != nullptr);
     }
@@ -67,22 +67,22 @@ _ErrorDiagnosticCls::_ErrorDiagnosticCls(DiagnosticLevel level, String message, 
 
 void _ErrorDiagnosticCls::_fromParts(DiagnosticLevel level, List<Object> messageParts, DiagnosticsTreeStyle style)
 
-ErrorDescriptionCls::ErrorDescriptionCls(Unknown message) {
+ErrorDescriptionCls::ErrorDescriptionCls(Unknown message) : _ErrorDiagnostic(DiagnosticLevelCls::info) {
 }
 
 void ErrorDescriptionCls::_fromParts(Unknown messageParts)
 
-ErrorSummaryCls::ErrorSummaryCls(Unknown message) {
+ErrorSummaryCls::ErrorSummaryCls(Unknown message) : _ErrorDiagnostic(DiagnosticLevelCls::summary) {
 }
 
 void ErrorSummaryCls::_fromParts(Unknown messageParts)
 
-ErrorHintCls::ErrorHintCls(Unknown message) {
+ErrorHintCls::ErrorHintCls(Unknown message) : _ErrorDiagnostic(DiagnosticLevelCls::hint) {
 }
 
 void ErrorHintCls::_fromParts(Unknown messageParts)
 
-ErrorSpacerCls::ErrorSpacerCls() {
+ErrorSpacerCls::ErrorSpacerCls() : DiagnosticsProperty<void>(__s(""), nullptr__s(""), false) {
 }
 
 FlutterErrorDetailsCls::FlutterErrorDetailsCls(DiagnosticsNode context, Object exception, InformationCollector informationCollector, String library, bool silent, StackTrace stack, IterableFilter<String> stackFilter) {
@@ -92,42 +92,42 @@ FlutterErrorDetailsCls::FlutterErrorDetailsCls(DiagnosticsNode context, Object e
 }
 
 FlutterErrorDetails FlutterErrorDetailsCls::copyWith(DiagnosticsNode context, Object exception, InformationCollector informationCollector, String library, bool silent, StackTrace stack, IterableFilter<String> stackFilter) {
-    return make<FlutterErrorDetailsCls>(context ?? this->context, exception ?? this->exception, informationCollector ?? this->informationCollector, library ?? this->library, silent ?? this->silent, stack ?? this->stack, stackFilter ?? this->stackFilter);
+    return make<FlutterErrorDetailsCls>(context or this->context, exception or this->exception, informationCollector or this->informationCollector, library or this->library, silent or this->silent, stack or this->stack, stackFilter or this->stackFilter);
 }
 
 String FlutterErrorDetailsCls::exceptionAsString() {
     String longMessage;
-    if (exception is AssertionError) {
-        Object message = (((AssertionError)exception))->message;
+    if (is<AssertionError>(exception)) {
+        Object message = (as<AssertionError>(exception))->message;
         String fullMessage = exception->toString();
-        if (message is String && message != fullMessage) {
+        if (is<String>(message) && message != fullMessage) {
             if (fullMessage->length > message->length) {
                 int position = fullMessage->lastIndexOf(message);
-                if (position == fullMessage->length - message->length && position > 2 && fullMessage->substring(position - 2, position) == ": ") {
+                if (position == fullMessage->length - message->length && position > 2 && fullMessage->substring(position - 2, position) == __s(": ")) {
                     String body = fullMessage->substring(0, position - 2);
-                    int splitPoint = body->indexOf(" Failed assertion:");
+                    int splitPoint = body->indexOf(__s(" Failed assertion:"));
                     if (splitPoint >= 0) {
-                        body = "${body.substring(0, splitPoint)}\n${body.substring(splitPoint + 1)}";
+                        body = __s("${body.substring(0, splitPoint)}\n${body.substring(splitPoint + 1)}");
                     }
-                    longMessage = "${message.trimRight()}\n$body";
+                    longMessage = __s("${message.trimRight()}\n$body");
                 }
             }
         }
         longMessage = fullMessage;
     } else     {
-        if (exception is String) {
-        longMessage = ((String)exception);
+        if (is<String>(exception)) {
+        longMessage = as<String>(exception);
     } else     {
-        if (exception is Error || exception is Exception) {
+        if (is<Error>(exception) || is<Exception>(exception)) {
         longMessage = exception->toString();
     } else {
-        longMessage = "  $exception";
+        longMessage = __s("  $exception");
     }
 ;
     };
     }    longMessage = longMessage->trimRight();
     if (longMessage->isEmpty) {
-        longMessage = "  <no message available>";
+        longMessage = __s("  <no message available>");
     }
     return longMessage;
 }
@@ -142,44 +142,44 @@ DiagnosticsNode FlutterErrorDetailsCls::summary() {
     if (diagnosticable != nullptr) {
         DiagnosticPropertiesBuilder builder = make<DiagnosticPropertiesBuilderCls>();
         debugFillProperties(builder);
-        summary = builder->properties-><DiagnosticsNode>cast()->firstWhere([=] (DiagnosticsNode node)         {
+        summary() = builder->properties-><DiagnosticsNode>cast()->firstWhere([=] (DiagnosticsNode node)         {
             node!->level == DiagnosticLevelCls::summary;
         }[=] ()         {
             nullptr;
         });
     }
-    return summary ?? make<ErrorSummaryCls>(formatException());
+    return summary() or make<ErrorSummaryCls>(formatException());
 }
 
 void FlutterErrorDetailsCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    DiagnosticsNode verb = make<ErrorDescriptionCls>("thrown${ context != null ? ErrorDescription(" $context") : ""}");
+    DiagnosticsNode verb = make<ErrorDescriptionCls>(__s("thrown${ context != null ? ErrorDescription(" $context") : ""}"));
     Diagnosticable diagnosticable = _exceptionToDiagnosticable();
-    if (exception is NullThrownError) {
-        properties->add(make<ErrorDescriptionCls>("The null value was $verb."));
+    if (is<NullThrownError>(exception)) {
+        properties->add(make<ErrorDescriptionCls>(__s("The null value was $verb.")));
     } else     {
-        if (exception is num) {
-        properties->add(make<ErrorDescriptionCls>("The number $exception was $verb."));
+        if (is<num>(exception)) {
+        properties->add(make<ErrorDescriptionCls>(__s("The number $exception was $verb.")));
     } else {
         DiagnosticsNode errorName;
-        if (exception is AssertionError) {
-            errorName = make<ErrorDescriptionCls>("assertion");
+        if (is<AssertionError>(exception)) {
+            errorName = make<ErrorDescriptionCls>(__s("assertion"));
         } else         {
-            if (exception is String) {
-            errorName = make<ErrorDescriptionCls>("message");
+            if (is<String>(exception)) {
+            errorName = make<ErrorDescriptionCls>(__s("message"));
         } else         {
-            if (exception is Error || exception is Exception) {
-            errorName = make<ErrorDescriptionCls>("${exception.runtimeType}");
+            if (is<Error>(exception) || is<Exception>(exception)) {
+            errorName = make<ErrorDescriptionCls>(__s("${exception.runtimeType}"));
         } else {
-            errorName = make<ErrorDescriptionCls>("${exception.runtimeType} object");
+            errorName = make<ErrorDescriptionCls>(__s("${exception.runtimeType} object"));
         }
 ;
         };
-        }        properties->add(make<ErrorDescriptionCls>("The following $errorName was $verb:"));
+        }        properties->add(make<ErrorDescriptionCls>(__s("The following $errorName was $verb:")));
         if (diagnosticable != nullptr) {
             diagnosticable->debugFillProperties(properties);
         } else {
-            String prefix = "${exception.runtimeType}: ";
+            String prefix = __s("${exception.runtimeType}: ");
             String message = exceptionAsString();
             if (message->startsWith(prefix)) {
                 message = message->substring(prefix->length);
@@ -189,18 +189,18 @@ void FlutterErrorDetailsCls::debugFillProperties(DiagnosticPropertiesBuilder pro
     }
 ;
     }    if (stack != nullptr) {
-        if (exception is AssertionError && diagnosticable == nullptr) {
+        if (is<AssertionError>(exception) && diagnosticable == nullptr) {
             List<StackFrame> stackFrames = StackFrameCls->fromStackTrace(FlutterErrorCls->demangleStackTrace(stack!))->skipWhile([=] (StackFrame frame) {
-    frame->packageScheme == "dart";
+    frame->packageScheme == __s("dart");
 })->toList();
-            bool ourFault = stackFrames->length >= 2 && stackFrames[0]->package == "flutter" && stackFrames[1]->package == "flutter";
+            bool ourFault = stackFrames->length >= 2 && stackFrames[0]->package == __s("flutter") && stackFrames[1]->package == __s("flutter");
             if (ourFault) {
                 properties->add(make<ErrorSpacerCls>());
-                properties->add(make<ErrorHintCls>("Either the assertion indicates an error in the framework itself, or we should provide substantially more information in this error message to help you determine and fix the underlying cause.\nIn either case, please report this assertion by filing a bug on GitHub:\n  https://github.com/flutter/flutter/issues/new?template=2_bug.md"));
+                properties->add(make<ErrorHintCls>(__s("Either the assertion indicates an error in the framework itself, or we should provide substantially more information in this error message to help you determine and fix the underlying cause.\nIn either case, please report this assertion by filing a bug on GitHub:\n  https://github.com/flutter/flutter/issues/new?template=2_bug.md")));
             }
         }
         properties->add(make<ErrorSpacerCls>());
-        properties->add(make<DiagnosticsStackTraceCls>("When the exception was thrown, this was the stack", stackstackFilter));
+        properties->add(make<DiagnosticsStackTraceCls>(__s("When the exception was thrown, this was the stack"), stackstackFilter));
     }
     if (informationCollector != nullptr) {
         properties->add(make<ErrorSpacerCls>());
@@ -209,7 +209,7 @@ void FlutterErrorDetailsCls::debugFillProperties(DiagnosticPropertiesBuilder pro
 }
 
 String FlutterErrorDetailsCls::toStringShort() {
-    return library != nullptr? "Exception caught by $library" : "Exception caught";
+    return library != nullptr? __s("Exception caught by $library") : __s("Exception caught");
 }
 
 String FlutterErrorDetailsCls::toString(DiagnosticLevel minLevel) {
@@ -222,18 +222,18 @@ DiagnosticsNode FlutterErrorDetailsCls::toDiagnosticsNode(String name, Diagnosti
 
 Diagnosticable FlutterErrorDetailsCls::_exceptionToDiagnosticable() {
     Object exception = this->exception;
-    if (exception is FlutterError) {
+    if (is<FlutterError>(exception)) {
         return exception;
     }
-    if (exception is AssertionError && exception->message is FlutterError) {
-        return ((FlutterError)exception->message!);
+    if (is<AssertionError>(exception) && is<FlutterError>(exception->message)) {
+        return as<FlutterError>(exception->message!);
     }
     return nullptr;
 }
 
 FlutterErrorCls::FlutterErrorCls(String message) {
     {
-        List<String> lines = message->split("\n");
+        List<String> lines = message()->split(__s("\n"));
             List<DiagnosticsNode> list1 = make<ListCls<>>();    list1.add(ArrayItem);    for (auto _x1 : lines->skip(1)-><DiagnosticsNode>map([=] (String line)         {                make<ErrorDescriptionCls>(line);            })) {    {        list1.add(_x1);    }return FlutterErrorCls->fromParts(list1);
     }
 }
@@ -248,10 +248,10 @@ void FlutterErrorCls::fromParts(List<DiagnosticsNode> diagnostics) {
             List<DiagnosticsNode> message = makeList(ArrayItem, ArrayItem, ArrayItem, ArrayItem);
             int i = 1;
             for (DiagnosticsNode summary : summaries) {
-                message->add(<DiagnosticsNode>make<DiagnosticsPropertyCls>("Summary $i", summarytrue));
+                message()->add(<DiagnosticsNode>make<DiagnosticsPropertyCls>(__s("Summary $i"), summarytrue));
                 i = 1;
             }
-            message->add(make<ErrorDescriptionCls>("\nThis error should still help you solve your problem, however please also report this malformed error in the framework by filing a bug on GitHub:\n  https://github.com/flutter/flutter/issues/new?template=2_bug.md"));
+            message()->add(make<ErrorDescriptionCls>(__s("\nThis error should still help you solve your problem, however please also report this malformed error in the framework by filing a bug on GitHub:\n  https://github.com/flutter/flutter/issues/new?template=2_bug.md")));
             ;
         }
         return true;
@@ -285,7 +285,7 @@ void FlutterErrorCls::dumpErrorToConsole(FlutterErrorDetails details, bool force
             debugPrintStack(details->stack, details->exception->toString(), 100);
         }
     } else {
-        debugPrint("Another exception was thrown: ${details.summary}");
+        debugPrint(__s("Another exception was thrown: ${details.summary}"));
     }
     _errorCount = 1;
 }
@@ -295,13 +295,13 @@ void FlutterErrorCls::addDefaultStackFilter(StackFilter filter) {
 }
 
 Iterable<String> FlutterErrorCls::defaultStackFilter(Iterable<String> frames) {
-    Map<String, int> map1 = make<MapCls<>>();map1.set("dart:async-patch", 0);map1.set("dart:async", 0);map1.set("package:stack_trace", 0);map1.set("class _AssertionError", 0);map1.set("class _FakeAsync", 0);map1.set("class _FrameCallbackEntry", 0);map1.set("class _Timer", 0);map1.set("class _RawReceivePortImpl", 0);Map<String, int> removedPackagesAndClasses = list1;
+    Map<String, int> map1 = make<MapCls<>>();map1.set(__s("dart:async-patch"), 0);map1.set(__s("dart:async"), 0);map1.set(__s("package:stack_trace"), 0);map1.set(__s("class _AssertionError"), 0);map1.set(__s("class _FakeAsync"), 0);map1.set(__s("class _FrameCallbackEntry"), 0);map1.set(__s("class _Timer"), 0);map1.set(__s("class _RawReceivePortImpl"), 0);Map<String, int> removedPackagesAndClasses = list1;
     int skipped = 0;
-    List<StackFrame> parsedFrames = StackFrameCls->fromStackString(frames->join("\n"));
+    List<StackFrame> parsedFrames = StackFrameCls->fromStackString(frames->join(__s("\n")));
     for (;  < parsedFrames->length; index = 1) {
         StackFrame frame = parsedFrames[index];
-        String className = "class ${frame.className}";
-        String package = "${frame.packageScheme}:${frame.package}";
+        String className = __s("class ${frame.className}");
+        String package = __s("${frame.packageScheme}:${frame.package}");
         if (removedPackagesAndClasses->containsKey(className)) {
             skipped = 1;
             removedPackagesAndClasses->update(className, [=] (int value)             {
@@ -330,29 +330,29 @@ Iterable<String> FlutterErrorCls::defaultStackFilter(Iterable<String> frames) {
         while ( < reasons->length - 1 && reasons[index] != nullptr && reasons[index + 1] == reasons[index]) {
             index++;
         }
-        String suffix = "";
+        String suffix = __s("");
         if (reasons[index] != nullptr) {
             if (index != start) {
-                suffix = " (${index - start + 2} frames)";
+                suffix = __s(" (${index - start + 2} frames)");
             } else {
-                suffix = " (1 frame)";
+                suffix = __s(" (1 frame)");
             }
         }
-        String resultLine = "${reasons[index] ?? parsedFrames[index].source}$suffix";
+        String resultLine = __s("${reasons[index] ?? parsedFrames[index].source}$suffix");
         result->add(resultLine);
     }
     auto _c2 = List<String> list3 = make<ListCls<>>();for (MapEntry<String, int> entry : removedPackagesAndClasses->entries) {    ;}{    list3.add(ArrayItem);}list3;_c2.sort();List<String> where = _c2;
     if (skipped == 1) {
-        result->add("(elided one frame from ${where.single})");
+        result->add(__s("(elided one frame from ${where.single})"));
     } else     {
         if (skipped > 1) {
         if (where->length > 1) {
-            where[where->length - 1] = "and ${where.last}";
+            where[where->length - 1] = __s("and ${where.last}");
         }
         if (where->length > 2) {
-            result->add("(elided $skipped frames from ${where.join(", ")})");
+            result->add(__s("(elided $skipped frames from ${where.join(", ")})"));
         } else {
-            result->add("(elided $skipped frames from ${where.join(" ")})");
+            result->add(__s("(elided $skipped frames from ${where.join(" ")})"));
         }
     }
 ;
@@ -364,7 +364,7 @@ void FlutterErrorCls::debugFillProperties(DiagnosticPropertiesBuilder properties
 }
 
 String FlutterErrorCls::toStringShort() {
-    return "FlutterError";
+    return __s("FlutterError");
 }
 
 String FlutterErrorCls::toString(DiagnosticLevel minLevel) {
@@ -375,7 +375,7 @@ String FlutterErrorCls::toString(DiagnosticLevel minLevel) {
     TextTreeRenderer renderer = make<TextTreeRendererCls>(4000000000);
     return diagnostics->map([=] (DiagnosticsNode node)     {
         renderer->render(node)->trimRight();
-    })->join("\n");
+    })->join(__s("\n"));
 }
 
 void FlutterErrorCls::reportError(FlutterErrorDetails details) {
@@ -397,19 +397,19 @@ void debugPrintStack(String label, int maxFrames, StackTrace stackTrace) {
     } else {
         stackTrace = FlutterErrorCls->demangleStackTrace(stackTrace);
     }
-    Iterable<String> lines = stackTrace->toString()->trimRight()->split("\n");
+    Iterable<String> lines = stackTrace->toString()->trimRight()->split(__s("\n"));
     if (kIsWeb && lines->isNotEmpty) {
         lines = lines->skipWhile([=] (String line) {
-            return line->contains("StackTrace.current") || line->contains("dart-sdk/lib/_internal") || line->contains("dart:sdk_internal");
+            return line->contains(__s("StackTrace.current")) || line->contains(__s("dart-sdk/lib/_internal")) || line->contains(__s("dart:sdk_internal"));
         });
     }
     if (maxFrames != nullptr) {
         lines = lines->take(maxFrames);
     }
-    debugPrint(FlutterErrorCls->defaultStackFilter(lines)->join("\n"));
+    debugPrint(FlutterErrorCls->defaultStackFilter(lines)->join(__s("\n")));
 }
 
-DiagnosticsStackTraceCls::DiagnosticsStackTraceCls(String name, Unknown showSeparator, StackTrace stack, IterableFilter<String> stackFilter) {
+DiagnosticsStackTraceCls::DiagnosticsStackTraceCls(String name, Unknown showSeparator, StackTrace stack, IterableFilter<String> stackFilter) : DiagnosticsBlock(name, stack, _applyStackFilter(stack, stackFilter), DiagnosticsTreeStyleCls::flat, true) {
 }
 
 void DiagnosticsStackTraceCls::singleFrame(String frame, String name, Unknown showSeparator)
@@ -422,8 +422,8 @@ List<DiagnosticsNode> DiagnosticsStackTraceCls::_applyStackFilter(StackTrace sta
     if (stack == nullptr) {
         return makeList();
     }
-    IterableFilter<String> filter = stackFilter ?? FlutterErrorCls::defaultStackFilter;
-    Iterable<String> frames = filter("${FlutterError.demangleStackTrace(stack)}"->trimRight()->split("\n"));
+    IterableFilter<String> filter = stackFilter or FlutterErrorCls::defaultStackFilter;
+    Iterable<String> frames = filter(__s("${FlutterError.demangleStackTrace(stack)}")->trimRight()->split(__s("\n")));
     return frames-><DiagnosticsNode>map(_createStackFrame)->toList();
 }
 
@@ -433,10 +433,10 @@ DiagnosticsNode DiagnosticsStackTraceCls::_createStackFrame(String frame) {
 
 DiagnosticPropertiesBuilder _FlutterErrorDetailsNodeCls::builder() {
     DiagnosticPropertiesBuilder builder = super->builder;
-    if (builder == nullptr) {
+    if (builder() == nullptr) {
         return nullptr;
     }
-    Iterable<DiagnosticsNode> properties = builder->properties;
+    Iterable<DiagnosticsNode> properties = builder()->properties;
     for (DiagnosticPropertiesTransformer transformer : FlutterErrorDetailsCls::propertiesTransformers) {
         properties = transformer(properties);
     }

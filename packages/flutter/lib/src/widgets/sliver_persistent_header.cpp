@@ -38,12 +38,12 @@ Widget SliverPersistentHeaderCls::build(BuildContext context) {
 
 void SliverPersistentHeaderCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<SliverPersistentHeaderDelegate>make<DiagnosticsPropertyCls>("delegate", delegate));
+    properties->add(<SliverPersistentHeaderDelegate>make<DiagnosticsPropertyCls>(__s("delegate"), delegate));
     List<String> list1 = make<ListCls<>>();if (pinned) {    list1.add(ArrayItem);}if (floating) {    list1.add(ArrayItem);}List<String> flags = list1;
     if (flags->isEmpty) {
-        flags->add("normal");
+        flags->add(__s("normal"));
     }
-    properties->add(<String>make<IterablePropertyCls>("mode", flags));
+    properties->add(<String>make<IterablePropertyCls>(__s("mode"), flags));
 }
 
 _FloatingHeaderState _FloatingHeaderCls::createState() {
@@ -79,7 +79,7 @@ RenderSliverFloatingPersistentHeader _FloatingHeaderStateCls::_headerRenderer() 
 void _FloatingHeaderStateCls::_isScrollingListener() {
     assert(_position != nullptr);
     RenderSliverFloatingPersistentHeader header = _headerRenderer();
-    if (_position!->isScrollingNotifier->value) {
+    if (_position!->isScrollingNotifier->value()) {
         header?->updateScrollStartDirection(_position!->userScrollDirection);
         header?->maybeStopSnapAnimation(_position!->userScrollDirection);
     } else {
@@ -88,32 +88,32 @@ void _FloatingHeaderStateCls::_isScrollingListener() {
 }
 
 _RenderSliverPersistentHeaderForWidgetsMixin _SliverPersistentHeaderElementCls::renderObject() {
-    return ((_RenderSliverPersistentHeaderForWidgetsMixin)super->renderObject);
+    return as<_RenderSliverPersistentHeaderForWidgetsMixin>(super->renderObject);
 }
 
 void _SliverPersistentHeaderElementCls::mount(Object newSlot, Element parent) {
     super->mount(parent, newSlot);
-    renderObject->_element = this;
+    renderObject()->_element = this;
 }
 
 void _SliverPersistentHeaderElementCls::unmount() {
-    renderObject->_element = nullptr;
+    renderObject()->_element = nullptr;
     super->unmount();
 }
 
 void _SliverPersistentHeaderElementCls::update(_SliverPersistentHeaderRenderObjectWidget newWidget) {
-    _SliverPersistentHeaderRenderObjectWidget oldWidget = ((_SliverPersistentHeaderRenderObjectWidget)widget);
+    _SliverPersistentHeaderRenderObjectWidget oldWidget = as<_SliverPersistentHeaderRenderObjectWidget>(widget);
     super->update(newWidget);
     SliverPersistentHeaderDelegate newDelegate = newWidget->delegate;
     SliverPersistentHeaderDelegate oldDelegate = oldWidget->delegate;
-    if (newDelegate != oldDelegate && (newDelegate->runtimeType != oldDelegate->runtimeType || newDelegate->shouldRebuild(oldDelegate))) {
-        renderObject->triggerRebuild();
+    if (newDelegate != oldDelegate && (newDelegate->runtimeType() != oldDelegate->runtimeType() || newDelegate->shouldRebuild(oldDelegate))) {
+        renderObject()->triggerRebuild();
     }
 }
 
 void _SliverPersistentHeaderElementCls::performRebuild() {
     super->performRebuild();
-    renderObject->triggerRebuild();
+    renderObject()->triggerRebuild();
 }
 
 void _SliverPersistentHeaderElementCls::forgetChild(Element child) {
@@ -123,8 +123,8 @@ void _SliverPersistentHeaderElementCls::forgetChild(Element child) {
 }
 
 void _SliverPersistentHeaderElementCls::insertRenderObjectChild(RenderBox child, Object slot) {
-    assert(renderObject->debugValidateChild(child));
-    renderObject->child = child;
+    assert(renderObject()->debugValidateChild(child));
+    renderObject()->child = child;
 }
 
 void _SliverPersistentHeaderElementCls::moveRenderObjectChild(RenderObject child, Object newSlot, Object oldSlot) {
@@ -132,7 +132,7 @@ void _SliverPersistentHeaderElementCls::moveRenderObjectChild(RenderObject child
 }
 
 void _SliverPersistentHeaderElementCls::removeRenderObjectChild(RenderObject child, Object slot) {
-    renderObject->child = nullptr;
+    renderObject()->child = nullptr;
 }
 
 void _SliverPersistentHeaderElementCls::visitChildren(ElementVisitor visitor) {
@@ -149,7 +149,7 @@ _SliverPersistentHeaderElementCls::_SliverPersistentHeaderElementCls(bool floati
 
 void _SliverPersistentHeaderElementCls::_build(bool overlapsContent, double shrinkOffset) {
     owner!->buildScope(this, [=] () {
-        _SliverPersistentHeaderRenderObjectWidget sliverPersistentHeaderRenderObjectWidget = ((_SliverPersistentHeaderRenderObjectWidget)widget);
+        _SliverPersistentHeaderRenderObjectWidget sliverPersistentHeaderRenderObjectWidget = as<_SliverPersistentHeaderRenderObjectWidget>(widget);
         child = updateChild(child, floating? make<_FloatingHeaderCls>(sliverPersistentHeaderRenderObjectWidget->delegate->build(this, shrinkOffset, overlapsContent)) : sliverPersistentHeaderRenderObjectWidget->delegate->build(this, shrinkOffset, overlapsContent), nullptr);
     });
 }
@@ -160,7 +160,7 @@ _SliverPersistentHeaderElement _SliverPersistentHeaderRenderObjectWidgetCls::cre
 
 void _SliverPersistentHeaderRenderObjectWidgetCls::debugFillProperties(DiagnosticPropertiesBuilder description) {
     super->debugFillProperties(description);
-    description->add(<SliverPersistentHeaderDelegate>make<DiagnosticsPropertyCls>("delegate", delegate));
+    description->add(<SliverPersistentHeaderDelegate>make<DiagnosticsPropertyCls>(__s("delegate"), delegate));
 }
 
 _SliverPersistentHeaderRenderObjectWidgetCls::_SliverPersistentHeaderRenderObjectWidgetCls(SliverPersistentHeaderDelegate delegate, bool floating) {
@@ -171,11 +171,11 @@ _SliverPersistentHeaderRenderObjectWidgetCls::_SliverPersistentHeaderRenderObjec
 }
 
 double _RenderSliverPersistentHeaderForWidgetsMixinCls::minExtent() {
-    return (((_SliverPersistentHeaderRenderObjectWidget)_element!->widget))->delegate->minExtent;
+    return (as<_SliverPersistentHeaderRenderObjectWidget>(_element!->widget))->delegate->minExtent();
 }
 
 double _RenderSliverPersistentHeaderForWidgetsMixinCls::maxExtent() {
-    return (((_SliverPersistentHeaderRenderObjectWidget)_element!->widget))->delegate->maxExtent;
+    return (as<_SliverPersistentHeaderRenderObjectWidget>(_element!->widget))->delegate->maxExtent();
 }
 
 void _RenderSliverPersistentHeaderForWidgetsMixinCls::updateChild(bool overlapsContent, double shrinkOffset) {
@@ -206,7 +206,7 @@ void _SliverFloatingPersistentHeaderCls::updateRenderObject(BuildContext context
     renderObject->showOnScreenConfiguration = delegate->showOnScreenConfiguration;
 }
 
-_SliverFloatingPersistentHeaderCls::_SliverFloatingPersistentHeaderCls(Unknown delegate) {
+_SliverFloatingPersistentHeaderCls::_SliverFloatingPersistentHeaderCls(Unknown delegate) : _SliverPersistentHeaderRenderObjectWidget(true) {
 }
 
 _RenderSliverPersistentHeaderForWidgetsMixin _SliverFloatingPinnedPersistentHeaderCls::createRenderObject(BuildContext context) {
@@ -220,5 +220,5 @@ void _SliverFloatingPinnedPersistentHeaderCls::updateRenderObject(BuildContext c
     renderObject->showOnScreenConfiguration = delegate->showOnScreenConfiguration;
 }
 
-_SliverFloatingPinnedPersistentHeaderCls::_SliverFloatingPinnedPersistentHeaderCls(Unknown delegate) {
+_SliverFloatingPinnedPersistentHeaderCls::_SliverFloatingPinnedPersistentHeaderCls(Unknown delegate) : _SliverPersistentHeaderRenderObjectWidget(true) {
 }

@@ -25,7 +25,7 @@ public:
 
     virtual void addToScene(SceneBuilder builder);
 
-    template<typename S : Object>  virtual bool findAnnotations(Offset localPosition, bool onlyFirst, AnnotationResult<S> result);
+    template<typename S>  virtual bool findAnnotations(Offset localPosition, bool onlyFirst, AnnotationResult<S> result);
 
 private:
     Layer _layer;
@@ -693,7 +693,7 @@ public:
 
     virtual void addToScene(SceneBuilder builder);
 
-    template<typename S : Object>  virtual bool findAnnotations(Offset localPosition, bool onlyFirst, AnnotationResult<S> result);
+    template<typename S>  virtual bool findAnnotations(Offset localPosition, bool onlyFirst, AnnotationResult<S> result);
 
 private:
     _InspectorOverlayRenderState _lastState;

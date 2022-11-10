@@ -1,10 +1,10 @@
 #include "viewport.hpp"
 RenderAbstractViewport RenderAbstractViewportCls::of(RenderObject object) {
     while (object != nullptr) {
-        if (object is RenderAbstractViewport) {
+        if (is<RenderAbstractViewport>(object)) {
             return object;
         }
-        object = ((RenderObject)object->parent);
+        object = as<RenderObject>(object->parent);
     }
     return nullptr;
 }
@@ -17,43 +17,43 @@ RevealedOffsetCls::RevealedOffsetCls(double offset, Rect rect) {
 }
 
 String RevealedOffsetCls::toString() {
-    return "${objectRuntimeType(this, 'RevealedOffset')}(offset: $offset, rect: $rect)";
+    return __s("${objectRuntimeType(this, 'RevealedOffset')}(offset: $offset, rect: $rect)");
 }
 
-template<typename ParentDataClass : ContainerParentDataMixin<RenderSliver>> RenderViewportBaseCls<ParentDataClass>::RenderViewportBaseCls(AxisDirection axisDirection, double cacheExtent, CacheExtentStyle cacheExtentStyle, Clip clipBehavior, AxisDirection crossAxisDirection, ViewportOffset offset) {
+template<typename ParentDataClass> RenderViewportBaseCls<ParentDataClass>::RenderViewportBaseCls(AxisDirection axisDirection, double cacheExtent, CacheExtentStyle cacheExtentStyle, Clip clipBehavior, AxisDirection crossAxisDirection, ViewportOffset offset) {
     {
-        assert(axisDirection != nullptr);
-        assert(crossAxisDirection != nullptr);
-        assert(offset != nullptr);
-        assert(axisDirectionToAxis(axisDirection) != axisDirectionToAxis(crossAxisDirection));
-        assert(cacheExtentStyle != nullptr);
-        assert(cacheExtent != nullptr || cacheExtentStyle == CacheExtentStyleCls::pixel);
-        assert(clipBehavior != nullptr);
-        _axisDirection = axisDirection;
-        _crossAxisDirection = crossAxisDirection;
-        _offset = offset;
-        _cacheExtent = cacheExtent ?? RenderAbstractViewportCls::defaultCacheExtent;
-        _cacheExtentStyle = cacheExtentStyle;
-        _clipBehavior = clipBehavior;
+        assert(axisDirection() != nullptr);
+        assert(crossAxisDirection() != nullptr);
+        assert(offset() != nullptr);
+        assert(axisDirectionToAxis(axisDirection()) != axisDirectionToAxis(crossAxisDirection()));
+        assert(cacheExtentStyle() != nullptr);
+        assert(cacheExtent() != nullptr || cacheExtentStyle() == CacheExtentStyleCls::pixel);
+        assert(clipBehavior() != nullptr);
+        _axisDirection = axisDirection();
+        _crossAxisDirection = crossAxisDirection();
+        _offset = offset();
+        _cacheExtent = cacheExtent() or RenderAbstractViewportCls::defaultCacheExtent;
+        _cacheExtentStyle = cacheExtentStyle();
+        _clipBehavior = clipBehavior();
     }
 }
 
-template<typename ParentDataClass : ContainerParentDataMixin<RenderSliver>> void RenderViewportBaseCls<ParentDataClass>::describeSemanticsConfiguration(SemanticsConfiguration config) {
+template<typename ParentDataClass> void RenderViewportBaseCls<ParentDataClass>::describeSemanticsConfiguration(SemanticsConfiguration config) {
     super->describeSemanticsConfiguration(config);
     config->addTagForChildren(RenderViewportCls::useTwoPaneSemantics);
 }
 
-template<typename ParentDataClass : ContainerParentDataMixin<RenderSliver>> void RenderViewportBaseCls<ParentDataClass>::visitChildrenForSemantics(RenderObjectVisitor visitor) {
-    childrenInPaintOrder->where([=] (RenderSliver sliver)     {
+template<typename ParentDataClass> void RenderViewportBaseCls<ParentDataClass>::visitChildrenForSemantics(RenderObjectVisitor visitor) {
+    childrenInPaintOrder()->where([=] (RenderSliver sliver)     {
         sliver->geometry!->visible || sliver->geometry!->cacheExtent > 0.0;
     })->forEach(visitor);
 }
 
-template<typename ParentDataClass : ContainerParentDataMixin<RenderSliver>> AxisDirection RenderViewportBaseCls<ParentDataClass>::axisDirection() {
+template<typename ParentDataClass> AxisDirection RenderViewportBaseCls<ParentDataClass>::axisDirection() {
     return _axisDirection;
 }
 
-template<typename ParentDataClass : ContainerParentDataMixin<RenderSliver>> void RenderViewportBaseCls<ParentDataClass>::axisDirection(AxisDirection value) {
+template<typename ParentDataClass> void RenderViewportBaseCls<ParentDataClass>::axisDirection(AxisDirection value) {
     assert(value != nullptr);
     if (value == _axisDirection) {
         return;
@@ -62,11 +62,11 @@ template<typename ParentDataClass : ContainerParentDataMixin<RenderSliver>> void
     markNeedsLayout();
 }
 
-template<typename ParentDataClass : ContainerParentDataMixin<RenderSliver>> AxisDirection RenderViewportBaseCls<ParentDataClass>::crossAxisDirection() {
+template<typename ParentDataClass> AxisDirection RenderViewportBaseCls<ParentDataClass>::crossAxisDirection() {
     return _crossAxisDirection;
 }
 
-template<typename ParentDataClass : ContainerParentDataMixin<RenderSliver>> void RenderViewportBaseCls<ParentDataClass>::crossAxisDirection(AxisDirection value) {
+template<typename ParentDataClass> void RenderViewportBaseCls<ParentDataClass>::crossAxisDirection(AxisDirection value) {
     assert(value != nullptr);
     if (value == _crossAxisDirection) {
         return;
@@ -75,15 +75,15 @@ template<typename ParentDataClass : ContainerParentDataMixin<RenderSliver>> void
     markNeedsLayout();
 }
 
-template<typename ParentDataClass : ContainerParentDataMixin<RenderSliver>> Axis RenderViewportBaseCls<ParentDataClass>::axis() {
-    return axisDirectionToAxis(axisDirection);
+template<typename ParentDataClass> Axis RenderViewportBaseCls<ParentDataClass>::axis() {
+    return axisDirectionToAxis(axisDirection());
 }
 
-template<typename ParentDataClass : ContainerParentDataMixin<RenderSliver>> ViewportOffset RenderViewportBaseCls<ParentDataClass>::offset() {
+template<typename ParentDataClass> ViewportOffset RenderViewportBaseCls<ParentDataClass>::offset() {
     return _offset;
 }
 
-template<typename ParentDataClass : ContainerParentDataMixin<RenderSliver>> void RenderViewportBaseCls<ParentDataClass>::offset(ViewportOffset value) {
+template<typename ParentDataClass> void RenderViewportBaseCls<ParentDataClass>::offset(ViewportOffset value) {
     assert(value != nullptr);
     if (value == _offset) {
         return;
@@ -98,11 +98,11 @@ template<typename ParentDataClass : ContainerParentDataMixin<RenderSliver>> void
     markNeedsLayout();
 }
 
-template<typename ParentDataClass : ContainerParentDataMixin<RenderSliver>> double RenderViewportBaseCls<ParentDataClass>::cacheExtent() {
+template<typename ParentDataClass> double RenderViewportBaseCls<ParentDataClass>::cacheExtent() {
     return _cacheExtent;
 }
 
-template<typename ParentDataClass : ContainerParentDataMixin<RenderSliver>> void RenderViewportBaseCls<ParentDataClass>::cacheExtent(double value) {
+template<typename ParentDataClass> void RenderViewportBaseCls<ParentDataClass>::cacheExtent(double value) {
     value = RenderAbstractViewportCls::defaultCacheExtent;
     assert(value != nullptr);
     if (value == _cacheExtent) {
@@ -112,11 +112,11 @@ template<typename ParentDataClass : ContainerParentDataMixin<RenderSliver>> void
     markNeedsLayout();
 }
 
-template<typename ParentDataClass : ContainerParentDataMixin<RenderSliver>> CacheExtentStyle RenderViewportBaseCls<ParentDataClass>::cacheExtentStyle() {
+template<typename ParentDataClass> CacheExtentStyle RenderViewportBaseCls<ParentDataClass>::cacheExtentStyle() {
     return _cacheExtentStyle;
 }
 
-template<typename ParentDataClass : ContainerParentDataMixin<RenderSliver>> void RenderViewportBaseCls<ParentDataClass>::cacheExtentStyle(CacheExtentStyle value) {
+template<typename ParentDataClass> void RenderViewportBaseCls<ParentDataClass>::cacheExtentStyle(CacheExtentStyle value) {
     assert(value != nullptr);
     if (value == _cacheExtentStyle) {
         return;
@@ -125,11 +125,11 @@ template<typename ParentDataClass : ContainerParentDataMixin<RenderSliver>> void
     markNeedsLayout();
 }
 
-template<typename ParentDataClass : ContainerParentDataMixin<RenderSliver>> Clip RenderViewportBaseCls<ParentDataClass>::clipBehavior() {
+template<typename ParentDataClass> Clip RenderViewportBaseCls<ParentDataClass>::clipBehavior() {
     return _clipBehavior;
 }
 
-template<typename ParentDataClass : ContainerParentDataMixin<RenderSliver>> void RenderViewportBaseCls<ParentDataClass>::clipBehavior(Clip value) {
+template<typename ParentDataClass> void RenderViewportBaseCls<ParentDataClass>::clipBehavior(Clip value) {
     assert(value != nullptr);
     if (value != _clipBehavior) {
         _clipBehavior = value;
@@ -138,20 +138,20 @@ template<typename ParentDataClass : ContainerParentDataMixin<RenderSliver>> void
     }
 }
 
-template<typename ParentDataClass : ContainerParentDataMixin<RenderSliver>> void RenderViewportBaseCls<ParentDataClass>::attach(PipelineOwner owner) {
+template<typename ParentDataClass> void RenderViewportBaseCls<ParentDataClass>::attach(PipelineOwner owner) {
     super->attach(owner);
     _offset->addListener(markNeedsLayout);
 }
 
-template<typename ParentDataClass : ContainerParentDataMixin<RenderSliver>> void RenderViewportBaseCls<ParentDataClass>::detach() {
+template<typename ParentDataClass> void RenderViewportBaseCls<ParentDataClass>::detach() {
     _offset->removeListener(markNeedsLayout);
     super->detach();
 }
 
-template<typename ParentDataClass : ContainerParentDataMixin<RenderSliver>> bool RenderViewportBaseCls<ParentDataClass>::debugThrowIfNotCheckingIntrinsics() {
+template<typename ParentDataClass> bool RenderViewportBaseCls<ParentDataClass>::debugThrowIfNotCheckingIntrinsics() {
     assert([=] () {
         if (!RenderObjectCls->debugCheckingIntrinsics) {
-            assert(this is! RenderShrinkWrappingViewport);
+            assert(!is<RenderShrinkWrappingViewport>(this));
             ;
         }
         return true;
@@ -159,35 +159,35 @@ template<typename ParentDataClass : ContainerParentDataMixin<RenderSliver>> bool
     return true;
 }
 
-template<typename ParentDataClass : ContainerParentDataMixin<RenderSliver>> double RenderViewportBaseCls<ParentDataClass>::computeMinIntrinsicWidth(double height) {
+template<typename ParentDataClass> double RenderViewportBaseCls<ParentDataClass>::computeMinIntrinsicWidth(double height) {
     assert(debugThrowIfNotCheckingIntrinsics());
     return 0.0;
 }
 
-template<typename ParentDataClass : ContainerParentDataMixin<RenderSliver>> double RenderViewportBaseCls<ParentDataClass>::computeMaxIntrinsicWidth(double height) {
+template<typename ParentDataClass> double RenderViewportBaseCls<ParentDataClass>::computeMaxIntrinsicWidth(double height) {
     assert(debugThrowIfNotCheckingIntrinsics());
     return 0.0;
 }
 
-template<typename ParentDataClass : ContainerParentDataMixin<RenderSliver>> double RenderViewportBaseCls<ParentDataClass>::computeMinIntrinsicHeight(double width) {
+template<typename ParentDataClass> double RenderViewportBaseCls<ParentDataClass>::computeMinIntrinsicHeight(double width) {
     assert(debugThrowIfNotCheckingIntrinsics());
     return 0.0;
 }
 
-template<typename ParentDataClass : ContainerParentDataMixin<RenderSliver>> double RenderViewportBaseCls<ParentDataClass>::computeMaxIntrinsicHeight(double width) {
+template<typename ParentDataClass> double RenderViewportBaseCls<ParentDataClass>::computeMaxIntrinsicHeight(double width) {
     assert(debugThrowIfNotCheckingIntrinsics());
     return 0.0;
 }
 
-template<typename ParentDataClass : ContainerParentDataMixin<RenderSliver>> bool RenderViewportBaseCls<ParentDataClass>::isRepaintBoundary() {
+template<typename ParentDataClass> bool RenderViewportBaseCls<ParentDataClass>::isRepaintBoundary() {
     return true;
 }
 
-template<typename ParentDataClass : ContainerParentDataMixin<RenderSliver>> double RenderViewportBaseCls<ParentDataClass>::layoutChildSequence(RenderSliver advance(RenderSliver child) , double cacheOrigin, RenderSliver child, double crossAxisExtent, GrowthDirection growthDirection, double layoutOffset, double mainAxisExtent, double overlap, double remainingCacheExtent, double remainingPaintExtent, double scrollOffset) {
+template<typename ParentDataClass> double RenderViewportBaseCls<ParentDataClass>::layoutChildSequence(RenderSliver advance(RenderSliver child) , double cacheOrigin, RenderSliver child, double crossAxisExtent, GrowthDirection growthDirection, double layoutOffset, double mainAxisExtent, double overlap, double remainingCacheExtent, double remainingPaintExtent, double scrollOffset) {
     assert(scrollOffset->isFinite);
     assert(scrollOffset >= 0.0);
     double initialLayoutOffset = layoutOffset;
-    ScrollDirection adjustedUserScrollDirection = applyGrowthDirectionToScrollDirection(offset->userScrollDirection, growthDirection);
+    ScrollDirection adjustedUserScrollDirection = applyGrowthDirectionToScrollDirection(offset()->userScrollDirection(), growthDirection);
     assert(adjustedUserScrollDirection != nullptr);
     double maxPaintOffset = layoutOffset + overlap;
     double precedingScrollExtent = 0.0;
@@ -199,7 +199,7 @@ template<typename ParentDataClass : ContainerParentDataMixin<RenderSliver>> doub
         assert(correctedCacheOrigin <= 0.0);
         assert(sliverScrollOffset >= 0.0);
         assert(cacheExtentCorrection <= 0.0);
-        child->layout(make<SliverConstraintsCls>(axisDirection, growthDirection, adjustedUserScrollDirection, sliverScrollOffset, precedingScrollExtent, maxPaintOffset - layoutOffset, math->max(0.0, remainingPaintExtent - layoutOffset + initialLayoutOffset), crossAxisExtent, crossAxisDirection, mainAxisExtent, math->max(0.0, remainingCacheExtent + cacheExtentCorrection), correctedCacheOrigin)true);
+        child->layout(make<SliverConstraintsCls>(axisDirection(), growthDirection, adjustedUserScrollDirection, sliverScrollOffset, precedingScrollExtent, maxPaintOffset - layoutOffset, math->max(0.0, remainingPaintExtent - layoutOffset + initialLayoutOffset), crossAxisExtent, crossAxisDirection(), mainAxisExtent, math->max(0.0, remainingCacheExtent + cacheExtentCorrection), correctedCacheOrigin)true);
         SliverGeometry childLayoutGeometry = child->geometry!;
         assert(childLayoutGeometry->debugAssertIsValid());
         if (childLayoutGeometry->scrollOffsetCorrection != nullptr) {
@@ -225,7 +225,7 @@ template<typename ParentDataClass : ContainerParentDataMixin<RenderSliver>> doub
     return 0.0;
 }
 
-template<typename ParentDataClass : ContainerParentDataMixin<RenderSliver>> Rect RenderViewportBaseCls<ParentDataClass>::describeApproximatePaintClip(RenderSliver child) {
+template<typename ParentDataClass> Rect RenderViewportBaseCls<ParentDataClass>::describeApproximatePaintClip(RenderSliver child) {
     ;
     Rect viewportClip = OffsetCls::zero & size;
     if (child->constraints->overlap == 0 || !child->constraints->viewportMainAxisExtent->isFinite) {
@@ -241,34 +241,34 @@ template<typename ParentDataClass : ContainerParentDataMixin<RenderSliver>> Rect
     return RectCls->fromLTRB(left, top, right, bottom);
 }
 
-template<typename ParentDataClass : ContainerParentDataMixin<RenderSliver>> Rect RenderViewportBaseCls<ParentDataClass>::describeSemanticsClip(RenderSliver child) {
-    assert(axis != nullptr);
+template<typename ParentDataClass> Rect RenderViewportBaseCls<ParentDataClass>::describeSemanticsClip(RenderSliver child) {
+    assert(axis() != nullptr);
     if (_calculatedCacheExtent == nullptr) {
         return semanticBounds;
     }
     ;
 }
 
-template<typename ParentDataClass : ContainerParentDataMixin<RenderSliver>> void RenderViewportBaseCls<ParentDataClass>::paint(PaintingContext context, Offset offset) {
+template<typename ParentDataClass> void RenderViewportBaseCls<ParentDataClass>::paint(PaintingContext context, Offset offset) {
     if (firstChild == nullptr) {
         return;
     }
-    if (hasVisualOverflow && clipBehavior != ClipCls::none) {
-        _clipRectLayer->layer = context->pushClipRect(needsCompositing, offset, OffsetCls::zero & size, _paintContentsclipBehavior, _clipRectLayer->layer);
+    if (hasVisualOverflow() && clipBehavior() != ClipCls::none) {
+        _clipRectLayer->layer() = context->pushClipRect(needsCompositing, offset(), OffsetCls::zero & size, _paintContentsclipBehavior(), _clipRectLayer->layer());
     } else {
-        _clipRectLayer->layer = nullptr;
-        _paintContents(context, offset);
+        _clipRectLayer->layer() = nullptr;
+        _paintContents(context, offset());
     }
 }
 
-template<typename ParentDataClass : ContainerParentDataMixin<RenderSliver>> void RenderViewportBaseCls<ParentDataClass>::dispose() {
-    _clipRectLayer->layer = nullptr;
+template<typename ParentDataClass> void RenderViewportBaseCls<ParentDataClass>::dispose() {
+    _clipRectLayer->layer() = nullptr;
     super->dispose();
 }
 
-template<typename ParentDataClass : ContainerParentDataMixin<RenderSliver>> void RenderViewportBaseCls<ParentDataClass>::debugPaintSize(PaintingContext context, Offset offset) {
+template<typename ParentDataClass> void RenderViewportBaseCls<ParentDataClass>::debugPaintSize(PaintingContext context, Offset offset) {
     assert([=] () {
-        super->debugPaintSize(context, offset);
+        super->debugPaintSize(context, offset());
             auto _c1 = make<PaintCls>();    _c1.style = auto _c2 = PaintingStyleCls::stroke;    _c2.strokeWidth = auto _c3 = 1.0;    _c3.color = make<ColorCls>(0xFF00FF00);    _c3;    _c2;Paint paint = _c1;
         Canvas canvas = context->canvas;
         RenderSliver child = firstChild;
@@ -276,20 +276,20 @@ template<typename ParentDataClass : ContainerParentDataMixin<RenderSliver>> void
             Size size;
             ;
             assert(size != nullptr);
-            canvas->drawRect(((offset + paintOffsetOf(child)) & size)->deflate(0.5), paint);
+            canvas->drawRect(((offset() + paintOffsetOf(child)) & size)->deflate(0.5), paint);
             child = childAfter(child);
         }
         return true;
     }());
 }
 
-template<typename ParentDataClass : ContainerParentDataMixin<RenderSliver>> bool RenderViewportBaseCls<ParentDataClass>::hitTestChildren(Offset position, BoxHitTestResult result) {
+template<typename ParentDataClass> bool RenderViewportBaseCls<ParentDataClass>::hitTestChildren(Offset position, BoxHitTestResult result) {
     double mainAxisPosition, crossAxisPosition;
     ;
     assert(mainAxisPosition != nullptr);
     assert(crossAxisPosition != nullptr);
     SliverHitTestResult sliverResult = SliverHitTestResultCls->wrap(result);
-    for (RenderSliver child : childrenInHitTestOrder) {
+    for (RenderSliver child : childrenInHitTestOrder()) {
         if (!child->geometry!->visible) {
             continue;
         }
@@ -305,18 +305,18 @@ template<typename ParentDataClass : ContainerParentDataMixin<RenderSliver>> bool
     return false;
 }
 
-template<typename ParentDataClass : ContainerParentDataMixin<RenderSliver>> RevealedOffset RenderViewportBaseCls<ParentDataClass>::getOffsetToReveal(double alignment, Rect rect, RenderObject target) {
+template<typename ParentDataClass> RevealedOffset RenderViewportBaseCls<ParentDataClass>::getOffsetToReveal(double alignment, Rect rect, RenderObject target) {
     double leadingScrollOffset = 0.0;
     RenderObject child = target;
     RenderBox pivot;
-    bool onlySlivers = target is RenderSliver;
+    bool onlySlivers = is<RenderSliver>(target);
     while (child->parent != this) {
-        RenderObject parent = ((RenderObject)child->parent!);
-        assert(parent != nullptr, "$target must be a descendant of $this");
-        if (child is RenderBox) {
+        RenderObject parent = as<RenderObject>(child->parent!);
+        assert(parent != nullptr, __s("$target must be a descendant of $this"));
+        if (is<RenderBox>(child)) {
             pivot = child;
         }
-        if (parent is RenderSliver) {
+        if (is<RenderSliver>(parent)) {
             leadingScrollOffset = parent->childScrollOffset(child)!;
         } else {
             onlySlivers = false;
@@ -331,15 +331,15 @@ template<typename ParentDataClass : ContainerParentDataMixin<RenderSliver>> Reve
         assert(pivot->parent != nullptr);
         assert(pivot->parent != this);
         assert(pivot != this);
-        assert(pivot->parent is RenderSliver);
-        RenderSliver pivotParent = ((RenderSliver)pivot->parent!);
+        assert(is<RenderSliver>(pivot->parent));
+        RenderSliver pivotParent = as<RenderSliver>(pivot->parent!);
         growthDirection = pivotParent->constraints->growthDirection;
         ;
         rect = target->paintBounds;
         rectLocal = MatrixUtilsCls->transformRect(target->getTransformTo(pivot), rect);
     } else     {
         if (onlySlivers) {
-        RenderSliver targetSliver = ((RenderSliver)target);
+        RenderSliver targetSliver = as<RenderSliver>(target);
         growthDirection = targetSliver->constraints->growthDirection;
         pivotExtent = targetSliver->geometry!->scrollExtent;
         if (rect == nullptr) {
@@ -348,7 +348,7 @@ template<typename ParentDataClass : ContainerParentDataMixin<RenderSliver>> Reve
         rectLocal = rect;
     } else {
         assert(rect != nullptr);
-        return make<RevealedOffsetCls>(offset->pixels, rect!);
+        return make<RevealedOffsetCls>(offset()->pixels(), rect!);
     }
 ;
     }    assert(pivotExtent != nullptr);
@@ -356,8 +356,8 @@ template<typename ParentDataClass : ContainerParentDataMixin<RenderSliver>> Reve
     assert(rectLocal != nullptr);
     assert(growthDirection != nullptr);
     assert(child->parent == this);
-    assert(child is RenderSliver);
-    RenderSliver sliver = ((RenderSliver)child);
+    assert(is<RenderSliver>(child));
+    RenderSliver sliver = as<RenderSliver>(child);
     double targetMainAxisExtent;
     ;
     bool isPinned = sliver->geometry!->maxScrollObstructionExtent > 0 && leadingScrollOffset >= 0;
@@ -369,34 +369,34 @@ template<typename ParentDataClass : ContainerParentDataMixin<RenderSliver>> Reve
     double mainAxisExtent;
     ;
     double targetOffset = leadingScrollOffset - (mainAxisExtent - targetMainAxisExtent) * alignment;
-    double offsetDifference = offset->pixels - targetOffset;
+    double offsetDifference = offset()->pixels() - targetOffset;
     ;
     return make<RevealedOffsetCls>(targetOffset, targetRect);
 }
 
-template<typename ParentDataClass : ContainerParentDataMixin<RenderSliver>> Offset RenderViewportBaseCls<ParentDataClass>::computeAbsolutePaintOffset(RenderSliver child, GrowthDirection growthDirection, double layoutOffset) {
+template<typename ParentDataClass> Offset RenderViewportBaseCls<ParentDataClass>::computeAbsolutePaintOffset(RenderSliver child, GrowthDirection growthDirection, double layoutOffset) {
     assert(hasSize);
-    assert(axisDirection != nullptr);
+    assert(axisDirection() != nullptr);
     assert(growthDirection != nullptr);
     assert(child != nullptr);
     assert(child->geometry != nullptr);
     ;
 }
 
-template<typename ParentDataClass : ContainerParentDataMixin<RenderSliver>> void RenderViewportBaseCls<ParentDataClass>::debugFillProperties(DiagnosticPropertiesBuilder properties) {
+template<typename ParentDataClass> void RenderViewportBaseCls<ParentDataClass>::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<AxisDirection>make<EnumPropertyCls>("axisDirection", axisDirection));
-    properties->add(<AxisDirection>make<EnumPropertyCls>("crossAxisDirection", crossAxisDirection));
-    properties->add(<ViewportOffset>make<DiagnosticsPropertyCls>("offset", offset));
+    properties->add(<AxisDirection>make<EnumPropertyCls>(__s("axisDirection"), axisDirection()));
+    properties->add(<AxisDirection>make<EnumPropertyCls>(__s("crossAxisDirection"), crossAxisDirection()));
+    properties->add(<ViewportOffset>make<DiagnosticsPropertyCls>(__s("offset"), offset()));
 }
 
-template<typename ParentDataClass : ContainerParentDataMixin<RenderSliver>> List<DiagnosticsNode> RenderViewportBaseCls<ParentDataClass>::debugDescribeChildren() {
+template<typename ParentDataClass> List<DiagnosticsNode> RenderViewportBaseCls<ParentDataClass>::debugDescribeChildren() {
     List<DiagnosticsNode> children = makeList();
     RenderSliver child = firstChild;
     if (child == nullptr) {
         return children;
     }
-    int count = indexOfFirstChild;
+    int count = indexOfFirstChild();
     while (true) {
         children->add(child!->toDiagnosticsNode(labelForChild(count)));
         if (child == lastChild) {
@@ -408,15 +408,15 @@ template<typename ParentDataClass : ContainerParentDataMixin<RenderSliver>> List
     return children;
 }
 
-template<typename ParentDataClass : ContainerParentDataMixin<RenderSliver>> void RenderViewportBaseCls<ParentDataClass>::showOnScreen(Curve curve, RenderObject descendant, Duration duration, Rect rect) {
-    if (!offset->allowImplicitScrolling) {
+template<typename ParentDataClass> void RenderViewportBaseCls<ParentDataClass>::showOnScreen(Curve curve, RenderObject descendant, Duration duration, Rect rect) {
+    if (!offset()->allowImplicitScrolling()) {
         return super->showOnScreen(descendant, rect, duration, curve);
     }
-    Rect newRect = RenderViewportBaseCls->showInViewport(descendant, this, offset, rect, duration, curve);
+    Rect newRect = RenderViewportBaseCls->showInViewport(descendant, this, offset(), rect, duration, curve);
     super->showOnScreen(newRect, duration, curve);
 }
 
-template<typename ParentDataClass : ContainerParentDataMixin<RenderSliver>> Rect RenderViewportBaseCls<ParentDataClass>::showInViewport(Curve curve, RenderObject descendant, Duration duration, ViewportOffset offset, Rect rect, RenderAbstractViewport viewport) {
+template<typename ParentDataClass> Rect RenderViewportBaseCls<ParentDataClass>::showInViewport(Curve curve, RenderObject descendant, Duration duration, ViewportOffset offset, Rect rect, RenderAbstractViewport viewport) {
     assert(viewport != nullptr);
     assert(offset != nullptr);
     if (descendant == nullptr) {
@@ -437,8 +437,8 @@ template<typename ParentDataClass : ContainerParentDataMixin<RenderSliver>> Rect
         if ( < trailingEdgeOffset->offset) {
         targetOffset = trailingEdgeOffset;
     } else {
-        Matrix4 transform = descendant->getTransformTo(((RenderObject)viewport->parent!));
-        return MatrixUtilsCls->transformRect(transform, rect ?? descendant->paintBounds);
+        Matrix4 transform = descendant->getTransformTo(as<RenderObject>(viewport->parent!));
+        return MatrixUtilsCls->transformRect(transform, rect or descendant->paintBounds);
     }
 ;
     };
@@ -447,33 +447,33 @@ template<typename ParentDataClass : ContainerParentDataMixin<RenderSliver>> Rect
     return targetOffset->rect;
 }
 
-template<typename ParentDataClass : ContainerParentDataMixin<RenderSliver>> void RenderViewportBaseCls<ParentDataClass>::_paintContents(PaintingContext context, Offset offset) {
-    for (RenderSliver child : childrenInPaintOrder) {
+template<typename ParentDataClass> void RenderViewportBaseCls<ParentDataClass>::_paintContents(PaintingContext context, Offset offset) {
+    for (RenderSliver child : childrenInPaintOrder()) {
         if (child->geometry!->visible) {
-            context->paintChild(child, offset + paintOffsetOf(child));
+            context->paintChild(child, offset() + paintOffsetOf(child));
         }
     }
 }
 
 RenderViewportCls::RenderViewportCls(double anchor, Unknown axisDirection, Unknown cacheExtent, Unknown cacheExtentStyle, RenderSliver center, List<RenderSliver> children, Unknown clipBehavior, Unknown crossAxisDirection, Unknown offset) {
     {
-        assert(anchor != nullptr);
-        assert(anchor >= 0.0 && anchor <= 1.0);
+        assert(anchor() != nullptr);
+        assert(anchor() >= 0.0 && anchor() <= 1.0);
         assert(cacheExtentStyle != CacheExtentStyleCls::viewport || cacheExtent != nullptr);
         assert(clipBehavior != nullptr);
-        _anchor = anchor;
-        _center = center;
+        _anchor = anchor();
+        _center = center();
     }
     {
         addAll(children);
-        if (center == nullptr && firstChild != nullptr) {
+        if (center() == nullptr && firstChild != nullptr) {
             _center = firstChild;
         }
     }
 }
 
 void RenderViewportCls::setupParentData(RenderObject child) {
-    if (child->parentData is! SliverPhysicalContainerParentData) {
+    if (!is<SliverPhysicalContainerParentData>(child->parentData)) {
         child->parentData = make<SliverPhysicalContainerParentDataCls>();
     }
 }
@@ -520,7 +520,7 @@ Size RenderViewportCls::computeDryLayout(BoxConstraints constraints) {
 
 void RenderViewportCls::performLayout() {
     ;
-    if (center == nullptr) {
+    if (center() == nullptr) {
         assert(firstChild == nullptr);
         _minScrollExtent = 0.0;
         _maxScrollExtent = 0.0;
@@ -528,11 +528,11 @@ void RenderViewportCls::performLayout() {
         offset->applyContentDimensions(0.0, 0.0);
         return;
     }
-    assert(center!->parent == this);
+    assert(center()!->parent == this);
     double mainAxisExtent;
     double crossAxisExtent;
     ;
-    double centerOffsetAdjustment = center!->centerOffsetAdjustment;
+    double centerOffsetAdjustment = center()!->centerOffsetAdjustment();
     double correction;
     int count = 0;
     do {
@@ -541,7 +541,7 @@ void RenderViewportCls::performLayout() {
         if (correction != 0.0) {
             offset->correctBy(correction);
         } else {
-            if (offset->applyContentDimensions(math->min(0.0, _minScrollExtent + mainAxisExtent * anchor), math->max(0.0, _maxScrollExtent - mainAxisExtent * (1.0 - anchor)))) {
+            if (offset->applyContentDimensions(math->min(0.0, _minScrollExtent + mainAxisExtent * anchor()), math->max(0.0, _maxScrollExtent - mainAxisExtent * (1.0 - anchor())))) {
                                 break;
             }
         }
@@ -568,12 +568,12 @@ void RenderViewportCls::updateOutOfBandData(SliverGeometry childLayoutGeometry, 
 }
 
 void RenderViewportCls::updateChildLayoutOffset(RenderSliver child, GrowthDirection growthDirection, double layoutOffset) {
-    SliverPhysicalParentData childParentData = ((SliverPhysicalParentData)child->parentData!);
+    SliverPhysicalParentData childParentData = as<SliverPhysicalParentData>(child->parentData!);
     childParentData->paintOffset = computeAbsolutePaintOffset(child, layoutOffset, growthDirection);
 }
 
 Offset RenderViewportCls::paintOffsetOf(RenderSliver child) {
-    SliverPhysicalParentData childParentData = ((SliverPhysicalParentData)child->parentData!);
+    SliverPhysicalParentData childParentData = as<SliverPhysicalParentData>(child->parentData!);
     return childParentData->paintOffset;
 }
 
@@ -593,23 +593,23 @@ double RenderViewportCls::maxScrollObstructionExtentBefore(RenderSliver child) {
 
 void RenderViewportCls::applyPaintTransform(RenderObject child, Matrix4 transform) {
     assert(child != nullptr);
-    SliverPhysicalParentData childParentData = ((SliverPhysicalParentData)child->parentData!);
+    SliverPhysicalParentData childParentData = as<SliverPhysicalParentData>(child->parentData!);
     childParentData->applyPaintTransform(transform);
 }
 
 double RenderViewportCls::computeChildMainAxisPosition(RenderSliver child, double parentMainAxisPosition) {
     assert(child != nullptr);
     assert(child->constraints != nullptr);
-    SliverPhysicalParentData childParentData = ((SliverPhysicalParentData)child->parentData!);
+    SliverPhysicalParentData childParentData = as<SliverPhysicalParentData>(child->parentData!);
     ;
 }
 
 int RenderViewportCls::indexOfFirstChild() {
-    assert(center != nullptr);
-    assert(center!->parent == this);
+    assert(center() != nullptr);
+    assert(center()!->parent == this);
     assert(firstChild != nullptr);
     int count = 0;
-    RenderSliver child = center;
+    RenderSliver child = center();
     while (child != firstChild) {
         count = 1;
         child = childBefore(child!);
@@ -619,9 +619,9 @@ int RenderViewportCls::indexOfFirstChild() {
 
 String RenderViewportCls::labelForChild(int index) {
     if (index == 0) {
-        return "center child";
+        return __s("center child");
     }
-    return "child $index";
+    return __s("child $index");
 }
 
 Iterable<RenderSliver> RenderViewportCls::childrenInPaintOrder() {
@@ -630,14 +630,14 @@ Iterable<RenderSliver> RenderViewportCls::childrenInPaintOrder() {
         return children;
     }
     RenderSliver child = firstChild;
-    while (child != center) {
+    while (child != center()) {
         children->add(child!);
         child = childAfter(child);
     }
     child = lastChild;
     while (true) {
         children->add(child!);
-        if (child == center) {
+        if (child == center()) {
             return children;
         }
         child = childBefore(child);
@@ -649,12 +649,12 @@ Iterable<RenderSliver> RenderViewportCls::childrenInHitTestOrder() {
     if (firstChild == nullptr) {
         return children;
     }
-    RenderSliver child = center;
+    RenderSliver child = center();
     while (child != nullptr) {
         children->add(child);
         child = childAfter(child);
     }
-    child = childBefore(center!);
+    child = childBefore(center()!);
     while (child != nullptr) {
         children->add(child);
         child = childBefore(child);
@@ -664,7 +664,7 @@ Iterable<RenderSliver> RenderViewportCls::childrenInHitTestOrder() {
 
 void RenderViewportCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(make<DoublePropertyCls>("anchor", anchor));
+    properties->add(make<DoublePropertyCls>(__s("anchor"), anchor()));
 }
 
 double RenderViewportCls::_attemptLayout(double correctedOffset, double crossAxisExtent, double mainAxisExtent) {
@@ -676,7 +676,7 @@ double RenderViewportCls::_attemptLayout(double correctedOffset, double crossAxi
     _minScrollExtent = 0.0;
     _maxScrollExtent = 0.0;
     _hasVisualOverflow = false;
-    double centerOffset = mainAxisExtent * anchor - correctedOffset;
+    double centerOffset = mainAxisExtent * anchor() - correctedOffset;
     double reverseDirectionRemainingPaintExtent = clampDouble(centerOffset, 0.0, mainAxisExtent);
     double forwardDirectionRemainingPaintExtent = clampDouble(mainAxisExtent - centerOffset, 0.0, mainAxisExtent);
     ;
@@ -684,14 +684,14 @@ double RenderViewportCls::_attemptLayout(double correctedOffset, double crossAxi
     double centerCacheOffset = centerOffset + _calculatedCacheExtent!;
     double reverseDirectionRemainingCacheExtent = clampDouble(centerCacheOffset, 0.0, fullCacheExtent);
     double forwardDirectionRemainingCacheExtent = clampDouble(fullCacheExtent - centerCacheOffset, 0.0, fullCacheExtent);
-    RenderSliver leadingNegativeChild = childBefore(center!);
+    RenderSliver leadingNegativeChild = childBefore(center()!);
     if (leadingNegativeChild != nullptr) {
         double result = layoutChildSequence(leadingNegativeChild, math->max(mainAxisExtent, centerOffset) - mainAxisExtent, 0.0, forwardDirectionRemainingPaintExtent, reverseDirectionRemainingPaintExtent, mainAxisExtent, crossAxisExtent, GrowthDirectionCls::reverse, childBefore, reverseDirectionRemainingCacheExtent, clampDouble(mainAxisExtent - centerOffset, -_calculatedCacheExtent!, 0.0));
         if (result != 0.0) {
             return -result;
         }
     }
-    return layoutChildSequence(center, math->max(0.0, -centerOffset), leadingNegativeChild == nullptr? math->min(0.0, -centerOffset) : 0.0, centerOffset >= mainAxisExtent? centerOffset : reverseDirectionRemainingPaintExtent, forwardDirectionRemainingPaintExtent, mainAxisExtent, crossAxisExtent, GrowthDirectionCls::forward, childAfter, forwardDirectionRemainingCacheExtent, clampDouble(centerOffset, -_calculatedCacheExtent!, 0.0));
+    return layoutChildSequence(center(), math->max(0.0, -centerOffset), leadingNegativeChild == nullptr? math->min(0.0, -centerOffset) : 0.0, centerOffset >= mainAxisExtent? centerOffset : reverseDirectionRemainingPaintExtent, forwardDirectionRemainingPaintExtent, mainAxisExtent, crossAxisExtent, GrowthDirectionCls::forward, childAfter, forwardDirectionRemainingCacheExtent, clampDouble(centerOffset, -_calculatedCacheExtent!, 0.0));
 }
 
 RenderShrinkWrappingViewportCls::RenderShrinkWrappingViewportCls(Unknown axisDirection, List<RenderSliver> children, Unknown clipBehavior, Unknown crossAxisDirection, Unknown offset) {
@@ -701,7 +701,7 @@ RenderShrinkWrappingViewportCls::RenderShrinkWrappingViewportCls(Unknown axisDir
 }
 
 void RenderShrinkWrappingViewportCls::setupParentData(RenderObject child) {
-    if (child->parentData is! SliverLogicalContainerParentData) {
+    if (!is<SliverLogicalContainerParentData>(child->parentData)) {
         child->parentData = make<SliverLogicalContainerParentDataCls>();
     }
 }
@@ -764,12 +764,12 @@ void RenderShrinkWrappingViewportCls::updateOutOfBandData(SliverGeometry childLa
 
 void RenderShrinkWrappingViewportCls::updateChildLayoutOffset(RenderSliver child, GrowthDirection growthDirection, double layoutOffset) {
     assert(growthDirection == GrowthDirectionCls::forward);
-    SliverLogicalParentData childParentData = ((SliverLogicalParentData)child->parentData!);
+    SliverLogicalParentData childParentData = as<SliverLogicalParentData>(child->parentData!);
     childParentData->layoutOffset = layoutOffset;
 }
 
 Offset RenderShrinkWrappingViewportCls::paintOffsetOf(RenderSliver child) {
-    SliverLogicalParentData childParentData = ((SliverLogicalParentData)child->parentData!);
+    SliverLogicalParentData childParentData = as<SliverLogicalParentData>(child->parentData!);
     return computeAbsolutePaintOffset(child, childParentData->layoutOffset!, GrowthDirectionCls::forward);
 }
 
@@ -799,7 +799,7 @@ double RenderShrinkWrappingViewportCls::maxScrollObstructionExtentBefore(RenderS
 
 void RenderShrinkWrappingViewportCls::applyPaintTransform(RenderObject child, Matrix4 transform) {
     assert(child != nullptr);
-    Offset offset = paintOffsetOf(((RenderSliver)child));
+    Offset offset = paintOffsetOf(as<RenderSliver>(child));
     transform->translate(offset->dx, offset->dy);
 }
 
@@ -807,7 +807,7 @@ double RenderShrinkWrappingViewportCls::computeChildMainAxisPosition(RenderSlive
     assert(child != nullptr);
     assert(child->constraints != nullptr);
     assert(hasSize);
-    SliverLogicalParentData childParentData = ((SliverLogicalParentData)child->parentData!);
+    SliverLogicalParentData childParentData = as<SliverLogicalParentData>(child->parentData!);
     ;
 }
 
@@ -816,7 +816,7 @@ int RenderShrinkWrappingViewportCls::indexOfFirstChild() {
 }
 
 String RenderShrinkWrappingViewportCls::labelForChild(int index) {
-    return "child $index";
+    return __s("child $index");
 }
 
 Iterable<RenderSliver> RenderShrinkWrappingViewportCls::childrenInPaintOrder() {

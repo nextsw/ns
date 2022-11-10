@@ -31,7 +31,7 @@ double FrictionSimulationCls::timeAtX(double x) {
     if (x == _x) {
         return 0.0;
     }
-    if (_v == 0.0 || (_v > 0? ( < _x || x > finalX) : (x > _x ||  < finalX))) {
+    if (_v == 0.0 || (_v > 0? ( < _x || x > finalX()) : (x > _x ||  < finalX()))) {
         return double->infinity;
     }
     return math->log(_dragLog * (x - _x) / _v + 1.0) / _dragLog;
@@ -42,11 +42,11 @@ bool FrictionSimulationCls::isDone(double time) {
 }
 
 String FrictionSimulationCls::toString() {
-    return "${objectRuntimeType(this, 'FrictionSimulation')}(cₓ: ${_drag.toStringAsFixed(1)}, x₀: ${_x.toStringAsFixed(1)}, dx₀: ${_v.toStringAsFixed(1)})";
+    return __s("${objectRuntimeType(this, 'FrictionSimulation')}(cₓ: ${_drag.toStringAsFixed(1)}, x₀: ${_x.toStringAsFixed(1)}, dx₀: ${_v.toStringAsFixed(1)})");
 }
 
 double FrictionSimulationCls::_dragFor(double endPosition, double endVelocity, double startPosition, double startVelocity) {
-    return ((double)math->pow(math->e, (startVelocity - endVelocity) / (startPosition - endPosition)));
+    return as<double>(math->pow(math->e, (startVelocity - endVelocity) / (startPosition - endPosition)));
 }
 
 BoundedFrictionSimulationCls::BoundedFrictionSimulationCls(double _maxX, double _minX, Unknown drag, Unknown position, Unknown velocity) {
@@ -64,5 +64,5 @@ bool BoundedFrictionSimulationCls::isDone(double time) {
 }
 
 String BoundedFrictionSimulationCls::toString() {
-    return "${objectRuntimeType(this, 'BoundedFrictionSimulation')}(cₓ: ${_drag.toStringAsFixed(1)}, x₀: ${_x.toStringAsFixed(1)}, dx₀: ${_v.toStringAsFixed(1)}, x: ${_minX.toStringAsFixed(1)}..${_maxX.toStringAsFixed(1)})";
+    return __s("${objectRuntimeType(this, 'BoundedFrictionSimulation')}(cₓ: ${_drag.toStringAsFixed(1)}, x₀: ${_x.toStringAsFixed(1)}, dx₀: ${_v.toStringAsFixed(1)}, x: ${_minX.toStringAsFixed(1)}..${_maxX.toStringAsFixed(1)})");
 }

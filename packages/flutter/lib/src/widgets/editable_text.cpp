@@ -1,5 +1,5 @@
 #include "editable_text.hpp"
-TextEditingControllerCls::TextEditingControllerCls(String text) {
+TextEditingControllerCls::TextEditingControllerCls(String text) : ValueNotifier<TextEditingValue>(text() == nullptr? TextEditingValueCls::empty : make<TextEditingValueCls>(text())) {
 }
 
 void TextEditingControllerCls::fromValue(TextEditingValue value)
@@ -13,16 +13,16 @@ void TextEditingControllerCls::text(String newText) {
 }
 
 void TextEditingControllerCls::value(TextEditingValue newValue) {
-    assert(!newValue->composing->isValid || newValue->isComposingRangeValid, "New TextEditingValue $newValue has an invalid non-empty composing range ${newValue.composing}. It is recommended to use a valid composing range, even for readonly text fields");
+    assert(!newValue->composing->isValid || newValue->isComposingRangeValid, __s("New TextEditingValue $newValue has an invalid non-empty composing range ${newValue.composing}. It is recommended to use a valid composing range, even for readonly text fields"));
     super->value = newValue;
 }
 
 TextSpan TextEditingControllerCls::buildTextSpan(BuildContext context, TextStyle style, bool withComposing) {
     assert(!value->composing->isValid || !withComposing || value->isComposingRangeValid);
     if (!value->isComposingRangeValid || !withComposing) {
-        return make<TextSpanCls>(style, text);
+        return make<TextSpanCls>(style, text());
     }
-    TextStyle composingStyle = style?->merge(make<TextStyleCls>(TextDecorationCls::underline)) ?? make<TextStyleCls>(TextDecorationCls::underline);
+    TextStyle composingStyle = style?->merge(make<TextStyleCls>(TextDecorationCls::underline)) or make<TextStyleCls>(TextDecorationCls::underline);
     return make<TextSpanCls>(style, makeList(ArrayItem, ArrayItem, ArrayItem));
 }
 
@@ -47,11 +47,11 @@ void TextEditingControllerCls::clearComposing() {
 }
 
 bool TextEditingControllerCls::isSelectionWithinTextBounds(TextSelection selection) {
-    return selection->start <= text->length && selection->end <= text->length;
+    return selection()->start <= text()->length() && selection()->end <= text()->length();
 }
 
 bool TextEditingControllerCls::_isSelectionWithinComposingRange(TextSelection selection) {
-    return selection->start >= value->composing->start && selection->end <= value->composing->end;
+    return selection()->start >= value->composing->start && selection()->end <= value->composing->end;
 }
 
 ToolbarOptionsCls::ToolbarOptionsCls(bool copy, bool cut, bool paste, bool selectAll) {
@@ -74,7 +74,7 @@ bool _DiscreteKeyFrameSimulationCls::isDone(double time) {
 }
 
 double _DiscreteKeyFrameSimulationCls::x(double time) {
-    int length = _keyFrames->length;
+    int length = _keyFrames->length();
     int searchIndex;
     int endIndex;
     if (_keyFrames[_lastKeyFrameIndex]->time > time) {
@@ -102,11 +102,11 @@ EditableTextCls::EditableTextCls(bool autocorrect, Color autocorrectionTextRectC
     {
         assert(controller != nullptr);
         assert(focusNode != nullptr);
-        assert(obscuringCharacter != nullptr && obscuringCharacter->length == 1);
+        assert(obscuringCharacter != nullptr && obscuringCharacter->length() == 1);
         assert(obscureText != nullptr);
         assert(autocorrect != nullptr);
-        smartDashesType = smartDashesType ?? (obscureText? SmartDashesTypeCls::disabled : SmartDashesTypeCls::enabled);
-        smartQuotesType = smartQuotesType ?? (obscureText? SmartQuotesTypeCls::disabled : SmartQuotesTypeCls::enabled);
+        smartDashesType = smartDashesType or (obscureText? SmartDashesTypeCls::disabled : SmartDashesTypeCls::enabled);
+        smartQuotesType = smartQuotesType or (obscureText? SmartQuotesTypeCls::disabled : SmartQuotesTypeCls::enabled);
         assert(enableSuggestions != nullptr);
         assert(showSelectionHandles != nullptr);
         assert(readOnly != nullptr);
@@ -121,22 +121,22 @@ EditableTextCls::EditableTextCls(bool autocorrect, Color autocorrectionTextRectC
         assert(textAlign != nullptr);
         assert(maxLines == nullptr || maxLines > 0);
         assert(minLines == nullptr || minLines > 0);
-        assert((maxLines == nullptr) || (minLines == nullptr) || (maxLines >= minLines), "minLines can't be greater than maxLines");
+        assert((maxLines == nullptr) || (minLines == nullptr) || (maxLines >= minLines), __s("minLines can't be greater than maxLines"));
         assert(expands != nullptr);
-        assert(!expands || (maxLines == nullptr && minLines == nullptr), "minLines and maxLines must be null when expands is true.");
-        assert(!obscureText || maxLines == 1, "Obscured fields cannot be multiline.");
+        assert(!expands || (maxLines == nullptr && minLines == nullptr), __s("minLines and maxLines must be null when expands is true."));
+        assert(!obscureText || maxLines == 1, __s("Obscured fields cannot be multiline."));
         assert(autofocus != nullptr);
         assert(rendererIgnoresPointer != nullptr);
         assert(scrollPadding != nullptr);
         assert(dragStartBehavior != nullptr);
-        enableInteractiveSelection = enableInteractiveSelection ?? (!readOnly || !obscureText);
-        toolbarOptions = toolbarOptions ?? (obscureText? (readOnly? make<ToolbarOptionsCls>() : make<ToolbarOptionsCls>(true, true)) : (readOnly? make<ToolbarOptionsCls>(true, true) : make<ToolbarOptionsCls>(true, true, true, true)));
+        enableInteractiveSelection = enableInteractiveSelection or (!readOnly || !obscureText);
+        toolbarOptions = toolbarOptions or (obscureText? (readOnly? make<ToolbarOptionsCls>() : make<ToolbarOptionsCls>(true, true)) : (readOnly? make<ToolbarOptionsCls>(true, true) : make<ToolbarOptionsCls>(true, true, true, true)));
         assert(clipBehavior != nullptr);
         assert(enableIMEPersonalizedLearning != nullptr);
-        _strutStyle = strutStyle;
-        keyboardType = keyboardType ?? _inferKeyboardType(autofillHints, maxLines);
-            List<TextInputFormatter> list1 = make<ListCls<>>();    list1.add(ArrayItem);    for (auto _x1 : inputFormatters ?? <TextInputFormatter>empty()) {    {        list1.add(_x1);    }inputFormatters = maxLines == 1? list1 : inputFormatters;
-        showCursor = showCursor ?? !readOnly;
+        _strutStyle = strutStyle();
+        keyboardType = keyboardType or _inferKeyboardType(autofillHints, maxLines);
+            List<TextInputFormatter> list1 = make<ListCls<>>();    list1.add(ArrayItem);    for (auto _x1 : inputFormatters or <TextInputFormatter>empty()) {    {        list1.add(_x1);    }inputFormatters = maxLines == 1? list1 : inputFormatters;
+        showCursor = showCursor or !readOnly;
     }
 }
 
@@ -157,31 +157,31 @@ EditableTextState EditableTextCls::createState() {
 
 void EditableTextCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<TextEditingController>make<DiagnosticsPropertyCls>("controller", controller));
-    properties->add(<FocusNode>make<DiagnosticsPropertyCls>("focusNode", focusNode));
-    properties->add(<bool>make<DiagnosticsPropertyCls>("obscureText", obscureTextfalse));
-    properties->add(<bool>make<DiagnosticsPropertyCls>("readOnly", readOnlyfalse));
-    properties->add(<bool>make<DiagnosticsPropertyCls>("autocorrect", autocorrecttrue));
-    properties->add(<SmartDashesType>make<EnumPropertyCls>("smartDashesType", smartDashesTypeobscureText? SmartDashesTypeCls::disabled : SmartDashesTypeCls::enabled));
-    properties->add(<SmartQuotesType>make<EnumPropertyCls>("smartQuotesType", smartQuotesTypeobscureText? SmartQuotesTypeCls::disabled : SmartQuotesTypeCls::enabled));
-    properties->add(<bool>make<DiagnosticsPropertyCls>("enableSuggestions", enableSuggestionstrue));
+    properties->add(<TextEditingController>make<DiagnosticsPropertyCls>(__s("controller"), controller));
+    properties->add(<FocusNode>make<DiagnosticsPropertyCls>(__s("focusNode"), focusNode));
+    properties->add(<bool>make<DiagnosticsPropertyCls>(__s("obscureText"), obscureTextfalse));
+    properties->add(<bool>make<DiagnosticsPropertyCls>(__s("readOnly"), readOnlyfalse));
+    properties->add(<bool>make<DiagnosticsPropertyCls>(__s("autocorrect"), autocorrecttrue));
+    properties->add(<SmartDashesType>make<EnumPropertyCls>(__s("smartDashesType"), smartDashesTypeobscureText? SmartDashesTypeCls::disabled : SmartDashesTypeCls::enabled));
+    properties->add(<SmartQuotesType>make<EnumPropertyCls>(__s("smartQuotesType"), smartQuotesTypeobscureText? SmartQuotesTypeCls::disabled : SmartQuotesTypeCls::enabled));
+    properties->add(<bool>make<DiagnosticsPropertyCls>(__s("enableSuggestions"), enableSuggestionstrue));
     style->debugFillProperties(properties);
-    properties->add(<TextAlign>make<EnumPropertyCls>("textAlign", textAlignnullptr));
-    properties->add(<TextDirection>make<EnumPropertyCls>("textDirection", textDirectionnullptr));
-    properties->add(<Locale>make<DiagnosticsPropertyCls>("locale", localenullptr));
-    properties->add(make<DoublePropertyCls>("textScaleFactor", textScaleFactornullptr));
-    properties->add(make<IntPropertyCls>("maxLines", maxLines1));
-    properties->add(make<IntPropertyCls>("minLines", minLinesnullptr));
-    properties->add(<bool>make<DiagnosticsPropertyCls>("expands", expandsfalse));
-    properties->add(<bool>make<DiagnosticsPropertyCls>("autofocus", autofocusfalse));
-    properties->add(<TextInputType>make<DiagnosticsPropertyCls>("keyboardType", keyboardTypenullptr));
-    properties->add(<ScrollController>make<DiagnosticsPropertyCls>("scrollController", scrollControllernullptr));
-    properties->add(<ScrollPhysics>make<DiagnosticsPropertyCls>("scrollPhysics", scrollPhysicsnullptr));
-    properties->add(<Iterable<String>>make<DiagnosticsPropertyCls>("autofillHints", autofillHintsnullptr));
-    properties->add(<TextHeightBehavior>make<DiagnosticsPropertyCls>("textHeightBehavior", textHeightBehaviornullptr));
-    properties->add(<bool>make<DiagnosticsPropertyCls>("scribbleEnabled", scribbleEnabledtrue));
-    properties->add(<bool>make<DiagnosticsPropertyCls>("enableIMEPersonalizedLearning", enableIMEPersonalizedLearningtrue));
-    properties->add(<bool>make<DiagnosticsPropertyCls>("enableInteractiveSelection", enableInteractiveSelectiontrue));
+    properties->add(<TextAlign>make<EnumPropertyCls>(__s("textAlign"), textAlignnullptr));
+    properties->add(<TextDirection>make<EnumPropertyCls>(__s("textDirection"), textDirectionnullptr));
+    properties->add(<Locale>make<DiagnosticsPropertyCls>(__s("locale"), localenullptr));
+    properties->add(make<DoublePropertyCls>(__s("textScaleFactor"), textScaleFactornullptr));
+    properties->add(make<IntPropertyCls>(__s("maxLines"), maxLines1));
+    properties->add(make<IntPropertyCls>(__s("minLines"), minLinesnullptr));
+    properties->add(<bool>make<DiagnosticsPropertyCls>(__s("expands"), expandsfalse));
+    properties->add(<bool>make<DiagnosticsPropertyCls>(__s("autofocus"), autofocusfalse));
+    properties->add(<TextInputType>make<DiagnosticsPropertyCls>(__s("keyboardType"), keyboardTypenullptr));
+    properties->add(<ScrollController>make<DiagnosticsPropertyCls>(__s("scrollController"), scrollControllernullptr));
+    properties->add(<ScrollPhysics>make<DiagnosticsPropertyCls>(__s("scrollPhysics"), scrollPhysicsnullptr));
+    properties->add(<Iterable<String>>make<DiagnosticsPropertyCls>(__s("autofillHints"), autofillHintsnullptr));
+    properties->add(<TextHeightBehavior>make<DiagnosticsPropertyCls>(__s("textHeightBehavior"), textHeightBehaviornullptr));
+    properties->add(<bool>make<DiagnosticsPropertyCls>(__s("scribbleEnabled"), scribbleEnabledtrue));
+    properties->add(<bool>make<DiagnosticsPropertyCls>(__s("enableIMEPersonalizedLearning"), enableIMEPersonalizedLearningtrue));
+    properties->add(<bool>make<DiagnosticsPropertyCls>(__s("enableInteractiveSelection"), enableInteractiveSelectiontrue));
 }
 
 bool EditableTextCls::_userSelectionEnabled() {
@@ -200,7 +200,7 @@ TextInputType EditableTextCls::_inferKeyboardType(Iterable<String> autofillHints
         return TextInputTypeCls::multiline;
     }
     Map<String, TextInputType> map1 = make<MapCls<>>();map1.set(AutofillHintsCls::addressCity, TextInputTypeCls::streetAddress);map1.set(AutofillHintsCls::addressCityAndState, TextInputTypeCls::streetAddress);map1.set(AutofillHintsCls::addressState, TextInputTypeCls::streetAddress);map1.set(AutofillHintsCls::birthday, TextInputTypeCls::datetime);map1.set(AutofillHintsCls::birthdayDay, TextInputTypeCls::datetime);map1.set(AutofillHintsCls::birthdayMonth, TextInputTypeCls::datetime);map1.set(AutofillHintsCls::birthdayYear, TextInputTypeCls::datetime);map1.set(AutofillHintsCls::countryCode, TextInputTypeCls::number);map1.set(AutofillHintsCls::countryName, TextInputTypeCls::text);map1.set(AutofillHintsCls::creditCardExpirationDate, TextInputTypeCls::datetime);map1.set(AutofillHintsCls::creditCardExpirationDay, TextInputTypeCls::datetime);map1.set(AutofillHintsCls::creditCardExpirationMonth, TextInputTypeCls::datetime);map1.set(AutofillHintsCls::creditCardExpirationYear, TextInputTypeCls::datetime);map1.set(AutofillHintsCls::creditCardFamilyName, TextInputTypeCls::name);map1.set(AutofillHintsCls::creditCardGivenName, TextInputTypeCls::name);map1.set(AutofillHintsCls::creditCardMiddleName, TextInputTypeCls::name);map1.set(AutofillHintsCls::creditCardName, TextInputTypeCls::name);map1.set(AutofillHintsCls::creditCardNumber, TextInputTypeCls::number);map1.set(AutofillHintsCls::creditCardSecurityCode, TextInputTypeCls::number);map1.set(AutofillHintsCls::creditCardType, TextInputTypeCls::text);map1.set(AutofillHintsCls::email, TextInputTypeCls::emailAddress);map1.set(AutofillHintsCls::familyName, TextInputTypeCls::name);map1.set(AutofillHintsCls::fullStreetAddress, TextInputTypeCls::streetAddress);map1.set(AutofillHintsCls::gender, TextInputTypeCls::text);map1.set(AutofillHintsCls::givenName, TextInputTypeCls::name);map1.set(AutofillHintsCls::impp, TextInputTypeCls::url);map1.set(AutofillHintsCls::jobTitle, TextInputTypeCls::text);map1.set(AutofillHintsCls::language, TextInputTypeCls::text);map1.set(AutofillHintsCls::location, TextInputTypeCls::streetAddress);map1.set(AutofillHintsCls::middleInitial, TextInputTypeCls::name);map1.set(AutofillHintsCls::middleName, TextInputTypeCls::name);map1.set(AutofillHintsCls::name, TextInputTypeCls::name);map1.set(AutofillHintsCls::namePrefix, TextInputTypeCls::name);map1.set(AutofillHintsCls::nameSuffix, TextInputTypeCls::name);map1.set(AutofillHintsCls::newPassword, TextInputTypeCls::text);map1.set(AutofillHintsCls::newUsername, TextInputTypeCls::text);map1.set(AutofillHintsCls::nickname, TextInputTypeCls::text);map1.set(AutofillHintsCls::oneTimeCode, TextInputTypeCls::text);map1.set(AutofillHintsCls::organizationName, TextInputTypeCls::text);map1.set(AutofillHintsCls::password, TextInputTypeCls::text);map1.set(AutofillHintsCls::photo, TextInputTypeCls::text);map1.set(AutofillHintsCls::postalAddress, TextInputTypeCls::streetAddress);map1.set(AutofillHintsCls::postalAddressExtended, TextInputTypeCls::streetAddress);map1.set(AutofillHintsCls::postalAddressExtendedPostalCode, TextInputTypeCls::number);map1.set(AutofillHintsCls::postalCode, TextInputTypeCls::number);map1.set(AutofillHintsCls::streetAddressLevel1, TextInputTypeCls::streetAddress);map1.set(AutofillHintsCls::streetAddressLevel2, TextInputTypeCls::streetAddress);map1.set(AutofillHintsCls::streetAddressLevel3, TextInputTypeCls::streetAddress);map1.set(AutofillHintsCls::streetAddressLevel4, TextInputTypeCls::streetAddress);map1.set(AutofillHintsCls::streetAddressLine1, TextInputTypeCls::streetAddress);map1.set(AutofillHintsCls::streetAddressLine2, TextInputTypeCls::streetAddress);map1.set(AutofillHintsCls::streetAddressLine3, TextInputTypeCls::streetAddress);map1.set(AutofillHintsCls::sublocality, TextInputTypeCls::streetAddress);map1.set(AutofillHintsCls::telephoneNumber, TextInputTypeCls::phone);map1.set(AutofillHintsCls::telephoneNumberAreaCode, TextInputTypeCls::phone);map1.set(AutofillHintsCls::telephoneNumberCountryCode, TextInputTypeCls::phone);map1.set(AutofillHintsCls::telephoneNumberDevice, TextInputTypeCls::phone);map1.set(AutofillHintsCls::telephoneNumberExtension, TextInputTypeCls::phone);map1.set(AutofillHintsCls::telephoneNumberLocal, TextInputTypeCls::phone);map1.set(AutofillHintsCls::telephoneNumberLocalPrefix, TextInputTypeCls::phone);map1.set(AutofillHintsCls::telephoneNumberLocalSuffix, TextInputTypeCls::phone);map1.set(AutofillHintsCls::telephoneNumberNational, TextInputTypeCls::phone);map1.set(AutofillHintsCls::transactionAmount, TextInputTypeCls->numberWithOptions(true));map1.set(AutofillHintsCls::transactionCurrency, TextInputTypeCls::text);map1.set(AutofillHintsCls::url, TextInputTypeCls::url);map1.set(AutofillHintsCls::username, TextInputTypeCls::text);Map<String, TextInputType> inferKeyboardType = list1;
-    return inferKeyboardType[effectiveHint] ?? TextInputTypeCls::text;
+    return inferKeyboardType[effectiveHint] or TextInputTypeCls::text;
 }
 
 AutofillScope EditableTextStateCls::currentAutofillScope() {
@@ -228,15 +228,15 @@ bool EditableTextStateCls::selectAllEnabled() {
 }
 
 void EditableTextStateCls::copySelection(SelectionChangedCause cause) {
-    TextSelection selection = textEditingValue->selection;
+    TextSelection selection = textEditingValue()->selection;
     assert(selection != nullptr);
     if (selection->isCollapsed || widget->obscureText) {
         return;
     }
-    String text = textEditingValue->text;
+    String text = textEditingValue()->text;
     ClipboardCls->setData(make<ClipboardDataCls>(selection->textInside(text)));
     if (cause == SelectionChangedCauseCls::toolbar) {
-        bringIntoView(textEditingValue->selection->extent);
+        bringIntoView(textEditingValue()->selection->extent());
         hideToolbar(false);
         ;
     }
@@ -247,18 +247,18 @@ void EditableTextStateCls::cutSelection(SelectionChangedCause cause) {
     if (widget->readOnly || widget->obscureText) {
         return;
     }
-    TextSelection selection = textEditingValue->selection;
-    String text = textEditingValue->text;
+    TextSelection selection = textEditingValue()->selection;
+    String text = textEditingValue()->text;
     assert(selection != nullptr);
     if (selection->isCollapsed) {
         return;
     }
     ClipboardCls->setData(make<ClipboardDataCls>(selection->textInside(text)));
-    _replaceText(make<ReplaceTextIntentCls>(textEditingValue, "", selection, cause));
+    _replaceText(make<ReplaceTextIntentCls>(textEditingValue(), __s(""), selection, cause));
     if (cause == SelectionChangedCauseCls::toolbar) {
         SchedulerBindingCls::instance->addPostFrameCallback([=] () {
             if (mounted) {
-                bringIntoView(textEditingValue->selection->extent);
+                bringIntoView(textEditingValue()->selection->extent());
             }
         });
         hideToolbar();
@@ -270,7 +270,7 @@ Future<void> EditableTextStateCls::pasteText(SelectionChangedCause cause) {
     if (widget->readOnly) {
         return;
     }
-    TextSelection selection = textEditingValue->selection;
+    TextSelection selection = textEditingValue()->selection;
     assert(selection != nullptr);
     if (!selection->isValid) {
         return;
@@ -280,12 +280,12 @@ Future<void> EditableTextStateCls::pasteText(SelectionChangedCause cause) {
         return;
     }
     int lastSelectionIndex = math->max(selection->baseOffset, selection->extentOffset);
-    TextEditingValue collapsedTextEditingValue = textEditingValue->copyWith(TextSelectionCls->collapsed(lastSelectionIndex));
+    TextEditingValue collapsedTextEditingValue = textEditingValue()->copyWith(TextSelectionCls->collapsed(lastSelectionIndex));
     userUpdateTextEditingValue(collapsedTextEditingValue->replaced(selection, data->text!), cause);
     if (cause == SelectionChangedCauseCls::toolbar) {
         SchedulerBindingCls::instance->addPostFrameCallback([=] () {
             if (mounted) {
-                bringIntoView(textEditingValue->selection->extent);
+                bringIntoView(textEditingValue()->selection->extent());
             }
         });
         hideToolbar();
@@ -296,9 +296,9 @@ void EditableTextStateCls::selectAll(SelectionChangedCause cause) {
     if (widget->readOnly && widget->obscureText) {
         return;
     }
-    userUpdateTextEditingValue(textEditingValue->copyWith(make<TextSelectionCls>(0, textEditingValue->text->length)), cause);
+    userUpdateTextEditingValue(textEditingValue()->copyWith(make<TextSelectionCls>(0, textEditingValue()->text->length())), cause);
     if (cause == SelectionChangedCauseCls::toolbar) {
-        bringIntoView(textEditingValue->selection->extent);
+        bringIntoView(textEditingValue()->selection->extent());
     }
 }
 
@@ -307,22 +307,22 @@ void EditableTextStateCls::initState() {
     _clipboardStatus?->addListener(_onChangedClipboardStatus);
     widget->controller->addListener(_didChangeTextEditingValue);
     widget->focusNode->addListener(_handleFocusChanged);
-    _scrollController->addListener(_updateSelectionOverlayForScroll);
-    _cursorVisibilityNotifier->value = widget->showCursor;
+    _scrollController()->addListener(_updateSelectionOverlayForScroll);
+    _cursorVisibilityNotifier->value() = widget->showCursor;
 }
 
 void EditableTextStateCls::didChangeDependencies() {
     super->didChangeDependencies();
     AutofillGroupState newAutofillGroup = AutofillGroupCls->of(context);
-    if (currentAutofillScope != newAutofillGroup) {
-        _currentAutofillScope?->unregister(autofillId);
+    if (currentAutofillScope() != newAutofillGroup) {
+        _currentAutofillScope?->unregister(autofillId());
         _currentAutofillScope = newAutofillGroup;
-        _currentAutofillScope?->register(_effectiveAutofillClient);
+        _currentAutofillScope?->register(_effectiveAutofillClient());
     }
     if (!_didAutoFocus && widget->autofocus) {
         _didAutoFocus = true;
         SchedulerBindingCls::instance->addPostFrameCallback([=] () {
-            if (mounted && renderEditable->hasSize) {
+            if (mounted && renderEditable()->hasSize) {
                 FocusScopeCls->of(context)->autofocus(widget->focusNode);
             }
         });
@@ -366,12 +366,12 @@ void EditableTextStateCls::didUpdateWidget(EditableText oldWidget) {
         _updateRemoteEditingValueIfNeeded();
     }
     if (widget->controller->selection != oldWidget->controller->selection) {
-        _selectionOverlay?->update(_value);
+        _selectionOverlay?->update(_value());
     }
-    _selectionOverlay?->handlesVisible = widget->showSelectionHandles;
+    _selectionOverlay?->handlesVisible() = widget->showSelectionHandles;
     if (widget->autofillClient != oldWidget->autofillClient) {
-        _currentAutofillScope?->unregister(oldWidget->autofillClient?->autofillId ?? autofillId);
-        _currentAutofillScope?->register(_effectiveAutofillClient);
+        _currentAutofillScope?->unregister(oldWidget->autofillClient?->autofillId or autofillId());
+        _currentAutofillScope?->register(_effectiveAutofillClient());
     }
     if (widget->focusNode != oldWidget->focusNode) {
         oldWidget->focusNode->removeListener(_handleFocusChanged);
@@ -379,40 +379,40 @@ void EditableTextStateCls::didUpdateWidget(EditableText oldWidget) {
         updateKeepAlive();
     }
     if (widget->scrollController != oldWidget->scrollController) {
-        (oldWidget->scrollController ?? _internalScrollController)?->removeListener(_updateSelectionOverlayForScroll);
-        _scrollController->addListener(_updateSelectionOverlayForScroll);
+        (oldWidget->scrollController or _internalScrollController)?->removeListener(_updateSelectionOverlayForScroll);
+        _scrollController()->addListener(_updateSelectionOverlayForScroll);
     }
-    if (!_shouldCreateInputConnection) {
+    if (!_shouldCreateInputConnection()) {
         _closeInputConnectionIfNeeded();
     } else     {
-        if (oldWidget->readOnly && _hasFocus) {
+        if (oldWidget->readOnly && _hasFocus()) {
         _openInputConnection();
     }
 ;
-    }    if (kIsWeb && _hasInputConnection) {
+    }    if (kIsWeb && _hasInputConnection()) {
         if (oldWidget->readOnly != widget->readOnly) {
-            _textInputConnection!->updateConfig(_effectiveAutofillClient->textInputConfiguration);
+            _textInputConnection!->updateConfig(_effectiveAutofillClient()->textInputConfiguration());
         }
     }
     if (widget->style != oldWidget->style) {
         TextStyle style = widget->style;
-        if (_hasInputConnection) {
-            _textInputConnection!->setStyle(style->fontFamily, style->fontSize, style->fontWeight, _textDirection, widget->textAlign);
+        if (_hasInputConnection()) {
+            _textInputConnection!->setStyle(style->fontFamily, style->fontSize, style->fontWeight, _textDirection(), widget->textAlign);
         }
     }
-    if (widget->selectionEnabled && pasteEnabled && (widget->selectionControls?->canPaste(this) ?? false)) {
+    if (widget->selectionEnabled && pasteEnabled() && (widget->selectionControls?->canPaste(this) or false)) {
         _clipboardStatus?->update();
     }
 }
 
 void EditableTextStateCls::dispose() {
     _internalScrollController?->dispose();
-    _currentAutofillScope?->unregister(autofillId);
+    _currentAutofillScope?->unregister(autofillId());
     widget->controller->removeListener(_didChangeTextEditingValue);
     _floatingCursorResetController?->dispose();
     _floatingCursorResetController = nullptr;
     _closeInputConnectionIfNeeded();
-    assert(!_hasInputConnection);
+    assert(!_hasInputConnection());
     _cursorTimer?->cancel();
     _cursorTimer = nullptr;
     _backingCursorBlinkOpacityController?->dispose();
@@ -425,36 +425,36 @@ void EditableTextStateCls::dispose() {
     _clipboardStatus?->dispose();
     _cursorVisibilityNotifier->dispose();
     super->dispose();
-    assert(_batchEditDepth <= 0, "unfinished batch edits: $_batchEditDepth");
+    assert(_batchEditDepth <= 0, __s("unfinished batch edits: $_batchEditDepth"));
 }
 
 TextEditingValue EditableTextStateCls::currentTextEditingValue() {
-    return _value;
+    return _value();
 }
 
 void EditableTextStateCls::updateEditingValue(TextEditingValue value) {
-    if (!_shouldCreateInputConnection) {
+    if (!_shouldCreateInputConnection()) {
         return;
     }
     if (widget->readOnly) {
-        value = _value->copyWith(value->selection);
+        value = _value()->copyWith(value->selection);
     }
     _lastKnownRemoteTextEditingValue = value;
-    if (value == _value) {
+    if (value == _value()) {
         return;
     }
-    if (value->text == _value->text && value->composing == _value->composing) {
-        _handleSelectionChanged(value->selection, (_textInputConnection?->scribbleInProgress ?? false)? SelectionChangedCauseCls::scribble : SelectionChangedCauseCls::keyboard);
+    if (value->text == _value()->text && value->composing == _value()->composing) {
+        _handleSelectionChanged(value->selection, (_textInputConnection?->scribbleInProgress() or false)? SelectionChangedCauseCls::scribble : SelectionChangedCauseCls::keyboard);
     } else {
         hideToolbar();
         _currentPromptRectRange = nullptr;
-        bool revealObscuredInput = _hasInputConnection && widget->obscureText && WidgetsBindingCls::instance->platformDispatcher->brieflyShowPassword && value->text->length == _value->text->length + 1;
+        bool revealObscuredInput = _hasInputConnection() && widget->obscureText && WidgetsBindingCls::instance->platformDispatcher->brieflyShowPassword && value->text->length == _value()->text->length() + 1;
         _obscureShowCharTicksPending = revealObscuredInput? _kObscureShowLatestCharCursorTicks : 0;
-        _obscureLatestCharIndex = revealObscuredInput? _value->selection->baseOffset : nullptr;
+        _obscureLatestCharIndex = revealObscuredInput? _value()->selection->baseOffset : nullptr;
         _formatAndSetValue(value, SelectionChangedCauseCls::keyboard);
     }
     _scheduleShowCaretOnScreen(true);
-    if (_hasInputConnection) {
+    if (_hasInputConnection()) {
         _stopCursorBlink(false);
         _startCursorBlink();
     }
@@ -479,12 +479,12 @@ void EditableTextStateCls::beginBatchEdit() {
 
 void EditableTextStateCls::endBatchEdit() {
     _batchEditDepth = 1;
-    assert(_batchEditDepth >= 0, "Unbalanced call to endBatchEdit: beginBatchEdit must be called first.");
+    assert(_batchEditDepth >= 0, __s("Unbalanced call to endBatchEdit: beginBatchEdit must be called first."));
     _updateRemoteEditingValueIfNeeded();
 }
 
 void EditableTextStateCls::connectionClosed() {
-    if (_hasInputConnection) {
+    if (_hasInputConnection()) {
         _textInputConnection!->connectionClosedReceived();
         _textInputConnection = nullptr;
         _lastKnownRemoteTextEditingValue = nullptr;
@@ -493,7 +493,7 @@ void EditableTextStateCls::connectionClosed() {
 }
 
 void EditableTextStateCls::requestKeyboard() {
-    if (_hasFocus) {
+    if (_hasFocus()) {
         _openInputConnection();
     } else {
         widget->focusNode->requestFocus();
@@ -513,7 +513,7 @@ void EditableTextStateCls::didChangeMetrics() {
 }
 
 bool EditableTextStateCls::cursorCurrentlyVisible() {
-    return _cursorBlinkOpacityController->value > 0;
+    return _cursorBlinkOpacityController()->value() > 0;
 }
 
 Duration EditableTextStateCls::cursorBlinkInterval() {
@@ -525,19 +525,19 @@ TextSelectionOverlay EditableTextStateCls::selectionOverlay() {
 }
 
 RenderEditable EditableTextStateCls::renderEditable() {
-    return ((RenderEditable)_editableKey->currentContext!->findRenderObject()!);
+    return as<RenderEditable>(_editableKey->currentContext()!->findRenderObject()!);
 }
 
 TextEditingValue EditableTextStateCls::textEditingValue() {
-    return _value;
+    return _value();
 }
 
 void EditableTextStateCls::userUpdateTextEditingValue(SelectionChangedCause cause, TextEditingValue value) {
-    bool shouldShowCaret = widget->readOnly? _value->selection != value->selection : _value != value;
+    bool shouldShowCaret = widget->readOnly? _value()->selection != value->selection : _value() != value;
     if (shouldShowCaret) {
         _scheduleShowCaretOnScreen(true);
     }
-    if (value == textEditingValue) {
+    if (value == textEditingValue()) {
         if (!widget->focusNode->hasFocus) {
             widget->focusNode->requestFocus();
             _createSelectionOverlay();
@@ -548,17 +548,17 @@ void EditableTextStateCls::userUpdateTextEditingValue(SelectionChangedCause caus
 }
 
 void EditableTextStateCls::bringIntoView(TextPosition position) {
-    Rect localRect = renderEditable->getLocalRectForCaret(position);
+    Rect localRect = renderEditable()->getLocalRectForCaret(position);
     RevealedOffset targetOffset = _getOffsetToRevealCaret(localRect);
-    _scrollController->jumpTo(targetOffset->offset);
-    renderEditable->showOnScreen(targetOffset->rect);
+    _scrollController()->jumpTo(targetOffset->offset);
+    renderEditable()->showOnScreen(targetOffset->rect);
 }
 
 bool EditableTextStateCls::showToolbar() {
     if (kIsWeb) {
         return false;
     }
-    if (_selectionOverlay == nullptr || _selectionOverlay!->toolbarIsVisible) {
+    if (_selectionOverlay == nullptr || _selectionOverlay!->toolbarIsVisible()) {
         return false;
     }
     _clipboardStatus?->update();
@@ -570,7 +570,7 @@ void EditableTextStateCls::hideToolbar(bool hideHandles) {
     if (hideHandles) {
         _selectionOverlay?->hide();
     } else     {
-        if (_selectionOverlay?->toolbarIsVisible ?? false) {
+        if (_selectionOverlay?->toolbarIsVisible() or false) {
         _selectionOverlay?->hideToolbar();
     }
 ;
@@ -578,7 +578,7 @@ void EditableTextStateCls::hideToolbar(bool hideHandles) {
 
 void EditableTextStateCls::toggleToolbar() {
     assert(_selectionOverlay != nullptr);
-    if (_selectionOverlay!->toolbarIsVisible) {
+    if (_selectionOverlay!->toolbarIsVisible()) {
         hideToolbar();
     } else {
         showToolbar();
@@ -593,7 +593,7 @@ void EditableTextStateCls::insertTextPlaceholder(Size size) {
         return;
     }
     setState([=] () {
-        _placeholderLocation = _value->text->length - widget->controller->selection->end;
+        _placeholderLocation = _value()->text->length() - widget->controller->selection->end;
     });
 }
 
@@ -607,13 +607,13 @@ void EditableTextStateCls::removeTextPlaceholder() {
 }
 
 String EditableTextStateCls::autofillId() {
-    return "EditableText-$hashCode";
+    return __s("EditableText-$hashCode");
 }
 
 TextInputConfiguration EditableTextStateCls::textInputConfiguration() {
     List<String> autofillHints = widget->autofillHints?->toList(false);
-    AutofillConfiguration autofillConfiguration = autofillHints != nullptr? make<AutofillConfigurationCls>(autofillId, autofillHints, currentTextEditingValue) : AutofillConfigurationCls::disabled;
-    return make<TextInputConfigurationCls>(widget->keyboardType, widget->readOnly, widget->obscureText, widget->autocorrect, widget->smartDashesType, widget->smartQuotesType, widget->enableSuggestions, widget->_userSelectionEnabled, widget->textInputAction ?? (widget->keyboardType == TextInputTypeCls::multiline? TextInputActionCls::newline : TextInputActionCls::done), widget->textCapitalization, widget->keyboardAppearance, autofillConfiguration, widget->enableIMEPersonalizedLearning);
+    AutofillConfiguration autofillConfiguration = autofillHints != nullptr? make<AutofillConfigurationCls>(autofillId(), autofillHints, currentTextEditingValue()) : AutofillConfigurationCls::disabled;
+    return make<TextInputConfigurationCls>(widget->keyboardType, widget->readOnly, widget->obscureText, widget->autocorrect, widget->smartDashesType, widget->smartQuotesType, widget->enableSuggestions, widget->_userSelectionEnabled, widget->textInputAction or (widget->keyboardType == TextInputTypeCls::multiline? TextInputActionCls::newline : TextInputActionCls::done), widget->textCapitalization, widget->keyboardAppearance, autofillConfiguration, widget->enableIMEPersonalizedLearning);
 }
 
 void EditableTextStateCls::autofill(TextEditingValue value) {
@@ -630,42 +630,42 @@ Widget EditableTextStateCls::build(BuildContext context) {
     assert(debugCheckHasMediaQuery(context));
     super->build(context);
     TextSelectionControls controls = widget->selectionControls;
-    return make<MouseRegionCls>(widget->mouseCursor ?? SystemMouseCursorsCls::text, make<ActionsCls>(_actions, make<_TextEditingHistoryCls>(widget->controller, [=] (TextEditingValue value) {
+    return make<MouseRegionCls>(widget->mouseCursor or SystemMouseCursorsCls::text, make<ActionsCls>(_actions, make<_TextEditingHistoryCls>(widget->controller, [=] (TextEditingValue value) {
         userUpdateTextEditingValue(value, SelectionChangedCauseCls::keyboard);
-    }, make<FocusCls>(widget->focusNode, false, "EditableText", make<ScrollableCls>(true, _isMultiline? AxisDirectionCls::down : AxisDirectionCls::right, _scrollController, widget->scrollPhysics, widget->dragStartBehavior, widget->restorationId, widget->scrollBehavior ?? ScrollConfigurationCls->of(context)->copyWith(_isMultiline, false), [=] (BuildContext context,ViewportOffset offset) {
+    }, make<FocusCls>(widget->focusNode, false, __s("EditableText"), make<ScrollableCls>(true, _isMultiline()? AxisDirectionCls::down : AxisDirectionCls::right, _scrollController(), widget->scrollPhysics, widget->dragStartBehavior, widget->restorationId, widget->scrollBehavior or ScrollConfigurationCls->of(context)->copyWith(_isMultiline(), false), [=] (BuildContext context,ViewportOffset offset) {
         return make<CompositedTransformTargetCls>(_toolbarLayerLink, make<SemanticsCls>(_semanticsOnCopy(controls), _semanticsOnCut(controls), _semanticsOnPaste(controls), make<_ScribbleFocusableCls>(widget->focusNode, _editableKey, widget->scribbleEnabled, [=] () {
             _openInputConnection();
             _updateSelectionRects(true);
-        }, make<_EditableCls>(_editableKey, _startHandleLayerLink, _endHandleLayerLink, buildTextSpan(), _value, _cursorColor, widget->backgroundCursorColor, EditableTextCls::debugDeterministicCursor? <bool>make<ValueNotifierCls>(widget->showCursor) : _cursorVisibilityNotifier, widget->forceLine, widget->readOnly, _hasFocus, widget->maxLines, widget->minLines, widget->expands, widget->strutStyle, widget->selectionColor, widget->textScaleFactor ?? MediaQueryCls->textScaleFactorOf(context), widget->textAlign, _textDirection, widget->locale, widget->textHeightBehavior ?? DefaultTextHeightBehaviorCls->of(context), widget->textWidthBasis, widget->obscuringCharacter, widget->obscureText, offset, _handleCaretChanged, widget->rendererIgnoresPointer, widget->cursorWidth, widget->cursorHeight, widget->cursorRadius, widget->cursorOffset ?? OffsetCls::zero, widget->selectionHeightStyle, widget->selectionWidthStyle, widget->paintCursorAboveText, widget->_userSelectionEnabled, this, _devicePixelRatio, _currentPromptRectRange, widget->autocorrectionTextRectColor, widget->clipBehavior))));
+        }, make<_EditableCls>(_editableKey, _startHandleLayerLink, _endHandleLayerLink, buildTextSpan(), _value(), _cursorColor(), widget->backgroundCursorColor, EditableTextCls::debugDeterministicCursor? <bool>make<ValueNotifierCls>(widget->showCursor) : _cursorVisibilityNotifier, widget->forceLine, widget->readOnly, _hasFocus(), widget->maxLines, widget->minLines, widget->expands, widget->strutStyle, widget->selectionColor, widget->textScaleFactor or MediaQueryCls->textScaleFactorOf(context), widget->textAlign, _textDirection(), widget->locale, widget->textHeightBehavior or DefaultTextHeightBehaviorCls->of(context), widget->textWidthBasis, widget->obscuringCharacter, widget->obscureText, offset, _handleCaretChanged, widget->rendererIgnoresPointer, widget->cursorWidth, widget->cursorHeight, widget->cursorRadius, widget->cursorOffset or OffsetCls::zero, widget->selectionHeightStyle, widget->selectionWidthStyle, widget->paintCursorAboveText, widget->_userSelectionEnabled, this, _devicePixelRatio(), _currentPromptRectRange, widget->autocorrectionTextRectColor, widget->clipBehavior))));
     })))));
 }
 
 TextSpan EditableTextStateCls::buildTextSpan() {
     if (widget->obscureText) {
-        String text = _value->text;
+        String text = _value()->text;
         text = widget->obscuringCharacter * text->length;
         Set<TargetPlatform> mobilePlatforms = makeSet(ArrayItem, ArrayItem);
         bool breiflyShowPassword = WidgetsBindingCls::instance->platformDispatcher->brieflyShowPassword && mobilePlatforms->contains(defaultTargetPlatform);
         if (breiflyShowPassword) {
             int o = _obscureShowCharTicksPending > 0? _obscureLatestCharIndex : nullptr;
             if (o != nullptr && o >= 0 &&  < text->length) {
-                text = text->replaceRange(o, o + 1, _value->text->substring(o, o + 1));
+                text = text->replaceRange(o, o + 1, _value()->text->substring(o, o + 1));
             }
         }
         return make<TextSpanCls>(widget->style, text);
     }
-    if (_placeholderLocation >= 0 && _placeholderLocation <= _value->text->length) {
+    if (_placeholderLocation >= 0 && _placeholderLocation <= _value()->text->length()) {
         List<_ScribblePlaceholder> placeholders = makeList();
-        int placeholderLocation = _value->text->length - _placeholderLocation;
-        if (_isMultiline) {
+        int placeholderLocation = _value()->text->length() - _placeholderLocation;
+        if (_isMultiline()) {
             placeholders->add(make<_ScribblePlaceholderCls>(make<SizedBoxCls>(), SizeCls::zero));
-            placeholders->add(make<_ScribblePlaceholderCls>(make<SizedBoxCls>(), make<SizeCls>(renderEditable->size->width, 0.0)));
+            placeholders->add(make<_ScribblePlaceholderCls>(make<SizedBoxCls>(), make<SizeCls>(renderEditable()->size->width, 0.0)));
         } else {
             placeholders->add(make<_ScribblePlaceholderCls>(make<SizedBoxCls>(), make<SizeCls>(100.0, 0.0)));
         }
             List<InlineSpan> list1 = make<ListCls<>>();    list1.add(ArrayItem);    for (auto _x1 : placeholders) {    {        list1.add(_x1);    }list1.add(ArrayItem);return make<TextSpanCls>(widget->style, list1);
     }
-    return widget->controller->buildTextSpan(context, widget->style, !widget->readOnly && _hasFocus);
+    return widget->controller->buildTextSpan(context, widget->style, !widget->readOnly && _hasFocus());
 }
 
 AnimationController EditableTextStateCls::_cursorBlinkOpacityController() {
@@ -673,11 +673,11 @@ AnimationController EditableTextStateCls::_cursorBlinkOpacityController() {
 }
 
 ScrollController EditableTextStateCls::_scrollController() {
-    return widget->scrollController ?? (_internalScrollController ??= make<ScrollControllerCls>());
+    return widget->scrollController or (_internalScrollController ??= make<ScrollControllerCls>());
 }
 
 AutofillClient EditableTextStateCls::_effectiveAutofillClient() {
-    return widget->autofillClient ?? this;
+    return widget->autofillClient or this;
 }
 
 bool EditableTextStateCls::_shouldCreateInputConnection() {
@@ -685,7 +685,7 @@ bool EditableTextStateCls::_shouldCreateInputConnection() {
 }
 
 Color EditableTextStateCls::_cursorColor() {
-    return widget->cursorColor->withOpacity(_cursorBlinkOpacityController->value);
+    return widget->cursorColor->withOpacity(_cursorBlinkOpacityController()->value());
 }
 
 void EditableTextStateCls::_onChangedClipboardStatus() {
@@ -694,22 +694,22 @@ void EditableTextStateCls::_onChangedClipboardStatus() {
 }
 
 TextEditingValue EditableTextStateCls::_textEditingValueforTextLayoutMetrics() {
-    Widget editableWidget = _editableKey->currentContext?->widget;
-    if (editableWidget is! _Editable) {
+    Widget editableWidget = _editableKey->currentContext()?->widget();
+    if (!is<_Editable>(editableWidget)) {
         ;
     }
     return editableWidget->value;
 }
 
 Offset EditableTextStateCls::_floatingCursorOffset() {
-    return make<OffsetCls>(0, renderEditable->preferredLineHeight / 2);
+    return make<OffsetCls>(0, renderEditable()->preferredLineHeight() / 2);
 }
 
 void EditableTextStateCls::_onFloatingCursorResetTick() {
-    Offset finalPosition = renderEditable->getLocalRectForCaret(_lastTextPosition!)->centerLeft - _floatingCursorOffset;
+    Offset finalPosition = renderEditable()->getLocalRectForCaret(_lastTextPosition!)->centerLeft() - _floatingCursorOffset();
     if (_floatingCursorResetController!->isCompleted) {
-        renderEditable->setFloatingCursor(FloatingCursorDragStateCls::EndCls, finalPosition, _lastTextPosition!);
-        if (_lastTextPosition!->offset != renderEditable->selection!->baseOffset) {
+        renderEditable()->setFloatingCursor(FloatingCursorDragStateCls::EndCls, finalPosition, _lastTextPosition!);
+        if (_lastTextPosition!->offset != renderEditable()->selection()!->baseOffset) {
             _handleSelectionChanged(TextSelectionCls->collapsed(_lastTextPosition!->offset), SelectionChangedCauseCls::forcePress);
         }
         _startCaretRect = nullptr;
@@ -717,10 +717,10 @@ void EditableTextStateCls::_onFloatingCursorResetTick() {
         _pointOffsetOrigin = nullptr;
         _lastBoundedOffset = nullptr;
     } else {
-        double lerpValue = _floatingCursorResetController!->value;
-        double lerpX = ui->lerpDouble(_lastBoundedOffset!->dx, finalPosition->dx, lerpValue)!;
-        double lerpY = ui->lerpDouble(_lastBoundedOffset!->dy, finalPosition->dy, lerpValue)!;
-        renderEditable->setFloatingCursor(FloatingCursorDragStateCls::UpdateCls, make<OffsetCls>(lerpX, lerpY), _lastTextPosition!lerpValue);
+        double lerpValue = _floatingCursorResetController!->value();
+        double lerpX = ui->lerpDouble(_lastBoundedOffset!->dx(), finalPosition->dx, lerpValue)!;
+        double lerpY = ui->lerpDouble(_lastBoundedOffset!->dy(), finalPosition->dy, lerpValue)!;
+        renderEditable()->setFloatingCursor(FloatingCursorDragStateCls::UpdateCls, make<OffsetCls>(lerpX, lerpY), _lastTextPosition!lerpValue);
     }
 }
 
@@ -729,7 +729,7 @@ void EditableTextStateCls::_finalizeEditing(TextInputAction action, bool shouldU
         try {
             widget->onEditingComplete!();
         } catch (Unknown exception) {
-            FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(exception, stack, "widgets", make<ErrorDescriptionCls>("while calling onEditingComplete for $action")));
+            FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(exception, stack, __s("widgets"), make<ErrorDescriptionCls>(__s("while calling onEditingComplete for $action"))));
         };
     } else {
         widget->controller->clearComposing();
@@ -742,9 +742,9 @@ void EditableTextStateCls::_finalizeEditing(TextInputAction action, bool shouldU
         return;
     }
     try {
-        onSubmitted(_value->text);
+        onSubmitted(_value()->text);
     } catch (Unknown exception) {
-        FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(exception, stack, "widgets", make<ErrorDescriptionCls>("while calling onSubmitted for $action")));
+        FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(exception, stack, __s("widgets"), make<ErrorDescriptionCls>(__s("while calling onSubmitted for $action"))));
     };
     if (shouldUnfocus) {
         _scheduleRestartConnection();
@@ -752,10 +752,10 @@ void EditableTextStateCls::_finalizeEditing(TextInputAction action, bool shouldU
 }
 
 void EditableTextStateCls::_updateRemoteEditingValueIfNeeded() {
-    if (_batchEditDepth > 0 || !_hasInputConnection) {
+    if (_batchEditDepth > 0 || !_hasInputConnection()) {
         return;
     }
-    TextEditingValue localValue = _value;
+    TextEditingValue localValue = _value();
     if (localValue == _lastKnownRemoteTextEditingValue) {
         return;
     }
@@ -780,46 +780,46 @@ bool EditableTextStateCls::_isMultiline() {
 }
 
 RevealedOffset EditableTextStateCls::_getOffsetToRevealCaret(Rect rect) {
-    if (!_scrollController->position->allowImplicitScrolling) {
-        return make<RevealedOffsetCls>(_scrollController->offset, rect);
+    if (!_scrollController()->position()->allowImplicitScrolling()) {
+        return make<RevealedOffsetCls>(_scrollController()->offset(), rect);
     }
-    Size editableSize = renderEditable->size;
+    Size editableSize = renderEditable()->size;
     double additionalOffset;
     Offset unitOffset;
-    if (!_isMultiline) {
+    if (!_isMultiline()) {
         additionalOffset = rect->width >= editableSize->width? editableSize->width / 2 - rect->center->dx : clampDouble(0.0, rect->right - editableSize->width, rect->left);
         unitOffset = make<OffsetCls>(1, 0);
     } else {
-        Rect expandedRect = RectCls->fromCenter(rect->center, rect->width, math->max(rect->height, renderEditable->preferredLineHeight));
+        Rect expandedRect = RectCls->fromCenter(rect->center, rect->width, math->max(rect->height, renderEditable()->preferredLineHeight()));
         additionalOffset = expandedRect->height >= editableSize->height? editableSize->height / 2 - expandedRect->center->dy : clampDouble(0.0, expandedRect->bottom - editableSize->height, expandedRect->top);
         unitOffset = make<OffsetCls>(0, 1);
     }
-    double targetOffset = clampDouble(additionalOffset + _scrollController->offset, _scrollController->position->minScrollExtent, _scrollController->position->maxScrollExtent);
-    double offsetDelta = _scrollController->offset - targetOffset;
+    double targetOffset = clampDouble(additionalOffset + _scrollController()->offset(), _scrollController()->position()->minScrollExtent(), _scrollController()->position()->maxScrollExtent());
+    double offsetDelta = _scrollController()->offset() - targetOffset;
     return make<RevealedOffsetCls>(rect->shift(unitOffset * offsetDelta), targetOffset);
 }
 
 bool EditableTextStateCls::_hasInputConnection() {
-    return _textInputConnection?->attached ?? false;
+    return _textInputConnection?->attached() or false;
 }
 
 bool EditableTextStateCls::_needsAutofill() {
-    return _effectiveAutofillClient->textInputConfiguration->autofillConfiguration->enabled;
+    return _effectiveAutofillClient()->textInputConfiguration()->autofillConfiguration->enabled;
 }
 
 void EditableTextStateCls::_openInputConnection() {
-    if (!_shouldCreateInputConnection) {
+    if (!_shouldCreateInputConnection()) {
         return;
     }
-    if (!_hasInputConnection) {
-        TextEditingValue localValue = _value;
-        _textInputConnection = _needsAutofill && currentAutofillScope != nullptr? currentAutofillScope!->attach(this, _effectiveAutofillClient->textInputConfiguration) : TextInputCls->attach(this, _effectiveAutofillClient->textInputConfiguration);
+    if (!_hasInputConnection()) {
+        TextEditingValue localValue = _value();
+        _textInputConnection = _needsAutofill() && currentAutofillScope() != nullptr? currentAutofillScope()!->attach(this, _effectiveAutofillClient()->textInputConfiguration()) : TextInputCls->attach(this, _effectiveAutofillClient()->textInputConfiguration());
         _updateSizeAndTransform();
         _updateComposingRectIfNeeded();
         _updateCaretRectIfNeeded();
         TextStyle style = widget->style;
-            auto _c1 = _textInputConnection!;    _c1.auto _c2 = setStyle(style->fontFamily, style->fontSize, style->fontWeight, _textDirection, widget->textAlign);    _c2.auto _c3 = setEditingState(localValue);    _c3.show();    _c3;    _c2;_c1;
-        if (_needsAutofill) {
+            auto _c1 = _textInputConnection!;    _c1.auto _c2 = setStyle(style->fontFamily, style->fontSize, style->fontWeight, _textDirection(), widget->textAlign);    _c2.auto _c3 = setEditingState(localValue);    _c3.show();    _c3;    _c2;_c1;
+        if (_needsAutofill()) {
             _textInputConnection!->requestAutofill();
         }
         _lastKnownRemoteTextEditingValue = localValue;
@@ -829,7 +829,7 @@ void EditableTextStateCls::_openInputConnection() {
 }
 
 void EditableTextStateCls::_closeInputConnectionIfNeeded() {
-    if (_hasInputConnection) {
+    if (_hasInputConnection()) {
         _textInputConnection!->close();
         _textInputConnection = nullptr;
         _lastKnownRemoteTextEditingValue = nullptr;
@@ -837,10 +837,10 @@ void EditableTextStateCls::_closeInputConnectionIfNeeded() {
 }
 
 void EditableTextStateCls::_openOrCloseInputConnectionIfNeeded() {
-    if (_hasFocus && widget->focusNode->consumeKeyboardToken()) {
+    if (_hasFocus() && widget->focusNode->consumeKeyboardToken()) {
         _openInputConnection();
     } else     {
-        if (!_hasFocus) {
+        if (!_hasFocus()) {
         _closeInputConnectionIfNeeded();
         widget->controller->clearComposing();
     }
@@ -857,24 +857,24 @@ void EditableTextStateCls::_scheduleRestartConnection() {
 
 void EditableTextStateCls::_restartConnectionIfNeeded() {
     _restartConnectionScheduled = false;
-    if (!_hasInputConnection || !_shouldCreateInputConnection) {
+    if (!_hasInputConnection() || !_shouldCreateInputConnection()) {
         return;
     }
     _textInputConnection!->close();
     _textInputConnection = nullptr;
     _lastKnownRemoteTextEditingValue = nullptr;
-    AutofillScope currentAutofillScope = _needsAutofill? this->currentAutofillScope : nullptr;
-    TextInputConnection newConnection = currentAutofillScope?->attach(this, textInputConfiguration) ?? TextInputCls->attach(this, _effectiveAutofillClient->textInputConfiguration);
+    AutofillScope currentAutofillScope = _needsAutofill()? this->currentAutofillScope : nullptr;
+    TextInputConnection newConnection = currentAutofillScope()?->attach(this, textInputConfiguration()) or TextInputCls->attach(this, _effectiveAutofillClient()->textInputConfiguration());
     _textInputConnection = newConnection;
     TextStyle style = widget->style;
-    auto _c1 = newConnection;_c1.auto _c2 = show();_c2.auto _c3 = setStyle(style->fontFamily, style->fontSize, style->fontWeight, _textDirection, widget->textAlign);_c3.setEditingState(_value);_c3;_c2;_c1;
-    _lastKnownRemoteTextEditingValue = _value;
+    auto _c1 = newConnection;_c1.auto _c2 = show();_c2.auto _c3 = setStyle(style->fontFamily, style->fontSize, style->fontWeight, _textDirection(), widget->textAlign);_c3.setEditingState(_value());_c3;_c2;_c1;
+    _lastKnownRemoteTextEditingValue = _value();
 }
 
 void EditableTextStateCls::_updateOrDisposeSelectionOverlayIfNeeded() {
     if (_selectionOverlay != nullptr) {
-        if (_hasFocus) {
-            _selectionOverlay!->update(_value);
+        if (_hasFocus()) {
+            _selectionOverlay!->update(_value());
         } else {
             _selectionOverlay!->dispose();
             _selectionOverlay = nullptr;
@@ -887,7 +887,7 @@ void EditableTextStateCls::_updateSelectionOverlayForScroll() {
 }
 
 void EditableTextStateCls::_createSelectionOverlay() {
-    _selectionOverlay = make<TextSelectionOverlayCls>(_clipboardStatus, context, _value, widget, _toolbarLayerLink, _startHandleLayerLink, _endHandleLayerLink, renderEditable, widget->selectionControls, this, widget->dragStartBehavior, widget->onSelectionHandleTapped);
+    _selectionOverlay = make<TextSelectionOverlayCls>(_clipboardStatus, context, _value(), widget, _toolbarLayerLink, _startHandleLayerLink, _endHandleLayerLink, renderEditable(), widget->selectionControls, this, widget->dragStartBehavior, widget->onSelectionHandleTapped);
 }
 
 void EditableTextStateCls::_handleSelectionChanged(SelectionChangedCause cause, TextSelection selection) {
@@ -903,15 +903,15 @@ void EditableTextStateCls::_handleSelectionChanged(SelectionChangedCause cause, 
         if (_selectionOverlay == nullptr) {
             _createSelectionOverlay();
         } else {
-            _selectionOverlay!->update(_value);
+            _selectionOverlay!->update(_value());
         }
-        _selectionOverlay!->handlesVisible = widget->showSelectionHandles;
+        _selectionOverlay!->handlesVisible() = widget->showSelectionHandles;
         _selectionOverlay!->showHandles();
     }
     try {
         widget->onSelectionChanged?->call(selection, cause);
     } catch (Unknown exception) {
-        FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(exception, stack, "widgets", make<ErrorDescriptionCls>("while calling onSelectionChanged for $cause")));
+        FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(exception, stack, __s("widgets"), make<ErrorDescriptionCls>(__s("while calling onSelectionChanged for $cause"))));
     };
     if (_cursorTimer != nullptr) {
         _stopCursorBlink(false);
@@ -930,13 +930,13 @@ void EditableTextStateCls::_scheduleShowCaretOnScreen(bool withAnimation) {
     _showCaretOnScreenScheduled = true;
     SchedulerBindingCls::instance->addPostFrameCallback([=] (Duration _) {
         _showCaretOnScreenScheduled = false;
-        if (_currentCaretRect == nullptr || !_scrollController->hasClients) {
+        if (_currentCaretRect == nullptr || !_scrollController()->hasClients()) {
             return;
         }
-        double lineHeight = renderEditable->preferredLineHeight;
+        double lineHeight = renderEditable()->preferredLineHeight();
         double bottomSpacing = widget->scrollPadding->bottom;
         if (_selectionOverlay?->selectionControls != nullptr) {
-            double handleHeight = _selectionOverlay!->selectionControls!->getHandleSize(lineHeight)->height;
+            double handleHeight = _selectionOverlay!->selectionControls!->getHandleSize(lineHeight)->height();
             double interactiveHandleHeight = math->max(handleHeight, kMinInteractiveDimension);
             Offset anchor = _selectionOverlay!->selectionControls!->getHandleAnchor(TextSelectionHandleTypeCls::collapsed, lineHeight);
             double handleCenter = handleHeight / 2 - anchor->dy;
@@ -945,60 +945,60 @@ void EditableTextStateCls::_scheduleShowCaretOnScreen(bool withAnimation) {
         EdgeInsets caretPadding = widget->scrollPadding->copyWith(bottomSpacing);
         RevealedOffset targetOffset = _getOffsetToRevealCaret(_currentCaretRect!);
         if (withAnimation) {
-            _scrollController->animateTo(targetOffset->offset_caretAnimationDuration, _caretAnimationCurve);
-            renderEditable->showOnScreen(caretPadding->inflateRect(targetOffset->rect), _caretAnimationDuration, _caretAnimationCurve);
+            _scrollController()->animateTo(targetOffset->offset_caretAnimationDuration, _caretAnimationCurve);
+            renderEditable()->showOnScreen(caretPadding->inflateRect(targetOffset->rect), _caretAnimationDuration, _caretAnimationCurve);
         } else {
-            _scrollController->jumpTo(targetOffset->offset);
-            renderEditable->showOnScreen(caretPadding->inflateRect(targetOffset->rect));
+            _scrollController()->jumpTo(targetOffset->offset);
+            renderEditable()->showOnScreen(caretPadding->inflateRect(targetOffset->rect));
         }
     });
 }
 
 void EditableTextStateCls::_formatAndSetValue(SelectionChangedCause cause, bool userInteraction, TextEditingValue value) {
-    bool textChanged = _value->text != value->text || (!_value->composing->isCollapsed && value->composing->isCollapsed);
-    bool selectionChanged = _value->selection != value->selection;
+    bool textChanged = _value()->text != value->text || (!_value()->composing->isCollapsed() && value->composing->isCollapsed);
+    bool selectionChanged = _value()->selection != value->selection;
     if (textChanged) {
         try {
             value = widget->inputFormatters?-><TextEditingValue>fold(value, [=] (TextEditingValue newValue,TextInputFormatter formatter)             {
-                formatter->formatEditUpdate(_value, newValue);
-            }) ?? value;
+                formatter->formatEditUpdate(_value(), newValue);
+            }) or value;
         } catch (Unknown exception) {
-            FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(exception, stack, "widgets", make<ErrorDescriptionCls>("while applying input formatters")));
+            FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(exception, stack, __s("widgets"), make<ErrorDescriptionCls>(__s("while applying input formatters"))));
         };
     }
     beginBatchEdit();
-    _value = value;
+    _value() = value;
     if (selectionChanged || (userInteraction && (cause == SelectionChangedCauseCls::longPress || cause == SelectionChangedCauseCls::keyboard))) {
-        _handleSelectionChanged(_value->selection, cause);
+        _handleSelectionChanged(_value()->selection, cause);
     }
     if (textChanged) {
         try {
-            widget->onChanged?->call(_value->text);
+            widget->onChanged?->call(_value()->text);
         } catch (Unknown exception) {
-            FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(exception, stack, "widgets", make<ErrorDescriptionCls>("while calling onChanged")));
+            FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(exception, stack, __s("widgets"), make<ErrorDescriptionCls>(__s("while calling onChanged"))));
         };
     }
     endBatchEdit();
 }
 
 void EditableTextStateCls::_onCursorColorTick() {
-    renderEditable->cursorColor = widget->cursorColor->withOpacity(_cursorBlinkOpacityController->value);
-    _cursorVisibilityNotifier->value = widget->showCursor && _cursorBlinkOpacityController->value > 0;
+    renderEditable()->cursorColor() = widget->cursorColor->withOpacity(_cursorBlinkOpacityController()->value());
+    _cursorVisibilityNotifier->value() = widget->showCursor && _cursorBlinkOpacityController()->value() > 0;
 }
 
 void EditableTextStateCls::_startCursorBlink() {
-    assert(!(_cursorTimer?->isActive ?? false) || !(_backingCursorBlinkOpacityController?->isAnimating ?? false));
+    assert(!(_cursorTimer?->isActive() or false) || !(_backingCursorBlinkOpacityController?->isAnimating() or false));
     _cursorActive = true;
     if (!_tickersEnabled) {
         return;
     }
     _cursorTimer?->cancel();
-    _cursorBlinkOpacityController->value = 1.0;
+    _cursorBlinkOpacityController()->value() = 1.0;
     if (EditableTextCls::debugDeterministicCursor) {
         return;
     }
     if (widget->cursorOpacityAnimates) {
-        _cursorBlinkOpacityController->animateWith(_iosBlinkCursorSimulation)->whenComplete(_onCursorTick);
+        _cursorBlinkOpacityController()->animateWith(_iosBlinkCursorSimulation)->whenComplete(_onCursorTick);
     } else {
         _cursorTimer = TimerCls->periodic(_kCursorBlinkHalfPeriod, [=] (Timer timer) {
             _onCursorTick();
@@ -1017,21 +1017,21 @@ void EditableTextStateCls::_onCursorTick() {
     if (widget->cursorOpacityAnimates) {
         _cursorTimer?->cancel();
         _cursorTimer = make<TimerCls>(DurationCls::zero, [=] ()         {
-            _cursorBlinkOpacityController->animateWith(_iosBlinkCursorSimulation)->whenComplete(_onCursorTick);
+            _cursorBlinkOpacityController()->animateWith(_iosBlinkCursorSimulation)->whenComplete(_onCursorTick);
         });
     } else {
-        if (!(_cursorTimer?->isActive ?? false) && _tickersEnabled) {
+        if (!(_cursorTimer?->isActive() or false) && _tickersEnabled) {
             _cursorTimer = TimerCls->periodic(_kCursorBlinkHalfPeriod, [=] (Timer timer) {
                 _onCursorTick();
             });
         }
-        _cursorBlinkOpacityController->value = _cursorBlinkOpacityController->value == 0? 1 : 0;
+        _cursorBlinkOpacityController()->value() = _cursorBlinkOpacityController()->value() == 0? 1 : 0;
     }
 }
 
 void EditableTextStateCls::_stopCursorBlink(bool resetCharTicks) {
     _cursorActive = false;
-    _cursorBlinkOpacityController->value = 0.0;
+    _cursorBlinkOpacityController()->value() = 0.0;
     _cursorTimer?->cancel();
     _cursorTimer = nullptr;
     if (resetCharTicks) {
@@ -1040,10 +1040,10 @@ void EditableTextStateCls::_stopCursorBlink(bool resetCharTicks) {
 }
 
 void EditableTextStateCls::_startOrStopCursorTimerIfNeeded() {
-    if (_cursorTimer == nullptr && _hasFocus && _value->selection->isCollapsed) {
+    if (_cursorTimer == nullptr && _hasFocus() && _value()->selection->isCollapsed) {
         _startCursorBlink();
     } else     {
-        if (_cursorActive && (!_hasFocus || !_value->selection->isCollapsed)) {
+        if (_cursorActive && (!_hasFocus() || !_value()->selection->isCollapsed)) {
         _stopCursorBlink();
     }
 ;
@@ -1062,16 +1062,16 @@ void EditableTextStateCls::_handleFocusChanged() {
     _openOrCloseInputConnectionIfNeeded();
     _startOrStopCursorTimerIfNeeded();
     _updateOrDisposeSelectionOverlayIfNeeded();
-    if (_hasFocus) {
+    if (_hasFocus()) {
         WidgetsBindingCls::instance->addObserver(this);
         _lastBottomViewInset = WidgetsBindingCls::instance->window->viewInsets->bottom;
         if (!widget->readOnly) {
             _scheduleShowCaretOnScreen(true);
         }
-        if (!_value->selection->isValid) {
-            _handleSelectionChanged(TextSelectionCls->collapsed(_value->text->length), nullptr);
+        if (!_value()->selection->isValid) {
+            _handleSelectionChanged(TextSelectionCls->collapsed(_value()->text->length()), nullptr);
         }
-        _cachedText = "";
+        _cachedText = __s("");
         _cachedFirstRect = nullptr;
         _cachedSize = SizeCls::zero;
         _cachedPlaceholder = -1;
@@ -1094,11 +1094,11 @@ void EditableTextStateCls::_updateSelectionRects(bool force) {
     if (WidgetsBindingCls::instance->window->physicalSize->shortestSide < _kIPadWidth) {
         return;
     }
-    String text = renderEditable->text?->toPlainText(false) ?? "";
-    List<Rect> firstSelectionBoxes = renderEditable->getBoxesForSelection(make<TextSelectionCls>(0, 1));
+    String text = renderEditable()->text()?->toPlainText(false) or __s("");
+    List<Rect> firstSelectionBoxes = renderEditable()->getBoxesForSelection(make<TextSelectionCls>(0, 1));
     Rect firstRect = firstSelectionBoxes->isNotEmpty? firstSelectionBoxes->first : nullptr;
-    ScrollDirection scrollDirection = _scrollController->position->userScrollDirection;
-    Size size = renderEditable->size;
+    ScrollDirection scrollDirection = _scrollController()->position()->userScrollDirection;
+    Size size = renderEditable()->size;
     bool textChanged = text != _cachedText;
     bool textStyleChanged = _cachedTextStyle != widget->style;
     bool firstRectChanged = _cachedFirstRect != firstRect;
@@ -1116,12 +1116,12 @@ void EditableTextStateCls::_updateSelectionRects(bool force) {
         return nullptr;
     }
     int offset = _cachedText->characters->getRange(0, i)->stringValue->length;
-    List<Rect> boxes = renderEditable->getBoxesForSelection(make<TextSelectionCls>(offset, offset + _cachedText->characters->characterAt(i)->stringValue->length));
+    List<Rect> boxes = renderEditable()->getBoxesForSelection(make<TextSelectionCls>(offset, offset + _cachedText->characters->characterAt(i)->stringValue->length));
     if (boxes->isEmpty) {
         return nullptr;
     }
     SelectionRect selectionRect = make<SelectionRectCls>(boxes->first, offset);
-    if (renderEditable->paintBounds->bottom < selectionRect->bounds->top) {
+    if (renderEditable()->paintBounds->bottom < selectionRect->bounds->top) {
         belowRenderEditableBottom = true;
         return nullptr;
     }
@@ -1130,10 +1130,10 @@ void EditableTextStateCls::_updateSelectionRects(bool force) {
     if (selectionRect == nullptr) {
         return false;
     }
-    if (renderEditable->paintBounds->right < selectionRect->bounds->left || selectionRect->bounds->right < renderEditable->paintBounds->left) {
+    if (renderEditable()->paintBounds->right < selectionRect->bounds->left || selectionRect->bounds->right < renderEditable()->paintBounds->left) {
         return false;
     }
-    if (renderEditable->paintBounds->bottom < selectionRect->bounds->top || selectionRect->bounds->bottom < renderEditable->paintBounds->top) {
+    if (renderEditable()->paintBounds->bottom < selectionRect->bounds->top || selectionRect->bounds->bottom < renderEditable()->paintBounds->top) {
         return false;
     }
     return true;
@@ -1145,9 +1145,9 @@ void EditableTextStateCls::_updateSelectionRects(bool force) {
 }
 
 void EditableTextStateCls::_updateSizeAndTransform() {
-    if (_hasInputConnection) {
-        Size size = renderEditable->size;
-        Matrix4 transform = renderEditable->getTransformTo(nullptr);
+    if (_hasInputConnection()) {
+        Size size = renderEditable()->size;
+        Matrix4 transform = renderEditable()->getTransformTo(nullptr);
         _textInputConnection!->setEditableSizeAndTransform(size, transform);
         _updateSelectionRects();
         SchedulerBindingCls::instance->addPostFrameCallback([=] (Duration _)         {
@@ -1161,14 +1161,14 @@ void EditableTextStateCls::_updateSizeAndTransform() {
     }}
 
 void EditableTextStateCls::_updateComposingRectIfNeeded() {
-    TextRange composingRange = _value->composing;
-    if (_hasInputConnection) {
+    TextRange composingRange = _value()->composing;
+    if (_hasInputConnection()) {
         assert(mounted);
-        Rect composingRect = renderEditable->getRectForComposingRange(composingRange);
+        Rect composingRect = renderEditable()->getRectForComposingRange(composingRange);
         if (composingRect == nullptr) {
             assert(!composingRange->isValid || composingRange->isCollapsed);
             int offset = composingRange->isValid? composingRange->start : 0;
-            composingRect = renderEditable->getLocalRectForCaret(make<TextPositionCls>(offset));
+            composingRect = renderEditable()->getLocalRectForCaret(make<TextPositionCls>(offset));
         }
         assert(composingRect != nullptr);
         _textInputConnection!->setComposingRect(composingRect);
@@ -1179,10 +1179,10 @@ void EditableTextStateCls::_updateComposingRectIfNeeded() {
 }
 
 void EditableTextStateCls::_updateCaretRectIfNeeded() {
-    if (_hasInputConnection) {
-        if (renderEditable->selection != nullptr && renderEditable->selection!->isValid && renderEditable->selection!->isCollapsed) {
-            TextPosition currentTextPosition = make<TextPositionCls>(renderEditable->selection!->baseOffset);
-            Rect caretRect = renderEditable->getLocalRectForCaret(currentTextPosition);
+    if (_hasInputConnection()) {
+        if (renderEditable()->selection() != nullptr && renderEditable()->selection()!->isValid && renderEditable()->selection()!->isCollapsed) {
+            TextPosition currentTextPosition = make<TextPositionCls>(renderEditable()->selection()!->baseOffset);
+            Rect caretRect = renderEditable()->getLocalRectForCaret(currentTextPosition);
             _textInputConnection!->setCaretRect(caretRect);
         }
         SchedulerBindingCls::instance->addPostFrameCallback([=] (Duration _)         {
@@ -1192,8 +1192,8 @@ void EditableTextStateCls::_updateCaretRectIfNeeded() {
 }
 
 TextDirection EditableTextStateCls::_textDirection() {
-    TextDirection result = widget->textDirection ?? DirectionalityCls->of(context);
-    assert(result != nullptr, "$runtimeType created without a textDirection and with no ambient Directionality.");
+    TextDirection result = widget->textDirection or DirectionalityCls->of(context);
+    assert(result != nullptr, __s("$runtimeType created without a textDirection and with no ambient Directionality."));
     return result;
 }
 
@@ -1202,25 +1202,25 @@ double EditableTextStateCls::_devicePixelRatio() {
 }
 
 VoidCallback EditableTextStateCls::_semanticsOnCopy(TextSelectionControls controls) {
-    return widget->selectionEnabled && copyEnabled && _hasFocus && (controls?->canCopy(this) ?? false)? [=] ()     {
+    return widget->selectionEnabled && copyEnabled() && _hasFocus() && (controls?->canCopy(this) or false)? [=] ()     {
         controls!->handleCopy(this);
     } : nullptr;
 }
 
 VoidCallback EditableTextStateCls::_semanticsOnCut(TextSelectionControls controls) {
-    return widget->selectionEnabled && cutEnabled && _hasFocus && (controls?->canCut(this) ?? false)? [=] ()     {
+    return widget->selectionEnabled && cutEnabled() && _hasFocus() && (controls?->canCut(this) or false)? [=] ()     {
         controls!->handleCut(this);
     } : nullptr;
 }
 
 VoidCallback EditableTextStateCls::_semanticsOnPaste(TextSelectionControls controls) {
-    return widget->selectionEnabled && pasteEnabled && _hasFocus && (controls?->canPaste(this) ?? false) && (_clipboardStatus == nullptr || _clipboardStatus!->value == ClipboardStatusCls::pasteable)? [=] ()     {
+    return widget->selectionEnabled && pasteEnabled() && _hasFocus() && (controls?->canPaste(this) or false) && (_clipboardStatus == nullptr || _clipboardStatus!->value == ClipboardStatusCls::pasteable)? [=] ()     {
         controls!->handlePaste(this);
     } : nullptr;
 }
 
 _TextBoundary EditableTextStateCls::_characterBoundary(DirectionalTextEditingIntent intent) {
-    _TextBoundary atomicTextBoundary = widget->obscureText? make<_CodeUnitBoundaryCls>(_value) : make<_CharacterBoundaryCls>(_value);
+    _TextBoundary atomicTextBoundary = widget->obscureText? make<_CodeUnitBoundaryCls>(_value()) : make<_CharacterBoundaryCls>(_value());
     return make<_CollapsedSelectionBoundaryCls>(atomicTextBoundary, intent->forward);
 }
 
@@ -1228,12 +1228,12 @@ _TextBoundary EditableTextStateCls::_nextWordBoundary(DirectionalTextEditingInte
     _TextBoundary atomicTextBoundary;
     _TextBoundary boundary;
     if (widget->obscureText) {
-        atomicTextBoundary = make<_CodeUnitBoundaryCls>(_value);
-        boundary = make<_DocumentBoundaryCls>(_value);
+        atomicTextBoundary = make<_CodeUnitBoundaryCls>(_value());
+        boundary = make<_DocumentBoundaryCls>(_value());
     } else {
-        TextEditingValue textEditingValue = _textEditingValueforTextLayoutMetrics;
-        atomicTextBoundary = make<_CharacterBoundaryCls>(textEditingValue);
-        boundary = make<_ExpandedTextBoundaryCls>(make<_WhitespaceBoundaryCls>(textEditingValue), make<_WordBoundaryCls>(renderEditable, textEditingValue));
+        TextEditingValue textEditingValue = _textEditingValueforTextLayoutMetrics();
+        atomicTextBoundary = make<_CharacterBoundaryCls>(textEditingValue());
+        boundary = make<_ExpandedTextBoundaryCls>(make<_WhitespaceBoundaryCls>(textEditingValue()), make<_WordBoundaryCls>(renderEditable(), textEditingValue()));
     }
     _MixedBoundary mixedBoundary = intent->forward? make<_MixedBoundaryCls>(atomicTextBoundary, boundary) : make<_MixedBoundaryCls>(boundary, atomicTextBoundary);
     return make<_CollapsedSelectionBoundaryCls>(mixedBoundary, intent->forward);
@@ -1243,30 +1243,30 @@ _TextBoundary EditableTextStateCls::_linebreak(DirectionalTextEditingIntent inte
     _TextBoundary atomicTextBoundary;
     _TextBoundary boundary;
     if (widget->obscureText) {
-        atomicTextBoundary = make<_CodeUnitBoundaryCls>(_value);
-        boundary = make<_DocumentBoundaryCls>(_value);
+        atomicTextBoundary = make<_CodeUnitBoundaryCls>(_value());
+        boundary = make<_DocumentBoundaryCls>(_value());
     } else {
-        TextEditingValue textEditingValue = _textEditingValueforTextLayoutMetrics;
-        atomicTextBoundary = make<_CharacterBoundaryCls>(textEditingValue);
-        boundary = make<_LineBreakCls>(renderEditable, textEditingValue);
+        TextEditingValue textEditingValue = _textEditingValueforTextLayoutMetrics();
+        atomicTextBoundary = make<_CharacterBoundaryCls>(textEditingValue());
+        boundary = make<_LineBreakCls>(renderEditable(), textEditingValue());
     }
     return intent->forward? make<_MixedBoundaryCls>(make<_CollapsedSelectionBoundaryCls>(atomicTextBoundary, true), boundary) : make<_MixedBoundaryCls>(boundary, make<_CollapsedSelectionBoundaryCls>(atomicTextBoundary, false));
 }
 
 _TextBoundary EditableTextStateCls::_documentBoundary(DirectionalTextEditingIntent intent) {
-    return make<_DocumentBoundaryCls>(_value);
+    return make<_DocumentBoundaryCls>(_value());
 }
 
-Action<T> EditableTextStateCls::_makeOverridabletemplate<typename T : Intent> (Action<T> defaultAction) {
+Action<T> EditableTextStateCls::_makeOverridabletemplate<typename T> (Action<T> defaultAction) {
     return <T>overridable(context, defaultAction);
 }
 
 void EditableTextStateCls::_transposeCharacters(TransposeCharactersIntent intent) {
-    if (_value->text->characters->length <= 1 || _value->selection == nullptr || !_value->selection->isCollapsed || _value->selection->baseOffset == 0) {
+    if (_value()->text->characters->length <= 1 || _value()->selection == nullptr || !_value()->selection->isCollapsed || _value()->selection->baseOffset == 0) {
         return;
     }
-    String text = _value->text;
-    TextSelection selection = _value->selection;
+    String text = _value()->text;
+    TextSelection selection = _value()->selection;
     bool atEnd = selection->baseOffset == text->length;
     CharacterRange transposing = CharacterRangeCls->at(text, selection->baseOffset);
     if (atEnd) {
@@ -1279,7 +1279,7 @@ void EditableTextStateCls::_transposeCharacters(TransposeCharactersIntent intent
 }
 
 void EditableTextStateCls::_replaceText(ReplaceTextIntent intent) {
-    TextEditingValue oldValue = _value;
+    TextEditingValue oldValue = _value();
     TextEditingValue newValue = intent->currentTextEditingValue->replaced(intent->replacementRange, intent->replacementText);
     userUpdateTextEditingValue(newValue, intent->cause);
     if (newValue == oldValue) {
@@ -1289,7 +1289,7 @@ void EditableTextStateCls::_replaceText(ReplaceTextIntent intent) {
 
 void EditableTextStateCls::_scrollToDocumentBoundary(ScrollToDocumentBoundaryIntent intent) {
     if (intent->forward) {
-        bringIntoView(make<TextPositionCls>(_value->text->length));
+        bringIntoView(make<TextPositionCls>(_value()->text->length()));
     } else {
         bringIntoView(make<TextPositionCls>(0));
     }
@@ -1320,12 +1320,12 @@ void EditableTextStateCls::_expandSelection(bool extentAtIndex, bool forward, _T
     TextPosition position = towardsExtent? textBoundarySelection->extent : textBoundarySelection->base;
     TextPosition newExtent = forward? textBoundary->getTrailingTextBoundaryAt(position) : textBoundary->getLeadingTextBoundaryAt(position);
     TextSelection newSelection = textBoundarySelection->expandTo(newExtent, textBoundarySelection->isCollapsed || extentAtIndex);
-    userUpdateTextEditingValue(_value->copyWith(newSelection), SelectionChangedCauseCls::keyboard);
+    userUpdateTextEditingValue(_value()->copyWith(newSelection), SelectionChangedCauseCls::keyboard);
     bringIntoView(newSelection->extent);
 }
 
 Object EditableTextStateCls::_hideToolbarIfVisible(DismissIntent intent) {
-    if (_selectionOverlay?->toolbarIsVisible ?? false) {
+    if (_selectionOverlay?->toolbarIsVisible() or false) {
         hideToolbar(false);
         return nullptr;
     }
@@ -1333,14 +1333,14 @@ Object EditableTextStateCls::_hideToolbarIfVisible(DismissIntent intent) {
 }
 
 RenderEditable _EditableCls::createRenderObject(BuildContext context) {
-    return make<RenderEditableCls>(inlineSpan, cursorColor, startHandleLayerLink, endHandleLayerLink, backgroundCursorColor, showCursor, forceLine, readOnly, hasFocus, maxLines, minLines, expands, strutStyle, selectionColor, textScaleFactor, textAlign, textDirection, locale ?? LocalizationsCls->maybeLocaleOf(context), value->selection, offset, onCaretChanged, rendererIgnoresPointer, obscuringCharacter, obscureText, textHeightBehavior, textWidthBasis, cursorWidth, cursorHeight, cursorRadius, cursorOffset, paintCursorAboveText, selectionHeightStyle, selectionWidthStyle, enableInteractiveSelection, textSelectionDelegate, devicePixelRatio, promptRectRange, promptRectColor, clipBehavior);
+    return make<RenderEditableCls>(inlineSpan, cursorColor, startHandleLayerLink, endHandleLayerLink, backgroundCursorColor, showCursor, forceLine, readOnly, hasFocus, maxLines, minLines, expands, strutStyle, selectionColor, textScaleFactor, textAlign, textDirection, locale or LocalizationsCls->maybeLocaleOf(context), value->selection, offset, onCaretChanged, rendererIgnoresPointer, obscuringCharacter, obscureText, textHeightBehavior, textWidthBasis, cursorWidth, cursorHeight, cursorRadius, cursorOffset, paintCursorAboveText, selectionHeightStyle, selectionWidthStyle, enableInteractiveSelection, textSelectionDelegate, devicePixelRatio, promptRectRange, promptRectColor, clipBehavior);
 }
 
 void _EditableCls::updateRenderObject(BuildContext context, RenderEditable renderObject) {
-    auto _c1 = renderObject;_c1.text = auto _c2 = inlineSpan;_c2.cursorColor = auto _c3 = cursorColor;_c3.startHandleLayerLink = auto _c4 = startHandleLayerLink;_c4.endHandleLayerLink = auto _c5 = endHandleLayerLink;_c5.showCursor = auto _c6 = showCursor;_c6.forceLine = auto _c7 = forceLine;_c7.readOnly = auto _c8 = readOnly;_c8.hasFocus = auto _c9 = hasFocus;_c9.maxLines = auto _c10 = maxLines;_c10.minLines = auto _c11 = minLines;_c11.expands = auto _c12 = expands;_c12.strutStyle = auto _c13 = strutStyle;_c13.selectionColor = auto _c14 = selectionColor;_c14.textScaleFactor = auto _c15 = textScaleFactor;_c15.textAlign = auto _c16 = textAlign;_c16.textDirection = auto _c17 = textDirection;_c17.locale = auto _c18 = locale ?? LocalizationsCls->maybeLocaleOf(context);_c18.selection = auto _c19 = value->selection;_c19.offset = auto _c20 = offset;_c20.onCaretChanged = auto _c21 = onCaretChanged;_c21.ignorePointer = auto _c22 = rendererIgnoresPointer;_c22.textHeightBehavior = auto _c23 = textHeightBehavior;_c23.textWidthBasis = auto _c24 = textWidthBasis;_c24.obscuringCharacter = auto _c25 = obscuringCharacter;_c25.obscureText = auto _c26 = obscureText;_c26.cursorWidth = auto _c27 = cursorWidth;_c27.cursorHeight = auto _c28 = cursorHeight;_c28.cursorRadius = auto _c29 = cursorRadius;_c29.cursorOffset = auto _c30 = cursorOffset;_c30.selectionHeightStyle = auto _c31 = selectionHeightStyle;_c31.selectionWidthStyle = auto _c32 = selectionWidthStyle;_c32.enableInteractiveSelection = auto _c33 = enableInteractiveSelection;_c33.textSelectionDelegate = auto _c34 = textSelectionDelegate;_c34.devicePixelRatio = auto _c35 = devicePixelRatio;_c35.paintCursorAboveText = auto _c36 = paintCursorAboveText;_c36.promptRectColor = auto _c37 = promptRectColor;_c37.clipBehavior = auto _c38 = clipBehavior;_c38.setPromptRectRange(promptRectRange);_c38;_c37;_c36;_c35;_c34;_c33;_c32;_c31;_c30;_c29;_c28;_c27;_c26;_c25;_c24;_c23;_c22;_c21;_c20;_c19;_c18;_c17;_c16;_c15;_c14;_c13;_c12;_c11;_c10;_c9;_c8;_c7;_c6;_c5;_c4;_c3;_c2;_c1;
+    auto _c1 = renderObject;_c1.text = auto _c2 = inlineSpan;_c2.cursorColor = auto _c3 = cursorColor;_c3.startHandleLayerLink = auto _c4 = startHandleLayerLink;_c4.endHandleLayerLink = auto _c5 = endHandleLayerLink;_c5.showCursor = auto _c6 = showCursor;_c6.forceLine = auto _c7 = forceLine;_c7.readOnly = auto _c8 = readOnly;_c8.hasFocus = auto _c9 = hasFocus;_c9.maxLines = auto _c10 = maxLines;_c10.minLines = auto _c11 = minLines;_c11.expands = auto _c12 = expands;_c12.strutStyle = auto _c13 = strutStyle;_c13.selectionColor = auto _c14 = selectionColor;_c14.textScaleFactor = auto _c15 = textScaleFactor;_c15.textAlign = auto _c16 = textAlign;_c16.textDirection = auto _c17 = textDirection;_c17.locale = auto _c18 = locale or LocalizationsCls->maybeLocaleOf(context);_c18.selection = auto _c19 = value->selection;_c19.offset = auto _c20 = offset;_c20.onCaretChanged = auto _c21 = onCaretChanged;_c21.ignorePointer = auto _c22 = rendererIgnoresPointer;_c22.textHeightBehavior = auto _c23 = textHeightBehavior;_c23.textWidthBasis = auto _c24 = textWidthBasis;_c24.obscuringCharacter = auto _c25 = obscuringCharacter;_c25.obscureText = auto _c26 = obscureText;_c26.cursorWidth = auto _c27 = cursorWidth;_c27.cursorHeight = auto _c28 = cursorHeight;_c28.cursorRadius = auto _c29 = cursorRadius;_c29.cursorOffset = auto _c30 = cursorOffset;_c30.selectionHeightStyle = auto _c31 = selectionHeightStyle;_c31.selectionWidthStyle = auto _c32 = selectionWidthStyle;_c32.enableInteractiveSelection = auto _c33 = enableInteractiveSelection;_c33.textSelectionDelegate = auto _c34 = textSelectionDelegate;_c34.devicePixelRatio = auto _c35 = devicePixelRatio;_c35.paintCursorAboveText = auto _c36 = paintCursorAboveText;_c36.promptRectColor = auto _c37 = promptRectColor;_c37.clipBehavior = auto _c38 = clipBehavior;_c38.setPromptRectRange(promptRectRange);_c38;_c37;_c36;_c35;_c34;_c33;_c32;_c31;_c30;_c29;_c28;_c27;_c26;_c25;_c24;_c23;_c22;_c21;_c20;_c19;_c18;_c17;_c16;_c15;_c14;_c13;_c12;_c11;_c10;_c9;_c8;_c7;_c6;_c5;_c4;_c3;_c2;_c1;
 }
 
-_EditableCls::_EditableCls(Color backgroundCursorColor, Clip clipBehavior, Color cursorColor, double cursorHeight, Offset cursorOffset, Radius cursorRadius, double cursorWidth, double devicePixelRatio, bool enableInteractiveSelection, LayerLink endHandleLayerLink, bool expands, bool forceLine, bool hasFocus, InlineSpan inlineSpan, Unknown key, Locale locale, int maxLines, int minLines, bool obscureText, String obscuringCharacter, ViewportOffset offset, CaretChangedHandler onCaretChanged, bool paintCursorAboveText, Color promptRectColor, TextRange promptRectRange, bool readOnly, bool rendererIgnoresPointer, Color selectionColor, BoxHeightStyle selectionHeightStyle, BoxWidthStyle selectionWidthStyle, ValueNotifier<bool> showCursor, LayerLink startHandleLayerLink, StrutStyle strutStyle, TextAlign textAlign, TextDirection textDirection, TextHeightBehavior textHeightBehavior, double textScaleFactor, TextSelectionDelegate textSelectionDelegate, TextWidthBasis textWidthBasis, TextEditingValue value) {
+_EditableCls::_EditableCls(Color backgroundCursorColor, Clip clipBehavior, Color cursorColor, double cursorHeight, Offset cursorOffset, Radius cursorRadius, double cursorWidth, double devicePixelRatio, bool enableInteractiveSelection, LayerLink endHandleLayerLink, bool expands, bool forceLine, bool hasFocus, InlineSpan inlineSpan, Unknown key, Locale locale, int maxLines, int minLines, bool obscureText, String obscuringCharacter, ViewportOffset offset, CaretChangedHandler onCaretChanged, bool paintCursorAboveText, Color promptRectColor, TextRange promptRectRange, bool readOnly, bool rendererIgnoresPointer, Color selectionColor, BoxHeightStyle selectionHeightStyle, BoxWidthStyle selectionWidthStyle, ValueNotifier<bool> showCursor, LayerLink startHandleLayerLink, StrutStyle strutStyle, TextAlign textAlign, TextDirection textDirection, TextHeightBehavior textHeightBehavior, double textScaleFactor, TextSelectionDelegate textSelectionDelegate, TextWidthBasis textWidthBasis, TextEditingValue value) : MultiChildRenderObjectWidget(_extractChildren(inlineSpan)) {
     {
         assert(textDirection != nullptr);
         assert(rendererIgnoresPointer != nullptr);
@@ -1350,7 +1350,7 @@ _EditableCls::_EditableCls(Color backgroundCursorColor, Clip clipBehavior, Color
 List<Widget> _EditableCls::_extractChildren(InlineSpan span) {
     List<Widget> result = makeList();
     span->visitChildren([=] (InlineSpan span) {
-        if (span is WidgetSpan) {
+        if (is<WidgetSpan>(span)) {
             result->add(span->child);
         }
         return true;
@@ -1365,27 +1365,27 @@ _ScribbleFocusableState _ScribbleFocusableCls::createState() {
 void _ScribbleFocusableStateCls::initState() {
     super->initState();
     if (widget->enabled) {
-        TextInputCls->registerScribbleElement(elementIdentifier, this);
+        TextInputCls->registerScribbleElement(elementIdentifier(), this);
     }
 }
 
 void _ScribbleFocusableStateCls::didUpdateWidget(_ScribbleFocusable oldWidget) {
     super->didUpdateWidget(oldWidget);
     if (!oldWidget->enabled && widget->enabled) {
-        TextInputCls->registerScribbleElement(elementIdentifier, this);
+        TextInputCls->registerScribbleElement(elementIdentifier(), this);
     }
     if (oldWidget->enabled && !widget->enabled) {
-        TextInputCls->unregisterScribbleElement(elementIdentifier);
+        TextInputCls->unregisterScribbleElement(elementIdentifier());
     }
 }
 
 void _ScribbleFocusableStateCls::dispose() {
-    TextInputCls->unregisterScribbleElement(elementIdentifier);
+    TextInputCls->unregisterScribbleElement(elementIdentifier());
     super->dispose();
 }
 
 RenderEditable _ScribbleFocusableStateCls::renderEditable() {
-    return ((RenderEditable)widget->editableKey->currentContext?->findRenderObject());
+    return as<RenderEditable>(widget->editableKey->currentContext?->findRenderObject());
 }
 
 String _ScribbleFocusableStateCls::elementIdentifier() {
@@ -1394,13 +1394,13 @@ String _ScribbleFocusableStateCls::elementIdentifier() {
 
 void _ScribbleFocusableStateCls::onScribbleFocus(Offset offset) {
     widget->focusNode->requestFocus();
-    renderEditable?->selectPositionAt(offset, SelectionChangedCauseCls::scribble);
+    renderEditable()?->selectPositionAt(offset, SelectionChangedCauseCls::scribble);
     widget->updateSelectionRects();
 }
 
 bool _ScribbleFocusableStateCls::isInScribbleRect(Rect rect) {
-    Rect calculatedBounds = bounds;
-    if (renderEditable?->readOnly ?? false) {
+    Rect calculatedBounds = bounds();
+    if (renderEditable()?->readOnly() or false) {
         return false;
     }
     if (calculatedBounds == RectCls::zero) {
@@ -1413,12 +1413,12 @@ bool _ScribbleFocusableStateCls::isInScribbleRect(Rect rect) {
     HitTestResult result = make<HitTestResultCls>();
     WidgetsBindingCls::instance->hitTest(result, intersection->center);
     return result->path->any([=] (HitTestEntry entry)     {
-        entry->target == renderEditable;
+        entry->target == renderEditable();
     });
 }
 
 Rect _ScribbleFocusableStateCls::bounds() {
-    RenderBox box = ((RenderBox)context->findRenderObject());
+    RenderBox box = as<RenderBox>(context->findRenderObject());
     if (box == nullptr || !mounted || !box->attached) {
         return RectCls::zero;
     }
@@ -1442,7 +1442,7 @@ void _ScribblePlaceholderCls::build(ParagraphBuilder builder, List<PlaceholderDi
     if (hasStyle) {
         builder->pushStyle(style!->getTextStyle(textScaleFactor));
     }
-    builder->addPlaceholder(size->width, size->height, alignmenttextScaleFactor);
+    builder->addPlaceholder(size->width(), size->height(), alignmenttextScaleFactor);
     if (hasStyle) {
         builder->pop();
     }
@@ -1464,7 +1464,7 @@ TextPosition _CodeUnitBoundaryCls::getLeadingTextBoundaryAt(TextPosition positio
 }
 
 TextPosition _CodeUnitBoundaryCls::getTrailingTextBoundaryAt(TextPosition position) {
-    return make<TextPositionCls>(math->min(position->offset + 1, textEditingValue->text->length));
+    return make<TextPositionCls>(math->min(position->offset + 1, textEditingValue->text->length()));
 }
 
 TextPosition _WhitespaceBoundaryCls::getLeadingTextBoundaryAt(TextPosition position) {
@@ -1477,29 +1477,29 @@ TextPosition _WhitespaceBoundaryCls::getLeadingTextBoundaryAt(TextPosition posit
 }
 
 TextPosition _WhitespaceBoundaryCls::getTrailingTextBoundaryAt(TextPosition position) {
-    for (;  < textEditingValue->text->length; index = 1) {
+    for (;  < textEditingValue->text->length(); index = 1) {
         if (!TextLayoutMetricsCls->isWhitespace(textEditingValue->text->codeUnitAt(index))) {
             return make<TextPositionCls>(index + 1);
         }
     }
-    return make<TextPositionCls>(textEditingValue->text->length);
+    return make<TextPositionCls>(textEditingValue->text->length());
 }
 
 TextPosition _CharacterBoundaryCls::getLeadingTextBoundaryAt(TextPosition position) {
-    int endOffset = math->min(position->offset + 1, textEditingValue->text->length);
+    int endOffset = math->min(position->offset + 1, textEditingValue->text->length());
     return make<TextPositionCls>(CharacterRangeCls->at(textEditingValue->text, position->offset, endOffset)->stringBeforeLength);
 }
 
 TextPosition _CharacterBoundaryCls::getTrailingTextBoundaryAt(TextPosition position) {
-    int endOffset = math->min(position->offset + 1, textEditingValue->text->length);
+    int endOffset = math->min(position->offset + 1, textEditingValue->text->length());
     CharacterRange range = CharacterRangeCls->at(textEditingValue->text, position->offset, endOffset);
-    return make<TextPositionCls>(textEditingValue->text->length - range->stringAfterLength);
+    return make<TextPositionCls>(textEditingValue->text->length() - range->stringAfterLength);
 }
 
 TextRange _CharacterBoundaryCls::getTextBoundaryAt(TextPosition position) {
-    int endOffset = math->min(position->offset + 1, textEditingValue->text->length);
+    int endOffset = math->min(position->offset + 1, textEditingValue->text->length());
     CharacterRange range = CharacterRangeCls->at(textEditingValue->text, position->offset, endOffset);
-    return make<TextRangeCls>(range->stringBeforeLength, textEditingValue->text->length - range->stringAfterLength);
+    return make<TextRangeCls>(range->stringBeforeLength, textEditingValue->text->length() - range->stringAfterLength);
 }
 
 TextPosition _WordBoundaryCls::getLeadingTextBoundaryAt(TextPosition position) {
@@ -1523,12 +1523,12 @@ TextPosition _DocumentBoundaryCls::getLeadingTextBoundaryAt(TextPosition positio
 }
 
 TextPosition _DocumentBoundaryCls::getTrailingTextBoundaryAt(TextPosition position) {
-    return make<TextPositionCls>(textEditingValue->text->length, TextAffinityCls::upstream);
+    return make<TextPositionCls>(textEditingValue->text->length(), TextAffinityCls::upstream);
 }
 
 TextEditingValue _ExpandedTextBoundaryCls::textEditingValue() {
-    assert(innerTextBoundary->textEditingValue == outerTextBoundary->textEditingValue);
-    return innerTextBoundary->textEditingValue;
+    assert(innerTextBoundary->textEditingValue() == outerTextBoundary->textEditingValue());
+    return innerTextBoundary->textEditingValue();
 }
 
 TextPosition _ExpandedTextBoundaryCls::getLeadingTextBoundaryAt(TextPosition position) {
@@ -1540,7 +1540,7 @@ TextPosition _ExpandedTextBoundaryCls::getTrailingTextBoundaryAt(TextPosition po
 }
 
 TextEditingValue _CollapsedSelectionBoundaryCls::textEditingValue() {
-    return innerTextBoundary->textEditingValue;
+    return innerTextBoundary->textEditingValue();
 }
 
 TextPosition _CollapsedSelectionBoundaryCls::getLeadingTextBoundaryAt(TextPosition position) {
@@ -1552,8 +1552,8 @@ TextPosition _CollapsedSelectionBoundaryCls::getTrailingTextBoundaryAt(TextPosit
 }
 
 TextEditingValue _MixedBoundaryCls::textEditingValue() {
-    assert(leadingTextBoundary->textEditingValue == trailingTextBoundary->textEditingValue);
-    return leadingTextBoundary->textEditingValue;
+    assert(leadingTextBoundary->textEditingValue() == trailingTextBoundary->textEditingValue());
+    return leadingTextBoundary->textEditingValue();
 }
 
 TextPosition _MixedBoundaryCls::getLeadingTextBoundaryAt(TextPosition position) {
@@ -1564,27 +1564,27 @@ TextPosition _MixedBoundaryCls::getTrailingTextBoundaryAt(TextPosition position)
     return trailingTextBoundary->getTrailingTextBoundaryAt(position);
 }
 
-template<typename T : DirectionalTextEditingIntent> Object _DeleteTextActionCls<T>::invoke(BuildContext context, T intent) {
-    TextSelection selection = state->_value->selection;
+template<typename T> Object _DeleteTextActionCls<T>::invoke(BuildContext context, T intent) {
+    TextSelection selection = state->_value()->selection;
     assert(selection->isValid);
     if (!selection->isCollapsed) {
-        return ActionsCls->invoke(context!, make<ReplaceTextIntentCls>(state->_value, "", _expandNonCollapsedRange(state->_value), SelectionChangedCauseCls::keyboard));
+        return ActionsCls->invoke(context!, make<ReplaceTextIntentCls>(state->_value(), __s(""), _expandNonCollapsedRange(state->_value()), SelectionChangedCauseCls::keyboard));
     }
     _TextBoundary textBoundary = getTextBoundariesForIntent(intent);
     if (!textBoundary->textEditingValue->selection->isValid) {
         return nullptr;
     }
     if (!textBoundary->textEditingValue->selection->isCollapsed) {
-        return ActionsCls->invoke(context!, make<ReplaceTextIntentCls>(state->_value, "", _expandNonCollapsedRange(textBoundary->textEditingValue), SelectionChangedCauseCls::keyboard));
+        return ActionsCls->invoke(context!, make<ReplaceTextIntentCls>(state->_value(), __s(""), _expandNonCollapsedRange(textBoundary->textEditingValue), SelectionChangedCauseCls::keyboard));
     }
-    return ActionsCls->invoke(context!, make<ReplaceTextIntentCls>(textBoundary->textEditingValue, "", textBoundary->getTextBoundaryAt(textBoundary->textEditingValue->selection->base), SelectionChangedCauseCls::keyboard));
+    return ActionsCls->invoke(context!, make<ReplaceTextIntentCls>(textBoundary->textEditingValue, __s(""), textBoundary->getTextBoundaryAt(textBoundary->textEditingValue->selection->base), SelectionChangedCauseCls::keyboard));
 }
 
-template<typename T : DirectionalTextEditingIntent> bool _DeleteTextActionCls<T>::isActionEnabled() {
-    return !state->widget->readOnly && state->_value->selection->isValid;
+template<typename T> bool _DeleteTextActionCls<T>::isActionEnabled() {
+    return !state->widget->readOnly && state->_value()->selection->isValid;
 }
 
-template<typename T : DirectionalTextEditingIntent> TextRange _DeleteTextActionCls<T>::_expandNonCollapsedRange(TextEditingValue value) {
+template<typename T> TextRange _DeleteTextActionCls<T>::_expandNonCollapsedRange(TextEditingValue value) {
     TextRange selection = value->selection;
     assert(selection->isValid);
     assert(!selection->isCollapsed);
@@ -1592,13 +1592,13 @@ template<typename T : DirectionalTextEditingIntent> TextRange _DeleteTextActionC
     return make<TextRangeCls>(atomicBoundary->getLeadingTextBoundaryAt(make<TextPositionCls>(selection->start))->offset, atomicBoundary->getTrailingTextBoundaryAt(make<TextPositionCls>(selection->end - 1))->offset);
 }
 
-template<typename T : DirectionalCaretMovementIntent> Object _UpdateTextSelectionActionCls<T>::invoke(BuildContext context, T intent) {
-    TextSelection selection = state->_value->selection;
+template<typename T> Object _UpdateTextSelectionActionCls<T>::invoke(BuildContext context, T intent) {
+    TextSelection selection = state->_value()->selection;
     assert(selection->isValid);
     bool collapseSelection = intent->collapseSelection || !state->widget->selectionEnabled;
     InlineMethod;
     if (!selection->isCollapsed && !ignoreNonCollapsedSelection && collapseSelection) {
-        return ActionsCls->invoke(context!, make<UpdateSelectionIntentCls>(state->_value, collapse(selection), SelectionChangedCauseCls::keyboard));
+        return ActionsCls->invoke(context!, make<UpdateSelectionIntentCls>(state->_value(), collapse(selection), SelectionChangedCauseCls::keyboard));
     }
     _TextBoundary textBoundary = getTextBoundariesForIntent(intent);
     TextSelection textBoundarySelection = textBoundary->textEditingValue->selection;
@@ -1606,7 +1606,7 @@ template<typename T : DirectionalCaretMovementIntent> Object _UpdateTextSelectio
         return nullptr;
     }
     if (!textBoundarySelection->isCollapsed && !ignoreNonCollapsedSelection && collapseSelection) {
-        return ActionsCls->invoke(context!, make<UpdateSelectionIntentCls>(state->_value, collapse(textBoundarySelection), SelectionChangedCauseCls::keyboard));
+        return ActionsCls->invoke(context!, make<UpdateSelectionIntentCls>(state->_value(), collapse(textBoundarySelection), SelectionChangedCauseCls::keyboard));
     }
     TextPosition extent = textBoundarySelection->extent;
     if (intent->continuesAtWrap) {
@@ -1621,27 +1621,27 @@ template<typename T : DirectionalCaretMovementIntent> Object _UpdateTextSelectio
     TextPosition newExtent = intent->forward? textBoundary->getTrailingTextBoundaryAt(extent) : textBoundary->getLeadingTextBoundaryAt(extent);
     TextSelection newSelection = collapseSelection? TextSelectionCls->fromPosition(newExtent) : textBoundarySelection->extendTo(newExtent);
     if (!selection->isCollapsed && intent->collapseAtReversal && (selection->baseOffset < selection->extentOffset != newSelection->baseOffset < newSelection->extentOffset)) {
-        return ActionsCls->invoke(context!, make<UpdateSelectionIntentCls>(state->_value, TextSelectionCls->fromPosition(selection->base), SelectionChangedCauseCls::keyboard));
+        return ActionsCls->invoke(context!, make<UpdateSelectionIntentCls>(state->_value(), TextSelectionCls->fromPosition(selection->base), SelectionChangedCauseCls::keyboard));
     }
     return ActionsCls->invoke(context!, make<UpdateSelectionIntentCls>(textBoundary->textEditingValue, newSelection, SelectionChangedCauseCls::keyboard));
 }
 
-template<typename T : DirectionalCaretMovementIntent> bool _UpdateTextSelectionActionCls<T>::isActionEnabled() {
-    return state->_value->selection->isValid;
+template<typename T> bool _UpdateTextSelectionActionCls<T>::isActionEnabled() {
+    return state->_value()->selection->isValid;
 }
 
-template<typename T : DirectionalCaretMovementIntent> bool _UpdateTextSelectionActionCls<T>::_isAtWordwrapUpstream(TextPosition position) {
-    TextPosition end = make<TextPositionCls>(state->renderEditable->getLineAtOffset(position)->end, TextAffinityCls::upstream);
-    return end == position && end->offset != state->textEditingValue->text->length && state->textEditingValue->text->codeUnitAt(position->offset) != NEWLINE_CODE_UNITCls;
+template<typename T> bool _UpdateTextSelectionActionCls<T>::_isAtWordwrapUpstream(TextPosition position) {
+    TextPosition end = make<TextPositionCls>(state->renderEditable()->getLineAtOffset(position)->end, TextAffinityCls::upstream);
+    return end == position && end->offset != state->textEditingValue()->text->length() && state->textEditingValue()->text->codeUnitAt(position->offset) != NEWLINE_CODE_UNITCls;
 }
 
-template<typename T : DirectionalCaretMovementIntent> bool _UpdateTextSelectionActionCls<T>::_isAtWordwrapDownstream(TextPosition position) {
-    TextPosition start = make<TextPositionCls>(state->renderEditable->getLineAtOffset(position)->start);
-    return start == position && start->offset != 0 && state->textEditingValue->text->codeUnitAt(position->offset - 1) != NEWLINE_CODE_UNITCls;
+template<typename T> bool _UpdateTextSelectionActionCls<T>::_isAtWordwrapDownstream(TextPosition position) {
+    TextPosition start = make<TextPositionCls>(state->renderEditable()->getLineAtOffset(position)->start);
+    return start == position && start->offset != 0 && state->textEditingValue()->text->codeUnitAt(position->offset - 1) != NEWLINE_CODE_UNITCls;
 }
 
 Object _ExtendSelectionOrCaretPositionActionCls::invoke(BuildContext context, ExtendSelectionToNextWordBoundaryOrCaretLocationIntent intent) {
-    TextSelection selection = state->_value->selection;
+    TextSelection selection = state->_value()->selection;
     assert(selection->isValid);
     _TextBoundary textBoundary = getTextBoundariesForIntent(intent);
     TextSelection textBoundarySelection = textBoundary->textEditingValue->selection;
@@ -1655,16 +1655,16 @@ Object _ExtendSelectionOrCaretPositionActionCls::invoke(BuildContext context, Ex
 }
 
 bool _ExtendSelectionOrCaretPositionActionCls::isActionEnabled() {
-    return state->widget->selectionEnabled && state->_value->selection->isValid;
+    return state->widget->selectionEnabled && state->_value()->selection->isValid;
 }
 
-template<typename T : DirectionalCaretMovementIntent> void _UpdateTextSelectionToAdjacentLineActionCls<T>::stopCurrentVerticalRunIfSelectionChanges() {
+template<typename T> void _UpdateTextSelectionToAdjacentLineActionCls<T>::stopCurrentVerticalRunIfSelectionChanges() {
     TextSelection runSelection = _runSelection;
     if (runSelection == nullptr) {
         assert(_verticalMovementRun == nullptr);
         return;
     }
-    _runSelection = state->_value->selection;
+    _runSelection = state->_value()->selection;
     TextSelection currentSelection = state->widget->controller->selection;
     bool continueCurrentRun = currentSelection->isValid && currentSelection->isCollapsed && currentSelection->baseOffset == runSelection->baseOffset && currentSelection->extentOffset == runSelection->extentOffset;
     if (!continueCurrentRun) {
@@ -1673,34 +1673,34 @@ template<typename T : DirectionalCaretMovementIntent> void _UpdateTextSelectionT
     }
 }
 
-template<typename T : DirectionalCaretMovementIntent> void _UpdateTextSelectionToAdjacentLineActionCls<T>::invoke(BuildContext context, T intent) {
-    assert(state->_value->selection->isValid);
+template<typename T> void _UpdateTextSelectionToAdjacentLineActionCls<T>::invoke(BuildContext context, T intent) {
+    assert(state->_value()->selection->isValid);
     bool collapseSelection = intent->collapseSelection || !state->widget->selectionEnabled;
-    TextEditingValue value = state->_textEditingValueforTextLayoutMetrics;
+    TextEditingValue value = state->_textEditingValueforTextLayoutMetrics();
     if (!value->selection->isValid) {
         return;
     }
-    if (_verticalMovementRun?->isValid == false) {
+    if (_verticalMovementRun?->isValid() == false) {
         _verticalMovementRun = nullptr;
         _runSelection = nullptr;
     }
-    VerticalCaretMovementRun currentRun = _verticalMovementRun ?? state->renderEditable->startVerticalCaretMovement(state->renderEditable->selection!->extent);
+    VerticalCaretMovementRun currentRun = _verticalMovementRun or state->renderEditable()->startVerticalCaretMovement(state->renderEditable()->selection()!->extent());
     bool shouldMove = intent->forward? currentRun->moveNext() : currentRun->movePrevious();
-    TextPosition newExtent = shouldMove? currentRun->current : (intent->forward? make<TextPositionCls>(state->_value->text->length) : make<TextPositionCls>(0));
+    TextPosition newExtent = shouldMove? currentRun->current : (intent->forward? make<TextPositionCls>(state->_value()->text->length()) : make<TextPositionCls>(0));
     TextSelection newSelection = collapseSelection? TextSelectionCls->fromPosition(newExtent) : value->selection->extendTo(newExtent);
     ActionsCls->invoke(context!, make<UpdateSelectionIntentCls>(value, newSelection, SelectionChangedCauseCls::keyboard));
-    if (state->_value->selection == newSelection) {
+    if (state->_value()->selection == newSelection) {
         _verticalMovementRun = currentRun;
         _runSelection = newSelection;
     }
 }
 
-template<typename T : DirectionalCaretMovementIntent> bool _UpdateTextSelectionToAdjacentLineActionCls<T>::isActionEnabled() {
-    return state->_value->selection->isValid;
+template<typename T> bool _UpdateTextSelectionToAdjacentLineActionCls<T>::isActionEnabled() {
+    return state->_value()->selection->isValid;
 }
 
 Object _SelectAllActionCls::invoke(BuildContext context, SelectAllTextIntent intent) {
-    return ActionsCls->invoke(context!, make<UpdateSelectionIntentCls>(state->_value, make<TextSelectionCls>(0, state->_value->text->length), intent->cause));
+    return ActionsCls->invoke(context!, make<UpdateSelectionIntentCls>(state->_value(), make<TextSelectionCls>(0, state->_value()->text->length()), intent->cause));
 }
 
 bool _SelectAllActionCls::isActionEnabled() {
@@ -1716,7 +1716,7 @@ void _CopySelectionActionCls::invoke(BuildContext context, CopySelectionTextInte
 }
 
 bool _CopySelectionActionCls::isActionEnabled() {
-    return state->_value->selection->isValid && !state->_value->selection->isCollapsed;
+    return state->_value()->selection->isValid && !state->_value()->selection->isCollapsed;
 }
 
 State<_TextEditingHistory> _TextEditingHistoryCls::createState() {
@@ -1784,37 +1784,37 @@ template<typename T> void _UndoStackCls<T>::push(T value) {
         _list->add(value);
         return;
     }
-    assert( < _list->length && _index >= 0);
-    if (value == currentValue) {
+    assert( < _list->length() && _index >= 0);
+    if (value == currentValue()) {
         return;
     }
-    if (_index != nullptr && _index != _list->length - 1) {
-        _list->removeRange(_index + 1, _list->length);
+    if (_index != nullptr && _index != _list->length() - 1) {
+        _list->removeRange(_index + 1, _list->length());
     }
     _list->add(value);
-    _index = _list->length - 1;
+    _index = _list->length() - 1;
 }
 
 template<typename T> T _UndoStackCls<T>::undo() {
     if (_list->isEmpty) {
         return nullptr;
     }
-    assert( < _list->length && _index >= 0);
+    assert( < _list->length() && _index >= 0);
     if (_index != 0) {
         _index = _index - 1;
     }
-    return currentValue;
+    return currentValue();
 }
 
 template<typename T> T _UndoStackCls<T>::redo() {
     if (_list->isEmpty) {
         return nullptr;
     }
-    assert( < _list->length && _index >= 0);
-    if ( < _list->length - 1) {
+    assert( < _list->length() && _index >= 0);
+    if ( < _list->length() - 1) {
         _index = _index + 1;
     }
-    return currentValue;
+    return currentValue();
 }
 
 template<typename T> void _UndoStackCls<T>::clear() {
@@ -1823,7 +1823,7 @@ template<typename T> void _UndoStackCls<T>::clear() {
 }
 
 template<typename T> String _UndoStackCls<T>::toString() {
-    return "_UndoStack $_list";
+    return __s("_UndoStack $_list");
 }
 
 _Throttled<T> _throttletemplate<typename T> (Duration duration, _Throttleable<T> function, bool leadingEdge) {

@@ -1,23 +1,23 @@
 #include "table.hpp"
 String TableRowCls::toString() {
     StringBuffer result = make<StringBufferCls>();
-    result->write("TableRow(");
+    result->write(__s("TableRow("));
     if (key != nullptr) {
-        result->write("$key, ");
+        result->write(__s("$key, "));
     }
     if (decoration != nullptr) {
-        result->write("$decoration, ");
+        result->write(__s("$decoration, "));
     }
     if (children == nullptr) {
-        result->write("child list is null");
+        result->write(__s("child list is null"));
     } else     {
         if (children!->isEmpty) {
-        result->write("no children");
+        result->write(__s("no children"));
     } else {
-        result->write("$children");
+        result->write(__s("$children"));
     }
 ;
-    }    result->write(")");
+    }    result->write(__s(")"));
     return result->toString();
 }
 
@@ -26,7 +26,7 @@ TableCls::TableCls(TableBorder border, List<TableRow> children, Map<int, TableCo
         assert(children != nullptr);
         assert(defaultColumnWidth != nullptr);
         assert(defaultVerticalAlignment != nullptr);
-        assert(defaultVerticalAlignment != TableCellVerticalAlignmentCls::baseline || textBaseline != nullptr, "textBaseline is required if you specify the defaultVerticalAlignment with TableCellVerticalAlignment.baseline");
+        assert(defaultVerticalAlignment != TableCellVerticalAlignmentCls::baseline || textBaseline != nullptr, __s("textBaseline is required if you specify the defaultVerticalAlignment with TableCellVerticalAlignment.baseline"));
         assert([=] () {
             if (children->any([=] (TableRow row)             {
                 row->children == nullptr;
@@ -57,9 +57,9 @@ TableCls::TableCls(TableBorder border, List<TableRow> children, Map<int, TableCo
         }());
         assert([=] () {
             if (children->isNotEmpty) {
-                int cellCount = children->first->children!->length;
+                int cellCount = children->first->children!->length();
                 if (children->any([=] (TableRow row)                 {
-                    row->children!->length != cellCount;
+                    row->children!->length() != cellCount;
                 })) {
                     ;
                 }
@@ -91,18 +91,18 @@ RenderObjectElement TableCls::createElement() {
 
 RenderTable TableCls::createRenderObject(BuildContext context) {
     assert(debugCheckHasDirectionality(context));
-    return make<RenderTableCls>(children->isNotEmpty? children[0]->children!->length : 0, children->length, columnWidths, defaultColumnWidth, textDirection ?? DirectionalityCls->of(context), border, _rowDecorations, createLocalImageConfiguration(context), defaultVerticalAlignment, textBaseline);
+    return make<RenderTableCls>(children->isNotEmpty? children[0]->children!->length() : 0, children->length(), columnWidths, defaultColumnWidth, textDirection or DirectionalityCls->of(context), border, _rowDecorations, createLocalImageConfiguration(context), defaultVerticalAlignment, textBaseline);
 }
 
 void TableCls::updateRenderObject(BuildContext context, RenderTable renderObject) {
     assert(debugCheckHasDirectionality(context));
-    assert(renderObject->columns == (children->isNotEmpty? children[0]->children!->length : 0));
-    assert(renderObject->rows == children->length);
-    auto _c1 = renderObject;_c1.columnWidths = auto _c2 = columnWidths;_c2.defaultColumnWidth = auto _c3 = defaultColumnWidth;_c3.textDirection = auto _c4 = textDirection ?? DirectionalityCls->of(context);_c4.border = auto _c5 = border;_c5.rowDecorations = auto _c6 = _rowDecorations;_c6.configuration = auto _c7 = createLocalImageConfiguration(context);_c7.defaultVerticalAlignment = auto _c8 = defaultVerticalAlignment;_c8.textBaseline = textBaseline;_c8;_c7;_c6;_c5;_c4;_c3;_c2;_c1;
+    assert(renderObject->columns == (children->isNotEmpty? children[0]->children!->length() : 0));
+    assert(renderObject->rows == children->length());
+    auto _c1 = renderObject;_c1.columnWidths = auto _c2 = columnWidths;_c2.defaultColumnWidth = auto _c3 = defaultColumnWidth;_c3.textDirection = auto _c4 = textDirection or DirectionalityCls->of(context);_c4.border = auto _c5 = border;_c5.rowDecorations = auto _c6 = _rowDecorations;_c6.configuration = auto _c7 = createLocalImageConfiguration(context);_c7.defaultVerticalAlignment = auto _c8 = defaultVerticalAlignment;_c8.textBaseline = textBaseline;_c8;_c7;_c6;_c5;_c4;_c3;_c2;_c1;
 }
 
 RenderTable _TableElementCls::renderObject() {
-    return ((RenderTable)super->renderObject);
+    return as<RenderTable>(super->renderObject);
 }
 
 void _TableElementCls::mount(Object newSlot, Element parent) {
@@ -110,7 +110,7 @@ void _TableElementCls::mount(Object newSlot, Element parent) {
     _doingMountOrUpdate = true;
     super->mount(parent, newSlot);
     int rowIndex = -1;
-    _children = (((Table)widget))->children-><_TableElementRow>map([=] (TableRow row) {
+    _children = (as<Table>(widget))->children-><_TableElementRow>map([=] (TableRow row) {
         int columnIndex = 0;
         rowIndex = 1;
         return make<_TableElementRowCls>(row->key, row->children!-><Element>map([=] (Widget child) {
@@ -124,9 +124,9 @@ void _TableElementCls::mount(Object newSlot, Element parent) {
 }
 
 void _TableElementCls::insertRenderObjectChild(RenderBox child, _TableSlot slot) {
-    renderObject->setupParentData(child);
+    renderObject()->setupParentData(child);
     if (!_doingMountOrUpdate) {
-        renderObject->setChild(slot->column, slot->row, child);
+        renderObject()->setChild(slot->column, slot->row, child);
     }
 }
 
@@ -135,7 +135,7 @@ void _TableElementCls::moveRenderObjectChild(RenderBox child, _TableSlot newSlot
 }
 
 void _TableElementCls::removeRenderObjectChild(RenderBox child, _TableSlot slot) {
-    renderObject->setChild(slot->column, slot->row, nullptr);
+    renderObject()->setChild(slot->column, slot->row, nullptr);
 }
 
 void _TableElementCls::update(Table newWidget) {
@@ -204,21 +204,21 @@ bool _TableElementCls::forgetChild(Element child) {
 }
 
 void _TableElementCls::_updateRenderObjectChildren() {
-    assert(renderObject != nullptr);
-    renderObject->setFlatChildren(_children->isNotEmpty? _children[0]->children->length : 0, _children-><RenderBox>expand([=] (_TableElementRow row) {
+    assert(renderObject() != nullptr);
+    renderObject()->setFlatChildren(_children->isNotEmpty? _children[0]->children->length() : 0, _children-><RenderBox>expand([=] (_TableElementRow row) {
         return row->children-><RenderBox>map([=] (Element child) {
-            RenderBox box = ((RenderBox)child->renderObject!);
+            RenderBox box = as<RenderBox>(child->renderObject!);
             return box;
         });
     })->toList());
 }
 
 void TableCellCls::applyParentData(RenderObject renderObject) {
-    TableCellParentData parentData = ((TableCellParentData)renderObject->parentData!);
+    TableCellParentData parentData = as<TableCellParentData>(renderObject->parentData!);
     if (parentData->verticalAlignment != verticalAlignment) {
         parentData->verticalAlignment = verticalAlignment;
         AbstractNode targetParent = renderObject->parent;
-        if (targetParent is RenderObject) {
+        if (is<RenderObject>(targetParent)) {
             targetParent->markNeedsLayout();
         }
     }
@@ -230,14 +230,14 @@ Type TableCellCls::debugTypicalAncestorWidgetClass() {
 
 void TableCellCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<TableCellVerticalAlignment>make<EnumPropertyCls>("verticalAlignment", verticalAlignment));
+    properties->add(<TableCellVerticalAlignment>make<EnumPropertyCls>(__s("verticalAlignment"), verticalAlignment));
 }
 
 bool _TableSlotCls::==(Object other) {
-    if (other->runtimeType != runtimeType) {
+    if (other->runtimeType() != runtimeType) {
         return false;
     }
-    return other is _TableSlot && column == other->column && row == other->row;
+    return is<_TableSlot>(other) && column == other->column && row == other->row;
 }
 
 int _TableSlotCls::hashCode() {
@@ -246,6 +246,6 @@ int _TableSlotCls::hashCode() {
 
 void _TableSlotCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(make<IntPropertyCls>("x", column));
-    properties->add(make<IntPropertyCls>("y", row));
+    properties->add(make<IntPropertyCls>(__s("x"), column));
+    properties->add(make<IntPropertyCls>(__s("y"), row));
 }

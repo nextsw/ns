@@ -10,8 +10,8 @@ public:
     bool allowLegacyUnsafeRenegotiation;
 
 
-    extern  SecurityContextCls(bool withTrustedRoots);
-    extern static SecurityContext defaultContext();
+     SecurityContextCls(bool withTrustedRoots);
+    static SecurityContext defaultContext();
     virtual void usePrivateKey(String file, String password);
     virtual void usePrivateKeyBytes(List<int> keyBytes, String password);
     virtual void setTrustedCertificates(String file, String password);
@@ -20,7 +20,7 @@ public:
     virtual void useCertificateChainBytes(List<int> chainBytes, String password);
     virtual void setClientAuthorities(String file, String password);
     virtual void setClientAuthoritiesBytes(List<int> authCertBytes, String password);
-    extern static bool alpnSupported();
+    static bool alpnSupported();
     virtual void setAlpnProtocols(bool isServer, List<String> protocols);
 private:
 

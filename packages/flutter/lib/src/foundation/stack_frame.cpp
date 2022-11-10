@@ -21,54 +21,54 @@ List<StackFrame> StackFrameCls::fromStackTrace(StackTrace stack) {
 
 List<StackFrame> StackFrameCls::fromStackString(String stack) {
     assert(stack != nullptr);
-    return stack->trim()->split("\n")->where([=] (String line)     {
+    return stack->trim()->split(__s("\n"))->where([=] (String line)     {
         line->isNotEmpty;
     })->map(fromStackTraceLine)-><StackFrame>whereType()->toList();
 }
 
 StackFrame StackFrameCls::fromStackTraceLine(String line) {
     assert(line != nullptr);
-    if (line == "<asynchronous suspension>") {
+    if (line == __s("<asynchronous suspension>")) {
         return asynchronousSuspension;
     } else     {
-        if (line == "...") {
+        if (line == __s("...")) {
         return stackOverFlowElision;
     }
 ;
-    }    assert(line != "===== asynchronous gap ===========================", "Got a stack frame from package:stack_trace, where a vm or web frame was expected. This can happen if FlutterError.demangleStackTrace was not set in an environment that propagates non-standard stack traces to the framework, such as during tests.");
-    if (!line->startsWith("#")) {
+    }    assert(line != __s("===== asynchronous gap ==========================="), __s("Got a stack frame from package:stack_trace, where a vm or web frame was expected. This can happen if FlutterError.demangleStackTrace was not set in an environment that propagates non-standard stack traces to the framework, such as during tests."));
+    if (!line->startsWith(__s("#"))) {
         return _parseWebFrame(line);
     }
-    RegExp parser = make<RegExpCls>("^#(\d+) +(.+) \((.+?):?(\d+){0,1}:?(\d+){0,1}\)$");
+    RegExp parser = make<RegExpCls>(__s("^#(\d+) +(.+) \((.+?):?(\d+){0,1}:?(\d+){0,1}\)$"));
     Match match = parser->firstMatch(line);
-    assert(match != nullptr, "Expected $line to match $parser.");
+    assert(match != nullptr, __s("Expected $line to match $parser."));
     match = match!;
     bool isConstructor = false;
-    String className = "";
-    String method = match->group(2)!->replaceAll(".<anonymous closure>", "");
-    if (method->startsWith("new")) {
-        List<String> methodParts = method->split(" ");
-        className = methodParts->length > 1? method->split(" ")[1] : "<unknown>";
-        method = "";
-        if (className->contains(".")) {
-            List<String> parts = className->split(".");
+    String className = __s("");
+    String method = match->group(2)!->replaceAll(__s(".<anonymous closure>"), __s(""));
+    if (method->startsWith(__s("new"))) {
+        List<String> methodParts = method->split(__s(" "));
+        className = methodParts->length > 1? method->split(__s(" "))[1] : __s("<unknown>");
+        method = __s("");
+        if (className->contains(__s("."))) {
+            List<String> parts = className->split(__s("."));
             className = parts[0];
             method = parts[1];
         }
         isConstructor = true;
     } else     {
-        if (method->contains(".")) {
-        List<String> parts = method->split(".");
+        if (method->contains(__s("."))) {
+        List<String> parts = method->split(__s("."));
         className = parts[0];
         method = parts[1];
     }
 ;
     }    Uri packageUri = UriCls->parse(match->group(3)!);
-    String package = "<unknown>";
+    String package = __s("<unknown>");
     String packagePath = packageUri->path;
-    if (packageUri->scheme == "dart" || packageUri->scheme == "package") {
+    if (packageUri->scheme == __s("dart") || packageUri->scheme == __s("package")) {
         package = packageUri->pathSegments[0];
-        packagePath = packageUri->path->replaceFirst("${packageUri.pathSegments[0]}/", "");
+        packagePath = packageUri->path->replaceFirst(__s("${packageUri.pathSegments[0]}/"), __s(""));
     }
     return make<StackFrameCls>(intValue->parse(match->group(1)!), className, method, packageUri->scheme, package, packagePath, match->group(4) == nullptr? -1 : intValue->parse(match->group(4)!), match->group(5) == nullptr? -1 : intValue->parse(match->group(5)!), isConstructor, line);
 }
@@ -78,14 +78,14 @@ int StackFrameCls::hashCode() {
 }
 
 bool StackFrameCls::==(Object other) {
-    if (other->runtimeType != runtimeType) {
+    if (other->runtimeType() != runtimeType) {
         return false;
     }
-    return other is StackFrame && other->number == number && other->package == package && other->line == line && other->column == column && other->className == className && other->method == method && other->source == source;
+    return is<StackFrame>(other) && other->number == number && other->package == package && other->line == line && other->column == column && other->className == className && other->method == method && other->source == source;
 }
 
 String StackFrameCls::toString() {
-    return "${objectRuntimeType(this, 'StackFrame')}(#$number, $packageScheme:$package/$packagePath:$line:$column, className: $className, method: $method)";
+    return __s("${objectRuntimeType(this, 'StackFrame')}(#$number, $packageScheme:$package/$packagePath:$line:$column, className: $className, method: $method)");
 }
 
 StackFrame StackFrameCls::_parseWebFrame(String line) {
@@ -97,21 +97,21 @@ StackFrame StackFrameCls::_parseWebFrame(String line) {
 }
 
 StackFrame StackFrameCls::_parseWebDebugFrame(String line) {
-    bool hasPackage = line->startsWith("package");
-    RegExp parser = hasPackage? make<RegExpCls>("^(package.+) (\d+):(\d+)\s+(.+)$") : make<RegExpCls>("^(.+) (\d+):(\d+)\s+(.+)$");
+    bool hasPackage = line->startsWith(__s("package"));
+    RegExp parser = hasPackage? make<RegExpCls>(__s("^(package.+) (\d+):(\d+)\s+(.+)$")) : make<RegExpCls>(__s("^(.+) (\d+):(\d+)\s+(.+)$"));
     Match match = parser->firstMatch(line);
-    assert(match != nullptr, "Expected $line to match $parser.");
+    assert(match != nullptr, __s("Expected $line to match $parser."));
     match = match!;
-    String package = "<unknown>";
-    String packageScheme = "<unknown>";
-    String packagePath = "<unknown>";
+    String package = __s("<unknown>");
+    String packageScheme = __s("<unknown>");
+    String packagePath = __s("<unknown>");
     if (hasPackage) {
-        packageScheme = "package";
+        packageScheme = __s("package");
         Uri packageUri = UriCls->parse(match->group(1)!);
         package = packageUri->pathSegments[0];
-        packagePath = packageUri->path->replaceFirst("${packageUri.pathSegments[0]}/", "");
+        packagePath = packageUri->path->replaceFirst(__s("${packageUri.pathSegments[0]}/"), __s(""));
     }
-    return make<StackFrameCls>(-1, packageScheme, package, packagePath, intValue->parse(match->group(2)!), intValue->parse(match->group(3)!), "<unknown>", match->group(4)!, line);
+    return make<StackFrameCls>(-1, packageScheme, package, packagePath, intValue->parse(match->group(2)!), intValue->parse(match->group(3)!), __s("<unknown>"), match->group(4)!, line);
 }
 
 StackFrame StackFrameCls::_parseWebNonDebugFrame(String line) {
@@ -119,8 +119,8 @@ StackFrame StackFrameCls::_parseWebNonDebugFrame(String line) {
     if (match == nullptr) {
         return nullptr;
     }
-    List<String> classAndMethod = match->group(1)!->split(".");
-    String className = classAndMethod->length > 1? classAndMethod->first : "<unknown>";
-    String method = classAndMethod->length > 1? classAndMethod->skip(1)->join(".") : classAndMethod->single;
-    return make<StackFrameCls>(-1, "<unknown>", "<unknown>", "<unknown>", -1, -1, className, method, line);
+    List<String> classAndMethod = match->group(1)!->split(__s("."));
+    String className = classAndMethod->length > 1? classAndMethod->first : __s("<unknown>");
+    String method = classAndMethod->length > 1? classAndMethod->skip(1)->join(__s(".")) : classAndMethod->single;
+    return make<StackFrameCls>(-1, __s("<unknown>"), __s("<unknown>"), __s("<unknown>"), -1, -1, className, method, line);
 }

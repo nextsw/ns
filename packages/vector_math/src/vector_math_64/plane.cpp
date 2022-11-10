@@ -39,7 +39,7 @@ void PlaneCls::setFromComponents(double w, double x, double y, double z) {
 }
 
 void PlaneCls::normalize() {
-    Unknown inverseLength = 1.0 / normal->length;
+    Unknown inverseLength = 1.0 / normal()->length;
     _normal->scale(inverseLength);
     constant = inverseLength;
 }

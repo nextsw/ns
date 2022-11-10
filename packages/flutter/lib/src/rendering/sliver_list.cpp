@@ -40,7 +40,7 @@ void RenderSliverListCls::performLayout() {
     for (; earliestScrollOffset > scrollOffset; earliestScrollOffset = childScrollOffset(earliestUsefulChild)!) {
         earliestUsefulChild = insertAndLayoutLeadingChild(childConstraintstrue);
         if (earliestUsefulChild == nullptr) {
-            SliverMultiBoxAdaptorParentData childParentData = ((SliverMultiBoxAdaptorParentData)firstChild!->parentData!);
+            SliverMultiBoxAdaptorParentData childParentData = as<SliverMultiBoxAdaptorParentData>(firstChild!->parentData!);
             childParentData->layoutOffset = 0.0;
             if (scrollOffset == 0.0) {
                 firstChild!->layout(childConstraintstrue);
@@ -56,11 +56,11 @@ void RenderSliverListCls::performLayout() {
         double firstChildScrollOffset = earliestScrollOffset - paintExtentOf(firstChild!);
         if ( < -precisionErrorTolerance) {
             geometry = make<SliverGeometryCls>(-firstChildScrollOffset);
-            SliverMultiBoxAdaptorParentData childParentData = ((SliverMultiBoxAdaptorParentData)firstChild!->parentData!);
+            SliverMultiBoxAdaptorParentData childParentData = as<SliverMultiBoxAdaptorParentData>(firstChild!->parentData!);
             childParentData->layoutOffset = 0.0;
             return;
         }
-        SliverMultiBoxAdaptorParentData childParentData = ((SliverMultiBoxAdaptorParentData)earliestUsefulChild->parentData!);
+        SliverMultiBoxAdaptorParentData childParentData = as<SliverMultiBoxAdaptorParentData>(earliestUsefulChild->parentData!);
         childParentData->layoutOffset = firstChildScrollOffset;
         assert(earliestUsefulChild == firstChild);
         leadingChildWithLayout = earliestUsefulChild;
@@ -73,7 +73,7 @@ void RenderSliverListCls::performLayout() {
             earliestUsefulChild = insertAndLayoutLeadingChild(childConstraintstrue);
             assert(earliestUsefulChild != nullptr);
             double firstChildScrollOffset = earliestScrollOffset - paintExtentOf(firstChild!);
-            SliverMultiBoxAdaptorParentData childParentData = ((SliverMultiBoxAdaptorParentData)firstChild!->parentData!);
+            SliverMultiBoxAdaptorParentData childParentData = as<SliverMultiBoxAdaptorParentData>(firstChild!->parentData!);
             childParentData->layoutOffset = 0.0;
             if ( < -precisionErrorTolerance) {
                 geometry = make<SliverGeometryCls>(-firstChildScrollOffset);

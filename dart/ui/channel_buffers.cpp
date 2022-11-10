@@ -20,7 +20,7 @@ _StoredMessageCls::_StoredMessageCls(PlatformMessageResponseCallback _callback, 
 }
 
 int _ChannelCls::length() {
-    return _queue->length;
+    return _queue->length();
 }
 
 int _ChannelCls::capacity() {
@@ -34,7 +34,7 @@ void _ChannelCls::capacity(int newSize) {
 
 bool _ChannelCls::push(_StoredMessage message) {
     if (!_draining && _channelCallbackRecord != nullptr) {
-        assert(_queue->isEmpty);
+        assert(_queue->isEmpty());
         _channelCallbackRecord!->invoke(message->data, message->invoke);
         return false;
     }
@@ -70,7 +70,7 @@ _ChannelCls::_ChannelCls(int _capacity) {
 
 bool _ChannelCls::_dropOverflowMessages(int lengthLimit) {
     bool result = false;
-    while (_queue->length > lengthLimit) {
+    while (_queue->length() > lengthLimit) {
         _StoredMessage message = _queue->removeFirst();
         message->invoke(nullptr);
         result = true;
@@ -100,7 +100,7 @@ void ChannelBuffersCls::push(PlatformMessageResponseCallback callback, ByteData 
     make<_ChannelCls>();
 });
     if (channel->push(make<_StoredMessageCls>(data, callback))) {
-        _printDebug("A message on the $name channel was discarded before it could be handled.\nThis happens when a plugin sends messages to the framework side before the framework has had an opportunity to register a listener. See the ChannelBuffers API documentation for details on how to configure the channel to expect more messages, or to expect messages to get discarded:\n  https://api.flutter.dev/flutter/dart-ui/ChannelBuffers-class.html");
+        _printDebug(__s("A message on the $name channel was discarded before it could be handled.\nThis happens when a plugin sends messages to the framework side before the framework has had an opportunity to register a listener. See the ChannelBuffers API documentation for details on how to configure the channel to expect more messages, or to expect messages to get discarded:\n  https://api.flutter.dev/flutter/dart-ui/ChannelBuffers-class.html"));
     }
 }
 
@@ -138,8 +138,8 @@ void ChannelBuffersCls::handleMessage(ByteData data) {
         index = methodNameLength;
         ;
     } else {
-        List<String> parts = utf8->decode(bytes)->split("\r");
-        if (parts->length == 1 + 2 && parts[0] == "resize") {
+        List<String> parts = utf8->decode(bytes)->split(__s("\r"));
+        if (parts->length == 1 + 2 && parts[0] == __s("resize")) {
             resize(parts[1], intValue->parse(parts[2]));
         } else {
             ;

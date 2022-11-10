@@ -10,9 +10,9 @@ public:
 
 private:
 
-    extern static _Namespace _namespace();
-    extern static int _namespacePointer();
-    extern static void _setupNamespace(auto namespace);
+    static _Namespace _namespace();
+    static int _namespacePointer();
+    static void _setupNamespace(auto namespace);
 };
 using _Namespace = std::shared_ptr<_NamespaceCls>;
 

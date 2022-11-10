@@ -20,10 +20,10 @@ Widget SafeAreaCls::build(BuildContext context) {
 
 void SafeAreaCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(make<FlagPropertyCls>("left"left, "avoid left padding"));
-    properties->add(make<FlagPropertyCls>("top"top, "avoid top padding"));
-    properties->add(make<FlagPropertyCls>("right"right, "avoid right padding"));
-    properties->add(make<FlagPropertyCls>("bottom"bottom, "avoid bottom padding"));
+    properties->add(make<FlagPropertyCls>(__s("left")left, __s("avoid left padding")));
+    properties->add(make<FlagPropertyCls>(__s("top")top, __s("avoid top padding")));
+    properties->add(make<FlagPropertyCls>(__s("right")right, __s("avoid right padding")));
+    properties->add(make<FlagPropertyCls>(__s("bottom")bottom, __s("avoid bottom padding")));
 }
 
 SliverSafeAreaCls::SliverSafeAreaCls(bool bottom, Unknown key, bool left, EdgeInsets minimum, bool right, Widget sliver, bool top) {
@@ -43,8 +43,8 @@ Widget SliverSafeAreaCls::build(BuildContext context) {
 
 void SliverSafeAreaCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(make<FlagPropertyCls>("left"left, "avoid left padding"));
-    properties->add(make<FlagPropertyCls>("top"top, "avoid top padding"));
-    properties->add(make<FlagPropertyCls>("right"right, "avoid right padding"));
-    properties->add(make<FlagPropertyCls>("bottom"bottom, "avoid bottom padding"));
+    properties->add(make<FlagPropertyCls>(__s("left")left, __s("avoid left padding")));
+    properties->add(make<FlagPropertyCls>(__s("top")top, __s("avoid top padding")));
+    properties->add(make<FlagPropertyCls>(__s("right")right, __s("avoid right padding")));
+    properties->add(make<FlagPropertyCls>(__s("bottom")bottom, __s("avoid bottom padding")));
 }

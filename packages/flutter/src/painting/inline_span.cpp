@@ -12,13 +12,13 @@ InlineSpanSemanticsInformationCls::InlineSpanSemanticsInformationCls(bool isPlac
     {
         assert(text != nullptr);
         assert(isPlaceholder != nullptr);
-        assert(isPlaceholder == false || (text == "\uFFFC" && semanticsLabel == nullptr && recognizer == nullptr));
+        assert(isPlaceholder == false || (text == __s("\uFFFC") && semanticsLabel == nullptr && recognizer == nullptr));
         requiresOwnNode = isPlaceholder || recognizer != nullptr;
     }
 }
 
 bool InlineSpanSemanticsInformationCls::==(Object other) {
-    return other is InlineSpanSemanticsInformation && other->text == text && other->semanticsLabel == semanticsLabel && other->recognizer == recognizer && other->isPlaceholder == isPlaceholder && <StringAttribute>listEquals(other->stringAttributes, stringAttributes);
+    return is<InlineSpanSemanticsInformation>(other) && other->text == text && other->semanticsLabel == semanticsLabel && other->recognizer == recognizer && other->isPlaceholder == isPlaceholder && <StringAttribute>listEquals(other->stringAttributes, stringAttributes);
 }
 
 int InlineSpanSemanticsInformationCls::hashCode() {
@@ -26,24 +26,24 @@ int InlineSpanSemanticsInformationCls::hashCode() {
 }
 
 String InlineSpanSemanticsInformationCls::toString() {
-    return "${objectRuntimeType(this, 'InlineSpanSemanticsInformation')}{text: $text, semanticsLabel: $semanticsLabel, recognizer: $recognizer}";
+    return __s("${objectRuntimeType(this, 'InlineSpanSemanticsInformation')}{text: $text, semanticsLabel: $semanticsLabel, recognizer: $recognizer}");
 }
 
 List<InlineSpanSemanticsInformation> combineSemanticsInfo(List<InlineSpanSemanticsInformation> infoList) {
     List<InlineSpanSemanticsInformation> combined = makeList();
-    String workingText = "";
-    String workingLabel = "";
+    String workingText = __s("");
+    String workingLabel = __s("");
     List<StringAttribute> workingAttributes = makeList();
     for (InlineSpanSemanticsInformation info : infoList) {
         if (info->requiresOwnNode) {
             combined->add(make<InlineSpanSemanticsInformationCls>(workingTextworkingLabel, workingAttributes));
-            workingText = "";
-            workingLabel = "";
+            workingText = __s("");
+            workingLabel = __s("");
             workingAttributes = makeList();
             combined->add(info);
         } else {
             workingText = info->text;
-            String effectiveLabel = info->semanticsLabel ?? info->text;
+            String effectiveLabel = info->semanticsLabel or info->text;
             for (StringAttribute infoAttribute : info->stringAttributes) {
                 workingAttributes->add(infoAttribute->copy(make<TextRangeCls>(infoAttribute->range->start + workingLabel->length, infoAttribute->range->end + workingLabel->length)));
             }
@@ -98,14 +98,14 @@ bool InlineSpanCls::==(Object other) {
     if (identical(this, other)) {
         return true;
     }
-    if (other->runtimeType != runtimeType) {
+    if (other->runtimeType() != runtimeType) {
         return false;
     }
-    return other is InlineSpan && other->style == style;
+    return is<InlineSpan>(other) && other->style == style;
 }
 
 int InlineSpanCls::hashCode() {
-    return style->hashCode;
+    return style->hashCode();
 }
 
 void InlineSpanCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {

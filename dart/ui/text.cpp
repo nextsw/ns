@@ -4,19 +4,19 @@ FontWeight FontWeightCls::lerp(FontWeight a, FontWeight b, double t) {
     if (a == nullptr && b == nullptr)     {
         return nullptr;
     }
-    return values[_lerpInt((a ?? normal)->index, (b ?? normal)->index, t)->round()->clamp(0, 8)];
+    return values[_lerpInt((a or normal)->index, (b or normal)->index, t)->round()->clamp(0, 8)];
 }
 
 String FontWeightCls::toString() {
-    Map<int, String> map1 = make<MapCls<>>();map1.set(0, "FontWeight.w100");map1.set(1, "FontWeight.w200");map1.set(2, "FontWeight.w300");map1.set(3, "FontWeight.w400");map1.set(4, "FontWeight.w500");map1.set(5, "FontWeight.w600");map1.set(6, "FontWeight.w700");map1.set(7, "FontWeight.w800");map1.set(8, "FontWeight.w900");return list1[index]!;
+    Map<int, String> map1 = make<MapCls<>>();map1.set(0, __s("FontWeight.w100"));map1.set(1, __s("FontWeight.w200"));map1.set(2, __s("FontWeight.w300"));map1.set(3, __s("FontWeight.w400"));map1.set(4, __s("FontWeight.w500"));map1.set(5, __s("FontWeight.w600"));map1.set(6, __s("FontWeight.w700"));map1.set(7, __s("FontWeight.w800"));map1.set(8, __s("FontWeight.w900"));return list1[index]!;
 }
 
 FontFeatureCls::FontFeatureCls(String feature, int value) {
     {
         assert(feature != nullptr);
-        assert(feature->length == 4, "Feature tag must be exactly four characters long.");
+        assert(feature->length() == 4, __s("Feature tag must be exactly four characters long."));
         assert(value != nullptr);
-        assert(value >= 0, "Feature value must be zero or a positive integer.");
+        assert(value >= 0, __s("Feature value must be zero or a positive integer."));
     }
 }
 
@@ -35,7 +35,7 @@ void FontFeatureCls::caseSensitiveForms()
 void FontFeatureCls::characterVariant(int value) {
     assert(value >= 1);
     assert(value <= 99);
-    return make<FontFeatureCls>("cv${value.toString().padLeft(2, "0")}");
+    return make<FontFeatureCls>(__s("cv${value.toString().padLeft(2, "0")}"));
 }
 
 void FontFeatureCls::denominator()
@@ -69,7 +69,7 @@ void FontFeatureCls::scientificInferiors()
 void FontFeatureCls::stylisticSet(int value) {
     assert(value >= 1);
     assert(value <= 20);
-    return make<FontFeatureCls>("ss${value.toString().padLeft(2, "0")}");
+    return make<FontFeatureCls>(__s("ss${value.toString().padLeft(2, "0")}"));
 }
 
 void FontFeatureCls::subscripts()
@@ -83,10 +83,10 @@ void FontFeatureCls::tabularFigures()
 void FontFeatureCls::slashedZero()
 
 bool FontFeatureCls::==(Object other) {
-    if (other->runtimeType != runtimeType)     {
+    if (other->runtimeType() != runtimeType)     {
         return false;
     }
-    return other is FontFeature && other->feature == feature && other->value == value;
+    return is<FontFeature>(other) && other->feature == feature && other->value == value;
 }
 
 int FontFeatureCls::hashCode() {
@@ -94,11 +94,11 @@ int FontFeatureCls::hashCode() {
 }
 
 String FontFeatureCls::toString() {
-    return "FontFeature('$feature', $value)";
+    return __s("FontFeature('$feature', $value)");
 }
 
 void FontFeatureCls::_encode(ByteData byteData) {
-    assert(feature->codeUnits->every([=] (int c)     {
+    assert(feature->codeUnits()->every([=] (int c)     {
         c >= 0x20 && c <= 0x7F;
     }));
     for (;  < 4; i++) {
@@ -110,16 +110,16 @@ void FontFeatureCls::_encode(ByteData byteData) {
 FontVariationCls::FontVariationCls(String axis, double value) {
     {
         assert(axis != nullptr);
-        assert(axis->length == 4, "Axis tag must be exactly four characters long.");
+        assert(axis->length() == 4, __s("Axis tag must be exactly four characters long."));
         assert(value != nullptr);
     }
 }
 
 bool FontVariationCls::==(Object other) {
-    if (other->runtimeType != runtimeType)     {
+    if (other->runtimeType() != runtimeType)     {
         return false;
     }
-    return other is FontVariation && other->axis == axis && other->value == value;
+    return is<FontVariation>(other) && other->axis == axis && other->value == value;
 }
 
 int FontVariationCls::hashCode() {
@@ -127,11 +127,11 @@ int FontVariationCls::hashCode() {
 }
 
 String FontVariationCls::toString() {
-    return "FontVariation('$axis', $value)";
+    return __s("FontVariation('$axis', $value)");
 }
 
 void FontVariationCls::_encode(ByteData byteData) {
-    assert(axis->codeUnits->every([=] (int c)     {
+    assert(axis->codeUnits()->every([=] (int c)     {
         c >= 0x20 && c <= 0x7F;
     }));
     for (;  < 4; i++) {
@@ -153,7 +153,7 @@ bool TextDecorationCls::contains(TextDecoration other) {
 }
 
 bool TextDecorationCls::==(Object other) {
-    return other is TextDecoration && other->_mask == _mask;
+    return is<TextDecoration>(other) && other->_mask == _mask;
 }
 
 int TextDecorationCls::hashCode() {
@@ -162,29 +162,29 @@ int TextDecorationCls::hashCode() {
 
 String TextDecorationCls::toString() {
     if (_mask == 0)     {
-        return "TextDecoration.none";
+        return __s("TextDecoration.none");
     }
     List<String> values = makeList();
     if (_mask & underline->_mask != 0)     {
-        values->add("underline");
+        values->add(__s("underline"));
     }
     if (_mask & overline->_mask != 0)     {
-        values->add("overline");
+        values->add(__s("overline"));
     }
     if (_mask & lineThrough->_mask != 0)     {
-        values->add("lineThrough");
+        values->add(__s("lineThrough"));
     }
     if (values->length == 1)     {
-        return "TextDecoration.${values[0]}";
+        return __s("TextDecoration.${values[0]}");
     }
-    return "TextDecoration.combine([${values.join(", ")}])";
+    return __s("TextDecoration.combine([${values.join(", ")}])");
 }
 
 bool TextHeightBehaviorCls::==(Object other) {
-    if (other->runtimeType != runtimeType)     {
+    if (other->runtimeType() != runtimeType)     {
         return false;
     }
-    return other is TextHeightBehavior && other->applyHeightToFirstAscent == applyHeightToFirstAscent && other->applyHeightToLastDescent == applyHeightToLastDescent && other->leadingDistribution == leadingDistribution;
+    return is<TextHeightBehavior>(other) && other->applyHeightToFirstAscent == applyHeightToFirstAscent && other->applyHeightToLastDescent == applyHeightToLastDescent && other->leadingDistribution == leadingDistribution;
 }
 
 int TextHeightBehaviorCls::hashCode() {
@@ -192,7 +192,7 @@ int TextHeightBehaviorCls::hashCode() {
 }
 
 String TextHeightBehaviorCls::toString() {
-    return "TextHeightBehavior(applyHeightToFirstAscent: $applyHeightToFirstAscent, applyHeightToLastDescent: $applyHeightToLastDescent, leadingDistribution: $leadingDistribution)";
+    return __s("TextHeightBehavior(applyHeightToFirstAscent: $applyHeightToFirstAscent, applyHeightToLastDescent: $applyHeightToLastDescent, leadingDistribution: $leadingDistribution)");
 }
 
 void TextHeightBehaviorCls::_fromEncoded(int encoded, TextLeadingDistribution leadingDistribution)
@@ -287,10 +287,10 @@ Int32List _encodeTextStyle(Paint background, Color color, TextDecoration decorat
 
 TextStyleCls::TextStyleCls(Paint background, Color color, TextDecoration decoration, Color decorationColor, TextDecorationStyle decorationStyle, double decorationThickness, String fontFamily, List<String> fontFamilyFallback, List<FontFeature> fontFeatures, double fontSize, FontStyle fontStyle, List<FontVariation> fontVariations, FontWeight fontWeight, Paint foreground, double height, TextLeadingDistribution leadingDistribution, double letterSpacing, Locale locale, List<Shadow> shadows, TextBaseline textBaseline, double wordSpacing) {
     {
-        assert(color == nullptr || foreground == nullptr, "Cannot provide both a color and a foreground\nThe color argument is just a shorthand for "foreground: Paint()..color = color".");
+        assert(color == nullptr || foreground == nullptr, __s("Cannot provide both a color and a foreground\nThe color argument is just a shorthand for "foreground: Paint()..color = color"."));
         _encoded = _encodeTextStyle(color, decoration, decorationColor, decorationStyle, decorationThickness, fontWeight, fontStyle, textBaseline, fontFamily, fontFamilyFallback, fontSize, letterSpacing, wordSpacing, height, locale, background, foreground, shadows, fontFeatures, fontVariations);
         _leadingDistribution = leadingDistribution;
-        _fontFamily = fontFamily ?? "";
+        _fontFamily = fontFamily or __s("");
         _fontFamilyFallback = fontFamilyFallback;
         _fontSize = fontSize;
         _letterSpacing = letterSpacing;
@@ -310,7 +310,7 @@ bool TextStyleCls::==(Object other) {
     if (identical(this, other))     {
         return true;
     }
-    return other is TextStyle && other->_leadingDistribution == _leadingDistribution && other->_fontFamily == _fontFamily && other->_fontSize == _fontSize && other->_letterSpacing == _letterSpacing && other->_wordSpacing == _wordSpacing && other->_height == _height && other->_decorationThickness == _decorationThickness && other->_locale == _locale && other->_background == _background && other->_foreground == _foreground && <int>_listEquals(other->_encoded, _encoded) && <Shadow>_listEquals(other->_shadows, _shadows) && <String>_listEquals(other->_fontFamilyFallback, _fontFamilyFallback) && <FontFeature>_listEquals(other->_fontFeatures, _fontFeatures) && <FontVariation>_listEquals(other->_fontVariations, _fontVariations);
+    return is<TextStyle>(other) && other->_leadingDistribution == _leadingDistribution && other->_fontFamily == _fontFamily && other->_fontSize == _fontSize && other->_letterSpacing == _letterSpacing && other->_wordSpacing == _wordSpacing && other->_height == _height && other->_decorationThickness == _decorationThickness && other->_locale == _locale && other->_background == _background && other->_foreground == _foreground && <int>_listEquals(other->_encoded, _encoded) && <Shadow>_listEquals(other->_shadows, _shadows) && <String>_listEquals(other->_fontFamilyFallback, _fontFamilyFallback) && <FontFeature>_listEquals(other->_fontFeatures, _fontFeatures) && <FontVariation>_listEquals(other->_fontVariations, _fontVariations);
 }
 
 int TextStyleCls::hashCode() {
@@ -318,7 +318,7 @@ int TextStyleCls::hashCode() {
 }
 
 String TextStyleCls::toString() {
-    return "TextStyle(color: ${              _encoded[0] & 0x00002 == 0x00002  ? Color(_encoded[1])                           : "unspecified"}, decoration: ${         _encoded[0] & 0x00004 == 0x00004  ? TextDecoration._(_encoded[2])                : "unspecified"}, decorationColor: ${    _encoded[0] & 0x00008 == 0x00008  ? Color(_encoded[3])                           : "unspecified"}, decorationStyle: ${    _encoded[0] & 0x00010 == 0x00010  ? TextDecorationStyle.values[_encoded[4]]      : "unspecified"}, decorationThickness: ${_encoded[0] & 0x00100 == 0x00100  ? _decorationThickness                         : "unspecified"}, fontWeight: ${         _encoded[0] & 0x00020 == 0x00020  ? FontWeight.values[_encoded[5]]               : "unspecified"}, fontStyle: ${          _encoded[0] & 0x00040 == 0x00040  ? FontStyle.values[_encoded[6]]                : "unspecified"}, textBaseline: ${       _encoded[0] & 0x00080 == 0x00080  ? TextBaseline.values[_encoded[7]]             : "unspecified"}, fontFamily: ${         _encoded[0] & 0x00200 == 0x00200                                     && _fontFamily != ''              ? _fontFamily                                  : "unspecified"}, fontFamilyFallback: ${ _encoded[0] & 0x00200 == 0x00200                                     && _fontFamilyFallback != null                                     && _fontFamilyFallback!.isNotEmpty ? _fontFamilyFallback                         : "unspecified"}, fontSize: ${           _encoded[0] & 0x00400 == 0x00400  ? _fontSize                                    : "unspecified"}, letterSpacing: ${      _encoded[0] & 0x00800 == 0x00800  ? "${_letterSpacing}x"                         : "unspecified"}, wordSpacing: ${        _encoded[0] & 0x01000 == 0x01000  ? "${_wordSpacing}x"                           : "unspecified"}, height: ${             _encoded[0] & 0x02000 == 0x02000  ? "${_height}x"                                : "unspecified"}, leadingDistribution: ${_leadingDistribution ?? "unspecified"}, locale: ${             _encoded[0] & 0x04000 == 0x04000  ? _locale                                      : "unspecified"}, background: ${         _encoded[0] & 0x08000 == 0x08000  ? _background                                  : "unspecified"}, foreground: ${         _encoded[0] & 0x10000 == 0x10000  ? _foreground                                  : "unspecified"}, shadows: ${            _encoded[0] & 0x20000 == 0x20000  ? _shadows                                     : "unspecified"}, fontFeatures: ${       _encoded[0] & 0x40000 == 0x40000  ? _fontFeatures                                : "unspecified"}, fontVariations: ${     _encoded[0] & 0x80000 == 0x80000  ? _fontVariations                              : "unspecified"})";
+    return __s("TextStyle(color: ${              _encoded[0] & 0x00002 == 0x00002  ? Color(_encoded[1])                           : "unspecified"}, decoration: ${         _encoded[0] & 0x00004 == 0x00004  ? TextDecoration._(_encoded[2])                : "unspecified"}, decorationColor: ${    _encoded[0] & 0x00008 == 0x00008  ? Color(_encoded[3])                           : "unspecified"}, decorationStyle: ${    _encoded[0] & 0x00010 == 0x00010  ? TextDecorationStyle.values[_encoded[4]]      : "unspecified"}, decorationThickness: ${_encoded[0] & 0x00100 == 0x00100  ? _decorationThickness                         : "unspecified"}, fontWeight: ${         _encoded[0] & 0x00020 == 0x00020  ? FontWeight.values[_encoded[5]]               : "unspecified"}, fontStyle: ${          _encoded[0] & 0x00040 == 0x00040  ? FontStyle.values[_encoded[6]]                : "unspecified"}, textBaseline: ${       _encoded[0] & 0x00080 == 0x00080  ? TextBaseline.values[_encoded[7]]             : "unspecified"}, fontFamily: ${         _encoded[0] & 0x00200 == 0x00200                                     && _fontFamily != ''              ? _fontFamily                                  : "unspecified"}, fontFamilyFallback: ${ _encoded[0] & 0x00200 == 0x00200                                     && _fontFamilyFallback != null                                     && _fontFamilyFallback!.isNotEmpty ? _fontFamilyFallback                         : "unspecified"}, fontSize: ${           _encoded[0] & 0x00400 == 0x00400  ? _fontSize                                    : "unspecified"}, letterSpacing: ${      _encoded[0] & 0x00800 == 0x00800  ? "${_letterSpacing}x"                         : "unspecified"}, wordSpacing: ${        _encoded[0] & 0x01000 == 0x01000  ? "${_wordSpacing}x"                           : "unspecified"}, height: ${             _encoded[0] & 0x02000 == 0x02000  ? "${_height}x"                                : "unspecified"}, leadingDistribution: ${_leadingDistribution ?? "unspecified"}, locale: ${             _encoded[0] & 0x04000 == 0x04000  ? _locale                                      : "unspecified"}, background: ${         _encoded[0] & 0x08000 == 0x08000  ? _background                                  : "unspecified"}, foreground: ${         _encoded[0] & 0x10000 == 0x10000  ? _foreground                                  : "unspecified"}, shadows: ${            _encoded[0] & 0x20000 == 0x20000  ? _shadows                                     : "unspecified"}, fontFeatures: ${       _encoded[0] & 0x40000 == 0x40000  ? _fontFeatures                                : "unspecified"}, fontVariations: ${     _encoded[0] & 0x80000 == 0x80000  ? _fontVariations                              : "unspecified"})");
 }
 
 Int32List _encodeParagraphStyle(String ellipsis, String fontFamily, double fontSize, FontStyle fontStyle, FontWeight fontWeight, double height, Locale locale, int maxLines, StrutStyle strutStyle, TextAlign textAlign, TextDirection textDirection, TextHeightBehavior textHeightBehavior) {
@@ -377,7 +377,7 @@ ParagraphStyleCls::ParagraphStyleCls(String ellipsis, String fontFamily, double 
         _strutStyle = strutStyle;
         _ellipsis = ellipsis;
         _locale = locale;
-        _leadingDistribution = textHeightBehavior?->leadingDistribution ?? TextLeadingDistributionCls::proportional;
+        _leadingDistribution = textHeightBehavior?->leadingDistribution or TextLeadingDistributionCls::proportional;
     }
 }
 
@@ -385,10 +385,10 @@ bool ParagraphStyleCls::==(Object other) {
     if (identical(this, other))     {
         return true;
     }
-    if (other->runtimeType != runtimeType)     {
+    if (other->runtimeType() != runtimeType)     {
         return false;
     }
-    return other is ParagraphStyle && other->_fontFamily == _fontFamily && other->_fontSize == _fontSize && other->_height == _height && other->_strutStyle == _strutStyle && other->_ellipsis == _ellipsis && other->_locale == _locale && other->_leadingDistribution == _leadingDistribution && <int>_listEquals(other->_encoded, _encoded);
+    return is<ParagraphStyle>(other) && other->_fontFamily == _fontFamily && other->_fontSize == _fontSize && other->_height == _height && other->_strutStyle == _strutStyle && other->_ellipsis == _ellipsis && other->_locale == _locale && other->_leadingDistribution == _leadingDistribution && <int>_listEquals(other->_encoded, _encoded);
 }
 
 int ParagraphStyleCls::hashCode() {
@@ -396,7 +396,7 @@ int ParagraphStyleCls::hashCode() {
 }
 
 String ParagraphStyleCls::toString() {
-    return "ParagraphStyle(textAlign: ${     _encoded[0] & 0x002 == 0x002 ? TextAlign.values[_encoded[1]]     : "unspecified"}, textDirection: ${ _encoded[0] & 0x004 == 0x004 ? TextDirection.values[_encoded[2]] : "unspecified"}, fontWeight: ${    _encoded[0] & 0x008 == 0x008 ? FontWeight.values[_encoded[3]]    : "unspecified"}, fontStyle: ${     _encoded[0] & 0x010 == 0x010 ? FontStyle.values[_encoded[4]]     : "unspecified"}, maxLines: ${      _encoded[0] & 0x020 == 0x020 ? _encoded[5]                       : "unspecified"}, textHeightBehavior: ${                                _encoded[0] & 0x040 == 0x040 ?                                          TextHeightBehavior._fromEncoded(_encoded[6], _leadingDistribution).toString() : "unspecified"}, fontFamily: ${    _encoded[0] & 0x080 == 0x080 ? _fontFamily                       : "unspecified"}, fontSize: ${      _encoded[0] & 0x100 == 0x100 ? _fontSize                         : "unspecified"}, height: ${        _encoded[0] & 0x200 == 0x200 ? "${_height}x"                     : "unspecified"}, ellipsis: ${      _encoded[0] & 0x400 == 0x400 ? "\"$_ellipsis\""                  : "unspecified"}, locale: ${        _encoded[0] & 0x800 == 0x800 ? _locale                           : "unspecified"})";
+    return __s("ParagraphStyle(textAlign: ${     _encoded[0] & 0x002 == 0x002 ? TextAlign.values[_encoded[1]]     : "unspecified"}, textDirection: ${ _encoded[0] & 0x004 == 0x004 ? TextDirection.values[_encoded[2]] : "unspecified"}, fontWeight: ${    _encoded[0] & 0x008 == 0x008 ? FontWeight.values[_encoded[3]]    : "unspecified"}, fontStyle: ${     _encoded[0] & 0x010 == 0x010 ? FontStyle.values[_encoded[4]]     : "unspecified"}, maxLines: ${      _encoded[0] & 0x020 == 0x020 ? _encoded[5]                       : "unspecified"}, textHeightBehavior: ${                                _encoded[0] & 0x040 == 0x040 ?                                          TextHeightBehavior._fromEncoded(_encoded[6], _leadingDistribution).toString() : "unspecified"}, fontFamily: ${    _encoded[0] & 0x080 == 0x080 ? _fontFamily                       : "unspecified"}, fontSize: ${      _encoded[0] & 0x100 == 0x100 ? _fontSize                         : "unspecified"}, height: ${        _encoded[0] & 0x200 == 0x200 ? "${_height}x"                     : "unspecified"}, ellipsis: ${      _encoded[0] & 0x400 == 0x400 ? "\"$_ellipsis\""                  : "unspecified"}, locale: ${        _encoded[0] & 0x800 == 0x800 ? _locale                           : "unspecified"})");
 }
 
 ByteData _encodeStrut(String fontFamily, List<String> fontFamilyFallback, double fontSize, FontStyle fontStyle, FontWeight fontWeight, bool forceStrutHeight, double height, double leading, TextLeadingDistribution leadingDistribution) {
@@ -434,12 +434,12 @@ ByteData _encodeStrut(String fontFamily, List<String> fontFamilyFallback, double
         data->setFloat32(byteCount, leading, _kFakeHostEndian);
         byteCount = 4;
     }
-    if (forceStrutHeight ?? false) {
+    if (forceStrutHeight or false) {
         bitmask = 1 << 7;
     }
     data->setInt8(0, bitmask);
     assert(byteCount <= 16);
-    assert(bitmask >> 8 == 0, "strut bitmask overflow: $bitmask");
+    assert(bitmask >> 8 == 0, __s("strut bitmask overflow: $bitmask"));
     return ByteDataCls->view(data->buffer, 0, byteCount);
 }
 
@@ -456,10 +456,10 @@ bool StrutStyleCls::==(Object other) {
     if (identical(this, other))     {
         return true;
     }
-    if (other->runtimeType != runtimeType)     {
+    if (other->runtimeType() != runtimeType)     {
         return false;
     }
-    return other is StrutStyle && other->_fontFamily == _fontFamily && other->_leadingDistribution == _leadingDistribution && <String>_listEquals(other->_fontFamilyFallback, _fontFamilyFallback) && <int>_listEquals(other->_encoded->buffer->asInt8List(), _encoded->buffer->asInt8List());
+    return is<StrutStyle>(other) && other->_fontFamily == _fontFamily && other->_leadingDistribution == _leadingDistribution && <String>_listEquals(other->_fontFamilyFallback, _fontFamilyFallback) && <int>_listEquals(other->_encoded->buffer->asInt8List(), _encoded->buffer->asInt8List());
 }
 
 int StrutStyleCls::hashCode() {
@@ -486,10 +486,10 @@ bool TextBoxCls::==(Object other) {
     if (identical(this, other))     {
         return true;
     }
-    if (other->runtimeType != runtimeType)     {
+    if (other->runtimeType() != runtimeType)     {
         return false;
     }
-    return other is TextBox && other->left == left && other->top == top && other->right == right && other->bottom == bottom && other->direction == direction;
+    return is<TextBox>(other) && other->left == left && other->top == top && other->right == right && other->bottom == bottom && other->direction == direction;
 }
 
 int TextBoxCls::hashCode() {
@@ -497,7 +497,7 @@ int TextBoxCls::hashCode() {
 }
 
 String TextBoxCls::toString() {
-    return "TextBox.fromLTRBD(${left.toStringAsFixed(1)}, ${top.toStringAsFixed(1)}, ${right.toStringAsFixed(1)}, ${bottom.toStringAsFixed(1)}, $direction)";
+    return __s("TextBox.fromLTRBD(${left.toStringAsFixed(1)}, ${top.toStringAsFixed(1)}, ${right.toStringAsFixed(1)}, ${bottom.toStringAsFixed(1)}, $direction)");
 }
 
 TextPositionCls::TextPositionCls(TextAffinity affinity, int offset) {
@@ -508,10 +508,10 @@ TextPositionCls::TextPositionCls(TextAffinity affinity, int offset) {
 }
 
 bool TextPositionCls::==(Object other) {
-    if (other->runtimeType != runtimeType)     {
+    if (other->runtimeType() != runtimeType)     {
         return false;
     }
-    return other is TextPosition && other->offset == offset && other->affinity == affinity;
+    return is<TextPosition>(other) && other->offset == offset && other->affinity == affinity;
 }
 
 int TextPositionCls::hashCode() {
@@ -519,7 +519,7 @@ int TextPositionCls::hashCode() {
 }
 
 String TextPositionCls::toString() {
-    return "TextPosition(offset: $offset, affinity: $affinity)";
+    return __s("TextPosition(offset: $offset, affinity: $affinity)");
 }
 
 TextRangeCls::TextRangeCls(int end, int start) {
@@ -544,17 +544,17 @@ bool TextRangeCls::isNormalized() {
 }
 
 String TextRangeCls::textBefore(String text) {
-    assert(isNormalized);
+    assert(isNormalized());
     return text->substring(0, start);
 }
 
 String TextRangeCls::textAfter(String text) {
-    assert(isNormalized);
+    assert(isNormalized());
     return text->substring(end);
 }
 
 String TextRangeCls::textInside(String text) {
-    assert(isNormalized);
+    assert(isNormalized());
     return text->substring(start, end);
 }
 
@@ -562,7 +562,7 @@ bool TextRangeCls::==(Object other) {
     if (identical(this, other))     {
         return true;
     }
-    return other is TextRange && other->start == start && other->end == end;
+    return is<TextRange>(other) && other->start == start && other->end == end;
 }
 
 int TextRangeCls::hashCode() {
@@ -570,7 +570,7 @@ int TextRangeCls::hashCode() {
 }
 
 String TextRangeCls::toString() {
-    return "TextRange(start: $start, end: $end)";
+    return __s("TextRange(start: $start, end: $end)");
 }
 
 ParagraphConstraintsCls::ParagraphConstraintsCls(double width) {
@@ -580,10 +580,10 @@ ParagraphConstraintsCls::ParagraphConstraintsCls(double width) {
 }
 
 bool ParagraphConstraintsCls::==(Object other) {
-    if (other->runtimeType != runtimeType)     {
+    if (other->runtimeType() != runtimeType)     {
         return false;
     }
-    return other is ParagraphConstraints && other->width == width;
+    return is<ParagraphConstraints>(other) && other->width == width;
 }
 
 int ParagraphConstraintsCls::hashCode() {
@@ -591,14 +591,14 @@ int ParagraphConstraintsCls::hashCode() {
 }
 
 String ParagraphConstraintsCls::toString() {
-    return "ParagraphConstraints(width: $width)";
+    return __s("ParagraphConstraints(width: $width)");
 }
 
 bool LineMetricsCls::==(Object other) {
-    if (other->runtimeType != runtimeType) {
+    if (other->runtimeType() != runtimeType) {
         return false;
     }
-    return other is LineMetrics && other->hardBreak == hardBreak && other->ascent == ascent && other->descent == descent && other->unscaledAscent == unscaledAscent && other->height == height && other->width == width && other->left == left && other->baseline == baseline && other->lineNumber == lineNumber;
+    return is<LineMetrics>(other) && other->hardBreak == hardBreak && other->ascent == ascent && other->descent == descent && other->unscaledAscent == unscaledAscent && other->height == height && other->width == width && other->left == left && other->baseline == baseline && other->lineNumber == lineNumber;
 }
 
 int LineMetricsCls::hashCode() {
@@ -606,7 +606,7 @@ int LineMetricsCls::hashCode() {
 }
 
 String LineMetricsCls::toString() {
-    return "LineMetrics(hardBreak: $hardBreak, ascent: $ascent, descent: $descent, unscaledAscent: $unscaledAscent, height: $height, width: $width, left: $left, baseline: $baseline, lineNumber: $lineNumber)";
+    return __s("LineMetrics(hardBreak: $hardBreak, ascent: $ascent, descent: $descent, unscaledAscent: $unscaledAscent, height: $height, width: $width, left: $left, baseline: $baseline, lineNumber: $lineNumber)");
 }
 
 void ParagraphCls::layout(ParagraphConstraints constraints) {
@@ -682,7 +682,7 @@ ParagraphBuilderCls::ParagraphBuilderCls(ParagraphStyle style) {
             String fontFamily = strutStyle->_fontFamily;
                     List<String> list1 = make<ListCls<>>();        if (fontFamily != nullptr) {            list1.add(ArrayItem);        }for (auto _x1 : strutStyle->_fontFamilyFallback) {        {            list1.add(_x1);        }strutFontFamilies = list1;
             assert(TextLeadingDistributionCls::values->length <= 2);
-            TextLeadingDistribution leadingDistribution = strutStyle->_leadingDistribution ?? style->_leadingDistribution;
+            TextLeadingDistribution leadingDistribution = strutStyle->_leadingDistribution or style->_leadingDistribution;
             encodedStrutStyle = strutStyle->_encoded;
             int bitmask = encodedStrutStyle->getInt8(0);
             bitmask = (leadingDistribution->index) << 3;
@@ -690,7 +690,7 @@ ParagraphBuilderCls::ParagraphBuilderCls(ParagraphStyle style) {
         } else {
             encodedStrutStyle = nullptr;
         }
-        _constructor(style->_encoded, encodedStrutStyle, style->_fontFamily ?? "", strutFontFamilies, style->_fontSize ?? 0, style->_height ?? 0, style->_ellipsis ?? "", _encodeLocale(style->_locale));
+        _constructor(style->_encoded, encodedStrutStyle, style->_fontFamily or __s(""), strutFontFamilies, style->_fontSize or 0, style->_height or 0, style->_ellipsis or __s(""), _encodeLocale(style->_locale));
     }
 }
 
@@ -709,7 +709,7 @@ void ParagraphBuilderCls::pushStyle(TextStyle style) {
         fullFontFamilies->addAll(style->_fontFamilyFallback!);
     }
     Int32List encoded = style->_encoded;
-    TextLeadingDistribution finalLeadingDistribution = style->_leadingDistribution ?? _defaultLeadingDistribution;
+    TextLeadingDistribution finalLeadingDistribution = style->_leadingDistribution or _defaultLeadingDistribution;
     assert(TextLeadingDistributionCls::values->length <= 2);
     encoded[0] = finalLeadingDistribution->index << 0;
     ByteData encodedFontFeatures;
@@ -732,7 +732,7 @@ void ParagraphBuilderCls::pushStyle(TextStyle style) {
             byteOffset = FontVariationCls::_kEncodedSize;
         }
     }
-    _pushStyle(encoded, fullFontFamilies, style->_fontSize ?? 0, style->_letterSpacing ?? 0, style->_wordSpacing ?? 0, style->_height ?? 0, style->_decorationThickness ?? 0, _encodeLocale(style->_locale), style->_background?->_objects, style->_background?->_data, style->_foreground?->_objects, style->_foreground?->_data, ShadowCls->_encodeShadows(style->_shadows), encodedFontFeatures, encodedFontVariations);
+    _pushStyle(encoded, fullFontFamilies, style->_fontSize or 0, style->_letterSpacing or 0, style->_wordSpacing or 0, style->_height or 0, style->_decorationThickness or 0, _encodeLocale(style->_locale), style->_background?->_objects, style->_background?->_data, style->_foreground?->_objects, style->_foreground?->_data, ShadowCls->_encodeShadows(style->_shadows), encodedFontFeatures, encodedFontVariations);
 }
 
 void ParagraphBuilderCls::addText(String text) {
@@ -744,8 +744,8 @@ void ParagraphBuilderCls::addText(String text) {
 
 void ParagraphBuilderCls::addPlaceholder(PlaceholderAlignment alignment, TextBaseline baseline, double baselineOffset, double height, double scale, double width) {
     assert(!(alignment == PlaceholderAlignmentCls::aboveBaseline || alignment == PlaceholderAlignmentCls::belowBaseline || alignment == PlaceholderAlignmentCls::baseline) || baseline != nullptr);
-    baselineOffset = baselineOffset ?? height;
-    _addPlaceholder(width * scale, height * scale, alignment->index, baselineOffset * scale, (baseline ?? TextBaselineCls::alphabetic)->index);
+    baselineOffset = baselineOffset or height;
+    _addPlaceholder(width * scale, height * scale, alignment->index, baselineOffset * scale, (baseline or TextBaselineCls::alphabetic)->index);
     _placeholderCount++;
     _placeholderScales->add(scale);
 }
@@ -757,12 +757,12 @@ Paragraph ParagraphBuilderCls::build() {
 }
 
 String ParagraphBuilderCls::_encodeLocale(Locale locale) {
-    return locale?->toString() ?? "";
+    return locale?->toString() or __s("");
 }
 
 Future<void> loadFontFromList(String fontFamily, Uint8List list) {
     return _futurize([=] (_Callback<void> callback) {
-        _loadFontFromList(list, callback, fontFamily ?? "");
+        _loadFontFromList(list, callback, fontFamily or __s(""));
     })->then([=] ()     {
         _sendFontChangeMessage();
     });

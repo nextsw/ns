@@ -53,7 +53,7 @@ bool mapEqualstemplate<typename T, typename U> (Map<T, U> a, Map<T, U> b) {
     return true;
 }
 
-int binarySearchtemplate<typename T : Comparable<Object>> (List<T> sortedList, T value) {
+int binarySearchtemplate<typename T> (List<T> sortedList, T value) {
     int min = 0;
     int max = sortedList->length;
     while ( < max) {
@@ -95,7 +95,7 @@ void mergeSorttemplate<typename T> (int compare(T , T ) , int end, List<T> list,
 
 Comparator<T> _defaultComparetemplate<typename T> () {
     return [=] (T value1,T value2)     {
-        (((Comparable<dynamic>)value1))->compareTo(value2);
+        (as<Comparable<dynamic>>(value1))->compareTo(value2);
     };
 }
 

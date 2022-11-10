@@ -1,6 +1,6 @@
 #include "internal.hpp"
 int CodeUnitsCls::length() {
-    return _string->length;
+    return _string->length();
 }
 
 int CodeUnitsCls::[](int i) {
@@ -359,19 +359,19 @@ int SystemHashCls::smear(int x) {
     return x;
 }
 
-T checkNotNullabletemplate<typename T : Object> (String name, T value) {
-    if ((((dynamic)value)) == nullptr) {
+T checkNotNullabletemplate<typename T> (String name, T value) {
+    if ((as<dynamic>(value)) == nullptr) {
         ;
     }
     return value;
 }
 
 template<typename T> String NotNullableErrorCls<T>::toString() {
-    return "Null is not a valid value for '$_name' of type '$T'";
+    return __s("Null is not a valid value for '$_name' of type '$T'");
 }
 
-T valueOfNonNullableParamWithDefaulttemplate<typename T : Object> (T defaultVal, T value) {
-    if ((((dynamic)value)) == nullptr) {
+T valueOfNonNullableParamWithDefaulttemplate<typename T> (T defaultVal, T value) {
+    if ((as<dynamic>(value)) == nullptr) {
         return defaultVal;
     } else {
         return value;

@@ -20,26 +20,26 @@ Velocity VelocityCls::+(Velocity other) {
 Velocity VelocityCls::clampMagnitude(double maxValue, double minValue) {
     assert(minValue != nullptr && minValue >= 0.0);
     assert(maxValue != nullptr && maxValue >= 0.0 && maxValue >= minValue);
-    double valueSquared = pixelsPerSecond->distanceSquared;
+    double valueSquared = pixelsPerSecond->distanceSquared();
     if (valueSquared > maxValue * maxValue) {
-        return make<VelocityCls>((pixelsPerSecond / pixelsPerSecond->distance) * maxValue);
+        return make<VelocityCls>((pixelsPerSecond / pixelsPerSecond->distance()) * maxValue);
     }
     if ( < minValue * minValue) {
-        return make<VelocityCls>((pixelsPerSecond / pixelsPerSecond->distance) * minValue);
+        return make<VelocityCls>((pixelsPerSecond / pixelsPerSecond->distance()) * minValue);
     }
     return this;
 }
 
 bool VelocityCls::==(Object other) {
-    return other is Velocity && other->pixelsPerSecond == pixelsPerSecond;
+    return is<Velocity>(other) && other->pixelsPerSecond == pixelsPerSecond;
 }
 
 int VelocityCls::hashCode() {
-    return pixelsPerSecond->hashCode;
+    return pixelsPerSecond->hashCode();
 }
 
 String VelocityCls::toString() {
-    return "Velocity(${pixelsPerSecond.dx.toStringAsFixed(1)}, ${pixelsPerSecond.dy.toStringAsFixed(1)})";
+    return __s("Velocity(${pixelsPerSecond.dx.toStringAsFixed(1)}, ${pixelsPerSecond.dy.toStringAsFixed(1)})");
 }
 
 VelocityEstimateCls::VelocityEstimateCls(double confidence, Duration duration, Offset offset, Offset pixelsPerSecond) {
@@ -52,11 +52,11 @@ VelocityEstimateCls::VelocityEstimateCls(double confidence, Duration duration, O
 }
 
 String VelocityEstimateCls::toString() {
-    return "VelocityEstimate(${pixelsPerSecond.dx.toStringAsFixed(1)}, ${pixelsPerSecond.dy.toStringAsFixed(1)}; offset: $offset, duration: $duration, confidence: ${confidence.toStringAsFixed(1)})";
+    return __s("VelocityEstimate(${pixelsPerSecond.dx.toStringAsFixed(1)}, ${pixelsPerSecond.dy.toStringAsFixed(1)}; offset: $offset, duration: $duration, confidence: ${confidence.toStringAsFixed(1)})");
 }
 
 String _PointAtTimeCls::toString() {
-    return "_PointAtTime($point at $time)";
+    return __s("_PointAtTime($point at $time)");
 }
 
 _PointAtTimeCls::_PointAtTimeCls(Offset point, Duration time) {
@@ -158,7 +158,7 @@ VelocityEstimate IOSScrollViewFlingVelocityTrackerCls::getVelocityEstimate() {
         }
     }
     if (oldestNonNullSample == nullptr || newestSample == nullptr) {
-        assert(false, "There must be at least 1 point in _touchSamples: $_touchSamples");
+        assert(false, __s("There must be at least 1 point in _touchSamples: $_touchSamples"));
         return make<VelocityEstimateCls>(OffsetCls::zero, 0.0, DurationCls::zero, OffsetCls::zero);
     } else {
         return make<VelocityEstimateCls>(estimatedVelocity, 1.0, newestSample->time - oldestNonNullSample->time, newestSample->point - oldestNonNullSample->point);

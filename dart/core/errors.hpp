@@ -11,14 +11,14 @@ public:
      ErrorCls();
     static String safeToString(Object object);
 
-    extern StackTrace stackTrace();
+    StackTrace stackTrace();
     static Never throwWithStackTrace(Object error, StackTrace stackTrace);
 
 private:
 
-    extern static String _stringToSafeString(String stringValue);
-    extern static String _objectToString(Object object);
-    extern static Never _throw(Object error, StackTrace stackTrace);
+    static String _stringToSafeString(String stringValue);
+    static String _objectToString(Object object);
+    static Never _throw(Object error, StackTrace stackTrace);
 };
 using Error = std::shared_ptr<ErrorCls>;
 

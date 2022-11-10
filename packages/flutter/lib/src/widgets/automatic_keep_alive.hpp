@@ -81,7 +81,7 @@ private:
 };
 using KeepAliveHandle = std::shared_ptr<KeepAliveHandleCls>;
 
-template<typename T : StatefulWidget> class AutomaticKeepAliveClientMixinCls : public ObjectCls {
+template<typename T> class AutomaticKeepAliveClientMixinCls : public ObjectCls {
 public:
 
     virtual bool wantKeepAlive();
@@ -102,7 +102,7 @@ private:
     virtual void _releaseKeepAlive();
 
 };
-template<typename T : StatefulWidget> using AutomaticKeepAliveClientMixin = std::shared_ptr<AutomaticKeepAliveClientMixinCls<T : StatefulWidget>>;
+template<typename T> using AutomaticKeepAliveClientMixin = std::shared_ptr<AutomaticKeepAliveClientMixinCls<T>>;
 
 class _NullWidgetCls : public StatelessWidgetCls {
 public:

@@ -1,13 +1,13 @@
 #include "sliver_fixed_extent_list.hpp"
 double RenderSliverFixedExtentBoxAdaptorCls::indexToLayoutOffset(int index, double itemExtent) {
-    return itemExtent * index;
+    return itemExtent() * index;
 }
 
 int RenderSliverFixedExtentBoxAdaptorCls::getMinChildIndexForScrollOffset(double itemExtent, double scrollOffset) {
-    if (itemExtent > 0.0) {
-        double actual = scrollOffset / itemExtent;
+    if (itemExtent() > 0.0) {
+        double actual = scrollOffset / itemExtent();
         int round = actual->round();
-        if ((actual * itemExtent - round * itemExtent)->abs() < precisionErrorTolerance) {
+        if ((actual * itemExtent() - round * itemExtent())->abs() < precisionErrorTolerance) {
             return round;
         }
         return actual->floor();
@@ -16,10 +16,10 @@ int RenderSliverFixedExtentBoxAdaptorCls::getMinChildIndexForScrollOffset(double
 }
 
 int RenderSliverFixedExtentBoxAdaptorCls::getMaxChildIndexForScrollOffset(double itemExtent, double scrollOffset) {
-    if (itemExtent > 0.0) {
-        double actual = scrollOffset / itemExtent - 1;
+    if (itemExtent() > 0.0) {
+        double actual = scrollOffset / itemExtent() - 1;
         int round = actual->round();
-        if ((actual * itemExtent - round * itemExtent)->abs() < precisionErrorTolerance) {
+        if ((actual * itemExtent() - round * itemExtent())->abs() < precisionErrorTolerance) {
             return math->max(0, round);
         }
         return math->max(0, actual->ceil());
@@ -32,7 +32,7 @@ double RenderSliverFixedExtentBoxAdaptorCls::estimateMaxScrollOffset(SliverConst
 }
 
 double RenderSliverFixedExtentBoxAdaptorCls::computeMaxScrollOffset(SliverConstraints constraints, double itemExtent) {
-    return childManager->childCount * itemExtent;
+    return childManager->childCount * itemExtent();
 }
 
 void RenderSliverFixedExtentBoxAdaptorCls::performLayout() {
@@ -45,9 +45,9 @@ void RenderSliverFixedExtentBoxAdaptorCls::performLayout() {
     double remainingExtent = constraints->remainingCacheExtent;
     assert(remainingExtent >= 0.0);
     double targetEndScrollOffset = scrollOffset + remainingExtent;
-    BoxConstraints childConstraints = constraints->asBoxConstraints(itemExtent, itemExtent);
-    int firstIndex = getMinChildIndexForScrollOffset(scrollOffset, itemExtent);
-    int targetLastIndex = targetEndScrollOffset->isFinite? getMaxChildIndexForScrollOffset(targetEndScrollOffset, itemExtent) : nullptr;
+    BoxConstraints childConstraints = constraints->asBoxConstraints(itemExtent(), itemExtent());
+    int firstIndex = getMinChildIndexForScrollOffset(scrollOffset, itemExtent());
+    int targetLastIndex = targetEndScrollOffset->isFinite? getMaxChildIndexForScrollOffset(targetEndScrollOffset, itemExtent()) : nullptr;
     if (firstChild != nullptr) {
         int leadingGarbage = _calculateLeadingGarbage(firstIndex);
         int trailingGarbage = targetLastIndex != nullptr? _calculateTrailingGarbage(targetLastIndex) : 0;
@@ -56,12 +56,12 @@ void RenderSliverFixedExtentBoxAdaptorCls::performLayout() {
         collectGarbage(0, 0);
     }
     if (firstChild == nullptr) {
-        if (!addInitialChild(firstIndex, indexToLayoutOffset(itemExtent, firstIndex))) {
+        if (!addInitialChild(firstIndex, indexToLayoutOffset(itemExtent(), firstIndex))) {
             double max;
             if (firstIndex <= 0) {
                 max = 0.0;
             } else {
-                max = computeMaxScrollOffset(constraints, itemExtent);
+                max = computeMaxScrollOffset(constraints, itemExtent());
             }
             geometry = make<SliverGeometryCls>(max, max);
             childManager->didFinishLayout();
@@ -72,18 +72,18 @@ void RenderSliverFixedExtentBoxAdaptorCls::performLayout() {
     for (; index >= firstIndex; --index) {
         RenderBox child = insertAndLayoutLeadingChild(childConstraints);
         if (child == nullptr) {
-            geometry = make<SliverGeometryCls>(index * itemExtent);
+            geometry = make<SliverGeometryCls>(index * itemExtent());
             return;
         }
-        SliverMultiBoxAdaptorParentData childParentData = ((SliverMultiBoxAdaptorParentData)child->parentData!);
-        childParentData->layoutOffset = indexToLayoutOffset(itemExtent, index);
+        SliverMultiBoxAdaptorParentData childParentData = as<SliverMultiBoxAdaptorParentData>(child->parentData!);
+        childParentData->layoutOffset = indexToLayoutOffset(itemExtent(), index);
         assert(childParentData->index == index);
         trailingChildWithLayout = child;
     }
     if (trailingChildWithLayout == nullptr) {
         firstChild!->layout(childConstraints);
-        SliverMultiBoxAdaptorParentData childParentData = ((SliverMultiBoxAdaptorParentData)firstChild!->parentData!);
-        childParentData->layoutOffset = indexToLayoutOffset(itemExtent, firstIndex);
+        SliverMultiBoxAdaptorParentData childParentData = as<SliverMultiBoxAdaptorParentData>(firstChild!->parentData!);
+        childParentData->layoutOffset = indexToLayoutOffset(itemExtent(), firstIndex);
         trailingChildWithLayout = firstChild;
     }
     double estimatedMaxScrollOffset = double->infinity;
@@ -92,7 +92,7 @@ void RenderSliverFixedExtentBoxAdaptorCls::performLayout() {
         if (child == nullptr || indexOf(child) != index) {
             child = insertAndLayoutChild(childConstraintstrailingChildWithLayout);
             if (child == nullptr) {
-                estimatedMaxScrollOffset = index * itemExtent;
+                estimatedMaxScrollOffset = index * itemExtent();
                                 break;
             }
         } else {
@@ -100,13 +100,13 @@ void RenderSliverFixedExtentBoxAdaptorCls::performLayout() {
         }
         trailingChildWithLayout = child;
         assert(child != nullptr);
-        SliverMultiBoxAdaptorParentData childParentData = ((SliverMultiBoxAdaptorParentData)child->parentData!);
+        SliverMultiBoxAdaptorParentData childParentData = as<SliverMultiBoxAdaptorParentData>(child->parentData!);
         assert(childParentData->index == index);
-        childParentData->layoutOffset = indexToLayoutOffset(itemExtent, childParentData->index!);
+        childParentData->layoutOffset = indexToLayoutOffset(itemExtent(), childParentData->index!);
     }
     int lastIndex = indexOf(lastChild!);
-    double leadingScrollOffset = indexToLayoutOffset(itemExtent, firstIndex);
-    double trailingScrollOffset = indexToLayoutOffset(itemExtent, lastIndex + 1);
+    double leadingScrollOffset = indexToLayoutOffset(itemExtent(), firstIndex);
+    double trailingScrollOffset = indexToLayoutOffset(itemExtent(), lastIndex + 1);
     assert(firstIndex == 0 || childScrollOffset(firstChild!)! - scrollOffset <= precisionErrorTolerance);
     assert(debugAssertChildListIsNonEmptyAndContiguous());
     assert(indexOf(firstChild!) == firstIndex);
@@ -115,7 +115,7 @@ void RenderSliverFixedExtentBoxAdaptorCls::performLayout() {
     double paintExtent = calculatePaintOffset(constraintsleadingScrollOffset, trailingScrollOffset);
     double cacheExtent = calculateCacheOffset(constraintsleadingScrollOffset, trailingScrollOffset);
     double targetEndScrollOffsetForPaint = constraints->scrollOffset + constraints->remainingPaintExtent;
-    int targetLastIndexForPaint = targetEndScrollOffsetForPaint->isFinite? getMaxChildIndexForScrollOffset(targetEndScrollOffsetForPaint, itemExtent) : nullptr;
+    int targetLastIndexForPaint = targetEndScrollOffsetForPaint->isFinite? getMaxChildIndexForScrollOffset(targetEndScrollOffsetForPaint, itemExtent()) : nullptr;
     geometry = make<SliverGeometryCls>(estimatedMaxScrollOffset, paintExtent, cacheExtent, estimatedMaxScrollOffset, (targetLastIndexForPaint != nullptr && lastIndex >= targetLastIndexForPaint) || constraints->scrollOffset > 0.0);
     if (estimatedMaxScrollOffset == trailingScrollOffset) {
         childManager->setDidUnderflow(true);
@@ -145,7 +145,7 @@ int RenderSliverFixedExtentBoxAdaptorCls::_calculateTrailingGarbage(int targetLa
 
 RenderSliverFixedExtentListCls::RenderSliverFixedExtentListCls(Unknown childManager, double itemExtent) {
     {
-        _itemExtent = itemExtent;
+        _itemExtent = itemExtent();
     }
 }
 

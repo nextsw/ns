@@ -6,5 +6,5 @@ DeferredLoadExceptionCls::DeferredLoadExceptionCls(String message) {
 }
 
 String DeferredLoadExceptionCls::toString() {
-    return "DeferredLoadException: '$_s'";
+    return __s("DeferredLoadException: '$_s'");
 }

@@ -193,8 +193,8 @@ private:
 
 };
 using NonGrowableListError = std::shared_ptr<NonGrowableListErrorCls>;
-template<typename T>  extern List<T> makeListFixedLength(List<T> growableList);
-template<typename T>  extern List<T> makeFixedListUnmodifiable(List<T> fixedLengthList);
+template<typename T>  List<T> makeListFixedLength(List<T> growableList);
+template<typename T>  List<T> makeFixedListUnmodifiable(List<T> fixedLengthList);
 
 
 #endif

@@ -28,7 +28,7 @@ Base64Decoder Base64CodecCls::decoder() {
 }
 
 Uint8List Base64CodecCls::decode(String encoded) {
-    return decoder->convert(encoded);
+    return decoder()->convert(encoded);
 }
 
 String Base64CodecCls::normalize(int end, String source, int start) {
@@ -67,7 +67,7 @@ String Base64CodecCls::normalize(int end, String source, int start) {
             } else             {
                 if (value == _Base64DecoderCls::_padding) {
                 if ( < 0) {
-                    firstPadding = (buffer?->length ?? 0) + (sliceEnd - sliceStart);
+                    firstPadding = (buffer?->length or 0) + (sliceEnd - sliceStart);
                     firstPaddingSourceIndex = sliceEnd;
                 }
                 paddingCount++;
@@ -94,7 +94,7 @@ String Base64CodecCls::normalize(int end, String source, int start) {
                 ;
             }
             while ( < 4) {
-                buffer->write("=");
+                buffer->write(__s("="));
                 endLength++;
             }
         }
@@ -109,7 +109,7 @@ String Base64CodecCls::normalize(int end, String source, int start) {
             ;
         }
         if (endLength > 1) {
-            source = source->replaceRange(end, end, (endLength == 2)? "==" : "=");
+            source = source->replaceRange(end, end, (endLength == 2)? __s("==") : __s("="));
         }
     }
     return source;
@@ -137,7 +137,7 @@ void Base64EncoderCls::urlSafe()
 
 String Base64EncoderCls::convert(List<int> input) {
     if (input->isEmpty)     {
-        return "";
+        return __s("");
     }
     auto encoder = make<_Base64EncoderCls>(_urlSafe);
     auto buffer = encoder->encode(input, 0, input->length, true)!;
@@ -145,7 +145,7 @@ String Base64EncoderCls::convert(List<int> input) {
 }
 
 ByteConversionSink Base64EncoderCls::startChunkedConversion(Sink<String> sink) {
-    if (sink is StringConversionSink) {
+    if (is<StringConversionSink>(sink)) {
         return make<_Utf8Base64EncoderSinkCls>(sink->asUtf8Sink(false), _urlSafe);
     }
     return make<_AsciiBase64EncoderSinkCls>(sink, _urlSafe);
@@ -255,7 +255,7 @@ Uint8List _BufferCachingBase64EncoderCls::createBuffer(int bufferLength) {
     return Uint8ListCls->view(buffer->buffer, buffer->offsetInBytes, bufferLength);
 }
 
-_BufferCachingBase64EncoderCls::_BufferCachingBase64EncoderCls(bool urlSafe) {
+_BufferCachingBase64EncoderCls::_BufferCachingBase64EncoderCls(bool urlSafe) : _Base64Encoder(urlSafe) {
 }
 
 void _Base64EncoderSinkCls::add(List<int> source) {

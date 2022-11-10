@@ -75,7 +75,7 @@ void TableBorderCls::paint(Canvas canvas, Iterable<double> columns, Rect rect, I
             ;
         }
     }
-    if (!isUniform || borderRadius == BorderRadiusCls::zero) {
+    if (!isUniform() || borderRadius == BorderRadiusCls::zero) {
         paintBorder(canvas, recttop, right, bottom, left);
     } else {
         RRect outer = borderRadius->toRRect(rect);
@@ -89,10 +89,10 @@ bool TableBorderCls::==(Object other) {
     if (identical(this, other)) {
         return true;
     }
-    if (other->runtimeType != runtimeType) {
+    if (other->runtimeType() != runtimeType) {
         return false;
     }
-    return other is TableBorder && other->top == top && other->right == right && other->bottom == bottom && other->left == left && other->horizontalInside == horizontalInside && other->verticalInside == verticalInside && other->borderRadius == borderRadius;
+    return is<TableBorder>(other) && other->top == top && other->right == right && other->bottom == bottom && other->left == left && other->horizontalInside == horizontalInside && other->verticalInside == verticalInside && other->borderRadius == borderRadius;
 }
 
 int TableBorderCls::hashCode() {
@@ -100,5 +100,5 @@ int TableBorderCls::hashCode() {
 }
 
 String TableBorderCls::toString() {
-    return "TableBorder($top, $right, $bottom, $left, $horizontalInside, $verticalInside, $borderRadius)";
+    return __s("TableBorder($top, $right, $bottom, $left, $horizontalInside, $verticalInside, $borderRadius)");
 }

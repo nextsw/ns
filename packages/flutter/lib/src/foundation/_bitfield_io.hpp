@@ -8,7 +8,7 @@
 int kMaxUnsignedSMI;
 
 
-template<typename T : dynamic> class BitFieldCls : public ObjectCls {
+template<typename T> class BitFieldCls : public ObjectCls {
 public:
 
      BitFieldCls(int _length);
@@ -34,7 +34,7 @@ private:
 
 
 };
-template<typename T : dynamic> using BitField = std::shared_ptr<BitFieldCls<T : dynamic>>;
+template<typename T> using BitField = std::shared_ptr<BitFieldCls<T>>;
 
 
 #endif

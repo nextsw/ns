@@ -1,6 +1,6 @@
 #include "timeline.hpp"
 Flow FlowCls::begin(int id) {
-    return FlowCls->_(_begin, id ?? _getNextAsyncId());
+    return FlowCls->_(_begin, id or _getNextAsyncId());
 }
 
 Flow FlowCls::step(int id) {
@@ -15,7 +15,7 @@ void TimelineCls::startSync(Map arguments, Flow flow, String name) {
     if (!_hasTimeline)     {
         return;
     }
-    ArgumentErrorCls->checkNotNull(name, "name");
+    ArgumentErrorCls->checkNotNull(name, __s("name"));
     if (!_isDartStreamEnabled()) {
         _stack->add(nullptr);
         return;
@@ -43,7 +43,7 @@ void TimelineCls::instantSync(Map arguments, String name) {
     if (!_hasTimeline)     {
         return;
     }
-    ArgumentErrorCls->checkNotNull(name, "name");
+    ArgumentErrorCls->checkNotNull(name, __s("name"));
     if (!_isDartStreamEnabled()) {
         return;
     }
@@ -51,7 +51,7 @@ void TimelineCls::instantSync(Map arguments, String name) {
     if (arguments != nullptr) {
         instantArguments = MapCls->from(arguments);
     }
-    _reportInstantEvent("Dart", name, _argumentsAsJson(instantArguments));
+    _reportInstantEvent(__s("Dart"), name, _argumentsAsJson(instantArguments));
 }
 
 T TimelineCls::timeSynctemplate<typename T> (Map arguments, Flow flow, TimelineSyncFunction<T> function, String name) {
@@ -78,14 +78,14 @@ TimelineTaskCls::TimelineTaskCls(String filterKey, TimelineTask parent) {
 }
 
 void TimelineTaskCls::withTaskId(String filterKey, int taskId) {
-    ArgumentErrorCls->checkNotNull(taskId, "taskId");
+    ArgumentErrorCls->checkNotNull(taskId, __s("taskId"));
 }
 
 void TimelineTaskCls::start(Map arguments, String name) {
     if (!_hasTimeline)     {
         return;
     }
-    ArgumentErrorCls->checkNotNull(name, "name");
+    ArgumentErrorCls->checkNotNull(name, __s("name"));
     if (!_isDartStreamEnabled()) {
         _stack->add(nullptr);
         return;
@@ -99,7 +99,7 @@ void TimelineTaskCls::start(Map arguments, String name) {
         }
     }
     if (_parent != nullptr)     {
-        map["parentId"] = _parent!->_taskId->toRadixString(16);
+        map[__s("parentId")] = _parent!->_taskId->toRadixString(16);
     }
     if (_filterKey != nullptr)     {
         map[_kFilterKey] = _filterKey;
@@ -111,7 +111,7 @@ void TimelineTaskCls::instant(Map arguments, String name) {
     if (!_hasTimeline)     {
         return;
     }
-    ArgumentErrorCls->checkNotNull(name, "name");
+    ArgumentErrorCls->checkNotNull(name, __s("name"));
     if (!_isDartStreamEnabled()) {
         return;
     }
@@ -123,14 +123,14 @@ void TimelineTaskCls::instant(Map arguments, String name) {
         instantArguments = makeMap(makeList(), makeList();
         instantArguments[_kFilterKey] = _filterKey;
     }
-    _reportTaskEvent(_taskId, "n", "Dart", name, _argumentsAsJson(instantArguments));
+    _reportTaskEvent(_taskId, __s("n"), __s("Dart"), name, _argumentsAsJson(instantArguments));
 }
 
 void TimelineTaskCls::finish(Map arguments) {
     if (!_hasTimeline) {
         return;
     }
-    if (_stack->length == 0) {
+    if (_stack->length() == 0) {
         ;
     }
     if (_filterKey != nullptr) {
@@ -145,7 +145,7 @@ void TimelineTaskCls::finish(Map arguments) {
 }
 
 int TimelineTaskCls::pass() {
-    if (_stack->length > 0) {
+    if (_stack->length() > 0) {
         ;
     }
     int r = _taskId;
@@ -153,28 +153,28 @@ int TimelineTaskCls::pass() {
 }
 
 void _AsyncBlockCls::_start(Map arguments) {
-    _reportTaskEvent(_taskId, "b", category, name, _argumentsAsJson(arguments));
+    _reportTaskEvent(_taskId, __s("b"), category, name, _argumentsAsJson(arguments));
 }
 
 void _AsyncBlockCls::_finish(Map arguments) {
-    _reportTaskEvent(_taskId, "e", category, name, _argumentsAsJson(arguments));
+    _reportTaskEvent(_taskId, __s("e"), category, name, _argumentsAsJson(arguments));
 }
 
 void _SyncBlockCls::finish() {
-    _reportTaskEvent(0, "E", category, name, _jsonArguments);
+    _reportTaskEvent(0, __s("E"), category, name, _jsonArguments);
     Flow tempFlow = flow;
     if (tempFlow != nullptr) {
-        _reportFlowEvent(category, "${tempFlow.id}", tempFlow->_type, tempFlow->id, _argumentsAsJson(nullptr));
+        _reportFlowEvent(category, __s("${tempFlow.id}"), tempFlow->_type, tempFlow->id, _argumentsAsJson(nullptr));
     }
 }
 
 void _SyncBlockCls::_startSync() {
-    _reportTaskEvent(0, "B", category, name, _jsonArguments);
+    _reportTaskEvent(0, __s("B"), category, name, _jsonArguments);
 }
 
 String _argumentsAsJson(Map arguments) {
     if ((arguments == nullptr) || (arguments->length == 0)) {
-        return "{}";
+        return __s("{}");
     }
     return json->encode(arguments);
 }

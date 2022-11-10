@@ -12,7 +12,7 @@ Future<String> AssetBundleCls::loadString(bool cache, String key) {
     if (data->lengthInBytes < 50 * 1024) {
         return utf8->decode(data->buffer->asUint8List());
     }
-    return compute(_utf8decode, data"UTF8 decode for "$key"");
+    return compute(_utf8decode, data__s("UTF8 decode for "$key""));
 }
 
 void AssetBundleCls::evict(String key) {
@@ -22,7 +22,7 @@ void AssetBundleCls::clear() {
 }
 
 String AssetBundleCls::toString() {
-    return "${describeIdentity(this)}()";
+    return __s("${describeIdentity(this)}()");
 }
 
 String AssetBundleCls::_utf8decode(ByteData data) {
@@ -53,7 +53,7 @@ Future<T> NetworkAssetBundleCls::loadStructuredDatatemplate<typename T> (String 
 }
 
 String NetworkAssetBundleCls::toString() {
-    return "${describeIdentity(this)}($_baseUrl)";
+    return __s("${describeIdentity(this)}($_baseUrl)");
 }
 
 Uri NetworkAssetBundleCls::_urlFromKey(String key) {
@@ -73,7 +73,7 @@ Future<T> CachingAssetBundleCls::loadStructuredDatatemplate<typename T> (String 
     assert(key != nullptr);
     assert(parser != nullptr);
     if (_structuredDataCache->containsKey(key)) {
-        return ((Future<T>)_structuredDataCache[key]!);
+        return as<Future<T>>(_structuredDataCache[key]!);
     }
     Completer<T> completer;
     Future<T> result;
@@ -109,7 +109,7 @@ Future<ImmutableBuffer> CachingAssetBundleCls::loadBuffer(String key) {
 
 Future<ByteData> PlatformAssetBundleCls::load(String key) {
     Uint8List encoded = utf8->encoder->convert(make<UriCls>(UriCls->encodeFull(key))->path);
-    ByteData asset = await ServicesBindingCls::instance->defaultBinaryMessenger->send("flutter/assets", encoded->buffer->asByteData());
+    ByteData asset = await ServicesBindingCls::instance->defaultBinaryMessenger->send(__s("flutter/assets"), encoded->buffer->asByteData());
     if (asset == nullptr) {
         ;
     }
@@ -123,7 +123,7 @@ Future<ImmutableBuffer> PlatformAssetBundleCls::loadBuffer(String key) {
     }
     bool debugUsePlatformChannel = false;
     assert([=] () {
-        if (PlatformCls::environment->containsKey("UNIT_TEST_ASSETS")) {
+        if (PlatformCls::environment->containsKey(__s("UNIT_TEST_ASSETS"))) {
             debugUsePlatformChannel = true;
         }
         return true;

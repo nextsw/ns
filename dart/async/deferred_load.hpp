@@ -13,7 +13,7 @@ public:
 
 
      DeferredLibraryCls(String libraryName, String uri);
-    extern Future<Null> load();
+    Future<Null> load();
 private:
 
 };

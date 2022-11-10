@@ -12,23 +12,23 @@ Future<NetworkImage> NetworkImageCls::obtainKey(ImageConfiguration configuration
 
 ImageStreamCompleter NetworkImageCls::load(DecoderCallback decode, NetworkImage key) {
     StreamController<ImageChunkEvent> chunkEvents = <ImageChunkEvent>make<StreamControllerCls>();
-    return make<MultiFrameImageStreamCompleterCls>(_loadAsync(((NetworkImage)key), chunkEvents, nullptr, decode), chunkEvents->stream, key->scale, key->url, [=] ()     {
+    return make<MultiFrameImageStreamCompleterCls>(_loadAsync(as<NetworkImage>(key), chunkEvents, nullptr, decode), chunkEvents->stream, key->scale, key->url, [=] ()     {
         makeList(ArrayItem, ArrayItem);
     });
 }
 
 ImageStreamCompleter NetworkImageCls::loadBuffer(DecoderBufferCallback decode, NetworkImage key) {
     StreamController<ImageChunkEvent> chunkEvents = <ImageChunkEvent>make<StreamControllerCls>();
-    return make<MultiFrameImageStreamCompleterCls>(_loadAsync(((NetworkImage)key), chunkEvents, decode, nullptr), chunkEvents->stream, key->scale, key->url, [=] ()     {
+    return make<MultiFrameImageStreamCompleterCls>(_loadAsync(as<NetworkImage>(key), chunkEvents, decode, nullptr), chunkEvents->stream, key->scale, key->url, [=] ()     {
         makeList(ArrayItem, ArrayItem);
     });
 }
 
 bool NetworkImageCls::==(Object other) {
-    if (other->runtimeType != runtimeType) {
+    if (other->runtimeType() != runtimeType) {
         return false;
     }
-    return other is NetworkImage && other->url == url && other->scale == scale;
+    return is<NetworkImage>(other) && other->url == url && other->scale == scale;
 }
 
 int NetworkImageCls::hashCode() {
@@ -36,7 +36,7 @@ int NetworkImageCls::hashCode() {
 }
 
 String NetworkImageCls::toString() {
-    return "${objectRuntimeType(this, 'NetworkImage')}("$url", scale: $scale)";
+    return __s("${objectRuntimeType(this, 'NetworkImage')}("$url", scale: $scale)");
 }
 
 HttpClient NetworkImageCls::_httpClient() {
@@ -54,7 +54,7 @@ Future<Codec> NetworkImageCls::_loadAsync(StreamController<ImageChunkEvent> chun
     try {
         assert(key == this);
         Uri resolved = UriCls::base->resolve(key->url);
-        HttpClientRequest request = await _httpClient->getUrl(resolved);
+        HttpClientRequest request = await _httpClient()->getUrl(resolved);
         headers?->forEach([=] (String name,String value) {
             request->headers->add(name, value);
         });

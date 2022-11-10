@@ -1,7 +1,7 @@
 #include "text_span.hpp"
 TextSpanCls::TextSpanCls(List<InlineSpan> children, Locale locale, MouseCursor mouseCursor, PointerEnterEventListener onEnter, PointerExitEventListener onExit, GestureRecognizer recognizer, String semanticsLabel, bool spellOut, Unknown style, String text) {
     {
-        mouseCursor = mouseCursor ?? (recognizer == nullptr? MouseCursorCls::defer : SystemMouseCursorsCls::click);
+        mouseCursor = mouseCursor or (recognizer == nullptr? MouseCursorCls::defer : SystemMouseCursorsCls::click);
         assert(!(text == nullptr && semanticsLabel != nullptr));
     }
 }
@@ -15,7 +15,7 @@ bool TextSpanCls::validForMouseTracker() {
 }
 
 void TextSpanCls::handleEvent(HitTestEntry entry, PointerEvent event) {
-    if (event is PointerDownEvent) {
+    if (is<PointerDownEvent>(event)) {
         recognizer?->addPointer(event);
     }
 }
@@ -30,8 +30,8 @@ void TextSpanCls::build(ParagraphBuilder builder, List<PlaceholderDimensions> di
         try {
             builder->addText(text!);
         } catch (ArgumentError exception) {
-            FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(exception, stack, "painting library", make<ErrorDescriptionCls>("while building a TextSpan")));
-            builder->addText("\uFFFD");
+            FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(exception, stack, __s("painting library"), make<ErrorDescriptionCls>(__s("while building a TextSpan"))));
+            builder->addText(__s("\uFFFD"));
         };
     }
     if (children != nullptr) {
@@ -67,11 +67,11 @@ InlineSpan TextSpanCls::getSpanForPositionVisitor(Accumulator offset, TextPositi
     }
     TextAffinity affinity = position->affinity;
     int targetOffset = position->offset;
-    int endOffset = offset->value + text!->length;
+    int endOffset = offset->value + text!->length();
     if (offset->value == targetOffset && affinity == TextAffinityCls::downstream || offset->value < targetOffset &&  < endOffset || endOffset == targetOffset && affinity == TextAffinityCls::upstream) {
         return this;
     }
-    offset->increment(text!->length);
+    offset->increment(text!->length());
     return nullptr;
 }
 
@@ -93,15 +93,15 @@ void TextSpanCls::computeToPlainText(StringBuffer buffer, bool includePlaceholde
 
 void TextSpanCls::computeSemanticsInformation(List<InlineSpanSemanticsInformation> collector, Locale inheritedLocale, bool inheritedSpellOut) {
     assert(debugAssertIsValid());
-    Locale effectiveLocale = locale ?? inheritedLocale;
-    bool effectiveSpellOut = spellOut ?? inheritedSpellOut;
+    Locale effectiveLocale = locale or inheritedLocale;
+    bool effectiveSpellOut = spellOut or inheritedSpellOut;
     if (text != nullptr) {
-        int textLength = semanticsLabel?->length ?? text!->length;
+        int textLength = semanticsLabel?->length() or text!->length();
             List<StringAttribute> list1 = make<ListCls<>>();    if (effectiveSpellOut && textLength > 0) {        list1.add(ArrayItem);    }if (effectiveLocale != nullptr && textLength > 0) {        list1.add(ArrayItem);    }collector->add(make<InlineSpanSemanticsInformationCls>(text!list1, semanticsLabel, recognizer));
     }
     if (children != nullptr) {
         for (InlineSpan child : children!) {
-            if (child is TextSpan) {
+            if (is<TextSpan>(child)) {
                 child->computeSemanticsInformation(collectoreffectiveLocale, effectiveSpellOut);
             } else {
                 child->computeSemanticsInformation(collector);
@@ -114,21 +114,21 @@ int TextSpanCls::codeUnitAtVisitor(int index, Accumulator offset) {
     if (text == nullptr) {
         return nullptr;
     }
-    if (index - offset->value < text!->length) {
+    if (index - offset->value < text!->length()) {
         return text!->codeUnitAt(index - offset->value);
     }
-    offset->increment(text!->length);
+    offset->increment(text!->length());
     return nullptr;
 }
 
 void TextSpanCls::describeSemantics(Accumulator offset, List<dynamic> semanticsElements, List<int> semanticsOffsets) {
-    if (recognizer != nullptr && (recognizer is TapGestureRecognizer || recognizer is LongPressGestureRecognizer)) {
-        int length = semanticsLabel?->length ?? text!->length;
+    if (recognizer != nullptr && (is<TapGestureRecognizer>(recognizer) || is<LongPressGestureRecognizer>(recognizer))) {
+        int length = semanticsLabel?->length() or text!->length();
         semanticsOffsets->add(offset->value);
         semanticsOffsets->add(offset->value + length);
         semanticsElements->add(recognizer);
     }
-    offset->increment(text != nullptr? text!->length : 0);
+    offset->increment(text != nullptr? text!->length() : 0);
 }
 
 bool TextSpanCls::debugAssertIsValid() {
@@ -150,11 +150,11 @@ RenderComparison TextSpanCls::compareTo(InlineSpan other) {
     if (identical(this, other)) {
         return RenderComparisonCls::identical;
     }
-    if (other->runtimeType != runtimeType) {
+    if (other->runtimeType() != runtimeType) {
         return RenderComparisonCls::layout;
     }
-    TextSpan textSpan = ((TextSpan)other);
-    if (textSpan->text != text || children?->length != textSpan->children?->length || (style == nullptr) != (textSpan->style == nullptr)) {
+    TextSpan textSpan = as<TextSpan>(other);
+    if (textSpan->text != text || children?->length() != textSpan->children?->length || (style == nullptr) != (textSpan->style == nullptr)) {
         return RenderComparisonCls::layout;
     }
     RenderComparison result = recognizer == textSpan->recognizer? RenderComparisonCls::identical : RenderComparisonCls::metadata;
@@ -168,7 +168,7 @@ RenderComparison TextSpanCls::compareTo(InlineSpan other) {
         }
     }
     if (children != nullptr) {
-        for (;  < children!->length; index = 1) {
+        for (;  < children!->length(); index = 1) {
             RenderComparison candidate = children![index]->compareTo(textSpan->children![index]);
             if (candidate->index > result->index) {
                 result = candidate;
@@ -185,34 +185,34 @@ bool TextSpanCls::==(Object other) {
     if (identical(this, other)) {
         return true;
     }
-    if (other->runtimeType != runtimeType) {
+    if (other->runtimeType() != runtimeType) {
         return false;
     }
     if (super != other) {
         return false;
     }
-    return other is TextSpan && other->text == text && other->recognizer == recognizer && other->semanticsLabel == semanticsLabel && onEnter == other->onEnter && onExit == other->onExit && mouseCursor == other->mouseCursor && <InlineSpan>listEquals(other->children, children);
+    return is<TextSpan>(other) && other->text == text && other->recognizer == recognizer && other->semanticsLabel == semanticsLabel && onEnter == other->onEnter && onExit == other->onExit && mouseCursor == other->mouseCursor && <InlineSpan>listEquals(other->children, children);
 }
 
 int TextSpanCls::hashCode() {
-    return ObjectCls->hash(super->hashCode, text, recognizer, semanticsLabel, onEnter, onExit, mouseCursor, children == nullptr? nullptr : ObjectCls->hashAll(children!));
+    return ObjectCls->hash(super->hashCode(), text, recognizer, semanticsLabel, onEnter, onExit, mouseCursor, children == nullptr? nullptr : ObjectCls->hashAll(children!));
 }
 
 String TextSpanCls::toStringShort() {
-    return objectRuntimeType(this, "TextSpan");
+    return objectRuntimeType(this, __s("TextSpan"));
 }
 
 void TextSpanCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(make<StringPropertyCls>("text", textfalse, nullptr));
+    properties->add(make<StringPropertyCls>(__s("text"), textfalse, nullptr));
     if (style == nullptr && text == nullptr && children == nullptr) {
-        properties->add(DiagnosticsNodeCls->message("(empty)"));
+        properties->add(DiagnosticsNodeCls->message(__s("(empty)")));
     }
-    properties->add(<GestureRecognizer>make<DiagnosticsPropertyCls>("recognizer", recognizerrecognizer?->runtimeType->toString(), nullptr));
-    Map<String, void  Function()> map1 = make<MapCls<>>();map1.set("enter", onEnter);map1.set("exit", onExit);properties->add(<void  Function()>make<FlagsSummaryCls>("callbacks", list1));
-    properties->add(<MouseCursor>make<DiagnosticsPropertyCls>("mouseCursor", cursorMouseCursorCls::defer));
+    properties->add(<GestureRecognizer>make<DiagnosticsPropertyCls>(__s("recognizer"), recognizerrecognizer?->runtimeType->toString(), nullptr));
+    Map<String, void  Function()> map1 = make<MapCls<>>();map1.set(__s("enter"), onEnter);map1.set(__s("exit"), onExit);properties->add(<void  Function()>make<FlagsSummaryCls>(__s("callbacks"), list1));
+    properties->add(<MouseCursor>make<DiagnosticsPropertyCls>(__s("mouseCursor"), cursor()MouseCursorCls::defer));
     if (semanticsLabel != nullptr) {
-        properties->add(make<StringPropertyCls>("semanticsLabel", semanticsLabel));
+        properties->add(make<StringPropertyCls>(__s("semanticsLabel"), semanticsLabel));
     }
 }
 
@@ -224,7 +224,7 @@ List<DiagnosticsNode> TextSpanCls::debugDescribeChildren() {
         if (child != nullptr) {
             return child->toDiagnosticsNode();
         } else {
-            return DiagnosticsNodeCls->message("<null child>");
+            return DiagnosticsNodeCls->message(__s("<null child>"));
         }
     })->toList();
 }

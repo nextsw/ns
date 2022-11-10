@@ -1,10 +1,10 @@
 #include "display_feature_sub_screen.hpp"
 Widget DisplayFeatureSubScreenCls::build(BuildContext context) {
-    assert(anchorPoint != nullptr || debugCheckHasDirectionality(context"to determine which sub-screen DisplayFeatureSubScreen uses", "Alternatively, consider specifying the 'anchorPoint' argument on the DisplayFeatureSubScreen."));
+    assert(anchorPoint != nullptr || debugCheckHasDirectionality(context__s("to determine which sub-screen DisplayFeatureSubScreen uses"), __s("Alternatively, consider specifying the 'anchorPoint' argument on the DisplayFeatureSubScreen.")));
     MediaQueryData mediaQuery = MediaQueryCls->of(context);
     Size parentSize = mediaQuery->size;
     Rect wantedBounds = OffsetCls::zero & parentSize;
-    Offset resolvedAnchorPoint = _capOffset(anchorPoint ?? _fallbackAnchorPoint(context), parentSize);
+    Offset resolvedAnchorPoint = _capOffset(anchorPoint or _fallbackAnchorPoint(context), parentSize);
     Iterable<Rect> subScreens = subScreensInBounds(wantedBounds, avoidBounds(mediaQuery));
     Rect closestSubScreen = _closestToAnchorPoint(subScreens, resolvedAnchorPoint);
     return make<PaddingCls>(EdgeInsetsCls->only(closestSubScreen->left, closestSubScreen->top, parentSize->width - closestSubScreen->right, parentSize->height - closestSubScreen->bottom), make<MediaQueryCls>(mediaQuery->removeDisplayFeatures(closestSubScreen), child));

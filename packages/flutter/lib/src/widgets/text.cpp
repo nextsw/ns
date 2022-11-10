@@ -16,12 +16,12 @@ Widget DefaultTextStyleCls::merge(Widget child, Key key, int maxLines, TextOverf
     assert(child != nullptr);
     return make<BuilderCls>([=] (BuildContext context) {
         DefaultTextStyle parent = DefaultTextStyleCls->of(context);
-        return make<DefaultTextStyleCls>(key, parent->style->merge(style), textAlign ?? parent->textAlign, softWrap ?? parent->softWrap, overflow ?? parent->overflow, maxLines ?? parent->maxLines, textWidthBasis ?? parent->textWidthBasis, child);
+        return make<DefaultTextStyleCls>(key, parent->style->merge(style), textAlign or parent->textAlign, softWrap or parent->softWrap, overflow or parent->overflow, maxLines or parent->maxLines, textWidthBasis or parent->textWidthBasis, child);
     });
 }
 
 DefaultTextStyle DefaultTextStyleCls::of(BuildContext context) {
-    return context-><DefaultTextStyle>dependOnInheritedWidgetOfExactType() ?? DefaultTextStyleCls->fallback();
+    return context-><DefaultTextStyle>dependOnInheritedWidgetOfExactType() or DefaultTextStyleCls->fallback();
 }
 
 bool DefaultTextStyleCls::updateShouldNotify(DefaultTextStyle oldWidget) {
@@ -35,12 +35,12 @@ Widget DefaultTextStyleCls::wrap(Widget child, BuildContext context) {
 void DefaultTextStyleCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
     style->debugFillProperties(properties);
-    properties->add(<TextAlign>make<EnumPropertyCls>("textAlign", textAlignnullptr));
-    properties->add(make<FlagPropertyCls>("softWrap"softWrap, "wrapping at box width", "no wrapping except at line break characters", true));
-    properties->add(<TextOverflow>make<EnumPropertyCls>("overflow", overflownullptr));
-    properties->add(make<IntPropertyCls>("maxLines", maxLinesnullptr));
-    properties->add(<TextWidthBasis>make<EnumPropertyCls>("textWidthBasis", textWidthBasisTextWidthBasisCls::parent));
-    properties->add(<TextHeightBehavior>make<DiagnosticsPropertyCls>("textHeightBehavior", textHeightBehaviornullptr));
+    properties->add(<TextAlign>make<EnumPropertyCls>(__s("textAlign"), textAlignnullptr));
+    properties->add(make<FlagPropertyCls>(__s("softWrap")softWrap, __s("wrapping at box width"), __s("no wrapping except at line break characters"), true));
+    properties->add(<TextOverflow>make<EnumPropertyCls>(__s("overflow"), overflownullptr));
+    properties->add(make<IntPropertyCls>(__s("maxLines"), maxLinesnullptr));
+    properties->add(<TextWidthBasis>make<EnumPropertyCls>(__s("textWidthBasis"), textWidthBasisTextWidthBasisCls::parent));
+    properties->add(<TextHeightBehavior>make<DiagnosticsPropertyCls>(__s("textHeightBehavior"), textHeightBehaviornullptr));
 }
 
 Widget _NullWidgetCls::build(BuildContext context) {
@@ -68,12 +68,12 @@ Widget DefaultTextHeightBehaviorCls::wrap(Widget child, BuildContext context) {
 
 void DefaultTextHeightBehaviorCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<TextHeightBehavior>make<DiagnosticsPropertyCls>("textHeightBehavior", textHeightBehaviornullptr));
+    properties->add(<TextHeightBehavior>make<DiagnosticsPropertyCls>(__s("textHeightBehavior"), textHeightBehaviornullptr));
 }
 
 TextCls::TextCls(String data, Unknown key, Locale locale, int maxLines, TextOverflow overflow, Color selectionColor, String semanticsLabel, bool softWrap, StrutStyle strutStyle, TextStyle style, TextAlign textAlign, TextDirection textDirection, TextHeightBehavior textHeightBehavior, double textScaleFactor, TextWidthBasis textWidthBasis) {
     {
-        assert(data != nullptr, "A non-null String must be provided to a Text widget.");
+        assert(data != nullptr, __s("A non-null String must be provided to a Text widget."));
         textSpan = nullptr;
     }
 }
@@ -90,7 +90,7 @@ Widget TextCls::build(BuildContext context) {
         effectiveTextStyle = effectiveTextStyle!->merge(make<TextStyleCls>(FontWeightCls::bold));
     }
     SelectionRegistrar registrar = SelectionContainerCls->maybeOf(context);
-    Widget result = make<RichTextCls>(textAlign ?? defaultTextStyle->textAlign ?? TextAlignCls::start, textDirection, locale, softWrap ?? defaultTextStyle->softWrap, overflow ?? effectiveTextStyle?->overflow ?? defaultTextStyle->overflow, textScaleFactor ?? MediaQueryCls->textScaleFactorOf(context), maxLines ?? defaultTextStyle->maxLines, strutStyle, textWidthBasis ?? defaultTextStyle->textWidthBasis, textHeightBehavior ?? defaultTextStyle->textHeightBehavior ?? DefaultTextHeightBehaviorCls->of(context), registrar, selectionColor ?? DefaultSelectionStyleCls->of(context)->selectionColor, make<TextSpanCls>(effectiveTextStyle, data, textSpan != nullptr? makeList(ArrayItem) : nullptr));
+    Widget result = make<RichTextCls>(textAlign or defaultTextStyle->textAlign or TextAlignCls::start, textDirection, locale, softWrap or defaultTextStyle->softWrap, overflow or effectiveTextStyle?->overflow or defaultTextStyle->overflow, textScaleFactor or MediaQueryCls->textScaleFactorOf(context), maxLines or defaultTextStyle->maxLines, strutStyle, textWidthBasis or defaultTextStyle->textWidthBasis, textHeightBehavior or defaultTextStyle->textHeightBehavior or DefaultTextHeightBehaviorCls->of(context), registrar, selectionColor or DefaultSelectionStyleCls->of(context)->selectionColor, make<TextSpanCls>(effectiveTextStyle, data, textSpan != nullptr? makeList(ArrayItem) : nullptr));
     if (registrar != nullptr) {
         result = make<MouseRegionCls>(SystemMouseCursorsCls::text, result);
     }
@@ -102,21 +102,21 @@ Widget TextCls::build(BuildContext context) {
 
 void TextCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(make<StringPropertyCls>("data", datafalse));
+    properties->add(make<StringPropertyCls>(__s("data"), datafalse));
     if (textSpan != nullptr) {
-        properties->add(textSpan!->toDiagnosticsNode("textSpan", DiagnosticsTreeStyleCls::transition));
+        properties->add(textSpan!->toDiagnosticsNode(__s("textSpan"), DiagnosticsTreeStyleCls::transition));
     }
     style?->debugFillProperties(properties);
-    properties->add(<TextAlign>make<EnumPropertyCls>("textAlign", textAlignnullptr));
-    properties->add(<TextDirection>make<EnumPropertyCls>("textDirection", textDirectionnullptr));
-    properties->add(<Locale>make<DiagnosticsPropertyCls>("locale", localenullptr));
-    properties->add(make<FlagPropertyCls>("softWrap"softWrap, "wrapping at box width", "no wrapping except at line break characters", true));
-    properties->add(<TextOverflow>make<EnumPropertyCls>("overflow", overflownullptr));
-    properties->add(make<DoublePropertyCls>("textScaleFactor", textScaleFactornullptr));
-    properties->add(make<IntPropertyCls>("maxLines", maxLinesnullptr));
-    properties->add(<TextWidthBasis>make<EnumPropertyCls>("textWidthBasis", textWidthBasisnullptr));
-    properties->add(<TextHeightBehavior>make<DiagnosticsPropertyCls>("textHeightBehavior", textHeightBehaviornullptr));
+    properties->add(<TextAlign>make<EnumPropertyCls>(__s("textAlign"), textAlignnullptr));
+    properties->add(<TextDirection>make<EnumPropertyCls>(__s("textDirection"), textDirectionnullptr));
+    properties->add(<Locale>make<DiagnosticsPropertyCls>(__s("locale"), localenullptr));
+    properties->add(make<FlagPropertyCls>(__s("softWrap")softWrap, __s("wrapping at box width"), __s("no wrapping except at line break characters"), true));
+    properties->add(<TextOverflow>make<EnumPropertyCls>(__s("overflow"), overflownullptr));
+    properties->add(make<DoublePropertyCls>(__s("textScaleFactor"), textScaleFactornullptr));
+    properties->add(make<IntPropertyCls>(__s("maxLines"), maxLinesnullptr));
+    properties->add(<TextWidthBasis>make<EnumPropertyCls>(__s("textWidthBasis"), textWidthBasisnullptr));
+    properties->add(<TextHeightBehavior>make<DiagnosticsPropertyCls>(__s("textHeightBehavior"), textHeightBehaviornullptr));
     if (semanticsLabel != nullptr) {
-        properties->add(make<StringPropertyCls>("semanticsLabel", semanticsLabel));
+        properties->add(make<StringPropertyCls>(__s("semanticsLabel"), semanticsLabel));
     }
 }

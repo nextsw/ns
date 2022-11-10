@@ -263,7 +263,7 @@ private:
 };
 using RawScrollbar = std::shared_ptr<RawScrollbarCls>;
 
-template<typename T : RawScrollbar> class RawScrollbarStateCls : public StateCls<T> {
+template<typename T> class RawScrollbarStateCls : public StateCls<T> {
 public:
     ScrollbarPainter scrollbarPainter;
 
@@ -343,7 +343,7 @@ private:
     virtual Map<Type, GestureRecognizerFactory> _gestures();
 
 };
-template<typename T : RawScrollbar> using RawScrollbarState = std::shared_ptr<RawScrollbarStateCls<T : RawScrollbar>>;
+template<typename T> using RawScrollbarState = std::shared_ptr<RawScrollbarStateCls<T>>;
 
 class _ThumbPressGestureRecognizerCls : public LongPressGestureRecognizerCls {
 public:

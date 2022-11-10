@@ -22,7 +22,7 @@ private:
 };
 using Notification = std::shared_ptr<NotificationCls>;
 
-template<typename T : Notification> class NotificationListenerCls : public ProxyWidgetCls {
+template<typename T> class NotificationListenerCls : public ProxyWidgetCls {
 public:
     NotificationListenerCallback<T> onNotification;
 
@@ -33,9 +33,9 @@ public:
 private:
 
 };
-template<typename T : Notification> using NotificationListener = std::shared_ptr<NotificationListenerCls<T : Notification>>;
+template<typename T> using NotificationListener = std::shared_ptr<NotificationListenerCls<T>>;
 
-template<typename T : Notification> class _NotificationElementCls : public ProxyElementCls {
+template<typename T> class _NotificationElementCls : public ProxyElementCls {
 public:
 
     virtual bool onNotification(Notification notification);
@@ -46,7 +46,7 @@ private:
 
      _NotificationElementCls(NotificationListener<T> widget);
 };
-template<typename T : Notification> using _NotificationElement = std::shared_ptr<_NotificationElementCls<T : Notification>>;
+template<typename T> using _NotificationElement = std::shared_ptr<_NotificationElementCls<T>>;
 
 class LayoutChangedNotificationCls : public NotificationCls {
 public:

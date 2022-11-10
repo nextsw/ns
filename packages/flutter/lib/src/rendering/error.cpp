@@ -2,7 +2,7 @@
 RenderErrorBoxCls::RenderErrorBoxCls(String message) {
     {
         try {
-            if (message != "") {
+            if (message != __s("")) {
                 ParagraphBuilder builder = ui->make<ParagraphBuilderCls>(paragraphStyle);
                 builder->pushStyle(textStyle);
                 builder->addText(message);
@@ -47,7 +47,7 @@ void RenderErrorBoxCls::paint(PaintingContext context, Offset offset) {
                 left = padding->left;
             }
             _paragraph!->layout(ui->make<ParagraphConstraintsCls>(width));
-            if (size->height > padding->top + _paragraph!->height + padding->bottom) {
+            if (size->height > padding->top + _paragraph!->height() + padding->bottom) {
                 top = padding->top;
             }
             context->canvas->drawParagraph(_paragraph!, offset + make<OffsetCls>(left, top));
@@ -66,9 +66,9 @@ Color RenderErrorBoxCls::_initBackgroundColor() {
 }
 
 TextStyle RenderErrorBoxCls::_initTextStyle() {
-    TextStyle result = ui->make<TextStyleCls>(make<ColorCls>(0xFF303030), "sans-serif", 18.0);
+    TextStyle result = ui->make<TextStyleCls>(make<ColorCls>(0xFF303030), __s("sans-serif"), 18.0);
     assert([=] () {
-        result = ui->make<TextStyleCls>(make<ColorCls>(0xFFFFFF66), "monospace", 14.0, FontWeightCls::bold);
+        result = ui->make<TextStyleCls>(make<ColorCls>(0xFFFFFF66), __s("monospace"), 14.0, FontWeightCls::bold);
         return true;
     }());
     return result;

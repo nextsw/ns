@@ -26,7 +26,7 @@ private:
 };
 using RenderProxyBox = std::shared_ptr<RenderProxyBoxCls>;
 
-template<typename T : RenderBox> class RenderProxyBoxMixinCls : public ObjectCls {
+template<typename T> class RenderProxyBoxMixinCls : public ObjectCls {
 public:
 
     virtual void setupParentData(RenderObject child);
@@ -56,7 +56,7 @@ public:
 private:
 
 };
-template<typename T : RenderBox> using RenderProxyBoxMixin = std::shared_ptr<RenderProxyBoxMixinCls<T : RenderBox>>;
+template<typename T> using RenderProxyBoxMixin = std::shared_ptr<RenderProxyBoxMixinCls<T>>;
 
 enum HitTestBehavior{
     deferToChild,
@@ -274,7 +274,7 @@ private:
 };
 using RenderOpacity = std::shared_ptr<RenderOpacityCls>;
 
-template<typename T : RenderObject> class RenderAnimatedOpacityMixinCls : public ObjectCls {
+template<typename T> class RenderAnimatedOpacityMixinCls : public ObjectCls {
 public:
 
     virtual bool isRepaintBoundary();
@@ -314,7 +314,7 @@ private:
     virtual void _updateOpacity();
 
 };
-template<typename T : RenderObject> using RenderAnimatedOpacityMixin = std::shared_ptr<RenderAnimatedOpacityMixinCls<T : RenderObject>>;
+template<typename T> using RenderAnimatedOpacityMixin = std::shared_ptr<RenderAnimatedOpacityMixinCls<T>>;
 
 class RenderAnimatedOpacityCls : public RenderProxyBoxCls {
 public:
@@ -1386,7 +1386,7 @@ private:
 };
 using RenderFollowerLayer = std::shared_ptr<RenderFollowerLayerCls>;
 
-template<typename T : Object> class RenderAnnotatedRegionCls : public RenderProxyBoxCls {
+template<typename T> class RenderAnnotatedRegionCls : public RenderProxyBoxCls {
 public:
     bool alwaysNeedsCompositing;
 
@@ -1410,7 +1410,7 @@ private:
 
 
 };
-template<typename T : Object> using RenderAnnotatedRegion = std::shared_ptr<RenderAnnotatedRegionCls<T : Object>>;
+template<typename T> using RenderAnnotatedRegion = std::shared_ptr<RenderAnnotatedRegionCls<T>>;
 
 
 #endif

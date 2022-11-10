@@ -1,13 +1,13 @@
 #include "focus_scope.hpp"
 FocusCls::FocusCls(bool autofocus, bool canRequestFocus, Widget child, String debugLabel, bool descendantsAreFocusable, bool descendantsAreTraversable, FocusNode focusNode, bool includeSemantics, Unknown key, ValueChanged<bool> onFocusChange, FocusOnKeyCallback onKey, FocusOnKeyEventCallback onKeyEvent, bool skipTraversal) {
     {
-        _onKeyEvent = onKeyEvent;
-        _onKey = onKey;
-        _canRequestFocus = canRequestFocus;
-        _skipTraversal = skipTraversal;
-        _descendantsAreFocusable = descendantsAreFocusable;
-        _descendantsAreTraversable = descendantsAreTraversable;
-        _debugLabel = debugLabel;
+        _onKeyEvent = onKeyEvent();
+        _onKey = onKey();
+        _canRequestFocus = canRequestFocus();
+        _skipTraversal = skipTraversal();
+        _descendantsAreFocusable = descendantsAreFocusable();
+        _descendantsAreTraversable = descendantsAreTraversable();
+        _debugLabel = debugLabel();
         assert(child != nullptr);
         assert(autofocus != nullptr);
         assert(includeSemantics != nullptr);
@@ -15,31 +15,31 @@ FocusCls::FocusCls(bool autofocus, bool canRequestFocus, Widget child, String de
 }
 
 FocusOnKeyEventCallback FocusCls::onKeyEvent() {
-    return _onKeyEvent ?? focusNode?->onKeyEvent;
+    return _onKeyEvent or focusNode?->onKeyEvent();
 }
 
 FocusOnKeyCallback FocusCls::onKey() {
-    return _onKey ?? focusNode?->onKey;
+    return _onKey or focusNode?->onKey();
 }
 
 bool FocusCls::canRequestFocus() {
-    return _canRequestFocus ?? focusNode?->canRequestFocus ?? true;
+    return _canRequestFocus or focusNode?->canRequestFocus or true;
 }
 
 bool FocusCls::skipTraversal() {
-    return _skipTraversal ?? focusNode?->skipTraversal ?? false;
+    return _skipTraversal or focusNode?->skipTraversal or false;
 }
 
 bool FocusCls::descendantsAreFocusable() {
-    return _descendantsAreFocusable ?? focusNode?->descendantsAreFocusable ?? true;
+    return _descendantsAreFocusable or focusNode?->descendantsAreFocusable or true;
 }
 
 bool FocusCls::descendantsAreTraversable() {
-    return _descendantsAreTraversable ?? focusNode?->descendantsAreTraversable ?? true;
+    return _descendantsAreTraversable or focusNode?->descendantsAreTraversable or true;
 }
 
 String FocusCls::debugLabel() {
-    return _debugLabel ?? focusNode?->debugLabel;
+    return _debugLabel or focusNode?->debugLabel;
 }
 
 FocusNode FocusCls::of(BuildContext context, bool scopeOk) {
@@ -54,7 +54,7 @@ FocusNode FocusCls::of(BuildContext context, bool scopeOk) {
         return true;
     }());
     assert([=] () {
-        if (!scopeOk && node is FocusScopeNode) {
+        if (!scopeOk && is<FocusScopeNode>(node)) {
             ;
         }
         return true;
@@ -70,24 +70,24 @@ FocusNode FocusCls::maybeOf(BuildContext context, bool scopeOk) {
     if (node == nullptr) {
         return nullptr;
     }
-    if (!scopeOk && node is FocusScopeNode) {
+    if (!scopeOk && is<FocusScopeNode>(node)) {
         return nullptr;
     }
     return node;
 }
 
 bool FocusCls::isAt(BuildContext context) {
-    return FocusCls->maybeOf(context)?->hasFocus ?? false;
+    return FocusCls->maybeOf(context)?->hasFocus or false;
 }
 
 void FocusCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(make<StringPropertyCls>("debugLabel", debugLabelnullptr));
-    properties->add(make<FlagPropertyCls>("autofocus"autofocus, "AUTOFOCUS", false));
-    properties->add(make<FlagPropertyCls>("canRequestFocus"canRequestFocus, "NOT FOCUSABLE", false));
-    properties->add(make<FlagPropertyCls>("descendantsAreFocusable"descendantsAreFocusable, "DESCENDANTS UNFOCUSABLE", true));
-    properties->add(make<FlagPropertyCls>("descendantsAreTraversable"descendantsAreTraversable, "DESCENDANTS UNTRAVERSABLE", true));
-    properties->add(<FocusNode>make<DiagnosticsPropertyCls>("focusNode", focusNodenullptr));
+    properties->add(make<StringPropertyCls>(__s("debugLabel"), debugLabel()nullptr));
+    properties->add(make<FlagPropertyCls>(__s("autofocus")autofocus, __s("AUTOFOCUS"), false));
+    properties->add(make<FlagPropertyCls>(__s("canRequestFocus")canRequestFocus(), __s("NOT FOCUSABLE"), false));
+    properties->add(make<FlagPropertyCls>(__s("descendantsAreFocusable")descendantsAreFocusable(), __s("DESCENDANTS UNFOCUSABLE"), true));
+    properties->add(make<FlagPropertyCls>(__s("descendantsAreTraversable")descendantsAreTraversable(), __s("DESCENDANTS UNTRAVERSABLE"), true));
+    properties->add(<FocusNode>make<DiagnosticsPropertyCls>(__s("focusNode"), focusNodenullptr));
 }
 
 State<Focus> FocusCls::createState() {
@@ -131,7 +131,7 @@ bool _FocusWithExternalFocusNodeCls::_descendantsAreTraversable() {
 }
 
 FocusNode _FocusStateCls::focusNode() {
-    return widget->focusNode ?? _internalNode!;
+    return widget->focusNode or _internalNode!;
 }
 
 void _FocusStateCls::initState() {
@@ -140,7 +140,7 @@ void _FocusStateCls::initState() {
 }
 
 void _FocusStateCls::dispose() {
-    focusNode->removeListener(_handleFocusChanged);
+    focusNode()->removeListener(_handleFocusChanged);
     _focusAttachment!->detach();
     _internalNode?->dispose();
     super->dispose();
@@ -162,26 +162,26 @@ void _FocusStateCls::didUpdateWidget(Focus oldWidget) {
     super->didUpdateWidget(oldWidget);
     assert([=] () {
         if (oldWidget->focusNode == widget->focusNode && !widget->_usingExternalFocus && oldWidget->debugLabel != widget->debugLabel) {
-            focusNode->debugLabel = widget->debugLabel;
+            focusNode()->debugLabel() = widget->debugLabel;
         }
         return true;
     }());
     if (oldWidget->focusNode == widget->focusNode) {
         if (!widget->_usingExternalFocus) {
-            if (widget->onKey != focusNode->onKey) {
-                focusNode->onKey = widget->onKey;
+            if (widget->onKey != focusNode()->onKey) {
+                focusNode()->onKey = widget->onKey;
             }
-            if (widget->onKeyEvent != focusNode->onKeyEvent) {
-                focusNode->onKeyEvent = widget->onKeyEvent;
+            if (widget->onKeyEvent != focusNode()->onKeyEvent) {
+                focusNode()->onKeyEvent = widget->onKeyEvent;
             }
             if (widget->skipTraversal != nullptr) {
-                focusNode->skipTraversal = widget->skipTraversal;
+                focusNode()->skipTraversal() = widget->skipTraversal;
             }
             if (widget->_canRequestFocus != nullptr) {
-                focusNode->canRequestFocus = widget->_canRequestFocus!;
+                focusNode()->canRequestFocus() = widget->_canRequestFocus!;
             }
-            focusNode->descendantsAreFocusable = widget->descendantsAreFocusable;
-            focusNode->descendantsAreTraversable = widget->descendantsAreTraversable;
+            focusNode()->descendantsAreFocusable() = widget->descendantsAreFocusable;
+            focusNode()->descendantsAreTraversable() = widget->descendantsAreTraversable;
         }
     } else {
         _focusAttachment!->detach();
@@ -199,27 +199,27 @@ Widget _FocusStateCls::build(BuildContext context) {
     if (widget->includeSemantics) {
         child = make<SemanticsCls>(_couldRequestFocus, _hadPrimaryFocus, widget->child);
     }
-    return make<_FocusMarkerCls>(focusNode, child);
+    return make<_FocusMarkerCls>(focusNode(), child);
 }
 
 void _FocusStateCls::_initNode() {
     if (widget->focusNode == nullptr) {
         _internalNode = _createNode();
     }
-    focusNode->descendantsAreFocusable = widget->descendantsAreFocusable;
-    focusNode->descendantsAreTraversable = widget->descendantsAreTraversable;
+    focusNode()->descendantsAreFocusable() = widget->descendantsAreFocusable;
+    focusNode()->descendantsAreTraversable() = widget->descendantsAreTraversable;
     if (widget->skipTraversal != nullptr) {
-        focusNode->skipTraversal = widget->skipTraversal;
+        focusNode()->skipTraversal() = widget->skipTraversal;
     }
     if (widget->_canRequestFocus != nullptr) {
-        focusNode->canRequestFocus = widget->_canRequestFocus!;
+        focusNode()->canRequestFocus() = widget->_canRequestFocus!;
     }
-    _couldRequestFocus = focusNode->canRequestFocus;
-    _descendantsWereFocusable = focusNode->descendantsAreFocusable;
-    _descendantsWereTraversable = focusNode->descendantsAreTraversable;
-    _hadPrimaryFocus = focusNode->hasPrimaryFocus;
-    _focusAttachment = focusNode->attach(contextwidget->onKeyEvent, widget->onKey);
-    focusNode->addListener(_handleFocusChanged);
+    _couldRequestFocus = focusNode()->canRequestFocus();
+    _descendantsWereFocusable = focusNode()->descendantsAreFocusable();
+    _descendantsWereTraversable = focusNode()->descendantsAreTraversable();
+    _hadPrimaryFocus = focusNode()->hasPrimaryFocus();
+    _focusAttachment = focusNode()->attach(contextwidget->onKeyEvent, widget->onKey);
+    focusNode()->addListener(_handleFocusChanged);
 }
 
 FocusNode _FocusStateCls::_createNode() {
@@ -228,17 +228,17 @@ FocusNode _FocusStateCls::_createNode() {
 
 void _FocusStateCls::_handleAutofocus() {
     if (!_didAutofocus && widget->autofocus) {
-        FocusScopeCls->of(context)->autofocus(focusNode);
+        FocusScopeCls->of(context)->autofocus(focusNode());
         _didAutofocus = true;
     }
 }
 
 void _FocusStateCls::_handleFocusChanged() {
-    bool hasPrimaryFocus = focusNode->hasPrimaryFocus;
-    bool canRequestFocus = focusNode->canRequestFocus;
-    bool descendantsAreFocusable = focusNode->descendantsAreFocusable;
-    bool descendantsAreTraversable = focusNode->descendantsAreTraversable;
-    widget->onFocusChange?->call(focusNode->hasFocus);
+    bool hasPrimaryFocus = focusNode()->hasPrimaryFocus();
+    bool canRequestFocus = focusNode()->canRequestFocus();
+    bool descendantsAreFocusable = focusNode()->descendantsAreFocusable();
+    bool descendantsAreTraversable = focusNode()->descendantsAreTraversable();
+    widget->onFocusChange?->call(focusNode()->hasFocus());
     if (_hadPrimaryFocus != hasPrimaryFocus) {
         setState([=] () {
             _hadPrimaryFocus = hasPrimaryFocus;
@@ -261,7 +261,7 @@ void _FocusStateCls::_handleFocusChanged() {
     }
 }
 
-FocusScopeCls::FocusScopeCls(Unknown autofocus, Unknown canRequestFocus, Unknown child, Unknown debugLabel, Unknown key, FocusScopeNode node, Unknown onFocusChange, Unknown onKey, Unknown onKeyEvent, Unknown skipTraversal) {
+FocusScopeCls::FocusScopeCls(Unknown autofocus, Unknown canRequestFocus, Unknown child, Unknown debugLabel, Unknown key, FocusScopeNode node, Unknown onFocusChange, Unknown onKey, Unknown onKeyEvent, Unknown skipTraversal) : Focus(node) {
     {
         assert(child != nullptr);
         assert(autofocus != nullptr);
@@ -271,7 +271,7 @@ FocusScopeCls::FocusScopeCls(Unknown autofocus, Unknown canRequestFocus, Unknown
 FocusScopeNode FocusScopeCls::of(BuildContext context) {
     assert(context != nullptr);
     _FocusMarker marker = context-><_FocusMarker>dependOnInheritedWidgetOfExactType();
-    return marker?->notifier?->nearestScope ?? context->owner!->focusManager->rootScope;
+    return marker?->notifier?->nearestScope or context->owner!->focusManager->rootScope;
 }
 
 State<Focus> FocusScopeCls::createState() {
@@ -306,7 +306,7 @@ String _FocusScopeWithExternalFocusNodeCls::debugLabel() {
     return focusNode!->debugLabel;
 }
 
-_FocusScopeWithExternalFocusNodeCls::_FocusScopeWithExternalFocusNodeCls(Unknown autofocus, Unknown child, FocusScopeNode focusScopeNode, Unknown key, Unknown onFocusChange) {
+_FocusScopeWithExternalFocusNodeCls::_FocusScopeWithExternalFocusNodeCls(Unknown autofocus, Unknown child, FocusScopeNode focusScopeNode, Unknown key, Unknown onFocusChange) : FocusScope(focusScopeNode) {
 }
 
 bool _FocusScopeWithExternalFocusNodeCls::_usingExternalFocus() {
@@ -322,7 +322,7 @@ FocusScopeNode _FocusScopeStateCls::_createNode() {
     return make<FocusScopeNodeCls>(widget->debugLabel, widget->canRequestFocus, widget->skipTraversal);
 }
 
-_FocusMarkerCls::_FocusMarkerCls(Unknown child, FocusNode node) {
+_FocusMarkerCls::_FocusMarkerCls(Unknown child, FocusNode node) : InheritedNotifier<FocusNode>(node) {
     {
         assert(node != nullptr);
         assert(child != nullptr);

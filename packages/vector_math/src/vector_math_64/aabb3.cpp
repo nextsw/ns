@@ -49,8 +49,8 @@ void Aabb3Cls::centerAndHalfExtents(Vector3 center, Vector3 halfExtents) {
 void Aabb3Cls::fromBuffer(ByteBuffer buffer, int offset)
 
 void Aabb3Cls::setCenterAndHalfExtents(Vector3 center, Vector3 halfExtents) {
-    auto _c1 = make<Aabb3Cls>();_c1.setSphere(sphere);auto _c1 = make<Aabb3Cls>();_c1.setTriangle(triangle);auto _c1 = make<Aabb3Cls>();_c1.setQuad(quad);auto _c1 = make<Aabb3Cls>();_c1.setObb3(obb);auto _c1 = make<Aabb3Cls>();_c1.setRay(ray, limitMin, limitMax);auto _c1 = make<Aabb3Cls>();_c1.setCenterAndHalfExtents(center, halfExtents);auto _c1 = _min;_c1.auto _c2 = setFrom(center);_c2.sub(halfExtents);_c2;_c1;
-    auto _c3 = _max;_c3.auto _c4 = setFrom(center);_c4.add(halfExtents);_c4;_c3;
+    auto _c1 = make<Aabb3Cls>();_c1.setSphere(sphere);auto _c1 = make<Aabb3Cls>();_c1.setTriangle(triangle);auto _c1 = make<Aabb3Cls>();_c1.setQuad(quad);auto _c1 = make<Aabb3Cls>();_c1.setObb3(obb);auto _c1 = make<Aabb3Cls>();_c1.setRay(ray, limitMin, limitMax);auto _c1 = make<Aabb3Cls>();_c1.setCenterAndHalfExtents(center(), halfExtents);auto _c1 = _min;_c1.auto _c2 = setFrom(center());_c2.sub(halfExtents);_c2;_c1;
+    auto _c3 = _max;_c3.auto _c4 = setFrom(center());_c4.add(halfExtents);_c4;_c3;
 }
 
 void Aabb3Cls::setSphere(Sphere sphere) {
@@ -109,12 +109,12 @@ void Aabb3Cls::setRay(double limitMax, double limitMin, Ray ray) {
 }
 
 void Aabb3Cls::copyCenterAndHalfExtents(Vector3 center, Vector3 halfExtents) {
-    auto _c1 = center;_c1.auto _c2 = setFrom(_min);_c2.auto _c3 = add(_max);_c3.scale(0.5);_c3;_c2;_c1;
+    auto _c1 = center();_c1.auto _c2 = setFrom(_min);_c2.auto _c3 = add(_max);_c3.scale(0.5);_c3;_c2;_c1;
     auto _c4 = halfExtents;_c4.auto _c5 = setFrom(_max);_c5.auto _c6 = sub(_min);_c6.scale(0.5);_c6;_c5;_c4;
 }
 
 void Aabb3Cls::copyCenter(Vector3 center) {
-    auto _c1 = center;_c1.auto _c2 = setFrom(_min);_c2.auto _c3 = add(_max);_c3.scale(0.5);_c3;_c2;_c1;
+    auto _c1 = center();_c1.auto _c2 = setFrom(_min);_c2.auto _c3 = add(_max);_c3.scale(0.5);_c3;_c2;_c1;
 }
 
 void Aabb3Cls::copyFrom(Aabb3 other) {

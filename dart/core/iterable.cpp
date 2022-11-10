@@ -16,7 +16,7 @@ template<typename E> Iterable<R> IterableCls<E>::casttemplate<typename R> () {
 
 template<typename E> Iterable<E> IterableCls<E>::followedBy(Iterable<E> other) {
     auto self = this;
-    if (self is EfficientLengthIterable<E>) {
+    if (is<EfficientLengthIterable<E>>(self)) {
         return <E>firstEfficient(self, other);
     }
     return <E>make<FollowedByIterableCls>(this, other);
@@ -55,12 +55,12 @@ template<typename E> void IterableCls<E>::forEach(void action(E element) ) {
 
 template<typename E> E IterableCls<E>::reduce(E combine(E element, E value) ) {
     Iterator<E> iterator = this->iterator;
-    if (!iterator->moveNext()) {
+    if (!iterator()->moveNext()) {
         ;
     }
-    E value = iterator->current;
-    while (iterator->moveNext()) {
-        value = combine(value, iterator->current);
+    E value = iterator()->current();
+    while (iterator()->moveNext()) {
+        value = combine(value, iterator()->current());
     }
     return value;
 }
@@ -84,19 +84,19 @@ template<typename E> bool IterableCls<E>::every(bool test(E element) ) {
 
 template<typename E> String IterableCls<E>::join(String separator) {
     Iterator<E> iterator = this->iterator;
-    if (!iterator->moveNext())     {
-        return "";
+    if (!iterator()->moveNext())     {
+        return __s("");
     }
     StringBuffer buffer = make<StringBufferCls>();
-    if (separator == nullptr || separator == "") {
+    if (separator == nullptr || separator == __s("")) {
         do {
-            buffer->write(iterator->current->toString());
-        } while (iterator->moveNext());
+            buffer->write(iterator()->current()->toString());
+        } while (iterator()->moveNext());
     } else {
-        buffer->write(iterator->current->toString());
-        while (iterator->moveNext()) {
+        buffer->write(iterator()->current()->toString());
+        while (iterator()->moveNext()) {
             buffer->write(separator);
-            buffer->write(iterator->current->toString());
+            buffer->write(iterator()->current()->toString());
         }
     }
     return buffer->toString();
@@ -120,9 +120,9 @@ template<typename E> Set<E> IterableCls<E>::toSet() {
 }
 
 template<typename E> int IterableCls<E>::length() {
-    assert(this is! EfficientLengthIterable);
+    assert(!is<EfficientLengthIterable>(this));
     int count = 0;
-    Iterator it = iterator;
+    Iterator it = iterator();
     while (it->moveNext()) {
         count++;
     }
@@ -130,11 +130,11 @@ template<typename E> int IterableCls<E>::length() {
 }
 
 template<typename E> bool IterableCls<E>::isEmpty() {
-    return !iterator->moveNext();
+    return !iterator()->moveNext();
 }
 
 template<typename E> bool IterableCls<E>::isNotEmpty() {
-    return !isEmpty;
+    return !isEmpty();
 }
 
 template<typename E> Iterable<E> IterableCls<E>::take(int count) {
@@ -154,7 +154,7 @@ template<typename E> Iterable<E> IterableCls<E>::skipWhile(bool test(E value) ) 
 }
 
 template<typename E> E IterableCls<E>::first() {
-    Iterator<E> it = iterator;
+    Iterator<E> it = iterator();
     if (!it->moveNext()) {
         ;
     }
@@ -162,7 +162,7 @@ template<typename E> E IterableCls<E>::first() {
 }
 
 template<typename E> E IterableCls<E>::last() {
-    Iterator<E> it = iterator;
+    Iterator<E> it = iterator();
     if (!it->moveNext()) {
         ;
     }
@@ -174,7 +174,7 @@ template<typename E> E IterableCls<E>::last() {
 }
 
 template<typename E> E IterableCls<E>::single() {
-    Iterator<E> it = iterator;
+    Iterator<E> it = iterator();
     if (!it->moveNext())     {
         ;
     }
@@ -237,7 +237,7 @@ template<typename E> E IterableCls<E>::singleWhere(E orElse() , bool test(E elem
 }
 
 template<typename E> E IterableCls<E>::elementAt(int index) {
-    RangeErrorCls->checkNotNegative(index, "index");
+    RangeErrorCls->checkNotNegative(index, __s("index"));
     int elementIndex = 0;
     for (E element : this) {
         if (index == elementIndex)         {
@@ -249,7 +249,7 @@ template<typename E> E IterableCls<E>::elementAt(int index) {
 }
 
 template<typename E> String IterableCls<E>::toString() {
-    return IterableBaseCls->iterableToShortString(this, "(", ")");
+    return IterableBaseCls->iterableToShortString(this, __s("("), __s(")"));
 }
 
 template<typename E> E _GeneratorIterableCls<E>::elementAt(int index) {
@@ -259,7 +259,7 @@ template<typename E> E _GeneratorIterableCls<E>::elementAt(int index) {
 
 template<typename E> _GeneratorIterableCls<E>::_GeneratorIterableCls(E generator(int index) , int length) {
     {
-        _generator = generator ?? (((E Function(int ))_id));
+        _generator = generator or (as<E Function(int )>(_id));
     }
 }
 

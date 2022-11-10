@@ -5,19 +5,19 @@ BoxBorder BoxBorderCls::add(ShapeBorder other, bool reversed) {
 
 BoxBorder BoxBorderCls::lerp(BoxBorder a, BoxBorder b, double t) {
     assert(t != nullptr);
-    if ((a is Border) && (b is Border)) {
+    if ((is<Border>(a)) && (is<Border>(b))) {
         return BorderCls->lerp(a, b, t);
     }
-    if ((a is BorderDirectional) && (b is BorderDirectional)) {
+    if ((is<BorderDirectional>(a)) && (is<BorderDirectional>(b))) {
         return BorderDirectionalCls->lerp(a, b, t);
     }
-    if (b is Border && a is BorderDirectional) {
+    if (is<Border>(b) && is<BorderDirectional>(a)) {
         BoxBorder c = b;
         b = a;
         a = c;
         t = 1.0 - t;
     }
-    if (a is Border && b is BorderDirectional) {
+    if (is<Border>(a) && is<BorderDirectional>(b)) {
         if (b->start == BorderSideCls::none && b->end == BorderSideCls::none) {
             return make<BorderCls>(BorderSideCls->lerp(a->top, b->top, t), BorderSideCls->lerp(a->right, BorderSideCls::none, t), BorderSideCls->lerp(a->bottom, b->bottom, t), BorderSideCls->lerp(a->left, BorderSideCls::none, t));
         }
@@ -33,12 +33,12 @@ BoxBorder BoxBorderCls::lerp(BoxBorder a, BoxBorder b, double t) {
 }
 
 Path BoxBorderCls::getInnerPath(Rect rect, TextDirection textDirection) {
-    assert(textDirection != nullptr, "The textDirection argument to $runtimeType.getInnerPath must not be null.");
+    assert(textDirection != nullptr, __s("The textDirection argument to $runtimeType.getInnerPath must not be null."));
     auto _c1 = make<PathCls>();_c1.addRect(dimensions->resolve(textDirection)->deflateRect(rect));return _c1;
 }
 
 Path BoxBorderCls::getOuterPath(Rect rect, TextDirection textDirection) {
-    assert(textDirection != nullptr, "The textDirection argument to $runtimeType.getOuterPath must not be null.");
+    assert(textDirection != nullptr, __s("The textDirection argument to $runtimeType.getOuterPath must not be null."));
     auto _c1 = make<PathCls>();_c1.addRect(rect);return _c1;
 }
 
@@ -116,18 +116,18 @@ Border BorderCls::merge(Border a, Border b) {
 }
 
 EdgeInsetsGeometry BorderCls::dimensions() {
-    if (isUniform) {
+    if (isUniform()) {
         ;
     }
     return EdgeInsetsCls->fromLTRB(left->width, top->width, right->width, bottom->width);
 }
 
 bool BorderCls::isUniform() {
-    return _colorIsUniform && _widthIsUniform && _styleIsUniform && _strokeAlignIsUniform;
+    return _colorIsUniform() && _widthIsUniform() && _styleIsUniform() && _strokeAlignIsUniform();
 }
 
 Border BorderCls::add(ShapeBorder other, bool reversed) {
-    if (other is Border && BorderSideCls->canMerge(top, other->top) && BorderSideCls->canMerge(right, other->right) && BorderSideCls->canMerge(bottom, other->bottom) && BorderSideCls->canMerge(left, other->left)) {
+    if (is<Border>(other) && BorderSideCls->canMerge(top, other->top) && BorderSideCls->canMerge(right, other->right) && BorderSideCls->canMerge(bottom, other->bottom) && BorderSideCls->canMerge(left, other->left)) {
         return BorderCls->merge(this, other);
     }
     return nullptr;
@@ -138,14 +138,14 @@ Border BorderCls::scale(double t) {
 }
 
 ShapeBorder BorderCls::lerpFrom(ShapeBorder a, double t) {
-    if (a is Border) {
+    if (is<Border>(a)) {
         return BorderCls->lerp(a, this, t);
     }
     return super->lerpFrom(a, t);
 }
 
 ShapeBorder BorderCls::lerpTo(ShapeBorder b, double t) {
-    if (b is Border) {
+    if (is<Border>(b)) {
         return BorderCls->lerp(this, b, t);
     }
     return super->lerpTo(b, t);
@@ -166,7 +166,7 @@ Border BorderCls::lerp(Border a, Border b, double t) {
 }
 
 void BorderCls::paint(BorderRadius borderRadius, Canvas canvas, Rect rect, BoxShape shape, TextDirection textDirection) {
-    if (isUniform) {
+    if (isUniform()) {
         ;
     }
     assert([=] () {
@@ -182,7 +182,7 @@ void BorderCls::paint(BorderRadius borderRadius, Canvas canvas, Rect rect, BoxSh
         return true;
     }());
     assert([=] () {
-        if (!_strokeAlignIsUniform || top->strokeAlign != StrokeAlignCls::inside) {
+        if (!_strokeAlignIsUniform() || top->strokeAlign != StrokeAlignCls::inside) {
             ;
         }
         return true;
@@ -194,10 +194,10 @@ bool BorderCls::==(Object other) {
     if (identical(this, other)) {
         return true;
     }
-    if (other->runtimeType != runtimeType) {
+    if (other->runtimeType() != runtimeType) {
         return false;
     }
-    return other is Border && other->top == top && other->right == right && other->bottom == bottom && other->left == left;
+    return is<Border>(other) && other->top == top && other->right == right && other->bottom == bottom && other->left == left;
 }
 
 int BorderCls::hashCode() {
@@ -205,11 +205,11 @@ int BorderCls::hashCode() {
 }
 
 String BorderCls::toString() {
-    if (isUniform) {
-        return "${objectRuntimeType(this, 'Border')}.all($top)";
+    if (isUniform()) {
+        return __s("${objectRuntimeType(this, 'Border')}.all($top)");
     }
     List<String> list1 = make<ListCls<>>();if (top != BorderSideCls::none) {    list1.add(ArrayItem);}if (right != BorderSideCls::none) {    list1.add(ArrayItem);}if (bottom != BorderSideCls::none) {    list1.add(ArrayItem);}if (left != BorderSideCls::none) {    list1.add(ArrayItem);}List<String> arguments = list1;
-    return "${objectRuntimeType(this, 'Border')}(${arguments.join(", ")})";
+    return __s("${objectRuntimeType(this, 'Border')}(${arguments.join(", ")})");
 }
 
 bool BorderCls::_colorIsUniform() {
@@ -252,7 +252,7 @@ BorderDirectional BorderDirectionalCls::merge(BorderDirectional a, BorderDirecti
 }
 
 EdgeInsetsGeometry BorderDirectionalCls::dimensions() {
-    if (isUniform) {
+    if (isUniform()) {
         ;
     }
     return EdgeInsetsDirectionalCls->fromSTEB(start->width, top->width, end->width, bottom->width);
@@ -271,21 +271,21 @@ bool BorderDirectionalCls::isUniform() {
     if (start->style != topStyle || end->style != topStyle || bottom->style != topStyle) {
         return false;
     }
-    if (_strokeAlignIsUniform == false) {
+    if (_strokeAlignIsUniform() == false) {
         return false;
     }
     return true;
 }
 
 BoxBorder BorderDirectionalCls::add(ShapeBorder other, bool reversed) {
-    if (other is BorderDirectional) {
+    if (is<BorderDirectional>(other)) {
         BorderDirectional typedOther = other;
         if (BorderSideCls->canMerge(top, typedOther->top) && BorderSideCls->canMerge(start, typedOther->start) && BorderSideCls->canMerge(end, typedOther->end) && BorderSideCls->canMerge(bottom, typedOther->bottom)) {
             return BorderDirectionalCls->merge(this, typedOther);
         }
         return nullptr;
     }
-    if (other is Border) {
+    if (is<Border>(other)) {
         Border typedOther = other;
         if (!BorderSideCls->canMerge(typedOther->top, top) || !BorderSideCls->canMerge(typedOther->bottom, bottom)) {
             return nullptr;
@@ -310,14 +310,14 @@ BorderDirectional BorderDirectionalCls::scale(double t) {
 }
 
 ShapeBorder BorderDirectionalCls::lerpFrom(ShapeBorder a, double t) {
-    if (a is BorderDirectional) {
+    if (is<BorderDirectional>(a)) {
         return BorderDirectionalCls->lerp(a, this, t);
     }
     return super->lerpFrom(a, t);
 }
 
 ShapeBorder BorderDirectionalCls::lerpTo(ShapeBorder b, double t) {
-    if (b is BorderDirectional) {
+    if (is<BorderDirectional>(b)) {
         return BorderDirectionalCls->lerp(this, b, t);
     }
     return super->lerpTo(b, t);
@@ -338,14 +338,14 @@ BorderDirectional BorderDirectionalCls::lerp(BorderDirectional a, BorderDirectio
 }
 
 void BorderDirectionalCls::paint(BorderRadius borderRadius, Canvas canvas, Rect rect, BoxShape shape, TextDirection textDirection) {
-    if (isUniform) {
+    if (isUniform()) {
         ;
     }
-    assert(borderRadius == nullptr, "A borderRadius can only be given for uniform borders.");
-    assert(shape == BoxShapeCls::rectangle, "A border can only be drawn as a circle if it is uniform.");
-    assert(_strokeAlignIsUniform && top->strokeAlign == StrokeAlignCls::inside, "A Border can only draw strokeAlign different than StrokeAlign.inside on uniform borders.");
+    assert(borderRadius == nullptr, __s("A borderRadius can only be given for uniform borders."));
+    assert(shape == BoxShapeCls::rectangle, __s("A border can only be drawn as a circle if it is uniform."));
+    assert(_strokeAlignIsUniform() && top->strokeAlign == StrokeAlignCls::inside, __s("A Border can only draw strokeAlign different than StrokeAlign.inside on uniform borders."));
     BorderSide left, right;
-    assert(textDirection != nullptr, "Non-uniform BorderDirectional objects require a TextDirection when painting.");
+    assert(textDirection != nullptr, __s("Non-uniform BorderDirectional objects require a TextDirection when painting."));
     ;
     paintBorder(canvas, recttop, left, bottom, right);
 }
@@ -354,10 +354,10 @@ bool BorderDirectionalCls::==(Object other) {
     if (identical(this, other)) {
         return true;
     }
-    if (other->runtimeType != runtimeType) {
+    if (other->runtimeType() != runtimeType) {
         return false;
     }
-    return other is BorderDirectional && other->top == top && other->start == start && other->end == end && other->bottom == bottom;
+    return is<BorderDirectional>(other) && other->top == top && other->start == start && other->end == end && other->bottom == bottom;
 }
 
 int BorderDirectionalCls::hashCode() {
@@ -366,7 +366,7 @@ int BorderDirectionalCls::hashCode() {
 
 String BorderDirectionalCls::toString() {
     List<String> list1 = make<ListCls<>>();if (top != BorderSideCls::none) {    list1.add(ArrayItem);}if (start != BorderSideCls::none) {    list1.add(ArrayItem);}if (end != BorderSideCls::none) {    list1.add(ArrayItem);}if (bottom != BorderSideCls::none) {    list1.add(ArrayItem);}List<String> arguments = list1;
-    return "${objectRuntimeType(this, 'BorderDirectional')}(${arguments.join(", ")})";
+    return __s("${objectRuntimeType(this, 'BorderDirectional')}(${arguments.join(", ")})");
 }
 
 bool BorderDirectionalCls::_strokeAlignIsUniform() {

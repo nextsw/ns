@@ -1,16 +1,16 @@
 #include "print.hpp"
 void debugPrintSynchronously(String message, int wrapWidth) {
     if (message != nullptr && wrapWidth != nullptr) {
-        print(message->split("\n")-><String>expand([=] (String line)         {
+        print(message->split(__s("\n"))-><String>expand([=] (String line)         {
             debugWordWrap(line, wrapWidth);
-        })->join("\n"));
+        })->join(__s("\n")));
     } else {
         print(message);
     }
 }
 
 void debugPrintThrottled(String message, int wrapWidth) {
-    List<String> messageLines = message?->split("\n") ?? makeList(ArrayItem);
+    List<String> messageLines = message?->split(__s("\n")) or makeList(ArrayItem);
     if (wrapWidth != nullptr) {
         _debugPrintBuffer->addAll(messageLines-><String>expand([=] (String line)         {
             debugWordWrap(line, wrapWidth);
@@ -48,16 +48,16 @@ void _debugPrintTask() {
 }
 
 Future<void> debugPrintDone() {
-    return _debugPrintCompleter?->future ?? <void>value();
+    return _debugPrintCompleter?->future or <void>value();
 }
 
 Iterable<String> debugWordWrap(String message, int width, String wrapIndent) {
-    if (message->length < width || message->trimLeft()[0] == "#") {
+    if (message->length < width || message->trimLeft()[0] == __s("#")) {
         return makeList(ArrayItem);
     }
     List<String> wrapped = makeList();
     Match prefixMatch = _indentPattern->matchAsPrefix(message)!;
-    String prefix = wrapIndent + " " * prefixMatch->group(0)!->length;
+    String prefix = wrapIndent + __s(" ") * prefixMatch->group(0)!->length;
     int start = 0;
     int startForLengthCalculations = 0;
     bool addPrefix = false;

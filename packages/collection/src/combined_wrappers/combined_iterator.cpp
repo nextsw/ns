@@ -13,16 +13,16 @@ template<typename T> CombinedIteratorCls<T>::CombinedIteratorCls(Iterator<Iterat
 template<typename T> T CombinedIteratorCls<T>::current() {
     auto iterators = _iterators;
     if (iterators != nullptr)     {
-        return iterators->current->current;
+        return iterators->current()->current();
     }
-    return ((T)nullptr);
+    return as<T>(nullptr);
 }
 
 template<typename T> bool CombinedIteratorCls<T>::moveNext() {
     auto iterators = _iterators;
     if (iterators != nullptr) {
         do {
-            if (iterators->current->moveNext()) {
+            if (iterators->current()->moveNext()) {
                 return true;
             }
         } while (iterators->moveNext());

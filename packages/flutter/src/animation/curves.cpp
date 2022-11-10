@@ -1,7 +1,7 @@
 #include "curves.hpp"
 template<typename T> T ParametricCurveCls<T>::transform(double t) {
     assert(t != nullptr);
-    assert(t >= 0.0 && t <= 1.0, "parametric value $t is outside of [0, 1] range.");
+    assert(t >= 0.0 && t <= 1.0, __s("parametric value $t is outside of [0, 1] range."));
     return transformInternal(t);
 }
 
@@ -10,7 +10,7 @@ template<typename T> T ParametricCurveCls<T>::transformInternal(double t) {
 }
 
 template<typename T> String ParametricCurveCls<T>::toString() {
-    return objectRuntimeType(this, "ParametricCurve");
+    return objectRuntimeType(this, __s("ParametricCurve"));
 }
 
 double CurveCls::transform(double t) {
@@ -40,7 +40,7 @@ double SawToothCls::transformInternal(double t) {
 }
 
 String SawToothCls::toString() {
-    return "${objectRuntimeType(this, 'SawTooth')}($count)";
+    return __s("${objectRuntimeType(this, 'SawTooth')}($count)");
 }
 
 IntervalCls::IntervalCls(double begin, Curve curve, double end) {
@@ -65,10 +65,10 @@ double IntervalCls::transformInternal(double t) {
 }
 
 String IntervalCls::toString() {
-    if (curve is! _Linear) {
-        return "${objectRuntimeType(this, 'Interval')}($begin\u22EF$end)\u27A9$curve";
+    if (!is<_Linear>(curve)) {
+        return __s("${objectRuntimeType(this, 'Interval')}($begin\u22EF$end)\u27A9$curve");
     }
-    return "${objectRuntimeType(this, 'Interval')}($begin\u22EF$end)";
+    return __s("${objectRuntimeType(this, 'Interval')}($begin\u22EF$end)");
 }
 
 ThresholdCls::ThresholdCls(double threshold) {
@@ -110,7 +110,7 @@ double CubicCls::transformInternal(double t) {
 }
 
 String CubicCls::toString() {
-    return "${objectRuntimeType(this, 'Cubic')}(${a.toStringAsFixed(2)}, ${b.toStringAsFixed(2)}, ${c.toStringAsFixed(2)}, ${d.toStringAsFixed(2)})";
+    return __s("${objectRuntimeType(this, 'Cubic')}(${a.toStringAsFixed(2)}, ${b.toStringAsFixed(2)}, ${c.toStringAsFixed(2)}, ${d.toStringAsFixed(2)})");
 }
 
 double CubicCls::_evaluateCubic(double a, double b, double m) {
@@ -118,19 +118,19 @@ double CubicCls::_evaluateCubic(double a, double b, double m) {
 }
 
 double ThreePointCubicCls::transformInternal(double t) {
-    bool firstCurve =  < midpoint->dx;
-    double scaleX = firstCurve? midpoint->dx : 1.0 - midpoint->dx;
-    double scaleY = firstCurve? midpoint->dy : 1.0 - midpoint->dy;
-    double scaledT = (t - (firstCurve? 0.0 : midpoint->dx)) / scaleX;
+    bool firstCurve =  < midpoint->dx();
+    double scaleX = firstCurve? midpoint->dx() : 1.0 - midpoint->dx();
+    double scaleY = firstCurve? midpoint->dy() : 1.0 - midpoint->dy();
+    double scaledT = (t - (firstCurve? 0.0 : midpoint->dx())) / scaleX;
     if (firstCurve) {
-        return make<CubicCls>(a1->dx / scaleX, a1->dy / scaleY, b1->dx / scaleX, b1->dy / scaleY)->transform(scaledT) * scaleY;
+        return make<CubicCls>(a1->dx() / scaleX, a1->dy() / scaleY, b1->dx() / scaleX, b1->dy() / scaleY)->transform(scaledT) * scaleY;
     } else {
-        return make<CubicCls>((a2->dx - midpoint->dx) / scaleX, (a2->dy - midpoint->dy) / scaleY, (b2->dx - midpoint->dx) / scaleX, (b2->dy - midpoint->dy) / scaleY)->transform(scaledT) * scaleY + midpoint->dy;
+        return make<CubicCls>((a2->dx() - midpoint->dx()) / scaleX, (a2->dy() - midpoint->dy()) / scaleY, (b2->dx() - midpoint->dx()) / scaleX, (b2->dy() - midpoint->dy()) / scaleY)->transform(scaledT) * scaleY + midpoint->dy();
     }
 }
 
 String ThreePointCubicCls::toString() {
-    return "${objectRuntimeType(this, 'ThreePointCubic($a1, $b1, $midpoint, $a2, $b2)')} ";
+    return __s("${objectRuntimeType(this, 'ThreePointCubic($a1, $b1, $midpoint, $a2, $b2)')} ");
 }
 
 Iterable<Curve2DSample> Curve2DCls::generateSamples(double end, double start, double tolerance) {
@@ -138,7 +138,7 @@ Iterable<Curve2DSample> Curve2DCls::generateSamples(double end, double start, do
     assert(start != nullptr);
     assert(end != nullptr);
     assert(end > start);
-    Random rand = math->make<RandomCls>(samplingSeed);
+    Random rand = math->make<RandomCls>(samplingSeed());
     InlineMethod;
     Curve2DSample first = make<Curve2DSampleCls>(start, transform(start));
     Curve2DSample last = make<Curve2DSampleCls>(end, transform(end));
@@ -182,16 +182,16 @@ Curve2DSampleCls::Curve2DSampleCls(double t, Offset value) {
 }
 
 String Curve2DSampleCls::toString() {
-    return "[(${value.dx.toStringAsFixed(2)}, ${value.dy.toStringAsFixed(2)}), ${t.toStringAsFixed(2)}]";
+    return __s("[(${value.dx.toStringAsFixed(2)}, ${value.dy.toStringAsFixed(2)}), ${t.toStringAsFixed(2)}]");
 }
 
 CatmullRomSplineCls::CatmullRomSplineCls(List<Offset> controlPoints, Offset endHandle, Offset startHandle, double tension) {
     {
         assert(controlPoints != nullptr);
         assert(tension != nullptr);
-        assert(tension <= 1.0, "tension $tension must not be greater than 1.0.");
-        assert(tension >= 0.0, "tension $tension must not be negative.");
-        assert(controlPoints->length > 3, "There must be at least four control points to create a CatmullRomSpline.");
+        assert(tension <= 1.0, __s("tension $tension must not be greater than 1.0."));
+        assert(tension >= 0.0, __s("tension $tension must not be negative."));
+        assert(controlPoints->length > 3, __s("There must be at least four control points to create a CatmullRomSpline."));
         _controlPoints = controlPoints;
         _startHandle = startHandle;
         _endHandle = endHandle;
@@ -210,7 +210,7 @@ int CatmullRomSplineCls::samplingSeed() {
 
 Offset CatmullRomSplineCls::transformInternal(double t) {
     _initializeIfNeeded();
-    double length = _cubicSegments->length->toDouble();
+    double length = _cubicSegments->length()->toDouble();
     double position;
     double localT;
     int index;
@@ -221,7 +221,7 @@ Offset CatmullRomSplineCls::transformInternal(double t) {
     } else {
         position = length;
         localT = 1.0;
-        index = _cubicSegments->length - 1;
+        index = _cubicSegments->length() - 1;
     }
     List<Offset> cubicControlPoints = _cubicSegments[index];
     double localT2 = localT * localT;
@@ -264,7 +264,7 @@ CatmullRomCurveCls::CatmullRomCurveCls(List<Offset> controlPoints, double tensio
         assert(tension != nullptr);
         assert([=] () {
                     auto _c1 = _debugAssertReasons;        _c1.clear();return validateControlPoints(controlPointstension, _c1);
-        }(), "control points $controlPoints could not be validated:\n  ${_debugAssertReasons.join('\n  ')}");
+        }(), __s("control points $controlPoints could not be validated:\n  ${_debugAssertReasons.join('\n  ')}"));
         _precomputedSamples = makeList();
     }
 }
@@ -275,14 +275,14 @@ bool CatmullRomCurveCls::validateControlPoints(List<Offset> controlPoints, List<
     assert(tension != nullptr);
     if (controlPoints == nullptr) {
         assert([=] () {
-            reasons?->add("Supplied control points cannot be null");
+            reasons?->add(__s("Supplied control points cannot be null"));
             return true;
         }());
         return false;
     }
     if (controlPoints->length < 2) {
         assert([=] () {
-            reasons?->add("There must be at least two points supplied to create a valid curve.");
+            reasons?->add(__s("There must be at least two points supplied to create a valid curve."));
             return true;
         }());
         return false;
@@ -295,14 +295,14 @@ bool CatmullRomCurveCls::validateControlPoints(List<Offset> controlPoints, List<
     for (;  < controlPoints->length; ++i) {
         if (i > 1 &&  < controlPoints->length - 2 && (controlPoints[i]->dx <= 0.0 || controlPoints[i]->dx >= 1.0)) {
             assert([=] () {
-                reasons?->add("Control points must have X values between 0.0 and 1.0, exclusive. Point $i has an x value (${controlPoints![i].dx}) which is outside the range.");
+                reasons?->add(__s("Control points must have X values between 0.0 and 1.0, exclusive. Point $i has an x value (${controlPoints![i].dx}) which is outside the range."));
                 return true;
             }());
             return false;
         }
         if (controlPoints[i]->dx <= lastX) {
             assert([=] () {
-                reasons?->add("Each X coordinate must be greater than the preceding X coordinate (i.e. must be monotonically increasing in X). Point $i has an x value of ${controlPoints![i].dx}, which is not greater than $lastX");
+                reasons?->add(__s("Each X coordinate must be greater than the preceding X coordinate (i.e. must be monotonically increasing in X). Point $i has an x value of ${controlPoints![i].dx}, which is not greater than $lastX"));
                 return true;
             }());
             return false;
@@ -320,7 +320,7 @@ bool CatmullRomCurveCls::validateControlPoints(List<Offset> controlPoints, List<
         bool bail = true;
         success = false;
         assert([=] () {
-            reasons?->add("The curve has more than one Y value at X = ${samplePoints.first.value.dx}. Try moving some control points further away from this value of X, or increasing the tension.");
+            reasons?->add(__s("The curve has more than one Y value at X = ${samplePoints.first.value.dx}. Try moving some control points further away from this value of X, or increasing the tension."));
             bail = reasons == nullptr;
             return true;
         }());
@@ -336,7 +336,7 @@ bool CatmullRomCurveCls::validateControlPoints(List<Offset> controlPoints, List<
             bool bail = true;
             success = false;
             assert([=] () {
-                reasons?->add("The resulting curve has an X value ($x) which is outside the range [0.0, 1.0], inclusive.");
+                reasons?->add(__s("The resulting curve has an X value ($x) which is outside the range [0.0, 1.0], inclusive."));
                 bail = reasons == nullptr;
                 return true;
             }());
@@ -348,7 +348,7 @@ bool CatmullRomCurveCls::validateControlPoints(List<Offset> controlPoints, List<
             bool bail = true;
             success = false;
             assert([=] () {
-                reasons?->add("The curve has more than one Y value at x = $x. Try moving some control points further apart in X, or increasing the tension.");
+                reasons?->add(__s("The curve has more than one Y value at x = $x. Try moving some control points further apart in X, or increasing the tension."));
                 bail = reasons == nullptr;
                 return true;
             }());
@@ -366,7 +366,7 @@ double CatmullRomCurveCls::transformInternal(double t) {
         _precomputedSamples->addAll(_computeSamples(controlPoints, tension));
     }
     int start = 0;
-    int end = _precomputedSamples->length - 1;
+    int end = _precomputedSamples->length() - 1;
     int mid;
     Offset value;
     Offset startValue = _precomputedSamples[start]->value;
@@ -401,7 +401,7 @@ double FlippedCurveCls::transformInternal(double t) {
 }
 
 String FlippedCurveCls::toString() {
-    return "${objectRuntimeType(this, 'FlippedCurve')}($curve)";
+    return __s("${objectRuntimeType(this, 'FlippedCurve')}($curve)");
 }
 
 double _DecelerateCurveCls::transformInternal(double t) {
@@ -450,7 +450,7 @@ double ElasticInCurveCls::transformInternal(double t) {
 }
 
 String ElasticInCurveCls::toString() {
-    return "${objectRuntimeType(this, 'ElasticInCurve')}($period)";
+    return __s("${objectRuntimeType(this, 'ElasticInCurve')}($period)");
 }
 
 double ElasticOutCurveCls::transformInternal(double t) {
@@ -459,7 +459,7 @@ double ElasticOutCurveCls::transformInternal(double t) {
 }
 
 String ElasticOutCurveCls::toString() {
-    return "${objectRuntimeType(this, 'ElasticOutCurve')}($period)";
+    return __s("${objectRuntimeType(this, 'ElasticOutCurve')}($period)");
 }
 
 double ElasticInOutCurveCls::transformInternal(double t) {
@@ -473,5 +473,5 @@ double ElasticInOutCurveCls::transformInternal(double t) {
 }
 
 String ElasticInOutCurveCls::toString() {
-    return "${objectRuntimeType(this, 'ElasticInOutCurve')}($period)";
+    return __s("${objectRuntimeType(this, 'ElasticInOutCurve')}($period)");
 }

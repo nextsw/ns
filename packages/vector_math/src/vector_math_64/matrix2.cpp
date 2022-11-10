@@ -22,14 +22,14 @@ int Matrix2Cls::index(int col, int row) {
 }
 
 double Matrix2Cls::entry(int col, int row) {
-    assert((row >= 0) && ( < dimension));
-    assert((col >= 0) && ( < dimension));
+    assert((row >= 0) && ( < dimension()));
+    assert((col >= 0) && ( < dimension()));
     return _m2storage[index(row, col)];
 }
 
 void Matrix2Cls::setEntry(int col, int row, double v) {
-    assert((row >= 0) && ( < dimension));
-    assert((col >= 0) && ( < dimension));
+    assert((row >= 0) && ( < dimension()));
+    assert((col >= 0) && ( < dimension()));
     _m2storage[index(row, col)] = v;
 }
 
@@ -107,7 +107,7 @@ void Matrix2Cls::setDiagonal(Vector2 arg) {
 }
 
 String Matrix2Cls::toString() {
-    return "[0] ${getRow(0)}\n[1] ${getRow(1)}\n";
+    return __s("[0] ${getRow(0)}\n[1] ${getRow(1)}\n");
 }
 
 int Matrix2Cls::dimension() {
@@ -123,7 +123,7 @@ void Matrix2Cls::[]=(int i, double v) {
 }
 
 bool Matrix2Cls::==(Object other) {
-    return (other is Matrix2) && (_m2storage[0] == other->_m2storage[0]) && (_m2storage[1] == other->_m2storage[1]) && (_m2storage[2] == other->_m2storage[2]) && (_m2storage[3] == other->_m2storage[3]);
+    return (is<Matrix2>(other)) && (_m2storage[0] == other->_m2storage[0]) && (_m2storage[1] == other->_m2storage[1]) && (_m2storage[2] == other->_m2storage[2]) && (_m2storage[3] == other->_m2storage[3]);
 }
 
 int Matrix2Cls::hashCode() {
@@ -190,13 +190,13 @@ Matrix2 Matrix2Cls::copyInto(Matrix2 arg) {
 }
 
 dynamic Matrix2Cls::*(dynamic arg) {
-    if (arg is double) {
+    if (is<double>(arg)) {
         return scaled(arg);
     }
-    if (arg is Vector2) {
+    if (is<Vector2>(arg)) {
         return transformed(arg);
     }
-    if (arg is Matrix2) {
+    if (is<Matrix2>(arg)) {
         return multiplied(arg);
     }
     ;

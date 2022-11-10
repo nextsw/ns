@@ -1,4 +1,4 @@
 #include "weak.hpp"
-template<typename T : Object> String ExpandoCls<T>::toString() {
-    return "Expando:$name";
+template<typename T> String ExpandoCls<T>::toString() {
+    return __s("Expando:$name");
 }

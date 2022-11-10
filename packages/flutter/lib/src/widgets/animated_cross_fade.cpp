@@ -24,17 +24,17 @@ State<AnimatedCrossFade> AnimatedCrossFadeCls::createState() {
 
 void AnimatedCrossFadeCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<CrossFadeState>make<EnumPropertyCls>("crossFadeState", crossFadeState));
-    properties->add(<AlignmentGeometry>make<DiagnosticsPropertyCls>("alignment", alignmentAlignmentCls::topCenter));
-    properties->add(make<IntPropertyCls>("duration", duration->inMilliseconds"ms"));
-    properties->add(make<IntPropertyCls>("reverseDuration", reverseDuration?->inMilliseconds"ms", nullptr));
+    properties->add(<CrossFadeState>make<EnumPropertyCls>(__s("crossFadeState"), crossFadeState));
+    properties->add(<AlignmentGeometry>make<DiagnosticsPropertyCls>(__s("alignment"), alignmentAlignmentCls::topCenter));
+    properties->add(make<IntPropertyCls>(__s("duration"), duration->inMilliseconds()__s("ms")));
+    properties->add(make<IntPropertyCls>(__s("reverseDuration"), reverseDuration?->inMilliseconds()__s("ms"), nullptr));
 }
 
 void _AnimatedCrossFadeStateCls::initState() {
     super->initState();
     _controller = make<AnimationControllerCls>(widget->duration, widget->reverseDuration, this);
     if (widget->crossFadeState == CrossFadeStateCls::showSecond) {
-        _controller->value = 1.0;
+        _controller->value() = 1.0;
     }
     _firstAnimation = _initAnimation(widget->firstCurve, true);
     _secondAnimation = _initAnimation(widget->secondCurve, false);
@@ -71,7 +71,7 @@ void _AnimatedCrossFadeStateCls::didUpdateWidget(AnimatedCrossFade oldWidget) {
 Widget _AnimatedCrossFadeStateCls::build(BuildContext context) {
     Key kFirstChildKey = <CrossFadeState>make<ValueKeyCls>(CrossFadeStateCls::showFirst);
     Key kSecondChildKey = <CrossFadeState>make<ValueKeyCls>(CrossFadeStateCls::showSecond);
-    bool transitioningForwards = _controller->status == AnimationStatusCls::completed || _controller->status == AnimationStatusCls::forward;
+    bool transitioningForwards = _controller->status() == AnimationStatusCls::completed || _controller->status() == AnimationStatusCls::forward;
     Key topKey;
     Widget topChild;
     Animation<double> topAnimation;
@@ -93,16 +93,16 @@ Widget _AnimatedCrossFadeStateCls::build(BuildContext context) {
         bottomChild = widget->secondChild;
         bottomAnimation = _secondAnimation;
     }
-    bottomChild = make<TickerModeCls>(bottomKey, _isTransitioning, make<IgnorePointerCls>(make<ExcludeSemanticsCls>(make<ExcludeFocusCls>(widget->excludeBottomFocus, make<FadeTransitionCls>(bottomAnimation, bottomChild)))));
+    bottomChild = make<TickerModeCls>(bottomKey, _isTransitioning(), make<IgnorePointerCls>(make<ExcludeSemanticsCls>(make<ExcludeFocusCls>(widget->excludeBottomFocus, make<FadeTransitionCls>(bottomAnimation, bottomChild)))));
     topChild = make<TickerModeCls>(topKey, true, make<IgnorePointerCls>(false, make<ExcludeSemanticsCls>(false, make<ExcludeFocusCls>(false, make<FadeTransitionCls>(topAnimation, topChild)))));
     return make<ClipRectCls>(make<AnimatedSizeCls>(widget->alignment, widget->duration, widget->reverseDuration, widget->sizeCurve, widget->layoutBuilder(topChild, topKey, bottomChild, bottomKey)));
 }
 
 void _AnimatedCrossFadeStateCls::debugFillProperties(DiagnosticPropertiesBuilder description) {
     super->debugFillProperties(description);
-    description->add(<CrossFadeState>make<EnumPropertyCls>("crossFadeState", widget->crossFadeState));
-    description->add(<AnimationController>make<DiagnosticsPropertyCls>("controller", _controllerfalse));
-    description->add(<AlignmentGeometry>make<DiagnosticsPropertyCls>("alignment", widget->alignmentAlignmentCls::topCenter));
+    description->add(<CrossFadeState>make<EnumPropertyCls>(__s("crossFadeState"), widget->crossFadeState));
+    description->add(<AnimationController>make<DiagnosticsPropertyCls>(__s("controller"), _controllerfalse));
+    description->add(<AlignmentGeometry>make<DiagnosticsPropertyCls>(__s("alignment"), widget->alignmentAlignmentCls::topCenter));
 }
 
 Animation<double> _AnimatedCrossFadeStateCls::_initAnimation(Curve curve, bool inverted) {
@@ -114,5 +114,5 @@ Animation<double> _AnimatedCrossFadeStateCls::_initAnimation(Curve curve, bool i
 }
 
 bool _AnimatedCrossFadeStateCls::_isTransitioning() {
-    return _controller->status == AnimationStatusCls::forward || _controller->status == AnimationStatusCls::reverse;
+    return _controller->status() == AnimationStatusCls::forward || _controller->status() == AnimationStatusCls::reverse;
 }

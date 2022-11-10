@@ -1,11 +1,11 @@
 #include "unique_widget.hpp"
-template<typename T : State<StatefulWidget>> UniqueWidgetCls<T>::UniqueWidgetCls(GlobalKey<T> key) {
+template<typename T> UniqueWidgetCls<T>::UniqueWidgetCls(GlobalKey<T> key) : StatefulWidget(key) {
     {
         assert(key != nullptr);
     }
 }
 
-template<typename T : State<StatefulWidget>> T UniqueWidgetCls<T>::currentState() {
-    GlobalKey<T> globalKey = ((GlobalKey<T>)key!);
+template<typename T> T UniqueWidgetCls<T>::currentState() {
+    GlobalKey<T> globalKey = as<GlobalKey<T>>(key!);
     return globalKey->currentState;
 }

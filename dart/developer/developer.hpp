@@ -8,9 +8,9 @@
 #include <dart/convert/convert.hpp>
 #include <dart/isolate/isolate.hpp>
 
-extern bool debugger(String message, bool when);
-extern Object inspect(Object object);
-extern void log(Object error, int level, String message, String name, int sequenceNumber, StackTrace stackTrace, DateTime time, Zone zone);
+bool debugger(String message, bool when);
+Object inspect(Object object);
+void log(Object error, int level, String message, String name, int sequenceNumber, StackTrace stackTrace, DateTime time, Zone zone);
 
 // Parts
 #include "extension.hpp"

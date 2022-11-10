@@ -2,18 +2,18 @@
 TapDownDetailsCls::TapDownDetailsCls(Offset globalPosition, PointerDeviceKind kind, Offset localPosition) {
     {
         assert(globalPosition != nullptr);
-        localPosition = localPosition ?? globalPosition;
+        localPosition = localPosition or globalPosition;
     }
 }
 
 TapUpDetailsCls::TapUpDetailsCls(Offset globalPosition, PointerDeviceKind kind, Offset localPosition) {
     {
         assert(globalPosition != nullptr);
-        localPosition = localPosition ?? globalPosition;
+        localPosition = localPosition or globalPosition;
     }
 }
 
-BaseTapGestureRecognizerCls::BaseTapGestureRecognizerCls(Unknown debugOwner, Unknown supportedDevices) {
+BaseTapGestureRecognizerCls::BaseTapGestureRecognizerCls(Unknown debugOwner, Unknown supportedDevices) : PrimaryPointerGestureRecognizer(kPressTimeout) {
 }
 
 void BaseTapGestureRecognizerCls::addAllowedPointer(PointerDownEvent event) {
@@ -37,14 +37,14 @@ void BaseTapGestureRecognizerCls::startTrackingPointer(int pointer, Matrix4 tran
 }
 
 void BaseTapGestureRecognizerCls::handlePrimaryPointer(PointerEvent event) {
-    if (event is PointerUpEvent) {
+    if (is<PointerUpEvent>(event)) {
         _up = event;
         _checkUp();
     } else     {
-        if (event is PointerCancelEvent) {
+        if (is<PointerCancelEvent>(event)) {
         resolve(GestureDispositionCls::rejected);
         if (_sentTapDown) {
-            _checkCancel(event, "");
+            _checkCancel(event, __s(""));
         }
         _reset();
     } else     {
@@ -59,7 +59,7 @@ void BaseTapGestureRecognizerCls::handlePrimaryPointer(PointerEvent event) {
 void BaseTapGestureRecognizerCls::resolve(GestureDisposition disposition) {
     if (_wonArenaForPrimaryPointer && disposition == GestureDispositionCls::rejected) {
         assert(_sentTapDown);
-        _checkCancel(nullptr, "spontaneous");
+        _checkCancel(nullptr, __s("spontaneous"));
         _reset();
     }
     super->resolve(disposition);
@@ -83,23 +83,23 @@ void BaseTapGestureRecognizerCls::rejectGesture(int pointer) {
     if (pointer == primaryPointer) {
         assert(state != GestureRecognizerStateCls::possible);
         if (_sentTapDown) {
-            _checkCancel(nullptr, "forced");
+            _checkCancel(nullptr, __s("forced"));
         }
         _reset();
     }
 }
 
 String BaseTapGestureRecognizerCls::debugDescription() {
-    return "base tap";
+    return __s("base tap");
 }
 
 void BaseTapGestureRecognizerCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(make<FlagPropertyCls>("wonArenaForPrimaryPointer"_wonArenaForPrimaryPointer, "won arena"));
-    properties->add(<Offset>make<DiagnosticsPropertyCls>("finalPosition", _up?->positionnullptr));
-    properties->add(<Offset>make<DiagnosticsPropertyCls>("finalLocalPosition", _up?->localPosition_up?->position));
-    properties->add(<int>make<DiagnosticsPropertyCls>("button", _down?->buttonsnullptr));
-    properties->add(make<FlagPropertyCls>("sentTapDown"_sentTapDown, "sent tap down"));
+    properties->add(make<FlagPropertyCls>(__s("wonArenaForPrimaryPointer")_wonArenaForPrimaryPointer, __s("won arena")));
+    properties->add(<Offset>make<DiagnosticsPropertyCls>(__s("finalPosition"), _up?->positionnullptr));
+    properties->add(<Offset>make<DiagnosticsPropertyCls>(__s("finalLocalPosition"), _up?->localPosition_up?->position));
+    properties->add(<int>make<DiagnosticsPropertyCls>(__s("button"), _down?->buttonsnullptr));
+    properties->add(make<FlagPropertyCls>(__s("sentTapDown")_sentTapDown, __s("sent tap down")));
 }
 
 void BaseTapGestureRecognizerCls::_checkDown() {
@@ -146,10 +146,10 @@ void TapGestureRecognizerCls::handleTapUp(PointerDownEvent down, PointerUpEvent 
 }
 
 void TapGestureRecognizerCls::handleTapCancel(PointerCancelEvent cancel, PointerDownEvent down, String reason) {
-    String note = reason == ""? reason : "$reason ";
+    String note = reason == __s("")? reason : __s("$reason ");
     ;
 }
 
 String TapGestureRecognizerCls::debugDescription() {
-    return "tap";
+    return __s("tap");
 }

@@ -25,7 +25,7 @@ template<typename E> void ListCls<E>::copyRangetemplate<typename T> (int at, int
 }
 
 template<typename E> void ListCls<E>::writeIterabletemplate<typename T> (int at, Iterable<T> source, List<T> target) {
-    RangeErrorCls->checkValueInInterval(at, 0, target->length, "at");
+    RangeErrorCls->checkValueInInterval(at, 0, target->length, __s("at"));
     int index = at;
     int targetLength = target->length;
     for (auto element : source) {

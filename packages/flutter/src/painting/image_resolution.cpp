@@ -6,15 +6,15 @@ AssetImageCls::AssetImageCls(String assetName, AssetBundle bundle, String packag
 }
 
 String AssetImageCls::keyName() {
-    return package == nullptr? assetName : "packages/$package/$assetName";
+    return package == nullptr? assetName : __s("packages/$package/$assetName");
 }
 
 Future<AssetBundleImageKey> AssetImageCls::obtainKey(ImageConfiguration configuration) {
-    AssetBundle chosenBundle = bundle ?? configuration->bundle ?? rootBundle;
+    AssetBundle chosenBundle = bundle or configuration->bundle or rootBundle;
     Completer<AssetBundleImageKey> completer;
     Future<AssetBundleImageKey> result;
     chosenBundle-><Map<String, List<String>>>loadStructuredData(_kAssetManifestFileName, _manifestParser)-><void>then([=] (Map<String, List<String>> manifest) {
-        String chosenName = _chooseVariant(keyName, configuration, manifest == nullptr? nullptr : manifest[keyName])!;
+        String chosenName = _chooseVariant(keyName(), configuration, manifest == nullptr? nullptr : manifest[keyName()])!;
         double chosenScale = _parseScale(chosenName);
         AssetBundleImageKey key = make<AssetBundleImageKeyCls>(chosenBundle, chosenName, chosenScale);
         if (completer != nullptr) {
@@ -35,27 +35,27 @@ Future<AssetBundleImageKey> AssetImageCls::obtainKey(ImageConfiguration configur
 }
 
 bool AssetImageCls::==(Object other) {
-    if (other->runtimeType != runtimeType) {
+    if (other->runtimeType() != runtimeType) {
         return false;
     }
-    return other is AssetImage && other->keyName == keyName && other->bundle == bundle;
+    return is<AssetImage>(other) && other->keyName == keyName() && other->bundle == bundle;
 }
 
 int AssetImageCls::hashCode() {
-    return ObjectCls->hash(keyName, bundle);
+    return ObjectCls->hash(keyName(), bundle);
 }
 
 String AssetImageCls::toString() {
-    return "${objectRuntimeType(this, 'AssetImage')}(bundle: $bundle, name: "$keyName")";
+    return __s("${objectRuntimeType(this, 'AssetImage')}(bundle: $bundle, name: "$keyName")");
 }
 
 Future<Map<String, List<String>>> AssetImageCls::_manifestParser(String jsonData) {
     if (jsonData == nullptr) {
         return <Map<String, List<String>>>make<SynchronousFutureCls>(nullptr);
     }
-    Map<String, dynamic> parsedJson = ((Map<String, dynamic>)json->decode(jsonData));
+    Map<String, dynamic> parsedJson = as<Map<String, dynamic>>(json->decode(jsonData));
     Iterable<String> keys = parsedJson->keys;
-    Map<String, List<String>> map1 = make<MapCls<>>();for (String key : keys) {    ;}{    map1.set(key, <String>from(((List<dynamic>)parsedJson[key])));}Map<String, List<String>> parsedManifest = list1;
+    Map<String, List<String>> map1 = make<MapCls<>>();for (String key : keys) {    ;}{    map1.set(key, <String>from(as<List<dynamic>>(parsedJson[key])));}Map<String, List<String>> parsedManifest = list1;
     return <Map<String, List<String>>>make<SynchronousFutureCls>(parsedManifest);
 }
 
@@ -94,7 +94,7 @@ double AssetImageCls::_parseScale(String key) {
         return _naturalResolution;
     }
     Uri assetUri = UriCls->parse(key);
-    String directoryPath = "";
+    String directoryPath = __s("");
     if (assetUri->pathSegments->length > 1) {
         directoryPath = assetUri->pathSegments[assetUri->pathSegments->length - 2];
     }

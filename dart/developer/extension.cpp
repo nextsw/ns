@@ -1,11 +1,11 @@
 #include "extension.hpp"
 void ServiceExtensionResponseCls::result(String result) {
-    checkNotNullable(result, "result");
+    checkNotNullable(result, __s("result"));
 }
 
 void ServiceExtensionResponseCls::error(int errorCode, String errorDetail) {
     _validateErrorCode(errorCode);
-    checkNotNullable(errorDetail, "errorDetail");
+    checkNotNullable(errorDetail, __s("errorDetail"));
 }
 
 bool ServiceExtensionResponseCls::isError() {
@@ -15,13 +15,13 @@ bool ServiceExtensionResponseCls::isError() {
 String ServiceExtensionResponseCls::_errorCodeMessage(int errorCode) {
     _validateErrorCode(errorCode);
     if (errorCode == invalidParams) {
-        return "Invalid params";
+        return __s("Invalid params");
     }
-    return "Server error";
+    return __s("Server error");
 }
 
 void ServiceExtensionResponseCls::_validateErrorCode(int errorCode) {
-    checkNotNullable(errorCode, "errorCode");
+    checkNotNullable(errorCode, __s("errorCode"));
     if (errorCode == invalidParams)     {
         return;
     }
@@ -32,18 +32,18 @@ void ServiceExtensionResponseCls::_validateErrorCode(int errorCode) {
 }
 
 String ServiceExtensionResponseCls::_toString() {
-    map1.set("code", errorCode!);map1.set("message", _errorCodeMessage(errorCode!));map1.set("data", map2.set("details", errorDetail!);list2);return result ?? json->encode(list1);
+    map1.set(__s("code"), errorCode!);map1.set(__s("message"), _errorCodeMessage(errorCode!));map1.set(__s("data"), map2.set(__s("details"), errorDetail!);list2);return result or json->encode(list1);
 }
 
 void registerExtension(ServiceExtensionHandler handler, String method) {
-    checkNotNullable(method, "method");
-    if (!method->startsWith("ext.")) {
+    checkNotNullable(method, __s("method"));
+    if (!method->startsWith(__s("ext."))) {
         ;
     }
     if (_lookupExtension(method) != nullptr) {
         ;
     }
-    checkNotNullable(handler, "handler");
+    checkNotNullable(handler, __s("handler"));
     _registerExtension(method, handler);
 }
 
@@ -51,8 +51,8 @@ void postEvent(Map eventData, String eventKind) {
     if (!extensionStreamHasListener) {
         return;
     }
-    checkNotNullable(eventKind, "eventKind");
-    checkNotNullable(eventData, "eventData");
+    checkNotNullable(eventKind, __s("eventKind"));
+    checkNotNullable(eventData, __s("eventData"));
     String eventDataAsString = json->encode(eventData);
     _postEvent(eventKind, eventDataAsString);
 }

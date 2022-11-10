@@ -45,10 +45,10 @@ bool GradientRotationCls::==(Object other) {
     if (identical(this, other)) {
         return true;
     }
-    if (other->runtimeType != runtimeType) {
+    if (other->runtimeType() != runtimeType) {
         return false;
     }
-    return other is GradientRotation && other->radians == radians;
+    return is<GradientRotation>(other) && other->radians == radians;
 }
 
 int GradientRotationCls::hashCode() {
@@ -56,7 +56,7 @@ int GradientRotationCls::hashCode() {
 }
 
 String GradientRotationCls::toString() {
-    return "${objectRuntimeType(this, 'GradientRotation')}(radians: ${debugFormatDouble(radians)})";
+    return __s("${objectRuntimeType(this, 'GradientRotation')}(radians: ${debugFormatDouble(radians)})");
 }
 
 GradientCls::GradientCls(List<Color> colors, List<double> stops, GradientTransform transform) {
@@ -102,15 +102,15 @@ List<double> GradientCls::_impliedStops() {
     if (stops != nullptr) {
         return stops!;
     }
-    assert(colors->length >= 2, "colors list must have at least two colors");
-    double separation = 1.0 / (colors->length - 1);
-    return <double>generate(colors->length, [=] (int index)     {
+    assert(colors->length() >= 2, __s("colors list must have at least two colors"));
+    double separation = 1.0 / (colors->length() - 1);
+    return <double>generate(colors->length(), [=] (int index)     {
         index * separation;
     }false);
 }
 
 Float64List GradientCls::_resolveTransform(Rect bounds, TextDirection textDirection) {
-    return transform?->transform(boundstextDirection)?->storage;
+    return transform?->transform(boundstextDirection)?->storage();
 }
 
 LinearGradientCls::LinearGradientCls(AlignmentGeometry begin, Unknown colors, AlignmentGeometry end, Unknown stops, TileMode tileMode, Unknown transform) {
@@ -132,15 +132,15 @@ LinearGradient LinearGradientCls::scale(double factor) {
 }
 
 Gradient LinearGradientCls::lerpFrom(Gradient a, double t) {
-    if (a == nullptr || (a is LinearGradient)) {
-        return LinearGradientCls->lerp(((LinearGradient)a), this, t);
+    if (a == nullptr || (is<LinearGradient>(a))) {
+        return LinearGradientCls->lerp(as<LinearGradient>(a), this, t);
     }
     return super->lerpFrom(a, t);
 }
 
 Gradient LinearGradientCls::lerpTo(Gradient b, double t) {
-    if (b == nullptr || (b is LinearGradient)) {
-        return LinearGradientCls->lerp(this, ((LinearGradient)b), t);
+    if (b == nullptr || (is<LinearGradient>(b))) {
+        return LinearGradientCls->lerp(this, as<LinearGradient>(b), t);
     }
     return super->lerpTo(b, t);
 }
@@ -164,10 +164,10 @@ bool LinearGradientCls::==(Object other) {
     if (identical(this, other)) {
         return true;
     }
-    if (other->runtimeType != runtimeType) {
+    if (other->runtimeType() != runtimeType) {
         return false;
     }
-    return other is LinearGradient && other->begin == begin && other->end == end && other->tileMode == tileMode && other->transform == transform && <Color>listEquals(other->colors, colors) && <double>listEquals(other->stops, stops);
+    return is<LinearGradient>(other) && other->begin == begin && other->end == end && other->tileMode == tileMode && other->transform == transform && <Color>listEquals(other->colors, colors) && <double>listEquals(other->stops, stops);
 }
 
 int LinearGradientCls::hashCode() {
@@ -176,7 +176,7 @@ int LinearGradientCls::hashCode() {
 
 String LinearGradientCls::toString() {
     List<String> list1 = make<ListCls<>>();list1.add(ArrayItem);list1.add(ArrayItem);list1.add(ArrayItem);if (stops != nullptr) {    list1.add(ArrayItem);}list1.add(ArrayItem);if (transform != nullptr) {    list1.add(ArrayItem);}List<String> description = list1;
-    return "${objectRuntimeType(this, 'LinearGradient')}(${description.join(', ')})";
+    return __s("${objectRuntimeType(this, 'LinearGradient')}(${description.join(', ')})");
 }
 
 RadialGradientCls::RadialGradientCls(AlignmentGeometry center, Unknown colors, AlignmentGeometry focal, double focalRadius, double radius, Unknown stops, TileMode tileMode, Unknown transform) {
@@ -199,15 +199,15 @@ RadialGradient RadialGradientCls::scale(double factor) {
 }
 
 Gradient RadialGradientCls::lerpFrom(Gradient a, double t) {
-    if (a == nullptr || (a is RadialGradient)) {
-        return RadialGradientCls->lerp(((RadialGradient)a), this, t);
+    if (a == nullptr || (is<RadialGradient>(a))) {
+        return RadialGradientCls->lerp(as<RadialGradient>(a), this, t);
     }
     return super->lerpFrom(a, t);
 }
 
 Gradient RadialGradientCls::lerpTo(Gradient b, double t) {
-    if (b == nullptr || (b is RadialGradient)) {
-        return RadialGradientCls->lerp(this, ((RadialGradient)b), t);
+    if (b == nullptr || (is<RadialGradient>(b))) {
+        return RadialGradientCls->lerp(this, as<RadialGradient>(b), t);
     }
     return super->lerpTo(b, t);
 }
@@ -231,10 +231,10 @@ bool RadialGradientCls::==(Object other) {
     if (identical(this, other)) {
         return true;
     }
-    if (other->runtimeType != runtimeType) {
+    if (other->runtimeType() != runtimeType) {
         return false;
     }
-    return other is RadialGradient && other->center == center && other->radius == radius && other->tileMode == tileMode && other->transform == transform && <Color>listEquals(other->colors, colors) && <double>listEquals(other->stops, stops) && other->focal == focal && other->focalRadius == focalRadius;
+    return is<RadialGradient>(other) && other->center == center && other->radius == radius && other->tileMode == tileMode && other->transform == transform && <Color>listEquals(other->colors, colors) && <double>listEquals(other->stops, stops) && other->focal == focal && other->focalRadius == focalRadius;
 }
 
 int RadialGradientCls::hashCode() {
@@ -243,7 +243,7 @@ int RadialGradientCls::hashCode() {
 
 String RadialGradientCls::toString() {
     List<String> list1 = make<ListCls<>>();list1.add(ArrayItem);list1.add(ArrayItem);list1.add(ArrayItem);if (stops != nullptr) {    list1.add(ArrayItem);}list1.add(ArrayItem);if (focal != nullptr) {    list1.add(ArrayItem);}list1.add(ArrayItem);if (transform != nullptr) {    list1.add(ArrayItem);}List<String> description = list1;
-    return "${objectRuntimeType(this, 'RadialGradient')}(${description.join(', ')})";
+    return __s("${objectRuntimeType(this, 'RadialGradient')}(${description.join(', ')})");
 }
 
 SweepGradientCls::SweepGradientCls(AlignmentGeometry center, Unknown colors, double endAngle, double startAngle, Unknown stops, TileMode tileMode, Unknown transform) {
@@ -266,15 +266,15 @@ SweepGradient SweepGradientCls::scale(double factor) {
 }
 
 Gradient SweepGradientCls::lerpFrom(Gradient a, double t) {
-    if (a == nullptr || (a is SweepGradient)) {
-        return SweepGradientCls->lerp(((SweepGradient)a), this, t);
+    if (a == nullptr || (is<SweepGradient>(a))) {
+        return SweepGradientCls->lerp(as<SweepGradient>(a), this, t);
     }
     return super->lerpFrom(a, t);
 }
 
 Gradient SweepGradientCls::lerpTo(Gradient b, double t) {
-    if (b == nullptr || (b is SweepGradient)) {
-        return SweepGradientCls->lerp(this, ((SweepGradient)b), t);
+    if (b == nullptr || (is<SweepGradient>(b))) {
+        return SweepGradientCls->lerp(this, as<SweepGradient>(b), t);
     }
     return super->lerpTo(b, t);
 }
@@ -298,10 +298,10 @@ bool SweepGradientCls::==(Object other) {
     if (identical(this, other)) {
         return true;
     }
-    if (other->runtimeType != runtimeType) {
+    if (other->runtimeType() != runtimeType) {
         return false;
     }
-    return other is SweepGradient && other->center == center && other->startAngle == startAngle && other->endAngle == endAngle && other->tileMode == tileMode && other->transform == transform && <Color>listEquals(other->colors, colors) && <double>listEquals(other->stops, stops);
+    return is<SweepGradient>(other) && other->center == center && other->startAngle == startAngle && other->endAngle == endAngle && other->tileMode == tileMode && other->transform == transform && <Color>listEquals(other->colors, colors) && <double>listEquals(other->stops, stops);
 }
 
 int SweepGradientCls::hashCode() {
@@ -310,5 +310,5 @@ int SweepGradientCls::hashCode() {
 
 String SweepGradientCls::toString() {
     List<String> list1 = make<ListCls<>>();list1.add(ArrayItem);list1.add(ArrayItem);list1.add(ArrayItem);list1.add(ArrayItem);if (stops != nullptr) {    list1.add(ArrayItem);}list1.add(ArrayItem);if (transform != nullptr) {    list1.add(ArrayItem);}List<String> description = list1;
-    return "${objectRuntimeType(this, 'SweepGradient')}(${description.join(', ')})";
+    return __s("${objectRuntimeType(this, 'SweepGradient')}(${description.join(', ')})");
 }

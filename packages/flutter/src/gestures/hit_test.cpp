@@ -1,9 +1,9 @@
 #include "hit_test.hpp"
-template<typename T : HitTestTarget> String HitTestEntryCls<T>::toString() {
-    return "${describeIdentity(this)}($target)";
+template<typename T> String HitTestEntryCls<T>::toString() {
+    return __s("${describeIdentity(this)}($target)");
 }
 
-template<typename T : HitTestTarget> Matrix4 HitTestEntryCls<T>::transform() {
+template<typename T> Matrix4 HitTestEntryCls<T>::transform() {
     return _transform;
 }
 
@@ -12,7 +12,7 @@ Matrix4 _MatrixTransformPartCls::multiply(Matrix4 rhs) {
 }
 
 Matrix4 _OffsetTransformPartCls::multiply(Matrix4 rhs) {
-    auto _c1 = rhs->clone();_c1.leftTranslate(offset->dx, offset->dy);return _c1;
+    auto _c1 = rhs->clone();_c1.leftTranslate(offset->dx(), offset->dy());return _c1;
 }
 
 HitTestResultCls::HitTestResultCls() {
@@ -31,13 +31,13 @@ Iterable<HitTestEntry> HitTestResultCls::path() {
 
 void HitTestResultCls::add(HitTestEntry entry) {
     assert(entry->_transform == nullptr);
-    entry->_transform = _lastTransform;
+    entry->_transform = _lastTransform();
     _path->add(entry);
 }
 
 void HitTestResultCls::pushTransform(Matrix4 transform) {
     assert(transform != nullptr);
-    assert(_debugVectorMoreOrLessEquals(transform->getRow(2), make<Vector4Cls>(0, 0, 1, 0)) && _debugVectorMoreOrLessEquals(transform->getColumn(2), make<Vector4Cls>(0, 0, 1, 0)), "The third row and third column of a transform matrix for pointer events must be Vector4(0, 0, 1, 0) to ensure that a transformed point is directly under the pointing device. Did you forget to run the paint matrix through PointerEvent.removePerspectiveTransform? The provided matrix is:\n$transform");
+    assert(_debugVectorMoreOrLessEquals(transform->getRow(2), make<Vector4Cls>(0, 0, 1, 0)) && _debugVectorMoreOrLessEquals(transform->getColumn(2), make<Vector4Cls>(0, 0, 1, 0)), __s("The third row and third column of a transform matrix for pointer events must be Vector4(0, 0, 1, 0) to ensure that a transformed point is directly under the pointing device. Did you forget to run the paint matrix through PointerEvent.removePerspectiveTransform? The provided matrix is:\n$transform"));
     _localTransforms->add(make<_MatrixTransformPartCls>(transform));
 }
 
@@ -56,7 +56,7 @@ void HitTestResultCls::popTransform() {
 }
 
 String HitTestResultCls::toString() {
-    return "HitTestResult(${_path.isEmpty ? "<empty path>" : _path.join(", ")})";
+    return __s("HitTestResult(${_path.isEmpty ? "<empty path>" : _path.join(", ")})");
 }
 
 void HitTestResultCls::_globalizeTransforms() {

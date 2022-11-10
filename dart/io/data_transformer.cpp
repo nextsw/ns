@@ -53,7 +53,7 @@ List<int> ZLibEncoderCls::convert(List<int> bytes) {
 }
 
 ByteConversionSink ZLibEncoderCls::startChunkedConversion(Sink<List<int>> sink) {
-    if (sink is! ByteConversionSink) {
+    if (!is<ByteConversionSink>(sink)) {
         sink = ByteConversionSinkCls->from(sink);
     }
     return _ZLibEncoderSinkCls->_(sink, gzip, level, windowBits, memLevel, strategy, dictionary, raw);
@@ -72,7 +72,7 @@ List<int> ZLibDecoderCls::convert(List<int> bytes) {
 }
 
 ByteConversionSink ZLibDecoderCls::startChunkedConversion(Sink<List<int>> sink) {
-    if (sink is! ByteConversionSink) {
+    if (!is<ByteConversionSink>(sink)) {
         sink = ByteConversionSinkCls->from(sink);
     }
     return _ZLibDecoderSinkCls->_(sink, windowBits, dictionary, raw);
@@ -91,7 +91,7 @@ void _BufferSinkCls::add(List<int> chunk) {
 }
 
 void _BufferSinkCls::addSlice(List<int> chunk, int end, bool isLast, int start) {
-    if (chunk is Uint8List) {
+    if (is<Uint8List>(chunk)) {
         Uint8List list = chunk;
         builder->add(Uint8ListCls->view(list->buffer, list->offsetInBytes + start, end - start));
     } else {
@@ -111,7 +111,7 @@ void _FilterSinkCls::add(List<int> data) {
 }
 
 void _FilterSinkCls::addSlice(List<int> data, int end, bool isLast, int start) {
-    ArgumentErrorCls->checkNotNull(end, "end");
+    ArgumentErrorCls->checkNotNull(end, __s("end"));
     if (_closed)     {
         return;
     }

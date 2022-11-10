@@ -42,19 +42,19 @@ private:
     static String _cachedOSVersion;
 
 
-    extern static int _numberOfProcessors();
-    extern static String _pathSeparator();
-    extern static String _operatingSystem();
-    extern static void  _operatingSystemVersion();
-    extern static void  _localHostname();
-    extern static void  _executable();
-    extern static void  _resolvedExecutable();
-    extern static void  _environment();
-    extern static List<String> _executableArguments();
-    extern static String _packageConfig();
-    extern static String _version();
-    extern static String _localeName();
-    extern static Uri _script();
+    static int _numberOfProcessors();
+    static String _pathSeparator();
+    static String _operatingSystem();
+    static void  _operatingSystemVersion();
+    static void  _localHostname();
+    static void  _executable();
+    static void  _resolvedExecutable();
+    static void  _environment();
+    static List<String> _executableArguments();
+    static String _packageConfig();
+    static String _version();
+    static String _localeName();
+    static Uri _script();
 };
 using _Platform = std::shared_ptr<_PlatformCls>;
 

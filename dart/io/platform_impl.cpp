@@ -1,7 +1,7 @@
 #include "platform_impl.hpp"
 String _PlatformCls::localeName() {
     Unknown result = (_localeClosure == nullptr)? _localeName() : _localeClosure!();
-    if (result is OSError) {
+    if (is<OSError>(result)) {
         ;
     }
     return result;
@@ -26,7 +26,7 @@ Uri _PlatformCls::script() {
 String _PlatformCls::operatingSystemVersion() {
     if (_cachedOSVersion == nullptr) {
         auto result = _operatingSystemVersion();
-        if (result is OSError) {
+        if (is<OSError>(result)) {
             ;
         }
         _cachedOSVersion = result;
@@ -36,7 +36,7 @@ String _PlatformCls::operatingSystemVersion() {
 
 String _PlatformCls::localHostname() {
     auto result = _localHostname();
-    if (result is OSError) {
+    if (is<OSError>(result)) {
         ;
     }
     return result;
@@ -49,14 +49,14 @@ List<String> _PlatformCls::executableArguments() {
 Map<String, String> _PlatformCls::environment() {
     if (_environmentCache == nullptr) {
         auto env = _environment();
-        if (env is! OSError) {
-            auto isWindows = operatingSystem == "windows";
+        if (!is<OSError>(env)) {
+            auto isWindows = operatingSystem == __s("windows");
             auto result = isWindows? <String>make<_CaseInsensitiveStringMapCls>() : <String, String>make<MapCls>();
             for (auto str : env) {
                 if (str == nullptr) {
                     continue;
                 }
-                auto equalsIndex = str->indexOf("=");
+                auto equalsIndex = str->indexOf(__s("="));
                 if (equalsIndex > 0) {
                     result[str->substring(0, equalsIndex)] = str->substring(equalsIndex + 1);
                 }
@@ -66,7 +66,7 @@ Map<String, String> _PlatformCls::environment() {
             _environmentCache = env;
         }
     }
-    if (_environmentCache is OSError) {
+    if (is<OSError>(_environmentCache)) {
         ;
     } else {
         return _environmentCache!;
@@ -78,7 +78,7 @@ String _PlatformCls::version() {
 }
 
 template<typename V> bool _CaseInsensitiveStringMapCls<V>::containsKey(Object key) {
-    return key is String && _map->containsKey(key->toUpperCase());
+    return is<String>(key) && _map->containsKey(key->toUpperCase());
 }
 
 template<typename V> bool _CaseInsensitiveStringMapCls<V>::containsValue(Object value) {
@@ -86,7 +86,7 @@ template<typename V> bool _CaseInsensitiveStringMapCls<V>::containsValue(Object 
 }
 
 template<typename V> V _CaseInsensitiveStringMapCls<V>::[](Object key) {
-    return key is String? _map[key->toUpperCase()] : nullptr;
+    return is<String>(key)? _map[key->toUpperCase()] : nullptr;
 }
 
 template<typename V> void _CaseInsensitiveStringMapCls<V>::[]=(String key, V value) {
@@ -104,7 +104,7 @@ template<typename V> void _CaseInsensitiveStringMapCls<V>::addAll(Map<String, V>
 }
 
 template<typename V> V _CaseInsensitiveStringMapCls<V>::remove(Object key) {
-    return key is String? _map->remove(key->toUpperCase()) : nullptr;
+    return is<String>(key)? _map->remove(key->toUpperCase()) : nullptr;
 }
 
 template<typename V> void _CaseInsensitiveStringMapCls<V>::clear() {
@@ -116,27 +116,27 @@ template<typename V> void _CaseInsensitiveStringMapCls<V>::forEach(void f(String
 }
 
 template<typename V> Iterable<String> _CaseInsensitiveStringMapCls<V>::keys() {
-    return _map->keys;
+    return _map->keys();
 }
 
 template<typename V> Iterable<V> _CaseInsensitiveStringMapCls<V>::values() {
-    return _map->values;
+    return _map->values();
 }
 
 template<typename V> int _CaseInsensitiveStringMapCls<V>::length() {
-    return _map->length;
+    return _map->length();
 }
 
 template<typename V> bool _CaseInsensitiveStringMapCls<V>::isEmpty() {
-    return _map->isEmpty;
+    return _map->isEmpty();
 }
 
 template<typename V> bool _CaseInsensitiveStringMapCls<V>::isNotEmpty() {
-    return _map->isNotEmpty;
+    return _map->isNotEmpty();
 }
 
 template<typename V> Iterable<MapEntry<String, V>> _CaseInsensitiveStringMapCls<V>::entries() {
-    return _map->entries;
+    return _map->entries();
 }
 
 template<typename V> Map<K2, V2> _CaseInsensitiveStringMapCls<V>::maptemplate<typename K2, typename V2> (MapEntry<K2, V2> transform(String key, V value) ) {

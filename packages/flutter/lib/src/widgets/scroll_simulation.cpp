@@ -18,7 +18,7 @@ BouncingScrollSimulationCls::BouncingScrollSimulationCls(double leadingExtent, d
             _springTime = double->negativeInfinity;
         } else {
             _frictionSimulation = make<FrictionSimulationCls>(0.135, position, velocity);
-            double finalX = _frictionSimulation->finalX;
+            double finalX = _frictionSimulation->finalX();
             if (velocity > 0.0 && finalX > trailingExtent) {
                 _springTime = _frictionSimulation->timeAtX(trailingExtent);
                 _springSimulation = _overscrollSimulation(trailingExtent, math->min(_frictionSimulation->dx(_springTime), maxSpringTransferVelocity));
@@ -51,7 +51,7 @@ bool BouncingScrollSimulationCls::isDone(double time) {
 }
 
 String BouncingScrollSimulationCls::toString() {
-    return "${objectRuntimeType(this, 'BouncingScrollSimulation')}(leadingExtent: $leadingExtent, trailingExtent: $trailingExtent)";
+    return __s("${objectRuntimeType(this, 'BouncingScrollSimulation')}(leadingExtent: $leadingExtent, trailingExtent: $trailingExtent)");
 }
 
 Simulation BouncingScrollSimulationCls::_underscrollSimulation(double dx, double x) {
@@ -86,12 +86,12 @@ ClampingScrollSimulationCls::ClampingScrollSimulationCls(double friction, double
 
 double ClampingScrollSimulationCls::x(double time) {
     double t = clampDouble(time / _duration, 0.0, 1.0);
-    return position + _distance * _flingDistancePenetration(t) * velocity->sign;
+    return position + _distance * _flingDistancePenetration(t) * velocity->sign();
 }
 
 double ClampingScrollSimulationCls::dx(double time) {
     double t = clampDouble(time / _duration, 0.0, 1.0);
-    return _distance * _flingVelocityPenetration(t) * velocity->sign / _duration;
+    return _distance * _flingVelocityPenetration(t) * velocity->sign() / _duration;
 }
 
 bool ClampingScrollSimulationCls::isDone(double time) {

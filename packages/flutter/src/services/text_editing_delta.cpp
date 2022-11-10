@@ -20,15 +20,15 @@ TextEditingDeltaCls::TextEditingDeltaCls(TextRange composing, String oldText, Te
 }
 
 void TextEditingDeltaCls::fromJSON(Map<String, dynamic> encoded) {
-    String oldText = ((String)encoded["oldText"]);
-    int replacementDestinationStart = ((int)encoded["deltaStart"]);
-    int replacementDestinationEnd = ((int)encoded["deltaEnd"]);
-    String replacementSource = ((String)encoded["deltaText"]);
+    String oldText = as<String>(encoded[__s("oldText")]);
+    int replacementDestinationStart = as<int>(encoded[__s("deltaStart")]);
+    int replacementDestinationEnd = as<int>(encoded[__s("deltaEnd")]);
+    String replacementSource = as<String>(encoded[__s("deltaText")]);
     int replacementSourceStart = 0;
     int replacementSourceEnd = replacementSource->length;
     bool isNonTextUpdate = replacementDestinationStart == -1 && replacementDestinationStart == replacementDestinationEnd;
-    TextRange newComposing = make<TextRangeCls>(((int)encoded["composingBase"]) ?? -1, ((int)encoded["composingExtent"]) ?? -1);
-    TextSelection newSelection = make<TextSelectionCls>(((int)encoded["selectionBase"]) ?? -1, ((int)encoded["selectionExtent"]) ?? -1, _toTextAffinity(((String)encoded["selectionAffinity"])) ?? TextAffinityCls::downstream, ((bool)encoded["selectionIsDirectional"]) ?? false);
+    TextRange newComposing = make<TextRangeCls>(as<int>(encoded[__s("composingBase")]) or -1, as<int>(encoded[__s("composingExtent")]) or -1);
+    TextSelection newSelection = make<TextSelectionCls>(as<int>(encoded[__s("selectionBase")]) or -1, as<int>(encoded[__s("selectionExtent")]) or -1, _toTextAffinity(as<String>(encoded[__s("selectionAffinity")])) or TextAffinityCls::downstream, as<bool>(encoded[__s("selectionIsDirectional")]) or false);
     if (isNonTextUpdate) {
         return make<TextEditingDeltaNonTextUpdateCls>(oldText, newSelection, newComposing);
     }
@@ -87,7 +87,7 @@ String TextEditingDeltaDeletionCls::textDeleted() {
 
 TextEditingValue TextEditingDeltaDeletionCls::apply(TextEditingValue value) {
     String newText = oldText;
-    newText = _replace(newText, "", deletedRange->start, deletedRange->end);
+    newText = _replace(newText, __s(""), deletedRange->start, deletedRange->end);
     return value->copyWith(newText, selection, composing);
 }
 

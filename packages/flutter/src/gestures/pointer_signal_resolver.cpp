@@ -1,6 +1,6 @@
 #include "pointer_signal_resolver.hpp"
 bool _isSameEvent(PointerSignalEvent event1, PointerSignalEvent event2) {
-    return (event1->original ?? event1) == (event2->original ?? event2);
+    return (event1->original or event1) == (event2->original or event2);
 }
 
 void PointerSignalResolverCls::register(PointerSignalResolvedCallback callback, PointerSignalEvent event) {
@@ -30,7 +30,7 @@ void PointerSignalResolverCls::resolve(PointerSignalEvent event) {
             };
             return true;
         }());
-        FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(exception, stack, "gesture library", make<ErrorDescriptionCls>("while resolving a PointerSignalEvent"), collector));
+        FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(exception, stack, __s("gesture library"), make<ErrorDescriptionCls>(__s("while resolving a PointerSignalEvent")), collector));
     };
     _firstRegisteredCallback = nullptr;
     _currentEvent = nullptr;

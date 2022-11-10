@@ -32,7 +32,7 @@ public:
 
     virtual void initInstances();
 
-    template<typename T : BindingBase>  static T checkInstance(T instance);
+    template<typename T>  static T checkInstance(T instance);
 
     static Type debugBindingType();
 

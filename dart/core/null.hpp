@@ -8,7 +8,7 @@
 class NullCls : public ObjectCls {
 public:
 
-    extern int hashCode();
+    int hashCode();
     virtual String toString();
 
 private:

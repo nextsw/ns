@@ -18,10 +18,10 @@ bool DecorationImageCls::==(Object other) {
     if (identical(this, other)) {
         return true;
     }
-    if (other->runtimeType != runtimeType) {
+    if (other->runtimeType() != runtimeType) {
         return false;
     }
-    return other is DecorationImage && other->image == image && other->colorFilter == colorFilter && other->fit == fit && other->alignment == alignment && other->centerSlice == centerSlice && other->repeat == repeat && other->matchTextDirection == matchTextDirection && other->scale == scale && other->opacity == opacity && other->filterQuality == filterQuality && other->invertColors == invertColors && other->isAntiAlias == isAntiAlias;
+    return is<DecorationImage>(other) && other->image == image && other->colorFilter == colorFilter && other->fit == fit && other->alignment == alignment && other->centerSlice == centerSlice && other->repeat == repeat && other->matchTextDirection == matchTextDirection && other->scale == scale && other->opacity == opacity && other->filterQuality == filterQuality && other->invertColors == invertColors && other->isAntiAlias == isAntiAlias;
 }
 
 int DecorationImageCls::hashCode() {
@@ -30,7 +30,7 @@ int DecorationImageCls::hashCode() {
 
 String DecorationImageCls::toString() {
     List<String> list1 = make<ListCls<>>();list1.add(ArrayItem);if (colorFilter != nullptr) {    list1.add(ArrayItem);}if (fit != nullptr && !(fit == BoxFitCls::fill && centerSlice != nullptr) && !(fit == BoxFitCls::scaleDown && centerSlice == nullptr)) {    list1.add(ArrayItem);}list1.add(ArrayItem);if (centerSlice != nullptr) {    list1.add(ArrayItem);}if (repeat != ImageRepeatCls::noRepeat) {    list1.add(ArrayItem);}if (matchTextDirection) {    list1.add(ArrayItem);}list1.add(ArrayItem);list1.add(ArrayItem);list1.add(ArrayItem);if (invertColors) {    list1.add(ArrayItem);}if (isAntiAlias) {    list1.add(ArrayItem);}List<String> properties = list1;
-    return "${objectRuntimeType(this, 'DecorationImage')}(${properties.join(", ")})";
+    return __s("${objectRuntimeType(this, 'DecorationImage')}(${properties.join(", ")})");
 }
 
 void DecorationImagePainterCls::paint(Canvas canvas, Path clipPath, ImageConfiguration configuration, Rect rect) {
@@ -76,7 +76,7 @@ void DecorationImagePainterCls::dispose() {
 }
 
 String DecorationImagePainterCls::toString() {
-    return "${objectRuntimeType(this, 'DecorationImagePainter')}(stream: $_imageStream, image: $_image) for $_details";
+    return __s("${objectRuntimeType(this, 'DecorationImagePainter')}(stream: $_imageStream, image: $_image) for $_details");
 }
 
 void DecorationImagePainterCls::_(DecorationImage _details, VoidCallback _onChanged)
@@ -111,7 +111,7 @@ void paintImage(Alignment alignment, Canvas canvas, Rect centerSlice, ColorFilte
     assert(repeat != nullptr);
     assert(flipHorizontally != nullptr);
     assert(isAntiAlias != nullptr);
-    assert(image->debugGetOpenHandleStackTraces()?->isNotEmpty ?? true, "Cannot paint an image that is disposed.\nThe caller of paintImage is expected to wait to dispose the image until after painting has completed.");
+    assert(image->debugGetOpenHandleStackTraces()?->isNotEmpty or true, __s("Cannot paint an image that is disposed.\nThe caller of paintImage is expected to wait to dispose the image until after painting has completed."));
     if (rect->isEmpty) {
         return;
     }
@@ -119,9 +119,9 @@ void paintImage(Alignment alignment, Canvas canvas, Rect centerSlice, ColorFilte
     Size inputSize = make<SizeCls>(image->width->toDouble(), image->height->toDouble());
     Offset sliceBorder;
     if (centerSlice != nullptr) {
-        sliceBorder = ((Offset)inputSize / scale - centerSlice->size);
-        outputSize = ((Size)outputSize - sliceBorder);
-        inputSize = ((Size)inputSize - sliceBorder * scale);
+        sliceBorder = as<Offset>(inputSize / scale - centerSlice->size);
+        outputSize = as<Size>(outputSize - sliceBorder);
+        inputSize = as<Size>(inputSize - sliceBorder * scale);
     }
     fit = centerSlice == nullptr? BoxFitCls::scaleDown : BoxFitCls::fill;
     assert(centerSlice == nullptr || (fit != BoxFitCls::none && fit != BoxFitCls::cover));
@@ -131,7 +131,7 @@ void paintImage(Alignment alignment, Canvas canvas, Rect centerSlice, ColorFilte
     if (centerSlice != nullptr) {
         outputSize = sliceBorder!;
         destinationSize = sliceBorder;
-        assert(sourceSize == inputSize, "centerSlice was used with a BoxFit that does not guarantee that the image is fully visible.");
+        assert(sourceSize == inputSize, __s("centerSlice was used with a BoxFit that does not guarantee that the image is fully visible."));
     }
     if (repeat != ImageRepeatCls::noRepeat && destinationSize == outputSize) {
         repeat = ImageRepeatCls::noRepeat;
@@ -151,13 +151,13 @@ void paintImage(Alignment alignment, Canvas canvas, Rect centerSlice, ColorFilte
     Rect destinationRect = destinationPosition & destinationSize;
     bool invertedCanvas = false;
     if (!kReleaseMode) {
-        ImageSizeInfo sizeInfo = make<ImageSizeInfoCls>(debugImageLabel ?? "<Unknown Image(${image.width}×${image.height})>", make<SizeCls>(image->width->toDouble(), image->height->toDouble()), outputSize * PaintingBindingCls::instance->window->devicePixelRatio);
+        ImageSizeInfo sizeInfo = make<ImageSizeInfoCls>(debugImageLabel or __s("<Unknown Image(${image.width}×${image.height})>"), make<SizeCls>(image->width->toDouble(), image->height->toDouble()), outputSize * PaintingBindingCls::instance->window->devicePixelRatio);
         assert([=] () {
             if (debugInvertOversizedImages && sizeInfo->decodedSizeInBytes > sizeInfo->displaySizeInBytes + debugImageOverheadAllowance) {
                 int overheadInKilobytes = (sizeInfo->decodedSizeInBytes - sizeInfo->displaySizeInBytes) ~/ 1024;
                 int outputWidth = sizeInfo->displaySize->width->toInt();
                 int outputHeight = sizeInfo->displaySize->height->toInt();
-                FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>("Image $debugImageLabel has a display size of $outputWidth×$outputHeight but a decode size of ${image.width}×${image.height}, which uses an additional ${overheadInKilobytes}KB.\n\nConsider resizing the asset ahead of time, supplying a cacheWidth parameter of $outputWidth, a cacheHeight parameter of $outputHeight, or using a ResizeImage.", "painting library", make<ErrorDescriptionCls>("while painting an image")));
+                FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(__s("Image $debugImageLabel has a display size of $outputWidth×$outputHeight but a decode size of ${image.width}×${image.height}, which uses an additional ${overheadInKilobytes}KB.\n\nConsider resizing the asset ahead of time, supplying a cacheWidth parameter of $outputWidth, a cacheHeight parameter of $outputHeight, or using a ResizeImage."), __s("painting library"), make<ErrorDescriptionCls>(__s("while painting an image"))));
                             auto _c2 = make<PaintCls>();            _c2.colorFilter = ColorFilterCls->matrix(makeList(ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem));canvas->saveLayer(destinationRect, _c2);
                 double dy = -(rect->top + rect->height / 2.0);
                 canvas->translate(0.0, -dy);
@@ -178,7 +178,7 @@ void paintImage(Alignment alignment, Canvas canvas, Rect centerSlice, ColorFilte
                 if (_pendingImageSizeInfo->isEmpty) {
                     return;
                 }
-                            Map<String, Object> map3 = make<MapCls<>>();            for (ImageSizeInfo imageSizeInfo : _pendingImageSizeInfo->values)                 {                                ;                            }            {                map3.set(imageSizeInfo->source!, imageSizeInfo->toJson());            }developer->postEvent("Flutter.ImageSizesForFrame", list3);
+                            Map<String, Object> map3 = make<MapCls<>>();            for (ImageSizeInfo imageSizeInfo : _pendingImageSizeInfo->values)                 {                                ;                            }            {                map3.set(imageSizeInfo->source!, imageSizeInfo->toJson());            }developer->postEvent(__s("Flutter.ImageSizesForFrame"), list3);
                 _pendingImageSizeInfo = makeMap(makeList(), makeList();
             });
         }

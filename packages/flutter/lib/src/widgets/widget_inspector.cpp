@@ -3,7 +3,7 @@ void _ProxyLayerCls::addToScene(SceneBuilder builder) {
     _layer->addToScene(builder);
 }
 
-bool _ProxyLayerCls::findAnnotationstemplate<typename S : Object> (Offset localPosition, bool onlyFirst, AnnotationResult<S> result) {
+bool _ProxyLayerCls::findAnnotationstemplate<typename S> (Offset localPosition, bool onlyFirst, AnnotationResult<S> result) {
     return _layer->findAnnotations(result, localPositiononlyFirst);
 }
 
@@ -212,11 +212,11 @@ void _ScreenshotContainerLayerCls::addToScene(SceneBuilder builder) {
 
 Offset _ScreenshotDataCls::screenshotOffset() {
     assert(foundTarget);
-    return containerLayer->offset;
+    return containerLayer->offset();
 }
 
 void _ScreenshotDataCls::screenshotOffset(Offset offset) {
-    containerLayer->offset = offset;
+    containerLayer->offset() = offset;
 }
 
 _ScreenshotDataCls::_ScreenshotDataCls(RenderObject target) {
@@ -248,11 +248,11 @@ void _ScreenshotPaintingContextCls::appendLayer(Layer layer) {
     if (_data->includeInRegularContext) {
         super->appendLayer(layer);
         if (_data->includeInScreenshot) {
-            assert(!_isScreenshotRecording);
+            assert(!_isScreenshotRecording());
             _data->containerLayer->append(make<_ProxyLayerCls>(layer));
         }
     } else {
-        assert(!_isScreenshotRecording);
+        assert(!_isScreenshotRecording());
         assert(_data->includeInScreenshot);
         layer->remove();
         _data->containerLayer->append(layer);
@@ -274,7 +274,7 @@ void _ScreenshotPaintingContextCls::paintChild(RenderObject child, Offset offset
         assert(!_data->includeInScreenshot);
         assert(!_data->foundTarget);
         _data->foundTarget = true;
-        _data->screenshotOffset = offset;
+        _data->screenshotOffset() = offset;
         _data->includeInScreenshot = true;
     }
     super->paintChild(child, offset);
@@ -287,7 +287,7 @@ void _ScreenshotPaintingContextCls::paintChild(RenderObject child, Offset offset
 Future<Image> _ScreenshotPaintingContextCls::toImage(bool debugPaint, double pixelRatio, Rect renderBounds, RenderObject renderObject) {
     RenderObject repaintBoundary = renderObject;
     while (repaintBoundary != nullptr && !repaintBoundary->isRepaintBoundary) {
-        repaintBoundary = ((RenderObject)repaintBoundary->parent!);
+        repaintBoundary = as<RenderObject>(repaintBoundary->parent!);
     }
     assert(repaintBoundary != nullptr);
     _ScreenshotData data = make<_ScreenshotDataCls>(renderObject);
@@ -295,7 +295,7 @@ Future<Image> _ScreenshotPaintingContextCls::toImage(bool debugPaint, double pix
     if (identical(renderObject, repaintBoundary)) {
         data->containerLayer->append(make<_ProxyLayerCls>(repaintBoundary->debugLayer!));
         data->foundTarget = true;
-        OffsetLayer offsetLayer = ((OffsetLayer)repaintBoundary->debugLayer!);
+        OffsetLayer offsetLayer = as<OffsetLayer>(repaintBoundary->debugLayer!);
         data->screenshotOffset = offsetLayer->offset;
     } else {
         PaintingContextCls->debugInstrumentRepaintCompositedChild(repaintBoundarycontext);
@@ -317,7 +317,7 @@ Future<Image> _ScreenshotPaintingContextCls::toImage(bool debugPaint, double pix
     return data->containerLayer->toImage(renderBoundspixelRatio);
 }
 
-_ScreenshotPaintingContextCls::_ScreenshotPaintingContextCls(ContainerLayer containerLayer, Rect estimatedBounds, _ScreenshotData screenshotData) {
+_ScreenshotPaintingContextCls::_ScreenshotPaintingContextCls(ContainerLayer containerLayer, Rect estimatedBounds, _ScreenshotData screenshotData) : PaintingContext(containerLayer, estimatedBounds) {
     {
         _data = screenshotData;
     }
@@ -342,7 +342,7 @@ bool _ScreenshotPaintingContextCls::_isScreenshotRecording() {
 
 void _ScreenshotPaintingContextCls::_startRecordingScreenshot() {
     assert(_data->includeInScreenshot);
-    assert(!_isScreenshotRecording);
+    assert(!_isScreenshotRecording());
     _screenshotCurrentLayer = make<PictureLayerCls>(estimatedBounds);
     _screenshotRecorder = ui->make<PictureRecorderCls>();
     _screenshotCanvas = make<CanvasCls>(_screenshotRecorder!);
@@ -355,10 +355,10 @@ void _ScreenshotPaintingContextCls::_startRecordingScreenshot() {
 }
 
 void _ScreenshotPaintingContextCls::_stopRecordingScreenshotIfNeeded() {
-    if (!_isScreenshotRecording) {
+    if (!_isScreenshotRecording()) {
         return;
     }
-    _screenshotCurrentLayer!->picture = _screenshotRecorder!->endRecording();
+    _screenshotCurrentLayer!->picture() = _screenshotRecorder!->endRecording();
     _screenshotCurrentLayer = nullptr;
     _screenshotRecorder = nullptr;
     _multicastCanvas = nullptr;
@@ -410,7 +410,7 @@ List<String> WidgetInspectorServiceCls::pubRootDirectories() {
 }
 
 void WidgetInspectorServiceCls::registerServiceExtension(ServiceExtensionCallback callback, String name) {
-    _registerServiceExtensionCallback("inspector.$name", callback);
+    _registerServiceExtensionCallback(__s("inspector.$name"), callback);
 }
 
 Future<void> WidgetInspectorServiceCls::forceRebuild() {
@@ -425,7 +425,7 @@ Future<void> WidgetInspectorServiceCls::forceRebuild() {
 bool WidgetInspectorServiceCls::isStructuredErrorsEnabled() {
     bool enabled = false;
     assert([=] () {
-        enabled = boolValue->fromEnvironment("flutter.inspector.structuredErrors"!kIsWeb);
+        enabled = boolValue->fromEnvironment(__s("flutter.inspector.structuredErrors")!kIsWeb);
         return true;
     }());
     return enabled;
@@ -443,13 +443,13 @@ void WidgetInspectorServiceCls::initServiceExtensions(RegisterServiceExtensionCa
         return true;
     }());
     SchedulerBindingCls::instance->addPersistentFrameCallback(_onFrameStart);
-    _registerBoolServiceExtension("structuredErrors", [=] ()     {
+    _registerBoolServiceExtension(__s("structuredErrors"), [=] ()     {
         FlutterErrorCls::presentError == _reportStructuredError;
     }, [=] (bool value) {
         FlutterErrorCls::presentError = value? _reportStructuredError : defaultExceptionHandler;
         return <void>value();
     });
-    _registerBoolServiceExtension("show", [=] ()     {
+    _registerBoolServiceExtension(__s("show"), [=] ()     {
         WidgetsAppCls::debugShowWidgetInspectorOverride;
     }, [=] (bool value) {
         if (WidgetsAppCls::debugShowWidgetInspectorOverride == value) {
@@ -459,7 +459,7 @@ void WidgetInspectorServiceCls::initServiceExtensions(RegisterServiceExtensionCa
         return forceRebuild();
     });
     if (isWidgetCreationTracked()) {
-        _registerBoolServiceExtension("trackRebuildDirtyWidgets", [=] ()         {
+        _registerBoolServiceExtension(__s("trackRebuildDirtyWidgets"), [=] ()         {
             _trackRebuildDirtyWidgets;
         }, [=] (bool value) {
             if (value == _trackRebuildDirtyWidgets) {
@@ -477,7 +477,7 @@ void WidgetInspectorServiceCls::initServiceExtensions(RegisterServiceExtensionCa
                 return;
             }
         });
-        _registerBoolServiceExtension("trackRepaintWidgets", [=] ()         {
+        _registerBoolServiceExtension(__s("trackRepaintWidgets"), [=] ()         {
             _trackRepaintWidgets;
         }, [=] (bool value) {
             if (value == _trackRepaintWidgets) {
@@ -496,59 +496,59 @@ void WidgetInspectorServiceCls::initServiceExtensions(RegisterServiceExtensionCa
             }
         });
     }
-    _registerSignalServiceExtension("disposeAllGroups", [=] () {
+    _registerSignalServiceExtension(__s("disposeAllGroups"), [=] () {
         disposeAllGroups();
         return nullptr;
     });
-    _registerObjectGroupServiceExtension("disposeGroup", [=] (String name) {
+    _registerObjectGroupServiceExtension(__s("disposeGroup"), [=] (String name) {
         disposeGroup(name);
         return nullptr;
     });
-    _registerSignalServiceExtension("isWidgetTreeReady", isWidgetTreeReady);
-    _registerServiceExtensionWithArg("disposeId", [=] (String objectId,String objectGroup) {
+    _registerSignalServiceExtension(__s("isWidgetTreeReady"), isWidgetTreeReady);
+    _registerServiceExtensionWithArg(__s("disposeId"), [=] (String objectId,String objectGroup) {
         disposeId(objectId, objectGroup);
         return nullptr;
     });
-    _registerServiceExtensionVarArgs("setPubRootDirectories", [=] (List<String> args) {
+    _registerServiceExtensionVarArgs(__s("setPubRootDirectories"), [=] (List<String> args) {
         setPubRootDirectories(args);
         return nullptr;
     });
-    _registerServiceExtensionVarArgs("addPubRootDirectories", [=] (List<String> args) {
+    _registerServiceExtensionVarArgs(__s("addPubRootDirectories"), [=] (List<String> args) {
         addPubRootDirectories(args);
         return nullptr;
     });
-    _registerServiceExtensionVarArgs("removePubRootDirectories", [=] (List<String> args) {
+    _registerServiceExtensionVarArgs(__s("removePubRootDirectories"), [=] (List<String> args) {
         removePubRootDirectories(args);
         return nullptr;
     });
-    _registerServiceExtensionWithArg("setSelectionById", setSelectionById);
-    _registerServiceExtensionWithArg("getParentChain", _getParentChain);
-    _registerServiceExtensionWithArg("getProperties", _getProperties);
-    _registerServiceExtensionWithArg("getChildren", _getChildren);
-    _registerServiceExtensionWithArg("getChildrenSummaryTree", _getChildrenSummaryTree);
-    _registerServiceExtensionWithArg("getChildrenDetailsSubtree", _getChildrenDetailsSubtree);
-    _registerObjectGroupServiceExtension("getRootWidget", _getRootWidget);
-    _registerObjectGroupServiceExtension("getRootRenderObject", _getRootRenderObject);
-    _registerObjectGroupServiceExtension("getRootWidgetSummaryTree", _getRootWidgetSummaryTree);
-    registerServiceExtension("getDetailsSubtree", [=] (Map<String, String> parameters) {
-        assert(parameters->containsKey("objectGroup"));
-        String subtreeDepth = parameters["subtreeDepth"];
-            Map<String, Object> map1 = make<MapCls<>>();    map1.set("result", _getDetailsSubtree(parameters["arg"], parameters["objectGroup"], subtreeDepth != nullptr? intValue->parse(subtreeDepth) : 2));return list1;
+    _registerServiceExtensionWithArg(__s("setSelectionById"), setSelectionById);
+    _registerServiceExtensionWithArg(__s("getParentChain"), _getParentChain);
+    _registerServiceExtensionWithArg(__s("getProperties"), _getProperties);
+    _registerServiceExtensionWithArg(__s("getChildren"), _getChildren);
+    _registerServiceExtensionWithArg(__s("getChildrenSummaryTree"), _getChildrenSummaryTree);
+    _registerServiceExtensionWithArg(__s("getChildrenDetailsSubtree"), _getChildrenDetailsSubtree);
+    _registerObjectGroupServiceExtension(__s("getRootWidget"), _getRootWidget);
+    _registerObjectGroupServiceExtension(__s("getRootRenderObject"), _getRootRenderObject);
+    _registerObjectGroupServiceExtension(__s("getRootWidgetSummaryTree"), _getRootWidgetSummaryTree);
+    registerServiceExtension(__s("getDetailsSubtree"), [=] (Map<String, String> parameters) {
+        assert(parameters->containsKey(__s("objectGroup")));
+        String subtreeDepth = parameters[__s("subtreeDepth")];
+            Map<String, Object> map1 = make<MapCls<>>();    map1.set(__s("result"), _getDetailsSubtree(parameters[__s("arg")], parameters[__s("objectGroup")], subtreeDepth != nullptr? intValue->parse(subtreeDepth) : 2));return list1;
     });
-    _registerServiceExtensionWithArg("getSelectedRenderObject", _getSelectedRenderObject);
-    _registerServiceExtensionWithArg("getSelectedWidget", _getSelectedWidget);
-    _registerServiceExtensionWithArg("getSelectedSummaryWidget", _getSelectedSummaryWidget);
-    _registerSignalServiceExtension("isWidgetCreationTracked", isWidgetCreationTracked);
-    registerServiceExtension("screenshot", [=] (Map<String, String> parameters) {
-        assert(parameters->containsKey("id"));
-        assert(parameters->containsKey("width"));
-        assert(parameters->containsKey("height"));
-        Image image = await screenshot(toObject(parameters["id"])double->parse(parameters["width"]!), double->parse(parameters["height"]!), parameters->containsKey("margin")? double->parse(parameters["margin"]!) : 0.0, parameters->containsKey("maxPixelRatio")? double->parse(parameters["maxPixelRatio"]!) : 1.0, parameters["debugPaint"] == "true");
+    _registerServiceExtensionWithArg(__s("getSelectedRenderObject"), _getSelectedRenderObject);
+    _registerServiceExtensionWithArg(__s("getSelectedWidget"), _getSelectedWidget);
+    _registerServiceExtensionWithArg(__s("getSelectedSummaryWidget"), _getSelectedSummaryWidget);
+    _registerSignalServiceExtension(__s("isWidgetCreationTracked"), isWidgetCreationTracked);
+    registerServiceExtension(__s("screenshot"), [=] (Map<String, String> parameters) {
+        assert(parameters->containsKey(__s("id")));
+        assert(parameters->containsKey(__s("width")));
+        assert(parameters->containsKey(__s("height")));
+        Image image = await screenshot(toObject(parameters[__s("id")])double->parse(parameters[__s("width")]!), double->parse(parameters[__s("height")]!), parameters->containsKey(__s("margin"))? double->parse(parameters[__s("margin")]!) : 0.0, parameters->containsKey(__s("maxPixelRatio"))? double->parse(parameters[__s("maxPixelRatio")]!) : 1.0, parameters[__s("debugPaint")] == __s("true"));
         if (image == nullptr) {
-                    Map<String, Object> map2 = make<MapCls<>>();        map2.set("result", nullptr);return list2;
+                    Map<String, Object> map2 = make<MapCls<>>();        map2.set(__s("result"), nullptr);return list2;
         }
         ByteData byteData = await image->toByteData(ui->ImageByteFormatCls::png);
-            Map<String, Object> map3 = make<MapCls<>>();    map3.set("result", base64->encoder->convert(Uint8ListCls->view(byteData!->buffer)));return list3;
+            Map<String, Object> map3 = make<MapCls<>>();    map3.set(__s("result"), base64->encoder->convert(Uint8ListCls->view(byteData!->buffer)));return list3;
     });
 }
 
@@ -583,7 +583,7 @@ String WidgetInspectorServiceCls::toId(String groupName, Object object) {
     String id = _objectToId[object];
     _InspectorReferenceData referenceData;
     if (id == nullptr) {
-        id = "inspector-$_nextId";
+        id = __s("inspector-$_nextId");
         _nextId = 1;
         _objectToId[object] = id;
         referenceData = make<_InspectorReferenceDataCls>(object);
@@ -615,7 +615,7 @@ Object WidgetInspectorServiceCls::toObject(String groupName, String id) {
 
 Object WidgetInspectorServiceCls::toObjectForSourceLocation(String groupName, String id) {
     Object object = toObject(id);
-    if (object is Element) {
+    if (is<Element>(object)) {
         return object->widget;
     }
     return object;
@@ -636,7 +636,7 @@ void WidgetInspectorServiceCls::disposeId(String groupName, String id) {
 }
 
 void WidgetInspectorServiceCls::setPubRootDirectories(List<String> pubRootDirectories) {
-    addPubRootDirectories(pubRootDirectories);
+    addPubRootDirectories(pubRootDirectories());
 }
 
 void WidgetInspectorServiceCls::resetPubRootDirectories() {
@@ -645,10 +645,10 @@ void WidgetInspectorServiceCls::resetPubRootDirectories() {
 }
 
 void WidgetInspectorServiceCls::addPubRootDirectories(List<String> pubRootDirectories) {
-    pubRootDirectories = pubRootDirectories-><String>map([=] (String directory)     {
+    pubRootDirectories() = pubRootDirectories()-><String>map([=] (String directory)     {
         UriCls->parse(directory)->path;
     })->toList();
-    Set<String> directorySet = <String>from(pubRootDirectories);
+    Set<String> directorySet = <String>from(pubRootDirectories());
     if (_pubRootDirectories != nullptr) {
         directorySet->addAll(_pubRootDirectories!);
     }
@@ -660,11 +660,11 @@ void WidgetInspectorServiceCls::removePubRootDirectories(List<String> pubRootDir
     if (_pubRootDirectories == nullptr) {
         return;
     }
-    pubRootDirectories = pubRootDirectories-><String>map([=] (String directory)     {
+    pubRootDirectories() = pubRootDirectories()-><String>map([=] (String directory)     {
         UriCls->parse(directory)->path;
     })->toList();
     Set<String> directorySet = <String>from(_pubRootDirectories!);
-    directorySet->removeAll(pubRootDirectories);
+    directorySet->removeAll(pubRootDirectories());
     _pubRootDirectories = directorySet->toList();
     _isLocalCreationCache->clear();
 }
@@ -674,19 +674,19 @@ bool WidgetInspectorServiceCls::setSelectionById(String groupName, String id) {
 }
 
 bool WidgetInspectorServiceCls::setSelection(String groupName, Object object) {
-    if (object is Element || object is RenderObject) {
-        if (object is Element) {
-            if (object == selection->currentElement) {
+    if (is<Element>(object) || is<RenderObject>(object)) {
+        if (is<Element>(object)) {
+            if (object == selection->currentElement()) {
                 return false;
             }
-            selection->currentElement = object;
-            developer->inspect(selection->currentElement);
+            selection->currentElement() = object;
+            developer->inspect(selection->currentElement());
         } else {
-            if (object == selection->current) {
+            if (object == selection->current()) {
                 return false;
             }
-            selection->current = ((RenderObject)object!);
-            developer->inspect(selection->current);
+            selection->current() = as<RenderObject>(object!);
+            developer->inspect(selection->current());
         }
         if (selectionChangedCallback != nullptr) {
             if (SchedulerBindingCls::instance->schedulerPhase == SchedulerPhaseCls::idle) {
@@ -703,11 +703,11 @@ bool WidgetInspectorServiceCls::setSelection(String groupName, Object object) {
 String WidgetInspectorServiceCls::devToolsInspectorUri(String inspectorRef) {
     assert(activeDevToolsServerAddress != nullptr);
     assert(connectedVmServiceUri != nullptr);
-    Map<String, dynamic> map1 = make<MapCls<>>();map1.set("uri", connectedVmServiceUri);map1.set("inspectorRef", inspectorRef);Uri uri = UriCls->parse(activeDevToolsServerAddress!)->replace(list1);
+    Map<String, dynamic> map1 = make<MapCls<>>();map1.set(__s("uri"), connectedVmServiceUri);map1.set(__s("inspectorRef"), inspectorRef);Uri uri = UriCls->parse(activeDevToolsServerAddress!)->replace(list1);
     String devToolsInspectorUri = uri->toString();
-    int startQueryParamIndex = devToolsInspectorUri->indexOf("?");
+    int startQueryParamIndex = devToolsInspectorUri->indexOf(__s("?"));
     assert(startQueryParamIndex != -1);
-    return "${devToolsInspectorUri.substring(0, startQueryParamIndex)}/#/inspector${devToolsInspectorUri.substring(startQueryParamIndex)}";
+    return __s("${devToolsInspectorUri.substring(0, startQueryParamIndex)}/#/inspector${devToolsInspectorUri.substring(startQueryParamIndex)}");
 }
 
 String WidgetInspectorServiceCls::getParentChain(String groupName, String id) {
@@ -755,10 +755,10 @@ String WidgetInspectorServiceCls::getSelectedWidget(String groupName, String pre
 }
 
 Future<Image> WidgetInspectorServiceCls::screenshot(bool debugPaint, double height, double margin, double maxPixelRatio, Object object, double width) {
-    if (object is! Element && object is! RenderObject) {
+    if (!is<Element>(object) && !is<RenderObject>(object)) {
         return nullptr;
     }
-    RenderObject renderObject = object is Element? object->renderObject : (((RenderObject)object));
+    RenderObject renderObject = is<Element>(object)? object->renderObject : (as<RenderObject>(object));
     if (renderObject == nullptr || !renderObject->attached) {
         return nullptr;
     }
@@ -787,7 +787,7 @@ String WidgetInspectorServiceCls::getSelectedSummaryWidget(String groupName, Str
 }
 
 bool WidgetInspectorServiceCls::isWidgetCreationTracked() {
-    _widgetCreationTracked = make<_WidgetForTypeTestsCls>() is _HasCreationLocation;
+    _widgetCreationTracked = is<_HasCreationLocation>(make<_WidgetForTypeTestsCls>());
     return _widgetCreationTracked!;
 }
 
@@ -802,13 +802,13 @@ void WidgetInspectorServiceCls::performReassemble() {
 
 void WidgetInspectorServiceCls::_registerSignalServiceExtension(FutureOr<Object> callback() , String name) {
     registerServiceExtension(name, [=] (Map<String, String> parameters) {
-            Map<String, Object> map1 = make<MapCls<>>();    map1.set("result", await callback());return list1;
+            Map<String, Object> map1 = make<MapCls<>>();    map1.set(__s("result"), await callback());return list1;
     });
 }
 
 void WidgetInspectorServiceCls::_registerObjectGroupServiceExtension(FutureOr<Object> callback(String objectGroup) , String name) {
     registerServiceExtension(name, [=] (Map<String, String> parameters) {
-            Map<String, Object> map1 = make<MapCls<>>();    map1.set("result", await callback(parameters["objectGroup"]!));return list1;
+            Map<String, Object> map1 = make<MapCls<>>();    map1.set(__s("result"), await callback(parameters[__s("objectGroup")]!));return list1;
     });
 }
 
@@ -817,23 +817,23 @@ void WidgetInspectorServiceCls::_registerBoolServiceExtension(AsyncValueGetter<b
     assert(getter != nullptr);
     assert(setter != nullptr);
     registerServiceExtension(name, [=] (Map<String, String> parameters) {
-        if (parameters->containsKey("enabled")) {
-            bool value = parameters["enabled"] == "true";
+        if (parameters->containsKey(__s("enabled"))) {
+            bool value = parameters[__s("enabled")] == __s("true");
             await await setter(value);
             _postExtensionStateChangedEvent(name, value);
         }
-            Map<String, dynamic> map1 = make<MapCls<>>();    map1.set("enabled", await getter()? "true" : "false");return list1;
+            Map<String, dynamic> map1 = make<MapCls<>>();    map1.set(__s("enabled"), await getter()? __s("true") : __s("false"));return list1;
     });
 }
 
 void WidgetInspectorServiceCls::_postExtensionStateChangedEvent(String name, Object value) {
-    Map<String, Object> map1 = make<MapCls<>>();map1.set("extension", "ext.flutter.inspector.$name");map1.set("value", value);postEvent("Flutter.ServiceExtensionStateChanged", list1);
+    Map<String, Object> map1 = make<MapCls<>>();map1.set(__s("extension"), __s("ext.flutter.inspector.$name"));map1.set(__s("value"), value);postEvent(__s("Flutter.ServiceExtensionStateChanged"), list1);
 }
 
 void WidgetInspectorServiceCls::_registerServiceExtensionWithArg(FutureOr<Object> callback(String objectGroup, String objectId) , String name) {
     registerServiceExtension(name, [=] (Map<String, String> parameters) {
-        assert(parameters->containsKey("objectGroup"));
-            Map<String, Object> map1 = make<MapCls<>>();    map1.set("result", await callback(parameters["arg"], parameters["objectGroup"]!));return list1;
+        assert(parameters->containsKey(__s("objectGroup")));
+            Map<String, Object> map1 = make<MapCls<>>();    map1.set(__s("result"), await callback(parameters[__s("arg")], parameters[__s("objectGroup")]!));return list1;
     });
 }
 
@@ -842,7 +842,7 @@ void WidgetInspectorServiceCls::_registerServiceExtensionVarArgs(FutureOr<Object
         List<String> args = makeList();
         int index = 0;
         while (true) {
-            String name = "arg$index";
+            String name = __s("arg$index");
             if (parameters->containsKey(name)) {
                 args->add(parameters[name]!);
             } else {
@@ -850,21 +850,21 @@ void WidgetInspectorServiceCls::_registerServiceExtensionVarArgs(FutureOr<Object
             }
             index++;
         }
-        assert(index == parameters->length || (index == parameters->length - 1 && parameters->containsKey("isolateId")));
-            Map<String, Object> map1 = make<MapCls<>>();    map1.set("result", await callback(args));return list1;
+        assert(index == parameters->length || (index == parameters->length - 1 && parameters->containsKey(__s("isolateId"))));
+            Map<String, Object> map1 = make<MapCls<>>();    map1.set(__s("result"), await callback(args));return list1;
     });
 }
 
 void WidgetInspectorServiceCls::_reportStructuredError(FlutterErrorDetails details) {
     Map<String, Object> errorJson = _nodeToJson(details->toDiagnosticsNode(), make<InspectorSerializationDelegateCls>(_consoleObjectGroup, 5, true, 5, this))!;
-    errorJson["errorsSinceReload"] = _errorsSinceReload;
+    errorJson[__s("errorsSinceReload")] = _errorsSinceReload;
     if (_errorsSinceReload == 0) {
-        errorJson["renderedErrorText"] = make<TextTreeRendererCls>(FlutterErrorCls::wrapWidth, 5)->render(details->toDiagnosticsNode(DiagnosticsTreeStyleCls::error))->trimRight();
+        errorJson[__s("renderedErrorText")] = make<TextTreeRendererCls>(FlutterErrorCls::wrapWidth, 5)->render(details->toDiagnosticsNode(DiagnosticsTreeStyleCls::error))->trimRight();
     } else {
-        errorJson["renderedErrorText"] = "Another exception was thrown: ${details.summary}";
+        errorJson[__s("renderedErrorText")] = __s("Another exception was thrown: ${details.summary}");
     }
     _errorsSinceReload = 1;
-    postEvent("Flutter.Error", errorJson);
+    postEvent(__s("Flutter.Error"), errorJson);
 }
 
 void WidgetInspectorServiceCls::_resetErrorCount() {
@@ -899,10 +899,10 @@ String WidgetInspectorServiceCls::_devToolsInspectorUriForElement(Element elemen
 List<Object> WidgetInspectorServiceCls::_getParentChain(String groupName, String id) {
     Object value = toObject(id);
     List<_DiagnosticsPathNode> path;
-    if (value is RenderObject) {
+    if (is<RenderObject>(value)) {
         path = _getRenderObjectParentChain(value, groupName)!;
     } else     {
-        if (value is Element) {
+        if (is<Element>(value)) {
         path = _getElementParentChain(value, groupName);
     } else {
         ;
@@ -917,7 +917,7 @@ Map<String, Object> WidgetInspectorServiceCls::_pathNodeToJson(InspectorSerializ
     if (pathNode == nullptr) {
         return nullptr;
     }
-    Map<String, Object> map1 = make<MapCls<>>();map1.set("node", _nodeToJson(pathNode->node, delegate));map1.set("children", _nodesToJson(pathNode->children, delegatepathNode->node));map1.set("childIndex", pathNode->childIndex);return list1;
+    Map<String, Object> map1 = make<MapCls<>>();map1.set(__s("node"), _nodeToJson(pathNode->node, delegate));map1.set(__s("children"), _nodesToJson(pathNode->children, delegatepathNode->node));map1.set(__s("childIndex"), pathNode->childIndex);return list1;
 }
 
 List<Element> WidgetInspectorServiceCls::_getRawElementParentChain(Element element, int numLocalParents) {
@@ -937,14 +937,14 @@ List<Element> WidgetInspectorServiceCls::_getRawElementParentChain(Element eleme
 }
 
 List<_DiagnosticsPathNode> WidgetInspectorServiceCls::_getElementParentChain(Element element, String groupName, int numLocalParents) {
-    return _followDiagnosticableChain(_getRawElementParentChain(elementnumLocalParents)) ?? makeList();
+    return _followDiagnosticableChain(_getRawElementParentChain(elementnumLocalParents)) or makeList();
 }
 
 List<_DiagnosticsPathNode> WidgetInspectorServiceCls::_getRenderObjectParentChain(String groupName, RenderObject renderObject) {
     List<RenderObject> chain = makeList();
     while (renderObject != nullptr) {
         chain->add(renderObject);
-        renderObject = ((RenderObject)renderObject->parent);
+        renderObject = as<RenderObject>(renderObject->parent);
     }
     return _followDiagnosticableChain(chain->reversed->toList());
 }
@@ -964,7 +964,7 @@ bool WidgetInspectorServiceCls::_isValueCreatedByLocalProject(Object value) {
 bool WidgetInspectorServiceCls::_isLocalCreationLocationImpl(String locationUri) {
     String file = UriCls->parse(locationUri)->path;
     if (_pubRootDirectories == nullptr) {
-        return !file->contains("packages/flutter/");
+        return !file->contains(__s("packages/flutter/"));
     }
     for (String directory : _pubRootDirectories!) {
         if (file->startsWith(directory)) {
@@ -987,13 +987,13 @@ bool WidgetInspectorServiceCls::_isLocalCreationLocation(String locationUri) {
 String WidgetInspectorServiceCls::_safeJsonEncode(Object object) {
     String jsonString = json->encode(object);
     _serializeRing[_serializeRingIndex] = jsonString;
-    _serializeRingIndex = (_serializeRingIndex + 1) % _serializeRing->length;
+    _serializeRingIndex = (_serializeRingIndex + 1) % _serializeRing->length();
     return jsonString;
 }
 
 List<DiagnosticsNode> WidgetInspectorServiceCls::_truncateNodes(int maxDescendentsTruncatableNode, Iterable<DiagnosticsNode> nodes) {
     if (nodes->every([=] (DiagnosticsNode node)     {
-        node->value is Element;
+        is<Element>(node->value);
     }) && isWidgetCreationTracked()) {
         List<DiagnosticsNode> localNodes = nodes->where([=] (DiagnosticsNode node) {
     _isValueCreatedByLocalProject(node->value);
@@ -1010,24 +1010,24 @@ List<Map<String, Object>> WidgetInspectorServiceCls::_nodesToJson(InspectorSeria
 }
 
 List<Object> WidgetInspectorServiceCls::_getProperties(String diagnosticsNodeId, String groupName) {
-    DiagnosticsNode node = ((DiagnosticsNode)toObject(diagnosticsNodeId));
+    DiagnosticsNode node = as<DiagnosticsNode>(toObject(diagnosticsNodeId));
     return _nodesToJson(node == nullptr? makeList() : node->getProperties(), make<InspectorSerializationDelegateCls>(groupName, this)node);
 }
 
 List<Object> WidgetInspectorServiceCls::_getChildren(String diagnosticsNodeId, String groupName) {
-    DiagnosticsNode node = ((DiagnosticsNode)toObject(diagnosticsNodeId));
+    DiagnosticsNode node = as<DiagnosticsNode>(toObject(diagnosticsNodeId));
     InspectorSerializationDelegate delegate = make<InspectorSerializationDelegateCls>(groupName, this);
     return _nodesToJson(node == nullptr? makeList() : _getChildrenFiltered(node, delegate), delegatenode);
 }
 
 List<Object> WidgetInspectorServiceCls::_getChildrenSummaryTree(String diagnosticsNodeId, String groupName) {
-    DiagnosticsNode node = ((DiagnosticsNode)toObject(diagnosticsNodeId));
+    DiagnosticsNode node = as<DiagnosticsNode>(toObject(diagnosticsNodeId));
     InspectorSerializationDelegate delegate = make<InspectorSerializationDelegateCls>(groupName, true, this);
     return _nodesToJson(node == nullptr? makeList() : _getChildrenFiltered(node, delegate), delegatenode);
 }
 
 List<Object> WidgetInspectorServiceCls::_getChildrenDetailsSubtree(String diagnosticsNodeId, String groupName) {
-    DiagnosticsNode node = ((DiagnosticsNode)toObject(diagnosticsNodeId));
+    DiagnosticsNode node = as<DiagnosticsNode>(toObject(diagnosticsNodeId));
     InspectorSerializationDelegate delegate = make<InspectorSerializationDelegateCls>(groupName, true, this);
     return _nodesToJson(node == nullptr? makeList() : _getChildrenFiltered(node, delegate), delegatenode);
 }
@@ -1037,10 +1037,10 @@ bool WidgetInspectorServiceCls::_shouldShowInSummaryTree(DiagnosticsNode node) {
         return true;
     }
     Object value = node->value;
-    if (value is! Diagnosticable) {
+    if (!is<Diagnosticable>(value)) {
         return true;
     }
-    if (value is! Element || !isWidgetCreationTracked()) {
+    if (!is<Element>(value) || !isWidgetCreationTracked()) {
         return true;
     }
     return _isValueCreatedByLocalProject(value);
@@ -1068,7 +1068,7 @@ Map<String, Object> WidgetInspectorServiceCls::_getRootRenderObject(String group
 }
 
 Map<String, Object> WidgetInspectorServiceCls::_getDetailsSubtree(String groupName, String id, int subtreeDepth) {
-    DiagnosticsNode root = ((DiagnosticsNode)toObject(id));
+    DiagnosticsNode root = as<DiagnosticsNode>(toObject(id));
     if (root == nullptr) {
         return nullptr;
     }
@@ -1076,14 +1076,14 @@ Map<String, Object> WidgetInspectorServiceCls::_getDetailsSubtree(String groupNa
 }
 
 Map<String, Object> WidgetInspectorServiceCls::_getSelectedRenderObject(String groupName, String previousSelectionId) {
-    DiagnosticsNode previousSelection = ((DiagnosticsNode)toObject(previousSelectionId));
-    RenderObject current = selection->current;
+    DiagnosticsNode previousSelection = as<DiagnosticsNode>(toObject(previousSelectionId));
+    RenderObject current = selection->current();
     return _nodeToJson(current == previousSelection?->value? previousSelection : current?->toDiagnosticsNode(), make<InspectorSerializationDelegateCls>(groupName, this));
 }
 
 Map<String, Object> WidgetInspectorServiceCls::_getSelectedWidget(String groupName, String previousSelectionId) {
-    DiagnosticsNode previousSelection = ((DiagnosticsNode)toObject(previousSelectionId));
-    Element current = selection->currentElement;
+    DiagnosticsNode previousSelection = as<DiagnosticsNode>(toObject(previousSelectionId));
+    Element current = selection->currentElement();
     return _nodeToJson(current == previousSelection?->value? previousSelection : current?->toDiagnosticsNode(), make<InspectorSerializationDelegateCls>(groupName, this));
 }
 
@@ -1091,8 +1091,8 @@ Map<String, Object> WidgetInspectorServiceCls::_getSelectedSummaryWidget(String 
     if (!isWidgetCreationTracked()) {
         return _getSelectedWidget(previousSelectionId, groupName);
     }
-    DiagnosticsNode previousSelection = ((DiagnosticsNode)toObject(previousSelectionId));
-    Element current = selection->currentElement;
+    DiagnosticsNode previousSelection = as<DiagnosticsNode>(toObject(previousSelectionId));
+    Element current = selection->currentElement();
     if (current != nullptr && !_isValueCreatedByLocalProject(current)) {
         Element firstLocal;
         for (Element candidate : current->debugGetDiagnosticChain()) {
@@ -1113,10 +1113,10 @@ void WidgetInspectorServiceCls::_onFrameStart(Duration timeStamp) {
 
 void WidgetInspectorServiceCls::_onFrameEnd(Duration timeStamp) {
     if (_trackRebuildDirtyWidgets) {
-        _postStatsEvent("Flutter.RebuiltWidgets", _rebuildStats);
+        _postStatsEvent(__s("Flutter.RebuiltWidgets"), _rebuildStats);
     }
     if (_trackRepaintWidgets) {
-        _postStatsEvent("Flutter.RepaintWidgets", _repaintStats);
+        _postStatsEvent(__s("Flutter.RepaintWidgets"), _repaintStats);
     }
 }
 
@@ -1130,20 +1130,20 @@ void WidgetInspectorServiceCls::_onRebuildWidget(bool builtOnce, Element element
 
 void WidgetInspectorServiceCls::_onPaint(RenderObject renderObject) {
     try {
-        Element element = (((DebugCreator)renderObject->debugCreator))?->element;
-        if (element is! RenderObjectElement) {
+        Element element = (as<DebugCreator>(renderObject->debugCreator))?->element;
+        if (!is<RenderObjectElement>(element)) {
             return;
         }
         _repaintStats->add(element);
         element->visitAncestorElements([=] (Element ancestor) {
-            if (ancestor is RenderObjectElement) {
+            if (is<RenderObjectElement>(ancestor)) {
                 return false;
             }
             _repaintStats->add(ancestor);
             return true;
         });
     } catch (Unknown exception) {
-        FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(exception, stack, "widget inspector library", make<ErrorDescriptionCls>("while tracking widget repaints")));
+        FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(exception, stack, __s("widget inspector library"), make<ErrorDescriptionCls>(__s("while tracking widget repaints"))));
     };
 }
 
@@ -1161,15 +1161,15 @@ void _LocationCountCls::increment() {
 
 void _ElementLocationStatsTrackerCls::add(Element element) {
     Object widget = element->widget;
-    if (widget is! _HasCreationLocation) {
+    if (!is<_HasCreationLocation>(widget)) {
         return;
     }
     _HasCreationLocation creationLocationSource = widget;
     _Location location = creationLocationSource->_location;
     int id = _toLocationId(location);
     _LocationCount entry;
-    if (id >= _stats->length || _stats[id] == nullptr) {
-        while (id >= _stats->length) {
+    if (id >= _stats->length() || _stats[id] == nullptr) {
+        while (id >= _stats->length()) {
             _stats->add(nullptr);
         }
         entry = make<_LocationCountCls>(location, id, WidgetInspectorServiceCls::instance->_isLocalCreationLocation(location->file));
@@ -1196,13 +1196,13 @@ void _ElementLocationStatsTrackerCls::resetCounts() {
 }
 
 Map<String, dynamic> _ElementLocationStatsTrackerCls::exportToJson(Duration startTime) {
-    List<int> events = <int>filled(active->length * 2, 0);
+    List<int> events = <int>filled(active->length() * 2, 0);
     int j = 0;
     for (_LocationCount stat : active) {
         events[j++] = stat->id;
         events[j++] = stat->count;
     }
-    Map<String, dynamic> map1 = make<MapCls<>>();map1.set("startTime", startTime->inMicroseconds);map1.set("events", events);Map<String, dynamic> json = list1;
+    Map<String, dynamic> map1 = make<MapCls<>>();map1.set(__s("startTime"), startTime->inMicroseconds);map1.set(__s("events"), events);Map<String, dynamic> json = list1;
     if (newLocations->isNotEmpty) {
         Map<String, List<int>> locationsJson = makeMap(makeList(), makeList();
         for (_LocationCount entry : newLocations) {
@@ -1212,21 +1212,21 @@ Map<String, dynamic> _ElementLocationStatsTrackerCls::exportToJson(Duration star
 });
                     auto _c2 = jsonForFile;        _c2.auto _c3 = add(entry->id);        _c3.auto _c4 = add(location->line);        _c4.add(location->column);        _c4;        _c3;_c2;
         }
-        json["newLocations"] = locationsJson;
+        json[__s("newLocations")] = locationsJson;
     }
     if (newLocations->isNotEmpty) {
         Map<String, Map<String, List<Object>>> fileLocationsMap = makeMap(makeList(), makeList();
         for (_LocationCount entry : newLocations) {
             _Location location = entry->location;
-                    Map<String, List<Object>> map5 = make<MapCls<>>();        map5.set("ids", makeList());        map5.set("lines", makeList());        map5.set("columns", makeList());        map5.set("names", makeList());Map<String, List<Object>> locations = fileLocationsMap->putIfAbsent(location->file, [=] () {
+                    Map<String, List<Object>> map5 = make<MapCls<>>();        map5.set(__s("ids"), makeList());        map5.set(__s("lines"), makeList());        map5.set(__s("columns"), makeList());        map5.set(__s("names"), makeList());Map<String, List<Object>> locations = fileLocationsMap->putIfAbsent(location->file, [=] () {
     list5;
 });
-            locations["ids"]!->add(entry->id);
-            locations["lines"]!->add(location->line);
-            locations["columns"]!->add(location->column);
-            locations["names"]!->add(location->name);
+            locations[__s("ids")]!->add(entry->id);
+            locations[__s("lines")]!->add(location->line);
+            locations[__s("columns")]!->add(location->column);
+            locations[__s("names")]!->add(location->name);
         }
-        json["locations"] = fileLocationsMap;
+        json[__s("locations")] = fileLocationsMap;
     }
     resetCounts();
     newLocations->clear();
@@ -1296,10 +1296,10 @@ bool _WidgetInspectorStateCls::_hitTestHelper(List<RenderObject> edgeHits, List<
     for (; i >= 0; i = 1) {
         DiagnosticsNode diagnostics = children[i];
         assert(diagnostics != nullptr);
-        if (diagnostics->style == DiagnosticsTreeStyleCls::offstage || diagnostics->value is! RenderObject) {
+        if (diagnostics->style == DiagnosticsTreeStyleCls::offstage || !is<RenderObject>(diagnostics->value)) {
             continue;
         }
-        RenderObject child = ((RenderObject)diagnostics->value!);
+        RenderObject child = as<RenderObject>(diagnostics->value!);
         Rect paintClip = object->describeApproximatePaintClip(child);
         if (paintClip != nullptr && !paintClip->contains(localPosition)) {
             continue;
@@ -1327,11 +1327,11 @@ void _WidgetInspectorStateCls::_inspectAt(Offset position) {
     if (!isSelectMode) {
         return;
     }
-    RenderIgnorePointer ignorePointer = ((RenderIgnorePointer)_ignorePointerKey->currentContext!->findRenderObject()!);
+    RenderIgnorePointer ignorePointer = as<RenderIgnorePointer>(_ignorePointerKey->currentContext()!->findRenderObject()!);
     RenderObject userRender = ignorePointer->child!;
     List<RenderObject> selected = hitTest(position, userRender);
     setState([=] () {
-        selection->candidates = selected;
+        selection->candidates() = selected;
     });
 }
 
@@ -1360,7 +1360,7 @@ void _WidgetInspectorStateCls::_handleTap() {
     }
     if (_lastPointerLocation != nullptr) {
         _inspectAt(_lastPointerLocation!);
-        developer->inspect(selection->current);
+        developer->inspect(selection->current());
     }
     setState([=] () {
         if (widget->selectButtonBuilder != nullptr) {
@@ -1401,27 +1401,27 @@ void InspectorSelectionCls::clear() {
 }
 
 RenderObject InspectorSelectionCls::current() {
-    return active? _current : nullptr;
+    return active()? _current : nullptr;
 }
 
 void InspectorSelectionCls::current(RenderObject value) {
     if (_current != value) {
         _current = value;
-        _currentElement = (((DebugCreator)value?->debugCreator))?->element;
+        _currentElement = (as<DebugCreator>(value?->debugCreator))?->element;
     }
 }
 
 Element InspectorSelectionCls::currentElement() {
-    return _currentElement?->debugIsDefunct ?? true? nullptr : _currentElement;
+    return _currentElement?->debugIsDefunct() or true? nullptr : _currentElement;
 }
 
 void InspectorSelectionCls::currentElement(Element element) {
-    if (element?->debugIsDefunct ?? false) {
+    if (element?->debugIsDefunct or false) {
         _currentElement = nullptr;
         _current = nullptr;
         return;
     }
-    if (currentElement != element) {
+    if (currentElement() != element) {
         _currentElement = element;
         _current = element!->findRenderObject();
     }
@@ -1432,9 +1432,9 @@ bool InspectorSelectionCls::active() {
 }
 
 void InspectorSelectionCls::_computeCurrent() {
-    if ( < candidates->length) {
-        _current = candidates[index];
-        _currentElement = (((DebugCreator)_current?->debugCreator))?->element;
+    if ( < candidates()->length()) {
+        _current = candidates()[index()];
+        _currentElement = (as<DebugCreator>(_current?->debugCreator))?->element;
     } else {
         _current = nullptr;
         _currentElement = nullptr;
@@ -1474,21 +1474,21 @@ Size _RenderInspectorOverlayCls::computeDryLayout(BoxConstraints constraints) {
 
 void _RenderInspectorOverlayCls::paint(PaintingContext context, Offset offset) {
     assert(needsCompositing);
-    context->addLayer(make<_InspectorOverlayLayerCls>(RectCls->fromLTWH(offset->dx, offset->dy, size->width, size->height), selection, parent is RenderObject? ((RenderObject)parent!) : nullptr));
+    context->addLayer(make<_InspectorOverlayLayerCls>(RectCls->fromLTWH(offset->dx, offset->dy, size->width, size->height), selection(), is<RenderObject>(parent)? as<RenderObject>(parent!) : nullptr));
 }
 
 _RenderInspectorOverlayCls::_RenderInspectorOverlayCls(InspectorSelection selection) {
     {
-        _selection = selection;
-        assert(selection != nullptr);
+        _selection = selection();
+        assert(selection() != nullptr);
     }
 }
 
 bool _TransformedRectCls::==(Object other) {
-    if (other->runtimeType != runtimeType) {
+    if (other->runtimeType() != runtimeType) {
         return false;
     }
-    return other is _TransformedRect && other->rect == rect && other->transform == transform;
+    return is<_TransformedRect>(other) && other->rect == rect && other->transform == transform;
 }
 
 int _TransformedRectCls::hashCode() {
@@ -1503,10 +1503,10 @@ _TransformedRectCls::_TransformedRectCls(RenderObject ancestor, RenderObject obj
 }
 
 bool _InspectorOverlayRenderStateCls::==(Object other) {
-    if (other->runtimeType != runtimeType) {
+    if (other->runtimeType() != runtimeType) {
         return false;
     }
-    return other is _InspectorOverlayRenderState && other->overlayRect == overlayRect && other->selected == selected && <_TransformedRect>listEquals(other->candidates, candidates) && other->tooltip == tooltip;
+    return is<_InspectorOverlayRenderState>(other) && other->overlayRect == overlayRect && other->selected == selected && <_TransformedRect>listEquals(other->candidates, candidates) && other->tooltip == tooltip;
 }
 
 int _InspectorOverlayRenderStateCls::hashCode() {
@@ -1514,21 +1514,21 @@ int _InspectorOverlayRenderStateCls::hashCode() {
 }
 
 void _InspectorOverlayLayerCls::addToScene(SceneBuilder builder) {
-    if (!selection->active) {
+    if (!selection->active()) {
         return;
     }
-    RenderObject selected = selection->current!;
+    RenderObject selected = selection->current()!;
     if (!_isInInspectorRenderObjectTree(selected)) {
         return;
     }
     List<_TransformedRect> candidates = makeList();
-    for (RenderObject candidate : selection->candidates) {
+    for (RenderObject candidate : selection->candidates()) {
         if (candidate == selected || !candidate->attached || !_isInInspectorRenderObjectTree(candidate)) {
             continue;
         }
         candidates->add(make<_TransformedRectCls>(candidate, rootRenderObject));
     }
-    _InspectorOverlayRenderState state = make<_InspectorOverlayRenderStateCls>(overlayRect, make<_TransformedRectCls>(selected, rootRenderObject), selection->currentElement!->toStringShort(), TextDirectionCls::ltr, candidates);
+    _InspectorOverlayRenderState state = make<_InspectorOverlayRenderStateCls>(overlayRect, make<_TransformedRectCls>(selected, rootRenderObject), selection->currentElement()!->toStringShort(), TextDirectionCls::ltr, candidates);
     if (state != _lastState) {
         _lastState = state;
         _picture = _buildPicture(state);
@@ -1536,7 +1536,7 @@ void _InspectorOverlayLayerCls::addToScene(SceneBuilder builder) {
     builder->addPicture(OffsetCls::zero, _picture);
 }
 
-bool _InspectorOverlayLayerCls::findAnnotationstemplate<typename S : Object> (Offset localPosition, bool onlyFirst, AnnotationResult<S> result) {
+bool _InspectorOverlayLayerCls::findAnnotationstemplate<typename S> (Offset localPosition, bool onlyFirst, AnnotationResult<S> result) {
     return false;
 }
 
@@ -1560,7 +1560,7 @@ _InspectorOverlayLayerCls::_InspectorOverlayLayerCls(Rect overlayRect, RenderObj
 Picture _InspectorOverlayLayerCls::_buildPicture(_InspectorOverlayRenderState state) {
     PictureRecorder recorder = ui->make<PictureRecorderCls>();
     Canvas canvas = make<CanvasCls>(recorder, state->overlayRect);
-    Size size = state->overlayRect->size;
+    Size size = state->overlayRect->size();
     canvas->translate(state->overlayRect->left, state->overlayRect->top);
     auto _c1 = make<PaintCls>();_c1.style = auto _c2 = PaintingStyleCls::fill;_c2.color = _kHighlightedRenderObjectFillColor;_c2;Paint fillPaint = _c1;
     auto _c3 = make<PaintCls>();_c3.style = auto _c4 = PaintingStyleCls::stroke;_c4.strokeWidth = auto _c5 = 1.0;_c5.color = _kHighlightedRenderObjectBorderColor;_c5;_c4;Paint borderPaint = _c3;
@@ -1580,12 +1580,12 @@ Picture _InspectorOverlayLayerCls::_buildPicture(_InspectorOverlayRenderState st
 void _InspectorOverlayLayerCls::_paintDescription(Canvas canvas, String message, Size size, Offset target, Rect targetRect, TextDirection textDirection, double verticalOffset) {
     canvas->save();
     double maxWidth = size->width - 2 * (_kScreenEdgeMargin + _kTooltipPadding);
-    TextSpan textSpan = ((TextSpan)_textPainter?->text);
+    TextSpan textSpan = as<TextSpan>(_textPainter?->text());
     if (_textPainter == nullptr || textSpan!->text != message || _textPainterMaxWidth != maxWidth) {
         _textPainterMaxWidth = maxWidth;
-            auto _c1 = make<TextPainterCls>();    _c1.maxLines = auto _c2 = _kMaxTooltipLines;    _c2.ellipsis = auto _c3 = "...";    _c3.text = auto _c4 = make<TextSpanCls>(_messageStyle, message);    _c4.textDirection = auto _c5 = textDirection;    _c5.layout(maxWidth);    _c5;    _c4;    _c3;    _c2;_textPainter = _c1;
+            auto _c1 = make<TextPainterCls>();    _c1.maxLines = auto _c2 = _kMaxTooltipLines;    _c2.ellipsis = auto _c3 = __s("...");    _c3.text = auto _c4 = make<TextSpanCls>(_messageStyle, message);    _c4.textDirection = auto _c5 = textDirection;    _c5.layout(maxWidth);    _c5;    _c4;    _c3;    _c2;_textPainter = _c1;
     }
-    Size tooltipSize = _textPainter!->size + make<OffsetCls>(_kTooltipPadding * 2, _kTooltipPadding * 2);
+    Size tooltipSize = _textPainter!->size() + make<OffsetCls>(_kTooltipPadding * 2, _kTooltipPadding * 2);
     Offset tipOffset = positionDependentBox(size, tooltipSize, target, verticalOffset, false);
     auto _c6 = make<PaintCls>();_c6.style = auto _c7 = PaintingStyleCls::fill;_c7.color = _kTooltipBackgroundColor;_c7;Paint tooltipBackground = _c6;
     canvas->drawRect(RectCls->fromPoints(tipOffset, tipOffset->translate(tooltipSize->width, tooltipSize->height)), tooltipBackground);
@@ -1604,20 +1604,20 @@ void _InspectorOverlayLayerCls::_paintDescription(Canvas canvas, String message,
 }
 
 bool _InspectorOverlayLayerCls::_isInInspectorRenderObjectTree(RenderObject child) {
-    RenderObject current = ((RenderObject)child->parent);
+    RenderObject current = as<RenderObject>(child->parent);
     while (current != nullptr) {
-        if (current is RenderStack && current->lastChild is _RenderInspectorOverlay) {
+        if (is<RenderStack>(current) && is<_RenderInspectorOverlay>(current->lastChild)) {
             return rootRenderObject == current;
         }
-        current = ((RenderObject)current->parent);
+        current = as<RenderObject>(current->parent);
     }
     return false;
 }
 
 Map<String, Object> _LocationCls::toJsonMap() {
-    Map<String, Object> map1 = make<MapCls<>>();map1.set("file", file);map1.set("line", line);map1.set("column", column);Map<String, Object> json = list1;
+    Map<String, Object> map1 = make<MapCls<>>();map1.set(__s("file"), file);map1.set(__s("line"), line);map1.set(__s("column"), column);Map<String, Object> json = list1;
     if (name != nullptr) {
-        json["name"] = name;
+        json[__s("name")] = name;
     }
     return json;
 }
@@ -1628,12 +1628,12 @@ String _LocationCls::toString() {
         parts->add(name!);
     }
     parts->add(file);
-    auto _c1 = parts;_c1.auto _c2 = add("$line");_c2.add("$column");_c2;_c1;
-    return parts->join(":");
+    auto _c1 = parts;_c1.auto _c2 = add(__s("$line"));_c2.add(__s("$column"));_c2;_c1;
+    return parts->join(__s(":"));
 }
 
 bool _isDebugCreator(DiagnosticsNode node) {
-    return node is DiagnosticsDebugCreator;
+    return is<DiagnosticsDebugCreator>(node);
 }
 
 Iterable<DiagnosticsNode> debugTransformDebugCreator(Iterable<DiagnosticsNode> properties) {
@@ -1643,7 +1643,7 @@ Iterable<DiagnosticsNode> debugTransformDebugCreator(Iterable<DiagnosticsNode> p
     List<DiagnosticsNode> pending = makeList();
     ErrorSummary errorSummary;
     for (DiagnosticsNode node : properties) {
-        if (node is ErrorSummary) {
+        if (is<ErrorSummary>(node)) {
             errorSummary = node;
                         break;
         }
@@ -1651,7 +1651,7 @@ Iterable<DiagnosticsNode> debugTransformDebugCreator(Iterable<DiagnosticsNode> p
     bool foundStackTrace = false;
     List<DiagnosticsNode> result = makeList();
     for (DiagnosticsNode node : properties) {
-        if (!foundStackTrace && node is DiagnosticsStackTrace) {
+        if (!foundStackTrace && is<DiagnosticsStackTrace>(node)) {
             foundStackTrace = true;
         }
         if (_isDebugCreator(node)) {
@@ -1671,12 +1671,12 @@ Iterable<DiagnosticsNode> debugTransformDebugCreator(Iterable<DiagnosticsNode> p
 Iterable<DiagnosticsNode> _parseDiagnosticsNode(ErrorSummary errorSummary, DiagnosticsNode node) {
     assert(_isDebugCreator(node));
     try {
-        DebugCreator debugCreator = ((DebugCreator)node->value!);
+        DebugCreator debugCreator = as<DebugCreator>(node->value!);
         Element element = debugCreator->element;
         return _describeRelevantUserCode(element, errorSummary);
     } catch (Unknown error) {
         scheduleMicrotask([=] () {
-            FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(error, stack, "widget inspector", [=] ()             {
+            FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(error, stack, __s("widget inspector"), [=] ()             {
                 makeList(ArrayItem);
             }));
         });
@@ -1697,7 +1697,7 @@ Iterable<DiagnosticsNode> _describeRelevantUserCode(Element element, ErrorSummar
     return nodes;
 }
 
-DevToolsDeepLinkPropertyCls::DevToolsDeepLinkPropertyCls(String description, String url) {
+DevToolsDeepLinkPropertyCls::DevToolsDeepLinkPropertyCls(String description, String url) : DiagnosticsProperty<String>(__s(""), urldescription, DiagnosticLevelCls::info) {
     {
         assert(description != nullptr);
         assert(url != nullptr);
@@ -1727,11 +1727,11 @@ String _describeCreationLocation(Object object) {
 }
 
 _Location _getObjectCreationLocation(Object object) {
-    return object is _HasCreationLocation? object->_location : nullptr;
+    return is<_HasCreationLocation>(object)? object->_location : nullptr;
 }
 
 _Location _getCreationLocation(Object object) {
-    Object candidate = object is Element && !object->debugIsDefunct? object->widget : object;
+    Object candidate = is<Element>(object) && !object->debugIsDefunct? object->widget : object;
     return candidate == nullptr? nullptr : _getObjectCreationLocation(candidate);
 }
 
@@ -1749,24 +1749,24 @@ int _toLocationId(_Location location) {
 Map<String, Object> InspectorSerializationDelegateCls::additionalNodeProperties(DiagnosticsNode node) {
     Map<String, Object> result = makeMap(makeList(), makeList();
     Object value = node->value;
-    if (_interactive) {
-        result["objectId"] = service->toId(node, groupName!);
-        result["valueId"] = service->toId(value, groupName!);
+    if (_interactive()) {
+        result[__s("objectId")] = service->toId(node, groupName!);
+        result[__s("valueId")] = service->toId(value, groupName!);
     }
     if (summaryTree) {
-        result["summaryTree"] = true;
+        result[__s("summaryTree")] = true;
     }
     _Location creationLocation = _getCreationLocation(value);
     if (creationLocation != nullptr) {
-        result["locationId"] = _toLocationId(creationLocation);
-        result["creationLocation"] = creationLocation->toJsonMap();
+        result[__s("locationId")] = _toLocationId(creationLocation);
+        result[__s("creationLocation")] = creationLocation->toJsonMap();
         if (service->_isLocalCreationLocation(creationLocation->file)) {
             _nodesCreatedByLocalProject->add(node);
-            result["createdByLocalProject"] = true;
+            result[__s("createdByLocalProject")] = true;
         }
     }
     if (addAdditionalPropertiesCallback != nullptr) {
-        result->addAll(addAdditionalPropertiesCallback!(node, this) ?? makeMap(makeList(), makeList());
+        result->addAll(addAdditionalPropertiesCallback!(node, this) or makeMap(makeList(), makeList());
     }
     return result;
 }
@@ -1794,7 +1794,7 @@ List<DiagnosticsNode> InspectorSerializationDelegateCls::truncateNodesList(List<
 }
 
 DiagnosticsSerializationDelegate InspectorSerializationDelegateCls::copyWith(bool includeProperties, int subtreeDepth) {
-    return make<InspectorSerializationDelegateCls>(groupName, summaryTree, maxDescendentsTruncatableNode, expandPropertyValues, subtreeDepth ?? this->subtreeDepth, includeProperties ?? this->includeProperties, service, addAdditionalPropertiesCallback);
+    return make<InspectorSerializationDelegateCls>(groupName, summaryTree, maxDescendentsTruncatableNode, expandPropertyValues, subtreeDepth or this->subtreeDepth, includeProperties or this->includeProperties, service, addAdditionalPropertiesCallback);
 }
 
 bool InspectorSerializationDelegateCls::_interactive() {

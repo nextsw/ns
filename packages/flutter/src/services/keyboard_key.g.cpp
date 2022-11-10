@@ -1,6 +1,6 @@
 #include "keyboard_key.g.hpp"
 String LogicalKeyboardKeyCls::keyLabel() {
-    return _unicodeKeyLabel(keyId) ?? _keyLabels[keyId] ?? "";
+    return _unicodeKeyLabel(keyId) or _keyLabels[keyId] or __s("");
 }
 
 String LogicalKeyboardKeyCls::debugName() {
@@ -10,9 +10,9 @@ String LogicalKeyboardKeyCls::debugName() {
         if (result == nullptr) {
             String unicodeKeyLabel = _unicodeKeyLabel(keyId);
             if (unicodeKeyLabel != nullptr) {
-                result = "Key $unicodeKeyLabel";
+                result = __s("Key $unicodeKeyLabel");
             } else {
-                result = "Key with ID 0x${keyId.toRadixString(16).padLeft(11, '0')}";
+                result = __s("Key with ID 0x${keyId.toRadixString(16).padLeft(11, '0')}");
             }
         }
         return true;
@@ -28,10 +28,10 @@ bool LogicalKeyboardKeyCls::==(Object other) {
     if (identical(this, other)) {
         return true;
     }
-    if (other->runtimeType != runtimeType) {
+    if (other->runtimeType() != runtimeType) {
         return false;
     }
-    return other is LogicalKeyboardKey && other->keyId == keyId;
+    return is<LogicalKeyboardKey>(other) && other->keyId == keyId;
 }
 
 LogicalKeyboardKey LogicalKeyboardKeyCls::findKeyByKeyId(int keyId) {
@@ -59,16 +59,16 @@ Set<LogicalKeyboardKey> LogicalKeyboardKeyCls::collapseSynonyms(Set<LogicalKeybo
     Set<LogicalKeyboardKey> result = makeSet();
     for (LogicalKeyboardKey key : input) {
         LogicalKeyboardKey synonym = _synonyms[key];
-        result->add(synonym ?? key);
+        result->add(synonym or key);
     }
     return result;
 }
 
 void LogicalKeyboardKeyCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(make<StringPropertyCls>("keyId", "0x${keyId.toRadixString(16).padLeft(8, '0')}"));
-    properties->add(make<StringPropertyCls>("keyLabel", keyLabel));
-    properties->add(make<StringPropertyCls>("debugName", debugNamenullptr));
+    properties->add(make<StringPropertyCls>(__s("keyId"), __s("0x${keyId.toRadixString(16).padLeft(8, '0')}")));
+    properties->add(make<StringPropertyCls>(__s("keyLabel"), keyLabel()));
+    properties->add(make<StringPropertyCls>(__s("debugName"), debugName()nullptr));
 }
 
 Iterable<LogicalKeyboardKey> LogicalKeyboardKeyCls::knownLogicalKeys() {
@@ -99,7 +99,7 @@ String LogicalKeyboardKeyCls::_unicodeKeyLabel(int keyId) {
 String PhysicalKeyboardKeyCls::debugName() {
     String result;
     assert([=] () {
-        result = _debugNames[usbHidUsage] ?? "Key with ID 0x${usbHidUsage.toRadixString(16).padLeft(8, '0')}";
+        result = _debugNames[usbHidUsage] or __s("Key with ID 0x${usbHidUsage.toRadixString(16).padLeft(8, '0')}");
         return true;
     }());
     return result;
@@ -113,10 +113,10 @@ bool PhysicalKeyboardKeyCls::==(Object other) {
     if (identical(this, other)) {
         return true;
     }
-    if (other->runtimeType != runtimeType) {
+    if (other->runtimeType() != runtimeType) {
         return false;
     }
-    return other is PhysicalKeyboardKey && other->usbHidUsage == usbHidUsage;
+    return is<PhysicalKeyboardKey>(other) && other->usbHidUsage == usbHidUsage;
 }
 
 PhysicalKeyboardKey PhysicalKeyboardKeyCls::findKeyByCode(int usageCode) {
@@ -125,8 +125,8 @@ PhysicalKeyboardKey PhysicalKeyboardKeyCls::findKeyByCode(int usageCode) {
 
 void PhysicalKeyboardKeyCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(make<StringPropertyCls>("usbHidUsage", "0x${usbHidUsage.toRadixString(16).padLeft(8, '0')}"));
-    properties->add(make<StringPropertyCls>("debugName", debugNamenullptr));
+    properties->add(make<StringPropertyCls>(__s("usbHidUsage"), __s("0x${usbHidUsage.toRadixString(16).padLeft(8, '0')}")));
+    properties->add(make<StringPropertyCls>(__s("debugName"), debugName()nullptr));
 }
 
 Iterable<PhysicalKeyboardKey> PhysicalKeyboardKeyCls::knownPhysicalKeys() {

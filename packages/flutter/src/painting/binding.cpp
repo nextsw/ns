@@ -34,13 +34,13 @@ Future<Codec> PaintingBindingCls::instantiateImageCodecFromBuffer(bool allowUpsc
 
 void PaintingBindingCls::evict(String asset) {
     super->evict(asset);
-    imageCache->clear();
-    imageCache->clearLiveImages();
+    imageCache()->clear();
+    imageCache()->clearLiveImages();
 }
 
 void PaintingBindingCls::handleMemoryPressure() {
     super->handleMemoryPressure();
-    imageCache->clear();
+    imageCache()->clear();
 }
 
 Listenable PaintingBindingCls::systemFonts() {
@@ -49,8 +49,8 @@ Listenable PaintingBindingCls::systemFonts() {
 
 Future<void> PaintingBindingCls::handleSystemMessage(Object systemMessage) {
     await await super->handleSystemMessage(systemMessage);
-    Map<String, dynamic> message = ((Map<String, dynamic>)systemMessage);
-    String type = ((String)message["type"]);
+    Map<String, dynamic> message = as<Map<String, dynamic>>(systemMessage);
+    String type = as<String>(message[__s("type")]);
     ;
     return;
 }

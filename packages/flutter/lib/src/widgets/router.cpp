@@ -7,7 +7,7 @@ template<typename T> RouterConfigCls<T>::RouterConfigCls(BackButtonDispatcher ba
 
 template<typename T> RouterCls<T>::RouterCls(BackButtonDispatcher backButtonDispatcher, Unknown key, String restorationScopeId, RouteInformationParser<T> routeInformationParser, RouteInformationProvider routeInformationProvider, RouterDelegate<T> routerDelegate) {
     {
-        assert(routeInformationProvider == nullptr || routeInformationParser != nullptr, "A routeInformationParser must be provided when a routeInformationProvider is specified.");
+        assert(routeInformationProvider == nullptr || routeInformationParser != nullptr, __s("A routeInformationParser must be provided when a routeInformationProvider is specified."));
         assert(routerDelegate != nullptr);
     }
 }
@@ -16,7 +16,7 @@ template<typename T> void RouterCls<T>::withConfig(RouterConfig<T> config, Key k
     return <T>make<RouterCls>(key, config->routeInformationProvider, config->routeInformationParser, config->routerDelegate, config->backButtonDispatcher, restorationScopeId);
 }
 
-template<typename T> Router<T> RouterCls<T>::oftemplate<typename T : Object> (BuildContext context) {
+template<typename T> Router<T> RouterCls<T>::oftemplate<typename T> (BuildContext context) {
     _RouterScope scope = context-><_RouterScope>dependOnInheritedWidgetOfExactType();
     assert([=] () {
         if (scope == nullptr) {
@@ -24,21 +24,21 @@ template<typename T> Router<T> RouterCls<T>::oftemplate<typename T : Object> (Bu
         }
         return true;
     }());
-    return ((Router<T>)scope!->routerState->widget);
+    return as<Router<T>>(scope!->routerState->widget);
 }
 
-template<typename T> Router<T> RouterCls<T>::maybeOftemplate<typename T : Object> (BuildContext context) {
+template<typename T> Router<T> RouterCls<T>::maybeOftemplate<typename T> (BuildContext context) {
     _RouterScope scope = context-><_RouterScope>dependOnInheritedWidgetOfExactType();
-    return ((Router<T>)scope?->routerState->widget);
+    return as<Router<T>>(scope?->routerState->widget);
 }
 
 template<typename T> void RouterCls<T>::navigate(VoidCallback callback, BuildContext context) {
-    _RouterScope scope = ((_RouterScope)context-><_RouterScope>getElementForInheritedWidgetOfExactType()!->widget);
+    _RouterScope scope = as<_RouterScope>(context-><_RouterScope>getElementForInheritedWidgetOfExactType()!->widget);
     scope->routerState->_setStateWithExplicitReportStatus(RouteInformationReportingTypeCls::navigate, callback);
 }
 
 template<typename T> void RouterCls<T>::neglect(VoidCallback callback, BuildContext context) {
-    _RouterScope scope = ((_RouterScope)context-><_RouterScope>getElementForInheritedWidgetOfExactType()!->widget);
+    _RouterScope scope = as<_RouterScope>(context-><_RouterScope>getElementForInheritedWidgetOfExactType()!->widget);
     scope->routerState->_setStateWithExplicitReportStatus(RouteInformationReportingTypeCls::neglect, callback);
 }
 
@@ -58,7 +58,7 @@ template<typename T> void _RouterStateCls<T>::initState() {
 }
 
 template<typename T> void _RouterStateCls<T>::restoreState(bool initialRestore, RestorationBucket oldBucket) {
-    registerForRestoration(_routeInformation, "route");
+    registerForRestoration(_routeInformation, __s("route"));
     if (_routeInformation->value != nullptr) {
         assert(widget->routeInformationParser != nullptr);
         _processRouteInformation(_routeInformation->value!, [=] ()         {
@@ -153,7 +153,7 @@ template<typename T> void _RouterStateCls<T>::_setStateWithExplicitReportStatus(
     assert(status->index >= RouteInformationReportingTypeCls::neglect->index);
     assert([=] () {
         if (_currentIntentionToReport != nullptr && _currentIntentionToReport != RouteInformationReportingTypeCls::none && _currentIntentionToReport != status) {
-            FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>("Both Router.navigate and Router.neglect have been called in this build cycle, and the Router cannot decide whether to report the route information. Please make sure only one of them is called within the same build cycle."));
+            FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(__s("Both Router.navigate and Router.neglect have been called in this build cycle, and the Router cannot decide whether to report the route information. Please make sure only one of them is called within the same build cycle.")));
         }
         return true;
     }());
@@ -236,7 +236,7 @@ _RouterScopeCls::_RouterScopeCls(BackButtonDispatcher backButtonDispatcher, Unkn
 }
 
 template<typename T> bool _CallbackHookProviderCls<T>::hasCallbacks() {
-    return _callbacks->isNotEmpty;
+    return _callbacks->isNotEmpty();
 }
 
 template<typename T> void _CallbackHookProviderCls<T>::addCallback(ValueGetter<T> callback) {
@@ -248,13 +248,13 @@ template<typename T> void _CallbackHookProviderCls<T>::removeCallback(ValueGette
 }
 
 template<typename T> T _CallbackHookProviderCls<T>::invokeCallback(T defaultValue) {
-    if (_callbacks->isEmpty) {
+    if (_callbacks->isEmpty()) {
         return defaultValue;
     }
     try {
         return _callbacks->single();
     } catch (Unknown exception) {
-        FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(exception, stack, "widget library", make<ErrorDescriptionCls>("while invoking the callback for $runtimeType"), [=] ()         {
+        FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(exception, stack, __s("widget library"), make<ErrorDescriptionCls>(__s("while invoking the callback for $runtimeType")), [=] ()         {
             makeList(ArrayItem);
         }));
         return defaultValue;
@@ -284,7 +284,7 @@ void BackButtonDispatcherCls::takePriority() {
 }
 
 void BackButtonDispatcherCls::deferTo(ChildBackButtonDispatcher child) {
-    assert(hasCallbacks);
+    assert(hasCallbacks());
     _children->remove(child);
     _children->add(child);
 }
@@ -346,7 +346,7 @@ State<BackButtonListener> BackButtonListenerCls::createState() {
 void _BackButtonListenerStateCls::didChangeDependencies() {
     dispatcher?->removeCallback(widget->onBackButtonPressed);
     BackButtonDispatcher rootBackDispatcher = RouterCls->of(context)->backButtonDispatcher;
-    assert(rootBackDispatcher != nullptr, "The parent router must have a backButtonDispatcher to use this widget");
+    assert(rootBackDispatcher != nullptr, __s("The parent router must have a backButtonDispatcher to use this widget"));
     auto _c1 = rootBackDispatcher!->createChildBackButtonDispatcher();_c1.auto _c2 = addCallback(widget->onBackButtonPressed);_c2.takePriority();_c2;dispatcher = _c1;
     super->didChangeDependencies();
 }
@@ -457,7 +457,7 @@ void PlatformRouteInformationProviderCls::_platformReportsNewRouteInformation(Ro
 }
 
 template<typename T> Future<bool> PopNavigatorRouterDelegateMixinCls<T>::popRoute() {
-    NavigatorState navigator = navigatorKey?->currentState;
+    NavigatorState navigator = navigatorKey()?->currentState();
     if (navigator == nullptr) {
         return <bool>make<SynchronousFutureCls>(false);
     }
@@ -476,9 +476,9 @@ RouteInformation _RestorableRouteInformationCls::fromPrimitives(Object data) {
     if (data == nullptr) {
         return nullptr;
     }
-    assert(data is List<Object> && data->length == 2);
-    List<Object> castedData = ((List<Object>)data);
-    return make<RouteInformationCls>(((String)castedData->first), castedData->last);
+    assert(is<List<Object>>(data) && data->length == 2);
+    List<Object> castedData = as<List<Object>>(data);
+    return make<RouteInformationCls>(as<String>(castedData->first), castedData->last);
 }
 
 Object _RestorableRouteInformationCls::toPrimitives() {

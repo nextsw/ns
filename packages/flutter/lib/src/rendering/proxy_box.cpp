@@ -5,55 +5,55 @@ RenderProxyBoxCls::RenderProxyBoxCls(RenderBox child) {
     }
 }
 
-template<typename T : RenderBox> void RenderProxyBoxMixinCls<T>::setupParentData(RenderObject child) {
-    if (child->parentData is! ParentData) {
+template<typename T> void RenderProxyBoxMixinCls<T>::setupParentData(RenderObject child) {
+    if (!is<ParentData>(child->parentData)) {
         child->parentData = make<ParentDataCls>();
     }
 }
 
-template<typename T : RenderBox> double RenderProxyBoxMixinCls<T>::computeMinIntrinsicWidth(double height) {
+template<typename T> double RenderProxyBoxMixinCls<T>::computeMinIntrinsicWidth(double height) {
     if (child != nullptr) {
         return child!->getMinIntrinsicWidth(height);
     }
     return 0.0;
 }
 
-template<typename T : RenderBox> double RenderProxyBoxMixinCls<T>::computeMaxIntrinsicWidth(double height) {
+template<typename T> double RenderProxyBoxMixinCls<T>::computeMaxIntrinsicWidth(double height) {
     if (child != nullptr) {
         return child!->getMaxIntrinsicWidth(height);
     }
     return 0.0;
 }
 
-template<typename T : RenderBox> double RenderProxyBoxMixinCls<T>::computeMinIntrinsicHeight(double width) {
+template<typename T> double RenderProxyBoxMixinCls<T>::computeMinIntrinsicHeight(double width) {
     if (child != nullptr) {
         return child!->getMinIntrinsicHeight(width);
     }
     return 0.0;
 }
 
-template<typename T : RenderBox> double RenderProxyBoxMixinCls<T>::computeMaxIntrinsicHeight(double width) {
+template<typename T> double RenderProxyBoxMixinCls<T>::computeMaxIntrinsicHeight(double width) {
     if (child != nullptr) {
         return child!->getMaxIntrinsicHeight(width);
     }
     return 0.0;
 }
 
-template<typename T : RenderBox> double RenderProxyBoxMixinCls<T>::computeDistanceToActualBaseline(TextBaseline baseline) {
+template<typename T> double RenderProxyBoxMixinCls<T>::computeDistanceToActualBaseline(TextBaseline baseline) {
     if (child != nullptr) {
         return child!->getDistanceToActualBaseline(baseline);
     }
     return super->computeDistanceToActualBaseline(baseline);
 }
 
-template<typename T : RenderBox> Size RenderProxyBoxMixinCls<T>::computeDryLayout(BoxConstraints constraints) {
+template<typename T> Size RenderProxyBoxMixinCls<T>::computeDryLayout(BoxConstraints constraints) {
     if (child != nullptr) {
         return child!->getDryLayout(constraints);
     }
     return computeSizeForNoChild(constraints);
 }
 
-template<typename T : RenderBox> void RenderProxyBoxMixinCls<T>::performLayout() {
+template<typename T> void RenderProxyBoxMixinCls<T>::performLayout() {
     if (child != nullptr) {
         child!->layout(constraintstrue);
         size = child!->size;
@@ -62,24 +62,24 @@ template<typename T : RenderBox> void RenderProxyBoxMixinCls<T>::performLayout()
     }
 }
 
-template<typename T : RenderBox> Size RenderProxyBoxMixinCls<T>::computeSizeForNoChild(BoxConstraints constraints) {
+template<typename T> Size RenderProxyBoxMixinCls<T>::computeSizeForNoChild(BoxConstraints constraints) {
     return constraints->smallest;
 }
 
-template<typename T : RenderBox> bool RenderProxyBoxMixinCls<T>::hitTestChildren(Offset position, BoxHitTestResult result) {
-    return child?->hitTest(resultposition) ?? false;
+template<typename T> bool RenderProxyBoxMixinCls<T>::hitTestChildren(Offset position, BoxHitTestResult result) {
+    return child?->hitTest(resultposition) or false;
 }
 
-template<typename T : RenderBox> void RenderProxyBoxMixinCls<T>::applyPaintTransform(RenderObject child, Matrix4 transform) {
+template<typename T> void RenderProxyBoxMixinCls<T>::applyPaintTransform(RenderObject child, Matrix4 transform) {
 }
 
-template<typename T : RenderBox> void RenderProxyBoxMixinCls<T>::paint(PaintingContext context, Offset offset) {
+template<typename T> void RenderProxyBoxMixinCls<T>::paint(PaintingContext context, Offset offset) {
     if (child != nullptr) {
         context->paintChild(child!, offset);
     }
 }
 
-RenderProxyBoxWithHitTestBehaviorCls::RenderProxyBoxWithHitTestBehaviorCls(HitTestBehavior behavior, RenderBox child) {
+RenderProxyBoxWithHitTestBehaviorCls::RenderProxyBoxWithHitTestBehaviorCls(HitTestBehavior behavior, RenderBox child) : RenderProxyBox(child) {
 }
 
 bool RenderProxyBoxWithHitTestBehaviorCls::hitTest(Offset position, BoxHitTestResult result) {
@@ -99,14 +99,14 @@ bool RenderProxyBoxWithHitTestBehaviorCls::hitTestSelf(Offset position) {
 
 void RenderProxyBoxWithHitTestBehaviorCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<HitTestBehavior>make<EnumPropertyCls>("behavior", behaviornullptr));
+    properties->add(<HitTestBehavior>make<EnumPropertyCls>(__s("behavior"), behaviornullptr));
 }
 
-RenderConstrainedBoxCls::RenderConstrainedBoxCls(BoxConstraints additionalConstraints, RenderBox child) {
+RenderConstrainedBoxCls::RenderConstrainedBoxCls(BoxConstraints additionalConstraints, RenderBox child) : RenderProxyBox(child) {
     {
-        assert(additionalConstraints != nullptr);
-        assert(additionalConstraints->debugAssertIsValid());
-        _additionalConstraints = additionalConstraints;
+        assert(additionalConstraints() != nullptr);
+        assert(additionalConstraints()->debugAssertIsValid());
+        _additionalConstraints = additionalConstraints();
     }
 }
 
@@ -125,48 +125,48 @@ void RenderConstrainedBoxCls::additionalConstraints(BoxConstraints value) {
 }
 
 double RenderConstrainedBoxCls::computeMinIntrinsicWidth(double height) {
-    if (_additionalConstraints->hasBoundedWidth && _additionalConstraints->hasTightWidth) {
+    if (_additionalConstraints->hasBoundedWidth() && _additionalConstraints->hasTightWidth()) {
         return _additionalConstraints->minWidth;
     }
     double width = super->computeMinIntrinsicWidth(height);
     assert(width->isFinite);
-    if (!_additionalConstraints->hasInfiniteWidth) {
+    if (!_additionalConstraints->hasInfiniteWidth()) {
         return _additionalConstraints->constrainWidth(width);
     }
     return width;
 }
 
 double RenderConstrainedBoxCls::computeMaxIntrinsicWidth(double height) {
-    if (_additionalConstraints->hasBoundedWidth && _additionalConstraints->hasTightWidth) {
+    if (_additionalConstraints->hasBoundedWidth() && _additionalConstraints->hasTightWidth()) {
         return _additionalConstraints->minWidth;
     }
     double width = super->computeMaxIntrinsicWidth(height);
     assert(width->isFinite);
-    if (!_additionalConstraints->hasInfiniteWidth) {
+    if (!_additionalConstraints->hasInfiniteWidth()) {
         return _additionalConstraints->constrainWidth(width);
     }
     return width;
 }
 
 double RenderConstrainedBoxCls::computeMinIntrinsicHeight(double width) {
-    if (_additionalConstraints->hasBoundedHeight && _additionalConstraints->hasTightHeight) {
+    if (_additionalConstraints->hasBoundedHeight() && _additionalConstraints->hasTightHeight()) {
         return _additionalConstraints->minHeight;
     }
     double height = super->computeMinIntrinsicHeight(width);
     assert(height->isFinite);
-    if (!_additionalConstraints->hasInfiniteHeight) {
+    if (!_additionalConstraints->hasInfiniteHeight()) {
         return _additionalConstraints->constrainHeight(height);
     }
     return height;
 }
 
 double RenderConstrainedBoxCls::computeMaxIntrinsicHeight(double width) {
-    if (_additionalConstraints->hasBoundedHeight && _additionalConstraints->hasTightHeight) {
+    if (_additionalConstraints->hasBoundedHeight() && _additionalConstraints->hasTightHeight()) {
         return _additionalConstraints->minHeight;
     }
     double height = super->computeMaxIntrinsicHeight(width);
     assert(height->isFinite);
-    if (!_additionalConstraints->hasInfiniteHeight) {
+    if (!_additionalConstraints->hasInfiniteHeight()) {
         return _additionalConstraints->constrainHeight(height);
     }
     return height;
@@ -204,15 +204,15 @@ void RenderConstrainedBoxCls::debugPaintSize(PaintingContext context, Offset off
 
 void RenderConstrainedBoxCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<BoxConstraints>make<DiagnosticsPropertyCls>("additionalConstraints", additionalConstraints));
+    properties->add(<BoxConstraints>make<DiagnosticsPropertyCls>(__s("additionalConstraints"), additionalConstraints()));
 }
 
-RenderLimitedBoxCls::RenderLimitedBoxCls(RenderBox child, double maxHeight, double maxWidth) {
+RenderLimitedBoxCls::RenderLimitedBoxCls(RenderBox child, double maxHeight, double maxWidth) : RenderProxyBox(child) {
     {
-        assert(maxWidth != nullptr && maxWidth >= 0.0);
-        assert(maxHeight != nullptr && maxHeight >= 0.0);
-        _maxWidth = maxWidth;
-        _maxHeight = maxHeight;
+        assert(maxWidth() != nullptr && maxWidth() >= 0.0);
+        assert(maxHeight() != nullptr && maxHeight() >= 0.0);
+        _maxWidth = maxWidth();
+        _maxHeight = maxHeight();
     }
 }
 
@@ -252,12 +252,12 @@ void RenderLimitedBoxCls::performLayout() {
 
 void RenderLimitedBoxCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(make<DoublePropertyCls>("maxWidth", maxWidthdouble->infinity));
-    properties->add(make<DoublePropertyCls>("maxHeight", maxHeightdouble->infinity));
+    properties->add(make<DoublePropertyCls>(__s("maxWidth"), maxWidth()double->infinity));
+    properties->add(make<DoublePropertyCls>(__s("maxHeight"), maxHeight()double->infinity));
 }
 
 BoxConstraints RenderLimitedBoxCls::_limitConstraints(BoxConstraints constraints) {
-    return make<BoxConstraintsCls>(constraints->minWidth, constraints->hasBoundedWidth? constraints->maxWidth : constraints->constrainWidth(maxWidth), constraints->minHeight, constraints->hasBoundedHeight? constraints->maxHeight : constraints->constrainHeight(maxHeight));
+    return make<BoxConstraintsCls>(constraints->minWidth, constraints->hasBoundedWidth? constraints->maxWidth : constraints->constrainWidth(maxWidth()), constraints->minHeight, constraints->hasBoundedHeight? constraints->maxHeight : constraints->constrainHeight(maxHeight()));
 }
 
 Size RenderLimitedBoxCls::_computeSize(BoxConstraints constraints, ChildLayouter layoutChild) {
@@ -268,12 +268,12 @@ Size RenderLimitedBoxCls::_computeSize(BoxConstraints constraints, ChildLayouter
     return _limitConstraints(constraints)->constrain(SizeCls::zero);
 }
 
-RenderAspectRatioCls::RenderAspectRatioCls(double aspectRatio, RenderBox child) {
+RenderAspectRatioCls::RenderAspectRatioCls(double aspectRatio, RenderBox child) : RenderProxyBox(child) {
     {
-        assert(aspectRatio != nullptr);
-        assert(aspectRatio > 0.0);
-        assert(aspectRatio->isFinite);
-        _aspectRatio = aspectRatio;
+        assert(aspectRatio() != nullptr);
+        assert(aspectRatio() > 0.0);
+        assert(aspectRatio()->isFinite);
+        _aspectRatio = aspectRatio();
     }
 }
 
@@ -345,7 +345,7 @@ void RenderAspectRatioCls::performLayout() {
 
 void RenderAspectRatioCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(make<DoublePropertyCls>("aspectRatio", aspectRatio));
+    properties->add(make<DoublePropertyCls>(__s("aspectRatio"), aspectRatio()));
 }
 
 Size RenderAspectRatioCls::_applyAspectRatio(BoxConstraints constraints) {
@@ -386,12 +386,12 @@ Size RenderAspectRatioCls::_applyAspectRatio(BoxConstraints constraints) {
     return constraints->constrain(make<SizeCls>(width, height));
 }
 
-RenderIntrinsicWidthCls::RenderIntrinsicWidthCls(RenderBox child, double stepHeight, double stepWidth) {
+RenderIntrinsicWidthCls::RenderIntrinsicWidthCls(RenderBox child, double stepHeight, double stepWidth) : RenderProxyBox(child) {
     {
-        assert(stepWidth == nullptr || stepWidth > 0.0);
-        assert(stepHeight == nullptr || stepHeight > 0.0);
-        _stepWidth = stepWidth;
-        _stepHeight = stepHeight;
+        assert(stepWidth() == nullptr || stepWidth() > 0.0);
+        assert(stepHeight() == nullptr || stepHeight() > 0.0);
+        _stepWidth = stepWidth();
+        _stepHeight = stepHeight();
     }
 }
 
@@ -467,8 +467,8 @@ void RenderIntrinsicWidthCls::performLayout() {
 
 void RenderIntrinsicWidthCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(make<DoublePropertyCls>("stepWidth", stepWidth));
-    properties->add(make<DoublePropertyCls>("stepHeight", stepHeight));
+    properties->add(make<DoublePropertyCls>(__s("stepWidth"), stepWidth()));
+    properties->add(make<DoublePropertyCls>(__s("stepHeight"), stepHeight()));
 }
 
 double RenderIntrinsicWidthCls::_applyStep(double input, double step) {
@@ -497,7 +497,7 @@ Size RenderIntrinsicWidthCls::_computeSize(BoxConstraints constraints, ChildLayo
     }
 }
 
-RenderIntrinsicHeightCls::RenderIntrinsicHeightCls(RenderBox child) {
+RenderIntrinsicHeightCls::RenderIntrinsicHeightCls(RenderBox child) : RenderProxyBox(child) {
 }
 
 double RenderIntrinsicHeightCls::computeMinIntrinsicWidth(double height) {
@@ -547,14 +547,14 @@ Size RenderIntrinsicHeightCls::_computeSize(BoxConstraints constraints, ChildLay
     }
 }
 
-RenderOpacityCls::RenderOpacityCls(bool alwaysIncludeSemantics, RenderBox child, double opacity) {
+RenderOpacityCls::RenderOpacityCls(bool alwaysIncludeSemantics, RenderBox child, double opacity) : RenderProxyBox(child) {
     {
-        assert(opacity != nullptr);
-        assert(opacity >= 0.0 && opacity <= 1.0);
-        assert(alwaysIncludeSemantics != nullptr);
-        _opacity = opacity;
-        _alwaysIncludeSemantics = alwaysIncludeSemantics;
-        _alpha = ui->ColorCls->getAlphaFromOpacity(opacity);
+        assert(opacity() != nullptr);
+        assert(opacity() >= 0.0 && opacity() <= 1.0);
+        assert(alwaysIncludeSemantics() != nullptr);
+        _opacity = opacity();
+        _alwaysIncludeSemantics = alwaysIncludeSemantics();
+        _alpha = ui->ColorCls->getAlphaFromOpacity(opacity());
     }
 }
 
@@ -572,15 +572,15 @@ void RenderOpacityCls::opacity(double value) {
     if (_opacity == value) {
         return;
     }
-    bool didNeedCompositing = alwaysNeedsCompositing;
+    bool didNeedCompositing = alwaysNeedsCompositing();
     bool wasVisible = _alpha != 0;
     _opacity = value;
     _alpha = ui->ColorCls->getAlphaFromOpacity(_opacity);
-    if (didNeedCompositing != alwaysNeedsCompositing) {
+    if (didNeedCompositing != alwaysNeedsCompositing()) {
         markNeedsCompositingBitsUpdate();
     }
     markNeedsPaint();
-    if (wasVisible != (_alpha != 0) && !alwaysIncludeSemantics) {
+    if (wasVisible != (_alpha != 0) && !alwaysIncludeSemantics()) {
         markNeedsSemanticsUpdate();
     }
 }
@@ -611,7 +611,7 @@ void RenderOpacityCls::paint(PaintingContext context, Offset offset) {
         return;
     }
     assert(needsCompositing);
-    layer = context->pushOpacity(offset, _alpha, super->paint((OpacityLayer)layer));
+    layer = context->pushOpacity(offset, _alpha, super->paintas<OpacityLayer>(layer));
     assert([=] () {
         layer!->debugCreator = debugCreator;
         return true;
@@ -619,51 +619,51 @@ void RenderOpacityCls::paint(PaintingContext context, Offset offset) {
 }
 
 void RenderOpacityCls::visitChildrenForSemantics(RenderObjectVisitor visitor) {
-    if (child != nullptr && (_alpha != 0 || alwaysIncludeSemantics)) {
+    if (child != nullptr && (_alpha != 0 || alwaysIncludeSemantics())) {
         visitor(child!);
     }
 }
 
 void RenderOpacityCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(make<DoublePropertyCls>("opacity", opacity));
-    properties->add(make<FlagPropertyCls>("alwaysIncludeSemantics"alwaysIncludeSemantics, "alwaysIncludeSemantics"));
+    properties->add(make<DoublePropertyCls>(__s("opacity"), opacity()));
+    properties->add(make<FlagPropertyCls>(__s("alwaysIncludeSemantics")alwaysIncludeSemantics(), __s("alwaysIncludeSemantics")));
 }
 
-template<typename T : RenderObject> bool RenderAnimatedOpacityMixinCls<T>::isRepaintBoundary() {
+template<typename T> bool RenderAnimatedOpacityMixinCls<T>::isRepaintBoundary() {
     return child != nullptr && _currentlyIsRepaintBoundary!;
 }
 
-template<typename T : RenderObject> OffsetLayer RenderAnimatedOpacityMixinCls<T>::updateCompositedLayer(OpacityLayer oldLayer) {
-    OpacityLayer updatedLayer = oldLayer ?? make<OpacityLayerCls>();
+template<typename T> OffsetLayer RenderAnimatedOpacityMixinCls<T>::updateCompositedLayer(OpacityLayer oldLayer) {
+    OpacityLayer updatedLayer = oldLayer or make<OpacityLayerCls>();
     updatedLayer->alpha = _alpha;
     return updatedLayer;
 }
 
-template<typename T : RenderObject> Animation<double> RenderAnimatedOpacityMixinCls<T>::opacity() {
+template<typename T> Animation<double> RenderAnimatedOpacityMixinCls<T>::opacity() {
     return _opacity!;
 }
 
-template<typename T : RenderObject> void RenderAnimatedOpacityMixinCls<T>::opacity(Animation<double> value) {
+template<typename T> void RenderAnimatedOpacityMixinCls<T>::opacity(Animation<double> value) {
     assert(value != nullptr);
     if (_opacity == value) {
         return;
     }
     if (attached && _opacity != nullptr) {
-        opacity->removeListener(_updateOpacity);
+        opacity()->removeListener(_updateOpacity);
     }
     _opacity = value;
     if (attached) {
-        opacity->addListener(_updateOpacity);
+        opacity()->addListener(_updateOpacity);
     }
     _updateOpacity();
 }
 
-template<typename T : RenderObject> bool RenderAnimatedOpacityMixinCls<T>::alwaysIncludeSemantics() {
+template<typename T> bool RenderAnimatedOpacityMixinCls<T>::alwaysIncludeSemantics() {
     return _alwaysIncludeSemantics!;
 }
 
-template<typename T : RenderObject> void RenderAnimatedOpacityMixinCls<T>::alwaysIncludeSemantics(bool value) {
+template<typename T> void RenderAnimatedOpacityMixinCls<T>::alwaysIncludeSemantics(bool value) {
     if (value == _alwaysIncludeSemantics) {
         return;
     }
@@ -671,44 +671,44 @@ template<typename T : RenderObject> void RenderAnimatedOpacityMixinCls<T>::alway
     markNeedsSemanticsUpdate();
 }
 
-template<typename T : RenderObject> void RenderAnimatedOpacityMixinCls<T>::attach(PipelineOwner owner) {
+template<typename T> void RenderAnimatedOpacityMixinCls<T>::attach(PipelineOwner owner) {
     super->attach(owner);
-    opacity->addListener(_updateOpacity);
+    opacity()->addListener(_updateOpacity);
     _updateOpacity();
 }
 
-template<typename T : RenderObject> void RenderAnimatedOpacityMixinCls<T>::detach() {
-    opacity->removeListener(_updateOpacity);
+template<typename T> void RenderAnimatedOpacityMixinCls<T>::detach() {
+    opacity()->removeListener(_updateOpacity);
     super->detach();
 }
 
-template<typename T : RenderObject> bool RenderAnimatedOpacityMixinCls<T>::paintsChild(RenderObject child) {
+template<typename T> bool RenderAnimatedOpacityMixinCls<T>::paintsChild(RenderObject child) {
     assert(child->parent == this);
-    return opacity->value > 0;
+    return opacity()->value() > 0;
 }
 
-template<typename T : RenderObject> void RenderAnimatedOpacityMixinCls<T>::paint(PaintingContext context, Offset offset) {
+template<typename T> void RenderAnimatedOpacityMixinCls<T>::paint(PaintingContext context, Offset offset) {
     if (_alpha == 0) {
         return;
     }
     super->paint(context, offset);
 }
 
-template<typename T : RenderObject> void RenderAnimatedOpacityMixinCls<T>::visitChildrenForSemantics(RenderObjectVisitor visitor) {
-    if (child != nullptr && (_alpha != 0 || alwaysIncludeSemantics)) {
+template<typename T> void RenderAnimatedOpacityMixinCls<T>::visitChildrenForSemantics(RenderObjectVisitor visitor) {
+    if (child != nullptr && (_alpha != 0 || alwaysIncludeSemantics())) {
         visitor(child!);
     }
 }
 
-template<typename T : RenderObject> void RenderAnimatedOpacityMixinCls<T>::debugFillProperties(DiagnosticPropertiesBuilder properties) {
+template<typename T> void RenderAnimatedOpacityMixinCls<T>::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<Animation<double>>make<DiagnosticsPropertyCls>("opacity", opacity));
-    properties->add(make<FlagPropertyCls>("alwaysIncludeSemantics"alwaysIncludeSemantics, "alwaysIncludeSemantics"));
+    properties->add(<Animation<double>>make<DiagnosticsPropertyCls>(__s("opacity"), opacity()));
+    properties->add(make<FlagPropertyCls>(__s("alwaysIncludeSemantics")alwaysIncludeSemantics(), __s("alwaysIncludeSemantics")));
 }
 
-template<typename T : RenderObject> void RenderAnimatedOpacityMixinCls<T>::_updateOpacity() {
+template<typename T> void RenderAnimatedOpacityMixinCls<T>::_updateOpacity() {
     int oldAlpha = _alpha;
-    _alpha = ui->ColorCls->getAlphaFromOpacity(opacity->value);
+    _alpha = ui->ColorCls->getAlphaFromOpacity(opacity()->value());
     if (oldAlpha != _alpha) {
         bool wasRepaintBoundary = _currentlyIsRepaintBoundary;
         _currentlyIsRepaintBoundary = _alpha! > 0;
@@ -722,7 +722,7 @@ template<typename T : RenderObject> void RenderAnimatedOpacityMixinCls<T>::_upda
     }
 }
 
-RenderAnimatedOpacityCls::RenderAnimatedOpacityCls(bool alwaysIncludeSemantics, RenderBox child, Animation<double> opacity) {
+RenderAnimatedOpacityCls::RenderAnimatedOpacityCls(bool alwaysIncludeSemantics, RenderBox child, Animation<double> opacity) : RenderProxyBox(child) {
     {
         assert(opacity != nullptr);
         assert(alwaysIncludeSemantics != nullptr);
@@ -733,17 +733,17 @@ RenderAnimatedOpacityCls::RenderAnimatedOpacityCls(bool alwaysIncludeSemantics, 
     }
 }
 
-RenderShaderMaskCls::RenderShaderMaskCls(BlendMode blendMode, RenderBox child, ShaderCallback shaderCallback) {
+RenderShaderMaskCls::RenderShaderMaskCls(BlendMode blendMode, RenderBox child, ShaderCallback shaderCallback) : RenderProxyBox(child) {
     {
-        assert(shaderCallback != nullptr);
-        assert(blendMode != nullptr);
-        _shaderCallback = shaderCallback;
-        _blendMode = blendMode;
+        assert(shaderCallback() != nullptr);
+        assert(blendMode() != nullptr);
+        _shaderCallback = shaderCallback();
+        _blendMode = blendMode();
     }
 }
 
 ShaderMaskLayer RenderShaderMaskCls::layer() {
-    return ((ShaderMaskLayer)super->layer);
+    return as<ShaderMaskLayer>(super->layer);
 }
 
 ShaderCallback RenderShaderMaskCls::shaderCallback() {
@@ -779,29 +779,29 @@ bool RenderShaderMaskCls::alwaysNeedsCompositing() {
 void RenderShaderMaskCls::paint(PaintingContext context, Offset offset) {
     if (child != nullptr) {
         assert(needsCompositing);
-        layer = make<ShaderMaskLayerCls>();
-            auto _c1 = layer!;    _c1.shader = auto _c2 = _shaderCallback(OffsetCls::zero & size);    _c2.maskRect = auto _c3 = offset & size;    _c3.blendMode = _blendMode;    _c3;    _c2;_c1;
-        context->pushLayer(layer!, super->paint, offset);
+        layer() = make<ShaderMaskLayerCls>();
+            auto _c1 = layer()!;    _c1.shader = auto _c2 = _shaderCallback(OffsetCls::zero & size);    _c2.maskRect = auto _c3 = offset & size;    _c3.blendMode() = _blendMode;    _c3;    _c2;_c1;
+        context->pushLayer(layer()!, super->paint, offset);
         assert([=] () {
-            layer!->debugCreator = debugCreator;
+            layer()!->debugCreator = debugCreator;
             return true;
         }());
     } else {
-        layer = nullptr;
+        layer() = nullptr;
     }
 }
 
-RenderBackdropFilterCls::RenderBackdropFilterCls(BlendMode blendMode, RenderBox child, ImageFilter filter) {
+RenderBackdropFilterCls::RenderBackdropFilterCls(BlendMode blendMode, RenderBox child, ImageFilter filter) : RenderProxyBox(child) {
     {
-        assert(filter != nullptr);
-        assert(blendMode != nullptr);
-        _filter = filter;
-        _blendMode = blendMode;
+        assert(filter() != nullptr);
+        assert(blendMode() != nullptr);
+        _filter = filter();
+        _blendMode = blendMode();
     }
 }
 
 BackdropFilterLayer RenderBackdropFilterCls::layer() {
-    return ((BackdropFilterLayer)super->layer);
+    return as<BackdropFilterLayer>(super->layer);
 }
 
 ImageFilter RenderBackdropFilterCls::filter() {
@@ -837,16 +837,16 @@ bool RenderBackdropFilterCls::alwaysNeedsCompositing() {
 void RenderBackdropFilterCls::paint(PaintingContext context, Offset offset) {
     if (child != nullptr) {
         assert(needsCompositing);
-        layer = make<BackdropFilterLayerCls>();
-        layer!->filter = _filter;
-        layer!->blendMode = _blendMode;
-        context->pushLayer(layer!, super->paint, offset);
+        layer() = make<BackdropFilterLayerCls>();
+        layer()!->filter() = _filter;
+        layer()!->blendMode() = _blendMode;
+        context->pushLayer(layer()!, super->paint, offset);
         assert([=] () {
-            layer!->debugCreator = debugCreator;
+            layer()!->debugCreator = debugCreator;
             return true;
         }());
     } else {
-        layer = nullptr;
+        layer() = nullptr;
     }
 }
 
@@ -869,7 +869,7 @@ template<typename T> Rect CustomClipperCls<T>::getApproximateClipRect(Size size)
 }
 
 template<typename T> String CustomClipperCls<T>::toString() {
-    return objectRuntimeType(this, "CustomClipper");
+    return objectRuntimeType(this, __s("CustomClipper"));
 }
 
 ShapeBorderClipperCls::ShapeBorderClipperCls(ShapeBorder shape, TextDirection textDirection) {
@@ -883,10 +883,10 @@ Path ShapeBorderClipperCls::getClip(Size size) {
 }
 
 bool ShapeBorderClipperCls::shouldReclip(CustomClipper<Path> oldClipper) {
-    if (oldClipper->runtimeType != ShapeBorderClipperCls) {
+    if (oldClipper->runtimeType() != ShapeBorderClipperCls) {
         return true;
     }
-    ShapeBorderClipper typedOldClipper = ((ShapeBorderClipper)oldClipper);
+    ShapeBorderClipper typedOldClipper = as<ShapeBorderClipper>(oldClipper);
     return typedOldClipper->shape != shape || typedOldClipper->textDirection != textDirection;
 }
 
@@ -901,7 +901,7 @@ template<typename T> void _RenderCustomClipCls<T>::clipper(CustomClipper<T> newC
     CustomClipper<T> oldClipper = _clipper;
     _clipper = newClipper;
     assert(newClipper != nullptr || oldClipper != nullptr);
-    if (newClipper == nullptr || oldClipper == nullptr || newClipper->runtimeType != oldClipper->runtimeType || newClipper->shouldReclip(oldClipper)) {
+    if (newClipper == nullptr || oldClipper == nullptr || newClipper->runtimeType() != oldClipper->runtimeType() || newClipper->shouldReclip(oldClipper)) {
         _markNeedsClip();
     }
     if (attached) {
@@ -946,16 +946,16 @@ template<typename T> Rect _RenderCustomClipCls<T>::describeApproximatePaintClip(
 template<typename T> void _RenderCustomClipCls<T>::debugPaintSize(PaintingContext context, Offset offset) {
     assert([=] () {
             auto _c1 = make<PaintCls>();    _c1.shader = auto _c2 = ui->GradientCls->linear(OffsetCls::zero, make<OffsetCls>(10.0, 10.0), makeList(ArrayItem, ArrayItem, ArrayItem, ArrayItem), makeList(ArrayItem, ArrayItem, ArrayItem, ArrayItem), TileModeCls::repeated);    _c2.strokeWidth = auto _c3 = 2.0;    _c3.style = PaintingStyleCls::stroke;    _c3;    _c2;_debugPaint = _c1;
-            auto _c4 = make<TextPainterCls>(make<TextSpanCls>("✂", make<TextStyleCls>(make<ColorCls>(0xFFFF00FF), 14.0)), TextDirectionCls::rtl);    _c4.layout();_debugText = _c4;
+            auto _c4 = make<TextPainterCls>(make<TextSpanCls>(__s("✂"), make<TextStyleCls>(make<ColorCls>(0xFFFF00FF), 14.0)), TextDirectionCls::rtl);    _c4.layout();_debugText = _c4;
         return true;
     }());
 }
 
-template<typename T> _RenderCustomClipCls<T>::_RenderCustomClipCls(RenderBox child, Clip clipBehavior, CustomClipper<T> clipper) {
+template<typename T> _RenderCustomClipCls<T>::_RenderCustomClipCls(RenderBox child, Clip clipBehavior, CustomClipper<T> clipper) : RenderProxyBox(child) {
     {
-        assert(clipBehavior != nullptr);
-        _clipper = clipper;
-        _clipBehavior = clipBehavior;
+        assert(clipBehavior() != nullptr);
+        _clipper = clipper();
+        _clipBehavior = clipBehavior();
     }
 }
 
@@ -966,7 +966,7 @@ template<typename T> void _RenderCustomClipCls<T>::_markNeedsClip() {
 }
 
 template<typename T> void _RenderCustomClipCls<T>::_updateClip() {
-    _clip = _clipper?->getClip(size) ?? _defaultClip;
+    _clip = _clipper?->getClip(size) or _defaultClip();
 }
 
 RenderClipRectCls::RenderClipRectCls(Unknown child, Unknown clipBehavior, Unknown clipper) {
@@ -990,7 +990,7 @@ void RenderClipRectCls::paint(PaintingContext context, Offset offset) {
     if (child != nullptr) {
         if (clipBehavior != ClipCls::none) {
             _updateClip();
-            layer = context->pushClipRect(needsCompositing, offset, _clip!, super->paintclipBehavior, ((ClipRectLayer)layer));
+            layer = context->pushClipRect(needsCompositing, offset, _clip!, super->paintclipBehavior, as<ClipRectLayer>(layer));
         } else {
             context->paintChild(child!, offset);
             layer = nullptr;
@@ -1017,11 +1017,11 @@ Rect RenderClipRectCls::_defaultClip() {
     return OffsetCls::zero & size;
 }
 
-RenderClipRRectCls::RenderClipRRectCls(BorderRadiusGeometry borderRadius, Unknown child, Unknown clipBehavior, CustomClipper<RRect> clipper, TextDirection textDirection) {
+RenderClipRRectCls::RenderClipRRectCls(BorderRadiusGeometry borderRadius, Unknown child, Unknown clipBehavior, CustomClipper<RRect> clipper, TextDirection textDirection) : _RenderCustomClip<RRect>(clipper) {
     {
         assert(clipBehavior != nullptr);
-        _borderRadius = borderRadius;
-        _textDirection = textDirection;
+        _borderRadius = borderRadius();
+        _textDirection = textDirection();
     }
     {
         assert(_borderRadius != nullptr || clipper != nullptr);
@@ -1068,7 +1068,7 @@ void RenderClipRRectCls::paint(PaintingContext context, Offset offset) {
     if (child != nullptr) {
         if (clipBehavior != ClipCls::none) {
             _updateClip();
-            layer = context->pushClipRRect(needsCompositing, offset, _clip!->outerRect, _clip!, super->paintclipBehavior, ((ClipRRectLayer)layer));
+            layer = context->pushClipRRect(needsCompositing, offset, _clip!->outerRect, _clip!, super->paintclipBehavior, as<ClipRRectLayer>(layer));
         } else {
             context->paintChild(child!, offset);
             layer = nullptr;
@@ -1092,7 +1092,7 @@ void RenderClipRRectCls::debugPaintSize(PaintingContext context, Offset offset) 
 }
 
 RRect RenderClipRRectCls::_defaultClip() {
-    return _borderRadius->resolve(textDirection)->toRRect(OffsetCls::zero & size);
+    return _borderRadius->resolve(textDirection())->toRRect(OffsetCls::zero & size);
 }
 
 RenderClipOvalCls::RenderClipOvalCls(Unknown child, Unknown clipBehavior, Unknown clipper) {
@@ -1116,7 +1116,7 @@ void RenderClipOvalCls::paint(PaintingContext context, Offset offset) {
     if (child != nullptr) {
         if (clipBehavior != ClipCls::none) {
             _updateClip();
-            layer = context->pushClipPath(needsCompositing, offset, _clip!, _getClipPath(_clip!), super->paintclipBehavior, ((ClipPathLayer)layer));
+            layer = context->pushClipPath(needsCompositing, offset, _clip!, _getClipPath(_clip!), super->paintclipBehavior, as<ClipPathLayer>(layer));
         } else {
             context->paintChild(child!, offset);
             layer = nullptr;
@@ -1172,7 +1172,7 @@ void RenderClipPathCls::paint(PaintingContext context, Offset offset) {
     if (child != nullptr) {
         if (clipBehavior != ClipCls::none) {
             _updateClip();
-            layer = context->pushClipPath(needsCompositing, offset, OffsetCls::zero & size, _clip!, super->paintclipBehavior, ((ClipPathLayer)layer));
+            layer = context->pushClipPath(needsCompositing, offset, OffsetCls::zero & size, _clip!, super->paintclipBehavior, as<ClipPathLayer>(layer));
         } else {
             context->paintChild(child!, offset);
             layer = nullptr;
@@ -1205,7 +1205,7 @@ template<typename T> double _RenderPhysicalModelBaseCls<T>::elevation() {
 
 template<typename T> void _RenderPhysicalModelBaseCls<T>::elevation(double value) {
     auto _c1 = make<PathCls>();_c1.addRect(OffsetCls::zero & size);assert(value != nullptr && value >= 0.0);
-    if (elevation == value) {
+    if (elevation() == value) {
         return;
     }
     bool didNeedCompositing = alwaysNeedsCompositing;
@@ -1222,7 +1222,7 @@ template<typename T> Color _RenderPhysicalModelBaseCls<T>::shadowColor() {
 
 template<typename T> void _RenderPhysicalModelBaseCls<T>::shadowColor(Color value) {
     assert(value != nullptr);
-    if (shadowColor == value) {
+    if (shadowColor() == value) {
         return;
     }
     _shadowColor = value;
@@ -1235,7 +1235,7 @@ template<typename T> Color _RenderPhysicalModelBaseCls<T>::color() {
 
 template<typename T> void _RenderPhysicalModelBaseCls<T>::color(Color value) {
     assert(value != nullptr);
-    if (color == value) {
+    if (color() == value) {
         return;
     }
     _color = value;
@@ -1244,37 +1244,37 @@ template<typename T> void _RenderPhysicalModelBaseCls<T>::color(Color value) {
 
 template<typename T> void _RenderPhysicalModelBaseCls<T>::describeSemanticsConfiguration(SemanticsConfiguration config) {
     super->describeSemanticsConfiguration(config);
-    config->elevation = elevation;
+    config->elevation = elevation();
 }
 
 template<typename T> void _RenderPhysicalModelBaseCls<T>::debugFillProperties(DiagnosticPropertiesBuilder description) {
     super->debugFillProperties(description);
-    description->add(make<DoublePropertyCls>("elevation", elevation));
-    description->add(make<ColorPropertyCls>("color", color));
-    description->add(make<ColorPropertyCls>("shadowColor", color));
+    description->add(make<DoublePropertyCls>(__s("elevation"), elevation()));
+    description->add(make<ColorPropertyCls>(__s("color"), color()));
+    description->add(make<ColorPropertyCls>(__s("shadowColor"), color()));
 }
 
 template<typename T> _RenderPhysicalModelBaseCls<T>::_RenderPhysicalModelBaseCls(Unknown child, Unknown clipBehavior, Unknown clipper, Color color, double elevation, Color shadowColor) {
     {
-        assert(elevation != nullptr && elevation >= 0.0);
-        assert(color != nullptr);
-        assert(shadowColor != nullptr);
+        assert(elevation() != nullptr && elevation() >= 0.0);
+        assert(color() != nullptr);
+        assert(shadowColor() != nullptr);
         assert(clipBehavior != nullptr);
-        _elevation = elevation;
-        _color = color;
-        _shadowColor = shadowColor;
+        _elevation = elevation();
+        _color = color();
+        _shadowColor = shadowColor();
     }
 }
 
 RenderPhysicalModelCls::RenderPhysicalModelCls(BorderRadius borderRadius, Unknown child, Unknown clipBehavior, Unknown color, Unknown elevation, Unknown shadowColor, BoxShape shape) {
     {
-        assert(shape != nullptr);
+        assert(shape() != nullptr);
         assert(clipBehavior != nullptr);
         assert(elevation != nullptr && elevation >= 0.0);
         assert(color != nullptr);
         assert(shadowColor != nullptr);
-        _shape = shape;
-        _borderRadius = borderRadius;
+        _shape = shape();
+        _borderRadius = borderRadius();
     }
 }
 
@@ -1284,7 +1284,7 @@ BoxShape RenderPhysicalModelCls::shape() {
 
 void RenderPhysicalModelCls::shape(BoxShape value) {
     assert(value != nullptr);
-    if (shape == value) {
+    if (shape() == value) {
         return;
     }
     _shape = value;
@@ -1296,7 +1296,7 @@ BorderRadius RenderPhysicalModelCls::borderRadius() {
 }
 
 void RenderPhysicalModelCls::borderRadius(BorderRadius value) {
-    if (borderRadius == value) {
+    if (borderRadius() == value) {
         return;
     }
     _borderRadius = value;
@@ -1347,7 +1347,7 @@ void RenderPhysicalModelCls::paint(PaintingContext context, Offset offset) {
                     auto _c6 = make<PaintCls>();        _c6.color = color;context->canvas->drawPaint(_c6);
         }
         super->paint(context, offset);
-    }((ClipRRectLayer)layer), clipBehavior);
+    }as<ClipRRectLayer>(layer), clipBehavior);
     assert([=] () {
         layer?->debugCreator = debugCreator;
         return true;
@@ -1356,8 +1356,8 @@ void RenderPhysicalModelCls::paint(PaintingContext context, Offset offset) {
 
 void RenderPhysicalModelCls::debugFillProperties(DiagnosticPropertiesBuilder description) {
     super->debugFillProperties(description);
-    description->add(<BoxShape>make<DiagnosticsPropertyCls>("shape", shape));
-    description->add(<BorderRadius>make<DiagnosticsPropertyCls>("borderRadius", borderRadius));
+    description->add(<BoxShape>make<DiagnosticsPropertyCls>(__s("shape"), shape()));
+    description->add(<BorderRadius>make<DiagnosticsPropertyCls>(__s("borderRadius"), borderRadius()));
 }
 
 RRect RenderPhysicalModelCls::_defaultClip() {
@@ -1418,7 +1418,7 @@ void RenderPhysicalShapeCls::paint(PaintingContext context, Offset offset) {
                     auto _c5 = make<PaintCls>();        _c5.color = color;context->canvas->drawPaint(_c5);
         }
         super->paint(context, offset);
-    }((ClipPathLayer)layer), clipBehavior);
+    }as<ClipPathLayer>(layer), clipBehavior);
     assert([=] () {
         layer?->debugCreator = debugCreator;
         return true;
@@ -1427,21 +1427,21 @@ void RenderPhysicalShapeCls::paint(PaintingContext context, Offset offset) {
 
 void RenderPhysicalShapeCls::debugFillProperties(DiagnosticPropertiesBuilder description) {
     super->debugFillProperties(description);
-    description->add(<CustomClipper<Path>>make<DiagnosticsPropertyCls>("clipper", clipper));
+    description->add(<CustomClipper<Path>>make<DiagnosticsPropertyCls>(__s("clipper"), clipper));
 }
 
 Path RenderPhysicalShapeCls::_defaultClip() {
     return _c1;
 }
 
-RenderDecoratedBoxCls::RenderDecoratedBoxCls(RenderBox child, ImageConfiguration configuration, Decoration decoration, DecorationPosition position) {
+RenderDecoratedBoxCls::RenderDecoratedBoxCls(RenderBox child, ImageConfiguration configuration, Decoration decoration, DecorationPosition position) : RenderProxyBox(child) {
     {
-            auto _c1 = make<PathCls>();    _c1.addRect(OffsetCls::zero & size);assert(decoration != nullptr);
-        assert(position != nullptr);
-        assert(configuration != nullptr);
-        _decoration = decoration;
-        _position = position;
-        _configuration = configuration;
+            auto _c1 = make<PathCls>();    _c1.addRect(OffsetCls::zero & size);assert(decoration() != nullptr);
+        assert(position() != nullptr);
+        assert(configuration() != nullptr);
+        _decoration = decoration();
+        _position = position();
+        _configuration = configuration();
     }
 }
 
@@ -1494,15 +1494,15 @@ void RenderDecoratedBoxCls::detach() {
 }
 
 bool RenderDecoratedBoxCls::hitTestSelf(Offset position) {
-    return _decoration->hitTest(size, positionconfiguration->textDirection);
+    return _decoration->hitTest(size, position()configuration()->textDirection);
 }
 
 void RenderDecoratedBoxCls::paint(PaintingContext context, Offset offset) {
     assert(size->width != nullptr);
     assert(size->height != nullptr);
     _painter = _decoration->createBoxPainter(markNeedsPaint);
-    ImageConfiguration filledConfiguration = configuration->copyWith(size);
-    if (position == DecorationPositionCls::background) {
+    ImageConfiguration filledConfiguration = configuration()->copyWith(size);
+    if (position() == DecorationPositionCls::background) {
         int debugSaveCount;
         assert([=] () {
             debugSaveCount = context->canvas->getSaveCount();
@@ -1515,14 +1515,14 @@ void RenderDecoratedBoxCls::paint(PaintingContext context, Offset offset) {
             }
             return true;
         }());
-        if (decoration->isComplex) {
+        if (decoration()->isComplex()) {
             context->setIsComplexHint();
         }
     }
     super->paint(context, offset);
-    if (position == DecorationPositionCls::foreground) {
+    if (position() == DecorationPositionCls::foreground) {
         _painter!->paint(context->canvas, offset, filledConfiguration);
-        if (decoration->isComplex) {
+        if (decoration()->isComplex()) {
             context->setIsComplexHint();
         }
     }
@@ -1530,20 +1530,20 @@ void RenderDecoratedBoxCls::paint(PaintingContext context, Offset offset) {
 
 void RenderDecoratedBoxCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(_decoration->toDiagnosticsNode("decoration"));
-    properties->add(<ImageConfiguration>make<DiagnosticsPropertyCls>("configuration", configuration));
+    properties->add(_decoration->toDiagnosticsNode(__s("decoration")));
+    properties->add(<ImageConfiguration>make<DiagnosticsPropertyCls>(__s("configuration"), configuration()));
 }
 
-RenderTransformCls::RenderTransformCls(AlignmentGeometry alignment, RenderBox child, FilterQuality filterQuality, Offset origin, TextDirection textDirection, Matrix4 transform, bool transformHitTests) {
+RenderTransformCls::RenderTransformCls(AlignmentGeometry alignment, RenderBox child, FilterQuality filterQuality, Offset origin, TextDirection textDirection, Matrix4 transform, bool transformHitTests) : RenderProxyBox(child) {
     {
         assert(transform != nullptr);
     }
     {
         this->transform = transform;
-        this->alignment = alignment;
-        this->textDirection = textDirection;
-        this->filterQuality = filterQuality;
-        this->origin = origin;
+        this->alignment = alignment();
+        this->textDirection = textDirection();
+        this->filterQuality = filterQuality();
+        this->origin = origin();
     }
 }
 
@@ -1608,9 +1608,9 @@ void RenderTransformCls::filterQuality(FilterQuality value) {
     if (_filterQuality == value) {
         return;
     }
-    bool didNeedCompositing = alwaysNeedsCompositing;
+    bool didNeedCompositing = alwaysNeedsCompositing();
     _filterQuality = value;
-    if (didNeedCompositing != alwaysNeedsCompositing) {
+    if (didNeedCompositing != alwaysNeedsCompositing()) {
         markNeedsCompositingBitsUpdate();
     }
     markNeedsPaint();
@@ -1657,16 +1657,16 @@ bool RenderTransformCls::hitTest(Offset position, BoxHitTestResult result) {
 }
 
 bool RenderTransformCls::hitTestChildren(Offset position, BoxHitTestResult result) {
-    assert(!transformHitTests || _effectiveTransform != nullptr);
-    return result->addWithPaintTransform(transformHitTests? _effectiveTransform : nullptr, position, [=] (BoxHitTestResult result,Offset position) {
+    assert(!transformHitTests || _effectiveTransform() != nullptr);
+    return result->addWithPaintTransform(transformHitTests? _effectiveTransform() : nullptr, position, [=] (BoxHitTestResult result,Offset position) {
         return super->hitTestChildren(resultposition);
     });
 }
 
 void RenderTransformCls::paint(PaintingContext context, Offset offset) {
     if (child != nullptr) {
-        Matrix4 transform = _effectiveTransform!;
-        if (filterQuality == nullptr) {
+        Matrix4 transform = _effectiveTransform()!;
+        if (filterQuality() == nullptr) {
             Offset childOffset = MatrixUtilsCls->getAsTranslation(transform);
             if (childOffset == nullptr) {
                 double det = transform->determinant();
@@ -1674,16 +1674,16 @@ void RenderTransformCls::paint(PaintingContext context, Offset offset) {
                     layer = nullptr;
                     return;
                 }
-                layer = context->pushTransform(needsCompositing, offset, transform, super->paintlayer is TransformLayer? ((TransformLayer)layer) : nullptr);
+                layer = context->pushTransform(needsCompositing, offset, transform, super->paintis<TransformLayer>(layer)? as<TransformLayer>(layer) : nullptr);
             } else {
                 super->paint(context, offset + childOffset);
                 layer = nullptr;
             }
         } else {
                     auto _c1 = Matrix4Cls->translationValues(offset->dx, offset->dy, 0.0);        _c1.auto _c2 = multiply(transform);        _c2.translate(-offset->dx, -offset->dy);        _c2;Matrix4 effectiveTransform = _c1;
-            ImageFilter filter = ui->ImageFilterCls->matrix(effectiveTransform->storagefilterQuality!);
-            if (layer is ImageFilterLayer) {
-                ImageFilterLayer filterLayer = ((ImageFilterLayer)layer!);
+            ImageFilter filter = ui->ImageFilterCls->matrix(effectiveTransform->storagefilterQuality()!);
+            if (is<ImageFilterLayer>(layer)) {
+                ImageFilterLayer filterLayer = as<ImageFilterLayer>(layer!);
                 filterLayer->imageFilter = filter;
             } else {
                 layer = make<ImageFilterLayerCls>(filter);
@@ -1698,26 +1698,26 @@ void RenderTransformCls::paint(PaintingContext context, Offset offset) {
 }
 
 void RenderTransformCls::applyPaintTransform(RenderBox child, Matrix4 transform) {
-    transform->multiply(_effectiveTransform!);
+    transform->multiply(_effectiveTransform()!);
 }
 
 void RenderTransformCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(make<TransformPropertyCls>("transform matrix", _transform));
-    properties->add(<Offset>make<DiagnosticsPropertyCls>("origin", origin));
-    properties->add(<AlignmentGeometry>make<DiagnosticsPropertyCls>("alignment", alignment));
-    properties->add(<TextDirection>make<EnumPropertyCls>("textDirection", textDirectionnullptr));
-    properties->add(<bool>make<DiagnosticsPropertyCls>("transformHitTests", transformHitTests));
+    properties->add(make<TransformPropertyCls>(__s("transform matrix"), _transform));
+    properties->add(<Offset>make<DiagnosticsPropertyCls>(__s("origin"), origin()));
+    properties->add(<AlignmentGeometry>make<DiagnosticsPropertyCls>(__s("alignment"), alignment()));
+    properties->add(<TextDirection>make<EnumPropertyCls>(__s("textDirection"), textDirection()nullptr));
+    properties->add(<bool>make<DiagnosticsPropertyCls>(__s("transformHitTests"), transformHitTests));
 }
 
 Matrix4 RenderTransformCls::_effectiveTransform() {
-    Alignment resolvedAlignment = alignment?->resolve(textDirection);
+    Alignment resolvedAlignment = alignment()?->resolve(textDirection());
     if (_origin == nullptr && resolvedAlignment == nullptr) {
         return _transform;
     }
     Matrix4 result = Matrix4Cls->identity();
     if (_origin != nullptr) {
-        result->translate(_origin!->dx, _origin!->dy);
+        result->translate(_origin!->dx(), _origin!->dy());
     }
     Offset translation;
     if (resolvedAlignment != nullptr) {
@@ -1729,20 +1729,20 @@ Matrix4 RenderTransformCls::_effectiveTransform() {
         result->translate(-translation!->dx, -translation->dy);
     }
     if (_origin != nullptr) {
-        result->translate(-_origin!->dx, -_origin!->dy);
+        result->translate(-_origin!->dx(), -_origin!->dy());
     }
     return result;
 }
 
-RenderFittedBoxCls::RenderFittedBoxCls(AlignmentGeometry alignment, RenderBox child, Clip clipBehavior, BoxFit fit, TextDirection textDirection) {
+RenderFittedBoxCls::RenderFittedBoxCls(AlignmentGeometry alignment, RenderBox child, Clip clipBehavior, BoxFit fit, TextDirection textDirection) : RenderProxyBox(child) {
     {
-        assert(fit != nullptr);
-        assert(alignment != nullptr);
-        assert(clipBehavior != nullptr);
-        _fit = fit;
-        _alignment = alignment;
-        _textDirection = textDirection;
-        _clipBehavior = clipBehavior;
+        assert(fit() != nullptr);
+        assert(alignment() != nullptr);
+        assert(clipBehavior() != nullptr);
+        _fit = fit();
+        _alignment = alignment();
+        _textDirection = textDirection();
+        _clipBehavior = clipBehavior();
     }
 }
 
@@ -1803,7 +1803,7 @@ Size RenderFittedBoxCls::computeDryLayout(BoxConstraints constraints) {
             return true;
         }());
         if (invalidChildSize) {
-            assert(debugCannotComputeDryLayout("Child provided invalid size of $childSize."));
+            assert(debugCannotComputeDryLayout(__s("Child provided invalid size of $childSize.")));
             return SizeCls::zero;
         }
         ;
@@ -1841,15 +1841,15 @@ void RenderFittedBoxCls::paint(PaintingContext context, Offset offset) {
     }
     _updatePaintData();
     assert(child != nullptr);
-    if (_hasVisualOverflow! && clipBehavior != ClipCls::none) {
-        layer = context->pushClipRect(needsCompositing, offset, OffsetCls::zero & size, _paintChildWithTransformlayer is ClipRectLayer? ((ClipRectLayer)layer!) : nullptr, clipBehavior);
+    if (_hasVisualOverflow! && clipBehavior() != ClipCls::none) {
+        layer = context->pushClipRect(needsCompositing, offset, OffsetCls::zero & size, _paintChildWithTransformis<ClipRectLayer>(layer)? as<ClipRectLayer>(layer!) : nullptr, clipBehavior());
     } else {
         layer = _paintChildWithTransform(context, offset);
     }
 }
 
 bool RenderFittedBoxCls::hitTestChildren(Offset position, BoxHitTestResult result) {
-    if (size->isEmpty || (child?->size->isEmpty ?? false)) {
+    if (size->isEmpty || (child?->size->isEmpty or false)) {
         return false;
     }
     _updatePaintData();
@@ -1874,16 +1874,16 @@ void RenderFittedBoxCls::applyPaintTransform(RenderBox child, Matrix4 transform)
 
 void RenderFittedBoxCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<BoxFit>make<EnumPropertyCls>("fit", fit));
-    properties->add(<AlignmentGeometry>make<DiagnosticsPropertyCls>("alignment", alignment));
-    properties->add(<TextDirection>make<EnumPropertyCls>("textDirection", textDirectionnullptr));
+    properties->add(<BoxFit>make<EnumPropertyCls>(__s("fit"), fit()));
+    properties->add(<AlignmentGeometry>make<DiagnosticsPropertyCls>(__s("alignment"), alignment()));
+    properties->add(<TextDirection>make<EnumPropertyCls>(__s("textDirection"), textDirection()nullptr));
 }
 
 void RenderFittedBoxCls::_resolve() {
     if (_resolvedAlignment != nullptr) {
         return;
     }
-    _resolvedAlignment = alignment->resolve(textDirection);
+    _resolvedAlignment = alignment()->resolve(textDirection());
 }
 
 void RenderFittedBoxCls::_markNeedResolution() {
@@ -1918,7 +1918,7 @@ void RenderFittedBoxCls::_updatePaintData() {
         _hasVisualOverflow = sourceRect->width < childSize->width || sourceRect->height < childSize->height;
         assert(scaleX->isFinite && scaleY->isFinite);
             auto _c1 = Matrix4Cls->translationValues(destinationRect->left, destinationRect->top, 0.0);    _c1.auto _c2 = scale(scaleX, scaleY, 1.0);    _c2.translate(-sourceRect->left, -sourceRect->top);    _c2;_transform = _c1;
-        assert(_transform!->storage->every([=] (double value)         {
+        assert(_transform!->storage()->every([=] (double value)         {
             value->isFinite;
         }));
     }
@@ -1927,17 +1927,17 @@ void RenderFittedBoxCls::_updatePaintData() {
 TransformLayer RenderFittedBoxCls::_paintChildWithTransform(PaintingContext context, Offset offset) {
     Offset childOffset = MatrixUtilsCls->getAsTranslation(_transform!);
     if (childOffset == nullptr) {
-        return context->pushTransform(needsCompositing, offset, _transform!, super->paintlayer is TransformLayer? ((TransformLayer)layer!) : nullptr);
+        return context->pushTransform(needsCompositing, offset, _transform!, super->paintis<TransformLayer>(layer)? as<TransformLayer>(layer!) : nullptr);
     } else {
         super->paint(context, offset + childOffset);
     }
     return nullptr;
 }
 
-RenderFractionalTranslationCls::RenderFractionalTranslationCls(RenderBox child, bool transformHitTests, Offset translation) {
+RenderFractionalTranslationCls::RenderFractionalTranslationCls(RenderBox child, bool transformHitTests, Offset translation) : RenderProxyBox(child) {
     {
-        assert(translation != nullptr);
-        _translation = translation;
+        assert(translation() != nullptr);
+        _translation = translation();
     }
 }
 
@@ -1961,7 +1961,7 @@ bool RenderFractionalTranslationCls::hitTest(Offset position, BoxHitTestResult r
 
 bool RenderFractionalTranslationCls::hitTestChildren(Offset position, BoxHitTestResult result) {
     assert(!debugNeedsLayout);
-    return result->addWithPaintOffset(transformHitTests? make<OffsetCls>(translation->dx * size->width, translation->dy * size->height) : nullptr, position, [=] (BoxHitTestResult result,Offset position) {
+    return result->addWithPaintOffset(transformHitTests? make<OffsetCls>(translation()->dx() * size->width, translation()->dy() * size->height) : nullptr, position, [=] (BoxHitTestResult result,Offset position) {
         return super->hitTestChildren(resultposition);
     });
 }
@@ -1969,18 +1969,18 @@ bool RenderFractionalTranslationCls::hitTestChildren(Offset position, BoxHitTest
 void RenderFractionalTranslationCls::paint(PaintingContext context, Offset offset) {
     assert(!debugNeedsLayout);
     if (child != nullptr) {
-        super->paint(context, make<OffsetCls>(offset->dx + translation->dx * size->width, offset->dy + translation->dy * size->height));
+        super->paint(context, make<OffsetCls>(offset->dx + translation()->dx() * size->width, offset->dy + translation()->dy() * size->height));
     }
 }
 
 void RenderFractionalTranslationCls::applyPaintTransform(RenderBox child, Matrix4 transform) {
-    transform->translate(translation->dx * size->width, translation->dy * size->height);
+    transform->translate(translation()->dx() * size->width, translation()->dy() * size->height);
 }
 
 void RenderFractionalTranslationCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<Offset>make<DiagnosticsPropertyCls>("translation", translation));
-    properties->add(<bool>make<DiagnosticsPropertyCls>("transformHitTests", transformHitTests));
+    properties->add(<Offset>make<DiagnosticsPropertyCls>(__s("translation"), translation()));
+    properties->add(<bool>make<DiagnosticsPropertyCls>(__s("transformHitTests"), transformHitTests));
 }
 
 Size RenderPointerListenerCls::computeSizeForNoChild(BoxConstraints constraints) {
@@ -1989,47 +1989,47 @@ Size RenderPointerListenerCls::computeSizeForNoChild(BoxConstraints constraints)
 
 void RenderPointerListenerCls::handleEvent(HitTestEntry entry, PointerEvent event) {
     assert(debugHandleEvent(event, entry));
-    if (event is PointerDownEvent) {
+    if (is<PointerDownEvent>(event)) {
         return onPointerDown?->call(event);
     }
-    if (event is PointerMoveEvent) {
+    if (is<PointerMoveEvent>(event)) {
         return onPointerMove?->call(event);
     }
-    if (event is PointerUpEvent) {
+    if (is<PointerUpEvent>(event)) {
         return onPointerUp?->call(event);
     }
-    if (event is PointerHoverEvent) {
+    if (is<PointerHoverEvent>(event)) {
         return onPointerHover?->call(event);
     }
-    if (event is PointerCancelEvent) {
+    if (is<PointerCancelEvent>(event)) {
         return onPointerCancel?->call(event);
     }
-    if (event is PointerPanZoomStartEvent) {
+    if (is<PointerPanZoomStartEvent>(event)) {
         return onPointerPanZoomStart?->call(event);
     }
-    if (event is PointerPanZoomUpdateEvent) {
+    if (is<PointerPanZoomUpdateEvent>(event)) {
         return onPointerPanZoomUpdate?->call(event);
     }
-    if (event is PointerPanZoomEndEvent) {
+    if (is<PointerPanZoomEndEvent>(event)) {
         return onPointerPanZoomEnd?->call(event);
     }
-    if (event is PointerSignalEvent) {
+    if (is<PointerSignalEvent>(event)) {
         return onPointerSignal?->call(event);
     }
 }
 
 void RenderPointerListenerCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    Map<String, void  Function()> map1 = make<MapCls<>>();map1.set("down", onPointerDown);map1.set("move", onPointerMove);map1.set("up", onPointerUp);map1.set("hover", onPointerHover);map1.set("cancel", onPointerCancel);map1.set("panZoomStart", onPointerPanZoomStart);map1.set("panZoomUpdate", onPointerPanZoomUpdate);map1.set("panZoomEnd", onPointerPanZoomEnd);map1.set("signal", onPointerSignal);properties->add(<void  Function()>make<FlagsSummaryCls>("listeners", list1"<none>"));
+    Map<String, void  Function()> map1 = make<MapCls<>>();map1.set(__s("down"), onPointerDown);map1.set(__s("move"), onPointerMove);map1.set(__s("up"), onPointerUp);map1.set(__s("hover"), onPointerHover);map1.set(__s("cancel"), onPointerCancel);map1.set(__s("panZoomStart"), onPointerPanZoomStart);map1.set(__s("panZoomUpdate"), onPointerPanZoomUpdate);map1.set(__s("panZoomEnd"), onPointerPanZoomEnd);map1.set(__s("signal"), onPointerSignal);properties->add(<void  Function()>make<FlagsSummaryCls>(__s("listeners"), list1__s("<none>")));
 }
 
-RenderMouseRegionCls::RenderMouseRegionCls(Unknown child, MouseCursor cursor, HitTestBehavior hitTestBehavior, PointerEnterEventListener onEnter, PointerExitEventListener onExit, PointerHoverEventListener onHover, bool opaque, bool validForMouseTracker) {
+RenderMouseRegionCls::RenderMouseRegionCls(Unknown child, MouseCursor cursor, HitTestBehavior hitTestBehavior, PointerEnterEventListener onEnter, PointerExitEventListener onExit, PointerHoverEventListener onHover, bool opaque, bool validForMouseTracker) : RenderProxyBoxWithHitTestBehavior(hitTestBehavior() or HitTestBehaviorCls::opaque) {
     {
-        assert(opaque != nullptr);
-        assert(cursor != nullptr);
-        _cursor = cursor;
-        _validForMouseTracker = validForMouseTracker;
-        _opaque = opaque;
+        assert(opaque() != nullptr);
+        assert(cursor() != nullptr);
+        _cursor = cursor();
+        _validForMouseTracker = validForMouseTracker();
+        _opaque = opaque();
     }
 }
 
@@ -2039,7 +2039,7 @@ bool RenderMouseRegionCls::hitTest(Offset position, BoxHitTestResult result) {
 
 void RenderMouseRegionCls::handleEvent(HitTestEntry entry, PointerEvent event) {
     assert(debugHandleEvent(event, entry));
-    if (onHover != nullptr && event is PointerHoverEvent) {
+    if (onHover != nullptr && is<PointerHoverEvent>(event)) {
         return onHover!(event);
     }
 }
@@ -2060,7 +2060,7 @@ HitTestBehavior RenderMouseRegionCls::hitTestBehavior() {
 }
 
 void RenderMouseRegionCls::hitTestBehavior(HitTestBehavior value) {
-    HitTestBehavior newValue = value ?? HitTestBehaviorCls::opaque;
+    HitTestBehavior newValue = value or HitTestBehaviorCls::opaque;
     if (behavior != newValue) {
         behavior = newValue;
         markNeedsPaint();
@@ -2098,13 +2098,13 @@ Size RenderMouseRegionCls::computeSizeForNoChild(BoxConstraints constraints) {
 
 void RenderMouseRegionCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    Map<String, void  Function()> map1 = make<MapCls<>>();map1.set("enter", onEnter);map1.set("hover", onHover);map1.set("exit", onExit);properties->add(<void  Function()>make<FlagsSummaryCls>("listeners", list1"<none>"));
-    properties->add(<MouseCursor>make<DiagnosticsPropertyCls>("cursor", cursorMouseCursorCls::defer));
-    properties->add(<bool>make<DiagnosticsPropertyCls>("opaque", opaquetrue));
-    properties->add(make<FlagPropertyCls>("validForMouseTracker"validForMouseTracker, true, "invalid for MouseTracker"));
+    Map<String, void  Function()> map1 = make<MapCls<>>();map1.set(__s("enter"), onEnter);map1.set(__s("hover"), onHover);map1.set(__s("exit"), onExit);properties->add(<void  Function()>make<FlagsSummaryCls>(__s("listeners"), list1__s("<none>")));
+    properties->add(<MouseCursor>make<DiagnosticsPropertyCls>(__s("cursor"), cursor()MouseCursorCls::defer));
+    properties->add(<bool>make<DiagnosticsPropertyCls>(__s("opaque"), opaque()true));
+    properties->add(make<FlagPropertyCls>(__s("validForMouseTracker")validForMouseTracker(), true, __s("invalid for MouseTracker")));
 }
 
-RenderRepaintBoundaryCls::RenderRepaintBoundaryCls(RenderBox child) {
+RenderRepaintBoundaryCls::RenderRepaintBoundaryCls(RenderBox child) : RenderProxyBox(child) {
 }
 
 bool RenderRepaintBoundaryCls::isRepaintBoundary() {
@@ -2113,7 +2113,7 @@ bool RenderRepaintBoundaryCls::isRepaintBoundary() {
 
 Future<Image> RenderRepaintBoundaryCls::toImage(double pixelRatio) {
     assert(!debugNeedsPaint);
-    OffsetLayer offsetLayer = ((OffsetLayer)layer!);
+    OffsetLayer offsetLayer = as<OffsetLayer>(layer!);
     return offsetLayer->toImage(OffsetCls::zero & sizepixelRatio);
 }
 
@@ -2149,50 +2149,50 @@ void RenderRepaintBoundaryCls::debugFillProperties(DiagnosticPropertiesBuilder p
     bool inReleaseMode = true;
     assert([=] () {
         inReleaseMode = false;
-        if (debugSymmetricPaintCount + debugAsymmetricPaintCount == 0) {
-            properties->add(make<MessagePropertyCls>("usefulness ratio", "no metrics collected yet (never painted)"));
+        if (debugSymmetricPaintCount() + debugAsymmetricPaintCount() == 0) {
+            properties->add(make<MessagePropertyCls>(__s("usefulness ratio"), __s("no metrics collected yet (never painted)")));
         } else {
-            double fraction = debugAsymmetricPaintCount / (debugSymmetricPaintCount + debugAsymmetricPaintCount);
+            double fraction = debugAsymmetricPaintCount() / (debugSymmetricPaintCount() + debugAsymmetricPaintCount());
             String diagnosis;
-            if (debugSymmetricPaintCount +  < 5) {
-                diagnosis = "insufficient data to draw conclusion (less than five repaints)";
+            if (debugSymmetricPaintCount() +  < 5) {
+                diagnosis = __s("insufficient data to draw conclusion (less than five repaints)");
             } else             {
                 if (fraction > 0.9) {
-                diagnosis = "this is an outstandingly useful repaint boundary and should definitely be kept";
+                diagnosis = __s("this is an outstandingly useful repaint boundary and should definitely be kept");
             } else             {
                 if (fraction > 0.5) {
-                diagnosis = "this is a useful repaint boundary and should be kept";
+                diagnosis = __s("this is a useful repaint boundary and should be kept");
             } else             {
                 if (fraction > 0.30) {
-                diagnosis = "this repaint boundary is probably useful, but maybe it would be more useful in tandem with adding more repaint boundaries elsewhere";
+                diagnosis = __s("this repaint boundary is probably useful, but maybe it would be more useful in tandem with adding more repaint boundaries elsewhere");
             } else             {
                 if (fraction > 0.1) {
-                diagnosis = "this repaint boundary does sometimes show value, though currently not that often";
+                diagnosis = __s("this repaint boundary does sometimes show value, though currently not that often");
             } else             {
-                if (debugAsymmetricPaintCount == 0) {
-                diagnosis = "this repaint boundary is astoundingly ineffectual and should be removed";
+                if (debugAsymmetricPaintCount() == 0) {
+                diagnosis = __s("this repaint boundary is astoundingly ineffectual and should be removed");
             } else {
-                diagnosis = "this repaint boundary is not very effective and should probably be removed";
+                diagnosis = __s("this repaint boundary is not very effective and should probably be removed");
             }
 ;
             };
             };
             };
             };
-            }            properties->add(make<PercentPropertyCls>("metrics", fraction"useful", "$debugSymmetricPaintCount bad vs $debugAsymmetricPaintCount good"));
-            properties->add(make<MessagePropertyCls>("diagnosis", diagnosis));
+            }            properties->add(make<PercentPropertyCls>(__s("metrics"), fraction__s("useful"), __s("$debugSymmetricPaintCount bad vs $debugAsymmetricPaintCount good")));
+            properties->add(make<MessagePropertyCls>(__s("diagnosis"), diagnosis));
         }
         return true;
     }());
     if (inReleaseMode) {
-        properties->add(DiagnosticsNodeCls->message("(run in debug mode to collect repaint boundary statistics)"));
+        properties->add(DiagnosticsNodeCls->message(__s("(run in debug mode to collect repaint boundary statistics)")));
     }
 }
 
-RenderIgnorePointerCls::RenderIgnorePointerCls(RenderBox child, bool ignoring, bool ignoringSemantics) {
+RenderIgnorePointerCls::RenderIgnorePointerCls(RenderBox child, bool ignoring, bool ignoringSemantics) : RenderProxyBox(child) {
     {
-        _ignoring = ignoring;
-        _ignoringSemantics = ignoringSemantics;
+        _ignoring = ignoring();
+        _ignoringSemantics = ignoringSemantics();
     }
     {
         assert(_ignoring != nullptr);
@@ -2222,37 +2222,37 @@ void RenderIgnorePointerCls::ignoringSemantics(bool value) {
     if (value == _ignoringSemantics) {
         return;
     }
-    bool oldEffectiveValue = _effectiveIgnoringSemantics;
+    bool oldEffectiveValue = _effectiveIgnoringSemantics();
     _ignoringSemantics = value;
-    if (oldEffectiveValue != _effectiveIgnoringSemantics) {
+    if (oldEffectiveValue != _effectiveIgnoringSemantics()) {
         markNeedsSemanticsUpdate();
     }
 }
 
 bool RenderIgnorePointerCls::hitTest(Offset position, BoxHitTestResult result) {
-    return !ignoring && super->hitTest(resultposition);
+    return !ignoring() && super->hitTest(resultposition);
 }
 
 void RenderIgnorePointerCls::visitChildrenForSemantics(RenderObjectVisitor visitor) {
-    if (child != nullptr && !_effectiveIgnoringSemantics) {
+    if (child != nullptr && !_effectiveIgnoringSemantics()) {
         visitor(child!);
     }
 }
 
 void RenderIgnorePointerCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<bool>make<DiagnosticsPropertyCls>("ignoring", ignoring));
-    properties->add(<bool>make<DiagnosticsPropertyCls>("ignoringSemantics", _effectiveIgnoringSemanticsignoringSemantics == nullptr? "implicitly $_effectiveIgnoringSemantics" : nullptr));
+    properties->add(<bool>make<DiagnosticsPropertyCls>(__s("ignoring"), ignoring()));
+    properties->add(<bool>make<DiagnosticsPropertyCls>(__s("ignoringSemantics"), _effectiveIgnoringSemantics()ignoringSemantics() == nullptr? __s("implicitly $_effectiveIgnoringSemantics") : nullptr));
 }
 
 bool RenderIgnorePointerCls::_effectiveIgnoringSemantics() {
-    return ignoringSemantics ?? ignoring;
+    return ignoringSemantics() or ignoring();
 }
 
-RenderOffstageCls::RenderOffstageCls(RenderBox child, bool offstage) {
+RenderOffstageCls::RenderOffstageCls(RenderBox child, bool offstage) : RenderProxyBox(child) {
     {
-        assert(offstage != nullptr);
-        _offstage = offstage;
+        assert(offstage() != nullptr);
+        _offstage = offstage();
     }
 }
 
@@ -2270,58 +2270,58 @@ void RenderOffstageCls::offstage(bool value) {
 }
 
 double RenderOffstageCls::computeMinIntrinsicWidth(double height) {
-    if (offstage) {
+    if (offstage()) {
         return 0.0;
     }
     return super->computeMinIntrinsicWidth(height);
 }
 
 double RenderOffstageCls::computeMaxIntrinsicWidth(double height) {
-    if (offstage) {
+    if (offstage()) {
         return 0.0;
     }
     return super->computeMaxIntrinsicWidth(height);
 }
 
 double RenderOffstageCls::computeMinIntrinsicHeight(double width) {
-    if (offstage) {
+    if (offstage()) {
         return 0.0;
     }
     return super->computeMinIntrinsicHeight(width);
 }
 
 double RenderOffstageCls::computeMaxIntrinsicHeight(double width) {
-    if (offstage) {
+    if (offstage()) {
         return 0.0;
     }
     return super->computeMaxIntrinsicHeight(width);
 }
 
 double RenderOffstageCls::computeDistanceToActualBaseline(TextBaseline baseline) {
-    if (offstage) {
+    if (offstage()) {
         return nullptr;
     }
     return super->computeDistanceToActualBaseline(baseline);
 }
 
 bool RenderOffstageCls::sizedByParent() {
-    return offstage;
+    return offstage();
 }
 
 Size RenderOffstageCls::computeDryLayout(BoxConstraints constraints) {
-    if (offstage) {
+    if (offstage()) {
         return constraints->smallest;
     }
     return super->computeDryLayout(constraints);
 }
 
 void RenderOffstageCls::performResize() {
-    assert(offstage);
+    assert(offstage());
     super->performResize();
 }
 
 void RenderOffstageCls::performLayout() {
-    if (offstage) {
+    if (offstage()) {
         child?->layout(constraints);
     } else {
         super->performLayout();
@@ -2329,23 +2329,23 @@ void RenderOffstageCls::performLayout() {
 }
 
 bool RenderOffstageCls::hitTest(Offset position, BoxHitTestResult result) {
-    return !offstage && super->hitTest(resultposition);
+    return !offstage() && super->hitTest(resultposition);
 }
 
 bool RenderOffstageCls::paintsChild(RenderBox child) {
     assert(child->parent == this);
-    return !offstage;
+    return !offstage();
 }
 
 void RenderOffstageCls::paint(PaintingContext context, Offset offset) {
-    if (offstage) {
+    if (offstage()) {
         return;
     }
     super->paint(context, offset);
 }
 
 void RenderOffstageCls::visitChildrenForSemantics(RenderObjectVisitor visitor) {
-    if (offstage) {
+    if (offstage()) {
         return;
     }
     super->visitChildrenForSemantics(visitor);
@@ -2353,7 +2353,7 @@ void RenderOffstageCls::visitChildrenForSemantics(RenderObjectVisitor visitor) {
 
 void RenderOffstageCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<bool>make<DiagnosticsPropertyCls>("offstage", offstage));
+    properties->add(<bool>make<DiagnosticsPropertyCls>(__s("offstage"), offstage()));
 }
 
 List<DiagnosticsNode> RenderOffstageCls::debugDescribeChildren() {
@@ -2363,11 +2363,11 @@ List<DiagnosticsNode> RenderOffstageCls::debugDescribeChildren() {
     return makeList(ArrayItem);
 }
 
-RenderAbsorbPointerCls::RenderAbsorbPointerCls(bool absorbing, RenderBox child, bool ignoringSemantics) {
+RenderAbsorbPointerCls::RenderAbsorbPointerCls(bool absorbing, RenderBox child, bool ignoringSemantics) : RenderProxyBox(child) {
     {
-        assert(absorbing != nullptr);
-        _absorbing = absorbing;
-        _ignoringSemantics = ignoringSemantics;
+        assert(absorbing() != nullptr);
+        _absorbing = absorbing();
+        _ignoringSemantics = ignoringSemantics();
     }
 }
 
@@ -2380,7 +2380,7 @@ void RenderAbsorbPointerCls::absorbing(bool value) {
         return;
     }
     _absorbing = value;
-    if (ignoringSemantics == nullptr) {
+    if (ignoringSemantics() == nullptr) {
         markNeedsSemanticsUpdate();
     }
 }
@@ -2393,45 +2393,45 @@ void RenderAbsorbPointerCls::ignoringSemantics(bool value) {
     if (value == _ignoringSemantics) {
         return;
     }
-    bool oldEffectiveValue = _effectiveIgnoringSemantics;
+    bool oldEffectiveValue = _effectiveIgnoringSemantics();
     _ignoringSemantics = value;
-    if (oldEffectiveValue != _effectiveIgnoringSemantics) {
+    if (oldEffectiveValue != _effectiveIgnoringSemantics()) {
         markNeedsSemanticsUpdate();
     }
 }
 
 bool RenderAbsorbPointerCls::hitTest(Offset position, BoxHitTestResult result) {
-    return absorbing? size->contains(position) : super->hitTest(resultposition);
+    return absorbing()? size->contains(position) : super->hitTest(resultposition);
 }
 
 void RenderAbsorbPointerCls::visitChildrenForSemantics(RenderObjectVisitor visitor) {
-    if (child != nullptr && !_effectiveIgnoringSemantics) {
+    if (child != nullptr && !_effectiveIgnoringSemantics()) {
         visitor(child!);
     }
 }
 
 void RenderAbsorbPointerCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<bool>make<DiagnosticsPropertyCls>("absorbing", absorbing));
-    properties->add(<bool>make<DiagnosticsPropertyCls>("ignoringSemantics", _effectiveIgnoringSemanticsignoringSemantics == nullptr? "implicitly $_effectiveIgnoringSemantics" : nullptr));
+    properties->add(<bool>make<DiagnosticsPropertyCls>(__s("absorbing"), absorbing()));
+    properties->add(<bool>make<DiagnosticsPropertyCls>(__s("ignoringSemantics"), _effectiveIgnoringSemantics()ignoringSemantics() == nullptr? __s("implicitly $_effectiveIgnoringSemantics") : nullptr));
 }
 
 bool RenderAbsorbPointerCls::_effectiveIgnoringSemantics() {
-    return ignoringSemantics ?? absorbing;
+    return ignoringSemantics() or absorbing();
 }
 
 void RenderMetaDataCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<dynamic>make<DiagnosticsPropertyCls>("metaData", metaData));
+    properties->add(<dynamic>make<DiagnosticsPropertyCls>(__s("metaData"), metaData));
 }
 
 RenderSemanticsGestureHandlerCls::RenderSemanticsGestureHandlerCls(Unknown behavior, Unknown child, GestureDragUpdateCallback onHorizontalDragUpdate, GestureLongPressCallback onLongPress, GestureTapCallback onTap, GestureDragUpdateCallback onVerticalDragUpdate, double scrollFactor) {
     {
         assert(scrollFactor != nullptr);
-        _onTap = onTap;
-        _onLongPress = onLongPress;
-        _onHorizontalDragUpdate = onHorizontalDragUpdate;
-        _onVerticalDragUpdate = onVerticalDragUpdate;
+        _onTap = onTap();
+        _onLongPress = onLongPress();
+        _onHorizontalDragUpdate = onHorizontalDragUpdate();
+        _onVerticalDragUpdate = onVerticalDragUpdate();
     }
 }
 
@@ -2509,13 +2509,13 @@ void RenderSemanticsGestureHandlerCls::onVerticalDragUpdate(GestureDragUpdateCal
 
 void RenderSemanticsGestureHandlerCls::describeSemanticsConfiguration(SemanticsConfiguration config) {
     super->describeSemanticsConfiguration(config);
-    if (onTap != nullptr && _isValidAction(SemanticsActionCls::tap)) {
-        config->onTap = onTap;
+    if (onTap() != nullptr && _isValidAction(SemanticsActionCls::tap)) {
+        config->onTap = onTap();
     }
-    if (onLongPress != nullptr && _isValidAction(SemanticsActionCls::longPress)) {
-        config->onLongPress = onLongPress;
+    if (onLongPress() != nullptr && _isValidAction(SemanticsActionCls::longPress)) {
+        config->onLongPress = onLongPress();
     }
-    if (onHorizontalDragUpdate != nullptr) {
+    if (onHorizontalDragUpdate() != nullptr) {
         if (_isValidAction(SemanticsActionCls::scrollRight)) {
             config->onScrollRight = _performSemanticScrollRight;
         }
@@ -2523,7 +2523,7 @@ void RenderSemanticsGestureHandlerCls::describeSemanticsConfiguration(SemanticsC
             config->onScrollLeft = _performSemanticScrollLeft;
         }
     }
-    if (onVerticalDragUpdate != nullptr) {
+    if (onVerticalDragUpdate() != nullptr) {
         if (_isValidAction(SemanticsActionCls::scrollUp)) {
             config->onScrollUp = _performSemanticScrollUp;
         }
@@ -2535,53 +2535,53 @@ void RenderSemanticsGestureHandlerCls::describeSemanticsConfiguration(SemanticsC
 
 void RenderSemanticsGestureHandlerCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    List<String> list1 = make<ListCls<>>();if (onTap != nullptr) {    list1.add(ArrayItem);}if (onLongPress != nullptr) {    list1.add(ArrayItem);}if (onHorizontalDragUpdate != nullptr) {    list1.add(ArrayItem);}if (onVerticalDragUpdate != nullptr) {    list1.add(ArrayItem);}List<String> gestures = list1;
+    List<String> list1 = make<ListCls<>>();if (onTap() != nullptr) {    list1.add(ArrayItem);}if (onLongPress() != nullptr) {    list1.add(ArrayItem);}if (onHorizontalDragUpdate() != nullptr) {    list1.add(ArrayItem);}if (onVerticalDragUpdate() != nullptr) {    list1.add(ArrayItem);}List<String> gestures = list1;
     if (gestures->isEmpty) {
-        gestures->add("<none>");
+        gestures->add(__s("<none>"));
     }
-    properties->add(<String>make<IterablePropertyCls>("gestures", gestures));
+    properties->add(<String>make<IterablePropertyCls>(__s("gestures"), gestures));
 }
 
 bool RenderSemanticsGestureHandlerCls::_isValidAction(SemanticsAction action) {
-    return validActions == nullptr || validActions!->contains(action);
+    return validActions() == nullptr || validActions()!->contains(action);
 }
 
 void RenderSemanticsGestureHandlerCls::_performSemanticScrollLeft() {
-    if (onHorizontalDragUpdate != nullptr) {
+    if (onHorizontalDragUpdate() != nullptr) {
         double primaryDelta = size->width * -scrollFactor;
-        onHorizontalDragUpdate!(make<DragUpdateDetailsCls>(make<OffsetCls>(primaryDelta, 0.0), primaryDelta, localToGlobal(size->center(OffsetCls::zero))));
+        onHorizontalDragUpdate()!(make<DragUpdateDetailsCls>(make<OffsetCls>(primaryDelta, 0.0), primaryDelta, localToGlobal(size->center(OffsetCls::zero))));
     }
 }
 
 void RenderSemanticsGestureHandlerCls::_performSemanticScrollRight() {
-    if (onHorizontalDragUpdate != nullptr) {
+    if (onHorizontalDragUpdate() != nullptr) {
         double primaryDelta = size->width * scrollFactor;
-        onHorizontalDragUpdate!(make<DragUpdateDetailsCls>(make<OffsetCls>(primaryDelta, 0.0), primaryDelta, localToGlobal(size->center(OffsetCls::zero))));
+        onHorizontalDragUpdate()!(make<DragUpdateDetailsCls>(make<OffsetCls>(primaryDelta, 0.0), primaryDelta, localToGlobal(size->center(OffsetCls::zero))));
     }
 }
 
 void RenderSemanticsGestureHandlerCls::_performSemanticScrollUp() {
-    if (onVerticalDragUpdate != nullptr) {
+    if (onVerticalDragUpdate() != nullptr) {
         double primaryDelta = size->height * -scrollFactor;
-        onVerticalDragUpdate!(make<DragUpdateDetailsCls>(make<OffsetCls>(0.0, primaryDelta), primaryDelta, localToGlobal(size->center(OffsetCls::zero))));
+        onVerticalDragUpdate()!(make<DragUpdateDetailsCls>(make<OffsetCls>(0.0, primaryDelta), primaryDelta, localToGlobal(size->center(OffsetCls::zero))));
     }
 }
 
 void RenderSemanticsGestureHandlerCls::_performSemanticScrollDown() {
-    if (onVerticalDragUpdate != nullptr) {
+    if (onVerticalDragUpdate() != nullptr) {
         double primaryDelta = size->height * scrollFactor;
-        onVerticalDragUpdate!(make<DragUpdateDetailsCls>(make<OffsetCls>(0.0, primaryDelta), primaryDelta, localToGlobal(size->center(OffsetCls::zero))));
+        onVerticalDragUpdate()!(make<DragUpdateDetailsCls>(make<OffsetCls>(0.0, primaryDelta), primaryDelta, localToGlobal(size->center(OffsetCls::zero))));
     }
 }
 
-RenderSemanticsAnnotationsCls::RenderSemanticsAnnotationsCls(RenderBox child, bool container, bool excludeSemantics, bool explicitChildNodes, SemanticsProperties properties, TextDirection textDirection) {
+RenderSemanticsAnnotationsCls::RenderSemanticsAnnotationsCls(RenderBox child, bool container, bool excludeSemantics, bool explicitChildNodes, SemanticsProperties properties, TextDirection textDirection) : RenderProxyBox(child) {
     {
-        assert(container != nullptr);
-        _container = container;
-        _explicitChildNodes = explicitChildNodes;
-        _excludeSemantics = excludeSemantics;
-        _textDirection = textDirection;
-        _properties = properties;
+        assert(container() != nullptr);
+        _container = container();
+        _explicitChildNodes = explicitChildNodes();
+        _excludeSemantics = excludeSemantics();
+        _textDirection = textDirection();
+        _properties = properties();
     }
     {
         _updateAttributedFields(_properties);
@@ -2608,7 +2608,7 @@ bool RenderSemanticsAnnotationsCls::container() {
 
 void RenderSemanticsAnnotationsCls::container(bool value) {
     assert(value != nullptr);
-    if (container == value) {
+    if (container() == value) {
         return;
     }
     _container = value;
@@ -2646,7 +2646,7 @@ TextDirection RenderSemanticsAnnotationsCls::textDirection() {
 }
 
 void RenderSemanticsAnnotationsCls::textDirection(TextDirection value) {
-    if (textDirection == value) {
+    if (textDirection() == value) {
         return;
     }
     _textDirection = value;
@@ -2654,7 +2654,7 @@ void RenderSemanticsAnnotationsCls::textDirection(TextDirection value) {
 }
 
 void RenderSemanticsAnnotationsCls::visitChildrenForSemantics(RenderObjectVisitor visitor) {
-    if (excludeSemantics) {
+    if (excludeSemantics()) {
         return;
     }
     super->visitChildrenForSemantics(visitor);
@@ -2662,10 +2662,10 @@ void RenderSemanticsAnnotationsCls::visitChildrenForSemantics(RenderObjectVisito
 
 void RenderSemanticsAnnotationsCls::describeSemanticsConfiguration(SemanticsConfiguration config) {
     super->describeSemanticsConfiguration(config);
-    config->isSemanticBoundary = container;
-    config->explicitChildNodes = explicitChildNodes;
-    assert(((_properties->scopesRoute ?? false) && explicitChildNodes) || !(_properties->scopesRoute ?? false), "explicitChildNodes must be set to true if scopes route is true");
-    assert(!((_properties->toggled ?? false) && (_properties->checked ?? false)), "A semantics node cannot be toggled and checked at the same time");
+    config->isSemanticBoundary = container();
+    config->explicitChildNodes = explicitChildNodes();
+    assert(((_properties->scopesRoute or false) && explicitChildNodes()) || !(_properties->scopesRoute or false), __s("explicitChildNodes must be set to true if scopes route is true"));
+    assert(!((_properties->toggled or false) && (_properties->checked or false)), __s("A semantics node cannot be toggled and checked at the same time"));
     if (_properties->enabled != nullptr) {
         config->isEnabled = _properties->enabled;
     }
@@ -2738,7 +2738,7 @@ void RenderSemanticsAnnotationsCls::describeSemanticsConfiguration(SemanticsConf
     if (_properties->tooltip != nullptr) {
         config->tooltip = _properties->tooltip!;
     }
-    if (_properties->hintOverrides != nullptr && _properties->hintOverrides!->isNotEmpty) {
+    if (_properties->hintOverrides != nullptr && _properties->hintOverrides!->isNotEmpty()) {
         config->hintOverrides = _properties->hintOverrides;
     }
     if (_properties->scopesRoute != nullptr) {
@@ -2756,8 +2756,8 @@ void RenderSemanticsAnnotationsCls::describeSemanticsConfiguration(SemanticsConf
     if (_properties->currentValueLength != nullptr) {
         config->currentValueLength = _properties->currentValueLength;
     }
-    if (textDirection != nullptr) {
-        config->textDirection = textDirection;
+    if (textDirection() != nullptr) {
+        config->textDirection = textDirection();
     }
     if (_properties->sortKey != nullptr) {
         config->sortKey = _properties->sortKey;
@@ -2839,23 +2839,23 @@ void RenderSemanticsAnnotationsCls::_updateAttributedFields(SemanticsProperties 
 }
 
 AttributedString RenderSemanticsAnnotationsCls::_effectiveAttributedLabel(SemanticsProperties value) {
-    return value->attributedLabel ?? (value->label == nullptr? nullptr : make<AttributedStringCls>(value->label!));
+    return value->attributedLabel or (value->label == nullptr? nullptr : make<AttributedStringCls>(value->label!));
 }
 
 AttributedString RenderSemanticsAnnotationsCls::_effectiveAttributedValue(SemanticsProperties value) {
-    return value->attributedValue ?? (value->value == nullptr? nullptr : make<AttributedStringCls>(value->value!));
+    return value->attributedValue or (value->value == nullptr? nullptr : make<AttributedStringCls>(value->value!));
 }
 
 AttributedString RenderSemanticsAnnotationsCls::_effectiveAttributedIncreasedValue(SemanticsProperties value) {
-    return value->attributedIncreasedValue ?? (value->increasedValue == nullptr? nullptr : make<AttributedStringCls>(value->increasedValue!));
+    return value->attributedIncreasedValue or (value->increasedValue == nullptr? nullptr : make<AttributedStringCls>(value->increasedValue!));
 }
 
 AttributedString RenderSemanticsAnnotationsCls::_effectiveAttributedDecreasedValue(SemanticsProperties value) {
-    return properties->attributedDecreasedValue ?? (value->decreasedValue == nullptr? nullptr : make<AttributedStringCls>(value->decreasedValue!));
+    return properties()->attributedDecreasedValue or (value->decreasedValue == nullptr? nullptr : make<AttributedStringCls>(value->decreasedValue!));
 }
 
 AttributedString RenderSemanticsAnnotationsCls::_effectiveAttributedHint(SemanticsProperties value) {
-    return value->attributedHint ?? (value->hint == nullptr? nullptr : make<AttributedStringCls>(value->hint!));
+    return value->attributedHint or (value->hint == nullptr? nullptr : make<AttributedStringCls>(value->hint!));
 }
 
 void RenderSemanticsAnnotationsCls::_performTap() {
@@ -2938,9 +2938,9 @@ void RenderSemanticsAnnotationsCls::_performDidLoseAccessibilityFocus() {
     _properties->onDidLoseAccessibilityFocus?->call();
 }
 
-RenderBlockSemanticsCls::RenderBlockSemanticsCls(bool blocking, RenderBox child) {
+RenderBlockSemanticsCls::RenderBlockSemanticsCls(bool blocking, RenderBox child) : RenderProxyBox(child) {
     {
-        _blocking = blocking;
+        _blocking = blocking();
     }
 }
 
@@ -2959,15 +2959,15 @@ void RenderBlockSemanticsCls::blocking(bool value) {
 
 void RenderBlockSemanticsCls::describeSemanticsConfiguration(SemanticsConfiguration config) {
     super->describeSemanticsConfiguration(config);
-    config->isBlockingSemanticsOfPreviouslyPaintedNodes = blocking;
+    config->isBlockingSemanticsOfPreviouslyPaintedNodes = blocking();
 }
 
 void RenderBlockSemanticsCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<bool>make<DiagnosticsPropertyCls>("blocking", blocking));
+    properties->add(<bool>make<DiagnosticsPropertyCls>(__s("blocking"), blocking()));
 }
 
-RenderMergeSemanticsCls::RenderMergeSemanticsCls(RenderBox child) {
+RenderMergeSemanticsCls::RenderMergeSemanticsCls(RenderBox child) : RenderProxyBox(child) {
 }
 
 void RenderMergeSemanticsCls::describeSemanticsConfiguration(SemanticsConfiguration config) {
@@ -2975,9 +2975,9 @@ void RenderMergeSemanticsCls::describeSemanticsConfiguration(SemanticsConfigurat
     auto _c1 = config;_c1.isSemanticBoundary = auto _c2 = true;_c2.isMergingSemanticsOfDescendants = true;_c2;_c1;
 }
 
-RenderExcludeSemanticsCls::RenderExcludeSemanticsCls(RenderBox child, bool excluding) {
+RenderExcludeSemanticsCls::RenderExcludeSemanticsCls(RenderBox child, bool excluding) : RenderProxyBox(child) {
     {
-        _excluding = excluding;
+        _excluding = excluding();
     }
     {
         assert(_excluding != nullptr);
@@ -2998,7 +2998,7 @@ void RenderExcludeSemanticsCls::excluding(bool value) {
 }
 
 void RenderExcludeSemanticsCls::visitChildrenForSemantics(RenderObjectVisitor visitor) {
-    if (excluding) {
+    if (excluding()) {
         return;
     }
     super->visitChildrenForSemantics(visitor);
@@ -3006,13 +3006,13 @@ void RenderExcludeSemanticsCls::visitChildrenForSemantics(RenderObjectVisitor vi
 
 void RenderExcludeSemanticsCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<bool>make<DiagnosticsPropertyCls>("excluding", excluding));
+    properties->add(<bool>make<DiagnosticsPropertyCls>(__s("excluding"), excluding()));
 }
 
-RenderIndexedSemanticsCls::RenderIndexedSemanticsCls(RenderBox child, int index) {
+RenderIndexedSemanticsCls::RenderIndexedSemanticsCls(RenderBox child, int index) : RenderProxyBox(child) {
     {
-        assert(index != nullptr);
-        _index = index;
+        assert(index() != nullptr);
+        _index = index();
     }
 }
 
@@ -3021,7 +3021,7 @@ int RenderIndexedSemanticsCls::index() {
 }
 
 void RenderIndexedSemanticsCls::index(int value) {
-    if (value == index) {
+    if (value == index()) {
         return;
     }
     _index = value;
@@ -3030,18 +3030,18 @@ void RenderIndexedSemanticsCls::index(int value) {
 
 void RenderIndexedSemanticsCls::describeSemanticsConfiguration(SemanticsConfiguration config) {
     super->describeSemanticsConfiguration(config);
-    config->indexInParent = index;
+    config->indexInParent = index();
 }
 
 void RenderIndexedSemanticsCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<int>make<DiagnosticsPropertyCls>("index", index));
+    properties->add(<int>make<DiagnosticsPropertyCls>(__s("index"), index()));
 }
 
-RenderLeaderLayerCls::RenderLeaderLayerCls(RenderBox child, LayerLink link) {
+RenderLeaderLayerCls::RenderLeaderLayerCls(RenderBox child, LayerLink link) : RenderProxyBox(child) {
     {
-        assert(link != nullptr);
-        _link = link;
+        assert(link() != nullptr);
+        _link = link();
     }
 }
 
@@ -3069,15 +3069,15 @@ bool RenderLeaderLayerCls::alwaysNeedsCompositing() {
 void RenderLeaderLayerCls::performLayout() {
     super->performLayout();
     _previousLayoutSize = size;
-    link->leaderSize = size;
+    link()->leaderSize = size;
 }
 
 void RenderLeaderLayerCls::paint(PaintingContext context, Offset offset) {
     if (layer == nullptr) {
-        layer = make<LeaderLayerCls>(link, offset);
+        layer = make<LeaderLayerCls>(link(), offset);
     } else {
-        LeaderLayer leaderLayer = ((LeaderLayer)layer!);
-            auto _c1 = leaderLayer;    _c1.link = auto _c2 = link;    _c2.offset = offset;    _c2;_c1;
+        LeaderLayer leaderLayer = as<LeaderLayer>(layer!);
+            auto _c1 = leaderLayer;    _c1.link() = auto _c2 = link();    _c2.offset = offset;    _c2;_c1;
     }
     context->pushLayer(layer!, super->paint, OffsetCls::zero);
     assert([=] () {
@@ -3088,19 +3088,19 @@ void RenderLeaderLayerCls::paint(PaintingContext context, Offset offset) {
 
 void RenderLeaderLayerCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<LayerLink>make<DiagnosticsPropertyCls>("link", link));
+    properties->add(<LayerLink>make<DiagnosticsPropertyCls>(__s("link"), link()));
 }
 
-RenderFollowerLayerCls::RenderFollowerLayerCls(RenderBox child, Alignment followerAnchor, Alignment leaderAnchor, LayerLink link, Offset offset, bool showWhenUnlinked) {
+RenderFollowerLayerCls::RenderFollowerLayerCls(RenderBox child, Alignment followerAnchor, Alignment leaderAnchor, LayerLink link, Offset offset, bool showWhenUnlinked) : RenderProxyBox(child) {
     {
-        assert(link != nullptr);
-        assert(showWhenUnlinked != nullptr);
-        assert(offset != nullptr);
-        _link = link;
-        _showWhenUnlinked = showWhenUnlinked;
-        _offset = offset;
-        _leaderAnchor = leaderAnchor;
-        _followerAnchor = followerAnchor;
+        assert(link() != nullptr);
+        assert(showWhenUnlinked() != nullptr);
+        assert(offset() != nullptr);
+        _link = link();
+        _showWhenUnlinked = showWhenUnlinked();
+        _offset = offset();
+        _leaderAnchor = leaderAnchor();
+        _followerAnchor = followerAnchor();
     }
 }
 
@@ -3170,7 +3170,7 @@ void RenderFollowerLayerCls::followerAnchor(Alignment value) {
 }
 
 void RenderFollowerLayerCls::detach() {
-    layer = nullptr;
+    layer() = nullptr;
     super->detach();
 }
 
@@ -3179,15 +3179,15 @@ bool RenderFollowerLayerCls::alwaysNeedsCompositing() {
 }
 
 FollowerLayer RenderFollowerLayerCls::layer() {
-    return ((FollowerLayer)super->layer);
+    return as<FollowerLayer>(super->layer);
 }
 
 Matrix4 RenderFollowerLayerCls::getCurrentTransform() {
-    return layer?->getLastTransform() ?? Matrix4Cls->identity();
+    return layer()?->getLastTransform() or Matrix4Cls->identity();
 }
 
 bool RenderFollowerLayerCls::hitTest(Offset position, BoxHitTestResult result) {
-    if (link->leader == nullptr && !showWhenUnlinked) {
+    if (link()->leader() == nullptr && !showWhenUnlinked()) {
         return false;
     }
     return hitTestChildren(resultposition);
@@ -3200,18 +3200,18 @@ bool RenderFollowerLayerCls::hitTestChildren(Offset position, BoxHitTestResult r
 }
 
 void RenderFollowerLayerCls::paint(PaintingContext context, Offset offset) {
-    Size leaderSize = link->leaderSize;
-    assert(link->leaderSize != nullptr || (link->leader == nullptr || leaderAnchor == AlignmentCls::topLeft), "$link: layer is linked to ${link.leader} but a valid leaderSize is not set. leaderSize is required when leaderAnchor is not Alignment.topLeft (current value is $leaderAnchor).");
-    Offset effectiveLinkedOffset = leaderSize == nullptr? this->offset : leaderAnchor->alongSize(leaderSize) - followerAnchor->alongSize(size) + this->offset;
-    assert(showWhenUnlinked != nullptr);
-    if (layer == nullptr) {
-        layer = make<FollowerLayerCls>(link, showWhenUnlinked, effectiveLinkedOffset, offset);
+    Size leaderSize = link()->leaderSize;
+    assert(link()->leaderSize != nullptr || (link()->leader() == nullptr || leaderAnchor() == AlignmentCls::topLeft), __s("$link: layer is linked to ${link.leader} but a valid leaderSize is not set. leaderSize is required when leaderAnchor is not Alignment.topLeft (current value is $leaderAnchor)."));
+    Offset effectiveLinkedOffset = leaderSize == nullptr? this->offset : leaderAnchor()->alongSize(leaderSize) - followerAnchor()->alongSize(size) + this->offset;
+    assert(showWhenUnlinked() != nullptr);
+    if (layer() == nullptr) {
+        layer() = make<FollowerLayerCls>(link(), showWhenUnlinked(), effectiveLinkedOffset, offset());
     } else {
-            auto _c1 = layer;    _c1.link = auto _c2 = link;    _c2.showWhenUnlinked = auto _c3 = showWhenUnlinked;    _c3.linkedOffset = auto _c4 = effectiveLinkedOffset;    _c4.unlinkedOffset = offset;    _c4;    _c3;    _c2;_c1;
+            auto _c1 = layer();    _c1.link() = auto _c2 = link();    _c2.showWhenUnlinked() = auto _c3 = showWhenUnlinked();    _c3.linkedOffset = auto _c4 = effectiveLinkedOffset;    _c4.unlinkedOffset = offset();    _c4;    _c3;    _c2;_c1;
     }
-    context->pushLayer(layer!, super->paint, OffsetCls::zeroRectCls->fromLTRB(double->negativeInfinity, double->negativeInfinity, double->infinity, double->infinity));
+    context->pushLayer(layer()!, super->paint, OffsetCls::zeroRectCls->fromLTRB(double->negativeInfinity, double->negativeInfinity, double->infinity, double->infinity));
     assert([=] () {
-        layer!->debugCreator = debugCreator;
+        layer()!->debugCreator = debugCreator;
         return true;
     }());
 }
@@ -3222,26 +3222,26 @@ void RenderFollowerLayerCls::applyPaintTransform(RenderBox child, Matrix4 transf
 
 void RenderFollowerLayerCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<LayerLink>make<DiagnosticsPropertyCls>("link", link));
-    properties->add(<bool>make<DiagnosticsPropertyCls>("showWhenUnlinked", showWhenUnlinked));
-    properties->add(<Offset>make<DiagnosticsPropertyCls>("offset", offset));
-    properties->add(make<TransformPropertyCls>("current transform matrix", getCurrentTransform()));
+    properties->add(<LayerLink>make<DiagnosticsPropertyCls>(__s("link"), link()));
+    properties->add(<bool>make<DiagnosticsPropertyCls>(__s("showWhenUnlinked"), showWhenUnlinked()));
+    properties->add(<Offset>make<DiagnosticsPropertyCls>(__s("offset"), offset()));
+    properties->add(make<TransformPropertyCls>(__s("current transform matrix"), getCurrentTransform()));
 }
 
-template<typename T : Object> RenderAnnotatedRegionCls<T>::RenderAnnotatedRegionCls(RenderBox child, bool sized, T value) {
+template<typename T> RenderAnnotatedRegionCls<T>::RenderAnnotatedRegionCls(RenderBox child, bool sized, T value) : RenderProxyBox(child) {
     {
-        assert(value != nullptr);
-        assert(sized != nullptr);
-        _value = value;
-        _sized = sized;
+        assert(value() != nullptr);
+        assert(sized() != nullptr);
+        _value = value();
+        _sized = sized();
     }
 }
 
-template<typename T : Object> T RenderAnnotatedRegionCls<T>::value() {
+template<typename T> T RenderAnnotatedRegionCls<T>::value() {
     return _value;
 }
 
-template<typename T : Object> void RenderAnnotatedRegionCls<T>::value(T newValue) {
+template<typename T> void RenderAnnotatedRegionCls<T>::value(T newValue) {
     if (_value == newValue) {
         return;
     }
@@ -3249,19 +3249,19 @@ template<typename T : Object> void RenderAnnotatedRegionCls<T>::value(T newValue
     markNeedsPaint();
 }
 
-template<typename T : Object> bool RenderAnnotatedRegionCls<T>::sized() {
+template<typename T> bool RenderAnnotatedRegionCls<T>::sized() {
     return _sized;
 }
 
-template<typename T : Object> void RenderAnnotatedRegionCls<T>::sized(bool value) {
-    if (_sized == value) {
+template<typename T> void RenderAnnotatedRegionCls<T>::sized(bool value) {
+    if (_sized == value()) {
         return;
     }
-    _sized = value;
+    _sized = value();
     markNeedsPaint();
 }
 
-template<typename T : Object> void RenderAnnotatedRegionCls<T>::paint(PaintingContext context, Offset offset) {
-    AnnotatedRegionLayer<T> layer = <T>make<AnnotatedRegionLayerCls>(valuesized? size : nullptr, sized? offset : nullptr);
+template<typename T> void RenderAnnotatedRegionCls<T>::paint(PaintingContext context, Offset offset) {
+    AnnotatedRegionLayer<T> layer = <T>make<AnnotatedRegionLayerCls>(value()sized()? size : nullptr, sized()? offset : nullptr);
     context->pushLayer(layer, super->paint, offset);
 }

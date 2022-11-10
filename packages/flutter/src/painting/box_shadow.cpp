@@ -43,10 +43,10 @@ bool BoxShadowCls::==(Object other) {
     if (identical(this, other)) {
         return true;
     }
-    if (other->runtimeType != runtimeType) {
+    if (other->runtimeType() != runtimeType) {
         return false;
     }
-    return other is BoxShadow && other->color == color && other->offset == offset && other->blurRadius == blurRadius && other->spreadRadius == spreadRadius && other->blurStyle == blurStyle;
+    return is<BoxShadow>(other) && other->color == color && other->offset == offset && other->blurRadius == blurRadius && other->spreadRadius == spreadRadius && other->blurStyle == blurStyle;
 }
 
 int BoxShadowCls::hashCode() {
@@ -54,5 +54,5 @@ int BoxShadowCls::hashCode() {
 }
 
 String BoxShadowCls::toString() {
-    return "BoxShadow($color, $offset, ${debugFormatDouble(blurRadius)}, ${debugFormatDouble(spreadRadius)}, $blurStyle)";
+    return __s("BoxShadow($color, $offset, ${debugFormatDouble(blurRadius)}, ${debugFormatDouble(spreadRadius)}, $blurStyle)");
 }

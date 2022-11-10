@@ -6,15 +6,15 @@ Latin1CodecCls::Latin1CodecCls(bool allowInvalid) {
 }
 
 String Latin1CodecCls::name() {
-    return "iso-8859-1";
+    return __s("iso-8859-1");
 }
 
 Uint8List Latin1CodecCls::encode(String source) {
-    return encoder->convert(source);
+    return encoder()->convert(source);
 }
 
 String Latin1CodecCls::decode(bool allowInvalid, List<int> bytes) {
-    if (allowInvalid ?? _allowInvalid) {
+    if (allowInvalid or _allowInvalid) {
         return make<Latin1DecoderCls>(true)->convert(bytes);
     } else {
         return make<Latin1DecoderCls>(false)->convert(bytes);
@@ -29,15 +29,15 @@ Latin1Decoder Latin1CodecCls::decoder() {
     return _allowInvalid? make<Latin1DecoderCls>(true) : make<Latin1DecoderCls>(false);
 }
 
-Latin1EncoderCls::Latin1EncoderCls() {
+Latin1EncoderCls::Latin1EncoderCls() : _UnicodeSubsetEncoder(_latin1Mask) {
 }
 
-Latin1DecoderCls::Latin1DecoderCls(bool allowInvalid) {
+Latin1DecoderCls::Latin1DecoderCls(bool allowInvalid) : _UnicodeSubsetDecoder(allowInvalid, _latin1Mask) {
 }
 
 ByteConversionSink Latin1DecoderCls::startChunkedConversion(Sink<String> sink) {
     StringConversionSink stringSink;
-    if (sink is StringConversionSink) {
+    if (is<StringConversionSink>(sink)) {
         stringSink = sink;
     } else {
         stringSink = StringConversionSinkCls->from(sink);
@@ -62,7 +62,7 @@ void _Latin1DecoderSinkCls::addSlice(int end, bool isLast, List<int> source, int
     if (start == end)     {
         return;
     }
-    if (source is! Uint8List) {
+    if (!is<Uint8List>(source)) {
         _checkValidLatin1(source, start, end);
     }
     _addSliceToSink(source, start, end, isLast);
@@ -116,5 +116,5 @@ void _Latin1AllowInvalidDecoderSinkCls::addSlice(int end, bool isLast, List<int>
     }
 }
 
-_Latin1AllowInvalidDecoderSinkCls::_Latin1AllowInvalidDecoderSinkCls(StringConversionSink sink) {
+_Latin1AllowInvalidDecoderSinkCls::_Latin1AllowInvalidDecoderSinkCls(StringConversionSink sink) : _Latin1DecoderSink(sink) {
 }

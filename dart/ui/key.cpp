@@ -1,10 +1,10 @@
 #include "key.hpp"
 String KeyDataCls::toString() {
-    return "KeyData(key ${_typeToString(type)}, physical: 0x${physical.toRadixString(16)}, logical: ${_logicalToString()}, character: ${_escapeCharacter()}${_quotedCharCode()}${synthesized ? ', synthesized' : ''})";
+    return __s("KeyData(key ${_typeToString(type)}, physical: 0x${physical.toRadixString(16)}, logical: ${_logicalToString()}, character: ${_escapeCharacter()}${_quotedCharCode()}${synthesized ? ', synthesized' : ''})");
 }
 
 String KeyDataCls::toStringFull() {
-    return "$runtimeType(type: ${_typeToString(type)}, timeStamp: $timeStamp, physical: 0x${physical.toRadixString(16)}, logical: 0x${logical.toRadixString(16)}, character: ${_escapeCharacter()}, synthesized: $synthesized)";
+    return __s("$runtimeType(type: ${_typeToString(type)}, timeStamp: $timeStamp, physical: 0x${physical.toRadixString(16)}, logical: 0x${logical.toRadixString(16)}, character: ${_escapeCharacter()}, synthesized: $synthesized)");
 }
 
 int KeyDataCls::_nonValueBits(int n) {
@@ -23,30 +23,30 @@ int KeyDataCls::_nonValueBits(int n) {
 }
 
 String KeyDataCls::_logicalToString() {
-    String result = "0x${logical.toRadixString(16)}";
+    String result = __s("0x${logical.toRadixString(16)}");
     int planeNum = _nonValueBits(logical) & 0x0FF;
     String planeDescription = ([=] () {
     ;
-    return "";
+    return __s("");
 })();
-    return "$result$planeDescription";
+    return __s("$result$planeDescription");
 }
 
 String KeyDataCls::_escapeCharacter() {
     if (character == nullptr) {
-        return "<none>";
+        return __s("<none>");
     }
     ;
 }
 
 String KeyDataCls::_quotedCharCode() {
     if (character == nullptr)     {
-        return "";
+        return __s("");
     }
-    Iterable<String> hexChars = character!->codeUnits->map([=] (int code) {
-    code->toRadixString(16)->padLeft(2, "0");
+    Iterable<String> hexChars = character!->codeUnits()->map([=] (int code) {
+    code->toRadixString(16)->padLeft(2, __s("0"));
 });
-    return " (0x${hexChars.join(' ')})";
+    return __s(" (0x${hexChars.join(' ')})");
 }
 
 String KeyDataCls::_typeToString(KeyEventType type) {

@@ -1,6 +1,6 @@
 #include "print.hpp"
 void print(Object object) {
-    String line = "$object";
+    String line = __s("$object");
     auto toZone = printToZone;
     if (toZone == nullptr) {
         printToConsole(line);

@@ -12,7 +12,7 @@ Widget SliverFillViewportCls::build(BuildContext context) {
 }
 
 RenderSliverFillViewport _SliverFillViewportRenderObjectWidgetCls::createRenderObject(BuildContext context) {
-    SliverMultiBoxAdaptorElement element = ((SliverMultiBoxAdaptorElement)context);
+    SliverMultiBoxAdaptorElement element = as<SliverMultiBoxAdaptorElement>(context);
     return make<RenderSliverFillViewportCls>(element, viewportFraction);
 }
 
@@ -35,7 +35,7 @@ void _SliverFractionalPaddingCls::updateRenderObject(BuildContext context, _Rend
     renderObject->viewportFraction = viewportFraction;
 }
 
-_SliverFractionalPaddingCls::_SliverFractionalPaddingCls(Widget sliver, double viewportFraction) {
+_SliverFractionalPaddingCls::_SliverFractionalPaddingCls(Widget sliver, double viewportFraction) : SingleChildRenderObjectWidget(sliver) {
     {
         assert(viewportFraction != nullptr);
         assert(viewportFraction >= 0);
@@ -67,10 +67,10 @@ void _RenderSliverFractionalPaddingCls::performLayout() {
 
 _RenderSliverFractionalPaddingCls::_RenderSliverFractionalPaddingCls(double viewportFraction) {
     {
-        assert(viewportFraction != nullptr);
-        assert(viewportFraction <= 0.5);
-        assert(viewportFraction >= 0);
-        _viewportFraction = viewportFraction;
+        assert(viewportFraction() != nullptr);
+        assert(viewportFraction() <= 0.5);
+        assert(viewportFraction() >= 0);
+        _viewportFraction = viewportFraction();
     }
 }
 
@@ -84,7 +84,7 @@ void _RenderSliverFractionalPaddingCls::_resolve() {
         return;
     }
     assert(constraints->axis != nullptr);
-    double paddingValue = constraints->viewportMainAxisExtent * viewportFraction;
+    double paddingValue = constraints->viewportMainAxisExtent * viewportFraction();
     _lastResolvedConstraints = constraints;
     ;
     return;
@@ -109,12 +109,12 @@ Widget SliverFillRemainingCls::build(BuildContext context) {
 
 void SliverFillRemainingCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<Widget>make<DiagnosticsPropertyCls>("child", child));
+    properties->add(<Widget>make<DiagnosticsPropertyCls>(__s("child"), child));
     List<String> list1 = make<ListCls<>>();if (hasScrollBody) {    list1.add(ArrayItem);}if (fillOverscroll) {    list1.add(ArrayItem);}List<String> flags = list1;
     if (flags->isEmpty) {
-        flags->add("nonscrollable");
+        flags->add(__s("nonscrollable"));
     }
-    properties->add(<String>make<IterablePropertyCls>("mode", flags));
+    properties->add(<String>make<IterablePropertyCls>(__s("mode"), flags));
 }
 
 RenderSliverFillRemainingWithScrollable _SliverFillRemainingWithScrollableCls::createRenderObject(BuildContext context) {

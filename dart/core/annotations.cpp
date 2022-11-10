@@ -4,7 +4,7 @@ String DeprecatedCls::expires() {
 }
 
 String DeprecatedCls::toString() {
-    return "Deprecated feature: $message";
+    return __s("Deprecated feature: $message");
 }
 
 String ProvisionalCls::message() {

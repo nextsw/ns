@@ -24,11 +24,11 @@ MediaQueryDataCls::MediaQueryDataCls(bool accessibleNavigation, bool alwaysUse24
 void MediaQueryDataCls::fromWindow(FlutterView window)
 
 Orientation MediaQueryDataCls::orientation() {
-    return size->width > size->height? OrientationCls::landscape : OrientationCls::portrait;
+    return size->width() > size->height()? OrientationCls::landscape : OrientationCls::portrait;
 }
 
 MediaQueryData MediaQueryDataCls::copyWith(bool accessibleNavigation, bool alwaysUse24HourFormat, bool boldText, double devicePixelRatio, bool disableAnimations, List<DisplayFeature> displayFeatures, DeviceGestureSettings gestureSettings, bool highContrast, bool invertColors, NavigationMode navigationMode, EdgeInsets padding, Brightness platformBrightness, Size size, EdgeInsets systemGestureInsets, double textScaleFactor, EdgeInsets viewInsets, EdgeInsets viewPadding) {
-    return make<MediaQueryDataCls>(size ?? this->size, devicePixelRatio ?? this->devicePixelRatio, textScaleFactor ?? this->textScaleFactor, platformBrightness ?? this->platformBrightness, padding ?? this->padding, viewPadding ?? this->viewPadding, viewInsets ?? this->viewInsets, systemGestureInsets ?? this->systemGestureInsets, alwaysUse24HourFormat ?? this->alwaysUse24HourFormat, invertColors ?? this->invertColors, highContrast ?? this->highContrast, disableAnimations ?? this->disableAnimations, accessibleNavigation ?? this->accessibleNavigation, boldText ?? this->boldText, navigationMode ?? this->navigationMode, gestureSettings ?? this->gestureSettings, displayFeatures ?? this->displayFeatures);
+    return make<MediaQueryDataCls>(size or this->size, devicePixelRatio or this->devicePixelRatio, textScaleFactor or this->textScaleFactor, platformBrightness or this->platformBrightness, padding or this->padding, viewPadding or this->viewPadding, viewInsets or this->viewInsets, systemGestureInsets or this->systemGestureInsets, alwaysUse24HourFormat or this->alwaysUse24HourFormat, invertColors or this->invertColors, highContrast or this->highContrast, disableAnimations or this->disableAnimations, accessibleNavigation or this->accessibleNavigation, boldText or this->boldText, navigationMode or this->navigationMode, gestureSettings or this->gestureSettings, displayFeatures or this->displayFeatures);
 }
 
 MediaQueryData MediaQueryDataCls::removePadding(bool removeBottom, bool removeLeft, bool removeRight, bool removeTop) {
@@ -53,22 +53,22 @@ MediaQueryData MediaQueryDataCls::removeViewPadding(bool removeBottom, bool remo
 }
 
 MediaQueryData MediaQueryDataCls::removeDisplayFeatures(Rect subScreen) {
-    assert(subScreen->left >= 0.0 && subScreen->top >= 0.0 && subScreen->right <= size->width && subScreen->bottom <= size->height, "'subScreen' argument cannot be outside the bounds of the screen");
+    assert(subScreen->left >= 0.0 && subScreen->top >= 0.0 && subScreen->right <= size->width() && subScreen->bottom <= size->height(), __s("'subScreen' argument cannot be outside the bounds of the screen"));
     if (subScreen->size == size && subScreen->topLeft == OffsetCls::zero) {
         return this;
     }
-    double rightInset = size->width - subScreen->right;
-    double bottomInset = size->height - subScreen->bottom;
+    double rightInset = size->width() - subScreen->right;
+    double bottomInset = size->height() - subScreen->bottom;
     return copyWith(EdgeInsetsCls->only(math->max(0.0, padding->left - subScreen->left), math->max(0.0, padding->top - subScreen->top), math->max(0.0, padding->right - rightInset), math->max(0.0, padding->bottom - bottomInset)), EdgeInsetsCls->only(math->max(0.0, viewPadding->left - subScreen->left), math->max(0.0, viewPadding->top - subScreen->top), math->max(0.0, viewPadding->right - rightInset), math->max(0.0, viewPadding->bottom - bottomInset)), EdgeInsetsCls->only(math->max(0.0, viewInsets->left - subScreen->left), math->max(0.0, viewInsets->top - subScreen->top), math->max(0.0, viewInsets->right - rightInset), math->max(0.0, viewInsets->bottom - bottomInset)), displayFeatures->where([=] (DisplayFeature displayFeature)     {
         subScreen->overlaps(displayFeature->bounds);
     })->toList());
 }
 
 bool MediaQueryDataCls::==(Object other) {
-    if (other->runtimeType != runtimeType) {
+    if (other->runtimeType() != runtimeType) {
         return false;
     }
-    return other is MediaQueryData && other->size == size && other->devicePixelRatio == devicePixelRatio && other->textScaleFactor == textScaleFactor && other->platformBrightness == platformBrightness && other->padding == padding && other->viewPadding == viewPadding && other->viewInsets == viewInsets && other->alwaysUse24HourFormat == alwaysUse24HourFormat && other->highContrast == highContrast && other->disableAnimations == disableAnimations && other->invertColors == invertColors && other->accessibleNavigation == accessibleNavigation && other->boldText == boldText && other->navigationMode == navigationMode && other->gestureSettings == gestureSettings && listEquals(other->displayFeatures, displayFeatures);
+    return is<MediaQueryData>(other) && other->size == size && other->devicePixelRatio == devicePixelRatio && other->textScaleFactor == textScaleFactor && other->platformBrightness == platformBrightness && other->padding == padding && other->viewPadding == viewPadding && other->viewInsets == viewInsets && other->alwaysUse24HourFormat == alwaysUse24HourFormat && other->highContrast == highContrast && other->disableAnimations == disableAnimations && other->invertColors == invertColors && other->accessibleNavigation == accessibleNavigation && other->boldText == boldText && other->navigationMode == navigationMode && other->gestureSettings == gestureSettings && listEquals(other->displayFeatures, displayFeatures);
 }
 
 int MediaQueryDataCls::hashCode() {
@@ -77,7 +77,7 @@ int MediaQueryDataCls::hashCode() {
 
 String MediaQueryDataCls::toString() {
     List<String> properties = makeList(ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem);
-    return "${objectRuntimeType(this, 'MediaQueryData')}(${properties.join(', ')})";
+    return __s("${objectRuntimeType(this, 'MediaQueryData')}(${properties.join(', ')})");
 }
 
 MediaQueryCls::MediaQueryCls(Unknown child, MediaQueryData data, Unknown key) {
@@ -115,19 +115,19 @@ MediaQueryData MediaQueryCls::maybeOf(BuildContext context) {
 }
 
 double MediaQueryCls::textScaleFactorOf(BuildContext context) {
-    return MediaQueryCls->maybeOf(context)?->textScaleFactor ?? 1.0;
+    return MediaQueryCls->maybeOf(context)?->textScaleFactor or 1.0;
 }
 
 Brightness MediaQueryCls::platformBrightnessOf(BuildContext context) {
-    return MediaQueryCls->maybeOf(context)?->platformBrightness ?? BrightnessCls::light;
+    return MediaQueryCls->maybeOf(context)?->platformBrightness or BrightnessCls::light;
 }
 
 bool MediaQueryCls::highContrastOf(BuildContext context) {
-    return MediaQueryCls->maybeOf(context)?->highContrast ?? false;
+    return MediaQueryCls->maybeOf(context)?->highContrast or false;
 }
 
 bool MediaQueryCls::boldTextOverride(BuildContext context) {
-    return MediaQueryCls->maybeOf(context)?->boldText ?? false;
+    return MediaQueryCls->maybeOf(context)?->boldText or false;
 }
 
 bool MediaQueryCls::updateShouldNotify(MediaQuery oldWidget) {
@@ -136,7 +136,7 @@ bool MediaQueryCls::updateShouldNotify(MediaQuery oldWidget) {
 
 void MediaQueryCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<MediaQueryData>make<DiagnosticsPropertyCls>("data", datafalse));
+    properties->add(<MediaQueryData>make<DiagnosticsPropertyCls>(__s("data"), datafalse));
 }
 
 State<_MediaQueryFromWindow> _MediaQueryFromWindowCls::createState() {

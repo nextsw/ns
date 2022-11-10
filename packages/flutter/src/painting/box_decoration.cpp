@@ -2,12 +2,12 @@
 BoxDecorationCls::BoxDecorationCls(BlendMode backgroundBlendMode, BoxBorder border, BorderRadiusGeometry borderRadius, List<BoxShadow> boxShadow, Color color, Gradient gradient, DecorationImage image, BoxShape shape) {
     {
         assert(shape != nullptr);
-        assert(backgroundBlendMode == nullptr || color != nullptr || gradient != nullptr, "backgroundBlendMode applies to BoxDecoration's background color or gradient, but no color or gradient was provided.");
+        assert(backgroundBlendMode == nullptr || color != nullptr || gradient != nullptr, __s("backgroundBlendMode applies to BoxDecoration's background color or gradient, but no color or gradient was provided."));
     }
 }
 
 BoxDecoration BoxDecorationCls::copyWith(BlendMode backgroundBlendMode, BoxBorder border, BorderRadiusGeometry borderRadius, List<BoxShadow> boxShadow, Color color, Gradient gradient, DecorationImage image, BoxShape shape) {
-    return make<BoxDecorationCls>(color ?? this->color, image ?? this->image, border ?? this->border, borderRadius ?? this->borderRadius, boxShadow ?? this->boxShadow, gradient ?? this->gradient, backgroundBlendMode ?? this->backgroundBlendMode, shape ?? this->shape);
+    return make<BoxDecorationCls>(color or this->color, image or this->image, border or this->border, borderRadius or this->borderRadius, boxShadow or this->boxShadow, gradient or this->gradient, backgroundBlendMode or this->backgroundBlendMode, shape or this->shape);
 }
 
 bool BoxDecorationCls::debugAssertIsValid() {
@@ -35,20 +35,20 @@ BoxDecoration BoxDecorationCls::lerpFrom(Decoration a, double t) {
     if (a == nullptr) {
         return scale(t);
     }
-    if (a is BoxDecoration) {
+    if (is<BoxDecoration>(a)) {
         return BoxDecorationCls->lerp(a, this, t);
     }
-    return ((BoxDecoration)super->lerpFrom(a, t));
+    return as<BoxDecoration>(super->lerpFrom(a, t));
 }
 
 BoxDecoration BoxDecorationCls::lerpTo(Decoration b, double t) {
     if (b == nullptr) {
         return scale(1.0 - t);
     }
-    if (b is BoxDecoration) {
+    if (is<BoxDecoration>(b)) {
         return BoxDecorationCls->lerp(this, b, t);
     }
-    return ((BoxDecoration)super->lerpTo(b, t));
+    return as<BoxDecoration>(super->lerpTo(b, t));
 }
 
 BoxDecoration BoxDecorationCls::lerp(BoxDecoration a, BoxDecoration b, double t) {
@@ -75,10 +75,10 @@ bool BoxDecorationCls::==(Object other) {
     if (identical(this, other)) {
         return true;
     }
-    if (other->runtimeType != runtimeType) {
+    if (other->runtimeType() != runtimeType) {
         return false;
     }
-    return other is BoxDecoration && other->color == color && other->image == image && other->border == border && other->borderRadius == borderRadius && <BoxShadow>listEquals(other->boxShadow, boxShadow) && other->gradient == gradient && other->backgroundBlendMode == backgroundBlendMode && other->shape == shape;
+    return is<BoxDecoration>(other) && other->color == color && other->image == image && other->border == border && other->borderRadius == borderRadius && <BoxShadow>listEquals(other->boxShadow, boxShadow) && other->gradient == gradient && other->backgroundBlendMode == backgroundBlendMode && other->shape == shape;
 }
 
 int BoxDecorationCls::hashCode() {
@@ -87,14 +87,14 @@ int BoxDecorationCls::hashCode() {
 
 void BoxDecorationCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    auto _c1 = properties;_c1.defaultDiagnosticsTreeStyle = auto _c2 = DiagnosticsTreeStyleCls::whitespace;_c2.emptyBodyDescription = "<no decorations specified>";_c2;_c1;
-    properties->add(make<ColorPropertyCls>("color", colornullptr));
-    properties->add(<DecorationImage>make<DiagnosticsPropertyCls>("image", imagenullptr));
-    properties->add(<BoxBorder>make<DiagnosticsPropertyCls>("border", bordernullptr));
-    properties->add(<BorderRadiusGeometry>make<DiagnosticsPropertyCls>("borderRadius", borderRadiusnullptr));
-    properties->add(<BoxShadow>make<IterablePropertyCls>("boxShadow", boxShadownullptr, DiagnosticsTreeStyleCls::whitespace));
-    properties->add(<Gradient>make<DiagnosticsPropertyCls>("gradient", gradientnullptr));
-    properties->add(<BoxShape>make<EnumPropertyCls>("shape", shapeBoxShapeCls::rectangle));
+    auto _c1 = properties;_c1.defaultDiagnosticsTreeStyle = auto _c2 = DiagnosticsTreeStyleCls::whitespace;_c2.emptyBodyDescription = __s("<no decorations specified>");_c2;_c1;
+    properties->add(make<ColorPropertyCls>(__s("color"), colornullptr));
+    properties->add(<DecorationImage>make<DiagnosticsPropertyCls>(__s("image"), imagenullptr));
+    properties->add(<BoxBorder>make<DiagnosticsPropertyCls>(__s("border"), bordernullptr));
+    properties->add(<BorderRadiusGeometry>make<DiagnosticsPropertyCls>(__s("borderRadius"), borderRadiusnullptr));
+    properties->add(<BoxShadow>make<IterablePropertyCls>(__s("boxShadow"), boxShadownullptr, DiagnosticsTreeStyleCls::whitespace));
+    properties->add(<Gradient>make<DiagnosticsPropertyCls>(__s("gradient"), gradientnullptr));
+    properties->add(<BoxShape>make<EnumPropertyCls>(__s("shape"), shapeBoxShapeCls::rectangle));
 }
 
 bool BoxDecorationCls::hitTest(Offset position, Size size, TextDirection textDirection) {
@@ -125,10 +125,10 @@ void _BoxDecorationPainterCls::paint(Canvas canvas, ImageConfiguration configura
 }
 
 String _BoxDecorationPainterCls::toString() {
-    return "BoxPainter for $_decoration";
+    return __s("BoxPainter for $_decoration");
 }
 
-_BoxDecorationPainterCls::_BoxDecorationPainterCls(BoxDecoration _decoration, VoidCallback onChanged) {
+_BoxDecorationPainterCls::_BoxDecorationPainterCls(BoxDecoration _decoration, VoidCallback onChanged) : BoxPainter(onChanged) {
     {
         assert(_decoration != nullptr);
     }

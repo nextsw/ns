@@ -13,14 +13,14 @@ bool TickerCls::muted() {
 }
 
 void TickerCls::muted(bool value) {
-    if (value == muted) {
+    if (value == muted()) {
         return;
     }
     _muted = value;
     if (value) {
         unscheduleTick();
     } else     {
-        if (shouldScheduleTick) {
+        if (shouldScheduleTick()) {
         scheduleTick();
     }
 ;
@@ -30,7 +30,7 @@ bool TickerCls::isTicking() {
     if (_future == nullptr) {
         return false;
     }
-    if (muted) {
+    if (muted()) {
         return false;
     }
     if (SchedulerBindingCls::instance->framesEnabled) {
@@ -48,14 +48,14 @@ bool TickerCls::isActive() {
 
 TickerFuture TickerCls::start() {
     assert([=] () {
-        if (isActive) {
+        if (isActive()) {
             ;
         }
         return true;
     }());
     assert(_startTime == nullptr);
     _future = TickerFutureCls->_();
-    if (shouldScheduleTick) {
+    if (shouldScheduleTick()) {
         scheduleTick();
     }
     if (SchedulerBindingCls::instance->schedulerPhase->index > SchedulerPhaseCls::idle->index && SchedulerBindingCls::instance->schedulerPhase->index < SchedulerPhaseCls::postFrameCallbacks->index) {
@@ -69,13 +69,13 @@ DiagnosticsNode TickerCls::describeForError(String name) {
 }
 
 void TickerCls::stop(bool canceled) {
-    if (!isActive) {
+    if (!isActive()) {
         return;
     }
     TickerFuture localFuture = _future!;
     _future = nullptr;
     _startTime = nullptr;
-    assert(!isActive);
+    assert(!isActive());
     unscheduleTick();
     if (canceled) {
         localFuture->_cancel(this);
@@ -89,33 +89,33 @@ bool TickerCls::scheduled() {
 }
 
 bool TickerCls::shouldScheduleTick() {
-    return !muted && isActive && !scheduled;
+    return !muted() && isActive() && !scheduled();
 }
 
 void TickerCls::scheduleTick(bool rescheduling) {
-    assert(!scheduled);
-    assert(shouldScheduleTick);
+    assert(!scheduled());
+    assert(shouldScheduleTick());
     _animationId = SchedulerBindingCls::instance->scheduleFrameCallback(_tickrescheduling);
 }
 
 void TickerCls::unscheduleTick() {
-    if (scheduled) {
+    if (scheduled()) {
         SchedulerBindingCls::instance->cancelFrameCallbackWithId(_animationId!);
         _animationId = nullptr;
     }
-    assert(!shouldScheduleTick);
+    assert(!shouldScheduleTick());
 }
 
 void TickerCls::absorbTicker(Ticker originalTicker) {
-    assert(!isActive);
+    assert(!isActive());
     assert(_future == nullptr);
     assert(_startTime == nullptr);
     assert(_animationId == nullptr);
-    assert((originalTicker->_future == nullptr) == (originalTicker->_startTime == nullptr), "Cannot absorb Ticker after it has been disposed.");
+    assert((originalTicker->_future == nullptr) == (originalTicker->_startTime == nullptr), __s("Cannot absorb Ticker after it has been disposed."));
     if (originalTicker->_future != nullptr) {
         _future = originalTicker->_future;
         _startTime = originalTicker->_startTime;
-        if (shouldScheduleTick) {
+        if (shouldScheduleTick()) {
             scheduleTick();
         }
         originalTicker->_future = nullptr;
@@ -128,7 +128,7 @@ void TickerCls::dispose() {
     if (_future != nullptr) {
         TickerFuture localFuture = _future!;
         _future = nullptr;
-        assert(!isActive);
+        assert(!isActive());
         unscheduleTick();
         localFuture->_cancel(this);
     }
@@ -140,17 +140,17 @@ void TickerCls::dispose() {
 
 String TickerCls::toString(bool debugIncludeStack) {
     StringBuffer buffer = make<StringBufferCls>();
-    buffer->write("${objectRuntimeType(this, 'Ticker')}(");
+    buffer->write(__s("${objectRuntimeType(this, 'Ticker')}("));
     assert([=] () {
-        buffer->write(debugLabel ?? "");
+        buffer->write(debugLabel or __s(""));
         return true;
     }());
-    buffer->write(")");
+    buffer->write(__s(")"));
     assert([=] () {
         if (debugIncludeStack) {
             buffer->writeln();
-            buffer->writeln("The stack trace when the $runtimeType was actually created was:");
-            FlutterErrorCls->defaultStackFilter(_debugCreationStack->toString()->trimRight()->split("\n"))->forEach(buffer->writeln);
+            buffer->writeln(__s("The stack trace when the $runtimeType was actually created was:"));
+            FlutterErrorCls->defaultStackFilter(_debugCreationStack->toString()->trimRight()->split(__s("\n")))->forEach(buffer->writeln);
         }
         return true;
     }());
@@ -158,12 +158,12 @@ String TickerCls::toString(bool debugIncludeStack) {
 }
 
 void TickerCls::_tick(Duration timeStamp) {
-    assert(isTicking);
-    assert(scheduled);
+    assert(isTicking());
+    assert(scheduled());
     _animationId = nullptr;
     _startTime = timeStamp;
     _onTick(timeStamp - _startTime!);
-    if (shouldScheduleTick) {
+    if (shouldScheduleTick()) {
         scheduleTick(true);
     }
 }
@@ -174,7 +174,7 @@ void TickerFutureCls::complete() {
 
 void TickerFutureCls::whenCompleteOrCancel(VoidCallback callback) {
     InlineMethod;
-    orCancel-><void>then(thunkthunk);
+    orCancel()-><void>then(thunkthunk);
 }
 
 Future<void> TickerFutureCls::orCancel() {
@@ -212,7 +212,7 @@ Future<void> TickerFutureCls::whenComplete(dynamic action() ) {
 }
 
 String TickerFutureCls::toString() {
-    return "${describeIdentity(this)}(${ _completed == null ? "active" : _completed! ? "complete" : "canceled" })";
+    return __s("${describeIdentity(this)}(${ _completed == null ? "active" : _completed! ? "complete" : "canceled" })");
 }
 
 void TickerFutureCls::_complete() {
@@ -230,7 +230,7 @@ void TickerFutureCls::_cancel(Ticker ticker) {
 
 String TickerCanceledCls::toString() {
     if (ticker != nullptr) {
-        return "This ticker was canceled: $ticker";
+        return __s("This ticker was canceled: $ticker");
     }
-    return "The ticker was canceled before the "orCancel" property was first used.";
+    return __s("The ticker was canceled before the "orCancel" property was first used.");
 }

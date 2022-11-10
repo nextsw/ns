@@ -28,7 +28,7 @@ void _SemanticsDebuggerStateCls::didChangeMetrics() {
 }
 
 Widget _SemanticsDebuggerStateCls::build(BuildContext context) {
-    return make<CustomPaintCls>(make<_SemanticsDebuggerPainterCls>(_pipelineOwner, _client->generation, _lastPointerDownLocation, WidgetsBindingCls::instance->window->devicePixelRatio, widget->labelStyle), make<GestureDetectorCls>(HitTestBehaviorCls::opaque, _handleTap, _handleLongPress, _handlePanEnd, true, make<ListenerCls>(_handlePointerDown, HitTestBehaviorCls::opaque, make<IgnorePointerCls>(false, widget->child))));
+    return make<CustomPaintCls>(make<_SemanticsDebuggerPainterCls>(_pipelineOwner(), _client->generation, _lastPointerDownLocation, WidgetsBindingCls::instance->window->devicePixelRatio, widget->labelStyle), make<GestureDetectorCls>(HitTestBehaviorCls::opaque, _handleTap, _handleLongPress, _handlePanEnd, true, make<ListenerCls>(_handlePointerDown, HitTestBehaviorCls::opaque, make<IgnorePointerCls>(false, widget->child))));
 }
 
 void _SemanticsDebuggerStateCls::_update() {
@@ -89,7 +89,7 @@ void _SemanticsDebuggerStateCls::_handlePanEnd(DragEndDetails details) {
 }
 
 void _SemanticsDebuggerStateCls::_performAction(SemanticsAction action, Offset position) {
-    _pipelineOwner->semanticsOwner?->performActionAt(position, action);
+    _pipelineOwner()->semanticsOwner()?->performActionAt(position, action);
 }
 
 PipelineOwner _SemanticsDebuggerStateCls::_pipelineOwner() {
@@ -114,7 +114,7 @@ void _SemanticsClientCls::_didUpdateSemantics() {
 }
 
 void _SemanticsDebuggerPainterCls::paint(Canvas canvas, Size size) {
-    SemanticsNode rootNode = _rootSemanticsNode;
+    SemanticsNode rootNode = _rootSemanticsNode();
     canvas->save();
     canvas->scale(1.0 / devicePixelRatio, 1.0 / devicePixelRatio);
     if (rootNode != nullptr) {
@@ -137,57 +137,57 @@ String _SemanticsDebuggerPainterCls::getMessage(SemanticsNode node) {
     List<String> annotations = makeList();
     bool wantsTap = false;
     if (data->hasFlag(SemanticsFlagCls::hasCheckedState)) {
-        annotations->add(data->hasFlag(SemanticsFlagCls::isChecked)? "checked" : "unchecked");
+        annotations->add(data->hasFlag(SemanticsFlagCls::isChecked)? __s("checked") : __s("unchecked"));
         wantsTap = true;
     }
     if (data->hasFlag(SemanticsFlagCls::isTextField)) {
-        annotations->add("textfield");
+        annotations->add(__s("textfield"));
         wantsTap = true;
     }
     if (data->hasAction(SemanticsActionCls::tap)) {
         if (!wantsTap) {
-            annotations->add("button");
+            annotations->add(__s("button"));
         }
     } else {
         if (wantsTap) {
-            annotations->add("disabled");
+            annotations->add(__s("disabled"));
         }
     }
     if (data->hasAction(SemanticsActionCls::longPress)) {
-        annotations->add("long-pressable");
+        annotations->add(__s("long-pressable"));
     }
     bool isScrollable = data->hasAction(SemanticsActionCls::scrollLeft) || data->hasAction(SemanticsActionCls::scrollRight) || data->hasAction(SemanticsActionCls::scrollUp) || data->hasAction(SemanticsActionCls::scrollDown);
     bool isAdjustable = data->hasAction(SemanticsActionCls::increase) || data->hasAction(SemanticsActionCls::decrease);
     if (isScrollable) {
-        annotations->add("scrollable");
+        annotations->add(__s("scrollable"));
     }
     if (isAdjustable) {
-        annotations->add("adjustable");
+        annotations->add(__s("adjustable"));
     }
     assert(data->attributedLabel != nullptr);
     String message;
-    List<String> list1 = make<ListCls<>>();if (data->tooltip->isNotEmpty) {    list1.add(ArrayItem);}if (data->attributedLabel->stringValue->isNotEmpty) {    list1.add(ArrayItem);}String tooltipAndLabel = list1->join("\n");
+    List<String> list1 = make<ListCls<>>();if (data->tooltip->isNotEmpty) {    list1.add(ArrayItem);}if (data->attributedLabel->stringValue->isNotEmpty) {    list1.add(ArrayItem);}String tooltipAndLabel = list1->join(__s("\n"));
     if (tooltipAndLabel->isEmpty) {
-        message = annotations->join("; ");
+        message = annotations->join(__s("; "));
     } else {
         String effectivelabel;
         if (data->textDirection == nullptr) {
-            effectivelabel = "${Unicode.FSI}$tooltipAndLabel${Unicode.PDI}";
-            annotations->insert(0, "MISSING TEXT DIRECTION");
+            effectivelabel = __s("${Unicode.FSI}$tooltipAndLabel${Unicode.PDI}");
+            annotations->insert(0, __s("MISSING TEXT DIRECTION"));
         } else {
             ;
         }
         if (annotations->isEmpty) {
             message = effectivelabel;
         } else {
-            message = "$effectivelabel (${annotations.join('; ')})";
+            message = __s("$effectivelabel (${annotations.join('; ')})");
         }
     }
     return message->trim();
 }
 
 SemanticsNode _SemanticsDebuggerPainterCls::_rootSemanticsNode() {
-    return owner->semanticsOwner?->rootSemanticsNode;
+    return owner->semanticsOwner()?->rootSemanticsNode();
 }
 
 void _SemanticsDebuggerPainterCls::_paintMessage(Canvas canvas, SemanticsNode node) {

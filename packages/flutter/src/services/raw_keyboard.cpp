@@ -25,9 +25,9 @@ Map<ModifierKey, KeyboardSide> RawKeyEventDataCls::modifiersPressed() {
             }
             assert([=] () {
                 if (side == nullptr) {
-                    debugPrint("Raw key data is returning inconsistent information for pressed modifiers. isModifierPressed returns true for $key being pressed, but when getModifierSide is called, it says that no modifiers are pressed.");
-                    if (this is RawKeyEventDataAndroid) {
-                        debugPrint("Android raw key metaState: ${(this as RawKeyEventDataAndroid).metaState}");
+                    debugPrint(__s("Raw key data is returning inconsistent information for pressed modifiers. isModifierPressed returns true for $key being pressed, but when getModifierSide is called, it says that no modifiers are pressed."));
+                    if (is<RawKeyEventDataAndroid>(this)) {
+                        debugPrint(__s("Android raw key metaState: ${(this as RawKeyEventDataAndroid).metaState}"));
                     }
                 }
                 return true;
@@ -48,11 +48,11 @@ void RawKeyEventCls::fromMessage(Map<String, Object> message) {
     if (kIsWeb) {
         data = dataFromWeb();
     } else {
-        String keymap = ((String)message["keymap"]!);
+        String keymap = as<String>(message[__s("keymap")]!);
         ;
     }
-    bool repeat = RawKeyboardCls::instance->physicalKeysPressed->contains(data->physicalKey);
-    String type = ((String)message["type"]!);
+    bool repeat = RawKeyboardCls::instance->physicalKeysPressed->contains(data->physicalKey());
+    String type = as<String>(message[__s("type")]!);
     ;
 }
 
@@ -77,23 +77,23 @@ bool RawKeyEventCls::isMetaPressed() {
 }
 
 PhysicalKeyboardKey RawKeyEventCls::physicalKey() {
-    return data->physicalKey;
+    return data->physicalKey();
 }
 
 LogicalKeyboardKey RawKeyEventCls::logicalKey() {
-    return data->logicalKey;
+    return data->logicalKey();
 }
 
 void RawKeyEventCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<LogicalKeyboardKey>make<DiagnosticsPropertyCls>("logicalKey", logicalKey));
-    properties->add(<PhysicalKeyboardKey>make<DiagnosticsPropertyCls>("physicalKey", physicalKey));
-    if (this is RawKeyDownEvent) {
-        properties->add(<bool>make<DiagnosticsPropertyCls>("repeat", repeat));
+    properties->add(<LogicalKeyboardKey>make<DiagnosticsPropertyCls>(__s("logicalKey"), logicalKey()));
+    properties->add(<PhysicalKeyboardKey>make<DiagnosticsPropertyCls>(__s("physicalKey"), physicalKey()));
+    if (is<RawKeyDownEvent>(this)) {
+        properties->add(<bool>make<DiagnosticsPropertyCls>(__s("repeat"), repeat));
     }
 }
 
-RawKeyUpEventCls::RawKeyUpEventCls(Unknown character, Unknown data) {
+RawKeyUpEventCls::RawKeyUpEventCls(Unknown character, Unknown data) : RawKeyEvent(false) {
 }
 
 void RawKeyboardCls::addListener(ValueChanged<RawKeyEvent> listener) {
@@ -108,7 +108,7 @@ RawKeyEventHandler RawKeyboardCls::keyEventHandler() {
     if (ServicesBindingCls::instance->keyEventManager->keyMessageHandler != _cachedKeyMessageHandler) {
         _cachedKeyMessageHandler = ServicesBindingCls::instance->keyEventManager->keyMessageHandler;
         _cachedKeyEventHandler = _cachedKeyMessageHandler == nullptr? nullptr : [=] (RawKeyEvent event) {
-            assert(false, "The RawKeyboard.instance.keyEventHandler assigned by Flutter is a dummy callback kept for compatibility and should not be directly called. Use ServicesBinding.instance!.keyMessageHandler instead.");
+            assert(false, __s("The RawKeyboard.instance.keyEventHandler assigned by Flutter is a dummy callback kept for compatibility and should not be directly called. Use ServicesBinding.instance!.keyMessageHandler instead."));
             return true;
         };
     }
@@ -127,15 +127,15 @@ void RawKeyboardCls::keyEventHandler(RawKeyEventHandler handler) {
 }
 
 bool RawKeyboardCls::handleRawKeyEvent(RawKeyEvent event) {
-    if (event is RawKeyDownEvent) {
+    if (is<RawKeyDownEvent>(event)) {
         _keysPressed[event->physicalKey] = event->logicalKey;
     } else     {
-        if (event is RawKeyUpEvent) {
+        if (is<RawKeyUpEvent>(event)) {
         _keysPressed->remove(event->physicalKey);
     }
 ;
     }    _synchronizeModifiers(event);
-    assert(event is! RawKeyDownEvent || _keysPressed->isNotEmpty, "Attempted to send a key down event when no keys are in keysPressed. This state can occur if the key event being sent doesn't properly set its modifier flags. This was the event: $event and its data: ${event.data}");
+    assert(!is<RawKeyDownEvent>(event) || _keysPressed->isNotEmpty(), __s("Attempted to send a key down event when no keys are in keysPressed. This state can occur if the key event being sent doesn't properly set its modifier flags. This was the event: $event and its data: ${event.data}"));
     for (ValueChanged<RawKeyEvent> listener : <ValueChanged<RawKeyEvent>>of(_listeners)) {
         try {
             if (_listeners->contains(listener)) {
@@ -149,18 +149,18 @@ bool RawKeyboardCls::handleRawKeyEvent(RawKeyEvent event) {
                 };
                 return true;
             }());
-            FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(exception, stack, "services library", make<ErrorDescriptionCls>("while processing a raw key listener"), collector));
+            FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(exception, stack, __s("services library"), make<ErrorDescriptionCls>(__s("while processing a raw key listener")), collector));
         };
     }
     return false;
 }
 
 Set<LogicalKeyboardKey> RawKeyboardCls::keysPressed() {
-    return _keysPressed->values->toSet();
+    return _keysPressed->values()->toSet();
 }
 
 Set<PhysicalKeyboardKey> RawKeyboardCls::physicalKeysPressed() {
-    return _keysPressed->keys->toSet();
+    return _keysPressed->keys()->toSet();
 }
 
 LogicalKeyboardKey RawKeyboardCls::lookUpLayout(PhysicalKeyboardKey physicalKey) {
@@ -175,7 +175,7 @@ void RawKeyboardCls::_synchronizeModifiers(RawKeyEvent event) {
     Map<ModifierKey, KeyboardSide> modifiersPressed = event->data->modifiersPressed;
     Map<PhysicalKeyboardKey, LogicalKeyboardKey> modifierKeys = makeMap(makeList(), makeList();
     Set<PhysicalKeyboardKey> anySideKeys = makeSet();
-    Set<PhysicalKeyboardKey> set1 = make<SetCls<>>();for (auto _x1 : _keysPressed->keys) {{    set1.add(_x1);}if (event is RawKeyDownEvent) {    set1.add(ArrayItem);}Set<PhysicalKeyboardKey> keysPressedAfterEvent = list1;
+    Set<PhysicalKeyboardKey> set1 = make<SetCls<>>();for (auto _x1 : _keysPressed->keys()) {{    set1.add(_x1);}if (is<RawKeyDownEvent>(event)) {    set1.add(ArrayItem);}Set<PhysicalKeyboardKey> keysPressedAfterEvent = list1;
     ModifierKey thisKeyModifier;
     for (ModifierKey key : ModifierKeyCls::values) {
         Set<PhysicalKeyboardKey> thisModifierKeys = _modifierKeyMap[make<_ModifierSidePairCls>(key, KeyboardSideCls::all)];
@@ -194,9 +194,9 @@ void RawKeyboardCls::_synchronizeModifiers(RawKeyEvent event) {
         Set<PhysicalKeyboardKey> mappedKeys = modifiersPressed[key] == nullptr? makeSet() : _modifierKeyMap[make<_ModifierSidePairCls>(key, modifiersPressed[key])];
         assert([=] () {
             if (mappedKeys == nullptr) {
-                debugPrint("Platform key support for ${Platform.operatingSystem} is producing unsupported modifier combinations for modifier $key on side ${modifiersPressed[key]}.");
-                if (event->data is RawKeyEventDataAndroid) {
-                    debugPrint("Android raw key metaState: ${(event.data as RawKeyEventDataAndroid).metaState}");
+                debugPrint(__s("Platform key support for ${Platform.operatingSystem} is producing unsupported modifier combinations for modifier $key on side ${modifiersPressed[key]}."));
+                if (is<RawKeyEventDataAndroid>(event->data)) {
+                    debugPrint(__s("Android raw key metaState: ${(event.data as RawKeyEventDataAndroid).metaState}"));
                 }
             }
             return true;
@@ -208,15 +208,15 @@ void RawKeyboardCls::_synchronizeModifiers(RawKeyEvent event) {
             modifierKeys[physicalModifier] = _allModifiers[physicalModifier]!;
         }
     }
-    _allModifiersExceptFn->keys->where([=] (PhysicalKeyboardKey key)     {
+    _allModifiersExceptFn->keys()->where([=] (PhysicalKeyboardKey key)     {
         !anySideKeys->contains(key);
     })->forEach(_keysPressed->remove);
-    if (event->data is! RawKeyEventDataFuchsia && event->data is! RawKeyEventDataMacOs) {
+    if (!is<RawKeyEventDataFuchsia>(event->data) && !is<RawKeyEventDataMacOs>(event->data)) {
         _keysPressed->remove(PhysicalKeyboardKeyCls::fn);
     }
     _keysPressed->addAll(modifierKeys);
-    if (event is RawKeyDownEvent && thisKeyModifier != nullptr && !_keysPressed->containsKey(event->physicalKey)) {
-        if (event->data is RawKeyEventDataLinux && event->physicalKey == PhysicalKeyboardKeyCls::altRight) {
+    if (is<RawKeyDownEvent>(event) && thisKeyModifier != nullptr && !_keysPressed->containsKey(event->physicalKey)) {
+        if (is<RawKeyEventDataLinux>(event->data) && event->physicalKey == PhysicalKeyboardKeyCls::altRight) {
             LogicalKeyboardKey logicalKey = _allModifiersExceptFn[event->physicalKey];
             if (logicalKey != nullptr) {
                 _keysPressed[event->physicalKey] = logicalKey;
@@ -226,10 +226,10 @@ void RawKeyboardCls::_synchronizeModifiers(RawKeyEvent event) {
 }
 
 bool _ModifierSidePairCls::==(Object other) {
-    if (other->runtimeType != runtimeType) {
+    if (other->runtimeType() != runtimeType) {
         return false;
     }
-    return other is _ModifierSidePair && other->modifier == modifier && other->side == side;
+    return is<_ModifierSidePair>(other) && other->modifier == modifier && other->side == side;
 }
 
 int _ModifierSidePairCls::hashCode() {

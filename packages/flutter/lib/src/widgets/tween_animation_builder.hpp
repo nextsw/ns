@@ -9,7 +9,7 @@
 #include "value_listenable_builder.hpp"
 
 
-template<typename T : Object> class TweenAnimationBuilderCls : public ImplicitlyAnimatedWidgetCls {
+template<typename T> class TweenAnimationBuilderCls : public ImplicitlyAnimatedWidgetCls {
 public:
     Tween<T> tween;
 
@@ -25,9 +25,9 @@ public:
 private:
 
 };
-template<typename T : Object> using TweenAnimationBuilder = std::shared_ptr<TweenAnimationBuilderCls<T : Object>>;
+template<typename T> using TweenAnimationBuilder = std::shared_ptr<TweenAnimationBuilderCls<T>>;
 
-template<typename T : Object> class _TweenAnimationBuilderStateCls : public AnimatedWidgetBaseStateCls<TweenAnimationBuilder<T>> {
+template<typename T> class _TweenAnimationBuilderStateCls : public AnimatedWidgetBaseStateCls<TweenAnimationBuilder<T>> {
 public:
 
     virtual void initState();
@@ -41,7 +41,7 @@ private:
 
 
 };
-template<typename T : Object> using _TweenAnimationBuilderState = std::shared_ptr<_TweenAnimationBuilderStateCls<T : Object>>;
+template<typename T> using _TweenAnimationBuilderState = std::shared_ptr<_TweenAnimationBuilderStateCls<T>>;
 
 
 #endif

@@ -16,7 +16,7 @@ ShapeBorder ContinuousRectangleBorderCls::scale(double t) {
 
 ShapeBorder ContinuousRectangleBorderCls::lerpFrom(ShapeBorder a, double t) {
     assert(t != nullptr);
-    if (a is ContinuousRectangleBorder) {
+    if (is<ContinuousRectangleBorder>(a)) {
         return make<ContinuousRectangleBorderCls>(BorderSideCls->lerp(a->side, side, t), BorderRadiusGeometryCls->lerp(a->borderRadius, borderRadius, t)!);
     }
     return super->lerpFrom(a, t);
@@ -24,7 +24,7 @@ ShapeBorder ContinuousRectangleBorderCls::lerpFrom(ShapeBorder a, double t) {
 
 ShapeBorder ContinuousRectangleBorderCls::lerpTo(ShapeBorder b, double t) {
     assert(t != nullptr);
-    if (b is ContinuousRectangleBorder) {
+    if (is<ContinuousRectangleBorder>(b)) {
         return make<ContinuousRectangleBorderCls>(BorderSideCls->lerp(side, b->side, t), BorderRadiusGeometryCls->lerp(borderRadius, b->borderRadius, t)!);
     }
     return super->lerpTo(b, t);
@@ -39,7 +39,7 @@ Path ContinuousRectangleBorderCls::getOuterPath(Rect rect, TextDirection textDir
 }
 
 ContinuousRectangleBorder ContinuousRectangleBorderCls::copyWith(BorderRadiusGeometry borderRadius, BorderSide side) {
-    return make<ContinuousRectangleBorderCls>(side ?? this->side, borderRadius ?? this->borderRadius);
+    return make<ContinuousRectangleBorderCls>(side or this->side, borderRadius or this->borderRadius);
 }
 
 void ContinuousRectangleBorderCls::paint(Canvas canvas, Rect rect, TextDirection textDirection) {
@@ -50,10 +50,10 @@ void ContinuousRectangleBorderCls::paint(Canvas canvas, Rect rect, TextDirection
 }
 
 bool ContinuousRectangleBorderCls::==(Object other) {
-    if (other->runtimeType != runtimeType) {
+    if (other->runtimeType() != runtimeType) {
         return false;
     }
-    return other is ContinuousRectangleBorder && other->side == side && other->borderRadius == borderRadius;
+    return is<ContinuousRectangleBorder>(other) && other->side == side && other->borderRadius == borderRadius;
 }
 
 int ContinuousRectangleBorderCls::hashCode() {
@@ -61,7 +61,7 @@ int ContinuousRectangleBorderCls::hashCode() {
 }
 
 String ContinuousRectangleBorderCls::toString() {
-    return "${objectRuntimeType(this, 'ContinuousRectangleBorder')}($side, $borderRadius)";
+    return __s("${objectRuntimeType(this, 'ContinuousRectangleBorder')}($side, $borderRadius)");
 }
 
 double ContinuousRectangleBorderCls::_clampToShortest(RRect rrect, double value) {

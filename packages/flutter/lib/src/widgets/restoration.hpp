@@ -137,7 +137,7 @@ private:
 };
 template<typename T> using RestorableProperty = std::shared_ptr<RestorablePropertyCls<T>>;
 
-template<typename S : StatefulWidget> class RestorationMixinCls : public ObjectCls {
+template<typename S> class RestorationMixinCls : public ObjectCls {
 public:
 
     virtual String restorationId();
@@ -185,7 +185,7 @@ private:
     virtual void _unregister(RestorableProperty<Object> property);
 
 };
-template<typename S : StatefulWidget> using RestorationMixin = std::shared_ptr<RestorationMixinCls<S : StatefulWidget>>;
+template<typename S> using RestorationMixin = std::shared_ptr<RestorationMixinCls<S>>;
 
 
 #endif

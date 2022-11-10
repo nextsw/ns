@@ -17,5 +17,5 @@ Widget KeyboardListenerCls::build(BuildContext context) {
 
 void KeyboardListenerCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<FocusNode>make<DiagnosticsPropertyCls>("focusNode", focusNode));
+    properties->add(<FocusNode>make<DiagnosticsPropertyCls>(__s("focusNode"), focusNode));
 }

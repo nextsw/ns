@@ -6,15 +6,15 @@ AsciiCodecCls::AsciiCodecCls(bool allowInvalid) {
 }
 
 String AsciiCodecCls::name() {
-    return "us-ascii";
+    return __s("us-ascii");
 }
 
 Uint8List AsciiCodecCls::encode(String source) {
-    return encoder->convert(source);
+    return encoder()->convert(source);
 }
 
 String AsciiCodecCls::decode(bool allowInvalid, List<int> bytes) {
-    if (allowInvalid ?? _allowInvalid) {
+    if (allowInvalid or _allowInvalid) {
         return make<AsciiDecoderCls>(true)->convert(bytes);
     } else {
         return make<AsciiDecoderCls>(false)->convert(bytes);
@@ -45,14 +45,14 @@ Uint8List _UnicodeSubsetEncoderCls::convert(int end, int start, String stringVal
 }
 
 StringConversionSink _UnicodeSubsetEncoderCls::startChunkedConversion(Sink<List<int>> sink) {
-    return make<_UnicodeSubsetEncoderSinkCls>(_subsetMask, sink is ByteConversionSink? sink : ByteConversionSinkCls->from(sink));
+    return make<_UnicodeSubsetEncoderSinkCls>(_subsetMask, is<ByteConversionSink>(sink)? sink : ByteConversionSinkCls->from(sink));
 }
 
 Stream<List<int>> _UnicodeSubsetEncoderCls::bind(Stream<String> stream) {
     return super->bind(stream);
 }
 
-AsciiEncoderCls::AsciiEncoderCls() {
+AsciiEncoderCls::AsciiEncoderCls() : _UnicodeSubsetEncoder(_asciiMask) {
 }
 
 void _UnicodeSubsetEncoderSinkCls::close() {
@@ -103,12 +103,12 @@ String _UnicodeSubsetDecoderCls::_convertInvalid(List<int> bytes, int end, int s
     return buffer->toString();
 }
 
-AsciiDecoderCls::AsciiDecoderCls(bool allowInvalid) {
+AsciiDecoderCls::AsciiDecoderCls(bool allowInvalid) : _UnicodeSubsetDecoder(allowInvalid, _asciiMask) {
 }
 
 ByteConversionSink AsciiDecoderCls::startChunkedConversion(Sink<String> sink) {
     StringConversionSink stringSink;
-    if (sink is StringConversionSink) {
+    if (is<StringConversionSink>(sink)) {
         stringSink = sink;
     } else {
         stringSink = StringConversionSinkCls->from(sink);

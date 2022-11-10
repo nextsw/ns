@@ -1,7 +1,7 @@
 #include "priority_queue.hpp"
 template<typename E> HeapPriorityQueueCls<E>::HeapPriorityQueueCls(int comparison(E , E ) ) {
     {
-        comparison = comparison ?? defaultCompare;
+        comparison = comparison or defaultCompare;
     }
 }
 
@@ -113,7 +113,7 @@ template<typename E> String HeapPriorityQueueCls<E>::toString() {
 }
 
 template<typename E> E HeapPriorityQueueCls<E>::_elementAt(int index) {
-    return _queue[index] ?? (((E)nullptr));
+    return _queue[index] or (as<E>(nullptr));
 }
 
 template<typename E> List<E> HeapPriorityQueueCls<E>::_toUnorderedList() {
@@ -121,7 +121,7 @@ template<typename E> List<E> HeapPriorityQueueCls<E>::_toUnorderedList() {
 }
 
 template<typename E> void HeapPriorityQueueCls<E>::_add(E element) {
-    for (;  < _length; i++)     {        ;    }{    list1.add(ArrayItem);}if (_length == _queue->length)     {
+    for (;  < _length; i++)     {        ;    }{    list1.add(ArrayItem);}if (_length == _queue->length())     {
         _grow();
     }
     _bubbleUp(element, _length++);
@@ -147,7 +147,7 @@ template<typename E> int HeapPriorityQueueCls<E>::_locate(E object) {
             }
         }
         do {
-            while (position->isOdd) {
+            while (position->isOdd()) {
                 position = 1;
             }
             position = 1;
@@ -215,7 +215,7 @@ template<typename E> void HeapPriorityQueueCls<E>::_bubbleDown(E element, int in
 }
 
 template<typename E> void HeapPriorityQueueCls<E>::_grow() {
-    auto newCapacity = _queue->length * 2 + 1;
+    auto newCapacity = _queue->length() * 2 + 1;
     if ( < _initialCapacity)     {
         newCapacity = _initialCapacity;
     }
@@ -233,7 +233,7 @@ template<typename E> bool _UnorderedElementsIteratorCls<E>::moveNext() {
         ;
     }
     auto nextIndex = _index + 1;
-    if (0 <= nextIndex &&  < _queue->length) {
+    if (0 <= nextIndex &&  < _queue->length()) {
         _current = _queue->_queue[nextIndex];
         _index = nextIndex;
         return true;
@@ -244,7 +244,7 @@ template<typename E> bool _UnorderedElementsIteratorCls<E>::moveNext() {
 }
 
 template<typename E> E _UnorderedElementsIteratorCls<E>::current() {
-    return  < 0?  : (_current ?? ((E)nullptr));
+    return  < 0?  : (_current or as<E>(nullptr));
 }
 
 template<typename E> _UnorderedElementsIteratorCls<E>::_UnorderedElementsIteratorCls(HeapPriorityQueue<E> _queue) {

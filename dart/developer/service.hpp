@@ -37,11 +37,11 @@ private:
 
 };
 using Service = std::shared_ptr<ServiceCls>;
-extern void _getServerInfo(SendPort sendPort);
-extern void _webServerControl(bool enable, SendPort sendPort, bool silenceOutput);
-extern int _getServiceMajorVersion();
-extern int _getServiceMinorVersion();
-extern String _getIsolateIDFromSendPort(SendPort sendPort);
+void _getServerInfo(SendPort sendPort);
+void _webServerControl(bool enable, SendPort sendPort, bool silenceOutput);
+int _getServiceMajorVersion();
+int _getServiceMinorVersion();
+String _getIsolateIDFromSendPort(SendPort sendPort);
 
 
 #endif

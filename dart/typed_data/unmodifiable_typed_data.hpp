@@ -111,7 +111,7 @@ private:
 };
 using UnmodifiableByteDataView = std::shared_ptr<UnmodifiableByteDataViewCls>;
 
-template<typename N, typename L : List<N>, typename TD : TypedData> class _UnmodifiableListMixinCls : public ObjectCls {
+template<typename N, typename L, typename TD> class _UnmodifiableListMixinCls : public ObjectCls {
 public:
 
     virtual int length();
@@ -135,7 +135,7 @@ private:
 
     virtual L _createList(int length);
 };
-template<typename N, typename L : List<N>, typename TD : TypedData> using _UnmodifiableListMixin = std::shared_ptr<_UnmodifiableListMixinCls<N, L : List<N>, TD : TypedData>>;
+template<typename N, typename L, typename TD> using _UnmodifiableListMixin = std::shared_ptr<_UnmodifiableListMixinCls<N, L, TD>>;
 
 class UnmodifiableUint8ListViewCls : public UnmodifiableListBaseCls<int> {
 public:

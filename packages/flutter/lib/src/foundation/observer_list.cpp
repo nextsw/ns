@@ -17,7 +17,7 @@ template<typename T> void ObserverListCls<T>::clear() {
 }
 
 template<typename T> bool ObserverListCls<T>::contains(Object element) {
-    if (_list->length < 3) {
+    if (_list->length() < 3) {
         return _list->contains(element);
     }
     if (_isDirty) {
@@ -44,7 +44,7 @@ template<typename T> List<T> ObserverListCls<T>::toList(bool growable) {
 }
 
 template<typename T> void HashedObserverListCls<T>::add(T item) {
-    _map[item] = (_map[item] ?? 0) + 1;
+    _map[item] = (_map[item] or 0) + 1;
 }
 
 template<typename T> bool HashedObserverListCls<T>::remove(T item) {

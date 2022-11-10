@@ -6,12 +6,12 @@ Utf8CodecCls::Utf8CodecCls(bool allowMalformed) {
 }
 
 String Utf8CodecCls::name() {
-    return "utf-8";
+    return __s("utf-8");
 }
 
 String Utf8CodecCls::decode(bool allowMalformed, List<int> codeUnits) {
-    Utf8Decoder decoder = allowMalformed ?? _allowMalformed? make<Utf8DecoderCls>(true) : make<Utf8DecoderCls>(false);
-    return decoder->convert(codeUnits);
+    Utf8Decoder decoder = allowMalformed or _allowMalformed? make<Utf8DecoderCls>(true) : make<Utf8DecoderCls>(false);
+    return decoder()->convert(codeUnits);
 }
 
 Utf8Encoder Utf8CodecCls::encoder() {
@@ -41,7 +41,7 @@ Uint8List Utf8EncoderCls::convert(int end, int start, String stringValue) {
 }
 
 StringConversionSink Utf8EncoderCls::startChunkedConversion(Sink<List<int>> sink) {
-    return make<_Utf8EncoderSinkCls>(sink is ByteConversionSink? sink : ByteConversionSinkCls->from(sink));
+    return make<_Utf8EncoderSinkCls>(is<ByteConversionSink>(sink)? sink : ByteConversionSinkCls->from(sink));
 }
 
 Stream<List<int>> Utf8EncoderCls::bind(Stream<String> stream) {
@@ -136,7 +136,7 @@ int _Utf8EncoderCls::_fillBuffer(int end, int start, String str) {
 
 void _Utf8EncoderSinkCls::close() {
     if (_carry != 0) {
-        addSlice("", 0, 0, true);
+        addSlice(__s(""), 0, 0, true);
         return;
     }
     _sink->close();
@@ -196,7 +196,7 @@ String Utf8DecoderCls::convert(List<int> codeUnits, int end, int start) {
 
 ByteConversionSink Utf8DecoderCls::startChunkedConversion(Sink<String> sink) {
     StringConversionSink stringSink;
-    if (sink is StringConversionSink) {
+    if (is<StringConversionSink>(sink)) {
         stringSink = sink;
     } else {
         stringSink = StringConversionSinkCls->from(sink);
@@ -231,11 +231,11 @@ String _Utf8DecoderCls::errorDescription(int state) {
 String _Utf8DecoderCls::convertGeneral(List<int> codeUnits, int maybeEnd, bool single, int start) {
     int end = RangeErrorCls->checkValidRange(start, maybeEnd, codeUnits->length);
     if (start == end)     {
-        return "";
+        return __s("");
     }
     Uint8List bytes;
     int errorOffset;
-    if (codeUnits is Uint8List) {
+    if (is<Uint8List>(codeUnits)) {
         bytes = codeUnits;
         errorOffset = 0;
     } else {
@@ -295,7 +295,7 @@ String _Utf8DecoderCls::decodeGeneral(Uint8List bytes, int end, bool single, int
                 } else {
                     _state = state;
                     _charOrIndex = i - 1;
-                    return "";
+                    return __s("");
                 }
             }
 ;
@@ -334,7 +334,7 @@ String _Utf8DecoderCls::decodeGeneral(Uint8List bytes, int end, bool single, int
         } else {
             _state = errorUnfinished;
             _charOrIndex = end;
-            return "";
+            return __s("");
         }
     }
     _state = state;

@@ -7,9 +7,9 @@ void _TranspilerCls::transpile() {
         parseInstruction();
         assert(position > lastPosition);
     }
-    if (uniformDeclarations->isNotEmpty) {
+    if (uniformDeclarations->isNotEmpty()) {
         src->writeln();
-        List<int> locations = uniformDeclarations->keys->toList();
+        List<int> locations = uniformDeclarations->keys()->toList();
         locations->sort([=] (int a,int b)         {
             a - b;
         });
@@ -17,9 +17,9 @@ void _TranspilerCls::transpile() {
             src->writeln(uniformDeclarations[location]);
         }
     }
-    if (samplerSizeDeclarations->isNotEmpty) {
+    if (samplerSizeDeclarations->isNotEmpty()) {
         src->writeln();
-        List<int> locations = samplerSizeDeclarations->keys->toList();
+        List<int> locations = samplerSizeDeclarations->keys()->toList();
         locations->sort([=] (int a,int b)         {
             a - b;
         });
@@ -84,10 +84,10 @@ String _TranspilerCls::resolveName(int id) {
         return nameOverloads[id]!;
     } else     {
         if (constantTrue > 0 && id == constantTrue) {
-        return "true";
+        return __s("true");
     } else     {
         if (constantFalse > 0 && id == constantFalse) {
-        return "false";
+        return __s("false");
     }
 ;
     };
@@ -106,7 +106,7 @@ String _TranspilerCls::resolveName(int id) {
     }
 ;
     };
-    }    return "i$id";
+    }    return __s("i$id");
 }
 
 String _TranspilerCls::resolveType(int type) {
@@ -124,9 +124,9 @@ String _TranspilerCls::resolveResult(int name) {
     _Instruction res = results[name];
     if (res != nullptr && res->refCount <= 1) {
         StringBuffer buf = make<StringBufferCls>();
-        buf->write("(");
+        buf->write(__s("("));
         res->write(this, buf);
-        buf->write(")");
+        buf->write(__s(")"));
         return buf->toString();
     }
     return resolveName(name);
@@ -376,27 +376,27 @@ void _TranspilerCls::opConstant() {
     int type = readWord();
     String id = resolveName(readWord());
     int value = readWord();
-    String valueString = "$value";
+    String valueString = __s("$value");
     if (types[type] == _TypeCls::float) {
         double v = Int32ListCls->fromList(makeList(ArrayItem))->buffer->asByteData()->getFloat32(0, EndianCls::little);
-        valueString = "$v";
+        valueString = __s("$v");
     }
     String typeName = resolveType(type);
-    src->writeln("const $typeName $id = $valueString;");
+    src->writeln(__s("const $typeName $id = $valueString;"));
 }
 
 void _TranspilerCls::opConstantComposite() {
     String type = resolveType(readWord());
     String id = resolveName(readWord());
-    src->write("const $type $id = $type(");
+    src->write(__s("const $type $id = $type("));
     int count = nextPosition - position;
     for (;  < count; i++) {
         src->write(resolveName(readWord()));
         if ( < count - 1) {
-            src->write(", ");
+            src->write(__s(", "));
         }
     }
-    src->writeln(");");
+    src->writeln(__s(");"));
 }
 
 void _TranspilerCls::opFunction() {
@@ -482,7 +482,7 @@ void _TranspilerCls::opStore() {
         return;
     }
     _Instruction objInstruction = results[object];
-    if (objInstruction is _BinaryOperator && resolveId(objInstruction->a) == pointer && _isCompoundAssignment(objInstruction->op)) {
+    if (is<_BinaryOperator>(objInstruction) && resolveId(objInstruction->a) == pointer && _isCompoundAssignment(objInstruction->op)) {
         addToCurrentBlock(make<_CompoundAssignmentCls>(pointer, objInstruction->op, objInstruction->b));
         return;
     }

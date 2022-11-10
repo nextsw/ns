@@ -4,14 +4,14 @@ template<typename T> void _EventSinkWrapperCls<T>::add(T data) {
 }
 
 template<typename T> void _EventSinkWrapperCls<T>::addError(Object error, StackTrace stackTrace) {
-    _sink->_addError(error, stackTrace ?? AsyncErrorCls->defaultStackTrace(error));
+    _sink->_addError(error, stackTrace or AsyncErrorCls->defaultStackTrace(error));
 }
 
 template<typename T> void _EventSinkWrapperCls<T>::close() {
     _sink->_close();
 }
 
-template<typename S, typename T> _SinkTransformerStreamSubscriptionCls<S, T>::_SinkTransformerStreamSubscriptionCls(bool cancelOnError, _SinkMapper<S, T> mapper, void onData(T data) , void onDone() , void  onError() , Stream<S> source) {
+template<typename S, typename T> _SinkTransformerStreamSubscriptionCls<S, T>::_SinkTransformerStreamSubscriptionCls(bool cancelOnError, _SinkMapper<S, T> mapper, void onData(T data) , void onDone() , void  onError() , Stream<S> source) : _BufferingStreamSubscription<T>(onData, onError, onDone, cancelOnError) {
     {
         _transformerSink = mapper(<T>make<_EventSinkWrapperCls>(this));
         _subscription = source->listen(_handleData_handleError, _handleDone);
@@ -90,11 +90,11 @@ template<typename S, typename T> Stream<T> _StreamSinkTransformerCls<S, T>::bind
 }
 
 template<typename S, typename T> bool _BoundSinkStreamCls<S, T>::isBroadcast() {
-    return _stream->isBroadcast;
+    return _stream->isBroadcast();
 }
 
 template<typename S, typename T> StreamSubscription<T> _BoundSinkStreamCls<S, T>::listen(bool cancelOnError, void onData(T event) , void onDone() , void  onError() ) {
-    StreamSubscription<T> subscription = <S, T>make<_SinkTransformerStreamSubscriptionCls>(_stream, _sinkMapper, onData, onError, onDone, cancelOnError ?? false);
+    StreamSubscription<T> subscription = <S, T>make<_SinkTransformerStreamSubscriptionCls>(_stream, _sinkMapper, onData, onError, onDone, cancelOnError or false);
     return subscription;
 }
 
@@ -107,12 +107,12 @@ template<typename S, typename T> void _HandlerEventSinkCls<S, T>::add(S data) {
     if (handleData != nullptr) {
         handleData(data, sink);
     } else {
-        sink->add(((T)data));
+        sink->add(as<T>(data));
     }
 }
 
 template<typename S, typename T> void _HandlerEventSinkCls<S, T>::addError(Object error, StackTrace stackTrace) {
-    checkNotNullable(error, "error");
+    checkNotNullable(error, __s("error"));
     auto sink = _sink;
     if (sink == nullptr) {
         ;
@@ -144,7 +144,9 @@ template<typename S, typename T> Stream<T> _StreamHandlerTransformerCls<S, T>::b
     return super->bind(stream);
 }
 
-template<typename S, typename T> _StreamHandlerTransformerCls<S, T>::_StreamHandlerTransformerCls(void handleData(S data, EventSink<T> sink) , void handleDone(EventSink<T> sink) , void handleError(Object error, EventSink<T> sink, StackTrace stackTrace) ) {
+template<typename S, typename T> _StreamHandlerTransformerCls<S, T>::_StreamHandlerTransformerCls(void handleData(S data, EventSink<T> sink) , void handleDone(EventSink<T> sink) , void handleError(Object error, EventSink<T> sink, StackTrace stackTrace) ) : _StreamSinkTransformer<S, T>([=] (EventSink<T> outputSink) {
+    return <S, T>make<_HandlerEventSinkCls>(handleData, handleError, handleDone, outputSink);
+}) {
 }
 
 template<typename S, typename T> Stream<T> _StreamBindTransformerCls<S, T>::bind(Stream<S> stream) {
@@ -156,11 +158,11 @@ template<typename S, typename T> Stream<T> _StreamSubscriptionTransformerCls<S, 
 }
 
 template<typename S, typename T> bool _BoundSubscriptionStreamCls<S, T>::isBroadcast() {
-    return _stream->isBroadcast;
+    return _stream->isBroadcast();
 }
 
 template<typename S, typename T> StreamSubscription<T> _BoundSubscriptionStreamCls<S, T>::listen(bool cancelOnError, void onData(T event) , void onDone() , void  onError() ) {
-    StreamSubscription<T> result = _onListen(_stream, cancelOnError ?? false);
+    StreamSubscription<T> result = _onListen(_stream, cancelOnError or false);
     result->onData(onData);
     result->onError(onError);
     result->onDone(onDone);

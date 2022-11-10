@@ -3,27 +3,27 @@ Uri ServiceProtocolInfoCls::serverWebSocketUri() {
     Uri uri = serverUri;
     if (uri != nullptr) {
         Unknown pathSegments = makeList();
-        if (uri->pathSegments->isNotEmpty) {
+        if (uri->pathSegments->isNotEmpty()) {
             pathSegments->addAll(uri->pathSegments->where([=] (Unknown  s)             {
                 s->isNotEmpty;
             }));
         }
-        pathSegments->add("ws");
-        uri = uri->replace("ws", pathSegments);
+        pathSegments->add(__s("ws"));
+        uri = uri->replace(__s("ws"), pathSegments);
     }
     return uri;
 }
 
 String ServiceProtocolInfoCls::toString() {
     if (serverUri != nullptr) {
-        return "Dart VM Service Protocol v$majorVersion.$minorVersion listening on $serverUri";
+        return __s("Dart VM Service Protocol v$majorVersion.$minorVersion listening on $serverUri");
     } else {
-        return "Dart VM Service Protocol v$majorVersion.$minorVersion";
+        return __s("Dart VM Service Protocol v$majorVersion.$minorVersion");
     }
 }
 
 Future<ServiceProtocolInfo> ServiceCls::getInfo() {
-    RawReceivePort receivePort = make<RawReceivePortCls>(nullptr, "Service.getInfo");
+    RawReceivePort receivePort = make<RawReceivePortCls>(nullptr, __s("Service.getInfo"));
     Completer<String> completer = <String>make<CompleterCls>();
     receivePort->handler = [=] (String uriString)     {
         completer->complete(uriString);
@@ -36,8 +36,8 @@ Future<ServiceProtocolInfo> ServiceCls::getInfo() {
 }
 
 Future<ServiceProtocolInfo> ServiceCls::controlWebServer(bool enable, bool silenceOutput) {
-    ArgumentErrorCls->checkNotNull(enable, "enable");
-    RawReceivePort receivePort = make<RawReceivePortCls>(nullptr, "Service.controlWebServer");
+    ArgumentErrorCls->checkNotNull(enable, __s("enable"));
+    RawReceivePort receivePort = make<RawReceivePortCls>(nullptr, __s("Service.controlWebServer"));
     Completer<String> completer = <String>make<CompleterCls>();
     receivePort->handler = [=] (String uriString)     {
         completer->complete(uriString);
@@ -50,6 +50,6 @@ Future<ServiceProtocolInfo> ServiceCls::controlWebServer(bool enable, bool silen
 }
 
 String ServiceCls::getIsolateID(Isolate isolate) {
-    ArgumentErrorCls->checkNotNull(isolate, "isolate");
+    ArgumentErrorCls->checkNotNull(isolate, __s("isolate"));
     return _getIsolateIDFromSendPort(isolate->controlPort);
 }

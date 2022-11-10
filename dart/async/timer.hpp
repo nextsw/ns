@@ -19,8 +19,8 @@ public:
     virtual bool isActive();
 private:
 
-    extern static Timer _createTimer(void callback() , Duration duration);
-    extern static Timer _createPeriodicTimer(void callback(Timer timer) , Duration duration);
+    static Timer _createTimer(void callback() , Duration duration);
+    static Timer _createPeriodicTimer(void callback(Timer timer) , Duration duration);
 };
 using Timer = std::shared_ptr<TimerCls>;
 

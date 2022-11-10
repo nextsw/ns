@@ -156,26 +156,26 @@ private:
 
     static Future _dispatchWithNamespace(List data, int request);
 
-    extern static void  _exists(_Namespace namespace, Uint8List rawPath);
-    extern static void  _create(_Namespace namespace, Uint8List rawPath);
-    extern static void  _createLink(_Namespace namespace, Uint8List rawPath, String target);
-    extern static void  _linkTarget(_Namespace namespace, Uint8List rawPath);
+    static void  _exists(_Namespace namespace, Uint8List rawPath);
+    static void  _create(_Namespace namespace, Uint8List rawPath);
+    static void  _createLink(_Namespace namespace, Uint8List rawPath, String target);
+    static void  _linkTarget(_Namespace namespace, Uint8List rawPath);
     virtual Future<File> _delete(bool recursive);
 
-    extern static void  _deleteNative(_Namespace namespace, Uint8List rawPath);
-    extern static void  _deleteLinkNative(_Namespace namespace, Uint8List rawPath);
+    static void  _deleteNative(_Namespace namespace, Uint8List rawPath);
+    static void  _deleteLinkNative(_Namespace namespace, Uint8List rawPath);
     virtual void _deleteSync(bool recursive);
 
-    extern static void  _rename(_Namespace namespace, String newPath, Uint8List oldPath);
-    extern static void  _renameLink(_Namespace namespace, String newPath, Uint8List oldPath);
-    extern static void  _copy(_Namespace namespace, String newPath, Uint8List oldPath);
-    extern static void  _lengthFromPath(_Namespace namespace, Uint8List rawPath);
-    extern static void  _lastAccessed(_Namespace namespace, Uint8List rawPath);
-    extern static void  _setLastAccessed(int millis, _Namespace namespace, Uint8List rawPath);
-    extern static void  _lastModified(_Namespace namespace, Uint8List rawPath);
-    extern static void  _setLastModified(int millis, _Namespace namespace, Uint8List rawPath);
-    extern static void  _open(int mode, _Namespace namespace, Uint8List rawPath);
-    extern static int _openStdio(int fd);
+    static void  _rename(_Namespace namespace, String newPath, Uint8List oldPath);
+    static void  _renameLink(_Namespace namespace, String newPath, Uint8List oldPath);
+    static void  _copy(_Namespace namespace, String newPath, Uint8List oldPath);
+    static void  _lengthFromPath(_Namespace namespace, Uint8List rawPath);
+    static void  _lastAccessed(_Namespace namespace, Uint8List rawPath);
+    static void  _setLastAccessed(int millis, _Namespace namespace, Uint8List rawPath);
+    static void  _lastModified(_Namespace namespace, Uint8List rawPath);
+    static void  _setLastModified(int millis, _Namespace namespace, Uint8List rawPath);
+    static void  _open(int mode, _Namespace namespace, Uint8List rawPath);
+    static int _openStdio(int fd);
     static RandomAccessFile _openStdioSync(int fd);
 
     virtual String _tryDecode(List<int> bytes, Encoding encoding);
@@ -204,7 +204,7 @@ public:
     virtual void  lock(int end, int lock, int start);
 private:
 
-    extern  _RandomAccessFileOpsCls(int pointer);
+     _RandomAccessFileOpsCls(int pointer);
 };
 using _RandomAccessFileOps = std::shared_ptr<_RandomAccessFileOpsCls>;
 

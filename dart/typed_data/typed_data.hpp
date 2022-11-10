@@ -81,7 +81,7 @@ using Endian = std::shared_ptr<EndianCls>;
 class ByteDataCls : public ObjectCls {
 public:
 
-    extern  ByteDataCls(int length);
+     ByteDataCls(int length);
     virtual void  view(ByteBuffer buffer, int length, int offsetInBytes);
 
     virtual void  sublistView(TypedData data, int end, int start);
@@ -116,8 +116,8 @@ public:
     static int bytesPerElement;
 
 
-    extern  Int8ListCls(int length);
-    extern void  fromList(List<int> elements);
+     Int8ListCls(int length);
+    void  fromList(List<int> elements);
     virtual void  view(ByteBuffer buffer, int length, int offsetInBytes);
 
     virtual void  sublistView(TypedData data, int end, int start);
@@ -133,8 +133,8 @@ public:
     static int bytesPerElement;
 
 
-    extern  Uint8ListCls(int length);
-    extern void  fromList(List<int> elements);
+     Uint8ListCls(int length);
+    void  fromList(List<int> elements);
     virtual void  view(ByteBuffer buffer, int length, int offsetInBytes);
 
     virtual void  sublistView(TypedData data, int end, int start);
@@ -151,8 +151,8 @@ public:
     static int bytesPerElement;
 
 
-    extern  Uint8ClampedListCls(int length);
-    extern void  fromList(List<int> elements);
+     Uint8ClampedListCls(int length);
+    void  fromList(List<int> elements);
     virtual void  view(ByteBuffer buffer, int length, int offsetInBytes);
 
     virtual void  sublistView(TypedData data, int end, int start);
@@ -168,8 +168,8 @@ public:
     static int bytesPerElement;
 
 
-    extern  Int16ListCls(int length);
-    extern void  fromList(List<int> elements);
+     Int16ListCls(int length);
+    void  fromList(List<int> elements);
     virtual void  view(ByteBuffer buffer, int length, int offsetInBytes);
 
     virtual void  sublistView(TypedData data, int end, int start);
@@ -185,8 +185,8 @@ public:
     static int bytesPerElement;
 
 
-    extern  Uint16ListCls(int length);
-    extern void  fromList(List<int> elements);
+     Uint16ListCls(int length);
+    void  fromList(List<int> elements);
     virtual void  view(ByteBuffer buffer, int length, int offsetInBytes);
 
     virtual void  sublistView(TypedData data, int end, int start);
@@ -202,8 +202,8 @@ public:
     static int bytesPerElement;
 
 
-    extern  Int32ListCls(int length);
-    extern void  fromList(List<int> elements);
+     Int32ListCls(int length);
+    void  fromList(List<int> elements);
     virtual void  view(ByteBuffer buffer, int length, int offsetInBytes);
 
     virtual void  sublistView(TypedData data, int end, int start);
@@ -219,8 +219,8 @@ public:
     static int bytesPerElement;
 
 
-    extern  Uint32ListCls(int length);
-    extern void  fromList(List<int> elements);
+     Uint32ListCls(int length);
+    void  fromList(List<int> elements);
     virtual void  view(ByteBuffer buffer, int length, int offsetInBytes);
 
     virtual void  sublistView(TypedData data, int end, int start);
@@ -236,8 +236,8 @@ public:
     static int bytesPerElement;
 
 
-    extern  Int64ListCls(int length);
-    extern void  fromList(List<int> elements);
+     Int64ListCls(int length);
+    void  fromList(List<int> elements);
     virtual void  view(ByteBuffer buffer, int length, int offsetInBytes);
 
     virtual void  sublistView(TypedData data, int end, int start);
@@ -253,8 +253,8 @@ public:
     static int bytesPerElement;
 
 
-    extern  Uint64ListCls(int length);
-    extern void  fromList(List<int> elements);
+     Uint64ListCls(int length);
+    void  fromList(List<int> elements);
     virtual void  view(ByteBuffer buffer, int length, int offsetInBytes);
 
     virtual void  sublistView(TypedData data, int end, int start);
@@ -270,8 +270,8 @@ public:
     static int bytesPerElement;
 
 
-    extern  Float32ListCls(int length);
-    extern void  fromList(List<double> elements);
+     Float32ListCls(int length);
+    void  fromList(List<double> elements);
     virtual void  view(ByteBuffer buffer, int length, int offsetInBytes);
 
     virtual void  sublistView(TypedData data, int end, int start);
@@ -287,8 +287,8 @@ public:
     static int bytesPerElement;
 
 
-    extern  Float64ListCls(int length);
-    extern void  fromList(List<double> elements);
+     Float64ListCls(int length);
+    void  fromList(List<double> elements);
     virtual void  view(ByteBuffer buffer, int length, int offsetInBytes);
 
     virtual void  sublistView(TypedData data, int end, int start);
@@ -304,8 +304,8 @@ public:
     static int bytesPerElement;
 
 
-    extern  Float32x4ListCls(int length);
-    extern void  fromList(List<Float32x4> elements);
+     Float32x4ListCls(int length);
+    void  fromList(List<Float32x4> elements);
     virtual void  view(ByteBuffer buffer, int length, int offsetInBytes);
 
     virtual void  sublistView(TypedData data, int end, int start);
@@ -322,8 +322,8 @@ public:
     static int bytesPerElement;
 
 
-    extern  Int32x4ListCls(int length);
-    extern void  fromList(List<Int32x4> elements);
+     Int32x4ListCls(int length);
+    void  fromList(List<Int32x4> elements);
     virtual void  view(ByteBuffer buffer, int length, int offsetInBytes);
 
     virtual void  sublistView(TypedData data, int end, int start);
@@ -340,8 +340,8 @@ public:
     static int bytesPerElement;
 
 
-    extern  Float64x2ListCls(int length);
-    extern void  fromList(List<Float64x2> elements);
+     Float64x2ListCls(int length);
+    void  fromList(List<Float64x2> elements);
     virtual List<Float64x2> operator+(List<Float64x2> other);
     virtual void  view(ByteBuffer buffer, int length, int offsetInBytes);
 
@@ -868,11 +868,11 @@ public:
     static int wwww;
 
 
-    extern  Float32x4Cls(double w, double x, double y, double z);
-    extern void  splat(double v);
-    extern void  zero();
-    extern void  fromInt32x4Bits(Int32x4 x);
-    extern void  fromFloat64x2(Float64x2 v);
+     Float32x4Cls(double w, double x, double y, double z);
+    void  splat(double v);
+    void  zero();
+    void  fromInt32x4Bits(Int32x4 x);
+    void  fromFloat64x2(Float64x2 v);
     virtual Float32x4 operator+(Float32x4 other);
     virtual Float32x4 operator-();
     virtual Float32x4 operator-(Float32x4 other);
@@ -1423,9 +1423,9 @@ public:
     static int wwww;
 
 
-    extern  Int32x4Cls(int w, int x, int y, int z);
-    extern void  boolValue(bool w, bool x, bool y, bool z);
-    extern void  fromFloat32x4Bits(Float32x4 x);
+     Int32x4Cls(int w, int x, int y, int z);
+    void  boolValue(bool w, bool x, bool y, bool z);
+    void  fromFloat32x4Bits(Float32x4 x);
     virtual Int32x4 operator|(Int32x4 other);
     virtual Int32x4 operator&(Int32x4 other);
     virtual Int32x4 operator^(Int32x4 other);
@@ -1459,10 +1459,10 @@ using Int32x4 = std::shared_ptr<Int32x4Cls>;
 class Float64x2Cls : public ObjectCls {
 public:
 
-    extern  Float64x2Cls(double x, double y);
-    extern void  splat(double v);
-    extern void  zero();
-    extern void  fromFloat32x4(Float32x4 v);
+     Float64x2Cls(double x, double y);
+    void  splat(double v);
+    void  zero();
+    void  fromFloat32x4(Float32x4 v);
     virtual Float64x2 operator+(Float64x2 other);
     virtual Float64x2 operator-();
     virtual Float64x2 operator-(Float64x2 other);

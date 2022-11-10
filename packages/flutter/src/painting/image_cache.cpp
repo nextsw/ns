@@ -6,15 +6,15 @@ int ImageCacheCls::maximumSize() {
 void ImageCacheCls::maximumSize(int value) {
     assert(value != nullptr);
     assert(value >= 0);
-    if (value == maximumSize) {
+    if (value == maximumSize()) {
         return;
     }
     TimelineTask timelineTask;
     if (!kReleaseMode) {
-            auto _c1 = make<TimelineTaskCls>();    _c1.start("ImageCache.setMaximumSize"Map<String, dynamic> map2 = make<MapCls<>>();    map2.set("value", value);    list2);timelineTask = _c1;
+            auto _c1 = make<TimelineTaskCls>();    _c1.start(__s("ImageCache.setMaximumSize")Map<String, dynamic> map2 = make<MapCls<>>();    map2.set(__s("value"), value);    list2);timelineTask = _c1;
     }
     _maximumSize = value;
-    if (maximumSize == 0) {
+    if (maximumSize() == 0) {
         clear();
     } else {
         _checkCacheSize(timelineTask);
@@ -25,7 +25,7 @@ void ImageCacheCls::maximumSize(int value) {
 }
 
 int ImageCacheCls::currentSize() {
-    return _cache->length;
+    return _cache->length();
 }
 
 int ImageCacheCls::maximumSizeBytes() {
@@ -40,7 +40,7 @@ void ImageCacheCls::maximumSizeBytes(int value) {
     }
     TimelineTask timelineTask;
     if (!kReleaseMode) {
-            auto _c1 = make<TimelineTaskCls>();    _c1.start("ImageCache.setMaximumSizeBytes"Map<String, dynamic> map2 = make<MapCls<>>();    map2.set("value", value);    list2);timelineTask = _c1;
+            auto _c1 = make<TimelineTaskCls>();    _c1.start(__s("ImageCache.setMaximumSizeBytes")Map<String, dynamic> map2 = make<MapCls<>>();    map2.set(__s("value"), value);    list2);timelineTask = _c1;
     }
     _maximumSizeBytes = value;
     if (_maximumSizeBytes == 0) {
@@ -59,13 +59,13 @@ int ImageCacheCls::currentSizeBytes() {
 
 void ImageCacheCls::clear() {
     if (!kReleaseMode) {
-            Map<String, dynamic> map1 = make<MapCls<>>();    map1.set("pendingImages", _pendingImages->length);    map1.set("keepAliveImages", _cache->length);    map1.set("liveImages", _liveImages->length);    map1.set("currentSizeInBytes", _currentSizeBytes);TimelineCls->instantSync("ImageCache.clear"list1);
+            Map<String, dynamic> map1 = make<MapCls<>>();    map1.set(__s("pendingImages"), _pendingImages->length());    map1.set(__s("keepAliveImages"), _cache->length());    map1.set(__s("liveImages"), _liveImages->length());    map1.set(__s("currentSizeInBytes"), _currentSizeBytes);TimelineCls->instantSync(__s("ImageCache.clear")list1);
     }
-    for (_CachedImage image : _cache->values) {
+    for (_CachedImage image : _cache->values()) {
         image->dispose();
     }
     _cache->clear();
-    for (_PendingImage pendingImage : _pendingImages->values) {
+    for (_PendingImage pendingImage : _pendingImages->values()) {
         pendingImage->removeListener();
     }
     _pendingImages->clear();
@@ -81,7 +81,7 @@ bool ImageCacheCls::evict(bool includeLive, Object key) {
     _PendingImage pendingImage = _pendingImages->remove(key);
     if (pendingImage != nullptr) {
         if (!kReleaseMode) {
-                    Map<String, dynamic> map1 = make<MapCls<>>();        map1.set("type", "pending");TimelineCls->instantSync("ImageCache.evict"list1);
+                    Map<String, dynamic> map1 = make<MapCls<>>();        map1.set(__s("type"), __s("pending"));TimelineCls->instantSync(__s("ImageCache.evict")list1);
         }
         pendingImage->removeListener();
         return true;
@@ -89,14 +89,14 @@ bool ImageCacheCls::evict(bool includeLive, Object key) {
     _CachedImage image = _cache->remove(key);
     if (image != nullptr) {
         if (!kReleaseMode) {
-                    Map<String, dynamic> map2 = make<MapCls<>>();        map2.set("type", "keepAlive");        map2.set("sizeInBytes", image->sizeBytes);TimelineCls->instantSync("ImageCache.evict"list2);
+                    Map<String, dynamic> map2 = make<MapCls<>>();        map2.set(__s("type"), __s("keepAlive"));        map2.set(__s("sizeInBytes"), image->sizeBytes);TimelineCls->instantSync(__s("ImageCache.evict")list2);
         }
         _currentSizeBytes = image->sizeBytes!;
         image->dispose();
         return true;
     }
     if (!kReleaseMode) {
-            Map<String, dynamic> map3 = make<MapCls<>>();    map3.set("type", "miss");TimelineCls->instantSync("ImageCache.evict"list3);
+            Map<String, dynamic> map3 = make<MapCls<>>();    map3.set(__s("type"), __s("miss"));TimelineCls->instantSync(__s("ImageCache.evict")list3);
     }
     return false;
 }
@@ -107,19 +107,19 @@ ImageStreamCompleter ImageCacheCls::putIfAbsent(Object key, ImageStreamCompleter
     TimelineTask timelineTask;
     TimelineTask listenerTask;
     if (!kReleaseMode) {
-            auto _c1 = make<TimelineTaskCls>();    _c1.start("ImageCache.putIfAbsent"Map<String, dynamic> map2 = make<MapCls<>>();    map2.set("key", key->toString());    list2);timelineTask = _c1;
+            auto _c1 = make<TimelineTaskCls>();    _c1.start(__s("ImageCache.putIfAbsent")Map<String, dynamic> map2 = make<MapCls<>>();    map2.set(__s("key"), key->toString());    list2);timelineTask = _c1;
     }
     ImageStreamCompleter result = _pendingImages[key]?->completer;
     if (result != nullptr) {
         if (!kReleaseMode) {
-                    Map<String, dynamic> map3 = make<MapCls<>>();        map3.set("result", "pending");timelineTask!->finish(list3);
+                    Map<String, dynamic> map3 = make<MapCls<>>();        map3.set(__s("result"), __s("pending"));timelineTask!->finish(list3);
         }
         return result;
     }
     _CachedImage image = _cache->remove(key);
     if (image != nullptr) {
         if (!kReleaseMode) {
-                    Map<String, dynamic> map4 = make<MapCls<>>();        map4.set("result", "keepAlive");timelineTask!->finish(list4);
+                    Map<String, dynamic> map4 = make<MapCls<>>();        map4.set(__s("result"), __s("keepAlive"));timelineTask!->finish(list4);
         }
         _trackLiveImage(key, image->completer, image->sizeBytes);
         _cache[key] = image;
@@ -129,7 +129,7 @@ ImageStreamCompleter ImageCacheCls::putIfAbsent(Object key, ImageStreamCompleter
     if (liveImage != nullptr) {
         _touch(key, make<_CachedImageCls>(liveImage->completerliveImage->sizeBytes), timelineTask);
         if (!kReleaseMode) {
-                    Map<String, dynamic> map5 = make<MapCls<>>();        map5.set("result", "keepAlive");timelineTask!->finish(list5);
+                    Map<String, dynamic> map5 = make<MapCls<>>();        map5.set(__s("result"), __s("keepAlive"));timelineTask!->finish(list5);
         }
         return liveImage->completer;
     }
@@ -138,7 +138,7 @@ ImageStreamCompleter ImageCacheCls::putIfAbsent(Object key, ImageStreamCompleter
         _trackLiveImage(key, result, nullptr);
     } catch (Unknown error) {
         if (!kReleaseMode) {
-                    Map<String, dynamic> map6 = make<MapCls<>>();        map6.set("result", "error");        map6.set("error", error->toString());        map6.set("stackTrace", stackTrace->toString());timelineTask!->finish(list6);
+                    Map<String, dynamic> map6 = make<MapCls<>>();        map6.set(__s("result"), __s("error"));        map6.set(__s("error"), error->toString());        map6.set(__s("stackTrace"), stackTrace->toString());timelineTask!->finish(list6);
         }
         if (onError != nullptr) {
             onError(error, stackTrace);
@@ -148,10 +148,10 @@ ImageStreamCompleter ImageCacheCls::putIfAbsent(Object key, ImageStreamCompleter
         }
     };
     if (!kReleaseMode) {
-            auto _c7 = make<TimelineTaskCls>(timelineTask);    _c7.start("listener");listenerTask = _c7;
+            auto _c7 = make<TimelineTaskCls>(timelineTask);    _c7.start(__s("listener"));listenerTask = _c7;
     }
     bool listenedOnce = false;
-    bool trackPendingImage = maximumSize > 0 && maximumSizeBytes > 0;
+    bool trackPendingImage = maximumSize() > 0 && maximumSizeBytes() > 0;
     _PendingImage pendingImage;
     InlineMethod;
     ImageStreamListener streamListener = make<ImageStreamListenerCls>(listener);
@@ -172,15 +172,15 @@ bool ImageCacheCls::containsKey(Object key) {
 }
 
 int ImageCacheCls::liveImageCount() {
-    return _liveImages->length;
+    return _liveImages->length();
 }
 
 int ImageCacheCls::pendingImageCount() {
-    return _pendingImages->length;
+    return _pendingImages->length();
 }
 
 void ImageCacheCls::clearLiveImages() {
-    for (_LiveImage image : _liveImages->values) {
+    for (_LiveImage image : _liveImages->values()) {
         image->dispose();
     }
     _liveImages->clear();
@@ -188,7 +188,7 @@ void ImageCacheCls::clearLiveImages() {
 
 void ImageCacheCls::_touch(_CachedImage image, Object key, TimelineTask timelineTask) {
     assert(timelineTask != nullptr);
-    if (image->sizeBytes != nullptr && image->sizeBytes! <= maximumSizeBytes && maximumSize > 0) {
+    if (image->sizeBytes != nullptr && image->sizeBytes! <= maximumSizeBytes() && maximumSize() > 0) {
         _currentSizeBytes = image->sizeBytes!;
         _cache[key] = image;
         _checkCacheSize(timelineTask);
@@ -209,29 +209,29 @@ void ImageCacheCls::_checkCacheSize(TimelineTask timelineTask) {
     Map<String, dynamic> finishArgs = makeMap(makeList(), makeList();
     TimelineTask checkCacheTask;
     if (!kReleaseMode) {
-            auto _c1 = make<TimelineTaskCls>(timelineTask);    _c1.start("checkCacheSize");checkCacheTask = _c1;
-        finishArgs["evictedKeys"] = makeList();
-        finishArgs["currentSize"] = currentSize;
-        finishArgs["currentSizeBytes"] = currentSizeBytes;
+            auto _c1 = make<TimelineTaskCls>(timelineTask);    _c1.start(__s("checkCacheSize"));checkCacheTask = _c1;
+        finishArgs[__s("evictedKeys")] = makeList();
+        finishArgs[__s("currentSize")] = currentSize();
+        finishArgs[__s("currentSizeBytes")] = currentSizeBytes();
     }
-    while (_currentSizeBytes > _maximumSizeBytes || _cache->length > _maximumSize) {
-        Object key = _cache->keys->first;
+    while (_currentSizeBytes > _maximumSizeBytes || _cache->length() > _maximumSize) {
+        Object key = _cache->keys()->first();
         _CachedImage image = _cache[key]!;
         _currentSizeBytes = image->sizeBytes!;
         image->dispose();
         _cache->remove(key);
         if (!kReleaseMode) {
-            (((List<String>)finishArgs["evictedKeys"]))->add(key->toString());
+            (as<List<String>>(finishArgs[__s("evictedKeys")]))->add(key->toString());
         }
     }
     if (!kReleaseMode) {
-        finishArgs["endSize"] = currentSize;
-        finishArgs["endSizeBytes"] = currentSizeBytes;
+        finishArgs[__s("endSize")] = currentSize();
+        finishArgs[__s("endSizeBytes")] = currentSizeBytes();
         checkCacheTask!->finish(finishArgs);
     }
     assert(_currentSizeBytes >= 0);
-    assert(_cache->length <= maximumSize);
-    assert(_currentSizeBytes <= maximumSizeBytes);
+    assert(_cache->length() <= maximumSize());
+    assert(_currentSizeBytes <= maximumSizeBytes());
 }
 
 bool ImageCacheStatusCls::tracked() {
@@ -243,10 +243,10 @@ bool ImageCacheStatusCls::untracked() {
 }
 
 bool ImageCacheStatusCls::==(Object other) {
-    if (other->runtimeType != runtimeType) {
+    if (other->runtimeType() != runtimeType) {
         return false;
     }
-    return other is ImageCacheStatus && other->pending == pending && other->keepAlive == keepAlive && other->live == live;
+    return is<ImageCacheStatus>(other) && other->pending == pending && other->keepAlive == keepAlive && other->live == live;
 }
 
 int ImageCacheStatusCls::hashCode() {
@@ -254,7 +254,7 @@ int ImageCacheStatusCls::hashCode() {
 }
 
 String ImageCacheStatusCls::toString() {
-    return "${objectRuntimeType(this, 'ImageCacheStatus')}(pending: $pending, live: $live, keepAlive: $keepAlive)";
+    return __s("${objectRuntimeType(this, 'ImageCacheStatus')}(pending: $pending, live: $live, keepAlive: $keepAlive)");
 }
 
 void ImageCacheStatusCls::_(bool keepAlive, bool live, bool pending)
@@ -284,7 +284,7 @@ String _LiveImageCls::toString() {
     return describeIdentity(this);
 }
 
-_LiveImageCls::_LiveImageCls(ImageStreamCompleter completer, VoidCallback handleRemove, int sizeBytes) {
+_LiveImageCls::_LiveImageCls(ImageStreamCompleter completer, VoidCallback handleRemove, int sizeBytes) : _CachedImageBase(completersizeBytes) {
     {
         _handleRemove = [=] () {
             handleRemove();

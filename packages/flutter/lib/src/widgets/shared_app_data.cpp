@@ -3,15 +3,15 @@ State<StatefulWidget> SharedAppDataCls::createState() {
     return make<_SharedAppDataStateCls>();
 }
 
-V SharedAppDataCls::getValuetemplate<typename K : Object, typename V> (BuildContext context, SharedAppDataInitCallback<V> init, K key) {
+V SharedAppDataCls::getValuetemplate<typename K, typename V> (BuildContext context, SharedAppDataInitCallback<V> init, K key) {
     _SharedAppModel model = InheritedModelCls-><_SharedAppModel>inheritFrom(contextkey);
-    assert(_debugHasSharedAppData(model, context, "getValue"));
+    assert(_debugHasSharedAppData(model, context, __s("getValue")));
     return model!->sharedAppDataState-><K, V>getValue(key, init);
 }
 
-void SharedAppDataCls::setValuetemplate<typename K : Object, typename V> (BuildContext context, K key, V value) {
-    _SharedAppModel model = ((_SharedAppModel)context-><_SharedAppModel>getElementForInheritedWidgetOfExactType()?->widget);
-    assert(_debugHasSharedAppData(model, context, "setValue"));
+void SharedAppDataCls::setValuetemplate<typename K, typename V> (BuildContext context, K key, V value) {
+    _SharedAppModel model = as<_SharedAppModel>(context-><_SharedAppModel>getElementForInheritedWidgetOfExactType()?->widget);
+    assert(_debugHasSharedAppData(model, context, __s("setValue")));
     model!->sharedAppDataState-><K, V>setValue(key, value);
 }
 
@@ -29,12 +29,12 @@ Widget _SharedAppDataStateCls::build(BuildContext context) {
     return make<_SharedAppModelCls>(this, widget->child);
 }
 
-V _SharedAppDataStateCls::getValuetemplate<typename K : Object, typename V> (SharedAppDataInitCallback<V> init, K key) {
+V _SharedAppDataStateCls::getValuetemplate<typename K, typename V> (SharedAppDataInitCallback<V> init, K key) {
     data[key] = init();
-    return ((V)data[key]);
+    return as<V>(data[key]);
 }
 
-void _SharedAppDataStateCls::setValuetemplate<typename K : Object, typename V> (K key, V value) {
+void _SharedAppDataStateCls::setValuetemplate<typename K, typename V> (K key, V value) {
     if (data[key] != value) {
         setState([=] () {
             data = <Object, Object>of(data);

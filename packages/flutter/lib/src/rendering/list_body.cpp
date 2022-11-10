@@ -1,8 +1,8 @@
 #include "list_body.hpp"
 RenderListBodyCls::RenderListBodyCls(AxisDirection axisDirection, List<RenderBox> children) {
     {
-        assert(axisDirection != nullptr);
-        _axisDirection = axisDirection;
+        assert(axisDirection() != nullptr);
+        _axisDirection = axisDirection();
     }
     {
         addAll(children);
@@ -10,7 +10,7 @@ RenderListBodyCls::RenderListBodyCls(AxisDirection axisDirection, List<RenderBox
 }
 
 void RenderListBodyCls::setupParentData(RenderBox child) {
-    if (child->parentData is! ListBodyParentData) {
+    if (!is<ListBodyParentData>(child->parentData)) {
         child->parentData = make<ListBodyParentDataCls>();
     }
 }
@@ -29,7 +29,7 @@ void RenderListBodyCls::axisDirection(AxisDirection value) {
 }
 
 Axis RenderListBodyCls::mainAxis() {
-    return axisDirectionToAxis(axisDirection);
+    return axisDirectionToAxis(axisDirection());
 }
 
 Size RenderListBodyCls::computeDryLayout(BoxConstraints constraints) {
@@ -50,26 +50,26 @@ void RenderListBodyCls::performLayout() {
 
 void RenderListBodyCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<AxisDirection>make<EnumPropertyCls>("axisDirection", axisDirection));
+    properties->add(<AxisDirection>make<EnumPropertyCls>(__s("axisDirection"), axisDirection()));
 }
 
 double RenderListBodyCls::computeMinIntrinsicWidth(double height) {
-    assert(mainAxis != nullptr);
+    assert(mainAxis() != nullptr);
     ;
 }
 
 double RenderListBodyCls::computeMaxIntrinsicWidth(double height) {
-    assert(mainAxis != nullptr);
+    assert(mainAxis() != nullptr);
     ;
 }
 
 double RenderListBodyCls::computeMinIntrinsicHeight(double width) {
-    assert(mainAxis != nullptr);
+    assert(mainAxis() != nullptr);
     ;
 }
 
 double RenderListBodyCls::computeMaxIntrinsicHeight(double width) {
-    assert(mainAxis != nullptr);
+    assert(mainAxis() != nullptr);
     ;
 }
 
@@ -102,7 +102,7 @@ double RenderListBodyCls::_getIntrinsicCrossAxis(_ChildSizingFunction childSize)
     RenderBox child = firstChild;
     while (child != nullptr) {
         extent = math->max(extent, childSize(child));
-        ListBodyParentData childParentData = ((ListBodyParentData)child->parentData!);
+        ListBodyParentData childParentData = as<ListBodyParentData>(child->parentData!);
         child = childParentData->nextSibling;
     }
     return extent;
@@ -113,7 +113,7 @@ double RenderListBodyCls::_getIntrinsicMainAxis(_ChildSizingFunction childSize) 
     RenderBox child = firstChild;
     while (child != nullptr) {
         extent = childSize(child);
-        ListBodyParentData childParentData = ((ListBodyParentData)child->parentData!);
+        ListBodyParentData childParentData = as<ListBodyParentData>(child->parentData!);
         child = childParentData->nextSibling;
     }
     return extent;

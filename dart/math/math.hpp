@@ -21,19 +21,19 @@ double sqrt1_2;
 
 double sqrt2;
 
-template<typename T : num>  extern T min(T a, T b);
-template<typename T : num>  extern T max(T a, T b);
-extern double atan2(num a, num b);
-extern num pow(num exponent, num x);
-extern double sin(num radians);
-extern double cos(num radians);
-extern double tan(num radians);
-extern double acos(num x);
-extern double asin(num x);
-extern double atan(num x);
-extern double sqrt(num x);
-extern double exp(num x);
-extern double log(num x);
+template<typename T>  T min(T a, T b);
+template<typename T>  T max(T a, T b);
+double atan2(num a, num b);
+num pow(num exponent, num x);
+double sin(num radians);
+double cos(num radians);
+double tan(num radians);
+double acos(num x);
+double asin(num x);
+double atan(num x);
+double sqrt(num x);
+double exp(num x);
+double log(num x);
 
 // Parts
 #include "point.hpp"

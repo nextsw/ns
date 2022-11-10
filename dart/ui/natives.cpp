@@ -16,12 +16,12 @@ void _printDebug(String arg) {
 
 Future<ServiceExtensionResponse> _scheduleFrame(String method, Map<String, String> parameters) {
     PlatformDispatcherCls::instance->scheduleFrame();
-    Map<String, String> map1 = make<MapCls<>>();map1.set("type", "Success");return developer->ServiceExtensionResponseCls->result(json->encode(list1));
+    Map<String, String> map1 = make<MapCls<>>();map1.set(__s("type"), __s("Success"));return developer->ServiceExtensionResponseCls->result(json->encode(list1));
 }
 
 void _setupHooks() {
     assert([=] () {
-        developer->registerExtension("ext.ui.window.scheduleFrame", _scheduleFrame);
+        developer->registerExtension(__s("ext.ui.window.scheduleFrame"), _scheduleFrame);
         return true;
     }());
 }

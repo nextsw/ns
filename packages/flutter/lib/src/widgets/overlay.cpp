@@ -2,10 +2,10 @@
 OverlayEntryCls::OverlayEntryCls(WidgetBuilder builder, bool maintainState, bool opaque) {
     {
         assert(builder != nullptr);
-        assert(opaque != nullptr);
-        assert(maintainState != nullptr);
-        _opaque = opaque;
-        _maintainState = maintainState;
+        assert(opaque() != nullptr);
+        assert(maintainState() != nullptr);
+        _opaque = opaque();
+        _maintainState = maintainState();
     }
 }
 
@@ -38,7 +38,7 @@ void OverlayEntryCls::maintainState(bool value) {
 }
 
 bool OverlayEntryCls::mounted() {
-    return _overlayStateMounted->value;
+    return _overlayStateMounted->value();
 }
 
 void OverlayEntryCls::addListener(VoidCallback listener) {
@@ -70,24 +70,24 @@ void OverlayEntryCls::remove() {
 
 void OverlayEntryCls::markNeedsBuild() {
     assert(!_disposedByOwner);
-    _key->currentState?->_markNeedsBuild();
+    _key->currentState()?->_markNeedsBuild();
 }
 
 void OverlayEntryCls::dispose() {
     assert(!_disposedByOwner);
-    assert(_overlay == nullptr, "An OverlayEntry must first be removed from the Overlay before dispose is called.");
+    assert(_overlay == nullptr, __s("An OverlayEntry must first be removed from the Overlay before dispose is called."));
     _disposedByOwner = true;
-    if (!mounted) {
+    if (!mounted()) {
         _overlayStateMounted->dispose();
     }
 }
 
 String OverlayEntryCls::toString() {
-    return "${describeIdentity(this)}(opaque: $opaque; maintainState: $maintainState)";
+    return __s("${describeIdentity(this)}(opaque: $opaque; maintainState: $maintainState)");
 }
 
 void OverlayEntryCls::_didUnmount() {
-    assert(!mounted);
+    assert(!mounted());
     if (_disposedByOwner) {
         _overlayStateMounted->dispose();
     }
@@ -97,7 +97,7 @@ _OverlayEntryWidgetState _OverlayEntryWidgetCls::createState() {
     return make<_OverlayEntryWidgetStateCls>();
 }
 
-_OverlayEntryWidgetCls::_OverlayEntryWidgetCls(OverlayEntry entry, Key key, bool tickerEnabled) {
+_OverlayEntryWidgetCls::_OverlayEntryWidgetCls(OverlayEntry entry, Key key, bool tickerEnabled) : StatefulWidget(key) {
     {
         assert(key != nullptr);
         assert(entry != nullptr);
@@ -155,8 +155,8 @@ void OverlayStateCls::initState() {
 
 void OverlayStateCls::insert(OverlayEntry above, OverlayEntry below, OverlayEntry entry) {
     assert(_debugVerifyInsertPosition(above, below));
-    assert(!_entries->contains(entry), "The specified entry is already present in the Overlay.");
-    assert(entry->_overlay == nullptr, "The specified entry is already present in another Overlay.");
+    assert(!_entries->contains(entry), __s("The specified entry is already present in the Overlay."));
+    assert(entry->_overlay == nullptr, __s("The specified entry is already present in another Overlay."));
     entry->_overlay = this;
     setState([=] () {
         _entries->insert(_insertionIndex(below, above), entry);
@@ -167,10 +167,10 @@ void OverlayStateCls::insertAll(OverlayEntry above, OverlayEntry below, Iterable
     assert(_debugVerifyInsertPosition(above, below));
     assert(entries->every([=] (OverlayEntry entry)     {
         !_entries->contains(entry);
-    }), "One or more of the specified entries are already present in the Overlay.");
+    }), __s("One or more of the specified entries are already present in the Overlay."));
     assert(entries->every([=] (OverlayEntry entry)     {
         entry->_overlay == nullptr;
-    }), "One or more of the specified entries are already present in another Overlay.");
+    }), __s("One or more of the specified entries are already present in another Overlay."));
     if (entries->isEmpty) {
         return;
     }
@@ -184,14 +184,14 @@ void OverlayStateCls::insertAll(OverlayEntry above, OverlayEntry below, Iterable
 }
 
 void OverlayStateCls::rearrange(OverlayEntry above, OverlayEntry below, Iterable<OverlayEntry> newEntries) {
-    List<OverlayEntry> newEntriesList = newEntries is List<OverlayEntry>? newEntries : newEntries->toList(false);
+    List<OverlayEntry> newEntriesList = is<List<OverlayEntry>>(newEntries)? newEntries : newEntries->toList(false);
     assert(_debugVerifyInsertPosition(above, belownewEntriesList));
     assert(newEntriesList->every([=] (OverlayEntry entry)     {
         entry->_overlay == nullptr || entry->_overlay == this;
-    }), "One or more of the specified entries are already present in another Overlay.");
+    }), __s("One or more of the specified entries are already present in another Overlay."));
     assert(newEntriesList->every([=] (OverlayEntry entry)     {
         _entries->indexOf(entry) == _entries->lastIndexOf(entry);
-    }), "One or more of the specified entries are specified multiple times.");
+    }), __s("One or more of the specified entries are specified multiple times."));
     if (newEntriesList->isEmpty) {
         return;
     }
@@ -252,7 +252,7 @@ Widget OverlayStateCls::build(BuildContext context) {
 
 void OverlayStateCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<List<OverlayEntry>>make<DiagnosticsPropertyCls>("entries", _entries));
+    properties->add(<List<OverlayEntry>>make<DiagnosticsPropertyCls>(__s("entries"), _entries));
 }
 
 int OverlayStateCls::_insertionIndex(OverlayEntry above, OverlayEntry below) {
@@ -263,13 +263,13 @@ int OverlayStateCls::_insertionIndex(OverlayEntry above, OverlayEntry below) {
     if (above != nullptr) {
         return _entries->indexOf(above) + 1;
     }
-    return _entries->length;
+    return _entries->length();
 }
 
 bool OverlayStateCls::_debugVerifyInsertPosition(OverlayEntry above, OverlayEntry below, Iterable<OverlayEntry> newEntries) {
-    assert(above == nullptr || below == nullptr, "Only one of `above` and `below` may be specified.");
-    assert(above == nullptr || (above->_overlay == this && _entries->contains(above) && (newEntries?->contains(above) ?? true)), "The provided entry used for `above` must be present in the Overlay${newEntries != null ? ' and in the `newEntriesList`' : ''}.");
-    assert(below == nullptr || (below->_overlay == this && _entries->contains(below) && (newEntries?->contains(below) ?? true)), "The provided entry used for `below` must be present in the Overlay${newEntries != null ? ' and in the `newEntriesList`' : ''}.");
+    assert(above == nullptr || below == nullptr, __s("Only one of `above` and `below` may be specified."));
+    assert(above == nullptr || (above->_overlay == this && _entries->contains(above) && (newEntries?->contains(above) or true)), __s("The provided entry used for `above` must be present in the Overlay${newEntries != null ? ' and in the `newEntriesList`' : ''}."));
+    assert(below == nullptr || (below->_overlay == this && _entries->contains(below) && (newEntries?->contains(below) or true)), __s("The provided entry used for `below` must be present in the Overlay${newEntries != null ? ' and in the `newEntriesList`' : ''}."));
     return true;
 }
 
@@ -299,7 +299,7 @@ void _TheatreCls::updateRenderObject(BuildContext context, _RenderTheatre render
 
 void _TheatreCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(make<IntPropertyCls>("skipCount", skipCount));
+    properties->add(make<IntPropertyCls>(__s("skipCount"), skipCount));
 }
 
 _TheatreCls::_TheatreCls(Unknown children, Clip clipBehavior, int skipCount) {
@@ -313,17 +313,17 @@ _TheatreCls::_TheatreCls(Unknown children, Clip clipBehavior, int skipCount) {
 }
 
 _RenderTheatre _TheatreElementCls::renderObject() {
-    return ((_RenderTheatre)super->renderObject);
+    return as<_RenderTheatre>(super->renderObject);
 }
 
 void _TheatreElementCls::debugVisitOnstageChildren(ElementVisitor visitor) {
-    _Theatre theatre = ((_Theatre)widget);
+    _Theatre theatre = as<_Theatre>(widget);
     assert(children->length >= theatre->skipCount);
     children->skip(theatre->skipCount)->forEach(visitor);
 }
 
 void _RenderTheatreCls::setupParentData(RenderBox child) {
-    if (child->parentData is! StackParentData) {
+    if (!is<StackParentData>(child->parentData)) {
         child->parentData = make<StackParentDataCls>();
     }
 }
@@ -366,25 +366,25 @@ void _RenderTheatreCls::clipBehavior(Clip value) {
 }
 
 double _RenderTheatreCls::computeMinIntrinsicWidth(double height) {
-    return RenderStackCls->getIntrinsicDimension(_firstOnstageChild, [=] (RenderBox child)     {
+    return RenderStackCls->getIntrinsicDimension(_firstOnstageChild(), [=] (RenderBox child)     {
         child->getMinIntrinsicWidth(height);
     });
 }
 
 double _RenderTheatreCls::computeMaxIntrinsicWidth(double height) {
-    return RenderStackCls->getIntrinsicDimension(_firstOnstageChild, [=] (RenderBox child)     {
+    return RenderStackCls->getIntrinsicDimension(_firstOnstageChild(), [=] (RenderBox child)     {
         child->getMaxIntrinsicWidth(height);
     });
 }
 
 double _RenderTheatreCls::computeMinIntrinsicHeight(double width) {
-    return RenderStackCls->getIntrinsicDimension(_firstOnstageChild, [=] (RenderBox child)     {
+    return RenderStackCls->getIntrinsicDimension(_firstOnstageChild(), [=] (RenderBox child)     {
         child->getMinIntrinsicHeight(width);
     });
 }
 
 double _RenderTheatreCls::computeMaxIntrinsicHeight(double width) {
-    return RenderStackCls->getIntrinsicDimension(_firstOnstageChild, [=] (RenderBox child)     {
+    return RenderStackCls->getIntrinsicDimension(_firstOnstageChild(), [=] (RenderBox child)     {
         child->getMaxIntrinsicHeight(width);
     });
 }
@@ -392,10 +392,10 @@ double _RenderTheatreCls::computeMaxIntrinsicHeight(double width) {
 double _RenderTheatreCls::computeDistanceToActualBaseline(TextBaseline baseline) {
     assert(!debugNeedsLayout);
     double result;
-    RenderBox child = _firstOnstageChild;
+    RenderBox child = _firstOnstageChild();
     while (child != nullptr) {
         assert(!child->debugNeedsLayout);
-        StackParentData childParentData = ((StackParentData)child->parentData!);
+        StackParentData childParentData = as<StackParentData>(child->parentData!);
         double candidate = child->getDistanceToActualBaseline(baseline);
         if (candidate != nullptr) {
             candidate = childParentData->offset->dy;
@@ -421,18 +421,18 @@ Size _RenderTheatreCls::computeDryLayout(BoxConstraints constraints) {
 
 void _RenderTheatreCls::performLayout() {
     _hasVisualOverflow = false;
-    if (_onstageChildCount == 0) {
+    if (_onstageChildCount() == 0) {
         return;
     }
     _resolve();
     assert(_resolvedAlignment != nullptr);
     BoxConstraints nonPositionedConstraints = BoxConstraintsCls->tight(constraints->biggest);
-    RenderBox child = _firstOnstageChild;
+    RenderBox child = _firstOnstageChild();
     while (child != nullptr) {
-        StackParentData childParentData = ((StackParentData)child->parentData!);
+        StackParentData childParentData = as<StackParentData>(child->parentData!);
         if (!childParentData->isPositioned) {
             child->layout(nonPositionedConstraintstrue);
-            childParentData->offset = _resolvedAlignment!->alongOffset(((Offset)size - child->size));
+            childParentData->offset = _resolvedAlignment!->alongOffset(as<Offset>(size - child->size));
         } else {
             _hasVisualOverflow = RenderStackCls->layoutPositionedChild(child, childParentData, size, _resolvedAlignment!) || _hasVisualOverflow;
         }
@@ -442,10 +442,10 @@ void _RenderTheatreCls::performLayout() {
 }
 
 bool _RenderTheatreCls::hitTestChildren(Offset position, BoxHitTestResult result) {
-    RenderBox child = _lastOnstageChild;
-    for (;  < _onstageChildCount; i++) {
+    RenderBox child = _lastOnstageChild();
+    for (;  < _onstageChildCount(); i++) {
         assert(child != nullptr);
-        StackParentData childParentData = ((StackParentData)child!->parentData!);
+        StackParentData childParentData = as<StackParentData>(child!->parentData!);
         bool isHit = result->addWithPaintOffset(childParentData->offset, position, [=] (BoxHitTestResult result,Offset transformed) {
     assert(transformed == position - childParentData->offset);
     return child!->hitTest(resulttransformed);
@@ -459,33 +459,33 @@ bool _RenderTheatreCls::hitTestChildren(Offset position, BoxHitTestResult result
 }
 
 void _RenderTheatreCls::paintStack(PaintingContext context, Offset offset) {
-    RenderBox child = _firstOnstageChild;
+    RenderBox child = _firstOnstageChild();
     while (child != nullptr) {
-        StackParentData childParentData = ((StackParentData)child->parentData!);
+        StackParentData childParentData = as<StackParentData>(child->parentData!);
         context->paintChild(child, childParentData->offset + offset);
         child = childParentData->nextSibling;
     }
 }
 
 void _RenderTheatreCls::paint(PaintingContext context, Offset offset) {
-    if (_hasVisualOverflow && clipBehavior != ClipCls::none) {
-        _clipRectLayer->layer = context->pushClipRect(needsCompositing, offset, OffsetCls::zero & size, paintStackclipBehavior, _clipRectLayer->layer);
+    if (_hasVisualOverflow && clipBehavior() != ClipCls::none) {
+        _clipRectLayer->layer() = context->pushClipRect(needsCompositing, offset, OffsetCls::zero & size, paintStackclipBehavior(), _clipRectLayer->layer());
     } else {
-        _clipRectLayer->layer = nullptr;
+        _clipRectLayer->layer() = nullptr;
         paintStack(context, offset);
     }
 }
 
 void _RenderTheatreCls::dispose() {
-    _clipRectLayer->layer = nullptr;
+    _clipRectLayer->layer() = nullptr;
     super->dispose();
 }
 
 void _RenderTheatreCls::visitChildrenForSemantics(RenderObjectVisitor visitor) {
-    RenderBox child = _firstOnstageChild;
+    RenderBox child = _firstOnstageChild();
     while (child != nullptr) {
         visitor(child);
-        StackParentData childParentData = ((StackParentData)child->parentData!);
+        StackParentData childParentData = as<StackParentData>(child->parentData!);
         child = childParentData->nextSibling;
     }
 }
@@ -496,8 +496,8 @@ Rect _RenderTheatreCls::describeApproximatePaintClip(RenderObject child) {
 
 void _RenderTheatreCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(make<IntPropertyCls>("skipCount", skipCount));
-    properties->add(<TextDirection>make<EnumPropertyCls>("textDirection", textDirection));
+    properties->add(make<IntPropertyCls>(__s("skipCount"), skipCount()));
+    properties->add(<TextDirection>make<EnumPropertyCls>(__s("textDirection"), textDirection()));
 }
 
 List<DiagnosticsNode> _RenderTheatreCls::debugDescribeChildren() {
@@ -506,18 +506,18 @@ List<DiagnosticsNode> _RenderTheatreCls::debugDescribeChildren() {
     int count = 1;
     bool onstage = false;
     RenderBox child = firstChild;
-    RenderBox firstOnstageChild = _firstOnstageChild;
+    RenderBox firstOnstageChild = _firstOnstageChild();
     while (child != nullptr) {
         if (child == firstOnstageChild) {
             onstage = true;
             count = 1;
         }
         if (onstage) {
-            onstageChildren->add(child->toDiagnosticsNode("onstage $count"));
+            onstageChildren->add(child->toDiagnosticsNode(__s("onstage $count")));
         } else {
-            offstageChildren->add(child->toDiagnosticsNode("offstage $count", DiagnosticsTreeStyleCls::offstage));
+            offstageChildren->add(child->toDiagnosticsNode(__s("offstage $count"), DiagnosticsTreeStyleCls::offstage));
         }
-        StackParentData childParentData = ((StackParentData)child->parentData!);
+        StackParentData childParentData = as<StackParentData>(child->parentData!);
         child = childParentData->nextSibling;
         count = 1;
     }
@@ -526,13 +526,13 @@ List<DiagnosticsNode> _RenderTheatreCls::debugDescribeChildren() {
 
 _RenderTheatreCls::_RenderTheatreCls(List<RenderBox> children, Clip clipBehavior, int skipCount, TextDirection textDirection) {
     {
-        assert(skipCount != nullptr);
-        assert(skipCount >= 0);
-        assert(textDirection != nullptr);
-        assert(clipBehavior != nullptr);
-        _textDirection = textDirection;
-        _skipCount = skipCount;
-        _clipBehavior = clipBehavior;
+        assert(skipCount() != nullptr);
+        assert(skipCount() >= 0);
+        assert(textDirection() != nullptr);
+        assert(clipBehavior() != nullptr);
+        _textDirection = textDirection();
+        _skipCount = skipCount();
+        _clipBehavior = clipBehavior();
     }
     {
         addAll(children);
@@ -543,7 +543,7 @@ void _RenderTheatreCls::_resolve() {
     if (_resolvedAlignment != nullptr) {
         return;
     }
-    _resolvedAlignment = AlignmentDirectionalCls::topStart->resolve(textDirection);
+    _resolvedAlignment = AlignmentDirectionalCls::topStart->resolve(textDirection());
 }
 
 void _RenderTheatreCls::_markNeedResolution() {
@@ -552,12 +552,12 @@ void _RenderTheatreCls::_markNeedResolution() {
 }
 
 RenderBox _RenderTheatreCls::_firstOnstageChild() {
-    if (skipCount == super->childCount) {
+    if (skipCount() == super->childCount) {
         return nullptr;
     }
     RenderBox child = super->firstChild;
     for (; toSkip > 0; toSkip--) {
-        StackParentData childParentData = ((StackParentData)child!->parentData!);
+        StackParentData childParentData = as<StackParentData>(child!->parentData!);
         child = childParentData->nextSibling;
         assert(child != nullptr);
     }
@@ -565,9 +565,9 @@ RenderBox _RenderTheatreCls::_firstOnstageChild() {
 }
 
 RenderBox _RenderTheatreCls::_lastOnstageChild() {
-    return skipCount == super->childCount? nullptr : lastChild;
+    return skipCount() == super->childCount? nullptr : lastChild;
 }
 
 int _RenderTheatreCls::_onstageChildCount() {
-    return childCount - skipCount;
+    return childCount - skipCount();
 }

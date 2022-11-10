@@ -50,7 +50,7 @@ bool DirectionalityCls::updateShouldNotify(Directionality oldWidget) {
 
 void DirectionalityCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<TextDirection>make<EnumPropertyCls>("textDirection", textDirection));
+    properties->add(<TextDirection>make<EnumPropertyCls>(__s("textDirection"), textDirection));
 }
 
 OpacityCls::OpacityCls(bool alwaysIncludeSemantics, Unknown child, Unknown key, double opacity) {
@@ -70,8 +70,8 @@ void OpacityCls::updateRenderObject(BuildContext context, RenderOpacity renderOb
 
 void OpacityCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(make<DoublePropertyCls>("opacity", opacity));
-    properties->add(make<FlagPropertyCls>("alwaysIncludeSemantics"alwaysIncludeSemantics, "alwaysIncludeSemantics"));
+    properties->add(make<DoublePropertyCls>(__s("opacity"), opacity));
+    properties->add(make<FlagPropertyCls>(__s("alwaysIncludeSemantics")alwaysIncludeSemantics, __s("alwaysIncludeSemantics")));
 }
 
 ShaderMaskCls::ShaderMaskCls(BlendMode blendMode, Unknown child, Unknown key, ShaderCallback shaderCallback) {
@@ -144,7 +144,7 @@ void ClipRectCls::didUnmountRenderObject(RenderClipRect renderObject) {
 
 void ClipRectCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<CustomClipper<Rect>>make<DiagnosticsPropertyCls>("clipper", clippernullptr));
+    properties->add(<CustomClipper<Rect>>make<DiagnosticsPropertyCls>(__s("clipper"), clippernullptr));
 }
 
 ClipRRectCls::ClipRRectCls(BorderRadiusGeometry borderRadius, Unknown child, Clip clipBehavior, CustomClipper<RRect> clipper, Unknown key) {
@@ -164,8 +164,8 @@ void ClipRRectCls::updateRenderObject(BuildContext context, RenderClipRRect rend
 
 void ClipRRectCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<BorderRadiusGeometry>make<DiagnosticsPropertyCls>("borderRadius", borderRadiusfalse, nullptr));
-    properties->add(<CustomClipper<RRect>>make<DiagnosticsPropertyCls>("clipper", clippernullptr));
+    properties->add(<BorderRadiusGeometry>make<DiagnosticsPropertyCls>(__s("borderRadius"), borderRadiusfalse, nullptr));
+    properties->add(<CustomClipper<RRect>>make<DiagnosticsPropertyCls>(__s("clipper"), clippernullptr));
 }
 
 ClipOvalCls::ClipOvalCls(Unknown child, Clip clipBehavior, CustomClipper<Rect> clipper, Unknown key) {
@@ -188,7 +188,7 @@ void ClipOvalCls::didUnmountRenderObject(RenderClipOval renderObject) {
 
 void ClipOvalCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<CustomClipper<Rect>>make<DiagnosticsPropertyCls>("clipper", clippernullptr));
+    properties->add(<CustomClipper<Rect>>make<DiagnosticsPropertyCls>(__s("clipper"), clippernullptr));
 }
 
 ClipPathCls::ClipPathCls(Unknown child, Clip clipBehavior, CustomClipper<Path> clipper, Unknown key) {
@@ -219,7 +219,7 @@ void ClipPathCls::didUnmountRenderObject(RenderClipPath renderObject) {
 
 void ClipPathCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<CustomClipper<Path>>make<DiagnosticsPropertyCls>("clipper", clippernullptr));
+    properties->add(<CustomClipper<Path>>make<DiagnosticsPropertyCls>(__s("clipper"), clippernullptr));
 }
 
 PhysicalModelCls::PhysicalModelCls(BorderRadius borderRadius, Unknown child, Clip clipBehavior, Color color, double elevation, Unknown key, Color shadowColor, BoxShape shape) {
@@ -242,11 +242,11 @@ void PhysicalModelCls::updateRenderObject(BuildContext context, RenderPhysicalMo
 
 void PhysicalModelCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<BoxShape>make<EnumPropertyCls>("shape", shape));
-    properties->add(<BorderRadius>make<DiagnosticsPropertyCls>("borderRadius", borderRadius));
-    properties->add(make<DoublePropertyCls>("elevation", elevation));
-    properties->add(make<ColorPropertyCls>("color", color));
-    properties->add(make<ColorPropertyCls>("shadowColor", shadowColor));
+    properties->add(<BoxShape>make<EnumPropertyCls>(__s("shape"), shape));
+    properties->add(<BorderRadius>make<DiagnosticsPropertyCls>(__s("borderRadius"), borderRadius));
+    properties->add(make<DoublePropertyCls>(__s("elevation"), elevation));
+    properties->add(make<ColorPropertyCls>(__s("color"), color));
+    properties->add(make<ColorPropertyCls>(__s("shadowColor"), shadowColor));
 }
 
 PhysicalShapeCls::PhysicalShapeCls(Unknown child, Clip clipBehavior, CustomClipper<Path> clipper, Color color, double elevation, Unknown key, Color shadowColor) {
@@ -269,10 +269,10 @@ void PhysicalShapeCls::updateRenderObject(BuildContext context, RenderPhysicalSh
 
 void PhysicalShapeCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<CustomClipper<Path>>make<DiagnosticsPropertyCls>("clipper", clipper));
-    properties->add(make<DoublePropertyCls>("elevation", elevation));
-    properties->add(make<ColorPropertyCls>("color", color));
-    properties->add(make<ColorPropertyCls>("shadowColor", shadowColor));
+    properties->add(<CustomClipper<Path>>make<DiagnosticsPropertyCls>(__s("clipper"), clipper));
+    properties->add(make<DoublePropertyCls>(__s("elevation"), elevation));
+    properties->add(make<ColorPropertyCls>(__s("color"), color));
+    properties->add(make<ColorPropertyCls>(__s("shadowColor"), shadowColor));
 }
 
 TransformCls::TransformCls(AlignmentGeometry alignment, Unknown child, FilterQuality filterQuality, Unknown key, Offset origin, Matrix4 transform, bool transformHitTests) {
@@ -296,7 +296,7 @@ void TransformCls::updateRenderObject(BuildContext context, RenderTransform rend
 }
 
 Matrix4 TransformCls::_computeRotation(double radians) {
-    assert(radians->isFinite, "Cannot compute the rotation matrix for a non-finite angle: $radians");
+    assert(radians->isFinite, __s("Cannot compute the rotation matrix for a non-finite angle: $radians"));
     if (radians == 0.0) {
         return Matrix4Cls->identity();
     }
@@ -375,8 +375,8 @@ void FittedBoxCls::updateRenderObject(BuildContext context, RenderFittedBox rend
 
 void FittedBoxCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<BoxFit>make<EnumPropertyCls>("fit", fit));
-    properties->add(<AlignmentGeometry>make<DiagnosticsPropertyCls>("alignment", alignment));
+    properties->add(<BoxFit>make<EnumPropertyCls>(__s("fit"), fit));
+    properties->add(<AlignmentGeometry>make<DiagnosticsPropertyCls>(__s("alignment"), alignment));
 }
 
 FractionalTranslationCls::FractionalTranslationCls(Unknown child, Unknown key, bool transformHitTests, Offset translation) {
@@ -423,7 +423,7 @@ void PaddingCls::updateRenderObject(BuildContext context, RenderPadding renderOb
 
 void PaddingCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<EdgeInsetsGeometry>make<DiagnosticsPropertyCls>("padding", padding));
+    properties->add(<EdgeInsetsGeometry>make<DiagnosticsPropertyCls>(__s("padding"), padding));
 }
 
 AlignCls::AlignCls(AlignmentGeometry alignment, Unknown child, double heightFactor, Unknown key, double widthFactor) {
@@ -444,9 +444,9 @@ void AlignCls::updateRenderObject(BuildContext context, RenderPositionedBox rend
 
 void AlignCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<AlignmentGeometry>make<DiagnosticsPropertyCls>("alignment", alignment));
-    properties->add(make<DoublePropertyCls>("widthFactor", widthFactornullptr));
-    properties->add(make<DoublePropertyCls>("heightFactor", heightFactornullptr));
+    properties->add(<AlignmentGeometry>make<DiagnosticsPropertyCls>(__s("alignment"), alignment));
+    properties->add(make<DoublePropertyCls>(__s("widthFactor"), widthFactornullptr));
+    properties->add(make<DoublePropertyCls>(__s("heightFactor"), heightFactornullptr));
 }
 
 CustomSingleChildLayoutCls::CustomSingleChildLayoutCls(Unknown child, SingleChildLayoutDelegate delegate, Unknown key) {
@@ -463,7 +463,7 @@ void CustomSingleChildLayoutCls::updateRenderObject(BuildContext context, Render
     renderObject->delegate = delegate;
 }
 
-LayoutIdCls::LayoutIdCls(Unknown child, Object id, Key key) {
+LayoutIdCls::LayoutIdCls(Unknown child, Object id, Key key) : ParentDataWidget<MultiChildLayoutParentData>(key or <Object>make<ValueKeyCls>(id)) {
     {
         assert(child != nullptr);
         assert(id != nullptr);
@@ -471,12 +471,12 @@ LayoutIdCls::LayoutIdCls(Unknown child, Object id, Key key) {
 }
 
 void LayoutIdCls::applyParentData(RenderObject renderObject) {
-    assert(renderObject->parentData is MultiChildLayoutParentData);
-    MultiChildLayoutParentData parentData = ((MultiChildLayoutParentData)renderObject->parentData!);
+    assert(is<MultiChildLayoutParentData>(renderObject->parentData));
+    MultiChildLayoutParentData parentData = as<MultiChildLayoutParentData>(renderObject->parentData!);
     if (parentData->id != id) {
         parentData->id = id;
         AbstractNode targetParent = renderObject->parent;
-        if (targetParent is RenderObject) {
+        if (is<RenderObject>(targetParent)) {
             targetParent->markNeedsLayout();
         }
     }
@@ -488,7 +488,7 @@ Type LayoutIdCls::debugTypicalAncestorWidgetClass() {
 
 void LayoutIdCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<Object>make<DiagnosticsPropertyCls>("id", id));
+    properties->add(<Object>make<DiagnosticsPropertyCls>(__s("id"), id));
 }
 
 CustomMultiChildLayoutCls::CustomMultiChildLayoutCls(Unknown children, MultiChildLayoutDelegate delegate, Unknown key) {
@@ -514,25 +514,25 @@ void SizedBoxCls::fromSize(Unknown child, Unknown key, Size size)
 void SizedBoxCls::square(Unknown child, double dimension, Unknown key)
 
 RenderConstrainedBox SizedBoxCls::createRenderObject(BuildContext context) {
-    return make<RenderConstrainedBoxCls>(_additionalConstraints);
+    return make<RenderConstrainedBoxCls>(_additionalConstraints());
 }
 
 void SizedBoxCls::updateRenderObject(BuildContext context, RenderConstrainedBox renderObject) {
-    renderObject->additionalConstraints = _additionalConstraints;
+    renderObject->additionalConstraints = _additionalConstraints();
 }
 
 String SizedBoxCls::toStringShort() {
     String type;
     if (width == double->infinity && height == double->infinity) {
-        type = "${objectRuntimeType(this, 'SizedBox')}.expand";
+        type = __s("${objectRuntimeType(this, 'SizedBox')}.expand");
     } else     {
         if (width == 0.0 && height == 0.0) {
-        type = "${objectRuntimeType(this, 'SizedBox')}.shrink";
+        type = __s("${objectRuntimeType(this, 'SizedBox')}.shrink");
     } else {
-        type = objectRuntimeType(this, "SizedBox");
+        type = objectRuntimeType(this, __s("SizedBox"));
     }
 ;
-    }    return key == nullptr? type : "$type-$key";
+    }    return key == nullptr? type : __s("$type-$key");
 }
 
 void SizedBoxCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
@@ -543,8 +543,8 @@ void SizedBoxCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     } else {
         level = DiagnosticLevelCls::info;
     }
-    properties->add(make<DoublePropertyCls>("width", widthnullptr, level));
-    properties->add(make<DoublePropertyCls>("height", heightnullptr, level));
+    properties->add(make<DoublePropertyCls>(__s("width"), widthnullptr, level));
+    properties->add(make<DoublePropertyCls>(__s("height"), heightnullptr, level));
 }
 
 BoxConstraints SizedBoxCls::_additionalConstraints() {
@@ -568,7 +568,7 @@ void ConstrainedBoxCls::updateRenderObject(BuildContext context, RenderConstrain
 
 void ConstrainedBoxCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<BoxConstraints>make<DiagnosticsPropertyCls>("constraints", constraintsfalse));
+    properties->add(<BoxConstraints>make<DiagnosticsPropertyCls>(__s("constraints"), constraintsfalse));
 }
 
 ConstraintsTransformBoxCls::ConstraintsTransformBoxCls(AlignmentGeometry alignment, Unknown child, Clip clipBehavior, BoxConstraintsTransform constraintsTransform, String debugTransformType, Unknown key, TextDirection textDirection) {
@@ -610,20 +610,20 @@ BoxConstraints ConstraintsTransformBoxCls::maxUnconstrained(BoxConstraints const
 }
 
 RenderConstraintsTransformBox ConstraintsTransformBoxCls::createRenderObject(BuildContext context) {
-    return make<RenderConstraintsTransformBoxCls>(textDirection ?? DirectionalityCls->maybeOf(context), alignment, constraintsTransform, clipBehavior);
+    return make<RenderConstraintsTransformBoxCls>(textDirection or DirectionalityCls->maybeOf(context), alignment, constraintsTransform, clipBehavior);
 }
 
 void ConstraintsTransformBoxCls::updateRenderObject(BuildContext context, RenderConstraintsTransformBox renderObject) {
-    auto _c1 = renderObject;_c1.textDirection = auto _c2 = textDirection ?? DirectionalityCls->maybeOf(context);_c2.constraintsTransform = auto _c3 = constraintsTransform;_c3.alignment = auto _c4 = alignment;_c4.clipBehavior = clipBehavior;_c4;_c3;_c2;_c1;
+    auto _c1 = renderObject;_c1.textDirection = auto _c2 = textDirection or DirectionalityCls->maybeOf(context);_c2.constraintsTransform = auto _c3 = constraintsTransform;_c3.alignment = auto _c4 = alignment;_c4.clipBehavior = clipBehavior;_c4;_c3;_c2;_c1;
 }
 
 void ConstraintsTransformBoxCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<AlignmentGeometry>make<DiagnosticsPropertyCls>("alignment", alignment));
-    properties->add(<TextDirection>make<EnumPropertyCls>("textDirection", textDirectionnullptr));
-    String debugTransformLabel = _debugTransformLabel->isNotEmpty? _debugTransformLabel : _debugKnownTransforms[constraintsTransform];
+    properties->add(<AlignmentGeometry>make<DiagnosticsPropertyCls>(__s("alignment"), alignment));
+    properties->add(<TextDirection>make<EnumPropertyCls>(__s("textDirection"), textDirectionnullptr));
+    String debugTransformLabel = _debugTransformLabel->isNotEmpty()? _debugTransformLabel : _debugKnownTransforms[constraintsTransform];
     if (debugTransformLabel != nullptr) {
-        properties->add(<String>make<DiagnosticsPropertyCls>("constraints transform", debugTransformLabel));
+        properties->add(<String>make<DiagnosticsPropertyCls>(__s("constraints transform"), debugTransformLabel));
     }
 }
 
@@ -640,9 +640,9 @@ Widget UnconstrainedBoxCls::build(BuildContext context) {
 
 void UnconstrainedBoxCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<AlignmentGeometry>make<DiagnosticsPropertyCls>("alignment", alignment));
-    properties->add(<Axis>make<EnumPropertyCls>("constrainedAxis", constrainedAxisnullptr));
-    properties->add(<TextDirection>make<EnumPropertyCls>("textDirection", textDirectionnullptr));
+    properties->add(<AlignmentGeometry>make<DiagnosticsPropertyCls>(__s("alignment"), alignment));
+    properties->add(<Axis>make<EnumPropertyCls>(__s("constrainedAxis"), constrainedAxisnullptr));
+    properties->add(<TextDirection>make<EnumPropertyCls>(__s("textDirection"), textDirectionnullptr));
 }
 
 BoxConstraintsTransform UnconstrainedBoxCls::_axisToTransform(Axis constrainedAxis) {
@@ -671,9 +671,9 @@ void FractionallySizedBoxCls::updateRenderObject(BuildContext context, RenderFra
 
 void FractionallySizedBoxCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<AlignmentGeometry>make<DiagnosticsPropertyCls>("alignment", alignment));
-    properties->add(make<DoublePropertyCls>("widthFactor", widthFactornullptr));
-    properties->add(make<DoublePropertyCls>("heightFactor", heightFactornullptr));
+    properties->add(<AlignmentGeometry>make<DiagnosticsPropertyCls>(__s("alignment"), alignment));
+    properties->add(make<DoublePropertyCls>(__s("widthFactor"), widthFactornullptr));
+    properties->add(make<DoublePropertyCls>(__s("heightFactor"), heightFactornullptr));
 }
 
 LimitedBoxCls::LimitedBoxCls(Unknown child, Unknown key, double maxHeight, double maxWidth) {
@@ -693,8 +693,8 @@ void LimitedBoxCls::updateRenderObject(BuildContext context, RenderLimitedBox re
 
 void LimitedBoxCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(make<DoublePropertyCls>("maxWidth", maxWidthdouble->infinity));
-    properties->add(make<DoublePropertyCls>("maxHeight", maxHeightdouble->infinity));
+    properties->add(make<DoublePropertyCls>(__s("maxWidth"), maxWidthdouble->infinity));
+    properties->add(make<DoublePropertyCls>(__s("maxHeight"), maxHeightdouble->infinity));
 }
 
 RenderConstrainedOverflowBox OverflowBoxCls::createRenderObject(BuildContext context) {
@@ -707,11 +707,11 @@ void OverflowBoxCls::updateRenderObject(BuildContext context, RenderConstrainedO
 
 void OverflowBoxCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<AlignmentGeometry>make<DiagnosticsPropertyCls>("alignment", alignment));
-    properties->add(make<DoublePropertyCls>("minWidth", minWidthnullptr));
-    properties->add(make<DoublePropertyCls>("maxWidth", maxWidthnullptr));
-    properties->add(make<DoublePropertyCls>("minHeight", minHeightnullptr));
-    properties->add(make<DoublePropertyCls>("maxHeight", maxHeightnullptr));
+    properties->add(<AlignmentGeometry>make<DiagnosticsPropertyCls>(__s("alignment"), alignment));
+    properties->add(make<DoublePropertyCls>(__s("minWidth"), minWidthnullptr));
+    properties->add(make<DoublePropertyCls>(__s("maxWidth"), maxWidthnullptr));
+    properties->add(make<DoublePropertyCls>(__s("minHeight"), minHeightnullptr));
+    properties->add(make<DoublePropertyCls>(__s("maxHeight"), maxHeightnullptr));
 }
 
 SizedOverflowBoxCls::SizedOverflowBoxCls(AlignmentGeometry alignment, Unknown child, Unknown key, Size size) {
@@ -731,8 +731,8 @@ void SizedOverflowBoxCls::updateRenderObject(BuildContext context, RenderSizedOv
 
 void SizedOverflowBoxCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<AlignmentGeometry>make<DiagnosticsPropertyCls>("alignment", alignment));
-    properties->add(<Size>make<DiagnosticsPropertyCls>("size", sizenullptr));
+    properties->add(<AlignmentGeometry>make<DiagnosticsPropertyCls>(__s("alignment"), alignment));
+    properties->add(<Size>make<DiagnosticsPropertyCls>(__s("size"), sizenullptr));
 }
 
 OffstageCls::OffstageCls(Unknown child, Unknown key, bool offstage) {
@@ -751,7 +751,7 @@ void OffstageCls::updateRenderObject(BuildContext context, RenderOffstage render
 
 void OffstageCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<bool>make<DiagnosticsPropertyCls>("offstage", offstage));
+    properties->add(<bool>make<DiagnosticsPropertyCls>(__s("offstage"), offstage));
 }
 
 SingleChildRenderObjectElement OffstageCls::createElement() {
@@ -759,7 +759,7 @@ SingleChildRenderObjectElement OffstageCls::createElement() {
 }
 
 void _OffstageElementCls::debugVisitOnstageChildren(ElementVisitor visitor) {
-    if (!(((Offstage)widget))->offstage) {
+    if (!(as<Offstage>(widget))->offstage) {
         super->debugVisitOnstageChildren(visitor);
     }
 }
@@ -781,7 +781,7 @@ void AspectRatioCls::updateRenderObject(BuildContext context, RenderAspectRatio 
 
 void AspectRatioCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(make<DoublePropertyCls>("aspectRatio", aspectRatio));
+    properties->add(make<DoublePropertyCls>(__s("aspectRatio"), aspectRatio));
 }
 
 IntrinsicWidthCls::IntrinsicWidthCls(Unknown child, Unknown key, double stepHeight, double stepWidth) {
@@ -792,11 +792,11 @@ IntrinsicWidthCls::IntrinsicWidthCls(Unknown child, Unknown key, double stepHeig
 }
 
 RenderIntrinsicWidth IntrinsicWidthCls::createRenderObject(BuildContext context) {
-    return make<RenderIntrinsicWidthCls>(_stepWidth, _stepHeight);
+    return make<RenderIntrinsicWidthCls>(_stepWidth(), _stepHeight());
 }
 
 void IntrinsicWidthCls::updateRenderObject(BuildContext context, RenderIntrinsicWidth renderObject) {
-    auto _c1 = renderObject;_c1.stepWidth = auto _c2 = _stepWidth;_c2.stepHeight = _stepHeight;_c2;_c1;
+    auto _c1 = renderObject;_c1.stepWidth = auto _c2 = _stepWidth();_c2.stepHeight = _stepHeight();_c2;_c1;
 }
 
 double IntrinsicWidthCls::_stepWidth() {
@@ -830,7 +830,7 @@ RenderSliverToBoxAdapter SliverToBoxAdapterCls::createRenderObject(BuildContext 
     return make<RenderSliverToBoxAdapterCls>();
 }
 
-SliverPaddingCls::SliverPaddingCls(Unknown key, EdgeInsetsGeometry padding, Widget sliver) {
+SliverPaddingCls::SliverPaddingCls(Unknown key, EdgeInsetsGeometry padding, Widget sliver) : SingleChildRenderObjectWidget(sliver) {
     {
         assert(padding != nullptr);
     }
@@ -846,7 +846,7 @@ void SliverPaddingCls::updateRenderObject(BuildContext context, RenderSliverPadd
 
 void SliverPaddingCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<EdgeInsetsGeometry>make<DiagnosticsPropertyCls>("padding", padding));
+    properties->add(<EdgeInsetsGeometry>make<DiagnosticsPropertyCls>(__s("padding"), padding));
 }
 
 AxisDirection getAxisDirectionFromAxisReverseAndDirectionality(Axis axis, BuildContext context, bool reverse) {
@@ -879,40 +879,40 @@ StackCls::StackCls(AlignmentGeometry alignment, Unknown children, Clip clipBehav
 
 RenderStack StackCls::createRenderObject(BuildContext context) {
     assert(_debugCheckHasDirectionality(context));
-    return make<RenderStackCls>(alignment, textDirection ?? DirectionalityCls->maybeOf(context), fit, clipBehavior);
+    return make<RenderStackCls>(alignment, textDirection or DirectionalityCls->maybeOf(context), fit, clipBehavior);
 }
 
 void StackCls::updateRenderObject(BuildContext context, RenderStack renderObject) {
     assert(_debugCheckHasDirectionality(context));
-    auto _c1 = renderObject;_c1.alignment = auto _c2 = alignment;_c2.textDirection = auto _c3 = textDirection ?? DirectionalityCls->maybeOf(context);_c3.fit = auto _c4 = fit;_c4.clipBehavior = clipBehavior;_c4;_c3;_c2;_c1;
+    auto _c1 = renderObject;_c1.alignment = auto _c2 = alignment;_c2.textDirection = auto _c3 = textDirection or DirectionalityCls->maybeOf(context);_c3.fit = auto _c4 = fit;_c4.clipBehavior = clipBehavior;_c4;_c3;_c2;_c1;
 }
 
 void StackCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<AlignmentGeometry>make<DiagnosticsPropertyCls>("alignment", alignment));
-    properties->add(<TextDirection>make<EnumPropertyCls>("textDirection", textDirectionnullptr));
-    properties->add(<StackFit>make<EnumPropertyCls>("fit", fit));
-    properties->add(<Clip>make<EnumPropertyCls>("clipBehavior", clipBehaviorClipCls::hardEdge));
+    properties->add(<AlignmentGeometry>make<DiagnosticsPropertyCls>(__s("alignment"), alignment));
+    properties->add(<TextDirection>make<EnumPropertyCls>(__s("textDirection"), textDirectionnullptr));
+    properties->add(<StackFit>make<EnumPropertyCls>(__s("fit"), fit));
+    properties->add(<Clip>make<EnumPropertyCls>(__s("clipBehavior"), clipBehaviorClipCls::hardEdge));
 }
 
 bool StackCls::_debugCheckHasDirectionality(BuildContext context) {
-    if (alignment is AlignmentDirectional && textDirection == nullptr) {
-        assert(debugCheckHasDirectionality(context"to resolve the 'alignment' argument", alignment == AlignmentDirectionalCls::topStart? "The default value for 'alignment' is AlignmentDirectional.topStart, which requires a text direction." : nullptr, "Instead of providing a Directionality widget, another solution would be passing a non-directional 'alignment', or an explicit 'textDirection', to the $runtimeType."));
+    if (is<AlignmentDirectional>(alignment) && textDirection == nullptr) {
+        assert(debugCheckHasDirectionality(context__s("to resolve the 'alignment' argument"), alignment == AlignmentDirectionalCls::topStart? __s("The default value for 'alignment' is AlignmentDirectional.topStart, which requires a text direction.") : nullptr, __s("Instead of providing a Directionality widget, another solution would be passing a non-directional 'alignment', or an explicit 'textDirection', to the $runtimeType.")));
     }
     return true;
 }
 
-IndexedStackCls::IndexedStackCls(Unknown alignment, Unknown children, int index, Unknown key, StackFit sizing, Unknown textDirection) {
+IndexedStackCls::IndexedStackCls(Unknown alignment, Unknown children, int index, Unknown key, StackFit sizing, Unknown textDirection) : Stack(sizing) {
 }
 
 RenderIndexedStack IndexedStackCls::createRenderObject(BuildContext context) {
     assert(_debugCheckHasDirectionality(context));
-    return make<RenderIndexedStackCls>(index, alignment, textDirection ?? DirectionalityCls->maybeOf(context));
+    return make<RenderIndexedStackCls>(index, alignment, textDirection or DirectionalityCls->maybeOf(context));
 }
 
 void IndexedStackCls::updateRenderObject(BuildContext context, RenderIndexedStack renderObject) {
     assert(_debugCheckHasDirectionality(context));
-    auto _c1 = renderObject;_c1.index = auto _c2 = index;_c2.alignment = auto _c3 = alignment;_c3.textDirection = textDirection ?? DirectionalityCls->maybeOf(context);_c3;_c2;_c1;
+    auto _c1 = renderObject;_c1.index = auto _c2 = index;_c2.alignment = auto _c3 = alignment;_c3.textDirection = textDirection or DirectionalityCls->maybeOf(context);_c3;_c2;_c1;
 }
 
 PositionedCls::PositionedCls(double bottom, Unknown child, double height, Unknown key, double left, double right, double top, double width) {
@@ -937,8 +937,8 @@ void PositionedCls::directional(double bottom, Widget child, double end, double 
 }
 
 void PositionedCls::applyParentData(RenderObject renderObject) {
-    assert(renderObject->parentData is StackParentData);
-    StackParentData parentData = ((StackParentData)renderObject->parentData!);
+    assert(is<StackParentData>(renderObject->parentData));
+    StackParentData parentData = as<StackParentData>(renderObject->parentData!);
     bool needsLayout = false;
     if (parentData->left != left) {
         parentData->left = left;
@@ -966,7 +966,7 @@ void PositionedCls::applyParentData(RenderObject renderObject) {
     }
     if (needsLayout) {
         AbstractNode targetParent = renderObject->parent;
-        if (targetParent is RenderObject) {
+        if (is<RenderObject>(targetParent)) {
             targetParent->markNeedsLayout();
         }
     }
@@ -978,12 +978,12 @@ Type PositionedCls::debugTypicalAncestorWidgetClass() {
 
 void PositionedCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(make<DoublePropertyCls>("left", leftnullptr));
-    properties->add(make<DoublePropertyCls>("top", topnullptr));
-    properties->add(make<DoublePropertyCls>("right", rightnullptr));
-    properties->add(make<DoublePropertyCls>("bottom", bottomnullptr));
-    properties->add(make<DoublePropertyCls>("width", widthnullptr));
-    properties->add(make<DoublePropertyCls>("height", heightnullptr));
+    properties->add(make<DoublePropertyCls>(__s("left"), leftnullptr));
+    properties->add(make<DoublePropertyCls>(__s("top"), topnullptr));
+    properties->add(make<DoublePropertyCls>(__s("right"), rightnullptr));
+    properties->add(make<DoublePropertyCls>(__s("bottom"), bottomnullptr));
+    properties->add(make<DoublePropertyCls>(__s("width"), widthnullptr));
+    properties->add(make<DoublePropertyCls>(__s("height"), heightnullptr));
 }
 
 Widget PositionedDirectionalCls::build(BuildContext context) {
@@ -997,13 +997,13 @@ FlexCls::FlexCls(Unknown children, Clip clipBehavior, CrossAxisAlignment crossAx
         assert(mainAxisSize != nullptr);
         assert(crossAxisAlignment != nullptr);
         assert(verticalDirection != nullptr);
-        assert(crossAxisAlignment != CrossAxisAlignmentCls::baseline || textBaseline != nullptr, "textBaseline is required if you specify the crossAxisAlignment with CrossAxisAlignment.baseline");
+        assert(crossAxisAlignment != CrossAxisAlignmentCls::baseline || textBaseline != nullptr, __s("textBaseline is required if you specify the crossAxisAlignment with CrossAxisAlignment.baseline"));
         assert(clipBehavior != nullptr);
     }
 }
 
 TextDirection FlexCls::getEffectiveTextDirection(BuildContext context) {
-    return textDirection ?? (_needTextDirection? DirectionalityCls->maybeOf(context) : nullptr);
+    return textDirection or (_needTextDirection()? DirectionalityCls->maybeOf(context) : nullptr);
 }
 
 RenderFlex FlexCls::createRenderObject(BuildContext context) {
@@ -1016,13 +1016,13 @@ void FlexCls::updateRenderObject(BuildContext context, RenderFlex renderObject) 
 
 void FlexCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<Axis>make<EnumPropertyCls>("direction", direction));
-    properties->add(<MainAxisAlignment>make<EnumPropertyCls>("mainAxisAlignment", mainAxisAlignment));
-    properties->add(<MainAxisSize>make<EnumPropertyCls>("mainAxisSize", mainAxisSizeMainAxisSizeCls::max));
-    properties->add(<CrossAxisAlignment>make<EnumPropertyCls>("crossAxisAlignment", crossAxisAlignment));
-    properties->add(<TextDirection>make<EnumPropertyCls>("textDirection", textDirectionnullptr));
-    properties->add(<VerticalDirection>make<EnumPropertyCls>("verticalDirection", verticalDirectionVerticalDirectionCls::down));
-    properties->add(<TextBaseline>make<EnumPropertyCls>("textBaseline", textBaselinenullptr));
+    properties->add(<Axis>make<EnumPropertyCls>(__s("direction"), direction));
+    properties->add(<MainAxisAlignment>make<EnumPropertyCls>(__s("mainAxisAlignment"), mainAxisAlignment));
+    properties->add(<MainAxisSize>make<EnumPropertyCls>(__s("mainAxisSize"), mainAxisSizeMainAxisSizeCls::max));
+    properties->add(<CrossAxisAlignment>make<EnumPropertyCls>(__s("crossAxisAlignment"), crossAxisAlignment));
+    properties->add(<TextDirection>make<EnumPropertyCls>(__s("textDirection"), textDirectionnullptr));
+    properties->add(<VerticalDirection>make<EnumPropertyCls>(__s("verticalDirection"), verticalDirectionVerticalDirectionCls::down));
+    properties->add(<TextBaseline>make<EnumPropertyCls>(__s("textBaseline"), textBaselinenullptr));
 }
 
 bool FlexCls::_needTextDirection() {
@@ -1030,15 +1030,15 @@ bool FlexCls::_needTextDirection() {
     ;
 }
 
-RowCls::RowCls(Unknown children, Unknown crossAxisAlignment, Unknown key, Unknown mainAxisAlignment, Unknown mainAxisSize, Unknown textBaseline, Unknown textDirection, Unknown verticalDirection) {
+RowCls::RowCls(Unknown children, Unknown crossAxisAlignment, Unknown key, Unknown mainAxisAlignment, Unknown mainAxisSize, Unknown textBaseline, Unknown textDirection, Unknown verticalDirection) : Flex(AxisCls::horizontal) {
 }
 
-ColumnCls::ColumnCls(Unknown children, Unknown crossAxisAlignment, Unknown key, Unknown mainAxisAlignment, Unknown mainAxisSize, Unknown textBaseline, Unknown textDirection, Unknown verticalDirection) {
+ColumnCls::ColumnCls(Unknown children, Unknown crossAxisAlignment, Unknown key, Unknown mainAxisAlignment, Unknown mainAxisSize, Unknown textBaseline, Unknown textDirection, Unknown verticalDirection) : Flex(AxisCls::vertical) {
 }
 
 void FlexibleCls::applyParentData(RenderObject renderObject) {
-    assert(renderObject->parentData is FlexParentData);
-    FlexParentData parentData = ((FlexParentData)renderObject->parentData!);
+    assert(is<FlexParentData>(renderObject->parentData));
+    FlexParentData parentData = as<FlexParentData>(renderObject->parentData!);
     bool needsLayout = false;
     if (parentData->flex != flex) {
         parentData->flex = flex;
@@ -1050,7 +1050,7 @@ void FlexibleCls::applyParentData(RenderObject renderObject) {
     }
     if (needsLayout) {
         AbstractNode targetParent = renderObject->parent;
-        if (targetParent is RenderObject) {
+        if (is<RenderObject>(targetParent)) {
             targetParent->markNeedsLayout();
         }
     }
@@ -1062,10 +1062,10 @@ Type FlexibleCls::debugTypicalAncestorWidgetClass() {
 
 void FlexibleCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(make<IntPropertyCls>("flex", flex));
+    properties->add(make<IntPropertyCls>(__s("flex"), flex));
 }
 
-ExpandedCls::ExpandedCls(Unknown child, Unknown flex, Unknown key) {
+ExpandedCls::ExpandedCls(Unknown child, Unknown flex, Unknown key) : Flexible(FlexFitCls::tight) {
 }
 
 WrapCls::WrapCls(WrapAlignment alignment, Unknown children, Clip clipBehavior, WrapCrossAlignment crossAxisAlignment, Axis direction, Unknown key, WrapAlignment runAlignment, double runSpacing, double spacing, TextDirection textDirection, VerticalDirection verticalDirection) {
@@ -1075,26 +1075,26 @@ WrapCls::WrapCls(WrapAlignment alignment, Unknown children, Clip clipBehavior, W
 }
 
 RenderWrap WrapCls::createRenderObject(BuildContext context) {
-    return make<RenderWrapCls>(direction, alignment, spacing, runAlignment, runSpacing, crossAxisAlignment, textDirection ?? DirectionalityCls->maybeOf(context), verticalDirection, clipBehavior);
+    return make<RenderWrapCls>(direction, alignment, spacing, runAlignment, runSpacing, crossAxisAlignment, textDirection or DirectionalityCls->maybeOf(context), verticalDirection, clipBehavior);
 }
 
 void WrapCls::updateRenderObject(BuildContext context, RenderWrap renderObject) {
-    auto _c1 = renderObject;_c1.direction = auto _c2 = direction;_c2.alignment = auto _c3 = alignment;_c3.spacing = auto _c4 = spacing;_c4.runAlignment = auto _c5 = runAlignment;_c5.runSpacing = auto _c6 = runSpacing;_c6.crossAxisAlignment = auto _c7 = crossAxisAlignment;_c7.textDirection = auto _c8 = textDirection ?? DirectionalityCls->maybeOf(context);_c8.verticalDirection = auto _c9 = verticalDirection;_c9.clipBehavior = clipBehavior;_c9;_c8;_c7;_c6;_c5;_c4;_c3;_c2;_c1;
+    auto _c1 = renderObject;_c1.direction = auto _c2 = direction;_c2.alignment = auto _c3 = alignment;_c3.spacing = auto _c4 = spacing;_c4.runAlignment = auto _c5 = runAlignment;_c5.runSpacing = auto _c6 = runSpacing;_c6.crossAxisAlignment = auto _c7 = crossAxisAlignment;_c7.textDirection = auto _c8 = textDirection or DirectionalityCls->maybeOf(context);_c8.verticalDirection = auto _c9 = verticalDirection;_c9.clipBehavior = clipBehavior;_c9;_c8;_c7;_c6;_c5;_c4;_c3;_c2;_c1;
 }
 
 void WrapCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<Axis>make<EnumPropertyCls>("direction", direction));
-    properties->add(<WrapAlignment>make<EnumPropertyCls>("alignment", alignment));
-    properties->add(make<DoublePropertyCls>("spacing", spacing));
-    properties->add(<WrapAlignment>make<EnumPropertyCls>("runAlignment", runAlignment));
-    properties->add(make<DoublePropertyCls>("runSpacing", runSpacing));
-    properties->add(<WrapCrossAlignment>make<EnumPropertyCls>("crossAxisAlignment", crossAxisAlignment));
-    properties->add(<TextDirection>make<EnumPropertyCls>("textDirection", textDirectionnullptr));
-    properties->add(<VerticalDirection>make<EnumPropertyCls>("verticalDirection", verticalDirectionVerticalDirectionCls::down));
+    properties->add(<Axis>make<EnumPropertyCls>(__s("direction"), direction));
+    properties->add(<WrapAlignment>make<EnumPropertyCls>(__s("alignment"), alignment));
+    properties->add(make<DoublePropertyCls>(__s("spacing"), spacing));
+    properties->add(<WrapAlignment>make<EnumPropertyCls>(__s("runAlignment"), runAlignment));
+    properties->add(make<DoublePropertyCls>(__s("runSpacing"), runSpacing));
+    properties->add(<WrapCrossAlignment>make<EnumPropertyCls>(__s("crossAxisAlignment"), crossAxisAlignment));
+    properties->add(<TextDirection>make<EnumPropertyCls>(__s("textDirection"), textDirectionnullptr));
+    properties->add(<VerticalDirection>make<EnumPropertyCls>(__s("verticalDirection"), verticalDirectionVerticalDirectionCls::down));
 }
 
-FlowCls::FlowCls(List<Widget> children, Clip clipBehavior, FlowDelegate delegate, Unknown key) {
+FlowCls::FlowCls(List<Widget> children, Clip clipBehavior, FlowDelegate delegate, Unknown key) : MultiChildRenderObjectWidget(RepaintBoundaryCls->wrapAll(children)) {
     {
         assert(delegate != nullptr);
         assert(clipBehavior != nullptr);
@@ -1112,7 +1112,7 @@ void FlowCls::updateRenderObject(BuildContext context, RenderFlow renderObject) 
     renderObject->clipBehavior = clipBehavior;
 }
 
-RichTextCls::RichTextCls(Unknown key, Locale locale, int maxLines, TextOverflow overflow, Color selectionColor, SelectionRegistrar selectionRegistrar, bool softWrap, StrutStyle strutStyle, InlineSpan text, TextAlign textAlign, TextDirection textDirection, TextHeightBehavior textHeightBehavior, double textScaleFactor, TextWidthBasis textWidthBasis) {
+RichTextCls::RichTextCls(Unknown key, Locale locale, int maxLines, TextOverflow overflow, Color selectionColor, SelectionRegistrar selectionRegistrar, bool softWrap, StrutStyle strutStyle, InlineSpan text, TextAlign textAlign, TextDirection textDirection, TextHeightBehavior textHeightBehavior, double textScaleFactor, TextWidthBasis textWidthBasis) : MultiChildRenderObjectWidget(_extractChildren(text)) {
     {
         assert(text != nullptr);
         assert(textAlign != nullptr);
@@ -1127,34 +1127,34 @@ RichTextCls::RichTextCls(Unknown key, Locale locale, int maxLines, TextOverflow 
 
 RenderParagraph RichTextCls::createRenderObject(BuildContext context) {
     assert(textDirection != nullptr || debugCheckHasDirectionality(context));
-    return make<RenderParagraphCls>(texttextAlign, textDirection ?? DirectionalityCls->of(context), softWrap, overflow, textScaleFactor, maxLines, strutStyle, textWidthBasis, textHeightBehavior, locale ?? LocalizationsCls->maybeLocaleOf(context), selectionRegistrar, selectionColor);
+    return make<RenderParagraphCls>(texttextAlign, textDirection or DirectionalityCls->of(context), softWrap, overflow, textScaleFactor, maxLines, strutStyle, textWidthBasis, textHeightBehavior, locale or LocalizationsCls->maybeLocaleOf(context), selectionRegistrar, selectionColor);
 }
 
 void RichTextCls::updateRenderObject(BuildContext context, RenderParagraph renderObject) {
     assert(textDirection != nullptr || debugCheckHasDirectionality(context));
-    auto _c1 = renderObject;_c1.text = auto _c2 = text;_c2.textAlign = auto _c3 = textAlign;_c3.textDirection = auto _c4 = textDirection ?? DirectionalityCls->of(context);_c4.softWrap = auto _c5 = softWrap;_c5.overflow = auto _c6 = overflow;_c6.textScaleFactor = auto _c7 = textScaleFactor;_c7.maxLines = auto _c8 = maxLines;_c8.strutStyle = auto _c9 = strutStyle;_c9.textWidthBasis = auto _c10 = textWidthBasis;_c10.textHeightBehavior = auto _c11 = textHeightBehavior;_c11.locale = auto _c12 = locale ?? LocalizationsCls->maybeLocaleOf(context);_c12.registrar = auto _c13 = selectionRegistrar;_c13.selectionColor = selectionColor;_c13;_c12;_c11;_c10;_c9;_c8;_c7;_c6;_c5;_c4;_c3;_c2;_c1;
+    auto _c1 = renderObject;_c1.text = auto _c2 = text;_c2.textAlign = auto _c3 = textAlign;_c3.textDirection = auto _c4 = textDirection or DirectionalityCls->of(context);_c4.softWrap = auto _c5 = softWrap;_c5.overflow = auto _c6 = overflow;_c6.textScaleFactor = auto _c7 = textScaleFactor;_c7.maxLines = auto _c8 = maxLines;_c8.strutStyle = auto _c9 = strutStyle;_c9.textWidthBasis = auto _c10 = textWidthBasis;_c10.textHeightBehavior = auto _c11 = textHeightBehavior;_c11.locale = auto _c12 = locale or LocalizationsCls->maybeLocaleOf(context);_c12.registrar = auto _c13 = selectionRegistrar;_c13.selectionColor = selectionColor;_c13;_c12;_c11;_c10;_c9;_c8;_c7;_c6;_c5;_c4;_c3;_c2;_c1;
 }
 
 void RichTextCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<TextAlign>make<EnumPropertyCls>("textAlign", textAlignTextAlignCls::start));
-    properties->add(<TextDirection>make<EnumPropertyCls>("textDirection", textDirectionnullptr));
-    properties->add(make<FlagPropertyCls>("softWrap"softWrap, "wrapping at box width", "no wrapping except at line break characters", true));
-    properties->add(<TextOverflow>make<EnumPropertyCls>("overflow", overflowTextOverflowCls::clip));
-    properties->add(make<DoublePropertyCls>("textScaleFactor", textScaleFactor1.0));
-    properties->add(make<IntPropertyCls>("maxLines", maxLines"unlimited"));
-    properties->add(<TextWidthBasis>make<EnumPropertyCls>("textWidthBasis", textWidthBasisTextWidthBasisCls::parent));
-    properties->add(make<StringPropertyCls>("text", text->toPlainText()));
-    properties->add(<Locale>make<DiagnosticsPropertyCls>("locale", localenullptr));
-    properties->add(<StrutStyle>make<DiagnosticsPropertyCls>("strutStyle", strutStylenullptr));
-    properties->add(<TextHeightBehavior>make<DiagnosticsPropertyCls>("textHeightBehavior", textHeightBehaviornullptr));
+    properties->add(<TextAlign>make<EnumPropertyCls>(__s("textAlign"), textAlignTextAlignCls::start));
+    properties->add(<TextDirection>make<EnumPropertyCls>(__s("textDirection"), textDirectionnullptr));
+    properties->add(make<FlagPropertyCls>(__s("softWrap")softWrap, __s("wrapping at box width"), __s("no wrapping except at line break characters"), true));
+    properties->add(<TextOverflow>make<EnumPropertyCls>(__s("overflow"), overflowTextOverflowCls::clip));
+    properties->add(make<DoublePropertyCls>(__s("textScaleFactor"), textScaleFactor1.0));
+    properties->add(make<IntPropertyCls>(__s("maxLines"), maxLines__s("unlimited")));
+    properties->add(<TextWidthBasis>make<EnumPropertyCls>(__s("textWidthBasis"), textWidthBasisTextWidthBasisCls::parent));
+    properties->add(make<StringPropertyCls>(__s("text"), text->toPlainText()));
+    properties->add(<Locale>make<DiagnosticsPropertyCls>(__s("locale"), localenullptr));
+    properties->add(<StrutStyle>make<DiagnosticsPropertyCls>(__s("strutStyle"), strutStylenullptr));
+    properties->add(<TextHeightBehavior>make<DiagnosticsPropertyCls>(__s("textHeightBehavior"), textHeightBehaviornullptr));
 }
 
 List<Widget> RichTextCls::_extractChildren(InlineSpan span) {
     int index = 0;
     List<Widget> result = makeList();
     span->visitChildren([=] (InlineSpan span) {
-        if (span is WidgetSpan) {
+        if (is<WidgetSpan>(span)) {
             result->add(make<SemanticsCls>(make<PlaceholderSpanIndexSemanticsTagCls>(index++), span->child));
         }
         return true;
@@ -1173,14 +1173,14 @@ RawImageCls::RawImageCls(AlignmentGeometry alignment, Rect centerSlice, Color co
 }
 
 RenderImage RawImageCls::createRenderObject(BuildContext context) {
-    assert((!matchTextDirection && alignment is Alignment) || debugCheckHasDirectionality(context));
-    assert(image?->debugGetOpenHandleStackTraces()?->isNotEmpty ?? true, "Creator of a RawImage disposed of the image when the RawImage still needed it.");
-    return make<RenderImageCls>(image?->clone(), debugImageLabel, width, height, scale, color, opacity, colorBlendMode, fit, alignment, repeat, centerSlice, matchTextDirection, matchTextDirection || alignment is! Alignment? DirectionalityCls->of(context) : nullptr, invertColors, isAntiAlias, filterQuality);
+    assert((!matchTextDirection && is<Alignment>(alignment)) || debugCheckHasDirectionality(context));
+    assert(image?->debugGetOpenHandleStackTraces()?->isNotEmpty or true, __s("Creator of a RawImage disposed of the image when the RawImage still needed it."));
+    return make<RenderImageCls>(image?->clone(), debugImageLabel, width, height, scale, color, opacity, colorBlendMode, fit, alignment, repeat, centerSlice, matchTextDirection, matchTextDirection || !is<Alignment>(alignment)? DirectionalityCls->of(context) : nullptr, invertColors, isAntiAlias, filterQuality);
 }
 
 void RawImageCls::updateRenderObject(BuildContext context, RenderImage renderObject) {
-    assert(image?->debugGetOpenHandleStackTraces()?->isNotEmpty ?? true, "Creator of a RawImage disposed of the image when the RawImage still needed it.");
-    auto _c1 = renderObject;_c1.image = auto _c2 = image?->clone();_c2.debugImageLabel = auto _c3 = debugImageLabel;_c3.width = auto _c4 = width;_c4.height = auto _c5 = height;_c5.scale = auto _c6 = scale;_c6.color = auto _c7 = color;_c7.opacity = auto _c8 = opacity;_c8.colorBlendMode = auto _c9 = colorBlendMode;_c9.fit = auto _c10 = fit;_c10.alignment = auto _c11 = alignment;_c11.repeat = auto _c12 = repeat;_c12.centerSlice = auto _c13 = centerSlice;_c13.matchTextDirection = auto _c14 = matchTextDirection;_c14.textDirection = matchTextDirection || alignment is! Alignment? DirectionalityCls->of(context) : auto _c15 = nullptr;_c15.invertColors = auto _c16 = invertColors;_c16.isAntiAlias = auto _c17 = isAntiAlias;_c17.filterQuality = filterQuality;_c17;_c16;_c15;_c14;_c13;_c12;_c11;_c10;_c9;_c8;_c7;_c6;_c5;_c4;_c3;_c2;_c1;
+    assert(image?->debugGetOpenHandleStackTraces()?->isNotEmpty or true, __s("Creator of a RawImage disposed of the image when the RawImage still needed it."));
+    auto _c1 = renderObject;_c1.image = auto _c2 = image?->clone();_c2.debugImageLabel = auto _c3 = debugImageLabel;_c3.width = auto _c4 = width;_c4.height = auto _c5 = height;_c5.scale = auto _c6 = scale;_c6.color = auto _c7 = color;_c7.opacity = auto _c8 = opacity;_c8.colorBlendMode = auto _c9 = colorBlendMode;_c9.fit = auto _c10 = fit;_c10.alignment = auto _c11 = alignment;_c11.repeat = auto _c12 = repeat;_c12.centerSlice = auto _c13 = centerSlice;_c13.matchTextDirection = auto _c14 = matchTextDirection;_c14.textDirection = matchTextDirection || !is<Alignment>(alignment)? DirectionalityCls->of(context) : auto _c15 = nullptr;_c15.invertColors = auto _c16 = invertColors;_c16.isAntiAlias = auto _c17 = isAntiAlias;_c17.filterQuality = filterQuality;_c17;_c16;_c15;_c14;_c13;_c12;_c11;_c10;_c9;_c8;_c7;_c6;_c5;_c4;_c3;_c2;_c1;
 }
 
 void RawImageCls::didUnmountRenderObject(RenderImage renderObject) {
@@ -1189,20 +1189,20 @@ void RawImageCls::didUnmountRenderObject(RenderImage renderObject) {
 
 void RawImageCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<Image>make<DiagnosticsPropertyCls>("image", image));
-    properties->add(make<DoublePropertyCls>("width", widthnullptr));
-    properties->add(make<DoublePropertyCls>("height", heightnullptr));
-    properties->add(make<DoublePropertyCls>("scale", scale1.0));
-    properties->add(make<ColorPropertyCls>("color", colornullptr));
-    properties->add(<Animation<double>>make<DiagnosticsPropertyCls>("opacity", opacitynullptr));
-    properties->add(<BlendMode>make<EnumPropertyCls>("colorBlendMode", colorBlendModenullptr));
-    properties->add(<BoxFit>make<EnumPropertyCls>("fit", fitnullptr));
-    properties->add(<AlignmentGeometry>make<DiagnosticsPropertyCls>("alignment", alignmentnullptr));
-    properties->add(<ImageRepeat>make<EnumPropertyCls>("repeat", repeatImageRepeatCls::noRepeat));
-    properties->add(<Rect>make<DiagnosticsPropertyCls>("centerSlice", centerSlicenullptr));
-    properties->add(make<FlagPropertyCls>("matchTextDirection"matchTextDirection, "match text direction"));
-    properties->add(<bool>make<DiagnosticsPropertyCls>("invertColors", invertColors));
-    properties->add(<FilterQuality>make<EnumPropertyCls>("filterQuality", filterQuality));
+    properties->add(<Image>make<DiagnosticsPropertyCls>(__s("image"), image));
+    properties->add(make<DoublePropertyCls>(__s("width"), widthnullptr));
+    properties->add(make<DoublePropertyCls>(__s("height"), heightnullptr));
+    properties->add(make<DoublePropertyCls>(__s("scale"), scale1.0));
+    properties->add(make<ColorPropertyCls>(__s("color"), colornullptr));
+    properties->add(<Animation<double>>make<DiagnosticsPropertyCls>(__s("opacity"), opacitynullptr));
+    properties->add(<BlendMode>make<EnumPropertyCls>(__s("colorBlendMode"), colorBlendModenullptr));
+    properties->add(<BoxFit>make<EnumPropertyCls>(__s("fit"), fitnullptr));
+    properties->add(<AlignmentGeometry>make<DiagnosticsPropertyCls>(__s("alignment"), alignmentnullptr));
+    properties->add(<ImageRepeat>make<EnumPropertyCls>(__s("repeat"), repeatImageRepeatCls::noRepeat));
+    properties->add(<Rect>make<DiagnosticsPropertyCls>(__s("centerSlice"), centerSlicenullptr));
+    properties->add(make<FlagPropertyCls>(__s("matchTextDirection")matchTextDirection, __s("match text direction")));
+    properties->add(<bool>make<DiagnosticsPropertyCls>(__s("invertColors"), invertColors));
+    properties->add(<FilterQuality>make<EnumPropertyCls>(__s("filterQuality"), filterQuality));
 }
 
 DefaultAssetBundleCls::DefaultAssetBundleCls(AssetBundle bundle, Unknown child, Unknown key) {
@@ -1214,14 +1214,14 @@ DefaultAssetBundleCls::DefaultAssetBundleCls(AssetBundle bundle, Unknown child, 
 
 AssetBundle DefaultAssetBundleCls::of(BuildContext context) {
     DefaultAssetBundle result = context-><DefaultAssetBundle>dependOnInheritedWidgetOfExactType();
-    return result?->bundle ?? rootBundle;
+    return result?->bundle or rootBundle;
 }
 
 bool DefaultAssetBundleCls::updateShouldNotify(DefaultAssetBundle oldWidget) {
     return bundle != oldWidget->bundle;
 }
 
-WidgetToRenderBoxAdapterCls::WidgetToRenderBoxAdapterCls(VoidCallback onBuild, VoidCallback onUnmount, RenderBox renderBox) {
+WidgetToRenderBoxAdapterCls::WidgetToRenderBoxAdapterCls(VoidCallback onBuild, VoidCallback onUnmount, RenderBox renderBox) : LeafRenderObjectWidget(make<GlobalObjectKeyCls>(renderBox)) {
     {
         assert(renderBox != nullptr);
     }
@@ -1257,8 +1257,8 @@ void ListenerCls::updateRenderObject(BuildContext context, RenderPointerListener
 void ListenerCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
     List<String> list1 = make<ListCls<>>();if (onPointerDown != nullptr) {    list1.add(ArrayItem);}if (onPointerMove != nullptr) {    list1.add(ArrayItem);}if (onPointerUp != nullptr) {    list1.add(ArrayItem);}if (onPointerHover != nullptr) {    list1.add(ArrayItem);}if (onPointerCancel != nullptr) {    list1.add(ArrayItem);}if (onPointerPanZoomStart != nullptr) {    list1.add(ArrayItem);}if (onPointerPanZoomUpdate != nullptr) {    list1.add(ArrayItem);}if (onPointerPanZoomEnd != nullptr) {    list1.add(ArrayItem);}if (onPointerSignal != nullptr) {    list1.add(ArrayItem);}List<String> listeners = list1;
-    properties->add(<String>make<IterablePropertyCls>("listeners", listeners"<none>"));
-    properties->add(<HitTestBehavior>make<EnumPropertyCls>("behavior", behavior));
+    properties->add(<String>make<IterablePropertyCls>(__s("listeners"), listeners__s("<none>")));
+    properties->add(<HitTestBehavior>make<EnumPropertyCls>(__s("behavior"), behavior));
 }
 
 MouseRegionCls::MouseRegionCls(Unknown child, MouseCursor cursor, HitTestBehavior hitTestBehavior, Unknown key, PointerEnterEventListener onEnter, PointerExitEventListener onExit, PointerHoverEventListener onHover, bool opaque) {
@@ -1280,17 +1280,17 @@ void MouseRegionCls::debugFillProperties(DiagnosticPropertiesBuilder properties)
     super->debugFillProperties(properties);
     List<String> listeners = makeList();
     if (onEnter != nullptr) {
-        listeners->add("enter");
+        listeners->add(__s("enter"));
     }
     if (onExit != nullptr) {
-        listeners->add("exit");
+        listeners->add(__s("exit"));
     }
     if (onHover != nullptr) {
-        listeners->add("hover");
+        listeners->add(__s("hover"));
     }
-    properties->add(<String>make<IterablePropertyCls>("listeners", listeners"<none>"));
-    properties->add(<MouseCursor>make<DiagnosticsPropertyCls>("cursor", cursornullptr));
-    properties->add(<bool>make<DiagnosticsPropertyCls>("opaque", opaquetrue));
+    properties->add(<String>make<IterablePropertyCls>(__s("listeners"), listeners__s("<none>")));
+    properties->add(<MouseCursor>make<DiagnosticsPropertyCls>(__s("cursor"), cursornullptr));
+    properties->add(<bool>make<DiagnosticsPropertyCls>(__s("opaque"), opaquetrue));
 }
 
 void RepaintBoundaryCls::wrap(Widget child, int childIndex) {
@@ -1323,8 +1323,8 @@ void IgnorePointerCls::updateRenderObject(BuildContext context, RenderIgnorePoin
 
 void IgnorePointerCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<bool>make<DiagnosticsPropertyCls>("ignoring", ignoring));
-    properties->add(<bool>make<DiagnosticsPropertyCls>("ignoringSemantics", ignoringSemanticsnullptr));
+    properties->add(<bool>make<DiagnosticsPropertyCls>(__s("ignoring"), ignoring));
+    properties->add(<bool>make<DiagnosticsPropertyCls>(__s("ignoringSemantics"), ignoringSemanticsnullptr));
 }
 
 AbsorbPointerCls::AbsorbPointerCls(bool absorbing, Unknown child, bool ignoringSemantics, Unknown key) {
@@ -1343,8 +1343,8 @@ void AbsorbPointerCls::updateRenderObject(BuildContext context, RenderAbsorbPoin
 
 void AbsorbPointerCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<bool>make<DiagnosticsPropertyCls>("absorbing", absorbing));
-    properties->add(<bool>make<DiagnosticsPropertyCls>("ignoringSemantics", ignoringSemanticsnullptr));
+    properties->add(<bool>make<DiagnosticsPropertyCls>(__s("absorbing"), absorbing));
+    properties->add(<bool>make<DiagnosticsPropertyCls>(__s("ignoringSemantics"), ignoringSemanticsnullptr));
 }
 
 RenderMetaData MetaDataCls::createRenderObject(BuildContext context) {
@@ -1357,8 +1357,8 @@ void MetaDataCls::updateRenderObject(BuildContext context, RenderMetaData render
 
 void MetaDataCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<HitTestBehavior>make<EnumPropertyCls>("behavior", behavior));
-    properties->add(<dynamic>make<DiagnosticsPropertyCls>("metaData", metaData));
+    properties->add(<HitTestBehavior>make<EnumPropertyCls>(__s("behavior"), behavior));
+    properties->add(<dynamic>make<DiagnosticsPropertyCls>(__s("metaData"), metaData));
 }
 
 SemanticsCls::SemanticsCls(AttributedString attributedDecreasedValue, AttributedString attributedHint, AttributedString attributedIncreasedValue, AttributedString attributedLabel, AttributedString attributedValue, bool button, bool checked, Widget child, bool container, int currentValueLength, Map<CustomSemanticsAction, VoidCallback> customSemanticsActions, String decreasedValue, bool enabled, bool excludeSemantics, bool explicitChildNodes, bool focusable, bool focused, bool header, bool hidden, String hint, bool image, bool inMutuallyExclusiveGroup, String increasedValue, Key key, bool keyboardKey, String label, bool link, bool liveRegion, int maxValueLength, bool multiline, bool namesRoute, bool obscured, VoidCallback onCopy, VoidCallback onCut, VoidCallback onDecrease, VoidCallback onDidGainAccessibilityFocus, VoidCallback onDidLoseAccessibilityFocus, VoidCallback onDismiss, VoidCallback onIncrease, VoidCallback onLongPress, String onLongPressHint, MoveCursorHandler onMoveCursorBackwardByCharacter, MoveCursorHandler onMoveCursorForwardByCharacter, VoidCallback onPaste, VoidCallback onScrollDown, VoidCallback onScrollLeft, VoidCallback onScrollRight, VoidCallback onScrollUp, SetSelectionHandler onSetSelection, SetTextHandler onSetText, VoidCallback onTap, String onTapHint, bool readOnly, bool scopesRoute, bool selected, bool slider, SemanticsSortKey sortKey, SemanticsTag tagForChildren, TextDirection textDirection, bool textField, bool toggled, String tooltip, String value) {
@@ -1379,8 +1379,8 @@ void SemanticsCls::updateRenderObject(BuildContext context, RenderSemanticsAnnot
 
 void SemanticsCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<bool>make<DiagnosticsPropertyCls>("container", container));
-    properties->add(<SemanticsProperties>make<DiagnosticsPropertyCls>("properties", this->properties));
+    properties->add(<bool>make<DiagnosticsPropertyCls>(__s("container"), container));
+    properties->add(<SemanticsProperties>make<DiagnosticsPropertyCls>(__s("properties"), this->properties));
     this->properties->debugFillProperties(properties);
 }
 
@@ -1409,7 +1409,7 @@ void BlockSemanticsCls::updateRenderObject(BuildContext context, RenderBlockSema
 
 void BlockSemanticsCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<bool>make<DiagnosticsPropertyCls>("blocking", blocking));
+    properties->add(<bool>make<DiagnosticsPropertyCls>(__s("blocking"), blocking));
 }
 
 ExcludeSemanticsCls::ExcludeSemanticsCls(Unknown child, bool excluding, Unknown key) {
@@ -1428,7 +1428,7 @@ void ExcludeSemanticsCls::updateRenderObject(BuildContext context, RenderExclude
 
 void ExcludeSemanticsCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<bool>make<DiagnosticsPropertyCls>("excluding", excluding));
+    properties->add(<bool>make<DiagnosticsPropertyCls>(__s("excluding"), excluding));
 }
 
 IndexedSemanticsCls::IndexedSemanticsCls(Unknown child, int index, Unknown key) {
@@ -1447,7 +1447,7 @@ void IndexedSemanticsCls::updateRenderObject(BuildContext context, RenderIndexed
 
 void IndexedSemanticsCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<int>make<DiagnosticsPropertyCls>("index", index));
+    properties->add(<int>make<DiagnosticsPropertyCls>(__s("index"), index));
 }
 
 KeyedSubtreeCls::KeyedSubtreeCls(Widget child, Unknown key) {
@@ -1514,12 +1514,12 @@ RenderObject ColoredBoxCls::createRenderObject(BuildContext context) {
 }
 
 void ColoredBoxCls::updateRenderObject(BuildContext context, RenderObject renderObject) {
-    (((_RenderColoredBox)renderObject))->color = color;
+    (as<_RenderColoredBox>(renderObject))->color = color;
 }
 
 void ColoredBoxCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<Color>make<DiagnosticsPropertyCls>("color", color));
+    properties->add(<Color>make<DiagnosticsPropertyCls>(__s("color"), color));
 }
 
 Color _RenderColoredBoxCls::color() {
@@ -1537,15 +1537,15 @@ void _RenderColoredBoxCls::color(Color value) {
 
 void _RenderColoredBoxCls::paint(PaintingContext context, Offset offset) {
     if (size > SizeCls::zero) {
-            auto _c1 = make<PaintCls>();    _c1.color = color;context->canvas->drawRect(offset & size, _c1);
+            auto _c1 = make<PaintCls>();    _c1.color() = color();context->canvas->drawRect(offset & size, _c1);
     }
     if (child != nullptr) {
         context->paintChild(child!, offset);
     }
 }
 
-_RenderColoredBoxCls::_RenderColoredBoxCls(Color color) {
+_RenderColoredBoxCls::_RenderColoredBoxCls(Color color) : RenderProxyBoxWithHitTestBehavior(HitTestBehaviorCls::opaque) {
     {
-        _color = color;
+        _color = color();
     }
 }

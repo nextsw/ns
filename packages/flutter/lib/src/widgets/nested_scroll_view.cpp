@@ -12,7 +12,7 @@ NestedScrollViewCls::NestedScrollViewCls(Widget body, Clip clipBehavior, ScrollC
 
 SliverOverlapAbsorberHandle NestedScrollViewCls::sliverOverlapAbsorberHandleFor(BuildContext context) {
     _InheritedNestedScrollView target = context-><_InheritedNestedScrollView>dependOnInheritedWidgetOfExactType();
-    assert(target != nullptr, "NestedScrollView.sliverOverlapAbsorberHandleFor must be called with a context that contains a NestedScrollView.");
+    assert(target != nullptr, __s("NestedScrollView.sliverOverlapAbsorberHandleFor must be called with a context that contains a NestedScrollView."));
     return target!->state->_absorberHandle;
 }
 
@@ -56,10 +56,10 @@ void NestedScrollViewStateCls::dispose() {
 }
 
 Widget NestedScrollViewStateCls::build(BuildContext context) {
-    ScrollPhysics scrollPhysics = widget->physics?->applyTo(make<ClampingScrollPhysicsCls>()) ?? widget->scrollBehavior?->getScrollPhysics(context)->applyTo(make<ClampingScrollPhysicsCls>()) ?? make<ClampingScrollPhysicsCls>();
+    ScrollPhysics scrollPhysics = widget->physics?->applyTo(make<ClampingScrollPhysicsCls>()) or widget->scrollBehavior?->getScrollPhysics(context)->applyTo(make<ClampingScrollPhysicsCls>()) or make<ClampingScrollPhysicsCls>();
     return make<_InheritedNestedScrollViewCls>(this, make<BuilderCls>([=] (BuildContext context) {
-        _lastHasScrolledBody = _coordinator!->hasScrolledBody;
-        return make<_NestedScrollViewCustomScrollViewCls>(widget->dragStartBehavior, widget->scrollDirection, widget->reverse, scrollPhysics, widget->scrollBehavior ?? ScrollConfigurationCls->of(context)->copyWith(false), _coordinator!->_outerController, widget->_buildSlivers(context, _coordinator!->_innerController, _lastHasScrolledBody!), _absorberHandle, widget->clipBehavior, widget->restorationId);
+        _lastHasScrolledBody = _coordinator!->hasScrolledBody();
+        return make<_NestedScrollViewCustomScrollViewCls>(widget->dragStartBehavior, widget->scrollDirection, widget->reverse, scrollPhysics, widget->scrollBehavior or ScrollConfigurationCls->of(context)->copyWith(false), _coordinator!->_outerController, widget->_buildSlivers(context, _coordinator!->_innerController, _lastHasScrolledBody!), _absorberHandle, widget->clipBehavior, widget->restorationId);
     }));
 }
 
@@ -67,7 +67,7 @@ void NestedScrollViewStateCls::_handleHasScrolledBodyChanged() {
     if (!mounted) {
         return;
     }
-    bool newHasScrolledBody = _coordinator!->hasScrolledBody;
+    bool newHasScrolledBody = _coordinator!->hasScrolledBody();
     if (_lastHasScrolledBody != newHasScrolledBody) {
         setState([=] () {
         });
@@ -91,11 +91,11 @@ _InheritedNestedScrollViewCls::_InheritedNestedScrollViewCls(Unknown child, Nest
 }
 
 _NestedScrollMetrics _NestedScrollMetricsCls::copyWith(AxisDirection axisDirection, double correctionOffset, double maxRange, double maxScrollExtent, double minRange, double minScrollExtent, double pixels, double viewportDimension) {
-    return make<_NestedScrollMetricsCls>(minScrollExtent ?? (hasContentDimensions? this->minScrollExtent : nullptr), maxScrollExtent ?? (hasContentDimensions? this->maxScrollExtent : nullptr), pixels ?? (hasPixels? this->pixels : nullptr), viewportDimension ?? (hasViewportDimension? this->viewportDimension : nullptr), axisDirection ?? this->axisDirection, minRange ?? this->minRange, maxRange ?? this->maxRange, correctionOffset ?? this->correctionOffset);
+    return make<_NestedScrollMetricsCls>(minScrollExtent or (hasContentDimensions? this->minScrollExtent : nullptr), maxScrollExtent or (hasContentDimensions? this->maxScrollExtent : nullptr), pixels or (hasPixels? this->pixels : nullptr), viewportDimension or (hasViewportDimension? this->viewportDimension : nullptr), axisDirection or this->axisDirection, minRange or this->minRange, maxRange or this->maxRange, correctionOffset or this->correctionOffset);
 }
 
 bool _NestedScrollCoordinatorCls::canScrollBody() {
-    _NestedScrollPosition outer = _outerPosition;
+    _NestedScrollPosition outer = _outerPosition();
     if (outer == nullptr) {
         return true;
     }
@@ -103,7 +103,7 @@ bool _NestedScrollCoordinatorCls::canScrollBody() {
 }
 
 bool _NestedScrollCoordinatorCls::hasScrolledBody() {
-    for (_NestedScrollPosition position : _innerPositions) {
+    for (_NestedScrollPosition position : _innerPositions()) {
         if (!position->hasContentDimensions || !position->hasPixels) {
             continue;
         } else         {
@@ -125,20 +125,20 @@ ScrollDirection _NestedScrollCoordinatorCls::userScrollDirection() {
 
 void _NestedScrollCoordinatorCls::updateUserScrollDirection(ScrollDirection value) {
     assert(value != nullptr);
-    if (userScrollDirection == value) {
+    if (userScrollDirection() == value) {
         return;
     }
     _userScrollDirection = value;
-    _outerPosition!->didUpdateScrollDirection(value);
-    for (_NestedScrollPosition position : _innerPositions) {
+    _outerPosition()!->didUpdateScrollDirection(value);
+    for (_NestedScrollPosition position : _innerPositions()) {
         position->didUpdateScrollDirection(value);
     }
 }
 
 void _NestedScrollCoordinatorCls::beginActivity(_NestedScrollActivityGetter innerActivityGetter, ScrollActivity newOuterActivity) {
-    _outerPosition!->beginActivity(newOuterActivity);
+    _outerPosition()!->beginActivity(newOuterActivity);
     bool scrolling = newOuterActivity->isScrolling;
-    for (_NestedScrollPosition position : _innerPositions) {
+    for (_NestedScrollPosition position : _innerPositions()) {
         ScrollActivity newInnerActivity = innerActivityGetter(position);
         position->beginActivity(newInnerActivity);
         scrolling = scrolling && newInnerActivity->isScrolling;
@@ -151,11 +151,11 @@ void _NestedScrollCoordinatorCls::beginActivity(_NestedScrollActivityGetter inne
 }
 
 AxisDirection _NestedScrollCoordinatorCls::axisDirection() {
-    return _outerPosition!->axisDirection;
+    return _outerPosition()!->axisDirection();
 }
 
 void _NestedScrollCoordinatorCls::goIdle() {
-    beginActivity(_createIdleScrollActivity(_outerPosition!), _createIdleScrollActivity);
+    beginActivity(_createIdleScrollActivity(_outerPosition()!), _createIdleScrollActivity);
 }
 
 void _NestedScrollCoordinatorCls::goBallistic(double velocity) {
@@ -167,7 +167,7 @@ void _NestedScrollCoordinatorCls::goBallistic(double velocity) {
 ScrollActivity _NestedScrollCoordinatorCls::createOuterBallisticScrollActivity(double velocity) {
     _NestedScrollPosition innerPosition;
     if (velocity != 0.0) {
-        for (_NestedScrollPosition position : _innerPositions) {
+        for (_NestedScrollPosition position : _innerPositions()) {
             if (innerPosition != nullptr) {
                 if (velocity > 0.0) {
                     if (innerPosition->pixels < position->pixels) {
@@ -184,10 +184,10 @@ ScrollActivity _NestedScrollCoordinatorCls::createOuterBallisticScrollActivity(d
         }
     }
     if (innerPosition == nullptr) {
-        return _outerPosition!->createBallisticScrollActivity(_outerPosition!->physics->createBallisticSimulation(_outerPosition!, velocity)_NestedBallisticScrollActivityModeCls::independent);
+        return _outerPosition()!->createBallisticScrollActivity(_outerPosition()!->physics->createBallisticSimulation(_outerPosition()!, velocity)_NestedBallisticScrollActivityModeCls::independent);
     }
     _NestedScrollMetrics metrics = _getMetrics(innerPosition, velocity);
-    return _outerPosition!->createBallisticScrollActivity(_outerPosition!->physics->createBallisticSimulation(metrics, velocity)_NestedBallisticScrollActivityModeCls::outer, metrics);
+    return _outerPosition()!->createBallisticScrollActivity(_outerPosition()!->physics->createBallisticSimulation(metrics, velocity)_NestedBallisticScrollActivityModeCls::outer, metrics);
 }
 
 ScrollActivity _NestedScrollCoordinatorCls::createInnerBallisticScrollActivity(_NestedScrollPosition position, double velocity) {
@@ -195,44 +195,44 @@ ScrollActivity _NestedScrollCoordinatorCls::createInnerBallisticScrollActivity(_
 }
 
 double _NestedScrollCoordinatorCls::unnestOffset(_NestedScrollPosition source, double value) {
-    if (source == _outerPosition) {
-        return clampDouble(value, _outerPosition!->minScrollExtent, _outerPosition!->maxScrollExtent);
+    if (source == _outerPosition()) {
+        return clampDouble(value, _outerPosition()!->minScrollExtent, _outerPosition()!->maxScrollExtent);
     }
     if ( < source->minScrollExtent) {
-        return value - source->minScrollExtent + _outerPosition!->minScrollExtent;
+        return value - source->minScrollExtent + _outerPosition()!->minScrollExtent;
     }
-    return value - source->minScrollExtent + _outerPosition!->maxScrollExtent;
+    return value - source->minScrollExtent + _outerPosition()!->maxScrollExtent;
 }
 
 double _NestedScrollCoordinatorCls::nestOffset(_NestedScrollPosition target, double value) {
-    if (target == _outerPosition) {
-        return clampDouble(value, _outerPosition!->minScrollExtent, _outerPosition!->maxScrollExtent);
+    if (target == _outerPosition()) {
+        return clampDouble(value, _outerPosition()!->minScrollExtent, _outerPosition()!->maxScrollExtent);
     }
-    if ( < _outerPosition!->minScrollExtent) {
-        return value - _outerPosition!->minScrollExtent + target->minScrollExtent;
+    if ( < _outerPosition()!->minScrollExtent) {
+        return value - _outerPosition()!->minScrollExtent + target->minScrollExtent;
     }
-    if (value > _outerPosition!->maxScrollExtent) {
-        return value - _outerPosition!->maxScrollExtent + target->minScrollExtent;
+    if (value > _outerPosition()!->maxScrollExtent) {
+        return value - _outerPosition()!->maxScrollExtent + target->minScrollExtent;
     }
     return target->minScrollExtent;
 }
 
 void _NestedScrollCoordinatorCls::updateCanDrag() {
-    if (!_outerPosition!->haveDimensions) {
+    if (!_outerPosition()!->haveDimensions) {
         return;
     }
     double maxInnerExtent = 0.0;
-    for (_NestedScrollPosition position : _innerPositions) {
+    for (_NestedScrollPosition position : _innerPositions()) {
         if (!position->haveDimensions) {
             return;
         }
         maxInnerExtent = math->max(maxInnerExtent, position->maxScrollExtent - position->minScrollExtent);
     }
-    _outerPosition!->updateCanDrag(maxInnerExtent);
+    _outerPosition()!->updateCanDrag(maxInnerExtent);
 }
 
 Future<void> _NestedScrollCoordinatorCls::animateTo(Curve curve, Duration duration, double to) {
-    DrivenScrollActivity outerActivity = _outerPosition!->createDrivenScrollActivity(nestOffset(to, _outerPosition!), duration, curve);
+    DrivenScrollActivity outerActivity = _outerPosition()!->createDrivenScrollActivity(nestOffset(to, _outerPosition()!), duration, curve);
     List<Future<void>> resultFutures = makeList(ArrayItem);
     beginActivity(outerActivity, [=] (_NestedScrollPosition position) {
         DrivenScrollActivity innerActivity = position->createDrivenScrollActivity(nestOffset(to, position), duration, curve);
@@ -244,8 +244,8 @@ Future<void> _NestedScrollCoordinatorCls::animateTo(Curve curve, Duration durati
 
 void _NestedScrollCoordinatorCls::jumpTo(double to) {
     goIdle();
-    _outerPosition!->localJumpTo(nestOffset(to, _outerPosition!));
-    for (_NestedScrollPosition position : _innerPositions) {
+    _outerPosition()!->localJumpTo(nestOffset(to, _outerPosition()!));
+    for (_NestedScrollPosition position : _innerPositions()) {
         position->localJumpTo(nestOffset(to, position));
     }
     goBallistic(0.0);
@@ -255,27 +255,27 @@ void _NestedScrollCoordinatorCls::pointerScroll(double delta) {
     assert(delta != 0.0);
     goIdle();
     updateUserScrollDirection( < 0.0? ScrollDirectionCls::forward : ScrollDirectionCls::reverse);
-    _outerPosition!->isScrollingNotifier->value = true;
-    _outerPosition!->didStartScroll();
-    for (_NestedScrollPosition position : _innerPositions) {
+    _outerPosition()!->isScrollingNotifier->value = true;
+    _outerPosition()!->didStartScroll();
+    for (_NestedScrollPosition position : _innerPositions()) {
         position->isScrollingNotifier->value = true;
         position->didStartScroll();
     }
-    if (_innerPositions->isEmpty) {
-        _outerPosition!->applyClampedPointerSignalUpdate(delta);
+    if (_innerPositions()->isEmpty()) {
+        _outerPosition()!->applyClampedPointerSignalUpdate(delta);
     } else     {
         if (delta > 0.0) {
         double outerDelta = delta;
-        for (_NestedScrollPosition position : _innerPositions) {
+        for (_NestedScrollPosition position : _innerPositions()) {
             if (position->pixels < 0.0) {
                 double potentialOuterDelta = position->applyClampedPointerSignalUpdate(delta);
                 outerDelta = math->max(outerDelta, potentialOuterDelta);
             }
         }
         if (outerDelta != 0.0) {
-            double innerDelta = _outerPosition!->applyClampedPointerSignalUpdate(outerDelta);
+            double innerDelta = _outerPosition()!->applyClampedPointerSignalUpdate(outerDelta);
             if (innerDelta != 0.0) {
-                for (_NestedScrollPosition position : _innerPositions) {
+                for (_NestedScrollPosition position : _innerPositions()) {
                     position->applyClampedPointerSignalUpdate(innerDelta);
                 }
             }
@@ -283,22 +283,22 @@ void _NestedScrollCoordinatorCls::pointerScroll(double delta) {
     } else {
         double innerDelta = delta;
         if (_floatHeaderSlivers) {
-            innerDelta = _outerPosition!->applyClampedPointerSignalUpdate(delta);
+            innerDelta = _outerPosition()!->applyClampedPointerSignalUpdate(delta);
         }
         if (innerDelta != 0.0) {
             double outerDelta = 0.0;
-            for (_NestedScrollPosition position : _innerPositions) {
+            for (_NestedScrollPosition position : _innerPositions()) {
                 double overscroll = position->applyClampedPointerSignalUpdate(innerDelta);
                 outerDelta = math->min(outerDelta, overscroll);
             }
             if (outerDelta != 0.0) {
-                _outerPosition!->applyClampedPointerSignalUpdate(outerDelta);
+                _outerPosition()!->applyClampedPointerSignalUpdate(outerDelta);
             }
         }
     }
 ;
-    }    _outerPosition!->didEndScroll();
-    for (_NestedScrollPosition position : _innerPositions) {
+    }    _outerPosition()!->didEndScroll();
+    for (_NestedScrollPosition position : _innerPositions()) {
         position->didEndScroll();
     }
     goBallistic(0.0);
@@ -310,7 +310,7 @@ double _NestedScrollCoordinatorCls::setPixels(double newPixels) {
 }
 
 ScrollHoldController _NestedScrollCoordinatorCls::hold(VoidCallback holdCancelCallback) {
-    beginActivity(make<HoldScrollActivityCls>(_outerPosition!, holdCancelCallback), [=] (_NestedScrollPosition position)     {
+    beginActivity(make<HoldScrollActivityCls>(_outerPosition()!, holdCancelCallback), [=] (_NestedScrollPosition position)     {
         make<HoldScrollActivityCls>(position);
     });
     return this;
@@ -322,7 +322,7 @@ void _NestedScrollCoordinatorCls::cancel() {
 
 Drag _NestedScrollCoordinatorCls::drag(DragStartDetails details, VoidCallback dragCancelCallback) {
     ScrollDragController drag = make<ScrollDragControllerCls>(this, details, dragCancelCallback);
-    beginActivity(make<DragScrollActivityCls>(_outerPosition!, drag), [=] (_NestedScrollPosition position)     {
+    beginActivity(make<DragScrollActivityCls>(_outerPosition()!, drag), [=] (_NestedScrollPosition position)     {
         make<DragScrollActivityCls>(position, drag);
     });
     assert(_currentDrag == nullptr);
@@ -333,21 +333,21 @@ Drag _NestedScrollCoordinatorCls::drag(DragStartDetails details, VoidCallback dr
 void _NestedScrollCoordinatorCls::applyUserOffset(double delta) {
     updateUserScrollDirection(delta > 0.0? ScrollDirectionCls::forward : ScrollDirectionCls::reverse);
     assert(delta != 0.0);
-    if (_innerPositions->isEmpty) {
-        _outerPosition!->applyFullDragUpdate(delta);
+    if (_innerPositions()->isEmpty()) {
+        _outerPosition()!->applyFullDragUpdate(delta);
     } else     {
         if ( < 0.0) {
         double outerDelta = delta;
-        for (_NestedScrollPosition position : _innerPositions) {
+        for (_NestedScrollPosition position : _innerPositions()) {
             if (position->pixels < 0.0) {
                 double potentialOuterDelta = position->applyClampedDragUpdate(delta);
                 outerDelta = math->max(outerDelta, potentialOuterDelta);
             }
         }
         if (outerDelta != 0.0) {
-            double innerDelta = _outerPosition!->applyClampedDragUpdate(outerDelta);
+            double innerDelta = _outerPosition()!->applyClampedDragUpdate(outerDelta);
             if (innerDelta != 0.0) {
-                for (_NestedScrollPosition position : _innerPositions) {
+                for (_NestedScrollPosition position : _innerPositions()) {
                     position->applyFullDragUpdate(innerDelta);
                 }
             }
@@ -355,19 +355,19 @@ void _NestedScrollCoordinatorCls::applyUserOffset(double delta) {
     } else {
         double innerDelta = delta;
         if (_floatHeaderSlivers) {
-            innerDelta = _outerPosition!->applyClampedDragUpdate(delta);
+            innerDelta = _outerPosition()!->applyClampedDragUpdate(delta);
         }
         if (innerDelta != 0.0) {
             double outerDelta = 0.0;
             List<double> overscrolls = makeList();
-            List<_NestedScrollPosition> innerPositions = _innerPositions->toList();
+            List<_NestedScrollPosition> innerPositions = _innerPositions()->toList();
             for (_NestedScrollPosition position : innerPositions) {
                 double overscroll = position->applyClampedDragUpdate(innerDelta);
                 outerDelta = math->max(outerDelta, overscroll);
                 overscrolls->add(overscroll);
             }
             if (outerDelta != 0.0) {
-                outerDelta = _outerPosition!->applyClampedDragUpdate(outerDelta);
+                outerDelta = _outerPosition()!->applyClampedDragUpdate(outerDelta);
             }
             for (;  < innerPositions->length; ++i) {
                 double remainingDelta = overscrolls[i] - outerDelta;
@@ -386,7 +386,7 @@ void _NestedScrollCoordinatorCls::setParent(ScrollController value) {
 }
 
 void _NestedScrollCoordinatorCls::updateParent() {
-    _outerPosition?->setParent(_parent ?? PrimaryScrollControllerCls->of(_state->context));
+    _outerPosition()?->setParent(_parent or PrimaryScrollControllerCls->of(_state->context));
 }
 
 void _NestedScrollCoordinatorCls::dispose() {
@@ -397,14 +397,14 @@ void _NestedScrollCoordinatorCls::dispose() {
 }
 
 String _NestedScrollCoordinatorCls::toString() {
-    return "${objectRuntimeType(this, '_NestedScrollCoordinator')}(outer=$_outerController; inner=$_innerController)";
+    return __s("${objectRuntimeType(this, '_NestedScrollCoordinator')}(outer=$_outerController; inner=$_innerController)");
 }
 
 _NestedScrollCoordinatorCls::_NestedScrollCoordinatorCls(bool _floatHeaderSlivers, VoidCallback _onHasScrolledBodyChanged, ScrollController _parent, NestedScrollViewState _state) {
     {
-        double initialScrollOffset = _parent?->initialScrollOffset ?? 0.0;
-        _outerController = make<_NestedScrollControllerCls>(thisinitialScrollOffset, "outer");
-        _innerController = make<_NestedScrollControllerCls>(this"inner");
+        double initialScrollOffset = _parent?->initialScrollOffset() or 0.0;
+        _outerController = make<_NestedScrollControllerCls>(thisinitialScrollOffset, __s("outer"));
+        _innerController = make<_NestedScrollControllerCls>(this__s("inner"));
     }
 }
 
@@ -412,11 +412,11 @@ _NestedScrollPosition _NestedScrollCoordinatorCls::_outerPosition() {
     if (!_outerController->hasClients) {
         return nullptr;
     }
-    return _outerController->nestedPositions->single;
+    return _outerController->nestedPositions()->single();
 }
 
 Iterable<_NestedScrollPosition> _NestedScrollCoordinatorCls::_innerPositions() {
-    return _innerController->nestedPositions;
+    return _innerController->nestedPositions();
 }
 
 IdleScrollActivity _NestedScrollCoordinatorCls::_createIdleScrollActivity(_NestedScrollPosition position) {
@@ -428,51 +428,51 @@ _NestedScrollMetrics _NestedScrollCoordinatorCls::_getMetrics(_NestedScrollPosit
     double pixels, minRange, maxRange, correctionOffset;
     double extra = 0.0;
     if (innerPosition->pixels == innerPosition->minScrollExtent) {
-        pixels = clampDouble(_outerPosition!->pixels, _outerPosition!->minScrollExtent, _outerPosition!->maxScrollExtent);
-        minRange = _outerPosition!->minScrollExtent;
-        maxRange = _outerPosition!->maxScrollExtent;
+        pixels = clampDouble(_outerPosition()!->pixels, _outerPosition()!->minScrollExtent, _outerPosition()!->maxScrollExtent);
+        minRange = _outerPosition()!->minScrollExtent;
+        maxRange = _outerPosition()!->maxScrollExtent;
         assert(minRange <= maxRange);
         correctionOffset = 0.0;
     } else {
         assert(innerPosition->pixels != innerPosition->minScrollExtent);
         if (innerPosition->pixels < innerPosition->minScrollExtent) {
-            pixels = innerPosition->pixels - innerPosition->minScrollExtent + _outerPosition!->minScrollExtent;
+            pixels = innerPosition->pixels - innerPosition->minScrollExtent + _outerPosition()!->minScrollExtent;
         } else {
             assert(innerPosition->pixels > innerPosition->minScrollExtent);
-            pixels = innerPosition->pixels - innerPosition->minScrollExtent + _outerPosition!->maxScrollExtent;
+            pixels = innerPosition->pixels - innerPosition->minScrollExtent + _outerPosition()!->maxScrollExtent;
         }
         if ((velocity > 0.0) && (innerPosition->pixels > innerPosition->minScrollExtent)) {
-            extra = _outerPosition!->maxScrollExtent - _outerPosition!->pixels;
+            extra = _outerPosition()!->maxScrollExtent - _outerPosition()!->pixels;
             assert(extra >= 0.0);
             minRange = pixels;
             maxRange = pixels + extra;
             assert(minRange <= maxRange);
-            correctionOffset = _outerPosition!->pixels - pixels;
+            correctionOffset = _outerPosition()!->pixels - pixels;
         } else         {
             if (( < 0.0) && (innerPosition->pixels < innerPosition->minScrollExtent)) {
-            extra = _outerPosition!->pixels - _outerPosition!->minScrollExtent;
+            extra = _outerPosition()!->pixels - _outerPosition()!->minScrollExtent;
             assert(extra >= 0.0);
             minRange = pixels - extra;
             maxRange = pixels;
             assert(minRange <= maxRange);
-            correctionOffset = _outerPosition!->pixels - pixels;
+            correctionOffset = _outerPosition()!->pixels - pixels;
         } else {
             if (velocity > 0.0) {
-                extra = _outerPosition!->minScrollExtent - _outerPosition!->pixels;
+                extra = _outerPosition()!->minScrollExtent - _outerPosition()!->pixels;
             } else             {
                 if ( < 0.0) {
-                extra = _outerPosition!->pixels - (_outerPosition!->maxScrollExtent - _outerPosition!->minScrollExtent);
+                extra = _outerPosition()!->pixels - (_outerPosition()!->maxScrollExtent - _outerPosition()!->minScrollExtent);
             }
 ;
             }            assert(extra <= 0.0);
-            minRange = _outerPosition!->minScrollExtent;
-            maxRange = _outerPosition!->maxScrollExtent + extra;
+            minRange = _outerPosition()!->minScrollExtent;
+            maxRange = _outerPosition()!->maxScrollExtent + extra;
             assert(minRange <= maxRange);
             correctionOffset = 0.0;
         }
 ;
         }    }
-    return make<_NestedScrollMetricsCls>(_outerPosition!->minScrollExtent, _outerPosition!->maxScrollExtent + innerPosition->maxScrollExtent - innerPosition->minScrollExtent + extra, pixels, _outerPosition!->viewportDimension, _outerPosition!->axisDirection, minRange, maxRange, correctionOffset);
+    return make<_NestedScrollMetricsCls>(_outerPosition()!->minScrollExtent, _outerPosition()!->maxScrollExtent + innerPosition->maxScrollExtent - innerPosition->minScrollExtent + extra, pixels, _outerPosition()!->viewportDimension, _outerPosition()!->axisDirection(), minRange, maxRange, correctionOffset);
 }
 
 ScrollPosition _NestedScrollControllerCls::createScrollPosition(ScrollContext context, ScrollPosition oldPosition, ScrollPhysics physics) {
@@ -480,7 +480,7 @@ ScrollPosition _NestedScrollControllerCls::createScrollPosition(ScrollContext co
 }
 
 void _NestedScrollControllerCls::attach(ScrollPosition position) {
-    assert(position is _NestedScrollPosition);
+    assert(is<_NestedScrollPosition>(position));
     super->attach(position);
     coordinator->updateParent();
     coordinator->updateCanDrag();
@@ -489,8 +489,8 @@ void _NestedScrollControllerCls::attach(ScrollPosition position) {
 }
 
 void _NestedScrollControllerCls::detach(ScrollPosition position) {
-    assert(position is _NestedScrollPosition);
-    (((_NestedScrollPosition)position))->setParent(nullptr);
+    assert(is<_NestedScrollPosition>(position));
+    (as<_NestedScrollPosition>(position))->setParent(nullptr);
     position->removeListener(_scheduleUpdateShadow);
     super->detach(position);
     _scheduleUpdateShadow();
@@ -526,7 +526,7 @@ void _NestedScrollPositionCls::absorb(ScrollPosition other) {
 }
 
 void _NestedScrollPositionCls::restoreScrollOffset() {
-    if (coordinator->canScrollBody) {
+    if (coordinator->canScrollBody()) {
         super->restoreScrollOffset();
     }
 }
@@ -586,11 +586,11 @@ double _NestedScrollPositionCls::applyClampedPointerSignalUpdate(double delta) {
 }
 
 ScrollDirection _NestedScrollPositionCls::userScrollDirection() {
-    return coordinator->userScrollDirection;
+    return coordinator->userScrollDirection();
 }
 
 DrivenScrollActivity _NestedScrollPositionCls::createDrivenScrollActivity(Curve curve, Duration duration, double to) {
-    return make<DrivenScrollActivityCls>(thispixels, to, duration, curve, vsync);
+    return make<DrivenScrollActivityCls>(thispixels, to, duration, curve, vsync());
 }
 
 double _NestedScrollPositionCls::applyUserOffset(double delta) {
@@ -675,34 +675,34 @@ _NestedScrollPositionCls::_NestedScrollPositionCls(Unknown context, _NestedScrol
 }
 
 _NestedScrollPosition _NestedInnerBallisticScrollActivityCls::delegate() {
-    return ((_NestedScrollPosition)super->delegate);
+    return as<_NestedScrollPosition>(super->delegate);
 }
 
 void _NestedInnerBallisticScrollActivityCls::resetActivity() {
-    delegate->beginActivity(coordinator->createInnerBallisticScrollActivity(delegate, velocity));
+    delegate()->beginActivity(coordinator->createInnerBallisticScrollActivity(delegate(), velocity));
 }
 
 void _NestedInnerBallisticScrollActivityCls::applyNewDimensions() {
-    delegate->beginActivity(coordinator->createInnerBallisticScrollActivity(delegate, velocity));
+    delegate()->beginActivity(coordinator->createInnerBallisticScrollActivity(delegate(), velocity));
 }
 
 bool _NestedInnerBallisticScrollActivityCls::applyMoveTo(double value) {
-    return super->applyMoveTo(coordinator->nestOffset(value, delegate));
+    return super->applyMoveTo(coordinator->nestOffset(value, delegate()));
 }
 
-_NestedInnerBallisticScrollActivityCls::_NestedInnerBallisticScrollActivityCls(_NestedScrollCoordinator coordinator, _NestedScrollPosition position, Simulation simulation, TickerProvider vsync) {
+_NestedInnerBallisticScrollActivityCls::_NestedInnerBallisticScrollActivityCls(_NestedScrollCoordinator coordinator, _NestedScrollPosition position, Simulation simulation, TickerProvider vsync) : BallisticScrollActivity(position, simulation, vsync) {
 }
 
 _NestedScrollPosition _NestedOuterBallisticScrollActivityCls::delegate() {
-    return ((_NestedScrollPosition)super->delegate);
+    return as<_NestedScrollPosition>(super->delegate);
 }
 
 void _NestedOuterBallisticScrollActivityCls::resetActivity() {
-    delegate->beginActivity(coordinator->createOuterBallisticScrollActivity(velocity));
+    delegate()->beginActivity(coordinator->createOuterBallisticScrollActivity(velocity));
 }
 
 void _NestedOuterBallisticScrollActivityCls::applyNewDimensions() {
-    delegate->beginActivity(coordinator->createOuterBallisticScrollActivity(velocity));
+    delegate()->beginActivity(coordinator->createOuterBallisticScrollActivity(velocity));
 }
 
 bool _NestedOuterBallisticScrollActivityCls::applyMoveTo(double value) {
@@ -735,10 +735,10 @@ bool _NestedOuterBallisticScrollActivityCls::applyMoveTo(double value) {
 }
 
 String _NestedOuterBallisticScrollActivityCls::toString() {
-    return "${objectRuntimeType(this, '_NestedOuterBallisticScrollActivity')}(${metrics.minRange} .. ${metrics.maxRange}; correcting by ${metrics.correctionOffset})";
+    return __s("${objectRuntimeType(this, '_NestedOuterBallisticScrollActivity')}(${metrics.minRange} .. ${metrics.maxRange}; correcting by ${metrics.correctionOffset})");
 }
 
-_NestedOuterBallisticScrollActivityCls::_NestedOuterBallisticScrollActivityCls(_NestedScrollCoordinator coordinator, _NestedScrollMetrics metrics, _NestedScrollPosition position, Simulation simulation, TickerProvider vsync) {
+_NestedOuterBallisticScrollActivityCls::_NestedOuterBallisticScrollActivityCls(_NestedScrollCoordinator coordinator, _NestedScrollMetrics metrics, _NestedScrollPosition position, Simulation simulation, TickerProvider vsync) : BallisticScrollActivity(position, simulation, vsync) {
     {
         assert(metrics->minRange != metrics->maxRange);
         assert(metrics->maxRange > metrics->minRange);
@@ -756,11 +756,11 @@ double SliverOverlapAbsorberHandleCls::scrollExtent() {
 String SliverOverlapAbsorberHandleCls::toString() {
     String extra;
     ;
-    return "${objectRuntimeType(this, 'SliverOverlapAbsorberHandle')}($layoutExtent$extra)";
+    return __s("${objectRuntimeType(this, 'SliverOverlapAbsorberHandle')}($layoutExtent$extra)");
 }
 
 void SliverOverlapAbsorberHandleCls::_setExtents(double layoutValue, double scrollValue) {
-    assert(_writers == 1, "Multiple RenderSliverOverlapAbsorbers have been provided the same SliverOverlapAbsorberHandle.");
+    assert(_writers == 1, __s("Multiple RenderSliverOverlapAbsorbers have been provided the same SliverOverlapAbsorberHandle."));
     _layoutExtent = layoutValue;
     _scrollExtent = scrollValue;
 }
@@ -769,7 +769,7 @@ void SliverOverlapAbsorberHandleCls::_markNeedsLayout() {
     return notifyListeners();
 }
 
-SliverOverlapAbsorberCls::SliverOverlapAbsorberCls(SliverOverlapAbsorberHandle handle, Unknown key, Widget sliver) {
+SliverOverlapAbsorberCls::SliverOverlapAbsorberCls(SliverOverlapAbsorberHandle handle, Unknown key, Widget sliver) : SingleChildRenderObjectWidget(sliver) {
     {
         assert(handle != nullptr);
     }
@@ -785,13 +785,13 @@ void SliverOverlapAbsorberCls::updateRenderObject(BuildContext context, RenderSl
 
 void SliverOverlapAbsorberCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<SliverOverlapAbsorberHandle>make<DiagnosticsPropertyCls>("handle", handle));
+    properties->add(<SliverOverlapAbsorberHandle>make<DiagnosticsPropertyCls>(__s("handle"), handle));
 }
 
 RenderSliverOverlapAbsorberCls::RenderSliverOverlapAbsorberCls(SliverOverlapAbsorberHandle handle, RenderSliver sliver) {
     {
-        assert(handle != nullptr);
-        _handle = handle;
+        assert(handle() != nullptr);
+        _handle = handle();
     }
     {
         child = sliver;
@@ -804,29 +804,29 @@ SliverOverlapAbsorberHandle RenderSliverOverlapAbsorberCls::handle() {
 
 void RenderSliverOverlapAbsorberCls::handle(SliverOverlapAbsorberHandle value) {
     assert(value != nullptr);
-    if (handle == value) {
+    if (handle() == value) {
         return;
     }
     if (attached) {
-        handle->_writers = 1;
+        handle()->_writers = 1;
         value->_writers = 1;
-        value->_setExtents(handle->layoutExtent, handle->scrollExtent);
+        value->_setExtents(handle()->layoutExtent(), handle()->scrollExtent());
     }
     _handle = value;
 }
 
 void RenderSliverOverlapAbsorberCls::attach(PipelineOwner owner) {
     super->attach(owner);
-    handle->_writers = 1;
+    handle()->_writers = 1;
 }
 
 void RenderSliverOverlapAbsorberCls::detach() {
-    handle->_writers = 1;
+    handle()->_writers = 1;
     super->detach();
 }
 
 void RenderSliverOverlapAbsorberCls::performLayout() {
-    assert(handle->_writers == 1, "A SliverOverlapAbsorberHandle cannot be passed to multiple RenderSliverOverlapAbsorber objects at the same time.");
+    assert(handle()->_writers == 1, __s("A SliverOverlapAbsorberHandle cannot be passed to multiple RenderSliverOverlapAbsorber objects at the same time."));
     if (child == nullptr) {
         geometry = SliverGeometryCls::zero;
         return;
@@ -834,7 +834,7 @@ void RenderSliverOverlapAbsorberCls::performLayout() {
     child!->layout(constraintstrue);
     SliverGeometry childLayoutGeometry = child!->geometry!;
     geometry = make<SliverGeometryCls>(childLayoutGeometry->scrollExtent - childLayoutGeometry->maxScrollObstructionExtent, childLayoutGeometry->paintExtent, childLayoutGeometry->paintOrigin, math->max(0, childLayoutGeometry->paintExtent - childLayoutGeometry->maxScrollObstructionExtent), childLayoutGeometry->maxPaintExtent, childLayoutGeometry->maxScrollObstructionExtent, childLayoutGeometry->hitTestExtent, childLayoutGeometry->visible, childLayoutGeometry->hasVisualOverflow, childLayoutGeometry->scrollOffsetCorrection);
-    handle->_setExtents(childLayoutGeometry->maxScrollObstructionExtent, childLayoutGeometry->maxScrollObstructionExtent);
+    handle()->_setExtents(childLayoutGeometry->maxScrollObstructionExtent, childLayoutGeometry->maxScrollObstructionExtent);
 }
 
 void RenderSliverOverlapAbsorberCls::applyPaintTransform(RenderObject child, Matrix4 transform) {
@@ -855,10 +855,10 @@ void RenderSliverOverlapAbsorberCls::paint(PaintingContext context, Offset offse
 
 void RenderSliverOverlapAbsorberCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<SliverOverlapAbsorberHandle>make<DiagnosticsPropertyCls>("handle", handle));
+    properties->add(<SliverOverlapAbsorberHandle>make<DiagnosticsPropertyCls>(__s("handle"), handle()));
 }
 
-SliverOverlapInjectorCls::SliverOverlapInjectorCls(SliverOverlapAbsorberHandle handle, Unknown key, Widget sliver) {
+SliverOverlapInjectorCls::SliverOverlapInjectorCls(SliverOverlapAbsorberHandle handle, Unknown key, Widget sliver) : SingleChildRenderObjectWidget(sliver) {
     {
         assert(handle != nullptr);
     }
@@ -874,13 +874,13 @@ void SliverOverlapInjectorCls::updateRenderObject(BuildContext context, RenderSl
 
 void SliverOverlapInjectorCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<SliverOverlapAbsorberHandle>make<DiagnosticsPropertyCls>("handle", handle));
+    properties->add(<SliverOverlapAbsorberHandle>make<DiagnosticsPropertyCls>(__s("handle"), handle));
 }
 
 RenderSliverOverlapInjectorCls::RenderSliverOverlapInjectorCls(SliverOverlapAbsorberHandle handle) {
     {
-        assert(handle != nullptr);
-        _handle = handle;
+        assert(handle() != nullptr);
+        _handle = handle();
     }
 }
 
@@ -890,16 +890,16 @@ SliverOverlapAbsorberHandle RenderSliverOverlapInjectorCls::handle() {
 
 void RenderSliverOverlapInjectorCls::handle(SliverOverlapAbsorberHandle value) {
     assert(value != nullptr);
-    if (handle == value) {
+    if (handle() == value) {
         return;
     }
     if (attached) {
-        handle->removeListener(markNeedsLayout);
+        handle()->removeListener(markNeedsLayout);
     }
     _handle = value;
     if (attached) {
-        handle->addListener(markNeedsLayout);
-        if (handle->layoutExtent != _currentLayoutExtent || handle->scrollExtent != _currentMaxExtent) {
+        handle()->addListener(markNeedsLayout);
+        if (handle()->layoutExtent() != _currentLayoutExtent || handle()->scrollExtent() != _currentMaxExtent) {
             markNeedsLayout();
         }
     }
@@ -907,20 +907,20 @@ void RenderSliverOverlapInjectorCls::handle(SliverOverlapAbsorberHandle value) {
 
 void RenderSliverOverlapInjectorCls::attach(PipelineOwner owner) {
     super->attach(owner);
-    handle->addListener(markNeedsLayout);
-    if (handle->layoutExtent != _currentLayoutExtent || handle->scrollExtent != _currentMaxExtent) {
+    handle()->addListener(markNeedsLayout);
+    if (handle()->layoutExtent() != _currentLayoutExtent || handle()->scrollExtent() != _currentMaxExtent) {
         markNeedsLayout();
     }
 }
 
 void RenderSliverOverlapInjectorCls::detach() {
-    handle->removeListener(markNeedsLayout);
+    handle()->removeListener(markNeedsLayout);
     super->detach();
 }
 
 void RenderSliverOverlapInjectorCls::performLayout() {
-    _currentLayoutExtent = handle->layoutExtent;
-    _currentMaxExtent = handle->layoutExtent;
+    _currentLayoutExtent = handle()->layoutExtent();
+    _currentMaxExtent = handle()->layoutExtent();
     double clampedLayoutExtent = math->min(_currentLayoutExtent! - constraints->scrollOffset, constraints->remainingPaintExtent);
     geometry = make<SliverGeometryCls>(_currentLayoutExtent!, math->max(0.0, clampedLayoutExtent), _currentMaxExtent!);
 }
@@ -941,7 +941,7 @@ void RenderSliverOverlapInjectorCls::debugPaint(PaintingContext context, Offset 
 
 void RenderSliverOverlapInjectorCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<SliverOverlapAbsorberHandle>make<DiagnosticsPropertyCls>("handle", handle));
+    properties->add(<SliverOverlapAbsorberHandle>make<DiagnosticsPropertyCls>(__s("handle"), handle()));
 }
 
 NestedScrollViewViewportCls::NestedScrollViewViewportCls(Unknown anchor, Unknown axisDirection, Unknown center, Unknown clipBehavior, Unknown crossAxisDirection, SliverOverlapAbsorberHandle handle, Unknown key, Unknown offset, Unknown slivers) {
@@ -951,22 +951,22 @@ NestedScrollViewViewportCls::NestedScrollViewViewportCls(Unknown anchor, Unknown
 }
 
 RenderNestedScrollViewViewport NestedScrollViewViewportCls::createRenderObject(BuildContext context) {
-    return make<RenderNestedScrollViewViewportCls>(axisDirection, crossAxisDirection ?? ViewportCls->getDefaultCrossAxisDirection(context, axisDirection), anchor, offset, handle, clipBehavior);
+    return make<RenderNestedScrollViewViewportCls>(axisDirection, crossAxisDirection or ViewportCls->getDefaultCrossAxisDirection(context, axisDirection), anchor, offset, handle, clipBehavior);
 }
 
 void NestedScrollViewViewportCls::updateRenderObject(BuildContext context, RenderNestedScrollViewViewport renderObject) {
-    auto _c1 = renderObject;_c1.axisDirection = auto _c2 = axisDirection;_c2.crossAxisDirection = auto _c3 = crossAxisDirection ?? ViewportCls->getDefaultCrossAxisDirection(context, axisDirection);_c3.anchor = auto _c4 = anchor;_c4.offset = auto _c5 = offset;_c5.handle = auto _c6 = handle;_c6.clipBehavior = clipBehavior;_c6;_c5;_c4;_c3;_c2;_c1;
+    auto _c1 = renderObject;_c1.axisDirection = auto _c2 = axisDirection;_c2.crossAxisDirection = auto _c3 = crossAxisDirection or ViewportCls->getDefaultCrossAxisDirection(context, axisDirection);_c3.anchor = auto _c4 = anchor;_c4.offset = auto _c5 = offset;_c5.handle = auto _c6 = handle;_c6.clipBehavior = clipBehavior;_c6;_c5;_c4;_c3;_c2;_c1;
 }
 
 void NestedScrollViewViewportCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<SliverOverlapAbsorberHandle>make<DiagnosticsPropertyCls>("handle", handle));
+    properties->add(<SliverOverlapAbsorberHandle>make<DiagnosticsPropertyCls>(__s("handle"), handle));
 }
 
 RenderNestedScrollViewViewportCls::RenderNestedScrollViewViewportCls(Unknown anchor, Unknown axisDirection, Unknown center, Unknown children, Unknown clipBehavior, Unknown crossAxisDirection, SliverOverlapAbsorberHandle handle, Unknown offset) {
     {
-        assert(handle != nullptr);
-        _handle = handle;
+        assert(handle() != nullptr);
+        _handle = handle();
     }
 }
 
@@ -976,19 +976,19 @@ SliverOverlapAbsorberHandle RenderNestedScrollViewViewportCls::handle() {
 
 void RenderNestedScrollViewViewportCls::handle(SliverOverlapAbsorberHandle value) {
     assert(value != nullptr);
-    if (handle == value) {
+    if (handle() == value) {
         return;
     }
     _handle = value;
-    handle->_markNeedsLayout();
+    handle()->_markNeedsLayout();
 }
 
 void RenderNestedScrollViewViewportCls::markNeedsLayout() {
-    handle->_markNeedsLayout();
+    handle()->_markNeedsLayout();
     super->markNeedsLayout();
 }
 
 void RenderNestedScrollViewViewportCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<SliverOverlapAbsorberHandle>make<DiagnosticsPropertyCls>("handle", handle));
+    properties->add(<SliverOverlapAbsorberHandle>make<DiagnosticsPropertyCls>(__s("handle"), handle()));
 }

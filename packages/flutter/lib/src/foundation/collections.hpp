@@ -10,7 +10,7 @@ template<typename T>  bool listEquals(List<T> a, List<T> b);
 
 template<typename T, typename U>  bool mapEquals(Map<T, U> a, Map<T, U> b);
 
-template<typename T : Comparable<Object>>  int binarySearch(List<T> sortedList, T value);
+template<typename T>  int binarySearch(List<T> sortedList, T value);
 
 int _kMergeSortLimit;
 

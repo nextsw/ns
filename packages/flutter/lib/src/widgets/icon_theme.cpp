@@ -14,7 +14,7 @@ Widget IconThemeCls::merge(Widget child, IconThemeData data, Key key) {
 
 IconThemeData IconThemeCls::of(BuildContext context) {
     IconThemeData iconThemeData = _getInheritedIconThemeData(context)->resolve(context);
-    return iconThemeData->isConcrete? iconThemeData : iconThemeData->copyWith(iconThemeData->size ?? IconThemeDataCls->fallback()->size, iconThemeData->color ?? IconThemeDataCls->fallback()->color, iconThemeData->opacity ?? IconThemeDataCls->fallback()->opacity, iconThemeData->shadows ?? IconThemeDataCls->fallback()->shadows);
+    return iconThemeData->isConcrete? iconThemeData : iconThemeData->copyWith(iconThemeData->size or IconThemeDataCls->fallback()->size, iconThemeData->color or IconThemeDataCls->fallback()->color, iconThemeData->opacity or IconThemeDataCls->fallback()->opacity, iconThemeData->shadows or IconThemeDataCls->fallback()->shadows);
 }
 
 bool IconThemeCls::updateShouldNotify(IconTheme oldWidget) {
@@ -32,5 +32,5 @@ void IconThemeCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
 
 IconThemeData IconThemeCls::_getInheritedIconThemeData(BuildContext context) {
     IconTheme iconTheme = context-><IconTheme>dependOnInheritedWidgetOfExactType();
-    return iconTheme?->data ?? IconThemeDataCls->fallback();
+    return iconTheme?->data or IconThemeDataCls->fallback();
 }

@@ -10,12 +10,12 @@ template<typename E> void UnionSetCls<E>::from(bool disjoint, Iterable<Set<E>> s
 
 template<typename E> int UnionSetCls<E>::length() {
     return _disjoint? _sets->fold(0, [=] (Unknown  length,Unknown  set)     {
-        length + set->length;
-    }) : _iterable->length;
+        length() + set->length;
+    }) : _iterable()->length();
 }
 
 template<typename E> Iterator<E> UnionSetCls<E>::iterator() {
-    return _iterable->iterator;
+    return _iterable()->iterator();
 }
 
 template<typename E> bool UnionSetCls<E>::contains(Object element) {

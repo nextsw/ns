@@ -149,7 +149,7 @@ String _debugDumpAppString();
 void debugDumpApp();
 
 
-template<typename T : RenderObject> class RenderObjectToWidgetAdapterCls : public RenderObjectWidgetCls {
+template<typename T> class RenderObjectToWidgetAdapterCls : public RenderObjectWidgetCls {
 public:
     Widget child;
 
@@ -173,9 +173,9 @@ public:
 private:
 
 };
-template<typename T : RenderObject> using RenderObjectToWidgetAdapter = std::shared_ptr<RenderObjectToWidgetAdapterCls<T : RenderObject>>;
+template<typename T> using RenderObjectToWidgetAdapter = std::shared_ptr<RenderObjectToWidgetAdapterCls<T>>;
 
-template<typename T : RenderObject> class RenderObjectToWidgetElementCls : public RootRenderObjectElementCls {
+template<typename T> class RenderObjectToWidgetElementCls : public RootRenderObjectElementCls {
 public:
 
      RenderObjectToWidgetElementCls(RenderObjectToWidgetAdapter<T> widget);
@@ -208,7 +208,7 @@ private:
     virtual void _rebuild();
 
 };
-template<typename T : RenderObject> using RenderObjectToWidgetElement = std::shared_ptr<RenderObjectToWidgetElementCls<T : RenderObject>>;
+template<typename T> using RenderObjectToWidgetElement = std::shared_ptr<RenderObjectToWidgetElementCls<T>>;
 
 class WidgetsFlutterBindingCls : public BindingBaseCls {
 public:

@@ -25,7 +25,7 @@ TargetPlatform defaultTargetPlatform() {
     };
     };
     }    assert([=] () {
-        if (PlatformCls::environment->containsKey("FLUTTER_TEST")) {
+        if (PlatformCls::environment->containsKey(__s("FLUTTER_TEST"))) {
             result = platform->TargetPlatformCls::android;
         }
         return true;

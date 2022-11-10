@@ -25,9 +25,9 @@ CapturedThemes InheritedThemeCls::capture(BuildContext from, BuildContext to) {
             }());
             return false;
         }
-        if (ancestor is InheritedElement && ancestor->widget is InheritedTheme) {
-            InheritedTheme theme = ((InheritedTheme)ancestor->widget);
-            Type themeType = theme->runtimeType;
+        if (is<InheritedElement>(ancestor) && is<InheritedTheme>(ancestor->widget)) {
+            InheritedTheme theme = as<InheritedTheme>(ancestor->widget);
+            Type themeType = theme->runtimeType();
             if (!themeTypes->contains(themeType)) {
                 themeTypes->add(themeType);
                 themes->add(theme);
@@ -35,7 +35,7 @@ CapturedThemes InheritedThemeCls::capture(BuildContext from, BuildContext to) {
         }
         return true;
     });
-    assert(debugDidFindAncestor, "The provided `to` context must be an ancestor of the `from` context.");
+    assert(debugDidFindAncestor, __s("The provided `to` context must be an ancestor of the `from` context."));
     return CapturedThemesCls->_(themes);
 }
 

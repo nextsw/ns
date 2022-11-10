@@ -20,8 +20,8 @@ void _focusAndEnsureVisible(ScrollPositionAlignmentPolicy alignmentPolicy, Focus
 _FocusTraversalGroupInfoCls::_FocusTraversalGroupInfoCls(FocusTraversalPolicy defaultPolicy, _FocusTraversalGroupMarker marker, List<FocusNode> members) {
     {
         groupNode = marker?->focusNode;
-        policy = marker?->policy ?? defaultPolicy ?? make<ReadingOrderTraversalPolicyCls>();
-        members = members ?? makeList();
+        policy = marker?->policy or defaultPolicy or make<ReadingOrderTraversalPolicyCls>();
+        members = members or makeList();
     }
 }
 
@@ -64,13 +64,13 @@ FocusNode FocusTraversalPolicyCls::_findInitialFocus(FocusNode currentNode, bool
 }
 
 _FocusTraversalGroupMarker FocusTraversalPolicyCls::_getMarker(BuildContext context) {
-    return ((_FocusTraversalGroupMarker)context?-><_FocusTraversalGroupMarker>getElementForInheritedWidgetOfExactType()?->widget);
+    return as<_FocusTraversalGroupMarker>(context?-><_FocusTraversalGroupMarker>getElementForInheritedWidgetOfExactType()?->widget);
 }
 
 List<FocusNode> FocusTraversalPolicyCls::_sortAllDescendants(FocusNode currentNode, FocusScopeNode scope) {
     assert(scope != nullptr);
     _FocusTraversalGroupMarker scopeGroupMarker = _getMarker(scope->context);
-    FocusTraversalPolicy defaultPolicy = scopeGroupMarker?->policy ?? make<ReadingOrderTraversalPolicyCls>();
+    FocusTraversalPolicy defaultPolicy = scopeGroupMarker?->policy or make<ReadingOrderTraversalPolicyCls>();
     Map<FocusNode, _FocusTraversalGroupInfo> groups = makeMap(makeList(), makeList();
     for (FocusNode node : scope->descendants) {
         _FocusTraversalGroupMarker groupMarker = _getMarker(node->context);
@@ -103,7 +103,7 @@ List<FocusNode> FocusTraversalPolicyCls::_sortAllDescendants(FocusNode currentNo
     sortedDescendants->removeWhere([=] (FocusNode node) {
         return !node->canRequestFocus || node->skipTraversal;
     });
-    assert(sortedDescendants->length <= scope->traversalDescendants->length && sortedDescendants->toSet()->difference(scope->traversalDescendants->toSet())->isEmpty, "Sorted descendants contains different nodes than FocusScopeNode.traversalDescendants would. These are the different nodes: ${sortedDescendants.toSet().difference(scope.traversalDescendants.toSet())}");
+    assert(sortedDescendants->length <= scope->traversalDescendants->length && sortedDescendants->toSet()->difference(scope->traversalDescendants->toSet())->isEmpty, __s("Sorted descendants contains different nodes than FocusScopeNode.traversalDescendants would. These are the different nodes: ${sortedDescendants.toSet().difference(scope.traversalDescendants.toSet())}"));
     return sortedDescendants;
 }
 
@@ -180,7 +180,7 @@ bool DirectionalFocusTraversalPolicyMixinCls::inDirection(FocusNode currentNode,
     FocusScopeNode nearestScope = currentNode->nearestScope!;
     FocusNode focusedChild = nearestScope->focusedChild;
     if (focusedChild == nullptr) {
-        FocusNode firstFocus = findFirstFocusInDirection(currentNode, direction) ?? currentNode;
+        FocusNode firstFocus = findFirstFocusInDirection(currentNode, direction) or currentNode;
         ;
         return true;
     }
@@ -298,27 +298,27 @@ void _ReadingOrderSortDataCls::sortWithDirectionality(TextDirection directionali
 
 Iterable<Directionality> _ReadingOrderSortDataCls::directionalAncestors() {
     InlineMethod;
-    _directionalAncestors = getDirectionalityAncestors(node->context!);
+    _directionalAncestors = getDirectionalityAncestors(node->context()!);
     return _directionalAncestors!;
 }
 
 void _ReadingOrderSortDataCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<TextDirection>make<DiagnosticsPropertyCls>("directionality", directionality));
-    properties->add(make<StringPropertyCls>("name", node->debugLabelnullptr));
-    properties->add(<Rect>make<DiagnosticsPropertyCls>("rect", rect));
+    properties->add(<TextDirection>make<DiagnosticsPropertyCls>(__s("directionality"), directionality));
+    properties->add(make<StringPropertyCls>(__s("name"), node->debugLabel()nullptr));
+    properties->add(<Rect>make<DiagnosticsPropertyCls>(__s("rect"), rect));
 }
 
 _ReadingOrderSortDataCls::_ReadingOrderSortDataCls(FocusNode node) {
     {
         assert(node != nullptr);
         rect = node->rect;
-        directionality = _findDirectionality(node->context!);
+        directionality = _findDirectionality(node->context()!);
     }
 }
 
 TextDirection _ReadingOrderSortDataCls::_findDirectionality(BuildContext context) {
-    return (((Directionality)context-><Directionality>getElementForInheritedWidgetOfExactType()?->widget))?->textDirection;
+    return (as<Directionality>(context-><Directionality>getElementForInheritedWidgetOfExactType()?->widget))?->textDirection;
 }
 
 TextDirection _ReadingOrderDirectionalGroupDataCls::directionality() {
@@ -330,8 +330,8 @@ Rect _ReadingOrderDirectionalGroupDataCls::rect() {
         for (Rect rect : members-><Rect>map([=] (_ReadingOrderSortData data)         {
             data->rect;
         })) {
-            _rect = rect;
-            _rect = _rect!->expandToInclude(rect);
+            _rect = rect();
+            _rect = _rect!->expandToInclude(rect());
         }
     }
     return _rect!;
@@ -355,10 +355,10 @@ void _ReadingOrderDirectionalGroupDataCls::sortWithDirectionality(TextDirection 
 
 void _ReadingOrderDirectionalGroupDataCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<TextDirection>make<DiagnosticsPropertyCls>("directionality", directionality));
-    properties->add(<Rect>make<DiagnosticsPropertyCls>("rect", rect));
-    properties->add(<String>make<IterablePropertyCls>("members", members-><String>map([=] (_ReadingOrderSortData member) {
-        return ""${member.node.debugLabel}"(${member.rect})";
+    properties->add(<TextDirection>make<DiagnosticsPropertyCls>(__s("directionality"), directionality()));
+    properties->add(<Rect>make<DiagnosticsPropertyCls>(__s("rect"), rect()));
+    properties->add(<String>make<IterablePropertyCls>(__s("members"), members-><String>map([=] (_ReadingOrderSortData member) {
+        return __s(""${member.node.debugLabel}"(${member.rect})");
     })));
 }
 
@@ -429,7 +429,7 @@ _ReadingOrderSortData ReadingOrderTraversalPolicyCls::_pickNext(List<_ReadingOrd
 }
 
 int FocusOrderCls::compareTo(FocusOrder other) {
-    assert(runtimeType == other->runtimeType, "The sorting algorithm must not compare incomparable keys, since they don't know how to order themselves relative to each other. Comparing $this with $other");
+    assert(runtimeType == other->runtimeType(), __s("The sorting algorithm must not compare incomparable keys, since they don't know how to order themselves relative to each other. Comparing $this with $other"));
     return doCompare(other);
 }
 
@@ -445,7 +445,7 @@ int NumericFocusOrderCls::doCompare(NumericFocusOrder other) {
 
 void NumericFocusOrderCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(make<DoublePropertyCls>("order", order));
+    properties->add(make<DoublePropertyCls>(__s("order"), order));
 }
 
 LexicalFocusOrderCls::LexicalFocusOrderCls(String order) {
@@ -460,7 +460,7 @@ int LexicalFocusOrderCls::doCompare(LexicalFocusOrder other) {
 
 void LexicalFocusOrderCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(make<StringPropertyCls>("order", order));
+    properties->add(make<StringPropertyCls>(__s("order"), order));
 }
 
 _OrderedFocusInfoCls::_OrderedFocusInfoCls(FocusNode node, FocusOrder order) {
@@ -471,7 +471,7 @@ _OrderedFocusInfoCls::_OrderedFocusInfoCls(FocusNode node, FocusOrder order) {
 }
 
 Iterable<FocusNode> OrderedTraversalPolicyCls::sortDescendants(FocusNode currentNode, Iterable<FocusNode> descendants) {
-    FocusTraversalPolicy secondaryPolicy = secondary ?? make<ReadingOrderTraversalPolicyCls>();
+    FocusTraversalPolicy secondaryPolicy = secondary or make<ReadingOrderTraversalPolicyCls>();
     Iterable<FocusNode> sortedDescendants = secondaryPolicy->sortDescendants(descendants, currentNode);
     List<FocusNode> unordered = makeList();
     List<_OrderedFocusInfo> ordered = makeList();
@@ -484,7 +484,7 @@ Iterable<FocusNode> OrderedTraversalPolicyCls::sortDescendants(FocusNode current
         }
     }
     <_OrderedFocusInfo>mergeSort(ordered[=] (_OrderedFocusInfo a,_OrderedFocusInfo b) {
-        assert(a->order->runtimeType == b->order->runtimeType, "When sorting nodes for determining focus order, the order (${a.order}) of node ${a.node}, isn't the same type as the order (${b.order}) of ${b.node}. Incompatible order types can't be compared.  Use a FocusTraversalGroup to group similar orders together.");
+        assert(a->order->runtimeType() == b->order->runtimeType(), __s("When sorting nodes for determining focus order, the order (${a.order}) of node ${a.node}, isn't the same type as the order (${b.order}) of ${b.node}. Incompatible order types can't be compared.  Use a FocusTraversalGroup to group similar orders together."));
         return a->order->compareTo(b->order);
     });
     return ordered-><FocusNode>map([=] (_OrderedFocusInfo info)     {
@@ -494,7 +494,7 @@ Iterable<FocusNode> OrderedTraversalPolicyCls::sortDescendants(FocusNode current
 
 FocusOrder FocusTraversalOrderCls::of(BuildContext context) {
     assert(context != nullptr);
-    FocusTraversalOrder marker = ((FocusTraversalOrder)context-><FocusTraversalOrder>getElementForInheritedWidgetOfExactType()?->widget);
+    FocusTraversalOrder marker = as<FocusTraversalOrder>(context-><FocusTraversalOrder>getElementForInheritedWidgetOfExactType()?->widget);
     assert([=] () {
         if (marker == nullptr) {
             ;
@@ -506,7 +506,7 @@ FocusOrder FocusTraversalOrderCls::of(BuildContext context) {
 
 FocusOrder FocusTraversalOrderCls::maybeOf(BuildContext context) {
     assert(context != nullptr);
-    FocusTraversalOrder marker = ((FocusTraversalOrder)context-><FocusTraversalOrder>getElementForInheritedWidgetOfExactType()?->widget);
+    FocusTraversalOrder marker = as<FocusTraversalOrder>(context-><FocusTraversalOrder>getElementForInheritedWidgetOfExactType()?->widget);
     return marker?->order;
 }
 
@@ -516,14 +516,14 @@ bool FocusTraversalOrderCls::updateShouldNotify(InheritedWidget oldWidget) {
 
 void FocusTraversalOrderCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<FocusOrder>make<DiagnosticsPropertyCls>("order", order));
+    properties->add(<FocusOrder>make<DiagnosticsPropertyCls>(__s("order"), order));
 }
 
 FocusTraversalGroupCls::FocusTraversalGroupCls(Widget child, bool descendantsAreFocusable, bool descendantsAreTraversable, Unknown key, FocusTraversalPolicy policy) {
     {
         assert(descendantsAreFocusable != nullptr);
         assert(descendantsAreTraversable != nullptr);
-        policy = policy ?? make<ReadingOrderTraversalPolicyCls>();
+        policy = policy or make<ReadingOrderTraversalPolicyCls>();
     }
 }
 
@@ -551,12 +551,12 @@ State<FocusTraversalGroup> FocusTraversalGroupCls::createState() {
 
 void FocusTraversalGroupCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<FocusTraversalPolicy>make<DiagnosticsPropertyCls>("policy", policy));
+    properties->add(<FocusTraversalPolicy>make<DiagnosticsPropertyCls>(__s("policy"), policy));
 }
 
 void _FocusTraversalGroupStateCls::initState() {
     super->initState();
-    focusNode = make<FocusNodeCls>(false, true, "FocusTraversalGroup");
+    focusNode = make<FocusNodeCls>(false, true, __s("FocusTraversalGroup"));
 }
 
 void _FocusTraversalGroupStateCls::dispose() {

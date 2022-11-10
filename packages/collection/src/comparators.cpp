@@ -66,7 +66,7 @@ int compareAsciiUpperCase(String a, String b) {
     if (b->length > a->length)     {
         return -1;
     }
-    return defaultResult->sign;
+    return defaultResult->sign();
 }
 
 int compareAsciiLowerCase(String a, String b) {
@@ -98,7 +98,7 @@ int compareAsciiLowerCase(String a, String b) {
     if (b->length > a->length)     {
         return -1;
     }
-    return defaultResult->sign;
+    return defaultResult->sign();
 }
 
 int compareNatural(String a, String b) {
@@ -147,7 +147,7 @@ int compareAsciiLowerCaseNatural(String a, String b) {
     if (b->length > a->length)     {
         return -1;
     }
-    return defaultResult->sign;
+    return defaultResult->sign();
 }
 
 int compareAsciiUpperCaseNatural(String a, String b) {
@@ -179,7 +179,7 @@ int compareAsciiUpperCaseNatural(String a, String b) {
     if (b->length > a->length)     {
         return -1;
     }
-    return defaultResult->sign;
+    return defaultResult->sign();
 }
 
 int _compareNaturally(String a, int aChar, String b, int bChar, int index) {

@@ -15,12 +15,12 @@ void _ByteAdapterSinkCls::close() {
 }
 
 void _ByteCallbackSinkCls::add(Iterable<int> chunk) {
-    auto freeCount = _buffer->length - _bufferIndex;
+    auto freeCount = _buffer->length() - _bufferIndex;
     if (chunk->length > freeCount) {
-        auto oldLength = _buffer->length;
+        auto oldLength = _buffer->length();
         auto newLength = _roundToPowerOf2(chunk->length + oldLength) * 2;
         auto grown = make<Uint8ListCls>(newLength);
-        grown->setRange(0, _buffer->length, _buffer);
+        grown->setRange(0, _buffer->length(), _buffer);
         _buffer = grown;
     }
     _buffer->setRange(_bufferIndex, _bufferIndex + chunk->length, chunk);

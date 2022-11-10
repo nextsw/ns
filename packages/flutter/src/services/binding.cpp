@@ -7,7 +7,7 @@ void ServicesBindingCls::initInstances() {
     _initKeyboard();
     initLicenses();
     SystemChannelsCls::system->setMessageHandler([=] (dynamic message)     {
-        handleSystemMessage(((Object)message));
+        handleSystemMessage(as<Object>(message));
     });
     SystemChannelsCls::lifecycle->setMessageHandler(_handleLifecycleMessage);
     SystemChannelsCls::platform->setMethodCallHandler(_handlePlatformMessage);
@@ -44,8 +44,8 @@ void ServicesBindingCls::handleMemoryPressure() {
 }
 
 Future<void> ServicesBindingCls::handleSystemMessage(Object systemMessage) {
-    Map<String, dynamic> message = ((Map<String, dynamic>)systemMessage);
-    String type = ((String)message["type"]);
+    Map<String, dynamic> message = as<Map<String, dynamic>>(systemMessage);
+    String type = as<String>(message[__s("type")]);
     ;
     return;
 }
@@ -57,8 +57,8 @@ void ServicesBindingCls::initLicenses() {
 void ServicesBindingCls::initServiceExtensions() {
     super->initServiceExtensions();
     assert([=] () {
-        registerStringServiceExtension("evict", [=] ()         {
-            "";
+        registerStringServiceExtension(__s("evict"), [=] ()         {
+            __s("");
         }, [=] (String value) {
             evict(value);
         });
@@ -104,13 +104,13 @@ Stream<LicenseEntry> ServicesBindingCls::_addLicenses() {
     controller = <LicenseEntry>make<StreamControllerCls>([=] () {
         String rawLicenses;
         if (kIsWeb) {
-            rawLicenses = await rootBundle->loadString("NOTICES"false);
+            rawLicenses = await rootBundle->loadString(__s("NOTICES")false);
         } else {
-            ByteData licenseBytes = await rootBundle->load("NOTICES.Z");
-            List<int> unzippedBytes = await <List<int>, List<int>>compute(gzip->decode, licenseBytes->buffer->asUint8List()"decompressLicenses");
-            rawLicenses = await <List<int>, String>compute(utf8->decode, unzippedBytes"utf8DecodeLicenses");
+            ByteData licenseBytes = await rootBundle->load(__s("NOTICES.Z"));
+            List<int> unzippedBytes = await <List<int>, List<int>>compute(gzip->decode, licenseBytes->buffer->asUint8List()__s("decompressLicenses"));
+            rawLicenses = await <List<int>, String>compute(utf8->decode, unzippedBytes__s("utf8DecodeLicenses"));
         }
-        List<LicenseEntry> licenses = await <String, List<LicenseEntry>>compute(_parseLicenses, rawLicenses"parseLicenses");
+        List<LicenseEntry> licenses = await <String, List<LicenseEntry>>compute(_parseLicenses, rawLicenses__s("parseLicenses"));
         licenses->forEach(controller->add);
         await await controller->close();
     });
@@ -118,13 +118,13 @@ Stream<LicenseEntry> ServicesBindingCls::_addLicenses() {
 }
 
 List<LicenseEntry> ServicesBindingCls::_parseLicenses(String rawLicenses) {
-    String licenseSeparator = "\n${'-' * 80}\n";
+    String licenseSeparator = __s("\n${'-' * 80}\n");
     List<LicenseEntry> result = makeList();
     List<String> licenses = rawLicenses->split(licenseSeparator);
     for (String license : licenses) {
-        int split = license->indexOf("\n\n");
+        int split = license->indexOf(__s("\n\n"));
         if (split >= 0) {
-            result->add(make<LicenseEntryWithLineBreaksCls>(license->substring(0, split)->split("\n"), license->substring(split + 2)));
+            result->add(make<LicenseEntryWithLineBreaksCls>(license->substring(0, split)->split(__s("\n")), license->substring(split + 2)));
         } else {
             result->add(make<LicenseEntryWithLineBreaksCls>(makeList(), license));
         }
@@ -139,10 +139,10 @@ Future<String> ServicesBindingCls::_handleLifecycleMessage(String message) {
 
 Future<void> ServicesBindingCls::_handlePlatformMessage(MethodCall methodCall) {
     String method = methodCall->method;
-    assert(method == "SystemChrome.systemUIChange");
-    List<dynamic> args = ((List<dynamic>)methodCall->arguments);
+    assert(method == __s("SystemChrome.systemUIChange"));
+    List<dynamic> args = as<List<dynamic>>(methodCall->arguments);
     if (_systemUiChangeCallback != nullptr) {
-        await await _systemUiChangeCallback!(((bool)args[0]));
+        await await _systemUiChangeCallback!(as<bool>(args[0]));
     }
 }
 
@@ -165,7 +165,7 @@ Future<ByteData> _DefaultBinaryMessengerCls::send(String channel, ByteData messa
         try {
             completer->complete(reply);
         } catch (Unknown exception) {
-            FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(exception, stack, "services library", make<ErrorDescriptionCls>("during a platform message response callback")));
+            FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(exception, stack, __s("services library"), make<ErrorDescriptionCls>(__s("during a platform message response callback"))));
         };
     });
     return completer->future;
@@ -180,7 +180,7 @@ void _DefaultBinaryMessengerCls::setMessageHandler(String channel, MessageHandle
             try {
                 response = await handler(data);
             } catch (Unknown exception) {
-                FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(exception, stack, "services library", make<ErrorDescriptionCls>("during a platform message callback")));
+                FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(exception, stack, __s("services library"), make<ErrorDescriptionCls>(__s("during a platform message callback"))));
             } finally {
                 callback(response);
             };

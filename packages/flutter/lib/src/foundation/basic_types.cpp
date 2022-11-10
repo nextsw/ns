@@ -33,7 +33,7 @@ template<typename E> Iterable<E> CachingIterableCls<E>::skipWhile(bool test(E va
 
 template<typename E> int CachingIterableCls<E>::length() {
     _precacheEntireList();
-    return _results->length;
+    return _results->length();
 }
 
 template<typename E> List<E> CachingIterableCls<E>::toList(bool growable) {
@@ -50,24 +50,24 @@ template<typename E> bool CachingIterableCls<E>::_fillNext() {
     if (!_prefillIterator->moveNext()) {
         return false;
     }
-    _results->add(_prefillIterator->current);
+    _results->add(_prefillIterator->current());
     return true;
 }
 
 template<typename E> E _LazyListIteratorCls<E>::current() {
     assert(_index >= 0);
-    if ( < 0 || _index == _owner->_results->length) {
+    if ( < 0 || _index == _owner->_results->length()) {
         ;
     }
     return _owner->_results[_index];
 }
 
 template<typename E> bool _LazyListIteratorCls<E>::moveNext() {
-    if (_index >= _owner->_results->length) {
+    if (_index >= _owner->_results->length()) {
         return false;
     }
     _index = 1;
-    if (_index == _owner->_results->length) {
+    if (_index == _owner->_results->length()) {
         return _owner->_fillNext();
     }
     return true;
@@ -90,7 +90,7 @@ template<typename T> Type FactoryCls<T>::type() {
 }
 
 template<typename T> String FactoryCls<T>::toString() {
-    return "Factory(type: $type)";
+    return __s("Factory(type: $type)");
 }
 
 Duration lerpDuration(Duration a, Duration b, double t) {

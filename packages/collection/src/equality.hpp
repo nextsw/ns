@@ -107,7 +107,7 @@ private:
 };
 template<typename E> using ListEquality = std::shared_ptr<ListEqualityCls<E>>;
 
-template<typename E, typename T : Iterable<E>> class _UnorderedEqualityCls : public ObjectCls {
+template<typename E, typename T> class _UnorderedEqualityCls : public ObjectCls {
 public:
 
     virtual bool equals(T elements1, T elements2);
@@ -120,7 +120,7 @@ private:
 
      _UnorderedEqualityCls(Equality<E> _elementEquality);
 };
-template<typename E, typename T : Iterable<E>> using _UnorderedEquality = std::shared_ptr<_UnorderedEqualityCls<E, T : Iterable<E>>>;
+template<typename E, typename T> using _UnorderedEquality = std::shared_ptr<_UnorderedEqualityCls<E, T>>;
 
 template<typename E> class UnorderedIterableEqualityCls : public _UnorderedEqualityCls<E, Iterable<E>> {
 public:

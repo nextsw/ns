@@ -8,7 +8,7 @@
 class FunctionCls : public ObjectCls {
 public:
 
-    extern static void  apply(void  function() , Map<Symbol, dynamic> namedArguments, List<dynamic> positionalArguments);
+    static void  apply(void  function() , Map<Symbol, dynamic> namedArguments, List<dynamic> positionalArguments);
     virtual int hashCode();
     virtual bool operator==(Object other);
 private:

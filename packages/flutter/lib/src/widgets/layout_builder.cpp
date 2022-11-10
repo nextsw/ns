@@ -1,78 +1,78 @@
 #include "layout_builder.hpp"
-template<typename ConstraintType : Constraints> ConstrainedLayoutBuilderCls<ConstraintType>::ConstrainedLayoutBuilderCls(Widget Function(BuildContext , ConstraintType ) builder, Unknown key) {
+template<typename ConstraintType> ConstrainedLayoutBuilderCls<ConstraintType>::ConstrainedLayoutBuilderCls(Widget Function(BuildContext , ConstraintType ) builder, Unknown key) {
     {
         assert(builder != nullptr);
     }
 }
 
-template<typename ConstraintType : Constraints> RenderObjectElement ConstrainedLayoutBuilderCls<ConstraintType>::createElement() {
+template<typename ConstraintType> RenderObjectElement ConstrainedLayoutBuilderCls<ConstraintType>::createElement() {
     return <ConstraintType>make<_LayoutBuilderElementCls>(this);
 }
 
-template<typename ConstraintType : Constraints> RenderConstrainedLayoutBuilder<ConstraintType, RenderObject> _LayoutBuilderElementCls<ConstraintType>::renderObject() {
-    return ((RenderConstrainedLayoutBuilder<ConstraintType, RenderObject>)super->renderObject);
+template<typename ConstraintType> RenderConstrainedLayoutBuilder<ConstraintType, RenderObject> _LayoutBuilderElementCls<ConstraintType>::renderObject() {
+    return as<RenderConstrainedLayoutBuilder<ConstraintType, RenderObject>>(super->renderObject);
 }
 
-template<typename ConstraintType : Constraints> void _LayoutBuilderElementCls<ConstraintType>::visitChildren(ElementVisitor visitor) {
+template<typename ConstraintType> void _LayoutBuilderElementCls<ConstraintType>::visitChildren(ElementVisitor visitor) {
     if (_child != nullptr) {
         visitor(_child!);
     }
 }
 
-template<typename ConstraintType : Constraints> void _LayoutBuilderElementCls<ConstraintType>::forgetChild(Element child) {
+template<typename ConstraintType> void _LayoutBuilderElementCls<ConstraintType>::forgetChild(Element child) {
     assert(child == _child);
     _child = nullptr;
     super->forgetChild(child);
 }
 
-template<typename ConstraintType : Constraints> void _LayoutBuilderElementCls<ConstraintType>::mount(Object newSlot, Element parent) {
+template<typename ConstraintType> void _LayoutBuilderElementCls<ConstraintType>::mount(Object newSlot, Element parent) {
     super->mount(parent, newSlot);
-    renderObject->updateCallback(_layout);
+    renderObject()->updateCallback(_layout);
 }
 
-template<typename ConstraintType : Constraints> void _LayoutBuilderElementCls<ConstraintType>::update(ConstrainedLayoutBuilder<ConstraintType> newWidget) {
+template<typename ConstraintType> void _LayoutBuilderElementCls<ConstraintType>::update(ConstrainedLayoutBuilder<ConstraintType> newWidget) {
     assert(widget != newWidget);
     super->update(newWidget);
     assert(widget == newWidget);
-    renderObject->updateCallback(_layout);
-    renderObject->markNeedsBuild();
+    renderObject()->updateCallback(_layout);
+    renderObject()->markNeedsBuild();
 }
 
-template<typename ConstraintType : Constraints> void _LayoutBuilderElementCls<ConstraintType>::performRebuild() {
-    renderObject->markNeedsBuild();
+template<typename ConstraintType> void _LayoutBuilderElementCls<ConstraintType>::performRebuild() {
+    renderObject()->markNeedsBuild();
     super->performRebuild();
 }
 
-template<typename ConstraintType : Constraints> void _LayoutBuilderElementCls<ConstraintType>::unmount() {
-    renderObject->updateCallback(nullptr);
+template<typename ConstraintType> void _LayoutBuilderElementCls<ConstraintType>::unmount() {
+    renderObject()->updateCallback(nullptr);
     super->unmount();
 }
 
-template<typename ConstraintType : Constraints> void _LayoutBuilderElementCls<ConstraintType>::insertRenderObjectChild(RenderObject child, Object slot) {
+template<typename ConstraintType> void _LayoutBuilderElementCls<ConstraintType>::insertRenderObjectChild(RenderObject child, Object slot) {
     RenderObjectWithChildMixin<RenderObject> renderObject = this->renderObject;
     assert(slot == nullptr);
-    assert(renderObject->debugValidateChild(child));
-    renderObject->child = child;
-    assert(renderObject == this->renderObject);
+    assert(renderObject()->debugValidateChild(child));
+    renderObject()->child = child;
+    assert(renderObject() == this->renderObject);
 }
 
-template<typename ConstraintType : Constraints> void _LayoutBuilderElementCls<ConstraintType>::moveRenderObjectChild(RenderObject child, Object newSlot, Object oldSlot) {
+template<typename ConstraintType> void _LayoutBuilderElementCls<ConstraintType>::moveRenderObjectChild(RenderObject child, Object newSlot, Object oldSlot) {
     assert(false);
 }
 
-template<typename ConstraintType : Constraints> void _LayoutBuilderElementCls<ConstraintType>::removeRenderObjectChild(RenderObject child, Object slot) {
+template<typename ConstraintType> void _LayoutBuilderElementCls<ConstraintType>::removeRenderObjectChild(RenderObject child, Object slot) {
     RenderConstrainedLayoutBuilder<ConstraintType, RenderObject> renderObject = this->renderObject;
-    assert(renderObject->child == child);
-    renderObject->child = nullptr;
-    assert(renderObject == this->renderObject);
+    assert(renderObject()->child == child);
+    renderObject()->child = nullptr;
+    assert(renderObject() == this->renderObject);
 }
 
-template<typename ConstraintType : Constraints> void _LayoutBuilderElementCls<ConstraintType>::_layout(ConstraintType constraints) {
+template<typename ConstraintType> void _LayoutBuilderElementCls<ConstraintType>::_layout(ConstraintType constraints) {
     InlineMethod;
     owner!->buildScope(this, layoutCallback);
 }
 
-template<typename ConstraintType : Constraints, typename ChildType : RenderObject> void RenderConstrainedLayoutBuilderCls<ConstraintType, ChildType>::updateCallback(LayoutCallback<ConstraintType> value) {
+template<typename ConstraintType, typename ChildType> void RenderConstrainedLayoutBuilderCls<ConstraintType, ChildType>::updateCallback(LayoutCallback<ConstraintType> value) {
     if (value == _callback) {
         return;
     }
@@ -80,12 +80,12 @@ template<typename ConstraintType : Constraints, typename ChildType : RenderObjec
     markNeedsLayout();
 }
 
-template<typename ConstraintType : Constraints, typename ChildType : RenderObject> void RenderConstrainedLayoutBuilderCls<ConstraintType, ChildType>::markNeedsBuild() {
+template<typename ConstraintType, typename ChildType> void RenderConstrainedLayoutBuilderCls<ConstraintType, ChildType>::markNeedsBuild() {
     _needsBuild = true;
     markNeedsLayout();
 }
 
-template<typename ConstraintType : Constraints, typename ChildType : RenderObject> void RenderConstrainedLayoutBuilderCls<ConstraintType, ChildType>::rebuildIfNecessary() {
+template<typename ConstraintType, typename ChildType> void RenderConstrainedLayoutBuilderCls<ConstraintType, ChildType>::rebuildIfNecessary() {
     assert(_callback != nullptr);
     if (_needsBuild || constraints != _previousConstraints) {
         _previousConstraints = constraints;
@@ -96,7 +96,7 @@ template<typename ConstraintType : Constraints, typename ChildType : RenderObjec
 
 LayoutBuilderCls::LayoutBuilderCls(Unknown builder, Unknown key) {
     {
-        assert(builder != nullptr);
+        assert(builder() != nullptr);
     }
 }
 
@@ -129,7 +129,7 @@ double _RenderLayoutBuilderCls::computeMaxIntrinsicHeight(double width) {
 }
 
 Size _RenderLayoutBuilderCls::computeDryLayout(BoxConstraints constraints) {
-    assert(debugCannotComputeDryLayout("Calculating the dry layout would require running the layout callback speculatively, which might mutate the live render object tree."));
+    assert(debugCannotComputeDryLayout(__s("Calculating the dry layout would require running the layout callback speculatively, which might mutate the live render object tree.")));
     return SizeCls::zero;
 }
 
@@ -152,7 +152,7 @@ double _RenderLayoutBuilderCls::computeDistanceToActualBaseline(TextBaseline bas
 }
 
 bool _RenderLayoutBuilderCls::hitTestChildren(Offset position, BoxHitTestResult result) {
-    return child?->hitTest(resultposition) ?? false;
+    return child?->hitTest(resultposition) or false;
 }
 
 void _RenderLayoutBuilderCls::paint(PaintingContext context, Offset offset) {
@@ -172,7 +172,7 @@ bool _RenderLayoutBuilderCls::_debugThrowIfNotCheckingIntrinsics() {
 }
 
 FlutterErrorDetails _debugReportException(DiagnosticsNode context, Object exception, InformationCollector informationCollector, StackTrace stack) {
-    FlutterErrorDetails details = make<FlutterErrorDetailsCls>(exception, stack, "widgets library", context, informationCollector);
+    FlutterErrorDetails details = make<FlutterErrorDetailsCls>(exception, stack, __s("widgets library"), context, informationCollector);
     FlutterErrorCls->reportError(details);
     return details;
 }

@@ -8,18 +8,18 @@
 class StringBufferCls : public ObjectCls {
 public:
 
-    extern  StringBufferCls(Object content);
-    extern int length();
+     StringBufferCls(Object content);
+    int length();
     virtual bool isEmpty();
 
     virtual bool isNotEmpty();
 
-    extern void write(Object object);
-    extern void writeCharCode(int charCode);
-    extern void writeAll(Iterable<dynamic> objects, String separator);
-    extern void writeln(Object obj);
-    extern void clear();
-    extern String toString();
+    void write(Object object);
+    void writeCharCode(int charCode);
+    void writeAll(Iterable<dynamic> objects, String separator);
+    void writeln(Object obj);
+    void clear();
+    String toString();
 private:
 
 };

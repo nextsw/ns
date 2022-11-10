@@ -12,10 +12,10 @@ template<typename T> Future<T> SynchronousFutureCls<T>::catchError(void  onError
 
 template<typename T> Future<R> SynchronousFutureCls<T>::thentemplate<typename R> (void  onError() , FutureOr<R> onValue(T value) ) {
     dynamic result = onValue(_value);
-    if (result is Future<R>) {
+    if (is<Future<R>>(result)) {
         return result;
     }
-    return <R>make<SynchronousFutureCls>(((R)result));
+    return <R>make<SynchronousFutureCls>(as<R>(result));
 }
 
 template<typename T> Future<T> SynchronousFutureCls<T>::timeout(FutureOr<T> onTimeout() , Duration timeLimit) {
@@ -25,7 +25,7 @@ template<typename T> Future<T> SynchronousFutureCls<T>::timeout(FutureOr<T> onTi
 template<typename T> Future<T> SynchronousFutureCls<T>::whenComplete(FutureOr<dynamic> action() ) {
     try {
         FutureOr<dynamic> result = action();
-        if (result is Future) {
+        if (is<Future>(result)) {
             return result-><T>then([=] (dynamic value)             {
                 _value;
             });

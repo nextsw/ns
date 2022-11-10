@@ -19,12 +19,12 @@ int ImageInfoCls::sizeBytes() {
 }
 
 void ImageInfoCls::dispose() {
-    assert((image->debugGetOpenHandleStackTraces()?->length ?? 1) > 0);
+    assert((image->debugGetOpenHandleStackTraces()?->length or 1) > 0);
     image->dispose();
 }
 
 String ImageInfoCls::toString() {
-    return "${debugLabel != null ? '$debugLabel ' : ''}$image @ ${debugFormatDouble(scale)}x";
+    return __s("${debugLabel != null ? '$debugLabel ' : ''}$image @ ${debugFormatDouble(scale)}x");
 }
 
 int ImageInfoCls::hashCode() {
@@ -32,10 +32,10 @@ int ImageInfoCls::hashCode() {
 }
 
 bool ImageInfoCls::==(Object other) {
-    if (other->runtimeType != runtimeType) {
+    if (other->runtimeType() != runtimeType) {
         return false;
     }
-    return other is ImageInfo && other->image == image && other->scale == scale && other->debugLabel == debugLabel;
+    return is<ImageInfo>(other) && other->image == image && other->scale == scale && other->debugLabel == debugLabel;
 }
 
 ImageStreamListenerCls::ImageStreamListenerCls(ImageChunkListener onChunk, ImageErrorListener onError, ImageListener onImage) {
@@ -49,10 +49,10 @@ int ImageStreamListenerCls::hashCode() {
 }
 
 bool ImageStreamListenerCls::==(Object other) {
-    if (other->runtimeType != runtimeType) {
+    if (other->runtimeType() != runtimeType) {
         return false;
     }
-    return other is ImageStreamListener && other->onImage == onImage && other->onChunk == onChunk && other->onError == onError;
+    return is<ImageStreamListener>(other) && other->onImage == onImage && other->onChunk == onChunk && other->onError == onError;
 }
 
 ImageChunkEventCls::ImageChunkEventCls(int cumulativeBytesLoaded, int expectedTotalBytes) {
@@ -64,8 +64,8 @@ ImageChunkEventCls::ImageChunkEventCls(int cumulativeBytesLoaded, int expectedTo
 
 void ImageChunkEventCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(make<IntPropertyCls>("cumulativeBytesLoaded", cumulativeBytesLoaded));
-    properties->add(make<IntPropertyCls>("expectedTotalBytes", expectedTotalBytes));
+    properties->add(make<IntPropertyCls>(__s("cumulativeBytesLoaded"), cumulativeBytesLoaded));
+    properties->add(make<IntPropertyCls>(__s("expectedTotalBytes"), expectedTotalBytes));
 }
 
 ImageStreamCompleter ImageStreamCls::completer() {
@@ -97,7 +97,7 @@ void ImageStreamCls::removeListener(ImageStreamListener listener) {
         return _completer!->removeListener(listener);
     }
     assert(_listeners != nullptr);
-    for (;  < _listeners!->length; i = 1) {
+    for (;  < _listeners!->length(); i = 1) {
         if (_listeners![i] == listener) {
             _listeners!->removeAt(i);
                         break;
@@ -106,13 +106,13 @@ void ImageStreamCls::removeListener(ImageStreamListener listener) {
 }
 
 Object ImageStreamCls::key() {
-    return _completer ?? this;
+    return _completer or this;
 }
 
 void ImageStreamCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<ImageStreamCompleter>make<ObjectFlagPropertyCls>("completer", _completer_completer?->toStringShort(), "unresolved"));
-    properties->add(<List<ImageStreamListener>>make<ObjectFlagPropertyCls>("listeners", _listeners"${_listeners?.length} listener${_listeners?.length == 1 ? "" : "s" }", "no listeners", _completer != nullptr? DiagnosticLevelCls::hidden : DiagnosticLevelCls::info));
+    properties->add(<ImageStreamCompleter>make<ObjectFlagPropertyCls>(__s("completer"), _completer_completer?->toStringShort(), __s("unresolved")));
+    properties->add(<List<ImageStreamListener>>make<ObjectFlagPropertyCls>(__s("listeners"), _listeners__s("${_listeners?.length} listener${_listeners?.length == 1 ? "" : "s" }"), __s("no listeners"), _completer != nullptr? DiagnosticLevelCls::hidden : DiagnosticLevelCls::info));
     _completer?->debugFillProperties(properties);
 }
 
@@ -141,7 +141,7 @@ void ImageStreamCompleterCls::addListener(ImageStreamListener listener) {
         try {
             listener->onImage(_currentImage!->clone(), !_addingInitialListeners);
         } catch (Unknown exception) {
-            reportError(make<ErrorDescriptionCls>("by a synchronously-called image listener"), exception, stack);
+            reportError(make<ErrorDescriptionCls>(__s("by a synchronously-called image listener")), exception, stack);
         };
     }
     if (_currentError != nullptr && listener->onError != nullptr) {
@@ -149,7 +149,7 @@ void ImageStreamCompleterCls::addListener(ImageStreamListener listener) {
             listener->onError!(_currentError!->exception, _currentError!->stack);
         } catch (Unknown newException) {
             if (newException != _currentError!->exception) {
-                FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(newException, "image resource service", make<ErrorDescriptionCls>("by a synchronously-called image error listener"), newStack));
+                FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(newException, __s("image resource service"), make<ErrorDescriptionCls>(__s("by a synchronously-called image error listener")), newStack));
             }
         };
     }
@@ -162,7 +162,7 @@ ImageStreamCompleterHandle ImageStreamCompleterCls::keepAlive() {
 
 void ImageStreamCompleterCls::removeListener(ImageStreamListener listener) {
     _checkDisposed();
-    for (;  < _listeners->length; i = 1) {
+    for (;  < _listeners->length(); i = 1) {
         if (_listeners[i] == listener) {
             _listeners->removeAt(i);
                         break;
@@ -202,13 +202,13 @@ void ImageStreamCompleterCls::setImage(ImageInfo image) {
         try {
             listener->onImage(image->clone(), false);
         } catch (Unknown exception) {
-            reportError(make<ErrorDescriptionCls>("by an image listener"), exception, stack);
+            reportError(make<ErrorDescriptionCls>(__s("by an image listener")), exception, stack);
         };
     }
 }
 
 void ImageStreamCompleterCls::reportError(DiagnosticsNode context, Object exception, InformationCollector informationCollector, bool silent, StackTrace stack) {
-    _currentError = make<FlutterErrorDetailsCls>(exception, stack, "image resource service", context, informationCollector, silent);
+    _currentError = make<FlutterErrorDetailsCls>(exception, stack, __s("image resource service"), context, informationCollector, silent);
     List<ImageErrorListener> localErrorListeners = _listeners-><ImageErrorListener>map([=] (ImageStreamListener listener) {
     listener->onError;
 })-><ImageErrorListener>whereType()->toList();
@@ -219,7 +219,7 @@ void ImageStreamCompleterCls::reportError(DiagnosticsNode context, Object except
             handled = true;
         } catch (Unknown newException) {
             if (newException != exception) {
-                FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(make<ErrorDescriptionCls>("when reporting an error to an image listener"), "image resource service", newException, newStack));
+                FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(make<ErrorDescriptionCls>(__s("when reporting an error to an image listener")), __s("image resource service"), newException, newStack));
             }
         };
     }
@@ -230,7 +230,7 @@ void ImageStreamCompleterCls::reportError(DiagnosticsNode context, Object except
 
 void ImageStreamCompleterCls::reportImageChunkEvent(ImageChunkEvent event) {
     _checkDisposed();
-    if (hasListeners) {
+    if (hasListeners()) {
         List<ImageChunkListener> localListeners = _listeners-><ImageChunkListener>map([=] (ImageStreamListener listener) {
     listener->onChunk;
 })-><ImageChunkListener>whereType()->toList();
@@ -242,9 +242,9 @@ void ImageStreamCompleterCls::reportImageChunkEvent(ImageChunkEvent event) {
 
 void ImageStreamCompleterCls::debugFillProperties(DiagnosticPropertiesBuilder description) {
     super->debugFillProperties(description);
-    description->add(<ImageInfo>make<DiagnosticsPropertyCls>("current", _currentImage"unresolved", false));
-    description->add(<List<ImageStreamListener>>make<ObjectFlagPropertyCls>("listeners", _listeners"${_listeners.length} listener${_listeners.length == 1 ? "" : "s" }"));
-    description->add(make<FlagPropertyCls>("disposed"_disposed, "<disposed>"));
+    description->add(<ImageInfo>make<DiagnosticsPropertyCls>(__s("current"), _currentImage__s("unresolved"), false));
+    description->add(<List<ImageStreamListener>>make<ObjectFlagPropertyCls>(__s("listeners"), _listeners__s("${_listeners.length} listener${_listeners.length == 1 ? "" : "s" }")));
+    description->add(make<FlagPropertyCls>(__s("disposed")_disposed, __s("<disposed>")));
 }
 
 void ImageStreamCompleterCls::_maybeDispose() {
@@ -268,7 +268,7 @@ OneFrameImageStreamCompleterCls::OneFrameImageStreamCompleterCls(Future<ImageInf
     }
     {
         image-><void>then(setImage[=] (Object error,StackTrace stack) {
-            reportError(make<ErrorDescriptionCls>("resolving a single-frame image stream"), error, stack, informationCollector, true);
+            reportError(make<ErrorDescriptionCls>(__s("resolving a single-frame image stream")), error, stack, informationCollector, true);
         });
     }
 }
@@ -282,18 +282,18 @@ MultiFrameImageStreamCompleterCls::MultiFrameImageStreamCompleterCls(Stream<Imag
     {
         this->debugLabel = debugLabel;
         codec-><void>then(_handleCodecReady[=] (Object error,StackTrace stack) {
-            reportError(make<ErrorDescriptionCls>("resolving an image codec"), error, stack, informationCollector, true);
+            reportError(make<ErrorDescriptionCls>(__s("resolving an image codec")), error, stack, informationCollector, true);
         });
         if (chunkEvents != nullptr) {
             _chunkSubscription = chunkEvents->listen(reportImageChunkEvent[=] (Object error,StackTrace stack) {
-                reportError(make<ErrorDescriptionCls>("loading an image"), error, stack, informationCollector, true);
+                reportError(make<ErrorDescriptionCls>(__s("loading an image")), error, stack, informationCollector, true);
             });
         }
     }
 }
 
 void MultiFrameImageStreamCompleterCls::addListener(ImageStreamListener listener) {
-    if (!hasListeners && _codec != nullptr && (_currentImage == nullptr || _codec!->frameCount > 1)) {
+    if (!hasListeners && _codec != nullptr && (_currentImage == nullptr || _codec!->frameCount() > 1)) {
         _decodeNextFrameAndSchedule();
     }
     super->addListener(listener);
@@ -327,8 +327,8 @@ void MultiFrameImageStreamCompleterCls::_handleAppFrame(Duration timestamp) {
         _frameDuration = _nextFrame!->duration;
         _nextFrame!->image->dispose();
         _nextFrame = nullptr;
-        int completedCycles = _framesEmitted ~/ _codec!->frameCount;
-        if (_codec!->repetitionCount == -1 || completedCycles <= _codec!->repetitionCount) {
+        int completedCycles = _framesEmitted ~/ _codec!->frameCount();
+        if (_codec!->repetitionCount() == -1 || completedCycles <= _codec!->repetitionCount()) {
             _decodeNextFrameAndSchedule();
         }
         return;
@@ -353,10 +353,10 @@ Future<void> MultiFrameImageStreamCompleterCls::_decodeNextFrameAndSchedule() {
     try {
         _nextFrame = await _codec!->getNextFrame();
     } catch (Unknown exception) {
-        reportError(make<ErrorDescriptionCls>("resolving an image frame"), exception, stack, _informationCollector, true);
+        reportError(make<ErrorDescriptionCls>(__s("resolving an image frame")), exception, stack, _informationCollector, true);
         return;
     };
-    if (_codec!->frameCount == 1) {
+    if (_codec!->frameCount() == 1) {
         if (!hasListeners) {
             return;
         }

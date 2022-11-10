@@ -13,7 +13,7 @@ int _IOResourceInfoCls::getNextID() {
 
 _IOResourceInfoCls::_IOResourceInfoCls(String type) {
     {
-            map1.set("type", "@$type");    map1.set("id", id);    map1.set("name", name);id = _IOResourceInfoCls->getNextID();
+            map1.set(__s("type"), __s("@$type"));    map1.set(__s("id"), id);    map1.set(__s("name"), name());id = _IOResourceInfoCls->getNextID();
     }
 }
 
@@ -37,9 +37,9 @@ Map<String, dynamic> _ReadWriteResourceInfoCls::fullValueMap() {
     return list1;
 }
 
-_ReadWriteResourceInfoCls::_ReadWriteResourceInfoCls(String type) {
+_ReadWriteResourceInfoCls::_ReadWriteResourceInfoCls(String type) : _IOResourceInfo(type) {
     {
-            map1.set("type", type);    map1.set("id", id);    map1.set("name", name);    map1.set("readBytes", readBytes);    map1.set("writeBytes", writeBytes);    map1.set("readCount", readCount);    map1.set("writeCount", writeCount);    map1.set("lastReadTime", lastReadTime);    map1.set("lastWriteTime", lastWriteTime);readBytes = 0;
+            map1.set(__s("type"), type);    map1.set(__s("id"), id);    map1.set(__s("name"), name);    map1.set(__s("readBytes"), readBytes);    map1.set(__s("writeBytes"), writeBytes);    map1.set(__s("readCount"), readCount);    map1.set(__s("writeCount"), writeCount);    map1.set(__s("lastReadTime"), lastReadTime);    map1.set(__s("lastWriteTime"), lastWriteTime);readBytes = 0;
         writeBytes = 0;
         readCount = 0;
         writeCount = 0;
@@ -65,8 +65,8 @@ Iterable<Map<String, dynamic>> _FileResourceInfoCls::getOpenFilesList() {
 }
 
 Future<ServiceExtensionResponse> _FileResourceInfoCls::getOpenFiles(function , params ) {
-    assert(function == "ext.dart.io.getOpenFiles");
-    map1.set("type", "OpenFileList");map1.set("files", getOpenFilesList());Unknown data = list1;
+    assert(function == __s("ext.dart.io.getOpenFiles"));
+    map1.set(__s("type"), __s("OpenFileList"));map1.set(__s("files"), getOpenFilesList());Unknown data = list1;
     Unknown jsonValue = json->encode(data);
     return FutureCls->value(ServiceExtensionResponseCls->result(jsonValue));
 }
@@ -76,7 +76,7 @@ Map<String, dynamic> _FileResourceInfoCls::fileInfoMap() {
 }
 
 Future<ServiceExtensionResponse> _FileResourceInfoCls::getOpenFileInfoMapByID(function , params ) {
-    Unknown id = intValue->parse(params["id"]!);
+    Unknown id = intValue->parse(params[__s("id")]!);
     Unknown result = openFiles->containsKey(id)? openFiles[id]!->fileInfoMap : makeMap(makeList(), makeList();
     Unknown jsonValue = json->encode(result);
     return FutureCls->value(ServiceExtensionResponseCls->result(jsonValue));
@@ -86,7 +86,7 @@ String _FileResourceInfoCls::name() {
     return file->path;
 }
 
-_FileResourceInfoCls::_FileResourceInfoCls(Unknown file) {
+_FileResourceInfoCls::_FileResourceInfoCls(Unknown file) : _ReadWriteResourceInfo(_type) {
     {
         fileOpened(this);
     }
@@ -105,7 +105,7 @@ Map<String, dynamic> _SpawnedProcessResourceInfoCls::fullValueMap() {
 }
 
 void _SpawnedProcessResourceInfoCls::processStarted(_SpawnedProcessResourceInfo info) {
-    map1.set("type", type);map1.set("id", id);map1.set("name", name);map1.set("pid", process->pid);map1.set("startedAt", startedAt);map1.set("arguments", process->_arguments);map1.set("workingDirectory", process->_workingDirectory == nullptr? "." : process->_workingDirectory);assert(!startedProcesses->containsKey(info->id));
+    map1.set(__s("type"), type);map1.set(__s("id"), id);map1.set(__s("name"), name());map1.set(__s("pid"), process->pid);map1.set(__s("startedAt"), startedAt);map1.set(__s("arguments"), process->_arguments);map1.set(__s("workingDirectory"), process->_workingDirectory == nullptr? __s(".") : process->_workingDirectory);assert(!startedProcesses->containsKey(info->id));
     startedProcesses[info->id] = info;
 }
 
@@ -121,20 +121,20 @@ Iterable<Map<String, dynamic>> _SpawnedProcessResourceInfoCls::getStartedProcess
 }
 
 Future<ServiceExtensionResponse> _SpawnedProcessResourceInfoCls::getStartedProcesses(String function, Map<String, String> params) {
-    assert(function == "ext.dart.io.getSpawnedProcesses");
-    map1.set("type", "SpawnedProcessList");map1.set("processes", getStartedProcessesList());Unknown data = list1;
+    assert(function == __s("ext.dart.io.getSpawnedProcesses"));
+    map1.set(__s("type"), __s("SpawnedProcessList"));map1.set(__s("processes"), getStartedProcessesList());Unknown data = list1;
     Unknown jsonValue = json->encode(data);
     return FutureCls->value(ServiceExtensionResponseCls->result(jsonValue));
 }
 
 Future<ServiceExtensionResponse> _SpawnedProcessResourceInfoCls::getProcessInfoMapById(String function, Map<String, String> params) {
-    Unknown id = intValue->parse(params["id"]!);
+    Unknown id = intValue->parse(params[__s("id")]!);
     Unknown result = startedProcesses->containsKey(id)? startedProcesses[id]!->fullValueMap : makeMap(makeList(), makeList();
     Unknown jsonValue = json->encode(result);
     return FutureCls->value(ServiceExtensionResponseCls->result(jsonValue));
 }
 
-_SpawnedProcessResourceInfoCls::_SpawnedProcessResourceInfoCls(Unknown process) {
+_SpawnedProcessResourceInfoCls::_SpawnedProcessResourceInfoCls(Unknown process) : _IOResourceInfo(_type) {
     {
         startedAt = _IOResourceInfoCls::timestamp;
     }

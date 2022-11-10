@@ -80,11 +80,11 @@ void Vector4Cls::splat(double arg) {
 }
 
 String Vector4Cls::toString() {
-    return "${_v4storage[0]},${_v4storage[1]},${_v4storage[2]},${_v4storage[3]}";
+    return __s("${_v4storage[0]},${_v4storage[1]},${_v4storage[2]},${_v4storage[3]}");
 }
 
 bool Vector4Cls::==(Object other) {
-    return (other is Vector4) && (_v4storage[0] == other->_v4storage[0]) && (_v4storage[1] == other->_v4storage[1]) && (_v4storage[2] == other->_v4storage[2]) && (_v4storage[3] == other->_v4storage[3]);
+    return (is<Vector4>(other)) && (_v4storage[0] == other->_v4storage[0]) && (_v4storage[1] == other->_v4storage[1]) && (_v4storage[2] == other->_v4storage[2]) && (_v4storage[3] == other->_v4storage[3]);
 }
 
 int Vector4Cls::hashCode() {
@@ -136,7 +136,7 @@ void Vector4Cls::length(double value) {
 }
 
 double Vector4Cls::length() {
-    return math->sqrt(length2);
+    return math->sqrt(length2());
 }
 
 double Vector4Cls::length2() {
@@ -2726,7 +2726,7 @@ double Vector4Cls::w() {
 }
 
 Vector2 Vector4Cls::rr() {
-    return xx;
+    return xx();
 }
 
 Vector2 Vector4Cls::rg() {
@@ -2746,7 +2746,7 @@ Vector2 Vector4Cls::gr() {
 }
 
 Vector2 Vector4Cls::gg() {
-    return yy;
+    return yy();
 }
 
 Vector2 Vector4Cls::gb() {
@@ -2766,7 +2766,7 @@ Vector2 Vector4Cls::bg() {
 }
 
 Vector2 Vector4Cls::bb() {
-    return zz;
+    return zz();
 }
 
 Vector2 Vector4Cls::ba() {
@@ -2786,31 +2786,31 @@ Vector2 Vector4Cls::ab() {
 }
 
 Vector2 Vector4Cls::aa() {
-    return ww;
+    return ww();
 }
 
 Vector3 Vector4Cls::rrr() {
-    return xxx;
+    return xxx();
 }
 
 Vector3 Vector4Cls::rrg() {
-    return xxy;
+    return xxy();
 }
 
 Vector3 Vector4Cls::rrb() {
-    return xxz;
+    return xxz();
 }
 
 Vector3 Vector4Cls::rra() {
-    return xxw;
+    return xxw();
 }
 
 Vector3 Vector4Cls::rgr() {
-    return xyx;
+    return xyx();
 }
 
 Vector3 Vector4Cls::rgg() {
-    return xyy;
+    return xyy();
 }
 
 Vector3 Vector4Cls::rgb() {
@@ -2822,7 +2822,7 @@ Vector3 Vector4Cls::rga() {
 }
 
 Vector3 Vector4Cls::rbr() {
-    return xzx;
+    return xzx();
 }
 
 Vector3 Vector4Cls::rbg() {
@@ -2830,7 +2830,7 @@ Vector3 Vector4Cls::rbg() {
 }
 
 Vector3 Vector4Cls::rbb() {
-    return xzz;
+    return xzz();
 }
 
 Vector3 Vector4Cls::rba() {
@@ -2838,7 +2838,7 @@ Vector3 Vector4Cls::rba() {
 }
 
 Vector3 Vector4Cls::rar() {
-    return xwx;
+    return xwx();
 }
 
 Vector3 Vector4Cls::rag() {
@@ -2850,15 +2850,15 @@ Vector3 Vector4Cls::rab() {
 }
 
 Vector3 Vector4Cls::raa() {
-    return xww;
+    return xww();
 }
 
 Vector3 Vector4Cls::grr() {
-    return yxx;
+    return yxx();
 }
 
 Vector3 Vector4Cls::grg() {
-    return yxy;
+    return yxy();
 }
 
 Vector3 Vector4Cls::grb() {
@@ -2870,19 +2870,19 @@ Vector3 Vector4Cls::gra() {
 }
 
 Vector3 Vector4Cls::ggr() {
-    return yyx;
+    return yyx();
 }
 
 Vector3 Vector4Cls::ggg() {
-    return yyy;
+    return yyy();
 }
 
 Vector3 Vector4Cls::ggb() {
-    return yyz;
+    return yyz();
 }
 
 Vector3 Vector4Cls::gga() {
-    return yyw;
+    return yyw();
 }
 
 Vector3 Vector4Cls::gbr() {
@@ -2890,11 +2890,11 @@ Vector3 Vector4Cls::gbr() {
 }
 
 Vector3 Vector4Cls::gbg() {
-    return yzy;
+    return yzy();
 }
 
 Vector3 Vector4Cls::gbb() {
-    return yzz;
+    return yzz();
 }
 
 Vector3 Vector4Cls::gba() {
@@ -2906,7 +2906,7 @@ Vector3 Vector4Cls::gar() {
 }
 
 Vector3 Vector4Cls::gag() {
-    return ywy;
+    return ywy();
 }
 
 Vector3 Vector4Cls::gab() {
@@ -2914,11 +2914,11 @@ Vector3 Vector4Cls::gab() {
 }
 
 Vector3 Vector4Cls::gaa() {
-    return yww;
+    return yww();
 }
 
 Vector3 Vector4Cls::brr() {
-    return zxx;
+    return zxx();
 }
 
 Vector3 Vector4Cls::brg() {
@@ -2926,7 +2926,7 @@ Vector3 Vector4Cls::brg() {
 }
 
 Vector3 Vector4Cls::brb() {
-    return zxz;
+    return zxz();
 }
 
 Vector3 Vector4Cls::bra() {
@@ -2938,11 +2938,11 @@ Vector3 Vector4Cls::bgr() {
 }
 
 Vector3 Vector4Cls::bgg() {
-    return zyy;
+    return zyy();
 }
 
 Vector3 Vector4Cls::bgb() {
-    return zyz;
+    return zyz();
 }
 
 Vector3 Vector4Cls::bga() {
@@ -2950,19 +2950,19 @@ Vector3 Vector4Cls::bga() {
 }
 
 Vector3 Vector4Cls::bbr() {
-    return zzx;
+    return zzx();
 }
 
 Vector3 Vector4Cls::bbg() {
-    return zzy;
+    return zzy();
 }
 
 Vector3 Vector4Cls::bbb() {
-    return zzz;
+    return zzz();
 }
 
 Vector3 Vector4Cls::bba() {
-    return zzw;
+    return zzw();
 }
 
 Vector3 Vector4Cls::bar() {
@@ -2974,15 +2974,15 @@ Vector3 Vector4Cls::bag() {
 }
 
 Vector3 Vector4Cls::bab() {
-    return zwz;
+    return zwz();
 }
 
 Vector3 Vector4Cls::baa() {
-    return zww;
+    return zww();
 }
 
 Vector3 Vector4Cls::arr() {
-    return wxx;
+    return wxx();
 }
 
 Vector3 Vector4Cls::arg() {
@@ -2994,7 +2994,7 @@ Vector3 Vector4Cls::arb() {
 }
 
 Vector3 Vector4Cls::ara() {
-    return wxw;
+    return wxw();
 }
 
 Vector3 Vector4Cls::agr() {
@@ -3002,7 +3002,7 @@ Vector3 Vector4Cls::agr() {
 }
 
 Vector3 Vector4Cls::agg() {
-    return wyy;
+    return wyy();
 }
 
 Vector3 Vector4Cls::agb() {
@@ -3010,7 +3010,7 @@ Vector3 Vector4Cls::agb() {
 }
 
 Vector3 Vector4Cls::aga() {
-    return wyw;
+    return wyw();
 }
 
 Vector3 Vector4Cls::abr() {
@@ -3022,135 +3022,135 @@ Vector3 Vector4Cls::abg() {
 }
 
 Vector3 Vector4Cls::abb() {
-    return wzz;
+    return wzz();
 }
 
 Vector3 Vector4Cls::aba() {
-    return wzw;
+    return wzw();
 }
 
 Vector3 Vector4Cls::aar() {
-    return wwx;
+    return wwx();
 }
 
 Vector3 Vector4Cls::aag() {
-    return wwy;
+    return wwy();
 }
 
 Vector3 Vector4Cls::aab() {
-    return wwz;
+    return wwz();
 }
 
 Vector3 Vector4Cls::aaa() {
-    return www;
+    return www();
 }
 
 Vector4 Vector4Cls::rrrr() {
-    return xxxx;
+    return xxxx();
 }
 
 Vector4 Vector4Cls::rrrg() {
-    return xxxy;
+    return xxxy();
 }
 
 Vector4 Vector4Cls::rrrb() {
-    return xxxz;
+    return xxxz();
 }
 
 Vector4 Vector4Cls::rrra() {
-    return xxxw;
+    return xxxw();
 }
 
 Vector4 Vector4Cls::rrgr() {
-    return xxyx;
+    return xxyx();
 }
 
 Vector4 Vector4Cls::rrgg() {
-    return xxyy;
+    return xxyy();
 }
 
 Vector4 Vector4Cls::rrgb() {
-    return xxyz;
+    return xxyz();
 }
 
 Vector4 Vector4Cls::rrga() {
-    return xxyw;
+    return xxyw();
 }
 
 Vector4 Vector4Cls::rrbr() {
-    return xxzx;
+    return xxzx();
 }
 
 Vector4 Vector4Cls::rrbg() {
-    return xxzy;
+    return xxzy();
 }
 
 Vector4 Vector4Cls::rrbb() {
-    return xxzz;
+    return xxzz();
 }
 
 Vector4 Vector4Cls::rrba() {
-    return xxzw;
+    return xxzw();
 }
 
 Vector4 Vector4Cls::rrar() {
-    return xxwx;
+    return xxwx();
 }
 
 Vector4 Vector4Cls::rrag() {
-    return xxwy;
+    return xxwy();
 }
 
 Vector4 Vector4Cls::rrab() {
-    return xxwz;
+    return xxwz();
 }
 
 Vector4 Vector4Cls::rraa() {
-    return xxww;
+    return xxww();
 }
 
 Vector4 Vector4Cls::rgrr() {
-    return xyxx;
+    return xyxx();
 }
 
 Vector4 Vector4Cls::rgrg() {
-    return xyxy;
+    return xyxy();
 }
 
 Vector4 Vector4Cls::rgrb() {
-    return xyxz;
+    return xyxz();
 }
 
 Vector4 Vector4Cls::rgra() {
-    return xyxw;
+    return xyxw();
 }
 
 Vector4 Vector4Cls::rggr() {
-    return xyyx;
+    return xyyx();
 }
 
 Vector4 Vector4Cls::rggg() {
-    return xyyy;
+    return xyyy();
 }
 
 Vector4 Vector4Cls::rggb() {
-    return xyyz;
+    return xyyz();
 }
 
 Vector4 Vector4Cls::rgga() {
-    return xyyw;
+    return xyyw();
 }
 
 Vector4 Vector4Cls::rgbr() {
-    return xyzx;
+    return xyzx();
 }
 
 Vector4 Vector4Cls::rgbg() {
-    return xyzy;
+    return xyzy();
 }
 
 Vector4 Vector4Cls::rgbb() {
-    return xyzz;
+    return xyzz();
 }
 
 Vector4 Vector4Cls::rgba() {
@@ -3158,11 +3158,11 @@ Vector4 Vector4Cls::rgba() {
 }
 
 Vector4 Vector4Cls::rgar() {
-    return xywx;
+    return xywx();
 }
 
 Vector4 Vector4Cls::rgag() {
-    return xywy;
+    return xywy();
 }
 
 Vector4 Vector4Cls::rgab() {
@@ -3170,35 +3170,35 @@ Vector4 Vector4Cls::rgab() {
 }
 
 Vector4 Vector4Cls::rgaa() {
-    return xyww;
+    return xyww();
 }
 
 Vector4 Vector4Cls::rbrr() {
-    return xzxx;
+    return xzxx();
 }
 
 Vector4 Vector4Cls::rbrg() {
-    return xzxy;
+    return xzxy();
 }
 
 Vector4 Vector4Cls::rbrb() {
-    return xzxz;
+    return xzxz();
 }
 
 Vector4 Vector4Cls::rbra() {
-    return xzxw;
+    return xzxw();
 }
 
 Vector4 Vector4Cls::rbgr() {
-    return xzyx;
+    return xzyx();
 }
 
 Vector4 Vector4Cls::rbgg() {
-    return xzyy;
+    return xzyy();
 }
 
 Vector4 Vector4Cls::rbgb() {
-    return xzyz;
+    return xzyz();
 }
 
 Vector4 Vector4Cls::rbga() {
@@ -3206,23 +3206,23 @@ Vector4 Vector4Cls::rbga() {
 }
 
 Vector4 Vector4Cls::rbbr() {
-    return xzzx;
+    return xzzx();
 }
 
 Vector4 Vector4Cls::rbbg() {
-    return xzzy;
+    return xzzy();
 }
 
 Vector4 Vector4Cls::rbbb() {
-    return xzzz;
+    return xzzz();
 }
 
 Vector4 Vector4Cls::rbba() {
-    return xzzw;
+    return xzzw();
 }
 
 Vector4 Vector4Cls::rbar() {
-    return xzwx;
+    return xzwx();
 }
 
 Vector4 Vector4Cls::rbag() {
@@ -3230,35 +3230,35 @@ Vector4 Vector4Cls::rbag() {
 }
 
 Vector4 Vector4Cls::rbab() {
-    return xzwz;
+    return xzwz();
 }
 
 Vector4 Vector4Cls::rbaa() {
-    return xzww;
+    return xzww();
 }
 
 Vector4 Vector4Cls::rarr() {
-    return xwxx;
+    return xwxx();
 }
 
 Vector4 Vector4Cls::rarg() {
-    return xwxy;
+    return xwxy();
 }
 
 Vector4 Vector4Cls::rarb() {
-    return xwxz;
+    return xwxz();
 }
 
 Vector4 Vector4Cls::rara() {
-    return xwxw;
+    return xwxw();
 }
 
 Vector4 Vector4Cls::ragr() {
-    return xwyx;
+    return xwyx();
 }
 
 Vector4 Vector4Cls::ragg() {
-    return xwyy;
+    return xwyy();
 }
 
 Vector4 Vector4Cls::ragb() {
@@ -3266,11 +3266,11 @@ Vector4 Vector4Cls::ragb() {
 }
 
 Vector4 Vector4Cls::raga() {
-    return xwyw;
+    return xwyw();
 }
 
 Vector4 Vector4Cls::rabr() {
-    return xwzx;
+    return xwzx();
 }
 
 Vector4 Vector4Cls::rabg() {
@@ -3278,71 +3278,71 @@ Vector4 Vector4Cls::rabg() {
 }
 
 Vector4 Vector4Cls::rabb() {
-    return xwzz;
+    return xwzz();
 }
 
 Vector4 Vector4Cls::raba() {
-    return xwzw;
+    return xwzw();
 }
 
 Vector4 Vector4Cls::raar() {
-    return xwwx;
+    return xwwx();
 }
 
 Vector4 Vector4Cls::raag() {
-    return xwwy;
+    return xwwy();
 }
 
 Vector4 Vector4Cls::raab() {
-    return xwwz;
+    return xwwz();
 }
 
 Vector4 Vector4Cls::raaa() {
-    return xwww;
+    return xwww();
 }
 
 Vector4 Vector4Cls::grrr() {
-    return yxxx;
+    return yxxx();
 }
 
 Vector4 Vector4Cls::grrg() {
-    return yxxy;
+    return yxxy();
 }
 
 Vector4 Vector4Cls::grrb() {
-    return yxxz;
+    return yxxz();
 }
 
 Vector4 Vector4Cls::grra() {
-    return yxxw;
+    return yxxw();
 }
 
 Vector4 Vector4Cls::grgr() {
-    return yxyx;
+    return yxyx();
 }
 
 Vector4 Vector4Cls::grgg() {
-    return yxyy;
+    return yxyy();
 }
 
 Vector4 Vector4Cls::grgb() {
-    return yxyz;
+    return yxyz();
 }
 
 Vector4 Vector4Cls::grga() {
-    return yxyw;
+    return yxyw();
 }
 
 Vector4 Vector4Cls::grbr() {
-    return yxzx;
+    return yxzx();
 }
 
 Vector4 Vector4Cls::grbg() {
-    return yxzy;
+    return yxzy();
 }
 
 Vector4 Vector4Cls::grbb() {
-    return yxzz;
+    return yxzz();
 }
 
 Vector4 Vector4Cls::grba() {
@@ -3350,11 +3350,11 @@ Vector4 Vector4Cls::grba() {
 }
 
 Vector4 Vector4Cls::grar() {
-    return yxwx;
+    return yxwx();
 }
 
 Vector4 Vector4Cls::grag() {
-    return yxwy;
+    return yxwy();
 }
 
 Vector4 Vector4Cls::grab() {
@@ -3362,83 +3362,83 @@ Vector4 Vector4Cls::grab() {
 }
 
 Vector4 Vector4Cls::graa() {
-    return yxww;
+    return yxww();
 }
 
 Vector4 Vector4Cls::ggrr() {
-    return yyxx;
+    return yyxx();
 }
 
 Vector4 Vector4Cls::ggrg() {
-    return yyxy;
+    return yyxy();
 }
 
 Vector4 Vector4Cls::ggrb() {
-    return yyxz;
+    return yyxz();
 }
 
 Vector4 Vector4Cls::ggra() {
-    return yyxw;
+    return yyxw();
 }
 
 Vector4 Vector4Cls::gggr() {
-    return yyyx;
+    return yyyx();
 }
 
 Vector4 Vector4Cls::gggg() {
-    return yyyy;
+    return yyyy();
 }
 
 Vector4 Vector4Cls::gggb() {
-    return yyyz;
+    return yyyz();
 }
 
 Vector4 Vector4Cls::ggga() {
-    return yyyw;
+    return yyyw();
 }
 
 Vector4 Vector4Cls::ggbr() {
-    return yyzx;
+    return yyzx();
 }
 
 Vector4 Vector4Cls::ggbg() {
-    return yyzy;
+    return yyzy();
 }
 
 Vector4 Vector4Cls::ggbb() {
-    return yyzz;
+    return yyzz();
 }
 
 Vector4 Vector4Cls::ggba() {
-    return yyzw;
+    return yyzw();
 }
 
 Vector4 Vector4Cls::ggar() {
-    return yywx;
+    return yywx();
 }
 
 Vector4 Vector4Cls::ggag() {
-    return yywy;
+    return yywy();
 }
 
 Vector4 Vector4Cls::ggab() {
-    return yywz;
+    return yywz();
 }
 
 Vector4 Vector4Cls::ggaa() {
-    return yyww;
+    return yyww();
 }
 
 Vector4 Vector4Cls::gbrr() {
-    return yzxx;
+    return yzxx();
 }
 
 Vector4 Vector4Cls::gbrg() {
-    return yzxy;
+    return yzxy();
 }
 
 Vector4 Vector4Cls::gbrb() {
-    return yzxz;
+    return yzxz();
 }
 
 Vector4 Vector4Cls::gbra() {
@@ -3446,35 +3446,35 @@ Vector4 Vector4Cls::gbra() {
 }
 
 Vector4 Vector4Cls::gbgr() {
-    return yzyx;
+    return yzyx();
 }
 
 Vector4 Vector4Cls::gbgg() {
-    return yzyy;
+    return yzyy();
 }
 
 Vector4 Vector4Cls::gbgb() {
-    return yzyz;
+    return yzyz();
 }
 
 Vector4 Vector4Cls::gbga() {
-    return yzyw;
+    return yzyw();
 }
 
 Vector4 Vector4Cls::gbbr() {
-    return yzzx;
+    return yzzx();
 }
 
 Vector4 Vector4Cls::gbbg() {
-    return yzzy;
+    return yzzy();
 }
 
 Vector4 Vector4Cls::gbbb() {
-    return yzzz;
+    return yzzz();
 }
 
 Vector4 Vector4Cls::gbba() {
-    return yzzw;
+    return yzzw();
 }
 
 Vector4 Vector4Cls::gbar() {
@@ -3482,23 +3482,23 @@ Vector4 Vector4Cls::gbar() {
 }
 
 Vector4 Vector4Cls::gbag() {
-    return yzwy;
+    return yzwy();
 }
 
 Vector4 Vector4Cls::gbab() {
-    return yzwz;
+    return yzwz();
 }
 
 Vector4 Vector4Cls::gbaa() {
-    return yzww;
+    return yzww();
 }
 
 Vector4 Vector4Cls::garr() {
-    return ywxx;
+    return ywxx();
 }
 
 Vector4 Vector4Cls::garg() {
-    return ywxy;
+    return ywxy();
 }
 
 Vector4 Vector4Cls::garb() {
@@ -3506,23 +3506,23 @@ Vector4 Vector4Cls::garb() {
 }
 
 Vector4 Vector4Cls::gara() {
-    return ywxw;
+    return ywxw();
 }
 
 Vector4 Vector4Cls::gagr() {
-    return ywyx;
+    return ywyx();
 }
 
 Vector4 Vector4Cls::gagg() {
-    return ywyy;
+    return ywyy();
 }
 
 Vector4 Vector4Cls::gagb() {
-    return ywyz;
+    return ywyz();
 }
 
 Vector4 Vector4Cls::gaga() {
-    return ywyw;
+    return ywyw();
 }
 
 Vector4 Vector4Cls::gabr() {
@@ -3530,59 +3530,59 @@ Vector4 Vector4Cls::gabr() {
 }
 
 Vector4 Vector4Cls::gabg() {
-    return ywzy;
+    return ywzy();
 }
 
 Vector4 Vector4Cls::gabb() {
-    return ywzz;
+    return ywzz();
 }
 
 Vector4 Vector4Cls::gaba() {
-    return ywzw;
+    return ywzw();
 }
 
 Vector4 Vector4Cls::gaar() {
-    return ywwx;
+    return ywwx();
 }
 
 Vector4 Vector4Cls::gaag() {
-    return ywwy;
+    return ywwy();
 }
 
 Vector4 Vector4Cls::gaab() {
-    return ywwz;
+    return ywwz();
 }
 
 Vector4 Vector4Cls::gaaa() {
-    return ywww;
+    return ywww();
 }
 
 Vector4 Vector4Cls::brrr() {
-    return zxxx;
+    return zxxx();
 }
 
 Vector4 Vector4Cls::brrg() {
-    return zxxy;
+    return zxxy();
 }
 
 Vector4 Vector4Cls::brrb() {
-    return zxxz;
+    return zxxz();
 }
 
 Vector4 Vector4Cls::brra() {
-    return zxxw;
+    return zxxw();
 }
 
 Vector4 Vector4Cls::brgr() {
-    return zxyx;
+    return zxyx();
 }
 
 Vector4 Vector4Cls::brgg() {
-    return zxyy;
+    return zxyy();
 }
 
 Vector4 Vector4Cls::brgb() {
-    return zxyz;
+    return zxyz();
 }
 
 Vector4 Vector4Cls::brga() {
@@ -3590,23 +3590,23 @@ Vector4 Vector4Cls::brga() {
 }
 
 Vector4 Vector4Cls::brbr() {
-    return zxzx;
+    return zxzx();
 }
 
 Vector4 Vector4Cls::brbg() {
-    return zxzy;
+    return zxzy();
 }
 
 Vector4 Vector4Cls::brbb() {
-    return zxzz;
+    return zxzz();
 }
 
 Vector4 Vector4Cls::brba() {
-    return zxzw;
+    return zxzw();
 }
 
 Vector4 Vector4Cls::brar() {
-    return zxwx;
+    return zxwx();
 }
 
 Vector4 Vector4Cls::brag() {
@@ -3614,23 +3614,23 @@ Vector4 Vector4Cls::brag() {
 }
 
 Vector4 Vector4Cls::brab() {
-    return zxwz;
+    return zxwz();
 }
 
 Vector4 Vector4Cls::braa() {
-    return zxww;
+    return zxww();
 }
 
 Vector4 Vector4Cls::bgrr() {
-    return zyxx;
+    return zyxx();
 }
 
 Vector4 Vector4Cls::bgrg() {
-    return zyxy;
+    return zyxy();
 }
 
 Vector4 Vector4Cls::bgrb() {
-    return zyxz;
+    return zyxz();
 }
 
 Vector4 Vector4Cls::bgra() {
@@ -3638,35 +3638,35 @@ Vector4 Vector4Cls::bgra() {
 }
 
 Vector4 Vector4Cls::bggr() {
-    return zyyx;
+    return zyyx();
 }
 
 Vector4 Vector4Cls::bggg() {
-    return zyyy;
+    return zyyy();
 }
 
 Vector4 Vector4Cls::bggb() {
-    return zyyz;
+    return zyyz();
 }
 
 Vector4 Vector4Cls::bgga() {
-    return zyyw;
+    return zyyw();
 }
 
 Vector4 Vector4Cls::bgbr() {
-    return zyzx;
+    return zyzx();
 }
 
 Vector4 Vector4Cls::bgbg() {
-    return zyzy;
+    return zyzy();
 }
 
 Vector4 Vector4Cls::bgbb() {
-    return zyzz;
+    return zyzz();
 }
 
 Vector4 Vector4Cls::bgba() {
-    return zyzw;
+    return zyzw();
 }
 
 Vector4 Vector4Cls::bgar() {
@@ -3674,83 +3674,83 @@ Vector4 Vector4Cls::bgar() {
 }
 
 Vector4 Vector4Cls::bgag() {
-    return zywy;
+    return zywy();
 }
 
 Vector4 Vector4Cls::bgab() {
-    return zywz;
+    return zywz();
 }
 
 Vector4 Vector4Cls::bgaa() {
-    return zyww;
+    return zyww();
 }
 
 Vector4 Vector4Cls::bbrr() {
-    return zzxx;
+    return zzxx();
 }
 
 Vector4 Vector4Cls::bbrg() {
-    return zzxy;
+    return zzxy();
 }
 
 Vector4 Vector4Cls::bbrb() {
-    return zzxz;
+    return zzxz();
 }
 
 Vector4 Vector4Cls::bbra() {
-    return zzxw;
+    return zzxw();
 }
 
 Vector4 Vector4Cls::bbgr() {
-    return zzyx;
+    return zzyx();
 }
 
 Vector4 Vector4Cls::bbgg() {
-    return zzyy;
+    return zzyy();
 }
 
 Vector4 Vector4Cls::bbgb() {
-    return zzyz;
+    return zzyz();
 }
 
 Vector4 Vector4Cls::bbga() {
-    return zzyw;
+    return zzyw();
 }
 
 Vector4 Vector4Cls::bbbr() {
-    return zzzx;
+    return zzzx();
 }
 
 Vector4 Vector4Cls::bbbg() {
-    return zzzy;
+    return zzzy();
 }
 
 Vector4 Vector4Cls::bbbb() {
-    return zzzz;
+    return zzzz();
 }
 
 Vector4 Vector4Cls::bbba() {
-    return zzzw;
+    return zzzw();
 }
 
 Vector4 Vector4Cls::bbar() {
-    return zzwx;
+    return zzwx();
 }
 
 Vector4 Vector4Cls::bbag() {
-    return zzwy;
+    return zzwy();
 }
 
 Vector4 Vector4Cls::bbab() {
-    return zzwz;
+    return zzwz();
 }
 
 Vector4 Vector4Cls::bbaa() {
-    return zzww;
+    return zzww();
 }
 
 Vector4 Vector4Cls::barr() {
-    return zwxx;
+    return zwxx();
 }
 
 Vector4 Vector4Cls::barg() {
@@ -3758,11 +3758,11 @@ Vector4 Vector4Cls::barg() {
 }
 
 Vector4 Vector4Cls::barb() {
-    return zwxz;
+    return zwxz();
 }
 
 Vector4 Vector4Cls::bara() {
-    return zwxw;
+    return zwxw();
 }
 
 Vector4 Vector4Cls::bagr() {
@@ -3770,71 +3770,71 @@ Vector4 Vector4Cls::bagr() {
 }
 
 Vector4 Vector4Cls::bagg() {
-    return zwyy;
+    return zwyy();
 }
 
 Vector4 Vector4Cls::bagb() {
-    return zwyz;
+    return zwyz();
 }
 
 Vector4 Vector4Cls::baga() {
-    return zwyw;
+    return zwyw();
 }
 
 Vector4 Vector4Cls::babr() {
-    return zwzx;
+    return zwzx();
 }
 
 Vector4 Vector4Cls::babg() {
-    return zwzy;
+    return zwzy();
 }
 
 Vector4 Vector4Cls::babb() {
-    return zwzz;
+    return zwzz();
 }
 
 Vector4 Vector4Cls::baba() {
-    return zwzw;
+    return zwzw();
 }
 
 Vector4 Vector4Cls::baar() {
-    return zwwx;
+    return zwwx();
 }
 
 Vector4 Vector4Cls::baag() {
-    return zwwy;
+    return zwwy();
 }
 
 Vector4 Vector4Cls::baab() {
-    return zwwz;
+    return zwwz();
 }
 
 Vector4 Vector4Cls::baaa() {
-    return zwww;
+    return zwww();
 }
 
 Vector4 Vector4Cls::arrr() {
-    return wxxx;
+    return wxxx();
 }
 
 Vector4 Vector4Cls::arrg() {
-    return wxxy;
+    return wxxy();
 }
 
 Vector4 Vector4Cls::arrb() {
-    return wxxz;
+    return wxxz();
 }
 
 Vector4 Vector4Cls::arra() {
-    return wxxw;
+    return wxxw();
 }
 
 Vector4 Vector4Cls::argr() {
-    return wxyx;
+    return wxyx();
 }
 
 Vector4 Vector4Cls::argg() {
-    return wxyy;
+    return wxyy();
 }
 
 Vector4 Vector4Cls::argb() {
@@ -3842,11 +3842,11 @@ Vector4 Vector4Cls::argb() {
 }
 
 Vector4 Vector4Cls::arga() {
-    return wxyw;
+    return wxyw();
 }
 
 Vector4 Vector4Cls::arbr() {
-    return wxzx;
+    return wxzx();
 }
 
 Vector4 Vector4Cls::arbg() {
@@ -3854,35 +3854,35 @@ Vector4 Vector4Cls::arbg() {
 }
 
 Vector4 Vector4Cls::arbb() {
-    return wxzz;
+    return wxzz();
 }
 
 Vector4 Vector4Cls::arba() {
-    return wxzw;
+    return wxzw();
 }
 
 Vector4 Vector4Cls::arar() {
-    return wxwx;
+    return wxwx();
 }
 
 Vector4 Vector4Cls::arag() {
-    return wxwy;
+    return wxwy();
 }
 
 Vector4 Vector4Cls::arab() {
-    return wxwz;
+    return wxwz();
 }
 
 Vector4 Vector4Cls::araa() {
-    return wxww;
+    return wxww();
 }
 
 Vector4 Vector4Cls::agrr() {
-    return wyxx;
+    return wyxx();
 }
 
 Vector4 Vector4Cls::agrg() {
-    return wyxy;
+    return wyxy();
 }
 
 Vector4 Vector4Cls::agrb() {
@@ -3890,23 +3890,23 @@ Vector4 Vector4Cls::agrb() {
 }
 
 Vector4 Vector4Cls::agra() {
-    return wyxw;
+    return wyxw();
 }
 
 Vector4 Vector4Cls::aggr() {
-    return wyyx;
+    return wyyx();
 }
 
 Vector4 Vector4Cls::aggg() {
-    return wyyy;
+    return wyyy();
 }
 
 Vector4 Vector4Cls::aggb() {
-    return wyyz;
+    return wyyz();
 }
 
 Vector4 Vector4Cls::agga() {
-    return wyyw;
+    return wyyw();
 }
 
 Vector4 Vector4Cls::agbr() {
@@ -3914,35 +3914,35 @@ Vector4 Vector4Cls::agbr() {
 }
 
 Vector4 Vector4Cls::agbg() {
-    return wyzy;
+    return wyzy();
 }
 
 Vector4 Vector4Cls::agbb() {
-    return wyzz;
+    return wyzz();
 }
 
 Vector4 Vector4Cls::agba() {
-    return wyzw;
+    return wyzw();
 }
 
 Vector4 Vector4Cls::agar() {
-    return wywx;
+    return wywx();
 }
 
 Vector4 Vector4Cls::agag() {
-    return wywy;
+    return wywy();
 }
 
 Vector4 Vector4Cls::agab() {
-    return wywz;
+    return wywz();
 }
 
 Vector4 Vector4Cls::agaa() {
-    return wyww;
+    return wyww();
 }
 
 Vector4 Vector4Cls::abrr() {
-    return wzxx;
+    return wzxx();
 }
 
 Vector4 Vector4Cls::abrg() {
@@ -3950,11 +3950,11 @@ Vector4 Vector4Cls::abrg() {
 }
 
 Vector4 Vector4Cls::abrb() {
-    return wzxz;
+    return wzxz();
 }
 
 Vector4 Vector4Cls::abra() {
-    return wzxw;
+    return wzxw();
 }
 
 Vector4 Vector4Cls::abgr() {
@@ -3962,115 +3962,115 @@ Vector4 Vector4Cls::abgr() {
 }
 
 Vector4 Vector4Cls::abgg() {
-    return wzyy;
+    return wzyy();
 }
 
 Vector4 Vector4Cls::abgb() {
-    return wzyz;
+    return wzyz();
 }
 
 Vector4 Vector4Cls::abga() {
-    return wzyw;
+    return wzyw();
 }
 
 Vector4 Vector4Cls::abbr() {
-    return wzzx;
+    return wzzx();
 }
 
 Vector4 Vector4Cls::abbg() {
-    return wzzy;
+    return wzzy();
 }
 
 Vector4 Vector4Cls::abbb() {
-    return wzzz;
+    return wzzz();
 }
 
 Vector4 Vector4Cls::abba() {
-    return wzzw;
+    return wzzw();
 }
 
 Vector4 Vector4Cls::abar() {
-    return wzwx;
+    return wzwx();
 }
 
 Vector4 Vector4Cls::abag() {
-    return wzwy;
+    return wzwy();
 }
 
 Vector4 Vector4Cls::abab() {
-    return wzwz;
+    return wzwz();
 }
 
 Vector4 Vector4Cls::abaa() {
-    return wzww;
+    return wzww();
 }
 
 Vector4 Vector4Cls::aarr() {
-    return wwxx;
+    return wwxx();
 }
 
 Vector4 Vector4Cls::aarg() {
-    return wwxy;
+    return wwxy();
 }
 
 Vector4 Vector4Cls::aarb() {
-    return wwxz;
+    return wwxz();
 }
 
 Vector4 Vector4Cls::aara() {
-    return wwxw;
+    return wwxw();
 }
 
 Vector4 Vector4Cls::aagr() {
-    return wwyx;
+    return wwyx();
 }
 
 Vector4 Vector4Cls::aagg() {
-    return wwyy;
+    return wwyy();
 }
 
 Vector4 Vector4Cls::aagb() {
-    return wwyz;
+    return wwyz();
 }
 
 Vector4 Vector4Cls::aaga() {
-    return wwyw;
+    return wwyw();
 }
 
 Vector4 Vector4Cls::aabr() {
-    return wwzx;
+    return wwzx();
 }
 
 Vector4 Vector4Cls::aabg() {
-    return wwzy;
+    return wwzy();
 }
 
 Vector4 Vector4Cls::aabb() {
-    return wwzz;
+    return wwzz();
 }
 
 Vector4 Vector4Cls::aaba() {
-    return wwzw;
+    return wwzw();
 }
 
 Vector4 Vector4Cls::aaar() {
-    return wwwx;
+    return wwwx();
 }
 
 Vector4 Vector4Cls::aaag() {
-    return wwwy;
+    return wwwy();
 }
 
 Vector4 Vector4Cls::aaab() {
-    return wwwz;
+    return wwwz();
 }
 
 Vector4 Vector4Cls::aaaa() {
-    return wwww;
+    return wwww();
 }
 
 Vector2 Vector4Cls::ss() {
-    return xx;
+    return xx();
 }
 
 Vector2 Vector4Cls::st() {
@@ -4090,7 +4090,7 @@ Vector2 Vector4Cls::ts() {
 }
 
 Vector2 Vector4Cls::tt() {
-    return yy;
+    return yy();
 }
 
 Vector2 Vector4Cls::tp() {
@@ -4110,7 +4110,7 @@ Vector2 Vector4Cls::pt() {
 }
 
 Vector2 Vector4Cls::pp() {
-    return zz;
+    return zz();
 }
 
 Vector2 Vector4Cls::pq() {
@@ -4130,31 +4130,31 @@ Vector2 Vector4Cls::qp() {
 }
 
 Vector2 Vector4Cls::qq() {
-    return ww;
+    return ww();
 }
 
 Vector3 Vector4Cls::sss() {
-    return xxx;
+    return xxx();
 }
 
 Vector3 Vector4Cls::sst() {
-    return xxy;
+    return xxy();
 }
 
 Vector3 Vector4Cls::ssp() {
-    return xxz;
+    return xxz();
 }
 
 Vector3 Vector4Cls::ssq() {
-    return xxw;
+    return xxw();
 }
 
 Vector3 Vector4Cls::sts() {
-    return xyx;
+    return xyx();
 }
 
 Vector3 Vector4Cls::stt() {
-    return xyy;
+    return xyy();
 }
 
 Vector3 Vector4Cls::stp() {
@@ -4166,7 +4166,7 @@ Vector3 Vector4Cls::stq() {
 }
 
 Vector3 Vector4Cls::sps() {
-    return xzx;
+    return xzx();
 }
 
 Vector3 Vector4Cls::spt() {
@@ -4174,7 +4174,7 @@ Vector3 Vector4Cls::spt() {
 }
 
 Vector3 Vector4Cls::spp() {
-    return xzz;
+    return xzz();
 }
 
 Vector3 Vector4Cls::spq() {
@@ -4182,7 +4182,7 @@ Vector3 Vector4Cls::spq() {
 }
 
 Vector3 Vector4Cls::sqs() {
-    return xwx;
+    return xwx();
 }
 
 Vector3 Vector4Cls::sqt() {
@@ -4194,15 +4194,15 @@ Vector3 Vector4Cls::sqp() {
 }
 
 Vector3 Vector4Cls::sqq() {
-    return xww;
+    return xww();
 }
 
 Vector3 Vector4Cls::tss() {
-    return yxx;
+    return yxx();
 }
 
 Vector3 Vector4Cls::tst() {
-    return yxy;
+    return yxy();
 }
 
 Vector3 Vector4Cls::tsp() {
@@ -4214,19 +4214,19 @@ Vector3 Vector4Cls::tsq() {
 }
 
 Vector3 Vector4Cls::tts() {
-    return yyx;
+    return yyx();
 }
 
 Vector3 Vector4Cls::ttt() {
-    return yyy;
+    return yyy();
 }
 
 Vector3 Vector4Cls::ttp() {
-    return yyz;
+    return yyz();
 }
 
 Vector3 Vector4Cls::ttq() {
-    return yyw;
+    return yyw();
 }
 
 Vector3 Vector4Cls::tps() {
@@ -4234,11 +4234,11 @@ Vector3 Vector4Cls::tps() {
 }
 
 Vector3 Vector4Cls::tpt() {
-    return yzy;
+    return yzy();
 }
 
 Vector3 Vector4Cls::tpp() {
-    return yzz;
+    return yzz();
 }
 
 Vector3 Vector4Cls::tpq() {
@@ -4250,7 +4250,7 @@ Vector3 Vector4Cls::tqs() {
 }
 
 Vector3 Vector4Cls::tqt() {
-    return ywy;
+    return ywy();
 }
 
 Vector3 Vector4Cls::tqp() {
@@ -4258,11 +4258,11 @@ Vector3 Vector4Cls::tqp() {
 }
 
 Vector3 Vector4Cls::tqq() {
-    return yww;
+    return yww();
 }
 
 Vector3 Vector4Cls::pss() {
-    return zxx;
+    return zxx();
 }
 
 Vector3 Vector4Cls::pst() {
@@ -4270,7 +4270,7 @@ Vector3 Vector4Cls::pst() {
 }
 
 Vector3 Vector4Cls::psp() {
-    return zxz;
+    return zxz();
 }
 
 Vector3 Vector4Cls::psq() {
@@ -4282,11 +4282,11 @@ Vector3 Vector4Cls::pts() {
 }
 
 Vector3 Vector4Cls::ptt() {
-    return zyy;
+    return zyy();
 }
 
 Vector3 Vector4Cls::ptp() {
-    return zyz;
+    return zyz();
 }
 
 Vector3 Vector4Cls::ptq() {
@@ -4294,19 +4294,19 @@ Vector3 Vector4Cls::ptq() {
 }
 
 Vector3 Vector4Cls::pps() {
-    return zzx;
+    return zzx();
 }
 
 Vector3 Vector4Cls::ppt() {
-    return zzy;
+    return zzy();
 }
 
 Vector3 Vector4Cls::ppp() {
-    return zzz;
+    return zzz();
 }
 
 Vector3 Vector4Cls::ppq() {
-    return zzw;
+    return zzw();
 }
 
 Vector3 Vector4Cls::pqs() {
@@ -4318,15 +4318,15 @@ Vector3 Vector4Cls::pqt() {
 }
 
 Vector3 Vector4Cls::pqp() {
-    return zwz;
+    return zwz();
 }
 
 Vector3 Vector4Cls::pqq() {
-    return zww;
+    return zww();
 }
 
 Vector3 Vector4Cls::qss() {
-    return wxx;
+    return wxx();
 }
 
 Vector3 Vector4Cls::qst() {
@@ -4338,7 +4338,7 @@ Vector3 Vector4Cls::qsp() {
 }
 
 Vector3 Vector4Cls::qsq() {
-    return wxw;
+    return wxw();
 }
 
 Vector3 Vector4Cls::qts() {
@@ -4346,7 +4346,7 @@ Vector3 Vector4Cls::qts() {
 }
 
 Vector3 Vector4Cls::qtt() {
-    return wyy;
+    return wyy();
 }
 
 Vector3 Vector4Cls::qtp() {
@@ -4354,7 +4354,7 @@ Vector3 Vector4Cls::qtp() {
 }
 
 Vector3 Vector4Cls::qtq() {
-    return wyw;
+    return wyw();
 }
 
 Vector3 Vector4Cls::qps() {
@@ -4366,135 +4366,135 @@ Vector3 Vector4Cls::qpt() {
 }
 
 Vector3 Vector4Cls::qpp() {
-    return wzz;
+    return wzz();
 }
 
 Vector3 Vector4Cls::qpq() {
-    return wzw;
+    return wzw();
 }
 
 Vector3 Vector4Cls::qqs() {
-    return wwx;
+    return wwx();
 }
 
 Vector3 Vector4Cls::qqt() {
-    return wwy;
+    return wwy();
 }
 
 Vector3 Vector4Cls::qqp() {
-    return wwz;
+    return wwz();
 }
 
 Vector3 Vector4Cls::qqq() {
-    return www;
+    return www();
 }
 
 Vector4 Vector4Cls::ssss() {
-    return xxxx;
+    return xxxx();
 }
 
 Vector4 Vector4Cls::ssst() {
-    return xxxy;
+    return xxxy();
 }
 
 Vector4 Vector4Cls::sssp() {
-    return xxxz;
+    return xxxz();
 }
 
 Vector4 Vector4Cls::sssq() {
-    return xxxw;
+    return xxxw();
 }
 
 Vector4 Vector4Cls::ssts() {
-    return xxyx;
+    return xxyx();
 }
 
 Vector4 Vector4Cls::sstt() {
-    return xxyy;
+    return xxyy();
 }
 
 Vector4 Vector4Cls::sstp() {
-    return xxyz;
+    return xxyz();
 }
 
 Vector4 Vector4Cls::sstq() {
-    return xxyw;
+    return xxyw();
 }
 
 Vector4 Vector4Cls::ssps() {
-    return xxzx;
+    return xxzx();
 }
 
 Vector4 Vector4Cls::sspt() {
-    return xxzy;
+    return xxzy();
 }
 
 Vector4 Vector4Cls::sspp() {
-    return xxzz;
+    return xxzz();
 }
 
 Vector4 Vector4Cls::sspq() {
-    return xxzw;
+    return xxzw();
 }
 
 Vector4 Vector4Cls::ssqs() {
-    return xxwx;
+    return xxwx();
 }
 
 Vector4 Vector4Cls::ssqt() {
-    return xxwy;
+    return xxwy();
 }
 
 Vector4 Vector4Cls::ssqp() {
-    return xxwz;
+    return xxwz();
 }
 
 Vector4 Vector4Cls::ssqq() {
-    return xxww;
+    return xxww();
 }
 
 Vector4 Vector4Cls::stss() {
-    return xyxx;
+    return xyxx();
 }
 
 Vector4 Vector4Cls::stst() {
-    return xyxy;
+    return xyxy();
 }
 
 Vector4 Vector4Cls::stsp() {
-    return xyxz;
+    return xyxz();
 }
 
 Vector4 Vector4Cls::stsq() {
-    return xyxw;
+    return xyxw();
 }
 
 Vector4 Vector4Cls::stts() {
-    return xyyx;
+    return xyyx();
 }
 
 Vector4 Vector4Cls::sttt() {
-    return xyyy;
+    return xyyy();
 }
 
 Vector4 Vector4Cls::sttp() {
-    return xyyz;
+    return xyyz();
 }
 
 Vector4 Vector4Cls::sttq() {
-    return xyyw;
+    return xyyw();
 }
 
 Vector4 Vector4Cls::stps() {
-    return xyzx;
+    return xyzx();
 }
 
 Vector4 Vector4Cls::stpt() {
-    return xyzy;
+    return xyzy();
 }
 
 Vector4 Vector4Cls::stpp() {
-    return xyzz;
+    return xyzz();
 }
 
 Vector4 Vector4Cls::stpq() {
@@ -4502,11 +4502,11 @@ Vector4 Vector4Cls::stpq() {
 }
 
 Vector4 Vector4Cls::stqs() {
-    return xywx;
+    return xywx();
 }
 
 Vector4 Vector4Cls::stqt() {
-    return xywy;
+    return xywy();
 }
 
 Vector4 Vector4Cls::stqp() {
@@ -4514,35 +4514,35 @@ Vector4 Vector4Cls::stqp() {
 }
 
 Vector4 Vector4Cls::stqq() {
-    return xyww;
+    return xyww();
 }
 
 Vector4 Vector4Cls::spss() {
-    return xzxx;
+    return xzxx();
 }
 
 Vector4 Vector4Cls::spst() {
-    return xzxy;
+    return xzxy();
 }
 
 Vector4 Vector4Cls::spsp() {
-    return xzxz;
+    return xzxz();
 }
 
 Vector4 Vector4Cls::spsq() {
-    return xzxw;
+    return xzxw();
 }
 
 Vector4 Vector4Cls::spts() {
-    return xzyx;
+    return xzyx();
 }
 
 Vector4 Vector4Cls::sptt() {
-    return xzyy;
+    return xzyy();
 }
 
 Vector4 Vector4Cls::sptp() {
-    return xzyz;
+    return xzyz();
 }
 
 Vector4 Vector4Cls::sptq() {
@@ -4550,23 +4550,23 @@ Vector4 Vector4Cls::sptq() {
 }
 
 Vector4 Vector4Cls::spps() {
-    return xzzx;
+    return xzzx();
 }
 
 Vector4 Vector4Cls::sppt() {
-    return xzzy;
+    return xzzy();
 }
 
 Vector4 Vector4Cls::sppp() {
-    return xzzz;
+    return xzzz();
 }
 
 Vector4 Vector4Cls::sppq() {
-    return xzzw;
+    return xzzw();
 }
 
 Vector4 Vector4Cls::spqs() {
-    return xzwx;
+    return xzwx();
 }
 
 Vector4 Vector4Cls::spqt() {
@@ -4574,35 +4574,35 @@ Vector4 Vector4Cls::spqt() {
 }
 
 Vector4 Vector4Cls::spqp() {
-    return xzwz;
+    return xzwz();
 }
 
 Vector4 Vector4Cls::spqq() {
-    return xzww;
+    return xzww();
 }
 
 Vector4 Vector4Cls::sqss() {
-    return xwxx;
+    return xwxx();
 }
 
 Vector4 Vector4Cls::sqst() {
-    return xwxy;
+    return xwxy();
 }
 
 Vector4 Vector4Cls::sqsp() {
-    return xwxz;
+    return xwxz();
 }
 
 Vector4 Vector4Cls::sqsq() {
-    return xwxw;
+    return xwxw();
 }
 
 Vector4 Vector4Cls::sqts() {
-    return xwyx;
+    return xwyx();
 }
 
 Vector4 Vector4Cls::sqtt() {
-    return xwyy;
+    return xwyy();
 }
 
 Vector4 Vector4Cls::sqtp() {
@@ -4610,11 +4610,11 @@ Vector4 Vector4Cls::sqtp() {
 }
 
 Vector4 Vector4Cls::sqtq() {
-    return xwyw;
+    return xwyw();
 }
 
 Vector4 Vector4Cls::sqps() {
-    return xwzx;
+    return xwzx();
 }
 
 Vector4 Vector4Cls::sqpt() {
@@ -4622,71 +4622,71 @@ Vector4 Vector4Cls::sqpt() {
 }
 
 Vector4 Vector4Cls::sqpp() {
-    return xwzz;
+    return xwzz();
 }
 
 Vector4 Vector4Cls::sqpq() {
-    return xwzw;
+    return xwzw();
 }
 
 Vector4 Vector4Cls::sqqs() {
-    return xwwx;
+    return xwwx();
 }
 
 Vector4 Vector4Cls::sqqt() {
-    return xwwy;
+    return xwwy();
 }
 
 Vector4 Vector4Cls::sqqp() {
-    return xwwz;
+    return xwwz();
 }
 
 Vector4 Vector4Cls::sqqq() {
-    return xwww;
+    return xwww();
 }
 
 Vector4 Vector4Cls::tsss() {
-    return yxxx;
+    return yxxx();
 }
 
 Vector4 Vector4Cls::tsst() {
-    return yxxy;
+    return yxxy();
 }
 
 Vector4 Vector4Cls::tssp() {
-    return yxxz;
+    return yxxz();
 }
 
 Vector4 Vector4Cls::tssq() {
-    return yxxw;
+    return yxxw();
 }
 
 Vector4 Vector4Cls::tsts() {
-    return yxyx;
+    return yxyx();
 }
 
 Vector4 Vector4Cls::tstt() {
-    return yxyy;
+    return yxyy();
 }
 
 Vector4 Vector4Cls::tstp() {
-    return yxyz;
+    return yxyz();
 }
 
 Vector4 Vector4Cls::tstq() {
-    return yxyw;
+    return yxyw();
 }
 
 Vector4 Vector4Cls::tsps() {
-    return yxzx;
+    return yxzx();
 }
 
 Vector4 Vector4Cls::tspt() {
-    return yxzy;
+    return yxzy();
 }
 
 Vector4 Vector4Cls::tspp() {
-    return yxzz;
+    return yxzz();
 }
 
 Vector4 Vector4Cls::tspq() {
@@ -4694,11 +4694,11 @@ Vector4 Vector4Cls::tspq() {
 }
 
 Vector4 Vector4Cls::tsqs() {
-    return yxwx;
+    return yxwx();
 }
 
 Vector4 Vector4Cls::tsqt() {
-    return yxwy;
+    return yxwy();
 }
 
 Vector4 Vector4Cls::tsqp() {
@@ -4706,83 +4706,83 @@ Vector4 Vector4Cls::tsqp() {
 }
 
 Vector4 Vector4Cls::tsqq() {
-    return yxww;
+    return yxww();
 }
 
 Vector4 Vector4Cls::ttss() {
-    return yyxx;
+    return yyxx();
 }
 
 Vector4 Vector4Cls::ttst() {
-    return yyxy;
+    return yyxy();
 }
 
 Vector4 Vector4Cls::ttsp() {
-    return yyxz;
+    return yyxz();
 }
 
 Vector4 Vector4Cls::ttsq() {
-    return yyxw;
+    return yyxw();
 }
 
 Vector4 Vector4Cls::ttts() {
-    return yyyx;
+    return yyyx();
 }
 
 Vector4 Vector4Cls::tttt() {
-    return yyyy;
+    return yyyy();
 }
 
 Vector4 Vector4Cls::tttp() {
-    return yyyz;
+    return yyyz();
 }
 
 Vector4 Vector4Cls::tttq() {
-    return yyyw;
+    return yyyw();
 }
 
 Vector4 Vector4Cls::ttps() {
-    return yyzx;
+    return yyzx();
 }
 
 Vector4 Vector4Cls::ttpt() {
-    return yyzy;
+    return yyzy();
 }
 
 Vector4 Vector4Cls::ttpp() {
-    return yyzz;
+    return yyzz();
 }
 
 Vector4 Vector4Cls::ttpq() {
-    return yyzw;
+    return yyzw();
 }
 
 Vector4 Vector4Cls::ttqs() {
-    return yywx;
+    return yywx();
 }
 
 Vector4 Vector4Cls::ttqt() {
-    return yywy;
+    return yywy();
 }
 
 Vector4 Vector4Cls::ttqp() {
-    return yywz;
+    return yywz();
 }
 
 Vector4 Vector4Cls::ttqq() {
-    return yyww;
+    return yyww();
 }
 
 Vector4 Vector4Cls::tpss() {
-    return yzxx;
+    return yzxx();
 }
 
 Vector4 Vector4Cls::tpst() {
-    return yzxy;
+    return yzxy();
 }
 
 Vector4 Vector4Cls::tpsp() {
-    return yzxz;
+    return yzxz();
 }
 
 Vector4 Vector4Cls::tpsq() {
@@ -4790,35 +4790,35 @@ Vector4 Vector4Cls::tpsq() {
 }
 
 Vector4 Vector4Cls::tpts() {
-    return yzyx;
+    return yzyx();
 }
 
 Vector4 Vector4Cls::tptt() {
-    return yzyy;
+    return yzyy();
 }
 
 Vector4 Vector4Cls::tptp() {
-    return yzyz;
+    return yzyz();
 }
 
 Vector4 Vector4Cls::tptq() {
-    return yzyw;
+    return yzyw();
 }
 
 Vector4 Vector4Cls::tpps() {
-    return yzzx;
+    return yzzx();
 }
 
 Vector4 Vector4Cls::tppt() {
-    return yzzy;
+    return yzzy();
 }
 
 Vector4 Vector4Cls::tppp() {
-    return yzzz;
+    return yzzz();
 }
 
 Vector4 Vector4Cls::tppq() {
-    return yzzw;
+    return yzzw();
 }
 
 Vector4 Vector4Cls::tpqs() {
@@ -4826,23 +4826,23 @@ Vector4 Vector4Cls::tpqs() {
 }
 
 Vector4 Vector4Cls::tpqt() {
-    return yzwy;
+    return yzwy();
 }
 
 Vector4 Vector4Cls::tpqp() {
-    return yzwz;
+    return yzwz();
 }
 
 Vector4 Vector4Cls::tpqq() {
-    return yzww;
+    return yzww();
 }
 
 Vector4 Vector4Cls::tqss() {
-    return ywxx;
+    return ywxx();
 }
 
 Vector4 Vector4Cls::tqst() {
-    return ywxy;
+    return ywxy();
 }
 
 Vector4 Vector4Cls::tqsp() {
@@ -4850,23 +4850,23 @@ Vector4 Vector4Cls::tqsp() {
 }
 
 Vector4 Vector4Cls::tqsq() {
-    return ywxw;
+    return ywxw();
 }
 
 Vector4 Vector4Cls::tqts() {
-    return ywyx;
+    return ywyx();
 }
 
 Vector4 Vector4Cls::tqtt() {
-    return ywyy;
+    return ywyy();
 }
 
 Vector4 Vector4Cls::tqtp() {
-    return ywyz;
+    return ywyz();
 }
 
 Vector4 Vector4Cls::tqtq() {
-    return ywyw;
+    return ywyw();
 }
 
 Vector4 Vector4Cls::tqps() {
@@ -4874,59 +4874,59 @@ Vector4 Vector4Cls::tqps() {
 }
 
 Vector4 Vector4Cls::tqpt() {
-    return ywzy;
+    return ywzy();
 }
 
 Vector4 Vector4Cls::tqpp() {
-    return ywzz;
+    return ywzz();
 }
 
 Vector4 Vector4Cls::tqpq() {
-    return ywzw;
+    return ywzw();
 }
 
 Vector4 Vector4Cls::tqqs() {
-    return ywwx;
+    return ywwx();
 }
 
 Vector4 Vector4Cls::tqqt() {
-    return ywwy;
+    return ywwy();
 }
 
 Vector4 Vector4Cls::tqqp() {
-    return ywwz;
+    return ywwz();
 }
 
 Vector4 Vector4Cls::tqqq() {
-    return ywww;
+    return ywww();
 }
 
 Vector4 Vector4Cls::psss() {
-    return zxxx;
+    return zxxx();
 }
 
 Vector4 Vector4Cls::psst() {
-    return zxxy;
+    return zxxy();
 }
 
 Vector4 Vector4Cls::pssp() {
-    return zxxz;
+    return zxxz();
 }
 
 Vector4 Vector4Cls::pssq() {
-    return zxxw;
+    return zxxw();
 }
 
 Vector4 Vector4Cls::psts() {
-    return zxyx;
+    return zxyx();
 }
 
 Vector4 Vector4Cls::pstt() {
-    return zxyy;
+    return zxyy();
 }
 
 Vector4 Vector4Cls::pstp() {
-    return zxyz;
+    return zxyz();
 }
 
 Vector4 Vector4Cls::pstq() {
@@ -4934,23 +4934,23 @@ Vector4 Vector4Cls::pstq() {
 }
 
 Vector4 Vector4Cls::psps() {
-    return zxzx;
+    return zxzx();
 }
 
 Vector4 Vector4Cls::pspt() {
-    return zxzy;
+    return zxzy();
 }
 
 Vector4 Vector4Cls::pspp() {
-    return zxzz;
+    return zxzz();
 }
 
 Vector4 Vector4Cls::pspq() {
-    return zxzw;
+    return zxzw();
 }
 
 Vector4 Vector4Cls::psqs() {
-    return zxwx;
+    return zxwx();
 }
 
 Vector4 Vector4Cls::psqt() {
@@ -4958,23 +4958,23 @@ Vector4 Vector4Cls::psqt() {
 }
 
 Vector4 Vector4Cls::psqp() {
-    return zxwz;
+    return zxwz();
 }
 
 Vector4 Vector4Cls::psqq() {
-    return zxww;
+    return zxww();
 }
 
 Vector4 Vector4Cls::ptss() {
-    return zyxx;
+    return zyxx();
 }
 
 Vector4 Vector4Cls::ptst() {
-    return zyxy;
+    return zyxy();
 }
 
 Vector4 Vector4Cls::ptsp() {
-    return zyxz;
+    return zyxz();
 }
 
 Vector4 Vector4Cls::ptsq() {
@@ -4982,35 +4982,35 @@ Vector4 Vector4Cls::ptsq() {
 }
 
 Vector4 Vector4Cls::ptts() {
-    return zyyx;
+    return zyyx();
 }
 
 Vector4 Vector4Cls::pttt() {
-    return zyyy;
+    return zyyy();
 }
 
 Vector4 Vector4Cls::pttp() {
-    return zyyz;
+    return zyyz();
 }
 
 Vector4 Vector4Cls::pttq() {
-    return zyyw;
+    return zyyw();
 }
 
 Vector4 Vector4Cls::ptps() {
-    return zyzx;
+    return zyzx();
 }
 
 Vector4 Vector4Cls::ptpt() {
-    return zyzy;
+    return zyzy();
 }
 
 Vector4 Vector4Cls::ptpp() {
-    return zyzz;
+    return zyzz();
 }
 
 Vector4 Vector4Cls::ptpq() {
-    return zyzw;
+    return zyzw();
 }
 
 Vector4 Vector4Cls::ptqs() {
@@ -5018,83 +5018,83 @@ Vector4 Vector4Cls::ptqs() {
 }
 
 Vector4 Vector4Cls::ptqt() {
-    return zywy;
+    return zywy();
 }
 
 Vector4 Vector4Cls::ptqp() {
-    return zywz;
+    return zywz();
 }
 
 Vector4 Vector4Cls::ptqq() {
-    return zyww;
+    return zyww();
 }
 
 Vector4 Vector4Cls::ppss() {
-    return zzxx;
+    return zzxx();
 }
 
 Vector4 Vector4Cls::ppst() {
-    return zzxy;
+    return zzxy();
 }
 
 Vector4 Vector4Cls::ppsp() {
-    return zzxz;
+    return zzxz();
 }
 
 Vector4 Vector4Cls::ppsq() {
-    return zzxw;
+    return zzxw();
 }
 
 Vector4 Vector4Cls::ppts() {
-    return zzyx;
+    return zzyx();
 }
 
 Vector4 Vector4Cls::pptt() {
-    return zzyy;
+    return zzyy();
 }
 
 Vector4 Vector4Cls::pptp() {
-    return zzyz;
+    return zzyz();
 }
 
 Vector4 Vector4Cls::pptq() {
-    return zzyw;
+    return zzyw();
 }
 
 Vector4 Vector4Cls::ppps() {
-    return zzzx;
+    return zzzx();
 }
 
 Vector4 Vector4Cls::pppt() {
-    return zzzy;
+    return zzzy();
 }
 
 Vector4 Vector4Cls::pppp() {
-    return zzzz;
+    return zzzz();
 }
 
 Vector4 Vector4Cls::pppq() {
-    return zzzw;
+    return zzzw();
 }
 
 Vector4 Vector4Cls::ppqs() {
-    return zzwx;
+    return zzwx();
 }
 
 Vector4 Vector4Cls::ppqt() {
-    return zzwy;
+    return zzwy();
 }
 
 Vector4 Vector4Cls::ppqp() {
-    return zzwz;
+    return zzwz();
 }
 
 Vector4 Vector4Cls::ppqq() {
-    return zzww;
+    return zzww();
 }
 
 Vector4 Vector4Cls::pqss() {
-    return zwxx;
+    return zwxx();
 }
 
 Vector4 Vector4Cls::pqst() {
@@ -5102,11 +5102,11 @@ Vector4 Vector4Cls::pqst() {
 }
 
 Vector4 Vector4Cls::pqsp() {
-    return zwxz;
+    return zwxz();
 }
 
 Vector4 Vector4Cls::pqsq() {
-    return zwxw;
+    return zwxw();
 }
 
 Vector4 Vector4Cls::pqts() {
@@ -5114,71 +5114,71 @@ Vector4 Vector4Cls::pqts() {
 }
 
 Vector4 Vector4Cls::pqtt() {
-    return zwyy;
+    return zwyy();
 }
 
 Vector4 Vector4Cls::pqtp() {
-    return zwyz;
+    return zwyz();
 }
 
 Vector4 Vector4Cls::pqtq() {
-    return zwyw;
+    return zwyw();
 }
 
 Vector4 Vector4Cls::pqps() {
-    return zwzx;
+    return zwzx();
 }
 
 Vector4 Vector4Cls::pqpt() {
-    return zwzy;
+    return zwzy();
 }
 
 Vector4 Vector4Cls::pqpp() {
-    return zwzz;
+    return zwzz();
 }
 
 Vector4 Vector4Cls::pqpq() {
-    return zwzw;
+    return zwzw();
 }
 
 Vector4 Vector4Cls::pqqs() {
-    return zwwx;
+    return zwwx();
 }
 
 Vector4 Vector4Cls::pqqt() {
-    return zwwy;
+    return zwwy();
 }
 
 Vector4 Vector4Cls::pqqp() {
-    return zwwz;
+    return zwwz();
 }
 
 Vector4 Vector4Cls::pqqq() {
-    return zwww;
+    return zwww();
 }
 
 Vector4 Vector4Cls::qsss() {
-    return wxxx;
+    return wxxx();
 }
 
 Vector4 Vector4Cls::qsst() {
-    return wxxy;
+    return wxxy();
 }
 
 Vector4 Vector4Cls::qssp() {
-    return wxxz;
+    return wxxz();
 }
 
 Vector4 Vector4Cls::qssq() {
-    return wxxw;
+    return wxxw();
 }
 
 Vector4 Vector4Cls::qsts() {
-    return wxyx;
+    return wxyx();
 }
 
 Vector4 Vector4Cls::qstt() {
-    return wxyy;
+    return wxyy();
 }
 
 Vector4 Vector4Cls::qstp() {
@@ -5186,11 +5186,11 @@ Vector4 Vector4Cls::qstp() {
 }
 
 Vector4 Vector4Cls::qstq() {
-    return wxyw;
+    return wxyw();
 }
 
 Vector4 Vector4Cls::qsps() {
-    return wxzx;
+    return wxzx();
 }
 
 Vector4 Vector4Cls::qspt() {
@@ -5198,35 +5198,35 @@ Vector4 Vector4Cls::qspt() {
 }
 
 Vector4 Vector4Cls::qspp() {
-    return wxzz;
+    return wxzz();
 }
 
 Vector4 Vector4Cls::qspq() {
-    return wxzw;
+    return wxzw();
 }
 
 Vector4 Vector4Cls::qsqs() {
-    return wxwx;
+    return wxwx();
 }
 
 Vector4 Vector4Cls::qsqt() {
-    return wxwy;
+    return wxwy();
 }
 
 Vector4 Vector4Cls::qsqp() {
-    return wxwz;
+    return wxwz();
 }
 
 Vector4 Vector4Cls::qsqq() {
-    return wxww;
+    return wxww();
 }
 
 Vector4 Vector4Cls::qtss() {
-    return wyxx;
+    return wyxx();
 }
 
 Vector4 Vector4Cls::qtst() {
-    return wyxy;
+    return wyxy();
 }
 
 Vector4 Vector4Cls::qtsp() {
@@ -5234,23 +5234,23 @@ Vector4 Vector4Cls::qtsp() {
 }
 
 Vector4 Vector4Cls::qtsq() {
-    return wyxw;
+    return wyxw();
 }
 
 Vector4 Vector4Cls::qtts() {
-    return wyyx;
+    return wyyx();
 }
 
 Vector4 Vector4Cls::qttt() {
-    return wyyy;
+    return wyyy();
 }
 
 Vector4 Vector4Cls::qttp() {
-    return wyyz;
+    return wyyz();
 }
 
 Vector4 Vector4Cls::qttq() {
-    return wyyw;
+    return wyyw();
 }
 
 Vector4 Vector4Cls::qtps() {
@@ -5258,35 +5258,35 @@ Vector4 Vector4Cls::qtps() {
 }
 
 Vector4 Vector4Cls::qtpt() {
-    return wyzy;
+    return wyzy();
 }
 
 Vector4 Vector4Cls::qtpp() {
-    return wyzz;
+    return wyzz();
 }
 
 Vector4 Vector4Cls::qtpq() {
-    return wyzw;
+    return wyzw();
 }
 
 Vector4 Vector4Cls::qtqs() {
-    return wywx;
+    return wywx();
 }
 
 Vector4 Vector4Cls::qtqt() {
-    return wywy;
+    return wywy();
 }
 
 Vector4 Vector4Cls::qtqp() {
-    return wywz;
+    return wywz();
 }
 
 Vector4 Vector4Cls::qtqq() {
-    return wyww;
+    return wyww();
 }
 
 Vector4 Vector4Cls::qpss() {
-    return wzxx;
+    return wzxx();
 }
 
 Vector4 Vector4Cls::qpst() {
@@ -5294,11 +5294,11 @@ Vector4 Vector4Cls::qpst() {
 }
 
 Vector4 Vector4Cls::qpsp() {
-    return wzxz;
+    return wzxz();
 }
 
 Vector4 Vector4Cls::qpsq() {
-    return wzxw;
+    return wzxw();
 }
 
 Vector4 Vector4Cls::qpts() {
@@ -5306,109 +5306,109 @@ Vector4 Vector4Cls::qpts() {
 }
 
 Vector4 Vector4Cls::qptt() {
-    return wzyy;
+    return wzyy();
 }
 
 Vector4 Vector4Cls::qptp() {
-    return wzyz;
+    return wzyz();
 }
 
 Vector4 Vector4Cls::qptq() {
-    return wzyw;
+    return wzyw();
 }
 
 Vector4 Vector4Cls::qpps() {
-    return wzzx;
+    return wzzx();
 }
 
 Vector4 Vector4Cls::qppt() {
-    return wzzy;
+    return wzzy();
 }
 
 Vector4 Vector4Cls::qppp() {
-    return wzzz;
+    return wzzz();
 }
 
 Vector4 Vector4Cls::qppq() {
-    return wzzw;
+    return wzzw();
 }
 
 Vector4 Vector4Cls::qpqs() {
-    return wzwx;
+    return wzwx();
 }
 
 Vector4 Vector4Cls::qpqt() {
-    return wzwy;
+    return wzwy();
 }
 
 Vector4 Vector4Cls::qpqp() {
-    return wzwz;
+    return wzwz();
 }
 
 Vector4 Vector4Cls::qpqq() {
-    return wzww;
+    return wzww();
 }
 
 Vector4 Vector4Cls::qqss() {
-    return wwxx;
+    return wwxx();
 }
 
 Vector4 Vector4Cls::qqst() {
-    return wwxy;
+    return wwxy();
 }
 
 Vector4 Vector4Cls::qqsp() {
-    return wwxz;
+    return wwxz();
 }
 
 Vector4 Vector4Cls::qqsq() {
-    return wwxw;
+    return wwxw();
 }
 
 Vector4 Vector4Cls::qqts() {
-    return wwyx;
+    return wwyx();
 }
 
 Vector4 Vector4Cls::qqtt() {
-    return wwyy;
+    return wwyy();
 }
 
 Vector4 Vector4Cls::qqtp() {
-    return wwyz;
+    return wwyz();
 }
 
 Vector4 Vector4Cls::qqtq() {
-    return wwyw;
+    return wwyw();
 }
 
 Vector4 Vector4Cls::qqps() {
-    return wwzx;
+    return wwzx();
 }
 
 Vector4 Vector4Cls::qqpt() {
-    return wwzy;
+    return wwzy();
 }
 
 Vector4 Vector4Cls::qqpp() {
-    return wwzz;
+    return wwzz();
 }
 
 Vector4 Vector4Cls::qqpq() {
-    return wwzw;
+    return wwzw();
 }
 
 Vector4 Vector4Cls::qqqs() {
-    return wwwx;
+    return wwwx();
 }
 
 Vector4 Vector4Cls::qqqt() {
-    return wwwy;
+    return wwwy();
 }
 
 Vector4 Vector4Cls::qqqp() {
-    return wwwz;
+    return wwwz();
 }
 
 Vector4 Vector4Cls::qqqq() {
-    return wwww;
+    return wwww();
 }

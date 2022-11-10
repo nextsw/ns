@@ -22,12 +22,12 @@ TextTreeConfigurationCls::TextTreeConfigurationCls(bool addBlankLineIfNoChildren
         assert(addBlankLineIfNoChildren != nullptr);
         assert(isNameOnOwnLine != nullptr);
         assert(isBlankLineBetweenPropertiesAndChildren != nullptr);
-        childLinkSpace = " " * linkCharacter->length;
+        childLinkSpace = __s(" ") * linkCharacter->length();
     }
 }
 
 String _PrefixedStringBuilderCls::prefixOtherLines() {
-    return _nextPrefixOtherLines ?? _prefixOtherLines;
+    return _nextPrefixOtherLines or _prefixOtherLines;
 }
 
 void _PrefixedStringBuilderCls::prefixOtherLines(String prefix) {
@@ -36,27 +36,27 @@ void _PrefixedStringBuilderCls::prefixOtherLines(String prefix) {
 }
 
 void _PrefixedStringBuilderCls::incrementPrefixOtherLines(String suffix, bool updateCurrentLine) {
-    if (_currentLine->isEmpty || updateCurrentLine) {
-        _prefixOtherLines = prefixOtherLines! + suffix;
+    if (_currentLine->isEmpty() || updateCurrentLine) {
+        _prefixOtherLines = prefixOtherLines()! + suffix;
         _nextPrefixOtherLines = nullptr;
     } else {
-        _nextPrefixOtherLines = prefixOtherLines! + suffix;
+        _nextPrefixOtherLines = prefixOtherLines()! + suffix;
     }
 }
 
 bool _PrefixedStringBuilderCls::requiresMultipleLines() {
-    return _numLines > 1 || (_numLines == 1 && _currentLine->isNotEmpty) || (_currentLine->length + _getCurrentPrefix(true)!->length > wrapWidth!);
+    return _numLines > 1 || (_numLines == 1 && _currentLine->isNotEmpty()) || (_currentLine->length() + _getCurrentPrefix(true)!->length() > wrapWidth!);
 }
 
 bool _PrefixedStringBuilderCls::isCurrentLineEmpty() {
-    return _currentLine->isEmpty;
+    return _currentLine->isEmpty();
 }
 
 void _PrefixedStringBuilderCls::write(bool allowWrap, String s) {
     if (s->isEmpty) {
         return;
     }
-    List<String> lines = s->split("\n");
+    List<String> lines = s->split(__s("\n"));
     for (;  < lines->length; i = 1) {
         if (i > 0) {
             _finalizeLine(true);
@@ -65,7 +65,7 @@ void _PrefixedStringBuilderCls::write(bool allowWrap, String s) {
         String line = lines[i];
         if (line->isNotEmpty) {
             if (allowWrap && wrapWidth != nullptr) {
-                int wrapStart = _currentLine->length;
+                int wrapStart = _currentLine->length();
                 int wrapEnd = wrapStart + line->length;
                 if (_wrappableRanges->isNotEmpty && _wrappableRanges->last == wrapStart) {
                     _wrappableRanges->last = wrapEnd;
@@ -82,13 +82,13 @@ void _PrefixedStringBuilderCls::writeRawLines(String lines) {
     if (lines->isEmpty) {
         return;
     }
-    if (_currentLine->isNotEmpty) {
+    if (_currentLine->isNotEmpty()) {
         _finalizeLine(true);
     }
-    assert(_currentLine->isEmpty);
+    assert(_currentLine->isEmpty());
     _buffer->write(lines);
-    if (!lines->endsWith("\n")) {
-        _buffer->write("\n");
+    if (!lines->endsWith(__s("\n"))) {
+        _buffer->write(__s("\n"));
     }
     _numLines++;
     _updatePrefix();
@@ -96,20 +96,20 @@ void _PrefixedStringBuilderCls::writeRawLines(String lines) {
 
 void _PrefixedStringBuilderCls::writeStretched(int targetLineLength, String text) {
     write(text);
-    int currentLineLength = _currentLine->length + _getCurrentPrefix(_buffer->isEmpty)!->length;
-    assert(_currentLine->length > 0);
+    int currentLineLength = _currentLine->length() + _getCurrentPrefix(_buffer->isEmpty())!->length();
+    assert(_currentLine->length() > 0);
     int targetLength = targetLineLength - currentLineLength;
     if (targetLength > 0) {
         assert(text->isNotEmpty);
         String lastChar = text[text->length - 1];
-        assert(lastChar != "\n");
+        assert(lastChar != __s("\n"));
         _currentLine->write(lastChar * targetLength);
     }
     _wrappableRanges->clear();
 }
 
 String _PrefixedStringBuilderCls::build() {
-    if (_currentLine->isNotEmpty) {
+    if (_currentLine->isNotEmpty()) {
         _finalizeLine(false);
     }
     return _buffer->toString();
@@ -117,19 +117,19 @@ String _PrefixedStringBuilderCls::build() {
 
 _PrefixedStringBuilderCls::_PrefixedStringBuilderCls(String prefixLineOne, String prefixOtherLines, int wrapWidth) {
     {
-        _prefixOtherLines = prefixOtherLines;
+        _prefixOtherLines = prefixOtherLines();
     }
 }
 
 void _PrefixedStringBuilderCls::_finalizeLine(bool addTrailingLineBreak) {
-    bool firstLine = _buffer->isEmpty;
+    bool firstLine = _buffer->isEmpty();
     String text = _currentLine->toString();
     _currentLine->clear();
     if (_wrappableRanges->isEmpty) {
         _writeLine(textaddTrailingLineBreak, firstLine);
         return;
     }
-    Iterable<String> lines = _wordWrapLine(text, _wrappableRanges, wrapWidth!firstLine? prefixLineOne->length : _prefixOtherLines!->length, _prefixOtherLines!->length);
+    Iterable<String> lines = _wordWrapLine(text, _wrappableRanges, wrapWidth!firstLine? prefixLineOne->length() : _prefixOtherLines!->length(), _prefixOtherLines!->length());
     int i = 0;
     int length = lines->length;
     for (String line : lines) {
@@ -166,16 +166,16 @@ void _PrefixedStringBuilderCls::_updatePrefix() {
 }
 
 void _PrefixedStringBuilderCls::_writeLine(bool firstLine, bool includeLineBreak, String line) {
-    line = "${_getCurrentPrefix(firstLine)}$line";
+    line = __s("${_getCurrentPrefix(firstLine)}$line");
     _buffer->write(line->trimRight());
     if (includeLineBreak) {
-        _buffer->write("\n");
+        _buffer->write(__s("\n"));
     }
     _numLines++;
 }
 
 String _PrefixedStringBuilderCls::_getCurrentPrefix(bool firstLine) {
-    return _buffer->isEmpty? prefixLineOne : _prefixOtherLines;
+    return _buffer->isEmpty()? prefixLineOne : _prefixOtherLines;
 }
 
 bool _isSingleLine(DiagnosticsTreeStyle style) {
@@ -194,7 +194,7 @@ TextTreeRendererCls::TextTreeRendererCls(int maxDescendentsTruncatableNode, Diag
 
 String TextTreeRendererCls::render(DiagnosticsNode node, TextTreeConfiguration parentConfiguration, String prefixLineOne, String prefixOtherLines) {
     if (kReleaseMode) {
-        return "";
+        return __s("");
     } else {
         return _debugRender(nodeprefixLineOne, prefixOtherLines, parentConfiguration);
     }
@@ -226,15 +226,15 @@ String TextTreeRendererCls::_debugRender(DiagnosticsNode node, TextTreeConfigura
         visitor(node);
         StringBuffer information = make<StringBufferCls>(prefixLineOne);
         if (lines > 1) {
-            information->writeln("This ${node.name} had the following descendants (showing up to depth $maxDepth):");
+            information->writeln(__s("This ${node.name} had the following descendants (showing up to depth $maxDepth):"));
         } else         {
             if (descendants->length == 1) {
-            information->writeln("This ${node.name} had the following child:");
+            information->writeln(__s("This ${node.name} had the following child:"));
         } else {
-            information->writeln("This ${node.name} has no descendants.");
+            information->writeln(__s("This ${node.name} has no descendants."));
         }
 ;
-        }        information->writeAll(descendants, "\n");
+        }        information->writeAll(descendants, __s("\n"));
         return information->toString();
     }
     _PrefixedStringBuilder builder = make<_PrefixedStringBuilderCls>(prefixLineOne, prefixOtherLines, math->max(_wrapWidth, prefixOtherLines->length + _wrapWidthProperties));
@@ -262,10 +262,10 @@ String TextTreeRendererCls::_debugRender(DiagnosticsNode node, TextTreeConfigura
             if (node->showSeparator) {
                 builder->write(config->afterNamewrapName);
             }
-            builder->write(config->isNameOnOwnLine || description->contains("\n")? "\n" : " "wrapName);
+            builder->write(config->isNameOnOwnLine || description->contains(__s("\n"))? __s("\n") : __s(" ")wrapName);
         }
         if (!isSingleLine && builder->requiresMultipleLines && !builder->isCurrentLineEmpty) {
-            builder->write("\n");
+            builder->write(__s("\n"));
         }
         if (includeName) {
             builder->incrementPrefixOtherLines(children->isEmpty? config->propertyPrefixNoChildren : config->propertyPrefixIfChildrentrue);
@@ -288,13 +288,13 @@ String TextTreeRendererCls::_debugRender(DiagnosticsNode node, TextTreeConfigura
     if (_maxDescendentsTruncatableNode >= 0 && node->allowTruncate) {
         if (propertiesIterable->length < _maxDescendentsTruncatableNode) {
             properties = propertiesIterable->take(_maxDescendentsTruncatableNode)->toList();
-            properties->add(DiagnosticsNodeCls->message("..."));
+            properties->add(DiagnosticsNodeCls->message(__s("...")));
         } else {
             properties = propertiesIterable->toList();
         }
         if ( < children->length) {
             children = children->take(_maxDescendentsTruncatableNode)->toList();
-            children->add(DiagnosticsNodeCls->message("..."));
+            children->add(DiagnosticsNodeCls->message(__s("...")));
         }
     } else {
         properties = propertiesIterable->toList();
@@ -322,18 +322,18 @@ String TextTreeRendererCls::_debugRender(DiagnosticsNode node, TextTreeConfigura
         }
         TextTreeConfiguration propertyStyle = property->textTreeConfiguration!;
         if (_isSingleLine(property->style)) {
-            String propertyRender = render(propertypropertyStyle->prefixLineOne, "${propertyStyle.childLinkSpace}${propertyStyle.prefixOtherLines}", config);
-            List<String> propertyLines = propertyRender->split("\n");
+            String propertyRender = render(propertypropertyStyle->prefixLineOne, __s("${propertyStyle.childLinkSpace}${propertyStyle.prefixOtherLines}"), config);
+            List<String> propertyLines = propertyRender->split(__s("\n"));
             if (propertyLines->length == 1 && !config->lineBreakProperties) {
                 builder->write(propertyLines->first);
             } else {
                 builder->write(propertyRender);
-                if (!propertyRender->endsWith("\n")) {
-                    builder->write("\n");
+                if (!propertyRender->endsWith(__s("\n"))) {
+                    builder->write(__s("\n"));
                 }
             }
         } else {
-            String propertyRender = render(property"${builder.prefixOtherLines}${propertyStyle.prefixLineOne}", "${builder.prefixOtherLines}${propertyStyle.childLinkSpace}${propertyStyle.prefixOtherLines}", config);
+            String propertyRender = render(property__s("${builder.prefixOtherLines}${propertyStyle.prefixLineOne}"), __s("${builder.prefixOtherLines}${propertyStyle.childLinkSpace}${propertyStyle.prefixOtherLines}"), config);
             builder->writeRawLines(propertyRender);
         }
     }
@@ -345,7 +345,7 @@ String TextTreeRendererCls::_debugRender(DiagnosticsNode node, TextTreeConfigura
         builder->write(config->lineBreak);
     }
     String prefixChildren = config->bodyIndent;
-    String prefixChildrenRaw = "$prefixOtherLines$prefixChildren";
+    String prefixChildrenRaw = __s("$prefixOtherLines$prefixChildren");
     if (children->isEmpty && config->addBlankLineIfNoChildren && builder->requiresMultipleLines && builder->prefixOtherLines!->trimRight()->isNotEmpty) {
         builder->write(config->lineBreak);
     }
@@ -359,12 +359,12 @@ String TextTreeRendererCls::_debugRender(DiagnosticsNode node, TextTreeConfigura
             assert(child != nullptr);
             TextTreeConfiguration childConfig = _childTextConfiguration(child, config)!;
             if (i == children->length - 1) {
-                String lastChildPrefixLineOne = "$prefixChildrenRaw${childConfig.prefixLastChildLineOne}";
-                String childPrefixOtherLines = "$prefixChildrenRaw${childConfig.childLinkSpace}${childConfig.prefixOtherLines}";
+                String lastChildPrefixLineOne = __s("$prefixChildrenRaw${childConfig.prefixLastChildLineOne}");
+                String childPrefixOtherLines = __s("$prefixChildrenRaw${childConfig.childLinkSpace}${childConfig.prefixOtherLines}");
                 builder->writeRawLines(render(childlastChildPrefixLineOne, childPrefixOtherLines, config));
                 if (childConfig->footer->isNotEmpty) {
                     builder->prefixOtherLines = prefixChildrenRaw;
-                    builder->write("${childConfig.childLinkSpace}${childConfig.footer}");
+                    builder->write(__s("${childConfig.childLinkSpace}${childConfig.footer}"));
                     if (childConfig->mandatoryFooter->isNotEmpty) {
                         builder->writeStretched(childConfig->mandatoryFooter, math->max(builder->wrapWidth!, _wrapWidthProperties + childPrefixOtherLines->length));
                     }
@@ -372,12 +372,12 @@ String TextTreeRendererCls::_debugRender(DiagnosticsNode node, TextTreeConfigura
                 }
             } else {
                 TextTreeConfiguration nextChildStyle = _childTextConfiguration(children[i + 1], config)!;
-                String childPrefixLineOne = "$prefixChildrenRaw${childConfig.prefixLineOne}";
-                String childPrefixOtherLines = "$prefixChildrenRaw${nextChildStyle.linkCharacter}${childConfig.prefixOtherLines}";
+                String childPrefixLineOne = __s("$prefixChildrenRaw${childConfig.prefixLineOne}");
+                String childPrefixOtherLines = __s("$prefixChildrenRaw${nextChildStyle.linkCharacter}${childConfig.prefixOtherLines}");
                 builder->writeRawLines(render(childchildPrefixLineOne, childPrefixOtherLines, config));
                 if (childConfig->footer->isNotEmpty) {
                     builder->prefixOtherLines = prefixChildrenRaw;
-                    builder->write("${childConfig.linkCharacter}${childConfig.footer}");
+                    builder->write(__s("${childConfig.linkCharacter}${childConfig.footer}"));
                     if (childConfig->mandatoryFooter->isNotEmpty) {
                         builder->writeStretched(childConfig->mandatoryFooter, math->max(builder->wrapWidth!, _wrapWidthProperties + childPrefixOtherLines->length));
                     }
@@ -397,18 +397,18 @@ DiagnosticsNodeCls::DiagnosticsNodeCls(String linePrefix, String name, bool show
     {
         assert(showName != nullptr);
         assert(showSeparator != nullptr);
-        assert(name == nullptr || !name->endsWith(":"), "Names of diagnostic nodes must not end with colons.\nname:\n  "$name"");
+        assert(name == nullptr || !name->endsWith(__s(":")), __s("Names of diagnostic nodes must not end with colons.\nname:\n  "$name""));
     }
 }
 
 void DiagnosticsNodeCls::message(bool allowWrap, DiagnosticLevel level, String message, DiagnosticsTreeStyle style) {
     assert(style != nullptr);
-    assert(level != nullptr);
-    return <void>make<DiagnosticsPropertyCls>("", nullptrmessage, style, false, allowWrap, level);
+    assert(level() != nullptr);
+    return <void>make<DiagnosticsPropertyCls>(__s(""), nullptrmessage, style, false, allowWrap(), level());
 }
 
 bool DiagnosticsNodeCls::isFiltered(DiagnosticLevel minLevel) {
-    return kReleaseMode || level->index < minLevel->index;
+    return kReleaseMode || level()->index < minLevel->index;
 }
 
 DiagnosticLevel DiagnosticsNodeCls::level() {
@@ -451,7 +451,7 @@ Map<String, Object> DiagnosticsNodeCls::toJsonMap(DiagnosticsSerializationDelega
     Map<String, Object> result = makeMap(makeList(), makeList();
     assert([=] () {
         bool hasChildren = getChildren()->isNotEmpty;
-            Map<String, Object> map1 = make<MapCls<>>();    map1.set("description", toDescription());    map1.set("type", runtimeType->toString());    if (name != nullptr) {        map1.set("name", name);    }if (!showSeparator) {        map1.set("showSeparator", showSeparator);    }if (level != DiagnosticLevelCls::info) {        map1.set("level", level->name);    }if (showName == false) {        map1.set("showName", showName);    }if (emptyBodyDescription != nullptr) {        map1.set("emptyBodyDescription", emptyBodyDescription);    }if (style != DiagnosticsTreeStyleCls::sparse) {        map1.set("style", style!->name);    }if (allowTruncate) {        map1.set("allowTruncate", allowTruncate);    }if (hasChildren) {        map1.set("hasChildren", hasChildren);    }if (linePrefix?->isNotEmpty ?? false) {        map1.set("linePrefix", linePrefix);    }if (!allowWrap) {        map1.set("allowWrap", allowWrap);    }if (allowNameWrap) {        map1.set("allowNameWrap", allowNameWrap);    }map1.addAll(delegate->additionalNodeProperties(this));if (delegate->includeProperties) {        map1.set("properties", toJsonList(delegate->filterProperties(getProperties(), this), this, delegate));    }if (delegate->subtreeDepth > 0) {        map1.set("children", toJsonList(delegate->filterChildren(getChildren(), this), this, delegate));    }result = list1;
+            Map<String, Object> map1 = make<MapCls<>>();    map1.set(__s("description"), toDescription());    map1.set(__s("type"), runtimeType->toString());    if (name != nullptr) {        map1.set(__s("name"), name);    }if (!showSeparator) {        map1.set(__s("showSeparator"), showSeparator);    }if (level() != DiagnosticLevelCls::info) {        map1.set(__s("level"), level()->name);    }if (showName == false) {        map1.set(__s("showName"), showName);    }if (emptyBodyDescription() != nullptr) {        map1.set(__s("emptyBodyDescription"), emptyBodyDescription());    }if (style != DiagnosticsTreeStyleCls::sparse) {        map1.set(__s("style"), style!->name);    }if (allowTruncate()) {        map1.set(__s("allowTruncate"), allowTruncate());    }if (hasChildren) {        map1.set(__s("hasChildren"), hasChildren);    }if (linePrefix?->isNotEmpty() or false) {        map1.set(__s("linePrefix"), linePrefix);    }if (!allowWrap()) {        map1.set(__s("allowWrap"), allowWrap());    }if (allowNameWrap()) {        map1.set(__s("allowNameWrap"), allowNameWrap());    }map1.addAll(delegate->additionalNodeProperties(this));if (delegate->includeProperties) {        map1.set(__s("properties"), toJsonList(delegate->filterProperties(getProperties(), this), this, delegate));    }if (delegate->subtreeDepth > 0) {        map1.set(__s("children"), toJsonList(delegate->filterChildren(getChildren(), this), this, delegate));    }result = list1;
         return true;
     }());
     return result;
@@ -465,14 +465,14 @@ List<Map<String, Object>> DiagnosticsNodeCls::toJsonList(DiagnosticsSerializatio
     int originalNodeCount = nodes->length;
     nodes = delegate->truncateNodesList(nodes, parent);
     if (nodes->length != originalNodeCount) {
-        nodes->add(DiagnosticsNodeCls->message("..."));
+        nodes->add(DiagnosticsNodeCls->message(__s("...")));
         truncated = true;
     }
     List<Map<String, Object>> json = nodes-><Map<String, Object>>map([=] (DiagnosticsNode node) {
     return node->toJsonMap(delegate->delegateForNode(node));
 })->toList();
     if (truncated) {
-        json->last["truncated"] = true;
+        json->last[__s("truncated")] = true;
     }
     return json;
 }
@@ -486,10 +486,10 @@ String DiagnosticsNodeCls::toString(DiagnosticLevel minLevel, TextTreeConfigurat
             result = toStringDeep(parentConfiguration, minLevel);
         } else {
             String description = toDescription(parentConfiguration);
-            if (name == nullptr || name!->isEmpty || !showName) {
+            if (name == nullptr || name!->isEmpty() || !showName) {
                 result = description;
             } else {
-                result = description->contains("\n")? "$name$_separator\n$description" : "$name$_separator $description";
+                result = description->contains(__s("\n"))? __s("$name$_separator\n$description") : __s("$name$_separator $description");
             }
         }
         return true;
@@ -503,7 +503,7 @@ TextTreeConfiguration DiagnosticsNodeCls::textTreeConfiguration() {
 }
 
 String DiagnosticsNodeCls::toStringDeep(DiagnosticLevel minLevel, TextTreeConfiguration parentConfiguration, String prefixLineOne, String prefixOtherLines) {
-    String result = "";
+    String result = __s("");
     assert([=] () {
         result = make<TextTreeRendererCls>(minLevel, 65)->render(thisprefixLineOne, prefixOtherLines, parentConfiguration);
         return true;
@@ -512,10 +512,10 @@ String DiagnosticsNodeCls::toStringDeep(DiagnosticLevel minLevel, TextTreeConfig
 }
 
 String DiagnosticsNodeCls::_separator() {
-    return showSeparator? ":" : "";
+    return showSeparator? __s(":") : __s("");
 }
 
-MessagePropertyCls::MessagePropertyCls(DiagnosticLevel level, String message, String name, DiagnosticsTreeStyle style) {
+MessagePropertyCls::MessagePropertyCls(DiagnosticLevel level, String message, String name, DiagnosticsTreeStyle style) : DiagnosticsProperty<void>(name, nullptrmessage, style, level) {
     {
         assert(name != nullptr);
         assert(message != nullptr);
@@ -535,40 +535,40 @@ StringPropertyCls::StringPropertyCls(Unknown defaultValue, Unknown description, 
 
 Map<String, Object> StringPropertyCls::toJsonMap(DiagnosticsSerializationDelegate delegate) {
     Map<String, Object> json = super->toJsonMap(delegate);
-    json["quoted"] = quoted;
+    json[__s("quoted")] = quoted;
     return json;
 }
 
 String StringPropertyCls::valueToString(TextTreeConfiguration parentConfiguration) {
-    String text = _description ?? value;
+    String text = _description or value;
     if (parentConfiguration != nullptr && !parentConfiguration->lineBreakProperties && text != nullptr) {
-        text = text->replaceAll("\n", "\n");
+        text = text->replaceAll(__s("\n"), __s("\n"));
     }
     if (quoted && text != nullptr) {
         if (ifEmpty != nullptr && text->isEmpty) {
             return ifEmpty!;
         }
-        return ""$text"";
+        return __s(""$text"");
     }
     return text->toString();
 }
 
-template<typename T : num> void _NumPropertyCls<T>::lazy(Unknown computeValue, Unknown defaultValue, Unknown ifNull, Unknown level, String name, Unknown showName, Unknown style, Unknown tooltip, String unit)
+template<typename T> void _NumPropertyCls<T>::lazy(Unknown computeValue, Unknown defaultValue, Unknown ifNull, Unknown level, String name, Unknown showName, Unknown style, Unknown tooltip, String unit)
 
-template<typename T : num> Map<String, Object> _NumPropertyCls<T>::toJsonMap(DiagnosticsSerializationDelegate delegate) {
+template<typename T> Map<String, Object> _NumPropertyCls<T>::toJsonMap(DiagnosticsSerializationDelegate delegate) {
     Map<String, Object> json = super->toJsonMap(delegate);
     if (unit != nullptr) {
-        json["unit"] = unit;
+        json[__s("unit")] = unit;
     }
-    json["numberToString"] = numberToString();
+    json[__s("numberToString")] = numberToString();
     return json;
 }
 
-template<typename T : num> String _NumPropertyCls<T>::valueToString(TextTreeConfiguration parentConfiguration) {
+template<typename T> String _NumPropertyCls<T>::valueToString(TextTreeConfiguration parentConfiguration) {
     if (value == nullptr) {
         return value->toString();
     }
-    return unit != nullptr? "${numberToString()}$unit" : numberToString();
+    return unit != nullptr? __s("${numberToString()}$unit") : numberToString();
 }
 
 DoublePropertyCls::DoublePropertyCls(Unknown defaultValue, Unknown ifNull, Unknown level, Unknown name, Unknown showName, Unknown style, Unknown tooltip, Unknown unit, Unknown value) {
@@ -608,7 +608,7 @@ String PercentPropertyCls::valueToString(TextTreeConfiguration parentConfigurati
     if (value == nullptr) {
         return value->toString();
     }
-    return unit != nullptr? "${numberToString()} $unit" : numberToString();
+    return unit != nullptr? __s("${numberToString()} $unit") : numberToString();
 }
 
 String PercentPropertyCls::numberToString() {
@@ -616,13 +616,13 @@ String PercentPropertyCls::numberToString() {
     if (v == nullptr) {
         return value->toString();
     }
-    return "${(clampDouble(v, 0.0, 1.0) * 100.0).toStringAsFixed(1)}%";
+    return __s("${(clampDouble(v, 0.0, 1.0) * 100.0).toStringAsFixed(1)}%");
 }
 
-FlagPropertyCls::FlagPropertyCls(Object defaultValue, String ifFalse, String ifTrue, DiagnosticLevel level, String name, bool showName, bool value) {
+FlagPropertyCls::FlagPropertyCls(Object defaultValue, String ifFalse, String ifTrue, DiagnosticLevel level, String name, bool showName, bool value) : DiagnosticsProperty<bool>(name, valueshowName(), defaultValue, level()) {
     {
-        assert(showName != nullptr);
-        assert(level != nullptr);
+        assert(showName() != nullptr);
+        assert(level() != nullptr);
         assert(ifTrue != nullptr || ifFalse != nullptr);
     }
 }
@@ -630,16 +630,16 @@ FlagPropertyCls::FlagPropertyCls(Object defaultValue, String ifFalse, String ifT
 Map<String, Object> FlagPropertyCls::toJsonMap(DiagnosticsSerializationDelegate delegate) {
     Map<String, Object> json = super->toJsonMap(delegate);
     if (ifTrue != nullptr) {
-        json["ifTrue"] = ifTrue;
+        json[__s("ifTrue")] = ifTrue;
     }
     if (ifFalse != nullptr) {
-        json["ifFalse"] = ifFalse;
+        json[__s("ifFalse")] = ifFalse;
     }
     return json;
 }
 
 String FlagPropertyCls::valueToString(TextTreeConfiguration parentConfiguration) {
-    if (value ?? false) {
+    if (value or false) {
         if (ifTrue != nullptr) {
             return ifTrue!;
         }
@@ -654,14 +654,14 @@ String FlagPropertyCls::valueToString(TextTreeConfiguration parentConfiguration)
 }
 
 bool FlagPropertyCls::showName() {
-    if (value == nullptr || ((value ?? false) && ifTrue == nullptr) || (!(value ?? true) && ifFalse == nullptr)) {
+    if (value == nullptr || ((value or false) && ifTrue == nullptr) || (!(value or true) && ifFalse == nullptr)) {
         return true;
     }
     return super->showName;
 }
 
 DiagnosticLevel FlagPropertyCls::level() {
-    if (value ?? false) {
+    if (value or false) {
         if (ifTrue == nullptr) {
             return DiagnosticLevelCls::hidden;
         }
@@ -679,7 +679,7 @@ template<typename T> IterablePropertyCls<T>::IterablePropertyCls(Unknown default
         assert(style != nullptr);
         assert(showName != nullptr);
         assert(showSeparator != nullptr);
-        assert(level != nullptr);
+        assert(level() != nullptr);
     }
 }
 
@@ -688,19 +688,19 @@ template<typename T> String IterablePropertyCls<T>::valueToString(TextTreeConfig
         return value->toString();
     }
     if (value!->isEmpty) {
-        return ifEmpty ?? "[]";
+        return ifEmpty or __s("[]");
     }
     Iterable<String> formattedValues = value!->map([=] (T v) {
-    if (TCls == double && v is double) {
+    if (TCls == double && is<double>(v)) {
         return debugFormatDouble(v);
     } else {
         return v->toString();
     }
 });
     if (parentConfiguration != nullptr && !parentConfiguration->lineBreakProperties) {
-        return "[${formattedValues.join(', ')}]";
+        return __s("[${formattedValues.join(', ')}]");
     }
-    return formattedValues->join(_isSingleLine(style)? ", " : "\n");
+    return formattedValues->join(_isSingleLine(style)? __s(", ") : __s("\n"));
 }
 
 template<typename T> DiagnosticLevel IterablePropertyCls<T>::level() {
@@ -713,7 +713,7 @@ template<typename T> DiagnosticLevel IterablePropertyCls<T>::level() {
 template<typename T> Map<String, Object> IterablePropertyCls<T>::toJsonMap(DiagnosticsSerializationDelegate delegate) {
     Map<String, Object> json = super->toJsonMap(delegate);
     if (value != nullptr) {
-        json["values"] = value!-><String>map([=] (T value)         {
+        json[__s("values")] = value!-><String>map([=] (T value)         {
             value->toString();
         })->toList();
     }
@@ -736,8 +736,8 @@ template<typename T> String EnumPropertyCls<T>::valueToString(TextTreeConfigurat
 template<typename T> ObjectFlagPropertyCls<T>::ObjectFlagPropertyCls(Unknown ifNull, String ifPresent, Unknown level, String name, Unknown showName, Unknown value) {
     {
         assert(ifPresent != nullptr || ifNull != nullptr);
-        assert(showName != nullptr);
-        assert(level != nullptr);
+        assert(showName() != nullptr);
+        assert(level() != nullptr);
     }
 }
 
@@ -779,17 +779,17 @@ template<typename T> DiagnosticLevel ObjectFlagPropertyCls<T>::level() {
 template<typename T> Map<String, Object> ObjectFlagPropertyCls<T>::toJsonMap(DiagnosticsSerializationDelegate delegate) {
     Map<String, Object> json = super->toJsonMap(delegate);
     if (ifPresent != nullptr) {
-        json["ifPresent"] = ifPresent;
+        json[__s("ifPresent")] = ifPresent;
     }
     return json;
 }
 
 template<typename T> FlagsSummaryCls<T>::FlagsSummaryCls(Unknown ifEmpty, Unknown level, String name, Unknown showName, Unknown showSeparator, Map<String, T> value) {
     {
-        assert(value != nullptr);
+        assert(value() != nullptr);
         assert(showName != nullptr);
         assert(showSeparator != nullptr);
-        assert(level != nullptr);
+        assert(level() != nullptr);
     }
 }
 
@@ -798,15 +798,15 @@ template<typename T> Map<String, T> FlagsSummaryCls<T>::value() {
 }
 
 template<typename T> String FlagsSummaryCls<T>::valueToString(TextTreeConfiguration parentConfiguration) {
-    assert(value != nullptr);
+    assert(value() != nullptr);
     if (!_hasNonNullEntry() && ifEmpty != nullptr) {
         return ifEmpty!;
     }
     Iterable<String> formattedValues = _formattedValues();
     if (parentConfiguration != nullptr && !parentConfiguration->lineBreakProperties) {
-        return "[${formattedValues.join(', ')}]";
+        return __s("[${formattedValues.join(', ')}]");
     }
-    return formattedValues->join(_isSingleLine(style)? ", " : "\n");
+    return formattedValues->join(_isSingleLine(style)? __s(", ") : __s("\n"));
 }
 
 template<typename T> DiagnosticLevel FlagsSummaryCls<T>::level() {
@@ -818,97 +818,97 @@ template<typename T> DiagnosticLevel FlagsSummaryCls<T>::level() {
 
 template<typename T> Map<String, Object> FlagsSummaryCls<T>::toJsonMap(DiagnosticsSerializationDelegate delegate) {
     Map<String, Object> json = super->toJsonMap(delegate);
-    if (value->isNotEmpty) {
-        json["values"] = _formattedValues()->toList();
+    if (value()->isNotEmpty()) {
+        json[__s("values")] = _formattedValues()->toList();
     }
     return json;
 }
 
 template<typename T> bool FlagsSummaryCls<T>::_hasNonNullEntry() {
-    return value->values->any([=] (T o)     {
+    return value()->values()->any([=] (T o)     {
         o != nullptr;
     });
 }
 
 template<typename T> Iterable<String> FlagsSummaryCls<T>::_formattedValues() {
-    return value->entries->where([=] (MapEntry<String, T> entry)     {
+    return value()->entries()->where([=] (MapEntry<String, T> entry)     {
         entry->value != nullptr;
     })->map([=] (MapEntry<String, T> entry)     {
         entry->key;
     });
 }
 
-template<typename T> DiagnosticsPropertyCls<T>::DiagnosticsPropertyCls(bool allowNameWrap, bool allowWrap, Object defaultValue, String description, bool expandableValue, String ifEmpty, String ifNull, DiagnosticLevel level, Unknown linePrefix, bool missingIfNull, String name, Unknown showName, Unknown showSeparator, DiagnosticsTreeStyle style, String tooltip, T value) {
+template<typename T> DiagnosticsPropertyCls<T>::DiagnosticsPropertyCls(bool allowNameWrap, bool allowWrap, Object defaultValue, String description, bool expandableValue, String ifEmpty, String ifNull, DiagnosticLevel level, Unknown linePrefix, bool missingIfNull, String name, Unknown showName, Unknown showSeparator, DiagnosticsTreeStyle style, String tooltip, T value) : DiagnosticsNode(name) {
     {
         assert(showName != nullptr);
         assert(showSeparator != nullptr);
         assert(style != nullptr);
-        assert(level != nullptr);
+        assert(level() != nullptr);
         _description = description;
         _valueComputed = true;
-        _value = value;
+        _value = value();
         _computeValue = nullptr;
-        ifNull = ifNull ?? (missingIfNull? "MISSING" : nullptr);
-        _defaultLevel = level;
+        ifNull = ifNull or (missingIfNull? __s("MISSING") : nullptr);
+        _defaultLevel = level();
     }
 }
 
 template<typename T> void DiagnosticsPropertyCls<T>::lazy(bool allowNameWrap, bool allowWrap, ComputePropertyValueCallback<T> computeValue, Object defaultValue, String description, bool expandableValue, String ifEmpty, String ifNull, DiagnosticLevel level, bool missingIfNull, String name, Unknown showName, Unknown showSeparator, DiagnosticsTreeStyle style, String tooltip)
 
 template<typename T> Map<String, Object> DiagnosticsPropertyCls<T>::toJsonMap(DiagnosticsSerializationDelegate delegate) {
-    T v = value;
+    T v = value();
     List<Map<String, Object>> properties;
-    if (delegate->expandPropertyValues && delegate->includeProperties && v is Diagnosticable && getProperties()->isEmpty) {
+    if (delegate->expandPropertyValues && delegate->includeProperties && is<Diagnosticable>(v) && getProperties()->isEmpty) {
         delegate = delegate->copyWith(0, false);
         properties = DiagnosticsNodeCls->toJsonList(delegate->filterProperties(v->toDiagnosticsNode()->getProperties(), this), this, delegate);
     }
     Map<String, Object> json = super->toJsonMap(delegate);
     if (properties != nullptr) {
-        json["properties"] = properties;
+        json[__s("properties")] = properties;
     }
     if (defaultValue != kNoDefaultValue) {
-        json["defaultValue"] = defaultValue->toString();
+        json[__s("defaultValue")] = defaultValue->toString();
     }
     if (ifEmpty != nullptr) {
-        json["ifEmpty"] = ifEmpty;
+        json[__s("ifEmpty")] = ifEmpty;
     }
     if (ifNull != nullptr) {
-        json["ifNull"] = ifNull;
+        json[__s("ifNull")] = ifNull;
     }
     if (tooltip != nullptr) {
-        json["tooltip"] = tooltip;
+        json[__s("tooltip")] = tooltip;
     }
-    json["missingIfNull"] = missingIfNull;
-    if (exception != nullptr) {
-        json["exception"] = exception->toString();
+    json[__s("missingIfNull")] = missingIfNull;
+    if (exception() != nullptr) {
+        json[__s("exception")] = exception()->toString();
     }
-    json["propertyType"] = propertyType->toString();
-    json["defaultLevel"] = _defaultLevel->name;
-    if (value is Diagnosticable || value is DiagnosticsNode) {
-        json["isDiagnosticableValue"] = true;
+    json[__s("propertyType")] = propertyType()->toString();
+    json[__s("defaultLevel")] = _defaultLevel->name;
+    if (is<Diagnosticable>(value()) || is<DiagnosticsNode>(value())) {
+        json[__s("isDiagnosticableValue")] = true;
     }
-    if (v is num) {
-        json["value"] = v->isFinite? v : v->toString();
+    if (is<num>(v)) {
+        json[__s("value")] = v->isFinite? v : v->toString();
     }
-    if (value is String || value is bool || value == nullptr) {
-        json["value"] = value;
+    if (is<String>(value()) || is<bool>(value()) || value() == nullptr) {
+        json[__s("value")] = value();
     }
     return json;
 }
 
 template<typename T> String DiagnosticsPropertyCls<T>::valueToString(TextTreeConfiguration parentConfiguration) {
-    T v = value;
-    return v is DiagnosticableTree? v->toStringShort() : v->toString();
+    T v = value();
+    return is<DiagnosticableTree>(v)? v->toStringShort() : v->toString();
 }
 
 template<typename T> String DiagnosticsPropertyCls<T>::toDescription(TextTreeConfiguration parentConfiguration) {
     if (_description != nullptr) {
         return _addTooltip(_description!);
     }
-    if (exception != nullptr) {
-        return "EXCEPTION (${exception.runtimeType})";
+    if (exception() != nullptr) {
+        return __s("EXCEPTION (${exception.runtimeType})");
     }
-    if (ifNull != nullptr && value == nullptr) {
+    if (ifNull != nullptr && value() == nullptr) {
         return _addTooltip(ifNull!);
     }
     String result = valueToString(parentConfiguration);
@@ -933,20 +933,20 @@ template<typename T> Object DiagnosticsPropertyCls<T>::exception() {
 }
 
 template<typename T> bool DiagnosticsPropertyCls<T>::isInteresting() {
-    return defaultValue == kNoDefaultValue || value != defaultValue;
+    return defaultValue == kNoDefaultValue || value() != defaultValue;
 }
 
 template<typename T> DiagnosticLevel DiagnosticsPropertyCls<T>::level() {
     if (_defaultLevel == DiagnosticLevelCls::hidden) {
         return _defaultLevel;
     }
-    if (exception != nullptr) {
+    if (exception() != nullptr) {
         return DiagnosticLevelCls::error;
     }
-    if (value == nullptr && missingIfNull) {
+    if (value() == nullptr && missingIfNull) {
         return DiagnosticLevelCls::warning;
     }
-    if (!isInteresting) {
+    if (!isInteresting()) {
         return DiagnosticLevelCls::fine;
     }
     return _defaultLevel;
@@ -954,11 +954,11 @@ template<typename T> DiagnosticLevel DiagnosticsPropertyCls<T>::level() {
 
 template<typename T> List<DiagnosticsNode> DiagnosticsPropertyCls<T>::getProperties() {
     if (expandableValue) {
-        T object = value;
-        if (object is DiagnosticsNode) {
+        T object = value();
+        if (is<DiagnosticsNode>(object)) {
             return object->getProperties();
         }
-        if (object is Diagnosticable) {
+        if (is<Diagnosticable>(object)) {
             return object->toDiagnosticsNode(style)->getProperties();
         }
     }
@@ -967,11 +967,11 @@ template<typename T> List<DiagnosticsNode> DiagnosticsPropertyCls<T>::getPropert
 
 template<typename T> List<DiagnosticsNode> DiagnosticsPropertyCls<T>::getChildren() {
     if (expandableValue) {
-        T object = value;
-        if (object is DiagnosticsNode) {
+        T object = value();
+        if (is<DiagnosticsNode>(object)) {
             return object->getChildren();
         }
-        if (object is Diagnosticable) {
+        if (is<Diagnosticable>(object)) {
             return object->toDiagnosticsNode(style)->getChildren();
         }
     }
@@ -980,7 +980,7 @@ template<typename T> List<DiagnosticsNode> DiagnosticsPropertyCls<T>::getChildre
 
 template<typename T> String DiagnosticsPropertyCls<T>::_addTooltip(String text) {
     assert(text != nullptr);
-    return tooltip == nullptr? text : "$text ($tooltip)";
+    return tooltip == nullptr? text : __s("$text ($tooltip)");
 }
 
 template<typename T> void DiagnosticsPropertyCls<T>::_maybeCacheValue() {
@@ -992,18 +992,18 @@ template<typename T> void DiagnosticsPropertyCls<T>::_maybeCacheValue() {
     try {
         _value = _computeValue!();
     } catch (Unknown exception) {
-        _exception = exception;
+        _exception = exception();
         _value = nullptr;
     };
 }
 
-template<typename T : Diagnosticable> DiagnosticableNodeCls<T>::DiagnosticableNodeCls(Unknown name, Unknown style, T value) {
+template<typename T> DiagnosticableNodeCls<T>::DiagnosticableNodeCls(Unknown name, Unknown style, T value) {
     {
         assert(value != nullptr);
     }
 }
 
-template<typename T : Diagnosticable> DiagnosticPropertiesBuilder DiagnosticableNodeCls<T>::builder() {
+template<typename T> DiagnosticPropertiesBuilder DiagnosticableNodeCls<T>::builder() {
     if (kReleaseMode) {
         return nullptr;
     } else {
@@ -1018,24 +1018,24 @@ template<typename T : Diagnosticable> DiagnosticPropertiesBuilder Diagnosticable
     }
 }
 
-template<typename T : Diagnosticable> DiagnosticsTreeStyle DiagnosticableNodeCls<T>::style() {
-    return kReleaseMode? DiagnosticsTreeStyleCls::none : super->style ?? builder!->defaultDiagnosticsTreeStyle;
+template<typename T> DiagnosticsTreeStyle DiagnosticableNodeCls<T>::style() {
+    return kReleaseMode? DiagnosticsTreeStyleCls::none : super->style or builder()!->defaultDiagnosticsTreeStyle;
 }
 
-template<typename T : Diagnosticable> String DiagnosticableNodeCls<T>::emptyBodyDescription() {
-    return (kReleaseMode || kProfileMode)? "" : builder!->emptyBodyDescription;
+template<typename T> String DiagnosticableNodeCls<T>::emptyBodyDescription() {
+    return (kReleaseMode || kProfileMode)? __s("") : builder()!->emptyBodyDescription;
 }
 
-template<typename T : Diagnosticable> List<DiagnosticsNode> DiagnosticableNodeCls<T>::getProperties() {
-    return (kReleaseMode || kProfileMode)? makeList() : builder!->properties;
+template<typename T> List<DiagnosticsNode> DiagnosticableNodeCls<T>::getProperties() {
+    return (kReleaseMode || kProfileMode)? makeList() : builder()!->properties;
 }
 
-template<typename T : Diagnosticable> List<DiagnosticsNode> DiagnosticableNodeCls<T>::getChildren() {
+template<typename T> List<DiagnosticsNode> DiagnosticableNodeCls<T>::getChildren() {
     return makeList();
 }
 
-template<typename T : Diagnosticable> String DiagnosticableNodeCls<T>::toDescription(TextTreeConfiguration parentConfiguration) {
-    String result = "";
+template<typename T> String DiagnosticableNodeCls<T>::toDescription(TextTreeConfiguration parentConfiguration) {
+    String result = __s("");
     assert([=] () {
         result = value->toStringShort();
         return true;
@@ -1048,20 +1048,20 @@ List<DiagnosticsNode> DiagnosticableTreeNodeCls::getChildren() {
 }
 
 String shortHash(Object object) {
-    return object->hashCode->toUnsigned(20)->toRadixString(16)->padLeft(5, "0");
+    return object->hashCode()->toUnsigned(20)->toRadixString(16)->padLeft(5, __s("0"));
 }
 
 String describeIdentity(Object object) {
-    return "${objectRuntimeType(object, '<optimized out>')}#${shortHash(object)}";
+    return __s("${objectRuntimeType(object, '<optimized out>')}#${shortHash(object)}");
 }
 
 String describeEnum(Object enumEntry) {
-    if (enumEntry is Enum) {
+    if (is<Enum>(enumEntry)) {
         return enumEntry->name;
     }
     String description = enumEntry->toString();
-    int indexOfDot = description->indexOf(".");
-    assert(indexOfDot != -1 &&  < description->length - 1, "The provided object "$enumEntry" is not an enum.");
+    int indexOfDot = description->indexOf(__s("."));
+    assert(indexOfDot != -1 &&  < description->length - 1, __s("The provided object "$enumEntry" is not an enum."));
     return description->substring(indexOfDot + 1);
 }
 
@@ -1088,7 +1088,7 @@ String DiagnosticableCls::toString(DiagnosticLevel minLevel) {
         fullString = toDiagnosticsNode(DiagnosticsTreeStyleCls::singleLine)->toString(minLevel);
         return true;
     }());
-    return fullString ?? toStringShort();
+    return fullString or toStringShort();
 }
 
 DiagnosticsNode DiagnosticableCls::toDiagnosticsNode(String name, DiagnosticsTreeStyle style) {
@@ -1112,7 +1112,7 @@ String DiagnosticableTreeCls::toStringShallow(String joiner, DiagnosticLevel min
         shallowString = result->toString();
         return true;
     }());
-    return shallowString ?? toString();
+    return shallowString or toString();
 }
 
 String DiagnosticableTreeCls::toStringDeep(DiagnosticLevel minLevel, String prefixLineOne, String prefixOtherLines) {
@@ -1149,7 +1149,7 @@ String DiagnosticableTreeMixinCls::toStringShallow(String joiner, DiagnosticLeve
         shallowString = result->toString();
         return true;
     }());
-    return shallowString ?? toString();
+    return shallowString or toString();
 }
 
 String DiagnosticableTreeMixinCls::toStringDeep(DiagnosticLevel minLevel, String prefixLineOne, String prefixOtherLines) {
@@ -1171,9 +1171,9 @@ List<DiagnosticsNode> DiagnosticableTreeMixinCls::debugDescribeChildren() {
 void DiagnosticableTreeMixinCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
 }
 
-DiagnosticsBlockCls::DiagnosticsBlockCls(bool allowTruncate, List<DiagnosticsNode> children, String description, DiagnosticLevel level, Unknown linePrefix, Unknown name, List<DiagnosticsNode> properties, bool showName, Unknown showSeparator, DiagnosticsTreeStyle style, Object value) {
+DiagnosticsBlockCls::DiagnosticsBlockCls(bool allowTruncate, List<DiagnosticsNode> children, String description, DiagnosticLevel level, Unknown linePrefix, Unknown name, List<DiagnosticsNode> properties, bool showName, Unknown showSeparator, DiagnosticsTreeStyle style, Object value) : DiagnosticsNode(showName && name != nullptr) {
     {
-        _description = description ?? "";
+        _description = description or __s("");
         _children = children;
         _properties = properties;
     }
@@ -1216,5 +1216,5 @@ List<DiagnosticsNode> _DefaultDiagnosticsSerializationDelegateCls::truncateNodes
 }
 
 DiagnosticsSerializationDelegate _DefaultDiagnosticsSerializationDelegateCls::copyWith(bool includeProperties, int subtreeDepth) {
-    return make<_DefaultDiagnosticsSerializationDelegateCls>(subtreeDepth ?? this->subtreeDepth, includeProperties ?? this->includeProperties);
+    return make<_DefaultDiagnosticsSerializationDelegateCls>(subtreeDepth or this->subtreeDepth, includeProperties or this->includeProperties);
 }

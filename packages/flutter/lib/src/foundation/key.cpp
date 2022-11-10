@@ -6,14 +6,14 @@ LocalKeyCls::LocalKeyCls() {
 }
 
 String UniqueKeyCls::toString() {
-    return "[#${shortHash(this)}]";
+    return __s("[#${shortHash(this)}]");
 }
 
 template<typename T> bool ValueKeyCls<T>::==(Object other) {
-    if (other->runtimeType != runtimeType) {
+    if (other->runtimeType() != runtimeType) {
         return false;
     }
-    return other is ValueKey<T> && other->value == value;
+    return is<ValueKey<T>>(other) && other->value == value;
 }
 
 template<typename T> int ValueKeyCls<T>::hashCode() {
@@ -21,11 +21,11 @@ template<typename T> int ValueKeyCls<T>::hashCode() {
 }
 
 template<typename T> String ValueKeyCls<T>::toString() {
-    String valueString = TCls == StringCls? "<'$value'>" : "<$value>";
+    String valueString = TCls == StringCls? __s("<'$value'>") : __s("<$value>");
     if (runtimeType == <ValueKey<T>>make<_TypeLiteralCls>()->type) {
-        return "[$valueString]";
+        return __s("[$valueString]");
     }
-    return "[$T $valueString]";
+    return __s("[$T $valueString]");
 }
 
 template<typename T> Type _TypeLiteralCls<T>::type() {

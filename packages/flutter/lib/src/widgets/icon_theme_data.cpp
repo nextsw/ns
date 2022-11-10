@@ -1,14 +1,14 @@
 #include "icon_theme_data.hpp"
 IconThemeDataCls::IconThemeDataCls(Color color, double opacity, List<Shadow> shadows, double size) {
     {
-        _opacity = opacity;
+        _opacity = opacity();
     }
 }
 
 void IconThemeDataCls::fallback()
 
 IconThemeData IconThemeDataCls::copyWith(Color color, double opacity, List<Shadow> shadows, double size) {
-    return make<IconThemeDataCls>(color ?? this->color, opacity ?? this->opacity, size ?? this->size, shadows ?? this->shadows);
+    return make<IconThemeDataCls>(color or this->color, opacity() or this->opacity, size or this->size, shadows or this->shadows);
 }
 
 IconThemeData IconThemeDataCls::merge(IconThemeData other) {
@@ -23,7 +23,7 @@ IconThemeData IconThemeDataCls::resolve(BuildContext context) {
 }
 
 bool IconThemeDataCls::isConcrete() {
-    return color != nullptr && opacity != nullptr && size != nullptr;
+    return color != nullptr && opacity() != nullptr && size != nullptr;
 }
 
 double IconThemeDataCls::opacity() {
@@ -36,20 +36,20 @@ IconThemeData IconThemeDataCls::lerp(IconThemeData a, IconThemeData b, double t)
 }
 
 bool IconThemeDataCls::==(Object other) {
-    if (other->runtimeType != runtimeType) {
+    if (other->runtimeType() != runtimeType) {
         return false;
     }
-    return other is IconThemeData && other->color == color && other->opacity == opacity && other->size == size && listEquals(other->shadows, shadows);
+    return is<IconThemeData>(other) && other->color == color && other->opacity == opacity() && other->size == size && listEquals(other->shadows, shadows);
 }
 
 int IconThemeDataCls::hashCode() {
-    return ObjectCls->hash(color, opacity, size, shadows == nullptr? nullptr : ObjectCls->hashAll(shadows!));
+    return ObjectCls->hash(color, opacity(), size, shadows == nullptr? nullptr : ObjectCls->hashAll(shadows!));
 }
 
 void IconThemeDataCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(make<ColorPropertyCls>("color", colornullptr));
-    properties->add(make<DoublePropertyCls>("opacity", opacitynullptr));
-    properties->add(make<DoublePropertyCls>("size", sizenullptr));
-    properties->add(<Shadow>make<IterablePropertyCls>("shadows", shadowsnullptr));
+    properties->add(make<ColorPropertyCls>(__s("color"), colornullptr));
+    properties->add(make<DoublePropertyCls>(__s("opacity"), opacity()nullptr));
+    properties->add(make<DoublePropertyCls>(__s("size"), sizenullptr));
+    properties->add(<Shadow>make<IterablePropertyCls>(__s("shadows"), shadowsnullptr));
 }

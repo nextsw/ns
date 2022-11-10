@@ -9,11 +9,11 @@ RawKeyEventDataWindowsCls::RawKeyEventDataWindowsCls(int characterCodePoint, int
 }
 
 String RawKeyEventDataWindowsCls::keyLabel() {
-    return characterCodePoint == 0? "" : StringCls->fromCharCode(characterCodePoint);
+    return characterCodePoint == 0? __s("") : StringCls->fromCharCode(characterCodePoint);
 }
 
 PhysicalKeyboardKey RawKeyEventDataWindowsCls::physicalKey() {
-    return kWindowsToPhysicalKey[scanCode] ?? make<PhysicalKeyboardKeyCls>(LogicalKeyboardKeyCls::windowsPlane + scanCode);
+    return kWindowsToPhysicalKey[scanCode] or make<PhysicalKeyboardKeyCls>(LogicalKeyboardKeyCls::windowsPlane + scanCode);
 }
 
 LogicalKeyboardKey RawKeyEventDataWindowsCls::logicalKey() {
@@ -21,9 +21,9 @@ LogicalKeyboardKey RawKeyEventDataWindowsCls::logicalKey() {
     if (numPadKey != nullptr) {
         return numPadKey;
     }
-    if (keyLabel->isNotEmpty && !LogicalKeyboardKeyCls->isControlCharacter(keyLabel)) {
+    if (keyLabel()->isNotEmpty() && !LogicalKeyboardKeyCls->isControlCharacter(keyLabel())) {
         int keyId = LogicalKeyboardKeyCls::unicodePlane | (characterCodePoint & LogicalKeyboardKeyCls::valueMask);
-        return LogicalKeyboardKeyCls->findKeyByKeyId(keyId) ?? make<LogicalKeyboardKeyCls>(keyId);
+        return LogicalKeyboardKeyCls->findKeyByKeyId(keyId) or make<LogicalKeyboardKeyCls>(keyId);
     }
     LogicalKeyboardKey newKey = kWindowsToLogicalKey[keyCode];
     if (newKey != nullptr) {
@@ -35,7 +35,7 @@ LogicalKeyboardKey RawKeyEventDataWindowsCls::logicalKey() {
 bool RawKeyEventDataWindowsCls::isModifierPressed(ModifierKey key, KeyboardSide side) {
     bool result;
     ;
-    assert(!result || getModifierSide(key) != nullptr, "$runtimeType thinks that a modifier is pressed, but can't figure out what side it's on.");
+    assert(!result || getModifierSide(key) != nullptr, __s("$runtimeType thinks that a modifier is pressed, but can't figure out what side it's on."));
     return result;
 }
 
@@ -50,20 +50,20 @@ bool RawKeyEventDataWindowsCls::shouldDispatchEvent() {
 
 void RawKeyEventDataWindowsCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<int>make<DiagnosticsPropertyCls>("keyCode", keyCode));
-    properties->add(<int>make<DiagnosticsPropertyCls>("scanCode", scanCode));
-    properties->add(<int>make<DiagnosticsPropertyCls>("characterCodePoint", characterCodePoint));
-    properties->add(<int>make<DiagnosticsPropertyCls>("modifiers", modifiers));
+    properties->add(<int>make<DiagnosticsPropertyCls>(__s("keyCode"), keyCode));
+    properties->add(<int>make<DiagnosticsPropertyCls>(__s("scanCode"), scanCode));
+    properties->add(<int>make<DiagnosticsPropertyCls>(__s("characterCodePoint"), characterCodePoint));
+    properties->add(<int>make<DiagnosticsPropertyCls>(__s("modifiers"), modifiers));
 }
 
 bool RawKeyEventDataWindowsCls::==(Object other) {
     if (identical(this, other)) {
         return true;
     }
-    if (other->runtimeType != runtimeType) {
+    if (other->runtimeType() != runtimeType) {
         return false;
     }
-    return other is RawKeyEventDataWindows && other->keyCode == keyCode && other->scanCode == scanCode && other->characterCodePoint == characterCodePoint && other->modifiers == modifiers;
+    return is<RawKeyEventDataWindows>(other) && other->keyCode == keyCode && other->scanCode == scanCode && other->characterCodePoint == characterCodePoint && other->modifiers == modifiers;
 }
 
 int RawKeyEventDataWindowsCls::hashCode() {

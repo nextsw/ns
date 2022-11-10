@@ -123,7 +123,7 @@ Matrix4 MatrixUtilsCls::createCylindricalProjectionTransform(double angle, Axis 
     assert(perspective >= 0 && perspective <= 1.0);
     assert(orientation != nullptr);
     auto _c1 = Matrix4Cls->identity();_c1.auto _c2 = setEntry(3, 2, -perspective);_c2.auto _c3 = setEntry(2, 3, -radius);_c3.setEntry(3, 3, perspective * radius + 1.0);_c3;_c2;Matrix4 result = _c1;
-    result = ((Matrix4)result * ((orientation == AxisCls::horizontal? Matrix4Cls->rotationY(angle) : Matrix4Cls->rotationX(angle)) * Matrix4Cls->translationValues(0.0, 0.0, radius)));
+    result = as<Matrix4>(result * ((orientation == AxisCls::horizontal? Matrix4Cls->rotationY(angle) : Matrix4Cls->rotationX(angle)) * Matrix4Cls->translationValues(0.0, 0.0, radius)));
     return result;
 }
 
@@ -193,7 +193,7 @@ TransformPropertyCls::TransformPropertyCls(Unknown defaultValue, Unknown level, 
 String TransformPropertyCls::valueToString(TextTreeConfiguration parentConfiguration) {
     if (parentConfiguration != nullptr && !parentConfiguration->lineBreakProperties) {
         List<String> values = makeList(ArrayItem, ArrayItem, ArrayItem, ArrayItem);
-        return "[${values.join('; ')}]";
+        return __s("[${values.join('; ')}]");
     }
-    return debugDescribeTransform(value)->join("\n");
+    return debugDescribeTransform(value)->join(__s("\n"));
 }

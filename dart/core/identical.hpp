@@ -4,8 +4,8 @@
 
 #include <dart/core/core.hpp>
 
-extern bool identical(Object a, Object b);
-extern int identityHashCode(Object object);
+bool identical(Object a, Object b);
+int identityHashCode(Object object);
 
 
 #endif

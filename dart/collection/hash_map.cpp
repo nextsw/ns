@@ -4,13 +4,13 @@ bool _defaultEquals(Object a, Object b) {
 }
 
 int _defaultHashCode(Object a) {
-    return a->hashCode;
+    return a->hashCode();
 }
 
 template<typename K, typename V> void HashMapCls<K, V>::from(Map<dynamic, dynamic> other) {
     HashMap<K, V> result = <K, V>make<HashMapCls>();
     other->forEach([=] (dynamic k,dynamic v) {
-        result[((K)k)] = ((V)v);
+        result[as<K>(k)] = as<V>(v);
     });
     return result;
 }

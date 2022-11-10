@@ -125,12 +125,12 @@ private:
 using _SyncBlock = std::shared_ptr<_SyncBlockCls>;
 String _argumentsAsJson(Map arguments);
 
-extern bool _isDartStreamEnabled();
-extern int _getNextAsyncId();
-extern int _getTraceClock();
-extern void _reportTaskEvent(String argumentsAsJson, String category, String name, String phase, int taskId);
-extern void _reportFlowEvent(String argumentsAsJson, String category, int id, String name, int type);
-extern void _reportInstantEvent(String argumentsAsJson, String category, String name);
+bool _isDartStreamEnabled();
+int _getNextAsyncId();
+int _getTraceClock();
+void _reportTaskEvent(String argumentsAsJson, String category, String name, String phase, int taskId);
+void _reportFlowEvent(String argumentsAsJson, String category, int id, String name, int type);
+void _reportInstantEvent(String argumentsAsJson, String category, String name);
 
 
 #endif

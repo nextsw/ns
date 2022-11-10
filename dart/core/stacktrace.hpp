@@ -12,7 +12,7 @@ public:
 
      StackTraceCls();
     virtual void  fromString(String stackTraceString);
-    extern static StackTrace current();
+    static StackTrace current();
     virtual String toString();
 private:
 

@@ -46,7 +46,7 @@ template<typename T> Type LocalizationsDelegateCls<T>::type() {
 }
 
 template<typename T> String LocalizationsDelegateCls<T>::toString() {
-    return "${objectRuntimeType(this, 'LocalizationsDelegate')}[$type]";
+    return __s("${objectRuntimeType(this, 'LocalizationsDelegate')}[$type]");
 }
 
 WidgetsLocalizations WidgetsLocalizationsCls::of(BuildContext context) {
@@ -67,7 +67,7 @@ bool _WidgetsLocalizationsDelegateCls::shouldReload(_WidgetsLocalizationsDelegat
 }
 
 String _WidgetsLocalizationsDelegateCls::toString() {
-    return "DefaultWidgetsLocalizations.delegate(en_US)";
+    return __s("DefaultWidgetsLocalizations.delegate(en_US)");
 }
 
 TextDirection DefaultWidgetsLocalizationsCls::textDirection() {
@@ -94,7 +94,7 @@ LocalizationsCls::LocalizationsCls(Widget child, List<LocalizationsDelegate<dyna
         assert(locale != nullptr);
         assert(delegates != nullptr);
         assert(delegates->any([=] (LocalizationsDelegate<dynamic> delegate)         {
-            delegate is LocalizationsDelegate<WidgetsLocalizations>;
+            is<LocalizationsDelegate<WidgetsLocalizations>>(delegate);
         }));
     }
 }
@@ -104,7 +104,7 @@ void LocalizationsCls::override(Widget child, BuildContext context, List<Localiz
     if (delegates != nullptr) {
         mergedDelegates->insertAll(0, delegates);
     }
-    return make<LocalizationsCls>(key, locale ?? LocalizationsCls->localeOf(context), mergedDelegates, child);
+    return make<LocalizationsCls>(key, locale or LocalizationsCls->localeOf(context), mergedDelegates, child);
 }
 
 Locale LocalizationsCls::localeOf(BuildContext context) {
@@ -141,14 +141,14 @@ State<Localizations> LocalizationsCls::createState() {
 
 void LocalizationsCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<Locale>make<DiagnosticsPropertyCls>("locale", locale));
-    properties->add(<LocalizationsDelegate<dynamic>>make<IterablePropertyCls>("delegates", delegates));
+    properties->add(<Locale>make<DiagnosticsPropertyCls>(__s("locale"), locale));
+    properties->add(<LocalizationsDelegate<dynamic>>make<IterablePropertyCls>(__s("delegates"), delegates));
 }
 
 List<LocalizationsDelegate<dynamic>> LocalizationsCls::_delegatesOf(BuildContext context) {
     assert(context != nullptr);
     _LocalizationsScope scope = context-><_LocalizationsScope>dependOnInheritedWidgetOfExactType();
-    assert(scope != nullptr, "a Localizations ancestor was not found");
+    assert(scope != nullptr, __s("a Localizations ancestor was not found"));
     return <LocalizationsDelegate<dynamic>>of(scope!->localizationsState->widget->delegates);
 }
 
@@ -171,23 +171,23 @@ void _LocalizationsStateCls::didUpdateWidget(Localizations old) {
 void _LocalizationsStateCls::load(Locale locale) {
     Iterable<LocalizationsDelegate<dynamic>> delegates = widget->delegates;
     if (delegates == nullptr || delegates->isEmpty) {
-        _locale = locale;
+        _locale = locale();
         return;
     }
     Map<Type, dynamic> typeToResources;
-    Future<Map<Type, dynamic>> typeToResourcesFuture = _loadAll(locale, delegates)-><Map<Type, dynamic>>then([=] (Map<Type, dynamic> value) {
+    Future<Map<Type, dynamic>> typeToResourcesFuture = _loadAll(locale(), delegates)-><Map<Type, dynamic>>then([=] (Map<Type, dynamic> value) {
     return typeToResources = value;
 });
     if (typeToResources != nullptr) {
         _typeToResources = typeToResources!;
-        _locale = locale;
+        _locale = locale();
     } else {
         RendererBindingCls::instance->deferFirstFrame();
         typeToResourcesFuture-><void>then([=] (Map<Type, dynamic> value) {
             if (mounted) {
                 setState([=] () {
                     _typeToResources = value;
-                    _locale = locale;
+                    _locale = locale();
                 });
             }
             RendererBindingCls::instance->allowFirstFrame();
@@ -197,7 +197,7 @@ void _LocalizationsStateCls::load(Locale locale) {
 
 T _LocalizationsStateCls::resourcesFortemplate<typename T> (Type type) {
     assert(type != nullptr);
-    T resources = ((T)_typeToResources[type]);
+    T resources = as<T>(_typeToResources[type]);
     return resources;
 }
 
@@ -205,7 +205,7 @@ Widget _LocalizationsStateCls::build(BuildContext context) {
     if (_locale == nullptr) {
         return make<ContainerCls>();
     }
-    return make<SemanticsCls>(_textDirection, make<_LocalizationsScopeCls>(_localizedResourcesScopeKey, _locale!, this, _typeToResources, make<DirectionalityCls>(_textDirection, widget->child!)));
+    return make<SemanticsCls>(_textDirection(), make<_LocalizationsScopeCls>(_localizedResourcesScopeKey, _locale!, this, _typeToResources, make<DirectionalityCls>(_textDirection(), widget->child!)));
 }
 
 bool _LocalizationsStateCls::_anyDelegatesShouldReload(Localizations old) {
@@ -217,7 +217,7 @@ bool _LocalizationsStateCls::_anyDelegatesShouldReload(Localizations old) {
     for (;  < delegates->length; i = 1) {
         LocalizationsDelegate<dynamic> delegate = delegates[i];
         LocalizationsDelegate<dynamic> oldDelegate = oldDelegates[i];
-        if (delegate->runtimeType != oldDelegate->runtimeType || delegate->shouldReload(oldDelegate)) {
+        if (delegate->runtimeType() != oldDelegate->runtimeType() || delegate->shouldReload(oldDelegate)) {
             return true;
         }
     }
@@ -225,7 +225,7 @@ bool _LocalizationsStateCls::_anyDelegatesShouldReload(Localizations old) {
 }
 
 TextDirection _LocalizationsStateCls::_textDirection() {
-    WidgetsLocalizations resources = ((WidgetsLocalizations)_typeToResources[WidgetsLocalizationsCls]);
+    WidgetsLocalizations resources = as<WidgetsLocalizations>(_typeToResources[WidgetsLocalizationsCls]);
     assert(resources != nullptr);
     return resources->textDirection;
 }

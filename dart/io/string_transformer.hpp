@@ -36,7 +36,7 @@ public:
 private:
 
      _WindowsCodePageEncoderCls();
-    extern static List<int> _encodeString(String stringValue);
+    static List<int> _encodeString(String stringValue);
 };
 using _WindowsCodePageEncoder = std::shared_ptr<_WindowsCodePageEncoderCls>;
 
@@ -67,7 +67,7 @@ public:
 private:
 
      _WindowsCodePageDecoderCls();
-    extern static String _decodeBytes(List<int> bytes);
+    static String _decodeBytes(List<int> bytes);
 };
 using _WindowsCodePageDecoder = std::shared_ptr<_WindowsCodePageDecoderCls>;
 

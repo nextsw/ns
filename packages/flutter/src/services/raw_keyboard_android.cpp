@@ -10,7 +10,7 @@ RawKeyEventDataAndroidCls::RawKeyEventDataAndroidCls(int codePoint, int deviceId
 }
 
 String RawKeyEventDataAndroidCls::keyLabel() {
-    return plainCodePoint == 0? "" : StringCls->fromCharCode(plainCodePoint & _kCombiningCharacterMask);
+    return plainCodePoint == 0? __s("") : StringCls->fromCharCode(plainCodePoint & _kCombiningCharacterMask);
 }
 
 PhysicalKeyboardKey RawKeyEventDataAndroidCls::physicalKey() {
@@ -40,10 +40,10 @@ LogicalKeyboardKey RawKeyEventDataAndroidCls::logicalKey() {
     if (numPadKey != nullptr) {
         return numPadKey;
     }
-    if (keyLabel->isNotEmpty && !LogicalKeyboardKeyCls->isControlCharacter(keyLabel)) {
+    if (keyLabel()->isNotEmpty() && !LogicalKeyboardKeyCls->isControlCharacter(keyLabel())) {
         int combinedCodePoint = plainCodePoint & _kCombiningCharacterMask;
         int keyId = LogicalKeyboardKeyCls::unicodePlane | (combinedCodePoint & LogicalKeyboardKeyCls::valueMask);
-        return LogicalKeyboardKeyCls->findKeyByKeyId(keyId) ?? make<LogicalKeyboardKeyCls>(keyId);
+        return LogicalKeyboardKeyCls->findKeyByKeyId(keyId) or make<LogicalKeyboardKeyCls>(keyId);
     }
     LogicalKeyboardKey newKey = kAndroidToLogicalKey[keyCode];
     if (newKey != nullptr) {
@@ -64,22 +64,22 @@ KeyboardSide RawKeyEventDataAndroidCls::getModifierSide(ModifierKey key) {
 
 void RawKeyEventDataAndroidCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<int>make<DiagnosticsPropertyCls>("flags", flags));
-    properties->add(<int>make<DiagnosticsPropertyCls>("codePoint", codePoint));
-    properties->add(<int>make<DiagnosticsPropertyCls>("plainCodePoint", plainCodePoint));
-    properties->add(<int>make<DiagnosticsPropertyCls>("keyCode", keyCode));
-    properties->add(<int>make<DiagnosticsPropertyCls>("scanCode", scanCode));
-    properties->add(<int>make<DiagnosticsPropertyCls>("metaState", metaState));
+    properties->add(<int>make<DiagnosticsPropertyCls>(__s("flags"), flags));
+    properties->add(<int>make<DiagnosticsPropertyCls>(__s("codePoint"), codePoint));
+    properties->add(<int>make<DiagnosticsPropertyCls>(__s("plainCodePoint"), plainCodePoint));
+    properties->add(<int>make<DiagnosticsPropertyCls>(__s("keyCode"), keyCode));
+    properties->add(<int>make<DiagnosticsPropertyCls>(__s("scanCode"), scanCode));
+    properties->add(<int>make<DiagnosticsPropertyCls>(__s("metaState"), metaState));
 }
 
 bool RawKeyEventDataAndroidCls::==(Object other) {
     if (identical(this, other)) {
         return true;
     }
-    if (other->runtimeType != runtimeType) {
+    if (other->runtimeType() != runtimeType) {
         return false;
     }
-    return other is RawKeyEventDataAndroid && other->flags == flags && other->codePoint == codePoint && other->plainCodePoint == plainCodePoint && other->keyCode == keyCode && other->scanCode == scanCode && other->metaState == metaState;
+    return is<RawKeyEventDataAndroid>(other) && other->flags == flags && other->codePoint == codePoint && other->plainCodePoint == plainCodePoint && other->keyCode == keyCode && other->scanCode == scanCode && other->metaState == metaState;
 }
 
 int RawKeyEventDataAndroidCls::hashCode() {

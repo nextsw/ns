@@ -4,10 +4,10 @@ bool _StorageEntryIdentifierCls::isNotEmpty() {
 }
 
 bool _StorageEntryIdentifierCls::==(Object other) {
-    if (other->runtimeType != runtimeType) {
+    if (other->runtimeType() != runtimeType) {
         return false;
     }
-    return other is _StorageEntryIdentifier && <PageStorageKey<dynamic>>listEquals(other->keys, keys);
+    return is<_StorageEntryIdentifier>(other) && <PageStorageKey<dynamic>>listEquals(other->keys, keys);
 }
 
 int _StorageEntryIdentifierCls::hashCode() {
@@ -15,7 +15,7 @@ int _StorageEntryIdentifierCls::hashCode() {
 }
 
 String _StorageEntryIdentifierCls::toString() {
-    return "StorageEntryIdentifier(${keys.join(":")})";
+    return __s("StorageEntryIdentifier(${keys.join(":")})");
 }
 
 _StorageEntryIdentifierCls::_StorageEntryIdentifierCls(List<PageStorageKey<dynamic>> keys) {
@@ -50,10 +50,10 @@ dynamic PageStorageBucketCls::readState(BuildContext context, Object identifier)
 bool PageStorageBucketCls::_maybeAddKey(BuildContext context, List<PageStorageKey<dynamic>> keys) {
     Widget widget = context->widget;
     Key key = widget->key;
-    if (key is PageStorageKey) {
+    if (is<PageStorageKey>(key)) {
         keys->add(key);
     }
-    return widget is! PageStorage;
+    return !is<PageStorage>(widget);
 }
 
 List<PageStorageKey<dynamic>> PageStorageBucketCls::_allKeys(BuildContext context) {

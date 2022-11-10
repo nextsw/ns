@@ -1,8 +1,8 @@
 #include "_isolates_io.hpp"
 Future<R> computetemplate<typename Q, typename R> (ComputeCallback<Q, R> callback, String debugLabel, Q message) {
-    debugLabel = kReleaseMode? "compute" : callback->toString();
+    debugLabel = kReleaseMode? __s("compute") : callback->toString();
     Flow flow = FlowCls->begin();
-    TimelineCls->startSync("$debugLabel: start"flow);
+    TimelineCls->startSync(__s("$debugLabel: start")flow);
     RawReceivePort port = make<RawReceivePortCls>();
     TimelineCls->finishSync();
     InlineMethod;
@@ -21,8 +21,8 @@ Future<R> computetemplate<typename Q, typename R> (ComputeCallback<Q, R> callbac
     if (response == nullptr) {
         ;
     }
-    assert(response is List<dynamic>);
-    ((List<dynamic>)response);
+    assert(is<List<dynamic>>(response));
+    as<List<dynamic>>(response);
     int type = response->length;
     assert(1 <= type && type <= 3);
     ;

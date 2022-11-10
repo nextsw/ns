@@ -21,7 +21,7 @@ template<typename E> Iterable<T> IterableMixinCls<E>::expandtemplate<typename T>
 
 template<typename E> Iterable<E> IterableMixinCls<E>::followedBy(Iterable<E> other) {
     auto _c1 = <E>make<HashSetCls>();_c1.addAll(elements);Iterable<E> self = this;
-    if (self is EfficientLengthIterable<E>) {
+    if (is<EfficientLengthIterable<E>>(self)) {
         return <E>firstEfficient(self, other);
     }
     return <E>make<FollowedByIterableCls>(this, other);
@@ -74,18 +74,18 @@ template<typename E> bool IterableMixinCls<E>::every(bool test(E element) ) {
 template<typename E> String IterableMixinCls<E>::join(String separator) {
     Iterator<E> iterator = this->iterator;
     if (!iterator->moveNext())     {
-        return "";
+        return __s("");
     }
     StringBuffer buffer = make<StringBufferCls>();
-    if (separator == nullptr || separator == "") {
+    if (separator == nullptr || separator == __s("")) {
         do {
-            buffer->write("${iterator.current}");
+            buffer->write(__s("${iterator.current}"));
         } while (iterator->moveNext());
     } else {
-        buffer->write("${iterator.current}");
+        buffer->write(__s("${iterator.current}"));
         while (iterator->moveNext()) {
             buffer->write(separator);
-            buffer->write("${iterator.current}");
+            buffer->write(__s("${iterator.current}"));
         }
     }
     return buffer->toString();
@@ -109,7 +109,7 @@ template<typename E> Set<E> IterableMixinCls<E>::toSet() {
 }
 
 template<typename E> int IterableMixinCls<E>::length() {
-    assert(this is! EfficientLengthIterable);
+    assert(!is<EfficientLengthIterable>(this));
     int count = 0;
     Iterator it = iterator;
     while (it->moveNext()) {
@@ -123,7 +123,7 @@ template<typename E> bool IterableMixinCls<E>::isEmpty() {
 }
 
 template<typename E> bool IterableMixinCls<E>::isNotEmpty() {
-    return !isEmpty;
+    return !isEmpty();
 }
 
 template<typename E> Iterable<E> IterableMixinCls<E>::take(int count) {
@@ -226,8 +226,8 @@ template<typename E> E IterableMixinCls<E>::singleWhere(E orElse() , bool test(E
 }
 
 template<typename E> E IterableMixinCls<E>::elementAt(int index) {
-    checkNotNullable(index, "index");
-    RangeErrorCls->checkNotNegative(index, "index");
+    checkNotNullable(index, __s("index"));
+    RangeErrorCls->checkNotNegative(index, __s("index"));
     int elementIndex = 0;
     for (E element : this) {
         if (index == elementIndex)         {
@@ -239,15 +239,15 @@ template<typename E> E IterableMixinCls<E>::elementAt(int index) {
 }
 
 template<typename E> String IterableMixinCls<E>::toString() {
-    return IterableBaseCls->iterableToShortString(this, "(", ")");
+    return IterableBaseCls->iterableToShortString(this, __s("("), __s(")"));
 }
 
 template<typename E> String IterableBaseCls<E>::iterableToShortString(Iterable iterable, String leftDelimiter, String rightDelimiter) {
     if (_isToStringVisiting(iterable)) {
-        if (leftDelimiter == "(" && rightDelimiter == ")") {
-            return "(...)";
+        if (leftDelimiter == __s("(") && rightDelimiter == __s(")")) {
+            return __s("(...)");
         }
-        return "$leftDelimiter...$rightDelimiter";
+        return __s("$leftDelimiter...$rightDelimiter");
     }
     List<String> parts = makeList();
     _toStringVisiting->add(iterable);
@@ -257,17 +257,17 @@ template<typename E> String IterableBaseCls<E>::iterableToShortString(Iterable i
         assert(identical(_toStringVisiting->last, iterable));
         _toStringVisiting->removeLast();
     };
-    auto _c1 = make<StringBufferCls>(leftDelimiter);_c1.auto _c2 = writeAll(parts, ", ");_c2.write(rightDelimiter);_c2;return (_c1)->toString();
+    auto _c1 = make<StringBufferCls>(leftDelimiter);_c1.auto _c2 = writeAll(parts, __s(", "));_c2.write(rightDelimiter);_c2;return (_c1)->toString();
 }
 
 template<typename E> String IterableBaseCls<E>::iterableToFullString(Iterable iterable, String leftDelimiter, String rightDelimiter) {
     if (_isToStringVisiting(iterable)) {
-        return "$leftDelimiter...$rightDelimiter";
+        return __s("$leftDelimiter...$rightDelimiter");
     }
     StringBuffer buffer = make<StringBufferCls>(leftDelimiter);
     _toStringVisiting->add(iterable);
     try {
-        buffer->writeAll(iterable, ", ");
+        buffer->writeAll(iterable, __s(", "));
     } finally {
         assert(identical(_toStringVisiting->last, iterable));
         _toStringVisiting->removeLast();
@@ -299,7 +299,7 @@ void _iterablePartsToStrings(Iterable<Object> iterable, List<String> parts) {
         if (!it->moveNext())         {
             return;
         }
-        String next = "${it.current}";
+        String next = __s("${it.current}");
         parts->add(next);
         length = next->length + overhead;
         count++;
@@ -317,10 +317,10 @@ void _iterablePartsToStrings(Iterable<Object> iterable, List<String> parts) {
         count++;
         if (!it->moveNext()) {
             if (count <= headCount + 1) {
-                parts->add("$penultimate");
+                parts->add(__s("$penultimate"));
                 return;
             }
-            ultimateString = "$penultimate";
+            ultimateString = __s("$penultimate");
             penultimateString = parts->removeLast();
             length = ultimateString->length + overhead;
         } else {
@@ -336,24 +336,24 @@ void _iterablePartsToStrings(Iterable<Object> iterable, List<String> parts) {
                         length = parts->removeLast()->length + overhead;
                         count--;
                     }
-                    parts->add("...");
+                    parts->add(__s("..."));
                     return;
                 }
             }
-            penultimateString = "$penultimate";
-            ultimateString = "$ultimate";
+            penultimateString = __s("$penultimate");
+            ultimateString = __s("$ultimate");
             length = ultimateString->length + penultimateString->length + 2 * overhead;
         }
     }
     String elision;
     if (count > parts->length + tailCount) {
-        elision = "...";
+        elision = __s("...");
         length = ellipsisSize + overhead;
     }
     while (length > lengthLimit && parts->length > headCount) {
         length = parts->removeLast()->length + overhead;
         if (elision == nullptr) {
-            elision = "...";
+            elision = __s("...");
             length = ellipsisSize + overhead;
         }
     }

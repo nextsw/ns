@@ -71,7 +71,7 @@ private:
 };
 using _EffectiveTickerMode = std::shared_ptr<_EffectiveTickerModeCls>;
 
-template<typename T : StatefulWidget> class SingleTickerProviderStateMixinCls : public ObjectCls {
+template<typename T> class SingleTickerProviderStateMixinCls : public ObjectCls {
 public:
 
     virtual Ticker createTicker(TickerCallback onTick);
@@ -93,9 +93,9 @@ private:
     virtual void _updateTickerModeNotifier();
 
 };
-template<typename T : StatefulWidget> using SingleTickerProviderStateMixin = std::shared_ptr<SingleTickerProviderStateMixinCls<T : StatefulWidget>>;
+template<typename T> using SingleTickerProviderStateMixin = std::shared_ptr<SingleTickerProviderStateMixinCls<T>>;
 
-template<typename T : StatefulWidget> class TickerProviderStateMixinCls : public ObjectCls {
+template<typename T> class TickerProviderStateMixinCls : public ObjectCls {
 public:
 
     virtual Ticker createTicker(TickerCallback onTick);
@@ -119,7 +119,7 @@ private:
     virtual void _updateTickerModeNotifier();
 
 };
-template<typename T : StatefulWidget> using TickerProviderStateMixin = std::shared_ptr<TickerProviderStateMixinCls<T : StatefulWidget>>;
+template<typename T> using TickerProviderStateMixin = std::shared_ptr<TickerProviderStateMixinCls<T>>;
 
 class _WidgetTickerCls : public TickerCls {
 public:

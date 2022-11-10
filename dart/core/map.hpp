@@ -8,10 +8,10 @@
 template<typename K, typename V> class MapCls : public ObjectCls {
 public:
 
-    extern  MapCls();
+     MapCls();
     virtual void  from(Map other);
     virtual void  of(Map<K, V> other);
-    extern void  unmodifiable(Map<dynamic, dynamic> other);
+    void  unmodifiable(Map<dynamic, dynamic> other);
     virtual void  identity();
     virtual void  fromIterable(Iterable iterable, K key(dynamic element) , V value(dynamic element) );
     virtual void  fromIterables(Iterable<K> keys, Iterable<V> values);

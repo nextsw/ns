@@ -1,34 +1,34 @@
 #include "painting.hpp"
 bool _rectIsValid(Rect rect) {
-    assert(rect != nullptr, "Rect argument was null.");
-    assert(!rect->hasNaN, "Rect argument contained a NaN value.");
+    assert(rect != nullptr, __s("Rect argument was null."));
+    assert(!rect->hasNaN, __s("Rect argument contained a NaN value."));
     return true;
 }
 
 bool _rrectIsValid(RRect rrect) {
-    assert(rrect != nullptr, "RRect argument was null.");
-    assert(!rrect->hasNaN, "RRect argument contained a NaN value.");
+    assert(rrect != nullptr, __s("RRect argument was null."));
+    assert(!rrect->hasNaN, __s("RRect argument contained a NaN value."));
     return true;
 }
 
 bool _offsetIsValid(Offset offset) {
-    assert(offset != nullptr, "Offset argument was null.");
-    assert(!offset->dx->isNaN && !offset->dy->isNaN, "Offset argument contained a NaN value.");
+    assert(offset != nullptr, __s("Offset argument was null."));
+    assert(!offset->dx->isNaN && !offset->dy->isNaN, __s("Offset argument contained a NaN value."));
     return true;
 }
 
 bool _matrix4IsValid(Float64List matrix4) {
-    assert(matrix4 != nullptr, "Matrix4 argument was null.");
-    assert(matrix4->length == 16, "Matrix4 must have 16 entries.");
+    assert(matrix4 != nullptr, __s("Matrix4 argument was null."));
+    assert(matrix4->length == 16, __s("Matrix4 must have 16 entries."));
     assert(matrix4->every([=] (double value)     {
         value->isFinite;
-    }), "Matrix4 entries must be finite.");
+    }), __s("Matrix4 entries must be finite."));
     return true;
 }
 
 bool _radiusIsValid(Radius radius) {
-    assert(radius != nullptr, "Radius argument was null.");
-    assert(!radius->x->isNaN && !radius->y->isNaN, "Radius argument contained a NaN value.");
+    assert(radius != nullptr, __s("Radius argument was null."));
+    assert(!radius->x->isNaN && !radius->y->isNaN, __s("Radius argument contained a NaN value."));
     return true;
 }
 
@@ -51,7 +51,7 @@ int ColorCls::alpha() {
 }
 
 double ColorCls::opacity() {
-    return alpha / 0xFF;
+    return alpha() / 0xFF;
 }
 
 int ColorCls::red() {
@@ -67,30 +67,30 @@ int ColorCls::blue() {
 }
 
 Color ColorCls::withAlpha(int a) {
-    return ColorCls->fromARGB(a, red, green, blue);
+    return ColorCls->fromARGB(a, red(), green(), blue());
 }
 
 Color ColorCls::withOpacity(double opacity) {
-    assert(opacity >= 0.0 && opacity <= 1.0);
-    return withAlpha((255.0 * opacity)->round());
+    assert(opacity() >= 0.0 && opacity() <= 1.0);
+    return withAlpha((255.0 * opacity())->round());
 }
 
 Color ColorCls::withRed(int r) {
-    return ColorCls->fromARGB(alpha, r, green, blue);
+    return ColorCls->fromARGB(alpha(), r, green(), blue());
 }
 
 Color ColorCls::withGreen(int g) {
-    return ColorCls->fromARGB(alpha, red, g, blue);
+    return ColorCls->fromARGB(alpha(), red(), g, blue());
 }
 
 Color ColorCls::withBlue(int b) {
-    return ColorCls->fromARGB(alpha, red, green, b);
+    return ColorCls->fromARGB(alpha(), red(), green(), b);
 }
 
 double ColorCls::computeLuminance() {
-    double R = _linearizeColorComponent(red / 0xFF);
-    double G = _linearizeColorComponent(green / 0xFF);
-    double B = _linearizeColorComponent(blue / 0xFF);
+    double R = _linearizeColorComponent(red() / 0xFF);
+    double G = _linearizeColorComponent(green() / 0xFF);
+    double B = _linearizeColorComponent(blue() / 0xFF);
     return 0.2126 * RCls + 0.7152 * GCls + 0.0722 * BCls;
 }
 
@@ -137,10 +137,10 @@ bool ColorCls::==(Object other) {
     if (identical(this, other))     {
         return true;
     }
-    if (other->runtimeType != runtimeType)     {
+    if (other->runtimeType() != runtimeType)     {
         return false;
     }
-    return other is Color && other->value == value;
+    return is<Color>(other) && other->value == value;
 }
 
 int ColorCls::hashCode() {
@@ -148,20 +148,20 @@ int ColorCls::hashCode() {
 }
 
 String ColorCls::toString() {
-    return "Color(0x${value.toRadixString(16).padLeft(8, '0')})";
+    return __s("Color(0x${value.toRadixString(16).padLeft(8, '0')})");
 }
 
 double ColorCls::_linearizeColorComponent(double component) {
     if (component <= 0.03928)     {
         return component / 12.92;
     }
-    return ((double)math->pow((component + 0.055) / 1.055, 2.4));
+    return as<double>(math->pow((component + 0.055) / 1.055, 2.4));
 }
 
 PaintCls::PaintCls() {
     {
         if (enableDithering) {
-            _dither = true;
+            _dither() = true;
         }
     }
 }
@@ -275,7 +275,7 @@ void PaintCls::filterQuality(FilterQuality value) {
 }
 
 Shader PaintCls::shader() {
-    return ((Shader)_objects?[_kShaderIndex]);
+    return as<Shader>(_objects?[_kShaderIndex]);
 }
 
 void PaintCls::shader(Shader value) {
@@ -283,7 +283,7 @@ void PaintCls::shader(Shader value) {
 }
 
 ColorFilter PaintCls::colorFilter() {
-    _ColorFilter nativeFilter = ((_ColorFilter)_objects?[_kColorFilterIndex]);
+    _ColorFilter nativeFilter = as<_ColorFilter>(_objects?[_kColorFilterIndex]);
     return nativeFilter?->creator;
 }
 
@@ -299,7 +299,7 @@ void PaintCls::colorFilter(ColorFilter value) {
 }
 
 ImageFilter PaintCls::imageFilter() {
-    _ImageFilter nativeFilter = ((_ImageFilter)_objects?[_kImageFilterIndex]);
+    _ImageFilter nativeFilter = as<_ImageFilter>(_objects?[_kImageFilterIndex]);
     return nativeFilter?->creator;
 }
 
@@ -310,8 +310,8 @@ void PaintCls::imageFilter(ImageFilter value) {
         }
     } else {
         List<Object> objects = _ensureObjectsInitialized();
-        _ImageFilter imageFilter = ((_ImageFilter)objects[_kImageFilterIndex]);
-        if (imageFilter?->creator != value) {
+        _ImageFilter imageFilter = as<_ImageFilter>(objects[_kImageFilterIndex]);
+        if (imageFilter()?->creator != value) {
             objects[_kImageFilterIndex] = value->_toNativeImageFilter();
         }
     }
@@ -326,70 +326,70 @@ void PaintCls::invertColors(bool value) {
 }
 
 String PaintCls::toString() {
-    if (boolValue->fromEnvironment("dart.vm.product"false)) {
+    if (boolValue->fromEnvironment(__s("dart.vm.product")false)) {
         return super->toString();
     }
     StringBuffer result = make<StringBufferCls>();
-    String semicolon = "";
-    result->write("Paint(");
-    if (style == PaintingStyleCls::stroke) {
-        result->write("$style");
-        if (strokeWidth != 0.0)         {
-            result->write(" ${strokeWidth.toStringAsFixed(1)}");
+    String semicolon = __s("");
+    result->write(__s("Paint("));
+    if (style() == PaintingStyleCls::stroke) {
+        result->write(__s("$style"));
+        if (strokeWidth() != 0.0)         {
+            result->write(__s(" ${strokeWidth.toStringAsFixed(1)}"));
         } else         {
-            result->write(" hairline");
+            result->write(__s(" hairline"));
         }
-        if (strokeCap != StrokeCapCls::butt)         {
-            result->write(" $strokeCap");
+        if (strokeCap() != StrokeCapCls::butt)         {
+            result->write(__s(" $strokeCap"));
         }
-        if (strokeJoin == StrokeJoinCls::miter) {
-            if (strokeMiterLimit != _kStrokeMiterLimitDefault)             {
-                result->write(" $strokeJoin up to ${strokeMiterLimit.toStringAsFixed(1)}");
+        if (strokeJoin() == StrokeJoinCls::miter) {
+            if (strokeMiterLimit() != _kStrokeMiterLimitDefault)             {
+                result->write(__s(" $strokeJoin up to ${strokeMiterLimit.toStringAsFixed(1)}"));
             }
         } else {
-            result->write(" $strokeJoin");
+            result->write(__s(" $strokeJoin"));
         }
-        semicolon = "; ";
+        semicolon = __s("; ");
     }
-    if (isAntiAlias != true) {
-        result->write("${semicolon}antialias off");
-        semicolon = "; ";
+    if (isAntiAlias() != true) {
+        result->write(__s("${semicolon}antialias off"));
+        semicolon = __s("; ");
     }
-    if (color != make<ColorCls>(_kColorDefault)) {
-        result->write("$semicolon$color");
-        semicolon = "; ";
+    if (color() != make<ColorCls>(_kColorDefault)) {
+        result->write(__s("$semicolon$color"));
+        semicolon = __s("; ");
     }
-    if (blendMode->index != _kBlendModeDefault) {
-        result->write("$semicolon$blendMode");
-        semicolon = "; ";
+    if (blendMode()->index != _kBlendModeDefault) {
+        result->write(__s("$semicolon$blendMode"));
+        semicolon = __s("; ");
     }
-    if (colorFilter != nullptr) {
-        result->write("${semicolon}colorFilter: $colorFilter");
-        semicolon = "; ";
+    if (colorFilter() != nullptr) {
+        result->write(__s("${semicolon}colorFilter: $colorFilter"));
+        semicolon = __s("; ");
     }
-    if (maskFilter != nullptr) {
-        result->write("${semicolon}maskFilter: $maskFilter");
-        semicolon = "; ";
+    if (maskFilter() != nullptr) {
+        result->write(__s("${semicolon}maskFilter: $maskFilter"));
+        semicolon = __s("; ");
     }
-    if (filterQuality != FilterQualityCls::none) {
-        result->write("${semicolon}filterQuality: $filterQuality");
-        semicolon = "; ";
+    if (filterQuality() != FilterQualityCls::none) {
+        result->write(__s("${semicolon}filterQuality: $filterQuality"));
+        semicolon = __s("; ");
     }
-    if (shader != nullptr) {
-        result->write("${semicolon}shader: $shader");
-        semicolon = "; ";
+    if (shader() != nullptr) {
+        result->write(__s("${semicolon}shader: $shader"));
+        semicolon = __s("; ");
     }
-    if (imageFilter != nullptr) {
-        result->write("${semicolon}imageFilter: $imageFilter");
-        semicolon = "; ";
+    if (imageFilter() != nullptr) {
+        result->write(__s("${semicolon}imageFilter: $imageFilter"));
+        semicolon = __s("; ");
     }
-    if (invertColors)     {
-        result->write("${semicolon}invert: $invertColors");
+    if (invertColors())     {
+        result->write(__s("${semicolon}invert: $invertColors"));
     }
-    if (_dither)     {
-        result->write("${semicolon}dither: $_dither");
+    if (_dither())     {
+        result->write(__s("${semicolon}dither: $_dither"));
     }
-    result->write(")");
+    result->write(__s(")"));
     return result->toString();
 }
 
@@ -422,7 +422,7 @@ bool ImageCls::debugDisposed() {
         disposed = _disposed;
         return true;
     }());
-    return disposed ?? ();
+    return disposed or ();
 }
 
 Future<ByteData> ImageCls::toByteData(ImageByteFormat format) {
@@ -475,28 +475,28 @@ Future<ByteData> _ImageCls::toByteData(ImageByteFormat format) {
 
 void _ImageCls::dispose() {
     assert(!_disposed);
-    assert(_handles->isEmpty, "Attempted to dispose of an Image object that has ${_handles.length} open handles.\nIf you see this, it is a bug in dart:ui. Please file an issue at https://github.com/flutter/flutter/issues/new.");
+    assert(_handles->isEmpty, __s("Attempted to dispose of an Image object that has ${_handles.length} open handles.\nIf you see this, it is a bug in dart:ui. Please file an issue at https://github.com/flutter/flutter/issues/new."));
     _disposed = true;
     _dispose();
 }
 
 String _ImageCls::toString() {
-    return "[$width\u00D7$height]";
+    return __s("[$width\u00D7$height]");
 }
 
 int CodecCls::frameCount() {
-    return _cachedFrameCount ??= _frameCount;
+    return _cachedFrameCount ??= _frameCount();
 }
 
 int CodecCls::repetitionCount() {
-    return _cachedRepetitionCount ??= _repetitionCount;
+    return _cachedRepetitionCount ??= _repetitionCount();
 }
 
 Future<FrameInfo> CodecCls::getNextFrame() {
     Completer<FrameInfo> completer = <FrameInfo>sync();
     String error = _getNextFrame([=] (_Image image,int durationMilliseconds) {
     if (image == nullptr) {
-        completer->completeError(make<ExceptionCls>("Codec failed to produce an image, possibly due to invalid image data."));
+        completer->completeError(make<ExceptionCls>(__s("Codec failed to produce an image, possibly due to invalid image data.")));
     } else {
         completer->complete(FrameInfoCls->_(ImageCls->_(image, image->width, image->height), make<DurationCls>(durationMilliseconds)));
     }
@@ -695,11 +695,11 @@ TangentCls::TangentCls(Offset position, Offset vector) {
 }
 
 void TangentCls::fromAngle(double angle, Offset position) {
-    return make<TangentCls>(position, make<OffsetCls>(math->cos(angle), math->sin(angle)));
+    return make<TangentCls>(position, make<OffsetCls>(math->cos(angle()), math->sin(angle())));
 }
 
 double TangentCls::angle() {
-    return -math->atan2(vector->dy, vector->dx);
+    return -math->atan2(vector->dy(), vector->dx());
 }
 
 Iterator<PathMetric> PathMetricsCls::iterator() {
@@ -736,18 +736,18 @@ Path PathMetricCls::extractPath(double end, double start, bool startWithMoveTo) 
 }
 
 String PathMetricCls::toString() {
-    return "$runtimeType{length: $length, isClosed: $isClosed, contourIndex:$contourIndex}";
+    return __s("$runtimeType{length: $length, isClosed: $isClosed, contourIndex:$contourIndex}");
 }
 
 void PathMetricCls::_(_PathMeasure _measure)
 
 double _PathMeasureCls::length(int contourIndex) {
-    assert(contourIndex <= currentContourIndex, "Iterator must be advanced before index $contourIndex can be used.");
+    assert(contourIndex <= currentContourIndex, __s("Iterator must be advanced before index $contourIndex can be used."));
     return _length(contourIndex);
 }
 
 Tangent _PathMeasureCls::getTangentForOffset(int contourIndex, double distance) {
-    assert(contourIndex <= currentContourIndex, "Iterator must be advanced before index $contourIndex can be used.");
+    assert(contourIndex <= currentContourIndex, __s("Iterator must be advanced before index $contourIndex can be used."));
     Float32List posTan = _getPosTan(contourIndex, distance);
     if (posTan[0] == 0.0) {
         return nullptr;
@@ -757,14 +757,14 @@ Tangent _PathMeasureCls::getTangentForOffset(int contourIndex, double distance) 
 }
 
 Path _PathMeasureCls::extractPath(int contourIndex, double end, double start, bool startWithMoveTo) {
-    assert(contourIndex <= currentContourIndex, "Iterator must be advanced before index $contourIndex can be used.");
+    assert(contourIndex <= currentContourIndex, __s("Iterator must be advanced before index $contourIndex can be used."));
     Path path = PathCls->_();
     _extractPath(path, contourIndex, start, endstartWithMoveTo);
     return path;
 }
 
 bool _PathMeasureCls::isClosed(int contourIndex) {
-    assert(contourIndex <= currentContourIndex, "Iterator must be advanced before index $contourIndex can be used.");
+    assert(contourIndex <= currentContourIndex, __s("Iterator must be advanced before index $contourIndex can be used."));
     return _isClosed(contourIndex);
 }
 
@@ -785,7 +785,7 @@ bool _PathMeasureCls::_nextContour() {
 void MaskFilterCls::blur(double _sigma, BlurStyle _style)
 
 bool MaskFilterCls::==(Object other) {
-    return other is MaskFilter && other->_style == _style && other->_sigma == _sigma;
+    return is<MaskFilter>(other) && other->_style == _style && other->_sigma == _sigma;
 }
 
 int MaskFilterCls::hashCode() {
@@ -793,7 +793,7 @@ int MaskFilterCls::hashCode() {
 }
 
 String MaskFilterCls::toString() {
-    return "MaskFilter.blur($_style, ${_sigma.toStringAsFixed(1)})";
+    return __s("MaskFilter.blur($_style, ${_sigma.toStringAsFixed(1)})");
 }
 
 void ColorFilterCls::mode(BlendMode blendMode, Color color)
@@ -805,10 +805,10 @@ void ColorFilterCls::linearToSrgbGamma()
 void ColorFilterCls::srgbToLinearGamma()
 
 bool ColorFilterCls::==(Object other) {
-    if (other->runtimeType != runtimeType)     {
+    if (other->runtimeType() != runtimeType)     {
         return false;
     }
-    return other is ColorFilter && other->_type == _type && <double>_listEquals(other->_matrix, _matrix) && other->_color == _color && other->_blendMode == _blendMode;
+    return is<ColorFilter>(other) && other->_type == _type && <double>_listEquals(other->_matrix, _matrix) && other->_color == _color && other->_blendMode == _blendMode;
 }
 
 int ColorFilterCls::hashCode() {
@@ -885,14 +885,14 @@ void ImageFilterCls::compose(ImageFilter inner, ImageFilter outer) {
 }
 
 String _MatrixImageFilterCls::toString() {
-    return "ImageFilter.matrix($data, $filterQuality)";
+    return __s("ImageFilter.matrix($data, $filterQuality)");
 }
 
 bool _MatrixImageFilterCls::==(Object other) {
-    if (other->runtimeType != runtimeType)     {
+    if (other->runtimeType() != runtimeType)     {
         return false;
     }
-    return other is _MatrixImageFilter && other->filterQuality == filterQuality && <double>_listEquals(other->data, data);
+    return is<_MatrixImageFilter>(other) && other->filterQuality == filterQuality && <double>_listEquals(other->data, data);
 }
 
 int _MatrixImageFilterCls::hashCode() {
@@ -904,18 +904,18 @@ _ImageFilter _MatrixImageFilterCls::_toNativeImageFilter() {
 }
 
 String _MatrixImageFilterCls::_shortDescription() {
-    return "matrix($data, $filterQuality)";
+    return __s("matrix($data, $filterQuality)");
 }
 
 String _GaussianBlurImageFilterCls::toString() {
-    return "ImageFilter.blur($sigmaX, $sigmaY, $_modeString)";
+    return __s("ImageFilter.blur($sigmaX, $sigmaY, $_modeString)");
 }
 
 bool _GaussianBlurImageFilterCls::==(Object other) {
-    if (other->runtimeType != runtimeType)     {
+    if (other->runtimeType() != runtimeType)     {
         return false;
     }
-    return other is _GaussianBlurImageFilter && other->sigmaX == sigmaX && other->sigmaY == sigmaY && other->tileMode == tileMode;
+    return is<_GaussianBlurImageFilter>(other) && other->sigmaX == sigmaX && other->sigmaY == sigmaY && other->tileMode == tileMode;
 }
 
 int _GaussianBlurImageFilterCls::hashCode() {
@@ -931,18 +931,18 @@ String _GaussianBlurImageFilterCls::_modeString() {
 }
 
 String _GaussianBlurImageFilterCls::_shortDescription() {
-    return "blur($sigmaX, $sigmaY, $_modeString)";
+    return __s("blur($sigmaX, $sigmaY, $_modeString)");
 }
 
 String _DilateImageFilterCls::toString() {
-    return "ImageFilter.dilate($radiusX, $radiusY)";
+    return __s("ImageFilter.dilate($radiusX, $radiusY)");
 }
 
 bool _DilateImageFilterCls::==(Object other) {
-    if (other->runtimeType != runtimeType)     {
+    if (other->runtimeType() != runtimeType)     {
         return false;
     }
-    return other is _DilateImageFilter && other->radiusX == radiusX && other->radiusY == radiusY;
+    return is<_DilateImageFilter>(other) && other->radiusX == radiusX && other->radiusY == radiusY;
 }
 
 int _DilateImageFilterCls::hashCode() {
@@ -954,18 +954,18 @@ _ImageFilter _DilateImageFilterCls::_toNativeImageFilter() {
 }
 
 String _DilateImageFilterCls::_shortDescription() {
-    return "dilate($radiusX, $radiusY)";
+    return __s("dilate($radiusX, $radiusY)");
 }
 
 String _ErodeImageFilterCls::toString() {
-    return "ImageFilter.erode($radiusX, $radiusY)";
+    return __s("ImageFilter.erode($radiusX, $radiusY)");
 }
 
 bool _ErodeImageFilterCls::==(Object other) {
-    if (other->runtimeType != runtimeType)     {
+    if (other->runtimeType() != runtimeType)     {
         return false;
     }
-    return other is _ErodeImageFilter && other->radiusX == radiusX && other->radiusY == radiusY;
+    return is<_ErodeImageFilter>(other) && other->radiusX == radiusX && other->radiusY == radiusY;
 }
 
 int _ErodeImageFilterCls::hashCode() {
@@ -977,18 +977,18 @@ _ImageFilter _ErodeImageFilterCls::_toNativeImageFilter() {
 }
 
 String _ErodeImageFilterCls::_shortDescription() {
-    return "erode($radiusX, $radiusY)";
+    return __s("erode($radiusX, $radiusY)");
 }
 
 String _ComposeImageFilterCls::toString() {
-    return "ImageFilter.compose(source -> $_shortDescription -> result)";
+    return __s("ImageFilter.compose(source -> $_shortDescription -> result)");
 }
 
 bool _ComposeImageFilterCls::==(Object other) {
-    if (other->runtimeType != runtimeType)     {
+    if (other->runtimeType() != runtimeType)     {
         return false;
     }
-    return other is _ComposeImageFilter && other->innerFilter == innerFilter && other->outerFilter == outerFilter;
+    return is<_ComposeImageFilter>(other) && other->innerFilter == innerFilter && other->outerFilter == outerFilter;
 }
 
 int _ComposeImageFilterCls::hashCode() {
@@ -1000,7 +1000,7 @@ _ImageFilter _ComposeImageFilterCls::_toNativeImageFilter() {
 }
 
 String _ComposeImageFilterCls::_shortDescription() {
-    return "${innerFilter._shortDescription} -> ${outerFilter._shortDescription}";
+    return __s("${innerFilter._shortDescription} -> ${outerFilter._shortDescription}");
 }
 
 void _ImageFilterCls::blur(_GaussianBlurImageFilter filter) {
@@ -1130,7 +1130,7 @@ ImageShaderCls::ImageShaderCls(FilterQuality filterQuality, Image image, Float64
             ;
         }
         _constructor();
-        String error = _initWithImage(image->_image, tmx->index, tmy->index, filterQuality?->index ?? -1, matrix4);
+        String error = _initWithImage(image->_image, tmx->index, tmy->index, filterQuality?->index or -1, matrix4);
         if (error != nullptr) {
             ;
         }
@@ -1175,10 +1175,10 @@ bool _FragmentShaderCls::==(Object other) {
     if (identical(this, other))     {
         return true;
     }
-    if (other->runtimeType != runtimeType)     {
+    if (other->runtimeType() != runtimeType)     {
         return false;
     }
-    return other is _FragmentShader && other->_builder == _builder && <double>_listEquals(other->_floatUniforms, _floatUniforms) && <ImageShader>_listEquals(other->_samplerUniforms, _samplerUniforms);
+    return is<_FragmentShader>(other) && other->_builder == _builder && <double>_listEquals(other->_floatUniforms, _floatUniforms) && <ImageShader>_listEquals(other->_samplerUniforms, _samplerUniforms);
 }
 
 int _FragmentShaderCls::hashCode() {
@@ -1261,7 +1261,7 @@ void CanvasCls::saveLayer(Rect bounds, Paint paint) {
 }
 
 void CanvasCls::scale(double sx, double sy) {
-    return _scale(sx, sy ?? sx);
+    return _scale(sx, sy or sx);
 }
 
 void CanvasCls::transform(Float64List matrix4) {
@@ -1473,7 +1473,7 @@ void CanvasCls::drawAtlas(Image atlas, BlendMode blendMode, List<Color> colors, 
     Int32List colorBuffer = (colors == nullptr || colors->isEmpty)? nullptr : _encodeColorList(colors);
     Float32List cullRectBuffer = cullRect?->_getValue32();
     int qualityIndex = paint->filterQuality->index;
-    String error = _drawAtlas(paint->_objects, paint->_data, qualityIndex, atlas->_image, rstTransformBuffer, rectBuffer, colorBuffer, (blendMode ?? BlendModeCls::src)->index, cullRectBuffer);
+    String error = _drawAtlas(paint->_objects, paint->_data, qualityIndex, atlas->_image, rstTransformBuffer, rectBuffer, colorBuffer, (blendMode or BlendModeCls::src)->index, cullRectBuffer);
     if (error != nullptr) {
         ;
     }
@@ -1496,7 +1496,7 @@ void CanvasCls::drawRawAtlas(Image atlas, BlendMode blendMode, Int32List colors,
         ;
     }
     int qualityIndex = paint->filterQuality->index;
-    String error = _drawAtlas(paint->_objects, paint->_data, qualityIndex, atlas->_image, rstTransforms, rects, colors, (blendMode ?? BlendModeCls::src)->index, cullRect?->_getValue32());
+    String error = _drawAtlas(paint->_objects, paint->_data, qualityIndex, atlas->_image, rstTransforms, rects, colors, (blendMode or BlendModeCls::src)->index, cullRect?->_getValue32());
     if (error != nullptr) {
         ;
     }
@@ -1540,7 +1540,7 @@ bool PictureCls::debugDisposed() {
         disposed = _disposed;
         return true;
     }());
-    return disposed ?? ();
+    return disposed or ();
 }
 
 PictureRecorderCls::PictureRecorderCls() {
@@ -1566,9 +1566,9 @@ Picture PictureRecorderCls::endRecording() {
 
 ShadowCls::ShadowCls(double blurRadius, Color color, Offset offset) {
     {
-        assert(color != nullptr, "Text shadow color was null.");
-        assert(offset != nullptr, "Text shadow offset was null.");
-        assert(blurRadius >= 0.0, "Text shadow blur radius should be non-negative.");
+        assert(color != nullptr, __s("Text shadow color was null."));
+        assert(offset != nullptr, __s("Text shadow offset was null."));
+        assert(blurRadius >= 0.0, __s("Text shadow blur radius should be non-negative."));
     }
 }
 
@@ -1581,7 +1581,7 @@ double ShadowCls::blurSigma() {
 }
 
 Paint ShadowCls::toPaint() {
-    auto _c1 = make<PaintCls>();_c1.color = auto _c2 = color;_c2.maskFilter = MaskFilterCls->blur(BlurStyleCls::normal, blurSigma);_c2;return _c1;
+    auto _c1 = make<PaintCls>();_c1.color = auto _c2 = color;_c2.maskFilter = MaskFilterCls->blur(BlurStyleCls::normal, blurSigma());_c2;return _c1;
 }
 
 Shadow ShadowCls::scale(double factor) {
@@ -1630,7 +1630,7 @@ bool ShadowCls::==(Object other) {
     if (identical(this, other))     {
         return true;
     }
-    return other is Shadow && other->color == color && other->offset == offset && other->blurRadius == blurRadius;
+    return is<Shadow>(other) && other->color == color && other->offset == offset && other->blurRadius == blurRadius;
 }
 
 int ShadowCls::hashCode() {
@@ -1638,7 +1638,7 @@ int ShadowCls::hashCode() {
 }
 
 String ShadowCls::toString() {
-    return "TextShadow($color, $offset, $blurRadius)";
+    return __s("TextShadow($color, $offset, $blurRadius)");
 }
 
 ByteData ShadowCls::_encodeShadows(List<Shadow> shadows) {
@@ -1713,10 +1713,10 @@ Future<ImageDescriptor> ImageDescriptorCls::encoded(ImmutableBuffer buffer) {
 }
 
 void ImageDescriptorCls::raw(ImmutableBuffer buffer, int height, PixelFormat pixelFormat, int rowBytes, int width) {
-    _width = width;
-    _height = height;
+    _width = width();
+    _height = height();
     _bytesPerPixel = 4;
-    _initRaw(this, buffer, width, height, rowBytes ?? -1, pixelFormat->index);
+    _initRaw(this, buffer, width(), height(), rowBytes or -1, pixelFormat->index);
 }
 
 int ImageDescriptorCls::width() {
@@ -1739,16 +1739,16 @@ Future<Codec> ImageDescriptorCls::instantiateCodec(int targetHeight, int targetW
         targetHeight = nullptr;
     }
     if (targetWidth == nullptr && targetHeight == nullptr) {
-        targetWidth = width;
-        targetHeight = height;
+        targetWidth = width();
+        targetHeight = height();
     } else     {
         if (targetWidth == nullptr && targetHeight != nullptr) {
-        targetWidth = (targetHeight * (width / height))->round();
+        targetWidth = (targetHeight * (width() / height()))->round();
         targetHeight = targetHeight;
     } else     {
         if (targetHeight == nullptr && targetWidth != nullptr) {
         targetWidth = targetWidth;
-        targetHeight = targetWidth ~/ (width / height);
+        targetHeight = targetWidth ~/ (width() / height());
     }
 ;
     };
@@ -1767,7 +1767,7 @@ Future<T> _futurizetemplate<typename T> (_Callbacker<T> callbacker) {
         if (sync) {
             ;
         } else {
-            completer->completeError(make<ExceptionCls>("operation failed"));
+            completer->completeError(make<ExceptionCls>(__s("operation failed")));
         }
     } else {
         completer->complete(t);
@@ -1781,10 +1781,10 @@ Future<T> _futurizetemplate<typename T> (_Callbacker<T> callbacker) {
 }
 
 String PictureRasterizationExceptionCls::toString() {
-    StringBuffer buffer = make<StringBufferCls>("Failed to rasterize a picture: $message.");
+    StringBuffer buffer = make<StringBufferCls>(__s("Failed to rasterize a picture: $message."));
     if (stack != nullptr) {
         buffer->writeln();
-        buffer->writeln("The callstack when the image was created was:");
+        buffer->writeln(__s("The callstack when the image was created was:"));
         buffer->writeln(stack!->toString());
     }
     return buffer->toString();

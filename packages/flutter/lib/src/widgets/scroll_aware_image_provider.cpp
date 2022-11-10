@@ -1,12 +1,12 @@
 #include "scroll_aware_image_provider.hpp"
-template<typename T : Object> ScrollAwareImageProviderCls<T>::ScrollAwareImageProviderCls(DisposableBuildContext context, ImageProvider<T> imageProvider) {
+template<typename T> ScrollAwareImageProviderCls<T>::ScrollAwareImageProviderCls(DisposableBuildContext context, ImageProvider<T> imageProvider) {
     {
         assert(context != nullptr);
         assert(imageProvider != nullptr);
     }
 }
 
-template<typename T : Object> void ScrollAwareImageProviderCls<T>::resolveStreamForKey(ImageConfiguration configuration, ImageErrorListener handleError, T key, ImageStream stream) {
+template<typename T> void ScrollAwareImageProviderCls<T>::resolveStreamForKey(ImageConfiguration configuration, ImageErrorListener handleError, T key, ImageStream stream) {
     if (stream->completer != nullptr || PaintingBindingCls::instance->imageCache->containsKey(key)) {
         imageProvider->resolveStreamForKey(configuration, stream, key, handleError);
         return;
@@ -25,14 +25,14 @@ template<typename T : Object> void ScrollAwareImageProviderCls<T>::resolveStream
     imageProvider->resolveStreamForKey(configuration, stream, key, handleError);
 }
 
-template<typename T : Object> ImageStreamCompleter ScrollAwareImageProviderCls<T>::load(DecoderCallback decode, T key) {
+template<typename T> ImageStreamCompleter ScrollAwareImageProviderCls<T>::load(DecoderCallback decode, T key) {
     return imageProvider->load(key, decode);
 }
 
-template<typename T : Object> ImageStreamCompleter ScrollAwareImageProviderCls<T>::loadBuffer(DecoderBufferCallback decode, T key) {
+template<typename T> ImageStreamCompleter ScrollAwareImageProviderCls<T>::loadBuffer(DecoderBufferCallback decode, T key) {
     return imageProvider->loadBuffer(key, decode);
 }
 
-template<typename T : Object> Future<T> ScrollAwareImageProviderCls<T>::obtainKey(ImageConfiguration configuration) {
+template<typename T> Future<T> ScrollAwareImageProviderCls<T>::obtainKey(ImageConfiguration configuration) {
     return imageProvider->obtainKey(configuration);
 }

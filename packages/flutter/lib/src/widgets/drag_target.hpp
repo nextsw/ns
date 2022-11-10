@@ -23,7 +23,7 @@ enum DragAnchor{
     pointer,
 } // end DragAnchor
 
-template<typename T : Object> class DraggableCls : public StatefulWidgetCls {
+template<typename T> class DraggableCls : public StatefulWidgetCls {
 public:
     T data;
 
@@ -73,9 +73,9 @@ public:
 private:
 
 };
-template<typename T : Object> using Draggable = std::shared_ptr<DraggableCls<T : Object>>;
+template<typename T> using Draggable = std::shared_ptr<DraggableCls<T>>;
 
-template<typename T : Object> class LongPressDraggableCls : public DraggableCls<T> {
+template<typename T> class LongPressDraggableCls : public DraggableCls<T> {
 public:
     bool hapticFeedbackOnStart;
 
@@ -88,9 +88,9 @@ public:
 private:
 
 };
-template<typename T : Object> using LongPressDraggable = std::shared_ptr<LongPressDraggableCls<T : Object>>;
+template<typename T> using LongPressDraggable = std::shared_ptr<LongPressDraggableCls<T>>;
 
-template<typename T : Object> class _DraggableStateCls : public StateCls<Draggable<T>> {
+template<typename T> class _DraggableStateCls : public StateCls<Draggable<T>> {
 public:
 
     virtual void initState();
@@ -114,7 +114,7 @@ private:
     virtual _DragAvatar<T> _startDrag(Offset position);
 
 };
-template<typename T : Object> using _DraggableState = std::shared_ptr<_DraggableStateCls<T : Object>>;
+template<typename T> using _DraggableState = std::shared_ptr<_DraggableStateCls<T>>;
 
 class DraggableDetailsCls : public ObjectCls {
 public:
@@ -146,7 +146,7 @@ private:
 };
 template<typename T> using DragTargetDetails = std::shared_ptr<DragTargetDetailsCls<T>>;
 
-template<typename T : Object> class DragTargetCls : public StatefulWidgetCls {
+template<typename T> class DragTargetCls : public StatefulWidgetCls {
 public:
     DragTargetBuilder<T> builder;
 
@@ -169,11 +169,11 @@ public:
 private:
 
 };
-template<typename T : Object> using DragTarget = std::shared_ptr<DragTargetCls<T : Object>>;
-template<typename T : Object>  List<T> _mapAvatarsToData(List<_DragAvatar<Object>> avatars);
+template<typename T> using DragTarget = std::shared_ptr<DragTargetCls<T>>;
+template<typename T>  List<T> _mapAvatarsToData(List<_DragAvatar<Object>> avatars);
 
 
-template<typename T : Object> class _DragTargetStateCls : public StateCls<DragTarget<T>> {
+template<typename T> class _DragTargetStateCls : public StateCls<DragTarget<T>> {
 public:
 
     virtual bool isExpectedDataType(Object data, Type type);
@@ -195,14 +195,14 @@ private:
 
 
 };
-template<typename T : Object> using _DragTargetState = std::shared_ptr<_DragTargetStateCls<T : Object>>;
+template<typename T> using _DragTargetState = std::shared_ptr<_DragTargetStateCls<T>>;
 
 enum _DragEndKind{
     dropped,
     canceled,
 } // end _DragEndKind
 
-template<typename T : Object> class _DragAvatarCls : public DragCls {
+template<typename T> class _DragAvatarCls : public DragCls {
 public:
     T data;
 
@@ -260,7 +260,7 @@ private:
     virtual Offset _restrictAxis(Offset offset);
 
 };
-template<typename T : Object> using _DragAvatar = std::shared_ptr<_DragAvatarCls<T : Object>>;
+template<typename T> using _DragAvatar = std::shared_ptr<_DragAvatarCls<T>>;
 
 
 #endif

@@ -34,29 +34,29 @@ public:
     Capability terminateCapability;
 
 
-    extern String debugName();
+    String debugName();
      IsolateCls(SendPort controlPort, Capability pauseCapability, Capability terminateCapability);
-    extern static Isolate current();
-    extern static Future<Uri> packageConfig();
-    extern static Future<Uri> resolvePackageUri(Uri packageUri);
-    template<typename T>  extern static Future<Isolate> spawn(String debugName, void entryPoint(T message) , bool errorsAreFatal, T message, SendPort onError, SendPort onExit, bool paused);
-    extern static Future<Isolate> spawnUri(List<String> args, bool automaticPackageResolution, bool checked, String debugName, Map<String, String> environment, bool errorsAreFatal, auto message, SendPort onError, SendPort onExit, Uri packageConfig, Uri packageRoot, bool paused, Uri uri);
+    static Isolate current();
+    static Future<Uri> packageConfig();
+    static Future<Uri> resolvePackageUri(Uri packageUri);
+    template<typename T>  static Future<Isolate> spawn(String debugName, void entryPoint(T message) , bool errorsAreFatal, T message, SendPort onError, SendPort onExit, bool paused);
+    static Future<Isolate> spawnUri(List<String> args, bool automaticPackageResolution, bool checked, String debugName, Map<String, String> environment, bool errorsAreFatal, auto message, SendPort onError, SendPort onExit, Uri packageConfig, Uri packageRoot, bool paused, Uri uri);
     virtual Capability pause(Capability resumeCapability);
 
-    extern void resume(Capability resumeCapability);
-    extern void addOnExitListener(Object response, SendPort responsePort);
-    extern void removeOnExitListener(SendPort responsePort);
-    extern void setErrorsFatal(bool errorsAreFatal);
-    extern void kill(int priority);
-    extern void ping(int priority, Object response, SendPort responsePort);
-    extern void addErrorListener(SendPort port);
-    extern void removeErrorListener(SendPort port);
+    void resume(Capability resumeCapability);
+    void addOnExitListener(Object response, SendPort responsePort);
+    void removeOnExitListener(SendPort responsePort);
+    void setErrorsFatal(bool errorsAreFatal);
+    void kill(int priority);
+    void ping(int priority, Object response, SendPort responsePort);
+    void addErrorListener(SendPort port);
+    void removeErrorListener(SendPort port);
     virtual Stream errors();
 
-    extern static Never exit(SendPort finalMessagePort, Object message);
+    static Never exit(SendPort finalMessagePort, Object message);
 private:
 
-    extern void _pause(Capability resumeCapability);
+    void _pause(Capability resumeCapability);
 };
 using Isolate = std::shared_ptr<IsolateCls>;
 
@@ -74,8 +74,8 @@ using SendPort = std::shared_ptr<SendPortCls>;
 class ReceivePortCls : public ObjectCls {
 public:
 
-    extern  ReceivePortCls(String debugName);
-    extern void  fromRawReceivePort(RawReceivePort rawPort);
+     ReceivePortCls(String debugName);
+    void  fromRawReceivePort(RawReceivePort rawPort);
     virtual StreamSubscription<dynamic> listen(bool cancelOnError, void onData(auto message) , void onDone() , void  onError() );
     virtual void close();
     virtual SendPort sendPort();
@@ -87,7 +87,7 @@ using ReceivePort = std::shared_ptr<ReceivePortCls>;
 class RawReceivePortCls : public ObjectCls {
 public:
 
-    extern  RawReceivePortCls(String debugName, void  handler() );
+     RawReceivePortCls(String debugName, void  handler() );
     virtual void handler(void  newHandler() );
     virtual void close();
     virtual SendPort sendPort();
@@ -115,7 +115,7 @@ using RemoteError = std::shared_ptr<RemoteErrorCls>;
 class TransferableTypedDataCls : public ObjectCls {
 public:
 
-    extern void  fromList(List<TypedData> list);
+    void  fromList(List<TypedData> list);
     virtual ByteBuffer materialize();
 private:
 

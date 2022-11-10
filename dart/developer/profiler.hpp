@@ -10,15 +10,15 @@ public:
     static auto  MAX_USER_TAGS;
 
 
-    extern  UserTagCls(String label);
+     UserTagCls(String label);
     virtual String label();
     virtual UserTag makeCurrent();
-    extern static UserTag defaultTag();
+    static UserTag defaultTag();
 private:
 
 };
 using UserTag = std::shared_ptr<UserTagCls>;
-extern UserTag getCurrentTag();
+UserTag getCurrentTag();
 
 class MetricCls : public ObjectCls {
 public:

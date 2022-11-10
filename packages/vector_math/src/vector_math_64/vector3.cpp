@@ -65,11 +65,11 @@ void Vector3Cls::splat(double arg) {
 }
 
 String Vector3Cls::toString() {
-    return "[${storage[0]},${storage[1]},${storage[2]}]";
+    return __s("[${storage[0]},${storage[1]},${storage[2]}]");
 }
 
 bool Vector3Cls::==(Object other) {
-    return (other is Vector3) && (_v3storage[0] == other->_v3storage[0]) && (_v3storage[1] == other->_v3storage[1]) && (_v3storage[2] == other->_v3storage[2]);
+    return (is<Vector3>(other)) && (_v3storage[0] == other->_v3storage[0]) && (_v3storage[1] == other->_v3storage[1]) && (_v3storage[2] == other->_v3storage[2]);
 }
 
 int Vector3Cls::hashCode() {
@@ -120,7 +120,7 @@ void Vector3Cls::length(double value) {
 }
 
 double Vector3Cls::length() {
-    return math->sqrt(length2);
+    return math->sqrt(length2());
 }
 
 double Vector3Cls::length2() {
@@ -1150,7 +1150,7 @@ double Vector3Cls::z() {
 }
 
 Vector2 Vector3Cls::rr() {
-    return xx;
+    return xx();
 }
 
 Vector2 Vector3Cls::rg() {
@@ -1166,7 +1166,7 @@ Vector2 Vector3Cls::gr() {
 }
 
 Vector2 Vector3Cls::gg() {
-    return yy;
+    return yy();
 }
 
 Vector2 Vector3Cls::gb() {
@@ -1182,27 +1182,27 @@ Vector2 Vector3Cls::bg() {
 }
 
 Vector2 Vector3Cls::bb() {
-    return zz;
+    return zz();
 }
 
 Vector3 Vector3Cls::rrr() {
-    return xxx;
+    return xxx();
 }
 
 Vector3 Vector3Cls::rrg() {
-    return xxy;
+    return xxy();
 }
 
 Vector3 Vector3Cls::rrb() {
-    return xxz;
+    return xxz();
 }
 
 Vector3 Vector3Cls::rgr() {
-    return xzx;
+    return xzx();
 }
 
 Vector3 Vector3Cls::rgg() {
-    return xyy;
+    return xyy();
 }
 
 Vector3 Vector3Cls::rgb() {
@@ -1210,7 +1210,7 @@ Vector3 Vector3Cls::rgb() {
 }
 
 Vector3 Vector3Cls::rbr() {
-    return xzx;
+    return xzx();
 }
 
 Vector3 Vector3Cls::rbg() {
@@ -1218,15 +1218,15 @@ Vector3 Vector3Cls::rbg() {
 }
 
 Vector3 Vector3Cls::rbb() {
-    return xzz;
+    return xzz();
 }
 
 Vector3 Vector3Cls::grr() {
-    return yxx;
+    return yxx();
 }
 
 Vector3 Vector3Cls::grg() {
-    return yxy;
+    return yxy();
 }
 
 Vector3 Vector3Cls::grb() {
@@ -1234,15 +1234,15 @@ Vector3 Vector3Cls::grb() {
 }
 
 Vector3 Vector3Cls::ggr() {
-    return yyx;
+    return yyx();
 }
 
 Vector3 Vector3Cls::ggg() {
-    return yyy;
+    return yyy();
 }
 
 Vector3 Vector3Cls::ggb() {
-    return yyz;
+    return yyz();
 }
 
 Vector3 Vector3Cls::gbr() {
@@ -1250,15 +1250,15 @@ Vector3 Vector3Cls::gbr() {
 }
 
 Vector3 Vector3Cls::gbg() {
-    return yzy;
+    return yzy();
 }
 
 Vector3 Vector3Cls::gbb() {
-    return yzz;
+    return yzz();
 }
 
 Vector3 Vector3Cls::brr() {
-    return zxx;
+    return zxx();
 }
 
 Vector3 Vector3Cls::brg() {
@@ -1266,7 +1266,7 @@ Vector3 Vector3Cls::brg() {
 }
 
 Vector3 Vector3Cls::brb() {
-    return zxz;
+    return zxz();
 }
 
 Vector3 Vector3Cls::bgr() {
@@ -1274,351 +1274,351 @@ Vector3 Vector3Cls::bgr() {
 }
 
 Vector3 Vector3Cls::bgg() {
-    return zyy;
+    return zyy();
 }
 
 Vector3 Vector3Cls::bgb() {
-    return zyz;
+    return zyz();
 }
 
 Vector3 Vector3Cls::bbr() {
-    return zzx;
+    return zzx();
 }
 
 Vector3 Vector3Cls::bbg() {
-    return zzy;
+    return zzy();
 }
 
 Vector3 Vector3Cls::bbb() {
-    return zzz;
+    return zzz();
 }
 
 Vector4 Vector3Cls::rrrr() {
-    return xxxx;
+    return xxxx();
 }
 
 Vector4 Vector3Cls::rrrg() {
-    return xxxy;
+    return xxxy();
 }
 
 Vector4 Vector3Cls::rrrb() {
-    return xxxz;
+    return xxxz();
 }
 
 Vector4 Vector3Cls::rrgr() {
-    return xxyx;
+    return xxyx();
 }
 
 Vector4 Vector3Cls::rrgg() {
-    return xxyy;
+    return xxyy();
 }
 
 Vector4 Vector3Cls::rrgb() {
-    return xxyz;
+    return xxyz();
 }
 
 Vector4 Vector3Cls::rrbr() {
-    return xxzx;
+    return xxzx();
 }
 
 Vector4 Vector3Cls::rrbg() {
-    return xxzy;
+    return xxzy();
 }
 
 Vector4 Vector3Cls::rrbb() {
-    return xxzz;
+    return xxzz();
 }
 
 Vector4 Vector3Cls::rgrr() {
-    return xyxx;
+    return xyxx();
 }
 
 Vector4 Vector3Cls::rgrg() {
-    return xyxy;
+    return xyxy();
 }
 
 Vector4 Vector3Cls::rgrb() {
-    return xyxz;
+    return xyxz();
 }
 
 Vector4 Vector3Cls::rggr() {
-    return xyyx;
+    return xyyx();
 }
 
 Vector4 Vector3Cls::rggg() {
-    return xyyy;
+    return xyyy();
 }
 
 Vector4 Vector3Cls::rggb() {
-    return xyyz;
+    return xyyz();
 }
 
 Vector4 Vector3Cls::rgbr() {
-    return xyzx;
+    return xyzx();
 }
 
 Vector4 Vector3Cls::rgbg() {
-    return xyzy;
+    return xyzy();
 }
 
 Vector4 Vector3Cls::rgbb() {
-    return xyzz;
+    return xyzz();
 }
 
 Vector4 Vector3Cls::rbrr() {
-    return xzxx;
+    return xzxx();
 }
 
 Vector4 Vector3Cls::rbrg() {
-    return xzxy;
+    return xzxy();
 }
 
 Vector4 Vector3Cls::rbrb() {
-    return xzxz;
+    return xzxz();
 }
 
 Vector4 Vector3Cls::rbgr() {
-    return xzyx;
+    return xzyx();
 }
 
 Vector4 Vector3Cls::rbgg() {
-    return xzyy;
+    return xzyy();
 }
 
 Vector4 Vector3Cls::rbgb() {
-    return xzyz;
+    return xzyz();
 }
 
 Vector4 Vector3Cls::rbbr() {
-    return xzzx;
+    return xzzx();
 }
 
 Vector4 Vector3Cls::rbbg() {
-    return xzzy;
+    return xzzy();
 }
 
 Vector4 Vector3Cls::rbbb() {
-    return xzzz;
+    return xzzz();
 }
 
 Vector4 Vector3Cls::grrr() {
-    return yxxx;
+    return yxxx();
 }
 
 Vector4 Vector3Cls::grrg() {
-    return yxxy;
+    return yxxy();
 }
 
 Vector4 Vector3Cls::grrb() {
-    return yxxz;
+    return yxxz();
 }
 
 Vector4 Vector3Cls::grgr() {
-    return yxyx;
+    return yxyx();
 }
 
 Vector4 Vector3Cls::grgg() {
-    return yxyy;
+    return yxyy();
 }
 
 Vector4 Vector3Cls::grgb() {
-    return yxyz;
+    return yxyz();
 }
 
 Vector4 Vector3Cls::grbr() {
-    return yxzx;
+    return yxzx();
 }
 
 Vector4 Vector3Cls::grbg() {
-    return yxzy;
+    return yxzy();
 }
 
 Vector4 Vector3Cls::grbb() {
-    return yxzz;
+    return yxzz();
 }
 
 Vector4 Vector3Cls::ggrr() {
-    return yyxx;
+    return yyxx();
 }
 
 Vector4 Vector3Cls::ggrg() {
-    return yyxy;
+    return yyxy();
 }
 
 Vector4 Vector3Cls::ggrb() {
-    return yyxz;
+    return yyxz();
 }
 
 Vector4 Vector3Cls::gggr() {
-    return yyyx;
+    return yyyx();
 }
 
 Vector4 Vector3Cls::gggg() {
-    return yyyy;
+    return yyyy();
 }
 
 Vector4 Vector3Cls::gggb() {
-    return yyyz;
+    return yyyz();
 }
 
 Vector4 Vector3Cls::ggbr() {
-    return yyzx;
+    return yyzx();
 }
 
 Vector4 Vector3Cls::ggbg() {
-    return yyzy;
+    return yyzy();
 }
 
 Vector4 Vector3Cls::ggbb() {
-    return yyzz;
+    return yyzz();
 }
 
 Vector4 Vector3Cls::gbrr() {
-    return yzxx;
+    return yzxx();
 }
 
 Vector4 Vector3Cls::gbrg() {
-    return yzxy;
+    return yzxy();
 }
 
 Vector4 Vector3Cls::gbrb() {
-    return yzxz;
+    return yzxz();
 }
 
 Vector4 Vector3Cls::gbgr() {
-    return yzyx;
+    return yzyx();
 }
 
 Vector4 Vector3Cls::gbgg() {
-    return yzyy;
+    return yzyy();
 }
 
 Vector4 Vector3Cls::gbgb() {
-    return yzyz;
+    return yzyz();
 }
 
 Vector4 Vector3Cls::gbbr() {
-    return yzzx;
+    return yzzx();
 }
 
 Vector4 Vector3Cls::gbbg() {
-    return yzzy;
+    return yzzy();
 }
 
 Vector4 Vector3Cls::gbbb() {
-    return yzzz;
+    return yzzz();
 }
 
 Vector4 Vector3Cls::brrr() {
-    return zxxx;
+    return zxxx();
 }
 
 Vector4 Vector3Cls::brrg() {
-    return zxxy;
+    return zxxy();
 }
 
 Vector4 Vector3Cls::brrb() {
-    return zxxz;
+    return zxxz();
 }
 
 Vector4 Vector3Cls::brgr() {
-    return zxyx;
+    return zxyx();
 }
 
 Vector4 Vector3Cls::brgg() {
-    return zxyy;
+    return zxyy();
 }
 
 Vector4 Vector3Cls::brgb() {
-    return zxyz;
+    return zxyz();
 }
 
 Vector4 Vector3Cls::brbr() {
-    return zxzx;
+    return zxzx();
 }
 
 Vector4 Vector3Cls::brbg() {
-    return zxzy;
+    return zxzy();
 }
 
 Vector4 Vector3Cls::brbb() {
-    return zxzz;
+    return zxzz();
 }
 
 Vector4 Vector3Cls::bgrr() {
-    return zyxx;
+    return zyxx();
 }
 
 Vector4 Vector3Cls::bgrg() {
-    return zyxy;
+    return zyxy();
 }
 
 Vector4 Vector3Cls::bgrb() {
-    return zyxz;
+    return zyxz();
 }
 
 Vector4 Vector3Cls::bggr() {
-    return zyyx;
+    return zyyx();
 }
 
 Vector4 Vector3Cls::bggg() {
-    return zyyy;
+    return zyyy();
 }
 
 Vector4 Vector3Cls::bggb() {
-    return zyyz;
+    return zyyz();
 }
 
 Vector4 Vector3Cls::bgbr() {
-    return zyzx;
+    return zyzx();
 }
 
 Vector4 Vector3Cls::bgbg() {
-    return zyzy;
+    return zyzy();
 }
 
 Vector4 Vector3Cls::bgbb() {
-    return zyzz;
+    return zyzz();
 }
 
 Vector4 Vector3Cls::bbrr() {
-    return zzxx;
+    return zzxx();
 }
 
 Vector4 Vector3Cls::bbrg() {
-    return zzxy;
+    return zzxy();
 }
 
 Vector4 Vector3Cls::bbrb() {
-    return zzxz;
+    return zzxz();
 }
 
 Vector4 Vector3Cls::bbgr() {
-    return zzyx;
+    return zzyx();
 }
 
 Vector4 Vector3Cls::bbgg() {
-    return zzyy;
+    return zzyy();
 }
 
 Vector4 Vector3Cls::bbgb() {
-    return zzyz;
+    return zzyz();
 }
 
 Vector4 Vector3Cls::bbbr() {
-    return zzzx;
+    return zzzx();
 }
 
 Vector4 Vector3Cls::bbbg() {
-    return zzzy;
+    return zzzy();
 }
 
 Vector4 Vector3Cls::bbbb() {
-    return zzzz;
+    return zzzz();
 }
 
 Vector2 Vector3Cls::ss() {
-    return xx;
+    return xx();
 }
 
 Vector2 Vector3Cls::st() {
@@ -1634,7 +1634,7 @@ Vector2 Vector3Cls::ts() {
 }
 
 Vector2 Vector3Cls::tt() {
-    return yy;
+    return yy();
 }
 
 Vector2 Vector3Cls::tp() {
@@ -1650,27 +1650,27 @@ Vector2 Vector3Cls::pt() {
 }
 
 Vector2 Vector3Cls::pp() {
-    return zz;
+    return zz();
 }
 
 Vector3 Vector3Cls::sss() {
-    return xxx;
+    return xxx();
 }
 
 Vector3 Vector3Cls::sst() {
-    return xxy;
+    return xxy();
 }
 
 Vector3 Vector3Cls::ssp() {
-    return xxz;
+    return xxz();
 }
 
 Vector3 Vector3Cls::sts() {
-    return xyx;
+    return xyx();
 }
 
 Vector3 Vector3Cls::stt() {
-    return xyy;
+    return xyy();
 }
 
 Vector3 Vector3Cls::stp() {
@@ -1678,7 +1678,7 @@ Vector3 Vector3Cls::stp() {
 }
 
 Vector3 Vector3Cls::sps() {
-    return xzx;
+    return xzx();
 }
 
 Vector3 Vector3Cls::spt() {
@@ -1686,15 +1686,15 @@ Vector3 Vector3Cls::spt() {
 }
 
 Vector3 Vector3Cls::spp() {
-    return xzz;
+    return xzz();
 }
 
 Vector3 Vector3Cls::tss() {
-    return yxx;
+    return yxx();
 }
 
 Vector3 Vector3Cls::tst() {
-    return yxy;
+    return yxy();
 }
 
 Vector3 Vector3Cls::tsp() {
@@ -1702,15 +1702,15 @@ Vector3 Vector3Cls::tsp() {
 }
 
 Vector3 Vector3Cls::tts() {
-    return yyx;
+    return yyx();
 }
 
 Vector3 Vector3Cls::ttt() {
-    return yyy;
+    return yyy();
 }
 
 Vector3 Vector3Cls::ttp() {
-    return yyz;
+    return yyz();
 }
 
 Vector3 Vector3Cls::tps() {
@@ -1718,15 +1718,15 @@ Vector3 Vector3Cls::tps() {
 }
 
 Vector3 Vector3Cls::tpt() {
-    return yzy;
+    return yzy();
 }
 
 Vector3 Vector3Cls::tpp() {
-    return yzz;
+    return yzz();
 }
 
 Vector3 Vector3Cls::pss() {
-    return zxx;
+    return zxx();
 }
 
 Vector3 Vector3Cls::pst() {
@@ -1734,7 +1734,7 @@ Vector3 Vector3Cls::pst() {
 }
 
 Vector3 Vector3Cls::psp() {
-    return zxz;
+    return zxz();
 }
 
 Vector3 Vector3Cls::pts() {
@@ -1742,345 +1742,345 @@ Vector3 Vector3Cls::pts() {
 }
 
 Vector3 Vector3Cls::ptt() {
-    return zyy;
+    return zyy();
 }
 
 Vector3 Vector3Cls::ptp() {
-    return zyz;
+    return zyz();
 }
 
 Vector3 Vector3Cls::pps() {
-    return zzx;
+    return zzx();
 }
 
 Vector3 Vector3Cls::ppt() {
-    return zzy;
+    return zzy();
 }
 
 Vector3 Vector3Cls::ppp() {
-    return zzz;
+    return zzz();
 }
 
 Vector4 Vector3Cls::ssss() {
-    return xxxx;
+    return xxxx();
 }
 
 Vector4 Vector3Cls::ssst() {
-    return xxxy;
+    return xxxy();
 }
 
 Vector4 Vector3Cls::sssp() {
-    return xxxz;
+    return xxxz();
 }
 
 Vector4 Vector3Cls::ssts() {
-    return xxyx;
+    return xxyx();
 }
 
 Vector4 Vector3Cls::sstt() {
-    return xxyy;
+    return xxyy();
 }
 
 Vector4 Vector3Cls::sstp() {
-    return xxyz;
+    return xxyz();
 }
 
 Vector4 Vector3Cls::ssps() {
-    return xxzx;
+    return xxzx();
 }
 
 Vector4 Vector3Cls::sspt() {
-    return xxzy;
+    return xxzy();
 }
 
 Vector4 Vector3Cls::sspp() {
-    return xxzz;
+    return xxzz();
 }
 
 Vector4 Vector3Cls::stss() {
-    return xyxx;
+    return xyxx();
 }
 
 Vector4 Vector3Cls::stst() {
-    return xyxy;
+    return xyxy();
 }
 
 Vector4 Vector3Cls::stsp() {
-    return xyxz;
+    return xyxz();
 }
 
 Vector4 Vector3Cls::stts() {
-    return xyyx;
+    return xyyx();
 }
 
 Vector4 Vector3Cls::sttt() {
-    return xyyy;
+    return xyyy();
 }
 
 Vector4 Vector3Cls::sttp() {
-    return xyyz;
+    return xyyz();
 }
 
 Vector4 Vector3Cls::stps() {
-    return xyzx;
+    return xyzx();
 }
 
 Vector4 Vector3Cls::stpt() {
-    return xyzy;
+    return xyzy();
 }
 
 Vector4 Vector3Cls::stpp() {
-    return xyzz;
+    return xyzz();
 }
 
 Vector4 Vector3Cls::spss() {
-    return xzxx;
+    return xzxx();
 }
 
 Vector4 Vector3Cls::spst() {
-    return xzxy;
+    return xzxy();
 }
 
 Vector4 Vector3Cls::spsp() {
-    return xzxz;
+    return xzxz();
 }
 
 Vector4 Vector3Cls::spts() {
-    return xzyx;
+    return xzyx();
 }
 
 Vector4 Vector3Cls::sptt() {
-    return xzyy;
+    return xzyy();
 }
 
 Vector4 Vector3Cls::sptp() {
-    return xzyz;
+    return xzyz();
 }
 
 Vector4 Vector3Cls::spps() {
-    return xzzx;
+    return xzzx();
 }
 
 Vector4 Vector3Cls::sppt() {
-    return xzzy;
+    return xzzy();
 }
 
 Vector4 Vector3Cls::sppp() {
-    return xzzz;
+    return xzzz();
 }
 
 Vector4 Vector3Cls::tsss() {
-    return yxxx;
+    return yxxx();
 }
 
 Vector4 Vector3Cls::tsst() {
-    return yxxy;
+    return yxxy();
 }
 
 Vector4 Vector3Cls::tssp() {
-    return yxxz;
+    return yxxz();
 }
 
 Vector4 Vector3Cls::tsts() {
-    return yxyx;
+    return yxyx();
 }
 
 Vector4 Vector3Cls::tstt() {
-    return yxyy;
+    return yxyy();
 }
 
 Vector4 Vector3Cls::tstp() {
-    return yxyz;
+    return yxyz();
 }
 
 Vector4 Vector3Cls::tsps() {
-    return yxzx;
+    return yxzx();
 }
 
 Vector4 Vector3Cls::tspt() {
-    return yxzy;
+    return yxzy();
 }
 
 Vector4 Vector3Cls::tspp() {
-    return yxzz;
+    return yxzz();
 }
 
 Vector4 Vector3Cls::ttss() {
-    return yyxx;
+    return yyxx();
 }
 
 Vector4 Vector3Cls::ttst() {
-    return yyxy;
+    return yyxy();
 }
 
 Vector4 Vector3Cls::ttsp() {
-    return yyxz;
+    return yyxz();
 }
 
 Vector4 Vector3Cls::ttts() {
-    return yyyx;
+    return yyyx();
 }
 
 Vector4 Vector3Cls::tttt() {
-    return yyyy;
+    return yyyy();
 }
 
 Vector4 Vector3Cls::tttp() {
-    return yyyz;
+    return yyyz();
 }
 
 Vector4 Vector3Cls::ttps() {
-    return yyzx;
+    return yyzx();
 }
 
 Vector4 Vector3Cls::ttpt() {
-    return yyzy;
+    return yyzy();
 }
 
 Vector4 Vector3Cls::ttpp() {
-    return yyzz;
+    return yyzz();
 }
 
 Vector4 Vector3Cls::tpss() {
-    return yzxx;
+    return yzxx();
 }
 
 Vector4 Vector3Cls::tpst() {
-    return yzxy;
+    return yzxy();
 }
 
 Vector4 Vector3Cls::tpsp() {
-    return yzxz;
+    return yzxz();
 }
 
 Vector4 Vector3Cls::tpts() {
-    return yzyx;
+    return yzyx();
 }
 
 Vector4 Vector3Cls::tptt() {
-    return yzyy;
+    return yzyy();
 }
 
 Vector4 Vector3Cls::tptp() {
-    return yzyz;
+    return yzyz();
 }
 
 Vector4 Vector3Cls::tpps() {
-    return yzzx;
+    return yzzx();
 }
 
 Vector4 Vector3Cls::tppt() {
-    return yzzy;
+    return yzzy();
 }
 
 Vector4 Vector3Cls::tppp() {
-    return yzzz;
+    return yzzz();
 }
 
 Vector4 Vector3Cls::psss() {
-    return zxxx;
+    return zxxx();
 }
 
 Vector4 Vector3Cls::psst() {
-    return zxxy;
+    return zxxy();
 }
 
 Vector4 Vector3Cls::pssp() {
-    return zxxz;
+    return zxxz();
 }
 
 Vector4 Vector3Cls::psts() {
-    return zxyx;
+    return zxyx();
 }
 
 Vector4 Vector3Cls::pstt() {
-    return zxyy;
+    return zxyy();
 }
 
 Vector4 Vector3Cls::pstp() {
-    return zxyz;
+    return zxyz();
 }
 
 Vector4 Vector3Cls::psps() {
-    return zxzx;
+    return zxzx();
 }
 
 Vector4 Vector3Cls::pspt() {
-    return zxzy;
+    return zxzy();
 }
 
 Vector4 Vector3Cls::pspp() {
-    return zxzz;
+    return zxzz();
 }
 
 Vector4 Vector3Cls::ptss() {
-    return zyxx;
+    return zyxx();
 }
 
 Vector4 Vector3Cls::ptst() {
-    return zyxy;
+    return zyxy();
 }
 
 Vector4 Vector3Cls::ptsp() {
-    return zyxz;
+    return zyxz();
 }
 
 Vector4 Vector3Cls::ptts() {
-    return zyyx;
+    return zyyx();
 }
 
 Vector4 Vector3Cls::pttt() {
-    return zyyy;
+    return zyyy();
 }
 
 Vector4 Vector3Cls::pttp() {
-    return zyyz;
+    return zyyz();
 }
 
 Vector4 Vector3Cls::ptps() {
-    return zyzx;
+    return zyzx();
 }
 
 Vector4 Vector3Cls::ptpt() {
-    return zyzy;
+    return zyzy();
 }
 
 Vector4 Vector3Cls::ptpp() {
-    return zyzz;
+    return zyzz();
 }
 
 Vector4 Vector3Cls::ppss() {
-    return zzxx;
+    return zzxx();
 }
 
 Vector4 Vector3Cls::ppst() {
-    return zzxy;
+    return zzxy();
 }
 
 Vector4 Vector3Cls::ppsp() {
-    return zzxz;
+    return zzxz();
 }
 
 Vector4 Vector3Cls::ppts() {
-    return zzyx;
+    return zzyx();
 }
 
 Vector4 Vector3Cls::pptt() {
-    return zzyy;
+    return zzyy();
 }
 
 Vector4 Vector3Cls::pptp() {
-    return zzyz;
+    return zzyz();
 }
 
 Vector4 Vector3Cls::ppps() {
-    return zzzx;
+    return zzzx();
 }
 
 Vector4 Vector3Cls::pppt() {
-    return zzzy;
+    return zzzy();
 }
 
 Vector4 Vector3Cls::pppp() {
-    return zzzz;
+    return zzzz();
 }

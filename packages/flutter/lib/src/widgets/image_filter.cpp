@@ -10,12 +10,12 @@ RenderObject ImageFilteredCls::createRenderObject(BuildContext context) {
 }
 
 void ImageFilteredCls::updateRenderObject(BuildContext context, RenderObject renderObject) {
-    auto _c1 = (((_ImageFilterRenderObject)renderObject));_c1.enabled = auto _c2 = enabled;_c2.imageFilter = imageFilter;_c2;_c1;
+    auto _c1 = (as<_ImageFilterRenderObject>(renderObject));_c1.enabled = auto _c2 = enabled;_c2.imageFilter = imageFilter;_c2;_c1;
 }
 
 void ImageFilteredCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<ImageFilter>make<DiagnosticsPropertyCls>("imageFilter", imageFilter));
+    properties->add(<ImageFilter>make<DiagnosticsPropertyCls>(__s("imageFilter"), imageFilter));
 }
 
 bool _ImageFilterRenderObjectCls::enabled() {
@@ -23,7 +23,7 @@ bool _ImageFilterRenderObjectCls::enabled() {
 }
 
 void _ImageFilterRenderObjectCls::enabled(bool value) {
-    if (enabled == value) {
+    if (enabled() == value) {
         return;
     }
     _enabled = value;
@@ -43,20 +43,20 @@ void _ImageFilterRenderObjectCls::imageFilter(ImageFilter value) {
 }
 
 bool _ImageFilterRenderObjectCls::alwaysNeedsCompositing() {
-    return child != nullptr && enabled;
+    return child != nullptr && enabled();
 }
 
 void _ImageFilterRenderObjectCls::paint(PaintingContext context, Offset offset) {
-    assert(imageFilter != nullptr);
-    if (!enabled) {
+    assert(imageFilter() != nullptr);
+    if (!enabled()) {
         layer = nullptr;
         return super->paint(context, offset);
     }
     if (layer == nullptr) {
-        layer = make<ImageFilterLayerCls>(imageFilter);
+        layer = make<ImageFilterLayerCls>(imageFilter());
     } else {
-        ImageFilterLayer filterLayer = ((ImageFilterLayer)layer!);
-        filterLayer->imageFilter = imageFilter;
+        ImageFilterLayer filterLayer = as<ImageFilterLayer>(layer!);
+        filterLayer->imageFilter = imageFilter();
     }
     context->pushLayer(layer!, super->paint, offset);
     assert([=] () {

@@ -4,7 +4,7 @@ String InternetAddressTypeCls::name() {
 }
 
 String InternetAddressTypeCls::toString() {
-    return "InternetAddressType: $name";
+    return __s("InternetAddressType: $name");
 }
 
 void InternetAddressTypeCls::_from(int value) {
@@ -97,22 +97,22 @@ void SocketExceptionCls::closed()
 
 String SocketExceptionCls::toString() {
     StringBuffer sb = make<StringBufferCls>();
-    sb->write("SocketException");
-    if (message->isNotEmpty) {
-        sb->write(": $message");
+    sb->write(__s("SocketException"));
+    if (message->isNotEmpty()) {
+        sb->write(__s(": $message"));
         if (osError != nullptr) {
-            sb->write(" ($osError)");
+            sb->write(__s(" ($osError)"));
         }
     } else     {
         if (osError != nullptr) {
-        sb->write(": $osError");
+        sb->write(__s(": $osError"));
     }
 ;
     }    if (address != nullptr) {
-        sb->write(", address = ${address!.host}");
+        sb->write(__s(", address = ${address!.host}"));
     }
     if (port != nullptr) {
-        sb->write(", port = $port");
+        sb->write(__s(", port = $port"));
     }
     return sb->toString();
 }

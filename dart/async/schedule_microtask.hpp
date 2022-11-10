@@ -41,7 +41,7 @@ public:
 
 private:
 
-    extern static void _scheduleImmediate(void callback() );
+    static void _scheduleImmediate(void callback() );
 };
 using _AsyncRun = std::shared_ptr<_AsyncRunCls>;
 

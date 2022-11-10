@@ -10,7 +10,7 @@ public:
 
 private:
 
-    extern static void _sendData(int data, SendPort sendPort, Object sender);
+    static void _sendData(int data, SendPort sendPort, Object sender);
 };
 using _EventHandler = std::shared_ptr<_EventHandlerCls>;
 

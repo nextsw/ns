@@ -6,7 +6,7 @@ UnmodifiableByteBufferViewCls::UnmodifiableByteBufferViewCls(ByteBuffer data) {
 }
 
 int UnmodifiableByteBufferViewCls::lengthInBytes() {
-    return _data->lengthInBytes;
+    return _data->lengthInBytes();
 }
 
 Uint8List UnmodifiableByteBufferViewCls::asUint8List(int length, int offsetInBytes) {
@@ -175,40 +175,40 @@ void UnmodifiableByteDataViewCls::_unsupported() {
     ;
 }
 
-template<typename N, typename L : List<N>, typename TD : TypedData> int _UnmodifiableListMixinCls<N, L, TD>::length() {
-    return _list->length;
+template<typename N, typename L, typename TD> int _UnmodifiableListMixinCls<N, L, TD>::length() {
+    return _list()->length();
 }
 
-template<typename N, typename L : List<N>, typename TD : TypedData> N _UnmodifiableListMixinCls<N, L, TD>::[](int index) {
-    return _list[index];
+template<typename N, typename L, typename TD> N _UnmodifiableListMixinCls<N, L, TD>::[](int index) {
+    return _list()[index];
 }
 
-template<typename N, typename L : List<N>, typename TD : TypedData> int _UnmodifiableListMixinCls<N, L, TD>::elementSizeInBytes() {
-    return _data->elementSizeInBytes;
+template<typename N, typename L, typename TD> int _UnmodifiableListMixinCls<N, L, TD>::elementSizeInBytes() {
+    return _data()->elementSizeInBytes();
 }
 
-template<typename N, typename L : List<N>, typename TD : TypedData> int _UnmodifiableListMixinCls<N, L, TD>::offsetInBytes() {
-    return _data->offsetInBytes;
+template<typename N, typename L, typename TD> int _UnmodifiableListMixinCls<N, L, TD>::offsetInBytes() {
+    return _data()->offsetInBytes();
 }
 
-template<typename N, typename L : List<N>, typename TD : TypedData> int _UnmodifiableListMixinCls<N, L, TD>::lengthInBytes() {
-    return _data->lengthInBytes;
+template<typename N, typename L, typename TD> int _UnmodifiableListMixinCls<N, L, TD>::lengthInBytes() {
+    return _data()->lengthInBytes();
 }
 
-template<typename N, typename L : List<N>, typename TD : TypedData> ByteBuffer _UnmodifiableListMixinCls<N, L, TD>::buffer() {
-    return make<UnmodifiableByteBufferViewCls>(_data->buffer);
+template<typename N, typename L, typename TD> ByteBuffer _UnmodifiableListMixinCls<N, L, TD>::buffer() {
+    return make<UnmodifiableByteBufferViewCls>(_data()->buffer());
 }
 
-template<typename N, typename L : List<N>, typename TD : TypedData> L _UnmodifiableListMixinCls<N, L, TD>::sublist(int end, int start) {
-    int endIndex = RangeErrorCls->checkValidRange(start, end!, length);
+template<typename N, typename L, typename TD> L _UnmodifiableListMixinCls<N, L, TD>::sublist(int end, int start) {
+    int endIndex = RangeErrorCls->checkValidRange(start, end!, length());
     int sublistLength = endIndex - start;
     L result = _createList(sublistLength);
-    result->setRange(0, sublistLength, _list, start);
+    result->setRange(0, sublistLength, _list(), start);
     return result;
 }
 
-template<typename N, typename L : List<N>, typename TD : TypedData> TD _UnmodifiableListMixinCls<N, L, TD>::_data() {
-    return (((TD)_list));
+template<typename N, typename L, typename TD> TD _UnmodifiableListMixinCls<N, L, TD>::_data() {
+    return (as<TD>(_list()));
 }
 
 UnmodifiableUint8ListViewCls::UnmodifiableUint8ListViewCls(Uint8List list) {

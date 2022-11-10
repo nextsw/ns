@@ -15,17 +15,17 @@ Set<Type> _factoriesTypeSettemplate<typename T> (Set<Factory<T>> factories) {
     })->toSet();
 }
 
-RenderAndroidViewCls::RenderAndroidViewCls(Clip clipBehavior, Set<Factory<OneSequenceGestureRecognizer>> gestureRecognizers, PlatformViewHitTestBehavior hitTestBehavior, AndroidViewController viewController) {
+RenderAndroidViewCls::RenderAndroidViewCls(Clip clipBehavior, Set<Factory<OneSequenceGestureRecognizer>> gestureRecognizers, PlatformViewHitTestBehavior hitTestBehavior, AndroidViewController viewController) : PlatformViewRenderBox(viewController, hitTestBehavior, gestureRecognizers) {
     {
         assert(viewController != nullptr);
         assert(hitTestBehavior != nullptr);
         assert(gestureRecognizers != nullptr);
-        assert(clipBehavior != nullptr);
+        assert(clipBehavior() != nullptr);
         _viewController = viewController;
-        _clipBehavior = clipBehavior;
+        _clipBehavior = clipBehavior();
     }
     {
-        _viewController->pointTransformer = [=] (Offset offset)         {
+        _viewController->pointTransformer() = [=] (Offset offset)         {
             globalToLocal(offset);
         };
         updateGestureRecognizers(gestureRecognizers);
@@ -42,18 +42,18 @@ AndroidViewController RenderAndroidViewCls::controller() {
 void RenderAndroidViewCls::controller(AndroidViewController controller) {
     assert(!_isDisposed);
     assert(_viewController != nullptr);
-    assert(controller != nullptr);
-    if (_viewController == controller) {
+    assert(controller() != nullptr);
+    if (_viewController == controller()) {
         return;
     }
     _viewController->removeOnPlatformViewCreatedListener(_onPlatformViewCreated);
-    super->controller = controller;
-    _viewController = controller;
-    _viewController->pointTransformer = [=] (Offset offset)     {
+    super->controller = controller();
+    _viewController = controller();
+    _viewController->pointTransformer() = [=] (Offset offset)     {
         globalToLocal(offset);
     };
     _sizePlatformView();
-    if (_viewController->isCreated) {
+    if (_viewController->isCreated()) {
         markNeedsSemanticsUpdate();
     }
     _viewController->addOnPlatformViewCreatedListener(_onPlatformViewCreated);
@@ -94,28 +94,28 @@ void RenderAndroidViewCls::performResize() {
 }
 
 void RenderAndroidViewCls::paint(PaintingContext context, Offset offset) {
-    if (_viewController->textureId == nullptr || _currentTextureSize == nullptr) {
+    if (_viewController->textureId() == nullptr || _currentTextureSize == nullptr) {
         return;
     }
-    bool isTextureLargerThanWidget = _currentTextureSize!->width > size->width || _currentTextureSize!->height > size->height;
-    if (isTextureLargerThanWidget && clipBehavior != ClipCls::none) {
-        _clipRectLayer->layer = context->pushClipRect(true, offset, offset & size, _paintTextureclipBehavior, _clipRectLayer->layer);
+    bool isTextureLargerThanWidget = _currentTextureSize!->width() > size->width || _currentTextureSize!->height() > size->height;
+    if (isTextureLargerThanWidget && clipBehavior() != ClipCls::none) {
+        _clipRectLayer->layer() = context->pushClipRect(true, offset, offset & size, _paintTextureclipBehavior(), _clipRectLayer->layer());
         return;
     }
-    _clipRectLayer->layer = nullptr;
+    _clipRectLayer->layer() = nullptr;
     _paintTexture(context, offset);
 }
 
 void RenderAndroidViewCls::dispose() {
     _isDisposed = true;
-    _clipRectLayer->layer = nullptr;
+    _clipRectLayer->layer() = nullptr;
     _viewController->removeOnPlatformViewCreatedListener(_onPlatformViewCreated);
     super->dispose();
 }
 
 void RenderAndroidViewCls::describeSemanticsConfiguration(SemanticsConfiguration config) {
     config->isSemanticBoundary = true;
-    if (_viewController->isCreated) {
+    if (_viewController->isCreated()) {
         config->platformViewId = _viewController->viewId;
     }
 }
@@ -158,15 +158,15 @@ void RenderAndroidViewCls::_paintTexture(PaintingContext context, Offset offset)
     if (_currentTextureSize == nullptr) {
         return;
     }
-    context->addLayer(make<TextureLayerCls>(offset & _currentTextureSize!, _viewController->textureId!));
+    context->addLayer(make<TextureLayerCls>(offset & _currentTextureSize!, _viewController->textureId()!));
 }
 
 RenderUiKitViewCls::RenderUiKitViewCls(Set<Factory<OneSequenceGestureRecognizer>> gestureRecognizers, PlatformViewHitTestBehavior hitTestBehavior, UiKitViewController viewController) {
     {
-        assert(viewController != nullptr);
+        assert(viewController() != nullptr);
         assert(hitTestBehavior != nullptr);
         assert(gestureRecognizers != nullptr);
-        _viewController = viewController;
+        _viewController = viewController();
     }
     {
         updateGestureRecognizers(gestureRecognizers);
@@ -178,9 +178,9 @@ UiKitViewController RenderUiKitViewCls::viewController() {
 }
 
 void RenderUiKitViewCls::viewController(UiKitViewController viewController) {
-    assert(viewController != nullptr);
-    bool needsSemanticsUpdate = _viewController->id != viewController->id;
-    _viewController = viewController;
+    assert(viewController() != nullptr);
+    bool needsSemanticsUpdate = _viewController->id != viewController()->id;
+    _viewController = viewController();
     markNeedsPaint();
     if (needsSemanticsUpdate) {
         markNeedsSemanticsUpdate();
@@ -189,12 +189,12 @@ void RenderUiKitViewCls::viewController(UiKitViewController viewController) {
 
 void RenderUiKitViewCls::updateGestureRecognizers(Set<Factory<OneSequenceGestureRecognizer>> gestureRecognizers) {
     assert(gestureRecognizers != nullptr);
-    assert(_factoriesTypeSet(gestureRecognizers)->length == gestureRecognizers->length, "There were multiple gesture recognizer factories for the same type, there must only be a single gesture recognizer factory for each gesture recognizer type.");
+    assert(_factoriesTypeSet(gestureRecognizers)->length == gestureRecognizers->length, __s("There were multiple gesture recognizer factories for the same type, there must only be a single gesture recognizer factory for each gesture recognizer type."));
     if (_factoryTypesSetEquals(gestureRecognizers, _gestureRecognizer?->gestureRecognizerFactories)) {
         return;
     }
     _gestureRecognizer?->dispose();
-    _gestureRecognizer = make<_UiKitViewGestureRecognizerCls>(viewController, gestureRecognizers);
+    _gestureRecognizer = make<_UiKitViewGestureRecognizerCls>(viewController(), gestureRecognizers);
 }
 
 bool RenderUiKitViewCls::sizedByParent() {
@@ -230,11 +230,11 @@ bool RenderUiKitViewCls::hitTestSelf(Offset position) {
 }
 
 void RenderUiKitViewCls::handleEvent(HitTestEntry entry, PointerEvent event) {
-    if (event is! PointerDownEvent) {
+    if (!is<PointerDownEvent>(event)) {
         return;
     }
     _gestureRecognizer!->addPointer(event);
-    _lastPointerDownEvent = event->original ?? event;
+    _lastPointerDownEvent = event->original or event;
 }
 
 void RenderUiKitViewCls::describeSemanticsConfiguration(SemanticsConfiguration config) {
@@ -255,13 +255,13 @@ void RenderUiKitViewCls::detach() {
 }
 
 void RenderUiKitViewCls::_handleGlobalPointerEvent(PointerEvent event) {
-    if (event is! PointerDownEvent) {
+    if (!is<PointerDownEvent>(event)) {
         return;
     }
     if (!(OffsetCls::zero & size)->contains(globalToLocal(event->position))) {
         return;
     }
-    if ((event->original ?? event) != _lastPointerDownEvent) {
+    if ((event->original or event) != _lastPointerDownEvent) {
         _viewController->rejectGesture();
     }
     _lastPointerDownEvent = nullptr;
@@ -275,7 +275,7 @@ void _UiKitViewGestureRecognizerCls::addAllowedPointer(PointerDownEvent event) {
 }
 
 String _UiKitViewGestureRecognizerCls::debugDescription() {
-    return "UIKit view";
+    return __s("UIKit view");
 }
 
 void _UiKitViewGestureRecognizerCls::didStopTrackingLastPointer(int pointer) {
@@ -303,15 +303,15 @@ _UiKitViewGestureRecognizerCls::_UiKitViewGestureRecognizerCls(UiKitViewControll
         _gestureRecognizers = gestureRecognizerFactories->map([=] (Factory<OneSequenceGestureRecognizer> recognizerFactory) {
             OneSequenceGestureRecognizer gestureRecognizer = recognizerFactory->constructor();
             gestureRecognizer->team = team;
-            if (gestureRecognizer is LongPressGestureRecognizer) {
+            if (is<LongPressGestureRecognizer>(gestureRecognizer)) {
                 gestureRecognizer->onLongPress = [=] () {
                 };
             } else             {
-                if (gestureRecognizer is DragGestureRecognizer) {
+                if (is<DragGestureRecognizer>(gestureRecognizer)) {
                 gestureRecognizer->onDown = [=] () {
                 };
             } else             {
-                if (gestureRecognizer is TapGestureRecognizer) {
+                if (is<TapGestureRecognizer>(gestureRecognizer)) {
                 gestureRecognizer->onTapDown = [=] () {
                 };
             }
@@ -330,7 +330,7 @@ void _PlatformViewGestureRecognizerCls::addAllowedPointer(PointerDownEvent event
 }
 
 String _PlatformViewGestureRecognizerCls::debugDescription() {
-    return "Platform view";
+    return __s("Platform view");
 }
 
 void _PlatformViewGestureRecognizerCls::didStopTrackingLastPointer(int pointer) {
@@ -363,7 +363,7 @@ void _PlatformViewGestureRecognizerCls::stopTrackingPointer(int pointer) {
 void _PlatformViewGestureRecognizerCls::reset() {
     forwardedPointers->forEach(super->stopTrackingPointer);
     forwardedPointers->clear();
-    cachedEvents->keys->forEach(super->stopTrackingPointer);
+    cachedEvents->keys()->forEach(super->stopTrackingPointer);
     cachedEvents->clear();
     resolve(GestureDispositionCls::rejected);
 }
@@ -374,15 +374,15 @@ _PlatformViewGestureRecognizerCls::_PlatformViewGestureRecognizerCls(Set<Factory
         _gestureRecognizers = gestureRecognizerFactories->map([=] (Factory<OneSequenceGestureRecognizer> recognizerFactory) {
             OneSequenceGestureRecognizer gestureRecognizer = recognizerFactory->constructor();
             gestureRecognizer->team = team;
-            if (gestureRecognizer is LongPressGestureRecognizer) {
+            if (is<LongPressGestureRecognizer>(gestureRecognizer)) {
                 gestureRecognizer->onLongPress = [=] () {
                 };
             } else             {
-                if (gestureRecognizer is DragGestureRecognizer) {
+                if (is<DragGestureRecognizer>(gestureRecognizer)) {
                 gestureRecognizer->onDown = [=] () {
                 };
             } else             {
-                if (gestureRecognizer is TapGestureRecognizer) {
+                if (is<TapGestureRecognizer>(gestureRecognizer)) {
                 gestureRecognizer->onTapDown = [=] () {
                 };
             }
@@ -407,10 +407,10 @@ void _PlatformViewGestureRecognizerCls::_flushPointerCache(int pointer) {
 
 PlatformViewRenderBoxCls::PlatformViewRenderBoxCls(PlatformViewController controller, Set<Factory<OneSequenceGestureRecognizer>> gestureRecognizers, PlatformViewHitTestBehavior hitTestBehavior) {
     {
-        assert(controller != nullptr && controller->viewId != nullptr && controller->viewId > -1);
+        assert(controller() != nullptr && controller()->viewId() != nullptr && controller()->viewId() > -1);
         assert(hitTestBehavior != nullptr);
         assert(gestureRecognizers != nullptr);
-        _controller = controller;
+        _controller = controller();
     }
     {
         this->hitTestBehavior = hitTestBehavior;
@@ -423,13 +423,13 @@ PlatformViewController PlatformViewRenderBoxCls::controller() {
 }
 
 void PlatformViewRenderBoxCls::controller(PlatformViewController controller) {
-    assert(controller != nullptr);
-    assert(controller->viewId != nullptr && controller->viewId > -1);
-    if (_controller == controller) {
+    assert(controller() != nullptr);
+    assert(controller()->viewId() != nullptr && controller()->viewId() > -1);
+    if (_controller == controller()) {
         return;
     }
-    bool needsSemanticsUpdate = _controller->viewId != controller->viewId;
-    _controller = controller;
+    bool needsSemanticsUpdate = _controller->viewId() != controller()->viewId();
+    _controller = controller();
     markNeedsPaint();
     if (needsSemanticsUpdate) {
         markNeedsSemanticsUpdate();
@@ -457,15 +457,15 @@ Size PlatformViewRenderBoxCls::computeDryLayout(BoxConstraints constraints) {
 }
 
 void PlatformViewRenderBoxCls::paint(PaintingContext context, Offset offset) {
-    assert(_controller->viewId != nullptr);
-    context->addLayer(make<PlatformViewLayerCls>(offset & size, _controller->viewId));
+    assert(_controller->viewId() != nullptr);
+    context->addLayer(make<PlatformViewLayerCls>(offset & size, _controller->viewId()));
 }
 
 void PlatformViewRenderBoxCls::describeSemanticsConfiguration(SemanticsConfiguration config) {
     super->describeSemanticsConfiguration(config);
-    assert(_controller->viewId != nullptr);
+    assert(_controller->viewId() != nullptr);
     config->isSemanticBoundary = true;
-    config->platformViewId = _controller->viewId;
+    config->platformViewId = _controller->viewId();
 }
 
 void _PlatformViewGestureMixinCls::hitTestBehavior(PlatformViewHitTestBehavior value) {
@@ -506,10 +506,10 @@ bool _PlatformViewGestureMixinCls::validForMouseTracker() {
 }
 
 void _PlatformViewGestureMixinCls::handleEvent(HitTestEntry entry, PointerEvent event) {
-    if (event is PointerDownEvent) {
+    if (is<PointerDownEvent>(event)) {
         _gestureRecognizer!->addPointer(event);
     }
-    if (event is PointerHoverEvent) {
+    if (is<PointerHoverEvent>(event)) {
         _handlePointerEvent?->call(event);
     }
 }
@@ -521,7 +521,7 @@ void _PlatformViewGestureMixinCls::detach() {
 
 void _PlatformViewGestureMixinCls::_updateGestureRecognizersWithCallBack(Set<Factory<OneSequenceGestureRecognizer>> gestureRecognizers, _HandlePointerEvent handlePointerEvent) {
     assert(gestureRecognizers != nullptr);
-    assert(_factoriesTypeSet(gestureRecognizers)->length == gestureRecognizers->length, "There were multiple gesture recognizer factories for the same type, there must only be a single gesture recognizer factory for each gesture recognizer type.");
+    assert(_factoriesTypeSet(gestureRecognizers)->length == gestureRecognizers->length, __s("There were multiple gesture recognizer factories for the same type, there must only be a single gesture recognizer factory for each gesture recognizer type."));
     if (_factoryTypesSetEquals(gestureRecognizers, _gestureRecognizer?->gestureRecognizerFactories)) {
         return;
     }

@@ -112,7 +112,7 @@ private:
 
     virtual bool _hasSelectionOverlayGeometry();
 
-    template<typename T : Intent>  virtual Action<T> _makeOverridable(Action<T> defaultAction);
+    template<typename T>  virtual Action<T> _makeOverridable(Action<T> defaultAction);
 
     virtual void _handleFocusChanged();
 
@@ -181,7 +181,7 @@ private:
 };
 using _SelectableRegionState = std::shared_ptr<_SelectableRegionStateCls>;
 
-template<typename T : Intent> class _NonOverrideActionCls : public ContextActionCls<T> {
+template<typename T> class _NonOverrideActionCls : public ContextActionCls<T> {
 public:
 
     virtual Object invokeAction(BuildContext context, T intent);
@@ -190,7 +190,7 @@ public:
 private:
 
 };
-template<typename T : Intent> using _NonOverrideAction = std::shared_ptr<_NonOverrideActionCls<T : Intent>>;
+template<typename T> using _NonOverrideAction = std::shared_ptr<_NonOverrideActionCls<T>>;
 
 class _SelectAllActionCls : public _NonOverrideActionCls<SelectAllTextIntent> {
 public:

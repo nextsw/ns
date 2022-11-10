@@ -136,7 +136,7 @@ template<typename E> void UnmodifiableListMixinCls<E>::fillRange(int end, E fill
 }
 
 int _ListIndicesIterableCls::length() {
-    return _backedList->length;
+    return _backedList->length();
 }
 
 int _ListIndicesIterableCls::elementAt(int index) {
@@ -145,11 +145,11 @@ int _ListIndicesIterableCls::elementAt(int index) {
 }
 
 template<typename E> E ListMapViewCls<E>::[](Object key) {
-    return containsKey(key)? _values[((int)key)] : nullptr;
+    return containsKey(key)? _values[as<int>(key)] : nullptr;
 }
 
 template<typename E> int ListMapViewCls<E>::length() {
-    return _values->length;
+    return _values->length();
 }
 
 template<typename E> Iterable<E> ListMapViewCls<E>::values() {
@@ -173,51 +173,51 @@ template<typename E> bool ListMapViewCls<E>::containsValue(Object value) {
 }
 
 template<typename E> bool ListMapViewCls<E>::containsKey(Object key) {
-    return key is int && key >= 0 &&  < length;
+    return is<int>(key) && key >= 0 &&  < length();
 }
 
 template<typename E> void ListMapViewCls<E>::forEach(void f(int key, E value) ) {
-    int length = _values->length;
-    for (;  < length; i++) {
+    int length = _values->length();
+    for (;  < length(); i++) {
         f(i, _values[i]);
-        if (length != _values->length) {
+        if (length() != _values->length()) {
             ;
         }
     }
 }
 
 template<typename E> int ReversedListIterableCls<E>::length() {
-    return _source->length;
+    return _source->length();
 }
 
 template<typename E> E ReversedListIterableCls<E>::elementAt(int index) {
-    return _source->elementAt(_source->length - 1 - index);
+    return _source->elementAt(_source->length() - 1 - index);
 }
 
 UnsupportedError UnmodifiableListErrorCls::add() {
-    return make<UnsupportedErrorCls>("Cannot add to unmodifiable List");
+    return make<UnsupportedErrorCls>(__s("Cannot add to unmodifiable List"));
 }
 
 UnsupportedError UnmodifiableListErrorCls::change() {
-    return make<UnsupportedErrorCls>("Cannot change the content of an unmodifiable List");
+    return make<UnsupportedErrorCls>(__s("Cannot change the content of an unmodifiable List"));
 }
 
 UnsupportedError UnmodifiableListErrorCls::length() {
-    return make<UnsupportedErrorCls>("Cannot change length of unmodifiable List");
+    return make<UnsupportedErrorCls>(__s("Cannot change length of unmodifiable List"));
 }
 
 UnsupportedError UnmodifiableListErrorCls::remove() {
-    return make<UnsupportedErrorCls>("Cannot remove from unmodifiable List");
+    return make<UnsupportedErrorCls>(__s("Cannot remove from unmodifiable List"));
 }
 
 UnsupportedError NonGrowableListErrorCls::add() {
-    return make<UnsupportedErrorCls>("Cannot add to non-growable List");
+    return make<UnsupportedErrorCls>(__s("Cannot add to non-growable List"));
 }
 
 UnsupportedError NonGrowableListErrorCls::length() {
-    return make<UnsupportedErrorCls>("Cannot change length of non-growable List");
+    return make<UnsupportedErrorCls>(__s("Cannot change length of non-growable List"));
 }
 
 UnsupportedError NonGrowableListErrorCls::remove() {
-    return make<UnsupportedErrorCls>("Cannot remove from non-growable List");
+    return make<UnsupportedErrorCls>(__s("Cannot remove from non-growable List"));
 }

@@ -8,8 +8,8 @@
 template<typename K, typename V> class LinkedHashMapCls : public ObjectCls {
 public:
 
-    extern  LinkedHashMapCls(bool equals(K , K ) , int hashCode(K ) , bool isValidKey(dynamic ) );
-    extern void  identity();
+     LinkedHashMapCls(bool equals(K , K ) , int hashCode(K ) , bool isValidKey(dynamic ) );
+    void  identity();
     virtual void  from(Map<dynamic, dynamic> other);
 
     virtual void  of(Map<K, V> other);

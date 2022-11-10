@@ -61,11 +61,11 @@ void Vector2Cls::splat(double arg) {
 }
 
 String Vector2Cls::toString() {
-    return "[${_v2storage[0]},${_v2storage[1]}]";
+    return __s("[${_v2storage[0]},${_v2storage[1]}]");
 }
 
 bool Vector2Cls::==(Object other) {
-    return (other is Vector2) && (_v2storage[0] == other->_v2storage[0]) && (_v2storage[1] == other->_v2storage[1]);
+    return (is<Vector2>(other)) && (_v2storage[0] == other->_v2storage[0]) && (_v2storage[1] == other->_v2storage[1]);
 }
 
 int Vector2Cls::hashCode() {
@@ -115,7 +115,7 @@ void Vector2Cls::length(double value) {
 }
 
 double Vector2Cls::length() {
-    return math->sqrt(length2);
+    return math->sqrt(length2());
 }
 
 double Vector2Cls::length2() {
@@ -527,7 +527,7 @@ double Vector2Cls::y() {
 }
 
 Vector2 Vector2Cls::rr() {
-    return xx;
+    return xx();
 }
 
 Vector2 Vector2Cls::rg() {
@@ -539,107 +539,107 @@ Vector2 Vector2Cls::gr() {
 }
 
 Vector2 Vector2Cls::gg() {
-    return yy;
+    return yy();
 }
 
 Vector3 Vector2Cls::rrr() {
-    return xxx;
+    return xxx();
 }
 
 Vector3 Vector2Cls::rrg() {
-    return xxy;
+    return xxy();
 }
 
 Vector3 Vector2Cls::rgr() {
-    return xyx;
+    return xyx();
 }
 
 Vector3 Vector2Cls::rgg() {
-    return xyy;
+    return xyy();
 }
 
 Vector3 Vector2Cls::grr() {
-    return yxx;
+    return yxx();
 }
 
 Vector3 Vector2Cls::grg() {
-    return yxy;
+    return yxy();
 }
 
 Vector3 Vector2Cls::ggr() {
-    return yyx;
+    return yyx();
 }
 
 Vector3 Vector2Cls::ggg() {
-    return yyy;
+    return yyy();
 }
 
 Vector4 Vector2Cls::rrrr() {
-    return xxxx;
+    return xxxx();
 }
 
 Vector4 Vector2Cls::rrrg() {
-    return xxxy;
+    return xxxy();
 }
 
 Vector4 Vector2Cls::rrgr() {
-    return xxyx;
+    return xxyx();
 }
 
 Vector4 Vector2Cls::rrgg() {
-    return xxyy;
+    return xxyy();
 }
 
 Vector4 Vector2Cls::rgrr() {
-    return xyxx;
+    return xyxx();
 }
 
 Vector4 Vector2Cls::rgrg() {
-    return xyxy;
+    return xyxy();
 }
 
 Vector4 Vector2Cls::rggr() {
-    return xyyx;
+    return xyyx();
 }
 
 Vector4 Vector2Cls::rggg() {
-    return xyyy;
+    return xyyy();
 }
 
 Vector4 Vector2Cls::grrr() {
-    return yxxx;
+    return yxxx();
 }
 
 Vector4 Vector2Cls::grrg() {
-    return yxxy;
+    return yxxy();
 }
 
 Vector4 Vector2Cls::grgr() {
-    return yxyx;
+    return yxyx();
 }
 
 Vector4 Vector2Cls::grgg() {
-    return yxyy;
+    return yxyy();
 }
 
 Vector4 Vector2Cls::ggrr() {
-    return yyxx;
+    return yyxx();
 }
 
 Vector4 Vector2Cls::ggrg() {
-    return yyxy;
+    return yyxy();
 }
 
 Vector4 Vector2Cls::gggr() {
-    return yyyx;
+    return yyyx();
 }
 
 Vector4 Vector2Cls::gggg() {
-    return yyyy;
+    return yyyy();
 }
 
 Vector2 Vector2Cls::ss() {
-    return xx;
+    return xx();
 }
 
 Vector2 Vector2Cls::st() {
@@ -651,101 +651,101 @@ Vector2 Vector2Cls::ts() {
 }
 
 Vector2 Vector2Cls::tt() {
-    return yy;
+    return yy();
 }
 
 Vector3 Vector2Cls::sss() {
-    return xxx;
+    return xxx();
 }
 
 Vector3 Vector2Cls::sst() {
-    return xxy;
+    return xxy();
 }
 
 Vector3 Vector2Cls::sts() {
-    return xyx;
+    return xyx();
 }
 
 Vector3 Vector2Cls::stt() {
-    return xyy;
+    return xyy();
 }
 
 Vector3 Vector2Cls::tss() {
-    return yxx;
+    return yxx();
 }
 
 Vector3 Vector2Cls::tst() {
-    return yxy;
+    return yxy();
 }
 
 Vector3 Vector2Cls::tts() {
-    return yyx;
+    return yyx();
 }
 
 Vector3 Vector2Cls::ttt() {
-    return yyy;
+    return yyy();
 }
 
 Vector4 Vector2Cls::ssss() {
-    return xxxx;
+    return xxxx();
 }
 
 Vector4 Vector2Cls::ssst() {
-    return xxxy;
+    return xxxy();
 }
 
 Vector4 Vector2Cls::ssts() {
-    return xxyx;
+    return xxyx();
 }
 
 Vector4 Vector2Cls::sstt() {
-    return xxyy;
+    return xxyy();
 }
 
 Vector4 Vector2Cls::stss() {
-    return xyxx;
+    return xyxx();
 }
 
 Vector4 Vector2Cls::stst() {
-    return xyxy;
+    return xyxy();
 }
 
 Vector4 Vector2Cls::stts() {
-    return xyyx;
+    return xyyx();
 }
 
 Vector4 Vector2Cls::sttt() {
-    return xyyy;
+    return xyyy();
 }
 
 Vector4 Vector2Cls::tsss() {
-    return yxxx;
+    return yxxx();
 }
 
 Vector4 Vector2Cls::tsst() {
-    return yxxy;
+    return yxxy();
 }
 
 Vector4 Vector2Cls::tsts() {
-    return yxyx;
+    return yxyx();
 }
 
 Vector4 Vector2Cls::tstt() {
-    return yxyy;
+    return yxyy();
 }
 
 Vector4 Vector2Cls::ttss() {
-    return yyxx;
+    return yyxx();
 }
 
 Vector4 Vector2Cls::ttst() {
-    return yyxy;
+    return yyxy();
 }
 
 Vector4 Vector2Cls::ttts() {
-    return yyyx;
+    return yyyx();
 }
 
 Vector4 Vector2Cls::tttt() {
-    return yyyy;
+    return yyyy();
 }

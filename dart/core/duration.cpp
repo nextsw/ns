@@ -65,7 +65,7 @@ int DurationCls::inMicroseconds() {
 }
 
 bool DurationCls::==(Object other) {
-    return other is Duration && _duration == other->inMicroseconds;
+    return is<Duration>(other) && _duration == other->inMicroseconds;
 }
 
 int DurationCls::hashCode() {
@@ -77,8 +77,8 @@ int DurationCls::compareTo(Duration other) {
 }
 
 String DurationCls::toString() {
-    auto microseconds = inMicroseconds;
-    auto sign = ( < 0)? "-" : "";
+    auto microseconds = inMicroseconds();
+    auto sign = ( < 0)? __s("-") : __s("");
     auto hours = microseconds ~/ microsecondsPerHour;
     microseconds = microseconds->remainder(microsecondsPerHour);
     if ( < 0)     {
@@ -86,12 +86,12 @@ String DurationCls::toString() {
     }
     auto minutes = microseconds ~/ microsecondsPerMinute;
     microseconds = microseconds->remainder(microsecondsPerMinute);
-    auto minutesPadding =  < 10? "0" : "";
+    auto minutesPadding =  < 10? __s("0") : __s("");
     auto seconds = microseconds ~/ microsecondsPerSecond;
     microseconds = microseconds->remainder(microsecondsPerSecond);
-    auto secondsPadding =  < 10? "0" : "";
-    auto paddedMicroseconds = microseconds->toString()->padLeft(6, "0");
-    return "$sign${hours.abs()}:$minutesPadding$minutes:$secondsPadding$seconds.$paddedMicroseconds";
+    auto secondsPadding =  < 10? __s("0") : __s("");
+    auto paddedMicroseconds = microseconds->toString()->padLeft(6, __s("0"));
+    return __s("$sign${hours.abs()}:$minutesPadding$minutes:$secondsPadding$seconds.$paddedMicroseconds");
 }
 
 bool DurationCls::isNegative() {

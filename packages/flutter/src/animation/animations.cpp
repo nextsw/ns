@@ -20,7 +20,7 @@ double _AlwaysCompleteAnimationCls::value() {
 }
 
 String _AlwaysCompleteAnimationCls::toString() {
-    return "kAlwaysCompleteAnimation";
+    return __s("kAlwaysCompleteAnimation");
 }
 
 void _AlwaysDismissedAnimationCls::addListener(VoidCallback listener) {
@@ -44,7 +44,7 @@ double _AlwaysDismissedAnimationCls::value() {
 }
 
 String _AlwaysDismissedAnimationCls::toString() {
-    return "kAlwaysDismissedAnimation";
+    return __s("kAlwaysDismissedAnimation");
 }
 
 template<typename T> void AlwaysStoppedAnimationCls<T>::addListener(VoidCallback listener) {
@@ -64,27 +64,27 @@ template<typename T> AnimationStatus AlwaysStoppedAnimationCls<T>::status() {
 }
 
 template<typename T> String AlwaysStoppedAnimationCls<T>::toStringDetails() {
-    return "${super.toStringDetails()} $value; paused";
+    return __s("${super.toStringDetails()} $value; paused");
 }
 
 template<typename T> void AnimationWithParentMixinCls<T>::addListener(VoidCallback listener) {
-    return parent->addListener(listener);
+    return parent()->addListener(listener);
 }
 
 template<typename T> void AnimationWithParentMixinCls<T>::removeListener(VoidCallback listener) {
-    return parent->removeListener(listener);
+    return parent()->removeListener(listener);
 }
 
 template<typename T> void AnimationWithParentMixinCls<T>::addStatusListener(AnimationStatusListener listener) {
-    return parent->addStatusListener(listener);
+    return parent()->addStatusListener(listener);
 }
 
 template<typename T> void AnimationWithParentMixinCls<T>::removeStatusListener(AnimationStatusListener listener) {
-    return parent->removeStatusListener(listener);
+    return parent()->removeStatusListener(listener);
 }
 
 template<typename T> AnimationStatus AnimationWithParentMixinCls<T>::status() {
-    return parent->status;
+    return parent()->status();
 }
 
 ProxyAnimationCls::ProxyAnimationCls(Animation<double> animation) {
@@ -102,26 +102,26 @@ Animation<double> ProxyAnimationCls::parent() {
 }
 
 void ProxyAnimationCls::parent(Animation<double> value) {
-    if (value == _parent) {
+    if (value() == _parent) {
         return;
     }
     if (_parent != nullptr) {
-        _status = _parent!->status;
-        _value = _parent!->value;
+        _status = _parent!->status();
+        _value = _parent!->value();
         if (isListening) {
             didStopListening();
         }
     }
-    _parent = value;
+    _parent = value();
     if (_parent != nullptr) {
         if (isListening) {
             didStartListening();
         }
-        if (_value != _parent!->value) {
+        if (_value != _parent!->value()) {
             notifyListeners();
         }
-        if (_status != _parent!->status) {
-            notifyStatusListeners(_parent!->status);
+        if (_status != _parent!->status()) {
+            notifyStatusListeners(_parent!->status());
         }
         _status = nullptr;
         _value = nullptr;
@@ -143,18 +143,18 @@ void ProxyAnimationCls::didStopListening() {
 }
 
 AnimationStatus ProxyAnimationCls::status() {
-    return _parent != nullptr? _parent!->status : _status!;
+    return _parent != nullptr? _parent!->status() : _status!;
 }
 
 double ProxyAnimationCls::value() {
-    return _parent != nullptr? _parent!->value : _value!;
+    return _parent != nullptr? _parent!->value() : _value!;
 }
 
 String ProxyAnimationCls::toString() {
-    if (parent == nullptr) {
-        return "${objectRuntimeType(this, 'ProxyAnimation')}(null; ${super.toStringDetails()} ${value.toStringAsFixed(3)})";
+    if (parent() == nullptr) {
+        return __s("${objectRuntimeType(this, 'ProxyAnimation')}(null; ${super.toStringDetails()} ${value.toStringAsFixed(3)})");
     }
-    return "$parent\u27A9${objectRuntimeType(this, 'ProxyAnimation')}";
+    return __s("$parent\u27A9${objectRuntimeType(this, 'ProxyAnimation')}");
 }
 
 ReverseAnimationCls::ReverseAnimationCls(Animation<double> parent) {
@@ -182,23 +182,23 @@ void ReverseAnimationCls::didStopListening() {
 }
 
 AnimationStatus ReverseAnimationCls::status() {
-    return _reverseStatus(parent->status);
+    return _reverseStatus(parent->status());
 }
 
 double ReverseAnimationCls::value() {
-    return 1.0 - parent->value;
+    return 1.0 - parent->value();
 }
 
 String ReverseAnimationCls::toString() {
-    return "$parent\u27AA${objectRuntimeType(this, 'ReverseAnimation')}";
+    return __s("$parent\u27AA${objectRuntimeType(this, 'ReverseAnimation')}");
 }
 
 void ReverseAnimationCls::_statusChangeHandler(AnimationStatus status) {
-    notifyStatusListeners(_reverseStatus(status));
+    notifyStatusListeners(_reverseStatus(status()));
 }
 
 AnimationStatus ReverseAnimationCls::_reverseStatus(AnimationStatus status) {
-    assert(status != nullptr);
+    assert(status() != nullptr);
     ;
 }
 
@@ -208,7 +208,7 @@ CurvedAnimationCls::CurvedAnimationCls(Curve curve, Animation<double> parent, Cu
         assert(curve != nullptr);
     }
     {
-        _updateCurveDirection(parent->status);
+        _updateCurveDirection(parent->status());
         parent->addStatusListener(_updateCurveDirection);
     }
 }
@@ -219,8 +219,8 @@ void CurvedAnimationCls::dispose() {
 }
 
 double CurvedAnimationCls::value() {
-    Curve activeCurve = _useForwardCurve? curve : reverseCurve;
-    double t = parent->value;
+    Curve activeCurve = _useForwardCurve()? curve : reverseCurve;
+    double t = parent->value();
     if (activeCurve == nullptr) {
         return t;
     }
@@ -240,12 +240,12 @@ double CurvedAnimationCls::value() {
 
 String CurvedAnimationCls::toString() {
     if (reverseCurve == nullptr) {
-        return "$parent\u27A9$curve";
+        return __s("$parent\u27A9$curve");
     }
-    if (_useForwardCurve) {
-        return "$parent\u27A9$curve\u2092\u2099/$reverseCurve";
+    if (_useForwardCurve()) {
+        return __s("$parent\u27A9$curve\u2092\u2099/$reverseCurve");
     }
-    return "$parent\u27A9$curve/$reverseCurve\u2092\u2099";
+    return __s("$parent\u27A9$curve/$reverseCurve\u2092\u2099");
 }
 
 void CurvedAnimationCls::_updateCurveDirection(AnimationStatus status) {
@@ -253,7 +253,7 @@ void CurvedAnimationCls::_updateCurveDirection(AnimationStatus status) {
 }
 
 bool CurvedAnimationCls::_useForwardCurve() {
-    return reverseCurve == nullptr || (_curveDirection ?? parent->status) != AnimationStatusCls::reverse;
+    return reverseCurve == nullptr || (_curveDirection or parent->status()) != AnimationStatusCls::reverse;
 }
 
 TrainHoppingAnimationCls::TrainHoppingAnimationCls(Animation<double> _currentTrain, Animation<double> _nextTrain, VoidCallback onSwitchedTrain) {
@@ -262,14 +262,14 @@ TrainHoppingAnimationCls::TrainHoppingAnimationCls(Animation<double> _currentTra
     }
     {
         if (_nextTrain != nullptr) {
-            if (_currentTrain!->value == _nextTrain!->value) {
+            if (_currentTrain!->value() == _nextTrain!->value()) {
                 _currentTrain = _nextTrain;
                 _nextTrain = nullptr;
             } else             {
-                if (_currentTrain!->value > _nextTrain!->value) {
+                if (_currentTrain!->value() > _nextTrain!->value()) {
                 _mode = _TrainHoppingModeCls::maximize;
             } else {
-                assert(_currentTrain!->value < _nextTrain!->value);
+                assert(_currentTrain!->value() < _nextTrain!->value());
                 _mode = _TrainHoppingModeCls::minimize;
             }
 ;
@@ -286,11 +286,11 @@ Animation<double> TrainHoppingAnimationCls::currentTrain() {
 }
 
 AnimationStatus TrainHoppingAnimationCls::status() {
-    return _currentTrain!->status;
+    return _currentTrain!->status();
 }
 
 double TrainHoppingAnimationCls::value() {
-    return _currentTrain!->value;
+    return _currentTrain!->value();
 }
 
 void TrainHoppingAnimationCls::dispose() {
@@ -307,16 +307,16 @@ void TrainHoppingAnimationCls::dispose() {
 
 String TrainHoppingAnimationCls::toString() {
     if (_nextTrain != nullptr) {
-        return "$currentTrain\u27A9${objectRuntimeType(this, 'TrainHoppingAnimation')}(next: $_nextTrain)";
+        return __s("$currentTrain\u27A9${objectRuntimeType(this, 'TrainHoppingAnimation')}(next: $_nextTrain)");
     }
-    return "$currentTrain\u27A9${objectRuntimeType(this, 'TrainHoppingAnimation')}(no next)";
+    return __s("$currentTrain\u27A9${objectRuntimeType(this, 'TrainHoppingAnimation')}(no next)");
 }
 
 void TrainHoppingAnimationCls::_statusChangeHandler(AnimationStatus status) {
     assert(_currentTrain != nullptr);
-    if (status != _lastStatus) {
+    if (status() != _lastStatus) {
         notifyListeners();
-        _lastStatus = status;
+        _lastStatus = status();
     }
     assert(_lastStatus != nullptr);
 }
@@ -332,10 +332,10 @@ void TrainHoppingAnimationCls::_valueChangeHandler() {
             _currentTrain = _nextTrain;
             _nextTrain = nullptr;
             _currentTrain!->addStatusListener(_statusChangeHandler);
-            _statusChangeHandler(_currentTrain!->status);
+            _statusChangeHandler(_currentTrain!->status());
         }
     }
-    double newValue = value;
+    double newValue = value();
     if (newValue != _lastValue) {
         notifyListeners();
         _lastValue = newValue;
@@ -368,20 +368,20 @@ template<typename T> void CompoundAnimationCls<T>::didStopListening() {
 }
 
 template<typename T> AnimationStatus CompoundAnimationCls<T>::status() {
-    if (next->status == AnimationStatusCls::forward || next->status == AnimationStatusCls::reverse) {
-        return next->status;
+    if (next->status() == AnimationStatusCls::forward || next->status() == AnimationStatusCls::reverse) {
+        return next->status();
     }
-    return first->status;
+    return first->status();
 }
 
 template<typename T> String CompoundAnimationCls<T>::toString() {
-    return "${objectRuntimeType(this, 'CompoundAnimation')}($first, $next)";
+    return __s("${objectRuntimeType(this, 'CompoundAnimation')}($first, $next)");
 }
 
 template<typename T> void CompoundAnimationCls<T>::_maybeNotifyStatusListeners(AnimationStatus _) {
-    if (status != _lastStatus) {
-        _lastStatus = status;
-        notifyStatusListeners(status);
+    if (status() != _lastStatus) {
+        _lastStatus = status();
+        notifyStatusListeners(status());
     }
 }
 
@@ -392,23 +392,23 @@ template<typename T> void CompoundAnimationCls<T>::_maybeNotifyListeners() {
     }
 }
 
-AnimationMeanCls::AnimationMeanCls(Animation<double> left, Animation<double> right) {
+AnimationMeanCls::AnimationMeanCls(Animation<double> left, Animation<double> right) : CompoundAnimation<double>(left, right) {
 }
 
 double AnimationMeanCls::value() {
     return (first->value + next->value) / 2.0;
 }
 
-template<typename T : num> AnimationMaxCls<T>::AnimationMaxCls(Animation<T> first, Animation<T> next) {
+template<typename T> AnimationMaxCls<T>::AnimationMaxCls(Animation<T> first, Animation<T> next) : CompoundAnimation<T>(first, next) {
 }
 
-template<typename T : num> T AnimationMaxCls<T>::value() {
+template<typename T> T AnimationMaxCls<T>::value() {
     return math->max(first->value, next->value);
 }
 
-template<typename T : num> AnimationMinCls<T>::AnimationMinCls(Animation<T> first, Animation<T> next) {
+template<typename T> AnimationMinCls<T>::AnimationMinCls(Animation<T> first, Animation<T> next) : CompoundAnimation<T>(first, next) {
 }
 
-template<typename T : num> T AnimationMinCls<T>::value() {
+template<typename T> T AnimationMinCls<T>::value() {
     return math->min(first->value, next->value);
 }

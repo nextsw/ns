@@ -116,7 +116,7 @@ bool HSVColorCls::==(Object other) {
     if (identical(this, other)) {
         return true;
     }
-    return other is HSVColor && other->alpha == alpha && other->hue == hue && other->saturation == saturation && other->value == value;
+    return is<HSVColor>(other) && other->alpha == alpha && other->hue == hue && other->saturation == saturation && other->value == value;
 }
 
 int HSVColorCls::hashCode() {
@@ -124,7 +124,7 @@ int HSVColorCls::hashCode() {
 }
 
 String HSVColorCls::toString() {
-    return "${objectRuntimeType(this, 'HSVColor')}($alpha, $hue, $saturation, $value)";
+    return __s("${objectRuntimeType(this, 'HSVColor')}($alpha, $hue, $saturation, $value)");
 }
 
 HSVColor HSVColorCls::_scaleAlpha(double factor) {
@@ -188,7 +188,7 @@ bool HSLColorCls::==(Object other) {
     if (identical(this, other)) {
         return true;
     }
-    return other is HSLColor && other->alpha == alpha && other->hue == hue && other->saturation == saturation && other->lightness == lightness;
+    return is<HSLColor>(other) && other->alpha == alpha && other->hue == hue && other->saturation == saturation && other->lightness == lightness;
 }
 
 int HSLColorCls::hashCode() {
@@ -196,7 +196,7 @@ int HSLColorCls::hashCode() {
 }
 
 String HSLColorCls::toString() {
-    return "${objectRuntimeType(this, 'HSLColor')}($alpha, $hue, $saturation, $lightness)";
+    return __s("${objectRuntimeType(this, 'HSLColor')}($alpha, $hue, $saturation, $lightness)");
 }
 
 HSLColor HSLColorCls::_scaleAlpha(double factor) {
@@ -211,10 +211,10 @@ template<typename T> bool ColorSwatchCls<T>::==(Object other) {
     if (identical(this, other)) {
         return true;
     }
-    if (other->runtimeType != runtimeType) {
+    if (other->runtimeType() != runtimeType) {
         return false;
     }
-    return super == other && other is ColorSwatch<T> && <T, Color>mapEquals(other->_swatch, _swatch);
+    return super == other && is<ColorSwatch<T>>(other) && <T, Color>mapEquals(other->_swatch, _swatch);
 }
 
 template<typename T> int ColorSwatchCls<T>::hashCode() {
@@ -222,7 +222,7 @@ template<typename T> int ColorSwatchCls<T>::hashCode() {
 }
 
 template<typename T> String ColorSwatchCls<T>::toString() {
-    return "${objectRuntimeType(this, 'ColorSwatch')}(primary value: ${super.toString()})";
+    return __s("${objectRuntimeType(this, 'ColorSwatch')}(primary value: ${super.toString()})");
 }
 
 template<typename T> ColorSwatch<T> ColorSwatchCls<T>::lerptemplate<typename T> (ColorSwatch<T> a, ColorSwatch<T> b, double t) {
@@ -260,7 +260,7 @@ ColorPropertyCls::ColorPropertyCls(Unknown defaultValue, Unknown level, String n
 Map<String, Object> ColorPropertyCls::toJsonMap(DiagnosticsSerializationDelegate delegate) {
     Map<String, Object> json = super->toJsonMap(delegate);
     if (value != nullptr) {
-            Map<String, Object> map1 = make<MapCls<>>();    map1.set("red", value!->red);    map1.set("green", value!->green);    map1.set("blue", value!->blue);    map1.set("alpha", value!->alpha);json["valueProperties"] = list1;
+            Map<String, Object> map1 = make<MapCls<>>();    map1.set(__s("red"), value!->red);    map1.set(__s("green"), value!->green);    map1.set(__s("blue"), value!->blue);    map1.set(__s("alpha"), value!->alpha);json[__s("valueProperties")] = list1;
     }
     return json;
 }

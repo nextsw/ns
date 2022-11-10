@@ -8,7 +8,7 @@
 class intCls : public numCls {
 public:
 
-    extern void  fromEnvironment(int defaultValue, String name);
+    void  fromEnvironment(int defaultValue, String name);
     virtual int operator&(int other);
     virtual int operator|(int other);
     virtual int operator^(int other);
@@ -37,8 +37,8 @@ public:
     virtual double truncateToDouble() override;
     virtual String toString() override;
     virtual String toRadixString(int radix);
-    extern static int parse(int onError(String source) , int radix, String source) override;
-    extern static int tryParse(int radix, String source) override;
+    static int parse(int onError(String source) , int radix, String source) override;
+    static int tryParse(int radix, String source) override;
 private:
 
 };

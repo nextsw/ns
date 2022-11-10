@@ -14,34 +14,34 @@ template<typename T> void _BufferingStreamSubscriptionCls<T>::onDone(void handle
 }
 
 template<typename T> void _BufferingStreamSubscriptionCls<T>::pause(Future<void> resumeSignal) {
-    if (_isCanceled)     {
+    if (_isCanceled())     {
         return;
     }
-    bool wasPaused = _isPaused;
-    bool wasInputPaused = _isInputPaused;
+    bool wasPaused = _isPaused();
+    bool wasInputPaused = _isInputPaused();
     _state = (_state + _STATE_PAUSE_COUNTCls) | _STATE_INPUT_PAUSEDCls;
     resumeSignal?->whenComplete(resume);
     if (!wasPaused)     {
         _pending?->cancelSchedule();
     }
-    if (!wasInputPaused && !_inCallback)     {
+    if (!wasInputPaused && !_inCallback())     {
         _guardCallback(_onPause);
     }
 }
 
 template<typename T> void _BufferingStreamSubscriptionCls<T>::resume() {
-    if (_isCanceled)     {
+    if (_isCanceled())     {
         return;
     }
-    if (_isPaused) {
+    if (_isPaused()) {
         _decrementPauseCount();
-        if (!_isPaused) {
-            if (_hasPending && !_pending!->isEmpty) {
+        if (!_isPaused()) {
+            if (_hasPending() && !_pending!->isEmpty()) {
                 _pending!->schedule(this);
             } else {
-                assert(_mayResumeInput);
+                assert(_mayResumeInput());
                 _state = ~_STATE_INPUT_PAUSEDCls;
-                if (!_inCallback)                 {
+                if (!_inCallback())                 {
                     _guardCallback(_onResume);
                 }
             }
@@ -51,10 +51,10 @@ template<typename T> void _BufferingStreamSubscriptionCls<T>::resume() {
 
 template<typename T> Future _BufferingStreamSubscriptionCls<T>::cancel() {
     _state = ~_STATE_WAIT_FOR_CANCELCls;
-    if (!_isCanceled) {
+    if (!_isCanceled()) {
         _cancel();
     }
-    return _cancelFuture ?? FutureCls::_nullFuture;
+    return _cancelFuture or FutureCls::_nullFuture;
 }
 
 template<typename T> Future<E> _BufferingStreamSubscriptionCls<T>::asFuturetemplate<typename E> (E futureValue) {
@@ -63,7 +63,7 @@ template<typename T> Future<E> _BufferingStreamSubscriptionCls<T>::asFuturetempl
         if (!<E>typeAcceptsNull()) {
             ;
         }
-        resultValue = ((dynamic)futureValue);
+        resultValue = as<dynamic>(futureValue);
     } else {
         resultValue = futureValue;
     }
@@ -85,7 +85,7 @@ template<typename T> Future<E> _BufferingStreamSubscriptionCls<T>::asFuturetempl
 }
 
 template<typename T> bool _BufferingStreamSubscriptionCls<T>::isPaused() {
-    return _isPaused;
+    return _isPaused();
 }
 
 template<typename T> _BufferingStreamSubscriptionCls<T>::_BufferingStreamSubscriptionCls(bool cancelOnError, void onData(T data) , void onDone() , void  onError() ) {
@@ -107,22 +107,22 @@ template<typename T> void _BufferingStreamSubscriptionCls<T>::_setPendingEvents(
 }
 
 template<typename T> void Function(T ) _BufferingStreamSubscriptionCls<T>::_registerDataHandlertemplate<typename T> (void handleData(T ) , Zone zone) {
-    return zone-><void, T>registerUnaryCallback(handleData ?? _nullDataHandler);
+    return zone-><void, T>registerUnaryCallback(handleData or _nullDataHandler);
 }
 
 template<typename T> void  Function() _BufferingStreamSubscriptionCls<T>::_registerErrorHandler(void  handleError() , Zone zone) {
     handleError = _nullErrorHandler;
-    if (handleError is void Function(Object , StackTrace )) {
+    if (is<void Function(Object , StackTrace )>(handleError)) {
         return zone-><dynamic, Object, StackTrace>registerBinaryCallback(handleError);
     }
-    if (handleError is void Function(Object )) {
+    if (is<void Function(Object )>(handleError)) {
         return zone-><dynamic, Object>registerUnaryCallback(handleError);
     }
     ;
 }
 
 template<typename T> void Function() _BufferingStreamSubscriptionCls<T>::_registerDoneHandler(void handleDone() , Zone zone) {
-    return zone->registerCallback(handleDone ?? _nullDoneHandler);
+    return zone->registerCallback(handleDone or _nullDoneHandler);
 }
 
 template<typename T> bool _BufferingStreamSubscriptionCls<T>::_isInputPaused() {
@@ -158,7 +158,7 @@ template<typename T> bool _BufferingStreamSubscriptionCls<T>::_canFire() {
 }
 
 template<typename T> bool _BufferingStreamSubscriptionCls<T>::_mayResumeInput() {
-    return !_isPaused && (_pending?->isEmpty ?? true);
+    return !_isPaused() && (_pending?->isEmpty() or true);
 }
 
 template<typename T> bool _BufferingStreamSubscriptionCls<T>::_cancelOnError() {
@@ -167,26 +167,26 @@ template<typename T> bool _BufferingStreamSubscriptionCls<T>::_cancelOnError() {
 
 template<typename T> void _BufferingStreamSubscriptionCls<T>::_cancel() {
     _state = _STATE_CANCELEDCls;
-    if (_hasPending) {
+    if (_hasPending()) {
         _pending!->cancelSchedule();
     }
-    if (!_inCallback)     {
+    if (!_inCallback())     {
         _pending = nullptr;
     }
     _cancelFuture = _onCancel();
 }
 
 template<typename T> void _BufferingStreamSubscriptionCls<T>::_decrementPauseCount() {
-    assert(_isPaused);
+    assert(_isPaused());
     _state = _STATE_PAUSE_COUNTCls;
 }
 
 template<typename T> void _BufferingStreamSubscriptionCls<T>::_add(T data) {
-    assert(!_isClosed);
-    if (_isCanceled)     {
+    assert(!_isClosed());
+    if (_isCanceled())     {
         return;
     }
-    if (_canFire) {
+    if (_canFire()) {
         _sendData(data);
     } else {
         _addPending(<T>make<_DelayedDataCls>(data));
@@ -194,10 +194,10 @@ template<typename T> void _BufferingStreamSubscriptionCls<T>::_add(T data) {
 }
 
 template<typename T> void _BufferingStreamSubscriptionCls<T>::_addError(Object error, StackTrace stackTrace) {
-    if (_isCanceled)     {
+    if (_isCanceled())     {
         return;
     }
-    if (_canFire) {
+    if (_canFire()) {
         _sendError(error, stackTrace);
     } else {
         _addPending(make<_DelayedErrorCls>(error, stackTrace));
@@ -205,12 +205,12 @@ template<typename T> void _BufferingStreamSubscriptionCls<T>::_addError(Object e
 }
 
 template<typename T> void _BufferingStreamSubscriptionCls<T>::_close() {
-    assert(!_isClosed);
-    if (_isCanceled)     {
+    assert(!_isClosed());
+    if (_isCanceled())     {
         return;
     }
     _state = _STATE_CLOSEDCls;
-    if (_canFire) {
+    if (_canFire()) {
         _sendDone();
     } else {
         _addPending(make<_DelayedDoneCls>());
@@ -218,34 +218,34 @@ template<typename T> void _BufferingStreamSubscriptionCls<T>::_close() {
 }
 
 template<typename T> void _BufferingStreamSubscriptionCls<T>::_onPause() {
-    assert(_isInputPaused);
+    assert(_isInputPaused());
 }
 
 template<typename T> void _BufferingStreamSubscriptionCls<T>::_onResume() {
-    assert(!_isInputPaused);
+    assert(!_isInputPaused());
 }
 
 template<typename T> Future<void> _BufferingStreamSubscriptionCls<T>::_onCancel() {
-    assert(_isCanceled);
+    assert(_isCanceled());
     return nullptr;
 }
 
 template<typename T> void _BufferingStreamSubscriptionCls<T>::_addPending(_DelayedEvent event) {
     auto pending = _pending ??= <T>make<_PendingEventsCls>();
     pending->add(event);
-    if (!_hasPending) {
+    if (!_hasPending()) {
         _state = _STATE_HAS_PENDINGCls;
-        if (!_isPaused) {
+        if (!_isPaused()) {
             pending->schedule(this);
         }
     }
 }
 
 template<typename T> void _BufferingStreamSubscriptionCls<T>::_sendData(T data) {
-    assert(!_isCanceled);
-    assert(!_isPaused);
-    assert(!_inCallback);
-    bool wasInputPaused = _isInputPaused;
+    assert(!_isCanceled());
+    assert(!_isPaused());
+    assert(!_inCallback());
+    bool wasInputPaused = _isInputPaused();
     _state = _STATE_IN_CALLBACKCls;
     _zone->runUnaryGuarded(_onData, data);
     _state = ~_STATE_IN_CALLBACKCls;
@@ -253,12 +253,12 @@ template<typename T> void _BufferingStreamSubscriptionCls<T>::_sendData(T data) 
 }
 
 template<typename T> void _BufferingStreamSubscriptionCls<T>::_sendError(Object error, StackTrace stackTrace) {
-    assert(!_isCanceled);
-    assert(!_isPaused);
-    assert(!_inCallback);
-    bool wasInputPaused = _isInputPaused;
+    assert(!_isCanceled());
+    assert(!_isPaused());
+    assert(!_inCallback());
+    bool wasInputPaused = _isInputPaused();
     InlineMethod;
-    if (_cancelOnError) {
+    if (_cancelOnError()) {
         _state = _STATE_WAIT_FOR_CANCELCls;
         _cancel();
         auto cancelFuture = _cancelFuture;
@@ -274,9 +274,9 @@ template<typename T> void _BufferingStreamSubscriptionCls<T>::_sendError(Object 
 }
 
 template<typename T> void _BufferingStreamSubscriptionCls<T>::_sendDone() {
-    assert(!_isCanceled);
-    assert(!_isPaused);
-    assert(!_inCallback);
+    assert(!_isCanceled());
+    assert(!_isPaused());
+    assert(!_inCallback());
     InlineMethod;
     _cancel();
     _state = _STATE_WAIT_FOR_CANCELCls;
@@ -289,8 +289,8 @@ template<typename T> void _BufferingStreamSubscriptionCls<T>::_sendDone() {
 }
 
 template<typename T> void _BufferingStreamSubscriptionCls<T>::_guardCallback(void callback() ) {
-    assert(!_inCallback);
-    bool wasInputPaused = _isInputPaused;
+    assert(!_inCallback());
+    bool wasInputPaused = _isInputPaused();
     _state = _STATE_IN_CALLBACKCls;
     callback();
     _state = ~_STATE_IN_CALLBACKCls;
@@ -298,19 +298,19 @@ template<typename T> void _BufferingStreamSubscriptionCls<T>::_guardCallback(voi
 }
 
 template<typename T> void _BufferingStreamSubscriptionCls<T>::_checkState(bool wasInputPaused) {
-    assert(!_inCallback);
-    if (_hasPending && _pending!->isEmpty) {
+    assert(!_inCallback());
+    if (_hasPending() && _pending!->isEmpty()) {
         _state = ~_STATE_HAS_PENDINGCls;
-        if (_isInputPaused && _mayResumeInput) {
+        if (_isInputPaused() && _mayResumeInput()) {
             _state = ~_STATE_INPUT_PAUSEDCls;
         }
     }
     while (true) {
-        if (_isCanceled) {
+        if (_isCanceled()) {
             _pending = nullptr;
             return;
         }
-        bool isInputPaused = _isInputPaused;
+        bool isInputPaused = _isInputPaused();
         if (wasInputPaused == isInputPaused)         {
                     break;
         }
@@ -323,7 +323,7 @@ template<typename T> void _BufferingStreamSubscriptionCls<T>::_checkState(bool w
         _state = ~_STATE_IN_CALLBACKCls;
         wasInputPaused = isInputPaused;
     }
-    if (_hasPending && !_isPaused) {
+    if (_hasPending() && !_isPaused()) {
         _pending!->schedule(this);
     }
 }
@@ -377,11 +377,11 @@ template<typename T> bool _PendingEventsCls<T>::isScheduled() {
 }
 
 template<typename T> void _PendingEventsCls<T>::schedule(_EventDispatch<T> dispatch) {
-    if (isScheduled)     {
+    if (isScheduled())     {
         return;
     }
-    assert(!isEmpty);
-    if (_eventScheduled) {
+    assert(!isEmpty());
+    if (_eventScheduled()) {
         assert(_state == stateCanceled);
         _state = stateScheduled;
         return;
@@ -398,7 +398,7 @@ template<typename T> void _PendingEventsCls<T>::schedule(_EventDispatch<T> dispa
 }
 
 template<typename T> void _PendingEventsCls<T>::cancelSchedule() {
-    if (isScheduled)     {
+    if (isScheduled())     {
         _state = stateCanceled;
     }
 }
@@ -417,8 +417,8 @@ template<typename T> void _PendingEventsCls<T>::add(_DelayedEvent event) {
 }
 
 template<typename T> void _PendingEventsCls<T>::handleNext(_EventDispatch<T> dispatch) {
-    assert(!isScheduled);
-    assert(!isEmpty);
+    assert(!isScheduled());
+    assert(!isEmpty());
     _DelayedEvent event = firstPendingEvent!;
     _DelayedEvent nextEvent = event->next;
     firstPendingEvent = nextEvent;
@@ -429,7 +429,7 @@ template<typename T> void _PendingEventsCls<T>::handleNext(_EventDispatch<T> dis
 }
 
 template<typename T> void _PendingEventsCls<T>::clear() {
-    if (isScheduled)     {
+    if (isScheduled())     {
         cancelSchedule();
     }
     firstPendingEvent = lastPendingEvent = nullptr;
@@ -461,9 +461,9 @@ template<typename T> void _DoneStreamSubscriptionCls<T>::pause(Future<void> resu
 }
 
 template<typename T> void _DoneStreamSubscriptionCls<T>::resume() {
-    if (isPaused) {
+    if (isPaused()) {
         _state = _PAUSEDCls;
-        if (!isPaused && !_isSent) {
+        if (!isPaused() && !_isSent()) {
             _schedule();
         }
     }
@@ -479,7 +479,7 @@ template<typename T> Future<E> _DoneStreamSubscriptionCls<T>::asFuturetemplate<t
         if (!<E>typeAcceptsNull()) {
             ;
         }
-        resultValue = ((dynamic)futureValue);
+        resultValue = as<dynamic>(futureValue);
     } else {
         resultValue = futureValue;
     }
@@ -508,7 +508,7 @@ template<typename T> bool _DoneStreamSubscriptionCls<T>::_isScheduled() {
 }
 
 template<typename T> void _DoneStreamSubscriptionCls<T>::_schedule() {
-    if (_isScheduled)     {
+    if (_isScheduled())     {
         return;
     }
     _zone->scheduleMicrotask(_sendDone);
@@ -517,7 +517,7 @@ template<typename T> void _DoneStreamSubscriptionCls<T>::_schedule() {
 
 template<typename T> void _DoneStreamSubscriptionCls<T>::_sendDone() {
     _state = ~_SCHEDULEDCls;
-    if (isPaused)     {
+    if (isPaused())     {
         return;
     }
     _state = _DONE_SENTCls;
@@ -537,7 +537,7 @@ template<typename T> StreamSubscription<T> _AsBroadcastStreamCls<T>::listen(bool
         return <T>make<_DoneStreamSubscriptionCls>(onDone);
     }
     _subscription = _source->listen(controller->addcontroller->addError, controller->close);
-    return controller->_subscribe(onData, onError, onDone, cancelOnError ?? false);
+    return controller->_subscribe(onData, onError, onDone, cancelOnError or false);
 }
 
 template<typename T> _AsBroadcastStreamCls<T>::_AsBroadcastStreamCls(Stream<T> _source, void onCancelHandler(StreamSubscription<T> subscription) , void onListenHandler(StreamSubscription<T> subscription) ) {
@@ -592,7 +592,7 @@ template<typename T> void _AsBroadcastStreamCls<T>::_resumeSubscription() {
 }
 
 template<typename T> bool _AsBroadcastStreamCls<T>::_isSubscriptionPaused() {
-    return _subscription?->isPaused ?? false;
+    return _subscription?->isPaused or false;
 }
 
 template<typename T> void _BroadcastSubscriptionWrapperCls<T>::onData(void handleData(T data) ) {
@@ -621,7 +621,7 @@ template<typename T> Future _BroadcastSubscriptionWrapperCls<T>::cancel() {
 }
 
 template<typename T> bool _BroadcastSubscriptionWrapperCls<T>::isPaused() {
-    return _stream->_isSubscriptionPaused;
+    return _stream->_isSubscriptionPaused();
 }
 
 template<typename T> Future<E> _BroadcastSubscriptionWrapperCls<T>::asFuturetemplate<typename E> (E futureValue) {
@@ -630,9 +630,9 @@ template<typename T> Future<E> _BroadcastSubscriptionWrapperCls<T>::asFuturetemp
 
 template<typename T> T _StreamIteratorCls<T>::current() {
     if (_hasValue)     {
-        return ((dynamic)_stateData);
+        return as<dynamic>(_stateData);
     }
-    return ((dynamic)nullptr);
+    return as<dynamic>(nullptr);
 }
 
 template<typename T> Future<bool> _StreamIteratorCls<T>::moveNext() {
@@ -657,7 +657,7 @@ template<typename T> Future _StreamIteratorCls<T>::cancel() {
     if (subscription != nullptr) {
         _subscription = nullptr;
         if (!_hasValue) {
-            _Future<bool> future = ((dynamic)stateData);
+            _Future<bool> future = as<dynamic>(stateData);
             future->_asyncComplete(false);
         } else {
             _hasValue = false;
@@ -669,7 +669,7 @@ template<typename T> Future _StreamIteratorCls<T>::cancel() {
 
 template<typename T> _StreamIteratorCls<T>::_StreamIteratorCls(Stream<T> stream) {
     {
-        _stateData = checkNotNullable(stream, "stream");
+        _stateData = checkNotNullable(stream, __s("stream"));
     }
 }
 
@@ -677,7 +677,7 @@ template<typename T> Future<bool> _StreamIteratorCls<T>::_initializeOrDone() {
     assert(_subscription == nullptr);
     auto stateData = _stateData;
     if (stateData != nullptr) {
-        Stream<T> stream = ((dynamic)stateData);
+        Stream<T> stream = as<dynamic>(stateData);
         auto future = <bool>make<_FutureCls>();
         _stateData = future;
         auto subscription = stream->listen(_onData_onError, _onDone, true);
@@ -693,7 +693,7 @@ template<typename T> void _StreamIteratorCls<T>::_onData(T data) {
     if (_subscription == nullptr)     {
         return;
     }
-    _Future<bool> moveNextFuture = ((dynamic)_stateData);
+    _Future<bool> moveNextFuture = as<dynamic>(_stateData);
     _stateData = data;
     _hasValue = true;
     moveNextFuture->_complete(true);
@@ -704,7 +704,7 @@ template<typename T> void _StreamIteratorCls<T>::_onData(T data) {
 
 template<typename T> void _StreamIteratorCls<T>::_onError(Object error, StackTrace stackTrace) {
     auto subscription = _subscription;
-    _Future<bool> moveNextFuture = ((dynamic)_stateData);
+    _Future<bool> moveNextFuture = as<dynamic>(_stateData);
     _subscription = nullptr;
     _stateData = nullptr;
     if (subscription != nullptr) {
@@ -716,7 +716,7 @@ template<typename T> void _StreamIteratorCls<T>::_onError(Object error, StackTra
 
 template<typename T> void _StreamIteratorCls<T>::_onDone() {
     auto subscription = _subscription;
-    _Future<bool> moveNextFuture = ((dynamic)_stateData);
+    _Future<bool> moveNextFuture = as<dynamic>(_stateData);
     _subscription = nullptr;
     _stateData = nullptr;
     if (subscription != nullptr) {
@@ -745,7 +745,7 @@ template<typename T> StreamSubscription<T> _MultiStreamCls<T>::listen(bool cance
     controller->onListen = [=] () {
         _onListen(controller);
     };
-    return controller->_subscribe(onData, onError, onDone, cancelOnError ?? false);
+    return controller->_subscribe(onData, onError, onDone, cancelOnError or false);
 }
 
 template<typename T> void _MultiStreamControllerCls<T>::addSync(T data) {
@@ -762,7 +762,7 @@ template<typename T> void _MultiStreamControllerCls<T>::addErrorSync(Object erro
         ;
     }
     if (hasListener) {
-        _subscription->_addError(error, stackTrace ?? StackTraceCls::empty);
+        _subscription->_addError(error, stackTrace or StackTraceCls::empty);
     }
 }
 
@@ -783,5 +783,5 @@ template<typename T> Stream<T> _MultiStreamControllerCls<T>::stream() {
     ;
 }
 
-template<typename T> _MultiStreamControllerCls<T>::_MultiStreamControllerCls() {
+template<typename T> _MultiStreamControllerCls<T>::_MultiStreamControllerCls() : _AsyncStreamController<T>(nullptr, nullptr, nullptr, nullptr) {
 }

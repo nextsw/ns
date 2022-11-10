@@ -8,8 +8,8 @@
 template<typename E> class LinkedHashSetCls : public ObjectCls {
 public:
 
-    extern  LinkedHashSetCls(bool equals(E , E ) , int hashCode(E ) , bool isValidKey(dynamic ) );
-    extern void  identity();
+     LinkedHashSetCls(bool equals(E , E ) , int hashCode(E ) , bool isValidKey(dynamic ) );
+    void  identity();
     virtual void  from(Iterable<dynamic> elements);
 
     virtual void  of(Iterable<E> elements);

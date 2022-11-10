@@ -8,11 +8,11 @@ template<typename T> bool PageRouteCls<T>::barrierDismissible() {
 }
 
 template<typename T> bool PageRouteCls<T>::canTransitionTo(TransitionRoute<dynamic> nextRoute) {
-    return nextRoute is PageRoute;
+    return is<PageRoute>(nextRoute);
 }
 
 template<typename T> bool PageRouteCls<T>::canTransitionFrom(TransitionRoute<dynamic> previousRoute) {
-    return previousRoute is PageRoute;
+    return is<PageRoute>(previousRoute);
 }
 
 Widget _defaultTransitionsBuilder(Animation<double> animation, Widget child, BuildContext context, Animation<double> secondaryAnimation) {

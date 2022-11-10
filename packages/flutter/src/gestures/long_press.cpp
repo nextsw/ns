@@ -2,14 +2,14 @@
 LongPressDownDetailsCls::LongPressDownDetailsCls(Offset globalPosition, PointerDeviceKind kind, Offset localPosition) {
     {
         assert(globalPosition != nullptr);
-        localPosition = localPosition ?? globalPosition;
+        localPosition = localPosition or globalPosition;
     }
 }
 
 LongPressStartDetailsCls::LongPressStartDetailsCls(Offset globalPosition, Offset localPosition) {
     {
         assert(globalPosition != nullptr);
-        localPosition = localPosition ?? globalPosition;
+        localPosition = localPosition or globalPosition;
     }
 }
 
@@ -17,19 +17,19 @@ LongPressMoveUpdateDetailsCls::LongPressMoveUpdateDetailsCls(Offset globalPositi
     {
         assert(globalPosition != nullptr);
         assert(offsetFromOrigin != nullptr);
-        localPosition = localPosition ?? globalPosition;
-        localOffsetFromOrigin = localOffsetFromOrigin ?? offsetFromOrigin;
+        localPosition = localPosition or globalPosition;
+        localOffsetFromOrigin = localOffsetFromOrigin or offsetFromOrigin;
     }
 }
 
 LongPressEndDetailsCls::LongPressEndDetailsCls(Offset globalPosition, Offset localPosition, Velocity velocity) {
     {
         assert(globalPosition != nullptr);
-        localPosition = localPosition ?? globalPosition;
+        localPosition = localPosition or globalPosition;
     }
 }
 
-LongPressGestureRecognizerCls::LongPressGestureRecognizerCls(Unknown debugOwner, Duration duration, Unknown kind, Unknown postAcceptSlopTolerance, Unknown supportedDevices) {
+LongPressGestureRecognizerCls::LongPressGestureRecognizerCls(Unknown debugOwner, Duration duration, Unknown kind, Unknown postAcceptSlopTolerance, Unknown supportedDevices) : PrimaryPointerGestureRecognizer(duration or kLongPressTimeout) {
 }
 
 bool LongPressGestureRecognizerCls::isPointerAllowed(PointerDownEvent event) {
@@ -46,16 +46,16 @@ void LongPressGestureRecognizerCls::didExceedDeadline() {
 
 void LongPressGestureRecognizerCls::handlePrimaryPointer(PointerEvent event) {
     if (!event->synthesized) {
-        if (event is PointerDownEvent) {
+        if (is<PointerDownEvent>(event)) {
             _velocityTracker = VelocityTrackerCls->withKind(event->kind);
             _velocityTracker!->addPosition(event->timeStamp, event->localPosition);
         }
-        if (event is PointerMoveEvent) {
+        if (is<PointerMoveEvent>(event)) {
             assert(_velocityTracker != nullptr);
             _velocityTracker!->addPosition(event->timeStamp, event->localPosition);
         }
     }
-    if (event is PointerUpEvent) {
+    if (is<PointerUpEvent>(event)) {
         if (_longPressAccepted == true) {
             _checkLongPressEnd(event);
         } else {
@@ -63,16 +63,16 @@ void LongPressGestureRecognizerCls::handlePrimaryPointer(PointerEvent event) {
         }
         _reset();
     } else     {
-        if (event is PointerCancelEvent) {
+        if (is<PointerCancelEvent>(event)) {
         _checkLongPressCancel();
         _reset();
     } else     {
-        if (event is PointerDownEvent) {
+        if (is<PointerDownEvent>(event)) {
         _longPressOrigin = OffsetPairCls->fromEventPosition(event);
         _initialButtons = event->buttons;
         _checkLongPressDown(event);
     } else     {
-        if (event is PointerMoveEvent) {
+        if (is<PointerMoveEvent>(event)) {
         if (event->buttons != _initialButtons) {
             resolve(GestureDispositionCls::rejected);
             stopTrackingPointer(primaryPointer!);
@@ -102,7 +102,7 @@ void LongPressGestureRecognizerCls::acceptGesture(int pointer) {
 }
 
 String LongPressGestureRecognizerCls::debugDescription() {
-    return "long press";
+    return __s("long press");
 }
 
 void LongPressGestureRecognizerCls::_checkLongPressDown(PointerDownEvent event) {

@@ -18,15 +18,15 @@ bool FlowDelegateCls::shouldRelayout(FlowDelegate oldDelegate) {
 }
 
 String FlowDelegateCls::toString() {
-    return objectRuntimeType(this, "FlowDelegate");
+    return objectRuntimeType(this, __s("FlowDelegate"));
 }
 
 RenderFlowCls::RenderFlowCls(List<RenderBox> children, Clip clipBehavior, FlowDelegate delegate) {
     {
-        assert(delegate != nullptr);
-        assert(clipBehavior != nullptr);
-        _delegate = delegate;
-        _clipBehavior = clipBehavior;
+        assert(delegate() != nullptr);
+        assert(clipBehavior() != nullptr);
+        _delegate = delegate();
+        _clipBehavior = clipBehavior();
     }
     {
         addAll(children);
@@ -35,7 +35,7 @@ RenderFlowCls::RenderFlowCls(List<RenderBox> children, Clip clipBehavior, FlowDe
 
 void RenderFlowCls::setupParentData(RenderBox child) {
     ParentData childParentData = child->parentData;
-    if (childParentData is FlowParentData) {
+    if (is<FlowParentData>(childParentData)) {
         childParentData->_transform = nullptr;
     } else {
         child->parentData = make<FlowParentDataCls>();
@@ -53,7 +53,7 @@ void RenderFlowCls::delegate(FlowDelegate newDelegate) {
     }
     FlowDelegate oldDelegate = _delegate;
     _delegate = newDelegate;
-    if (newDelegate->runtimeType != oldDelegate->runtimeType || newDelegate->shouldRelayout(oldDelegate)) {
+    if (newDelegate->runtimeType() != oldDelegate->runtimeType() || newDelegate->shouldRelayout(oldDelegate)) {
         markNeedsLayout();
     } else     {
         if (newDelegate->shouldRepaint(oldDelegate)) {
@@ -94,7 +94,7 @@ bool RenderFlowCls::isRepaintBoundary() {
 }
 
 double RenderFlowCls::computeMinIntrinsicWidth(double height) {
-    double width = _getSize(BoxConstraintsCls->tightForFinite(height))->width;
+    double width = _getSize(BoxConstraintsCls->tightForFinite(height))->width();
     if (width->isFinite) {
         return width;
     }
@@ -102,7 +102,7 @@ double RenderFlowCls::computeMinIntrinsicWidth(double height) {
 }
 
 double RenderFlowCls::computeMaxIntrinsicWidth(double height) {
-    double width = _getSize(BoxConstraintsCls->tightForFinite(height))->width;
+    double width = _getSize(BoxConstraintsCls->tightForFinite(height))->width();
     if (width->isFinite) {
         return width;
     }
@@ -110,7 +110,7 @@ double RenderFlowCls::computeMaxIntrinsicWidth(double height) {
 }
 
 double RenderFlowCls::computeMinIntrinsicHeight(double width) {
-    double height = _getSize(BoxConstraintsCls->tightForFinite(width))->height;
+    double height = _getSize(BoxConstraintsCls->tightForFinite(width))->height();
     if (height->isFinite) {
         return height;
     }
@@ -118,7 +118,7 @@ double RenderFlowCls::computeMinIntrinsicHeight(double width) {
 }
 
 double RenderFlowCls::computeMaxIntrinsicHeight(double width) {
-    double height = _getSize(BoxConstraintsCls->tightForFinite(width))->height;
+    double height = _getSize(BoxConstraintsCls->tightForFinite(width))->height();
     if (height->isFinite) {
         return height;
     }
@@ -139,7 +139,7 @@ void RenderFlowCls::performLayout() {
         _randomAccessChildren->add(child);
         BoxConstraints innerConstraints = _delegate->getConstraintsForChild(i, constraints);
         child->layout(innerConstraintstrue);
-        FlowParentData childParentData = ((FlowParentData)child->parentData!);
+        FlowParentData childParentData = as<FlowParentData>(child->parentData!);
         childParentData->offset = OffsetCls::zero;
         child = childParentData->nextSibling;
         i = 1;
@@ -147,16 +147,16 @@ void RenderFlowCls::performLayout() {
 }
 
 Size RenderFlowCls::getChildSize(int i) {
-    if ( < 0 || i >= _randomAccessChildren->length) {
+    if ( < 0 || i >= _randomAccessChildren->length()) {
         return nullptr;
     }
-    return _randomAccessChildren[i]->size;
+    return _randomAccessChildren[i]->size();
 }
 
 void RenderFlowCls::paintChild(int i, double opacity, Matrix4 transform) {
     transform = Matrix4Cls->identity();
     RenderBox child = _randomAccessChildren[i];
-    FlowParentData childParentData = ((FlowParentData)child->parentData!);
+    FlowParentData childParentData = as<FlowParentData>(child->parentData!);
     assert([=] () {
         if (childParentData->_transform != nullptr) {
             ;
@@ -179,11 +179,11 @@ void RenderFlowCls::paintChild(int i, double opacity, Matrix4 transform) {
 }
 
 void RenderFlowCls::paint(PaintingContext context, Offset offset) {
-    _clipRectLayer->layer = context->pushClipRect(needsCompositing, offset, OffsetCls::zero & size, _paintWithDelegateclipBehavior, _clipRectLayer->layer);
+    _clipRectLayer->layer() = context->pushClipRect(needsCompositing, offset, OffsetCls::zero & size, _paintWithDelegateclipBehavior(), _clipRectLayer->layer());
 }
 
 void RenderFlowCls::dispose() {
-    _clipRectLayer->layer = nullptr;
+    _clipRectLayer->layer() = nullptr;
     super->dispose();
 }
 
@@ -195,7 +195,7 @@ bool RenderFlowCls::hitTestChildren(Offset position, BoxHitTestResult result) {
             continue;
         }
         RenderBox child = children[childIndex];
-        FlowParentData childParentData = ((FlowParentData)child->parentData!);
+        FlowParentData childParentData = as<FlowParentData>(child->parentData!);
         Matrix4 transform = childParentData->_transform;
         if (transform == nullptr) {
             continue;
@@ -211,7 +211,7 @@ bool RenderFlowCls::hitTestChildren(Offset position, BoxHitTestResult result) {
 }
 
 void RenderFlowCls::applyPaintTransform(RenderBox child, Matrix4 transform) {
-    FlowParentData childParentData = ((FlowParentData)child->parentData!);
+    FlowParentData childParentData = as<FlowParentData>(child->parentData!);
     if (childParentData->_transform != nullptr) {
         transform->multiply(childParentData->_transform!);
     }
@@ -228,7 +228,7 @@ void RenderFlowCls::_paintWithDelegate(PaintingContext context, Offset offset) {
     _paintingContext = context;
     _paintingOffset = offset;
     for (RenderBox child : _randomAccessChildren) {
-        FlowParentData childParentData = ((FlowParentData)child->parentData!);
+        FlowParentData childParentData = as<FlowParentData>(child->parentData!);
         childParentData->_transform = nullptr;
     }
     try {

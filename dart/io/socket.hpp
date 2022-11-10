@@ -33,10 +33,10 @@ using InternetAddressType = std::shared_ptr<InternetAddressTypeCls>;
 class InternetAddressCls : public ObjectCls {
 public:
 
-    extern static InternetAddress loopbackIPv4();
-    extern static InternetAddress loopbackIPv6();
-    extern static InternetAddress anyIPv4();
-    extern static InternetAddress anyIPv6();
+    static InternetAddress loopbackIPv4();
+    static InternetAddress loopbackIPv6();
+    static InternetAddress anyIPv4();
+    static InternetAddress anyIPv6();
     virtual InternetAddressType type();
     virtual String address();
     virtual String host();
@@ -44,14 +44,14 @@ public:
     virtual bool isLoopback();
     virtual bool isLinkLocal();
     virtual bool isMulticast();
-    extern  InternetAddressCls(String address, InternetAddressType type);
-    extern void  fromRawAddress(Uint8List rawAddress, InternetAddressType type);
+     InternetAddressCls(String address, InternetAddressType type);
+    void  fromRawAddress(Uint8List rawAddress, InternetAddressType type);
     virtual Future<InternetAddress> reverse();
-    extern static Future<List<InternetAddress>> lookup(String host, InternetAddressType type);
-    extern static InternetAddress tryParse(String address);
+    static Future<List<InternetAddress>> lookup(String host, InternetAddressType type);
+    static InternetAddress tryParse(String address);
 private:
 
-    extern static InternetAddress _cloneWithNewHost(InternetAddress address, String host);
+    static InternetAddress _cloneWithNewHost(InternetAddress address, String host);
 };
 using InternetAddress = std::shared_ptr<InternetAddressCls>;
 
@@ -61,8 +61,8 @@ public:
     virtual String name();
     virtual int index();
     virtual List<InternetAddress> addresses();
-    extern static bool listSupported();
-    extern static Future<List<NetworkInterface>> list(bool includeLinkLocal, bool includeLoopback, InternetAddressType type);
+    static bool listSupported();
+    static Future<List<NetworkInterface>> list(bool includeLinkLocal, bool includeLoopback, InternetAddressType type);
 private:
 
 };
@@ -71,7 +71,7 @@ using NetworkInterface = std::shared_ptr<NetworkInterfaceCls>;
 class RawServerSocketCls : public ObjectCls {
 public:
 
-    extern static Future<RawServerSocket> bind(address , int backlog, int port, bool shared, bool v6Only);
+    static Future<RawServerSocket> bind(address , int backlog, int port, bool shared, bool v6Only);
     virtual int port();
     virtual InternetAddress address();
     virtual Future<RawServerSocket> close();
@@ -90,7 +90,7 @@ public:
     virtual Future<ServerSocket> close();
 private:
 
-    extern static Future<ServerSocket> _bind(address , int backlog, int port, bool shared, bool v6Only);
+    static Future<ServerSocket> _bind(address , int backlog, int port, bool shared, bool v6Only);
 };
 using ServerSocket = std::shared_ptr<ServerSocketCls>;
 
@@ -172,7 +172,7 @@ public:
 
 private:
 
-    extern static int _getOptionValue(int key);
+    static int _getOptionValue(int key);
 };
 using RawSocketOption = std::shared_ptr<RawSocketOptionCls>;
 
@@ -220,8 +220,8 @@ public:
     bool writeEventsEnabled;
 
 
-    extern static Future<RawSocket> connect(host , sourceAddress , int port, int sourcePort, Duration timeout);
-    extern static Future<ConnectionTask<RawSocket>> startConnect(host , sourceAddress , int port, int sourcePort);
+    static Future<RawSocket> connect(host , sourceAddress , int port, int sourcePort, Duration timeout);
+    static Future<ConnectionTask<RawSocket>> startConnect(host , sourceAddress , int port, int sourcePort);
     virtual int available();
     virtual Uint8List read(int len);
     virtual SocketMessage readMessage(int count);
@@ -260,8 +260,8 @@ public:
     virtual Future done();
 private:
 
-    extern static Future<Socket> _connect(host , sourceAddress , int port, int sourcePort, Duration timeout);
-    extern static Future<ConnectionTask<Socket>> _startConnect(host , sourceAddress , int port, int sourcePort);
+    static Future<Socket> _connect(host , sourceAddress , int port, int sourcePort, Duration timeout);
+    static Future<ConnectionTask<Socket>> _startConnect(host , sourceAddress , int port, int sourcePort);
 };
 using Socket = std::shared_ptr<SocketCls>;
 
@@ -283,12 +283,12 @@ using Datagram = std::shared_ptr<DatagramCls>;
 class ResourceHandleCls : public ObjectCls {
 public:
 
-    extern void  fromFile(RandomAccessFile file);
-    extern void  fromSocket(Socket socket);
-    extern void  fromRawSocket(RawSocket socket);
-    extern void  fromRawDatagramSocket(RawDatagramSocket socket);
-    extern void  fromStdin(Stdin stdin);
-    extern void  fromStdout(Stdout stdout);
+    void  fromFile(RandomAccessFile file);
+    void  fromSocket(Socket socket);
+    void  fromRawSocket(RawSocket socket);
+    void  fromRawDatagramSocket(RawDatagramSocket socket);
+    void  fromStdin(Stdin stdin);
+    void  fromStdout(Stdout stdout);
     virtual RandomAccessFile toFile();
     virtual Socket toSocket();
     virtual RawSocket toRawSocket();
@@ -301,7 +301,7 @@ using ResourceHandle = std::shared_ptr<ResourceHandleCls>;
 class SocketControlMessageCls : public ObjectCls {
 public:
 
-    extern void  fromHandles(List<ResourceHandle> handles);
+    void  fromHandles(List<ResourceHandle> handles);
     virtual List<ResourceHandle> extractHandles();
     virtual int level();
     virtual int type();
@@ -339,7 +339,7 @@ public:
     bool broadcastEnabled;
 
 
-    extern static Future<RawDatagramSocket> bind(host , int port, bool reuseAddress, bool reusePort, int ttl);
+    static Future<RawDatagramSocket> bind(host , int port, bool reuseAddress, bool reusePort, int ttl);
     virtual int port();
     virtual InternetAddress address();
     virtual void close();

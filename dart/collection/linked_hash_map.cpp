@@ -2,7 +2,7 @@
 template<typename K, typename V> void LinkedHashMapCls<K, V>::from(Map<dynamic, dynamic> other) {
     LinkedHashMap<K, V> result = <K, V>make<LinkedHashMapCls>();
     other->forEach([=] (dynamic k,dynamic v) {
-        result[((K)k)] = ((V)v);
+        result[as<K>(k)] = as<V>(v);
     });
     return result;
 }

@@ -16,10 +16,10 @@ ShapeBorder RoundedRectangleBorderCls::scale(double t) {
 
 ShapeBorder RoundedRectangleBorderCls::lerpFrom(ShapeBorder a, double t) {
     assert(t != nullptr);
-    if (a is RoundedRectangleBorder) {
+    if (is<RoundedRectangleBorder>(a)) {
         return make<RoundedRectangleBorderCls>(BorderSideCls->lerp(a->side, side, t), BorderRadiusGeometryCls->lerp(a->borderRadius, borderRadius, t)!);
     }
-    if (a is CircleBorder) {
+    if (is<CircleBorder>(a)) {
         return make<_RoundedRectangleToCircleBorderCls>(BorderSideCls->lerp(a->side, side, t), borderRadius, 1.0 - t);
     }
     return super->lerpFrom(a, t);
@@ -27,17 +27,17 @@ ShapeBorder RoundedRectangleBorderCls::lerpFrom(ShapeBorder a, double t) {
 
 ShapeBorder RoundedRectangleBorderCls::lerpTo(ShapeBorder b, double t) {
     assert(t != nullptr);
-    if (b is RoundedRectangleBorder) {
+    if (is<RoundedRectangleBorder>(b)) {
         return make<RoundedRectangleBorderCls>(BorderSideCls->lerp(side, b->side, t), BorderRadiusGeometryCls->lerp(borderRadius, b->borderRadius, t)!);
     }
-    if (b is CircleBorder) {
+    if (is<CircleBorder>(b)) {
         return make<_RoundedRectangleToCircleBorderCls>(BorderSideCls->lerp(side, b->side, t), borderRadius, t);
     }
     return super->lerpTo(b, t);
 }
 
 RoundedRectangleBorder RoundedRectangleBorderCls::copyWith(BorderRadiusGeometry borderRadius, BorderSide side) {
-    return make<RoundedRectangleBorderCls>(side ?? this->side, borderRadius ?? this->borderRadius);
+    return make<RoundedRectangleBorderCls>(side or this->side, borderRadius or this->borderRadius);
 }
 
 Path RoundedRectangleBorderCls::getInnerPath(Rect rect, TextDirection textDirection) {
@@ -56,10 +56,10 @@ void RoundedRectangleBorderCls::paint(Canvas canvas, Rect rect, TextDirection te
 }
 
 bool RoundedRectangleBorderCls::==(Object other) {
-    if (other->runtimeType != runtimeType) {
+    if (other->runtimeType() != runtimeType) {
         return false;
     }
-    return other is RoundedRectangleBorder && other->side == side && other->borderRadius == borderRadius;
+    return is<RoundedRectangleBorder>(other) && other->side == side && other->borderRadius == borderRadius;
 }
 
 int RoundedRectangleBorderCls::hashCode() {
@@ -67,7 +67,7 @@ int RoundedRectangleBorderCls::hashCode() {
 }
 
 String RoundedRectangleBorderCls::toString() {
-    return "${objectRuntimeType(this, 'RoundedRectangleBorder')}($side, $borderRadius)";
+    return __s("${objectRuntimeType(this, 'RoundedRectangleBorder')}($side, $borderRadius)");
 }
 
 EdgeInsetsGeometry _RoundedRectangleToCircleBorderCls::dimensions() {
@@ -80,26 +80,26 @@ ShapeBorder _RoundedRectangleToCircleBorderCls::scale(double t) {
 
 ShapeBorder _RoundedRectangleToCircleBorderCls::lerpFrom(ShapeBorder a, double t) {
     assert(t != nullptr);
-    if (a is RoundedRectangleBorder) {
+    if (is<RoundedRectangleBorder>(a)) {
         return make<_RoundedRectangleToCircleBorderCls>(BorderSideCls->lerp(a->side, side, t), BorderRadiusGeometryCls->lerp(a->borderRadius, borderRadius, t)!, circleness * t);
     }
-    if (a is CircleBorder) {
+    if (is<CircleBorder>(a)) {
         return make<_RoundedRectangleToCircleBorderCls>(BorderSideCls->lerp(a->side, side, t), borderRadius, circleness + (1.0 - circleness) * (1.0 - t));
     }
-    if (a is _RoundedRectangleToCircleBorder) {
+    if (is<_RoundedRectangleToCircleBorder>(a)) {
         return make<_RoundedRectangleToCircleBorderCls>(BorderSideCls->lerp(a->side, side, t), BorderRadiusGeometryCls->lerp(a->borderRadius, borderRadius, t)!, ui->lerpDouble(a->circleness, circleness, t)!);
     }
     return super->lerpFrom(a, t);
 }
 
 ShapeBorder _RoundedRectangleToCircleBorderCls::lerpTo(ShapeBorder b, double t) {
-    if (b is RoundedRectangleBorder) {
+    if (is<RoundedRectangleBorder>(b)) {
         return make<_RoundedRectangleToCircleBorderCls>(BorderSideCls->lerp(side, b->side, t), BorderRadiusGeometryCls->lerp(borderRadius, b->borderRadius, t)!, circleness * (1.0 - t));
     }
-    if (b is CircleBorder) {
+    if (is<CircleBorder>(b)) {
         return make<_RoundedRectangleToCircleBorderCls>(BorderSideCls->lerp(side, b->side, t), borderRadius, circleness + (1.0 - circleness) * t);
     }
-    if (b is _RoundedRectangleToCircleBorder) {
+    if (is<_RoundedRectangleToCircleBorder>(b)) {
         return make<_RoundedRectangleToCircleBorderCls>(BorderSideCls->lerp(side, b->side, t), BorderRadiusGeometryCls->lerp(borderRadius, b->borderRadius, t)!, ui->lerpDouble(circleness, b->circleness, t)!);
     }
     return super->lerpTo(b, t);
@@ -117,7 +117,7 @@ Path _RoundedRectangleToCircleBorderCls::getOuterPath(Rect rect, TextDirection t
 }
 
 _RoundedRectangleToCircleBorder _RoundedRectangleToCircleBorderCls::copyWith(BorderRadiusGeometry borderRadius, double circleness, BorderSide side) {
-    return make<_RoundedRectangleToCircleBorderCls>(side ?? this->side, borderRadius ?? this->borderRadius, circleness ?? this->circleness);
+    return make<_RoundedRectangleToCircleBorderCls>(side or this->side, borderRadius or this->borderRadius, circleness or this->circleness);
 }
 
 void _RoundedRectangleToCircleBorderCls::paint(Canvas canvas, Rect rect, TextDirection textDirection) {
@@ -125,10 +125,10 @@ void _RoundedRectangleToCircleBorderCls::paint(Canvas canvas, Rect rect, TextDir
 }
 
 bool _RoundedRectangleToCircleBorderCls::==(Object other) {
-    if (other->runtimeType != runtimeType) {
+    if (other->runtimeType() != runtimeType) {
         return false;
     }
-    return other is _RoundedRectangleToCircleBorder && other->side == side && other->borderRadius == borderRadius && other->circleness == circleness;
+    return is<_RoundedRectangleToCircleBorder>(other) && other->side == side && other->borderRadius == borderRadius && other->circleness == circleness;
 }
 
 int _RoundedRectangleToCircleBorderCls::hashCode() {
@@ -136,7 +136,7 @@ int _RoundedRectangleToCircleBorderCls::hashCode() {
 }
 
 String _RoundedRectangleToCircleBorderCls::toString() {
-    return "RoundedRectangleBorder($side, $borderRadius, ${(circleness * 100).toStringAsFixed(1)}% of the way to being a CircleBorder)";
+    return __s("RoundedRectangleBorder($side, $borderRadius, ${(circleness * 100).toStringAsFixed(1)}% of the way to being a CircleBorder)");
 }
 
 _RoundedRectangleToCircleBorderCls::_RoundedRectangleToCircleBorderCls(BorderRadiusGeometry borderRadius, double circleness, Unknown side) {

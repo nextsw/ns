@@ -28,25 +28,25 @@ void _ResamplerCls::sample(SamplingClock clock, Duration samplingOffset) {
         _frameTime = make<DurationCls>(clock->now()->millisecondsSinceEpoch);
             auto _c1 = clock->stopwatch();    _c1.start();_frameTimeAge = _c1;
     }
-    if (_timer?->isActive != true) {
+    if (_timer?->isActive() != true) {
         _timer = TimerCls->periodic(_samplingInterval, [=] ()         {
             _onSampleTimeChanged();
         });
     }
-    int samplingIntervalUs = _samplingInterval->inMicroseconds;
-    int elapsedIntervals = _frameTimeAge->elapsedMicroseconds ~/ samplingIntervalUs;
+    int samplingIntervalUs = _samplingInterval->inMicroseconds();
+    int elapsedIntervals = _frameTimeAge->elapsedMicroseconds() ~/ samplingIntervalUs;
     int elapsedUs = elapsedIntervals * samplingIntervalUs;
     Duration frameTime = _frameTime + make<DurationCls>(elapsedUs);
     Duration sampleTime = frameTime + samplingOffset;
     Duration nextSampleTime = sampleTime + _samplingInterval;
-    for (PointerEventResampler resampler : _resamplers->values) {
+    for (PointerEventResampler resampler : _resamplers->values()) {
         resampler->sample(sampleTime, nextSampleTime, _handlePointerEvent);
     }
     _resamplers->removeWhere([=] (int key,PointerEventResampler resampler) {
         return !resampler->hasPendingEvents && !resampler->isDown;
     });
     _lastSampleTime = sampleTime;
-    if (_resamplers->isEmpty) {
+    if (_resamplers->isEmpty()) {
         _timer!->cancel();
         return;
     }
@@ -66,7 +66,7 @@ void _ResamplerCls::sample(SamplingClock clock, Duration samplingOffset) {
 }
 
 void _ResamplerCls::stop() {
-    for (PointerEventResampler resampler : _resamplers->values) {
+    for (PointerEventResampler resampler : _resamplers->values()) {
         resampler->stop(_handlePointerEvent);
     }
     _resamplers->clear();
@@ -78,7 +78,7 @@ void _ResamplerCls::_onSampleTimeChanged() {
     assert([=] () {
         if (debugPrintResamplingMargin) {
             Duration resamplingMargin = _lastEventTime - _lastSampleTime;
-            debugPrint("$resamplingMargin");
+            debugPrint(__s("$resamplingMargin"));
         }
         return true;
     }());
@@ -111,7 +111,7 @@ void GestureBindingCls::handlePointerEvent(PointerEvent event) {
     assert(!locked);
     if (resamplingEnabled) {
         _resampler->addOrDispatch(event);
-        _resampler->sample(samplingOffset, _samplingClock);
+        _resampler->sample(samplingOffset, _samplingClock());
         return;
     }
     _resampler->stop();
@@ -125,11 +125,11 @@ void GestureBindingCls::hitTest(Offset position, HitTestResult result) {
 void GestureBindingCls::dispatchEvent(PointerEvent event, HitTestResult hitTestResult) {
     assert(!locked);
     if (hitTestResult == nullptr) {
-        assert(event is PointerAddedEvent || event is PointerRemovedEvent);
+        assert(is<PointerAddedEvent>(event) || is<PointerRemovedEvent>(event));
         try {
             pointerRouter->route(event);
         } catch (Unknown exception) {
-            FlutterErrorCls->reportError(make<FlutterErrorDetailsForPointerEventDispatcherCls>(exception, stack, "gesture library", make<ErrorDescriptionCls>("while dispatching a non-hit-tested pointer event"), event, [=] ()             {
+            FlutterErrorCls->reportError(make<FlutterErrorDetailsForPointerEventDispatcherCls>(exception, stack, __s("gesture library"), make<ErrorDescriptionCls>(__s("while dispatching a non-hit-tested pointer event")), event, [=] ()             {
                 makeList(ArrayItem);
             }));
         };
@@ -139,7 +139,7 @@ void GestureBindingCls::dispatchEvent(PointerEvent event, HitTestResult hitTestR
         try {
             entry->target->handleEvent(event->transformed(entry->transform), entry);
         } catch (Unknown exception) {
-            FlutterErrorCls->reportError(make<FlutterErrorDetailsForPointerEventDispatcherCls>(exception, stack, "gesture library", make<ErrorDescriptionCls>("while dispatching a pointer event"), event, entry, [=] ()             {
+            FlutterErrorCls->reportError(make<FlutterErrorDetailsForPointerEventDispatcherCls>(exception, stack, __s("gesture library"), make<ErrorDescriptionCls>(__s("while dispatching a pointer event")), event, entry, [=] ()             {
                 makeList(ArrayItem, ArrayItem);
             }));
         };
@@ -148,13 +148,13 @@ void GestureBindingCls::dispatchEvent(PointerEvent event, HitTestResult hitTestR
 
 void GestureBindingCls::handleEvent(HitTestEntry entry, PointerEvent event) {
     pointerRouter->route(event);
-    if (event is PointerDownEvent || event is PointerPanZoomStartEvent) {
+    if (is<PointerDownEvent>(event) || is<PointerPanZoomStartEvent>(event)) {
         gestureArena->close(event->pointer);
     } else     {
-        if (event is PointerUpEvent || event is PointerPanZoomEndEvent) {
+        if (is<PointerUpEvent>(event) || is<PointerPanZoomEndEvent>(event)) {
         gestureArena->sweep(event->pointer);
     } else     {
-        if (event is PointerSignalEvent) {
+        if (is<PointerSignalEvent>(event)) {
         pointerSignalResolver->resolve(event);
     }
 ;
@@ -185,35 +185,35 @@ void GestureBindingCls::_flushPointerEventQueue() {
 
 void GestureBindingCls::_handlePointerEventImmediately(PointerEvent event) {
     HitTestResult hitTestResult;
-    if (event is PointerDownEvent || event is PointerSignalEvent || event is PointerHoverEvent || event is PointerPanZoomStartEvent) {
+    if (is<PointerDownEvent>(event) || is<PointerSignalEvent>(event) || is<PointerHoverEvent>(event) || is<PointerPanZoomStartEvent>(event)) {
         assert(!_hitTests->containsKey(event->pointer));
         hitTestResult = make<HitTestResultCls>();
         hitTest(hitTestResult, event->position);
-        if (event is PointerDownEvent || event is PointerPanZoomStartEvent) {
+        if (is<PointerDownEvent>(event) || is<PointerPanZoomStartEvent>(event)) {
             _hitTests[event->pointer] = hitTestResult;
         }
         assert([=] () {
             if (debugPrintHitTestResults) {
-                debugPrint("$event: $hitTestResult");
+                debugPrint(__s("$event: $hitTestResult"));
             }
             return true;
         }());
     } else     {
-        if (event is PointerUpEvent || event is PointerCancelEvent || event is PointerPanZoomEndEvent) {
+        if (is<PointerUpEvent>(event) || is<PointerCancelEvent>(event) || is<PointerPanZoomEndEvent>(event)) {
         hitTestResult = _hitTests->remove(event->pointer);
     } else     {
-        if (event->down || event is PointerPanZoomUpdateEvent) {
+        if (event->down || is<PointerPanZoomUpdateEvent>(event)) {
         hitTestResult = _hitTests[event->pointer];
     }
 ;
     };
     }    assert([=] () {
-        if (debugPrintMouseHoverEvents && event is PointerHoverEvent) {
-            debugPrint("$event");
+        if (debugPrintMouseHoverEvents && is<PointerHoverEvent>(event)) {
+            debugPrint(__s("$event"));
         }
         return true;
     }());
-    if (hitTestResult != nullptr || event is PointerAddedEvent || event is PointerRemovedEvent) {
+    if (hitTestResult != nullptr || is<PointerAddedEvent>(event) || is<PointerRemovedEvent>(event)) {
         assert(event->position != nullptr);
         dispatchEvent(event, hitTestResult);
     }
@@ -222,7 +222,7 @@ void GestureBindingCls::_handlePointerEventImmediately(PointerEvent event) {
 void GestureBindingCls::_handleSampleTimeChanged() {
     if (!locked) {
         if (resamplingEnabled) {
-            _resampler->sample(samplingOffset, _samplingClock);
+            _resampler->sample(samplingOffset, _samplingClock());
         } else {
             _resampler->stop();
         }
@@ -232,7 +232,7 @@ void GestureBindingCls::_handleSampleTimeChanged() {
 SamplingClock GestureBindingCls::_samplingClock() {
     SamplingClock value = make<SamplingClockCls>();
     assert([=] () {
-        SamplingClock debugValue = debugSamplingClock;
+        SamplingClock debugValue = debugSamplingClock();
         if (debugValue != nullptr) {
             value = debugValue;
         }

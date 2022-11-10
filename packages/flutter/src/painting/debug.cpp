@@ -8,14 +8,14 @@ int ImageSizeInfoCls::decodedSizeInBytes() {
 }
 
 Map<String, Object> ImageSizeInfoCls::toJson() {
-    Map<String, Object> map1 = make<MapCls<>>();map1.set("source", source);map1.set("displaySize", Map<String, Object> map2 = make<MapCls<>>();map2.set("width", displaySize->width);map2.set("height", displaySize->height);list2);map1.set("imageSize", Map<String, Object> map3 = make<MapCls<>>();map3.set("width", imageSize->width);map3.set("height", imageSize->height);list3);map1.set("displaySizeInBytes", displaySizeInBytes);map1.set("decodedSizeInBytes", decodedSizeInBytes);return list1;
+    Map<String, Object> map1 = make<MapCls<>>();map1.set(__s("source"), source);map1.set(__s("displaySize"), Map<String, Object> map2 = make<MapCls<>>();map2.set(__s("width"), displaySize->width());map2.set(__s("height"), displaySize->height());list2);map1.set(__s("imageSize"), Map<String, Object> map3 = make<MapCls<>>();map3.set(__s("width"), imageSize->width());map3.set(__s("height"), imageSize->height());list3);map1.set(__s("displaySizeInBytes"), displaySizeInBytes());map1.set(__s("decodedSizeInBytes"), decodedSizeInBytes());return list1;
 }
 
 bool ImageSizeInfoCls::==(Object other) {
-    if (other->runtimeType != runtimeType) {
+    if (other->runtimeType() != runtimeType) {
         return false;
     }
-    return other is ImageSizeInfo && other->source == source && other->imageSize == imageSize && other->displaySize == displaySize;
+    return is<ImageSizeInfo>(other) && other->source == source && other->imageSize == imageSize && other->displaySize == displaySize;
 }
 
 int ImageSizeInfoCls::hashCode() {
@@ -23,7 +23,7 @@ int ImageSizeInfoCls::hashCode() {
 }
 
 String ImageSizeInfoCls::toString() {
-    return "ImageSizeInfo($source, imageSize: $imageSize, displaySize: $displaySize)";
+    return __s("ImageSizeInfo($source, imageSize: $imageSize, displaySize: $displaySize)");
 }
 
 int ImageSizeInfoCls::_sizeToBytes(Size size) {

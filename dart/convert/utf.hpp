@@ -100,12 +100,12 @@ public:
 
     virtual Stream<String> bind(Stream<List<int>> stream);
 
-    template<typename T>  extern Converter<List<int>, T> fuse(Converter<String, T> next) override;
+    template<typename T>  Converter<List<int>, T> fuse(Converter<String, T> next) override;
 private:
     bool _allowMalformed;
 
 
-    extern static String _convertIntercepted(bool allowMalformed, List<int> codeUnits, int end, int start);
+    static String _convertIntercepted(bool allowMalformed, List<int> codeUnits, int end, int start);
 };
 using Utf8Decoder = std::shared_ptr<Utf8DecoderCls>;
 int _ONE_BYTE_LIMIT;
@@ -208,8 +208,8 @@ public:
 
     static String errorDescription(int state);
 
-    extern String convertSingle(List<int> codeUnits, int maybeEnd, int start);
-    extern String convertChunked(List<int> codeUnits, int maybeEnd, int start);
+    String convertSingle(List<int> codeUnits, int maybeEnd, int start);
+    String convertChunked(List<int> codeUnits, int maybeEnd, int start);
     virtual String convertGeneral(List<int> codeUnits, int maybeEnd, bool single, int start);
 
     virtual void flush(StringSink sink);
@@ -260,7 +260,7 @@ private:
     static String _E7;
 
 
-    extern  _Utf8DecoderCls(bool allowMalformed);
+     _Utf8DecoderCls(bool allowMalformed);
     virtual String _convertRecursive(Uint8List bytes, int end, bool single, int start);
 
     static Uint8List _makeUint8List(List<int> codeUnits, int end, int start);

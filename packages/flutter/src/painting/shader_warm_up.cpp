@@ -11,9 +11,9 @@ Future<void> ShaderWarmUpCls::execute() {
     assert(debugCaptureShaderWarmUpPicture(picture));
     if (!kIsWeb) {
         TimelineTask shaderWarmUpTask = make<TimelineTaskCls>();
-        shaderWarmUpTask->start("Warm-up shader");
+        shaderWarmUpTask->start(__s("Warm-up shader"));
         try {
-            Image image = await picture->toImage(size->width->ceil(), size->height->ceil());
+            Image image = await picture->toImage(size()->width()->ceil(), size()->height()->ceil());
             assert(debugCaptureShaderWarmUpImage(image));
             image->dispose();
         } finally {

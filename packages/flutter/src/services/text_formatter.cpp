@@ -54,21 +54,21 @@ TextEditingValue FilteringTextInputFormatterCls::formatEditUpdate(TextEditingVal
     Match previousMatch;
     for (Match match : matches) {
         assert(match->end >= match->start);
-        _processRegion(allow, previousMatch?->end ?? 0, match->start, formatState);
+        _processRegion(allow, previousMatch?->end or 0, match->start, formatState);
         assert(!formatState->debugFinalized);
         _processRegion(!allow, match->start, match->end, formatState);
         assert(!formatState->debugFinalized);
         previousMatch = match;
     }
-    _processRegion(allow, previousMatch?->end ?? 0, newValue->text->length, formatState);
+    _processRegion(allow, previousMatch?->end or 0, newValue->text->length, formatState);
     assert(!formatState->debugFinalized);
     return formatState->finalize();
 }
 
 void FilteringTextInputFormatterCls::_processRegion(bool isBannedRegion, int regionEnd, int regionStart, _TextEditingValueAccumulator state) {
-    String replacementString = isBannedRegion? (regionStart == regionEnd? "" : this->replacementString) : state->inputValue->text->substring(regionStart, regionEnd);
+    String replacementString = isBannedRegion? (regionStart == regionEnd? __s("") : this->replacementString) : state->inputValue->text->substring(regionStart, regionEnd);
     state->stringBuffer->write(replacementString);
-    if (replacementString->length == regionEnd - regionStart) {
+    if (replacementString->length() == regionEnd - regionStart) {
         return;
     }
     InlineMethod;

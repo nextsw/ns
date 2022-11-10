@@ -65,7 +65,7 @@ List<MenuItem> MenuItemCls::members() {
 
 DefaultPlatformMenuDelegateCls::DefaultPlatformMenuDelegateCls(MethodChannel channel) {
     {
-        channel = channel ?? SystemChannelsCls::menu;
+        channel = channel or SystemChannelsCls::menu;
         _idMap = makeMap(makeList(), makeList();
     }
     {
@@ -85,7 +85,7 @@ void DefaultPlatformMenuDelegateCls::setMenus(List<MenuItem> topLevelMenus) {
             representation->addAll(childItem->toChannelRepresentation(this_getId));
         }
     }
-    Map<String, Object> map1 = make<MapCls<>>();map1.set("0", representation);Map<String, Object> windowMenu = list1;
+    Map<String, Object> map1 = make<MapCls<>>();map1.set(__s("0"), representation);Map<String, Object> windowMenu = list1;
     channel-><void>invokeMethod(_kMenuSetMethod, windowMenu);
 }
 
@@ -118,14 +118,14 @@ int DefaultPlatformMenuDelegateCls::_getId(MenuItem item) {
 }
 
 Future<void> DefaultPlatformMenuDelegateCls::_methodCallHandler(MethodCall call) {
-    int id = ((int)call->arguments);
-    assert(_idMap->containsKey(id), "Received a menu ${call.method} for a menu item with an ID that was not recognized: $id");
+    int id = as<int>(call->arguments);
+    assert(_idMap->containsKey(id), __s("Received a menu ${call.method} for a menu item with an ID that was not recognized: $id"));
     if (!_idMap->containsKey(id)) {
         return;
     }
     MenuItem item = _idMap[id]!;
     if (call->method == _kMenuSelectedCallbackMethod) {
-        assert(item->onSelected == nullptr || item->onSelectedIntent == nullptr, "Only one of MenuItem.onSelected or MenuItem.onSelectedIntent may be specified");
+        assert(item->onSelected == nullptr || item->onSelectedIntent == nullptr, __s("Only one of MenuItem.onSelected or MenuItem.onSelectedIntent may be specified"));
         item->onSelected?->call();
         if (item->onSelectedIntent != nullptr) {
             ActionsCls->maybeInvoke(FocusManagerCls::instance->primaryFocus!->context!, item->onSelectedIntent!);
@@ -143,7 +143,7 @@ Future<void> DefaultPlatformMenuDelegateCls::_methodCallHandler(MethodCall call)
 
 PlatformMenuBarCls::PlatformMenuBarCls(Widget body, Widget child, Unknown key, List<MenuItem> menus) {
     {
-        assert(body == nullptr || child == nullptr, "The body argument is deprecated, and only one of body or child may be used.");
+        assert(body == nullptr || child == nullptr, __s("The body argument is deprecated, and only one of body or child may be used."));
     }
 }
 
@@ -159,13 +159,13 @@ List<DiagnosticsNode> PlatformMenuBarCls::debugDescribeChildren() {
 
 void _PlatformMenuBarStateCls::initState() {
     super->initState();
-    assert(WidgetsBindingCls::instance->platformMenuDelegate->debugLockDelegate(context), "More than one active $PlatformMenuBar detected. Only one active platform-rendered menu bar is allowed at a time.");
+    assert(WidgetsBindingCls::instance->platformMenuDelegate->debugLockDelegate(context), __s("More than one active $PlatformMenuBar detected. Only one active platform-rendered menu bar is allowed at a time."));
     WidgetsBindingCls::instance->platformMenuDelegate->clearMenus();
     _updateMenu();
 }
 
 void _PlatformMenuBarStateCls::dispose() {
-    assert(WidgetsBindingCls::instance->platformMenuDelegate->debugUnlockDelegate(context), "tried to unlock the $DefaultPlatformMenuDelegate more than once with context $context.");
+    assert(WidgetsBindingCls::instance->platformMenuDelegate->debugUnlockDelegate(context), __s("tried to unlock the $DefaultPlatformMenuDelegate more than once with context $context."));
     WidgetsBindingCls::instance->platformMenuDelegate->clearMenus();
     super->dispose();
 }
@@ -180,7 +180,7 @@ void _PlatformMenuBarStateCls::didUpdateWidget(PlatformMenuBar oldWidget) {
 }
 
 Widget _PlatformMenuBarStateCls::build(BuildContext context) {
-    return widget->child ?? widget->body ?? make<SizedBoxCls>();
+    return widget->child or widget->body or make<SizedBoxCls>();
 }
 
 void _PlatformMenuBarStateCls::_updateMenu() {
@@ -229,12 +229,12 @@ List<DiagnosticsNode> PlatformMenuCls::debugDescribeChildren() {
 
 void PlatformMenuCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(make<StringPropertyCls>("label", label));
-    properties->add(make<FlagPropertyCls>("enabled"menus->isNotEmpty, "DISABLED"));
+    properties->add(make<StringPropertyCls>(__s("label"), label));
+    properties->add(make<FlagPropertyCls>(__s("enabled")menus->isNotEmpty, __s("DISABLED")));
 }
 
 Iterable<Map<String, Object>> PlatformMenuItemGroupCls::toChannelRepresentation(PlatformMenuDelegate delegate, MenuItemSerializableIdGenerator getId) {
-    assert(members->isNotEmpty, "There must be at least one member in a PlatformMenuItemGroup");
+    assert(members->isNotEmpty, __s("There must be at least one member in a PlatformMenuItemGroup"));
     return serialize(this, delegategetId);
 }
 
@@ -250,12 +250,12 @@ Iterable<Map<String, Object>> PlatformMenuItemGroupCls::serialize(PlatformMenuDe
 
 void PlatformMenuItemGroupCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<MenuItem>make<IterablePropertyCls>("members", members));
+    properties->add(<MenuItem>make<IterablePropertyCls>(__s("members"), members));
 }
 
 PlatformMenuItemCls::PlatformMenuItemCls(String label, VoidCallback onSelected, Intent onSelectedIntent, MenuSerializableShortcut shortcut) {
     {
-        assert(onSelected == nullptr || onSelectedIntent == nullptr, "Only one of onSelected or onSelectedIntent may be specified");
+        assert(onSelected == nullptr || onSelectedIntent == nullptr, __s("Only one of onSelected or onSelectedIntent may be specified"));
     }
 }
 
@@ -269,17 +269,17 @@ Map<String, Object> PlatformMenuItemCls::serialize(PlatformMenuDelegate delegate
 }
 
 String PlatformMenuItemCls::toStringShort() {
-    return "${describeIdentity(this)}($label)";
+    return __s("${describeIdentity(this)}($label)");
 }
 
 void PlatformMenuItemCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(make<StringPropertyCls>("label", label));
-    properties->add(<MenuSerializableShortcut>make<DiagnosticsPropertyCls>("shortcut", shortcutnullptr));
-    properties->add(make<FlagPropertyCls>("enabled"onSelected != nullptr, "DISABLED"));
+    properties->add(make<StringPropertyCls>(__s("label"), label));
+    properties->add(<MenuSerializableShortcut>make<DiagnosticsPropertyCls>(__s("shortcut"), shortcutnullptr));
+    properties->add(make<FlagPropertyCls>(__s("enabled")onSelected != nullptr, __s("DISABLED")));
 }
 
-PlatformProvidedMenuItemCls::PlatformProvidedMenuItemCls(bool enabled, PlatformProvidedMenuItemType type) {
+PlatformProvidedMenuItemCls::PlatformProvidedMenuItemCls(bool enabled, PlatformProvidedMenuItemType type) : PlatformMenuItem(__s("")) {
 }
 
 bool PlatformProvidedMenuItemCls::hasMenu(PlatformProvidedMenuItemType menu) {
@@ -298,5 +298,5 @@ Iterable<Map<String, Object>> PlatformProvidedMenuItemCls::toChannelRepresentati
 
 void PlatformProvidedMenuItemCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(make<FlagPropertyCls>("enabled"enabled, "DISABLED"));
+    properties->add(make<FlagPropertyCls>(__s("enabled")enabled, __s("DISABLED")));
 }

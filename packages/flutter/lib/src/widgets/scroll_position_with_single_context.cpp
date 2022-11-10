@@ -22,7 +22,7 @@ double ScrollPositionWithSingleContextCls::setPixels(double newPixels) {
 
 void ScrollPositionWithSingleContextCls::absorb(ScrollPosition other) {
     super->absorb(other);
-    if (other is! ScrollPositionWithSingleContext) {
+    if (!is<ScrollPositionWithSingleContext>(other)) {
         goIdle();
         return;
     }
@@ -80,7 +80,7 @@ ScrollDirection ScrollPositionWithSingleContextCls::userScrollDirection() {
 
 void ScrollPositionWithSingleContextCls::updateUserScrollDirection(ScrollDirection value) {
     assert(value != nullptr);
-    if (userScrollDirection == value) {
+    if (userScrollDirection() == value) {
         return;
     }
     _userScrollDirection = value;
@@ -160,8 +160,8 @@ void ScrollPositionWithSingleContextCls::dispose() {
 
 void ScrollPositionWithSingleContextCls::debugFillDescription(List<String> description) {
     super->debugFillDescription(description);
-    description->add("${context.runtimeType}");
-    description->add("$physics");
-    description->add("$activity");
-    description->add("$userScrollDirection");
+    description->add(__s("${context.runtimeType}"));
+    description->add(__s("$physics"));
+    description->add(__s("$activity"));
+    description->add(__s("$userScrollDirection"));
 }

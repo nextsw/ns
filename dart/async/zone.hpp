@@ -5,7 +5,7 @@
 #include <dart/core/core.hpp>
 
 
-template<typename T : void  Function()> class _ZoneFunctionCls : public ObjectCls {
+template<typename T> class _ZoneFunctionCls : public ObjectCls {
 public:
     _Zone zone;
 
@@ -16,7 +16,7 @@ private:
 
      _ZoneFunctionCls(T function, _Zone zone);
 };
-template<typename T : void  Function()> using _ZoneFunction = std::shared_ptr<_ZoneFunctionCls<T : void  Function()>>;
+template<typename T> using _ZoneFunction = std::shared_ptr<_ZoneFunctionCls<T>>;
 
 class ZoneSpecificationCls : public ObjectCls {
 public:

@@ -9,7 +9,7 @@ AndroidViewController PlatformViewsServiceCls::initAndroidView(dynamic creationP
     assert(layoutDirection != nullptr);
     assert(creationParams == nullptr || creationParamsCodec != nullptr);
     TextureAndroidViewController controller = TextureAndroidViewControllerCls->_(id, viewType, layoutDirection, creationParams, creationParamsCodec);
-    _instance->_focusCallbacks[id] = onFocus ?? [=] () {
+    _instance->_focusCallbacks[id] = onFocus or [=] () {
     };
     return controller;
 }
@@ -20,14 +20,14 @@ SurfaceAndroidViewController PlatformViewsServiceCls::initSurfaceAndroidView(dyn
     assert(layoutDirection != nullptr);
     assert(creationParams == nullptr || creationParamsCodec != nullptr);
     SurfaceAndroidViewController controller = SurfaceAndroidViewControllerCls->_(id, viewType, layoutDirection, creationParams, creationParamsCodec);
-    _instance->_focusCallbacks[id] = onFocus ?? [=] () {
+    _instance->_focusCallbacks[id] = onFocus or [=] () {
     };
     return controller;
 }
 
 ExpensiveAndroidViewController PlatformViewsServiceCls::initExpensiveAndroidView(dynamic creationParams, MessageCodec<dynamic> creationParamsCodec, int id, TextDirection layoutDirection, VoidCallback onFocus, String viewType) {
     ExpensiveAndroidViewController controller = ExpensiveAndroidViewControllerCls->_(id, viewType, layoutDirection, creationParams, creationParamsCodec);
-    _instance->_focusCallbacks[id] = onFocus ?? [=] () {
+    _instance->_focusCallbacks[id] = onFocus or [=] () {
     };
     return controller;
 }
@@ -40,12 +40,12 @@ Future<UiKitViewController> PlatformViewsServiceCls::initUiKitView(dynamic creat
     assert(viewType != nullptr);
     assert(layoutDirection != nullptr);
     assert(creationParams == nullptr || creationParamsCodec != nullptr);
-    Map<String, dynamic> map1 = make<MapCls<>>();map1.set("id", id);map1.set("viewType", viewType);Map<String, dynamic> args = list1;
+    Map<String, dynamic> map1 = make<MapCls<>>();map1.set(__s("id"), id);map1.set(__s("viewType"), viewType);Map<String, dynamic> args = list1;
     if (creationParams != nullptr) {
         ByteData paramsByteData = creationParamsCodec!->encodeMessage(creationParams)!;
-        args["params"] = Uint8ListCls->view(paramsByteData->buffer, 0, paramsByteData->lengthInBytes);
+        args[__s("params")] = Uint8ListCls->view(paramsByteData->buffer, 0, paramsByteData->lengthInBytes);
     }
-    await await SystemChannelsCls::platform_views-><void>invokeMethod("create", args);
+    await await SystemChannelsCls::platform_views-><void>invokeMethod(__s("create"), args);
     if (onFocus != nullptr) {
         _instance->_focusCallbacks[id] = onFocus;
     }
@@ -69,7 +69,7 @@ AndroidPointerPropertiesCls::AndroidPointerPropertiesCls(int id, int toolType) {
 }
 
 String AndroidPointerPropertiesCls::toString() {
-    return "${objectRuntimeType(this, 'AndroidPointerProperties')}(id: $id, toolType: $toolType)";
+    return __s("${objectRuntimeType(this, 'AndroidPointerProperties')}(id: $id, toolType: $toolType)");
 }
 
 List<int> AndroidPointerPropertiesCls::_asList() {
@@ -91,7 +91,7 @@ AndroidPointerCoordsCls::AndroidPointerCoordsCls(double orientation, double pres
 }
 
 String AndroidPointerCoordsCls::toString() {
-    return "${objectRuntimeType(this, 'AndroidPointerCoords')}(orientation: $orientation, pressure: $pressure, size: $size, toolMajor: $toolMajor, toolMinor: $toolMinor, touchMajor: $touchMajor, touchMinor: $touchMinor, x: $x, y: $y)";
+    return __s("${objectRuntimeType(this, 'AndroidPointerCoords')}(orientation: $orientation, pressure: $pressure, size: $size, toolMajor: $toolMajor, toolMinor: $toolMinor, touchMajor: $touchMajor, touchMinor: $touchMinor, x: $x, y: $y)");
 }
 
 List<double> AndroidPointerCoordsCls::_asList() {
@@ -114,13 +114,13 @@ AndroidMotionEventCls::AndroidMotionEventCls(int action, int buttonState, int de
         assert(edgeFlags != nullptr);
         assert(source != nullptr);
         assert(flags != nullptr);
-        assert(pointerProperties->length == pointerCount);
-        assert(pointerCoords->length == pointerCount);
+        assert(pointerProperties->length() == pointerCount);
+        assert(pointerCoords->length() == pointerCount);
     }
 }
 
 String AndroidMotionEventCls::toString() {
-    return "AndroidPointerEvent(downTime: $downTime, eventTime: $eventTime, action: $action, pointerCount: $pointerCount, pointerProperties: $pointerProperties, pointerCoords: $pointerCoords, metaState: $metaState, buttonState: $buttonState, xPrecision: $xPrecision, yPrecision: $yPrecision, deviceId: $deviceId, edgeFlags: $edgeFlags, source: $source, flags: $flags, motionEventId: $motionEventId)";
+    return __s("AndroidPointerEvent(downTime: $downTime, eventTime: $eventTime, action: $action, pointerCount: $pointerCount, pointerProperties: $pointerProperties, pointerCoords: $pointerCoords, metaState: $metaState, buttonState: $buttonState, xPrecision: $xPrecision, yPrecision: $yPrecision, deviceId: $deviceId, edgeFlags: $edgeFlags, source: $source, flags: $flags, motionEventId: $motionEventId)");
 }
 
 List<dynamic> AndroidMotionEventCls::_asList(int viewId) {
@@ -137,7 +137,7 @@ void _AndroidMotionEventConverterCls::pointTransformer(PointTransformer transfor
 }
 
 void _AndroidMotionEventConverterCls::handlePointerDownEvent(PointerDownEvent event) {
-    if (pointerProperties->isEmpty) {
+    if (pointerProperties->isEmpty()) {
         downTimeMillis = event->timeStamp->inMilliseconds;
     }
     int androidPointerId = 0;
@@ -162,7 +162,7 @@ void _AndroidMotionEventConverterCls::handlePointerCancelEvent(PointerCancelEven
 }
 
 AndroidMotionEvent _AndroidMotionEventConverterCls::toAndroidMotionEvent(PointerEvent event) {
-    List<int> pointers = pointerPositions->keys->toList();
+    List<int> pointers = pointerPositions->keys()->toList();
     int pointerIdx = pointers->indexOf(event->pointer);
     int numPointers = pointers->length;
     int kPointerDataFlagBatched = 1;
@@ -170,16 +170,16 @@ AndroidMotionEvent _AndroidMotionEventConverterCls::toAndroidMotionEvent(Pointer
         return nullptr;
     }
     int action;
-    if (event is PointerDownEvent) {
+    if (is<PointerDownEvent>(event)) {
         action = numPointers == 1? AndroidViewControllerCls::kActionDown : AndroidViewControllerCls->pointerAction(pointerIdx, AndroidViewControllerCls::kActionPointerDown);
     } else     {
-        if (event is PointerUpEvent) {
+        if (is<PointerUpEvent>(event)) {
         action = numPointers == 1? AndroidViewControllerCls::kActionUp : AndroidViewControllerCls->pointerAction(pointerIdx, AndroidViewControllerCls::kActionPointerUp);
     } else     {
-        if (event is PointerMoveEvent) {
+        if (is<PointerMoveEvent>(event)) {
         action = AndroidViewControllerCls::kActionMove;
     } else     {
-        if (event is PointerCancelEvent) {
+        if (is<PointerCancelEvent>(event)) {
         action = AndroidViewControllerCls::kActionCancel;
     } else {
         return nullptr;
@@ -187,7 +187,7 @@ AndroidMotionEvent _AndroidMotionEventConverterCls::toAndroidMotionEvent(Pointer
 ;
     };
     };
-    }    return make<AndroidMotionEventCls>(downTimeMillis!, event->timeStamp->inMilliseconds, action, pointerPositions->length, pointers-><AndroidPointerProperties>map([=] (int i)     {
+    }    return make<AndroidMotionEventCls>(downTimeMillis!, event->timeStamp->inMilliseconds, action, pointerPositions->length(), pointers-><AndroidPointerProperties>map([=] (int i)     {
         pointerProperties[i]!;
     })->toList(), pointers-><AndroidPointerCoords>map([=] (int i)     {
         pointerPositions[i]!;
@@ -201,14 +201,14 @@ AndroidPointerProperties _AndroidMotionEventConverterCls::propertiesFor(PointerE
 }
 
 bool _AndroidMotionEventConverterCls::isSinglePointerAction(PointerEvent event) {
-    return event is! PointerDownEvent && event is! PointerUpEvent;
+    return !is<PointerDownEvent>(event) && !is<PointerUpEvent>(event);
 }
 
 void _AndroidMotionEventConverterCls::_remove(int pointer) {
     pointerPositions->remove(pointer);
     usedAndroidPointerIds->remove(pointerProperties[pointer]!->id);
     pointerProperties->remove(pointer);
-    if (pointerProperties->isEmpty) {
+    if (pointerProperties->isEmpty()) {
         downTimeMillis = nullptr;
     }
 }
@@ -222,9 +222,9 @@ bool AndroidViewControllerCls::awaitingCreation() {
 }
 
 Future<void> AndroidViewControllerCls::create(Size size) {
-    assert(_state != _AndroidViewStateCls::disposed, "trying to create a disposed Android view");
-    assert(_state == _AndroidViewStateCls::waitingForSize, "Android view is already sized. View id: $viewId");
-    if (_createRequiresSize && size == nullptr) {
+    assert(_state != _AndroidViewStateCls::disposed, __s("trying to create a disposed Android view"));
+    assert(_state == _AndroidViewStateCls::waitingForSize, __s("Android view is already sized. View id: $viewId"));
+    if (_createRequiresSize() && size == nullptr) {
         return;
     }
     _state = _AndroidViewStateCls::creating;
@@ -236,7 +236,7 @@ Future<void> AndroidViewControllerCls::create(Size size) {
 }
 
 Future<Size> AndroidViewControllerCls::setSize(Size size) {
-    assert(_state != _AndroidViewStateCls::disposed, "Android view is disposed. View id: $viewId");
+    assert(_state != _AndroidViewStateCls::disposed, __s("Android view is disposed. View id: $viewId"));
     if (_state == _AndroidViewStateCls::waitingForSize) {
         await await create(size);
         return size;
@@ -246,7 +246,7 @@ Future<Size> AndroidViewControllerCls::setSize(Size size) {
 }
 
 Future<void> AndroidViewControllerCls::sendMotionEvent(AndroidMotionEvent event) {
-    await await SystemChannelsCls::platform_views-><dynamic>invokeMethod("touch", event->_asList(viewId));
+    await await SystemChannelsCls::platform_views-><dynamic>invokeMethod(__s("touch"), event->_asList(viewId));
 }
 
 PointTransformer AndroidViewControllerCls::pointTransformer() {
@@ -279,7 +279,7 @@ List<PlatformViewCreatedCallback> AndroidViewControllerCls::createdCallbacks() {
 }
 
 Future<void> AndroidViewControllerCls::setLayoutDirection(TextDirection layoutDirection) {
-    assert(_state != _AndroidViewStateCls::disposed, "trying to set a layout direction for a disposed UIView. View id: $viewId");
+    assert(_state != _AndroidViewStateCls::disposed, __s("trying to set a layout direction for a disposed UIView. View id: $viewId"));
     if (layoutDirection == _layoutDirection) {
         return;
     }
@@ -288,22 +288,22 @@ Future<void> AndroidViewControllerCls::setLayoutDirection(TextDirection layoutDi
     if (_state == _AndroidViewStateCls::waitingForSize) {
         return;
     }
-    Map<String, dynamic> map1 = make<MapCls<>>();map1.set("id", viewId);map1.set("direction", _getAndroidDirection(layoutDirection));await await SystemChannelsCls::platform_views-><void>invokeMethod("setDirection", list1);
+    Map<String, dynamic> map1 = make<MapCls<>>();map1.set(__s("id"), viewId);map1.set(__s("direction"), _getAndroidDirection(layoutDirection));await await SystemChannelsCls::platform_views-><void>invokeMethod(__s("setDirection"), list1);
 }
 
 Future<void> AndroidViewControllerCls::dispatchPointerEvent(PointerEvent event) {
-    if (event is PointerHoverEvent) {
+    if (is<PointerHoverEvent>(event)) {
         return;
     }
-    if (event is PointerDownEvent) {
+    if (is<PointerDownEvent>(event)) {
         _motionEventConverter->handlePointerDownEvent(event);
     }
     _motionEventConverter->updatePointerPositions(event);
     AndroidMotionEvent androidEvent = _motionEventConverter->toAndroidMotionEvent(event);
-    if (event is PointerUpEvent) {
+    if (is<PointerUpEvent>(event)) {
         _motionEventConverter->handlePointerUpEvent(event);
     } else     {
-        if (event is PointerCancelEvent) {
+        if (is<PointerCancelEvent>(event)) {
         _motionEventConverter->handlePointerCancelEvent(event);
     }
 ;
@@ -316,7 +316,7 @@ Future<void> AndroidViewControllerCls::clearFocus() {
     if (_state != _AndroidViewStateCls::created) {
         return <void>value();
     }
-    return SystemChannelsCls::platform_views-><void>invokeMethod("clearFocus", viewId);
+    return SystemChannelsCls::platform_views-><void>invokeMethod(__s("clearFocus"), viewId);
 }
 
 Future<void> AndroidViewControllerCls::dispose() {
@@ -352,16 +352,16 @@ bool ExpensiveAndroidViewControllerCls::_createRequiresSize() {
 }
 
 Future<void> ExpensiveAndroidViewControllerCls::_sendCreateMessage(Size size) {
-    Map<String, dynamic> map1 = make<MapCls<>>();map1.set("id", viewId);map1.set("viewType", _viewType);map1.set("direction", AndroidViewControllerCls->_getAndroidDirection(_layoutDirection));map1.set("hybrid", true);Map<String, dynamic> args = list1;
+    Map<String, dynamic> map1 = make<MapCls<>>();map1.set(__s("id"), viewId);map1.set(__s("viewType"), _viewType);map1.set(__s("direction"), AndroidViewControllerCls->_getAndroidDirection(_layoutDirection));map1.set(__s("hybrid"), true);Map<String, dynamic> args = list1;
     if (_creationParams != nullptr) {
         ByteData paramsByteData = _creationParamsCodec!->encodeMessage(_creationParams)!;
-        args["params"] = Uint8ListCls->view(paramsByteData->buffer, 0, paramsByteData->lengthInBytes);
+        args[__s("params")] = Uint8ListCls->view(paramsByteData->buffer, 0, paramsByteData->lengthInBytes);
     }
-    await await SystemChannelsCls::platform_views-><void>invokeMethod("create", args);
+    await await SystemChannelsCls::platform_views-><void>invokeMethod(__s("create"), args);
 }
 
 Future<void> ExpensiveAndroidViewControllerCls::_sendDisposeMessage() {
-    Map<String, dynamic> map1 = make<MapCls<>>();map1.set("id", viewId);map1.set("hybrid", true);return SystemChannelsCls::platform_views-><void>invokeMethod("dispose", list1);
+    Map<String, dynamic> map1 = make<MapCls<>>();map1.set(__s("id"), viewId);map1.set(__s("hybrid"), true);return SystemChannelsCls::platform_views-><void>invokeMethod(__s("dispose"), list1);
 }
 
 Future<Size> ExpensiveAndroidViewControllerCls::_sendResizeMessage(Size size) {
@@ -380,20 +380,20 @@ Future<void> TextureAndroidViewControllerCls::setOffset(Offset off) {
         return;
     }
     _off = off;
-    Map<String, dynamic> map1 = make<MapCls<>>();map1.set("id", viewId);map1.set("top", off->dy);map1.set("left", off->dx);await await SystemChannelsCls::platform_views-><void>invokeMethod("offset", list1);
+    Map<String, dynamic> map1 = make<MapCls<>>();map1.set(__s("id"), viewId);map1.set(__s("top"), off->dy);map1.set(__s("left"), off->dx);await await SystemChannelsCls::platform_views-><void>invokeMethod(__s("offset"), list1);
 }
 
 void TextureAndroidViewControllerCls::_(Unknown creationParams, Unknown creationParamsCodec, Unknown layoutDirection, Unknown viewId, Unknown viewType)
 
 Future<Size> TextureAndroidViewControllerCls::_sendResizeMessage(Size size) {
-    assert(_state != _AndroidViewStateCls::waitingForSize, "Android view must have an initial size. View id: $viewId");
+    assert(_state != _AndroidViewStateCls::waitingForSize, __s("Android view must have an initial size. View id: $viewId"));
     assert(size != nullptr);
     assert(!size->isEmpty);
-    Map<String, dynamic> map1 = make<MapCls<>>();map1.set("id", viewId);map1.set("width", size->width);map1.set("height", size->height);Map<Object, Object> meta = await SystemChannelsCls::platform_views-><Object, Object>invokeMapMethod("resize", list1);
+    Map<String, dynamic> map1 = make<MapCls<>>();map1.set(__s("id"), viewId);map1.set(__s("width"), size->width);map1.set(__s("height"), size->height);Map<Object, Object> meta = await SystemChannelsCls::platform_views-><Object, Object>invokeMapMethod(__s("resize"), list1);
     assert(meta != nullptr);
-    assert(meta!->containsKey("width"));
-    assert(meta!->containsKey("height"));
-    return make<SizeCls>(((double)meta!["width"]!), ((double)meta["height"]!));
+    assert(meta!->containsKey(__s("width")));
+    assert(meta!->containsKey(__s("height")));
+    return make<SizeCls>(as<double>(meta![__s("width")]!), as<double>(meta[__s("height")]!));
 }
 
 bool TextureAndroidViewControllerCls::_createRequiresSize() {
@@ -401,21 +401,21 @@ bool TextureAndroidViewControllerCls::_createRequiresSize() {
 }
 
 Future<void> TextureAndroidViewControllerCls::_sendCreateMessage(Size size) {
-    assert(!size->isEmpty, "trying to create $TextureAndroidViewController without setting a valid size.");
-    Map<String, dynamic> map1 = make<MapCls<>>();map1.set("id", viewId);map1.set("viewType", _viewType);map1.set("width", size->width);map1.set("height", size->height);map1.set("direction", AndroidViewControllerCls->_getAndroidDirection(_layoutDirection));Map<String, dynamic> args = list1;
+    assert(!size->isEmpty, __s("trying to create $TextureAndroidViewController without setting a valid size."));
+    Map<String, dynamic> map1 = make<MapCls<>>();map1.set(__s("id"), viewId);map1.set(__s("viewType"), _viewType);map1.set(__s("width"), size->width);map1.set(__s("height"), size->height);map1.set(__s("direction"), AndroidViewControllerCls->_getAndroidDirection(_layoutDirection));Map<String, dynamic> args = list1;
     if (_creationParams != nullptr) {
         ByteData paramsByteData = _creationParamsCodec!->encodeMessage(_creationParams)!;
-        args["params"] = Uint8ListCls->view(paramsByteData->buffer, 0, paramsByteData->lengthInBytes);
+        args[__s("params")] = Uint8ListCls->view(paramsByteData->buffer, 0, paramsByteData->lengthInBytes);
     }
-    _textureId = await SystemChannelsCls::platform_views-><int>invokeMethod("create", args);
+    _textureId = await SystemChannelsCls::platform_views-><int>invokeMethod(__s("create"), args);
 }
 
 Future<void> TextureAndroidViewControllerCls::_sendDisposeMessage() {
-    Map<String, dynamic> map1 = make<MapCls<>>();map1.set("id", viewId);map1.set("hybrid", false);return SystemChannelsCls::platform_views-><void>invokeMethod("dispose", list1);
+    Map<String, dynamic> map1 = make<MapCls<>>();map1.set(__s("id"), viewId);map1.set(__s("hybrid"), false);return SystemChannelsCls::platform_views-><void>invokeMethod(__s("dispose"), list1);
 }
 
 Future<void> UiKitViewControllerCls::setLayoutDirection(TextDirection layoutDirection) {
-    assert(!_debugDisposed, "trying to set a layout direction for a disposed iOS UIView. View id: $id");
+    assert(!_debugDisposed, __s("trying to set a layout direction for a disposed iOS UIView. View id: $id"));
     if (layoutDirection == _layoutDirection) {
         return;
     }
@@ -424,18 +424,18 @@ Future<void> UiKitViewControllerCls::setLayoutDirection(TextDirection layoutDire
 }
 
 Future<void> UiKitViewControllerCls::acceptGesture() {
-    Map<String, dynamic> map1 = make<MapCls<>>();map1.set("id", id);Map<String, dynamic> args = list1;
-    return SystemChannelsCls::platform_views->invokeMethod("acceptGesture", args);
+    Map<String, dynamic> map1 = make<MapCls<>>();map1.set(__s("id"), id);Map<String, dynamic> args = list1;
+    return SystemChannelsCls::platform_views->invokeMethod(__s("acceptGesture"), args);
 }
 
 Future<void> UiKitViewControllerCls::rejectGesture() {
-    Map<String, dynamic> map1 = make<MapCls<>>();map1.set("id", id);Map<String, dynamic> args = list1;
-    return SystemChannelsCls::platform_views->invokeMethod("rejectGesture", args);
+    Map<String, dynamic> map1 = make<MapCls<>>();map1.set(__s("id"), id);Map<String, dynamic> args = list1;
+    return SystemChannelsCls::platform_views->invokeMethod(__s("rejectGesture"), args);
 }
 
 Future<void> UiKitViewControllerCls::dispose() {
     _debugDisposed = true;
-    await await SystemChannelsCls::platform_views-><void>invokeMethod("dispose", id);
+    await await SystemChannelsCls::platform_views-><void>invokeMethod(__s("dispose"), id);
 }
 
 void UiKitViewControllerCls::_(int id, TextDirection layoutDirection)

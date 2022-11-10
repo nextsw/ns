@@ -9,7 +9,7 @@
 #include "framework.hpp"
 
 
-template<typename ConstraintType : Constraints> class ConstrainedLayoutBuilderCls : public RenderObjectWidgetCls {
+template<typename ConstraintType> class ConstrainedLayoutBuilderCls : public RenderObjectWidgetCls {
 public:
     Widget Function(BuildContext , ConstraintType ) builder;
 
@@ -21,9 +21,9 @@ public:
 private:
 
 };
-template<typename ConstraintType : Constraints> using ConstrainedLayoutBuilder = std::shared_ptr<ConstrainedLayoutBuilderCls<ConstraintType : Constraints>>;
+template<typename ConstraintType> using ConstrainedLayoutBuilder = std::shared_ptr<ConstrainedLayoutBuilderCls<ConstraintType>>;
 
-template<typename ConstraintType : Constraints> class _LayoutBuilderElementCls : public RenderObjectElementCls {
+template<typename ConstraintType> class _LayoutBuilderElementCls : public RenderObjectElementCls {
 public:
 
     virtual RenderConstrainedLayoutBuilder<ConstraintType, RenderObject> renderObject();
@@ -54,9 +54,9 @@ private:
     virtual void _layout(ConstraintType constraints);
 
 };
-template<typename ConstraintType : Constraints> using _LayoutBuilderElement = std::shared_ptr<_LayoutBuilderElementCls<ConstraintType : Constraints>>;
+template<typename ConstraintType> using _LayoutBuilderElement = std::shared_ptr<_LayoutBuilderElementCls<ConstraintType>>;
 
-template<typename ConstraintType : Constraints, typename ChildType : RenderObject> class RenderConstrainedLayoutBuilderCls : public ObjectCls {
+template<typename ConstraintType, typename ChildType> class RenderConstrainedLayoutBuilderCls : public ObjectCls {
 public:
 
     virtual void updateCallback(LayoutCallback<ConstraintType> value);
@@ -74,7 +74,7 @@ private:
 
 
 };
-template<typename ConstraintType : Constraints, typename ChildType : RenderObject> using RenderConstrainedLayoutBuilder = std::shared_ptr<RenderConstrainedLayoutBuilderCls<ConstraintType : Constraints, ChildType : RenderObject>>;
+template<typename ConstraintType, typename ChildType> using RenderConstrainedLayoutBuilder = std::shared_ptr<RenderConstrainedLayoutBuilderCls<ConstraintType, ChildType>>;
 
 class LayoutBuilderCls : public ConstrainedLayoutBuilderCls<BoxConstraints> {
 public:

@@ -8,13 +8,13 @@ RawKeyEventDataFuchsiaCls::RawKeyEventDataFuchsiaCls(int codePoint, int hidUsage
 }
 
 String RawKeyEventDataFuchsiaCls::keyLabel() {
-    return codePoint == 0? "" : StringCls->fromCharCode(codePoint);
+    return codePoint == 0? __s("") : StringCls->fromCharCode(codePoint);
 }
 
 LogicalKeyboardKey RawKeyEventDataFuchsiaCls::logicalKey() {
     if (codePoint != 0) {
         int flutterId = LogicalKeyboardKeyCls::unicodePlane | codePoint & LogicalKeyboardKeyCls::valueMask;
-        return kFuchsiaToLogicalKey[flutterId] ?? make<LogicalKeyboardKeyCls>(LogicalKeyboardKeyCls::unicodePlane | codePoint & LogicalKeyboardKeyCls::valueMask);
+        return kFuchsiaToLogicalKey[flutterId] or make<LogicalKeyboardKeyCls>(LogicalKeyboardKeyCls::unicodePlane | codePoint & LogicalKeyboardKeyCls::valueMask);
     }
     LogicalKeyboardKey newKey = kFuchsiaToLogicalKey[hidUsage | LogicalKeyboardKeyCls::fuchsiaPlane];
     if (newKey != nullptr) {
@@ -24,7 +24,7 @@ LogicalKeyboardKey RawKeyEventDataFuchsiaCls::logicalKey() {
 }
 
 PhysicalKeyboardKey RawKeyEventDataFuchsiaCls::physicalKey() {
-    return kFuchsiaToPhysicalKey[hidUsage] ?? make<PhysicalKeyboardKeyCls>(LogicalKeyboardKeyCls::fuchsiaPlane + hidUsage);
+    return kFuchsiaToPhysicalKey[hidUsage] or make<PhysicalKeyboardKeyCls>(LogicalKeyboardKeyCls::fuchsiaPlane + hidUsage);
 }
 
 bool RawKeyEventDataFuchsiaCls::isModifierPressed(ModifierKey key, KeyboardSide side) {
@@ -39,19 +39,19 @@ KeyboardSide RawKeyEventDataFuchsiaCls::getModifierSide(ModifierKey key) {
 
 void RawKeyEventDataFuchsiaCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<int>make<DiagnosticsPropertyCls>("hidUsage", hidUsage));
-    properties->add(<int>make<DiagnosticsPropertyCls>("codePoint", codePoint));
-    properties->add(<int>make<DiagnosticsPropertyCls>("modifiers", modifiers));
+    properties->add(<int>make<DiagnosticsPropertyCls>(__s("hidUsage"), hidUsage));
+    properties->add(<int>make<DiagnosticsPropertyCls>(__s("codePoint"), codePoint));
+    properties->add(<int>make<DiagnosticsPropertyCls>(__s("modifiers"), modifiers));
 }
 
 bool RawKeyEventDataFuchsiaCls::==(Object other) {
     if (identical(this, other)) {
         return true;
     }
-    if (other->runtimeType != runtimeType) {
+    if (other->runtimeType() != runtimeType) {
         return false;
     }
-    return other is RawKeyEventDataFuchsia && other->hidUsage == hidUsage && other->codePoint == codePoint && other->modifiers == modifiers;
+    return is<RawKeyEventDataFuchsia>(other) && other->hidUsage == hidUsage && other->codePoint == codePoint && other->modifiers == modifiers;
 }
 
 int RawKeyEventDataFuchsiaCls::hashCode() {

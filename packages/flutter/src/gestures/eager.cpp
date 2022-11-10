@@ -6,7 +6,7 @@ void EagerGestureRecognizerCls::addAllowedPointer(PointerDownEvent event) {
 }
 
 String EagerGestureRecognizerCls::debugDescription() {
-    return "eager";
+    return __s("eager");
 }
 
 void EagerGestureRecognizerCls::didStopTrackingLastPointer(int pointer) {

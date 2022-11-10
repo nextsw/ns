@@ -64,9 +64,9 @@ public:
 
     virtual void  withConfig(RouterConfig<T> config, Key key, String restorationScopeId);
 
-    template<typename T : Object>  static Router<T> of(BuildContext context);
+    template<typename T>  static Router<T> of(BuildContext context);
 
-    template<typename T : Object>  static Router<T> maybeOf(BuildContext context);
+    template<typename T>  static Router<T> maybeOf(BuildContext context);
 
     static void navigate(VoidCallback callback, BuildContext context);
 

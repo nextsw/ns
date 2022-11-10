@@ -13,7 +13,7 @@ String RawKeyEventDataIosCls::keyLabel() {
 }
 
 PhysicalKeyboardKey RawKeyEventDataIosCls::physicalKey() {
-    return kIosToPhysicalKey[keyCode] ?? make<PhysicalKeyboardKeyCls>(LogicalKeyboardKeyCls::iosPlane + keyCode);
+    return kIosToPhysicalKey[keyCode] or make<PhysicalKeyboardKeyCls>(LogicalKeyboardKeyCls::iosPlane + keyCode);
 }
 
 LogicalKeyboardKey RawKeyEventDataIosCls::logicalKey() {
@@ -21,7 +21,7 @@ LogicalKeyboardKey RawKeyEventDataIosCls::logicalKey() {
     if (numPadKey != nullptr) {
         return numPadKey;
     }
-    LogicalKeyboardKey newKey = _kIosToLogicalMap[keyLabel];
+    LogicalKeyboardKey newKey = _kIosToLogicalMap[keyLabel()];
     if (newKey != nullptr) {
         return newKey;
     }
@@ -29,15 +29,15 @@ LogicalKeyboardKey RawKeyEventDataIosCls::logicalKey() {
     if (knownKey != nullptr) {
         return knownKey;
     }
-    if (keyLabel->isNotEmpty && !LogicalKeyboardKeyCls->isControlCharacter(keyLabel) && !_isUnprintableKey(keyLabel)) {
-        assert(charactersIgnoringModifiers->length <= 2);
+    if (keyLabel()->isNotEmpty() && !LogicalKeyboardKeyCls->isControlCharacter(keyLabel()) && !_isUnprintableKey(keyLabel())) {
+        assert(charactersIgnoringModifiers->length() <= 2);
         int codeUnit = charactersIgnoringModifiers->codeUnitAt(0);
-        if (charactersIgnoringModifiers->length == 2) {
+        if (charactersIgnoringModifiers->length() == 2) {
             int secondCode = charactersIgnoringModifiers->codeUnitAt(1);
             codeUnit = (codeUnit << 16) | secondCode;
         }
         int keyId = LogicalKeyboardKeyCls::unicodePlane | (codeUnit & LogicalKeyboardKeyCls::valueMask);
-        return LogicalKeyboardKeyCls->findKeyByKeyId(keyId) ?? make<LogicalKeyboardKeyCls>(keyId);
+        return LogicalKeyboardKeyCls->findKeyByKeyId(keyId) or make<LogicalKeyboardKeyCls>(keyId);
     }
     return make<LogicalKeyboardKeyCls>(keyCode | LogicalKeyboardKeyCls::iosPlane);
 }
@@ -46,7 +46,7 @@ bool RawKeyEventDataIosCls::isModifierPressed(ModifierKey key, KeyboardSide side
     int independentModifier = modifiers & deviceIndependentMask;
     bool result;
     ;
-    assert(!result || getModifierSide(key) != nullptr, "$runtimeType thinks that a modifier is pressed, but can't figure out what side it's on.");
+    assert(!result || getModifierSide(key) != nullptr, __s("$runtimeType thinks that a modifier is pressed, but can't figure out what side it's on."));
     return result;
 }
 
@@ -57,20 +57,20 @@ KeyboardSide RawKeyEventDataIosCls::getModifierSide(ModifierKey key) {
 
 void RawKeyEventDataIosCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<String>make<DiagnosticsPropertyCls>("characters", characters));
-    properties->add(<String>make<DiagnosticsPropertyCls>("charactersIgnoringModifiers", charactersIgnoringModifiers));
-    properties->add(<int>make<DiagnosticsPropertyCls>("keyCode", keyCode));
-    properties->add(<int>make<DiagnosticsPropertyCls>("modifiers", modifiers));
+    properties->add(<String>make<DiagnosticsPropertyCls>(__s("characters"), characters));
+    properties->add(<String>make<DiagnosticsPropertyCls>(__s("charactersIgnoringModifiers"), charactersIgnoringModifiers));
+    properties->add(<int>make<DiagnosticsPropertyCls>(__s("keyCode"), keyCode));
+    properties->add(<int>make<DiagnosticsPropertyCls>(__s("modifiers"), modifiers));
 }
 
 bool RawKeyEventDataIosCls::==(Object other) {
     if (identical(this, other)) {
         return true;
     }
-    if (other->runtimeType != runtimeType) {
+    if (other->runtimeType() != runtimeType) {
         return false;
     }
-    return other is RawKeyEventDataIos && other->characters == characters && other->charactersIgnoringModifiers == charactersIgnoringModifiers && other->keyCode == keyCode && other->modifiers == modifiers;
+    return is<RawKeyEventDataIos>(other) && other->characters == characters && other->charactersIgnoringModifiers == charactersIgnoringModifiers && other->keyCode == keyCode && other->modifiers == modifiers;
 }
 
 int RawKeyEventDataIosCls::hashCode() {

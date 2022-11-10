@@ -2,7 +2,7 @@
 ReorderableListCls::ReorderableListCls(double anchor, double cacheExtent, Clip clipBehavior, ScrollController controller, DragStartBehavior dragStartBehavior, IndexedWidgetBuilder itemBuilder, int itemCount, double itemExtent, Unknown key, ScrollViewKeyboardDismissBehavior keyboardDismissBehavior, ReorderCallback onReorder, void Function(int index) onReorderEnd, void Function(int index) onReorderStart, EdgeInsetsGeometry padding, ScrollPhysics physics, bool primary, Widget prototypeItem, ReorderItemProxyDecorator proxyDecorator, String restorationId, bool reverse, Axis scrollDirection, bool shrinkWrap) {
     {
         assert(itemCount >= 0);
-        assert(itemExtent == nullptr || prototypeItem == nullptr, "You can only pass itemExtent or prototypeItem, not both");
+        assert(itemExtent == nullptr || prototypeItem == nullptr, __s("You can only pass itemExtent or prototypeItem, not both"));
     }
 }
 
@@ -28,11 +28,11 @@ ReorderableListState ReorderableListCls::createState() {
 }
 
 void ReorderableListStateCls::startItemDragReorder(PointerDownEvent event, int index, MultiDragGestureRecognizer recognizer) {
-    _sliverReorderableListKey->currentState!->startItemDragReorder(index, event, recognizer);
+    _sliverReorderableListKey->currentState()!->startItemDragReorder(index, event, recognizer);
 }
 
 void ReorderableListStateCls::cancelReorder() {
-    _sliverReorderableListKey->currentState!->cancelReorder();
+    _sliverReorderableListKey->currentState()!->cancelReorder();
 }
 
 Widget ReorderableListStateCls::build(BuildContext context) {
@@ -42,7 +42,7 @@ Widget ReorderableListStateCls::build(BuildContext context) {
 SliverReorderableListCls::SliverReorderableListCls(ChildIndexGetter findChildIndexCallback, IndexedWidgetBuilder itemBuilder, int itemCount, double itemExtent, Unknown key, ReorderCallback onReorder, void Function(int ) onReorderEnd, void Function(int ) onReorderStart, Widget prototypeItem, ReorderItemProxyDecorator proxyDecorator) {
     {
         assert(itemCount >= 0);
-        assert(itemExtent == nullptr || prototypeItem == nullptr, "You can only pass itemExtent or prototypeItem, not both");
+        assert(itemExtent == nullptr || prototypeItem == nullptr, __s("You can only pass itemExtent or prototypeItem, not both"));
     }
 }
 
@@ -130,11 +130,11 @@ Widget SliverReorderableListStateCls::build(BuildContext context) {
 }
 
 Axis SliverReorderableListStateCls::_scrollDirection() {
-    return axisDirectionToAxis(_scrollable->axisDirection);
+    return axisDirectionToAxis(_scrollable->axisDirection());
 }
 
 bool SliverReorderableListStateCls::_reverse() {
-    return _scrollable->axisDirection == AxisDirectionCls::up || _scrollable->axisDirection == AxisDirectionCls::left;
+    return _scrollable->axisDirection() == AxisDirectionCls::up || _scrollable->axisDirection() == AxisDirectionCls::left;
 }
 
 void SliverReorderableListStateCls::_registerItem(_ReorderableItemState item) {
@@ -163,17 +163,17 @@ Drag SliverReorderableListStateCls::_dragStart(Offset position) {
         _dragStartTransitionComplete = true;
     });
     _insertIndex = item->index;
-    _dragInfo = make<_DragInfoCls>(item, position, _scrollDirection, _dragUpdate, _dragCancel, _dragEnd, _dropCompleted, widget->proxyDecorator, this);
+    _dragInfo = make<_DragInfoCls>(item, position, _scrollDirection(), _dragUpdate, _dragCancel, _dragEnd, _dropCompleted, widget->proxyDecorator, this);
     _dragInfo!->startDrag();
     OverlayState overlay = OverlayCls->of(context)!;
     assert(_overlayEntry == nullptr);
     _overlayEntry = make<OverlayEntryCls>(_dragInfo!->createProxy);
     overlay->insert(_overlayEntry!);
-    for (_ReorderableItemState childItem : _items->values) {
+    for (_ReorderableItemState childItem : _items->values()) {
         if (childItem == item || !childItem->mounted) {
             continue;
         }
-        childItem->updateForGap(_insertIndex!, _dragInfo!->itemExtent, false, _reverse);
+        childItem->updateForGap(_insertIndex!, _dragInfo!->itemExtent, false, _reverse());
     }
     return _dragInfo;
 }
@@ -182,7 +182,7 @@ void SliverReorderableListStateCls::_dragUpdate(Offset delta, _DragInfo item, Of
     setState([=] () {
         _overlayEntry?->markNeedsBuild();
         _dragUpdateItems();
-        _autoScroller?->startAutoScrollIfNecessary(_dragTargetRect);
+        _autoScroller?->startAutoScrollIfNecessary(_dragTargetRect());
     });
 }
 
@@ -195,13 +195,13 @@ void SliverReorderableListStateCls::_dragCancel(_DragInfo item) {
 void SliverReorderableListStateCls::_dragEnd(_DragInfo item) {
     setState([=] () {
         if (_insertIndex! < widget->itemCount - 1) {
-            _finalDropPosition = _itemOffsetAt(_insertIndex! + (_reverse? 1 : 0));
+            _finalDropPosition = _itemOffsetAt(_insertIndex! + (_reverse()? 1 : 0));
         } else {
-            int itemIndex = _items->length > 1? _insertIndex! - 1 : _insertIndex!;
-            if (_reverse) {
-                _finalDropPosition = _itemOffsetAt(itemIndex) - _extentOffset(item->itemExtent, _scrollDirection);
+            int itemIndex = _items->length() > 1? _insertIndex! - 1 : _insertIndex!;
+            if (_reverse()) {
+                _finalDropPosition = _itemOffsetAt(itemIndex) - _extentOffset(item->itemExtent, _scrollDirection());
             } else {
-                _finalDropPosition = _itemOffsetAt(itemIndex) + _extentOffset(item->itemExtent, _scrollDirection);
+                _finalDropPosition = _itemOffsetAt(itemIndex) + _extentOffset(item->itemExtent, _scrollDirection());
             }
         }
     });
@@ -240,7 +240,7 @@ void SliverReorderableListStateCls::_dragReset() {
 }
 
 void SliverReorderableListStateCls::_resetItemGap() {
-    for (_ReorderableItemState item : _items->values) {
+    for (_ReorderableItemState item : _items->values()) {
         item->resetGap();
     }
 }
@@ -250,29 +250,29 @@ void SliverReorderableListStateCls::_handleScrollableAutoScrolled() {
         return;
     }
     _dragUpdateItems();
-    _autoScroller?->startAutoScrollIfNecessary(_dragTargetRect);
+    _autoScroller?->startAutoScrollIfNecessary(_dragTargetRect());
 }
 
 void SliverReorderableListStateCls::_dragUpdateItems() {
     assert(_dragInfo != nullptr);
     double gapExtent = _dragInfo!->itemExtent;
-    double proxyItemStart = _offsetExtent(_dragInfo!->dragPosition - _dragInfo!->dragOffset, _scrollDirection);
+    double proxyItemStart = _offsetExtent(_dragInfo!->dragPosition - _dragInfo!->dragOffset, _scrollDirection());
     double proxyItemEnd = proxyItemStart + gapExtent;
     int newIndex = _insertIndex!;
-    for (_ReorderableItemState item : _items->values) {
+    for (_ReorderableItemState item : _items->values()) {
         if (item->index == _dragIndex! || !item->mounted) {
             continue;
         }
         Rect geometry = item->targetGeometry();
         if (!_dragStartTransitionComplete && _dragIndex! <= item->index) {
-            Offset transitionOffset = _extentOffset(_reverse? -gapExtent : gapExtent, _scrollDirection);
+            Offset transitionOffset = _extentOffset(_reverse()? -gapExtent : gapExtent, _scrollDirection());
             geometry = (geometry->topLeft - transitionOffset) & geometry->size;
         }
-        double itemStart = _scrollDirection == AxisCls::vertical? geometry->top : geometry->left;
-        double itemExtent = _scrollDirection == AxisCls::vertical? geometry->height : geometry->width;
+        double itemStart = _scrollDirection() == AxisCls::vertical? geometry->top : geometry->left;
+        double itemExtent = _scrollDirection() == AxisCls::vertical? geometry->height : geometry->width;
         double itemEnd = itemStart + itemExtent;
         double itemMiddle = itemStart + itemExtent / 2;
-        if (_reverse) {
+        if (_reverse()) {
             if (itemEnd >= proxyItemEnd && proxyItemEnd >= itemMiddle) {
                 newIndex = item->index;
                                 break;
@@ -312,22 +312,22 @@ void SliverReorderableListStateCls::_dragUpdateItems() {
     }
     if (newIndex != _insertIndex) {
         _insertIndex = newIndex;
-        for (_ReorderableItemState item : _items->values) {
+        for (_ReorderableItemState item : _items->values()) {
             if (item->index == _dragIndex! || !item->mounted) {
                 continue;
             }
-            item->updateForGap(newIndex, gapExtent, true, _reverse);
+            item->updateForGap(newIndex, gapExtent, true, _reverse());
         }
     }
 }
 
 Rect SliverReorderableListStateCls::_dragTargetRect() {
     Offset origin = _dragInfo!->dragPosition - _dragInfo!->dragOffset;
-    return RectCls->fromLTWH(origin->dx, origin->dy, _dragInfo!->itemSize->width, _dragInfo!->itemSize->height);
+    return RectCls->fromLTWH(origin->dx, origin->dy, _dragInfo!->itemSize->width(), _dragInfo!->itemSize->height());
 }
 
 Offset SliverReorderableListStateCls::_itemOffsetAt(int index) {
-    RenderBox itemRenderBox = ((RenderBox)_items[index]!->context->findRenderObject()!);
+    RenderBox itemRenderBox = as<RenderBox>(_items[index]!->context->findRenderObject()!);
     return itemRenderBox->localToGlobal(OffsetCls::zero);
 }
 
@@ -336,7 +336,7 @@ Widget SliverReorderableListStateCls::_itemBuilder(BuildContext context, int ind
         ;
     }
     Widget child = widget->itemBuilder(context, index);
-    assert(child->key != nullptr, "All list items must have a key");
+    assert(child->key != nullptr, __s("All list items must have a key"));
     OverlayState overlay = OverlayCls->of(context)!;
     return make<_ReorderableItemCls>(make<_ReorderableItemGlobalKeyCls>(child->key!, index, this), index, InheritedThemeCls->capture(context, overlay->context), child);
 }
@@ -345,7 +345,7 @@ _ReorderableItemState _ReorderableItemCls::createState() {
     return make<_ReorderableItemStateCls>();
 }
 
-_ReorderableItemCls::_ReorderableItemCls(CapturedThemes capturedThemes, Widget child, int index, Key key) {
+_ReorderableItemCls::_ReorderableItemCls(CapturedThemes capturedThemes, Widget child, int index, Key key) : StatefulWidget(key) {
 }
 
 Key _ReorderableItemStateCls::key() {
@@ -363,7 +363,7 @@ bool _ReorderableItemStateCls::dragging() {
 void _ReorderableItemStateCls::dragging(bool dragging) {
     if (mounted) {
         setState([=] () {
-            _dragging = dragging;
+            _dragging = dragging();
         });
     }
 }
@@ -376,7 +376,7 @@ void _ReorderableItemStateCls::initState() {
 
 void _ReorderableItemStateCls::dispose() {
     _offsetAnimation?->dispose();
-    _listState->_unregisterItem(index, this);
+    _listState->_unregisterItem(index(), this);
     super->dispose();
 }
 
@@ -393,31 +393,31 @@ Widget _ReorderableItemStateCls::build(BuildContext context) {
         return make<SizedBoxCls>();
     }
     _listState->_registerItem(this);
-    return make<TransformCls>(Matrix4Cls->translationValues(offset->dx, offset->dy, 0.0), widget->child);
+    return make<TransformCls>(Matrix4Cls->translationValues(offset()->dx(), offset()->dy(), 0.0), widget->child);
 }
 
 void _ReorderableItemStateCls::deactivate() {
-    _listState->_unregisterItem(index, this);
+    _listState->_unregisterItem(index(), this);
     super->deactivate();
 }
 
 Offset _ReorderableItemStateCls::offset() {
     if (_offsetAnimation != nullptr) {
-        double animValue = CurvesCls::easeInOut->transform(_offsetAnimation!->value);
+        double animValue = CurvesCls::easeInOut->transform(_offsetAnimation!->value());
         return OffsetCls->lerp(_startOffset, _targetOffset, animValue)!;
     }
     return _targetOffset;
 }
 
 void _ReorderableItemStateCls::updateForGap(bool animate, double gapExtent, int gapIndex, bool reverse) {
-    Offset newTargetOffset = (gapIndex <= index)? _extentOffset(reverse? -gapExtent : gapExtent, _listState->_scrollDirection) : OffsetCls::zero;
+    Offset newTargetOffset = (gapIndex <= index())? _extentOffset(reverse? -gapExtent : gapExtent, _listState->_scrollDirection()) : OffsetCls::zero;
     if (newTargetOffset != _targetOffset) {
         _targetOffset = newTargetOffset;
         if (animate) {
             if (_offsetAnimation == nullptr) {
                                             });            _c3.forward();            _c3;            _c2;_offsetAnimation =                                     }                    auto _c1 = make<AnimationControllerCls>(_listState, make<DurationCls>(250));                    _c1.auto _c2 = addListener(rebuild);                    _c2.auto _c3 = addStatusListener([=] (AnimationStatus status) {                                        if (status == AnimationStatusCls::completed) {                                            _startOffset = _targetOffset;                                            _offsetAnimation!->dispose();                                            _offsetAnimation = nullptr;_c1;
             } else {
-                _startOffset = offset;
+                _startOffset = offset();
                 _offsetAnimation!->forward(0.0);
             }
         } else {
@@ -442,7 +442,7 @@ void _ReorderableItemStateCls::resetGap() {
 }
 
 Rect _ReorderableItemStateCls::targetGeometry() {
-    RenderBox itemRenderBox = ((RenderBox)context->findRenderObject()!);
+    RenderBox itemRenderBox = as<RenderBox>(context->findRenderObject()!);
     Offset itemPosition = itemRenderBox->localToGlobal(OffsetCls::zero) + _targetOffset;
     return itemPosition & itemRenderBox->size;
 }
@@ -505,7 +505,7 @@ Widget _DragInfoCls::createProxy(BuildContext context) {
 
 _DragInfoCls::_DragInfoCls(Offset initialPosition, _ReorderableItemState item, _DragItemCallback onCancel, VoidCallback onDropCompleted, _DragItemCallback onEnd, _DragItemUpdate onUpdate, ReorderItemProxyDecorator proxyDecorator, Axis scrollDirection, TickerProvider tickerProvider) {
     {
-        RenderBox itemRenderBox = ((RenderBox)item->context->findRenderObject()!);
+        RenderBox itemRenderBox = as<RenderBox>(item->context->findRenderObject()!);
         listState = item->_listState;
         index = item->index;
         child = item->widget->child;
@@ -526,20 +526,20 @@ void _DragInfoCls::_dropCompleted() {
 
 Offset _overlayOrigin(BuildContext context) {
     OverlayState overlay = OverlayCls->of(context)!;
-    RenderBox overlayBox = ((RenderBox)overlay->context->findRenderObject()!);
+    RenderBox overlayBox = as<RenderBox>(overlay->context->findRenderObject()!);
     return overlayBox->localToGlobal(OffsetCls::zero);
 }
 
 Widget _DragItemProxyCls::build(BuildContext context) {
-    Widget proxyChild = proxyDecorator?->call(child, index, animation->view) ?? child;
+    Widget proxyChild = proxyDecorator?->call(child, index, animation->view()) or child;
     Offset overlayOrigin = _overlayOrigin(context);
     return make<MediaQueryCls>(MediaQueryCls->of(context)->removePadding(true), make<AnimatedBuilderCls>(animation, [=] (BuildContext context,Widget child) {
         Offset effectivePosition = position;
         Offset dropPosition = listState->_finalDropPosition;
         if (dropPosition != nullptr) {
-            effectivePosition = OffsetCls->lerp(dropPosition - overlayOrigin, effectivePosition, CurvesCls::easeOut->transform(animation->value))!;
+            effectivePosition = OffsetCls->lerp(dropPosition - overlayOrigin, effectivePosition, CurvesCls::easeOut->transform(animation->value()))!;
         }
-        return make<PositionedCls>(effectivePosition->dx, effectivePosition->dy, make<SizedBoxCls>(size->width, size->height, child));
+        return make<PositionedCls>(effectivePosition->dx, effectivePosition->dy, make<SizedBoxCls>(size->width(), size->height(), child));
     }, proxyChild));
 }
 
@@ -560,15 +560,15 @@ Offset _restrictAxis(Offset offset, Axis scrollDirection) {
 }
 
 bool _ReorderableItemGlobalKeyCls::==(Object other) {
-    if (other->runtimeType != runtimeType) {
+    if (other->runtimeType() != runtimeType) {
         return false;
     }
-    return other is _ReorderableItemGlobalKey && other->subKey == subKey && other->index == index && other->state == state;
+    return is<_ReorderableItemGlobalKey>(other) && other->subKey == subKey && other->index == index && other->state == state;
 }
 
 int _ReorderableItemGlobalKeyCls::hashCode() {
     return ObjectCls->hash(subKey, index, state);
 }
 
-_ReorderableItemGlobalKeyCls::_ReorderableItemGlobalKeyCls(int index, SliverReorderableListState state, Key subKey) {
+_ReorderableItemGlobalKeyCls::_ReorderableItemGlobalKeyCls(int index, SliverReorderableListState state, Key subKey) : GlobalObjectKey(subKey) {
 }

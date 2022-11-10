@@ -104,17 +104,17 @@ bool SelectionGeometryCls::hasSelection() {
 }
 
 SelectionGeometry SelectionGeometryCls::copyWith(SelectionPoint endSelectionPoint, bool hasContent, SelectionPoint startSelectionPoint, SelectionStatus status) {
-    return make<SelectionGeometryCls>(startSelectionPoint ?? this->startSelectionPoint, endSelectionPoint ?? this->endSelectionPoint, status ?? this->status, hasContent ?? this->hasContent);
+    return make<SelectionGeometryCls>(startSelectionPoint or this->startSelectionPoint, endSelectionPoint or this->endSelectionPoint, status or this->status, hasContent or this->hasContent);
 }
 
 bool SelectionGeometryCls::==(Object other) {
     if (identical(this, other)) {
         return true;
     }
-    if (other->runtimeType != runtimeType) {
+    if (other->runtimeType() != runtimeType) {
         return false;
     }
-    return other is SelectionGeometry && other->startSelectionPoint == startSelectionPoint && other->endSelectionPoint == endSelectionPoint && other->status == status && other->hasContent == hasContent;
+    return is<SelectionGeometry>(other) && other->startSelectionPoint == startSelectionPoint && other->endSelectionPoint == endSelectionPoint && other->status == status && other->hasContent == hasContent;
 }
 
 int SelectionGeometryCls::hashCode() {
@@ -133,10 +133,10 @@ bool SelectionPointCls::==(Object other) {
     if (identical(this, other)) {
         return true;
     }
-    if (other->runtimeType != runtimeType) {
+    if (other->runtimeType() != runtimeType) {
         return false;
     }
-    return other is SelectionPoint && other->localPosition == localPosition && other->lineHeight == lineHeight && other->handleType == handleType;
+    return is<SelectionPoint>(other) && other->localPosition == localPosition && other->lineHeight == lineHeight && other->handleType == handleType;
 }
 
 int SelectionPointCls::hashCode() {

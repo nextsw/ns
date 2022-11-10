@@ -1,34 +1,34 @@
 #include "window.hpp"
 double FlutterViewCls::devicePixelRatio() {
-    return viewConfiguration->devicePixelRatio;
+    return viewConfiguration()->devicePixelRatio;
 }
 
 Rect FlutterViewCls::physicalGeometry() {
-    return viewConfiguration->geometry;
+    return viewConfiguration()->geometry;
 }
 
 Size FlutterViewCls::physicalSize() {
-    return viewConfiguration->geometry->size;
+    return viewConfiguration()->geometry->size;
 }
 
 WindowPadding FlutterViewCls::viewInsets() {
-    return viewConfiguration->viewInsets;
+    return viewConfiguration()->viewInsets;
 }
 
 WindowPadding FlutterViewCls::viewPadding() {
-    return viewConfiguration->viewPadding;
+    return viewConfiguration()->viewPadding;
 }
 
 WindowPadding FlutterViewCls::systemGestureInsets() {
-    return viewConfiguration->systemGestureInsets;
+    return viewConfiguration()->systemGestureInsets;
 }
 
 WindowPadding FlutterViewCls::padding() {
-    return viewConfiguration->padding;
+    return viewConfiguration()->padding;
 }
 
 List<DisplayFeature> FlutterViewCls::displayFeatures() {
-    return viewConfiguration->displayFeatures;
+    return viewConfiguration()->displayFeatures;
 }
 
 void FlutterViewCls::render(Scene scene) {
@@ -264,35 +264,35 @@ bool AccessibilityFeaturesCls::onOffSwitchLabels() {
 
 String AccessibilityFeaturesCls::toString() {
     List<String> features = makeList();
-    if (accessibleNavigation)     {
-        features->add("accessibleNavigation");
+    if (accessibleNavigation())     {
+        features->add(__s("accessibleNavigation"));
     }
-    if (invertColors)     {
-        features->add("invertColors");
+    if (invertColors())     {
+        features->add(__s("invertColors"));
     }
-    if (disableAnimations)     {
-        features->add("disableAnimations");
+    if (disableAnimations())     {
+        features->add(__s("disableAnimations"));
     }
-    if (boldText)     {
-        features->add("boldText");
+    if (boldText())     {
+        features->add(__s("boldText"));
     }
-    if (reduceMotion)     {
-        features->add("reduceMotion");
+    if (reduceMotion())     {
+        features->add(__s("reduceMotion"));
     }
-    if (highContrast)     {
-        features->add("highContrast");
+    if (highContrast())     {
+        features->add(__s("highContrast"));
     }
-    if (onOffSwitchLabels)     {
-        features->add("onOffSwitchLabels");
+    if (onOffSwitchLabels())     {
+        features->add(__s("onOffSwitchLabels"));
     }
-    return "AccessibilityFeatures$features";
+    return __s("AccessibilityFeatures$features");
 }
 
 bool AccessibilityFeaturesCls::==(Object other) {
-    if (other->runtimeType != runtimeType)     {
+    if (other->runtimeType() != runtimeType)     {
         return false;
     }
-    return other is AccessibilityFeatures && other->_index == _index;
+    return is<AccessibilityFeatures>(other) && other->_index == _index;
 }
 
 int AccessibilityFeaturesCls::hashCode() {
@@ -300,14 +300,14 @@ int AccessibilityFeaturesCls::hashCode() {
 }
 
 GestureSettings GestureSettingsCls::copyWith(double physicalDoubleTapSlop, double physicalTouchSlop) {
-    return make<GestureSettingsCls>(physicalTouchSlop ?? this->physicalTouchSlop, physicalDoubleTapSlop ?? this->physicalDoubleTapSlop);
+    return make<GestureSettingsCls>(physicalTouchSlop or this->physicalTouchSlop, physicalDoubleTapSlop or this->physicalDoubleTapSlop);
 }
 
 bool GestureSettingsCls::==(Object other) {
-    if (other->runtimeType != runtimeType)     {
+    if (other->runtimeType() != runtimeType)     {
         return false;
     }
-    return other is GestureSettings && other->physicalTouchSlop == physicalTouchSlop && other->physicalDoubleTapSlop == physicalDoubleTapSlop;
+    return is<GestureSettings>(other) && other->physicalTouchSlop == physicalTouchSlop && other->physicalDoubleTapSlop == physicalDoubleTapSlop;
 }
 
 int GestureSettingsCls::hashCode() {
@@ -315,5 +315,5 @@ int GestureSettingsCls::hashCode() {
 }
 
 String GestureSettingsCls::toString() {
-    return "GestureSettings(physicalTouchSlop: $physicalTouchSlop, physicalDoubleTapSlop: $physicalDoubleTapSlop)";
+    return __s("GestureSettings(physicalTouchSlop: $physicalTouchSlop, physicalDoubleTapSlop: $physicalDoubleTapSlop)");
 }

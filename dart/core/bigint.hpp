@@ -8,12 +8,12 @@
 class BigIntCls : public ObjectCls {
 public:
 
-    extern static BigInt zero();
-    extern static BigInt one();
-    extern static BigInt two();
-    extern static BigInt parse(int radix, String source);
-    extern static BigInt tryParse(int radix, String source);
-    extern void  from(num value);
+    static BigInt zero();
+    static BigInt one();
+    static BigInt two();
+    static BigInt parse(int radix, String source);
+    static BigInt tryParse(int radix, String source);
+    void  from(num value);
     virtual BigInt abs();
     virtual BigInt operator-();
     virtual BigInt operator+(BigInt other);

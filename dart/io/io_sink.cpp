@@ -6,14 +6,14 @@ template<typename T> void _StreamSinkImplCls<T>::add(T data) {
     if (_isClosed) {
         ;
     }
-    _controller->add(data);
+    _controller()->add(data);
 }
 
 template<typename T> void _StreamSinkImplCls<T>::addError(error , StackTrace stackTrace) {
     if (_isClosed) {
         ;
     }
-    _controller->addError(error, stackTrace);
+    _controller()->addError(error, stackTrace);
 }
 
 template<typename T> Future _StreamSinkImplCls<T>::addStream(Stream<T> stream) {
@@ -21,7 +21,7 @@ template<typename T> Future _StreamSinkImplCls<T>::addStream(Stream<T> stream) {
         ;
     }
     if (_hasError)     {
-        return done;
+        return done();
     }
     _isBound = true;
     auto future = _controllerCompleter == nullptr? _target->addStream(stream) : _controllerCompleter!->future->then([=] () {
@@ -60,7 +60,7 @@ template<typename T> Future _StreamSinkImplCls<T>::close() {
             _closeTarget();
         }
     }
-    return done;
+    return done();
 }
 
 template<typename T> Future _StreamSinkImplCls<T>::done() {
@@ -94,7 +94,7 @@ template<typename T> StreamController<T> _StreamSinkImplCls<T>::_controller() {
     if (_controllerInstance == nullptr) {
         _controllerInstance = <T>make<StreamControllerCls>(true);
         _controllerCompleter = make<CompleterCls>();
-        _target->addStream(_controller->stream)->then([=] () {
+        _target->addStream(_controller()->stream())->then([=] () {
             if (_isBound) {
                 _controllerCompleter!->complete(this);
                 _controllerCompleter = nullptr;
@@ -127,7 +127,7 @@ void _IOSinkImplCls::encoding(Encoding value) {
 }
 
 void _IOSinkImplCls::write(Object obj) {
-    String string = "$obj";
+    String string = __s("$obj");
     if (stringValue->isEmpty)     {
         return;
     }
@@ -154,12 +154,12 @@ void _IOSinkImplCls::writeAll(Iterable objects, String separator) {
 
 void _IOSinkImplCls::writeln(Object object) {
     write(object);
-    write("\n");
+    write(__s("\n"));
 }
 
 void _IOSinkImplCls::writeCharCode(int charCode) {
     write(StringCls->fromCharCode(charCode));
 }
 
-_IOSinkImplCls::_IOSinkImplCls(Encoding _encoding, StreamConsumer<List<int>> target) {
+_IOSinkImplCls::_IOSinkImplCls(Encoding _encoding, StreamConsumer<List<int>> target) : _StreamSinkImpl<List<int>>(target) {
 }

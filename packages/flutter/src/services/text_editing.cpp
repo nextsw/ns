@@ -1,5 +1,5 @@
 #include "text_editing.hpp"
-TextSelectionCls::TextSelectionCls(TextAffinity affinity, int baseOffset, int extentOffset, bool isDirectional) {
+TextSelectionCls::TextSelectionCls(TextAffinity affinity, int baseOffset, int extentOffset, bool isDirectional) : TextRange( < extentOffset? baseOffset : extentOffset,  < extentOffset? extentOffset : baseOffset) {
 }
 
 void TextSelectionCls::collapsed(TextAffinity affinity, int offset)
@@ -35,18 +35,18 @@ TextPosition TextSelectionCls::extent() {
 }
 
 String TextSelectionCls::toString() {
-    String typeName = objectRuntimeType(this, "TextSelection");
+    String typeName = objectRuntimeType(this, __s("TextSelection"));
     if (!isValid) {
-        return "$typeName.invalid";
+        return __s("$typeName.invalid");
     }
-    return isCollapsed? "$typeName.collapsed(offset: $baseOffset, affinity: $affinity, isDirectional: $isDirectional)" : "$typeName(baseOffset: $baseOffset, extentOffset: $extentOffset, isDirectional: $isDirectional)";
+    return isCollapsed? __s("$typeName.collapsed(offset: $baseOffset, affinity: $affinity, isDirectional: $isDirectional)") : __s("$typeName(baseOffset: $baseOffset, extentOffset: $extentOffset, isDirectional: $isDirectional)");
 }
 
 bool TextSelectionCls::==(Object other) {
     if (identical(this, other)) {
         return true;
     }
-    if (other is! TextSelection) {
+    if (!is<TextSelection>(other)) {
         return false;
     }
     if (!isValid) {
@@ -57,14 +57,14 @@ bool TextSelectionCls::==(Object other) {
 
 int TextSelectionCls::hashCode() {
     if (!isValid) {
-        return ObjectCls->hash(-1->hashCode, -1->hashCode, TextAffinityCls::downstream->hashCode);
+        return ObjectCls->hash(-1->hashCode, -1->hashCode, TextAffinityCls::downstream->hashCode());
     }
-    int affinityHash = isCollapsed? affinity->hashCode : TextAffinityCls::downstream->hashCode;
-    return ObjectCls->hash(baseOffset->hashCode, extentOffset->hashCode, affinityHash, isDirectional->hashCode);
+    int affinityHash = isCollapsed? affinity->hashCode() : TextAffinityCls::downstream->hashCode();
+    return ObjectCls->hash(baseOffset->hashCode, extentOffset->hashCode, affinityHash, isDirectional->hashCode());
 }
 
 TextSelection TextSelectionCls::copyWith(TextAffinity affinity, int baseOffset, int extentOffset, bool isDirectional) {
-    return make<TextSelectionCls>(baseOffset ?? this->baseOffset, extentOffset ?? this->extentOffset, affinity ?? this->affinity, isDirectional ?? this->isDirectional);
+    return make<TextSelectionCls>(baseOffset or this->baseOffset, extentOffset or this->extentOffset, affinity or this->affinity, isDirectional or this->isDirectional);
 }
 
 TextSelection TextSelectionCls::expandTo(bool extentAtIndex, TextPosition position) {
@@ -85,7 +85,7 @@ TextSelection TextSelectionCls::expandTo(bool extentAtIndex, TextPosition positi
 }
 
 TextSelection TextSelectionCls::extendTo(TextPosition position) {
-    if (extent == position) {
+    if (extent() == position) {
         return this;
     }
     return copyWith(position->offset, position->affinity);

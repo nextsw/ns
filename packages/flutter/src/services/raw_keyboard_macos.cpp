@@ -21,13 +21,13 @@ String RawKeyEventDataMacOsCls::keyLabel() {
 }
 
 PhysicalKeyboardKey RawKeyEventDataMacOsCls::physicalKey() {
-    return kMacOsToPhysicalKey[keyCode] ?? make<PhysicalKeyboardKeyCls>(LogicalKeyboardKeyCls::windowsPlane + keyCode);
+    return kMacOsToPhysicalKey[keyCode] or make<PhysicalKeyboardKeyCls>(LogicalKeyboardKeyCls::windowsPlane + keyCode);
 }
 
 LogicalKeyboardKey RawKeyEventDataMacOsCls::logicalKey() {
     if (specifiedLogicalKey != nullptr) {
         int key = specifiedLogicalKey!;
-        return LogicalKeyboardKeyCls->findKeyByKeyId(key) ?? make<LogicalKeyboardKeyCls>(key);
+        return LogicalKeyboardKeyCls->findKeyByKeyId(key) or make<LogicalKeyboardKeyCls>(key);
     }
     LogicalKeyboardKey numPadKey = kMacOsNumPadMap[keyCode];
     if (numPadKey != nullptr) {
@@ -38,15 +38,15 @@ LogicalKeyboardKey RawKeyEventDataMacOsCls::logicalKey() {
         return knownKey;
     }
     int character;
-    if (keyLabel->isNotEmpty) {
-        List<int> codePoints = keyLabel->runes->toList();
-        if (codePoints->length == 1 && !LogicalKeyboardKeyCls->isControlCharacter(keyLabel) && !_isUnprintableKey(keyLabel)) {
+    if (keyLabel()->isNotEmpty()) {
+        List<int> codePoints = keyLabel()->runes()->toList();
+        if (codePoints->length == 1 && !LogicalKeyboardKeyCls->isControlCharacter(keyLabel()) && !_isUnprintableKey(keyLabel())) {
             character = runeToLowerCase(codePoints[0]);
         }
     }
     if (character != nullptr) {
         int keyId = LogicalKeyboardKeyCls::unicodePlane | (character & LogicalKeyboardKeyCls::valueMask);
-        return LogicalKeyboardKeyCls->findKeyByKeyId(keyId) ?? make<LogicalKeyboardKeyCls>(keyId);
+        return LogicalKeyboardKeyCls->findKeyByKeyId(keyId) or make<LogicalKeyboardKeyCls>(keyId);
     }
     return make<LogicalKeyboardKeyCls>(keyCode | LogicalKeyboardKeyCls::macosPlane);
 }
@@ -55,7 +55,7 @@ bool RawKeyEventDataMacOsCls::isModifierPressed(ModifierKey key, KeyboardSide si
     int independentModifier = modifiers & deviceIndependentMask;
     bool result;
     ;
-    assert(!result || getModifierSide(key) != nullptr, "$runtimeType thinks that a modifier is pressed, but can't figure out what side it's on.");
+    assert(!result || getModifierSide(key) != nullptr, __s("$runtimeType thinks that a modifier is pressed, but can't figure out what side it's on."));
     return result;
 }
 
@@ -65,26 +65,26 @@ KeyboardSide RawKeyEventDataMacOsCls::getModifierSide(ModifierKey key) {
 }
 
 bool RawKeyEventDataMacOsCls::shouldDispatchEvent() {
-    return logicalKey != LogicalKeyboardKeyCls::fn;
+    return logicalKey() != LogicalKeyboardKeyCls::fn;
 }
 
 void RawKeyEventDataMacOsCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<String>make<DiagnosticsPropertyCls>("characters", characters));
-    properties->add(<String>make<DiagnosticsPropertyCls>("charactersIgnoringModifiers", charactersIgnoringModifiers));
-    properties->add(<int>make<DiagnosticsPropertyCls>("keyCode", keyCode));
-    properties->add(<int>make<DiagnosticsPropertyCls>("modifiers", modifiers));
-    properties->add(<int>make<DiagnosticsPropertyCls>("specifiedLogicalKey", specifiedLogicalKeynullptr));
+    properties->add(<String>make<DiagnosticsPropertyCls>(__s("characters"), characters));
+    properties->add(<String>make<DiagnosticsPropertyCls>(__s("charactersIgnoringModifiers"), charactersIgnoringModifiers));
+    properties->add(<int>make<DiagnosticsPropertyCls>(__s("keyCode"), keyCode));
+    properties->add(<int>make<DiagnosticsPropertyCls>(__s("modifiers"), modifiers));
+    properties->add(<int>make<DiagnosticsPropertyCls>(__s("specifiedLogicalKey"), specifiedLogicalKeynullptr));
 }
 
 bool RawKeyEventDataMacOsCls::==(Object other) {
     if (identical(this, other)) {
         return true;
     }
-    if (other->runtimeType != runtimeType) {
+    if (other->runtimeType() != runtimeType) {
         return false;
     }
-    return other is RawKeyEventDataMacOs && other->characters == characters && other->charactersIgnoringModifiers == charactersIgnoringModifiers && other->keyCode == keyCode && other->modifiers == modifiers;
+    return is<RawKeyEventDataMacOs>(other) && other->characters == characters && other->charactersIgnoringModifiers == charactersIgnoringModifiers && other->keyCode == keyCode && other->modifiers == modifiers;
 }
 
 int RawKeyEventDataMacOsCls::hashCode() {

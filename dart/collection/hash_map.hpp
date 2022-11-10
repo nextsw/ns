@@ -12,8 +12,8 @@ int _defaultHashCode(Object a);
 template<typename K, typename V> class HashMapCls : public ObjectCls {
 public:
 
-    extern  HashMapCls(bool equals(K , K ) , int hashCode(K ) , bool isValidKey(dynamic ) );
-    extern void  identity();
+     HashMapCls(bool equals(K , K ) , int hashCode(K ) , bool isValidKey(dynamic ) );
+    void  identity();
     virtual void  from(Map<dynamic, dynamic> other);
 
     virtual void  of(Map<K, V> other);

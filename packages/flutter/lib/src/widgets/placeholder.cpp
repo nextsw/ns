@@ -20,9 +20,9 @@ Widget PlaceholderCls::build(BuildContext context) {
 
 void PlaceholderCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(make<ColorPropertyCls>("color", colormake<ColorCls>(0xFF455A64)));
-    properties->add(make<DoublePropertyCls>("strokeWidth", strokeWidth2.0));
-    properties->add(make<DoublePropertyCls>("fallbackWidth", fallbackWidth400.0));
-    properties->add(make<DoublePropertyCls>("fallbackHeight", fallbackHeight400.0));
-    properties->add(<Widget>make<DiagnosticsPropertyCls>("child", childnullptr));
+    properties->add(make<ColorPropertyCls>(__s("color"), colormake<ColorCls>(0xFF455A64)));
+    properties->add(make<DoublePropertyCls>(__s("strokeWidth"), strokeWidth2.0));
+    properties->add(make<DoublePropertyCls>(__s("fallbackWidth"), fallbackWidth400.0));
+    properties->add(make<DoublePropertyCls>(__s("fallbackHeight"), fallbackHeight400.0));
+    properties->add(<Widget>make<DiagnosticsPropertyCls>(__s("child"), childnullptr));
 }

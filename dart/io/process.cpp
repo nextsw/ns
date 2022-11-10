@@ -1,6 +1,6 @@
 #include "process.hpp"
 Never exit(int code) {
-    ArgumentErrorCls->checkNotNull(code, "code");
+    ArgumentErrorCls->checkNotNull(code, __s("code"));
     if (!_EmbedderConfigCls->_mayExit) {
         ;
     }
@@ -8,7 +8,7 @@ Never exit(int code) {
 }
 
 void exitCode(int code) {
-    ArgumentErrorCls->checkNotNull(code, "code");
+    ArgumentErrorCls->checkNotNull(code, __s("code"));
     _ProcessUtilsCls->_setExitCode(code);
 }
 
@@ -48,14 +48,14 @@ Stream<ProcessSignal> ProcessSignalCls::watch() {
 }
 
 String SignalExceptionCls::toString() {
-    auto msg = "";
+    auto msg = __s("");
     if (osError != nullptr) {
-        msg = ", osError: $osError";
+        msg = __s(", osError: $osError");
     }
-    return "SignalException: $message$msg";
+    return __s("SignalException: $message$msg");
 }
 
 String ProcessExceptionCls::toString() {
-    auto args = arguments->join(" ");
-    return "ProcessException: $message\n  Command: $executable $args";
+    auto args = arguments->join(__s(" "));
+    return __s("ProcessException: $message\n  Command: $executable $args");
 }

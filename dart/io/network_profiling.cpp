@@ -4,7 +4,7 @@ String _NetworkProfilingCls::getVersion() {
 }
 
 void _NetworkProfilingCls::_registerServiceExtension() {
-    map1.set("type", "Version");map1.set("major", _versionMajor);map1.set("minor", _versionMinor);registerExtension(_kGetHttpEnableTimelineLogging, _serviceExtensionHandler);
+    map1.set(__s("type"), __s("Version"));map1.set(__s("major"), _versionMajor);map1.set(__s("minor"), _versionMinor);registerExtension(_kGetHttpEnableTimelineLogging, _serviceExtensionHandler);
     registerExtension(_kSetHttpEnableTimelineLogging, _serviceExtensionHandler);
     registerExtension(_kHttpEnableTimelineLogging, _serviceExtensionHandler);
     registerExtension(_kGetSocketProfileRPC, _serviceExtensionHandler);
@@ -33,11 +33,11 @@ String _success() {
 }
 
 String _invalidArgument(String argument, dynamic value) {
-    return "Value for parameter '$argument' is not valid: $value";
+    return __s("Value for parameter '$argument' is not valid: $value");
 }
 
 String _missingArgument(String argument) {
-    return "Parameter '$argument' is required";
+    return __s("Parameter '$argument' is required");
 }
 
 String _getHttpEnableTimelineLogging() {
@@ -45,23 +45,23 @@ String _getHttpEnableTimelineLogging() {
 }
 
 String _setHttpEnableTimelineLogging(Map<String, String> parameters) {
-    map1.set("type", "Success");map1.set("type", "HttpTimelineLoggingState");map1.set("enabled", HttpClientCls::enableTimelineLogging);String kEnable = "enable";
+    map1.set(__s("type"), __s("Success"));map1.set(__s("type"), __s("HttpTimelineLoggingState"));map1.set(__s("enabled"), HttpClientCls::enableTimelineLogging);String kEnable = __s("enable");
     if (!parameters->containsKey(kEnable)) {
         ;
     }
     Unknown enable = parameters[kEnable]!->toLowerCase();
-    if (enable != "true" && enable != "false") {
+    if (enable != __s("true") && enable != __s("false")) {
         ;
     }
-    HttpClientCls::enableTimelineLogging = enable == "true";
+    HttpClientCls::enableTimelineLogging = enable == __s("true");
     return _success();
 }
 
 String _getHttpProfileRequest(Map<String, String> parameters) {
-    if (!parameters->containsKey("id")) {
+    if (!parameters->containsKey(__s("id"))) {
         ;
     }
-    Unknown id = intValue->tryParse(parameters["id"]!);
+    Unknown id = intValue->tryParse(parameters[__s("id")]!);
     if (id == nullptr) {
         ;
     }
@@ -73,20 +73,20 @@ String _getHttpProfileRequest(Map<String, String> parameters) {
 }
 
 String _socketProfilingEnabled(Map<String, String> parameters) {
-    String kEnabled = "enabled";
+    String kEnabled = __s("enabled");
     if (parameters->containsKey(kEnabled)) {
         Unknown enable = parameters[kEnabled]!->toLowerCase();
-        if (enable != "true" && enable != "false") {
+        if (enable != __s("true") && enable != __s("false")) {
             ;
         }
-        enable == "true"? _SocketProfileCls->start() : _SocketProfileCls->pause();
+        enable == __s("true")? _SocketProfileCls->start() : _SocketProfileCls->pause();
     }
-    map1.set("type", "SocketProfilingState");map1.set("enabled", _SocketProfileCls::enableSocketProfiling);return json->encode(list1);
+    map1.set(__s("type"), __s("SocketProfilingState"));map1.set(__s("enabled"), _SocketProfileCls::enableSocketProfiling);return json->encode(list1);
 }
 
 void _SocketProfileCls::enableSocketProfiling(bool enabled) {
     if (enabled != _enableSocketProfiling) {
-            map1.set("isolateId", ServiceCls->getIsolateID(IsolateCls::current));    map1.set("enabled", enabled);postEvent("SocketProfilingStateChange", list1);
+            map1.set(__s("isolateId"), ServiceCls->getIsolateID(IsolateCls::current));    map1.set(__s("enabled"), enabled);postEvent(__s("SocketProfilingStateChange"), list1);
         _enableSocketProfiling = enabled;
     }
 }
@@ -100,7 +100,7 @@ String _SocketProfileCls::toJson() {
 }
 
 void _SocketProfileCls::collectNewSocket(InternetAddress addr, int id, int port, String type) {
-    map1.set("type", _kType);map1.set("sockets", _idToSocketStatistic->values->map([=] (Unknown  f)     {        f->toMap();    })->toList());_SocketProfileCls->collectStatistic(id, _SocketProfileTypeCls::startTime);
+    map1.set(__s("type"), _kType);map1.set(__s("sockets"), _idToSocketStatistic->values->map([=] (Unknown  f)     {        f->toMap();    })->toList());_SocketProfileCls->collectStatistic(id, _SocketProfileTypeCls::startTime);
     _SocketProfileCls->collectStatistic(id, _SocketProfileTypeCls::socketType, type);
     _SocketProfileCls->collectStatistic(id, _SocketProfileTypeCls::address, addr);
     _SocketProfileCls->collectStatistic(id, _SocketProfileTypeCls::port, port);
@@ -133,16 +133,16 @@ String _SocketProfileCls::clear() {
 }
 
 Map<String, dynamic> _SocketStatisticCls::toMap() {
-    Map<String, dynamic> map1 = make<MapCls<>>();map1.set("id", id);Unknown map = list1;
-    _setIfNotNull(map, "startTime", startTime);
-    _setIfNotNull(map, "endTime", endTime);
-    _setIfNotNull(map, "address", address);
-    _setIfNotNull(map, "port", port);
-    _setIfNotNull(map, "socketType", socketType);
-    _setIfNotNull(map, "readBytes", readBytes);
-    _setIfNotNull(map, "writeBytes", writeBytes);
-    _setIfNotNull(map, "lastWriteTime", lastWriteTime);
-    _setIfNotNull(map, "lastReadTime", lastReadTime);
+    Map<String, dynamic> map1 = make<MapCls<>>();map1.set(__s("id"), id);Unknown map = list1;
+    _setIfNotNull(map, __s("startTime"), startTime);
+    _setIfNotNull(map, __s("endTime"), endTime);
+    _setIfNotNull(map, __s("address"), address);
+    _setIfNotNull(map, __s("port"), port);
+    _setIfNotNull(map, __s("socketType"), socketType);
+    _setIfNotNull(map, __s("readBytes"), readBytes);
+    _setIfNotNull(map, __s("writeBytes"), writeBytes);
+    _setIfNotNull(map, __s("lastWriteTime"), lastWriteTime);
+    _setIfNotNull(map, __s("lastReadTime"), lastReadTime);
     return map;
 }
 

@@ -15,7 +15,7 @@ bool FlutterLogoDecorationCls::debugAssertIsValid() {
 }
 
 bool FlutterLogoDecorationCls::isComplex() {
-    return !_inTransition;
+    return !_inTransition();
 }
 
 FlutterLogoDecoration FlutterLogoDecorationCls::lerp(FlutterLogoDecoration a, FlutterLogoDecoration b, double t) {
@@ -42,20 +42,20 @@ FlutterLogoDecoration FlutterLogoDecorationCls::lerp(FlutterLogoDecoration a, Fl
 
 FlutterLogoDecoration FlutterLogoDecorationCls::lerpFrom(Decoration a, double t) {
     assert(debugAssertIsValid());
-    if (a == nullptr || a is FlutterLogoDecoration) {
+    if (a == nullptr || is<FlutterLogoDecoration>(a)) {
         assert(a == nullptr || a->debugAssertIsValid());
-        return FlutterLogoDecorationCls->lerp(((FlutterLogoDecoration)a), this, t);
+        return FlutterLogoDecorationCls->lerp(as<FlutterLogoDecoration>(a), this, t);
     }
-    return ((FlutterLogoDecoration)super->lerpFrom(a, t));
+    return as<FlutterLogoDecoration>(super->lerpFrom(a, t));
 }
 
 FlutterLogoDecoration FlutterLogoDecorationCls::lerpTo(Decoration b, double t) {
     assert(debugAssertIsValid());
-    if (b == nullptr || b is FlutterLogoDecoration) {
+    if (b == nullptr || is<FlutterLogoDecoration>(b)) {
         assert(b == nullptr || b->debugAssertIsValid());
-        return FlutterLogoDecorationCls->lerp(this, ((FlutterLogoDecoration)b), t);
+        return FlutterLogoDecorationCls->lerp(this, as<FlutterLogoDecoration>(b), t);
     }
-    return ((FlutterLogoDecoration)super->lerpTo(b, t));
+    return as<FlutterLogoDecoration>(super->lerpTo(b, t));
 }
 
 bool FlutterLogoDecorationCls::hitTest(Offset position, Size size, TextDirection textDirection) {
@@ -76,7 +76,7 @@ bool FlutterLogoDecorationCls::==(Object other) {
     if (identical(this, other)) {
         return true;
     }
-    return other is FlutterLogoDecoration && other->textColor == textColor && other->_position == _position && other->_opacity == _opacity;
+    return is<FlutterLogoDecoration>(other) && other->textColor == textColor && other->_position == _position && other->_opacity == _opacity;
 }
 
 int FlutterLogoDecorationCls::hashCode() {
@@ -86,10 +86,10 @@ int FlutterLogoDecorationCls::hashCode() {
 
 void FlutterLogoDecorationCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(make<ColorPropertyCls>("textColor", textColor));
-    properties->add(<FlutterLogoStyle>make<EnumPropertyCls>("style", style));
-    if (_inTransition) {
-        properties->add(DiagnosticsNodeCls->message("transition ${debugFormatDouble(_position)}:${debugFormatDouble(_opacity)}"));
+    properties->add(make<ColorPropertyCls>(__s("textColor"), textColor));
+    properties->add(<FlutterLogoStyle>make<EnumPropertyCls>(__s("style"), style));
+    if (_inTransition()) {
+        properties->add(DiagnosticsNodeCls->message(__s("transition ${debugFormatDouble(_position)}:${debugFormatDouble(_opacity)}")));
     }
 }
 
@@ -98,7 +98,7 @@ bool FlutterLogoDecorationCls::_inTransition() {
 }
 
 void _FlutterLogoPainterCls::paint(Canvas canvas, ImageConfiguration configuration, Offset offset) {
-    offset = _config->margin->topLeft;
+    offset = _config->margin->topLeft();
     Size canvasSize = _config->margin->deflateSize(configuration->size!);
     if (canvasSize->isEmpty) {
         return;
@@ -138,8 +138,8 @@ void _FlutterLogoPainterCls::paint(Canvas canvas, ImageConfiguration configurati
             double fontSize = 2.0 / 3.0 * logoSquare->height * (1 - (10.4 * 2.0) / 202.0);
             double scale = fontSize / 100.0;
             double finalLeftTextPosition = (256.4 / 820.0) * rect->width - (32.0 / 350.0) * fontSize;
-            double initialLeftTextPosition = rect->width / 2.0 - _textBoundingRect->width * scale;
-            Offset textOffset = make<OffsetCls>(rect->left + ui->lerpDouble(initialLeftTextPosition, finalLeftTextPosition, _config->_position)!, rect->top + (rect->height - _textBoundingRect->height * scale) / 2.0);
+            double initialLeftTextPosition = rect->width / 2.0 - _textBoundingRect->width() * scale;
+            Offset textOffset = make<OffsetCls>(rect->left + ui->lerpDouble(initialLeftTextPosition, finalLeftTextPosition, _config->_position)!, rect->top + (rect->height - _textBoundingRect->height() * scale) / 2.0);
             canvas->save();
             if (_config->_position < 1.0) {
                 Offset center = logoSquare->center;
@@ -159,11 +159,11 @@ void _FlutterLogoPainterCls::paint(Canvas canvas, ImageConfiguration configurati
             } else {
                 canvas->save();
             }
-            canvas->translate(logoTargetSquare->center->dx - (_textBoundingRect->width * scale / 2.0), logoTargetSquare->bottom);
+            canvas->translate(logoTargetSquare->center->dx - (_textBoundingRect->width() * scale / 2.0), logoTargetSquare->bottom);
             canvas->scale(scale, scale);
             _textPainter->paint(canvas, OffsetCls::zero);
             if (_config->_position > -1.0) {
-                            auto _c6 = make<PaintCls>();            _c6.blendMode = auto _c7 = BlendModeCls::modulate;            _c7.shader = ui->GradientCls->linear(make<OffsetCls>(_textBoundingRect->width * -0.5, 0.0), make<OffsetCls>(_textBoundingRect->width * 1.5, 0.0), makeList(ArrayItem, ArrayItem, ArrayItem, ArrayItem), makeList(ArrayItem, ArrayItem, ArrayItem, ArrayItem));            _c7;canvas->drawRect(_textBoundingRect->inflate(_textBoundingRect->width * 0.5), _c6);
+                            auto _c6 = make<PaintCls>();            _c6.blendMode = auto _c7 = BlendModeCls::modulate;            _c7.shader = ui->GradientCls->linear(make<OffsetCls>(_textBoundingRect->width() * -0.5, 0.0), make<OffsetCls>(_textBoundingRect->width() * 1.5, 0.0), makeList(ArrayItem, ArrayItem, ArrayItem, ArrayItem), makeList(ArrayItem, ArrayItem, ArrayItem, ArrayItem));            _c7;canvas->drawRect(_textBoundingRect->inflate(_textBoundingRect->width() * 0.5), _c6);
             }
             canvas->restore();
         }
@@ -175,7 +175,7 @@ void _FlutterLogoPainterCls::paint(Canvas canvas, ImageConfiguration configurati
     }
 }
 
-_FlutterLogoPainterCls::_FlutterLogoPainterCls(FlutterLogoDecoration _config) {
+_FlutterLogoPainterCls::_FlutterLogoPainterCls(FlutterLogoDecoration _config) : BoxPainter(nullptr) {
     {
         assert(_config != nullptr);
         assert(_config->debugAssertIsValid());
@@ -186,8 +186,8 @@ _FlutterLogoPainterCls::_FlutterLogoPainterCls(FlutterLogoDecoration _config) {
 }
 
 void _FlutterLogoPainterCls::_prepareText() {
-    String kLabel = "Flutter";
-    _textPainter = make<TextPainterCls>(make<TextSpanCls>(kLabel, make<TextStyleCls>(_config->textColor, "Roboto", 100.0 * 350.0 / 247.0, FontWeightCls::w300, TextBaselineCls::alphabetic)), TextDirectionCls::ltr);
+    String kLabel = __s("Flutter");
+    _textPainter = make<TextPainterCls>(make<TextSpanCls>(kLabel, make<TextStyleCls>(_config->textColor, __s("Roboto"), 100.0 * 350.0 / 247.0, FontWeightCls::w300, TextBaselineCls::alphabetic)), TextDirectionCls::ltr);
     _textPainter->layout();
     TextBox textSize = _textPainter->getBoxesForSelection(make<TextSelectionCls>(0, kLabel->length))->single;
     _textBoundingRect = RectCls->fromLTRB(textSize->left, textSize->top, textSize->right, textSize->bottom);

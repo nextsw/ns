@@ -63,7 +63,7 @@ private:
 };
 template<typename T> using _ChainedEvaluation = std::shared_ptr<_ChainedEvaluationCls<T>>;
 
-template<typename T : Object> class TweenCls : public AnimatableCls<T> {
+template<typename T> class TweenCls : public AnimatableCls<T> {
 public:
     T begin;
 
@@ -80,9 +80,9 @@ public:
 private:
 
 };
-template<typename T : Object> using Tween = std::shared_ptr<TweenCls<T : Object>>;
+template<typename T> using Tween = std::shared_ptr<TweenCls<T>>;
 
-template<typename T : Object> class ReverseTweenCls : public TweenCls<T> {
+template<typename T> class ReverseTweenCls : public TweenCls<T> {
 public:
     Tween<T> parent;
 
@@ -94,7 +94,7 @@ public:
 private:
 
 };
-template<typename T : Object> using ReverseTween = std::shared_ptr<ReverseTweenCls<T : Object>>;
+template<typename T> using ReverseTween = std::shared_ptr<ReverseTweenCls<T>>;
 
 class ColorTweenCls : public TweenCls<Color> {
 public:

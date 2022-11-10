@@ -8,11 +8,11 @@ template<typename S> RenderBox SlottedContainerRenderObjectMixinCls<S>::childFor
 }
 
 template<typename S> Iterable<RenderBox> SlottedContainerRenderObjectMixinCls<S>::children() {
-    return _slotToChild->values;
+    return _slotToChild->values();
 }
 
 template<typename S> String SlottedContainerRenderObjectMixinCls<S>::debugNameForSlot(S slot) {
-    if (slot is Enum) {
+    if (is<Enum>(slot)) {
         return slot->name;
     }
     return slot->toString();
@@ -20,31 +20,31 @@ template<typename S> String SlottedContainerRenderObjectMixinCls<S>::debugNameFo
 
 template<typename S> void SlottedContainerRenderObjectMixinCls<S>::attach(PipelineOwner owner) {
     super->attach(owner);
-    for (RenderBox child : children) {
+    for (RenderBox child : children()) {
         child->attach(owner);
     }
 }
 
 template<typename S> void SlottedContainerRenderObjectMixinCls<S>::detach() {
     super->detach();
-    for (RenderBox child : children) {
+    for (RenderBox child : children()) {
         child->detach();
     }
 }
 
 template<typename S> void SlottedContainerRenderObjectMixinCls<S>::redepthChildren() {
-    children->forEach(redepthChild);
+    children()->forEach(redepthChild);
 }
 
 template<typename S> void SlottedContainerRenderObjectMixinCls<S>::visitChildren(RenderObjectVisitor visitor) {
-    children->forEach(visitor);
+    children()->forEach(visitor);
 }
 
 template<typename S> List<DiagnosticsNode> SlottedContainerRenderObjectMixinCls<S>::debugDescribeChildren() {
     List<DiagnosticsNode> value = makeList();
-    Map<RenderBox, S> childToSlot = <RenderBox, S>fromIterables(_slotToChild->values, _slotToChild->keys);
-    for (RenderBox child : children) {
-        _addDiagnostics(child, value, debugNameForSlot(((S)childToSlot[child])));
+    Map<RenderBox, S> childToSlot = <RenderBox, S>fromIterables(_slotToChild->values(), _slotToChild->keys());
+    for (RenderBox child : children()) {
+        _addDiagnostics(child, value, debugNameForSlot(as<S>(childToSlot[child])));
     }
     return value;
 }
@@ -66,16 +66,16 @@ template<typename S> void SlottedContainerRenderObjectMixinCls<S>::_setChild(Ren
 }
 
 template<typename S> SlottedContainerRenderObjectMixin<S> SlottedRenderObjectElementCls<S>::renderObject() {
-    return ((SlottedContainerRenderObjectMixin<S>)super->renderObject);
+    return as<SlottedContainerRenderObjectMixin<S>>(super->renderObject);
 }
 
 template<typename S> void SlottedRenderObjectElementCls<S>::visitChildren(ElementVisitor visitor) {
-    _slotToChild->values->forEach(visitor);
+    _slotToChild->values()->forEach(visitor);
 }
 
 template<typename S> void SlottedRenderObjectElementCls<S>::forgetChild(Element child) {
     assert(_slotToChild->containsValue(child));
-    assert(child->slot is S);
+    assert(is<S>(child->slot));
     assert(_slotToChild->containsKey(child->slot));
     _slotToChild->remove(child->slot);
     super->forgetChild(child);
@@ -93,27 +93,27 @@ template<typename S> void SlottedRenderObjectElementCls<S>::update(SlottedMultiC
 }
 
 template<typename S> void SlottedRenderObjectElementCls<S>::insertRenderObjectChild(RenderBox child, S slot) {
-    renderObject->_setChild(child, slot);
-    assert(renderObject->_slotToChild[slot] == child);
+    renderObject()->_setChild(child, slot);
+    assert(renderObject()->_slotToChild[slot] == child);
 }
 
 template<typename S> void SlottedRenderObjectElementCls<S>::removeRenderObjectChild(RenderBox child, S slot) {
-    assert(renderObject->_slotToChild[slot] == child);
-    renderObject->_setChild(nullptr, slot);
-    assert(renderObject->_slotToChild[slot] == nullptr);
+    assert(renderObject()->_slotToChild[slot] == child);
+    renderObject()->_setChild(nullptr, slot);
+    assert(renderObject()->_slotToChild[slot] == nullptr);
 }
 
 template<typename S> void SlottedRenderObjectElementCls<S>::moveRenderObjectChild(RenderBox child, Object newSlot, Object oldSlot) {
-    assert(false, "not reachable");
+    assert(false, __s("not reachable"));
 }
 
 template<typename S> void SlottedRenderObjectElementCls<S>::_updateChildren() {
-    SlottedMultiChildRenderObjectWidgetMixin<S> slottedMultiChildRenderObjectWidgetMixin = ((SlottedMultiChildRenderObjectWidgetMixin<S>)widget);
+    SlottedMultiChildRenderObjectWidgetMixin<S> slottedMultiChildRenderObjectWidgetMixin = as<SlottedMultiChildRenderObjectWidgetMixin<S>>(widget);
     assert([=] () {
         _debugPreviousSlots = slottedMultiChildRenderObjectWidgetMixin->slots->toList();
         return listEquals(_debugPreviousSlots, slottedMultiChildRenderObjectWidgetMixin->slots->toList());
-    }(), "${widget.runtimeType}.slots must not change.");
-    assert(slottedMultiChildRenderObjectWidgetMixin->slots->toSet()->length == slottedMultiChildRenderObjectWidgetMixin->slots->length, "slots must be unique");
+    }(), __s("${widget.runtimeType}.slots must not change."));
+    assert(slottedMultiChildRenderObjectWidgetMixin->slots->toSet()->length == slottedMultiChildRenderObjectWidgetMixin->slots->length, __s("slots must be unique"));
     for (S slot : slottedMultiChildRenderObjectWidgetMixin->slots) {
         _updateChild(slottedMultiChildRenderObjectWidgetMixin->childForSlot(slot), slot);
     }

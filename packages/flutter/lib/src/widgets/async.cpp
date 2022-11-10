@@ -80,10 +80,10 @@ template<typename T> void AsyncSnapshotCls<T>::withData(T data, ConnectionState 
 template<typename T> void AsyncSnapshotCls<T>::withError(Object error, StackTrace stackTrace, ConnectionState state)
 
 template<typename T> T AsyncSnapshotCls<T>::requireData() {
-    if (hasData) {
+    if (hasData()) {
         return data!;
     }
-    if (hasError) {
+    if (hasError()) {
         ErrorCls->throwWithStackTrace(error!, stackTrace!);
     }
     ;
@@ -102,14 +102,14 @@ template<typename T> bool AsyncSnapshotCls<T>::hasError() {
 }
 
 template<typename T> String AsyncSnapshotCls<T>::toString() {
-    return "${objectRuntimeType(this, 'AsyncSnapshot')}($connectionState, $data, $error, $stackTrace)";
+    return __s("${objectRuntimeType(this, 'AsyncSnapshot')}($connectionState, $data, $error, $stackTrace)");
 }
 
 template<typename T> bool AsyncSnapshotCls<T>::==(Object other) {
     if (identical(this, other)) {
         return true;
     }
-    return other is AsyncSnapshot<T> && other->connectionState == connectionState && other->data == data && other->error == error && other->stackTrace == stackTrace;
+    return is<AsyncSnapshot<T>>(other) && other->connectionState == connectionState && other->data == data && other->error == error && other->stackTrace == stackTrace;
 }
 
 template<typename T> int AsyncSnapshotCls<T>::hashCode() {
@@ -125,7 +125,7 @@ template<typename T> StreamBuilderCls<T>::StreamBuilderCls(AsyncWidgetBuilder<T>
 }
 
 template<typename T> AsyncSnapshot<T> StreamBuilderCls<T>::initial() {
-    return initialData == nullptr? <T>nothing() : <T>withData(ConnectionStateCls::none, ((T)initialData));
+    return initialData == nullptr? <T>nothing() : <T>withData(ConnectionStateCls::none, as<T>(initialData));
 }
 
 template<typename T> AsyncSnapshot<T> StreamBuilderCls<T>::afterConnected(AsyncSnapshot<T> current) {
@@ -164,7 +164,7 @@ template<typename T> State<FutureBuilder<T>> FutureBuilderCls<T>::createState() 
 
 template<typename T> void _FutureBuilderStateCls<T>::initState() {
     super->initState();
-    _snapshot = widget->initialData == nullptr? <T>nothing() : <T>withData(ConnectionStateCls::none, ((T)widget->initialData));
+    _snapshot = widget->initialData == nullptr? <T>nothing() : <T>withData(ConnectionStateCls::none, as<T>(widget->initialData));
     _subscribe();
 }
 

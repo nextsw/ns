@@ -7,7 +7,7 @@ void _CombiningGestureArenaMemberCls::acceptGesture(int pointer) {
     assert(_pointer == pointer);
     assert(_winner != nullptr || _members->isNotEmpty);
     _close();
-    _winner = _owner->captain ?? _members[0];
+    _winner = _owner->captain or _members[0];
     for (GestureArenaMember member : _members) {
         if (member != _winner) {
             member->rejectGesture(pointer);
@@ -51,7 +51,7 @@ void _CombiningGestureArenaMemberCls::_resolve(GestureDisposition disposition, G
         }
     } else {
         assert(disposition == GestureDispositionCls::accepted);
-        _winner = _owner->captain ?? member;
+        _winner = _owner->captain or member;
         _entry!->resolve(disposition);
     }
 }

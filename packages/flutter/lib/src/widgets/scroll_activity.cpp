@@ -53,7 +53,7 @@ double IdleScrollActivityCls::velocity() {
     return 0.0;
 }
 
-HoldScrollActivityCls::HoldScrollActivityCls(ScrollActivityDelegate delegate, VoidCallback onHoldCanceled) {
+HoldScrollActivityCls::HoldScrollActivityCls(ScrollActivityDelegate delegate, VoidCallback onHoldCanceled) : ScrollActivity(delegate) {
 }
 
 bool HoldScrollActivityCls::shouldIgnorePointer() {
@@ -79,10 +79,10 @@ void HoldScrollActivityCls::dispose() {
 
 ScrollDragControllerCls::ScrollDragControllerCls(double carriedVelocity, ScrollActivityDelegate delegate, DragStartDetails details, double motionStartDistanceThreshold, VoidCallback onDragCanceled) {
     {
-        assert(delegate != nullptr);
+        assert(delegate() != nullptr);
         assert(details != nullptr);
-        assert(motionStartDistanceThreshold == nullptr || motionStartDistanceThreshold > 0.0, "motionStartDistanceThreshold must be a positive number or null");
-        _delegate = delegate;
+        assert(motionStartDistanceThreshold == nullptr || motionStartDistanceThreshold > 0.0, __s("motionStartDistanceThreshold must be a positive number or null"));
+        _delegate = delegate();
         _lastDetails = details;
         _retainMomentum = carriedVelocity != nullptr && carriedVelocity != 0.0;
         _lastNonStationaryTimestamp = details->sourceTimeStamp;
@@ -111,31 +111,31 @@ void ScrollDragControllerCls::update(DragUpdateDetails details) {
     if (offset == 0.0) {
         return;
     }
-    if (_reversed) {
+    if (_reversed()) {
         offset = -offset;
     }
-    delegate->applyUserOffset(offset);
+    delegate()->applyUserOffset(offset);
 }
 
 void ScrollDragControllerCls::end(DragEndDetails details) {
     assert(details->primaryVelocity != nullptr);
     double velocity = -details->primaryVelocity!;
-    if (_reversed) {
+    if (_reversed()) {
         velocity = -velocity;
     }
     _lastDetails = details;
     if (_retainMomentum) {
-        bool isFlingingInSameDirection = velocity->sign == carriedVelocity!->sign;
+        bool isFlingingInSameDirection = velocity->sign == carriedVelocity!->sign();
         bool isVelocityNotSubstantiallyLessThanCarriedMomentum = velocity->abs() > carriedVelocity!->abs() * momentumRetainVelocityThresholdFactor;
         if (isFlingingInSameDirection && isVelocityNotSubstantiallyLessThanCarriedMomentum) {
             velocity = carriedVelocity!;
         }
     }
-    delegate->goBallistic(velocity);
+    delegate()->goBallistic(velocity);
 }
 
 void ScrollDragControllerCls::cancel() {
-    delegate->goBallistic(0.0);
+    delegate()->goBallistic(0.0);
 }
 
 void ScrollDragControllerCls::dispose() {
@@ -152,7 +152,7 @@ String ScrollDragControllerCls::toString() {
 }
 
 bool ScrollDragControllerCls::_reversed() {
-    return axisDirectionIsReversed(delegate->axisDirection);
+    return axisDirectionIsReversed(delegate()->axisDirection());
 }
 
 void ScrollDragControllerCls::_maybeLoseMomentum(double offset, Duration timestamp) {
@@ -196,26 +196,26 @@ DragScrollActivityCls::DragScrollActivityCls(ScrollDragController controller, Un
 }
 
 void DragScrollActivityCls::dispatchScrollStartNotification(BuildContext context, ScrollMetrics metrics) {
-    dynamic lastDetails = _controller!->lastDetails;
-    assert(lastDetails is DragStartDetails);
-    make<ScrollStartNotificationCls>(metrics, context, ((DragStartDetails)lastDetails))->dispatch(context);
+    dynamic lastDetails = _controller!->lastDetails();
+    assert(is<DragStartDetails>(lastDetails));
+    make<ScrollStartNotificationCls>(metrics, context, as<DragStartDetails>(lastDetails))->dispatch(context);
 }
 
 void DragScrollActivityCls::dispatchScrollUpdateNotification(BuildContext context, ScrollMetrics metrics, double scrollDelta) {
-    dynamic lastDetails = _controller!->lastDetails;
-    assert(lastDetails is DragUpdateDetails);
-    make<ScrollUpdateNotificationCls>(metrics, context, scrollDelta, ((DragUpdateDetails)lastDetails))->dispatch(context);
+    dynamic lastDetails = _controller!->lastDetails();
+    assert(is<DragUpdateDetails>(lastDetails));
+    make<ScrollUpdateNotificationCls>(metrics, context, scrollDelta, as<DragUpdateDetails>(lastDetails))->dispatch(context);
 }
 
 void DragScrollActivityCls::dispatchOverscrollNotification(BuildContext context, ScrollMetrics metrics, double overscroll) {
-    dynamic lastDetails = _controller!->lastDetails;
-    assert(lastDetails is DragUpdateDetails);
-    make<OverscrollNotificationCls>(metrics, context, overscroll, ((DragUpdateDetails)lastDetails))->dispatch(context);
+    dynamic lastDetails = _controller!->lastDetails();
+    assert(is<DragUpdateDetails>(lastDetails));
+    make<OverscrollNotificationCls>(metrics, context, overscroll, as<DragUpdateDetails>(lastDetails))->dispatch(context);
 }
 
 void DragScrollActivityCls::dispatchScrollEndNotification(BuildContext context, ScrollMetrics metrics) {
-    dynamic lastDetails = _controller!->lastDetails;
-    make<ScrollEndNotificationCls>(metrics, context, lastDetails is DragEndDetails? lastDetails : nullptr)->dispatch(context);
+    dynamic lastDetails = _controller!->lastDetails();
+    make<ScrollEndNotificationCls>(metrics, context, is<DragEndDetails>(lastDetails)? lastDetails : nullptr)->dispatch(context);
 }
 
 bool DragScrollActivityCls::shouldIgnorePointer() {
@@ -236,21 +236,21 @@ void DragScrollActivityCls::dispose() {
 }
 
 String DragScrollActivityCls::toString() {
-    return "${describeIdentity(this)}($_controller)";
+    return __s("${describeIdentity(this)}($_controller)");
 }
 
 BallisticScrollActivityCls::BallisticScrollActivityCls(Unknown delegate, Simulation simulation, TickerProvider vsync) {
     {
-            auto _c1 = AnimationControllerCls->unbounded(kDebugMode? objectRuntimeType(this, "BallisticScrollActivity") : nullptr, vsync);    _c1.auto _c2 = addListener(_tick);    _c2.animateWith(simulation)->whenComplete(_end);    _c2;_controller = _c1;
+            auto _c1 = AnimationControllerCls->unbounded(kDebugMode? objectRuntimeType(this, __s("BallisticScrollActivity")) : nullptr, vsync);    _c1.auto _c2 = addListener(_tick);    _c2.animateWith(simulation)->whenComplete(_end);    _c2;_controller = _c1;
     }
 }
 
 void BallisticScrollActivityCls::resetActivity() {
-    delegate->goBallistic(velocity);
+    delegate->goBallistic(velocity());
 }
 
 void BallisticScrollActivityCls::applyNewDimensions() {
-    delegate->goBallistic(velocity);
+    delegate->goBallistic(velocity());
 }
 
 bool BallisticScrollActivityCls::applyMoveTo(double value) {
@@ -258,7 +258,7 @@ bool BallisticScrollActivityCls::applyMoveTo(double value) {
 }
 
 void BallisticScrollActivityCls::dispatchOverscrollNotification(BuildContext context, ScrollMetrics metrics, double overscroll) {
-    make<OverscrollNotificationCls>(metrics, context, overscroll, velocity)->dispatch(context);
+    make<OverscrollNotificationCls>(metrics, context, overscroll, velocity())->dispatch(context);
 }
 
 bool BallisticScrollActivityCls::shouldIgnorePointer() {
@@ -270,7 +270,7 @@ bool BallisticScrollActivityCls::isScrolling() {
 }
 
 double BallisticScrollActivityCls::velocity() {
-    return _controller->velocity;
+    return _controller->velocity();
 }
 
 void BallisticScrollActivityCls::dispose() {
@@ -279,11 +279,11 @@ void BallisticScrollActivityCls::dispose() {
 }
 
 String BallisticScrollActivityCls::toString() {
-    return "${describeIdentity(this)}($_controller)";
+    return __s("${describeIdentity(this)}($_controller)");
 }
 
 void BallisticScrollActivityCls::_tick() {
-    if (!applyMoveTo(_controller->value)) {
+    if (!applyMoveTo(_controller->value())) {
         delegate->goIdle();
     }
 }
@@ -302,7 +302,7 @@ DrivenScrollActivityCls::DrivenScrollActivityCls(Curve curve, Unknown delegate, 
     }
     {
         _completer = <void>make<CompleterCls>();
-            auto _c1 = AnimationControllerCls->unbounded(from, objectRuntimeType(this, "DrivenScrollActivity"), vsync);    _c1.auto _c2 = addListener(_tick);    _c2.animateTo(toduration, curve)->whenComplete(_end);    _c2;_controller = _c1;
+            auto _c1 = AnimationControllerCls->unbounded(from, objectRuntimeType(this, __s("DrivenScrollActivity")), vsync);    _c1.auto _c2 = addListener(_tick);    _c2.animateTo(toduration, curve)->whenComplete(_end);    _c2;_controller = _c1;
     }
 }
 
@@ -311,7 +311,7 @@ Future<void> DrivenScrollActivityCls::done() {
 }
 
 void DrivenScrollActivityCls::dispatchOverscrollNotification(BuildContext context, ScrollMetrics metrics, double overscroll) {
-    make<OverscrollNotificationCls>(metrics, context, overscroll, velocity)->dispatch(context);
+    make<OverscrollNotificationCls>(metrics, context, overscroll, velocity())->dispatch(context);
 }
 
 bool DrivenScrollActivityCls::shouldIgnorePointer() {
@@ -323,7 +323,7 @@ bool DrivenScrollActivityCls::isScrolling() {
 }
 
 double DrivenScrollActivityCls::velocity() {
-    return _controller->velocity;
+    return _controller->velocity();
 }
 
 void DrivenScrollActivityCls::dispose() {
@@ -333,15 +333,15 @@ void DrivenScrollActivityCls::dispose() {
 }
 
 String DrivenScrollActivityCls::toString() {
-    return "${describeIdentity(this)}($_controller)";
+    return __s("${describeIdentity(this)}($_controller)");
 }
 
 void DrivenScrollActivityCls::_tick() {
-    if (delegate->setPixels(_controller->value) != 0.0) {
+    if (delegate->setPixels(_controller->value()) != 0.0) {
         delegate->goIdle();
     }
 }
 
 void DrivenScrollActivityCls::_end() {
-    delegate->goBallistic(velocity);
+    delegate->goBallistic(velocity());
 }

@@ -10,12 +10,12 @@ public:
 
 private:
 
-    extern static Never _exit(int status);
-    extern static void _setExitCode(int status);
-    extern static int _getExitCode();
-    extern static void _sleep(int millis);
-    extern static int _pid(Process process);
-    extern static Stream<ProcessSignal> _watchSignal(ProcessSignal signal);
+    static Never _exit(int status);
+    static void _setExitCode(int status);
+    static int _getExitCode();
+    static void _sleep(int millis);
+    static int _pid(Process process);
+    static Stream<ProcessSignal> _watchSignal(ProcessSignal signal);
 };
 using _ProcessUtils = std::shared_ptr<_ProcessUtilsCls>;
 Never exit(int code);
@@ -32,8 +32,8 @@ int pid();
 class ProcessInfoCls : public ObjectCls {
 public:
 
-    extern static int currentRss();
-    extern static int maxRss();
+    static int currentRss();
+    static int maxRss();
 private:
 
 };
@@ -66,10 +66,10 @@ class ProcessCls : public ObjectCls {
 public:
 
     virtual Future<int> exitCode();
-    extern static Future<Process> start(List<String> arguments, Map<String, String> environment, String executable, bool includeParentEnvironment, ProcessStartMode mode, bool runInShell, String workingDirectory);
-    extern static Future<ProcessResult> run(List<String> arguments, Map<String, String> environment, String executable, bool includeParentEnvironment, bool runInShell, Encoding stderrEncoding, Encoding stdoutEncoding, String workingDirectory);
-    extern static ProcessResult runSync(List<String> arguments, Map<String, String> environment, String executable, bool includeParentEnvironment, bool runInShell, Encoding stderrEncoding, Encoding stdoutEncoding, String workingDirectory);
-    extern static bool killPid(int pid, ProcessSignal signal);
+    static Future<Process> start(List<String> arguments, Map<String, String> environment, String executable, bool includeParentEnvironment, ProcessStartMode mode, bool runInShell, String workingDirectory);
+    static Future<ProcessResult> run(List<String> arguments, Map<String, String> environment, String executable, bool includeParentEnvironment, bool runInShell, Encoding stderrEncoding, Encoding stdoutEncoding, String workingDirectory);
+    static ProcessResult runSync(List<String> arguments, Map<String, String> environment, String executable, bool includeParentEnvironment, bool runInShell, Encoding stderrEncoding, Encoding stdoutEncoding, String workingDirectory);
+    static bool killPid(int pid, ProcessSignal signal);
     virtual Stream<List<int>> stdout();
     virtual Stream<List<int>> stderr();
     virtual IOSink stdin();

@@ -37,8 +37,8 @@ public:
     virtual double ceilToDouble() override;
     virtual double truncateToDouble() override;
     virtual String toString() override;
-    extern static double parse(double onError(String source) , String source) override;
-    extern static double tryParse(String source) override;
+    static double parse(double onError(String source) , String source) override;
+    static double tryParse(String source) override;
 private:
 
 };

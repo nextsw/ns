@@ -8,9 +8,9 @@
 class StringCls : public ObjectCls {
 public:
 
-    extern void  fromCharCodes(Iterable<int> charCodes, int end, int start);
-    extern void  fromCharCode(int charCode);
-    extern void  fromEnvironment(String defaultValue, String name);
+    void  fromCharCodes(Iterable<int> charCodes, int end, int start);
+    void  fromCharCode(int charCode);
+    void  fromEnvironment(String defaultValue, String name);
     virtual String operator[](int index);
     virtual int codeUnitAt(int index);
     virtual int length();

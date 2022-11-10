@@ -1,82 +1,82 @@
 #include "wrappers.hpp"
 template<typename E> bool _DelegatingIterableBaseCls<E>::any(bool test(E ) ) {
-    return _base->any(test);
+    return _base()->any(test);
 }
 
 template<typename E> Iterable<T> _DelegatingIterableBaseCls<E>::casttemplate<typename T> () {
-    return _base-><T>cast();
+    return _base()-><T>cast();
 }
 
 template<typename E> bool _DelegatingIterableBaseCls<E>::contains(Object element) {
-    return _base->contains(element);
+    return _base()->contains(element);
 }
 
 template<typename E> E _DelegatingIterableBaseCls<E>::elementAt(int index) {
-    return _base->elementAt(index);
+    return _base()->elementAt(index);
 }
 
 template<typename E> bool _DelegatingIterableBaseCls<E>::every(bool test(E ) ) {
-    return _base->every(test);
+    return _base()->every(test);
 }
 
 template<typename E> Iterable<T> _DelegatingIterableBaseCls<E>::expandtemplate<typename T> (Iterable<T> f(E ) ) {
-    return _base->expand(f);
+    return _base()->expand(f);
 }
 
 template<typename E> E _DelegatingIterableBaseCls<E>::first() {
-    return _base->first;
+    return _base()->first();
 }
 
 template<typename E> E _DelegatingIterableBaseCls<E>::firstWhere(E orElse() , bool test(E ) ) {
-    return _base->firstWhere(testorElse);
+    return _base()->firstWhere(testorElse);
 }
 
 template<typename E> T _DelegatingIterableBaseCls<E>::foldtemplate<typename T> (T combine(E element, T previousValue) , T initialValue) {
-    return _base->fold(initialValue, combine);
+    return _base()->fold(initialValue, combine);
 }
 
 template<typename E> Iterable<E> _DelegatingIterableBaseCls<E>::followedBy(Iterable<E> other) {
-    return _base->followedBy(other);
+    return _base()->followedBy(other);
 }
 
 template<typename E> void _DelegatingIterableBaseCls<E>::forEach(void f(E ) ) {
-    return _base->forEach(f);
+    return _base()->forEach(f);
 }
 
 template<typename E> bool _DelegatingIterableBaseCls<E>::isEmpty() {
-    return _base->isEmpty;
+    return _base()->isEmpty();
 }
 
 template<typename E> bool _DelegatingIterableBaseCls<E>::isNotEmpty() {
-    return _base->isNotEmpty;
+    return _base()->isNotEmpty();
 }
 
 template<typename E> Iterator<E> _DelegatingIterableBaseCls<E>::iterator() {
-    return _base->iterator;
+    return _base()->iterator();
 }
 
 template<typename E> String _DelegatingIterableBaseCls<E>::join(String separator) {
-    return _base->join(separator);
+    return _base()->join(separator);
 }
 
 template<typename E> E _DelegatingIterableBaseCls<E>::last() {
-    return _base->last;
+    return _base()->last();
 }
 
 template<typename E> E _DelegatingIterableBaseCls<E>::lastWhere(E orElse() , bool test(E ) ) {
-    return _base->lastWhere(testorElse);
+    return _base()->lastWhere(testorElse);
 }
 
 template<typename E> int _DelegatingIterableBaseCls<E>::length() {
-    return _base->length;
+    return _base()->length();
 }
 
 template<typename E> Iterable<T> _DelegatingIterableBaseCls<E>::maptemplate<typename T> (T f(E ) ) {
-    return _base->map(f);
+    return _base()->map(f);
 }
 
 template<typename E> E _DelegatingIterableBaseCls<E>::reduce(E combine(E element, E value) ) {
-    return _base->reduce(combine);
+    return _base()->reduce(combine);
 }
 
 template<typename E> Iterable<T> _DelegatingIterableBaseCls<E>::retypetemplate<typename T> () {
@@ -84,47 +84,47 @@ template<typename E> Iterable<T> _DelegatingIterableBaseCls<E>::retypetemplate<t
 }
 
 template<typename E> E _DelegatingIterableBaseCls<E>::single() {
-    return _base->single;
+    return _base()->single();
 }
 
 template<typename E> E _DelegatingIterableBaseCls<E>::singleWhere(E orElse() , bool test(E ) ) {
-    return _base->singleWhere(testorElse);
+    return _base()->singleWhere(testorElse);
 }
 
 template<typename E> Iterable<E> _DelegatingIterableBaseCls<E>::skip(int n) {
-    return _base->skip(n);
+    return _base()->skip(n);
 }
 
 template<typename E> Iterable<E> _DelegatingIterableBaseCls<E>::skipWhile(bool test(E ) ) {
-    return _base->skipWhile(test);
+    return _base()->skipWhile(test);
 }
 
 template<typename E> Iterable<E> _DelegatingIterableBaseCls<E>::take(int n) {
-    return _base->take(n);
+    return _base()->take(n);
 }
 
 template<typename E> Iterable<E> _DelegatingIterableBaseCls<E>::takeWhile(bool test(E ) ) {
-    return _base->takeWhile(test);
+    return _base()->takeWhile(test);
 }
 
 template<typename E> List<E> _DelegatingIterableBaseCls<E>::toList(bool growable) {
-    return _base->toList(growable);
+    return _base()->toList(growable);
 }
 
 template<typename E> Set<E> _DelegatingIterableBaseCls<E>::toSet() {
-    return _base->toSet();
+    return _base()->toSet();
 }
 
 template<typename E> Iterable<E> _DelegatingIterableBaseCls<E>::where(bool test(E ) ) {
-    return _base->where(test);
+    return _base()->where(test);
 }
 
 template<typename E> Iterable<T> _DelegatingIterableBaseCls<E>::whereTypetemplate<typename T> () {
-    return _base-><T>whereType();
+    return _base()-><T>whereType();
 }
 
 template<typename E> String _DelegatingIterableBaseCls<E>::toString() {
-    return _base->toString();
+    return _base()->toString();
 }
 
 template<typename E> DelegatingIterableCls<E>::DelegatingIterableCls(Iterable<E> base) {
@@ -226,7 +226,7 @@ template<typename E> int DelegatingListCls<E>::lastIndexWhere(int start, bool te
 }
 
 template<typename E> void DelegatingListCls<E>::length(int newLength) {
-    _base->length = newLength;
+    _base->length() = newLength;
 }
 
 template<typename E> bool DelegatingListCls<E>::remove(Object value) {
@@ -262,7 +262,7 @@ template<typename E> List<T> DelegatingListCls<E>::retypetemplate<typename T> ()
 }
 
 template<typename E> Iterable<E> DelegatingListCls<E>::reversed() {
-    return _base->reversed;
+    return _base->reversed();
 }
 
 template<typename E> void DelegatingListCls<E>::setAll(int index, Iterable<E> iterable) {
@@ -440,7 +440,7 @@ template<typename K, typename V> void DelegatingMapCls<K, V>::addAll(Map<K, V> o
 }
 
 template<typename K, typename V> void DelegatingMapCls<K, V>::addEntries(Iterable<MapEntry<K, V>> entries) {
-    _base->addEntries(entries);
+    _base->addEntries(entries());
 }
 
 template<typename K, typename V> void DelegatingMapCls<K, V>::clear() {
@@ -460,7 +460,7 @@ template<typename K, typename V> bool DelegatingMapCls<K, V>::containsValue(Obje
 }
 
 template<typename K, typename V> Iterable<MapEntry<K, V>> DelegatingMapCls<K, V>::entries() {
-    return _base->entries;
+    return _base->entries();
 }
 
 template<typename K, typename V> void DelegatingMapCls<K, V>::forEach(void f(K , V ) ) {
@@ -468,19 +468,19 @@ template<typename K, typename V> void DelegatingMapCls<K, V>::forEach(void f(K ,
 }
 
 template<typename K, typename V> bool DelegatingMapCls<K, V>::isEmpty() {
-    return _base->isEmpty;
+    return _base->isEmpty();
 }
 
 template<typename K, typename V> bool DelegatingMapCls<K, V>::isNotEmpty() {
-    return _base->isNotEmpty;
+    return _base->isNotEmpty();
 }
 
 template<typename K, typename V> Iterable<K> DelegatingMapCls<K, V>::keys() {
-    return _base->keys;
+    return _base->keys();
 }
 
 template<typename K, typename V> int DelegatingMapCls<K, V>::length() {
-    return _base->length;
+    return _base->length();
 }
 
 template<typename K, typename V> Map<K2, V2> DelegatingMapCls<K, V>::maptemplate<typename K2, typename V2> (MapEntry<K2, V2> transform(K , V ) ) {
@@ -504,7 +504,7 @@ template<typename K, typename V> Map<K2, V2> DelegatingMapCls<K, V>::retypetempl
 }
 
 template<typename K, typename V> Iterable<V> DelegatingMapCls<K, V>::values() {
-    return _base->values;
+    return _base->values();
 }
 
 template<typename K, typename V> String DelegatingMapCls<K, V>::toString() {
@@ -520,8 +520,8 @@ template<typename K, typename V> void DelegatingMapCls<K, V>::updateAll(V update
 }
 
 template<typename E> Set<T> MapKeySetCls<E>::casttemplate<typename T> () {
-    if (this is MapKeySet<T>) {
-        return ((MapKeySet<T>)this);
+    if (is<MapKeySet<T>>(this)) {
+        return as<MapKeySet<T>>(this);
     }
     return SetCls-><E, T>castFrom(this);
 }
@@ -531,15 +531,15 @@ template<typename E> bool MapKeySetCls<E>::contains(Object element) {
 }
 
 template<typename E> bool MapKeySetCls<E>::isEmpty() {
-    return _baseMap->isEmpty;
+    return _baseMap->isEmpty();
 }
 
 template<typename E> bool MapKeySetCls<E>::isNotEmpty() {
-    return _baseMap->isNotEmpty;
+    return _baseMap->isNotEmpty();
 }
 
 template<typename E> int MapKeySetCls<E>::length() {
-    return _baseMap->length;
+    return _baseMap->length();
 }
 
 template<typename E> String MapKeySetCls<E>::toString() {
@@ -573,18 +573,18 @@ template<typename E> Set<E> MapKeySetCls<E>::union(Set<E> other) {
 }
 
 template<typename E> Iterable<E> MapKeySetCls<E>::_base() {
-    return _baseMap->keys;
+    return _baseMap->keys();
 }
 
 template<typename K, typename V> Set<T> MapValueSetCls<K, V>::casttemplate<typename T> () {
-    if (this is Set<T>) {
-            auto _c1 = toSet();    _c1.addAll(other);return ((Set<T>)this);
+    if (is<Set<T>>(this)) {
+            auto _c1 = toSet();    _c1.addAll(other);return as<Set<T>>(this);
     }
     return SetCls-><V, T>castFrom(this);
 }
 
 template<typename K, typename V> bool MapValueSetCls<K, V>::contains(Object element) {
-    if (element is! V)     {
+    if (!is<V>(element))     {
         return false;
     }
     auto key = _keyForValue(element);
@@ -592,15 +592,15 @@ template<typename K, typename V> bool MapValueSetCls<K, V>::contains(Object elem
 }
 
 template<typename K, typename V> bool MapValueSetCls<K, V>::isEmpty() {
-    return _baseMap->isEmpty;
+    return _baseMap->isEmpty();
 }
 
 template<typename K, typename V> bool MapValueSetCls<K, V>::isNotEmpty() {
-    return _baseMap->isNotEmpty;
+    return _baseMap->isNotEmpty();
 }
 
 template<typename K, typename V> int MapValueSetCls<K, V>::length() {
-    return _baseMap->length;
+    return _baseMap->length();
 }
 
 template<typename K, typename V> String MapValueSetCls<K, V>::toString() {
@@ -640,7 +640,7 @@ template<typename K, typename V> Set<V> MapValueSetCls<K, V>::intersection(Set<O
 }
 
 template<typename K, typename V> V MapValueSetCls<K, V>::lookup(Object element) {
-    if (element is! V)     {
+    if (!is<V>(element))     {
         return nullptr;
     }
     auto key = _keyForValue(element);
@@ -648,7 +648,7 @@ template<typename K, typename V> V MapValueSetCls<K, V>::lookup(Object element) 
 }
 
 template<typename K, typename V> bool MapValueSetCls<K, V>::remove(Object element) {
-    if (element is! V)     {
+    if (!is<V>(element))     {
         return false;
     }
     auto key = _keyForValue(element);
@@ -676,14 +676,14 @@ template<typename K, typename V> void MapValueSetCls<K, V>::removeWhere(bool tes
 template<typename K, typename V> void MapValueSetCls<K, V>::retainAll(Iterable<Object> elements) {
     auto valuesToRetain = <V>identity();
     for (auto element : elements) {
-        if (element is! V)         {
+        if (!is<V>(element))         {
             continue;
         }
         auto key = _keyForValue(element);
         if (!_baseMap->containsKey(key))         {
             continue;
         }
-        valuesToRetain->add(_baseMap[key] ?? ((V)nullptr));
+        valuesToRetain->add(_baseMap[key] or as<V>(nullptr));
     }
     auto keysToRemove = makeList();
     _baseMap->forEach([=] (Unknown  k,Unknown  v) {
@@ -709,5 +709,5 @@ template<typename K, typename V> Set<V> MapValueSetCls<K, V>::union(Set<V> other
 }
 
 template<typename K, typename V> Iterable<V> MapValueSetCls<K, V>::_base() {
-    return _baseMap->values;
+    return _baseMap->values();
 }

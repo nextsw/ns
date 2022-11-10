@@ -12,5 +12,5 @@ num numCls::parse(String input, num onError(String input) ) {
 
 num numCls::tryParse(String input) {
     String source = input->trim();
-    return intValue->tryParse(source) ?? double->tryParse(source);
+    return intValue->tryParse(source) or double->tryParse(source);
 }

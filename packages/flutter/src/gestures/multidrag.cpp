@@ -20,7 +20,7 @@ void MultiDragPointerStateCls::checkForResolutionAfterMove() {
 void MultiDragPointerStateCls::rejected() {
     assert(_arenaEntry != nullptr);
     assert(_client == nullptr);
-    assert(pendingDelta != nullptr);
+    assert(pendingDelta() != nullptr);
     _pendingDelta = nullptr;
     _lastPendingEventTimestamp = nullptr;
     _arenaEntry = nullptr;
@@ -37,7 +37,7 @@ void MultiDragPointerStateCls::dispose() {
 
 void MultiDragPointerStateCls::_setArenaEntry(GestureArenaEntry entry) {
     assert(_arenaEntry == nullptr);
-    assert(pendingDelta != nullptr);
+    assert(pendingDelta() != nullptr);
     assert(_client == nullptr);
     _arenaEntry = entry;
 }
@@ -48,10 +48,10 @@ void MultiDragPointerStateCls::_move(PointerMoveEvent event) {
         _velocityTracker->addPosition(event->timeStamp, event->position);
     }
     if (_client != nullptr) {
-        assert(pendingDelta == nullptr);
+        assert(pendingDelta() == nullptr);
         _client!->update(make<DragUpdateDetailsCls>(event->timeStamp, event->delta, event->position));
     } else {
-        assert(pendingDelta != nullptr);
+        assert(pendingDelta() != nullptr);
         _pendingDelta = _pendingDelta! + event->delta;
         _lastPendingEventTimestamp = event->timeStamp;
         checkForResolutionAfterMove();
@@ -62,9 +62,9 @@ void MultiDragPointerStateCls::_startDrag(Drag client) {
     assert(_arenaEntry != nullptr);
     assert(_client == nullptr);
     assert(client != nullptr);
-    assert(pendingDelta != nullptr);
+    assert(pendingDelta() != nullptr);
     _client = client;
-    DragUpdateDetails details = make<DragUpdateDetailsCls>(_lastPendingEventTimestamp, pendingDelta!, initialPosition);
+    DragUpdateDetails details = make<DragUpdateDetailsCls>(_lastPendingEventTimestamp, pendingDelta()!, initialPosition);
     _pendingDelta = nullptr;
     _lastPendingEventTimestamp = nullptr;
     _client!->update(details);
@@ -73,13 +73,13 @@ void MultiDragPointerStateCls::_startDrag(Drag client) {
 void MultiDragPointerStateCls::_up() {
     assert(_arenaEntry != nullptr);
     if (_client != nullptr) {
-        assert(pendingDelta == nullptr);
+        assert(pendingDelta() == nullptr);
         DragEndDetails details = make<DragEndDetailsCls>(_velocityTracker->getVelocity());
         Drag client = _client!;
         _client = nullptr;
         client->end(details);
     } else {
-        assert(pendingDelta != nullptr);
+        assert(pendingDelta() != nullptr);
         _pendingDelta = nullptr;
         _lastPendingEventTimestamp = nullptr;
     }
@@ -88,12 +88,12 @@ void MultiDragPointerStateCls::_up() {
 void MultiDragPointerStateCls::_cancel() {
     assert(_arenaEntry != nullptr);
     if (_client != nullptr) {
-        assert(pendingDelta == nullptr);
+        assert(pendingDelta() == nullptr);
         Drag client = _client!;
         _client = nullptr;
         client->cancel();
     } else {
-        assert(pendingDelta != nullptr);
+        assert(pendingDelta() != nullptr);
         _pendingDelta = nullptr;
         _lastPendingEventTimestamp = nullptr;
     }
@@ -132,8 +132,8 @@ void MultiDragGestureRecognizerCls::rejectGesture(int pointer) {
 }
 
 void MultiDragGestureRecognizerCls::dispose() {
-    _pointers!->keys->toList()->forEach(_removeState);
-    assert(_pointers!->isEmpty);
+    _pointers!->keys()->toList()->forEach(_removeState);
+    assert(_pointers!->isEmpty());
     _pointers = nullptr;
     super->dispose();
 }
@@ -145,20 +145,20 @@ void MultiDragGestureRecognizerCls::_handleEvent(PointerEvent event) {
     assert(event->position != nullptr);
     assert(_pointers!->containsKey(event->pointer));
     MultiDragPointerState state = _pointers![event->pointer]!;
-    if (event is PointerMoveEvent) {
+    if (is<PointerMoveEvent>(event)) {
         state->_move(event);
     } else     {
-        if (event is PointerUpEvent) {
+        if (is<PointerUpEvent>(event)) {
         assert(event->delta == OffsetCls::zero);
         state->_up();
         _removeState(event->pointer);
     } else     {
-        if (event is PointerCancelEvent) {
+        if (is<PointerCancelEvent>(event)) {
         assert(event->delta == OffsetCls::zero);
         state->_cancel();
         _removeState(event->pointer);
     } else     {
-        if (event is! PointerDownEvent) {
+        if (!is<PointerDownEvent>(event)) {
         assert(false);
     }
 ;
@@ -173,7 +173,7 @@ Drag MultiDragGestureRecognizerCls::_startDrag(Offset initialPosition, int point
     assert(state->_pendingDelta != nullptr);
     Drag drag;
     if (onStart != nullptr) {
-        drag = <Drag>invokeCallback("onStart", [=] ()         {
+        drag = <Drag>invokeCallback(__s("onStart"), [=] ()         {
             onStart!(initialPosition);
         });
     }
@@ -210,7 +210,7 @@ MultiDragPointerState ImmediateMultiDragGestureRecognizerCls::createNewPointerSt
 }
 
 String ImmediateMultiDragGestureRecognizerCls::debugDescription() {
-    return "multidrag";
+    return __s("multidrag");
 }
 
 void _HorizontalPointerStateCls::checkForResolutionAfterMove() {
@@ -229,7 +229,7 @@ MultiDragPointerState HorizontalMultiDragGestureRecognizerCls::createNewPointerS
 }
 
 String HorizontalMultiDragGestureRecognizerCls::debugDescription() {
-    return "horizontal multidrag";
+    return __s("horizontal multidrag");
 }
 
 void _VerticalPointerStateCls::checkForResolutionAfterMove() {
@@ -248,7 +248,7 @@ MultiDragPointerState VerticalMultiDragGestureRecognizerCls::createNewPointerSta
 }
 
 String VerticalMultiDragGestureRecognizerCls::debugDescription() {
-    return "vertical multidrag";
+    return __s("vertical multidrag");
 }
 
 void _DelayedPointerStateCls::accepted(GestureMultiDragStartCallback starter) {
@@ -277,7 +277,7 @@ void _DelayedPointerStateCls::dispose() {
     super->dispose();
 }
 
-_DelayedPointerStateCls::_DelayedPointerStateCls(Duration delay, DeviceGestureSettings deviceGestureSettings, Offset initialPosition, PointerDeviceKind kind) {
+_DelayedPointerStateCls::_DelayedPointerStateCls(Duration delay, DeviceGestureSettings deviceGestureSettings, Offset initialPosition, PointerDeviceKind kind) : MultiDragPointerState(initialPosition, kind, deviceGestureSettings) {
     {
         assert(delay != nullptr);
     }
@@ -316,5 +316,5 @@ MultiDragPointerState DelayedMultiDragGestureRecognizerCls::createNewPointerStat
 }
 
 String DelayedMultiDragGestureRecognizerCls::debugDescription() {
-    return "long multidrag";
+    return __s("long multidrag");
 }

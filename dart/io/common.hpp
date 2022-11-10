@@ -64,12 +64,12 @@ private:
 using _BufferAndStart = std::shared_ptr<_BufferAndStartCls>;
 _BufferAndStart _ensureFastAndSerializableByteData(List<int> buffer, int end, int start);
 
-extern bool _isDirectIOCapableTypedList(List<int> buffer);
+bool _isDirectIOCapableTypedList(List<int> buffer);
 
 class _IOCryptoCls : public ObjectCls {
 public:
 
-    extern static Uint8List getRandomBytes(int count);
+    static Uint8List getRandomBytes(int count);
 private:
 
 };

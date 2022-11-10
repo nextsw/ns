@@ -12,5 +12,5 @@ bool boolCls::^(bool other) {
 }
 
 String boolCls::toString() {
-    return this? "true" : "false";
+    return this? __s("true") : __s("false");
 }

@@ -14,11 +14,11 @@ RawKeyEventDataWebCls::RawKeyEventDataWebCls(String code, String key, int keyCod
 }
 
 String RawKeyEventDataWebCls::keyLabel() {
-    return key == "Unidentified"? "" : _unicodeChar(key) ?? "";
+    return key == __s("Unidentified")? __s("") : _unicodeChar(key) or __s("");
 }
 
 PhysicalKeyboardKey RawKeyEventDataWebCls::physicalKey() {
-    return kWebToPhysicalKey[code] ?? make<PhysicalKeyboardKeyCls>(LogicalKeyboardKeyCls::webPlane + code->hashCode);
+    return kWebToPhysicalKey[code] or make<PhysicalKeyboardKeyCls>(LogicalKeyboardKeyCls::webPlane + code->hashCode());
 }
 
 LogicalKeyboardKey RawKeyEventDataWebCls::logicalKey() {
@@ -30,11 +30,11 @@ LogicalKeyboardKey RawKeyEventDataWebCls::logicalKey() {
     if (newKey != nullptr) {
         return newKey;
     }
-    bool isPrintable = key->length == 1;
+    bool isPrintable = key->length() == 1;
     if (isPrintable) {
         return make<LogicalKeyboardKeyCls>(key->toLowerCase()->codeUnitAt(0));
     }
-    return make<LogicalKeyboardKeyCls>(code->hashCode + LogicalKeyboardKeyCls::webPlane);
+    return make<LogicalKeyboardKeyCls>(code->hashCode() + LogicalKeyboardKeyCls::webPlane);
 }
 
 bool RawKeyEventDataWebCls::isModifierPressed(ModifierKey key, KeyboardSide side) {
@@ -47,21 +47,21 @@ KeyboardSide RawKeyEventDataWebCls::getModifierSide(ModifierKey key) {
 
 void RawKeyEventDataWebCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<String>make<DiagnosticsPropertyCls>("code", code));
-    properties->add(<String>make<DiagnosticsPropertyCls>("key", key));
-    properties->add(<int>make<DiagnosticsPropertyCls>("location", location));
-    properties->add(<int>make<DiagnosticsPropertyCls>("metaState", metaState));
-    properties->add(<int>make<DiagnosticsPropertyCls>("keyCode", keyCode));
+    properties->add(<String>make<DiagnosticsPropertyCls>(__s("code"), code));
+    properties->add(<String>make<DiagnosticsPropertyCls>(__s("key"), key));
+    properties->add(<int>make<DiagnosticsPropertyCls>(__s("location"), location));
+    properties->add(<int>make<DiagnosticsPropertyCls>(__s("metaState"), metaState));
+    properties->add(<int>make<DiagnosticsPropertyCls>(__s("keyCode"), keyCode));
 }
 
 bool RawKeyEventDataWebCls::==(Object other) {
     if (identical(this, other)) {
         return true;
     }
-    if (other->runtimeType != runtimeType) {
+    if (other->runtimeType() != runtimeType) {
         return false;
     }
-    return other is RawKeyEventDataWeb && other->code == code && other->key == key && other->location == location && other->metaState == metaState && other->keyCode == keyCode;
+    return is<RawKeyEventDataWeb>(other) && other->code == code && other->key == key && other->location == location && other->metaState == metaState && other->keyCode == keyCode;
 }
 
 int RawKeyEventDataWebCls::hashCode() {

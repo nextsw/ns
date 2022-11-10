@@ -8,7 +8,7 @@
 class CapabilityCls : public ObjectCls {
 public:
 
-    extern  CapabilityCls();
+     CapabilityCls();
 private:
 
 };

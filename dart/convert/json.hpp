@@ -169,7 +169,7 @@ public:
 
     virtual dynamic convert(String input);
 
-    extern StringConversionSink startChunkedConversion(Sink<Object> sink) override;
+    StringConversionSink startChunkedConversion(Sink<Object> sink) override;
     virtual Stream<Object> bind(Stream<String> stream);
 
 private:
@@ -178,7 +178,7 @@ private:
 
 };
 using JsonDecoder = std::shared_ptr<JsonDecoderCls>;
-extern dynamic _parseJson(reviver , String source);
+dynamic _parseJson(reviver , String source);
 dynamic _defaultToEncodable(dynamic object);
 
 

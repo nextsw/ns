@@ -6,23 +6,23 @@ void NotificationCls::dispatch(BuildContext target) {
 String NotificationCls::toString() {
     List<String> description = makeList();
     debugFillDescription(description);
-    return "${objectRuntimeType(this, 'Notification')}(${description.join(", ")})";
+    return __s("${objectRuntimeType(this, 'Notification')}(${description.join(", ")})");
 }
 
 void NotificationCls::debugFillDescription(List<String> description) {
 }
 
-template<typename T : Notification> Element NotificationListenerCls<T>::createElement() {
+template<typename T> Element NotificationListenerCls<T>::createElement() {
     return <T>make<_NotificationElementCls>(this);
 }
 
-template<typename T : Notification> bool _NotificationElementCls<T>::onNotification(Notification notification) {
-    NotificationListener<T> listener = ((NotificationListener<T>)widget);
-    if (listener->onNotification != nullptr && notification is T) {
+template<typename T> bool _NotificationElementCls<T>::onNotification(Notification notification) {
+    NotificationListener<T> listener = as<NotificationListener<T>>(widget);
+    if (listener->onNotification != nullptr && is<T>(notification)) {
         return listener->onNotification!(notification);
     }
     return false;
 }
 
-template<typename T : Notification> void _NotificationElementCls<T>::notifyClients(ProxyWidget oldWidget) {
+template<typename T> void _NotificationElementCls<T>::notifyClients(ProxyWidget oldWidget) {
 }

@@ -27,7 +27,7 @@ private:
 };
 template<typename T> using RestorableValue = std::shared_ptr<RestorableValueCls<T>>;
 
-template<typename T : Object> class _RestorablePrimitiveValueNCls : public RestorableValueCls<T> {
+template<typename T> class _RestorablePrimitiveValueNCls : public RestorableValueCls<T> {
 public:
 
     virtual T createDefaultValue();
@@ -45,9 +45,9 @@ private:
      _RestorablePrimitiveValueNCls(T _defaultValue);
 
 };
-template<typename T : Object> using _RestorablePrimitiveValueN = std::shared_ptr<_RestorablePrimitiveValueNCls<T : Object>>;
+template<typename T> using _RestorablePrimitiveValueN = std::shared_ptr<_RestorablePrimitiveValueNCls<T>>;
 
-template<typename T : Object> class _RestorablePrimitiveValueCls : public _RestorablePrimitiveValueNCls<T> {
+template<typename T> class _RestorablePrimitiveValueCls : public _RestorablePrimitiveValueNCls<T> {
 public:
 
     virtual void  value(T value);
@@ -61,9 +61,9 @@ private:
      _RestorablePrimitiveValueCls(Unknown defaultValue);
 
 };
-template<typename T : Object> using _RestorablePrimitiveValue = std::shared_ptr<_RestorablePrimitiveValueCls<T : Object>>;
+template<typename T> using _RestorablePrimitiveValue = std::shared_ptr<_RestorablePrimitiveValueCls<T>>;
 
-template<typename T : num> class RestorableNumCls : public _RestorablePrimitiveValueCls<T> {
+template<typename T> class RestorableNumCls : public _RestorablePrimitiveValueCls<T> {
 public:
 
      RestorableNumCls(Unknown defaultValue);
@@ -71,7 +71,7 @@ public:
 private:
 
 };
-template<typename T : num> using RestorableNum = std::shared_ptr<RestorableNumCls<T : num>>;
+template<typename T> using RestorableNum = std::shared_ptr<RestorableNumCls<T>>;
 
 class RestorableDoubleCls : public RestorableNumCls<double> {
 public:
@@ -122,14 +122,14 @@ private:
 };
 using RestorableBoolN = std::shared_ptr<RestorableBoolNCls>;
 
-template<typename T : num> class RestorableNumNCls : public _RestorablePrimitiveValueNCls<T> {
+template<typename T> class RestorableNumNCls : public _RestorablePrimitiveValueNCls<T> {
 public:
 
      RestorableNumNCls(Unknown defaultValue);
 private:
 
 };
-template<typename T : num> using RestorableNumN = std::shared_ptr<RestorableNumNCls<T : num>>;
+template<typename T> using RestorableNumN = std::shared_ptr<RestorableNumNCls<T>>;
 
 class RestorableDoubleNCls : public RestorableNumNCls<double> {
 public:
@@ -198,7 +198,7 @@ private:
 };
 using RestorableDateTimeN = std::shared_ptr<RestorableDateTimeNCls>;
 
-template<typename T : Listenable> class RestorableListenableCls : public RestorablePropertyCls<T> {
+template<typename T> class RestorableListenableCls : public RestorablePropertyCls<T> {
 public:
 
     virtual T value();
@@ -212,9 +212,9 @@ private:
 
 
 };
-template<typename T : Listenable> using RestorableListenable = std::shared_ptr<RestorableListenableCls<T : Listenable>>;
+template<typename T> using RestorableListenable = std::shared_ptr<RestorableListenableCls<T>>;
 
-template<typename T : ChangeNotifier> class RestorableChangeNotifierCls : public RestorableListenableCls<T> {
+template<typename T> class RestorableChangeNotifierCls : public RestorableListenableCls<T> {
 public:
 
     virtual void initWithValue(T value);
@@ -226,7 +226,7 @@ private:
     virtual void _disposeOldValue();
 
 };
-template<typename T : ChangeNotifier> using RestorableChangeNotifier = std::shared_ptr<RestorableChangeNotifierCls<T : ChangeNotifier>>;
+template<typename T> using RestorableChangeNotifier = std::shared_ptr<RestorableChangeNotifierCls<T>>;
 
 class RestorableTextEditingControllerCls : public RestorableChangeNotifierCls<TextEditingController> {
 public:

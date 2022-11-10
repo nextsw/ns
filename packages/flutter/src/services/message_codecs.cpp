@@ -37,17 +37,17 @@ dynamic JSONMessageCodecCls::decodeMessage(ByteData message) {
 }
 
 ByteData JSONMethodCodecCls::encodeMethodCall(MethodCall methodCall) {
-    Map<String, Object> map1 = make<MapCls<>>();map1.set("method", methodCall->method);map1.set("args", methodCall->arguments);return make<JSONMessageCodecCls>()->encodeMessage(list1)!;
+    Map<String, Object> map1 = make<MapCls<>>();map1.set(__s("method"), methodCall->method);map1.set(__s("args"), methodCall->arguments);return make<JSONMessageCodecCls>()->encodeMessage(list1)!;
 }
 
 MethodCall JSONMethodCodecCls::decodeMethodCall(ByteData methodCall) {
     Object decoded = make<JSONMessageCodecCls>()->decodeMessage(methodCall);
-    if (decoded is! Map) {
+    if (!is<Map>(decoded)) {
         ;
     }
-    Object method = decoded["method"];
-    Object arguments = decoded["args"];
-    if (method is String) {
+    Object method = decoded[__s("method")];
+    Object arguments = decoded[__s("args")];
+    if (is<String>(method)) {
         return make<MethodCallCls>(method, arguments);
     }
     ;
@@ -55,16 +55,16 @@ MethodCall JSONMethodCodecCls::decodeMethodCall(ByteData methodCall) {
 
 dynamic JSONMethodCodecCls::decodeEnvelope(ByteData envelope) {
     Object decoded = make<JSONMessageCodecCls>()->decodeMessage(envelope);
-    if (decoded is! List) {
+    if (!is<List>(decoded)) {
         ;
     }
     if (decoded->length == 1) {
         return decoded[0];
     }
-    if (decoded->length == 3 && decoded[0] is String && (decoded[1] == nullptr || decoded[1] is String)) {
+    if (decoded->length == 3 && is<String>(decoded[0]) && (decoded[1] == nullptr || is<String>(decoded[1]))) {
         ;
     }
-    if (decoded->length == 4 && decoded[0] is String && (decoded[1] == nullptr || decoded[1] is String) && (decoded[3] == nullptr || decoded[3] is String)) {
+    if (decoded->length == 4 && is<String>(decoded[0]) && (decoded[1] == nullptr || is<String>(decoded[1])) && (decoded[3] == nullptr || is<String>(decoded[3]))) {
         ;
     }
     ;
@@ -104,14 +104,14 @@ void StandardMessageCodecCls::writeValue(WriteBuffer buffer, Object value) {
     if (value == nullptr) {
         buffer->putUint8(_valueNull);
     } else     {
-        if (value is bool) {
+        if (is<bool>(value)) {
         buffer->putUint8(value? _valueTrue : _valueFalse);
     } else     {
-        if (value is double) {
+        if (is<double>(value)) {
         buffer->putUint8(_valueFloat64);
         buffer->putFloat64(value);
     } else     {
-        if (value is int) {
+        if (is<int>(value)) {
         if (-0x7fffffff - 1 <= value && value <= 0x7fffffff) {
             buffer->putUint8(_valueInt32);
             buffer->putInt32(value);
@@ -120,7 +120,7 @@ void StandardMessageCodecCls::writeValue(WriteBuffer buffer, Object value) {
             buffer->putInt64(value);
         }
     } else     {
-        if (value is String) {
+        if (is<String>(value)) {
         buffer->putUint8(_valueString);
         Uint8List asciiBytes = make<Uint8ListCls>(value->length);
         Uint8List utf8Bytes;
@@ -144,39 +144,39 @@ void StandardMessageCodecCls::writeValue(WriteBuffer buffer, Object value) {
             buffer->putUint8List(asciiBytes);
         }
     } else     {
-        if (value is Uint8List) {
+        if (is<Uint8List>(value)) {
         buffer->putUint8(_valueUint8List);
         writeSize(buffer, value->length);
         buffer->putUint8List(value);
     } else     {
-        if (value is Int32List) {
+        if (is<Int32List>(value)) {
         buffer->putUint8(_valueInt32List);
         writeSize(buffer, value->length);
         buffer->putInt32List(value);
     } else     {
-        if (value is Int64List) {
+        if (is<Int64List>(value)) {
         buffer->putUint8(_valueInt64List);
         writeSize(buffer, value->length);
         buffer->putInt64List(value);
     } else     {
-        if (value is Float32List) {
+        if (is<Float32List>(value)) {
         buffer->putUint8(_valueFloat32List);
         writeSize(buffer, value->length);
         buffer->putFloat32List(value);
     } else     {
-        if (value is Float64List) {
+        if (is<Float64List>(value)) {
         buffer->putUint8(_valueFloat64List);
         writeSize(buffer, value->length);
         buffer->putFloat64List(value);
     } else     {
-        if (value is List) {
+        if (is<List>(value)) {
         buffer->putUint8(_valueList);
         writeSize(buffer, value->length);
         for (Object item : value) {
             writeValue(buffer, item);
         }
     } else     {
-        if (value is Map) {
+        if (is<Map>(value)) {
         buffer->putUint8(_valueMap);
         writeSize(buffer, value->length);
         value->forEach([=] (Object key,Object value) {
@@ -242,7 +242,7 @@ MethodCall StandardMethodCodecCls::decodeMethodCall(ByteData methodCall) {
     ReadBuffer buffer = make<ReadBufferCls>(methodCall!);
     Object method = messageCodec->readValue(buffer);
     Object arguments = messageCodec->readValue(buffer);
-    if (method is String && !buffer->hasRemaining) {
+    if (is<String>(method) && !buffer->hasRemaining) {
         return make<MethodCallCls>(method, arguments);
     } else {
         ;
@@ -276,8 +276,8 @@ dynamic StandardMethodCodecCls::decodeEnvelope(ByteData envelope) {
     Object errorCode = messageCodec->readValue(buffer);
     Object errorMessage = messageCodec->readValue(buffer);
     Object errorDetails = messageCodec->readValue(buffer);
-    String errorStacktrace = (buffer->hasRemaining)? ((String)messageCodec->readValue(buffer)) : nullptr;
-    if (errorCode is String && (errorMessage == nullptr || errorMessage is String) && !buffer->hasRemaining) {
+    String errorStacktrace = (buffer->hasRemaining)? as<String>(messageCodec->readValue(buffer)) : nullptr;
+    if (is<String>(errorCode) && (errorMessage == nullptr || is<String>(errorMessage)) && !buffer->hasRemaining) {
         ;
     } else {
         ;

@@ -73,7 +73,7 @@ State<InteractiveViewer> InteractiveViewerCls::createState() {
 
 void _InteractiveViewerStateCls::initState() {
     super->initState();
-    _transformationController = widget->transformationController ?? make<TransformationControllerCls>();
+    _transformationController = widget->transformationController or make<TransformationControllerCls>();
     _transformationController!->addListener(_onTransformationControllerChange);
     _controller = make<AnimationControllerCls>(this);
 }
@@ -127,22 +127,22 @@ Widget _InteractiveViewerStateCls::build(BuildContext context) {
 }
 
 Rect _InteractiveViewerStateCls::_boundaryRect() {
-    assert(_childKey->currentContext != nullptr);
+    assert(_childKey->currentContext() != nullptr);
     assert(!widget->boundaryMargin->left->isNaN);
     assert(!widget->boundaryMargin->right->isNaN);
     assert(!widget->boundaryMargin->top->isNaN);
     assert(!widget->boundaryMargin->bottom->isNaN);
-    RenderBox childRenderBox = ((RenderBox)_childKey->currentContext!->findRenderObject()!);
+    RenderBox childRenderBox = as<RenderBox>(_childKey->currentContext()!->findRenderObject()!);
     Size childSize = childRenderBox->size;
     Rect boundaryRect = widget->boundaryMargin->inflateRect(OffsetCls::zero & childSize);
-    assert(!boundaryRect->isEmpty, "InteractiveViewer's child must have nonzero dimensions.");
-    assert(boundaryRect->isFinite || (boundaryRect->left->isInfinite && boundaryRect->top->isInfinite && boundaryRect->right->isInfinite && boundaryRect->bottom->isInfinite), "boundaryRect must either be infinite in all directions or finite in all directions.");
+    assert(!boundaryRect->isEmpty, __s("InteractiveViewer's child must have nonzero dimensions."));
+    assert(boundaryRect->isFinite || (boundaryRect->left->isInfinite && boundaryRect->top->isInfinite && boundaryRect->right->isInfinite && boundaryRect->bottom->isInfinite), __s("boundaryRect must either be infinite in all directions or finite in all directions."));
     return boundaryRect;
 }
 
 Rect _InteractiveViewerStateCls::_viewport() {
-    assert(_parentKey->currentContext != nullptr);
-    RenderBox parentRenderBox = ((RenderBox)_parentKey->currentContext!->findRenderObject()!);
+    assert(_parentKey->currentContext() != nullptr);
+    RenderBox parentRenderBox = as<RenderBox>(_parentKey->currentContext()!->findRenderObject()!);
     return OffsetCls::zero & parentRenderBox->size;
 }
 
@@ -152,11 +152,11 @@ Matrix4 _InteractiveViewerStateCls::_matrixTranslate(Matrix4 matrix, Offset tran
     }
     Offset alignedTranslation = widget->alignPanAxis && _panAxis != nullptr? _alignAxis(translation, _panAxis!) : translation;
     auto _c1 = matrix->clone();_c1.translate(alignedTranslation->dx, alignedTranslation->dy);Matrix4 nextMatrix = _c1;
-    Quad nextViewport = _transformViewport(nextMatrix, _viewport);
-    if (_boundaryRect->isInfinite) {
+    Quad nextViewport = _transformViewport(nextMatrix, _viewport());
+    if (_boundaryRect()->isInfinite()) {
         return nextMatrix;
     }
-    Quad boundariesAabbQuad = _getAxisAlignedBoundingBoxWithRotation(_boundaryRect, _currentRotation);
+    Quad boundariesAabbQuad = _getAxisAlignedBoundingBoxWithRotation(_boundaryRect(), _currentRotation);
     Offset offendingDistance = _exceedsBy(boundariesAabbQuad, nextViewport);
     if (offendingDistance == OffsetCls::zero) {
         return nextMatrix;
@@ -165,7 +165,7 @@ Matrix4 _InteractiveViewerStateCls::_matrixTranslate(Matrix4 matrix, Offset tran
     double currentScale = matrix->getMaxScaleOnAxis();
     Offset correctedTotalTranslation = make<OffsetCls>(nextTotalTranslation->dx - offendingDistance->dx * currentScale, nextTotalTranslation->dy - offendingDistance->dy * currentScale);
     auto _c2 = matrix->clone();_c2.setTranslation(make<Vector3Cls>(correctedTotalTranslation->dx, correctedTotalTranslation->dy, 0.0));Matrix4 correctedMatrix = _c2;
-    Quad correctedViewport = _transformViewport(correctedMatrix, _viewport);
+    Quad correctedViewport = _transformViewport(correctedMatrix, _viewport());
     Offset offendingCorrectedDistance = _exceedsBy(boundariesAabbQuad, correctedViewport);
     if (offendingCorrectedDistance == OffsetCls::zero) {
         return correctedMatrix;
@@ -183,7 +183,7 @@ Matrix4 _InteractiveViewerStateCls::_matrixScale(Matrix4 matrix, double scale) {
     }
     assert(scale != 0.0);
     double currentScale = _transformationController!->value->getMaxScaleOnAxis();
-    double totalScale = math->max(currentScale * scale, math->max(_viewport->width / _boundaryRect->width, _viewport->height / _boundaryRect->height));
+    double totalScale = math->max(currentScale * scale, math->max(_viewport()->width() / _boundaryRect()->width(), _viewport()->height() / _boundaryRect()->height()));
     double clampedTotalScale = clampDouble(totalScale, widget->minScale, widget->maxScale);
     double clampedScale = clampedTotalScale / currentScale;
     auto _c1 = matrix->clone();_c1.scale(clampedScale);return _c1;
@@ -217,7 +217,7 @@ _GestureType _InteractiveViewerStateCls::_getGestureType(ScaleUpdateDetails deta
 
 void _InteractiveViewerStateCls::_onScaleStart(ScaleStartDetails details) {
     widget->onInteractionStart?->call(details);
-    if (_controller->isAnimating) {
+    if (_controller->isAnimating()) {
         _controller->stop();
         _controller->reset();
         _animation?->removeListener(_onAnimate);
@@ -273,7 +273,7 @@ void _InteractiveViewerStateCls::_onScaleEnd(ScaleEndDetails details) {
 }
 
 void _InteractiveViewerStateCls::_receivedPointerSignal(PointerSignalEvent event) {
-    if (event is PointerScrollEvent) {
+    if (is<PointerScrollEvent>(event)) {
         if (event->scrollDelta->dy == 0.0) {
             return;
         }
@@ -294,7 +294,7 @@ void _InteractiveViewerStateCls::_receivedPointerSignal(PointerSignalEvent event
 }
 
 void _InteractiveViewerStateCls::_onAnimate() {
-    if (!_controller->isAnimating) {
+    if (!_controller->isAnimating()) {
         _panAxis = nullptr;
         _animation?->removeListener(_onAnimate);
         _animation = nullptr;
@@ -304,7 +304,7 @@ void _InteractiveViewerStateCls::_onAnimate() {
     Vector3 translationVector = _transformationController!->value->getTranslation();
     Offset translation = make<OffsetCls>(translationVector->x, translationVector->y);
     Offset translationScene = _transformationController!->toScene(translation);
-    Offset animationScene = _transformationController!->toScene(_animation!->value);
+    Offset animationScene = _transformationController!->toScene(_animation!->value());
     Offset translationChangeScene = animationScene - translationScene;
     _transformationController!->value = _matrixTranslate(_transformationController!->value, translationChangeScene);
 }
@@ -322,7 +322,7 @@ Widget _InteractiveViewerBuiltCls::build(BuildContext context) {
     return make<ClipRectCls>(clipBehavior, child);
 }
 
-TransformationControllerCls::TransformationControllerCls(Matrix4 value) {
+TransformationControllerCls::TransformationControllerCls(Matrix4 value) : ValueNotifier<Matrix4>(value or Matrix4Cls->identity()) {
 }
 
 Offset TransformationControllerCls::toScene(Offset viewportPoint) {

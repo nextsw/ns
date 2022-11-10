@@ -1,5 +1,5 @@
 #include "unmodifiable_wrappers.hpp"
-template<typename E> NonGrowableListViewCls<E>::NonGrowableListViewCls(List<E> listBase) {
+template<typename E> NonGrowableListViewCls<E>::NonGrowableListViewCls(List<E> listBase) : DelegatingList<E>(listBase) {
 }
 
 template<typename E> void NonGrowableListMixinCls<E>::length(int newLength) {
@@ -58,7 +58,7 @@ template<typename E> Never NonGrowableListMixinCls<E>::_throw() {
     ;
 }
 
-template<typename E> UnmodifiableSetViewCls<E>::UnmodifiableSetViewCls(Set<E> setBase) {
+template<typename E> UnmodifiableSetViewCls<E>::UnmodifiableSetViewCls(Set<E> setBase) : DelegatingSet<E>(setBase) {
 }
 
 template<typename E> bool UnmodifiableSetMixinCls<E>::add(E value) {

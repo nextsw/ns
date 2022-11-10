@@ -1,10 +1,10 @@
 #include "set.hpp"
 template<typename E> bool SetMixinCls<E>::isEmpty() {
-    return length == 0;
+    return length() == 0;
 }
 
 template<typename E> bool SetMixinCls<E>::isNotEmpty() {
-    return length != 0;
+    return length() != 0;
 }
 
 template<typename E> Set<R> SetMixinCls<E>::casttemplate<typename R> () {
@@ -105,10 +105,10 @@ template<typename E> Iterable<T> SetMixinCls<E>::maptemplate<typename T> (T f(E 
 }
 
 template<typename E> E SetMixinCls<E>::single() {
-    if (length > 1)     {
+    if (length() > 1)     {
         ;
     }
-    Iterator<E> it = iterator;
+    Iterator<E> it = iterator();
     if (!it->moveNext())     {
         ;
     }
@@ -117,7 +117,7 @@ template<typename E> E SetMixinCls<E>::single() {
 }
 
 template<typename E> String SetMixinCls<E>::toString() {
-    return IterableBaseCls->iterableToFullString(this, "{", "}");
+    return IterableBaseCls->iterableToFullString(this, __s("{"), __s("}"));
 }
 
 template<typename E> Iterable<E> SetMixinCls<E>::where(bool f(E element) ) {
@@ -136,12 +136,12 @@ template<typename E> void SetMixinCls<E>::forEach(void f(E element) ) {
 
 template<typename E> E SetMixinCls<E>::reduce(E combine(E element, E value) ) {
     Iterator<E> iterator = this->iterator;
-    if (!iterator->moveNext()) {
+    if (!iterator()->moveNext()) {
         ;
     }
-    E value = iterator->current;
-    while (iterator->moveNext()) {
-        value = combine(value, iterator->current);
+    E value = iterator()->current();
+    while (iterator()->moveNext()) {
+        value = combine(value, iterator()->current());
     }
     return value;
 }
@@ -165,19 +165,19 @@ template<typename E> bool SetMixinCls<E>::every(bool f(E element) ) {
 
 template<typename E> String SetMixinCls<E>::join(String separator) {
     Iterator<E> iterator = this->iterator;
-    if (!iterator->moveNext())     {
-        return "";
+    if (!iterator()->moveNext())     {
+        return __s("");
     }
     StringBuffer buffer = make<StringBufferCls>();
-    if (separator == nullptr || separator == "") {
+    if (separator == nullptr || separator == __s("")) {
         do {
-            buffer->write(iterator->current);
-        } while (iterator->moveNext());
+            buffer->write(iterator()->current());
+        } while (iterator()->moveNext());
     } else {
-        buffer->write(iterator->current);
-        while (iterator->moveNext()) {
+        buffer->write(iterator()->current());
+        while (iterator()->moveNext()) {
             buffer->write(separator);
-            buffer->write(iterator->current);
+            buffer->write(iterator()->current());
         }
     }
     return buffer->toString();
@@ -209,7 +209,7 @@ template<typename E> Iterable<E> SetMixinCls<E>::skipWhile(bool test(E value) ) 
 }
 
 template<typename E> E SetMixinCls<E>::first() {
-    Iterator<E> it = iterator;
+    Iterator<E> it = iterator();
     if (!it->moveNext()) {
         ;
     }
@@ -217,7 +217,7 @@ template<typename E> E SetMixinCls<E>::first() {
 }
 
 template<typename E> E SetMixinCls<E>::last() {
-    Iterator<E> it = iterator;
+    Iterator<E> it = iterator();
     if (!it->moveNext()) {
         ;
     }
@@ -280,8 +280,8 @@ template<typename E> E SetMixinCls<E>::singleWhere(E orElse() , bool test(E valu
 }
 
 template<typename E> E SetMixinCls<E>::elementAt(int index) {
-    checkNotNullable(index, "index");
-    RangeErrorCls->checkNotNegative(index, "index");
+    checkNotNullable(index, __s("index"));
+    RangeErrorCls->checkNotNegative(index, __s("index"));
     int elementIndex = 0;
     for (E element : this) {
         if (index == elementIndex)         {
@@ -293,7 +293,7 @@ template<typename E> E SetMixinCls<E>::elementAt(int index) {
 }
 
 template<typename E> String SetBaseCls<E>::setToString(Set set) {
-    return IterableBaseCls->iterableToFullString(set, "{", "}");
+    return IterableBaseCls->iterableToFullString(set, __s("{"), __s("}"));
 }
 
 template<typename E> Set<R> _SetBaseCls<E>::casttemplate<typename R> () {
@@ -365,15 +365,15 @@ template<typename E> bool _UnmodifiableSetCls<E>::contains(Object element) {
 }
 
 template<typename E> Iterator<E> _UnmodifiableSetCls<E>::iterator() {
-    return _map->keys->iterator;
+    return _map->keys()->iterator();
 }
 
 template<typename E> int _UnmodifiableSetCls<E>::length() {
-    return _map->length;
+    return _map->length();
 }
 
 template<typename E> E _UnmodifiableSetCls<E>::lookup(Object element) {
-    for (auto key : _map->keys) {
+    for (auto key : _map->keys()) {
         if (key == element)         {
             return key;
         }
@@ -408,7 +408,7 @@ template<typename E> int UnmodifiableSetViewCls<E>::length() {
 }
 
 template<typename E> Iterator<E> UnmodifiableSetViewCls<E>::iterator() {
-    return _source->iterator;
+    return _source->iterator();
 }
 
 template<typename E> Set<E> UnmodifiableSetViewCls<E>::toSet() {

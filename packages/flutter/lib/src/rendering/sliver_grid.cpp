@@ -9,7 +9,7 @@ BoxConstraints SliverGridGeometryCls::getBoxConstraints(SliverConstraints constr
 
 String SliverGridGeometryCls::toString() {
     List<String> properties = makeList(ArrayItem, ArrayItem, ArrayItem, ArrayItem);
-    return "SliverGridGeometry(${properties.join(', ')})";
+    return __s("SliverGridGeometry(${properties.join(', ')})");
 }
 
 SliverGridRegularTileLayoutCls::SliverGridRegularTileLayoutCls(double childCrossAxisExtent, double childMainAxisExtent, int crossAxisCount, double crossAxisStride, double mainAxisStride, bool reverseCrossAxis) {
@@ -67,7 +67,7 @@ SliverGridLayout SliverGridDelegateWithFixedCrossAxisCountCls::getLayout(SliverC
     assert(_debugAssertIsValid());
     double usableCrossAxisExtent = math->max(0.0, constraints->crossAxisExtent - crossAxisSpacing * (crossAxisCount - 1));
     double childCrossAxisExtent = usableCrossAxisExtent / crossAxisCount;
-    double childMainAxisExtent = mainAxisExtent ?? childCrossAxisExtent / childAspectRatio;
+    double childMainAxisExtent = mainAxisExtent or childCrossAxisExtent / childAspectRatio;
     return make<SliverGridRegularTileLayoutCls>(crossAxisCount, childMainAxisExtent + mainAxisSpacing, childCrossAxisExtent + crossAxisSpacing, childMainAxisExtent, childCrossAxisExtent, axisDirectionIsReversed(constraints->crossAxisDirection));
 }
 
@@ -97,7 +97,7 @@ SliverGridLayout SliverGridDelegateWithMaxCrossAxisExtentCls::getLayout(SliverCo
     int crossAxisCount = (constraints->crossAxisExtent / (maxCrossAxisExtent + crossAxisSpacing))->ceil();
     double usableCrossAxisExtent = math->max(0.0, constraints->crossAxisExtent - crossAxisSpacing * (crossAxisCount - 1));
     double childCrossAxisExtent = usableCrossAxisExtent / crossAxisCount;
-    double childMainAxisExtent = mainAxisExtent ?? childCrossAxisExtent / childAspectRatio;
+    double childMainAxisExtent = mainAxisExtent or childCrossAxisExtent / childAspectRatio;
     return make<SliverGridRegularTileLayoutCls>(crossAxisCount, childMainAxisExtent + mainAxisSpacing, childCrossAxisExtent + crossAxisSpacing, childMainAxisExtent, childCrossAxisExtent, axisDirectionIsReversed(constraints->crossAxisDirection));
 }
 
@@ -115,18 +115,18 @@ bool SliverGridDelegateWithMaxCrossAxisExtentCls::_debugAssertIsValid(double cro
 }
 
 String SliverGridParentDataCls::toString() {
-    return "crossAxisOffset=$crossAxisOffset; ${super.toString()}";
+    return __s("crossAxisOffset=$crossAxisOffset; ${super.toString()}");
 }
 
 RenderSliverGridCls::RenderSliverGridCls(Unknown childManager, SliverGridDelegate gridDelegate) {
     {
-        assert(gridDelegate != nullptr);
-        _gridDelegate = gridDelegate;
+        assert(gridDelegate() != nullptr);
+        _gridDelegate = gridDelegate();
     }
 }
 
 void RenderSliverGridCls::setupParentData(RenderObject child) {
-    if (child->parentData is! SliverGridParentData) {
+    if (!is<SliverGridParentData>(child->parentData)) {
         child->parentData = make<SliverGridParentDataCls>();
     }
 }
@@ -140,14 +140,14 @@ void RenderSliverGridCls::gridDelegate(SliverGridDelegate value) {
     if (_gridDelegate == value) {
         return;
     }
-    if (value->runtimeType != _gridDelegate->runtimeType || value->shouldRelayout(_gridDelegate)) {
+    if (value->runtimeType() != _gridDelegate->runtimeType || value->shouldRelayout(_gridDelegate)) {
         markNeedsLayout();
     }
     _gridDelegate = value;
 }
 
 double RenderSliverGridCls::childCrossAxisPosition(RenderBox child) {
-    SliverGridParentData childParentData = ((SliverGridParentData)child->parentData!);
+    SliverGridParentData childParentData = as<SliverGridParentData>(child->parentData!);
     return childParentData->crossAxisOffset!;
 }
 
@@ -187,7 +187,7 @@ void RenderSliverGridCls::performLayout() {
     for (; index >= firstIndex; --index) {
         SliverGridGeometry gridGeometry = layout->getGeometryForChildIndex(index);
         RenderBox child = insertAndLayoutLeadingChild(gridGeometry->getBoxConstraints(constraints))!;
-        SliverGridParentData childParentData = ((SliverGridParentData)child->parentData!);
+        SliverGridParentData childParentData = as<SliverGridParentData>(child->parentData!);
         childParentData->layoutOffset = gridGeometry->scrollOffset;
         childParentData->crossAxisOffset = gridGeometry->crossAxisOffset;
         assert(childParentData->index == index);
@@ -196,7 +196,7 @@ void RenderSliverGridCls::performLayout() {
     }
     if (trailingChildWithLayout == nullptr) {
         firstChild!->layout(firstChildGridGeometry->getBoxConstraints(constraints));
-        SliverGridParentData childParentData = ((SliverGridParentData)firstChild!->parentData!);
+        SliverGridParentData childParentData = as<SliverGridParentData>(firstChild!->parentData!);
         childParentData->layoutOffset = firstChildGridGeometry->scrollOffset;
         childParentData->crossAxisOffset = firstChildGridGeometry->crossAxisOffset;
         trailingChildWithLayout = firstChild;
@@ -215,7 +215,7 @@ void RenderSliverGridCls::performLayout() {
         }
         trailingChildWithLayout = child;
         assert(child != nullptr);
-        SliverGridParentData childParentData = ((SliverGridParentData)child->parentData!);
+        SliverGridParentData childParentData = as<SliverGridParentData>(child->parentData!);
         childParentData->layoutOffset = gridGeometry->scrollOffset;
         childParentData->crossAxisOffset = gridGeometry->crossAxisOffset;
         assert(childParentData->index == index);

@@ -40,7 +40,7 @@ void WidgetsBindingCls::initInstances() {
         return true;
     }());
     _buildOwner = make<BuildOwnerCls>();
-    buildOwner!->onBuildScheduled = _handleBuildScheduled;
+    buildOwner()!->onBuildScheduled = _handleBuildScheduled;
     platformDispatcher->onLocaleChanged = handleLocaleChanged;
     platformDispatcher->onAccessibilityFeaturesChanged = handleAccessibilityFeaturesChanged;
     SystemChannelsCls::navigation->setMethodCallHandler(_handleNavigationInvocation);
@@ -58,12 +58,12 @@ WidgetsBinding WidgetsBindingCls::instance() {
 void WidgetsBindingCls::initServiceExtensions() {
     super->initServiceExtensions();
     if (!kReleaseMode) {
-        registerServiceExtension("debugDumpApp", [=] (Map<String, String> parameters) {
+        registerServiceExtension(__s("debugDumpApp"), [=] (Map<String, String> parameters) {
             String data = _debugDumpAppString();
-                    Map<String, Object> map1 = make<MapCls<>>();        map1.set("data", data);return list1;
+                    Map<String, Object> map1 = make<MapCls<>>();        map1.set(__s("data"), data);return list1;
         });
         if (!kIsWeb) {
-            registerBoolServiceExtension("showPerformanceOverlay", [=] ()             {
+            registerBoolServiceExtension(__s("showPerformanceOverlay"), [=] ()             {
                 <bool>value(WidgetsAppCls::showPerformanceOverlayOverride);
             }, [=] (bool value) {
                 if (WidgetsAppCls::showPerformanceOverlayOverride == value) {
@@ -73,30 +73,30 @@ void WidgetsBindingCls::initServiceExtensions() {
                 return _forceRebuild();
             });
         }
-        registerServiceExtension("didSendFirstFrameEvent", [=] () {
-                    Map<String, dynamic> map2 = make<MapCls<>>();        map2.set("enabled", _needToReportFirstFrame? "false" : "true");return list2;
+        registerServiceExtension(__s("didSendFirstFrameEvent"), [=] () {
+                    Map<String, dynamic> map2 = make<MapCls<>>();        map2.set(__s("enabled"), _needToReportFirstFrame? __s("false") : __s("true"));return list2;
         });
-        registerServiceExtension("didSendFirstFrameRasterizedEvent", [=] () {
-                    Map<String, dynamic> map3 = make<MapCls<>>();        map3.set("enabled", firstFrameRasterized? "true" : "false");return list3;
+        registerServiceExtension(__s("didSendFirstFrameRasterizedEvent"), [=] () {
+                    Map<String, dynamic> map3 = make<MapCls<>>();        map3.set(__s("enabled"), firstFrameRasterized()? __s("true") : __s("false"));return list3;
         });
-        registerServiceExtension("fastReassemble", [=] (Map<String, Object> params) {
-            String className = ((String)params["className"]);
+        registerServiceExtension(__s("fastReassemble"), [=] (Map<String, Object> params) {
+            String className = as<String>(params[__s("className")]);
             BindingBaseCls::debugReassembleConfig = make<DebugReassembleConfigCls>(className);
             try {
                 await await reassembleApplication();
             } finally {
                 BindingBaseCls::debugReassembleConfig = nullptr;
             };
-                    Map<String, String> map4 = make<MapCls<>>();        map4.set("type", "Success");return list4;
+                    Map<String, String> map4 = make<MapCls<>>();        map4.set(__s("type"), __s("Success"));return list4;
         });
-        registerBoolServiceExtension("profileWidgetBuilds", [=] ()         {
+        registerBoolServiceExtension(__s("profileWidgetBuilds"), [=] ()         {
             debugProfileBuildsEnabled;
         }, [=] (bool value) {
             if (debugProfileBuildsEnabled != value) {
                 debugProfileBuildsEnabled = value;
             }
         });
-        registerBoolServiceExtension("profileUserWidgetBuilds", [=] ()         {
+        registerBoolServiceExtension(__s("profileUserWidgetBuilds"), [=] ()         {
             debugProfileBuildsEnabledUserWidgets;
         }, [=] (bool value) {
             if (debugProfileBuildsEnabledUserWidgets != value) {
@@ -105,7 +105,7 @@ void WidgetsBindingCls::initServiceExtensions() {
         });
     }
     assert([=] () {
-        registerBoolServiceExtension("debugAllowBanner", [=] ()         {
+        registerBoolServiceExtension(__s("debugAllowBanner"), [=] ()         {
             <bool>value(WidgetsAppCls::debugAllowBannerOverride);
         }, [=] (bool value) {
             if (WidgetsAppCls::debugAllowBannerOverride == value) {
@@ -114,7 +114,7 @@ void WidgetsBindingCls::initServiceExtensions() {
             WidgetsAppCls::debugAllowBannerOverride = value;
             return _forceRebuild();
         });
-        registerBoolServiceExtension("debugWidgetInspector", [=] ()         {
+        registerBoolServiceExtension(__s("debugWidgetInspector"), [=] ()         {
             WidgetsAppCls::debugShowWidgetInspectorOverride;
         }, [=] (bool value) {
             if (WidgetsAppCls::debugShowWidgetInspectorOverride == value) {
@@ -244,8 +244,8 @@ void WidgetsBindingCls::drawFrame() {
             assert(sendFramesToEngine);
             if (!kReleaseMode) {
                 developer->UserTagCls::defaultTag->makeCurrent();
-                developer->TimelineCls->instantSync("Rasterized first useful frame");
-                developer->postEvent("Flutter.FirstFrame", makeMap(makeList(), makeList());
+                developer->TimelineCls->instantSync(__s("Rasterized first useful frame"));
+                developer->postEvent(__s("Flutter.FirstFrame"), makeMap(makeList(), makeList());
             }
             SchedulerBindingCls::instance->removeTimingsCallback(firstFrameCallback!);
             firstFrameCallback = nullptr;
@@ -254,11 +254,11 @@ void WidgetsBindingCls::drawFrame() {
         SchedulerBindingCls::instance->addTimingsCallback(firstFrameCallback!);
     }
     try {
-        if (renderViewElement != nullptr) {
-            buildOwner!->buildScope(renderViewElement!);
+        if (renderViewElement() != nullptr) {
+            buildOwner()!->buildScope(renderViewElement()!);
         }
         super->drawFrame();
-        buildOwner!->finalizeTree();
+        buildOwner()!->finalizeTree();
     } finally {
         assert([=] () {
             debugBuildingDirtyElements = false;
@@ -267,7 +267,7 @@ void WidgetsBindingCls::drawFrame() {
     };
     if (!kReleaseMode) {
         if (_needToReportFirstFrame && sendFramesToEngine) {
-            developer->TimelineCls->instantSync("Widgets built first useful frame");
+            developer->TimelineCls->instantSync(__s("Widgets built first useful frame"));
         }
     }
     _needToReportFirstFrame = false;
@@ -292,9 +292,9 @@ void WidgetsBindingCls::scheduleAttachRootWidget(Widget rootWidget) {
 }
 
 void WidgetsBindingCls::attachRootWidget(Widget rootWidget) {
-    bool isBootstrapFrame = renderViewElement == nullptr;
+    bool isBootstrapFrame = renderViewElement() == nullptr;
     _readyToProduceFrames = true;
-    _renderViewElement = <RenderBox>make<RenderObjectToWidgetAdapterCls>(renderView, "[root]", rootWidget)->attachToRenderTree(buildOwner!, ((RenderObjectToWidgetElement<RenderBox>)renderViewElement));
+    _renderViewElement = <RenderBox>make<RenderObjectToWidgetAdapterCls>(renderView, __s("[root]"), rootWidget)->attachToRenderTree(buildOwner()!, as<RenderObjectToWidgetElement<RenderBox>>(renderViewElement()));
     if (isBootstrapFrame) {
         SchedulerBindingCls::instance->ensureVisualUpdate();
     }
@@ -309,8 +309,8 @@ Future<void> WidgetsBindingCls::performReassemble() {
         WidgetInspectorServiceCls::instance->performReassemble();
         return true;
     }());
-    if (renderViewElement != nullptr) {
-        buildOwner!->reassemble(renderViewElement!, BindingBaseCls::debugReassembleConfig);
+    if (renderViewElement() != nullptr) {
+        buildOwner()!->reassemble(renderViewElement()!, BindingBaseCls::debugReassembleConfig);
     }
     return super->performReassemble();
 }
@@ -320,16 +320,16 @@ Locale WidgetsBindingCls::computePlatformResolvedLocale(List<Locale> supportedLo
 }
 
 void WidgetsBindingCls::_debugAddStackFilters() {
-    PartialStackFrame elementInflateWidget = make<PartialStackFrameCls>("package:flutter/src/widgets/framework.dart", "Element", "inflateWidget");
-    PartialStackFrame elementUpdateChild = make<PartialStackFrameCls>("package:flutter/src/widgets/framework.dart", "Element", "updateChild");
-    PartialStackFrame elementRebuild = make<PartialStackFrameCls>("package:flutter/src/widgets/framework.dart", "Element", "rebuild");
-    PartialStackFrame componentElementPerformRebuild = make<PartialStackFrameCls>("package:flutter/src/widgets/framework.dart", "ComponentElement", "performRebuild");
-    PartialStackFrame componentElementFirstBuild = make<PartialStackFrameCls>("package:flutter/src/widgets/framework.dart", "ComponentElement", "_firstBuild");
-    PartialStackFrame componentElementMount = make<PartialStackFrameCls>("package:flutter/src/widgets/framework.dart", "ComponentElement", "mount");
-    PartialStackFrame statefulElementFirstBuild = make<PartialStackFrameCls>("package:flutter/src/widgets/framework.dart", "StatefulElement", "_firstBuild");
-    PartialStackFrame singleChildMount = make<PartialStackFrameCls>("package:flutter/src/widgets/framework.dart", "SingleChildRenderObjectElement", "mount");
-    PartialStackFrame statefulElementRebuild = make<PartialStackFrameCls>("package:flutter/src/widgets/framework.dart", "StatefulElement", "performRebuild");
-    String replacementString = "...     Normal element mounting";
+    PartialStackFrame elementInflateWidget = make<PartialStackFrameCls>(__s("package:flutter/src/widgets/framework.dart"), __s("Element"), __s("inflateWidget"));
+    PartialStackFrame elementUpdateChild = make<PartialStackFrameCls>(__s("package:flutter/src/widgets/framework.dart"), __s("Element"), __s("updateChild"));
+    PartialStackFrame elementRebuild = make<PartialStackFrameCls>(__s("package:flutter/src/widgets/framework.dart"), __s("Element"), __s("rebuild"));
+    PartialStackFrame componentElementPerformRebuild = make<PartialStackFrameCls>(__s("package:flutter/src/widgets/framework.dart"), __s("ComponentElement"), __s("performRebuild"));
+    PartialStackFrame componentElementFirstBuild = make<PartialStackFrameCls>(__s("package:flutter/src/widgets/framework.dart"), __s("ComponentElement"), __s("_firstBuild"));
+    PartialStackFrame componentElementMount = make<PartialStackFrameCls>(__s("package:flutter/src/widgets/framework.dart"), __s("ComponentElement"), __s("mount"));
+    PartialStackFrame statefulElementFirstBuild = make<PartialStackFrameCls>(__s("package:flutter/src/widgets/framework.dart"), __s("StatefulElement"), __s("_firstBuild"));
+    PartialStackFrame singleChildMount = make<PartialStackFrameCls>(__s("package:flutter/src/widgets/framework.dart"), __s("SingleChildRenderObjectElement"), __s("mount"));
+    PartialStackFrame statefulElementRebuild = make<PartialStackFrameCls>(__s("package:flutter/src/widgets/framework.dart"), __s("StatefulElement"), __s("performRebuild"));
+    String replacementString = __s("...     Normal element mounting");
     FlutterErrorCls->addDefaultStackFilter(make<RepetitiveStackFrameFilterCls>(makeList(ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem), replacementString));
     FlutterErrorCls->addDefaultStackFilter(make<RepetitiveStackFrameFilterCls>(makeList(ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem), replacementString));
     FlutterErrorCls->addDefaultStackFilter(make<RepetitiveStackFrameFilterCls>(makeList(ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem), replacementString));
@@ -339,8 +339,8 @@ void WidgetsBindingCls::_debugAddStackFilters() {
 }
 
 Future<void> WidgetsBindingCls::_forceRebuild() {
-    if (renderViewElement != nullptr) {
-        buildOwner!->reassemble(renderViewElement!, nullptr);
+    if (renderViewElement() != nullptr) {
+        buildOwner()!->reassemble(renderViewElement()!, nullptr);
         return endOfFrame;
     }
     return <void>value();
@@ -348,7 +348,7 @@ Future<void> WidgetsBindingCls::_forceRebuild() {
 
 Future<void> WidgetsBindingCls::_handlePushRouteInformation(Map<dynamic, dynamic> routeArguments) {
     for (WidgetsBindingObserver observer : <WidgetsBindingObserver>of(_observers)) {
-        if (await observer->didPushRouteInformation(make<RouteInformationCls>(((String)routeArguments["location"]), ((Object)routeArguments["state"])))) {
+        if (await observer->didPushRouteInformation(make<RouteInformationCls>(as<String>(routeArguments[__s("location")]), as<Object>(routeArguments[__s("state")])))) {
             return;
         }
     }
@@ -374,13 +374,13 @@ void runApp(Widget app) {
 }
 
 String _debugDumpAppString() {
-    String mode = kDebugMode? "DEBUG MODE" : kReleaseMode? "RELEASE MODE" : "PROFILE MODE";
+    String mode = kDebugMode? __s("DEBUG MODE") : kReleaseMode? __s("RELEASE MODE") : __s("PROFILE MODE");
     StringBuffer buffer = make<StringBufferCls>();
-    buffer->writeln("${WidgetsBinding.instance.runtimeType} - $mode");
+    buffer->writeln(__s("${WidgetsBinding.instance.runtimeType} - $mode"));
     if (WidgetsBindingCls::instance->renderViewElement != nullptr) {
         buffer->writeln(WidgetsBindingCls::instance->renderViewElement!->toStringDeep());
     } else {
-        buffer->writeln("<no tree currently mounted>");
+        buffer->writeln(__s("<no tree currently mounted>"));
     }
     return buffer->toString();
 }
@@ -389,21 +389,21 @@ void debugDumpApp() {
     debugPrint(_debugDumpAppString());
 }
 
-template<typename T : RenderObject> RenderObjectToWidgetAdapterCls<T>::RenderObjectToWidgetAdapterCls(Widget child, RenderObjectWithChildMixin<T> container, String debugShortDescription) {
+template<typename T> RenderObjectToWidgetAdapterCls<T>::RenderObjectToWidgetAdapterCls(Widget child, RenderObjectWithChildMixin<T> container, String debugShortDescription) : RenderObjectWidget(make<GlobalObjectKeyCls>(container)) {
 }
 
-template<typename T : RenderObject> RenderObjectToWidgetElement<T> RenderObjectToWidgetAdapterCls<T>::createElement() {
+template<typename T> RenderObjectToWidgetElement<T> RenderObjectToWidgetAdapterCls<T>::createElement() {
     return <T>make<RenderObjectToWidgetElementCls>(this);
 }
 
-template<typename T : RenderObject> RenderObjectWithChildMixin<T> RenderObjectToWidgetAdapterCls<T>::createRenderObject(BuildContext context) {
+template<typename T> RenderObjectWithChildMixin<T> RenderObjectToWidgetAdapterCls<T>::createRenderObject(BuildContext context) {
     return container;
 }
 
-template<typename T : RenderObject> void RenderObjectToWidgetAdapterCls<T>::updateRenderObject(BuildContext context, RenderObject renderObject) {
+template<typename T> void RenderObjectToWidgetAdapterCls<T>::updateRenderObject(BuildContext context, RenderObject renderObject) {
 }
 
-template<typename T : RenderObject> RenderObjectToWidgetElement<T> RenderObjectToWidgetAdapterCls<T>::attachToRenderTree(RenderObjectToWidgetElement<T> element, BuildOwner owner) {
+template<typename T> RenderObjectToWidgetElement<T> RenderObjectToWidgetAdapterCls<T>::attachToRenderTree(RenderObjectToWidgetElement<T> element, BuildOwner owner) {
     if (element == nullptr) {
         owner->lockState([=] () {
             element = createElement();
@@ -420,69 +420,69 @@ template<typename T : RenderObject> RenderObjectToWidgetElement<T> RenderObjectT
     return element!;
 }
 
-template<typename T : RenderObject> String RenderObjectToWidgetAdapterCls<T>::toStringShort() {
-    return debugShortDescription ?? super->toStringShort();
+template<typename T> String RenderObjectToWidgetAdapterCls<T>::toStringShort() {
+    return debugShortDescription or super->toStringShort();
 }
 
-template<typename T : RenderObject> void RenderObjectToWidgetElementCls<T>::visitChildren(ElementVisitor visitor) {
+template<typename T> void RenderObjectToWidgetElementCls<T>::visitChildren(ElementVisitor visitor) {
     if (_child != nullptr) {
         visitor(_child!);
     }
 }
 
-template<typename T : RenderObject> void RenderObjectToWidgetElementCls<T>::forgetChild(Element child) {
+template<typename T> void RenderObjectToWidgetElementCls<T>::forgetChild(Element child) {
     assert(child == _child);
     _child = nullptr;
     super->forgetChild(child);
 }
 
-template<typename T : RenderObject> void RenderObjectToWidgetElementCls<T>::mount(Object newSlot, Element parent) {
+template<typename T> void RenderObjectToWidgetElementCls<T>::mount(Object newSlot, Element parent) {
     assert(parent == nullptr);
     super->mount(parent, newSlot);
     _rebuild();
     assert(_child != nullptr);
 }
 
-template<typename T : RenderObject> void RenderObjectToWidgetElementCls<T>::update(RenderObjectToWidgetAdapter<T> newWidget) {
+template<typename T> void RenderObjectToWidgetElementCls<T>::update(RenderObjectToWidgetAdapter<T> newWidget) {
     super->update(newWidget);
     assert(widget == newWidget);
     _rebuild();
 }
 
-template<typename T : RenderObject> void RenderObjectToWidgetElementCls<T>::performRebuild() {
+template<typename T> void RenderObjectToWidgetElementCls<T>::performRebuild() {
     if (_newWidget != nullptr) {
         Widget newWidget = _newWidget!;
         _newWidget = nullptr;
-        update(((RenderObjectToWidgetAdapter<T>)newWidget));
+        update(as<RenderObjectToWidgetAdapter<T>>(newWidget));
     }
     super->performRebuild();
     assert(_newWidget == nullptr);
 }
 
-template<typename T : RenderObject> RenderObjectWithChildMixin<T> RenderObjectToWidgetElementCls<T>::renderObject() {
-    return ((RenderObjectWithChildMixin<T>)super->renderObject);
+template<typename T> RenderObjectWithChildMixin<T> RenderObjectToWidgetElementCls<T>::renderObject() {
+    return as<RenderObjectWithChildMixin<T>>(super->renderObject);
 }
 
-template<typename T : RenderObject> void RenderObjectToWidgetElementCls<T>::insertRenderObjectChild(RenderObject child, Object slot) {
+template<typename T> void RenderObjectToWidgetElementCls<T>::insertRenderObjectChild(RenderObject child, Object slot) {
     assert(slot == _rootChildSlot);
-    assert(renderObject->debugValidateChild(child));
-    renderObject->child = ((T)child);
+    assert(renderObject()->debugValidateChild(child));
+    renderObject()->child() = as<T>(child);
 }
 
-template<typename T : RenderObject> void RenderObjectToWidgetElementCls<T>::moveRenderObjectChild(RenderObject child, Object newSlot, Object oldSlot) {
+template<typename T> void RenderObjectToWidgetElementCls<T>::moveRenderObjectChild(RenderObject child, Object newSlot, Object oldSlot) {
     assert(false);
 }
 
-template<typename T : RenderObject> void RenderObjectToWidgetElementCls<T>::removeRenderObjectChild(RenderObject child, Object slot) {
-    assert(renderObject->child == child);
-    renderObject->child = nullptr;
+template<typename T> void RenderObjectToWidgetElementCls<T>::removeRenderObjectChild(RenderObject child, Object slot) {
+    assert(renderObject()->child() == child);
+    renderObject()->child() = nullptr;
 }
 
-template<typename T : RenderObject> void RenderObjectToWidgetElementCls<T>::_rebuild() {
+template<typename T> void RenderObjectToWidgetElementCls<T>::_rebuild() {
     try {
-        _child = updateChild(_child, (((RenderObjectToWidgetAdapter<T>)widget))->child, _rootChildSlot);
+        _child = updateChild(_child, (as<RenderObjectToWidgetAdapter<T>>(widget))->child, _rootChildSlot);
     } catch (Unknown exception) {
-        FlutterErrorDetails details = make<FlutterErrorDetailsCls>(exception, stack, "widgets library", make<ErrorDescriptionCls>("attaching to the render tree"));
+        FlutterErrorDetails details = make<FlutterErrorDetailsCls>(exception, stack, __s("widgets library"), make<ErrorDescriptionCls>(__s("attaching to the render tree")));
         FlutterErrorCls->reportError(details);
         Widget error = ErrorWidgetCls->builder(details);
         _child = updateChild(nullptr, error, _rootChildSlot);

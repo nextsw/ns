@@ -5,20 +5,20 @@ Widget ModalBarrierCls::build(BuildContext context) {
     ;
     assert(platformSupportsDismissingBarrier != nullptr);
     bool semanticsDismissible = dismissible && platformSupportsDismissingBarrier;
-    bool modalBarrierSemanticsDismissible = barrierSemanticsDismissible ?? semanticsDismissible;
+    bool modalBarrierSemanticsDismissible = barrierSemanticsDismissible or semanticsDismissible;
     InlineMethod;
     return make<BlockSemanticsCls>(make<ExcludeSemanticsCls>(!semanticsDismissible || !modalBarrierSemanticsDismissible, make<_ModalBarrierGestureDetectorCls>(handleDismiss, make<SemanticsCls>(semanticsDismissible? semanticsLabel : nullptr, semanticsDismissible? handleDismiss : nullptr, semanticsDismissible && semanticsLabel != nullptr? DirectionalityCls->of(context) : nullptr, make<MouseRegionCls>(SystemMouseCursorsCls::basic, make<ConstrainedBoxCls>(BoxConstraintsCls->expand(), color == nullptr? nullptr : make<ColoredBoxCls>(color!)))))));
 }
 
-AnimatedModalBarrierCls::AnimatedModalBarrierCls(bool barrierSemanticsDismissible, Animation<Color> color, bool dismissible, Unknown key, VoidCallback onDismiss, String semanticsLabel) {
+AnimatedModalBarrierCls::AnimatedModalBarrierCls(bool barrierSemanticsDismissible, Animation<Color> color, bool dismissible, Unknown key, VoidCallback onDismiss, String semanticsLabel) : AnimatedWidget(color()) {
 }
 
 Animation<Color> AnimatedModalBarrierCls::color() {
-    return ((Animation<Color>)listenable);
+    return as<Animation<Color>>(listenable);
 }
 
 Widget AnimatedModalBarrierCls::build(BuildContext context) {
-    return make<ModalBarrierCls>(color->value, dismissible, semanticsLabel, barrierSemanticsDismissible, onDismiss);
+    return make<ModalBarrierCls>(color()->value(), dismissible, semanticsLabel, barrierSemanticsDismissible, onDismiss);
 }
 
 bool _AnyTapGestureRecognizerCls::isPointerAllowed(PointerDownEvent event) {
@@ -39,7 +39,7 @@ void _AnyTapGestureRecognizerCls::handleTapCancel(PointerCancelEvent cancel, Poi
 }
 
 String _AnyTapGestureRecognizerCls::debugDescription() {
-    return "any tap";
+    return __s("any tap");
 }
 
 void _ModalBarrierSemanticsDelegateCls::assignSemantics(RenderSemanticsGestureHandler renderObject) {

@@ -252,7 +252,7 @@ public:
 
 
      ModalRouteCls(ImageFilter filter, Unknown settings);
-    template<typename T : Object>  static ModalRoute<T> of(BuildContext context);
+    template<typename T>  static ModalRoute<T> of(BuildContext context);
 
     virtual void setState(VoidCallback fn);
 
@@ -349,7 +349,7 @@ private:
 };
 template<typename T> using PopupRoute = std::shared_ptr<PopupRouteCls<T>>;
 
-template<typename R : Route<dynamic>> class RouteObserverCls : public NavigatorObserverCls {
+template<typename R> class RouteObserverCls : public NavigatorObserverCls {
 public:
 
     virtual bool debugObservingRoute(R route);
@@ -367,7 +367,7 @@ private:
 
 
 };
-template<typename R : Route<dynamic>> using RouteObserver = std::shared_ptr<RouteObserverCls<R : Route<dynamic>>>;
+template<typename R> using RouteObserver = std::shared_ptr<RouteObserverCls<R>>;
 
 class RouteAwareCls : public ObjectCls {
 public:
@@ -420,7 +420,7 @@ private:
 
 };
 template<typename T> using RawDialogRoute = std::shared_ptr<RawDialogRouteCls<T>>;
-template<typename T : Object>  Future<T> showGeneralDialog(Offset anchorPoint, Color barrierColor, bool barrierDismissible, String barrierLabel, BuildContext context, RoutePageBuilder pageBuilder, RouteSettings routeSettings, RouteTransitionsBuilder transitionBuilder, Duration transitionDuration, bool useRootNavigator);
+template<typename T>  Future<T> showGeneralDialog(Offset anchorPoint, Color barrierColor, bool barrierDismissible, String barrierLabel, BuildContext context, RoutePageBuilder pageBuilder, RouteSettings routeSettings, RouteTransitionsBuilder transitionBuilder, Duration transitionDuration, bool useRootNavigator);
 
 
 class FocusTrapCls : public SingleChildRenderObjectWidgetCls {

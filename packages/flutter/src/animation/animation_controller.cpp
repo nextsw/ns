@@ -9,13 +9,13 @@ AnimationControllerCls::AnimationControllerCls(AnimationBehavior animationBehavi
     }
     {
         _ticker = vsync->createTicker(_tick);
-        _internalSetValue(value ?? lowerBound);
+        _internalSetValue(value() or lowerBound);
     }
 }
 
 void AnimationControllerCls::unbounded(AnimationBehavior animationBehavior, String debugLabel, Duration duration, Duration reverseDuration, double value, TickerProvider vsync) {
     _ticker = vsync->createTicker(_tick);
-    _internalSetValue(value);
+    _internalSetValue(value());
 }
 
 Animation<double> AnimationControllerCls::view() {
@@ -41,14 +41,14 @@ void AnimationControllerCls::value(double newValue) {
 }
 
 void AnimationControllerCls::reset() {
-    value = lowerBound;
+    value() = lowerBound;
 }
 
 double AnimationControllerCls::velocity() {
-    if (!isAnimating) {
+    if (!isAnimating()) {
         return 0.0;
     }
-    return _simulation!->dx(lastElapsedDuration!->inMicroseconds->toDouble() / DurationCls::microsecondsPerSecond);
+    return _simulation!->dx(lastElapsedDuration()!->inMicroseconds()->toDouble() / DurationCls::microsecondsPerSecond);
 }
 
 Duration AnimationControllerCls::lastElapsedDuration() {
@@ -56,7 +56,7 @@ Duration AnimationControllerCls::lastElapsedDuration() {
 }
 
 bool AnimationControllerCls::isAnimating() {
-    return _ticker != nullptr && _ticker!->isActive;
+    return _ticker != nullptr && _ticker!->isActive();
 }
 
 AnimationStatus AnimationControllerCls::status() {
@@ -70,10 +70,10 @@ TickerFuture AnimationControllerCls::forward(double from) {
         }
         return true;
     }());
-    assert(_ticker != nullptr, "AnimationController.forward() called after AnimationController.dispose()\nAnimationController methods should not be used after calling dispose.");
+    assert(_ticker != nullptr, __s("AnimationController.forward() called after AnimationController.dispose()\nAnimationController methods should not be used after calling dispose."));
     _direction = _AnimationDirectionCls::forward;
     if (from != nullptr) {
-        value = from;
+        value() = from;
     }
     return _animateToInternal(upperBound);
 }
@@ -85,10 +85,10 @@ TickerFuture AnimationControllerCls::reverse(double from) {
         }
         return true;
     }());
-    assert(_ticker != nullptr, "AnimationController.reverse() called after AnimationController.dispose()\nAnimationController methods should not be used after calling dispose.");
+    assert(_ticker != nullptr, __s("AnimationController.reverse() called after AnimationController.dispose()\nAnimationController methods should not be used after calling dispose."));
     _direction = _AnimationDirectionCls::reverse;
     if (from != nullptr) {
-        value = from;
+        value() = from;
     }
     return _animateToInternal(lowerBound);
 }
@@ -100,7 +100,7 @@ TickerFuture AnimationControllerCls::animateTo(Curve curve, Duration duration, d
         }
         return true;
     }());
-    assert(_ticker != nullptr, "AnimationController.animateTo() called after AnimationController.dispose()\nAnimationController methods should not be used after calling dispose.");
+    assert(_ticker != nullptr, __s("AnimationController.animateTo() called after AnimationController.dispose()\nAnimationController methods should not be used after calling dispose."));
     _direction = _AnimationDirectionCls::forward;
     return _animateToInternal(targetduration, curve);
 }
@@ -112,7 +112,7 @@ TickerFuture AnimationControllerCls::animateBack(Curve curve, Duration duration,
         }
         return true;
     }());
-    assert(_ticker != nullptr, "AnimationController.animateBack() called after AnimationController.dispose()\nAnimationController methods should not be used after calling dispose.");
+    assert(_ticker != nullptr, __s("AnimationController.animateBack() called after AnimationController.dispose()\nAnimationController methods should not be used after calling dispose."));
     _direction = _AnimationDirectionCls::reverse;
     return _animateToInternal(targetduration, curve);
 }
@@ -139,25 +139,25 @@ TickerFuture AnimationControllerCls::fling(AnimationBehavior animationBehavior, 
     _direction =  < 0.0? _AnimationDirectionCls::reverse : _AnimationDirectionCls::forward;
     double target =  < 0.0? lowerBound - _kFlingTolerance->distance : upperBound + _kFlingTolerance->distance;
     double scale = 1.0;
-    AnimationBehavior behavior = animationBehavior ?? this->animationBehavior;
+    AnimationBehavior behavior = animationBehavior or this->animationBehavior;
     if (SemanticsBindingCls::instance->disableAnimations) {
         ;
     }
-    auto _c1 = make<SpringSimulationCls>(springDescription, value, target, velocity * scale);_c1.tolerance = _kFlingTolerance;SpringSimulation simulation = _c1;
-    assert(simulation->type != SpringTypeCls::underDamped, "The resulting spring simulation is of type SpringType.underDamped.\nThis can lead to unexpected look of the animation, please adjust the springDescription parameter");
+    auto _c1 = make<SpringSimulationCls>(springDescription, value(), target, velocity() * scale);_c1.tolerance = _kFlingTolerance;SpringSimulation simulation = _c1;
+    assert(simulation->type != SpringTypeCls::underDamped, __s("The resulting spring simulation is of type SpringType.underDamped.\nThis can lead to unexpected look of the animation, please adjust the springDescription parameter"));
     stop();
     return _startSimulation(simulation);
 }
 
 TickerFuture AnimationControllerCls::animateWith(Simulation simulation) {
-    assert(_ticker != nullptr, "AnimationController.animateWith() called after AnimationController.dispose()\nAnimationController methods should not be used after calling dispose.");
+    assert(_ticker != nullptr, __s("AnimationController.animateWith() called after AnimationController.dispose()\nAnimationController methods should not be used after calling dispose."));
     stop();
     _direction = _AnimationDirectionCls::forward;
     return _startSimulation(simulation);
 }
 
 void AnimationControllerCls::stop(bool canceled) {
-    assert(_ticker != nullptr, "AnimationController.stop() called after AnimationController.dispose()\nAnimationController methods should not be used after calling dispose.");
+    assert(_ticker != nullptr, __s("AnimationController.stop() called after AnimationController.dispose()\nAnimationController methods should not be used after calling dispose."));
     _simulation = nullptr;
     _lastElapsedDuration = nullptr;
     _ticker!->stop(canceled);
@@ -178,11 +178,11 @@ void AnimationControllerCls::dispose() {
 }
 
 String AnimationControllerCls::toStringDetails() {
-    String paused = isAnimating? "" : "; paused";
-    String ticker = _ticker == nullptr? "; DISPOSED" : (_ticker!->muted? "; silenced" : "");
-    String label = debugLabel == nullptr? "" : "; for $debugLabel";
-    String more = "${super.toStringDetails()} ${value.toStringAsFixed(3)}";
-    return "$more$paused$ticker$label";
+    String paused = isAnimating()? __s("") : __s("; paused");
+    String ticker = _ticker == nullptr? __s("; DISPOSED") : (_ticker!->muted()? __s("; silenced") : __s(""));
+    String label = debugLabel == nullptr? __s("") : __s("; for $debugLabel");
+    String more = __s("${super.toStringDetails()} ${value.toStringAsFixed(3)}");
+    return __s("$more$paused$ticker$label");
 }
 
 void AnimationControllerCls::_internalSetValue(double newValue) {
@@ -212,13 +212,13 @@ TickerFuture AnimationControllerCls::_animateToInternal(Curve curve, Duration du
         Duration directionDuration = (_direction == _AnimationDirectionCls::reverse && reverseDuration != nullptr)? reverseDuration! : this->duration!;
         simulationDuration = directionDuration * remainingFraction;
     } else     {
-        if (target == value) {
+        if (target == value()) {
         simulationDuration = DurationCls::zero;
     }
 ;
     }    stop();
     if (simulationDuration == DurationCls::zero) {
-        if (value != target) {
+        if (value() != target) {
             _value = clampDouble(target, lowerBound, upperBound);
             notifyListeners();
         }
@@ -227,7 +227,7 @@ TickerFuture AnimationControllerCls::_animateToInternal(Curve curve, Duration du
         return TickerFutureCls->complete();
     }
     assert(simulationDuration > DurationCls::zero);
-    assert(!isAnimating);
+    assert(!isAnimating());
     return _startSimulation(make<_InterpolationSimulationCls>(_value, target, simulationDuration, curve, scale));
 }
 
@@ -239,7 +239,7 @@ void AnimationControllerCls::_directionSetter(_AnimationDirection direction) {
 
 TickerFuture AnimationControllerCls::_startSimulation(Simulation simulation) {
     assert(simulation != nullptr);
-    assert(!isAnimating);
+    assert(!isAnimating());
     _simulation = simulation;
     _lastElapsedDuration = DurationCls::zero;
     _value = clampDouble(simulation->x(0.0), lowerBound, upperBound);
@@ -250,7 +250,7 @@ TickerFuture AnimationControllerCls::_startSimulation(Simulation simulation) {
 }
 
 void AnimationControllerCls::_checkStatusChanged() {
-    AnimationStatus newStatus = status;
+    AnimationStatus newStatus = status();
     if (_lastReportedStatus != newStatus) {
         _lastReportedStatus = newStatus;
         notifyStatusListeners(newStatus);

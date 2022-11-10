@@ -6,7 +6,7 @@ SliverPrototypeExtentListCls::SliverPrototypeExtentListCls(Unknown delegate, Unk
 }
 
 RenderSliverMultiBoxAdaptor SliverPrototypeExtentListCls::createRenderObject(BuildContext context) {
-    _SliverPrototypeExtentListElement element = ((_SliverPrototypeExtentListElement)context);
+    _SliverPrototypeExtentListElement element = as<_SliverPrototypeExtentListElement>(context);
     return make<_RenderSliverPrototypeExtentListCls>(element);
 }
 
@@ -15,20 +15,20 @@ SliverMultiBoxAdaptorElement SliverPrototypeExtentListCls::createElement() {
 }
 
 _RenderSliverPrototypeExtentList _SliverPrototypeExtentListElementCls::renderObject() {
-    return ((_RenderSliverPrototypeExtentList)super->renderObject);
+    return as<_RenderSliverPrototypeExtentList>(super->renderObject);
 }
 
 void _SliverPrototypeExtentListElementCls::insertRenderObjectChild(RenderObject child, Object slot) {
     if (slot == _prototypeSlot) {
-        assert(child is RenderBox);
-        renderObject->child = ((RenderBox)child);
+        assert(is<RenderBox>(child));
+        renderObject()->child() = as<RenderBox>(child);
     } else {
-        super->insertRenderObjectChild(child, ((int)slot));
+        super->insertRenderObjectChild(child, as<int>(slot));
     }
 }
 
 void _SliverPrototypeExtentListElementCls::didAdoptChild(RenderBox child) {
-    if (child != renderObject->child) {
+    if (child != renderObject()->child()) {
         super->didAdoptChild(child);
     }
 }
@@ -37,15 +37,15 @@ void _SliverPrototypeExtentListElementCls::moveRenderObjectChild(RenderBox child
     if (newSlot == _prototypeSlot) {
         assert(false);
     } else {
-        super->moveRenderObjectChild(child, ((int)oldSlot), ((int)newSlot));
+        super->moveRenderObjectChild(child, as<int>(oldSlot), as<int>(newSlot));
     }
 }
 
 void _SliverPrototypeExtentListElementCls::removeRenderObjectChild(RenderBox child, Object slot) {
-    if (renderObject->child == child) {
-        renderObject->child = nullptr;
+    if (renderObject()->child() == child) {
+        renderObject()->child() = nullptr;
     } else {
-        super->removeRenderObjectChild(child, ((int)slot));
+        super->removeRenderObjectChild(child, as<int>(slot));
     }
 }
 
@@ -58,13 +58,13 @@ void _SliverPrototypeExtentListElementCls::visitChildren(ElementVisitor visitor)
 
 void _SliverPrototypeExtentListElementCls::mount(Object newSlot, Element parent) {
     super->mount(parent, newSlot);
-    _prototype = updateChild(_prototype, (((SliverPrototypeExtentList)widget))->prototypeItem, _prototypeSlot);
+    _prototype = updateChild(_prototype, (as<SliverPrototypeExtentList>(widget))->prototypeItem, _prototypeSlot);
 }
 
 void _SliverPrototypeExtentListElementCls::update(SliverPrototypeExtentList newWidget) {
     super->update(newWidget);
     assert(widget == newWidget);
-    _prototype = updateChild(_prototype, (((SliverPrototypeExtentList)widget))->prototypeItem, _prototypeSlot);
+    _prototype = updateChild(_prototype, (as<SliverPrototypeExtentList>(widget))->prototypeItem, _prototypeSlot);
 }
 
 RenderBox _RenderSliverPrototypeExtentListCls::child() {
@@ -83,7 +83,7 @@ void _RenderSliverPrototypeExtentListCls::child(RenderBox value) {
 }
 
 void _RenderSliverPrototypeExtentListCls::performLayout() {
-    child!->layout(constraints->asBoxConstraints()true);
+    child()!->layout(constraints->asBoxConstraints()true);
     super->performLayout();
 }
 
@@ -116,9 +116,9 @@ void _RenderSliverPrototypeExtentListCls::visitChildren(RenderObjectVisitor visi
 }
 
 double _RenderSliverPrototypeExtentListCls::itemExtent() {
-    assert(child != nullptr && child!->hasSize);
-    return constraints->axis == AxisCls::vertical? child!->size->height : child!->size->width;
+    assert(child() != nullptr && child()!->hasSize());
+    return constraints->axis == AxisCls::vertical? child()!->size()->height() : child()!->size()->width();
 }
 
-_RenderSliverPrototypeExtentListCls::_RenderSliverPrototypeExtentListCls(_SliverPrototypeExtentListElement childManager) {
+_RenderSliverPrototypeExtentListCls::_RenderSliverPrototypeExtentListCls(_SliverPrototypeExtentListElement childManager) : RenderSliverFixedExtentBoxAdaptor(childManager) {
 }

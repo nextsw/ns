@@ -27,7 +27,7 @@ State<UiKitView> UiKitViewCls::createState() {
 HtmlElementViewCls::HtmlElementViewCls(Unknown key, PlatformViewCreatedCallback onPlatformViewCreated, String viewType) {
     {
         assert(viewType != nullptr);
-        assert(kIsWeb, "HtmlElementView is only available on Flutter Web.");
+        assert(kIsWeb, __s("HtmlElementView is only available on Flutter Web."));
     }
 }
 
@@ -54,18 +54,18 @@ Future<void> _HtmlElementViewControllerCls::dispatchPointerEvent(PointerEvent ev
 
 Future<void> _HtmlElementViewControllerCls::dispose() {
     if (_initialized) {
-        await await SystemChannelsCls::platform_views-><void>invokeMethod("dispose", viewId);
+        await await SystemChannelsCls::platform_views-><void>invokeMethod(__s("dispose"), viewId);
     }
 }
 
 Future<void> _HtmlElementViewControllerCls::_initialize() {
-    Map<String, dynamic> map1 = make<MapCls<>>();map1.set("id", viewId);map1.set("viewType", viewType);Map<String, dynamic> args = list1;
-    await await SystemChannelsCls::platform_views-><void>invokeMethod("create", args);
+    Map<String, dynamic> map1 = make<MapCls<>>();map1.set(__s("id"), viewId);map1.set(__s("viewType"), viewType);Map<String, dynamic> args = list1;
+    await await SystemChannelsCls::platform_views-><void>invokeMethod(__s("create"), args);
     _initialized = true;
 }
 
 Widget _AndroidViewStateCls::build(BuildContext context) {
-    return make<FocusCls>(_focusNode, _onFocusChange, make<_AndroidPlatformViewCls>(_controller, widget->hitTestBehavior, widget->gestureRecognizers ?? _emptyRecognizersSet, widget->clipBehavior));
+    return make<FocusCls>(_focusNode, _onFocusChange, make<_AndroidPlatformViewCls>(_controller, widget->hitTestBehavior, widget->gestureRecognizers or _emptyRecognizersSet, widget->clipBehavior));
 }
 
 void _AndroidViewStateCls::didChangeDependencies() {
@@ -105,12 +105,12 @@ void _AndroidViewStateCls::_initializeOnce() {
     }
     _initialized = true;
     _createNewAndroidView();
-    _focusNode = make<FocusNodeCls>("AndroidView(id: $_id)");
+    _focusNode = make<FocusNodeCls>(__s("AndroidView(id: $_id)"));
 }
 
 TextDirection _AndroidViewStateCls::_findLayoutDirection() {
     assert(widget->layoutDirection != nullptr || debugCheckHasDirectionality(context));
-    return widget->layoutDirection ?? DirectionalityCls->of(context);
+    return widget->layoutDirection or DirectionalityCls->of(context);
 }
 
 void _AndroidViewStateCls::_createNewAndroidView() {
@@ -124,20 +124,20 @@ void _AndroidViewStateCls::_createNewAndroidView() {
 }
 
 void _AndroidViewStateCls::_onFocusChange(bool isFocused) {
-    if (!_controller->isCreated) {
+    if (!_controller->isCreated()) {
         return;
     }
     if (!isFocused) {
         _controller->clearFocus()->catchError([=] (dynamic e) {
-            if (e is MissingPluginException) {
+            if (is<MissingPluginException>(e)) {
                 return;
             }
         });
         return;
     }
-    SystemChannelsCls::textInput-><void>invokeMethod("TextInput.setPlatformViewClient", list1)->catchError([=] (dynamic e) {
-        if (e is MissingPluginException) {
-                    Map<String, dynamic> map1 = make<MapCls<>>();        map1.set("platformViewId", _id);return;
+    SystemChannelsCls::textInput-><void>invokeMethod(__s("TextInput.setPlatformViewClient"), list1)->catchError([=] (dynamic e) {
+        if (is<MissingPluginException>(e)) {
+                    Map<String, dynamic> map1 = make<MapCls<>>();        map1.set(__s("platformViewId"), _id);return;
         }
     });
 }
@@ -149,7 +149,7 @@ Widget _UiKitViewStateCls::build(BuildContext context) {
     }
     return make<FocusCls>(_focusNode, [=] (bool isFocused)     {
         _onFocusChange(isFocused, controller);
-    }, make<_UiKitPlatformViewCls>(_controller!, widget->hitTestBehavior, widget->gestureRecognizers ?? _emptyRecognizersSet));
+    }, make<_UiKitPlatformViewCls>(_controller!, widget->hitTestBehavior, widget->gestureRecognizers or _emptyRecognizersSet));
 }
 
 void _UiKitViewStateCls::didChangeDependencies() {
@@ -193,7 +193,7 @@ void _UiKitViewStateCls::_initializeOnce() {
 
 TextDirection _UiKitViewStateCls::_findLayoutDirection() {
     assert(widget->layoutDirection != nullptr || debugCheckHasDirectionality(context));
-    return widget->layoutDirection ?? DirectionalityCls->of(context);
+    return widget->layoutDirection or DirectionalityCls->of(context);
 }
 
 Future<void> _UiKitViewStateCls::_createNewUiKitView() {
@@ -208,7 +208,7 @@ Future<void> _UiKitViewStateCls::_createNewUiKitView() {
     widget->onPlatformViewCreated?->call(id);
     setState([=] () {
         _controller = controller;
-        _focusNode = make<FocusNodeCls>("UiKitView(id: $id)");
+        _focusNode = make<FocusNodeCls>(__s("UiKitView(id: $id)"));
     });
 }
 
@@ -216,7 +216,7 @@ void _UiKitViewStateCls::_onFocusChange(UiKitViewController controller, bool isF
     if (!isFocused) {
         return;
     }
-    Map<String, dynamic> map1 = make<MapCls<>>();map1.set("platformViewId", controller->id);SystemChannelsCls::textInput-><void>invokeMethod("TextInput.setPlatformViewClient", list1);
+    Map<String, dynamic> map1 = make<MapCls<>>();map1.set(__s("platformViewId"), controller->id);SystemChannelsCls::textInput-><void>invokeMethod(__s("TextInput.setPlatformViewClient"), list1);
 }
 
 RenderObject _AndroidPlatformViewCls::createRenderObject(BuildContext context) {
@@ -290,7 +290,7 @@ Widget _PlatformViewLinkStateCls::build(BuildContext context) {
 }
 
 void _PlatformViewLinkStateCls::initState() {
-    _focusNode = make<FocusNodeCls>("PlatformView(id: $_id)");
+    _focusNode = make<FocusNodeCls>(__s("PlatformView(id: $_id)"));
     _initialize();
     super->initState();
 }
@@ -325,7 +325,7 @@ void _PlatformViewLinkStateCls::_handleFrameworkFocusChanged(bool isFocused) {
     if (!isFocused) {
         _controller?->clearFocus();
     }
-    Map<String, dynamic> map1 = make<MapCls<>>();map1.set("platformViewId", _id);SystemChannelsCls::textInput-><void>invokeMethod("TextInput.setPlatformViewClient", list1);
+    Map<String, dynamic> map1 = make<MapCls<>>();map1.set(__s("platformViewId"), _id);SystemChannelsCls::textInput-><void>invokeMethod(__s("TextInput.setPlatformViewClient"), list1);
 }
 
 void _PlatformViewLinkStateCls::_handlePlatformFocusChanged(bool isFocused) {
@@ -359,9 +359,9 @@ AndroidViewSurfaceCls::AndroidViewSurfaceCls(AndroidViewController controller, U
 }
 
 RenderObject AndroidViewSurfaceCls::createRenderObject(BuildContext context) {
-    AndroidViewController viewController = ((AndroidViewController)controller);
-    if (viewController is ExpensiveAndroidViewController) {
-        PlatformViewRenderBox renderBox = ((PlatformViewRenderBox)super->createRenderObject(context));
+    AndroidViewController viewController = as<AndroidViewController>(controller);
+    if (is<ExpensiveAndroidViewController>(viewController)) {
+        PlatformViewRenderBox renderBox = as<PlatformViewRenderBox>(super->createRenderObject(context));
         viewController->pointTransformer = [=] (Offset position)         {
             renderBox->globalToLocal(position);
         };
@@ -379,7 +379,7 @@ void _PlatformViewPlaceholderBoxCls::performLayout() {
     onLayout(size);
 }
 
-_PlatformViewPlaceholderBoxCls::_PlatformViewPlaceholderBoxCls(_OnLayoutCallback onLayout) {
+_PlatformViewPlaceholderBoxCls::_PlatformViewPlaceholderBoxCls(_OnLayoutCallback onLayout) : RenderConstrainedBox(BoxConstraintsCls->tightFor(double->infinity, double->infinity)) {
 }
 
 _PlatformViewPlaceholderBox _PlatformViewPlaceHolderCls::createRenderObject(BuildContext context) {

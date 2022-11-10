@@ -1,10 +1,10 @@
 #include "codec.hpp"
 template<typename S, typename T> T CodecCls<S, T>::encode(S input) {
-    return encoder->convert(input);
+    return encoder()->convert(input);
 }
 
 template<typename S, typename T> S CodecCls<S, T>::decode(T encoded) {
-    return decoder->convert(encoded);
+    return decoder()->convert(encoded);
 }
 
 template<typename S, typename T> Codec<S, R> CodecCls<S, T>::fusetemplate<typename R> (Codec<T, R> other) {

@@ -5,7 +5,7 @@
 #include <dart/core/core.hpp>
 
 
-template<typename K, typename Node : _SplayTreeNode<K, Node>> class _SplayTreeNodeCls : public ObjectCls {
+template<typename K, typename Node> class _SplayTreeNodeCls : public ObjectCls {
 public:
     K key;
 
@@ -18,7 +18,7 @@ private:
 
      _SplayTreeNodeCls(K key);
 };
-template<typename K, typename Node : _SplayTreeNode<K, Node>> using _SplayTreeNode = std::shared_ptr<_SplayTreeNodeCls<K, Node : _SplayTreeNode<K, Node>>>;
+template<typename K, typename Node> using _SplayTreeNode = std::shared_ptr<_SplayTreeNodeCls<K, Node>>;
 
 template<typename K> class _SplayTreeSetNodeCls : public _SplayTreeNodeCls<K, _SplayTreeSetNode<K>> {
 public:
@@ -46,7 +46,7 @@ private:
 };
 template<typename K, typename V> using _SplayTreeMapNode = std::shared_ptr<_SplayTreeMapNodeCls<K, V>>;
 
-template<typename K, typename Node : _SplayTreeNode<K, Node>> class _SplayTreeCls : public ObjectCls {
+template<typename K, typename Node> class _SplayTreeCls : public ObjectCls {
 public:
 
 private:
@@ -80,7 +80,7 @@ private:
     virtual bool _containsKey(Object key);
 
 };
-template<typename K, typename Node : _SplayTreeNode<K, Node>> using _SplayTree = std::shared_ptr<_SplayTreeCls<K, Node : _SplayTreeNode<K, Node>>>;
+template<typename K, typename Node> using _SplayTree = std::shared_ptr<_SplayTreeCls<K, Node>>;
 int _dynamicCompare(dynamic a, dynamic b);
 
 template<typename K>  Comparator<K> _defaultCompare();
@@ -152,7 +152,7 @@ private:
 };
 template<typename K, typename V> using SplayTreeMap = std::shared_ptr<SplayTreeMapCls<K, V>>;
 
-template<typename K, typename Node : _SplayTreeNode<K, Node>, typename T> class _SplayTreeIteratorCls : public ObjectCls {
+template<typename K, typename Node, typename T> class _SplayTreeIteratorCls : public ObjectCls {
 public:
 
     virtual T current();
@@ -177,9 +177,9 @@ private:
 
     virtual T _getValue(Node node);
 };
-template<typename K, typename Node : _SplayTreeNode<K, Node>, typename T> using _SplayTreeIterator = std::shared_ptr<_SplayTreeIteratorCls<K, Node : _SplayTreeNode<K, Node>, T>>;
+template<typename K, typename Node, typename T> using _SplayTreeIterator = std::shared_ptr<_SplayTreeIteratorCls<K, Node, T>>;
 
-template<typename K, typename Node : _SplayTreeNode<K, Node>> class _SplayTreeKeyIterableCls : public EfficientLengthIterableCls<K> {
+template<typename K, typename Node> class _SplayTreeKeyIterableCls : public EfficientLengthIterableCls<K> {
 public:
 
     virtual int length();
@@ -198,7 +198,7 @@ private:
 
      _SplayTreeKeyIterableCls(_SplayTree<K, Node> _tree);
 };
-template<typename K, typename Node : _SplayTreeNode<K, Node>> using _SplayTreeKeyIterable = std::shared_ptr<_SplayTreeKeyIterableCls<K, Node : _SplayTreeNode<K, Node>>>;
+template<typename K, typename Node> using _SplayTreeKeyIterable = std::shared_ptr<_SplayTreeKeyIterableCls<K, Node>>;
 
 template<typename K, typename V> class _SplayTreeValueIterableCls : public EfficientLengthIterableCls<V> {
 public:
@@ -234,7 +234,7 @@ private:
 };
 template<typename K, typename V> using _SplayTreeMapEntryIterable = std::shared_ptr<_SplayTreeMapEntryIterableCls<K, V>>;
 
-template<typename K, typename Node : _SplayTreeNode<K, Node>> class _SplayTreeKeyIteratorCls : public _SplayTreeIteratorCls<K, Node, K> {
+template<typename K, typename Node> class _SplayTreeKeyIteratorCls : public _SplayTreeIteratorCls<K, Node, K> {
 public:
 
 private:
@@ -244,7 +244,7 @@ private:
     virtual K _getValue(Node node);
 
 };
-template<typename K, typename Node : _SplayTreeNode<K, Node>> using _SplayTreeKeyIterator = std::shared_ptr<_SplayTreeKeyIteratorCls<K, Node : _SplayTreeNode<K, Node>>>;
+template<typename K, typename Node> using _SplayTreeKeyIterator = std::shared_ptr<_SplayTreeKeyIteratorCls<K, Node>>;
 
 template<typename K, typename V> class _SplayTreeValueIteratorCls : public _SplayTreeIteratorCls<K, _SplayTreeMapNode<K, V>, V> {
 public:
@@ -337,7 +337,7 @@ private:
 
     virtual SplayTreeSet<E> _clone();
 
-    template<typename Node : _SplayTreeNode<E, Node>>  virtual _SplayTreeSetNode<E> _copyNode(Node node);
+    template<typename Node>  virtual _SplayTreeSetNode<E> _copyNode(Node node);
 
 };
 template<typename E> using SplayTreeSet = std::shared_ptr<SplayTreeSetCls<E>>;

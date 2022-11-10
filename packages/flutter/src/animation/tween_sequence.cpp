@@ -12,8 +12,8 @@ template<typename T> TweenSequenceCls<T>::TweenSequenceCls(List<TweenSequenceIte
         }
         assert(totalWeight > 0.0);
         double start = 0.0;
-        for (;  < _items->length; i = 1) {
-            double end = i == _items->length - 1? 1.0 : start + _items[i]->weight / totalWeight;
+        for (;  < _items->length(); i = 1) {
+            double end = i == _items->length() - 1? 1.0 : start + _items[i]->weight / totalWeight;
             _intervals->add(make<_IntervalCls>(start, end));
             start = end;
         }
@@ -23,9 +23,9 @@ template<typename T> TweenSequenceCls<T>::TweenSequenceCls(List<TweenSequenceIte
 template<typename T> T TweenSequenceCls<T>::transform(double t) {
     assert(t >= 0.0 && t <= 1.0);
     if (t == 1.0) {
-        return _evaluateAt(t, _items->length - 1);
+        return _evaluateAt(t, _items->length() - 1);
     }
-    for (;  < _items->length; index++) {
+    for (;  < _items->length(); index++) {
         if (_intervals[index]->contains(t)) {
             return _evaluateAt(t, index);
         }
@@ -34,7 +34,7 @@ template<typename T> T TweenSequenceCls<T>::transform(double t) {
 }
 
 template<typename T> String TweenSequenceCls<T>::toString() {
-    return "TweenSequence(${_items.length} items)";
+    return __s("TweenSequence(${_items.length} items)");
 }
 
 template<typename T> T TweenSequenceCls<T>::_evaluateAt(int index, double t) {
@@ -70,7 +70,7 @@ double _IntervalCls::value(double t) {
 }
 
 String _IntervalCls::toString() {
-    return "<$start, $end>";
+    return __s("<$start, $end>");
 }
 
 _IntervalCls::_IntervalCls(double end, double start) {

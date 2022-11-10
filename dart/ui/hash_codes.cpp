@@ -1,7 +1,7 @@
 #include "hash_codes.hpp"
 int _JenkinsCls::combine(int hash, Object o) {
-    assert(o is! Iterable);
-    hash = 0x1fffffff & (hash + o->hashCode);
+    assert(!is<Iterable>(o));
+    hash = 0x1fffffff & (hash + o->hashCode());
     hash = 0x1fffffff & (hash + ((0x0007ffff & hash) << 10));
     return hash ^ (hash >> 6);
 }

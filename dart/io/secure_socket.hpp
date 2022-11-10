@@ -21,7 +21,7 @@ public:
     virtual void renegotiate(bool requestClientCertificate, bool requireClientCertificate, bool useSessionCache);
 private:
 
-    extern void  _(RawSecureSocket rawSocket);
+    void  _(RawSecureSocket rawSocket);
 };
 using SecureSocket = std::shared_ptr<SecureSocketCls>;
 
@@ -56,7 +56,7 @@ public:
     virtual DateTime endValidity();
 private:
 
-    extern void  _();
+    void  _();
 };
 using X509Certificate = std::shared_ptr<X509CertificateCls>;
 
@@ -322,7 +322,7 @@ public:
     virtual List<_ExternalBuffer> buffers();
 private:
 
-    extern void  _();
+    void  _();
     virtual int _pointer();
 };
 using _SecureFilter = std::shared_ptr<_SecureFilterCls>;

@@ -9,19 +9,19 @@ Future<void> ViewportOffsetCls::moveTo(bool clamp, Curve curve, Duration duratio
         jumpTo(to);
         return <void>value();
     } else {
-        return animateTo(toduration, curve ?? CurvesCls::ease);
+        return animateTo(toduration, curve or CurvesCls::ease);
     }
 }
 
 String ViewportOffsetCls::toString() {
     List<String> description = makeList();
     debugFillDescription(description);
-    return "${describeIdentity(this)}(${description.join(", ")})";
+    return __s("${describeIdentity(this)}(${description.join(", ")})");
 }
 
 void ViewportOffsetCls::debugFillDescription(List<String> description) {
-    if (hasPixels) {
-        description->add("offset: ${pixels.toStringAsFixed(1)}");
+    if (hasPixels()) {
+        description->add(__s("offset: ${pixels.toStringAsFixed(1)}"));
     }
 }
 
