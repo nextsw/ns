@@ -26,9 +26,9 @@ public:
 
     virtual bool remove(Object element);
 
-    virtual void removeWhere(bool test(T ) );
+    virtual void removeWhere(std::function<bool(T )> test);
 
-    virtual void retainWhere(bool test(T ) );
+    virtual void retainWhere(std::function<bool(T )> test);
 
 private:
     List<List<T>> _lists;

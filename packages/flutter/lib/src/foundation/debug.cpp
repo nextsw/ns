@@ -10,7 +10,7 @@ bool debugAssertAllFoundationVarsUnset(DebugPrintCallback debugPrintOverride, St
 }
 
 template<typename T>
-Future<T> debugInstrumentAction(Future<T> action() , String description) {
+Future<T> debugInstrumentAction(std::function<Future<T>()> action, String description) {
     bool instrument = false;
     assert([=] () {
         instrument = debugInstrumentationEnabled;

@@ -1,13 +1,13 @@
 #include "stream_controller.hpp"
 template<typename T>
-StreamControllerCls<T>::StreamControllerCls(FutureOr<void> onCancel() , void onListen() , void onPause() , void onResume() , bool sync) {
+StreamControllerCls<T>::StreamControllerCls(std::function<FutureOr<void>()> onCancel, std::function<void()> onListen, std::function<void()> onPause, std::function<void()> onResume, bool sync) {
     {
         return sync? <T>make<_SyncStreamControllerCls>(onListen, onPause, onResume, onCancel) : <T>make<_AsyncStreamControllerCls>(onListen, onPause, onResume, onCancel);
     }
 }
 
 template<typename T>
-void StreamControllerCls<T>::broadcast(void onCancel() , void onListen() , bool sync) {
+void StreamControllerCls<T>::broadcast(std::function<void()> onCancel, std::function<void()> onListen, bool sync) {
     return sync? <T>make<_SyncBroadcastStreamControllerCls>(onListen, onCancel) : <T>make<_AsyncBroadcastStreamControllerCls>(onListen, onCancel);
 }
 
@@ -221,7 +221,7 @@ void _StreamControllerCls<T>::_close() {
 }
 
 template<typename T>
-StreamSubscription<T> _StreamControllerCls<T>::_subscribe(bool cancelOnError, void onData(T data) , void onDone() , void  onError() ) {
+StreamSubscription<T> _StreamControllerCls<T>::_subscribe(bool cancelOnError, std::function<void(T data)> onData, std::function<void()> onDone, std::function<void ()> onError) {
     if (!_isInitialState()) {
         ;
     }
@@ -323,7 +323,7 @@ void _AsyncStreamControllerDispatchCls<T>::_sendDone() {
     _subscription->_addPending(make<_DelayedDoneCls>());
 }
 
-void _runGuarded(void notificationHandler() ) {
+void _runGuarded(std::function<void()> notificationHandler) {
     if (notificationHandler == nullptr)     {
         return;
     }
@@ -348,12 +348,12 @@ bool _ControllerStreamCls<T>::==(Object other) {
 }
 
 template<typename T>
-StreamSubscription<T> _ControllerStreamCls<T>::_createSubscription(bool cancelOnError, void onData(T data) , void onDone() , void  onError() ) {
+StreamSubscription<T> _ControllerStreamCls<T>::_createSubscription(bool cancelOnError, std::function<void(T data)> onData, std::function<void()> onDone, std::function<void ()> onError) {
     return _controller->_subscribe(onData, onError, onDone, cancelOnError);
 }
 
 template<typename T>
-_ControllerSubscriptionCls<T>::_ControllerSubscriptionCls(_StreamControllerLifecycle<T> _controller, bool cancelOnError, void onData(T data) , void onDone() , void  onError() ) {
+_ControllerSubscriptionCls<T>::_ControllerSubscriptionCls(_StreamControllerLifecycle<T> _controller, bool cancelOnError, std::function<void(T data)> onData, std::function<void()> onDone, std::function<void ()> onError) {
 }
 
 template<typename T>

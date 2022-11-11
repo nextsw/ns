@@ -1,5 +1,5 @@
 #include "reorderable_list.hpp"
-ReorderableListCls::ReorderableListCls(double anchor, double cacheExtent, Clip clipBehavior, ScrollController controller, DragStartBehavior dragStartBehavior, IndexedWidgetBuilder itemBuilder, int itemCount, double itemExtent, Unknown key, ScrollViewKeyboardDismissBehavior keyboardDismissBehavior, ReorderCallback onReorder, void Function(int index) onReorderEnd, void Function(int index) onReorderStart, EdgeInsetsGeometry padding, ScrollPhysics physics, bool primary, Widget prototypeItem, ReorderItemProxyDecorator proxyDecorator, String restorationId, bool reverse, Axis scrollDirection, bool shrinkWrap) {
+ReorderableListCls::ReorderableListCls(double anchor, double cacheExtent, Clip clipBehavior, ScrollController controller, DragStartBehavior dragStartBehavior, IndexedWidgetBuilder itemBuilder, int itemCount, double itemExtent, Unknown key, ScrollViewKeyboardDismissBehavior keyboardDismissBehavior, ReorderCallback onReorder, std::function<void(int index)> onReorderEnd, std::function<void(int index)> onReorderStart, EdgeInsetsGeometry padding, ScrollPhysics physics, bool primary, Widget prototypeItem, ReorderItemProxyDecorator proxyDecorator, String restorationId, bool reverse, Axis scrollDirection, bool shrinkWrap) {
     {
         assert(itemCount >= 0);
         assert(itemExtent == nullptr || prototypeItem == nullptr, __s("You can only pass itemExtent or prototypeItem, not both"));
@@ -39,7 +39,7 @@ Widget ReorderableListStateCls::build(BuildContext context) {
     return make<CustomScrollViewCls>(widget->scrollDirection, widget->reverse, widget->controller, widget->primary, widget->physics, widget->shrinkWrap, widget->anchor, widget->cacheExtent, widget->dragStartBehavior, widget->keyboardDismissBehavior, widget->restorationId, widget->clipBehavior, makeList(ArrayItem));
 }
 
-SliverReorderableListCls::SliverReorderableListCls(ChildIndexGetter findChildIndexCallback, IndexedWidgetBuilder itemBuilder, int itemCount, double itemExtent, Unknown key, ReorderCallback onReorder, void Function(int ) onReorderEnd, void Function(int ) onReorderStart, Widget prototypeItem, ReorderItemProxyDecorator proxyDecorator) {
+SliverReorderableListCls::SliverReorderableListCls(ChildIndexGetter findChildIndexCallback, IndexedWidgetBuilder itemBuilder, int itemCount, double itemExtent, Unknown key, ReorderCallback onReorder, std::function<void(int )> onReorderEnd, std::function<void(int )> onReorderStart, Widget prototypeItem, ReorderItemProxyDecorator proxyDecorator) {
     {
         assert(itemCount >= 0);
         assert(itemExtent == nullptr || prototypeItem == nullptr, __s("You can only pass itemExtent or prototypeItem, not both"));

@@ -9,7 +9,7 @@ class ByteConversionSinkCls : public ChunkedConversionSinkCls<List<int>> {
 public:
 
      ByteConversionSinkCls();
-    virtual void  withCallback(void callback(List<int> accumulated) ) override;
+    virtual void  withCallback(std::function<void(List<int> accumulated)> callback) override;
     virtual void  from(Sink<List<int>> sink);
     virtual void addSlice(List<int> chunk, int end, bool isLast, int start);
 private:
@@ -54,14 +54,14 @@ public:
 private:
     static auto  _INITIAL_BUFFER_SIZE;
 
-    void Function(List<int> ) _callback;
+    std::function<void(List<int> )> _callback;
 
     List<int> _buffer;
 
     int _bufferIndex;
 
 
-     _ByteCallbackSinkCls(void callback(List<int> accumulated) );
+     _ByteCallbackSinkCls(std::function<void(List<int> accumulated)> callback);
 
     static int _roundToPowerOf2(int v);
 

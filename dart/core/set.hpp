@@ -16,9 +16,9 @@ public:
     virtual void  unmodifiable(Iterable<E> elements);
 
     template<typename S, typename T>
- static Set<T> castFrom(<R>Set<R> newSet() , Set<S> source);
+ static Set<T> castFrom(std::function<Set<R>()> newSet, Set<S> source);
 
-<R>    template<typename R>
+    template<typename R>
  virtual Set<R> cast();
     virtual Iterator<E> iterator();
     virtual bool contains(Object value);
@@ -28,8 +28,8 @@ public:
     virtual E lookup(Object object);
     virtual void removeAll(Iterable<Object> elements);
     virtual void retainAll(Iterable<Object> elements);
-    virtual void removeWhere(bool test(E element) );
-    virtual void retainWhere(bool test(E element) );
+    virtual void removeWhere(std::function<bool(E element)> test);
+    virtual void retainWhere(std::function<bool(E element)> test);
     virtual bool containsAll(Iterable<Object> other);
     virtual Set<E> intersection(Set<Object> other);
     virtual Set<E> union(Set<E> other);

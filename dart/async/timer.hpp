@@ -8,19 +8,19 @@
 class TimerCls : public ObjectCls {
 public:
 
-     TimerCls(void callback() , Duration duration);
+     TimerCls(std::function<void()> callback, Duration duration);
 
-    virtual void  periodic(void callback(Timer timer) , Duration duration);
+    virtual void  periodic(std::function<void(Timer timer)> callback, Duration duration);
 
-    static void run(void callback() );
+    static void run(std::function<void()> callback);
 
     virtual void cancel();
     virtual int tick();
     virtual bool isActive();
 private:
 
-    static Timer _createTimer(void callback() , Duration duration);
-    static Timer _createPeriodicTimer(void callback(Timer timer) , Duration duration);
+    static Timer _createTimer(std::function<void()> callback, Duration duration);
+    static Timer _createPeriodicTimer(std::function<void(Timer timer)> callback, Duration duration);
 };
 using Timer = std::shared_ptr<TimerCls>;
 

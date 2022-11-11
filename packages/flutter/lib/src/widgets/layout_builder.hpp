@@ -12,10 +12,10 @@
 template<typename ConstraintType>
 class ConstrainedLayoutBuilderCls : public RenderObjectWidgetCls {
 public:
-    Widget Function(BuildContext , ConstraintType ) builder;
+    std::function<Widget(BuildContext , ConstraintType )> builder;
 
 
-     ConstrainedLayoutBuilderCls(Widget Function(BuildContext , ConstraintType ) builder, Unknown key);
+     ConstrainedLayoutBuilderCls(std::function<Widget(BuildContext , ConstraintType )> builder, Unknown key);
 
     virtual RenderObjectElement createElement();
 

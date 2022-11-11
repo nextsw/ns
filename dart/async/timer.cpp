@@ -1,5 +1,5 @@
 #include "timer.hpp"
-TimerCls::TimerCls(void callback() , Duration duration) {
+TimerCls::TimerCls(std::function<void()> callback, Duration duration) {
     {
         if (ZoneCls::current == ZoneCls::root) {
             return ZoneCls::current->createTimer(duration, callback);
@@ -8,7 +8,7 @@ TimerCls::TimerCls(void callback() , Duration duration) {
     }
 }
 
-void TimerCls::periodic(void callback(Timer timer) , Duration duration) {
+void TimerCls::periodic(std::function<void(Timer timer)> callback, Duration duration) {
     if (ZoneCls::current == ZoneCls::root) {
         return ZoneCls::current->createPeriodicTimer(duration, callback);
     }
@@ -16,6 +16,6 @@ void TimerCls::periodic(void callback(Timer timer) , Duration duration) {
     return ZoneCls::current->createPeriodicTimer(duration, boundCallback);
 }
 
-void TimerCls::run(void callback() ) {
+void TimerCls::run(std::function<void()> callback) {
     make<TimerCls>(DurationCls::zero, callback);
 }

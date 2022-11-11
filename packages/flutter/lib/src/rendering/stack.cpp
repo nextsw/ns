@@ -169,7 +169,7 @@ void RenderStackCls::clipBehavior(Clip value) {
     }
 }
 
-double RenderStackCls::getIntrinsicDimension(RenderBox firstChild, double mainChildSizeGetter(RenderBox child) ) {
+double RenderStackCls::getIntrinsicDimension(RenderBox firstChild, std::function<double(RenderBox child)> mainChildSizeGetter) {
     double extent = 0.0;
     RenderBox child = firstChild;
     while (child != nullptr) {

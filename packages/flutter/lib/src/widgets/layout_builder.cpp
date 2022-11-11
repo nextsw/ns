@@ -1,6 +1,6 @@
 #include "layout_builder.hpp"
 template<typename ConstraintType>
-ConstrainedLayoutBuilderCls<ConstraintType>::ConstrainedLayoutBuilderCls(Widget Function(BuildContext , ConstraintType ) builder, Unknown key) {
+ConstrainedLayoutBuilderCls<ConstraintType>::ConstrainedLayoutBuilderCls(std::function<Widget(BuildContext , ConstraintType )> builder, Unknown key) {
     {
         assert(builder != nullptr);
     }

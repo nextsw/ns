@@ -53,7 +53,7 @@ void GestureRecognizerCls::dispose() {
 }
 
 template<typename T>
-T GestureRecognizerCls::invokeCallback(RecognizerCallback<T> callback, String debugReport() , String name) {
+T GestureRecognizerCls::invokeCallback(RecognizerCallback<T> callback, std::function<String()> debugReport, String name) {
     assert(callback != nullptr);
     T result;
     try {

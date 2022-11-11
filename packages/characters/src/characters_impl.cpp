@@ -64,7 +64,7 @@ String StringCharactersCls::join(String separator) {
     return _explodeReplace(stringValue, 0, stringValue->length(), separator, __s(""));
 }
 
-String StringCharactersCls::lastWhere(String orElse() , bool test(String element) ) {
+String StringCharactersCls::lastWhere(std::function<String()> orElse, std::function<bool(String element)> test) {
     auto cursor = stringValue->length();
     auto brk = make<BackBreaksCls>(stringValue, cursor, 0, stateEoTNoBreak);
     auto next = 0;
@@ -240,7 +240,7 @@ Characters StringCharactersCls::characterAt(int position) {
     return make<StringCharactersCls>(stringValue->substring(start, end));
 }
 
-Characters StringCharactersCls::skipWhile(bool test(String ) ) {
+Characters StringCharactersCls::skipWhile(std::function<bool(String )> test) {
     if (stringValue->isNotEmpty()) {
         auto stringLength = stringValue->length();
         auto breaks = make<BreaksCls>(stringValue, 0, stringLength, stateSoTNoBreak);
@@ -262,7 +262,7 @@ Characters StringCharactersCls::skipWhile(bool test(String ) ) {
     return CharactersCls::empty;
 }
 
-Characters StringCharactersCls::takeWhile(bool test(String ) ) {
+Characters StringCharactersCls::takeWhile(std::function<bool(String )> test) {
     if (stringValue->isNotEmpty()) {
         auto breaks = make<BreaksCls>(stringValue, 0, stringValue->length(), stateSoTNoBreak);
         auto index = 0;
@@ -280,7 +280,7 @@ Characters StringCharactersCls::takeWhile(bool test(String ) ) {
     return this;
 }
 
-Characters StringCharactersCls::where(bool test(String ) ) {
+Characters StringCharactersCls::where(std::function<bool(String )> test) {
     auto string = super->where(test)->join();
     if (stringValue->isEmpty)     {
         return CharactersCls::empty;
@@ -316,7 +316,7 @@ Characters StringCharactersCls::skipLast(int count) {
     return CharactersCls::empty;
 }
 
-Characters StringCharactersCls::skipLastWhile(bool test(String ) ) {
+Characters StringCharactersCls::skipLastWhile(std::function<bool(String )> test) {
     if (stringValue->isNotEmpty()) {
         auto breaks = make<BackBreaksCls>(stringValue, stringValue->length(), 0, stateEoTNoBreak);
         auto index = 0;
@@ -358,7 +358,7 @@ Characters StringCharactersCls::takeLast(int count) {
     return this;
 }
 
-Characters StringCharactersCls::takeLastWhile(bool test(String ) ) {
+Characters StringCharactersCls::takeLastWhile(std::function<bool(String )> test) {
     if (stringValue->isNotEmpty()) {
         auto breaks = make<BackBreaksCls>(stringValue, stringValue->length(), 0, stateEoTNoBreak);
         auto index = 0;
@@ -536,7 +536,7 @@ bool StringCharacterRangeCls::dropUntil(Characters target) {
     return false;
 }
 
-void StringCharacterRangeCls::dropWhile(bool test(String ) ) {
+void StringCharacterRangeCls::dropWhile(std::function<bool(String )> test) {
     if (_start == _end)     {
         return;
     }
@@ -595,7 +595,7 @@ bool StringCharacterRangeCls::dropBackUntil(Characters target) {
     return false;
 }
 
-void StringCharacterRangeCls::dropBackWhile(bool test(String ) ) {
+void StringCharacterRangeCls::dropBackWhile(std::function<bool(String )> test) {
     if (_start == _end)     {
         return;
     }
@@ -625,7 +625,7 @@ bool StringCharacterRangeCls::expandTo(Characters target) {
     return false;
 }
 
-void StringCharacterRangeCls::expandWhile(bool test(String character) ) {
+void StringCharacterRangeCls::expandWhile(std::function<bool(String character)> test) {
     auto breaks = _breaksFromEnd();
     auto cursor = _end;
     auto next = 0;
@@ -656,7 +656,7 @@ bool StringCharacterRangeCls::expandBackTo(Characters target) {
     return false;
 }
 
-void StringCharacterRangeCls::expandBackWhile(bool test(String character) ) {
+void StringCharacterRangeCls::expandBackWhile(std::function<bool(String character)> test) {
     auto breaks = _backBreaksFromStart();
     auto cursor = _start;
     auto next = 0;

@@ -2071,7 +2071,7 @@ void RenderPointerListenerCls::handleEvent(HitTestEntry entry, PointerEvent even
 
 void RenderPointerListenerCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    Map<String, void  Function()> map1 = make<MapCls<>>();map1.set(__s("down"), onPointerDown);map1.set(__s("move"), onPointerMove);map1.set(__s("up"), onPointerUp);map1.set(__s("hover"), onPointerHover);map1.set(__s("cancel"), onPointerCancel);map1.set(__s("panZoomStart"), onPointerPanZoomStart);map1.set(__s("panZoomUpdate"), onPointerPanZoomUpdate);map1.set(__s("panZoomEnd"), onPointerPanZoomEnd);map1.set(__s("signal"), onPointerSignal);properties->add(<void  Function()>make<FlagsSummaryCls>(__s("listeners"), list1__s("<none>")));
+    Map<String, std::function<void ()>> map1 = make<MapCls<>>();map1.set(__s("down"), onPointerDown);map1.set(__s("move"), onPointerMove);map1.set(__s("up"), onPointerUp);map1.set(__s("hover"), onPointerHover);map1.set(__s("cancel"), onPointerCancel);map1.set(__s("panZoomStart"), onPointerPanZoomStart);map1.set(__s("panZoomUpdate"), onPointerPanZoomUpdate);map1.set(__s("panZoomEnd"), onPointerPanZoomEnd);map1.set(__s("signal"), onPointerSignal);properties->add(<std::function<void ()>>make<FlagsSummaryCls>(__s("listeners"), list1__s("<none>")));
 }
 
 RenderMouseRegionCls::RenderMouseRegionCls(Unknown child, MouseCursor cursor, HitTestBehavior hitTestBehavior, PointerEnterEventListener onEnter, PointerExitEventListener onExit, PointerHoverEventListener onHover, bool opaque, bool validForMouseTracker) {
@@ -2149,7 +2149,7 @@ Size RenderMouseRegionCls::computeSizeForNoChild(BoxConstraints constraints) {
 
 void RenderMouseRegionCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    Map<String, void  Function()> map1 = make<MapCls<>>();map1.set(__s("enter"), onEnter);map1.set(__s("hover"), onHover);map1.set(__s("exit"), onExit);properties->add(<void  Function()>make<FlagsSummaryCls>(__s("listeners"), list1__s("<none>")));
+    Map<String, std::function<void ()>> map1 = make<MapCls<>>();map1.set(__s("enter"), onEnter);map1.set(__s("hover"), onHover);map1.set(__s("exit"), onExit);properties->add(<std::function<void ()>>make<FlagsSummaryCls>(__s("listeners"), list1__s("<none>")));
     properties->add(<MouseCursor>make<DiagnosticsPropertyCls>(__s("cursor"), cursor()MouseCursorCls::defer));
     properties->add(<bool>make<DiagnosticsPropertyCls>(__s("opaque"), opaque()true));
     properties->add(make<FlagPropertyCls>(__s("validForMouseTracker")validForMouseTracker(), true, __s("invalid for MouseTracker")));

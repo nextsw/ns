@@ -355,7 +355,7 @@ public:
  virtual T findRootAncestorStateOfType();
     template<typename T>
  virtual T findAncestorRenderObjectOfType();
-    virtual void visitAncestorElements(bool visitor(Element element) );
+    virtual void visitAncestorElements(std::function<bool(Element element)> visitor);
     virtual void visitChildElements(ElementVisitor visitor);
     virtual void dispatchNotification(Notification notification);
     virtual DiagnosticsNode describeElement(String name, DiagnosticsTreeStyle style);
@@ -558,7 +558,7 @@ public:
     template<typename T>
  virtual T findAncestorRenderObjectOfType();
 
-    virtual void visitAncestorElements(bool visitor(Element element) );
+    virtual void visitAncestorElements(std::function<bool(Element element)> visitor);
 
     virtual void didChangeDependencies();
 

@@ -27,7 +27,7 @@ template<typename E, typename F>
 class EqualityByCls : public ObjectCls {
 public:
 
-     EqualityByCls(F comparisonKey(E ) , Equality<F> inner);
+     EqualityByCls(std::function<F(E )> comparisonKey, Equality<F> inner);
 
     virtual bool equals(E e1, E e2);
 
@@ -36,7 +36,7 @@ public:
     virtual bool isValidKey(Object o);
 
 private:
-    F Function(E ) _comparisonKey;
+    std::function<F(E )> _comparisonKey;
 
     Equality<F> _inner;
 

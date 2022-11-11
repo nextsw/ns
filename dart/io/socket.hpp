@@ -206,10 +206,10 @@ public:
     virtual void cancel();
 
 private:
-    void Function() _onCancel;
+    std::function<void()> _onCancel;
 
 
-    virtual void  _(void onCancel() , Future<S> socket);
+    virtual void  _(std::function<void()> onCancel, Future<S> socket);
 
 };
 template<typename S>

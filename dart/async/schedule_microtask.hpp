@@ -33,7 +33,7 @@ void _scheduleAsyncCallback(_AsyncCallback callback);
 
 void _schedulePriorityAsyncCallback(_AsyncCallback callback);
 
-void scheduleMicrotask(void callback() );
+void scheduleMicrotask(std::function<void()> callback);
 
 
 class _AsyncRunCls : public ObjectCls {
@@ -41,7 +41,7 @@ public:
 
 private:
 
-    static void _scheduleImmediate(void callback() );
+    static void _scheduleImmediate(std::function<void()> callback);
 };
 using _AsyncRun = std::shared_ptr<_AsyncRunCls>;
 

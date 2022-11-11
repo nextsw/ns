@@ -101,7 +101,7 @@ public:
 
     virtual bool isRepaintBoundary();
 
-    virtual double layoutChildSequence(RenderSliver advance(RenderSliver child) , double cacheOrigin, RenderSliver child, double crossAxisExtent, GrowthDirection growthDirection, double layoutOffset, double mainAxisExtent, double overlap, double remainingCacheExtent, double remainingPaintExtent, double scrollOffset);
+    virtual double layoutChildSequence(std::function<RenderSliver(RenderSliver child)> advance, double cacheOrigin, RenderSliver child, double crossAxisExtent, GrowthDirection growthDirection, double layoutOffset, double mainAxisExtent, double overlap, double remainingCacheExtent, double remainingPaintExtent, double scrollOffset);
 
     virtual Rect describeApproximatePaintClip(RenderSliver child);
 

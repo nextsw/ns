@@ -36,9 +36,9 @@ public:
 
     virtual void retainAll(Iterable<Object> elements);
 
-    virtual void removeWhere(bool test(E element) );
+    virtual void removeWhere(std::function<bool(E element)> test);
 
-    virtual void retainWhere(bool test(E element) );
+    virtual void retainWhere(std::function<bool(E element)> test);
 
     virtual bool containsAll(Iterable<Object> other);
 
@@ -51,47 +51,47 @@ public:
     virtual List<E> toList(bool growable);
 
     template<typename T>
- virtual Iterable<T> map(T f(E element) );
+ virtual Iterable<T> map(std::function<T(E element)> f);
 
     virtual E single();
 
     virtual String toString();
 
-    virtual Iterable<E> where(bool f(E element) );
+    virtual Iterable<E> where(std::function<bool(E element)> f);
 
     template<typename T>
- virtual Iterable<T> expand(Iterable<T> f(E element) );
+ virtual Iterable<T> expand(std::function<Iterable<T>(E element)> f);
 
-    virtual void forEach(void f(E element) );
+    virtual void forEach(std::function<void(E element)> f);
 
-    virtual E reduce(E combine(E element, E value) );
+    virtual E reduce(std::function<E(E element, E value)> combine);
 
     template<typename T>
- virtual T fold(T combine(E element, T previousValue) , T initialValue);
+ virtual T fold(std::function<T(E element, T previousValue)> combine, T initialValue);
 
-    virtual bool every(bool f(E element) );
+    virtual bool every(std::function<bool(E element)> f);
 
     virtual String join(String separator);
 
-    virtual bool any(bool test(E element) );
+    virtual bool any(std::function<bool(E element)> test);
 
     virtual Iterable<E> take(int n);
 
-    virtual Iterable<E> takeWhile(bool test(E value) );
+    virtual Iterable<E> takeWhile(std::function<bool(E value)> test);
 
     virtual Iterable<E> skip(int n);
 
-    virtual Iterable<E> skipWhile(bool test(E value) );
+    virtual Iterable<E> skipWhile(std::function<bool(E value)> test);
 
     virtual E first();
 
     virtual E last();
 
-    virtual E firstWhere(E orElse() , bool test(E value) );
+    virtual E firstWhere(std::function<E()> orElse, std::function<bool(E value)> test);
 
-    virtual E lastWhere(E orElse() , bool test(E value) );
+    virtual E lastWhere(std::function<E()> orElse, std::function<bool(E value)> test);
 
-    virtual E singleWhere(E orElse() , bool test(E value) );
+    virtual E singleWhere(std::function<E()> orElse, std::function<bool(E value)> test);
 
     virtual E elementAt(int index);
 
@@ -150,9 +150,9 @@ public:
 
     virtual void retainAll(Iterable<Object> elements);
 
-    virtual void removeWhere(bool test(E element) );
+    virtual void removeWhere(std::function<bool(E element)> test);
 
-    virtual void retainWhere(bool test(E element) );
+    virtual void retainWhere(std::function<bool(E element)> test);
 
     virtual bool remove(Object value);
 

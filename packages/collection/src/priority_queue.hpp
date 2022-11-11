@@ -11,7 +11,7 @@ template<typename E>
 class PriorityQueueCls : public ObjectCls {
 public:
 
-     PriorityQueueCls(int comparison(E , E ) );
+     PriorityQueueCls(std::function<int(E , E )> comparison);
     virtual int length();
     virtual bool isEmpty();
     virtual bool isNotEmpty();
@@ -39,7 +39,7 @@ public:
     Comparator<E> comparison;
 
 
-     HeapPriorityQueueCls(int comparison(E , E ) );
+     HeapPriorityQueueCls(std::function<int(E , E )> comparison);
 
     virtual void add(E element);
 

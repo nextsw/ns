@@ -58,7 +58,7 @@ public:
 
     virtual String debugDescription();
     template<typename T>
- virtual T invokeCallback(RecognizerCallback<T> callback, String debugReport() , String name);
+ virtual T invokeCallback(RecognizerCallback<T> callback, std::function<String()> debugReport, String name);
 
     virtual void debugFillProperties(DiagnosticPropertiesBuilder properties);
 

@@ -1,5 +1,5 @@
 #include "num.hpp"
-num numCls::parse(String input, num onError(String input) ) {
+num numCls::parse(String input, std::function<num(String input)> onError) {
     num result = tryParse(input);
     if (result != nullptr)     {
         return result;

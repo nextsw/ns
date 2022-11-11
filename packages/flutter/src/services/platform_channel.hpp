@@ -101,7 +101,7 @@ public:
 
     virtual Future<T> send(T message);
 
-    virtual void setMessageHandler(Future<T> handler(T message) );
+    virtual void setMessageHandler(std::function<Future<T>(T message)> handler);
 
 private:
     BinaryMessenger _binaryMessenger;
@@ -131,7 +131,7 @@ public:
     template<typename K, typename V>
  virtual Future<Map<K, V>> invokeMapMethod(dynamic arguments, String method);
 
-    virtual void setMethodCallHandler(Future<dynamic> handler(MethodCall call) );
+    virtual void setMethodCallHandler(std::function<Future<dynamic>(MethodCall call)> handler);
 
 private:
     BinaryMessenger _binaryMessenger;
@@ -140,7 +140,7 @@ private:
     template<typename T>
  virtual Future<T> _invokeMethod(dynamic arguments, String method, bool missingOk);
 
-    virtual Future<ByteData> _handleAsMethodCall(Future<dynamic> handler(MethodCall call) , ByteData message);
+    virtual Future<ByteData> _handleAsMethodCall(std::function<Future<dynamic>(MethodCall call)> handler, ByteData message);
 
 };
 using MethodChannel = std::shared_ptr<MethodChannelCls>;

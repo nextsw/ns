@@ -35,7 +35,7 @@ public:
     static String version();
 
 private:
-    static String Function() _localeClosure;
+    static std::function<String()> _localeClosure;
 
     static auto _environmentCache;
 
@@ -70,7 +70,7 @@ public:
 
     virtual void operator[]=(String key, V value);
 
-    virtual V putIfAbsent(V ifAbsent() , String key);
+    virtual V putIfAbsent(std::function<V()> ifAbsent, String key);
 
     virtual void addAll(Map<String, V> other);
 
@@ -78,7 +78,7 @@ public:
 
     virtual void clear();
 
-    virtual void forEach(void f(String key, V value) );
+    virtual void forEach(std::function<void(String key, V value)> f);
 
     virtual Iterable<String> keys();
 
@@ -93,13 +93,13 @@ public:
     virtual Iterable<MapEntry<String, V>> entries();
 
     template<typename K2, typename V2>
- virtual Map<K2, V2> map(MapEntry<K2, V2> transform(String key, V value) );
+ virtual Map<K2, V2> map(std::function<MapEntry<K2, V2>(String key, V value)> transform);
 
-    virtual V update(V ifAbsent() , String key, V update(V value) );
+    virtual V update(std::function<V()> ifAbsent, String key, std::function<V(V value)> update);
 
-    virtual void updateAll(V update(String key, V value) );
+    virtual void updateAll(std::function<V(String key, V value)> update);
 
-    virtual void removeWhere(bool test(String key, V value) );
+    virtual void removeWhere(std::function<bool(String key, V value)> test);
 
     virtual String toString();
 

@@ -31,7 +31,7 @@ void _ByteCallbackSinkCls::close() {
     _callback(_buffer->sublist(0, _bufferIndex));
 }
 
-_ByteCallbackSinkCls::_ByteCallbackSinkCls(void callback(List<int> accumulated) ) {
+_ByteCallbackSinkCls::_ByteCallbackSinkCls(std::function<void(List<int> accumulated)> callback) {
     {
         _callback = callback;
     }

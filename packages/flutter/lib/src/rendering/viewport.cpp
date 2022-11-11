@@ -208,7 +208,7 @@ bool RenderViewportBaseCls<ParentDataClass>::isRepaintBoundary() {
 }
 
 template<typename ParentDataClass>
-double RenderViewportBaseCls<ParentDataClass>::layoutChildSequence(RenderSliver advance(RenderSliver child) , double cacheOrigin, RenderSliver child, double crossAxisExtent, GrowthDirection growthDirection, double layoutOffset, double mainAxisExtent, double overlap, double remainingCacheExtent, double remainingPaintExtent, double scrollOffset) {
+double RenderViewportBaseCls<ParentDataClass>::layoutChildSequence(std::function<RenderSliver(RenderSliver child)> advance, double cacheOrigin, RenderSliver child, double crossAxisExtent, GrowthDirection growthDirection, double layoutOffset, double mainAxisExtent, double overlap, double remainingCacheExtent, double remainingPaintExtent, double scrollOffset) {
     assert(scrollOffset->isFinite);
     assert(scrollOffset >= 0.0);
     double initialLayoutOffset = layoutOffset;

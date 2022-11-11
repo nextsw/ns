@@ -12,7 +12,7 @@ template<typename E>
 class _DelegatingIterableBaseCls : public ObjectCls {
 public:
 
-    virtual bool any(bool test(E ) );
+    virtual bool any(std::function<bool(E )> test);
 
     template<typename T>
  virtual Iterable<T> cast();
@@ -21,21 +21,21 @@ public:
 
     virtual E elementAt(int index);
 
-    virtual bool every(bool test(E ) );
+    virtual bool every(std::function<bool(E )> test);
 
     template<typename T>
- virtual Iterable<T> expand(Iterable<T> f(E ) );
+ virtual Iterable<T> expand(std::function<Iterable<T>(E )> f);
 
     virtual E first();
 
-    virtual E firstWhere(E orElse() , bool test(E ) );
+    virtual E firstWhere(std::function<E()> orElse, std::function<bool(E )> test);
 
     template<typename T>
- virtual T fold(T combine(E element, T previousValue) , T initialValue);
+ virtual T fold(std::function<T(E element, T previousValue)> combine, T initialValue);
 
     virtual Iterable<E> followedBy(Iterable<E> other);
 
-    virtual void forEach(void f(E ) );
+    virtual void forEach(std::function<void(E )> f);
 
     virtual bool isEmpty();
 
@@ -47,35 +47,35 @@ public:
 
     virtual E last();
 
-    virtual E lastWhere(E orElse() , bool test(E ) );
+    virtual E lastWhere(std::function<E()> orElse, std::function<bool(E )> test);
 
     virtual int length();
 
     template<typename T>
- virtual Iterable<T> map(T f(E ) );
+ virtual Iterable<T> map(std::function<T(E )> f);
 
-    virtual E reduce(E combine(E element, E value) );
+    virtual E reduce(std::function<E(E element, E value)> combine);
 
     template<typename T>
  virtual Iterable<T> retype();
 
     virtual E single();
 
-    virtual E singleWhere(E orElse() , bool test(E ) );
+    virtual E singleWhere(std::function<E()> orElse, std::function<bool(E )> test);
 
     virtual Iterable<E> skip(int n);
 
-    virtual Iterable<E> skipWhile(bool test(E ) );
+    virtual Iterable<E> skipWhile(std::function<bool(E )> test);
 
     virtual Iterable<E> take(int n);
 
-    virtual Iterable<E> takeWhile(bool test(E ) );
+    virtual Iterable<E> takeWhile(std::function<bool(E )> test);
 
     virtual List<E> toList(bool growable);
 
     virtual Set<E> toSet();
 
-    virtual Iterable<E> where(bool test(E ) );
+    virtual Iterable<E> where(std::function<bool(E )> test);
 
     template<typename T>
  virtual Iterable<T> whereType();
@@ -141,7 +141,7 @@ public:
 
     virtual int indexOf(E element, int start);
 
-    virtual int indexWhere(int start, bool test(E ) );
+    virtual int indexWhere(int start, std::function<bool(E )> test);
 
     virtual void insert(E element, int index);
 
@@ -151,7 +151,7 @@ public:
 
     virtual int lastIndexOf(E element, int start);
 
-    virtual int lastIndexWhere(int start, bool test(E ) );
+    virtual int lastIndexWhere(int start, std::function<bool(E )> test);
 
     virtual void  length(int newLength);
 
@@ -163,11 +163,11 @@ public:
 
     virtual void removeRange(int end, int start);
 
-    virtual void removeWhere(bool test(E ) );
+    virtual void removeWhere(std::function<bool(E )> test);
 
     virtual void replaceRange(int end, Iterable<E> iterable, int start);
 
-    virtual void retainWhere(bool test(E ) );
+    virtual void retainWhere(std::function<bool(E )> test);
 
     template<typename T>
  virtual List<T> retype();
@@ -180,7 +180,7 @@ public:
 
     virtual void shuffle(Random random);
 
-    virtual void sort(int compare(E , E ) );
+    virtual void sort(std::function<int(E , E )> compare);
 
     virtual List<E> sublist(int end, int start);
 
@@ -222,14 +222,14 @@ public:
 
     virtual void removeAll(Iterable<Object> elements);
 
-    virtual void removeWhere(bool test(E ) );
+    virtual void removeWhere(std::function<bool(E )> test);
 
     virtual void retainAll(Iterable<Object> elements);
 
     template<typename T>
  virtual Set<T> retype();
 
-    virtual void retainWhere(bool test(E ) );
+    virtual void retainWhere(std::function<bool(E )> test);
 
     virtual Set<E> union(Set<E> other);
 
@@ -267,9 +267,9 @@ public:
 
     virtual bool remove(Object object);
 
-    virtual void removeWhere(bool test(E ) );
+    virtual void removeWhere(std::function<bool(E )> test);
 
-    virtual void retainWhere(bool test(E ) );
+    virtual void retainWhere(std::function<bool(E )> test);
 
     template<typename T>
  virtual Queue<T> retype();
@@ -314,7 +314,7 @@ public:
 
     virtual Iterable<MapEntry<K, V>> entries();
 
-    virtual void forEach(void f(K , V ) );
+    virtual void forEach(std::function<void(K , V )> f);
 
     virtual bool isEmpty();
 
@@ -325,13 +325,13 @@ public:
     virtual int length();
 
     template<typename K2, typename V2>
- virtual Map<K2, V2> map(MapEntry<K2, V2> transform(K , V ) );
+ virtual Map<K2, V2> map(std::function<MapEntry<K2, V2>(K , V )> transform);
 
-    virtual V putIfAbsent(V ifAbsent() , K key);
+    virtual V putIfAbsent(std::function<V()> ifAbsent, K key);
 
     virtual V remove(Object key);
 
-    virtual void removeWhere(bool test(K , V ) );
+    virtual void removeWhere(std::function<bool(K , V )> test);
 
     template<typename K2, typename V2>
  virtual Map<K2, V2> retype();
@@ -340,9 +340,9 @@ public:
 
     virtual String toString();
 
-    virtual V update(V ifAbsent() , K key, V update(V ) );
+    virtual V update(std::function<V()> ifAbsent, K key, std::function<V(V )> update);
 
-    virtual void updateAll(V update(K , V ) );
+    virtual void updateAll(std::function<V(K , V )> update);
 
 private:
     Map<K, V> _base;
@@ -397,7 +397,7 @@ template<typename K, typename V>
 class MapValueSetCls : public _DelegatingIterableBaseCls<V> {
 public:
 
-     MapValueSetCls(Map<K, V> _baseMap, K Function(V ) _keyForValue);
+     MapValueSetCls(Map<K, V> _baseMap, std::function<K(V )> _keyForValue);
     template<typename T>
  virtual Set<T> cast();
 
@@ -429,11 +429,11 @@ public:
 
     virtual void removeAll(Iterable<Object> elements);
 
-    virtual void removeWhere(bool test(V ) );
+    virtual void removeWhere(std::function<bool(V )> test);
 
     virtual void retainAll(Iterable<Object> elements);
 
-    virtual void retainWhere(bool test(V ) );
+    virtual void retainWhere(std::function<bool(V )> test);
 
     template<typename T>
  virtual Set<T> retype();
@@ -443,7 +443,7 @@ public:
 private:
     Map<K, V> _baseMap;
 
-    K Function(V ) _keyForValue;
+    std::function<K(V )> _keyForValue;
 
 
     virtual Iterable<V> _base();

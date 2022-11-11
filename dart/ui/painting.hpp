@@ -385,7 +385,7 @@ private:
     virtual void  _();
     virtual int _frameCount();
     virtual int _repetitionCount();
-    virtual String _getNextFrame(void callback(_Image , int ) );
+    virtual String _getNextFrame(std::function<void(_Image , int )> callback);
 };
 using Codec = std::shared_ptr<CodecCls>;
 Future<Codec> instantiateImageCodec(bool allowUpscaling, Uint8List list, int targetHeight, int targetWidth);

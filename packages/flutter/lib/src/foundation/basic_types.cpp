@@ -6,18 +6,18 @@ Iterator<E> CachingIterableCls<E>::iterator() {
 
 template<typename E>
 template<typename T>
-Iterable<T> CachingIterableCls<E>::map(T toElement(E e) ) {
+Iterable<T> CachingIterableCls<E>::map(std::function<T(E e)> toElement) {
     return <T>make<CachingIterableCls>(super-><T>map(toElement)->iterator);
 }
 
 template<typename E>
-Iterable<E> CachingIterableCls<E>::where(bool test(E element) ) {
+Iterable<E> CachingIterableCls<E>::where(std::function<bool(E element)> test) {
     return <E>make<CachingIterableCls>(super->where(test)->iterator);
 }
 
 template<typename E>
 template<typename T>
-Iterable<T> CachingIterableCls<E>::expand(Iterable<T> toElements(E element) ) {
+Iterable<T> CachingIterableCls<E>::expand(std::function<Iterable<T>(E element)> toElements) {
     return <T>make<CachingIterableCls>(super-><T>expand(toElements)->iterator);
 }
 
@@ -27,7 +27,7 @@ Iterable<E> CachingIterableCls<E>::take(int count) {
 }
 
 template<typename E>
-Iterable<E> CachingIterableCls<E>::takeWhile(bool test(E value) ) {
+Iterable<E> CachingIterableCls<E>::takeWhile(std::function<bool(E value)> test) {
     return <E>make<CachingIterableCls>(super->takeWhile(test)->iterator);
 }
 
@@ -37,7 +37,7 @@ Iterable<E> CachingIterableCls<E>::skip(int count) {
 }
 
 template<typename E>
-Iterable<E> CachingIterableCls<E>::skipWhile(bool test(E value) ) {
+Iterable<E> CachingIterableCls<E>::skipWhile(std::function<bool(E value)> test) {
     return <E>make<CachingIterableCls>(super->skipWhile(test)->iterator);
 }
 

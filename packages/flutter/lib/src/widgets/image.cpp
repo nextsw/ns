@@ -56,8 +56,8 @@ State<Image> ImageCls::createState() {
 void ImageCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
     properties->add(<ImageProvider>make<DiagnosticsPropertyCls>(__s("image"), image));
-    properties->add(<void  Function()>make<DiagnosticsPropertyCls>(__s("frameBuilder"), frameBuilder));
-    properties->add(<void  Function()>make<DiagnosticsPropertyCls>(__s("loadingBuilder"), loadingBuilder));
+    properties->add(<std::function<void ()>>make<DiagnosticsPropertyCls>(__s("frameBuilder"), frameBuilder));
+    properties->add(<std::function<void ()>>make<DiagnosticsPropertyCls>(__s("loadingBuilder"), loadingBuilder));
     properties->add(make<DoublePropertyCls>(__s("width"), widthnullptr));
     properties->add(make<DoublePropertyCls>(__s("height"), heightnullptr));
     properties->add(make<ColorPropertyCls>(__s("color"), colornullptr));

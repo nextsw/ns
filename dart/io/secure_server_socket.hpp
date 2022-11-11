@@ -10,7 +10,7 @@ public:
 
     static Future<SecureServerSocket> bind(address , int backlog, SecurityContext context, int port, bool requestClientCertificate, bool requireClientCertificate, bool shared, List<String> supportedProtocols, bool v6Only);
 
-    virtual StreamSubscription<SecureSocket> listen(bool cancelOnError, void onData(SecureSocket socket) , void onDone() , void  onError() );
+    virtual StreamSubscription<SecureSocket> listen(bool cancelOnError, std::function<void(SecureSocket socket)> onData, std::function<void()> onDone, std::function<void ()> onError);
 
     virtual int port();
 
@@ -39,7 +39,7 @@ public:
 
     static Future<RawSecureServerSocket> bind(address , int backlog, SecurityContext context, int port, bool requestClientCertificate, bool requireClientCertificate, bool shared, List<String> supportedProtocols, bool v6Only);
 
-    virtual StreamSubscription<RawSecureSocket> listen(bool cancelOnError, void onData(RawSecureSocket s) , void onDone() , void  onError() );
+    virtual StreamSubscription<RawSecureSocket> listen(bool cancelOnError, std::function<void(RawSecureSocket s)> onData, std::function<void()> onDone, std::function<void ()> onError);
 
     virtual int port();
 

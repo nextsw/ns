@@ -40,9 +40,9 @@ public:
 
     virtual E removeLast();
 
-    virtual void removeWhere(bool test(E ) );
+    virtual void removeWhere(std::function<bool(E )> test);
 
-    virtual void retainWhere(bool test(E ) );
+    virtual void retainWhere(std::function<bool(E )> test);
 
     virtual void removeRange(int end, int start);
 
@@ -85,9 +85,9 @@ public:
 
     virtual void retainAll(Iterable elements);
 
-    virtual void removeWhere(bool test(E ) );
+    virtual void removeWhere(std::function<bool(E )> test);
 
-    virtual void retainWhere(bool test(E ) );
+    virtual void retainWhere(std::function<bool(E )> test);
 
     virtual void clear();
 
@@ -105,7 +105,7 @@ public:
 
     virtual void operator[]=(K key, V value);
 
-    virtual V putIfAbsent(V ifAbsent() , K key);
+    virtual V putIfAbsent(std::function<V()> ifAbsent, K key);
 
     virtual void addAll(Map<K, V> other);
 

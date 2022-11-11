@@ -60,7 +60,7 @@ void _schedulePriorityAsyncCallback(_AsyncCallback callback) {
     }
 }
 
-void scheduleMicrotask(void callback() ) {
+void scheduleMicrotask(std::function<void()> callback) {
     _Zone currentZone = ZoneCls::_current;
     if (identical(_rootZone, currentZone)) {
         _rootScheduleMicrotask(nullptr, nullptr, _rootZone, callback);

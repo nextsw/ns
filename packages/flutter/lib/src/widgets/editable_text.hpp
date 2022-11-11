@@ -918,7 +918,7 @@ class _DeleteTextActionCls : public ContextActionCls<T> {
 public:
     EditableTextState state;
 
-    _TextBoundary Function(T intent) getTextBoundariesForIntent;
+    std::function<_TextBoundary(T intent)> getTextBoundariesForIntent;
 
 
     virtual Object invoke(BuildContext context, T intent);
@@ -927,7 +927,7 @@ public:
 
 private:
 
-     _DeleteTextActionCls(_TextBoundary Function(T intent) getTextBoundariesForIntent, EditableTextState state);
+     _DeleteTextActionCls(std::function<_TextBoundary(T intent)> getTextBoundariesForIntent, EditableTextState state);
     virtual TextRange _expandNonCollapsedRange(TextEditingValue value);
 
 };
@@ -941,7 +941,7 @@ public:
 
     bool ignoreNonCollapsedSelection;
 
-    _TextBoundary Function(T intent) getTextBoundariesForIntent;
+    std::function<_TextBoundary(T intent)> getTextBoundariesForIntent;
 
     static int NEWLINE_CODE_UNIT;
 
@@ -952,7 +952,7 @@ public:
 
 private:
 
-     _UpdateTextSelectionActionCls(_TextBoundary Function(T intent) getTextBoundariesForIntent, bool ignoreNonCollapsedSelection, EditableTextState state);
+     _UpdateTextSelectionActionCls(std::function<_TextBoundary(T intent)> getTextBoundariesForIntent, bool ignoreNonCollapsedSelection, EditableTextState state);
     virtual bool _isAtWordwrapUpstream(TextPosition position);
 
     virtual bool _isAtWordwrapDownstream(TextPosition position);
@@ -965,7 +965,7 @@ class _ExtendSelectionOrCaretPositionActionCls : public ContextActionCls<ExtendS
 public:
     EditableTextState state;
 
-    _TextBoundary Function(ExtendSelectionToNextWordBoundaryOrCaretLocationIntent intent) getTextBoundariesForIntent;
+    std::function<_TextBoundary(ExtendSelectionToNextWordBoundaryOrCaretLocationIntent intent)> getTextBoundariesForIntent;
 
 
     virtual Object invoke(BuildContext context, ExtendSelectionToNextWordBoundaryOrCaretLocationIntent intent);
@@ -974,7 +974,7 @@ public:
 
 private:
 
-     _ExtendSelectionOrCaretPositionActionCls(_TextBoundary Function(ExtendSelectionToNextWordBoundaryOrCaretLocationIntent intent) getTextBoundariesForIntent, EditableTextState state);
+     _ExtendSelectionOrCaretPositionActionCls(std::function<_TextBoundary(ExtendSelectionToNextWordBoundaryOrCaretLocationIntent intent)> getTextBoundariesForIntent, EditableTextState state);
 };
 using _ExtendSelectionOrCaretPositionAction = std::shared_ptr<_ExtendSelectionOrCaretPositionActionCls>;
 

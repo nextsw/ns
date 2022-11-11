@@ -686,7 +686,7 @@ private:
 
     virtual bool _debugCheckIsPagelessRoute(Route<dynamic> route);
 
-    virtual bool _debugIsStaticCallback(void  callback() );
+    virtual bool _debugIsStaticCallback(std::function<void ()> callback);
 
     virtual void _pushEntry(_RouteEntry entry);
 

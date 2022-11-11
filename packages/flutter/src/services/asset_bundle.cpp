@@ -47,7 +47,7 @@ Future<ByteData> NetworkAssetBundleCls::load(String key) {
 }
 
 template<typename T>
-Future<T> NetworkAssetBundleCls::loadStructuredData(String key, Future<T> parser(String value) ) {
+Future<T> NetworkAssetBundleCls::loadStructuredData(String key, std::function<Future<T>(String value)> parser) {
     assert(key != nullptr);
     assert(parser != nullptr);
     return parser(await loadString(key));
@@ -71,7 +71,7 @@ Future<String> CachingAssetBundleCls::loadString(bool cache, String key) {
 }
 
 template<typename T>
-Future<T> CachingAssetBundleCls::loadStructuredData(String key, Future<T> parser(String value) ) {
+Future<T> CachingAssetBundleCls::loadStructuredData(String key, std::function<Future<T>(String value)> parser) {
     assert(key != nullptr);
     assert(parser != nullptr);
     if (_structuredDataCache->containsKey(key)) {

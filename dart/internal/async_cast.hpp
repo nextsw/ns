@@ -12,7 +12,7 @@ public:
      CastStreamCls(Stream<S> _source);
     virtual bool isBroadcast();
 
-    virtual StreamSubscription<T> listen(bool cancelOnError, void onData(T data) , void onDone() , void  onError() );
+    virtual StreamSubscription<T> listen(bool cancelOnError, std::function<void(T data)> onData, std::function<void()> onDone, std::function<void ()> onError);
 
     template<typename R>
  virtual Stream<R> cast();
@@ -33,11 +33,11 @@ public:
 
     virtual Future cancel();
 
-    virtual void onData(void handleData(T data) );
+    virtual void onData(std::function<void(T data)> handleData);
 
-    virtual void onError(void  handleError() );
+    virtual void onError(std::function<void ()> handleError);
 
-    virtual void onDone(void handleDone() );
+    virtual void onDone(std::function<void()> handleDone);
 
     virtual void pause(Future resumeSignal);
 
@@ -53,9 +53,9 @@ private:
 
     Zone _zone;
 
-    void Function(T ) _handleData;
+    std::function<void(T )> _handleData;
 
-    void  Function() _handleError;
+    std::function<void ()> _handleError;
 
 
     virtual void _onData(S data);

@@ -224,7 +224,7 @@ using _DraggableScrollableSheetScrollController = std::shared_ptr<_DraggableScro
 
 class _DraggableScrollableSheetScrollPositionCls : public ScrollPositionWithSingleContextCls {
 public:
-    _DraggableSheetExtent Function() getExtent;
+    std::function<_DraggableSheetExtent()> getExtent;
 
 
     virtual bool listShouldScroll();
@@ -251,7 +251,7 @@ private:
     Set<AnimationController> _ballisticControllers;
 
 
-     _DraggableScrollableSheetScrollPositionCls(Unknown context, _DraggableSheetExtent Function() getExtent, Unknown oldPosition, Unknown physics);
+     _DraggableScrollableSheetScrollPositionCls(Unknown context, std::function<_DraggableSheetExtent()> getExtent, Unknown oldPosition, Unknown physics);
     virtual bool _isAtSnapSize();
 
     virtual bool _shouldSnap();

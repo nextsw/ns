@@ -47,16 +47,16 @@ void _SyncCompleterCls<T>::_completeError(Object error, StackTrace stackTrace) {
 }
 
 template<typename S, typename T>
-void _FutureListenerCls<S, T>::then(void  errorCallback() , FutureOr<T> onValue(S ) , _Future<T> result)
+void _FutureListenerCls<S, T>::then(std::function<void ()> errorCallback, std::function<FutureOr<T>(S )> onValue, _Future<T> result)
 
 template<typename S, typename T>
-void _FutureListenerCls<S, T>::thenAwait(void  errorCallback() , FutureOr<T> onValue(S ) , _Future<T> result)
+void _FutureListenerCls<S, T>::thenAwait(std::function<void ()> errorCallback, std::function<FutureOr<T>(S )> onValue, _Future<T> result)
 
 template<typename S, typename T>
-void _FutureListenerCls<S, T>::catchError(void  Function() callback, void  Function() errorCallback, _Future<T> result)
+void _FutureListenerCls<S, T>::catchError(std::function<void ()> callback, std::function<void ()> errorCallback, _Future<T> result)
 
 template<typename S, typename T>
-void _FutureListenerCls<S, T>::whenComplete(void  Function() callback, _Future<T> result)
+void _FutureListenerCls<S, T>::whenComplete(std::function<void ()> callback, _Future<T> result)
 
 template<typename S, typename T>
 bool _FutureListenerCls<S, T>::handlesValue() {
@@ -102,7 +102,7 @@ FutureOr<T> _FutureListenerCls<S, T>::handleError(AsyncError asyncError) {
     assert(handlesError() && hasErrorCallback());
     auto errorCallback = this->errorCallback;
     dynamic result;
-    if (is<dynamic Function(Object , StackTrace )>(errorCallback)) {
+    if (is<std::function<dynamic(Object , StackTrace )>>(errorCallback)) {
         result = _zone()-><dynamic, Object, StackTrace>runBinary(errorCallback, asyncError->error, asyncError->stackTrace);
     } else {
         result = _zone()-><dynamic, Object>runUnary(as<dynamic>(errorCallback), asyncError->error);
@@ -134,24 +134,24 @@ _Zone _FutureListenerCls<S, T>::_zone() {
 }
 
 template<typename S, typename T>
-FutureOr<T> Function(S ) _FutureListenerCls<S, T>::_onValue() {
+std::function<FutureOr<T>(S )> _FutureListenerCls<S, T>::_onValue() {
     assert(handlesValue());
-    return <FutureOr<T> Function(S )>unsafeCast(callback);
+    return <std::function<FutureOr<T>(S )>>unsafeCast(callback);
 }
 
 template<typename S, typename T>
-void  Function() _FutureListenerCls<S, T>::_onError() {
+std::function<void ()> _FutureListenerCls<S, T>::_onError() {
     return errorCallback;
 }
 
 template<typename S, typename T>
-bool Function(Object ) _FutureListenerCls<S, T>::_errorTest() {
+std::function<bool(Object )> _FutureListenerCls<S, T>::_errorTest() {
     assert(hasErrorTest());
-    return <bool Function(Object )>unsafeCast(callback);
+    return <std::function<bool(Object )>>unsafeCast(callback);
 }
 
 template<typename S, typename T>
-dynamic Function() _FutureListenerCls<S, T>::_whenCompleteAction() {
+std::function<dynamic()> _FutureListenerCls<S, T>::_whenCompleteAction() {
     assert(handlesComplete());
-    return <dynamic Function()>unsafeCast(callback);
+    return <std::function<dynamic()>>unsafeCast(callback);
 }

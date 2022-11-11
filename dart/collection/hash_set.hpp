@@ -9,7 +9,7 @@ template<typename E>
 class HashSetCls : public ObjectCls {
 public:
 
-     HashSetCls(bool equals(E , E ) , int hashCode(E ) , bool isValidKey(dynamic ) );
+     HashSetCls(std::function<bool(E , E )> equals, std::function<int(E )> hashCode, std::function<bool(dynamic )> isValidKey);
     void  identity();
     virtual void  from(Iterable<dynamic> elements);
 

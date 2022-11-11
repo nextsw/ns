@@ -1315,7 +1315,7 @@ T ElementCls::findAncestorRenderObjectOfType() {
     return nullptr;
 }
 
-void ElementCls::visitAncestorElements(bool visitor(Element element) ) {
+void ElementCls::visitAncestorElements(std::function<bool(Element element)> visitor) {
     assert(_debugCheckStateIsActiveForAncestorLookup());
     Element ancestor = _parent;
     while (ancestor != nullptr && visitor(ancestor)) {

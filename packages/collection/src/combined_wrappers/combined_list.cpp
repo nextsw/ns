@@ -47,12 +47,12 @@ bool CombinedListViewCls<T>::remove(Object element) {
 }
 
 template<typename T>
-void CombinedListViewCls<T>::removeWhere(bool test(T ) ) {
+void CombinedListViewCls<T>::removeWhere(std::function<bool(T )> test) {
     _throw();
 }
 
 template<typename T>
-void CombinedListViewCls<T>::retainWhere(bool test(T ) ) {
+void CombinedListViewCls<T>::retainWhere(std::function<bool(T )> test) {
     _throw();
 }
 

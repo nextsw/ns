@@ -10,7 +10,7 @@ class IterableCls : public ObjectCls {
 public:
 
      IterableCls();
-    virtual void  generate(int count, E generator(int index) );
+    virtual void  generate(int count, std::function<E(int index)> generator);
 
     virtual void  empty();
     template<typename S, typename T>
@@ -23,30 +23,30 @@ public:
     virtual Iterable<E> followedBy(Iterable<E> other);
 
     template<typename T>
- virtual Iterable<T> map(T toElement(E e) );
+ virtual Iterable<T> map(std::function<T(E e)> toElement);
 
-    virtual Iterable<E> where(bool test(E element) );
+    virtual Iterable<E> where(std::function<bool(E element)> test);
 
     template<typename T>
  virtual Iterable<T> whereType();
 
     template<typename T>
- virtual Iterable<T> expand(Iterable<T> toElements(E element) );
+ virtual Iterable<T> expand(std::function<Iterable<T>(E element)> toElements);
 
     virtual bool contains(Object element);
 
-    virtual void forEach(void action(E element) );
+    virtual void forEach(std::function<void(E element)> action);
 
-    virtual E reduce(E combine(E element, E value) );
+    virtual E reduce(std::function<E(E element, E value)> combine);
 
     template<typename T>
- virtual T fold(T combine(E element, T previousValue) , T initialValue);
+ virtual T fold(std::function<T(E element, T previousValue)> combine, T initialValue);
 
-    virtual bool every(bool test(E element) );
+    virtual bool every(std::function<bool(E element)> test);
 
     virtual String join(String separator);
 
-    virtual bool any(bool test(E element) );
+    virtual bool any(std::function<bool(E element)> test);
 
     virtual List<E> toList(bool growable);
 
@@ -60,11 +60,11 @@ public:
 
     virtual Iterable<E> take(int count);
 
-    virtual Iterable<E> takeWhile(bool test(E value) );
+    virtual Iterable<E> takeWhile(std::function<bool(E value)> test);
 
     virtual Iterable<E> skip(int count);
 
-    virtual Iterable<E> skipWhile(bool test(E value) );
+    virtual Iterable<E> skipWhile(std::function<bool(E value)> test);
 
     virtual E first();
 
@@ -72,11 +72,11 @@ public:
 
     virtual E single();
 
-    virtual E firstWhere(E orElse() , bool test(E element) );
+    virtual E firstWhere(std::function<E()> orElse, std::function<bool(E element)> test);
 
-    virtual E lastWhere(E orElse() , bool test(E element) );
+    virtual E lastWhere(std::function<E()> orElse, std::function<bool(E element)> test);
 
-    virtual E singleWhere(E orElse() , bool test(E element) );
+    virtual E singleWhere(std::function<E()> orElse, std::function<bool(E element)> test);
 
     virtual E elementAt(int index);
 
@@ -97,10 +97,10 @@ public:
     virtual E elementAt(int index);
 
 private:
-    E Function(int ) _generator;
+    std::function<E(int )> _generator;
 
 
-     _GeneratorIterableCls(E generator(int index) , int length);
+     _GeneratorIterableCls(std::function<E(int index)> generator, int length);
 
     static int _id(int n);
 

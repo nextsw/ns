@@ -37,7 +37,7 @@ private:
     _BroadcastSubscription<T> _previous;
 
 
-     _BroadcastSubscriptionCls(bool cancelOnError, _StreamControllerLifecycle<T> controller, void onData(T data) , void onDone() , void  onError() );
+     _BroadcastSubscriptionCls(bool cancelOnError, _StreamControllerLifecycle<T> controller, std::function<void(T data)> onData, std::function<void()> onDone, std::function<void ()> onError);
 
     virtual bool _expectsEvent(int eventId);
 
@@ -60,18 +60,18 @@ using _BroadcastSubscription = std::shared_ptr<_BroadcastSubscriptionCls<T>>;
 template<typename T>
 class _BroadcastStreamControllerCls : public ObjectCls {
 public:
-    void Function() onListen;
+    std::function<void()> onListen;
 
-    FutureOr<void> Function() onCancel;
+    std::function<FutureOr<void>()> onCancel;
 
 
-    virtual void Function() onPause();
+    virtual std::function<void()> onPause();
 
-    virtual void onPause(void onPauseHandler() );
+    virtual void onPause(std::function<void()> onPauseHandler);
 
-    virtual void Function() onResume();
+    virtual std::function<void()> onResume();
 
-    virtual void onResume(void onResumeHandler() );
+    virtual void onResume(std::function<void()> onResumeHandler);
 
     virtual Stream<T> stream();
 
@@ -115,7 +115,7 @@ private:
     _Future<void> _doneFuture;
 
 
-     _BroadcastStreamControllerCls(FutureOr<void> Function() onCancel, void Function() onListen);
+     _BroadcastStreamControllerCls(std::function<FutureOr<void>()> onCancel, std::function<void()> onListen);
 
     virtual bool _hasOneListener();
 
@@ -133,7 +133,7 @@ private:
 
     virtual void _removeListener(_BroadcastSubscription<T> subscription);
 
-    virtual StreamSubscription<T> _subscribe(bool cancelOnError, void onData(T data) , void onDone() , void  onError() );
+    virtual StreamSubscription<T> _subscribe(bool cancelOnError, std::function<void(T data)> onData, std::function<void()> onDone, std::function<void ()> onError);
 
     virtual Future<void> _recordCancel(StreamSubscription<T> sub);
 
@@ -149,7 +149,7 @@ private:
 
     virtual void _close();
 
-    virtual void _forEachListener(void action(_BufferingStreamSubscription<T> subscription) );
+    virtual void _forEachListener(std::function<void(_BufferingStreamSubscription<T> subscription)> action);
 
     virtual void _callOnCancel();
 
@@ -163,7 +163,7 @@ public:
 
 private:
 
-     _SyncBroadcastStreamControllerCls(void onCancel() , void onListen() );
+     _SyncBroadcastStreamControllerCls(std::function<void()> onCancel, std::function<void()> onListen);
 
     virtual bool _mayAddEvent();
 
@@ -185,7 +185,7 @@ public:
 
 private:
 
-     _AsyncBroadcastStreamControllerCls(void onCancel() , void onListen() );
+     _AsyncBroadcastStreamControllerCls(std::function<void()> onCancel, std::function<void()> onListen);
 
     virtual void _sendData(T data);
 
@@ -211,7 +211,7 @@ private:
     _PendingEvents<T> _pending;
 
 
-     _AsBroadcastStreamControllerCls(void onCancel() , void onListen() );
+     _AsBroadcastStreamControllerCls(std::function<void()> onCancel, std::function<void()> onListen);
 
     virtual bool _hasPending();
 

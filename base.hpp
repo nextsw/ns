@@ -1,6 +1,7 @@
 #ifndef BASE_H
 #define BASE_H
 #include <memory>
+#include <functional>
 
 template<class _Tp, class ..._Args>
 std::shared_ptr<_Tp> make(_Args&& ...__args)

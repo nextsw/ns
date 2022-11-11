@@ -15,7 +15,7 @@ private:
 
     static Object _id(Object x);
 
-    static void _fillMapWithMappedIterable(Iterable<Object> iterable, Object key(Object element) , Map<Object, Object> map, Object value(Object element) );
+    static void _fillMapWithMappedIterable(Iterable<Object> iterable, std::function<Object(Object element)> key, Map<Object, Object> map, std::function<Object(Object element)> value);
 
     static void _fillMapWithIterables(Iterable<Object> keys, Map<Object, Object> map, Iterable<Object> values);
 
@@ -35,26 +35,26 @@ public:
     template<typename RK, typename RV>
  virtual Map<RK, RV> cast();
 
-    virtual void forEach(void action(K key, V value) );
+    virtual void forEach(std::function<void(K key, V value)> action);
 
     virtual void addAll(Map<K, V> other);
 
     virtual bool containsValue(Object value);
 
-    virtual V putIfAbsent(V ifAbsent() , K key);
+    virtual V putIfAbsent(std::function<V()> ifAbsent, K key);
 
-    virtual V update(V ifAbsent() , K key, V update(V value) );
+    virtual V update(std::function<V()> ifAbsent, K key, std::function<V(V value)> update);
 
-    virtual void updateAll(V update(K key, V value) );
+    virtual void updateAll(std::function<V(K key, V value)> update);
 
     virtual Iterable<MapEntry<K, V>> entries();
 
     template<typename K2, typename V2>
- virtual Map<K2, V2> map(MapEntry<K2, V2> transform(K key, V value) );
+ virtual Map<K2, V2> map(std::function<MapEntry<K2, V2>(K key, V value)> transform);
 
     virtual void addEntries(Iterable<MapEntry<K, V>> newEntries);
 
-    virtual void removeWhere(bool test(K key, V value) );
+    virtual void removeWhere(std::function<bool(K key, V value)> test);
 
     virtual bool containsKey(Object key);
 
@@ -147,13 +147,13 @@ public:
 
     virtual V remove(Object key);
 
-    virtual void removeWhere(bool test(K key, V value) );
+    virtual void removeWhere(std::function<bool(K key, V value)> test);
 
-    virtual V putIfAbsent(V ifAbsent() , K key);
+    virtual V putIfAbsent(std::function<V()> ifAbsent, K key);
 
-    virtual V update(V ifAbsent() , K key, V update(V value) );
+    virtual V update(std::function<V()> ifAbsent, K key, std::function<V(V value)> update);
 
-    virtual void updateAll(V update(K key, V value) );
+    virtual void updateAll(std::function<V(K key, V value)> update);
 
 private:
 
@@ -178,13 +178,13 @@ public:
 
     virtual void clear();
 
-    virtual V putIfAbsent(V ifAbsent() , K key);
+    virtual V putIfAbsent(std::function<V()> ifAbsent, K key);
 
     virtual bool containsKey(Object key);
 
     virtual bool containsValue(Object value);
 
-    virtual void forEach(void action(K key, V value) );
+    virtual void forEach(std::function<void(K key, V value)> action);
 
     virtual bool isEmpty();
 
@@ -205,13 +205,13 @@ public:
     virtual void addEntries(Iterable<MapEntry<K, V>> entries);
 
     template<typename K2, typename V2>
- virtual Map<K2, V2> map(MapEntry<K2, V2> transform(K key, V value) );
+ virtual Map<K2, V2> map(std::function<MapEntry<K2, V2>(K key, V value)> transform);
 
-    virtual V update(V ifAbsent() , K key, V update(V value) );
+    virtual V update(std::function<V()> ifAbsent, K key, std::function<V(V value)> update);
 
-    virtual void updateAll(V update(K key, V value) );
+    virtual void updateAll(std::function<V(K key, V value)> update);
 
-    virtual void removeWhere(bool test(K key, V value) );
+    virtual void removeWhere(std::function<bool(K key, V value)> test);
 
 private:
     Map<K, V> _map;

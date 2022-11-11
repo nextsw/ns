@@ -24,7 +24,7 @@ void _ZoneDelegateCls::handleUncaughtError(Object error, StackTrace stackTrace, 
 }
 
 template<typename R>
-R _ZoneDelegateCls::run(R f() , Zone zone) {
+R _ZoneDelegateCls::run(std::function<R()> f, Zone zone) {
     auto implementation = _delegationTarget->_run();
     _Zone implZone = implementation->zone;
     auto handler = as<RunHandler>(implementation->function);
@@ -32,7 +32,7 @@ R _ZoneDelegateCls::run(R f() , Zone zone) {
 }
 
 template<typename R, typename T>
-R _ZoneDelegateCls::runUnary(T arg, R f(T arg) , Zone zone) {
+R _ZoneDelegateCls::runUnary(T arg, std::function<R(T arg)> f, Zone zone) {
     auto implementation = _delegationTarget->_runUnary();
     _Zone implZone = implementation->zone;
     auto handler = as<RunUnaryHandler>(implementation->function);
@@ -40,7 +40,7 @@ R _ZoneDelegateCls::runUnary(T arg, R f(T arg) , Zone zone) {
 }
 
 template<typename R, typename T1, typename T2>
-R _ZoneDelegateCls::runBinary(T1 arg1, T2 arg2, R f(T1 arg1, T2 arg2) , Zone zone) {
+R _ZoneDelegateCls::runBinary(T1 arg1, T2 arg2, std::function<R(T1 arg1, T2 arg2)> f, Zone zone) {
     auto implementation = _delegationTarget->_runBinary();
     _Zone implZone = implementation->zone;
     auto handler = as<RunBinaryHandler>(implementation->function);
@@ -48,7 +48,7 @@ R _ZoneDelegateCls::runBinary(T1 arg1, T2 arg2, R f(T1 arg1, T2 arg2) , Zone zon
 }
 
 template<typename R>
-ZoneCallback<R> _ZoneDelegateCls::registerCallback(R f() , Zone zone) {
+ZoneCallback<R> _ZoneDelegateCls::registerCallback(std::function<R()> f, Zone zone) {
     auto implementation = _delegationTarget->_registerCallback();
     _Zone implZone = implementation->zone;
     auto handler = as<RegisterCallbackHandler>(implementation->function);
@@ -56,7 +56,7 @@ ZoneCallback<R> _ZoneDelegateCls::registerCallback(R f() , Zone zone) {
 }
 
 template<typename R, typename T>
-ZoneUnaryCallback<R, T> _ZoneDelegateCls::registerUnaryCallback(R f(T arg) , Zone zone) {
+ZoneUnaryCallback<R, T> _ZoneDelegateCls::registerUnaryCallback(std::function<R(T arg)> f, Zone zone) {
     auto implementation = _delegationTarget->_registerUnaryCallback();
     _Zone implZone = implementation->zone;
     auto handler = as<RegisterUnaryCallbackHandler>(implementation->function);
@@ -64,7 +64,7 @@ ZoneUnaryCallback<R, T> _ZoneDelegateCls::registerUnaryCallback(R f(T arg) , Zon
 }
 
 template<typename R, typename T1, typename T2>
-ZoneBinaryCallback<R, T1, T2> _ZoneDelegateCls::registerBinaryCallback(R f(T1 arg1, T2 arg2) , Zone zone) {
+ZoneBinaryCallback<R, T1, T2> _ZoneDelegateCls::registerBinaryCallback(std::function<R(T1 arg1, T2 arg2)> f, Zone zone) {
     auto implementation = _delegationTarget->_registerBinaryCallback();
     _Zone implZone = implementation->zone;
     auto handler = as<RegisterBinaryCallbackHandler>(implementation->function);
@@ -89,14 +89,14 @@ void _ZoneDelegateCls::scheduleMicrotask(f , Zone zone) {
     handler(implZone, implZone->_parentDelegate(), zone, f);
 }
 
-Timer _ZoneDelegateCls::createTimer(Duration duration, void f() , Zone zone) {
+Timer _ZoneDelegateCls::createTimer(Duration duration, std::function<void()> f, Zone zone) {
     auto implementation = _delegationTarget->_createTimer();
     _Zone implZone = implementation->zone;
     CreateTimerHandler handler = implementation->function;
     return handler(implZone, implZone->_parentDelegate(), zone, duration, f);
 }
 
-Timer _ZoneDelegateCls::createPeriodicTimer(void f(Timer timer) , Duration period, Zone zone) {
+Timer _ZoneDelegateCls::createPeriodicTimer(std::function<void(Timer timer)> f, Duration period, Zone zone) {
     auto implementation = _delegationTarget->_createPeriodicTimer();
     _Zone implZone = implementation->zone;
     CreatePeriodicTimerHandler handler = implementation->function;
@@ -146,7 +146,7 @@ Zone _CustomZoneCls::errorZone() {
     return _handleUncaughtError->zone;
 }
 
-void _CustomZoneCls::runGuarded(void f() ) {
+void _CustomZoneCls::runGuarded(std::function<void()> f) {
     try {
         run(f);
     } catch (Unknown e) {
@@ -155,7 +155,7 @@ void _CustomZoneCls::runGuarded(void f() ) {
 }
 
 template<typename T>
-void _CustomZoneCls::runUnaryGuarded(T arg, void f(T arg) ) {
+void _CustomZoneCls::runUnaryGuarded(T arg, std::function<void(T arg)> f) {
     try {
         runUnary(f, arg);
     } catch (Unknown e) {
@@ -164,7 +164,7 @@ void _CustomZoneCls::runUnaryGuarded(T arg, void f(T arg) ) {
 }
 
 template<typename T1, typename T2>
-void _CustomZoneCls::runBinaryGuarded(T1 arg1, T2 arg2, void f(T1 arg1, T2 arg2) ) {
+void _CustomZoneCls::runBinaryGuarded(T1 arg1, T2 arg2, std::function<void(T1 arg1, T2 arg2)> f) {
     try {
         runBinary(f, arg1, arg2);
     } catch (Unknown e) {
@@ -173,7 +173,7 @@ void _CustomZoneCls::runBinaryGuarded(T1 arg1, T2 arg2, void f(T1 arg1, T2 arg2)
 }
 
 template<typename R>
-ZoneCallback<R> _CustomZoneCls::bindCallback(R f() ) {
+ZoneCallback<R> _CustomZoneCls::bindCallback(std::function<R()> f) {
     auto registered = registerCallback(f);
     return [=] ()     {
         this->run(registered);
@@ -181,7 +181,7 @@ ZoneCallback<R> _CustomZoneCls::bindCallback(R f() ) {
 }
 
 template<typename R, typename T>
-ZoneUnaryCallback<R, T> _CustomZoneCls::bindUnaryCallback(R f(T arg) ) {
+ZoneUnaryCallback<R, T> _CustomZoneCls::bindUnaryCallback(std::function<R(T arg)> f) {
     auto registered = registerUnaryCallback(f);
     return [=] (Unknown  arg)     {
         this->runUnary(registered, arg);
@@ -189,14 +189,14 @@ ZoneUnaryCallback<R, T> _CustomZoneCls::bindUnaryCallback(R f(T arg) ) {
 }
 
 template<typename R, typename T1, typename T2>
-ZoneBinaryCallback<R, T1, T2> _CustomZoneCls::bindBinaryCallback(R f(T1 arg1, T2 arg2) ) {
+ZoneBinaryCallback<R, T1, T2> _CustomZoneCls::bindBinaryCallback(std::function<R(T1 arg1, T2 arg2)> f) {
     auto registered = registerBinaryCallback(f);
     return [=] (Unknown  arg1,Unknown  arg2)     {
         this->runBinary(registered, arg1, arg2);
     };
 }
 
-void Function() _CustomZoneCls::bindCallbackGuarded(void f() ) {
+std::function<void()> _CustomZoneCls::bindCallbackGuarded(std::function<void()> f) {
     auto registered = registerCallback(f);
     return [=] ()     {
         this->runGuarded(registered);
@@ -204,7 +204,7 @@ void Function() _CustomZoneCls::bindCallbackGuarded(void f() ) {
 }
 
 template<typename T>
-void Function(T ) _CustomZoneCls::bindUnaryCallbackGuarded(void f(T arg) ) {
+std::function<void(T )> _CustomZoneCls::bindUnaryCallbackGuarded(std::function<void(T arg)> f) {
     auto registered = registerUnaryCallback(f);
     return [=] (Unknown  arg)     {
         this->runUnaryGuarded(registered, arg);
@@ -212,7 +212,7 @@ void Function(T ) _CustomZoneCls::bindUnaryCallbackGuarded(void f(T arg) ) {
 }
 
 template<typename T1, typename T2>
-void Function(T1 , T2 ) _CustomZoneCls::bindBinaryCallbackGuarded(void f(T1 arg1, T2 arg2) ) {
+std::function<void(T1 , T2 )> _CustomZoneCls::bindBinaryCallbackGuarded(std::function<void(T1 arg1, T2 arg2)> f) {
     auto registered = registerBinaryCallback(f);
     return [=] (Unknown  arg1,Unknown  arg2)     {
         this->runBinaryGuarded(registered, arg1, arg2);
@@ -247,7 +247,7 @@ Zone _CustomZoneCls::fork(ZoneSpecification specification, Map<Object, Object> z
 }
 
 template<typename R>
-R _CustomZoneCls::run(R f() ) {
+R _CustomZoneCls::run(std::function<R()> f) {
     auto implementation = this->_run;
     ZoneDelegate parentDelegate = implementation->zone->_parentDelegate();
     auto handler = as<RunHandler>(implementation->function);
@@ -255,7 +255,7 @@ R _CustomZoneCls::run(R f() ) {
 }
 
 template<typename R, typename T>
-R _CustomZoneCls::runUnary(T arg, R f(T arg) ) {
+R _CustomZoneCls::runUnary(T arg, std::function<R(T arg)> f) {
     auto implementation = this->_runUnary;
     ZoneDelegate parentDelegate = implementation->zone->_parentDelegate();
     auto handler = as<RunUnaryHandler>(implementation->function);
@@ -263,7 +263,7 @@ R _CustomZoneCls::runUnary(T arg, R f(T arg) ) {
 }
 
 template<typename R, typename T1, typename T2>
-R _CustomZoneCls::runBinary(T1 arg1, T2 arg2, R f(T1 arg1, T2 arg2) ) {
+R _CustomZoneCls::runBinary(T1 arg1, T2 arg2, std::function<R(T1 arg1, T2 arg2)> f) {
     auto implementation = this->_runBinary;
     ZoneDelegate parentDelegate = implementation->zone->_parentDelegate();
     auto handler = as<RunBinaryHandler>(implementation->function);
@@ -271,7 +271,7 @@ R _CustomZoneCls::runBinary(T1 arg1, T2 arg2, R f(T1 arg1, T2 arg2) ) {
 }
 
 template<typename R>
-ZoneCallback<R> _CustomZoneCls::registerCallback(R callback() ) {
+ZoneCallback<R> _CustomZoneCls::registerCallback(std::function<R()> callback) {
     auto implementation = this->_registerCallback;
     ZoneDelegate parentDelegate = implementation->zone->_parentDelegate();
     auto handler = as<RegisterCallbackHandler>(implementation->function);
@@ -279,7 +279,7 @@ ZoneCallback<R> _CustomZoneCls::registerCallback(R callback() ) {
 }
 
 template<typename R, typename T>
-ZoneUnaryCallback<R, T> _CustomZoneCls::registerUnaryCallback(R callback(T arg) ) {
+ZoneUnaryCallback<R, T> _CustomZoneCls::registerUnaryCallback(std::function<R(T arg)> callback) {
     auto implementation = this->_registerUnaryCallback;
     ZoneDelegate parentDelegate = implementation->zone->_parentDelegate();
     auto handler = as<RegisterUnaryCallbackHandler>(implementation->function);
@@ -287,7 +287,7 @@ ZoneUnaryCallback<R, T> _CustomZoneCls::registerUnaryCallback(R callback(T arg) 
 }
 
 template<typename R, typename T1, typename T2>
-ZoneBinaryCallback<R, T1, T2> _CustomZoneCls::registerBinaryCallback(R callback(T1 arg1, T2 arg2) ) {
+ZoneBinaryCallback<R, T1, T2> _CustomZoneCls::registerBinaryCallback(std::function<R(T1 arg1, T2 arg2)> callback) {
     auto implementation = this->_registerBinaryCallback;
     ZoneDelegate parentDelegate = implementation->zone->_parentDelegate();
     auto handler = as<RegisterBinaryCallbackHandler>(implementation->function);
@@ -306,21 +306,21 @@ AsyncError _CustomZoneCls::errorCallback(Object error, StackTrace stackTrace) {
     return handler(implementationZone, parentDelegate, this, error, stackTrace);
 }
 
-void _CustomZoneCls::scheduleMicrotask(void f() ) {
+void _CustomZoneCls::scheduleMicrotask(std::function<void()> f) {
     auto implementation = this->_scheduleMicrotask;
     ZoneDelegate parentDelegate = implementation->zone->_parentDelegate();
     ScheduleMicrotaskHandler handler = implementation->function;
     return handler(implementation->zone, parentDelegate, this, f);
 }
 
-Timer _CustomZoneCls::createTimer(Duration duration, void f() ) {
+Timer _CustomZoneCls::createTimer(Duration duration, std::function<void()> f) {
     auto implementation = this->_createTimer;
     ZoneDelegate parentDelegate = implementation->zone->_parentDelegate();
     CreateTimerHandler handler = implementation->function;
     return handler(implementation->zone, parentDelegate, this, duration, f);
 }
 
-Timer _CustomZoneCls::createPeriodicTimer(Duration duration, void f(Timer timer) ) {
+Timer _CustomZoneCls::createPeriodicTimer(Duration duration, std::function<void(Timer timer)> f) {
     auto implementation = this->_createPeriodicTimer;
     ZoneDelegate parentDelegate = implementation->zone->_parentDelegate();
     CreatePeriodicTimerHandler handler = implementation->function;
@@ -425,7 +425,7 @@ void _rootHandleError(Object error, StackTrace stackTrace) {
 }
 
 template<typename R>
-R _rootRun(R f() , ZoneDelegate parent, Zone self, Zone zone) {
+R _rootRun(std::function<R()> f, ZoneDelegate parent, Zone self, Zone zone) {
     if (identical(ZoneCls::_current, zone))     {
         return f();
     }
@@ -441,7 +441,7 @@ R _rootRun(R f() , ZoneDelegate parent, Zone self, Zone zone) {
 }
 
 template<typename R, typename T>
-R _rootRunUnary(T arg, R f(T arg) , ZoneDelegate parent, Zone self, Zone zone) {
+R _rootRunUnary(T arg, std::function<R(T arg)> f, ZoneDelegate parent, Zone self, Zone zone) {
     if (identical(ZoneCls::_current, zone))     {
         return f(arg);
     }
@@ -457,7 +457,7 @@ R _rootRunUnary(T arg, R f(T arg) , ZoneDelegate parent, Zone self, Zone zone) {
 }
 
 template<typename R, typename T1, typename T2>
-R _rootRunBinary(T1 arg1, T2 arg2, R f(T1 arg1, T2 arg2) , ZoneDelegate parent, Zone self, Zone zone) {
+R _rootRunBinary(T1 arg1, T2 arg2, std::function<R(T1 arg1, T2 arg2)> f, ZoneDelegate parent, Zone self, Zone zone) {
     if (identical(ZoneCls::_current, zone))     {
         return f(arg1, arg2);
     }
@@ -473,17 +473,17 @@ R _rootRunBinary(T1 arg1, T2 arg2, R f(T1 arg1, T2 arg2) , ZoneDelegate parent, 
 }
 
 template<typename R>
-ZoneCallback<R> _rootRegisterCallback(R f() , ZoneDelegate parent, Zone self, Zone zone) {
+ZoneCallback<R> _rootRegisterCallback(std::function<R()> f, ZoneDelegate parent, Zone self, Zone zone) {
     return f;
 }
 
 template<typename R, typename T>
-ZoneUnaryCallback<R, T> _rootRegisterUnaryCallback(R f(T arg) , ZoneDelegate parent, Zone self, Zone zone) {
+ZoneUnaryCallback<R, T> _rootRegisterUnaryCallback(std::function<R(T arg)> f, ZoneDelegate parent, Zone self, Zone zone) {
     return f;
 }
 
 template<typename R, typename T1, typename T2>
-ZoneBinaryCallback<R, T1, T2> _rootRegisterBinaryCallback(R f(T1 arg1, T2 arg2) , ZoneDelegate parent, Zone self, Zone zone) {
+ZoneBinaryCallback<R, T1, T2> _rootRegisterBinaryCallback(std::function<R(T1 arg1, T2 arg2)> f, ZoneDelegate parent, Zone self, Zone zone) {
     return f;
 }
 
@@ -491,7 +491,7 @@ AsyncError _rootErrorCallback(Object error, ZoneDelegate parent, Zone self, Stac
     return nullptr;
 }
 
-void _rootScheduleMicrotask(void f() , ZoneDelegate parent, Zone self, Zone zone) {
+void _rootScheduleMicrotask(std::function<void()> f, ZoneDelegate parent, Zone self, Zone zone) {
     if (!identical(_rootZone, zone)) {
         bool hasErrorHandler = !_rootZone->inSameErrorZone(zone);
         if (hasErrorHandler) {
@@ -503,14 +503,14 @@ void _rootScheduleMicrotask(void f() , ZoneDelegate parent, Zone self, Zone zone
     _scheduleAsyncCallback(f);
 }
 
-Timer _rootCreateTimer(void callback() , Duration duration, ZoneDelegate parent, Zone self, Zone zone) {
+Timer _rootCreateTimer(std::function<void()> callback, Duration duration, ZoneDelegate parent, Zone self, Zone zone) {
     if (!identical(_rootZone, zone)) {
         callback = zone->bindCallback(callback);
     }
     return TimerCls->_createTimer(duration, callback);
 }
 
-Timer _rootCreatePeriodicTimer(void callback(Timer timer) , Duration duration, ZoneDelegate parent, Zone self, Zone zone) {
+Timer _rootCreatePeriodicTimer(std::function<void(Timer timer)> callback, Duration duration, ZoneDelegate parent, Zone self, Zone zone) {
     if (!identical(_rootZone, zone)) {
         callback = zone-><void, Timer>bindUnaryCallback(callback);
     }
@@ -557,7 +557,7 @@ Zone _RootZoneCls::errorZone() {
     return this;
 }
 
-void _RootZoneCls::runGuarded(void f() ) {
+void _RootZoneCls::runGuarded(std::function<void()> f) {
     try {
         if (identical(_rootZone, ZoneCls::_current)) {
             f();
@@ -570,7 +570,7 @@ void _RootZoneCls::runGuarded(void f() ) {
 }
 
 template<typename T>
-void _RootZoneCls::runUnaryGuarded(T arg, void f(T arg) ) {
+void _RootZoneCls::runUnaryGuarded(T arg, std::function<void(T arg)> f) {
     try {
         if (identical(_rootZone, ZoneCls::_current)) {
             f(arg);
@@ -583,7 +583,7 @@ void _RootZoneCls::runUnaryGuarded(T arg, void f(T arg) ) {
 }
 
 template<typename T1, typename T2>
-void _RootZoneCls::runBinaryGuarded(T1 arg1, T2 arg2, void f(T1 arg1, T2 arg2) ) {
+void _RootZoneCls::runBinaryGuarded(T1 arg1, T2 arg2, std::function<void(T1 arg1, T2 arg2)> f) {
     try {
         if (identical(_rootZone, ZoneCls::_current)) {
             f(arg1, arg2);
@@ -596,41 +596,41 @@ void _RootZoneCls::runBinaryGuarded(T1 arg1, T2 arg2, void f(T1 arg1, T2 arg2) )
 }
 
 template<typename R>
-ZoneCallback<R> _RootZoneCls::bindCallback(R f() ) {
+ZoneCallback<R> _RootZoneCls::bindCallback(std::function<R()> f) {
     return [=] ()     {
         this-><R>run(f);
     };
 }
 
 template<typename R, typename T>
-ZoneUnaryCallback<R, T> _RootZoneCls::bindUnaryCallback(R f(T arg) ) {
+ZoneUnaryCallback<R, T> _RootZoneCls::bindUnaryCallback(std::function<R(T arg)> f) {
     return [=] (Unknown  arg)     {
         this-><R, T>runUnary(f, arg);
     };
 }
 
 template<typename R, typename T1, typename T2>
-ZoneBinaryCallback<R, T1, T2> _RootZoneCls::bindBinaryCallback(R f(T1 arg1, T2 arg2) ) {
+ZoneBinaryCallback<R, T1, T2> _RootZoneCls::bindBinaryCallback(std::function<R(T1 arg1, T2 arg2)> f) {
     return [=] (Unknown  arg1,Unknown  arg2)     {
         this-><R, T1, T2>runBinary(f, arg1, arg2);
     };
 }
 
-void Function() _RootZoneCls::bindCallbackGuarded(void f() ) {
+std::function<void()> _RootZoneCls::bindCallbackGuarded(std::function<void()> f) {
     return [=] ()     {
         this->runGuarded(f);
     };
 }
 
 template<typename T>
-void Function(T ) _RootZoneCls::bindUnaryCallbackGuarded(void f(T arg) ) {
+std::function<void(T )> _RootZoneCls::bindUnaryCallbackGuarded(std::function<void(T arg)> f) {
     return [=] (Unknown  arg)     {
         this->runUnaryGuarded(f, arg);
     };
 }
 
 template<typename T1, typename T2>
-void Function(T1 , T2 ) _RootZoneCls::bindBinaryCallbackGuarded(void f(T1 arg1, T2 arg2) ) {
+std::function<void(T1 , T2 )> _RootZoneCls::bindBinaryCallbackGuarded(std::function<void(T1 arg1, T2 arg2)> f) {
     return [=] (Unknown  arg1,Unknown  arg2)     {
         this->runBinaryGuarded(f, arg1, arg2);
     };
@@ -649,7 +649,7 @@ Zone _RootZoneCls::fork(ZoneSpecification specification, Map<Object, Object> zon
 }
 
 template<typename R>
-R _RootZoneCls::run(R f() ) {
+R _RootZoneCls::run(std::function<R()> f) {
     if (identical(ZoneCls::_current, _rootZone))     {
         return f();
     }
@@ -657,7 +657,7 @@ R _RootZoneCls::run(R f() ) {
 }
 
 template<typename R, typename T>
-R _RootZoneCls::runUnary(T arg, R f(T arg) ) {
+R _RootZoneCls::runUnary(T arg, std::function<R(T arg)> f) {
     if (identical(ZoneCls::_current, _rootZone))     {
         return f(arg);
     }
@@ -665,7 +665,7 @@ R _RootZoneCls::runUnary(T arg, R f(T arg) ) {
 }
 
 template<typename R, typename T1, typename T2>
-R _RootZoneCls::runBinary(T1 arg1, T2 arg2, R f(T1 arg1, T2 arg2) ) {
+R _RootZoneCls::runBinary(T1 arg1, T2 arg2, std::function<R(T1 arg1, T2 arg2)> f) {
     if (identical(ZoneCls::_current, _rootZone))     {
         return f(arg1, arg2);
     }
@@ -673,17 +673,17 @@ R _RootZoneCls::runBinary(T1 arg1, T2 arg2, R f(T1 arg1, T2 arg2) ) {
 }
 
 template<typename R>
-ZoneCallback<R> _RootZoneCls::registerCallback(R f() ) {
+ZoneCallback<R> _RootZoneCls::registerCallback(std::function<R()> f) {
     return f;
 }
 
 template<typename R, typename T>
-ZoneUnaryCallback<R, T> _RootZoneCls::registerUnaryCallback(R f(T arg) ) {
+ZoneUnaryCallback<R, T> _RootZoneCls::registerUnaryCallback(std::function<R(T arg)> f) {
     return f;
 }
 
 template<typename R, typename T1, typename T2>
-ZoneBinaryCallback<R, T1, T2> _RootZoneCls::registerBinaryCallback(R f(T1 arg1, T2 arg2) ) {
+ZoneBinaryCallback<R, T1, T2> _RootZoneCls::registerBinaryCallback(std::function<R(T1 arg1, T2 arg2)> f) {
     return f;
 }
 
@@ -691,15 +691,15 @@ AsyncError _RootZoneCls::errorCallback(Object error, StackTrace stackTrace) {
     return nullptr;
 }
 
-void _RootZoneCls::scheduleMicrotask(void f() ) {
+void _RootZoneCls::scheduleMicrotask(std::function<void()> f) {
     _rootScheduleMicrotask(nullptr, nullptr, this, f);
 }
 
-Timer _RootZoneCls::createTimer(Duration duration, void f() ) {
+Timer _RootZoneCls::createTimer(Duration duration, std::function<void()> f) {
     return TimerCls->_createTimer(duration, f);
 }
 
-Timer _RootZoneCls::createPeriodicTimer(Duration duration, void f(Timer timer) ) {
+Timer _RootZoneCls::createPeriodicTimer(Duration duration, std::function<void(Timer timer)> f) {
     return TimerCls->_createPeriodicTimer(duration, f);
 }
 
@@ -772,11 +772,11 @@ ZoneDelegate _RootZoneCls::_parentDelegate() {
 }
 
 template<typename R>
-R runZoned(R body() , void  onError() , ZoneSpecification zoneSpecification, Map<Object, Object> zoneValues) {
+R runZoned(std::function<R()> body, std::function<void ()> onError, ZoneSpecification zoneSpecification, Map<Object, Object> zoneValues) {
     checkNotNullable(body, __s("body"));
     if (onError != nullptr) {
-        if (!is<void Function(Object , StackTrace )>(onError)) {
-            if (is<void Function(Object )>(onError)) {
+        if (!is<std::function<void(Object , StackTrace )>>(onError)) {
+            if (is<std::function<void(Object )>>(onError)) {
                 auto originalOnError = onError;
                 onError = [=] (Object error,StackTrace stack)                 {
                     originalOnError(error);
@@ -791,7 +791,7 @@ R runZoned(R body() , void  onError() , ZoneSpecification zoneSpecification, Map
 }
 
 template<typename R>
-R runZonedGuarded(R body() , void onError(Object error, StackTrace stack) , ZoneSpecification zoneSpecification, Map<Object, Object> zoneValues) {
+R runZonedGuarded(std::function<R()> body, std::function<void(Object error, StackTrace stack)> onError, ZoneSpecification zoneSpecification, Map<Object, Object> zoneValues) {
     checkNotNullable(body, __s("body"));
     checkNotNullable(onError, __s("onError"));
     _Zone parentZone = ZoneCls::_current;
@@ -820,6 +820,6 @@ R runZonedGuarded(R body() , void onError(Object error, StackTrace stack) , Zone
 }
 
 template<typename R>
-R _runZoned(R body() , ZoneSpecification specification, Map<Object, Object> zoneValues) {
+R _runZoned(std::function<R()> body, ZoneSpecification specification, Map<Object, Object> zoneValues) {
     return ZoneCls::current->fork(specification, zoneValues)-><R>run(body);
 }

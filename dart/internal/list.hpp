@@ -21,9 +21,9 @@ public:
 
     virtual bool remove(Object element);
 
-    virtual void removeWhere(bool test(E element) );
+    virtual void removeWhere(std::function<bool(E element)> test);
 
-    virtual void retainWhere(bool test(E element) );
+    virtual void retainWhere(std::function<bool(E element)> test);
 
     virtual void clear();
 
@@ -65,9 +65,9 @@ public:
 
     virtual bool remove(Object element);
 
-    virtual void removeWhere(bool test(E element) );
+    virtual void removeWhere(std::function<bool(E element)> test);
 
-    virtual void retainWhere(bool test(E element) );
+    virtual void retainWhere(std::function<bool(E element)> test);
 
     virtual void sort(Comparator<E> compare);
 
@@ -149,7 +149,7 @@ public:
 
     virtual bool containsKey(Object key);
 
-    virtual void forEach(void f(int key, E value) );
+    virtual void forEach(std::function<void(int key, E value)> f);
 
 private:
     List<E> _values;

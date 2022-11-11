@@ -44,7 +44,7 @@ public:
     virtual String toStringAsExponential(int fractionDigits);
     virtual String toStringAsPrecision(int precision);
     virtual String toString();
-    static num parse(String input, num onError(String input) );
+    static num parse(String input, std::function<num(String input)> onError);
 
     static num tryParse(String input);
 

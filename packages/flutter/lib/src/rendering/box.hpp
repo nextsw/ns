@@ -310,7 +310,7 @@ private:
     int _debugActivePointers;
 
 
-    virtual double _computeIntrinsicDimension(double argument, double computer(double argument) , _IntrinsicDimension dimension);
+    virtual double _computeIntrinsicDimension(double argument, std::function<double(double argument)> computer, _IntrinsicDimension dimension);
 
     virtual Size _computeDryLayout(BoxConstraints constraints);
 

@@ -8,19 +8,19 @@
 template<typename T>
 class StreamControllerCls : public ObjectCls {
 public:
-    void Function() onListen;
+    std::function<void()> onListen;
 
-    void Function() onPause;
+    std::function<void()> onPause;
 
-    void Function() onResume;
+    std::function<void()> onResume;
 
-    FutureOr<void> Function() onCancel;
+    std::function<FutureOr<void>()> onCancel;
 
 
     virtual Stream<T> stream();
-     StreamControllerCls(FutureOr<void> onCancel() , void onListen() , void onPause() , void onResume() , bool sync);
+     StreamControllerCls(std::function<FutureOr<void>()> onCancel, std::function<void()> onListen, std::function<void()> onPause, std::function<void()> onResume, bool sync);
 
-    virtual void  broadcast(void onCancel() , void onListen() , bool sync);
+    virtual void  broadcast(std::function<void()> onCancel, std::function<void()> onListen, bool sync);
 
     virtual StreamSink<T> sink();
     virtual bool isClosed();
@@ -56,7 +56,7 @@ public:
 
 private:
 
-    virtual StreamSubscription<T> _subscribe(bool cancelOnError, void onData(T data) , void onDone() , void  onError() );
+    virtual StreamSubscription<T> _subscribe(bool cancelOnError, std::function<void(T data)> onData, std::function<void()> onDone, std::function<void ()> onError);
     virtual void _recordPause(StreamSubscription<T> subscription);
 
     virtual void _recordResume(StreamSubscription<T> subscription);
@@ -80,13 +80,13 @@ using _StreamControllerBase = std::shared_ptr<_StreamControllerBaseCls<T>>;
 template<typename T>
 class _StreamControllerCls : public ObjectCls {
 public:
-    void Function() onListen;
+    std::function<void()> onListen;
 
-    void Function() onPause;
+    std::function<void()> onPause;
 
-    void Function() onResume;
+    std::function<void()> onResume;
 
-    FutureOr<void> Function() onCancel;
+    std::function<FutureOr<void>()> onCancel;
 
 
     virtual Stream<T> stream();
@@ -129,7 +129,7 @@ private:
     _Future<void> _doneFuture;
 
 
-     _StreamControllerCls(FutureOr<void> Function() onCancel, void Function() onListen, void Function() onPause, void Function() onResume);
+     _StreamControllerCls(std::function<FutureOr<void>()> onCancel, std::function<void()> onListen, std::function<void()> onPause, std::function<void()> onResume);
     virtual bool _isCanceled();
 
     virtual bool _isInitialState();
@@ -156,7 +156,7 @@ private:
 
     virtual void _close();
 
-    virtual StreamSubscription<T> _subscribe(bool cancelOnError, void onData(T data) , void onDone() , void  onError() );
+    virtual StreamSubscription<T> _subscribe(bool cancelOnError, std::function<void(T data)> onData, std::function<void()> onDone, std::function<void ()> onError);
 
     virtual Future<void> _recordCancel(StreamSubscription<T> subscription);
 
@@ -219,7 +219,7 @@ private:
 };
 template<typename T>
 using _SyncStreamController = std::shared_ptr<_SyncStreamControllerCls<T>>;
-void _runGuarded(void notificationHandler() );
+void _runGuarded(std::function<void()> notificationHandler);
 
 
 template<typename T>
@@ -235,7 +235,7 @@ private:
 
 
      _ControllerStreamCls(_StreamControllerLifecycle<T> _controller);
-    virtual StreamSubscription<T> _createSubscription(bool cancelOnError, void onData(T data) , void onDone() , void  onError() );
+    virtual StreamSubscription<T> _createSubscription(bool cancelOnError, std::function<void(T data)> onData, std::function<void()> onDone, std::function<void ()> onError);
 
 };
 template<typename T>
@@ -249,7 +249,7 @@ private:
     _StreamControllerLifecycle<T> _controller;
 
 
-     _ControllerSubscriptionCls(_StreamControllerLifecycle<T> _controller, bool cancelOnError, void onData(T data) , void onDone() , void  onError() );
+     _ControllerSubscriptionCls(_StreamControllerLifecycle<T> _controller, bool cancelOnError, std::function<void(T data)> onData, std::function<void()> onDone, std::function<void ()> onError);
 
     virtual Future<void> _onCancel();
 

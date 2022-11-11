@@ -15,7 +15,7 @@ public:
 
     virtual void  empty(int capacity, bool growable);
 
-    virtual void  generate(bool generator(int ) , bool growable, int length);
+    virtual void  generate(std::function<bool(int )> generator, bool growable, int length);
 
     virtual void  of(Iterable<bool> elements, bool growable);
 

@@ -115,7 +115,7 @@ bool BindingBaseCls::locked() {
     return _lockCount > 0;
 }
 
-Future<void> BindingBaseCls::lockEvents(Future<void> callback() ) {
+Future<void> BindingBaseCls::lockEvents(std::function<Future<void>()> callback) {
     auto _c1 = developer->make<TimelineTaskCls>();_c1.start(__s("Lock events"));TimelineTask timelineTask = _c1;
     assert(callback != nullptr);
     _lockCount = 1;

@@ -55,7 +55,7 @@ void SetMixinCls<E>::retainAll(Iterable<Object> elements) {
 }
 
 template<typename E>
-void SetMixinCls<E>::removeWhere(bool test(E element) ) {
+void SetMixinCls<E>::removeWhere(std::function<bool(E element)> test) {
     List<Object> toRemove = makeList();
     for (E element : this) {
         if (test(element))         {
@@ -66,7 +66,7 @@ void SetMixinCls<E>::removeWhere(bool test(E element) ) {
 }
 
 template<typename E>
-void SetMixinCls<E>::retainWhere(bool test(E element) ) {
+void SetMixinCls<E>::retainWhere(std::function<bool(E element)> test) {
     List<Object> toRemove = makeList();
     for (E element : this) {
         if (!test(element))         {
@@ -120,7 +120,7 @@ List<E> SetMixinCls<E>::toList(bool growable) {
 
 template<typename E>
 template<typename T>
-Iterable<T> SetMixinCls<E>::map(T f(E element) ) {
+Iterable<T> SetMixinCls<E>::map(std::function<T(E element)> f) {
     return <E, T>make<EfficientLengthMappedIterableCls>(this, f);
 }
 
@@ -143,25 +143,25 @@ String SetMixinCls<E>::toString() {
 }
 
 template<typename E>
-Iterable<E> SetMixinCls<E>::where(bool f(E element) ) {
+Iterable<E> SetMixinCls<E>::where(std::function<bool(E element)> f) {
     return <E>make<WhereIterableCls>(this, f);
 }
 
 template<typename E>
 template<typename T>
-Iterable<T> SetMixinCls<E>::expand(Iterable<T> f(E element) ) {
+Iterable<T> SetMixinCls<E>::expand(std::function<Iterable<T>(E element)> f) {
     return <E, T>make<ExpandIterableCls>(this, f);
 }
 
 template<typename E>
-void SetMixinCls<E>::forEach(void f(E element) ) {
+void SetMixinCls<E>::forEach(std::function<void(E element)> f) {
     for (E element : this)     {
         f(element);
     }
 }
 
 template<typename E>
-E SetMixinCls<E>::reduce(E combine(E element, E value) ) {
+E SetMixinCls<E>::reduce(std::function<E(E element, E value)> combine) {
     Iterator<E> iterator = this->iterator();
     if (!iterator->moveNext()) {
         ;
@@ -175,7 +175,7 @@ E SetMixinCls<E>::reduce(E combine(E element, E value) ) {
 
 template<typename E>
 template<typename T>
-T SetMixinCls<E>::fold(T combine(E element, T previousValue) , T initialValue) {
+T SetMixinCls<E>::fold(std::function<T(E element, T previousValue)> combine, T initialValue) {
     auto value = initialValue;
     for (E element : this)     {
         value = combine(value, element);
@@ -184,7 +184,7 @@ T SetMixinCls<E>::fold(T combine(E element, T previousValue) , T initialValue) {
 }
 
 template<typename E>
-bool SetMixinCls<E>::every(bool f(E element) ) {
+bool SetMixinCls<E>::every(std::function<bool(E element)> f) {
     for (E element : this) {
         if (!f(element))         {
             return false;
@@ -215,7 +215,7 @@ String SetMixinCls<E>::join(String separator) {
 }
 
 template<typename E>
-bool SetMixinCls<E>::any(bool test(E element) ) {
+bool SetMixinCls<E>::any(std::function<bool(E element)> test) {
     for (E element : this) {
         if (test(element))         {
             return true;
@@ -230,7 +230,7 @@ Iterable<E> SetMixinCls<E>::take(int n) {
 }
 
 template<typename E>
-Iterable<E> SetMixinCls<E>::takeWhile(bool test(E value) ) {
+Iterable<E> SetMixinCls<E>::takeWhile(std::function<bool(E value)> test) {
     return <E>make<TakeWhileIterableCls>(this, test);
 }
 
@@ -240,7 +240,7 @@ Iterable<E> SetMixinCls<E>::skip(int n) {
 }
 
 template<typename E>
-Iterable<E> SetMixinCls<E>::skipWhile(bool test(E value) ) {
+Iterable<E> SetMixinCls<E>::skipWhile(std::function<bool(E value)> test) {
     return <E>make<SkipWhileIterableCls>(this, test);
 }
 
@@ -267,7 +267,7 @@ E SetMixinCls<E>::last() {
 }
 
 template<typename E>
-E SetMixinCls<E>::firstWhere(E orElse() , bool test(E value) ) {
+E SetMixinCls<E>::firstWhere(std::function<E()> orElse, std::function<bool(E value)> test) {
     for (E element : this) {
         if (test(element))         {
             return element;
@@ -280,7 +280,7 @@ E SetMixinCls<E>::firstWhere(E orElse() , bool test(E value) ) {
 }
 
 template<typename E>
-E SetMixinCls<E>::lastWhere(E orElse() , bool test(E value) ) {
+E SetMixinCls<E>::lastWhere(std::function<E()> orElse, std::function<bool(E value)> test) {
     E result;
     bool foundMatching = false;
     for (E element : this) {
@@ -299,7 +299,7 @@ E SetMixinCls<E>::lastWhere(E orElse() , bool test(E value) ) {
 }
 
 template<typename E>
-E SetMixinCls<E>::singleWhere(E orElse() , bool test(E value) ) {
+E SetMixinCls<E>::singleWhere(std::function<E()> orElse, std::function<bool(E value)> test) {
     E result;
     bool foundMatching = false;
     for (E element : this) {
@@ -398,12 +398,12 @@ void _UnmodifiableSetMixinCls<E>::retainAll(Iterable<Object> elements) {
 }
 
 template<typename E>
-void _UnmodifiableSetMixinCls<E>::removeWhere(bool test(E element) ) {
+void _UnmodifiableSetMixinCls<E>::removeWhere(std::function<bool(E element)> test) {
     return _throwUnmodifiable();
 }
 
 template<typename E>
-void _UnmodifiableSetMixinCls<E>::retainWhere(bool test(E element) ) {
+void _UnmodifiableSetMixinCls<E>::retainWhere(std::function<bool(E element)> test) {
     return _throwUnmodifiable();
 }
 

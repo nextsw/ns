@@ -101,7 +101,7 @@ bool ImageCacheCls::evict(bool includeLive, Object key) {
     return false;
 }
 
-ImageStreamCompleter ImageCacheCls::putIfAbsent(Object key, ImageStreamCompleter loader() , ImageErrorListener onError) {
+ImageStreamCompleter ImageCacheCls::putIfAbsent(Object key, std::function<ImageStreamCompleter()> loader, ImageErrorListener onError) {
     assert(key != nullptr);
     assert(loader != nullptr);
     TimelineTask timelineTask;

@@ -9,13 +9,13 @@ template<typename K, typename V>
 class LinkedHashMapCls : public ObjectCls {
 public:
 
-     LinkedHashMapCls(bool equals(K , K ) , int hashCode(K ) , bool isValidKey(dynamic ) );
+     LinkedHashMapCls(std::function<bool(K , K )> equals, std::function<int(K )> hashCode, std::function<bool(dynamic )> isValidKey);
     void  identity();
     virtual void  from(Map<dynamic, dynamic> other);
 
     virtual void  of(Map<K, V> other);
 
-    virtual void  fromIterable(Iterable iterable, K key(dynamic element) , V value(dynamic element) );
+    virtual void  fromIterable(Iterable iterable, std::function<K(dynamic element)> key, std::function<V(dynamic element)> value);
 
     virtual void  fromIterables(Iterable<K> keys, Iterable<V> values);
 

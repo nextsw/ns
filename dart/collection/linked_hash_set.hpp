@@ -9,13 +9,13 @@ template<typename E>
 class LinkedHashSetCls : public ObjectCls {
 public:
 
-     LinkedHashSetCls(bool equals(E , E ) , int hashCode(E ) , bool isValidKey(dynamic ) );
+     LinkedHashSetCls(std::function<bool(E , E )> equals, std::function<int(E )> hashCode, std::function<bool(dynamic )> isValidKey);
     void  identity();
     virtual void  from(Iterable<dynamic> elements);
 
     virtual void  of(Iterable<E> elements);
 
-    virtual void forEach(void action(E element) );
+    virtual void forEach(std::function<void(E element)> action);
     virtual Iterator<E> iterator();
 private:
 

@@ -9,7 +9,7 @@ _BroadcastStreamCls<T>::_BroadcastStreamCls(_StreamControllerLifecycle<T> contro
 }
 
 template<typename T>
-_BroadcastSubscriptionCls<T>::_BroadcastSubscriptionCls(bool cancelOnError, _StreamControllerLifecycle<T> controller, void onData(T data) , void onDone() , void  onError() ) {
+_BroadcastSubscriptionCls<T>::_BroadcastSubscriptionCls(bool cancelOnError, _StreamControllerLifecycle<T> controller, std::function<void(T data)> onData, std::function<void()> onDone, std::function<void ()> onError) {
     {
         _next = _previous = this;
     }
@@ -50,22 +50,22 @@ void _BroadcastSubscriptionCls<T>::_onResume() {
 }
 
 template<typename T>
-void Function() _BroadcastStreamControllerCls<T>::onPause() {
+std::function<void()> _BroadcastStreamControllerCls<T>::onPause() {
     ;
 }
 
 template<typename T>
-void _BroadcastStreamControllerCls<T>::onPause(void onPauseHandler() ) {
+void _BroadcastStreamControllerCls<T>::onPause(std::function<void()> onPauseHandler) {
     ;
 }
 
 template<typename T>
-void Function() _BroadcastStreamControllerCls<T>::onResume() {
+std::function<void()> _BroadcastStreamControllerCls<T>::onResume() {
     ;
 }
 
 template<typename T>
-void _BroadcastStreamControllerCls<T>::onResume(void onResumeHandler() ) {
+void _BroadcastStreamControllerCls<T>::onResume(std::function<void()> onResumeHandler) {
     ;
 }
 
@@ -150,7 +150,7 @@ Future _BroadcastStreamControllerCls<T>::addStream(bool cancelOnError, Stream<T>
 }
 
 template<typename T>
-_BroadcastStreamControllerCls<T>::_BroadcastStreamControllerCls(FutureOr<void> Function() onCancel, void Function() onListen) {
+_BroadcastStreamControllerCls<T>::_BroadcastStreamControllerCls(std::function<FutureOr<void>()> onCancel, std::function<void()> onListen) {
     {
         _state = _STATE_INITIALCls;
     }
@@ -222,7 +222,7 @@ void _BroadcastStreamControllerCls<T>::_removeListener(_BroadcastSubscription<T>
 }
 
 template<typename T>
-StreamSubscription<T> _BroadcastStreamControllerCls<T>::_subscribe(bool cancelOnError, void onData(T data) , void onDone() , void  onError() ) {
+StreamSubscription<T> _BroadcastStreamControllerCls<T>::_subscribe(bool cancelOnError, std::function<void(T data)> onData, std::function<void()> onDone, std::function<void ()> onError) {
     if (isClosed()) {
         return <T>make<_DoneStreamSubscriptionCls>(onDone);
     }
@@ -288,7 +288,7 @@ void _BroadcastStreamControllerCls<T>::_close() {
 }
 
 template<typename T>
-void _BroadcastStreamControllerCls<T>::_forEachListener(void action(_BufferingStreamSubscription<T> subscription) ) {
+void _BroadcastStreamControllerCls<T>::_forEachListener(std::function<void(_BufferingStreamSubscription<T> subscription)> action) {
     if (_isFiring()) {
         ;
     }
@@ -332,7 +332,7 @@ void _BroadcastStreamControllerCls<T>::_callOnCancel() {
 }
 
 template<typename T>
-_SyncBroadcastStreamControllerCls<T>::_SyncBroadcastStreamControllerCls(void onCancel() , void onListen() ) {
+_SyncBroadcastStreamControllerCls<T>::_SyncBroadcastStreamControllerCls(std::function<void()> onCancel, std::function<void()> onListen) {
 }
 
 template<typename T>
@@ -391,7 +391,7 @@ void _SyncBroadcastStreamControllerCls<T>::_sendDone() {
 }
 
 template<typename T>
-_AsyncBroadcastStreamControllerCls<T>::_AsyncBroadcastStreamControllerCls(void onCancel() , void onListen() ) {
+_AsyncBroadcastStreamControllerCls<T>::_AsyncBroadcastStreamControllerCls(std::function<void()> onCancel, std::function<void()> onListen) {
 }
 
 template<typename T>
@@ -458,7 +458,7 @@ Future _AsBroadcastStreamControllerCls<T>::close() {
 }
 
 template<typename T>
-_AsBroadcastStreamControllerCls<T>::_AsBroadcastStreamControllerCls(void onCancel() , void onListen() ) {
+_AsBroadcastStreamControllerCls<T>::_AsBroadcastStreamControllerCls(std::function<void()> onCancel, std::function<void()> onListen) {
 }
 
 template<typename T>

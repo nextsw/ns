@@ -85,14 +85,14 @@ public:
 
     virtual Stream<void> asStream();
 
-    virtual Future<void> catchError(void  onError() , bool test(Object ) );
+    virtual Future<void> catchError(std::function<void ()> onError, std::function<bool(Object )> test);
 
     template<typename R>
- virtual Future<R> then(void  onError() , FutureOr<R> onValue(void value) );
+ virtual Future<R> then(std::function<void ()> onError, std::function<FutureOr<R>(void value)> onValue);
 
-    virtual Future<void> timeout(FutureOr<void> onTimeout() , Duration timeLimit);
+    virtual Future<void> timeout(std::function<FutureOr<void>()> onTimeout, Duration timeLimit);
 
-    virtual Future<void> whenComplete(dynamic action() );
+    virtual Future<void> whenComplete(std::function<dynamic()> action);
 
     virtual String toString();
 

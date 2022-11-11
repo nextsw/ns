@@ -5,7 +5,7 @@ bool CastStreamCls<S, T>::isBroadcast() {
 }
 
 template<typename S, typename T>
-StreamSubscription<T> CastStreamCls<S, T>::listen(bool cancelOnError, void onData(T data) , void onDone() , void  onError() ) {
+StreamSubscription<T> CastStreamCls<S, T>::listen(bool cancelOnError, std::function<void(T data)> onData, std::function<void()> onDone, std::function<void ()> onError) {
     auto _c1 = <S, T>make<CastStreamSubscriptionCls>(_source->listen(nullptronDone, cancelOnError));_c1.auto _c2 = onData(onData);_c2.onError(onError);_c2;return _c1;
 }
 
@@ -28,20 +28,20 @@ Future CastStreamSubscriptionCls<S, T>::cancel() {
 }
 
 template<typename S, typename T>
-void CastStreamSubscriptionCls<S, T>::onData(void handleData(T data) ) {
+void CastStreamSubscriptionCls<S, T>::onData(std::function<void(T data)> handleData) {
     _handleData = handleData == nullptr? nullptr : _zone-><dynamic, T>registerUnaryCallback(handleData);
 }
 
 template<typename S, typename T>
-void CastStreamSubscriptionCls<S, T>::onError(void  handleError() ) {
+void CastStreamSubscriptionCls<S, T>::onError(std::function<void ()> handleError) {
     _source->onError(handleError);
     if (handleError == nullptr) {
         _handleError = nullptr;
     } else     {
-        if (is<void Function(Object , StackTrace )>(handleError)) {
+        if (is<std::function<void(Object , StackTrace )>>(handleError)) {
         _handleError = _zone-><dynamic, Object, StackTrace>registerBinaryCallback(handleError);
     } else     {
-        if (is<void Function(Object )>(handleError)) {
+        if (is<std::function<void(Object )>>(handleError)) {
         _handleError = _zone-><dynamic, Object>registerUnaryCallback(handleError);
     } else {
         ;
@@ -51,7 +51,7 @@ void CastStreamSubscriptionCls<S, T>::onError(void  handleError() ) {
     }}
 
 template<typename S, typename T>
-void CastStreamSubscriptionCls<S, T>::onDone(void handleDone() ) {
+void CastStreamSubscriptionCls<S, T>::onDone(std::function<void()> handleDone) {
     _source->onDone(handleDone);
 }
 
@@ -89,10 +89,10 @@ void CastStreamSubscriptionCls<S, T>::_onData(S data) {
         if (handleError == nullptr) {
             _zone->handleUncaughtError(error, stack);
         } else         {
-            if (is<void Function(Object , StackTrace )>(handleError)) {
+            if (is<std::function<void(Object , StackTrace )>>(handleError)) {
             _zone-><Object, StackTrace>runBinaryGuarded(handleError, error, stack);
         } else {
-            _zone-><Object>runUnaryGuarded(as<void Function(Object )>(handleError), error);
+            _zone-><Object>runUnaryGuarded(as<std::function<void(Object )>>(handleError), error);
         }
 ;
         }        return;

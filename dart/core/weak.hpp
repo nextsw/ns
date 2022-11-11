@@ -38,7 +38,7 @@ template<typename T>
 class FinalizerCls : public ObjectCls {
 public:
 
-     FinalizerCls(void callback(T ) );
+     FinalizerCls(std::function<void(T )> callback);
     virtual void attach(Object detach, T finalizationToken, Object value);
     virtual void detach(Object detach);
 private:

@@ -40,7 +40,7 @@ public:
     static Future<Uri> packageConfig();
     static Future<Uri> resolvePackageUri(Uri packageUri);
     template<typename T>
- static Future<Isolate> spawn(String debugName, void entryPoint(T message) , bool errorsAreFatal, T message, SendPort onError, SendPort onExit, bool paused);
+ static Future<Isolate> spawn(String debugName, std::function<void(T message)> entryPoint, bool errorsAreFatal, T message, SendPort onError, SendPort onExit, bool paused);
     static Future<Isolate> spawnUri(List<String> args, bool automaticPackageResolution, bool checked, String debugName, Map<String, String> environment, bool errorsAreFatal, auto message, SendPort onError, SendPort onExit, Uri packageConfig, Uri packageRoot, bool paused, Uri uri);
     virtual Capability pause(Capability resumeCapability);
 
@@ -77,7 +77,7 @@ public:
 
      ReceivePortCls(String debugName);
     void  fromRawReceivePort(RawReceivePort rawPort);
-    virtual StreamSubscription<dynamic> listen(bool cancelOnError, void onData(auto message) , void onDone() , void  onError() );
+    virtual StreamSubscription<dynamic> listen(bool cancelOnError, std::function<void(auto message)> onData, std::function<void()> onDone, std::function<void ()> onError);
     virtual void close();
     virtual SendPort sendPort();
 private:
@@ -88,8 +88,8 @@ using ReceivePort = std::shared_ptr<ReceivePortCls>;
 class RawReceivePortCls : public ObjectCls {
 public:
 
-     RawReceivePortCls(String debugName, void  handler() );
-    virtual void handler(void  newHandler() );
+     RawReceivePortCls(String debugName, std::function<void ()> handler);
+    virtual void handler(std::function<void ()> newHandler);
     virtual void close();
     virtual SendPort sendPort();
 private:

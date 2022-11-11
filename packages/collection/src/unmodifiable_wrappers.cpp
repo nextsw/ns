@@ -44,12 +44,12 @@ E NonGrowableListMixinCls<E>::removeLast() {
 }
 
 template<typename E>
-void NonGrowableListMixinCls<E>::removeWhere(bool test(E ) ) {
+void NonGrowableListMixinCls<E>::removeWhere(std::function<bool(E )> test) {
     return _throw();
 }
 
 template<typename E>
-void NonGrowableListMixinCls<E>::retainWhere(bool test(E ) ) {
+void NonGrowableListMixinCls<E>::retainWhere(std::function<bool(E )> test) {
     return _throw();
 }
 
@@ -103,12 +103,12 @@ void UnmodifiableSetMixinCls<E>::retainAll(Iterable elements) {
 }
 
 template<typename E>
-void UnmodifiableSetMixinCls<E>::removeWhere(bool test(E ) ) {
+void UnmodifiableSetMixinCls<E>::removeWhere(std::function<bool(E )> test) {
     return _throw();
 }
 
 template<typename E>
-void UnmodifiableSetMixinCls<E>::retainWhere(bool test(E ) ) {
+void UnmodifiableSetMixinCls<E>::retainWhere(std::function<bool(E )> test) {
     return _throw();
 }
 
@@ -128,7 +128,7 @@ void UnmodifiableMapMixinCls<K, V>::[]=(K key, V value) {
 }
 
 template<typename K, typename V>
-V UnmodifiableMapMixinCls<K, V>::putIfAbsent(V ifAbsent() , K key) {
+V UnmodifiableMapMixinCls<K, V>::putIfAbsent(std::function<V()> ifAbsent, K key) {
     return _throw();
 }
 

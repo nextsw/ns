@@ -98,7 +98,7 @@ void _CaseInsensitiveStringMapCls<V>::[]=(String key, V value) {
 }
 
 template<typename V>
-V _CaseInsensitiveStringMapCls<V>::putIfAbsent(V ifAbsent() , String key) {
+V _CaseInsensitiveStringMapCls<V>::putIfAbsent(std::function<V()> ifAbsent, String key) {
     return _map->putIfAbsent(key->toUpperCase(), ifAbsent);
 }
 
@@ -120,7 +120,7 @@ void _CaseInsensitiveStringMapCls<V>::clear() {
 }
 
 template<typename V>
-void _CaseInsensitiveStringMapCls<V>::forEach(void f(String key, V value) ) {
+void _CaseInsensitiveStringMapCls<V>::forEach(std::function<void(String key, V value)> f) {
     _map->forEach(f);
 }
 
@@ -156,22 +156,22 @@ Iterable<MapEntry<String, V>> _CaseInsensitiveStringMapCls<V>::entries() {
 
 template<typename V>
 template<typename K2, typename V2>
-Map<K2, V2> _CaseInsensitiveStringMapCls<V>::map(MapEntry<K2, V2> transform(String key, V value) ) {
+Map<K2, V2> _CaseInsensitiveStringMapCls<V>::map(std::function<MapEntry<K2, V2>(String key, V value)> transform) {
     return _map->map(transform);
 }
 
 template<typename V>
-V _CaseInsensitiveStringMapCls<V>::update(V ifAbsent() , String key, V update(V value) ) {
+V _CaseInsensitiveStringMapCls<V>::update(std::function<V()> ifAbsent, String key, std::function<V(V value)> update) {
     return _map->update(key->toUpperCase(), updateifAbsent);
 }
 
 template<typename V>
-void _CaseInsensitiveStringMapCls<V>::updateAll(V update(String key, V value) ) {
+void _CaseInsensitiveStringMapCls<V>::updateAll(std::function<V(String key, V value)> update) {
     _map->updateAll(update);
 }
 
 template<typename V>
-void _CaseInsensitiveStringMapCls<V>::removeWhere(bool test(String key, V value) ) {
+void _CaseInsensitiveStringMapCls<V>::removeWhere(std::function<bool(String key, V value)> test) {
     _map->removeWhere(test);
 }
 

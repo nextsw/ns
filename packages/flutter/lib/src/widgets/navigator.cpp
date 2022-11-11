@@ -1713,7 +1713,7 @@ bool NavigatorStateCls::_debugCheckIsPagelessRoute(Route<dynamic> route) {
     return true;
 }
 
-bool NavigatorStateCls::_debugIsStaticCallback(void  callback() ) {
+bool NavigatorStateCls::_debugIsStaticCallback(std::function<void ()> callback) {
     bool result = false;
     assert([=] () {
         result = kIsWeb || ui->PluginUtilitiesCls->getCallbackHandle(callback) != nullptr;

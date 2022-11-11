@@ -56,7 +56,7 @@ bool _onError(Object error, StackTrace stackTrace) {
     return PlatformDispatcherCls::instance->_dispatchError(error, stackTrace or StackTraceCls::empty);
 }
 
-void _runMain(List<String> args, void  startMainIsolateFunction() , void  userMainFunction() ) {
+void _runMain(List<String> args, std::function<void ()> startMainIsolateFunction, std::function<void ()> userMainFunction) {
     startMainIsolateFunction([=] () {
         if (is<_ListStringArgFunction>(userMainFunction)) {
             userMainFunction(args);
@@ -66,7 +66,7 @@ void _runMain(List<String> args, void  startMainIsolateFunction() , void  userMa
     }, nullptr);
 }
 
-void _invoke(void callback() , Zone zone) {
+void _invoke(std::function<void()> callback, Zone zone) {
     if (callback == nullptr) {
         return;
     }
@@ -79,7 +79,7 @@ void _invoke(void callback() , Zone zone) {
 }
 
 template<typename A>
-void _invoke1(A arg, void callback(A a) , Zone zone) {
+void _invoke1(A arg, std::function<void(A a)> callback, Zone zone) {
     if (callback == nullptr) {
         return;
     }
@@ -92,7 +92,7 @@ void _invoke1(A arg, void callback(A a) , Zone zone) {
 }
 
 template<typename A1, typename A2>
-void _invoke2(A1 arg1, A2 arg2, void callback(A1 a1, A2 a2) , Zone zone) {
+void _invoke2(A1 arg1, A2 arg2, std::function<void(A1 a1, A2 a2)> callback, Zone zone) {
     if (callback == nullptr) {
         return;
     }
@@ -107,7 +107,7 @@ void _invoke2(A1 arg1, A2 arg2, void callback(A1 a1, A2 a2) , Zone zone) {
 }
 
 template<typename A1, typename A2, typename A3>
-void _invoke3(A1 arg1, A2 arg2, A3 arg3, void callback(A1 a1, A2 a2, A3 a3) , Zone zone) {
+void _invoke3(A1 arg1, A2 arg2, A3 arg3, std::function<void(A1 a1, A2 a2, A3 a3)> callback, Zone zone) {
     if (callback == nullptr) {
         return;
     }

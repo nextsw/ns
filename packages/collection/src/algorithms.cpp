@@ -1,12 +1,12 @@
 #include "algorithms.hpp"
 template<typename E>
-int binarySearch(int compare(E , E ) , List<E> sortedList, E value) {
+int binarySearch(std::function<int(E , E )> compare, List<E> sortedList, E value) {
     compare = defaultCompare;
     return <E, E>binarySearchBy(sortedList, identity, compare, value);
 }
 
 template<typename E, typename K>
-int binarySearchBy(int compare(K , K ) , int end, K keyOf(E element) , List<E> sortedList, int start, E value) {
+int binarySearchBy(std::function<int(K , K )> compare, int end, std::function<K(E element)> keyOf, List<E> sortedList, int start, E value) {
     end = RangeErrorCls->checkValidRange(start, end, sortedList->length());
     auto min = start;
     auto max = end;
@@ -28,13 +28,13 @@ int binarySearchBy(int compare(K , K ) , int end, K keyOf(E element) , List<E> s
 }
 
 template<typename E>
-int lowerBound(int compare(E , E ) , List<E> sortedList, E value) {
+int lowerBound(std::function<int(E , E )> compare, List<E> sortedList, E value) {
     compare = defaultCompare;
     return <E, E>lowerBoundBy(sortedList, identity, compare, value);
 }
 
 template<typename E, typename K>
-int lowerBoundBy(int compare(K , K ) , int end, K keyOf(E element) , List<E> sortedList, int start, E value) {
+int lowerBoundBy(std::function<int(K , K )> compare, int end, std::function<K(E element)> keyOf, List<E> sortedList, int start, E value) {
     end = RangeErrorCls->checkValidRange(start, end, sortedList->length());
     auto min = start;
     auto max = end;
@@ -81,7 +81,7 @@ void _reverse(List<E> elements, int end, int start) {
 }
 
 template<typename E>
-void insertionSort(int compare(E , E ) , List<E> elements, int end, int start) {
+void insertionSort(std::function<int(E , E )> compare, List<E> elements, int end, int start) {
     compare = defaultCompare;
     end = elements->length();
     for (;  < end; pos++) {
@@ -103,7 +103,7 @@ void insertionSort(int compare(E , E ) , List<E> elements, int end, int start) {
 }
 
 template<typename E, typename K>
-void insertionSortBy(int compare(K a, K b) , List<E> elements, int end, K keyOf(E element) , int start) {
+void insertionSortBy(std::function<int(K a, K b)> compare, List<E> elements, int end, std::function<K(E element)> keyOf, int start) {
     end = RangeErrorCls->checkValidRange(start, end, elements->length());
     _movingInsertionSort(elements, keyOf, compare, start, end, elements, start);
 }

@@ -26,14 +26,14 @@ using CallbackHandle = std::shared_ptr<CallbackHandleCls>;
 class PluginUtilitiesCls : public ObjectCls {
 public:
 
-    static CallbackHandle getCallbackHandle(void  callback() );
+    static CallbackHandle getCallbackHandle(std::function<void ()> callback);
 
-    static void  Function() getCallbackFromHandle(CallbackHandle handle);
+    static std::function<void ()> getCallbackFromHandle(CallbackHandle handle);
 
 private:
-    static Map<void  Function(), CallbackHandle> _forwardCache;
+    static Map<std::function<void ()>, CallbackHandle> _forwardCache;
 
-    static Map<CallbackHandle, void  Function()> _backwardCache;
+    static Map<CallbackHandle, std::function<void ()>> _backwardCache;
 
 
     virtual void  _();

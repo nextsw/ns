@@ -801,13 +801,13 @@ void WidgetInspectorServiceCls::performReassemble() {
     _resetErrorCount();
 }
 
-void WidgetInspectorServiceCls::_registerSignalServiceExtension(FutureOr<Object> callback() , String name) {
+void WidgetInspectorServiceCls::_registerSignalServiceExtension(std::function<FutureOr<Object>()> callback, String name) {
     registerServiceExtension(name, [=] (Map<String, String> parameters) {
             Map<String, Object> map1 = make<MapCls<>>();    map1.set(__s("result"), await callback());return list1;
     });
 }
 
-void WidgetInspectorServiceCls::_registerObjectGroupServiceExtension(FutureOr<Object> callback(String objectGroup) , String name) {
+void WidgetInspectorServiceCls::_registerObjectGroupServiceExtension(std::function<FutureOr<Object>(String objectGroup)> callback, String name) {
     registerServiceExtension(name, [=] (Map<String, String> parameters) {
             Map<String, Object> map1 = make<MapCls<>>();    map1.set(__s("result"), await callback(parameters[__s("objectGroup")]!));return list1;
     });
@@ -831,14 +831,14 @@ void WidgetInspectorServiceCls::_postExtensionStateChangedEvent(String name, Obj
     Map<String, Object> map1 = make<MapCls<>>();map1.set(__s("extension"), __s("ext.flutter.inspector.$name"));map1.set(__s("value"), value);postEvent(__s("Flutter.ServiceExtensionStateChanged"), list1);
 }
 
-void WidgetInspectorServiceCls::_registerServiceExtensionWithArg(FutureOr<Object> callback(String objectGroup, String objectId) , String name) {
+void WidgetInspectorServiceCls::_registerServiceExtensionWithArg(std::function<FutureOr<Object>(String objectGroup, String objectId)> callback, String name) {
     registerServiceExtension(name, [=] (Map<String, String> parameters) {
         assert(parameters->containsKey(__s("objectGroup")));
             Map<String, Object> map1 = make<MapCls<>>();    map1.set(__s("result"), await callback(parameters[__s("arg")], parameters[__s("objectGroup")]!));return list1;
     });
 }
 
-void WidgetInspectorServiceCls::_registerServiceExtensionVarArgs(FutureOr<Object> callback(List<String> args) , String name) {
+void WidgetInspectorServiceCls::_registerServiceExtensionVarArgs(std::function<FutureOr<Object>(List<String> args)> callback, String name) {
     registerServiceExtension(name, [=] (Map<String, String> parameters) {
         List<String> args = makeList();
         int index = 0;

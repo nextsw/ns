@@ -33,12 +33,12 @@ public:
     virtual String padRight(String padding, int width);
     virtual bool contains(Pattern other, int startIndex);
     virtual String replaceFirst(Pattern from, int startIndex, String to);
-    virtual String replaceFirstMapped(Pattern from, String replace(Match match) , int startIndex);
+    virtual String replaceFirstMapped(Pattern from, std::function<String(Match match)> replace, int startIndex);
     virtual String replaceAll(Pattern from, String replace);
-    virtual String replaceAllMapped(Pattern from, String replace(Match match) );
+    virtual String replaceAllMapped(Pattern from, std::function<String(Match match)> replace);
     virtual String replaceRange(int end, String replacement, int start);
     virtual List<String> split(Pattern pattern);
-    virtual String splitMapJoin(String onMatch(Match ) , String onNonMatch(String ) , Pattern pattern);
+    virtual String splitMapJoin(std::function<String(Match )> onMatch, std::function<String(String )> onNonMatch, Pattern pattern);
     virtual List<int> codeUnits();
     virtual Runes runes();
     virtual String toLowerCase();

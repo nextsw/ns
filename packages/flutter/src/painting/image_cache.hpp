@@ -32,7 +32,7 @@ public:
 
     virtual bool evict(bool includeLive, Object key);
 
-    virtual ImageStreamCompleter putIfAbsent(Object key, ImageStreamCompleter loader() , ImageErrorListener onError);
+    virtual ImageStreamCompleter putIfAbsent(Object key, std::function<ImageStreamCompleter()> loader, ImageErrorListener onError);
 
     virtual ImageCacheStatus statusForKey(Object key);
 

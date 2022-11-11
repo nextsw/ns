@@ -7,12 +7,12 @@ Iterable<R> IterableMixinCls<E>::cast() {
 
 template<typename E>
 template<typename T>
-Iterable<T> IterableMixinCls<E>::map(T toElement(E element) ) {
+Iterable<T> IterableMixinCls<E>::map(std::function<T(E element)> toElement) {
     return <E, T>make<MappedIterableCls>(this, toElement);
 }
 
 template<typename E>
-Iterable<E> IterableMixinCls<E>::where(bool test(E element) ) {
+Iterable<E> IterableMixinCls<E>::where(std::function<bool(E element)> test) {
     return <E>make<WhereIterableCls>(this, test);
 }
 
@@ -24,7 +24,7 @@ Iterable<T> IterableMixinCls<E>::whereType() {
 
 template<typename E>
 template<typename T>
-Iterable<T> IterableMixinCls<E>::expand(Iterable<T> toElements(E element) ) {
+Iterable<T> IterableMixinCls<E>::expand(std::function<Iterable<T>(E element)> toElements) {
     return <E, T>make<ExpandIterableCls>(this, toElements);
 }
 
@@ -48,14 +48,14 @@ bool IterableMixinCls<E>::contains(Object element) {
 }
 
 template<typename E>
-void IterableMixinCls<E>::forEach(void action(E element) ) {
+void IterableMixinCls<E>::forEach(std::function<void(E element)> action) {
     for (E element : this)     {
         action(element);
     }
 }
 
 template<typename E>
-E IterableMixinCls<E>::reduce(E combine(E element, E value) ) {
+E IterableMixinCls<E>::reduce(std::function<E(E element, E value)> combine) {
     Iterator<E> iterator = this->iterator;
     if (!iterator->moveNext()) {
         ;
@@ -69,7 +69,7 @@ E IterableMixinCls<E>::reduce(E combine(E element, E value) ) {
 
 template<typename E>
 template<typename T>
-T IterableMixinCls<E>::fold(T combine(E element, T previousValue) , T initialValue) {
+T IterableMixinCls<E>::fold(std::function<T(E element, T previousValue)> combine, T initialValue) {
     auto value = initialValue;
     for (E element : this)     {
         value = combine(value, element);
@@ -78,7 +78,7 @@ T IterableMixinCls<E>::fold(T combine(E element, T previousValue) , T initialVal
 }
 
 template<typename E>
-bool IterableMixinCls<E>::every(bool test(E element) ) {
+bool IterableMixinCls<E>::every(std::function<bool(E element)> test) {
     for (E element : this) {
         if (!test(element))         {
             return false;
@@ -109,7 +109,7 @@ String IterableMixinCls<E>::join(String separator) {
 }
 
 template<typename E>
-bool IterableMixinCls<E>::any(bool test(E element) ) {
+bool IterableMixinCls<E>::any(std::function<bool(E element)> test) {
     for (E element : this) {
         if (test(element))         {
             return true;
@@ -155,7 +155,7 @@ Iterable<E> IterableMixinCls<E>::take(int count) {
 }
 
 template<typename E>
-Iterable<E> IterableMixinCls<E>::takeWhile(bool test(E value) ) {
+Iterable<E> IterableMixinCls<E>::takeWhile(std::function<bool(E value)> test) {
     return <E>make<TakeWhileIterableCls>(this, test);
 }
 
@@ -165,7 +165,7 @@ Iterable<E> IterableMixinCls<E>::skip(int count) {
 }
 
 template<typename E>
-Iterable<E> IterableMixinCls<E>::skipWhile(bool test(E value) ) {
+Iterable<E> IterableMixinCls<E>::skipWhile(std::function<bool(E value)> test) {
     return <E>make<SkipWhileIterableCls>(this, test);
 }
 
@@ -205,7 +205,7 @@ E IterableMixinCls<E>::single() {
 }
 
 template<typename E>
-E IterableMixinCls<E>::firstWhere(E orElse() , bool test(E value) ) {
+E IterableMixinCls<E>::firstWhere(std::function<E()> orElse, std::function<bool(E value)> test) {
     for (E element : this) {
         if (test(element))         {
             return element;
@@ -218,7 +218,7 @@ E IterableMixinCls<E>::firstWhere(E orElse() , bool test(E value) ) {
 }
 
 template<typename E>
-E IterableMixinCls<E>::lastWhere(E orElse() , bool test(E value) ) {
+E IterableMixinCls<E>::lastWhere(std::function<E()> orElse, std::function<bool(E value)> test) {
     E result;
     bool foundMatching = false;
     for (E element : this) {
@@ -237,7 +237,7 @@ E IterableMixinCls<E>::lastWhere(E orElse() , bool test(E value) ) {
 }
 
 template<typename E>
-E IterableMixinCls<E>::singleWhere(E orElse() , bool test(E element) ) {
+E IterableMixinCls<E>::singleWhere(std::function<E()> orElse, std::function<bool(E element)> test) {
     E result;
     bool foundMatching = false;
     for (E element : this) {

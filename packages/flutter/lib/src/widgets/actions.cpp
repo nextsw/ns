@@ -251,7 +251,7 @@ void ActionsCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     properties->add(<Map<Type, Action<Intent>>>make<DiagnosticsPropertyCls>(__s("actions"), actions));
 }
 
-bool ActionsCls::_visitActionsAncestors(BuildContext context, bool visitor(InheritedElement element) ) {
+bool ActionsCls::_visitActionsAncestors(BuildContext context, std::function<bool(InheritedElement element)> visitor) {
     InheritedElement actionsElement = context-><_ActionsMarker>getElementForInheritedWidgetOfExactType();
     while (actionsElement != nullptr) {
         if (visitor(actionsElement) == true) {

@@ -77,7 +77,7 @@ int binarySearch(List<T> sortedList, T value) {
 }
 
 template<typename T>
-void mergeSort(int compare(T , T ) , int end, List<T> list, int start) {
+void mergeSort(std::function<int(T , T )> compare, int end, List<T> list, int start) {
     end = list->length();
     compare = <T>_defaultCompare();
     int length = end - start;
@@ -106,7 +106,7 @@ Comparator<T> _defaultCompare() {
 }
 
 template<typename T>
-void _insertionSort(int compare(T , T ) , int end, List<T> list, int start) {
+void _insertionSort(std::function<int(T , T )> compare, int end, List<T> list, int start) {
     compare = <T>_defaultCompare();
     end = list->length();
     for (;  < end; pos++) {
@@ -128,7 +128,7 @@ void _insertionSort(int compare(T , T ) , int end, List<T> list, int start) {
 }
 
 template<typename T>
-void _movingInsertionSort(int compare(T , T ) , int end, List<T> list, int start, List<T> target, int targetOffset) {
+void _movingInsertionSort(std::function<int(T , T )> compare, int end, List<T> list, int start, List<T> target, int targetOffset) {
     int length = end - start;
     if (length == 0) {
         return;
@@ -152,7 +152,7 @@ void _movingInsertionSort(int compare(T , T ) , int end, List<T> list, int start
 }
 
 template<typename T>
-void _mergeSort(int compare(T , T ) , int end, List<T> list, int start, List<T> target, int targetOffset) {
+void _mergeSort(std::function<int(T , T )> compare, int end, List<T> list, int start, List<T> target, int targetOffset) {
     int length = end - start;
     if ( < _kMergeSortLimit) {
         <T>_movingInsertionSort(list, compare, start, end, target, targetOffset);
@@ -168,7 +168,7 @@ void _mergeSort(int compare(T , T ) , int end, List<T> list, int start, List<T> 
 }
 
 template<typename T>
-void _merge(int compare(T , T ) , int firstEnd, List<T> firstList, int firstStart, int secondEnd, List<T> secondList, int secondStart, List<T> target, int targetOffset) {
+void _merge(std::function<int(T , T )> compare, int firstEnd, List<T> firstList, int firstStart, int secondEnd, List<T> secondList, int secondStart, List<T> target, int targetOffset) {
     assert( < firstEnd);
     assert( < secondEnd);
     int cursor1 = firstStart;

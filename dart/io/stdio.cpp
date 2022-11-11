@@ -1,5 +1,5 @@
 #include "stdio.hpp"
-StreamSubscription<List<int>> _StdStreamCls::listen(bool cancelOnError, void onData(List<int> event) , void onDone() , void  onError() ) {
+StreamSubscription<List<int>> _StdStreamCls::listen(bool cancelOnError, std::function<void(List<int> event)> onData, std::function<void()> onDone, std::function<void ()> onError) {
     return _stream->listen(onDataonError, onDone, cancelOnError);
 }
 

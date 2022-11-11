@@ -10,7 +10,7 @@ class ChunkedConversionSinkCls : public ObjectCls {
 public:
 
      ChunkedConversionSinkCls();
-    virtual void  withCallback(void callback(List<T> accumulated) );
+    virtual void  withCallback(std::function<void(List<T> accumulated)> callback);
     virtual void add(T chunk);
     virtual void close();
 private:
@@ -28,12 +28,12 @@ public:
     virtual void close();
 
 private:
-    void Function(List<T> ) _callback;
+    std::function<void(List<T> )> _callback;
 
     List<T> _accumulated;
 
 
-     _SimpleCallbackSinkCls(void Function(List<T> ) _callback);
+     _SimpleCallbackSinkCls(std::function<void(List<T> )> _callback);
 };
 template<typename T>
 using _SimpleCallbackSink = std::shared_ptr<_SimpleCallbackSinkCls<T>>;

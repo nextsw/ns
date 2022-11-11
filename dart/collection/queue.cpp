@@ -180,12 +180,12 @@ bool DoubleLinkedQueueCls<E>::remove(Object o) {
 }
 
 template<typename E>
-void DoubleLinkedQueueCls<E>::removeWhere(bool test(E element) ) {
+void DoubleLinkedQueueCls<E>::removeWhere(std::function<bool(E element)> test) {
     _filter(test, true);
 }
 
 template<typename E>
-void DoubleLinkedQueueCls<E>::retainWhere(bool test(E element) ) {
+void DoubleLinkedQueueCls<E>::retainWhere(std::function<bool(E element)> test) {
     _filter(test, false);
 }
 
@@ -239,7 +239,7 @@ void DoubleLinkedQueueCls<E>::clear() {
 }
 
 template<typename E>
-void DoubleLinkedQueueCls<E>::forEachEntry(void action(DoubleLinkedQueueEntry<E> element) ) {
+void DoubleLinkedQueueCls<E>::forEachEntry(std::function<void(DoubleLinkedQueueEntry<E> element)> action) {
     auto cursor = _sentinel->_nextLink!;
     while (true) {
         auto element = cursor->_asNonSentinelEntry();
@@ -268,7 +268,7 @@ String DoubleLinkedQueueCls<E>::toString() {
 }
 
 template<typename E>
-void DoubleLinkedQueueCls<E>::_filter(bool removeMatching, bool test(E element) ) {
+void DoubleLinkedQueueCls<E>::_filter(bool removeMatching, std::function<bool(E element)> test) {
     _DoubleLinkedQueueEntry<E> entry = _sentinel->_nextLink!;
     while (true) {
         auto elementEntry = entry->_asNonSentinelEntry();
@@ -367,7 +367,7 @@ Iterator<E> ListQueueCls<E>::iterator() {
 }
 
 template<typename E>
-void ListQueueCls<E>::forEach(void f(E element) ) {
+void ListQueueCls<E>::forEach(std::function<void(E element)> f) {
     auto _c1 = <E>make<ListQueueCls>();_c1.addAll(elements);int modificationCount = _modificationCount;
     for (; i != _tail; i = (i + 1) & (_table->length() - 1)) {
         f(as<E>(_table[i]));
@@ -481,12 +481,12 @@ bool ListQueueCls<E>::remove(Object value) {
 }
 
 template<typename E>
-void ListQueueCls<E>::removeWhere(bool test(E element) ) {
+void ListQueueCls<E>::removeWhere(std::function<bool(E element)> test) {
     _filterWhere(test, true);
 }
 
 template<typename E>
-void ListQueueCls<E>::retainWhere(bool test(E element) ) {
+void ListQueueCls<E>::retainWhere(std::function<bool(E element)> test) {
     _filterWhere(test, false);
 }
 
@@ -559,7 +559,7 @@ int ListQueueCls<E>::_calculateCapacity(int initialCapacity) {
 }
 
 template<typename E>
-void ListQueueCls<E>::_filterWhere(bool removeMatching, bool test(E element) ) {
+void ListQueueCls<E>::_filterWhere(bool removeMatching, std::function<bool(E element)> test) {
     int modificationCount = _modificationCount;
     int i = _head;
     while (i != _tail) {

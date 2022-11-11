@@ -35,13 +35,13 @@ template<typename T>
 class _BufferingStreamSubscriptionCls : public ObjectCls {
 public:
 
-    virtual void  zoned(Zone _zone, bool cancelOnError, void onData(T data) , void onDone() , void  onError() );
+    virtual void  zoned(Zone _zone, bool cancelOnError, std::function<void(T data)> onData, std::function<void()> onDone, std::function<void ()> onError);
 
-    virtual void onData(void handleData(T event) );
+    virtual void onData(std::function<void(T event)> handleData);
 
-    virtual void onError(void  handleError() );
+    virtual void onError(std::function<void ()> handleError);
 
-    virtual void onDone(void handleDone() );
+    virtual void onDone(std::function<void()> handleDone);
 
     virtual void pause(Future<void> resumeSignal);
 
@@ -71,11 +71,11 @@ private:
 
     static int _STATE_PAUSE_COUNT;
 
-    void Function(T ) _onData;
+    std::function<void(T )> _onData;
 
-    void  Function() _onError;
+    std::function<void ()> _onError;
 
-    void Function() _onDone;
+    std::function<void()> _onDone;
 
     Zone _zone;
 
@@ -86,16 +86,16 @@ private:
     _PendingEvents<T> _pending;
 
 
-     _BufferingStreamSubscriptionCls(bool cancelOnError, void onData(T data) , void onDone() , void  onError() );
+     _BufferingStreamSubscriptionCls(bool cancelOnError, std::function<void(T data)> onData, std::function<void()> onDone, std::function<void ()> onError);
 
     virtual void _setPendingEvents(_PendingEvents<T> pendingEvents);
 
     template<typename T>
- static void Function(T ) _registerDataHandler(void handleData(T ) , Zone zone);
+ static std::function<void(T )> _registerDataHandler(std::function<void(T )> handleData, Zone zone);
 
-    static void  Function() _registerErrorHandler(void  handleError() , Zone zone);
+    static std::function<void ()> _registerErrorHandler(std::function<void ()> handleError, Zone zone);
 
-    static void Function() _registerDoneHandler(void handleDone() , Zone zone);
+    static std::function<void()> _registerDoneHandler(std::function<void()> handleDone, Zone zone);
 
     virtual bool _isInputPaused();
 
@@ -141,7 +141,7 @@ private:
 
     virtual void _sendDone();
 
-    virtual void _guardCallback(void callback() );
+    virtual void _guardCallback(std::function<void()> callback);
 
     virtual void _checkState(bool wasInputPaused);
 
@@ -153,11 +153,11 @@ template<typename T>
 class _StreamImplCls : public StreamCls<T> {
 public:
 
-    virtual StreamSubscription<T> listen(bool cancelOnError, void onData(T data) , void onDone() , void  onError() );
+    virtual StreamSubscription<T> listen(bool cancelOnError, std::function<void(T data)> onData, std::function<void()> onDone, std::function<void ()> onError);
 
 private:
 
-    virtual StreamSubscription<T> _createSubscription(bool cancelOnError, void onData(T data) , void onDone() , void  onError() );
+    virtual StreamSubscription<T> _createSubscription(bool cancelOnError, std::function<void(T data)> onData, std::function<void()> onDone, std::function<void ()> onError);
 
     virtual void _onListen(StreamSubscription subscription);
 
@@ -273,11 +273,11 @@ public:
 
     virtual bool isPaused();
 
-    virtual void onData(void handleData(T data) );
+    virtual void onData(std::function<void(T data)> handleData);
 
-    virtual void onError(void  handleError() );
+    virtual void onError(std::function<void ()> handleError);
 
-    virtual void onDone(void handleDone() );
+    virtual void onDone(std::function<void()> handleDone);
 
     virtual void pause(Future<void> resumeSignal);
 
@@ -299,10 +299,10 @@ private:
 
     int _state;
 
-    void Function() _onDone;
+    std::function<void()> _onDone;
 
 
-     _DoneStreamSubscriptionCls(void Function() _onDone);
+     _DoneStreamSubscriptionCls(std::function<void()> _onDone);
 
     virtual bool _isSent();
 
@@ -322,7 +322,7 @@ public:
 
     virtual bool isBroadcast();
 
-    virtual StreamSubscription<T> listen(bool cancelOnError, void onData(T data) , void onDone() , void  onError() );
+    virtual StreamSubscription<T> listen(bool cancelOnError, std::function<void(T data)> onData, std::function<void()> onDone, std::function<void ()> onError);
 
 private:
     Stream<T> _source;
@@ -338,7 +338,7 @@ private:
     StreamSubscription<T> _subscription;
 
 
-     _AsBroadcastStreamCls(Stream<T> _source, void onCancelHandler(StreamSubscription<T> subscription) , void onListenHandler(StreamSubscription<T> subscription) );
+     _AsBroadcastStreamCls(Stream<T> _source, std::function<void(StreamSubscription<T> subscription)> onCancelHandler, std::function<void(StreamSubscription<T> subscription)> onListenHandler);
 
     virtual void _onCancel();
 
@@ -360,11 +360,11 @@ template<typename T>
 class _BroadcastSubscriptionWrapperCls : public ObjectCls {
 public:
 
-    virtual void onData(void handleData(T data) );
+    virtual void onData(std::function<void(T data)> handleData);
 
-    virtual void onError(void  handleError() );
+    virtual void onError(std::function<void ()> handleError);
 
-    virtual void onDone(void handleDone() );
+    virtual void onDone(std::function<void()> handleDone);
 
     virtual void pause(Future<void> resumeSignal);
 
@@ -424,7 +424,7 @@ public:
 
     virtual bool isBroadcast();
 
-    virtual StreamSubscription<T> listen(bool cancelOnError, void onData(T data) , void onDone() , void  onError() );
+    virtual StreamSubscription<T> listen(bool cancelOnError, std::function<void(T data)> onData, std::function<void()> onDone, std::function<void ()> onError);
 
 private:
 
@@ -440,13 +440,13 @@ public:
     bool isBroadcast;
 
 
-    virtual StreamSubscription<T> listen(bool cancelOnError, void onData(T event) , void onDone() , void  onError() );
+    virtual StreamSubscription<T> listen(bool cancelOnError, std::function<void(T event)> onData, std::function<void()> onDone, std::function<void ()> onError);
 
 private:
-    void Function(MultiStreamController<T> ) _onListen;
+    std::function<void(MultiStreamController<T> )> _onListen;
 
 
-     _MultiStreamCls(void Function(MultiStreamController<T> ) _onListen, bool isBroadcast);
+     _MultiStreamCls(std::function<void(MultiStreamController<T> )> _onListen, bool isBroadcast);
 };
 template<typename T>
 using _MultiStream = std::shared_ptr<_MultiStreamCls<T>>;

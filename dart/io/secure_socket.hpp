@@ -8,11 +8,11 @@
 class SecureSocketCls : public ObjectCls {
 public:
 
-    static Future<SecureSocket> connect(host , SecurityContext context, void keyLog(String line) , bool onBadCertificate(X509Certificate certificate) , int port, List<String> supportedProtocols, Duration timeout);
+    static Future<SecureSocket> connect(host , SecurityContext context, std::function<void(String line)> keyLog, std::function<bool(X509Certificate certificate)> onBadCertificate, int port, List<String> supportedProtocols, Duration timeout);
 
-    static Future<ConnectionTask<SecureSocket>> startConnect(host , SecurityContext context, void keyLog(String line) , bool onBadCertificate(X509Certificate certificate) , int port, List<String> supportedProtocols);
+    static Future<ConnectionTask<SecureSocket>> startConnect(host , SecurityContext context, std::function<void(String line)> keyLog, std::function<bool(X509Certificate certificate)> onBadCertificate, int port, List<String> supportedProtocols);
 
-    static Future<SecureSocket> secure(host , SecurityContext context, void keyLog(String line) , bool onBadCertificate(X509Certificate certificate) , Socket socket, List<String> supportedProtocols);
+    static Future<SecureSocket> secure(host , SecurityContext context, std::function<void(String line)> keyLog, std::function<bool(X509Certificate certificate)> onBadCertificate, Socket socket, List<String> supportedProtocols);
 
     static Future<SecureSocket> secureServer(List<int> bufferedData, SecurityContext context, bool requestClientCertificate, bool requireClientCertificate, Socket socket, List<String> supportedProtocols);
 
@@ -28,11 +28,11 @@ using SecureSocket = std::shared_ptr<SecureSocketCls>;
 class RawSecureSocketCls : public ObjectCls {
 public:
 
-    static Future<RawSecureSocket> connect(host , SecurityContext context, void keyLog(String line) , bool onBadCertificate(X509Certificate certificate) , int port, List<String> supportedProtocols, Duration timeout);
+    static Future<RawSecureSocket> connect(host , SecurityContext context, std::function<void(String line)> keyLog, std::function<bool(X509Certificate certificate)> onBadCertificate, int port, List<String> supportedProtocols, Duration timeout);
 
-    static Future<ConnectionTask<RawSecureSocket>> startConnect(host , SecurityContext context, void keyLog(String line) , bool onBadCertificate(X509Certificate certificate) , int port, List<String> supportedProtocols);
+    static Future<ConnectionTask<RawSecureSocket>> startConnect(host , SecurityContext context, std::function<void(String line)> keyLog, std::function<bool(X509Certificate certificate)> onBadCertificate, int port, List<String> supportedProtocols);
 
-    static Future<RawSecureSocket> secure(host , SecurityContext context, void keyLog(String line) , bool onBadCertificate(X509Certificate certificate) , RawSocket socket, StreamSubscription<RawSocketEvent> subscription, List<String> supportedProtocols);
+    static Future<RawSecureSocket> secure(host , SecurityContext context, std::function<void(String line)> keyLog, std::function<bool(X509Certificate certificate)> onBadCertificate, RawSocket socket, StreamSubscription<RawSocketEvent> subscription, List<String> supportedProtocols);
 
     static Future<RawSecureSocket> secureServer(List<int> bufferedData, SecurityContext context, bool requestClientCertificate, bool requireClientCertificate, RawSocket socket, StreamSubscription<RawSocketEvent> subscription, List<String> supportedProtocols);
 
@@ -111,16 +111,16 @@ public:
 
     bool requireClientCertificate;
 
-    bool Function(X509Certificate certificate) onBadCertificate;
+    std::function<bool(X509Certificate certificate)> onBadCertificate;
 
-    void Function(String line) keyLog;
+    std::function<void(String line)> keyLog;
 
     ReceivePort keyLogPort;
 
 
-    static Future<_RawSecureSocket> connect(List<int> bufferedData, SecurityContext context, dynamic host, bool isServer, void keyLog(String line) , bool onBadCertificate(X509Certificate certificate) , bool requestClientCertificate, int requestedPort, bool requireClientCertificate, RawSocket socket, StreamSubscription<RawSocketEvent> subscription, List<String> supportedProtocols);
+    static Future<_RawSecureSocket> connect(List<int> bufferedData, SecurityContext context, dynamic host, bool isServer, std::function<void(String line)> keyLog, std::function<bool(X509Certificate certificate)> onBadCertificate, bool requestClientCertificate, int requestedPort, bool requireClientCertificate, RawSocket socket, StreamSubscription<RawSocketEvent> subscription, List<String> supportedProtocols);
 
-    virtual StreamSubscription<RawSocketEvent> listen(bool cancelOnError, void onData(RawSocketEvent data) , void onDone() , void  onError() );
+    virtual StreamSubscription<RawSocketEvent> listen(bool cancelOnError, std::function<void(RawSocketEvent data)> onData, std::function<void()> onDone, std::function<void ()> onError);
 
     virtual int port();
 
@@ -210,7 +210,7 @@ private:
 
     static bool _isBufferEncrypted(int identifier);
 
-     _RawSecureSocketCls(List<int> _bufferedData, RawSocket _socket, InternetAddress address, SecurityContext context, bool isServer, void Function(String line) keyLog, bool Function(X509Certificate certificate) onBadCertificate, bool requestClientCertificate, int requestedPort, bool requireClientCertificate, StreamSubscription<RawSocketEvent> subscription, List<String> supportedProtocols);
+     _RawSecureSocketCls(List<int> _bufferedData, RawSocket _socket, InternetAddress address, SecurityContext context, bool isServer, std::function<void(String line)> keyLog, std::function<bool(X509Certificate certificate)> onBadCertificate, bool requestClientCertificate, int requestedPort, bool requireClientCertificate, StreamSubscription<RawSocketEvent> subscription, List<String> supportedProtocols);
 
     static void _verifyFields(host , bool requestClientCertificate, int requestedPort, bool requireClientCertificate);
 
@@ -294,7 +294,7 @@ public:
 
     virtual int write(int bytes, List<int> inputData, int offset);
 
-    virtual int writeFromSource(List<int> getData(int requested) );
+    virtual int writeFromSource(std::function<List<int>(int requested)> getData);
 
     virtual bool readToSocket(RawSocket socket);
 
@@ -316,8 +316,8 @@ public:
     virtual void init();
     virtual X509Certificate peerCertificate();
     virtual int processBuffer(int bufferIndex);
-    virtual void registerBadCertificateCallback(void  callback() );
-    virtual void registerHandshakeCompleteCallback(void  handshakeCompleteHandler() );
+    virtual void registerBadCertificateCallback(std::function<void ()> callback);
+    virtual void registerHandshakeCompleteCallback(std::function<void ()> handshakeCompleteHandler);
     virtual void registerKeyLogPort(SendPort port);
     virtual List<_ExternalBuffer> buffers();
 private:

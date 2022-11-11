@@ -17,7 +17,7 @@ void ClipContextCls::clipRectAndPaint(Rect bounds, Clip clipBehavior, VoidCallba
     }, clipBehavior, bounds, painter);
 }
 
-void ClipContextCls::_clipAndPaint(Rect bounds, void canvasClipCall(bool doAntiAlias) , Clip clipBehavior, VoidCallback painter) {
+void ClipContextCls::_clipAndPaint(Rect bounds, std::function<void(bool doAntiAlias)> canvasClipCall, Clip clipBehavior, VoidCallback painter) {
     assert(canvasClipCall != nullptr);
     canvas()->save();
     ;

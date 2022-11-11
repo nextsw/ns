@@ -209,7 +209,7 @@ void TextSpanCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
         properties->add(DiagnosticsNodeCls->message(__s("(empty)")));
     }
     properties->add(<GestureRecognizer>make<DiagnosticsPropertyCls>(__s("recognizer"), recognizerrecognizer?->runtimeType->toString(), nullptr));
-    Map<String, void  Function()> map1 = make<MapCls<>>();map1.set(__s("enter"), onEnter);map1.set(__s("exit"), onExit);properties->add(<void  Function()>make<FlagsSummaryCls>(__s("callbacks"), list1));
+    Map<String, std::function<void ()>> map1 = make<MapCls<>>();map1.set(__s("enter"), onEnter);map1.set(__s("exit"), onExit);properties->add(<std::function<void ()>>make<FlagsSummaryCls>(__s("callbacks"), list1));
     properties->add(<MouseCursor>make<DiagnosticsPropertyCls>(__s("mouseCursor"), cursor()MouseCursorCls::defer));
     if (semanticsLabel != nullptr) {
         properties->add(make<StringPropertyCls>(__s("semanticsLabel"), semanticsLabel));

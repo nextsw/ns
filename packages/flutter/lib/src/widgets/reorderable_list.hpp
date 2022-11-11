@@ -30,9 +30,9 @@ public:
 
     ReorderCallback onReorder;
 
-    void Function(int index) onReorderStart;
+    std::function<void(int index)> onReorderStart;
 
-    void Function(int index) onReorderEnd;
+    std::function<void(int index)> onReorderEnd;
 
     ReorderItemProxyDecorator proxyDecorator;
 
@@ -67,7 +67,7 @@ public:
     Widget prototypeItem;
 
 
-     ReorderableListCls(double anchor, double cacheExtent, Clip clipBehavior, ScrollController controller, DragStartBehavior dragStartBehavior, IndexedWidgetBuilder itemBuilder, int itemCount, double itemExtent, Unknown key, ScrollViewKeyboardDismissBehavior keyboardDismissBehavior, ReorderCallback onReorder, void Function(int index) onReorderEnd, void Function(int index) onReorderStart, EdgeInsetsGeometry padding, ScrollPhysics physics, bool primary, Widget prototypeItem, ReorderItemProxyDecorator proxyDecorator, String restorationId, bool reverse, Axis scrollDirection, bool shrinkWrap);
+     ReorderableListCls(double anchor, double cacheExtent, Clip clipBehavior, ScrollController controller, DragStartBehavior dragStartBehavior, IndexedWidgetBuilder itemBuilder, int itemCount, double itemExtent, Unknown key, ScrollViewKeyboardDismissBehavior keyboardDismissBehavior, ReorderCallback onReorder, std::function<void(int index)> onReorderEnd, std::function<void(int index)> onReorderStart, EdgeInsetsGeometry padding, ScrollPhysics physics, bool primary, Widget prototypeItem, ReorderItemProxyDecorator proxyDecorator, String restorationId, bool reverse, Axis scrollDirection, bool shrinkWrap);
 
     static ReorderableListState of(BuildContext context);
 
@@ -106,9 +106,9 @@ public:
 
     ReorderCallback onReorder;
 
-    void Function(int ) onReorderStart;
+    std::function<void(int )> onReorderStart;
 
-    void Function(int ) onReorderEnd;
+    std::function<void(int )> onReorderEnd;
 
     ReorderItemProxyDecorator proxyDecorator;
 
@@ -117,7 +117,7 @@ public:
     Widget prototypeItem;
 
 
-     SliverReorderableListCls(ChildIndexGetter findChildIndexCallback, IndexedWidgetBuilder itemBuilder, int itemCount, double itemExtent, Unknown key, ReorderCallback onReorder, void Function(int ) onReorderEnd, void Function(int ) onReorderStart, Widget prototypeItem, ReorderItemProxyDecorator proxyDecorator);
+     SliverReorderableListCls(ChildIndexGetter findChildIndexCallback, IndexedWidgetBuilder itemBuilder, int itemCount, double itemExtent, Unknown key, ReorderCallback onReorder, std::function<void(int )> onReorderEnd, std::function<void(int )> onReorderStart, Widget prototypeItem, ReorderItemProxyDecorator proxyDecorator);
 
     virtual SliverReorderableListState createState();
 

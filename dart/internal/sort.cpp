@@ -1,11 +1,11 @@
 #include "sort.hpp"
 template<typename E>
-void SortCls::sort(List<E> a, int compare(E a, E b) ) {
+void SortCls::sort(List<E> a, std::function<int(E a, E b)> compare) {
     _doSort(a, 0, a->length - 1, compare);
 }
 
 template<typename E>
-void SortCls::sortRange(List<E> a, int compare(E a, E b) , int from, int to) {
+void SortCls::sortRange(List<E> a, std::function<int(E a, E b)> compare, int from, int to) {
     if (( < 0) || (to > a->length) || ( < from)) {
         ;
     }
@@ -13,7 +13,7 @@ void SortCls::sortRange(List<E> a, int compare(E a, E b) , int from, int to) {
 }
 
 template<typename E>
-void SortCls::_doSort(List<E> a, int compare(E a, E b) , int left, int right) {
+void SortCls::_doSort(List<E> a, std::function<int(E a, E b)> compare, int left, int right) {
     if ((right - left) <= _INSERTION_SORT_THRESHOLDCls) {
         _insertionSort(a, left, right, compare);
     } else {
@@ -22,7 +22,7 @@ void SortCls::_doSort(List<E> a, int compare(E a, E b) , int left, int right) {
 }
 
 template<typename E>
-void SortCls::_insertionSort(List<E> a, int compare(E a, E b) , int left, int right) {
+void SortCls::_insertionSort(List<E> a, std::function<int(E a, E b)> compare, int left, int right) {
     for (; i <= right; i++) {
         auto el = a[i];
         int j = i;
@@ -35,7 +35,7 @@ void SortCls::_insertionSort(List<E> a, int compare(E a, E b) , int left, int ri
 }
 
 template<typename E>
-void SortCls::_dualPivotQuicksort(List<E> a, int compare(E a, E b) , int left, int right) {
+void SortCls::_dualPivotQuicksort(List<E> a, std::function<int(E a, E b)> compare, int left, int right) {
     assert(right - left > _INSERTION_SORT_THRESHOLDCls);
     int sixth = (right - left + 1) ~/ 6;
     int index1 = left + sixth;

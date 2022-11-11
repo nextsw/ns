@@ -13,14 +13,14 @@ public:
      SynchronousFutureCls(T _value);
     virtual Stream<T> asStream();
 
-    virtual Future<T> catchError(void  onError() , bool test(Object error) );
+    virtual Future<T> catchError(std::function<void ()> onError, std::function<bool(Object error)> test);
 
     template<typename R>
- virtual Future<R> then(void  onError() , FutureOr<R> onValue(T value) );
+ virtual Future<R> then(std::function<void ()> onError, std::function<FutureOr<R>(T value)> onValue);
 
-    virtual Future<T> timeout(FutureOr<T> onTimeout() , Duration timeLimit);
+    virtual Future<T> timeout(std::function<FutureOr<T>()> onTimeout, Duration timeLimit);
 
-    virtual Future<T> whenComplete(FutureOr<dynamic> action() );
+    virtual Future<T> whenComplete(std::function<FutureOr<dynamic>()> action);
 
 private:
     T _value;

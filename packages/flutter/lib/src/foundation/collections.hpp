@@ -19,22 +19,22 @@ template<typename T>
 int _kMergeSortLimit;
 
 template<typename T>
- void mergeSort(int compare(T , T ) , int end, List<T> list, int start);
+ void mergeSort(std::function<int(T , T )> compare, int end, List<T> list, int start);
 
 template<typename T>
  Comparator<T> _defaultCompare();
 
 template<typename T>
- void _insertionSort(int compare(T , T ) , int end, List<T> list, int start);
+ void _insertionSort(std::function<int(T , T )> compare, int end, List<T> list, int start);
 
 template<typename T>
- void _movingInsertionSort(int compare(T , T ) , int end, List<T> list, int start, List<T> target, int targetOffset);
+ void _movingInsertionSort(std::function<int(T , T )> compare, int end, List<T> list, int start, List<T> target, int targetOffset);
 
 template<typename T>
- void _mergeSort(int compare(T , T ) , int end, List<T> list, int start, List<T> target, int targetOffset);
+ void _mergeSort(std::function<int(T , T )> compare, int end, List<T> list, int start, List<T> target, int targetOffset);
 
 template<typename T>
- void _merge(int compare(T , T ) , int firstEnd, List<T> firstList, int firstStart, int secondEnd, List<T> secondList, int secondStart, List<T> target, int targetOffset);
+ void _merge(std::function<int(T , T )> compare, int firstEnd, List<T> firstList, int firstStart, int secondEnd, List<T> secondList, int secondStart, List<T> target, int targetOffset);
 
 
 

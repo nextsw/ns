@@ -14,7 +14,7 @@ public:
     void  empty(bool growable);
     void  from(Iterable elements, bool growable);
     void  of(Iterable<E> elements, bool growable);
-    void  generate(E generator(int index) , bool growable, int length);
+    void  generate(std::function<E(int index)> generator, bool growable, int length);
     void  unmodifiable(Iterable elements);
     template<typename S, typename T>
  static List<T> castFrom(List<S> source);
@@ -36,11 +36,11 @@ public:
     virtual void add(E value);
     virtual void addAll(Iterable<E> iterable);
     virtual Iterable<E> reversed();
-    virtual void sort(int compare(E a, E b) );
+    virtual void sort(std::function<int(E a, E b)> compare);
     virtual void shuffle(Random random);
     virtual int indexOf(E element, int start);
-    virtual int indexWhere(int start, bool test(E element) );
-    virtual int lastIndexWhere(int start, bool test(E element) );
+    virtual int indexWhere(int start, std::function<bool(E element)> test);
+    virtual int lastIndexWhere(int start, std::function<bool(E element)> test);
     virtual int lastIndexOf(E element, int start);
     virtual void clear();
     virtual void insert(E element, int index);
@@ -49,8 +49,8 @@ public:
     virtual bool remove(Object value);
     virtual E removeAt(int index);
     virtual E removeLast();
-    virtual void removeWhere(bool test(E element) );
-    virtual void retainWhere(bool test(E element) );
+    virtual void removeWhere(std::function<bool(E element)> test);
+    virtual void retainWhere(std::function<bool(E element)> test);
     virtual List<E> operator+(List<E> other);
     virtual List<E> sublist(int end, int start);
     virtual Iterable<E> getRange(int end, int start);

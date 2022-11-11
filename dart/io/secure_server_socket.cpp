@@ -5,7 +5,7 @@ Future<SecureServerSocket> SecureServerSocketCls::bind(address , int backlog, Se
     });
 }
 
-StreamSubscription<SecureSocket> SecureServerSocketCls::listen(bool cancelOnError, void onData(SecureSocket socket) , void onDone() , void  onError() ) {
+StreamSubscription<SecureSocket> SecureServerSocketCls::listen(bool cancelOnError, std::function<void(SecureSocket socket)> onData, std::function<void()> onDone, std::function<void ()> onError) {
     return _socket->map([=] (Unknown  rawSocket)     {
         SecureSocketCls->_(rawSocket);
     })->listen(onDataonError, onDone, cancelOnError);
@@ -35,7 +35,7 @@ Future<RawSecureServerSocket> RawSecureServerSocketCls::bind(address , int backl
     });
 }
 
-StreamSubscription<RawSecureSocket> RawSecureServerSocketCls::listen(bool cancelOnError, void onData(RawSecureSocket s) , void onDone() , void  onError() ) {
+StreamSubscription<RawSecureSocket> RawSecureServerSocketCls::listen(bool cancelOnError, std::function<void(RawSecureSocket s)> onData, std::function<void()> onDone, std::function<void ()> onError) {
     return _controller->stream()->listen(onDataonError, onDone, cancelOnError);
 }
 

@@ -32,7 +32,7 @@ public:
 
     virtual E single();
 
-    virtual void forEach(void action(E entry) );
+    virtual void forEach(std::function<void(E entry)> action);
 
     virtual bool isEmpty();
 

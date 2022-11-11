@@ -9,7 +9,7 @@ class StringConversionSinkCls : public ChunkedConversionSinkCls<String> {
 public:
 
      StringConversionSinkCls();
-    virtual void  withCallback(void callback(String accumulated) ) override;
+    virtual void  withCallback(std::function<void(String accumulated)> callback) override;
     virtual void  from(Sink<String> sink);
     virtual void  fromStringSink(StringSink sink);
     virtual void addSlice(String chunk, int end, bool isLast, int start);
@@ -23,7 +23,7 @@ using StringConversionSink = std::shared_ptr<StringConversionSinkCls>;
 class ClosableStringSinkCls : public StringSinkCls {
 public:
 
-    virtual void  fromStringSink(void onClose() , StringSink sink);
+    virtual void  fromStringSink(std::function<void()> onClose, StringSink sink);
     virtual void close();
 private:
 
@@ -44,12 +44,12 @@ public:
     virtual void writeAll(Iterable objects, String separator);
 
 private:
-    void Function() _callback;
+    std::function<void()> _callback;
 
     StringSink _sink;
 
 
-     _ClosableStringSinkCls(void Function() _callback, StringSink _sink);
+     _ClosableStringSinkCls(std::function<void()> _callback, StringSink _sink);
 };
 using _ClosableStringSink = std::shared_ptr<_ClosableStringSinkCls>;
 
@@ -136,10 +136,10 @@ public:
     virtual ByteConversionSink asUtf8Sink(bool allowMalformed);
 
 private:
-    void Function(String ) _callback;
+    std::function<void(String )> _callback;
 
 
-     _StringCallbackSinkCls(void Function(String ) _callback);
+     _StringCallbackSinkCls(std::function<void(String )> _callback);
 
 };
 using _StringCallbackSink = std::shared_ptr<_StringCallbackSinkCls>;

@@ -41,7 +41,7 @@ public:
 
     virtual bool locked();
 
-    virtual Future<void> lockEvents(Future<void> callback() );
+    virtual Future<void> lockEvents(std::function<Future<void>()> callback);
 
     virtual void unlocked();
 

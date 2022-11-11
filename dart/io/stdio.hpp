@@ -20,7 +20,7 @@ int _stdioHandleTypeError;
 class _StdStreamCls : public StreamCls<List<int>> {
 public:
 
-    virtual StreamSubscription<List<int>> listen(bool cancelOnError, void onData(List<int> event) , void onDone() , void  onError() );
+    virtual StreamSubscription<List<int>> listen(bool cancelOnError, std::function<void(List<int> event)> onData, std::function<void()> onDone, std::function<void ()> onError);
 
 private:
     Stream<List<int>> _stream;

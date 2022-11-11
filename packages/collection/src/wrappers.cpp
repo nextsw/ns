@@ -1,6 +1,6 @@
 #include "wrappers.hpp"
 template<typename E>
-bool _DelegatingIterableBaseCls<E>::any(bool test(E ) ) {
+bool _DelegatingIterableBaseCls<E>::any(std::function<bool(E )> test) {
     return _base()->any(test);
 }
 
@@ -21,13 +21,13 @@ E _DelegatingIterableBaseCls<E>::elementAt(int index) {
 }
 
 template<typename E>
-bool _DelegatingIterableBaseCls<E>::every(bool test(E ) ) {
+bool _DelegatingIterableBaseCls<E>::every(std::function<bool(E )> test) {
     return _base()->every(test);
 }
 
 template<typename E>
 template<typename T>
-Iterable<T> _DelegatingIterableBaseCls<E>::expand(Iterable<T> f(E ) ) {
+Iterable<T> _DelegatingIterableBaseCls<E>::expand(std::function<Iterable<T>(E )> f) {
     return _base()->expand(f);
 }
 
@@ -37,13 +37,13 @@ E _DelegatingIterableBaseCls<E>::first() {
 }
 
 template<typename E>
-E _DelegatingIterableBaseCls<E>::firstWhere(E orElse() , bool test(E ) ) {
+E _DelegatingIterableBaseCls<E>::firstWhere(std::function<E()> orElse, std::function<bool(E )> test) {
     return _base()->firstWhere(testorElse);
 }
 
 template<typename E>
 template<typename T>
-T _DelegatingIterableBaseCls<E>::fold(T combine(E element, T previousValue) , T initialValue) {
+T _DelegatingIterableBaseCls<E>::fold(std::function<T(E element, T previousValue)> combine, T initialValue) {
     return _base()->fold(initialValue, combine);
 }
 
@@ -53,7 +53,7 @@ Iterable<E> _DelegatingIterableBaseCls<E>::followedBy(Iterable<E> other) {
 }
 
 template<typename E>
-void _DelegatingIterableBaseCls<E>::forEach(void f(E ) ) {
+void _DelegatingIterableBaseCls<E>::forEach(std::function<void(E )> f) {
     return _base()->forEach(f);
 }
 
@@ -83,7 +83,7 @@ E _DelegatingIterableBaseCls<E>::last() {
 }
 
 template<typename E>
-E _DelegatingIterableBaseCls<E>::lastWhere(E orElse() , bool test(E ) ) {
+E _DelegatingIterableBaseCls<E>::lastWhere(std::function<E()> orElse, std::function<bool(E )> test) {
     return _base()->lastWhere(testorElse);
 }
 
@@ -94,12 +94,12 @@ int _DelegatingIterableBaseCls<E>::length() {
 
 template<typename E>
 template<typename T>
-Iterable<T> _DelegatingIterableBaseCls<E>::map(T f(E ) ) {
+Iterable<T> _DelegatingIterableBaseCls<E>::map(std::function<T(E )> f) {
     return _base()->map(f);
 }
 
 template<typename E>
-E _DelegatingIterableBaseCls<E>::reduce(E combine(E element, E value) ) {
+E _DelegatingIterableBaseCls<E>::reduce(std::function<E(E element, E value)> combine) {
     return _base()->reduce(combine);
 }
 
@@ -115,7 +115,7 @@ E _DelegatingIterableBaseCls<E>::single() {
 }
 
 template<typename E>
-E _DelegatingIterableBaseCls<E>::singleWhere(E orElse() , bool test(E ) ) {
+E _DelegatingIterableBaseCls<E>::singleWhere(std::function<E()> orElse, std::function<bool(E )> test) {
     return _base()->singleWhere(testorElse);
 }
 
@@ -125,7 +125,7 @@ Iterable<E> _DelegatingIterableBaseCls<E>::skip(int n) {
 }
 
 template<typename E>
-Iterable<E> _DelegatingIterableBaseCls<E>::skipWhile(bool test(E ) ) {
+Iterable<E> _DelegatingIterableBaseCls<E>::skipWhile(std::function<bool(E )> test) {
     return _base()->skipWhile(test);
 }
 
@@ -135,7 +135,7 @@ Iterable<E> _DelegatingIterableBaseCls<E>::take(int n) {
 }
 
 template<typename E>
-Iterable<E> _DelegatingIterableBaseCls<E>::takeWhile(bool test(E ) ) {
+Iterable<E> _DelegatingIterableBaseCls<E>::takeWhile(std::function<bool(E )> test) {
     return _base()->takeWhile(test);
 }
 
@@ -150,7 +150,7 @@ Set<E> _DelegatingIterableBaseCls<E>::toSet() {
 }
 
 template<typename E>
-Iterable<E> _DelegatingIterableBaseCls<E>::where(bool test(E ) ) {
+Iterable<E> _DelegatingIterableBaseCls<E>::where(std::function<bool(E )> test) {
     return _base()->where(test);
 }
 
@@ -256,7 +256,7 @@ int DelegatingListCls<E>::indexOf(E element, int start) {
 }
 
 template<typename E>
-int DelegatingListCls<E>::indexWhere(int start, bool test(E ) ) {
+int DelegatingListCls<E>::indexWhere(int start, std::function<bool(E )> test) {
     return _base->indexWhere(test, start);
 }
 
@@ -284,7 +284,7 @@ int DelegatingListCls<E>::lastIndexOf(E element, int start) {
 }
 
 template<typename E>
-int DelegatingListCls<E>::lastIndexWhere(int start, bool test(E ) ) {
+int DelegatingListCls<E>::lastIndexWhere(int start, std::function<bool(E )> test) {
     return _base->lastIndexWhere(test, start);
 }
 
@@ -314,7 +314,7 @@ void DelegatingListCls<E>::removeRange(int end, int start) {
 }
 
 template<typename E>
-void DelegatingListCls<E>::removeWhere(bool test(E ) ) {
+void DelegatingListCls<E>::removeWhere(std::function<bool(E )> test) {
     _base->removeWhere(test);
 }
 
@@ -324,7 +324,7 @@ void DelegatingListCls<E>::replaceRange(int end, Iterable<E> iterable, int start
 }
 
 template<typename E>
-void DelegatingListCls<E>::retainWhere(bool test(E ) ) {
+void DelegatingListCls<E>::retainWhere(std::function<bool(E )> test) {
     _base->retainWhere(test);
 }
 
@@ -355,7 +355,7 @@ void DelegatingListCls<E>::shuffle(Random random) {
 }
 
 template<typename E>
-void DelegatingListCls<E>::sort(int compare(E , E ) ) {
+void DelegatingListCls<E>::sort(std::function<int(E , E )> compare) {
     _base->sort(compare);
 }
 
@@ -429,7 +429,7 @@ void DelegatingSetCls<E>::removeAll(Iterable<Object> elements) {
 }
 
 template<typename E>
-void DelegatingSetCls<E>::removeWhere(bool test(E ) ) {
+void DelegatingSetCls<E>::removeWhere(std::function<bool(E )> test) {
     _base->removeWhere(test);
 }
 
@@ -445,7 +445,7 @@ Set<T> DelegatingSetCls<E>::retype() {
 }
 
 template<typename E>
-void DelegatingSetCls<E>::retainWhere(bool test(E ) ) {
+void DelegatingSetCls<E>::retainWhere(std::function<bool(E )> test) {
     _base->retainWhere(test);
 }
 
@@ -509,12 +509,12 @@ bool DelegatingQueueCls<E>::remove(Object object) {
 }
 
 template<typename E>
-void DelegatingQueueCls<E>::removeWhere(bool test(E ) ) {
+void DelegatingQueueCls<E>::removeWhere(std::function<bool(E )> test) {
     _base->removeWhere(test);
 }
 
 template<typename E>
-void DelegatingQueueCls<E>::retainWhere(bool test(E ) ) {
+void DelegatingQueueCls<E>::retainWhere(std::function<bool(E )> test) {
     _base->retainWhere(test);
 }
 
@@ -594,7 +594,7 @@ Iterable<MapEntry<K, V>> DelegatingMapCls<K, V>::entries() {
 }
 
 template<typename K, typename V>
-void DelegatingMapCls<K, V>::forEach(void f(K , V ) ) {
+void DelegatingMapCls<K, V>::forEach(std::function<void(K , V )> f) {
     _base->forEach(f);
 }
 
@@ -620,12 +620,12 @@ int DelegatingMapCls<K, V>::length() {
 
 template<typename K, typename V>
 template<typename K2, typename V2>
-Map<K2, V2> DelegatingMapCls<K, V>::map(MapEntry<K2, V2> transform(K , V ) ) {
+Map<K2, V2> DelegatingMapCls<K, V>::map(std::function<MapEntry<K2, V2>(K , V )> transform) {
     return _base->map(transform);
 }
 
 template<typename K, typename V>
-V DelegatingMapCls<K, V>::putIfAbsent(V ifAbsent() , K key) {
+V DelegatingMapCls<K, V>::putIfAbsent(std::function<V()> ifAbsent, K key) {
     return _base->putIfAbsent(key, ifAbsent);
 }
 
@@ -635,7 +635,7 @@ V DelegatingMapCls<K, V>::remove(Object key) {
 }
 
 template<typename K, typename V>
-void DelegatingMapCls<K, V>::removeWhere(bool test(K , V ) ) {
+void DelegatingMapCls<K, V>::removeWhere(std::function<bool(K , V )> test) {
     return _base->removeWhere(test);
 }
 
@@ -656,12 +656,12 @@ String DelegatingMapCls<K, V>::toString() {
 }
 
 template<typename K, typename V>
-V DelegatingMapCls<K, V>::update(V ifAbsent() , K key, V update(V ) ) {
+V DelegatingMapCls<K, V>::update(std::function<V()> ifAbsent, K key, std::function<V(V )> update) {
     return _base->update(key, updateifAbsent);
 }
 
 template<typename K, typename V>
-void DelegatingMapCls<K, V>::updateAll(V update(K , V ) ) {
+void DelegatingMapCls<K, V>::updateAll(std::function<V(K , V )> update) {
     return _base->updateAll(update);
 }
 
@@ -841,7 +841,7 @@ void MapValueSetCls<K, V>::removeAll(Iterable<Object> elements) {
 }
 
 template<typename K, typename V>
-void MapValueSetCls<K, V>::removeWhere(bool test(V ) ) {
+void MapValueSetCls<K, V>::removeWhere(std::function<bool(V )> test) {
     auto toRemove = makeList();
     _baseMap->forEach([=] (Unknown  key,Unknown  value) {
         if (test(value))         {
@@ -874,7 +874,7 @@ void MapValueSetCls<K, V>::retainAll(Iterable<Object> elements) {
 }
 
 template<typename K, typename V>
-void MapValueSetCls<K, V>::retainWhere(bool test(V ) ) {
+void MapValueSetCls<K, V>::retainWhere(std::function<bool(V )> test) {
     return removeWhere([=] (Unknown  element)     {
         !test(element);
     });

@@ -1,6 +1,6 @@
 #include "iterable.hpp"
 template<typename E>
-void IterableCls<E>::generate(int count, E generator(int index) ) {
+void IterableCls<E>::generate(int count, std::function<E(int index)> generator) {
     if (count <= 0)     {
         return <E>make<EmptyIterableCls>();
     }
@@ -30,12 +30,12 @@ Iterable<E> IterableCls<E>::followedBy(Iterable<E> other) {
 
 template<typename E>
 template<typename T>
-Iterable<T> IterableCls<E>::map(T toElement(E e) ) {
+Iterable<T> IterableCls<E>::map(std::function<T(E e)> toElement) {
     return <E, T>make<MappedIterableCls>(this, toElement);
 }
 
 template<typename E>
-Iterable<E> IterableCls<E>::where(bool test(E element) ) {
+Iterable<E> IterableCls<E>::where(std::function<bool(E element)> test) {
     return <E>make<WhereIterableCls>(this, test);
 }
 
@@ -47,7 +47,7 @@ Iterable<T> IterableCls<E>::whereType() {
 
 template<typename E>
 template<typename T>
-Iterable<T> IterableCls<E>::expand(Iterable<T> toElements(E element) ) {
+Iterable<T> IterableCls<E>::expand(std::function<Iterable<T>(E element)> toElements) {
     return <E, T>make<ExpandIterableCls>(this, toElements);
 }
 
@@ -62,14 +62,14 @@ bool IterableCls<E>::contains(Object element) {
 }
 
 template<typename E>
-void IterableCls<E>::forEach(void action(E element) ) {
+void IterableCls<E>::forEach(std::function<void(E element)> action) {
     for (E element : this)     {
         action(element);
     }
 }
 
 template<typename E>
-E IterableCls<E>::reduce(E combine(E element, E value) ) {
+E IterableCls<E>::reduce(std::function<E(E element, E value)> combine) {
     Iterator<E> iterator = this->iterator();
     if (!iterator->moveNext()) {
         ;
@@ -83,7 +83,7 @@ E IterableCls<E>::reduce(E combine(E element, E value) ) {
 
 template<typename E>
 template<typename T>
-T IterableCls<E>::fold(T combine(E element, T previousValue) , T initialValue) {
+T IterableCls<E>::fold(std::function<T(E element, T previousValue)> combine, T initialValue) {
     auto value = initialValue;
     for (E element : this)     {
         value = combine(value, element);
@@ -92,7 +92,7 @@ T IterableCls<E>::fold(T combine(E element, T previousValue) , T initialValue) {
 }
 
 template<typename E>
-bool IterableCls<E>::every(bool test(E element) ) {
+bool IterableCls<E>::every(std::function<bool(E element)> test) {
     for (E element : this) {
         if (!test(element))         {
             return false;
@@ -123,7 +123,7 @@ String IterableCls<E>::join(String separator) {
 }
 
 template<typename E>
-bool IterableCls<E>::any(bool test(E element) ) {
+bool IterableCls<E>::any(std::function<bool(E element)> test) {
     for (E element : this) {
         if (test(element))         {
             return true;
@@ -169,7 +169,7 @@ Iterable<E> IterableCls<E>::take(int count) {
 }
 
 template<typename E>
-Iterable<E> IterableCls<E>::takeWhile(bool test(E value) ) {
+Iterable<E> IterableCls<E>::takeWhile(std::function<bool(E value)> test) {
     return <E>make<TakeWhileIterableCls>(this, test);
 }
 
@@ -179,7 +179,7 @@ Iterable<E> IterableCls<E>::skip(int count) {
 }
 
 template<typename E>
-Iterable<E> IterableCls<E>::skipWhile(bool test(E value) ) {
+Iterable<E> IterableCls<E>::skipWhile(std::function<bool(E value)> test) {
     return <E>make<SkipWhileIterableCls>(this, test);
 }
 
@@ -219,7 +219,7 @@ E IterableCls<E>::single() {
 }
 
 template<typename E>
-E IterableCls<E>::firstWhere(E orElse() , bool test(E element) ) {
+E IterableCls<E>::firstWhere(std::function<E()> orElse, std::function<bool(E element)> test) {
     for (E element : this) {
         if (test(element))         {
             return element;
@@ -232,7 +232,7 @@ E IterableCls<E>::firstWhere(E orElse() , bool test(E element) ) {
 }
 
 template<typename E>
-E IterableCls<E>::lastWhere(E orElse() , bool test(E element) ) {
+E IterableCls<E>::lastWhere(std::function<E()> orElse, std::function<bool(E element)> test) {
     E result;
     bool foundMatching = false;
     for (E element : this) {
@@ -251,7 +251,7 @@ E IterableCls<E>::lastWhere(E orElse() , bool test(E element) ) {
 }
 
 template<typename E>
-E IterableCls<E>::singleWhere(E orElse() , bool test(E element) ) {
+E IterableCls<E>::singleWhere(std::function<E()> orElse, std::function<bool(E element)> test) {
     E result;
     bool foundMatching = false;
     for (E element : this) {
@@ -297,9 +297,9 @@ E _GeneratorIterableCls<E>::elementAt(int index) {
 }
 
 template<typename E>
-_GeneratorIterableCls<E>::_GeneratorIterableCls(E generator(int index) , int length) {
+_GeneratorIterableCls<E>::_GeneratorIterableCls(std::function<E(int index)> generator, int length) {
     {
-        _generator = generator or (as<E Function(int )>(_id));
+        _generator = generator or (as<std::function<E(int )>>(_id));
     }
 }
 

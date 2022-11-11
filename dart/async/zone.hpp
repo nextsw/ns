@@ -84,21 +84,21 @@ public:
 
     virtual void handleUncaughtError(Object error, StackTrace stackTrace, Zone zone);
     template<typename R>
- virtual R run(R f() , Zone zone);
+ virtual R run(std::function<R()> f, Zone zone);
     template<typename R, typename T>
- virtual R runUnary(T arg, R f(T arg) , Zone zone);
+ virtual R runUnary(T arg, std::function<R(T arg)> f, Zone zone);
     template<typename R, typename T1, typename T2>
- virtual R runBinary(T1 arg1, T2 arg2, R f(T1 arg1, T2 arg2) , Zone zone);
+ virtual R runBinary(T1 arg1, T2 arg2, std::function<R(T1 arg1, T2 arg2)> f, Zone zone);
     template<typename R>
- virtual ZoneCallback<R> registerCallback(R f() , Zone zone);
+ virtual ZoneCallback<R> registerCallback(std::function<R()> f, Zone zone);
     template<typename R, typename T>
- virtual ZoneUnaryCallback<R, T> registerUnaryCallback(R f(T arg) , Zone zone);
+ virtual ZoneUnaryCallback<R, T> registerUnaryCallback(std::function<R(T arg)> f, Zone zone);
     template<typename R, typename T1, typename T2>
- virtual ZoneBinaryCallback<R, T1, T2> registerBinaryCallback(R f(T1 arg1, T2 arg2) , Zone zone);
+ virtual ZoneBinaryCallback<R, T1, T2> registerBinaryCallback(std::function<R(T1 arg1, T2 arg2)> f, Zone zone);
     virtual AsyncError errorCallback(Object error, StackTrace stackTrace, Zone zone);
-    virtual void scheduleMicrotask(void f() , Zone zone);
-    virtual Timer createTimer(Duration duration, void f() , Zone zone);
-    virtual Timer createPeriodicTimer(void f(Timer timer) , Duration period, Zone zone);
+    virtual void scheduleMicrotask(std::function<void()> f, Zone zone);
+    virtual Timer createTimer(Duration duration, std::function<void()> f, Zone zone);
+    virtual Timer createPeriodicTimer(std::function<void(Timer timer)> f, Duration period, Zone zone);
     virtual void print(String line, Zone zone);
     virtual Zone fork(ZoneSpecification specification, Zone zone, Map zoneValues);
 private:
@@ -119,37 +119,37 @@ public:
     virtual bool inSameErrorZone(Zone otherZone);
     virtual Zone fork(ZoneSpecification specification, Map<Object, Object> zoneValues);
     template<typename R>
- virtual R run(R action() );
+ virtual R run(std::function<R()> action);
     template<typename R, typename T>
- virtual R runUnary(R action(T argument) , T argument);
+ virtual R runUnary(std::function<R(T argument)> action, T argument);
     template<typename R, typename T1, typename T2>
- virtual R runBinary(R action(T1 argument1, T2 argument2) , T1 argument1, T2 argument2);
-    virtual void runGuarded(void action() );
+ virtual R runBinary(std::function<R(T1 argument1, T2 argument2)> action, T1 argument1, T2 argument2);
+    virtual void runGuarded(std::function<void()> action);
     template<typename T>
- virtual void runUnaryGuarded(void action(T argument) , T argument);
+ virtual void runUnaryGuarded(std::function<void(T argument)> action, T argument);
     template<typename T1, typename T2>
- virtual void runBinaryGuarded(void action(T1 argument1, T2 argument2) , T1 argument1, T2 argument2);
+ virtual void runBinaryGuarded(std::function<void(T1 argument1, T2 argument2)> action, T1 argument1, T2 argument2);
     template<typename R>
- virtual ZoneCallback<R> registerCallback(R callback() );
+ virtual ZoneCallback<R> registerCallback(std::function<R()> callback);
     template<typename R, typename T>
- virtual ZoneUnaryCallback<R, T> registerUnaryCallback(R callback(T arg) );
+ virtual ZoneUnaryCallback<R, T> registerUnaryCallback(std::function<R(T arg)> callback);
     template<typename R, typename T1, typename T2>
- virtual ZoneBinaryCallback<R, T1, T2> registerBinaryCallback(R callback(T1 arg1, T2 arg2) );
+ virtual ZoneBinaryCallback<R, T1, T2> registerBinaryCallback(std::function<R(T1 arg1, T2 arg2)> callback);
     template<typename R>
- virtual ZoneCallback<R> bindCallback(R callback() );
+ virtual ZoneCallback<R> bindCallback(std::function<R()> callback);
     template<typename R, typename T>
- virtual ZoneUnaryCallback<R, T> bindUnaryCallback(R callback(T argument) );
+ virtual ZoneUnaryCallback<R, T> bindUnaryCallback(std::function<R(T argument)> callback);
     template<typename R, typename T1, typename T2>
- virtual ZoneBinaryCallback<R, T1, T2> bindBinaryCallback(R callback(T1 argument1, T2 argument2) );
-    virtual void Function() bindCallbackGuarded(void callback() );
+ virtual ZoneBinaryCallback<R, T1, T2> bindBinaryCallback(std::function<R(T1 argument1, T2 argument2)> callback);
+    virtual std::function<void()> bindCallbackGuarded(std::function<void()> callback);
     template<typename T>
- virtual void Function(T ) bindUnaryCallbackGuarded(void callback(T argument) );
+ virtual std::function<void(T )> bindUnaryCallbackGuarded(std::function<void(T argument)> callback);
     template<typename T1, typename T2>
- virtual void Function(T1 , T2 ) bindBinaryCallbackGuarded(void callback(T1 argument1, T2 argument2) );
+ virtual std::function<void(T1 , T2 )> bindBinaryCallbackGuarded(std::function<void(T1 argument1, T2 argument2)> callback);
     virtual AsyncError errorCallback(Object error, StackTrace stackTrace);
-    virtual void scheduleMicrotask(void callback() );
-    virtual Timer createTimer(void callback() , Duration duration);
-    virtual Timer createPeriodicTimer(void callback(Timer timer) , Duration period);
+    virtual void scheduleMicrotask(std::function<void()> callback);
+    virtual Timer createTimer(std::function<void()> callback, Duration duration);
+    virtual Timer createPeriodicTimer(std::function<void(Timer timer)> callback, Duration period);
     virtual void print(String line);
     virtual dynamic operator[](Object key);
 private:
@@ -170,30 +170,30 @@ public:
     virtual void handleUncaughtError(Object error, StackTrace stackTrace, Zone zone);
 
     template<typename R>
- virtual R run(R f() , Zone zone);
+ virtual R run(std::function<R()> f, Zone zone);
 
     template<typename R, typename T>
- virtual R runUnary(T arg, R f(T arg) , Zone zone);
+ virtual R runUnary(T arg, std::function<R(T arg)> f, Zone zone);
 
     template<typename R, typename T1, typename T2>
- virtual R runBinary(T1 arg1, T2 arg2, R f(T1 arg1, T2 arg2) , Zone zone);
+ virtual R runBinary(T1 arg1, T2 arg2, std::function<R(T1 arg1, T2 arg2)> f, Zone zone);
 
     template<typename R>
- virtual ZoneCallback<R> registerCallback(R f() , Zone zone);
+ virtual ZoneCallback<R> registerCallback(std::function<R()> f, Zone zone);
 
     template<typename R, typename T>
- virtual ZoneUnaryCallback<R, T> registerUnaryCallback(R f(T arg) , Zone zone);
+ virtual ZoneUnaryCallback<R, T> registerUnaryCallback(std::function<R(T arg)> f, Zone zone);
 
     template<typename R, typename T1, typename T2>
- virtual ZoneBinaryCallback<R, T1, T2> registerBinaryCallback(R f(T1 arg1, T2 arg2) , Zone zone);
+ virtual ZoneBinaryCallback<R, T1, T2> registerBinaryCallback(std::function<R(T1 arg1, T2 arg2)> f, Zone zone);
 
     virtual AsyncError errorCallback(Object error, StackTrace stackTrace, Zone zone);
 
     virtual void scheduleMicrotask(f , Zone zone);
 
-    virtual Timer createTimer(Duration duration, void f() , Zone zone);
+    virtual Timer createTimer(Duration duration, std::function<void()> f, Zone zone);
 
-    virtual Timer createPeriodicTimer(void f(Timer timer) , Duration period, Zone zone);
+    virtual Timer createPeriodicTimer(std::function<void(Timer timer)> f, Duration period, Zone zone);
 
     virtual void print(String line, Zone zone);
 
@@ -244,30 +244,30 @@ public:
 
     virtual Zone errorZone();
 
-    virtual void runGuarded(void f() );
+    virtual void runGuarded(std::function<void()> f);
 
     template<typename T>
- virtual void runUnaryGuarded(T arg, void f(T arg) );
+ virtual void runUnaryGuarded(T arg, std::function<void(T arg)> f);
 
     template<typename T1, typename T2>
- virtual void runBinaryGuarded(T1 arg1, T2 arg2, void f(T1 arg1, T2 arg2) );
+ virtual void runBinaryGuarded(T1 arg1, T2 arg2, std::function<void(T1 arg1, T2 arg2)> f);
 
     template<typename R>
- virtual ZoneCallback<R> bindCallback(R f() );
+ virtual ZoneCallback<R> bindCallback(std::function<R()> f);
 
     template<typename R, typename T>
- virtual ZoneUnaryCallback<R, T> bindUnaryCallback(R f(T arg) );
+ virtual ZoneUnaryCallback<R, T> bindUnaryCallback(std::function<R(T arg)> f);
 
     template<typename R, typename T1, typename T2>
- virtual ZoneBinaryCallback<R, T1, T2> bindBinaryCallback(R f(T1 arg1, T2 arg2) );
+ virtual ZoneBinaryCallback<R, T1, T2> bindBinaryCallback(std::function<R(T1 arg1, T2 arg2)> f);
 
-    virtual void Function() bindCallbackGuarded(void f() );
+    virtual std::function<void()> bindCallbackGuarded(std::function<void()> f);
 
     template<typename T>
- virtual void Function(T ) bindUnaryCallbackGuarded(void f(T arg) );
+ virtual std::function<void(T )> bindUnaryCallbackGuarded(std::function<void(T arg)> f);
 
     template<typename T1, typename T2>
- virtual void Function(T1 , T2 ) bindBinaryCallbackGuarded(void f(T1 arg1, T2 arg2) );
+ virtual std::function<void(T1 , T2 )> bindBinaryCallbackGuarded(std::function<void(T1 arg1, T2 arg2)> f);
 
     virtual dynamic operator[](Object key);
 
@@ -276,30 +276,30 @@ public:
     virtual Zone fork(ZoneSpecification specification, Map<Object, Object> zoneValues);
 
     template<typename R>
- virtual R run(R f() );
+ virtual R run(std::function<R()> f);
 
     template<typename R, typename T>
- virtual R runUnary(T arg, R f(T arg) );
+ virtual R runUnary(T arg, std::function<R(T arg)> f);
 
     template<typename R, typename T1, typename T2>
- virtual R runBinary(T1 arg1, T2 arg2, R f(T1 arg1, T2 arg2) );
+ virtual R runBinary(T1 arg1, T2 arg2, std::function<R(T1 arg1, T2 arg2)> f);
 
     template<typename R>
- virtual ZoneCallback<R> registerCallback(R callback() );
+ virtual ZoneCallback<R> registerCallback(std::function<R()> callback);
 
     template<typename R, typename T>
- virtual ZoneUnaryCallback<R, T> registerUnaryCallback(R callback(T arg) );
+ virtual ZoneUnaryCallback<R, T> registerUnaryCallback(std::function<R(T arg)> callback);
 
     template<typename R, typename T1, typename T2>
- virtual ZoneBinaryCallback<R, T1, T2> registerBinaryCallback(R callback(T1 arg1, T2 arg2) );
+ virtual ZoneBinaryCallback<R, T1, T2> registerBinaryCallback(std::function<R(T1 arg1, T2 arg2)> callback);
 
     virtual AsyncError errorCallback(Object error, StackTrace stackTrace);
 
-    virtual void scheduleMicrotask(void f() );
+    virtual void scheduleMicrotask(std::function<void()> f);
 
-    virtual Timer createTimer(Duration duration, void f() );
+    virtual Timer createTimer(Duration duration, std::function<void()> f);
 
-    virtual Timer createPeriodicTimer(Duration duration, void f(Timer timer) );
+    virtual Timer createPeriodicTimer(Duration duration, std::function<void(Timer timer)> f);
 
     virtual void print(String line);
 
@@ -348,30 +348,30 @@ void _rootHandleUncaughtError(Object error, ZoneDelegate parent, Zone self, Stac
 void _rootHandleError(Object error, StackTrace stackTrace);
 
 template<typename R>
- R _rootRun(R f() , ZoneDelegate parent, Zone self, Zone zone);
+ R _rootRun(std::function<R()> f, ZoneDelegate parent, Zone self, Zone zone);
 
 template<typename R, typename T>
- R _rootRunUnary(T arg, R f(T arg) , ZoneDelegate parent, Zone self, Zone zone);
+ R _rootRunUnary(T arg, std::function<R(T arg)> f, ZoneDelegate parent, Zone self, Zone zone);
 
 template<typename R, typename T1, typename T2>
- R _rootRunBinary(T1 arg1, T2 arg2, R f(T1 arg1, T2 arg2) , ZoneDelegate parent, Zone self, Zone zone);
+ R _rootRunBinary(T1 arg1, T2 arg2, std::function<R(T1 arg1, T2 arg2)> f, ZoneDelegate parent, Zone self, Zone zone);
 
 template<typename R>
- ZoneCallback<R> _rootRegisterCallback(R f() , ZoneDelegate parent, Zone self, Zone zone);
+ ZoneCallback<R> _rootRegisterCallback(std::function<R()> f, ZoneDelegate parent, Zone self, Zone zone);
 
 template<typename R, typename T>
- ZoneUnaryCallback<R, T> _rootRegisterUnaryCallback(R f(T arg) , ZoneDelegate parent, Zone self, Zone zone);
+ ZoneUnaryCallback<R, T> _rootRegisterUnaryCallback(std::function<R(T arg)> f, ZoneDelegate parent, Zone self, Zone zone);
 
 template<typename R, typename T1, typename T2>
- ZoneBinaryCallback<R, T1, T2> _rootRegisterBinaryCallback(R f(T1 arg1, T2 arg2) , ZoneDelegate parent, Zone self, Zone zone);
+ ZoneBinaryCallback<R, T1, T2> _rootRegisterBinaryCallback(std::function<R(T1 arg1, T2 arg2)> f, ZoneDelegate parent, Zone self, Zone zone);
 
 AsyncError _rootErrorCallback(Object error, ZoneDelegate parent, Zone self, StackTrace stackTrace, Zone zone);
 
-void _rootScheduleMicrotask(void f() , ZoneDelegate parent, Zone self, Zone zone);
+void _rootScheduleMicrotask(std::function<void()> f, ZoneDelegate parent, Zone self, Zone zone);
 
-Timer _rootCreateTimer(void callback() , Duration duration, ZoneDelegate parent, Zone self, Zone zone);
+Timer _rootCreateTimer(std::function<void()> callback, Duration duration, ZoneDelegate parent, Zone self, Zone zone);
 
-Timer _rootCreatePeriodicTimer(void callback(Timer timer) , Duration duration, ZoneDelegate parent, Zone self, Zone zone);
+Timer _rootCreatePeriodicTimer(std::function<void(Timer timer)> callback, Duration duration, ZoneDelegate parent, Zone self, Zone zone);
 
 void _rootPrint(String line, ZoneDelegate parent, Zone self, Zone zone);
 
@@ -387,30 +387,30 @@ public:
 
     virtual Zone errorZone();
 
-    virtual void runGuarded(void f() );
+    virtual void runGuarded(std::function<void()> f);
 
     template<typename T>
- virtual void runUnaryGuarded(T arg, void f(T arg) );
+ virtual void runUnaryGuarded(T arg, std::function<void(T arg)> f);
 
     template<typename T1, typename T2>
- virtual void runBinaryGuarded(T1 arg1, T2 arg2, void f(T1 arg1, T2 arg2) );
+ virtual void runBinaryGuarded(T1 arg1, T2 arg2, std::function<void(T1 arg1, T2 arg2)> f);
 
     template<typename R>
- virtual ZoneCallback<R> bindCallback(R f() );
+ virtual ZoneCallback<R> bindCallback(std::function<R()> f);
 
     template<typename R, typename T>
- virtual ZoneUnaryCallback<R, T> bindUnaryCallback(R f(T arg) );
+ virtual ZoneUnaryCallback<R, T> bindUnaryCallback(std::function<R(T arg)> f);
 
     template<typename R, typename T1, typename T2>
- virtual ZoneBinaryCallback<R, T1, T2> bindBinaryCallback(R f(T1 arg1, T2 arg2) );
+ virtual ZoneBinaryCallback<R, T1, T2> bindBinaryCallback(std::function<R(T1 arg1, T2 arg2)> f);
 
-    virtual void Function() bindCallbackGuarded(void f() );
+    virtual std::function<void()> bindCallbackGuarded(std::function<void()> f);
 
     template<typename T>
- virtual void Function(T ) bindUnaryCallbackGuarded(void f(T arg) );
+ virtual std::function<void(T )> bindUnaryCallbackGuarded(std::function<void(T arg)> f);
 
     template<typename T1, typename T2>
- virtual void Function(T1 , T2 ) bindBinaryCallbackGuarded(void f(T1 arg1, T2 arg2) );
+ virtual std::function<void(T1 , T2 )> bindBinaryCallbackGuarded(std::function<void(T1 arg1, T2 arg2)> f);
 
     virtual dynamic operator[](Object key);
 
@@ -419,30 +419,30 @@ public:
     virtual Zone fork(ZoneSpecification specification, Map<Object, Object> zoneValues);
 
     template<typename R>
- virtual R run(R f() );
+ virtual R run(std::function<R()> f);
 
     template<typename R, typename T>
- virtual R runUnary(T arg, R f(T arg) );
+ virtual R runUnary(T arg, std::function<R(T arg)> f);
 
     template<typename R, typename T1, typename T2>
- virtual R runBinary(T1 arg1, T2 arg2, R f(T1 arg1, T2 arg2) );
+ virtual R runBinary(T1 arg1, T2 arg2, std::function<R(T1 arg1, T2 arg2)> f);
 
     template<typename R>
- virtual ZoneCallback<R> registerCallback(R f() );
+ virtual ZoneCallback<R> registerCallback(std::function<R()> f);
 
     template<typename R, typename T>
- virtual ZoneUnaryCallback<R, T> registerUnaryCallback(R f(T arg) );
+ virtual ZoneUnaryCallback<R, T> registerUnaryCallback(std::function<R(T arg)> f);
 
     template<typename R, typename T1, typename T2>
- virtual ZoneBinaryCallback<R, T1, T2> registerBinaryCallback(R f(T1 arg1, T2 arg2) );
+ virtual ZoneBinaryCallback<R, T1, T2> registerBinaryCallback(std::function<R(T1 arg1, T2 arg2)> f);
 
     virtual AsyncError errorCallback(Object error, StackTrace stackTrace);
 
-    virtual void scheduleMicrotask(void f() );
+    virtual void scheduleMicrotask(std::function<void()> f);
 
-    virtual Timer createTimer(Duration duration, void f() );
+    virtual Timer createTimer(Duration duration, std::function<void()> f);
 
-    virtual Timer createPeriodicTimer(Duration duration, void f(Timer timer) );
+    virtual Timer createPeriodicTimer(Duration duration, std::function<void(Timer timer)> f);
 
     virtual void print(String line);
 
@@ -490,13 +490,13 @@ using _RootZone = std::shared_ptr<_RootZoneCls>;
 _Zone _rootZone;
 
 template<typename R>
- R runZoned(R body() , void  onError() , ZoneSpecification zoneSpecification, Map<Object, Object> zoneValues);
+ R runZoned(std::function<R()> body, std::function<void ()> onError, ZoneSpecification zoneSpecification, Map<Object, Object> zoneValues);
 
 template<typename R>
- R runZonedGuarded(R body() , void onError(Object error, StackTrace stack) , ZoneSpecification zoneSpecification, Map<Object, Object> zoneValues);
+ R runZonedGuarded(std::function<R()> body, std::function<void(Object error, StackTrace stack)> onError, ZoneSpecification zoneSpecification, Map<Object, Object> zoneValues);
 
 template<typename R>
- R _runZoned(R body() , ZoneSpecification specification, Map<Object, Object> zoneValues);
+ R _runZoned(std::function<R()> body, ZoneSpecification specification, Map<Object, Object> zoneValues);
 
 
 

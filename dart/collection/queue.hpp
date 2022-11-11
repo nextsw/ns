@@ -24,8 +24,8 @@ public:
     virtual void add(E value);
     virtual bool remove(Object value);
     virtual void addAll(Iterable<E> iterable);
-    virtual void removeWhere(bool test(E element) );
-    virtual void retainWhere(bool test(E element) );
+    virtual void removeWhere(std::function<bool(E element)> test);
+    virtual void retainWhere(std::function<bool(E element)> test);
     virtual void clear();
 private:
 
@@ -133,9 +133,9 @@ public:
 
     virtual bool remove(Object o);
 
-    virtual void removeWhere(bool test(E element) );
+    virtual void removeWhere(std::function<bool(E element)> test);
 
-    virtual void retainWhere(bool test(E element) );
+    virtual void retainWhere(std::function<bool(E element)> test);
 
     virtual E first();
 
@@ -151,7 +151,7 @@ public:
 
     virtual void clear();
 
-    virtual void forEachEntry(void action(DoubleLinkedQueueEntry<E> element) );
+    virtual void forEachEntry(std::function<void(DoubleLinkedQueueEntry<E> element)> action);
 
     virtual _DoubleLinkedQueueIterator<E> iterator();
 
@@ -163,7 +163,7 @@ private:
     int _elementCount;
 
 
-    virtual void _filter(bool removeMatching, bool test(E element) );
+    virtual void _filter(bool removeMatching, std::function<bool(E element)> test);
 
 };
 template<typename E>
@@ -206,7 +206,7 @@ public:
 
     virtual Iterator<E> iterator();
 
-    virtual void forEach(void f(E element) );
+    virtual void forEach(std::function<void(E element)> f);
 
     virtual bool isEmpty();
 
@@ -228,9 +228,9 @@ public:
 
     virtual bool remove(Object value);
 
-    virtual void removeWhere(bool test(E element) );
+    virtual void removeWhere(std::function<bool(E element)> test);
 
-    virtual void retainWhere(bool test(E element) );
+    virtual void retainWhere(std::function<bool(E element)> test);
 
     virtual void clear();
 
@@ -258,7 +258,7 @@ private:
 
     static int _calculateCapacity(int initialCapacity);
 
-    virtual void _filterWhere(bool removeMatching, bool test(E element) );
+    virtual void _filterWhere(bool removeMatching, std::function<bool(E element)> test);
 
     static bool _isPowerOf2(int number);
 

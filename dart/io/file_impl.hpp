@@ -12,7 +12,7 @@ public:
 
     virtual void  forStdin();
 
-    virtual StreamSubscription<Uint8List> listen(bool cancelOnError, void onData(Uint8List event) , void onDone() , void  onError() );
+    virtual StreamSubscription<Uint8List> listen(bool cancelOnError, std::function<void(Uint8List event)> onData, std::function<void()> onDone, std::function<void ()> onError);
 
 private:
     StreamController<Uint8List> _controller;

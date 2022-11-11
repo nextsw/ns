@@ -8,7 +8,7 @@
 class FunctionCls : public ObjectCls {
 public:
 
-    static void  apply(void  function() , Map<Symbol, dynamic> namedArguments, List<dynamic> positionalArguments);
+    static void  apply(std::function<void ()> function, Map<Symbol, dynamic> namedArguments, List<dynamic> positionalArguments);
     virtual int hashCode();
     virtual bool operator==(Object other);
 private:

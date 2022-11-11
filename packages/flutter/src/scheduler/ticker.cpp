@@ -195,20 +195,20 @@ Stream<void> TickerFutureCls::asStream() {
     return _primaryCompleter->future->asStream();
 }
 
-Future<void> TickerFutureCls::catchError(void  onError() , bool test(Object ) ) {
+Future<void> TickerFutureCls::catchError(std::function<void ()> onError, std::function<bool(Object )> test) {
     return _primaryCompleter->future->catchError(onErrortest);
 }
 
 template<typename R>
-Future<R> TickerFutureCls::then(void  onError() , FutureOr<R> onValue(void value) ) {
+Future<R> TickerFutureCls::then(std::function<void ()> onError, std::function<FutureOr<R>(void value)> onValue) {
     return _primaryCompleter->future-><R>then(onValueonError);
 }
 
-Future<void> TickerFutureCls::timeout(FutureOr<void> onTimeout() , Duration timeLimit) {
+Future<void> TickerFutureCls::timeout(std::function<FutureOr<void>()> onTimeout, Duration timeLimit) {
     return _primaryCompleter->future->timeout(timeLimitonTimeout);
 }
 
-Future<void> TickerFutureCls::whenComplete(dynamic action() ) {
+Future<void> TickerFutureCls::whenComplete(std::function<dynamic()> action) {
     return _primaryCompleter->future->whenComplete(action);
 }
 

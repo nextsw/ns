@@ -31,7 +31,7 @@ public:
 
     virtual bool contains(Object other);
 
-    virtual T lastWhere(T orElse() , bool test(T element) );
+    virtual T lastWhere(std::function<T()> orElse, std::function<bool(T element)> test);
 
     virtual String toString();
 
@@ -103,7 +103,7 @@ public:
 
     virtual void addAll(Iterable<T> values);
 
-    virtual void sort(int compare(T v1, T v2) );
+    virtual void sort(std::function<int(T v1, T v2)> compare);
 
     virtual void shuffle(Random random);
 
@@ -119,9 +119,9 @@ public:
 
     virtual T removeLast();
 
-    virtual void removeWhere(bool test(T element) );
+    virtual void removeWhere(std::function<bool(T element)> test);
 
-    virtual void retainWhere(bool test(T element) );
+    virtual void retainWhere(std::function<bool(T element)> test);
 
     virtual Iterable<T> getRange(int end, int start);
 
@@ -160,7 +160,7 @@ template<typename S, typename T>
 class CastSetCls : public _CastIterableBaseCls<S, T> {
 public:
 
-     CastSetCls(<R>Set<R> Function() _emptySet, Set<S> _source);
+     CastSetCls(std::function<Set<R>()> _emptySet, Set<S> _source);
     template<typename R>
  virtual Set<R> cast();
 
@@ -174,9 +174,9 @@ public:
 
     virtual void retainAll(Iterable<Object> objects);
 
-    virtual void removeWhere(bool test(T element) );
+    virtual void removeWhere(std::function<bool(T element)> test);
 
-    virtual void retainWhere(bool test(T element) );
+    virtual void retainWhere(std::function<bool(T element)> test);
 
     virtual bool containsAll(Iterable<Object> objects);
 
@@ -195,7 +195,7 @@ public:
 private:
     Set<S> _source;
 
-    <R>Set<R> Function() _emptySet;
+    std::function<Set<R>()> _emptySet;
 
 
     virtual Set<T> _conditionalAdd(Set<Object> other, bool otherContains);
@@ -222,7 +222,7 @@ public:
 
     virtual void operator[]=(K key, V value);
 
-    virtual V putIfAbsent(V ifAbsent() , K key);
+    virtual V putIfAbsent(std::function<V()> ifAbsent, K key);
 
     virtual void addAll(Map<K, V> other);
 
@@ -230,7 +230,7 @@ public:
 
     virtual void clear();
 
-    virtual void forEach(void f(K key, V value) );
+    virtual void forEach(std::function<void(K key, V value)> f);
 
     virtual Iterable<K> keys();
 
@@ -242,15 +242,15 @@ public:
 
     virtual bool isNotEmpty();
 
-    virtual V update(V ifAbsent() , K key, V update(V value) );
+    virtual V update(std::function<V()> ifAbsent, K key, std::function<V(V value)> update);
 
-    virtual void updateAll(V update(K key, V value) );
+    virtual void updateAll(std::function<V(K key, V value)> update);
 
     virtual Iterable<MapEntry<K, V>> entries();
 
     virtual void addEntries(Iterable<MapEntry<K, V>> entries);
 
-    virtual void removeWhere(bool test(K key, V value) );
+    virtual void removeWhere(std::function<bool(K key, V value)> test);
 
 private:
     Map<SK, SV> _source;
@@ -282,9 +282,9 @@ public:
 
     virtual void addAll(Iterable<T> elements);
 
-    virtual void removeWhere(bool test(T element) );
+    virtual void removeWhere(std::function<bool(T element)> test);
 
-    virtual void retainWhere(bool test(T element) );
+    virtual void retainWhere(std::function<bool(T element)> test);
 
     virtual void clear();
 

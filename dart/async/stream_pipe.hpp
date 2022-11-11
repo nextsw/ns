@@ -5,13 +5,13 @@
 #include <dart/core/core.hpp>
 
 template<typename T>
- void  _runUserCode(onSuccess , onError , T userCode() );
+ void  _runUserCode(onSuccess , onError , std::function<T()> userCode);
 
 void _cancelAndError(Object error, _Future future, StackTrace stackTrace, StreamSubscription subscription);
 
 void _cancelAndErrorWithReplacement(Object error, _Future future, StackTrace stackTrace, StreamSubscription subscription);
 
-void Function(Object error, StackTrace stackTrace) _cancelAndErrorClosure(_Future future, StreamSubscription subscription);
+std::function<void(Object error, StackTrace stackTrace)> _cancelAndErrorClosure(_Future future, StreamSubscription subscription);
 
 void _cancelAndValue(value , _Future future, StreamSubscription subscription);
 
@@ -22,14 +22,14 @@ public:
 
     virtual bool isBroadcast();
 
-    virtual StreamSubscription<T> listen(bool cancelOnError, void onData(T value) , void onDone() , void  onError() );
+    virtual StreamSubscription<T> listen(bool cancelOnError, std::function<void(T value)> onData, std::function<void()> onDone, std::function<void ()> onError);
 
 private:
     Stream<S> _source;
 
 
      _ForwardingStreamCls(Stream<S> _source);
-    virtual StreamSubscription<T> _createSubscription(bool cancelOnError, void onData(T data) , void onDone() , void  onError() );
+    virtual StreamSubscription<T> _createSubscription(bool cancelOnError, std::function<void(T data)> onData, std::function<void()> onDone, std::function<void ()> onError);
 
     virtual void _handleData(S data, _EventSink<T> sink);
     virtual void _handleError(Object error, _EventSink<T> sink, StackTrace stackTrace);
@@ -50,7 +50,7 @@ private:
     StreamSubscription<S> _subscription;
 
 
-     _ForwardingStreamSubscriptionCls(_ForwardingStream<S, T> _stream, bool cancelOnError, void onData(T data) , void onDone() , void  onError() );
+     _ForwardingStreamSubscriptionCls(_ForwardingStream<S, T> _stream, bool cancelOnError, std::function<void(T data)> onData, std::function<void()> onDone, std::function<void ()> onError);
 
     virtual void _add(T data);
 
@@ -79,10 +79,10 @@ class _WhereStreamCls : public _ForwardingStreamCls<T, T> {
 public:
 
 private:
-    bool Function(T ) _test;
+    std::function<bool(T )> _test;
 
 
-     _WhereStreamCls(Stream<T> source, bool test(T value) );
+     _WhereStreamCls(Stream<T> source, std::function<bool(T value)> test);
 
     virtual void _handleData(T inputEvent, _EventSink<T> sink);
 
@@ -98,7 +98,7 @@ private:
     _Transformation<S, T> _transform;
 
 
-     _MapStreamCls(Stream<S> source, T transform(S event) );
+     _MapStreamCls(Stream<S> source, std::function<T(S event)> transform);
 
     virtual void _handleData(S inputEvent, _EventSink<T> sink);
 
@@ -114,7 +114,7 @@ private:
     _Transformation<S, Iterable<T>> _expand;
 
 
-     _ExpandStreamCls(Iterable<T> expand(S event) , Stream<S> source);
+     _ExpandStreamCls(std::function<Iterable<T>(S event)> expand, Stream<S> source);
 
     virtual void _handleData(S inputEvent, _EventSink<T> sink);
 
@@ -127,12 +127,12 @@ class _HandleErrorStreamCls : public _ForwardingStreamCls<T, T> {
 public:
 
 private:
-    void Function(Object , StackTrace ) _onError;
+    std::function<void(Object , StackTrace )> _onError;
 
-    bool Function(Object ) _test;
+    std::function<bool(Object )> _test;
 
 
-     _HandleErrorStreamCls(void Function(Object , StackTrace ) _onError, bool Function(Object ) _test, Stream<T> source);
+     _HandleErrorStreamCls(std::function<void(Object , StackTrace )> _onError, std::function<bool(Object )> _test, Stream<T> source);
 
     virtual void _handleData(T data, _EventSink<T> sink);
 
@@ -152,7 +152,7 @@ private:
 
      _TakeStreamCls(int count, Stream<T> source);
 
-    virtual StreamSubscription<T> _createSubscription(bool cancelOnError, void onData(T data) , void onDone() , void  onError() );
+    virtual StreamSubscription<T> _createSubscription(bool cancelOnError, std::function<void(T data)> onData, std::function<void()> onDone, std::function<void ()> onError);
 
     virtual void _handleData(T inputEvent, _EventSink<T> sink);
 
@@ -168,7 +168,7 @@ private:
     S _subState;
 
 
-     _StateStreamSubscriptionCls(S _subState, bool cancelOnError, void onData(T data) , void onDone() , void  onError() , _ForwardingStream<T, T> stream);
+     _StateStreamSubscriptionCls(S _subState, bool cancelOnError, std::function<void(T data)> onData, std::function<void()> onDone, std::function<void ()> onError, _ForwardingStream<T, T> stream);
 
 };
 template<typename S, typename T>
@@ -179,10 +179,10 @@ class _TakeWhileStreamCls : public _ForwardingStreamCls<T, T> {
 public:
 
 private:
-    bool Function(T ) _test;
+    std::function<bool(T )> _test;
 
 
-     _TakeWhileStreamCls(Stream<T> source, bool test(T value) );
+     _TakeWhileStreamCls(Stream<T> source, std::function<bool(T value)> test);
 
     virtual void _handleData(T inputEvent, _EventSink<T> sink);
 
@@ -200,7 +200,7 @@ private:
 
      _SkipStreamCls(int count, Stream<T> source);
 
-    virtual StreamSubscription<T> _createSubscription(bool cancelOnError, void onData(T data) , void onDone() , void  onError() );
+    virtual StreamSubscription<T> _createSubscription(bool cancelOnError, std::function<void(T data)> onData, std::function<void()> onDone, std::function<void ()> onError);
 
     virtual void _handleData(T inputEvent, _EventSink<T> sink);
 
@@ -213,12 +213,12 @@ class _SkipWhileStreamCls : public _ForwardingStreamCls<T, T> {
 public:
 
 private:
-    bool Function(T ) _test;
+    std::function<bool(T )> _test;
 
 
-     _SkipWhileStreamCls(Stream<T> source, bool test(T value) );
+     _SkipWhileStreamCls(Stream<T> source, std::function<bool(T value)> test);
 
-    virtual StreamSubscription<T> _createSubscription(bool cancelOnError, void onData(T data) , void onDone() , void  onError() );
+    virtual StreamSubscription<T> _createSubscription(bool cancelOnError, std::function<void(T data)> onData, std::function<void()> onDone, std::function<void ()> onError);
 
     virtual void _handleData(T inputEvent, _EventSink<T> sink);
 
@@ -233,12 +233,12 @@ public:
 private:
     static auto  _SENTINEL;
 
-    bool Function(T , T ) _equals;
+    std::function<bool(T , T )> _equals;
 
 
-     _DistinctStreamCls(bool equals(T a, T b) , Stream<T> source);
+     _DistinctStreamCls(std::function<bool(T a, T b)> equals, Stream<T> source);
 
-    virtual StreamSubscription<T> _createSubscription(bool cancelOnError, void onData(T data) , void onDone() , void  onError() );
+    virtual StreamSubscription<T> _createSubscription(bool cancelOnError, std::function<void(T data)> onData, std::function<void()> onDone, std::function<void ()> onError);
 
     virtual void _handleData(T inputEvent, _EventSink<T> sink);
 

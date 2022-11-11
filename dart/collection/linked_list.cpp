@@ -83,7 +83,7 @@ E LinkedListCls<E>::single() {
 }
 
 template<typename E>
-void LinkedListCls<E>::forEach(void action(E entry) ) {
+void LinkedListCls<E>::forEach(std::function<void(E entry)> action) {
     int modificationCount = _modificationCount;
     if (isEmpty())     {
         return;

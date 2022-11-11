@@ -901,7 +901,7 @@ void RenderBoxCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     properties->add(<Size>make<DiagnosticsPropertyCls>(__s("size"), _sizetrue));
 }
 
-double RenderBoxCls::_computeIntrinsicDimension(double argument, double computer(double argument) , _IntrinsicDimension dimension) {
+double RenderBoxCls::_computeIntrinsicDimension(double argument, std::function<double(double argument)> computer, _IntrinsicDimension dimension) {
     assert(RenderObjectCls::debugCheckingIntrinsics || !debugDoingThisResize);
     bool shouldCache = true;
     assert([=] () {

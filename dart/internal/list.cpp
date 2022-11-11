@@ -30,12 +30,12 @@ bool FixedLengthListMixinCls<E>::remove(Object element) {
 }
 
 template<typename E>
-void FixedLengthListMixinCls<E>::removeWhere(bool test(E element) ) {
+void FixedLengthListMixinCls<E>::removeWhere(std::function<bool(E element)> test) {
     ;
 }
 
 template<typename E>
-void FixedLengthListMixinCls<E>::retainWhere(bool test(E element) ) {
+void FixedLengthListMixinCls<E>::retainWhere(std::function<bool(E element)> test) {
     ;
 }
 
@@ -115,12 +115,12 @@ bool UnmodifiableListMixinCls<E>::remove(Object element) {
 }
 
 template<typename E>
-void UnmodifiableListMixinCls<E>::removeWhere(bool test(E element) ) {
+void UnmodifiableListMixinCls<E>::removeWhere(std::function<bool(E element)> test) {
     ;
 }
 
 template<typename E>
-void UnmodifiableListMixinCls<E>::retainWhere(bool test(E element) ) {
+void UnmodifiableListMixinCls<E>::retainWhere(std::function<bool(E element)> test) {
     ;
 }
 
@@ -219,7 +219,7 @@ bool ListMapViewCls<E>::containsKey(Object key) {
 }
 
 template<typename E>
-void ListMapViewCls<E>::forEach(void f(int key, E value) ) {
+void ListMapViewCls<E>::forEach(std::function<void(int key, E value)> f) {
     int length = _values->length();
     for (;  < length; i++) {
         f(i, _values[i]);

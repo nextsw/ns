@@ -1,7 +1,7 @@
 #include "file_impl.hpp"
 void _FileStreamCls::forStdin()
 
-StreamSubscription<Uint8List> _FileStreamCls::listen(bool cancelOnError, void onData(Uint8List event) , void onDone() , void  onError() ) {
+StreamSubscription<Uint8List> _FileStreamCls::listen(bool cancelOnError, std::function<void(Uint8List event)> onData, std::function<void()> onDone, std::function<void ()> onError) {
     _controller = <Uint8List>make<StreamControllerCls>(true, _start, _readBlock, [=] () {
         _unsubscribed = true;
         return _closeFile();

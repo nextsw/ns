@@ -24,7 +24,7 @@ void BoolListCls::empty(int capacity, bool growable) {
     }
 }
 
-void BoolListCls::generate(bool generator(int ) , bool growable, int length) {
+void BoolListCls::generate(std::function<bool(int )> generator, bool growable, int length) {
     RangeErrorCls->checkNotNegative(length, __s("length"));
     auto instance = BoolListCls->_selectType(length, growable);
     for (;  < length; i++) {

@@ -15,7 +15,7 @@ void _EventSinkWrapperCls<T>::close() {
 }
 
 template<typename S, typename T>
-_SinkTransformerStreamSubscriptionCls<S, T>::_SinkTransformerStreamSubscriptionCls(bool cancelOnError, _SinkMapper<S, T> mapper, void onData(T data) , void onDone() , void  onError() , Stream<S> source) {
+_SinkTransformerStreamSubscriptionCls<S, T>::_SinkTransformerStreamSubscriptionCls(bool cancelOnError, _SinkMapper<S, T> mapper, std::function<void(T data)> onData, std::function<void()> onDone, std::function<void ()> onError, Stream<S> source) {
     {
         _transformerSink = mapper(<T>make<_EventSinkWrapperCls>(this));
         _subscription = source->listen(_handleData_handleError, _handleDone);
@@ -109,7 +109,7 @@ bool _BoundSinkStreamCls<S, T>::isBroadcast() {
 }
 
 template<typename S, typename T>
-StreamSubscription<T> _BoundSinkStreamCls<S, T>::listen(bool cancelOnError, void onData(T event) , void onDone() , void  onError() ) {
+StreamSubscription<T> _BoundSinkStreamCls<S, T>::listen(bool cancelOnError, std::function<void(T event)> onData, std::function<void()> onDone, std::function<void ()> onError) {
     StreamSubscription<T> subscription = <S, T>make<_SinkTransformerStreamSubscriptionCls>(_stream, _sinkMapper, onData, onError, onDone, cancelOnError or false);
     return subscription;
 }
@@ -165,7 +165,7 @@ Stream<T> _StreamHandlerTransformerCls<S, T>::bind(Stream<S> stream) {
 }
 
 template<typename S, typename T>
-_StreamHandlerTransformerCls<S, T>::_StreamHandlerTransformerCls(void handleData(S data, EventSink<T> sink) , void handleDone(EventSink<T> sink) , void handleError(Object error, EventSink<T> sink, StackTrace stackTrace) ) {
+_StreamHandlerTransformerCls<S, T>::_StreamHandlerTransformerCls(std::function<void(S data, EventSink<T> sink)> handleData, std::function<void(EventSink<T> sink)> handleDone, std::function<void(Object error, EventSink<T> sink, StackTrace stackTrace)> handleError) {
 }
 
 template<typename S, typename T>
@@ -184,7 +184,7 @@ bool _BoundSubscriptionStreamCls<S, T>::isBroadcast() {
 }
 
 template<typename S, typename T>
-StreamSubscription<T> _BoundSubscriptionStreamCls<S, T>::listen(bool cancelOnError, void onData(T event) , void onDone() , void  onError() ) {
+StreamSubscription<T> _BoundSubscriptionStreamCls<S, T>::listen(bool cancelOnError, std::function<void(T event)> onData, std::function<void()> onDone, std::function<void ()> onError) {
     StreamSubscription<T> result = _onListen(_stream, cancelOnError or false);
     result->onData(onData);
     result->onError(onError);

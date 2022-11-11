@@ -37,7 +37,7 @@ public:
     virtual double truncateToDouble() override;
     virtual String toString() override;
     virtual String toRadixString(int radix);
-    static int parse(int onError(String source) , int radix, String source) override;
+    static int parse(std::function<int(String source)> onError, int radix, String source) override;
     static int tryParse(int radix, String source) override;
 private:
 

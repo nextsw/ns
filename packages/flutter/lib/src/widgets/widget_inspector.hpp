@@ -356,17 +356,17 @@ private:
     _ElementLocationStatsTracker _repaintStats;
 
 
-    virtual void _registerSignalServiceExtension(FutureOr<Object> callback() , String name);
+    virtual void _registerSignalServiceExtension(std::function<FutureOr<Object>()> callback, String name);
 
-    virtual void _registerObjectGroupServiceExtension(FutureOr<Object> callback(String objectGroup) , String name);
+    virtual void _registerObjectGroupServiceExtension(std::function<FutureOr<Object>(String objectGroup)> callback, String name);
 
     virtual void _registerBoolServiceExtension(AsyncValueGetter<bool> getter, String name, AsyncValueSetter<bool> setter);
 
     virtual void _postExtensionStateChangedEvent(String name, Object value);
 
-    virtual void _registerServiceExtensionWithArg(FutureOr<Object> callback(String objectGroup, String objectId) , String name);
+    virtual void _registerServiceExtensionWithArg(std::function<FutureOr<Object>(String objectGroup, String objectId)> callback, String name);
 
-    virtual void _registerServiceExtensionVarArgs(FutureOr<Object> callback(List<String> args) , String name);
+    virtual void _registerServiceExtensionVarArgs(std::function<FutureOr<Object>(List<String> args)> callback, String name);
 
     virtual void _reportStructuredError(FlutterErrorDetails details);
 
@@ -808,10 +808,10 @@ public:
 
     bool expandPropertyValues;
 
-    Map<String, Object> Function(DiagnosticsNode , InspectorSerializationDelegate ) addAdditionalPropertiesCallback;
+    std::function<Map<String, Object>(DiagnosticsNode , InspectorSerializationDelegate )> addAdditionalPropertiesCallback;
 
 
-     InspectorSerializationDelegateCls(Map<String, Object> Function(DiagnosticsNode , InspectorSerializationDelegate ) addAdditionalPropertiesCallback, bool expandPropertyValues, String groupName, bool includeProperties, int maxDescendentsTruncatableNode, WidgetInspectorService service, int subtreeDepth, bool summaryTree);
+     InspectorSerializationDelegateCls(std::function<Map<String, Object>(DiagnosticsNode , InspectorSerializationDelegate )> addAdditionalPropertiesCallback, bool expandPropertyValues, String groupName, bool includeProperties, int maxDescendentsTruncatableNode, WidgetInspectorService service, int subtreeDepth, bool summaryTree);
     virtual Map<String, Object> additionalNodeProperties(DiagnosticsNode node);
 
     virtual DiagnosticsSerializationDelegate delegateForNode(DiagnosticsNode node);

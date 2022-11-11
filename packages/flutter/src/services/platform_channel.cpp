@@ -103,7 +103,7 @@ Future<T> BasicMessageChannelCls<T>::send(T message) {
 }
 
 template<typename T>
-void BasicMessageChannelCls<T>::setMessageHandler(Future<T> handler(T message) ) {
+void BasicMessageChannelCls<T>::setMessageHandler(std::function<Future<T>(T message)> handler) {
     if (handler == nullptr) {
         binaryMessenger()->setMessageHandler(name, nullptr);
     } else {
@@ -143,7 +143,7 @@ Future<Map<K, V>> MethodChannelCls::invokeMapMethod(dynamic arguments, String me
     return result?-><K, V>cast();
 }
 
-void MethodChannelCls::setMethodCallHandler(Future<dynamic> handler(MethodCall call) ) {
+void MethodChannelCls::setMethodCallHandler(std::function<Future<dynamic>(MethodCall call)> handler) {
     assert(_binaryMessenger != nullptr || ServicesBindingCls::instance != nullptr, __s("Cannot set the method call handler before the binary messenger has been initialized. This happens when you call setMethodCallHandler() before the WidgetsFlutterBinding has been initialized. You can fix this by either calling WidgetsFlutterBinding.ensureInitialized() before this or by passing a custom BinaryMessenger instance to MethodChannel()."));
     binaryMessenger()->setMessageHandler(name, handler == nullptr? nullptr : [=] (ByteData message)     {
         _handleAsMethodCall(message, handler);
@@ -164,7 +164,7 @@ Future<T> MethodChannelCls::_invokeMethod(dynamic arguments, String method, bool
     return as<T>(codec->decodeEnvelope(result));
 }
 
-Future<ByteData> MethodChannelCls::_handleAsMethodCall(Future<dynamic> handler(MethodCall call) , ByteData message) {
+Future<ByteData> MethodChannelCls::_handleAsMethodCall(std::function<Future<dynamic>(MethodCall call)> handler, ByteData message) {
     MethodCall call = codec->decodeMethodCall(message);
     try {
         return codec->encodeSuccessEnvelope(await handler(call));

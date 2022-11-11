@@ -16,7 +16,7 @@ int CallbackHandleCls::hashCode() {
     return _handle->hashCode;
 }
 
-CallbackHandle PluginUtilitiesCls::getCallbackHandle(void  callback() ) {
+CallbackHandle PluginUtilitiesCls::getCallbackHandle(std::function<void ()> callback) {
     assert(callback != nullptr, __s("'callback' must not be null."));
     return _forwardCache->putIfAbsent(callback, [=] () {
         int handle = _getCallbackHandle(callback);
@@ -24,7 +24,7 @@ CallbackHandle PluginUtilitiesCls::getCallbackHandle(void  callback() ) {
     });
 }
 
-void  Function() PluginUtilitiesCls::getCallbackFromHandle(CallbackHandle handle) {
+std::function<void ()> PluginUtilitiesCls::getCallbackFromHandle(CallbackHandle handle) {
     assert(handle != nullptr, __s("'handle' must not be null."));
     return _backwardCache->putIfAbsent(handle, [=] ()     {
         _getCallbackFromHandle(handle->toRawHandle());

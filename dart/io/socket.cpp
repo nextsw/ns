@@ -77,7 +77,7 @@ void ConnectionTaskCls<S>::cancel() {
 }
 
 template<typename S>
-void ConnectionTaskCls<S>::_(void onCancel() , Future<S> socket)
+void ConnectionTaskCls<S>::_(std::function<void()> onCancel, Future<S> socket)
 
 Future<Socket> SocketCls::connect(host , sourceAddress , int port, int sourcePort, Duration timeout) {
     IOOverrides overrides = IOOverridesCls::current;

@@ -117,7 +117,7 @@ using SentinelValue = std::shared_ptr<SentinelValueCls>;
 Object sentinelValue;
 
 template<typename T>
- Object extractTypeArguments(void  extract() , T instance);
+ Object extractTypeArguments(std::function<void ()> extract, T instance);
 
 class SinceCls : public ObjectCls {
 public:

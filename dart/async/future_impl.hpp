@@ -80,18 +80,18 @@ public:
 
     int state;
 
-    void  Function() callback;
+    std::function<void ()> callback;
 
-    void  Function() errorCallback;
+    std::function<void ()> errorCallback;
 
 
-    virtual void  then(void  errorCallback() , FutureOr<T> onValue(S ) , _Future<T> result);
+    virtual void  then(std::function<void ()> errorCallback, std::function<FutureOr<T>(S )> onValue, _Future<T> result);
 
-    virtual void  thenAwait(void  errorCallback() , FutureOr<T> onValue(S ) , _Future<T> result);
+    virtual void  thenAwait(std::function<void ()> errorCallback, std::function<FutureOr<T>(S )> onValue, _Future<T> result);
 
-    virtual void  catchError(void  Function() callback, void  Function() errorCallback, _Future<T> result);
+    virtual void  catchError(std::function<void ()> callback, std::function<void ()> errorCallback, _Future<T> result);
 
-    virtual void  whenComplete(void  Function() callback, _Future<T> result);
+    virtual void  whenComplete(std::function<void ()> callback, _Future<T> result);
 
     virtual bool handlesValue();
 
@@ -119,13 +119,13 @@ private:
 
     virtual _Zone _zone();
 
-    virtual FutureOr<T> Function(S ) _onValue();
+    virtual std::function<FutureOr<T>(S )> _onValue();
 
-    virtual void  Function() _onError();
+    virtual std::function<void ()> _onError();
 
-    virtual bool Function(Object ) _errorTest();
+    virtual std::function<bool(Object )> _errorTest();
 
-    virtual dynamic Function() _whenCompleteAction();
+    virtual std::function<dynamic()> _whenCompleteAction();
 
 };
 template<typename S, typename T>

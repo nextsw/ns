@@ -4,7 +4,7 @@
 
 #include <dart/core/core.hpp>
 
-void Function(String ) printToZone;
+std::function<void(String )> printToZone;
 
 void printToConsole(String line);
 

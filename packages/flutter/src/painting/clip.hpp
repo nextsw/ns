@@ -18,7 +18,7 @@ public:
 
 private:
 
-    virtual void _clipAndPaint(Rect bounds, void canvasClipCall(bool doAntiAlias) , Clip clipBehavior, VoidCallback painter);
+    virtual void _clipAndPaint(Rect bounds, std::function<void(bool doAntiAlias)> canvasClipCall, Clip clipBehavior, VoidCallback painter);
 
 };
 using ClipContext = std::shared_ptr<ClipContextCls>;

@@ -117,7 +117,7 @@ public:
 
     virtual void  clipBehavior(Clip value);
 
-    static double getIntrinsicDimension(RenderBox firstChild, double mainChildSizeGetter(RenderBox child) );
+    static double getIntrinsicDimension(RenderBox firstChild, std::function<double(RenderBox child)> mainChildSizeGetter);
 
     virtual double computeMinIntrinsicWidth(double height);
 

@@ -1,6 +1,6 @@
 #include "equality.hpp"
 template<typename E, typename F>
-EqualityByCls<E, F>::EqualityByCls(F comparisonKey(E ) , Equality<F> inner) {
+EqualityByCls<E, F>::EqualityByCls(std::function<F(E )> comparisonKey, Equality<F> inner) {
     {
         _comparisonKey = comparisonKey;
         _inner = inner;

@@ -1,6 +1,6 @@
 #include "priority_queue.hpp"
 template<typename E>
-HeapPriorityQueueCls<E>::HeapPriorityQueueCls(int comparison(E , E ) ) {
+HeapPriorityQueueCls<E>::HeapPriorityQueueCls(std::function<int(E , E )> comparison) {
     {
         comparison = comparison or defaultCompare;
     }

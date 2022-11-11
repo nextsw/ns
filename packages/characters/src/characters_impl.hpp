@@ -36,7 +36,7 @@ public:
 
     virtual String join(String separator);
 
-    virtual String lastWhere(String orElse() , bool test(String element) );
+    virtual String lastWhere(std::function<String()> orElse, std::function<bool(String element)> test);
 
     virtual String elementAt(int index);
 
@@ -62,21 +62,21 @@ public:
 
     virtual Characters characterAt(int position);
 
-    virtual Characters skipWhile(bool test(String ) );
+    virtual Characters skipWhile(std::function<bool(String )> test);
 
-    virtual Characters takeWhile(bool test(String ) );
+    virtual Characters takeWhile(std::function<bool(String )> test);
 
-    virtual Characters where(bool test(String ) );
+    virtual Characters where(std::function<bool(String )> test);
 
     virtual Characters operator+(Characters characters);
 
     virtual Characters skipLast(int count);
 
-    virtual Characters skipLastWhile(bool test(String ) );
+    virtual Characters skipLastWhile(std::function<bool(String )> test);
 
     virtual Characters takeLast(int count);
 
-    virtual Characters takeLastWhile(bool test(String ) );
+    virtual Characters takeLastWhile(std::function<bool(String )> test);
 
     virtual Characters toLowerCase();
 
@@ -134,7 +134,7 @@ public:
 
     virtual bool dropUntil(Characters target);
 
-    virtual void dropWhile(bool test(String ) );
+    virtual void dropWhile(std::function<bool(String )> test);
 
     virtual bool dropLast(int count);
 
@@ -142,13 +142,13 @@ public:
 
     virtual bool dropBackUntil(Characters target);
 
-    virtual void dropBackWhile(bool test(String ) );
+    virtual void dropBackWhile(std::function<bool(String )> test);
 
     virtual bool expandNext(int count);
 
     virtual bool expandTo(Characters target);
 
-    virtual void expandWhile(bool test(String character) );
+    virtual void expandWhile(std::function<bool(String character)> test);
 
     virtual void expandAll();
 
@@ -156,7 +156,7 @@ public:
 
     virtual bool expandBackTo(Characters target);
 
-    virtual void expandBackWhile(bool test(String character) );
+    virtual void expandBackWhile(std::function<bool(String character)> test);
 
     virtual bool expandBackUntil(Characters target);
 

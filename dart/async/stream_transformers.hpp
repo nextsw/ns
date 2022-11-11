@@ -34,7 +34,7 @@ private:
     StreamSubscription<S> _subscription;
 
 
-     _SinkTransformerStreamSubscriptionCls(bool cancelOnError, _SinkMapper<S, T> mapper, void onData(T data) , void onDone() , void  onError() , Stream<S> source);
+     _SinkTransformerStreamSubscriptionCls(bool cancelOnError, _SinkMapper<S, T> mapper, std::function<void(T data)> onData, std::function<void()> onDone, std::function<void ()> onError, Stream<S> source);
 
     virtual void _add(T data);
 
@@ -79,7 +79,7 @@ public:
 
     virtual bool isBroadcast();
 
-    virtual StreamSubscription<T> listen(bool cancelOnError, void onData(T event) , void onDone() , void  onError() );
+    virtual StreamSubscription<T> listen(bool cancelOnError, std::function<void(T event)> onData, std::function<void()> onDone, std::function<void ()> onError);
 
 private:
     _SinkMapper<S, T> _sinkMapper;
@@ -125,7 +125,7 @@ public:
 
 private:
 
-     _StreamHandlerTransformerCls(void handleData(S data, EventSink<T> sink) , void handleDone(EventSink<T> sink) , void handleError(Object error, EventSink<T> sink, StackTrace stackTrace) );
+     _StreamHandlerTransformerCls(std::function<void(S data, EventSink<T> sink)> handleData, std::function<void(EventSink<T> sink)> handleDone, std::function<void(Object error, EventSink<T> sink, StackTrace stackTrace)> handleError);
 
 };
 template<typename S, typename T>
@@ -138,10 +138,10 @@ public:
     virtual Stream<T> bind(Stream<S> stream);
 
 private:
-    Stream<T> Function(Stream<S> ) _bind;
+    std::function<Stream<T>(Stream<S> )> _bind;
 
 
-     _StreamBindTransformerCls(Stream<T> Function(Stream<S> ) _bind);
+     _StreamBindTransformerCls(std::function<Stream<T>(Stream<S> )> _bind);
 };
 template<typename S, typename T>
 using _StreamBindTransformer = std::shared_ptr<_StreamBindTransformerCls<S, T>>;
@@ -167,7 +167,7 @@ public:
 
     virtual bool isBroadcast();
 
-    virtual StreamSubscription<T> listen(bool cancelOnError, void onData(T event) , void onDone() , void  onError() );
+    virtual StreamSubscription<T> listen(bool cancelOnError, std::function<void(T event)> onData, std::function<void()> onDone, std::function<void ()> onError);
 
 private:
     _SubscriptionTransformer<S, T> _onListen;

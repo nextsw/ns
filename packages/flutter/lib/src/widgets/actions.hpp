@@ -175,7 +175,7 @@ public:
 
 private:
 
-    static bool _visitActionsAncestors(BuildContext context, bool visitor(InheritedElement element) );
+    static bool _visitActionsAncestors(BuildContext context, std::function<bool(InheritedElement element)> visitor);
 
     static ActionDispatcher _findDispatcher(BuildContext context);
 

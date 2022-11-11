@@ -39,9 +39,9 @@ void _setupHooks();
 
 List<int> saveCompilationTrace();
 
-void _scheduleMicrotask(void callback() );
-int _getCallbackHandle(void  closure() );
-void  Function() _getCallbackFromHandle(int handle);
+void _scheduleMicrotask(std::function<void()> callback);
+int _getCallbackHandle(std::function<void ()> closure);
+std::function<void ()> _getCallbackFromHandle(int handle);
 _PrintClosure _getPrintClosure();
 
 _ScheduleImmediateClosure _getScheduleMicrotaskClosure();

@@ -17,10 +17,10 @@ public:
     static void  global(IOOverrides overrides);
 
     template<typename R>
- static R runZoned(R body() , Directory createDirectory(String ) , File createFile(String ) , Link createLink(String ) , Stream<FileSystemEvent> fsWatch(String , int , bool ) , bool fsWatchIsSupported() , Future<FileSystemEntityType> fseGetType(String , bool ) , FileSystemEntityType fseGetTypeSync(String , bool ) , Future<bool> fseIdentical(String , String ) , bool fseIdenticalSync(String , String ) , Directory getCurrentDirectory() , Directory getSystemTempDirectory() , Future<ServerSocket> serverSocketBind(dynamic , int , int backlog, bool shared, bool v6Only) , void setCurrentDirectory(String ) , Future<Socket> socketConnect(dynamic , int , dynamic sourceAddress, int sourcePort, Duration timeout) , Future<ConnectionTask<Socket>> socketStartConnect(dynamic , int , dynamic sourceAddress, int sourcePort) , Future<FileStat> stat(String ) , FileStat statSync(String ) , Stdout stderr() , Stdin stdin() , Stdout stdout() );
+ static R runZoned(std::function<R()> body, std::function<Directory(String )> createDirectory, std::function<File(String )> createFile, std::function<Link(String )> createLink, std::function<Stream<FileSystemEvent>(String , int , bool )> fsWatch, std::function<bool()> fsWatchIsSupported, std::function<Future<FileSystemEntityType>(String , bool )> fseGetType, std::function<FileSystemEntityType(String , bool )> fseGetTypeSync, std::function<Future<bool>(String , String )> fseIdentical, std::function<bool(String , String )> fseIdenticalSync, std::function<Directory()> getCurrentDirectory, std::function<Directory()> getSystemTempDirectory, std::function<Future<ServerSocket>(dynamic , int , int backlog, bool shared, bool v6Only)> serverSocketBind, std::function<void(String )> setCurrentDirectory, std::function<Future<Socket>(dynamic , int , dynamic sourceAddress, int sourcePort, Duration timeout)> socketConnect, std::function<Future<ConnectionTask<Socket>>(dynamic , int , dynamic sourceAddress, int sourcePort)> socketStartConnect, std::function<Future<FileStat>(String )> stat, std::function<FileStat(String )> statSync, std::function<Stdout()> stderr, std::function<Stdin()> stdin, std::function<Stdout()> stdout);
 
     template<typename R>
- static R runWithIOOverrides(R body() , IOOverrides overrides);
+ static R runWithIOOverrides(std::function<R()> body, IOOverrides overrides);
 
     virtual Directory createDirectory(String path);
 
@@ -115,48 +115,48 @@ public:
 private:
     IOOverrides _previous;
 
-    Directory Function(String ) _createDirectory;
+    std::function<Directory(String )> _createDirectory;
 
-    Directory Function() _getCurrentDirectory;
+    std::function<Directory()> _getCurrentDirectory;
 
-    void Function(String ) _setCurrentDirectory;
+    std::function<void(String )> _setCurrentDirectory;
 
-    Directory Function() _getSystemTempDirectory;
+    std::function<Directory()> _getSystemTempDirectory;
 
-    File Function(String ) _createFile;
+    std::function<File(String )> _createFile;
 
-    Future<FileStat> Function(String ) _stat;
+    std::function<Future<FileStat>(String )> _stat;
 
-    FileStat Function(String ) _statSync;
+    std::function<FileStat(String )> _statSync;
 
-    Future<bool> Function(String , String ) _fseIdentical;
+    std::function<Future<bool>(String , String )> _fseIdentical;
 
-    bool Function(String , String ) _fseIdenticalSync;
+    std::function<bool(String , String )> _fseIdenticalSync;
 
-    Future<FileSystemEntityType> Function(String , bool ) _fseGetType;
+    std::function<Future<FileSystemEntityType>(String , bool )> _fseGetType;
 
-    FileSystemEntityType Function(String , bool ) _fseGetTypeSync;
+    std::function<FileSystemEntityType(String , bool )> _fseGetTypeSync;
 
-    Stream<FileSystemEvent> Function(String , int , bool ) _fsWatch;
+    std::function<Stream<FileSystemEvent>(String , int , bool )> _fsWatch;
 
-    bool Function() _fsWatchIsSupported;
+    std::function<bool()> _fsWatchIsSupported;
 
-    Link Function(String ) _createLink;
+    std::function<Link(String )> _createLink;
 
-    Future<Socket> Function(dynamic , int , dynamic sourceAddress, int sourcePort, Duration timeout) _socketConnect;
+    std::function<Future<Socket>(dynamic , int , dynamic sourceAddress, int sourcePort, Duration timeout)> _socketConnect;
 
-    Future<ConnectionTask<Socket>> Function(dynamic , int , dynamic sourceAddress, int sourcePort) _socketStartConnect;
+    std::function<Future<ConnectionTask<Socket>>(dynamic , int , dynamic sourceAddress, int sourcePort)> _socketStartConnect;
 
-    Future<ServerSocket> Function(dynamic , int , int backlog, bool shared, bool v6Only) _serverSocketBind;
+    std::function<Future<ServerSocket>(dynamic , int , int backlog, bool shared, bool v6Only)> _serverSocketBind;
 
-    Stdin Function() _stdin;
+    std::function<Stdin()> _stdin;
 
-    Stdout Function() _stdout;
+    std::function<Stdout()> _stdout;
 
-    Stdout Function() _stderr;
+    std::function<Stdout()> _stderr;
 
 
-     _IOOverridesScopeCls(Directory Function(String ) _createDirectory, File Function(String ) _createFile, Link Function(String ) _createLink, Stream<FileSystemEvent> Function(String , int , bool ) _fsWatch, bool Function() _fsWatchIsSupported, Future<FileSystemEntityType> Function(String , bool ) _fseGetType, FileSystemEntityType Function(String , bool ) _fseGetTypeSync, Future<bool> Function(String , String ) _fseIdentical, bool Function(String , String ) _fseIdenticalSync, Directory Function() _getCurrentDirectory, Directory Function() _getSystemTempDirectory, Future<ServerSocket> Function(dynamic , int , int backlog, bool shared, bool v6Only) _serverSocketBind, void Function(String ) _setCurrentDirectory, Future<Socket> Function(dynamic , int , dynamic sourceAddress, int sourcePort, Duration timeout) _socketConnect, Future<ConnectionTask<Socket>> Function(dynamic , int , dynamic sourceAddress, int sourcePort) _socketStartConnect, Future<FileStat> Function(String ) _stat, FileStat Function(String ) _statSync, Stdout Function() _stderr, Stdin Function() _stdin, Stdout Function() _stdout);
+     _IOOverridesScopeCls(std::function<Directory(String )> _createDirectory, std::function<File(String )> _createFile, std::function<Link(String )> _createLink, std::function<Stream<FileSystemEvent>(String , int , bool )> _fsWatch, std::function<bool()> _fsWatchIsSupported, std::function<Future<FileSystemEntityType>(String , bool )> _fseGetType, std::function<FileSystemEntityType(String , bool )> _fseGetTypeSync, std::function<Future<bool>(String , String )> _fseIdentical, std::function<bool(String , String )> _fseIdenticalSync, std::function<Directory()> _getCurrentDirectory, std::function<Directory()> _getSystemTempDirectory, std::function<Future<ServerSocket>(dynamic , int , int backlog, bool shared, bool v6Only)> _serverSocketBind, std::function<void(String )> _setCurrentDirectory, std::function<Future<Socket>(dynamic , int , dynamic sourceAddress, int sourcePort, Duration timeout)> _socketConnect, std::function<Future<ConnectionTask<Socket>>(dynamic , int , dynamic sourceAddress, int sourcePort)> _socketStartConnect, std::function<Future<FileStat>(String )> _stat, std::function<FileStat(String )> _statSync, std::function<Stdout()> _stderr, std::function<Stdin()> _stdin, std::function<Stdout()> _stdout);
 };
 using _IOOverridesScope = std::shared_ptr<_IOOverridesScopeCls>;
 

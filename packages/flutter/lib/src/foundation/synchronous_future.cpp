@@ -8,13 +8,13 @@ Stream<T> SynchronousFutureCls<T>::asStream() {
 }
 
 template<typename T>
-Future<T> SynchronousFutureCls<T>::catchError(void  onError() , bool test(Object error) ) {
+Future<T> SynchronousFutureCls<T>::catchError(std::function<void ()> onError, std::function<bool(Object error)> test) {
     return <T>make<CompleterCls>()->future;
 }
 
 template<typename T>
 template<typename R>
-Future<R> SynchronousFutureCls<T>::then(void  onError() , FutureOr<R> onValue(T value) ) {
+Future<R> SynchronousFutureCls<T>::then(std::function<void ()> onError, std::function<FutureOr<R>(T value)> onValue) {
     dynamic result = onValue(_value);
     if (is<Future<R>>(result)) {
         return result;
@@ -23,12 +23,12 @@ Future<R> SynchronousFutureCls<T>::then(void  onError() , FutureOr<R> onValue(T 
 }
 
 template<typename T>
-Future<T> SynchronousFutureCls<T>::timeout(FutureOr<T> onTimeout() , Duration timeLimit) {
+Future<T> SynchronousFutureCls<T>::timeout(std::function<FutureOr<T>()> onTimeout, Duration timeLimit) {
     return <T>value(_value)->timeout(timeLimitonTimeout);
 }
 
 template<typename T>
-Future<T> SynchronousFutureCls<T>::whenComplete(FutureOr<dynamic> action() ) {
+Future<T> SynchronousFutureCls<T>::whenComplete(std::function<FutureOr<dynamic>()> action) {
     try {
         FutureOr<dynamic> result = action();
         if (is<Future>(result)) {

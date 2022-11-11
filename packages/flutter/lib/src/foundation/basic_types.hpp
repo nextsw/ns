@@ -14,20 +14,20 @@ public:
     virtual Iterator<E> iterator();
 
     template<typename T>
- virtual Iterable<T> map(T toElement(E e) );
+ virtual Iterable<T> map(std::function<T(E e)> toElement);
 
-    virtual Iterable<E> where(bool test(E element) );
+    virtual Iterable<E> where(std::function<bool(E element)> test);
 
     template<typename T>
- virtual Iterable<T> expand(Iterable<T> toElements(E element) );
+ virtual Iterable<T> expand(std::function<Iterable<T>(E element)> toElements);
 
     virtual Iterable<E> take(int count);
 
-    virtual Iterable<E> takeWhile(bool test(E value) );
+    virtual Iterable<E> takeWhile(std::function<bool(E value)> test);
 
     virtual Iterable<E> skip(int count);
 
-    virtual Iterable<E> skipWhile(bool test(E value) );
+    virtual Iterable<E> skipWhile(std::function<bool(E value)> test);
 
     virtual int length();
 

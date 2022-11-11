@@ -27,7 +27,7 @@ public:
 
     virtual Iterable<E> followedBy(Iterable<E> other);
 
-    virtual void forEach(void action(E element) );
+    virtual void forEach(std::function<void(E element)> action);
 
     virtual bool isEmpty();
 
@@ -45,41 +45,41 @@ public:
 
     virtual bool contains(Object element);
 
-    virtual bool every(bool test(E element) );
+    virtual bool every(std::function<bool(E element)> test);
 
-    virtual bool any(bool test(E element) );
+    virtual bool any(std::function<bool(E element)> test);
 
-    virtual E firstWhere(E orElse() , bool test(E element) );
+    virtual E firstWhere(std::function<E()> orElse, std::function<bool(E element)> test);
 
-    virtual E lastWhere(E orElse() , bool test(E element) );
+    virtual E lastWhere(std::function<E()> orElse, std::function<bool(E element)> test);
 
-    virtual E singleWhere(E orElse() , bool test(E element) );
+    virtual E singleWhere(std::function<E()> orElse, std::function<bool(E element)> test);
 
     virtual String join(String separator);
 
-    virtual Iterable<E> where(bool test(E element) );
+    virtual Iterable<E> where(std::function<bool(E element)> test);
 
     template<typename T>
  virtual Iterable<T> whereType();
 
     template<typename T>
- virtual Iterable<T> map(T f(E element) );
+ virtual Iterable<T> map(std::function<T(E element)> f);
 
     template<typename T>
- virtual Iterable<T> expand(Iterable<T> f(E element) );
+ virtual Iterable<T> expand(std::function<Iterable<T>(E element)> f);
 
-    virtual E reduce(E combine(E element, E previousValue) );
+    virtual E reduce(std::function<E(E element, E previousValue)> combine);
 
     template<typename T>
- virtual T fold(T combine(E element, T previousValue) , T initialValue);
+ virtual T fold(std::function<T(E element, T previousValue)> combine, T initialValue);
 
     virtual Iterable<E> skip(int count);
 
-    virtual Iterable<E> skipWhile(bool test(E element) );
+    virtual Iterable<E> skipWhile(std::function<bool(E element)> test);
 
     virtual Iterable<E> take(int count);
 
-    virtual Iterable<E> takeWhile(bool test(E element) );
+    virtual Iterable<E> takeWhile(std::function<bool(E element)> test);
 
     virtual List<E> toList(bool growable);
 
@@ -91,9 +91,9 @@ public:
 
     virtual bool remove(Object element);
 
-    virtual void removeWhere(bool test(E element) );
+    virtual void removeWhere(std::function<bool(E element)> test);
 
-    virtual void retainWhere(bool test(E element) );
+    virtual void retainWhere(std::function<bool(E element)> test);
 
     virtual void clear();
 
@@ -102,7 +102,7 @@ public:
 
     virtual E removeLast();
 
-    virtual void sort(int compare(E a, E b) );
+    virtual void sort(std::function<int(E a, E b)> compare);
 
     virtual void shuffle(Random random);
 
@@ -124,11 +124,11 @@ public:
 
     virtual int indexOf(Object element, int start);
 
-    virtual int indexWhere(int start, bool test(E element) );
+    virtual int indexWhere(int start, std::function<bool(E element)> test);
 
     virtual int lastIndexOf(Object element, int start);
 
-    virtual int lastIndexWhere(int start, bool test(E element) );
+    virtual int lastIndexWhere(int start, std::function<bool(E element)> test);
 
     virtual void insert(E element, int index);
 
@@ -146,7 +146,7 @@ private:
 
     virtual void _closeGap(int end, int start);
 
-    virtual void _filter(bool retainMatching, bool test(E element) );
+    virtual void _filter(bool retainMatching, std::function<bool(E element)> test);
 
     static int _compareAny(dynamic a, dynamic b);
 
