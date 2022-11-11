@@ -153,7 +153,7 @@ void _RenderLayoutBuilderCls::performLayout() {
     BoxConstraints constraints = this->constraints;
     rebuildIfNecessary();
     if (child != nullptr) {
-        child!->layout(constraintstrue);
+        child!->layout(constraints, true);
         size = constraints->constrain(child!->size);
     } else {
         size = constraints->biggest();
@@ -168,7 +168,7 @@ double _RenderLayoutBuilderCls::computeDistanceToActualBaseline(TextBaseline bas
 }
 
 bool _RenderLayoutBuilderCls::hitTestChildren(BoxHitTestResult result, Offset position) {
-    return child?->hitTest(resultposition) | false;
+    return child?->hitTest(result, position) | false;
 }
 
 void _RenderLayoutBuilderCls::paint(PaintingContext context, Offset offset) {

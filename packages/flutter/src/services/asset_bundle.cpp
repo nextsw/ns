@@ -12,7 +12,7 @@ Future<String> AssetBundleCls::loadString(String key, bool cache) {
     if (data->lengthInBytes < 50 * 1024) {
         return utf8->decode(data->buffer->asUint8List());
     }
-    return compute(_utf8decode, data__s("UTF8 decode for "$key""));
+    return compute(_utf8decode, data, __s("UTF8 decode for "$key""));
 }
 
 void AssetBundleCls::evict(String key) {
@@ -79,7 +79,7 @@ Future<T> CachingAssetBundleCls::loadStructuredData(String key, std::function<Fu
     }
     Completer<T> completer;
     Future<T> result;
-    loadString(keyfalse)-><T>then(parser)-><void>then([=] (T value) {
+    loadString(key, false)-><T>then(parser)-><void>then([=] (T value) {
         result = <T>make<SynchronousFutureCls>(value);
         _structuredDataCache[key] = result!;
         if (completer != nullptr) {

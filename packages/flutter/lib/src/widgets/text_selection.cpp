@@ -171,12 +171,12 @@ void TextSelectionOverlayCls::_handleSelectionEndHandleDragUpdate(DragUpdateDeta
     _dragEndPosition += details->delta;
     TextPosition position = renderObject->getPositionForPoint(_dragEndPosition);
     if (_selection()->isCollapsed) {
-        _handleSelectionHandleChanged(TextSelectionCls->fromPosition(position)true);
+        _handleSelectionHandleChanged(TextSelectionCls->fromPosition(position), true);
         return;
     }
     TextSelection newSelection;
     ;
-    _handleSelectionHandleChanged(newSelectiontrue);
+    _handleSelectionHandleChanged(newSelection, true);
 }
 
 void TextSelectionOverlayCls::_handleSelectionStartHandleDragStart(DragStartDetails details) {
@@ -188,12 +188,12 @@ void TextSelectionOverlayCls::_handleSelectionStartHandleDragUpdate(DragUpdateDe
     _dragStartPosition += details->delta;
     TextPosition position = renderObject->getPositionForPoint(_dragStartPosition);
     if (_selection()->isCollapsed) {
-        _handleSelectionHandleChanged(TextSelectionCls->fromPosition(position)false);
+        _handleSelectionHandleChanged(TextSelectionCls->fromPosition(position), false);
         return;
     }
     TextSelection newSelection;
     ;
-    _handleSelectionHandleChanged(newSelectionfalse);
+    _handleSelectionHandleChanged(newSelection, false);
 }
 
 void TextSelectionOverlayCls::_handleSelectionHandleChanged(TextSelection newSelection, bool isEnd) {
@@ -220,7 +220,7 @@ SelectionOverlayCls::SelectionOverlayCls(ClipboardStatusNotifier clipboardStatus
         _toolbarLocation = toolbarLocation;
     }
     {
-        OverlayState overlay = OverlayCls->of(contexttrue);
+        OverlayState overlay = OverlayCls->of(context, true);
         assert(overlay != nullptr, __s("No Overlay widget exists above $context.\nUsually the Navigator created by WidgetsApp provides the overlay. Perhaps your app content was created above the Navigator with the WidgetsApp builder parameter."));
     }
 }
@@ -301,7 +301,7 @@ void SelectionOverlayCls::showHandles() {
         return;
     }
     _handles = makeList(ArrayItem, ArrayItem);
-    OverlayCls->of(contexttrue, debugRequiredFor)!->insertAll(_handles!);
+    OverlayCls->of(context, true, debugRequiredFor)!->insertAll(_handles!);
 }
 
 void SelectionOverlayCls::hideHandles() {
@@ -317,7 +317,7 @@ void SelectionOverlayCls::showToolbar() {
         return;
     }
     _toolbar = make<OverlayEntryCls>(_buildToolbar);
-    OverlayCls->of(contexttrue, debugRequiredFor)!->insert(_toolbar!);
+    OverlayCls->of(context, true, debugRequiredFor)!->insert(_toolbar!);
 }
 
 void SelectionOverlayCls::hide() {

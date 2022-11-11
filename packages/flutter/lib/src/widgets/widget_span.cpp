@@ -15,7 +15,7 @@ void WidgetSpanCls::build(ParagraphBuilder builder, List<PlaceholderDimensions> 
     }
     assert(builder->placeholderCount() < dimensions!->length());
     PlaceholderDimensions currentDimensions = dimensions![builder->placeholderCount()];
-    builder->addPlaceholder(currentDimensions->size->width(), currentDimensions->size->height(), alignmenttextScaleFactor, currentDimensions->baseline, currentDimensions->baselineOffset);
+    builder->addPlaceholder(currentDimensions->size->width(), currentDimensions->size->height(), alignment, textScaleFactor, currentDimensions->baseline, currentDimensions->baselineOffset);
     if (hasStyle) {
         builder->pop();
     }

@@ -29,7 +29,7 @@ Size MultiChildLayoutDelegateCls::layoutChild(Object childId, BoxConstraints con
         };
         return true;
     }());
-    child!->layout(constraintstrue);
+    child!->layout(constraints, true);
     return child->size();
 }
 
@@ -195,7 +195,7 @@ void RenderCustomMultiChildLayoutBoxCls::paint(PaintingContext context, Offset o
 }
 
 bool RenderCustomMultiChildLayoutBoxCls::hitTestChildren(BoxHitTestResult result, Offset position) {
-    return defaultHitTestChildren(resultposition);
+    return defaultHitTestChildren(result, position);
 }
 
 Size RenderCustomMultiChildLayoutBoxCls::_getSize(BoxConstraints constraints) {

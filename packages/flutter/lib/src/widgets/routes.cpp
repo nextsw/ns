@@ -197,7 +197,7 @@ void TransitionRouteCls<T>::_updateSecondaryAnimation(Route<dynamic> nextRoute) 
                     newAnimation?->dispose();
                 };
                 nextTrain->addStatusListener(jumpOnAnimationEnd);
-                newAnimation = make<TrainHoppingAnimationCls>(currentTrain, nextTrain[=] () {
+                newAnimation = make<TrainHoppingAnimationCls>(currentTrain, nextTrain, [=] () {
                     assert(_secondaryAnimation->parent() == newAnimation);
                     assert(newAnimation!->currentTrain == nextRoute->_animation);
                     _setSecondaryAnimation(newAnimation!->currentTrain, nextRoute->completed);
@@ -330,9 +330,9 @@ bool _ModalScopeStatusCls::updateShouldNotify(_ModalScopeStatus old) {
 
 void _ModalScopeStatusCls::debugFillProperties(DiagnosticPropertiesBuilder description) {
     super->debugFillProperties(description);
-    description->add(make<FlagPropertyCls>(__s("isCurrent")isCurrent, __s("active"), __s("inactive")));
-    description->add(make<FlagPropertyCls>(__s("canPop")canPop, __s("can pop")));
-    description->add(make<FlagPropertyCls>(__s("impliesAppBarDismissal")impliesAppBarDismissal, __s("implies app bar dismissal")));
+    description->add(make<FlagPropertyCls>(__s("isCurrent"), isCurrent, __s("active"), __s("inactive")));
+    description->add(make<FlagPropertyCls>(__s("canPop"), canPop, __s("can pop")));
+    description->add(make<FlagPropertyCls>(__s("impliesAppBarDismissal"), impliesAppBarDismissal, __s("implies app bar dismissal")));
 }
 
 _ModalScopeStatusCls::_ModalScopeStatusCls(bool canPop, Unknown child, bool impliesAppBarDismissal, bool isCurrent, Route<dynamic> route) {
@@ -755,7 +755,7 @@ Future<T> showGeneralDialog(Offset anchorPoint, Color barrierColor, bool barrier
     assert(pageBuilder != nullptr);
     assert(useRootNavigator != nullptr);
     assert(!barrierDismissible || barrierLabel != nullptr);
-    return NavigatorCls->of(contextuseRootNavigator)-><T>push(<T>make<RawDialogRouteCls>(pageBuilder, barrierDismissible, barrierLabel, barrierColor, transitionDuration, transitionBuilder, routeSettings, anchorPoint));
+    return NavigatorCls->of(context, useRootNavigator)-><T>push(<T>make<RawDialogRouteCls>(pageBuilder, barrierDismissible, barrierLabel, barrierColor, transitionDuration, transitionBuilder, routeSettings, anchorPoint));
 }
 
 RenderObject FocusTrapCls::createRenderObject(BuildContext context) {
@@ -792,7 +792,7 @@ void _RenderFocusTrapCls::focusScopeNode(FocusScopeNode value) {
 bool _RenderFocusTrapCls::hitTest(BoxHitTestResult result, Offset position) {
     bool hitTarget = false;
     if (size->contains(position)) {
-        hitTarget = hitTestChildren(resultposition) || hitTestSelf(position);
+        hitTarget = hitTestChildren(result, position) || hitTestSelf(position);
         if (hitTarget) {
             BoxHitTestEntry entry = make<BoxHitTestEntryCls>(this, position);
             cachedResults[entry] = result;

@@ -237,7 +237,7 @@ Future<void> ScrollPositionCls::ensureVisible(RenderObject object, double alignm
         jumpTo(target);
         return <void>value();
     }
-    return animateTo(targetduration, curve);
+    return animateTo(target, duration, curve);
 }
 
 Future<void> ScrollPositionCls::moveTo(double to, bool clamp, Curve curve, Duration duration) {
@@ -246,7 +246,7 @@ Future<void> ScrollPositionCls::moveTo(double to, bool clamp, Curve curve, Durat
     if (clamp!) {
         to = clampDouble(to, minScrollExtent(), maxScrollExtent());
     }
-    return super->moveTo(toduration, curve);
+    return super->moveTo(to, duration, curve);
 }
 
 bool ScrollPositionCls::allowImplicitScrolling() {

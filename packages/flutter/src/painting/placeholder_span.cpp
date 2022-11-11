@@ -18,6 +18,6 @@ void PlaceholderSpanCls::describeSemantics(Accumulator offset, List<int> semanti
 
 void PlaceholderSpanCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<PlaceholderAlignment>make<EnumPropertyCls>(__s("alignment"), alignmentnullptr));
-    properties->add(<TextBaseline>make<EnumPropertyCls>(__s("baseline"), baselinenullptr));
+    properties->add(<PlaceholderAlignment>make<EnumPropertyCls>(__s("alignment"), alignment, nullptr));
+    properties->add(<TextBaseline>make<EnumPropertyCls>(__s("baseline"), baseline, nullptr));
 }

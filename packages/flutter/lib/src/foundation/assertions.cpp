@@ -144,7 +144,7 @@ DiagnosticsNode FlutterErrorDetailsCls::summary() {
         debugFillProperties(builder);
         summary = builder->properties-><DiagnosticsNode>cast()->firstWhere([=] (DiagnosticsNode node)         {
             node!->level == DiagnosticLevelCls::summary;
-        }[=] ()         {
+        }, [=] ()         {
             nullptr;
         });
     }
@@ -200,7 +200,7 @@ void FlutterErrorDetailsCls::debugFillProperties(DiagnosticPropertiesBuilder pro
             }
         }
         properties->add(make<ErrorSpacerCls>());
-        properties->add(make<DiagnosticsStackTraceCls>(__s("When the exception was thrown, this was the stack"), stackstackFilter));
+        properties->add(make<DiagnosticsStackTraceCls>(__s("When the exception was thrown, this was the stack"), stack, stackFilter));
     }
     if (informationCollector != nullptr) {
         properties->add(make<ErrorSpacerCls>());
@@ -248,7 +248,7 @@ void FlutterErrorCls::fromParts(List<DiagnosticsNode> diagnostics) {
             List<DiagnosticsNode> message = makeList(ArrayItem, ArrayItem, ArrayItem, ArrayItem);
             int i = 1;
             for (DiagnosticsNode summary : summaries) {
-                message->add(<DiagnosticsNode>make<DiagnosticsPropertyCls>(__s("Summary $i"), summarytrue));
+                message->add(<DiagnosticsNode>make<DiagnosticsPropertyCls>(__s("Summary $i"), summary, true));
                 i += 1;
             }
             message->add(make<ErrorDescriptionCls>(__s("\nThis error should still help you solve your problem, however please also report this malformed error in the framework by filing a bug on GitHub:\n  https://github.com/flutter/flutter/issues/new?template=2_bug.md")));
@@ -428,7 +428,7 @@ List<DiagnosticsNode> DiagnosticsStackTraceCls::_applyStackFilter(StackTrace sta
 }
 
 DiagnosticsNode DiagnosticsStackTraceCls::_createStackFrame(String frame) {
-    return DiagnosticsNodeCls->message(framefalse);
+    return DiagnosticsNodeCls->message(frame, false);
 }
 
 DiagnosticPropertiesBuilder _FlutterErrorDetailsNodeCls::builder() {

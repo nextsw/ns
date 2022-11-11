@@ -66,15 +66,15 @@ void StrutStyleCls::debugFillProperties(DiagnosticPropertiesBuilder properties, 
     if (fontWeight != nullptr) {
         weightDescription = __s("w${fontWeight!.index + 1}00");
     }
-    styles->add(<FontWeight>make<DiagnosticsPropertyCls>(__s("${prefix}weight"), fontWeightweightDescription, nullptr));
-    styles->add(<FontStyle>make<EnumPropertyCls>(__s("${prefix}style"), fontStylenullptr));
-    styles->add(make<DoublePropertyCls>(__s("${prefix}height"), height__s("x"), nullptr));
-    styles->add(make<FlagPropertyCls>(__s("${prefix}forceStrutHeight")forceStrutHeight, __s("$prefix<strut height forced>"), __s("$prefix<strut height normal>")));
+    styles->add(<FontWeight>make<DiagnosticsPropertyCls>(__s("${prefix}weight"), fontWeight, weightDescription, nullptr));
+    styles->add(<FontStyle>make<EnumPropertyCls>(__s("${prefix}style"), fontStyle, nullptr));
+    styles->add(make<DoublePropertyCls>(__s("${prefix}height"), height, __s("x"), nullptr));
+    styles->add(make<FlagPropertyCls>(__s("${prefix}forceStrutHeight"), forceStrutHeight, __s("$prefix<strut height forced>"), __s("$prefix<strut height normal>")));
     bool styleSpecified = styles->any([=] (DiagnosticsNode n) {
     !n->isFiltered(DiagnosticLevelCls::info);
 });
     styles->forEach(properties->add);
     if (!styleSpecified) {
-        properties->add(make<FlagPropertyCls>(__s("forceStrutHeight")forceStrutHeight, __s("$prefix<strut height forced>"), __s("$prefix<strut height normal>")));
+        properties->add(make<FlagPropertyCls>(__s("forceStrutHeight"), forceStrutHeight, __s("$prefix<strut height forced>"), __s("$prefix<strut height normal>")));
     }
 }

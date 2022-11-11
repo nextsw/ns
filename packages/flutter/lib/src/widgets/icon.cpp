@@ -22,8 +22,8 @@ Widget IconCls::build(BuildContext context) {
 
 void IconCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(make<IconDataPropertyCls>(__s("icon"), icon__s("<empty>"), false));
-    properties->add(make<DoublePropertyCls>(__s("size"), sizenullptr));
-    properties->add(make<ColorPropertyCls>(__s("color"), colornullptr));
-    properties->add(<Shadow>make<IterablePropertyCls>(__s("shadows"), shadowsnullptr));
+    properties->add(make<IconDataPropertyCls>(__s("icon"), icon, __s("<empty>"), false));
+    properties->add(make<DoublePropertyCls>(__s("size"), size, nullptr));
+    properties->add(make<ColorPropertyCls>(__s("color"), color, nullptr));
+    properties->add(<Shadow>make<IterablePropertyCls>(__s("shadows"), shadows, nullptr));
 }

@@ -309,18 +309,18 @@ void RenderImageCls::dispose() {
 void RenderImageCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
     properties->add(<Image>make<DiagnosticsPropertyCls>(__s("image"), image()));
-    properties->add(make<DoublePropertyCls>(__s("width"), width()nullptr));
-    properties->add(make<DoublePropertyCls>(__s("height"), height()nullptr));
-    properties->add(make<DoublePropertyCls>(__s("scale"), scale()1.0));
-    properties->add(make<ColorPropertyCls>(__s("color"), color()nullptr));
-    properties->add(<Animation<double>>make<DiagnosticsPropertyCls>(__s("opacity"), opacity()nullptr));
-    properties->add(<BlendMode>make<EnumPropertyCls>(__s("colorBlendMode"), colorBlendMode()nullptr));
-    properties->add(<BoxFit>make<EnumPropertyCls>(__s("fit"), fit()nullptr));
-    properties->add(<AlignmentGeometry>make<DiagnosticsPropertyCls>(__s("alignment"), alignment()nullptr));
-    properties->add(<ImageRepeat>make<EnumPropertyCls>(__s("repeat"), repeat()ImageRepeatCls::noRepeat));
-    properties->add(<Rect>make<DiagnosticsPropertyCls>(__s("centerSlice"), centerSlice()nullptr));
-    properties->add(make<FlagPropertyCls>(__s("matchTextDirection")matchTextDirection(), __s("match text direction")));
-    properties->add(<TextDirection>make<EnumPropertyCls>(__s("textDirection"), textDirection()nullptr));
+    properties->add(make<DoublePropertyCls>(__s("width"), width(), nullptr));
+    properties->add(make<DoublePropertyCls>(__s("height"), height(), nullptr));
+    properties->add(make<DoublePropertyCls>(__s("scale"), scale(), 1.0));
+    properties->add(make<ColorPropertyCls>(__s("color"), color(), nullptr));
+    properties->add(<Animation<double>>make<DiagnosticsPropertyCls>(__s("opacity"), opacity(), nullptr));
+    properties->add(<BlendMode>make<EnumPropertyCls>(__s("colorBlendMode"), colorBlendMode(), nullptr));
+    properties->add(<BoxFit>make<EnumPropertyCls>(__s("fit"), fit(), nullptr));
+    properties->add(<AlignmentGeometry>make<DiagnosticsPropertyCls>(__s("alignment"), alignment(), nullptr));
+    properties->add(<ImageRepeat>make<EnumPropertyCls>(__s("repeat"), repeat(), ImageRepeatCls::noRepeat));
+    properties->add(<Rect>make<DiagnosticsPropertyCls>(__s("centerSlice"), centerSlice(), nullptr));
+    properties->add(make<FlagPropertyCls>(__s("matchTextDirection"), matchTextDirection(), __s("match text direction")));
+    properties->add(<TextDirection>make<EnumPropertyCls>(__s("textDirection"), textDirection(), nullptr));
     properties->add(<bool>make<DiagnosticsPropertyCls>(__s("invertColors"), invertColors()));
     properties->add(<FilterQuality>make<EnumPropertyCls>(__s("filterQuality"), filterQuality()));
 }

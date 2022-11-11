@@ -30,7 +30,7 @@ void RenderSliverFillRemainingWithScrollableCls::performLayout() {
     if (child != nullptr) {
         child!->layout(constraints->asBoxConstraints(extent, extent));
     }
-    double paintedChildSize = calculatePaintOffset(constraints0.0, extent);
+    double paintedChildSize = calculatePaintOffset(constraints, 0.0, extent);
     assert(paintedChildSize->isFinite);
     assert(paintedChildSize >= 0.0);
     geometry = make<SliverGeometryCls>(constraints->viewportMainAxisExtent, paintedChildSize, paintedChildSize, extent > constraints->remainingPaintExtent || constraints->scrollOffset > 0.0);
@@ -49,7 +49,7 @@ void RenderSliverFillRemainingCls::performLayout() {
         child!->layout(constraints->asBoxConstraints(extent, extent));
     }
     assert(extent->isFinite, __s("The calculated extent for the child of SliverFillRemaining is not finite. This can happen if the child is a scrollable, in which case, the hasScrollBody property of SliverFillRemaining should not be set to false."));
-    double paintedChildSize = calculatePaintOffset(constraints0.0, extent);
+    double paintedChildSize = calculatePaintOffset(constraints, 0.0, extent);
     assert(paintedChildSize->isFinite);
     assert(paintedChildSize >= 0.0);
     geometry = make<SliverGeometryCls>(extent, paintedChildSize, paintedChildSize, extent > constraints->remainingPaintExtent || constraints->scrollOffset > 0.0);
@@ -70,7 +70,7 @@ void RenderSliverFillRemainingAndOverscrollCls::performLayout() {
         child!->layout(constraints->asBoxConstraints(extent, maxExtent));
     }
     assert(extent->isFinite, __s("The calculated extent for the child of SliverFillRemaining is not finite. This can happen if the child is a scrollable, in which case, the hasScrollBody property of SliverFillRemaining should not be set to false."));
-    double paintedChildSize = calculatePaintOffset(constraints0.0, extent);
+    double paintedChildSize = calculatePaintOffset(constraints, 0.0, extent);
     assert(paintedChildSize->isFinite);
     assert(paintedChildSize >= 0.0);
     geometry = make<SliverGeometryCls>(extent, math->min(maxExtent, constraints->remainingPaintExtent), maxExtent, extent > constraints->remainingPaintExtent || constraints->scrollOffset > 0.0);

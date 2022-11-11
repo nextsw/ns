@@ -4,13 +4,13 @@ SimplexNoiseCls::SimplexNoiseCls(Random r) {
         r |= math->make<RandomCls>();
         Unknown p = <int>generate(256, [=] () {
     r!->nextInt(256);
-}false);
+}, false);
         _perm = <int>generate(p->length * 2, [=] (int i)         {
             p[i % p->length];
-        }false);
+        }, false);
         _permMod12 = <int>generate(_perm->length(), [=] (int i)         {
             _perm[i] % 12;
-        }false);
+        }, false);
     }
 }
 

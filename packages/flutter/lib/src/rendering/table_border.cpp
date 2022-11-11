@@ -76,7 +76,7 @@ void TableBorderCls::paint(Canvas canvas, Rect rect, Iterable<double> columns, I
         }
     }
     if (!isUniform() || borderRadius == BorderRadiusCls::zero) {
-        paintBorder(canvas, recttop, right, bottom, left);
+        paintBorder(canvas, rect, top, right, bottom, left);
     } else {
         RRect outer = borderRadius->toRRect(rect);
         RRect inner = outer->deflate(top->width);

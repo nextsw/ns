@@ -78,7 +78,7 @@ void RenderViewCls::performLayout() {
 
 bool RenderViewCls::hitTest(HitTestResult result, Offset position) {
     if (child != nullptr) {
-        child!->hitTest(BoxHitTestResultCls->wrap(result)position);
+        child!->hitTest(BoxHitTestResultCls->wrap(result), position);
     }
     result->add(make<HitTestEntryCls>(this));
     return true;
@@ -87,7 +87,7 @@ bool RenderViewCls::hitTest(HitTestResult result, Offset position) {
 HitTestResult RenderViewCls::hitTestMouseTrackers(Offset position) {
     assert(position != nullptr);
     BoxHitTestResult result = make<BoxHitTestResultCls>();
-    hitTest(resultposition);
+    hitTest(result, position);
     return result;
 }
 
@@ -146,9 +146,9 @@ void RenderViewCls::debugFillProperties(DiagnosticPropertiesBuilder properties) 
         properties->add(DiagnosticsNodeCls->message(__s("debug mode enabled - ${kIsWeb ? 'Web' :  Platform.operatingSystem}")));
         return true;
     }());
-    properties->add(<Size>make<DiagnosticsPropertyCls>(__s("window size"), _window->physicalSize()__s("in physical pixels")));
-    properties->add(make<DoublePropertyCls>(__s("device pixel ratio"), _window->devicePixelRatio()__s("physical pixels per logical pixel")));
-    properties->add(<ViewConfiguration>make<DiagnosticsPropertyCls>(__s("configuration"), configuration()__s("in logical pixels")));
+    properties->add(<Size>make<DiagnosticsPropertyCls>(__s("window size"), _window->physicalSize(), __s("in physical pixels")));
+    properties->add(make<DoublePropertyCls>(__s("device pixel ratio"), _window->devicePixelRatio(), __s("physical pixels per logical pixel")));
+    properties->add(<ViewConfiguration>make<DiagnosticsPropertyCls>(__s("configuration"), configuration(), __s("in logical pixels")));
     if (_window->platformDispatcher()->semanticsEnabled) {
         properties->add(DiagnosticsNodeCls->message(__s("semantics enabled")));
     }

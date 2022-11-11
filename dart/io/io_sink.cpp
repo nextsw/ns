@@ -75,7 +75,7 @@ Future _StreamSinkImplCls<T>::done() {
 
 template<typename T>
 void _StreamSinkImplCls<T>::_closeTarget() {
-    _target->close()->then(_completeDoneValue_completeDoneError);
+    _target->close()->then(_completeDoneValue, _completeDoneError);
 }
 
 template<typename T>
@@ -112,7 +112,7 @@ StreamController<T> _StreamSinkImplCls<T>::_controller() {
             } else {
                 _closeTarget();
             }
-        }[=] (Unknown  error,Unknown  stackTrace) {
+        }, [=] (Unknown  error,Unknown  stackTrace) {
             if (_isBound) {
                 _controllerCompleter!->completeError(error, stackTrace);
                 _controllerCompleter = nullptr;

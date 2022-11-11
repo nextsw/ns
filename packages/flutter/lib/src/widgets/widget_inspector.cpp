@@ -5,22 +5,22 @@ void _ProxyLayerCls::addToScene(SceneBuilder builder) {
 
 template<typename S>
 bool _ProxyLayerCls::findAnnotations(AnnotationResult<S> result, Offset localPosition, bool onlyFirst) {
-    return _layer->findAnnotations(result, localPositiononlyFirst);
+    return _layer->findAnnotations(result, localPosition, onlyFirst);
 }
 
 void _MulticastCanvasCls::clipPath(Path path, bool doAntiAlias) {
-    _main->clipPath(pathdoAntiAlias);
-    _screenshot->clipPath(pathdoAntiAlias);
+    _main->clipPath(path, doAntiAlias);
+    _screenshot->clipPath(path, doAntiAlias);
 }
 
 void _MulticastCanvasCls::clipRRect(RRect rrect, bool doAntiAlias) {
-    _main->clipRRect(rrectdoAntiAlias);
-    _screenshot->clipRRect(rrectdoAntiAlias);
+    _main->clipRRect(rrect, doAntiAlias);
+    _screenshot->clipRRect(rrect, doAntiAlias);
 }
 
 void _MulticastCanvasCls::clipRect(Rect rect, ClipOp clipOp, bool doAntiAlias) {
-    _main->clipRect(rectclipOp, doAntiAlias);
-    _screenshot->clipRect(rectclipOp, doAntiAlias);
+    _main->clipRect(rect, clipOp, doAntiAlias);
+    _screenshot->clipRect(rect, clipOp, doAntiAlias);
 }
 
 void _MulticastCanvasCls::drawArc(Rect rect, double startAngle, double sweepAngle, bool useCenter, Paint paint) {
@@ -299,7 +299,7 @@ Future<Image> _ScreenshotPaintingContextCls::toImage(RenderObject renderObject, 
         OffsetLayer offsetLayer = as<OffsetLayer>(repaintBoundary->debugLayer()!);
         data->screenshotOffset() = offsetLayer->offset();
     } else {
-        PaintingContextCls->debugInstrumentRepaintCompositedChild(repaintBoundarycontext);
+        PaintingContextCls->debugInstrumentRepaintCompositedChild(repaintBoundary, context);
     }
     if (debugPaint && !debugPaintSizeEnabled) {
         data->includeInRegularContext = false;
@@ -315,7 +315,7 @@ Future<Image> _ScreenshotPaintingContextCls::toImage(RenderObject renderObject, 
         };
     }
     repaintBoundary->debugLayer()!->buildScene(ui->make<SceneBuilderCls>());
-    return data->containerLayer->toImage(renderBoundspixelRatio);
+    return data->containerLayer->toImage(renderBounds, pixelRatio);
 }
 
 _ScreenshotPaintingContextCls::_ScreenshotPaintingContextCls(ContainerLayer containerLayer, Rect estimatedBounds, _ScreenshotData screenshotData) : PaintingContext(containerLayer, estimatedBounds) {
@@ -426,7 +426,7 @@ Future<void> WidgetInspectorServiceCls::forceRebuild() {
 bool WidgetInspectorServiceCls::isStructuredErrorsEnabled() {
     bool enabled = false;
     assert([=] () {
-        enabled = boolValue->fromEnvironment(__s("flutter.inspector.structuredErrors")!kIsWeb);
+        enabled = boolValue->fromEnvironment(__s("flutter.inspector.structuredErrors"), !kIsWeb);
         return true;
     }());
     return enabled;
@@ -544,7 +544,7 @@ void WidgetInspectorServiceCls::initServiceExtensions(RegisterServiceExtensionCa
         assert(parameters->containsKey(__s("id")));
         assert(parameters->containsKey(__s("width")));
         assert(parameters->containsKey(__s("height")));
-        Image image = await screenshot(toObject(parameters[__s("id")])double->parse(parameters[__s("width")]!), double->parse(parameters[__s("height")]!), parameters->containsKey(__s("margin"))? double->parse(parameters[__s("margin")]!) : 0.0, parameters->containsKey(__s("maxPixelRatio"))? double->parse(parameters[__s("maxPixelRatio")]!) : 1.0, parameters[__s("debugPaint")] == __s("true"));
+        Image image = await screenshot(toObject(parameters[__s("id")]), double->parse(parameters[__s("width")]!), double->parse(parameters[__s("height")]!), parameters->containsKey(__s("margin"))? double->parse(parameters[__s("margin")]!) : 0.0, parameters->containsKey(__s("maxPixelRatio"))? double->parse(parameters[__s("maxPixelRatio")]!) : 1.0, parameters[__s("debugPaint")] == __s("true"));
         if (image == nullptr) {
                     Map<String, Object> map2 = make<MapCls<>>();        map2.set(__s("result"), nullptr);return list2;
         }
@@ -780,7 +780,7 @@ Future<Image> WidgetInspectorServiceCls::screenshot(Object object, bool debugPai
         return nullptr;
     }
     double pixelRatio = math->min(maxPixelRatio, math->min(width / renderBounds->width, height / renderBounds->height));
-    return _ScreenshotPaintingContextCls->toImage(renderObject, renderBoundspixelRatio, debugPaint);
+    return _ScreenshotPaintingContextCls->toImage(renderObject, renderBounds, pixelRatio, debugPaint);
 }
 
 String WidgetInspectorServiceCls::getSelectedSummaryWidget(String previousSelectionId, String groupName) {
@@ -918,7 +918,7 @@ Map<String, Object> WidgetInspectorServiceCls::_pathNodeToJson(_DiagnosticsPathN
     if (pathNode == nullptr) {
         return nullptr;
     }
-    Map<String, Object> map1 = make<MapCls<>>();map1.set(__s("node"), _nodeToJson(pathNode->node, delegate));map1.set(__s("children"), _nodesToJson(pathNode->children, delegatepathNode->node));map1.set(__s("childIndex"), pathNode->childIndex);return list1;
+    Map<String, Object> map1 = make<MapCls<>>();map1.set(__s("node"), _nodeToJson(pathNode->node, delegate));map1.set(__s("children"), _nodesToJson(pathNode->children, delegate, pathNode->node));map1.set(__s("childIndex"), pathNode->childIndex);return list1;
 }
 
 List<Element> WidgetInspectorServiceCls::_getRawElementParentChain(Element element, int numLocalParents) {
@@ -938,7 +938,7 @@ List<Element> WidgetInspectorServiceCls::_getRawElementParentChain(Element eleme
 }
 
 List<_DiagnosticsPathNode> WidgetInspectorServiceCls::_getElementParentChain(Element element, String groupName, int numLocalParents) {
-    return _followDiagnosticableChain(_getRawElementParentChain(elementnumLocalParents)) | makeList();
+    return _followDiagnosticableChain(_getRawElementParentChain(element, numLocalParents)) | makeList();
 }
 
 List<_DiagnosticsPathNode> WidgetInspectorServiceCls::_getRenderObjectParentChain(RenderObject renderObject, String groupName) {
@@ -1012,25 +1012,25 @@ List<Map<String, Object>> WidgetInspectorServiceCls::_nodesToJson(List<Diagnosti
 
 List<Object> WidgetInspectorServiceCls::_getProperties(String diagnosticsNodeId, String groupName) {
     DiagnosticsNode node = as<DiagnosticsNode>(toObject(diagnosticsNodeId));
-    return _nodesToJson(node == nullptr? makeList() : node->getProperties(), make<InspectorSerializationDelegateCls>(groupName, this)node);
+    return _nodesToJson(node == nullptr? makeList() : node->getProperties(), make<InspectorSerializationDelegateCls>(groupName, this), node);
 }
 
 List<Object> WidgetInspectorServiceCls::_getChildren(String diagnosticsNodeId, String groupName) {
     DiagnosticsNode node = as<DiagnosticsNode>(toObject(diagnosticsNodeId));
     InspectorSerializationDelegate delegate = make<InspectorSerializationDelegateCls>(groupName, this);
-    return _nodesToJson(node == nullptr? makeList() : _getChildrenFiltered(node, delegate), delegatenode);
+    return _nodesToJson(node == nullptr? makeList() : _getChildrenFiltered(node, delegate), delegate, node);
 }
 
 List<Object> WidgetInspectorServiceCls::_getChildrenSummaryTree(String diagnosticsNodeId, String groupName) {
     DiagnosticsNode node = as<DiagnosticsNode>(toObject(diagnosticsNodeId));
     InspectorSerializationDelegate delegate = make<InspectorSerializationDelegateCls>(groupName, true, this);
-    return _nodesToJson(node == nullptr? makeList() : _getChildrenFiltered(node, delegate), delegatenode);
+    return _nodesToJson(node == nullptr? makeList() : _getChildrenFiltered(node, delegate), delegate, node);
 }
 
 List<Object> WidgetInspectorServiceCls::_getChildrenDetailsSubtree(String diagnosticsNodeId, String groupName) {
     DiagnosticsNode node = as<DiagnosticsNode>(toObject(diagnosticsNodeId));
     InspectorSerializationDelegate delegate = make<InspectorSerializationDelegateCls>(groupName, true, this);
-    return _nodesToJson(node == nullptr? makeList() : _getChildrenFiltered(node, delegate), delegatenode);
+    return _nodesToJson(node == nullptr? makeList() : _getChildrenFiltered(node, delegate), delegate, node);
 }
 
 bool WidgetInspectorServiceCls::_shouldShowInSummaryTree(DiagnosticsNode node) {

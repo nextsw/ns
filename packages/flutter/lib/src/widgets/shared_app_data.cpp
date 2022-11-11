@@ -5,7 +5,7 @@ State<StatefulWidget> SharedAppDataCls::createState() {
 
 template<typename K, typename V>
 V SharedAppDataCls::getValue(BuildContext context, K key, SharedAppDataInitCallback<V> init) {
-    _SharedAppModel model = InheritedModelCls-><_SharedAppModel>inheritFrom(contextkey);
+    _SharedAppModel model = InheritedModelCls-><_SharedAppModel>inheritFrom(context, key);
     assert(_debugHasSharedAppData(model, context, __s("getValue")));
     return model!->sharedAppDataState-><K, V>getValue(key, init);
 }

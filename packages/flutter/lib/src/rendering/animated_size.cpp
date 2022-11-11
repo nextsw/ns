@@ -104,7 +104,7 @@ void RenderAnimatedSizeCls::performLayout() {
         child?->layout(constraints);
         return;
     }
-    child!->layout(constraintstrue);
+    child!->layout(constraints, true);
     assert(_state != nullptr);
     ;
     size = constraints->constrain(_animatedSize()!);
@@ -127,7 +127,7 @@ Size RenderAnimatedSizeCls::computeDryLayout(BoxConstraints constraints) {
 void RenderAnimatedSizeCls::paint(PaintingContext context, Offset offset) {
     if (child != nullptr && _hasVisualOverflow && clipBehavior() != ClipCls::none) {
         Rect rect = OffsetCls::zero & size;
-        _clipRectLayer->layer() = context->pushClipRect(needsCompositing, offset, rect, super->paintclipBehavior(), _clipRectLayer->layer());
+        _clipRectLayer->layer() = context->pushClipRect(needsCompositing, offset, rect, super->paint, clipBehavior(), _clipRectLayer->layer());
     } else {
         _clipRectLayer->layer() = nullptr;
         super->paint(context, offset);

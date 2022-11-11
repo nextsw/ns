@@ -29,5 +29,5 @@ Future<void> FontLoaderCls::load() {
 }
 
 Future<void> FontLoaderCls::loadFont(Uint8List list, String family) {
-    return loadFontFromList(listfamily);
+    return loadFontFromList(list, family);
 }

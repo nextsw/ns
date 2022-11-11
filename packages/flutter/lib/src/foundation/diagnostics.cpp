@@ -126,15 +126,15 @@ void _PrefixedStringBuilderCls::_finalizeLine(bool addTrailingLineBreak) {
     String text = _currentLine->toString();
     _currentLine->clear();
     if (_wrappableRanges->isEmpty) {
-        _writeLine(textaddTrailingLineBreak, firstLine);
+        _writeLine(text, addTrailingLineBreak, firstLine);
         return;
     }
-    Iterable<String> lines = _wordWrapLine(text, _wrappableRanges, wrapWidth!firstLine? prefixLineOne->length() : _prefixOtherLines!->length(), _prefixOtherLines!->length());
+    Iterable<String> lines = _wordWrapLine(text, _wrappableRanges, wrapWidth!, firstLine? prefixLineOne->length() : _prefixOtherLines!->length(), _prefixOtherLines!->length());
     int i = 0;
     int length = lines->length();
     for (String line : lines) {
         i++;
-        _writeLine(lineaddTrailingLineBreak ||  < length, firstLine);
+        _writeLine(line, addTrailingLineBreak ||  < length, firstLine);
     }
     _wrappableRanges->clear();
 }
@@ -196,7 +196,7 @@ String TextTreeRendererCls::render(DiagnosticsNode node, TextTreeConfiguration p
     if (kReleaseMode) {
         return __s("");
     } else {
-        return _debugRender(nodeprefixLineOne, prefixOtherLines, parentConfiguration);
+        return _debugRender(node, prefixLineOne, prefixOtherLines, parentConfiguration);
     }
 }
 
@@ -252,30 +252,30 @@ String TextTreeRendererCls::_debugRender(DiagnosticsNode node, TextTreeConfigura
     }
     if (description == nullptr || description->isEmpty()) {
         if (node->showName && name != nullptr) {
-            builder->write(namewrapName);
+            builder->write(name, wrapName);
         }
     } else {
         bool includeName = false;
         if (name != nullptr && name->isNotEmpty() && node->showName) {
             includeName = true;
-            builder->write(namewrapName);
+            builder->write(name, wrapName);
             if (node->showSeparator) {
-                builder->write(config->afterNamewrapName);
+                builder->write(config->afterName, wrapName);
             }
-            builder->write(config->isNameOnOwnLine || description->contains(__s("\n"))? __s("\n") : __s(" ")wrapName);
+            builder->write(config->isNameOnOwnLine || description->contains(__s("\n"))? __s("\n") : __s(" "), wrapName);
         }
         if (!isSingleLine && builder->requiresMultipleLines() && !builder->isCurrentLineEmpty()) {
             builder->write(__s("\n"));
         }
         if (includeName) {
-            builder->incrementPrefixOtherLines(children->isEmpty? config->propertyPrefixNoChildren : config->propertyPrefixIfChildrentrue);
+            builder->incrementPrefixOtherLines(children->isEmpty? config->propertyPrefixNoChildren : config->propertyPrefixIfChildren, true);
         }
         if (uppercaseTitle) {
             description = description->toUpperCase();
         }
-        builder->write(description->trimRight()wrapDescription);
+        builder->write(description->trimRight(), wrapDescription);
         if (!includeName) {
-            builder->incrementPrefixOtherLines(children->isEmpty? config->propertyPrefixNoChildren : config->propertyPrefixIfChildrenfalse);
+            builder->incrementPrefixOtherLines(children->isEmpty? config->propertyPrefixNoChildren : config->propertyPrefixIfChildren, false);
         }
     }
     if (config->suffixLineOne->isNotEmpty()) {
@@ -308,7 +308,7 @@ String TextTreeRendererCls::_debugRender(DiagnosticsNode node, TextTreeConfigura
     if (properties->isNotEmpty) {
         builder->write(config->beforeProperties);
     }
-    builder->incrementPrefixOtherLines(config->bodyIndentfalse);
+    builder->incrementPrefixOtherLines(config->bodyIndent, false);
     if (node->emptyBodyDescription() != nullptr && properties->isEmpty && children->isEmpty && prefixLineOne->isNotEmpty()) {
         builder->write(node->emptyBodyDescription()!);
         if (config->lineBreakProperties) {
@@ -322,7 +322,7 @@ String TextTreeRendererCls::_debugRender(DiagnosticsNode node, TextTreeConfigura
         }
         TextTreeConfiguration propertyStyle = property->textTreeConfiguration()!;
         if (_isSingleLine(property->style)) {
-            String propertyRender = render(propertypropertyStyle->prefixLineOne, __s("${propertyStyle.childLinkSpace}${propertyStyle.prefixOtherLines}"), config);
+            String propertyRender = render(property, propertyStyle->prefixLineOne, __s("${propertyStyle.childLinkSpace}${propertyStyle.prefixOtherLines}"), config);
             List<String> propertyLines = propertyRender->split(__s("\n"));
             if (propertyLines->length() == 1 && !config->lineBreakProperties) {
                 builder->write(propertyLines->first);
@@ -333,7 +333,7 @@ String TextTreeRendererCls::_debugRender(DiagnosticsNode node, TextTreeConfigura
                 }
             }
         } else {
-            String propertyRender = render(property__s("${builder.prefixOtherLines}${propertyStyle.prefixLineOne}"), __s("${builder.prefixOtherLines}${propertyStyle.childLinkSpace}${propertyStyle.prefixOtherLines}"), config);
+            String propertyRender = render(property, __s("${builder.prefixOtherLines}${propertyStyle.prefixLineOne}"), __s("${builder.prefixOtherLines}${propertyStyle.childLinkSpace}${propertyStyle.prefixOtherLines}"), config);
             builder->writeRawLines(propertyRender);
         }
     }
@@ -361,7 +361,7 @@ String TextTreeRendererCls::_debugRender(DiagnosticsNode node, TextTreeConfigura
             if (i == children->length() - 1) {
                 String lastChildPrefixLineOne = __s("$prefixChildrenRaw${childConfig.prefixLastChildLineOne}");
                 String childPrefixOtherLines = __s("$prefixChildrenRaw${childConfig.childLinkSpace}${childConfig.prefixOtherLines}");
-                builder->writeRawLines(render(childlastChildPrefixLineOne, childPrefixOtherLines, config));
+                builder->writeRawLines(render(child, lastChildPrefixLineOne, childPrefixOtherLines, config));
                 if (childConfig->footer->isNotEmpty()) {
                     builder->prefixOtherLines = prefixChildrenRaw;
                     builder->write(__s("${childConfig.childLinkSpace}${childConfig.footer}"));
@@ -374,7 +374,7 @@ String TextTreeRendererCls::_debugRender(DiagnosticsNode node, TextTreeConfigura
                 TextTreeConfiguration nextChildStyle = _childTextConfiguration(children[i + 1], config)!;
                 String childPrefixLineOne = __s("$prefixChildrenRaw${childConfig.prefixLineOne}");
                 String childPrefixOtherLines = __s("$prefixChildrenRaw${nextChildStyle.linkCharacter}${childConfig.prefixOtherLines}");
-                builder->writeRawLines(render(childchildPrefixLineOne, childPrefixOtherLines, config));
+                builder->writeRawLines(render(child, childPrefixLineOne, childPrefixOtherLines, config));
                 if (childConfig->footer->isNotEmpty()) {
                     builder->prefixOtherLines = prefixChildrenRaw;
                     builder->write(__s("${childConfig.linkCharacter}${childConfig.footer}"));
@@ -404,7 +404,7 @@ DiagnosticsNodeCls::DiagnosticsNodeCls(String linePrefix, String name, bool show
 void DiagnosticsNodeCls::message(String message, bool allowWrap, DiagnosticLevel level, DiagnosticsTreeStyle style) {
     assert(style != nullptr);
     assert(level != nullptr);
-    return <void>make<DiagnosticsPropertyCls>(__s(""), nullptrmessage, style, false, allowWrap, level);
+    return <void>make<DiagnosticsPropertyCls>(__s(""), nullptr, message, style, false, allowWrap, level);
 }
 
 bool DiagnosticsNodeCls::isFiltered(DiagnosticLevel minLevel) {
@@ -505,7 +505,7 @@ TextTreeConfiguration DiagnosticsNodeCls::textTreeConfiguration() {
 String DiagnosticsNodeCls::toStringDeep(DiagnosticLevel minLevel, TextTreeConfiguration parentConfiguration, String prefixLineOne, String prefixOtherLines) {
     String result = __s("");
     assert([=] () {
-        result = make<TextTreeRendererCls>(minLevel, 65)->render(thisprefixLineOne, prefixOtherLines, parentConfiguration);
+        result = make<TextTreeRendererCls>(minLevel, 65)->render(this, prefixLineOne, prefixOtherLines, parentConfiguration);
         return true;
     }());
     return result;

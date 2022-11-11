@@ -19,12 +19,12 @@ void OverflowBarCls::updateRenderObject(BuildContext context, RenderObject rende
 
 void OverflowBarCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(make<DoublePropertyCls>(__s("spacing"), spacing0));
-    properties->add(<MainAxisAlignment>make<EnumPropertyCls>(__s("alignment"), alignmentnullptr));
-    properties->add(make<DoublePropertyCls>(__s("overflowSpacing"), overflowSpacing0));
-    properties->add(<OverflowBarAlignment>make<EnumPropertyCls>(__s("overflowAlignment"), overflowAlignmentOverflowBarAlignmentCls::start));
-    properties->add(<VerticalDirection>make<EnumPropertyCls>(__s("overflowDirection"), overflowDirectionVerticalDirectionCls::down));
-    properties->add(<TextDirection>make<EnumPropertyCls>(__s("textDirection"), textDirectionnullptr));
+    properties->add(make<DoublePropertyCls>(__s("spacing"), spacing, 0));
+    properties->add(<MainAxisAlignment>make<EnumPropertyCls>(__s("alignment"), alignment, nullptr));
+    properties->add(make<DoublePropertyCls>(__s("overflowSpacing"), overflowSpacing, 0));
+    properties->add(<OverflowBarAlignment>make<EnumPropertyCls>(__s("overflowAlignment"), overflowAlignment, OverflowBarAlignmentCls::start));
+    properties->add(<VerticalDirection>make<EnumPropertyCls>(__s("overflowDirection"), overflowDirection, VerticalDirectionCls::down));
+    properties->add(<TextDirection>make<EnumPropertyCls>(__s("textDirection"), textDirection, nullptr));
 }
 
 double _RenderOverflowBarCls::spacing() {
@@ -247,7 +247,7 @@ void _RenderOverflowBarCls::performLayout() {
     double maxChildHeight = 0;
     double maxChildWidth = 0;
     while (child != nullptr) {
-        child->layout(childConstraintstrue);
+        child->layout(childConstraints, true);
         childrenWidth += child->size()->width();
         maxChildHeight = math->max(maxChildHeight, child->size()->height());
         maxChildWidth = math->max(maxChildWidth, child->size()->width());
@@ -292,7 +292,7 @@ void _RenderOverflowBarCls::performLayout() {
 }
 
 bool _RenderOverflowBarCls::hitTestChildren(BoxHitTestResult result, Offset position) {
-    return defaultHitTestChildren(resultposition);
+    return defaultHitTestChildren(result, position);
 }
 
 void _RenderOverflowBarCls::paint(PaintingContext context, Offset offset) {
@@ -301,11 +301,11 @@ void _RenderOverflowBarCls::paint(PaintingContext context, Offset offset) {
 
 void _RenderOverflowBarCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(make<DoublePropertyCls>(__s("spacing"), spacing()0));
-    properties->add(make<DoublePropertyCls>(__s("overflowSpacing"), overflowSpacing()0));
-    properties->add(<OverflowBarAlignment>make<EnumPropertyCls>(__s("overflowAlignment"), overflowAlignment()OverflowBarAlignmentCls::start));
-    properties->add(<VerticalDirection>make<EnumPropertyCls>(__s("overflowDirection"), overflowDirection()VerticalDirectionCls::down));
-    properties->add(<TextDirection>make<EnumPropertyCls>(__s("textDirection"), textDirection()nullptr));
+    properties->add(make<DoublePropertyCls>(__s("spacing"), spacing(), 0));
+    properties->add(make<DoublePropertyCls>(__s("overflowSpacing"), overflowSpacing(), 0));
+    properties->add(<OverflowBarAlignment>make<EnumPropertyCls>(__s("overflowAlignment"), overflowAlignment(), OverflowBarAlignmentCls::start));
+    properties->add(<VerticalDirection>make<EnumPropertyCls>(__s("overflowDirection"), overflowDirection(), VerticalDirectionCls::down));
+    properties->add(<TextDirection>make<EnumPropertyCls>(__s("textDirection"), textDirection(), nullptr));
 }
 
 _RenderOverflowBarCls::_RenderOverflowBarCls(MainAxisAlignment alignment, List<RenderBox> children, Clip clipBehavior, OverflowBarAlignment overflowAlignment, VerticalDirection overflowDirection, double overflowSpacing, double spacing, TextDirection textDirection) {

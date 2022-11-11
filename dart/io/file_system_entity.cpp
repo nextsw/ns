@@ -314,7 +314,7 @@ String FileSystemEntityCls::_toStringFromUtf8Array(Uint8List l) {
     if (l->last == 0) {
         nonNullTerminated = Uint8ListCls->view(l->buffer, l->offsetInBytes, l->length - 1);
     }
-    return utf8->decode(nonNullTerminatedtrue);
+    return utf8->decode(nonNullTerminated, true);
 }
 
 Future<bool> FileSystemEntityCls::_isLinkRaw(Uint8List rawPath) {
@@ -344,7 +344,7 @@ FileSystemEntityType FileSystemEntityCls::_getTypeSync(Uint8List rawPath, bool f
 Future<FileSystemEntityType> FileSystemEntityCls::_getTypeRequest(Uint8List rawPath, bool followLinks) {
     return _FileCls->_dispatchWithNamespace(_IOServiceCls::fileType, makeList(ArrayItem, ArrayItem, ArrayItem))->then([=] (Unknown  response) {
         if (_isErrorResponse(response)) {
-            throw _exceptionFromResponse(response, __s("Error getting type"), utf8->decode(rawPathtrue));
+            throw _exceptionFromResponse(response, __s("Error getting type"), utf8->decode(rawPath, true));
         }
         return FileSystemEntityTypeCls->_lookup(response);
     });

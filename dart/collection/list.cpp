@@ -276,7 +276,7 @@ List<E> ListMixinCls<E>::toList(bool growable) {
         return <E>empty(growable);
     }
     auto first = this[0];
-    auto result = <E>filled(this->length, firstgrowable);
+    auto result = <E>filled(this->length, first, growable);
     for (;  < this->length; i++) {
         result[i] = this[i];
     }

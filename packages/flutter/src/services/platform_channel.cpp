@@ -128,7 +128,7 @@ BinaryMessenger MethodChannelCls::binaryMessenger() {
 
 template<typename T>
 Future<T> MethodChannelCls::invokeMethod(String method, dynamic arguments) {
-    return <T>_invokeMethod(methodfalse, arguments);
+    return <T>_invokeMethod(method, false, arguments);
 }
 
 template<typename T>
@@ -179,7 +179,7 @@ Future<ByteData> MethodChannelCls::_handleAsMethodCall(ByteData message, std::fu
 
 template<typename T>
 Future<T> OptionalMethodChannelCls::invokeMethod(String method, dynamic arguments) {
-    return super-><T>_invokeMethod(methodtrue, arguments);
+    return super-><T>_invokeMethod(method, true, arguments);
 }
 
 EventChannelCls::EventChannelCls(String name, MethodCodec codec, BinaryMessenger binaryMessenger) {

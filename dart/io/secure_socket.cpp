@@ -1,12 +1,12 @@
 #include "secure_socket.hpp"
 Future<SecureSocket> SecureSocketCls::connect(host , int port, SecurityContext context, std::function<void(String line)> keyLog, std::function<bool(X509Certificate certificate)> onBadCertificate, List<String> supportedProtocols, Duration timeout) {
-    return RawSecureSocketCls->connect(host, portcontext, onBadCertificate, keyLog, supportedProtocols, timeout)->then([=] (Unknown  rawSocket)     {
+    return RawSecureSocketCls->connect(host, port, context, onBadCertificate, keyLog, supportedProtocols, timeout)->then([=] (Unknown  rawSocket)     {
         SecureSocketCls->_(rawSocket);
     });
 }
 
 Future<ConnectionTask<SecureSocket>> SecureSocketCls::startConnect(host , int port, SecurityContext context, std::function<void(String line)> keyLog, std::function<bool(X509Certificate certificate)> onBadCertificate, List<String> supportedProtocols) {
-    return RawSecureSocketCls->startConnect(host, portcontext, onBadCertificate, keyLog, supportedProtocols)->then([=] (Unknown  rawState) {
+    return RawSecureSocketCls->startConnect(host, port, context, onBadCertificate, keyLog, supportedProtocols)->then([=] (Unknown  rawState) {
         Future<SecureSocket> socket = rawState->socket->then([=] (Unknown  rawSocket) {
     SecureSocketCls->_(rawSocket);
 });
@@ -16,7 +16,7 @@ Future<ConnectionTask<SecureSocket>> SecureSocketCls::startConnect(host , int po
 
 Future<SecureSocket> SecureSocketCls::secure(Socket socket, host , SecurityContext context, std::function<void(String line)> keyLog, std::function<bool(X509Certificate certificate)> onBadCertificate, List<String> supportedProtocols) {
     return (as<Future>((as<dynamic>(socket))->_detachRaw()))-><RawSecureSocket>then([=] (Unknown  detachedRaw) {
-        return RawSecureSocketCls->secure(as<RawSocket>(detachedRaw[0])as<StreamSubscription<RawSocketEvent>>(detachedRaw[1]), host, context, onBadCertificate, keyLog, supportedProtocols);
+        return RawSecureSocketCls->secure(as<RawSocket>(detachedRaw[0]), as<StreamSubscription<RawSocketEvent>>(detachedRaw[1]), host, context, onBadCertificate, keyLog, supportedProtocols);
     })-><SecureSocket>then([=] (Unknown  raw)     {
         SecureSocketCls->_(raw);
     });
@@ -24,7 +24,7 @@ Future<SecureSocket> SecureSocketCls::secure(Socket socket, host , SecurityConte
 
 Future<SecureSocket> SecureSocketCls::secureServer(Socket socket, SecurityContext context, List<int> bufferedData, bool requestClientCertificate, bool requireClientCertificate, List<String> supportedProtocols) {
     return (as<Future>((as<dynamic>(socket))->_detachRaw()))-><RawSecureSocket>then([=] (Unknown  detachedRaw) {
-        return RawSecureSocketCls->secureServer(as<RawSocket>(detachedRaw[0]), contextas<StreamSubscription<RawSocketEvent>>(detachedRaw[1]), bufferedData, requestClientCertificate, requireClientCertificate, supportedProtocols);
+        return RawSecureSocketCls->secureServer(as<RawSocket>(detachedRaw[0]), context, as<StreamSubscription<RawSocketEvent>>(detachedRaw[1]), bufferedData, requestClientCertificate, requireClientCertificate, supportedProtocols);
     })-><SecureSocket>then([=] (Unknown  raw)     {
         SecureSocketCls->_(raw);
     });
@@ -32,15 +32,15 @@ Future<SecureSocket> SecureSocketCls::secureServer(Socket socket, SecurityContex
 
 Future<RawSecureSocket> RawSecureSocketCls::connect(host , int port, SecurityContext context, std::function<void(String line)> keyLog, std::function<bool(X509Certificate certificate)> onBadCertificate, List<String> supportedProtocols, Duration timeout) {
     _RawSecureSocketCls->_verifyFields(host, port, false, false);
-    return RawSocketCls->connect(host, porttimeout)->then([=] (Unknown  socket) {
-        return secure(socketcontext, onBadCertificate, keyLog, supportedProtocols);
+    return RawSocketCls->connect(host, port, timeout)->then([=] (Unknown  socket) {
+        return secure(socket, context, onBadCertificate, keyLog, supportedProtocols);
     });
 }
 
 Future<ConnectionTask<RawSecureSocket>> RawSecureSocketCls::startConnect(host , int port, SecurityContext context, std::function<void(String line)> keyLog, std::function<bool(X509Certificate certificate)> onBadCertificate, List<String> supportedProtocols) {
     return RawSocketCls->startConnect(host, port)->then([=] (ConnectionTask<RawSocket> rawState) {
         Future<RawSecureSocket> socket = rawState->socket->then([=] (Unknown  rawSocket) {
-    return secure(rawSocketcontext, onBadCertificate, keyLog, supportedProtocols);
+    return secure(rawSocket, context, onBadCertificate, keyLog, supportedProtocols);
 });
         return <RawSecureSocket>_(socket, rawState->_onCancel);
     });
@@ -49,13 +49,13 @@ Future<ConnectionTask<RawSecureSocket>> RawSecureSocketCls::startConnect(host , 
 Future<RawSecureSocket> RawSecureSocketCls::secure(RawSocket socket, host , SecurityContext context, std::function<void(String line)> keyLog, std::function<bool(X509Certificate certificate)> onBadCertificate, StreamSubscription<RawSocketEvent> subscription, List<String> supportedProtocols) {
     socket->readEventsEnabled = false;
     socket->writeEventsEnabled = false;
-    return _RawSecureSocketCls->connect(host != nullptr? host : socket->address()->host(), socket->port(), false, socketsubscription, context, onBadCertificate, keyLog, supportedProtocols);
+    return _RawSecureSocketCls->connect(host != nullptr? host : socket->address()->host(), socket->port(), false, socket, subscription, context, onBadCertificate, keyLog, supportedProtocols);
 }
 
 Future<RawSecureSocket> RawSecureSocketCls::secureServer(RawSocket socket, SecurityContext context, List<int> bufferedData, bool requestClientCertificate, bool requireClientCertificate, StreamSubscription<RawSocketEvent> subscription, List<String> supportedProtocols) {
     socket->readEventsEnabled = false;
     socket->writeEventsEnabled = false;
-    return _RawSecureSocketCls->connect(socket->address(), socket->remotePort(), true, socketcontext, subscription, bufferedData, requestClientCertificate, requireClientCertificate, supportedProtocols);
+    return _RawSecureSocketCls->connect(socket->address(), socket->remotePort(), true, socket, context, subscription, bufferedData, requestClientCertificate, requireClientCertificate, supportedProtocols);
 }
 
 Future<_RawSecureSocket> _RawSecureSocketCls::connect(dynamic host, int requestedPort, bool isServer, RawSocket socket, List<int> bufferedData, SecurityContext context, std::function<void(String line)> keyLog, std::function<bool(X509Certificate certificate)> onBadCertificate, bool requestClientCertificate, bool requireClientCertificate, StreamSubscription<RawSocketEvent> subscription, List<String> supportedProtocols) {
@@ -72,7 +72,7 @@ Future<_RawSecureSocket> _RawSecureSocketCls::connect(dynamic host, int requeste
 
 StreamSubscription<RawSocketEvent> _RawSecureSocketCls::listen(std::function<void(RawSocketEvent data)> onData, bool cancelOnError, std::function<void()> onDone, std::function<void ()> onError) {
     _sendWriteEvent();
-    return _controller->stream->listen(onDataonError, onDone, cancelOnError);
+    return _controller->stream->listen(onData, onError, onDone, cancelOnError);
 }
 
 int _RawSecureSocketCls::port() {
@@ -244,7 +244,7 @@ _RawSecureSocketCls::_RawSecureSocketCls(InternetAddress address, int requestedP
         _socket->readEventsEnabled = true;
         _socket->writeEventsEnabled = false;
         if (subscription == nullptr) {
-            _socketSubscription = _socket->listen(_eventDispatcher_reportError, _doneHandler);
+            _socketSubscription = _socket->listen(_eventDispatcher, _reportError, _doneHandler);
         } else {
             _socketSubscription = subscription;
             if (_socketSubscription->isPaused) {

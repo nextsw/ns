@@ -18,7 +18,7 @@ void DecoratedBoxCls::debugFillProperties(DiagnosticPropertiesBuilder properties
     super->debugFillProperties(properties);
     String label;
     ;
-    properties->add(<DecorationPosition>make<EnumPropertyCls>(__s("position"), positionDiagnosticLevelCls::hidden));
+    properties->add(<DecorationPosition>make<EnumPropertyCls>(__s("position"), position, DiagnosticLevelCls::hidden));
     properties->add(<Decoration>make<DiagnosticsPropertyCls>(label, decoration));
 }
 
@@ -75,17 +75,17 @@ Widget ContainerCls::build(BuildContext context) {
 
 void ContainerCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<AlignmentGeometry>make<DiagnosticsPropertyCls>(__s("alignment"), alignmentfalse, nullptr));
-    properties->add(<EdgeInsetsGeometry>make<DiagnosticsPropertyCls>(__s("padding"), paddingnullptr));
-    properties->add(<Clip>make<DiagnosticsPropertyCls>(__s("clipBehavior"), clipBehaviorClipCls::none));
+    properties->add(<AlignmentGeometry>make<DiagnosticsPropertyCls>(__s("alignment"), alignment, false, nullptr));
+    properties->add(<EdgeInsetsGeometry>make<DiagnosticsPropertyCls>(__s("padding"), padding, nullptr));
+    properties->add(<Clip>make<DiagnosticsPropertyCls>(__s("clipBehavior"), clipBehavior, ClipCls::none));
     if (color != nullptr) {
         properties->add(<Color>make<DiagnosticsPropertyCls>(__s("bg"), color));
     } else {
-        properties->add(<Decoration>make<DiagnosticsPropertyCls>(__s("bg"), decorationnullptr));
+        properties->add(<Decoration>make<DiagnosticsPropertyCls>(__s("bg"), decoration, nullptr));
     }
-    properties->add(<Decoration>make<DiagnosticsPropertyCls>(__s("fg"), foregroundDecorationnullptr));
-    properties->add(<BoxConstraints>make<DiagnosticsPropertyCls>(__s("constraints"), constraintsnullptr));
-    properties->add(<EdgeInsetsGeometry>make<DiagnosticsPropertyCls>(__s("margin"), marginnullptr));
+    properties->add(<Decoration>make<DiagnosticsPropertyCls>(__s("fg"), foregroundDecoration, nullptr));
+    properties->add(<BoxConstraints>make<DiagnosticsPropertyCls>(__s("constraints"), constraints, nullptr));
+    properties->add(<EdgeInsetsGeometry>make<DiagnosticsPropertyCls>(__s("margin"), margin, nullptr));
     properties->add(<Matrix4>has(__s("transform"), transform));
 }
 

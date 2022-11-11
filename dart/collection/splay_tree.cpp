@@ -699,7 +699,7 @@ void SplayTreeSetCls<E>::of(Iterable<E> elements, std::function<int(E key1, E ke
 template<typename E>
 template<typename R>
 Set<R> SplayTreeSetCls<E>::cast() {
-    return SetCls-><E, R>castFrom(this_newSet);
+    return SetCls-><E, R>castFrom(this, _newSet);
 }
 
 template<typename E>

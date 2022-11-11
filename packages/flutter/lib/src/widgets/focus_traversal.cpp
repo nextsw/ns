@@ -14,7 +14,7 @@ BuildContext _getAncestor(BuildContext context, int count) {
 
 void _focusAndEnsureVisible(FocusNode node, ScrollPositionAlignmentPolicy alignmentPolicy) {
     node->requestFocus();
-    ScrollableCls->ensureVisible(node->context()!1.0, alignmentPolicy);
+    ScrollableCls->ensureVisible(node->context()!, 1.0, alignmentPolicy);
 }
 
 _FocusTraversalGroupInfoCls::_FocusTraversalGroupInfoCls(_FocusTraversalGroupMarker marker, FocusTraversalPolicy defaultPolicy, List<FocusNode> members) {
@@ -30,7 +30,7 @@ FocusNode FocusTraversalPolicyCls::findFirstFocus(FocusNode currentNode) {
 }
 
 FocusNode FocusTraversalPolicyCls::findLastFocus(FocusNode currentNode) {
-    return _findInitialFocus(currentNodetrue);
+    return _findInitialFocus(currentNode, true);
 }
 
 void FocusTraversalPolicyCls::invalidateScopeData(FocusScopeNode node) {
@@ -40,11 +40,11 @@ void FocusTraversalPolicyCls::changedScope(FocusNode node, FocusScopeNode oldSco
 }
 
 bool FocusTraversalPolicyCls::next(FocusNode currentNode) {
-    return _moveFocus(currentNodetrue);
+    return _moveFocus(currentNode, true);
 }
 
 bool FocusTraversalPolicyCls::previous(FocusNode currentNode) {
-    return _moveFocus(currentNodefalse);
+    return _moveFocus(currentNode, false);
 }
 
 FocusNode FocusTraversalPolicyCls::_findInitialFocus(FocusNode currentNode, bool fromEnd) {
@@ -76,16 +76,16 @@ List<FocusNode> FocusTraversalPolicyCls::_sortAllDescendants(FocusScopeNode scop
         _FocusTraversalGroupMarker groupMarker = _getMarker(node->context);
         FocusNode groupNode = groupMarker?->focusNode;
         if (node == groupNode) {
-            BuildContext parentContext = _getAncestor(groupNode!->context()!2);
+            BuildContext parentContext = _getAncestor(groupNode!->context()!, 2);
             _FocusTraversalGroupMarker parentMarker = _getMarker(parentContext);
             FocusNode parentNode = parentMarker?->focusNode;
-            groups[parentNode] |= make<_FocusTraversalGroupInfoCls>(parentMarkermakeList(), defaultPolicy);
+            groups[parentNode] |= make<_FocusTraversalGroupInfoCls>(parentMarker, makeList(), defaultPolicy);
             assert(!groups[parentNode]!->members->contains(node));
             groups[parentNode]!->members->add(groupNode);
             continue;
         }
         if (node->canRequestFocus && !node->skipTraversal) {
-            groups[groupNode] |= make<_FocusTraversalGroupInfoCls>(groupMarkermakeList(), defaultPolicy);
+            groups[groupNode] |= make<_FocusTraversalGroupInfoCls>(groupMarker, makeList(), defaultPolicy);
             assert(!groups[groupNode]!->members->contains(node));
             groups[groupNode]!->members->add(node);
         }
@@ -115,7 +115,7 @@ bool FocusTraversalPolicyCls::_moveFocus(FocusNode currentNode, bool forward) {
     if (focusedChild == nullptr) {
         FocusNode firstFocus = forward? findFirstFocus(currentNode) : findLastFocus(currentNode);
         if (firstFocus != nullptr) {
-            _focusAndEnsureVisible(firstFocusforward? ScrollPositionAlignmentPolicyCls::keepVisibleAtEnd : ScrollPositionAlignmentPolicyCls::keepVisibleAtStart);
+            _focusAndEnsureVisible(firstFocus, forward? ScrollPositionAlignmentPolicyCls::keepVisibleAtEnd : ScrollPositionAlignmentPolicyCls::keepVisibleAtStart);
             return true;
         }
     }
@@ -124,18 +124,18 @@ bool FocusTraversalPolicyCls::_moveFocus(FocusNode currentNode, bool forward) {
         return false;
     }
     if (forward && focusedChild == sortedNodes->last) {
-        _focusAndEnsureVisible(sortedNodes->firstScrollPositionAlignmentPolicyCls::keepVisibleAtEnd);
+        _focusAndEnsureVisible(sortedNodes->first, ScrollPositionAlignmentPolicyCls::keepVisibleAtEnd);
         return true;
     }
     if (!forward && focusedChild == sortedNodes->first) {
-        _focusAndEnsureVisible(sortedNodes->lastScrollPositionAlignmentPolicyCls::keepVisibleAtStart);
+        _focusAndEnsureVisible(sortedNodes->last, ScrollPositionAlignmentPolicyCls::keepVisibleAtStart);
         return true;
     }
     Iterable<FocusNode> maybeFlipped = forward? sortedNodes : sortedNodes->reversed();
     FocusNode previousNode;
     for (FocusNode node : maybeFlipped) {
         if (previousNode == focusedChild) {
-            _focusAndEnsureVisible(nodeforward? ScrollPositionAlignmentPolicyCls::keepVisibleAtEnd : ScrollPositionAlignmentPolicyCls::keepVisibleAtStart);
+            _focusAndEnsureVisible(node, forward? ScrollPositionAlignmentPolicyCls::keepVisibleAtEnd : ScrollPositionAlignmentPolicyCls::keepVisibleAtStart);
             return true;
         }
         previousNode = node;
@@ -201,7 +201,7 @@ bool DirectionalFocusTraversalPolicyMixinCls::inDirection(FocusNode currentNode,
 FocusNode DirectionalFocusTraversalPolicyMixinCls::_sortAndFindInitial(FocusNode currentNode, bool first, bool vertical) {
     Iterable<FocusNode> nodes = currentNode->nearestScope()!->traversalDescendants();
     List<FocusNode> sorted = nodes->toList();
-    <FocusNode>mergeSort(sorted[=] (FocusNode a,FocusNode b) {
+    <FocusNode>mergeSort(sorted, [=] (FocusNode a,FocusNode b) {
         if (vertical) {
             if (first) {
                 return a->rect->top->compareTo(b->rect->top);
@@ -227,7 +227,7 @@ Iterable<FocusNode> DirectionalFocusTraversalPolicyMixinCls::_sortAndFilterHoriz
     Iterable<FocusNode> nodes = nearestScope->traversalDescendants();
     assert(!nodes->contains(nearestScope));
     List<FocusNode> sorted = nodes->toList();
-    <FocusNode>mergeSort(sorted[=] (FocusNode a,FocusNode b)     {
+    <FocusNode>mergeSort(sorted, [=] (FocusNode a,FocusNode b)     {
         a->rect->center->dx->compareTo(b->rect->center->dx);
     });
     Iterable<FocusNode> result;
@@ -237,7 +237,7 @@ Iterable<FocusNode> DirectionalFocusTraversalPolicyMixinCls::_sortAndFilterHoriz
 
 Iterable<FocusNode> DirectionalFocusTraversalPolicyMixinCls::_sortAndFilterVertically(TraversalDirection direction, Rect target, Iterable<FocusNode> nodes) {
     List<FocusNode> sorted = nodes->toList();
-    <FocusNode>mergeSort(sorted[=] (FocusNode a,FocusNode b)     {
+    <FocusNode>mergeSort(sorted, [=] (FocusNode a,FocusNode b)     {
         a->rect->center->dy->compareTo(b->rect->center->dy);
     });
     ;
@@ -291,7 +291,7 @@ TextDirection _ReadingOrderSortDataCls::commonDirectionalityOf(List<_ReadingOrde
 }
 
 void _ReadingOrderSortDataCls::sortWithDirectionality(List<_ReadingOrderSortData> list, TextDirection directionality) {
-    <_ReadingOrderSortData>mergeSort(list[=] (_ReadingOrderSortData a,_ReadingOrderSortData b) {
+    <_ReadingOrderSortData>mergeSort(list, [=] (_ReadingOrderSortData a,_ReadingOrderSortData b) {
         ;
     });
 }
@@ -305,7 +305,7 @@ Iterable<Directionality> _ReadingOrderSortDataCls::directionalAncestors() {
 void _ReadingOrderSortDataCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
     properties->add(<TextDirection>make<DiagnosticsPropertyCls>(__s("directionality"), directionality));
-    properties->add(make<StringPropertyCls>(__s("name"), node->debugLabel()nullptr));
+    properties->add(make<StringPropertyCls>(__s("name"), node->debugLabel(), nullptr));
     properties->add(<Rect>make<DiagnosticsPropertyCls>(__s("rect"), rect));
 }
 
@@ -348,7 +348,7 @@ List<Directionality> _ReadingOrderDirectionalGroupDataCls::memberAncestors() {
 }
 
 void _ReadingOrderDirectionalGroupDataCls::sortWithDirectionality(List<_ReadingOrderDirectionalGroupData> list, TextDirection directionality) {
-    <_ReadingOrderDirectionalGroupData>mergeSort(list[=] (_ReadingOrderDirectionalGroupData a,_ReadingOrderDirectionalGroupData b) {
+    <_ReadingOrderDirectionalGroupData>mergeSort(list, [=] (_ReadingOrderDirectionalGroupData a,_ReadingOrderDirectionalGroupData b) {
         ;
     });
 }
@@ -408,7 +408,7 @@ List<_ReadingOrderDirectionalGroupData> ReadingOrderTraversalPolicyCls::_collect
 }
 
 _ReadingOrderSortData ReadingOrderTraversalPolicyCls::_pickNext(List<_ReadingOrderSortData> candidates) {
-    <_ReadingOrderSortData>mergeSort(candidates[=] (_ReadingOrderSortData a,_ReadingOrderSortData b)     {
+    <_ReadingOrderSortData>mergeSort(candidates, [=] (_ReadingOrderSortData a,_ReadingOrderSortData b)     {
         a->rect->top->compareTo(b->rect->top);
     });
     _ReadingOrderSortData topmost = candidates->first;
@@ -483,7 +483,7 @@ Iterable<FocusNode> OrderedTraversalPolicyCls::sortDescendants(Iterable<FocusNod
             unordered->add(node);
         }
     }
-    <_OrderedFocusInfo>mergeSort(ordered[=] (_OrderedFocusInfo a,_OrderedFocusInfo b) {
+    <_OrderedFocusInfo>mergeSort(ordered, [=] (_OrderedFocusInfo a,_OrderedFocusInfo b) {
         assert(a->order->runtimeType() == b->order->runtimeType(), __s("When sorting nodes for determining focus order, the order (${a.order}) of node ${a.node}, isn't the same type as the order (${b.order}) of ${b.node}. Incompatible order types can't be compared.  Use a FocusTraversalGroup to group similar orders together."));
         return a->order->compareTo(b->order);
     });

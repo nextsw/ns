@@ -168,7 +168,7 @@ VoidCallback ActionsCls::handler(BuildContext context, T intent) {
 
 template<typename T>
 Action<T> ActionsCls::find(BuildContext context, T intent) {
-    Action<T> action = maybeFind(contextintent);
+    Action<T> action = maybeFind(context, intent);
     assert([=] () {
         if (action == nullptr) {
             Type type = intent?->runtimeType | T;
@@ -186,7 +186,7 @@ Action<T> ActionsCls::maybeFind(BuildContext context, T intent) {
     assert(type != IntentCls, __s("The type passed to "find" resolved to "Intent": either a non-Intent generic type argument or an example intent derived from Intent must be specified. Intent may be used as the generic type as long as the optional "intent" argument is passed."));
     _visitActionsAncestors(context, [=] (InheritedElement element) {
         _ActionsMarker actions = as<_ActionsMarker>(element->widget);
-        Action<T> result = _castAction(actionsintent);
+        Action<T> result = _castAction(actions, intent);
         if (result != nullptr) {
             context->dependOnInheritedElement(element);
             action = result;
@@ -210,7 +210,7 @@ Object ActionsCls::invoke(BuildContext context, T intent) {
     Object returnValue;
     bool actionFound = _visitActionsAncestors(context, [=] (InheritedElement element) {
     _ActionsMarker actions = as<_ActionsMarker>(element->widget);
-    Action<T> result = _castAction(actionsintent);
+    Action<T> result = _castAction(actions, intent);
     if (result != nullptr && result->isEnabled(intent)) {
         returnValue = _findDispatcher(element)->invokeAction(result, intent, context);
     }
@@ -232,7 +232,7 @@ Object ActionsCls::maybeInvoke(BuildContext context, T intent) {
     Object returnValue;
     _visitActionsAncestors(context, [=] (InheritedElement element) {
         _ActionsMarker actions = as<_ActionsMarker>(element->widget);
-        Action<T> result = _castAction(actionsintent);
+        Action<T> result = _castAction(actions, intent);
         if (result != nullptr && result->isEnabled(intent)) {
             returnValue = _findDispatcher(element)->invokeAction(result, intent, context);
         }
@@ -283,7 +283,7 @@ Action<T> ActionsCls::_maybeFindWithoutDependingOn(BuildContext context, T inten
     assert(type != IntentCls, __s("The type passed to "find" resolved to "Intent": either a non-Intent generic type argument or an example intent derived from Intent must be specified. Intent may be used as the generic type as long as the optional "intent" argument is passed."));
     _visitActionsAncestors(context, [=] (InheritedElement element) {
         _ActionsMarker actions = as<_ActionsMarker>(element->widget);
-        Action<T> result = _castAction(actionsintent);
+        Action<T> result = _castAction(actions, intent);
         if (result != nullptr) {
             action = result;
             return true;
@@ -496,7 +496,7 @@ bool PrioritizedActionCls::isEnabled(PrioritizedIntents intent) {
         return false;
     }
     for (Intent candidateIntent : intent->orderedIntents) {
-        Action<Intent> candidateAction = ActionsCls-><Intent>maybeFind(focus->context()!candidateIntent);
+        Action<Intent> candidateAction = ActionsCls-><Intent>maybeFind(focus->context()!, candidateIntent);
         if (candidateAction != nullptr && candidateAction->isEnabled(candidateIntent)) {
             _selectedAction = candidateAction;
             _selectedIntent = candidateIntent;

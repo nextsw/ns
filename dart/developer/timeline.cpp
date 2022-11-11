@@ -20,7 +20,7 @@ void TimelineCls::startSync(String name, Map arguments, Flow flow) {
         _stack->add(nullptr);
         return;
     }
-    auto block = _SyncBlockCls->_(namearguments, flow);
+    auto block = _SyncBlockCls->_(name, arguments, flow);
     _stack->add(block);
     block->_startSync();
 }
@@ -56,7 +56,7 @@ void TimelineCls::instantSync(String name, Map arguments) {
 
 template<typename T>
 T TimelineCls::timeSync(String name, TimelineSyncFunction<T> function, Map arguments, Flow flow) {
-    startSync(namearguments, flow);
+    startSync(name, arguments, flow);
     try {
         return function();
     } finally {

@@ -147,7 +147,7 @@ Iterable<Curve2DSample> Curve2DCls::generateSamples(double end, double start, do
     Curve2DSample last = make<Curve2DSampleCls>(end, transform(end));
     List<Curve2DSample> samples = makeList(ArrayItem);
     InlineMethod;
-    sample(first, last(first->value->dx() - last->value->dx())->abs() < tolerance && (first->value->dy() - last->value->dy())->abs() < tolerance);
+    sample(first, last, (first->value->dx() - last->value->dx())->abs() < tolerance && (first->value->dy() - last->value->dy())->abs() < tolerance);
     return samples;
 }
 
@@ -259,14 +259,14 @@ void CatmullRomSplineCls::_initializeIfNeeded() {
     if (_cubicSegments->isNotEmpty) {
         return;
     }
-    _cubicSegments->addAll(_computeSegments(_controlPoints!, _tension!_startHandle, _endHandle));
+    _cubicSegments->addAll(_computeSegments(_controlPoints!, _tension!, _startHandle, _endHandle));
 }
 
 CatmullRomCurveCls::CatmullRomCurveCls(List<Offset> controlPoints, double tension) {
     {
         assert(tension != nullptr);
         assert([=] () {
-                    auto _c1 = _debugAssertReasons;        _c1.clear();return validateControlPoints(controlPointstension, _c1);
+                    auto _c1 = _debugAssertReasons;        _c1.clear();return validateControlPoints(controlPoints, tension, _c1);
         }(), __s("control points $controlPoints could not be validated:\n  ${_debugAssertReasons.join('\n  ')}"));
         _precomputedSamples = makeList();
     }
@@ -315,7 +315,7 @@ bool CatmullRomCurveCls::validateControlPoints(List<Offset> controlPoints, List<
     bool success = true;
     lastX = -double->infinity;
     double tolerance = 1e-3;
-    CatmullRomSpline testSpline = make<CatmullRomSplineCls>(controlPointstension);
+    CatmullRomSpline testSpline = make<CatmullRomSplineCls>(controlPoints, tension);
     double start = testSpline->findInverse(0.0);
     double end = testSpline->findInverse(1.0);
     Iterable<Curve2DSample> samplePoints = testSpline->generateSamples(start, end);
@@ -390,7 +390,7 @@ double CatmullRomCurveCls::transformInternal(double t) {
 }
 
 List<Curve2DSample> CatmullRomCurveCls::_computeSamples(List<Offset> controlPoints, double tension) {
-    List<Offset> list1 = make<ListCls<>>();list1.add(ArrayItem);for (auto _x1 : controlPoints) {{    list1.add(_x1);}list1.add(ArrayItem);return CatmullRomSplineCls->precompute(list1tension)->generateSamples(1e-12)->toList();
+    List<Offset> list1 = make<ListCls<>>();list1.add(ArrayItem);for (auto _x1 : controlPoints) {{    list1.add(_x1);}list1.add(ArrayItem);return CatmullRomSplineCls->precompute(list1, tension)->generateSamples(1e-12)->toList();
 }
 
 FlippedCurveCls::FlippedCurveCls(Curve curve) {

@@ -136,7 +136,7 @@ bool MediaQueryCls::updateShouldNotify(MediaQuery oldWidget) {
 
 void MediaQueryCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<MediaQueryData>make<DiagnosticsPropertyCls>(__s("data"), datafalse));
+    properties->add(<MediaQueryData>make<DiagnosticsPropertyCls>(__s("data"), data, false));
 }
 
 State<_MediaQueryFromWindow> _MediaQueryFromWindowCls::createState() {

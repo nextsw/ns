@@ -88,13 +88,13 @@ int BoxDecorationCls::hashCode() {
 void BoxDecorationCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
     auto _c1 = properties;_c1.defaultDiagnosticsTreeStyle = auto _c2 = DiagnosticsTreeStyleCls::whitespace;_c2.emptyBodyDescription = __s("<no decorations specified>");_c2;_c1;
-    properties->add(make<ColorPropertyCls>(__s("color"), colornullptr));
-    properties->add(<DecorationImage>make<DiagnosticsPropertyCls>(__s("image"), imagenullptr));
-    properties->add(<BoxBorder>make<DiagnosticsPropertyCls>(__s("border"), bordernullptr));
-    properties->add(<BorderRadiusGeometry>make<DiagnosticsPropertyCls>(__s("borderRadius"), borderRadiusnullptr));
-    properties->add(<BoxShadow>make<IterablePropertyCls>(__s("boxShadow"), boxShadownullptr, DiagnosticsTreeStyleCls::whitespace));
-    properties->add(<Gradient>make<DiagnosticsPropertyCls>(__s("gradient"), gradientnullptr));
-    properties->add(<BoxShape>make<EnumPropertyCls>(__s("shape"), shapeBoxShapeCls::rectangle));
+    properties->add(make<ColorPropertyCls>(__s("color"), color, nullptr));
+    properties->add(<DecorationImage>make<DiagnosticsPropertyCls>(__s("image"), image, nullptr));
+    properties->add(<BoxBorder>make<DiagnosticsPropertyCls>(__s("border"), border, nullptr));
+    properties->add(<BorderRadiusGeometry>make<DiagnosticsPropertyCls>(__s("borderRadius"), borderRadius, nullptr));
+    properties->add(<BoxShadow>make<IterablePropertyCls>(__s("boxShadow"), boxShadow, nullptr, DiagnosticsTreeStyleCls::whitespace));
+    properties->add(<Gradient>make<DiagnosticsPropertyCls>(__s("gradient"), gradient, nullptr));
+    properties->add(<BoxShape>make<EnumPropertyCls>(__s("shape"), shape, BoxShapeCls::rectangle));
 }
 
 bool BoxDecorationCls::hitTest(Size size, Offset position, TextDirection textDirection) {
@@ -121,7 +121,7 @@ void _BoxDecorationPainterCls::paint(Canvas canvas, Offset offset, ImageConfigur
     _paintShadows(canvas, rect, textDirection);
     _paintBackgroundColor(canvas, rect, textDirection);
     _paintBackgroundImage(canvas, rect, configuration);
-    _decoration->border?->paint(canvas, rect_decoration->shape, _decoration->borderRadius?->resolve(textDirection), configuration->textDirection);
+    _decoration->border?->paint(canvas, rect, _decoration->shape, _decoration->borderRadius?->resolve(textDirection), configuration->textDirection);
 }
 
 String _BoxDecorationPainterCls::toString() {
@@ -146,7 +146,7 @@ Paint _BoxDecorationPainterCls::_getBackgroundPaint(Rect rect, TextDirection tex
             paint->color() = _decoration->color!;
         }
         if (_decoration->gradient != nullptr) {
-            paint->shader() = _decoration->gradient!->createShader(recttextDirection);
+            paint->shader() = _decoration->gradient!->createShader(rect, textDirection);
             _rectForCachedBackgroundPaint = rect;
         }
         _cachedBackgroundPaint = paint;

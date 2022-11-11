@@ -85,7 +85,7 @@ void mergeSort(List<T> list, std::function<int(T , T )> compare, int end, int st
         return;
     }
     if ( < _kMergeSortLimit) {
-        <T>_insertionSort(listcompare, start, end);
+        <T>_insertionSort(list, compare, start, end);
         return;
     }
     int middle = start + ((end - start) >> 1);

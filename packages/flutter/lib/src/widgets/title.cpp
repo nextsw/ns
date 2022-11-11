@@ -13,6 +13,6 @@ Widget TitleCls::build(BuildContext context) {
 
 void TitleCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(make<StringPropertyCls>(__s("title"), title__s("")));
-    properties->add(make<ColorPropertyCls>(__s("color"), colornullptr));
+    properties->add(make<StringPropertyCls>(__s("title"), title, __s("")));
+    properties->add(make<ColorPropertyCls>(__s("color"), color, nullptr));
 }

@@ -22,14 +22,14 @@ Future<Codec> PaintingBindingCls::instantiateImageCodec(Uint8List bytes, bool al
     assert(cacheWidth == nullptr || cacheWidth > 0);
     assert(cacheHeight == nullptr || cacheHeight > 0);
     assert(allowUpscaling != nullptr);
-    return ui->instantiateImageCodec(bytescacheWidth, cacheHeight, allowUpscaling);
+    return ui->instantiateImageCodec(bytes, cacheWidth, cacheHeight, allowUpscaling);
 }
 
 Future<Codec> PaintingBindingCls::instantiateImageCodecFromBuffer(ImmutableBuffer buffer, bool allowUpscaling, int cacheHeight, int cacheWidth) {
     assert(cacheWidth == nullptr || cacheWidth > 0);
     assert(cacheHeight == nullptr || cacheHeight > 0);
     assert(allowUpscaling != nullptr);
-    return ui->instantiateImageCodecFromBuffer(buffercacheWidth, cacheHeight, allowUpscaling);
+    return ui->instantiateImageCodecFromBuffer(buffer, cacheWidth, cacheHeight, allowUpscaling);
 }
 
 void PaintingBindingCls::evict(String asset) {

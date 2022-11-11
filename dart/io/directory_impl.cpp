@@ -306,10 +306,10 @@ void _AsyncDirectoryListerCls::error(message ) {
         auto err = make<OSErrorCls>(responseErrorInfo[_osErrorResponseMessage], responseErrorInfo[_osErrorResponseErrorCode]);
         auto errorPath = message[responsePath];
         if (errorPath == nullptr) {
-            errorPath = utf8->decode(rawPathtrue);
+            errorPath = utf8->decode(rawPath, true);
         } else         {
             if (is<Uint8List>(errorPath)) {
-            as<Uint8ListCls>(errorPath) = utf8->decode(message[responsePath]true);
+            as<Uint8ListCls>(errorPath) = utf8->decode(message[responsePath], true);
         }
 ;
         }        controller->addError(make<FileSystemExceptionCls>(__s("Directory listing failed"), errorPath, err));

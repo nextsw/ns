@@ -1,6 +1,6 @@
 #include "display_feature_sub_screen.hpp"
 Widget DisplayFeatureSubScreenCls::build(BuildContext context) {
-    assert(anchorPoint != nullptr || debugCheckHasDirectionality(context__s("to determine which sub-screen DisplayFeatureSubScreen uses"), __s("Alternatively, consider specifying the 'anchorPoint' argument on the DisplayFeatureSubScreen.")));
+    assert(anchorPoint != nullptr || debugCheckHasDirectionality(context, __s("to determine which sub-screen DisplayFeatureSubScreen uses"), __s("Alternatively, consider specifying the 'anchorPoint' argument on the DisplayFeatureSubScreen.")));
     MediaQueryData mediaQuery = MediaQueryCls->of(context);
     Size parentSize = mediaQuery->size;
     Rect wantedBounds = OffsetCls::zero & parentSize;

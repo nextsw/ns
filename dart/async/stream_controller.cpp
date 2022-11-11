@@ -435,7 +435,7 @@ template<typename T>
 _AddStreamStateCls<T>::_AddStreamStateCls(_EventSink<T> controller, Stream<T> source, bool cancelOnError) {
     {
         addStreamFuture = make<_FutureCls>();
-        addSubscription = source->listen(controller->_addcancelOnError? makeErrorHandler(controller) : controller->_addError, controller->_close, cancelOnError);
+        addSubscription = source->listen(controller->_add, cancelOnError? makeErrorHandler(controller) : controller->_addError, controller->_close, cancelOnError);
     }
 }
 

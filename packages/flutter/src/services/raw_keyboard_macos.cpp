@@ -74,7 +74,7 @@ void RawKeyEventDataMacOsCls::debugFillProperties(DiagnosticPropertiesBuilder pr
     properties->add(<String>make<DiagnosticsPropertyCls>(__s("charactersIgnoringModifiers"), charactersIgnoringModifiers));
     properties->add(<int>make<DiagnosticsPropertyCls>(__s("keyCode"), keyCode));
     properties->add(<int>make<DiagnosticsPropertyCls>(__s("modifiers"), modifiers));
-    properties->add(<int>make<DiagnosticsPropertyCls>(__s("specifiedLogicalKey"), specifiedLogicalKeynullptr));
+    properties->add(<int>make<DiagnosticsPropertyCls>(__s("specifiedLogicalKey"), specifiedLogicalKey, nullptr));
 }
 
 bool RawKeyEventDataMacOsCls::==(Object other) {

@@ -243,7 +243,7 @@ void RendererBindingCls::hitTest(HitTestResult result, Offset position) {
     assert(renderView() != nullptr);
     assert(result != nullptr);
     assert(position != nullptr);
-    renderView()->hitTest(resultposition);
+    renderView()->hitTest(result, position);
     super->hitTest(result, position);
 }
 

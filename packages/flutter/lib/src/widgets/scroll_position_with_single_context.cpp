@@ -92,7 +92,7 @@ Future<void> ScrollPositionWithSingleContextCls::animateTo(double to, Curve curv
         jumpTo(to);
         return <void>value();
     }
-    DrivenScrollActivity activity = make<DrivenScrollActivityCls>(thispixels, to, duration, curve, context->vsync);
+    DrivenScrollActivity activity = make<DrivenScrollActivityCls>(this, pixels, to, duration, curve, context->vsync);
     beginActivity(activity);
     return activity->done();
 }

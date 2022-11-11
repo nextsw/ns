@@ -233,7 +233,7 @@ Simulation ClampingScrollPhysicsCls::createBallisticSimulation(ScrollMetrics pos
             end = position->minScrollExtent();
         }
         assert(end != nullptr);
-        return make<ScrollSpringSimulationCls>(spring, position->pixels(), end!, math->min(0.0, velocity)tolerance);
+        return make<ScrollSpringSimulationCls>(spring, position->pixels(), end!, math->min(0.0, velocity), tolerance);
     }
     if (velocity->abs() < tolerance->velocity) {
         return nullptr;

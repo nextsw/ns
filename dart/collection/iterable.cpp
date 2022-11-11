@@ -120,7 +120,7 @@ bool IterableMixinCls<E>::any(std::function<bool(E element)> test) {
 
 template<typename E>
 List<E> IterableMixinCls<E>::toList(bool growable) {
-    return <E>from(thisgrowable);
+    return <E>from(this, growable);
 }
 
 template<typename E>

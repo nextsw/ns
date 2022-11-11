@@ -128,7 +128,7 @@ bool RenderCustomPaintCls::hitTestChildren(BoxHitTestResult result, Offset posit
     if (_foregroundPainter != nullptr && (_foregroundPainter!->hitTest(position) | false)) {
         return true;
     }
-    return super->hitTestChildren(resultposition);
+    return super->hitTestChildren(result, position);
 }
 
 bool RenderCustomPaintCls::hitTestSelf(Offset position) {
@@ -189,10 +189,10 @@ void RenderCustomPaintCls::clearSemantics() {
 void RenderCustomPaintCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
     properties->add(make<MessagePropertyCls>(__s("painter"), __s("$painter")));
-    properties->add(make<MessagePropertyCls>(__s("foregroundPainter"), __s("$foregroundPainter")foregroundPainter() != nullptr? DiagnosticLevelCls::info : DiagnosticLevelCls::fine));
-    properties->add(<Size>make<DiagnosticsPropertyCls>(__s("preferredSize"), preferredSize()SizeCls::zero));
-    properties->add(<bool>make<DiagnosticsPropertyCls>(__s("isComplex"), isComplexfalse));
-    properties->add(<bool>make<DiagnosticsPropertyCls>(__s("willChange"), willChangefalse));
+    properties->add(make<MessagePropertyCls>(__s("foregroundPainter"), __s("$foregroundPainter"), foregroundPainter() != nullptr? DiagnosticLevelCls::info : DiagnosticLevelCls::fine));
+    properties->add(<Size>make<DiagnosticsPropertyCls>(__s("preferredSize"), preferredSize(), SizeCls::zero));
+    properties->add(<bool>make<DiagnosticsPropertyCls>(__s("isComplex"), isComplex, false));
+    properties->add(<bool>make<DiagnosticsPropertyCls>(__s("willChange"), willChange, false));
 }
 
 void RenderCustomPaintCls::_didUpdatePainter(CustomPainter newPainter, CustomPainter oldPainter) {

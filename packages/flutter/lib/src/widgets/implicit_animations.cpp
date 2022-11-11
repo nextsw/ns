@@ -53,7 +53,7 @@ ImplicitlyAnimatedWidgetCls::ImplicitlyAnimatedWidgetCls(Curve curve, Duration d
 
 void ImplicitlyAnimatedWidgetCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(make<IntPropertyCls>(__s("duration"), duration->inMilliseconds()__s("ms")));
+    properties->add(make<IntPropertyCls>(__s("duration"), duration->inMilliseconds(), __s("ms")));
 }
 
 template<typename T>
@@ -172,14 +172,14 @@ AnimatedWidgetBaseState<AnimatedContainer> AnimatedContainerCls::createState() {
 
 void AnimatedContainerCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<AlignmentGeometry>make<DiagnosticsPropertyCls>(__s("alignment"), alignmentfalse, nullptr));
-    properties->add(<EdgeInsetsGeometry>make<DiagnosticsPropertyCls>(__s("padding"), paddingnullptr));
-    properties->add(<Decoration>make<DiagnosticsPropertyCls>(__s("bg"), decorationnullptr));
-    properties->add(<Decoration>make<DiagnosticsPropertyCls>(__s("fg"), foregroundDecorationnullptr));
-    properties->add(<BoxConstraints>make<DiagnosticsPropertyCls>(__s("constraints"), constraintsnullptr, false));
-    properties->add(<EdgeInsetsGeometry>make<DiagnosticsPropertyCls>(__s("margin"), marginnullptr));
+    properties->add(<AlignmentGeometry>make<DiagnosticsPropertyCls>(__s("alignment"), alignment, false, nullptr));
+    properties->add(<EdgeInsetsGeometry>make<DiagnosticsPropertyCls>(__s("padding"), padding, nullptr));
+    properties->add(<Decoration>make<DiagnosticsPropertyCls>(__s("bg"), decoration, nullptr));
+    properties->add(<Decoration>make<DiagnosticsPropertyCls>(__s("fg"), foregroundDecoration, nullptr));
+    properties->add(<BoxConstraints>make<DiagnosticsPropertyCls>(__s("constraints"), constraints, nullptr, false));
+    properties->add(<EdgeInsetsGeometry>make<DiagnosticsPropertyCls>(__s("margin"), margin, nullptr));
     properties->add(<Matrix4>has(__s("transform"), transform));
-    properties->add(<AlignmentGeometry>make<DiagnosticsPropertyCls>(__s("transformAlignment"), transformAlignmentnullptr));
+    properties->add(<AlignmentGeometry>make<DiagnosticsPropertyCls>(__s("transformAlignment"), transformAlignment, nullptr));
     properties->add(<Clip>make<DiagnosticsPropertyCls>(__s("clipBehavior"), clipBehavior));
 }
 
@@ -217,14 +217,14 @@ Widget _AnimatedContainerStateCls::build(BuildContext context) {
 
 void _AnimatedContainerStateCls::debugFillProperties(DiagnosticPropertiesBuilder description) {
     super->debugFillProperties(description);
-    description->add(<AlignmentGeometryTween>make<DiagnosticsPropertyCls>(__s("alignment"), _alignmentfalse, nullptr));
-    description->add(<EdgeInsetsGeometryTween>make<DiagnosticsPropertyCls>(__s("padding"), _paddingnullptr));
-    description->add(<DecorationTween>make<DiagnosticsPropertyCls>(__s("bg"), _decorationnullptr));
-    description->add(<DecorationTween>make<DiagnosticsPropertyCls>(__s("fg"), _foregroundDecorationnullptr));
-    description->add(<BoxConstraintsTween>make<DiagnosticsPropertyCls>(__s("constraints"), _constraintsfalse, nullptr));
-    description->add(<EdgeInsetsGeometryTween>make<DiagnosticsPropertyCls>(__s("margin"), _marginnullptr));
+    description->add(<AlignmentGeometryTween>make<DiagnosticsPropertyCls>(__s("alignment"), _alignment, false, nullptr));
+    description->add(<EdgeInsetsGeometryTween>make<DiagnosticsPropertyCls>(__s("padding"), _padding, nullptr));
+    description->add(<DecorationTween>make<DiagnosticsPropertyCls>(__s("bg"), _decoration, nullptr));
+    description->add(<DecorationTween>make<DiagnosticsPropertyCls>(__s("fg"), _foregroundDecoration, nullptr));
+    description->add(<BoxConstraintsTween>make<DiagnosticsPropertyCls>(__s("constraints"), _constraints, false, nullptr));
+    description->add(<EdgeInsetsGeometryTween>make<DiagnosticsPropertyCls>(__s("margin"), _margin, nullptr));
     description->add(<Matrix4Tween>has(__s("transform"), _transform));
-    description->add(<AlignmentGeometryTween>make<DiagnosticsPropertyCls>(__s("transformAlignment"), _transformAlignmentnullptr));
+    description->add(<AlignmentGeometryTween>make<DiagnosticsPropertyCls>(__s("transformAlignment"), _transformAlignment, nullptr));
 }
 
 AnimatedPaddingCls::AnimatedPaddingCls(Widget child, Unknown curve, Unknown duration, Unknown key, Unknown onEnd, EdgeInsetsGeometry padding) {
@@ -255,7 +255,7 @@ Widget _AnimatedPaddingStateCls::build(BuildContext context) {
 
 void _AnimatedPaddingStateCls::debugFillProperties(DiagnosticPropertiesBuilder description) {
     super->debugFillProperties(description);
-    description->add(<EdgeInsetsGeometryTween>make<DiagnosticsPropertyCls>(__s("padding"), _paddingnullptr));
+    description->add(<EdgeInsetsGeometryTween>make<DiagnosticsPropertyCls>(__s("padding"), _padding, nullptr));
 }
 
 AnimatedAlignCls::AnimatedAlignCls(AlignmentGeometry alignment, Widget child, Unknown curve, Unknown duration, double heightFactor, Unknown key, Unknown onEnd, double widthFactor) {
@@ -297,9 +297,9 @@ Widget _AnimatedAlignStateCls::build(BuildContext context) {
 
 void _AnimatedAlignStateCls::debugFillProperties(DiagnosticPropertiesBuilder description) {
     super->debugFillProperties(description);
-    description->add(<AlignmentGeometryTween>make<DiagnosticsPropertyCls>(__s("alignment"), _alignmentnullptr));
-    description->add(<Tween<double>>make<DiagnosticsPropertyCls>(__s("widthFactor"), _widthFactorTweennullptr));
-    description->add(<Tween<double>>make<DiagnosticsPropertyCls>(__s("heightFactor"), _heightFactorTweennullptr));
+    description->add(<AlignmentGeometryTween>make<DiagnosticsPropertyCls>(__s("alignment"), _alignment, nullptr));
+    description->add(<Tween<double>>make<DiagnosticsPropertyCls>(__s("widthFactor"), _widthFactorTween, nullptr));
+    description->add(<Tween<double>>make<DiagnosticsPropertyCls>(__s("heightFactor"), _heightFactorTween, nullptr));
 }
 
 AnimatedPositionedCls::AnimatedPositionedCls(double bottom, Widget child, Unknown curve, Unknown duration, double height, Unknown key, double left, Unknown onEnd, double right, double top, double width) {
@@ -317,12 +317,12 @@ AnimatedWidgetBaseState<AnimatedPositioned> AnimatedPositionedCls::createState()
 
 void AnimatedPositionedCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(make<DoublePropertyCls>(__s("left"), leftnullptr));
-    properties->add(make<DoublePropertyCls>(__s("top"), topnullptr));
-    properties->add(make<DoublePropertyCls>(__s("right"), rightnullptr));
-    properties->add(make<DoublePropertyCls>(__s("bottom"), bottomnullptr));
-    properties->add(make<DoublePropertyCls>(__s("width"), widthnullptr));
-    properties->add(make<DoublePropertyCls>(__s("height"), heightnullptr));
+    properties->add(make<DoublePropertyCls>(__s("left"), left, nullptr));
+    properties->add(make<DoublePropertyCls>(__s("top"), top, nullptr));
+    properties->add(make<DoublePropertyCls>(__s("right"), right, nullptr));
+    properties->add(make<DoublePropertyCls>(__s("bottom"), bottom, nullptr));
+    properties->add(make<DoublePropertyCls>(__s("width"), width, nullptr));
+    properties->add(make<DoublePropertyCls>(__s("height"), height, nullptr));
 }
 
 void _AnimatedPositionedStateCls::forEachTween(TweenVisitor<dynamic> visitor) {
@@ -373,12 +373,12 @@ AnimatedWidgetBaseState<AnimatedPositionedDirectional> AnimatedPositionedDirecti
 
 void AnimatedPositionedDirectionalCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(make<DoublePropertyCls>(__s("start"), startnullptr));
-    properties->add(make<DoublePropertyCls>(__s("top"), topnullptr));
-    properties->add(make<DoublePropertyCls>(__s("end"), endnullptr));
-    properties->add(make<DoublePropertyCls>(__s("bottom"), bottomnullptr));
-    properties->add(make<DoublePropertyCls>(__s("width"), widthnullptr));
-    properties->add(make<DoublePropertyCls>(__s("height"), heightnullptr));
+    properties->add(make<DoublePropertyCls>(__s("start"), start, nullptr));
+    properties->add(make<DoublePropertyCls>(__s("top"), top, nullptr));
+    properties->add(make<DoublePropertyCls>(__s("end"), end, nullptr));
+    properties->add(make<DoublePropertyCls>(__s("bottom"), bottom, nullptr));
+    properties->add(make<DoublePropertyCls>(__s("width"), width, nullptr));
+    properties->add(make<DoublePropertyCls>(__s("height"), height, nullptr));
 }
 
 void _AnimatedPositionedDirectionalStateCls::forEachTween(TweenVisitor<dynamic> visitor) {
@@ -430,8 +430,8 @@ ImplicitlyAnimatedWidgetState<AnimatedScale> AnimatedScaleCls::createState() {
 void AnimatedScaleCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
     properties->add(make<DoublePropertyCls>(__s("scale"), scale));
-    properties->add(<Alignment>make<DiagnosticsPropertyCls>(__s("alignment"), alignmentAlignmentCls::center));
-    properties->add(<FilterQuality>make<EnumPropertyCls>(__s("filterQuality"), filterQualitynullptr));
+    properties->add(<Alignment>make<DiagnosticsPropertyCls>(__s("alignment"), alignment, AlignmentCls::center));
+    properties->add(<FilterQuality>make<EnumPropertyCls>(__s("filterQuality"), filterQuality, nullptr));
 }
 
 void _AnimatedScaleStateCls::forEachTween(TweenVisitor<dynamic> visitor) {
@@ -461,8 +461,8 @@ ImplicitlyAnimatedWidgetState<AnimatedRotation> AnimatedRotationCls::createState
 void AnimatedRotationCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
     properties->add(make<DoublePropertyCls>(__s("turns"), turns));
-    properties->add(<Alignment>make<DiagnosticsPropertyCls>(__s("alignment"), alignmentAlignmentCls::center));
-    properties->add(<FilterQuality>make<EnumPropertyCls>(__s("filterQuality"), filterQualitynullptr));
+    properties->add(<Alignment>make<DiagnosticsPropertyCls>(__s("alignment"), alignment, AlignmentCls::center));
+    properties->add(<FilterQuality>make<EnumPropertyCls>(__s("filterQuality"), filterQuality, nullptr));
 }
 
 void _AnimatedRotationStateCls::forEachTween(TweenVisitor<dynamic> visitor) {
@@ -578,12 +578,12 @@ AnimatedWidgetBaseState<AnimatedDefaultTextStyle> AnimatedDefaultTextStyleCls::c
 void AnimatedDefaultTextStyleCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
     style->debugFillProperties(properties);
-    properties->add(<TextAlign>make<EnumPropertyCls>(__s("textAlign"), textAlignnullptr));
-    properties->add(make<FlagPropertyCls>(__s("softWrap")softWrap, __s("wrapping at box width"), __s("no wrapping except at line break characters"), true));
-    properties->add(<TextOverflow>make<EnumPropertyCls>(__s("overflow"), overflownullptr));
-    properties->add(make<IntPropertyCls>(__s("maxLines"), maxLinesnullptr));
-    properties->add(<TextWidthBasis>make<EnumPropertyCls>(__s("textWidthBasis"), textWidthBasisTextWidthBasisCls::parent));
-    properties->add(<TextHeightBehavior>make<DiagnosticsPropertyCls>(__s("textHeightBehavior"), textHeightBehaviornullptr));
+    properties->add(<TextAlign>make<EnumPropertyCls>(__s("textAlign"), textAlign, nullptr));
+    properties->add(make<FlagPropertyCls>(__s("softWrap"), softWrap, __s("wrapping at box width"), __s("no wrapping except at line break characters"), true));
+    properties->add(<TextOverflow>make<EnumPropertyCls>(__s("overflow"), overflow, nullptr));
+    properties->add(make<IntPropertyCls>(__s("maxLines"), maxLines, nullptr));
+    properties->add(<TextWidthBasis>make<EnumPropertyCls>(__s("textWidthBasis"), textWidthBasis, TextWidthBasisCls::parent));
+    properties->add(<TextHeightBehavior>make<DiagnosticsPropertyCls>(__s("textHeightBehavior"), textHeightBehavior, nullptr));
 }
 
 void _AnimatedDefaultTextStyleStateCls::forEachTween(TweenVisitor<dynamic> visitor) {
@@ -685,7 +685,7 @@ Widget _AnimatedFractionallySizedBoxStateCls::build(BuildContext context) {
 
 void _AnimatedFractionallySizedBoxStateCls::debugFillProperties(DiagnosticPropertiesBuilder description) {
     super->debugFillProperties(description);
-    description->add(<AlignmentGeometryTween>make<DiagnosticsPropertyCls>(__s("alignment"), _alignmentnullptr));
-    description->add(<Tween<double>>make<DiagnosticsPropertyCls>(__s("widthFactor"), _widthFactorTweennullptr));
-    description->add(<Tween<double>>make<DiagnosticsPropertyCls>(__s("heightFactor"), _heightFactorTweennullptr));
+    description->add(<AlignmentGeometryTween>make<DiagnosticsPropertyCls>(__s("alignment"), _alignment, nullptr));
+    description->add(<Tween<double>>make<DiagnosticsPropertyCls>(__s("widthFactor"), _widthFactorTween, nullptr));
+    description->add(<Tween<double>>make<DiagnosticsPropertyCls>(__s("heightFactor"), _heightFactorTween, nullptr));
 }

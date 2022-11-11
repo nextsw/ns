@@ -395,7 +395,7 @@ Map<K2, V2> MapViewCls<K, V>::map(std::function<MapEntry<K2, V2>(K key, V value)
 
 template<typename K, typename V>
 V MapViewCls<K, V>::update(K key, std::function<V(V value)> update, std::function<V()> ifAbsent) {
-    return _map->update(key, updateifAbsent);
+    return _map->update(key, update, ifAbsent);
 }
 
 template<typename K, typename V>

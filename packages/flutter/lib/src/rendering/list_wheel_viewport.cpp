@@ -316,7 +316,7 @@ void RenderListWheelViewportCls::performLayout() {
     }
     RenderBox child = firstChild;
     while (child != nullptr) {
-        child->layout(childConstraintstrue);
+        child->layout(childConstraints, true);
         child = childAfter(child);
     }
     while (currentFirstIndex > targetFirstIndex) {
@@ -324,7 +324,7 @@ void RenderListWheelViewportCls::performLayout() {
         _layoutChild(firstChild!, childConstraints, --currentFirstIndex);
     }
     while ( < targetLastIndex) {
-        _createChild(currentLastIndex + 1lastChild);
+        _createChild(currentLastIndex + 1, lastChild);
         _layoutChild(lastChild!, childConstraints, ++currentLastIndex);
     }
     double minScrollExtent = childManager->childExistsAt(targetFirstIndex - 1)? _minEstimatedScrollExtent() : indexToScrollOffset(targetFirstIndex);
@@ -335,7 +335,7 @@ void RenderListWheelViewportCls::performLayout() {
 void RenderListWheelViewportCls::paint(PaintingContext context, Offset offset) {
     if (childCount > 0) {
         if (_shouldClipAtCurrentOffset() && clipBehavior() != ClipCls::none) {
-            _clipRectLayer->layer() = context->pushClipRect(needsCompositing, offset, OffsetCls::zero & size, _paintVisibleChildrenclipBehavior(), _clipRectLayer->layer());
+            _clipRectLayer->layer() = context->pushClipRect(needsCompositing, offset, OffsetCls::zero & size, _paintVisibleChildren, clipBehavior(), _clipRectLayer->layer());
         } else {
             _clipRectLayer->layer() = nullptr;
             _paintVisibleChildren(context, offset);
@@ -380,11 +380,11 @@ RevealedOffset RenderListWheelViewportCls::getOffsetToReveal(RenderObject target
 
 void RenderListWheelViewportCls::showOnScreen(Curve curve, RenderObject descendant, Duration duration, Rect rect) {
     if (descendant != nullptr) {
-        RevealedOffset revealedOffset = getOffsetToReveal(descendant, 0.5rect);
+        RevealedOffset revealedOffset = getOffsetToReveal(descendant, 0.5, rect);
         if (duration == DurationCls::zero) {
             offset()->jumpTo(revealedOffset->offset);
         } else {
-            offset()->animateTo(revealedOffset->offsetduration, curve);
+            offset()->animateTo(revealedOffset->offset, duration, curve);
         }
         rect = revealedOffset->rect;
     }
@@ -446,7 +446,7 @@ double RenderListWheelViewportCls::_getIntrinsicCrossAxis(_ChildSizingFunction c
 void RenderListWheelViewportCls::_createChild(int index, RenderBox after) {
     <BoxConstraints>invokeLayoutCallback([=] (BoxConstraints constraints) {
         assert(constraints == this->constraints);
-        childManager->createChild(indexafter);
+        childManager->createChild(index, after);
     });
 }
 
@@ -458,7 +458,7 @@ void RenderListWheelViewportCls::_destroyChild(RenderBox child) {
 }
 
 void RenderListWheelViewportCls::_layoutChild(RenderBox child, BoxConstraints constraints, int index) {
-    child->layout(constraintstrue);
+    child->layout(constraints, true);
     ListWheelParentData childParentData = as<ListWheelParentData>(child->parentData!);
     double crossPosition = size->width / 2.0 - child->size()->width() / 2.0;
     childParentData->offset = make<OffsetCls>(crossPosition, indexToScrollOffset(index));

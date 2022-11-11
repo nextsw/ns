@@ -27,7 +27,7 @@ bool _IteratorZipCls<T>::moveNext() {
     }
     _current = ListCls->generate(_iterators->length(), [=] (Unknown  i)     {
         _iterators[i]->current();
-    }false);
+    }, false);
     return true;
 }
 

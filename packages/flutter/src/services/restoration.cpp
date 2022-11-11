@@ -252,7 +252,7 @@ void RestorationBucketCls::rename(String newRestorationId) {
 
 void RestorationBucketCls::dispose() {
     assert(_debugAssertNotDisposed());
-    _visitChildren(_dropChildtrue);
+    _visitChildren(_dropChild, true);
     _claimedChildren->clear();
     _childrenToAdd->clear();
     _parent?->_removeChildData(this);

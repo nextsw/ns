@@ -302,7 +302,7 @@ bool RenderParagraphCls::hitTestChildren(BoxHitTestResult result, Offset positio
         Offset manualPosition = (position - textParentData->offset) / textParentData->scale!;
         return (transformed->dx - manualPosition->dx())->abs() < precisionErrorTolerance && (transformed->dy - manualPosition->dy())->abs() < precisionErrorTolerance;
     }());
-    return child!->hitTest(resulttransformed);
+    return child!->hitTest(result, transformed);
 });
         if (isHit) {
             return true;
@@ -327,7 +327,7 @@ Size RenderParagraphCls::computeDryLayout(BoxConstraints constraints) {
         assert(debugCannotComputeDryLayout(__s("Dry layout not available for alignments that require baseline.")));
         return SizeCls::zero;
     }
-    _textPainter->setPlaceholderDimensions(_layoutChildren(constraintstrue));
+    _textPainter->setPlaceholderDimensions(_layoutChildren(constraints, true));
     _layoutText(constraints->minWidth, constraints->maxWidth);
     return constraints->constrain(_textPainter->size());
 }
@@ -414,7 +414,7 @@ List<TextBox> RenderParagraphCls::getBoxesForSelection(TextSelection selection, 
     assert(boxHeightStyle != nullptr);
     assert(boxWidthStyle != nullptr);
     _layoutTextWithConstraints(constraints);
-    return _textPainter->getBoxesForSelection(selectionboxHeightStyle, boxWidthStyle);
+    return _textPainter->getBoxesForSelection(selection, boxHeightStyle, boxWidthStyle);
 }
 
 TextPosition RenderParagraphCls::getPositionForOffset(Offset offset) {
@@ -456,7 +456,7 @@ void RenderParagraphCls::describeSemanticsConfiguration(SemanticsConfiguration c
                 buffer->write(label);
                 offset += label->length();
             }
-            _cachedAttributedLabel = make<AttributedStringCls>(buffer->toString()attributes);
+            _cachedAttributedLabel = make<AttributedStringCls>(buffer->toString(), attributes);
         }
         config->attributedLabel() = _cachedAttributedLabel!;
         config->textDirection() = textDirection();
@@ -505,7 +505,7 @@ void RenderParagraphCls::assembleSemanticsNode(SemanticsNode node, SemanticsConf
             }
             rect = RectCls->fromLTWH(math->max(0.0, rect->left), math->max(0.0, rect->top), math->min(rect->width(), constraints->maxWidth), math->min(rect->height(), constraints->maxHeight));
             currentRect = RectCls->fromLTRB(rect->left->floorToDouble() - 4.0, rect->top->floorToDouble() - 4.0, rect->right->ceilToDouble() + 4.0, rect->bottom->ceilToDouble() + 4.0);
-                    auto _c1 = make<SemanticsConfigurationCls>();        _c1.sortKey = auto _c2 = make<OrdinalSortKeyCls>(ordinal++);        _c2.textDirection() = auto _c3 = initialDirection;        _c3.attributedLabel = make<AttributedStringCls>(info->semanticsLabel | info->textinfo->stringAttributes);        _c3;        _c2;SemanticsConfiguration configuration = _c1;
+                    auto _c1 = make<SemanticsConfigurationCls>();        _c1.sortKey = auto _c2 = make<OrdinalSortKeyCls>(ordinal++);        _c2.textDirection() = auto _c3 = initialDirection;        _c3.attributedLabel = make<AttributedStringCls>(info->semanticsLabel | info->text, info->stringAttributes);        _c3;        _c2;SemanticsConfiguration configuration = _c1;
             GestureRecognizer recognizer = info->recognizer;
             if (recognizer != nullptr) {
                 if (is<TapGestureRecognizer>(recognizer)) {
@@ -565,11 +565,11 @@ void RenderParagraphCls::debugFillProperties(DiagnosticPropertiesBuilder propert
     super->debugFillProperties(properties);
     properties->add(<TextAlign>make<EnumPropertyCls>(__s("textAlign"), textAlign()));
     properties->add(<TextDirection>make<EnumPropertyCls>(__s("textDirection"), textDirection()));
-    properties->add(make<FlagPropertyCls>(__s("softWrap")softWrap(), __s("wrapping at box width"), __s("no wrapping except at line break characters"), true));
+    properties->add(make<FlagPropertyCls>(__s("softWrap"), softWrap(), __s("wrapping at box width"), __s("no wrapping except at line break characters"), true));
     properties->add(<TextOverflow>make<EnumPropertyCls>(__s("overflow"), overflow()));
-    properties->add(make<DoublePropertyCls>(__s("textScaleFactor"), textScaleFactor()1.0));
-    properties->add(<Locale>make<DiagnosticsPropertyCls>(__s("locale"), locale()nullptr));
-    properties->add(make<IntPropertyCls>(__s("maxLines"), maxLines()__s("unlimited")));
+    properties->add(make<DoublePropertyCls>(__s("textScaleFactor"), textScaleFactor(), 1.0));
+    properties->add(<Locale>make<DiagnosticsPropertyCls>(__s("locale"), locale(), nullptr));
+    properties->add(make<IntPropertyCls>(__s("maxLines"), maxLines(), __s("unlimited")));
 }
 
 void RenderParagraphCls::_updateSelectionRegistrarSubscription() {
@@ -706,7 +706,7 @@ List<PlaceholderDimensions> RenderParagraphCls::_layoutChildren(BoxConstraints c
         double baselineOffset;
         Size childSize;
         if (!dry) {
-            child->layout(boxConstraintstrue);
+            child->layout(boxConstraints, true);
             childSize = child->size();
             ;
         } else {
@@ -861,16 +861,16 @@ void _SelectableFragmentCls::_didChangeSelection() {
 }
 
 SelectionResult _SelectableFragmentCls::_updateSelectionEdge(Offset globalPosition, bool isEnd) {
-    _setSelectionPosition(nullptrisEnd);
+    _setSelectionPosition(nullptr, isEnd);
     Matrix4 transform = paragraph->getTransformTo(nullptr);
     transform->invert();
     Offset localPosition = MatrixUtilsCls->transformPoint(transform, globalPosition);
     if (_rect()->isEmpty()) {
         return SelectionUtilsCls->getResultBasedOnRect(_rect(), localPosition);
     }
-    Offset adjustedOffset = SelectionUtilsCls->adjustDragOffset(_rect(), localPositionparagraph->textDirection());
+    Offset adjustedOffset = SelectionUtilsCls->adjustDragOffset(_rect(), localPosition, paragraph->textDirection());
     TextPosition position = _clampTextPosition(paragraph->getPositionForOffset(adjustedOffset));
-    _setSelectionPosition(positionisEnd);
+    _setSelectionPosition(position, isEnd);
     if (position->offset == range->end) {
         return SelectionResultCls::next;
     }

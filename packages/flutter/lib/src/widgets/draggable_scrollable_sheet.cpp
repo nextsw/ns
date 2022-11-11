@@ -42,7 +42,7 @@ Future<void> DraggableScrollableControllerCls::animateTo(double size, Curve curv
             animationController->stop(false);
         }
     });
-    await await animationController->animateTo(sizeduration, curve);
+    await await animationController->animateTo(size, duration, curve);
 }
 
 void DraggableScrollableControllerCls::jumpTo(double size) {
@@ -306,7 +306,7 @@ void _DraggableScrollableSheetScrollControllerCls::reset() {
     extent->_cancelActivity?->call();
     extent->hasDragged = false;
     if (offset != 0.0) {
-        animateTo(0.0make<DurationCls>(1), CurvesCls::linear);
+        animateTo(0.0, make<DurationCls>(1), CurvesCls::linear);
     }
     extent->updateSize(extent->initialSize, position()->context->notificationContext!);
 }

@@ -66,7 +66,7 @@ void RenderSliverMultiBoxAdaptorCls::adoptChild(RenderObject child) {
 
 void RenderSliverMultiBoxAdaptorCls::insert(RenderBox child, RenderBox after) {
     assert(!_keepAliveBucket->containsValue(child));
-    super->insert(childafter);
+    super->insert(child, after);
     assert(firstChild != nullptr);
     assert(_debugVerifyChildOrder());
 }
@@ -74,7 +74,7 @@ void RenderSliverMultiBoxAdaptorCls::insert(RenderBox child, RenderBox after) {
 void RenderSliverMultiBoxAdaptorCls::move(RenderBox child, RenderBox after) {
     SliverMultiBoxAdaptorParentData childParentData = as<SliverMultiBoxAdaptorParentData>(child->parentData!);
     if (!childParentData->keptAlive()) {
-        super->move(childafter);
+        super->move(child, after);
         childManager()->didAdoptChild(child);
         markNeedsLayout();
     } else {
@@ -148,7 +148,7 @@ void RenderSliverMultiBoxAdaptorCls::visitChildrenForSemantics(RenderObjectVisit
 bool RenderSliverMultiBoxAdaptorCls::addInitialChild(int index, double layoutOffset) {
     assert(_debugAssertChildListLocked());
     assert(firstChild == nullptr);
-    _createOrObtainChild(indexnullptr);
+    _createOrObtainChild(index, nullptr);
     if (firstChild != nullptr) {
         assert(firstChild == lastChild);
         assert(indexOf(firstChild!) == index);
@@ -163,9 +163,9 @@ bool RenderSliverMultiBoxAdaptorCls::addInitialChild(int index, double layoutOff
 RenderBox RenderSliverMultiBoxAdaptorCls::insertAndLayoutLeadingChild(BoxConstraints childConstraints, bool parentUsesSize) {
     assert(_debugAssertChildListLocked());
     int index = indexOf(firstChild!) - 1;
-    _createOrObtainChild(indexnullptr);
+    _createOrObtainChild(index, nullptr);
     if (indexOf(firstChild!) == index) {
-        firstChild!->layout(childConstraintsparentUsesSize);
+        firstChild!->layout(childConstraints, parentUsesSize);
         return firstChild;
     }
     childManager()->setDidUnderflow(true);
@@ -176,10 +176,10 @@ RenderBox RenderSliverMultiBoxAdaptorCls::insertAndLayoutChild(BoxConstraints ch
     assert(_debugAssertChildListLocked());
     assert(after != nullptr);
     int index = indexOf(after!) + 1;
-    _createOrObtainChild(indexafter);
+    _createOrObtainChild(index, after);
     RenderBox child = childAfter(after);
     if (child != nullptr && indexOf(child) == index) {
-        child->layout(childConstraintsparentUsesSize);
+        child->layout(childConstraints, parentUsesSize);
         return child;
     }
     childManager()->setDidUnderflow(true);
@@ -226,7 +226,7 @@ bool RenderSliverMultiBoxAdaptorCls::hitTestChildren(SliverHitTestResult result,
     RenderBox child = lastChild;
     BoxHitTestResult boxResult = BoxHitTestResultCls->wrap(result);
     while (child != nullptr) {
-        if (hitTestBoxChild(boxResult, childmainAxisPosition, crossAxisPosition)) {
+        if (hitTestBoxChild(boxResult, child, mainAxisPosition, crossAxisPosition)) {
             return true;
         }
         child = childBefore(child);
@@ -350,10 +350,10 @@ void RenderSliverMultiBoxAdaptorCls::_createOrObtainChild(int index, RenderBox a
             assert(childParentData->_keptAlive);
             dropChild(child);
             child->parentData = childParentData;
-            insert(childafter);
+            insert(child, after);
             childParentData->_keptAlive = false;
         } else {
-            _childManager->createChild(indexafter);
+            _childManager->createChild(index, after);
         }
     });
 }

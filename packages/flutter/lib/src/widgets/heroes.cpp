@@ -92,7 +92,7 @@ Rect _HeroFlightManifestCls::_boundingBoxFor(BuildContext context, BuildContext 
 
 void _HeroFlightCls::onTick() {
     RenderBox toHeroBox = (!_aborted && manifest->toHero->mounted)? as<RenderBox>(manifest->toHero->context->findRenderObject()) : nullptr;
-    Offset toHeroOrigin = toHeroBox != nullptr && toHeroBox->attached && toHeroBox->hasSize()? toHeroBox->localToGlobal(OffsetCls::zeroas<RenderBox>(manifest->toRoute->subtreeContext?->findRenderObject())) : nullptr;
+    Offset toHeroOrigin = toHeroBox != nullptr && toHeroBox->attached && toHeroBox->hasSize()? toHeroBox->localToGlobal(OffsetCls::zero, as<RenderBox>(manifest->toRoute->subtreeContext?->findRenderObject())) : nullptr;
     if (toHeroOrigin != nullptr && toHeroOrigin->isFinite) {
         if (toHeroOrigin != heroRectTween->end!->topLeft) {
             Rect heroRectEnd = toHeroOrigin & heroRectTween->end!->size;
@@ -348,5 +348,5 @@ Widget HeroModeCls::build(BuildContext context) {
 
 void HeroModeCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(make<FlagPropertyCls>(__s("mode")enabled, __s("enabled"), __s("disabled"), true));
+    properties->add(make<FlagPropertyCls>(__s("mode"), enabled, __s("enabled"), __s("disabled"), true));
 }

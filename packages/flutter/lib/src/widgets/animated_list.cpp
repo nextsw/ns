@@ -36,11 +36,11 @@ AnimatedListState AnimatedListCls::createState() {
 }
 
 void AnimatedListStateCls::insertItem(int index, Duration duration) {
-    _sliverAnimatedListKey->currentState()!->insertItem(indexduration);
+    _sliverAnimatedListKey->currentState()!->insertItem(index, duration);
 }
 
 void AnimatedListStateCls::removeItem(int index, AnimatedListRemovedItemBuilder builder, Duration duration) {
-    _sliverAnimatedListKey->currentState()!->removeItem(index, builderduration);
+    _sliverAnimatedListKey->currentState()!->removeItem(index, builder, duration);
 }
 
 Widget AnimatedListStateCls::build(BuildContext context) {
@@ -184,7 +184,7 @@ int SliverAnimatedListStateCls::_itemIndexToIndex(int itemIndex) {
 }
 
 SliverChildDelegate SliverAnimatedListStateCls::_createDelegate() {
-    return make<SliverChildBuilderDelegateCls>(_itemBuilder_itemsCount, widget->findChildIndexCallback);
+    return make<SliverChildBuilderDelegateCls>(_itemBuilder, _itemsCount, widget->findChildIndexCallback);
 }
 
 Widget SliverAnimatedListStateCls::_itemBuilder(BuildContext context, int itemIndex) {

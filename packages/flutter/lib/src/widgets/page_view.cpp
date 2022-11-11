@@ -21,7 +21,7 @@ Future<void> PageControllerCls::animateToPage(int page, Curve curve, Duration du
         position->_cachedPage = page->toDouble();
         return <void>value();
     }
-    return position->animateTo(position->getPixelsFromPage(page->toDouble())duration, curve);
+    return position->animateTo(position->getPixelsFromPage(page->toDouble()), duration, curve);
 }
 
 void PageControllerCls::jumpToPage(int page) {
@@ -34,11 +34,11 @@ void PageControllerCls::jumpToPage(int page) {
 }
 
 Future<void> PageControllerCls::nextPage(Curve curve, Duration duration) {
-    return animateToPage(page()!->round() + 1duration, curve);
+    return animateToPage(page()!->round() + 1, duration, curve);
 }
 
 Future<void> PageControllerCls::previousPage(Curve curve, Duration duration) {
-    return animateToPage(page()!->round() - 1duration, curve);
+    return animateToPage(page()!->round() - 1, duration, curve);
 }
 
 ScrollPosition PageControllerCls::createScrollPosition(ScrollPhysics physics, ScrollContext context, ScrollPosition oldPosition) {
@@ -60,7 +60,7 @@ double PageMetricsCls::page() {
 }
 
 Future<void> _PagePositionCls::ensureVisible(RenderObject object, double alignment, ScrollPositionAlignmentPolicy alignmentPolicy, Curve curve, Duration duration, RenderObject targetRenderObject) {
-    return super->ensureVisible(objectalignment, duration, curve, alignmentPolicy);
+    return super->ensureVisible(object, alignment, duration, curve, alignmentPolicy);
 }
 
 double _PagePositionCls::viewportFraction() {
@@ -206,7 +206,7 @@ Simulation PageScrollPhysicsCls::createBallisticSimulation(ScrollMetrics positio
     Tolerance tolerance = this->tolerance;
     double target = _getTargetPixels(position, tolerance, velocity);
     if (target != position->pixels()) {
-        return make<ScrollSpringSimulationCls>(spring, position->pixels(), target, velocitytolerance);
+        return make<ScrollSpringSimulationCls>(spring, position->pixels(), target, velocity, tolerance);
     }
     return nullptr;
 }
@@ -284,11 +284,11 @@ Widget _PageViewStateCls::build(BuildContext context) {
 void _PageViewStateCls::debugFillProperties(DiagnosticPropertiesBuilder description) {
     super->debugFillProperties(description);
     description->add(<Axis>make<EnumPropertyCls>(__s("scrollDirection"), widget->scrollDirection));
-    description->add(make<FlagPropertyCls>(__s("reverse")widget->reverse, __s("reversed")));
-    description->add(<PageController>make<DiagnosticsPropertyCls>(__s("controller"), widget->controllerfalse));
-    description->add(<ScrollPhysics>make<DiagnosticsPropertyCls>(__s("physics"), widget->physicsfalse));
-    description->add(make<FlagPropertyCls>(__s("pageSnapping")widget->pageSnapping, __s("snapping disabled")));
-    description->add(make<FlagPropertyCls>(__s("allowImplicitScrolling")widget->allowImplicitScrolling, __s("allow implicit scrolling")));
+    description->add(make<FlagPropertyCls>(__s("reverse"), widget->reverse, __s("reversed")));
+    description->add(<PageController>make<DiagnosticsPropertyCls>(__s("controller"), widget->controller, false));
+    description->add(<ScrollPhysics>make<DiagnosticsPropertyCls>(__s("physics"), widget->physics, false));
+    description->add(make<FlagPropertyCls>(__s("pageSnapping"), widget->pageSnapping, __s("snapping disabled")));
+    description->add(make<FlagPropertyCls>(__s("allowImplicitScrolling"), widget->allowImplicitScrolling, __s("allow implicit scrolling")));
 }
 
 AxisDirection _PageViewStateCls::_getDirection(BuildContext context) {

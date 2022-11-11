@@ -1,6 +1,6 @@
 #include "stdio.hpp"
 StreamSubscription<List<int>> _StdStreamCls::listen(std::function<void(List<int> event)> onData, bool cancelOnError, std::function<void()> onDone, std::function<void ()> onError) {
-    return _stream->listen(onDataonError, onDone, cancelOnError);
+    return _stream->listen(onData, onError, onDone, cancelOnError);
 }
 
 String StdinCls::readLineSync(Encoding encoding, bool retainNewlines) {
@@ -114,7 +114,7 @@ Future _StdConsumerCls::addStream(Stream<List<int>> stream) {
             sub->cancel();
             completer->completeError(e, s);
         };
-    }completer->completeError, completer->complete, true);
+    }, completer->completeError, completer->complete, true);
     return completer->future;
 }
 

@@ -168,7 +168,7 @@ bool Obb3Cls::intersectsWithTriangle(Triangle other, IntersectionResult result) 
     auto _c3 = _triangle->point1;_c3.auto _c4 = sub(_center);_c4.setValues(_triangle->point1->dot(axis0()), _triangle->point1->dot(axis1()), _triangle->point1->dot(axis2()));_c4;_c3;
     auto _c5 = _triangle->point2;_c5.auto _c6 = sub(_center);_c6.setValues(_triangle->point2->dot(axis0()), _triangle->point2->dot(axis1()), _triangle->point2->dot(axis2()));_c6;_c5;
     _aabb3->setCenterAndHalfExtents(_zeroVector, _halfExtents);
-    return _aabb3->intersectsWithTriangle(_triangleresult);
+    return _aabb3->intersectsWithTriangle(_triangle, result);
 }
 
 bool Obb3Cls::intersectsWithVector3(Vector3 other) {
@@ -179,5 +179,5 @@ bool Obb3Cls::intersectsWithVector3(Vector3 other) {
 
 bool Obb3Cls::intersectsWithQuad(Quad other, IntersectionResult result) {
     other->copyTriangles(_quadTriangle0, _quadTriangle1);
-    return intersectsWithTriangle(_quadTriangle0result) || intersectsWithTriangle(_quadTriangle1result);
+    return intersectsWithTriangle(_quadTriangle0, result) || intersectsWithTriangle(_quadTriangle1, result);
 }

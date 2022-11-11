@@ -18,7 +18,7 @@ template<typename S, typename T>
 _SinkTransformerStreamSubscriptionCls<S, T>::_SinkTransformerStreamSubscriptionCls(Stream<S> source, _SinkMapper<S, T> mapper, std::function<void(T data)> onData, std::function<void ()> onError, std::function<void()> onDone, bool cancelOnError) : _BufferingStreamSubscription<T>(onData, onError, onDone, cancelOnError) {
     {
         _transformerSink = mapper(<T>make<_EventSinkWrapperCls>(this));
-        _subscription = source->listen(_handleData_handleError, _handleDone);
+        _subscription = source->listen(_handleData, _handleError, _handleDone);
     }
 }
 

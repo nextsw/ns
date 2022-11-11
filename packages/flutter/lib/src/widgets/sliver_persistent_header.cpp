@@ -155,7 +155,7 @@ void _SliverPersistentHeaderElementCls::_build(double shrinkOffset, bool overlap
 }
 
 _SliverPersistentHeaderElement _SliverPersistentHeaderRenderObjectWidgetCls::createElement() {
-    return make<_SliverPersistentHeaderElementCls>(thisfloating);
+    return make<_SliverPersistentHeaderElementCls>(this, floating);
 }
 
 void _SliverPersistentHeaderRenderObjectWidgetCls::debugFillProperties(DiagnosticPropertiesBuilder description) {

@@ -146,42 +146,42 @@ void TextStyleCls::debugFillProperties(DiagnosticPropertiesBuilder properties, S
     if (fontWeight != nullptr) {
         weightDescription = __s("${fontWeight!.index + 1}00");
     }
-    styles->add(<FontWeight>make<DiagnosticsPropertyCls>(__s("${prefix}weight"), fontWeightweightDescription, nullptr));
-    styles->add(<FontStyle>make<EnumPropertyCls>(__s("${prefix}style"), fontStylenullptr));
-    styles->add(make<DoublePropertyCls>(__s("${prefix}letterSpacing"), letterSpacingnullptr));
-    styles->add(make<DoublePropertyCls>(__s("${prefix}wordSpacing"), wordSpacingnullptr));
-    styles->add(<TextBaseline>make<EnumPropertyCls>(__s("${prefix}baseline"), textBaselinenullptr));
-    styles->add(make<DoublePropertyCls>(__s("${prefix}height"), height__s("x"), nullptr));
-    styles->add(<TextLeadingDistribution>make<EnumPropertyCls>(__s("${prefix}leadingDistribution"), leadingDistributionnullptr));
-    styles->add(<Locale>make<DiagnosticsPropertyCls>(__s("${prefix}locale"), localenullptr));
-    styles->add(<Paint>make<DiagnosticsPropertyCls>(__s("${prefix}foreground"), foregroundnullptr));
-    styles->add(<Paint>make<DiagnosticsPropertyCls>(__s("${prefix}background"), backgroundnullptr));
+    styles->add(<FontWeight>make<DiagnosticsPropertyCls>(__s("${prefix}weight"), fontWeight, weightDescription, nullptr));
+    styles->add(<FontStyle>make<EnumPropertyCls>(__s("${prefix}style"), fontStyle, nullptr));
+    styles->add(make<DoublePropertyCls>(__s("${prefix}letterSpacing"), letterSpacing, nullptr));
+    styles->add(make<DoublePropertyCls>(__s("${prefix}wordSpacing"), wordSpacing, nullptr));
+    styles->add(<TextBaseline>make<EnumPropertyCls>(__s("${prefix}baseline"), textBaseline, nullptr));
+    styles->add(make<DoublePropertyCls>(__s("${prefix}height"), height, __s("x"), nullptr));
+    styles->add(<TextLeadingDistribution>make<EnumPropertyCls>(__s("${prefix}leadingDistribution"), leadingDistribution, nullptr));
+    styles->add(<Locale>make<DiagnosticsPropertyCls>(__s("${prefix}locale"), locale, nullptr));
+    styles->add(<Paint>make<DiagnosticsPropertyCls>(__s("${prefix}foreground"), foreground, nullptr));
+    styles->add(<Paint>make<DiagnosticsPropertyCls>(__s("${prefix}background"), background, nullptr));
     if (decoration != nullptr || decorationColor != nullptr || decorationStyle != nullptr || decorationThickness != nullptr) {
         List<String> decorationDescription = makeList();
         if (decorationStyle != nullptr) {
             decorationDescription->add(decorationStyle!->name);
         }
-        styles->add(make<ColorPropertyCls>(__s("${prefix}decorationColor"), decorationColornullptr, DiagnosticLevelCls::fine));
+        styles->add(make<ColorPropertyCls>(__s("${prefix}decorationColor"), decorationColor, nullptr, DiagnosticLevelCls::fine));
         if (decorationColor != nullptr) {
             decorationDescription->add(__s("$decorationColor"));
         }
-        styles->add(<TextDecoration>make<DiagnosticsPropertyCls>(__s("${prefix}decoration"), decorationnullptr, DiagnosticLevelCls::hidden));
+        styles->add(<TextDecoration>make<DiagnosticsPropertyCls>(__s("${prefix}decoration"), decoration, nullptr, DiagnosticLevelCls::hidden));
         if (decoration != nullptr) {
             decorationDescription->add(__s("$decoration"));
         }
         assert(decorationDescription->isNotEmpty);
         styles->add(make<MessagePropertyCls>(__s("${prefix}decoration"), decorationDescription->join(__s(" "))));
-        styles->add(make<DoublePropertyCls>(__s("${prefix}decorationThickness"), decorationThickness__s("x"), nullptr));
+        styles->add(make<DoublePropertyCls>(__s("${prefix}decorationThickness"), decorationThickness, __s("x"), nullptr));
     }
     bool styleSpecified = styles->any([=] (DiagnosticsNode n) {
     !n->isFiltered(DiagnosticLevelCls::info);
 });
-    properties->add(<bool>make<DiagnosticsPropertyCls>(__s("${prefix}inherit"), inherit(!styleSpecified && inherit)? DiagnosticLevelCls::fine : DiagnosticLevelCls::info));
+    properties->add(<bool>make<DiagnosticsPropertyCls>(__s("${prefix}inherit"), inherit, (!styleSpecified && inherit)? DiagnosticLevelCls::fine : DiagnosticLevelCls::info));
     styles->forEach(properties->add);
     if (!styleSpecified) {
-        properties->add(make<FlagPropertyCls>(__s("inherit")inherit, __s("$prefix<all styles inherited>"), __s("$prefix<no style specified>")));
+        properties->add(make<FlagPropertyCls>(__s("inherit"), inherit, __s("$prefix<all styles inherited>"), __s("$prefix<no style specified>")));
     }
-    styles->add(<TextOverflow>make<EnumPropertyCls>(__s("${prefix}overflow"), overflownullptr));
+    styles->add(<TextOverflow>make<EnumPropertyCls>(__s("${prefix}overflow"), overflow, nullptr));
 }
 
 String TextStyleCls::_fontFamily() {

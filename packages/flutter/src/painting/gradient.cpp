@@ -106,11 +106,11 @@ List<double> GradientCls::_impliedStops() {
     double separation = 1.0 / (colors->length() - 1);
     return <double>generate(colors->length(), [=] (int index)     {
         index * separation;
-    }false);
+    }, false);
 }
 
 Float64List GradientCls::_resolveTransform(Rect bounds, TextDirection textDirection) {
-    return transform?->transform(boundstextDirection)?->storage();
+    return transform?->transform(bounds, textDirection)?->storage();
 }
 
 LinearGradientCls::LinearGradientCls(AlignmentGeometry begin, Unknown colors, AlignmentGeometry end, Unknown stops, TileMode tileMode, Unknown transform) {

@@ -28,8 +28,8 @@ Widget _AutomaticKeepAliveStateCls::build(BuildContext context) {
 
 void _AutomaticKeepAliveStateCls::debugFillProperties(DiagnosticPropertiesBuilder description) {
     super->debugFillProperties(description);
-    description->add(make<FlagPropertyCls>(__s("_keepingAlive")_keepingAlive, __s("keeping subtree alive")));
-    description->add(<Map<Listenable, VoidCallback>>make<DiagnosticsPropertyCls>(__s("handles"), _handles_handles != nullptr? __s("${_handles!.length} active client${ _handles!.length == 1 ? "" : "s" }") : nullptr, __s("no notifications ever received")));
+    description->add(make<FlagPropertyCls>(__s("_keepingAlive"), _keepingAlive, __s("keeping subtree alive")));
+    description->add(<Map<Listenable, VoidCallback>>make<DiagnosticsPropertyCls>(__s("handles"), _handles, _handles != nullptr? __s("${_handles!.length} active client${ _handles!.length == 1 ? "" : "s" }") : nullptr, __s("no notifications ever received")));
 }
 
 void _AutomaticKeepAliveStateCls::_updateChild() {

@@ -61,7 +61,7 @@ void RenderSliverPersistentHeaderCls::layoutChild(double scrollOffset, double ma
     if (stretchConfiguration != nullptr && constraints->scrollOffset == 0.0) {
         stretchOffset += constraints->overlap->abs();
     }
-    child?->layout(constraints->asBoxConstraints(math->max(minExtent(), maxExtent - shrinkOffset) + stretchOffset)true);
+    child?->layout(constraints->asBoxConstraints(math->max(minExtent(), maxExtent - shrinkOffset) + stretchOffset), true);
     if (stretchConfiguration != nullptr && stretchConfiguration!->onStretchTrigger != nullptr && stretchOffset >= stretchConfiguration!->stretchTriggerOffset && _lastStretchOffset <= stretchConfiguration!->stretchTriggerOffset) {
         stretchConfiguration!->onStretchTrigger!();
     }
@@ -75,7 +75,7 @@ double RenderSliverPersistentHeaderCls::childMainAxisPosition(RenderObject child
 bool RenderSliverPersistentHeaderCls::hitTestChildren(SliverHitTestResult result, double crossAxisPosition, double mainAxisPosition) {
     assert(geometry!->hitTestExtent > 0.0);
     if (child != nullptr) {
-        return hitTestBoxChild(BoxHitTestResultCls->wrap(result), child!mainAxisPosition, crossAxisPosition);
+        return hitTestBoxChild(BoxHitTestResultCls->wrap(result), child!, mainAxisPosition, crossAxisPosition);
     }
     return false;
 }
@@ -139,7 +139,7 @@ void RenderSliverPinnedPersistentHeaderCls::performLayout() {
     SliverConstraints constraints = this->constraints;
     double maxExtent = this->maxExtent;
     bool overlapsContent = constraints->overlap > 0.0;
-    layoutChild(constraints->scrollOffset, maxExtentoverlapsContent);
+    layoutChild(constraints->scrollOffset, maxExtent, overlapsContent);
     double effectiveRemainingPaintExtent = math->max(0, constraints->remainingPaintExtent - constraints->overlap);
     double layoutExtent = clampDouble(maxExtent - constraints->scrollOffset, 0.0, effectiveRemainingPaintExtent);
     double stretchOffset = stretchConfiguration != nullptr? constraints->overlap->abs() : 0.0;
@@ -248,7 +248,7 @@ void RenderSliverFloatingPersistentHeaderCls::performLayout() {
         _effectiveScrollOffset = constraints->scrollOffset;
     }
     bool overlapsContent = _effectiveScrollOffset! < constraints->scrollOffset;
-    layoutChild(_effectiveScrollOffset!, maxExtentoverlapsContent);
+    layoutChild(_effectiveScrollOffset!, maxExtent, overlapsContent);
     _childPosition = updateGeometry();
     _lastActualScrollOffset = constraints->scrollOffset;
 }

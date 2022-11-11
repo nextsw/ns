@@ -287,7 +287,7 @@ bool RestorationMixinCls<S>::_updateBucketIfNecessary(RestorationBucket parent, 
     assert(restorationId() != nullptr);
     assert(parent != nullptr);
     if (restorePending || _bucket == nullptr) {
-        RestorationBucket newBucket = parent->claimChild(restorationId()!this);
+        RestorationBucket newBucket = parent->claimChild(restorationId()!, this);
         assert(newBucket != nullptr);
         bool didReplace = _setNewBucketIfNecessary(newBucket, restorePending);
         assert(_bucket == newBucket);

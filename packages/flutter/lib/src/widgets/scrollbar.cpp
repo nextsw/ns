@@ -595,12 +595,12 @@ bool RawScrollbarStateCls<T>::isPointerOverScrollbar(Offset position, PointerDev
         return false;
     }
     Offset localOffset = _getLocalOffset(_scrollbarPainterKey, position);
-    return scrollbarPainter->hitTestInteractive(localOffset, kindtrue);
+    return scrollbarPainter->hitTestInteractive(localOffset, kind, true);
 }
 
 template<typename T>
 void RawScrollbarStateCls<T>::handleHover(PointerHoverEvent event) {
-    if (isPointerOverScrollbar(event->position, event->kindtrue)) {
+    if (isPointerOverScrollbar(event->position, event->kind, true)) {
         _hoverIsActive = true;
         _fadeoutAnimationController->forward();
         _fadeoutTimer?->cancel();
@@ -747,7 +747,7 @@ void RawScrollbarStateCls<T>::_handleTrackTapDown(TapDownDetails details) {
         scrollIncrement = 0.8 * _currentController!->position()->viewportDimension();
     }
     ;
-    _currentController!->position()->moveTo(_currentController!->position()->pixels() + scrollIncrementmake<DurationCls>(100), CurvesCls::easeInOut);
+    _currentController!->position()->moveTo(_currentController!->position()->pixels() + scrollIncrement, make<DurationCls>(100), CurvesCls::easeInOut);
 }
 
 template<typename T>

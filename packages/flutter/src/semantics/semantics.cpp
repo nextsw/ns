@@ -72,7 +72,7 @@ AttributedString AttributedStringCls::+(AttributedString other) {
             newAttributes->add(adjustedAttribute);
         }
     }
-    return make<AttributedStringCls>(newStringnewAttributes);
+    return make<AttributedStringCls>(newString, newAttributes);
 }
 
 bool AttributedStringCls::==(Object other) {
@@ -165,36 +165,36 @@ String SemanticsDataCls::toStringShort() {
 
 void SemanticsDataCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<Rect>make<DiagnosticsPropertyCls>(__s("rect"), rectfalse));
-    properties->add(make<TransformPropertyCls>(__s("transform"), transformfalse, nullptr));
-    properties->add(make<DoublePropertyCls>(__s("elevation"), elevation0.0));
-    properties->add(make<DoublePropertyCls>(__s("thickness"), thickness0.0));
+    properties->add(<Rect>make<DiagnosticsPropertyCls>(__s("rect"), rect, false));
+    properties->add(make<TransformPropertyCls>(__s("transform"), transform, false, nullptr));
+    properties->add(make<DoublePropertyCls>(__s("elevation"), elevation, 0.0));
+    properties->add(make<DoublePropertyCls>(__s("thickness"), thickness, 0.0));
     List<String> list1 = make<ListCls<>>();for (SemanticsAction action : SemanticsActionCls::values->values) {    ;}{    list1.add(ArrayItem);}List<String> actionSummary = list1;
     List<String> customSemanticsActionSummary = customSemanticsActionIds!-><String>map([=] (int actionId) {
     CustomSemanticsActionCls->getAction(actionId)!->label;
 })->toList();
-    properties->add(<String>make<IterablePropertyCls>(__s("actions"), actionSummarynullptr));
-    properties->add(<String>make<IterablePropertyCls>(__s("customActions"), customSemanticsActionSummarynullptr));
+    properties->add(<String>make<IterablePropertyCls>(__s("actions"), actionSummary, nullptr));
+    properties->add(<String>make<IterablePropertyCls>(__s("customActions"), customSemanticsActionSummary, nullptr));
     List<String> list2 = make<ListCls<>>();for (SemanticsFlag flag : SemanticsFlagCls::values->values) {    ;}{    list2.add(ArrayItem);}List<String> flagSummary = list2;
-    properties->add(<String>make<IterablePropertyCls>(__s("flags"), flagSummarynullptr));
+    properties->add(<String>make<IterablePropertyCls>(__s("flags"), flagSummary, nullptr));
     properties->add(make<AttributedStringPropertyCls>(__s("label"), attributedLabel));
     properties->add(make<AttributedStringPropertyCls>(__s("value"), attributedValue));
     properties->add(make<AttributedStringPropertyCls>(__s("increasedValue"), attributedIncreasedValue));
     properties->add(make<AttributedStringPropertyCls>(__s("decreasedValue"), attributedDecreasedValue));
     properties->add(make<AttributedStringPropertyCls>(__s("hint"), attributedHint));
-    properties->add(make<StringPropertyCls>(__s("tooltip"), tooltip__s("")));
-    properties->add(<TextDirection>make<EnumPropertyCls>(__s("textDirection"), textDirectionnullptr));
+    properties->add(make<StringPropertyCls>(__s("tooltip"), tooltip, __s("")));
+    properties->add(<TextDirection>make<EnumPropertyCls>(__s("textDirection"), textDirection, nullptr));
     if (textSelection?->isValid | false) {
         properties->add(make<MessagePropertyCls>(__s("textSelection"), __s("[${textSelection!.start}, ${textSelection!.end}]")));
     }
-    properties->add(make<IntPropertyCls>(__s("platformViewId"), platformViewIdnullptr));
-    properties->add(make<IntPropertyCls>(__s("maxValueLength"), maxValueLengthnullptr));
-    properties->add(make<IntPropertyCls>(__s("currentValueLength"), currentValueLengthnullptr));
-    properties->add(make<IntPropertyCls>(__s("scrollChildren"), scrollChildCountnullptr));
-    properties->add(make<IntPropertyCls>(__s("scrollIndex"), scrollIndexnullptr));
-    properties->add(make<DoublePropertyCls>(__s("scrollExtentMin"), scrollExtentMinnullptr));
-    properties->add(make<DoublePropertyCls>(__s("scrollPosition"), scrollPositionnullptr));
-    properties->add(make<DoublePropertyCls>(__s("scrollExtentMax"), scrollExtentMaxnullptr));
+    properties->add(make<IntPropertyCls>(__s("platformViewId"), platformViewId, nullptr));
+    properties->add(make<IntPropertyCls>(__s("maxValueLength"), maxValueLength, nullptr));
+    properties->add(make<IntPropertyCls>(__s("currentValueLength"), currentValueLength, nullptr));
+    properties->add(make<IntPropertyCls>(__s("scrollChildren"), scrollChildCount, nullptr));
+    properties->add(make<IntPropertyCls>(__s("scrollIndex"), scrollIndex, nullptr));
+    properties->add(make<DoublePropertyCls>(__s("scrollExtentMin"), scrollExtentMin, nullptr));
+    properties->add(make<DoublePropertyCls>(__s("scrollPosition"), scrollPosition, nullptr));
+    properties->add(make<DoublePropertyCls>(__s("scrollExtentMax"), scrollExtentMax, nullptr));
 }
 
 bool SemanticsDataCls::==(Object other) {
@@ -251,8 +251,8 @@ bool SemanticsHintOverridesCls::==(Object other) {
 
 void SemanticsHintOverridesCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(make<StringPropertyCls>(__s("onTapHint"), onTapHintnullptr));
-    properties->add(make<StringPropertyCls>(__s("onLongPressHint"), onLongPressHintnullptr));
+    properties->add(make<StringPropertyCls>(__s("onTapHint"), onTapHint, nullptr));
+    properties->add(make<StringPropertyCls>(__s("onLongPressHint"), onLongPressHint, nullptr));
 }
 
 SemanticsPropertiesCls::SemanticsPropertiesCls(AttributedString attributedDecreasedValue, AttributedString attributedHint, AttributedString attributedIncreasedValue, AttributedString attributedLabel, AttributedString attributedValue, bool button, bool checked, int currentValueLength, Map<CustomSemanticsAction, VoidCallback> customSemanticsActions, String decreasedValue, bool enabled, bool focusable, bool focused, bool header, bool hidden, String hint, SemanticsHintOverrides hintOverrides, bool image, bool inMutuallyExclusiveGroup, String increasedValue, bool keyboardKey, String label, bool link, bool liveRegion, int maxValueLength, bool multiline, bool namesRoute, bool obscured, VoidCallback onCopy, VoidCallback onCut, VoidCallback onDecrease, VoidCallback onDidGainAccessibilityFocus, VoidCallback onDidLoseAccessibilityFocus, VoidCallback onDismiss, VoidCallback onIncrease, VoidCallback onLongPress, MoveCursorHandler onMoveCursorBackwardByCharacter, MoveCursorHandler onMoveCursorBackwardByWord, MoveCursorHandler onMoveCursorForwardByCharacter, MoveCursorHandler onMoveCursorForwardByWord, VoidCallback onPaste, VoidCallback onScrollDown, VoidCallback onScrollLeft, VoidCallback onScrollRight, VoidCallback onScrollUp, SetSelectionHandler onSetSelection, SetTextHandler onSetText, VoidCallback onTap, bool readOnly, bool scopesRoute, bool selected, bool slider, SemanticsSortKey sortKey, SemanticsTag tagForChildren, TextDirection textDirection, bool textField, bool toggled, String tooltip, String value) {
@@ -267,22 +267,22 @@ SemanticsPropertiesCls::SemanticsPropertiesCls(AttributedString attributedDecrea
 
 void SemanticsPropertiesCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<bool>make<DiagnosticsPropertyCls>(__s("checked"), checkednullptr));
-    properties->add(<bool>make<DiagnosticsPropertyCls>(__s("selected"), selectednullptr));
-    properties->add(make<StringPropertyCls>(__s("label"), labelnullptr));
-    properties->add(make<AttributedStringPropertyCls>(__s("attributedLabel"), attributedLabelnullptr));
-    properties->add(make<StringPropertyCls>(__s("value"), valuenullptr));
-    properties->add(make<AttributedStringPropertyCls>(__s("attributedValue"), attributedValuenullptr));
-    properties->add(make<StringPropertyCls>(__s("increasedValue"), valuenullptr));
-    properties->add(make<AttributedStringPropertyCls>(__s("attributedIncreasedValue"), attributedIncreasedValuenullptr));
-    properties->add(make<StringPropertyCls>(__s("decreasedValue"), valuenullptr));
-    properties->add(make<AttributedStringPropertyCls>(__s("attributedDecreasedValue"), attributedDecreasedValuenullptr));
-    properties->add(make<StringPropertyCls>(__s("hint"), hintnullptr));
-    properties->add(make<AttributedStringPropertyCls>(__s("attributedHint"), attributedHintnullptr));
+    properties->add(<bool>make<DiagnosticsPropertyCls>(__s("checked"), checked, nullptr));
+    properties->add(<bool>make<DiagnosticsPropertyCls>(__s("selected"), selected, nullptr));
+    properties->add(make<StringPropertyCls>(__s("label"), label, nullptr));
+    properties->add(make<AttributedStringPropertyCls>(__s("attributedLabel"), attributedLabel, nullptr));
+    properties->add(make<StringPropertyCls>(__s("value"), value, nullptr));
+    properties->add(make<AttributedStringPropertyCls>(__s("attributedValue"), attributedValue, nullptr));
+    properties->add(make<StringPropertyCls>(__s("increasedValue"), value, nullptr));
+    properties->add(make<AttributedStringPropertyCls>(__s("attributedIncreasedValue"), attributedIncreasedValue, nullptr));
+    properties->add(make<StringPropertyCls>(__s("decreasedValue"), value, nullptr));
+    properties->add(make<AttributedStringPropertyCls>(__s("attributedDecreasedValue"), attributedDecreasedValue, nullptr));
+    properties->add(make<StringPropertyCls>(__s("hint"), hint, nullptr));
+    properties->add(make<AttributedStringPropertyCls>(__s("attributedHint"), attributedHint, nullptr));
     properties->add(make<StringPropertyCls>(__s("tooltip"), tooltip));
-    properties->add(<TextDirection>make<EnumPropertyCls>(__s("textDirection"), textDirectionnullptr));
-    properties->add(<SemanticsSortKey>make<DiagnosticsPropertyCls>(__s("sortKey"), sortKeynullptr));
-    properties->add(<SemanticsHintOverrides>make<DiagnosticsPropertyCls>(__s("hintOverrides"), hintOverridesnullptr));
+    properties->add(<TextDirection>make<EnumPropertyCls>(__s("textDirection"), textDirection, nullptr));
+    properties->add(<SemanticsSortKey>make<DiagnosticsPropertyCls>(__s("sortKey"), sortKey, nullptr));
+    properties->add(<SemanticsHintOverrides>make<DiagnosticsPropertyCls>(__s("hintOverrides"), hintOverrides, nullptr));
 }
 
 String SemanticsPropertiesCls::toStringShort() {
@@ -677,15 +677,15 @@ void SemanticsNodeCls::debugFillProperties(DiagnosticPropertiesBuilder propertie
     bool hideOwner = true;
     if (_dirty) {
         bool inDirtyNodes = owner() != nullptr && owner()!->_dirtyNodes->contains(this);
-        properties->add(make<FlagPropertyCls>(__s("inDirtyNodes")inDirtyNodes, __s("dirty"), __s("STALE")));
+        properties->add(make<FlagPropertyCls>(__s("inDirtyNodes"), inDirtyNodes, __s("dirty"), __s("STALE")));
         hideOwner = inDirtyNodes;
     }
-    properties->add(<SemanticsOwner>make<DiagnosticsPropertyCls>(__s("owner"), owner()hideOwner? DiagnosticLevelCls::hidden : DiagnosticLevelCls::info));
-    properties->add(make<FlagPropertyCls>(__s("isMergedIntoParent")isMergedIntoParent(), __s("merged up ⬆️")));
-    properties->add(make<FlagPropertyCls>(__s("mergeAllDescendantsIntoThisNode")mergeAllDescendantsIntoThisNode(), __s("merge boundary ⛔️")));
+    properties->add(<SemanticsOwner>make<DiagnosticsPropertyCls>(__s("owner"), owner(), hideOwner? DiagnosticLevelCls::hidden : DiagnosticLevelCls::info));
+    properties->add(make<FlagPropertyCls>(__s("isMergedIntoParent"), isMergedIntoParent(), __s("merged up ⬆️")));
+    properties->add(make<FlagPropertyCls>(__s("mergeAllDescendantsIntoThisNode"), mergeAllDescendantsIntoThisNode(), __s("merge boundary ⛔️")));
     Offset offset = transform() != nullptr? MatrixUtilsCls->getAsTranslation(transform()!) : nullptr;
     if (offset != nullptr) {
-        properties->add(<Rect>make<DiagnosticsPropertyCls>(__s("rect"), rect()->shift(offset)false));
+        properties->add(<Rect>make<DiagnosticsPropertyCls>(__s("rect"), rect()->shift(offset), false));
     } else {
         double scale = transform() != nullptr? MatrixUtilsCls->getAsScale(transform()!) : nullptr;
         String description;
@@ -699,46 +699,46 @@ void SemanticsNodeCls::debugFillProperties(DiagnosticPropertiesBuilder propertie
             description = __s("$rect with transform [$matrix]");
         }
 ;
-        }        properties->add(<Rect>make<DiagnosticsPropertyCls>(__s("rect"), rect()description, false));
+        }        properties->add(<Rect>make<DiagnosticsPropertyCls>(__s("rect"), rect(), description, false));
     }
     properties->add(<String>make<IterablePropertyCls>(__s("tags"), tags?->map([=] (SemanticsTag tag)     {
         tag->name;
-    })nullptr));
+    }), nullptr));
     auto _c1 = _actions->keys()-><String>map([=] (SemanticsAction action) {    describeEnum(action);})->toList();_c1.sort();List<String> actions = _c1;
     List<String> customSemanticsActions = _customSemanticsActions->keys()-><String>map([=] (CustomSemanticsAction action) {
     action->label;
 })->toList();
-    properties->add(<String>make<IterablePropertyCls>(__s("actions"), actionsnullptr));
-    properties->add(<String>make<IterablePropertyCls>(__s("customActions"), customSemanticsActionsnullptr));
+    properties->add(<String>make<IterablePropertyCls>(__s("actions"), actions, nullptr));
+    properties->add(<String>make<IterablePropertyCls>(__s("customActions"), customSemanticsActions, nullptr));
     List<String> flags = SemanticsFlagCls::values->values->where([=] (SemanticsFlag flag) {
     hasFlag(flag);
 })->map([=] (SemanticsFlag flag) {
     flag->toString()->substring(__s("SemanticsFlag.")->length());
 })->toList();
-    properties->add(<String>make<IterablePropertyCls>(__s("flags"), flagsnullptr));
-    properties->add(make<FlagPropertyCls>(__s("isInvisible")isInvisible(), __s("invisible")));
-    properties->add(make<FlagPropertyCls>(__s("isHidden")hasFlag(SemanticsFlagCls::isHidden), __s("HIDDEN")));
+    properties->add(<String>make<IterablePropertyCls>(__s("flags"), flags, nullptr));
+    properties->add(make<FlagPropertyCls>(__s("isInvisible"), isInvisible(), __s("invisible")));
+    properties->add(make<FlagPropertyCls>(__s("isHidden"), hasFlag(SemanticsFlagCls::isHidden), __s("HIDDEN")));
     properties->add(make<AttributedStringPropertyCls>(__s("label"), _attributedLabel));
     properties->add(make<AttributedStringPropertyCls>(__s("value"), _attributedValue));
     properties->add(make<AttributedStringPropertyCls>(__s("increasedValue"), _attributedIncreasedValue));
     properties->add(make<AttributedStringPropertyCls>(__s("decreasedValue"), _attributedDecreasedValue));
     properties->add(make<AttributedStringPropertyCls>(__s("hint"), _attributedHint));
-    properties->add(make<StringPropertyCls>(__s("tooltip"), _tooltip__s("")));
-    properties->add(<TextDirection>make<EnumPropertyCls>(__s("textDirection"), _textDirectionnullptr));
-    properties->add(<SemanticsSortKey>make<DiagnosticsPropertyCls>(__s("sortKey"), sortKey()nullptr));
+    properties->add(make<StringPropertyCls>(__s("tooltip"), _tooltip, __s("")));
+    properties->add(<TextDirection>make<EnumPropertyCls>(__s("textDirection"), _textDirection, nullptr));
+    properties->add(<SemanticsSortKey>make<DiagnosticsPropertyCls>(__s("sortKey"), sortKey(), nullptr));
     if (_textSelection?->isValid | false) {
         properties->add(make<MessagePropertyCls>(__s("text selection"), __s("[${_textSelection!.start}, ${_textSelection!.end}]")));
     }
-    properties->add(make<IntPropertyCls>(__s("platformViewId"), platformViewId()nullptr));
-    properties->add(make<IntPropertyCls>(__s("maxValueLength"), maxValueLength()nullptr));
-    properties->add(make<IntPropertyCls>(__s("currentValueLength"), currentValueLength()nullptr));
-    properties->add(make<IntPropertyCls>(__s("scrollChildren"), scrollChildCount()nullptr));
-    properties->add(make<IntPropertyCls>(__s("scrollIndex"), scrollIndex()nullptr));
-    properties->add(make<DoublePropertyCls>(__s("scrollExtentMin"), scrollExtentMin()nullptr));
-    properties->add(make<DoublePropertyCls>(__s("scrollPosition"), scrollPosition()nullptr));
-    properties->add(make<DoublePropertyCls>(__s("scrollExtentMax"), scrollExtentMax()nullptr));
-    properties->add(make<DoublePropertyCls>(__s("elevation"), elevation()0.0));
-    properties->add(make<DoublePropertyCls>(__s("thickness"), thickness()0.0));
+    properties->add(make<IntPropertyCls>(__s("platformViewId"), platformViewId(), nullptr));
+    properties->add(make<IntPropertyCls>(__s("maxValueLength"), maxValueLength(), nullptr));
+    properties->add(make<IntPropertyCls>(__s("currentValueLength"), currentValueLength(), nullptr));
+    properties->add(make<IntPropertyCls>(__s("scrollChildren"), scrollChildCount(), nullptr));
+    properties->add(make<IntPropertyCls>(__s("scrollIndex"), scrollIndex(), nullptr));
+    properties->add(make<DoublePropertyCls>(__s("scrollExtentMin"), scrollExtentMin(), nullptr));
+    properties->add(make<DoublePropertyCls>(__s("scrollPosition"), scrollPosition(), nullptr));
+    properties->add(make<DoublePropertyCls>(__s("scrollExtentMax"), scrollExtentMax(), nullptr));
+    properties->add(make<DoublePropertyCls>(__s("elevation"), elevation(), 0.0));
+    properties->add(make<DoublePropertyCls>(__s("thickness"), thickness(), 0.0));
 }
 
 String SemanticsNodeCls::toStringDeep(DebugSemanticsDumpOrder childOrder, DiagnosticLevel minLevel, String prefixLineOne, String prefixOtherLines) {
@@ -2096,7 +2096,7 @@ int SemanticsSortKeyCls::compareTo(SemanticsSortKey other) {
 
 void SemanticsSortKeyCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(make<StringPropertyCls>(__s("name"), namenullptr));
+    properties->add(make<StringPropertyCls>(__s("name"), name, nullptr));
 }
 
 OrdinalSortKeyCls::OrdinalSortKeyCls(double order, Unknown name) {
@@ -2117,5 +2117,5 @@ int OrdinalSortKeyCls::doCompare(OrdinalSortKey other) {
 
 void OrdinalSortKeyCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(make<DoublePropertyCls>(__s("order"), ordernullptr));
+    properties->add(make<DoublePropertyCls>(__s("order"), order, nullptr));
 }

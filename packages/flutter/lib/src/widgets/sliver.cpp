@@ -206,9 +206,9 @@ void _SelectionKeepAliveStateCls::wantKeepAlive(bool value) {
 VoidCallback _SelectionKeepAliveStateCls::listensTo(Selectable selectable) {
     return [=] () {
         if (selectable->value->hasSelection) {
-            _updateSelectablesWithSelections(selectabletrue);
+            _updateSelectablesWithSelections(selectable, true);
         } else {
-            _updateSelectablesWithSelections(selectablefalse);
+            _updateSelectablesWithSelections(selectable, false);
         }
     };
 }
@@ -234,7 +234,7 @@ void _SelectionKeepAliveStateCls::add(Selectable selectable) {
     _selectableAttachments![selectable] = attachment;
     _registrar!->add(selectable);
     if (selectable->value->hasSelection) {
-        _updateSelectablesWithSelections(selectabletrue);
+        _updateSelectablesWithSelections(selectable, true);
     }
 }
 
@@ -246,7 +246,7 @@ void _SelectionKeepAliveStateCls::remove(Selectable selectable) {
     VoidCallback attachment = _selectableAttachments!->remove(selectable)!;
     selectable->removeListener(attachment);
     _registrar!->remove(selectable);
-    _updateSelectablesWithSelections(selectablefalse);
+    _updateSelectablesWithSelections(selectable, false);
 }
 
 void _SelectionKeepAliveStateCls::dispose() {
@@ -301,7 +301,7 @@ void SliverMultiBoxAdaptorWidgetCls::debugFillProperties(DiagnosticPropertiesBui
 }
 
 SliverMultiBoxAdaptorElement SliverListCls::createElement() {
-    return make<SliverMultiBoxAdaptorElementCls>(thistrue);
+    return make<SliverMultiBoxAdaptorElementCls>(this, true);
 }
 
 RenderSliverList SliverListCls::createRenderObject(BuildContext context) {
@@ -535,7 +535,7 @@ void SliverMultiBoxAdaptorElementCls::insertRenderObjectChild(RenderObject child
     assert(slot != nullptr);
     assert(_currentlyUpdatingChildIndex == slot);
     assert(renderObject()->debugValidateChild(child));
-    renderObject()->insert(as<RenderBox>(child)_currentBeforeChild);
+    renderObject()->insert(as<RenderBox>(child), _currentBeforeChild);
     assert([=] () {
         SliverMultiBoxAdaptorParentData childParentData = as<SliverMultiBoxAdaptorParentData>(child->parentData!);
         assert(slot == childParentData->index);
@@ -546,7 +546,7 @@ void SliverMultiBoxAdaptorElementCls::insertRenderObjectChild(RenderObject child
 void SliverMultiBoxAdaptorElementCls::moveRenderObjectChild(RenderObject child, int oldSlot, int newSlot) {
     assert(newSlot != nullptr);
     assert(_currentlyUpdatingChildIndex == newSlot);
-    renderObject()->move(as<RenderBox>(child)_currentBeforeChild);
+    renderObject()->move(as<RenderBox>(child), _currentBeforeChild);
 }
 
 void SliverMultiBoxAdaptorElementCls::removeRenderObjectChild(RenderObject child, int slot) {
@@ -602,7 +602,7 @@ void SliverOpacityCls::updateRenderObject(BuildContext context, RenderSliverOpac
 void SliverOpacityCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
     properties->add(<double>make<DiagnosticsPropertyCls>(__s("opacity"), opacity));
-    properties->add(make<FlagPropertyCls>(__s("alwaysIncludeSemantics")alwaysIncludeSemantics, __s("alwaysIncludeSemantics")));
+    properties->add(make<FlagPropertyCls>(__s("alwaysIncludeSemantics"), alwaysIncludeSemantics, __s("alwaysIncludeSemantics")));
 }
 
 SliverIgnorePointerCls::SliverIgnorePointerCls(bool ignoring, bool ignoringSemantics, Unknown key, Widget sliver) : SingleChildRenderObjectWidget(sliver) {
@@ -622,7 +622,7 @@ void SliverIgnorePointerCls::updateRenderObject(BuildContext context, RenderSliv
 void SliverIgnorePointerCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
     properties->add(<bool>make<DiagnosticsPropertyCls>(__s("ignoring"), ignoring));
-    properties->add(<bool>make<DiagnosticsPropertyCls>(__s("ignoringSemantics"), ignoringSemanticsnullptr));
+    properties->add(<bool>make<DiagnosticsPropertyCls>(__s("ignoringSemantics"), ignoringSemantics, nullptr));
 }
 
 SliverOffstageCls::SliverOffstageCls(Unknown key, bool offstage, Widget sliver) : SingleChildRenderObjectWidget(sliver) {

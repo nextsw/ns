@@ -130,7 +130,7 @@ void FadeTransitionCls::updateRenderObject(BuildContext context, RenderAnimatedO
 void FadeTransitionCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
     properties->add(<Animation<double>>make<DiagnosticsPropertyCls>(__s("opacity"), opacity));
-    properties->add(make<FlagPropertyCls>(__s("alwaysIncludeSemantics")alwaysIncludeSemantics, __s("alwaysIncludeSemantics")));
+    properties->add(make<FlagPropertyCls>(__s("alwaysIncludeSemantics"), alwaysIncludeSemantics, __s("alwaysIncludeSemantics")));
 }
 
 SliverFadeTransitionCls::SliverFadeTransitionCls(bool alwaysIncludeSemantics, Unknown key, Animation<double> opacity, Widget sliver) : SingleChildRenderObjectWidget(sliver) {
@@ -150,7 +150,7 @@ void SliverFadeTransitionCls::updateRenderObject(BuildContext context, RenderSli
 void SliverFadeTransitionCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
     properties->add(<Animation<double>>make<DiagnosticsPropertyCls>(__s("opacity"), opacity));
-    properties->add(make<FlagPropertyCls>(__s("alwaysIncludeSemantics")alwaysIncludeSemantics, __s("alwaysIncludeSemantics")));
+    properties->add(make<FlagPropertyCls>(__s("alwaysIncludeSemantics"), alwaysIncludeSemantics, __s("alwaysIncludeSemantics")));
 }
 
 RelativeRect RelativeRectTweenCls::lerp(double t) {

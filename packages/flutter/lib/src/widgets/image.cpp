@@ -4,7 +4,7 @@ ImageConfiguration createLocalImageConfiguration(BuildContext context, Size size
 }
 
 Future<void> precacheImage(ImageProvider provider, BuildContext context, ImageErrorListener onError, Size size) {
-    ImageConfiguration config = createLocalImageConfiguration(contextsize);
+    ImageConfiguration config = createLocalImageConfiguration(context, size);
     Completer<void> completer = <void>make<CompleterCls>();
     ImageStream stream = provider->resolve(config);
     ImageStreamListener listener;
@@ -15,7 +15,7 @@ Future<void> precacheImage(ImageProvider provider, BuildContext context, ImageEr
         SchedulerBindingCls::instance->addPostFrameCallback([=] (Duration timeStamp) {
             stream->removeListener(listener!);
         });
-    }[=] (Object exception,StackTrace stackTrace) {
+    }, [=] (Object exception,StackTrace stackTrace) {
         if (!completer->isCompleted) {
             completer->complete();
         }
@@ -58,17 +58,17 @@ void ImageCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     properties->add(<ImageProvider>make<DiagnosticsPropertyCls>(__s("image"), image));
     properties->add(<std::function<void ()>>make<DiagnosticsPropertyCls>(__s("frameBuilder"), frameBuilder));
     properties->add(<std::function<void ()>>make<DiagnosticsPropertyCls>(__s("loadingBuilder"), loadingBuilder));
-    properties->add(make<DoublePropertyCls>(__s("width"), widthnullptr));
-    properties->add(make<DoublePropertyCls>(__s("height"), heightnullptr));
-    properties->add(make<ColorPropertyCls>(__s("color"), colornullptr));
-    properties->add(<Animation<double>>make<DiagnosticsPropertyCls>(__s("opacity"), opacitynullptr));
-    properties->add(<BlendMode>make<EnumPropertyCls>(__s("colorBlendMode"), colorBlendModenullptr));
-    properties->add(<BoxFit>make<EnumPropertyCls>(__s("fit"), fitnullptr));
-    properties->add(<AlignmentGeometry>make<DiagnosticsPropertyCls>(__s("alignment"), alignmentnullptr));
-    properties->add(<ImageRepeat>make<EnumPropertyCls>(__s("repeat"), repeatImageRepeatCls::noRepeat));
-    properties->add(<Rect>make<DiagnosticsPropertyCls>(__s("centerSlice"), centerSlicenullptr));
-    properties->add(make<FlagPropertyCls>(__s("matchTextDirection")matchTextDirection, __s("match text direction")));
-    properties->add(make<StringPropertyCls>(__s("semanticLabel"), semanticLabelnullptr));
+    properties->add(make<DoublePropertyCls>(__s("width"), width, nullptr));
+    properties->add(make<DoublePropertyCls>(__s("height"), height, nullptr));
+    properties->add(make<ColorPropertyCls>(__s("color"), color, nullptr));
+    properties->add(<Animation<double>>make<DiagnosticsPropertyCls>(__s("opacity"), opacity, nullptr));
+    properties->add(<BlendMode>make<EnumPropertyCls>(__s("colorBlendMode"), colorBlendMode, nullptr));
+    properties->add(<BoxFit>make<EnumPropertyCls>(__s("fit"), fit, nullptr));
+    properties->add(<AlignmentGeometry>make<DiagnosticsPropertyCls>(__s("alignment"), alignment, nullptr));
+    properties->add(<ImageRepeat>make<EnumPropertyCls>(__s("repeat"), repeat, ImageRepeatCls::noRepeat));
+    properties->add(<Rect>make<DiagnosticsPropertyCls>(__s("centerSlice"), centerSlice, nullptr));
+    properties->add(make<FlagPropertyCls>(__s("matchTextDirection"), matchTextDirection, __s("match text direction")));
+    properties->add(make<StringPropertyCls>(__s("semanticLabel"), semanticLabel, nullptr));
     properties->add(<bool>make<DiagnosticsPropertyCls>(__s("this.excludeFromSemantics"), excludeFromSemantics));
     properties->add(<FilterQuality>make<EnumPropertyCls>(__s("filterQuality"), filterQuality));
 }
@@ -161,7 +161,7 @@ void _ImageStateCls::_updateInvertColors() {
 
 void _ImageStateCls::_resolveImage() {
     ScrollAwareImageProvider provider = <Object>make<ScrollAwareImageProviderCls>(_scrollAwareContext, widget->image);
-    ImageStream newStream = provider->resolve(createLocalImageConfiguration(contextwidget->width != nullptr && widget->height != nullptr? make<SizeCls>(widget->width!, widget->height!) : nullptr));
+    ImageStream newStream = provider->resolve(createLocalImageConfiguration(context, widget->width != nullptr && widget->height != nullptr? make<SizeCls>(widget->width!, widget->height!) : nullptr));
     assert(newStream != nullptr);
     _updateSourceStream(newStream);
 }
@@ -170,7 +170,7 @@ ImageStreamListener _ImageStateCls::_getListener(bool recreateListener) {
     if (_imageStreamListener == nullptr || recreateListener) {
         _lastException = nullptr;
         _lastStack = nullptr;
-        _imageStreamListener = make<ImageStreamListenerCls>(_handleImageFramewidget->loadingBuilder == nullptr? nullptr : _handleImageChunk, widget->errorBuilder != nullptr || kDebugMode? [=] (Object error,StackTrace stackTrace) {
+        _imageStreamListener = make<ImageStreamListenerCls>(_handleImageFrame, widget->loadingBuilder == nullptr? nullptr : _handleImageChunk, widget->errorBuilder != nullptr || kDebugMode? [=] (Object error,StackTrace stackTrace) {
             setState([=] () {
                 _lastException = error;
                 _lastStack = stackTrace;

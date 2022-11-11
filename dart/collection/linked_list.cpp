@@ -1,13 +1,13 @@
 #include "linked_list.hpp"
 template<typename E>
 void LinkedListCls<E>::addFirst(E entry) {
-    auto _c1 = <E>make<LinkedHashSetCls>();_c1.addAll(elements);_insertBefore(_first, entrytrue);
+    auto _c1 = <E>make<LinkedHashSetCls>();_c1.addAll(elements);_insertBefore(_first, entry, true);
     _first = entry;
 }
 
 template<typename E>
 void LinkedListCls<E>::add(E entry) {
-    _insertBefore(_first, entryfalse);
+    _insertBefore(_first, entry, false);
 }
 
 template<typename E>
@@ -203,10 +203,10 @@ E LinkedListEntryCls<E>::previous() {
 
 template<typename E>
 void LinkedListEntryCls<E>::insertAfter(E entry) {
-    _list!->_insertBefore(_next, entryfalse);
+    _list!->_insertBefore(_next, entry, false);
 }
 
 template<typename E>
 void LinkedListEntryCls<E>::insertBefore(E entry) {
-    _list!->_insertBefore(as<E>(this), entrytrue);
+    _list!->_insertBefore(as<E>(this), entry, true);
 }

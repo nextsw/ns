@@ -61,7 +61,7 @@ Size RenderRotatedBoxCls::computeDryLayout(BoxConstraints constraints) {
 void RenderRotatedBoxCls::performLayout() {
     _paintTransform = nullptr;
     if (child != nullptr) {
-        child!->layout(_isVertical()? constraints->flipped : constraintstrue);
+        child!->layout(_isVertical()? constraints->flipped : constraints, true);
         size = _isVertical()? make<SizeCls>(child!->size->height, child!->size->width) : child!->size;
             auto _c1 = Matrix4Cls->identity();    _c1.auto _c2 = translate(size->width / 2.0, size->height / 2.0);    _c2.auto _c3 = rotateZ(_kQuarterTurnsInRadians * (quarterTurns() % 4));    _c3.translate(-child!->size->width / 2.0, -child!->size->height / 2.0);    _c3;    _c2;_paintTransform = _c1;
     } else {
@@ -75,13 +75,13 @@ bool RenderRotatedBoxCls::hitTestChildren(BoxHitTestResult result, Offset positi
         return false;
     }
     return result->addWithPaintTransform(_paintTransform, position, [=] (BoxHitTestResult result,Offset position) {
-        return child!->hitTest(resultposition);
+        return child!->hitTest(result, position);
     });
 }
 
 void RenderRotatedBoxCls::paint(PaintingContext context, Offset offset) {
     if (child != nullptr) {
-        _transformLayer->layer() = context->pushTransform(needsCompositing, offset, _paintTransform!, _paintChild_transformLayer->layer());
+        _transformLayer->layer() = context->pushTransform(needsCompositing, offset, _paintTransform!, _paintChild, _transformLayer->layer());
     } else {
         _transformLayer->layer() = nullptr;
     }

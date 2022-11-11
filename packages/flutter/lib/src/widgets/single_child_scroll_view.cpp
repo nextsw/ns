@@ -177,7 +177,7 @@ void _RenderSingleChildViewportCls::performLayout() {
     if (child == nullptr) {
         size = constraints->smallest();
     } else {
-        child!->layout(_getInnerConstraints(constraints)true);
+        child!->layout(_getInnerConstraints(constraints), true);
         size = constraints->constrain(child!->size);
     }
     offset()->applyViewportDimension(_viewportExtent());
@@ -189,7 +189,7 @@ void _RenderSingleChildViewportCls::paint(PaintingContext context, Offset offset
         Offset paintOffset = _paintOffset();
         InlineMethod;
         if (_shouldClipAtPaintOffset(paintOffset)) {
-            _clipRectLayer->layer() = context->pushClipRect(needsCompositing, offset, OffsetCls::zero & size, paintContentsclipBehavior(), _clipRectLayer->layer());
+            _clipRectLayer->layer() = context->pushClipRect(needsCompositing, offset, OffsetCls::zero & size, paintContents, clipBehavior(), _clipRectLayer->layer());
         } else {
             _clipRectLayer->layer() = nullptr;
             paintContents(context, offset);
@@ -218,7 +218,7 @@ bool _RenderSingleChildViewportCls::hitTestChildren(BoxHitTestResult result, Off
     if (child != nullptr) {
         return result->addWithPaintOffset(_paintOffset(), position, [=] (BoxHitTestResult result,Offset transformed) {
             assert(transformed == position + -_paintOffset());
-            return child!->hitTest(resulttransformed);
+            return child!->hitTest(result, transformed);
         });
     }
     return false;

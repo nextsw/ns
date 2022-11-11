@@ -168,15 +168,15 @@ void _TableElementCls::update(Table newWidget) {
         }        List<_TableSlot> slots = <_TableSlot>generate(row->children!->length(), [=] (int columnIndex) {
     make<_TableSlotCls>(columnIndex, rowIndex);
 });
-        newChildren->add(make<_TableElementRowCls>(row->key, updateChildren(oldChildren, row->children!_forgottenChildren, slots)));
+        newChildren->add(make<_TableElementRowCls>(row->key, updateChildren(oldChildren, row->children!, _forgottenChildren, slots)));
     }
     while (oldUnkeyedRows->moveNext()) {
-        updateChildren(oldUnkeyedRows->current()->children, makeList()_forgottenChildren);
+        updateChildren(oldUnkeyedRows->current()->children, makeList(), _forgottenChildren);
     }
     for (List<Element> oldChildren : oldKeyedRows->values()->where([=] (List<Element> list)     {
         !taken->contains(list);
     })) {
-        updateChildren(oldChildren, makeList()_forgottenChildren);
+        updateChildren(oldChildren, makeList(), _forgottenChildren);
     }
     _children = newChildren;
     _updateRenderObjectChildren();

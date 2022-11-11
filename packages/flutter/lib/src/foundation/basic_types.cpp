@@ -50,7 +50,7 @@ int CachingIterableCls<E>::length() {
 template<typename E>
 List<E> CachingIterableCls<E>::toList(bool growable) {
     _precacheEntireList();
-    return <E>of(_resultsgrowable);
+    return <E>of(_results, growable);
 }
 
 template<typename E>

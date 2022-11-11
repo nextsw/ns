@@ -9,7 +9,7 @@ void KeyEventCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     properties->add(<LogicalKeyboardKey>make<DiagnosticsPropertyCls>(__s("logicalKey"), logicalKey));
     properties->add(make<StringPropertyCls>(__s("character"), character));
     properties->add(<Duration>make<DiagnosticsPropertyCls>(__s("timeStamp"), timeStamp));
-    properties->add(make<FlagPropertyCls>(__s("synthesized")synthesized, __s("synthesized")));
+    properties->add(make<FlagPropertyCls>(__s("synthesized"), synthesized, __s("synthesized")));
 }
 
 HardwareKeyboard HardwareKeyboardCls::instance() {

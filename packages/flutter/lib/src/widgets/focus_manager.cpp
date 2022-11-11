@@ -53,7 +53,7 @@ void FocusAttachmentCls::reparent(FocusNode parent) {
     assert(_node != nullptr);
     if (isAttached()) {
         assert(_node->context() != nullptr);
-        parent |= FocusCls->maybeOf(_node->context()!true);
+        parent |= FocusCls->maybeOf(_node->context()!, true);
         parent |= _node->context()!->owner()!->focusManager->rootScope;
         assert(parent != nullptr);
         parent->_reparent(_node);
@@ -317,12 +317,12 @@ bool FocusNodeCls::focusInDirection(TraversalDirection direction) {
 
 void FocusNodeCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<BuildContext>make<DiagnosticsPropertyCls>(__s("context"), context()nullptr));
-    properties->add(make<FlagPropertyCls>(__s("descendantsAreFocusable")descendantsAreFocusable(), __s("DESCENDANTS UNFOCUSABLE"), true));
-    properties->add(make<FlagPropertyCls>(__s("descendantsAreTraversable")descendantsAreTraversable(), __s("DESCENDANTS UNTRAVERSABLE"), true));
-    properties->add(make<FlagPropertyCls>(__s("canRequestFocus")canRequestFocus(), __s("NOT FOCUSABLE"), true));
-    properties->add(make<FlagPropertyCls>(__s("hasFocus")hasFocus() && !hasPrimaryFocus(), __s("IN FOCUS PATH"), false));
-    properties->add(make<FlagPropertyCls>(__s("hasPrimaryFocus")hasPrimaryFocus(), __s("PRIMARY FOCUS"), false));
+    properties->add(<BuildContext>make<DiagnosticsPropertyCls>(__s("context"), context(), nullptr));
+    properties->add(make<FlagPropertyCls>(__s("descendantsAreFocusable"), descendantsAreFocusable(), __s("DESCENDANTS UNFOCUSABLE"), true));
+    properties->add(make<FlagPropertyCls>(__s("descendantsAreTraversable"), descendantsAreTraversable(), __s("DESCENDANTS UNTRAVERSABLE"), true));
+    properties->add(make<FlagPropertyCls>(__s("canRequestFocus"), canRequestFocus(), __s("NOT FOCUSABLE"), true));
+    properties->add(make<FlagPropertyCls>(__s("hasFocus"), hasFocus() && !hasPrimaryFocus(), __s("IN FOCUS PATH"), false));
+    properties->add(make<FlagPropertyCls>(__s("hasPrimaryFocus"), hasPrimaryFocus(), __s("PRIMARY FOCUS"), false));
 }
 
 List<DiagnosticsNode> FocusNodeCls::debugDescribeChildren() {
@@ -386,7 +386,7 @@ void FocusNodeCls::_reparent(FocusNode child) {
     assert(!ancestors()->contains(child), __s("The supplied child is already an ancestor of this node. Loops are not allowed."));
     FocusScopeNode oldScope = child->enclosingScope();
     bool hadFocus = child->hasFocus();
-    child->_parent?->_removeChild(childoldScope != nearestScope());
+    child->_parent?->_removeChild(child, oldScope != nearestScope());
     _children->add(child);
     child->_parent = this;
     child->_ancestors = nullptr;
@@ -513,7 +513,7 @@ void FocusScopeNodeCls::debugFillProperties(DiagnosticPropertiesBuilder properti
     List<String> childList = _focusedChildren->reversed()-><String>map([=] (FocusNode child) {
     return child->toStringShort();
 })->toList();
-    properties->add(<String>make<IterablePropertyCls>(__s("focusedChildren"), childList<String>empty()));
+    properties->add(<String>make<IterablePropertyCls>(__s("focusedChildren"), childList, <String>empty()));
 }
 
 void FocusScopeNodeCls::_doRequestFocus(bool findFirstFocus) {
@@ -586,9 +586,9 @@ List<DiagnosticsNode> FocusManagerCls::debugDescribeChildren() {
 }
 
 void FocusManagerCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    properties->add(make<FlagPropertyCls>(__s("haveScheduledUpdate")_haveScheduledUpdate, __s("UPDATE SCHEDULED")));
-    properties->add(<FocusNode>make<DiagnosticsPropertyCls>(__s("primaryFocus"), primaryFocus()nullptr));
-    properties->add(<FocusNode>make<DiagnosticsPropertyCls>(__s("nextFocus"), _markedForFocusnullptr));
+    properties->add(make<FlagPropertyCls>(__s("haveScheduledUpdate"), _haveScheduledUpdate, __s("UPDATE SCHEDULED")));
+    properties->add(<FocusNode>make<DiagnosticsPropertyCls>(__s("primaryFocus"), primaryFocus(), nullptr));
+    properties->add(<FocusNode>make<DiagnosticsPropertyCls>(__s("nextFocus"), _markedForFocus, nullptr));
     Element element = as<Element>(primaryFocus()?->context());
     if (element != nullptr) {
         properties->add(<String>make<DiagnosticsPropertyCls>(__s("primaryFocusCreator"), element->debugGetCreatorChain(20)));

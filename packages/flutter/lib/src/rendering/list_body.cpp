@@ -82,7 +82,7 @@ void RenderListBodyCls::paint(PaintingContext context, Offset offset) {
 }
 
 bool RenderListBodyCls::hitTestChildren(BoxHitTestResult result, Offset position) {
-    return defaultHitTestChildren(resultposition);
+    return defaultHitTestChildren(result, position);
 }
 
 bool RenderListBodyCls::_debugCheckConstraints(BoxConstraints constraints) {

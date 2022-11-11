@@ -35,7 +35,7 @@ Future<void> SystemChromeCls::setApplicationSwitcherDescription(ApplicationSwitc
 }
 
 Future<void> SystemChromeCls::setEnabledSystemUIOverlays(List<SystemUiOverlay> overlays) {
-    await await setEnabledSystemUIMode(SystemUiModeCls::manualoverlays);
+    await await setEnabledSystemUIMode(SystemUiModeCls::manual, overlays);
 }
 
 Future<void> SystemChromeCls::setEnabledSystemUIMode(SystemUiMode mode, List<SystemUiOverlay> overlays) {

@@ -41,7 +41,7 @@ Widget _TickerModeStateCls::build(BuildContext context) {
 
 void _TickerModeStateCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(make<FlagPropertyCls>(__s("requested mode")widget->enabled, __s("enabled"), __s("disabled"), true));
+    properties->add(make<FlagPropertyCls>(__s("requested mode"), widget->enabled, __s("enabled"), __s("disabled"), true));
 }
 
 void _TickerModeStateCls::_updateEffectiveMode() {
@@ -54,7 +54,7 @@ bool _EffectiveTickerModeCls::updateShouldNotify(_EffectiveTickerMode oldWidget)
 
 void _EffectiveTickerModeCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(make<FlagPropertyCls>(__s("effective mode")enabled, __s("enabled"), __s("disabled"), true));
+    properties->add(make<FlagPropertyCls>(__s("effective mode"), enabled, __s("enabled"), __s("disabled"), true));
 }
 
 _EffectiveTickerModeCls::_EffectiveTickerModeCls(Unknown child, bool enabled, ValueNotifier<bool> notifier) {
@@ -71,7 +71,7 @@ Ticker SingleTickerProviderStateMixinCls<T>::createTicker(TickerCallback onTick)
         }
         throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem, ArrayItem));
     }());
-    _ticker = make<TickerCls>(onTickkDebugMode? __s("created by ${describeIdentity(this)}") : nullptr);
+    _ticker = make<TickerCls>(onTick, kDebugMode? __s("created by ${describeIdentity(this)}") : nullptr);
     _updateTickerModeNotifier();
     _updateTicker();
     return _ticker!;
@@ -116,7 +116,7 @@ void SingleTickerProviderStateMixinCls<T>::debugFillProperties(DiagnosticPropert
 ;
         };
         }    }
-    properties->add(<Ticker>make<DiagnosticsPropertyCls>(__s("ticker"), _tickertickerDescription, false, nullptr));
+    properties->add(<Ticker>make<DiagnosticsPropertyCls>(__s("ticker"), _ticker, tickerDescription, false, nullptr));
 }
 
 template<typename T>
@@ -144,7 +144,7 @@ Ticker TickerProviderStateMixinCls<T>::createTicker(TickerCallback onTick) {
     }
     assert(_tickerModeNotifier != nullptr);
     _tickers |= makeSet();
-    auto _c1 = make<_WidgetTickerCls>(onTick, thiskDebugMode? __s("created by ${describeIdentity(this)}") : nullptr);_c1.muted = !_tickerModeNotifier!->value();_WidgetTicker result = _c1;
+    auto _c1 = make<_WidgetTickerCls>(onTick, this, kDebugMode? __s("created by ${describeIdentity(this)}") : nullptr);_c1.muted = !_tickerModeNotifier!->value();_WidgetTicker result = _c1;
     _tickers!->add(result);
     return result;
 }
@@ -176,7 +176,7 @@ void TickerProviderStateMixinCls<T>::dispose() {
 template<typename T>
 void TickerProviderStateMixinCls<T>::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<Set<Ticker>>make<DiagnosticsPropertyCls>(__s("tickers"), _tickers_tickers != nullptr? __s("tracking ${_tickers!.length} ticker${_tickers!.length == 1 ? "" : "s"}") : nullptr, nullptr));
+    properties->add(<Set<Ticker>>make<DiagnosticsPropertyCls>(__s("tickers"), _tickers, _tickers != nullptr? __s("tracking ${_tickers!.length} ticker${_tickers!.length == 1 ? "" : "s"}") : nullptr, nullptr));
 }
 
 template<typename T>

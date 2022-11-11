@@ -206,7 +206,7 @@ void RenderSliverGridCls::performLayout() {
         BoxConstraints childConstraints = gridGeometry->getBoxConstraints(constraints);
         RenderBox child = childAfter(trailingChildWithLayout!);
         if (child == nullptr || indexOf(child) != index) {
-            child = insertAndLayoutChild(childConstraintstrailingChildWithLayout);
+            child = insertAndLayoutChild(childConstraints, trailingChildWithLayout);
             if (child == nullptr) {
                 break;
             }
@@ -225,9 +225,9 @@ void RenderSliverGridCls::performLayout() {
     assert(debugAssertChildListIsNonEmptyAndContiguous());
     assert(indexOf(firstChild!) == firstIndex);
     assert(targetLastIndex == nullptr || lastIndex <= targetLastIndex);
-    double estimatedTotalExtent = childManager->estimateMaxScrollOffset(constraintsfirstIndex, lastIndex, leadingScrollOffset, trailingScrollOffset);
-    double paintExtent = calculatePaintOffset(constraintsmath->min(constraints->scrollOffset, leadingScrollOffset), trailingScrollOffset);
-    double cacheExtent = calculateCacheOffset(constraintsleadingScrollOffset, trailingScrollOffset);
+    double estimatedTotalExtent = childManager->estimateMaxScrollOffset(constraints, firstIndex, lastIndex, leadingScrollOffset, trailingScrollOffset);
+    double paintExtent = calculatePaintOffset(constraints, math->min(constraints->scrollOffset, leadingScrollOffset), trailingScrollOffset);
+    double cacheExtent = calculateCacheOffset(constraints, leadingScrollOffset, trailingScrollOffset);
     geometry = make<SliverGeometryCls>(estimatedTotalExtent, paintExtent, estimatedTotalExtent, cacheExtent, estimatedTotalExtent > paintExtent || constraints->scrollOffset > 0.0 || constraints->overlap != 0.0);
     if (estimatedTotalExtent == trailingScrollOffset) {
         childManager->setDidUnderflow(true);

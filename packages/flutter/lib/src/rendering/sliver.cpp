@@ -65,14 +65,14 @@ bool SliverConstraintsCls::debugAssertIsValid(InformationCollector informationCo
         verifyDouble(scrollOffset, __s("scrollOffset"));
         verifyDouble(overlap, __s("overlap"));
         verifyDouble(crossAxisExtent, __s("crossAxisExtent"));
-        verifyDouble(scrollOffset, __s("scrollOffset")true);
+        verifyDouble(scrollOffset, __s("scrollOffset"), true);
         verify(crossAxisDirection != nullptr, __s("The "crossAxisDirection" is null."));
         verify(axisDirectionToAxis(axisDirection) != axisDirectionToAxis(crossAxisDirection), __s("The "axisDirection" and the "crossAxisDirection" are along the same axis."));
-        verifyDouble(viewportMainAxisExtent, __s("viewportMainAxisExtent")true);
-        verifyDouble(remainingPaintExtent, __s("remainingPaintExtent")true);
-        verifyDouble(remainingCacheExtent, __s("remainingCacheExtent")true);
-        verifyDouble(cacheOrigin, __s("cacheOrigin")true);
-        verifyDouble(precedingScrollExtent, __s("precedingScrollExtent")true);
+        verifyDouble(viewportMainAxisExtent, __s("viewportMainAxisExtent"), true);
+        verifyDouble(remainingPaintExtent, __s("remainingPaintExtent"), true);
+        verifyDouble(remainingCacheExtent, __s("remainingCacheExtent"), true);
+        verifyDouble(cacheOrigin, __s("cacheOrigin"), true);
+        verifyDouble(precedingScrollExtent, __s("precedingScrollExtent"), true);
         verify(isNormalized(), __s("The constraints are not normalized."));
         if (hasErrors) {
                     List<DiagnosticsNode> list1 = make<ListCls<>>();        list1.add(ArrayItem);        if (informationCollector != nullptr) {            list1.add(ArrayItem);        }list1.add(ArrayItem);throw FlutterErrorCls->fromParts(list1);
@@ -129,11 +129,11 @@ bool SliverGeometryCls::debugAssertIsValid(InformationCollector informationColle
         verify(layoutExtent >= 0.0, __s("The "layoutExtent" is negative."));
         verify(cacheExtent >= 0.0, __s("The "cacheExtent" is negative."));
         if (layoutExtent > paintExtent) {
-            verify(false, __s("The "layoutExtent" exceeds the "paintExtent".")_debugCompareFloats(__s("paintExtent"), paintExtent, __s("layoutExtent"), layoutExtent));
+            verify(false, __s("The "layoutExtent" exceeds the "paintExtent"."), _debugCompareFloats(__s("paintExtent"), paintExtent, __s("layoutExtent"), layoutExtent));
         }
         verify(maxPaintExtent != nullptr, __s("The "maxPaintExtent" is null."));
         if (paintExtent - maxPaintExtent > precisionErrorTolerance) {
-                    auto _c1 = _debugCompareFloats(__s("maxPaintExtent"), maxPaintExtent, __s("paintExtent"), paintExtent);        _c1.add(make<ErrorDescriptionCls>(__s("By definition, a sliver can't paint more than the maximum that it can paint!")));verify(false, __s("The "maxPaintExtent" is less than the "paintExtent".")_c1);
+                    auto _c1 = _debugCompareFloats(__s("maxPaintExtent"), maxPaintExtent, __s("paintExtent"), paintExtent);        _c1.add(make<ErrorDescriptionCls>(__s("By definition, a sliver can't paint more than the maximum that it can paint!")));verify(false, __s("The "maxPaintExtent" is less than the "paintExtent"."), _c1);
         }
         verify(hitTestExtent != nullptr, __s("The "hitTestExtent" is null."));
         verify(hitTestExtent >= 0.0, __s("The "hitTestExtent" is negative."));
@@ -153,24 +153,24 @@ void SliverGeometryCls::debugFillProperties(DiagnosticPropertiesBuilder properti
     super->debugFillProperties(properties);
     properties->add(make<DoublePropertyCls>(__s("scrollExtent"), scrollExtent));
     if (paintExtent > 0.0) {
-        properties->add(make<DoublePropertyCls>(__s("paintExtent"), paintExtentvisible? nullptr : __s(" but not painting")));
+        properties->add(make<DoublePropertyCls>(__s("paintExtent"), paintExtent, visible? nullptr : __s(" but not painting")));
     } else     {
         if (paintExtent == 0.0) {
         if (visible) {
-            properties->add(make<DoublePropertyCls>(__s("paintExtent"), paintExtentvisible? nullptr : __s(" but visible")));
+            properties->add(make<DoublePropertyCls>(__s("paintExtent"), paintExtent, visible? nullptr : __s(" but visible")));
         }
-        properties->add(make<FlagPropertyCls>(__s("visible")visible, __s("hidden")));
+        properties->add(make<FlagPropertyCls>(__s("visible"), visible, __s("hidden")));
     } else {
-        properties->add(make<DoublePropertyCls>(__s("paintExtent"), paintExtent__s("!")));
+        properties->add(make<DoublePropertyCls>(__s("paintExtent"), paintExtent, __s("!")));
     }
 ;
-    }    properties->add(make<DoublePropertyCls>(__s("paintOrigin"), paintOrigin0.0));
-    properties->add(make<DoublePropertyCls>(__s("layoutExtent"), layoutExtentpaintExtent));
+    }    properties->add(make<DoublePropertyCls>(__s("paintOrigin"), paintOrigin, 0.0));
+    properties->add(make<DoublePropertyCls>(__s("layoutExtent"), layoutExtent, paintExtent));
     properties->add(make<DoublePropertyCls>(__s("maxPaintExtent"), maxPaintExtent));
-    properties->add(make<DoublePropertyCls>(__s("hitTestExtent"), hitTestExtentpaintExtent));
-    properties->add(<bool>make<DiagnosticsPropertyCls>(__s("hasVisualOverflow"), hasVisualOverflowfalse));
-    properties->add(make<DoublePropertyCls>(__s("scrollOffsetCorrection"), scrollOffsetCorrectionnullptr));
-    properties->add(make<DoublePropertyCls>(__s("cacheExtent"), cacheExtent0.0));
+    properties->add(make<DoublePropertyCls>(__s("hitTestExtent"), hitTestExtent, paintExtent));
+    properties->add(<bool>make<DiagnosticsPropertyCls>(__s("hasVisualOverflow"), hasVisualOverflow, false));
+    properties->add(make<DoublePropertyCls>(__s("scrollOffsetCorrection"), scrollOffsetCorrection, nullptr));
+    properties->add(make<DoublePropertyCls>(__s("cacheExtent"), cacheExtent, 0.0));
 }
 
 SliverHitTestResultCls::SliverHitTestResultCls() : HitTestResult() {
@@ -187,7 +187,7 @@ bool SliverHitTestResultCls::addWithAxisOffset(double crossAxisOffset, double cr
     if (paintOffset != nullptr) {
         pushOffset(-paintOffset);
     }
-    bool isHit = hitTest(thismainAxisPosition - mainAxisOffset, crossAxisPosition - crossAxisOffset);
+    bool isHit = hitTest(this, mainAxisPosition - mainAxisOffset, crossAxisPosition - crossAxisOffset);
     if (paintOffset != nullptr) {
         popTransform();
     }
@@ -292,8 +292,8 @@ double RenderSliverCls::centerOffsetAdjustment() {
 
 bool RenderSliverCls::hitTest(SliverHitTestResult result, double crossAxisPosition, double mainAxisPosition) {
     if (mainAxisPosition >= 0.0 &&  < geometry()!->hitTestExtent && crossAxisPosition >= 0.0 &&  < constraints()->crossAxisExtent) {
-        if (hitTestChildren(resultmainAxisPosition, crossAxisPosition) || hitTestSelf(mainAxisPosition, crossAxisPosition)) {
-            result->add(make<SliverHitTestEntryCls>(thismainAxisPosition, crossAxisPosition));
+        if (hitTestChildren(result, mainAxisPosition, crossAxisPosition) || hitTestSelf(mainAxisPosition, crossAxisPosition)) {
+            result->add(make<SliverHitTestEntryCls>(this, mainAxisPosition, crossAxisPosition));
             return true;
         }
     }
@@ -411,7 +411,7 @@ bool RenderSliverHelpersCls::hitTestBoxChild(BoxHitTestResult result, RenderBox 
     assert(paintOffset != nullptr);
     assert(transformedPosition != nullptr);
     return result->addWithOutOfBandPosition(paintOffset, [=] (BoxHitTestResult result) {
-        return child->hitTest(resulttransformedPosition);
+        return child->hitTest(result, transformedPosition);
     });
 }
 
@@ -457,7 +457,7 @@ void RenderSliverSingleBoxAdapterCls::setChildParentData(RenderObject child, Sli
 bool RenderSliverSingleBoxAdapterCls::hitTestChildren(SliverHitTestResult result, double crossAxisPosition, double mainAxisPosition) {
     assert(geometry!->hitTestExtent > 0.0);
     if (child != nullptr) {
-        return hitTestBoxChild(BoxHitTestResultCls->wrap(result), child!mainAxisPosition, crossAxisPosition);
+        return hitTestBoxChild(BoxHitTestResultCls->wrap(result), child!, mainAxisPosition, crossAxisPosition);
     }
     return false;
 }
@@ -486,12 +486,12 @@ void RenderSliverToBoxAdapterCls::performLayout() {
         return;
     }
     SliverConstraints constraints = this->constraints;
-    child!->layout(constraints->asBoxConstraints()true);
+    child!->layout(constraints->asBoxConstraints(), true);
     double childExtent;
     ;
     assert(childExtent != nullptr);
-    double paintedChildSize = calculatePaintOffset(constraints0.0, childExtent);
-    double cacheExtent = calculateCacheOffset(constraints0.0, childExtent);
+    double paintedChildSize = calculatePaintOffset(constraints, 0.0, childExtent);
+    double cacheExtent = calculateCacheOffset(constraints, 0.0, childExtent);
     assert(paintedChildSize->isFinite);
     assert(paintedChildSize >= 0.0);
     geometry = make<SliverGeometryCls>(childExtent, paintedChildSize, cacheExtent, childExtent, paintedChildSize, childExtent > constraints->remainingPaintExtent || constraints->scrollOffset > 0.0);

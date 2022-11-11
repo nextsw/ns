@@ -187,7 +187,7 @@ void BorderCls::paint(Canvas canvas, Rect rect, BorderRadius borderRadius, BoxSh
         }
         return true;
     }());
-    paintBorder(canvas, recttop, right, bottom, left);
+    paintBorder(canvas, rect, top, right, bottom, left);
 }
 
 bool BorderCls::==(Object other) {
@@ -347,7 +347,7 @@ void BorderDirectionalCls::paint(Canvas canvas, Rect rect, BorderRadius borderRa
     BorderSide left, right;
     assert(textDirection != nullptr, __s("Non-uniform BorderDirectional objects require a TextDirection when painting."));
     ;
-    paintBorder(canvas, recttop, left, bottom, right);
+    paintBorder(canvas, rect, top, left, bottom, right);
 }
 
 bool BorderDirectionalCls::==(Object other) {

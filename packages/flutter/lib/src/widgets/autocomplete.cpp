@@ -191,7 +191,7 @@ void _RawAutocompleteStateCls<T>::_updateOverlay() {
         return widget->optionsViewBuilder(context, _select, _options);
     })));
 });
-        OverlayCls->of(contexttrue)!->insert(newFloatingOptions);
+        OverlayCls->of(context, true)!->insert(newFloatingOptions);
         _floatingOptions = newFloatingOptions;
     } else {
         _floatingOptions = nullptr;

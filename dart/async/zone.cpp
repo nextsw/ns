@@ -785,7 +785,7 @@ R runZoned(std::function<R()> body, std::function<void ()> onError, ZoneSpecific
                 throw ArgumentErrorCls->value(onError, __s("onError"), __s("Must be Function(Object) or Function(Object, StackTrace)"));
             }
         }
-        return as<R>(runZonedGuarded(body, onErrorzoneSpecification, zoneValues));
+        return as<R>(runZonedGuarded(body, onError, zoneSpecification, zoneValues));
     }
     return <R>_runZoned(body, zoneValues, zoneSpecification);
 }
@@ -809,7 +809,7 @@ R runZonedGuarded(std::function<R()> body, std::function<void(Object error, Stac
     if (zoneSpecification == nullptr) {
         zoneSpecification = make<ZoneSpecificationCls>(errorHandler);
     } else {
-        zoneSpecification = ZoneSpecificationCls->from(zoneSpecificationerrorHandler);
+        zoneSpecification = ZoneSpecificationCls->from(zoneSpecification, errorHandler);
     }
     try {
         return <R>_runZoned(body, zoneValues, zoneSpecification);

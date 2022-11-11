@@ -23,7 +23,7 @@ Future<Uint8List> consolidateHttpClientResponseBytes(HttpClientResponse response
                 return;
             };
         }
-    }[=] () {
+    }, [=] () {
         sink->close();
         completer->complete(output->bytes());
     }, completer->completeError, true);

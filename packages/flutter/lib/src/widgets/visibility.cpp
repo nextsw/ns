@@ -39,12 +39,12 @@ Widget VisibilityCls::build(BuildContext context) {
 
 void VisibilityCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(make<FlagPropertyCls>(__s("visible")visible, __s("hidden"), __s("visible")));
-    properties->add(make<FlagPropertyCls>(__s("maintainState")maintainState, __s("maintainState")));
-    properties->add(make<FlagPropertyCls>(__s("maintainAnimation")maintainAnimation, __s("maintainAnimation")));
-    properties->add(make<FlagPropertyCls>(__s("maintainSize")maintainSize, __s("maintainSize")));
-    properties->add(make<FlagPropertyCls>(__s("maintainSemantics")maintainSemantics, __s("maintainSemantics")));
-    properties->add(make<FlagPropertyCls>(__s("maintainInteractivity")maintainInteractivity, __s("maintainInteractivity")));
+    properties->add(make<FlagPropertyCls>(__s("visible"), visible, __s("hidden"), __s("visible")));
+    properties->add(make<FlagPropertyCls>(__s("maintainState"), maintainState, __s("maintainState")));
+    properties->add(make<FlagPropertyCls>(__s("maintainAnimation"), maintainAnimation, __s("maintainAnimation")));
+    properties->add(make<FlagPropertyCls>(__s("maintainSize"), maintainSize, __s("maintainSize")));
+    properties->add(make<FlagPropertyCls>(__s("maintainSemantics"), maintainSemantics, __s("maintainSemantics")));
+    properties->add(make<FlagPropertyCls>(__s("maintainInteractivity"), maintainInteractivity, __s("maintainInteractivity")));
 }
 
 SliverVisibilityCls::SliverVisibilityCls(Unknown key, bool maintainAnimation, bool maintainInteractivity, bool maintainSemantics, bool maintainSize, bool maintainState, Widget replacementSliver, Widget sliver, bool visible) {
@@ -89,10 +89,10 @@ Widget SliverVisibilityCls::build(BuildContext context) {
 
 void SliverVisibilityCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(make<FlagPropertyCls>(__s("visible")visible, __s("hidden"), __s("visible")));
-    properties->add(make<FlagPropertyCls>(__s("maintainState")maintainState, __s("maintainState")));
-    properties->add(make<FlagPropertyCls>(__s("maintainAnimation")maintainAnimation, __s("maintainAnimation")));
-    properties->add(make<FlagPropertyCls>(__s("maintainSize")maintainSize, __s("maintainSize")));
-    properties->add(make<FlagPropertyCls>(__s("maintainSemantics")maintainSemantics, __s("maintainSemantics")));
-    properties->add(make<FlagPropertyCls>(__s("maintainInteractivity")maintainInteractivity, __s("maintainInteractivity")));
+    properties->add(make<FlagPropertyCls>(__s("visible"), visible, __s("hidden"), __s("visible")));
+    properties->add(make<FlagPropertyCls>(__s("maintainState"), maintainState, __s("maintainState")));
+    properties->add(make<FlagPropertyCls>(__s("maintainAnimation"), maintainAnimation, __s("maintainAnimation")));
+    properties->add(make<FlagPropertyCls>(__s("maintainSize"), maintainSize, __s("maintainSize")));
+    properties->add(make<FlagPropertyCls>(__s("maintainSemantics"), maintainSemantics, __s("maintainSemantics")));
+    properties->add(make<FlagPropertyCls>(__s("maintainInteractivity"), maintainInteractivity, __s("maintainInteractivity")));
 }

@@ -191,7 +191,7 @@ void RenderWrapCls::performLayout() {
     double runCrossAxisExtent = 0.0;
     int childCount = 0;
     while (child != nullptr) {
-        child->layout(childConstraintstrue);
+        child->layout(childConstraints, true);
         double childMainAxisExtent = _getMainAxisExtent(child->size());
         double childCrossAxisExtent = _getCrossAxisExtent(child->size());
         if (childCount > 0 && runMainAxisExtent + spacing + childMainAxisExtent > mainAxisLimit) {
@@ -278,12 +278,12 @@ void RenderWrapCls::performLayout() {
 }
 
 bool RenderWrapCls::hitTestChildren(BoxHitTestResult result, Offset position) {
-    return defaultHitTestChildren(resultposition);
+    return defaultHitTestChildren(result, position);
 }
 
 void RenderWrapCls::paint(PaintingContext context, Offset offset) {
     if (_hasVisualOverflow && clipBehavior() != ClipCls::none) {
-        _clipRectLayer->layer() = context->pushClipRect(needsCompositing, offset, OffsetCls::zero & size, defaultPaintclipBehavior(), _clipRectLayer->layer());
+        _clipRectLayer->layer() = context->pushClipRect(needsCompositing, offset, OffsetCls::zero & size, defaultPaint, clipBehavior(), _clipRectLayer->layer());
     } else {
         _clipRectLayer->layer() = nullptr;
         defaultPaint(context, offset);
@@ -303,8 +303,8 @@ void RenderWrapCls::debugFillProperties(DiagnosticPropertiesBuilder properties) 
     properties->add(<WrapAlignment>make<EnumPropertyCls>(__s("runAlignment"), runAlignment()));
     properties->add(make<DoublePropertyCls>(__s("runSpacing"), runSpacing()));
     properties->add(make<DoublePropertyCls>(__s("crossAxisAlignment"), runSpacing()));
-    properties->add(<TextDirection>make<EnumPropertyCls>(__s("textDirection"), textDirection()nullptr));
-    properties->add(<VerticalDirection>make<EnumPropertyCls>(__s("verticalDirection"), verticalDirection()VerticalDirectionCls::down));
+    properties->add(<TextDirection>make<EnumPropertyCls>(__s("textDirection"), textDirection(), nullptr));
+    properties->add(<VerticalDirection>make<EnumPropertyCls>(__s("verticalDirection"), verticalDirection(), VerticalDirectionCls::down));
 }
 
 bool RenderWrapCls::_debugHasNecessaryDirections() {

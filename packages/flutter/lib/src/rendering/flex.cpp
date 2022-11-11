@@ -205,7 +205,7 @@ void RenderFlexCls::performLayout() {
                 }
                 return true;
             }());
-            double distance = child->getDistanceToBaseline(textBaseline()!true);
+            double distance = child->getDistanceToBaseline(textBaseline()!, true);
             if (distance != nullptr) {
                 maxBaselineDistance = math->max(maxBaselineDistance, distance);
                 maxSizeAboveBaseline = math->max(distance, maxSizeAboveBaseline);
@@ -244,7 +244,7 @@ void RenderFlexCls::performLayout() {
 }
 
 bool RenderFlexCls::hitTestChildren(BoxHitTestResult result, Offset position) {
-    return defaultHitTestChildren(resultposition);
+    return defaultHitTestChildren(result, position);
 }
 
 void RenderFlexCls::paint(PaintingContext context, Offset offset) {
@@ -255,12 +255,12 @@ void RenderFlexCls::paint(PaintingContext context, Offset offset) {
     if (size->isEmpty) {
         return;
     }
-    _clipRectLayer->layer() = context->pushClipRect(needsCompositing, offset, OffsetCls::zero & size, defaultPaintclipBehavior(), _clipRectLayer->layer());
+    _clipRectLayer->layer() = context->pushClipRect(needsCompositing, offset, OffsetCls::zero & size, defaultPaint, clipBehavior(), _clipRectLayer->layer());
     assert([=] () {
         List<DiagnosticsNode> debugOverflowHints = makeList(ArrayItem, ArrayItem, ArrayItem, ArrayItem);
         Rect overflowChildRect;
         ;
-        paintOverflowIndicator(context, offset, OffsetCls::zero & size, overflowChildRectdebugOverflowHints);
+        paintOverflowIndicator(context, offset, OffsetCls::zero & size, overflowChildRect, debugOverflowHints);
         return true;
     }());
 }
@@ -290,9 +290,9 @@ void RenderFlexCls::debugFillProperties(DiagnosticPropertiesBuilder properties) 
     properties->add(<MainAxisAlignment>make<EnumPropertyCls>(__s("mainAxisAlignment"), mainAxisAlignment()));
     properties->add(<MainAxisSize>make<EnumPropertyCls>(__s("mainAxisSize"), mainAxisSize()));
     properties->add(<CrossAxisAlignment>make<EnumPropertyCls>(__s("crossAxisAlignment"), crossAxisAlignment()));
-    properties->add(<TextDirection>make<EnumPropertyCls>(__s("textDirection"), textDirection()nullptr));
-    properties->add(<VerticalDirection>make<EnumPropertyCls>(__s("verticalDirection"), verticalDirection()nullptr));
-    properties->add(<TextBaseline>make<EnumPropertyCls>(__s("textBaseline"), textBaseline()nullptr));
+    properties->add(<TextDirection>make<EnumPropertyCls>(__s("textDirection"), textDirection(), nullptr));
+    properties->add(<VerticalDirection>make<EnumPropertyCls>(__s("verticalDirection"), verticalDirection(), nullptr));
+    properties->add(<TextBaseline>make<EnumPropertyCls>(__s("textBaseline"), textBaseline(), nullptr));
 }
 
 bool RenderFlexCls::_debugHasNecessaryDirections() {

@@ -54,7 +54,7 @@ void _DraggableStateCls<T>::didChangeDependencies() {
 
 template<typename T>
 Widget _DraggableStateCls<T>::build(BuildContext context) {
-    assert(OverlayCls->of(contextwidget, widget->rootOverlay) != nullptr);
+    assert(OverlayCls->of(context, widget, widget->rootOverlay) != nullptr);
     bool canDrag = widget->maxSimultaneousDrags == nullptr ||  < widget->maxSimultaneousDrags!;
     bool showChild = _activeCount == 0 || widget->childWhenDragging == nullptr;
     return make<ListenerCls>(widget->hitTestBehavior, canDrag? _routePointer : nullptr, showChild? widget->child : widget->childWhenDragging);
@@ -91,7 +91,7 @@ _DragAvatar<T> _DraggableStateCls<T>::_startDrag(Offset position) {
     setState([=] () {
         _activeCount += 1;
     });
-    _DragAvatar<T> avatar = <T>make<_DragAvatarCls>(OverlayCls->of(contextwidget, widget->rootOverlay)!, widget->data, widget->axis, position, dragStartPoint, widget->feedback, widget->feedbackOffset, widget->ignoringFeedbackSemantics, widget->ignoringFeedbackPointer, [=] (DragUpdateDetails details) {
+    _DragAvatar<T> avatar = <T>make<_DragAvatarCls>(OverlayCls->of(context, widget, widget->rootOverlay)!, widget->data, widget->axis, position, dragStartPoint, widget->feedback, widget->feedbackOffset, widget->ignoringFeedbackSemantics, widget->ignoringFeedbackPointer, [=] (DragUpdateDetails details) {
     if (mounted && widget->onDragUpdate != nullptr) {
         widget->onDragUpdate!(details);
     }
@@ -261,7 +261,7 @@ void _DragAvatarCls<T>::updateDrag(Offset globalPosition) {
     }
     _enteredTargets->add(target);
     return target->didEnter(this);
-}[=] () {
+}, [=] () {
     nullptr;
 });
     for (_DragTargetState<Object> target : _enteredTargets) {

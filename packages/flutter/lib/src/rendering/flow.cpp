@@ -138,7 +138,7 @@ void RenderFlowCls::performLayout() {
     while (child != nullptr) {
         _randomAccessChildren->add(child);
         BoxConstraints innerConstraints = _delegate->getConstraintsForChild(i, constraints);
-        child->layout(innerConstraintstrue);
+        child->layout(innerConstraints, true);
         FlowParentData childParentData = as<FlowParentData>(child->parentData!);
         childParentData->offset = OffsetCls::zero;
         child = childParentData->nextSibling;
@@ -179,7 +179,7 @@ void RenderFlowCls::paintChild(int i, double opacity, Matrix4 transform) {
 }
 
 void RenderFlowCls::paint(PaintingContext context, Offset offset) {
-    _clipRectLayer->layer() = context->pushClipRect(needsCompositing, offset, OffsetCls::zero & size, _paintWithDelegateclipBehavior(), _clipRectLayer->layer());
+    _clipRectLayer->layer() = context->pushClipRect(needsCompositing, offset, OffsetCls::zero & size, _paintWithDelegate, clipBehavior(), _clipRectLayer->layer());
 }
 
 void RenderFlowCls::dispose() {
@@ -201,7 +201,7 @@ bool RenderFlowCls::hitTestChildren(BoxHitTestResult result, Offset position) {
             continue;
         }
         bool absorbed = result->addWithPaintTransform(transform, position, [=] (BoxHitTestResult result,Offset position) {
-    return child->hitTest(resultposition);
+    return child->hitTest(result, position);
 });
         if (absorbed) {
             return true;

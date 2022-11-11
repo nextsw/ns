@@ -58,7 +58,7 @@ template<typename S, typename T>
 T _CastIterableBaseCls<S, T>::lastWhere(std::function<bool(T element)> test, std::function<T()> orElse) {
     return as<T>(_source()->lastWhere([=] (S element)     {
         test(as<T>(element));
-    }(orElse == nullptr)? nullptr : [=] ()     {
+    }, (orElse == nullptr)? nullptr : [=] ()     {
         as<S>(orElse());
     }));
 }
@@ -404,7 +404,7 @@ template<typename SK, typename SV, typename K, typename V>
 V CastMapCls<SK, SV, K, V>::update(K key, std::function<V(V value)> update, std::function<V()> ifAbsent) {
     return as<V>(_source->update(as<SK>(key), [=] (SV value)     {
         as<SV>(update(as<V>(value)));
-    }(ifAbsent == nullptr)? nullptr : [=] ()     {
+    }, (ifAbsent == nullptr)? nullptr : [=] ()     {
         as<SV>(ifAbsent());
     }));
 }

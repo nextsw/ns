@@ -7,16 +7,16 @@ void ColorsCls::fromHexString(String value, Vector4 result) {
     Unknown fullMatch = _hexStringFullRegex->matchAsPrefix(value);
     if (fullMatch != nullptr) {
         if (fullMatch[4] == nullptr) {
-            Unknown r = intValue->parse(fullMatch[1]!16);
-            Unknown g = intValue->parse(fullMatch[2]!16);
-            Unknown b = intValue->parse(fullMatch[3]!16);
+            Unknown r = intValue->parse(fullMatch[1]!, 16);
+            Unknown g = intValue->parse(fullMatch[2]!, 16);
+            Unknown b = intValue->parse(fullMatch[3]!, 16);
             fromRgba(r, g, b, 255, result);
             return;
         } else {
-            Unknown a = intValue->parse(fullMatch[1]!16);
-            Unknown r = intValue->parse(fullMatch[2]!16);
-            Unknown g = intValue->parse(fullMatch[3]!16);
-            Unknown b = intValue->parse(fullMatch[4]!16);
+            Unknown a = intValue->parse(fullMatch[1]!, 16);
+            Unknown r = intValue->parse(fullMatch[2]!, 16);
+            Unknown g = intValue->parse(fullMatch[3]!, 16);
+            Unknown b = intValue->parse(fullMatch[4]!, 16);
             fromRgba(r, g, b, a, result);
             return;
         }
@@ -24,16 +24,16 @@ void ColorsCls::fromHexString(String value, Vector4 result) {
     Unknown smallMatch = _hexStringSmallRegex->matchAsPrefix(value);
     if (smallMatch != nullptr) {
         if (smallMatch[4] == nullptr) {
-            Unknown r = intValue->parse(smallMatch[1]! + smallMatch[1]!16);
-            Unknown g = intValue->parse(smallMatch[2]! + smallMatch[2]!16);
-            Unknown b = intValue->parse(smallMatch[3]! + smallMatch[3]!16);
+            Unknown r = intValue->parse(smallMatch[1]! + smallMatch[1]!, 16);
+            Unknown g = intValue->parse(smallMatch[2]! + smallMatch[2]!, 16);
+            Unknown b = intValue->parse(smallMatch[3]! + smallMatch[3]!, 16);
             fromRgba(r, g, b, 255, result);
             return;
         } else {
-            Unknown a = intValue->parse(smallMatch[1]! + smallMatch[1]!16);
-            Unknown r = intValue->parse(smallMatch[2]! + smallMatch[2]!16);
-            Unknown g = intValue->parse(smallMatch[3]! + smallMatch[3]!16);
-            Unknown b = intValue->parse(smallMatch[4]! + smallMatch[4]!16);
+            Unknown a = intValue->parse(smallMatch[1]! + smallMatch[1]!, 16);
+            Unknown r = intValue->parse(smallMatch[2]! + smallMatch[2]!, 16);
+            Unknown g = intValue->parse(smallMatch[3]! + smallMatch[3]!, 16);
+            Unknown b = intValue->parse(smallMatch[4]! + smallMatch[4]!, 16);
             fromRgba(r, g, b, a, result);
             return;
         }

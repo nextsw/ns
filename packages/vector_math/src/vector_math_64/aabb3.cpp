@@ -394,7 +394,7 @@ bool Aabb3Cls::intersectsWithTriangle(Triangle other, double epsilon, Intersecti
     _v0->add(_aabbCenter);
     _f0->crossInto(_f1, _trianglePlane->normal);
     _trianglePlane->constant = _trianglePlane->normal->dot(_v0);
-    return intersectsWithPlane(_trianglePlaneresult);
+    return intersectsWithPlane(_trianglePlane, result);
 }
 
 bool Aabb3Cls::intersectsWithPlane(Plane other, IntersectionResult result) {
@@ -414,7 +414,7 @@ bool Aabb3Cls::intersectsWithPlane(Plane other, IntersectionResult result) {
 
 bool Aabb3Cls::intersectsWithQuad(Quad other, IntersectionResult result) {
     other->copyTriangles(_quadTriangle0, _quadTriangle1);
-    return intersectsWithTriangle(_quadTriangle0result) || intersectsWithTriangle(_quadTriangle1result);
+    return intersectsWithTriangle(_quadTriangle0, result) || intersectsWithTriangle(_quadTriangle1, result);
 }
 
 void Aabb3Cls::_updateCenterAndHalfExtents() {

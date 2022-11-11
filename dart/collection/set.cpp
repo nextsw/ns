@@ -115,7 +115,7 @@ Set<E> SetMixinCls<E>::difference(Set<Object> other) {
 
 template<typename E>
 List<E> SetMixinCls<E>::toList(bool growable) {
-    return <E>of(thisgrowable);
+    return <E>of(this, growable);
 }
 
 template<typename E>
@@ -342,7 +342,7 @@ String SetBaseCls<E>::setToString(Set set) {
 template<typename E>
 template<typename R>
 Set<R> _SetBaseCls<E>::cast() {
-    return SetCls-><E, R>castFrom(this_newSimilarSet);
+    return SetCls-><E, R>castFrom(this, _newSimilarSet);
 }
 
 template<typename E>

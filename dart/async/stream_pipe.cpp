@@ -80,7 +80,7 @@ void _ForwardingStreamCls<S, T>::_handleDone(_EventSink<T> sink) {
 template<typename S, typename T>
 _ForwardingStreamSubscriptionCls<S, T>::_ForwardingStreamSubscriptionCls(_ForwardingStream<S, T> _stream, std::function<void(T data)> onData, std::function<void ()> onError, std::function<void()> onDone, bool cancelOnError) : _BufferingStreamSubscription<T>(onData, onError, onDone, cancelOnError) {
     {
-        _subscription = _stream->_source->listen(_handleData_handleError, _handleDone);
+        _subscription = _stream->_source->listen(_handleData, _handleError, _handleDone);
     }
 }
 

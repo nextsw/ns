@@ -32,14 +32,14 @@ MultiChildRenderObjectElement ViewportCls::createElement() {
 void ViewportCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
     properties->add(<AxisDirection>make<EnumPropertyCls>(__s("axisDirection"), axisDirection));
-    properties->add(<AxisDirection>make<EnumPropertyCls>(__s("crossAxisDirection"), crossAxisDirectionnullptr));
+    properties->add(<AxisDirection>make<EnumPropertyCls>(__s("crossAxisDirection"), crossAxisDirection, nullptr));
     properties->add(make<DoublePropertyCls>(__s("anchor"), anchor));
     properties->add(<ViewportOffset>make<DiagnosticsPropertyCls>(__s("offset"), offset));
     if (center != nullptr) {
         properties->add(<Key>make<DiagnosticsPropertyCls>(__s("center"), center));
     } else     {
         if (children->isNotEmpty && children->first->key != nullptr) {
-        properties->add(<Key>make<DiagnosticsPropertyCls>(__s("center"), children->first->key__s("implicit")));
+        properties->add(<Key>make<DiagnosticsPropertyCls>(__s("center"), children->first->key, __s("implicit")));
     }
 ;
     }    properties->add(<double>make<DiagnosticsPropertyCls>(__s("cacheExtent"), cacheExtent));
@@ -135,6 +135,6 @@ void ShrinkWrappingViewportCls::updateRenderObject(BuildContext context, RenderS
 void ShrinkWrappingViewportCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
     properties->add(<AxisDirection>make<EnumPropertyCls>(__s("axisDirection"), axisDirection));
-    properties->add(<AxisDirection>make<EnumPropertyCls>(__s("crossAxisDirection"), crossAxisDirectionnullptr));
+    properties->add(<AxisDirection>make<EnumPropertyCls>(__s("crossAxisDirection"), crossAxisDirection, nullptr));
     properties->add(<ViewportOffset>make<DiagnosticsPropertyCls>(__s("offset"), offset));
 }

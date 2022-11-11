@@ -35,7 +35,7 @@ void GlowingOverscrollIndicatorCls::debugFillProperties(DiagnosticPropertiesBuil
 ;
     };
     }    properties->add(make<MessagePropertyCls>(__s("show"), showDescription));
-    properties->add(make<ColorPropertyCls>(__s("color"), colorfalse));
+    properties->add(make<ColorPropertyCls>(__s("color"), color, false));
 }
 
 void _GlowingOverscrollIndicatorStateCls::initState() {

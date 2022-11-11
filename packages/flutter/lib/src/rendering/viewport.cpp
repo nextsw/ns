@@ -224,7 +224,7 @@ double RenderViewportBaseCls<ParentDataClass>::layoutChildSequence(std::function
         assert(correctedCacheOrigin <= 0.0);
         assert(sliverScrollOffset >= 0.0);
         assert(cacheExtentCorrection <= 0.0);
-        child->layout(make<SliverConstraintsCls>(axisDirection(), growthDirection, adjustedUserScrollDirection, sliverScrollOffset, precedingScrollExtent, maxPaintOffset - layoutOffset, math->max(0.0, remainingPaintExtent - layoutOffset + initialLayoutOffset), crossAxisExtent, crossAxisDirection(), mainAxisExtent, math->max(0.0, remainingCacheExtent + cacheExtentCorrection), correctedCacheOrigin)true);
+        child->layout(make<SliverConstraintsCls>(axisDirection(), growthDirection, adjustedUserScrollDirection, sliverScrollOffset, precedingScrollExtent, maxPaintOffset - layoutOffset, math->max(0.0, remainingPaintExtent - layoutOffset + initialLayoutOffset), crossAxisExtent, crossAxisDirection(), mainAxisExtent, math->max(0.0, remainingCacheExtent + cacheExtentCorrection), correctedCacheOrigin), true);
         SliverGeometry childLayoutGeometry = child->geometry()!;
         assert(childLayoutGeometry->debugAssertIsValid());
         if (childLayoutGeometry->scrollOffsetCorrection != nullptr) {
@@ -282,7 +282,7 @@ void RenderViewportBaseCls<ParentDataClass>::paint(PaintingContext context, Offs
         return;
     }
     if (hasVisualOverflow() && clipBehavior() != ClipCls::none) {
-        _clipRectLayer->layer() = context->pushClipRect(needsCompositing, offset, OffsetCls::zero & size, _paintContentsclipBehavior(), _clipRectLayer->layer());
+        _clipRectLayer->layer() = context->pushClipRect(needsCompositing, offset, OffsetCls::zero & size, _paintContents, clipBehavior(), _clipRectLayer->layer());
     } else {
         _clipRectLayer->layer() = nullptr;
         _paintContents(context, offset);
@@ -327,7 +327,7 @@ bool RenderViewportBaseCls<ParentDataClass>::hitTestChildren(BoxHitTestResult re
         Matrix4 transform = Matrix4Cls->identity();
         applyPaintTransform(child, transform);
         bool isHit = result->addWithOutOfBandPosition(transform, [=] (BoxHitTestResult result) {
-    return child->hitTest(sliverResultcomputeChildMainAxisPosition(child, mainAxisPosition), crossAxisPosition);
+    return child->hitTest(sliverResult, computeChildMainAxisPosition(child, mainAxisPosition), crossAxisPosition);
 });
         if (isHit) {
             return true;
@@ -459,8 +459,8 @@ Rect RenderViewportBaseCls<ParentDataClass>::showInViewport(Curve curve, RenderO
     if (descendant == nullptr) {
         return rect;
     }
-    RevealedOffset leadingEdgeOffset = viewport->getOffsetToReveal(descendant, 0.0rect);
-    RevealedOffset trailingEdgeOffset = viewport->getOffsetToReveal(descendant, 1.0rect);
+    RevealedOffset leadingEdgeOffset = viewport->getOffsetToReveal(descendant, 0.0, rect);
+    RevealedOffset trailingEdgeOffset = viewport->getOffsetToReveal(descendant, 1.0, rect);
     double currentOffset = offset->pixels();
     RevealedOffset targetOffset;
     if (leadingEdgeOffset->offset < trailingEdgeOffset->offset) {
@@ -480,7 +480,7 @@ Rect RenderViewportBaseCls<ParentDataClass>::showInViewport(Curve curve, RenderO
 ;
     };
     }    assert(targetOffset != nullptr);
-    offset->moveTo(targetOffset->offsetduration, curve);
+    offset->moveTo(targetOffset->offset, duration, curve);
     return targetOffset->rect;
 }
 

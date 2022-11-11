@@ -67,12 +67,12 @@ Widget BannerCls::build(BuildContext context) {
 
 void BannerCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(make<StringPropertyCls>(__s("message"), messagefalse));
-    properties->add(<TextDirection>make<EnumPropertyCls>(__s("textDirection"), textDirectionnullptr));
+    properties->add(make<StringPropertyCls>(__s("message"), message, false));
+    properties->add(<TextDirection>make<EnumPropertyCls>(__s("textDirection"), textDirection, nullptr));
     properties->add(<BannerLocation>make<EnumPropertyCls>(__s("location"), location));
-    properties->add(<TextDirection>make<EnumPropertyCls>(__s("layoutDirection"), layoutDirectionnullptr));
-    properties->add(make<ColorPropertyCls>(__s("color"), colorfalse));
-    textStyle->debugFillProperties(properties__s("text "));
+    properties->add(<TextDirection>make<EnumPropertyCls>(__s("layoutDirection"), layoutDirection, nullptr));
+    properties->add(make<ColorPropertyCls>(__s("color"), color, false));
+    textStyle->debugFillProperties(properties, __s("text "));
 }
 
 Widget CheckedModeBannerCls::build(BuildContext context) {

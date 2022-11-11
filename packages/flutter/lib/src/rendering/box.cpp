@@ -494,7 +494,7 @@ Size RenderBoxCls::getDryLayout(BoxConstraints constraints) {
         }());
         if (!kReleaseMode) {
             if (debugProfileLayoutsEnabled || _debugIntrinsicsDepth == 0) {
-                TimelineCls->startSync(__s("$runtimeType.getDryLayout")debugTimelineArguments);
+                TimelineCls->startSync(__s("$runtimeType.getDryLayout"), debugTimelineArguments);
             }
             _debugIntrinsicsDepth += 1;
         }
@@ -738,7 +738,7 @@ void RenderBoxCls::layout(Constraints constraints, bool parentUsesSize) {
     if (hasSize() && constraints != this->constraints && _cachedBaselines != nullptr && _cachedBaselines!->isNotEmpty()) {
         _cachedBaselines?->clear();
     }
-    super->layout(constraintsparentUsesSize);
+    super->layout(constraints, parentUsesSize);
 }
 
 void RenderBoxCls::performResize() {
@@ -766,7 +766,7 @@ bool RenderBoxCls::hitTest(BoxHitTestResult result, Offset position) {
         return true;
     }());
     if (_size!->contains(position)) {
-        if (hitTestChildren(resultposition) || hitTestSelf(position)) {
+        if (hitTestChildren(result, position) || hitTestSelf(position)) {
             result->add(make<BoxHitTestEntryCls>(this, position));
             return true;
         }
@@ -866,7 +866,7 @@ void RenderBoxCls::debugPaintBaselines(PaintingContext context, Offset offset) {
     assert([=] () {
             auto _c1 = make<PaintCls>();    _c1.style = auto _c2 = PaintingStyleCls::stroke;    _c2.strokeWidth = 0.25;    _c2;Paint paint = _c1;
         Path path;
-        double baselineI = getDistanceToBaseline(TextBaselineCls::ideographictrue);
+        double baselineI = getDistanceToBaseline(TextBaselineCls::ideographic, true);
         if (baselineI != nullptr) {
             paint->color() = make<ColorCls>(0xFFFFD000);
             path = make<PathCls>();
@@ -874,7 +874,7 @@ void RenderBoxCls::debugPaintBaselines(PaintingContext context, Offset offset) {
             path->lineTo(offset->dx() + size()->width(), offset->dy() + baselineI);
             context->canvas()->drawPath(path, paint);
         }
-        double baselineA = getDistanceToBaseline(TextBaselineCls::alphabetictrue);
+        double baselineA = getDistanceToBaseline(TextBaselineCls::alphabetic, true);
         if (baselineA != nullptr) {
             paint->color() = make<ColorCls>(0xFF00FF00);
             path = make<PathCls>();
@@ -898,7 +898,7 @@ void RenderBoxCls::debugPaintPointers(PaintingContext context, Offset offset) {
 
 void RenderBoxCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<Size>make<DiagnosticsPropertyCls>(__s("size"), _sizetrue));
+    properties->add(<Size>make<DiagnosticsPropertyCls>(__s("size"), _size, true));
 }
 
 double RenderBoxCls::_computeIntrinsicDimension(_IntrinsicDimension dimension, double argument, std::function<double(double argument)> computer) {
@@ -924,7 +924,7 @@ double RenderBoxCls::_computeIntrinsicDimension(_IntrinsicDimension dimension, d
         }());
         if (!kReleaseMode) {
             if (debugProfileLayoutsEnabled || _debugIntrinsicsDepth == 0) {
-                TimelineCls->startSync(__s("$runtimeType intrinsics")debugTimelineArguments);
+                TimelineCls->startSync(__s("$runtimeType intrinsics"), debugTimelineArguments);
             }
             _debugIntrinsicsDepth += 1;
         }
@@ -1016,7 +1016,7 @@ bool RenderBoxContainerDefaultsMixinCls<ChildType, ParentDataType>::defaultHitTe
         ParentDataType childParentData = as<ParentDataType>(child->parentData!);
         bool isHit = result->addWithPaintOffset(childParentData->offset, position, [=] (BoxHitTestResult result,Offset transformed) {
     assert(transformed == position - childParentData->offset);
-    return child!->hitTest(resulttransformed);
+    return child!->hitTest(result, transformed);
 });
         if (isHit) {
             return true;

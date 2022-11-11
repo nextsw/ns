@@ -25,9 +25,9 @@ State<AnimatedCrossFade> AnimatedCrossFadeCls::createState() {
 void AnimatedCrossFadeCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
     properties->add(<CrossFadeState>make<EnumPropertyCls>(__s("crossFadeState"), crossFadeState));
-    properties->add(<AlignmentGeometry>make<DiagnosticsPropertyCls>(__s("alignment"), alignmentAlignmentCls::topCenter));
-    properties->add(make<IntPropertyCls>(__s("duration"), duration->inMilliseconds()__s("ms")));
-    properties->add(make<IntPropertyCls>(__s("reverseDuration"), reverseDuration?->inMilliseconds()__s("ms"), nullptr));
+    properties->add(<AlignmentGeometry>make<DiagnosticsPropertyCls>(__s("alignment"), alignment, AlignmentCls::topCenter));
+    properties->add(make<IntPropertyCls>(__s("duration"), duration->inMilliseconds(), __s("ms")));
+    properties->add(make<IntPropertyCls>(__s("reverseDuration"), reverseDuration?->inMilliseconds(), __s("ms"), nullptr));
 }
 
 void _AnimatedCrossFadeStateCls::initState() {
@@ -101,8 +101,8 @@ Widget _AnimatedCrossFadeStateCls::build(BuildContext context) {
 void _AnimatedCrossFadeStateCls::debugFillProperties(DiagnosticPropertiesBuilder description) {
     super->debugFillProperties(description);
     description->add(<CrossFadeState>make<EnumPropertyCls>(__s("crossFadeState"), widget->crossFadeState));
-    description->add(<AnimationController>make<DiagnosticsPropertyCls>(__s("controller"), _controllerfalse));
-    description->add(<AlignmentGeometry>make<DiagnosticsPropertyCls>(__s("alignment"), widget->alignmentAlignmentCls::topCenter));
+    description->add(<AnimationController>make<DiagnosticsPropertyCls>(__s("controller"), _controller, false));
+    description->add(<AlignmentGeometry>make<DiagnosticsPropertyCls>(__s("alignment"), widget->alignment, AlignmentCls::topCenter));
 }
 
 Animation<double> _AnimatedCrossFadeStateCls::_initAnimation(Curve curve, bool inverted) {

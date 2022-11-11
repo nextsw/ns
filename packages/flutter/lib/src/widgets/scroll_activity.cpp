@@ -302,7 +302,7 @@ DrivenScrollActivityCls::DrivenScrollActivityCls(Unknown delegate, Curve curve, 
     }
     {
         _completer = <void>make<CompleterCls>();
-            auto _c1 = AnimationControllerCls->unbounded(from, objectRuntimeType(this, __s("DrivenScrollActivity")), vsync);    _c1.auto _c2 = addListener(_tick);    _c2.animateTo(toduration, curve)->whenComplete(_end);    _c2;_controller = _c1;
+            auto _c1 = AnimationControllerCls->unbounded(from, objectRuntimeType(this, __s("DrivenScrollActivity")), vsync);    _c1.auto _c2 = addListener(_tick);    _c2.animateTo(to, duration, curve)->whenComplete(_end);    _c2;_controller = _c1;
     }
 }
 

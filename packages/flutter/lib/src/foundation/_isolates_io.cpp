@@ -3,7 +3,7 @@ template<typename Q, typename R>
 Future<R> compute(ComputeCallback<Q, R> callback, Q message, String debugLabel) {
     debugLabel |= kReleaseMode? __s("compute") : callback->toString();
     Flow flow = FlowCls->begin();
-    TimelineCls->startSync(__s("$debugLabel: start")flow);
+    TimelineCls->startSync(__s("$debugLabel: start"), flow);
     RawReceivePort port = make<RawReceivePortCls>();
     TimelineCls->finishSync();
     InlineMethod;
@@ -13,7 +13,7 @@ Future<R> compute(ComputeCallback<Q, R> callback, Q message, String debugLabel) 
         completer->complete(msg);
     };
     try {
-        await await IsolateCls-><_IsolateConfiguration<Q, R>>spawn(_spawn, <Q, R>make<_IsolateConfigurationCls>(callback, message, port->sendPort(), debugLabel, flow->id)port->sendPort(), port->sendPort(), debugLabel);
+        await await IsolateCls-><_IsolateConfiguration<Q, R>>spawn(_spawn, <Q, R>make<_IsolateConfigurationCls>(callback, message, port->sendPort(), debugLabel, flow->id), port->sendPort(), port->sendPort(), debugLabel);
     } catch (Object null) {
         timeEndAndCleanup();
         throw;
@@ -33,7 +33,7 @@ template<typename Q, typename R>
 FutureOr<R> _IsolateConfigurationCls<Q, R>::applyAndTime() {
     return TimelineCls->timeSync(debugLabel, [=] ()     {
         callback(message);
-    }FlowCls->step(flowId));
+    }, FlowCls->step(flowId));
 }
 
 template<typename Q, typename R>

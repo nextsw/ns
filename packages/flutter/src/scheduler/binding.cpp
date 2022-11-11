@@ -17,7 +17,7 @@ void _TaskEntryCls<T>::run() {
     if (!kReleaseMode) {
         TimelineCls->timeSync(debugLabel | __s("Scheduled Task"), [=] () {
             completer->complete(task());
-        }flow != nullptr? FlowCls->step(flow!->id) : nullptr);
+        }, flow != nullptr? FlowCls->step(flow!->id) : nullptr);
     } else {
         completer->complete(task());
     }
@@ -153,7 +153,7 @@ int SchedulerBindingCls::transientCallbackCount() {
 int SchedulerBindingCls::scheduleFrameCallback(FrameCallback callback, bool rescheduling) {
     scheduleFrame();
     _nextFrameCallbackId += 1;
-    _transientCallbacks[_nextFrameCallbackId] = make<_FrameCallbackEntryCls>(callbackrescheduling);
+    _transientCallbacks[_nextFrameCallbackId] = make<_FrameCallbackEntryCls>(callback, rescheduling);
     return _nextFrameCallbackId;
 }
 

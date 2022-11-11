@@ -24,7 +24,7 @@ Future<R> SynchronousFutureCls<T>::then(std::function<FutureOr<R>(T value)> onVa
 
 template<typename T>
 Future<T> SynchronousFutureCls<T>::timeout(Duration timeLimit, std::function<FutureOr<T>()> onTimeout) {
-    return <T>value(_value)->timeout(timeLimitonTimeout);
+    return <T>value(_value)->timeout(timeLimit, onTimeout);
 }
 
 template<typename T>

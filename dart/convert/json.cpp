@@ -18,11 +18,11 @@ String JsonCyclicErrorCls::toString() {
 }
 
 String jsonEncode(Object object, std::function<Object(Object nonEncodable)> toEncodable) {
-    return json->encode(objecttoEncodable);
+    return json->encode(object, toEncodable);
 }
 
 dynamic jsonDecode(String source, std::function<Object(Object key, Object value)> reviver) {
-    return json->decode(sourcereviver);
+    return json->decode(source, reviver);
 }
 
 JsonCodecCls::JsonCodecCls(std::function<Object(Object key, Object value)> reviver, std::function<Object(dynamic object)> toEncodable) {
@@ -269,11 +269,11 @@ void _JsonStringifierCls::writeObject(Object object) {
     try {
         auto customJson = _toEncodable(object);
         if (!writeJsonValue(customJson)) {
-            throw make<JsonUnsupportedObjectErrorCls>(object_partialResult());
+            throw make<JsonUnsupportedObjectErrorCls>(object, _partialResult());
         }
         _removeSeen(object);
     } catch (Unknown e) {
-        throw make<JsonUnsupportedObjectErrorCls>(objecte, _partialResult());
+        throw make<JsonUnsupportedObjectErrorCls>(object, e, _partialResult());
     };
 }
 

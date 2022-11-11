@@ -102,7 +102,7 @@ TickerFuture AnimationControllerCls::animateTo(double target, Curve curve, Durat
     }());
     assert(_ticker != nullptr, __s("AnimationController.animateTo() called after AnimationController.dispose()\nAnimationController methods should not be used after calling dispose."));
     _direction = _AnimationDirectionCls::forward;
-    return _animateToInternal(targetduration, curve);
+    return _animateToInternal(target, duration, curve);
 }
 
 TickerFuture AnimationControllerCls::animateBack(double target, Curve curve, Duration duration) {
@@ -114,7 +114,7 @@ TickerFuture AnimationControllerCls::animateBack(double target, Curve curve, Dur
     }());
     assert(_ticker != nullptr, __s("AnimationController.animateBack() called after AnimationController.dispose()\nAnimationController methods should not be used after calling dispose."));
     _direction = _AnimationDirectionCls::reverse;
-    return _animateToInternal(targetduration, curve);
+    return _animateToInternal(target, duration, curve);
 }
 
 TickerFuture AnimationControllerCls::repeat(double max, double min, Duration period, bool reverse) {

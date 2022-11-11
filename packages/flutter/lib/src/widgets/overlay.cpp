@@ -185,7 +185,7 @@ void OverlayStateCls::insertAll(Iterable<OverlayEntry> entries, OverlayEntry abo
 
 void OverlayStateCls::rearrange(Iterable<OverlayEntry> newEntries, OverlayEntry above, OverlayEntry below) {
     List<OverlayEntry> newEntriesList = is<List<OverlayEntry>>(newEntries)? newEntries : newEntries->toList(false);
-    assert(_debugVerifyInsertPosition(above, belownewEntriesList));
+    assert(_debugVerifyInsertPosition(above, below, newEntriesList));
     assert(newEntriesList->every([=] (OverlayEntry entry)     {
         entry->_overlay == nullptr || entry->_overlay == this;
     }), __s("One or more of the specified entries are already present in another Overlay."));
@@ -431,7 +431,7 @@ void _RenderTheatreCls::performLayout() {
     while (child != nullptr) {
         StackParentData childParentData = as<StackParentData>(child->parentData!);
         if (!childParentData->isPositioned()) {
-            child->layout(nonPositionedConstraintstrue);
+            child->layout(nonPositionedConstraints, true);
             childParentData->offset = _resolvedAlignment!->alongOffset(as<Offset>(size - child->size()));
         } else {
             _hasVisualOverflow = RenderStackCls->layoutPositionedChild(child, childParentData, size, _resolvedAlignment!) || _hasVisualOverflow;
@@ -448,7 +448,7 @@ bool _RenderTheatreCls::hitTestChildren(BoxHitTestResult result, Offset position
         StackParentData childParentData = as<StackParentData>(child!->parentData!);
         bool isHit = result->addWithPaintOffset(childParentData->offset, position, [=] (BoxHitTestResult result,Offset transformed) {
     assert(transformed == position - childParentData->offset);
-    return child!->hitTest(resulttransformed);
+    return child!->hitTest(result, transformed);
 });
         if (isHit) {
             return true;
@@ -469,7 +469,7 @@ void _RenderTheatreCls::paintStack(PaintingContext context, Offset offset) {
 
 void _RenderTheatreCls::paint(PaintingContext context, Offset offset) {
     if (_hasVisualOverflow && clipBehavior() != ClipCls::none) {
-        _clipRectLayer->layer() = context->pushClipRect(needsCompositing, offset, OffsetCls::zero & size, paintStackclipBehavior(), _clipRectLayer->layer());
+        _clipRectLayer->layer() = context->pushClipRect(needsCompositing, offset, OffsetCls::zero & size, paintStack, clipBehavior(), _clipRectLayer->layer());
     } else {
         _clipRectLayer->layer() = nullptr;
         paintStack(context, offset);

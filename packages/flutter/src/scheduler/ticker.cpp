@@ -65,7 +65,7 @@ TickerFuture TickerCls::start() {
 }
 
 DiagnosticsNode TickerCls::describeForError(String name) {
-    return <Ticker>make<DiagnosticsPropertyCls>(name, thistoString(true));
+    return <Ticker>make<DiagnosticsPropertyCls>(name, this, toString(true));
 }
 
 void TickerCls::stop(bool canceled) {
@@ -95,7 +95,7 @@ bool TickerCls::shouldScheduleTick() {
 void TickerCls::scheduleTick(bool rescheduling) {
     assert(!scheduled());
     assert(shouldScheduleTick());
-    _animationId = SchedulerBindingCls::instance->scheduleFrameCallback(_tickrescheduling);
+    _animationId = SchedulerBindingCls::instance->scheduleFrameCallback(_tick, rescheduling);
 }
 
 void TickerCls::unscheduleTick() {
@@ -174,7 +174,7 @@ void TickerFutureCls::complete() {
 
 void TickerFutureCls::whenCompleteOrCancel(VoidCallback callback) {
     InlineMethod;
-    orCancel()-><void>then(thunkthunk);
+    orCancel()-><void>then(thunk, thunk);
 }
 
 Future<void> TickerFutureCls::orCancel() {
@@ -196,16 +196,16 @@ Stream<void> TickerFutureCls::asStream() {
 }
 
 Future<void> TickerFutureCls::catchError(std::function<void ()> onError, std::function<bool(Object )> test) {
-    return _primaryCompleter->future->catchError(onErrortest);
+    return _primaryCompleter->future->catchError(onError, test);
 }
 
 template<typename R>
 Future<R> TickerFutureCls::then(std::function<FutureOr<R>(void value)> onValue, std::function<void ()> onError) {
-    return _primaryCompleter->future-><R>then(onValueonError);
+    return _primaryCompleter->future-><R>then(onValue, onError);
 }
 
 Future<void> TickerFutureCls::timeout(Duration timeLimit, std::function<FutureOr<void>()> onTimeout) {
-    return _primaryCompleter->future->timeout(timeLimitonTimeout);
+    return _primaryCompleter->future->timeout(timeLimit, onTimeout);
 }
 
 Future<void> TickerFutureCls::whenComplete(std::function<dynamic()> action) {

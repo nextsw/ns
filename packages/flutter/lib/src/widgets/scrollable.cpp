@@ -42,7 +42,7 @@ Future<void> ScrollableCls::ensureVisible(BuildContext context, double alignment
     RenderObject targetRenderObject;
     ScrollableState scrollable = ScrollableCls->of(context);
     while (scrollable != nullptr) {
-        futures->add(scrollable->position()->ensureVisible(context->findRenderObject()!alignment, duration, curve, alignmentPolicy, targetRenderObject));
+        futures->add(scrollable->position()->ensureVisible(context->findRenderObject()!, alignment, duration, curve, alignmentPolicy, targetRenderObject));
         targetRenderObject = targetRenderObject | context->findRenderObject();
         context = scrollable->context;
         scrollable = ScrollableCls->of(context);
@@ -81,7 +81,7 @@ void ScrollableStateCls::restoreState(RestorationBucket oldBucket, bool initialR
     registerForRestoration(_persistedScrollOffset, __s("offset"));
     assert(_position != nullptr);
     if (_persistedScrollOffset->value != nullptr) {
-        position()->restoreOffset(_persistedScrollOffset->value!initialRestore);
+        position()->restoreOffset(_persistedScrollOffset->value!, initialRestore);
     }
 }
 
@@ -429,7 +429,7 @@ Future<void> EdgeDraggingAutoScrollerCls::_scroll() {
         return;
     }
     Duration duration = make<DurationCls>((1000 / velocityScalar)->round());
-    await await scrollable->position()->animateTo(newOffsetduration, CurvesCls::linear);
+    await await scrollable->position()->animateTo(newOffset, duration, CurvesCls::linear);
     if (onScrollViewScrolled != nullptr) {
         onScrollViewScrolled!();
     }
@@ -549,7 +549,7 @@ void _ScrollableSelectionContainerDelegateCls::dispose() {
 _ScrollableSelectionContainerDelegateCls::_ScrollableSelectionContainerDelegateCls(ScrollPosition position, ScrollableState state) {
     {
         _position = position;
-        _autoScroller = make<EdgeDraggingAutoScrollerCls>(state_kDefaultSelectToScrollVelocityScalar);
+        _autoScroller = make<EdgeDraggingAutoScrollerCls>(state, _kDefaultSelectToScrollVelocityScalar);
     }
     {
         _position->addListener(_scheduleLayoutChange);
@@ -781,7 +781,7 @@ void ScrollActionCls::invoke(ScrollIntent intent) {
     if (increment == 0.0) {
         return;
     }
-    state->position()->moveTo(state->position()->pixels() + incrementmake<DurationCls>(100), CurvesCls::easeInOut);
+    state->position()->moveTo(state->position()->pixels() + increment, make<DurationCls>(100), CurvesCls::easeInOut);
 }
 
 double ScrollActionCls::_calculateScrollIncrement(ScrollableState state, ScrollIncrementType type) {
@@ -799,7 +799,7 @@ double ScrollActionCls::_calculateScrollIncrement(ScrollableState state, ScrollI
 }
 
 double ScrollActionCls::_getIncrement(ScrollableState state, ScrollIntent intent) {
-    double increment = _calculateScrollIncrement(stateintent->type);
+    double increment = _calculateScrollIncrement(state, intent->type);
     ;
 }
 

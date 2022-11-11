@@ -308,7 +308,7 @@ List<TextBox> TextPainterCls::getBoxesForSelection(TextSelection selection, BoxH
     assert(!_debugNeedsLayout());
     assert(boxHeightStyle != nullptr);
     assert(boxWidthStyle != nullptr);
-    return _paragraph!->getBoxesForRange(selection->start, selection->endboxHeightStyle, boxWidthStyle);
+    return _paragraph!->getBoxesForRange(selection->start, selection->end, boxHeightStyle, boxWidthStyle);
 }
 
 TextPosition TextPainterCls::getPositionForOffset(Offset offset) {
@@ -362,7 +362,7 @@ void TextPainterCls::_createParagraph() {
         throw make<StateErrorCls>(__s("TextPainter.text must be set to a non-null value before using the TextPainter."));
     }
     ParagraphBuilder builder = ui->make<ParagraphBuilderCls>(_createParagraphStyle());
-    text->build(buildertextScaleFactor(), _placeholderDimensions);
+    text->build(builder, textScaleFactor(), _placeholderDimensions);
     _inlinePlaceholderScales = builder->placeholderScales();
     _paragraph = builder->build();
     _rebuildParagraphForPaint = false;
@@ -400,7 +400,7 @@ Rect TextPainterCls::_getRectFromUpstream(int offset, Rect caretPrototype) {
     List<TextBox> boxes = makeList();
     while (boxes->isEmpty) {
         int prevRuneOffset = offset - graphemeClusterLength;
-        boxes = _paragraph!->getBoxesForRange(prevRuneOffset, offsetui->BoxHeightStyleCls::strut);
+        boxes = _paragraph!->getBoxesForRange(prevRuneOffset, offset, ui->BoxHeightStyleCls::strut);
         if (boxes->isEmpty) {
             if (!needsSearch && prevCodeUnit == NEWLINE_CODE_UNIT) {
                 break;
@@ -433,7 +433,7 @@ Rect TextPainterCls::_getRectFromDownstream(int offset, Rect caretPrototype) {
     List<TextBox> boxes = makeList();
     while (boxes->isEmpty) {
         int nextRuneOffset = offset + graphemeClusterLength;
-        boxes = _paragraph!->getBoxesForRange(offset, nextRuneOffsetui->BoxHeightStyleCls::strut);
+        boxes = _paragraph!->getBoxesForRange(offset, nextRuneOffset, ui->BoxHeightStyleCls::strut);
         if (boxes->isEmpty) {
             if (!needsSearch) {
                 break;

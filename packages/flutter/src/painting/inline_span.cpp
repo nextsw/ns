@@ -36,7 +36,7 @@ List<InlineSpanSemanticsInformation> combineSemanticsInfo(List<InlineSpanSemanti
     List<StringAttribute> workingAttributes = makeList();
     for (InlineSpanSemanticsInformation info : infoList) {
         if (info->requiresOwnNode) {
-            combined->add(make<InlineSpanSemanticsInformationCls>(workingTextworkingLabel, workingAttributes));
+            combined->add(make<InlineSpanSemanticsInformationCls>(workingText, workingLabel, workingAttributes));
             workingText = __s("");
             workingLabel = __s("");
             workingAttributes = makeList();
@@ -50,7 +50,7 @@ List<InlineSpanSemanticsInformation> combineSemanticsInfo(List<InlineSpanSemanti
             workingLabel += effectiveLabel;
         }
     }
-    combined->add(make<InlineSpanSemanticsInformationCls>(workingTextworkingLabel, workingAttributes));
+    combined->add(make<InlineSpanSemanticsInformationCls>(workingText, workingLabel, workingAttributes));
     return combined;
 }
 
@@ -67,7 +67,7 @@ InlineSpan InlineSpanCls::getSpanForPosition(TextPosition position) {
 
 String InlineSpanCls::toPlainText(bool includePlaceholders, bool includeSemanticsLabels) {
     StringBuffer buffer = make<StringBufferCls>();
-    computeToPlainText(bufferincludeSemanticsLabels, includePlaceholders);
+    computeToPlainText(buffer, includeSemanticsLabels, includePlaceholders);
     return buffer->toString();
 }
 

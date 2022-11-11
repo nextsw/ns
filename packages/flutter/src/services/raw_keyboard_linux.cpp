@@ -39,7 +39,7 @@ LogicalKeyboardKey RawKeyEventDataLinuxCls::logicalKey() {
 }
 
 bool RawKeyEventDataLinuxCls::isModifierPressed(ModifierKey key, KeyboardSide side) {
-    return keyHelper->isModifierPressed(key, modifiersside, keyCode, isDown);
+    return keyHelper->isModifierPressed(key, modifiers, side, keyCode, isDown);
 }
 
 KeyboardSide RawKeyEventDataLinuxCls::getModifierSide(ModifierKey key) {
@@ -54,7 +54,7 @@ void RawKeyEventDataLinuxCls::debugFillProperties(DiagnosticPropertiesBuilder pr
     properties->add(<int>make<DiagnosticsPropertyCls>(__s("keyCode"), keyCode));
     properties->add(<int>make<DiagnosticsPropertyCls>(__s("modifiers"), modifiers));
     properties->add(<bool>make<DiagnosticsPropertyCls>(__s("isDown"), isDown));
-    properties->add(<int>make<DiagnosticsPropertyCls>(__s("specifiedLogicalKey"), specifiedLogicalKeynullptr));
+    properties->add(<int>make<DiagnosticsPropertyCls>(__s("specifiedLogicalKey"), specifiedLogicalKey, nullptr));
 }
 
 bool RawKeyEventDataLinuxCls::==(Object other) {

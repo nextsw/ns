@@ -22,7 +22,7 @@ T InheritedModelCls<T>::inheritFrom(BuildContext context, Object aspect) {
     }
     InheritedElement lastModel = models->last;
     for (InheritedElement model : models) {
-        T value = as<T>(context->dependOnInheritedElement(modelaspect));
+        T value = as<T>(context->dependOnInheritedElement(model, aspect));
         if (model == lastModel) {
             return value;
         }

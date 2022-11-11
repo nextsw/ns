@@ -30,5 +30,5 @@ bool PrimaryScrollControllerCls::updateShouldNotify(PrimaryScrollController oldW
 
 void PrimaryScrollControllerCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<ScrollController>make<DiagnosticsPropertyCls>(__s("controller"), controller__s("no controller"), false));
+    properties->add(<ScrollController>make<DiagnosticsPropertyCls>(__s("controller"), controller, __s("no controller"), false));
 }

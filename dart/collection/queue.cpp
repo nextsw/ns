@@ -425,7 +425,7 @@ List<E> ListQueueCls<E>::toList(bool growable) {
     if (length == 0)     {
         return <E>empty(growable);
     }
-    auto list = <E>filled(length, first()growable);
+    auto list = <E>filled(length, first(), growable);
     for (;  < length; i++) {
         list[i] = as<E>(_table[(_head + i) & mask]);
     }

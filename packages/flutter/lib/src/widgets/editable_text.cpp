@@ -142,7 +142,7 @@ EditableTextCls::EditableTextCls(bool autocorrect, Color autocorrectionTextRectC
 
 StrutStyle EditableTextCls::strutStyle() {
     if (_strutStyle == nullptr) {
-        return StrutStyleCls->fromTextStyle(styletrue);
+        return StrutStyleCls->fromTextStyle(style, true);
     }
     return _strutStyle!->inheritFromTextStyle(style);
 }
@@ -159,29 +159,29 @@ void EditableTextCls::debugFillProperties(DiagnosticPropertiesBuilder properties
     super->debugFillProperties(properties);
     properties->add(<TextEditingController>make<DiagnosticsPropertyCls>(__s("controller"), controller));
     properties->add(<FocusNode>make<DiagnosticsPropertyCls>(__s("focusNode"), focusNode));
-    properties->add(<bool>make<DiagnosticsPropertyCls>(__s("obscureText"), obscureTextfalse));
-    properties->add(<bool>make<DiagnosticsPropertyCls>(__s("readOnly"), readOnlyfalse));
-    properties->add(<bool>make<DiagnosticsPropertyCls>(__s("autocorrect"), autocorrecttrue));
-    properties->add(<SmartDashesType>make<EnumPropertyCls>(__s("smartDashesType"), smartDashesTypeobscureText? SmartDashesTypeCls::disabled : SmartDashesTypeCls::enabled));
-    properties->add(<SmartQuotesType>make<EnumPropertyCls>(__s("smartQuotesType"), smartQuotesTypeobscureText? SmartQuotesTypeCls::disabled : SmartQuotesTypeCls::enabled));
-    properties->add(<bool>make<DiagnosticsPropertyCls>(__s("enableSuggestions"), enableSuggestionstrue));
+    properties->add(<bool>make<DiagnosticsPropertyCls>(__s("obscureText"), obscureText, false));
+    properties->add(<bool>make<DiagnosticsPropertyCls>(__s("readOnly"), readOnly, false));
+    properties->add(<bool>make<DiagnosticsPropertyCls>(__s("autocorrect"), autocorrect, true));
+    properties->add(<SmartDashesType>make<EnumPropertyCls>(__s("smartDashesType"), smartDashesType, obscureText? SmartDashesTypeCls::disabled : SmartDashesTypeCls::enabled));
+    properties->add(<SmartQuotesType>make<EnumPropertyCls>(__s("smartQuotesType"), smartQuotesType, obscureText? SmartQuotesTypeCls::disabled : SmartQuotesTypeCls::enabled));
+    properties->add(<bool>make<DiagnosticsPropertyCls>(__s("enableSuggestions"), enableSuggestions, true));
     style->debugFillProperties(properties);
-    properties->add(<TextAlign>make<EnumPropertyCls>(__s("textAlign"), textAlignnullptr));
-    properties->add(<TextDirection>make<EnumPropertyCls>(__s("textDirection"), textDirectionnullptr));
-    properties->add(<Locale>make<DiagnosticsPropertyCls>(__s("locale"), localenullptr));
-    properties->add(make<DoublePropertyCls>(__s("textScaleFactor"), textScaleFactornullptr));
-    properties->add(make<IntPropertyCls>(__s("maxLines"), maxLines1));
-    properties->add(make<IntPropertyCls>(__s("minLines"), minLinesnullptr));
-    properties->add(<bool>make<DiagnosticsPropertyCls>(__s("expands"), expandsfalse));
-    properties->add(<bool>make<DiagnosticsPropertyCls>(__s("autofocus"), autofocusfalse));
-    properties->add(<TextInputType>make<DiagnosticsPropertyCls>(__s("keyboardType"), keyboardTypenullptr));
-    properties->add(<ScrollController>make<DiagnosticsPropertyCls>(__s("scrollController"), scrollControllernullptr));
-    properties->add(<ScrollPhysics>make<DiagnosticsPropertyCls>(__s("scrollPhysics"), scrollPhysicsnullptr));
-    properties->add(<Iterable<String>>make<DiagnosticsPropertyCls>(__s("autofillHints"), autofillHintsnullptr));
-    properties->add(<TextHeightBehavior>make<DiagnosticsPropertyCls>(__s("textHeightBehavior"), textHeightBehaviornullptr));
-    properties->add(<bool>make<DiagnosticsPropertyCls>(__s("scribbleEnabled"), scribbleEnabledtrue));
-    properties->add(<bool>make<DiagnosticsPropertyCls>(__s("enableIMEPersonalizedLearning"), enableIMEPersonalizedLearningtrue));
-    properties->add(<bool>make<DiagnosticsPropertyCls>(__s("enableInteractiveSelection"), enableInteractiveSelectiontrue));
+    properties->add(<TextAlign>make<EnumPropertyCls>(__s("textAlign"), textAlign, nullptr));
+    properties->add(<TextDirection>make<EnumPropertyCls>(__s("textDirection"), textDirection, nullptr));
+    properties->add(<Locale>make<DiagnosticsPropertyCls>(__s("locale"), locale, nullptr));
+    properties->add(make<DoublePropertyCls>(__s("textScaleFactor"), textScaleFactor, nullptr));
+    properties->add(make<IntPropertyCls>(__s("maxLines"), maxLines, 1));
+    properties->add(make<IntPropertyCls>(__s("minLines"), minLines, nullptr));
+    properties->add(<bool>make<DiagnosticsPropertyCls>(__s("expands"), expands, false));
+    properties->add(<bool>make<DiagnosticsPropertyCls>(__s("autofocus"), autofocus, false));
+    properties->add(<TextInputType>make<DiagnosticsPropertyCls>(__s("keyboardType"), keyboardType, nullptr));
+    properties->add(<ScrollController>make<DiagnosticsPropertyCls>(__s("scrollController"), scrollController, nullptr));
+    properties->add(<ScrollPhysics>make<DiagnosticsPropertyCls>(__s("scrollPhysics"), scrollPhysics, nullptr));
+    properties->add(<Iterable<String>>make<DiagnosticsPropertyCls>(__s("autofillHints"), autofillHints, nullptr));
+    properties->add(<TextHeightBehavior>make<DiagnosticsPropertyCls>(__s("textHeightBehavior"), textHeightBehavior, nullptr));
+    properties->add(<bool>make<DiagnosticsPropertyCls>(__s("scribbleEnabled"), scribbleEnabled, true));
+    properties->add(<bool>make<DiagnosticsPropertyCls>(__s("enableIMEPersonalizedLearning"), enableIMEPersonalizedLearning, true));
+    properties->add(<bool>make<DiagnosticsPropertyCls>(__s("enableInteractiveSelection"), enableInteractiveSelection, true));
 }
 
 bool EditableTextCls::_userSelectionEnabled() {
@@ -488,7 +488,7 @@ void EditableTextStateCls::connectionClosed() {
         _textInputConnection!->connectionClosedReceived();
         _textInputConnection = nullptr;
         _lastKnownRemoteTextEditingValue = nullptr;
-        _finalizeEditing(TextInputActionCls::donetrue);
+        _finalizeEditing(TextInputActionCls::done, true);
     }
 }
 
@@ -544,7 +544,7 @@ void EditableTextStateCls::userUpdateTextEditingValue(TextEditingValue value, Se
         }
         return;
     }
-    _formatAndSetValue(value, causetrue);
+    _formatAndSetValue(value, cause, true);
 }
 
 void EditableTextStateCls::bringIntoView(TextPosition position) {
@@ -720,7 +720,7 @@ void EditableTextStateCls::_onFloatingCursorResetTick() {
         double lerpValue = _floatingCursorResetController!->value();
         double lerpX = ui->lerpDouble(_lastBoundedOffset!->dx(), finalPosition->dx(), lerpValue)!;
         double lerpY = ui->lerpDouble(_lastBoundedOffset!->dy(), finalPosition->dy(), lerpValue)!;
-        renderEditable()->setFloatingCursor(FloatingCursorDragStateCls::UpdateCls, make<OffsetCls>(lerpX, lerpY), _lastTextPosition!lerpValue);
+        renderEditable()->setFloatingCursor(FloatingCursorDragStateCls::UpdateCls, make<OffsetCls>(lerpX, lerpY), _lastTextPosition!, lerpValue);
     }
 }
 
@@ -945,7 +945,7 @@ void EditableTextStateCls::_scheduleShowCaretOnScreen(bool withAnimation) {
         EdgeInsets caretPadding = widget->scrollPadding->copyWith(bottomSpacing);
         RevealedOffset targetOffset = _getOffsetToRevealCaret(_currentCaretRect!);
         if (withAnimation) {
-            _scrollController()->animateTo(targetOffset->offset_caretAnimationDuration, _caretAnimationCurve);
+            _scrollController()->animateTo(targetOffset->offset, _caretAnimationDuration, _caretAnimationCurve);
             renderEditable()->showOnScreen(caretPadding->inflateRect(targetOffset->rect), _caretAnimationDuration, _caretAnimationCurve);
         } else {
             _scrollController()->jumpTo(targetOffset->offset);
@@ -1443,7 +1443,7 @@ void _ScribblePlaceholderCls::build(ParagraphBuilder builder, List<PlaceholderDi
     if (hasStyle) {
         builder->pushStyle(style!->getTextStyle(textScaleFactor));
     }
-    builder->addPlaceholder(size->width(), size->height(), alignmenttextScaleFactor);
+    builder->addPlaceholder(size->width(), size->height(), alignment, textScaleFactor);
     if (hasStyle) {
         builder->pop();
     }

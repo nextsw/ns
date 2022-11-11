@@ -15,7 +15,7 @@ double _RenderSliverLayoutBuilderCls::childMainAxisPosition(RenderObject child) 
 
 void _RenderSliverLayoutBuilderCls::performLayout() {
     rebuildIfNecessary();
-    child?->layout(constraintstrue);
+    child?->layout(constraints, true);
     geometry = child?->geometry | SliverGeometryCls::zero;
 }
 
@@ -31,5 +31,5 @@ void _RenderSliverLayoutBuilderCls::paint(PaintingContext context, Offset offset
 }
 
 bool _RenderSliverLayoutBuilderCls::hitTestChildren(SliverHitTestResult result, double crossAxisPosition, double mainAxisPosition) {
-    return child != nullptr && child!->geometry!->hitTestExtent > 0 && child!->hitTest(resultmainAxisPosition, crossAxisPosition);
+    return child != nullptr && child!->geometry!->hitTestExtent > 0 && child!->hitTest(result, mainAxisPosition, crossAxisPosition);
 }

@@ -51,7 +51,7 @@ void DecorationImagePainterCls::paint(Canvas canvas, Rect rect, Path clipPath, I
     }
     ImageStream newImageStream = _details->image->resolve(configuration);
     if (newImageStream->key() != _imageStream?->key) {
-        ImageStreamListener listener = make<ImageStreamListenerCls>(_handleImage_details->onError);
+        ImageStreamListener listener = make<ImageStreamListenerCls>(_handleImage, _details->onError);
         _imageStream?->removeListener(listener);
         _imageStream = newImageStream;
         _imageStream!->addListener(listener);
@@ -70,7 +70,7 @@ void DecorationImagePainterCls::paint(Canvas canvas, Rect rect, Path clipPath, I
 }
 
 void DecorationImagePainterCls::dispose() {
-    _imageStream?->removeListener(make<ImageStreamListenerCls>(_handleImage_details->onError));
+    _imageStream?->removeListener(make<ImageStreamListenerCls>(_handleImage, _details->onError));
     _image?->dispose();
     _image = nullptr;
 }

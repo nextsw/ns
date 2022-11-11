@@ -12,7 +12,7 @@ void FrictionSimulationCls::through(double startPosition, double endPosition, do
     assert(startVelocity == 0.0 || endVelocity == 0.0 || startVelocity->sign() == endVelocity->sign());
     assert(startVelocity->abs() >= endVelocity->abs());
     assert((endPosition - startPosition)->sign() == startVelocity->sign());
-    return make<FrictionSimulationCls>(_dragFor(startPosition, endPosition, startVelocity, endVelocity), startPosition, startVelocitymake<ToleranceCls>(endVelocity->abs()));
+    return make<FrictionSimulationCls>(_dragFor(startPosition, endPosition, startVelocity, endVelocity), startPosition, startVelocity, make<ToleranceCls>(endVelocity->abs()));
 }
 
 double FrictionSimulationCls::x(double time) {

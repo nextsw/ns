@@ -38,12 +38,12 @@ void RenderSliverListCls::performLayout() {
     }
     earliestUsefulChild = firstChild;
     for (; earliestScrollOffset > scrollOffset; earliestScrollOffset = childScrollOffset(earliestUsefulChild)!) {
-        earliestUsefulChild = insertAndLayoutLeadingChild(childConstraintstrue);
+        earliestUsefulChild = insertAndLayoutLeadingChild(childConstraints, true);
         if (earliestUsefulChild == nullptr) {
             SliverMultiBoxAdaptorParentData childParentData = as<SliverMultiBoxAdaptorParentData>(firstChild!->parentData!);
             childParentData->layoutOffset = 0.0;
             if (scrollOffset == 0.0) {
-                firstChild!->layout(childConstraintstrue);
+                firstChild!->layout(childConstraints, true);
                 earliestUsefulChild = firstChild;
                 leadingChildWithLayout = earliestUsefulChild;
                 trailingChildWithLayout |= earliestUsefulChild;
@@ -70,7 +70,7 @@ void RenderSliverListCls::performLayout() {
     if ( < precisionErrorTolerance) {
         while (indexOf(firstChild!) > 0) {
             double earliestScrollOffset = childScrollOffset(firstChild!)!;
-            earliestUsefulChild = insertAndLayoutLeadingChild(childConstraintstrue);
+            earliestUsefulChild = insertAndLayoutLeadingChild(childConstraints, true);
             assert(earliestUsefulChild != nullptr);
             double firstChildScrollOffset = earliestScrollOffset - paintExtentOf(firstChild!);
             SliverMultiBoxAdaptorParentData childParentData = as<SliverMultiBoxAdaptorParentData>(firstChild!->parentData!);
@@ -84,7 +84,7 @@ void RenderSliverListCls::performLayout() {
     assert(earliestUsefulChild == firstChild);
     assert(childScrollOffset(earliestUsefulChild!)! <= scrollOffset);
     if (leadingChildWithLayout == nullptr) {
-        earliestUsefulChild!->layout(childConstraintstrue);
+        earliestUsefulChild!->layout(childConstraints, true);
         leadingChildWithLayout = earliestUsefulChild;
         trailingChildWithLayout = earliestUsefulChild;
     }
@@ -124,11 +124,11 @@ void RenderSliverListCls::performLayout() {
     if (reachedEnd) {
         estimatedMaxScrollOffset = endScrollOffset;
     } else {
-        estimatedMaxScrollOffset = childManager->estimateMaxScrollOffset(constraintsindexOf(firstChild!), indexOf(lastChild!), childScrollOffset(firstChild!), endScrollOffset);
+        estimatedMaxScrollOffset = childManager->estimateMaxScrollOffset(constraints, indexOf(firstChild!), indexOf(lastChild!), childScrollOffset(firstChild!), endScrollOffset);
         assert(estimatedMaxScrollOffset >= endScrollOffset - childScrollOffset(firstChild!)!);
     }
-    double paintExtent = calculatePaintOffset(constraintschildScrollOffset(firstChild!)!, endScrollOffset);
-    double cacheExtent = calculateCacheOffset(constraintschildScrollOffset(firstChild!)!, endScrollOffset);
+    double paintExtent = calculatePaintOffset(constraints, childScrollOffset(firstChild!)!, endScrollOffset);
+    double cacheExtent = calculateCacheOffset(constraints, childScrollOffset(firstChild!)!, endScrollOffset);
     double targetEndScrollOffsetForPaint = constraints->scrollOffset + constraints->remainingPaintExtent;
     geometry = make<SliverGeometryCls>(estimatedMaxScrollOffset, paintExtent, cacheExtent, estimatedMaxScrollOffset, endScrollOffset > targetEndScrollOffsetForPaint || constraints->scrollOffset > 0.0);
     if (estimatedMaxScrollOffset == endScrollOffset) {

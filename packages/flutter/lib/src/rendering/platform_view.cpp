@@ -101,7 +101,7 @@ void RenderAndroidViewCls::paint(PaintingContext context, Offset offset) {
     }
     bool isTextureLargerThanWidget = _currentTextureSize!->width() > size->width || _currentTextureSize!->height() > size->height;
     if (isTextureLargerThanWidget && clipBehavior() != ClipCls::none) {
-        _clipRectLayer->layer() = context->pushClipRect(true, offset, offset & size, _paintTextureclipBehavior(), _clipRectLayer->layer());
+        _clipRectLayer->layer() = context->pushClipRect(true, offset, offset & size, _paintTexture, clipBehavior(), _clipRectLayer->layer());
         return;
     }
     _clipRectLayer->layer() = nullptr;

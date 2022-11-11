@@ -190,14 +190,14 @@ void RawGestureDetectorStateCls::debugFillProperties(DiagnosticPropertiesBuilder
         List<String> gestures = _recognizers!->values()-><String>map([=] (GestureRecognizer recognizer) {
     recognizer->debugDescription;
 })->toList();
-        properties->add(<String>make<IterablePropertyCls>(__s("gestures"), gestures__s("<none>")));
-        properties->add(<GestureRecognizer>make<IterablePropertyCls>(__s("recognizers"), _recognizers!->values()DiagnosticLevelCls::fine));
-        properties->add(<bool>make<DiagnosticsPropertyCls>(__s("excludeFromSemantics"), widget->excludeFromSemanticsfalse));
+        properties->add(<String>make<IterablePropertyCls>(__s("gestures"), gestures, __s("<none>")));
+        properties->add(<GestureRecognizer>make<IterablePropertyCls>(__s("recognizers"), _recognizers!->values(), DiagnosticLevelCls::fine));
+        properties->add(<bool>make<DiagnosticsPropertyCls>(__s("excludeFromSemantics"), widget->excludeFromSemantics, false));
         if (!widget->excludeFromSemantics) {
-            properties->add(<SemanticsGestureDelegate>make<DiagnosticsPropertyCls>(__s("semantics"), widget->semanticsnullptr));
+            properties->add(<SemanticsGestureDelegate>make<DiagnosticsPropertyCls>(__s("semantics"), widget->semantics, nullptr));
         }
     }
-    properties->add(<HitTestBehavior>make<EnumPropertyCls>(__s("behavior"), widget->behaviornullptr));
+    properties->add(<HitTestBehavior>make<EnumPropertyCls>(__s("behavior"), widget->behavior, nullptr));
 }
 
 void RawGestureDetectorStateCls::_syncAll(Map<Type, GestureRecognizerFactory> gestures) {

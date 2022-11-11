@@ -134,7 +134,7 @@ bool IterableCls<E>::any(std::function<bool(E element)> test) {
 
 template<typename E>
 List<E> IterableCls<E>::toList(bool growable) {
-    return <E>of(thisgrowable);
+    return <E>of(this, growable);
 }
 
 template<typename E>

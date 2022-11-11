@@ -108,7 +108,7 @@ void _SelectableRegionStateCls::dispose() {
 }
 
 Widget _SelectableRegionStateCls::build(BuildContext context) {
-    assert(OverlayCls->of(contextwidget) != nullptr);
+    assert(OverlayCls->of(context, widget) != nullptr);
     return make<CompositedTransformTargetCls>(_toolbarLayerLink, make<RawGestureDetectorCls>(_gestureRecognizers, HitTestBehaviorCls::translucent, true, make<ActionsCls>(_actions, make<FocusCls>(false, widget->focusNode, make<SelectionContainerCls>(this, _selectionDelegate, widget->child)))));
 }
 
@@ -644,9 +644,9 @@ SelectionResult MultiSelectableSelectionContainerDelegateCls::handleClearSelecti
 
 SelectionResult MultiSelectableSelectionContainerDelegateCls::handleSelectionEdgeUpdate(SelectionEdgeUpdateEvent event) {
     if (event->type == SelectionEventTypeCls::endEdgeUpdate) {
-        return currentSelectionEndIndex == -1? _initSelection(eventtrue) : _adjustSelection(eventtrue);
+        return currentSelectionEndIndex == -1? _initSelection(event, true) : _adjustSelection(event, true);
     }
-    return currentSelectionStartIndex == -1? _initSelection(eventfalse) : _adjustSelection(eventfalse);
+    return currentSelectionStartIndex == -1? _initSelection(event, false) : _adjustSelection(event, false);
 }
 
 SelectionResult MultiSelectableSelectionContainerDelegateCls::dispatchSelectionEvent(SelectionEvent event) {

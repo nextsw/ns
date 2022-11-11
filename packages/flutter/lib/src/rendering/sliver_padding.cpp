@@ -43,26 +43,26 @@ void RenderSliverEdgeInsetsPaddingCls::performLayout() {
     double mainAxisPadding = this->mainAxisPadding();
     double crossAxisPadding = this->crossAxisPadding();
     if (child == nullptr) {
-        double paintExtent = calculatePaintOffset(constraints0.0, mainAxisPadding);
-        double cacheExtent = calculateCacheOffset(constraints0.0, mainAxisPadding);
+        double paintExtent = calculatePaintOffset(constraints, 0.0, mainAxisPadding);
+        double cacheExtent = calculateCacheOffset(constraints, 0.0, mainAxisPadding);
         geometry = make<SliverGeometryCls>(mainAxisPadding, math->min(paintExtent, constraints->remainingPaintExtent), mainAxisPadding, cacheExtent);
         return;
     }
-    double beforePaddingPaintExtent = calculatePaintOffset(constraints0.0, beforePadding);
+    double beforePaddingPaintExtent = calculatePaintOffset(constraints, 0.0, beforePadding);
     double overlap = constraints->overlap;
     if (overlap > 0) {
         overlap = math->max(0.0, constraints->overlap - beforePaddingPaintExtent);
     }
-    child!->layout(constraints->copyWith(math->max(0.0, constraints->scrollOffset - beforePadding), math->min(0.0, constraints->cacheOrigin + beforePadding), overlap, constraints->remainingPaintExtent - calculatePaintOffset(constraints0.0, beforePadding), constraints->remainingCacheExtent - calculateCacheOffset(constraints0.0, beforePadding), math->max(0.0, constraints->crossAxisExtent - crossAxisPadding), beforePadding + constraints->precedingScrollExtent)true);
+    child!->layout(constraints->copyWith(math->max(0.0, constraints->scrollOffset - beforePadding), math->min(0.0, constraints->cacheOrigin + beforePadding), overlap, constraints->remainingPaintExtent - calculatePaintOffset(constraints, 0.0, beforePadding), constraints->remainingCacheExtent - calculateCacheOffset(constraints, 0.0, beforePadding), math->max(0.0, constraints->crossAxisExtent - crossAxisPadding), beforePadding + constraints->precedingScrollExtent), true);
     SliverGeometry childLayoutGeometry = child!->geometry!;
     if (childLayoutGeometry->scrollOffsetCorrection != nullptr) {
         geometry = make<SliverGeometryCls>(childLayoutGeometry->scrollOffsetCorrection);
         return;
     }
-    double afterPaddingPaintExtent = calculatePaintOffset(constraintsbeforePadding + childLayoutGeometry->scrollExtent, mainAxisPadding + childLayoutGeometry->scrollExtent);
+    double afterPaddingPaintExtent = calculatePaintOffset(constraints, beforePadding + childLayoutGeometry->scrollExtent, mainAxisPadding + childLayoutGeometry->scrollExtent);
     double mainAxisPaddingPaintExtent = beforePaddingPaintExtent + afterPaddingPaintExtent;
-    double beforePaddingCacheExtent = calculateCacheOffset(constraints0.0, beforePadding);
-    double afterPaddingCacheExtent = calculateCacheOffset(constraintsbeforePadding + childLayoutGeometry->scrollExtent, mainAxisPadding + childLayoutGeometry->scrollExtent);
+    double beforePaddingCacheExtent = calculateCacheOffset(constraints, 0.0, beforePadding);
+    double afterPaddingCacheExtent = calculateCacheOffset(constraints, beforePadding + childLayoutGeometry->scrollExtent, mainAxisPadding + childLayoutGeometry->scrollExtent);
     double mainAxisPaddingCacheExtent = afterPaddingCacheExtent + beforePaddingCacheExtent;
     double paintExtent = math->min(beforePaddingPaintExtent + math->max(childLayoutGeometry->paintExtent, childLayoutGeometry->layoutExtent + afterPaddingPaintExtent), constraints->remainingPaintExtent);
     geometry = make<SliverGeometryCls>(childLayoutGeometry->paintOrigin, mainAxisPadding + childLayoutGeometry->scrollExtent, paintExtent, math->min(mainAxisPaddingPaintExtent + childLayoutGeometry->layoutExtent, paintExtent), math->min(mainAxisPaddingCacheExtent + childLayoutGeometry->cacheExtent, constraints->remainingCacheExtent), mainAxisPadding + childLayoutGeometry->maxPaintExtent, math->max(mainAxisPaddingPaintExtent + childLayoutGeometry->paintExtent, beforePaddingPaintExtent + childLayoutGeometry->hitTestExtent), childLayoutGeometry->hasVisualOverflow);
@@ -88,7 +88,7 @@ bool RenderSliverEdgeInsetsPaddingCls::hitTestChildren(SliverHitTestResult resul
 double RenderSliverEdgeInsetsPaddingCls::childMainAxisPosition(RenderSliver child) {
     assert(child != nullptr);
     assert(child == this->child);
-    return calculatePaintOffset(constraints0.0, beforePadding());
+    return calculatePaintOffset(constraints, 0.0, beforePadding());
 }
 
 double RenderSliverEdgeInsetsPaddingCls::childCrossAxisPosition(RenderSliver child) {
@@ -192,7 +192,7 @@ void RenderSliverPaddingCls::performLayout() {
 void RenderSliverPaddingCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
     properties->add(<EdgeInsetsGeometry>make<DiagnosticsPropertyCls>(__s("padding"), padding()));
-    properties->add(<TextDirection>make<EnumPropertyCls>(__s("textDirection"), textDirection()nullptr));
+    properties->add(<TextDirection>make<EnumPropertyCls>(__s("textDirection"), textDirection(), nullptr));
 }
 
 void RenderSliverPaddingCls::_resolve() {

@@ -700,7 +700,7 @@ void RenderEditableCls::describeSemanticsConfiguration(SemanticsConfiguration co
                 buffer->write(label);
                 offset += label->length();
             }
-            _cachedAttributedValue = make<AttributedStringCls>(buffer->toString()attributes);
+            _cachedAttributedValue = make<AttributedStringCls>(buffer->toString(), attributes);
         }
     }
     auto _c3 = config;_c3.attributedValue = auto _c4 = _cachedAttributedValue!;_c4.isObscured = auto _c5 = obscureText();_c5.isMultiline = auto _c6 = _isMultiline();_c6.textDirection() = auto _c7 = textDirection();_c7.isFocused = auto _c8 = hasFocus();_c8.isTextField = auto _c9 = true;_c9.isReadOnly = readOnly();_c9;_c8;_c7;_c6;_c5;_c4;_c3;
@@ -761,7 +761,7 @@ void RenderEditableCls::assembleSemanticsNode(SemanticsNode node, SemanticsConfi
             }
             rect = RectCls->fromLTWH(math->max(0.0, rect->left), math->max(0.0, rect->top), math->min(rect->width(), constraints->maxWidth), math->min(rect->height(), constraints->maxHeight));
             currentRect = RectCls->fromLTRB(rect->left->floorToDouble() - 4.0, rect->top->floorToDouble() - 4.0, rect->right->ceilToDouble() + 4.0, rect->bottom->ceilToDouble() + 4.0);
-                    auto _c1 = make<SemanticsConfigurationCls>();        _c1.sortKey = auto _c2 = make<OrdinalSortKeyCls>(ordinal++);        _c2.textDirection() = auto _c3 = initialDirection;        _c3.attributedLabel = make<AttributedStringCls>(info->semanticsLabel | info->textinfo->stringAttributes);        _c3;        _c2;SemanticsConfiguration configuration = _c1;
+                    auto _c1 = make<SemanticsConfigurationCls>();        _c1.sortKey = auto _c2 = make<OrdinalSortKeyCls>(ordinal++);        _c2.textDirection() = auto _c3 = initialDirection;        _c3.attributedLabel = make<AttributedStringCls>(info->semanticsLabel | info->text, info->stringAttributes);        _c3;        _c2;SemanticsConfiguration configuration = _c1;
             GestureRecognizer recognizer = info->recognizer;
             if (recognizer != nullptr) {
                 if (is<TapGestureRecognizer>(recognizer)) {
@@ -854,7 +854,7 @@ void RenderEditableCls::visitChildren(RenderObjectVisitor visitor) {
 List<TextSelectionPoint> RenderEditableCls::getEndpointsForSelection(TextSelection selection) {
     _computeTextMetricsIfNeeded();
     Offset paintOffset = _paintOffset();
-    List<TextBox> boxes = selection->isCollapsed? makeList() : _textPainter->getBoxesForSelection(selectionselectionHeightStyle(), selectionWidthStyle());
+    List<TextBox> boxes = selection->isCollapsed? makeList() : _textPainter->getBoxesForSelection(selection, selectionHeightStyle(), selectionWidthStyle());
     if (boxes->isEmpty) {
         Offset caretOffset = _textPainter->getOffsetForCaret(selection->extent(), _caretPrototype);
         Offset start = make<OffsetCls>(0.0, preferredLineHeight()) + caretOffset + paintOffset;
@@ -871,7 +871,7 @@ Rect RenderEditableCls::getRectForComposingRange(TextRange range) {
         return nullptr;
     }
     _computeTextMetricsIfNeeded();
-    List<TextBox> boxes = _textPainter->getBoxesForSelection(make<TextSelectionCls>(range->start, range->end)selectionHeightStyle(), selectionWidthStyle());
+    List<TextBox> boxes = _textPainter->getBoxesForSelection(make<TextSelectionCls>(range->start, range->end), selectionHeightStyle(), selectionWidthStyle());
     return boxes->fold(nullptr, [=] (Rect accum,TextBox incoming)     {
         accum?->expandToInclude(incoming->toRect()) | incoming->toRect();
     })?->shift(_paintOffset());
@@ -940,7 +940,7 @@ bool RenderEditableCls::hitTestChildren(BoxHitTestResult result, Offset position
         Offset manualPosition = (position - textParentData->offset) / textParentData->scale!;
         return (transformed->dx - manualPosition->dx())->abs() < precisionErrorTolerance && (transformed->dy - manualPosition->dy())->abs() < precisionErrorTolerance;
     }());
-    return child!->hitTest(resulttransformed);
+    return child!->hitTest(result, transformed);
 });
         if (isHit) {
             return true;
@@ -1037,7 +1037,7 @@ Size RenderEditableCls::computeDryLayout(BoxConstraints constraints) {
         assert(debugCannotComputeDryLayout(__s("Dry layout not available for alignments that require baseline.")));
         return SizeCls::zero;
     }
-    _textPainter->setPlaceholderDimensions(_layoutChildren(constraintstrue));
+    _textPainter->setPlaceholderDimensions(_layoutChildren(constraints, true));
     _layoutText(constraints->minWidth, constraints->maxWidth);
     double width = forceLine()? constraints->maxWidth : constraints->constrainWidth(_textPainter->size()->width() + _caretMargin());
     return make<SizeCls>(width, constraints->constrainHeight(_preferredHeight(constraints->maxWidth)));
@@ -1146,7 +1146,7 @@ VerticalCaretMovementRun RenderEditableCls::startVerticalCaretMovement(TextPosit
 void RenderEditableCls::paint(PaintingContext context, Offset offset) {
     _computeTextMetricsIfNeeded();
     if (_hasVisualOverflow() && clipBehavior() != ClipCls::none) {
-        _clipRectLayer->layer() = context->pushClipRect(needsCompositing, offset, OffsetCls::zero & size, _paintContentsclipBehavior(), _clipRectLayer->layer());
+        _clipRectLayer->layer() = context->pushClipRect(needsCompositing, offset, OffsetCls::zero & size, _paintContents, clipBehavior(), _clipRectLayer->layer());
     } else {
         _clipRectLayer->layer() = nullptr;
         _paintContents(context, offset);
@@ -1166,10 +1166,10 @@ void RenderEditableCls::debugFillProperties(DiagnosticPropertiesBuilder properti
     properties->add(<ValueNotifier<bool>>make<DiagnosticsPropertyCls>(__s("showCursor"), showCursor()));
     properties->add(make<IntPropertyCls>(__s("maxLines"), maxLines()));
     properties->add(make<IntPropertyCls>(__s("minLines"), minLines()));
-    properties->add(<bool>make<DiagnosticsPropertyCls>(__s("expands"), expands()false));
+    properties->add(<bool>make<DiagnosticsPropertyCls>(__s("expands"), expands(), false));
     properties->add(make<ColorPropertyCls>(__s("selectionColor"), selectionColor()));
     properties->add(make<DoublePropertyCls>(__s("textScaleFactor"), textScaleFactor()));
-    properties->add(<Locale>make<DiagnosticsPropertyCls>(__s("locale"), locale()nullptr));
+    properties->add(<Locale>make<DiagnosticsPropertyCls>(__s("locale"), locale(), nullptr));
     properties->add(<TextSelection>make<DiagnosticsPropertyCls>(__s("selection"), selection()));
     properties->add(<ViewportOffset>make<DiagnosticsPropertyCls>(__s("offset"), offset()));
 }
@@ -1475,7 +1475,7 @@ List<PlaceholderDimensions> RenderEditableCls::_layoutChildren(BoxConstraints co
         double baselineOffset;
         Size childSize;
         if (!dry) {
-            child->layout(boxConstraintstrue);
+            child->layout(boxConstraints, true);
             childSize = child->size();
             ;
         } else {
@@ -1704,7 +1704,7 @@ void _TextHighlightPainterCls::paint(Canvas canvas, Size size, RenderEditable re
     }
     highlightPaint->color = color;
     TextPainter textPainter = renderEditable->_textPainter;
-    List<TextBox> boxes = textPainter->getBoxesForSelection(make<TextSelectionCls>(range->start, range->end)selectionHeightStyle(), selectionWidthStyle());
+    List<TextBox> boxes = textPainter->getBoxesForSelection(make<TextSelectionCls>(range->start, range->end), selectionHeightStyle(), selectionWidthStyle());
     for (TextBox box : boxes) {
         canvas->drawRect(box->toRect()->shift(renderEditable->_paintOffset())->intersect(RectCls->fromLTWH(0, 0, textPainter->width(), textPainter->height())), highlightPaint);
     }

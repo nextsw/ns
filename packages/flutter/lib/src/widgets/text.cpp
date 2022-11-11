@@ -35,12 +35,12 @@ Widget DefaultTextStyleCls::wrap(BuildContext context, Widget child) {
 void DefaultTextStyleCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
     style->debugFillProperties(properties);
-    properties->add(<TextAlign>make<EnumPropertyCls>(__s("textAlign"), textAlignnullptr));
-    properties->add(make<FlagPropertyCls>(__s("softWrap")softWrap, __s("wrapping at box width"), __s("no wrapping except at line break characters"), true));
-    properties->add(<TextOverflow>make<EnumPropertyCls>(__s("overflow"), overflownullptr));
-    properties->add(make<IntPropertyCls>(__s("maxLines"), maxLinesnullptr));
-    properties->add(<TextWidthBasis>make<EnumPropertyCls>(__s("textWidthBasis"), textWidthBasisTextWidthBasisCls::parent));
-    properties->add(<TextHeightBehavior>make<DiagnosticsPropertyCls>(__s("textHeightBehavior"), textHeightBehaviornullptr));
+    properties->add(<TextAlign>make<EnumPropertyCls>(__s("textAlign"), textAlign, nullptr));
+    properties->add(make<FlagPropertyCls>(__s("softWrap"), softWrap, __s("wrapping at box width"), __s("no wrapping except at line break characters"), true));
+    properties->add(<TextOverflow>make<EnumPropertyCls>(__s("overflow"), overflow, nullptr));
+    properties->add(make<IntPropertyCls>(__s("maxLines"), maxLines, nullptr));
+    properties->add(<TextWidthBasis>make<EnumPropertyCls>(__s("textWidthBasis"), textWidthBasis, TextWidthBasisCls::parent));
+    properties->add(<TextHeightBehavior>make<DiagnosticsPropertyCls>(__s("textHeightBehavior"), textHeightBehavior, nullptr));
 }
 
 Widget _NullWidgetCls::build(BuildContext context) {
@@ -68,7 +68,7 @@ Widget DefaultTextHeightBehaviorCls::wrap(BuildContext context, Widget child) {
 
 void DefaultTextHeightBehaviorCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<TextHeightBehavior>make<DiagnosticsPropertyCls>(__s("textHeightBehavior"), textHeightBehaviornullptr));
+    properties->add(<TextHeightBehavior>make<DiagnosticsPropertyCls>(__s("textHeightBehavior"), textHeightBehavior, nullptr));
 }
 
 TextCls::TextCls(String data, Unknown key, Locale locale, int maxLines, TextOverflow overflow, Color selectionColor, String semanticsLabel, bool softWrap, StrutStyle strutStyle, TextStyle style, TextAlign textAlign, TextDirection textDirection, TextHeightBehavior textHeightBehavior, double textScaleFactor, TextWidthBasis textWidthBasis) {
@@ -102,20 +102,20 @@ Widget TextCls::build(BuildContext context) {
 
 void TextCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(make<StringPropertyCls>(__s("data"), datafalse));
+    properties->add(make<StringPropertyCls>(__s("data"), data, false));
     if (textSpan != nullptr) {
         properties->add(textSpan!->toDiagnosticsNode(__s("textSpan"), DiagnosticsTreeStyleCls::transition));
     }
     style?->debugFillProperties(properties);
-    properties->add(<TextAlign>make<EnumPropertyCls>(__s("textAlign"), textAlignnullptr));
-    properties->add(<TextDirection>make<EnumPropertyCls>(__s("textDirection"), textDirectionnullptr));
-    properties->add(<Locale>make<DiagnosticsPropertyCls>(__s("locale"), localenullptr));
-    properties->add(make<FlagPropertyCls>(__s("softWrap")softWrap, __s("wrapping at box width"), __s("no wrapping except at line break characters"), true));
-    properties->add(<TextOverflow>make<EnumPropertyCls>(__s("overflow"), overflownullptr));
-    properties->add(make<DoublePropertyCls>(__s("textScaleFactor"), textScaleFactornullptr));
-    properties->add(make<IntPropertyCls>(__s("maxLines"), maxLinesnullptr));
-    properties->add(<TextWidthBasis>make<EnumPropertyCls>(__s("textWidthBasis"), textWidthBasisnullptr));
-    properties->add(<TextHeightBehavior>make<DiagnosticsPropertyCls>(__s("textHeightBehavior"), textHeightBehaviornullptr));
+    properties->add(<TextAlign>make<EnumPropertyCls>(__s("textAlign"), textAlign, nullptr));
+    properties->add(<TextDirection>make<EnumPropertyCls>(__s("textDirection"), textDirection, nullptr));
+    properties->add(<Locale>make<DiagnosticsPropertyCls>(__s("locale"), locale, nullptr));
+    properties->add(make<FlagPropertyCls>(__s("softWrap"), softWrap, __s("wrapping at box width"), __s("no wrapping except at line break characters"), true));
+    properties->add(<TextOverflow>make<EnumPropertyCls>(__s("overflow"), overflow, nullptr));
+    properties->add(make<DoublePropertyCls>(__s("textScaleFactor"), textScaleFactor, nullptr));
+    properties->add(make<IntPropertyCls>(__s("maxLines"), maxLines, nullptr));
+    properties->add(<TextWidthBasis>make<EnumPropertyCls>(__s("textWidthBasis"), textWidthBasis, nullptr));
+    properties->add(<TextHeightBehavior>make<DiagnosticsPropertyCls>(__s("textHeightBehavior"), textHeightBehavior, nullptr));
     if (semanticsLabel != nullptr) {
         properties->add(make<StringPropertyCls>(__s("semanticsLabel"), semanticsLabel));
     }

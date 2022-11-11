@@ -95,11 +95,11 @@ String BaseTapGestureRecognizerCls::debugDescription() {
 
 void BaseTapGestureRecognizerCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(make<FlagPropertyCls>(__s("wonArenaForPrimaryPointer")_wonArenaForPrimaryPointer, __s("won arena")));
-    properties->add(<Offset>make<DiagnosticsPropertyCls>(__s("finalPosition"), _up?->positionnullptr));
-    properties->add(<Offset>make<DiagnosticsPropertyCls>(__s("finalLocalPosition"), _up?->localPosition_up?->position));
-    properties->add(<int>make<DiagnosticsPropertyCls>(__s("button"), _down?->buttonsnullptr));
-    properties->add(make<FlagPropertyCls>(__s("sentTapDown")_sentTapDown, __s("sent tap down")));
+    properties->add(make<FlagPropertyCls>(__s("wonArenaForPrimaryPointer"), _wonArenaForPrimaryPointer, __s("won arena")));
+    properties->add(<Offset>make<DiagnosticsPropertyCls>(__s("finalPosition"), _up?->position, nullptr));
+    properties->add(<Offset>make<DiagnosticsPropertyCls>(__s("finalLocalPosition"), _up?->localPosition, _up?->position));
+    properties->add(<int>make<DiagnosticsPropertyCls>(__s("button"), _down?->buttons, nullptr));
+    properties->add(make<FlagPropertyCls>(__s("sentTapDown"), _sentTapDown, __s("sent tap down")));
 }
 
 void BaseTapGestureRecognizerCls::_checkDown() {

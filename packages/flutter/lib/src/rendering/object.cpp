@@ -15,7 +15,7 @@ PaintingContextCls::PaintingContextCls(ContainerLayer _containerLayer, Rect esti
 
 void PaintingContextCls::repaintCompositedChild(RenderObject child, bool debugAlsoPaintedParent) {
     assert(child->_needsPaint);
-    _repaintCompositedChild(childdebugAlsoPaintedParent);
+    _repaintCompositedChild(child, debugAlsoPaintedParent);
 }
 
 void PaintingContextCls::updateLayerProperties(RenderObject child) {
@@ -36,7 +36,7 @@ void PaintingContextCls::updateLayerProperties(RenderObject child) {
 
 void PaintingContextCls::debugInstrumentRepaintCompositedChild(RenderObject child, PaintingContext customContext, bool debugAlsoPaintedParent) {
     assert([=] () {
-        _repaintCompositedChild(childdebugAlsoPaintedParent, customContext);
+        _repaintCompositedChild(child, debugAlsoPaintedParent, customContext);
         return true;
     }());
 }
@@ -137,7 +137,7 @@ ClipRectLayer PaintingContextCls::pushClipRect(bool needsCompositing, Offset off
     if (needsCompositing) {
         ClipRectLayer layer = oldLayer | make<ClipRectLayerCls>();
             auto _c1 = layer;    _c1.clipRect = auto _c2 = offsetClipRect;    _c2.clipBehavior = clipBehavior;    _c2;_c1;
-        pushLayer(layer, painter, offsetoffsetClipRect);
+        pushLayer(layer, painter, offset, offsetClipRect);
         return layer;
     } else {
         clipRectAndPaint(offsetClipRect, clipBehavior, offsetClipRect, [=] ()         {
@@ -158,7 +158,7 @@ ClipRRectLayer PaintingContextCls::pushClipRRect(bool needsCompositing, Offset o
     if (needsCompositing) {
         ClipRRectLayer layer = oldLayer | make<ClipRRectLayerCls>();
             auto _c1 = layer;    _c1.clipRRect = auto _c2 = offsetClipRRect;    _c2.clipBehavior = clipBehavior;    _c2;_c1;
-        pushLayer(layer, painter, offsetoffsetBounds);
+        pushLayer(layer, painter, offset, offsetBounds);
         return layer;
     } else {
         clipRRectAndPaint(offsetClipRRect, clipBehavior, offsetBounds, [=] ()         {
@@ -179,7 +179,7 @@ ClipPathLayer PaintingContextCls::pushClipPath(bool needsCompositing, Offset off
     if (needsCompositing) {
         ClipPathLayer layer = oldLayer | make<ClipPathLayerCls>();
             auto _c1 = layer;    _c1.clipPath = auto _c2 = offsetClipPath;    _c2.clipBehavior = clipBehavior;    _c2;_c1;
-        pushLayer(layer, painter, offsetoffsetBounds);
+        pushLayer(layer, painter, offset, offsetBounds);
         return layer;
     } else {
         clipPathAndPaint(offsetClipPath, clipBehavior, offsetBounds, [=] ()         {
@@ -202,7 +202,7 @@ TransformLayer PaintingContextCls::pushTransform(bool needsCompositing, Offset o
     if (needsCompositing) {
         TransformLayer layer = oldLayer | make<TransformLayerCls>();
         layer->transform = effectiveTransform;
-        pushLayer(layer, painter, offsetMatrixUtilsCls->inverseTransformRect(effectiveTransform, estimatedBounds));
+        pushLayer(layer, painter, offset, MatrixUtilsCls->inverseTransformRect(effectiveTransform, estimatedBounds));
         return layer;
     } else {
             auto _c3 = canvas();    _c3.auto _c4 = save();    _c4.transform(effectiveTransform->storage());    _c4;_c3;
@@ -265,7 +265,7 @@ void PaintingContextCls::_compositeChild(RenderObject child, Offset offset) {
     assert(child->isRepaintBoundary());
     assert(_canvas == nullptr || _canvas!->getSaveCount() == 1);
     if (child->_needsPaint || !child->_wasRepaintBoundary) {
-        repaintCompositedChild(childtrue);
+        repaintCompositedChild(child, true);
     } else {
         if (child->_needsCompositedLayerUpdate) {
             updateLayerProperties(child);
@@ -355,7 +355,7 @@ void PipelineOwnerCls::flushLayout() {
             }
             return true;
         }());
-        TimelineCls->startSync(__s("LAYOUT")debugTimelineArguments);
+        TimelineCls->startSync(__s("LAYOUT"), debugTimelineArguments);
     }
     assert([=] () {
         _debugDoingLayout = true;
@@ -427,7 +427,7 @@ void PipelineOwnerCls::flushPaint() {
             }
             return true;
         }());
-        TimelineCls->startSync(__s("PAINT")debugTimelineArguments);
+        TimelineCls->startSync(__s("PAINT"), debugTimelineArguments);
     }
     try {
         assert([=] () {
@@ -744,7 +744,7 @@ void RenderObjectCls::layout(Constraints constraints, bool parentUsesSize) {
             }
             return true;
         }());
-        TimelineCls->startSync(__s("$runtimeType")debugTimelineArguments);
+        TimelineCls->startSync(__s("$runtimeType"), debugTimelineArguments);
     }
     assert(constraints != nullptr);
     assert(constraints->debugAssertIsValid(true, [=] () {
@@ -1253,14 +1253,14 @@ String RenderObjectCls::toStringShallow(String joiner, DiagnosticLevel minLevel)
 
 void RenderObjectCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(make<FlagPropertyCls>(__s("needsCompositing")_needsCompositing, __s("needs compositing")));
-    properties->add(<Object>make<DiagnosticsPropertyCls>(__s("creator"), debugCreatornullptr, DiagnosticLevelCls::debug));
-    properties->add(<ParentData>make<DiagnosticsPropertyCls>(__s("parentData"), parentData(_debugCanParentUseSize | false)? __s("can use size") : nullptr, true));
-    properties->add(<Constraints>make<DiagnosticsPropertyCls>(__s("constraints"), _constraintstrue));
-    properties->add(<ContainerLayer>make<DiagnosticsPropertyCls>(__s("layer"), _layerHandle->layer()nullptr));
-    properties->add(<SemanticsNode>make<DiagnosticsPropertyCls>(__s("semantics node"), _semanticsnullptr));
-    properties->add(make<FlagPropertyCls>(__s("isBlockingSemanticsOfPreviouslyPaintedNodes")_semanticsConfiguration()->isBlockingSemanticsOfPreviouslyPaintedNodes, __s("blocks semantics of earlier render objects below the common boundary")));
-    properties->add(make<FlagPropertyCls>(__s("isSemanticBoundary")_semanticsConfiguration()->isSemanticBoundary(), __s("semantic boundary")));
+    properties->add(make<FlagPropertyCls>(__s("needsCompositing"), _needsCompositing, __s("needs compositing")));
+    properties->add(<Object>make<DiagnosticsPropertyCls>(__s("creator"), debugCreator, nullptr, DiagnosticLevelCls::debug));
+    properties->add(<ParentData>make<DiagnosticsPropertyCls>(__s("parentData"), parentData, (_debugCanParentUseSize | false)? __s("can use size") : nullptr, true));
+    properties->add(<Constraints>make<DiagnosticsPropertyCls>(__s("constraints"), _constraints, true));
+    properties->add(<ContainerLayer>make<DiagnosticsPropertyCls>(__s("layer"), _layerHandle->layer(), nullptr));
+    properties->add(<SemanticsNode>make<DiagnosticsPropertyCls>(__s("semantics node"), _semantics, nullptr));
+    properties->add(make<FlagPropertyCls>(__s("isBlockingSemanticsOfPreviouslyPaintedNodes"), _semanticsConfiguration()->isBlockingSemanticsOfPreviouslyPaintedNodes, __s("blocks semantics of earlier render objects below the common boundary")));
+    properties->add(make<FlagPropertyCls>(__s("isSemanticBoundary"), _semanticsConfiguration()->isSemanticBoundary(), __s("semantic boundary")));
 }
 
 List<DiagnosticsNode> RenderObjectCls::debugDescribeChildren() {
@@ -1475,7 +1475,7 @@ void RenderObjectCls::_paintWithContext(PaintingContext context, Offset offset) 
             }
             return true;
         }());
-        TimelineCls->startSync(__s("$runtimeType")debugTimelineArguments);
+        TimelineCls->startSync(__s("$runtimeType"), debugTimelineArguments);
     }
     assert([=] () {
         if (_needsCompositingBitsUpdate) {
@@ -1706,12 +1706,12 @@ void ContainerRenderObjectMixinCls<ChildType, ParentDataType>::insert(ChildType 
     assert(child != _firstChild);
     assert(child != _lastChild);
     adoptChild(child);
-    _insertIntoChildList(childafter);
+    _insertIntoChildList(child, after);
 }
 
 template<typename ChildType, typename ParentDataType>
 void ContainerRenderObjectMixinCls<ChildType, ParentDataType>::add(ChildType child) {
-    insert(child_lastChild);
+    insert(child, _lastChild);
 }
 
 template<typename ChildType, typename ParentDataType>
@@ -1752,7 +1752,7 @@ void ContainerRenderObjectMixinCls<ChildType, ParentDataType>::move(ChildType ch
         return;
     }
     _removeFromChildList(child);
-    _insertIntoChildList(childafter);
+    _insertIntoChildList(child, after);
     markNeedsLayout();
 }
 
@@ -1883,8 +1883,8 @@ void ContainerRenderObjectMixinCls<ChildType, ParentDataType>::_insertIntoChildL
     } else {
         assert(_firstChild != nullptr);
         assert(_lastChild != nullptr);
-        assert(_debugUltimatePreviousSiblingOf(after_firstChild));
-        assert(_debugUltimateNextSiblingOf(after_lastChild));
+        assert(_debugUltimatePreviousSiblingOf(after, _firstChild));
+        assert(_debugUltimateNextSiblingOf(after, _lastChild));
         ParentDataType afterParentData = as<ParentDataType>(after->parentData!);
         if (afterParentData->nextSibling == nullptr) {
             assert(after == _lastChild);
@@ -1906,8 +1906,8 @@ void ContainerRenderObjectMixinCls<ChildType, ParentDataType>::_insertIntoChildL
 template<typename ChildType, typename ParentDataType>
 void ContainerRenderObjectMixinCls<ChildType, ParentDataType>::_removeFromChildList(ChildType child) {
     ParentDataType childParentData = as<ParentDataType>(child->parentData!);
-    assert(_debugUltimatePreviousSiblingOf(child_firstChild));
-    assert(_debugUltimateNextSiblingOf(child_lastChild));
+    assert(_debugUltimatePreviousSiblingOf(child, _firstChild));
+    assert(_debugUltimateNextSiblingOf(child, _lastChild));
     assert(_childCount >= 0);
     if (childParentData->previousSibling == nullptr) {
         assert(_firstChild == child);

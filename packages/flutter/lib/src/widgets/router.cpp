@@ -154,7 +154,7 @@ void _RouterStateCls<T>::_reportRouteInformation(Duration timestamp) {
     if (_routeInformation->value != nullptr) {
         RouteInformation currentRouteInformation = _routeInformation->value!;
         assert(_currentIntentionToReport != nullptr);
-        widget->routeInformationProvider!->routerReportsNewRouteInformation(currentRouteInformation_currentIntentionToReport!);
+        widget->routeInformationProvider!->routerReportsNewRouteInformation(currentRouteInformation, _currentIntentionToReport!);
     }
     _currentIntentionToReport = RouteInformationReportingTypeCls::none;
 }

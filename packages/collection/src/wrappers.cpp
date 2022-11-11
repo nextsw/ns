@@ -38,7 +38,7 @@ E _DelegatingIterableBaseCls<E>::first() {
 
 template<typename E>
 E _DelegatingIterableBaseCls<E>::firstWhere(std::function<bool(E )> test, std::function<E()> orElse) {
-    return _base()->firstWhere(testorElse);
+    return _base()->firstWhere(test, orElse);
 }
 
 template<typename E>
@@ -84,7 +84,7 @@ E _DelegatingIterableBaseCls<E>::last() {
 
 template<typename E>
 E _DelegatingIterableBaseCls<E>::lastWhere(std::function<bool(E )> test, std::function<E()> orElse) {
-    return _base()->lastWhere(testorElse);
+    return _base()->lastWhere(test, orElse);
 }
 
 template<typename E>
@@ -116,7 +116,7 @@ E _DelegatingIterableBaseCls<E>::single() {
 
 template<typename E>
 E _DelegatingIterableBaseCls<E>::singleWhere(std::function<bool(E )> test, std::function<E()> orElse) {
-    return _base()->singleWhere(testorElse);
+    return _base()->singleWhere(test, orElse);
 }
 
 template<typename E>
@@ -657,7 +657,7 @@ String DelegatingMapCls<K, V>::toString() {
 
 template<typename K, typename V>
 V DelegatingMapCls<K, V>::update(K key, std::function<V(V )> update, std::function<V()> ifAbsent) {
-    return _base->update(key, updateifAbsent);
+    return _base->update(key, update, ifAbsent);
 }
 
 template<typename K, typename V>

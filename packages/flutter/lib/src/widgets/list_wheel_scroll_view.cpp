@@ -168,7 +168,7 @@ Simulation FixedExtentScrollPhysicsCls::createBallisticSimulation(ScrollMetrics 
         return nullptr;
     }
     if (settlingItemIndex == metrics->itemIndex()) {
-        return make<SpringSimulationCls>(spring, metrics->pixels, settlingPixels, velocitytolerance);
+        return make<SpringSimulationCls>(spring, metrics->pixels, settlingPixels, velocity, tolerance);
     }
     return FrictionSimulationCls->through(metrics->pixels, settlingPixels, velocity, tolerance->velocity * velocity->sign());
 }
@@ -327,7 +327,7 @@ Element ListWheelElementCls::updateChild(Element child, Widget newWidget, Object
 void ListWheelElementCls::insertRenderObjectChild(RenderObject child, int slot) {
     RenderListWheelViewport renderObject = this->renderObject();
     assert(renderObject->debugValidateChild(child));
-    renderObject->insert(as<RenderBox>(child)as<RenderBox>(_childElements[slot - 1]?->renderObject));
+    renderObject->insert(as<RenderBox>(child), as<RenderBox>(_childElements[slot - 1]?->renderObject));
     assert(renderObject == this->renderObject);
 }
 

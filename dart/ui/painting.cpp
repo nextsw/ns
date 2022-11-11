@@ -326,7 +326,7 @@ void PaintCls::invertColors(bool value) {
 }
 
 String PaintCls::toString() {
-    if (boolValue->fromEnvironment(__s("dart.vm.product")false)) {
+    if (boolValue->fromEnvironment(__s("dart.vm.product"), false)) {
         return super->toString();
     }
     StringBuffer result = make<StringBufferCls>();
@@ -394,7 +394,7 @@ String PaintCls::toString() {
 }
 
 List<Object> PaintCls::_ensureObjectsInitialized() {
-    return _objects ??= <Object>filled(_kObjectCount, nullptrfalse);
+    return _objects ??= <Object>filled(_kObjectCount, nullptr, false);
 }
 
 bool PaintCls::_dither() {
@@ -509,7 +509,7 @@ Future<FrameInfo> CodecCls::getNextFrame() {
 
 Future<Codec> instantiateImageCodec(Uint8List list, bool allowUpscaling, int targetHeight, int targetWidth) {
     ImmutableBuffer buffer = await ImmutableBufferCls->fromUint8List(list);
-    return instantiateImageCodecFromBuffer(buffertargetWidth, targetHeight, allowUpscaling);
+    return instantiateImageCodecFromBuffer(buffer, targetWidth, targetHeight, allowUpscaling);
 }
 
 Future<Codec> instantiateImageCodecFromBuffer(ImmutableBuffer buffer, bool allowUpscaling, int targetHeight, int targetWidth) {
@@ -544,7 +544,7 @@ void decodeImageFromPixels(Uint8List pixels, int width, int height, PixelFormat 
         assert(allowUpscaling || targetHeight <= height);
     }
     ImmutableBufferCls->fromUint8List(pixels)->then([=] (ImmutableBuffer buffer) {
-        ImageDescriptor descriptor = ImageDescriptorCls->raw(bufferwidth, height, rowBytes, format);
+        ImageDescriptor descriptor = ImageDescriptorCls->raw(buffer, width, height, rowBytes, format);
         if (!allowUpscaling) {
             if (targetWidth != nullptr && targetWidth! > descriptor->width) {
                 targetWidth = descriptor->width;
@@ -732,7 +732,7 @@ Tangent PathMetricCls::getTangentForOffset(double distance) {
 }
 
 Path PathMetricCls::extractPath(double start, double end, bool startWithMoveTo) {
-    return _measure->extractPath(contourIndex, start, endstartWithMoveTo);
+    return _measure->extractPath(contourIndex, start, end, startWithMoveTo);
 }
 
 String PathMetricCls::toString() {
@@ -759,7 +759,7 @@ Tangent _PathMeasureCls::getTangentForOffset(int contourIndex, double distance) 
 Path _PathMeasureCls::extractPath(int contourIndex, double start, double end, bool startWithMoveTo) {
     assert(contourIndex <= currentContourIndex, __s("Iterator must be advanced before index $contourIndex can be used."));
     Path path = PathCls->_();
-    _extractPath(path, contourIndex, start, endstartWithMoveTo);
+    _extractPath(path, contourIndex, start, end, startWithMoveTo);
     return path;
 }
 
@@ -1376,7 +1376,7 @@ void CanvasCls::drawImage(Image image, Offset offset, Paint paint) {
     assert(paint != nullptr);
     String error = _drawImage(image->_image, offset->dx(), offset->dy(), paint->_objects, paint->_data, paint->filterQuality()->index);
     if (error != nullptr) {
-        throw PictureRasterizationExceptionCls->_(errorimage->_debugStack);
+        throw PictureRasterizationExceptionCls->_(error, image->_debugStack);
     }
 }
 
@@ -1387,7 +1387,7 @@ void CanvasCls::drawImageRect(Image image, Rect src, Rect dst, Paint paint) {
     assert(paint != nullptr);
     String error = _drawImageRect(image->_image, src->left, src->top, src->right, src->bottom, dst->left, dst->top, dst->right, dst->bottom, paint->_objects, paint->_data, paint->filterQuality()->index);
     if (error != nullptr) {
-        throw PictureRasterizationExceptionCls->_(errorimage->_debugStack);
+        throw PictureRasterizationExceptionCls->_(error, image->_debugStack);
     }
 }
 
@@ -1398,7 +1398,7 @@ void CanvasCls::drawImageNine(Image image, Rect center, Rect dst, Paint paint) {
     assert(paint != nullptr);
     String error = _drawImageNine(image->_image, center->left, center->top, center->right, center->bottom, dst->left, dst->top, dst->right, dst->bottom, paint->_objects, paint->_data, paint->filterQuality()->index);
     if (error != nullptr) {
-        throw PictureRasterizationExceptionCls->_(errorimage->_debugStack);
+        throw PictureRasterizationExceptionCls->_(error, image->_debugStack);
     }
 }
 
@@ -1475,7 +1475,7 @@ void CanvasCls::drawAtlas(Image atlas, List<RSTransform> transforms, List<Rect> 
     int qualityIndex = paint->filterQuality()->index;
     String error = _drawAtlas(paint->_objects, paint->_data, qualityIndex, atlas->_image, rstTransformBuffer, rectBuffer, colorBuffer, (blendMode | BlendModeCls::src)->index, cullRectBuffer);
     if (error != nullptr) {
-        throw PictureRasterizationExceptionCls->_(erroratlas->_debugStack);
+        throw PictureRasterizationExceptionCls->_(error, atlas->_debugStack);
     }
 }
 
@@ -1498,7 +1498,7 @@ void CanvasCls::drawRawAtlas(Image atlas, Float32List rstTransforms, Float32List
     int qualityIndex = paint->filterQuality()->index;
     String error = _drawAtlas(paint->_objects, paint->_data, qualityIndex, atlas->_image, rstTransforms, rects, colors, (blendMode | BlendModeCls::src)->index, cullRect?->_getValue32());
     if (error != nullptr) {
-        throw PictureRasterizationExceptionCls->_(erroratlas->_debugStack);
+        throw PictureRasterizationExceptionCls->_(error, atlas->_debugStack);
     }
 }
 

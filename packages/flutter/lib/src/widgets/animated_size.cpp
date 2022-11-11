@@ -23,9 +23,9 @@ void _AnimatedSizeCls::updateRenderObject(BuildContext context, RenderAnimatedSi
 
 void _AnimatedSizeCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<AlignmentGeometry>make<DiagnosticsPropertyCls>(__s("alignment"), alignmentAlignmentCls::topCenter));
-    properties->add(make<IntPropertyCls>(__s("duration"), duration->inMilliseconds()__s("ms")));
-    properties->add(make<IntPropertyCls>(__s("reverseDuration"), reverseDuration?->inMilliseconds()__s("ms"), nullptr));
+    properties->add(<AlignmentGeometry>make<DiagnosticsPropertyCls>(__s("alignment"), alignment, AlignmentCls::topCenter));
+    properties->add(make<IntPropertyCls>(__s("duration"), duration->inMilliseconds(), __s("ms")));
+    properties->add(make<IntPropertyCls>(__s("reverseDuration"), reverseDuration?->inMilliseconds(), __s("ms"), nullptr));
 }
 
 _AnimatedSizeCls::_AnimatedSizeCls(AlignmentGeometry alignment, Unknown child, Clip clipBehavior, Curve curve, Duration duration, Duration reverseDuration, TickerProvider vsync) {

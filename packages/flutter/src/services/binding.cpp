@@ -104,13 +104,13 @@ Stream<LicenseEntry> ServicesBindingCls::_addLicenses() {
     controller = <LicenseEntry>make<StreamControllerCls>([=] () {
         String rawLicenses;
         if (kIsWeb) {
-            rawLicenses = await rootBundle->loadString(__s("NOTICES")false);
+            rawLicenses = await rootBundle->loadString(__s("NOTICES"), false);
         } else {
             ByteData licenseBytes = await rootBundle->load(__s("NOTICES.Z"));
-            List<int> unzippedBytes = await <List<int>, List<int>>compute(gzip->decode, licenseBytes->buffer->asUint8List()__s("decompressLicenses"));
-            rawLicenses = await <List<int>, String>compute(utf8->decode, unzippedBytes__s("utf8DecodeLicenses"));
+            List<int> unzippedBytes = await <List<int>, List<int>>compute(gzip->decode, licenseBytes->buffer->asUint8List(), __s("decompressLicenses"));
+            rawLicenses = await <List<int>, String>compute(utf8->decode, unzippedBytes, __s("utf8DecodeLicenses"));
         }
-        List<LicenseEntry> licenses = await <String, List<LicenseEntry>>compute(_parseLicenses, rawLicenses__s("parseLicenses"));
+        List<LicenseEntry> licenses = await <String, List<LicenseEntry>>compute(_parseLicenses, rawLicenses, __s("parseLicenses"));
         licenses->forEach(controller->add);
         await await controller->close();
     });

@@ -37,7 +37,7 @@ void TextSpanCls::build(ParagraphBuilder builder, List<PlaceholderDimensions> di
     if (children != nullptr) {
         for (InlineSpan child : children!) {
             assert(child != nullptr);
-            child->build(buildertextScaleFactor, dimensions);
+            child->build(builder, textScaleFactor, dimensions);
         }
     }
     if (hasStyle) {
@@ -86,7 +86,7 @@ void TextSpanCls::computeToPlainText(StringBuffer buffer, bool includePlaceholde
 ;
     }    if (children != nullptr) {
         for (InlineSpan child : children!) {
-            child->computeToPlainText(bufferincludeSemanticsLabels, includePlaceholders);
+            child->computeToPlainText(buffer, includeSemanticsLabels, includePlaceholders);
         }
     }
 }
@@ -97,12 +97,12 @@ void TextSpanCls::computeSemanticsInformation(List<InlineSpanSemanticsInformatio
     bool effectiveSpellOut = spellOut | inheritedSpellOut;
     if (text != nullptr) {
         int textLength = semanticsLabel?->length() | text!->length();
-            List<StringAttribute> list1 = make<ListCls<>>();    if (effectiveSpellOut && textLength > 0) {        list1.add(ArrayItem);    }if (effectiveLocale != nullptr && textLength > 0) {        list1.add(ArrayItem);    }collector->add(make<InlineSpanSemanticsInformationCls>(text!list1, semanticsLabel, recognizer));
+            List<StringAttribute> list1 = make<ListCls<>>();    if (effectiveSpellOut && textLength > 0) {        list1.add(ArrayItem);    }if (effectiveLocale != nullptr && textLength > 0) {        list1.add(ArrayItem);    }collector->add(make<InlineSpanSemanticsInformationCls>(text!, list1, semanticsLabel, recognizer));
     }
     if (children != nullptr) {
         for (InlineSpan child : children!) {
             if (is<TextSpan>(child)) {
-                as<TextSpanCls>(child)->computeSemanticsInformation(collectoreffectiveLocale, effectiveSpellOut);
+                as<TextSpanCls>(child)->computeSemanticsInformation(collector, effectiveLocale, effectiveSpellOut);
             } else {
                 child->computeSemanticsInformation(collector);
             }
@@ -204,13 +204,13 @@ String TextSpanCls::toStringShort() {
 
 void TextSpanCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(make<StringPropertyCls>(__s("text"), textfalse, nullptr));
+    properties->add(make<StringPropertyCls>(__s("text"), text, false, nullptr));
     if (style == nullptr && text == nullptr && children == nullptr) {
         properties->add(DiagnosticsNodeCls->message(__s("(empty)")));
     }
-    properties->add(<GestureRecognizer>make<DiagnosticsPropertyCls>(__s("recognizer"), recognizerrecognizer?->runtimeType->toString(), nullptr));
+    properties->add(<GestureRecognizer>make<DiagnosticsPropertyCls>(__s("recognizer"), recognizer, recognizer?->runtimeType->toString(), nullptr));
     Map<String, std::function<void ()>> map1 = make<MapCls<>>();map1.set(__s("enter"), onEnter);map1.set(__s("exit"), onExit);properties->add(<std::function<void ()>>make<FlagsSummaryCls>(__s("callbacks"), list1));
-    properties->add(<MouseCursor>make<DiagnosticsPropertyCls>(__s("mouseCursor"), cursor()MouseCursorCls::defer));
+    properties->add(<MouseCursor>make<DiagnosticsPropertyCls>(__s("mouseCursor"), cursor(), MouseCursorCls::defer));
     if (semanticsLabel != nullptr) {
         properties->add(make<StringPropertyCls>(__s("semanticsLabel"), semanticsLabel));
     }

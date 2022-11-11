@@ -604,7 +604,7 @@ StreamSubscription<T> _AsBroadcastStreamCls<T>::listen(std::function<void(T data
     if (controller == nullptr || controller->isClosed) {
         return <T>make<_DoneStreamSubscriptionCls>(onDone);
     }
-    _subscription |= _source->listen(controller->addcontroller->addError, controller->close);
+    _subscription |= _source->listen(controller->add, controller->addError, controller->close);
     return controller->_subscribe(onData, onError, onDone, cancelOnError | false);
 }
 
@@ -769,7 +769,7 @@ Future<bool> _StreamIteratorCls<T>::_initializeOrDone() {
         Stream<T> stream = as<dynamic>(stateData);
         auto future = <bool>make<_FutureCls>();
         _stateData = future;
-        auto subscription = stream->listen(_onData_onError, _onDone, true);
+        auto subscription = stream->listen(_onData, _onError, _onDone, true);
         if (_stateData != nullptr) {
             _subscription = subscription;
         }

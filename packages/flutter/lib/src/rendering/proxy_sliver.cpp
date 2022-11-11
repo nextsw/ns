@@ -13,7 +13,7 @@ void RenderProxySliverCls::setupParentData(RenderObject child) {
 
 void RenderProxySliverCls::performLayout() {
     assert(child != nullptr);
-    child!->layout(constraintstrue);
+    child!->layout(constraints, true);
     geometry = child!->geometry;
 }
 
@@ -24,7 +24,7 @@ void RenderProxySliverCls::paint(PaintingContext context, Offset offset) {
 }
 
 bool RenderProxySliverCls::hitTestChildren(SliverHitTestResult result, double crossAxisPosition, double mainAxisPosition) {
-    return child != nullptr && child!->geometry!->hitTestExtent > 0 && child!->hitTest(resultmainAxisPosition, crossAxisPosition);
+    return child != nullptr && child!->geometry!->hitTestExtent > 0 && child!->hitTest(result, mainAxisPosition, crossAxisPosition);
 }
 
 double RenderProxySliverCls::childMainAxisPosition(RenderSliver child) {
@@ -98,7 +98,7 @@ void RenderSliverOpacityCls::paint(PaintingContext context, Offset offset) {
             return;
         }
         assert(needsCompositing);
-        layer = context->pushOpacity(offset, _alpha, super->paintas<OpacityLayer>(layer));
+        layer = context->pushOpacity(offset, _alpha, super->paint, as<OpacityLayer>(layer));
         assert([=] () {
             layer!->debugCreator = debugCreator;
             return true;
@@ -115,7 +115,7 @@ void RenderSliverOpacityCls::visitChildrenForSemantics(RenderObjectVisitor visit
 void RenderSliverOpacityCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
     properties->add(make<DoublePropertyCls>(__s("opacity"), opacity()));
-    properties->add(make<FlagPropertyCls>(__s("alwaysIncludeSemantics")alwaysIncludeSemantics(), __s("alwaysIncludeSemantics")));
+    properties->add(make<FlagPropertyCls>(__s("alwaysIncludeSemantics"), alwaysIncludeSemantics(), __s("alwaysIncludeSemantics")));
 }
 
 RenderSliverIgnorePointerCls::RenderSliverIgnorePointerCls(bool ignoring, bool ignoringSemantics, RenderSliver sliver) {
@@ -160,7 +160,7 @@ void RenderSliverIgnorePointerCls::ignoringSemantics(bool value) {
 }
 
 bool RenderSliverIgnorePointerCls::hitTest(SliverHitTestResult result, double crossAxisPosition, double mainAxisPosition) {
-    return !ignoring() && super->hitTest(resultmainAxisPosition, crossAxisPosition);
+    return !ignoring() && super->hitTest(result, mainAxisPosition, crossAxisPosition);
 }
 
 void RenderSliverIgnorePointerCls::visitChildrenForSemantics(RenderObjectVisitor visitor) {
@@ -172,7 +172,7 @@ void RenderSliverIgnorePointerCls::visitChildrenForSemantics(RenderObjectVisitor
 void RenderSliverIgnorePointerCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
     properties->add(<bool>make<DiagnosticsPropertyCls>(__s("ignoring"), ignoring()));
-    properties->add(<bool>make<DiagnosticsPropertyCls>(__s("ignoringSemantics"), _effectiveIgnoringSemantics()ignoringSemantics() == nullptr? __s("implicitly $_effectiveIgnoringSemantics") : nullptr));
+    properties->add(<bool>make<DiagnosticsPropertyCls>(__s("ignoringSemantics"), _effectiveIgnoringSemantics(), ignoringSemantics() == nullptr? __s("implicitly $_effectiveIgnoringSemantics") : nullptr));
 }
 
 bool RenderSliverIgnorePointerCls::_effectiveIgnoringSemantics() {
@@ -204,7 +204,7 @@ void RenderSliverOffstageCls::offstage(bool value) {
 
 void RenderSliverOffstageCls::performLayout() {
     assert(child != nullptr);
-    child!->layout(constraintstrue);
+    child!->layout(constraints, true);
     if (!offstage()) {
         geometry = child!->geometry;
     } else {
@@ -213,11 +213,11 @@ void RenderSliverOffstageCls::performLayout() {
 }
 
 bool RenderSliverOffstageCls::hitTest(SliverHitTestResult result, double crossAxisPosition, double mainAxisPosition) {
-    return !offstage() && super->hitTest(resultmainAxisPosition, crossAxisPosition);
+    return !offstage() && super->hitTest(result, mainAxisPosition, crossAxisPosition);
 }
 
 bool RenderSliverOffstageCls::hitTestChildren(SliverHitTestResult result, double crossAxisPosition, double mainAxisPosition) {
-    return !offstage() && child != nullptr && child!->geometry!->hitTestExtent > 0 && child!->hitTest(resultmainAxisPosition, crossAxisPosition);
+    return !offstage() && child != nullptr && child!->geometry!->hitTestExtent > 0 && child!->hitTest(result, mainAxisPosition, crossAxisPosition);
 }
 
 void RenderSliverOffstageCls::paint(PaintingContext context, Offset offset) {

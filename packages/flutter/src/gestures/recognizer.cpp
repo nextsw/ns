@@ -81,7 +81,7 @@ T GestureRecognizerCls::invokeCallback(String name, RecognizerCallback<T> callba
 
 void GestureRecognizerCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<Object>make<DiagnosticsPropertyCls>(__s("debugOwner"), debugOwnernullptr));
+    properties->add(<Object>make<DiagnosticsPropertyCls>(__s("debugOwner"), debugOwner, nullptr));
 }
 
 void OneSequenceGestureRecognizerCls::addAllowedPointer(PointerDownEvent event) {

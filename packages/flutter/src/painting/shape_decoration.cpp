@@ -14,7 +14,7 @@ void ShapeDecorationCls::fromBoxDecoration(BoxDecoration source) {
 }
 
 Path ShapeDecorationCls::getClipPath(Rect rect, TextDirection textDirection) {
-    return shape->getOuterPath(recttextDirection);
+    return shape->getOuterPath(rect, textDirection);
 }
 
 EdgeInsetsGeometry ShapeDecorationCls::padding() {
@@ -80,15 +80,15 @@ int ShapeDecorationCls::hashCode() {
 void ShapeDecorationCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
     properties->defaultDiagnosticsTreeStyle = DiagnosticsTreeStyleCls::whitespace;
-    properties->add(make<ColorPropertyCls>(__s("color"), colornullptr));
-    properties->add(<Gradient>make<DiagnosticsPropertyCls>(__s("gradient"), gradientnullptr));
-    properties->add(<DecorationImage>make<DiagnosticsPropertyCls>(__s("image"), imagenullptr));
-    properties->add(<BoxShadow>make<IterablePropertyCls>(__s("shadows"), shadowsnullptr, DiagnosticsTreeStyleCls::whitespace));
+    properties->add(make<ColorPropertyCls>(__s("color"), color, nullptr));
+    properties->add(<Gradient>make<DiagnosticsPropertyCls>(__s("gradient"), gradient, nullptr));
+    properties->add(<DecorationImage>make<DiagnosticsPropertyCls>(__s("image"), image, nullptr));
+    properties->add(<BoxShadow>make<IterablePropertyCls>(__s("shadows"), shadows, nullptr, DiagnosticsTreeStyleCls::whitespace));
     properties->add(<ShapeBorder>make<DiagnosticsPropertyCls>(__s("shape"), shape));
 }
 
 bool ShapeDecorationCls::hitTest(Size size, Offset position, TextDirection textDirection) {
-    return shape->getOuterPath(OffsetCls::zero & sizetextDirection)->contains(position);
+    return shape->getOuterPath(OffsetCls::zero & size, textDirection)->contains(position);
 }
 
 BoxPainter ShapeDecorationCls::createBoxPainter(VoidCallback onChanged) {
@@ -114,7 +114,7 @@ void _ShapeDecorationPainterCls::paint(Canvas canvas, Offset offset, ImageConfig
     _paintShadows(canvas);
     _paintInterior(canvas);
     _paintImage(canvas, configuration);
-    _decoration->shape->paint(canvas, recttextDirection);
+    _decoration->shape->paint(canvas, rect, textDirection);
 }
 
 _ShapeDecorationPainterCls::_ShapeDecorationPainterCls(ShapeDecoration _decoration, VoidCallback onChanged) : BoxPainter(onChanged) {
@@ -135,20 +135,20 @@ void _ShapeDecorationPainterCls::_precache(Rect rect, TextDirection textDirectio
         }
     }
     if (_decoration->gradient != nullptr) {
-        _interiorPaint!->shader() = _decoration->gradient!->createShader(recttextDirection);
+        _interiorPaint!->shader() = _decoration->gradient!->createShader(rect, textDirection);
     }
     if (_decoration->shadows != nullptr) {
         if (_shadowCount == nullptr) {
             _shadowCount = _decoration->shadows!->length();
                     List<Paint> list1 = make<ListCls<>>();        for (auto _x1 : _decoration->shadows!->map([=] (BoxShadow shadow)             {                        shadow->toPaint();                    })) {        {            list1.add(_x1);        }_shadowPaints = list1;
         }
-                    })) {    {        list2.add(_x2);    }_shadowPaths =         List<Path> list2 = make<ListCls<>>();        for (auto _x2 : _decoration->shadows!->map([=] (BoxShadow shadow) {                    return _decoration->shape->getOuterPath(rect->shift(shadow->offset)->inflate(shadow->spreadRadius)textDirection);list2;
+                    })) {    {        list2.add(_x2);    }_shadowPaths =         List<Path> list2 = make<ListCls<>>();        for (auto _x2 : _decoration->shadows!->map([=] (BoxShadow shadow) {                    return _decoration->shape->getOuterPath(rect->shift(shadow->offset)->inflate(shadow->spreadRadius), textDirection);list2;
     }
     if (_interiorPaint != nullptr || _shadowCount != nullptr) {
-        _outerPath = _decoration->shape->getOuterPath(recttextDirection);
+        _outerPath = _decoration->shape->getOuterPath(rect, textDirection);
     }
     if (_decoration->image != nullptr) {
-        _innerPath = _decoration->shape->getInnerPath(recttextDirection);
+        _innerPath = _decoration->shape->getInnerPath(rect, textDirection);
     }
     _lastRect = rect;
     _lastTextDirection = textDirection;

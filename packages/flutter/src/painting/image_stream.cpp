@@ -111,8 +111,8 @@ Object ImageStreamCls::key() {
 
 void ImageStreamCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<ImageStreamCompleter>make<ObjectFlagPropertyCls>(__s("completer"), _completer_completer?->toStringShort(), __s("unresolved")));
-    properties->add(<List<ImageStreamListener>>make<ObjectFlagPropertyCls>(__s("listeners"), _listeners__s("${_listeners?.length} listener${_listeners?.length == 1 ? "" : "s" }"), __s("no listeners"), _completer != nullptr? DiagnosticLevelCls::hidden : DiagnosticLevelCls::info));
+    properties->add(<ImageStreamCompleter>make<ObjectFlagPropertyCls>(__s("completer"), _completer, _completer?->toStringShort(), __s("unresolved")));
+    properties->add(<List<ImageStreamListener>>make<ObjectFlagPropertyCls>(__s("listeners"), _listeners, __s("${_listeners?.length} listener${_listeners?.length == 1 ? "" : "s" }"), __s("no listeners"), _completer != nullptr? DiagnosticLevelCls::hidden : DiagnosticLevelCls::info));
     _completer?->debugFillProperties(properties);
 }
 
@@ -242,9 +242,9 @@ void ImageStreamCompleterCls::reportImageChunkEvent(ImageChunkEvent event) {
 
 void ImageStreamCompleterCls::debugFillProperties(DiagnosticPropertiesBuilder description) {
     super->debugFillProperties(description);
-    description->add(<ImageInfo>make<DiagnosticsPropertyCls>(__s("current"), _currentImage__s("unresolved"), false));
-    description->add(<List<ImageStreamListener>>make<ObjectFlagPropertyCls>(__s("listeners"), _listeners__s("${_listeners.length} listener${_listeners.length == 1 ? "" : "s" }")));
-    description->add(make<FlagPropertyCls>(__s("disposed")_disposed, __s("<disposed>")));
+    description->add(<ImageInfo>make<DiagnosticsPropertyCls>(__s("current"), _currentImage, __s("unresolved"), false));
+    description->add(<List<ImageStreamListener>>make<ObjectFlagPropertyCls>(__s("listeners"), _listeners, __s("${_listeners.length} listener${_listeners.length == 1 ? "" : "s" }")));
+    description->add(make<FlagPropertyCls>(__s("disposed"), _disposed, __s("<disposed>")));
 }
 
 void ImageStreamCompleterCls::_maybeDispose() {
@@ -267,7 +267,7 @@ OneFrameImageStreamCompleterCls::OneFrameImageStreamCompleterCls(Future<ImageInf
         assert(image != nullptr);
     }
     {
-        image-><void>then(setImage[=] (Object error,StackTrace stack) {
+        image-><void>then(setImage, [=] (Object error,StackTrace stack) {
             reportError(make<ErrorDescriptionCls>(__s("resolving a single-frame image stream")), error, stack, informationCollector, true);
         });
     }
@@ -281,11 +281,11 @@ MultiFrameImageStreamCompleterCls::MultiFrameImageStreamCompleterCls(Stream<Imag
     }
     {
         this->debugLabel = debugLabel;
-        codec-><void>then(_handleCodecReady[=] (Object error,StackTrace stack) {
+        codec-><void>then(_handleCodecReady, [=] (Object error,StackTrace stack) {
             reportError(make<ErrorDescriptionCls>(__s("resolving an image codec")), error, stack, informationCollector, true);
         });
         if (chunkEvents != nullptr) {
-            _chunkSubscription = chunkEvents->listen(reportImageChunkEvent[=] (Object error,StackTrace stack) {
+            _chunkSubscription = chunkEvents->listen(reportImageChunkEvent, [=] (Object error,StackTrace stack) {
                 reportError(make<ErrorDescriptionCls>(__s("loading an image")), error, stack, informationCollector, true);
             });
         }

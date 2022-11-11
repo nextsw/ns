@@ -53,32 +53,32 @@ Matrix4 PointerEventCls::removePerspectiveTransform(Matrix4 transform) {
 void _PointerEventDescriptionCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
     properties->add(<Offset>make<DiagnosticsPropertyCls>(__s("position"), position));
-    properties->add(<Offset>make<DiagnosticsPropertyCls>(__s("localPosition"), localPositionposition, DiagnosticLevelCls::debug));
-    properties->add(<Offset>make<DiagnosticsPropertyCls>(__s("delta"), deltaOffsetCls::zero, DiagnosticLevelCls::debug));
-    properties->add(<Offset>make<DiagnosticsPropertyCls>(__s("localDelta"), localDeltadelta, DiagnosticLevelCls::debug));
-    properties->add(<Duration>make<DiagnosticsPropertyCls>(__s("timeStamp"), timeStampDurationCls::zero, DiagnosticLevelCls::debug));
-    properties->add(make<IntPropertyCls>(__s("pointer"), pointerDiagnosticLevelCls::debug));
-    properties->add(<PointerDeviceKind>make<EnumPropertyCls>(__s("kind"), kindDiagnosticLevelCls::debug));
-    properties->add(make<IntPropertyCls>(__s("device"), device0, DiagnosticLevelCls::debug));
-    properties->add(make<IntPropertyCls>(__s("buttons"), buttons0, DiagnosticLevelCls::debug));
-    properties->add(<bool>make<DiagnosticsPropertyCls>(__s("down"), downDiagnosticLevelCls::debug));
-    properties->add(make<DoublePropertyCls>(__s("pressure"), pressure1.0, DiagnosticLevelCls::debug));
-    properties->add(make<DoublePropertyCls>(__s("pressureMin"), pressureMin1.0, DiagnosticLevelCls::debug));
-    properties->add(make<DoublePropertyCls>(__s("pressureMax"), pressureMax1.0, DiagnosticLevelCls::debug));
-    properties->add(make<DoublePropertyCls>(__s("distance"), distance0.0, DiagnosticLevelCls::debug));
-    properties->add(make<DoublePropertyCls>(__s("distanceMin"), distanceMin0.0, DiagnosticLevelCls::debug));
-    properties->add(make<DoublePropertyCls>(__s("distanceMax"), distanceMax0.0, DiagnosticLevelCls::debug));
-    properties->add(make<DoublePropertyCls>(__s("size"), size0.0, DiagnosticLevelCls::debug));
-    properties->add(make<DoublePropertyCls>(__s("radiusMajor"), radiusMajor0.0, DiagnosticLevelCls::debug));
-    properties->add(make<DoublePropertyCls>(__s("radiusMinor"), radiusMinor0.0, DiagnosticLevelCls::debug));
-    properties->add(make<DoublePropertyCls>(__s("radiusMin"), radiusMin0.0, DiagnosticLevelCls::debug));
-    properties->add(make<DoublePropertyCls>(__s("radiusMax"), radiusMax0.0, DiagnosticLevelCls::debug));
-    properties->add(make<DoublePropertyCls>(__s("orientation"), orientation0.0, DiagnosticLevelCls::debug));
-    properties->add(make<DoublePropertyCls>(__s("tilt"), tilt0.0, DiagnosticLevelCls::debug));
-    properties->add(make<IntPropertyCls>(__s("platformData"), platformData0, DiagnosticLevelCls::debug));
-    properties->add(make<FlagPropertyCls>(__s("obscured")obscured, __s("obscured"), DiagnosticLevelCls::debug));
-    properties->add(make<FlagPropertyCls>(__s("synthesized")synthesized, __s("synthesized"), DiagnosticLevelCls::debug));
-    properties->add(make<IntPropertyCls>(__s("embedderId"), embedderId0, DiagnosticLevelCls::debug));
+    properties->add(<Offset>make<DiagnosticsPropertyCls>(__s("localPosition"), localPosition, position, DiagnosticLevelCls::debug));
+    properties->add(<Offset>make<DiagnosticsPropertyCls>(__s("delta"), delta, OffsetCls::zero, DiagnosticLevelCls::debug));
+    properties->add(<Offset>make<DiagnosticsPropertyCls>(__s("localDelta"), localDelta, delta, DiagnosticLevelCls::debug));
+    properties->add(<Duration>make<DiagnosticsPropertyCls>(__s("timeStamp"), timeStamp, DurationCls::zero, DiagnosticLevelCls::debug));
+    properties->add(make<IntPropertyCls>(__s("pointer"), pointer, DiagnosticLevelCls::debug));
+    properties->add(<PointerDeviceKind>make<EnumPropertyCls>(__s("kind"), kind, DiagnosticLevelCls::debug));
+    properties->add(make<IntPropertyCls>(__s("device"), device, 0, DiagnosticLevelCls::debug));
+    properties->add(make<IntPropertyCls>(__s("buttons"), buttons, 0, DiagnosticLevelCls::debug));
+    properties->add(<bool>make<DiagnosticsPropertyCls>(__s("down"), down, DiagnosticLevelCls::debug));
+    properties->add(make<DoublePropertyCls>(__s("pressure"), pressure, 1.0, DiagnosticLevelCls::debug));
+    properties->add(make<DoublePropertyCls>(__s("pressureMin"), pressureMin, 1.0, DiagnosticLevelCls::debug));
+    properties->add(make<DoublePropertyCls>(__s("pressureMax"), pressureMax, 1.0, DiagnosticLevelCls::debug));
+    properties->add(make<DoublePropertyCls>(__s("distance"), distance, 0.0, DiagnosticLevelCls::debug));
+    properties->add(make<DoublePropertyCls>(__s("distanceMin"), distanceMin, 0.0, DiagnosticLevelCls::debug));
+    properties->add(make<DoublePropertyCls>(__s("distanceMax"), distanceMax, 0.0, DiagnosticLevelCls::debug));
+    properties->add(make<DoublePropertyCls>(__s("size"), size, 0.0, DiagnosticLevelCls::debug));
+    properties->add(make<DoublePropertyCls>(__s("radiusMajor"), radiusMajor, 0.0, DiagnosticLevelCls::debug));
+    properties->add(make<DoublePropertyCls>(__s("radiusMinor"), radiusMinor, 0.0, DiagnosticLevelCls::debug));
+    properties->add(make<DoublePropertyCls>(__s("radiusMin"), radiusMin, 0.0, DiagnosticLevelCls::debug));
+    properties->add(make<DoublePropertyCls>(__s("radiusMax"), radiusMax, 0.0, DiagnosticLevelCls::debug));
+    properties->add(make<DoublePropertyCls>(__s("orientation"), orientation, 0.0, DiagnosticLevelCls::debug));
+    properties->add(make<DoublePropertyCls>(__s("tilt"), tilt, 0.0, DiagnosticLevelCls::debug));
+    properties->add(make<IntPropertyCls>(__s("platformData"), platformData, 0, DiagnosticLevelCls::debug));
+    properties->add(make<FlagPropertyCls>(__s("obscured"), obscured, __s("obscured"), DiagnosticLevelCls::debug));
+    properties->add(make<FlagPropertyCls>(__s("synthesized"), synthesized, __s("synthesized"), DiagnosticLevelCls::debug));
+    properties->add(make<IntPropertyCls>(__s("embedderId"), embedderId, 0, DiagnosticLevelCls::debug));
 }
 
 String _PointerEventDescriptionCls::toStringFull() {

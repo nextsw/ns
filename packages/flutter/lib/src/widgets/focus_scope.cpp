@@ -82,12 +82,12 @@ bool FocusCls::isAt(BuildContext context) {
 
 void FocusCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(make<StringPropertyCls>(__s("debugLabel"), debugLabel()nullptr));
-    properties->add(make<FlagPropertyCls>(__s("autofocus")autofocus, __s("AUTOFOCUS"), false));
-    properties->add(make<FlagPropertyCls>(__s("canRequestFocus")canRequestFocus(), __s("NOT FOCUSABLE"), false));
-    properties->add(make<FlagPropertyCls>(__s("descendantsAreFocusable")descendantsAreFocusable(), __s("DESCENDANTS UNFOCUSABLE"), true));
-    properties->add(make<FlagPropertyCls>(__s("descendantsAreTraversable")descendantsAreTraversable(), __s("DESCENDANTS UNTRAVERSABLE"), true));
-    properties->add(<FocusNode>make<DiagnosticsPropertyCls>(__s("focusNode"), focusNodenullptr));
+    properties->add(make<StringPropertyCls>(__s("debugLabel"), debugLabel(), nullptr));
+    properties->add(make<FlagPropertyCls>(__s("autofocus"), autofocus, __s("AUTOFOCUS"), false));
+    properties->add(make<FlagPropertyCls>(__s("canRequestFocus"), canRequestFocus(), __s("NOT FOCUSABLE"), false));
+    properties->add(make<FlagPropertyCls>(__s("descendantsAreFocusable"), descendantsAreFocusable(), __s("DESCENDANTS UNFOCUSABLE"), true));
+    properties->add(make<FlagPropertyCls>(__s("descendantsAreTraversable"), descendantsAreTraversable(), __s("DESCENDANTS UNTRAVERSABLE"), true));
+    properties->add(<FocusNode>make<DiagnosticsPropertyCls>(__s("focusNode"), focusNode, nullptr));
 }
 
 State<Focus> FocusCls::createState() {
@@ -218,7 +218,7 @@ void _FocusStateCls::_initNode() {
     _descendantsWereFocusable = focusNode()->descendantsAreFocusable();
     _descendantsWereTraversable = focusNode()->descendantsAreTraversable();
     _hadPrimaryFocus = focusNode()->hasPrimaryFocus();
-    _focusAttachment = focusNode()->attach(contextwidget->onKeyEvent, widget->onKey);
+    _focusAttachment = focusNode()->attach(context, widget->onKeyEvent, widget->onKey);
     focusNode()->addListener(_handleFocusChanged);
 }
 

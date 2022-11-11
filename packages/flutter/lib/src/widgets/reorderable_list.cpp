@@ -72,7 +72,7 @@ void SliverReorderableListStateCls::didChangeDependencies() {
     _scrollable = ScrollableCls->of(context)!;
     if (_autoScroller?->scrollable != _scrollable) {
         _autoScroller?->stopAutoScroll();
-        _autoScroller = make<EdgeDraggingAutoScrollerCls>(_scrollable_handleScrollableAutoScrolled);
+        _autoScroller = make<EdgeDraggingAutoScrollerCls>(_scrollable, _handleScrollableAutoScrolled);
     }
 }
 
@@ -118,7 +118,7 @@ void SliverReorderableListStateCls::cancelReorder() {
 
 Widget SliverReorderableListStateCls::build(BuildContext context) {
     assert(debugCheckHasOverlay(context));
-    SliverChildBuilderDelegate childrenDelegate = make<SliverChildBuilderDelegateCls>(_itemBuilderwidget->itemCount + (_dragInfo != nullptr? 1 : 0), widget->findChildIndexCallback);
+    SliverChildBuilderDelegate childrenDelegate = make<SliverChildBuilderDelegateCls>(_itemBuilder, widget->itemCount + (_dragInfo != nullptr? 1 : 0), widget->findChildIndexCallback);
     if (widget->itemExtent != nullptr) {
         return make<SliverFixedExtentListCls>(childrenDelegate, widget->itemExtent!);
     } else     {

@@ -9,7 +9,7 @@ Future<void> ViewportOffsetCls::moveTo(double to, bool clamp, Curve curve, Durat
         jumpTo(to);
         return <void>value();
     } else {
-        return animateTo(toduration, curve | CurvesCls::ease);
+        return animateTo(to, duration, curve | CurvesCls::ease);
     }
 }
 

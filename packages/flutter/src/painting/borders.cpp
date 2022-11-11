@@ -104,7 +104,7 @@ ShapeBorder ShapeBorderCls::add(ShapeBorder other, bool reversed) {
 }
 
 ShapeBorder ShapeBorderCls::+(ShapeBorder other) {
-    return add(other) | other->add(thistrue) | make<_CompoundBorderCls>(makeList(ArrayItem, ArrayItem));
+    return add(other) | other->add(this, true) | make<_CompoundBorderCls>(makeList(ArrayItem, ArrayItem));
 }
 
 ShapeBorder ShapeBorderCls::lerpFrom(ShapeBorder a, double t) {
@@ -178,7 +178,7 @@ EdgeInsetsGeometry _CompoundBorderCls::dimensions() {
 ShapeBorder _CompoundBorderCls::add(ShapeBorder other, bool reversed) {
     if (!is<_CompoundBorder>(other)) {
         ShapeBorder ours = reversed? borders->last : borders->first;
-        ShapeBorder merged = ours->add(as<_CompoundBorderCls>(other)reversed) | as<_CompoundBorderCls>(other)->add(ours!reversed);
+        ShapeBorder merged = ours->add(as<_CompoundBorderCls>(other), reversed) | as<_CompoundBorderCls>(other)->add(ours, !reversed);
         if (merged != nullptr) {
                     List<ShapeBorder> list1 = make<ListCls<>>();        for (auto _x1 : borders) {        {            list1.add(_x1);        }List<ShapeBorder> result = list1;
             result[reversed? result->length() - 1 : 0] = merged;
@@ -234,16 +234,16 @@ Path _CompoundBorderCls::getInnerPath(Rect rect, TextDirection textDirection) {
     for (;  < borders->length() - 1; index += 1) {
         rect = borders[index]->dimensions()->resolve(textDirection)->deflateRect(rect);
     }
-    return borders->last->getInnerPath(recttextDirection);
+    return borders->last->getInnerPath(rect, textDirection);
 }
 
 Path _CompoundBorderCls::getOuterPath(Rect rect, TextDirection textDirection) {
-    return borders->first->getOuterPath(recttextDirection);
+    return borders->first->getOuterPath(rect, textDirection);
 }
 
 void _CompoundBorderCls::paint(Canvas canvas, Rect rect, TextDirection textDirection) {
     for (ShapeBorder border : borders) {
-        border->paint(canvas, recttextDirection);
+        border->paint(canvas, rect, textDirection);
         rect = border->dimensions->resolve(textDirection)->deflateRect(rect);
     }
 }

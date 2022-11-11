@@ -655,7 +655,7 @@ bool RenderTableCls::hitTestChildren(BoxHitTestResult result, Offset position) {
             BoxParentData childParentData = as<BoxParentData>(child->parentData!);
             bool isHit = result->addWithPaintOffset(childParentData->offset, position, [=] (BoxHitTestResult result,Offset transformed) {
     assert(transformed == position - childParentData->offset);
-    return child->hitTest(resulttransformed);
+    return child->hitTest(result, transformed);
 });
             if (isHit) {
                 return true;
@@ -670,7 +670,7 @@ void RenderTableCls::paint(PaintingContext context, Offset offset) {
     if (rows() * columns() == 0) {
         if (border() != nullptr) {
             Rect borderRect = RectCls->fromLTWH(offset->dx(), offset->dy(), _tableWidth, 0.0);
-            border()!->paint(context->canvas(), borderRectmakeList(), makeList());
+            border()!->paint(context->canvas(), borderRect, makeList(), makeList());
         }
         return;
     }
@@ -701,18 +701,18 @@ void RenderTableCls::paint(PaintingContext context, Offset offset) {
         Rect borderRect = RectCls->fromLTWH(offset->dx(), offset->dy(), _tableWidth, _rowTops->last);
         Iterable<double> rows = _rowTops->getRange(1, _rowTops->length() - 1);
         Iterable<double> columns = _columnLefts!->skip(1);
-        border()!->paint(context->canvas(), borderRectrows, columns);
+        border()!->paint(context->canvas(), borderRect, rows, columns);
     }
 }
 
 void RenderTableCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<TableBorder>make<DiagnosticsPropertyCls>(__s("border"), border()nullptr));
-    properties->add(<Map<int, TableColumnWidth>>make<DiagnosticsPropertyCls>(__s("specified column widths"), _columnWidths_columnWidths->isEmpty()? DiagnosticLevelCls::hidden : DiagnosticLevelCls::info));
+    properties->add(<TableBorder>make<DiagnosticsPropertyCls>(__s("border"), border(), nullptr));
+    properties->add(<Map<int, TableColumnWidth>>make<DiagnosticsPropertyCls>(__s("specified column widths"), _columnWidths, _columnWidths->isEmpty()? DiagnosticLevelCls::hidden : DiagnosticLevelCls::info));
     properties->add(<TableColumnWidth>make<DiagnosticsPropertyCls>(__s("default column width"), defaultColumnWidth()));
     properties->add(make<MessagePropertyCls>(__s("table size"), __s("$columns\u00D7$rows")));
-    properties->add(<String>make<IterablePropertyCls>(__s("column offsets"), _columnLefts?->map(debugFormatDouble)__s("unknown")));
-    properties->add(<String>make<IterablePropertyCls>(__s("row offsets"), _rowTops->map(debugFormatDouble)__s("unknown")));
+    properties->add(<String>make<IterablePropertyCls>(__s("column offsets"), _columnLefts?->map(debugFormatDouble), __s("unknown")));
+    properties->add(<String>make<IterablePropertyCls>(__s("row offsets"), _rowTops->map(debugFormatDouble), __s("unknown")));
 }
 
 List<DiagnosticsNode> RenderTableCls::debugDescribeChildren() {
@@ -728,7 +728,7 @@ List<DiagnosticsNode> RenderTableCls::debugDescribeChildren() {
             if (child != nullptr) {
                 children->add(child->toDiagnosticsNode(name));
             } else {
-                children->add(<Object>make<DiagnosticsPropertyCls>(name, nullptr__s("is null"), false));
+                children->add(<Object>make<DiagnosticsPropertyCls>(name, nullptr, __s("is null"), false));
             }
         }
     }

@@ -111,7 +111,7 @@ int SystemMouseCursorCls::hashCode() {
 
 void SystemMouseCursorCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<String>make<DiagnosticsPropertyCls>(__s("kind"), kindDiagnosticLevelCls::debug));
+    properties->add(<String>make<DiagnosticsPropertyCls>(__s("kind"), kind, DiagnosticLevelCls::debug));
 }
 
 void SystemMouseCursorCls::_(String kind)

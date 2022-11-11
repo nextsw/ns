@@ -54,11 +54,11 @@ Widget ScrollViewCls::build(BuildContext context) {
 void ScrollViewCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
     properties->add(<Axis>make<EnumPropertyCls>(__s("scrollDirection"), scrollDirection));
-    properties->add(make<FlagPropertyCls>(__s("reverse")reverse, __s("reversed"), true));
-    properties->add(<ScrollController>make<DiagnosticsPropertyCls>(__s("controller"), controllerfalse, nullptr));
-    properties->add(make<FlagPropertyCls>(__s("primary")primary, __s("using primary controller"), true));
-    properties->add(<ScrollPhysics>make<DiagnosticsPropertyCls>(__s("physics"), physicsfalse, nullptr));
-    properties->add(make<FlagPropertyCls>(__s("shrinkWrap")shrinkWrap, __s("shrink-wrapping"), true));
+    properties->add(make<FlagPropertyCls>(__s("reverse"), reverse, __s("reversed"), true));
+    properties->add(<ScrollController>make<DiagnosticsPropertyCls>(__s("controller"), controller, false, nullptr));
+    properties->add(make<FlagPropertyCls>(__s("primary"), primary, __s("using primary controller"), true));
+    properties->add(<ScrollPhysics>make<DiagnosticsPropertyCls>(__s("physics"), physics, false, nullptr));
+    properties->add(make<FlagPropertyCls>(__s("shrinkWrap"), shrinkWrap, __s("shrink-wrapping"), true));
 }
 
 List<Widget> CustomScrollViewCls::buildSlivers(BuildContext context) {
@@ -85,13 +85,13 @@ List<Widget> BoxScrollViewCls::buildSlivers(BuildContext context) {
 
 void BoxScrollViewCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<EdgeInsetsGeometry>make<DiagnosticsPropertyCls>(__s("padding"), paddingnullptr));
+    properties->add(<EdgeInsetsGeometry>make<DiagnosticsPropertyCls>(__s("padding"), padding, nullptr));
 }
 
 ListViewCls::ListViewCls(bool addAutomaticKeepAlives, bool addRepaintBoundaries, bool addSemanticIndexes, Unknown cacheExtent, List<Widget> children, Unknown clipBehavior, Unknown controller, Unknown dragStartBehavior, double itemExtent, Unknown key, Unknown keyboardDismissBehavior, Unknown padding, Unknown physics, Unknown primary, Widget prototypeItem, Unknown restorationId, Unknown reverse, Unknown scrollDirection, int semanticChildCount, Unknown shrinkWrap) : BoxScrollView(semanticChildCount | children->length()) {
     {
         assert(itemExtent == nullptr || prototypeItem == nullptr, __s("You can only pass itemExtent or prototypeItem, not both."));
-        childrenDelegate = make<SliverChildListDelegateCls>(childrenaddAutomaticKeepAlives, addRepaintBoundaries, addSemanticIndexes);
+        childrenDelegate = make<SliverChildListDelegateCls>(children, addAutomaticKeepAlives, addRepaintBoundaries, addSemanticIndexes);
     }
 }
 
@@ -114,7 +114,7 @@ Widget ListViewCls::buildChildLayout(BuildContext context) {
 
 void ListViewCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(make<DoublePropertyCls>(__s("itemExtent"), itemExtentnullptr));
+    properties->add(make<DoublePropertyCls>(__s("itemExtent"), itemExtent, nullptr));
 }
 
 int ListViewCls::_computeActualChildCount(int itemCount) {
@@ -124,7 +124,7 @@ int ListViewCls::_computeActualChildCount(int itemCount) {
 GridViewCls::GridViewCls(bool addAutomaticKeepAlives, bool addRepaintBoundaries, bool addSemanticIndexes, Unknown cacheExtent, List<Widget> children, Unknown clipBehavior, Unknown controller, Unknown dragStartBehavior, SliverGridDelegate gridDelegate, Unknown key, Unknown keyboardDismissBehavior, Unknown padding, Unknown physics, Unknown primary, Unknown restorationId, Unknown reverse, Unknown scrollDirection, int semanticChildCount, Unknown shrinkWrap) : BoxScrollView(semanticChildCount | children->length()) {
     {
         assert(gridDelegate != nullptr);
-        childrenDelegate = make<SliverChildListDelegateCls>(childrenaddAutomaticKeepAlives, addRepaintBoundaries, addSemanticIndexes);
+        childrenDelegate = make<SliverChildListDelegateCls>(children, addAutomaticKeepAlives, addRepaintBoundaries, addSemanticIndexes);
     }
 }
 

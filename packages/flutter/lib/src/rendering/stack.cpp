@@ -230,7 +230,7 @@ bool RenderStackCls::layoutPositionedChild(RenderBox child, StackParentData chil
         childConstraints = childConstraints->tighten(childParentData->height);
     }
 ;
-    }    child->layout(childConstraintstrue);
+    }    child->layout(childConstraints, true);
     double x;
     if (childParentData->left != nullptr) {
         x = childParentData->left!;
@@ -284,7 +284,7 @@ void RenderStackCls::performLayout() {
 }
 
 bool RenderStackCls::hitTestChildren(BoxHitTestResult result, Offset position) {
-    return defaultHitTestChildren(resultposition);
+    return defaultHitTestChildren(result, position);
 }
 
 void RenderStackCls::paintStack(PaintingContext context, Offset offset) {
@@ -293,7 +293,7 @@ void RenderStackCls::paintStack(PaintingContext context, Offset offset) {
 
 void RenderStackCls::paint(PaintingContext context, Offset offset) {
     if (clipBehavior() != ClipCls::none && _hasVisualOverflow) {
-        _clipRectLayer->layer() = context->pushClipRect(needsCompositing, offset, OffsetCls::zero & size, paintStackclipBehavior(), _clipRectLayer->layer());
+        _clipRectLayer->layer() = context->pushClipRect(needsCompositing, offset, OffsetCls::zero & size, paintStack, clipBehavior(), _clipRectLayer->layer());
     } else {
         _clipRectLayer->layer() = nullptr;
         paintStack(context, offset);
@@ -314,7 +314,7 @@ void RenderStackCls::debugFillProperties(DiagnosticPropertiesBuilder properties)
     properties->add(<AlignmentGeometry>make<DiagnosticsPropertyCls>(__s("alignment"), alignment()));
     properties->add(<TextDirection>make<EnumPropertyCls>(__s("textDirection"), textDirection()));
     properties->add(<StackFit>make<EnumPropertyCls>(__s("fit"), fit()));
-    properties->add(<Clip>make<EnumPropertyCls>(__s("clipBehavior"), clipBehavior()ClipCls::hardEdge));
+    properties->add(<Clip>make<EnumPropertyCls>(__s("clipBehavior"), clipBehavior(), ClipCls::hardEdge));
 }
 
 void RenderStackCls::_resolve() {
@@ -397,7 +397,7 @@ bool RenderIndexedStackCls::hitTestChildren(BoxHitTestResult result, Offset posi
     StackParentData childParentData = as<StackParentData>(child->parentData!);
     return result->addWithPaintOffset(childParentData->offset, position, [=] (BoxHitTestResult result,Offset transformed) {
         assert(transformed == position - childParentData->offset);
-        return child->hitTest(resulttransformed);
+        return child->hitTest(result, transformed);
     });
 }
 

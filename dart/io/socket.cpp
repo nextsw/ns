@@ -23,9 +23,9 @@ void InternetAddressTypeCls::_from(int value) {
 Future<ServerSocket> ServerSocketCls::bind(address , int port, int backlog, bool shared, bool v6Only) {
     IOOverrides overrides = IOOverridesCls::current;
     if (overrides == nullptr) {
-        return ServerSocketCls->_bind(address, portbacklog, v6Only, shared);
+        return ServerSocketCls->_bind(address, port, backlog, v6Only, shared);
     }
-    return overrides->serverSocketBind(address, portbacklog, v6Only, shared);
+    return overrides->serverSocketBind(address, port, backlog, v6Only, shared);
 }
 
 void RawSocketOptionCls::fromInt(int level, int option, int value) {
@@ -82,17 +82,17 @@ void ConnectionTaskCls<S>::_(Future<S> socket, std::function<void()> onCancel)
 Future<Socket> SocketCls::connect(host , int port, sourceAddress , int sourcePort, Duration timeout) {
     IOOverrides overrides = IOOverridesCls::current;
     if (overrides == nullptr) {
-        return SocketCls->_connect(host, portsourceAddress, sourcePort, timeout);
+        return SocketCls->_connect(host, port, sourceAddress, sourcePort, timeout);
     }
-    return overrides->socketConnect(host, portsourceAddress, sourcePort, timeout);
+    return overrides->socketConnect(host, port, sourceAddress, sourcePort, timeout);
 }
 
 Future<ConnectionTask<Socket>> SocketCls::startConnect(host , int port, sourceAddress , int sourcePort) {
     IOOverrides overrides = IOOverridesCls::current;
     if (overrides == nullptr) {
-        return SocketCls->_startConnect(host, portsourceAddress, sourcePort);
+        return SocketCls->_startConnect(host, port, sourceAddress, sourcePort);
     }
-    return overrides->socketStartConnect(host, portsourceAddress, sourcePort);
+    return overrides->socketStartConnect(host, port, sourceAddress, sourcePort);
 }
 
 void SocketExceptionCls::closed()

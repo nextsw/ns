@@ -6,7 +6,7 @@ StreamSubscription<Uint8List> _FileStreamCls::listen(std::function<void(Uint8Lis
         _unsubscribed = true;
         return _closeFile();
     });
-    return _controller->stream()->listen(onDataonError, onDone, cancelOnError);
+    return _controller->stream()->listen(onData, onError, onDone, cancelOnError);
 }
 
 _FileStreamCls::_FileStreamCls(String _path, int position, int _end) {
@@ -86,7 +86,7 @@ void _FileStreamCls::_start() {
     InlineMethod;
     Unknown path = _path;
     if (path != nullptr) {
-        make<FileCls>(path)->open(FileModeCls::read)->then(onOpenFileopenFailed);
+        make<FileCls>(path)->open(FileModeCls::read)->then(onOpenFile, openFailed);
     } else {
         try {
             onOpenFile(_FileCls->_openStdioSync(0));
@@ -108,11 +108,11 @@ Future<File> _FileStreamConsumerCls::addStream(Stream<List<int>> stream) {
             try {
                 openedFile->writeFrom(d, 0, d->length)->then([=] ()                 {
                     _subscription->resume();
-                }error);
+                }, error);
             } catch (Unknown e) {
                 error(e, stackTrace);
             };
-        }[=] () {
+        }, [=] () {
             completer->complete(_file);
         }, error, true);
     })->catchError(completer->completeError);
@@ -320,7 +320,7 @@ IOSink _FileCls::openWrite(Encoding encoding, FileMode mode) {
         throw make<ArgumentErrorCls>(__s("Invalid file mode for this operation"));
     }
     auto consumer = make<_FileStreamConsumerCls>(this, mode);
-    return make<IOSinkCls>(consumerencoding);
+    return make<IOSinkCls>(consumer, encoding);
 }
 
 Future<Uint8List> _FileCls::readAsBytes() {
@@ -408,14 +408,14 @@ void _FileCls::writeAsBytesSync(List<int> bytes, bool flush, FileMode mode) {
 
 Future<File> _FileCls::writeAsString(String contents, Encoding encoding, bool flush, FileMode mode) {
     try {
-        return writeAsBytes(encoding->encode(contents)mode, flush);
+        return writeAsBytes(encoding->encode(contents), mode, flush);
     } catch (Unknown e) {
         return FutureCls->error(e);
     };
 }
 
 void _FileCls::writeAsStringSync(String contents, Encoding encoding, bool flush, FileMode mode) {
-    writeAsBytesSync(encoding->encode(contents)mode, flush);
+    writeAsBytesSync(encoding->encode(contents), mode, flush);
 }
 
 String _FileCls::toString() {
@@ -489,7 +489,7 @@ T _FileCls::_checkNotNull(T t, String name) {
 }
 
 Future<void> _RandomAccessFileCls::close() {
-    return _dispatch(_IOServiceCls::fileClose, makeList(ArrayItem)true)->then([=] (Unknown  result) {
+    return _dispatch(_IOServiceCls::fileClose, makeList(ArrayItem), true)->then([=] (Unknown  result) {
         if (result == -1) {
             throw make<FileSystemExceptionCls>(__s("Cannot close file"), path);
         }

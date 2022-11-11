@@ -48,8 +48,8 @@ int IconThemeDataCls::hashCode() {
 
 void IconThemeDataCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(make<ColorPropertyCls>(__s("color"), colornullptr));
-    properties->add(make<DoublePropertyCls>(__s("opacity"), opacity()nullptr));
-    properties->add(make<DoublePropertyCls>(__s("size"), sizenullptr));
-    properties->add(<Shadow>make<IterablePropertyCls>(__s("shadows"), shadowsnullptr));
+    properties->add(make<ColorPropertyCls>(__s("color"), color, nullptr));
+    properties->add(make<DoublePropertyCls>(__s("opacity"), opacity(), nullptr));
+    properties->add(make<DoublePropertyCls>(__s("size"), size, nullptr));
+    properties->add(<Shadow>make<IterablePropertyCls>(__s("shadows"), shadows, nullptr));
 }

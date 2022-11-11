@@ -82,7 +82,7 @@ void DefaultPlatformMenuDelegateCls::setMenus(List<MenuItem> topLevelMenus) {
     List<Map<String, Object>> representation = makeList();
     if (topLevelMenus->isNotEmpty) {
         for (MenuItem childItem : topLevelMenus) {
-            representation->addAll(childItem->toChannelRepresentation(this_getId));
+            representation->addAll(childItem->toChannelRepresentation(this, _getId));
         }
     }
     Map<String, Object> map1 = make<MapCls<>>();map1.set(__s("0"), representation);Map<String, Object> windowMenu = list1;
@@ -202,7 +202,7 @@ Iterable<Map<String, Object>> PlatformMenuCls::toChannelRepresentation(PlatformM
 Map<String, Object> PlatformMenuCls::serialize(PlatformMenu item, PlatformMenuDelegate delegate, MenuItemSerializableIdGenerator getId) {
     List<Map<String, Object>> result = makeList();
     for (MenuItem childItem : item->menus) {
-        result->addAll(childItem->toChannelRepresentation(delegategetId));
+        result->addAll(childItem->toChannelRepresentation(delegate, getId));
     }
     Map<String, Object> previousItem;
     result->removeWhere([=] (Map<String, Object> item) {
@@ -230,19 +230,19 @@ List<DiagnosticsNode> PlatformMenuCls::debugDescribeChildren() {
 void PlatformMenuCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
     properties->add(make<StringPropertyCls>(__s("label"), label));
-    properties->add(make<FlagPropertyCls>(__s("enabled")menus->isNotEmpty, __s("DISABLED")));
+    properties->add(make<FlagPropertyCls>(__s("enabled"), menus->isNotEmpty, __s("DISABLED")));
 }
 
 Iterable<Map<String, Object>> PlatformMenuItemGroupCls::toChannelRepresentation(PlatformMenuDelegate delegate, MenuItemSerializableIdGenerator getId) {
     assert(members->isNotEmpty, __s("There must be at least one member in a PlatformMenuItemGroup"));
-    return serialize(this, delegategetId);
+    return serialize(this, delegate, getId);
 }
 
 Iterable<Map<String, Object>> PlatformMenuItemGroupCls::serialize(MenuItem group, PlatformMenuDelegate delegate, MenuItemSerializableIdGenerator getId) {
     List<Map<String, Object>> result = makeList();
     Map<String, Object> map1 = make<MapCls<>>();map1.set(_kIdKey, getId(group));map1.set(_kIsDividerKey, true);result->add(list1);
     for (MenuItem item : group->members()) {
-        result->addAll(item->toChannelRepresentation(delegategetId));
+        result->addAll(item->toChannelRepresentation(delegate, getId));
     }
     Map<String, Object> map2 = make<MapCls<>>();map2.set(_kIdKey, getId(group));map2.set(_kIsDividerKey, true);result->add(list2);
     return result;
@@ -275,8 +275,8 @@ String PlatformMenuItemCls::toStringShort() {
 void PlatformMenuItemCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
     properties->add(make<StringPropertyCls>(__s("label"), label));
-    properties->add(<MenuSerializableShortcut>make<DiagnosticsPropertyCls>(__s("shortcut"), shortcutnullptr));
-    properties->add(make<FlagPropertyCls>(__s("enabled")onSelected != nullptr, __s("DISABLED")));
+    properties->add(<MenuSerializableShortcut>make<DiagnosticsPropertyCls>(__s("shortcut"), shortcut, nullptr));
+    properties->add(make<FlagPropertyCls>(__s("enabled"), onSelected != nullptr, __s("DISABLED")));
 }
 
 PlatformProvidedMenuItemCls::PlatformProvidedMenuItemCls(bool enabled, PlatformProvidedMenuItemType type) : PlatformMenuItem(__s("")) {
@@ -298,5 +298,5 @@ Iterable<Map<String, Object>> PlatformProvidedMenuItemCls::toChannelRepresentati
 
 void PlatformProvidedMenuItemCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(make<FlagPropertyCls>(__s("enabled")enabled, __s("DISABLED")));
+    properties->add(make<FlagPropertyCls>(__s("enabled"), enabled, __s("DISABLED")));
 }

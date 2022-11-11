@@ -477,7 +477,7 @@ void _TranspilerCls::opStore() {
     ref(object);
     _Variable v = currentFunction!->variable(pointer);
     if (v != nullptr && !v->initialized) {
-        addToCurrentBlock(make<_StoreCls>(pointer, objecttrue, v->type));
+        addToCurrentBlock(make<_StoreCls>(pointer, object, true, v->type));
         v->initialized = true;
         return;
     }

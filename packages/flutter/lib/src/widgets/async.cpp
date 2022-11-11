@@ -61,7 +61,7 @@ void _StreamBuilderBaseStateCls<T, S>::_subscribe() {
             setState([=] () {
                 _summary = widget->afterData(_summary, data);
             });
-        }[=] (Object error,StackTrace stackTrace) {
+        }, [=] (Object error,StackTrace stackTrace) {
             setState([=] () {
                 _summary = widget->afterError(_summary, error, stackTrace);
             });
@@ -236,7 +236,7 @@ void _FutureBuilderStateCls<T>::_subscribe() {
                     _snapshot = <T>withData(ConnectionStateCls::done, data);
                 });
             }
-        }[=] (Object error,StackTrace stackTrace) {
+        }, [=] (Object error,StackTrace stackTrace) {
             if (_activeCallbackIdentity == callbackIdentity) {
                 setState([=] () {
                     _snapshot = <T>withError(ConnectionStateCls::done, error, stackTrace);

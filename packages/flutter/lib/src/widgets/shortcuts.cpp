@@ -105,5 +105,5 @@ String LogicalKeySetCls::debugDescribeKeys() {
 
 void LogicalKeySetCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<Set<LogicalKeyboardKey>>make<DiagnosticsPropertyCls>(__s("keys"), _keysdebugDescribeKeys()));
+    properties->add(<Set<LogicalKeyboardKey>>make<DiagnosticsPropertyCls>(__s("keys"), _keys, debugDescribeKeys()));
 }

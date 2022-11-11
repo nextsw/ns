@@ -184,14 +184,14 @@ ScrollActivity _NestedScrollCoordinatorCls::createOuterBallisticScrollActivity(d
         }
     }
     if (innerPosition == nullptr) {
-        return _outerPosition()!->createBallisticScrollActivity(_outerPosition()!->physics->createBallisticSimulation(_outerPosition()!, velocity)_NestedBallisticScrollActivityModeCls::independent);
+        return _outerPosition()!->createBallisticScrollActivity(_outerPosition()!->physics->createBallisticSimulation(_outerPosition()!, velocity), _NestedBallisticScrollActivityModeCls::independent);
     }
     _NestedScrollMetrics metrics = _getMetrics(innerPosition, velocity);
-    return _outerPosition()!->createBallisticScrollActivity(_outerPosition()!->physics->createBallisticSimulation(metrics, velocity)_NestedBallisticScrollActivityModeCls::outer, metrics);
+    return _outerPosition()!->createBallisticScrollActivity(_outerPosition()!->physics->createBallisticSimulation(metrics, velocity), _NestedBallisticScrollActivityModeCls::outer, metrics);
 }
 
 ScrollActivity _NestedScrollCoordinatorCls::createInnerBallisticScrollActivity(_NestedScrollPosition position, double velocity) {
-    return position->createBallisticScrollActivity(position->physics->createBallisticSimulation(_getMetrics(position, velocity), velocity)_NestedBallisticScrollActivityModeCls::inner);
+    return position->createBallisticScrollActivity(position->physics->createBallisticSimulation(_getMetrics(position, velocity), velocity), _NestedBallisticScrollActivityModeCls::inner);
 }
 
 double _NestedScrollCoordinatorCls::unnestOffset(double value, _NestedScrollPosition source) {
@@ -403,8 +403,8 @@ String _NestedScrollCoordinatorCls::toString() {
 _NestedScrollCoordinatorCls::_NestedScrollCoordinatorCls(NestedScrollViewState _state, ScrollController _parent, VoidCallback _onHasScrolledBodyChanged, bool _floatHeaderSlivers) {
     {
         double initialScrollOffset = _parent?->initialScrollOffset() | 0.0;
-        _outerController = make<_NestedScrollControllerCls>(thisinitialScrollOffset, __s("outer"));
-        _innerController = make<_NestedScrollControllerCls>(this__s("inner"));
+        _outerController = make<_NestedScrollControllerCls>(this, initialScrollOffset, __s("outer"));
+        _innerController = make<_NestedScrollControllerCls>(this, __s("inner"));
     }
 }
 
@@ -590,7 +590,7 @@ ScrollDirection _NestedScrollPositionCls::userScrollDirection() {
 }
 
 DrivenScrollActivity _NestedScrollPositionCls::createDrivenScrollActivity(double to, Duration duration, Curve curve) {
-    return make<DrivenScrollActivityCls>(thispixels, to, duration, curve, vsync());
+    return make<DrivenScrollActivityCls>(this, pixels, to, duration, curve, vsync());
 }
 
 double _NestedScrollPositionCls::applyUserOffset(double delta) {
@@ -607,7 +607,7 @@ void _NestedScrollPositionCls::goBallistic(double velocity) {
     if (velocity != 0.0 || outOfRange) {
         simulation = physics->createBallisticSimulation(this, velocity);
     }
-    beginActivity(createBallisticScrollActivity(simulation_NestedBallisticScrollActivityModeCls::independent));
+    beginActivity(createBallisticScrollActivity(simulation, _NestedBallisticScrollActivityModeCls::independent));
 }
 
 ScrollActivity _NestedScrollPositionCls::createBallisticScrollActivity(Simulation simulation, _NestedScrollMetrics metrics, _NestedBallisticScrollActivityMode mode) {
@@ -619,7 +619,7 @@ ScrollActivity _NestedScrollPositionCls::createBallisticScrollActivity(Simulatio
 }
 
 Future<void> _NestedScrollPositionCls::animateTo(double to, Curve curve, Duration duration) {
-    return coordinator->animateTo(coordinator->unnestOffset(to, this)duration, curve);
+    return coordinator->animateTo(coordinator->unnestOffset(to, this), duration, curve);
 }
 
 void _NestedScrollPositionCls::jumpTo(double value) {
@@ -831,7 +831,7 @@ void RenderSliverOverlapAbsorberCls::performLayout() {
         geometry = SliverGeometryCls::zero;
         return;
     }
-    child!->layout(constraintstrue);
+    child!->layout(constraints, true);
     SliverGeometry childLayoutGeometry = child!->geometry!;
     geometry = make<SliverGeometryCls>(childLayoutGeometry->scrollExtent - childLayoutGeometry->maxScrollObstructionExtent, childLayoutGeometry->paintExtent, childLayoutGeometry->paintOrigin, math->max(0, childLayoutGeometry->paintExtent - childLayoutGeometry->maxScrollObstructionExtent), childLayoutGeometry->maxPaintExtent, childLayoutGeometry->maxScrollObstructionExtent, childLayoutGeometry->hitTestExtent, childLayoutGeometry->visible, childLayoutGeometry->hasVisualOverflow, childLayoutGeometry->scrollOffsetCorrection);
     handle()->_setExtents(childLayoutGeometry->maxScrollObstructionExtent, childLayoutGeometry->maxScrollObstructionExtent);
@@ -842,7 +842,7 @@ void RenderSliverOverlapAbsorberCls::applyPaintTransform(RenderObject child, Mat
 
 bool RenderSliverOverlapAbsorberCls::hitTestChildren(SliverHitTestResult result, double crossAxisPosition, double mainAxisPosition) {
     if (child != nullptr) {
-        return child!->hitTest(resultmainAxisPosition, crossAxisPosition);
+        return child!->hitTest(result, mainAxisPosition, crossAxisPosition);
     }
     return false;
 }
