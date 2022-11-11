@@ -17,24 +17,24 @@ int PlaceholderSpanIndexSemanticsTagCls::hashCode() {
 
 RenderParagraphCls::RenderParagraphCls(List<RenderBox> children, Locale locale, int maxLines, TextOverflow overflow, SelectionRegistrar registrar, Color selectionColor, bool softWrap, StrutStyle strutStyle, InlineSpan text, TextAlign textAlign, TextDirection textDirection, TextHeightBehavior textHeightBehavior, double textScaleFactor, TextWidthBasis textWidthBasis) {
     {
-        assert(text() != nullptr);
-        assert(text()->debugAssertIsValid());
-        assert(textAlign() != nullptr);
-        assert(textDirection() != nullptr);
-        assert(softWrap() != nullptr);
-        assert(overflow() != nullptr);
-        assert(textScaleFactor() != nullptr);
-        assert(maxLines() == nullptr || maxLines() > 0);
-        assert(textWidthBasis() != nullptr);
-        _softWrap = softWrap();
-        _overflow = overflow();
-        _selectionColor = selectionColor();
-        _textPainter = make<TextPainterCls>(text(), textAlign(), textDirection(), textScaleFactor(), maxLines(), overflow() == TextOverflowCls::ellipsis? _kEllipsis : nullptr, locale(), strutStyle(), textWidthBasis(), textHeightBehavior());
+        assert(text != nullptr);
+        assert(text->debugAssertIsValid());
+        assert(textAlign != nullptr);
+        assert(textDirection != nullptr);
+        assert(softWrap != nullptr);
+        assert(overflow != nullptr);
+        assert(textScaleFactor != nullptr);
+        assert(maxLines == nullptr || maxLines > 0);
+        assert(textWidthBasis != nullptr);
+        _softWrap = softWrap;
+        _overflow = overflow;
+        _selectionColor = selectionColor;
+        _textPainter = make<TextPainterCls>(text, textAlign, textDirection, textScaleFactor, maxLines, overflow == TextOverflowCls::ellipsis? _kEllipsis : nullptr, locale, strutStyle, textWidthBasis, textHeightBehavior);
     }
     {
         addAll(children);
-        _extractPlaceholderSpans(text());
-        this->registrar = registrar();
+        _extractPlaceholderSpans(text);
+        this->registrar = registrar;
     }
 }
 
@@ -45,7 +45,7 @@ void RenderParagraphCls::setupParentData(RenderBox child) {
 }
 
 InlineSpan RenderParagraphCls::text() {
-    return _textPainter->text()!;
+    return _textPainter->text!;
 }
 
 void RenderParagraphCls::text(InlineSpan value) {
@@ -97,28 +97,28 @@ void RenderParagraphCls::dispose() {
 }
 
 TextAlign RenderParagraphCls::textAlign() {
-    return _textPainter->textAlign();
+    return _textPainter->textAlign;
 }
 
 void RenderParagraphCls::textAlign(TextAlign value) {
     assert(value != nullptr);
-    if (_textPainter->textAlign() == value) {
+    if (_textPainter->textAlign == value) {
         return;
     }
-    _textPainter->textAlign() = value;
+    _textPainter->textAlign = value;
     markNeedsPaint();
 }
 
 TextDirection RenderParagraphCls::textDirection() {
-    return _textPainter->textDirection()!;
+    return _textPainter->textDirection!;
 }
 
 void RenderParagraphCls::textDirection(TextDirection value) {
     assert(value != nullptr);
-    if (_textPainter->textDirection() == value) {
+    if (_textPainter->textDirection == value) {
         return;
     }
-    _textPainter->textDirection() = value;
+    _textPainter->textDirection = value;
     markNeedsLayout();
 }
 
@@ -145,87 +145,87 @@ void RenderParagraphCls::overflow(TextOverflow value) {
         return;
     }
     _overflow = value;
-    _textPainter->ellipsis() = value == TextOverflowCls::ellipsis? _kEllipsis : nullptr;
+    _textPainter->ellipsis = value == TextOverflowCls::ellipsis? _kEllipsis : nullptr;
     markNeedsLayout();
 }
 
 double RenderParagraphCls::textScaleFactor() {
-    return _textPainter->textScaleFactor();
+    return _textPainter->textScaleFactor;
 }
 
 void RenderParagraphCls::textScaleFactor(double value) {
     assert(value != nullptr);
-    if (_textPainter->textScaleFactor() == value) {
+    if (_textPainter->textScaleFactor == value) {
         return;
     }
-    _textPainter->textScaleFactor() = value;
+    _textPainter->textScaleFactor = value;
     _overflowShader = nullptr;
     markNeedsLayout();
 }
 
 int RenderParagraphCls::maxLines() {
-    return _textPainter->maxLines();
+    return _textPainter->maxLines;
 }
 
 void RenderParagraphCls::maxLines(int value) {
     assert(value == nullptr || value > 0);
-    if (_textPainter->maxLines() == value) {
+    if (_textPainter->maxLines == value) {
         return;
     }
-    _textPainter->maxLines() = value;
+    _textPainter->maxLines = value;
     _overflowShader = nullptr;
     markNeedsLayout();
 }
 
 Locale RenderParagraphCls::locale() {
-    return _textPainter->locale();
+    return _textPainter->locale;
 }
 
 void RenderParagraphCls::locale(Locale value) {
-    if (_textPainter->locale() == value) {
+    if (_textPainter->locale == value) {
         return;
     }
-    _textPainter->locale() = value;
+    _textPainter->locale = value;
     _overflowShader = nullptr;
     markNeedsLayout();
 }
 
 StrutStyle RenderParagraphCls::strutStyle() {
-    return _textPainter->strutStyle();
+    return _textPainter->strutStyle;
 }
 
 void RenderParagraphCls::strutStyle(StrutStyle value) {
-    if (_textPainter->strutStyle() == value) {
+    if (_textPainter->strutStyle == value) {
         return;
     }
-    _textPainter->strutStyle() = value;
+    _textPainter->strutStyle = value;
     _overflowShader = nullptr;
     markNeedsLayout();
 }
 
 TextWidthBasis RenderParagraphCls::textWidthBasis() {
-    return _textPainter->textWidthBasis();
+    return _textPainter->textWidthBasis;
 }
 
 void RenderParagraphCls::textWidthBasis(TextWidthBasis value) {
     assert(value != nullptr);
-    if (_textPainter->textWidthBasis() == value) {
+    if (_textPainter->textWidthBasis == value) {
         return;
     }
-    _textPainter->textWidthBasis() = value;
+    _textPainter->textWidthBasis = value;
     _overflowShader = nullptr;
     markNeedsLayout();
 }
 
 TextHeightBehavior RenderParagraphCls::textHeightBehavior() {
-    return _textPainter->textHeightBehavior();
+    return _textPainter->textHeightBehavior;
 }
 
 void RenderParagraphCls::textHeightBehavior(TextHeightBehavior value) {
-    if (_textPainter->textHeightBehavior() == value) {
+    if (_textPainter->textHeightBehavior == value) {
         return;
     }
-    _textPainter->textHeightBehavior() = value;
+    _textPainter->textHeightBehavior = value;
     _overflowShader = nullptr;
     markNeedsLayout();
 }
@@ -287,14 +287,14 @@ bool RenderParagraphCls::hitTestSelf(Offset position) {
 bool RenderParagraphCls::hitTestChildren(Offset position, BoxHitTestResult result) {
     bool hitText = false;
     TextPosition textPosition = _textPainter->getPositionForOffset(position);
-    InlineSpan span = _textPainter->text()!->getSpanForPosition(textPosition);
+    InlineSpan span = _textPainter->text!->getSpanForPosition(textPosition);
     if (span != nullptr && is<HitTestTarget>(span)) {
         result->add(make<HitTestEntryCls>(as<HitTestTarget>(span)));
         hitText = true;
     }
     RenderBox child = firstChild;
     int childIndex = 0;
-    while (child != nullptr &&  < _textPainter->inlinePlaceholderBoxes()!->length()) {
+    while (child != nullptr &&  < _textPainter->inlinePlaceholderBoxes()!->length) {
         TextParentData textParentData = as<TextParentData>(child->parentData!);
             auto _c1 = Matrix4Cls->translationValues(textParentData->offset->dx, textParentData->offset->dy, 0.0);    _c1.scale(textParentData->scale, textParentData->scale, textParentData->scale);Matrix4 transform = _c1;
         bool isHit = result->addWithPaintTransform(transform, position, [=] (BoxHitTestResult result,Offset transformed) {
@@ -329,7 +329,7 @@ Size RenderParagraphCls::computeDryLayout(BoxConstraints constraints) {
     }
     _textPainter->setPlaceholderDimensions(_layoutChildren(constraintstrue));
     _layoutText(constraints->minWidth, constraints->maxWidth);
-    return constraints->constrain(_textPainter->size());
+    return constraints->constrain(_textPainter->size);
 }
 
 void RenderParagraphCls::performLayout() {
@@ -337,11 +337,11 @@ void RenderParagraphCls::performLayout() {
     _placeholderDimensions = _layoutChildren(constraints);
     _layoutTextWithConstraints(constraints);
     _setParentData();
-    Size textSize = _textPainter->size();
+    Size textSize = _textPainter->size;
     bool textDidExceedMaxLines = _textPainter->didExceedMaxLines();
-    size = constraints->constrain(textSize());
-    bool didOverflowHeight = size->height < textSize()->height() || textDidExceedMaxLines;
-    bool didOverflowWidth = size->width < textSize()->width();
+    size = constraints->constrain(textSize);
+    bool didOverflowHeight = size->height < textSize->height || textDidExceedMaxLines;
+    bool didOverflowWidth = size->width < textSize->width;
     bool hasVisualOverflow = didOverflowWidth || didOverflowHeight;
     if (hasVisualOverflow) {
         ;
@@ -372,7 +372,7 @@ void RenderParagraphCls::paint(PaintingContext context, Offset offset) {
     _textPainter->paint(context->canvas, offset);
     RenderBox child = firstChild;
     int childIndex = 0;
-    while (child != nullptr &&  < _textPainter->inlinePlaceholderBoxes()!->length()) {
+    while (child != nullptr &&  < _textPainter->inlinePlaceholderBoxes()!->length) {
         TextParentData textParentData = as<TextParentData>(child->parentData!);
         double scale = textParentData->scale!;
         context->pushTransform(needsCompositing, offset + textParentData->offset, Matrix4Cls->diagonal3Values(scale, scale, scale), [=] (PaintingContext context,Offset offset) {
@@ -431,17 +431,17 @@ TextRange RenderParagraphCls::getWordBoundary(TextPosition position) {
 
 Size RenderParagraphCls::textSize() {
     assert(!debugNeedsLayout);
-    return _textPainter->size();
+    return _textPainter->size;
 }
 
 void RenderParagraphCls::describeSemanticsConfiguration(SemanticsConfiguration config) {
     super->describeSemanticsConfiguration(config);
-    _semanticsInfo = text()->getSemanticsInformation();
+    _semanticsInfo = text->getSemanticsInformation();
     if (_semanticsInfo!->any([=] (InlineSpanSemanticsInformation info)     {
         info->recognizer != nullptr;
     })) {
         config->explicitChildNodes = true;
-        config->isSemanticBoundary = true;
+        config->isSemanticBoundary() = true;
     } else {
         if (_cachedAttributedLabel == nullptr) {
             StringBuffer buffer = make<StringBufferCls>();
@@ -459,14 +459,14 @@ void RenderParagraphCls::describeSemanticsConfiguration(SemanticsConfiguration c
             _cachedAttributedLabel = make<AttributedStringCls>(buffer->toString()attributes);
         }
         config->attributedLabel = _cachedAttributedLabel!;
-        config->textDirection = textDirection();
+        config->textDirection = textDirection;
     }
 }
 
 void RenderParagraphCls::assembleSemanticsNode(Iterable<SemanticsNode> children, SemanticsConfiguration config, SemanticsNode node) {
     assert(_semanticsInfo != nullptr && _semanticsInfo!->isNotEmpty);
     List<SemanticsNode> newChildren = makeList();
-    TextDirection currentDirection = textDirection();
+    TextDirection currentDirection = textDirection;
     Rect currentRect;
     double ordinal = 0.0;
     int start = 0;
@@ -505,23 +505,23 @@ void RenderParagraphCls::assembleSemanticsNode(Iterable<SemanticsNode> children,
             }
             rect = RectCls->fromLTWH(math->max(0.0, rect->left), math->max(0.0, rect->top), math->min(rect->width, constraints->maxWidth), math->min(rect->height, constraints->maxHeight));
             currentRect = RectCls->fromLTRB(rect->left->floorToDouble() - 4.0, rect->top->floorToDouble() - 4.0, rect->right->ceilToDouble() + 4.0, rect->bottom->ceilToDouble() + 4.0);
-                    auto _c1 = make<SemanticsConfigurationCls>();        _c1.sortKey = auto _c2 = make<OrdinalSortKeyCls>(ordinal++);        _c2.textDirection() = auto _c3 = initialDirection;        _c3.attributedLabel = make<AttributedStringCls>(info->semanticsLabel or info->textinfo->stringAttributes);        _c3;        _c2;SemanticsConfiguration configuration = _c1;
+                    auto _c1 = make<SemanticsConfigurationCls>();        _c1.sortKey = auto _c2 = make<OrdinalSortKeyCls>(ordinal++);        _c2.textDirection = auto _c3 = initialDirection;        _c3.attributedLabel = make<AttributedStringCls>(info->semanticsLabel or info->textinfo->stringAttributes);        _c3;        _c2;SemanticsConfiguration configuration = _c1;
             GestureRecognizer recognizer = info->recognizer;
             if (recognizer != nullptr) {
                 if (is<TapGestureRecognizer>(recognizer)) {
-                    if (recognizer->onTap != nullptr) {
+                    if (as<TapGestureRecognizerCls>(recognizer)->onTap != nullptr) {
                         configuration->onTap = recognizer->onTap;
-                        configuration->isLink = true;
+                        configuration->isLink() = true;
                     }
                 } else                 {
                     if (is<DoubleTapGestureRecognizer>(recognizer)) {
-                    if (recognizer->onDoubleTap != nullptr) {
+                    if (as<DoubleTapGestureRecognizerCls>(recognizer)->onDoubleTap != nullptr) {
                         configuration->onTap = recognizer->onDoubleTap;
-                        configuration->isLink = true;
+                        configuration->isLink() = true;
                     }
                 } else                 {
                     if (is<LongPressGestureRecognizer>(recognizer)) {
-                    if (recognizer->onLongPress != nullptr) {
+                    if (as<LongPressGestureRecognizerCls>(recognizer)->onLongPress != nullptr) {
                         configuration->onLongPress = recognizer->onLongPress;
                     }
                 } else {
@@ -532,7 +532,7 @@ void RenderParagraphCls::assembleSemanticsNode(Iterable<SemanticsNode> children,
                 }            }
             if (node->parentPaintClipRect != nullptr) {
                 Rect paintRect = node->parentPaintClipRect!->intersect(currentRect);
-                configuration->isHidden = paintRect->isEmpty && !currentRect->isEmpty;
+                configuration->isHidden() = paintRect->isEmpty() && !currentRect->isEmpty();
             }
             SemanticsNode newChild;
             if (_cachedChildNodes?->isNotEmpty or false) {
@@ -563,13 +563,13 @@ List<DiagnosticsNode> RenderParagraphCls::debugDescribeChildren() {
 
 void RenderParagraphCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<TextAlign>make<EnumPropertyCls>(__s("textAlign"), textAlign()));
-    properties->add(<TextDirection>make<EnumPropertyCls>(__s("textDirection"), textDirection()));
-    properties->add(make<FlagPropertyCls>(__s("softWrap")softWrap(), __s("wrapping at box width"), __s("no wrapping except at line break characters"), true));
-    properties->add(<TextOverflow>make<EnumPropertyCls>(__s("overflow"), overflow()));
-    properties->add(make<DoublePropertyCls>(__s("textScaleFactor"), textScaleFactor()1.0));
-    properties->add(<Locale>make<DiagnosticsPropertyCls>(__s("locale"), locale()nullptr));
-    properties->add(make<IntPropertyCls>(__s("maxLines"), maxLines()__s("unlimited")));
+    properties->add(<TextAlign>make<EnumPropertyCls>(__s("textAlign"), textAlign));
+    properties->add(<TextDirection>make<EnumPropertyCls>(__s("textDirection"), textDirection));
+    properties->add(make<FlagPropertyCls>(__s("softWrap")softWrap, __s("wrapping at box width"), __s("no wrapping except at line break characters"), true));
+    properties->add(<TextOverflow>make<EnumPropertyCls>(__s("overflow"), overflow));
+    properties->add(make<DoublePropertyCls>(__s("textScaleFactor"), textScaleFactor1.0));
+    properties->add(<Locale>make<DiagnosticsPropertyCls>(__s("locale"), localenullptr));
+    properties->add(make<IntPropertyCls>(__s("maxLines"), maxLines__s("unlimited")));
 }
 
 void RenderParagraphCls::_updateSelectionRegistrarSubscription() {
@@ -588,7 +588,7 @@ void RenderParagraphCls::_removeSelectionRegistrarSubscription() {
 }
 
 List<_SelectableFragment> RenderParagraphCls::_getSelectableFragments() {
-    String plainText = text()->toPlainText(false);
+    String plainText = text->toPlainText(false);
     List<_SelectableFragment> result = makeList();
     int start = 0;
     while ( < plainText->length) {
@@ -619,7 +619,7 @@ void RenderParagraphCls::_extractPlaceholderSpans(InlineSpan span) {
     _placeholderSpans = makeList();
     span->visitChildren([=] (InlineSpan span) {
         if (is<PlaceholderSpan>(span)) {
-            _placeholderSpans->add(span);
+            _placeholderSpans->add(as<PlaceholderSpanCls>(span));
         }
         return true;
     });
@@ -635,7 +635,7 @@ double RenderParagraphCls::_computeIntrinsicHeight(double width) {
     }
     _computeChildrenHeightWithMinIntrinsics(width);
     _layoutText(width, width);
-    return _textPainter->height();
+    return _textPainter->height;
 }
 
 bool RenderParagraphCls::_canComputeIntrinsics() {
@@ -673,7 +673,7 @@ void RenderParagraphCls::_computeChildrenHeightWithMinIntrinsics(double width) {
     RenderBox child = firstChild;
     List<PlaceholderDimensions> placeholderDimensions = <PlaceholderDimensions>filled(childCount, PlaceholderDimensionsCls::empty);
     int childIndex = 0;
-    width = width / textScaleFactor();
+    width = width / textScaleFactor;
     while (child != nullptr) {
         Size size = child->getDryLayout(make<BoxConstraintsCls>(width));
         placeholderDimensions[childIndex] = make<PlaceholderDimensionsCls>(size, _placeholderSpans[childIndex]->alignment, _placeholderSpans[childIndex]->baseline);
@@ -684,7 +684,7 @@ void RenderParagraphCls::_computeChildrenHeightWithMinIntrinsics(double width) {
 }
 
 void RenderParagraphCls::_layoutText(double maxWidth, double minWidth) {
-    bool widthMatters = softWrap() || overflow() == TextOverflowCls::ellipsis;
+    bool widthMatters = softWrap || overflow == TextOverflowCls::ellipsis;
     _textPainter->layout(minWidth, widthMatters? maxWidth : double->infinity);
 }
 
@@ -701,7 +701,7 @@ List<PlaceholderDimensions> RenderParagraphCls::_layoutChildren(BoxConstraints c
     List<PlaceholderDimensions> placeholderDimensions = <PlaceholderDimensions>filled(childCount, PlaceholderDimensionsCls::empty);
     int childIndex = 0;
     BoxConstraints boxConstraints = make<BoxConstraintsCls>(constraints->maxWidth);
-    boxConstraints = boxConstraints / textScaleFactor();
+    boxConstraints = boxConstraints / textScaleFactor;
     while (child != nullptr) {
         double baselineOffset;
         Size childSize;
@@ -723,7 +723,7 @@ List<PlaceholderDimensions> RenderParagraphCls::_layoutChildren(BoxConstraints c
 void RenderParagraphCls::_setParentData() {
     RenderBox child = firstChild;
     int childIndex = 0;
-    while (child != nullptr &&  < _textPainter->inlinePlaceholderBoxes()!->length()) {
+    while (child != nullptr &&  < _textPainter->inlinePlaceholderBoxes()!->length) {
         TextParentData textParentData = as<TextParentData>(child->parentData!);
         textParentData->offset = make<OffsetCls>(_textPainter->inlinePlaceholderBoxes()![childIndex]->left, _textPainter->inlinePlaceholderBoxes()![childIndex]->top);
         textParentData->scale = _textPainter->inlinePlaceholderScales()![childIndex];
@@ -767,7 +767,7 @@ SelectedContent _SelectableFragmentCls::getSelectedContent() {
     }
     int start = math->min(_textSelectionStart!->offset, _textSelectionEnd!->offset);
     int end = math->max(_textSelectionStart!->offset, _textSelectionEnd!->offset);
-    return make<SelectedContentCls>(paragraph->text()->toPlainText(false)->substring(start, end));
+    return make<SelectedContentCls>(paragraph->text->toPlainText(false)->substring(start, end));
 }
 
 Matrix4 _SelectableFragmentCls::getTransformToParagraph() {
@@ -798,27 +798,27 @@ void _SelectableFragmentCls::didChangeParagraphLayout() {
 }
 
 Size _SelectableFragmentCls::size() {
-    return _rect()->size();
+    return _rect()->size;
 }
 
 void _SelectableFragmentCls::paint(PaintingContext context, Offset offset) {
     if (_textSelectionStart == nullptr || _textSelectionEnd == nullptr) {
         return;
     }
-    if (paragraph->selectionColor() != nullptr) {
+    if (paragraph->selectionColor != nullptr) {
         TextSelection selection = make<TextSelectionCls>(_textSelectionStart!->offset, _textSelectionEnd!->offset);
-            auto _c1 = make<PaintCls>();    _c1.style = auto _c2 = PaintingStyleCls::fill;    _c2.color = paragraph->selectionColor()!;    _c2;Paint selectionPaint = _c1;
+            auto _c1 = make<PaintCls>();    _c1.style = auto _c2 = PaintingStyleCls::fill;    _c2.color = paragraph->selectionColor!;    _c2;Paint selectionPaint = _c1;
         for (TextBox textBox : paragraph->getBoxesForSelection(selection)) {
             context->canvas->drawRect(textBox->toRect()->shift(offset), selectionPaint);
         }
     }
     Matrix4 transform = getTransformToParagraph();
-    if (_startHandleLayerLink != nullptr && value()->startSelectionPoint != nullptr) {
-        context->pushLayer(make<LeaderLayerCls>(_startHandleLayerLink!, offset + MatrixUtilsCls->transformPoint(transform, value()->startSelectionPoint!->localPosition)), [=] (PaintingContext context,Offset offset) {
+    if (_startHandleLayerLink != nullptr && value->startSelectionPoint != nullptr) {
+        context->pushLayer(make<LeaderLayerCls>(_startHandleLayerLink!, offset + MatrixUtilsCls->transformPoint(transform, value->startSelectionPoint!->localPosition)), [=] (PaintingContext context,Offset offset) {
         }, OffsetCls::zero);
     }
-    if (_endHandleLayerLink != nullptr && value()->endSelectionPoint != nullptr) {
-        context->pushLayer(make<LeaderLayerCls>(_endHandleLayerLink!, offset + MatrixUtilsCls->transformPoint(transform, value()->endSelectionPoint!->localPosition)), [=] (PaintingContext context,Offset offset) {
+    if (_endHandleLayerLink != nullptr && value->endSelectionPoint != nullptr) {
+        context->pushLayer(make<LeaderLayerCls>(_endHandleLayerLink!, offset + MatrixUtilsCls->transformPoint(transform, value->endSelectionPoint!->localPosition)), [=] (PaintingContext context,Offset offset) {
         }, OffsetCls::zero);
     }
 }
@@ -850,7 +850,7 @@ SelectionGeometry _SelectableFragmentCls::_getSelectionGeometry() {
     bool isReversed = selectionStart > selectionEnd;
     Offset startOffsetInParagraphCoordinates = paragraph->_getOffsetForPosition(make<TextPositionCls>(selectionStart));
     Offset endOffsetInParagraphCoordinates = selectionStart == selectionEnd? startOffsetInParagraphCoordinates : paragraph->_getOffsetForPosition(make<TextPositionCls>(selectionEnd));
-    bool flipHandles = isReversed != (TextDirectionCls::rtl == paragraph->textDirection());
+    bool flipHandles = isReversed != (TextDirectionCls::rtl == paragraph->textDirection);
     auto _c1 = getTransformToParagraph();_c1.invert();Matrix4 paragraphToFragmentTransform = _c1;
     return make<SelectionGeometryCls>(make<SelectionPointCls>(MatrixUtilsCls->transformPoint(paragraphToFragmentTransform, startOffsetInParagraphCoordinates), paragraph->_textPainter->preferredLineHeight(), flipHandles? TextSelectionHandleTypeCls::right : TextSelectionHandleTypeCls::left), make<SelectionPointCls>(MatrixUtilsCls->transformPoint(paragraphToFragmentTransform, endOffsetInParagraphCoordinates), paragraph->_textPainter->preferredLineHeight(), flipHandles? TextSelectionHandleTypeCls::left : TextSelectionHandleTypeCls::right), _textSelectionStart!->offset == _textSelectionEnd!->offset? SelectionStatusCls::collapsed : SelectionStatusCls::uncollapsed, true);
 }
@@ -868,7 +868,7 @@ SelectionResult _SelectableFragmentCls::_updateSelectionEdge(Offset globalPositi
     if (_rect()->isEmpty()) {
         return SelectionUtilsCls->getResultBasedOnRect(_rect(), localPosition);
     }
-    Offset adjustedOffset = SelectionUtilsCls->adjustDragOffset(_rect(), localPositionparagraph->textDirection());
+    Offset adjustedOffset = SelectionUtilsCls->adjustDragOffset(_rect(), localPositionparagraph->textDirection);
     TextPosition position = _clampTextPosition(paragraph->getPositionForOffset(adjustedOffset));
     _setSelectionPosition(positionisEnd);
     if (position->offset == range->end) {
@@ -916,7 +916,7 @@ SelectionResult _SelectableFragmentCls::_handleSelectWord(Offset globalPosition)
         return SelectionResultCls::end;
     }
     TextRange word = paragraph->getWordBoundary(position);
-    assert(word->isNormalized);
+    assert(word->isNormalized());
     assert(word->start >= range->start && word->end <= range->end);
     TextPosition start;
     TextPosition end;

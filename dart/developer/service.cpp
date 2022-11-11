@@ -5,7 +5,7 @@ Uri ServiceProtocolInfoCls::serverWebSocketUri() {
         Unknown pathSegments = makeList();
         if (uri->pathSegments->isNotEmpty()) {
             pathSegments->addAll(uri->pathSegments->where([=] (Unknown  s)             {
-                s->isNotEmpty;
+                s->isNotEmpty();
             }));
         }
         pathSegments->add(__s("ws"));
@@ -28,7 +28,7 @@ Future<ServiceProtocolInfo> ServiceCls::getInfo() {
     receivePort->handler = [=] (String uriString)     {
         completer->complete(uriString);
     };
-    _getServerInfo(receivePort->sendPort);
+    _getServerInfo(receivePort->sendPort());
     String uriString = await completer->future;
     Uri uri = uriString == nullptr? nullptr : UriCls->parse(uriString);
     receivePort->close();
@@ -42,7 +42,7 @@ Future<ServiceProtocolInfo> ServiceCls::controlWebServer(bool enable, bool silen
     receivePort->handler = [=] (String uriString)     {
         completer->complete(uriString);
     };
-    _webServerControl(receivePort->sendPort, enable, silenceOutput);
+    _webServerControl(receivePort->sendPort(), enable, silenceOutput);
     String uriString = await completer->future;
     Uri uri = uriString == nullptr? nullptr : UriCls->parse(uriString);
     receivePort->close();

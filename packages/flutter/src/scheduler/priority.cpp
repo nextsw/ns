@@ -5,7 +5,7 @@ int PriorityCls::value() {
 
 Priority PriorityCls::+(int offset) {
     if (offset->abs() > kMaxOffset) {
-        offset = kMaxOffset * offset->sign;
+        offset = kMaxOffset * offset->sign();
     }
     return PriorityCls->_(_value + offset);
 }

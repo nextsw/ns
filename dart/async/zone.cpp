@@ -1,6 +1,6 @@
 #include "zone.hpp"
 void ZoneSpecificationCls::from(CreatePeriodicTimerHandler createPeriodicTimer, CreateTimerHandler createTimer, ErrorCallbackHandler errorCallback, ForkHandler fork, HandleUncaughtErrorHandler handleUncaughtError, ZoneSpecification other, PrintHandler print, RegisterBinaryCallbackHandler registerBinaryCallback, RegisterCallbackHandler registerCallback, RegisterUnaryCallbackHandler registerUnaryCallback, RunHandler run, RunBinaryHandler runBinary, RunUnaryHandler runUnary, ScheduleMicrotaskHandler scheduleMicrotask) {
-    return make<ZoneSpecificationCls>(handleUncaughtError() or other->handleUncaughtError, run() or other->run, runUnary() or other->runUnary, runBinary() or other->runBinary, registerCallback() or other->registerCallback, registerUnaryCallback() or other->registerUnaryCallback, registerBinaryCallback() or other->registerBinaryCallback, errorCallback() or other->errorCallback, scheduleMicrotask() or other->scheduleMicrotask, createTimer() or other->createTimer, createPeriodicTimer() or other->createPeriodicTimer, print() or other->print, fork() or other->fork);
+    return make<ZoneSpecificationCls>(handleUncaughtError or other->handleUncaughtError, run or other->run, runUnary or other->runUnary, runBinary or other->runBinary, registerCallback or other->registerCallback, registerUnaryCallback or other->registerUnaryCallback, registerBinaryCallback or other->registerBinaryCallback, errorCallback or other->errorCallback, scheduleMicrotask or other->scheduleMicrotask, createTimer or other->createTimer, createPeriodicTimer or other->createPeriodicTimer, print or other->print, fork or other->fork);
 }
 
 Zone ZoneCls::current() {
@@ -27,42 +27,42 @@ R _ZoneDelegateCls::runtemplate<typename R> (R f() , Zone zone) {
     auto implementation = _delegationTarget->_run();
     _Zone implZone = implementation->zone;
     auto handler = as<RunHandler>(implementation->function);
-    return handler(implZone, implZone->_parentDelegate, zone, f);
+    return handler(implZone, implZone->_parentDelegate(), zone, f);
 }
 
 R _ZoneDelegateCls::runUnarytemplate<typename R, typename T> (T arg, R f(T arg) , Zone zone) {
     auto implementation = _delegationTarget->_runUnary();
     _Zone implZone = implementation->zone;
     auto handler = as<RunUnaryHandler>(implementation->function);
-    return handler(implZone, implZone->_parentDelegate, zone, f, arg);
+    return handler(implZone, implZone->_parentDelegate(), zone, f, arg);
 }
 
 R _ZoneDelegateCls::runBinarytemplate<typename R, typename T1, typename T2> (T1 arg1, T2 arg2, R f(T1 arg1, T2 arg2) , Zone zone) {
     auto implementation = _delegationTarget->_runBinary();
     _Zone implZone = implementation->zone;
     auto handler = as<RunBinaryHandler>(implementation->function);
-    return handler(implZone, implZone->_parentDelegate, zone, f, arg1, arg2);
+    return handler(implZone, implZone->_parentDelegate(), zone, f, arg1, arg2);
 }
 
 ZoneCallback<R> _ZoneDelegateCls::registerCallbacktemplate<typename R> (R f() , Zone zone) {
     auto implementation = _delegationTarget->_registerCallback();
     _Zone implZone = implementation->zone;
     auto handler = as<RegisterCallbackHandler>(implementation->function);
-    return handler(implZone, implZone->_parentDelegate, zone, f);
+    return handler(implZone, implZone->_parentDelegate(), zone, f);
 }
 
 ZoneUnaryCallback<R, T> _ZoneDelegateCls::registerUnaryCallbacktemplate<typename R, typename T> (R f(T arg) , Zone zone) {
     auto implementation = _delegationTarget->_registerUnaryCallback();
     _Zone implZone = implementation->zone;
     auto handler = as<RegisterUnaryCallbackHandler>(implementation->function);
-    return handler(implZone, implZone->_parentDelegate, zone, f);
+    return handler(implZone, implZone->_parentDelegate(), zone, f);
 }
 
 ZoneBinaryCallback<R, T1, T2> _ZoneDelegateCls::registerBinaryCallbacktemplate<typename R, typename T1, typename T2> (R f(T1 arg1, T2 arg2) , Zone zone) {
     auto implementation = _delegationTarget->_registerBinaryCallback();
     _Zone implZone = implementation->zone;
     auto handler = as<RegisterBinaryCallbackHandler>(implementation->function);
-    return handler(implZone, implZone->_parentDelegate, zone, f);
+    return handler(implZone, implZone->_parentDelegate(), zone, f);
 }
 
 AsyncError _ZoneDelegateCls::errorCallback(Object error, StackTrace stackTrace, Zone zone) {
@@ -73,46 +73,46 @@ AsyncError _ZoneDelegateCls::errorCallback(Object error, StackTrace stackTrace, 
         return nullptr;
     }
     ErrorCallbackHandler handler = implementation->function;
-    return handler(implZone, implZone->_parentDelegate, zone, error, stackTrace);
+    return handler(implZone, implZone->_parentDelegate(), zone, error, stackTrace);
 }
 
 void _ZoneDelegateCls::scheduleMicrotask(f , Zone zone) {
     auto implementation = _delegationTarget->_scheduleMicrotask();
     _Zone implZone = implementation->zone;
     ScheduleMicrotaskHandler handler = implementation->function;
-    handler(implZone, implZone->_parentDelegate, zone, f);
+    handler(implZone, implZone->_parentDelegate(), zone, f);
 }
 
 Timer _ZoneDelegateCls::createTimer(Duration duration, void f() , Zone zone) {
     auto implementation = _delegationTarget->_createTimer();
     _Zone implZone = implementation->zone;
     CreateTimerHandler handler = implementation->function;
-    return handler(implZone, implZone->_parentDelegate, zone, duration, f);
+    return handler(implZone, implZone->_parentDelegate(), zone, duration, f);
 }
 
 Timer _ZoneDelegateCls::createPeriodicTimer(void f(Timer timer) , Duration period, Zone zone) {
     auto implementation = _delegationTarget->_createPeriodicTimer();
     _Zone implZone = implementation->zone;
     CreatePeriodicTimerHandler handler = implementation->function;
-    return handler(implZone, implZone->_parentDelegate, zone, period, f);
+    return handler(implZone, implZone->_parentDelegate(), zone, period, f);
 }
 
 void _ZoneDelegateCls::print(String line, Zone zone) {
     auto implementation = _delegationTarget->_print();
     _Zone implZone = implementation->zone;
     PrintHandler handler = implementation->function;
-    handler(implZone, implZone->_parentDelegate, zone, line);
+    handler(implZone, implZone->_parentDelegate(), zone, line);
 }
 
 Zone _ZoneDelegateCls::fork(ZoneSpecification specification, Zone zone, Map<Object, Object> zoneValues) {
     auto implementation = _delegationTarget->_fork();
     _Zone implZone = implementation->zone;
     ForkHandler handler = implementation->function;
-    return handler(implZone, implZone->_parentDelegate, zone, specification, zoneValues);
+    return handler(implZone, implZone->_parentDelegate(), zone, specification, zoneValues);
 }
 
 bool _ZoneCls::inSameErrorZone(Zone otherZone) {
-    return identical(this, otherZone) || identical(errorZone, otherZone->errorZone);
+    return identical(this, otherZone) || identical(errorZone, otherZone->errorZone());
 }
 
 void _ZoneCls::_processUncaughtError(Object error, StackTrace stackTrace, Zone zone) {
@@ -123,8 +123,8 @@ void _ZoneCls::_processUncaughtError(Object error, StackTrace stackTrace, Zone z
         return;
     }
     HandleUncaughtErrorHandler handler = implementation->function;
-    ZoneDelegate parentDelegate = implZone->_parentDelegate;
-    _Zone parentZone = implZone->parent!;
+    ZoneDelegate parentDelegate = implZone->_parentDelegate();
+    _Zone parentZone = implZone->parent()!;
     _Zone currentZone = ZoneCls::_current;
     try {
         ZoneCls::_current = parentZone;
@@ -228,49 +228,49 @@ void _CustomZoneCls::handleUncaughtError(Object error, StackTrace stackTrace) {
 
 Zone _CustomZoneCls::fork(ZoneSpecification specification, Map<Object, Object> zoneValues) {
     auto implementation = this->_fork;
-    ZoneDelegate parentDelegate = implementation->zone->_parentDelegate();
+    ZoneDelegate parentDelegate = implementation->zone->_parentDelegate;
     ForkHandler handler = implementation->function;
     return handler(implementation->zone, parentDelegate, this, specification, zoneValues);
 }
 
 R _CustomZoneCls::runtemplate<typename R> (R f() ) {
     auto implementation = this->_run;
-    ZoneDelegate parentDelegate = implementation->zone->_parentDelegate();
+    ZoneDelegate parentDelegate = implementation->zone->_parentDelegate;
     auto handler = as<RunHandler>(implementation->function);
     return handler(implementation->zone, parentDelegate, this, f);
 }
 
 R _CustomZoneCls::runUnarytemplate<typename R, typename T> (T arg, R f(T arg) ) {
     auto implementation = this->_runUnary;
-    ZoneDelegate parentDelegate = implementation->zone->_parentDelegate();
+    ZoneDelegate parentDelegate = implementation->zone->_parentDelegate;
     auto handler = as<RunUnaryHandler>(implementation->function);
     return handler(implementation->zone, parentDelegate, this, f, arg);
 }
 
 R _CustomZoneCls::runBinarytemplate<typename R, typename T1, typename T2> (T1 arg1, T2 arg2, R f(T1 arg1, T2 arg2) ) {
     auto implementation = this->_runBinary;
-    ZoneDelegate parentDelegate = implementation->zone->_parentDelegate();
+    ZoneDelegate parentDelegate = implementation->zone->_parentDelegate;
     auto handler = as<RunBinaryHandler>(implementation->function);
     return handler(implementation->zone, parentDelegate, this, f, arg1, arg2);
 }
 
 ZoneCallback<R> _CustomZoneCls::registerCallbacktemplate<typename R> (R callback() ) {
     auto implementation = this->_registerCallback;
-    ZoneDelegate parentDelegate = implementation->zone->_parentDelegate();
+    ZoneDelegate parentDelegate = implementation->zone->_parentDelegate;
     auto handler = as<RegisterCallbackHandler>(implementation->function);
     return handler(implementation->zone, parentDelegate, this, callback);
 }
 
 ZoneUnaryCallback<R, T> _CustomZoneCls::registerUnaryCallbacktemplate<typename R, typename T> (R callback(T arg) ) {
     auto implementation = this->_registerUnaryCallback;
-    ZoneDelegate parentDelegate = implementation->zone->_parentDelegate();
+    ZoneDelegate parentDelegate = implementation->zone->_parentDelegate;
     auto handler = as<RegisterUnaryCallbackHandler>(implementation->function);
     return handler(implementation->zone, parentDelegate, this, callback);
 }
 
 ZoneBinaryCallback<R, T1, T2> _CustomZoneCls::registerBinaryCallbacktemplate<typename R, typename T1, typename T2> (R callback(T1 arg1, T2 arg2) ) {
     auto implementation = this->_registerBinaryCallback;
-    ZoneDelegate parentDelegate = implementation->zone->_parentDelegate();
+    ZoneDelegate parentDelegate = implementation->zone->_parentDelegate;
     auto handler = as<RegisterBinaryCallbackHandler>(implementation->function);
     return handler(implementation->zone, parentDelegate, this, callback);
 }
@@ -282,35 +282,35 @@ AsyncError _CustomZoneCls::errorCallback(Object error, StackTrace stackTrace) {
     if (identical(implementationZone, _rootZone))     {
         return nullptr;
     }
-    ZoneDelegate parentDelegate = implementationZone->_parentDelegate;
+    ZoneDelegate parentDelegate = implementationZone->_parentDelegate();
     ErrorCallbackHandler handler = implementation->function;
     return handler(implementationZone, parentDelegate, this, error, stackTrace);
 }
 
 void _CustomZoneCls::scheduleMicrotask(void f() ) {
     auto implementation = this->_scheduleMicrotask;
-    ZoneDelegate parentDelegate = implementation->zone->_parentDelegate();
+    ZoneDelegate parentDelegate = implementation->zone->_parentDelegate;
     ScheduleMicrotaskHandler handler = implementation->function;
     return handler(implementation->zone, parentDelegate, this, f);
 }
 
 Timer _CustomZoneCls::createTimer(Duration duration, void f() ) {
     auto implementation = this->_createTimer;
-    ZoneDelegate parentDelegate = implementation->zone->_parentDelegate();
+    ZoneDelegate parentDelegate = implementation->zone->_parentDelegate;
     CreateTimerHandler handler = implementation->function;
     return handler(implementation->zone, parentDelegate, this, duration, f);
 }
 
 Timer _CustomZoneCls::createPeriodicTimer(Duration duration, void f(Timer timer) ) {
     auto implementation = this->_createPeriodicTimer;
-    ZoneDelegate parentDelegate = implementation->zone->_parentDelegate();
+    ZoneDelegate parentDelegate = implementation->zone->_parentDelegate;
     CreatePeriodicTimerHandler handler = implementation->function;
     return handler(implementation->zone, parentDelegate, this, duration, f);
 }
 
 void _CustomZoneCls::print(String line) {
     auto implementation = this->_print;
-    ZoneDelegate parentDelegate = implementation->zone->_parentDelegate();
+    ZoneDelegate parentDelegate = implementation->zone->_parentDelegate;
     PrintHandler handler = implementation->function;
     return handler(implementation->zone, parentDelegate, this, line);
 }
@@ -509,7 +509,7 @@ Zone _rootFork(ZoneDelegate parent, Zone self, ZoneSpecification specification, 
         specification = make<ZoneSpecificationCls>();
     } else     {
         if (!is<_ZoneSpecification>(specification)) {
-        specification = ZoneSpecificationCls->from(specification);
+        as<_ZoneSpecificationCls>(specification) = ZoneSpecificationCls->from(as<_ZoneSpecificationCls>(specification));
     }
 ;
     }    Map<Object, Object> valueMap;

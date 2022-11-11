@@ -136,6 +136,6 @@ void _AnimatedSwitcherStateCls::_rebuildOutgoingWidgetsIfNeeded() {
     _outgoingWidgets = <Widget>unmodifiable(_outgoingEntries-><Widget>map([=] (_ChildEntry entry)     {
         entry->transition;
     }));
-    assert(_outgoingEntries->length == _outgoingWidgets!->length());
+    assert(_outgoingEntries->length == _outgoingWidgets!->length);
     assert(_outgoingEntries->isEmpty || _outgoingEntries->last->transition == _outgoingWidgets!->last);
 }

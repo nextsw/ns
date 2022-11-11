@@ -38,10 +38,10 @@ CustomPainterSemanticsCls::CustomPainterSemanticsCls(Key key, SemanticsPropertie
 
 RenderCustomPaintCls::RenderCustomPaintCls(RenderBox child, CustomPainter foregroundPainter, bool isComplex, CustomPainter painter, Size preferredSize, bool willChange) : RenderProxyBox(child) {
     {
-        assert(preferredSize() != nullptr);
-        _painter = painter();
-        _foregroundPainter = foregroundPainter();
-        _preferredSize = preferredSize();
+        assert(preferredSize != nullptr);
+        _painter = painter;
+        _foregroundPainter = foregroundPainter;
+        _preferredSize = preferredSize;
     }
 }
 
@@ -77,7 +77,7 @@ Size RenderCustomPaintCls::preferredSize() {
 
 void RenderCustomPaintCls::preferredSize(Size value) {
     assert(value != nullptr);
-    if (preferredSize() == value) {
+    if (preferredSize == value) {
         return;
     }
     _preferredSize = value;
@@ -86,28 +86,28 @@ void RenderCustomPaintCls::preferredSize(Size value) {
 
 double RenderCustomPaintCls::computeMinIntrinsicWidth(double height) {
     if (child == nullptr) {
-        return preferredSize()->width()->isFinite? preferredSize()->width() : 0;
+        return preferredSize->width->isFinite? preferredSize->width : 0;
     }
     return super->computeMinIntrinsicWidth(height);
 }
 
 double RenderCustomPaintCls::computeMaxIntrinsicWidth(double height) {
     if (child == nullptr) {
-        return preferredSize()->width()->isFinite? preferredSize()->width() : 0;
+        return preferredSize->width->isFinite? preferredSize->width : 0;
     }
     return super->computeMaxIntrinsicWidth(height);
 }
 
 double RenderCustomPaintCls::computeMinIntrinsicHeight(double width) {
     if (child == nullptr) {
-        return preferredSize()->height()->isFinite? preferredSize()->height() : 0;
+        return preferredSize->height->isFinite? preferredSize->height : 0;
     }
     return super->computeMinIntrinsicHeight(width);
 }
 
 double RenderCustomPaintCls::computeMaxIntrinsicHeight(double width) {
     if (child == nullptr) {
-        return preferredSize()->height()->isFinite? preferredSize()->height() : 0;
+        return preferredSize->height->isFinite? preferredSize->height : 0;
     }
     return super->computeMaxIntrinsicHeight(width);
 }
@@ -141,7 +141,7 @@ void RenderCustomPaintCls::performLayout() {
 }
 
 Size RenderCustomPaintCls::computeSizeForNoChild(BoxConstraints constraints) {
-    return constraints->constrain(preferredSize());
+    return constraints->constrain(preferredSize);
 }
 
 void RenderCustomPaintCls::paint(PaintingContext context, Offset offset) {
@@ -158,14 +158,14 @@ void RenderCustomPaintCls::paint(PaintingContext context, Offset offset) {
 
 void RenderCustomPaintCls::describeSemanticsConfiguration(SemanticsConfiguration config) {
     super->describeSemanticsConfiguration(config);
-    _backgroundSemanticsBuilder = painter()?->semanticsBuilder();
-    _foregroundSemanticsBuilder = foregroundPainter()?->semanticsBuilder();
-    config->isSemanticBoundary = _backgroundSemanticsBuilder != nullptr || _foregroundSemanticsBuilder != nullptr;
+    _backgroundSemanticsBuilder = painter?->semanticsBuilder();
+    _foregroundSemanticsBuilder = foregroundPainter?->semanticsBuilder();
+    config->isSemanticBoundary() = _backgroundSemanticsBuilder != nullptr || _foregroundSemanticsBuilder != nullptr;
 }
 
 void RenderCustomPaintCls::assembleSemanticsNode(Iterable<SemanticsNode> children, SemanticsConfiguration config, SemanticsNode node) {
     assert([=] () {
-        if (child == nullptr && children->isNotEmpty) {
+        if (child == nullptr && children->isNotEmpty()) {
             ;
         }
         return true;
@@ -189,8 +189,8 @@ void RenderCustomPaintCls::clearSemantics() {
 void RenderCustomPaintCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
     properties->add(make<MessagePropertyCls>(__s("painter"), __s("$painter")));
-    properties->add(make<MessagePropertyCls>(__s("foregroundPainter"), __s("$foregroundPainter")foregroundPainter() != nullptr? DiagnosticLevelCls::info : DiagnosticLevelCls::fine));
-    properties->add(<Size>make<DiagnosticsPropertyCls>(__s("preferredSize"), preferredSize()SizeCls::zero));
+    properties->add(make<MessagePropertyCls>(__s("foregroundPainter"), __s("$foregroundPainter")foregroundPainter != nullptr? DiagnosticLevelCls::info : DiagnosticLevelCls::fine));
+    properties->add(<Size>make<DiagnosticsPropertyCls>(__s("preferredSize"), preferredSizeSizeCls::zero));
     properties->add(<bool>make<DiagnosticsPropertyCls>(__s("isComplex"), isComplexfalse));
     properties->add(<bool>make<DiagnosticsPropertyCls>(__s("willChange"), willChangefalse));
 }
@@ -200,7 +200,7 @@ void RenderCustomPaintCls::_didUpdatePainter(CustomPainter newPainter, CustomPai
         assert(oldPainter != nullptr);
         markNeedsPaint();
     } else     {
-        if (oldPainter == nullptr || newPainter->runtimeType() != oldPainter->runtimeType() || newPainter->shouldRepaint(oldPainter)) {
+        if (oldPainter == nullptr || newPainter->runtimeType != oldPainter->runtimeType || newPainter->shouldRepaint(oldPainter)) {
         markNeedsPaint();
     }
 ;
@@ -214,7 +214,7 @@ void RenderCustomPaintCls::_didUpdatePainter(CustomPainter newPainter, CustomPai
             markNeedsSemanticsUpdate();
         }
     } else     {
-        if (oldPainter == nullptr || newPainter->runtimeType() != oldPainter->runtimeType() || newPainter->shouldRebuildSemantics(oldPainter)) {
+        if (oldPainter == nullptr || newPainter->runtimeType != oldPainter->runtimeType || newPainter->shouldRebuildSemantics(oldPainter)) {
         markNeedsSemanticsUpdate();
     }
 ;
@@ -230,7 +230,7 @@ void RenderCustomPaintCls::_paintWithPainter(Canvas canvas, Offset offset, Custo
     if (offset != OffsetCls::zero) {
         canvas->translate(offset->dx, offset->dy);
     }
-    painter()->paint(canvas, size);
+    painter->paint(canvas, size);
     assert([=] () {
         int debugNewCanvasSaveCount = canvas->getSaveCount();
         if (debugNewCanvasSaveCount > debugPreviousCanvasSaveCount) {
@@ -370,52 +370,52 @@ SemanticsNode RenderCustomPaintCls::_updateSemanticsChild(CustomPainterSemantics
         config->sortKey = properties->sortKey;
     }
     if (properties->checked != nullptr) {
-        config->isChecked = properties->checked;
+        config->isChecked() = properties->checked;
     }
     if (properties->selected != nullptr) {
-        config->isSelected = properties->selected!;
+        config->isSelected() = properties->selected!;
     }
     if (properties->button != nullptr) {
-        config->isButton = properties->button!;
+        config->isButton() = properties->button!;
     }
     if (properties->link != nullptr) {
-        config->isLink = properties->link!;
+        config->isLink() = properties->link!;
     }
     if (properties->textField != nullptr) {
-        config->isTextField = properties->textField!;
+        config->isTextField() = properties->textField!;
     }
     if (properties->slider != nullptr) {
-        config->isSlider = properties->slider!;
+        config->isSlider() = properties->slider!;
     }
     if (properties->keyboardKey != nullptr) {
-        config->isKeyboardKey = properties->keyboardKey!;
+        config->isKeyboardKey() = properties->keyboardKey!;
     }
     if (properties->readOnly != nullptr) {
-        config->isReadOnly = properties->readOnly!;
+        config->isReadOnly() = properties->readOnly!;
     }
     if (properties->focusable != nullptr) {
-        config->isFocusable = properties->focusable!;
+        config->isFocusable() = properties->focusable!;
     }
     if (properties->focused != nullptr) {
-        config->isFocused = properties->focused!;
+        config->isFocused() = properties->focused!;
     }
     if (properties->enabled != nullptr) {
-        config->isEnabled = properties->enabled;
+        config->isEnabled() = properties->enabled;
     }
     if (properties->inMutuallyExclusiveGroup != nullptr) {
-        config->isInMutuallyExclusiveGroup = properties->inMutuallyExclusiveGroup!;
+        config->isInMutuallyExclusiveGroup() = properties->inMutuallyExclusiveGroup!;
     }
     if (properties->obscured != nullptr) {
-        config->isObscured = properties->obscured!;
+        config->isObscured() = properties->obscured!;
     }
     if (properties->multiline != nullptr) {
-        config->isMultiline = properties->multiline!;
+        config->isMultiline() = properties->multiline!;
     }
     if (properties->hidden != nullptr) {
-        config->isHidden = properties->hidden!;
+        config->isHidden() = properties->hidden!;
     }
     if (properties->header != nullptr) {
-        config->isHeader = properties->header!;
+        config->isHeader() = properties->header!;
     }
     if (properties->scopesRoute != nullptr) {
         config->scopesRoute = properties->scopesRoute!;
@@ -433,10 +433,10 @@ SemanticsNode RenderCustomPaintCls::_updateSemanticsChild(CustomPainterSemantics
         config->currentValueLength = properties->currentValueLength;
     }
     if (properties->toggled != nullptr) {
-        config->isToggled = properties->toggled;
+        config->isToggled() = properties->toggled;
     }
     if (properties->image != nullptr) {
-        config->isImage = properties->image!;
+        config->isImage() = properties->image!;
     }
     if (properties->label != nullptr) {
         config->label = properties->label!;

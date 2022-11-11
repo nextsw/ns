@@ -104,7 +104,7 @@ bool _NestedScrollCoordinatorCls::canScrollBody() {
 
 bool _NestedScrollCoordinatorCls::hasScrolledBody() {
     for (_NestedScrollPosition position : _innerPositions()) {
-        if (!position->hasContentDimensions || !position->hasPixels) {
+        if (!position->hasContentDimensions() || !position->hasPixels()) {
             continue;
         } else         {
             if (position->pixels > position->minScrollExtent) {
@@ -125,7 +125,7 @@ ScrollDirection _NestedScrollCoordinatorCls::userScrollDirection() {
 
 void _NestedScrollCoordinatorCls::updateUserScrollDirection(ScrollDirection value) {
     assert(value != nullptr);
-    if (userScrollDirection() == value) {
+    if (userScrollDirection == value) {
         return;
     }
     _userScrollDirection = value;
@@ -151,7 +151,7 @@ void _NestedScrollCoordinatorCls::beginActivity(_NestedScrollActivityGetter inne
 }
 
 AxisDirection _NestedScrollCoordinatorCls::axisDirection() {
-    return _outerPosition()!->axisDirection();
+    return _outerPosition()!->axisDirection;
 }
 
 void _NestedScrollCoordinatorCls::goIdle() {
@@ -236,7 +236,7 @@ Future<void> _NestedScrollCoordinatorCls::animateTo(Curve curve, Duration durati
     List<Future<void>> resultFutures = makeList(ArrayItem);
     beginActivity(outerActivity, [=] (_NestedScrollPosition position) {
         DrivenScrollActivity innerActivity = position->createDrivenScrollActivity(nestOffset(to, position), duration, curve);
-        resultFutures->add(innerActivity->done);
+        resultFutures->add(innerActivity->done());
         return innerActivity;
     });
     await await FutureCls-><void>wait(resultFutures);
@@ -402,7 +402,7 @@ String _NestedScrollCoordinatorCls::toString() {
 
 _NestedScrollCoordinatorCls::_NestedScrollCoordinatorCls(bool _floatHeaderSlivers, VoidCallback _onHasScrolledBodyChanged, ScrollController _parent, NestedScrollViewState _state) {
     {
-        double initialScrollOffset = _parent?->initialScrollOffset() or 0.0;
+        double initialScrollOffset = _parent?->initialScrollOffset or 0.0;
         _outerController = make<_NestedScrollControllerCls>(thisinitialScrollOffset, __s("outer"));
         _innerController = make<_NestedScrollControllerCls>(this__s("inner"));
     }
@@ -412,7 +412,7 @@ _NestedScrollPosition _NestedScrollCoordinatorCls::_outerPosition() {
     if (!_outerController->hasClients) {
         return nullptr;
     }
-    return _outerController->nestedPositions()->single();
+    return _outerController->nestedPositions()->single;
 }
 
 Iterable<_NestedScrollPosition> _NestedScrollCoordinatorCls::_innerPositions() {
@@ -472,7 +472,7 @@ _NestedScrollMetrics _NestedScrollCoordinatorCls::_getMetrics(_NestedScrollPosit
         }
 ;
         }    }
-    return make<_NestedScrollMetricsCls>(_outerPosition()!->minScrollExtent, _outerPosition()!->maxScrollExtent + innerPosition->maxScrollExtent - innerPosition->minScrollExtent + extra, pixels, _outerPosition()!->viewportDimension, _outerPosition()!->axisDirection(), minRange, maxRange, correctionOffset);
+    return make<_NestedScrollMetricsCls>(_outerPosition()!->minScrollExtent, _outerPosition()!->maxScrollExtent + innerPosition->maxScrollExtent - innerPosition->minScrollExtent + extra, pixels, _outerPosition()!->viewportDimension, _outerPosition()!->axisDirection, minRange, maxRange, correctionOffset);
 }
 
 ScrollPosition _NestedScrollControllerCls::createScrollPosition(ScrollContext context, ScrollPosition oldPosition, ScrollPhysics physics) {
@@ -586,11 +586,11 @@ double _NestedScrollPositionCls::applyClampedPointerSignalUpdate(double delta) {
 }
 
 ScrollDirection _NestedScrollPositionCls::userScrollDirection() {
-    return coordinator->userScrollDirection();
+    return coordinator->userScrollDirection;
 }
 
 DrivenScrollActivity _NestedScrollPositionCls::createDrivenScrollActivity(Curve curve, Duration duration, double to) {
-    return make<DrivenScrollActivityCls>(thispixels, to, duration, curve, vsync());
+    return make<DrivenScrollActivityCls>(thispixels, to, duration, curve, vsync);
 }
 
 double _NestedScrollPositionCls::applyUserOffset(double delta) {
@@ -679,15 +679,15 @@ _NestedScrollPosition _NestedInnerBallisticScrollActivityCls::delegate() {
 }
 
 void _NestedInnerBallisticScrollActivityCls::resetActivity() {
-    delegate()->beginActivity(coordinator->createInnerBallisticScrollActivity(delegate(), velocity));
+    delegate->beginActivity(coordinator->createInnerBallisticScrollActivity(delegate, velocity));
 }
 
 void _NestedInnerBallisticScrollActivityCls::applyNewDimensions() {
-    delegate()->beginActivity(coordinator->createInnerBallisticScrollActivity(delegate(), velocity));
+    delegate->beginActivity(coordinator->createInnerBallisticScrollActivity(delegate, velocity));
 }
 
 bool _NestedInnerBallisticScrollActivityCls::applyMoveTo(double value) {
-    return super->applyMoveTo(coordinator->nestOffset(value, delegate()));
+    return super->applyMoveTo(coordinator->nestOffset(value, delegate));
 }
 
 _NestedInnerBallisticScrollActivityCls::_NestedInnerBallisticScrollActivityCls(_NestedScrollCoordinator coordinator, _NestedScrollPosition position, Simulation simulation, TickerProvider vsync) : BallisticScrollActivity(position, simulation, vsync) {
@@ -698,11 +698,11 @@ _NestedScrollPosition _NestedOuterBallisticScrollActivityCls::delegate() {
 }
 
 void _NestedOuterBallisticScrollActivityCls::resetActivity() {
-    delegate()->beginActivity(coordinator->createOuterBallisticScrollActivity(velocity));
+    delegate->beginActivity(coordinator->createOuterBallisticScrollActivity(velocity));
 }
 
 void _NestedOuterBallisticScrollActivityCls::applyNewDimensions() {
-    delegate()->beginActivity(coordinator->createOuterBallisticScrollActivity(velocity));
+    delegate->beginActivity(coordinator->createOuterBallisticScrollActivity(velocity));
 }
 
 bool _NestedOuterBallisticScrollActivityCls::applyMoveTo(double value) {
@@ -790,8 +790,8 @@ void SliverOverlapAbsorberCls::debugFillProperties(DiagnosticPropertiesBuilder p
 
 RenderSliverOverlapAbsorberCls::RenderSliverOverlapAbsorberCls(SliverOverlapAbsorberHandle handle, RenderSliver sliver) {
     {
-        assert(handle() != nullptr);
-        _handle = handle();
+        assert(handle != nullptr);
+        _handle = handle;
     }
     {
         child = sliver;
@@ -804,29 +804,29 @@ SliverOverlapAbsorberHandle RenderSliverOverlapAbsorberCls::handle() {
 
 void RenderSliverOverlapAbsorberCls::handle(SliverOverlapAbsorberHandle value) {
     assert(value != nullptr);
-    if (handle() == value) {
+    if (handle == value) {
         return;
     }
     if (attached) {
-        handle()->_writers = 1;
+        handle->_writers = 1;
         value->_writers = 1;
-        value->_setExtents(handle()->layoutExtent(), handle()->scrollExtent());
+        value->_setExtents(handle->layoutExtent, handle->scrollExtent);
     }
     _handle = value;
 }
 
 void RenderSliverOverlapAbsorberCls::attach(PipelineOwner owner) {
     super->attach(owner);
-    handle()->_writers = 1;
+    handle->_writers = 1;
 }
 
 void RenderSliverOverlapAbsorberCls::detach() {
-    handle()->_writers = 1;
+    handle->_writers = 1;
     super->detach();
 }
 
 void RenderSliverOverlapAbsorberCls::performLayout() {
-    assert(handle()->_writers == 1, __s("A SliverOverlapAbsorberHandle cannot be passed to multiple RenderSliverOverlapAbsorber objects at the same time."));
+    assert(handle->_writers == 1, __s("A SliverOverlapAbsorberHandle cannot be passed to multiple RenderSliverOverlapAbsorber objects at the same time."));
     if (child == nullptr) {
         geometry = SliverGeometryCls::zero;
         return;
@@ -834,7 +834,7 @@ void RenderSliverOverlapAbsorberCls::performLayout() {
     child!->layout(constraintstrue);
     SliverGeometry childLayoutGeometry = child!->geometry!;
     geometry = make<SliverGeometryCls>(childLayoutGeometry->scrollExtent - childLayoutGeometry->maxScrollObstructionExtent, childLayoutGeometry->paintExtent, childLayoutGeometry->paintOrigin, math->max(0, childLayoutGeometry->paintExtent - childLayoutGeometry->maxScrollObstructionExtent), childLayoutGeometry->maxPaintExtent, childLayoutGeometry->maxScrollObstructionExtent, childLayoutGeometry->hitTestExtent, childLayoutGeometry->visible, childLayoutGeometry->hasVisualOverflow, childLayoutGeometry->scrollOffsetCorrection);
-    handle()->_setExtents(childLayoutGeometry->maxScrollObstructionExtent, childLayoutGeometry->maxScrollObstructionExtent);
+    handle->_setExtents(childLayoutGeometry->maxScrollObstructionExtent, childLayoutGeometry->maxScrollObstructionExtent);
 }
 
 void RenderSliverOverlapAbsorberCls::applyPaintTransform(RenderObject child, Matrix4 transform) {
@@ -855,7 +855,7 @@ void RenderSliverOverlapAbsorberCls::paint(PaintingContext context, Offset offse
 
 void RenderSliverOverlapAbsorberCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<SliverOverlapAbsorberHandle>make<DiagnosticsPropertyCls>(__s("handle"), handle()));
+    properties->add(<SliverOverlapAbsorberHandle>make<DiagnosticsPropertyCls>(__s("handle"), handle));
 }
 
 SliverOverlapInjectorCls::SliverOverlapInjectorCls(SliverOverlapAbsorberHandle handle, Unknown key, Widget sliver) : SingleChildRenderObjectWidget(sliver) {
@@ -879,8 +879,8 @@ void SliverOverlapInjectorCls::debugFillProperties(DiagnosticPropertiesBuilder p
 
 RenderSliverOverlapInjectorCls::RenderSliverOverlapInjectorCls(SliverOverlapAbsorberHandle handle) {
     {
-        assert(handle() != nullptr);
-        _handle = handle();
+        assert(handle != nullptr);
+        _handle = handle;
     }
 }
 
@@ -890,16 +890,16 @@ SliverOverlapAbsorberHandle RenderSliverOverlapInjectorCls::handle() {
 
 void RenderSliverOverlapInjectorCls::handle(SliverOverlapAbsorberHandle value) {
     assert(value != nullptr);
-    if (handle() == value) {
+    if (handle == value) {
         return;
     }
     if (attached) {
-        handle()->removeListener(markNeedsLayout);
+        handle->removeListener(markNeedsLayout);
     }
     _handle = value;
     if (attached) {
-        handle()->addListener(markNeedsLayout);
-        if (handle()->layoutExtent() != _currentLayoutExtent || handle()->scrollExtent() != _currentMaxExtent) {
+        handle->addListener(markNeedsLayout);
+        if (handle->layoutExtent != _currentLayoutExtent || handle->scrollExtent != _currentMaxExtent) {
             markNeedsLayout();
         }
     }
@@ -907,20 +907,20 @@ void RenderSliverOverlapInjectorCls::handle(SliverOverlapAbsorberHandle value) {
 
 void RenderSliverOverlapInjectorCls::attach(PipelineOwner owner) {
     super->attach(owner);
-    handle()->addListener(markNeedsLayout);
-    if (handle()->layoutExtent() != _currentLayoutExtent || handle()->scrollExtent() != _currentMaxExtent) {
+    handle->addListener(markNeedsLayout);
+    if (handle->layoutExtent != _currentLayoutExtent || handle->scrollExtent != _currentMaxExtent) {
         markNeedsLayout();
     }
 }
 
 void RenderSliverOverlapInjectorCls::detach() {
-    handle()->removeListener(markNeedsLayout);
+    handle->removeListener(markNeedsLayout);
     super->detach();
 }
 
 void RenderSliverOverlapInjectorCls::performLayout() {
-    _currentLayoutExtent = handle()->layoutExtent();
-    _currentMaxExtent = handle()->layoutExtent();
+    _currentLayoutExtent = handle->layoutExtent;
+    _currentMaxExtent = handle->layoutExtent;
     double clampedLayoutExtent = math->min(_currentLayoutExtent! - constraints->scrollOffset, constraints->remainingPaintExtent);
     geometry = make<SliverGeometryCls>(_currentLayoutExtent!, math->max(0.0, clampedLayoutExtent), _currentMaxExtent!);
 }
@@ -941,7 +941,7 @@ void RenderSliverOverlapInjectorCls::debugPaint(PaintingContext context, Offset 
 
 void RenderSliverOverlapInjectorCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<SliverOverlapAbsorberHandle>make<DiagnosticsPropertyCls>(__s("handle"), handle()));
+    properties->add(<SliverOverlapAbsorberHandle>make<DiagnosticsPropertyCls>(__s("handle"), handle));
 }
 
 NestedScrollViewViewportCls::NestedScrollViewViewportCls(Unknown anchor, Unknown axisDirection, Unknown center, Unknown clipBehavior, Unknown crossAxisDirection, SliverOverlapAbsorberHandle handle, Unknown key, Unknown offset, Unknown slivers) {
@@ -965,8 +965,8 @@ void NestedScrollViewViewportCls::debugFillProperties(DiagnosticPropertiesBuilde
 
 RenderNestedScrollViewViewportCls::RenderNestedScrollViewViewportCls(Unknown anchor, Unknown axisDirection, Unknown center, Unknown children, Unknown clipBehavior, Unknown crossAxisDirection, SliverOverlapAbsorberHandle handle, Unknown offset) {
     {
-        assert(handle() != nullptr);
-        _handle = handle();
+        assert(handle != nullptr);
+        _handle = handle;
     }
 }
 
@@ -976,19 +976,19 @@ SliverOverlapAbsorberHandle RenderNestedScrollViewViewportCls::handle() {
 
 void RenderNestedScrollViewViewportCls::handle(SliverOverlapAbsorberHandle value) {
     assert(value != nullptr);
-    if (handle() == value) {
+    if (handle == value) {
         return;
     }
     _handle = value;
-    handle()->_markNeedsLayout();
+    handle->_markNeedsLayout();
 }
 
 void RenderNestedScrollViewViewportCls::markNeedsLayout() {
-    handle()->_markNeedsLayout();
+    handle->_markNeedsLayout();
     super->markNeedsLayout();
 }
 
 void RenderNestedScrollViewViewportCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<SliverOverlapAbsorberHandle>make<DiagnosticsPropertyCls>(__s("handle"), handle()));
+    properties->add(<SliverOverlapAbsorberHandle>make<DiagnosticsPropertyCls>(__s("handle"), handle));
 }

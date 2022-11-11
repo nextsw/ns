@@ -13,7 +13,7 @@ int _IOResourceInfoCls::getNextID() {
 
 _IOResourceInfoCls::_IOResourceInfoCls(String type) {
     {
-            map1.set(__s("type"), __s("@$type"));    map1.set(__s("id"), id);    map1.set(__s("name"), name());id = _IOResourceInfoCls->getNextID();
+            map1.set(__s("type"), __s("@$type"));    map1.set(__s("id"), id);    map1.set(__s("name"), name);id = _IOResourceInfoCls->getNextID();
     }
 }
 
@@ -105,7 +105,7 @@ Map<String, dynamic> _SpawnedProcessResourceInfoCls::fullValueMap() {
 }
 
 void _SpawnedProcessResourceInfoCls::processStarted(_SpawnedProcessResourceInfo info) {
-    map1.set(__s("type"), type);map1.set(__s("id"), id);map1.set(__s("name"), name());map1.set(__s("pid"), process->pid);map1.set(__s("startedAt"), startedAt);map1.set(__s("arguments"), process->_arguments);map1.set(__s("workingDirectory"), process->_workingDirectory == nullptr? __s(".") : process->_workingDirectory);assert(!startedProcesses->containsKey(info->id));
+    map1.set(__s("type"), type);map1.set(__s("id"), id);map1.set(__s("name"), name);map1.set(__s("pid"), process->pid);map1.set(__s("startedAt"), startedAt);map1.set(__s("arguments"), process->_arguments);map1.set(__s("workingDirectory"), process->_workingDirectory == nullptr? __s(".") : process->_workingDirectory);assert(!startedProcesses->containsKey(info->id));
     startedProcesses[info->id] = info;
 }
 

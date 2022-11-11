@@ -132,7 +132,7 @@ void MultiDragGestureRecognizerCls::rejectGesture(int pointer) {
 }
 
 void MultiDragGestureRecognizerCls::dispose() {
-    _pointers!->keys()->toList()->forEach(_removeState);
+    _pointers!->keys->toList()->forEach(_removeState);
     assert(_pointers!->isEmpty());
     _pointers = nullptr;
     super->dispose();
@@ -146,17 +146,17 @@ void MultiDragGestureRecognizerCls::_handleEvent(PointerEvent event) {
     assert(_pointers!->containsKey(event->pointer));
     MultiDragPointerState state = _pointers![event->pointer]!;
     if (is<PointerMoveEvent>(event)) {
-        state->_move(event);
+        state->_move(as<PointerMoveEventCls>(event));
     } else     {
         if (is<PointerUpEvent>(event)) {
-        assert(event->delta == OffsetCls::zero);
+        assert(as<PointerUpEventCls>(event)->delta == OffsetCls::zero);
         state->_up();
-        _removeState(event->pointer);
+        _removeState(as<PointerUpEventCls>(event)->pointer);
     } else     {
         if (is<PointerCancelEvent>(event)) {
-        assert(event->delta == OffsetCls::zero);
+        assert(as<PointerCancelEventCls>(event)->delta == OffsetCls::zero);
         state->_cancel();
-        _removeState(event->pointer);
+        _removeState(as<PointerCancelEventCls>(event)->pointer);
     } else     {
         if (!is<PointerDownEvent>(event)) {
         assert(false);

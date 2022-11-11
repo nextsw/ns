@@ -8,7 +8,7 @@ SimplexNoiseCls::SimplexNoiseCls(Random r) {
         _perm = <int>generate(p->length * 2, [=] (int i)         {
             p[i % p->length];
         }false);
-        _permMod12 = <int>generate(_perm->length(), [=] (int i)         {
+        _permMod12 = <int>generate(_perm->length, [=] (int i)         {
             _perm[i] % 12;
         }false);
     }

@@ -22,23 +22,23 @@ bool _BlockCls::hasLoopStructure() {
 void _BlockCls::write(_BlockContext ctx) {
     for (_Instruction inst : instructions) {
         if (is<_Store>(inst)) {
-            _Variable v = function->variables[inst->pointer];
-            if (v != nullptr && inst->shouldDeclare && v->liftToBlock != 0) {
+            _Variable v = function->variables[as<_StoreCls>(inst)->pointer];
+            if (v != nullptr && as<_StoreCls>(inst)->shouldDeclare && v->liftToBlock != 0) {
                 function->block(v->liftToBlock)->loopInitializer = inst;
                 continue;
             }
         }
         if (!inst->isResult) {
             ctx->writeIndent();
-            inst->write(transpiler(), ctx->out);
+            inst->write(transpiler, ctx->out);
             ctx->out->writeln(__s(";"));
         } else         {
             if (inst->refCount > 1) {
             ctx->writeIndent();
-            String typeString = transpiler()->resolveType(inst->type);
-            String nameString = transpiler()->resolveName(inst->id);
+            String typeString = transpiler->resolveType(inst->type);
+            String nameString = transpiler->resolveName(inst->id);
             ctx->out->write(__s("$typeString $nameString = "));
-            inst->write(transpiler(), ctx->out);
+            inst->write(transpiler, ctx->out);
             ctx->out->writeln(__s(";"));
         }
 ;
@@ -85,7 +85,7 @@ void _BlockCls::_writeContinue(_BlockContext ctx) {
     if (assignments->length > 1) {
         ;
     }
-    assignments[0]->write(transpiler(), ctx->out);
+    assignments[0]->write(transpiler, ctx->out);
 }
 
 void _BlockCls::_preprocess() {
@@ -127,7 +127,7 @@ void _BlockCls::_preprocess() {
 void _BlockCls::_writeSelectionStructure(_BlockContext ctx) {
     _BlockContext childCtx = ctx->child(mergeBlock);
     ctx->writeIndent();
-    String conditionString = transpiler()->resolveResult(condition);
+    String conditionString = transpiler->resolveResult(condition);
     ctx->out->writeln(__s("if ($conditionString) {"));
     function->block(truthyBlock)->write(childCtx);
     if (falseyBlock != 0 && falseyBlock != mergeBlock) {
@@ -144,7 +144,7 @@ void _BlockCls::_writeLoopStructure(_BlockContext ctx) {
     String conditionString;
     int loopBody = 0;
     if (condition != 0) {
-        conditionString = transpiler()->resolveResult(condition);
+        conditionString = transpiler->resolveResult(condition);
         if (truthyBlock == mergeBlock) {
             conditionString = __s("!") + conditionString;
             loopBody = falseyBlock;
@@ -158,7 +158,7 @@ void _BlockCls::_writeLoopStructure(_BlockContext ctx) {
         if (!branchBlock->_isSimple() || branchBlock->condition == 0) {
             ;
         }
-        conditionString = transpiler()->resolveResult(branchBlock->condition);
+        conditionString = transpiler->resolveResult(branchBlock->condition);
         if (branchBlock->truthyBlock == mergeBlock) {
             conditionString = __s("!") + conditionString;
             loopBody = branchBlock->falseyBlock;
@@ -173,7 +173,7 @@ void _BlockCls::_writeLoopStructure(_BlockContext ctx) {
     }
     ctx->writeIndent();
     ctx->out->write(__s("for("));
-    loopInitializer!->write(transpiler(), ctx->out);
+    loopInitializer!->write(transpiler, ctx->out);
     ctx->out->write(__s("; "));
     ctx->out->write(conditionString);
     ctx->out->write(__s("; "));
@@ -206,7 +206,7 @@ int _InstructionCls::id() {
 }
 
 bool _InstructionCls::isResult() {
-    return id() != 0;
+    return id != 0;
 }
 
 List<int> _InstructionCls::deps() {
@@ -219,9 +219,9 @@ List<int> _FunctionCallCls::deps() {
 
 void _FunctionCallCls::write(StringBuffer out, _Transpiler t) {
     out->write(__s("$function("));
-    for (;  < args->length(); i++) {
+    for (;  < args->length; i++) {
         out->write(t->resolveResult(args[i]));
-        if ( < args->length() - 1) {
+        if ( < args->length - 1) {
             out->write(__s(", "));
         }
     }
@@ -275,7 +275,7 @@ List<int> _AccessChainCls::deps() {
 
 void _AccessChainCls::write(StringBuffer out, _Transpiler t) {
     List<int> list1 = make<ListCls<>>();list1.add(ArrayItem);for (auto _x1 : indices) {{    list1.add(_x1);}out->write(t->resolveResult(base));
-    for (;  < indices->length(); i++) {
+    for (;  < indices->length; i++) {
         String indexString = t->resolveResult(indices[i]);
         out->write(__s("[$indexString]"));
     }
@@ -289,10 +289,10 @@ void _VectorShuffleCls::write(StringBuffer out, _Transpiler t) {
     String typeString = t->resolveType(type);
     String vectorString = t->resolveName(vector);
     out->write(__s("$typeString("));
-    for (;  < indices->length(); i++) {
+    for (;  < indices->length; i++) {
         int index = indices[i];
         out->write(__s("$vectorString[$index]"));
-        if ( < indices->length() - 1) {
+        if ( < indices->length - 1) {
             out->write(__s(", "));
         }
     }
@@ -306,9 +306,9 @@ List<int> _CompositeConstructCls::deps() {
 void _CompositeConstructCls::write(StringBuffer out, _Transpiler t) {
     String typeString = t->resolveType(type);
     out->write(__s("$typeString("));
-    for (;  < components->length(); i++) {
+    for (;  < components->length; i++) {
         out->write(t->resolveResult(components[i]));
-        if ( < components->length() - 1) {
+        if ( < components->length - 1) {
             out->write(__s(", "));
         }
     }
@@ -321,7 +321,7 @@ List<int> _CompositeExtractCls::deps() {
 
 void _CompositeExtractCls::write(StringBuffer out, _Transpiler t) {
     out->write(t->resolveResult(src));
-    for (;  < indices->length(); i++) {
+    for (;  < indices->length; i++) {
         out->write(__s("[${indices[i]}]"));
     }
 }
@@ -375,9 +375,9 @@ List<int> _BuiltinFunctionCls::deps() {
 
 void _BuiltinFunctionCls::write(StringBuffer out, _Transpiler t) {
     out->write(__s("$function("));
-    for (;  < args->length(); i++) {
+    for (;  < args->length; i++) {
         out->write(t->resolveResult(args[i]));
-        if ( < args->length() - 1) {
+        if ( < args->length - 1) {
             out->write(__s(", "));
         }
     }

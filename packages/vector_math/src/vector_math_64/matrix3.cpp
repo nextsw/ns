@@ -8,8 +8,8 @@ void Matrix3Cls::solve2(Matrix3 A, Vector2 b, Vector2 x) {
     Unknown a12 = ACls->entry(0, 1);
     Unknown a21 = ACls->entry(1, 0);
     Unknown a22 = ACls->entry(1, 1);
-    Unknown bx = b->x - ACls::storage[6];
-    Unknown by = b->y - ACls::storage[7];
+    Unknown bx = b->x - ACls::storage()[6];
+    Unknown by = b->y - ACls::storage()[7];
     auto det = a11 * a22 - a12 * a21;
     if (det != 0.0) {
         det = 1.0 / det;
@@ -162,9 +162,9 @@ void Matrix3Cls::splatDiagonal(double arg) {
 }
 
 void Matrix3Cls::setDiagonal(Vector3 arg) {
-    _m3storage[0] = arg->storage[0];
-    _m3storage[4] = arg->storage[1];
-    _m3storage[8] = arg->storage[2];
+    _m3storage[0] = arg->storage()[0];
+    _m3storage[4] = arg->storage()[1];
+    _m3storage[8] = arg->storage()[2];
 }
 
 void Matrix3Cls::setUpper2x2(Matrix2 arg) {
@@ -277,13 +277,13 @@ Matrix3 Matrix3Cls::copyInto(Matrix3 arg) {
 
 dynamic Matrix3Cls::*(dynamic arg) {
     if (is<double>(arg)) {
-        return scaled(arg);
+        return scaled(as<doubleCls>(arg));
     }
     if (is<Vector3>(arg)) {
-        return transformed(arg);
+        return transformed(as<Vector3Cls>(arg));
     }
     if (is<Matrix3>(arg)) {
-        return multiplied(arg);
+        return multiplied(as<Matrix3Cls>(arg));
     }
     ;
 }

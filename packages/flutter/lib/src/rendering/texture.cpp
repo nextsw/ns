@@ -1,10 +1,10 @@
 #include "texture.hpp"
 TextureBoxCls::TextureBoxCls(FilterQuality filterQuality, bool freeze, int textureId) {
     {
-        assert(textureId() != nullptr);
-        _textureId = textureId();
-        _freeze = freeze();
-        _filterQuality = filterQuality();
+        assert(textureId != nullptr);
+        _textureId = textureId;
+        _freeze = freeze;
+        _filterQuality = filterQuality;
     }
 }
 
@@ -57,7 +57,7 @@ bool TextureBoxCls::isRepaintBoundary() {
 }
 
 Size TextureBoxCls::computeDryLayout(BoxConstraints constraints) {
-    return constraints->biggest;
+    return constraints->biggest();
 }
 
 bool TextureBoxCls::hitTestSelf(Offset position) {
@@ -65,5 +65,5 @@ bool TextureBoxCls::hitTestSelf(Offset position) {
 }
 
 void TextureBoxCls::paint(PaintingContext context, Offset offset) {
-    context->addLayer(make<TextureLayerCls>(RectCls->fromLTWH(offset->dx, offset->dy, size->width, size->height), _textureId, freeze(), _filterQuality));
+    context->addLayer(make<TextureLayerCls>(RectCls->fromLTWH(offset->dx, offset->dy, size->width, size->height), _textureId, freeze, _filterQuality));
 }

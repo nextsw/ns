@@ -16,13 +16,13 @@ Directory _DirectoryCls::current() {
 void _DirectoryCls::current(path ) {
     Uint8List _rawPath;
     if (is<_Directory>(path)) {
-        _rawPath = path->_rawPath;
+        _rawPath = as<_DirectoryCls>(path)->_rawPath;
     } else     {
         if (is<Directory>(path)) {
-        _rawPath = FileSystemEntityCls->_toUtf8Array(path->path);
+        _rawPath = FileSystemEntityCls->_toUtf8Array(as<DirectoryCls>(path)->as<DirectoryCls>(path));
     } else     {
         if (is<String>(path)) {
-        _rawPath = FileSystemEntityCls->_toUtf8Array(path);
+        _rawPath = FileSystemEntityCls->_toUtf8Array(as<StringCls>(path));
     } else {
         ;
     }
@@ -41,7 +41,7 @@ void _DirectoryCls::current(path ) {
 }
 
 Uri _DirectoryCls::uri() {
-    return UriCls->directory(path());
+    return UriCls->directory(path);
 }
 
 Future<bool> _DirectoryCls::exists() {
@@ -71,7 +71,7 @@ Future<Directory> _DirectoryCls::create(bool recursive) {
             if (exists)             {
                 return this;
             }
-            if (path() != parent->path) {
+            if (path != parent->path) {
                 return parent->create(true)->then([=] () {
                     return create();
                 });
@@ -94,7 +94,7 @@ void _DirectoryCls::createSync(bool recursive) {
         if (existsSync())         {
             return;
         }
-        if (path() != parent->path) {
+        if (path != parent->path) {
             parent->createSync(true);
         }
     }
@@ -110,11 +110,11 @@ Directory _DirectoryCls::systemTemp() {
 
 Future<Directory> _DirectoryCls::createTemp(String prefix) {
     prefix = __s("");
-    if (path() == __s("")) {
+    if (path == __s("")) {
         ;
     }
     String fullPrefix;
-    if (path()->endsWith(__s("/")) || (PlatformCls::isWindows && path()->endsWith(__s("\\")))) {
+    if (path->endsWith(__s("/")) || (PlatformCls::isWindows && path->endsWith(__s("\\")))) {
         fullPrefix = __s("$path$prefix");
     } else {
         fullPrefix = __s("$path${Platform.pathSeparator}$prefix");
@@ -129,11 +129,11 @@ Future<Directory> _DirectoryCls::createTemp(String prefix) {
 
 Directory _DirectoryCls::createTempSync(String prefix) {
     prefix = __s("");
-    if (path() == __s("")) {
+    if (path == __s("")) {
         ;
     }
     String fullPrefix;
-    if (path()->endsWith(__s("/")) || (PlatformCls::isWindows && path()->endsWith(__s("\\")))) {
+    if (path->endsWith(__s("/")) || (PlatformCls::isWindows && path->endsWith(__s("\\")))) {
         fullPrefix = __s("$path$prefix");
     } else {
         fullPrefix = __s("$path${Platform.pathSeparator}$prefix");
@@ -164,14 +164,14 @@ Directory _DirectoryCls::renameSync(String newPath) {
 }
 
 Stream<FileSystemEntity> _DirectoryCls::list(bool followLinks, bool recursive) {
-    return make<_AsyncDirectoryListerCls>(FileSystemEntityCls->_toUtf8Array(FileSystemEntityCls->_ensureTrailingPathSeparators(path())), recursive, followLinks)->stream;
+    return make<_AsyncDirectoryListerCls>(FileSystemEntityCls->_toUtf8Array(FileSystemEntityCls->_ensureTrailingPathSeparators(path)), recursive, followLinks)->stream;
 }
 
 List<FileSystemEntity> _DirectoryCls::listSync(bool followLinks, bool recursive) {
     ArgumentErrorCls->checkNotNull(recursive, __s("recursive"));
     ArgumentErrorCls->checkNotNull(followLinks, __s("followLinks"));
     auto result = makeList();
-    _fillWithDirectoryListing(_NamespaceCls::_namespace, result, FileSystemEntityCls->_toUtf8Array(FileSystemEntityCls->_ensureTrailingPathSeparators(path())), recursive, followLinks);
+    _fillWithDirectoryListing(_NamespaceCls::_namespace, result, FileSystemEntityCls->_toUtf8Array(FileSystemEntityCls->_ensureTrailingPathSeparators(path)), recursive, followLinks);
     return result;
 }
 
@@ -181,8 +181,8 @@ String _DirectoryCls::toString() {
 
 _DirectoryCls::_DirectoryCls(String path) {
     {
-        _path = _checkNotNull(path(), __s("path"));
-        _rawPath = FileSystemEntityCls->_toUtf8Array(path());
+        _path = _checkNotNull(path, __s("path"));
+        _rawPath = FileSystemEntityCls->_toUtf8Array(path);
     }
 }
 
@@ -223,11 +223,11 @@ Stream<FileSystemEntity> _AsyncDirectoryListerCls::stream() {
 void _AsyncDirectoryListerCls::onListen() {
     _FileCls->_dispatchWithNamespace(_IOServiceCls::directoryListStart, makeList(ArrayItem, ArrayItem, ArrayItem, ArrayItem))->then([=] (Unknown  response) {
         if (is<int>(response)) {
-            _ops = make<_AsyncDirectoryListerOpsCls>(response);
+            _ops = make<_AsyncDirectoryListerOpsCls>(as<intCls>(response));
             next();
         } else         {
             if (is<Error>(response)) {
-            controller->addError(response, response->stackTrace);
+            controller->addError(as<ErrorCls>(response), as<ErrorCls>(response)->stackTrace);
             close();
         } else {
             error(response);
@@ -256,7 +256,7 @@ void _AsyncDirectoryListerCls::next() {
         close();
         return;
     }
-    if (controller->isPaused || nextRunning) {
+    if (controller->isPaused() || nextRunning) {
         return;
     }
     auto pointer = _pointer();
@@ -268,8 +268,8 @@ void _AsyncDirectoryListerCls::next() {
         nextRunning = false;
         if (is<List>(result)) {
             next();
-            assert(result->length % 2 == 0);
-            for (;  < result->length; i++) {
+            assert(as<ListCls>(result)->length % 2 == 0);
+            for (;  < as<ListCls>(result)->length; i++) {
                 assert(i % 2 == 0);
                 ;
             }
@@ -308,7 +308,7 @@ void _AsyncDirectoryListerCls::error(message ) {
             errorPath = utf8->decode(rawPathtrue);
         } else         {
             if (is<Uint8List>(errorPath)) {
-            errorPath = utf8->decode(message[responsePath]true);
+            as<Uint8ListCls>(errorPath) = utf8->decode(message[responsePath]true);
         }
 ;
         }        controller->addError(make<FileSystemExceptionCls>(__s("Directory listing failed"), errorPath, err));

@@ -36,7 +36,7 @@ bool _TapTrackerCls::isWithinGlobalTolerance(PointerEvent event, double toleranc
 }
 
 bool _TapTrackerCls::hasElapsedMinTime() {
-    return _doubleTapMinTimeCountdown->timeout();
+    return _doubleTapMinTimeCountdown->timeout;
 }
 
 bool _TapTrackerCls::hasSameButton(PointerDownEvent event) {
@@ -122,7 +122,7 @@ void DoubleTapGestureRecognizerCls::_handleEvent(PointerEvent event) {
         }
     } else     {
         if (is<PointerMoveEvent>(event)) {
-        if (!tracker->isWithinGlobalTolerance(event, kDoubleTapTouchSlop)) {
+        if (!tracker->isWithinGlobalTolerance(as<PointerMoveEventCls>(event), kDoubleTapTouchSlop)) {
             _reject(tracker);
         }
     } else     {
@@ -182,7 +182,7 @@ void DoubleTapGestureRecognizerCls::_registerSecondTap(_TapTracker tracker) {
 }
 
 void DoubleTapGestureRecognizerCls::_clearTrackers() {
-    _trackers->values()->toList()->forEach(_reject);
+    _trackers->values->toList()->forEach(_reject);
     assert(_trackers->isEmpty());
 }
 
@@ -217,7 +217,7 @@ void DoubleTapGestureRecognizerCls::_checkCancel() {
 void _TapGestureCls::handleEvent(PointerEvent event) {
     assert(event->pointer == pointer);
     if (is<PointerMoveEvent>(event)) {
-        if (!isWithinGlobalTolerance(event, computeHitSlop(event->kind, gestureSettings))) {
+        if (!isWithinGlobalTolerance(as<PointerMoveEventCls>(event), computeHitSlop(as<PointerMoveEventCls>(event)->kind, gestureSettings))) {
             cancel();
         } else {
             _lastPosition = OffsetPairCls->fromEventPosition(event);
@@ -228,7 +228,7 @@ void _TapGestureCls::handleEvent(PointerEvent event) {
     } else     {
         if (is<PointerUpEvent>(event)) {
         stopTrackingPointer(handleEvent);
-        _finalPosition = OffsetPairCls->fromEventPosition(event);
+        _finalPosition = OffsetPairCls->fromEventPosition(as<PointerUpEventCls>(event));
         _check();
     }
 ;
@@ -302,7 +302,7 @@ void MultiTapGestureRecognizerCls::rejectGesture(int pointer) {
 }
 
 void MultiTapGestureRecognizerCls::dispose() {
-    List<_TapGesture> localGestures = <_TapGesture>of(_gestureMap->values());
+    List<_TapGesture> localGestures = <_TapGesture>of(_gestureMap->values);
     for (_TapGesture gesture : localGestures) {
         gesture->cancel();
     }
@@ -414,7 +414,7 @@ bool SerialTapGestureRecognizerCls::_representsSameSeries(PointerDownEvent event
 void SerialTapGestureRecognizerCls::_trackTap(PointerDownEvent event) {
     _stopSerialTapTimer();
     if (onSerialTapDown != nullptr) {
-        SerialTapDownDetails details = make<SerialTapDownDetailsCls>(event->position, event->localPosition, getKindForPointer(event->pointer), event->buttons, _completedTaps->length() + 1);
+        SerialTapDownDetails details = make<SerialTapDownDetailsCls>(event->position, event->localPosition, getKindForPointer(event->pointer), event->buttons, _completedTaps->length + 1);
         <void>invokeCallback(__s("onSerialTapDown"), [=] ()         {
             onSerialTapDown!(details);
         });
@@ -430,10 +430,10 @@ void SerialTapGestureRecognizerCls::_handleEvent(PointerEvent event) {
     assert(_pendingTap!->pointer == event->pointer);
     _TapTracker tracker = _pendingTap!;
     if (is<PointerUpEvent>(event)) {
-        _registerTap(event, tracker);
+        _registerTap(as<PointerUpEventCls>(event), tracker);
     } else     {
         if (is<PointerMoveEvent>(event)) {
-        if (!tracker->isWithinGlobalTolerance(event, kDoubleTapTouchSlop)) {
+        if (!tracker->isWithinGlobalTolerance(as<PointerMoveEventCls>(event), kDoubleTapTouchSlop)) {
             _reset();
         }
     } else     {
@@ -448,7 +448,7 @@ void SerialTapGestureRecognizerCls::_rejectPendingTap() {
     assert(_pendingTap != nullptr);
     _TapTracker tracker = _pendingTap!;
     _pendingTap = nullptr;
-    _checkCancel(_completedTaps->length() + 1);
+    _checkCancel(_completedTaps->length + 1);
     if (!_gestureResolutions->containsKey(tracker->pointer)) {
         tracker->entry->resolve(GestureDispositionCls::rejected);
     }
@@ -497,7 +497,7 @@ void SerialTapGestureRecognizerCls::_stopSerialTapTimer() {
 
 void SerialTapGestureRecognizerCls::_checkUp(PointerUpEvent event, _TapTracker tracker) {
     if (onSerialTapUp != nullptr) {
-        SerialTapUpDetails details = make<SerialTapUpDetailsCls>(event->position, event->localPosition, getKindForPointer(tracker->pointer), _completedTaps->length() + 1);
+        SerialTapUpDetails details = make<SerialTapUpDetailsCls>(event->position, event->localPosition, getKindForPointer(tracker->pointer), _completedTaps->length + 1);
         <void>invokeCallback(__s("onSerialTapUp"), [=] ()         {
             onSerialTapUp!(details);
         });

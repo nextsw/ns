@@ -22,7 +22,7 @@ template<typename E> Iterable<T> IterableMixinCls<E>::expandtemplate<typename T>
 template<typename E> Iterable<E> IterableMixinCls<E>::followedBy(Iterable<E> other) {
     auto _c1 = <E>make<HashSetCls>();_c1.addAll(elements);Iterable<E> self = this;
     if (is<EfficientLengthIterable<E>>(self)) {
-        return <E>firstEfficient(self, other);
+        return <E>firstEfficient(as<EfficientLengthIterableCls>(self), other);
     }
     return <E>make<FollowedByIterableCls>(this, other);
 }
@@ -47,9 +47,9 @@ template<typename E> E IterableMixinCls<E>::reduce(E combine(E element, E value)
     if (!iterator->moveNext()) {
         ;
     }
-    E value = iterator->current;
+    E value = iterator->current();
     while (iterator->moveNext()) {
-        value = combine(value, iterator->current);
+        value = combine(value, iterator->current());
     }
     return value;
 }
@@ -147,7 +147,7 @@ template<typename E> E IterableMixinCls<E>::first() {
     if (!it->moveNext()) {
         ;
     }
-    return it->current;
+    return it->current();
 }
 
 template<typename E> E IterableMixinCls<E>::last() {
@@ -157,7 +157,7 @@ template<typename E> E IterableMixinCls<E>::last() {
     }
     E result;
     do {
-        result = it->current;
+        result = it->current();
     } while (it->moveNext());
     return result;
 }
@@ -167,7 +167,7 @@ template<typename E> E IterableMixinCls<E>::single() {
     if (!it->moveNext())     {
         ;
     }
-    E result = it->current;
+    E result = it->current();
     if (it->moveNext())     {
         ;
     }
@@ -294,7 +294,7 @@ void _iterablePartsToStrings(Iterable<Object> iterable, List<String> parts) {
     int ellipsisSize = 3;
     int length = 0;
     int count = 0;
-    Iterator<Object> it = iterable->iterator;
+    Iterator<Object> it = iterable->iterator();
     while ( < lengthLimit ||  < headCount) {
         if (!it->moveNext())         {
             return;
@@ -313,7 +313,7 @@ void _iterablePartsToStrings(Iterable<Object> iterable, List<String> parts) {
         ultimateString = parts->removeLast();
         penultimateString = parts->removeLast();
     } else {
-        Object penultimate = it->current;
+        Object penultimate = it->current();
         count++;
         if (!it->moveNext()) {
             if (count <= headCount + 1) {
@@ -324,12 +324,12 @@ void _iterablePartsToStrings(Iterable<Object> iterable, List<String> parts) {
             penultimateString = parts->removeLast();
             length = ultimateString->length + overhead;
         } else {
-            Object ultimate = it->current;
+            Object ultimate = it->current();
             count++;
             assert( < maxCount);
             while (it->moveNext()) {
                 penultimate = ultimate;
-                ultimate = it->current;
+                ultimate = it->current();
                 count++;
                 if (count > maxCount) {
                     while (length > lengthLimit - ellipsisSize - overhead && count > headCount) {

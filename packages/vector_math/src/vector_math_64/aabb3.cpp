@@ -49,8 +49,8 @@ void Aabb3Cls::centerAndHalfExtents(Vector3 center, Vector3 halfExtents) {
 void Aabb3Cls::fromBuffer(ByteBuffer buffer, int offset)
 
 void Aabb3Cls::setCenterAndHalfExtents(Vector3 center, Vector3 halfExtents) {
-    auto _c1 = make<Aabb3Cls>();_c1.setSphere(sphere);auto _c1 = make<Aabb3Cls>();_c1.setTriangle(triangle);auto _c1 = make<Aabb3Cls>();_c1.setQuad(quad);auto _c1 = make<Aabb3Cls>();_c1.setObb3(obb);auto _c1 = make<Aabb3Cls>();_c1.setRay(ray, limitMin, limitMax);auto _c1 = make<Aabb3Cls>();_c1.setCenterAndHalfExtents(center(), halfExtents);auto _c1 = _min;_c1.auto _c2 = setFrom(center());_c2.sub(halfExtents);_c2;_c1;
-    auto _c3 = _max;_c3.auto _c4 = setFrom(center());_c4.add(halfExtents);_c4;_c3;
+    auto _c1 = make<Aabb3Cls>();_c1.setSphere(sphere);auto _c1 = make<Aabb3Cls>();_c1.setTriangle(triangle);auto _c1 = make<Aabb3Cls>();_c1.setQuad(quad);auto _c1 = make<Aabb3Cls>();_c1.setObb3(obb);auto _c1 = make<Aabb3Cls>();_c1.setRay(ray, limitMin, limitMax);auto _c1 = make<Aabb3Cls>();_c1.setCenterAndHalfExtents(center, halfExtents);auto _c1 = _min;_c1.auto _c2 = setFrom(center);_c2.sub(halfExtents);_c2;_c1;
+    auto _c3 = _max;_c3.auto _c4 = setFrom(center);_c4.add(halfExtents);_c4;_c3;
 }
 
 void Aabb3Cls::setSphere(Sphere sphere) {
@@ -109,12 +109,12 @@ void Aabb3Cls::setRay(double limitMax, double limitMin, Ray ray) {
 }
 
 void Aabb3Cls::copyCenterAndHalfExtents(Vector3 center, Vector3 halfExtents) {
-    auto _c1 = center();_c1.auto _c2 = setFrom(_min);_c2.auto _c3 = add(_max);_c3.scale(0.5);_c3;_c2;_c1;
+    auto _c1 = center;_c1.auto _c2 = setFrom(_min);_c2.auto _c3 = add(_max);_c3.scale(0.5);_c3;_c2;_c1;
     auto _c4 = halfExtents;_c4.auto _c5 = setFrom(_max);_c5.auto _c6 = sub(_min);_c6.scale(0.5);_c6;_c5;_c4;
 }
 
 void Aabb3Cls::copyCenter(Vector3 center) {
-    auto _c1 = center();_c1.auto _c2 = setFrom(_min);_c2.auto _c3 = add(_max);_c3.scale(0.5);_c3;_c2;_c1;
+    auto _c1 = center;_c1.auto _c2 = setFrom(_min);_c2.auto _c3 = add(_max);_c3.scale(0.5);_c3;_c2;_c1;
 }
 
 void Aabb3Cls::copyFrom(Aabb3 other) {
@@ -235,9 +235,9 @@ bool Aabb3Cls::intersectsWithTriangle(double epsilon, Triangle other, Intersecti
     double p0, p1, p2, r, len;
     double a;
     copyCenterAndHalfExtents(_aabbCenter, _aabbHalfExtents);
-    auto _c1 = _v0;_c1.auto _c2 = setFrom(other->point0);_c2.sub(_aabbCenter);_c2;_c1;
-    auto _c3 = _v1;_c3.auto _c4 = setFrom(other->point1);_c4.sub(_aabbCenter);_c4;_c3;
-    auto _c5 = _v2;_c5.auto _c6 = setFrom(other->point2);_c6.sub(_aabbCenter);_c6;_c5;
+    auto _c1 = _v0;_c1.auto _c2 = setFrom(other->point0());_c2.sub(_aabbCenter);_c2;_c1;
+    auto _c3 = _v1;_c3.auto _c4 = setFrom(other->point1());_c4.sub(_aabbCenter);_c4;_c3;
+    auto _c5 = _v2;_c5.auto _c6 = setFrom(other->point2());_c6.sub(_aabbCenter);_c6;_c5;
     auto _c7 = _f0;_c7.auto _c8 = setFrom(_v1);_c8.sub(_v0);_c8;_c7;
     auto _c9 = _f1;_c9.auto _c10 = setFrom(_v2);_c10.sub(_v1);_c10;_c9;
     auto _c11 = _f2;_c11.auto _c12 = setFrom(_v0);_c12.sub(_v2);_c12;_c11;
@@ -399,13 +399,13 @@ bool Aabb3Cls::intersectsWithTriangle(double epsilon, Triangle other, Intersecti
 
 bool Aabb3Cls::intersectsWithPlane(Plane other, IntersectionResult result) {
     copyCenterAndHalfExtents(_aabbCenter, _aabbHalfExtents);
-    Unknown r = _aabbHalfExtents[0] * other->normal[0]->abs() + _aabbHalfExtents[1] * other->normal[1]->abs() + _aabbHalfExtents[2] * other->normal[2]->abs();
-    Unknown s = other->normal->dot(_aabbCenter) - other->constant;
+    Unknown r = _aabbHalfExtents[0] * other->normal()[0]->abs() + _aabbHalfExtents[1] * other->normal()[1]->abs() + _aabbHalfExtents[2] * other->normal()[2]->abs();
+    Unknown s = other->normal()->dot(_aabbCenter) - other->constant;
     if (s->abs() <= r) {
         Unknown a = s - r;
         if (result != nullptr && (result->_depth == nullptr || (result->_depth!) < a)) {
             result->_depth = a;
-            result->axis->setFrom(other->normal);
+            result->axis->setFrom(other->normal());
         }
         return true;
     }

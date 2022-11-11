@@ -159,11 +159,11 @@ void RawGestureDetectorStateCls::replaceSemanticsActions(Set<SemanticsAction> ac
         }
         return true;
     }());
-    semanticsGestureHandler!->validActions = actions;
+    semanticsGestureHandler!->validActions() = actions;
 }
 
 void RawGestureDetectorStateCls::dispose() {
-    for (GestureRecognizer recognizer : _recognizers!->values()) {
+    for (GestureRecognizer recognizer : _recognizers!->values) {
         recognizer->dispose();
     }
     _recognizers = nullptr;
@@ -183,11 +183,11 @@ void RawGestureDetectorStateCls::debugFillProperties(DiagnosticPropertiesBuilder
     if (_recognizers == nullptr) {
         properties->add(DiagnosticsNodeCls->message(__s("DISPOSED")));
     } else {
-        List<String> gestures = _recognizers!->values()-><String>map([=] (GestureRecognizer recognizer) {
-    recognizer->debugDescription;
+        List<String> gestures = _recognizers!->values-><String>map([=] (GestureRecognizer recognizer) {
+    recognizer->debugDescription();
 })->toList();
         properties->add(<String>make<IterablePropertyCls>(__s("gestures"), gestures__s("<none>")));
-        properties->add(<GestureRecognizer>make<IterablePropertyCls>(__s("recognizers"), _recognizers!->values()DiagnosticLevelCls::fine));
+        properties->add(<GestureRecognizer>make<IterablePropertyCls>(__s("recognizers"), _recognizers!->valuesDiagnosticLevelCls::fine));
         properties->add(<bool>make<DiagnosticsPropertyCls>(__s("excludeFromSemantics"), widget->excludeFromSemanticsfalse));
         if (!widget->excludeFromSemantics) {
             properties->add(<SemanticsGestureDelegate>make<DiagnosticsPropertyCls>(__s("semantics"), widget->semanticsnullptr));
@@ -217,14 +217,14 @@ void RawGestureDetectorStateCls::_syncAll(Map<Type, GestureRecognizerFactory> ge
 
 void RawGestureDetectorStateCls::_handlePointerDown(PointerDownEvent event) {
     assert(_recognizers != nullptr);
-    for (GestureRecognizer recognizer : _recognizers!->values()) {
+    for (GestureRecognizer recognizer : _recognizers!->values) {
         recognizer->addPointer(event);
     }
 }
 
 void RawGestureDetectorStateCls::_handlePointerPanZoomStart(PointerPanZoomStartEvent event) {
     assert(_recognizers != nullptr);
-    for (GestureRecognizer recognizer : _recognizers!->values()) {
+    for (GestureRecognizer recognizer : _recognizers!->values) {
         recognizer->addPointerPanZoom(event);
     }
 }

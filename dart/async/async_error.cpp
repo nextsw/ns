@@ -8,7 +8,7 @@ AsyncErrorCls::AsyncErrorCls(Object error, StackTrace stackTrace) {
 
 StackTrace AsyncErrorCls::defaultStackTrace(Object error) {
     if (is<Error>(error)) {
-        auto stackTrace = error->stackTrace;
+        auto stackTrace = as<ErrorCls>(error)->stackTrace;
         if (stackTrace != nullptr)         {
             return stackTrace;
         }

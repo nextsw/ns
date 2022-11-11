@@ -3,18 +3,18 @@ DirectoryCls::DirectoryCls(String path) {
     {
         IOOverrides overrides = IOOverridesCls::current;
         if (overrides == nullptr) {
-            return make<_DirectoryCls>(path());
+            return make<_DirectoryCls>(path);
         }
-        return overrides->createDirectory(path());
+        return overrides->createDirectory(path);
     }
 }
 
 void DirectoryCls::fromRawPath(Uint8List path) {
-    return _DirectoryCls->fromRawPath(path());
+    return _DirectoryCls->fromRawPath(path);
 }
 
 void DirectoryCls::fromUri(Uri uri) {
-    return make<DirectoryCls>(uri()->toFilePath());
+    return make<DirectoryCls>(uri->toFilePath());
 }
 
 Directory DirectoryCls::current() {

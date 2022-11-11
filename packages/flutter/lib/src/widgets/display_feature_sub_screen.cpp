@@ -12,7 +12,7 @@ Widget DisplayFeatureSubScreenCls::build(BuildContext context) {
 
 Iterable<Rect> DisplayFeatureSubScreenCls::avoidBounds(MediaQueryData mediaQuery) {
     return mediaQuery->displayFeatures->where([=] (DisplayFeature d)     {
-        d->bounds->shortestSide > 0 || d->state == DisplayFeatureStateCls::postureHalfOpened;
+        d->bounds->shortestSide() > 0 || d->state == DisplayFeatureStateCls::postureHalfOpened;
     })->map([=] (DisplayFeature d)     {
         d->bounds;
     });

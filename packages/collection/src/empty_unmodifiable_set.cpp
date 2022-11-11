@@ -16,7 +16,7 @@ template<typename E> bool EmptyUnmodifiableSetCls<E>::contains(Object element) {
 }
 
 template<typename E> bool EmptyUnmodifiableSetCls<E>::containsAll(Iterable<Object> other) {
-    return other->isEmpty;
+    return other->isEmpty();
 }
 
 template<typename E> Iterable<E> EmptyUnmodifiableSetCls<E>::followedBy(Iterable<E> other) {

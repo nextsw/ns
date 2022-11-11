@@ -1,7 +1,7 @@
 #include "matrix_utils.hpp"
 Offset MatrixUtilsCls::getAsTranslation(Matrix4 transform) {
     assert(transform != nullptr);
-    Float64List values = transform->storage;
+    Float64List values = transform->storage();
     if (values[0] == 1.0 && values[1] == 0.0 && values[2] == 0.0 && values[3] == 0.0 && values[4] == 0.0 && values[5] == 1.0 && values[6] == 0.0 && values[7] == 0.0 && values[8] == 0.0 && values[9] == 0.0 && values[10] == 1.0 && values[11] == 0.0 && values[14] == 0.0 && values[15] == 1.0) {
         return make<OffsetCls>(values[12], values[13]);
     }
@@ -10,7 +10,7 @@ Offset MatrixUtilsCls::getAsTranslation(Matrix4 transform) {
 
 double MatrixUtilsCls::getAsScale(Matrix4 transform) {
     assert(transform != nullptr);
-    Float64List values = transform->storage;
+    Float64List values = transform->storage();
     if (values[1] == 0.0 && values[2] == 0.0 && values[3] == 0.0 && values[4] == 0.0 && values[6] == 0.0 && values[7] == 0.0 && values[8] == 0.0 && values[9] == 0.0 && values[10] == 1.0 && values[11] == 0.0 && values[12] == 0.0 && values[13] == 0.0 && values[14] == 0.0 && values[15] == 1.0 && values[0] == values[5]) {
         return values[0];
     }
@@ -29,16 +29,16 @@ bool MatrixUtilsCls::matrixEquals(Matrix4 a, Matrix4 b) {
         return isIdentity(a);
     }
     assert(a != nullptr && b != nullptr);
-    return a->storage[0] == b->storage[0] && a->storage[1] == b->storage[1] && a->storage[2] == b->storage[2] && a->storage[3] == b->storage[3] && a->storage[4] == b->storage[4] && a->storage[5] == b->storage[5] && a->storage[6] == b->storage[6] && a->storage[7] == b->storage[7] && a->storage[8] == b->storage[8] && a->storage[9] == b->storage[9] && a->storage[10] == b->storage[10] && a->storage[11] == b->storage[11] && a->storage[12] == b->storage[12] && a->storage[13] == b->storage[13] && a->storage[14] == b->storage[14] && a->storage[15] == b->storage[15];
+    return a->storage()[0] == b->storage()[0] && a->storage()[1] == b->storage()[1] && a->storage()[2] == b->storage()[2] && a->storage()[3] == b->storage()[3] && a->storage()[4] == b->storage()[4] && a->storage()[5] == b->storage()[5] && a->storage()[6] == b->storage()[6] && a->storage()[7] == b->storage()[7] && a->storage()[8] == b->storage()[8] && a->storage()[9] == b->storage()[9] && a->storage()[10] == b->storage()[10] && a->storage()[11] == b->storage()[11] && a->storage()[12] == b->storage()[12] && a->storage()[13] == b->storage()[13] && a->storage()[14] == b->storage()[14] && a->storage()[15] == b->storage()[15];
 }
 
 bool MatrixUtilsCls::isIdentity(Matrix4 a) {
     assert(a != nullptr);
-    return a->storage[0] == 1.0 && a->storage[1] == 0.0 && a->storage[2] == 0.0 && a->storage[3] == 0.0 && a->storage[4] == 0.0 && a->storage[5] == 1.0 && a->storage[6] == 0.0 && a->storage[7] == 0.0 && a->storage[8] == 0.0 && a->storage[9] == 0.0 && a->storage[10] == 1.0 && a->storage[11] == 0.0 && a->storage[12] == 0.0 && a->storage[13] == 0.0 && a->storage[14] == 0.0 && a->storage[15] == 1.0;
+    return a->storage()[0] == 1.0 && a->storage()[1] == 0.0 && a->storage()[2] == 0.0 && a->storage()[3] == 0.0 && a->storage()[4] == 0.0 && a->storage()[5] == 1.0 && a->storage()[6] == 0.0 && a->storage()[7] == 0.0 && a->storage()[8] == 0.0 && a->storage()[9] == 0.0 && a->storage()[10] == 1.0 && a->storage()[11] == 0.0 && a->storage()[12] == 0.0 && a->storage()[13] == 0.0 && a->storage()[14] == 0.0 && a->storage()[15] == 1.0;
 }
 
 Offset MatrixUtilsCls::transformPoint(Offset point, Matrix4 transform) {
-    Float64List storage = transform->storage;
+    Float64List storage = transform->storage();
     double x = point->dx;
     double y = point->dy;
     double rx = storage[0] * x + storage[4] * y + storage[12];
@@ -52,7 +52,7 @@ Offset MatrixUtilsCls::transformPoint(Offset point, Matrix4 transform) {
 }
 
 Rect MatrixUtilsCls::transformRect(Rect rect, Matrix4 transform) {
-    Float64List storage = transform->storage;
+    Float64List storage = transform->storage();
     double x = rect->left;
     double y = rect->top;
     double w = rect->right - x;
@@ -132,7 +132,7 @@ Matrix4 MatrixUtilsCls::forceToPoint(Offset offset) {
 }
 
 Rect MatrixUtilsCls::_safeTransformRect(Rect rect, Matrix4 transform) {
-    Float64List storage = transform->storage;
+    Float64List storage = transform->storage();
     bool isAffine = storage[3] == 0.0 && storage[7] == 0.0 && storage[15] == 1.0;
     _accumulate(storage, rect->left, rect->top, true, isAffine);
     _accumulate(storage, rect->right, rect->top, false, isAffine);

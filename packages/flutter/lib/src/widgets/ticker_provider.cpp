@@ -36,7 +36,7 @@ void _TickerModeStateCls::dispose() {
 }
 
 Widget _TickerModeStateCls::build(BuildContext context) {
-    return make<_EffectiveTickerModeCls>(_effectiveMode->value(), _effectiveMode, widget->child);
+    return make<_EffectiveTickerModeCls>(_effectiveMode->value, _effectiveMode, widget->child);
 }
 
 void _TickerModeStateCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
@@ -45,7 +45,7 @@ void _TickerModeStateCls::debugFillProperties(DiagnosticPropertiesBuilder proper
 }
 
 void _TickerModeStateCls::_updateEffectiveMode() {
-    _effectiveMode->value() = _ancestorTicketMode && widget->enabled;
+    _effectiveMode->value = _ancestorTicketMode && widget->enabled;
 }
 
 bool _EffectiveTickerModeCls::updateShouldNotify(_EffectiveTickerMode oldWidget) {
@@ -117,7 +117,7 @@ template<typename T> void SingleTickerProviderStateMixinCls<T>::debugFillPropert
 
 template<typename T> void SingleTickerProviderStateMixinCls<T>::_updateTicker() {
     if (_ticker != nullptr) {
-        _ticker!->muted() = !_tickerModeNotifier!->value();
+        _ticker!->muted() = !_tickerModeNotifier!->value;
     }
 }
 
@@ -137,7 +137,7 @@ template<typename T> Ticker TickerProviderStateMixinCls<T>::createTicker(TickerC
     }
     assert(_tickerModeNotifier != nullptr);
     _tickers = makeSet();
-    auto _c1 = make<_WidgetTickerCls>(onTick, thiskDebugMode? __s("created by ${describeIdentity(this)}") : nullptr);_c1.muted = !_tickerModeNotifier!->value();_WidgetTicker result = _c1;
+    auto _c1 = make<_WidgetTickerCls>(onTick, thiskDebugMode? __s("created by ${describeIdentity(this)}") : nullptr);_c1.muted = !_tickerModeNotifier!->value;_WidgetTicker result = _c1;
     _tickers!->add(result);
     return result;
 }
@@ -152,7 +152,7 @@ template<typename T> void TickerProviderStateMixinCls<T>::dispose() {
     assert([=] () {
         if (_tickers != nullptr) {
             for (Ticker ticker : _tickers!) {
-                if (ticker->isActive) {
+                if (ticker->isActive()) {
                     ;
                 }
             }
@@ -177,7 +177,7 @@ template<typename T> void TickerProviderStateMixinCls<T>::_removeTicker(_WidgetT
 
 template<typename T> void TickerProviderStateMixinCls<T>::_updateTickers() {
     if (_tickers != nullptr) {
-        bool muted = !_tickerModeNotifier!->value();
+        bool muted = !_tickerModeNotifier!->value;
         for (Ticker ticker : _tickers!) {
             ticker->muted = muted;
         }

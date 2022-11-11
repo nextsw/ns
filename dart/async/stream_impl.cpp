@@ -100,7 +100,7 @@ template<typename T> void _BufferingStreamSubscriptionCls<T>::_setPendingEvents(
         return;
     }
     _pending = pendingEvents;
-    if (!pendingEvents->isEmpty) {
+    if (!pendingEvents->isEmpty()) {
         _state = _STATE_HAS_PENDINGCls;
         pendingEvents->schedule(this);
     }

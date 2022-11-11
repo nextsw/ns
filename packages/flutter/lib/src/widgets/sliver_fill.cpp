@@ -67,10 +67,10 @@ void _RenderSliverFractionalPaddingCls::performLayout() {
 
 _RenderSliverFractionalPaddingCls::_RenderSliverFractionalPaddingCls(double viewportFraction) {
     {
-        assert(viewportFraction() != nullptr);
-        assert(viewportFraction() <= 0.5);
-        assert(viewportFraction() >= 0);
-        _viewportFraction = viewportFraction();
+        assert(viewportFraction != nullptr);
+        assert(viewportFraction <= 0.5);
+        assert(viewportFraction >= 0);
+        _viewportFraction = viewportFraction;
     }
 }
 
@@ -84,7 +84,7 @@ void _RenderSliverFractionalPaddingCls::_resolve() {
         return;
     }
     assert(constraints->axis != nullptr);
-    double paddingValue = constraints->viewportMainAxisExtent * viewportFraction();
+    double paddingValue = constraints->viewportMainAxisExtent * viewportFraction;
     _lastResolvedConstraints = constraints;
     ;
     return;

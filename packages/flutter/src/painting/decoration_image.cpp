@@ -112,7 +112,7 @@ void paintImage(Alignment alignment, Canvas canvas, Rect centerSlice, ColorFilte
     assert(flipHorizontally != nullptr);
     assert(isAntiAlias != nullptr);
     assert(image->debugGetOpenHandleStackTraces()?->isNotEmpty or true, __s("Cannot paint an image that is disposed.\nThe caller of paintImage is expected to wait to dispose the image until after painting has completed."));
-    if (rect->isEmpty) {
+    if (rect->isEmpty()) {
         return;
     }
     Size outputSize = rect->size;
@@ -153,8 +153,8 @@ void paintImage(Alignment alignment, Canvas canvas, Rect centerSlice, ColorFilte
     if (!kReleaseMode) {
         ImageSizeInfo sizeInfo = make<ImageSizeInfoCls>(debugImageLabel or __s("<Unknown Image(${image.width}×${image.height})>"), make<SizeCls>(image->width->toDouble(), image->height->toDouble()), outputSize * PaintingBindingCls::instance->window->devicePixelRatio);
         assert([=] () {
-            if (debugInvertOversizedImages && sizeInfo->decodedSizeInBytes > sizeInfo->displaySizeInBytes + debugImageOverheadAllowance) {
-                int overheadInKilobytes = (sizeInfo->decodedSizeInBytes - sizeInfo->displaySizeInBytes) ~/ 1024;
+            if (debugInvertOversizedImages && sizeInfo->decodedSizeInBytes() > sizeInfo->displaySizeInBytes() + debugImageOverheadAllowance) {
+                int overheadInKilobytes = (sizeInfo->decodedSizeInBytes() - sizeInfo->displaySizeInBytes()) ~/ 1024;
                 int outputWidth = sizeInfo->displaySize->width->toInt();
                 int outputHeight = sizeInfo->displaySize->height->toInt();
                 FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(__s("Image $debugImageLabel has a display size of $outputWidth×$outputHeight but a decode size of ${image.width}×${image.height}, which uses an additional ${overheadInKilobytes}KB.\n\nConsider resizing the asset ahead of time, supplying a cacheWidth parameter of $outputWidth, a cacheHeight parameter of $outputHeight, or using a ResizeImage."), __s("painting library"), make<ErrorDescriptionCls>(__s("while painting an image"))));
@@ -169,7 +169,7 @@ void paintImage(Alignment alignment, Canvas canvas, Rect centerSlice, ColorFilte
         }());
         if (!_lastFrameImageSizeInfo->contains(sizeInfo)) {
             ImageSizeInfo existingSizeInfo = _pendingImageSizeInfo[sizeInfo->source];
-            if (existingSizeInfo == nullptr || existingSizeInfo->displaySizeInBytes < sizeInfo->displaySizeInBytes) {
+            if (existingSizeInfo == nullptr || existingSizeInfo->displaySizeInBytes() < sizeInfo->displaySizeInBytes()) {
                 _pendingImageSizeInfo[sizeInfo->source!] = sizeInfo;
             }
             debugOnPaintImage?->call(sizeInfo);

@@ -2,7 +2,7 @@
 bool _focusDebug(Iterable<String> details, String message) {
     if (debugFocusChanges) {
         debugPrint(__s("FOCUS: $message"));
-        if (details != nullptr && details->isNotEmpty) {
+        if (details != nullptr && details->isNotEmpty()) {
             for (String detail : details) {
                 debugPrint(__s("    $detail"));
             }
@@ -20,7 +20,7 @@ KeyEventResult combineKeyEventResults(Iterable<KeyEventResult> results) {
 }
 
 void _AutofocusCls::applyIfValid(FocusManager manager) {
-    bool shouldApply = (scope->parent != nullptr || identical(scope, manager->rootScope)) && identical(scope->_manager, manager) && scope->focusedChild() == nullptr && autofocusNode->ancestors()->contains(scope);
+    bool shouldApply = (scope->parent != nullptr || identical(scope, manager->rootScope)) && identical(scope->_manager, manager) && scope->focusedChild() == nullptr && autofocusNode->ancestors->contains(scope);
     if (shouldApply) {
         assert(_focusDebug(__s("Applying autofocus: $autofocusNode")));
         autofocusNode->_doRequestFocus(true);
@@ -52,9 +52,9 @@ void FocusAttachmentCls::detach() {
 void FocusAttachmentCls::reparent(FocusNode parent) {
     assert(_node != nullptr);
     if (isAttached()) {
-        assert(_node->context() != nullptr);
-        parent = FocusCls->maybeOf(_node->context()!true);
-        parent = _node->context()!->owner()!->focusManager->rootScope;
+        assert(_node->context != nullptr);
+        parent = FocusCls->maybeOf(_node->context!true);
+        parent = _node->context!->owner!->focusManager->rootScope;
         assert(parent != nullptr);
         parent->_reparent(_node);
     }
@@ -64,16 +64,16 @@ void FocusAttachmentCls::_(FocusNode _node)
 
 FocusNodeCls::FocusNodeCls(bool canRequestFocus, String debugLabel, bool descendantsAreFocusable, bool descendantsAreTraversable, FocusOnKeyCallback onKey, FocusOnKeyEventCallback onKeyEvent, bool skipTraversal) {
     {
-        assert(skipTraversal() != nullptr);
-        assert(canRequestFocus() != nullptr);
-        assert(descendantsAreFocusable() != nullptr);
-        _skipTraversal = skipTraversal();
-        _canRequestFocus = canRequestFocus();
-        _descendantsAreFocusable = descendantsAreFocusable();
-        _descendantsAreTraversable = descendantsAreTraversable();
+        assert(skipTraversal != nullptr);
+        assert(canRequestFocus != nullptr);
+        assert(descendantsAreFocusable != nullptr);
+        _skipTraversal = skipTraversal;
+        _canRequestFocus = canRequestFocus;
+        _descendantsAreFocusable = descendantsAreFocusable;
+        _descendantsAreTraversable = descendantsAreTraversable;
     }
     {
-        this->debugLabel = debugLabel();
+        this->debugLabel = debugLabel;
     }
 }
 
@@ -81,7 +81,7 @@ bool FocusNodeCls::skipTraversal() {
     if (_skipTraversal) {
         return true;
     }
-    for (FocusNode ancestor : ancestors()) {
+    for (FocusNode ancestor : ancestors) {
         if (!ancestor->descendantsAreTraversable) {
             return true;
         }
@@ -104,7 +104,7 @@ bool FocusNodeCls::canRequestFocus() {
     if (scope != nullptr && !scope->canRequestFocus) {
         return false;
     }
-    for (FocusNode ancestor : ancestors()) {
+    for (FocusNode ancestor : ancestors) {
         if (!ancestor->descendantsAreFocusable) {
             return false;
         }
@@ -115,7 +115,7 @@ bool FocusNodeCls::canRequestFocus() {
 void FocusNodeCls::canRequestFocus(bool value) {
     if (value != _canRequestFocus) {
         _canRequestFocus = value;
-        if (hasFocus() && !value) {
+        if (hasFocus && !value) {
             unfocus(UnfocusDispositionCls::previouslyFocusedChild);
         }
         _manager?->_markPropertiesChanged(this);
@@ -131,7 +131,7 @@ void FocusNodeCls::descendantsAreFocusable(bool value) {
         return;
     }
     _descendantsAreFocusable = value;
-    if (!value && hasFocus()) {
+    if (!value && hasFocus) {
         unfocus(UnfocusDispositionCls::previouslyFocusedChild);
     }
     _manager?->_markPropertiesChanged(this);
@@ -161,10 +161,10 @@ Iterable<FocusNode> FocusNodeCls::children() {
 }
 
 Iterable<FocusNode> FocusNodeCls::traversalChildren() {
-    if (!descendantsAreFocusable()) {
+    if (!descendantsAreFocusable) {
         return <FocusNode>empty();
     }
-    return children()->where([=] (FocusNode node)     {
+    return children->where([=] (FocusNode node)     {
         !node->skipTraversal && node->canRequestFocus;
     });
 }
@@ -193,7 +193,7 @@ Iterable<FocusNode> FocusNodeCls::descendants() {
 }
 
 Iterable<FocusNode> FocusNodeCls::traversalDescendants() {
-    if (!descendantsAreFocusable()) {
+    if (!descendantsAreFocusable) {
         return <FocusNode>empty();
     }
     return descendants()->where([=] (FocusNode node)     {
@@ -205,9 +205,9 @@ Iterable<FocusNode> FocusNodeCls::ancestors() {
     if (_ancestors == nullptr) {
         List<FocusNode> result = makeList();
         FocusNode parent = _parent;
-        while (parent() != nullptr) {
-            result->add(parent());
-            parent() = parent()->_parent;
+        while (parent != nullptr) {
+            result->add(parent);
+            parent = parent->_parent;
         }
         _ancestors = result;
     }
@@ -215,7 +215,7 @@ Iterable<FocusNode> FocusNodeCls::ancestors() {
 }
 
 bool FocusNodeCls::hasFocus() {
-    return hasPrimaryFocus() || (_manager?->primaryFocus()?->ancestors()->contains(this) or false);
+    return hasPrimaryFocus() || (_manager?->primaryFocus()?->ancestors->contains(this) or false);
 }
 
 bool FocusNodeCls::hasPrimaryFocus() {
@@ -223,7 +223,7 @@ bool FocusNodeCls::hasPrimaryFocus() {
 }
 
 FocusHighlightMode FocusNodeCls::highlightMode() {
-    return FocusManagerCls::instance->highlightMode;
+    return FocusManagerCls::instance->highlightMode();
 }
 
 FocusScopeNode FocusNodeCls::nearestScope() {
@@ -231,35 +231,35 @@ FocusScopeNode FocusNodeCls::nearestScope() {
 }
 
 FocusScopeNode FocusNodeCls::enclosingScope() {
-    for (FocusNode node : ancestors()) {
+    for (FocusNode node : ancestors) {
         if (is<FocusScopeNode>(node)) {
-            return node;
+            return as<FocusScopeNodeCls>(node);
         }
     }
     return nullptr;
 }
 
 Size FocusNodeCls::size() {
-    return rect()->size();
+    return rect->size;
 }
 
 Offset FocusNodeCls::offset() {
-    assert(context() != nullptr, __s("Tried to get the offset of a focus node that didn't have its context set yet.\nThe context needs to be set before trying to evaluate traversal policies. Setting the context is typically done with the attach method."));
-    RenderObject object = context()!->findRenderObject()!;
-    return MatrixUtilsCls->transformPoint(object->getTransformTo(nullptr), object->semanticBounds->topLeft);
+    assert(context != nullptr, __s("Tried to get the offset of a focus node that didn't have its context set yet.\nThe context needs to be set before trying to evaluate traversal policies. Setting the context is typically done with the attach method."));
+    RenderObject object = context!->findRenderObject()!;
+    return MatrixUtilsCls->transformPoint(object->getTransformTo(nullptr), object->semanticBounds()->topLeft);
 }
 
 Rect FocusNodeCls::rect() {
-    assert(context() != nullptr, __s("Tried to get the bounds of a focus node that didn't have its context set yet.\nThe context needs to be set before trying to evaluate traversal policies. Setting the context is typically done with the attach method."));
-    RenderObject object = context()!->findRenderObject()!;
-    Offset topLeft = MatrixUtilsCls->transformPoint(object->getTransformTo(nullptr), object->semanticBounds->topLeft);
-    Offset bottomRight = MatrixUtilsCls->transformPoint(object->getTransformTo(nullptr), object->semanticBounds->bottomRight);
+    assert(context != nullptr, __s("Tried to get the bounds of a focus node that didn't have its context set yet.\nThe context needs to be set before trying to evaluate traversal policies. Setting the context is typically done with the attach method."));
+    RenderObject object = context!->findRenderObject()!;
+    Offset topLeft = MatrixUtilsCls->transformPoint(object->getTransformTo(nullptr), object->semanticBounds()->topLeft);
+    Offset bottomRight = MatrixUtilsCls->transformPoint(object->getTransformTo(nullptr), object->semanticBounds()->bottomRight);
     return RectCls->fromLTRB(topLeft->dx, topLeft->dy, bottomRight->dx, bottomRight->dy);
 }
 
 void FocusNodeCls::unfocus(UnfocusDisposition disposition) {
     assert(disposition != nullptr);
-    if (!hasFocus() && (_manager == nullptr || _manager!->_markedForFocus != this)) {
+    if (!hasFocus && (_manager == nullptr || _manager!->_markedForFocus != this)) {
         return;
     }
     FocusScopeNode scope = enclosingScope();
@@ -279,7 +279,7 @@ bool FocusNodeCls::consumeKeyboardToken() {
 }
 
 FocusAttachment FocusNodeCls::attach(BuildContext context, FocusOnKeyCallback onKey, FocusOnKeyEventCallback onKeyEvent) {
-    _context = context();
+    _context = context;
     this->onKey = onKey or this->onKey;
     this->onKeyEvent = onKeyEvent or this->onKeyEvent;
     _attachment = FocusAttachmentCls->_(this);
@@ -304,24 +304,24 @@ void FocusNodeCls::requestFocus(FocusNode node) {
 }
 
 bool FocusNodeCls::nextFocus() {
-    return FocusTraversalGroupCls->of(context()!)->next(this);
+    return FocusTraversalGroupCls->of(context!)->next(this);
 }
 
 bool FocusNodeCls::previousFocus() {
-    return FocusTraversalGroupCls->of(context()!)->previous(this);
+    return FocusTraversalGroupCls->of(context!)->previous(this);
 }
 
 bool FocusNodeCls::focusInDirection(TraversalDirection direction) {
-    return FocusTraversalGroupCls->of(context()!)->inDirection(this, direction);
+    return FocusTraversalGroupCls->of(context!)->inDirection(this, direction);
 }
 
 void FocusNodeCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<BuildContext>make<DiagnosticsPropertyCls>(__s("context"), context()nullptr));
-    properties->add(make<FlagPropertyCls>(__s("descendantsAreFocusable")descendantsAreFocusable(), __s("DESCENDANTS UNFOCUSABLE"), true));
-    properties->add(make<FlagPropertyCls>(__s("descendantsAreTraversable")descendantsAreTraversable(), __s("DESCENDANTS UNTRAVERSABLE"), true));
-    properties->add(make<FlagPropertyCls>(__s("canRequestFocus")canRequestFocus(), __s("NOT FOCUSABLE"), true));
-    properties->add(make<FlagPropertyCls>(__s("hasFocus")hasFocus() && !hasPrimaryFocus(), __s("IN FOCUS PATH"), false));
+    properties->add(<BuildContext>make<DiagnosticsPropertyCls>(__s("context"), contextnullptr));
+    properties->add(make<FlagPropertyCls>(__s("descendantsAreFocusable")descendantsAreFocusable, __s("DESCENDANTS UNFOCUSABLE"), true));
+    properties->add(make<FlagPropertyCls>(__s("descendantsAreTraversable")descendantsAreTraversable, __s("DESCENDANTS UNTRAVERSABLE"), true));
+    properties->add(make<FlagPropertyCls>(__s("canRequestFocus")canRequestFocus, __s("NOT FOCUSABLE"), true));
+    properties->add(make<FlagPropertyCls>(__s("hasFocus")hasFocus && !hasPrimaryFocus(), __s("IN FOCUS PATH"), false));
     properties->add(make<FlagPropertyCls>(__s("hasPrimaryFocus")hasPrimaryFocus(), __s("PRIMARY FOCUS"), false));
 }
 
@@ -333,7 +333,7 @@ List<DiagnosticsNode> FocusNodeCls::debugDescribeChildren() {
 }
 
 String FocusNodeCls::toStringShort() {
-    bool hasDebugLabel = debugLabel() != nullptr && debugLabel()!->isNotEmpty();
+    bool hasDebugLabel = debugLabel != nullptr && debugLabel!->isNotEmpty();
     String extraData = __s("${hasDebugLabel ? debugLabel : ''}${hasFocus && hasDebugLabel ? ' ' : ''}${hasFocus && !hasPrimaryFocus ? '[IN FOCUS PATH]' : ''}${hasPrimaryFocus ? '[PRIMARY FOCUS]' : ''}");
     return __s("${describeIdentity(this)}${extraData.isNotEmpty ? '($extraData)' : ''}");
 }
@@ -356,11 +356,11 @@ void FocusNodeCls::_removeChild(FocusNode node, bool removeScopeFocus) {
     assert(node->_parent == this);
     assert(node->_manager == _manager);
     if (removeScopeFocus) {
-        node->enclosingScope?->_focusedChildren->remove(node);
+        node->enclosingScope()?->_focusedChildren->remove(node);
     }
     node->_parent = nullptr;
     _children->remove(node);
-    for (FocusNode ancestor : ancestors()) {
+    for (FocusNode ancestor : ancestors) {
         ancestor->_descendants = nullptr;
     }
     _descendants = nullptr;
@@ -383,8 +383,8 @@ void FocusNodeCls::_reparent(FocusNode child) {
         return;
     }
     assert(_manager == nullptr || child != _manager!->rootScope, __s("Reparenting the root node isn't allowed."));
-    assert(!ancestors()->contains(child), __s("The supplied child is already an ancestor of this node. Loops are not allowed."));
-    FocusScopeNode oldScope = child->enclosingScope;
+    assert(!ancestors->contains(child), __s("The supplied child is already an ancestor of this node. Loops are not allowed."));
+    FocusScopeNode oldScope = child->enclosingScope();
     bool hadFocus = child->hasFocus;
     child->_parent?->_removeChild(childoldScope != nearestScope());
     _children->add(child);
@@ -397,7 +397,7 @@ void FocusNodeCls::_reparent(FocusNode child) {
     if (hadFocus) {
         _manager?->primaryFocus()?->_setAsFocusedChildForScope();
     }
-    if (oldScope != nullptr && child->context != nullptr && child->enclosingScope != oldScope) {
+    if (oldScope != nullptr && child->context != nullptr && child->enclosingScope() != oldScope) {
         FocusTraversalGroupCls->maybeOf(child->context!)?->changedScope(child, oldScope);
     }
     if (child->_requestFocusWhenReparented) {
@@ -418,7 +418,7 @@ void FocusNodeCls::_notify() {
 
 void FocusNodeCls::_doRequestFocus(bool findFirstFocus) {
     assert(findFirstFocus != nullptr);
-    if (!canRequestFocus()) {
+    if (!canRequestFocus) {
         assert(_focusDebug(__s("Node NOT requesting focus because canRequestFocus is false: $this")));
         return;
     }
@@ -437,7 +437,7 @@ void FocusNodeCls::_doRequestFocus(bool findFirstFocus) {
 
 void FocusNodeCls::_setAsFocusedChildForScope() {
     FocusNode scopeFocus = this;
-    for (FocusScopeNode ancestor : ancestors()-><FocusScopeNode>whereType()) {
+    for (FocusScopeNode ancestor : ancestors-><FocusScopeNode>whereType()) {
         assert(scopeFocus != ancestor, __s("Somehow made a loop by setting focusedChild to its scope."));
         assert(_focusDebug(__s("Setting $scopeFocus as focused child for scope:"), makeList(ArrayItem)));
         ancestor->_focusedChildren->remove(scopeFocus);
@@ -510,7 +510,7 @@ void FocusScopeNodeCls::debugFillProperties(DiagnosticPropertiesBuilder properti
     if (_focusedChildren->isEmpty) {
         return;
     }
-    List<String> childList = _focusedChildren->reversed()-><String>map([=] (FocusNode child) {
+    List<String> childList = _focusedChildren->reversed-><String>map([=] (FocusNode child) {
     return child->toStringShort();
 })->toList();
     properties->add(<String>make<IterablePropertyCls>(__s("focusedChildren"), childList<String>empty()));
@@ -518,18 +518,18 @@ void FocusScopeNodeCls::debugFillProperties(DiagnosticPropertiesBuilder properti
 
 void FocusScopeNodeCls::_doRequestFocus(bool findFirstFocus) {
     assert(findFirstFocus != nullptr);
-    while (this->focusedChild != nullptr && !this->focusedChild!->canRequestFocus) {
+    while (this->focusedChild() != nullptr && !this->focusedChild()!->canRequestFocus) {
         _focusedChildren->removeLast();
     }
-    FocusNode focusedChild = this->focusedChild;
-    if (!findFirstFocus || focusedChild() == nullptr) {
+    FocusNode focusedChild = this->focusedChild();
+    if (!findFirstFocus || focusedChild == nullptr) {
         if (canRequestFocus) {
             _setAsFocusedChildForScope();
             _markNextFocus(this);
         }
         return;
     }
-    focusedChild()->_doRequestFocus(true);
+    focusedChild->_doRequestFocus(true);
 }
 
 FocusManagerCls::FocusManagerCls() {
@@ -561,7 +561,7 @@ FocusHighlightStrategy FocusManagerCls::highlightStrategy() {
 }
 
 void FocusManagerCls::highlightStrategy(FocusHighlightStrategy highlightStrategy) {
-    _highlightStrategy = highlightStrategy();
+    _highlightStrategy = highlightStrategy;
     _updateHighlightMode();
 }
 
@@ -589,7 +589,7 @@ void FocusManagerCls::debugFillProperties(DiagnosticPropertiesBuilder properties
     properties->add(make<FlagPropertyCls>(__s("haveScheduledUpdate")_haveScheduledUpdate, __s("UPDATE SCHEDULED")));
     properties->add(<FocusNode>make<DiagnosticsPropertyCls>(__s("primaryFocus"), primaryFocus()nullptr));
     properties->add(<FocusNode>make<DiagnosticsPropertyCls>(__s("nextFocus"), _markedForFocusnullptr));
-    Element element = as<Element>(primaryFocus()?->context());
+    Element element = as<Element>(primaryFocus()?->context);
     if (element != nullptr) {
         properties->add(<String>make<DiagnosticsPropertyCls>(__s("primaryFocusCreator"), element->debugGetCreatorChain(20)));
     }
@@ -650,7 +650,7 @@ bool FocusManagerCls::_handleKeyMessage(KeyMessage message) {
     }
     bool handled = false;
     for (FocusNode node : list1) {
-            List<FocusNode> list1 = make<ListCls<>>();    list1.add(ArrayItem);    for (auto _x1 : _primaryFocus!->ancestors()) {    {        list1.add(_x1);    }List<KeyEventResult> results = makeList();
+            List<FocusNode> list1 = make<ListCls<>>();    list1.add(ArrayItem);    for (auto _x1 : _primaryFocus!->ancestors) {    {        list1.add(_x1);    }List<KeyEventResult> results = makeList();
         if (node->onKeyEvent != nullptr) {
             for (KeyEvent event : message->events) {
                 results->add(node->onKeyEvent!(node, event));
@@ -715,7 +715,7 @@ void FocusManagerCls::_applyFocusChange() {
     assert(_focusDebug(__s("Refreshing focus state. Next focus will be $_markedForFocus")));
     if (_markedForFocus != nullptr && _markedForFocus != _primaryFocus) {
         Set<FocusNode> previousPath = previousFocus?->ancestors->toSet() or makeSet();
-        Set<FocusNode> nextPath = _markedForFocus!->ancestors()->toSet();
+        Set<FocusNode> nextPath = _markedForFocus!->ancestors->toSet();
         _dirtyNodes->addAll(nextPath->difference(previousPath));
         _dirtyNodes->addAll(previousPath->difference(nextPath));
         _primaryFocus = _markedForFocus;
@@ -750,7 +750,7 @@ void FocusManagerCls::_applyFocusChange() {
 }
 
 FocusNode primaryFocus() {
-    return WidgetsBindingCls::instance->focusManager->primaryFocus;
+    return WidgetsBindingCls::instance->focusManager->primaryFocus();
 }
 
 String debugDescribeFocusTree() {

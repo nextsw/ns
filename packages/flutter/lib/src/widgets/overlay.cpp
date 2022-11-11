@@ -2,10 +2,10 @@
 OverlayEntryCls::OverlayEntryCls(WidgetBuilder builder, bool maintainState, bool opaque) {
     {
         assert(builder != nullptr);
-        assert(opaque() != nullptr);
-        assert(maintainState() != nullptr);
-        _opaque = opaque();
-        _maintainState = maintainState();
+        assert(opaque != nullptr);
+        assert(maintainState != nullptr);
+        _opaque = opaque;
+        _maintainState = maintainState;
     }
 }
 
@@ -38,7 +38,7 @@ void OverlayEntryCls::maintainState(bool value) {
 }
 
 bool OverlayEntryCls::mounted() {
-    return _overlayStateMounted->value();
+    return _overlayStateMounted->value;
 }
 
 void OverlayEntryCls::addListener(VoidCallback listener) {
@@ -171,7 +171,7 @@ void OverlayStateCls::insertAll(OverlayEntry above, OverlayEntry below, Iterable
     assert(entries->every([=] (OverlayEntry entry)     {
         entry->_overlay == nullptr;
     }), __s("One or more of the specified entries are already present in another Overlay."));
-    if (entries->isEmpty) {
+    if (entries->isEmpty()) {
         return;
     }
     for (OverlayEntry entry : entries) {
@@ -263,7 +263,7 @@ int OverlayStateCls::_insertionIndex(OverlayEntry above, OverlayEntry below) {
     if (above != nullptr) {
         return _entries->indexOf(above) + 1;
     }
-    return _entries->length();
+    return _entries->length;
 }
 
 bool OverlayStateCls::_debugVerifyInsertPosition(OverlayEntry above, OverlayEntry below, Iterable<OverlayEntry> newEntries) {
@@ -415,8 +415,8 @@ bool _RenderTheatreCls::sizedByParent() {
 }
 
 Size _RenderTheatreCls::computeDryLayout(BoxConstraints constraints) {
-    assert(constraints->biggest->isFinite);
-    return constraints->biggest;
+    assert(constraints->biggest()->isFinite);
+    return constraints->biggest();
 }
 
 void _RenderTheatreCls::performLayout() {
@@ -426,11 +426,11 @@ void _RenderTheatreCls::performLayout() {
     }
     _resolve();
     assert(_resolvedAlignment != nullptr);
-    BoxConstraints nonPositionedConstraints = BoxConstraintsCls->tight(constraints->biggest);
+    BoxConstraints nonPositionedConstraints = BoxConstraintsCls->tight(constraints->biggest());
     RenderBox child = _firstOnstageChild();
     while (child != nullptr) {
         StackParentData childParentData = as<StackParentData>(child->parentData!);
-        if (!childParentData->isPositioned) {
+        if (!childParentData->isPositioned()) {
             child->layout(nonPositionedConstraintstrue);
             childParentData->offset = _resolvedAlignment!->alongOffset(as<Offset>(size - child->size));
         } else {
@@ -468,16 +468,16 @@ void _RenderTheatreCls::paintStack(PaintingContext context, Offset offset) {
 }
 
 void _RenderTheatreCls::paint(PaintingContext context, Offset offset) {
-    if (_hasVisualOverflow && clipBehavior() != ClipCls::none) {
-        _clipRectLayer->layer() = context->pushClipRect(needsCompositing, offset, OffsetCls::zero & size, paintStackclipBehavior(), _clipRectLayer->layer());
+    if (_hasVisualOverflow && clipBehavior != ClipCls::none) {
+        _clipRectLayer->layer = context->pushClipRect(needsCompositing, offset, OffsetCls::zero & size, paintStackclipBehavior, _clipRectLayer->layer);
     } else {
-        _clipRectLayer->layer() = nullptr;
+        _clipRectLayer->layer = nullptr;
         paintStack(context, offset);
     }
 }
 
 void _RenderTheatreCls::dispose() {
-    _clipRectLayer->layer() = nullptr;
+    _clipRectLayer->layer = nullptr;
     super->dispose();
 }
 
@@ -496,8 +496,8 @@ Rect _RenderTheatreCls::describeApproximatePaintClip(RenderObject child) {
 
 void _RenderTheatreCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(make<IntPropertyCls>(__s("skipCount"), skipCount()));
-    properties->add(<TextDirection>make<EnumPropertyCls>(__s("textDirection"), textDirection()));
+    properties->add(make<IntPropertyCls>(__s("skipCount"), skipCount));
+    properties->add(<TextDirection>make<EnumPropertyCls>(__s("textDirection"), textDirection));
 }
 
 List<DiagnosticsNode> _RenderTheatreCls::debugDescribeChildren() {
@@ -526,13 +526,13 @@ List<DiagnosticsNode> _RenderTheatreCls::debugDescribeChildren() {
 
 _RenderTheatreCls::_RenderTheatreCls(List<RenderBox> children, Clip clipBehavior, int skipCount, TextDirection textDirection) {
     {
-        assert(skipCount() != nullptr);
-        assert(skipCount() >= 0);
-        assert(textDirection() != nullptr);
-        assert(clipBehavior() != nullptr);
-        _textDirection = textDirection();
-        _skipCount = skipCount();
-        _clipBehavior = clipBehavior();
+        assert(skipCount != nullptr);
+        assert(skipCount >= 0);
+        assert(textDirection != nullptr);
+        assert(clipBehavior != nullptr);
+        _textDirection = textDirection;
+        _skipCount = skipCount;
+        _clipBehavior = clipBehavior;
     }
     {
         addAll(children);
@@ -543,7 +543,7 @@ void _RenderTheatreCls::_resolve() {
     if (_resolvedAlignment != nullptr) {
         return;
     }
-    _resolvedAlignment = AlignmentDirectionalCls::topStart->resolve(textDirection());
+    _resolvedAlignment = AlignmentDirectionalCls::topStart->resolve(textDirection);
 }
 
 void _RenderTheatreCls::_markNeedResolution() {
@@ -552,7 +552,7 @@ void _RenderTheatreCls::_markNeedResolution() {
 }
 
 RenderBox _RenderTheatreCls::_firstOnstageChild() {
-    if (skipCount() == super->childCount) {
+    if (skipCount == super->childCount) {
         return nullptr;
     }
     RenderBox child = super->firstChild;
@@ -565,9 +565,9 @@ RenderBox _RenderTheatreCls::_firstOnstageChild() {
 }
 
 RenderBox _RenderTheatreCls::_lastOnstageChild() {
-    return skipCount() == super->childCount? nullptr : lastChild;
+    return skipCount == super->childCount? nullptr : lastChild;
 }
 
 int _RenderTheatreCls::_onstageChildCount() {
-    return childCount - skipCount();
+    return childCount - skipCount;
 }

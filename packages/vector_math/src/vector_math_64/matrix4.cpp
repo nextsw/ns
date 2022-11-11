@@ -80,10 +80,10 @@ void Matrix4Cls::solve(Matrix4 A, Vector4 b, Vector4 x) {
     Unknown b09 = a21 * a32 - a22 * a31;
     Unknown b10 = a21 * a33 - a23 * a31;
     Unknown b11 = a22 * a33 - a23 * a32;
-    Unknown bX = b->storage[0];
-    Unknown bY = b->storage[1];
-    Unknown bZ = b->storage[2];
-    Unknown bW = b->storage[3];
+    Unknown bX = b->storage()[0];
+    Unknown bY = b->storage()[1];
+    Unknown bZ = b->storage()[2];
+    Unknown bW = b->storage()[3];
     auto det = b00 * b11 - b01 * b10 + b02 * b09 + b03 * b08 - b04 * b07 + b05 * b06;
     if (det != 0.0) {
         det = 1.0 / det;
@@ -483,16 +483,16 @@ Matrix4 Matrix4Cls::-() {
 
 dynamic Matrix4Cls::*(dynamic arg) {
     if (is<double>(arg)) {
-            auto _c1 = clone();    _c1.negate();return scaled(arg);
+            auto _c1 = clone();    _c1.negate();return scaled(as<doubleCls>(arg));
     }
     if (is<Vector4>(arg)) {
-        return transformed(arg);
+        return transformed(as<Vector4Cls>(arg));
     }
     if (is<Vector3>(arg)) {
-        return transformed3(arg);
+        return transformed3(as<Vector3Cls>(arg));
     }
     if (is<Matrix4>(arg)) {
-        return multiplied(arg);
+        return multiplied(as<Matrix4Cls>(arg));
     }
     ;
 }
@@ -511,17 +511,17 @@ void Matrix4Cls::translate(dynamic x, double y, double z) {
     double tz;
     Unknown tw = is<Vector4>(x)? x->w : 1.0;
     if (is<Vector3>(x)) {
-        tx = x->x;
-        ty = x->y;
-        tz = x->z;
+        tx = as<Vector3Cls>(x)->as<Vector3Cls>(x);
+        ty = as<Vector3Cls>(x)->y;
+        tz = as<Vector3Cls>(x)->z;
     } else     {
         if (is<Vector4>(x)) {
-        tx = x->x;
-        ty = x->y;
-        tz = x->z;
+        tx = as<Vector4Cls>(x)->as<Vector4Cls>(x);
+        ty = as<Vector4Cls>(x)->y;
+        tz = as<Vector4Cls>(x)->z;
     } else     {
         if (is<double>(x)) {
-        tx = x;
+        tx = as<doubleCls>(x);
         ty = y;
         tz = z;
     } else {
@@ -545,17 +545,17 @@ void Matrix4Cls::leftTranslate(dynamic x, double y, double z) {
     double tz;
     Unknown tw = is<Vector4>(x)? x->w : 1.0;
     if (is<Vector3>(x)) {
-        tx = x->x;
-        ty = x->y;
-        tz = x->z;
+        tx = as<Vector3Cls>(x)->as<Vector3Cls>(x);
+        ty = as<Vector3Cls>(x)->y;
+        tz = as<Vector3Cls>(x)->z;
     } else     {
         if (is<Vector4>(x)) {
-        tx = x->x;
-        ty = x->y;
-        tz = x->z;
+        tx = as<Vector4Cls>(x)->as<Vector4Cls>(x);
+        ty = as<Vector4Cls>(x)->y;
+        tz = as<Vector4Cls>(x)->z;
     } else     {
         if (is<double>(x)) {
-        tx = x;
+        tx = as<doubleCls>(x);
         ty = y;
         tz = z;
     } else {
@@ -694,19 +694,19 @@ void Matrix4Cls::scale(dynamic x, double y, double z) {
     double sz;
     Unknown sw = is<Vector4>(x)? x->w : 1.0;
     if (is<Vector3>(x)) {
-        sx = x->x;
-        sy = x->y;
-        sz = x->z;
+        sx = as<Vector3Cls>(x)->as<Vector3Cls>(x);
+        sy = as<Vector3Cls>(x)->y;
+        sz = as<Vector3Cls>(x)->z;
     } else     {
         if (is<Vector4>(x)) {
-        sx = x->x;
-        sy = x->y;
-        sz = x->z;
+        sx = as<Vector4Cls>(x)->as<Vector4Cls>(x);
+        sy = as<Vector4Cls>(x)->y;
+        sz = as<Vector4Cls>(x)->z;
     } else     {
         if (is<double>(x)) {
-        sx = x;
-        sy = y or x;
-        sz = z or x;
+        sx = as<doubleCls>(x);
+        sy = y or as<doubleCls>(x);
+        sz = z or as<doubleCls>(x);
     } else {
         ;
     }

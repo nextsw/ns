@@ -13,8 +13,8 @@ void WidgetSpanCls::build(ParagraphBuilder builder, List<PlaceholderDimensions> 
     if (hasStyle) {
         builder->pushStyle(style!->getTextStyle(textScaleFactor));
     }
-    assert(builder->placeholderCount < dimensions!->length);
-    PlaceholderDimensions currentDimensions = dimensions![builder->placeholderCount];
+    assert(builder->placeholderCount() < dimensions!->length);
+    PlaceholderDimensions currentDimensions = dimensions![builder->placeholderCount()];
     builder->addPlaceholder(currentDimensions->size->width, currentDimensions->size->height, alignmenttextScaleFactor, currentDimensions->baseline, currentDimensions->baselineOffset);
     if (hasStyle) {
         builder->pop();
@@ -42,7 +42,7 @@ RenderComparison WidgetSpanCls::compareTo(InlineSpan other) {
     if (identical(this, other)) {
         return RenderComparisonCls::identical;
     }
-    if (other->runtimeType() != runtimeType) {
+    if (other->runtimeType != runtimeType) {
         return RenderComparisonCls::layout;
     }
     if ((style == nullptr) != (other->style == nullptr)) {
@@ -79,7 +79,7 @@ bool WidgetSpanCls::==(Object other) {
 }
 
 int WidgetSpanCls::hashCode() {
-    return ObjectCls->hash(super->hashCode(), child, alignment, baseline);
+    return ObjectCls->hash(super->hashCode, child, alignment, baseline);
 }
 
 InlineSpan WidgetSpanCls::getSpanForPosition(TextPosition position) {

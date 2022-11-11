@@ -35,7 +35,7 @@ bool _ColorFilterRenderObjectCls::alwaysNeedsCompositing() {
 }
 
 void _ColorFilterRenderObjectCls::paint(PaintingContext context, Offset offset) {
-    layer = context->pushColorFilter(offset, colorFilter(), super->paintas<ColorFilterLayer>(layer));
+    layer = context->pushColorFilter(offset, colorFilter, super->paintas<ColorFilterLayer>(layer));
     assert([=] () {
         layer!->debugCreator = debugCreator;
         return true;

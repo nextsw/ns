@@ -20,8 +20,8 @@ String ViewConfigurationCls::toString() {
 
 RenderViewCls::RenderViewCls(RenderBox child, ViewConfiguration configuration, FlutterView window) {
     {
-        assert(configuration() != nullptr);
-        _configuration = configuration();
+        assert(configuration != nullptr);
+        _configuration = configuration;
         _window = window;
     }
     {
@@ -39,7 +39,7 @@ ViewConfiguration RenderViewCls::configuration() {
 
 void RenderViewCls::configuration(ViewConfiguration value) {
     assert(value != nullptr);
-    if (configuration() == value) {
+    if (configuration == value) {
         return;
     }
     ViewConfiguration oldConfiguration = _configuration;
@@ -69,7 +69,7 @@ void RenderViewCls::performResize() {
 
 void RenderViewCls::performLayout() {
     assert(_rootTransform != nullptr);
-    _size = configuration()->size;
+    _size = configuration->size;
     assert(_size->isFinite);
     if (child != nullptr) {
         child!->layout(BoxConstraintsCls->tight(_size));
@@ -133,12 +133,12 @@ void RenderViewCls::compositeFrame() {
 }
 
 Rect RenderViewCls::paintBounds() {
-    return OffsetCls::zero & (size() * configuration()->devicePixelRatio);
+    return OffsetCls::zero & (size * configuration->devicePixelRatio);
 }
 
 Rect RenderViewCls::semanticBounds() {
     assert(_rootTransform != nullptr);
-    return MatrixUtilsCls->transformRect(_rootTransform!, OffsetCls::zero & size());
+    return MatrixUtilsCls->transformRect(_rootTransform!, OffsetCls::zero & size);
 }
 
 void RenderViewCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
@@ -147,15 +147,15 @@ void RenderViewCls::debugFillProperties(DiagnosticPropertiesBuilder properties) 
         return true;
     }());
     properties->add(<Size>make<DiagnosticsPropertyCls>(__s("window size"), _window->physicalSize()__s("in physical pixels")));
-    properties->add(make<DoublePropertyCls>(__s("device pixel ratio"), _window->devicePixelRatio()__s("physical pixels per logical pixel")));
-    properties->add(<ViewConfiguration>make<DiagnosticsPropertyCls>(__s("configuration"), configuration()__s("in logical pixels")));
-    if (_window->platformDispatcher()->semanticsEnabled) {
+    properties->add(make<DoublePropertyCls>(__s("device pixel ratio"), _window->devicePixelRatio__s("physical pixels per logical pixel")));
+    properties->add(<ViewConfiguration>make<DiagnosticsPropertyCls>(__s("configuration"), configuration__s("in logical pixels")));
+    if (_window->platformDispatcher->semanticsEnabled) {
         properties->add(DiagnosticsNodeCls->message(__s("semantics enabled")));
     }
 }
 
 TransformLayer RenderViewCls::_updateMatricesAndCreateNewRootLayer() {
-    _rootTransform = configuration()->toMatrix();
+    _rootTransform = configuration->toMatrix();
     TransformLayer rootLayer = make<TransformLayerCls>(_rootTransform);
     rootLayer->attach(this);
     assert(_rootTransform != nullptr);
@@ -164,8 +164,8 @@ TransformLayer RenderViewCls::_updateMatricesAndCreateNewRootLayer() {
 
 void RenderViewCls::_updateSystemChrome() {
     Rect bounds = paintBounds();
-    Offset top = make<OffsetCls>(bounds->center->dx, _window->padding()->top / 2.0);
-    Offset bottom = make<OffsetCls>(bounds->center->dx, bounds->bottom - 1.0 - _window->padding()->bottom / 2.0);
+    Offset top = make<OffsetCls>(bounds->center->dx, _window->padding->top / 2.0);
+    Offset bottom = make<OffsetCls>(bounds->center->dx, bounds->bottom - 1.0 - _window->padding->bottom / 2.0);
     SystemUiOverlayStyle upperOverlayStyle = layer!-><SystemUiOverlayStyle>find(top);
     SystemUiOverlayStyle lowerOverlayStyle;
     ;

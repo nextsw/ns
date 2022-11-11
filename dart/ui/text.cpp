@@ -14,7 +14,7 @@ String FontWeightCls::toString() {
 FontFeatureCls::FontFeatureCls(String feature, int value) {
     {
         assert(feature != nullptr);
-        assert(feature->length() == 4, __s("Feature tag must be exactly four characters long."));
+        assert(feature->length == 4, __s("Feature tag must be exactly four characters long."));
         assert(value != nullptr);
         assert(value >= 0, __s("Feature value must be zero or a positive integer."));
     }
@@ -98,7 +98,7 @@ String FontFeatureCls::toString() {
 }
 
 void FontFeatureCls::_encode(ByteData byteData) {
-    assert(feature->codeUnits()->every([=] (int c)     {
+    assert(feature->codeUnits->every([=] (int c)     {
         c >= 0x20 && c <= 0x7F;
     }));
     for (;  < 4; i++) {
@@ -110,7 +110,7 @@ void FontFeatureCls::_encode(ByteData byteData) {
 FontVariationCls::FontVariationCls(String axis, double value) {
     {
         assert(axis != nullptr);
-        assert(axis->length() == 4, __s("Axis tag must be exactly four characters long."));
+        assert(axis->length == 4, __s("Axis tag must be exactly four characters long."));
         assert(value != nullptr);
     }
 }
@@ -131,7 +131,7 @@ String FontVariationCls::toString() {
 }
 
 void FontVariationCls::_encode(ByteData byteData) {
-    assert(axis->codeUnits()->every([=] (int c)     {
+    assert(axis->codeUnits->every([=] (int c)     {
         c >= 0x20 && c <= 0x7F;
     }));
     for (;  < 4; i++) {
@@ -642,7 +642,7 @@ TextRange ParagraphCls::getLineBoundary(TextPosition position) {
     TextRange line = make<TextRangeCls>(boundary[0], boundary[1]);
     List<int> nextBoundary = _getLineBoundary(position->offset + 1);
     TextRange nextLine = make<TextRangeCls>(nextBoundary[0], nextBoundary[1]);
-    if (!nextLine->isValid) {
+    if (!nextLine->isValid()) {
         return line;
     }
     if (position->affinity == TextAffinityCls::downstream && line != nextLine && position->offset == line->end && line->end == nextLine->start) {
@@ -704,7 +704,7 @@ List<double> ParagraphBuilderCls::placeholderScales() {
 
 void ParagraphBuilderCls::pushStyle(TextStyle style) {
     List<String> fullFontFamilies = makeList();
-    fullFontFamilies->add(style->_fontFamily);
+    fullFontFamilies->add(style->_fontFamily());
     if (style->_fontFamilyFallback != nullptr)     {
         fullFontFamilies->addAll(style->_fontFamilyFallback!);
     }

@@ -120,7 +120,7 @@ Widget _InteractiveViewerStateCls::build(BuildContext context) {
         assert(!widget->constrained);
         child = make<LayoutBuilderCls>([=] (BuildContext context,BoxConstraints constraints) {
             Matrix4 matrix = _transformationController!->value;
-            return make<_InteractiveViewerBuiltCls>(_childKey, widget->clipBehavior, widget->constrained, matrix, widget->builder!(context, _transformViewport(matrix, OffsetCls::zero & constraints->biggest)));
+            return make<_InteractiveViewerBuiltCls>(_childKey, widget->clipBehavior, widget->constrained, matrix, widget->builder!(context, _transformViewport(matrix, OffsetCls::zero & constraints->biggest())));
         });
     }
     return make<ListenerCls>(_parentKey, _receivedPointerSignal, make<GestureDetectorCls>(HitTestBehaviorCls::opaque, _onScaleEnd, _onScaleStart, _onScaleUpdate, child));
@@ -135,8 +135,8 @@ Rect _InteractiveViewerStateCls::_boundaryRect() {
     RenderBox childRenderBox = as<RenderBox>(_childKey->currentContext()!->findRenderObject()!);
     Size childSize = childRenderBox->size;
     Rect boundaryRect = widget->boundaryMargin->inflateRect(OffsetCls::zero & childSize);
-    assert(!boundaryRect->isEmpty, __s("InteractiveViewer's child must have nonzero dimensions."));
-    assert(boundaryRect->isFinite || (boundaryRect->left->isInfinite && boundaryRect->top->isInfinite && boundaryRect->right->isInfinite && boundaryRect->bottom->isInfinite), __s("boundaryRect must either be infinite in all directions or finite in all directions."));
+    assert(!boundaryRect->isEmpty(), __s("InteractiveViewer's child must have nonzero dimensions."));
+    assert(boundaryRect->isFinite() || (boundaryRect->left->isInfinite && boundaryRect->top->isInfinite && boundaryRect->right->isInfinite && boundaryRect->bottom->isInfinite), __s("boundaryRect must either be infinite in all directions or finite in all directions."));
     return boundaryRect;
 }
 
@@ -183,7 +183,7 @@ Matrix4 _InteractiveViewerStateCls::_matrixScale(Matrix4 matrix, double scale) {
     }
     assert(scale != 0.0);
     double currentScale = _transformationController!->value->getMaxScaleOnAxis();
-    double totalScale = math->max(currentScale * scale, math->max(_viewport()->width() / _boundaryRect()->width(), _viewport()->height() / _boundaryRect()->height()));
+    double totalScale = math->max(currentScale * scale, math->max(_viewport()->width / _boundaryRect()->width, _viewport()->height / _boundaryRect()->height));
     double clampedTotalScale = clampDouble(totalScale, widget->minScale, widget->maxScale);
     double clampedScale = clampedTotalScale / currentScale;
     auto _c1 = matrix->clone();_c1.scale(clampedScale);return _c1;
@@ -217,7 +217,7 @@ _GestureType _InteractiveViewerStateCls::_getGestureType(ScaleUpdateDetails deta
 
 void _InteractiveViewerStateCls::_onScaleStart(ScaleStartDetails details) {
     widget->onInteractionStart?->call(details);
-    if (_controller->isAnimating()) {
+    if (_controller->isAnimating) {
         _controller->stop();
         _controller->reset();
         _animation?->removeListener(_onAnimate);
@@ -266,7 +266,7 @@ void _InteractiveViewerStateCls::_onScaleEnd(ScaleEndDetails details) {
     FrictionSimulation frictionSimulationX = make<FrictionSimulationCls>(_kDrag, translation->dx, details->velocity->pixelsPerSecond->dx);
     FrictionSimulation frictionSimulationY = make<FrictionSimulationCls>(_kDrag, translation->dy, details->velocity->pixelsPerSecond->dy);
     double tFinal = _getFinalTime(details->velocity->pixelsPerSecond->distance, _kDrag);
-    _animation = <Offset>make<TweenCls>(translation, make<OffsetCls>(frictionSimulationX->finalX, frictionSimulationY->finalX))->animate(make<CurvedAnimationCls>(_controller, CurvesCls::decelerate));
+    _animation = <Offset>make<TweenCls>(translation, make<OffsetCls>(frictionSimulationX->finalX(), frictionSimulationY->finalX()))->animate(make<CurvedAnimationCls>(_controller, CurvesCls::decelerate));
     _controller->duration = make<DurationCls>((tFinal * 1000)->round());
     _animation!->addListener(_onAnimate);
     _controller->forward();
@@ -274,27 +274,27 @@ void _InteractiveViewerStateCls::_onScaleEnd(ScaleEndDetails details) {
 
 void _InteractiveViewerStateCls::_receivedPointerSignal(PointerSignalEvent event) {
     if (is<PointerScrollEvent>(event)) {
-        if (event->scrollDelta->dy == 0.0) {
+        if (as<PointerScrollEventCls>(event)->scrollDelta->dy == 0.0) {
             return;
         }
-        widget->onInteractionStart?->call(make<ScaleStartDetailsCls>(event->position, event->localPosition));
-        double scaleChange = math->exp(-event->scrollDelta->dy / widget->scaleFactor);
+        widget->onInteractionStart?->call(make<ScaleStartDetailsCls>(as<PointerScrollEventCls>(event)->position, as<PointerScrollEventCls>(event)->localPosition));
+        double scaleChange = math->exp(-as<PointerScrollEventCls>(event)->scrollDelta->dy / widget->scaleFactor);
         if (!_gestureIsSupported(_GestureTypeCls::scale)) {
             widget->onInteractionUpdate?->call(make<ScaleUpdateDetailsCls>(event->position, event->localPosition, scaleChange));
             widget->onInteractionEnd?->call(make<ScaleEndDetailsCls>());
             return;
         }
-        Offset focalPointScene = _transformationController!->toScene(event->localPosition);
+        Offset focalPointScene = _transformationController!->toScene(as<PointerScrollEventCls>(event)->localPosition);
         _transformationController!->value = _matrixScale(_transformationController!->value, scaleChange);
-        Offset focalPointSceneScaled = _transformationController!->toScene(event->localPosition);
+        Offset focalPointSceneScaled = _transformationController!->toScene(as<PointerScrollEventCls>(event)->localPosition);
         _transformationController!->value = _matrixTranslate(_transformationController!->value, focalPointSceneScaled - focalPointScene);
-        widget->onInteractionUpdate?->call(make<ScaleUpdateDetailsCls>(event->position, event->localPosition, scaleChange));
+        widget->onInteractionUpdate?->call(make<ScaleUpdateDetailsCls>(as<PointerScrollEventCls>(event)->position, as<PointerScrollEventCls>(event)->localPosition, scaleChange));
         widget->onInteractionEnd?->call(make<ScaleEndDetailsCls>());
     }
 }
 
 void _InteractiveViewerStateCls::_onAnimate() {
-    if (!_controller->isAnimating()) {
+    if (!_controller->isAnimating) {
         _panAxis = nullptr;
         _animation?->removeListener(_onAnimate);
         _animation = nullptr;
@@ -304,7 +304,7 @@ void _InteractiveViewerStateCls::_onAnimate() {
     Vector3 translationVector = _transformationController!->value->getTranslation();
     Offset translation = make<OffsetCls>(translationVector->x, translationVector->y);
     Offset translationScene = _transformationController!->toScene(translation);
-    Offset animationScene = _transformationController!->toScene(_animation!->value());
+    Offset animationScene = _transformationController!->toScene(_animation!->value);
     Offset translationChangeScene = animationScene - translationScene;
     _transformationController!->value = _matrixTranslate(_transformationController!->value, translationChangeScene);
 }

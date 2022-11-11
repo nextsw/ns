@@ -27,7 +27,7 @@ CapturedThemes InheritedThemeCls::capture(BuildContext from, BuildContext to) {
         }
         if (is<InheritedElement>(ancestor) && is<InheritedTheme>(ancestor->widget)) {
             InheritedTheme theme = as<InheritedTheme>(ancestor->widget);
-            Type themeType = theme->runtimeType();
+            Type themeType = theme->runtimeType;
             if (!themeTypes->contains(themeType)) {
                 themeTypes->add(themeType);
                 themes->add(theme);

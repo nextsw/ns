@@ -12,7 +12,7 @@ Matrix4 _MatrixTransformPartCls::multiply(Matrix4 rhs) {
 }
 
 Matrix4 _OffsetTransformPartCls::multiply(Matrix4 rhs) {
-    auto _c1 = rhs->clone();_c1.leftTranslate(offset->dx(), offset->dy());return _c1;
+    auto _c1 = rhs->clone();_c1.leftTranslate(offset->dx, offset->dy);return _c1;
 }
 
 HitTestResultCls::HitTestResultCls() {
@@ -81,7 +81,7 @@ bool HitTestResultCls::_debugVectorMoreOrLessEquals(Vector4 a, Vector4 b, double
     bool result = true;
     assert([=] () {
         Vector4 difference = a - b;
-        result = difference->storage->every([=] (double component)         {
+        result = difference->storage()->every([=] (double component)         {
             component->abs() < epsilon;
         });
         return true;

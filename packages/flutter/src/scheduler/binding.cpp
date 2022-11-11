@@ -66,7 +66,7 @@ SchedulerBinding SchedulerBindingCls::instance() {
 
 void SchedulerBindingCls::addTimingsCallback(TimingsCallback callback) {
     _timingsCallbacks->add(callback);
-    if (_timingsCallbacks->length() == 1) {
+    if (_timingsCallbacks->length == 1) {
         assert(platformDispatcher->onReportTimings == nullptr);
         platformDispatcher->onReportTimings = _executeTimingsCallbacks;
     }
@@ -144,7 +144,7 @@ bool SchedulerBindingCls::handleEventLoopCallback() {
 }
 
 int SchedulerBindingCls::transientCallbackCount() {
-    return _transientCallbacks->length();
+    return _transientCallbacks->length;
 }
 
 int SchedulerBindingCls::scheduleFrameCallback(FrameCallback callback, bool rescheduling) {
@@ -360,7 +360,7 @@ void SchedulerBindingCls::handleDrawFrame() {
         _frameTimelineTask?->finish();
         assert([=] () {
             if (debugPrintEndFrameBanner) {
-                debugPrint(__s("▀") * _debugBanner!->length());
+                debugPrint(__s("▀") * _debugBanner!->length);
             }
             _debugBanner = nullptr;
             return true;
@@ -422,7 +422,7 @@ void SchedulerBindingCls::_setFramesEnabledState(bool enabled) {
 
 Duration SchedulerBindingCls::_adjustForEpoch(Duration rawTimeStamp) {
     Duration rawDurationSinceEpoch = _firstRawTimeStampInEpoch == nullptr? DurationCls::zero : rawTimeStamp - _firstRawTimeStampInEpoch!;
-    return make<DurationCls>((rawDurationSinceEpoch->inMicroseconds / timeDilation)->round() + _epochStart->inMicroseconds());
+    return make<DurationCls>((rawDurationSinceEpoch->inMicroseconds() / timeDilation)->round() + _epochStart->inMicroseconds());
 }
 
 void SchedulerBindingCls::_handleBeginFrame(Duration rawTimeStamp) {
@@ -451,20 +451,20 @@ void SchedulerBindingCls::_profileFramePostEvent(FrameTiming frameTiming) {
 }
 
 void SchedulerBindingCls::_debugDescribeTimeStamp(StringBuffer buffer, Duration timeStamp) {
-    if (timeStamp->inDays > 0) {
+    if (timeStamp->inDays() > 0) {
         buffer->write(__s("${timeStamp.inDays}d "));
     }
-    if (timeStamp->inHours > 0) {
+    if (timeStamp->inHours() > 0) {
         buffer->write(__s("${timeStamp.inHours - timeStamp.inDays * Duration.hoursPerDay}h "));
     }
-    if (timeStamp->inMinutes > 0) {
+    if (timeStamp->inMinutes() > 0) {
         buffer->write(__s("${timeStamp.inMinutes - timeStamp.inHours * Duration.minutesPerHour}m "));
     }
-    if (timeStamp->inSeconds > 0) {
+    if (timeStamp->inSeconds() > 0) {
         buffer->write(__s("${timeStamp.inSeconds - timeStamp.inMinutes * Duration.secondsPerMinute}s "));
     }
     buffer->write(__s("${timeStamp.inMilliseconds - timeStamp.inSeconds * Duration.millisecondsPerSecond}"));
-    int microseconds = timeStamp->inMicroseconds - timeStamp->inMilliseconds * DurationCls::microsecondsPerMillisecond;
+    int microseconds = timeStamp->inMicroseconds() - timeStamp->inMilliseconds() * DurationCls::microsecondsPerMillisecond;
     if (microseconds > 0) {
         buffer->write(__s(".${microseconds.toString().padLeft(3, "0")}"));
     }
@@ -492,7 +492,7 @@ void SchedulerBindingCls::_invokeFrameCallback(FrameCallback callback, StackTrac
 }
 
 bool defaultSchedulingStrategy(int priority, SchedulerBinding scheduler) {
-    if (scheduler->transientCallbackCount > 0) {
+    if (scheduler->transientCallbackCount() > 0) {
         return priority >= PriorityCls::animation->value;
     }
     return true;

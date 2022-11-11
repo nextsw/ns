@@ -178,7 +178,7 @@ EdgeInsetsGeometry _CompoundBorderCls::dimensions() {
 ShapeBorder _CompoundBorderCls::add(ShapeBorder other, bool reversed) {
     if (!is<_CompoundBorder>(other)) {
         ShapeBorder ours = reversed? borders->last : borders->first;
-        ShapeBorder merged = ours->add(otherreversed) or other->add(ours!reversed);
+        ShapeBorder merged = ours->add(as<_CompoundBorderCls>(other)reversed) or as<_CompoundBorderCls>(other)->add(ours!reversed);
         if (merged != nullptr) {
                     List<ShapeBorder> list1 = make<ListCls<>>();        for (auto _x1 : borders) {        {            list1.add(_x1);        }List<ShapeBorder> result = list1;
             result[reversed? result->length - 1 : 0] = merged;
@@ -231,7 +231,7 @@ _CompoundBorder _CompoundBorderCls::lerp(ShapeBorder a, ShapeBorder b, double t)
 }
 
 Path _CompoundBorderCls::getInnerPath(Rect rect, TextDirection textDirection) {
-    for (;  < borders->length() - 1; index = 1) {
+    for (;  < borders->length - 1; index = 1) {
         rect = borders[index]->dimensions()->resolve(textDirection)->deflateRect(rect);
     }
     return borders->last->getInnerPath(recttextDirection);
@@ -263,7 +263,7 @@ int _CompoundBorderCls::hashCode() {
 }
 
 String _CompoundBorderCls::toString() {
-    return borders->reversed()-><String>map([=] (ShapeBorder border)     {
+    return borders->reversed-><String>map([=] (ShapeBorder border)     {
         border->toString();
     })->join(__s(" + "));
 }
@@ -271,7 +271,7 @@ String _CompoundBorderCls::toString() {
 _CompoundBorderCls::_CompoundBorderCls(List<ShapeBorder> borders) {
     {
         assert(borders != nullptr);
-        assert(borders->length() >= 2);
+        assert(borders->length >= 2);
         assert(!borders->any([=] (ShapeBorder border)         {
             is<_CompoundBorder>(border);
         }));

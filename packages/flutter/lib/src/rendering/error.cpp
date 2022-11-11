@@ -47,7 +47,7 @@ void RenderErrorBoxCls::paint(PaintingContext context, Offset offset) {
                 left = padding->left;
             }
             _paragraph!->layout(ui->make<ParagraphConstraintsCls>(width));
-            if (size->height > padding->top + _paragraph!->height() + padding->bottom) {
+            if (size->height > padding->top + _paragraph!->height + padding->bottom) {
                 top = padding->top;
             }
             context->canvas->drawParagraph(_paragraph!, offset + make<OffsetCls>(left, top));

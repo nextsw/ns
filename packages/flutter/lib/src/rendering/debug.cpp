@@ -7,7 +7,7 @@ void _debugDrawDoubleRect(Canvas canvas, Color color, Rect innerRect, Rect outer
 
 void debugPaintPadding(Canvas canvas, Rect innerRect, Rect outerRect, double outlineWidth) {
     assert([=] () {
-        if (innerRect != nullptr && !innerRect->isEmpty) {
+        if (innerRect != nullptr && !innerRect->isEmpty()) {
             _debugDrawDoubleRect(canvas, outerRect, innerRect, make<ColorCls>(0x900090FF));
             _debugDrawDoubleRect(canvas, innerRect->inflate(outlineWidth)->intersect(outerRect), innerRect, make<ColorCls>(0xFF0090FF));
         } else {

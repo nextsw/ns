@@ -35,7 +35,7 @@ void TextEditingDeltaCls::fromJSON(Map<String, dynamic> encoded) {
     String newText = _replace(oldText, replacementSource, replacementDestinationStart, replacementDestinationEnd);
     bool isEqual = oldText == newText;
     bool isDeletionGreaterThanOne = (replacementDestinationEnd - replacementDestinationStart) - (replacementSourceEnd - replacementSourceStart) > 1;
-    bool isDeletingByReplacingWithEmpty = replacementSource->isEmpty && replacementSourceStart == 0 && replacementSourceStart == replacementSourceEnd;
+    bool isDeletingByReplacingWithEmpty = replacementSource->isEmpty() && replacementSourceStart == 0 && replacementSourceStart == replacementSourceEnd;
     bool isReplacedByShorter = isDeletionGreaterThanOne && (replacementSourceEnd -  < replacementDestinationEnd - replacementDestinationStart);
     bool isReplacedByLonger = replacementSourceEnd - replacementSourceStart > replacementDestinationEnd - replacementDestinationStart;
     bool isReplacedBySame = replacementSourceEnd - replacementSourceStart == replacementDestinationEnd - replacementDestinationStart;

@@ -25,7 +25,7 @@ void ImageCacheCls::maximumSize(int value) {
 }
 
 int ImageCacheCls::currentSize() {
-    return _cache->length();
+    return _cache->length;
 }
 
 int ImageCacheCls::maximumSizeBytes() {
@@ -59,13 +59,13 @@ int ImageCacheCls::currentSizeBytes() {
 
 void ImageCacheCls::clear() {
     if (!kReleaseMode) {
-            Map<String, dynamic> map1 = make<MapCls<>>();    map1.set(__s("pendingImages"), _pendingImages->length());    map1.set(__s("keepAliveImages"), _cache->length());    map1.set(__s("liveImages"), _liveImages->length());    map1.set(__s("currentSizeInBytes"), _currentSizeBytes);TimelineCls->instantSync(__s("ImageCache.clear")list1);
+            Map<String, dynamic> map1 = make<MapCls<>>();    map1.set(__s("pendingImages"), _pendingImages->length);    map1.set(__s("keepAliveImages"), _cache->length);    map1.set(__s("liveImages"), _liveImages->length);    map1.set(__s("currentSizeInBytes"), _currentSizeBytes);TimelineCls->instantSync(__s("ImageCache.clear")list1);
     }
-    for (_CachedImage image : _cache->values()) {
+    for (_CachedImage image : _cache->values) {
         image->dispose();
     }
     _cache->clear();
-    for (_PendingImage pendingImage : _pendingImages->values()) {
+    for (_PendingImage pendingImage : _pendingImages->values) {
         pendingImage->removeListener();
     }
     _pendingImages->clear();
@@ -172,15 +172,15 @@ bool ImageCacheCls::containsKey(Object key) {
 }
 
 int ImageCacheCls::liveImageCount() {
-    return _liveImages->length();
+    return _liveImages->length;
 }
 
 int ImageCacheCls::pendingImageCount() {
-    return _pendingImages->length();
+    return _pendingImages->length;
 }
 
 void ImageCacheCls::clearLiveImages() {
-    for (_LiveImage image : _liveImages->values()) {
+    for (_LiveImage image : _liveImages->values) {
         image->dispose();
     }
     _liveImages->clear();
@@ -214,8 +214,8 @@ void ImageCacheCls::_checkCacheSize(TimelineTask timelineTask) {
         finishArgs[__s("currentSize")] = currentSize();
         finishArgs[__s("currentSizeBytes")] = currentSizeBytes();
     }
-    while (_currentSizeBytes > _maximumSizeBytes || _cache->length() > _maximumSize) {
-        Object key = _cache->keys()->first();
+    while (_currentSizeBytes > _maximumSizeBytes || _cache->length > _maximumSize) {
+        Object key = _cache->keys->first;
         _CachedImage image = _cache[key]!;
         _currentSizeBytes = image->sizeBytes!;
         image->dispose();
@@ -230,7 +230,7 @@ void ImageCacheCls::_checkCacheSize(TimelineTask timelineTask) {
         checkCacheTask!->finish(finishArgs);
     }
     assert(_currentSizeBytes >= 0);
-    assert(_cache->length() <= maximumSize());
+    assert(_cache->length <= maximumSize());
     assert(_currentSizeBytes <= maximumSizeBytes());
 }
 

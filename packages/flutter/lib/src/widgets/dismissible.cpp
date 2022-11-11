@@ -21,7 +21,7 @@ Rect _DismissibleClipperCls::getApproximateClipRect(Size size) {
 }
 
 bool _DismissibleClipperCls::shouldReclip(_DismissibleClipper oldClipper) {
-    return oldClipper->axis != axis || oldClipper->moveAnimation->value() != moveAnimation->value();
+    return oldClipper->axis != axis || oldClipper->moveAnimation->value != moveAnimation->value;
 }
 
 _DismissibleClipperCls::_DismissibleClipperCls(Axis axis, Animation<Offset> moveAnimation) : CustomClipper<Rect>(moveAnimation) {
@@ -59,13 +59,13 @@ Widget _DismissibleStateCls::build(BuildContext context) {
     }
     if (_resizeAnimation != nullptr) {
         assert([=] () {
-            if (_resizeAnimation!->status() != AnimationStatusCls::forward) {
-                assert(_resizeAnimation!->status() == AnimationStatusCls::completed);
+            if (_resizeAnimation!->status != AnimationStatusCls::forward) {
+                assert(_resizeAnimation!->status == AnimationStatusCls::completed);
                 ;
             }
             return true;
         }());
-        return make<SizeTransitionCls>(_resizeAnimation!, _directionIsXAxis()? AxisCls::vertical : AxisCls::horizontal, make<SizedBoxCls>(_sizePriorToCollapse!->width(), _sizePriorToCollapse!->height(), background));
+        return make<SizeTransitionCls>(_resizeAnimation!, _directionIsXAxis()? AxisCls::vertical : AxisCls::horizontal, make<SizedBoxCls>(_sizePriorToCollapse!->width, _sizePriorToCollapse!->height, background));
     }
     Widget content = make<SlideTransitionCls>(_moveAnimation, widget->child);
     if (background != nullptr) {
@@ -110,11 +110,11 @@ void _DismissibleStateCls::_handleDragStart(DragStartDetails details) {
     }
     _dragUnderway = true;
     if (_moveController!->isAnimating()) {
-        _dragExtent = _moveController!->value() * _overallDragAxisExtent() * _dragExtent->sign();
+        _dragExtent = _moveController!->value * _overallDragAxisExtent() * _dragExtent->sign();
         _moveController!->stop();
     } else {
         _dragExtent = 0.0;
-        _moveController!->value() = 0.0;
+        _moveController!->value = 0.0;
     }
     setState([=] () {
         _updateMoveAnimation();
@@ -128,21 +128,21 @@ void _DismissibleStateCls::_handleDragUpdate(DragUpdateDetails details) {
     double delta = details->primaryDelta!;
     double oldDragExtent = _dragExtent;
     ;
-    if (oldDragExtent->sign != _dragExtent->sign()) {
+    if (oldDragExtent->sign() != _dragExtent->sign()) {
         setState([=] () {
             _updateMoveAnimation();
         });
     }
     if (!_moveController!->isAnimating()) {
-        _moveController!->value() = _dragExtent->abs() / _overallDragAxisExtent();
+        _moveController!->value = _dragExtent->abs() / _overallDragAxisExtent();
     }
 }
 
 void _DismissibleStateCls::_handleDismissUpdateValueChanged() {
     if (widget->onUpdate != nullptr) {
         bool oldDismissThresholdReached = _dismissThresholdReached;
-        _dismissThresholdReached = _moveController!->value() > (widget->dismissThresholds[_dismissDirection()] or _kDismissThreshold);
-        DismissUpdateDetails details = make<DismissUpdateDetailsCls>(_dismissDirection(), _dismissThresholdReached, oldDismissThresholdReached, _moveController!->value());
+        _dismissThresholdReached = _moveController!->value > (widget->dismissThresholds[_dismissDirection()] or _kDismissThreshold);
+        DismissUpdateDetails details = make<DismissUpdateDetailsCls>(_dismissDirection(), _dismissThresholdReached, oldDismissThresholdReached, _moveController!->value);
         widget->onUpdate!(details);
     }
 }

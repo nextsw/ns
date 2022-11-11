@@ -49,21 +49,21 @@ Future<ConnectionTask<RawSecureSocket>> RawSecureSocketCls::startConnect(host , 
 Future<RawSecureSocket> RawSecureSocketCls::secure(host , SecurityContext context, void keyLog(String line) , bool onBadCertificate(X509Certificate certificate) , RawSocket socket, StreamSubscription<RawSocketEvent> subscription, List<String> supportedProtocols) {
     socket->readEventsEnabled = false;
     socket->writeEventsEnabled = false;
-    return _RawSecureSocketCls->connect(host != nullptr? host : socket->address->host, socket->port, false, socketsubscription, context, onBadCertificate, keyLog, supportedProtocols);
+    return _RawSecureSocketCls->connect(host != nullptr? host : socket->address()->host(), socket->port, false, socketsubscription, context, onBadCertificate, keyLog, supportedProtocols);
 }
 
 Future<RawSecureSocket> RawSecureSocketCls::secureServer(List<int> bufferedData, SecurityContext context, bool requestClientCertificate, bool requireClientCertificate, RawSocket socket, StreamSubscription<RawSocketEvent> subscription, List<String> supportedProtocols) {
     socket->readEventsEnabled = false;
     socket->writeEventsEnabled = false;
-    return _RawSecureSocketCls->connect(socket->address, socket->remotePort, true, socketcontext, subscription, bufferedData, requestClientCertificate, requireClientCertificate, supportedProtocols);
+    return _RawSecureSocketCls->connect(socket->address(), socket->remotePort(), true, socketcontext, subscription, bufferedData, requestClientCertificate, requireClientCertificate, supportedProtocols);
 }
 
 Future<_RawSecureSocket> _RawSecureSocketCls::connect(List<int> bufferedData, SecurityContext context, dynamic host, bool isServer, void keyLog(String line) , bool onBadCertificate(X509Certificate certificate) , bool requestClientCertificate, int requestedPort, bool requireClientCertificate, RawSocket socket, StreamSubscription<RawSocketEvent> subscription, List<String> supportedProtocols) {
     _verifyFields(host, requestedPort, requestClientCertificate, requireClientCertificate);
     if (is<InternetAddress>(host))     {
-        host = host->host;
+        as<InternetAddressCls>(host) = as<InternetAddressCls>(host)->as<InternetAddressCls>(host);
     }
-    InternetAddress address = socket->address;
+    InternetAddress address = socket->address();
     if (host != nullptr) {
         address = InternetAddressCls->_cloneWithNewHost(address, host);
     }
@@ -76,19 +76,19 @@ StreamSubscription<RawSocketEvent> _RawSecureSocketCls::listen(bool cancelOnErro
 }
 
 int _RawSecureSocketCls::port() {
-    return _socket->port();
+    return _socket->port;
 }
 
 InternetAddress _RawSecureSocketCls::remoteAddress() {
-    return _socket->remoteAddress();
+    return _socket->remoteAddress;
 }
 
 int _RawSecureSocketCls::remotePort() {
-    return _socket->remotePort();
+    return _socket->remotePort;
 }
 
 int _RawSecureSocketCls::available() {
-    return _status != connectedStatus? 0 : _secureFilter!->buffers()![readPlaintextId]->length();
+    return _status != connectedStatus? 0 : _secureFilter!->buffers()![readPlaintextId]->length;
 }
 
 Future<RawSecureSocket> _RawSecureSocketCls::close() {
@@ -259,7 +259,7 @@ _RawSecureSocketCls::_RawSecureSocketCls(List<int> _bufferedData, RawSocket _soc
         }
         try {
             auto encodedProtocols = SecurityContextCls->_protocolsToLengthEncoding(supportedProtocols);
-            secureFilter->connect(address->host(), context, isServer, requestClientCertificate || requireClientCertificate, requireClientCertificate, encodedProtocols);
+            secureFilter->connect(address->host, context, isServer, requestClientCertificate || requireClientCertificate, requireClientCertificate, encodedProtocols);
             _secureHandshake();
         } catch (Unknown e) {
             _reportError(e, s);
@@ -516,12 +516,12 @@ Future<void> _RawSecureSocketCls::_tryFilter() {
 List<int> _RawSecureSocketCls::_readSocketOrBufferedData(int bytes) {
     Unknown bufferedData = _bufferedData;
     if (bufferedData != nullptr) {
-        if (bytes > bufferedData->length() - _bufferedDataIndex) {
-            bytes = bufferedData->length() - _bufferedDataIndex;
+        if (bytes > bufferedData->length - _bufferedDataIndex) {
+            bytes = bufferedData->length - _bufferedDataIndex;
         }
         auto result = bufferedData->sublist(_bufferedDataIndex, _bufferedDataIndex + bytes);
         _bufferedDataIndex = bytes;
-        if (bufferedData->length() == _bufferedDataIndex) {
+        if (bufferedData->length == _bufferedDataIndex) {
             _bufferedData = nullptr;
         }
         return result;
@@ -608,7 +608,7 @@ Future<_FilterStatus> _RawSecureSocketCls::_pushAllFilterStages() {
     int new_start = start(writePlaintextId);
     if (new_start != buffer->start) {
         status->progress = true;
-        if (buffer->free == 0) {
+        if (buffer->free() == 0) {
             status->writePlaintextNoLongerFull = true;
         }
         buffer->start = new_start;
@@ -617,7 +617,7 @@ Future<_FilterStatus> _RawSecureSocketCls::_pushAllFilterStages() {
     new_start = start(readEncryptedId);
     if (new_start != buffer->start) {
         status->progress = true;
-        if (buffer->free == 0) {
+        if (buffer->free() == 0) {
             status->readEncryptedNoLongerFull = true;
         }
         buffer->start = new_start;
@@ -691,9 +691,9 @@ int _ExternalBufferCls::linearFree() {
 
 Uint8List _ExternalBufferCls::read(int bytes) {
     if (bytes == nullptr) {
-        bytes = length();
+        bytes = length;
     } else {
-        bytes = min(bytes, length());
+        bytes = min(bytes, length);
     }
     if (bytes == 0)     {
         return nullptr;

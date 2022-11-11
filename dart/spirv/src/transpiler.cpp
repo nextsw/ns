@@ -9,7 +9,7 @@ void _TranspilerCls::transpile() {
     }
     if (uniformDeclarations->isNotEmpty()) {
         src->writeln();
-        List<int> locations = uniformDeclarations->keys()->toList();
+        List<int> locations = uniformDeclarations->keys->toList();
         locations->sort([=] (int a,int b)         {
             a - b;
         });
@@ -19,7 +19,7 @@ void _TranspilerCls::transpile() {
     }
     if (samplerSizeDeclarations->isNotEmpty()) {
         src->writeln();
-        List<int> locations = samplerSizeDeclarations->keys()->toList();
+        List<int> locations = samplerSizeDeclarations->keys->toList();
         locations->sort([=] (int a,int b)         {
             a - b;
         });
@@ -45,7 +45,7 @@ void _TranspilerCls::collectDeps(Set<int> collectedDeps, int id) {
     if (result == nullptr) {
         return;
     }
-    for (int i : result->deps) {
+    for (int i : result->deps()) {
         if (!collectedDeps->contains(i)) {
             collectedDeps->add(i);
             collectDeps(collectedDeps, i);
@@ -173,7 +173,7 @@ void _TranspilerCls::ref(int id) {
 }
 
 void _TranspilerCls::addToCurrentBlock(_Instruction inst) {
-    if (inst->isResult) {
+    if (inst->isResult()) {
         results[inst->id] = inst;
     }
     currentBlock!->_add(inst);

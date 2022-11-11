@@ -60,7 +60,7 @@ bool SliverConstraintsCls::debugAssertIsValid(InformationCollector informationCo
         StringBuffer errorMessage = make<StringBufferCls>(__s("\n"));
         InlineMethod;
         InlineMethod;
-        verify(axis() != nullptr, __s("The "axis" is null."));
+        verify(axis != nullptr, __s("The "axis" is null."));
         verify(growthDirection != nullptr, __s("The "growthDirection" is null."));
         verifyDouble(scrollOffset, __s("scrollOffset"));
         verifyDouble(overlap, __s("overlap"));
@@ -210,7 +210,7 @@ String SliverLogicalParentDataCls::toString() {
 }
 
 void SliverPhysicalParentDataCls::applyPaintTransform(Matrix4 transform) {
-    transform->translate(paintOffset->dx(), paintOffset->dy());
+    transform->translate(paintOffset->dx, paintOffset->dy);
 }
 
 String SliverPhysicalParentDataCls::toString() {
@@ -243,7 +243,7 @@ void RenderSliverCls::geometry(SliverGeometry value) {
             violation = make<ErrorDescriptionCls>(__s("It appears that the geometry setter was called from performLayout()."));
         } else {
             violation = make<ErrorDescriptionCls>(__s("The geometry setter was called from outside layout (neither performResize() nor performLayout() were being run for this object)."));
-            if (owner != nullptr && owner!->debugDoingLayout) {
+            if (owner != nullptr && owner!->debugDoingLayout()) {
                 hint = make<ErrorDescriptionCls>(__s("Only the object itself can set its geometry. It is a contract violation for other objects to set it."));
             }
         }
@@ -263,7 +263,7 @@ Rect RenderSliverCls::semanticBounds() {
 }
 
 Rect RenderSliverCls::paintBounds() {
-    assert(constraints()->axis() != nullptr);
+    assert(constraints->axis != nullptr);
     ;
 }
 
@@ -275,7 +275,7 @@ void RenderSliverCls::debugAssertDoesMeetConstraints() {
         makeList(ArrayItem);
     }));
     assert([=] () {
-        if (geometry()!->paintOrigin + geometry()!->paintExtent > constraints()->remainingPaintExtent) {
+        if (geometry()!->paintOrigin + geometry()!->paintExtent > constraints->remainingPaintExtent) {
             ;
         }
         return true;
@@ -291,7 +291,7 @@ double RenderSliverCls::centerOffsetAdjustment() {
 }
 
 bool RenderSliverCls::hitTest(double crossAxisPosition, double mainAxisPosition, SliverHitTestResult result) {
-    if (mainAxisPosition >= 0.0 &&  < geometry()!->hitTestExtent && crossAxisPosition >= 0.0 &&  < constraints()->crossAxisExtent) {
+    if (mainAxisPosition >= 0.0 &&  < geometry()!->hitTestExtent && crossAxisPosition >= 0.0 &&  < constraints->crossAxisExtent) {
         if (hitTestChildren(resultmainAxisPosition, crossAxisPosition) || hitTestSelf(mainAxisPosition, crossAxisPosition)) {
             result->add(make<SliverHitTestEntryCls>(thismainAxisPosition, crossAxisPosition));
             return true;
@@ -310,16 +310,16 @@ bool RenderSliverCls::hitTestChildren(double crossAxisPosition, double mainAxisP
 
 double RenderSliverCls::calculatePaintOffset(SliverConstraints constraints, double from, double to) {
     assert(from <= to);
-    double a = constraints()->scrollOffset;
-    double b = constraints()->scrollOffset + constraints()->remainingPaintExtent;
-    return clampDouble(clampDouble(to, a, b) - clampDouble(from, a, b), 0.0, constraints()->remainingPaintExtent);
+    double a = constraints->scrollOffset;
+    double b = constraints->scrollOffset + constraints->remainingPaintExtent;
+    return clampDouble(clampDouble(to, a, b) - clampDouble(from, a, b), 0.0, constraints->remainingPaintExtent);
 }
 
 double RenderSliverCls::calculateCacheOffset(SliverConstraints constraints, double from, double to) {
     assert(from <= to);
-    double a = constraints()->scrollOffset + constraints()->cacheOrigin;
-    double b = constraints()->scrollOffset + constraints()->remainingCacheExtent;
-    return clampDouble(clampDouble(to, a, b) - clampDouble(from, a, b), 0.0, constraints()->remainingCacheExtent);
+    double a = constraints->scrollOffset + constraints->cacheOrigin;
+    double b = constraints->scrollOffset + constraints->remainingCacheExtent;
+    return clampDouble(clampDouble(to, a, b) - clampDouble(from, a, b), 0.0, constraints->remainingCacheExtent);
 }
 
 double RenderSliverCls::childMainAxisPosition(RenderObject child) {

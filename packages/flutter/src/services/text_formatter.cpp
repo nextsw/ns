@@ -14,7 +14,7 @@ _SimpleTextInputFormatterCls::_SimpleTextInputFormatterCls(TextInputFormatFuncti
 }
 
 _MutableTextRange _MutableTextRangeCls::fromComposingRange(TextRange range) {
-    return range->isValid && !range->isCollapsed? make<_MutableTextRangeCls>(range->start, range->end) : nullptr;
+    return range->isValid() && !range->isCollapsed()? make<_MutableTextRangeCls>(range->start, range->end) : nullptr;
 }
 
 _MutableTextRange _MutableTextRangeCls::fromTextSelection(TextSelection selection) {
@@ -68,7 +68,7 @@ TextEditingValue FilteringTextInputFormatterCls::formatEditUpdate(TextEditingVal
 void FilteringTextInputFormatterCls::_processRegion(bool isBannedRegion, int regionEnd, int regionStart, _TextEditingValueAccumulator state) {
     String replacementString = isBannedRegion? (regionStart == regionEnd? __s("") : this->replacementString) : state->inputValue->text->substring(regionStart, regionEnd);
     state->stringBuffer->write(replacementString);
-    if (replacementString->length() == regionEnd - regionStart) {
+    if (replacementString->length == regionEnd - regionStart) {
         return;
     }
     InlineMethod;

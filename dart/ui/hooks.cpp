@@ -119,7 +119,7 @@ void _invoke3template<typename A1, typename A2, typename A3> (A1 arg1, A2 arg2, 
 }
 
 bool _isLoopback(String host) {
-    if (host->isEmpty) {
+    if (host->isEmpty()) {
         return false;
     }
     if (__s("localhost") == host) {

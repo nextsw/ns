@@ -202,7 +202,7 @@ void Vector4Cls::applyMatrix4(Matrix4 arg) {
     Unknown v2 = _v4storage[1];
     Unknown v3 = _v4storage[2];
     Unknown v4 = _v4storage[3];
-    Unknown argStorage = arg->storage;
+    Unknown argStorage = arg->storage();
     _v4storage[0] = argStorage[0] * v1 + argStorage[4] * v2 + argStorage[8] * v3 + argStorage[12] * v4;
     _v4storage[1] = argStorage[1] * v1 + argStorage[5] * v2 + argStorage[9] * v3 + argStorage[13] * v4;
     _v4storage[2] = argStorage[2] * v1 + argStorage[6] * v2 + argStorage[10] * v3 + argStorage[14] * v4;
@@ -303,8 +303,8 @@ void Vector4Cls::absolute() {
 }
 
 void Vector4Cls::clamp(Vector4 max, Vector4 min) {
-    Unknown minStorage = min->storage;
-    Unknown maxStorage = max->storage;
+    Unknown minStorage = min->storage();
+    Unknown maxStorage = max->storage();
     _v4storage[0] = _v4storage[0]->clamp(minStorage[0], maxStorage[0])->toDouble();
     _v4storage[1] = _v4storage[1]->clamp(minStorage[1], maxStorage[1])->toDouble();
     _v4storage[2] = _v4storage[2]->clamp(minStorage[2], maxStorage[2])->toDouble();

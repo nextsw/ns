@@ -9,13 +9,13 @@ AnimationControllerCls::AnimationControllerCls(AnimationBehavior animationBehavi
     }
     {
         _ticker = vsync->createTicker(_tick);
-        _internalSetValue(value() or lowerBound);
+        _internalSetValue(value or lowerBound);
     }
 }
 
 void AnimationControllerCls::unbounded(AnimationBehavior animationBehavior, String debugLabel, Duration duration, Duration reverseDuration, double value, TickerProvider vsync) {
     _ticker = vsync->createTicker(_tick);
-    _internalSetValue(value());
+    _internalSetValue(value);
 }
 
 Animation<double> AnimationControllerCls::view() {
@@ -41,7 +41,7 @@ void AnimationControllerCls::value(double newValue) {
 }
 
 void AnimationControllerCls::reset() {
-    value() = lowerBound;
+    value = lowerBound;
 }
 
 double AnimationControllerCls::velocity() {
@@ -73,7 +73,7 @@ TickerFuture AnimationControllerCls::forward(double from) {
     assert(_ticker != nullptr, __s("AnimationController.forward() called after AnimationController.dispose()\nAnimationController methods should not be used after calling dispose."));
     _direction = _AnimationDirectionCls::forward;
     if (from != nullptr) {
-        value() = from;
+        value = from;
     }
     return _animateToInternal(upperBound);
 }
@@ -88,7 +88,7 @@ TickerFuture AnimationControllerCls::reverse(double from) {
     assert(_ticker != nullptr, __s("AnimationController.reverse() called after AnimationController.dispose()\nAnimationController methods should not be used after calling dispose."));
     _direction = _AnimationDirectionCls::reverse;
     if (from != nullptr) {
-        value() = from;
+        value = from;
     }
     return _animateToInternal(lowerBound);
 }
@@ -143,7 +143,7 @@ TickerFuture AnimationControllerCls::fling(AnimationBehavior animationBehavior, 
     if (SemanticsBindingCls::instance->disableAnimations) {
         ;
     }
-    auto _c1 = make<SpringSimulationCls>(springDescription, value(), target, velocity() * scale);_c1.tolerance = _kFlingTolerance;SpringSimulation simulation = _c1;
+    auto _c1 = make<SpringSimulationCls>(springDescription, value, target, velocity * scale);_c1.tolerance = _kFlingTolerance;SpringSimulation simulation = _c1;
     assert(simulation->type != SpringTypeCls::underDamped, __s("The resulting spring simulation is of type SpringType.underDamped.\nThis can lead to unexpected look of the animation, please adjust the springDescription parameter"));
     stop();
     return _startSimulation(simulation);
@@ -212,13 +212,13 @@ TickerFuture AnimationControllerCls::_animateToInternal(Curve curve, Duration du
         Duration directionDuration = (_direction == _AnimationDirectionCls::reverse && reverseDuration != nullptr)? reverseDuration! : this->duration!;
         simulationDuration = directionDuration * remainingFraction;
     } else     {
-        if (target == value()) {
+        if (target == value) {
         simulationDuration = DurationCls::zero;
     }
 ;
     }    stop();
     if (simulationDuration == DurationCls::zero) {
-        if (value() != target) {
+        if (value != target) {
             _value = clampDouble(target, lowerBound, upperBound);
             notifyListeners();
         }
@@ -250,7 +250,7 @@ TickerFuture AnimationControllerCls::_startSimulation(Simulation simulation) {
 }
 
 void AnimationControllerCls::_checkStatusChanged() {
-    AnimationStatus newStatus = status();
+    AnimationStatus newStatus = status;
     if (_lastReportedStatus != newStatus) {
         _lastReportedStatus = newStatus;
         notifyStatusListeners(newStatus);
@@ -259,7 +259,7 @@ void AnimationControllerCls::_checkStatusChanged() {
 
 void AnimationControllerCls::_tick(Duration elapsed) {
     _lastElapsedDuration = elapsed;
-    double elapsedInSeconds = elapsed->inMicroseconds->toDouble() / DurationCls::microsecondsPerSecond;
+    double elapsedInSeconds = elapsed->inMicroseconds()->toDouble() / DurationCls::microsecondsPerSecond;
     assert(elapsedInSeconds >= 0.0);
     _value = clampDouble(_simulation!->x(elapsedInSeconds), lowerBound, upperBound);
     if (_simulation!->isDone(elapsedInSeconds)) {
@@ -296,8 +296,8 @@ _InterpolationSimulationCls::_InterpolationSimulationCls(double _begin, Curve _c
     {
         assert(_begin != nullptr);
         assert(_end != nullptr);
-        assert(duration != nullptr && duration->inMicroseconds > 0);
-        _durationInSeconds = (duration->inMicroseconds * scale) / DurationCls::microsecondsPerSecond;
+        assert(duration != nullptr && duration->inMicroseconds() > 0);
+        _durationInSeconds = (duration->inMicroseconds() * scale) / DurationCls::microsecondsPerSecond;
     }
 }
 
@@ -325,8 +325,8 @@ bool _RepeatingSimulationCls::isDone(double timeInSeconds) {
 
 _RepeatingSimulationCls::_RepeatingSimulationCls(_DirectionSetter directionSetter, double initialValue, double max, double min, Duration period, bool reverse) {
     {
-        _periodInSeconds = period->inMicroseconds / DurationCls::microsecondsPerSecond;
-        _initialT = (max == min)? 0.0 : (initialValue / (max - min)) * (period->inMicroseconds / DurationCls::microsecondsPerSecond);
+        _periodInSeconds = period->inMicroseconds() / DurationCls::microsecondsPerSecond;
+        _initialT = (max == min)? 0.0 : (initialValue / (max - min)) * (period->inMicroseconds() / DurationCls::microsecondsPerSecond);
     }
     {
         assert(_periodInSeconds > 0.0);

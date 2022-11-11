@@ -17,11 +17,11 @@ HardwareKeyboard HardwareKeyboardCls::instance() {
 }
 
 Set<PhysicalKeyboardKey> HardwareKeyboardCls::physicalKeysPressed() {
-    return _pressedKeys->keys()->toSet();
+    return _pressedKeys->keys->toSet();
 }
 
 Set<LogicalKeyboardKey> HardwareKeyboardCls::logicalKeysPressed() {
-    return _pressedKeys->values()->toSet();
+    return _pressedKeys->values->toSet();
 }
 
 LogicalKeyboardKey HardwareKeyboardCls::lookUpLayout(PhysicalKeyboardKey physicalKey) {
@@ -56,7 +56,7 @@ bool HardwareKeyboardCls::handleKeyEvent(KeyEvent event) {
     LogicalKeyboardKey logicalKey = event->logicalKey;
     if (is<KeyDownEvent>(event)) {
         _pressedKeys[physicalKey] = logicalKey;
-        KeyboardLockMode lockMode = KeyboardLockModeCls->findLockByLogicalKey(event->logicalKey);
+        KeyboardLockMode lockMode = KeyboardLockModeCls->findLockByLogicalKey(as<KeyDownEventCls>(event)->logicalKey);
         if (lockMode != nullptr) {
             if (_lockModes->contains(lockMode)) {
                 _lockModes->remove(lockMode);
@@ -86,7 +86,7 @@ void HardwareKeyboardCls::_assertEventIsRegular(KeyEvent event) {
     assert([=] () {
         String common = __s("If this occurs in real application, please report this bug to Flutter. If this occurs in unit tests, please ensure that simulated events follow Flutter's event model as documented in `HardwareKeyboard`. This was the event: ");
         if (is<KeyDownEvent>(event)) {
-            assert(!_pressedKeys->containsKey(event->physicalKey), __s("A ${event.runtimeType} is dispatched, but the state shows that the physical key is already pressed. $common$event"));
+            assert(!_pressedKeys->containsKey(as<KeyDownEventCls>(event)->physicalKey), __s("A ${event.runtimeType} is dispatched, but the state shows that the physical key is already pressed. $common$event"));
         } else         {
             if (is<KeyRepeatEvent>(event) || is<KeyUpEvent>(event)) {
             assert(_pressedKeys->containsKey(event->physicalKey), __s("A ${event.runtimeType} is dispatched, but the state shows that the physical key is not pressed. $common$event"));
@@ -143,7 +143,7 @@ Future<Map<String, dynamic>> KeyEventManagerCls::handleRawKeyMessage(dynamic mes
     RawKeyEvent rawEvent = RawKeyEventCls->fromMessage(as<Map<String, dynamic>>(message));
     bool shouldDispatch = true;
     if (is<RawKeyDownEvent>(rawEvent)) {
-        if (!rawEvent->data->shouldDispatchEvent()) {
+        if (!as<RawKeyDownEventCls>(rawEvent)->data->shouldDispatchEvent()) {
             shouldDispatch = false;
             _skippedRawKeysPressed->add(rawEvent->physicalKey);
         } else {
@@ -151,7 +151,7 @@ Future<Map<String, dynamic>> KeyEventManagerCls::handleRawKeyMessage(dynamic mes
         }
     } else     {
         if (is<RawKeyUpEvent>(rawEvent)) {
-        if (_skippedRawKeysPressed->contains(rawEvent->physicalKey)) {
+        if (_skippedRawKeysPressed->contains(as<RawKeyUpEventCls>(rawEvent)->physicalKey)) {
             _skippedRawKeysPressed->remove(rawEvent->physicalKey);
             shouldDispatch = false;
         }
@@ -226,14 +226,14 @@ void KeyEventManagerCls::_convertRawEventAndStore(RawKeyEvent rawEvent) {
             physicalKeysPressed->remove(physicalKey);
         }
     }
-    for (PhysicalKeyboardKey key : physicalKeysPressed->difference(_rawKeyboard->physicalKeysPressed())) {
+    for (PhysicalKeyboardKey key : physicalKeysPressed->difference(_rawKeyboard->physicalKeysPressed)) {
         if (key == physicalKey) {
             eventAfterwards->add(make<KeyUpEventCls>(key, logicalKey, timeStamp, true));
         } else {
             _keyEventsSinceLastMessage->add(make<KeyUpEventCls>(key, _hardwareKeyboard->lookUpLayout(key)!, timeStamp, true));
         }
     }
-    for (PhysicalKeyboardKey key : _rawKeyboard->physicalKeysPressed()->difference(physicalKeysPressed)) {
+    for (PhysicalKeyboardKey key : _rawKeyboard->physicalKeysPressed->difference(physicalKeysPressed)) {
         _keyEventsSinceLastMessage->add(make<KeyDownEventCls>(key, _rawKeyboard->lookUpLayout(key)!, timeStamp, true));
     }
     if (mainEvent != nullptr) {

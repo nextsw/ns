@@ -125,14 +125,14 @@ Future<void> DefaultPlatformMenuDelegateCls::_methodCallHandler(MethodCall call)
     }
     MenuItem item = _idMap[id]!;
     if (call->method == _kMenuSelectedCallbackMethod) {
-        assert(item->onSelected == nullptr || item->onSelectedIntent == nullptr, __s("Only one of MenuItem.onSelected or MenuItem.onSelectedIntent may be specified"));
-        item->onSelected?->call();
-        if (item->onSelectedIntent != nullptr) {
-            ActionsCls->maybeInvoke(FocusManagerCls::instance->primaryFocus!->context!, item->onSelectedIntent!);
+        assert(item->onSelected() == nullptr || item->onSelectedIntent() == nullptr, __s("Only one of MenuItem.onSelected or MenuItem.onSelectedIntent may be specified"));
+        item->onSelected()?->call();
+        if (item->onSelectedIntent() != nullptr) {
+            ActionsCls->maybeInvoke(FocusManagerCls::instance->primaryFocus!->context!, item->onSelectedIntent()!);
         }
     } else     {
         if (call->method == _kMenuItemOpenedMethod) {
-        item->onOpen?->call();
+        item->onOpen()?->call();
     } else     {
         if (call->method == _kMenuItemClosedMethod) {
         item->onClose?->call();

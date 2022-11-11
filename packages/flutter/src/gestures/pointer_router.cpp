@@ -12,7 +12,7 @@ void PointerRouterCls::removeRoute(int pointer, PointerRoute route) {
     Map<PointerRoute, Matrix4> routes = _routeMap[pointer]!;
     assert(routes->containsKey(route));
     routes->remove(route);
-    if (routes->isEmpty) {
+    if (routes->isEmpty()) {
         _routeMap->remove(pointer);
     }
 }
@@ -30,7 +30,7 @@ void PointerRouterCls::removeGlobalRoute(PointerRoute route) {
 int PointerRouterCls::debugGlobalRouteCount() {
     int count;
     assert([=] () {
-        count = _globalRoutes->length();
+        count = _globalRoutes->length;
         return true;
     }());
     if (count != nullptr) {

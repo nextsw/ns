@@ -17,10 +17,10 @@ ShapeBorder RoundedRectangleBorderCls::scale(double t) {
 ShapeBorder RoundedRectangleBorderCls::lerpFrom(ShapeBorder a, double t) {
     assert(t != nullptr);
     if (is<RoundedRectangleBorder>(a)) {
-        return make<RoundedRectangleBorderCls>(BorderSideCls->lerp(a->side, side, t), BorderRadiusGeometryCls->lerp(a->borderRadius, borderRadius, t)!);
+        return make<RoundedRectangleBorderCls>(BorderSideCls->lerp(as<RoundedRectangleBorderCls>(a)->side, side, t), BorderRadiusGeometryCls->lerp(as<RoundedRectangleBorderCls>(a)->borderRadius, borderRadius, t)!);
     }
     if (is<CircleBorder>(a)) {
-        return make<_RoundedRectangleToCircleBorderCls>(BorderSideCls->lerp(a->side, side, t), borderRadius, 1.0 - t);
+        return make<_RoundedRectangleToCircleBorderCls>(BorderSideCls->lerp(as<CircleBorderCls>(a)->side, side, t), borderRadius, 1.0 - t);
     }
     return super->lerpFrom(a, t);
 }
@@ -28,10 +28,10 @@ ShapeBorder RoundedRectangleBorderCls::lerpFrom(ShapeBorder a, double t) {
 ShapeBorder RoundedRectangleBorderCls::lerpTo(ShapeBorder b, double t) {
     assert(t != nullptr);
     if (is<RoundedRectangleBorder>(b)) {
-        return make<RoundedRectangleBorderCls>(BorderSideCls->lerp(side, b->side, t), BorderRadiusGeometryCls->lerp(borderRadius, b->borderRadius, t)!);
+        return make<RoundedRectangleBorderCls>(BorderSideCls->lerp(side, as<RoundedRectangleBorderCls>(b)->side, t), BorderRadiusGeometryCls->lerp(borderRadius, as<RoundedRectangleBorderCls>(b)->borderRadius, t)!);
     }
     if (is<CircleBorder>(b)) {
-        return make<_RoundedRectangleToCircleBorderCls>(BorderSideCls->lerp(side, b->side, t), borderRadius, t);
+        return make<_RoundedRectangleToCircleBorderCls>(BorderSideCls->lerp(side, as<CircleBorderCls>(b)->side, t), borderRadius, t);
     }
     return super->lerpTo(b, t);
 }
@@ -81,26 +81,26 @@ ShapeBorder _RoundedRectangleToCircleBorderCls::scale(double t) {
 ShapeBorder _RoundedRectangleToCircleBorderCls::lerpFrom(ShapeBorder a, double t) {
     assert(t != nullptr);
     if (is<RoundedRectangleBorder>(a)) {
-        return make<_RoundedRectangleToCircleBorderCls>(BorderSideCls->lerp(a->side, side, t), BorderRadiusGeometryCls->lerp(a->borderRadius, borderRadius, t)!, circleness * t);
+        return make<_RoundedRectangleToCircleBorderCls>(BorderSideCls->lerp(as<RoundedRectangleBorderCls>(a)->side, side, t), BorderRadiusGeometryCls->lerp(as<RoundedRectangleBorderCls>(a)->borderRadius, borderRadius, t)!, circleness * t);
     }
     if (is<CircleBorder>(a)) {
-        return make<_RoundedRectangleToCircleBorderCls>(BorderSideCls->lerp(a->side, side, t), borderRadius, circleness + (1.0 - circleness) * (1.0 - t));
+        return make<_RoundedRectangleToCircleBorderCls>(BorderSideCls->lerp(as<CircleBorderCls>(a)->side, side, t), borderRadius, circleness + (1.0 - circleness) * (1.0 - t));
     }
     if (is<_RoundedRectangleToCircleBorder>(a)) {
-        return make<_RoundedRectangleToCircleBorderCls>(BorderSideCls->lerp(a->side, side, t), BorderRadiusGeometryCls->lerp(a->borderRadius, borderRadius, t)!, ui->lerpDouble(a->circleness, circleness, t)!);
+        return make<_RoundedRectangleToCircleBorderCls>(BorderSideCls->lerp(as<_RoundedRectangleToCircleBorderCls>(a)->side, side, t), BorderRadiusGeometryCls->lerp(as<_RoundedRectangleToCircleBorderCls>(a)->borderRadius, borderRadius, t)!, ui->lerpDouble(as<_RoundedRectangleToCircleBorderCls>(a)->circleness, circleness, t)!);
     }
     return super->lerpFrom(a, t);
 }
 
 ShapeBorder _RoundedRectangleToCircleBorderCls::lerpTo(ShapeBorder b, double t) {
     if (is<RoundedRectangleBorder>(b)) {
-        return make<_RoundedRectangleToCircleBorderCls>(BorderSideCls->lerp(side, b->side, t), BorderRadiusGeometryCls->lerp(borderRadius, b->borderRadius, t)!, circleness * (1.0 - t));
+        return make<_RoundedRectangleToCircleBorderCls>(BorderSideCls->lerp(side, as<RoundedRectangleBorderCls>(b)->side, t), BorderRadiusGeometryCls->lerp(borderRadius, as<RoundedRectangleBorderCls>(b)->borderRadius, t)!, circleness * (1.0 - t));
     }
     if (is<CircleBorder>(b)) {
-        return make<_RoundedRectangleToCircleBorderCls>(BorderSideCls->lerp(side, b->side, t), borderRadius, circleness + (1.0 - circleness) * t);
+        return make<_RoundedRectangleToCircleBorderCls>(BorderSideCls->lerp(side, as<CircleBorderCls>(b)->side, t), borderRadius, circleness + (1.0 - circleness) * t);
     }
     if (is<_RoundedRectangleToCircleBorder>(b)) {
-        return make<_RoundedRectangleToCircleBorderCls>(BorderSideCls->lerp(side, b->side, t), BorderRadiusGeometryCls->lerp(borderRadius, b->borderRadius, t)!, ui->lerpDouble(circleness, b->circleness, t)!);
+        return make<_RoundedRectangleToCircleBorderCls>(BorderSideCls->lerp(side, as<_RoundedRectangleToCircleBorderCls>(b)->side, t), BorderRadiusGeometryCls->lerp(borderRadius, as<_RoundedRectangleToCircleBorderCls>(b)->borderRadius, t)!, ui->lerpDouble(circleness, as<_RoundedRectangleToCircleBorderCls>(b)->circleness, t)!);
     }
     return super->lerpTo(b, t);
 }
@@ -165,5 +165,5 @@ BorderRadius _RoundedRectangleToCircleBorderCls::_adjustBorderRadius(Rect rect, 
     if (circleness == 0.0) {
         return resolvedRadius;
     }
-    return BorderRadiusCls->lerp(resolvedRadius, BorderRadiusCls->circular(rect->shortestSide / 2.0), circleness);
+    return BorderRadiusCls->lerp(resolvedRadius, BorderRadiusCls->circular(rect->shortestSide() / 2.0), circleness);
 }

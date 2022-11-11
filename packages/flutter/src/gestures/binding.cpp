@@ -39,7 +39,7 @@ void _ResamplerCls::sample(SamplingClock clock, Duration samplingOffset) {
     Duration frameTime = _frameTime + make<DurationCls>(elapsedUs);
     Duration sampleTime = frameTime + samplingOffset;
     Duration nextSampleTime = sampleTime + _samplingInterval;
-    for (PointerEventResampler resampler : _resamplers->values()) {
+    for (PointerEventResampler resampler : _resamplers->values) {
         resampler->sample(sampleTime, nextSampleTime, _handlePointerEvent);
     }
     _resamplers->removeWhere([=] (int key,PointerEventResampler resampler) {
@@ -54,7 +54,7 @@ void _ResamplerCls::sample(SamplingClock clock, Duration samplingOffset) {
         _frameCallbackScheduled = true;
         scheduler->addPostFrameCallback([=] () {
             _frameCallbackScheduled = false;
-            _frameTime = scheduler->currentSystemFrameTimeStamp;
+            _frameTime = scheduler->currentSystemFrameTimeStamp();
             _frameTimeAge->reset();
             _timer?->cancel();
             _timer = TimerCls->periodic(_samplingInterval, [=] ()             {
@@ -66,7 +66,7 @@ void _ResamplerCls::sample(SamplingClock clock, Duration samplingOffset) {
 }
 
 void _ResamplerCls::stop() {
-    for (PointerEventResampler resampler : _resamplers->values()) {
+    for (PointerEventResampler resampler : _resamplers->values) {
         resampler->stop(_handlePointerEvent);
     }
     _resamplers->clear();
@@ -155,7 +155,7 @@ void GestureBindingCls::handleEvent(HitTestEntry entry, PointerEvent event) {
         gestureArena->sweep(event->pointer);
     } else     {
         if (is<PointerSignalEvent>(event)) {
-        pointerSignalResolver->resolve(event);
+        pointerSignalResolver->resolve(as<PointerSignalEventCls>(event));
     }
 ;
     };

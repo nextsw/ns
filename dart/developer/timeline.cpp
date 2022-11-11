@@ -130,7 +130,7 @@ void TimelineTaskCls::finish(Map arguments) {
     if (!_hasTimeline) {
         return;
     }
-    if (_stack->length() == 0) {
+    if (_stack->length == 0) {
         ;
     }
     if (_filterKey != nullptr) {
@@ -145,7 +145,7 @@ void TimelineTaskCls::finish(Map arguments) {
 }
 
 int TimelineTaskCls::pass() {
-    if (_stack->length() > 0) {
+    if (_stack->length > 0) {
         ;
     }
     int r = _taskId;

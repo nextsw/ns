@@ -11,7 +11,7 @@ template<typename T> BuildContext DisposableBuildContextCls<T>::context() {
     if (_state == nullptr) {
         return nullptr;
     }
-    return _state!->context();
+    return _state!->context;
 }
 
 template<typename T> void DisposableBuildContextCls<T>::dispose() {

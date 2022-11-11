@@ -10,11 +10,11 @@ ListWheelChildListDelegateCls::ListWheelChildListDelegateCls(List<Widget> childr
 }
 
 int ListWheelChildListDelegateCls::estimatedChildCount() {
-    return children->length();
+    return children->length;
 }
 
 Widget ListWheelChildListDelegateCls::build(BuildContext context, int index) {
-    if ( < 0 || index >= children->length()) {
+    if ( < 0 || index >= children->length) {
         return nullptr;
     }
     return make<IndexedSemanticsCls>(index, children[index]);
@@ -35,14 +35,14 @@ int ListWheelChildLoopingListDelegateCls::estimatedChildCount() {
 }
 
 int ListWheelChildLoopingListDelegateCls::trueIndexOf(int index) {
-    return index % children->length();
+    return index % children->length;
 }
 
 Widget ListWheelChildLoopingListDelegateCls::build(BuildContext context, int index) {
     if (children->isEmpty) {
         return nullptr;
     }
-    return make<IndexedSemanticsCls>(index, children[index % children->length()]);
+    return make<IndexedSemanticsCls>(index, children[index % children->length]);
 }
 
 bool ListWheelChildLoopingListDelegateCls::shouldRebuild(ListWheelChildLoopingListDelegate oldDelegate) {
@@ -121,11 +121,11 @@ double _FixedExtentScrollPositionCls::itemExtent() {
 }
 
 int _FixedExtentScrollPositionCls::itemIndex() {
-    return _getItemFromOffset(pixels, itemExtent(), minScrollExtent, maxScrollExtent);
+    return _getItemFromOffset(pixels, itemExtent, minScrollExtent, maxScrollExtent);
 }
 
 FixedExtentMetrics _FixedExtentScrollPositionCls::copyWith(AxisDirection axisDirection, int itemIndex, double maxScrollExtent, double minScrollExtent, double pixels, double viewportDimension) {
-    return make<FixedExtentMetricsCls>(minScrollExtent or (hasContentDimensions? this->minScrollExtent : nullptr), maxScrollExtent or (hasContentDimensions? this->maxScrollExtent : nullptr), pixels or (hasPixels? this->pixels : nullptr), viewportDimension or (hasViewportDimension? this->viewportDimension : nullptr), axisDirection or this->axisDirection, itemIndex() or this->itemIndex);
+    return make<FixedExtentMetricsCls>(minScrollExtent or (hasContentDimensions? this->minScrollExtent : nullptr), maxScrollExtent or (hasContentDimensions? this->maxScrollExtent : nullptr), pixels or (hasPixels? this->pixels : nullptr), viewportDimension or (hasViewportDimension? this->viewportDimension : nullptr), axisDirection or this->axisDirection, itemIndex or this->itemIndex);
 }
 
 _FixedExtentScrollPositionCls::_FixedExtentScrollPositionCls(Unknown context, int initialItem, Unknown oldPosition, Unknown physics) : ScrollPositionWithSingleContext(_getItemExtentFromScrollContext(context) * initialItem) {
@@ -170,7 +170,7 @@ Simulation FixedExtentScrollPhysicsCls::createBallisticSimulation(ScrollMetrics 
     if (settlingItemIndex == metrics->itemIndex) {
         return make<SpringSimulationCls>(spring, metrics->pixels, settlingPixels, velocitytolerance);
     }
-    return FrictionSimulationCls->through(metrics->pixels, settlingPixels, velocity, tolerance->velocity * velocity->sign);
+    return FrictionSimulationCls->through(metrics->pixels, settlingPixels, velocity, tolerance->velocity * velocity->sign());
 }
 
 ListWheelScrollViewCls::ListWheelScrollViewCls(List<Widget> children, Clip clipBehavior, ScrollController controller, double diameterRatio, double itemExtent, Unknown key, double magnification, double offAxisFraction, ValueChanged<int> onSelectedItemChanged, double overAndUnderCenterOpacity, double perspective, ScrollPhysics physics, bool renderChildrenOutsideViewport, String restorationId, ScrollBehavior scrollBehavior, double squeeze, bool useMagnifier) {
@@ -249,9 +249,9 @@ void ListWheelElementCls::update(ListWheelViewport newWidget) {
     super->update(newWidget);
     ListWheelChildDelegate newDelegate = newWidget->childDelegate;
     ListWheelChildDelegate oldDelegate = oldWidget->childDelegate;
-    if (newDelegate != oldDelegate && (newDelegate->runtimeType() != oldDelegate->runtimeType() || newDelegate->shouldRebuild(oldDelegate))) {
+    if (newDelegate != oldDelegate && (newDelegate->runtimeType != oldDelegate->runtimeType || newDelegate->shouldRebuild(oldDelegate))) {
         performRebuild();
-        renderObject()->markNeedsLayout();
+        renderObject->markNeedsLayout();
     }
 }
 
@@ -301,7 +301,7 @@ void ListWheelElementCls::createChild(RenderBox after, int index) {
 }
 
 void ListWheelElementCls::removeChild(RenderBox child) {
-    int index = renderObject()->indexOf(child);
+    int index = renderObject->indexOf(child);
     owner!->buildScope(this, [=] () {
         assert(_childElements->containsKey(index));
         Element result = updateChild(_childElements[index], nullptr, index);
@@ -326,9 +326,9 @@ Element ListWheelElementCls::updateChild(Element child, Object newSlot, Widget n
 
 void ListWheelElementCls::insertRenderObjectChild(RenderObject child, int slot) {
     RenderListWheelViewport renderObject = this->renderObject;
-    assert(renderObject()->debugValidateChild(child));
-    renderObject()->insert(as<RenderBox>(child)as<RenderBox>(_childElements[slot - 1]?->renderObject));
-    assert(renderObject() == this->renderObject);
+    assert(renderObject->debugValidateChild(child));
+    renderObject->insert(as<RenderBox>(child)as<RenderBox>(_childElements[slot - 1]?->renderObject));
+    assert(renderObject == this->renderObject);
 }
 
 void ListWheelElementCls::moveRenderObjectChild(RenderObject child, int newSlot, int oldSlot) {
@@ -337,8 +337,8 @@ void ListWheelElementCls::moveRenderObjectChild(RenderObject child, int newSlot,
 }
 
 void ListWheelElementCls::removeRenderObjectChild(RenderObject child, int slot) {
-    assert(child->parent == renderObject());
-    renderObject()->remove(as<RenderBox>(child));
+    assert(child->parent == renderObject);
+    renderObject->remove(as<RenderBox>(child));
 }
 
 void ListWheelElementCls::visitChildren(ElementVisitor visitor) {

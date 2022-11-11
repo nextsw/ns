@@ -238,7 +238,7 @@ template<typename E> Iterable<E> ListMixinCls<E>::takeWhile(bool test(E element)
 }
 
 template<typename E> List<E> ListMixinCls<E>::toList(bool growable) {
-    if (this->isEmpty)     {
+    if (this->isEmpty())     {
         return <E>empty(growable);
     }
     auto first = this[0];
@@ -372,7 +372,7 @@ template<typename E> void ListMixinCls<E>::setRange(int end, Iterable<E> iterabl
     List<E> otherList;
     int otherStart;
     if (is<List<E>>(iterable)) {
-        otherList = iterable;
+        otherList = as<ListCls>(iterable);
         otherStart = skipCount;
     } else {
         otherList = iterable->skip(skipCount)->toList(false);
@@ -399,7 +399,7 @@ template<typename E> void ListMixinCls<E>::replaceRange(int end, Iterable<E> new
         return;
     }
     if (!is<EfficientLengthIterable>(newContents)) {
-        newContents = newContents->toList();
+        as<EfficientLengthIterableCls>(newContents) = as<EfficientLengthIterableCls>(newContents)->toList();
     }
     int removeLength = end - start;
     int insertLength = newContents->length;
@@ -536,7 +536,7 @@ template<typename E> void ListMixinCls<E>::insertAll(int index, Iterable<E> iter
 
 template<typename E> void ListMixinCls<E>::setAll(int index, Iterable<E> iterable) {
     if (is<List>(iterable)) {
-        setRange(index, index + iterable->length, iterable);
+        setRange(index, index + as<ListCls>(iterable)->length, as<ListCls>(iterable));
     } else {
         for (E element : iterable) {
             this[index++] = element;

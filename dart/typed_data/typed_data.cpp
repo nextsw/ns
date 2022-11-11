@@ -4,8 +4,8 @@ void ByteDataCls::view(ByteBuffer buffer, int length, int offsetInBytes) {
 }
 
 void ByteDataCls::sublistView(TypedData data, int end, int start) {
-    int elementSize = data->elementSizeInBytes;
-    end = RangeErrorCls->checkValidRange(start, end, data->lengthInBytes ~/ elementSize);
+    int elementSize = data->elementSizeInBytes();
+    end = RangeErrorCls->checkValidRange(start, end, data->lengthInBytes() ~/ elementSize);
     return data->buffer->asByteData(data->offsetInBytes + start * elementSize, (end - start) * elementSize);
 }
 
@@ -14,8 +14,8 @@ void Int8ListCls::view(ByteBuffer buffer, int length, int offsetInBytes) {
 }
 
 void Int8ListCls::sublistView(TypedData data, int end, int start) {
-    int elementSize = data->elementSizeInBytes;
-    end = RangeErrorCls->checkValidRange(start, end, data->lengthInBytes ~/ elementSize);
+    int elementSize = data->elementSizeInBytes();
+    end = RangeErrorCls->checkValidRange(start, end, data->lengthInBytes() ~/ elementSize);
     return data->buffer->asInt8List(data->offsetInBytes + start * elementSize, (end - start) * elementSize);
 }
 
@@ -24,8 +24,8 @@ void Uint8ListCls::view(ByteBuffer buffer, int length, int offsetInBytes) {
 }
 
 void Uint8ListCls::sublistView(TypedData data, int end, int start) {
-    int elementSize = data->elementSizeInBytes;
-    end = RangeErrorCls->checkValidRange(start, end, data->lengthInBytes ~/ elementSize);
+    int elementSize = data->elementSizeInBytes();
+    end = RangeErrorCls->checkValidRange(start, end, data->lengthInBytes() ~/ elementSize);
     return data->buffer->asUint8List(data->offsetInBytes + start * elementSize, (end - start) * elementSize);
 }
 
@@ -34,8 +34,8 @@ void Uint8ClampedListCls::view(ByteBuffer buffer, int length, int offsetInBytes)
 }
 
 void Uint8ClampedListCls::sublistView(TypedData data, int end, int start) {
-    int elementSize = data->elementSizeInBytes;
-    end = RangeErrorCls->checkValidRange(start, end, data->lengthInBytes ~/ elementSize);
+    int elementSize = data->elementSizeInBytes();
+    end = RangeErrorCls->checkValidRange(start, end, data->lengthInBytes() ~/ elementSize);
     return data->buffer->asUint8ClampedList(data->offsetInBytes + start * elementSize, (end - start) * elementSize);
 }
 
@@ -44,8 +44,8 @@ void Int16ListCls::view(ByteBuffer buffer, int length, int offsetInBytes) {
 }
 
 void Int16ListCls::sublistView(TypedData data, int end, int start) {
-    int elementSize = data->elementSizeInBytes;
-    end = RangeErrorCls->checkValidRange(start, end, data->lengthInBytes ~/ elementSize);
+    int elementSize = data->elementSizeInBytes();
+    end = RangeErrorCls->checkValidRange(start, end, data->lengthInBytes() ~/ elementSize);
     int byteLength = (end - start) * elementSize;
     if (byteLength % bytesPerElement != 0) {
         ;
@@ -58,8 +58,8 @@ void Uint16ListCls::view(ByteBuffer buffer, int length, int offsetInBytes) {
 }
 
 void Uint16ListCls::sublistView(TypedData data, int end, int start) {
-    int elementSize = data->elementSizeInBytes;
-    end = RangeErrorCls->checkValidRange(start, end, data->lengthInBytes ~/ elementSize);
+    int elementSize = data->elementSizeInBytes();
+    end = RangeErrorCls->checkValidRange(start, end, data->lengthInBytes() ~/ elementSize);
     int byteLength = (end - start) * elementSize;
     if (byteLength % bytesPerElement != 0) {
         ;
@@ -72,8 +72,8 @@ void Int32ListCls::view(ByteBuffer buffer, int length, int offsetInBytes) {
 }
 
 void Int32ListCls::sublistView(TypedData data, int end, int start) {
-    int elementSize = data->elementSizeInBytes;
-    end = RangeErrorCls->checkValidRange(start, end, data->lengthInBytes ~/ elementSize);
+    int elementSize = data->elementSizeInBytes();
+    end = RangeErrorCls->checkValidRange(start, end, data->lengthInBytes() ~/ elementSize);
     int byteLength = (end - start) * elementSize;
     if (byteLength % bytesPerElement != 0) {
         ;
@@ -86,8 +86,8 @@ void Uint32ListCls::view(ByteBuffer buffer, int length, int offsetInBytes) {
 }
 
 void Uint32ListCls::sublistView(TypedData data, int end, int start) {
-    int elementSize = data->elementSizeInBytes;
-    end = RangeErrorCls->checkValidRange(start, end, data->lengthInBytes ~/ elementSize);
+    int elementSize = data->elementSizeInBytes();
+    end = RangeErrorCls->checkValidRange(start, end, data->lengthInBytes() ~/ elementSize);
     int byteLength = (end - start) * elementSize;
     if (byteLength % bytesPerElement != 0) {
         ;
@@ -100,8 +100,8 @@ void Int64ListCls::view(ByteBuffer buffer, int length, int offsetInBytes) {
 }
 
 void Int64ListCls::sublistView(TypedData data, int end, int start) {
-    int elementSize = data->elementSizeInBytes;
-    end = RangeErrorCls->checkValidRange(start, end, data->lengthInBytes ~/ elementSize);
+    int elementSize = data->elementSizeInBytes();
+    end = RangeErrorCls->checkValidRange(start, end, data->lengthInBytes() ~/ elementSize);
     int byteLength = (end - start) * elementSize;
     if (byteLength % bytesPerElement != 0) {
         ;
@@ -114,8 +114,8 @@ void Uint64ListCls::view(ByteBuffer buffer, int length, int offsetInBytes) {
 }
 
 void Uint64ListCls::sublistView(TypedData data, int end, int start) {
-    int elementSize = data->elementSizeInBytes;
-    end = RangeErrorCls->checkValidRange(start, end, data->lengthInBytes ~/ elementSize);
+    int elementSize = data->elementSizeInBytes();
+    end = RangeErrorCls->checkValidRange(start, end, data->lengthInBytes() ~/ elementSize);
     int byteLength = (end - start) * elementSize;
     if (byteLength % bytesPerElement != 0) {
         ;
@@ -128,8 +128,8 @@ void Float32ListCls::view(ByteBuffer buffer, int length, int offsetInBytes) {
 }
 
 void Float32ListCls::sublistView(TypedData data, int end, int start) {
-    int elementSize = data->elementSizeInBytes;
-    end = RangeErrorCls->checkValidRange(start, end, data->lengthInBytes ~/ elementSize);
+    int elementSize = data->elementSizeInBytes();
+    end = RangeErrorCls->checkValidRange(start, end, data->lengthInBytes() ~/ elementSize);
     int byteLength = (end - start) * elementSize;
     if (byteLength % bytesPerElement != 0) {
         ;
@@ -142,8 +142,8 @@ void Float64ListCls::view(ByteBuffer buffer, int length, int offsetInBytes) {
 }
 
 void Float64ListCls::sublistView(TypedData data, int end, int start) {
-    int elementSize = data->elementSizeInBytes;
-    end = RangeErrorCls->checkValidRange(start, end, data->lengthInBytes ~/ elementSize);
+    int elementSize = data->elementSizeInBytes();
+    end = RangeErrorCls->checkValidRange(start, end, data->lengthInBytes() ~/ elementSize);
     int byteLength = (end - start) * elementSize;
     if (byteLength % bytesPerElement != 0) {
         ;
@@ -156,8 +156,8 @@ void Float32x4ListCls::view(ByteBuffer buffer, int length, int offsetInBytes) {
 }
 
 void Float32x4ListCls::sublistView(TypedData data, int end, int start) {
-    int elementSize = data->elementSizeInBytes;
-    end = RangeErrorCls->checkValidRange(start, end, data->lengthInBytes ~/ elementSize);
+    int elementSize = data->elementSizeInBytes();
+    end = RangeErrorCls->checkValidRange(start, end, data->lengthInBytes() ~/ elementSize);
     int byteLength = (end - start) * elementSize;
     if (byteLength % bytesPerElement != 0) {
         ;
@@ -170,8 +170,8 @@ void Int32x4ListCls::view(ByteBuffer buffer, int length, int offsetInBytes) {
 }
 
 void Int32x4ListCls::sublistView(TypedData data, int end, int start) {
-    int elementSize = data->elementSizeInBytes;
-    end = RangeErrorCls->checkValidRange(start, end, data->lengthInBytes ~/ elementSize);
+    int elementSize = data->elementSizeInBytes();
+    end = RangeErrorCls->checkValidRange(start, end, data->lengthInBytes() ~/ elementSize);
     int byteLength = (end - start) * elementSize;
     if (byteLength % bytesPerElement != 0) {
         ;
@@ -184,8 +184,8 @@ void Float64x2ListCls::view(ByteBuffer buffer, int length, int offsetInBytes) {
 }
 
 void Float64x2ListCls::sublistView(TypedData data, int end, int start) {
-    int elementSize = data->elementSizeInBytes;
-    end = RangeErrorCls->checkValidRange(start, end, data->lengthInBytes ~/ elementSize);
+    int elementSize = data->elementSizeInBytes();
+    end = RangeErrorCls->checkValidRange(start, end, data->lengthInBytes() ~/ elementSize);
     int byteLength = (end - start) * elementSize;
     if (byteLength % bytesPerElement != 0) {
         ;

@@ -44,19 +44,19 @@ PointerEvent PointerEventResamplerCls::_toMoveEvent(int buttons, Offset delta, P
 }
 
 PointerEvent PointerEventResamplerCls::_toMoveOrHoverEvent(int buttons, Offset delta, PointerEvent event, bool isDown, int pointerIdentifier, Offset position, Duration timeStamp) {
-    return isDown()? _toMoveEvent(event, position, delta, pointerIdentifier, timeStamp, buttons) : _toHoverEvent(event, position, delta, timeStamp, buttons);
+    return isDown? _toMoveEvent(event, position, delta, pointerIdentifier, timeStamp, buttons) : _toHoverEvent(event, position, delta, timeStamp, buttons);
 }
 
 Offset PointerEventResamplerCls::_positionAt(Duration sampleTime) {
-    double x = _next?->position->dx() or 0.0;
-    double y = _next?->position->dy() or 0.0;
+    double x = _next?->position->dx or 0.0;
+    double y = _next?->position->dy or 0.0;
     Duration nextTimeStamp = _next?->timeStamp or DurationCls::zero;
     Duration lastTimeStamp = _last?->timeStamp or DurationCls::zero;
     if (nextTimeStamp > sampleTime && nextTimeStamp > lastTimeStamp) {
-        double interval = (nextTimeStamp - lastTimeStamp)->inMicroseconds->toDouble();
-        double scalar = (sampleTime - lastTimeStamp)->inMicroseconds->toDouble() / interval;
-        double lastX = _last?->position->dx() or 0.0;
-        double lastY = _last?->position->dy() or 0.0;
+        double interval = (nextTimeStamp - lastTimeStamp)->inMicroseconds()->toDouble();
+        double scalar = (sampleTime - lastTimeStamp)->inMicroseconds()->toDouble() / interval;
+        double lastX = _last?->position->dx or 0.0;
+        double lastY = _last?->position->dy or 0.0;
         x = lastX + (x - lastX) * scalar;
         y = lastY + (y - lastY) * scalar;
     }
@@ -66,7 +66,7 @@ Offset PointerEventResamplerCls::_positionAt(Duration sampleTime) {
 void PointerEventResamplerCls::_processPointerEvents(Duration sampleTime) {
     Iterator<PointerEvent> it = _queuedEvents->iterator;
     while (it->moveNext()) {
-        PointerEvent event = it->current;
+        PointerEvent event = it->current();
         if (event->timeStamp <= sampleTime || _last == nullptr) {
             _last = event;
             _next = event;
@@ -84,7 +84,7 @@ void PointerEventResamplerCls::_dequeueAndSampleNonHoverOrMovePointerEventsUntil
     Duration endTime = sampleTime;
     Iterator<PointerEvent> it = _queuedEvents->iterator;
     while (it->moveNext()) {
-        PointerEvent event = it->current;
+        PointerEvent event = it->current();
         if (event->timeStamp > sampleTime) {
             if (event->timeStamp >= nextSampleTime) {
                                 break;

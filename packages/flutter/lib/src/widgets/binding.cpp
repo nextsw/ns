@@ -465,8 +465,8 @@ template<typename T> RenderObjectWithChildMixin<T> RenderObjectToWidgetElementCl
 
 template<typename T> void RenderObjectToWidgetElementCls<T>::insertRenderObjectChild(RenderObject child, Object slot) {
     assert(slot == _rootChildSlot);
-    assert(renderObject()->debugValidateChild(child));
-    renderObject()->child() = as<T>(child);
+    assert(renderObject->debugValidateChild(child));
+    renderObject->child = as<T>(child);
 }
 
 template<typename T> void RenderObjectToWidgetElementCls<T>::moveRenderObjectChild(RenderObject child, Object newSlot, Object oldSlot) {
@@ -474,8 +474,8 @@ template<typename T> void RenderObjectToWidgetElementCls<T>::moveRenderObjectChi
 }
 
 template<typename T> void RenderObjectToWidgetElementCls<T>::removeRenderObjectChild(RenderObject child, Object slot) {
-    assert(renderObject()->child() == child);
-    renderObject()->child() = nullptr;
+    assert(renderObject->child == child);
+    renderObject->child = nullptr;
 }
 
 template<typename T> void RenderObjectToWidgetElementCls<T>::_rebuild() {

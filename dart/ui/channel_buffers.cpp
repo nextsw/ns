@@ -20,7 +20,7 @@ _StoredMessageCls::_StoredMessageCls(PlatformMessageResponseCallback _callback, 
 }
 
 int _ChannelCls::length() {
-    return _queue->length();
+    return _queue->length;
 }
 
 int _ChannelCls::capacity() {
@@ -70,7 +70,7 @@ _ChannelCls::_ChannelCls(int _capacity) {
 
 bool _ChannelCls::_dropOverflowMessages(int lengthLimit) {
     bool result = false;
-    while (_queue->length() > lengthLimit) {
+    while (_queue->length > lengthLimit) {
         _StoredMessage message = _queue->removeFirst();
         message->invoke(nullptr);
         result = true;
@@ -120,7 +120,7 @@ void ChannelBuffersCls::clearListener(String name) {
 
 Future<void> ChannelBuffersCls::drain(DrainChannelCallback callback, String name) {
     _Channel channel = _channels[name];
-    while (channel != nullptr && !channel->_queue->isEmpty) {
+    while (channel != nullptr && !channel->_queue->isEmpty()) {
         _StoredMessage message = channel->pop();
         await await callback(message->data, message->invoke);
     }
@@ -153,7 +153,7 @@ void ChannelBuffersCls::resize(String name, int newSize) {
         channel = make<_ChannelCls>(newSize);
         _channels[name] = channel;
     } else {
-        channel->capacity = newSize;
+        channel->capacity() = newSize;
     }
 }
 

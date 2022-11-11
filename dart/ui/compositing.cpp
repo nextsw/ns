@@ -195,7 +195,7 @@ void SceneBuilderCls::addPerformanceOverlay(Rect bounds, int enabledOptions) {
 }
 
 void SceneBuilderCls::addPicture(bool isComplexHint, Offset offset, Picture picture, bool willChangeHint) {
-    assert(!picture->debugDisposed);
+    assert(!picture->debugDisposed());
     int hints = (isComplexHint? 1 : 0) | (willChangeHint? 2 : 0);
     _addPicture(offset->dx, offset->dy, picture, hints);
 }

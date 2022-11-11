@@ -1,10 +1,10 @@
 #include "invocation.hpp"
 void InvocationCls::method(Symbol memberName, Map<Symbol, Object> namedArguments, Iterable<Object> positionalArguments) {
-    return _InvocationCls->method(memberName(), nullptr, positionalArguments(), namedArguments());
+    return _InvocationCls->method(memberName, nullptr, positionalArguments, namedArguments);
 }
 
 void InvocationCls::genericMethod(Symbol memberName, Map<Symbol, Object> namedArguments, Iterable<Object> positionalArguments, Iterable<Type> typeArguments) {
-    return _InvocationCls->method(memberName(), typeArguments(), positionalArguments(), namedArguments());
+    return _InvocationCls->method(memberName, typeArguments, positionalArguments, namedArguments);
 }
 
 List<Type> InvocationCls::typeArguments() {

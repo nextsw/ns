@@ -134,7 +134,7 @@ Encoding _StdSinkCls::encoding() {
 }
 
 void _StdSinkCls::encoding(Encoding encoding) {
-    _sink->encoding = encoding();
+    _sink->encoding = encoding;
 }
 
 void _StdSinkCls::write(Object object) {
@@ -174,7 +174,7 @@ Future _StdSinkCls::close() {
 }
 
 Future _StdSinkCls::done() {
-    return _sink->done();
+    return _sink->done;
 }
 
 String StdioTypeCls::toString() {
@@ -201,7 +201,7 @@ Stdout stderr() {
 
 StdioType stdioType(object ) {
     if (is<_StdStream>(object)) {
-        object = object->_stream;
+        as<_StdStreamCls>(object) = as<_StdStreamCls>(object)->_stream;
     } else     {
         if (object == stdout || object == stderr) {
         int stdiofd = object == stdout? _stdoutFD : _stderrFD;
@@ -216,7 +216,7 @@ StdioType stdioType(object ) {
         return StdioTypeCls::file;
     }
     if (is<Socket>(object)) {
-        int socketType = _StdIOUtilsCls->_socketType(object);
+        int socketType = _StdIOUtilsCls->_socketType(as<SocketCls>(object));
         if (socketType == nullptr)         {
             return StdioTypeCls::other;
         }

@@ -51,7 +51,7 @@ void RawKeyEventCls::fromMessage(Map<String, Object> message) {
         String keymap = as<String>(message[__s("keymap")]!);
         ;
     }
-    bool repeat = RawKeyboardCls::instance->physicalKeysPressed->contains(data->physicalKey());
+    bool repeat = RawKeyboardCls::instance->physicalKeysPressed->contains(data->physicalKey);
     String type = as<String>(message[__s("type")]!);
     ;
 }
@@ -77,17 +77,17 @@ bool RawKeyEventCls::isMetaPressed() {
 }
 
 PhysicalKeyboardKey RawKeyEventCls::physicalKey() {
-    return data->physicalKey();
+    return data->physicalKey;
 }
 
 LogicalKeyboardKey RawKeyEventCls::logicalKey() {
-    return data->logicalKey();
+    return data->logicalKey;
 }
 
 void RawKeyEventCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<LogicalKeyboardKey>make<DiagnosticsPropertyCls>(__s("logicalKey"), logicalKey()));
-    properties->add(<PhysicalKeyboardKey>make<DiagnosticsPropertyCls>(__s("physicalKey"), physicalKey()));
+    properties->add(<LogicalKeyboardKey>make<DiagnosticsPropertyCls>(__s("logicalKey"), logicalKey));
+    properties->add(<PhysicalKeyboardKey>make<DiagnosticsPropertyCls>(__s("physicalKey"), physicalKey));
     if (is<RawKeyDownEvent>(this)) {
         properties->add(<bool>make<DiagnosticsPropertyCls>(__s("repeat"), repeat));
     }
@@ -128,10 +128,10 @@ void RawKeyboardCls::keyEventHandler(RawKeyEventHandler handler) {
 
 bool RawKeyboardCls::handleRawKeyEvent(RawKeyEvent event) {
     if (is<RawKeyDownEvent>(event)) {
-        _keysPressed[event->physicalKey] = event->logicalKey;
+        _keysPressed[as<RawKeyDownEventCls>(event)->physicalKey] = as<RawKeyDownEventCls>(event)->logicalKey;
     } else     {
         if (is<RawKeyUpEvent>(event)) {
-        _keysPressed->remove(event->physicalKey);
+        _keysPressed->remove(as<RawKeyUpEventCls>(event)->physicalKey);
     }
 ;
     }    _synchronizeModifiers(event);
@@ -156,11 +156,11 @@ bool RawKeyboardCls::handleRawKeyEvent(RawKeyEvent event) {
 }
 
 Set<LogicalKeyboardKey> RawKeyboardCls::keysPressed() {
-    return _keysPressed->values()->toSet();
+    return _keysPressed->values->toSet();
 }
 
 Set<PhysicalKeyboardKey> RawKeyboardCls::physicalKeysPressed() {
-    return _keysPressed->keys()->toSet();
+    return _keysPressed->keys->toSet();
 }
 
 LogicalKeyboardKey RawKeyboardCls::lookUpLayout(PhysicalKeyboardKey physicalKey) {
@@ -175,7 +175,7 @@ void RawKeyboardCls::_synchronizeModifiers(RawKeyEvent event) {
     Map<ModifierKey, KeyboardSide> modifiersPressed = event->data->modifiersPressed;
     Map<PhysicalKeyboardKey, LogicalKeyboardKey> modifierKeys = makeMap(makeList(), makeList();
     Set<PhysicalKeyboardKey> anySideKeys = makeSet();
-    Set<PhysicalKeyboardKey> set1 = make<SetCls<>>();for (auto _x1 : _keysPressed->keys()) {{    set1.add(_x1);}if (is<RawKeyDownEvent>(event)) {    set1.add(ArrayItem);}Set<PhysicalKeyboardKey> keysPressedAfterEvent = list1;
+    Set<PhysicalKeyboardKey> set1 = make<SetCls<>>();for (auto _x1 : _keysPressed->keys) {{    set1.add(_x1);}if (is<RawKeyDownEvent>(event)) {    set1.add(ArrayItem);}Set<PhysicalKeyboardKey> keysPressedAfterEvent = list1;
     ModifierKey thisKeyModifier;
     for (ModifierKey key : ModifierKeyCls::values) {
         Set<PhysicalKeyboardKey> thisModifierKeys = _modifierKeyMap[make<_ModifierSidePairCls>(key, KeyboardSideCls::all)];
@@ -208,7 +208,7 @@ void RawKeyboardCls::_synchronizeModifiers(RawKeyEvent event) {
             modifierKeys[physicalModifier] = _allModifiers[physicalModifier]!;
         }
     }
-    _allModifiersExceptFn->keys()->where([=] (PhysicalKeyboardKey key)     {
+    _allModifiersExceptFn->keys->where([=] (PhysicalKeyboardKey key)     {
         !anySideKeys->contains(key);
     })->forEach(_keysPressed->remove);
     if (!is<RawKeyEventDataFuchsia>(event->data) && !is<RawKeyEventDataMacOs>(event->data)) {

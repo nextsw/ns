@@ -1,13 +1,13 @@
 #include "painting.hpp"
 bool _rectIsValid(Rect rect) {
     assert(rect != nullptr, __s("Rect argument was null."));
-    assert(!rect->hasNaN, __s("Rect argument contained a NaN value."));
+    assert(!rect->hasNaN(), __s("Rect argument contained a NaN value."));
     return true;
 }
 
 bool _rrectIsValid(RRect rrect) {
     assert(rrect != nullptr, __s("RRect argument was null."));
-    assert(!rrect->hasNaN, __s("RRect argument contained a NaN value."));
+    assert(!rrect->hasNaN(), __s("RRect argument contained a NaN value."));
     return true;
 }
 
@@ -51,7 +51,7 @@ int ColorCls::alpha() {
 }
 
 double ColorCls::opacity() {
-    return alpha() / 0xFF;
+    return alpha / 0xFF;
 }
 
 int ColorCls::red() {
@@ -71,20 +71,20 @@ Color ColorCls::withAlpha(int a) {
 }
 
 Color ColorCls::withOpacity(double opacity) {
-    assert(opacity() >= 0.0 && opacity() <= 1.0);
-    return withAlpha((255.0 * opacity())->round());
+    assert(opacity >= 0.0 && opacity <= 1.0);
+    return withAlpha((255.0 * opacity)->round());
 }
 
 Color ColorCls::withRed(int r) {
-    return ColorCls->fromARGB(alpha(), r, green(), blue());
+    return ColorCls->fromARGB(alpha, r, green(), blue());
 }
 
 Color ColorCls::withGreen(int g) {
-    return ColorCls->fromARGB(alpha(), red(), g, blue());
+    return ColorCls->fromARGB(alpha, red(), g, blue());
 }
 
 Color ColorCls::withBlue(int b) {
-    return ColorCls->fromARGB(alpha(), red(), green(), b);
+    return ColorCls->fromARGB(alpha, red(), green(), b);
 }
 
 double ColorCls::computeLuminance() {
@@ -106,7 +106,7 @@ Color ColorCls::lerp(Color a, Color b, double t) {
         if (a == nullptr) {
             return _scaleAlpha(b, t);
         } else {
-            return ColorCls->fromARGB(_clampInt(_lerpInt(a->alpha, b->alpha, t)->toInt(), 0, 255), _clampInt(_lerpInt(a->red, b->red, t)->toInt(), 0, 255), _clampInt(_lerpInt(a->green, b->green, t)->toInt(), 0, 255), _clampInt(_lerpInt(a->blue, b->blue, t)->toInt(), 0, 255));
+            return ColorCls->fromARGB(_clampInt(_lerpInt(a->alpha, b->alpha, t)->toInt(), 0, 255), _clampInt(_lerpInt(a->red(), b->red(), t)->toInt(), 0, 255), _clampInt(_lerpInt(a->green(), b->green(), t)->toInt(), 0, 255), _clampInt(_lerpInt(a->blue(), b->blue(), t)->toInt(), 0, 255));
         }
     }
 }
@@ -119,12 +119,12 @@ Color ColorCls::alphaBlend(Color background, Color foreground) {
     int invAlpha = 0xff - alpha;
     int backAlpha = background->alpha;
     if (backAlpha == 0xff) {
-        return ColorCls->fromARGB(0xff, (alpha * foreground->red + invAlpha * background->red) ~/ 0xff, (alpha * foreground->green + invAlpha * background->green) ~/ 0xff, (alpha * foreground->blue + invAlpha * background->blue) ~/ 0xff);
+        return ColorCls->fromARGB(0xff, (alpha * foreground->red() + invAlpha * background->red()) ~/ 0xff, (alpha * foreground->green() + invAlpha * background->green()) ~/ 0xff, (alpha * foreground->blue() + invAlpha * background->blue()) ~/ 0xff);
     } else {
         backAlpha = (backAlpha * invAlpha) ~/ 0xff;
         int outAlpha = alpha + backAlpha;
         assert(outAlpha != 0x00);
-        return ColorCls->fromARGB(outAlpha, (foreground->red * alpha + background->red * backAlpha) ~/ outAlpha, (foreground->green * alpha + background->green * backAlpha) ~/ outAlpha, (foreground->blue * alpha + background->blue * backAlpha) ~/ outAlpha);
+        return ColorCls->fromARGB(outAlpha, (foreground->red() * alpha + background->red() * backAlpha) ~/ outAlpha, (foreground->green() * alpha + background->green() * backAlpha) ~/ outAlpha, (foreground->blue() * alpha + background->blue() * backAlpha) ~/ outAlpha);
     }
 }
 
@@ -311,7 +311,7 @@ void PaintCls::imageFilter(ImageFilter value) {
     } else {
         List<Object> objects = _ensureObjectsInitialized();
         _ImageFilter imageFilter = as<_ImageFilter>(objects[_kImageFilterIndex]);
-        if (imageFilter()?->creator != value) {
+        if (imageFilter?->creator != value) {
             objects[_kImageFilterIndex] = value->_toNativeImageFilter();
         }
     }
@@ -332,7 +332,7 @@ String PaintCls::toString() {
     StringBuffer result = make<StringBufferCls>();
     String semicolon = __s("");
     result->write(__s("Paint("));
-    if (style() == PaintingStyleCls::stroke) {
+    if (style == PaintingStyleCls::stroke) {
         result->write(__s("$style"));
         if (strokeWidth() != 0.0)         {
             result->write(__s(" ${strokeWidth.toStringAsFixed(1)}"));
@@ -355,11 +355,11 @@ String PaintCls::toString() {
         result->write(__s("${semicolon}antialias off"));
         semicolon = __s("; ");
     }
-    if (color() != make<ColorCls>(_kColorDefault)) {
+    if (color != make<ColorCls>(_kColorDefault)) {
         result->write(__s("$semicolon$color"));
         semicolon = __s("; ");
     }
-    if (blendMode()->index != _kBlendModeDefault) {
+    if (blendMode->index != _kBlendModeDefault) {
         result->write(__s("$semicolon$blendMode"));
         semicolon = __s("; ");
     }
@@ -371,11 +371,11 @@ String PaintCls::toString() {
         result->write(__s("${semicolon}maskFilter: $maskFilter"));
         semicolon = __s("; ");
     }
-    if (filterQuality() != FilterQualityCls::none) {
+    if (filterQuality != FilterQualityCls::none) {
         result->write(__s("${semicolon}filterQuality: $filterQuality"));
         semicolon = __s("; ");
     }
-    if (shader() != nullptr) {
+    if (shader != nullptr) {
         result->write(__s("${semicolon}shader: $shader"));
         semicolon = __s("; ");
     }
@@ -695,11 +695,11 @@ TangentCls::TangentCls(Offset position, Offset vector) {
 }
 
 void TangentCls::fromAngle(double angle, Offset position) {
-    return make<TangentCls>(position, make<OffsetCls>(math->cos(angle()), math->sin(angle())));
+    return make<TangentCls>(position, make<OffsetCls>(math->cos(angle), math->sin(angle)));
 }
 
 double TangentCls::angle() {
-    return -math->atan2(vector->dy(), vector->dx());
+    return -math->atan2(vector->dy, vector->dx);
 }
 
 Iterator<PathMetric> PathMetricsCls::iterator() {
@@ -1240,7 +1240,7 @@ CanvasCls::CanvasCls(Rect cullRect, PictureRecorder recorder) {
         assert(recorder != nullptr);
     }
     {
-        if (recorder->isRecording)         {
+        if (recorder->isRecording())         {
             ;
         }
         _recorder = recorder;
@@ -1713,10 +1713,10 @@ Future<ImageDescriptor> ImageDescriptorCls::encoded(ImmutableBuffer buffer) {
 }
 
 void ImageDescriptorCls::raw(ImmutableBuffer buffer, int height, PixelFormat pixelFormat, int rowBytes, int width) {
-    _width = width();
-    _height = height();
+    _width = width;
+    _height = height;
     _bytesPerPixel = 4;
-    _initRaw(this, buffer, width(), height(), rowBytes or -1, pixelFormat->index);
+    _initRaw(this, buffer, width, height, rowBytes or -1, pixelFormat->index);
 }
 
 int ImageDescriptorCls::width() {
@@ -1739,16 +1739,16 @@ Future<Codec> ImageDescriptorCls::instantiateCodec(int targetHeight, int targetW
         targetHeight = nullptr;
     }
     if (targetWidth == nullptr && targetHeight == nullptr) {
-        targetWidth = width();
-        targetHeight = height();
+        targetWidth = width;
+        targetHeight = height;
     } else     {
         if (targetWidth == nullptr && targetHeight != nullptr) {
-        targetWidth = (targetHeight * (width() / height()))->round();
+        targetWidth = (targetHeight * (width / height))->round();
         targetHeight = targetHeight;
     } else     {
         if (targetHeight == nullptr && targetWidth != nullptr) {
         targetWidth = targetWidth;
-        targetHeight = targetWidth ~/ (width() / height());
+        targetHeight = targetWidth ~/ (width / height);
     }
 ;
     };

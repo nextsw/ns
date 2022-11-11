@@ -316,12 +316,12 @@ Matrix4 TransformCls::_computeRotation(double radians) {
 
 Matrix4 TransformCls::_createZRotation(double cos, double sin) {
     Matrix4 result = Matrix4Cls->zero();
-    result->storage[0] = cos;
-    result->storage[1] = sin;
-    result->storage[4] = -sin;
-    result->storage[5] = cos;
-    result->storage[10] = 1.0;
-    result->storage[15] = 1.0;
+    result->storage()[0] = cos;
+    result->storage()[1] = sin;
+    result->storage()[4] = -sin;
+    result->storage()[5] = cos;
+    result->storage()[10] = 1.0;
+    result->storage()[15] = 1.0;
     return result;
 }
 
@@ -477,7 +477,7 @@ void LayoutIdCls::applyParentData(RenderObject renderObject) {
         parentData->id = id;
         AbstractNode targetParent = renderObject->parent;
         if (is<RenderObject>(targetParent)) {
-            targetParent->markNeedsLayout();
+            as<RenderObjectCls>(targetParent)->markNeedsLayout();
         }
     }
 }
@@ -967,7 +967,7 @@ void PositionedCls::applyParentData(RenderObject renderObject) {
     if (needsLayout) {
         AbstractNode targetParent = renderObject->parent;
         if (is<RenderObject>(targetParent)) {
-            targetParent->markNeedsLayout();
+            as<RenderObjectCls>(targetParent)->markNeedsLayout();
         }
     }
 }
@@ -1051,7 +1051,7 @@ void FlexibleCls::applyParentData(RenderObject renderObject) {
     if (needsLayout) {
         AbstractNode targetParent = renderObject->parent;
         if (is<RenderObject>(targetParent)) {
-            targetParent->markNeedsLayout();
+            as<RenderObjectCls>(targetParent)->markNeedsLayout();
         }
     }
 }
@@ -1155,7 +1155,7 @@ List<Widget> RichTextCls::_extractChildren(InlineSpan span) {
     List<Widget> result = makeList();
     span->visitChildren([=] (InlineSpan span) {
         if (is<WidgetSpan>(span)) {
-            result->add(make<SemanticsCls>(make<PlaceholderSpanIndexSemanticsTagCls>(index++), span->child));
+            result->add(make<SemanticsCls>(make<PlaceholderSpanIndexSemanticsTagCls>(index++), as<WidgetSpanCls>(span)->child));
         }
         return true;
     });
@@ -1537,7 +1537,7 @@ void _RenderColoredBoxCls::color(Color value) {
 
 void _RenderColoredBoxCls::paint(PaintingContext context, Offset offset) {
     if (size > SizeCls::zero) {
-            auto _c1 = make<PaintCls>();    _c1.color() = color();context->canvas->drawRect(offset & size, _c1);
+            auto _c1 = make<PaintCls>();    _c1.color = color;context->canvas->drawRect(offset & size, _c1);
     }
     if (child != nullptr) {
         context->paintChild(child!, offset);
@@ -1546,6 +1546,6 @@ void _RenderColoredBoxCls::paint(PaintingContext context, Offset offset) {
 
 _RenderColoredBoxCls::_RenderColoredBoxCls(Color color) : RenderProxyBoxWithHitTestBehavior(HitTestBehaviorCls::opaque) {
     {
-        _color = color();
+        _color = color;
     }
 }

@@ -57,10 +57,10 @@ bool TextSelectionCls::==(Object other) {
 
 int TextSelectionCls::hashCode() {
     if (!isValid) {
-        return ObjectCls->hash(-1->hashCode, -1->hashCode, TextAffinityCls::downstream->hashCode());
+        return ObjectCls->hash(-1->hashCode, -1->hashCode, TextAffinityCls::downstream->hashCode);
     }
-    int affinityHash = isCollapsed? affinity->hashCode() : TextAffinityCls::downstream->hashCode();
-    return ObjectCls->hash(baseOffset->hashCode, extentOffset->hashCode, affinityHash, isDirectional->hashCode());
+    int affinityHash = isCollapsed? affinity->hashCode : TextAffinityCls::downstream->hashCode;
+    return ObjectCls->hash(baseOffset->hashCode, extentOffset->hashCode, affinityHash, isDirectional->hashCode);
 }
 
 TextSelection TextSelectionCls::copyWith(TextAffinity affinity, int baseOffset, int extentOffset, bool isDirectional) {

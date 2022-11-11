@@ -27,33 +27,33 @@ template<typename ConstraintType> void _LayoutBuilderElementCls<ConstraintType>:
 
 template<typename ConstraintType> void _LayoutBuilderElementCls<ConstraintType>::mount(Object newSlot, Element parent) {
     super->mount(parent, newSlot);
-    renderObject()->updateCallback(_layout);
+    renderObject->updateCallback(_layout);
 }
 
 template<typename ConstraintType> void _LayoutBuilderElementCls<ConstraintType>::update(ConstrainedLayoutBuilder<ConstraintType> newWidget) {
     assert(widget != newWidget);
     super->update(newWidget);
     assert(widget == newWidget);
-    renderObject()->updateCallback(_layout);
-    renderObject()->markNeedsBuild();
+    renderObject->updateCallback(_layout);
+    renderObject->markNeedsBuild();
 }
 
 template<typename ConstraintType> void _LayoutBuilderElementCls<ConstraintType>::performRebuild() {
-    renderObject()->markNeedsBuild();
+    renderObject->markNeedsBuild();
     super->performRebuild();
 }
 
 template<typename ConstraintType> void _LayoutBuilderElementCls<ConstraintType>::unmount() {
-    renderObject()->updateCallback(nullptr);
+    renderObject->updateCallback(nullptr);
     super->unmount();
 }
 
 template<typename ConstraintType> void _LayoutBuilderElementCls<ConstraintType>::insertRenderObjectChild(RenderObject child, Object slot) {
     RenderObjectWithChildMixin<RenderObject> renderObject = this->renderObject;
     assert(slot == nullptr);
-    assert(renderObject()->debugValidateChild(child));
-    renderObject()->child = child;
-    assert(renderObject() == this->renderObject);
+    assert(renderObject->debugValidateChild(child));
+    renderObject->child = child;
+    assert(renderObject == this->renderObject);
 }
 
 template<typename ConstraintType> void _LayoutBuilderElementCls<ConstraintType>::moveRenderObjectChild(RenderObject child, Object newSlot, Object oldSlot) {
@@ -62,9 +62,9 @@ template<typename ConstraintType> void _LayoutBuilderElementCls<ConstraintType>:
 
 template<typename ConstraintType> void _LayoutBuilderElementCls<ConstraintType>::removeRenderObjectChild(RenderObject child, Object slot) {
     RenderConstrainedLayoutBuilder<ConstraintType, RenderObject> renderObject = this->renderObject;
-    assert(renderObject()->child == child);
-    renderObject()->child = nullptr;
-    assert(renderObject() == this->renderObject);
+    assert(renderObject->child == child);
+    renderObject->child = nullptr;
+    assert(renderObject == this->renderObject);
 }
 
 template<typename ConstraintType> void _LayoutBuilderElementCls<ConstraintType>::_layout(ConstraintType constraints) {
@@ -96,7 +96,7 @@ template<typename ConstraintType, typename ChildType> void RenderConstrainedLayo
 
 LayoutBuilderCls::LayoutBuilderCls(Unknown builder, Unknown key) {
     {
-        assert(builder() != nullptr);
+        assert(builder != nullptr);
     }
 }
 
@@ -140,7 +140,7 @@ void _RenderLayoutBuilderCls::performLayout() {
         child!->layout(constraintstrue);
         size = constraints->constrain(child!->size);
     } else {
-        size = constraints->biggest;
+        size = constraints->biggest();
     }
 }
 

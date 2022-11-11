@@ -1,8 +1,8 @@
 #include "fractional_offset.hpp"
-FractionalOffsetCls::FractionalOffsetCls(double dx, double dy) : Alignment(dx() * 2.0 - 1.0, dy() * 2.0 - 1.0) {
+FractionalOffsetCls::FractionalOffsetCls(double dx, double dy) : Alignment(dx * 2.0 - 1.0, dy * 2.0 - 1.0) {
     {
-        assert(dx() != nullptr);
-        assert(dy() != nullptr);
+        assert(dx != nullptr);
+        assert(dy != nullptr);
     }
 }
 
@@ -26,36 +26,36 @@ double FractionalOffsetCls::dy() {
 
 Alignment FractionalOffsetCls::-(Alignment other) {
     if (!is<FractionalOffset>(other)) {
-        return super - other;
+        return super - as<FractionalOffsetCls>(other);
     }
-    return make<FractionalOffsetCls>(dx() - other->dx, dy() - other->dy);
+    return make<FractionalOffsetCls>(dx - other->dx, dy - other->dy);
 }
 
 Alignment FractionalOffsetCls::+(Alignment other) {
     if (!is<FractionalOffset>(other)) {
-        return super + other;
+        return super + as<FractionalOffsetCls>(other);
     }
-    return make<FractionalOffsetCls>(dx() + other->dx, dy() + other->dy);
+    return make<FractionalOffsetCls>(dx + other->dx, dy + other->dy);
 }
 
 FractionalOffset FractionalOffsetCls::-() {
-    return make<FractionalOffsetCls>(-dx(), -dy());
+    return make<FractionalOffsetCls>(-dx, -dy);
 }
 
 FractionalOffset FractionalOffsetCls::*(double other) {
-    return make<FractionalOffsetCls>(dx() * other, dy() * other);
+    return make<FractionalOffsetCls>(dx * other, dy * other);
 }
 
 FractionalOffset FractionalOffsetCls::/(double other) {
-    return make<FractionalOffsetCls>(dx() / other, dy() / other);
+    return make<FractionalOffsetCls>(dx / other, dy / other);
 }
 
 FractionalOffset FractionalOffsetCls::~/(double other) {
-    return make<FractionalOffsetCls>((dx() ~/ other)->toDouble(), (dy() ~/ other)->toDouble());
+    return make<FractionalOffsetCls>((dx ~/ other)->toDouble(), (dy ~/ other)->toDouble());
 }
 
 FractionalOffset FractionalOffsetCls::%(double other) {
-    return make<FractionalOffsetCls>(dx() % other, dy() % other);
+    return make<FractionalOffsetCls>(dx % other, dy % other);
 }
 
 FractionalOffset FractionalOffsetCls::lerp(FractionalOffset a, FractionalOffset b, double t) {

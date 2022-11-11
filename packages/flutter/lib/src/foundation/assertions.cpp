@@ -23,7 +23,7 @@ RepetitiveStackFrameFilterCls::RepetitiveStackFrameFilterCls(List<PartialStackFr
 }
 
 int RepetitiveStackFrameFilterCls::numFrames() {
-    return frames->length();
+    return frames->length;
 }
 
 void RepetitiveStackFrameFilterCls::filter(List<String> reasons, List<StackFrame> stackFrames) {
@@ -56,7 +56,7 @@ List<Object> _ErrorDiagnosticCls::value() {
 }
 
 String _ErrorDiagnosticCls::valueToString(TextTreeConfiguration parentConfiguration) {
-    return value()->join();
+    return value->join();
 }
 
 _ErrorDiagnosticCls::_ErrorDiagnosticCls(DiagnosticLevel level, String message, DiagnosticsTreeStyle style) : DiagnosticsProperty<List<Object>>(nullptr, makeList(ArrayItem)false, false, nullptr, style, level) {
@@ -98,8 +98,8 @@ FlutterErrorDetails FlutterErrorDetailsCls::copyWith(DiagnosticsNode context, Ob
 String FlutterErrorDetailsCls::exceptionAsString() {
     String longMessage;
     if (is<AssertionError>(exception)) {
-        Object message = (as<AssertionError>(exception))->message;
-        String fullMessage = exception->toString();
+        Object message = (as<AssertionError>(as<AssertionErrorCls>(exception)))->message;
+        String fullMessage = as<AssertionErrorCls>(exception)->toString();
         if (is<String>(message) && message != fullMessage) {
             if (fullMessage->length > message->length) {
                 int position = fullMessage->lastIndexOf(message);
@@ -116,7 +116,7 @@ String FlutterErrorDetailsCls::exceptionAsString() {
         longMessage = fullMessage;
     } else     {
         if (is<String>(exception)) {
-        longMessage = as<String>(exception);
+        longMessage = as<String>(as<StringCls>(exception));
     } else     {
         if (is<Error>(exception) || is<Exception>(exception)) {
         longMessage = exception->toString();
@@ -126,7 +126,7 @@ String FlutterErrorDetailsCls::exceptionAsString() {
 ;
     };
     }    longMessage = longMessage->trimRight();
-    if (longMessage->isEmpty) {
+    if (longMessage->isEmpty()) {
         longMessage = __s("  <no message available>");
     }
     return longMessage;
@@ -142,13 +142,13 @@ DiagnosticsNode FlutterErrorDetailsCls::summary() {
     if (diagnosticable != nullptr) {
         DiagnosticPropertiesBuilder builder = make<DiagnosticPropertiesBuilderCls>();
         debugFillProperties(builder);
-        summary() = builder->properties-><DiagnosticsNode>cast()->firstWhere([=] (DiagnosticsNode node)         {
+        summary = builder->properties-><DiagnosticsNode>cast()->firstWhere([=] (DiagnosticsNode node)         {
             node!->level == DiagnosticLevelCls::summary;
         }[=] ()         {
             nullptr;
         });
     }
-    return summary() or make<ErrorSummaryCls>(formatException());
+    return summary or make<ErrorSummaryCls>(formatException());
 }
 
 void FlutterErrorDetailsCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
@@ -223,7 +223,7 @@ DiagnosticsNode FlutterErrorDetailsCls::toDiagnosticsNode(String name, Diagnosti
 Diagnosticable FlutterErrorDetailsCls::_exceptionToDiagnosticable() {
     Object exception = this->exception;
     if (is<FlutterError>(exception)) {
-        return exception;
+        return as<FlutterErrorCls>(exception);
     }
     if (is<AssertionError>(exception) && is<FlutterError>(exception->message)) {
         return as<FlutterError>(exception->message!);
@@ -233,7 +233,7 @@ Diagnosticable FlutterErrorDetailsCls::_exceptionToDiagnosticable() {
 
 FlutterErrorCls::FlutterErrorCls(String message) {
     {
-        List<String> lines = message()->split(__s("\n"));
+        List<String> lines = message->split(__s("\n"));
             List<DiagnosticsNode> list1 = make<ListCls<>>();    list1.add(ArrayItem);    for (auto _x1 : lines->skip(1)-><DiagnosticsNode>map([=] (String line)         {                make<ErrorDescriptionCls>(line);            })) {    {        list1.add(_x1);    }return FlutterErrorCls->fromParts(list1);
     }
 }
@@ -248,10 +248,10 @@ void FlutterErrorCls::fromParts(List<DiagnosticsNode> diagnostics) {
             List<DiagnosticsNode> message = makeList(ArrayItem, ArrayItem, ArrayItem, ArrayItem);
             int i = 1;
             for (DiagnosticsNode summary : summaries) {
-                message()->add(<DiagnosticsNode>make<DiagnosticsPropertyCls>(__s("Summary $i"), summarytrue));
+                message->add(<DiagnosticsNode>make<DiagnosticsPropertyCls>(__s("Summary $i"), summarytrue));
                 i = 1;
             }
-            message()->add(make<ErrorDescriptionCls>(__s("\nThis error should still help you solve your problem, however please also report this malformed error in the framework by filing a bug on GitHub:\n  https://github.com/flutter/flutter/issues/new?template=2_bug.md")));
+            message->add(make<ErrorDescriptionCls>(__s("\nThis error should still help you solve your problem, however please also report this malformed error in the framework by filing a bug on GitHub:\n  https://github.com/flutter/flutter/issues/new?template=2_bug.md")));
             ;
         }
         return true;
@@ -370,7 +370,7 @@ String FlutterErrorCls::toStringShort() {
 String FlutterErrorCls::toString(DiagnosticLevel minLevel) {
     if (kReleaseMode) {
         Iterable<_ErrorDiagnostic> errors = diagnostics-><_ErrorDiagnostic>whereType();
-        return errors->isNotEmpty? errors->first->valueToString() : toStringShort();
+        return errors->isNotEmpty()? errors->first()->valueToString() : toStringShort();
     }
     TextTreeRenderer renderer = make<TextTreeRendererCls>(4000000000);
     return diagnostics->map([=] (DiagnosticsNode node)     {
@@ -398,7 +398,7 @@ void debugPrintStack(String label, int maxFrames, StackTrace stackTrace) {
         stackTrace = FlutterErrorCls->demangleStackTrace(stackTrace);
     }
     Iterable<String> lines = stackTrace->toString()->trimRight()->split(__s("\n"));
-    if (kIsWeb && lines->isNotEmpty) {
+    if (kIsWeb && lines->isNotEmpty()) {
         lines = lines->skipWhile([=] (String line) {
             return line->contains(__s("StackTrace.current")) || line->contains(__s("dart-sdk/lib/_internal")) || line->contains(__s("dart:sdk_internal"));
         });
@@ -433,10 +433,10 @@ DiagnosticsNode DiagnosticsStackTraceCls::_createStackFrame(String frame) {
 
 DiagnosticPropertiesBuilder _FlutterErrorDetailsNodeCls::builder() {
     DiagnosticPropertiesBuilder builder = super->builder;
-    if (builder() == nullptr) {
+    if (builder == nullptr) {
         return nullptr;
     }
-    Iterable<DiagnosticsNode> properties = builder()->properties;
+    Iterable<DiagnosticsNode> properties = builder->properties;
     for (DiagnosticPropertiesTransformer transformer : FlutterErrorDetailsCls::propertiesTransformers) {
         properties = transformer(properties);
     }

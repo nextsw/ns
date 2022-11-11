@@ -97,7 +97,7 @@ void ImageStreamCls::removeListener(ImageStreamListener listener) {
         return _completer!->removeListener(listener);
     }
     assert(_listeners != nullptr);
-    for (;  < _listeners!->length(); i = 1) {
+    for (;  < _listeners!->length; i = 1) {
         if (_listeners![i] == listener) {
             _listeners!->removeAt(i);
                         break;
@@ -162,7 +162,7 @@ ImageStreamCompleterHandle ImageStreamCompleterCls::keepAlive() {
 
 void ImageStreamCompleterCls::removeListener(ImageStreamListener listener) {
     _checkDisposed();
-    for (;  < _listeners->length(); i = 1) {
+    for (;  < _listeners->length; i = 1) {
         if (_listeners[i] == listener) {
             _listeners->removeAt(i);
                         break;

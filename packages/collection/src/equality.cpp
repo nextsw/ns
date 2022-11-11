@@ -27,7 +27,7 @@ template<typename E> bool DefaultEqualityCls<E>::equals(Object e1, Object e2) {
 }
 
 template<typename E> int DefaultEqualityCls<E>::hash(Object e) {
-    return e->hashCode();
+    return e->hashCode;
 }
 
 template<typename E> bool DefaultEqualityCls<E>::isValidKey(Object o) {
@@ -59,8 +59,8 @@ template<typename E> bool IterableEqualityCls<E>::equals(Iterable<E> elements1, 
     if (elements1 == nullptr || elements2 == nullptr)     {
         return false;
     }
-    auto it1 = elements1->iterator;
-    auto it2 = elements2->iterator;
+    auto it1 = elements1->iterator();
+    auto it2 = elements2->iterator();
     while (true) {
         auto hasNext = it1->moveNext();
         if (hasNext != it2->moveNext())         {
@@ -69,7 +69,7 @@ template<typename E> bool IterableEqualityCls<E>::equals(Iterable<E> elements1, 
         if (!hasNext)         {
             return true;
         }
-        if (!_elementEquality->equals(it1->current, it2->current))         {
+        if (!_elementEquality->equals(it1->current(), it2->current()))         {
             return false;
         }
     }
@@ -303,24 +303,24 @@ void DeepCollectionEqualityCls::unordered(Equality base)
 
 bool DeepCollectionEqualityCls::equals(e1 , e2 ) {
     if (is<Set>(e1)) {
-        return is<Set>(e2) && make<SetEqualityCls>(this)->equals(e1, e2);
+        return is<Set>(e2) && make<SetEqualityCls>(this)->equals(as<SetCls>(e1), e2);
     }
     if (is<Map>(e1)) {
-        return is<Map>(e2) && make<MapEqualityCls>(this, this)->equals(e1, e2);
+        return is<Map>(e2) && make<MapEqualityCls>(this, this)->equals(as<MapCls>(e1), e2);
     }
     if (!_unordered) {
         if (is<List>(e1)) {
-            return is<List>(e2) && make<ListEqualityCls>(this)->equals(e1, e2);
+            return is<List>(e2) && make<ListEqualityCls>(this)->equals(as<ListCls>(e1), e2);
         }
         if (is<Iterable>(e1)) {
-            return is<Iterable>(e2) && make<IterableEqualityCls>(this)->equals(e1, e2);
+            return is<Iterable>(e2) && make<IterableEqualityCls>(this)->equals(as<IterableCls>(e1), e2);
         }
     } else     {
         if (is<Iterable>(e1)) {
-        if (is<List>(e1) != is<List>(e2))         {
+        if (is<List>(as<IterableCls>(e1)) != is<List>(e2))         {
             return false;
         }
-        return is<Iterable>(e2) && make<UnorderedIterableEqualityCls>(this)->equals(e1, e2);
+        return is<Iterable>(e2) && make<UnorderedIterableEqualityCls>(this)->equals(as<IterableCls>(e1), e2);
     }
 ;
     }    return _base->equals(e1, e2);
@@ -328,21 +328,21 @@ bool DeepCollectionEqualityCls::equals(e1 , e2 ) {
 
 int DeepCollectionEqualityCls::hash(Object o) {
     if (is<Set>(o))     {
-        return make<SetEqualityCls>(this)->hash(o);
+        return make<SetEqualityCls>(this)->hash(as<SetCls>(o));
     }
     if (is<Map>(o))     {
-        return make<MapEqualityCls>(this, this)->hash(o);
+        return make<MapEqualityCls>(this, this)->hash(as<MapCls>(o));
     }
     if (!_unordered) {
         if (is<List>(o))         {
-            return make<ListEqualityCls>(this)->hash(o);
+            return make<ListEqualityCls>(this)->hash(as<ListCls>(o));
         }
         if (is<Iterable>(o))         {
-            return make<IterableEqualityCls>(this)->hash(o);
+            return make<IterableEqualityCls>(this)->hash(as<IterableCls>(o));
         }
     } else     {
         if (is<Iterable>(o)) {
-        return make<UnorderedIterableEqualityCls>(this)->hash(o);
+        return make<UnorderedIterableEqualityCls>(this)->hash(as<IterableCls>(o));
     }
 ;
     }    return _base->hash(o);

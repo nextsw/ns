@@ -57,7 +57,7 @@ int compareAsciiUpperCase(String a, String b) {
             bUpperCase = _asciiCaseBit;
         }
         if (aUpperCase != bUpperCase)         {
-            return (aUpperCase - bUpperCase)->sign;
+            return (aUpperCase - bUpperCase)->sign();
         }
         if (defaultResult == 0)         {
             defaultResult = (aChar - bChar);
@@ -89,7 +89,7 @@ int compareAsciiLowerCase(String a, String b) {
             aLowerCase = _asciiCaseBit;
         }
         if (aLowerCase != bLowerCase)         {
-            return (aLowerCase - bLowerCase)->sign;
+            return (aLowerCase - bLowerCase)->sign();
         }
         if (defaultResult == 0)         {
             defaultResult = aChar - bChar;
@@ -199,7 +199,7 @@ int _compareNaturally(String a, int aChar, String b, int bChar, int index) {
         return -1;
     }
 ;
-    }    return (aChar - bChar)->sign;
+    }    return (aChar - bChar)->sign();
 }
 
 int _compareNumerically(String a, int aChar, String b, int bChar, int index) {
@@ -208,7 +208,7 @@ int _compareNumerically(String a, int aChar, String b, int bChar, int index) {
         if (result != 0)         {
             return result;
         }
-        return (aChar - bChar)->sign;
+        return (aChar - bChar)->sign();
     }
     auto aIndex = index;
     auto bIndex = index;
@@ -242,7 +242,7 @@ int _compareNumerically(String a, int aChar, String b, int bChar, int index) {
         if (result != 0)         {
             return result;
         }
-        return (aChar - bChar)->sign;
+        return (aChar - bChar)->sign();
     }
     while (true) {
         auto aIsDigit = false;
@@ -269,7 +269,7 @@ int _compareNumerically(String a, int aChar, String b, int bChar, int index) {
             if (bIsDigit) {
             return -1;
         } else {
-            return (aIndex - bIndex)->sign;
+            return (aIndex - bIndex)->sign();
         }
 ;
         }    }
@@ -277,7 +277,7 @@ int _compareNumerically(String a, int aChar, String b, int bChar, int index) {
     if (result != 0)     {
         return result;
     }
-    return (aChar - bChar)->sign;
+    return (aChar - bChar)->sign();
 }
 
 int _compareDigitCount(String a, String b, int i, int j) {

@@ -1,10 +1,10 @@
 #include "border_radius.hpp"
 BorderRadiusGeometry BorderRadiusGeometryCls::subtract(BorderRadiusGeometry other) {
-    return make<_MixedBorderRadiusCls>(_topLeft() - other->_topLeft, _topRight() - other->_topRight, _bottomLeft() - other->_bottomLeft, _bottomRight() - other->_bottomRight, _topStart() - other->_topStart, _topEnd() - other->_topEnd, _bottomStart() - other->_bottomStart, _bottomEnd() - other->_bottomEnd);
+    return make<_MixedBorderRadiusCls>(_topLeft() - other->_topLeft(), _topRight() - other->_topRight(), _bottomLeft() - other->_bottomLeft(), _bottomRight() - other->_bottomRight(), _topStart() - other->_topStart(), _topEnd() - other->_topEnd(), _bottomStart() - other->_bottomStart(), _bottomEnd() - other->_bottomEnd());
 }
 
 BorderRadiusGeometry BorderRadiusGeometryCls::add(BorderRadiusGeometry other) {
-    return make<_MixedBorderRadiusCls>(_topLeft() + other->_topLeft, _topRight() + other->_topRight, _bottomLeft() + other->_bottomLeft, _bottomRight() + other->_bottomRight, _topStart() + other->_topStart, _topEnd() + other->_topEnd, _bottomStart() + other->_bottomStart, _bottomEnd() + other->_bottomEnd);
+    return make<_MixedBorderRadiusCls>(_topLeft() + other->_topLeft(), _topRight() + other->_topRight(), _bottomLeft() + other->_bottomLeft(), _bottomRight() + other->_bottomRight(), _topStart() + other->_topStart(), _topEnd() + other->_topEnd(), _bottomStart() + other->_bottomStart(), _bottomEnd() + other->_bottomEnd());
 }
 
 BorderRadiusGeometry BorderRadiusGeometryCls::lerp(BorderRadiusGeometry a, BorderRadiusGeometry b, double t) {
@@ -141,14 +141,14 @@ RRect BorderRadiusCls::toRRect(Rect rect) {
 
 BorderRadiusGeometry BorderRadiusCls::subtract(BorderRadiusGeometry other) {
     if (is<BorderRadius>(other)) {
-        return this - other;
+        return this - as<BorderRadiusCls>(other);
     }
     return super->subtract(other);
 }
 
 BorderRadiusGeometry BorderRadiusCls::add(BorderRadiusGeometry other) {
     if (is<BorderRadius>(other)) {
-        return this + other;
+        return this + as<BorderRadiusCls>(other);
     }
     return super->add(other);
 }
@@ -241,14 +241,14 @@ void BorderRadiusDirectionalCls::horizontal(Radius end, Radius start)
 
 BorderRadiusGeometry BorderRadiusDirectionalCls::subtract(BorderRadiusGeometry other) {
     if (is<BorderRadiusDirectional>(other)) {
-        return this - other;
+        return this - as<BorderRadiusDirectionalCls>(other);
     }
     return super->subtract(other);
 }
 
 BorderRadiusGeometry BorderRadiusDirectionalCls::add(BorderRadiusGeometry other) {
     if (is<BorderRadiusDirectional>(other)) {
-        return this + other;
+        return this + as<BorderRadiusDirectionalCls>(other);
     }
     return super->add(other);
 }

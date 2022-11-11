@@ -17,7 +17,7 @@ int exitCode() {
 }
 
 void sleep(Duration duration) {
-    int milliseconds = duration->inMilliseconds;
+    int milliseconds = duration->inMilliseconds();
     if ( < 0) {
         ;
     }

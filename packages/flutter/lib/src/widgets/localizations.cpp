@@ -170,24 +170,24 @@ void _LocalizationsStateCls::didUpdateWidget(Localizations old) {
 
 void _LocalizationsStateCls::load(Locale locale) {
     Iterable<LocalizationsDelegate<dynamic>> delegates = widget->delegates;
-    if (delegates == nullptr || delegates->isEmpty) {
-        _locale = locale();
+    if (delegates == nullptr || delegates->isEmpty()) {
+        _locale = locale;
         return;
     }
     Map<Type, dynamic> typeToResources;
-    Future<Map<Type, dynamic>> typeToResourcesFuture = _loadAll(locale(), delegates)-><Map<Type, dynamic>>then([=] (Map<Type, dynamic> value) {
+    Future<Map<Type, dynamic>> typeToResourcesFuture = _loadAll(locale, delegates)-><Map<Type, dynamic>>then([=] (Map<Type, dynamic> value) {
     return typeToResources = value;
 });
     if (typeToResources != nullptr) {
         _typeToResources = typeToResources!;
-        _locale = locale();
+        _locale = locale;
     } else {
         RendererBindingCls::instance->deferFirstFrame();
         typeToResourcesFuture-><void>then([=] (Map<Type, dynamic> value) {
             if (mounted) {
                 setState([=] () {
                     _typeToResources = value;
-                    _locale = locale();
+                    _locale = locale;
                 });
             }
             RendererBindingCls::instance->allowFirstFrame();
@@ -217,7 +217,7 @@ bool _LocalizationsStateCls::_anyDelegatesShouldReload(Localizations old) {
     for (;  < delegates->length; i = 1) {
         LocalizationsDelegate<dynamic> delegate = delegates[i];
         LocalizationsDelegate<dynamic> oldDelegate = oldDelegates[i];
-        if (delegate->runtimeType() != oldDelegate->runtimeType() || delegate->shouldReload(oldDelegate)) {
+        if (delegate->runtimeType != oldDelegate->runtimeType || delegate->shouldReload(oldDelegate)) {
             return true;
         }
     }

@@ -65,7 +65,7 @@ KeyboardSide RawKeyEventDataMacOsCls::getModifierSide(ModifierKey key) {
 }
 
 bool RawKeyEventDataMacOsCls::shouldDispatchEvent() {
-    return logicalKey() != LogicalKeyboardKeyCls::fn;
+    return logicalKey != LogicalKeyboardKeyCls::fn;
 }
 
 void RawKeyEventDataMacOsCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {

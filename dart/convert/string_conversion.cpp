@@ -28,7 +28,7 @@ void _StringConversionSinkAsStringSinkAdapterCls::close() {
 
 void _StringConversionSinkAsStringSinkAdapterCls::writeCharCode(int charCode) {
     _buffer->writeCharCode(charCode);
-    if (_buffer->length() > _MIN_STRING_SIZECls)     {
+    if (_buffer->length > _MIN_STRING_SIZECls)     {
         _flush();
     }
 }
@@ -42,7 +42,7 @@ void _StringConversionSinkAsStringSinkAdapterCls::write(Object o) {
 
 void _StringConversionSinkAsStringSinkAdapterCls::writeln(Object o) {
     _buffer->writeln(o);
-    if (_buffer->length() > _MIN_STRING_SIZECls)     {
+    if (_buffer->length > _MIN_STRING_SIZECls)     {
         _flush();
     }
 }
@@ -51,19 +51,19 @@ void _StringConversionSinkAsStringSinkAdapterCls::writeAll(Iterable objects, Str
     if (_buffer->isNotEmpty())     {
         _flush();
     }
-    auto iterator = objects->iterator;
+    auto iterator = objects->iterator();
     if (!iterator->moveNext())     {
         return;
     }
-    if (separator->isEmpty) {
+    if (separator->isEmpty()) {
         do {
-            _chunkedSink->add(iterator->current->toString());
+            _chunkedSink->add(iterator->current()->toString());
         } while (iterator->moveNext());
     } else {
-        _chunkedSink->add(iterator->current->toString());
+        _chunkedSink->add(iterator->current()->toString());
         while (iterator->moveNext()) {
             write(separator);
-            _chunkedSink->add(iterator->current->toString());
+            _chunkedSink->add(iterator->current()->toString());
         }
     }
 }
@@ -179,7 +179,7 @@ void _Utf8ConversionSinkCls::close() {
     if (_buffer->isNotEmpty()) {
         auto accumulated = _buffer->toString();
         _buffer->clear();
-        _chunkedSink->addSlice(accumulated, 0, accumulated->length(), true);
+        _chunkedSink->addSlice(accumulated, 0, accumulated->length, true);
     } else {
         _chunkedSink->close();
     }
@@ -193,7 +193,7 @@ void _Utf8ConversionSinkCls::addSlice(List<int> chunk, int endIndex, bool isLast
     _buffer->write(_decoder->convertChunked(chunk, startIndex, endIndex));
     if (_buffer->isNotEmpty()) {
         auto accumulated = _buffer->toString();
-        _chunkedSink->addSlice(accumulated, 0, accumulated->length(), isLast);
+        _chunkedSink->addSlice(accumulated, 0, accumulated->length, isLast);
         _buffer->clear();
         return;
     }

@@ -25,7 +25,7 @@ double RenderSliverPersistentHeaderCls::childExtent() {
     if (child == nullptr) {
         return 0.0;
     }
-    assert(child!->hasSize);
+    assert(child!->hasSize());
     assert(constraints->axis != nullptr);
     ;
 }
@@ -39,8 +39,8 @@ void RenderSliverPersistentHeaderCls::markNeedsLayout() {
 }
 
 void RenderSliverPersistentHeaderCls::layoutChild(double maxExtent, bool overlapsContent, double scrollOffset) {
-    assert(maxExtent() != nullptr);
-    double shrinkOffset = math->min(scrollOffset, maxExtent());
+    assert(maxExtent != nullptr);
+    double shrinkOffset = math->min(scrollOffset, maxExtent);
     if (_needsUpdateChild || _lastShrinkOffset != shrinkOffset || _lastOverlapsContent != overlapsContent) {
         <SliverConstraints>invokeLayoutCallback([=] (SliverConstraints constraints) {
             assert(constraints == this->constraints);
@@ -50,9 +50,9 @@ void RenderSliverPersistentHeaderCls::layoutChild(double maxExtent, bool overlap
         _lastOverlapsContent = overlapsContent;
         _needsUpdateChild = false;
     }
-    assert(minExtent() != nullptr);
+    assert(minExtent != nullptr);
     assert([=] () {
-        if (minExtent() <= maxExtent()) {
+        if (minExtent <= maxExtent) {
             return true;
         }
         ;
@@ -61,7 +61,7 @@ void RenderSliverPersistentHeaderCls::layoutChild(double maxExtent, bool overlap
     if (stretchConfiguration != nullptr && constraints->scrollOffset == 0.0) {
         stretchOffset = constraints->overlap->abs();
     }
-    child?->layout(constraints->asBoxConstraints(math->max(minExtent(), maxExtent() - shrinkOffset) + stretchOffset)true);
+    child?->layout(constraints->asBoxConstraints(math->max(minExtent, maxExtent - shrinkOffset) + stretchOffset)true);
     if (stretchConfiguration != nullptr && stretchConfiguration!->onStretchTrigger != nullptr && stretchOffset >= stretchConfiguration!->stretchTriggerOffset && _lastStretchOffset <= stretchConfiguration!->stretchTriggerOffset) {
         stretchConfiguration!->onStretchTrigger!();
     }
@@ -102,7 +102,7 @@ void RenderSliverPersistentHeaderCls::describeSemanticsConfiguration(SemanticsCo
 void RenderSliverPersistentHeaderCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
     properties->add(DoublePropertyCls->lazy(__s("maxExtent"), [=] ()     {
-        maxExtent();
+        maxExtent;
     }));
     properties->add(DoublePropertyCls->lazy(__s("child position"), [=] ()     {
         childMainAxisPosition(child!);
@@ -151,7 +151,7 @@ double RenderSliverPinnedPersistentHeaderCls::childMainAxisPosition(RenderBox ch
 }
 
 void RenderSliverPinnedPersistentHeaderCls::showOnScreen(Curve curve, RenderObject descendant, Duration duration, Rect rect) {
-    Rect localBounds = descendant != nullptr? MatrixUtilsCls->transformRect(descendant->getTransformTo(this), rect or descendant->paintBounds) : rect;
+    Rect localBounds = descendant != nullptr? MatrixUtilsCls->transformRect(descendant->getTransformTo(this), rect or descendant->paintBounds()) : rect;
     Rect newRect;
     ;
     super->showOnScreen(this, newRect, duration, curve);
@@ -166,7 +166,7 @@ FloatingHeaderSnapConfigurationCls::FloatingHeaderSnapConfigurationCls(Curve cur
 
 RenderSliverFloatingPersistentHeaderCls::RenderSliverFloatingPersistentHeaderCls(Unknown child, PersistentHeaderShowOnScreenConfiguration showOnScreenConfiguration, FloatingHeaderSnapConfiguration snapConfiguration, Unknown stretchConfiguration, TickerProvider vsync) {
     {
-        _vsync = vsync();
+        _vsync = vsync;
     }
 }
 
@@ -259,7 +259,7 @@ void RenderSliverFloatingPersistentHeaderCls::showOnScreen(Curve curve, RenderOb
         return super->showOnScreen(descendant, rect, duration, curve);
     }
     assert(child != nullptr || descendant == nullptr);
-    Rect childBounds = descendant != nullptr? MatrixUtilsCls->transformRect(descendant->getTransformTo(child), rect or descendant->paintBounds) : rect;
+    Rect childBounds = descendant != nullptr? MatrixUtilsCls->transformRect(descendant->getTransformTo(child), rect or descendant->paintBounds()) : rect;
     double targetExtent;
     Rect targetRect;
     ;
@@ -267,7 +267,7 @@ void RenderSliverFloatingPersistentHeaderCls::showOnScreen(Curve curve, RenderOb
     targetExtent = clampDouble(clampDouble(targetExtent, showOnScreen->minShowOnScreenExtent, showOnScreen->maxShowOnScreenExtent), childExtent, effectiveMaxExtent);
     if (targetExtent > childExtent) {
         double targetScrollOffset = maxExtent - targetExtent;
-        assert(vsync() != nullptr, __s("vsync must not be null if the floating header changes size animatedly."));
+        assert(vsync != nullptr, __s("vsync must not be null if the floating header changes size animatedly."));
         _updateAnimation(duration, targetScrollOffset, curve);
         _controller?->forward(0.0);
     }
@@ -288,8 +288,8 @@ void RenderSliverFloatingPersistentHeaderCls::_updateAnimation(Curve curve, Dura
     assert(duration != nullptr);
     assert(endValue != nullptr);
     assert(curve != nullptr);
-    assert(vsync() != nullptr, __s("vsync must not be null if the floating header changes size animatedly."));
-    });AnimationController effectiveController = _controller ??=     }    auto _c1 = make<AnimationControllerCls>(vsync()!, duration);    _c1.addListener([=] () {        if (_effectiveScrollOffset == _animation->value()) {            return;    _effectiveScrollOffset = _animation->value();    markNeedsLayout();_c1;
+    assert(vsync != nullptr, __s("vsync must not be null if the floating header changes size animatedly."));
+    });AnimationController effectiveController = _controller ??=     }    auto _c1 = make<AnimationControllerCls>(vsync!, duration);    _c1.addListener([=] () {        if (_effectiveScrollOffset == _animation->value) {            return;    _effectiveScrollOffset = _animation->value;    markNeedsLayout();_c1;
     _animation = effectiveController->drive(<double>make<TweenCls>(_effectiveScrollOffset, endValue)->chain(make<CurveTweenCls>(curve)));
 }
 

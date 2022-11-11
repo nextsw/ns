@@ -1,36 +1,36 @@
 #include "scrollbar.hpp"
 ScrollbarPainterCls::ScrollbarPainterCls(Color color, double crossAxisMargin, Animation<double> fadeoutOpacityAnimation, bool ignorePointer, double mainAxisMargin, double minLength, double minOverscrollLength, EdgeInsets padding, Radius radius, ScrollbarOrientation scrollbarOrientation, OutlinedBorder shape, TextDirection textDirection, double thickness, Color trackBorderColor, Color trackColor, Radius trackRadius) {
     {
-        assert(color() != nullptr);
-        assert(radius() == nullptr || shape() == nullptr);
-        assert(thickness() != nullptr);
+        assert(color != nullptr);
+        assert(radius == nullptr || shape == nullptr);
+        assert(thickness != nullptr);
         assert(fadeoutOpacityAnimation != nullptr);
-        assert(mainAxisMargin() != nullptr);
-        assert(crossAxisMargin() != nullptr);
-        assert(minLength() != nullptr);
-        assert(minLength() >= 0);
-        assert(minOverscrollLength() == nullptr || minOverscrollLength() <= minLength());
-        assert(minOverscrollLength() == nullptr || minOverscrollLength() >= 0);
-        assert(padding() != nullptr);
-        assert(padding()->isNonNegative);
-        assert(trackColor() != nullptr);
-        assert(trackBorderColor() != nullptr);
-        assert(ignorePointer() != nullptr);
-        _color = color();
-        _textDirection = textDirection();
-        _thickness = thickness();
-        _radius = radius();
-        _shape = shape();
-        _padding = padding();
-        _mainAxisMargin = mainAxisMargin();
-        _crossAxisMargin = crossAxisMargin();
-        _minLength = minLength();
-        _trackColor = trackColor();
-        _trackBorderColor = trackBorderColor();
-        _trackRadius = trackRadius();
-        _scrollbarOrientation = scrollbarOrientation();
-        _minOverscrollLength = minOverscrollLength() or minLength();
-        _ignorePointer = ignorePointer();
+        assert(mainAxisMargin != nullptr);
+        assert(crossAxisMargin != nullptr);
+        assert(minLength != nullptr);
+        assert(minLength >= 0);
+        assert(minOverscrollLength == nullptr || minOverscrollLength <= minLength);
+        assert(minOverscrollLength == nullptr || minOverscrollLength >= 0);
+        assert(padding != nullptr);
+        assert(padding->isNonNegative);
+        assert(trackColor != nullptr);
+        assert(trackBorderColor != nullptr);
+        assert(ignorePointer != nullptr);
+        _color = color;
+        _textDirection = textDirection;
+        _thickness = thickness;
+        _radius = radius;
+        _shape = shape;
+        _padding = padding;
+        _mainAxisMargin = mainAxisMargin;
+        _crossAxisMargin = crossAxisMargin;
+        _minLength = minLength;
+        _trackColor = trackColor;
+        _trackBorderColor = trackBorderColor;
+        _trackRadius = trackRadius;
+        _scrollbarOrientation = scrollbarOrientation;
+        _minOverscrollLength = minOverscrollLength or minLength;
+        _ignorePointer = ignorePointer;
     }
     {
         fadeoutOpacityAnimation->addListener(notifyListeners);
@@ -43,7 +43,7 @@ Color ScrollbarPainterCls::color() {
 
 void ScrollbarPainterCls::color(Color value) {
     assert(value != nullptr);
-    if (color() == value) {
+    if (color == value) {
         return;
     }
     _color = value;
@@ -56,7 +56,7 @@ Color ScrollbarPainterCls::trackColor() {
 
 void ScrollbarPainterCls::trackColor(Color value) {
     assert(value != nullptr);
-    if (trackColor() == value) {
+    if (trackColor == value) {
         return;
     }
     _trackColor = value;
@@ -69,7 +69,7 @@ Color ScrollbarPainterCls::trackBorderColor() {
 
 void ScrollbarPainterCls::trackBorderColor(Color value) {
     assert(value != nullptr);
-    if (trackBorderColor() == value) {
+    if (trackBorderColor == value) {
         return;
     }
     _trackBorderColor = value;
@@ -81,7 +81,7 @@ Radius ScrollbarPainterCls::trackRadius() {
 }
 
 void ScrollbarPainterCls::trackRadius(Radius value) {
-    if (trackRadius() == value) {
+    if (trackRadius == value) {
         return;
     }
     _trackRadius = value;
@@ -94,7 +94,7 @@ TextDirection ScrollbarPainterCls::textDirection() {
 
 void ScrollbarPainterCls::textDirection(TextDirection value) {
     assert(value != nullptr);
-    if (textDirection() == value) {
+    if (textDirection == value) {
         return;
     }
     _textDirection = value;
@@ -107,7 +107,7 @@ double ScrollbarPainterCls::thickness() {
 
 void ScrollbarPainterCls::thickness(double value) {
     assert(value != nullptr);
-    if (thickness() == value) {
+    if (thickness == value) {
         return;
     }
     _thickness = value;
@@ -120,7 +120,7 @@ double ScrollbarPainterCls::mainAxisMargin() {
 
 void ScrollbarPainterCls::mainAxisMargin(double value) {
     assert(value != nullptr);
-    if (mainAxisMargin() == value) {
+    if (mainAxisMargin == value) {
         return;
     }
     _mainAxisMargin = value;
@@ -133,7 +133,7 @@ double ScrollbarPainterCls::crossAxisMargin() {
 
 void ScrollbarPainterCls::crossAxisMargin(double value) {
     assert(value != nullptr);
-    if (crossAxisMargin() == value) {
+    if (crossAxisMargin == value) {
         return;
     }
     _crossAxisMargin = value;
@@ -145,8 +145,8 @@ Radius ScrollbarPainterCls::radius() {
 }
 
 void ScrollbarPainterCls::radius(Radius value) {
-    assert(shape() == nullptr || value == nullptr);
-    if (radius() == value) {
+    assert(shape == nullptr || value == nullptr);
+    if (radius == value) {
         return;
     }
     _radius = value;
@@ -158,8 +158,8 @@ OutlinedBorder ScrollbarPainterCls::shape() {
 }
 
 void ScrollbarPainterCls::shape(OutlinedBorder value) {
-    assert(radius() == nullptr || value == nullptr);
-    if (shape() == value) {
+    assert(radius == nullptr || value == nullptr);
+    if (shape == value) {
         return;
     }
     _shape = value;
@@ -172,7 +172,7 @@ EdgeInsets ScrollbarPainterCls::padding() {
 
 void ScrollbarPainterCls::padding(EdgeInsets value) {
     assert(value != nullptr);
-    if (padding() == value) {
+    if (padding == value) {
         return;
     }
     _padding = value;
@@ -185,7 +185,7 @@ double ScrollbarPainterCls::minLength() {
 
 void ScrollbarPainterCls::minLength(double value) {
     assert(value != nullptr);
-    if (minLength() == value) {
+    if (minLength == value) {
         return;
     }
     _minLength = value;
@@ -198,7 +198,7 @@ double ScrollbarPainterCls::minOverscrollLength() {
 
 void ScrollbarPainterCls::minOverscrollLength(double value) {
     assert(value != nullptr);
-    if (minOverscrollLength() == value) {
+    if (minOverscrollLength == value) {
         return;
     }
     _minOverscrollLength = value;
@@ -210,7 +210,7 @@ ScrollbarOrientation ScrollbarPainterCls::scrollbarOrientation() {
 }
 
 void ScrollbarPainterCls::scrollbarOrientation(ScrollbarOrientation value) {
-    if (scrollbarOrientation() == value) {
+    if (scrollbarOrientation == value) {
         return;
     }
     _scrollbarOrientation = value;
@@ -222,7 +222,7 @@ bool ScrollbarPainterCls::ignorePointer() {
 }
 
 void ScrollbarPainterCls::ignorePointer(bool value) {
-    if (ignorePointer() == value) {
+    if (ignorePointer == value) {
         return;
     }
     _ignorePointer = value;
@@ -230,7 +230,7 @@ void ScrollbarPainterCls::ignorePointer(bool value) {
 }
 
 void ScrollbarPainterCls::update(AxisDirection axisDirection, ScrollMetrics metrics) {
-    if (_lastMetrics != nullptr && _lastMetrics!->extentBefore() == metrics->extentBefore && _lastMetrics!->extentInside() == metrics->extentInside && _lastMetrics!->extentAfter() == metrics->extentAfter && _lastAxisDirection == axisDirection) {
+    if (_lastMetrics != nullptr && _lastMetrics!->extentBefore() == metrics->extentBefore() && _lastMetrics!->extentInside() == metrics->extentInside() && _lastMetrics!->extentAfter() == metrics->extentAfter() && _lastAxisDirection == axisDirection) {
         return;
     }
     ScrollMetrics oldMetrics = _lastMetrics;
@@ -244,8 +244,8 @@ void ScrollbarPainterCls::update(AxisDirection axisDirection, ScrollMetrics metr
 }
 
 void ScrollbarPainterCls::updateThickness(Radius nextRadius, double nextThickness) {
-    thickness() = nextThickness;
-    radius() = nextRadius;
+    thickness = nextThickness;
+    radius = nextRadius;
 }
 
 void ScrollbarPainterCls::dispose() {
@@ -255,23 +255,23 @@ void ScrollbarPainterCls::dispose() {
 
 double ScrollbarPainterCls::getTrackToScroll(double thumbOffsetLocal) {
     assert(thumbOffsetLocal != nullptr);
-    double scrollableExtent = _lastMetrics!->maxScrollExtent() - _lastMetrics!->minScrollExtent();
+    double scrollableExtent = _lastMetrics!->maxScrollExtent - _lastMetrics!->minScrollExtent;
     double thumbMovableExtent = _trackExtent() - _thumbExtent();
     return scrollableExtent * thumbOffsetLocal / thumbMovableExtent;
 }
 
 void ScrollbarPainterCls::paint(Canvas canvas, Size size) {
-    if (_lastAxisDirection == nullptr || _lastMetrics == nullptr || _lastMetrics!->maxScrollExtent() <= _lastMetrics!->minScrollExtent()) {
+    if (_lastAxisDirection == nullptr || _lastMetrics == nullptr || _lastMetrics!->maxScrollExtent <= _lastMetrics!->minScrollExtent) {
         return;
     }
-    if (_lastMetrics!->viewportDimension() <= _mainAxisPadding() || _trackExtent() <= 0) {
+    if (_lastMetrics!->viewportDimension <= _mainAxisPadding() || _trackExtent() <= 0) {
         return;
     }
-    double beforePadding = _isVertical()? padding()->top : padding()->left;
+    double beforePadding = _isVertical()? padding->top : padding->left;
     double thumbExtent = _thumbExtent();
     double thumbOffsetLocal = _getScrollToTrack(_lastMetrics!, thumbExtent);
-    _thumbOffset = thumbOffsetLocal + mainAxisMargin() + beforePadding;
-    if (_lastMetrics!->maxScrollExtent()->isInfinite) {
+    _thumbOffset = thumbOffsetLocal + mainAxisMargin + beforePadding;
+    if (_lastMetrics!->maxScrollExtent->isInfinite) {
         return;
     }
     return _paintScrollbar(canvas, size, thumbExtent, _lastAxisDirection!);
@@ -281,15 +281,15 @@ bool ScrollbarPainterCls::hitTestInteractive(bool forHover, PointerDeviceKind ki
     if (_trackRect == nullptr) {
         return false;
     }
-    if (ignorePointer()) {
+    if (ignorePointer) {
         return false;
     }
     if (!_lastMetricsAreScrollable()) {
         return false;
     }
     Rect interactiveRect = _trackRect!;
-    Rect paddedRect = interactiveRect->expandToInclude(RectCls->fromCircle(_thumbRect!->center(), _kMinInteractiveSize / 2));
-    if (fadeoutOpacityAnimation->value() == 0.0) {
+    Rect paddedRect = interactiveRect->expandToInclude(RectCls->fromCircle(_thumbRect!->center, _kMinInteractiveSize / 2));
+    if (fadeoutOpacityAnimation->value == 0.0) {
         if (forHover && kind == PointerDeviceKindCls::mouse) {
             return paddedRect->contains(position);
         }
@@ -302,10 +302,10 @@ bool ScrollbarPainterCls::hitTestOnlyThumbInteractive(PointerDeviceKind kind, Of
     if (_thumbRect == nullptr) {
         return false;
     }
-    if (ignorePointer()) {
+    if (ignorePointer) {
         return false;
     }
-    if (fadeoutOpacityAnimation->value() == 0.0) {
+    if (fadeoutOpacityAnimation->value == 0.0) {
         return false;
     }
     if (!_lastMetricsAreScrollable()) {
@@ -318,10 +318,10 @@ bool ScrollbarPainterCls::hitTest(Offset position) {
     if (_thumbRect == nullptr) {
         return nullptr;
     }
-    if (ignorePointer()) {
+    if (ignorePointer) {
         return false;
     }
-    if (fadeoutOpacityAnimation->value() == 0.0) {
+    if (fadeoutOpacityAnimation->value == 0.0) {
         return false;
     }
     if (!_lastMetricsAreScrollable()) {
@@ -331,7 +331,7 @@ bool ScrollbarPainterCls::hitTest(Offset position) {
 }
 
 bool ScrollbarPainterCls::shouldRepaint(ScrollbarPainter oldDelegate) {
-    return color() != oldDelegate->color || trackColor() != oldDelegate->trackColor || trackBorderColor() != oldDelegate->trackBorderColor || textDirection() != oldDelegate->textDirection || thickness() != oldDelegate->thickness || fadeoutOpacityAnimation != oldDelegate->fadeoutOpacityAnimation || mainAxisMargin() != oldDelegate->mainAxisMargin || crossAxisMargin() != oldDelegate->crossAxisMargin || radius() != oldDelegate->radius || trackRadius() != oldDelegate->trackRadius || shape() != oldDelegate->shape || padding() != oldDelegate->padding || minLength() != oldDelegate->minLength || minOverscrollLength() != oldDelegate->minOverscrollLength || scrollbarOrientation() != oldDelegate->scrollbarOrientation || ignorePointer() != oldDelegate->ignorePointer;
+    return color != oldDelegate->color || trackColor != oldDelegate->trackColor || trackBorderColor != oldDelegate->trackBorderColor || textDirection != oldDelegate->textDirection || thickness != oldDelegate->thickness || fadeoutOpacityAnimation != oldDelegate->fadeoutOpacityAnimation || mainAxisMargin != oldDelegate->mainAxisMargin || crossAxisMargin != oldDelegate->crossAxisMargin || radius != oldDelegate->radius || trackRadius != oldDelegate->trackRadius || shape != oldDelegate->shape || padding != oldDelegate->padding || minLength != oldDelegate->minLength || minOverscrollLength != oldDelegate->minOverscrollLength || scrollbarOrientation != oldDelegate->scrollbarOrientation || ignorePointer != oldDelegate->ignorePointer;
 }
 
 bool ScrollbarPainterCls::shouldRebuildSemantics(CustomPainter oldDelegate) {
@@ -355,27 +355,27 @@ bool ScrollbarPainterCls::_isVerticalOrientation(ScrollbarOrientation orientatio
 }
 
 Paint ScrollbarPainterCls::_paintThumb() {
-    auto _c1 = make<PaintCls>();_c1.color() = color()->withOpacity(color()->opacity() * fadeoutOpacityAnimation->value());return _c1;
+    auto _c1 = make<PaintCls>();_c1.color = color->withOpacity(color->opacity * fadeoutOpacityAnimation->value);return _c1;
 }
 
 Paint ScrollbarPainterCls::_paintTrack(bool isBorder) {
     if (isBorder) {
-            auto _c1 = make<PaintCls>();    _c1.color() = auto _c2 = trackBorderColor()->withOpacity(trackBorderColor()->opacity() * fadeoutOpacityAnimation->value());    _c2.style = auto _c3 = PaintingStyleCls::stroke;    _c3.strokeWidth = 1.0;    _c3;    _c2;return _c1;
+            auto _c1 = make<PaintCls>();    _c1.color = auto _c2 = trackBorderColor->withOpacity(trackBorderColor->opacity * fadeoutOpacityAnimation->value);    _c2.style = auto _c3 = PaintingStyleCls::stroke;    _c3.strokeWidth = 1.0;    _c3;    _c2;return _c1;
     }
-    auto _c4 = make<PaintCls>();_c4.color() = trackColor()->withOpacity(trackColor()->opacity() * fadeoutOpacityAnimation->value());return _c4;
+    auto _c4 = make<PaintCls>();_c4.color = trackColor->withOpacity(trackColor->opacity * fadeoutOpacityAnimation->value);return _c4;
 }
 
 void ScrollbarPainterCls::_paintScrollbar(Canvas canvas, AxisDirection direction, Size size, double thumbExtent) {
-    assert(textDirection() != nullptr, __s("A TextDirection must be provided before a Scrollbar can be painted."));
+    assert(textDirection != nullptr, __s("A TextDirection must be provided before a Scrollbar can be painted."));
     ScrollbarOrientation resolvedOrientation;
-    if (scrollbarOrientation() == nullptr) {
+    if (scrollbarOrientation == nullptr) {
         if (_isVertical()) {
-            resolvedOrientation = textDirection() == TextDirectionCls::ltr? ScrollbarOrientationCls::right : ScrollbarOrientationCls::left;
+            resolvedOrientation = textDirection == TextDirectionCls::ltr? ScrollbarOrientationCls::right : ScrollbarOrientationCls::left;
         } else {
             resolvedOrientation = ScrollbarOrientationCls::bottom;
         }
     } else {
-        resolvedOrientation = scrollbarOrientation()!;
+        resolvedOrientation = scrollbarOrientation!;
     }
     double x, y;
     Size thumbSize, trackSize;
@@ -384,32 +384,32 @@ void ScrollbarPainterCls::_paintScrollbar(Canvas canvas, AxisDirection direction
     ;
     _trackRect = trackOffset & trackSize;
     _thumbRect = make<OffsetCls>(x, y) & thumbSize;
-    if (fadeoutOpacityAnimation->value() != 0.0) {
-        if (trackRadius() == nullptr) {
+    if (fadeoutOpacityAnimation->value != 0.0) {
+        if (trackRadius == nullptr) {
             canvas->drawRect(_trackRect!, _paintTrack());
         } else {
-            canvas->drawRRect(RRectCls->fromRectAndRadius(_trackRect!, trackRadius()!), _paintTrack());
+            canvas->drawRRect(RRectCls->fromRectAndRadius(_trackRect!, trackRadius!), _paintTrack());
         }
         canvas->drawLine(borderStart, borderEnd, _paintTrack(true));
-        if (radius() != nullptr) {
-            canvas->drawRRect(RRectCls->fromRectAndRadius(_thumbRect!, radius()!), _paintThumb());
+        if (radius != nullptr) {
+            canvas->drawRRect(RRectCls->fromRectAndRadius(_thumbRect!, radius!), _paintThumb());
             return;
         }
-        if (shape() == nullptr) {
+        if (shape == nullptr) {
             canvas->drawRect(_thumbRect!, _paintThumb());
             return;
         }
-        Path outerPath = shape()!->getOuterPath(_thumbRect!);
+        Path outerPath = shape!->getOuterPath(_thumbRect!);
         canvas->drawPath(outerPath, _paintThumb());
-        shape()!->paint(canvas, _thumbRect!);
+        shape!->paint(canvas, _thumbRect!);
     }
 }
 
 double ScrollbarPainterCls::_thumbExtent() {
     double fractionVisible = clampDouble((_lastMetrics!->extentInside() - _mainAxisPadding()) / (_totalContentExtent() - _mainAxisPadding()), 0.0, 1.0);
-    double thumbExtent = math->max(math->min(_trackExtent(), minOverscrollLength()), _trackExtent() * fractionVisible);
-    double fractionOverscrolled = 1.0 - _lastMetrics!->extentInside() / _lastMetrics!->viewportDimension();
-    double safeMinLength = math->min(minLength(), _trackExtent());
+    double thumbExtent = math->max(math->min(_trackExtent(), minOverscrollLength), _trackExtent() * fractionVisible);
+    double fractionOverscrolled = 1.0 - _lastMetrics!->extentInside() / _lastMetrics!->viewportDimension;
+    double safeMinLength = math->min(minLength, _trackExtent());
     double newMinLength = (_beforeExtent() > 0 && _afterExtent() > 0)? safeMinLength : safeMinLength * (1.0 - clampDouble(fractionOverscrolled, 0.0, 0.2) / 0.2);
     return clampDouble(thumbExtent, newMinLength, _trackExtent());
 }
@@ -431,15 +431,15 @@ double ScrollbarPainterCls::_afterExtent() {
 }
 
 double ScrollbarPainterCls::_mainAxisPadding() {
-    return _isVertical()? padding()->vertical : padding()->horizontal;
+    return _isVertical()? padding->vertical : padding->horizontal;
 }
 
 double ScrollbarPainterCls::_trackExtent() {
-    return _lastMetrics!->viewportDimension() - 2 * mainAxisMargin() - _mainAxisPadding();
+    return _lastMetrics!->viewportDimension - 2 * mainAxisMargin - _mainAxisPadding();
 }
 
 double ScrollbarPainterCls::_totalContentExtent() {
-    return _lastMetrics!->maxScrollExtent() - _lastMetrics!->minScrollExtent() + _lastMetrics!->viewportDimension();
+    return _lastMetrics!->maxScrollExtent - _lastMetrics!->minScrollExtent + _lastMetrics!->viewportDimension;
 }
 
 double ScrollbarPainterCls::_getScrollToTrack(ScrollMetrics metrics, double thumbExtent) {
@@ -449,7 +449,7 @@ double ScrollbarPainterCls::_getScrollToTrack(ScrollMetrics metrics, double thum
 }
 
 bool ScrollbarPainterCls::_lastMetricsAreScrollable() {
-    return _lastMetrics!->minScrollExtent() != _lastMetrics!->maxScrollExtent();
+    return _lastMetrics!->minScrollExtent != _lastMetrics!->maxScrollExtent;
 }
 
 RawScrollbarCls::RawScrollbarCls(Widget child, ScrollController controller, double crossAxisMargin, Duration fadeDuration, bool interactive, bool isAlwaysShown, Unknown key, double mainAxisMargin, double minOverscrollLength, double minThumbLength, ScrollNotificationPredicate notificationPredicate, Duration pressDuration, Radius radius, ScrollbarOrientation scrollbarOrientation, OutlinedBorder shape, double thickness, Color thumbColor, bool thumbVisibility, Duration timeToFade, Color trackBorderColor, Color trackColor, Radius trackRadius, bool trackVisibility) {
@@ -514,7 +514,7 @@ template<typename T> void RawScrollbarStateCls<T>::didUpdateWidget(T oldWidget) 
 template<typename T> Axis RawScrollbarStateCls<T>::getScrollbarDirection() {
     assert(_currentController != nullptr);
     if (_currentController!->hasClients()) {
-        return _currentController!->position()->axis;
+        return _currentController!->position->axis;
     }
     return nullptr;
 }
@@ -635,7 +635,7 @@ template<typename T> bool RawScrollbarStateCls<T>::_debugScheduleCheckHasValidSc
 template<typename T> void RawScrollbarStateCls<T>::_validateInteractions(AnimationStatus status) {
     ScrollController scrollController = widget->controller or PrimaryScrollControllerCls->of(context);
     if (status == AnimationStatusCls::dismissed) {
-        assert(_fadeoutOpacityAnimation->value() == 0.0);
+        assert(_fadeoutOpacityAnimation->value == 0.0);
     } else     {
         if (scrollController != nullptr && enableGestures()) {
         assert(_debugCheckHasValidScrollPosition());
@@ -666,7 +666,7 @@ template<typename T> bool RawScrollbarStateCls<T>::_debugCheckHasValidScrollPosi
     };
     }    assert(scrollController != nullptr, __s("A ScrollController is required when $when. ${tryPrimary ? 'The Scrollbar was not provided a ScrollController, '      'and attempted to use the PrimaryScrollController, but none was found.' :''}"));
     assert([=] () {
-        if (!scrollController!->hasClients) {
+        if (!scrollController!->hasClients()) {
             ;
         }
         return true;
@@ -688,7 +688,7 @@ template<typename T> bool RawScrollbarStateCls<T>::_debugCheckHasValidScrollPosi
 template<typename T> void RawScrollbarStateCls<T>::_updateScrollPosition(Offset updatedOffset) {
     assert(_currentController != nullptr);
     assert(_dragScrollbarAxisOffset != nullptr);
-    ScrollPosition position = _currentController!->position();
+    ScrollPosition position = _currentController!->position;
     double primaryDelta;
     ;
     double scrollOffsetLocal = scrollbarPainter->getTrackToScroll(primaryDelta);
@@ -715,14 +715,14 @@ template<typename T> void RawScrollbarStateCls<T>::_handleTrackTapDown(TapDownDe
     assert(_debugCheckHasValidScrollPosition());
     _currentController = widget->controller or PrimaryScrollControllerCls->of(context);
     double scrollIncrement;
-    ScrollIncrementCalculator calculator = ScrollableCls->of(_currentController!->position()->context->notificationContext()!)?->widget->incrementCalculator;
+    ScrollIncrementCalculator calculator = ScrollableCls->of(_currentController!->position->context->notificationContext!)?->widget->incrementCalculator;
     if (calculator != nullptr) {
-        scrollIncrement = calculator(make<ScrollIncrementDetailsCls>(ScrollIncrementTypeCls::page, _currentController!->position()));
+        scrollIncrement = calculator(make<ScrollIncrementDetailsCls>(ScrollIncrementTypeCls::page, _currentController!->position));
     } else {
-        scrollIncrement = 0.8 * _currentController!->position()->viewportDimension();
+        scrollIncrement = 0.8 * _currentController!->position->viewportDimension;
     }
     ;
-    _currentController!->position()->moveTo(_currentController!->position()->pixels() + scrollIncrementmake<DurationCls>(100), CurvesCls::easeInOut);
+    _currentController!->position->moveTo(_currentController!->position->pixels + scrollIncrementmake<DurationCls>(100), CurvesCls::easeInOut);
 }
 
 template<typename T> bool RawScrollbarStateCls<T>::_shouldUpdatePainter(Axis notificationAxis) {
@@ -733,7 +733,7 @@ template<typename T> bool RawScrollbarStateCls<T>::_shouldUpdatePainter(Axis not
     if (scrollController->positions->length > 1) {
         return false;
     }
-    return !scrollController->hasClients || scrollController->position->axis == notificationAxis;
+    return !scrollController->hasClients() || scrollController->position->axis == notificationAxis;
 }
 
 template<typename T> bool RawScrollbarStateCls<T>::_handleScrollMetricsNotification(ScrollMetricsNotification notification) {
@@ -741,7 +741,7 @@ template<typename T> bool RawScrollbarStateCls<T>::_handleScrollMetricsNotificat
         return false;
     }
     if (showScrollbar()) {
-        if (_fadeoutAnimationController->status() != AnimationStatusCls::forward && _fadeoutAnimationController->status() != AnimationStatusCls::completed) {
+        if (_fadeoutAnimationController->status != AnimationStatusCls::forward && _fadeoutAnimationController->status != AnimationStatusCls::completed) {
             _fadeoutAnimationController->forward();
         }
     }
@@ -758,7 +758,7 @@ template<typename T> bool RawScrollbarStateCls<T>::_handleScrollNotification(Scr
     }
     ScrollMetrics metrics = notification->metrics;
     if (metrics->maxScrollExtent <= metrics->minScrollExtent) {
-        if (_fadeoutAnimationController->status() != AnimationStatusCls::dismissed && _fadeoutAnimationController->status() != AnimationStatusCls::reverse) {
+        if (_fadeoutAnimationController->status != AnimationStatusCls::dismissed && _fadeoutAnimationController->status != AnimationStatusCls::reverse) {
             _fadeoutAnimationController->reverse();
         }
         if (_shouldUpdatePainter(metrics->axis)) {
@@ -767,7 +767,7 @@ template<typename T> bool RawScrollbarStateCls<T>::_handleScrollNotification(Scr
         return false;
     }
     if (is<ScrollUpdateNotification>(notification) || is<OverscrollNotification>(notification)) {
-        if (_fadeoutAnimationController->status() != AnimationStatusCls::forward && _fadeoutAnimationController->status() != AnimationStatusCls::completed) {
+        if (_fadeoutAnimationController->status != AnimationStatusCls::forward && _fadeoutAnimationController->status != AnimationStatusCls::completed) {
             _fadeoutAnimationController->forward();
         }
         _fadeoutTimer?->cancel();
@@ -826,10 +826,10 @@ _ThumbPressGestureRecognizerCls::_ThumbPressGestureRecognizerCls(GlobalKey custo
 }
 
 bool _ThumbPressGestureRecognizerCls::_hitTestInteractive(GlobalKey customPaintKey, PointerDeviceKind kind, Offset offset) {
-    if (customPaintKey->currentContext == nullptr) {
+    if (customPaintKey->currentContext() == nullptr) {
         return false;
     }
-    CustomPaint customPaint = as<CustomPaint>(customPaintKey->currentContext!->widget);
+    CustomPaint customPaint = as<CustomPaint>(customPaintKey->currentContext()!->widget);
     ScrollbarPainter painter = as<ScrollbarPainter>(customPaint->foregroundPainter!);
     Offset localOffset = _getLocalOffset(customPaintKey, offset);
     return painter->hitTestOnlyThumbInteractive(localOffset, kind);
@@ -849,16 +849,16 @@ _TrackTapGestureRecognizerCls::_TrackTapGestureRecognizerCls(GlobalKey customPai
 }
 
 bool _TrackTapGestureRecognizerCls::_hitTestInteractive(GlobalKey customPaintKey, PointerDeviceKind kind, Offset offset) {
-    if (customPaintKey->currentContext == nullptr) {
+    if (customPaintKey->currentContext() == nullptr) {
         return false;
     }
-    CustomPaint customPaint = as<CustomPaint>(customPaintKey->currentContext!->widget);
+    CustomPaint customPaint = as<CustomPaint>(customPaintKey->currentContext()!->widget);
     ScrollbarPainter painter = as<ScrollbarPainter>(customPaint->foregroundPainter!);
     Offset localOffset = _getLocalOffset(customPaintKey, offset);
     return painter->hitTestInteractive(localOffset, kind) && !painter->hitTestOnlyThumbInteractive(localOffset, kind);
 }
 
 Offset _getLocalOffset(Offset position, GlobalKey scrollbarPainterKey) {
-    RenderBox renderBox = as<RenderBox>(scrollbarPainterKey->currentContext!->findRenderObject()!);
+    RenderBox renderBox = as<RenderBox>(scrollbarPainterKey->currentContext()!->findRenderObject()!);
     return renderBox->globalToLocal(position);
 }

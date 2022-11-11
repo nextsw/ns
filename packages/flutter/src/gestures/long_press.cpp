@@ -47,12 +47,12 @@ void LongPressGestureRecognizerCls::didExceedDeadline() {
 void LongPressGestureRecognizerCls::handlePrimaryPointer(PointerEvent event) {
     if (!event->synthesized) {
         if (is<PointerDownEvent>(event)) {
-            _velocityTracker = VelocityTrackerCls->withKind(event->kind);
-            _velocityTracker!->addPosition(event->timeStamp, event->localPosition);
+            _velocityTracker = VelocityTrackerCls->withKind(as<PointerDownEventCls>(event)->kind);
+            _velocityTracker!->addPosition(as<PointerDownEventCls>(event)->timeStamp, as<PointerDownEventCls>(event)->localPosition);
         }
         if (is<PointerMoveEvent>(event)) {
             assert(_velocityTracker != nullptr);
-            _velocityTracker!->addPosition(event->timeStamp, event->localPosition);
+            _velocityTracker!->addPosition(as<PointerMoveEventCls>(event)->timeStamp, as<PointerMoveEventCls>(event)->localPosition);
         }
     }
     if (is<PointerUpEvent>(event)) {
@@ -68,12 +68,12 @@ void LongPressGestureRecognizerCls::handlePrimaryPointer(PointerEvent event) {
         _reset();
     } else     {
         if (is<PointerDownEvent>(event)) {
-        _longPressOrigin = OffsetPairCls->fromEventPosition(event);
-        _initialButtons = event->buttons;
-        _checkLongPressDown(event);
+        _longPressOrigin = OffsetPairCls->fromEventPosition(as<PointerDownEventCls>(event));
+        _initialButtons = as<PointerDownEventCls>(event)->buttons;
+        _checkLongPressDown(as<PointerDownEventCls>(event));
     } else     {
         if (is<PointerMoveEvent>(event)) {
-        if (event->buttons != _initialButtons) {
+        if (as<PointerMoveEventCls>(event)->buttons != _initialButtons) {
             resolve(GestureDispositionCls::rejected);
             stopTrackingPointer(primaryPointer!);
         } else         {

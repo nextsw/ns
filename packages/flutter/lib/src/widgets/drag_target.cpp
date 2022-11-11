@@ -213,10 +213,10 @@ template<typename T> void _DragAvatarCls<T>::updateDrag(Offset globalPosition) {
     WidgetsBindingCls::instance->hitTest(result, globalPosition + feedbackOffset);
     List<_DragTargetState<Object>> targets = _getDragTargets(result->path)->toList();
     bool listsMatch = false;
-    if (targets->length >= _enteredTargets->length() && _enteredTargets->isNotEmpty) {
+    if (targets->length >= _enteredTargets->length && _enteredTargets->isNotEmpty) {
         listsMatch = true;
         Iterator<_DragTargetState<Object>> iterator = targets->iterator;
-        for (;  < _enteredTargets->length(); i = 1) {
+        for (;  < _enteredTargets->length; i = 1) {
             iterator->moveNext();
             if (iterator->current != _enteredTargets[i]) {
                 listsMatch = false;
@@ -281,7 +281,7 @@ template<typename T> Iterable<_DragTargetState<Object>> _DragAvatarCls<T>::_getD
     for (HitTestEntry entry : path) {
         HitTestTarget target = entry->target;
         if (is<RenderMetaData>(target)) {
-            dynamic metaData = target->metaData;
+            dynamic metaData = as<RenderMetaDataCls>(target)->metaData;
             if (is<_DragTargetState>(metaData) && metaData->isExpectedDataType(data, TCls)) {
                 targets->add(metaData);
             }
@@ -291,7 +291,7 @@ template<typename T> Iterable<_DragTargetState<Object>> _DragAvatarCls<T>::_getD
 }
 
 template<typename T> void _DragAvatarCls<T>::_leaveAllEntered() {
-    for (;  < _enteredTargets->length(); i = 1) {
+    for (;  < _enteredTargets->length; i = 1) {
         _enteredTargets[i]->didLeave(this);
     }
     _enteredTargets->clear();
@@ -300,7 +300,7 @@ template<typename T> void _DragAvatarCls<T>::_leaveAllEntered() {
 template<typename T> Widget _DragAvatarCls<T>::_build(BuildContext context) {
     RenderBox box = as<RenderBox>(overlayState->context->findRenderObject()!);
     Offset overlayTopLeft = box->localToGlobal(OffsetCls::zero);
-    return make<PositionedCls>(_lastOffset!->dx() - overlayTopLeft->dx, _lastOffset!->dy() - overlayTopLeft->dy, make<IgnorePointerCls>(ignoringFeedbackPointer, ignoringFeedbackSemantics, feedback));
+    return make<PositionedCls>(_lastOffset!->dx - overlayTopLeft->dx, _lastOffset!->dy - overlayTopLeft->dy, make<IgnorePointerCls>(ignoringFeedbackPointer, ignoringFeedbackSemantics, feedback));
 }
 
 template<typename T> Velocity _DragAvatarCls<T>::_restrictVelocityAxis(Velocity velocity) {

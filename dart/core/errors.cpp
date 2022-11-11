@@ -4,7 +4,7 @@ String ErrorCls::safeToString(Object object) {
             Map<String, T> map1 = make<MapCls<>>();    for (auto value : this)     {            ;        }    {        map1.set(value->_name, value);    }return object->toString();
     }
     if (is<String>(object)) {
-        return _stringToSafeString(object);
+        return _stringToSafeString(as<StringCls>(object));
     }
     return _objectToString(object);
 }

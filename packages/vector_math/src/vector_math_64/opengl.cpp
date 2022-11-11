@@ -83,24 +83,24 @@ Matrix4 makeOrthographicMatrix(double bottom, double far, double left, double ne
 }
 
 Matrix4 makePlaneProjection(Vector3 planeNormal, Vector3 planePoint) {
-    Unknown v = make<Vector4Cls>(planeNormal->storage[0], planeNormal->storage[1], planeNormal->storage[2], 0.0);
+    Unknown v = make<Vector4Cls>(planeNormal->storage()[0], planeNormal->storage()[1], planeNormal->storage()[2], 0.0);
     Unknown outer = Matrix4Cls->outer(v, v);
     auto r = Matrix4Cls->zero();
     r = r - outer;
     Unknown scaledNormal = planeNormal->scaled(dot3(planePoint, planeNormal));
-    Unknown T = make<Vector4Cls>(scaledNormal->storage[0], scaledNormal->storage[1], scaledNormal->storage[2], 1.0);
+    Unknown T = make<Vector4Cls>(scaledNormal->storage()[0], scaledNormal->storage()[1], scaledNormal->storage()[2], 1.0);
     r->setColumn(3, TCls);
     return r;
 }
 
 Matrix4 makePlaneReflection(Vector3 planeNormal, Vector3 planePoint) {
-    Unknown v = make<Vector4Cls>(planeNormal->storage[0], planeNormal->storage[1], planeNormal->storage[2], 0.0);
+    Unknown v = make<Vector4Cls>(planeNormal->storage()[0], planeNormal->storage()[1], planeNormal->storage()[2], 0.0);
     auto _c1 = Matrix4Cls->outer(v, v);_c1.scale(2.0);Unknown outer = _c1;
     auto r = Matrix4Cls->zero();
     r = r - outer;
     Unknown scale = 2.0 * planePoint->dot(planeNormal);
     Unknown scaledNormal = planeNormal->scaled(scale);
-    Unknown T = make<Vector4Cls>(scaledNormal->storage[0], scaledNormal->storage[1], scaledNormal->storage[2], 1.0);
+    Unknown T = make<Vector4Cls>(scaledNormal->storage()[0], scaledNormal->storage()[1], scaledNormal->storage()[2], 1.0);
     r->setColumn(3, TCls);
     return r;
 }

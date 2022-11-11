@@ -14,7 +14,7 @@ template<typename T> void RestorableValueCls<T>::value(T newValue) {
 }
 
 template<typename T> void RestorableValueCls<T>::initWithValue(T value) {
-    _value = value();
+    _value = value;
 }
 
 template<typename T> T _RestorablePrimitiveValueNCls<T>::createDefaultValue() {
@@ -144,9 +144,9 @@ template<typename T> T RestorableListenableCls<T>::value() {
 }
 
 template<typename T> void RestorableListenableCls<T>::initWithValue(T value) {
-    assert(value() != nullptr);
+    assert(value != nullptr);
     _value?->removeListener(notifyListeners);
-    _value = value();
+    _value = value;
     _value!->addListener(notifyListeners);
 }
 

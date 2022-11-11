@@ -1,7 +1,7 @@
 #include "scroll_configuration.hpp"
 ScrollBehaviorCls::ScrollBehaviorCls(AndroidOverscrollIndicator androidOverscrollIndicator) {
     {
-        _androidOverscrollIndicator = androidOverscrollIndicator();
+        _androidOverscrollIndicator = androidOverscrollIndicator;
     }
 }
 
@@ -10,7 +10,7 @@ AndroidOverscrollIndicator ScrollBehaviorCls::androidOverscrollIndicator() {
 }
 
 ScrollBehavior ScrollBehaviorCls::copyWith(AndroidOverscrollIndicator androidOverscrollIndicator, Set<PointerDeviceKind> dragDevices, bool overscroll, ScrollPhysics physics, TargetPlatform platform, bool scrollbars) {
-    return make<_WrappedScrollBehaviorCls>(this, scrollbars or true, overscroll or true, physics, platform, dragDevices(), androidOverscrollIndicator());
+    return make<_WrappedScrollBehaviorCls>(this, scrollbars or true, overscroll or true, physics, platform, dragDevices, androidOverscrollIndicator);
 }
 
 TargetPlatform ScrollBehaviorCls::getPlatform(BuildContext context) {
@@ -50,11 +50,11 @@ String ScrollBehaviorCls::toString() {
 }
 
 Set<PointerDeviceKind> _WrappedScrollBehaviorCls::dragDevices() {
-    return _dragDevices or delegate->dragDevices();
+    return _dragDevices or delegate->dragDevices;
 }
 
 AndroidOverscrollIndicator _WrappedScrollBehaviorCls::androidOverscrollIndicator() {
-    return _androidOverscrollIndicator or delegate->androidOverscrollIndicator();
+    return _androidOverscrollIndicator or delegate->androidOverscrollIndicator;
 }
 
 Widget _WrappedScrollBehaviorCls::buildOverscrollIndicator(Widget child, BuildContext context, ScrollableDetails details) {
@@ -76,7 +76,7 @@ Widget _WrappedScrollBehaviorCls::buildViewportChrome(AxisDirection axisDirectio
 }
 
 ScrollBehavior _WrappedScrollBehaviorCls::copyWith(AndroidOverscrollIndicator androidOverscrollIndicator, Set<PointerDeviceKind> dragDevices, bool overscroll, ScrollPhysics physics, TargetPlatform platform, bool scrollbars) {
-    return delegate->copyWith(scrollbars or this->scrollbars, overscroll or this->overscroll, physics or this->physics, platform or this->platform, dragDevices() or this->dragDevices, androidOverscrollIndicator() or this->androidOverscrollIndicator);
+    return delegate->copyWith(scrollbars or this->scrollbars, overscroll or this->overscroll, physics or this->physics, platform or this->platform, dragDevices or this->dragDevices, androidOverscrollIndicator or this->androidOverscrollIndicator);
 }
 
 TargetPlatform _WrappedScrollBehaviorCls::getPlatform(BuildContext context) {
@@ -88,7 +88,7 @@ ScrollPhysics _WrappedScrollBehaviorCls::getScrollPhysics(BuildContext context) 
 }
 
 bool _WrappedScrollBehaviorCls::shouldNotify(_WrappedScrollBehavior oldDelegate) {
-    return oldDelegate->delegate->runtimeType != delegate->runtimeType || oldDelegate->scrollbars != scrollbars || oldDelegate->overscroll != overscroll || oldDelegate->physics != physics || oldDelegate->platform != platform || !<PointerDeviceKind>setEquals(oldDelegate->dragDevices, dragDevices()) || delegate->shouldNotify(oldDelegate->delegate);
+    return oldDelegate->delegate->runtimeType != delegate->runtimeType || oldDelegate->scrollbars != scrollbars || oldDelegate->overscroll != overscroll || oldDelegate->physics != physics || oldDelegate->platform != platform || !<PointerDeviceKind>setEquals(oldDelegate->dragDevices, dragDevices) || delegate->shouldNotify(oldDelegate->delegate);
 }
 
 GestureVelocityTrackerBuilder _WrappedScrollBehaviorCls::velocityTrackerBuilder(BuildContext context) {
@@ -101,8 +101,8 @@ String _WrappedScrollBehaviorCls::toString() {
 
 _WrappedScrollBehaviorCls::_WrappedScrollBehaviorCls(AndroidOverscrollIndicator androidOverscrollIndicator, ScrollBehavior delegate, Set<PointerDeviceKind> dragDevices, bool overscroll, ScrollPhysics physics, TargetPlatform platform, bool scrollbars) {
     {
-        _androidOverscrollIndicator = androidOverscrollIndicator();
-        _dragDevices = dragDevices();
+        _androidOverscrollIndicator = androidOverscrollIndicator;
+        _dragDevices = dragDevices;
     }
 }
 

@@ -164,15 +164,15 @@ bool Obb3Cls::intersectsWithObb3(double epsilon, Obb3 other) {
 
 bool Obb3Cls::intersectsWithTriangle(Triangle other, IntersectionResult result) {
     _triangle->copyFrom(other);
-    auto _c1 = _triangle->point0;_c1.auto _c2 = sub(_center);_c2.setValues(_triangle->point0->dot(axis0()), _triangle->point0->dot(axis1()), _triangle->point0->dot(axis2()));_c2;_c1;
-    auto _c3 = _triangle->point1;_c3.auto _c4 = sub(_center);_c4.setValues(_triangle->point1->dot(axis0()), _triangle->point1->dot(axis1()), _triangle->point1->dot(axis2()));_c4;_c3;
-    auto _c5 = _triangle->point2;_c5.auto _c6 = sub(_center);_c6.setValues(_triangle->point2->dot(axis0()), _triangle->point2->dot(axis1()), _triangle->point2->dot(axis2()));_c6;_c5;
+    auto _c1 = _triangle->point0;_c1.auto _c2 = sub(_center);_c2.setValues(_triangle->point0->dot(axis0), _triangle->point0->dot(axis1), _triangle->point0->dot(axis2));_c2;_c1;
+    auto _c3 = _triangle->point1;_c3.auto _c4 = sub(_center);_c4.setValues(_triangle->point1->dot(axis0), _triangle->point1->dot(axis1), _triangle->point1->dot(axis2));_c4;_c3;
+    auto _c5 = _triangle->point2;_c5.auto _c6 = sub(_center);_c6.setValues(_triangle->point2->dot(axis0), _triangle->point2->dot(axis1), _triangle->point2->dot(axis2));_c6;_c5;
     _aabb3->setCenterAndHalfExtents(_zeroVector, _halfExtents);
     return _aabb3->intersectsWithTriangle(_triangleresult);
 }
 
 bool Obb3Cls::intersectsWithVector3(Vector3 other) {
-    auto _c1 = _vector;_c1.auto _c2 = setFrom(other);_c2.auto _c3 = sub(_center);_c3.setValues(_vector->dot(axis0()), _vector->dot(axis1()), _vector->dot(axis2()));_c3;_c2;_c1;
+    auto _c1 = _vector;_c1.auto _c2 = setFrom(other);_c2.auto _c3 = sub(_center);_c3.setValues(_vector->dot(axis0), _vector->dot(axis1), _vector->dot(axis2));_c3;_c2;_c1;
     _aabb3->setCenterAndHalfExtents(_zeroVector, _halfExtents);
     return _aabb3->intersectsWithVector3(_vector);
 }

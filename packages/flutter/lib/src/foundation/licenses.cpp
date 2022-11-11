@@ -10,7 +10,7 @@ Iterable<LicenseParagraph> LicenseEntryWithLineBreaksCls::paragraphs() {
     List<LicenseParagraph> result = makeList();
     InlineMethod;
     InlineMethod;
-    while ( < text->length()) {
+    while ( < text->length) {
         ;
         currentPosition = 1;
     }

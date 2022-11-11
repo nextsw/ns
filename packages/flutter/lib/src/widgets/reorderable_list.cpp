@@ -130,17 +130,17 @@ Widget SliverReorderableListStateCls::build(BuildContext context) {
 }
 
 Axis SliverReorderableListStateCls::_scrollDirection() {
-    return axisDirectionToAxis(_scrollable->axisDirection());
+    return axisDirectionToAxis(_scrollable->axisDirection);
 }
 
 bool SliverReorderableListStateCls::_reverse() {
-    return _scrollable->axisDirection() == AxisDirectionCls::up || _scrollable->axisDirection() == AxisDirectionCls::left;
+    return _scrollable->axisDirection == AxisDirectionCls::up || _scrollable->axisDirection == AxisDirectionCls::left;
 }
 
 void SliverReorderableListStateCls::_registerItem(_ReorderableItemState item) {
     _items[item->index] = item;
     if (item->index == _dragInfo?->index) {
-        item->dragging = true;
+        item->dragging() = true;
         item->rebuild();
     }
 }
@@ -155,7 +155,7 @@ void SliverReorderableListStateCls::_unregisterItem(int index, _ReorderableItemS
 Drag SliverReorderableListStateCls::_dragStart(Offset position) {
     assert(_dragInfo == nullptr);
     _ReorderableItemState item = _items[_dragIndex!]!;
-    item->dragging = true;
+    item->dragging() = true;
     widget->onReorderStart?->call(_dragIndex!);
     item->rebuild();
     _dragStartTransitionComplete = false;
@@ -169,7 +169,7 @@ Drag SliverReorderableListStateCls::_dragStart(Offset position) {
     assert(_overlayEntry == nullptr);
     _overlayEntry = make<OverlayEntryCls>(_dragInfo!->createProxy);
     overlay->insert(_overlayEntry!);
-    for (_ReorderableItemState childItem : _items->values()) {
+    for (_ReorderableItemState childItem : _items->values) {
         if (childItem == item || !childItem->mounted) {
             continue;
         }
@@ -197,7 +197,7 @@ void SliverReorderableListStateCls::_dragEnd(_DragInfo item) {
         if (_insertIndex! < widget->itemCount - 1) {
             _finalDropPosition = _itemOffsetAt(_insertIndex! + (_reverse()? 1 : 0));
         } else {
-            int itemIndex = _items->length() > 1? _insertIndex! - 1 : _insertIndex!;
+            int itemIndex = _items->length > 1? _insertIndex! - 1 : _insertIndex!;
             if (_reverse()) {
                 _finalDropPosition = _itemOffsetAt(itemIndex) - _extentOffset(item->itemExtent, _scrollDirection());
             } else {
@@ -240,7 +240,7 @@ void SliverReorderableListStateCls::_dragReset() {
 }
 
 void SliverReorderableListStateCls::_resetItemGap() {
-    for (_ReorderableItemState item : _items->values()) {
+    for (_ReorderableItemState item : _items->values) {
         item->resetGap();
     }
 }
@@ -259,7 +259,7 @@ void SliverReorderableListStateCls::_dragUpdateItems() {
     double proxyItemStart = _offsetExtent(_dragInfo!->dragPosition - _dragInfo!->dragOffset, _scrollDirection());
     double proxyItemEnd = proxyItemStart + gapExtent;
     int newIndex = _insertIndex!;
-    for (_ReorderableItemState item : _items->values()) {
+    for (_ReorderableItemState item : _items->values) {
         if (item->index == _dragIndex! || !item->mounted) {
             continue;
         }
@@ -312,7 +312,7 @@ void SliverReorderableListStateCls::_dragUpdateItems() {
     }
     if (newIndex != _insertIndex) {
         _insertIndex = newIndex;
-        for (_ReorderableItemState item : _items->values()) {
+        for (_ReorderableItemState item : _items->values) {
             if (item->index == _dragIndex! || !item->mounted) {
                 continue;
             }
@@ -323,7 +323,7 @@ void SliverReorderableListStateCls::_dragUpdateItems() {
 
 Rect SliverReorderableListStateCls::_dragTargetRect() {
     Offset origin = _dragInfo!->dragPosition - _dragInfo!->dragOffset;
-    return RectCls->fromLTWH(origin->dx, origin->dy, _dragInfo!->itemSize->width(), _dragInfo!->itemSize->height());
+    return RectCls->fromLTWH(origin->dx, origin->dy, _dragInfo!->itemSize->width, _dragInfo!->itemSize->height);
 }
 
 Offset SliverReorderableListStateCls::_itemOffsetAt(int index) {
@@ -363,7 +363,7 @@ bool _ReorderableItemStateCls::dragging() {
 void _ReorderableItemStateCls::dragging(bool dragging) {
     if (mounted) {
         setState([=] () {
-            _dragging = dragging();
+            _dragging = dragging;
         });
     }
 }
@@ -376,7 +376,7 @@ void _ReorderableItemStateCls::initState() {
 
 void _ReorderableItemStateCls::dispose() {
     _offsetAnimation?->dispose();
-    _listState->_unregisterItem(index(), this);
+    _listState->_unregisterItem(index, this);
     super->dispose();
 }
 
@@ -393,31 +393,31 @@ Widget _ReorderableItemStateCls::build(BuildContext context) {
         return make<SizedBoxCls>();
     }
     _listState->_registerItem(this);
-    return make<TransformCls>(Matrix4Cls->translationValues(offset()->dx(), offset()->dy(), 0.0), widget->child);
+    return make<TransformCls>(Matrix4Cls->translationValues(offset->dx, offset->dy, 0.0), widget->child);
 }
 
 void _ReorderableItemStateCls::deactivate() {
-    _listState->_unregisterItem(index(), this);
+    _listState->_unregisterItem(index, this);
     super->deactivate();
 }
 
 Offset _ReorderableItemStateCls::offset() {
     if (_offsetAnimation != nullptr) {
-        double animValue = CurvesCls::easeInOut->transform(_offsetAnimation!->value());
+        double animValue = CurvesCls::easeInOut->transform(_offsetAnimation!->value);
         return OffsetCls->lerp(_startOffset, _targetOffset, animValue)!;
     }
     return _targetOffset;
 }
 
 void _ReorderableItemStateCls::updateForGap(bool animate, double gapExtent, int gapIndex, bool reverse) {
-    Offset newTargetOffset = (gapIndex <= index())? _extentOffset(reverse? -gapExtent : gapExtent, _listState->_scrollDirection()) : OffsetCls::zero;
+    Offset newTargetOffset = (gapIndex <= index)? _extentOffset(reverse? -gapExtent : gapExtent, _listState->_scrollDirection()) : OffsetCls::zero;
     if (newTargetOffset != _targetOffset) {
         _targetOffset = newTargetOffset;
         if (animate) {
             if (_offsetAnimation == nullptr) {
                                             });            _c3.forward();            _c3;            _c2;_offsetAnimation =                                     }                    auto _c1 = make<AnimationControllerCls>(_listState, make<DurationCls>(250));                    _c1.auto _c2 = addListener(rebuild);                    _c2.auto _c3 = addStatusListener([=] (AnimationStatus status) {                                        if (status == AnimationStatusCls::completed) {                                            _startOffset = _targetOffset;                                            _offsetAnimation!->dispose();                                            _offsetAnimation = nullptr;_c1;
             } else {
-                _startOffset = offset();
+                _startOffset = offset;
                 _offsetAnimation!->forward(0.0);
             }
         } else {
@@ -531,15 +531,15 @@ Offset _overlayOrigin(BuildContext context) {
 }
 
 Widget _DragItemProxyCls::build(BuildContext context) {
-    Widget proxyChild = proxyDecorator?->call(child, index, animation->view()) or child;
+    Widget proxyChild = proxyDecorator?->call(child, index, animation->view) or child;
     Offset overlayOrigin = _overlayOrigin(context);
     return make<MediaQueryCls>(MediaQueryCls->of(context)->removePadding(true), make<AnimatedBuilderCls>(animation, [=] (BuildContext context,Widget child) {
         Offset effectivePosition = position;
         Offset dropPosition = listState->_finalDropPosition;
         if (dropPosition != nullptr) {
-            effectivePosition = OffsetCls->lerp(dropPosition - overlayOrigin, effectivePosition, CurvesCls::easeOut->transform(animation->value()))!;
+            effectivePosition = OffsetCls->lerp(dropPosition - overlayOrigin, effectivePosition, CurvesCls::easeOut->transform(animation->value))!;
         }
-        return make<PositionedCls>(effectivePosition->dx, effectivePosition->dy, make<SizedBoxCls>(size->width(), size->height(), child));
+        return make<PositionedCls>(effectivePosition->dx, effectivePosition->dy, make<SizedBoxCls>(size->width, size->height, child));
     }, proxyChild));
 }
 

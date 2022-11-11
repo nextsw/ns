@@ -56,7 +56,7 @@ void _LinkCls::createSync(bool recursive, String target) {
         parent->createSync(true);
     }
     auto result = _FileCls->_createLink(_NamespaceCls::_namespace, _rawPath, target);
-    throwIfError(result, __s("Cannot create link"), path());
+    throwIfError(result, __s("Cannot create link"), path);
 }
 
 void _LinkCls::updateSync(String target) {
@@ -96,7 +96,7 @@ Future<String> _LinkCls::target() {
 
 String _LinkCls::targetSync() {
     auto result = _FileCls->_linkTarget(_NamespaceCls::_namespace, _rawPath);
-    throwIfError(result, __s("Cannot read link"), path());
+    throwIfError(result, __s("Cannot read link"), path);
     return result;
 }
 
@@ -108,8 +108,8 @@ void _LinkCls::throwIfError(String msg, String path, Object result) {
 
 _LinkCls::_LinkCls(String path) {
     {
-        _path = path();
-        _rawPath = FileSystemEntityCls->_toUtf8Array(path());
+        _path = path;
+        _rawPath = FileSystemEntityCls->_toUtf8Array(path);
     }
 }
 
@@ -132,7 +132,7 @@ void _LinkCls::_deleteSync(bool recursive) {
         return DirectoryCls->fromRawPath(_rawPath)->deleteSync(true);
     }
     auto result = _FileCls->_deleteLinkNative(_NamespaceCls::_namespace, _rawPath);
-    throwIfError(result, __s("Cannot delete link"), path());
+    throwIfError(result, __s("Cannot delete link"), path);
 }
 
 bool _LinkCls::_isErrorResponse(response ) {

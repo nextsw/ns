@@ -69,7 +69,7 @@ Future<FileStat> FileStatCls::_stat(String path) {
 }
 
 Uri FileSystemEntityCls::uri() {
-    return UriCls->file(path());
+    return UriCls->file(path);
 }
 
 Future<String> FileSystemEntityCls::resolveSymbolicLinks() {
@@ -83,16 +83,16 @@ Future<String> FileSystemEntityCls::resolveSymbolicLinks() {
 
 String FileSystemEntityCls::resolveSymbolicLinksSync() {
     auto result = _resolveSymbolicLinks(_NamespaceCls::_namespace, _rawPath());
-    _throwIfError(result, __s("Cannot resolve symbolic links"), path());
+    _throwIfError(result, __s("Cannot resolve symbolic links"), path);
     return result;
 }
 
 Future<FileStat> FileSystemEntityCls::stat() {
-    return FileStatCls->stat(path());
+    return FileStatCls->stat(path);
 }
 
 FileStat FileSystemEntityCls::statSync() {
-    return FileStatCls->statSync(path());
+    return FileStatCls->statSync(path);
 }
 
 Future<FileSystemEntity> FileSystemEntityCls::delete(bool recursive) {
@@ -104,7 +104,7 @@ void FileSystemEntityCls::deleteSync(bool recursive) {
 }
 
 Stream<FileSystemEvent> FileSystemEntityCls::watch(int events, bool recursive) {
-    String trimmedPath = _trimTrailingPathSeparators(path());
+    String trimmedPath = _trimTrailingPathSeparators(path);
     IOOverrides overrides = IOOverridesCls::current;
     if (overrides == nullptr) {
         return _FileSystemWatcherCls->_watch(trimmedPath, events, recursive);
@@ -121,7 +121,7 @@ Future<bool> FileSystemEntityCls::identical(String path1, String path2) {
 }
 
 bool FileSystemEntityCls::isAbsolute() {
-    return _isAbsolute(path());
+    return _isAbsolute(path);
 }
 
 bool FileSystemEntityCls::identicalSync(String path1, String path2) {
@@ -207,7 +207,7 @@ String FileSystemEntityCls::parentOf(String path) {
     }}
 
 Directory FileSystemEntityCls::parent() {
-    return make<DirectoryCls>(parentOf(path()));
+    return make<DirectoryCls>(parentOf(path));
 }
 
 Future<bool> FileSystemEntityCls::_identical(String path1, String path2) {
@@ -229,10 +229,10 @@ bool FileSystemEntityCls::_isAbsolute(String path) {
 
 String FileSystemEntityCls::_absolutePath() {
     if (isAbsolute())     {
-        return path();
+        return path;
     }
     if (PlatformCls::isWindows)     {
-        return _absoluteWindowsPath(path());
+        return _absoluteWindowsPath(path);
     }
     String current = DirectoryCls::current->path;
     if (current->endsWith(__s("/"))) {
@@ -243,7 +243,7 @@ String FileSystemEntityCls::_absolutePath() {
 }
 
 int FileSystemEntityCls::_windowsDriveLetter(String path) {
-    if (path->isEmpty || !path->startsWith(__s(":"), 1))     {
+    if (path->isEmpty() || !path->startsWith(__s(":"), 1))     {
         return -1;
     }
     auto first = path->codeUnitAt(0) & ~0x20;
@@ -383,7 +383,7 @@ String FileSystemEntityCls::_trimTrailingPathSeparators(String path) {
 }
 
 String FileSystemEntityCls::_ensureTrailingPathSeparators(String path) {
-    if (path->isEmpty)     {
+    if (path->isEmpty())     {
         path = __s(".");
     }
     if (PlatformCls::isWindows) {

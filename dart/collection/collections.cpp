@@ -10,7 +10,7 @@ template<typename E> List<R> UnmodifiableListViewCls<E>::casttemplate<typename R
 }
 
 template<typename E> int UnmodifiableListViewCls<E>::length() {
-    return _source->length();
+    return _source->length;
 }
 
 template<typename E> E UnmodifiableListViewCls<E>::[](int index) {

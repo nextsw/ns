@@ -16,13 +16,13 @@ ShapeBorder StadiumBorderCls::scale(double t) {
 ShapeBorder StadiumBorderCls::lerpFrom(ShapeBorder a, double t) {
     assert(t != nullptr);
     if (is<StadiumBorder>(a)) {
-        return make<StadiumBorderCls>(BorderSideCls->lerp(a->side, side, t));
+        return make<StadiumBorderCls>(BorderSideCls->lerp(as<StadiumBorderCls>(a)->side, side, t));
     }
     if (is<CircleBorder>(a)) {
-        return make<_StadiumToCircleBorderCls>(BorderSideCls->lerp(a->side, side, t), 1.0 - t);
+        return make<_StadiumToCircleBorderCls>(BorderSideCls->lerp(as<CircleBorderCls>(a)->side, side, t), 1.0 - t);
     }
     if (is<RoundedRectangleBorder>(a)) {
-        return make<_StadiumToRoundedRectangleBorderCls>(BorderSideCls->lerp(a->side, side, t), as<BorderRadius>(a->borderRadius), 1.0 - t);
+        return make<_StadiumToRoundedRectangleBorderCls>(BorderSideCls->lerp(as<RoundedRectangleBorderCls>(a)->side, side, t), as<BorderRadius>(as<RoundedRectangleBorderCls>(a)->borderRadius), 1.0 - t);
     }
     return super->lerpFrom(a, t);
 }
@@ -30,13 +30,13 @@ ShapeBorder StadiumBorderCls::lerpFrom(ShapeBorder a, double t) {
 ShapeBorder StadiumBorderCls::lerpTo(ShapeBorder b, double t) {
     assert(t != nullptr);
     if (is<StadiumBorder>(b)) {
-        return make<StadiumBorderCls>(BorderSideCls->lerp(side, b->side, t));
+        return make<StadiumBorderCls>(BorderSideCls->lerp(side, as<StadiumBorderCls>(b)->side, t));
     }
     if (is<CircleBorder>(b)) {
-        return make<_StadiumToCircleBorderCls>(BorderSideCls->lerp(side, b->side, t), t);
+        return make<_StadiumToCircleBorderCls>(BorderSideCls->lerp(side, as<CircleBorderCls>(b)->side, t), t);
     }
     if (is<RoundedRectangleBorder>(b)) {
-        return make<_StadiumToRoundedRectangleBorderCls>(BorderSideCls->lerp(side, b->side, t), as<BorderRadius>(b->borderRadius), t);
+        return make<_StadiumToRoundedRectangleBorderCls>(BorderSideCls->lerp(side, as<RoundedRectangleBorderCls>(b)->side, t), as<BorderRadius>(as<RoundedRectangleBorderCls>(b)->borderRadius), t);
     }
     return super->lerpTo(b, t);
 }
@@ -46,7 +46,7 @@ StadiumBorder StadiumBorderCls::copyWith(BorderSide side) {
 }
 
 Path StadiumBorderCls::getInnerPath(Rect rect, TextDirection textDirection) {
-    Radius radius = RadiusCls->circular(rect->shortestSide / 2.0);
+    Radius radius = RadiusCls->circular(rect->shortestSide() / 2.0);
     RRect borderRect = RRectCls->fromRectAndRadius(rect, radius);
     RRect adjustedRect;
     ;
@@ -54,7 +54,7 @@ Path StadiumBorderCls::getInnerPath(Rect rect, TextDirection textDirection) {
 }
 
 Path StadiumBorderCls::getOuterPath(Rect rect, TextDirection textDirection) {
-    Radius radius = RadiusCls->circular(rect->shortestSide / 2.0);
+    Radius radius = RadiusCls->circular(rect->shortestSide() / 2.0);
     auto _c1 = make<PathCls>();_c1.addRRect(RRectCls->fromRectAndRadius(rect, radius));return _c1;
 }
 
@@ -70,7 +70,7 @@ bool StadiumBorderCls::==(Object other) {
 }
 
 int StadiumBorderCls::hashCode() {
-    return side->hashCode();
+    return side->hashCode;
 }
 
 String StadiumBorderCls::toString() {
@@ -88,13 +88,13 @@ ShapeBorder _StadiumToCircleBorderCls::scale(double t) {
 ShapeBorder _StadiumToCircleBorderCls::lerpFrom(ShapeBorder a, double t) {
     assert(t != nullptr);
     if (is<StadiumBorder>(a)) {
-        return make<_StadiumToCircleBorderCls>(BorderSideCls->lerp(a->side, side, t), circleness * t);
+        return make<_StadiumToCircleBorderCls>(BorderSideCls->lerp(as<StadiumBorderCls>(a)->side, side, t), circleness * t);
     }
     if (is<CircleBorder>(a)) {
-        return make<_StadiumToCircleBorderCls>(BorderSideCls->lerp(a->side, side, t), circleness + (1.0 - circleness) * (1.0 - t));
+        return make<_StadiumToCircleBorderCls>(BorderSideCls->lerp(as<CircleBorderCls>(a)->side, side, t), circleness + (1.0 - circleness) * (1.0 - t));
     }
     if (is<_StadiumToCircleBorder>(a)) {
-        return make<_StadiumToCircleBorderCls>(BorderSideCls->lerp(a->side, side, t), ui->lerpDouble(a->circleness, circleness, t)!);
+        return make<_StadiumToCircleBorderCls>(BorderSideCls->lerp(as<_StadiumToCircleBorderCls>(a)->side, side, t), ui->lerpDouble(as<_StadiumToCircleBorderCls>(a)->circleness, circleness, t)!);
     }
     return super->lerpFrom(a, t);
 }
@@ -102,13 +102,13 @@ ShapeBorder _StadiumToCircleBorderCls::lerpFrom(ShapeBorder a, double t) {
 ShapeBorder _StadiumToCircleBorderCls::lerpTo(ShapeBorder b, double t) {
     assert(t != nullptr);
     if (is<StadiumBorder>(b)) {
-        return make<_StadiumToCircleBorderCls>(BorderSideCls->lerp(side, b->side, t), circleness * (1.0 - t));
+        return make<_StadiumToCircleBorderCls>(BorderSideCls->lerp(side, as<StadiumBorderCls>(b)->side, t), circleness * (1.0 - t));
     }
     if (is<CircleBorder>(b)) {
-        return make<_StadiumToCircleBorderCls>(BorderSideCls->lerp(side, b->side, t), circleness + (1.0 - circleness) * t);
+        return make<_StadiumToCircleBorderCls>(BorderSideCls->lerp(side, as<CircleBorderCls>(b)->side, t), circleness + (1.0 - circleness) * t);
     }
     if (is<_StadiumToCircleBorder>(b)) {
-        return make<_StadiumToCircleBorderCls>(BorderSideCls->lerp(side, b->side, t), ui->lerpDouble(circleness, b->circleness, t)!);
+        return make<_StadiumToCircleBorderCls>(BorderSideCls->lerp(side, as<_StadiumToCircleBorderCls>(b)->side, t), ui->lerpDouble(circleness, as<_StadiumToCircleBorderCls>(b)->circleness, t)!);
     }
     return super->lerpTo(b, t);
 }
@@ -165,7 +165,7 @@ Rect _StadiumToCircleBorderCls::_adjustRect(Rect rect) {
 }
 
 BorderRadius _StadiumToCircleBorderCls::_adjustBorderRadius(Rect rect) {
-    return BorderRadiusCls->circular(rect->shortestSide / 2.0);
+    return BorderRadiusCls->circular(rect->shortestSide() / 2.0);
 }
 
 EdgeInsetsGeometry _StadiumToRoundedRectangleBorderCls::dimensions() {
@@ -179,13 +179,13 @@ ShapeBorder _StadiumToRoundedRectangleBorderCls::scale(double t) {
 ShapeBorder _StadiumToRoundedRectangleBorderCls::lerpFrom(ShapeBorder a, double t) {
     assert(t != nullptr);
     if (is<StadiumBorder>(a)) {
-        return make<_StadiumToRoundedRectangleBorderCls>(BorderSideCls->lerp(a->side, side, t), borderRadius, rectness * t);
+        return make<_StadiumToRoundedRectangleBorderCls>(BorderSideCls->lerp(as<StadiumBorderCls>(a)->side, side, t), borderRadius, rectness * t);
     }
     if (is<RoundedRectangleBorder>(a)) {
-        return make<_StadiumToRoundedRectangleBorderCls>(BorderSideCls->lerp(a->side, side, t), borderRadius, rectness + (1.0 - rectness) * (1.0 - t));
+        return make<_StadiumToRoundedRectangleBorderCls>(BorderSideCls->lerp(as<RoundedRectangleBorderCls>(a)->side, side, t), borderRadius, rectness + (1.0 - rectness) * (1.0 - t));
     }
     if (is<_StadiumToRoundedRectangleBorder>(a)) {
-        return make<_StadiumToRoundedRectangleBorderCls>(BorderSideCls->lerp(a->side, side, t), BorderRadiusCls->lerp(a->borderRadius, borderRadius, t)!, ui->lerpDouble(a->rectness, rectness, t)!);
+        return make<_StadiumToRoundedRectangleBorderCls>(BorderSideCls->lerp(as<_StadiumToRoundedRectangleBorderCls>(a)->side, side, t), BorderRadiusCls->lerp(as<_StadiumToRoundedRectangleBorderCls>(a)->borderRadius, borderRadius, t)!, ui->lerpDouble(as<_StadiumToRoundedRectangleBorderCls>(a)->rectness, rectness, t)!);
     }
     return super->lerpFrom(a, t);
 }
@@ -193,13 +193,13 @@ ShapeBorder _StadiumToRoundedRectangleBorderCls::lerpFrom(ShapeBorder a, double 
 ShapeBorder _StadiumToRoundedRectangleBorderCls::lerpTo(ShapeBorder b, double t) {
     assert(t != nullptr);
     if (is<StadiumBorder>(b)) {
-        return make<_StadiumToRoundedRectangleBorderCls>(BorderSideCls->lerp(side, b->side, t), borderRadius, rectness * (1.0 - t));
+        return make<_StadiumToRoundedRectangleBorderCls>(BorderSideCls->lerp(side, as<StadiumBorderCls>(b)->side, t), borderRadius, rectness * (1.0 - t));
     }
     if (is<RoundedRectangleBorder>(b)) {
-        return make<_StadiumToRoundedRectangleBorderCls>(BorderSideCls->lerp(side, b->side, t), borderRadius, rectness + (1.0 - rectness) * t);
+        return make<_StadiumToRoundedRectangleBorderCls>(BorderSideCls->lerp(side, as<RoundedRectangleBorderCls>(b)->side, t), borderRadius, rectness + (1.0 - rectness) * t);
     }
     if (is<_StadiumToRoundedRectangleBorder>(b)) {
-        return make<_StadiumToRoundedRectangleBorderCls>(BorderSideCls->lerp(side, b->side, t), BorderRadiusCls->lerp(borderRadius, b->borderRadius, t)!, ui->lerpDouble(rectness, b->rectness, t)!);
+        return make<_StadiumToRoundedRectangleBorderCls>(BorderSideCls->lerp(side, as<_StadiumToRoundedRectangleBorderCls>(b)->side, t), BorderRadiusCls->lerp(borderRadius, as<_StadiumToRoundedRectangleBorderCls>(b)->borderRadius, t)!, ui->lerpDouble(rectness, as<_StadiumToRoundedRectangleBorderCls>(b)->rectness, t)!);
     }
     return super->lerpTo(b, t);
 }
@@ -247,5 +247,5 @@ _StadiumToRoundedRectangleBorderCls::_StadiumToRoundedRectangleBorderCls(BorderR
 }
 
 BorderRadius _StadiumToRoundedRectangleBorderCls::_adjustBorderRadius(Rect rect) {
-    return BorderRadiusCls->lerp(borderRadius, BorderRadiusCls->all(RadiusCls->circular(rect->shortestSide / 2.0)), 1.0 - rectness)!;
+    return BorderRadiusCls->lerp(borderRadius, BorderRadiusCls->all(RadiusCls->circular(rect->shortestSide() / 2.0)), 1.0 - rectness)!;
 }

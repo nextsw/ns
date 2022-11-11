@@ -187,7 +187,7 @@ double Vector2Cls::dot(Vector2 other) {
 }
 
 void Vector2Cls::postmultiply(Matrix2 arg) {
-    Unknown argStorage = arg->storage;
+    Unknown argStorage = arg->storage();
     Unknown v0 = _v2storage[0];
     Unknown v1 = _v2storage[1];
     _v2storage[0] = v0 * argStorage[0] + v1 * argStorage[1];
@@ -286,8 +286,8 @@ void Vector2Cls::absolute() {
 }
 
 void Vector2Cls::clamp(Vector2 max, Vector2 min) {
-    Unknown minStorage = min->storage;
-    Unknown maxStorage = max->storage;
+    Unknown minStorage = min->storage();
+    Unknown maxStorage = max->storage();
     _v2storage[0] = _v2storage[0]->clamp(minStorage[0], maxStorage[0])->toDouble();
     _v2storage[1] = _v2storage[1]->clamp(minStorage[1], maxStorage[1])->toDouble();
 }

@@ -1,15 +1,15 @@
 #include "boollist.hpp"
 BoolListCls::BoolListCls(bool fill, bool growable, int length) {
     {
-        RangeErrorCls->checkNotNegative(length(), __s("length"));
+        RangeErrorCls->checkNotNegative(length, __s("length"));
         BoolList boolist;
         if (growable) {
-            boolist = make<_GrowableBoolListCls>(length());
+            boolist = make<_GrowableBoolListCls>(length);
         } else {
-            boolist = make<_NonGrowableBoolListCls>(length());
+            boolist = make<_NonGrowableBoolListCls>(length);
         }
         if (fill) {
-            boolist->fillRange(0, length(), true);
+            boolist->fillRange(0, length, true);
         }
         return boolist;
     }
@@ -25,9 +25,9 @@ void BoolListCls::empty(int capacity, bool growable) {
 }
 
 void BoolListCls::generate(bool generator(int ) , bool growable, int length) {
-    RangeErrorCls->checkNotNegative(length(), __s("length"));
-    auto instance = BoolListCls->_selectType(length(), growable);
-    for (;  < length(); i++) {
+    RangeErrorCls->checkNotNegative(length, __s("length"));
+    auto instance = BoolListCls->_selectType(length, growable);
+    for (;  < length; i++) {
         instance->_setBit(i, generator(i));
     }
     return instance;
@@ -83,9 +83,9 @@ Iterator<bool> BoolListCls::iterator() {
 
 void BoolListCls::_selectType(bool growable, int length) {
     if (growable) {
-        return make<_GrowableBoolListCls>(length());
+        return make<_GrowableBoolListCls>(length);
     } else {
-        return make<_NonGrowableBoolListCls>(length());
+        return make<_NonGrowableBoolListCls>(length);
     }
 }
 
@@ -154,7 +154,7 @@ bool _BoolListIteratorCls::moveNext() {
     if (_boolList->_length != _length) {
         ;
     }
-    if ( < _boolList->length()) {
+    if ( < _boolList->length) {
         auto pos = _pos++;
         _current = _boolList->_data[pos >> BoolListCls::_entryShift] & (1 << (pos & BoolListCls::_entrySignBitIndex)) != 0;
         return true;

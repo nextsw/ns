@@ -3,7 +3,7 @@ Paint BoxShadowCls::toPaint() {
     auto _c1 = make<PaintCls>();_c1.color = auto _c2 = color;_c2.maskFilter = MaskFilterCls->blur(blurStyle, blurSigma);_c2;Paint result = _c1;
     assert([=] () {
         if (debugDisableShadows) {
-            result->maskFilter = nullptr;
+            result->maskFilter() = nullptr;
         }
         return true;
     }());

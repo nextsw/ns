@@ -80,7 +80,7 @@ ScrollDirection ScrollPositionWithSingleContextCls::userScrollDirection() {
 
 void ScrollPositionWithSingleContextCls::updateUserScrollDirection(ScrollDirection value) {
     assert(value != nullptr);
-    if (userScrollDirection() == value) {
+    if (userScrollDirection == value) {
         return;
     }
     _userScrollDirection = value;
@@ -94,7 +94,7 @@ Future<void> ScrollPositionWithSingleContextCls::animateTo(Curve curve, Duration
     }
     DrivenScrollActivity activity = make<DrivenScrollActivityCls>(thispixels, to, duration, curve, context->vsync);
     beginActivity(activity);
-    return activity->done;
+    return activity->done();
 }
 
 void ScrollPositionWithSingleContextCls::jumpTo(double value) {

@@ -105,7 +105,7 @@ bool InlineSpanCls::==(Object other) {
 }
 
 int InlineSpanCls::hashCode() {
-    return style->hashCode();
+    return style->hashCode;
 }
 
 void InlineSpanCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {

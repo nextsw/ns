@@ -194,7 +194,7 @@ double Vector3Cls::dot(Vector3 other) {
 }
 
 void Vector3Cls::postmultiply(Matrix3 arg) {
-    Unknown argStorage = arg->storage;
+    Unknown argStorage = arg->storage();
     Unknown v0 = _v3storage[0];
     Unknown v1 = _v3storage[1];
     Unknown v2 = _v3storage[2];
@@ -238,7 +238,7 @@ Vector3 Vector3Cls::reflected(Vector3 normal) {
 }
 
 void Vector3Cls::applyProjection(Matrix4 arg) {
-    auto _c1 = clone();_c1.reflect(normal);Unknown argStorage = arg->storage;
+    auto _c1 = clone();_c1.reflect(normal);Unknown argStorage = arg->storage();
     Unknown x = _v3storage[0];
     Unknown y = _v3storage[1];
     Unknown z = _v3storage[2];
@@ -271,7 +271,7 @@ void Vector3Cls::applyQuaternion(Quaternion arg) {
 }
 
 void Vector3Cls::applyMatrix3(Matrix3 arg) {
-    Unknown argStorage = arg->storage;
+    Unknown argStorage = arg->storage();
     Unknown v0 = _v3storage[0];
     Unknown v1 = _v3storage[1];
     Unknown v2 = _v3storage[2];
@@ -281,7 +281,7 @@ void Vector3Cls::applyMatrix3(Matrix3 arg) {
 }
 
 void Vector3Cls::applyMatrix4(Matrix4 arg) {
-    Unknown argStorage = arg->storage;
+    Unknown argStorage = arg->storage();
     Unknown v0 = _v3storage[0];
     Unknown v1 = _v3storage[1];
     Unknown v2 = _v3storage[2];
@@ -374,8 +374,8 @@ void Vector3Cls::absolute() {
 }
 
 void Vector3Cls::clamp(Vector3 max, Vector3 min) {
-    Unknown minStorage = min->storage;
-    Unknown maxStorage = max->storage;
+    Unknown minStorage = min->storage();
+    Unknown maxStorage = max->storage();
     _v3storage[0] = _v3storage[0]->clamp(minStorage[0], maxStorage[0])->toDouble();
     _v3storage[1] = _v3storage[1]->clamp(minStorage[1], maxStorage[1])->toDouble();
     _v3storage[2] = _v3storage[2]->clamp(minStorage[2], maxStorage[2])->toDouble();

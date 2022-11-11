@@ -71,7 +71,7 @@ void _ViewportElementCls::update(MultiChildRenderObjectWidget newWidget) {
 void _ViewportElementCls::insertRenderObjectChild(RenderObject child, IndexedSlot<Element> slot) {
     super->insertRenderObjectChild(child, slot);
     if (!_doingMountOrUpdate && slot->index == _centerSlotIndex) {
-        renderObject()->center() = as<RenderSliver>(child);
+        renderObject->center = as<RenderSliver>(child);
     }
 }
 
@@ -82,8 +82,8 @@ void _ViewportElementCls::moveRenderObjectChild(RenderObject child, IndexedSlot<
 
 void _ViewportElementCls::removeRenderObjectChild(RenderObject child, Object slot) {
     super->removeRenderObjectChild(child, slot);
-    if (!_doingMountOrUpdate && renderObject()->center() == child) {
-        renderObject()->center() = nullptr;
+    if (!_doingMountOrUpdate && renderObject->center == child) {
+        renderObject->center = nullptr;
     }
 }
 
@@ -100,7 +100,7 @@ void _ViewportElementCls::_updateCenter() {
         int elementIndex = 0;
         for (Element e : children) {
             if (e->widget->key == viewport->center) {
-                renderObject()->center() = as<RenderSliver>(e->renderObject);
+                renderObject->center = as<RenderSliver>(e->renderObject);
                                 break;
             }
             elementIndex++;
@@ -109,10 +109,10 @@ void _ViewportElementCls::_updateCenter() {
         _centerSlotIndex = elementIndex;
     } else     {
         if (children->isNotEmpty) {
-        renderObject()->center() = as<RenderSliver>(children->first->renderObject);
+        renderObject->center = as<RenderSliver>(children->first->renderObject);
         _centerSlotIndex = 0;
     } else {
-        renderObject()->center() = nullptr;
+        renderObject->center = nullptr;
         _centerSlotIndex = nullptr;
     }
 ;

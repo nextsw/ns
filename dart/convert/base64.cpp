@@ -146,7 +146,7 @@ String Base64EncoderCls::convert(List<int> input) {
 
 ByteConversionSink Base64EncoderCls::startChunkedConversion(Sink<String> sink) {
     if (is<StringConversionSink>(sink)) {
-        return make<_Utf8Base64EncoderSinkCls>(sink->asUtf8Sink(false), _urlSafe);
+        return make<_Utf8Base64EncoderSinkCls>(as<StringConversionSinkCls>(sink)->asUtf8Sink(false), _urlSafe);
     }
     return make<_AsciiBase64EncoderSinkCls>(sink, _urlSafe);
 }
@@ -549,7 +549,7 @@ int _Base64DecoderCls::_checkPadding(int end, String input, int start, int state
 }
 
 void _Base64DecoderSinkCls::add(String stringValue) {
-    if (stringValue->isEmpty)     {
+    if (stringValue->isEmpty())     {
         return;
     }
     auto buffer = _decoder->decode(stringValue, 0, stringValue->length);

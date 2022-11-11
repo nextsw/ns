@@ -21,14 +21,14 @@ _RenderSliverPrototypeExtentList _SliverPrototypeExtentListElementCls::renderObj
 void _SliverPrototypeExtentListElementCls::insertRenderObjectChild(RenderObject child, Object slot) {
     if (slot == _prototypeSlot) {
         assert(is<RenderBox>(child));
-        renderObject()->child() = as<RenderBox>(child);
+        renderObject->child = as<RenderBox>(child);
     } else {
         super->insertRenderObjectChild(child, as<int>(slot));
     }
 }
 
 void _SliverPrototypeExtentListElementCls::didAdoptChild(RenderBox child) {
-    if (child != renderObject()->child()) {
+    if (child != renderObject->child) {
         super->didAdoptChild(child);
     }
 }
@@ -42,8 +42,8 @@ void _SliverPrototypeExtentListElementCls::moveRenderObjectChild(RenderBox child
 }
 
 void _SliverPrototypeExtentListElementCls::removeRenderObjectChild(RenderBox child, Object slot) {
-    if (renderObject()->child() == child) {
-        renderObject()->child() = nullptr;
+    if (renderObject->child == child) {
+        renderObject->child = nullptr;
     } else {
         super->removeRenderObjectChild(child, as<int>(slot));
     }
@@ -83,7 +83,7 @@ void _RenderSliverPrototypeExtentListCls::child(RenderBox value) {
 }
 
 void _RenderSliverPrototypeExtentListCls::performLayout() {
-    child()!->layout(constraints->asBoxConstraints()true);
+    child!->layout(constraints->asBoxConstraints()true);
     super->performLayout();
 }
 
@@ -116,8 +116,8 @@ void _RenderSliverPrototypeExtentListCls::visitChildren(RenderObjectVisitor visi
 }
 
 double _RenderSliverPrototypeExtentListCls::itemExtent() {
-    assert(child() != nullptr && child()!->hasSize());
-    return constraints->axis == AxisCls::vertical? child()!->size()->height() : child()!->size()->width();
+    assert(child != nullptr && child!->hasSize());
+    return constraints->axis == AxisCls::vertical? child!->size->height : child!->size->width;
 }
 
 _RenderSliverPrototypeExtentListCls::_RenderSliverPrototypeExtentListCls(_SliverPrototypeExtentListElement childManager) : RenderSliverFixedExtentBoxAdaptor(childManager) {

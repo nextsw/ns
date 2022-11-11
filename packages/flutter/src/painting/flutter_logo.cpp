@@ -98,9 +98,9 @@ bool FlutterLogoDecorationCls::_inTransition() {
 }
 
 void _FlutterLogoPainterCls::paint(Canvas canvas, ImageConfiguration configuration, Offset offset) {
-    offset = _config->margin->topLeft();
+    offset = _config->margin->topLeft;
     Size canvasSize = _config->margin->deflateSize(configuration->size!);
-    if (canvasSize->isEmpty) {
+    if (canvasSize->isEmpty()) {
         return;
     }
     Size logoSize;
@@ -116,7 +116,7 @@ void _FlutterLogoPainterCls::paint(Canvas canvas, ImageConfiguration configurati
     }    FittedSizes fittedSize = applyBoxFit(BoxFitCls::contain, logoSize, canvasSize);
     assert(fittedSize->source == logoSize);
     Rect rect = AlignmentCls::center->inscribe(fittedSize->destination, offset & canvasSize);
-    double centerSquareHeight = canvasSize->shortestSide;
+    double centerSquareHeight = canvasSize->shortestSide();
     Rect centerSquare = RectCls->fromLTWH(offset->dx + (canvasSize->width - centerSquareHeight) / 2.0, offset->dy + (canvasSize->height - centerSquareHeight) / 2.0, centerSquareHeight, centerSquareHeight);
     Rect logoTargetSquare;
     if (_config->_position > 0.0) {
@@ -138,8 +138,8 @@ void _FlutterLogoPainterCls::paint(Canvas canvas, ImageConfiguration configurati
             double fontSize = 2.0 / 3.0 * logoSquare->height * (1 - (10.4 * 2.0) / 202.0);
             double scale = fontSize / 100.0;
             double finalLeftTextPosition = (256.4 / 820.0) * rect->width - (32.0 / 350.0) * fontSize;
-            double initialLeftTextPosition = rect->width / 2.0 - _textBoundingRect->width() * scale;
-            Offset textOffset = make<OffsetCls>(rect->left + ui->lerpDouble(initialLeftTextPosition, finalLeftTextPosition, _config->_position)!, rect->top + (rect->height - _textBoundingRect->height() * scale) / 2.0);
+            double initialLeftTextPosition = rect->width / 2.0 - _textBoundingRect->width * scale;
+            Offset textOffset = make<OffsetCls>(rect->left + ui->lerpDouble(initialLeftTextPosition, finalLeftTextPosition, _config->_position)!, rect->top + (rect->height - _textBoundingRect->height * scale) / 2.0);
             canvas->save();
             if (_config->_position < 1.0) {
                 Offset center = logoSquare->center;
@@ -159,11 +159,11 @@ void _FlutterLogoPainterCls::paint(Canvas canvas, ImageConfiguration configurati
             } else {
                 canvas->save();
             }
-            canvas->translate(logoTargetSquare->center->dx - (_textBoundingRect->width() * scale / 2.0), logoTargetSquare->bottom);
+            canvas->translate(logoTargetSquare->center->dx - (_textBoundingRect->width * scale / 2.0), logoTargetSquare->bottom);
             canvas->scale(scale, scale);
             _textPainter->paint(canvas, OffsetCls::zero);
             if (_config->_position > -1.0) {
-                            auto _c6 = make<PaintCls>();            _c6.blendMode = auto _c7 = BlendModeCls::modulate;            _c7.shader = ui->GradientCls->linear(make<OffsetCls>(_textBoundingRect->width() * -0.5, 0.0), make<OffsetCls>(_textBoundingRect->width() * 1.5, 0.0), makeList(ArrayItem, ArrayItem, ArrayItem, ArrayItem), makeList(ArrayItem, ArrayItem, ArrayItem, ArrayItem));            _c7;canvas->drawRect(_textBoundingRect->inflate(_textBoundingRect->width() * 0.5), _c6);
+                            auto _c6 = make<PaintCls>();            _c6.blendMode = auto _c7 = BlendModeCls::modulate;            _c7.shader = ui->GradientCls->linear(make<OffsetCls>(_textBoundingRect->width * -0.5, 0.0), make<OffsetCls>(_textBoundingRect->width * 1.5, 0.0), makeList(ArrayItem, ArrayItem, ArrayItem, ArrayItem), makeList(ArrayItem, ArrayItem, ArrayItem, ArrayItem));            _c7;canvas->drawRect(_textBoundingRect->inflate(_textBoundingRect->width * 0.5), _c6);
             }
             canvas->restore();
         }

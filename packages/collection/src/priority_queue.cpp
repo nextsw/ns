@@ -121,7 +121,7 @@ template<typename E> List<E> HeapPriorityQueueCls<E>::_toUnorderedList() {
 }
 
 template<typename E> void HeapPriorityQueueCls<E>::_add(E element) {
-    for (;  < _length; i++)     {        ;    }{    list1.add(ArrayItem);}if (_length == _queue->length())     {
+    for (;  < _length; i++)     {        ;    }{    list1.add(ArrayItem);}if (_length == _queue->length)     {
         _grow();
     }
     _bubbleUp(element, _length++);
@@ -215,7 +215,7 @@ template<typename E> void HeapPriorityQueueCls<E>::_bubbleDown(E element, int in
 }
 
 template<typename E> void HeapPriorityQueueCls<E>::_grow() {
-    auto newCapacity = _queue->length() * 2 + 1;
+    auto newCapacity = _queue->length * 2 + 1;
     if ( < _initialCapacity)     {
         newCapacity = _initialCapacity;
     }
@@ -233,7 +233,7 @@ template<typename E> bool _UnorderedElementsIteratorCls<E>::moveNext() {
         ;
     }
     auto nextIndex = _index + 1;
-    if (0 <= nextIndex &&  < _queue->length()) {
+    if (0 <= nextIndex &&  < _queue->length) {
         _current = _queue->_queue[nextIndex];
         _index = nextIndex;
         return true;

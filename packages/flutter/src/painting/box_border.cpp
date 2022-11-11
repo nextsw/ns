@@ -139,14 +139,14 @@ Border BorderCls::scale(double t) {
 
 ShapeBorder BorderCls::lerpFrom(ShapeBorder a, double t) {
     if (is<Border>(a)) {
-        return BorderCls->lerp(a, this, t);
+        return BorderCls->lerp(as<BorderCls>(a), this, t);
     }
     return super->lerpFrom(a, t);
 }
 
 ShapeBorder BorderCls::lerpTo(ShapeBorder b, double t) {
     if (is<Border>(b)) {
-        return BorderCls->lerp(this, b, t);
+        return BorderCls->lerp(this, as<BorderCls>(b), t);
     }
     return super->lerpTo(b, t);
 }
@@ -279,14 +279,14 @@ bool BorderDirectionalCls::isUniform() {
 
 BoxBorder BorderDirectionalCls::add(ShapeBorder other, bool reversed) {
     if (is<BorderDirectional>(other)) {
-        BorderDirectional typedOther = other;
+        BorderDirectional typedOther = as<BorderDirectionalCls>(other);
         if (BorderSideCls->canMerge(top, typedOther->top) && BorderSideCls->canMerge(start, typedOther->start) && BorderSideCls->canMerge(end, typedOther->end) && BorderSideCls->canMerge(bottom, typedOther->bottom)) {
             return BorderDirectionalCls->merge(this, typedOther);
         }
         return nullptr;
     }
     if (is<Border>(other)) {
-        Border typedOther = other;
+        Border typedOther = as<BorderCls>(other);
         if (!BorderSideCls->canMerge(typedOther->top, top) || !BorderSideCls->canMerge(typedOther->bottom, bottom)) {
             return nullptr;
         }
@@ -311,14 +311,14 @@ BorderDirectional BorderDirectionalCls::scale(double t) {
 
 ShapeBorder BorderDirectionalCls::lerpFrom(ShapeBorder a, double t) {
     if (is<BorderDirectional>(a)) {
-        return BorderDirectionalCls->lerp(a, this, t);
+        return BorderDirectionalCls->lerp(as<BorderDirectionalCls>(a), this, t);
     }
     return super->lerpFrom(a, t);
 }
 
 ShapeBorder BorderDirectionalCls::lerpTo(ShapeBorder b, double t) {
     if (is<BorderDirectional>(b)) {
-        return BorderDirectionalCls->lerp(this, b, t);
+        return BorderDirectionalCls->lerp(this, as<BorderDirectionalCls>(b), t);
     }
     return super->lerpTo(b, t);
 }

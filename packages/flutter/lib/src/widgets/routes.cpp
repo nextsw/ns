@@ -32,11 +32,11 @@ template<typename T> Future<T> TransitionRouteCls<T>::completed() {
 }
 
 template<typename T> Duration TransitionRouteCls<T>::reverseTransitionDuration() {
-    return transitionDuration();
+    return transitionDuration;
 }
 
 template<typename T> bool TransitionRouteCls<T>::finishedWhenPopped() {
-    return _controller!->status() == AnimationStatusCls::dismissed && !_popFinalized;
+    return _controller!->status == AnimationStatusCls::dismissed && !_popFinalized;
 }
 
 template<typename T> Animation<double> TransitionRouteCls<T>::animation() {
@@ -53,16 +53,16 @@ template<typename T> Animation<double> TransitionRouteCls<T>::secondaryAnimation
 
 template<typename T> AnimationController TransitionRouteCls<T>::createAnimationController() {
     assert(!_transitionCompleter->isCompleted, __s("Cannot reuse a $runtimeType after disposing it."));
-    Duration duration = transitionDuration();
-    Duration reverseDuration = reverseTransitionDuration();
+    Duration duration = transitionDuration;
+    Duration reverseDuration = reverseTransitionDuration;
     assert(duration != nullptr && duration >= DurationCls::zero);
-    return make<AnimationControllerCls>(duration, reverseDuration, debugLabel(), navigator!);
+    return make<AnimationControllerCls>(duration, reverseDuration, debugLabel, navigator!);
 }
 
 template<typename T> Animation<double> TransitionRouteCls<T>::createAnimation() {
     assert(!_transitionCompleter->isCompleted, __s("Cannot reuse a $runtimeType after disposing it."));
     assert(_controller != nullptr);
-    return _controller!->view();
+    return _controller!->view;
 }
 
 template<typename T> void TransitionRouteCls<T>::install() {
@@ -73,7 +73,7 @@ template<typename T> void TransitionRouteCls<T>::install() {
     assert(_animation != nullptr, __s("$runtimeType.createAnimation() returned null."));
     super->install();
     if (_animation!->isCompleted() && overlayEntries->isNotEmpty) {
-        overlayEntries->first->opaque = opaque();
+        overlayEntries->first->opaque = opaque;
     }
 }
 
@@ -88,14 +88,14 @@ template<typename T> void TransitionRouteCls<T>::didAdd() {
     assert(_controller != nullptr, __s("$runtimeType.didPush called before calling install() or after calling dispose()."));
     assert(!_transitionCompleter->isCompleted, __s("Cannot reuse a $runtimeType after disposing it."));
     super->didAdd();
-    _controller!->value() = _controller!->upperBound;
+    _controller!->value = _controller!->upperBound;
 }
 
 template<typename T> void TransitionRouteCls<T>::didReplace(Route<dynamic> oldRoute) {
     assert(_controller != nullptr, __s("$runtimeType.didReplace called before calling install() or after calling dispose()."));
     assert(!_transitionCompleter->isCompleted, __s("Cannot reuse a $runtimeType after disposing it."));
     if (is<TransitionRoute>(oldRoute)) {
-        _controller!->value() = oldRoute->_controller!->value();
+        _controller!->value = as<TransitionRouteCls>(oldRoute)->_controller!->value;
     }
     super->didReplace(oldRoute);
 }
@@ -156,7 +156,7 @@ template<typename T> void TransitionRouteCls<T>::_updateSecondaryAnimation(Route
     VoidCallback previousTrainHoppingListenerRemover = _trainHoppingListenerRemover;
     _trainHoppingListenerRemover = nullptr;
     if (is<TransitionRoute<dynamic>>(nextRoute) && canTransitionTo(nextRoute) && nextRoute->canTransitionFrom(this)) {
-        Animation<double> current = _secondaryAnimation->parent();
+        Animation<double> current = _secondaryAnimation->parent;
         if (current != nullptr) {
             Animation<double> currentTrain = (is<TrainHoppingAnimation>(current)? current->currentTrain : current)!;
             Animation<double> nextTrain = nextRoute->_animation!;
@@ -171,7 +171,7 @@ template<typename T> void TransitionRouteCls<T>::_updateSecondaryAnimation(Route
                 };
                 nextTrain->addStatusListener(jumpOnAnimationEnd);
                 newAnimation = make<TrainHoppingAnimationCls>(currentTrain, nextTrain[=] () {
-                    assert(_secondaryAnimation->parent() == newAnimation);
+                    assert(_secondaryAnimation->parent == newAnimation);
                     assert(newAnimation!->currentTrain == nextRoute->_animation);
                     _setSecondaryAnimation(newAnimation!->currentTrain, nextRoute->completed);
                     if (_trainHoppingListenerRemover != nullptr) {
@@ -193,12 +193,12 @@ template<typename T> void TransitionRouteCls<T>::_updateSecondaryAnimation(Route
 }
 
 template<typename T> void TransitionRouteCls<T>::_setSecondaryAnimation(Animation<double> animation, Future<dynamic> disposed) {
-    _secondaryAnimation->parent() = animation();
+    _secondaryAnimation->parent = animation;
     disposed?->then([=] (dynamic _) {
-        if (_secondaryAnimation->parent() == animation()) {
-            _secondaryAnimation->parent() = kAlwaysDismissedAnimation;
-            if (is<TrainHoppingAnimation>(animation())) {
-                animation()->dispose();
+        if (_secondaryAnimation->parent == animation) {
+            _secondaryAnimation->parent = kAlwaysDismissedAnimation;
+            if (is<TrainHoppingAnimation>(animation)) {
+                as<TrainHoppingAnimationCls>(animation)->dispose();
             }
         }
     });
@@ -366,7 +366,7 @@ template<typename T> void _ModalScopeStateCls<T>::_forceRebuildPage() {
 }
 
 template<typename T> bool _ModalScopeStateCls<T>::_shouldIgnoreFocusRequest() {
-    return widget->route->animation?->status == AnimationStatusCls::reverse || (widget->route->navigator?->userGestureInProgress or false);
+    return widget->route->animation?->status == AnimationStatusCls::reverse || (widget->route->navigator?->userGestureInProgress() or false);
 }
 
 template<typename T> bool _ModalScopeStateCls<T>::_shouldRequestFocus() {
@@ -442,8 +442,8 @@ template<typename T> void ModalRouteCls<T>::offstage(bool value) {
     setState([=] () {
         _offstage = value;
     });
-    _animationProxy!->parent() = _offstage? kAlwaysCompleteAnimation : super->animation;
-    _secondaryAnimationProxy!->parent() = _offstage? kAlwaysDismissedAnimation : super->secondaryAnimation;
+    _animationProxy!->parent = _offstage? kAlwaysCompleteAnimation : super->animation;
+    _secondaryAnimationProxy!->parent = _offstage? kAlwaysDismissedAnimation : super->secondaryAnimation;
     changedInternalState();
 }
 
@@ -494,7 +494,7 @@ template<typename T> void ModalRouteCls<T>::changedInternalState() {
     setState([=] () {
     });
     _modalBarrier->markNeedsBuild();
-    _modalScope->maintainState() = maintainState();
+    _modalScope->maintainState = maintainState;
 }
 
 template<typename T> void ModalRouteCls<T>::changedExternalState() {
@@ -523,18 +523,18 @@ template<typename T> String ModalRouteCls<T>::toString() {
 
 template<typename T> Widget ModalRouteCls<T>::_buildModalBarrier(BuildContext context) {
     Widget barrier;
-    if (barrierColor() != nullptr && barrierColor()!->alpha() != 0 && !offstage()) {
-        assert(barrierColor() != barrierColor()!->withOpacity(0.0));
-        Animation<Color> color = animation()!->drive(make<ColorTweenCls>(barrierColor()!->withOpacity(0.0), barrierColor())->chain(make<CurveTweenCls>(barrierCurve())));
-        barrier = make<AnimatedModalBarrierCls>(color, barrierDismissible(), barrierLabel(), semanticsDismissible());
+    if (barrierColor != nullptr && barrierColor!->alpha != 0 && !offstage) {
+        assert(barrierColor != barrierColor!->withOpacity(0.0));
+        Animation<Color> color = animation!->drive(make<ColorTweenCls>(barrierColor!->withOpacity(0.0), barrierColor)->chain(make<CurveTweenCls>(barrierCurve())));
+        barrier = make<AnimatedModalBarrierCls>(color, barrierDismissible, barrierLabel, semanticsDismissible());
     } else {
-        barrier = make<ModalBarrierCls>(barrierDismissible(), barrierLabel(), semanticsDismissible());
+        barrier = make<ModalBarrierCls>(barrierDismissible, barrierLabel, semanticsDismissible());
     }
     if (filter != nullptr) {
         barrier = make<BackdropFilterCls>(filter!, barrier);
     }
-    barrier = make<IgnorePointerCls>(animation()!->status() == AnimationStatusCls::reverse || animation()!->status() == AnimationStatusCls::dismissed, barrier);
-    if (semanticsDismissible() && barrierDismissible()) {
+    barrier = make<IgnorePointerCls>(animation!->status == AnimationStatusCls::reverse || animation!->status == AnimationStatusCls::dismissed, barrier);
+    if (semanticsDismissible() && barrierDismissible) {
         barrier = make<SemanticsCls>(make<OrdinalSortKeyCls>(1.0), barrier);
     }
     return barrier;
@@ -574,7 +574,7 @@ template<typename R> void RouteObserverCls<R>::subscribe(R route, RouteAware rou
 
 template<typename R> void RouteObserverCls<R>::unsubscribe(RouteAware routeAware) {
     assert(routeAware != nullptr);
-    List<R> routes = _listeners->keys()->toList();
+    List<R> routes = _listeners->keys->toList();
     for (R route : routes) {
         Set<RouteAware> subscribers = _listeners[route];
         if (subscribers != nullptr) {
@@ -628,12 +628,12 @@ void RouteAwareCls::didPushNext() {
 
 template<typename T> RawDialogRouteCls<T>::RawDialogRouteCls(Offset anchorPoint, Color barrierColor, bool barrierDismissible, String barrierLabel, RoutePageBuilder pageBuilder, Unknown settings, RouteTransitionsBuilder transitionBuilder, Duration transitionDuration) {
     {
-        assert(barrierDismissible() != nullptr);
+        assert(barrierDismissible != nullptr);
         _pageBuilder = pageBuilder;
-        _barrierDismissible = barrierDismissible();
-        _barrierLabel = barrierLabel();
-        _barrierColor = barrierColor();
-        _transitionDuration = transitionDuration();
+        _barrierDismissible = barrierDismissible;
+        _barrierLabel = barrierLabel;
+        _barrierColor = barrierColor;
+        _transitionDuration = transitionDuration;
         _transitionBuilder = transitionBuilder;
     }
 }
@@ -678,7 +678,7 @@ RenderObject FocusTrapCls::createRenderObject(BuildContext context) {
 
 void FocusTrapCls::updateRenderObject(BuildContext context, RenderObject renderObject) {
     if (is<_RenderFocusTrap>(renderObject)) {
-        renderObject->focusScopeNode = focusScopeNode;
+        as<_RenderFocusTrapCls>(renderObject)->focusScopeNode = focusScopeNode;
     }
 }
 
@@ -688,7 +688,7 @@ RenderObject FocusTrapAreaCls::createRenderObject(BuildContext context) {
 
 void FocusTrapAreaCls::updateRenderObject(BuildContext context, RenderObject renderObject) {
     if (is<_RenderFocusTrapArea>(renderObject)) {
-        renderObject->focusNode = focusNode;
+        as<_RenderFocusTrapAreaCls>(renderObject)->focusNode = focusNode;
     }
 }
 
@@ -697,7 +697,7 @@ FocusScopeNode _RenderFocusTrapCls::focusScopeNode() {
 }
 
 void _RenderFocusTrapCls::focusScopeNode(FocusScopeNode value) {
-    if (focusScopeNode() == value) {
+    if (focusScopeNode == value) {
         return;
     }
     _focusScopeNode = value;
@@ -718,11 +718,11 @@ bool _RenderFocusTrapCls::hitTest(Offset position, BoxHitTestResult result) {
 
 void _RenderFocusTrapCls::handleEvent(HitTestEntry entry, PointerEvent event) {
     assert(debugHandleEvent(event, entry));
-    if (!is<PointerDownEvent>(event) || event->buttons != kPrimaryButton || event->kind != PointerDeviceKindCls::mouse || _shouldIgnoreEvents() || _focusScopeNode->focusedChild() == nullptr) {
+    if (!is<PointerDownEvent>(event) || event->buttons != kPrimaryButton || event->kind != PointerDeviceKindCls::mouse || _shouldIgnoreEvents() || _focusScopeNode->focusedChild == nullptr) {
         return;
     }
     BoxHitTestResult result = cachedResults[entry];
-    FocusNode focusNode = _focusScopeNode->focusedChild();
+    FocusNode focusNode = _focusScopeNode->focusedChild;
     if (focusNode == nullptr || result == nullptr) {
         return;
     }

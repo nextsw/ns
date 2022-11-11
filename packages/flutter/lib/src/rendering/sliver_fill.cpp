@@ -1,14 +1,14 @@
 #include "sliver_fill.hpp"
 RenderSliverFillViewportCls::RenderSliverFillViewportCls(Unknown childManager, double viewportFraction) {
     {
-        assert(viewportFraction() != nullptr);
-        assert(viewportFraction() > 0.0);
-        _viewportFraction = viewportFraction();
+        assert(viewportFraction != nullptr);
+        assert(viewportFraction > 0.0);
+        _viewportFraction = viewportFraction;
     }
 }
 
 double RenderSliverFillViewportCls::itemExtent() {
-    return constraints->viewportMainAxisExtent * viewportFraction();
+    return constraints->viewportMainAxisExtent * viewportFraction;
 }
 
 double RenderSliverFillViewportCls::viewportFraction() {

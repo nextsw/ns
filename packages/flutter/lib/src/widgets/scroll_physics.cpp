@@ -26,7 +26,7 @@ bool ScrollPhysicsCls::recommendDeferredLoading(BuildContext context, ScrollMetr
     assert(metrics != nullptr);
     assert(context != nullptr);
     if (parent == nullptr) {
-        double maxPhysicalPixels = WidgetsBindingCls::instance->window->physicalSize->longestSide;
+        double maxPhysicalPixels = WidgetsBindingCls::instance->window->physicalSize()->longestSide();
         return velocity->abs() > maxPhysicalPixels;
     }
     return parent!->recommendDeferredLoading(velocity, metrics, context);
@@ -54,11 +54,11 @@ Simulation ScrollPhysicsCls::createBallisticSimulation(ScrollMetrics position, d
 }
 
 SpringDescription ScrollPhysicsCls::spring() {
-    return parent?->spring() or _kDefaultSpring;
+    return parent?->spring or _kDefaultSpring;
 }
 
 Tolerance ScrollPhysicsCls::tolerance() {
-    return parent?->tolerance() or _kDefaultTolerance;
+    return parent?->tolerance or _kDefaultTolerance;
 }
 
 double ScrollPhysicsCls::minFlingDistance() {
@@ -146,7 +146,7 @@ double BouncingScrollPhysicsCls::frictionFactor(double overscrollFraction) {
 double BouncingScrollPhysicsCls::applyPhysicsToUserOffset(double offset, ScrollMetrics position) {
     assert(offset != 0.0);
     assert(position->minScrollExtent <= position->maxScrollExtent);
-    if (!position->outOfRange) {
+    if (!position->outOfRange()) {
         return offset;
     }
     double overscrollPastStart = math->max(position->minScrollExtent - position->pixels, 0.0);
@@ -154,7 +154,7 @@ double BouncingScrollPhysicsCls::applyPhysicsToUserOffset(double offset, ScrollM
     double overscrollPast = math->max(overscrollPastStart, overscrollPastEnd);
     bool easing = (overscrollPastStart > 0.0 &&  < 0.0) || (overscrollPastEnd > 0.0 && offset > 0.0);
     double friction = easing? frictionFactor((overscrollPast - offset->abs()) / position->viewportDimension) : frictionFactor(overscrollPast / position->viewportDimension);
-    double direction = offset->sign;
+    double direction = offset->sign();
     return direction * _applyFriction(overscrollPast, offset->abs(), friction);
 }
 
@@ -164,7 +164,7 @@ double BouncingScrollPhysicsCls::applyBoundaryConditions(ScrollMetrics position,
 
 Simulation BouncingScrollPhysicsCls::createBallisticSimulation(ScrollMetrics position, double velocity) {
     Tolerance tolerance = this->tolerance;
-    if (velocity->abs() >= tolerance->velocity || position->outOfRange) {
+    if (velocity->abs() >= tolerance->velocity || position->outOfRange()) {
         return make<BouncingScrollSimulationCls>(spring, position->pixels, velocity, position->minScrollExtent, position->maxScrollExtent, tolerance);
     }
     return nullptr;
@@ -175,7 +175,7 @@ double BouncingScrollPhysicsCls::minFlingVelocity() {
 }
 
 double BouncingScrollPhysicsCls::carriedMomentum(double existingVelocity) {
-    return existingVelocity->sign * math->min(0.000816 * math->pow(existingVelocity->abs(), 1.967)->toDouble(), 40000.0);
+    return existingVelocity->sign() * math->min(0.000816 * math->pow(existingVelocity->abs(), 1.967)->toDouble(), 40000.0);
 }
 
 double BouncingScrollPhysicsCls::dragStartDistanceMotionThreshold() {
@@ -224,7 +224,7 @@ double ClampingScrollPhysicsCls::applyBoundaryConditions(ScrollMetrics position,
 
 Simulation ClampingScrollPhysicsCls::createBallisticSimulation(ScrollMetrics position, double velocity) {
     Tolerance tolerance = this->tolerance;
-    if (position->outOfRange) {
+    if (position->outOfRange()) {
         double end;
         if (position->pixels > position->maxScrollExtent) {
             end = position->maxScrollExtent;

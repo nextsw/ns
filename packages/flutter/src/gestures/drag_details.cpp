@@ -24,7 +24,7 @@ String DragStartDetailsCls::toString() {
 DragUpdateDetailsCls::DragUpdateDetailsCls(Offset delta, Offset globalPosition, Offset localPosition, double primaryDelta, Duration sourceTimeStamp) {
     {
         assert(delta != nullptr);
-        assert(primaryDelta == nullptr || (primaryDelta == delta->dx() && delta->dy() == 0.0) || (primaryDelta == delta->dy() && delta->dx() == 0.0));
+        assert(primaryDelta == nullptr || (primaryDelta == delta->dx && delta->dy == 0.0) || (primaryDelta == delta->dy && delta->dx == 0.0));
         localPosition = localPosition or globalPosition;
     }
 }
@@ -36,7 +36,7 @@ String DragUpdateDetailsCls::toString() {
 DragEndDetailsCls::DragEndDetailsCls(double primaryVelocity, Velocity velocity) {
     {
         assert(velocity != nullptr);
-        assert(primaryVelocity == nullptr || primaryVelocity == velocity->pixelsPerSecond->dx() || primaryVelocity == velocity->pixelsPerSecond->dy());
+        assert(primaryVelocity == nullptr || primaryVelocity == velocity->pixelsPerSecond->dx || primaryVelocity == velocity->pixelsPerSecond->dy);
     }
 }
 

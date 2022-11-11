@@ -39,9 +39,9 @@ MouseCursorSessionCls::MouseCursorSessionCls(MouseCursor cursor, int device) {
 }
 
 String MouseCursorCls::toString(DiagnosticLevel minLevel) {
-    String debugDescription = this->debugDescription;
-    if (minLevel->index >= DiagnosticLevelCls::info->index && debugDescription() != nullptr) {
-        return debugDescription();
+    String debugDescription = this->debugDescription();
+    if (minLevel->index >= DiagnosticLevelCls::info->index && debugDescription != nullptr) {
+        return debugDescription;
     }
     return super->toString(minLevel);
 }
@@ -84,7 +84,7 @@ SystemMouseCursor _SystemMouseCursorSessionCls::cursor() {
 }
 
 Future<void> _SystemMouseCursorSessionCls::activate() {
-    Map<String, dynamic> map1 = make<MapCls<>>();map1.set(__s("device"), device);map1.set(__s("kind"), cursor()->kind);return SystemChannelsCls::mouseCursor-><void>invokeMethod(__s("activateSystemCursor"), list1);
+    Map<String, dynamic> map1 = make<MapCls<>>();map1.set(__s("device"), device);map1.set(__s("kind"), cursor->kind);return SystemChannelsCls::mouseCursor-><void>invokeMethod(__s("activateSystemCursor"), list1);
 }
 
 void _SystemMouseCursorSessionCls::dispose() {
@@ -106,7 +106,7 @@ bool SystemMouseCursorCls::==(Object other) {
 }
 
 int SystemMouseCursorCls::hashCode() {
-    return kind->hashCode();
+    return kind->hashCode;
 }
 
 void SystemMouseCursorCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {

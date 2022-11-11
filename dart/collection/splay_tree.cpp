@@ -214,7 +214,7 @@ template<typename K, typename V> SplayTreeMapCls<K, V>::SplayTreeMapCls(int comp
 
 template<typename K, typename V> void SplayTreeMapCls<K, V>::from(int compare(K key1, K key2) , bool isValidKey(dynamic potentialKey) , Map<dynamic, dynamic> other) {
     if (is<Map<K, V>>(other)) {
-        return <K, V>of(other, compare, isValidKey);
+        return <K, V>of(as<MapCls>(other), compare, isValidKey);
     }
     SplayTreeMap<K, V> result = <K, V>make<SplayTreeMapCls>(compare, isValidKey);
     other->forEach([=] (dynamic k,dynamic v) {
@@ -235,7 +235,7 @@ template<typename K, typename V> void SplayTreeMapCls<K, V>::fromIterable(int co
 
 template<typename K, typename V> void SplayTreeMapCls<K, V>::fromIterables(int compare(K key1, K key2) , bool isValidKey(dynamic potentialKey) , Iterable<K> keys, Iterable<V> values) {
     SplayTreeMap<K, V> map = <K, V>make<SplayTreeMapCls>(compare, isValidKey);
-    MapBaseCls->_fillMapWithIterables(map, keys(), values());
+    MapBaseCls->_fillMapWithIterables(map, keys, values);
     return map;
 }
 
@@ -354,7 +354,7 @@ template<typename K, typename V> bool SplayTreeMapCls<K, V>::isNotEmpty() {
 template<typename K, typename V> void SplayTreeMapCls<K, V>::forEach(void f(K key, V value) ) {
     Iterator<MapEntry<K, V>> nodes = <K, V>make<_SplayTreeMapEntryIteratorCls>(this);
     while (nodes->moveNext()) {
-        MapEntry<K, V> node = nodes->current;
+        MapEntry<K, V> node = nodes->current();
         f(node->key, node->value);
     }
 }
@@ -592,7 +592,7 @@ template<typename K, typename V> void _SplayTreeMapEntryIteratorCls<K, V>::_repl
     auto last = _path->removeLast();
     auto newLast = last->_replaceValue(value);
     if (_path->isEmpty) {
-        _tree->_root = newLast;
+        _tree->_root() = newLast;
     } else {
         auto parent = _path->last;
         if (identical(last, parent->_left)) {
@@ -617,7 +617,7 @@ template<typename E> SplayTreeSetCls<E>::SplayTreeSetCls(int compare(E key1, E k
 
 template<typename E> void SplayTreeSetCls<E>::from(int compare(E key1, E key2) , Iterable elements, bool isValidKey(dynamic potentialKey) ) {
     if (is<Iterable<E>>(elements)) {
-        return <E>of(elements, compare, isValidKey);
+        return <E>of(as<IterableCls>(elements), compare, isValidKey);
     }
     SplayTreeSet<E> result = <E>make<SplayTreeSetCls>(compare, isValidKey);
     for (auto element : elements) {

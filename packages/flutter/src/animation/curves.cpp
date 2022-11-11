@@ -118,14 +118,14 @@ double CubicCls::_evaluateCubic(double a, double b, double m) {
 }
 
 double ThreePointCubicCls::transformInternal(double t) {
-    bool firstCurve =  < midpoint->dx();
-    double scaleX = firstCurve? midpoint->dx() : 1.0 - midpoint->dx();
-    double scaleY = firstCurve? midpoint->dy() : 1.0 - midpoint->dy();
-    double scaledT = (t - (firstCurve? 0.0 : midpoint->dx())) / scaleX;
+    bool firstCurve =  < midpoint->dx;
+    double scaleX = firstCurve? midpoint->dx : 1.0 - midpoint->dx;
+    double scaleY = firstCurve? midpoint->dy : 1.0 - midpoint->dy;
+    double scaledT = (t - (firstCurve? 0.0 : midpoint->dx)) / scaleX;
     if (firstCurve) {
-        return make<CubicCls>(a1->dx() / scaleX, a1->dy() / scaleY, b1->dx() / scaleX, b1->dy() / scaleY)->transform(scaledT) * scaleY;
+        return make<CubicCls>(a1->dx / scaleX, a1->dy / scaleY, b1->dx / scaleX, b1->dy / scaleY)->transform(scaledT) * scaleY;
     } else {
-        return make<CubicCls>((a2->dx() - midpoint->dx()) / scaleX, (a2->dy() - midpoint->dy()) / scaleY, (b2->dx() - midpoint->dx()) / scaleX, (b2->dy() - midpoint->dy()) / scaleY)->transform(scaledT) * scaleY + midpoint->dy();
+        return make<CubicCls>((a2->dx - midpoint->dx) / scaleX, (a2->dy - midpoint->dy) / scaleY, (b2->dx - midpoint->dx) / scaleX, (b2->dy - midpoint->dy) / scaleY)->transform(scaledT) * scaleY + midpoint->dy;
     }
 }
 
@@ -164,7 +164,7 @@ double Curve2DCls::findInverse(double x) {
     while ((end - start) / 2.0 > errorLimit && count > 0) {
         mid = (end + start) / 2.0;
         double value = offsetToOrigin(mid);
-        if (value->sign == startValue->sign) {
+        if (value->sign() == startValue->sign()) {
             start = mid;
         } else {
             end = mid;
@@ -210,7 +210,7 @@ int CatmullRomSplineCls::samplingSeed() {
 
 Offset CatmullRomSplineCls::transformInternal(double t) {
     _initializeIfNeeded();
-    double length = _cubicSegments->length()->toDouble();
+    double length = _cubicSegments->length->toDouble();
     double position;
     double localT;
     int index;
@@ -221,7 +221,7 @@ Offset CatmullRomSplineCls::transformInternal(double t) {
     } else {
         position = length;
         localT = 1.0;
-        index = _cubicSegments->length() - 1;
+        index = _cubicSegments->length - 1;
     }
     List<Offset> cubicControlPoints = _cubicSegments[index];
     double localT2 = localT * localT;
@@ -316,7 +316,7 @@ bool CatmullRomCurveCls::validateControlPoints(List<Offset> controlPoints, List<
     double start = testSpline->findInverse(0.0);
     double end = testSpline->findInverse(1.0);
     Iterable<Curve2DSample> samplePoints = testSpline->generateSamples(start, end);
-    if (samplePoints->first->value->dy->abs() > tolerance || (1.0 - samplePoints->last->value->dy)->abs() > tolerance) {
+    if (samplePoints->first->value->dy->abs() > tolerance || (1.0 - samplePoints->last()->value->dy)->abs() > tolerance) {
         bool bail = true;
         success = false;
         assert([=] () {
@@ -366,7 +366,7 @@ double CatmullRomCurveCls::transformInternal(double t) {
         _precomputedSamples->addAll(_computeSamples(controlPoints, tension));
     }
     int start = 0;
-    int end = _precomputedSamples->length() - 1;
+    int end = _precomputedSamples->length - 1;
     int mid;
     Offset value;
     Offset startValue = _precomputedSamples[start]->value;

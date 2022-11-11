@@ -39,7 +39,7 @@ template<typename T> void _BroadcastSubscriptionCls<T>::_onPause() {
 template<typename T> void _BroadcastSubscriptionCls<T>::_onResume() {
 }
 
-template<typename T> int _BroadcastStreamControllerCls<T>::onPause() {
+template<typename T> void Function() _BroadcastStreamControllerCls<T>::onPause() {
     ;
 }
 
@@ -47,7 +47,7 @@ template<typename T> void _BroadcastStreamControllerCls<T>::onPause(void onPause
     ;
 }
 
-template<typename T> void  _BroadcastStreamControllerCls<T>::onResume() {
+template<typename T> void Function() _BroadcastStreamControllerCls<T>::onResume() {
     ;
 }
 
@@ -120,7 +120,7 @@ template<typename T> Future _BroadcastStreamControllerCls<T>::addStream(bool can
         ;
     }
     _state = _STATE_ADDSTREAMCls;
-    auto addStreamState = make<_AddStreamStateCls>(this, stream(), cancelOnError or false);
+    auto addStreamState = make<_AddStreamStateCls>(this, stream, cancelOnError or false);
     _addStreamState = addStreamState;
     return addStreamState->addStreamFuture;
 }
@@ -205,7 +205,7 @@ template<typename T> Future<void> _BroadcastStreamControllerCls<T>::_recordCance
     if (identical(subscription->_next, subscription))     {
         return nullptr;
     }
-    if (subscription->_isFiring) {
+    if (subscription->_isFiring()) {
         subscription->_setRemoveAfterFiring();
     } else {
         _removeListener(subscription);
@@ -246,10 +246,9 @@ template<typename T> void _BroadcastStreamControllerCls<T>::_close() {
     addState->complete();
 }
 
-template<typename T> 
-void _BroadcastStreamControllerCls<T>::_forEachListener(void action(_BufferingStreamSubscription<T> subscription) ) {
+template<typename T> void _BroadcastStreamControllerCls<T>::_forEachListener(void action(_BufferingStreamSubscription<T> subscription) ) {
     if (_isFiring()) {
-        
+        ;
     }
     if (_isEmpty())     {
         return;
@@ -263,7 +262,7 @@ void _BroadcastStreamControllerCls<T>::_forEachListener(void action(_BufferingSt
             action(subscription);
             subscription->_toggleEventId();
             _BroadcastSubscription<T> next = subscription->_next;
-            if (subscription->_removeAfterFiring) {
+            if (subscription->_removeAfterFiring()) {
                 _removeListener(subscription);
             }
             subscription->_eventState = ~_BroadcastSubscriptionCls->_STATE_FIRINGCls;
@@ -272,7 +271,7 @@ void _BroadcastStreamControllerCls<T>::_forEachListener(void action(_BufferingSt
             subscription = subscription->_next;
         }
     }
-    // _state &= _STATE_FIRINGCls;
+    _state = ~_STATE_FIRINGCls;
     if (_isEmpty()) {
         _callOnCancel();
     }

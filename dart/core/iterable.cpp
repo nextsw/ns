@@ -17,7 +17,7 @@ template<typename E> Iterable<R> IterableCls<E>::casttemplate<typename R> () {
 template<typename E> Iterable<E> IterableCls<E>::followedBy(Iterable<E> other) {
     auto self = this;
     if (is<EfficientLengthIterable<E>>(self)) {
-        return <E>firstEfficient(self, other);
+        return <E>firstEfficient(as<EfficientLengthIterableCls>(self), other);
     }
     return <E>make<FollowedByIterableCls>(this, other);
 }
@@ -54,13 +54,13 @@ template<typename E> void IterableCls<E>::forEach(void action(E element) ) {
 }
 
 template<typename E> E IterableCls<E>::reduce(E combine(E element, E value) ) {
-    Iterator<E> iterator = this->iterator;
-    if (!iterator()->moveNext()) {
+    Iterator<E> iterator = this->iterator();
+    if (!iterator->moveNext()) {
         ;
     }
-    E value = iterator()->current();
-    while (iterator()->moveNext()) {
-        value = combine(value, iterator()->current());
+    E value = iterator->current();
+    while (iterator->moveNext()) {
+        value = combine(value, iterator->current());
     }
     return value;
 }
@@ -83,20 +83,20 @@ template<typename E> bool IterableCls<E>::every(bool test(E element) ) {
 }
 
 template<typename E> String IterableCls<E>::join(String separator) {
-    Iterator<E> iterator = this->iterator;
-    if (!iterator()->moveNext())     {
+    Iterator<E> iterator = this->iterator();
+    if (!iterator->moveNext())     {
         return __s("");
     }
     StringBuffer buffer = make<StringBufferCls>();
     if (separator == nullptr || separator == __s("")) {
         do {
-            buffer->write(iterator()->current()->toString());
-        } while (iterator()->moveNext());
+            buffer->write(iterator->current()->toString());
+        } while (iterator->moveNext());
     } else {
-        buffer->write(iterator()->current()->toString());
-        while (iterator()->moveNext()) {
+        buffer->write(iterator->current()->toString());
+        while (iterator->moveNext()) {
             buffer->write(separator);
-            buffer->write(iterator()->current()->toString());
+            buffer->write(iterator->current()->toString());
         }
     }
     return buffer->toString();
@@ -158,7 +158,7 @@ template<typename E> E IterableCls<E>::first() {
     if (!it->moveNext()) {
         ;
     }
-    return it->current;
+    return it->current();
 }
 
 template<typename E> E IterableCls<E>::last() {
@@ -168,7 +168,7 @@ template<typename E> E IterableCls<E>::last() {
     }
     E result;
     do {
-        result = it->current;
+        result = it->current();
     } while (it->moveNext());
     return result;
 }
@@ -178,7 +178,7 @@ template<typename E> E IterableCls<E>::single() {
     if (!it->moveNext())     {
         ;
     }
-    E result = it->current;
+    E result = it->current();
     if (it->moveNext())     {
         ;
     }

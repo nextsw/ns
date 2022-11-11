@@ -9,9 +9,9 @@ FrictionSimulationCls::FrictionSimulationCls(double drag, double position, Unkno
 }
 
 void FrictionSimulationCls::through(double endPosition, double endVelocity, double startPosition, double startVelocity) {
-    assert(startVelocity == 0.0 || endVelocity == 0.0 || startVelocity->sign == endVelocity->sign);
+    assert(startVelocity == 0.0 || endVelocity == 0.0 || startVelocity->sign() == endVelocity->sign());
     assert(startVelocity->abs() >= endVelocity->abs());
-    assert((endPosition - startPosition)->sign == startVelocity->sign);
+    assert((endPosition - startPosition)->sign() == startVelocity->sign());
     return make<FrictionSimulationCls>(_dragFor(startPosition, endPosition, startVelocity, endVelocity), startPosition, startVelocitymake<ToleranceCls>(endVelocity->abs()));
 }
 

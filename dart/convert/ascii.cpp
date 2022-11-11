@@ -67,7 +67,7 @@ void _UnicodeSubsetEncoderSinkCls::addSlice(int end, bool isLast, String source,
             ;
         }
     }
-    _sink->add(source->codeUnits->sublist(start, end));
+    _sink->add(source->codeUnits()->sublist(start, end));
     if (isLast) {
         close();
     }
@@ -109,7 +109,7 @@ AsciiDecoderCls::AsciiDecoderCls(bool allowInvalid) : _UnicodeSubsetDecoder(allo
 ByteConversionSink AsciiDecoderCls::startChunkedConversion(Sink<String> sink) {
     StringConversionSink stringSink;
     if (is<StringConversionSink>(sink)) {
-        stringSink = sink;
+        stringSink = as<StringConversionSinkCls>(sink);
     } else {
         stringSink = StringConversionSinkCls->from(sink);
     }

@@ -8,7 +8,7 @@ double QuaternionCls::x() {
 }
 
 void QuaternionCls::x(double x) {
-    _qStorage[0] = x();
+    _qStorage[0] = x;
 }
 
 double QuaternionCls::y() {
@@ -16,7 +16,7 @@ double QuaternionCls::y() {
 }
 
 void QuaternionCls::y(double y) {
-    _qStorage[1] = y();
+    _qStorage[1] = y;
 }
 
 double QuaternionCls::z() {
@@ -24,7 +24,7 @@ double QuaternionCls::z() {
 }
 
 void QuaternionCls::z(double z) {
-    _qStorage[2] = z();
+    _qStorage[2] = z;
 }
 
 double QuaternionCls::w() {
@@ -32,7 +32,7 @@ double QuaternionCls::w() {
 }
 
 void QuaternionCls::w(double w) {
-    _qStorage[3] = w();
+    _qStorage[3] = w;
 }
 
 QuaternionCls::QuaternionCls(double w, double x, double y, double z) {
@@ -77,7 +77,7 @@ Quaternion QuaternionCls::clone() {
 }
 
 void QuaternionCls::setFrom(Quaternion source) {
-    auto _c1 = QuaternionCls->_();_c1.setFromRotation(rotationMatrix);auto _c1 = QuaternionCls->_();_c1.setAxisAngle(axis(), angle);auto _c1 = QuaternionCls->_();_c1.setFromTwoVectors(a, b);auto _c1 = QuaternionCls->_();_c1.setFrom(original);auto _c1 = QuaternionCls->_();_c1.setRandom(rn);auto _c1 = QuaternionCls->_();_c1[3] =1.0;auto _c1 = QuaternionCls->_();_c1.setDQ(q, omega);auto _c1 = QuaternionCls->_();_c1.setEuler(yaw, pitch, roll);Unknown sourceStorage = source->_qStorage;
+    auto _c1 = QuaternionCls->_();_c1.setFromRotation(rotationMatrix);auto _c1 = QuaternionCls->_();_c1.setAxisAngle(axis, angle);auto _c1 = QuaternionCls->_();_c1.setFromTwoVectors(a, b);auto _c1 = QuaternionCls->_();_c1.setFrom(original);auto _c1 = QuaternionCls->_();_c1.setRandom(rn);auto _c1 = QuaternionCls->_();_c1[3] =1.0;auto _c1 = QuaternionCls->_();_c1.setDQ(q, omega);auto _c1 = QuaternionCls->_();_c1.setEuler(yaw, pitch, roll);Unknown sourceStorage = source->_qStorage;
     _qStorage[0] = sourceStorage[0];
     _qStorage[1] = sourceStorage[1];
     _qStorage[2] = sourceStorage[2];
@@ -85,27 +85,27 @@ void QuaternionCls::setFrom(Quaternion source) {
 }
 
 void QuaternionCls::setValues(double w, double x, double y, double z) {
-    _qStorage[0] = x();
-    _qStorage[1] = y();
-    _qStorage[2] = z();
-    _qStorage[3] = w();
+    _qStorage[0] = x;
+    _qStorage[1] = y;
+    _qStorage[2] = z;
+    _qStorage[3] = w;
 }
 
 void QuaternionCls::setAxisAngle(Vector3 axis, double radians) {
-    Unknown len = axis()->length;
+    Unknown len = axis->length;
     if (len == 0.0) {
         return;
     }
-    Unknown halfSin = math->sin(radians() * 0.5) / len;
-    Unknown axisStorage = axis()->storage();
+    Unknown halfSin = math->sin(radians * 0.5) / len;
+    Unknown axisStorage = axis->storage();
     _qStorage[0] = axisStorage[0] * halfSin;
     _qStorage[1] = axisStorage[1] * halfSin;
     _qStorage[2] = axisStorage[2] * halfSin;
-    _qStorage[3] = math->cos(radians() * 0.5);
+    _qStorage[3] = math->cos(radians * 0.5);
 }
 
 void QuaternionCls::setFromRotation(Matrix3 rotationMatrix) {
-    Unknown rotationMatrixStorage = rotationMatrix->storage;
+    Unknown rotationMatrixStorage = rotationMatrix->storage();
     Unknown trace = rotationMatrix->trace();
     if (trace > 0.0) {
         auto s = math->sqrt(trace + 1.0);
@@ -167,7 +167,7 @@ void QuaternionCls::setRandom(Random rn) {
 
 void QuaternionCls::setDQ(Vector3 omega, Quaternion q) {
     Unknown qStorage = q->_qStorage;
-    Unknown omegaStorage = omega->storage;
+    Unknown omegaStorage = omega->storage();
     Unknown qx = qStorage[0];
     Unknown qy = qStorage[1];
     Unknown qz = qStorage[2];
@@ -202,7 +202,7 @@ void QuaternionCls::setEuler(double pitch, double roll, double yaw) {
 }
 
 double QuaternionCls::normalize() {
-    Unknown l = length();
+    Unknown l = length;
     if (l == 0.0) {
         return 0.0;
     }
@@ -287,7 +287,7 @@ Vector3 QuaternionCls::rotate(Vector3 v) {
     Unknown result_x = tw * _x + tx * _w + ty * _z - tz * _y;
     Unknown result_y = tw * _y + ty * _w + tz * _x - tx * _z;
     Unknown result_z = tw * _z + tz * _w + tx * _y - ty * _x;
-    Unknown vStorage = v->storage;
+    Unknown vStorage = v->storage();
     vStorage[2] = result_z;
     vStorage[1] = result_y;
     vStorage[0] = result_x;
@@ -378,7 +378,7 @@ Matrix3 QuaternionCls::copyRotationInto(Matrix3 rotationMatrix) {
     Unknown yy = _y * ys;
     Unknown yz = _y * zs;
     Unknown zz = _z * zs;
-    Unknown rotationMatrixStorage = rotationMatrix->storage;
+    Unknown rotationMatrixStorage = rotationMatrix->storage();
     rotationMatrixStorage[0] = 1.0 - (yy + zz);
     rotationMatrixStorage[1] = xy + wz;
     rotationMatrixStorage[2] = xz - wy;
@@ -403,7 +403,7 @@ double QuaternionCls::relativeError(Quaternion correct) {
 }
 
 double QuaternionCls::absoluteError(Quaternion correct) {
-    Unknown this_norm = length();
+    Unknown this_norm = length;
     Unknown correct_norm = correct->length;
     Unknown norm_diff = (this_norm - correct_norm)->abs();
     return norm_diff;

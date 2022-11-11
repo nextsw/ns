@@ -23,8 +23,8 @@ String SliverMultiBoxAdaptorParentDataCls::toString() {
 
 RenderSliverMultiBoxAdaptorCls::RenderSliverMultiBoxAdaptorCls(RenderSliverBoxChildManager childManager) {
     {
-        assert(childManager() != nullptr);
-        _childManager = childManager();
+        assert(childManager != nullptr);
+        _childManager = childManager;
     }
     {
         assert([=] () {
@@ -60,7 +60,7 @@ void RenderSliverMultiBoxAdaptorCls::adoptChild(RenderObject child) {
     super->adoptChild(child);
     SliverMultiBoxAdaptorParentData childParentData = as<SliverMultiBoxAdaptorParentData>(child->parentData!);
     if (!childParentData->_keptAlive) {
-        childManager()->didAdoptChild(as<RenderBox>(child));
+        childManager->didAdoptChild(as<RenderBox>(child));
     }
 }
 
@@ -73,9 +73,9 @@ void RenderSliverMultiBoxAdaptorCls::insert(RenderBox after, RenderBox child) {
 
 void RenderSliverMultiBoxAdaptorCls::move(RenderBox after, RenderBox child) {
     SliverMultiBoxAdaptorParentData childParentData = as<SliverMultiBoxAdaptorParentData>(child->parentData!);
-    if (!childParentData->keptAlive) {
+    if (!childParentData->keptAlive()) {
         super->move(childafter);
-        childManager()->didAdoptChild(child);
+        childManager->didAdoptChild(child);
         markNeedsLayout();
     } else {
         if (_keepAliveBucket[childParentData->index] == child) {
@@ -85,7 +85,7 @@ void RenderSliverMultiBoxAdaptorCls::move(RenderBox after, RenderBox child) {
             _debugDanglingKeepAlives->remove(child);
             return true;
         }());
-        childManager()->didAdoptChild(child);
+        childManager->didAdoptChild(child);
         assert([=] () {
             if (_keepAliveBucket->containsKey(childParentData->index)) {
                 _debugDanglingKeepAlives->add(_keepAliveBucket[childParentData->index]!);
@@ -113,32 +113,32 @@ void RenderSliverMultiBoxAdaptorCls::remove(RenderBox child) {
 
 void RenderSliverMultiBoxAdaptorCls::removeAll() {
     super->removeAll();
-    _keepAliveBucket->values()->forEach(dropChild);
+    _keepAliveBucket->values->forEach(dropChild);
     _keepAliveBucket->clear();
 }
 
 void RenderSliverMultiBoxAdaptorCls::attach(PipelineOwner owner) {
     super->attach(owner);
-    for (RenderBox child : _keepAliveBucket->values()) {
+    for (RenderBox child : _keepAliveBucket->values) {
         child->attach(owner);
     }
 }
 
 void RenderSliverMultiBoxAdaptorCls::detach() {
     super->detach();
-    for (RenderBox child : _keepAliveBucket->values()) {
+    for (RenderBox child : _keepAliveBucket->values) {
         child->detach();
     }
 }
 
 void RenderSliverMultiBoxAdaptorCls::redepthChildren() {
     super->redepthChildren();
-    _keepAliveBucket->values()->forEach(redepthChild);
+    _keepAliveBucket->values->forEach(redepthChild);
 }
 
 void RenderSliverMultiBoxAdaptorCls::visitChildren(RenderObjectVisitor visitor) {
     super->visitChildren(visitor);
-    _keepAliveBucket->values()->forEach(visitor);
+    _keepAliveBucket->values->forEach(visitor);
 }
 
 void RenderSliverMultiBoxAdaptorCls::visitChildrenForSemantics(RenderObjectVisitor visitor) {
@@ -156,7 +156,7 @@ bool RenderSliverMultiBoxAdaptorCls::addInitialChild(int index, double layoutOff
         firstChildParentData->layoutOffset = layoutOffset;
         return true;
     }
-    childManager()->setDidUnderflow(true);
+    childManager->setDidUnderflow(true);
     return false;
 }
 
@@ -168,7 +168,7 @@ RenderBox RenderSliverMultiBoxAdaptorCls::insertAndLayoutLeadingChild(BoxConstra
         firstChild!->layout(childConstraintsparentUsesSize);
         return firstChild;
     }
-    childManager()->setDidUnderflow(true);
+    childManager->setDidUnderflow(true);
     return nullptr;
 }
 
@@ -182,7 +182,7 @@ RenderBox RenderSliverMultiBoxAdaptorCls::insertAndLayoutChild(RenderBox after, 
         child->layout(childConstraintsparentUsesSize);
         return child;
     }
-    childManager()->setDidUnderflow(true);
+    childManager->setDidUnderflow(true);
     return nullptr;
 }
 
@@ -198,14 +198,14 @@ void RenderSliverMultiBoxAdaptorCls::collectGarbage(int leadingGarbage, int trai
             _destroyOrCacheChild(lastChild!);
             trailingGarbage = 1;
         }
-        _keepAliveBucket->values()->where([=] (RenderBox child) {
+        _keepAliveBucket->values->where([=] (RenderBox child) {
             SliverMultiBoxAdaptorParentData childParentData = as<SliverMultiBoxAdaptorParentData>(child->parentData!);
             return !childParentData->keepAlive;
         })->toList()->forEach(_childManager->removeChild);
-        assert(_keepAliveBucket->values()->where([=] (RenderBox child) {
+        assert(_keepAliveBucket->values->where([=] (RenderBox child) {
             SliverMultiBoxAdaptorParentData childParentData = as<SliverMultiBoxAdaptorParentData>(child->parentData!);
             return !childParentData->keepAlive;
-        })->isEmpty());
+        })->isEmpty);
     });
 }
 
@@ -218,7 +218,7 @@ int RenderSliverMultiBoxAdaptorCls::indexOf(RenderBox child) {
 
 double RenderSliverMultiBoxAdaptorCls::paintExtentOf(RenderBox child) {
     assert(child != nullptr);
-    assert(child->hasSize);
+    assert(child->hasSize());
     ;
 }
 
@@ -316,7 +316,7 @@ List<DiagnosticsNode> RenderSliverMultiBoxAdaptorCls::debugDescribeChildren() {
         }
     }
     if (_keepAliveBucket->isNotEmpty()) {
-            auto _c1 = _keepAliveBucket->keys()->toList();    _c1.sort();List<int> indices = _c1;
+            auto _c1 = _keepAliveBucket->keys->toList();    _c1.sort();List<int> indices = _c1;
         for (int index : indices) {
             children->add(_keepAliveBucket[index]!->toDiagnosticsNode(__s("child with index $index (kept alive but not laid out)"), DiagnosticsTreeStyleCls::offstage));
         }
@@ -325,7 +325,7 @@ List<DiagnosticsNode> RenderSliverMultiBoxAdaptorCls::debugDescribeChildren() {
 }
 
 bool RenderSliverMultiBoxAdaptorCls::_debugAssertChildListLocked() {
-    return childManager()->debugAssertChildListLocked();
+    return childManager->debugAssertChildListLocked();
 }
 
 bool RenderSliverMultiBoxAdaptorCls::_debugVerifyChildOrder() {

@@ -2,7 +2,7 @@
 void SemanticsBindingCls::initInstances() {
     super->initInstances();
     _instance = this;
-    _accessibilityFeatures = platformDispatcher->accessibilityFeatures;
+    _accessibilityFeatures = platformDispatcher->accessibilityFeatures();
 }
 
 SemanticsBinding SemanticsBindingCls::instance() {
@@ -10,7 +10,7 @@ SemanticsBinding SemanticsBindingCls::instance() {
 }
 
 void SemanticsBindingCls::handleAccessibilityFeaturesChanged() {
-    _accessibilityFeatures = platformDispatcher->accessibilityFeatures;
+    _accessibilityFeatures = platformDispatcher->accessibilityFeatures();
 }
 
 SemanticsUpdateBuilder SemanticsBindingCls::createSemanticsUpdateBuilder() {

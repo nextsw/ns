@@ -7,5 +7,5 @@ template<typename T> UniqueWidgetCls<T>::UniqueWidgetCls(GlobalKey<T> key) : Sta
 
 template<typename T> T UniqueWidgetCls<T>::currentState() {
     GlobalKey<T> globalKey = as<GlobalKey<T>>(key!);
-    return globalKey->currentState;
+    return globalKey->currentState();
 }

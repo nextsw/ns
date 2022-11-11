@@ -126,7 +126,7 @@ Object ActionDispatcherCls::invokeAction(Action<Intent> action, BuildContext con
     assert(action->isEnabled(intent), __s("Action must be enabled when calling invokeAction"));
     if (is<ContextAction>(action)) {
         context = primaryFocus?->context;
-        return action->invoke(intent, context);
+        return as<ContextActionCls>(action)->invoke(intent, context);
     } else {
         return action->invoke(intent);
     }
@@ -155,7 +155,7 @@ Action<T> ActionsCls::findtemplate<typename T> (BuildContext context, T intent) 
     Action<T> action = maybeFind(contextintent);
     assert([=] () {
         if (action == nullptr) {
-            Type type = intent?->runtimeType() or TCls;
+            Type type = intent?->runtimeType or TCls;
             ;
         }
         return true;
@@ -165,7 +165,7 @@ Action<T> ActionsCls::findtemplate<typename T> (BuildContext context, T intent) 
 
 Action<T> ActionsCls::maybeFindtemplate<typename T> (BuildContext context, T intent) {
     Action<T> action;
-    Type type = intent?->runtimeType() or TCls;
+    Type type = intent?->runtimeType or TCls;
     assert(type != IntentCls, __s("The type passed to "find" resolved to "Intent": either a non-Intent generic type argument or an example intent derived from Intent must be specified. Intent may be used as the generic type as long as the optional "intent" argument is passed."));
     _visitActionsAncestors(context, [=] (InheritedElement element) {
         _ActionsMarker actions = as<_ActionsMarker>(element->widget);
@@ -259,7 +259,7 @@ ActionDispatcher ActionsCls::_findDispatcher(BuildContext context) {
 
 Action<T> ActionsCls::_maybeFindWithoutDependingOntemplate<typename T> (BuildContext context, T intent) {
     Action<T> action;
-    Type type = intent?->runtimeType() or TCls;
+    Type type = intent?->runtimeType or TCls;
     assert(type != IntentCls, __s("The type passed to "find" resolved to "Intent": either a non-Intent generic type argument or an example intent derived from Intent must be specified. Intent may be used as the generic type as long as the optional "intent" argument is passed."));
     _visitActionsAncestors(context, [=] (InheritedElement element) {
         _ActionsMarker actions = as<_ActionsMarker>(element->widget);
@@ -274,9 +274,9 @@ Action<T> ActionsCls::_maybeFindWithoutDependingOntemplate<typename T> (BuildCon
 }
 
 Action<T> ActionsCls::_castActiontemplate<typename T> (_ActionsMarker actionsMarker, T intent) {
-    Action<Intent> mappedAction = actionsMarker->actions[intent?->runtimeType() or TCls];
+    Action<Intent> mappedAction = actionsMarker->actions[intent?->runtimeType or TCls];
     if (is<Action<T>>(mappedAction)) {
-        return mappedAction;
+        return as<ActionCls>(mappedAction);
     } else {
         assert(false, __s("$T cannot be handled by an Action of runtime type ${mappedAction.runtimeType}."));
         return nullptr;
@@ -372,10 +372,10 @@ void _FocusableActionDetectorStateCls::didUpdateWidget(FocusableActionDetector o
 
 Widget _FocusableActionDetectorStateCls::build(BuildContext context) {
     Widget child = make<MouseRegionCls>(_mouseRegionKey, _handleMouseEnter, _handleMouseExit, widget->mouseCursor, make<FocusCls>(widget->focusNode, widget->autofocus, widget->descendantsAreFocusable, widget->descendantsAreTraversable, _canRequestFocus(), _handleFocusChange, widget->child));
-    if (widget->enabled && widget->actions != nullptr && widget->actions!->isNotEmpty) {
+    if (widget->enabled && widget->actions != nullptr && widget->actions!->isNotEmpty()) {
         child = make<ActionsCls>(widget->actions!, child);
     }
-    if (widget->enabled && widget->shortcuts != nullptr && widget->shortcuts!->isNotEmpty) {
+    if (widget->enabled && widget->shortcuts != nullptr && widget->shortcuts!->isNotEmpty()) {
         child = make<ShortcutsCls>(widget->shortcuts!, child);
     }
     return child;
@@ -509,8 +509,8 @@ template<typename T> bool _OverridableActionMixinCls<T>::isOverrideActionEnabled
         debugAssertIsActionEnabledMutuallyRecursive = true;
         return true;
     }());
-    overrideAction->_updateCallingAction(defaultAction());
-    bool isOverrideEnabled = overrideAction->isActionEnabled;
+    overrideAction->_updateCallingAction(defaultAction);
+    bool isOverrideEnabled = overrideAction->isActionEnabled();
     overrideAction->_updateCallingAction(nullptr);
     assert([=] () {
         debugAssertIsActionEnabledMutuallyRecursive = false;
@@ -521,7 +521,7 @@ template<typename T> bool _OverridableActionMixinCls<T>::isOverrideActionEnabled
 
 template<typename T> bool _OverridableActionMixinCls<T>::isActionEnabled() {
     Action<T> overrideAction = getOverrideAction(true);
-    bool returnValue = overrideAction != nullptr? isOverrideActionEnabled(overrideAction) : defaultAction()->isActionEnabled();
+    bool returnValue = overrideAction != nullptr? isOverrideActionEnabled(overrideAction) : defaultAction->isActionEnabled();
     return returnValue;
 }
 
@@ -532,8 +532,8 @@ template<typename T> bool _OverridableActionMixinCls<T>::isEnabled(T intent) {
         return true;
     }());
     Action<T> overrideAction = getOverrideAction();
-    overrideAction?->_updateCallingAction(defaultAction());
-    bool returnValue = (overrideAction or defaultAction())->isEnabled(intent);
+    overrideAction?->_updateCallingAction(defaultAction);
+    bool returnValue = (overrideAction or defaultAction)->isEnabled(intent);
     overrideAction?->_updateCallingAction(nullptr);
     assert([=] () {
         debugAssertIsEnabledMutuallyRecursive = false;
@@ -549,8 +549,8 @@ template<typename T> bool _OverridableActionMixinCls<T>::consumesKey(T intent) {
         return true;
     }());
     Action<T> overrideAction = getOverrideAction();
-    overrideAction?->_updateCallingAction(defaultAction());
-    bool isEnabled = (overrideAction or defaultAction())->consumesKey(intent);
+    overrideAction?->_updateCallingAction(defaultAction);
+    bool isEnabled = (overrideAction or defaultAction)->consumesKey(intent);
     overrideAction?->_updateCallingAction(nullptr);
     assert([=] () {
         debugAssertConsumeKeyMutuallyRecursive = false;
@@ -561,12 +561,12 @@ template<typename T> bool _OverridableActionMixinCls<T>::consumesKey(T intent) {
 
 template<typename T> void _OverridableActionMixinCls<T>::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<Action<T>>make<DiagnosticsPropertyCls>(__s("defaultAction"), defaultAction()));
+    properties->add(<Action<T>>make<DiagnosticsPropertyCls>(__s("defaultAction"), defaultAction));
 }
 
 template<typename T> void _OverridableActionMixinCls<T>::_updateCallingAction(Action<T> value) {
     super->_updateCallingAction(value);
-    defaultAction()->_updateCallingAction(value);
+    defaultAction->_updateCallingAction(value);
 }
 
 template<typename T> Object _OverridableActionMixinCls<T>::_invokeOverride(BuildContext context, T intent, Action<T> overrideAction) {
@@ -575,7 +575,7 @@ template<typename T> Object _OverridableActionMixinCls<T>::_invokeOverride(Build
         debugAssertMutuallyRecursive = true;
         return true;
     }());
-    overrideAction->_updateCallingAction(defaultAction());
+    overrideAction->_updateCallingAction(defaultAction);
     Object returnValue = is<ContextAction<T>>(overrideAction)? overrideAction->invoke(intent, context) : overrideAction->invoke(intent);
     overrideAction->_updateCallingAction(nullptr);
     assert([=] () {
@@ -630,7 +630,7 @@ template<typename T> ContextAction<T> _OverridableContextActionCls<T>::_makeOver
 }
 
 template<typename T> Action<T> _ContextActionToActionAdapterCls<T>::callingAction() {
-    return action->callingAction;
+    return action->callingAction();
 }
 
 template<typename T> bool _ContextActionToActionAdapterCls<T>::isEnabled(T intent) {
@@ -638,7 +638,7 @@ template<typename T> bool _ContextActionToActionAdapterCls<T>::isEnabled(T inten
 }
 
 template<typename T> bool _ContextActionToActionAdapterCls<T>::isActionEnabled() {
-    return action->isActionEnabled;
+    return action->isActionEnabled();
 }
 
 template<typename T> bool _ContextActionToActionAdapterCls<T>::consumesKey(T intent) {

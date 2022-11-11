@@ -1,16 +1,16 @@
 #include "animated_size.hpp"
 RenderAnimatedSizeCls::RenderAnimatedSizeCls(Unknown alignment, Unknown child, Clip clipBehavior, Curve curve, Duration duration, Duration reverseDuration, Unknown textDirection, TickerProvider vsync) {
     {
-        assert(vsync() != nullptr);
-        assert(duration() != nullptr);
-        assert(curve() != nullptr);
-        assert(clipBehavior() != nullptr);
-        _vsync = vsync();
-        _clipBehavior = clipBehavior();
+        assert(vsync != nullptr);
+        assert(duration != nullptr);
+        assert(curve != nullptr);
+        assert(clipBehavior != nullptr);
+        _vsync = vsync;
+        _clipBehavior = clipBehavior;
     }
     {
-                    });_controller =                     }            auto _c1 = make<AnimationControllerCls>(vsync(), duration(), reverseDuration());            _c1.addListener([=] () {                        if (_controller->value() != _lastValue) {                            markNeedsLayout();_c1;
-        _animation = make<CurvedAnimationCls>(_controller, curve());
+                    });_controller =                     }            auto _c1 = make<AnimationControllerCls>(vsync, duration, reverseDuration);            _c1.addListener([=] () {                        if (_controller->value != _lastValue) {                            markNeedsLayout();_c1;
+        _animation = make<CurvedAnimationCls>(_controller, curve);
     }
 }
 
@@ -67,7 +67,7 @@ void RenderAnimatedSizeCls::clipBehavior(Clip value) {
 }
 
 bool RenderAnimatedSizeCls::isAnimating() {
-    return _controller->isAnimating();
+    return _controller->isAnimating;
 }
 
 TickerProvider RenderAnimatedSizeCls::vsync() {
@@ -80,7 +80,7 @@ void RenderAnimatedSizeCls::vsync(TickerProvider value) {
         return;
     }
     _vsync = value;
-    _controller->resync(vsync());
+    _controller->resync(vsync);
 }
 
 void RenderAnimatedSizeCls::attach(PipelineOwner owner) {
@@ -94,12 +94,12 @@ void RenderAnimatedSizeCls::detach() {
 }
 
 void RenderAnimatedSizeCls::performLayout() {
-    _lastValue = _controller->value();
+    _lastValue = _controller->value;
     _hasVisualOverflow = false;
     BoxConstraints constraints = this->constraints;
-    if (child == nullptr || constraints->isTight) {
+    if (child == nullptr || constraints->isTight()) {
         _controller->stop();
-        size = _sizeTween->begin = _sizeTween->end = constraints->smallest;
+        size = _sizeTween->begin = _sizeTween->end = constraints->smallest();
         _state = RenderAnimatedSizeStateCls::start;
         child?->layout(constraints);
         return;
@@ -115,8 +115,8 @@ void RenderAnimatedSizeCls::performLayout() {
 }
 
 Size RenderAnimatedSizeCls::computeDryLayout(BoxConstraints constraints) {
-    if (child == nullptr || constraints->isTight) {
-        return constraints->smallest;
+    if (child == nullptr || constraints->isTight()) {
+        return constraints->smallest();
     }
     Size childSize = child!->getDryLayout(constraints);
     assert(_state != nullptr);
@@ -125,17 +125,17 @@ Size RenderAnimatedSizeCls::computeDryLayout(BoxConstraints constraints) {
 }
 
 void RenderAnimatedSizeCls::paint(PaintingContext context, Offset offset) {
-    if (child != nullptr && _hasVisualOverflow && clipBehavior() != ClipCls::none) {
+    if (child != nullptr && _hasVisualOverflow && clipBehavior != ClipCls::none) {
         Rect rect = OffsetCls::zero & size;
-        _clipRectLayer->layer() = context->pushClipRect(needsCompositing, offset, rect, super->paintclipBehavior(), _clipRectLayer->layer());
+        _clipRectLayer->layer = context->pushClipRect(needsCompositing, offset, rect, super->paintclipBehavior, _clipRectLayer->layer);
     } else {
-        _clipRectLayer->layer() = nullptr;
+        _clipRectLayer->layer = nullptr;
         super->paint(context, offset);
     }
 }
 
 void RenderAnimatedSizeCls::dispose() {
-    _clipRectLayer->layer() = nullptr;
+    _clipRectLayer->layer = nullptr;
     super->dispose();
 }
 
@@ -160,10 +160,10 @@ void RenderAnimatedSizeCls::_layoutStable() {
         _restartAnimation();
         _state = RenderAnimatedSizeStateCls::changed;
     } else     {
-        if (_controller->value() == _controller->upperBound) {
+        if (_controller->value == _controller->upperBound) {
         _sizeTween->begin = _sizeTween->end = debugAdoptSize(child!->size);
     } else     {
-        if (!_controller->isAnimating()) {
+        if (!_controller->isAnimating) {
         _controller->forward();
     }
 ;
@@ -177,7 +177,7 @@ void RenderAnimatedSizeCls::_layoutChanged() {
         _state = RenderAnimatedSizeStateCls::unstable;
     } else {
         _state = RenderAnimatedSizeStateCls::stable;
-        if (!_controller->isAnimating()) {
+        if (!_controller->isAnimating) {
             _controller->forward();
         }
     }

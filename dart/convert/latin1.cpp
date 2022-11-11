@@ -38,7 +38,7 @@ Latin1DecoderCls::Latin1DecoderCls(bool allowInvalid) : _UnicodeSubsetDecoder(al
 ByteConversionSink Latin1DecoderCls::startChunkedConversion(Sink<String> sink) {
     StringConversionSink stringSink;
     if (is<StringConversionSink>(sink)) {
-        stringSink = sink;
+        stringSink = as<StringConversionSinkCls>(sink);
     } else {
         stringSink = StringConversionSinkCls->from(sink);
     }
@@ -63,7 +63,7 @@ void _Latin1DecoderSinkCls::addSlice(int end, bool isLast, List<int> source, int
         return;
     }
     if (!is<Uint8List>(source)) {
-        _checkValidLatin1(source, start, end);
+        _checkValidLatin1(as<Uint8ListCls>(source), start, end);
     }
     _addSliceToSink(source, start, end, isLast);
 }

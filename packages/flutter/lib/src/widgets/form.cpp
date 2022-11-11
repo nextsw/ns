@@ -113,7 +113,7 @@ template<typename T> bool FormFieldStateCls<T>::isValid() {
 }
 
 template<typename T> void FormFieldStateCls<T>::save() {
-    widget->onSaved?->call(value());
+    widget->onSaved?->call(value);
 }
 
 template<typename T> void FormFieldStateCls<T>::reset() {
@@ -134,14 +134,14 @@ template<typename T> bool FormFieldStateCls<T>::validate() {
 
 template<typename T> void FormFieldStateCls<T>::didChange(T value) {
     setState([=] () {
-        _value = value();
+        _value = value;
         _hasInteractedByUser->value = true;
     });
     FormCls->of(context)?->_fieldDidChange();
 }
 
 template<typename T> void FormFieldStateCls<T>::setValue(T value) {
-    _value = value();
+    _value = value;
 }
 
 template<typename T> String FormFieldStateCls<T>::restorationId() {

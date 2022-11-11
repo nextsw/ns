@@ -16,12 +16,12 @@ Stream IsolateCls::errors() {
     controller->onListen = [=] () {
         RawReceivePort receivePort = make<RawReceivePortCls>(handleError);
         port = receivePort;
-        this->addErrorListener(receivePort->sendPort);
+        this->addErrorListener(receivePort->sendPort());
     };
     controller->onCancel = [=] () {
         auto listenPort = port!;
         port = nullptr;
-        this->removeErrorListener(listenPort->sendPort);
+        this->removeErrorListener(listenPort->sendPort());
         listenPort->close();
     };
     return controller->stream;

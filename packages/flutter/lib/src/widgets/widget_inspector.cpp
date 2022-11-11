@@ -185,7 +185,7 @@ _MulticastCanvasCls::_MulticastCanvasCls(Canvas main, Canvas screenshot) {
 }
 
 Rect _calculateSubtreeBoundsHelper(RenderObject object, Matrix4 transform) {
-    Rect bounds = MatrixUtilsCls->transformRect(transform, object->semanticBounds);
+    Rect bounds = MatrixUtilsCls->transformRect(transform, object->semanticBounds());
     object->visitChildren([=] (RenderObject child) {
         Matrix4 childTransform = transform->clone();
         object->applyPaintTransform(child, childTransform);
@@ -195,8 +195,8 @@ Rect _calculateSubtreeBoundsHelper(RenderObject object, Matrix4 transform) {
             Rect transformedPaintClip = MatrixUtilsCls->transformRect(transform, paintClip);
             childBounds = childBounds->intersect(transformedPaintClip);
         }
-        if (childBounds->isFinite && !childBounds->isEmpty) {
-            bounds = bounds->isEmpty? childBounds : bounds->expandToInclude(childBounds);
+        if (childBounds->isFinite() && !childBounds->isEmpty()) {
+            bounds = bounds->isEmpty()? childBounds : bounds->expandToInclude(childBounds);
         }
     });
     return bounds;
@@ -212,11 +212,11 @@ void _ScreenshotContainerLayerCls::addToScene(SceneBuilder builder) {
 
 Offset _ScreenshotDataCls::screenshotOffset() {
     assert(foundTarget);
-    return containerLayer->offset();
+    return containerLayer->offset;
 }
 
 void _ScreenshotDataCls::screenshotOffset(Offset offset) {
-    containerLayer->offset() = offset;
+    containerLayer->offset = offset;
 }
 
 _ScreenshotDataCls::_ScreenshotDataCls(RenderObject target) {
@@ -274,7 +274,7 @@ void _ScreenshotPaintingContextCls::paintChild(RenderObject child, Offset offset
         assert(!_data->includeInScreenshot);
         assert(!_data->foundTarget);
         _data->foundTarget = true;
-        _data->screenshotOffset() = offset;
+        _data->screenshotOffset = offset;
         _data->includeInScreenshot = true;
     }
     super->paintChild(child, offset);
@@ -286,17 +286,17 @@ void _ScreenshotPaintingContextCls::paintChild(RenderObject child, Offset offset
 
 Future<Image> _ScreenshotPaintingContextCls::toImage(bool debugPaint, double pixelRatio, Rect renderBounds, RenderObject renderObject) {
     RenderObject repaintBoundary = renderObject;
-    while (repaintBoundary != nullptr && !repaintBoundary->isRepaintBoundary) {
+    while (repaintBoundary != nullptr && !repaintBoundary->isRepaintBoundary()) {
         repaintBoundary = as<RenderObject>(repaintBoundary->parent!);
     }
     assert(repaintBoundary != nullptr);
     _ScreenshotData data = make<_ScreenshotDataCls>(renderObject);
-    _ScreenshotPaintingContext context = make<_ScreenshotPaintingContextCls>(repaintBoundary->debugLayer!, repaintBoundary->paintBounds, data);
+    _ScreenshotPaintingContext context = make<_ScreenshotPaintingContextCls>(repaintBoundary->debugLayer()!, repaintBoundary->paintBounds(), data);
     if (identical(renderObject, repaintBoundary)) {
-        data->containerLayer->append(make<_ProxyLayerCls>(repaintBoundary->debugLayer!));
+        data->containerLayer->append(make<_ProxyLayerCls>(repaintBoundary->debugLayer()!));
         data->foundTarget = true;
-        OffsetLayer offsetLayer = as<OffsetLayer>(repaintBoundary->debugLayer!);
-        data->screenshotOffset = offsetLayer->offset;
+        OffsetLayer offsetLayer = as<OffsetLayer>(repaintBoundary->debugLayer()!);
+        data->screenshotOffset() = offsetLayer->offset;
     } else {
         PaintingContextCls->debugInstrumentRepaintCompositedChild(repaintBoundarycontext);
     }
@@ -307,13 +307,13 @@ Future<Image> _ScreenshotPaintingContextCls::toImage(bool debugPaint, double pix
         data->includeInScreenshot = true;
         debugPaintSizeEnabled = true;
         try {
-            renderObject->debugPaint(context, data->screenshotOffset);
+            renderObject->debugPaint(context, data->screenshotOffset());
         } finally {
             debugPaintSizeEnabled = false;
             context->stopRecordingIfNeeded();
         };
     }
-    repaintBoundary->debugLayer!->buildScene(ui->make<SceneBuilderCls>());
+    repaintBoundary->debugLayer()!->buildScene(ui->make<SceneBuilderCls>());
     return data->containerLayer->toImage(renderBoundspixelRatio);
 }
 
@@ -358,7 +358,7 @@ void _ScreenshotPaintingContextCls::_stopRecordingScreenshotIfNeeded() {
     if (!_isScreenshotRecording()) {
         return;
     }
-    _screenshotCurrentLayer!->picture() = _screenshotRecorder!->endRecording();
+    _screenshotCurrentLayer!->picture = _screenshotRecorder!->endRecording();
     _screenshotCurrentLayer = nullptr;
     _screenshotRecorder = nullptr;
     _multicastCanvas = nullptr;
@@ -415,8 +415,8 @@ void WidgetInspectorServiceCls::registerServiceExtension(ServiceExtensionCallbac
 
 Future<void> WidgetInspectorServiceCls::forceRebuild() {
     WidgetsBinding binding = WidgetsBindingCls::instance;
-    if (binding->renderViewElement != nullptr) {
-        binding->buildOwner!->reassemble(binding->renderViewElement!, nullptr);
+    if (binding->renderViewElement() != nullptr) {
+        binding->buildOwner()!->reassemble(binding->renderViewElement()!, nullptr);
         return binding->endOfFrame;
     }
     return <void>value();
@@ -616,7 +616,7 @@ Object WidgetInspectorServiceCls::toObject(String groupName, String id) {
 Object WidgetInspectorServiceCls::toObjectForSourceLocation(String groupName, String id) {
     Object object = toObject(id);
     if (is<Element>(object)) {
-        return object->widget;
+        return as<ElementCls>(object)->widget;
     }
     return object;
 }
@@ -636,7 +636,7 @@ void WidgetInspectorServiceCls::disposeId(String groupName, String id) {
 }
 
 void WidgetInspectorServiceCls::setPubRootDirectories(List<String> pubRootDirectories) {
-    addPubRootDirectories(pubRootDirectories());
+    addPubRootDirectories(pubRootDirectories);
 }
 
 void WidgetInspectorServiceCls::resetPubRootDirectories() {
@@ -645,10 +645,10 @@ void WidgetInspectorServiceCls::resetPubRootDirectories() {
 }
 
 void WidgetInspectorServiceCls::addPubRootDirectories(List<String> pubRootDirectories) {
-    pubRootDirectories() = pubRootDirectories()-><String>map([=] (String directory)     {
+    pubRootDirectories = pubRootDirectories-><String>map([=] (String directory)     {
         UriCls->parse(directory)->path;
     })->toList();
-    Set<String> directorySet = <String>from(pubRootDirectories());
+    Set<String> directorySet = <String>from(pubRootDirectories);
     if (_pubRootDirectories != nullptr) {
         directorySet->addAll(_pubRootDirectories!);
     }
@@ -660,11 +660,11 @@ void WidgetInspectorServiceCls::removePubRootDirectories(List<String> pubRootDir
     if (_pubRootDirectories == nullptr) {
         return;
     }
-    pubRootDirectories() = pubRootDirectories()-><String>map([=] (String directory)     {
+    pubRootDirectories = pubRootDirectories-><String>map([=] (String directory)     {
         UriCls->parse(directory)->path;
     })->toList();
     Set<String> directorySet = <String>from(_pubRootDirectories!);
-    directorySet->removeAll(pubRootDirectories());
+    directorySet->removeAll(pubRootDirectories);
     _pubRootDirectories = directorySet->toList();
     _isLocalCreationCache->clear();
 }
@@ -676,17 +676,17 @@ bool WidgetInspectorServiceCls::setSelectionById(String groupName, String id) {
 bool WidgetInspectorServiceCls::setSelection(String groupName, Object object) {
     if (is<Element>(object) || is<RenderObject>(object)) {
         if (is<Element>(object)) {
-            if (object == selection->currentElement()) {
+            if (as<ElementCls>(object) == selection->currentElement) {
                 return false;
             }
-            selection->currentElement() = object;
-            developer->inspect(selection->currentElement());
+            selection->currentElement = as<ElementCls>(object);
+            developer->inspect(selection->currentElement);
         } else {
-            if (object == selection->current()) {
+            if (object == selection->current) {
                 return false;
             }
-            selection->current() = as<RenderObject>(object!);
-            developer->inspect(selection->current());
+            selection->current = as<RenderObject>(object!);
+            developer->inspect(selection->current);
         }
         if (selectionChangedCallback != nullptr) {
             if (SchedulerBindingCls::instance->schedulerPhase == SchedulerPhaseCls::idle) {
@@ -762,12 +762,12 @@ Future<Image> WidgetInspectorServiceCls::screenshot(bool debugPaint, double heig
     if (renderObject == nullptr || !renderObject->attached) {
         return nullptr;
     }
-    if (renderObject->debugNeedsLayout) {
+    if (renderObject->debugNeedsLayout()) {
         PipelineOwner owner = renderObject->owner!;
         assert(owner != nullptr);
-        assert(!owner->debugDoingLayout);
+        assert(!owner->debugDoingLayout());
             auto _c1 = owner;    _c1.auto _c2 = flushLayout();    _c2.auto _c3 = flushCompositingBits();    _c3.flushPaint();    _c3;    _c2;_c1;
-        if (renderObject->debugNeedsLayout) {
+        if (renderObject->debugNeedsLayout()) {
             return nullptr;
         }
     }
@@ -775,7 +775,7 @@ Future<Image> WidgetInspectorServiceCls::screenshot(bool debugPaint, double heig
     if (margin != 0.0) {
         renderBounds = renderBounds->inflate(margin);
     }
-    if (renderBounds->isEmpty) {
+    if (renderBounds->isEmpty()) {
         return nullptr;
     }
     double pixelRatio = math->min(maxPixelRatio, math->min(width / renderBounds->width, height / renderBounds->height));
@@ -900,10 +900,10 @@ List<Object> WidgetInspectorServiceCls::_getParentChain(String groupName, String
     Object value = toObject(id);
     List<_DiagnosticsPathNode> path;
     if (is<RenderObject>(value)) {
-        path = _getRenderObjectParentChain(value, groupName)!;
+        path = _getRenderObjectParentChain(as<RenderObjectCls>(value), groupName)!;
     } else     {
         if (is<Element>(value)) {
-        path = _getElementParentChain(value, groupName);
+        path = _getElementParentChain(as<ElementCls>(value), groupName);
     } else {
         ;
     }
@@ -987,7 +987,7 @@ bool WidgetInspectorServiceCls::_isLocalCreationLocation(String locationUri) {
 String WidgetInspectorServiceCls::_safeJsonEncode(Object object) {
     String jsonString = json->encode(object);
     _serializeRing[_serializeRingIndex] = jsonString;
-    _serializeRingIndex = (_serializeRingIndex + 1) % _serializeRing->length();
+    _serializeRingIndex = (_serializeRingIndex + 1) % _serializeRing->length;
     return jsonString;
 }
 
@@ -1077,13 +1077,13 @@ Map<String, Object> WidgetInspectorServiceCls::_getDetailsSubtree(String groupNa
 
 Map<String, Object> WidgetInspectorServiceCls::_getSelectedRenderObject(String groupName, String previousSelectionId) {
     DiagnosticsNode previousSelection = as<DiagnosticsNode>(toObject(previousSelectionId));
-    RenderObject current = selection->current();
+    RenderObject current = selection->current;
     return _nodeToJson(current == previousSelection?->value? previousSelection : current?->toDiagnosticsNode(), make<InspectorSerializationDelegateCls>(groupName, this));
 }
 
 Map<String, Object> WidgetInspectorServiceCls::_getSelectedWidget(String groupName, String previousSelectionId) {
     DiagnosticsNode previousSelection = as<DiagnosticsNode>(toObject(previousSelectionId));
-    Element current = selection->currentElement();
+    Element current = selection->currentElement;
     return _nodeToJson(current == previousSelection?->value? previousSelection : current?->toDiagnosticsNode(), make<InspectorSerializationDelegateCls>(groupName, this));
 }
 
@@ -1092,7 +1092,7 @@ Map<String, Object> WidgetInspectorServiceCls::_getSelectedSummaryWidget(String 
         return _getSelectedWidget(previousSelectionId, groupName);
     }
     DiagnosticsNode previousSelection = as<DiagnosticsNode>(toObject(previousSelectionId));
-    Element current = selection->currentElement();
+    Element current = selection->currentElement;
     if (current != nullptr && !_isValueCreatedByLocalProject(current)) {
         Element firstLocal;
         for (Element candidate : current->debugGetDiagnosticChain()) {
@@ -1165,11 +1165,11 @@ void _ElementLocationStatsTrackerCls::add(Element element) {
         return;
     }
     _HasCreationLocation creationLocationSource = widget;
-    _Location location = creationLocationSource->_location;
+    _Location location = creationLocationSource->_location();
     int id = _toLocationId(location);
     _LocationCount entry;
-    if (id >= _stats->length() || _stats[id] == nullptr) {
-        while (id >= _stats->length()) {
+    if (id >= _stats->length || _stats[id] == nullptr) {
+        while (id >= _stats->length) {
             _stats->add(nullptr);
         }
         entry = make<_LocationCountCls>(location, id, WidgetInspectorServiceCls::instance->_isLocalCreationLocation(location->file));
@@ -1196,13 +1196,13 @@ void _ElementLocationStatsTrackerCls::resetCounts() {
 }
 
 Map<String, dynamic> _ElementLocationStatsTrackerCls::exportToJson(Duration startTime) {
-    List<int> events = <int>filled(active->length() * 2, 0);
+    List<int> events = <int>filled(active->length * 2, 0);
     int j = 0;
     for (_LocationCount stat : active) {
         events[j++] = stat->id;
         events[j++] = stat->count;
     }
-    Map<String, dynamic> map1 = make<MapCls<>>();map1.set(__s("startTime"), startTime->inMicroseconds);map1.set(__s("events"), events);Map<String, dynamic> json = list1;
+    Map<String, dynamic> map1 = make<MapCls<>>();map1.set(__s("startTime"), startTime->inMicroseconds());map1.set(__s("events"), events);Map<String, dynamic> json = list1;
     if (newLocations->isNotEmpty) {
         Map<String, List<int>> locationsJson = makeMap(makeList(), makeList();
         for (_LocationCount entry : newLocations) {
@@ -1310,7 +1310,7 @@ bool _WidgetInspectorStateCls::_hitTestHelper(List<RenderObject> edgeHits, List<
             hit = true;
         }
     }
-    Rect bounds = object->semanticBounds;
+    Rect bounds = object->semanticBounds();
     if (bounds->contains(localPosition)) {
         hit = true;
         if (!bounds->deflate(_edgeHitMargin)->contains(localPosition)) {
@@ -1331,7 +1331,7 @@ void _WidgetInspectorStateCls::_inspectAt(Offset position) {
     RenderObject userRender = ignorePointer->child!;
     List<RenderObject> selected = hitTest(position, userRender);
     setState([=] () {
-        selection->candidates() = selected;
+        selection->candidates = selected;
     });
 }
 
@@ -1346,7 +1346,7 @@ void _WidgetInspectorStateCls::_handlePanUpdate(DragUpdateDetails event) {
 }
 
 void _WidgetInspectorStateCls::_handlePanEnd(DragEndDetails details) {
-    Rect bounds = (OffsetCls::zero & (WidgetsBindingCls::instance->window->physicalSize / WidgetsBindingCls::instance->window->devicePixelRatio))->deflate(_kOffScreenMargin);
+    Rect bounds = (OffsetCls::zero & (WidgetsBindingCls::instance->window->physicalSize() / WidgetsBindingCls::instance->window->devicePixelRatio))->deflate(_kOffScreenMargin);
     if (!bounds->contains(_lastPointerLocation!)) {
         setState([=] () {
             selection->clear();
@@ -1360,7 +1360,7 @@ void _WidgetInspectorStateCls::_handleTap() {
     }
     if (_lastPointerLocation != nullptr) {
         _inspectAt(_lastPointerLocation!);
-        developer->inspect(selection->current());
+        developer->inspect(selection->current);
     }
     setState([=] () {
         if (widget->selectButtonBuilder != nullptr) {
@@ -1416,7 +1416,7 @@ Element InspectorSelectionCls::currentElement() {
 }
 
 void InspectorSelectionCls::currentElement(Element element) {
-    if (element?->debugIsDefunct or false) {
+    if (element?->debugIsDefunct() or false) {
         _currentElement = nullptr;
         _current = nullptr;
         return;
@@ -1432,8 +1432,8 @@ bool InspectorSelectionCls::active() {
 }
 
 void InspectorSelectionCls::_computeCurrent() {
-    if ( < candidates()->length()) {
-        _current = candidates()[index()];
+    if ( < candidates->length) {
+        _current = candidates[index];
         _currentElement = (as<DebugCreator>(_current?->debugCreator))?->element;
     } else {
         _current = nullptr;
@@ -1474,13 +1474,13 @@ Size _RenderInspectorOverlayCls::computeDryLayout(BoxConstraints constraints) {
 
 void _RenderInspectorOverlayCls::paint(PaintingContext context, Offset offset) {
     assert(needsCompositing);
-    context->addLayer(make<_InspectorOverlayLayerCls>(RectCls->fromLTWH(offset->dx, offset->dy, size->width, size->height), selection(), is<RenderObject>(parent)? as<RenderObject>(parent!) : nullptr));
+    context->addLayer(make<_InspectorOverlayLayerCls>(RectCls->fromLTWH(offset->dx, offset->dy, size->width, size->height), selection, is<RenderObject>(parent)? as<RenderObject>(parent!) : nullptr));
 }
 
 _RenderInspectorOverlayCls::_RenderInspectorOverlayCls(InspectorSelection selection) {
     {
-        _selection = selection();
-        assert(selection() != nullptr);
+        _selection = selection;
+        assert(selection != nullptr);
     }
 }
 
@@ -1497,7 +1497,7 @@ int _TransformedRectCls::hashCode() {
 
 _TransformedRectCls::_TransformedRectCls(RenderObject ancestor, RenderObject object) {
     {
-        rect = object->semanticBounds;
+        rect = object->semanticBounds();
         transform = object->getTransformTo(ancestor);
     }
 }
@@ -1517,12 +1517,12 @@ void _InspectorOverlayLayerCls::addToScene(SceneBuilder builder) {
     if (!selection->active()) {
         return;
     }
-    RenderObject selected = selection->current()!;
+    RenderObject selected = selection->current!;
     if (!_isInInspectorRenderObjectTree(selected)) {
         return;
     }
     List<_TransformedRect> candidates = makeList();
-    for (RenderObject candidate : selection->candidates()) {
+    for (RenderObject candidate : selection->candidates) {
         if (candidate == selected || !candidate->attached || !_isInInspectorRenderObjectTree(candidate)) {
             continue;
         }
@@ -1560,14 +1560,14 @@ _InspectorOverlayLayerCls::_InspectorOverlayLayerCls(Rect overlayRect, RenderObj
 Picture _InspectorOverlayLayerCls::_buildPicture(_InspectorOverlayRenderState state) {
     PictureRecorder recorder = ui->make<PictureRecorderCls>();
     Canvas canvas = make<CanvasCls>(recorder, state->overlayRect);
-    Size size = state->overlayRect->size();
+    Size size = state->overlayRect->size;
     canvas->translate(state->overlayRect->left, state->overlayRect->top);
     auto _c1 = make<PaintCls>();_c1.style = auto _c2 = PaintingStyleCls::fill;_c2.color = _kHighlightedRenderObjectFillColor;_c2;Paint fillPaint = _c1;
     auto _c3 = make<PaintCls>();_c3.style = auto _c4 = PaintingStyleCls::stroke;_c4.strokeWidth = auto _c5 = 1.0;_c5.color = _kHighlightedRenderObjectBorderColor;_c5;_c4;Paint borderPaint = _c3;
     Rect selectedPaintRect = state->selected->rect->deflate(0.5);
-    auto _c6 = canvas;_c6.auto _c7 = save();_c7.auto _c8 = transform(state->selected->transform->storage);_c8.auto _c9 = drawRect(selectedPaintRect, fillPaint);_c9.auto _c10 = drawRect(selectedPaintRect, borderPaint);_c10.restore();_c10;_c9;_c8;_c7;_c6;
+    auto _c6 = canvas;_c6.auto _c7 = save();_c7.auto _c8 = transform(state->selected->transform->storage());_c8.auto _c9 = drawRect(selectedPaintRect, fillPaint);_c9.auto _c10 = drawRect(selectedPaintRect, borderPaint);_c10.restore();_c10;_c9;_c8;_c7;_c6;
     for (_TransformedRect transformedRect : state->candidates) {
-            auto _c11 = canvas;    _c11.auto _c12 = save();    _c12.auto _c13 = transform(transformedRect->transform->storage);    _c13.auto _c14 = drawRect(transformedRect->rect->deflate(0.5), borderPaint);    _c14.restore();    _c14;    _c13;    _c12;_c11;
+            auto _c11 = canvas;    _c11.auto _c12 = save();    _c12.auto _c13 = transform(transformedRect->transform->storage());    _c13.auto _c14 = drawRect(transformedRect->rect->deflate(0.5), borderPaint);    _c14.restore();    _c14;    _c13;    _c12;_c11;
     }
     Rect targetRect = MatrixUtilsCls->transformRect(state->selected->transform, state->selected->rect);
     Offset target = make<OffsetCls>(targetRect->left, targetRect->center->dy);
@@ -1580,12 +1580,12 @@ Picture _InspectorOverlayLayerCls::_buildPicture(_InspectorOverlayRenderState st
 void _InspectorOverlayLayerCls::_paintDescription(Canvas canvas, String message, Size size, Offset target, Rect targetRect, TextDirection textDirection, double verticalOffset) {
     canvas->save();
     double maxWidth = size->width - 2 * (_kScreenEdgeMargin + _kTooltipPadding);
-    TextSpan textSpan = as<TextSpan>(_textPainter?->text());
+    TextSpan textSpan = as<TextSpan>(_textPainter?->text);
     if (_textPainter == nullptr || textSpan!->text != message || _textPainterMaxWidth != maxWidth) {
         _textPainterMaxWidth = maxWidth;
             auto _c1 = make<TextPainterCls>();    _c1.maxLines = auto _c2 = _kMaxTooltipLines;    _c2.ellipsis = auto _c3 = __s("...");    _c3.text = auto _c4 = make<TextSpanCls>(_messageStyle, message);    _c4.textDirection = auto _c5 = textDirection;    _c5.layout(maxWidth);    _c5;    _c4;    _c3;    _c2;_textPainter = _c1;
     }
-    Size tooltipSize = _textPainter!->size() + make<OffsetCls>(_kTooltipPadding * 2, _kTooltipPadding * 2);
+    Size tooltipSize = _textPainter!->size + make<OffsetCls>(_kTooltipPadding * 2, _kTooltipPadding * 2);
     Offset tipOffset = positionDependentBox(size, tooltipSize, target, verticalOffset, false);
     auto _c6 = make<PaintCls>();_c6.style = auto _c7 = PaintingStyleCls::fill;_c7.color = _kTooltipBackgroundColor;_c7;Paint tooltipBackground = _c6;
     canvas->drawRect(RectCls->fromPoints(tipOffset, tipOffset->translate(tooltipSize->width, tooltipSize->height)), tooltipBackground);
@@ -1644,7 +1644,7 @@ Iterable<DiagnosticsNode> debugTransformDebugCreator(Iterable<DiagnosticsNode> p
     ErrorSummary errorSummary;
     for (DiagnosticsNode node : properties) {
         if (is<ErrorSummary>(node)) {
-            errorSummary = node;
+            errorSummary = as<ErrorSummaryCls>(node);
                         break;
         }
     }

@@ -42,7 +42,7 @@ String ScaleEndDetailsCls::toString() {
 
 bool _isFlingGesture(Velocity velocity) {
     assert(velocity != nullptr);
-    double speedSquared = velocity->pixelsPerSecond->distanceSquared;
+    double speedSquared = velocity->pixelsPerSecond->distanceSquared();
     return speedSquared > kMinFlingVelocity * kMinFlingVelocity;
 }
 
@@ -94,20 +94,20 @@ void ScaleGestureRecognizerCls::handleEvent(PointerEvent event) {
     bool didChangeConfiguration = false;
     bool shouldStartIfAccepted = false;
     if (is<PointerMoveEvent>(event)) {
-        VelocityTracker tracker = _velocityTrackers[event->pointer]!;
-        if (!event->synthesized) {
+        VelocityTracker tracker = _velocityTrackers[as<PointerMoveEventCls>(event)->pointer]!;
+        if (!as<PointerMoveEventCls>(event)->synthesized) {
             tracker->addPosition(event->timeStamp, event->position);
         }
-        _pointerLocations[event->pointer] = event->position;
+        _pointerLocations[as<PointerMoveEventCls>(event)->pointer] = as<PointerMoveEventCls>(event)->position;
         shouldStartIfAccepted = true;
-        _lastTransform = event->transform;
+        _lastTransform = as<PointerMoveEventCls>(event)->transform;
     } else     {
         if (is<PointerDownEvent>(event)) {
-        _pointerLocations[event->pointer] = event->position;
-        _pointerQueue->add(event->pointer);
+        _pointerLocations[as<PointerDownEventCls>(event)->pointer] = as<PointerDownEventCls>(event)->position;
+        _pointerQueue->add(as<PointerDownEventCls>(event)->pointer);
         didChangeConfiguration = true;
         shouldStartIfAccepted = true;
-        _lastTransform = event->transform;
+        _lastTransform = as<PointerDownEventCls>(event)->transform;
     } else     {
         if (is<PointerUpEvent>(event) || is<PointerCancelEvent>(event)) {
         _pointerLocations->remove(event->pointer);
@@ -116,23 +116,23 @@ void ScaleGestureRecognizerCls::handleEvent(PointerEvent event) {
         _lastTransform = event->transform;
     } else     {
         if (is<PointerPanZoomStartEvent>(event)) {
-        assert(_pointerPanZooms[event->pointer] == nullptr);
-        _pointerPanZooms[event->pointer] = make<_PointerPanZoomDataCls>(event->position, 1, 0);
+        assert(_pointerPanZooms[as<PointerPanZoomStartEventCls>(event)->pointer] == nullptr);
+        _pointerPanZooms[as<PointerPanZoomStartEventCls>(event)->pointer] = make<_PointerPanZoomDataCls>(as<PointerPanZoomStartEventCls>(event)->position, 1, 0);
         didChangeConfiguration = true;
         shouldStartIfAccepted = true;
     } else     {
         if (is<PointerPanZoomUpdateEvent>(event)) {
-        assert(_pointerPanZooms[event->pointer] != nullptr);
-        if (!event->synthesized) {
+        assert(_pointerPanZooms[as<PointerPanZoomUpdateEventCls>(event)->pointer] != nullptr);
+        if (!as<PointerPanZoomUpdateEventCls>(event)->synthesized) {
             _velocityTrackers[event->pointer]!->addPosition(event->timeStamp, event->pan);
         }
-        _pointerPanZooms[event->pointer] = make<_PointerPanZoomDataCls>(event->position + event->pan, event->scale, event->rotation);
-        _lastTransform = event->transform;
+        _pointerPanZooms[as<PointerPanZoomUpdateEventCls>(event)->pointer] = make<_PointerPanZoomDataCls>(as<PointerPanZoomUpdateEventCls>(event)->position + as<PointerPanZoomUpdateEventCls>(event)->pan, as<PointerPanZoomUpdateEventCls>(event)->scale, as<PointerPanZoomUpdateEventCls>(event)->rotation);
+        _lastTransform = as<PointerPanZoomUpdateEventCls>(event)->transform;
         shouldStartIfAccepted = true;
     } else     {
         if (is<PointerPanZoomEndEvent>(event)) {
-        assert(_pointerPanZooms[event->pointer] != nullptr);
-        _pointerPanZooms->remove(event->pointer);
+        assert(_pointerPanZooms[as<PointerPanZoomEndEventCls>(event)->pointer] != nullptr);
+        _pointerPanZooms->remove(as<PointerPanZoomEndEventCls>(event)->pointer);
         didChangeConfiguration = true;
     }
 ;
@@ -163,7 +163,7 @@ void ScaleGestureRecognizerCls::acceptGesture(int pointer) {
                 _initialPanZoomRotationFactor = 0.0;
             } else {
                 _initialPanZoomScaleFactor = _scaleFactor() / _pointerScaleFactor();
-                _initialPanZoomRotationFactor = _pointerPanZooms->values()->map([=] (_PointerPanZoomData x)                 {
+                _initialPanZoomRotationFactor = _pointerPanZooms->values->map([=] (_PointerPanZoomData x)                 {
                     x->rotation;
                 })->reduce([=] (double a,double b)                 {
                     a + b;
@@ -208,7 +208,7 @@ double ScaleGestureRecognizerCls::_pointerVerticalScaleFactor() {
 
 double ScaleGestureRecognizerCls::_scaleFactor() {
     double scale = _pointerScaleFactor();
-    for (_PointerPanZoomData p : _pointerPanZooms->values()) {
+    for (_PointerPanZoomData p : _pointerPanZooms->values) {
         scale = p->scale / _initialPanZoomScaleFactor;
     }
     return scale;
@@ -216,7 +216,7 @@ double ScaleGestureRecognizerCls::_scaleFactor() {
 
 double ScaleGestureRecognizerCls::_horizontalScaleFactor() {
     double scale = _pointerHorizontalScaleFactor();
-    for (_PointerPanZoomData p : _pointerPanZooms->values()) {
+    for (_PointerPanZoomData p : _pointerPanZooms->values) {
         scale = p->scale / _initialPanZoomScaleFactor;
     }
     return scale;
@@ -224,32 +224,32 @@ double ScaleGestureRecognizerCls::_horizontalScaleFactor() {
 
 double ScaleGestureRecognizerCls::_verticalScaleFactor() {
     double scale = _pointerVerticalScaleFactor();
-    for (_PointerPanZoomData p : _pointerPanZooms->values()) {
+    for (_PointerPanZoomData p : _pointerPanZooms->values) {
         scale = p->scale / _initialPanZoomScaleFactor;
     }
     return scale;
 }
 
 int ScaleGestureRecognizerCls::_pointerCount() {
-    return _pointerPanZooms->length() + _pointerQueue->length();
+    return _pointerPanZooms->length + _pointerQueue->length;
 }
 
 double ScaleGestureRecognizerCls::_computeRotationFactor() {
     double factor = 0.0;
     if (_initialLine != nullptr && _currentLine != nullptr) {
-        double fx = _initialLine!->pointerStartLocation->dx();
-        double fy = _initialLine!->pointerStartLocation->dy();
-        double sx = _initialLine!->pointerEndLocation->dx();
-        double sy = _initialLine!->pointerEndLocation->dy();
-        double nfx = _currentLine!->pointerStartLocation->dx();
-        double nfy = _currentLine!->pointerStartLocation->dy();
-        double nsx = _currentLine!->pointerEndLocation->dx();
-        double nsy = _currentLine!->pointerEndLocation->dy();
+        double fx = _initialLine!->pointerStartLocation->dx;
+        double fy = _initialLine!->pointerStartLocation->dy;
+        double sx = _initialLine!->pointerEndLocation->dx;
+        double sy = _initialLine!->pointerEndLocation->dy;
+        double nfx = _currentLine!->pointerStartLocation->dx;
+        double nfy = _currentLine!->pointerStartLocation->dy;
+        double nsx = _currentLine!->pointerEndLocation->dx;
+        double nsy = _currentLine!->pointerEndLocation->dy;
         double angle1 = math->atan2(fy - sy, fx - sx);
         double angle2 = math->atan2(nfy - nsy, nfx - nsx);
         factor = angle2 - angle1;
     }
-    for (_PointerPanZoomData p : _pointerPanZooms->values()) {
+    for (_PointerPanZoomData p : _pointerPanZooms->values) {
         factor = p->rotation;
     }
     factor = _initialPanZoomRotationFactor;
@@ -259,10 +259,10 @@ double ScaleGestureRecognizerCls::_computeRotationFactor() {
 void ScaleGestureRecognizerCls::_update() {
     Offset previousFocalPoint = _currentFocalPoint;
     Offset focalPoint = OffsetCls::zero;
-    for (int pointer : _pointerLocations->keys()) {
+    for (int pointer : _pointerLocations->keys) {
         focalPoint = _pointerLocations[pointer]!;
     }
-    for (_PointerPanZoomData p : _pointerPanZooms->values()) {
+    for (_PointerPanZoomData p : _pointerPanZooms->values) {
         focalPoint = p->focalPoint;
     }
     _currentFocalPoint = _pointerCount() > 0? focalPoint / _pointerCount()->toDouble() : OffsetCls::zero;
@@ -274,9 +274,9 @@ void ScaleGestureRecognizerCls::_update() {
         _localFocalPoint = PointerEventCls->transformPosition(_lastTransform, _currentFocalPoint!);
         _delta = _localFocalPoint - localPreviousFocalPoint;
     }
-    int count = _pointerLocations->keys()->length();
+    int count = _pointerLocations->keys->length;
     Offset pointerFocalPoint = OffsetCls::zero;
-    for (int pointer : _pointerLocations->keys()) {
+    for (int pointer : _pointerLocations->keys) {
         pointerFocalPoint = _pointerLocations[pointer]!;
     }
     if (count > 0) {
@@ -285,7 +285,7 @@ void ScaleGestureRecognizerCls::_update() {
     double totalDeviation = 0.0;
     double totalHorizontalDeviation = 0.0;
     double totalVerticalDeviation = 0.0;
-    for (int pointer : _pointerLocations->keys()) {
+    for (int pointer : _pointerLocations->keys) {
         totalDeviation = (pointerFocalPoint - _pointerLocations[pointer]!)->distance;
         totalHorizontalDeviation = (pointerFocalPoint->dx - _pointerLocations[pointer]!->dx)->abs();
         totalVerticalDeviation = (pointerFocalPoint->dy - _pointerLocations[pointer]!->dy)->abs();
@@ -296,8 +296,8 @@ void ScaleGestureRecognizerCls::_update() {
 }
 
 void ScaleGestureRecognizerCls::_updateLines() {
-    int count = _pointerLocations->keys()->length();
-    assert(_pointerQueue->length() >= count);
+    int count = _pointerLocations->keys->length;
+    assert(_pointerQueue->length >= count);
     if ( < 2) {
         _initialLine = _currentLine;
     } else     {
@@ -321,7 +321,7 @@ bool ScaleGestureRecognizerCls::_reconfigure(int pointer) {
         _initialPanZoomRotationFactor = 0.0;
     } else {
         _initialPanZoomScaleFactor = _scaleFactor() / _pointerScaleFactor();
-        _initialPanZoomRotationFactor = _pointerPanZooms->values()->map([=] (_PointerPanZoomData x)         {
+        _initialPanZoomRotationFactor = _pointerPanZooms->values->map([=] (_PointerPanZoomData x)         {
             x->rotation;
         })->reduce([=] (double a,double b)         {
             a + b;
@@ -333,7 +333,7 @@ bool ScaleGestureRecognizerCls::_reconfigure(int pointer) {
             Velocity velocity = tracker->getVelocity();
             if (_isFlingGesture(velocity)) {
                 Offset pixelsPerSecond = velocity->pixelsPerSecond;
-                if (pixelsPerSecond->distanceSquared > kMaxFlingVelocity * kMaxFlingVelocity) {
+                if (pixelsPerSecond->distanceSquared() > kMaxFlingVelocity * kMaxFlingVelocity) {
                     velocity = make<VelocityCls>((pixelsPerSecond / pixelsPerSecond->distance) * kMaxFlingVelocity);
                 }
                 <void>invokeCallback(__s("onEnd"), [=] ()                 {
@@ -357,7 +357,7 @@ void ScaleGestureRecognizerCls::_advanceStateMachine(PointerDeviceKind pointerDe
     }
     if (_state == _ScaleStateCls::possible) {
         double spanDelta = (_currentSpan - _initialSpan)->abs();
-        double focalPointDelta = (_currentFocalPoint! - _initialFocalPoint)->distance();
+        double focalPointDelta = (_currentFocalPoint! - _initialFocalPoint)->distance;
         if (spanDelta > computeScaleSlop(pointerDeviceKind) || focalPointDelta > computePanSlop(pointerDeviceKind, gestureSettings) || math->max(_scaleFactor() / _pointerScaleFactor(), _pointerScaleFactor() / _scaleFactor()) > 1.05) {
             resolve(GestureDispositionCls::accepted);
         }

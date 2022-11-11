@@ -6,14 +6,14 @@ template<typename T> void _StreamSinkImplCls<T>::add(T data) {
     if (_isClosed) {
         ;
     }
-    _controller()->add(data);
+    _controller->add(data);
 }
 
 template<typename T> void _StreamSinkImplCls<T>::addError(error , StackTrace stackTrace) {
     if (_isClosed) {
         ;
     }
-    _controller()->addError(error, stackTrace);
+    _controller->addError(error, stackTrace);
 }
 
 template<typename T> Future _StreamSinkImplCls<T>::addStream(Stream<T> stream) {
@@ -94,7 +94,7 @@ template<typename T> StreamController<T> _StreamSinkImplCls<T>::_controller() {
     if (_controllerInstance == nullptr) {
         _controllerInstance = <T>make<StreamControllerCls>(true);
         _controllerCompleter = make<CompleterCls>();
-        _target->addStream(_controller()->stream())->then([=] () {
+        _target->addStream(_controller->stream)->then([=] () {
             if (_isBound) {
                 _controllerCompleter!->complete(this);
                 _controllerCompleter = nullptr;
@@ -128,26 +128,26 @@ void _IOSinkImplCls::encoding(Encoding value) {
 
 void _IOSinkImplCls::write(Object obj) {
     String string = __s("$obj");
-    if (stringValue->isEmpty)     {
+    if (stringValue->isEmpty())     {
         return;
     }
     add(_encoding->encode(stringValue));
 }
 
 void _IOSinkImplCls::writeAll(Iterable objects, String separator) {
-    Iterator iterator = objects->iterator;
+    Iterator iterator = objects->iterator();
     if (!iterator->moveNext())     {
         return;
     }
-    if (separator->isEmpty) {
+    if (separator->isEmpty()) {
         do {
-            write(iterator->current);
+            write(iterator->current());
         } while (iterator->moveNext());
     } else {
-        write(iterator->current);
+        write(iterator->current());
         while (iterator->moveNext()) {
             write(separator);
-            write(iterator->current);
+            write(iterator->current());
         }
     }
 }

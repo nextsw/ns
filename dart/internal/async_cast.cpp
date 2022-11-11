@@ -1,6 +1,6 @@
 #include "async_cast.hpp"
 template<typename S, typename T> bool CastStreamCls<S, T>::isBroadcast() {
-    return _source->isBroadcast();
+    return _source->isBroadcast;
 }
 
 template<typename S, typename T> StreamSubscription<T> CastStreamCls<S, T>::listen(bool cancelOnError, void onData(T data) , void onDone() , void  onError() ) {

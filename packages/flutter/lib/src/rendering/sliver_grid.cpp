@@ -120,8 +120,8 @@ String SliverGridParentDataCls::toString() {
 
 RenderSliverGridCls::RenderSliverGridCls(Unknown childManager, SliverGridDelegate gridDelegate) {
     {
-        assert(gridDelegate() != nullptr);
-        _gridDelegate = gridDelegate();
+        assert(gridDelegate != nullptr);
+        _gridDelegate = gridDelegate;
     }
 }
 
@@ -140,7 +140,7 @@ void RenderSliverGridCls::gridDelegate(SliverGridDelegate value) {
     if (_gridDelegate == value) {
         return;
     }
-    if (value->runtimeType() != _gridDelegate->runtimeType || value->shouldRelayout(_gridDelegate)) {
+    if (value->runtimeType != _gridDelegate->runtimeType || value->shouldRelayout(_gridDelegate)) {
         markNeedsLayout();
     }
     _gridDelegate = value;

@@ -19,7 +19,7 @@ String FormatExceptionCls::toString() {
     int offset = this->offset;
     Object source = this->source;
     if (is<String>(source)) {
-        if (offset != nullptr && ( < 0 || offset > source->length)) {
+        if (offset != nullptr && ( < 0 || offset > as<StringCls>(source)->length)) {
             offset = nullptr;
         }
         if (offset == nullptr) {
@@ -52,8 +52,8 @@ String FormatExceptionCls::toString() {
         } else {
             report = __s(" (at character ${offset + 1})\n");
         }
-        int lineEnd = source->length;
-        for (;  < source->length; i++) {
+        int lineEnd = as<StringCls>(source)->length;
+        for (;  < as<StringCls>(source)->length; i++) {
             int char = source->codeUnitAt(i);
             if (char == 0x0a || char == 0x0d) {
                 lineEnd = i;
@@ -81,7 +81,7 @@ String FormatExceptionCls::toString() {
             }
 ;
             }        }
-        String slice = source->substring(start, end);
+        String slice = as<StringCls>(source)->substring(start, end);
         int markOffset = offset - start + prefix->length;
         return __s("$report$prefix$slice$postfix\n${" " * markOffset}^\n");
     } else {

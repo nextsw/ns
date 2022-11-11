@@ -41,11 +41,11 @@ ViewConfiguration FlutterWindowCls::viewConfiguration() {
 }
 
 VoidCallback SingletonFlutterWindowCls::onMetricsChanged() {
-    return platformDispatcher->onMetricsChanged;
+    return platformDispatcher->onMetricsChanged();
 }
 
 void SingletonFlutterWindowCls::onMetricsChanged(VoidCallback callback) {
-    platformDispatcher->onMetricsChanged = callback;
+    platformDispatcher->onMetricsChanged() = callback;
 }
 
 Locale SingletonFlutterWindowCls::locale() {
@@ -61,107 +61,107 @@ Locale SingletonFlutterWindowCls::computePlatformResolvedLocale(List<Locale> sup
 }
 
 VoidCallback SingletonFlutterWindowCls::onLocaleChanged() {
-    return platformDispatcher->onLocaleChanged;
+    return platformDispatcher->onLocaleChanged();
 }
 
 void SingletonFlutterWindowCls::onLocaleChanged(VoidCallback callback) {
-    platformDispatcher->onLocaleChanged = callback;
+    platformDispatcher->onLocaleChanged() = callback;
 }
 
 String SingletonFlutterWindowCls::initialLifecycleState() {
-    return platformDispatcher->initialLifecycleState;
+    return platformDispatcher->initialLifecycleState();
 }
 
 double SingletonFlutterWindowCls::textScaleFactor() {
-    return platformDispatcher->textScaleFactor;
+    return platformDispatcher->textScaleFactor();
 }
 
 bool SingletonFlutterWindowCls::nativeSpellCheckServiceDefined() {
-    return platformDispatcher->nativeSpellCheckServiceDefined;
+    return platformDispatcher->nativeSpellCheckServiceDefined();
 }
 
 bool SingletonFlutterWindowCls::brieflyShowPassword() {
-    return platformDispatcher->brieflyShowPassword;
+    return platformDispatcher->brieflyShowPassword();
 }
 
 bool SingletonFlutterWindowCls::alwaysUse24HourFormat() {
-    return platformDispatcher->alwaysUse24HourFormat;
+    return platformDispatcher->alwaysUse24HourFormat();
 }
 
 VoidCallback SingletonFlutterWindowCls::onTextScaleFactorChanged() {
-    return platformDispatcher->onTextScaleFactorChanged;
+    return platformDispatcher->onTextScaleFactorChanged();
 }
 
 void SingletonFlutterWindowCls::onTextScaleFactorChanged(VoidCallback callback) {
-    platformDispatcher->onTextScaleFactorChanged = callback;
+    platformDispatcher->onTextScaleFactorChanged() = callback;
 }
 
 Brightness SingletonFlutterWindowCls::platformBrightness() {
-    return platformDispatcher->platformBrightness;
+    return platformDispatcher->platformBrightness();
 }
 
 VoidCallback SingletonFlutterWindowCls::onPlatformBrightnessChanged() {
-    return platformDispatcher->onPlatformBrightnessChanged;
+    return platformDispatcher->onPlatformBrightnessChanged();
 }
 
 void SingletonFlutterWindowCls::onPlatformBrightnessChanged(VoidCallback callback) {
-    platformDispatcher->onPlatformBrightnessChanged = callback;
+    platformDispatcher->onPlatformBrightnessChanged() = callback;
 }
 
 String SingletonFlutterWindowCls::systemFontFamily() {
-    return platformDispatcher->systemFontFamily;
+    return platformDispatcher->systemFontFamily();
 }
 
 VoidCallback SingletonFlutterWindowCls::onSystemFontFamilyChanged() {
-    return platformDispatcher->onSystemFontFamilyChanged;
+    return platformDispatcher->onSystemFontFamilyChanged();
 }
 
 void SingletonFlutterWindowCls::onSystemFontFamilyChanged(VoidCallback callback) {
-    platformDispatcher->onSystemFontFamilyChanged = callback;
+    platformDispatcher->onSystemFontFamilyChanged() = callback;
 }
 
 FrameCallback SingletonFlutterWindowCls::onBeginFrame() {
-    return platformDispatcher->onBeginFrame;
+    return platformDispatcher->onBeginFrame();
 }
 
 void SingletonFlutterWindowCls::onBeginFrame(FrameCallback callback) {
-    platformDispatcher->onBeginFrame = callback;
+    platformDispatcher->onBeginFrame() = callback;
 }
 
 VoidCallback SingletonFlutterWindowCls::onDrawFrame() {
-    return platformDispatcher->onDrawFrame;
+    return platformDispatcher->onDrawFrame();
 }
 
 void SingletonFlutterWindowCls::onDrawFrame(VoidCallback callback) {
-    platformDispatcher->onDrawFrame = callback;
+    platformDispatcher->onDrawFrame() = callback;
 }
 
 TimingsCallback SingletonFlutterWindowCls::onReportTimings() {
-    return platformDispatcher->onReportTimings;
+    return platformDispatcher->onReportTimings();
 }
 
 void SingletonFlutterWindowCls::onReportTimings(TimingsCallback callback) {
-    platformDispatcher->onReportTimings = callback;
+    platformDispatcher->onReportTimings() = callback;
 }
 
 PointerDataPacketCallback SingletonFlutterWindowCls::onPointerDataPacket() {
-    return platformDispatcher->onPointerDataPacket;
+    return platformDispatcher->onPointerDataPacket();
 }
 
 void SingletonFlutterWindowCls::onPointerDataPacket(PointerDataPacketCallback callback) {
-    platformDispatcher->onPointerDataPacket = callback;
+    platformDispatcher->onPointerDataPacket() = callback;
 }
 
 KeyDataCallback SingletonFlutterWindowCls::onKeyData() {
-    return platformDispatcher->onKeyData;
+    return platformDispatcher->onKeyData();
 }
 
 void SingletonFlutterWindowCls::onKeyData(KeyDataCallback callback) {
-    platformDispatcher->onKeyData = callback;
+    platformDispatcher->onKeyData() = callback;
 }
 
 String SingletonFlutterWindowCls::defaultRouteName() {
-    return platformDispatcher->defaultRouteName;
+    return platformDispatcher->defaultRouteName();
 }
 
 void SingletonFlutterWindowCls::scheduleFrame() {
@@ -169,47 +169,47 @@ void SingletonFlutterWindowCls::scheduleFrame() {
 }
 
 bool SingletonFlutterWindowCls::semanticsEnabled() {
-    return platformDispatcher->semanticsEnabled;
+    return platformDispatcher->semanticsEnabled();
 }
 
 VoidCallback SingletonFlutterWindowCls::onSemanticsEnabledChanged() {
-    return platformDispatcher->onSemanticsEnabledChanged;
+    return platformDispatcher->onSemanticsEnabledChanged();
 }
 
 void SingletonFlutterWindowCls::onSemanticsEnabledChanged(VoidCallback callback) {
-    platformDispatcher->onSemanticsEnabledChanged = callback;
+    platformDispatcher->onSemanticsEnabledChanged() = callback;
 }
 
 FrameData SingletonFlutterWindowCls::frameData() {
-    return platformDispatcher->frameData;
+    return platformDispatcher->frameData();
 }
 
 VoidCallback SingletonFlutterWindowCls::onFrameDataChanged() {
-    return platformDispatcher->onFrameDataChanged;
+    return platformDispatcher->onFrameDataChanged();
 }
 
 void SingletonFlutterWindowCls::onFrameDataChanged(VoidCallback callback) {
-    platformDispatcher->onFrameDataChanged = callback;
+    platformDispatcher->onFrameDataChanged() = callback;
 }
 
 SemanticsActionCallback SingletonFlutterWindowCls::onSemanticsAction() {
-    return platformDispatcher->onSemanticsAction;
+    return platformDispatcher->onSemanticsAction();
 }
 
 void SingletonFlutterWindowCls::onSemanticsAction(SemanticsActionCallback callback) {
-    platformDispatcher->onSemanticsAction = callback;
+    platformDispatcher->onSemanticsAction() = callback;
 }
 
 AccessibilityFeatures SingletonFlutterWindowCls::accessibilityFeatures() {
-    return platformDispatcher->accessibilityFeatures;
+    return platformDispatcher->accessibilityFeatures();
 }
 
 VoidCallback SingletonFlutterWindowCls::onAccessibilityFeaturesChanged() {
-    return platformDispatcher->onAccessibilityFeaturesChanged;
+    return platformDispatcher->onAccessibilityFeaturesChanged();
 }
 
 void SingletonFlutterWindowCls::onAccessibilityFeaturesChanged(VoidCallback callback) {
-    platformDispatcher->onAccessibilityFeaturesChanged = callback;
+    platformDispatcher->onAccessibilityFeaturesChanged() = callback;
 }
 
 void SingletonFlutterWindowCls::updateSemantics(SemanticsUpdate update) {
@@ -221,11 +221,11 @@ void SingletonFlutterWindowCls::sendPlatformMessage(PlatformMessageResponseCallb
 }
 
 PlatformMessageCallback SingletonFlutterWindowCls::onPlatformMessage() {
-    return platformDispatcher->onPlatformMessage;
+    return platformDispatcher->onPlatformMessage();
 }
 
 void SingletonFlutterWindowCls::onPlatformMessage(PlatformMessageCallback callback) {
-    platformDispatcher->onPlatformMessage = callback;
+    platformDispatcher->onPlatformMessage() = callback;
 }
 
 void SingletonFlutterWindowCls::setIsolateDebugName(String name) {

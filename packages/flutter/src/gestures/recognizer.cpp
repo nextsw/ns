@@ -98,7 +98,7 @@ void OneSequenceGestureRecognizerCls::rejectGesture(int pointer) {
 }
 
 void OneSequenceGestureRecognizerCls::resolve(GestureDisposition disposition) {
-    List<GestureArenaEntry> localEntries = <GestureArenaEntry>of(_entries->values());
+    List<GestureArenaEntry> localEntries = <GestureArenaEntry>of(_entries->values);
     _entries->clear();
     for (GestureArenaEntry entry : localEntries) {
         entry->resolve(disposition);
@@ -186,7 +186,7 @@ OffsetPair PrimaryPointerGestureRecognizerCls::initialPosition() {
 
 void PrimaryPointerGestureRecognizerCls::addAllowedPointer(PointerDownEvent event) {
     super->addAllowedPointer(event);
-    if (state() == GestureRecognizerStateCls::ready) {
+    if (state == GestureRecognizerStateCls::ready) {
         _state = GestureRecognizerStateCls::possible;
         _primaryPointer = event->pointer;
         _initialPosition = make<OffsetPairCls>(event->localPosition, event->position);
@@ -205,8 +205,8 @@ void PrimaryPointerGestureRecognizerCls::handleNonAllowedPointer(PointerDownEven
 }
 
 void PrimaryPointerGestureRecognizerCls::handleEvent(PointerEvent event) {
-    assert(state() != GestureRecognizerStateCls::ready);
-    if (state() == GestureRecognizerStateCls::possible && event->pointer == primaryPointer()) {
+    assert(state != GestureRecognizerStateCls::ready);
+    if (state == GestureRecognizerStateCls::possible && event->pointer == primaryPointer()) {
         bool isPreAcceptSlopPastTolerance = !_gestureAccepted && preAcceptSlopTolerance != nullptr && _getGlobalDistance(event) > preAcceptSlopTolerance!;
         bool isPostAcceptSlopPastTolerance = _gestureAccepted && postAcceptSlopTolerance != nullptr && _getGlobalDistance(event) > postAcceptSlopTolerance!;
         if (is<PointerMoveEvent>(event) && (isPreAcceptSlopPastTolerance || isPostAcceptSlopPastTolerance)) {
@@ -235,14 +235,14 @@ void PrimaryPointerGestureRecognizerCls::acceptGesture(int pointer) {
 }
 
 void PrimaryPointerGestureRecognizerCls::rejectGesture(int pointer) {
-    if (pointer == primaryPointer() && state() == GestureRecognizerStateCls::possible) {
+    if (pointer == primaryPointer() && state == GestureRecognizerStateCls::possible) {
         _stopTimer();
         _state = GestureRecognizerStateCls::defunct;
     }
 }
 
 void PrimaryPointerGestureRecognizerCls::didStopTrackingLastPointer(int pointer) {
-    assert(state() != GestureRecognizerStateCls::ready);
+    assert(state != GestureRecognizerStateCls::ready);
     _stopTimer();
     _state = GestureRecognizerStateCls::ready;
     _initialPosition = nullptr;
@@ -256,7 +256,7 @@ void PrimaryPointerGestureRecognizerCls::dispose() {
 
 void PrimaryPointerGestureRecognizerCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<GestureRecognizerState>make<EnumPropertyCls>(__s("state"), state()));
+    properties->add(<GestureRecognizerState>make<EnumPropertyCls>(__s("state"), state));
 }
 
 void PrimaryPointerGestureRecognizerCls::_stopTimer() {
@@ -276,7 +276,7 @@ void OffsetPairCls::fromEventPosition(PointerEvent event) {
 }
 
 void OffsetPairCls::fromEventDelta(PointerEvent event) {
-    return make<OffsetPairCls>(event->localDelta, event->delta);
+    return make<OffsetPairCls>(event->localDelta(), event->delta);
 }
 
 OffsetPair OffsetPairCls::+(OffsetPair other) {

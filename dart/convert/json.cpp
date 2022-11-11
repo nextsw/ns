@@ -79,7 +79,7 @@ String JsonEncoderCls::convert(Object object) {
 
 ChunkedConversionSink<Object> JsonEncoderCls::startChunkedConversion(Sink<String> sink) {
     if (is<_Utf8EncoderSink>(sink)) {
-        return make<_JsonUtf8EncoderSinkCls>(sink->_sink, _toEncodable, JsonUtf8EncoderCls->_utf8Encode(indent), JsonUtf8EncoderCls::_defaultBufferSize);
+        return make<_JsonUtf8EncoderSinkCls>(as<_Utf8EncoderSinkCls>(sink)->_sink, _toEncodable, JsonUtf8EncoderCls->_utf8Encode(indent), JsonUtf8EncoderCls::_defaultBufferSize);
     }
     return make<_JsonEncoderSinkCls>(is<StringConversionSink>(sink)? sink : StringConversionSinkCls->from(sink), _toEncodable, indent);
 }
@@ -107,7 +107,7 @@ List<int> JsonUtf8EncoderCls::convert(Object object) {
     auto bytes = makeList();
     InlineMethod;
     _JsonUtf8StringifierCls->stringify(object, _indent, _toEncodable, _bufferSize, addChunk);
-    if (bytes->length() == 1)     {
+    if (bytes->length == 1)     {
         return bytes[0];
     }
     auto length = 0;
@@ -127,7 +127,7 @@ List<int> JsonUtf8EncoderCls::convert(Object object) {
 ChunkedConversionSink<Object> JsonUtf8EncoderCls::startChunkedConversion(Sink<List<int>> sink) {
     ByteConversionSink byteSink;
     if (is<ByteConversionSink>(sink)) {
-        byteSink = sink;
+        byteSink = as<ByteConversionSinkCls>(sink);
     } else {
         byteSink = ByteConversionSinkCls->from(sink);
     }
@@ -142,7 +142,7 @@ List<int> JsonUtf8EncoderCls::_utf8Encode(String stringValue) {
     if (stringValue == nullptr)     {
         return nullptr;
     }
-    if (stringValue->isEmpty)     {
+    if (stringValue->isEmpty())     {
         return make<Uint8ListCls>(0);
     }
     checkAscii:;
@@ -152,7 +152,7 @@ List<int> JsonUtf8EncoderCls::_utf8Encode(String stringValue) {
                             break checkAscii;
             }
         }
-        return stringValue->codeUnits;
+        return stringValue->codeUnits();
     }    return utf8->encode(stringValue);
 }
 
@@ -278,10 +278,10 @@ void _JsonStringifierCls::writeObject(Object object) {
 
 bool _JsonStringifierCls::writeJsonValue(Object object) {
     if (is<num>(object)) {
-        if (!object->isFinite)         {
+        if (!as<numCls>(object)->isFinite())         {
             return false;
         }
-        writeNumber(object);
+        writeNumber(as<numCls>(object));
         return true;
     } else     {
         if (identical(object, true)) {
@@ -298,20 +298,20 @@ bool _JsonStringifierCls::writeJsonValue(Object object) {
     } else     {
         if (is<String>(object)) {
         writeString(__s("""));
-        writeStringContent(object);
+        writeStringContent(as<StringCls>(object));
         writeString(__s("""));
         return true;
     } else     {
         if (is<List>(object)) {
-        _checkCycle(object);
-        writeList(object);
-        _removeSeen(object);
+        _checkCycle(as<ListCls>(object));
+        writeList(as<ListCls>(object));
+        _removeSeen(as<ListCls>(object));
         return true;
     } else     {
         if (is<Map>(object)) {
-        _checkCycle(object);
-        auto success = writeMap(object);
-        _removeSeen(object);
+        _checkCycle(as<MapCls>(object));
+        auto success = writeMap(as<MapCls>(object));
+        _removeSeen(as<MapCls>(object));
         return success;
     } else {
         return false;
@@ -337,7 +337,7 @@ void _JsonStringifierCls::writeList(List<Object> list) {
 }
 
 bool _JsonStringifierCls::writeMap(Map<Object, Object> map) {
-    if (map->isEmpty) {
+    if (map->isEmpty()) {
         writeString(__s("{}"));
         return true;
     }
@@ -374,7 +374,7 @@ _JsonStringifierCls::_JsonStringifierCls(dynamic toEncodable(dynamic o) ) {
 }
 
 void _JsonStringifierCls::_checkCycle(Object object) {
-    for (;  < _seen->length(); i++) {
+    for (;  < _seen->length; i++) {
         if (identical(object, _seen[i])) {
             ;
         }
@@ -409,7 +409,7 @@ void _JsonPrettyPrintMixinCls::writeList(List<Object> list) {
 }
 
 bool _JsonPrettyPrintMixinCls::writeMap(Map<Object, Object> map) {
-    if (map->isEmpty) {
+    if (map->isEmpty()) {
         writeString(__s("{}"));
         return true;
     }
@@ -605,7 +605,7 @@ String _JsonUtf8StringifierCls::_partialResult() {
 
 void _JsonUtf8StringifierPrettyCls::writeIndentation(int count) {
     auto indent = this->indent;
-    auto indentLength = indent->length();
+    auto indentLength = indent->length;
     if (indentLength == 1) {
         auto char = indent[0];
         while (count > 0) {

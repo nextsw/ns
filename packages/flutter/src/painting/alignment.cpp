@@ -1,6 +1,6 @@
 #include "alignment.hpp"
 AlignmentGeometry AlignmentGeometryCls::add(AlignmentGeometry other) {
-    return make<_MixedAlignmentCls>(_x() + other->_x, _start() + other->_start, _y() + other->_y);
+    return make<_MixedAlignmentCls>(_x() + other->_x(), _start + other->_start, _y() + other->_y());
 }
 
 AlignmentGeometry AlignmentGeometryCls::lerp(AlignmentGeometry a, AlignmentGeometry b, double t) {
@@ -20,25 +20,25 @@ AlignmentGeometry AlignmentGeometryCls::lerp(AlignmentGeometry a, AlignmentGeome
     if (is<AlignmentDirectional>(a) && is<AlignmentDirectional>(b)) {
         return AlignmentDirectionalCls->lerp(a, b, t);
     }
-    return make<_MixedAlignmentCls>(ui->lerpDouble(a->_x, b->_x, t)!, ui->lerpDouble(a->_start, b->_start, t)!, ui->lerpDouble(a->_y, b->_y, t)!);
+    return make<_MixedAlignmentCls>(ui->lerpDouble(a->_x(), b->_x(), t)!, ui->lerpDouble(a->_start, b->_start, t)!, ui->lerpDouble(a->_y(), b->_y(), t)!);
 }
 
 String AlignmentGeometryCls::toString() {
-    if (_start() == 0.0) {
+    if (_start == 0.0) {
         return AlignmentCls->_stringify(_x(), _y());
     }
     if (_x() == 0.0) {
-        return AlignmentDirectionalCls->_stringify(_start(), _y());
+        return AlignmentDirectionalCls->_stringify(_start, _y());
     }
     return __s("${Alignment._stringify(_x, _y)} + ${AlignmentDirectional._stringify(_start, 0.0)}");
 }
 
 bool AlignmentGeometryCls::==(Object other) {
-    return is<AlignmentGeometry>(other) && other->_x == _x() && other->_start == _start() && other->_y == _y();
+    return is<AlignmentGeometry>(other) && other->_x == _x() && other->_start == _start && other->_y == _y();
 }
 
 int AlignmentGeometryCls::hashCode() {
-    return ObjectCls->hash(_x(), _start(), _y());
+    return ObjectCls->hash(_x(), _start, _y());
 }
 
 AlignmentCls::AlignmentCls(double x, double y) {
@@ -50,7 +50,7 @@ AlignmentCls::AlignmentCls(double x, double y) {
 
 AlignmentGeometry AlignmentCls::add(AlignmentGeometry other) {
     if (is<Alignment>(other)) {
-        return this + other;
+        return this + as<AlignmentCls>(other);
     }
     return super->add(other);
 }
@@ -181,7 +181,7 @@ AlignmentDirectionalCls::AlignmentDirectionalCls(double start, double y) {
 
 AlignmentGeometry AlignmentDirectionalCls::add(AlignmentGeometry other) {
     if (is<AlignmentDirectional>(other)) {
-        return this + other;
+        return this + as<AlignmentDirectionalCls>(other);
     }
     return super->add(other);
 }

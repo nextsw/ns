@@ -11,7 +11,7 @@ String Utf8CodecCls::name() {
 
 String Utf8CodecCls::decode(bool allowMalformed, List<int> codeUnits) {
     Utf8Decoder decoder = allowMalformed or _allowMalformed? make<Utf8DecoderCls>(true) : make<Utf8DecoderCls>(false);
-    return decoder()->convert(codeUnits);
+    return decoder->convert(codeUnits);
 }
 
 Utf8Encoder Utf8CodecCls::encoder() {
@@ -197,7 +197,7 @@ String Utf8DecoderCls::convert(List<int> codeUnits, int end, int start) {
 ByteConversionSink Utf8DecoderCls::startChunkedConversion(Sink<String> sink) {
     StringConversionSink stringSink;
     if (is<StringConversionSink>(sink)) {
-        stringSink = sink;
+        stringSink = as<StringConversionSinkCls>(sink);
     } else {
         stringSink = StringConversionSinkCls->from(sink);
     }
@@ -236,7 +236,7 @@ String _Utf8DecoderCls::convertGeneral(List<int> codeUnits, int maybeEnd, bool s
     Uint8List bytes;
     int errorOffset;
     if (is<Uint8List>(codeUnits)) {
-        bytes = codeUnits;
+        bytes = as<Uint8ListCls>(codeUnits);
         errorOffset = 0;
     } else {
         bytes = _makeUint8List(codeUnits, start, end);

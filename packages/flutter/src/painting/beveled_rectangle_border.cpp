@@ -17,7 +17,7 @@ ShapeBorder BeveledRectangleBorderCls::scale(double t) {
 ShapeBorder BeveledRectangleBorderCls::lerpFrom(ShapeBorder a, double t) {
     assert(t != nullptr);
     if (is<BeveledRectangleBorder>(a)) {
-        return make<BeveledRectangleBorderCls>(BorderSideCls->lerp(a->side, side, t), BorderRadiusGeometryCls->lerp(a->borderRadius, borderRadius, t)!);
+        return make<BeveledRectangleBorderCls>(BorderSideCls->lerp(as<BeveledRectangleBorderCls>(a)->side, side, t), BorderRadiusGeometryCls->lerp(as<BeveledRectangleBorderCls>(a)->borderRadius, borderRadius, t)!);
     }
     return super->lerpFrom(a, t);
 }
@@ -25,7 +25,7 @@ ShapeBorder BeveledRectangleBorderCls::lerpFrom(ShapeBorder a, double t) {
 ShapeBorder BeveledRectangleBorderCls::lerpTo(ShapeBorder b, double t) {
     assert(t != nullptr);
     if (is<BeveledRectangleBorder>(b)) {
-        return make<BeveledRectangleBorderCls>(BorderSideCls->lerp(side, b->side, t), BorderRadiusGeometryCls->lerp(borderRadius, b->borderRadius, t)!);
+        return make<BeveledRectangleBorderCls>(BorderSideCls->lerp(side, as<BeveledRectangleBorderCls>(b)->side, t), BorderRadiusGeometryCls->lerp(borderRadius, as<BeveledRectangleBorderCls>(b)->borderRadius, t)!);
     }
     return super->lerpTo(b, t);
 }
@@ -46,7 +46,7 @@ Path BeveledRectangleBorderCls::getOuterPath(Rect rect, TextDirection textDirect
 }
 
 void BeveledRectangleBorderCls::paint(Canvas canvas, Rect rect, TextDirection textDirection) {
-    if (rect->isEmpty) {
+    if (rect->isEmpty()) {
         return;
     }
     ;

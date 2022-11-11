@@ -124,7 +124,7 @@ void _AndroidViewStateCls::_createNewAndroidView() {
 }
 
 void _AndroidViewStateCls::_onFocusChange(bool isFocused) {
-    if (!_controller->isCreated()) {
+    if (!_controller->isCreated) {
         return;
     }
     if (!isFocused) {
@@ -280,7 +280,7 @@ Widget _PlatformViewLinkStateCls::build(BuildContext context) {
     }
     if (!_platformViewCreated) {
         return make<_PlatformViewPlaceHolderCls>([=] (Size size) {
-            if (controller->awaitingCreation) {
+            if (controller->awaitingCreation()) {
                 controller->create(size);
             }
         });
@@ -362,13 +362,13 @@ RenderObject AndroidViewSurfaceCls::createRenderObject(BuildContext context) {
     AndroidViewController viewController = as<AndroidViewController>(controller);
     if (is<ExpensiveAndroidViewController>(viewController)) {
         PlatformViewRenderBox renderBox = as<PlatformViewRenderBox>(super->createRenderObject(context));
-        viewController->pointTransformer = [=] (Offset position)         {
+        as<ExpensiveAndroidViewControllerCls>(viewController)->pointTransformer = [=] (Offset position)         {
             renderBox->globalToLocal(position);
         };
         return renderBox;
     }
     RenderAndroidView renderBox = make<RenderAndroidViewCls>(viewController, gestureRecognizers, hitTestBehavior);
-    viewController->pointTransformer = [=] (Offset position)     {
+    viewController->pointTransformer() = [=] (Offset position)     {
         renderBox->globalToLocal(position);
     };
     return renderBox;

@@ -22,10 +22,10 @@ Velocity VelocityCls::clampMagnitude(double maxValue, double minValue) {
     assert(maxValue != nullptr && maxValue >= 0.0 && maxValue >= minValue);
     double valueSquared = pixelsPerSecond->distanceSquared();
     if (valueSquared > maxValue * maxValue) {
-        return make<VelocityCls>((pixelsPerSecond / pixelsPerSecond->distance()) * maxValue);
+        return make<VelocityCls>((pixelsPerSecond / pixelsPerSecond->distance) * maxValue);
     }
     if ( < minValue * minValue) {
-        return make<VelocityCls>((pixelsPerSecond / pixelsPerSecond->distance()) * minValue);
+        return make<VelocityCls>((pixelsPerSecond / pixelsPerSecond->distance) * minValue);
     }
     return this;
 }
@@ -35,7 +35,7 @@ bool VelocityCls::==(Object other) {
 }
 
 int VelocityCls::hashCode() {
-    return pixelsPerSecond->hashCode();
+    return pixelsPerSecond->hashCode;
 }
 
 String VelocityCls::toString() {
@@ -173,7 +173,7 @@ Offset IOSScrollViewFlingVelocityTrackerCls::_previousVelocityAt(int index) {
     if (end == nullptr || start == nullptr) {
         return OffsetCls::zero;
     }
-    int dt = (end->time - start->time)->inMicroseconds;
+    int dt = (end->time - start->time)->inMicroseconds();
     assert(dt >= 0);
     return dt > 0? (end->point - start->point) * 1000 / (dt->toDouble() / 1000) : OffsetCls::zero;
 }

@@ -28,7 +28,7 @@ int hexDigitValue(int char) {
 }
 
 int parseHexByte(int index, String source) {
-    assert(index + 2 <= source->length);
+    assert(index + 2 <= source->length());
     int digit1 = hexDigitValue(source->codeUnitAt(index));
     int digit2 = hexDigitValue(source->codeUnitAt(index + 1));
     return digit1 * 16 + digit2 - (digit2 & 256);

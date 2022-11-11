@@ -34,7 +34,7 @@ void _SelectionContainerStateCls::initState() {
 void _SelectionContainerStateCls::didUpdateWidget(SelectionContainer oldWidget) {
     super->didUpdateWidget(oldWidget);
     if (oldWidget->delegate != widget->delegate) {
-        if (!oldWidget->_disabled) {
+        if (!oldWidget->_disabled()) {
             oldWidget->delegate!->_selectionContainerContext = nullptr;
             _listeners->forEach(oldWidget->delegate!->removeListener);
         }
@@ -105,7 +105,7 @@ Matrix4 _SelectionContainerStateCls::getTransformTo(RenderObject ancestor) {
 }
 
 Size _SelectionContainerStateCls::size() {
-    return (as<RenderBox>(context->findRenderObject()!))->size();
+    return (as<RenderBox>(context->findRenderObject()!))->size;
 }
 
 void _SelectionContainerStateCls::dispose() {

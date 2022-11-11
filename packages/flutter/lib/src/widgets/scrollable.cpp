@@ -81,7 +81,7 @@ void ScrollableStateCls::restoreState(bool initialRestore, RestorationBucket old
     registerForRestoration(_persistedScrollOffset, __s("offset"));
     assert(_position != nullptr);
     if (_persistedScrollOffset->value != nullptr) {
-        position()->restoreOffset(_persistedScrollOffset->value!initialRestore);
+        position->restoreOffset(_persistedScrollOffset->value!initialRestore);
     }
 }
 
@@ -110,16 +110,16 @@ void ScrollableStateCls::didUpdateWidget(Scrollable oldWidget) {
         if (oldWidget->controller == nullptr) {
             assert(_fallbackScrollController != nullptr);
             assert(widget->controller != nullptr);
-            _fallbackScrollController!->detach(position());
+            _fallbackScrollController!->detach(position);
             _fallbackScrollController!->dispose();
             _fallbackScrollController = nullptr;
         } else {
-            oldWidget->controller?->detach(position());
+            oldWidget->controller?->detach(position);
             if (widget->controller == nullptr) {
                 _fallbackScrollController = make<ScrollControllerCls>();
             }
         }
-        _effectiveScrollController()->attach(position());
+        _effectiveScrollController()->attach(position);
     }
     if (_shouldUpdatePosition(oldWidget)) {
         _updatePosition();
@@ -128,12 +128,12 @@ void ScrollableStateCls::didUpdateWidget(Scrollable oldWidget) {
 
 void ScrollableStateCls::dispose() {
     if (widget->controller != nullptr) {
-        widget->controller!->detach(position());
+        widget->controller!->detach(position);
     } else {
-        _fallbackScrollController?->detach(position());
+        _fallbackScrollController?->detach(position);
         _fallbackScrollController?->dispose();
     }
-    position()->dispose();
+    position->dispose();
     _persistedScrollOffset->dispose();
     super->dispose();
 }
@@ -186,22 +186,22 @@ BuildContext ScrollableStateCls::storageContext() {
 
 Widget ScrollableStateCls::build(BuildContext context) {
     assert(_position != nullptr);
-    Widget result = make<_ScrollableScopeCls>(this, position(), make<ListenerCls>(_receivedPointerSignal, make<RawGestureDetectorCls>(_gestureDetectorKey, _gestureRecognizers, HitTestBehaviorCls::opaque, widget->excludeFromSemantics, make<SemanticsCls>(!widget->excludeFromSemantics, make<IgnorePointerCls>(_ignorePointerKey, _shouldIgnorePointer, false, widget->viewportBuilder(context, position()))))));
+    Widget result = make<_ScrollableScopeCls>(this, position, make<ListenerCls>(_receivedPointerSignal, make<RawGestureDetectorCls>(_gestureDetectorKey, _gestureRecognizers, HitTestBehaviorCls::opaque, widget->excludeFromSemantics, make<SemanticsCls>(!widget->excludeFromSemantics, make<IgnorePointerCls>(_ignorePointerKey, _shouldIgnorePointer, false, widget->viewportBuilder(context, position))))));
     if (!widget->excludeFromSemantics) {
-        result = <ScrollMetricsNotification>make<NotificationListenerCls>(_handleScrollMetricsNotification, make<_ScrollSemanticsCls>(_scrollSemanticsKey, position(), _physics!->allowImplicitScrolling(), widget->semanticChildCount, result));
+        result = <ScrollMetricsNotification>make<NotificationListenerCls>(_handleScrollMetricsNotification, make<_ScrollSemanticsCls>(_scrollSemanticsKey, position, _physics!->allowImplicitScrolling(), widget->semanticChildCount, result));
     }
     ScrollableDetails details = make<ScrollableDetailsCls>(widget->axisDirection, _effectiveScrollController(), widget->clipBehavior);
     result = _configuration->buildScrollbar(context, _configuration->buildOverscrollIndicator(context, result, details), details);
     SelectionRegistrar registrar = SelectionContainerCls->maybeOf(context);
     if (registrar != nullptr) {
-        result = make<_ScrollableSelectionHandlerCls>(this, position(), registrar, result);
+        result = make<_ScrollableSelectionHandlerCls>(this, position, registrar, result);
     }
     return result;
 }
 
 void ScrollableStateCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<ScrollPosition>make<DiagnosticsPropertyCls>(__s("position"), position()));
+    properties->add(<ScrollPosition>make<DiagnosticsPropertyCls>(__s("position"), position));
     properties->add(<ScrollPhysics>make<DiagnosticsPropertyCls>(__s("effective physics"), _physics));
 }
 
@@ -230,31 +230,31 @@ void ScrollableStateCls::_updatePosition() {
     }
     _position = _effectiveScrollController()->createScrollPosition(_physics!, this, oldPosition);
     assert(_position != nullptr);
-    _effectiveScrollController()->attach(position());
+    _effectiveScrollController()->attach(position);
 }
 
 bool ScrollableStateCls::_shouldUpdatePosition(Scrollable oldWidget) {
     ScrollPhysics newPhysics = widget->physics or widget->scrollBehavior?->getScrollPhysics(context);
     ScrollPhysics oldPhysics = oldWidget->physics or oldWidget->scrollBehavior?->getScrollPhysics(context);
     do {
-        if (newPhysics?->runtimeType() != oldPhysics?->runtimeType) {
+        if (newPhysics?->runtimeType != oldPhysics?->runtimeType()) {
             return true;
         }
         newPhysics = newPhysics?->parent;
         oldPhysics = oldPhysics?->parent;
     } while (newPhysics != nullptr || oldPhysics != nullptr);
-    return widget->controller?->runtimeType() != oldWidget->controller?->runtimeType;
+    return widget->controller?->runtimeType != oldWidget->controller?->runtimeType();
 }
 
 void ScrollableStateCls::_handleDragDown(DragDownDetails details) {
     assert(_drag == nullptr);
     assert(_hold == nullptr);
-    _hold = position()->hold(_disposeHold);
+    _hold = position->hold(_disposeHold);
 }
 
 void ScrollableStateCls::_handleDragStart(DragStartDetails details) {
     assert(_drag == nullptr);
-    _drag = position()->drag(details, _disposeDrag);
+    _drag = position->drag(details, _disposeDrag);
     assert(_drag != nullptr);
     assert(_hold == nullptr);
 }
@@ -287,7 +287,7 @@ void ScrollableStateCls::_disposeDrag() {
 }
 
 double ScrollableStateCls::_targetScrollOffsetForPointerScroll(double delta) {
-    return math->min(math->max(position()->pixels() + delta, position()->minScrollExtent()), position()->maxScrollExtent());
+    return math->min(math->max(position->pixels + delta, position->minScrollExtent), position->maxScrollExtent);
 }
 
 double ScrollableStateCls::_pointerSignalEventDelta(PointerScrollEvent event) {
@@ -300,12 +300,12 @@ double ScrollableStateCls::_pointerSignalEventDelta(PointerScrollEvent event) {
 
 void ScrollableStateCls::_receivedPointerSignal(PointerSignalEvent event) {
     if (is<PointerScrollEvent>(event) && _position != nullptr) {
-        if (_physics != nullptr && !_physics!->shouldAcceptUserOffset(position())) {
+        if (_physics != nullptr && !_physics!->shouldAcceptUserOffset(position)) {
             return;
         }
         double delta = _pointerSignalEventDelta(event);
         double targetScrollOffset = _targetScrollOffsetForPointerScroll(delta);
-        if (delta != 0.0 && targetScrollOffset != position()->pixels()) {
+        if (delta != 0.0 && targetScrollOffset != position->pixels) {
             GestureBindingCls::instance->pointerSignalResolver->register(event, _handlePointerScroll);
         }
     }
@@ -315,8 +315,8 @@ void ScrollableStateCls::_handlePointerScroll(PointerEvent event) {
     assert(is<PointerScrollEvent>(event));
     double delta = _pointerSignalEventDelta(as<PointerScrollEvent>(event));
     double targetScrollOffset = _targetScrollOffsetForPointerScroll(delta);
-    if (delta != 0.0 && targetScrollOffset != position()->pixels()) {
-        position()->pointerScroll(delta);
+    if (delta != 0.0 && targetScrollOffset != position->pixels) {
+        position->pointerScroll(delta);
     }
 }
 
@@ -342,7 +342,7 @@ void _ScrollableSelectionHandlerStateCls::initState() {
 void _ScrollableSelectionHandlerStateCls::didUpdateWidget(_ScrollableSelectionHandler oldWidget) {
     super->didUpdateWidget(oldWidget);
     if (oldWidget->position != widget->position) {
-        _selectionDelegate->position() = widget->position;
+        _selectionDelegate->position = widget->position;
     }
 }
 
@@ -383,7 +383,7 @@ double EdgeDraggingAutoScrollerCls::_sizeExtent(Axis scrollDirection, Size size)
 }
 
 AxisDirection EdgeDraggingAutoScrollerCls::_axisDirection() {
-    return scrollable->axisDirection();
+    return scrollable->axisDirection;
 }
 
 Axis EdgeDraggingAutoScrollerCls::_scrollDirection() {
@@ -400,36 +400,36 @@ Future<void> EdgeDraggingAutoScrollerCls::_scroll() {
     Offset viewportOrigin = globalRect->topLeft->translate(deltaToOrigin->dx, deltaToOrigin->dy);
     double viewportStart = _offsetExtent(viewportOrigin, _scrollDirection());
     double viewportEnd = viewportStart + _sizeExtent(globalRect->size, _scrollDirection());
-    double proxyStart = _offsetExtent(_dragTargetRelatedToScrollOrigin->topLeft(), _scrollDirection());
-    double proxyEnd = _offsetExtent(_dragTargetRelatedToScrollOrigin->bottomRight(), _scrollDirection());
+    double proxyStart = _offsetExtent(_dragTargetRelatedToScrollOrigin->topLeft, _scrollDirection());
+    double proxyEnd = _offsetExtent(_dragTargetRelatedToScrollOrigin->bottomRight, _scrollDirection());
     double overDrag;
     if (_axisDirection() == AxisDirectionCls::up || _axisDirection() == AxisDirectionCls::left) {
-        if (proxyEnd > viewportEnd && scrollable->position()->pixels() > scrollable->position()->minScrollExtent()) {
+        if (proxyEnd > viewportEnd && scrollable->position->pixels > scrollable->position->minScrollExtent) {
             overDrag = math->max(proxyEnd - viewportEnd, overDragMax);
-            newOffset = math->max(scrollable->position()->minScrollExtent(), scrollable->position()->pixels() - overDrag);
+            newOffset = math->max(scrollable->position->minScrollExtent, scrollable->position->pixels - overDrag);
         } else         {
-            if ( < viewportStart && scrollable->position()->pixels() < scrollable->position()->maxScrollExtent()) {
+            if ( < viewportStart && scrollable->position->pixels < scrollable->position->maxScrollExtent) {
             overDrag = math->max(viewportStart - proxyStart, overDragMax);
-            newOffset = math->min(scrollable->position()->maxScrollExtent(), scrollable->position()->pixels() + overDrag);
+            newOffset = math->min(scrollable->position->maxScrollExtent, scrollable->position->pixels + overDrag);
         }
 ;
         }    } else {
-        if ( < viewportStart && scrollable->position()->pixels() > scrollable->position()->minScrollExtent()) {
+        if ( < viewportStart && scrollable->position->pixels > scrollable->position->minScrollExtent) {
             overDrag = math->max(viewportStart - proxyStart, overDragMax);
-            newOffset = math->max(scrollable->position()->minScrollExtent(), scrollable->position()->pixels() - overDrag);
+            newOffset = math->max(scrollable->position->minScrollExtent, scrollable->position->pixels - overDrag);
         } else         {
-            if (proxyEnd > viewportEnd && scrollable->position()->pixels() < scrollable->position()->maxScrollExtent()) {
+            if (proxyEnd > viewportEnd && scrollable->position->pixels < scrollable->position->maxScrollExtent) {
             overDrag = math->max(proxyEnd - viewportEnd, overDragMax);
-            newOffset = math->min(scrollable->position()->maxScrollExtent(), scrollable->position()->pixels() + overDrag);
+            newOffset = math->min(scrollable->position->maxScrollExtent, scrollable->position->pixels + overDrag);
         }
 ;
         }    }
-    if (newOffset == nullptr || (newOffset - scrollable->position()->pixels())->abs() < 1.0) {
+    if (newOffset == nullptr || (newOffset - scrollable->position->pixels)->abs() < 1.0) {
         _scrolling = false;
         return;
     }
     Duration duration = make<DurationCls>((1000 / velocityScalar)->round());
-    await await scrollable->position()->animateTo(newOffsetduration, CurvesCls::linear);
+    await await scrollable->position->animateTo(newOffsetduration, CurvesCls::linear);
     if (onScrollViewScrolled != nullptr) {
         onScrollViewScrolled!();
     }
@@ -523,7 +523,7 @@ SelectionResult _ScrollableSelectionContainerDelegateCls::dispatchSelectionEvent
 }
 
 void _ScrollableSelectionContainerDelegateCls::ensureChildUpdated(Selectable selectable) {
-    double newRecord = state->position()->pixels();
+    double newRecord = state->position->pixels;
     double previousStartRecord = _selectableStartEdgeUpdateRecords[selectable];
     if (_currentDragStartRelatedToOrigin != nullptr && (previousStartRecord == nullptr || (newRecord - previousStartRecord)->abs() > precisionErrorTolerance)) {
         Offset deltaToOrigin = _getDeltaToScrollOrigin(state);
@@ -548,7 +548,7 @@ void _ScrollableSelectionContainerDelegateCls::dispose() {
 
 _ScrollableSelectionContainerDelegateCls::_ScrollableSelectionContainerDelegateCls(ScrollPosition position, ScrollableState state) {
     {
-        _position = position();
+        _position = position;
         _autoScroller = make<EdgeDraggingAutoScrollerCls>(state_kDefaultSelectToScrollVelocityScalar);
     }
     {
@@ -591,7 +591,7 @@ void _ScrollableSelectionContainerDelegateCls::_updateDragLocationsFromGeometrie
     Matrix4 transform = box->getTransformTo(nullptr);
     if (currentSelectionStartIndex != -1) {
         SelectionGeometry geometry = selectables[currentSelectionStartIndex]->value;
-        assert(geometry->hasSelection);
+        assert(geometry->hasSelection());
         SelectionPoint start = geometry->startSelectionPoint!;
         Matrix4 childTransform = selectables[currentSelectionStartIndex]->getTransformTo(box);
         Offset localDragStart = MatrixUtilsCls->transformPoint(childTransform, start->localPosition + make<OffsetCls>(0, -start->lineHeight / 2));
@@ -599,7 +599,7 @@ void _ScrollableSelectionContainerDelegateCls::_updateDragLocationsFromGeometrie
     }
     if (currentSelectionEndIndex != -1) {
         SelectionGeometry geometry = selectables[currentSelectionEndIndex]->value;
-        assert(geometry->hasSelection);
+        assert(geometry->hasSelection());
         SelectionPoint end = geometry->endSelectionPoint!;
         Matrix4 childTransform = selectables[currentSelectionEndIndex]->getTransformTo(box);
         Offset localDragEnd = MatrixUtilsCls->transformPoint(childTransform, end->localPosition + make<OffsetCls>(0, -end->lineHeight / 2));
@@ -669,7 +669,7 @@ int _RenderScrollSemanticsCls::semanticChildCount() {
 }
 
 void _RenderScrollSemanticsCls::semanticChildCount(int value) {
-    if (value == semanticChildCount()) {
+    if (value == semanticChildCount) {
         return;
     }
     _semanticChildCount = value;
@@ -678,19 +678,19 @@ void _RenderScrollSemanticsCls::semanticChildCount(int value) {
 
 void _RenderScrollSemanticsCls::describeSemanticsConfiguration(SemanticsConfiguration config) {
     super->describeSemanticsConfiguration(config);
-    config->isSemanticBoundary = true;
-    if (position()->haveDimensions()) {
-            auto _c1 = config;    _c1.hasImplicitScrolling = auto _c2 = allowImplicitScrolling();    _c2.scrollPosition = auto _c3 = _position->pixels();    _c3.scrollExtentMax = auto _c4 = _position->maxScrollExtent();    _c4.scrollExtentMin = auto _c5 = _position->minScrollExtent();    _c5.scrollChildCount = semanticChildCount();    _c5;    _c4;    _c3;    _c2;_c1;
+    config->isSemanticBoundary() = true;
+    if (position->haveDimensions()) {
+            auto _c1 = config;    _c1.hasImplicitScrolling = auto _c2 = allowImplicitScrolling;    _c2.scrollPosition = auto _c3 = _position->pixels;    _c3.scrollExtentMax = auto _c4 = _position->maxScrollExtent;    _c4.scrollExtentMin = auto _c5 = _position->minScrollExtent;    _c5.scrollChildCount = semanticChildCount;    _c5;    _c4;    _c3;    _c2;_c1;
     }
 }
 
 void _RenderScrollSemanticsCls::assembleSemanticsNode(Iterable<SemanticsNode> children, SemanticsConfiguration config, SemanticsNode node) {
-    if (children->isEmpty || !children->first->isTagged(RenderViewportCls::useTwoPaneSemantics)) {
+    if (children->isEmpty() || !children->first->isTagged(RenderViewportCls::useTwoPaneSemantics)) {
         super->assembleSemanticsNode(node, config, children);
         return;
     }
     _innerNode = make<SemanticsNodeCls>(showOnScreen);
-    auto _c1 = _innerNode!;_c1.isMergedIntoParent = auto _c2 = node->isPartOfNodeMerging;_c2.rect = node->rect;_c2;_c1;
+    auto _c1 = _innerNode!;_c1.isMergedIntoParent = auto _c2 = node->isPartOfNodeMerging();_c2.rect = node->rect;_c2;_c1;
     int firstVisibleIndex;
     List<SemanticsNode> excluded = makeList(ArrayItem);
     List<SemanticsNode> included = makeList();
@@ -717,13 +717,13 @@ void _RenderScrollSemanticsCls::clearSemantics() {
 
 _RenderScrollSemanticsCls::_RenderScrollSemanticsCls(bool allowImplicitScrolling, RenderBox child, ScrollPosition position, int semanticChildCount) : RenderProxyBox(child) {
     {
-        _position = position();
-        _allowImplicitScrolling = allowImplicitScrolling();
-        _semanticChildCount = semanticChildCount();
-        assert(position() != nullptr);
+        _position = position;
+        _allowImplicitScrolling = allowImplicitScrolling;
+        _semanticChildCount = semanticChildCount;
+        assert(position != nullptr);
     }
     {
-        position()->addListener(markNeedsSemanticsUpdate);
+        position->addListener(markNeedsSemanticsUpdate);
     }
 }
 
@@ -749,7 +749,7 @@ bool ScrollActionCls::isEnabled(ScrollIntent intent) {
             return true;
         }
         ScrollController primaryScrollController = PrimaryScrollControllerCls->of(focus->context!);
-        return primaryScrollController != nullptr && primaryScrollController->hasClients;
+        return primaryScrollController != nullptr && primaryScrollController->hasClients();
     }
     return false;
 }
@@ -770,7 +770,7 @@ void ScrollActionCls::invoke(ScrollIntent intent) {
         state = ScrollableCls->of(primaryScrollController->position->context->notificationContext!);
     }
     assert(state != nullptr, __s("$ScrollAction was invoked on a context that has no scrollable parent"));
-    assert(state!->position->hasPixels, __s("Scrollable must be laid out before it can be scrolled via a ScrollAction"));
+    assert(state!->position->hasPixels(), __s("Scrollable must be laid out before it can be scrolled via a ScrollAction"));
     assert(state!->position->viewportDimension != nullptr);
     assert(state!->position->maxScrollExtent != nullptr);
     assert(state!->position->minScrollExtent != nullptr);
@@ -787,7 +787,7 @@ void ScrollActionCls::invoke(ScrollIntent intent) {
 double ScrollActionCls::_calculateScrollIncrement(ScrollableState state, ScrollIncrementType type) {
     assert(type != nullptr);
     assert(state->position != nullptr);
-    assert(state->position->hasPixels);
+    assert(state->position->hasPixels());
     assert(state->position->viewportDimension != nullptr);
     assert(state->position->maxScrollExtent != nullptr);
     assert(state->position->minScrollExtent != nullptr);

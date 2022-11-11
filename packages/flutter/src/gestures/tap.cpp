@@ -38,7 +38,7 @@ void BaseTapGestureRecognizerCls::startTrackingPointer(int pointer, Matrix4 tran
 
 void BaseTapGestureRecognizerCls::handlePrimaryPointer(PointerEvent event) {
     if (is<PointerUpEvent>(event)) {
-        _up = event;
+        _up = as<PointerUpEventCls>(event);
         _checkUp();
     } else     {
         if (is<PointerCancelEvent>(event)) {

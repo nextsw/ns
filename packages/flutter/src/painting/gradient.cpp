@@ -102,9 +102,9 @@ List<double> GradientCls::_impliedStops() {
     if (stops != nullptr) {
         return stops!;
     }
-    assert(colors->length() >= 2, __s("colors list must have at least two colors"));
-    double separation = 1.0 / (colors->length() - 1);
-    return <double>generate(colors->length(), [=] (int index)     {
+    assert(colors->length >= 2, __s("colors list must have at least two colors"));
+    double separation = 1.0 / (colors->length - 1);
+    return <double>generate(colors->length, [=] (int index)     {
         index * separation;
     }false);
 }
@@ -189,7 +189,7 @@ RadialGradientCls::RadialGradientCls(AlignmentGeometry center, Unknown colors, A
 }
 
 Shader RadialGradientCls::createShader(Rect rect, TextDirection textDirection) {
-    return ui->GradientCls->radial(center->resolve(textDirection)->withinRect(rect), radius * rect->shortestSide, colors, _impliedStops(), tileMode, _resolveTransform(rect, textDirection), focal == nullptr? nullptr : focal!->resolve(textDirection)->withinRect(rect), focalRadius * rect->shortestSide);
+    return ui->GradientCls->radial(center->resolve(textDirection)->withinRect(rect), radius * rect->shortestSide(), colors, _impliedStops(), tileMode, _resolveTransform(rect, textDirection), focal == nullptr? nullptr : focal!->resolve(textDirection)->withinRect(rect), focalRadius * rect->shortestSide());
 }
 
 RadialGradient RadialGradientCls::scale(double factor) {

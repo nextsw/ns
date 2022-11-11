@@ -40,7 +40,7 @@ void ForcePressGestureRecognizerCls::handleEvent(PointerEvent event) {
                 _state = _ForceStateCls::started;
                 resolve(GestureDispositionCls::accepted);
             } else             {
-                if (event->delta->distanceSquared > computeHitSlop(event->kind, gestureSettings)) {
+                if (event->delta->distanceSquared() > computeHitSlop(event->kind, gestureSettings)) {
                 resolve(GestureDispositionCls::rejected);
             }
 ;

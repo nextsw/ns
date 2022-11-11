@@ -52,7 +52,7 @@ void FrustumCls::copyFrom(Frustum other) {
 }
 
 void FrustumCls::setFromMatrix(Matrix4 matrix) {
-    Unknown me = matrix->storage;
+    Unknown me = matrix->storage();
     Unknown me0 = me[0], me1 = me[1], me2 = me[2], me3 = me[3];
     Unknown me4 = me[4], me5 = me[5], me6 = me[6], me7 = me[7];
     Unknown me8 = me[8], me9 = me[9], me10 = me[10], me11 = me[11];

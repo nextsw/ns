@@ -271,7 +271,7 @@ bool _WidgetsAppStateCls::_usesRouterWithConfig() {
 }
 
 bool _WidgetsAppStateCls::_usesNavigator() {
-    return widget->home != nullptr || (widget->routes?->isNotEmpty or false) || widget->onGenerateRoute != nullptr || widget->onUnknownRoute != nullptr;
+    return widget->home != nullptr || (widget->routes?->isNotEmpty() or false) || widget->onGenerateRoute != nullptr || widget->onUnknownRoute != nullptr;
 }
 
 RouteInformationProvider _WidgetsAppStateCls::_effectiveRouteInformationProvider() {

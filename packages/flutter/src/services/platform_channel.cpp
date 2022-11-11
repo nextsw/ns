@@ -86,7 +86,7 @@ template<typename T> BasicMessageChannelCls<T>::BasicMessageChannelCls(BinaryMes
     {
         assert(name != nullptr);
         assert(codec != nullptr);
-        _binaryMessenger = binaryMessenger();
+        _binaryMessenger = binaryMessenger;
     }
 }
 
@@ -96,14 +96,14 @@ template<typename T> BinaryMessenger BasicMessageChannelCls<T>::binaryMessenger(
 }
 
 template<typename T> Future<T> BasicMessageChannelCls<T>::send(T message) {
-    return codec->decodeMessage(await binaryMessenger()->send(name, codec->encodeMessage(message)));
+    return codec->decodeMessage(await binaryMessenger->send(name, codec->encodeMessage(message)));
 }
 
 template<typename T> void BasicMessageChannelCls<T>::setMessageHandler(Future<T> handler(T message) ) {
     if (handler == nullptr) {
-        binaryMessenger()->setMessageHandler(name, nullptr);
+        binaryMessenger->setMessageHandler(name, nullptr);
     } else {
-        binaryMessenger()->setMessageHandler(name, [=] (ByteData message) {
+        binaryMessenger->setMessageHandler(name, [=] (ByteData message) {
             return codec->encodeMessage(await handler(codec->decodeMessage(message)));
         });
     }
@@ -113,7 +113,7 @@ MethodChannelCls::MethodChannelCls(BinaryMessenger binaryMessenger, MethodCodec 
     {
         assert(name != nullptr);
         assert(codec != nullptr);
-        _binaryMessenger = binaryMessenger();
+        _binaryMessenger = binaryMessenger;
     }
 }
 
@@ -138,7 +138,7 @@ Future<Map<K, V>> MethodChannelCls::invokeMapMethodtemplate<typename K, typename
 
 void MethodChannelCls::setMethodCallHandler(Future<dynamic> handler(MethodCall call) ) {
     assert(_binaryMessenger != nullptr || ServicesBindingCls::instance != nullptr, __s("Cannot set the method call handler before the binary messenger has been initialized. This happens when you call setMethodCallHandler() before the WidgetsFlutterBinding has been initialized. You can fix this by either calling WidgetsFlutterBinding.ensureInitialized() before this or by passing a custom BinaryMessenger instance to MethodChannel()."));
-    binaryMessenger()->setMessageHandler(name, handler == nullptr? nullptr : [=] (ByteData message)     {
+    binaryMessenger->setMessageHandler(name, handler == nullptr? nullptr : [=] (ByteData message)     {
         _handleAsMethodCall(message, handler);
     });
 }
@@ -146,7 +146,7 @@ void MethodChannelCls::setMethodCallHandler(Future<dynamic> handler(MethodCall c
 Future<T> MethodChannelCls::_invokeMethodtemplate<typename T> (dynamic arguments, String method, bool missingOk) {
     assert(method != nullptr);
     ByteData input = codec->encodeMethodCall(make<MethodCallCls>(method, arguments));
-    ByteData result = !kReleaseMode && debugProfilePlatformChannels? await (as<_ProfiledBinaryMessenger>(binaryMessenger()))->sendWithPostfix(name, __s("#$method"), input) : await binaryMessenger()->send(name, input);
+    ByteData result = !kReleaseMode && debugProfilePlatformChannels? await (as<_ProfiledBinaryMessenger>(binaryMessenger))->sendWithPostfix(name, __s("#$method"), input) : await binaryMessenger->send(name, input);
     if (result == nullptr) {
         if (missingOk) {
             return nullptr;
@@ -177,7 +177,7 @@ EventChannelCls::EventChannelCls(BinaryMessenger binaryMessenger, MethodCodec co
     {
         assert(name != nullptr);
         assert(codec != nullptr);
-        _binaryMessenger = binaryMessenger();
+        _binaryMessenger = binaryMessenger;
     }
 }
 
@@ -189,7 +189,7 @@ Stream<dynamic> EventChannelCls::receiveBroadcastStream(dynamic arguments) {
     MethodChannel methodChannel = make<MethodChannelCls>(name, codec);
     StreamController<dynamic> controller;
     controller = <dynamic>broadcast([=] () {
-        binaryMessenger()->setMessageHandler(name, [=] (ByteData reply) {
+        binaryMessenger->setMessageHandler(name, [=] (ByteData reply) {
             if (reply == nullptr) {
                 controller->close();
             } else {
@@ -207,7 +207,7 @@ Stream<dynamic> EventChannelCls::receiveBroadcastStream(dynamic arguments) {
             FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(exception, stack, __s("services library"), make<ErrorDescriptionCls>(__s("while activating platform stream on channel $name"))));
         };
     }, [=] () {
-        binaryMessenger()->setMessageHandler(name, nullptr);
+        binaryMessenger->setMessageHandler(name, nullptr);
         try {
             await await methodChannel-><void>invokeMethod(__s("cancel"), arguments);
         } catch (Unknown exception) {

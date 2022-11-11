@@ -41,9 +41,9 @@ void _AnimatedStateCls::_handleChange() {
     });
 }
 
-SlideTransitionCls::SlideTransitionCls(Widget child, Unknown key, Animation<Offset> position, TextDirection textDirection, bool transformHitTests) : AnimatedWidget(position()) {
+SlideTransitionCls::SlideTransitionCls(Widget child, Unknown key, Animation<Offset> position, TextDirection textDirection, bool transformHitTests) : AnimatedWidget(position) {
     {
-        assert(position() != nullptr);
+        assert(position != nullptr);
     }
 }
 
@@ -52,16 +52,16 @@ Animation<Offset> SlideTransitionCls::position() {
 }
 
 Widget SlideTransitionCls::build(BuildContext context) {
-    Offset offset = position()->value();
+    Offset offset = position->value;
     if (textDirection == TextDirectionCls::rtl) {
         offset = make<OffsetCls>(-offset->dx, offset->dy);
     }
     return make<FractionalTranslationCls>(offset, transformHitTests, child);
 }
 
-ScaleTransitionCls::ScaleTransitionCls(Alignment alignment, Widget child, FilterQuality filterQuality, Unknown key, Animation<double> scale) : AnimatedWidget(scale()) {
+ScaleTransitionCls::ScaleTransitionCls(Alignment alignment, Widget child, FilterQuality filterQuality, Unknown key, Animation<double> scale) : AnimatedWidget(scale) {
     {
-        assert(scale() != nullptr);
+        assert(scale != nullptr);
     }
 }
 
@@ -72,12 +72,12 @@ Animation<double> ScaleTransitionCls::scale() {
 Widget ScaleTransitionCls::build(BuildContext context) {
     bool useFilterQuality;
     ;
-    return TransformCls->scale(scale()->value(), alignment, useFilterQuality? filterQuality : nullptr, child);
+    return TransformCls->scale(scale->value, alignment, useFilterQuality? filterQuality : nullptr, child);
 }
 
-RotationTransitionCls::RotationTransitionCls(Alignment alignment, Widget child, FilterQuality filterQuality, Unknown key, Animation<double> turns) : AnimatedWidget(turns()) {
+RotationTransitionCls::RotationTransitionCls(Alignment alignment, Widget child, FilterQuality filterQuality, Unknown key, Animation<double> turns) : AnimatedWidget(turns) {
     {
-        assert(turns() != nullptr);
+        assert(turns != nullptr);
     }
 }
 
@@ -88,13 +88,13 @@ Animation<double> RotationTransitionCls::turns() {
 Widget RotationTransitionCls::build(BuildContext context) {
     bool useFilterQuality;
     ;
-    return TransformCls->rotate(turns()->value() * math->pi * 2.0, alignment, useFilterQuality? filterQuality : nullptr, child);
+    return TransformCls->rotate(turns->value * math->pi * 2.0, alignment, useFilterQuality? filterQuality : nullptr, child);
 }
 
-SizeTransitionCls::SizeTransitionCls(Axis axis, double axisAlignment, Widget child, Unknown key, Animation<double> sizeFactor) : AnimatedWidget(sizeFactor()) {
+SizeTransitionCls::SizeTransitionCls(Axis axis, double axisAlignment, Widget child, Unknown key, Animation<double> sizeFactor) : AnimatedWidget(sizeFactor) {
     {
         assert(axis != nullptr);
-        assert(sizeFactor() != nullptr);
+        assert(sizeFactor != nullptr);
         assert(axisAlignment != nullptr);
     }
 }
@@ -110,7 +110,7 @@ Widget SizeTransitionCls::build(BuildContext context) {
     } else {
         alignment = make<AlignmentDirectionalCls>(axisAlignment, -1.0);
     }
-    return make<ClipRectCls>(make<AlignCls>(alignment, axis == AxisCls::vertical? math->max(sizeFactor()->value(), 0.0) : nullptr, axis == AxisCls::horizontal? math->max(sizeFactor()->value(), 0.0) : nullptr, child));
+    return make<ClipRectCls>(make<AlignCls>(alignment, axis == AxisCls::vertical? math->max(sizeFactor->value, 0.0) : nullptr, axis == AxisCls::horizontal? math->max(sizeFactor->value, 0.0) : nullptr, child));
 }
 
 FadeTransitionCls::FadeTransitionCls(bool alwaysIncludeSemantics, Unknown child, Unknown key, Animation<double> opacity) {
@@ -157,9 +157,9 @@ RelativeRect RelativeRectTweenCls::lerp(double t) {
     return RelativeRectCls->lerp(begin, end, t)!;
 }
 
-PositionedTransitionCls::PositionedTransitionCls(Widget child, Unknown key, Animation<RelativeRect> rect) : AnimatedWidget(rect()) {
+PositionedTransitionCls::PositionedTransitionCls(Widget child, Unknown key, Animation<RelativeRect> rect) : AnimatedWidget(rect) {
     {
-        assert(rect() != nullptr);
+        assert(rect != nullptr);
     }
 }
 
@@ -168,12 +168,12 @@ Animation<RelativeRect> PositionedTransitionCls::rect() {
 }
 
 Widget PositionedTransitionCls::build(BuildContext context) {
-    return PositionedCls->fromRelativeRect(rect()->value(), child);
+    return PositionedCls->fromRelativeRect(rect->value, child);
 }
 
-RelativePositionedTransitionCls::RelativePositionedTransitionCls(Widget child, Unknown key, Animation<Rect> rect, Size size) : AnimatedWidget(rect()) {
+RelativePositionedTransitionCls::RelativePositionedTransitionCls(Widget child, Unknown key, Animation<Rect> rect, Size size) : AnimatedWidget(rect) {
     {
-        assert(rect() != nullptr);
+        assert(rect != nullptr);
         assert(size != nullptr);
         assert(child != nullptr);
     }
@@ -184,7 +184,7 @@ Animation<Rect> RelativePositionedTransitionCls::rect() {
 }
 
 Widget RelativePositionedTransitionCls::build(BuildContext context) {
-    RelativeRect offsets = RelativeRectCls->fromSize(rect()->value() or RectCls::zero, size);
+    RelativeRect offsets = RelativeRectCls->fromSize(rect->value or RectCls::zero, size);
     return make<PositionedCls>(offsets->top, offsets->right, offsets->bottom, offsets->left, child);
 }
 
@@ -196,12 +196,12 @@ DecoratedBoxTransitionCls::DecoratedBoxTransitionCls(Widget child, Animation<Dec
 }
 
 Widget DecoratedBoxTransitionCls::build(BuildContext context) {
-    return make<DecoratedBoxCls>(decoration->value(), position, child);
+    return make<DecoratedBoxCls>(decoration->value, position, child);
 }
 
-AlignTransitionCls::AlignTransitionCls(Animation<AlignmentGeometry> alignment, Widget child, double heightFactor, Unknown key, double widthFactor) : AnimatedWidget(alignment()) {
+AlignTransitionCls::AlignTransitionCls(Animation<AlignmentGeometry> alignment, Widget child, double heightFactor, Unknown key, double widthFactor) : AnimatedWidget(alignment) {
     {
-        assert(alignment() != nullptr);
+        assert(alignment != nullptr);
         assert(child != nullptr);
     }
 }
@@ -211,12 +211,12 @@ Animation<AlignmentGeometry> AlignTransitionCls::alignment() {
 }
 
 Widget AlignTransitionCls::build(BuildContext context) {
-    return make<AlignCls>(alignment()->value(), widthFactor, heightFactor, child);
+    return make<AlignCls>(alignment->value, widthFactor, heightFactor, child);
 }
 
-DefaultTextStyleTransitionCls::DefaultTextStyleTransitionCls(Widget child, Unknown key, int maxLines, TextOverflow overflow, bool softWrap, Animation<TextStyle> style, TextAlign textAlign) : AnimatedWidget(style()) {
+DefaultTextStyleTransitionCls::DefaultTextStyleTransitionCls(Widget child, Unknown key, int maxLines, TextOverflow overflow, bool softWrap, Animation<TextStyle> style, TextAlign textAlign) : AnimatedWidget(style) {
     {
-        assert(style() != nullptr);
+        assert(style != nullptr);
         assert(child != nullptr);
     }
 }
@@ -226,7 +226,7 @@ Animation<TextStyle> DefaultTextStyleTransitionCls::style() {
 }
 
 Widget DefaultTextStyleTransitionCls::build(BuildContext context) {
-    return make<DefaultTextStyleCls>(style()->value(), textAlign, softWrap, overflow, maxLines, child);
+    return make<DefaultTextStyleCls>(style->value, textAlign, softWrap, overflow, maxLines, child);
 }
 
 AnimatedBuilderCls::AnimatedBuilderCls(Listenable animation, TransitionBuilder builder, Widget child, Unknown key) : AnimatedWidget(animation) {

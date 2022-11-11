@@ -1,9 +1,9 @@
 #include "scroll_controller.hpp"
 ScrollControllerCls::ScrollControllerCls(String debugLabel, double initialScrollOffset, bool keepScrollOffset) {
     {
-        assert(initialScrollOffset() != nullptr);
+        assert(initialScrollOffset != nullptr);
         assert(keepScrollOffset != nullptr);
-        _initialScrollOffset = initialScrollOffset();
+        _initialScrollOffset = initialScrollOffset;
     }
 }
 
@@ -21,47 +21,47 @@ bool ScrollControllerCls::hasClients() {
 
 ScrollPosition ScrollControllerCls::position() {
     assert(_positions->isNotEmpty, __s("ScrollController not attached to any scroll views."));
-    assert(_positions->length() == 1, __s("ScrollController attached to multiple scroll views."));
+    assert(_positions->length == 1, __s("ScrollController attached to multiple scroll views."));
     return _positions->single;
 }
 
 double ScrollControllerCls::offset() {
-    return position()->pixels();
+    return position->pixels;
 }
 
 Future<void> ScrollControllerCls::animateTo(Curve curve, Duration duration, double offset) {
     assert(_positions->isNotEmpty, __s("ScrollController not attached to any scroll views."));
-    List<Future<void>> list1 = make<ListCls<>>();for (;  < _positions->length(); i = 1)     {        ;    }{    list1.add(ArrayItem);}await await FutureCls-><void>wait(list1);
+    List<Future<void>> list1 = make<ListCls<>>();for (;  < _positions->length; i = 1)     {        ;    }{    list1.add(ArrayItem);}await await FutureCls-><void>wait(list1);
 }
 
 void ScrollControllerCls::jumpTo(double value) {
     assert(_positions->isNotEmpty, __s("ScrollController not attached to any scroll views."));
     for (ScrollPosition position : <ScrollPosition>of(_positions)) {
-        position()->jumpTo(value);
+        position->jumpTo(value);
     }
 }
 
 void ScrollControllerCls::attach(ScrollPosition position) {
-    assert(!_positions->contains(position()));
-    _positions->add(position());
-    position()->addListener(notifyListeners);
+    assert(!_positions->contains(position));
+    _positions->add(position);
+    position->addListener(notifyListeners);
 }
 
 void ScrollControllerCls::detach(ScrollPosition position) {
-    assert(_positions->contains(position()));
-    position()->removeListener(notifyListeners);
-    _positions->remove(position());
+    assert(_positions->contains(position));
+    position->removeListener(notifyListeners);
+    _positions->remove(position);
 }
 
 void ScrollControllerCls::dispose() {
     for (ScrollPosition position : _positions) {
-        position()->removeListener(notifyListeners);
+        position->removeListener(notifyListeners);
     }
     super->dispose();
 }
 
 ScrollPosition ScrollControllerCls::createScrollPosition(ScrollContext context, ScrollPosition oldPosition, ScrollPhysics physics) {
-    return make<ScrollPositionWithSingleContextCls>(physics, context, initialScrollOffset(), keepScrollOffset, oldPosition, debugLabel);
+    return make<ScrollPositionWithSingleContextCls>(physics, context, initialScrollOffset, keepScrollOffset, oldPosition, debugLabel);
 }
 
 String ScrollControllerCls::toString() {
@@ -74,13 +74,13 @@ void ScrollControllerCls::debugFillDescription(List<String> description) {
     if (debugLabel != nullptr) {
         description->add(debugLabel!);
     }
-    if (initialScrollOffset() != 0.0) {
+    if (initialScrollOffset != 0.0) {
         description->add(__s("initialScrollOffset: ${initialScrollOffset.toStringAsFixed(1)}, "));
     }
     if (_positions->isEmpty) {
         description->add(__s("no clients"));
     } else     {
-        if (_positions->length() == 1) {
+        if (_positions->length == 1) {
         description->add(__s("one client, offset ${offset.toStringAsFixed(1)}"));
     } else {
         description->add(__s("${_positions.length} clients"));

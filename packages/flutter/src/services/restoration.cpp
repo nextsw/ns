@@ -131,7 +131,7 @@ void RestorationManagerCls::_doSerialization() {
 
 void RestorationBucketCls::empty(Object debugOwner, String restorationId) {
     assert([=] () {
-        _debugOwner = debugOwner();
+        _debugOwner = debugOwner;
         return true;
     }());
 }
@@ -145,7 +145,7 @@ void RestorationBucketCls::root(RestorationManager manager, Map<Object, Object> 
 
 void RestorationBucketCls::child(Object debugOwner, RestorationBucket parent, String restorationId) {
     assert([=] () {
-        _debugOwner = debugOwner();
+        _debugOwner = debugOwner;
         return true;
     }());
 }
@@ -166,25 +166,25 @@ String RestorationBucketCls::restorationId() {
 
 P RestorationBucketCls::readtemplate<typename P> (String restorationId) {
     assert(_debugAssertNotDisposed());
-    assert(restorationId() != nullptr);
-    return as<P>(_rawValues()[restorationId()]);
+    assert(restorationId != nullptr);
+    return as<P>(_rawValues()[restorationId]);
 }
 
 void RestorationBucketCls::writetemplate<typename P> (String restorationId, P value) {
     assert(_debugAssertNotDisposed());
-    assert(restorationId() != nullptr);
+    assert(restorationId != nullptr);
     assert(debugIsSerializableForRestoration(value));
-    if (_rawValues()[restorationId()] != value || !_rawValues()->containsKey(restorationId())) {
-        _rawValues()[restorationId()] = value;
+    if (_rawValues()[restorationId] != value || !_rawValues()->containsKey(restorationId)) {
+        _rawValues()[restorationId] = value;
         _markNeedsSerialization();
     }
 }
 
 P RestorationBucketCls::removetemplate<typename P> (String restorationId) {
     assert(_debugAssertNotDisposed());
-    assert(restorationId() != nullptr);
-    bool needsUpdate = _rawValues()->containsKey(restorationId());
-    P result = as<P>(_rawValues()->remove(restorationId()));
+    assert(restorationId != nullptr);
+    bool needsUpdate = _rawValues()->containsKey(restorationId);
+    P result = as<P>(_rawValues()->remove(restorationId));
     if (_rawValues()->isEmpty()) {
         _rawData->remove(_valuesMapKey);
     }
@@ -196,21 +196,21 @@ P RestorationBucketCls::removetemplate<typename P> (String restorationId) {
 
 bool RestorationBucketCls::contains(String restorationId) {
     assert(_debugAssertNotDisposed());
-    assert(restorationId() != nullptr);
-    return _rawValues()->containsKey(restorationId());
+    assert(restorationId != nullptr);
+    return _rawValues()->containsKey(restorationId);
 }
 
 RestorationBucket RestorationBucketCls::claimChild(Object debugOwner, String restorationId) {
     assert(_debugAssertNotDisposed());
-    assert(restorationId() != nullptr);
-    if (_claimedChildren->containsKey(restorationId()) || !_rawChildren()->containsKey(restorationId())) {
-        RestorationBucket child = RestorationBucketCls->empty(debugOwner(), restorationId());
+    assert(restorationId != nullptr);
+    if (_claimedChildren->containsKey(restorationId) || !_rawChildren()->containsKey(restorationId)) {
+        RestorationBucket child = RestorationBucketCls->empty(debugOwner, restorationId);
         adoptChild(child);
         return child;
     }
-    assert(_rawChildren()[restorationId()] != nullptr);
-    RestorationBucket child = RestorationBucketCls->child(restorationId(), this, debugOwner());
-    _claimedChildren[restorationId()] = child;
+    assert(_rawChildren()[restorationId] != nullptr);
+    RestorationBucket child = RestorationBucketCls->child(restorationId, this, debugOwner);
+    _claimedChildren[restorationId] = child;
     return child;
 }
 
@@ -239,7 +239,7 @@ void RestorationBucketCls::finalize() {
 void RestorationBucketCls::rename(String newRestorationId) {
     assert(_debugAssertNotDisposed());
     assert(newRestorationId != nullptr);
-    if (newRestorationId == restorationId()) {
+    if (newRestorationId == restorationId) {
         return;
     }
     _parent?->_removeChildData(this);
@@ -317,7 +317,7 @@ bool RestorationBucketCls::_debugAssertIntegrity() {
             return true;
         }
         List<DiagnosticsNode> error = makeList(ArrayItem, ArrayItem);
-        for (MapEntry<String, List<RestorationBucket>> child : _childrenToAdd->entries()) {
+        for (MapEntry<String, List<RestorationBucket>> child : _childrenToAdd->entries) {
             String id = child->key;
             List<RestorationBucket> buckets = child->value;
             assert(buckets->isNotEmpty);
@@ -376,7 +376,7 @@ void RestorationBucketCls::_finalizeAddChildData(RestorationBucket child) {
 }
 
 void RestorationBucketCls::_visitChildren(bool concurrentModification, _BucketVisitor visitor) {
-    Iterable<RestorationBucket> children = _claimedChildren->values()->followedBy(_childrenToAdd->values()->expand([=] (List<RestorationBucket> buckets) {
+    Iterable<RestorationBucket> children = _claimedChildren->values->followedBy(_childrenToAdd->values->expand([=] (List<RestorationBucket> buckets) {
     buckets;
 }));
     if (concurrentModification) {

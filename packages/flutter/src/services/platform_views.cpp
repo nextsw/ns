@@ -114,8 +114,8 @@ AndroidMotionEventCls::AndroidMotionEventCls(int action, int buttonState, int de
         assert(edgeFlags != nullptr);
         assert(source != nullptr);
         assert(flags != nullptr);
-        assert(pointerProperties->length() == pointerCount);
-        assert(pointerCoords->length() == pointerCount);
+        assert(pointerProperties->length == pointerCount);
+        assert(pointerCoords->length == pointerCount);
     }
 }
 
@@ -137,8 +137,8 @@ void _AndroidMotionEventConverterCls::pointTransformer(PointTransformer transfor
 }
 
 void _AndroidMotionEventConverterCls::handlePointerDownEvent(PointerDownEvent event) {
-    if (pointerProperties->isEmpty()) {
-        downTimeMillis = event->timeStamp->inMilliseconds;
+    if (pointerProperties->isEmpty) {
+        downTimeMillis = event->timeStamp->inMilliseconds();
     }
     int androidPointerId = 0;
     while (usedAndroidPointerIds->contains(androidPointerId)) {
@@ -162,7 +162,7 @@ void _AndroidMotionEventConverterCls::handlePointerCancelEvent(PointerCancelEven
 }
 
 AndroidMotionEvent _AndroidMotionEventConverterCls::toAndroidMotionEvent(PointerEvent event) {
-    List<int> pointers = pointerPositions->keys()->toList();
+    List<int> pointers = pointerPositions->keys->toList();
     int pointerIdx = pointers->indexOf(event->pointer);
     int numPointers = pointers->length;
     int kPointerDataFlagBatched = 1;
@@ -187,7 +187,7 @@ AndroidMotionEvent _AndroidMotionEventConverterCls::toAndroidMotionEvent(Pointer
 ;
     };
     };
-    }    return make<AndroidMotionEventCls>(downTimeMillis!, event->timeStamp->inMilliseconds, action, pointerPositions->length(), pointers-><AndroidPointerProperties>map([=] (int i)     {
+    }    return make<AndroidMotionEventCls>(downTimeMillis!, event->timeStamp->inMilliseconds(), action, pointerPositions->length, pointers-><AndroidPointerProperties>map([=] (int i)     {
         pointerProperties[i]!;
     })->toList(), pointers-><AndroidPointerCoords>map([=] (int i)     {
         pointerPositions[i]!;
@@ -208,7 +208,7 @@ void _AndroidMotionEventConverterCls::_remove(int pointer) {
     pointerPositions->remove(pointer);
     usedAndroidPointerIds->remove(pointerProperties[pointer]!->id);
     pointerProperties->remove(pointer);
-    if (pointerProperties->isEmpty()) {
+    if (pointerProperties->isEmpty) {
         downTimeMillis = nullptr;
     }
 }
@@ -296,15 +296,15 @@ Future<void> AndroidViewControllerCls::dispatchPointerEvent(PointerEvent event) 
         return;
     }
     if (is<PointerDownEvent>(event)) {
-        _motionEventConverter->handlePointerDownEvent(event);
+        _motionEventConverter->handlePointerDownEvent(as<PointerDownEventCls>(event));
     }
     _motionEventConverter->updatePointerPositions(event);
     AndroidMotionEvent androidEvent = _motionEventConverter->toAndroidMotionEvent(event);
     if (is<PointerUpEvent>(event)) {
-        _motionEventConverter->handlePointerUpEvent(event);
+        _motionEventConverter->handlePointerUpEvent(as<PointerUpEventCls>(event));
     } else     {
         if (is<PointerCancelEvent>(event)) {
-        _motionEventConverter->handlePointerCancelEvent(event);
+        _motionEventConverter->handlePointerCancelEvent(as<PointerCancelEventCls>(event));
     }
 ;
     }    if (androidEvent != nullptr) {
@@ -388,7 +388,7 @@ void TextureAndroidViewControllerCls::_(Unknown creationParams, Unknown creation
 Future<Size> TextureAndroidViewControllerCls::_sendResizeMessage(Size size) {
     assert(_state != _AndroidViewStateCls::waitingForSize, __s("Android view must have an initial size. View id: $viewId"));
     assert(size != nullptr);
-    assert(!size->isEmpty);
+    assert(!size->isEmpty());
     Map<String, dynamic> map1 = make<MapCls<>>();map1.set(__s("id"), viewId);map1.set(__s("width"), size->width);map1.set(__s("height"), size->height);Map<Object, Object> meta = await SystemChannelsCls::platform_views-><Object, Object>invokeMapMethod(__s("resize"), list1);
     assert(meta != nullptr);
     assert(meta!->containsKey(__s("width")));
@@ -401,7 +401,7 @@ bool TextureAndroidViewControllerCls::_createRequiresSize() {
 }
 
 Future<void> TextureAndroidViewControllerCls::_sendCreateMessage(Size size) {
-    assert(!size->isEmpty, __s("trying to create $TextureAndroidViewController without setting a valid size."));
+    assert(!size->isEmpty(), __s("trying to create $TextureAndroidViewController without setting a valid size."));
     Map<String, dynamic> map1 = make<MapCls<>>();map1.set(__s("id"), viewId);map1.set(__s("viewType"), _viewType);map1.set(__s("width"), size->width);map1.set(__s("height"), size->height);map1.set(__s("direction"), AndroidViewControllerCls->_getAndroidDirection(_layoutDirection));Map<String, dynamic> args = list1;
     if (_creationParams != nullptr) {
         ByteData paramsByteData = _creationParamsCodec!->encodeMessage(_creationParams)!;

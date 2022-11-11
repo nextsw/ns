@@ -69,7 +69,7 @@ void _SemanticsDebuggerStateCls::_handlePanEnd(DragEndDetails details) {
         return;
     }
     if (vx->abs() > vy->abs()) {
-        if (vx->sign < 0) {
+        if (vx->sign() < 0) {
             _performAction(_lastPointerDownLocation!, SemanticsActionCls::decrease);
             _performAction(_lastPointerDownLocation!, SemanticsActionCls::scrollLeft);
         } else {
@@ -77,7 +77,7 @@ void _SemanticsDebuggerStateCls::_handlePanEnd(DragEndDetails details) {
             _performAction(_lastPointerDownLocation!, SemanticsActionCls::scrollRight);
         }
     } else {
-        if (vy->sign < 0) {
+        if (vy->sign() < 0) {
             _performAction(_lastPointerDownLocation!, SemanticsActionCls::scrollUp);
         } else {
             _performAction(_lastPointerDownLocation!, SemanticsActionCls::scrollDown);
@@ -166,8 +166,8 @@ String _SemanticsDebuggerPainterCls::getMessage(SemanticsNode node) {
     }
     assert(data->attributedLabel != nullptr);
     String message;
-    List<String> list1 = make<ListCls<>>();if (data->tooltip->isNotEmpty) {    list1.add(ArrayItem);}if (data->attributedLabel->stringValue->isNotEmpty) {    list1.add(ArrayItem);}String tooltipAndLabel = list1->join(__s("\n"));
-    if (tooltipAndLabel->isEmpty) {
+    List<String> list1 = make<ListCls<>>();if (data->tooltip->isNotEmpty()) {    list1.add(ArrayItem);}if (data->attributedLabel->stringValue->isNotEmpty()) {    list1.add(ArrayItem);}String tooltipAndLabel = list1->join(__s("\n"));
+    if (tooltipAndLabel->isEmpty()) {
         message = annotations->join(__s("; "));
     } else {
         String effectivelabel;
@@ -192,7 +192,7 @@ SemanticsNode _SemanticsDebuggerPainterCls::_rootSemanticsNode() {
 
 void _SemanticsDebuggerPainterCls::_paintMessage(Canvas canvas, SemanticsNode node) {
     String message = getMessage(node);
-    if (message->isEmpty) {
+    if (message->isEmpty()) {
         return;
     }
     Rect rect = node->rect;
@@ -204,7 +204,7 @@ void _SemanticsDebuggerPainterCls::_paintMessage(Canvas canvas, SemanticsNode no
 }
 
 int _SemanticsDebuggerPainterCls::_findDepth(SemanticsNode node) {
-    if (!node->hasChildren || node->mergeAllDescendantsIntoThisNode) {
+    if (!node->hasChildren() || node->mergeAllDescendantsIntoThisNode()) {
         return 1;
     }
     int childrenDepth = 0;
@@ -218,13 +218,13 @@ int _SemanticsDebuggerPainterCls::_findDepth(SemanticsNode node) {
 void _SemanticsDebuggerPainterCls::_paint(Canvas canvas, SemanticsNode node, int rank) {
     canvas->save();
     if (node->transform != nullptr) {
-        canvas->transform(node->transform!->storage);
+        canvas->transform(node->transform!->storage());
     }
     Rect rect = node->rect;
-    if (!rect->isEmpty) {
+    if (!rect->isEmpty()) {
         Color lineColor = make<ColorCls>(0xFF000000 + math->make<RandomCls>(node->id)->nextInt(0xFFFFFF));
         Rect innerRect = rect->deflate(rank * 1.0);
-        if (innerRect->isEmpty) {
+        if (innerRect->isEmpty()) {
                     auto _c1 = make<PaintCls>();        _c1.color = auto _c2 = lineColor;        _c2.style = PaintingStyleCls::fill;        _c2;Paint fill = _c1;
             canvas->drawRect(rect, fill);
         } else {
@@ -235,7 +235,7 @@ void _SemanticsDebuggerPainterCls::_paint(Canvas canvas, SemanticsNode node, int
         }
         _paintMessage(canvas, node);
     }
-    if (!node->mergeAllDescendantsIntoThisNode) {
+    if (!node->mergeAllDescendantsIntoThisNode()) {
         int childRank = rank - 1;
         node->visitChildren([=] (SemanticsNode child) {
             _paint(canvas, child, childRank);

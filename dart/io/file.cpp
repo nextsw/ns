@@ -3,9 +3,9 @@ FileCls::FileCls(String path) {
     {
         IOOverrides overrides = IOOverridesCls::current;
         if (overrides == nullptr) {
-            return make<_FileCls>(path());
+            return make<_FileCls>(path);
         }
-        return overrides->createFile(path());
+        return overrides->createFile(path);
     }
 }
 

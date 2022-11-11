@@ -13,7 +13,7 @@ void _CopyingBytesBuilderCls::add(List<int> bytes) {
     }
     assert(_buffer->length >= required);
     if (is<Uint8List>(bytes)) {
-        _buffer->setRange(_length, required, bytes);
+        _buffer->setRange(_length, required, as<Uint8ListCls>(bytes));
     } else {
         for (;  < byteCount; i++) {
             _buffer[_length + i] = bytes[i];
@@ -100,7 +100,7 @@ int _CopyingBytesBuilderCls::_pow2roundup(int x) {
 void _BytesBuilderCls::add(List<int> bytes) {
     Uint8List typedBytes;
     if (is<Uint8List>(bytes)) {
-        typedBytes = bytes;
+        typedBytes = as<Uint8ListCls>(bytes);
     } else {
         typedBytes = Uint8ListCls->fromList(bytes);
     }
@@ -117,7 +117,7 @@ Uint8List _BytesBuilderCls::takeBytes() {
     if (_length == 0)     {
         return _CopyingBytesBuilderCls::_emptyList;
     }
-    if (_chunks->length() == 1) {
+    if (_chunks->length == 1) {
         auto buffer = _chunks[0];
         _clear();
         return buffer;

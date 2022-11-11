@@ -40,7 +40,7 @@ List<_Variable> _FunctionCls::variableDeps(int id) {
 }
 
 void _FunctionCls::write(StringBuffer out) {
-    if (declaredParams != params->length()) {
+    if (declaredParams != params->length) {
         ;
     }
     if (entry == nullptr) {
@@ -56,11 +56,11 @@ void _FunctionCls::write(StringBuffer out) {
         String fragParam = __s("float2 $_fragParamName");
         out->write(fragParam);
     }
-    for (;  < params->length(); i++) {
+    for (;  < params->length; i++) {
         String typeString = transpiler->resolveType(type->params[i]);
         String nameString = transpiler->resolveName(params[i]);
         out->write(__s("$typeString $nameString"));
-        if ( < params->length() - 1) {
+        if ( < params->length - 1) {
             out->write(__s(", "));
         }
     }
@@ -83,6 +83,6 @@ void _FunctionCls::write(StringBuffer out) {
 
 _FunctionCls::_FunctionCls(int name, _Transpiler transpiler, _FunctionType type) {
     {
-        params = <int>filled(type->params->length(), 0);
+        params = <int>filled(type->params->length, 0);
     }
 }

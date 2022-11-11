@@ -36,7 +36,7 @@ BoxDecoration BoxDecorationCls::lerpFrom(Decoration a, double t) {
         return scale(t);
     }
     if (is<BoxDecoration>(a)) {
-        return BoxDecorationCls->lerp(a, this, t);
+        return BoxDecorationCls->lerp(as<BoxDecorationCls>(a), this, t);
     }
     return as<BoxDecoration>(super->lerpFrom(a, t));
 }
@@ -46,7 +46,7 @@ BoxDecoration BoxDecorationCls::lerpTo(Decoration b, double t) {
         return scale(1.0 - t);
     }
     if (is<BoxDecoration>(b)) {
-        return BoxDecorationCls->lerp(this, b, t);
+        return BoxDecorationCls->lerp(this, as<BoxDecorationCls>(b), t);
     }
     return as<BoxDecoration>(super->lerpTo(b, t));
 }

@@ -88,19 +88,19 @@ void BindingBaseCls::initServiceExtensions() {
         registerServiceExtension(platformOverrideExtensionName, [=] (Map<String, String> parameters) {
             if (parameters->containsKey(__s("value"))) {
                 ;
-                _postExtensionStateChangedEvent(platformOverrideExtensionName, defaultTargetPlatform->toString()->substring(__s("$TargetPlatform.")->length()));
+                _postExtensionStateChangedEvent(platformOverrideExtensionName, defaultTargetPlatform->toString()->substring(__s("$TargetPlatform.")->length));
                 await await reassembleApplication();
             }
-                    Map<String, dynamic> map1 = make<MapCls<>>();        map1.set(__s("value"), defaultTargetPlatform->toString()->substring(__s("$TargetPlatform.")->length()));return list1;
+                    Map<String, dynamic> map1 = make<MapCls<>>();        map1.set(__s("value"), defaultTargetPlatform->toString()->substring(__s("$TargetPlatform.")->length));return list1;
         });
         String brightnessOverrideExtensionName = __s("brightnessOverride");
         registerServiceExtension(brightnessOverrideExtensionName, [=] (Map<String, String> parameters) {
             if (parameters->containsKey(__s("value"))) {
                 ;
-                _postExtensionStateChangedEvent(brightnessOverrideExtensionName, (debugBrightnessOverride or platformDispatcher()->platformBrightness)->toString());
+                _postExtensionStateChangedEvent(brightnessOverrideExtensionName, (debugBrightnessOverride or platformDispatcher->platformBrightness)->toString());
                 await await reassembleApplication();
             }
-                    Map<String, dynamic> map2 = make<MapCls<>>();        map2.set(__s("value"), (debugBrightnessOverride or platformDispatcher()->platformBrightness)->toString());return list2;
+                    Map<String, dynamic> map2 = make<MapCls<>>();        map2.set(__s("value"), (debugBrightnessOverride or platformDispatcher->platformBrightness)->toString());return list2;
         });
         return true;
     }());

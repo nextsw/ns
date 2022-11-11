@@ -1,22 +1,22 @@
 #include "wrap.hpp"
 RenderWrapCls::RenderWrapCls(WrapAlignment alignment, List<RenderBox> children, Clip clipBehavior, WrapCrossAlignment crossAxisAlignment, Axis direction, WrapAlignment runAlignment, double runSpacing, double spacing, TextDirection textDirection, VerticalDirection verticalDirection) {
     {
-        assert(direction() != nullptr);
-        assert(alignment() != nullptr);
-        assert(spacing() != nullptr);
-        assert(runAlignment() != nullptr);
-        assert(runSpacing() != nullptr);
-        assert(crossAxisAlignment() != nullptr);
-        assert(clipBehavior() != nullptr);
-        _direction = direction();
-        _alignment = alignment();
-        _spacing = spacing();
-        _runAlignment = runAlignment();
-        _runSpacing = runSpacing();
-        _crossAxisAlignment = crossAxisAlignment();
-        _textDirection = textDirection();
-        _verticalDirection = verticalDirection();
-        _clipBehavior = clipBehavior();
+        assert(direction != nullptr);
+        assert(alignment != nullptr);
+        assert(spacing != nullptr);
+        assert(runAlignment != nullptr);
+        assert(runSpacing != nullptr);
+        assert(crossAxisAlignment != nullptr);
+        assert(clipBehavior != nullptr);
+        _direction = direction;
+        _alignment = alignment;
+        _spacing = spacing;
+        _runAlignment = runAlignment;
+        _runSpacing = runSpacing;
+        _crossAxisAlignment = crossAxisAlignment;
+        _textDirection = textDirection;
+        _verticalDirection = verticalDirection;
+        _clipBehavior = clipBehavior;
     }
     {
         addAll(children);
@@ -172,7 +172,7 @@ void RenderWrapCls::performLayout() {
     _hasVisualOverflow = false;
     RenderBox child = firstChild;
     if (child == nullptr) {
-        size = constraints->smallest;
+        size = constraints->smallest();
         return;
     }
     BoxConstraints childConstraints;
@@ -194,11 +194,11 @@ void RenderWrapCls::performLayout() {
         child->layout(childConstraintstrue);
         double childMainAxisExtent = _getMainAxisExtent(child->size);
         double childCrossAxisExtent = _getCrossAxisExtent(child->size);
-        if (childCount > 0 && runMainAxisExtent + spacing() + childMainAxisExtent > mainAxisLimit) {
+        if (childCount > 0 && runMainAxisExtent + spacing + childMainAxisExtent > mainAxisLimit) {
             mainAxisExtent = math->max(mainAxisExtent, runMainAxisExtent);
             crossAxisExtent = runCrossAxisExtent;
             if (runMetrics->isNotEmpty) {
-                crossAxisExtent = runSpacing();
+                crossAxisExtent = runSpacing;
             }
             runMetrics->add(make<_RunMetricsCls>(runMainAxisExtent, runCrossAxisExtent, childCount));
             runMainAxisExtent = 0.0;
@@ -207,7 +207,7 @@ void RenderWrapCls::performLayout() {
         }
         runMainAxisExtent = childMainAxisExtent;
         if (childCount > 0) {
-            runMainAxisExtent = spacing();
+            runMainAxisExtent = spacing;
         }
         runCrossAxisExtent = math->max(runCrossAxisExtent, childCrossAxisExtent);
         childCount = 1;
@@ -219,7 +219,7 @@ void RenderWrapCls::performLayout() {
         mainAxisExtent = math->max(mainAxisExtent, runMainAxisExtent);
         crossAxisExtent = runCrossAxisExtent;
         if (runMetrics->isNotEmpty) {
-            crossAxisExtent = runSpacing();
+            crossAxisExtent = runSpacing;
         }
         runMetrics->add(make<_RunMetricsCls>(runMainAxisExtent, runCrossAxisExtent, childCount));
     }
@@ -233,7 +233,7 @@ void RenderWrapCls::performLayout() {
     double runLeadingSpace = 0.0;
     double runBetweenSpace = 0.0;
     ;
-    runBetweenSpace = runSpacing();
+    runBetweenSpace = runSpacing;
     double crossAxisOffset = flipCrossAxis? containerCrossAxisExtent - runLeadingSpace : runLeadingSpace;
     child = firstChild;
     for (;  < runCount; ++i) {
@@ -245,7 +245,7 @@ void RenderWrapCls::performLayout() {
         double childLeadingSpace = 0.0;
         double childBetweenSpace = 0.0;
         ;
-        childBetweenSpace = spacing();
+        childBetweenSpace = spacing;
         double childMainPosition = flipMainAxis? containerMainAxisExtent - childLeadingSpace : childLeadingSpace;
         if (flipCrossAxis) {
             crossAxisOffset = runCrossAxisExtent;
@@ -282,46 +282,46 @@ bool RenderWrapCls::hitTestChildren(Offset position, BoxHitTestResult result) {
 }
 
 void RenderWrapCls::paint(PaintingContext context, Offset offset) {
-    if (_hasVisualOverflow && clipBehavior() != ClipCls::none) {
-        _clipRectLayer->layer() = context->pushClipRect(needsCompositing, offset, OffsetCls::zero & size, defaultPaintclipBehavior(), _clipRectLayer->layer());
+    if (_hasVisualOverflow && clipBehavior != ClipCls::none) {
+        _clipRectLayer->layer = context->pushClipRect(needsCompositing, offset, OffsetCls::zero & size, defaultPaintclipBehavior, _clipRectLayer->layer);
     } else {
-        _clipRectLayer->layer() = nullptr;
+        _clipRectLayer->layer = nullptr;
         defaultPaint(context, offset);
     }
 }
 
 void RenderWrapCls::dispose() {
-    _clipRectLayer->layer() = nullptr;
+    _clipRectLayer->layer = nullptr;
     super->dispose();
 }
 
 void RenderWrapCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<Axis>make<EnumPropertyCls>(__s("direction"), direction()));
-    properties->add(<WrapAlignment>make<EnumPropertyCls>(__s("alignment"), alignment()));
-    properties->add(make<DoublePropertyCls>(__s("spacing"), spacing()));
-    properties->add(<WrapAlignment>make<EnumPropertyCls>(__s("runAlignment"), runAlignment()));
-    properties->add(make<DoublePropertyCls>(__s("runSpacing"), runSpacing()));
-    properties->add(make<DoublePropertyCls>(__s("crossAxisAlignment"), runSpacing()));
-    properties->add(<TextDirection>make<EnumPropertyCls>(__s("textDirection"), textDirection()nullptr));
-    properties->add(<VerticalDirection>make<EnumPropertyCls>(__s("verticalDirection"), verticalDirection()VerticalDirectionCls::down));
+    properties->add(<Axis>make<EnumPropertyCls>(__s("direction"), direction));
+    properties->add(<WrapAlignment>make<EnumPropertyCls>(__s("alignment"), alignment));
+    properties->add(make<DoublePropertyCls>(__s("spacing"), spacing));
+    properties->add(<WrapAlignment>make<EnumPropertyCls>(__s("runAlignment"), runAlignment));
+    properties->add(make<DoublePropertyCls>(__s("runSpacing"), runSpacing));
+    properties->add(make<DoublePropertyCls>(__s("crossAxisAlignment"), runSpacing));
+    properties->add(<TextDirection>make<EnumPropertyCls>(__s("textDirection"), textDirectionnullptr));
+    properties->add(<VerticalDirection>make<EnumPropertyCls>(__s("verticalDirection"), verticalDirectionVerticalDirectionCls::down));
 }
 
 bool RenderWrapCls::_debugHasNecessaryDirections() {
-    assert(direction() != nullptr);
-    assert(alignment() != nullptr);
-    assert(runAlignment() != nullptr);
-    assert(crossAxisAlignment() != nullptr);
+    assert(direction != nullptr);
+    assert(alignment != nullptr);
+    assert(runAlignment != nullptr);
+    assert(crossAxisAlignment != nullptr);
     if (firstChild != nullptr && lastChild != firstChild) {
         ;
     }
-    if (alignment() == WrapAlignmentCls::start || alignment() == WrapAlignmentCls::end) {
+    if (alignment == WrapAlignmentCls::start || alignment == WrapAlignmentCls::end) {
         ;
     }
-    if (runAlignment() == WrapAlignmentCls::start || runAlignment() == WrapAlignmentCls::end) {
+    if (runAlignment == WrapAlignmentCls::start || runAlignment == WrapAlignmentCls::end) {
         ;
     }
-    if (crossAxisAlignment() == WrapCrossAlignmentCls::start || crossAxisAlignment() == WrapCrossAlignmentCls::end) {
+    if (crossAxisAlignment == WrapCrossAlignmentCls::start || crossAxisAlignment == WrapCrossAlignmentCls::end) {
         ;
     }
     return true;
@@ -358,9 +358,9 @@ Size RenderWrapCls::_computeDryLayout(BoxConstraints constraints, ChildLayouter 
         Size childSize = layoutChild(child, childConstraints);
         double childMainAxisExtent = _getMainAxisExtent(childSize);
         double childCrossAxisExtent = _getCrossAxisExtent(childSize);
-        if (childCount > 0 && runMainAxisExtent + childMainAxisExtent + spacing() > mainAxisLimit) {
+        if (childCount > 0 && runMainAxisExtent + childMainAxisExtent + spacing > mainAxisLimit) {
             mainAxisExtent = math->max(mainAxisExtent, runMainAxisExtent);
-            crossAxisExtent = runCrossAxisExtent + runSpacing();
+            crossAxisExtent = runCrossAxisExtent + runSpacing;
             runMainAxisExtent = 0.0;
             runCrossAxisExtent = 0.0;
             childCount = 0;
@@ -368,7 +368,7 @@ Size RenderWrapCls::_computeDryLayout(BoxConstraints constraints, ChildLayouter 
         runMainAxisExtent = childMainAxisExtent;
         runCrossAxisExtent = math->max(runCrossAxisExtent, childCrossAxisExtent);
         if (childCount > 0) {
-            runMainAxisExtent = spacing();
+            runMainAxisExtent = spacing;
         }
         childCount = 1;
         child = childAfter(child);

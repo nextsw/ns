@@ -7,14 +7,14 @@ void DebugOverflowIndicatorMixinCls::paintOverflowIndicator(Rect childRect, Rect
     List<_OverflowRegionData> overflowRegions = _calculateOverflowRegions(overflow, containerRect);
     for (_OverflowRegionData region : overflowRegions) {
         context->canvas->drawRect(region->rect->shift(offset), _indicatorPaint);
-        TextSpan textSpan = as<TextSpan>(_indicatorLabel[region->side->index]->text());
+        TextSpan textSpan = as<TextSpan>(_indicatorLabel[region->side->index]->text);
         if (textSpan?->text != region->label) {
-            _indicatorLabel[region->side->index]->text() = make<TextSpanCls>(region->label, _indicatorTextStyle);
+            _indicatorLabel[region->side->index]->text = make<TextSpanCls>(region->label, _indicatorTextStyle);
             _indicatorLabel[region->side->index]->layout();
         }
         Offset labelOffset = region->labelOffset + offset;
-        Offset centerOffset = make<OffsetCls>(-_indicatorLabel[region->side->index]->width() / 2.0, 0.0);
-        Rect textBackgroundRect = centerOffset & _indicatorLabel[region->side->index]->size();
+        Offset centerOffset = make<OffsetCls>(-_indicatorLabel[region->side->index]->width / 2.0, 0.0);
+        Rect textBackgroundRect = centerOffset & _indicatorLabel[region->side->index]->size;
         context->canvas->save();
         context->canvas->translate(labelOffset->dx, labelOffset->dy);
         context->canvas->rotate(region->rotation);
@@ -63,11 +63,11 @@ List<_OverflowRegionData> DebugOverflowIndicatorMixinCls::_calculateOverflowRegi
     }
     if (overflow->top > 0.0) {
         Rect markerRect = RectCls->fromLTWH(0.0, 0.0, containerRect->width, containerRect->height * _indicatorFraction);
-        regions->add(make<_OverflowRegionDataCls>(markerRect, __s("TOP OVERFLOWED BY ${_formatPixels(overflow.top)} PIXELS"), markerRect->topCenter + make<OffsetCls>(0.0, _indicatorLabelPaddingPixels), _OverflowSideCls::top));
+        regions->add(make<_OverflowRegionDataCls>(markerRect, __s("TOP OVERFLOWED BY ${_formatPixels(overflow.top)} PIXELS"), markerRect->topCenter() + make<OffsetCls>(0.0, _indicatorLabelPaddingPixels), _OverflowSideCls::top));
     }
     if (overflow->bottom > 0.0) {
         Rect markerRect = RectCls->fromLTWH(0.0, containerRect->height * (1.0 - _indicatorFraction), containerRect->width, containerRect->height * _indicatorFraction);
-        regions->add(make<_OverflowRegionDataCls>(markerRect, __s("BOTTOM OVERFLOWED BY ${_formatPixels(overflow.bottom)} PIXELS"), markerRect->bottomCenter - make<OffsetCls>(0.0, _indicatorFontSizePixels + _indicatorLabelPaddingPixels), _OverflowSideCls::bottom));
+        regions->add(make<_OverflowRegionDataCls>(markerRect, __s("BOTTOM OVERFLOWED BY ${_formatPixels(overflow.bottom)} PIXELS"), markerRect->bottomCenter() - make<OffsetCls>(0.0, _indicatorFontSizePixels + _indicatorLabelPaddingPixels), _OverflowSideCls::bottom));
     }
     return regions;
 }

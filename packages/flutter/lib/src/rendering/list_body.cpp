@@ -1,8 +1,8 @@
 #include "list_body.hpp"
 RenderListBodyCls::RenderListBodyCls(AxisDirection axisDirection, List<RenderBox> children) {
     {
-        assert(axisDirection() != nullptr);
-        _axisDirection = axisDirection();
+        assert(axisDirection != nullptr);
+        _axisDirection = axisDirection;
     }
     {
         addAll(children);
@@ -29,7 +29,7 @@ void RenderListBodyCls::axisDirection(AxisDirection value) {
 }
 
 Axis RenderListBodyCls::mainAxis() {
-    return axisDirectionToAxis(axisDirection());
+    return axisDirectionToAxis(axisDirection);
 }
 
 Size RenderListBodyCls::computeDryLayout(BoxConstraints constraints) {
@@ -50,7 +50,7 @@ void RenderListBodyCls::performLayout() {
 
 void RenderListBodyCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<AxisDirection>make<EnumPropertyCls>(__s("axisDirection"), axisDirection()));
+    properties->add(<AxisDirection>make<EnumPropertyCls>(__s("axisDirection"), axisDirection));
 }
 
 double RenderListBodyCls::computeMinIntrinsicWidth(double height) {

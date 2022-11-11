@@ -99,7 +99,7 @@ double AssetImageCls::_parseScale(String key) {
         directoryPath = assetUri->pathSegments[assetUri->pathSegments->length - 2];
     }
     Match match = _extractRatioRegExp->firstMatch(directoryPath);
-    if (match != nullptr && match->groupCount > 0) {
+    if (match != nullptr && match->groupCount() > 0) {
         return double->parse(match->group(1)!);
     }
     return _naturalResolution;

@@ -68,7 +68,7 @@ void _RenderSingleChildViewportCls::axisDirection(AxisDirection value) {
 }
 
 Axis _RenderSingleChildViewportCls::axis() {
-    return axisDirectionToAxis(axisDirection());
+    return axisDirectionToAxis(axisDirection);
 }
 
 ViewportOffset _RenderSingleChildViewportCls::offset() {
@@ -166,7 +166,7 @@ double _RenderSingleChildViewportCls::computeMaxIntrinsicHeight(double width) {
 
 Size _RenderSingleChildViewportCls::computeDryLayout(BoxConstraints constraints) {
     if (child == nullptr) {
-        return constraints->smallest;
+        return constraints->smallest();
     }
     Size childSize = child!->getDryLayout(_getInnerConstraints(constraints));
     return constraints->constrain(childSize);
@@ -175,13 +175,13 @@ Size _RenderSingleChildViewportCls::computeDryLayout(BoxConstraints constraints)
 void _RenderSingleChildViewportCls::performLayout() {
     BoxConstraints constraints = this->constraints;
     if (child == nullptr) {
-        size = constraints->smallest;
+        size = constraints->smallest();
     } else {
         child!->layout(_getInnerConstraints(constraints)true);
         size = constraints->constrain(child!->size);
     }
-    offset()->applyViewportDimension(_viewportExtent());
-    offset()->applyContentDimensions(_minScrollExtent(), _maxScrollExtent());
+    offset->applyViewportDimension(_viewportExtent());
+    offset->applyContentDimensions(_minScrollExtent(), _maxScrollExtent());
 }
 
 void _RenderSingleChildViewportCls::paint(PaintingContext context, Offset offset) {
@@ -189,16 +189,16 @@ void _RenderSingleChildViewportCls::paint(PaintingContext context, Offset offset
         Offset paintOffset = _paintOffset();
         InlineMethod;
         if (_shouldClipAtPaintOffset(paintOffset)) {
-            _clipRectLayer->layer() = context->pushClipRect(needsCompositing, offset(), OffsetCls::zero & size, paintContentsclipBehavior(), _clipRectLayer->layer());
+            _clipRectLayer->layer = context->pushClipRect(needsCompositing, offset, OffsetCls::zero & size, paintContentsclipBehavior, _clipRectLayer->layer);
         } else {
-            _clipRectLayer->layer() = nullptr;
-            paintContents(context, offset());
+            _clipRectLayer->layer = nullptr;
+            paintContents(context, offset);
         }
     }
 }
 
 void _RenderSingleChildViewportCls::dispose() {
-    _clipRectLayer->layer() = nullptr;
+    _clipRectLayer->layer = nullptr;
     super->dispose();
 }
 
@@ -225,9 +225,9 @@ bool _RenderSingleChildViewportCls::hitTestChildren(Offset position, BoxHitTestR
 }
 
 RevealedOffset _RenderSingleChildViewportCls::getOffsetToReveal(double alignment, Rect rect, RenderObject target) {
-    rect = target->paintBounds;
+    rect = target->paintBounds();
     if (!is<RenderBox>(target)) {
-        return make<RevealedOffsetCls>(offset()->pixels(), rect);
+        return make<RevealedOffsetCls>(offset->pixels, rect);
     }
     RenderBox targetBox = target;
     Matrix4 transform = targetBox->getTransformTo(child);
@@ -236,7 +236,7 @@ RevealedOffset _RenderSingleChildViewportCls::getOffsetToReveal(double alignment
     double leadingScrollOffset;
     double targetMainAxisExtent;
     double mainAxisExtent;
-    assert(axisDirection() != nullptr);
+    assert(axisDirection != nullptr);
     ;
     double targetOffset = leadingScrollOffset - (mainAxisExtent - targetMainAxisExtent) * alignment;
     Rect targetRect = bounds->shift(_paintOffsetForPosition(targetOffset));
@@ -244,10 +244,10 @@ RevealedOffset _RenderSingleChildViewportCls::getOffsetToReveal(double alignment
 }
 
 void _RenderSingleChildViewportCls::showOnScreen(Curve curve, RenderObject descendant, Duration duration, Rect rect) {
-    if (!offset()->allowImplicitScrolling()) {
+    if (!offset->allowImplicitScrolling) {
         return super->showOnScreen(descendant, rect, duration, curve);
     }
-    Rect newRect = RenderViewportBaseCls->showInViewport(descendant, this, offset(), rect, duration, curve);
+    Rect newRect = RenderViewportBaseCls->showInViewport(descendant, this, offset, rect, duration, curve);
     super->showOnScreen(newRect, duration, curve);
 }
 
@@ -257,20 +257,20 @@ void _RenderSingleChildViewportCls::debugFillProperties(DiagnosticPropertiesBuil
 }
 
 Rect _RenderSingleChildViewportCls::describeSemanticsClip(RenderObject child) {
-    assert(axis() != nullptr);
+    assert(axis != nullptr);
     ;
 }
 
 _RenderSingleChildViewportCls::_RenderSingleChildViewportCls(AxisDirection axisDirection, double cacheExtent, RenderBox child, Clip clipBehavior, ViewportOffset offset) {
     {
-        assert(axisDirection() != nullptr);
-        assert(offset() != nullptr);
-        assert(cacheExtent() != nullptr);
-        assert(clipBehavior() != nullptr);
-        _axisDirection = axisDirection();
-        _offset = offset();
-        _cacheExtent = cacheExtent();
-        _clipBehavior = clipBehavior();
+        assert(axisDirection != nullptr);
+        assert(offset != nullptr);
+        assert(cacheExtent != nullptr);
+        assert(clipBehavior != nullptr);
+        _axisDirection = axisDirection;
+        _offset = offset;
+        _cacheExtent = cacheExtent;
+        _clipBehavior = clipBehavior;
     }
     {
         this->child = child;
@@ -305,11 +305,11 @@ BoxConstraints _RenderSingleChildViewportCls::_getInnerConstraints(BoxConstraint
 }
 
 Offset _RenderSingleChildViewportCls::_paintOffset() {
-    return _paintOffsetForPosition(offset()->pixels());
+    return _paintOffsetForPosition(offset->pixels);
 }
 
 Offset _RenderSingleChildViewportCls::_paintOffsetForPosition(double position) {
-    assert(axisDirection() != nullptr);
+    assert(axisDirection != nullptr);
     ;
 }
 

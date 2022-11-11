@@ -191,13 +191,13 @@ Matrix2 Matrix2Cls::copyInto(Matrix2 arg) {
 
 dynamic Matrix2Cls::*(dynamic arg) {
     if (is<double>(arg)) {
-        return scaled(arg);
+        return scaled(as<doubleCls>(arg));
     }
     if (is<Vector2>(arg)) {
-        return transformed(arg);
+        return transformed(as<Vector2Cls>(arg));
     }
     if (is<Matrix2>(arg)) {
-        return multiplied(arg);
+        return multiplied(as<Matrix2Cls>(arg));
     }
     ;
 }

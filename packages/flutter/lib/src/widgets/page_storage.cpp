@@ -30,7 +30,7 @@ void PageStorageBucketCls::writeState(BuildContext context, dynamic data, Object
         _storage![identifier] = data;
     } else {
         _StorageEntryIdentifier contextIdentifier = _computeIdentifier(context);
-        if (contextIdentifier->isNotEmpty) {
+        if (contextIdentifier->isNotEmpty()) {
             _storage![contextIdentifier] = data;
         }
     }
@@ -44,14 +44,14 @@ dynamic PageStorageBucketCls::readState(BuildContext context, Object identifier)
         return _storage![identifier];
     }
     _StorageEntryIdentifier contextIdentifier = _computeIdentifier(context);
-    return contextIdentifier->isNotEmpty? _storage![contextIdentifier] : nullptr;
+    return contextIdentifier->isNotEmpty()? _storage![contextIdentifier] : nullptr;
 }
 
 bool PageStorageBucketCls::_maybeAddKey(BuildContext context, List<PageStorageKey<dynamic>> keys) {
     Widget widget = context->widget;
     Key key = widget->key;
     if (is<PageStorageKey>(key)) {
-        keys->add(key);
+        keys->add(as<PageStorageKeyCls>(key));
     }
     return !is<PageStorage>(widget);
 }

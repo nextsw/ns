@@ -1,6 +1,6 @@
 #include "gesture_settings.hpp"
 void DeviceGestureSettingsCls::fromWindow(FlutterView window) {
-    double physicalTouchSlop = window->viewConfiguration->gestureSettings->physicalTouchSlop;
+    double physicalTouchSlop = window->viewConfiguration()->gestureSettings->physicalTouchSlop;
     return make<DeviceGestureSettingsCls>(physicalTouchSlop == nullptr? nullptr : physicalTouchSlop / window->devicePixelRatio);
 }
 

@@ -17,7 +17,7 @@ ShapeBorder ContinuousRectangleBorderCls::scale(double t) {
 ShapeBorder ContinuousRectangleBorderCls::lerpFrom(ShapeBorder a, double t) {
     assert(t != nullptr);
     if (is<ContinuousRectangleBorder>(a)) {
-        return make<ContinuousRectangleBorderCls>(BorderSideCls->lerp(a->side, side, t), BorderRadiusGeometryCls->lerp(a->borderRadius, borderRadius, t)!);
+        return make<ContinuousRectangleBorderCls>(BorderSideCls->lerp(as<ContinuousRectangleBorderCls>(a)->side, side, t), BorderRadiusGeometryCls->lerp(as<ContinuousRectangleBorderCls>(a)->borderRadius, borderRadius, t)!);
     }
     return super->lerpFrom(a, t);
 }
@@ -25,7 +25,7 @@ ShapeBorder ContinuousRectangleBorderCls::lerpFrom(ShapeBorder a, double t) {
 ShapeBorder ContinuousRectangleBorderCls::lerpTo(ShapeBorder b, double t) {
     assert(t != nullptr);
     if (is<ContinuousRectangleBorder>(b)) {
-        return make<ContinuousRectangleBorderCls>(BorderSideCls->lerp(side, b->side, t), BorderRadiusGeometryCls->lerp(borderRadius, b->borderRadius, t)!);
+        return make<ContinuousRectangleBorderCls>(BorderSideCls->lerp(side, as<ContinuousRectangleBorderCls>(b)->side, t), BorderRadiusGeometryCls->lerp(borderRadius, as<ContinuousRectangleBorderCls>(b)->borderRadius, t)!);
     }
     return super->lerpTo(b, t);
 }
@@ -43,7 +43,7 @@ ContinuousRectangleBorder ContinuousRectangleBorderCls::copyWith(BorderRadiusGeo
 }
 
 void ContinuousRectangleBorderCls::paint(Canvas canvas, Rect rect, TextDirection textDirection) {
-    if (rect->isEmpty) {
+    if (rect->isEmpty()) {
         return;
     }
     ;
@@ -65,7 +65,7 @@ String ContinuousRectangleBorderCls::toString() {
 }
 
 double ContinuousRectangleBorderCls::_clampToShortest(RRect rrect, double value) {
-    return value > rrect->shortestSide? rrect->shortestSide : value;
+    return value > rrect->shortestSide()? rrect->shortestSide() : value;
 }
 
 Path ContinuousRectangleBorderCls::_getPath(RRect rrect) {

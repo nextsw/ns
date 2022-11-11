@@ -385,7 +385,7 @@ template<typename T> _AddStreamStateCls<T>::_AddStreamStateCls(bool cancelOnErro
 
 template<typename T> _StreamControllerAddStreamStateCls<T>::_StreamControllerAddStreamStateCls(bool cancelOnError, _StreamController<T> controller, Stream<T> source, auto varData) : _AddStreamState<T>(controller, source, cancelOnError) {
     {
-        if (controller->isPaused) {
+        if (controller->isPaused()) {
             addSubscription->pause();
         }
     }
