@@ -813,8 +813,8 @@ bool RawScrollbarStateCls<T>::_handleScrollNotification(ScrollNotification notif
 }
 
 template<typename T>
-Map<Type, GestureRecognizerFactory> RawScrollbarStateCls<T>::_gestures() {
-    Map<Type, GestureRecognizerFactory> gestures = makeMap(makeList(), makeList();
+Map<Type, GestureRecognizerFactory<any>> RawScrollbarStateCls<T>::_gestures() {
+    Map<Type, GestureRecognizerFactory<any>> gestures = makeMap(makeList(), makeList();
     ScrollController controller = widget()->controller | PrimaryScrollControllerCls->of(context());
     if (controller == nullptr || !enableGestures()) {
         return gestures;
@@ -848,13 +848,13 @@ bool _ThumbPressGestureRecognizerCls::isPointerAllowed(PointerDownEvent event) {
     return super->isPointerAllowed(event);
 }
 
-_ThumbPressGestureRecognizerCls::_ThumbPressGestureRecognizerCls(GlobalKey customPaintKey, Object debugOwner, Duration pressDuration) : LongPressGestureRecognizer(pressDuration) {
+_ThumbPressGestureRecognizerCls::_ThumbPressGestureRecognizerCls(GlobalKey<any> customPaintKey, Object debugOwner, Duration pressDuration) : LongPressGestureRecognizer(pressDuration) {
     {
         _customPaintKey = customPaintKey;
     }
 }
 
-bool _ThumbPressGestureRecognizerCls::_hitTestInteractive(GlobalKey customPaintKey, Offset offset, PointerDeviceKind kind) {
+bool _ThumbPressGestureRecognizerCls::_hitTestInteractive(GlobalKey<any> customPaintKey, Offset offset, PointerDeviceKind kind) {
     if (customPaintKey->currentContext() == nullptr) {
         return false;
     }
@@ -871,13 +871,13 @@ bool _TrackTapGestureRecognizerCls::isPointerAllowed(PointerDownEvent event) {
     return super->isPointerAllowed(event);
 }
 
-_TrackTapGestureRecognizerCls::_TrackTapGestureRecognizerCls(GlobalKey customPaintKey, Object debugOwner) : TapGestureRecognizer(debugOwner) {
+_TrackTapGestureRecognizerCls::_TrackTapGestureRecognizerCls(GlobalKey<any> customPaintKey, Object debugOwner) : TapGestureRecognizer(debugOwner) {
     {
         _customPaintKey = customPaintKey;
     }
 }
 
-bool _TrackTapGestureRecognizerCls::_hitTestInteractive(GlobalKey customPaintKey, Offset offset, PointerDeviceKind kind) {
+bool _TrackTapGestureRecognizerCls::_hitTestInteractive(GlobalKey<any> customPaintKey, Offset offset, PointerDeviceKind kind) {
     if (customPaintKey->currentContext() == nullptr) {
         return false;
     }
@@ -887,7 +887,7 @@ bool _TrackTapGestureRecognizerCls::_hitTestInteractive(GlobalKey customPaintKey
     return painter->hitTestInteractive(localOffset, kind) && !painter->hitTestOnlyThumbInteractive(localOffset, kind);
 }
 
-Offset _getLocalOffset(GlobalKey scrollbarPainterKey, Offset position) {
+Offset _getLocalOffset(GlobalKey<any> scrollbarPainterKey, Offset position) {
     RenderBox renderBox = as<RenderBox>(scrollbarPainterKey->currentContext()!->findRenderObject()!);
     return renderBox->globalToLocal(position);
 }

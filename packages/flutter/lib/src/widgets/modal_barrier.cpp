@@ -55,7 +55,7 @@ void _AnyTapGestureRecognizerFactoryCls::initializer(_AnyTapGestureRecognizer in
 }
 
 Widget _ModalBarrierGestureDetectorCls::build(BuildContext context) {
-    Map<Type, GestureRecognizerFactory> map1 = make<MapCls<>>();map1.set(_AnyTapGestureRecognizerCls, make<_AnyTapGestureRecognizerFactoryCls>(onDismiss));Map<Type, GestureRecognizerFactory> gestures = list1;
+    Map<Type, GestureRecognizerFactory<any>> map1 = make<MapCls<>>();map1.set(_AnyTapGestureRecognizerCls, make<_AnyTapGestureRecognizerFactoryCls>(onDismiss));Map<Type, GestureRecognizerFactory<any>> gestures = list1;
     return make<RawGestureDetectorCls>(gestures, HitTestBehaviorCls::opaque, make<_ModalBarrierSemanticsDelegateCls>(onDismiss), child);
 }
 

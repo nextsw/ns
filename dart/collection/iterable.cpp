@@ -130,9 +130,9 @@ Set<E> IterableMixinCls<E>::toSet() {
 
 template<typename E>
 int IterableMixinCls<E>::length() {
-    assert(!is<EfficientLengthIterable>(this));
+    assert(!is<EfficientLengthIterable<any>>(this));
     int count = 0;
-    Iterator it = iterator();
+    Iterator<any> it = iterator();
     while (it->moveNext()) {
         count++;
     }
@@ -278,7 +278,7 @@ String IterableMixinCls<E>::toString() {
 }
 
 template<typename E>
-String IterableBaseCls<E>::iterableToShortString(Iterable iterable, String leftDelimiter, String rightDelimiter) {
+String IterableBaseCls<E>::iterableToShortString(Iterable<any> iterable, String leftDelimiter, String rightDelimiter) {
     if (_isToStringVisiting(iterable)) {
         if (leftDelimiter == __s("(") && rightDelimiter == __s(")")) {
             return __s("(...)");
@@ -297,7 +297,7 @@ String IterableBaseCls<E>::iterableToShortString(Iterable iterable, String leftD
 }
 
 template<typename E>
-String IterableBaseCls<E>::iterableToFullString(Iterable iterable, String leftDelimiter, String rightDelimiter) {
+String IterableBaseCls<E>::iterableToFullString(Iterable<any> iterable, String leftDelimiter, String rightDelimiter) {
     if (_isToStringVisiting(iterable)) {
         return __s("$leftDelimiter...$rightDelimiter");
     }

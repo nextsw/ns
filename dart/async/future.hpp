@@ -33,16 +33,15 @@ public:
 
     virtual void  delayed(Duration duration, std::function<FutureOr<T>()> computation);
 
-    template<typename T>
  static Future<List<T>> wait(Iterable<Future<T>> futures, std::function<void(T successValue)> cleanUp, bool eagerError);
 
     template<typename T>
  static Future<T> any(Iterable<Future<T>> futures);
 
     template<typename T>
- static Future forEach(Iterable<T> elements, std::function<FutureOr(T element)> action);
+ static Future<any> forEach(Iterable<T> elements, std::function<FutureOr<any>(T element)> action);
 
-    static Future doWhile(std::function<FutureOr<bool>()> action);
+    static Future<any> doWhile(std::function<FutureOr<bool>()> action);
 
     template<typename R>
  virtual Future<R> then(std::function<FutureOr<R>(T value)> onValue, std::function<void ()> onError);
@@ -113,9 +112,9 @@ private:
 };
 template<typename T>
 using Completer = std::shared_ptr<CompleterCls<T>>;
-void _completeWithErrorCallback(_Future result, Object error, StackTrace stackTrace);
+void _completeWithErrorCallback(_Future<any> result, Object error, StackTrace stackTrace);
 
-void _asyncCompleteWithErrorCallback(_Future result, Object error, StackTrace stackTrace);
+void _asyncCompleteWithErrorCallback(_Future<any> result, Object error, StackTrace stackTrace);
 
 
 

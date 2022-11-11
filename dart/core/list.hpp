@@ -12,10 +12,10 @@ public:
      ListCls(int length);
     void  filled(int length, E fill, bool growable);
     void  empty(bool growable);
-    void  from(Iterable elements, bool growable);
+    void  from(Iterable<any> elements, bool growable);
     void  of(Iterable<E> elements, bool growable);
     void  generate(int length, std::function<E(int index)> generator, bool growable);
-    void  unmodifiable(Iterable elements);
+    void  unmodifiable(Iterable<any> elements);
     template<typename S, typename T>
  static List<T> castFrom(List<S> source);
 

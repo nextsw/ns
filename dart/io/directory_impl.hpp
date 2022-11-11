@@ -119,7 +119,7 @@ public:
 
     bool closed;
 
-    Completer closeCompleter;
+    Completer<any> closeCompleter;
 
 
     virtual Stream<FileSystemEntity> stream();
@@ -128,7 +128,7 @@ public:
 
     virtual void onResume();
 
-    virtual Future onCancel();
+    virtual Future<any> onCancel();
 
     virtual void next();
 

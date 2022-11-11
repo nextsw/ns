@@ -231,7 +231,7 @@ bool RenderUiKitViewCls::hitTestSelf(Offset position) {
     return hitTestBehavior != PlatformViewHitTestBehaviorCls::transparent;
 }
 
-void RenderUiKitViewCls::handleEvent(PointerEvent event, HitTestEntry entry) {
+void RenderUiKitViewCls::handleEvent(PointerEvent event, HitTestEntry<any> entry) {
     if (!is<PointerDownEvent>(event)) {
         return;
     }
@@ -507,7 +507,7 @@ bool _PlatformViewGestureMixinCls::validForMouseTracker() {
     return true;
 }
 
-void _PlatformViewGestureMixinCls::handleEvent(PointerEvent event, HitTestEntry entry) {
+void _PlatformViewGestureMixinCls::handleEvent(PointerEvent event, HitTestEntry<any> entry) {
     if (is<PointerDownEvent>(event)) {
         _gestureRecognizer!->addPointer(as<PointerDownEventCls>(event));
     }

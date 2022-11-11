@@ -150,7 +150,7 @@ public:
      StatefulWidgetCls(Key key);
     virtual StatefulElement createElement();
 
-    virtual State createState();
+    virtual State<any> createState();
 private:
 
 };
@@ -405,30 +405,30 @@ private:
 
     Element _debugCurrentBuildTarget;
 
-    Map<Element, Set<GlobalKey>> _debugElementsThatWillNeedToBeRebuiltDueToGlobalKeyShenanigans;
+    Map<Element, Set<GlobalKey<any>>> _debugElementsThatWillNeedToBeRebuiltDueToGlobalKeyShenanigans;
 
-    Map<GlobalKey, Element> _globalKeyRegistry;
+    Map<GlobalKey<any>, Element> _globalKeyRegistry;
 
     Set<Element> _debugIllFatedElements;
 
-    Map<Element, Map<Element, GlobalKey>> _debugGlobalKeyReservations;
+    Map<Element, Map<Element, GlobalKey<any>>> _debugGlobalKeyReservations;
 
 
     virtual bool _debugIsInBuildScope();
 
     virtual bool _debugStateLocked();
 
-    virtual void _debugTrackElementThatWillNeedToBeRebuiltDueToGlobalKeyShenanigans(Element node, GlobalKey key);
+    virtual void _debugTrackElementThatWillNeedToBeRebuiltDueToGlobalKeyShenanigans(Element node, GlobalKey<any> key);
 
     virtual void _debugElementWasRebuilt(Element node);
 
     virtual void _debugRemoveGlobalKeyReservationFor(Element parent, Element child);
 
-    virtual void _registerGlobalKey(GlobalKey key, Element element);
+    virtual void _registerGlobalKey(GlobalKey<any> key, Element element);
 
-    virtual void _unregisterGlobalKey(GlobalKey key, Element element);
+    virtual void _unregisterGlobalKey(GlobalKey<any> key, Element element);
 
-    virtual void _debugReserveGlobalKeyFor(Element parent, Element child, GlobalKey key);
+    virtual void _debugReserveGlobalKeyFor(Element parent, Element child, GlobalKey<any> key);
 
     virtual void _debugVerifyGlobalKeyReservation();
 
@@ -629,7 +629,7 @@ private:
 
     virtual void _updateDepth(int parentDepth);
 
-    virtual Element _retakeInactiveElement(GlobalKey key, Widget newWidget);
+    virtual Element _retakeInactiveElement(GlobalKey<any> key, Widget newWidget);
 
     virtual void _debugCheckForCycles(Element newChild);
 

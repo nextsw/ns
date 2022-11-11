@@ -85,9 +85,9 @@ class IterableBaseCls : public IterableCls<E> {
 public:
 
      IterableBaseCls();
-    static String iterableToShortString(Iterable iterable, String leftDelimiter, String rightDelimiter);
+    static String iterableToShortString(Iterable<any> iterable, String leftDelimiter, String rightDelimiter);
 
-    static String iterableToFullString(Iterable iterable, String leftDelimiter, String rightDelimiter);
+    static String iterableToFullString(Iterable<any> iterable, String leftDelimiter, String rightDelimiter);
 
 private:
 

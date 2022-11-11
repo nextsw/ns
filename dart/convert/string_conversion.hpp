@@ -41,7 +41,7 @@ public:
 
     virtual void writeln(Object o);
 
-    virtual void writeAll(Iterable objects, String separator);
+    virtual void writeAll(Iterable<any> objects, String separator);
 
 private:
     std::function<void()> _callback;
@@ -64,7 +64,7 @@ public:
 
     virtual void writeln(Object o);
 
-    virtual void writeAll(Iterable objects, String separator);
+    virtual void writeAll(Iterable<any> objects, String separator);
 
 private:
     static auto  _MIN_STRING_SIZE;

@@ -40,7 +40,7 @@ public:
      RawAutocompleteCls(AutocompleteOptionToString<T> displayStringForOption, AutocompleteFieldViewBuilder fieldViewBuilder, FocusNode focusNode, TextEditingValue initialValue, Key key, AutocompleteOnSelected<T> onSelected, AutocompleteOptionsBuilder<T> optionsBuilder, AutocompleteOptionsViewBuilder<T> optionsViewBuilder, TextEditingController textEditingController);
 
     template<typename T>
- static void onFieldSubmitted(GlobalKey key);
+ static void onFieldSubmitted(GlobalKey<any> key);
 
     static String defaultStringForOption(dynamic option);
 
@@ -65,7 +65,7 @@ public:
     virtual Widget build(BuildContext context);
 
 private:
-    GlobalKey _fieldKey;
+    GlobalKey<any> _fieldKey;
 
     LayerLink _optionsLayerLink;
 

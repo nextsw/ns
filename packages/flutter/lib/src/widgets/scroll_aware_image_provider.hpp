@@ -14,12 +14,12 @@
 template<typename T>
 class ScrollAwareImageProviderCls : public ImageProviderCls<T> {
 public:
-    DisposableBuildContext context;
+    DisposableBuildContext<any> context;
 
     ImageProvider<T> imageProvider;
 
 
-     ScrollAwareImageProviderCls(DisposableBuildContext context, ImageProvider<T> imageProvider);
+     ScrollAwareImageProviderCls(DisposableBuildContext<any> context, ImageProvider<T> imageProvider);
 
     virtual void resolveStreamForKey(ImageConfiguration configuration, ImageStream stream, T key, ImageErrorListener handleError);
 

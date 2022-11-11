@@ -1,6 +1,6 @@
 #include "scroll_aware_image_provider.hpp"
 template<typename T>
-ScrollAwareImageProviderCls<T>::ScrollAwareImageProviderCls(DisposableBuildContext context, ImageProvider<T> imageProvider) {
+ScrollAwareImageProviderCls<T>::ScrollAwareImageProviderCls(DisposableBuildContext<any> context, ImageProvider<T> imageProvider) {
     {
         assert(context != nullptr);
         assert(imageProvider != nullptr);

@@ -263,7 +263,7 @@ private:
 
      _DragAvatarCls(Axis axis, T data, Offset dragStartPoint, Widget feedback, Offset feedbackOffset, bool ignoringFeedbackPointer, bool ignoringFeedbackSemantics, Offset initialPosition, _OnDragEnd onDragEnd, DragUpdateCallback onDragUpdate, OverlayState overlayState);
 
-    virtual Iterable<_DragTargetState<Object>> _getDragTargets(Iterable<HitTestEntry> path);
+    virtual Iterable<_DragTargetState<Object>> _getDragTargets(Iterable<HitTestEntry<any>> path);
 
     virtual void _leaveAllEntered();
 

@@ -258,8 +258,8 @@ public:
     virtual int remotePort();
     virtual InternetAddress address();
     virtual InternetAddress remoteAddress();
-    virtual Future close();
-    virtual Future done();
+    virtual Future<any> close();
+    virtual Future<any> done();
 private:
 
     static Future<Socket> _connect(host , int port, sourceAddress , int sourcePort, Duration timeout);

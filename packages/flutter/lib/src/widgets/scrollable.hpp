@@ -144,13 +144,13 @@ private:
 
     MediaQueryData _mediaQueryData;
 
-    GlobalKey _scrollSemanticsKey;
+    GlobalKey<any> _scrollSemanticsKey;
 
     GlobalKey<RawGestureDetectorState> _gestureDetectorKey;
 
-    GlobalKey _ignorePointerKey;
+    GlobalKey<any> _ignorePointerKey;
 
-    Map<Type, GestureRecognizerFactory> _gestureRecognizers;
+    Map<Type, GestureRecognizerFactory<any>> _gestureRecognizers;
 
     bool _shouldIgnorePointer;
 

@@ -115,9 +115,9 @@ using StdinException = std::shared_ptr<StdinExceptionCls>;
 class _StdConsumerCls : public ObjectCls {
 public:
 
-    virtual Future addStream(Stream<List<int>> stream);
+    virtual Future<any> addStream(Stream<List<int>> stream);
 
-    virtual Future close();
+    virtual Future<any> close();
 
 private:
     auto  _file;
@@ -139,7 +139,7 @@ public:
 
     virtual void writeln(Object object);
 
-    virtual void writeAll(Iterable objects, String sep);
+    virtual void writeAll(Iterable<any> objects, String sep);
 
     virtual void add(List<int> data);
 
@@ -147,13 +147,13 @@ public:
 
     virtual void writeCharCode(int charCode);
 
-    virtual Future addStream(Stream<List<int>> stream);
+    virtual Future<any> addStream(Stream<List<int>> stream);
 
-    virtual Future flush();
+    virtual Future<any> flush();
 
-    virtual Future close();
+    virtual Future<any> close();
 
-    virtual Future done();
+    virtual Future<any> done();
 
 private:
     IOSink _sink;

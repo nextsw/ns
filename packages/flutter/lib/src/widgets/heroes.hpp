@@ -60,7 +60,7 @@ public:
     virtual Widget build(BuildContext context);
 
 private:
-    GlobalKey _key;
+    GlobalKey<any> _key;
 
     Size _placeholderSize;
 

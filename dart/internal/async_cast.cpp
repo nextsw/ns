@@ -23,7 +23,7 @@ CastStreamSubscriptionCls<S, T>::CastStreamSubscriptionCls(StreamSubscription<S>
 }
 
 template<typename S, typename T>
-Future CastStreamSubscriptionCls<S, T>::cancel() {
+Future<any> CastStreamSubscriptionCls<S, T>::cancel() {
     return _source->cancel();
 }
 
@@ -56,7 +56,7 @@ void CastStreamSubscriptionCls<S, T>::onDone(std::function<void()> handleDone) {
 }
 
 template<typename S, typename T>
-void CastStreamSubscriptionCls<S, T>::pause(Future resumeSignal) {
+void CastStreamSubscriptionCls<S, T>::pause(Future<any> resumeSignal) {
     _source->pause(resumeSignal);
 }
 

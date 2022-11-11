@@ -570,5 +570,5 @@ int _ReorderableItemGlobalKeyCls::hashCode() {
     return ObjectCls->hash(subKey, index, state);
 }
 
-_ReorderableItemGlobalKeyCls::_ReorderableItemGlobalKeyCls(Key subKey, int index, SliverReorderableListState state) : GlobalObjectKey(subKey) {
+_ReorderableItemGlobalKeyCls::_ReorderableItemGlobalKeyCls(Key subKey, int index, SliverReorderableListState state) : GlobalObjectKey<any>(subKey) {
 }

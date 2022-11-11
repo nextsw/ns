@@ -16,7 +16,7 @@ private:
 
     virtual int _serviceId();
 
-    virtual Map _toJSON(bool ref);
+    virtual Map<any, any> _toJSON(bool ref);
     virtual String _servicePath();
 
     virtual String _serviceTypePath();

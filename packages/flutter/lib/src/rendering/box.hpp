@@ -278,7 +278,7 @@ public:
 
     virtual void handleEvent(PointerEvent event, BoxHitTestEntry entry);
 
-    virtual bool debugHandleEvent(PointerEvent event, HitTestEntry entry);
+    virtual bool debugHandleEvent(PointerEvent event, HitTestEntry<any> entry);
 
     virtual void debugPaint(PaintingContext context, Offset offset);
 

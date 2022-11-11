@@ -153,7 +153,7 @@ public:
     virtual Widget build(BuildContext context);
 
 private:
-    GlobalKey _localizedResourcesScopeKey;
+    GlobalKey<any> _localizedResourcesScopeKey;
 
     Map<Type, dynamic> _typeToResources;
 

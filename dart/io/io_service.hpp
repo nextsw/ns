@@ -96,7 +96,7 @@ public:
 
 private:
 
-    static Future _dispatch(int request, List data);
+    static Future<any> _dispatch(int request, List<any> data);
 };
 using _IOService = std::shared_ptr<_IOServiceCls>;
 

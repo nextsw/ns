@@ -22,7 +22,7 @@ void HashMapCls<K, V>::of(Map<K, V> other) {
 }
 
 template<typename K, typename V>
-void HashMapCls<K, V>::fromIterable(Iterable iterable, std::function<K(dynamic element)> key, std::function<V(dynamic element)> value) {
+void HashMapCls<K, V>::fromIterable(Iterable<any> iterable, std::function<K(dynamic element)> key, std::function<V(dynamic element)> value) {
     auto _c1 = <K, V>make<HashMapCls>();_c1.addAll(other);HashMap<K, V> map = <K, V>make<HashMapCls>();
     MapBaseCls->_fillMapWithMappedIterable(map, iterable, key, value);
     return map;

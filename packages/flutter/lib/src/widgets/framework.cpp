@@ -39,7 +39,7 @@ T GlobalKeyCls<T>::currentState() {
     Element element = _currentElement();
     if (is<StatefulElement>(element)) {
         StatefulElement statefulElement = as<StatefulElementCls>(element);
-        State state = statefulElement->state();
+        State<any> state = statefulElement->state();
         if (is<T>(state)) {
             return state;
         }
@@ -180,7 +180,7 @@ void StateCls<T>::setState(VoidCallback fn) {
     }());
     Object result = as<dynamic>(fn());
     assert([=] () {
-        if (is<Future>(result)) {
+        if (is<Future<any>>(result)) {
             throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem, ArrayItem));
         }
         return true;
@@ -320,7 +320,7 @@ void _InactiveElementsCls::_unmount(Element element) {
     assert(element->_lifecycleState == _ElementLifecycleCls::inactive);
     assert([=] () {
         if (debugPrintGlobalKeyedWidgetLifecycle) {
-            if (is<GlobalKey>(element->widget()->key)) {
+            if (is<GlobalKey<any>>(element->widget()->key)) {
                 debugPrint(__s("Discarding $element from inactive elements list."));
             }
         }
@@ -565,7 +565,7 @@ void BuildOwnerCls::finalizeTree() {
                 _debugVerifyGlobalKeyReservation();
                 _debugVerifyIllFatedPopulation();
                 if (_debugElementsThatWillNeedToBeRebuiltDueToGlobalKeyShenanigans != nullptr && _debugElementsThatWillNeedToBeRebuiltDueToGlobalKeyShenanigans!->isNotEmpty()) {
-                    Set<GlobalKey> keys = <GlobalKey>make<HashSetCls>();
+                    Set<GlobalKey<any>> keys = <GlobalKey<any>>make<HashSetCls>();
                     for (Element element : _debugElementsThatWillNeedToBeRebuiltDueToGlobalKeyShenanigans!->keys) {
                         if (element->_lifecycleState != _ElementLifecycleCls::defunct) {
                             keys->addAll(_debugElementsThatWillNeedToBeRebuiltDueToGlobalKeyShenanigans![element]!);
@@ -573,7 +573,7 @@ void BuildOwnerCls::finalizeTree() {
                     }
                     if (keys->isNotEmpty()) {
                         Map<String, int> keyStringCount = <String, int>make<HashMapCls>();
-                        for (String key : keys-><String>map([=] (GlobalKey key) {
+                        for (String key : keys-><String>map([=] (GlobalKey<any> key) {
                             key->toString();
                         })) {
                             if (keyStringCount->containsKey(key)) {
@@ -666,10 +666,10 @@ bool BuildOwnerCls::_debugStateLocked() {
     return _debugStateLockLevel > 0;
 }
 
-void BuildOwnerCls::_debugTrackElementThatWillNeedToBeRebuiltDueToGlobalKeyShenanigans(Element node, GlobalKey key) {
-    _debugElementsThatWillNeedToBeRebuiltDueToGlobalKeyShenanigans |= <Element, Set<GlobalKey>>make<HashMapCls>();
-    Set<GlobalKey> keys = _debugElementsThatWillNeedToBeRebuiltDueToGlobalKeyShenanigans!->putIfAbsent(node, [=] () {
-    <GlobalKey>make<HashSetCls>();
+void BuildOwnerCls::_debugTrackElementThatWillNeedToBeRebuiltDueToGlobalKeyShenanigans(Element node, GlobalKey<any> key) {
+    _debugElementsThatWillNeedToBeRebuiltDueToGlobalKeyShenanigans |= <Element, Set<GlobalKey<any>>>make<HashMapCls>();
+    Set<GlobalKey<any>> keys = _debugElementsThatWillNeedToBeRebuiltDueToGlobalKeyShenanigans!->putIfAbsent(node, [=] () {
+    <GlobalKey<any>>make<HashSetCls>();
 });
     keys->add(key);
 }
@@ -687,7 +687,7 @@ void BuildOwnerCls::_debugRemoveGlobalKeyReservationFor(Element parent, Element 
     }());
 }
 
-void BuildOwnerCls::_registerGlobalKey(GlobalKey key, Element element) {
+void BuildOwnerCls::_registerGlobalKey(GlobalKey<any> key, Element element) {
     assert([=] () {
         if (_globalKeyRegistry->containsKey(key)) {
             assert(element->widget() != nullptr);
@@ -701,7 +701,7 @@ void BuildOwnerCls::_registerGlobalKey(GlobalKey key, Element element) {
     _globalKeyRegistry[key] = element;
 }
 
-void BuildOwnerCls::_unregisterGlobalKey(GlobalKey key, Element element) {
+void BuildOwnerCls::_unregisterGlobalKey(GlobalKey<any> key, Element element) {
     assert([=] () {
         if (_globalKeyRegistry->containsKey(key) && _globalKeyRegistry[key] != element) {
             assert(element->widget() != nullptr);
@@ -716,7 +716,7 @@ void BuildOwnerCls::_unregisterGlobalKey(GlobalKey key, Element element) {
     }
 }
 
-void BuildOwnerCls::_debugReserveGlobalKeyFor(Element parent, Element child, GlobalKey key) {
+void BuildOwnerCls::_debugReserveGlobalKeyFor(Element parent, Element child, GlobalKey<any> key) {
     assert([=] () {
         assert(parent != nullptr);
         assert(child != nullptr);
@@ -728,12 +728,12 @@ void BuildOwnerCls::_debugReserveGlobalKeyFor(Element parent, Element child, Glo
 
 void BuildOwnerCls::_debugVerifyGlobalKeyReservation() {
     assert([=] () {
-        Map<GlobalKey, Element> keyToParent = makeMap(makeList(), makeList();
-        _debugGlobalKeyReservations?->forEach([=] (Element parent,Map<Element, GlobalKey> childToKey) {
+        Map<GlobalKey<any>, Element> keyToParent = makeMap(makeList(), makeList();
+        _debugGlobalKeyReservations?->forEach([=] (Element parent,Map<Element, GlobalKey<any>> childToKey) {
             if (parent->_lifecycleState == _ElementLifecycleCls::defunct || parent->renderObject?->attached == false) {
                 return;
             }
-            childToKey->forEach([=] (Element child,GlobalKey key) {
+            childToKey->forEach([=] (Element child,GlobalKey<any> key) {
                 if (child->_parent == nullptr) {
                     return;
                 }
@@ -773,13 +773,13 @@ void BuildOwnerCls::_debugVerifyGlobalKeyReservation() {
 
 void BuildOwnerCls::_debugVerifyIllFatedPopulation() {
     assert([=] () {
-        Map<GlobalKey, Set<Element>> duplicates;
+        Map<GlobalKey<any>, Set<Element>> duplicates;
         for (Element element : _debugIllFatedElements | makeSet()) {
             if (element->_lifecycleState != _ElementLifecycleCls::defunct) {
                 assert(element != nullptr);
                 assert(element->widget != nullptr);
                 assert(element->widget->key != nullptr);
-                GlobalKey key = as<GlobalKey>(element->widget->key!);
+                GlobalKey<any> key = as<GlobalKey<any>>(element->widget->key!);
                 assert(_globalKeyRegistry->containsKey(key));
                 duplicates |= makeMap(makeList(), makeList();
                 Set<Element> elements = duplicates->putIfAbsent(key, [=] () {
@@ -793,7 +793,7 @@ void BuildOwnerCls::_debugVerifyIllFatedPopulation() {
         if (duplicates != nullptr) {
             List<DiagnosticsNode> information = makeList();
             information->add(make<ErrorSummaryCls>(__s("Multiple widgets used the same GlobalKey.")));
-            for (GlobalKey key : duplicates->keys()) {
+            for (GlobalKey<any> key : duplicates->keys()) {
                 Set<Element> elements = duplicates[key]!;
                 information->add(ElementCls->describeElements(__s("The key $key was used by ${elements.length} widgets"), elements));
             }
@@ -1001,7 +1001,7 @@ Element ElementCls::updateChild(Element child, Widget newWidget, Object newSlot)
             _debugRemoveGlobalKeyReservation(child);
         }
         Key key = newWidget->key;
-        if (is<GlobalKey>(key)) {
+        if (is<GlobalKey<any>>(key)) {
             assert(owner() != nullptr);
             owner()!->_debugReserveGlobalKeyFor(this, newChild, as<GlobalKeyCls>(key));
         }
@@ -1025,7 +1025,7 @@ void ElementCls::mount(Element parent, Object newSlot) {
     }
     assert(owner() != nullptr);
     Key key = widget()->key;
-    if (is<GlobalKey>(key)) {
+    if (is<GlobalKey<any>>(key)) {
         owner()!->_registerGlobalKey(as<GlobalKeyCls>(key), this);
     }
     _updateInheritance();
@@ -1080,7 +1080,7 @@ Element ElementCls::inflateWidget(Widget newWidget, Object newSlot) {
     }
     try {
         Key key = newWidget->key;
-        if (is<GlobalKey>(key)) {
+        if (is<GlobalKey<any>>(key)) {
             Element newChild = _retakeInactiveElement(as<GlobalKeyCls>(key), newWidget);
             if (newChild != nullptr) {
                 assert(newChild->_parent == nullptr);
@@ -1117,7 +1117,7 @@ void ElementCls::deactivateChild(Element child) {
     owner()!->_inactiveElements->add(child);
     assert([=] () {
         if (debugPrintGlobalKeyedWidgetLifecycle) {
-            if (is<GlobalKey>(child->widget()->key)) {
+            if (is<GlobalKey<any>>(child->widget()->key)) {
                 debugPrint(__s("Deactivated $child (keyed child of $this)"));
             }
         }
@@ -1127,7 +1127,7 @@ void ElementCls::deactivateChild(Element child) {
 
 void ElementCls::forgetChild(Element child) {
     assert([=] () {
-        if (is<GlobalKey>(child->widget()->key)) {
+        if (is<GlobalKey<any>>(child->widget()->key)) {
             _debugForgottenChildrenWithGlobalKey?->add(child);
         }
         return true;
@@ -1176,7 +1176,7 @@ void ElementCls::unmount() {
     assert(depth() != nullptr);
     assert(owner() != nullptr);
     Key key = _widget?->key;
-    if (is<GlobalKey>(key)) {
+    if (is<GlobalKey<any>>(key)) {
         owner()!->_unregisterGlobalKey(as<GlobalKeyCls>(key), this);
     }
     _widget = nullptr;
@@ -1518,7 +1518,7 @@ void ElementCls::_updateDepth(int parentDepth) {
     }
 }
 
-Element ElementCls::_retakeInactiveElement(GlobalKey key, Widget newWidget) {
+Element ElementCls::_retakeInactiveElement(GlobalKey<any> key, Widget newWidget) {
     Element element = key->_currentElement();
     if (element == nullptr) {
         return nullptr;
@@ -1789,7 +1789,7 @@ void StatefulElementCls::update(StatefulWidget newWidget) {
         _debugSetAllowIgnoredCallsToMarkNeedsBuild(true);
         Object debugCheckForReturnedFuture = as<dynamic>(state()->didUpdateWidget(oldWidget));
         assert([=] () {
-            if (is<Future>(debugCheckForReturnedFuture)) {
+            if (is<Future<any>>(debugCheckForReturnedFuture)) {
                 throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem, ArrayItem));
             }
             return true;
@@ -1860,7 +1860,7 @@ void StatefulElementCls::_firstBuild() {
         _debugSetAllowIgnoredCallsToMarkNeedsBuild(true);
         Object debugCheckForReturnedFuture = as<dynamic>(state()->initState());
         assert([=] () {
-            if (is<Future>(debugCheckForReturnedFuture)) {
+            if (is<Future<any>>(debugCheckForReturnedFuture)) {
                 throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem, ArrayItem));
             }
             return true;
@@ -2452,7 +2452,7 @@ bool IndexedSlotCls<T>::==(Object other) {
     if (other->runtimeType() != runtimeType) {
         return false;
     }
-    return is<IndexedSlot>(other) && index == other->index && value == other->value;
+    return is<IndexedSlot<any>>(other) && index == other->index && value == other->value;
 }
 
 template<typename T>

@@ -166,7 +166,7 @@ using SetEquality = std::shared_ptr<SetEqualityCls<E>>;
 
 class _MapEntryCls : public ObjectCls {
 public:
-    MapEquality equality;
+    MapEquality<any, any> equality;
 
     Object key;
 
@@ -179,7 +179,7 @@ public:
 
 private:
 
-     _MapEntryCls(MapEquality equality, Object key, Object value);
+     _MapEntryCls(MapEquality<any, any> equality, Object key, Object value);
 };
 using _MapEntry = std::shared_ptr<_MapEntryCls>;
 
@@ -228,9 +228,9 @@ using MultiEquality = std::shared_ptr<MultiEqualityCls<E>>;
 class DeepCollectionEqualityCls : public ObjectCls {
 public:
 
-     DeepCollectionEqualityCls(Equality base);
+     DeepCollectionEqualityCls(Equality<any> base);
 
-    virtual void  unordered(Equality base);
+    virtual void  unordered(Equality<any> base);
 
     virtual bool equals(e1 , e2 );
 
@@ -239,7 +239,7 @@ public:
     virtual bool isValidKey(Object o);
 
 private:
-    Equality _base;
+    Equality<any> _base;
 
     bool _unordered;
 

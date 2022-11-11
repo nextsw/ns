@@ -156,7 +156,7 @@ bool MouseTrackerCls::_shouldMarkStateDirty(_MouseState state, PointerEvent even
 LinkedHashMap<MouseTrackerAnnotation, Matrix4> MouseTrackerCls::_hitTestResultToAnnotations(HitTestResult result) {
     assert(result != nullptr);
     LinkedHashMap<MouseTrackerAnnotation, Matrix4> annotations = <MouseTrackerAnnotation, Matrix4>make<LinkedHashMapCls>();
-    for (HitTestEntry entry : result->path()) {
+    for (HitTestEntry<any> entry : result->path()) {
         Object target = entry->target;
         if (is<MouseTrackerAnnotation>(target)) {
             annotations[as<MouseTrackerAnnotationCls>(target)] = entry->transform!;

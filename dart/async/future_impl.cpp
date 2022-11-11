@@ -47,16 +47,24 @@ void _SyncCompleterCls<T>::_completeError(Object error, StackTrace stackTrace) {
 }
 
 template<typename S, typename T>
-void _FutureListenerCls<S, T>::then(_Future<T> result, std::function<FutureOr<T>(S )> onValue, std::function<void ()> errorCallback)
+void _FutureListenerCls<S, T>::then(_Future<T> result, std::function<FutureOr<T>(S )> onValue, std::function<void ()> errorCallback){
+
+}
 
 template<typename S, typename T>
-void _FutureListenerCls<S, T>::thenAwait(_Future<T> result, std::function<FutureOr<T>(S )> onValue, std::function<void ()> errorCallback)
+void _FutureListenerCls<S, T>::thenAwait(_Future<T> result, std::function<FutureOr<T>(S )> onValue, std::function<void ()> errorCallback){
+
+}
 
 template<typename S, typename T>
-void _FutureListenerCls<S, T>::catchError(_Future<T> result, std::function<void ()> errorCallback, std::function<void ()> callback)
+void _FutureListenerCls<S, T>::catchError(_Future<T> result, std::function<void ()> errorCallback, std::function<void ()> callback){
+
+}
 
 template<typename S, typename T>
-void _FutureListenerCls<S, T>::whenComplete(_Future<T> result, std::function<void ()> callback)
+void _FutureListenerCls<S, T>::whenComplete(_Future<T> result, std::function<void ()> callback){
+    
+}
 
 template<typename S, typename T>
 bool _FutureListenerCls<S, T>::handlesValue() {
@@ -300,7 +308,7 @@ bool _FutureCls<T>::_ignoreError() {
 }
 
 template<typename T>
-void _FutureCls<T>::_setChained(_Future source) {
+void _FutureCls<T>::_setChained(_Future<any> source) {
     assert(_mayAddListener());
     _state = _stateChained | (_state & _stateIgnoreError);
     _resultOrListeners = source;
@@ -338,7 +346,7 @@ AsyncError _FutureCls<T>::_error() {
 }
 
 template<typename T>
-_Future _FutureCls<T>::_chainSource() {
+_Future<any> _FutureCls<T>::_chainSource() {
     assert(_isChained());
     return _resultOrListeners;
 }
@@ -363,7 +371,7 @@ void _FutureCls<T>::_setError(Object error, StackTrace stackTrace) {
 }
 
 template<typename T>
-void _FutureCls<T>::_cloneResult(_Future source) {
+void _FutureCls<T>::_cloneResult(_Future<any> source) {
     assert(!_isComplete());
     assert(source->_isComplete());
     _state = (source->_state & _completionStateMask) | (_state & _stateIgnoreError);
@@ -371,14 +379,14 @@ void _FutureCls<T>::_cloneResult(_Future source) {
 }
 
 template<typename T>
-void _FutureCls<T>::_addListener(_FutureListener listener) {
+void _FutureCls<T>::_addListener(_FutureListener<any, any> listener) {
     assert(listener->_nextListener == nullptr);
     if (_mayAddListener()) {
         listener->_nextListener = _resultOrListeners;
         _resultOrListeners = listener;
     } else {
         if (_isChained()) {
-            _Future source = _chainSource();
+            _Future<any> source = _chainSource();
             if (!source->_isComplete()) {
                 source->_addListener(listener);
                 return;
@@ -393,16 +401,16 @@ void _FutureCls<T>::_addListener(_FutureListener listener) {
 }
 
 template<typename T>
-void _FutureCls<T>::_prependListeners(_FutureListener listeners) {
+void _FutureCls<T>::_prependListeners(_FutureListener<any, any> listeners) {
     if (listeners == nullptr) {
         return;
     }
     if (_mayAddListener()) {
-        _FutureListener existingListeners = _resultOrListeners;
+        _FutureListener<any, any> existingListeners = _resultOrListeners;
         _resultOrListeners = listeners;
         if (existingListeners != nullptr) {
-            _FutureListener cursor = listeners;
-            _FutureListener next = cursor->_nextListener;
+            _FutureListener<any, any> cursor = listeners;
+            _FutureListener<any, any> next = cursor->_nextListener;
             while (next != nullptr) {
                 cursor = next;
                 next = cursor->_nextListener;
@@ -411,7 +419,7 @@ void _FutureCls<T>::_prependListeners(_FutureListener listeners) {
         }
     } else {
         if (_isChained()) {
-            _Future source = _chainSource();
+            _Future<any> source = _chainSource();
             if (!source->_isComplete()) {
                 source->_prependListeners(listeners);
                 return;
@@ -427,19 +435,19 @@ void _FutureCls<T>::_prependListeners(_FutureListener listeners) {
 }
 
 template<typename T>
-_FutureListener _FutureCls<T>::_removeListeners() {
+_FutureListener<any, any> _FutureCls<T>::_removeListeners() {
     assert(!_isComplete());
-    _FutureListener current = _resultOrListeners;
+    _FutureListener<any, any> current = _resultOrListeners;
     _resultOrListeners = nullptr;
     return _reverseListeners(current);
 }
 
 template<typename T>
-_FutureListener _FutureCls<T>::_reverseListeners(_FutureListener listeners) {
-    _FutureListener prev = nullptr;
-    _FutureListener current = listeners;
+_FutureListener<any, any> _FutureCls<T>::_reverseListeners(_FutureListener<any, any> listeners) {
+    _FutureListener<any, any> prev = nullptr;
+    _FutureListener<any, any> current = listeners;
     while (current != nullptr) {
-        _FutureListener next = current->_nextListener;
+        _FutureListener<any, any> next = current->_nextListener;
         current->_nextListener = prev;
         prev = current;
         current = next;
@@ -448,9 +456,9 @@ _FutureListener _FutureCls<T>::_reverseListeners(_FutureListener listeners) {
 }
 
 template<typename T>
-void _FutureCls<T>::_chainForeignFuture(Future source) {
+void _FutureCls<T>::_chainForeignFuture(Future<any> source) {
     assert(!_isComplete());
-    assert(!is<_Future>(source));
+    assert(!is<_Future<any>>(source));
     _setPendingComplete();
     try {
         source->then([=] (Unknown  value) {
@@ -473,17 +481,17 @@ void _FutureCls<T>::_chainForeignFuture(Future source) {
 }
 
 template<typename T>
-void _FutureCls<T>::_chainCoreFuture(_Future source, _Future target) {
+void _FutureCls<T>::_chainCoreFuture(_Future<any> source, _Future<any> target) {
     assert(target->_mayAddListener());
     while (source->_isChained()) {
         source = source->_chainSource();
     }
     if (source->_isComplete()) {
-        _FutureListener listeners = target->_removeListeners();
+        _FutureListener<any, any> listeners = target->_removeListeners();
         target->_cloneResult(source);
         _propagateToListeners(target, listeners);
     } else {
-        _FutureListener listeners = target->_resultOrListeners;
+        _FutureListener<any, any> listeners = target->_resultOrListeners;
         target->_setChained(source);
         source->_prependListeners(listeners);
     }
@@ -499,7 +507,7 @@ void _FutureCls<T>::_complete(FutureOr<T> value) {
             _chainForeignFuture(value);
         }
     } else {
-        _FutureListener listeners = _removeListeners();
+        _FutureListener<any, any> listeners = _removeListeners();
         _setValue(as<dynamic>(value));
         _propagateToListeners(this, listeners);
     }
@@ -508,7 +516,7 @@ void _FutureCls<T>::_complete(FutureOr<T> value) {
 template<typename T>
 void _FutureCls<T>::_completeWithValue(T value) {
     assert(!_isComplete());
-    _FutureListener listeners = _removeListeners();
+    _FutureListener<any, any> listeners = _removeListeners();
     _setValue(value);
     _propagateToListeners(this, listeners);
 }
@@ -516,7 +524,7 @@ void _FutureCls<T>::_completeWithValue(T value) {
 template<typename T>
 void _FutureCls<T>::_completeError(Object error, StackTrace stackTrace) {
     assert(!_isComplete());
-    _FutureListener listeners = _removeListeners();
+    _FutureListener<any, any> listeners = _removeListeners();
     _setError(error, stackTrace);
     _propagateToListeners(this, listeners);
 }
@@ -582,7 +590,7 @@ void _FutureCls<T>::_asyncCompleteError(Object error, StackTrace stackTrace) {
 }
 
 template<typename T>
-void _FutureCls<T>::_propagateToListeners(_Future source, _FutureListener listeners) {
+void _FutureCls<T>::_propagateToListeners(_Future<any> source, _FutureListener<any, any> listeners) {
     while (true) {
         assert(source->_isComplete());
         bool hasError = source->_hasError();
@@ -593,8 +601,8 @@ void _FutureCls<T>::_propagateToListeners(_Future source, _FutureListener listen
             }
             return;
         }
-        _FutureListener listener = listeners;
-        _FutureListener nextListener = listener->_nextListener;
+        _FutureListener<any, any> listener = listeners;
+        _FutureListener<any, any> nextListener = listener->_nextListener;
         while (nextListener != nullptr) {
             listener->_nextListener = nullptr;
             _propagateToListeners(source, listener);
@@ -634,10 +642,10 @@ void _FutureCls<T>::_propagateToListeners(_Future source, _FutureListener listen
             }            if (oldZone != nullptr) {
                 ZoneCls->_leave(oldZone);
             }
-            if (is<Future>(listenerValueOrError) && listener->shouldChain(listenerValueOrError)) {
-                Future chainSource = listenerValueOrError;
-                _Future result = listener->result;
-                if (is<_Future>(chainSource)) {
+            if (is<Future<any>>(listenerValueOrError) && listener->shouldChain(listenerValueOrError)) {
+                Future<any> chainSource = listenerValueOrError;
+                _Future<any> result = listener->result;
+                if (is<_Future<any>>(chainSource)) {
                     if (as<_FutureCls>(chainSource)->_isComplete()) {
                         listeners = result->_removeListeners();
                         result->_cloneResult(chainSource);
@@ -652,7 +660,7 @@ void _FutureCls<T>::_propagateToListeners(_Future source, _FutureListener listen
                 return;
             }
         }
-        _Future result = listener->result;
+        _Future<any> result = listener->result;
         listeners = result->_removeListeners();
         if (!listenerHasError) {
             result->_setValue(listenerValueOrError);

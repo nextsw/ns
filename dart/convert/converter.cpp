@@ -18,7 +18,7 @@ Sink<S> ConverterCls<S, T>::startChunkedConversion(Sink<T> sink) {
 
 template<typename S, typename T>
 Stream<T> ConverterCls<S, T>::bind(Stream<S> stream) {
-    return <T>eventTransformed(stream, [=] (EventSink sink) {
+    return <T>eventTransformed(stream, [=] (EventSink<any> sink) {
         make<_ConverterStreamEventSinkCls>(this, sink);
     });
 }

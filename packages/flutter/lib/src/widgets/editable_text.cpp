@@ -1413,7 +1413,7 @@ bool _ScribbleFocusableStateCls::isInScribbleRect(Rect rect) {
     Rect intersection = calculatedBounds->intersect(rect);
     HitTestResult result = make<HitTestResultCls>();
     WidgetsBindingCls::instance->hitTest(result, intersection->center());
-    return result->path()->any([=] (HitTestEntry entry) {
+    return result->path()->any([=] (HitTestEntry<any> entry) {
         entry->target == renderEditable();
     });
 }

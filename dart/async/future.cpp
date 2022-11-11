@@ -93,7 +93,6 @@ void FutureCls<T>::delayed(Duration duration, std::function<FutureOr<T>()> compu
 }
 
 template<typename T>
-template<typename T>
 Future<List<T>> FutureCls<T>::wait(Iterable<Future<T>> futures, std::function<void(T successValue)> cleanUp, bool eagerError) {
     _Future<List<T>> _future = <List<T>>make<_FutureCls>();
     List<T> values;
@@ -154,14 +153,14 @@ Future<T> FutureCls<T>::any(Iterable<Future<T>> futures) {
 
 template<typename T>
 template<typename T>
-Future FutureCls<T>::forEach(Iterable<T> elements, std::function<FutureOr(T element)> action) {
+Future<any> FutureCls<T>::forEach(Iterable<T> elements, std::function<FutureOr<any>(T element)> action) {
     auto iterator = elements->iterator();
     return doWhile([=] () {
         if (!iterator->moveNext()) {
             return false;
         }
         auto result = action(iterator->current());
-        if (is<Future>(result)) {
+        if (is<Future<any>>(result)) {
             return as<FutureCls>(result)->then(_kTrue);
         }
         return true;
@@ -169,7 +168,7 @@ Future FutureCls<T>::forEach(Iterable<T> elements, std::function<FutureOr(T elem
 }
 
 template<typename T>
-Future FutureCls<T>::doWhile(std::function<FutureOr<bool>()> action) {
+Future<any> FutureCls<T>::doWhile(std::function<FutureOr<bool>()> action) {
     _Future<void> doneSignal = <void>make<_FutureCls>();
     std::function<void(bool )> nextIteration;
     nextIteration = ZoneCls::current->bindUnaryCallbackGuarded([=] (bool keepGoing) {
@@ -245,7 +244,7 @@ void CompleterCls<T>::sync() {
     return <T>make<_SyncCompleterCls>();
 }
 
-void _completeWithErrorCallback(_Future result, Object error, StackTrace stackTrace) {
+void _completeWithErrorCallback(_Future<any> result, Object error, StackTrace stackTrace) {
     AsyncError replacement = ZoneCls::current->errorCallback(error, stackTrace);
     if (replacement != nullptr) {
         error = replacement->error;
@@ -256,7 +255,7 @@ void _completeWithErrorCallback(_Future result, Object error, StackTrace stackTr
     result->_completeError(error, stackTrace);
 }
 
-void _asyncCompleteWithErrorCallback(_Future result, Object error, StackTrace stackTrace) {
+void _asyncCompleteWithErrorCallback(_Future<any> result, Object error, StackTrace stackTrace) {
     AsyncError replacement = ZoneCls::current->errorCallback(error, stackTrace);
     if (replacement != nullptr) {
         error = replacement->error;

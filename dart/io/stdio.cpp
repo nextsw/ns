@@ -104,7 +104,7 @@ String StdinExceptionCls::toString() {
     return __s("StdinException: $message${osError == null ? "" : ", $osError"}");
 }
 
-Future _StdConsumerCls::addStream(Stream<List<int>> stream) {
+Future<any> _StdConsumerCls::addStream(Stream<List<int>> stream) {
     auto completer = make<CompleterCls>();
     auto sub;
     sub = stream->listen([=] (Unknown  data) {
@@ -118,7 +118,7 @@ Future _StdConsumerCls::addStream(Stream<List<int>> stream) {
     return completer->future;
 }
 
-Future _StdConsumerCls::close() {
+Future<any> _StdConsumerCls::close() {
     _file->closeSync();
     return FutureCls->value();
 }
@@ -145,7 +145,7 @@ void _StdSinkCls::writeln(Object object) {
     _sink->writeln(object);
 }
 
-void _StdSinkCls::writeAll(Iterable objects, String sep) {
+void _StdSinkCls::writeAll(Iterable<any> objects, String sep) {
     _sink->writeAll(objects, sep);
 }
 
@@ -161,19 +161,19 @@ void _StdSinkCls::writeCharCode(int charCode) {
     _sink->writeCharCode(charCode);
 }
 
-Future _StdSinkCls::addStream(Stream<List<int>> stream) {
+Future<any> _StdSinkCls::addStream(Stream<List<int>> stream) {
     return _sink->addStream(stream);
 }
 
-Future _StdSinkCls::flush() {
+Future<any> _StdSinkCls::flush() {
     return _sink->flush();
 }
 
-Future _StdSinkCls::close() {
+Future<any> _StdSinkCls::close() {
     return _sink->close();
 }
 
-Future _StdSinkCls::done() {
+Future<any> _StdSinkCls::done() {
     return _sink->done();
 }
 

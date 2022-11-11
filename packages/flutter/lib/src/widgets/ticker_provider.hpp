@@ -131,10 +131,10 @@ public:
     virtual void dispose();
 
 private:
-    TickerProviderStateMixin _creator;
+    TickerProviderStateMixin<any> _creator;
 
 
-     _WidgetTickerCls(Unknown onTick, TickerProviderStateMixin _creator, String debugLabel);
+     _WidgetTickerCls(Unknown onTick, TickerProviderStateMixin<any> _creator, String debugLabel);
 };
 using _WidgetTicker = std::shared_ptr<_WidgetTickerCls>;
 

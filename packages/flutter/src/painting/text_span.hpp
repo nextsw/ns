@@ -39,7 +39,7 @@ public:
 
     virtual bool validForMouseTracker();
 
-    virtual void handleEvent(PointerEvent event, HitTestEntry entry);
+    virtual void handleEvent(PointerEvent event, HitTestEntry<any> entry);
 
     virtual void build(ParagraphBuilder builder, List<PlaceholderDimensions> dimensions, double textScaleFactor);
 

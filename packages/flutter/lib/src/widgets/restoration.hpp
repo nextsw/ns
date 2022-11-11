@@ -119,7 +119,7 @@ public:
 
     virtual void dispose();
 
-    virtual State state();
+    virtual State<any> state();
 
     virtual bool isRegistered();
 
@@ -128,10 +128,10 @@ private:
 
     String _restorationId;
 
-    RestorationMixin _owner;
+    RestorationMixin<any> _owner;
 
 
-    virtual void _register(String restorationId, RestorationMixin owner);
+    virtual void _register(String restorationId, RestorationMixin<any> owner);
 
     virtual void _unregister();
 

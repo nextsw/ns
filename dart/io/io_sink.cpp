@@ -19,7 +19,7 @@ void _StreamSinkImplCls<T>::addError(error , StackTrace stackTrace) {
 }
 
 template<typename T>
-Future _StreamSinkImplCls<T>::addStream(Stream<T> stream) {
+Future<any> _StreamSinkImplCls<T>::addStream(Stream<T> stream) {
     if (_isBound) {
         throw make<StateErrorCls>(__s("StreamSink is already bound to a stream"));
     }
@@ -37,7 +37,7 @@ Future _StreamSinkImplCls<T>::addStream(Stream<T> stream) {
 }
 
 template<typename T>
-Future _StreamSinkImplCls<T>::flush() {
+Future<any> _StreamSinkImplCls<T>::flush() {
     if (_isBound) {
         throw make<StateErrorCls>(__s("StreamSink is bound to a stream"));
     }
@@ -53,7 +53,7 @@ Future _StreamSinkImplCls<T>::flush() {
 }
 
 template<typename T>
-Future _StreamSinkImplCls<T>::close() {
+Future<any> _StreamSinkImplCls<T>::close() {
     if (_isBound) {
         throw make<StateErrorCls>(__s("StreamSink is bound to a stream"));
     }
@@ -69,7 +69,7 @@ Future _StreamSinkImplCls<T>::close() {
 }
 
 template<typename T>
-Future _StreamSinkImplCls<T>::done() {
+Future<any> _StreamSinkImplCls<T>::done() {
     return _doneCompleter->future();
 }
 
@@ -144,8 +144,8 @@ void _IOSinkImplCls::write(Object obj) {
     add(_encoding->encode(stringValue));
 }
 
-void _IOSinkImplCls::writeAll(Iterable objects, String separator) {
-    Iterator iterator = objects->iterator();
+void _IOSinkImplCls::writeAll(Iterable<any> objects, String separator) {
+    Iterator<any> iterator = objects->iterator();
     if (!iterator->moveNext()) {
         return;
     }

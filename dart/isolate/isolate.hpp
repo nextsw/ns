@@ -52,7 +52,7 @@ public:
     void ping(SendPort responsePort, int priority, Object response);
     void addErrorListener(SendPort port);
     void removeErrorListener(SendPort port);
-    virtual Stream errors();
+    virtual Stream<any> errors();
 
     static Never exit(SendPort finalMessagePort, Object message);
 private:

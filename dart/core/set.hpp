@@ -11,7 +11,7 @@ public:
 
      SetCls();
     virtual void  identity();
-    virtual void  from(Iterable elements);
+    virtual void  from(Iterable<any> elements);
     virtual void  of(Iterable<E> elements);
     virtual void  unmodifiable(Iterable<E> elements);
 

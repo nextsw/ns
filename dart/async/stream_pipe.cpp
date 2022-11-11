@@ -15,7 +15,7 @@ void _runUserCode(std::function<T()> userCode, onSuccess , onError ) {
     };
 }
 
-void _cancelAndError(StreamSubscription subscription, _Future future, Object error, StackTrace stackTrace) {
+void _cancelAndError(StreamSubscription<any> subscription, _Future<any> future, Object error, StackTrace stackTrace) {
     auto cancelFuture = subscription->cancel();
     if (cancelFuture != nullptr && !identical(cancelFuture, FutureCls::_nullFuture)) {
         cancelFuture->whenComplete([=] () {
@@ -26,7 +26,7 @@ void _cancelAndError(StreamSubscription subscription, _Future future, Object err
     }
 }
 
-void _cancelAndErrorWithReplacement(StreamSubscription subscription, _Future future, Object error, StackTrace stackTrace) {
+void _cancelAndErrorWithReplacement(StreamSubscription<any> subscription, _Future<any> future, Object error, StackTrace stackTrace) {
     AsyncError replacement = ZoneCls::current->errorCallback(error, stackTrace);
     if (replacement != nullptr) {
         error = replacement->error;
@@ -35,13 +35,13 @@ void _cancelAndErrorWithReplacement(StreamSubscription subscription, _Future fut
     _cancelAndError(subscription, future, error, stackTrace);
 }
 
-std::function<void(Object error, StackTrace stackTrace)> _cancelAndErrorClosure(StreamSubscription subscription, _Future future) {
+std::function<void(Object error, StackTrace stackTrace)> _cancelAndErrorClosure(StreamSubscription<any> subscription, _Future<any> future) {
     return [=] (Object error,StackTrace stackTrace) {
         _cancelAndError(subscription, future, error, stackTrace);
     };
 }
 
-void _cancelAndValue(StreamSubscription subscription, _Future future, value ) {
+void _cancelAndValue(StreamSubscription<any> subscription, _Future<any> future, value ) {
     auto cancelFuture = subscription->cancel();
     if (cancelFuture != nullptr && !identical(cancelFuture, FutureCls::_nullFuture)) {
         cancelFuture->whenComplete([=] () {
@@ -135,7 +135,7 @@ void _ForwardingStreamSubscriptionCls<S, T>::_handleDone() {
     _stream->_handleDone(this);
 }
 
-void _addErrorWithReplacement(_EventSink sink, Object error, StackTrace stackTrace) {
+void _addErrorWithReplacement(_EventSink<any> sink, Object error, StackTrace stackTrace) {
     AsyncError replacement = ZoneCls::current->errorCallback(error, stackTrace);
     if (replacement != nullptr) {
         error = replacement->error;

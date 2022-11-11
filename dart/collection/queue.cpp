@@ -339,7 +339,7 @@ void ListQueueCls<E>::from(Iterable<dynamic> elements) {
         return queue;
     } else {
         int capacity = _INITIAL_CAPACITY;
-        if (is<EfficientLengthIterable>(elements)) {
+        if (is<EfficientLengthIterable<any>>(elements)) {
             capacity = as<EfficientLengthIterableCls>(elements)->length();
         }
         ListQueue<E> result = <E>make<ListQueueCls>(capacity);

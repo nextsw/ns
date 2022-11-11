@@ -8,7 +8,7 @@ QueueListCls<E>::QueueListCls(int initialCapacity) {
 
 template<typename E>
 void QueueListCls<E>::from(Iterable<E> source) {
-    if (is<List>(source)) {
+    if (is<List<any>>(source)) {
         auto length = as<ListCls>(source)->length();
         auto queue = <E>make<QueueListCls>(length + 1);
         assert(queue->_table->length > length);
@@ -28,7 +28,7 @@ void QueueListCls<E>::add(E element) {
 
 template<typename E>
 void QueueListCls<E>::addAll(Iterable<E> iterable) {
-    if (is<List>(iterable)) {
+    if (is<List<any>>(iterable)) {
         auto list = as<ListCls>(iterable);
         auto addCount = list->length();
         auto length = this->length();

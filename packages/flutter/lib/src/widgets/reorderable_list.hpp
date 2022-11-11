@@ -393,7 +393,7 @@ Offset _extentOffset(double extent, Axis scrollDirection);
 Offset _restrictAxis(Offset offset, Axis scrollDirection);
 
 
-class _ReorderableItemGlobalKeyCls : public GlobalObjectKeyCls {
+class _ReorderableItemGlobalKeyCls : public GlobalObjectKeyCls<any> {
 public:
     Key subKey;
 

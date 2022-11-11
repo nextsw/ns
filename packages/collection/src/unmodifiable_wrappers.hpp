@@ -81,9 +81,9 @@ public:
 
     virtual bool remove(Object value);
 
-    virtual void removeAll(Iterable elements);
+    virtual void removeAll(Iterable<any> elements);
 
-    virtual void retainAll(Iterable elements);
+    virtual void retainAll(Iterable<any> elements);
 
     virtual void removeWhere(std::function<bool(E )> test);
 

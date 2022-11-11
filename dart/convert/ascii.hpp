@@ -134,10 +134,10 @@ public:
     virtual void addSlice(List<int> source, int start, int end, bool isLast);
 
 private:
-    Sink _sink;
+    Sink<any> _sink;
 
 
-     _SimpleAsciiDecoderSinkCls(Sink _sink);
+     _SimpleAsciiDecoderSinkCls(Sink<any> _sink);
 };
 using _SimpleAsciiDecoderSink = std::shared_ptr<_SimpleAsciiDecoderSinkCls>;
 

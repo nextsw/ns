@@ -114,7 +114,7 @@ public:
     virtual bool shouldChain(Future<dynamic> value);
 
 private:
-    _FutureListener _nextListener;
+    _FutureListener<any, any> _nextListener;
 
 
     virtual _Zone _zone();
@@ -192,7 +192,7 @@ private:
 
     virtual bool _ignoreError();
 
-    virtual void _setChained(_Future source);
+    virtual void _setChained(_Future<any> source);
 
     template<typename E>
  virtual Future<E> _thenAwait(std::function<FutureOr<E>(T value)> f, std::function<void ()> onError);
@@ -205,7 +205,7 @@ private:
 
     virtual AsyncError _error();
 
-    virtual _Future _chainSource();
+    virtual _Future<any> _chainSource();
 
     virtual void _setValue(T value);
 
@@ -213,19 +213,19 @@ private:
 
     virtual void _setError(Object error, StackTrace stackTrace);
 
-    virtual void _cloneResult(_Future source);
+    virtual void _cloneResult(_Future<any> source);
 
-    virtual void _addListener(_FutureListener listener);
+    virtual void _addListener(_FutureListener<any, any> listener);
 
-    virtual void _prependListeners(_FutureListener listeners);
+    virtual void _prependListeners(_FutureListener<any, any> listeners);
 
-    virtual _FutureListener _removeListeners();
+    virtual _FutureListener<any, any> _removeListeners();
 
-    virtual _FutureListener _reverseListeners(_FutureListener listeners);
+    virtual _FutureListener<any, any> _reverseListeners(_FutureListener<any, any> listeners);
 
-    virtual void _chainForeignFuture(Future source);
+    virtual void _chainForeignFuture(Future<any> source);
 
-    static void _chainCoreFuture(_Future source, _Future target);
+    static void _chainCoreFuture(_Future<any> source, _Future<any> target);
 
     virtual void _complete(FutureOr<T> value);
 
@@ -245,7 +245,7 @@ private:
 
     virtual void _asyncCompleteError(Object error, StackTrace stackTrace);
 
-    static void _propagateToListeners(_Future source, _FutureListener listeners);
+    static void _propagateToListeners(_Future<any> source, _FutureListener<any, any> listeners);
 
 };
 template<typename T>

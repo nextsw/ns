@@ -63,7 +63,7 @@ Future<FileStat> FileStatCls::_stat(String path) {
         if (_isErrorResponse(response)) {
             return FileStatCls::_notFound;
         }
-        List data = response[1];
+        List<any> data = response[1];
         return FileStatCls->_internal(DateTimeCls->fromMillisecondsSinceEpoch(data[_changedTime]), DateTimeCls->fromMillisecondsSinceEpoch(data[_modifiedTime]), DateTimeCls->fromMillisecondsSinceEpoch(data[_accessedTime]), FileSystemEntityTypeCls->_lookup(data[_type]), data[_mode], data[_size]);
     });
 }

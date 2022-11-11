@@ -81,9 +81,9 @@ public:
 private:
     TransformationController _transformationController;
 
-    GlobalKey _childKey;
+    GlobalKey<any> _childKey;
 
-    GlobalKey _parentKey;
+    GlobalKey<any> _parentKey;
 
     Animation<Offset> _animation;
 
@@ -139,7 +139,7 @@ class _InteractiveViewerBuiltCls : public StatelessWidgetCls {
 public:
     Widget child;
 
-    GlobalKey childKey;
+    GlobalKey<any> childKey;
 
     Clip clipBehavior;
 
@@ -152,7 +152,7 @@ public:
 
 private:
 
-     _InteractiveViewerBuiltCls(Widget child, GlobalKey childKey, Clip clipBehavior, bool constrained, Matrix4 matrix);
+     _InteractiveViewerBuiltCls(Widget child, GlobalKey<any> childKey, Clip clipBehavior, bool constrained, Matrix4 matrix);
 };
 using _InteractiveViewerBuilt = std::shared_ptr<_InteractiveViewerBuiltCls>;
 

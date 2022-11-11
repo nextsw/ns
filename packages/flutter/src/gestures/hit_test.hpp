@@ -103,9 +103,9 @@ public:
 
     virtual void  wrap(HitTestResult result);
 
-    virtual Iterable<HitTestEntry> path();
+    virtual Iterable<HitTestEntry<any>> path();
 
-    virtual void add(HitTestEntry entry);
+    virtual void add(HitTestEntry<any> entry);
 
     virtual void pushTransform(Matrix4 transform);
 
@@ -116,7 +116,7 @@ public:
     virtual String toString();
 
 private:
-    List<HitTestEntry> _path;
+    List<HitTestEntry<any>> _path;
 
     List<Matrix4> _transforms;
 

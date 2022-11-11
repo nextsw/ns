@@ -111,7 +111,7 @@ template<typename T>
 void TransitionRouteCls<T>::didReplace(Route<dynamic> oldRoute) {
     assert(_controller != nullptr, __s("$runtimeType.didReplace called before calling install() or after calling dispose()."));
     assert(!_transitionCompleter->isCompleted(), __s("Cannot reuse a $runtimeType after disposing it."));
-    if (is<TransitionRoute>(oldRoute)) {
+    if (is<TransitionRoute<any>>(oldRoute)) {
         _controller!->value() = as<TransitionRouteCls>(oldRoute)->_controller!->value();
     }
     super->didReplace(oldRoute);
@@ -442,7 +442,7 @@ void ModalRouteCls<T>::setState(VoidCallback fn) {
 template<typename T>
 RoutePredicate ModalRouteCls<T>::withName(String name) {
     return [=] (Route<dynamic> route) {
-        return !route->willHandlePopInternally && is<ModalRoute>(route) && route->settings->name == name;
+        return !route->willHandlePopInternally && is<ModalRoute<any>>(route) && route->settings->name == name;
     };
 }
 
@@ -802,7 +802,7 @@ bool _RenderFocusTrapCls::hitTest(BoxHitTestResult result, Offset position) {
     return hitTarget;
 }
 
-void _RenderFocusTrapCls::handleEvent(PointerEvent event, HitTestEntry entry) {
+void _RenderFocusTrapCls::handleEvent(PointerEvent event, HitTestEntry<any> entry) {
     assert(debugHandleEvent(event, entry));
     if (!is<PointerDownEvent>(event) || event->buttons != kPrimaryButton || event->kind != PointerDeviceKindCls::mouse || _shouldIgnoreEvents() || _focusScopeNode->focusedChild() == nullptr) {
         return;
@@ -817,7 +817,7 @@ void _RenderFocusTrapCls::handleEvent(PointerEvent event, HitTestEntry entry) {
         return;
     }
     bool hitCurrentFocus = false;
-    for (HitTestEntry entry : result->path()) {
+    for (HitTestEntry<any> entry : result->path()) {
         HitTestTarget target = entry->target;
         if (target == renderObject) {
             hitCurrentFocus = true;

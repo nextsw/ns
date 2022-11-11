@@ -112,7 +112,7 @@ public:
 
     virtual bool hitTestSelf(Offset position);
 
-    virtual void handleEvent(PointerEvent event, HitTestEntry entry);
+    virtual void handleEvent(PointerEvent event, HitTestEntry<any> entry);
 
     virtual void describeSemanticsConfiguration(SemanticsConfiguration config);
 
@@ -250,7 +250,7 @@ public:
 
     virtual bool validForMouseTracker();
 
-    virtual void handleEvent(PointerEvent event, HitTestEntry entry);
+    virtual void handleEvent(PointerEvent event, HitTestEntry<any> entry);
 
     virtual void detach();
 

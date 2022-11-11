@@ -822,7 +822,7 @@ void RenderBoxCls::handleEvent(PointerEvent event, BoxHitTestEntry entry) {
     super->handleEvent(event, entry);
 }
 
-bool RenderBoxCls::debugHandleEvent(PointerEvent event, HitTestEntry entry) {
+bool RenderBoxCls::debugHandleEvent(PointerEvent event, HitTestEntry<any> entry) {
     assert([=] () {
         if (debugPaintPointersEnabled) {
             if (is<PointerDownEvent>(event)) {

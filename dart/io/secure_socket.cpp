@@ -15,7 +15,7 @@ Future<ConnectionTask<SecureSocket>> SecureSocketCls::startConnect(host , int po
 }
 
 Future<SecureSocket> SecureSocketCls::secure(Socket socket, host , SecurityContext context, std::function<void(String line)> keyLog, std::function<bool(X509Certificate certificate)> onBadCertificate, List<String> supportedProtocols) {
-    return (as<Future>((as<dynamic>(socket))->_detachRaw()))-><RawSecureSocket>then([=] (Unknown  detachedRaw) {
+    return (as<Future<any>>((as<dynamic>(socket))->_detachRaw()))-><RawSecureSocket>then([=] (Unknown  detachedRaw) {
         return RawSecureSocketCls->secure(as<RawSocket>(detachedRaw[0]), as<StreamSubscription<RawSocketEvent>>(detachedRaw[1]), host, context, onBadCertificate, keyLog, supportedProtocols);
     })-><SecureSocket>then([=] (Unknown  raw) {
         SecureSocketCls->_(raw);
@@ -23,7 +23,7 @@ Future<SecureSocket> SecureSocketCls::secure(Socket socket, host , SecurityConte
 }
 
 Future<SecureSocket> SecureSocketCls::secureServer(Socket socket, SecurityContext context, List<int> bufferedData, bool requestClientCertificate, bool requireClientCertificate, List<String> supportedProtocols) {
-    return (as<Future>((as<dynamic>(socket))->_detachRaw()))-><RawSecureSocket>then([=] (Unknown  detachedRaw) {
+    return (as<Future<any>>((as<dynamic>(socket))->_detachRaw()))-><RawSecureSocket>then([=] (Unknown  detachedRaw) {
         return RawSecureSocketCls->secureServer(as<RawSocket>(detachedRaw[0]), context, as<StreamSubscription<RawSocketEvent>>(detachedRaw[1]), bufferedData, requestClientCertificate, requireClientCertificate, supportedProtocols);
     })-><SecureSocket>then([=] (Unknown  raw) {
         SecureSocketCls->_(raw);
@@ -580,7 +580,7 @@ void _RawSecureSocketCls::_sendWriteEvent() {
 
 Future<_FilterStatus> _RawSecureSocketCls::_pushAllFilterStages() {
     bool wasInHandshake = _status != connectedStatus;
-    List args = <dynamic>filled(2 + bufferCount * 2, nullptr);
+    List<any> args = <dynamic>filled(2 + bufferCount * 2, nullptr);
     args[0] = _secureFilter!->_pointer();
     args[1] = wasInHandshake;
     auto bufs = _secureFilter!->buffers()!;

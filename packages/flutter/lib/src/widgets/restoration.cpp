@@ -119,7 +119,7 @@ void RestorablePropertyCls<T>::dispose() {
 }
 
 template<typename T>
-State RestorablePropertyCls<T>::state() {
+State<any> RestorablePropertyCls<T>::state() {
     assert(isRegistered());
     assert(ChangeNotifierCls->debugAssertNotDisposed(this));
     return _owner!;
@@ -132,7 +132,7 @@ bool RestorablePropertyCls<T>::isRegistered() {
 }
 
 template<typename T>
-void RestorablePropertyCls<T>::_register(String restorationId, RestorationMixin owner) {
+void RestorablePropertyCls<T>::_register(String restorationId, RestorationMixin<any> owner) {
     assert(ChangeNotifierCls->debugAssertNotDisposed(this));
     assert(restorationId != nullptr);
     assert(owner != nullptr);

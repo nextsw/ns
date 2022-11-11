@@ -97,7 +97,7 @@ public:
      DelegatingIterableCls(Iterable<E> base);
 
     template<typename E>
- static Iterable<E> typed(Iterable base);
+ static Iterable<E> typed(Iterable<any> base);
 
 private:
     Iterable<E> _base;
@@ -114,7 +114,7 @@ public:
      DelegatingListCls(List<E> base);
 
     template<typename E>
- static List<E> typed(List base);
+ static List<E> typed(List<any> base);
 
     virtual E operator[](int index);
 
@@ -199,7 +199,7 @@ public:
      DelegatingSetCls(Set<E> base);
 
     template<typename E>
- static Set<E> typed(Set base);
+ static Set<E> typed(Set<any> base);
 
     virtual bool add(E value);
 
@@ -250,7 +250,7 @@ public:
      DelegatingQueueCls(Queue<E> queue);
 
     template<typename E>
- static Queue<E> typed(Queue base);
+ static Queue<E> typed(Queue<any> base);
 
     virtual void add(E value);
 
@@ -293,7 +293,7 @@ public:
      DelegatingMapCls(Map<K, V> base);
 
     template<typename K, typename V>
- static Map<K, V> typed(Map base);
+ static Map<K, V> typed(Map<any, any> base);
 
     virtual V operator[](Object key);
 

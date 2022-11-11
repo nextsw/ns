@@ -19,7 +19,7 @@ public:
 
     virtual void  of(Map<K, V> other);
 
-    virtual void  fromIterable(Iterable iterable, std::function<K(dynamic element)> key, std::function<V(dynamic element)> value);
+    virtual void  fromIterable(Iterable<any> iterable, std::function<K(dynamic element)> key, std::function<V(dynamic element)> value);
 
     virtual void  fromIterables(Iterable<K> keys, Iterable<V> values);
 

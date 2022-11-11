@@ -10,7 +10,7 @@ class ComparableCls : public ObjectCls {
 public:
 
     virtual int compareTo(T other);
-    static int compare(Comparable a, Comparable b);
+    static int compare(Comparable<any> a, Comparable<any> b);
 
 private:
 

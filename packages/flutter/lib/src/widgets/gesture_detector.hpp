@@ -188,7 +188,7 @@ class RawGestureDetectorCls : public StatefulWidgetCls {
 public:
     Widget child;
 
-    Map<Type, GestureRecognizerFactory> gestures;
+    Map<Type, GestureRecognizerFactory<any>> gestures;
 
     HitTestBehavior behavior;
 
@@ -197,7 +197,7 @@ public:
     SemanticsGestureDelegate semantics;
 
 
-     RawGestureDetectorCls(HitTestBehavior behavior, Widget child, bool excludeFromSemantics, Map<Type, GestureRecognizerFactory> gestures, Key key, SemanticsGestureDelegate semantics);
+     RawGestureDetectorCls(HitTestBehavior behavior, Widget child, bool excludeFromSemantics, Map<Type, GestureRecognizerFactory<any>> gestures, Key key, SemanticsGestureDelegate semantics);
 
     virtual RawGestureDetectorState createState();
 
@@ -213,7 +213,7 @@ public:
 
     virtual void didUpdateWidget(RawGestureDetector oldWidget);
 
-    virtual void replaceGestureRecognizers(Map<Type, GestureRecognizerFactory> gestures);
+    virtual void replaceGestureRecognizers(Map<Type, GestureRecognizerFactory<any>> gestures);
 
     virtual void replaceSemanticsActions(Set<SemanticsAction> actions);
 
@@ -229,7 +229,7 @@ private:
     SemanticsGestureDelegate _semantics;
 
 
-    virtual void _syncAll(Map<Type, GestureRecognizerFactory> gestures);
+    virtual void _syncAll(Map<Type, GestureRecognizerFactory<any>> gestures);
 
     virtual void _handlePointerDown(PointerDownEvent event);
 

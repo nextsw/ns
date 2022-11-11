@@ -9,8 +9,8 @@ Capability IsolateCls::pause(Capability resumeCapability) {
     return resumeCapability;
 }
 
-Stream IsolateCls::errors() {
-    StreamController controller = StreamControllerCls->broadcast(true);
+Stream<any> IsolateCls::errors() {
+    StreamController<any> controller = StreamControllerCls->broadcast(true);
     RawReceivePort port;
     InlineMethod;
     controller->onListen = [=] () {

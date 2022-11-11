@@ -335,7 +335,7 @@ E SetMixinCls<E>::elementAt(int index) {
 }
 
 template<typename E>
-String SetBaseCls<E>::setToString(Set set) {
+String SetBaseCls<E>::setToString(Set<any> set) {
     return IterableBaseCls->iterableToFullString(set, __s("{"), __s("}"));
 }
 

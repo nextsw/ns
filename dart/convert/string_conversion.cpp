@@ -15,7 +15,7 @@ void _ClosableStringSinkCls::writeln(Object o) {
     _sink->writeln(o);
 }
 
-void _ClosableStringSinkCls::writeAll(Iterable objects, String separator) {
+void _ClosableStringSinkCls::writeAll(Iterable<any> objects, String separator) {
     _sink->writeAll(objects, separator);
 }
 
@@ -47,7 +47,7 @@ void _StringConversionSinkAsStringSinkAdapterCls::writeln(Object o) {
     }
 }
 
-void _StringConversionSinkAsStringSinkAdapterCls::writeAll(Iterable objects, String separator) {
+void _StringConversionSinkAsStringSinkAdapterCls::writeAll(Iterable<any> objects, String separator) {
     if (_buffer->isNotEmpty()) {
         _flush();
     }

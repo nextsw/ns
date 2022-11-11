@@ -284,7 +284,7 @@ private:
 
     bool _focused;
 
-    GlobalKey _mouseRegionKey;
+    GlobalKey<any> _mouseRegionKey;
 
 
     virtual void _updateHighlightMode(FocusHighlightMode mode);

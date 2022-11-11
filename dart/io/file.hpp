@@ -65,11 +65,11 @@ public:
     virtual File absolute();
     virtual Future<DateTime> lastAccessed();
     virtual DateTime lastAccessedSync();
-    virtual Future setLastAccessed(DateTime time);
+    virtual Future<any> setLastAccessed(DateTime time);
     virtual void setLastAccessedSync(DateTime time);
     virtual Future<DateTime> lastModified();
     virtual DateTime lastModifiedSync();
-    virtual Future setLastModified(DateTime time);
+    virtual Future<any> setLastModified(DateTime time);
     virtual void setLastModifiedSync(DateTime time);
     virtual Future<RandomAccessFile> open(FileMode mode);
     virtual RandomAccessFile openSync(FileMode mode);

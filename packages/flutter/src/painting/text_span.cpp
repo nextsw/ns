@@ -14,7 +14,7 @@ bool TextSpanCls::validForMouseTracker() {
     return true;
 }
 
-void TextSpanCls::handleEvent(PointerEvent event, HitTestEntry entry) {
+void TextSpanCls::handleEvent(PointerEvent event, HitTestEntry<any> entry) {
     if (is<PointerDownEvent>(event)) {
         recognizer?->addPointer(as<PointerDownEventCls>(event));
     }

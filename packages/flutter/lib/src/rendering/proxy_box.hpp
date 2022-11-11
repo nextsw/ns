@@ -874,7 +874,7 @@ public:
      RenderPointerListenerCls(HitTestBehavior behavior, Unknown child, PointerCancelEventListener onPointerCancel, PointerDownEventListener onPointerDown, PointerHoverEventListener onPointerHover, PointerMoveEventListener onPointerMove, PointerPanZoomEndEventListener onPointerPanZoomEnd, PointerPanZoomStartEventListener onPointerPanZoomStart, PointerPanZoomUpdateEventListener onPointerPanZoomUpdate, PointerSignalEventListener onPointerSignal, PointerUpEventListener onPointerUp);
     virtual Size computeSizeForNoChild(BoxConstraints constraints);
 
-    virtual void handleEvent(PointerEvent event, HitTestEntry entry);
+    virtual void handleEvent(PointerEvent event, HitTestEntry<any> entry);
 
     virtual void debugFillProperties(DiagnosticPropertiesBuilder properties);
 
@@ -896,7 +896,7 @@ public:
 
     virtual bool hitTest(BoxHitTestResult result, Offset position);
 
-    virtual void handleEvent(PointerEvent event, HitTestEntry entry);
+    virtual void handleEvent(PointerEvent event, HitTestEntry<any> entry);
 
     virtual bool opaque();
 

@@ -50,7 +50,7 @@ dynamic PageStorageBucketCls::readState(BuildContext context, Object identifier)
 bool PageStorageBucketCls::_maybeAddKey(BuildContext context, List<PageStorageKey<dynamic>> keys) {
     Widget widget = context->widget();
     Key key = widget->key;
-    if (is<PageStorageKey>(key)) {
+    if (is<PageStorageKey<any>>(key)) {
         keys->add(as<PageStorageKeyCls>(key));
     }
     return !is<PageStorage>(widget);

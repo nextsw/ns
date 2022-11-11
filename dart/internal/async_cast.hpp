@@ -31,7 +31,7 @@ public:
 
      CastStreamSubscriptionCls(StreamSubscription<S> _source);
 
-    virtual Future cancel();
+    virtual Future<any> cancel();
 
     virtual void onData(std::function<void(T data)> handleData);
 
@@ -39,7 +39,7 @@ public:
 
     virtual void onDone(std::function<void()> handleDone);
 
-    virtual void pause(Future resumeSignal);
+    virtual void pause(Future<any> resumeSignal);
 
     virtual void resume();
 

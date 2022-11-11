@@ -47,7 +47,7 @@ GestureDetectorCls::GestureDetectorCls(HitTestBehavior behavior, Widget child, D
 }
 
 Widget GestureDetectorCls::build(BuildContext context) {
-    Map<Type, GestureRecognizerFactory> gestures = makeMap(makeList(), makeList();
+    Map<Type, GestureRecognizerFactory<any>> gestures = makeMap(makeList(), makeList();
     DeviceGestureSettings gestureSettings = MediaQueryCls->maybeOf(context)?->gestureSettings;
     if (onTapDown != nullptr || onTapUp != nullptr || onTap != nullptr || onTapCancel != nullptr || onSecondaryTap != nullptr || onSecondaryTapDown != nullptr || onSecondaryTapUp != nullptr || onSecondaryTapCancel != nullptr || onTertiaryTapDown != nullptr || onTertiaryTapUp != nullptr || onTertiaryTapCancel != nullptr) {
         gestures[TapGestureRecognizerCls] = <TapGestureRecognizer>make<GestureRecognizerFactoryWithHandlersCls>([=] () {
@@ -113,7 +113,7 @@ void GestureDetectorCls::debugFillProperties(DiagnosticPropertiesBuilder propert
     properties->add(<DragStartBehavior>make<EnumPropertyCls>(__s("startBehavior"), dragStartBehavior));
 }
 
-RawGestureDetectorCls::RawGestureDetectorCls(HitTestBehavior behavior, Widget child, bool excludeFromSemantics, Map<Type, GestureRecognizerFactory> gestures, Key key, SemanticsGestureDelegate semantics) {
+RawGestureDetectorCls::RawGestureDetectorCls(HitTestBehavior behavior, Widget child, bool excludeFromSemantics, Map<Type, GestureRecognizerFactory<any>> gestures, Key key, SemanticsGestureDelegate semantics) {
     {
         assert(gestures != nullptr);
         assert(excludeFromSemantics != nullptr);
@@ -138,7 +138,7 @@ void RawGestureDetectorStateCls::didUpdateWidget(RawGestureDetector oldWidget) {
     _syncAll(widget()->gestures);
 }
 
-void RawGestureDetectorStateCls::replaceGestureRecognizers(Map<Type, GestureRecognizerFactory> gestures) {
+void RawGestureDetectorStateCls::replaceGestureRecognizers(Map<Type, GestureRecognizerFactory<any>> gestures) {
     assert([=] () {
         if (!context()->findRenderObject()!->owner()!->debugDoingLayout()) {
             throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem, ArrayItem));
@@ -200,7 +200,7 @@ void RawGestureDetectorStateCls::debugFillProperties(DiagnosticPropertiesBuilder
     properties->add(<HitTestBehavior>make<EnumPropertyCls>(__s("behavior"), widget()->behavior, nullptr));
 }
 
-void RawGestureDetectorStateCls::_syncAll(Map<Type, GestureRecognizerFactory> gestures) {
+void RawGestureDetectorStateCls::_syncAll(Map<Type, GestureRecognizerFactory<any>> gestures) {
     assert(_recognizers != nullptr);
     Map<Type, GestureRecognizer> oldRecognizers = _recognizers!;
     _recognizers = makeMap(makeList(), makeList();

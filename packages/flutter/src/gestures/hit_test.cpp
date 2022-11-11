@@ -27,11 +27,11 @@ HitTestResultCls::HitTestResultCls() {
 
 void HitTestResultCls::wrap(HitTestResult result)
 
-Iterable<HitTestEntry> HitTestResultCls::path() {
+Iterable<HitTestEntry<any>> HitTestResultCls::path() {
     return _path;
 }
 
-void HitTestResultCls::add(HitTestEntry entry) {
+void HitTestResultCls::add(HitTestEntry<any> entry) {
     assert(entry->_transform == nullptr);
     entry->_transform = _lastTransform();
     _path->add(entry);

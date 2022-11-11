@@ -66,7 +66,7 @@ void scheduleMicrotask(std::function<void()> callback) {
         _rootScheduleMicrotask(nullptr, nullptr, _rootZone, callback);
         return;
     }
-    _ZoneFunction implementation = currentZone->_scheduleMicrotask();
+    _ZoneFunction<any> implementation = currentZone->_scheduleMicrotask();
     if (identical(_rootZone, implementation->zone) && _rootZone->inSameErrorZone(currentZone)) {
         _rootScheduleMicrotask(nullptr, nullptr, currentZone, currentZone->registerCallback(callback));
         return;

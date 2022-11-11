@@ -330,7 +330,7 @@ private:
 
     GlobalKey<_ModalScopeState<T>> _scopeKey;
 
-    GlobalKey _subtreeKey;
+    GlobalKey<any> _subtreeKey;
 
     PageStorageBucket _storageBucket;
 
@@ -497,7 +497,7 @@ public:
 
     virtual bool hitTest(BoxHitTestResult result, Offset position);
 
-    virtual void handleEvent(PointerEvent event, HitTestEntry entry);
+    virtual void handleEvent(PointerEvent event, HitTestEntry<any> entry);
 
 private:
     FocusScopeNode _focusScopeNode;

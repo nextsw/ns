@@ -160,7 +160,7 @@ void _ImageStateCls::_updateInvertColors() {
 }
 
 void _ImageStateCls::_resolveImage() {
-    ScrollAwareImageProvider provider = <Object>make<ScrollAwareImageProviderCls>(_scrollAwareContext, widget()->image);
+    ScrollAwareImageProvider<any> provider = <Object>make<ScrollAwareImageProviderCls>(_scrollAwareContext, widget()->image);
     ImageStream newStream = provider->resolve(createLocalImageConfiguration(context(), widget()->width != nullptr && widget()->height != nullptr? make<SizeCls>(widget()->width!, widget()->height!) : nullptr));
     assert(newStream != nullptr);
     _updateSourceStream(newStream);

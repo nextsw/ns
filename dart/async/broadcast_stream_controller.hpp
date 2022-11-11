@@ -87,11 +87,11 @@ public:
 
     virtual void addError(Object error, StackTrace stackTrace);
 
-    virtual Future close();
+    virtual Future<any> close();
 
     virtual Future<void> done();
 
-    virtual Future addStream(Stream<T> stream, bool cancelOnError);
+    virtual Future<any> addStream(Stream<T> stream, bool cancelOnError);
 
 private:
     static int _STATE_INITIAL;
@@ -205,7 +205,7 @@ public:
 
     virtual void addError(Object error, StackTrace stackTrace);
 
-    virtual Future close();
+    virtual Future<any> close();
 
 private:
     _PendingEvents<T> _pending;
@@ -215,7 +215,7 @@ private:
 
     virtual bool _hasPending();
 
-    virtual void _addPendingEvent(_DelayedEvent event);
+    virtual void _addPendingEvent(_DelayedEvent<any> event);
 
     virtual void _flushPending();
 

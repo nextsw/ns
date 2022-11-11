@@ -322,7 +322,7 @@ public:
 
     virtual void assembleSemanticsNode(SemanticsNode node, SemanticsConfiguration config, Iterable<SemanticsNode> children);
 
-    virtual void handleEvent(PointerEvent event, HitTestEntry entry);
+    virtual void handleEvent(PointerEvent event, HitTestEntry<any> entry);
 
     virtual String toStringShort();
 

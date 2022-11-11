@@ -121,10 +121,10 @@ public:
     virtual int elementAt(int index);
 
 private:
-    List _backedList;
+    List<any> _backedList;
 
 
-     _ListIndicesIterableCls(List _backedList);
+     _ListIndicesIterableCls(List<any> _backedList);
 };
 using _ListIndicesIterable = std::shared_ptr<_ListIndicesIterableCls>;
 

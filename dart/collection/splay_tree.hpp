@@ -105,7 +105,7 @@ public:
 
     virtual void  of(Map<K, V> other, std::function<int(K key1, K key2)> compare, std::function<bool(dynamic potentialKey)> isValidKey);
 
-    virtual void  fromIterable(Iterable iterable, std::function<int(K key1, K key2)> compare, std::function<bool(dynamic potentialKey)> isValidKey, std::function<K(dynamic element)> key, std::function<V(dynamic element)> value);
+    virtual void  fromIterable(Iterable<any> iterable, std::function<int(K key1, K key2)> compare, std::function<bool(dynamic potentialKey)> isValidKey, std::function<K(dynamic element)> key, std::function<V(dynamic element)> value);
 
     virtual void  fromIterables(Iterable<K> keys, Iterable<V> values, std::function<int(K key1, K key2)> compare, std::function<bool(dynamic potentialKey)> isValidKey);
 
@@ -303,7 +303,7 @@ public:
 
      SplayTreeSetCls(std::function<int(E key1, E key2)> compare, std::function<bool(dynamic potentialKey)> isValidKey);
 
-    virtual void  from(Iterable elements, std::function<int(E key1, E key2)> compare, std::function<bool(dynamic potentialKey)> isValidKey);
+    virtual void  from(Iterable<any> elements, std::function<int(E key1, E key2)> compare, std::function<bool(dynamic potentialKey)> isValidKey);
 
     virtual void  of(Iterable<E> elements, std::function<int(E key1, E key2)> compare, std::function<bool(dynamic potentialKey)> isValidKey);
 

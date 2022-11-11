@@ -52,7 +52,7 @@ int lowerBoundBy(List<E> sortedList, std::function<K(E element)> keyOf, std::fun
     return min;
 }
 
-void shuffle(List elements, int start, int end, Random random) {
+void shuffle(List<any> elements, int start, int end, Random random) {
     random |= make<RandomCls>();
     end |= elements->length();
     auto length = end - start;

@@ -303,13 +303,13 @@ _DragAvatarCls<T>::_DragAvatarCls(Axis axis, T data, Offset dragStartPoint, Widg
 }
 
 template<typename T>
-Iterable<_DragTargetState<Object>> _DragAvatarCls<T>::_getDragTargets(Iterable<HitTestEntry> path) {
+Iterable<_DragTargetState<Object>> _DragAvatarCls<T>::_getDragTargets(Iterable<HitTestEntry<any>> path) {
     List<_DragTargetState<Object>> targets = makeList();
-    for (HitTestEntry entry : path) {
+    for (HitTestEntry<any> entry : path) {
         HitTestTarget target = entry->target;
         if (is<RenderMetaData>(target)) {
             dynamic metaData = as<RenderMetaDataCls>(target)->metaData;
-            if (is<_DragTargetState>(metaData) && metaData->isExpectedDataType(data, T)) {
+            if (is<_DragTargetState<any>>(metaData) && metaData->isExpectedDataType(data, T)) {
                 targets->add(metaData);
             }
         }

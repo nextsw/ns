@@ -316,7 +316,7 @@ private:
 
     Animation<double> _fadeoutOpacityAnimation;
 
-    GlobalKey _scrollbarPainterKey;
+    GlobalKey<any> _scrollbarPainterKey;
 
     bool _hoverIsActive;
 
@@ -341,7 +341,7 @@ private:
 
     virtual bool _handleScrollNotification(ScrollNotification notification);
 
-    virtual Map<Type, GestureRecognizerFactory> _gestures();
+    virtual Map<Type, GestureRecognizerFactory<any>> _gestures();
 
 };
 template<typename T>
@@ -353,12 +353,12 @@ public:
     virtual bool isPointerAllowed(PointerDownEvent event);
 
 private:
-    GlobalKey _customPaintKey;
+    GlobalKey<any> _customPaintKey;
 
 
-     _ThumbPressGestureRecognizerCls(GlobalKey customPaintKey, Object debugOwner, Duration pressDuration);
+     _ThumbPressGestureRecognizerCls(GlobalKey<any> customPaintKey, Object debugOwner, Duration pressDuration);
 
-    virtual bool _hitTestInteractive(GlobalKey customPaintKey, Offset offset, PointerDeviceKind kind);
+    virtual bool _hitTestInteractive(GlobalKey<any> customPaintKey, Offset offset, PointerDeviceKind kind);
 
 };
 using _ThumbPressGestureRecognizer = std::shared_ptr<_ThumbPressGestureRecognizerCls>;
@@ -369,16 +369,16 @@ public:
     virtual bool isPointerAllowed(PointerDownEvent event);
 
 private:
-    GlobalKey _customPaintKey;
+    GlobalKey<any> _customPaintKey;
 
 
-     _TrackTapGestureRecognizerCls(GlobalKey customPaintKey, Object debugOwner);
+     _TrackTapGestureRecognizerCls(GlobalKey<any> customPaintKey, Object debugOwner);
 
-    virtual bool _hitTestInteractive(GlobalKey customPaintKey, Offset offset, PointerDeviceKind kind);
+    virtual bool _hitTestInteractive(GlobalKey<any> customPaintKey, Offset offset, PointerDeviceKind kind);
 
 };
 using _TrackTapGestureRecognizer = std::shared_ptr<_TrackTapGestureRecognizerCls>;
-Offset _getLocalOffset(GlobalKey scrollbarPainterKey, Offset position);
+Offset _getLocalOffset(GlobalKey<any> scrollbarPainterKey, Offset position);
 
 
 

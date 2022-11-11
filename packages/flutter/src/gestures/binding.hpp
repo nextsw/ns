@@ -105,7 +105,7 @@ public:
 
     virtual void dispatchEvent(PointerEvent event, HitTestResult hitTestResult);
 
-    virtual void handleEvent(PointerEvent event, HitTestEntry entry);
+    virtual void handleEvent(PointerEvent event, HitTestEntry<any> entry);
 
     virtual void resetGestureBinding();
 
@@ -138,10 +138,10 @@ class FlutterErrorDetailsForPointerEventDispatcherCls : public FlutterErrorDetai
 public:
     PointerEvent event;
 
-    HitTestEntry hitTestEntry;
+    HitTestEntry<any> hitTestEntry;
 
 
-     FlutterErrorDetailsForPointerEventDispatcherCls(DiagnosticsNode context, PointerEvent event, Object exception, HitTestEntry hitTestEntry, InformationCollector informationCollector, String library, bool silent, StackTrace stack);
+     FlutterErrorDetailsForPointerEventDispatcherCls(DiagnosticsNode context, PointerEvent event, Object exception, HitTestEntry<any> hitTestEntry, InformationCollector informationCollector, String library, bool silent, StackTrace stack);
 private:
 
 };

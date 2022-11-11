@@ -135,7 +135,7 @@ void GestureBindingCls::dispatchEvent(PointerEvent event, HitTestResult hitTestR
         };
         return;
     }
-    for (HitTestEntry entry : hitTestResult->path()) {
+    for (HitTestEntry<any> entry : hitTestResult->path()) {
         try {
             entry->target->handleEvent(event->transformed(entry->transform), entry);
         } catch (Unknown exception) {
@@ -146,7 +146,7 @@ void GestureBindingCls::dispatchEvent(PointerEvent event, HitTestResult hitTestR
     }
 }
 
-void GestureBindingCls::handleEvent(PointerEvent event, HitTestEntry entry) {
+void GestureBindingCls::handleEvent(PointerEvent event, HitTestEntry<any> entry) {
     pointerRouter->route(event);
     if (is<PointerDownEvent>(event) || is<PointerPanZoomStartEvent>(event)) {
         gestureArena->close(event->pointer);

@@ -241,7 +241,7 @@ public:
     virtual bool writeMap(Map<Object, Object> map);
 
 private:
-    List _seen;
+    List<any> _seen;
 
     std::function<void (dynamic )> _toEncodable;
 

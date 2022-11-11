@@ -56,7 +56,7 @@ void _BufferingStreamSubscriptionCls<T>::resume() {
 }
 
 template<typename T>
-Future _BufferingStreamSubscriptionCls<T>::cancel() {
+Future<any> _BufferingStreamSubscriptionCls<T>::cancel() {
     _state &= ~_STATE_WAIT_FOR_CANCEL;
     if (!_isCanceled()) {
         _cancel();
@@ -81,7 +81,7 @@ Future<E> _BufferingStreamSubscriptionCls<T>::asFuture(E futureValue) {
         result->_complete(resultValue);
     };
     _onError = [=] (Object error,StackTrace stackTrace) {
-        Future cancelFuture = cancel();
+        Future<any> cancelFuture = cancel();
         if (!identical(cancelFuture, FutureCls::_nullFuture)) {
             cancelFuture->whenComplete([=] () {
                 result->_completeError(error, stackTrace);
@@ -265,7 +265,7 @@ Future<void> _BufferingStreamSubscriptionCls<T>::_onCancel() {
 }
 
 template<typename T>
-void _BufferingStreamSubscriptionCls<T>::_addPending(_DelayedEvent event) {
+void _BufferingStreamSubscriptionCls<T>::_addPending(_DelayedEvent<any> event) {
     auto pending = _pending ??= <T>make<_PendingEventsCls>();
     pending->add(event);
     if (!_hasPending()) {
@@ -382,7 +382,7 @@ StreamSubscription<T> _StreamImplCls<T>::_createSubscription(std::function<void(
 }
 
 template<typename T>
-void _StreamImplCls<T>::_onListen(StreamSubscription subscription) {
+void _StreamImplCls<T>::_onListen(StreamSubscription<any> subscription) {
 }
 
 void _nullDataHandler(dynamic value) {
@@ -400,19 +400,19 @@ void _DelayedDataCls<T>::perform(_EventDispatch<T> dispatch) {
     dispatch->_sendData(value);
 }
 
-void _DelayedErrorCls::perform(_EventDispatch dispatch) {
+void _DelayedErrorCls::perform(_EventDispatch<any> dispatch) {
     dispatch->_sendError(error, stackTrace);
 }
 
-void _DelayedDoneCls::perform(_EventDispatch dispatch) {
+void _DelayedDoneCls::perform(_EventDispatch<any> dispatch) {
     dispatch->_sendDone();
 }
 
-_DelayedEvent _DelayedDoneCls::next() {
+_DelayedEvent<any> _DelayedDoneCls::next() {
     return nullptr;
 }
 
-void _DelayedDoneCls::next(_DelayedEvent _) {
+void _DelayedDoneCls::next(_DelayedEvent<any> _) {
     throw make<StateErrorCls>(__s("No events after a done."));
 }
 
@@ -456,7 +456,7 @@ bool _PendingEventsCls<T>::isEmpty() {
 }
 
 template<typename T>
-void _PendingEventsCls<T>::add(_DelayedEvent event) {
+void _PendingEventsCls<T>::add(_DelayedEvent<any> event) {
     auto lastEvent = lastPendingEvent;
     if (lastEvent == nullptr) {
         firstPendingEvent = lastPendingEvent = event;
@@ -469,8 +469,8 @@ template<typename T>
 void _PendingEventsCls<T>::handleNext(_EventDispatch<T> dispatch) {
     assert(!isScheduled());
     assert(!isEmpty());
-    _DelayedEvent event = firstPendingEvent!;
-    _DelayedEvent nextEvent = event->next;
+    _DelayedEvent<any> event = firstPendingEvent!;
+    _DelayedEvent<any> nextEvent = event->next;
     firstPendingEvent = nextEvent;
     if (nextEvent == nullptr) {
         lastPendingEvent = nullptr;
@@ -528,7 +528,7 @@ void _DoneStreamSubscriptionCls<T>::resume() {
 }
 
 template<typename T>
-Future _DoneStreamSubscriptionCls<T>::cancel() {
+Future<any> _DoneStreamSubscriptionCls<T>::cancel() {
     return FutureCls::_nullFuture;
 }
 
@@ -696,7 +696,7 @@ void _BroadcastSubscriptionWrapperCls<T>::resume() {
 }
 
 template<typename T>
-Future _BroadcastSubscriptionWrapperCls<T>::cancel() {
+Future<any> _BroadcastSubscriptionWrapperCls<T>::cancel() {
     _stream->_cancelSubscription();
     return FutureCls::_nullFuture;
 }
@@ -737,7 +737,7 @@ Future<bool> _StreamIteratorCls<T>::moveNext() {
 }
 
 template<typename T>
-Future _StreamIteratorCls<T>::cancel() {
+Future<any> _StreamIteratorCls<T>::cancel() {
     auto subscription = _subscription;
     auto stateData = _stateData;
     _stateData = nullptr;

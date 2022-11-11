@@ -144,9 +144,9 @@ Set<E> IterableCls<E>::toSet() {
 
 template<typename E>
 int IterableCls<E>::length() {
-    assert(!is<EfficientLengthIterable>(this));
+    assert(!is<EfficientLengthIterable<any>>(this));
     int count = 0;
-    Iterator it = iterator();
+    Iterator<any> it = iterator();
     while (it->moveNext()) {
         count++;
     }

@@ -9,7 +9,7 @@ template<typename E>
 class ListBaseCls : public ObjectCls {
 public:
 
-    static String listToString(List list);
+    static String listToString(List<any> list);
 
 private:
 

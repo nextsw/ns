@@ -49,7 +49,7 @@ using ServiceExtensionResponse = std::shared_ptr<ServiceExtensionResponseCls>;
 void registerExtension(String method, ServiceExtensionHandler handler);
 
 bool extensionStreamHasListener();
-void postEvent(String eventKind, Map eventData);
+void postEvent(String eventKind, Map<any, any> eventData);
 
 void _postEvent(String eventKind, String eventData);
 ServiceExtensionHandler _lookupExtension(String method);

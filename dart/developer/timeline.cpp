@@ -11,7 +11,7 @@ Flow FlowCls::end(int id) {
     return FlowCls->_(_end, id);
 }
 
-void TimelineCls::startSync(String name, Map arguments, Flow flow) {
+void TimelineCls::startSync(String name, Map<any, any> arguments, Flow flow) {
     if (!_hasTimeline) {
         return;
     }
@@ -39,7 +39,7 @@ void TimelineCls::finishSync() {
     block->finish();
 }
 
-void TimelineCls::instantSync(String name, Map arguments) {
+void TimelineCls::instantSync(String name, Map<any, any> arguments) {
     if (!_hasTimeline) {
         return;
     }
@@ -47,7 +47,7 @@ void TimelineCls::instantSync(String name, Map arguments) {
     if (!_isDartStreamEnabled()) {
         return;
     }
-    Map instantArguments;
+    Map<any, any> instantArguments;
     if (arguments != nullptr) {
         instantArguments = MapCls->from(arguments);
     }
@@ -55,7 +55,7 @@ void TimelineCls::instantSync(String name, Map arguments) {
 }
 
 template<typename T>
-T TimelineCls::timeSync(String name, TimelineSyncFunction<T> function, Map arguments, Flow flow) {
+T TimelineCls::timeSync(String name, TimelineSyncFunction<T> function, Map<any, any> arguments, Flow flow) {
     startSync(name, arguments, flow);
     try {
         return function();
@@ -82,7 +82,7 @@ void TimelineTaskCls::withTaskId(int taskId, String filterKey) {
     ArgumentErrorCls->checkNotNull(taskId, __s("taskId"));
 }
 
-void TimelineTaskCls::start(String name, Map arguments) {
+void TimelineTaskCls::start(String name, Map<any, any> arguments) {
     if (!_hasTimeline) {
         return;
     }
@@ -108,7 +108,7 @@ void TimelineTaskCls::start(String name, Map arguments) {
     block->_start(map);
 }
 
-void TimelineTaskCls::instant(String name, Map arguments) {
+void TimelineTaskCls::instant(String name, Map<any, any> arguments) {
     if (!_hasTimeline) {
         return;
     }
@@ -116,7 +116,7 @@ void TimelineTaskCls::instant(String name, Map arguments) {
     if (!_isDartStreamEnabled()) {
         return;
     }
-    Map instantArguments;
+    Map<any, any> instantArguments;
     if (arguments != nullptr) {
         instantArguments = MapCls->from(arguments);
     }
@@ -127,7 +127,7 @@ void TimelineTaskCls::instant(String name, Map arguments) {
     _reportTaskEvent(_taskId, __s("n"), __s("Dart"), name, _argumentsAsJson(instantArguments));
 }
 
-void TimelineTaskCls::finish(Map arguments) {
+void TimelineTaskCls::finish(Map<any, any> arguments) {
     if (!_hasTimeline) {
         return;
     }
@@ -153,11 +153,11 @@ int TimelineTaskCls::pass() {
     return r;
 }
 
-void _AsyncBlockCls::_start(Map arguments) {
+void _AsyncBlockCls::_start(Map<any, any> arguments) {
     _reportTaskEvent(_taskId, __s("b"), category, name, _argumentsAsJson(arguments));
 }
 
-void _AsyncBlockCls::_finish(Map arguments) {
+void _AsyncBlockCls::_finish(Map<any, any> arguments) {
     _reportTaskEvent(_taskId, __s("e"), category, name, _argumentsAsJson(arguments));
 }
 
@@ -173,7 +173,7 @@ void _SyncBlockCls::_startSync() {
     _reportTaskEvent(0, __s("B"), category, name, _jsonArguments);
 }
 
-String _argumentsAsJson(Map arguments) {
+String _argumentsAsJson(Map<any, any> arguments) {
     if ((arguments == nullptr) || (arguments->length() == 0)) {
         return __s("{}");
     }

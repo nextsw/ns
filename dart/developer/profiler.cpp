@@ -35,7 +35,7 @@ GaugeCls::GaugeCls(String name, String description, double min, double max) : Me
     }
 }
 
-Map GaugeCls::_toJSON() {
+Map<any, any> GaugeCls::_toJSON() {
     map1.set(__s("type"), __s("Gauge"));map1.set(__s("id"), __s("metrics/$name"));map1.set(__s("name"), name);map1.set(__s("description"), description);map1.set(__s("value"), value());map1.set(__s("min"), min);map1.set(__s("max"), max);auto map = list1;
     return map;
 }
@@ -51,7 +51,7 @@ void CounterCls::value(double v) {
     _value = v;
 }
 
-Map CounterCls::_toJSON() {
+Map<any, any> CounterCls::_toJSON() {
     map1.set(__s("type"), __s("Counter"));map1.set(__s("id"), __s("metrics/$name"));map1.set(__s("name"), name);map1.set(__s("description"), description);map1.set(__s("value"), value());auto map = list1;
     return map;
 }

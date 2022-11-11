@@ -35,14 +35,14 @@ using Flow = std::shared_ptr<FlowCls>;
 class TimelineCls : public ObjectCls {
 public:
 
-    static void startSync(String name, Map arguments, Flow flow);
+    static void startSync(String name, Map<any, any> arguments, Flow flow);
 
     static void finishSync();
 
-    static void instantSync(String name, Map arguments);
+    static void instantSync(String name, Map<any, any> arguments);
 
     template<typename T>
- static T timeSync(String name, TimelineSyncFunction<T> function, Map arguments, Flow flow);
+ static T timeSync(String name, TimelineSyncFunction<T> function, Map<any, any> arguments, Flow flow);
 
     static int now();
 
@@ -60,11 +60,11 @@ public:
 
     virtual void  withTaskId(int taskId, String filterKey);
 
-    virtual void start(String name, Map arguments);
+    virtual void start(String name, Map<any, any> arguments);
 
-    virtual void instant(String name, Map arguments);
+    virtual void instant(String name, Map<any, any> arguments);
 
-    virtual void finish(Map arguments);
+    virtual void finish(Map<any, any> arguments);
 
     virtual int pass();
 
@@ -95,9 +95,9 @@ private:
 
 
     virtual void  _(String name, int _taskId);
-    virtual void _start(Map arguments);
+    virtual void _start(Map<any, any> arguments);
 
-    virtual void _finish(Map arguments);
+    virtual void _finish(Map<any, any> arguments);
 
 };
 using _AsyncBlock = std::shared_ptr<_AsyncBlockCls>;
@@ -108,7 +108,7 @@ public:
 
     String name;
 
-    Map arguments;
+    Map<any, any> arguments;
 
     Flow flow;
 
@@ -119,12 +119,12 @@ private:
     String _jsonArguments;
 
 
-    virtual void  _(String name, Map arguments, Flow flow);
+    virtual void  _(String name, Map<any, any> arguments, Flow flow);
     virtual void _startSync();
 
 };
 using _SyncBlock = std::shared_ptr<_SyncBlockCls>;
-String _argumentsAsJson(Map arguments);
+String _argumentsAsJson(Map<any, any> arguments);
 
 bool _isDartStreamEnabled();
 int _getNextAsyncId();

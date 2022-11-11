@@ -380,7 +380,7 @@ private:
 
     ValueNotifier<bool> _cursorVisibilityNotifier;
 
-    GlobalKey _editableKey;
+    GlobalKey<any> _editableKey;
 
     ClipboardStatusNotifier _clipboardStatus;
 
@@ -685,7 +685,7 @@ public:
 
     FocusNode focusNode;
 
-    GlobalKey editableKey;
+    GlobalKey<any> editableKey;
 
     VoidCallback updateSelectionRects;
 
@@ -696,7 +696,7 @@ public:
 
 private:
 
-     _ScribbleFocusableCls(Widget child, GlobalKey editableKey, bool enabled, FocusNode focusNode, VoidCallback updateSelectionRects);
+     _ScribbleFocusableCls(Widget child, GlobalKey<any> editableKey, bool enabled, FocusNode focusNode, VoidCallback updateSelectionRects);
 };
 using _ScribbleFocusable = std::shared_ptr<_ScribbleFocusableCls>;
 

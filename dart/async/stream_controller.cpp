@@ -50,7 +50,7 @@ bool _StreamControllerCls<T>::isPaused() {
 }
 
 template<typename T>
-Future _StreamControllerCls<T>::addStream(Stream<T> source, bool cancelOnError) {
+Future<any> _StreamControllerCls<T>::addStream(Stream<T> source, bool cancelOnError) {
     if (!_mayAddEvent()) {
         throw _badEventState();
     }
@@ -93,7 +93,7 @@ void _StreamControllerCls<T>::addError(Object error, StackTrace stackTrace) {
 }
 
 template<typename T>
-Future _StreamControllerCls<T>::close() {
+Future<any> _StreamControllerCls<T>::close() {
     if (isClosed()) {
         return _ensureDoneFuture();
     }
@@ -344,7 +344,7 @@ bool _ControllerStreamCls<T>::==(Object other) {
     if (identical(this, other)) {
         return true;
     }
-    return is<_ControllerStream>(other) && identical(other->_controller, this->_controller);
+    return is<_ControllerStream<any>>(other) && identical(other->_controller, this->_controller);
 }
 
 template<typename T>
@@ -382,22 +382,22 @@ void _StreamSinkWrapperCls<T>::addError(Object error, StackTrace stackTrace) {
 }
 
 template<typename T>
-Future _StreamSinkWrapperCls<T>::close() {
+Future<any> _StreamSinkWrapperCls<T>::close() {
     return _target->close();
 }
 
 template<typename T>
-Future _StreamSinkWrapperCls<T>::addStream(Stream<T> source) {
+Future<any> _StreamSinkWrapperCls<T>::addStream(Stream<T> source) {
     return _target->addStream(source);
 }
 
 template<typename T>
-Future _StreamSinkWrapperCls<T>::done() {
+Future<any> _StreamSinkWrapperCls<T>::done() {
     return _target->done();
 }
 
 template<typename T>
-void _AddStreamStateCls<T>::makeErrorHandler(_EventSink controller) {
+void _AddStreamStateCls<T>::makeErrorHandler(_EventSink<any> controller) {
     return [=] (Object e,StackTrace s) {
         controller->_addError(e, s);
         controller->_close();

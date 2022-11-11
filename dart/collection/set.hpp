@@ -105,7 +105,7 @@ template<typename E>
 class SetBaseCls : public ObjectCls {
 public:
 
-    static String setToString(Set set);
+    static String setToString(Set<any> set);
 
 private:
 

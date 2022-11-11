@@ -1435,7 +1435,7 @@ SetSelectionHandler SemanticsConfigurationCls::onSetSelection() {
 void SemanticsConfigurationCls::onSetSelection(SetSelectionHandler value) {
     assert(value != nullptr);
     _addAction(SemanticsActionCls::setSelection, [=] (Object args) {
-        assert(args != nullptr && is<Map>(args));
+        assert(args != nullptr && is<Map<any, any>>(args));
         Map<String, int> selection = (as<Map<dynamic, dynamic>>(args!))-><String, int>cast();
         assert(selection != nullptr && selection[__s("base")] != nullptr && selection[__s("extent")] != nullptr);
         value!(make<TextSelectionCls>(selection[__s("base")]!, selection[__s("extent")]!));

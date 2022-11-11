@@ -1182,7 +1182,7 @@ void RenderObjectCls::assembleSemanticsNode(SemanticsNode node, SemanticsConfigu
     node->updateWith(config, as<List<SemanticsNode>>(children));
 }
 
-void RenderObjectCls::handleEvent(PointerEvent event, HitTestEntry entry) {
+void RenderObjectCls::handleEvent(PointerEvent event, HitTestEntry<any> entry) {
 }
 
 String RenderObjectCls::toStringShort() {

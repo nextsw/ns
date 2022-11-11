@@ -2038,7 +2038,7 @@ Size RenderPointerListenerCls::computeSizeForNoChild(BoxConstraints constraints)
     return constraints->biggest();
 }
 
-void RenderPointerListenerCls::handleEvent(PointerEvent event, HitTestEntry entry) {
+void RenderPointerListenerCls::handleEvent(PointerEvent event, HitTestEntry<any> entry) {
     assert(debugHandleEvent(event, entry));
     if (is<PointerDownEvent>(event)) {
         return onPointerDown?->call(as<PointerDownEventCls>(event));
@@ -2088,7 +2088,7 @@ bool RenderMouseRegionCls::hitTest(BoxHitTestResult result, Offset position) {
     return super->hitTest(result, position) && _opaque;
 }
 
-void RenderMouseRegionCls::handleEvent(PointerEvent event, HitTestEntry entry) {
+void RenderMouseRegionCls::handleEvent(PointerEvent event, HitTestEntry<any> entry) {
     assert(debugHandleEvent(event, entry));
     if (onHover != nullptr && is<PointerHoverEvent>(event)) {
         return onHover!(event);

@@ -31,7 +31,7 @@ template<typename T>
 Future<T> SynchronousFutureCls<T>::whenComplete(std::function<FutureOr<dynamic>()> action) {
     try {
         FutureOr<dynamic> result = action();
-        if (is<Future>(result)) {
+        if (is<Future<any>>(result)) {
             return as<FutureCls>(result)-><T>then([=] (dynamic value) {
                 _value;
             });

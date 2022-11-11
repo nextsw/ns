@@ -16,7 +16,7 @@ String _RectangleBaseCls<T>::toString() {
 
 template<typename T>
 bool _RectangleBaseCls<T>::==(Object other) {
-    return is<Rectangle>(other) && left() == other->left && top() == other->top && right() == other->right && bottom() == other->bottom;
+    return is<Rectangle<any>>(other) && left() == other->left && top() == other->top && right() == other->right && bottom() == other->bottom;
 }
 
 template<typename T>

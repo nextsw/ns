@@ -51,7 +51,7 @@ public:
     template<typename S>
  virtual Stream<S> expand(std::function<Iterable<S>(T element)> convert);
 
-    virtual Future pipe(StreamConsumer<T> streamConsumer);
+    virtual Future<any> pipe(StreamConsumer<T> streamConsumer);
 
     template<typename S>
  virtual Stream<S> transform(StreamTransformer<T, S> streamTransformer);
@@ -65,7 +65,7 @@ public:
 
     virtual Future<bool> contains(Object needle);
 
-    virtual Future forEach(std::function<void(T element)> action);
+    virtual Future<any> forEach(std::function<void(T element)> action);
 
     virtual Future<bool> every(std::function<bool(T element)> test);
 
@@ -174,8 +174,8 @@ template<typename S>
 class StreamConsumerCls : public ObjectCls {
 public:
 
-    virtual Future addStream(Stream<S> stream);
-    virtual Future close();
+    virtual Future<any> addStream(Stream<S> stream);
+    virtual Future<any> close();
 private:
 
 };
@@ -186,8 +186,8 @@ template<typename S>
 class StreamSinkCls : public ObjectCls {
 public:
 
-    virtual Future close();
-    virtual Future done();
+    virtual Future<any> close();
+    virtual Future<any> done();
 private:
 
 };
@@ -235,7 +235,7 @@ public:
 
     virtual Future<bool> moveNext();
     virtual T current();
-    virtual Future cancel();
+    virtual Future<any> cancel();
 private:
 
 };
@@ -253,11 +253,11 @@ public:
     virtual void close();
 
 private:
-    EventSink _sink;
+    EventSink<any> _sink;
 
 
-     _ControllerEventSinkWrapperCls(EventSink _sink);
-    virtual EventSink _ensureSink();
+     _ControllerEventSinkWrapperCls(EventSink<any> _sink);
+    virtual EventSink<any> _ensureSink();
 
 };
 template<typename T>

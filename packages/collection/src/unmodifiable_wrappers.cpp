@@ -93,12 +93,12 @@ bool UnmodifiableSetMixinCls<E>::remove(Object value) {
 }
 
 template<typename E>
-void UnmodifiableSetMixinCls<E>::removeAll(Iterable elements) {
+void UnmodifiableSetMixinCls<E>::removeAll(Iterable<any> elements) {
     return _throw();
 }
 
 template<typename E>
-void UnmodifiableSetMixinCls<E>::retainAll(Iterable elements) {
+void UnmodifiableSetMixinCls<E>::retainAll(Iterable<any> elements) {
     return _throw();
 }
 

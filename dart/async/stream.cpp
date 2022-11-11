@@ -209,7 +209,7 @@ Stream<S> StreamCls<T>::expand(std::function<Iterable<S>(T element)> convert) {
 }
 
 template<typename T>
-Future StreamCls<T>::pipe(StreamConsumer<T> streamConsumer) {
+Future<any> StreamCls<T>::pipe(StreamConsumer<T> streamConsumer) {
     return streamConsumer->addStream(this)->then([=] () {
         streamConsumer->close();
     });
@@ -317,8 +317,8 @@ Future<bool> StreamCls<T>::contains(Object needle) {
 }
 
 template<typename T>
-Future StreamCls<T>::forEach(std::function<void(T element)> action) {
-    _Future future = make<_FutureCls>();
+Future<any> StreamCls<T>::forEach(std::function<void(T element)> action) {
+    _Future<any> future = make<_FutureCls>();
     StreamSubscription<T> subscription = this->listen(nullptr, future->_completeError, [=] () {
     future->_complete(nullptr);
 }, true);
@@ -736,7 +736,7 @@ void _ControllerEventSinkWrapperCls<T>::close() {
 }
 
 template<typename T>
-EventSink _ControllerEventSinkWrapperCls<T>::_ensureSink() {
+EventSink<any> _ControllerEventSinkWrapperCls<T>::_ensureSink() {
     auto sink = _sink;
     if (sink == nullptr) {
         throw make<StateErrorCls>(__s("Sink not available"));

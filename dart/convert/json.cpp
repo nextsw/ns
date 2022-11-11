@@ -303,13 +303,13 @@ bool _JsonStringifierCls::writeJsonValue(Object object) {
         writeString(__s("""));
         return true;
     } else {
-        if (is<List>(object)) {
+        if (is<List<any>>(object)) {
         _checkCycle(as<ListCls>(object));
         writeList(as<ListCls>(object));
         _removeSeen(as<ListCls>(object));
         return true;
     } else {
-        if (is<Map>(object)) {
+        if (is<Map<any, any>>(object)) {
         _checkCycle(as<MapCls>(object));
         auto success = writeMap(as<MapCls>(object));
         _removeSeen(as<MapCls>(object));

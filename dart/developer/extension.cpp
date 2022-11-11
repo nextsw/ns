@@ -47,7 +47,7 @@ void registerExtension(String method, ServiceExtensionHandler handler) {
     _registerExtension(method, handler);
 }
 
-void postEvent(String eventKind, Map eventData) {
+void postEvent(String eventKind, Map<any, any> eventData) {
     if (!extensionStreamHasListener) {
         return;
     }

@@ -81,7 +81,7 @@ public:
 private:
     Map<Type, Action<Intent>> _actions;
 
-    Map<Type, GestureRecognizerFactory> _gestureRecognizers;
+    Map<Type, GestureRecognizerFactory<any>> _gestureRecognizers;
 
     SelectionOverlay _selectionOverlay;
 

@@ -509,7 +509,7 @@ String _RouteEntryCls::restorationId() {
 }
 
 bool _RouteEntryCls::hasPage() {
-    return is<Page>(route->settings());
+    return is<Page<any>>(route->settings());
 }
 
 bool _RouteEntryCls::canUpdateFrom(Page<dynamic> page) {
@@ -1705,7 +1705,7 @@ Route<T> NavigatorStateCls::_routeNamed(String name, bool allowNull, Object argu
 
 bool NavigatorStateCls::_debugCheckIsPagelessRoute(Route<dynamic> route) {
     assert([=] () {
-        if (is<Page>(route->settings())) {
+        if (is<Page<any>>(route->settings())) {
             FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(make<FlutterErrorCls>(__s("A page-based route should not be added using the imperative api. Provide a new list with the corresponding Page to Navigator.pages instead.")), __s("widget library"), StackTraceCls::current));
         }
         return true;

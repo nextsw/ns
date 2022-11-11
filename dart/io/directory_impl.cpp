@@ -203,7 +203,7 @@ void _DirectoryCls::_deleteSync(bool recursive) {
 }
 
 bool _DirectoryCls::_isErrorResponse(response ) {
-    return is<List>(response) && response[0] != _successResponse;
+    return is<List<any>>(response) && response[0] != _successResponse;
 }
 
 void _DirectoryCls::_exceptionOrErrorFromResponse(response , String message) {
@@ -244,7 +244,7 @@ void _AsyncDirectoryListerCls::onResume() {
     }
 }
 
-Future _AsyncDirectoryListerCls::onCancel() {
+Future<any> _AsyncDirectoryListerCls::onCancel() {
     canceled = true;
     if (!nextRunning) {
         close();
@@ -267,7 +267,7 @@ void _AsyncDirectoryListerCls::next() {
     nextRunning = true;
     _IOServiceCls->_dispatch(_IOServiceCls::directoryListNext, makeList(ArrayItem))->then([=] (Unknown  result) {
         nextRunning = false;
-        if (is<List>(result)) {
+        if (is<List<any>>(result)) {
             next();
             assert(as<ListCls>(result)->length() % 2 == 0);
             for (;  < as<ListCls>(result)->length(); i++) {

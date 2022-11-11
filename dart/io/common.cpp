@@ -1,6 +1,6 @@
 #include "common.hpp"
 bool _isErrorResponse(response ) {
-    return is<List>(response) && response[0] != _successResponse;
+    return is<List<any>>(response) && response[0] != _successResponse;
 }
 
 void _exceptionFromResponse(response , String message, String path) {

@@ -15,7 +15,7 @@ _FileStreamCls::_FileStreamCls(String _path, int position, int _end) {
     }
 }
 
-Future _FileStreamCls::_closeFile() {
+Future<any> _FileStreamCls::_closeFile() {
     if (_readInProgress || _closed) {
         return _closeCompleter->future();
     }
@@ -251,7 +251,7 @@ DateTime _FileCls::lastAccessedSync() {
     return DateTimeCls->fromMillisecondsSinceEpoch(ms);
 }
 
-Future _FileCls::setLastAccessed(DateTime time) {
+Future<any> _FileCls::setLastAccessed(DateTime time) {
     int millis = time->millisecondsSinceEpoch;
     return _dispatchWithNamespace(_IOServiceCls::fileSetLastAccessed, makeList(ArrayItem, ArrayItem, ArrayItem))->then([=] (Unknown  response) {
         if (_isErrorResponse(response)) {
@@ -284,7 +284,7 @@ DateTime _FileCls::lastModifiedSync() {
     return DateTimeCls->fromMillisecondsSinceEpoch(ms);
 }
 
-Future _FileCls::setLastModified(DateTime time) {
+Future<any> _FileCls::setLastModified(DateTime time) {
     int millis = time->millisecondsSinceEpoch;
     return _dispatchWithNamespace(_IOServiceCls::fileSetLastModified, makeList(ArrayItem, ArrayItem, ArrayItem))->then([=] (Unknown  response) {
         if (_isErrorResponse(response)) {
@@ -439,7 +439,7 @@ int _FileCls::_namespacePointer() {
     return _NamespaceCls::_namespacePointer;
 }
 
-Future _FileCls::_dispatchWithNamespace(int request, List data) {
+Future<any> _FileCls::_dispatchWithNamespace(int request, List<any> data) {
     data[0] = _namespacePointer();
     return _IOServiceCls->_dispatch(request, data);
 }
@@ -620,7 +620,7 @@ Future<RandomAccessFile> _RandomAccessFileCls::writeFrom(List<int> buffer, int s
     } catch (Unknown e) {
         return FutureCls->error(e);
     };
-    List request = <dynamic>filled(4, nullptr);
+    List<any> request = <dynamic>filled(4, nullptr);
     request[0] = nullptr;
     request[1] = result->buffer;
     request[2] = result->start;
@@ -843,7 +843,7 @@ int _RandomAccessFileCls::_pointer() {
     return _ops->getPointer();
 }
 
-Future _RandomAccessFileCls::_dispatch(int request, List data, bool markClosed) {
+Future<any> _RandomAccessFileCls::_dispatch(int request, List<any> data, bool markClosed) {
     if (closed) {
         return FutureCls->error(make<FileSystemExceptionCls>(__s("File closed"), path));
     }

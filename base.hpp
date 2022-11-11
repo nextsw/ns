@@ -47,6 +47,7 @@ template<class T>
 std::shared_ptr<T> operator |=(std::shared_ptr<T> a, std::shared_ptr<T> b) { 
     return a = (a == nullptr? b : a);
 }
+using any = ObjectCls;
 
 
 #endif

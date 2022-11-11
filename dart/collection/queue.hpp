@@ -10,7 +10,7 @@ class QueueCls : public ObjectCls {
 public:
 
      QueueCls();
-    virtual void  from(Iterable elements);
+    virtual void  from(Iterable<any> elements);
     virtual void  of(Iterable<E> elements);
     template<typename S, typename T>
  static Queue<T> castFrom(Queue<S> source);

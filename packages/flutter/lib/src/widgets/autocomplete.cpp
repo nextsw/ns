@@ -13,7 +13,7 @@ RawAutocompleteCls<T>::RawAutocompleteCls(AutocompleteOptionToString<T> displayS
 
 template<typename T>
 template<typename T>
-void RawAutocompleteCls<T>::onFieldSubmitted(GlobalKey key) {
+void RawAutocompleteCls<T>::onFieldSubmitted(GlobalKey<any> key) {
     _RawAutocompleteState<T> rawAutocomplete = as<_RawAutocompleteState<T>>(key->currentState()!);
     rawAutocomplete->_onFieldSubmitted();
 }

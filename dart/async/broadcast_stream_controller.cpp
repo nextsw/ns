@@ -119,7 +119,7 @@ void _BroadcastStreamControllerCls<T>::addError(Object error, StackTrace stackTr
 }
 
 template<typename T>
-Future _BroadcastStreamControllerCls<T>::close() {
+Future<any> _BroadcastStreamControllerCls<T>::close() {
     if (isClosed()) {
         assert(_doneFuture != nullptr);
         return _doneFuture!;
@@ -128,7 +128,7 @@ Future _BroadcastStreamControllerCls<T>::close() {
         throw _addEventError();
     }
     _state |= _STATE_CLOSED;
-    Future doneFuture = _ensureDoneFuture();
+    Future<any> doneFuture = _ensureDoneFuture();
     _sendDone();
     return doneFuture;
 }
@@ -139,7 +139,7 @@ Future<void> _BroadcastStreamControllerCls<T>::done() {
 }
 
 template<typename T>
-Future _BroadcastStreamControllerCls<T>::addStream(Stream<T> stream, bool cancelOnError) {
+Future<any> _BroadcastStreamControllerCls<T>::addStream(Stream<T> stream, bool cancelOnError) {
     if (!_mayAddEvent()) {
         throw _addEventError();
     }
@@ -281,7 +281,7 @@ void _BroadcastStreamControllerCls<T>::_addError(Object error, StackTrace stackT
 template<typename T>
 void _BroadcastStreamControllerCls<T>::_close() {
     assert(_isAddingStream());
-    _AddStreamState addState = _addStreamState!;
+    _AddStreamState<any> addState = _addStreamState!;
     _addStreamState = nullptr;
     _state &= ~_STATE_ADDSTREAM;
     addState->complete();
@@ -446,13 +446,13 @@ void _AsBroadcastStreamControllerCls<T>::addError(Object error, StackTrace stack
 }
 
 template<typename T>
-Future _AsBroadcastStreamControllerCls<T>::close() {
+Future<any> _AsBroadcastStreamControllerCls<T>::close() {
     if (!isClosed() && _isFiring()) {
         _addPendingEvent(make<_DelayedDoneCls>());
         _state |= _BroadcastStreamControllerCls::_STATE_CLOSED;
         return super->done;
     }
-    Future result = super->close();
+    Future<any> result = super->close();
     assert(!_hasPending());
     return result;
 }
@@ -468,7 +468,7 @@ bool _AsBroadcastStreamControllerCls<T>::_hasPending() {
 }
 
 template<typename T>
-void _AsBroadcastStreamControllerCls<T>::_addPendingEvent(_DelayedEvent event) {
+void _AsBroadcastStreamControllerCls<T>::_addPendingEvent(_DelayedEvent<any> event) {
     (_pending ??= <T>make<_PendingEventsCls>())->add(event);
 }
 

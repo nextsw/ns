@@ -31,7 +31,7 @@ public:
 
 private:
 
-    virtual Map _toJSON();
+    virtual Map<any, any> _toJSON();
 };
 using Metric = std::shared_ptr<MetricCls>;
 
@@ -52,7 +52,7 @@ private:
     double _value;
 
 
-    virtual Map _toJSON();
+    virtual Map<any, any> _toJSON();
 
 };
 using Gauge = std::shared_ptr<GaugeCls>;
@@ -70,7 +70,7 @@ private:
     double _value;
 
 
-    virtual Map _toJSON();
+    virtual Map<any, any> _toJSON();
 
 };
 using Counter = std::shared_ptr<CounterCls>;

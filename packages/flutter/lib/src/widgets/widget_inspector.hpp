@@ -531,7 +531,7 @@ public:
 private:
     Offset _lastPointerLocation;
 
-    GlobalKey _ignorePointerKey;
+    GlobalKey<any> _ignorePointerKey;
 
     static double _edgeHitMargin;
 

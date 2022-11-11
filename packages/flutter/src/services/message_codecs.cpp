@@ -42,7 +42,7 @@ ByteData JSONMethodCodecCls::encodeMethodCall(MethodCall methodCall) {
 
 MethodCall JSONMethodCodecCls::decodeMethodCall(ByteData methodCall) {
     Object decoded = make<JSONMessageCodecCls>()->decodeMessage(methodCall);
-    if (!is<Map>(decoded)) {
+    if (!is<Map<any, any>>(decoded)) {
         throw make<FormatExceptionCls>(__s("Expected method call Map, got $decoded"));
     }
     Object method = decoded[__s("method")];
@@ -55,7 +55,7 @@ MethodCall JSONMethodCodecCls::decodeMethodCall(ByteData methodCall) {
 
 dynamic JSONMethodCodecCls::decodeEnvelope(ByteData envelope) {
     Object decoded = make<JSONMessageCodecCls>()->decodeMessage(envelope);
-    if (!is<List>(decoded)) {
+    if (!is<List<any>>(decoded)) {
         throw make<FormatExceptionCls>(__s("Expected envelope List, got $decoded"));
     }
     if (decoded->length == 1) {
@@ -169,14 +169,14 @@ void StandardMessageCodecCls::writeValue(WriteBuffer buffer, Object value) {
         writeSize(buffer, as<Float64ListCls>(value)->length());
         buffer->putFloat64List(as<Float64ListCls>(value));
     } else {
-        if (is<List>(value)) {
+        if (is<List<any>>(value)) {
         buffer->putUint8(_valueList);
         writeSize(buffer, as<ListCls>(value)->length());
         for (Object item : as<ListCls>(value)) {
             writeValue(buffer, item);
         }
     } else {
-        if (is<Map>(value)) {
+        if (is<Map<any, any>>(value)) {
         buffer->putUint8(_valueMap);
         writeSize(buffer, as<MapCls>(value)->length());
         as<MapCls>(value)->forEach([=] (Object key,Object value) {

@@ -1,6 +1,6 @@
 #include "list.hpp"
 template<typename E>
-String ListBaseCls<E>::listToString(List list) {
+String ListBaseCls<E>::listToString(List<any> list) {
     return IterableBaseCls->iterableToFullString(list, __s("["), __s("]"));
 }
 
@@ -452,7 +452,7 @@ void ListMixinCls<E>::replaceRange(int start, int end, Iterable<E> newContents) 
         addAll(newContents);
         return;
     }
-    if (!is<EfficientLengthIterable>(newContents)) {
+    if (!is<EfficientLengthIterable<any>>(newContents)) {
         as<EfficientLengthIterableCls>(newContents) = as<EfficientLengthIterableCls>(newContents)->toList();
     }
     int removeLength = end - start;
@@ -573,7 +573,7 @@ void ListMixinCls<E>::insertAll(int index, Iterable<E> iterable) {
         addAll(iterable);
         return;
     }
-    if (!is<EfficientLengthIterable>(iterable) || identical(iterable, this)) {
+    if (!is<EfficientLengthIterable<any>>(iterable) || identical(iterable, this)) {
         iterable = iterable->toList();
     }
     int insertionLength = iterable->length();
@@ -597,7 +597,7 @@ void ListMixinCls<E>::insertAll(int index, Iterable<E> iterable) {
 
 template<typename E>
 void ListMixinCls<E>::setAll(int index, Iterable<E> iterable) {
-    if (is<List>(iterable)) {
+    if (is<List<any>>(iterable)) {
         setRange(index, index + as<ListCls>(iterable)->length(), as<ListCls>(iterable));
     } else {
         for (E element : iterable) {
@@ -650,5 +650,5 @@ void ListMixinCls<E>::_filter(std::function<bool(E element)> test, bool retainMa
 
 template<typename E>
 int ListMixinCls<E>::_compareAny(dynamic a, dynamic b) {
-    return ComparableCls->compare(as<Comparable>(a), as<Comparable>(b));
+    return ComparableCls->compare(as<Comparable<any>>(a), as<Comparable<any>>(b));
 }

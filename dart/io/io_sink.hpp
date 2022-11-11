@@ -14,14 +14,14 @@ public:
 
     virtual void add(List<int> data);
     virtual void write(Object object);
-    virtual void writeAll(Iterable objects, String separator);
+    virtual void writeAll(Iterable<any> objects, String separator);
     virtual void writeln(Object object);
     virtual void writeCharCode(int charCode);
     virtual void addError(error , StackTrace stackTrace);
-    virtual Future addStream(Stream<List<int>> stream);
-    virtual Future flush();
-    virtual Future close();
-    virtual Future done();
+    virtual Future<any> addStream(Stream<List<int>> stream);
+    virtual Future<any> flush();
+    virtual Future<any> close();
+    virtual Future<any> done();
 private:
 
 };
@@ -35,22 +35,22 @@ public:
 
     virtual void addError(error , StackTrace stackTrace);
 
-    virtual Future addStream(Stream<T> stream);
+    virtual Future<any> addStream(Stream<T> stream);
 
-    virtual Future flush();
+    virtual Future<any> flush();
 
-    virtual Future close();
+    virtual Future<any> close();
 
-    virtual Future done();
+    virtual Future<any> done();
 
 private:
     StreamConsumer<T> _target;
 
-    Completer _doneCompleter;
+    Completer<any> _doneCompleter;
 
     StreamController<T> _controllerInstance;
 
-    Completer _controllerCompleter;
+    Completer<any> _controllerCompleter;
 
     bool _isClosed;
 
@@ -81,7 +81,7 @@ public:
 
     virtual void write(Object obj);
 
-    virtual void writeAll(Iterable objects, String separator);
+    virtual void writeAll(Iterable<any> objects, String separator);
 
     virtual void writeln(Object object);
 

@@ -7,13 +7,13 @@
 template<typename T>
  void  _runUserCode(std::function<T()> userCode, onSuccess , onError );
 
-void _cancelAndError(StreamSubscription subscription, _Future future, Object error, StackTrace stackTrace);
+void _cancelAndError(StreamSubscription<any> subscription, _Future<any> future, Object error, StackTrace stackTrace);
 
-void _cancelAndErrorWithReplacement(StreamSubscription subscription, _Future future, Object error, StackTrace stackTrace);
+void _cancelAndErrorWithReplacement(StreamSubscription<any> subscription, _Future<any> future, Object error, StackTrace stackTrace);
 
-std::function<void(Object error, StackTrace stackTrace)> _cancelAndErrorClosure(StreamSubscription subscription, _Future future);
+std::function<void(Object error, StackTrace stackTrace)> _cancelAndErrorClosure(StreamSubscription<any> subscription, _Future<any> future);
 
-void _cancelAndValue(StreamSubscription subscription, _Future future, value );
+void _cancelAndValue(StreamSubscription<any> subscription, _Future<any> future, value );
 
 
 template<typename S, typename T>
@@ -71,7 +71,7 @@ private:
 };
 template<typename S, typename T>
 using _ForwardingStreamSubscription = std::shared_ptr<_ForwardingStreamSubscriptionCls<S, T>>;
-void _addErrorWithReplacement(_EventSink sink, Object error, StackTrace stackTrace);
+void _addErrorWithReplacement(_EventSink<any> sink, Object error, StackTrace stackTrace);
 
 
 template<typename T>

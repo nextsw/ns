@@ -25,7 +25,7 @@ private:
 
     int _end;
 
-    Completer _closeCompleter;
+    Completer<any> _closeCompleter;
 
     bool _unsubscribed;
 
@@ -38,7 +38,7 @@ private:
 
      _FileStreamCls(String _path, int position, int _end);
 
-    virtual Future _closeFile();
+    virtual Future<any> _closeFile();
 
     virtual void _readBlock();
 
@@ -102,7 +102,7 @@ public:
 
     virtual DateTime lastAccessedSync();
 
-    virtual Future setLastAccessed(DateTime time);
+    virtual Future<any> setLastAccessed(DateTime time);
 
     virtual void setLastAccessedSync(DateTime time);
 
@@ -110,7 +110,7 @@ public:
 
     virtual DateTime lastModifiedSync();
 
-    virtual Future setLastModified(DateTime time);
+    virtual Future<any> setLastModified(DateTime time);
 
     virtual void setLastModifiedSync(DateTime time);
 
@@ -154,7 +154,7 @@ private:
 
     static int _namespacePointer();
 
-    static Future _dispatchWithNamespace(int request, List data);
+    static Future<any> _dispatchWithNamespace(int request, List<any> data);
 
     static void  _exists(_Namespace namespace, Uint8List rawPath);
     static void  _create(_Namespace namespace, Uint8List rawPath);
@@ -296,7 +296,7 @@ private:
 
     virtual int _pointer();
 
-    virtual Future _dispatch(int request, List data, bool markClosed);
+    virtual Future<any> _dispatch(int request, List<any> data, bool markClosed);
 
     virtual void _checkAvailable();
 

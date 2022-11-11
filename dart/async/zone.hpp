@@ -100,7 +100,7 @@ public:
     virtual Timer createTimer(Zone zone, Duration duration, std::function<void()> f);
     virtual Timer createPeriodicTimer(Zone zone, Duration period, std::function<void(Timer timer)> f);
     virtual void print(Zone zone, String line);
-    virtual Zone fork(Zone zone, ZoneSpecification specification, Map zoneValues);
+    virtual Zone fork(Zone zone, ZoneSpecification specification, Map<any, any> zoneValues);
 private:
 
 };

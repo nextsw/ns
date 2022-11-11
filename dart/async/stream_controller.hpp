@@ -28,9 +28,9 @@ public:
     virtual bool hasListener();
     virtual void add(T event);
     virtual void addError(Object error, StackTrace stackTrace);
-    virtual Future close();
-    virtual Future done();
-    virtual Future addStream(Stream<T> source, bool cancelOnError);
+    virtual Future<any> close();
+    virtual Future<any> done();
+    virtual Future<any> addStream(Stream<T> source, bool cancelOnError);
 private:
 
 };
@@ -43,7 +43,7 @@ public:
 
     virtual void add(T data);
     virtual void addError(Object error, StackTrace stackTrace);
-    virtual Future close();
+    virtual Future<any> close();
 private:
 
 };
@@ -99,7 +99,7 @@ public:
 
     virtual bool isPaused();
 
-    virtual Future addStream(Stream<T> source, bool cancelOnError);
+    virtual Future<any> addStream(Stream<T> source, bool cancelOnError);
 
     virtual Future<void> done();
 
@@ -107,7 +107,7 @@ public:
 
     virtual void addError(Object error, StackTrace stackTrace);
 
-    virtual Future close();
+    virtual Future<any> close();
 
 private:
     static int _STATE_INITIAL;
@@ -269,17 +269,17 @@ public:
 
     virtual void addError(Object error, StackTrace stackTrace);
 
-    virtual Future close();
+    virtual Future<any> close();
 
-    virtual Future addStream(Stream<T> source);
+    virtual Future<any> addStream(Stream<T> source);
 
-    virtual Future done();
+    virtual Future<any> done();
 
 private:
-    StreamController _target;
+    StreamController<any> _target;
 
 
-     _StreamSinkWrapperCls(StreamController _target);
+     _StreamSinkWrapperCls(StreamController<any> _target);
 };
 template<typename T>
 using _StreamSinkWrapper = std::shared_ptr<_StreamSinkWrapperCls<T>>;
@@ -287,12 +287,12 @@ using _StreamSinkWrapper = std::shared_ptr<_StreamSinkWrapperCls<T>>;
 template<typename T>
 class _AddStreamStateCls : public ObjectCls {
 public:
-    _Future addStreamFuture;
+    _Future<any> addStreamFuture;
 
-    StreamSubscription addSubscription;
+    StreamSubscription<any> addSubscription;
 
 
-    static void  makeErrorHandler(_EventSink controller);
+    static void  makeErrorHandler(_EventSink<any> controller);
 
     virtual void pause();
 

@@ -138,7 +138,7 @@ Object ActionDispatcherCls::invokeAction(Action<Intent> action, Intent intent, B
     assert(action != nullptr);
     assert(intent != nullptr);
     assert(action->isEnabled(intent), __s("Action must be enabled when calling invokeAction"));
-    if (is<ContextAction>(action)) {
+    if (is<ContextAction<any>>(action)) {
         context |= primaryFocus?->context;
         return as<ContextActionCls>(action)->invoke(intent, context);
     } else {

@@ -26,7 +26,7 @@ bool LinkedListCls<E>::remove(E entry) {
 
 template<typename E>
 bool LinkedListCls<E>::contains(Object entry) {
-    return is<LinkedListEntry>(entry) && identical(this, entry->list);
+    return is<LinkedListEntry<any>>(entry) && identical(this, entry->list);
 }
 
 template<typename E>

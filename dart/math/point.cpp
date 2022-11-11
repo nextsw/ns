@@ -14,7 +14,7 @@ String PointCls<T>::toString() {
 
 template<typename T>
 bool PointCls<T>::==(Object other) {
-    return is<Point>(other) && x == other->x && y == other->y;
+    return is<Point<any>>(other) && x == other->x && y == other->y;
 }
 
 template<typename T>

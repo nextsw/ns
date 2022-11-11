@@ -18,7 +18,7 @@ template<typename E>
 template<typename E, typename K>
  int lowerBoundBy(List<E> sortedList, std::function<K(E element)> keyOf, std::function<int(K , K )> compare, E value, int start, int end);
 
-void shuffle(List elements, int start, int end, Random random);
+void shuffle(List<any> elements, int start, int end, Random random);
 
 template<typename E>
  void reverse(List<E> elements, int start, int end);

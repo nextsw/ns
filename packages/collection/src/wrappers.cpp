@@ -174,7 +174,7 @@ DelegatingIterableCls<E>::DelegatingIterableCls(Iterable<E> base) {
 
 template<typename E>
 template<typename E>
-Iterable<E> DelegatingIterableCls<E>::typed(Iterable base) {
+Iterable<E> DelegatingIterableCls<E>::typed(Iterable<any> base) {
     return base-><E>cast();
 }
 
@@ -187,7 +187,7 @@ DelegatingListCls<E>::DelegatingListCls(List<E> base) {
 
 template<typename E>
 template<typename E>
-List<E> DelegatingListCls<E>::typed(List base) {
+List<E> DelegatingListCls<E>::typed(List<any> base) {
     return base-><E>cast();
 }
 
@@ -373,7 +373,7 @@ DelegatingSetCls<E>::DelegatingSetCls(Set<E> base) {
 
 template<typename E>
 template<typename E>
-Set<E> DelegatingSetCls<E>::typed(Set base) {
+Set<E> DelegatingSetCls<E>::typed(Set<any> base) {
     return base-><E>cast();
 }
 
@@ -468,7 +468,7 @@ DelegatingQueueCls<E>::DelegatingQueueCls(Queue<E> queue) {
 
 template<typename E>
 template<typename E>
-Queue<E> DelegatingQueueCls<E>::typed(Queue base) {
+Queue<E> DelegatingQueueCls<E>::typed(Queue<any> base) {
     return base-><E>cast();
 }
 
@@ -543,7 +543,7 @@ DelegatingMapCls<K, V>::DelegatingMapCls(Map<K, V> base) {
 
 template<typename K, typename V>
 template<typename K, typename V>
-Map<K, V> DelegatingMapCls<K, V>::typed(Map base) {
+Map<K, V> DelegatingMapCls<K, V>::typed(Map<any, any> base) {
     return base-><K, V>cast();
 }
 

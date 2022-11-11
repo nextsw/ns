@@ -47,7 +47,7 @@ public:
 
     virtual void resume();
 
-    virtual Future cancel();
+    virtual Future<any> cancel();
 
     template<typename E>
  virtual Future<E> asFuture(E futureValue);
@@ -81,7 +81,7 @@ private:
 
     int _state;
 
-    Future _cancelFuture;
+    Future<any> _cancelFuture;
 
     _PendingEvents<T> _pending;
 
@@ -133,7 +133,7 @@ private:
 
     virtual Future<void> _onCancel();
 
-    virtual void _addPending(_DelayedEvent event);
+    virtual void _addPending(_DelayedEvent<any> event);
 
     virtual void _sendData(T data);
 
@@ -159,7 +159,7 @@ private:
 
     virtual StreamSubscription<T> _createSubscription(std::function<void(T data)> onData, std::function<void ()> onError, std::function<void()> onDone, bool cancelOnError);
 
-    virtual void _onListen(StreamSubscription subscription);
+    virtual void _onListen(StreamSubscription<any> subscription);
 
 };
 template<typename T>
@@ -174,7 +174,7 @@ void _nullDoneHandler();
 template<typename T>
 class _DelayedEventCls : public ObjectCls {
 public:
-    _DelayedEvent next;
+    _DelayedEvent<any> next;
 
 
     virtual void perform(_EventDispatch<T> dispatch);
@@ -199,14 +199,14 @@ private:
 template<typename T>
 using _DelayedData = std::shared_ptr<_DelayedDataCls<T>>;
 
-class _DelayedErrorCls : public _DelayedEventCls {
+class _DelayedErrorCls : public _DelayedEventCls<any> {
 public:
     Object error;
 
     StackTrace stackTrace;
 
 
-    virtual void perform(_EventDispatch dispatch);
+    virtual void perform(_EventDispatch<any> dispatch);
 
 private:
 
@@ -217,11 +217,11 @@ using _DelayedError = std::shared_ptr<_DelayedErrorCls>;
 class _DelayedDoneCls : public ObjectCls {
 public:
 
-    virtual void perform(_EventDispatch dispatch);
+    virtual void perform(_EventDispatch<any> dispatch);
 
-    virtual _DelayedEvent next();
+    virtual _DelayedEvent<any> next();
 
-    virtual void next(_DelayedEvent _);
+    virtual void next(_DelayedEvent<any> _);
 
 private:
 
@@ -238,9 +238,9 @@ public:
 
     static int stateCanceled;
 
-    _DelayedEvent firstPendingEvent;
+    _DelayedEvent<any> firstPendingEvent;
 
-    _DelayedEvent lastPendingEvent;
+    _DelayedEvent<any> lastPendingEvent;
 
 
     virtual bool isScheduled();
@@ -251,7 +251,7 @@ public:
 
     virtual bool isEmpty();
 
-    virtual void add(_DelayedEvent event);
+    virtual void add(_DelayedEvent<any> event);
 
     virtual void handleNext(_EventDispatch<T> dispatch);
 
@@ -283,7 +283,7 @@ public:
 
     virtual void resume();
 
-    virtual Future cancel();
+    virtual Future<any> cancel();
 
     template<typename E>
  virtual Future<E> asFuture(E futureValue);
@@ -370,7 +370,7 @@ public:
 
     virtual void resume();
 
-    virtual Future cancel();
+    virtual Future<any> cancel();
 
     virtual bool isPaused();
 
@@ -378,10 +378,10 @@ public:
  virtual Future<E> asFuture(E futureValue);
 
 private:
-    _AsBroadcastStream _stream;
+    _AsBroadcastStream<any> _stream;
 
 
-     _BroadcastSubscriptionWrapperCls(_AsBroadcastStream _stream);
+     _BroadcastSubscriptionWrapperCls(_AsBroadcastStream<any> _stream);
 };
 template<typename T>
 using _BroadcastSubscriptionWrapper = std::shared_ptr<_BroadcastSubscriptionWrapperCls<T>>;
@@ -394,7 +394,7 @@ public:
 
     virtual Future<bool> moveNext();
 
-    virtual Future cancel();
+    virtual Future<any> cancel();
 
 private:
     StreamSubscription<T> _subscription;
