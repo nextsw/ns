@@ -91,7 +91,7 @@ double ColorCls::computeLuminance() {
     double R = _linearizeColorComponent(red() / 0xFF);
     double G = _linearizeColorComponent(green() / 0xFF);
     double B = _linearizeColorComponent(blue() / 0xFF);
-    return 0.2126 * RCls + 0.7152 * GCls + 0.0722 * BCls;
+    return 0.2126 * R + 0.7152 * G + 0.0722 * B;
 }
 
 Color ColorCls::lerp(Color a, Color b, double t) {

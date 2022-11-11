@@ -1,7 +1,7 @@
 #include "gesture_detector.hpp"
 template<typename T>
 bool GestureRecognizerFactoryCls<T>::_debugAssertTypeMatches(Type type) {
-    assert(type == TCls, __s("GestureRecognizerFactory of type $T was used where type $type was specified."));
+    assert(type == T, __s("GestureRecognizerFactory of type $T was used where type $type was specified."));
     return true;
 }
 

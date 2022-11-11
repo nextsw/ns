@@ -696,7 +696,7 @@ String IterablePropertyCls<T>::valueToString(TextTreeConfiguration parentConfigu
         return ifEmpty or __s("[]");
     }
     Iterable<String> formattedValues = value!->map([=] (T v) {
-    if (TCls == double && is<double>(v)) {
+    if (T == double && is<double>(v)) {
         return debugFormatDouble(v);
     } else {
         return v->toString();
@@ -947,7 +947,7 @@ String DiagnosticsPropertyCls<T>::toDescription(TextTreeConfiguration parentConf
 
 template<typename T>
 Type DiagnosticsPropertyCls<T>::propertyType() {
-    return TCls;
+    return T;
 }
 
 template<typename T>

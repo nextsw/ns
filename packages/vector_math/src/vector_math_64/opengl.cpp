@@ -89,7 +89,7 @@ Matrix4 makePlaneProjection(Vector3 planeNormal, Vector3 planePoint) {
     r = r - outer;
     Unknown scaledNormal = planeNormal->scaled(dot3(planePoint, planeNormal));
     Unknown T = make<Vector4Cls>(scaledNormal->storage()[0], scaledNormal->storage()[1], scaledNormal->storage()[2], 1.0);
-    r->setColumn(3, TCls);
+    r->setColumn(3, T);
     return r;
 }
 
@@ -101,7 +101,7 @@ Matrix4 makePlaneReflection(Vector3 planeNormal, Vector3 planePoint) {
     Unknown scale = 2.0 * planePoint->dot(planeNormal);
     Unknown scaledNormal = planeNormal->scaled(scale);
     Unknown T = make<Vector4Cls>(scaledNormal->storage()[0], scaledNormal->storage()[1], scaledNormal->storage()[2], 1.0);
-    r->setColumn(3, TCls);
+    r->setColumn(3, T);
     return r;
 }
 

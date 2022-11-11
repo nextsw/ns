@@ -146,7 +146,7 @@ List<T> _mapAvatarsToData(List<_DragAvatar<Object>> avatars) {
 
 template<typename T>
 bool _DragTargetStateCls<T>::isExpectedDataType(Object data, Type type) {
-    if (kIsWeb && ((type == intValue && TCls == double) || (type == double && TCls == intValue))) {
+    if (kIsWeb && ((type == intValue && T == double) || (type == double && T == intValue))) {
         return false;
     }
     return is<T>(data);
@@ -309,7 +309,7 @@ Iterable<_DragTargetState<Object>> _DragAvatarCls<T>::_getDragTargets(Iterable<H
         HitTestTarget target = entry->target;
         if (is<RenderMetaData>(target)) {
             dynamic metaData = as<RenderMetaDataCls>(target)->metaData;
-            if (is<_DragTargetState>(metaData) && metaData->isExpectedDataType(data, TCls)) {
+            if (is<_DragTargetState>(metaData) && metaData->isExpectedDataType(data, T)) {
                 targets->add(metaData);
             }
         }

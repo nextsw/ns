@@ -40,31 +40,31 @@ void RawSocketOptionCls::fromBool(int level, int option, bool value) {
 }
 
 int RawSocketOptionCls::levelSocket() {
-    return _getOptionValue(_RawSocketOptionsCls::SOL_SOCKETCls::index);
+    return _getOptionValue(_RawSocketOptionsCls::SOL_SOCKET::index);
 }
 
 int RawSocketOptionCls::levelIPv4() {
-    return _getOptionValue(_RawSocketOptionsCls::IPPROTO_IPCls::index);
+    return _getOptionValue(_RawSocketOptionsCls::IPPROTO_IP::index);
 }
 
 int RawSocketOptionCls::IPv4MulticastInterface() {
-    return _getOptionValue(_RawSocketOptionsCls::IP_MULTICAST_IFCls::index);
+    return _getOptionValue(_RawSocketOptionsCls::IP_MULTICAST_IF::index);
 }
 
 int RawSocketOptionCls::levelIPv6() {
-    return _getOptionValue(_RawSocketOptionsCls::IPPROTO_IPV6Cls::index);
+    return _getOptionValue(_RawSocketOptionsCls::IPPROTO_IPV6::index);
 }
 
 int RawSocketOptionCls::IPv6MulticastInterface() {
-    return _getOptionValue(_RawSocketOptionsCls::IPV6_MULTICAST_IFCls::index);
+    return _getOptionValue(_RawSocketOptionsCls::IPV6_MULTICAST_IF::index);
 }
 
 int RawSocketOptionCls::levelTcp() {
-    return _getOptionValue(_RawSocketOptionsCls::IPPROTO_TCPCls::index);
+    return _getOptionValue(_RawSocketOptionsCls::IPPROTO_TCP::index);
 }
 
 int RawSocketOptionCls::levelUdp() {
-    return _getOptionValue(_RawSocketOptionsCls::IPPROTO_UDPCls::index);
+    return _getOptionValue(_RawSocketOptionsCls::IPPROTO_UDP::index);
 }
 
 String RawSocketEventCls::toString() {

@@ -366,14 +366,14 @@ _DistinctStreamCls<T>::_DistinctStreamCls(std::function<bool(T a, T b)> equals, 
 
 template<typename T>
 StreamSubscription<T> _DistinctStreamCls<T>::_createSubscription(bool cancelOnError, std::function<void(T data)> onData, std::function<void()> onDone, std::function<void ()> onError) {
-    return <Object, T>make<_StateStreamSubscriptionCls>(this, onData, onError, onDone, cancelOnError, _SENTINELCls);
+    return <Object, T>make<_StateStreamSubscriptionCls>(this, onData, onError, onDone, cancelOnError, _SENTINEL);
 }
 
 template<typename T>
 void _DistinctStreamCls<T>::_handleData(T inputEvent, _EventSink<T> sink) {
     auto subscription = as<_StateStreamSubscription<Object, T>>(sink);
     auto previous = subscription->_subState;
-    if (identical(previous, _SENTINELCls)) {
+    if (identical(previous, _SENTINEL)) {
         subscription->_subState = inputEvent;
         sink->_add(inputEvent);
     } else {

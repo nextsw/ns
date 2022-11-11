@@ -43,7 +43,7 @@ Future<Map<Type, dynamic>> _loadAll(Iterable<LocalizationsDelegate<dynamic>> all
 
 template<typename T>
 Type LocalizationsDelegateCls<T>::type() {
-    return TCls;
+    return T;
 }
 
 template<typename T>

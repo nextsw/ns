@@ -14,7 +14,7 @@ void SortCls::sortRange(List<E> a, std::function<int(E a, E b)> compare, int fro
 
 template<typename E>
 void SortCls::_doSort(List<E> a, std::function<int(E a, E b)> compare, int left, int right) {
-    if ((right - left) <= _INSERTION_SORT_THRESHOLDCls) {
+    if ((right - left) <= _INSERTION_SORT_THRESHOLD) {
         _insertionSort(a, left, right, compare);
     } else {
         _dualPivotQuicksort(a, left, right, compare);
@@ -36,7 +36,7 @@ void SortCls::_insertionSort(List<E> a, std::function<int(E a, E b)> compare, in
 
 template<typename E>
 void SortCls::_dualPivotQuicksort(List<E> a, std::function<int(E a, E b)> compare, int left, int right) {
-    assert(right - left > _INSERTION_SORT_THRESHOLDCls);
+    assert(right - left > _INSERTION_SORT_THRESHOLD);
     int sixth = (right - left + 1) ~/ 6;
     int index1 = left + sixth;
     int index5 = right - sixth;

@@ -4,10 +4,10 @@ Float64List Matrix2Cls::storage() {
 }
 
 void Matrix2Cls::solve(Matrix2 A, Vector2 b, Vector2 x) {
-    Unknown a11 = ACls->entry(0, 0);
-    Unknown a12 = ACls->entry(0, 1);
-    Unknown a21 = ACls->entry(1, 0);
-    Unknown a22 = ACls->entry(1, 1);
+    Unknown a11 = A->entry(0, 0);
+    Unknown a12 = A->entry(0, 1);
+    Unknown a21 = A->entry(1, 0);
+    Unknown a22 = A->entry(1, 1);
     Unknown bx = b->x;
     Unknown by = b->y;
     auto det = a11 * a22 - a12 * a21;

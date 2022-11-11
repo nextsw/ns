@@ -28,7 +28,7 @@ void _StringConversionSinkAsStringSinkAdapterCls::close() {
 
 void _StringConversionSinkAsStringSinkAdapterCls::writeCharCode(int charCode) {
     _buffer->writeCharCode(charCode);
-    if (_buffer->length() > _MIN_STRING_SIZECls)     {
+    if (_buffer->length() > _MIN_STRING_SIZE)     {
         _flush();
     }
 }
@@ -42,7 +42,7 @@ void _StringConversionSinkAsStringSinkAdapterCls::write(Object o) {
 
 void _StringConversionSinkAsStringSinkAdapterCls::writeln(Object o) {
     _buffer->writeln(o);
-    if (_buffer->length() > _MIN_STRING_SIZECls)     {
+    if (_buffer->length() > _MIN_STRING_SIZE)     {
         _flush();
     }
 }

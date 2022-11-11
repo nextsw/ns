@@ -4,8 +4,8 @@ StreamSubscription<List<int>> _StdStreamCls::listen(bool cancelOnError, std::fun
 }
 
 String StdinCls::readLineSync(Encoding encoding, bool retainNewlines) {
-    CRCls = 13;
-    LFCls = 10;
+    CR = 13;
+    LF = 10;
     List<int> line = makeList();
     bool crIsNewline = PlatformCls::isWindows && (stdioType(stdin) == StdioTypeCls::terminal) && !lineMode();
     if (retainNewlines) {
@@ -16,7 +16,7 @@ String StdinCls::readLineSync(Encoding encoding, bool retainNewlines) {
                 break;
             }
             line->add(byte);
-        } while (byte != LFCls && !(byte == CRCls && crIsNewline));
+        } while (byte != LF && !(byte == CR && crIsNewline));
         if (line->isEmpty) {
             return nullptr;
         }
@@ -30,7 +30,7 @@ String StdinCls::readLineSync(Encoding encoding, bool retainNewlines) {
                 }
                 break;
             }
-            if (byte == LFCls || byte == CRCls)             {
+            if (byte == LF || byte == CR)             {
                 break;
             }
             line->add(byte);
@@ -39,17 +39,17 @@ String StdinCls::readLineSync(Encoding encoding, bool retainNewlines) {
         outer:;
         while (true) {
             int byte = readByteSync();
-            if (byte == LFCls)             {
+            if (byte == LF)             {
                 break;
             }
-            if (byte == CRCls) {
+            if (byte == CR) {
                 do {
                     byte = readByteSync();
-                    if (byte == LFCls)                     {
+                    if (byte == LF)                     {
                         break outer;
                     }
-                    line->add(CRCls);
-                } while (byte == CRCls);
+                    line->add(CR);
+                } while (byte == CR);
             }
             if ( < 0) {
                 if (line->isEmpty)                 {

@@ -105,7 +105,7 @@ FactoryCls<T>::FactoryCls(ValueGetter<T> constructor) {
 
 template<typename T>
 Type FactoryCls<T>::type() {
-    return TCls;
+    return T;
 }
 
 template<typename T>

@@ -232,8 +232,8 @@ ParentDataElement<T> ParentDataWidgetCls<T>::createElement() {
 
 template<typename T>
 bool ParentDataWidgetCls<T>::debugIsValidRenderObject(RenderObject renderObject) {
-    assert(TCls != dynamic);
-    assert(TCls != ParentDataCls);
+    assert(T != dynamic);
+    assert(T != ParentDataCls);
     return is<T>(renderObject->parentData);
 }
 
@@ -244,8 +244,8 @@ bool ParentDataWidgetCls<T>::debugCanApplyOutOfTurn() {
 
 template<typename T>
 Iterable<DiagnosticsNode> ParentDataWidgetCls<T>::_debugDescribeIncorrectParentDataType(DiagnosticsNode ownershipChain, ParentData parentData, RenderObjectWidget parentDataCreator) {
-    assert(TCls != dynamic);
-    assert(TCls != ParentDataCls);
+    assert(T != dynamic);
+    assert(T != ParentDataCls);
     assert(debugTypicalAncestorWidgetClass() != nullptr);
     String description = __s("The ParentDataWidget $this wants to apply ParentData of type $T to a RenderObject");
     List<DiagnosticsNode> list1 = make<ListCls<>>();if (parentData == nullptr) {    list1.add(ArrayItem);} else {    list1.add(ArrayItem);}list1.add(ArrayItem);if (parentDataCreator != nullptr) {    list1.add(ArrayItem);}if (ownershipChain != nullptr) {    list1.add(ArrayItem);}return list1;
@@ -1245,7 +1245,7 @@ InheritedWidget ElementCls::dependOnInheritedElement(InheritedElement ancestor, 
 template<typename T>
 T ElementCls::dependOnInheritedWidgetOfExactType(Object aspect) {
     assert(_debugCheckStateIsActiveForAncestorLookup());
-    InheritedElement ancestor = _inheritedWidgets == nullptr? nullptr : _inheritedWidgets![TCls];
+    InheritedElement ancestor = _inheritedWidgets == nullptr? nullptr : _inheritedWidgets![T];
     if (ancestor != nullptr) {
         return as<T>(dependOnInheritedElement(ancestoraspect));
     }
@@ -1256,7 +1256,7 @@ T ElementCls::dependOnInheritedWidgetOfExactType(Object aspect) {
 template<typename T>
 InheritedElement ElementCls::getElementForInheritedWidgetOfExactType() {
     assert(_debugCheckStateIsActiveForAncestorLookup());
-    InheritedElement ancestor = _inheritedWidgets == nullptr? nullptr : _inheritedWidgets![TCls];
+    InheritedElement ancestor = _inheritedWidgets == nullptr? nullptr : _inheritedWidgets![T];
     return ancestor;
 }
 
@@ -1268,7 +1268,7 @@ template<typename T>
 T ElementCls::findAncestorWidgetOfExactType() {
     assert(_debugCheckStateIsActiveForAncestorLookup());
     Element ancestor = _parent;
-    while (ancestor != nullptr && ancestor->widget()->runtimeType != TCls) {
+    while (ancestor != nullptr && ancestor->widget()->runtimeType != T) {
         ancestor = ancestor->_parent;
     }
     return as<T>(ancestor?->widget());

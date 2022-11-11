@@ -52,7 +52,7 @@ void _Utf8EncoderCls::withBufferSize(int bufferSize)
 
 _Utf8EncoderCls::_Utf8EncoderCls() {
     {
-        this->withBufferSize(_DEFAULT_BYTE_BUFFER_SIZECls);
+        this->withBufferSize(_DEFAULT_BYTE_BUFFER_SIZE);
     }
 }
 
@@ -69,8 +69,8 @@ void _Utf8EncoderCls::_writeReplacementCharacter() {
 bool _Utf8EncoderCls::_writeSurrogate(int leadingSurrogate, int nextCodeUnit) {
     if (_isTailSurrogate(nextCodeUnit)) {
         auto rune = _combineSurrogatePair(leadingSurrogate, nextCodeUnit);
-        assert(rune > _THREE_BYTE_LIMITCls);
-        assert(rune <= _FOUR_BYTE_LIMITCls);
+        assert(rune > _THREE_BYTE_LIMIT);
+        assert(rune <= _FOUR_BYTE_LIMIT);
         _buffer[_bufferIndex++] = 0xF0 | (rune >> 18);
         _buffer[_bufferIndex++] = 0x80 | ((rune >> 12) & 0x3f);
         _buffer[_bufferIndex++] = 0x80 | ((rune >> 6) & 0x3f);
@@ -89,7 +89,7 @@ int _Utf8EncoderCls::_fillBuffer(int end, int start, String str) {
     int stringIndex;
     for (stringIndex = start;  < end; stringIndex++) {
         auto codeUnit = str->codeUnitAt(stringIndex);
-        if (codeUnit <= _ONE_BYTE_LIMITCls) {
+        if (codeUnit <= _ONE_BYTE_LIMIT) {
             if (_bufferIndex >= _buffer->length)             {
                 break;
             }
@@ -112,14 +112,14 @@ int _Utf8EncoderCls::_fillBuffer(int end, int start, String str) {
             _writeReplacementCharacter();
         } else {
             auto rune = codeUnit;
-            if (rune <= _TWO_BYTE_LIMITCls) {
+            if (rune <= _TWO_BYTE_LIMIT) {
                 if (_bufferIndex + 1 >= _buffer->length)                 {
                     break;
                 }
                 _buffer[_bufferIndex++] = 0xC0 | (rune >> 6);
                 _buffer[_bufferIndex++] = 0x80 | (rune & 0x3f);
             } else {
-                assert(rune <= _THREE_BYTE_LIMITCls);
+                assert(rune <= _THREE_BYTE_LIMIT);
                 if (_bufferIndex + 2 >= _buffer->length)                 {
                     break;
                 }
@@ -209,15 +209,15 @@ Stream<String> Utf8DecoderCls::bind(Stream<List<int>> stream) {
 }
 
 bool _isLeadSurrogate(int codeUnit) {
-    return (codeUnit & _SURROGATE_TAG_MASKCls) == _LEAD_SURROGATE_MINCls;
+    return (codeUnit & _SURROGATE_TAG_MASK) == _LEAD_SURROGATE_MIN;
 }
 
 bool _isTailSurrogate(int codeUnit) {
-    return (codeUnit & _SURROGATE_TAG_MASKCls) == _TAIL_SURROGATE_MINCls;
+    return (codeUnit & _SURROGATE_TAG_MASK) == _TAIL_SURROGATE_MIN;
 }
 
 int _combineSurrogatePair(int lead, int tail) {
-    return 0x10000 + ((lead & _SURROGATE_VALUE_MASKCls) << 10) | (tail & _SURROGATE_VALUE_MASKCls);
+    return 0x10000 + ((lead & _SURROGATE_VALUE_MASK) << 10) | (tail & _SURROGATE_VALUE_MASK);
 }
 
 bool _Utf8DecoderCls::isErrorState(int state) {

@@ -16,14 +16,14 @@ SimplexNoiseCls::SimplexNoiseCls(Random r) {
 
 double SimplexNoiseCls::noise2D(double xin, double yin) {
     double n0, n1, n2;
-    Unknown s = (xin + yin) * _F2Cls;
+    Unknown s = (xin + yin) * _F2;
     Unknown i = (xin + s)->floor();
     Unknown j = (yin + s)->floor();
-    Unknown t = (i + j) * _G2Cls;
+    Unknown t = (i + j) * _G2;
     Unknown X0 = i - t;
     Unknown Y0 = j - t;
-    Unknown x0 = xin - X0Cls;
-    Unknown y0 = yin - Y0Cls;
+    Unknown x0 = xin - X0;
+    Unknown y0 = yin - Y0;
     int i1, j1;
     if (x0 > y0) {
         i1 = 1;
@@ -32,10 +32,10 @@ double SimplexNoiseCls::noise2D(double xin, double yin) {
         i1 = 0;
         j1 = 1;
     }
-    Unknown x1 = x0 - i1 + _G2Cls;
-    Unknown y1 = y0 - j1 + _G2Cls;
-    Unknown x2 = x0 - 1.0 + 2.0 * _G2Cls;
-    Unknown y2 = y0 - 1.0 + 2.0 * _G2Cls;
+    Unknown x1 = x0 - i1 + _G2;
+    Unknown y1 = y0 - j1 + _G2;
+    Unknown x2 = x0 - 1.0 + 2.0 * _G2;
+    Unknown y2 = y0 - 1.0 + 2.0 * _G2;
     Unknown ii = i & 255;
     Unknown jj = j & 255;
     Unknown gi0 = _permMod12[ii + _perm[jj]];
@@ -75,9 +75,9 @@ double SimplexNoiseCls::noise3D(double xin, double yin, double zin) {
     Unknown X0 = i - t;
     Unknown Y0 = j - t;
     Unknown Z0 = k - t;
-    Unknown x0 = xin - X0Cls;
-    Unknown y0 = yin - Y0Cls;
-    Unknown z0 = zin - Z0Cls;
+    Unknown x0 = xin - X0;
+    Unknown y0 = yin - Y0;
+    Unknown z0 = zin - Z0;
     int i1, j1, k1;
     int i2, j2, k2;
     if (x0 >= y0) {
@@ -180,20 +180,20 @@ double SimplexNoiseCls::noise3D(double xin, double yin, double zin) {
 
 double SimplexNoiseCls::noise4D(double w, double x, double y, double z) {
     double n0, n1, n2, n3, n4;
-    Unknown s = (x + y + z + w) * _F4Cls;
+    Unknown s = (x + y + z + w) * _F4;
     Unknown i = (x + s)->floor();
     Unknown j = (y + s)->floor();
     Unknown k = (z + s)->floor();
     Unknown l = (w + s)->floor();
-    Unknown t = (i + j + k + l) * _G4Cls;
+    Unknown t = (i + j + k + l) * _G4;
     Unknown X0 = i - t;
     Unknown Y0 = j - t;
     Unknown Z0 = k - t;
     Unknown W0 = l - t;
-    Unknown x0 = x - X0Cls;
-    Unknown y0 = y - Y0Cls;
-    Unknown z0 = z - Z0Cls;
-    Unknown w0 = w - W0Cls;
+    Unknown x0 = x - X0;
+    Unknown y0 = y - Y0;
+    Unknown z0 = z - Z0;
+    Unknown w0 = w - W0;
     auto rankx = 0;
     auto ranky = 0;
     auto rankz = 0;
@@ -243,22 +243,22 @@ double SimplexNoiseCls::noise4D(double w, double x, double y, double z) {
     j3 = ranky >= 1? 1 : 0;
     k3 = rankz >= 1? 1 : 0;
     l3 = rankw >= 1? 1 : 0;
-    Unknown x1 = x0 - i1 + _G4Cls;
-    Unknown y1 = y0 - j1 + _G4Cls;
-    Unknown z1 = z0 - k1 + _G4Cls;
-    Unknown w1 = w0 - l1 + _G4Cls;
-    Unknown x2 = x0 - i2 + 2.0 * _G4Cls;
-    Unknown y2 = y0 - j2 + 2.0 * _G4Cls;
-    Unknown z2 = z0 - k2 + 2.0 * _G4Cls;
-    Unknown w2 = w0 - l2 + 2.0 * _G4Cls;
-    Unknown x3 = x0 - i3 + 3.0 * _G4Cls;
-    Unknown y3 = y0 - j3 + 3.0 * _G4Cls;
-    Unknown z3 = z0 - k3 + 3.0 * _G4Cls;
-    Unknown w3 = w0 - l3 + 3.0 * _G4Cls;
-    Unknown x4 = x0 - 1.0 + 4.0 * _G4Cls;
-    Unknown y4 = y0 - 1.0 + 4.0 * _G4Cls;
-    Unknown z4 = z0 - 1.0 + 4.0 * _G4Cls;
-    Unknown w4 = w0 - 1.0 + 4.0 * _G4Cls;
+    Unknown x1 = x0 - i1 + _G4;
+    Unknown y1 = y0 - j1 + _G4;
+    Unknown z1 = z0 - k1 + _G4;
+    Unknown w1 = w0 - l1 + _G4;
+    Unknown x2 = x0 - i2 + 2.0 * _G4;
+    Unknown y2 = y0 - j2 + 2.0 * _G4;
+    Unknown z2 = z0 - k2 + 2.0 * _G4;
+    Unknown w2 = w0 - l2 + 2.0 * _G4;
+    Unknown x3 = x0 - i3 + 3.0 * _G4;
+    Unknown y3 = y0 - j3 + 3.0 * _G4;
+    Unknown z3 = z0 - k3 + 3.0 * _G4;
+    Unknown w3 = w0 - l3 + 3.0 * _G4;
+    Unknown x4 = x0 - 1.0 + 4.0 * _G4;
+    Unknown y4 = y0 - 1.0 + 4.0 * _G4;
+    Unknown z4 = z0 - 1.0 + 4.0 * _G4;
+    Unknown w4 = w0 - 1.0 + 4.0 * _G4;
     Unknown ii = i & 255;
     Unknown jj = j & 255;
     Unknown kk = k & 255;

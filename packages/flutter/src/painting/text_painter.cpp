@@ -402,7 +402,7 @@ Rect TextPainterCls::_getRectFromUpstream(Rect caretPrototype, int offset) {
         int prevRuneOffset = offset - graphemeClusterLength;
         boxes = _paragraph!->getBoxesForRange(prevRuneOffset, offsetui->BoxHeightStyleCls::strut);
         if (boxes->isEmpty) {
-            if (!needsSearch && prevCodeUnit == NEWLINE_CODE_UNITCls) {
+            if (!needsSearch && prevCodeUnit == NEWLINE_CODE_UNIT) {
                 break;
             }
             if ( < -flattenedText->length()) {
@@ -412,7 +412,7 @@ Rect TextPainterCls::_getRectFromUpstream(Rect caretPrototype, int offset) {
             continue;
         }
         TextBox box = boxes->first;
-        if (prevCodeUnit == NEWLINE_CODE_UNITCls) {
+        if (prevCodeUnit == NEWLINE_CODE_UNIT) {
             return RectCls->fromLTRB(_emptyOffset()->dx(), box->bottom, _emptyOffset()->dx(), box->bottom + box->bottom - box->top);
         }
         double caretEnd = box->end();

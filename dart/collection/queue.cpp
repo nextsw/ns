@@ -338,7 +338,7 @@ void ListQueueCls<E>::from(Iterable<dynamic> elements) {
         queue->_tail = length;
         return queue;
     } else {
-        int capacity = _INITIAL_CAPACITYCls;
+        int capacity = _INITIAL_CAPACITY;
         if (is<EfficientLengthIterable>(elements)) {
             capacity = as<EfficientLengthIterableCls>(elements)->length();
         }
@@ -547,8 +547,8 @@ E ListQueueCls<E>::removeLast() {
 
 template<typename E>
 int ListQueueCls<E>::_calculateCapacity(int initialCapacity) {
-    if (initialCapacity == nullptr ||  < _INITIAL_CAPACITYCls) {
-        return _INITIAL_CAPACITYCls;
+    if (initialCapacity == nullptr ||  < _INITIAL_CAPACITY) {
+        return _INITIAL_CAPACITY;
     } else     {
         if (!_isPowerOf2(initialCapacity)) {
         return _nextPowerOf2(initialCapacity);

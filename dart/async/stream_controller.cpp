@@ -36,12 +36,12 @@ StreamSink<T> _StreamControllerCls<T>::sink() {
 
 template<typename T>
 bool _StreamControllerCls<T>::hasListener() {
-    return (_state & _STATE_SUBSCRIBEDCls) != 0;
+    return (_state & _STATE_SUBSCRIBED) != 0;
 }
 
 template<typename T>
 bool _StreamControllerCls<T>::isClosed() {
-    return (_state & _STATE_CLOSEDCls) != 0;
+    return (_state & _STATE_CLOSED) != 0;
 }
 
 template<typename T>
@@ -59,7 +59,7 @@ Future _StreamControllerCls<T>::addStream(bool cancelOnError, Stream<T> source) 
     }
     _StreamControllerAddStreamState<T> addState = <T>make<_StreamControllerAddStreamStateCls>(this, _varData, source, cancelOnError or false);
     _varData = addState;
-    _state = _STATE_ADDSTREAMCls;
+    _state = _STATE_ADDSTREAM;
     return addState->addStreamFuture;
 }
 
@@ -106,22 +106,22 @@ Future _StreamControllerCls<T>::close() {
 
 template<typename T>
 bool _StreamControllerCls<T>::_isCanceled() {
-    return (_state & _STATE_CANCELEDCls) != 0;
+    return (_state & _STATE_CANCELED) != 0;
 }
 
 template<typename T>
 bool _StreamControllerCls<T>::_isInitialState() {
-    return (_state & _STATE_SUBSCRIPTION_MASKCls) == _STATE_INITIALCls;
+    return (_state & _STATE_SUBSCRIPTION_MASK) == _STATE_INITIAL;
 }
 
 template<typename T>
 bool _StreamControllerCls<T>::_isAddingStream() {
-    return (_state & _STATE_ADDSTREAMCls) != 0;
+    return (_state & _STATE_ADDSTREAM) != 0;
 }
 
 template<typename T>
 bool _StreamControllerCls<T>::_mayAddEvent() {
-    return ( < _STATE_CLOSEDCls);
+    return ( < _STATE_CLOSED);
 }
 
 template<typename T>
@@ -179,7 +179,7 @@ Future<void> _StreamControllerCls<T>::_ensureDoneFuture() {
 
 template<typename T>
 void _StreamControllerCls<T>::_closeUnchecked() {
-    _state = _STATE_CLOSEDCls;
+    _state = _STATE_CLOSED;
     if (hasListener()) {
         _sendDone();
     } else     {
@@ -216,7 +216,7 @@ void _StreamControllerCls<T>::_close() {
     assert(_isAddingStream());
     _StreamControllerAddStreamState<T> addState = as<dynamic>(_varData);
     _varData = addState->varData;
-    _state = ~_STATE_ADDSTREAMCls;
+    _state = ~_STATE_ADDSTREAM;
     addState->complete();
 }
 
@@ -227,7 +227,7 @@ StreamSubscription<T> _StreamControllerCls<T>::_subscribe(bool cancelOnError, st
     }
     _ControllerSubscription<T> subscription = <T>make<_ControllerSubscriptionCls>(this, onData, onError, onDone, cancelOnError);
     _PendingEvents<T> pendingEvents = _pendingEvents();
-    _state = _STATE_SUBSCRIBEDCls;
+    _state = _STATE_SUBSCRIBED;
     if (_isAddingStream()) {
         _StreamControllerAddStreamState<T> addState = as<dynamic>(_varData);
         addState->varData = subscription;
@@ -250,7 +250,7 @@ Future<void> _StreamControllerCls<T>::_recordCancel(StreamSubscription<T> subscr
         result = addState->cancel();
     }
     _varData = nullptr;
-    _state = (_state & ~(_STATE_SUBSCRIBEDCls | _STATE_ADDSTREAMCls)) | _STATE_CANCELEDCls;
+    _state = (_state & ~(_STATE_SUBSCRIBED | _STATE_ADDSTREAM)) | _STATE_CANCELED;
     auto onCancel = this->onCancel;
     if (onCancel != nullptr) {
         if (result == nullptr) {

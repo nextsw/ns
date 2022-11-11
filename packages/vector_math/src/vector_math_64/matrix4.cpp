@@ -4,12 +4,12 @@ Float64List Matrix4Cls::storage() {
 }
 
 void Matrix4Cls::solve2(Matrix4 A, Vector2 b, Vector2 x) {
-    Unknown a11 = ACls->entry(0, 0);
-    Unknown a12 = ACls->entry(0, 1);
-    Unknown a21 = ACls->entry(1, 0);
-    Unknown a22 = ACls->entry(1, 1);
-    Unknown bx = b->x - ACls::_m4storage[8];
-    Unknown by = b->y - ACls::_m4storage[9];
+    Unknown a11 = A->entry(0, 0);
+    Unknown a12 = A->entry(0, 1);
+    Unknown a21 = A->entry(1, 0);
+    Unknown a22 = A->entry(1, 1);
+    Unknown bx = b->x - A::_m4storage[8];
+    Unknown by = b->y - A::_m4storage[9];
     auto det = a11 * a22 - a12 * a21;
     if (det != 0.0) {
         det = 1.0 / det;
@@ -18,18 +18,18 @@ void Matrix4Cls::solve2(Matrix4 A, Vector2 b, Vector2 x) {
 }
 
 void Matrix4Cls::solve3(Matrix4 A, Vector3 b, Vector3 x) {
-    Unknown A0x = ACls->entry(0, 0);
-    Unknown A0y = ACls->entry(1, 0);
-    Unknown A0z = ACls->entry(2, 0);
-    Unknown A1x = ACls->entry(0, 1);
-    Unknown A1y = ACls->entry(1, 1);
-    Unknown A1z = ACls->entry(2, 1);
-    Unknown A2x = ACls->entry(0, 2);
-    Unknown A2y = ACls->entry(1, 2);
-    Unknown A2z = ACls->entry(2, 2);
-    Unknown bx = b->x - ACls::_m4storage[12];
-    Unknown by = b->y - ACls::_m4storage[13];
-    Unknown bz = b->z - ACls::_m4storage[14];
+    Unknown A0x = A->entry(0, 0);
+    Unknown A0y = A->entry(1, 0);
+    Unknown A0z = A->entry(2, 0);
+    Unknown A1x = A->entry(0, 1);
+    Unknown A1y = A->entry(1, 1);
+    Unknown A1z = A->entry(2, 1);
+    Unknown A2x = A->entry(0, 2);
+    Unknown A2y = A->entry(1, 2);
+    Unknown A2z = A->entry(2, 2);
+    Unknown bx = b->x - A::_m4storage[12];
+    Unknown by = b->y - A::_m4storage[13];
+    Unknown bz = b->z - A::_m4storage[14];
     double rx, ry, rz;
     double det;
     rx = A1yCls * A2zCls - A1zCls * A2yCls;
@@ -52,22 +52,22 @@ void Matrix4Cls::solve3(Matrix4 A, Vector3 b, Vector3 x) {
 }
 
 void Matrix4Cls::solve(Matrix4 A, Vector4 b, Vector4 x) {
-    Unknown a00 = ACls::_m4storage[0];
-    Unknown a01 = ACls::_m4storage[1];
-    Unknown a02 = ACls::_m4storage[2];
-    Unknown a03 = ACls::_m4storage[3];
-    Unknown a10 = ACls::_m4storage[4];
-    Unknown a11 = ACls::_m4storage[5];
-    Unknown a12 = ACls::_m4storage[6];
-    Unknown a13 = ACls::_m4storage[7];
-    Unknown a20 = ACls::_m4storage[8];
-    Unknown a21 = ACls::_m4storage[9];
-    Unknown a22 = ACls::_m4storage[10];
-    Unknown a23 = ACls::_m4storage[11];
-    Unknown a30 = ACls::_m4storage[12];
-    Unknown a31 = ACls::_m4storage[13];
-    Unknown a32 = ACls::_m4storage[14];
-    Unknown a33 = ACls::_m4storage[15];
+    Unknown a00 = A::_m4storage[0];
+    Unknown a01 = A::_m4storage[1];
+    Unknown a02 = A::_m4storage[2];
+    Unknown a03 = A::_m4storage[3];
+    Unknown a10 = A::_m4storage[4];
+    Unknown a11 = A::_m4storage[5];
+    Unknown a12 = A::_m4storage[6];
+    Unknown a13 = A::_m4storage[7];
+    Unknown a20 = A::_m4storage[8];
+    Unknown a21 = A::_m4storage[9];
+    Unknown a22 = A::_m4storage[10];
+    Unknown a23 = A::_m4storage[11];
+    Unknown a30 = A::_m4storage[12];
+    Unknown a31 = A::_m4storage[13];
+    Unknown a32 = A::_m4storage[14];
+    Unknown a33 = A::_m4storage[15];
     Unknown b00 = a00 * a11 - a01 * a10;
     Unknown b01 = a00 * a12 - a02 * a10;
     Unknown b02 = a00 * a13 - a03 * a10;
@@ -590,15 +590,15 @@ void Matrix4Cls::rotate(double angle, Vector3 axis) {
     Unknown c = math->cos(angle);
     Unknown s = math->sin(angle);
     Unknown C = 1.0 - c;
-    Unknown m11 = x * x * CCls + c;
-    Unknown m12 = x * y * CCls - z * s;
-    Unknown m13 = x * z * CCls + y * s;
-    Unknown m21 = y * x * CCls + z * s;
-    Unknown m22 = y * y * CCls + c;
-    Unknown m23 = y * z * CCls - x * s;
-    Unknown m31 = z * x * CCls - y * s;
-    Unknown m32 = z * y * CCls + x * s;
-    Unknown m33 = z * z * CCls + c;
+    Unknown m11 = x * x * C + c;
+    Unknown m12 = x * y * C - z * s;
+    Unknown m13 = x * z * C + y * s;
+    Unknown m21 = y * x * C + z * s;
+    Unknown m22 = y * y * C + c;
+    Unknown m23 = y * z * C - x * s;
+    Unknown m31 = z * x * C - y * s;
+    Unknown m32 = z * y * C + x * s;
+    Unknown m33 = z * z * C + c;
     Unknown t1 = _m4storage[0] * m11 + _m4storage[4] * m21 + _m4storage[8] * m31;
     Unknown t2 = _m4storage[1] * m11 + _m4storage[5] * m21 + _m4storage[9] * m31;
     Unknown t3 = _m4storage[2] * m11 + _m4storage[6] * m21 + _m4storage[10] * m31;

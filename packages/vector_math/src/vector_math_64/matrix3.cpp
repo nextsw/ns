@@ -4,12 +4,12 @@ Float64List Matrix3Cls::storage() {
 }
 
 void Matrix3Cls::solve2(Matrix3 A, Vector2 b, Vector2 x) {
-    Unknown a11 = ACls->entry(0, 0);
-    Unknown a12 = ACls->entry(0, 1);
-    Unknown a21 = ACls->entry(1, 0);
-    Unknown a22 = ACls->entry(1, 1);
-    Unknown bx = b->x - ACls::storage()[6];
-    Unknown by = b->y - ACls::storage()[7];
+    Unknown a11 = A->entry(0, 0);
+    Unknown a12 = A->entry(0, 1);
+    Unknown a21 = A->entry(1, 0);
+    Unknown a22 = A->entry(1, 1);
+    Unknown bx = b->x - A::storage()[6];
+    Unknown by = b->y - A::storage()[7];
     auto det = a11 * a22 - a12 * a21;
     if (det != 0.0) {
         det = 1.0 / det;
@@ -18,15 +18,15 @@ void Matrix3Cls::solve2(Matrix3 A, Vector2 b, Vector2 x) {
 }
 
 void Matrix3Cls::solve(Matrix3 A, Vector3 b, Vector3 x) {
-    Unknown A0x = ACls->entry(0, 0);
-    Unknown A0y = ACls->entry(1, 0);
-    Unknown A0z = ACls->entry(2, 0);
-    Unknown A1x = ACls->entry(0, 1);
-    Unknown A1y = ACls->entry(1, 1);
-    Unknown A1z = ACls->entry(2, 1);
-    Unknown A2x = ACls->entry(0, 2);
-    Unknown A2y = ACls->entry(1, 2);
-    Unknown A2z = ACls->entry(2, 2);
+    Unknown A0x = A->entry(0, 0);
+    Unknown A0y = A->entry(1, 0);
+    Unknown A0z = A->entry(2, 0);
+    Unknown A1x = A->entry(0, 1);
+    Unknown A1y = A->entry(1, 1);
+    Unknown A1z = A->entry(2, 1);
+    Unknown A2x = A->entry(0, 2);
+    Unknown A2y = A->entry(1, 2);
+    Unknown A2z = A->entry(2, 2);
     double rx, ry, rz;
     double det;
     rx = A1yCls * A2zCls - A1zCls * A2yCls;

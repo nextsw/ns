@@ -24,7 +24,7 @@ int ValueKeyCls<T>::hashCode() {
 
 template<typename T>
 String ValueKeyCls<T>::toString() {
-    String valueString = TCls == StringCls? __s("<'$value'>") : __s("<$value>");
+    String valueString = T == StringCls? __s("<'$value'>") : __s("<$value>");
     if (runtimeType == <ValueKey<T>>make<_TypeLiteralCls>()->type) {
         return __s("[$valueString]");
     }
@@ -33,5 +33,5 @@ String ValueKeyCls<T>::toString() {
 
 template<typename T>
 Type _TypeLiteralCls<T>::type() {
-    return TCls;
+    return T;
 }

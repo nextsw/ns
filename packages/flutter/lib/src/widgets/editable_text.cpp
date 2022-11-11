@@ -1639,13 +1639,13 @@ bool _UpdateTextSelectionActionCls<T>::isActionEnabled() {
 template<typename T>
 bool _UpdateTextSelectionActionCls<T>::_isAtWordwrapUpstream(TextPosition position) {
     TextPosition end = make<TextPositionCls>(state->renderEditable()->getLineAtOffset(position)->end, TextAffinityCls::upstream);
-    return end == position && end->offset != state->textEditingValue()->text->length() && state->textEditingValue()->text->codeUnitAt(position->offset) != NEWLINE_CODE_UNITCls;
+    return end == position && end->offset != state->textEditingValue()->text->length() && state->textEditingValue()->text->codeUnitAt(position->offset) != NEWLINE_CODE_UNIT;
 }
 
 template<typename T>
 bool _UpdateTextSelectionActionCls<T>::_isAtWordwrapDownstream(TextPosition position) {
     TextPosition start = make<TextPositionCls>(state->renderEditable()->getLineAtOffset(position)->start);
-    return start == position && start->offset != 0 && state->textEditingValue()->text->codeUnitAt(position->offset - 1) != NEWLINE_CODE_UNITCls;
+    return start == position && start->offset != 0 && state->textEditingValue()->text->codeUnitAt(position->offset - 1) != NEWLINE_CODE_UNIT;
 }
 
 Object _ExtendSelectionOrCaretPositionActionCls::invoke(BuildContext context, ExtendSelectionToNextWordBoundaryOrCaretLocationIntent intent) {

@@ -1577,7 +1577,7 @@ bool AnnotatedRegionLayerCls<T>::findAnnotations(Offset localPosition, bool only
     if (size != nullptr && !(offset & size!)->contains(localPosition)) {
         return isAbsorbed;
     }
-    if (TCls == SCls) {
+    if (T == S) {
         isAbsorbed = isAbsorbed || opaque;
         Object untypedValue = value;
         S typedValue = as<S>(untypedValue);

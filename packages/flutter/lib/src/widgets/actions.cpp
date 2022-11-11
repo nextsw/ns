@@ -20,7 +20,7 @@ Action<T> ActionCls<T>::callingAction() {
 
 template<typename T>
 Type ActionCls<T>::intentType() {
-    return TCls;
+    return T;
 }
 
 template<typename T>
@@ -171,7 +171,7 @@ Action<T> ActionsCls::find(BuildContext context, T intent) {
     Action<T> action = maybeFind(contextintent);
     assert([=] () {
         if (action == nullptr) {
-            Type type = intent?->runtimeType or TCls;
+            Type type = intent?->runtimeType or T;
             throw make<FlutterErrorCls>(__s("Unable to find an action for a $type in an $Actions widget in the given context.\n$Actions.find() was called on a context that doesn't contain an $Actions widget with a mapping for the given intent type.\nThe context used was:\n  $context\nThe intent type requested was:\n  $type"));
         }
         return true;
@@ -182,7 +182,7 @@ Action<T> ActionsCls::find(BuildContext context, T intent) {
 template<typename T>
 Action<T> ActionsCls::maybeFind(BuildContext context, T intent) {
     Action<T> action;
-    Type type = intent?->runtimeType or TCls;
+    Type type = intent?->runtimeType or T;
     assert(type != IntentCls, __s("The type passed to "find" resolved to "Intent": either a non-Intent generic type argument or an example intent derived from Intent must be specified. Intent may be used as the generic type as long as the optional "intent" argument is passed."));
     _visitActionsAncestors(context, [=] (InheritedElement element) {
         _ActionsMarker actions = as<_ActionsMarker>(element->widget);
@@ -279,7 +279,7 @@ ActionDispatcher ActionsCls::_findDispatcher(BuildContext context) {
 template<typename T>
 Action<T> ActionsCls::_maybeFindWithoutDependingOn(BuildContext context, T intent) {
     Action<T> action;
-    Type type = intent?->runtimeType or TCls;
+    Type type = intent?->runtimeType or T;
     assert(type != IntentCls, __s("The type passed to "find" resolved to "Intent": either a non-Intent generic type argument or an example intent derived from Intent must be specified. Intent may be used as the generic type as long as the optional "intent" argument is passed."));
     _visitActionsAncestors(context, [=] (InheritedElement element) {
         _ActionsMarker actions = as<_ActionsMarker>(element->widget);
@@ -295,7 +295,7 @@ Action<T> ActionsCls::_maybeFindWithoutDependingOn(BuildContext context, T inten
 
 template<typename T>
 Action<T> ActionsCls::_castAction(_ActionsMarker actionsMarker, T intent) {
-    Action<Intent> mappedAction = actionsMarker->actions[intent?->runtimeType or TCls];
+    Action<Intent> mappedAction = actionsMarker->actions[intent?->runtimeType or T];
     if (is<Action<T>>(mappedAction)) {
         return as<ActionCls>(mappedAction);
     } else {

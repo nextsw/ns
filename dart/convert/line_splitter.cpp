@@ -6,11 +6,11 @@ Iterable<String> LineSplitterCls::split(int end, String lines, int start) {
     for (;  < end; i++) {
         auto previousChar = charValue;
         charValue = lines->codeUnitAt(i);
-        if (charValue != _CRCls) {
-            if (charValue != _LFCls)             {
+        if (charValue != _CR) {
+            if (charValue != _LF)             {
                 continue;
             }
-            if (previousChar == _CRCls) {
+            if (previousChar == _CR) {
                 sliceStart = i + 1;
                 continue;
             }
@@ -33,11 +33,11 @@ List<String> LineSplitterCls::convert(String data) {
     for (;  < end; i++) {
         auto previousChar = charValue;
         charValue = data->codeUnitAt(i);
-        if (charValue != _CRCls) {
-            if (charValue != _LFCls)             {
+        if (charValue != _CR) {
+            if (charValue != _LF)             {
                 continue;
             }
-            if (previousChar == _CRCls) {
+            if (previousChar == _CR) {
                 sliceStart = i + 1;
                 continue;
             }
@@ -78,7 +78,7 @@ void _LineSplitterSinkCls::addSlice(String chunk, int end, bool isLast, int star
         _carry = nullptr;
     } else     {
         if (_skipLeadingLF) {
-        if (chunk->codeUnitAt(start) == _LFCls) {
+        if (chunk->codeUnitAt(start) == _LF) {
             start = 1;
         }
         _skipLeadingLF = false;
@@ -104,11 +104,11 @@ void _LineSplitterSinkCls::_addLines(int end, String lines, int start) {
     for (;  < end; i++) {
         auto previousChar = charValue;
         charValue = lines->codeUnitAt(i);
-        if (charValue != _CRCls) {
-            if (charValue != _LFCls)             {
+        if (charValue != _CR) {
+            if (charValue != _LF)             {
                 continue;
             }
-            if (previousChar == _CRCls) {
+            if (previousChar == _CR) {
                 sliceStart = i + 1;
                 continue;
             }
@@ -119,7 +119,7 @@ void _LineSplitterSinkCls::_addLines(int end, String lines, int start) {
     if ( < end) {
         _carry = lines->substring(sliceStart, end);
     } else {
-        _skipLeadingLF = (charValue == _CRCls);
+        _skipLeadingLF = (charValue == _CR);
     }
 }
 
