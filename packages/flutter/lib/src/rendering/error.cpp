@@ -37,7 +37,7 @@ Size RenderErrorBoxCls::computeDryLayout(BoxConstraints constraints) {
 
 void RenderErrorBoxCls::paint(PaintingContext context, Offset offset) {
     try {
-            auto _c1 = make<PaintCls>();    _c1.color = backgroundColor;context->canvas->drawRect(offset & size, _c1);
+            auto _c1 = make<PaintCls>();    _c1.color = backgroundColor;context->canvas()->drawRect(offset & size, _c1);
         if (_paragraph != nullptr) {
             double width = size->width;
             double left = 0.0;
@@ -47,10 +47,10 @@ void RenderErrorBoxCls::paint(PaintingContext context, Offset offset) {
                 left = padding->left;
             }
             _paragraph!->layout(ui->make<ParagraphConstraintsCls>(width));
-            if (size->height > padding->top + _paragraph!->height + padding->bottom) {
+            if (size->height > padding->top + _paragraph!->height() + padding->bottom) {
                 top = padding->top;
             }
-            context->canvas->drawParagraph(_paragraph!, offset + make<OffsetCls>(left, top));
+            context->canvas()->drawParagraph(_paragraph!, offset + make<OffsetCls>(left, top));
         }
     } catch (Unknown error) {
     };

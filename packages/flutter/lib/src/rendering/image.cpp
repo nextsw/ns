@@ -247,12 +247,12 @@ double RenderImageCls::computeMinIntrinsicWidth(double height) {
     if (_width == nullptr && _height == nullptr) {
         return 0.0;
     }
-    return _sizeForConstraints(BoxConstraintsCls->tightForFinite(height))->width;
+    return _sizeForConstraints(BoxConstraintsCls->tightForFinite(height))->width();
 }
 
 double RenderImageCls::computeMaxIntrinsicWidth(double height) {
     assert(height >= 0.0);
-    return _sizeForConstraints(BoxConstraintsCls->tightForFinite(height))->width;
+    return _sizeForConstraints(BoxConstraintsCls->tightForFinite(height))->width();
 }
 
 double RenderImageCls::computeMinIntrinsicHeight(double width) {
@@ -260,12 +260,12 @@ double RenderImageCls::computeMinIntrinsicHeight(double width) {
     if (_width == nullptr && _height == nullptr) {
         return 0.0;
     }
-    return _sizeForConstraints(BoxConstraintsCls->tightForFinite(width))->height;
+    return _sizeForConstraints(BoxConstraintsCls->tightForFinite(width))->height();
 }
 
 double RenderImageCls::computeMaxIntrinsicHeight(double width) {
     assert(width >= 0.0);
-    return _sizeForConstraints(BoxConstraintsCls->tightForFinite(width))->height;
+    return _sizeForConstraints(BoxConstraintsCls->tightForFinite(width))->height();
 }
 
 bool RenderImageCls::hitTestSelf(Offset position) {
@@ -297,7 +297,7 @@ void RenderImageCls::paint(PaintingContext context, Offset offset) {
     _resolve();
     assert(_resolvedAlignment != nullptr);
     assert(_flipHorizontally != nullptr);
-    paintImage(context->canvas, offset & size, _image!, debugImageLabel, _scale, _opacity?->value or 1.0, _colorFilter, _fit, _resolvedAlignment!, _centerSlice, _repeat, _flipHorizontally!, invertColors, _filterQuality, _isAntiAlias);
+    paintImage(context->canvas(), offset & size, _image!, debugImageLabel, _scale, _opacity?->value() or 1.0, _colorFilter, _fit, _resolvedAlignment!, _centerSlice, _repeat, _flipHorizontally!, invertColors(), _filterQuality, _isAntiAlias);
 }
 
 void RenderImageCls::dispose() {
@@ -308,29 +308,29 @@ void RenderImageCls::dispose() {
 
 void RenderImageCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<Image>make<DiagnosticsPropertyCls>(__s("image"), image));
-    properties->add(make<DoublePropertyCls>(__s("width"), widthnullptr));
-    properties->add(make<DoublePropertyCls>(__s("height"), heightnullptr));
-    properties->add(make<DoublePropertyCls>(__s("scale"), scale1.0));
-    properties->add(make<ColorPropertyCls>(__s("color"), colornullptr));
-    properties->add(<Animation<double>>make<DiagnosticsPropertyCls>(__s("opacity"), opacitynullptr));
-    properties->add(<BlendMode>make<EnumPropertyCls>(__s("colorBlendMode"), colorBlendModenullptr));
-    properties->add(<BoxFit>make<EnumPropertyCls>(__s("fit"), fitnullptr));
-    properties->add(<AlignmentGeometry>make<DiagnosticsPropertyCls>(__s("alignment"), alignmentnullptr));
-    properties->add(<ImageRepeat>make<EnumPropertyCls>(__s("repeat"), repeatImageRepeatCls::noRepeat));
-    properties->add(<Rect>make<DiagnosticsPropertyCls>(__s("centerSlice"), centerSlicenullptr));
-    properties->add(make<FlagPropertyCls>(__s("matchTextDirection")matchTextDirection, __s("match text direction")));
-    properties->add(<TextDirection>make<EnumPropertyCls>(__s("textDirection"), textDirectionnullptr));
-    properties->add(<bool>make<DiagnosticsPropertyCls>(__s("invertColors"), invertColors));
-    properties->add(<FilterQuality>make<EnumPropertyCls>(__s("filterQuality"), filterQuality));
+    properties->add(<Image>make<DiagnosticsPropertyCls>(__s("image"), image()));
+    properties->add(make<DoublePropertyCls>(__s("width"), width()nullptr));
+    properties->add(make<DoublePropertyCls>(__s("height"), height()nullptr));
+    properties->add(make<DoublePropertyCls>(__s("scale"), scale()1.0));
+    properties->add(make<ColorPropertyCls>(__s("color"), color()nullptr));
+    properties->add(<Animation<double>>make<DiagnosticsPropertyCls>(__s("opacity"), opacity()nullptr));
+    properties->add(<BlendMode>make<EnumPropertyCls>(__s("colorBlendMode"), colorBlendMode()nullptr));
+    properties->add(<BoxFit>make<EnumPropertyCls>(__s("fit"), fit()nullptr));
+    properties->add(<AlignmentGeometry>make<DiagnosticsPropertyCls>(__s("alignment"), alignment()nullptr));
+    properties->add(<ImageRepeat>make<EnumPropertyCls>(__s("repeat"), repeat()ImageRepeatCls::noRepeat));
+    properties->add(<Rect>make<DiagnosticsPropertyCls>(__s("centerSlice"), centerSlice()nullptr));
+    properties->add(make<FlagPropertyCls>(__s("matchTextDirection")matchTextDirection(), __s("match text direction")));
+    properties->add(<TextDirection>make<EnumPropertyCls>(__s("textDirection"), textDirection()nullptr));
+    properties->add(<bool>make<DiagnosticsPropertyCls>(__s("invertColors"), invertColors()));
+    properties->add(<FilterQuality>make<EnumPropertyCls>(__s("filterQuality"), filterQuality()));
 }
 
 void RenderImageCls::_resolve() {
     if (_resolvedAlignment != nullptr) {
         return;
     }
-    _resolvedAlignment = alignment->resolve(textDirection);
-    _flipHorizontally = matchTextDirection && textDirection == TextDirectionCls::rtl;
+    _resolvedAlignment = alignment()->resolve(textDirection());
+    _flipHorizontally = matchTextDirection() && textDirection() == TextDirectionCls::rtl;
 }
 
 void RenderImageCls::_markNeedResolution() {

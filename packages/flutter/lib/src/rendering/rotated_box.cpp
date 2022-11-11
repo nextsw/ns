@@ -55,17 +55,17 @@ Size RenderRotatedBoxCls::computeDryLayout(BoxConstraints constraints) {
         return constraints->smallest();
     }
     Size childSize = child!->getDryLayout(_isVertical()? constraints->flipped() : constraints);
-    return _isVertical()? make<SizeCls>(childSize->height, childSize->width) : childSize;
+    return _isVertical()? make<SizeCls>(childSize->height(), childSize->width()) : childSize;
 }
 
 void RenderRotatedBoxCls::performLayout() {
     _paintTransform = nullptr;
     if (child != nullptr) {
-        child!->layout(_isVertical()? constraints->flipped() : constraintstrue);
+        child!->layout(_isVertical()? constraints->flipped : constraintstrue);
         size = _isVertical()? make<SizeCls>(child!->size->height, child!->size->width) : child!->size;
-            auto _c1 = Matrix4Cls->identity();    _c1.auto _c2 = translate(size->width / 2.0, size->height / 2.0);    _c2.auto _c3 = rotateZ(_kQuarterTurnsInRadians * (quarterTurns % 4));    _c3.translate(-child!->size->width / 2.0, -child!->size->height / 2.0);    _c3;    _c2;_paintTransform = _c1;
+            auto _c1 = Matrix4Cls->identity();    _c1.auto _c2 = translate(size->width / 2.0, size->height / 2.0);    _c2.auto _c3 = rotateZ(_kQuarterTurnsInRadians * (quarterTurns() % 4));    _c3.translate(-child!->size->width / 2.0, -child!->size->height / 2.0);    _c3;    _c2;_paintTransform = _c1;
     } else {
-        size = constraints->smallest();
+        size = constraints->smallest;
     }
 }
 
@@ -81,14 +81,14 @@ bool RenderRotatedBoxCls::hitTestChildren(Offset position, BoxHitTestResult resu
 
 void RenderRotatedBoxCls::paint(PaintingContext context, Offset offset) {
     if (child != nullptr) {
-        _transformLayer->layer = context->pushTransform(needsCompositing, offset, _paintTransform!, _paintChild_transformLayer->layer);
+        _transformLayer->layer() = context->pushTransform(needsCompositing, offset, _paintTransform!, _paintChild_transformLayer->layer());
     } else {
-        _transformLayer->layer = nullptr;
+        _transformLayer->layer() = nullptr;
     }
 }
 
 void RenderRotatedBoxCls::dispose() {
-    _transformLayer->layer = nullptr;
+    _transformLayer->layer() = nullptr;
     super->dispose();
 }
 
@@ -100,7 +100,7 @@ void RenderRotatedBoxCls::applyPaintTransform(RenderBox child, Matrix4 transform
 }
 
 bool RenderRotatedBoxCls::_isVertical() {
-    return quarterTurns->isOdd();
+    return quarterTurns()->isOdd();
 }
 
 void RenderRotatedBoxCls::_paintChild(PaintingContext context, Offset offset) {

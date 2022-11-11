@@ -105,7 +105,7 @@ Matrix4 _SelectionContainerStateCls::getTransformTo(RenderObject ancestor) {
 }
 
 Size _SelectionContainerStateCls::size() {
-    return (as<RenderBox>(context->findRenderObject()!))->size;
+    return (as<RenderBox>(context->findRenderObject()!))->size();
 }
 
 void _SelectionContainerStateCls::dispose() {
@@ -149,5 +149,5 @@ Matrix4 SelectionContainerDelegateCls::getTransformTo(RenderObject ancestor) {
 Size SelectionContainerDelegateCls::containerSize() {
     assert(_selectionContainerContext?->findRenderObject() != nullptr, __s("containerSize cannot be called before SelectionContainer is laid out."));
     RenderBox box = as<RenderBox>(_selectionContainerContext!->findRenderObject()!);
-    return box->size;
+    return box->size();
 }

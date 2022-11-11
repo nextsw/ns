@@ -6,7 +6,7 @@ StreamSubscription<Uint8List> _FileStreamCls::listen(bool cancelOnError, void on
         _unsubscribed = true;
         return _closeFile();
     });
-    return _controller->stream->listen(onDataonError, onDone, cancelOnError);
+    return _controller->stream()->listen(onDataonError, onDone, cancelOnError);
 }
 
 _FileStreamCls::_FileStreamCls(int _end, String _path, int position) {
@@ -58,7 +58,7 @@ void _FileStreamCls::_readBlock() {
         if (block->length < readBytes || (_end != nullptr && _position == _end)) {
             _atEnd = true;
         }
-        if (!_atEnd && !_controller->isPaused) {
+        if (!_atEnd && !_controller->isPaused()) {
             _readBlock();
         }
         _controller->add(block);
@@ -151,7 +151,7 @@ Future<bool> _FileCls::exists() {
 
 bool _FileCls::existsSync() {
     auto result = _exists(_NamespaceCls::_namespace, _rawPath);
-    throwIfError(result, __s("Cannot check existence of file"), path);
+    throwIfError(result, __s("Cannot check existence of file"), path());
     return result;
 }
 
@@ -176,7 +176,7 @@ void _FileCls::createSync(bool recursive) {
         parent->createSync(true);
     }
     auto result = _create(_NamespaceCls::_namespace, _rawPath);
-    throwIfError(result, __s("Cannot create file"), path);
+    throwIfError(result, __s("Cannot create file"), path());
 }
 
 Future<File> _FileCls::rename(String newPath) {
@@ -190,7 +190,7 @@ Future<File> _FileCls::rename(String newPath) {
 
 File _FileCls::renameSync(String newPath) {
     auto result = _rename(_NamespaceCls::_namespace, _rawPath, newPath);
-    throwIfError(result, __s("Cannot rename file to '$newPath'"), path);
+    throwIfError(result, __s("Cannot rename file to '$newPath'"), path());
     return make<FileCls>(newPath);
 }
 
@@ -205,7 +205,7 @@ Future<File> _FileCls::copy(String newPath) {
 
 File _FileCls::copySync(String newPath) {
     auto result = _copy(_NamespaceCls::_namespace, _rawPath, newPath);
-    throwIfError(result, __s("Cannot copy file to '$newPath'"), path);
+    throwIfError(result, __s("Cannot copy file to '$newPath'"), path());
     return make<FileCls>(newPath);
 }
 
@@ -217,7 +217,7 @@ Future<RandomAccessFile> _FileCls::open(FileMode mode) {
         if (_isErrorResponse(response)) {
             ;
         }
-        return make<_RandomAccessFileCls>(response, path);
+        return make<_RandomAccessFileCls>(response, path());
     });
 }
 
@@ -232,7 +232,7 @@ Future<int> _FileCls::length() {
 
 int _FileCls::lengthSync() {
     auto result = _lengthFromPath(_NamespaceCls::_namespace, _rawPath);
-    throwIfError(result, __s("Cannot retrieve length of file"), path);
+    throwIfError(result, __s("Cannot retrieve length of file"), path());
     return result;
 }
 
@@ -247,7 +247,7 @@ Future<DateTime> _FileCls::lastAccessed() {
 
 DateTime _FileCls::lastAccessedSync() {
     auto ms = _lastAccessed(_NamespaceCls::_namespace, _rawPath);
-    throwIfError(ms, __s("Cannot retrieve access time"), path);
+    throwIfError(ms, __s("Cannot retrieve access time"), path());
     return DateTimeCls->fromMillisecondsSinceEpoch(ms);
 }
 
@@ -280,7 +280,7 @@ Future<DateTime> _FileCls::lastModified() {
 
 DateTime _FileCls::lastModifiedSync() {
     auto ms = _lastModified(_NamespaceCls::_namespace, _rawPath);
-    throwIfError(ms, __s("Cannot retrieve modification time"), path);
+    throwIfError(ms, __s("Cannot retrieve modification time"), path());
     return DateTimeCls->fromMillisecondsSinceEpoch(ms);
 }
 
@@ -307,12 +307,12 @@ RandomAccessFile _FileCls::openSync(FileMode mode) {
         ;
     }
     auto id = _open(_NamespaceCls::_namespace, _rawPath, mode->_mode);
-    throwIfError(id, __s("Cannot open file"), path);
+    throwIfError(id, __s("Cannot open file"), path());
     return make<_RandomAccessFileCls>(id, _path);
 }
 
 Stream<List<int>> _FileCls::openRead(int end, int start) {
-    return make<_FileStreamCls>(path, start, end);
+    return make<_FileStreamCls>(path(), start, end);
 }
 
 IOSink _FileCls::openWrite(Encoding encoding, FileMode mode) {
@@ -383,7 +383,7 @@ List<String> _FileCls::readAsLinesSync(Encoding encoding) {
 
 Future<File> _FileCls::writeAsBytes(List<int> bytes, bool flush, FileMode mode) {
     return open(mode)->then([=] (Unknown  file) {
-        return file->writeFrom(bytes, 0, bytes->length)-><File>then([=] () {
+        return file->writeFrom(bytes, 0, bytes->length())-><File>then([=] () {
             if (flush)             {
                 return file->flush()->then([=] ()             {
                 this;
@@ -397,7 +397,7 @@ Future<File> _FileCls::writeAsBytes(List<int> bytes, bool flush, FileMode mode) 
 void _FileCls::writeAsBytesSync(List<int> bytes, bool flush, FileMode mode) {
     RandomAccessFile opened = openSync(mode);
     try {
-        opened->writeFromSync(bytes, 0, bytes->length);
+        opened->writeFromSync(bytes, 0, bytes->length());
         if (flush)         {
             opened->flushSync();
         }
@@ -446,7 +446,7 @@ Future _FileCls::_dispatchWithNamespace(List data, int request) {
 
 Future<File> _FileCls::_delete(bool recursive) {
     if (recursive) {
-        return make<DirectoryCls>(path)->delete(true)->then([=] ()         {
+        return make<DirectoryCls>(path())->delete(true)->then([=] ()         {
             this;
         });
     }
@@ -463,7 +463,7 @@ void _FileCls::_deleteSync(bool recursive) {
         return DirectoryCls->fromRawPath(_rawPath)->deleteSync(true);
     }
     auto result = _deleteNative(_NamespaceCls::_namespace, _rawPath);
-    throwIfError(result, __s("Cannot delete file"), path);
+    throwIfError(result, __s("Cannot delete file"), path());
 }
 
 RandomAccessFile _FileCls::_openStdioSync(int fd) {
@@ -552,7 +552,7 @@ Uint8List _RandomAccessFileCls::readSync(int bytes) {
 
 Future<int> _RandomAccessFileCls::readInto(List<int> buffer, int end, int start) {
     ArgumentErrorCls->checkNotNull(buffer, __s("buffer"));
-    end = RangeErrorCls->checkValidRange(start, end, buffer->length);
+    end = RangeErrorCls->checkValidRange(start, end, buffer->length());
     if (end == start) {
         return FutureCls->value(0);
     }
@@ -572,7 +572,7 @@ Future<int> _RandomAccessFileCls::readInto(List<int> buffer, int end, int start)
 int _RandomAccessFileCls::readIntoSync(List<int> buffer, int end, int start) {
     ArgumentErrorCls->checkNotNull(buffer, __s("buffer"));
     _checkAvailable();
-    end = RangeErrorCls->checkValidRange(start, end, buffer->length);
+    end = RangeErrorCls->checkValidRange(start, end, buffer->length());
     if (end == start) {
         return 0;
     }
@@ -609,7 +609,7 @@ int _RandomAccessFileCls::writeByteSync(int value) {
 Future<RandomAccessFile> _RandomAccessFileCls::writeFrom(List<int> buffer, int end, int start) {
     ArgumentErrorCls->checkNotNull(buffer, __s("buffer"));
     ArgumentErrorCls->checkNotNull(start, __s("start"));
-    end = RangeErrorCls->checkValidRange(start, end, buffer->length);
+    end = RangeErrorCls->checkValidRange(start, end, buffer->length());
     if (end == start) {
         return FutureCls->value(this);
     }
@@ -637,7 +637,7 @@ void _RandomAccessFileCls::writeFromSync(List<int> buffer, int end, int start) {
     _checkAvailable();
     ArgumentErrorCls->checkNotNull(buffer, __s("buffer"));
     ArgumentErrorCls->checkNotNull(start, __s("start"));
-    end = RangeErrorCls->checkValidRange(start, end, buffer->length);
+    end = RangeErrorCls->checkValidRange(start, end, buffer->length());
     if (end == start) {
         return;
     }
@@ -807,7 +807,7 @@ void _RandomAccessFileCls::unlockSync(int end, int start) {
 }
 
 int _RandomAccessFileCls::fd() {
-    return _ops->fd;
+    return _ops->fd();
 }
 
 _RandomAccessFileCls::_RandomAccessFileCls(String path, int pointer) {

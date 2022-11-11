@@ -155,11 +155,11 @@ template<typename S> void RestorationMixinCls<S>::registerForRestoration(Restora
     assert(property != nullptr);
     assert(restorationId != nullptr);
     assert(property->_restorationId == nullptr || (_debugDoingRestore() && property->_restorationId == restorationId), __s("Property is already registered under ${property._restorationId}."));
-    assert(_debugDoingRestore() || !_properties->keys->map([=] (RestorableProperty<Object> r)     {
+    assert(_debugDoingRestore() || !_properties->keys()->map([=] (RestorableProperty<Object> r)     {
         r->_restorationId;
     })->contains(restorationId), __s(""$restorationId" is already registered to another property."));
-    bool hasSerializedValue = bucket?->contains(restorationId) or false;
-    Object initialValue = hasSerializedValue? property->fromPrimitives(bucket!-><Object>read(restorationId)) : property->createDefaultValue();
+    bool hasSerializedValue = bucket()?->contains(restorationId) or false;
+    Object initialValue = hasSerializedValue? property->fromPrimitives(bucket()!-><Object>read(restorationId)) : property->createDefaultValue();
     if (!property->isRegistered()) {
         property->_register(restorationId, this);
         InlineMethod;
@@ -168,7 +168,7 @@ template<typename S> void RestorationMixinCls<S>::registerForRestoration(Restora
     }
     assert(property->_restorationId == restorationId && property->_owner == this && _properties->containsKey(property));
     property->initWithValue(initialValue);
-    if (!hasSerializedValue && property->enabled && bucket != nullptr) {
+    if (!hasSerializedValue && property->enabled() && bucket() != nullptr) {
         _updateProperty(property);
     }
     assert([=] () {
@@ -185,7 +185,7 @@ template<typename S> void RestorationMixinCls<S>::unregisterFromRestoration(Rest
 }
 
 template<typename S> void RestorationMixinCls<S>::didUpdateRestorationId() {
-    if (_currentParent == nullptr || _bucket?->restorationId == restorationId || restorePending()) {
+    if (_currentParent == nullptr || _bucket?->restorationId() == restorationId() || restorePending()) {
         return;
     }
     RestorationBucket oldBucket = _bucket;
@@ -207,7 +207,7 @@ template<typename S> bool RestorationMixinCls<S>::restorePending() {
     if (_firstRestorePending) {
         return true;
     }
-    if (restorationId == nullptr) {
+    if (restorationId() == nullptr) {
         return false;
     }
     RestorationBucket potentialNewParent = RestorationScopeCls->of(context);
@@ -246,7 +246,7 @@ template<typename S> bool RestorationMixinCls<S>::_debugDoingRestore() {
 
 template<typename S> void RestorationMixinCls<S>::_doRestore(RestorationBucket oldBucket) {
     assert([=] () {
-        _debugPropertiesWaitingForReregistration = _properties->keys->toList();
+        _debugPropertiesWaitingForReregistration = _properties->keys()->toList();
         return true;
     }());
     restoreState(oldBucket, _firstRestorePending);
@@ -261,15 +261,15 @@ template<typename S> void RestorationMixinCls<S>::_doRestore(RestorationBucket o
 }
 
 template<typename S> bool RestorationMixinCls<S>::_updateBucketIfNecessary(RestorationBucket parent, bool restorePending) {
-    if (restorationId == nullptr || parent == nullptr) {
+    if (restorationId() == nullptr || parent == nullptr) {
         bool didReplace = _setNewBucketIfNecessary(nullptr, restorePending);
         assert(_bucket == nullptr);
         return didReplace;
     }
-    assert(restorationId != nullptr);
+    assert(restorationId() != nullptr);
     assert(parent != nullptr);
     if (restorePending || _bucket == nullptr) {
-        RestorationBucket newBucket = parent->claimChild(restorationId!this);
+        RestorationBucket newBucket = parent->claimChild(restorationId()!this);
         assert(newBucket != nullptr);
         bool didReplace = _setNewBucketIfNecessary(newBucket, restorePending);
         assert(_bucket == newBucket);
@@ -277,7 +277,7 @@ template<typename S> bool RestorationMixinCls<S>::_updateBucketIfNecessary(Resto
     }
     assert(_bucket != nullptr);
     assert(!restorePending);
-    _bucket!->rename(restorationId!);
+    _bucket!->rename(restorationId()!);
     parent->adoptChild(_bucket!);
     return false;
 }
@@ -290,7 +290,7 @@ template<typename S> bool RestorationMixinCls<S>::_setNewBucketIfNecessary(Resto
     _bucket = newBucket;
     if (!restorePending) {
         if (_bucket != nullptr) {
-            _properties->keys->forEach(_updateProperty);
+            _properties->keys()->forEach(_updateProperty);
         }
         didToggleBucket(oldBucket);
     }
@@ -298,7 +298,7 @@ template<typename S> bool RestorationMixinCls<S>::_setNewBucketIfNecessary(Resto
 }
 
 template<typename S> void RestorationMixinCls<S>::_updateProperty(RestorableProperty<Object> property) {
-    if (property->enabled) {
+    if (property->enabled()) {
         _bucket?->write(property->_restorationId!, property->toPrimitives());
     } else {
         _bucket?-><Object>remove(property->_restorationId!);

@@ -127,8 +127,8 @@ void LayerCls::engineLayer(EngineLayer value) {
     _engineLayer?->dispose();
     _engineLayer = value;
     if (!alwaysNeedsAddToScene()) {
-        if (parent != nullptr && !parent!->alwaysNeedsAddToScene) {
-            parent!->markNeedsAddToScene();
+        if (parent() != nullptr && !parent()!->alwaysNeedsAddToScene) {
+            parent()!->markNeedsAddToScene();
         }
     }
 }
@@ -170,7 +170,7 @@ void LayerCls::adoptChild(Layer child) {
 
 void LayerCls::remove() {
     assert(!_debugMutationsLocked);
-    parent?->_removeChild(this);
+    parent()?->_removeChild(this);
 }
 
 bool LayerCls::findAnnotationstemplate<typename S> (Offset localPosition, bool onlyFirst, AnnotationResult<S> result) {
@@ -180,7 +180,7 @@ bool LayerCls::findAnnotationstemplate<typename S> (Offset localPosition, bool o
 S LayerCls::findtemplate<typename S> (Offset localPosition) {
     AnnotationResult<S> result = <S>make<AnnotationResultCls>();
     <S>findAnnotations(result, localPositiontrue);
-    return result->entries->isEmpty()? nullptr : result->entries->first->annotation;
+    return result->entries()->isEmpty()? nullptr : result->entries()->first()->annotation;
 }
 
 AnnotationResult<S> LayerCls::findAllAnnotationstemplate<typename S> (Offset localPosition) {
@@ -195,7 +195,7 @@ String LayerCls::toStringShort() {
 
 void LayerCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<Object>make<DiagnosticsPropertyCls>(__s("owner"), ownerparent != nullptr? DiagnosticLevelCls::hidden : DiagnosticLevelCls::info, nullptr));
+    properties->add(<Object>make<DiagnosticsPropertyCls>(__s("owner"), ownerparent() != nullptr? DiagnosticLevelCls::hidden : DiagnosticLevelCls::info, nullptr));
     properties->add(<Object>make<DiagnosticsPropertyCls>(__s("creator"), debugCreatornullptr, DiagnosticLevelCls::debug));
     if (_engineLayer != nullptr) {
         properties->add(<String>make<DiagnosticsPropertyCls>(__s("engine layer"), describeIdentity(_engineLayer)));
@@ -207,13 +207,13 @@ void LayerCls::_updateSubtreeCompositionObserverCount(int delta) {
     assert(delta != 0);
     _compositionCallbackCount = delta;
     assert(_compositionCallbackCount >= 0);
-    if (parent != nullptr) {
-        parent!->_updateSubtreeCompositionObserverCount(delta);
+    if (parent() != nullptr) {
+        parent()!->_updateSubtreeCompositionObserverCount(delta);
     }
 }
 
 void LayerCls::_fireCompositionCallbacks(bool includeChildren) {
-    for (VoidCallback callback : <VoidCallback>of(_callbacks->values)) {
+    for (VoidCallback callback : <VoidCallback>of(_callbacks->values())) {
         callback();
     }
 }
@@ -299,13 +299,13 @@ void PictureLayerCls::willChangeHint(bool value) {
 }
 
 void PictureLayerCls::dispose() {
-    picture = nullptr;
+    picture() = nullptr;
     super->dispose();
 }
 
 void PictureLayerCls::addToScene(SceneBuilder builder) {
-    assert(picture != nullptr);
-    builder->addPicture(OffsetCls::zero, picture!isComplexHint, willChangeHint);
+    assert(picture() != nullptr);
+    builder->addPicture(OffsetCls::zero, picture()!isComplexHint(), willChangeHint());
 }
 
 void PictureLayerCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
@@ -327,7 +327,7 @@ TextureLayerCls::TextureLayerCls(FilterQuality filterQuality, bool freeze, Rect 
 }
 
 void TextureLayerCls::addToScene(SceneBuilder builder) {
-    builder->addTexture(textureIdrect->topLeft, rect->width, rect->height, freeze, filterQuality);
+    builder->addTexture(textureIdrect->topLeft(), rect->width(), rect->height(), freeze, filterQuality);
 }
 
 bool TextureLayerCls::findAnnotationstemplate<typename S> (Offset localPosition, bool onlyFirst, AnnotationResult<S> result) {
@@ -342,7 +342,7 @@ PlatformViewLayerCls::PlatformViewLayerCls(Rect rect, int viewId) {
 }
 
 void PlatformViewLayerCls::addToScene(SceneBuilder builder) {
-    builder->addPlatformView(viewIdrect->topLeft, rect->width, rect->height);
+    builder->addPlatformView(viewIdrect->topLeft(), rect->width(), rect->height());
 }
 
 PerformanceOverlayLayerCls::PerformanceOverlayLayerCls(bool checkerboardOffscreenLayers, bool checkerboardRasterCacheImages, int optionsMask, Rect overlayRect, int rasterizerThreshold) {
@@ -364,7 +364,7 @@ void PerformanceOverlayLayerCls::overlayRect(Rect value) {
 
 void PerformanceOverlayLayerCls::addToScene(SceneBuilder builder) {
     assert(optionsMask != nullptr);
-    builder->addPerformanceOverlay(optionsMask, overlayRect);
+    builder->addPerformanceOverlay(optionsMask, overlayRect());
     builder->setRasterizerTracingThreshold(rasterizerThreshold);
     builder->setCheckerboardRasterCacheImages(checkerboardRasterCacheImages);
     builder->setCheckerboardOffscreenLayers(checkerboardOffscreenLayers);
@@ -414,12 +414,12 @@ void ContainerLayerCls::updateSubtreeNeedsAddToScene() {
 }
 
 bool ContainerLayerCls::findAnnotationstemplate<typename S> (Offset localPosition, bool onlyFirst, AnnotationResult<S> result) {
-    for (; child != nullptr; child = child->previousSibling()) {
+    for (; child != nullptr; child = child->previousSibling) {
         bool isAbsorbed = child-><S>findAnnotations(result, localPositiononlyFirst);
         if (isAbsorbed) {
             return true;
         }
-        if (onlyFirst && result->entries->isNotEmpty()) {
+        if (onlyFirst && result->entries()->isNotEmpty()) {
             return isAbsorbed;
         }
     }
@@ -452,15 +452,15 @@ void ContainerLayerCls::append(Layer child) {
     assert(child != this);
     assert(child != firstChild());
     assert(child != lastChild());
-    assert(child->parent == nullptr);
+    assert(child->parent() == nullptr);
     assert(!child->attached);
     assert(child->nextSibling() == nullptr);
     assert(child->previousSibling() == nullptr);
-    assert(child->_parentHandle->layer == nullptr);
+    assert(child->_parentHandle->layer() == nullptr);
     assert([=] () {
         Layer node = this;
-        while (node->parent != nullptr) {
-            node = node->parent!;
+        while (node->parent() != nullptr) {
+            node = node->parent()!;
         }
         assert(node != child);
         return true;
@@ -472,7 +472,7 @@ void ContainerLayerCls::append(Layer child) {
     }
     _lastChild = child;
     _firstChild = child;
-    child->_parentHandle->layer = child;
+    child->_parentHandle->layer() = child;
     assert(child->attached == attached);
 }
 
@@ -486,7 +486,7 @@ void ContainerLayerCls::removeAllChildren() {
         assert(child->attached == attached);
         dropChild(child);
         assert(child->_parentHandle != nullptr);
-        child->_parentHandle->layer = nullptr;
+        child->_parentHandle->layer() = nullptr;
         child = next;
     }
     _firstChild = nullptr;
@@ -577,11 +577,11 @@ bool ContainerLayerCls::_debugUltimateNextSiblingOf(Layer child, Layer equals) {
 }
 
 void ContainerLayerCls::_removeChild(Layer child) {
-    assert(child->parent == this);
+    assert(child->parent() == this);
     assert(child->attached == attached);
     assert(_debugUltimatePreviousSiblingOf(childfirstChild()));
     assert(_debugUltimateNextSiblingOf(childlastChild()));
-    assert(child->_parentHandle->layer != nullptr);
+    assert(child->_parentHandle->layer() != nullptr);
     if (child->_previousSibling == nullptr) {
         assert(_firstChild == child);
         _firstChild = child->_nextSibling;
@@ -602,7 +602,7 @@ void ContainerLayerCls::_removeChild(Layer child) {
     child->_previousSibling = nullptr;
     child->_nextSibling = nullptr;
     dropChild(child);
-    child->_parentHandle->layer = nullptr;
+    child->_parentHandle->layer() = nullptr;
     assert(!child->attached);
 }
 
@@ -624,36 +624,36 @@ void OffsetLayerCls::offset(Offset value) {
 }
 
 bool OffsetLayerCls::findAnnotationstemplate<typename S> (Offset localPosition, bool onlyFirst, AnnotationResult<S> result) {
-    return super-><S>findAnnotations(result, localPosition - offsetonlyFirst);
+    return super-><S>findAnnotations(result, localPosition - offset()onlyFirst);
 }
 
 void OffsetLayerCls::applyTransform(Layer child, Matrix4 transform) {
     assert(child != nullptr);
     assert(transform != nullptr);
-    transform->translate(offset->dx, offset->dy);
+    transform->translate(offset()->dx(), offset()->dy());
 }
 
 void OffsetLayerCls::addToScene(SceneBuilder builder) {
-    engineLayer = builder->pushOffset(offset->dx, offset->dyas<OffsetEngineLayer>(_engineLayer));
+    engineLayer = builder->pushOffset(offset()->dx(), offset()->dy()as<OffsetEngineLayer>(_engineLayer));
     addChildrenToScene(builder);
     builder->pop();
 }
 
 void OffsetLayerCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<Offset>make<DiagnosticsPropertyCls>(__s("offset"), offset));
+    properties->add(<Offset>make<DiagnosticsPropertyCls>(__s("offset"), offset()));
 }
 
 Future<Image> OffsetLayerCls::toImage(Rect bounds, double pixelRatio) {
     assert(bounds != nullptr);
     assert(pixelRatio != nullptr);
     SceneBuilder builder = ui->make<SceneBuilderCls>();
-    Matrix4 transform = Matrix4Cls->translationValues((-bounds->left - offset->dx) * pixelRatio, (-bounds->top - offset->dy) * pixelRatio, 0.0);
+    Matrix4 transform = Matrix4Cls->translationValues((-bounds->left - offset()->dx()) * pixelRatio, (-bounds->top - offset()->dy()) * pixelRatio, 0.0);
     transform->scale(pixelRatio, pixelRatio);
     builder->pushTransform(transform->storage());
     Scene scene = buildScene(builder);
     try {
-        return await scene->toImage((pixelRatio * bounds->width)->ceil(), (pixelRatio * bounds->height)->ceil());
+        return await scene->toImage((pixelRatio * bounds->width())->ceil(), (pixelRatio * bounds->height())->ceil());
     } finally {
         scene->dispose();
     };
@@ -680,7 +680,7 @@ void ClipRectLayerCls::clipRect(Rect value) {
 }
 
 Rect ClipRectLayerCls::describeClipBounds() {
-    return clipRect;
+    return clipRect();
 }
 
 Clip ClipRectLayerCls::clipBehavior() {
@@ -697,22 +697,22 @@ void ClipRectLayerCls::clipBehavior(Clip value) {
 }
 
 bool ClipRectLayerCls::findAnnotationstemplate<typename S> (Offset localPosition, bool onlyFirst, AnnotationResult<S> result) {
-    if (!clipRect!->contains(localPosition)) {
+    if (!clipRect()!->contains(localPosition)) {
         return false;
     }
     return super-><S>findAnnotations(result, localPositiononlyFirst);
 }
 
 void ClipRectLayerCls::addToScene(SceneBuilder builder) {
-    assert(clipRect != nullptr);
-    assert(clipBehavior != nullptr);
+    assert(clipRect() != nullptr);
+    assert(clipBehavior() != nullptr);
     bool enabled = true;
     assert([=] () {
         enabled = !debugDisableClipLayers;
         return true;
     }());
     if (enabled) {
-        engineLayer = builder->pushClipRect(clipRect!clipBehavior, as<ClipRectEngineLayer>(_engineLayer));
+        engineLayer = builder->pushClipRect(clipRect()!clipBehavior(), as<ClipRectEngineLayer>(_engineLayer));
     } else {
         engineLayer = nullptr;
     }
@@ -724,8 +724,8 @@ void ClipRectLayerCls::addToScene(SceneBuilder builder) {
 
 void ClipRectLayerCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<Rect>make<DiagnosticsPropertyCls>(__s("clipRect"), clipRect));
-    properties->add(<Clip>make<DiagnosticsPropertyCls>(__s("clipBehavior"), clipBehavior));
+    properties->add(<Rect>make<DiagnosticsPropertyCls>(__s("clipRect"), clipRect()));
+    properties->add(<Clip>make<DiagnosticsPropertyCls>(__s("clipBehavior"), clipBehavior()));
 }
 
 ClipRRectLayerCls::ClipRRectLayerCls(Clip clipBehavior, RRect clipRRect) {
@@ -749,7 +749,7 @@ void ClipRRectLayerCls::clipRRect(RRect value) {
 }
 
 Rect ClipRRectLayerCls::describeClipBounds() {
-    return clipRRect?->outerRect;
+    return clipRRect()?->outerRect();
 }
 
 Clip ClipRRectLayerCls::clipBehavior() {
@@ -766,22 +766,22 @@ void ClipRRectLayerCls::clipBehavior(Clip value) {
 }
 
 bool ClipRRectLayerCls::findAnnotationstemplate<typename S> (Offset localPosition, bool onlyFirst, AnnotationResult<S> result) {
-    if (!clipRRect!->contains(localPosition)) {
+    if (!clipRRect()!->contains(localPosition)) {
         return false;
     }
     return super-><S>findAnnotations(result, localPositiononlyFirst);
 }
 
 void ClipRRectLayerCls::addToScene(SceneBuilder builder) {
-    assert(clipRRect != nullptr);
-    assert(clipBehavior != nullptr);
+    assert(clipRRect() != nullptr);
+    assert(clipBehavior() != nullptr);
     bool enabled = true;
     assert([=] () {
         enabled = !debugDisableClipLayers;
         return true;
     }());
     if (enabled) {
-        engineLayer = builder->pushClipRRect(clipRRect!clipBehavior, as<ClipRRectEngineLayer>(_engineLayer));
+        engineLayer = builder->pushClipRRect(clipRRect()!clipBehavior(), as<ClipRRectEngineLayer>(_engineLayer));
     } else {
         engineLayer = nullptr;
     }
@@ -793,8 +793,8 @@ void ClipRRectLayerCls::addToScene(SceneBuilder builder) {
 
 void ClipRRectLayerCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<RRect>make<DiagnosticsPropertyCls>(__s("clipRRect"), clipRRect));
-    properties->add(<Clip>make<DiagnosticsPropertyCls>(__s("clipBehavior"), clipBehavior));
+    properties->add(<RRect>make<DiagnosticsPropertyCls>(__s("clipRRect"), clipRRect()));
+    properties->add(<Clip>make<DiagnosticsPropertyCls>(__s("clipBehavior"), clipBehavior()));
 }
 
 ClipPathLayerCls::ClipPathLayerCls(Clip clipBehavior, Path clipPath) {
@@ -818,7 +818,7 @@ void ClipPathLayerCls::clipPath(Path value) {
 }
 
 Rect ClipPathLayerCls::describeClipBounds() {
-    return clipPath?->getBounds();
+    return clipPath()?->getBounds();
 }
 
 Clip ClipPathLayerCls::clipBehavior() {
@@ -835,22 +835,22 @@ void ClipPathLayerCls::clipBehavior(Clip value) {
 }
 
 bool ClipPathLayerCls::findAnnotationstemplate<typename S> (Offset localPosition, bool onlyFirst, AnnotationResult<S> result) {
-    if (!clipPath!->contains(localPosition)) {
+    if (!clipPath()!->contains(localPosition)) {
         return false;
     }
     return super-><S>findAnnotations(result, localPositiononlyFirst);
 }
 
 void ClipPathLayerCls::addToScene(SceneBuilder builder) {
-    assert(clipPath != nullptr);
-    assert(clipBehavior != nullptr);
+    assert(clipPath() != nullptr);
+    assert(clipBehavior() != nullptr);
     bool enabled = true;
     assert([=] () {
         enabled = !debugDisableClipLayers;
         return true;
     }());
     if (enabled) {
-        engineLayer = builder->pushClipPath(clipPath!clipBehavior, as<ClipPathEngineLayer>(_engineLayer));
+        engineLayer = builder->pushClipPath(clipPath()!clipBehavior(), as<ClipPathEngineLayer>(_engineLayer));
     } else {
         engineLayer = nullptr;
     }
@@ -862,7 +862,7 @@ void ClipPathLayerCls::addToScene(SceneBuilder builder) {
 
 void ClipPathLayerCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<Clip>make<DiagnosticsPropertyCls>(__s("clipBehavior"), clipBehavior));
+    properties->add(<Clip>make<DiagnosticsPropertyCls>(__s("clipBehavior"), clipBehavior()));
 }
 
 ColorFilterLayerCls::ColorFilterLayerCls(ColorFilter colorFilter) {
@@ -884,15 +884,15 @@ void ColorFilterLayerCls::colorFilter(ColorFilter value) {
 }
 
 void ColorFilterLayerCls::addToScene(SceneBuilder builder) {
-    assert(colorFilter != nullptr);
-    engineLayer = builder->pushColorFilter(colorFilter!as<ColorFilterEngineLayer>(_engineLayer));
+    assert(colorFilter() != nullptr);
+    engineLayer = builder->pushColorFilter(colorFilter()!as<ColorFilterEngineLayer>(_engineLayer));
     addChildrenToScene(builder);
     builder->pop();
 }
 
 void ColorFilterLayerCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<ColorFilter>make<DiagnosticsPropertyCls>(__s("colorFilter"), colorFilter));
+    properties->add(<ColorFilter>make<DiagnosticsPropertyCls>(__s("colorFilter"), colorFilter()));
 }
 
 ImageFilterLayerCls::ImageFilterLayerCls(ImageFilter imageFilter) {
@@ -914,15 +914,15 @@ void ImageFilterLayerCls::imageFilter(ImageFilter value) {
 }
 
 void ImageFilterLayerCls::addToScene(SceneBuilder builder) {
-    assert(imageFilter != nullptr);
-    engineLayer = builder->pushImageFilter(imageFilter!as<ImageFilterEngineLayer>(_engineLayer));
+    assert(imageFilter() != nullptr);
+    engineLayer = builder->pushImageFilter(imageFilter()!as<ImageFilterEngineLayer>(_engineLayer));
     addChildrenToScene(builder);
     builder->pop();
 }
 
 void ImageFilterLayerCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<ImageFilter>make<DiagnosticsPropertyCls>(__s("imageFilter"), imageFilter));
+    properties->add(<ImageFilter>make<DiagnosticsPropertyCls>(__s("imageFilter"), imageFilter()));
 }
 
 TransformLayerCls::TransformLayerCls(Unknown offset, Matrix4 transform) {
@@ -949,8 +949,8 @@ void TransformLayerCls::transform(Matrix4 value) {
 }
 
 void TransformLayerCls::addToScene(SceneBuilder builder) {
-    assert(transform != nullptr);
-    _lastEffectiveTransform = transform;
+    assert(transform() != nullptr);
+    _lastEffectiveTransform = transform();
     if (offset != OffsetCls::zero) {
             auto _c1 = Matrix4Cls->translationValues(offset->dx, offset->dy, 0.0);    _c1.multiply(_lastEffectiveTransform!);_lastEffectiveTransform = _c1;
     }
@@ -980,12 +980,12 @@ void TransformLayerCls::applyTransform(Layer child, Matrix4 transform) {
 
 void TransformLayerCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(make<TransformPropertyCls>(__s("transform"), transform));
+    properties->add(make<TransformPropertyCls>(__s("transform"), transform()));
 }
 
 Offset TransformLayerCls::_transformOffset(Offset localPosition) {
     if (_inverseDirty) {
-        _invertedTransform = Matrix4Cls->tryInvert(PointerEventCls->removePerspectiveTransform(transform!));
+        _invertedTransform = Matrix4Cls->tryInvert(PointerEventCls->removePerspectiveTransform(transform()!));
         _inverseDirty = false;
     }
     if (_invertedTransform == nullptr) {
@@ -1016,7 +1016,7 @@ void OpacityLayerCls::alpha(int value) {
 }
 
 void OpacityLayerCls::addToScene(SceneBuilder builder) {
-    assert(alpha != nullptr);
+    assert(alpha() != nullptr);
     bool enabled = firstChild != nullptr;
     if (!enabled) {
         engineLayer = nullptr;
@@ -1026,7 +1026,7 @@ void OpacityLayerCls::addToScene(SceneBuilder builder) {
         enabled = enabled && !debugDisableOpacityLayers;
         return true;
     }());
-    int realizedAlpha = alpha!;
+    int realizedAlpha = alpha()!;
     if (enabled &&  < 255) {
         assert(is<OpacityEngineLayer>(_engineLayer));
         engineLayer = builder->pushOpacity(realizedAlphaoffset, as<OpacityEngineLayer>(_engineLayer));
@@ -1040,7 +1040,7 @@ void OpacityLayerCls::addToScene(SceneBuilder builder) {
 
 void OpacityLayerCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(make<IntPropertyCls>(__s("alpha"), alpha));
+    properties->add(make<IntPropertyCls>(__s("alpha"), alpha()));
 }
 
 ShaderMaskLayerCls::ShaderMaskLayerCls(BlendMode blendMode, Rect maskRect, Shader shader) {
@@ -1085,19 +1085,19 @@ void ShaderMaskLayerCls::blendMode(BlendMode value) {
 }
 
 void ShaderMaskLayerCls::addToScene(SceneBuilder builder) {
-    assert(shader != nullptr);
-    assert(maskRect != nullptr);
-    assert(blendMode != nullptr);
-    engineLayer = builder->pushShaderMask(shader!, maskRect!, blendMode!as<ShaderMaskEngineLayer>(_engineLayer));
+    assert(shader() != nullptr);
+    assert(maskRect() != nullptr);
+    assert(blendMode() != nullptr);
+    engineLayer = builder->pushShaderMask(shader()!, maskRect()!, blendMode()!as<ShaderMaskEngineLayer>(_engineLayer));
     addChildrenToScene(builder);
     builder->pop();
 }
 
 void ShaderMaskLayerCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<Shader>make<DiagnosticsPropertyCls>(__s("shader"), shader));
-    properties->add(<Rect>make<DiagnosticsPropertyCls>(__s("maskRect"), maskRect));
-    properties->add(<BlendMode>make<EnumPropertyCls>(__s("blendMode"), blendMode));
+    properties->add(<Shader>make<DiagnosticsPropertyCls>(__s("shader"), shader()));
+    properties->add(<Rect>make<DiagnosticsPropertyCls>(__s("maskRect"), maskRect()));
+    properties->add(<BlendMode>make<EnumPropertyCls>(__s("blendMode"), blendMode()));
 }
 
 BackdropFilterLayerCls::BackdropFilterLayerCls(BlendMode blendMode, ImageFilter filter) {
@@ -1130,16 +1130,16 @@ void BackdropFilterLayerCls::blendMode(BlendMode value) {
 }
 
 void BackdropFilterLayerCls::addToScene(SceneBuilder builder) {
-    assert(filter != nullptr);
-    engineLayer = builder->pushBackdropFilter(filter!blendMode, as<BackdropFilterEngineLayer>(_engineLayer));
+    assert(filter() != nullptr);
+    engineLayer = builder->pushBackdropFilter(filter()!blendMode(), as<BackdropFilterEngineLayer>(_engineLayer));
     addChildrenToScene(builder);
     builder->pop();
 }
 
 void BackdropFilterLayerCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<ImageFilter>make<DiagnosticsPropertyCls>(__s("filter"), filter));
-    properties->add(<BlendMode>make<EnumPropertyCls>(__s("blendMode"), blendMode));
+    properties->add(<ImageFilter>make<DiagnosticsPropertyCls>(__s("filter"), filter()));
+    properties->add(<BlendMode>make<EnumPropertyCls>(__s("blendMode"), blendMode()));
 }
 
 PhysicalModelLayerCls::PhysicalModelLayerCls(Clip clipBehavior, Path clipPath, Color color, double elevation, Color shadowColor) {
@@ -1209,25 +1209,25 @@ void PhysicalModelLayerCls::shadowColor(Color value) {
 }
 
 bool PhysicalModelLayerCls::findAnnotationstemplate<typename S> (Offset localPosition, bool onlyFirst, AnnotationResult<S> result) {
-    if (!clipPath!->contains(localPosition)) {
+    if (!clipPath()!->contains(localPosition)) {
         return false;
     }
     return super-><S>findAnnotations(result, localPositiononlyFirst);
 }
 
 void PhysicalModelLayerCls::addToScene(SceneBuilder builder) {
-    assert(clipPath != nullptr);
-    assert(clipBehavior != nullptr);
-    assert(elevation != nullptr);
-    assert(color != nullptr);
-    assert(shadowColor != nullptr);
+    assert(clipPath() != nullptr);
+    assert(clipBehavior() != nullptr);
+    assert(elevation() != nullptr);
+    assert(color() != nullptr);
+    assert(shadowColor() != nullptr);
     bool enabled = true;
     assert([=] () {
         enabled = !debugDisablePhysicalShapeLayers;
         return true;
     }());
     if (enabled) {
-        engineLayer = builder->pushPhysicalShape(clipPath!, elevation!, color!, shadowColor, clipBehavior, as<PhysicalShapeEngineLayer>(_engineLayer));
+        engineLayer = builder->pushPhysicalShape(clipPath()!, elevation()!, color()!, shadowColor(), clipBehavior(), as<PhysicalShapeEngineLayer>(_engineLayer));
     } else {
         engineLayer = nullptr;
     }
@@ -1239,8 +1239,8 @@ void PhysicalModelLayerCls::addToScene(SceneBuilder builder) {
 
 void PhysicalModelLayerCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(make<DoublePropertyCls>(__s("elevation"), elevation));
-    properties->add(make<ColorPropertyCls>(__s("color"), color));
+    properties->add(make<DoublePropertyCls>(__s("elevation"), elevation()));
+    properties->add(make<ColorPropertyCls>(__s("color"), color()));
 }
 
 LeaderLayer LayerLinkCls::leader() {
@@ -1337,30 +1337,30 @@ void LeaderLayerCls::detach() {
 }
 
 bool LeaderLayerCls::findAnnotationstemplate<typename S> (Offset localPosition, bool onlyFirst, AnnotationResult<S> result) {
-    return super-><S>findAnnotations(result, localPosition - offsetonlyFirst);
+    return super-><S>findAnnotations(result, localPosition - offset()onlyFirst);
 }
 
 void LeaderLayerCls::addToScene(SceneBuilder builder) {
-    assert(offset != nullptr);
-    if (offset != OffsetCls::zero) {
-        engineLayer = builder->pushTransform(Matrix4Cls->translationValues(offset->dx, offset->dy, 0.0)->storageas<TransformEngineLayer>(_engineLayer));
+    assert(offset() != nullptr);
+    if (offset() != OffsetCls::zero) {
+        engineLayer = builder->pushTransform(Matrix4Cls->translationValues(offset()->dx(), offset()->dy(), 0.0)->storageas<TransformEngineLayer>(_engineLayer));
     }
     addChildrenToScene(builder);
-    if (offset != OffsetCls::zero) {
+    if (offset() != OffsetCls::zero) {
         builder->pop();
     }
 }
 
 void LeaderLayerCls::applyTransform(Layer child, Matrix4 transform) {
-    if (offset != OffsetCls::zero) {
-        transform->translate(offset->dx, offset->dy);
+    if (offset() != OffsetCls::zero) {
+        transform->translate(offset()->dx(), offset()->dy());
     }
 }
 
 void LeaderLayerCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<Offset>make<DiagnosticsPropertyCls>(__s("offset"), offset));
-    properties->add(<LayerLink>make<DiagnosticsPropertyCls>(__s("link"), link));
+    properties->add(<Offset>make<DiagnosticsPropertyCls>(__s("offset"), offset()));
+    properties->add(<LayerLink>make<DiagnosticsPropertyCls>(__s("link"), link()));
 }
 
 FollowerLayerCls::FollowerLayerCls(LayerLink link, Offset linkedOffset, bool showWhenUnlinked, Offset unlinkedOffset) {
@@ -1380,7 +1380,7 @@ void FollowerLayerCls::link(LayerLink value) {
 }
 
 bool FollowerLayerCls::findAnnotationstemplate<typename S> (Offset localPosition, bool onlyFirst, AnnotationResult<S> result) {
-    if (_link->leader == nullptr) {
+    if (_link->leader() == nullptr) {
         if (showWhenUnlinked!) {
             return super->findAnnotations(result, localPosition - unlinkedOffset!onlyFirst);
         }
@@ -1397,7 +1397,7 @@ Matrix4 FollowerLayerCls::getLastTransform() {
     if (_lastTransform == nullptr) {
         return nullptr;
     }
-    Matrix4 result = Matrix4Cls->translationValues(-_lastOffset!->dx, -_lastOffset!->dy, 0.0);
+    Matrix4 result = Matrix4Cls->translationValues(-_lastOffset!->dx(), -_lastOffset!->dy(), 0.0);
     result->multiply(_lastTransform!);
     return result;
 }
@@ -1407,9 +1407,9 @@ bool FollowerLayerCls::alwaysNeedsAddToScene() {
 }
 
 void FollowerLayerCls::addToScene(SceneBuilder builder) {
-    assert(link != nullptr);
+    assert(link() != nullptr);
     assert(showWhenUnlinked != nullptr);
-    if (_link->leader == nullptr && !showWhenUnlinked!) {
+    if (_link->leader() == nullptr && !showWhenUnlinked!) {
         _lastTransform = nullptr;
         _lastOffset = nullptr;
         _inverseDirty = true;
@@ -1424,7 +1424,7 @@ void FollowerLayerCls::addToScene(SceneBuilder builder) {
         builder->pop();
     } else {
         _lastOffset = nullptr;
-        Matrix4 matrix = Matrix4Cls->translationValues(unlinkedOffset!->dx, unlinkedOffset!->dy, .0);
+        Matrix4 matrix = Matrix4Cls->translationValues(unlinkedOffset!->dx(), unlinkedOffset!->dy(), .0);
         engineLayer = builder->pushTransform(matrix->storage()as<TransformEngineLayer>(_engineLayer));
         addChildrenToScene(builder);
         builder->pop();
@@ -1438,13 +1438,13 @@ void FollowerLayerCls::applyTransform(Layer child, Matrix4 transform) {
     if (_lastTransform != nullptr) {
         transform->multiply(_lastTransform!);
     } else {
-        transform->multiply(Matrix4Cls->translationValues(unlinkedOffset!->dx, unlinkedOffset!->dy, 0));
+        transform->multiply(Matrix4Cls->translationValues(unlinkedOffset!->dx(), unlinkedOffset!->dy(), 0));
     }
 }
 
 void FollowerLayerCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<LayerLink>make<DiagnosticsPropertyCls>(__s("link"), link));
+    properties->add(<LayerLink>make<DiagnosticsPropertyCls>(__s("link"), link()));
     properties->add(make<TransformPropertyCls>(__s("transform"), getLastTransform()nullptr));
 }
 
@@ -1456,9 +1456,9 @@ Offset FollowerLayerCls::_transformOffset(Offset localPosition) {
     if (_invertedTransform == nullptr) {
         return nullptr;
     }
-    Vector4 vector = make<Vector4Cls>(localPosition->dx, localPosition->dy, 0.0, 1.0);
+    Vector4 vector = make<Vector4Cls>(localPosition->dx(), localPosition->dy(), 0.0, 1.0);
     Vector4 result = _invertedTransform!->transform(vector);
-    return make<OffsetCls>(result[0] - linkedOffset!->dx, result[1] - linkedOffset!->dy);
+    return make<OffsetCls>(result[0] - linkedOffset!->dx(), result[1] - linkedOffset!->dy());
 }
 
 Matrix4 FollowerLayerCls::_collectTransformForLayerChain(List<ContainerLayer> layers) {
@@ -1477,28 +1477,28 @@ Layer FollowerLayerCls::_pathsToCommonAncestor(Layer a, List<ContainerLayer> anc
         return a;
     }
     if (a->depth < b->depth) {
-        ancestorsB->add(b->parent);
-        return _pathsToCommonAncestor(a, b->parent, ancestorsA, ancestorsB);
+        ancestorsB->add(b->parent());
+        return _pathsToCommonAncestor(a, b->parent(), ancestorsA, ancestorsB);
     } else     {
         if (a->depth > b->depth) {
-        ancestorsA->add(a->parent);
-        return _pathsToCommonAncestor(a->parent, b, ancestorsA, ancestorsB);
+        ancestorsA->add(a->parent());
+        return _pathsToCommonAncestor(a->parent(), b, ancestorsA, ancestorsB);
     }
 ;
-    }    ancestorsA->add(a->parent);
-    ancestorsB->add(b->parent);
-    return _pathsToCommonAncestor(a->parent, b->parent, ancestorsA, ancestorsB);
+    }    ancestorsA->add(a->parent());
+    ancestorsB->add(b->parent());
+    return _pathsToCommonAncestor(a->parent(), b->parent(), ancestorsA, ancestorsB);
 }
 
 bool FollowerLayerCls::_debugCheckLeaderBeforeFollower(List<ContainerLayer> followerToCommonAncestor, List<ContainerLayer> leaderToCommonAncestor) {
-    if (followerToCommonAncestor->length <= 1) {
+    if (followerToCommonAncestor->length() <= 1) {
         return false;
     }
-    if (leaderToCommonAncestor->length <= 1) {
+    if (leaderToCommonAncestor->length() <= 1) {
         return true;
     }
-    ContainerLayer leaderSubtreeBelowAncestor = leaderToCommonAncestor[leaderToCommonAncestor->length - 2];
-    ContainerLayer followerSubtreeBelowAncestor = followerToCommonAncestor[followerToCommonAncestor->length - 2];
+    ContainerLayer leaderSubtreeBelowAncestor = leaderToCommonAncestor[leaderToCommonAncestor->length() - 2];
+    ContainerLayer followerSubtreeBelowAncestor = followerToCommonAncestor[followerToCommonAncestor->length() - 2];
     Layer sibling = leaderSubtreeBelowAncestor;
     while (sibling != nullptr) {
         if (sibling == followerSubtreeBelowAncestor) {
@@ -1510,9 +1510,9 @@ bool FollowerLayerCls::_debugCheckLeaderBeforeFollower(List<ContainerLayer> foll
 }
 
 void FollowerLayerCls::_establishTransform() {
-    assert(link != nullptr);
+    assert(link() != nullptr);
     _lastTransform = nullptr;
-    LeaderLayer leader = _link->leader;
+    LeaderLayer leader = _link->leader();
     if (leader == nullptr) {
         return;
     }
@@ -1524,7 +1524,7 @@ void FollowerLayerCls::_establishTransform() {
     assert(_debugCheckLeaderBeforeFollower(forwardLayers, inverseLayers), __s("LeaderLayer anchor must come before FollowerLayer in paint order, but the reverse was true."));
     Matrix4 forwardTransform = _collectTransformForLayerChain(forwardLayers);
     leader->applyTransform(nullptr, forwardTransform);
-    forwardTransform->translate(linkedOffset!->dx, linkedOffset!->dy);
+    forwardTransform->translate(linkedOffset!->dx(), linkedOffset!->dy());
     Matrix4 inverseTransform = _collectTransformForLayerChain(inverseLayers);
     if (inverseTransform->invert() == 0.0) {
         return;
@@ -1544,7 +1544,7 @@ template<typename T> AnnotatedRegionLayerCls<T>::AnnotatedRegionLayerCls(Offset 
 
 template<typename T> bool AnnotatedRegionLayerCls<T>::findAnnotationstemplate<typename S> (Offset localPosition, bool onlyFirst, AnnotationResult<S> result) {
     bool isAbsorbed = super->findAnnotations(result, localPositiononlyFirst);
-    if (result->entries->isNotEmpty() && onlyFirst) {
+    if (result->entries()->isNotEmpty() && onlyFirst) {
         return isAbsorbed;
     }
     if (size != nullptr && !(offset & size!)->contains(localPosition)) {

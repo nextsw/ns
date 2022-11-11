@@ -3,7 +3,7 @@ ScrollPositionCls::ScrollPositionCls(ScrollContext context, String debugLabel, b
     {
         assert(physics != nullptr);
         assert(context != nullptr);
-        assert(context->vsync != nullptr);
+        assert(context->vsync() != nullptr);
         assert(keepScrollOffset != nullptr);
     }
     {
@@ -53,14 +53,14 @@ void ScrollPositionCls::absorb(ScrollPosition other) {
     assert(other->context == context);
     assert(_pixels == nullptr);
     if (other->hasContentDimensions()) {
-        _minScrollExtent = other->minScrollExtent;
-        _maxScrollExtent = other->maxScrollExtent;
+        _minScrollExtent = other->minScrollExtent();
+        _maxScrollExtent = other->maxScrollExtent();
     }
     if (other->hasPixels()) {
-        _pixels = other->pixels;
+        _pixels = other->pixels();
     }
     if (other->hasViewportDimension()) {
-        _viewportDimension = other->viewportDimension;
+        _viewportDimension = other->viewportDimension();
     }
     assert(activity() == nullptr);
     assert(other->activity() != nullptr);
@@ -70,26 +70,26 @@ void ScrollPositionCls::absorb(ScrollPosition other) {
         activity()!->resetActivity();
     }
     context->setIgnorePointer(activity()!->shouldIgnorePointer());
-    isScrollingNotifier->value = activity()!->isScrolling();
+    isScrollingNotifier->value() = activity()!->isScrolling();
 }
 
 double ScrollPositionCls::setPixels(double newPixels) {
     assert(hasPixels());
     assert(SchedulerBindingCls::instance->schedulerPhase != SchedulerPhaseCls::persistentCallbacks, __s("A scrollable's position should not change during the build, layout, and paint phases, otherwise the rendering will be confused."));
-    if (newPixels != pixels) {
+    if (newPixels != pixels()) {
         double overscroll = applyBoundaryConditions(newPixels);
         assert([=] () {
-            double delta = newPixels - pixels;
+            double delta = newPixels - pixels();
             if (overscroll->abs() > delta->abs()) {
                 ;
             }
             return true;
         }());
-        double oldPixels = pixels;
+        double oldPixels = pixels();
         _pixels = newPixels - overscroll;
         if (_pixels != oldPixels) {
             notifyListeners();
-            didUpdateScrollPositionBy(pixels - oldPixels);
+            didUpdateScrollPositionBy(pixels() - oldPixels);
         }
         if (overscroll != 0.0) {
             didOverscrollBy(overscroll);
@@ -112,7 +112,7 @@ void ScrollPositionCls::correctBy(double correction) {
 void ScrollPositionCls::forcePixels(double value) {
     assert(hasPixels());
     assert(value != nullptr);
-    _impliedVelocity = value - pixels;
+    _impliedVelocity = value - pixels();
     _pixels = value;
     notifyListeners();
     SchedulerBindingCls::instance->addPostFrameCallback([=] (Duration timeStamp) {
@@ -121,7 +121,7 @@ void ScrollPositionCls::forcePixels(double value) {
 }
 
 void ScrollPositionCls::saveScrollOffset() {
-    PageStorageCls->of(context->storageContext())?->writeState(context->storageContext(), pixels);
+    PageStorageCls->of(context->storageContext())?->writeState(context->storageContext(), pixels());
 }
 
 void ScrollPositionCls::restoreScrollOffset() {
@@ -145,13 +145,13 @@ void ScrollPositionCls::restoreOffset(bool initialRestore, double offset) {
 
 void ScrollPositionCls::saveOffset() {
     assert(hasPixels());
-    context->saveOffset(pixels);
+    context->saveOffset(pixels());
 }
 
 double ScrollPositionCls::applyBoundaryConditions(double value) {
     double result = physics->applyBoundaryConditions(this, value);
     assert([=] () {
-        double delta = value - pixels;
+        double delta = value - pixels();
         if (result->abs() > delta->abs()) {
             ;
         }
@@ -204,8 +204,8 @@ bool ScrollPositionCls::applyContentDimensions(double maxScrollExtent, double mi
 }
 
 bool ScrollPositionCls::correctForNewDimensions(ScrollMetrics newPosition, ScrollMetrics oldPosition) {
-    double newPixels = physics->adjustPositionForNewDimensions(oldPosition, newPosition, activity()!->isScrolling(), activity()!->velocity);
-    if (newPixels != pixels) {
+    double newPixels = physics->adjustPositionForNewDimensions(oldPosition, newPosition, activity()!->isScrolling(), activity()!->velocity());
+    if (newPixels != pixels()) {
         correctPixels(newPixels);
         return false;
     }
@@ -230,7 +230,7 @@ Future<void> ScrollPositionCls::ensureVisible(double alignment, ScrollPositionAl
     }
     double target;
     ;
-    if (target == pixels) {
+    if (target == pixels()) {
         return <void>value();
     }
     if (duration == DurationCls::zero) {
@@ -244,7 +244,7 @@ Future<void> ScrollPositionCls::moveTo(bool clamp, Curve curve, Duration duratio
     assert(to != nullptr);
     assert(clamp != nullptr);
     if (clamp!) {
-        to = clampDouble(to, minScrollExtent, maxScrollExtent);
+        to = clampDouble(to, minScrollExtent(), maxScrollExtent());
     }
     return super->moveTo(toduration, curve);
 }
@@ -277,7 +277,7 @@ void ScrollPositionCls::beginActivity(ScrollActivity newActivity) {
     if (oldIgnorePointer != activity()!->shouldIgnorePointer()) {
         context->setIgnorePointer(activity()!->shouldIgnorePointer());
     }
-    isScrollingNotifier->value = activity()!->isScrolling();
+    isScrollingNotifier->value() = activity()!->isScrolling();
     if (!wasScrolling && _activity!->isScrolling()) {
         didStartScroll();
     }
@@ -320,9 +320,9 @@ void ScrollPositionCls::didUpdateScrollMetrics() {
 bool ScrollPositionCls::recommendDeferredLoading(BuildContext context) {
     assert(context != nullptr);
     assert(activity() != nullptr);
-    assert(activity()!->velocity != nullptr);
+    assert(activity()!->velocity() != nullptr);
     assert(_impliedVelocity != nullptr);
-    return physics->recommendDeferredLoading(activity()!->velocity + _impliedVelocity, copyWith(), context);
+    return physics->recommendDeferredLoading(activity()!->velocity() + _impliedVelocity, copyWith(), context);
 }
 
 void ScrollPositionCls::dispose() {
@@ -348,7 +348,7 @@ void ScrollPositionCls::debugFillDescription(List<String> description) {
 bool ScrollPositionCls::_isMetricsChanged() {
     assert(haveDimensions());
     ScrollMetrics currentMetrics = copyWith();
-    return _lastMetrics == nullptr || !(currentMetrics->extentBefore() == _lastMetrics!->extentBefore() && currentMetrics->extentInside() == _lastMetrics!->extentInside() && currentMetrics->extentAfter() == _lastMetrics!->extentAfter() && currentMetrics->axisDirection == _lastMetrics!->axisDirection);
+    return _lastMetrics == nullptr || !(currentMetrics->extentBefore() == _lastMetrics!->extentBefore() && currentMetrics->extentInside() == _lastMetrics!->extentInside() && currentMetrics->extentAfter() == _lastMetrics!->extentAfter() && currentMetrics->axisDirection() == _lastMetrics!->axisDirection());
 }
 
 void ScrollPositionCls::_updateSemanticActions() {
@@ -356,10 +356,10 @@ void ScrollPositionCls::_updateSemanticActions() {
     SemanticsAction backward;
     ;
     Set<SemanticsAction> actions = makeSet();
-    if (pixels > minScrollExtent) {
+    if (pixels() > minScrollExtent()) {
         actions->add(backward);
     }
-    if ( < maxScrollExtent) {
+    if ( < maxScrollExtent()) {
         actions->add(forward);
     }
     if (<SemanticsAction>setEquals(actions, _semanticActions)) {

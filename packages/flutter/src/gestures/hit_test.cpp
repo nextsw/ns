@@ -12,7 +12,7 @@ Matrix4 _MatrixTransformPartCls::multiply(Matrix4 rhs) {
 }
 
 Matrix4 _OffsetTransformPartCls::multiply(Matrix4 rhs) {
-    auto _c1 = rhs->clone();_c1.leftTranslate(offset->dx, offset->dy);return _c1;
+    auto _c1 = rhs->clone();_c1.leftTranslate(offset->dx(), offset->dy());return _c1;
 }
 
 HitTestResultCls::HitTestResultCls() {

@@ -50,7 +50,7 @@ void DecorationImagePainterCls::paint(Canvas canvas, Path clipPath, ImageConfigu
         }
     }
     ImageStream newImageStream = _details->image->resolve(configuration);
-    if (newImageStream->key != _imageStream?->key) {
+    if (newImageStream->key() != _imageStream?->key) {
         ImageStreamListener listener = make<ImageStreamListenerCls>(_handleImage_details->onError);
         _imageStream?->removeListener(listener);
         _imageStream = newImageStream;
@@ -115,11 +115,11 @@ void paintImage(Alignment alignment, Canvas canvas, Rect centerSlice, ColorFilte
     if (rect->isEmpty()) {
         return;
     }
-    Size outputSize = rect->size;
+    Size outputSize = rect->size();
     Size inputSize = make<SizeCls>(image->width->toDouble(), image->height->toDouble());
     Offset sliceBorder;
     if (centerSlice != nullptr) {
-        sliceBorder = as<Offset>(inputSize / scale - centerSlice->size);
+        sliceBorder = as<Offset>(inputSize / scale - centerSlice->size());
         outputSize = as<Size>(outputSize - sliceBorder);
         inputSize = as<Size>(inputSize - sliceBorder * scale);
     }
@@ -140,14 +140,14 @@ void paintImage(Alignment alignment, Canvas canvas, Rect centerSlice, ColorFilte
     if (colorFilter != nullptr) {
         paint->colorFilter = colorFilter;
     }
-    paint->color = ColorCls->fromRGBO(0, 0, 0, opacity);
+    paint->color() = ColorCls->fromRGBO(0, 0, 0, opacity);
     paint->filterQuality = filterQuality;
     paint->invertColors = invertColors;
-    double halfWidthDelta = (outputSize->width - destinationSize->width) / 2.0;
-    double halfHeightDelta = (outputSize->height - destinationSize->height) / 2.0;
+    double halfWidthDelta = (outputSize->width() - destinationSize->width()) / 2.0;
+    double halfHeightDelta = (outputSize->height() - destinationSize->height()) / 2.0;
     double dx = halfWidthDelta + (flipHorizontally? -alignment->x : alignment->x) * halfWidthDelta;
     double dy = halfHeightDelta + alignment->y * halfHeightDelta;
-    Offset destinationPosition = rect->topLeft->translate(dx, dy);
+    Offset destinationPosition = rect->topLeft()->translate(dx, dy);
     Rect destinationRect = destinationPosition & destinationSize;
     bool invertedCanvas = false;
     if (!kReleaseMode) {
@@ -155,11 +155,11 @@ void paintImage(Alignment alignment, Canvas canvas, Rect centerSlice, ColorFilte
         assert([=] () {
             if (debugInvertOversizedImages && sizeInfo->decodedSizeInBytes() > sizeInfo->displaySizeInBytes() + debugImageOverheadAllowance) {
                 int overheadInKilobytes = (sizeInfo->decodedSizeInBytes() - sizeInfo->displaySizeInBytes()) ~/ 1024;
-                int outputWidth = sizeInfo->displaySize->width->toInt();
-                int outputHeight = sizeInfo->displaySize->height->toInt();
+                int outputWidth = sizeInfo->displaySize->width()->toInt();
+                int outputHeight = sizeInfo->displaySize->height()->toInt();
                 FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(__s("Image $debugImageLabel has a display size of $outputWidth×$outputHeight but a decode size of ${image.width}×${image.height}, which uses an additional ${overheadInKilobytes}KB.\n\nConsider resizing the asset ahead of time, supplying a cacheWidth parameter of $outputWidth, a cacheHeight parameter of $outputHeight, or using a ResizeImage."), __s("painting library"), make<ErrorDescriptionCls>(__s("while painting an image"))));
                             auto _c2 = make<PaintCls>();            _c2.colorFilter = ColorFilterCls->matrix(makeList(ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem));canvas->saveLayer(destinationRect, _c2);
-                double dy = -(rect->top + rect->height / 2.0);
+                double dy = -(rect->top + rect->height() / 2.0);
                 canvas->translate(0.0, -dy);
                 canvas->scale(1.0, -1.0);
                 canvas->translate(0.0, dy);
@@ -191,7 +191,7 @@ void paintImage(Alignment alignment, Canvas canvas, Rect centerSlice, ColorFilte
         canvas->clipRect(rect);
     }
     if (flipHorizontally) {
-        double dx = -(rect->left + rect->width / 2.0);
+        double dx = -(rect->left + rect->width() / 2.0);
         canvas->translate(-dx, 0.0);
         canvas->scale(-1.0, 1.0);
         canvas->translate(dx, 0.0);
@@ -228,8 +228,8 @@ Iterable<Rect> _generateImageTileRects(Rect fundamentalRect, Rect outputRect, Im
     int startY = 0;
     int stopX = 0;
     int stopY = 0;
-    double strideX = fundamentalRect->width;
-    double strideY = fundamentalRect->height;
+    double strideX = fundamentalRect->width();
+    double strideY = fundamentalRect->height();
     if (repeat == ImageRepeatCls::repeat || repeat == ImageRepeatCls::repeatX) {
         startX = ((outputRect->left - fundamentalRect->left) / strideX)->floor();
         stopX = ((outputRect->right - fundamentalRect->right) / strideX)->ceil();

@@ -50,7 +50,7 @@ List<Type> _InvocationCls::_ensureNonNullTypes(Iterable<Type> types) {
         return makeList();
     }
     List<Type> typeArguments = <Type>unmodifiable(types);
-    for (;  < typeArguments->length; i++) {
+    for (;  < typeArguments->length(); i++) {
         if (typeArguments[i] == nullptr) {
             ;
         }

@@ -54,7 +54,7 @@ Future<Map<String, List<String>>> AssetImageCls::_manifestParser(String jsonData
         return <Map<String, List<String>>>make<SynchronousFutureCls>(nullptr);
     }
     Map<String, dynamic> parsedJson = as<Map<String, dynamic>>(json->decode(jsonData));
-    Iterable<String> keys = parsedJson->keys;
+    Iterable<String> keys = parsedJson->keys();
     Map<String, List<String>> map1 = make<MapCls<>>();for (String key : keys) {    ;}{    map1.set(key, <String>from(as<List<dynamic>>(parsedJson[key])));}Map<String, List<String>> parsedManifest = list1;
     return <Map<String, List<String>>>make<SynchronousFutureCls>(parsedManifest);
 }

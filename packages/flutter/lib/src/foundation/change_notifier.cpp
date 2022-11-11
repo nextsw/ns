@@ -16,11 +16,11 @@ bool ChangeNotifierCls::hasListeners() {
 
 void ChangeNotifierCls::addListener(VoidCallback listener) {
     assert(ChangeNotifierCls->debugAssertNotDisposed(this));
-    if (_count == _listeners->length) {
+    if (_count == _listeners->length()) {
         if (_count == 0) {
             _listeners = <VoidCallback>filled(1, nullptr);
         } else {
-            List<VoidCallback> newListeners = <VoidCallback>filled(_listeners->length * 2, nullptr);
+            List<VoidCallback> newListeners = <VoidCallback>filled(_listeners->length() * 2, nullptr);
             for (;  < _count; i++) {
                 newListeners[i] = _listeners[i];
             }
@@ -74,7 +74,7 @@ void ChangeNotifierCls::notifyListeners() {
     _notificationCallStackDepth--;
     if (_notificationCallStackDepth == 0 && _reentrantlyRemovedListeners > 0) {
         int newLength = _count - _reentrantlyRemovedListeners;
-        if (newLength * 2 <= _listeners->length) {
+        if (newLength * 2 <= _listeners->length()) {
             List<VoidCallback> newListeners = <VoidCallback>filled(newLength, nullptr);
             int newIndex = 0;
             for (;  < _count; i++) {
@@ -103,7 +103,7 @@ void ChangeNotifierCls::notifyListeners() {
 
 void ChangeNotifierCls::_removeAt(int index) {
     _count = 1;
-    if (_count * 2 <= _listeners->length) {
+    if (_count * 2 <= _listeners->length()) {
         List<VoidCallback> newListeners = <VoidCallback>filled(_count, nullptr);
         for (;  < index; i++) {
             newListeners[i] = _listeners[i];

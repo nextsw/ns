@@ -38,7 +38,7 @@ void OverlayEntryCls::maintainState(bool value) {
 }
 
 bool OverlayEntryCls::mounted() {
-    return _overlayStateMounted->value;
+    return _overlayStateMounted->value();
 }
 
 void OverlayEntryCls::addListener(VoidCallback listener) {
@@ -136,7 +136,7 @@ OverlayState OverlayCls::of(BuildContext context, Widget debugRequiredFor, bool 
     OverlayState result = rootOverlay? context-><OverlayState>findRootAncestorStateOfType() : context-><OverlayState>findAncestorStateOfType();
     assert([=] () {
         if (debugRequiredFor != nullptr && result == nullptr) {
-                    List<DiagnosticsNode> list1 = make<ListCls<>>();        list1.add(ArrayItem);        list1.add(ArrayItem);        list1.add(ArrayItem);        list1.add(ArrayItem);        if (context->widget != debugRequiredFor) {            list1.add(ArrayItem);        }List<DiagnosticsNode> information = list1;
+                    List<DiagnosticsNode> list1 = make<ListCls<>>();        list1.add(ArrayItem);        list1.add(ArrayItem);        list1.add(ArrayItem);        list1.add(ArrayItem);        if (context->widget() != debugRequiredFor) {            list1.add(ArrayItem);        }List<DiagnosticsNode> information = list1;
             ;
         }
         return true;
@@ -220,7 +220,7 @@ bool OverlayStateCls::debugIsVisible(OverlayEntry entry) {
                 result = true;
                                 break;
             }
-            if (candidate->opaque) {
+            if (candidate->opaque()) {
                                 break;
             }
         }
@@ -238,16 +238,16 @@ Widget OverlayStateCls::build(BuildContext context) {
         if (onstage) {
             onstageCount = 1;
             children->add(make<_OverlayEntryWidgetCls>(entry->_key, entry));
-            if (entry->opaque) {
+            if (entry->opaque()) {
                 onstage = false;
             }
         } else         {
-            if (entry->maintainState) {
+            if (entry->maintainState()) {
             children->add(make<_OverlayEntryWidgetCls>(entry->_key, entry, false));
         }
 ;
         }    }
-    return make<_TheatreCls>(children->length - onstageCount, widget->clipBehavior, children->reversed->toList(false));
+    return make<_TheatreCls>(children->length() - onstageCount, widget->clipBehavior, children->reversed()->toList(false));
 }
 
 void OverlayStateCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
@@ -263,7 +263,7 @@ int OverlayStateCls::_insertionIndex(OverlayEntry above, OverlayEntry below) {
     if (above != nullptr) {
         return _entries->indexOf(above) + 1;
     }
-    return _entries->length;
+    return _entries->length();
 }
 
 bool OverlayStateCls::_debugVerifyInsertPosition(OverlayEntry above, OverlayEntry below, Iterable<OverlayEntry> newEntries) {
@@ -426,13 +426,13 @@ void _RenderTheatreCls::performLayout() {
     }
     _resolve();
     assert(_resolvedAlignment != nullptr);
-    BoxConstraints nonPositionedConstraints = BoxConstraintsCls->tight(constraints->biggest());
+    BoxConstraints nonPositionedConstraints = BoxConstraintsCls->tight(constraints->biggest);
     RenderBox child = _firstOnstageChild();
     while (child != nullptr) {
         StackParentData childParentData = as<StackParentData>(child->parentData!);
         if (!childParentData->isPositioned()) {
             child->layout(nonPositionedConstraintstrue);
-            childParentData->offset = _resolvedAlignment!->alongOffset(as<Offset>(size - child->size));
+            childParentData->offset = _resolvedAlignment!->alongOffset(as<Offset>(size - child->size()));
         } else {
             _hasVisualOverflow = RenderStackCls->layoutPositionedChild(child, childParentData, size, _resolvedAlignment!) || _hasVisualOverflow;
         }
@@ -468,16 +468,16 @@ void _RenderTheatreCls::paintStack(PaintingContext context, Offset offset) {
 }
 
 void _RenderTheatreCls::paint(PaintingContext context, Offset offset) {
-    if (_hasVisualOverflow && clipBehavior != ClipCls::none) {
-        _clipRectLayer->layer = context->pushClipRect(needsCompositing, offset, OffsetCls::zero & size, paintStackclipBehavior, _clipRectLayer->layer);
+    if (_hasVisualOverflow && clipBehavior() != ClipCls::none) {
+        _clipRectLayer->layer() = context->pushClipRect(needsCompositing, offset, OffsetCls::zero & size, paintStackclipBehavior(), _clipRectLayer->layer());
     } else {
-        _clipRectLayer->layer = nullptr;
+        _clipRectLayer->layer() = nullptr;
         paintStack(context, offset);
     }
 }
 
 void _RenderTheatreCls::dispose() {
-    _clipRectLayer->layer = nullptr;
+    _clipRectLayer->layer() = nullptr;
     super->dispose();
 }
 
@@ -496,8 +496,8 @@ Rect _RenderTheatreCls::describeApproximatePaintClip(RenderObject child) {
 
 void _RenderTheatreCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(make<IntPropertyCls>(__s("skipCount"), skipCount));
-    properties->add(<TextDirection>make<EnumPropertyCls>(__s("textDirection"), textDirection));
+    properties->add(make<IntPropertyCls>(__s("skipCount"), skipCount()));
+    properties->add(<TextDirection>make<EnumPropertyCls>(__s("textDirection"), textDirection()));
 }
 
 List<DiagnosticsNode> _RenderTheatreCls::debugDescribeChildren() {
@@ -543,7 +543,7 @@ void _RenderTheatreCls::_resolve() {
     if (_resolvedAlignment != nullptr) {
         return;
     }
-    _resolvedAlignment = AlignmentDirectionalCls::topStart->resolve(textDirection);
+    _resolvedAlignment = AlignmentDirectionalCls::topStart->resolve(textDirection());
 }
 
 void _RenderTheatreCls::_markNeedResolution() {
@@ -552,7 +552,7 @@ void _RenderTheatreCls::_markNeedResolution() {
 }
 
 RenderBox _RenderTheatreCls::_firstOnstageChild() {
-    if (skipCount == super->childCount) {
+    if (skipCount() == super->childCount) {
         return nullptr;
     }
     RenderBox child = super->firstChild;
@@ -565,9 +565,9 @@ RenderBox _RenderTheatreCls::_firstOnstageChild() {
 }
 
 RenderBox _RenderTheatreCls::_lastOnstageChild() {
-    return skipCount == super->childCount? nullptr : lastChild;
+    return skipCount() == super->childCount? nullptr : lastChild;
 }
 
 int _RenderTheatreCls::_onstageChildCount() {
-    return childCount - skipCount;
+    return childCount - skipCount();
 }

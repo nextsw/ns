@@ -48,15 +48,15 @@ PointerEvent PointerEventResamplerCls::_toMoveOrHoverEvent(int buttons, Offset d
 }
 
 Offset PointerEventResamplerCls::_positionAt(Duration sampleTime) {
-    double x = _next?->position->dx or 0.0;
-    double y = _next?->position->dy or 0.0;
+    double x = _next?->position->dx() or 0.0;
+    double y = _next?->position->dy() or 0.0;
     Duration nextTimeStamp = _next?->timeStamp or DurationCls::zero;
     Duration lastTimeStamp = _last?->timeStamp or DurationCls::zero;
     if (nextTimeStamp > sampleTime && nextTimeStamp > lastTimeStamp) {
         double interval = (nextTimeStamp - lastTimeStamp)->inMicroseconds()->toDouble();
         double scalar = (sampleTime - lastTimeStamp)->inMicroseconds()->toDouble() / interval;
-        double lastX = _last?->position->dx or 0.0;
-        double lastY = _last?->position->dy or 0.0;
+        double lastX = _last?->position->dx() or 0.0;
+        double lastY = _last?->position->dy() or 0.0;
         x = lastX + (x - lastX) * scalar;
         y = lastY + (y - lastY) * scalar;
     }

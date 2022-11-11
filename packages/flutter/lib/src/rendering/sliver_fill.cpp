@@ -8,7 +8,7 @@ RenderSliverFillViewportCls::RenderSliverFillViewportCls(Unknown childManager, d
 }
 
 double RenderSliverFillViewportCls::itemExtent() {
-    return constraints->viewportMainAxisExtent * viewportFraction;
+    return constraints->viewportMainAxisExtent * viewportFraction();
 }
 
 double RenderSliverFillViewportCls::viewportFraction() {

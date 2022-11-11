@@ -46,7 +46,7 @@ void ScrollPositionWithSingleContextCls::beginActivity(ScrollActivity newActivit
     if (newActivity == nullptr) {
         return;
     }
-    assert(newActivity->delegate == this);
+    assert(newActivity->delegate() == this);
     super->beginActivity(newActivity);
     _currentDrag?->dispose();
     _currentDrag = nullptr;
@@ -80,7 +80,7 @@ ScrollDirection ScrollPositionWithSingleContextCls::userScrollDirection() {
 
 void ScrollPositionWithSingleContextCls::updateUserScrollDirection(ScrollDirection value) {
     assert(value != nullptr);
-    if (userScrollDirection == value) {
+    if (userScrollDirection() == value) {
         return;
     }
     _userScrollDirection = value;

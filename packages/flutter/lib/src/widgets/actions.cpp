@@ -372,10 +372,10 @@ void _FocusableActionDetectorStateCls::didUpdateWidget(FocusableActionDetector o
 
 Widget _FocusableActionDetectorStateCls::build(BuildContext context) {
     Widget child = make<MouseRegionCls>(_mouseRegionKey, _handleMouseEnter, _handleMouseExit, widget->mouseCursor, make<FocusCls>(widget->focusNode, widget->autofocus, widget->descendantsAreFocusable, widget->descendantsAreTraversable, _canRequestFocus(), _handleFocusChange, widget->child));
-    if (widget->enabled && widget->actions != nullptr && widget->actions!->isNotEmpty()) {
+    if (widget->enabled && widget->actions != nullptr && widget->actions!->isNotEmpty) {
         child = make<ActionsCls>(widget->actions!, child);
     }
-    if (widget->enabled && widget->shortcuts != nullptr && widget->shortcuts!->isNotEmpty()) {
+    if (widget->enabled && widget->shortcuts != nullptr && widget->shortcuts!->isNotEmpty) {
         child = make<ShortcutsCls>(widget->shortcuts!, child);
     }
     return child;
@@ -471,11 +471,11 @@ PrioritizedIntentsCls::PrioritizedIntentsCls(List<Intent> orderedIntents) {
 
 bool PrioritizedActionCls::isEnabled(PrioritizedIntents intent) {
     FocusNode focus = primaryFocus;
-    if (focus == nullptr || focus->context == nullptr) {
+    if (focus == nullptr || focus->context() == nullptr) {
         return false;
     }
     for (Intent candidateIntent : intent->orderedIntents) {
-        Action<Intent> candidateAction = ActionsCls-><Intent>maybeFind(focus->context!candidateIntent);
+        Action<Intent> candidateAction = ActionsCls-><Intent>maybeFind(focus->context()!candidateIntent);
         if (candidateAction != nullptr && candidateAction->isEnabled(candidateIntent)) {
             _selectedAction = candidateAction;
             _selectedIntent = candidateIntent;
@@ -509,7 +509,7 @@ template<typename T> bool _OverridableActionMixinCls<T>::isOverrideActionEnabled
         debugAssertIsActionEnabledMutuallyRecursive = true;
         return true;
     }());
-    overrideAction->_updateCallingAction(defaultAction);
+    overrideAction->_updateCallingAction(defaultAction());
     bool isOverrideEnabled = overrideAction->isActionEnabled();
     overrideAction->_updateCallingAction(nullptr);
     assert([=] () {
@@ -521,7 +521,7 @@ template<typename T> bool _OverridableActionMixinCls<T>::isOverrideActionEnabled
 
 template<typename T> bool _OverridableActionMixinCls<T>::isActionEnabled() {
     Action<T> overrideAction = getOverrideAction(true);
-    bool returnValue = overrideAction != nullptr? isOverrideActionEnabled(overrideAction) : defaultAction->isActionEnabled();
+    bool returnValue = overrideAction != nullptr? isOverrideActionEnabled(overrideAction) : defaultAction()->isActionEnabled();
     return returnValue;
 }
 
@@ -532,8 +532,8 @@ template<typename T> bool _OverridableActionMixinCls<T>::isEnabled(T intent) {
         return true;
     }());
     Action<T> overrideAction = getOverrideAction();
-    overrideAction?->_updateCallingAction(defaultAction);
-    bool returnValue = (overrideAction or defaultAction)->isEnabled(intent);
+    overrideAction?->_updateCallingAction(defaultAction());
+    bool returnValue = (overrideAction or defaultAction())->isEnabled(intent);
     overrideAction?->_updateCallingAction(nullptr);
     assert([=] () {
         debugAssertIsEnabledMutuallyRecursive = false;
@@ -549,8 +549,8 @@ template<typename T> bool _OverridableActionMixinCls<T>::consumesKey(T intent) {
         return true;
     }());
     Action<T> overrideAction = getOverrideAction();
-    overrideAction?->_updateCallingAction(defaultAction);
-    bool isEnabled = (overrideAction or defaultAction)->consumesKey(intent);
+    overrideAction?->_updateCallingAction(defaultAction());
+    bool isEnabled = (overrideAction or defaultAction())->consumesKey(intent);
     overrideAction?->_updateCallingAction(nullptr);
     assert([=] () {
         debugAssertConsumeKeyMutuallyRecursive = false;
@@ -561,12 +561,12 @@ template<typename T> bool _OverridableActionMixinCls<T>::consumesKey(T intent) {
 
 template<typename T> void _OverridableActionMixinCls<T>::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<Action<T>>make<DiagnosticsPropertyCls>(__s("defaultAction"), defaultAction));
+    properties->add(<Action<T>>make<DiagnosticsPropertyCls>(__s("defaultAction"), defaultAction()));
 }
 
 template<typename T> void _OverridableActionMixinCls<T>::_updateCallingAction(Action<T> value) {
     super->_updateCallingAction(value);
-    defaultAction->_updateCallingAction(value);
+    defaultAction()->_updateCallingAction(value);
 }
 
 template<typename T> Object _OverridableActionMixinCls<T>::_invokeOverride(BuildContext context, T intent, Action<T> overrideAction) {
@@ -575,7 +575,7 @@ template<typename T> Object _OverridableActionMixinCls<T>::_invokeOverride(Build
         debugAssertMutuallyRecursive = true;
         return true;
     }());
-    overrideAction->_updateCallingAction(defaultAction);
+    overrideAction->_updateCallingAction(defaultAction());
     Object returnValue = is<ContextAction<T>>(overrideAction)? overrideAction->invoke(intent, context) : overrideAction->invoke(intent);
     overrideAction->_updateCallingAction(nullptr);
     assert([=] () {
@@ -630,7 +630,7 @@ template<typename T> ContextAction<T> _OverridableContextActionCls<T>::_makeOver
 }
 
 template<typename T> Action<T> _ContextActionToActionAdapterCls<T>::callingAction() {
-    return action->callingAction();
+    return action->callingAction;
 }
 
 template<typename T> bool _ContextActionToActionAdapterCls<T>::isEnabled(T intent) {
@@ -638,7 +638,7 @@ template<typename T> bool _ContextActionToActionAdapterCls<T>::isEnabled(T inten
 }
 
 template<typename T> bool _ContextActionToActionAdapterCls<T>::isActionEnabled() {
-    return action->isActionEnabled();
+    return action->isActionEnabled;
 }
 
 template<typename T> bool _ContextActionToActionAdapterCls<T>::consumesKey(T intent) {

@@ -94,16 +94,16 @@ Size RenderPerformanceOverlayCls::computeDryLayout(BoxConstraints constraints) {
 
 void RenderPerformanceOverlayCls::paint(PaintingContext context, Offset offset) {
     assert(needsCompositing);
-    context->addLayer(make<PerformanceOverlayLayerCls>(RectCls->fromLTWH(offset->dx, offset->dy, size->width, size->height), optionsMask, rasterizerThreshold, checkerboardRasterCacheImages, checkerboardOffscreenLayers));
+    context->addLayer(make<PerformanceOverlayLayerCls>(RectCls->fromLTWH(offset->dx(), offset->dy(), size->width, size->height), optionsMask(), rasterizerThreshold(), checkerboardRasterCacheImages(), checkerboardOffscreenLayers()));
 }
 
 double RenderPerformanceOverlayCls::_intrinsicHeight() {
     double kDefaultGraphHeight = 80.0;
     double result = 0.0;
-    if ((optionsMask | (1 << PerformanceOverlayOptionCls::displayRasterizerStatistics->index) > 0) || (optionsMask | (1 << PerformanceOverlayOptionCls::visualizeRasterizerStatistics->index) > 0)) {
+    if ((optionsMask() | (1 << PerformanceOverlayOptionCls::displayRasterizerStatistics->index) > 0) || (optionsMask() | (1 << PerformanceOverlayOptionCls::visualizeRasterizerStatistics->index) > 0)) {
         result = kDefaultGraphHeight;
     }
-    if ((optionsMask | (1 << PerformanceOverlayOptionCls::displayEngineStatistics->index) > 0) || (optionsMask | (1 << PerformanceOverlayOptionCls::visualizeEngineStatistics->index) > 0)) {
+    if ((optionsMask() | (1 << PerformanceOverlayOptionCls::displayEngineStatistics->index) > 0) || (optionsMask() | (1 << PerformanceOverlayOptionCls::visualizeEngineStatistics->index) > 0)) {
         result = kDefaultGraphHeight;
     }
     return result;

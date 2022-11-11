@@ -63,8 +63,8 @@ void _SemanticsDebuggerStateCls::_handleLongPress() {
 }
 
 void _SemanticsDebuggerStateCls::_handlePanEnd(DragEndDetails details) {
-    double vx = details->velocity->pixelsPerSecond->dx;
-    double vy = details->velocity->pixelsPerSecond->dy;
+    double vx = details->velocity->pixelsPerSecond->dx();
+    double vy = details->velocity->pixelsPerSecond->dy();
     if (vx->abs() == vy->abs()) {
         return;
     }
@@ -122,7 +122,7 @@ void _SemanticsDebuggerPainterCls::paint(Canvas canvas, Size size) {
     }
     if (pointerPosition != nullptr) {
         Paint paint = make<PaintCls>();
-        paint->color = make<ColorCls>(0x7F0090FF);
+        paint->color() = make<ColorCls>(0x7F0090FF);
         canvas->drawCircle(pointerPosition!, 10.0 * devicePixelRatio, paint);
     }
     canvas->restore();
@@ -195,11 +195,11 @@ void _SemanticsDebuggerPainterCls::_paintMessage(Canvas canvas, SemanticsNode no
     if (message->isEmpty()) {
         return;
     }
-    Rect rect = node->rect;
+    Rect rect = node->rect();
     canvas->save();
     canvas->clipRect(rect);
-    auto _c1 = make<TextPainterCls>();_c1.text = auto _c2 = make<TextSpanCls>(labelStyle, message);_c2.textDirection = auto _c3 = TextDirectionCls::ltr;_c3.textAlign = auto _c4 = TextAlignCls::center;_c4.layout(rect->width);_c4;_c3;_c2;TextPainter textPainter = _c1;
-    textPainter->paint(canvas, AlignmentCls::center->inscribe(textPainter->size, rect)->topLeft);
+    auto _c1 = make<TextPainterCls>();_c1.text = auto _c2 = make<TextSpanCls>(labelStyle, message);_c2.textDirection = auto _c3 = TextDirectionCls::ltr;_c3.textAlign = auto _c4 = TextAlignCls::center;_c4.layout(rect->width());_c4;_c3;_c2;TextPainter textPainter = _c1;
+    textPainter->paint(canvas, AlignmentCls::center->inscribe(textPainter->size(), rect)->topLeft);
     canvas->restore();
 }
 
@@ -217,12 +217,12 @@ int _SemanticsDebuggerPainterCls::_findDepth(SemanticsNode node) {
 
 void _SemanticsDebuggerPainterCls::_paint(Canvas canvas, SemanticsNode node, int rank) {
     canvas->save();
-    if (node->transform != nullptr) {
-        canvas->transform(node->transform!->storage());
+    if (node->transform() != nullptr) {
+        canvas->transform(node->transform()!->storage());
     }
-    Rect rect = node->rect;
+    Rect rect = node->rect();
     if (!rect->isEmpty()) {
-        Color lineColor = make<ColorCls>(0xFF000000 + math->make<RandomCls>(node->id)->nextInt(0xFFFFFF));
+        Color lineColor = make<ColorCls>(0xFF000000 + math->make<RandomCls>(node->id())->nextInt(0xFFFFFF));
         Rect innerRect = rect->deflate(rank * 1.0);
         if (innerRect->isEmpty()) {
                     auto _c1 = make<PaintCls>();        _c1.color = auto _c2 = lineColor;        _c2.style = PaintingStyleCls::fill;        _c2;Paint fill = _c1;

@@ -1,6 +1,6 @@
 #include "raw_keyboard_web.hpp"
 String _unicodeChar(String key) {
-    if (key->length == 1) {
+    if (key->length() == 1) {
         return key->substring(0, 1);
     }
     return nullptr;
@@ -18,7 +18,7 @@ String RawKeyEventDataWebCls::keyLabel() {
 }
 
 PhysicalKeyboardKey RawKeyEventDataWebCls::physicalKey() {
-    return kWebToPhysicalKey[code] or make<PhysicalKeyboardKeyCls>(LogicalKeyboardKeyCls::webPlane + code->hashCode);
+    return kWebToPhysicalKey[code] or make<PhysicalKeyboardKeyCls>(LogicalKeyboardKeyCls::webPlane + code->hashCode());
 }
 
 LogicalKeyboardKey RawKeyEventDataWebCls::logicalKey() {
@@ -30,11 +30,11 @@ LogicalKeyboardKey RawKeyEventDataWebCls::logicalKey() {
     if (newKey != nullptr) {
         return newKey;
     }
-    bool isPrintable = key->length == 1;
+    bool isPrintable = key->length() == 1;
     if (isPrintable) {
         return make<LogicalKeyboardKeyCls>(key->toLowerCase()->codeUnitAt(0));
     }
-    return make<LogicalKeyboardKeyCls>(code->hashCode + LogicalKeyboardKeyCls::webPlane);
+    return make<LogicalKeyboardKeyCls>(code->hashCode() + LogicalKeyboardKeyCls::webPlane);
 }
 
 bool RawKeyEventDataWebCls::isModifierPressed(ModifierKey key, KeyboardSide side) {

@@ -2,7 +2,7 @@
 void TextInputTypeCls::numberWithOptions(bool decimal, bool signed)
 
 Map<String, dynamic> TextInputTypeCls::toJson() {
-    Map<String, dynamic> map1 = make<MapCls<>>();map1.set(__s("name"), _name);map1.set(__s("signed"), signed);map1.set(__s("decimal"), decimal);return list1;
+    Map<String, dynamic> map1 = make<MapCls<>>();map1.set(__s("name"), _name());map1.set(__s("signed"), signed);map1.set(__s("decimal"), decimal);return list1;
 }
 
 String TextInputTypeCls::toString() {
@@ -82,7 +82,7 @@ TextEditingValue TextEditingValueCls::copyWith(TextRange composing, TextSelectio
 }
 
 bool TextEditingValueCls::isComposingRangeValid() {
-    return composing->isValid() && composing->isNormalized() && composing->end <= text->length;
+    return composing->isValid() && composing->isNormalized() && composing->end <= text->length();
 }
 
 TextEditingValue TextEditingValueCls::replaced(TextRange replacementRange, String replacementString) {
@@ -90,7 +90,7 @@ TextEditingValue TextEditingValueCls::replaced(TextRange replacementRange, Strin
         return this;
     }
     String newText = text->replaceRange(replacementRange->start, replacementRange->end, replacementString);
-    if (replacementRange->end - replacementRange->start == replacementString->length) {
+    if (replacementRange->end - replacementRange->start == replacementString->length()) {
         return copyWith(newText);
     }
     InlineMethod;
@@ -119,15 +119,15 @@ bool TextEditingValueCls::==(Object other) {
 }
 
 int TextEditingValueCls::hashCode() {
-    return ObjectCls->hash(text->hashCode, selection->hashCode, composing->hashCode);
+    return ObjectCls->hash(text->hashCode(), selection->hashCode(), composing->hashCode());
 }
 
 bool TextEditingValueCls::_textRangeIsValid(TextRange range, String text) {
     if (range->start == -1 && range->end == -1) {
         return true;
     }
-    assert(range->start >= 0 && range->start <= text->length, __s("Range start ${range.start} is out of text of length ${text.length}"));
-    assert(range->end >= 0 && range->end <= text->length, __s("Range end ${range.end} is out of text of length ${text.length}"));
+    assert(range->start >= 0 && range->start <= text->length(), __s("Range start ${range.start} is out of text of length ${text.length}"));
+    assert(range->end >= 0 && range->end <= text->length(), __s("Range end ${range.end} is out of text of length ${text.length}"));
     return true;
 }
 
@@ -214,7 +214,7 @@ void TextInputConnectionCls::setEditableSizeAndTransform(Size editableBoxSize, M
     if (editableBoxSize != _cachedSize || transform != _cachedTransform) {
         _cachedSize = editableBoxSize;
         _cachedTransform = transform;
-            Map<String, dynamic> map1 = make<MapCls<>>();    map1.set(__s("width"), editableBoxSize->width);    map1.set(__s("height"), editableBoxSize->height);    map1.set(__s("transform"), transform->storage());TextInputCls::_instance->_setEditableSizeAndTransform(list1);
+            Map<String, dynamic> map1 = make<MapCls<>>();    map1.set(__s("width"), editableBoxSize->width());    map1.set(__s("height"), editableBoxSize->height());    map1.set(__s("transform"), transform->storage());TextInputCls::_instance->_setEditableSizeAndTransform(list1);
     }
 }
 
@@ -225,7 +225,7 @@ void TextInputConnectionCls::setComposingRect(Rect rect) {
     }
     _cachedRect = rect;
     Rect validRect = rect->isFinite()? rect : OffsetCls::zero & make<SizeCls>(-1, -1);
-    Map<String, dynamic> map1 = make<MapCls<>>();map1.set(__s("width"), validRect->width);map1.set(__s("height"), validRect->height);map1.set(__s("x"), validRect->left);map1.set(__s("y"), validRect->top);TextInputCls::_instance->_setComposingTextRect(list1);
+    Map<String, dynamic> map1 = make<MapCls<>>();map1.set(__s("width"), validRect->width());map1.set(__s("height"), validRect->height());map1.set(__s("x"), validRect->left);map1.set(__s("y"), validRect->top);TextInputCls::_instance->_setComposingTextRect(list1);
 }
 
 void TextInputConnectionCls::setCaretRect(Rect rect) {
@@ -235,7 +235,7 @@ void TextInputConnectionCls::setCaretRect(Rect rect) {
     }
     _cachedCaretRect = rect;
     Rect validRect = rect->isFinite()? rect : OffsetCls::zero & make<SizeCls>(-1, -1);
-    Map<String, dynamic> map1 = make<MapCls<>>();map1.set(__s("width"), validRect->width);map1.set(__s("height"), validRect->height);map1.set(__s("x"), validRect->left);map1.set(__s("y"), validRect->top);TextInputCls::_instance->_setCaretRect(list1);
+    Map<String, dynamic> map1 = make<MapCls<>>();map1.set(__s("width"), validRect->width());map1.set(__s("height"), validRect->height());map1.set(__s("x"), validRect->left);map1.set(__s("y"), validRect->top);TextInputCls::_instance->_setCaretRect(list1);
 }
 
 void TextInputConnectionCls::setSelectionRects(List<SelectionRect> selectionRects) {
@@ -378,7 +378,7 @@ Future<dynamic> TextInputCls::_handleTextInputInvocation(MethodCall methodCall) 
         List<double> args = (as<List<dynamic>>(methodCall->arguments))-><num>cast()-><double>map([=] (num value) {
     value->toDouble();
 })->toList();
-        return _scribbleClients->keys->where([=] (String elementIdentifier) {
+        return _scribbleClients->keys()->where([=] (String elementIdentifier) {
             Rect rect = RectCls->fromLTWH(args[0], args[1], args[2], args[3]);
             if (!(_scribbleClients[elementIdentifier]?->isInScribbleRect(rect) or false)) {
                 return false;
@@ -419,7 +419,7 @@ Future<dynamic> TextInputCls::_handleTextInputInvocation(MethodCall methodCall) 
         TextInputClient client = _currentConnection!->_client;
         AutofillScope scope = client->currentAutofillScope();
         Map<String, dynamic> editingValue = as<Map<String, dynamic>>(args[1]);
-        for (String tag : editingValue->keys) {
+        for (String tag : editingValue->keys()) {
             TextEditingValue textEditingValue = TextEditingValueCls->fromJSON(as<Map<String, dynamic>>(editingValue[tag]));
             AutofillClient client = scope?->getAutofillClient(tag);
             if (client != nullptr && client->textInputConfiguration()->autofillConfiguration->enabled) {

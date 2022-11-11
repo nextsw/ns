@@ -74,7 +74,7 @@ void RenderSliverOpacityCls::opacity(double value) {
         markNeedsCompositingBitsUpdate();
     }
     markNeedsPaint();
-    if (wasVisible != (_alpha != 0) && !alwaysIncludeSemantics) {
+    if (wasVisible != (_alpha != 0) && !alwaysIncludeSemantics()) {
         markNeedsSemanticsUpdate();
     }
 }
@@ -107,15 +107,15 @@ void RenderSliverOpacityCls::paint(PaintingContext context, Offset offset) {
 }
 
 void RenderSliverOpacityCls::visitChildrenForSemantics(RenderObjectVisitor visitor) {
-    if (child != nullptr && (_alpha != 0 || alwaysIncludeSemantics)) {
+    if (child != nullptr && (_alpha != 0 || alwaysIncludeSemantics())) {
         visitor(child!);
     }
 }
 
 void RenderSliverOpacityCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(make<DoublePropertyCls>(__s("opacity"), opacity));
-    properties->add(make<FlagPropertyCls>(__s("alwaysIncludeSemantics")alwaysIncludeSemantics, __s("alwaysIncludeSemantics")));
+    properties->add(make<DoublePropertyCls>(__s("opacity"), opacity()));
+    properties->add(make<FlagPropertyCls>(__s("alwaysIncludeSemantics")alwaysIncludeSemantics(), __s("alwaysIncludeSemantics")));
 }
 
 RenderSliverIgnorePointerCls::RenderSliverIgnorePointerCls(bool ignoring, bool ignoringSemantics, RenderSliver sliver) {
@@ -160,7 +160,7 @@ void RenderSliverIgnorePointerCls::ignoringSemantics(bool value) {
 }
 
 bool RenderSliverIgnorePointerCls::hitTest(double crossAxisPosition, double mainAxisPosition, SliverHitTestResult result) {
-    return !ignoring && super->hitTest(resultmainAxisPosition, crossAxisPosition);
+    return !ignoring() && super->hitTest(resultmainAxisPosition, crossAxisPosition);
 }
 
 void RenderSliverIgnorePointerCls::visitChildrenForSemantics(RenderObjectVisitor visitor) {
@@ -171,12 +171,12 @@ void RenderSliverIgnorePointerCls::visitChildrenForSemantics(RenderObjectVisitor
 
 void RenderSliverIgnorePointerCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<bool>make<DiagnosticsPropertyCls>(__s("ignoring"), ignoring));
-    properties->add(<bool>make<DiagnosticsPropertyCls>(__s("ignoringSemantics"), _effectiveIgnoringSemantics()ignoringSemantics == nullptr? __s("implicitly $_effectiveIgnoringSemantics") : nullptr));
+    properties->add(<bool>make<DiagnosticsPropertyCls>(__s("ignoring"), ignoring()));
+    properties->add(<bool>make<DiagnosticsPropertyCls>(__s("ignoringSemantics"), _effectiveIgnoringSemantics()ignoringSemantics() == nullptr? __s("implicitly $_effectiveIgnoringSemantics") : nullptr));
 }
 
 bool RenderSliverIgnorePointerCls::_effectiveIgnoringSemantics() {
-    return ignoringSemantics or ignoring;
+    return ignoringSemantics() or ignoring();
 }
 
 RenderSliverOffstageCls::RenderSliverOffstageCls(bool offstage, RenderSliver sliver) {
@@ -205,7 +205,7 @@ void RenderSliverOffstageCls::offstage(bool value) {
 void RenderSliverOffstageCls::performLayout() {
     assert(child != nullptr);
     child!->layout(constraintstrue);
-    if (!offstage) {
+    if (!offstage()) {
         geometry = child!->geometry;
     } else {
         geometry = SliverGeometryCls::zero;
@@ -213,22 +213,22 @@ void RenderSliverOffstageCls::performLayout() {
 }
 
 bool RenderSliverOffstageCls::hitTest(double crossAxisPosition, double mainAxisPosition, SliverHitTestResult result) {
-    return !offstage && super->hitTest(resultmainAxisPosition, crossAxisPosition);
+    return !offstage() && super->hitTest(resultmainAxisPosition, crossAxisPosition);
 }
 
 bool RenderSliverOffstageCls::hitTestChildren(double crossAxisPosition, double mainAxisPosition, SliverHitTestResult result) {
-    return !offstage && child != nullptr && child!->geometry!->hitTestExtent > 0 && child!->hitTest(resultmainAxisPosition, crossAxisPosition);
+    return !offstage() && child != nullptr && child!->geometry!->hitTestExtent > 0 && child!->hitTest(resultmainAxisPosition, crossAxisPosition);
 }
 
 void RenderSliverOffstageCls::paint(PaintingContext context, Offset offset) {
-    if (offstage) {
+    if (offstage()) {
         return;
     }
     context->paintChild(child!, offset);
 }
 
 void RenderSliverOffstageCls::visitChildrenForSemantics(RenderObjectVisitor visitor) {
-    if (offstage) {
+    if (offstage()) {
         return;
     }
     super->visitChildrenForSemantics(visitor);
@@ -236,7 +236,7 @@ void RenderSliverOffstageCls::visitChildrenForSemantics(RenderObjectVisitor visi
 
 void RenderSliverOffstageCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<bool>make<DiagnosticsPropertyCls>(__s("offstage"), offstage));
+    properties->add(<bool>make<DiagnosticsPropertyCls>(__s("offstage"), offstage()));
 }
 
 List<DiagnosticsNode> RenderSliverOffstageCls::debugDescribeChildren() {

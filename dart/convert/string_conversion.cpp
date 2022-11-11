@@ -28,7 +28,7 @@ void _StringConversionSinkAsStringSinkAdapterCls::close() {
 
 void _StringConversionSinkAsStringSinkAdapterCls::writeCharCode(int charCode) {
     _buffer->writeCharCode(charCode);
-    if (_buffer->length > _MIN_STRING_SIZECls)     {
+    if (_buffer->length() > _MIN_STRING_SIZECls)     {
         _flush();
     }
 }
@@ -42,7 +42,7 @@ void _StringConversionSinkAsStringSinkAdapterCls::write(Object o) {
 
 void _StringConversionSinkAsStringSinkAdapterCls::writeln(Object o) {
     _buffer->writeln(o);
-    if (_buffer->length > _MIN_STRING_SIZECls)     {
+    if (_buffer->length() > _MIN_STRING_SIZECls)     {
         _flush();
     }
 }
@@ -81,7 +81,7 @@ void _StringConversionSinkAsStringSinkAdapterCls::_flush() {
 }
 
 void StringConversionSinkMixinCls::add(String str) {
-    addSlice(str, 0, str->length, false);
+    addSlice(str, 0, str->length(), false);
 }
 
 ByteConversionSink StringConversionSinkMixinCls::asUtf8Sink(bool allowMalformed) {
@@ -96,7 +96,7 @@ template<typename TStringSink> void _StringSinkConversionSinkCls<TStringSink>::c
 }
 
 template<typename TStringSink> void _StringSinkConversionSinkCls<TStringSink>::addSlice(int end, bool isLast, int start, String str) {
-    if (start != 0 || end != str->length) {
+    if (start != 0 || end != str->length()) {
         for (;  < end; i++) {
             _stringSink->writeCharCode(str->codeUnitAt(i));
         }
@@ -138,7 +138,7 @@ void _StringAdapterSinkCls::add(String str) {
 }
 
 void _StringAdapterSinkCls::addSlice(int end, bool isLast, int start, String str) {
-    if (start == 0 && end == str->length) {
+    if (start == 0 && end == str->length()) {
         add(str);
     } else {
         add(str->substring(start, end));
@@ -158,7 +158,7 @@ void _Utf8StringSinkAdapterCls::close() {
 }
 
 void _Utf8StringSinkAdapterCls::add(List<int> chunk) {
-    addSlice(chunk, 0, chunk->length, false);
+    addSlice(chunk, 0, chunk->length(), false);
 }
 
 void _Utf8StringSinkAdapterCls::addSlice(List<int> codeUnits, int endIndex, bool isLast, int startIndex) {
@@ -179,21 +179,21 @@ void _Utf8ConversionSinkCls::close() {
     if (_buffer->isNotEmpty()) {
         auto accumulated = _buffer->toString();
         _buffer->clear();
-        _chunkedSink->addSlice(accumulated, 0, accumulated->length, true);
+        _chunkedSink->addSlice(accumulated, 0, accumulated->length(), true);
     } else {
         _chunkedSink->close();
     }
 }
 
 void _Utf8ConversionSinkCls::add(List<int> chunk) {
-    addSlice(chunk, 0, chunk->length, false);
+    addSlice(chunk, 0, chunk->length(), false);
 }
 
 void _Utf8ConversionSinkCls::addSlice(List<int> chunk, int endIndex, bool isLast, int startIndex) {
     _buffer->write(_decoder->convertChunked(chunk, startIndex, endIndex));
     if (_buffer->isNotEmpty()) {
         auto accumulated = _buffer->toString();
-        _chunkedSink->addSlice(accumulated, 0, accumulated->length, isLast);
+        _chunkedSink->addSlice(accumulated, 0, accumulated->length(), isLast);
         _buffer->clear();
         return;
     }

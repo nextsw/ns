@@ -30,9 +30,9 @@ LogicalKeyboardKey RawKeyEventDataIosCls::logicalKey() {
         return knownKey;
     }
     if (keyLabel()->isNotEmpty() && !LogicalKeyboardKeyCls->isControlCharacter(keyLabel()) && !_isUnprintableKey(keyLabel())) {
-        assert(charactersIgnoringModifiers->length <= 2);
+        assert(charactersIgnoringModifiers->length() <= 2);
         int codeUnit = charactersIgnoringModifiers->codeUnitAt(0);
-        if (charactersIgnoringModifiers->length == 2) {
+        if (charactersIgnoringModifiers->length() == 2) {
             int secondCode = charactersIgnoringModifiers->codeUnitAt(1);
             codeUnit = (codeUnit << 16) | secondCode;
         }
@@ -78,7 +78,7 @@ int RawKeyEventDataIosCls::hashCode() {
 }
 
 bool RawKeyEventDataIosCls::_isUnprintableKey(String label) {
-    if (label->length != 1) {
+    if (label->length() != 1) {
         return false;
     }
     int codeUnit = label->codeUnitAt(0);

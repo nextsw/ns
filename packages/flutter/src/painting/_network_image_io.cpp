@@ -12,14 +12,14 @@ Future<NetworkImage> NetworkImageCls::obtainKey(ImageConfiguration configuration
 
 ImageStreamCompleter NetworkImageCls::load(DecoderCallback decode, NetworkImage key) {
     StreamController<ImageChunkEvent> chunkEvents = <ImageChunkEvent>make<StreamControllerCls>();
-    return make<MultiFrameImageStreamCompleterCls>(_loadAsync(as<NetworkImage>(key), chunkEvents, nullptr, decode), chunkEvents->stream, key->scale, key->url, [=] ()     {
+    return make<MultiFrameImageStreamCompleterCls>(_loadAsync(as<NetworkImage>(key), chunkEvents, nullptr, decode), chunkEvents->stream(), key->scale, key->url, [=] ()     {
         makeList(ArrayItem, ArrayItem);
     });
 }
 
 ImageStreamCompleter NetworkImageCls::loadBuffer(DecoderBufferCallback decode, NetworkImage key) {
     StreamController<ImageChunkEvent> chunkEvents = <ImageChunkEvent>make<StreamControllerCls>();
-    return make<MultiFrameImageStreamCompleterCls>(_loadAsync(as<NetworkImage>(key), chunkEvents, decode, nullptr), chunkEvents->stream, key->scale, key->url, [=] ()     {
+    return make<MultiFrameImageStreamCompleterCls>(_loadAsync(as<NetworkImage>(key), chunkEvents, decode, nullptr), chunkEvents->stream(), key->scale, key->url, [=] ()     {
         makeList(ArrayItem, ArrayItem);
     });
 }

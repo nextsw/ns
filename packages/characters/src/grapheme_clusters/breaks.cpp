@@ -152,7 +152,7 @@ bool isGraphemeClusterBoundary(int end, int index, int start, String text) {
     assert(0 <= start);
     assert(start <= index);
     assert(index <= end);
-    assert(end <= text->length);
+    assert(end <= text->length());
     if ( < index &&  < end) {
         auto char = text->codeUnitAt(index);
         auto prevChar = text->codeUnitAt(index - 1);
@@ -204,7 +204,7 @@ int previousBreak(int end, int index, int start, String text) {
     assert(0 <= start);
     assert(start <= index);
     assert(index <= end);
-    assert(end <= text->length);
+    assert(end <= text->length());
     if (index == start || index == end)     {
         return index;
     }
@@ -237,7 +237,7 @@ int nextBreak(int end, int index, int start, String text) {
     assert(0 <= start);
     assert(start <= index);
     assert(index <= end);
-    assert(end <= text->length);
+    assert(end <= text->length());
     if (index == start || index == end)     {
         return index;
     }
@@ -283,5 +283,5 @@ int nextBreak(int end, int index, int start, String text) {
         state = move(stateSoTNoBreak, prevCategory);
     }
 ;
-    }    return make<BreaksCls>(text, index, text->length, state)->nextBreak();
+    }    return make<BreaksCls>(text, index, text->length(), state)->nextBreak();
 }

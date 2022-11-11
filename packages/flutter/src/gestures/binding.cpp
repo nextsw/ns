@@ -39,7 +39,7 @@ void _ResamplerCls::sample(SamplingClock clock, Duration samplingOffset) {
     Duration frameTime = _frameTime + make<DurationCls>(elapsedUs);
     Duration sampleTime = frameTime + samplingOffset;
     Duration nextSampleTime = sampleTime + _samplingInterval;
-    for (PointerEventResampler resampler : _resamplers->values) {
+    for (PointerEventResampler resampler : _resamplers->values()) {
         resampler->sample(sampleTime, nextSampleTime, _handlePointerEvent);
     }
     _resamplers->removeWhere([=] (int key,PointerEventResampler resampler) {
@@ -66,7 +66,7 @@ void _ResamplerCls::sample(SamplingClock clock, Duration samplingOffset) {
 }
 
 void _ResamplerCls::stop() {
-    for (PointerEventResampler resampler : _resamplers->values) {
+    for (PointerEventResampler resampler : _resamplers->values()) {
         resampler->stop(_handlePointerEvent);
     }
     _resamplers->clear();
@@ -135,7 +135,7 @@ void GestureBindingCls::dispatchEvent(PointerEvent event, HitTestResult hitTestR
         };
         return;
     }
-    for (HitTestEntry entry : hitTestResult->path) {
+    for (HitTestEntry entry : hitTestResult->path()) {
         try {
             entry->target->handleEvent(event->transformed(entry->transform), entry);
         } catch (Unknown exception) {

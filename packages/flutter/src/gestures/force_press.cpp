@@ -57,14 +57,14 @@ void ForcePressGestureRecognizerCls::handleEvent(PointerEvent event) {
             _state = _ForceStateCls::peaked;
             if (onPeak != nullptr) {
                 <void>invokeCallback(__s("onPeak"), [=] ()                 {
-                    onPeak!(make<ForcePressDetailsCls>(pressure, event->position, event->localPosition));
+                    onPeak!(make<ForcePressDetailsCls>(pressure, event->position, event->localPosition()));
                 });
             }
         }
         if (onUpdate != nullptr && !pressure->isNaN && (_state == _ForceStateCls::started || _state == _ForceStateCls::peaked)) {
             if (onUpdate != nullptr) {
                 <void>invokeCallback(__s("onUpdate"), [=] ()                 {
-                    onUpdate!(make<ForcePressDetailsCls>(pressure, event->position, event->localPosition));
+                    onUpdate!(make<ForcePressDetailsCls>(pressure, event->position, event->localPosition()));
                 });
             }
         }

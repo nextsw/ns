@@ -239,7 +239,7 @@ void RestorationBucketCls::finalize() {
 void RestorationBucketCls::rename(String newRestorationId) {
     assert(_debugAssertNotDisposed());
     assert(newRestorationId != nullptr);
-    if (newRestorationId == restorationId) {
+    if (newRestorationId == restorationId()) {
         return;
     }
     _parent?->_removeChildData(this);
@@ -317,7 +317,7 @@ bool RestorationBucketCls::_debugAssertIntegrity() {
             return true;
         }
         List<DiagnosticsNode> error = makeList(ArrayItem, ArrayItem);
-        for (MapEntry<String, List<RestorationBucket>> child : _childrenToAdd->entries) {
+        for (MapEntry<String, List<RestorationBucket>> child : _childrenToAdd->entries()) {
             String id = child->key;
             List<RestorationBucket> buckets = child->value;
             assert(buckets->isNotEmpty);
@@ -332,14 +332,14 @@ bool RestorationBucketCls::_debugAssertIntegrity() {
 void RestorationBucketCls::_removeChildData(RestorationBucket child) {
     assert(child != nullptr);
     assert(child->_parent == this);
-    if (_claimedChildren->remove(child->restorationId) == child) {
-        _rawChildren()->remove(child->restorationId);
-        List<RestorationBucket> pendingChildren = _childrenToAdd[child->restorationId];
+    if (_claimedChildren->remove(child->restorationId()) == child) {
+        _rawChildren()->remove(child->restorationId());
+        List<RestorationBucket> pendingChildren = _childrenToAdd[child->restorationId()];
         if (pendingChildren != nullptr) {
             RestorationBucket toAdd = pendingChildren->removeLast();
             _finalizeAddChildData(toAdd);
             if (pendingChildren->isEmpty) {
-                _childrenToAdd->remove(child->restorationId);
+                _childrenToAdd->remove(child->restorationId());
             }
         }
         if (_rawChildren()->isEmpty()) {
@@ -348,17 +348,17 @@ void RestorationBucketCls::_removeChildData(RestorationBucket child) {
         _markNeedsSerialization();
         return;
     }
-    _childrenToAdd[child->restorationId]?->remove(child);
-    if (_childrenToAdd[child->restorationId]?->isEmpty() or false) {
-        _childrenToAdd->remove(child->restorationId);
+    _childrenToAdd[child->restorationId()]?->remove(child);
+    if (_childrenToAdd[child->restorationId()]?->isEmpty() or false) {
+        _childrenToAdd->remove(child->restorationId());
     }
 }
 
 void RestorationBucketCls::_addChildData(RestorationBucket child) {
     assert(child != nullptr);
     assert(child->_parent == this);
-    if (_claimedChildren->containsKey(child->restorationId)) {
-        _childrenToAdd->putIfAbsent(child->restorationId, [=] ()         {
+    if (_claimedChildren->containsKey(child->restorationId())) {
+        _childrenToAdd->putIfAbsent(child->restorationId(), [=] ()         {
             makeList();
         })->add(child);
         _markNeedsSerialization();
@@ -369,14 +369,14 @@ void RestorationBucketCls::_addChildData(RestorationBucket child) {
 }
 
 void RestorationBucketCls::_finalizeAddChildData(RestorationBucket child) {
-    assert(_claimedChildren[child->restorationId] == nullptr);
-    assert(_rawChildren()[child->restorationId] == nullptr);
-    _claimedChildren[child->restorationId] = child;
-    _rawChildren()[child->restorationId] = child->_rawData;
+    assert(_claimedChildren[child->restorationId()] == nullptr);
+    assert(_rawChildren()[child->restorationId()] == nullptr);
+    _claimedChildren[child->restorationId()] = child;
+    _rawChildren()[child->restorationId()] = child->_rawData;
 }
 
 void RestorationBucketCls::_visitChildren(bool concurrentModification, _BucketVisitor visitor) {
-    Iterable<RestorationBucket> children = _claimedChildren->values->followedBy(_childrenToAdd->values->expand([=] (List<RestorationBucket> buckets) {
+    Iterable<RestorationBucket> children = _claimedChildren->values()->followedBy(_childrenToAdd->values()->expand([=] (List<RestorationBucket> buckets) {
     buckets;
 }));
     if (concurrentModification) {

@@ -54,11 +54,11 @@ void _Latin1DecoderSinkCls::close() {
 }
 
 void _Latin1DecoderSinkCls::add(List<int> source) {
-    addSlice(source, 0, source->length, false);
+    addSlice(source, 0, source->length(), false);
 }
 
 void _Latin1DecoderSinkCls::addSlice(int end, bool isLast, List<int> source, int start) {
-    RangeErrorCls->checkValidRange(start, end, source->length);
+    RangeErrorCls->checkValidRange(start, end, source->length());
     if (start == end)     {
         return;
     }
@@ -97,7 +97,7 @@ void _Latin1DecoderSinkCls::_reportInvalidLatin1(int end, List<int> source, int 
 }
 
 void _Latin1AllowInvalidDecoderSinkCls::addSlice(int end, bool isLast, List<int> source, int start) {
-    RangeErrorCls->checkValidRange(start, end, source->length);
+    RangeErrorCls->checkValidRange(start, end, source->length());
     for (;  < end; i++) {
         auto char = source[i];
         if (char > _latin1Mask ||  < 0) {

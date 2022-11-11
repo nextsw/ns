@@ -21,16 +21,16 @@ void PaintingContextCls::repaintCompositedChild(RenderObject child, bool debugAl
 void PaintingContextCls::updateLayerProperties(RenderObject child) {
     assert(child->isRepaintBoundary() && child->_wasRepaintBoundary);
     assert(!child->_needsPaint);
-    assert(child->_layerHandle->layer != nullptr);
-    OffsetLayer childLayer = as<OffsetLayer>(child->_layerHandle->layer!);
+    assert(child->_layerHandle->layer() != nullptr);
+    OffsetLayer childLayer = as<OffsetLayer>(child->_layerHandle->layer()!);
     Offset debugOldOffset;
     assert([=] () {
-        debugOldOffset = childLayer->offset;
+        debugOldOffset = childLayer->offset();
         return true;
     }());
     OffsetLayer updatedLayer = child->updateCompositedLayer(childLayer);
     assert(identical(updatedLayer, childLayer), __s("$child created a new layer instance $updatedLayer instead of reusing the existing layer $childLayer. See the documentation of RenderObject.updateCompositedLayer for more information on how to correctly implement this method."));
-    assert(debugOldOffset == updatedLayer->offset);
+    assert(debugOldOffset == updatedLayer->offset());
     child->_needsCompositedLayerUpdate = false;
 }
 
@@ -51,8 +51,8 @@ void PaintingContextCls::paintChild(RenderObject child, Offset offset) {
         _compositeChild(child, offset);
     } else     {
         if (child->_wasRepaintBoundary) {
-        assert(is<OffsetLayer>(child->_layerHandle->layer));
-        child->_layerHandle->layer = nullptr;
+        assert(is<OffsetLayer>(child->_layerHandle->layer()));
+        child->_layerHandle->layer() = nullptr;
         child->_paintWithContext(this, offset);
     } else {
         child->_paintWithContext(this, offset);
@@ -85,26 +85,26 @@ void PaintingContextCls::stopRecordingIfNeeded() {
     assert([=] () {
         if (debugRepaintRainbowEnabled) {
                     auto _c1 = make<PaintCls>();        _c1.style = auto _c2 = PaintingStyleCls::stroke;        _c2.strokeWidth = auto _c3 = 6.0;        _c3.color = debugCurrentRepaintColor->toColor();        _c3;        _c2;Paint paint = _c1;
-            canvas->drawRect(estimatedBounds->deflate(3.0), paint);
+            canvas()->drawRect(estimatedBounds->deflate(3.0), paint);
         }
         if (debugPaintLayerBordersEnabled) {
                     auto _c4 = make<PaintCls>();        _c4.style = auto _c5 = PaintingStyleCls::stroke;        _c5.strokeWidth = auto _c6 = 1.0;        _c6.color = make<ColorCls>(0xFFFF9800);        _c6;        _c5;Paint paint = _c4;
-            canvas->drawRect(estimatedBounds, paint);
+            canvas()->drawRect(estimatedBounds, paint);
         }
         return true;
     }());
-    _currentLayer!->picture = _recorder!->endRecording();
+    _currentLayer!->picture() = _recorder!->endRecording();
     _currentLayer = nullptr;
     _recorder = nullptr;
     _canvas = nullptr;
 }
 
 void PaintingContextCls::setIsComplexHint() {
-    _currentLayer?->isComplexHint = true;
+    _currentLayer?->isComplexHint() = true;
 }
 
 void PaintingContextCls::setWillChangeHint() {
-    _currentLayer?->willChangeHint = true;
+    _currentLayer?->willChangeHint() = true;
 }
 
 void PaintingContextCls::addLayer(Layer layer) {
@@ -198,16 +198,16 @@ ColorFilterLayer PaintingContextCls::pushColorFilter(ColorFilter colorFilter, Of
 }
 
 TransformLayer PaintingContextCls::pushTransform(bool needsCompositing, Offset offset, TransformLayer oldLayer, PaintingContextCallback painter, Matrix4 transform) {
-    auto _c1 = Matrix4Cls->translationValues(offset->dx, offset->dy, 0.0);_c1.auto _c2 = multiply(transform);_c2.translate(-offset->dx, -offset->dy);_c2;Matrix4 effectiveTransform = _c1;
+    auto _c1 = Matrix4Cls->translationValues(offset->dx(), offset->dy(), 0.0);_c1.auto _c2 = multiply(transform);_c2.translate(-offset->dx(), -offset->dy());_c2;Matrix4 effectiveTransform = _c1;
     if (needsCompositing) {
         TransformLayer layer = oldLayer or make<TransformLayerCls>();
         layer->transform = effectiveTransform;
         pushLayer(layer, painter, offsetMatrixUtilsCls->inverseTransformRect(effectiveTransform, estimatedBounds));
         return layer;
     } else {
-            auto _c3 = canvas;    _c3.auto _c4 = save();    _c4.transform(effectiveTransform->storage());    _c4;_c3;
+            auto _c3 = canvas();    _c3.auto _c4 = save();    _c4.transform(effectiveTransform->storage());    _c4;_c3;
         painter(this, offset);
-        canvas->restore();
+        canvas()->restore();
         return nullptr;
     }
 }
@@ -229,34 +229,34 @@ void PaintingContextCls::_repaintCompositedChild(RenderObject child, PaintingCon
         child->debugRegisterRepaintBoundaryPaint(debugAlsoPaintedParent, true);
         return true;
     }());
-    OffsetLayer childLayer = as<OffsetLayer>(child->_layerHandle->layer);
+    OffsetLayer childLayer = as<OffsetLayer>(child->_layerHandle->layer());
     if (childLayer == nullptr) {
         assert(debugAlsoPaintedParent);
-        assert(child->_layerHandle->layer == nullptr);
+        assert(child->_layerHandle->layer() == nullptr);
         OffsetLayer layer = child->updateCompositedLayer(nullptr);
         child->_layerHandle->layer = childLayer = layer;
     } else {
         assert(debugAlsoPaintedParent || childLayer->attached);
         Offset debugOldOffset;
         assert([=] () {
-            debugOldOffset = childLayer!->offset;
+            debugOldOffset = childLayer!->offset();
             return true;
         }());
         childLayer->removeAllChildren();
         OffsetLayer updatedLayer = child->updateCompositedLayer(childLayer);
         assert(identical(updatedLayer, childLayer), __s("$child created a new layer instance $updatedLayer instead of reusing the existing layer $childLayer. See the documentation of RenderObject.updateCompositedLayer for more information on how to correctly implement this method."));
-        assert(debugOldOffset == updatedLayer->offset);
+        assert(debugOldOffset == updatedLayer->offset());
     }
     child->_needsCompositedLayerUpdate = false;
-    assert(identical(childLayer, child->_layerHandle->layer));
-    assert(is<OffsetLayer>(child->_layerHandle->layer));
+    assert(identical(childLayer, child->_layerHandle->layer()));
+    assert(is<OffsetLayer>(child->_layerHandle->layer()));
     assert([=] () {
         childLayer!->debugCreator = child->debugCreator or child->runtimeType;
         return true;
     }());
     childContext = make<PaintingContextCls>(childLayer, child->paintBounds());
     child->_paintWithContext(childContext, OffsetCls::zero);
-    assert(identical(childLayer, child->_layerHandle->layer));
+    assert(identical(childLayer, child->_layerHandle->layer()));
     childContext->stopRecordingIfNeeded();
 }
 
@@ -272,12 +272,12 @@ void PaintingContextCls::_compositeChild(RenderObject child, Offset offset) {
         }
         assert([=] () {
             child->debugRegisterRepaintBoundaryPaint();
-            child->_layerHandle->layer!->debugCreator = child->debugCreator or child;
+            child->_layerHandle->layer()!->debugCreator = child->debugCreator or child;
             return true;
         }());
     }
-    assert(is<OffsetLayer>(child->_layerHandle->layer));
-    OffsetLayer childOffsetLayer = as<OffsetLayer>(child->_layerHandle->layer!);
+    assert(is<OffsetLayer>(child->_layerHandle->layer()));
+    OffsetLayer childOffsetLayer = as<OffsetLayer>(child->_layerHandle->layer()!);
     childOffsetLayer->offset = offset;
     appendLayer(childOffsetLayer);
 }
@@ -314,14 +314,14 @@ bool ConstraintsCls::debugAssertIsValid(InformationCollector informationCollecto
 
 void SemanticsHandleCls::dispose() {
     if (listener != nullptr) {
-        _owner->semanticsOwner!->removeListener(listener!);
+        _owner->semanticsOwner()!->removeListener(listener!);
     }
     _owner->_didDisposeSemanticsHandle();
 }
 
 void SemanticsHandleCls::_(VoidCallback listener, PipelineOwner owner) {
     if (listener != nullptr) {
-        _owner->semanticsOwner!->addListener(listener!);
+        _owner->semanticsOwner()!->addListener(listener!);
     }
 }
 
@@ -369,16 +369,16 @@ void PipelineOwnerCls::flushLayout() {
             dirtyNodes->sort([=] (RenderObject a,RenderObject b)             {
                 a->depth - b->depth;
             });
-            for (;  < dirtyNodes->length; i++) {
+            for (;  < dirtyNodes->length(); i++) {
                 if (_shouldMergeDirtyNodes) {
                     _shouldMergeDirtyNodes = false;
                     if (_nodesNeedingLayout->isNotEmpty) {
-                        _nodesNeedingLayout->addAll(dirtyNodes->getRange(i, dirtyNodes->length));
+                        _nodesNeedingLayout->addAll(dirtyNodes->getRange(i, dirtyNodes->length()));
                                                 break;
                     }
                 }
                 RenderObject node = dirtyNodes[i];
-                if (node->_needsLayout && node->owner == this) {
+                if (node->_needsLayout && node->owner() == this) {
                     node->_layoutWithoutResize();
                 }
             }
@@ -571,7 +571,7 @@ bool RenderObjectCls::debugDisposed() {
 
 void RenderObjectCls::dispose() {
     assert(!_debugDisposed);
-    _layerHandle->layer = nullptr;
+    _layerHandle->layer() = nullptr;
     assert([=] () {
         _debugDisposed = true;
         return true;
@@ -642,7 +642,7 @@ void RenderObjectCls::attach(PipelineOwner owner) {
         _needsCompositingBitsUpdate = false;
         markNeedsCompositingBitsUpdate();
     }
-    if (_needsPaint && _layerHandle->layer != nullptr) {
+    if (_needsPaint && _layerHandle->layer() != nullptr) {
         _needsPaint = false;
         markNeedsPaint();
     }
@@ -689,15 +689,15 @@ void RenderObjectCls::markNeedsLayout() {
         markParentNeedsLayout();
     } else {
         _needsLayout = true;
-        if (owner != nullptr) {
+        if (owner() != nullptr) {
             assert([=] () {
                 if (debugPrintMarkNeedsLayoutStacks) {
                     debugPrintStack(__s("markNeedsLayout() called for $this"));
                 }
                 return true;
             }());
-            owner!->_nodesNeedingLayout->add(this);
-            owner!->requestVisualUpdate();
+            owner()!->_nodesNeedingLayout->add(this);
+            owner()!->requestVisualUpdate();
         }
     }
 }
@@ -724,14 +724,14 @@ void RenderObjectCls::scheduleInitialLayout() {
     assert(!_debugDisposed);
     assert(attached);
     assert(!is<RenderObject>(parent));
-    assert(!owner!->_debugDoingLayout);
+    assert(!owner()!->_debugDoingLayout);
     assert(_relayoutBoundary == nullptr);
     _relayoutBoundary = this;
     assert([=] () {
         _debugCanParentUseSize = false;
         return true;
     }());
-    owner!->_nodesNeedingLayout->add(this);
+    owner()!->_nodesNeedingLayout->add(this);
 }
 
 void RenderObjectCls::layout(Constraints constraints, bool parentUsesSize) {
@@ -751,13 +751,13 @@ void RenderObjectCls::layout(Constraints constraints, bool parentUsesSize) {
         List<String> stack = StackTraceCls::current->toString()->split(__s("\n"));
         int targetFrame;
         Pattern layoutFramePattern = make<RegExpCls>(__s("^#[0-9]+ +RenderObject.layout \("));
-        for (;  < stack->length; i = 1) {
+        for (;  < stack->length(); i = 1) {
             if (layoutFramePattern->matchAsPrefix(stack[i]) != nullptr) {
                 targetFrame = i + 1;
                                 break;
             }
         }
-        if (targetFrame != nullptr &&  < stack->length) {
+        if (targetFrame != nullptr &&  < stack->length()) {
             Pattern targetFramePattern = make<RegExpCls>(__s("^#[0-9]+ +(.+)$"));
             Match targetFrameMatch = targetFramePattern->matchAsPrefix(stack[targetFrame]);
             String problemFunction = (targetFrameMatch != nullptr && targetFrameMatch->groupCount() > 0)? targetFrameMatch->group(1) : stack[targetFrame]->trim();
@@ -870,8 +870,8 @@ void RenderObjectCls::invokeLayoutCallbacktemplate<typename T> (LayoutCallback<T
     assert(!_doingThisLayoutWithCallback);
     _doingThisLayoutWithCallback = true;
     try {
-        owner!->_enableMutationsToDirtySubtrees([=] () {
-            callback(as<T>(constraints));
+        owner()!->_enableMutationsToDirtySubtrees([=] () {
+            callback(as<T>(constraints()));
         });
     } finally {
         _doingThisLayoutWithCallback = false;
@@ -903,19 +903,19 @@ OffsetLayer RenderObjectCls::updateCompositedLayer(OffsetLayer oldLayer) {
 }
 
 ContainerLayer RenderObjectCls::layer() {
-    assert(!isRepaintBoundary() || _layerHandle->layer == nullptr || is<OffsetLayer>(_layerHandle->layer));
-    return _layerHandle->layer;
+    assert(!isRepaintBoundary() || _layerHandle->layer() == nullptr || is<OffsetLayer>(_layerHandle->layer()));
+    return _layerHandle->layer();
 }
 
 void RenderObjectCls::layer(ContainerLayer newLayer) {
     assert(!isRepaintBoundary(), __s("Attempted to set a layer to a repaint boundary render object.\nThe framework creates and assigns an OffsetLayer to a repaint boundary automatically."));
-    _layerHandle->layer = newLayer;
+    _layerHandle->layer() = newLayer;
 }
 
 ContainerLayer RenderObjectCls::debugLayer() {
     ContainerLayer result;
     assert([=] () {
-        result = _layerHandle->layer;
+        result = _layerHandle->layer();
         return true;
     }());
     return result;
@@ -937,8 +937,8 @@ void RenderObjectCls::markNeedsCompositingBitsUpdate() {
             return;
         }
     }
-    if (owner != nullptr) {
-        owner!->_nodesNeedingCompositingBitsUpdate->add(this);
+    if (owner() != nullptr) {
+        owner()!->_nodesNeedingCompositingBitsUpdate->add(this);
     }
 }
 
@@ -967,7 +967,7 @@ bool RenderObjectCls::debugNeedsCompositedLayerUpdate() {
 
 void RenderObjectCls::markNeedsPaint() {
     assert(!_debugDisposed);
-    assert(owner == nullptr || !owner!->debugDoingPaint());
+    assert(owner() == nullptr || !owner()!->debugDoingPaint());
     if (_needsPaint) {
         return;
     }
@@ -979,10 +979,10 @@ void RenderObjectCls::markNeedsPaint() {
             }
             return true;
         }());
-        assert(is<OffsetLayer>(_layerHandle->layer));
-        if (owner != nullptr) {
-            owner!->_nodesNeedingPaint->add(this);
-            owner!->requestVisualUpdate();
+        assert(is<OffsetLayer>(_layerHandle->layer()));
+        if (owner() != nullptr) {
+            owner()!->_nodesNeedingPaint->add(this);
+            owner()!->requestVisualUpdate();
         }
     } else     {
         if (is<RenderObject>(parent)) {
@@ -996,8 +996,8 @@ void RenderObjectCls::markNeedsPaint() {
             }
             return true;
         }());
-        if (owner != nullptr) {
-            owner!->requestVisualUpdate();
+        if (owner() != nullptr) {
+            owner()!->requestVisualUpdate();
         }
     }
 ;
@@ -1005,16 +1005,16 @@ void RenderObjectCls::markNeedsPaint() {
 
 void RenderObjectCls::markNeedsCompositedLayerUpdate() {
     assert(!_debugDisposed);
-    assert(owner == nullptr || !owner!->debugDoingPaint());
+    assert(owner() == nullptr || !owner()!->debugDoingPaint());
     if (_needsCompositedLayerUpdate || _needsPaint) {
         return;
     }
     _needsCompositedLayerUpdate = true;
     if (isRepaintBoundary() && _wasRepaintBoundary) {
-        assert(_layerHandle->layer != nullptr);
-        if (owner != nullptr) {
-            owner!->_nodesNeedingPaint->add(this);
-            owner!->requestVisualUpdate();
+        assert(_layerHandle->layer() != nullptr);
+        if (owner() != nullptr) {
+            owner()!->_nodesNeedingPaint->add(this);
+            owner()!->requestVisualUpdate();
         }
     } else {
         markNeedsPaint();
@@ -1025,12 +1025,12 @@ void RenderObjectCls::scheduleInitialPaint(ContainerLayer rootLayer) {
     assert(rootLayer->attached);
     assert(attached);
     assert(!is<RenderObject>(parent));
-    assert(!owner!->_debugDoingPaint);
+    assert(!owner()!->_debugDoingPaint);
     assert(isRepaintBoundary());
-    assert(_layerHandle->layer == nullptr);
-    _layerHandle->layer = rootLayer;
+    assert(_layerHandle->layer() == nullptr);
+    _layerHandle->layer() = rootLayer;
     assert(_needsPaint);
-    owner!->_nodesNeedingPaint->add(this);
+    owner()!->_nodesNeedingPaint->add(this);
 }
 
 void RenderObjectCls::replaceRootLayer(OffsetLayer rootLayer) {
@@ -1038,11 +1038,11 @@ void RenderObjectCls::replaceRootLayer(OffsetLayer rootLayer) {
     assert(rootLayer->attached);
     assert(attached);
     assert(!is<RenderObject>(parent));
-    assert(!owner!->_debugDoingPaint);
+    assert(!owner()!->_debugDoingPaint);
     assert(isRepaintBoundary());
-    assert(_layerHandle->layer != nullptr);
-    _layerHandle->layer!->detach();
-    _layerHandle->layer = rootLayer;
+    assert(_layerHandle->layer() != nullptr);
+    _layerHandle->layer()!->detach();
+    _layerHandle->layer() = rootLayer;
     markNeedsPaint();
 }
 
@@ -1065,7 +1065,7 @@ Matrix4 RenderObjectCls::getTransformTo(RenderObject ancestor) {
     bool ancestorSpecified = ancestor != nullptr;
     assert(attached);
     if (ancestor == nullptr) {
-        AbstractNode rootNode = owner!->rootNode();
+        AbstractNode rootNode = owner()!->rootNode();
         if (is<RenderObject>(rootNode)) {
             ancestor = as<RenderObjectCls>(rootNode);
         }
@@ -1097,19 +1097,19 @@ void RenderObjectCls::scheduleInitialSemantics() {
     assert(!_debugDisposed);
     assert(attached);
     assert(!is<RenderObject>(parent));
-    assert(!owner!->_debugDoingSemantics);
+    assert(!owner()!->_debugDoingSemantics);
     assert(_semantics == nullptr);
     assert(_needsSemanticsUpdate);
-    assert(owner!->_semanticsOwner != nullptr);
-    owner!->_nodesNeedingSemantics->add(this);
-    owner!->requestVisualUpdate();
+    assert(owner()!->_semanticsOwner != nullptr);
+    owner()!->_nodesNeedingSemantics->add(this);
+    owner()!->requestVisualUpdate();
 }
 
 void RenderObjectCls::describeSemanticsConfiguration(SemanticsConfiguration config) {
 }
 
 void RenderObjectCls::sendSemanticsEvent(SemanticsEvent semanticsEvent) {
-    if (owner!->semanticsOwner() == nullptr) {
+    if (owner()!->semanticsOwner() == nullptr) {
         return;
     }
     if (_semantics != nullptr && !_semantics!->isMergedIntoParent()) {
@@ -1139,8 +1139,8 @@ void RenderObjectCls::clearSemantics() {
 
 void RenderObjectCls::markNeedsSemanticsUpdate() {
     assert(!_debugDisposed);
-    assert(!attached || !owner!->_debugDoingSemantics);
-    if (!attached || owner!->_semanticsOwner == nullptr) {
+    assert(!attached || !owner()!->_debugDoingSemantics);
+    if (!attached || owner()!->_semanticsOwner == nullptr) {
         _cachedSemanticsConfiguration = nullptr;
         return;
     }
@@ -1160,14 +1160,14 @@ void RenderObjectCls::markNeedsSemanticsUpdate() {
         }
     }
     if (node != this && _semantics != nullptr && _needsSemanticsUpdate) {
-        owner!->_nodesNeedingSemantics->remove(this);
+        owner()!->_nodesNeedingSemantics->remove(this);
     }
     if (!node->_needsSemanticsUpdate) {
         node->_needsSemanticsUpdate = true;
-        if (owner != nullptr) {
+        if (owner() != nullptr) {
             assert(node->_semanticsConfiguration()->isSemanticBoundary() || !is<RenderObject>(node->parent));
-            owner!->_nodesNeedingSemantics->add(node);
-            owner!->requestVisualUpdate();
+            owner()!->_nodesNeedingSemantics->add(node);
+            owner()!->requestVisualUpdate();
         }
     }
 }
@@ -1256,7 +1256,7 @@ void RenderObjectCls::debugFillProperties(DiagnosticPropertiesBuilder properties
     properties->add(<Object>make<DiagnosticsPropertyCls>(__s("creator"), debugCreatornullptr, DiagnosticLevelCls::debug));
     properties->add(<ParentData>make<DiagnosticsPropertyCls>(__s("parentData"), parentData(_debugCanParentUseSize or false)? __s("can use size") : nullptr, true));
     properties->add(<Constraints>make<DiagnosticsPropertyCls>(__s("constraints"), _constraintstrue));
-    properties->add(<ContainerLayer>make<DiagnosticsPropertyCls>(__s("layer"), _layerHandle->layernullptr));
+    properties->add(<ContainerLayer>make<DiagnosticsPropertyCls>(__s("layer"), _layerHandle->layer()nullptr));
     properties->add(<SemanticsNode>make<DiagnosticsPropertyCls>(__s("semantics node"), _semanticsnullptr));
     properties->add(make<FlagPropertyCls>(__s("isBlockingSemanticsOfPreviouslyPaintedNodes")_semanticsConfiguration()->isBlockingSemanticsOfPreviouslyPaintedNodes, __s("blocks semantics of earlier render objects below the common boundary")));
     properties->add(make<FlagPropertyCls>(__s("isSemanticBoundary")_semanticsConfiguration()->isSemanticBoundary(), __s("semantic boundary")));
@@ -1289,7 +1289,7 @@ bool RenderObjectCls::_debugCanPerformMutations() {
         if (_debugDisposed) {
             ;
         }
-        PipelineOwner owner = this->owner;
+        PipelineOwner owner = this->owner();
         if (owner == nullptr || !owner->debugDoingLayout()) {
             result = true;
             return true;
@@ -1421,7 +1421,7 @@ void RenderObjectCls::_updateCompositingBits() {
     if (!isRepaintBoundary() && _wasRepaintBoundary) {
         _needsPaint = false;
         _needsCompositedLayerUpdate = false;
-        owner?->_nodesNeedingPaint->remove(this);
+        owner()?->_nodesNeedingPaint->remove(this);
         _needsCompositingBitsUpdate = false;
         markNeedsPaint();
     } else     {
@@ -1438,20 +1438,20 @@ void RenderObjectCls::_skippedPaintingOnLayer() {
     assert(attached);
     assert(isRepaintBoundary());
     assert(_needsPaint || _needsCompositedLayerUpdate);
-    assert(_layerHandle->layer != nullptr);
-    assert(!_layerHandle->layer!->attached);
+    assert(_layerHandle->layer() != nullptr);
+    assert(!_layerHandle->layer()!->attached);
     AbstractNode node = parent;
     while (is<RenderObject>(node)) {
         if (node->isRepaintBoundary) {
-            if (node->_layerHandle->layer == nullptr) {
+            if (node->_layerHandle->layer() == nullptr) {
                                 break;
             }
-            if (node->_layerHandle->layer!->attached) {
+            if (node->_layerHandle->layer()!->attached) {
                                 break;
             }
             node->_needsPaint = true;
         }
-        node = node->parent;
+        node = node->parent();
     }
 }
 
@@ -1499,7 +1499,7 @@ void RenderObjectCls::_paintWithContext(PaintingContext context, Offset offset) 
         _debugDoingThisPaint = true;
         debugLastActivePaint = _debugActivePaint;
         _debugActivePaint = this;
-        assert(!isRepaintBoundary() || _layerHandle->layer != nullptr);
+        assert(!isRepaintBoundary() || _layerHandle->layer() != nullptr);
         return true;
     }());
     _needsPaint = false;
@@ -1536,13 +1536,13 @@ void RenderObjectCls::_updateSemantics() {
     if (_needsLayout) {
         return;
     }
-    _SemanticsFragment fragment = _getSemanticsForParent(_semantics?->parent?->isPartOfNodeMerging or false);
+    _SemanticsFragment fragment = _getSemanticsForParent(_semantics?->parent()?->isPartOfNodeMerging() or false);
     assert(is<_InterestingSemanticsFragment>(fragment));
     _InterestingSemanticsFragment interestingFragment = as<_InterestingSemanticsFragment>(fragment);
     List<SemanticsNode> result = makeList();
     interestingFragment->compileChildren(_semantics?->parentSemanticsClipRect, _semantics?->parentPaintClipRect, _semantics?->elevationAdjustment or 0.0, result);
     SemanticsNode node = result->single;
-    assert(interestingFragment->config == nullptr && node == _semantics);
+    assert(interestingFragment->config() == nullptr && node == _semantics);
 }
 
 _SemanticsFragment RenderObjectCls::_getSemanticsForParent(bool mergeIntoParent) {
@@ -1578,7 +1578,7 @@ _SemanticsFragment RenderObjectCls::_getSemanticsForParent(bool mergeIntoParent)
             if (!config->isCompatibleWith(fragment->config)) {
                 toBeMarkedExplicit->add(fragment);
             }
-            int siblingLength = fragments->length - 1;
+            int siblingLength = fragments->length() - 1;
             for (;  < siblingLength; i = 1) {
                 _InterestingSemanticsFragment siblingFragment = fragments[i];
                 if (!fragment->config!->isCompatibleWith(siblingFragment->config)) {
@@ -1663,7 +1663,7 @@ template<typename ChildType> void RenderObjectWithChildMixinCls<ChildType>::visi
 }
 
 template<typename ChildType> List<DiagnosticsNode> RenderObjectWithChildMixinCls<ChildType>::debugDescribeChildren() {
-    return child != nullptr? makeList(ArrayItem) : makeList();
+    return child() != nullptr? makeList(ArrayItem) : makeList();
 }
 
 template<typename ChildType> void ContainerParentDataMixinCls<ChildType>::detach() {
@@ -1926,7 +1926,7 @@ RenderObject _InterestingSemanticsFragmentCls::owner() {
 }
 
 bool _InterestingSemanticsFragmentCls::hasConfigForParent() {
-    return config != nullptr;
+    return config() != nullptr;
 }
 
 List<_InterestingSemanticsFragment> _InterestingSemanticsFragmentCls::interestingFragments() {
@@ -1960,10 +1960,10 @@ void _RootSemanticsFragmentCls::compileChildren(double elevationAdjustment, Rect
     assert(elevationAdjustment == 0.0);
     owner->_semantics = SemanticsNodeCls->root(owner->showOnScreen, owner->owner!->semanticsOwner!);
     SemanticsNode node = owner->_semantics!;
-    assert(MatrixUtilsCls->matrixEquals(node->transform, Matrix4Cls->identity()));
+    assert(MatrixUtilsCls->matrixEquals(node->transform(), Matrix4Cls->identity()));
     assert(node->parentSemanticsClipRect == nullptr);
     assert(node->parentPaintClipRect == nullptr);
-    node->rect = owner->semanticBounds();
+    node->rect() = owner->semanticBounds;
     List<SemanticsNode> children = makeList();
     for (_InterestingSemanticsFragment fragment : _children) {
         assert(fragment->config == nullptr);
@@ -1991,7 +1991,7 @@ void _SwitchableSemanticsFragmentCls::compileChildren(double elevationAdjustment
         for (_InterestingSemanticsFragment fragment : _children) {
             assert(_ancestorChain->first == fragment->_ancestorChain->last);
             fragment->_ancestorChain->addAll(_ancestorChain->skip(1));
-            fragment->compileChildren(parentSemanticsClipRect, parentPaintClipRect, elevationAdjustment + _config->elevation, result);
+            fragment->compileChildren(parentSemanticsClipRect, parentPaintClipRect, elevationAdjustment + _config->elevation(), result);
         }
         return;
     }
@@ -2004,21 +2004,21 @@ void _SwitchableSemanticsFragmentCls::compileChildren(double elevationAdjustment
     node->elevationAdjustment = elevationAdjustment;
     if (elevationAdjustment != 0.0) {
         _ensureConfigIsWritable();
-        _config->elevation = elevationAdjustment;
+        _config->elevation() = elevationAdjustment;
     }
     if (geometry != nullptr) {
         assert(_needsGeometryUpdate());
-            auto _c3 = node;    _c3.rect = auto _c4 = geometry->rect;    _c4.transform = auto _c5 = geometry->transform;    _c5.parentSemanticsClipRect = auto _c6 = geometry->semanticsClipRect();    _c6.parentPaintClipRect = geometry->paintClipRect();    _c6;    _c5;    _c4;_c3;
+            auto _c3 = node;    _c3.rect = auto _c4 = geometry->rect();    _c4.transform = auto _c5 = geometry->transform();    _c5.parentSemanticsClipRect = auto _c6 = geometry->semanticsClipRect();    _c6.parentPaintClipRect = geometry->paintClipRect();    _c6;    _c5;    _c4;_c3;
         if (!_mergeIntoParent && geometry->markAsHidden()) {
             _ensureConfigIsWritable();
-            _config->isHidden = true;
+            _config->isHidden() = true;
         }
     }
     List<SemanticsNode> children = makeList();
     for (_InterestingSemanticsFragment fragment : _children) {
         fragment->compileChildren(node->parentSemanticsClipRect, node->parentPaintClipRect, 0.0, children);
     }
-    if (_config->isSemanticBoundary) {
+    if (_config->isSemanticBoundary()) {
         owner->assembleSemanticsNode(node, _config, children);
     } else {
         node->updateWith(_config, children);
@@ -2096,7 +2096,7 @@ _SemanticsGeometryCls::_SemanticsGeometryCls(List<RenderObject> ancestors, Rect 
 }
 
 void _SemanticsGeometryCls::_computeValues(List<RenderObject> ancestors, Rect parentPaintClipRect, Rect parentSemanticsClipRect) {
-    assert(ancestors->length > 1);
+    assert(ancestors->length() > 1);
     _transform = Matrix4Cls->identity();
     _semanticsClipRect = parentSemanticsClipRect;
     _paintClipRect = parentPaintClipRect;

@@ -19,10 +19,10 @@ Color _sample(List<Color> colors, List<double> stops, double t) {
 }
 
 _ColorsAndStops _interpolateColorsAndStops(List<Color> aColors, List<double> aStops, List<Color> bColors, List<double> bStops, double t) {
-    assert(aColors->length >= 2);
-    assert(bColors->length >= 2);
-    assert(aStops->length == aColors->length);
-    assert(bStops->length == bColors->length);
+    assert(aColors->length() >= 2);
+    assert(bColors->length() >= 2);
+    assert(aStops->length() == aColors->length());
+    assert(bStops->length() == bColors->length());
     auto _c1 = <double>make<SplayTreeSetCls>();_c1.auto _c2 = addAll(aStops);_c2.addAll(bStops);_c2;SplayTreeSet<double> stops = _c1;
     List<double> interpolatedStops = stops->toList(false);
     List<Color> interpolatedColors = interpolatedStops-><Color>map([=] (double stop) {
@@ -35,9 +35,9 @@ Matrix4 GradientRotationCls::transform(Rect bounds, TextDirection textDirection)
     assert(bounds != nullptr);
     double sinRadians = math->sin(radians);
     double oneMinusCosRadians = 1 - math->cos(radians);
-    Offset center = bounds->center;
-    double originX = sinRadians * center->dy + oneMinusCosRadians * center->dx;
-    double originY = -sinRadians * center->dx + oneMinusCosRadians * center->dy;
+    Offset center = bounds->center();
+    double originX = sinRadians * center->dy() + oneMinusCosRadians * center->dx();
+    double originY = -sinRadians * center->dx() + oneMinusCosRadians * center->dy();
     auto _c1 = Matrix4Cls->identity();_c1.auto _c2 = translate(originX, originY);_c2.rotateZ(radians);_c2;return _c1;
 }
 
@@ -102,9 +102,9 @@ List<double> GradientCls::_impliedStops() {
     if (stops != nullptr) {
         return stops!;
     }
-    assert(colors->length >= 2, __s("colors list must have at least two colors"));
-    double separation = 1.0 / (colors->length - 1);
-    return <double>generate(colors->length, [=] (int index)     {
+    assert(colors->length() >= 2, __s("colors list must have at least two colors"));
+    double separation = 1.0 / (colors->length() - 1);
+    return <double>generate(colors->length(), [=] (int index)     {
         index * separation;
     }false);
 }

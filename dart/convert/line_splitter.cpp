@@ -1,6 +1,6 @@
 #include "line_splitter.hpp"
 Iterable<String> LineSplitterCls::split(int end, String lines, int start) {
-    end = RangeErrorCls->checkValidRange(start, end, lines->length);
+    end = RangeErrorCls->checkValidRange(start, end, lines->length());
     auto sliceStart = start;
     auto char = 0;
     for (;  < end; i++) {
@@ -27,7 +27,7 @@ Iterable<String> LineSplitterCls::split(int end, String lines, int start) {
 
 List<String> LineSplitterCls::convert(String data) {
     auto lines = makeList();
-    auto end = data->length;
+    auto end = data->length();
     auto sliceStart = 0;
     auto char = 0;
     for (;  < end; i++) {
@@ -62,7 +62,7 @@ Stream<String> LineSplitterCls::bind(Stream<String> stream) {
 }
 
 void _LineSplitterSinkCls::addSlice(String chunk, int end, bool isLast, int start) {
-    end = RangeErrorCls->checkValidRange(start, end, chunk->length);
+    end = RangeErrorCls->checkValidRange(start, end, chunk->length());
     if (start >= end) {
         if (isLast)         {
             close();
@@ -74,7 +74,7 @@ void _LineSplitterSinkCls::addSlice(String chunk, int end, bool isLast, int star
         assert(!_skipLeadingLF);
         chunk = carry + chunk->substring(start, end);
         start = 0;
-        end = chunk->length;
+        end = chunk->length();
         _carry = nullptr;
     } else     {
         if (_skipLeadingLF) {

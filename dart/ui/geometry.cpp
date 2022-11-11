@@ -58,55 +58,55 @@ double OffsetCls::dy() {
 }
 
 double OffsetCls::distance() {
-    return math->sqrt(dx * dx + dy * dy);
+    return math->sqrt(dx() * dx() + dy() * dy());
 }
 
 double OffsetCls::distanceSquared() {
-    return dx * dx + dy * dy;
+    return dx() * dx() + dy() * dy();
 }
 
 double OffsetCls::direction() {
-    return math->atan2(dy, dx);
+    return math->atan2(dy(), dx());
 }
 
 Offset OffsetCls::scale(double scaleX, double scaleY) {
-    return make<OffsetCls>(dx * scaleX, dy * scaleY);
+    return make<OffsetCls>(dx() * scaleX, dy() * scaleY);
 }
 
 Offset OffsetCls::translate(double translateX, double translateY) {
-    return make<OffsetCls>(dx + translateX, dy + translateY);
+    return make<OffsetCls>(dx() + translateX, dy() + translateY);
 }
 
 Offset OffsetCls::-() {
-    return make<OffsetCls>(-dx, -dy);
+    return make<OffsetCls>(-dx(), -dy());
 }
 
 Offset OffsetCls::-(Offset other) {
-    return make<OffsetCls>(dx - other->dx, dy - other->dy);
+    return make<OffsetCls>(dx() - other->dx(), dy() - other->dy());
 }
 
 Offset OffsetCls::+(Offset other) {
-    return make<OffsetCls>(dx + other->dx, dy + other->dy);
+    return make<OffsetCls>(dx() + other->dx(), dy() + other->dy());
 }
 
 Offset OffsetCls::*(double operand) {
-    return make<OffsetCls>(dx * operand, dy * operand);
+    return make<OffsetCls>(dx() * operand, dy() * operand);
 }
 
 Offset OffsetCls::/(double operand) {
-    return make<OffsetCls>(dx / operand, dy / operand);
+    return make<OffsetCls>(dx() / operand, dy() / operand);
 }
 
 Offset OffsetCls::~/(double operand) {
-    return make<OffsetCls>((dx ~/ operand)->toDouble(), (dy ~/ operand)->toDouble());
+    return make<OffsetCls>((dx() ~/ operand)->toDouble(), (dy() ~/ operand)->toDouble());
 }
 
 Offset OffsetCls::%(double operand) {
-    return make<OffsetCls>(dx % operand, dy % operand);
+    return make<OffsetCls>(dx() % operand, dy() % operand);
 }
 
 Rect OffsetCls::&(Size other) {
-    return RectCls->fromLTWH(dx, dy, other->width, other->height);
+    return RectCls->fromLTWH(dx(), dy(), other->width(), other->height());
 }
 
 Offset OffsetCls::lerp(Offset a, Offset b, double t) {
@@ -121,17 +121,17 @@ Offset OffsetCls::lerp(Offset a, Offset b, double t) {
         if (a == nullptr) {
             return b * t;
         } else {
-            return make<OffsetCls>(_lerpDouble(a->dx, b->dx, t), _lerpDouble(a->dy, b->dy, t));
+            return make<OffsetCls>(_lerpDouble(a->dx(), b->dx(), t), _lerpDouble(a->dy(), b->dy(), t));
         }
     }
 }
 
 bool OffsetCls::==(Object other) {
-    return is<Offset>(other) && other->dx == dx && other->dy == dy;
+    return is<Offset>(other) && other->dx == dx() && other->dy == dy();
 }
 
 int OffsetCls::hashCode() {
-    return ObjectCls->hash(dx, dy);
+    return ObjectCls->hash(dx(), dy());
 }
 
 String OffsetCls::toString() {
@@ -160,10 +160,10 @@ double SizeCls::height() {
 }
 
 double SizeCls::aspectRatio() {
-    if (height != 0.0)     {
-        return width / height;
+    if (height() != 0.0)     {
+        return width() / height();
     }
-    if (width > 0.0)     {
+    if (width() > 0.0)     {
         return double->infinity;
     }
     if ( < 0.0)     {
@@ -173,45 +173,45 @@ double SizeCls::aspectRatio() {
 }
 
 bool SizeCls::isEmpty() {
-    return width <= 0.0 || height <= 0.0;
+    return width() <= 0.0 || height() <= 0.0;
 }
 
 OffsetBase SizeCls::-(OffsetBase other) {
     if (is<Size>(other))     {
-        return make<OffsetCls>(width - as<SizeCls>(other)->width, height - as<SizeCls>(other)->height);
+        return make<OffsetCls>(width() - as<SizeCls>(other)->width(), height() - as<SizeCls>(other)->height());
     }
     if (is<Offset>(other))     {
-        return make<SizeCls>(width - as<OffsetCls>(other)->dx, height - as<OffsetCls>(other)->dy);
+        return make<SizeCls>(width() - as<OffsetCls>(other)->dx(), height() - as<OffsetCls>(other)->dy());
     }
     ;
 }
 
 Size SizeCls::+(Offset other) {
-    return make<SizeCls>(width + other->dx, height + other->dy);
+    return make<SizeCls>(width() + other->dx(), height() + other->dy());
 }
 
 Size SizeCls::*(double operand) {
-    return make<SizeCls>(width * operand, height * operand);
+    return make<SizeCls>(width() * operand, height() * operand);
 }
 
 Size SizeCls::/(double operand) {
-    return make<SizeCls>(width / operand, height / operand);
+    return make<SizeCls>(width() / operand, height() / operand);
 }
 
 Size SizeCls::~/(double operand) {
-    return make<SizeCls>((width ~/ operand)->toDouble(), (height ~/ operand)->toDouble());
+    return make<SizeCls>((width() ~/ operand)->toDouble(), (height() ~/ operand)->toDouble());
 }
 
 Size SizeCls::%(double operand) {
-    return make<SizeCls>(width % operand, height % operand);
+    return make<SizeCls>(width() % operand, height() % operand);
 }
 
 double SizeCls::shortestSide() {
-    return math->min(width->abs(), height->abs());
+    return math->min(width()->abs(), height()->abs());
 }
 
 double SizeCls::longestSide() {
-    return math->max(width->abs(), height->abs());
+    return math->max(width()->abs(), height()->abs());
 }
 
 Offset SizeCls::topLeft(Offset origin) {
@@ -219,43 +219,43 @@ Offset SizeCls::topLeft(Offset origin) {
 }
 
 Offset SizeCls::topCenter(Offset origin) {
-    return make<OffsetCls>(origin->dx + width / 2.0, origin->dy);
+    return make<OffsetCls>(origin->dx() + width() / 2.0, origin->dy());
 }
 
 Offset SizeCls::topRight(Offset origin) {
-    return make<OffsetCls>(origin->dx + width, origin->dy);
+    return make<OffsetCls>(origin->dx() + width(), origin->dy());
 }
 
 Offset SizeCls::centerLeft(Offset origin) {
-    return make<OffsetCls>(origin->dx, origin->dy + height / 2.0);
+    return make<OffsetCls>(origin->dx(), origin->dy() + height() / 2.0);
 }
 
 Offset SizeCls::center(Offset origin) {
-    return make<OffsetCls>(origin->dx + width / 2.0, origin->dy + height / 2.0);
+    return make<OffsetCls>(origin->dx() + width() / 2.0, origin->dy() + height() / 2.0);
 }
 
 Offset SizeCls::centerRight(Offset origin) {
-    return make<OffsetCls>(origin->dx + width, origin->dy + height / 2.0);
+    return make<OffsetCls>(origin->dx() + width(), origin->dy() + height() / 2.0);
 }
 
 Offset SizeCls::bottomLeft(Offset origin) {
-    return make<OffsetCls>(origin->dx, origin->dy + height);
+    return make<OffsetCls>(origin->dx(), origin->dy() + height());
 }
 
 Offset SizeCls::bottomCenter(Offset origin) {
-    return make<OffsetCls>(origin->dx + width / 2.0, origin->dy + height);
+    return make<OffsetCls>(origin->dx() + width() / 2.0, origin->dy() + height());
 }
 
 Offset SizeCls::bottomRight(Offset origin) {
-    return make<OffsetCls>(origin->dx + width, origin->dy + height);
+    return make<OffsetCls>(origin->dx() + width(), origin->dy() + height());
 }
 
 bool SizeCls::contains(Offset offset) {
-    return offset->dx >= 0.0 && offset->dx < width && offset->dy >= 0.0 && offset->dy < height;
+    return offset->dx() >= 0.0 && offset->dx() < width() && offset->dy() >= 0.0 && offset->dy() < height();
 }
 
 Size SizeCls::flipped() {
-    return make<SizeCls>(height, width);
+    return make<SizeCls>(height(), width());
 }
 
 Size SizeCls::lerp(Size a, Size b, double t) {
@@ -270,7 +270,7 @@ Size SizeCls::lerp(Size a, Size b, double t) {
         if (a == nullptr) {
             return b * t;
         } else {
-            return make<SizeCls>(_lerpDouble(a->width, b->width, t), _lerpDouble(a->height, b->height, t));
+            return make<SizeCls>(_lerpDouble(a->width(), b->width(), t), _lerpDouble(a->height(), b->height(), t));
         }
     }
 }
@@ -306,7 +306,7 @@ double RectCls::height() {
 }
 
 Size RectCls::size() {
-    return make<SizeCls>(width, height);
+    return make<SizeCls>(width(), height());
 }
 
 bool RectCls::hasNaN() {
@@ -326,7 +326,7 @@ bool RectCls::isEmpty() {
 }
 
 Rect RectCls::shift(Offset offset) {
-    return RectCls->fromLTRB(left + offset->dx, top + offset->dy, right + offset->dx, bottom + offset->dy);
+    return RectCls->fromLTRB(left + offset->dx(), top + offset->dy(), right + offset->dx(), bottom + offset->dy());
 }
 
 Rect RectCls::translate(double translateX, double translateY) {
@@ -360,11 +360,11 @@ bool RectCls::overlaps(Rect other) {
 }
 
 double RectCls::shortestSide() {
-    return math->min(width->abs(), height->abs());
+    return math->min(width()->abs(), height()->abs());
 }
 
 double RectCls::longestSide() {
-    return math->max(width->abs(), height->abs());
+    return math->max(width()->abs(), height()->abs());
 }
 
 Offset RectCls::topLeft() {
@@ -372,7 +372,7 @@ Offset RectCls::topLeft() {
 }
 
 Offset RectCls::topCenter() {
-    return make<OffsetCls>(left + width / 2.0, top);
+    return make<OffsetCls>(left + width() / 2.0, top);
 }
 
 Offset RectCls::topRight() {
@@ -380,15 +380,15 @@ Offset RectCls::topRight() {
 }
 
 Offset RectCls::centerLeft() {
-    return make<OffsetCls>(left, top + height / 2.0);
+    return make<OffsetCls>(left, top + height() / 2.0);
 }
 
 Offset RectCls::center() {
-    return make<OffsetCls>(left + width / 2.0, top + height / 2.0);
+    return make<OffsetCls>(left + width() / 2.0, top + height() / 2.0);
 }
 
 Offset RectCls::centerRight() {
-    return make<OffsetCls>(right, top + height / 2.0);
+    return make<OffsetCls>(right, top + height() / 2.0);
 }
 
 Offset RectCls::bottomLeft() {
@@ -396,7 +396,7 @@ Offset RectCls::bottomLeft() {
 }
 
 Offset RectCls::bottomCenter() {
-    return make<OffsetCls>(left + width / 2.0, bottom);
+    return make<OffsetCls>(left + width() / 2.0, bottom);
 }
 
 Offset RectCls::bottomRight() {
@@ -404,7 +404,7 @@ Offset RectCls::bottomRight() {
 }
 
 bool RectCls::contains(Offset offset) {
-    return offset->dx >= left && offset->dx < right && offset->dy >= top && offset->dy < bottom;
+    return offset->dx() >= left && offset->dx() < right && offset->dy() >= top && offset->dy() < bottom;
 }
 
 Rect RectCls::lerp(Rect a, Rect b, double t) {
@@ -547,7 +547,7 @@ Radius RRectCls::blRadius() {
 }
 
 RRect RRectCls::shift(Offset offset) {
-    return RRectCls->_raw(left + offset->dx, top + offset->dy, right + offset->dx, bottom + offset->dy, tlRadiusX, tlRadiusY, trRadiusX, trRadiusY, blRadiusX, blRadiusY, brRadiusX, brRadiusY);
+    return RRectCls->_raw(left + offset->dx(), top + offset->dy(), right + offset->dx(), bottom + offset->dy(), tlRadiusX, tlRadiusY, trRadiusX, trRadiusY, blRadiusX, blRadiusY, brRadiusX, brRadiusY);
 }
 
 RRect RRectCls::inflate(double delta) {
@@ -612,23 +612,23 @@ bool RRectCls::isRect() {
 }
 
 bool RRectCls::isStadium() {
-    return tlRadius() == trRadius() && trRadius() == brRadius() && brRadius() == blRadius() && (width <= 2.0 * tlRadiusX || height <= 2.0 * tlRadiusY);
+    return tlRadius() == trRadius() && trRadius() == brRadius() && brRadius() == blRadius() && (width() <= 2.0 * tlRadiusX || height() <= 2.0 * tlRadiusY);
 }
 
 bool RRectCls::isEllipse() {
-    return tlRadius() == trRadius() && trRadius() == brRadius() && brRadius() == blRadius() && width <= 2.0 * tlRadiusX && height <= 2.0 * tlRadiusY;
+    return tlRadius() == trRadius() && trRadius() == brRadius() && brRadius() == blRadius() && width() <= 2.0 * tlRadiusX && height() <= 2.0 * tlRadiusY;
 }
 
 bool RRectCls::isCircle() {
-    return width == height && isEllipse();
+    return width() == height() && isEllipse();
 }
 
 double RRectCls::shortestSide() {
-    return math->min(width->abs(), height->abs());
+    return math->min(width()->abs(), height()->abs());
 }
 
 double RRectCls::longestSide() {
-    return math->max(width->abs(), height->abs());
+    return math->max(width()->abs(), height()->abs());
 }
 
 bool RRectCls::hasNaN() {
@@ -636,15 +636,15 @@ bool RRectCls::hasNaN() {
 }
 
 Offset RRectCls::center() {
-    return make<OffsetCls>(left + width / 2.0, top + height / 2.0);
+    return make<OffsetCls>(left + width() / 2.0, top + height() / 2.0);
 }
 
 RRect RRectCls::scaleRadii() {
     double scale = 1.0;
-    scale = _getMin(scale, blRadiusY, tlRadiusY, height);
-    scale = _getMin(scale, tlRadiusX, trRadiusX, width);
-    scale = _getMin(scale, trRadiusY, brRadiusY, height);
-    scale = _getMin(scale, brRadiusX, blRadiusX, width);
+    scale = _getMin(scale, blRadiusY, tlRadiusY, height());
+    scale = _getMin(scale, tlRadiusX, trRadiusX, width());
+    scale = _getMin(scale, trRadiusY, brRadiusY, height());
+    scale = _getMin(scale, brRadiusX, blRadiusX, width());
     if ( < 1.0) {
         return RRectCls->_raw(top, left, right, bottom, tlRadiusX * scale, tlRadiusY * scale, trRadiusX * scale, trRadiusY * scale, blRadiusX * scale, blRadiusY * scale, brRadiusX * scale, brRadiusY * scale);
     }
@@ -652,7 +652,7 @@ RRect RRectCls::scaleRadii() {
 }
 
 bool RRectCls::contains(Offset point) {
-    if (point->dx < left || point->dx >= right || point->dy < top || point->dy >= bottom)     {
+    if (point->dx() < left || point->dx() >= right || point->dy() < top || point->dy() >= bottom)     {
         return false;
     }
     RRect scaled = scaleRadii();
@@ -660,27 +660,27 @@ bool RRectCls::contains(Offset point) {
     double y;
     double radiusX;
     double radiusY;
-    if (point->dx < left + scaled->tlRadiusX && point->dy < top + scaled->tlRadiusY) {
-        x = point->dx - left - scaled->tlRadiusX;
-        y = point->dy - top - scaled->tlRadiusY;
+    if (point->dx() < left + scaled->tlRadiusX && point->dy() < top + scaled->tlRadiusY) {
+        x = point->dx() - left - scaled->tlRadiusX;
+        y = point->dy() - top - scaled->tlRadiusY;
         radiusX = scaled->tlRadiusX;
         radiusY = scaled->tlRadiusY;
     } else     {
-        if (point->dx > right - scaled->trRadiusX && point->dy < top + scaled->trRadiusY) {
-        x = point->dx - right + scaled->trRadiusX;
-        y = point->dy - top - scaled->trRadiusY;
+        if (point->dx() > right - scaled->trRadiusX && point->dy() < top + scaled->trRadiusY) {
+        x = point->dx() - right + scaled->trRadiusX;
+        y = point->dy() - top - scaled->trRadiusY;
         radiusX = scaled->trRadiusX;
         radiusY = scaled->trRadiusY;
     } else     {
-        if (point->dx > right - scaled->brRadiusX && point->dy > bottom - scaled->brRadiusY) {
-        x = point->dx - right + scaled->brRadiusX;
-        y = point->dy - bottom + scaled->brRadiusY;
+        if (point->dx() > right - scaled->brRadiusX && point->dy() > bottom - scaled->brRadiusY) {
+        x = point->dx() - right + scaled->brRadiusX;
+        y = point->dy() - bottom + scaled->brRadiusY;
         radiusX = scaled->brRadiusX;
         radiusY = scaled->brRadiusY;
     } else     {
-        if (point->dx < left + scaled->blRadiusX && point->dy > bottom - scaled->blRadiusY) {
-        x = point->dx - left - scaled->blRadiusX;
-        y = point->dy - bottom + scaled->blRadiusY;
+        if (point->dx() < left + scaled->blRadiusX && point->dy() > bottom - scaled->blRadiusY) {
+        x = point->dx() - left - scaled->blRadiusX;
+        y = point->dy() - bottom + scaled->blRadiusY;
         radiusX = scaled->blRadiusX;
         radiusY = scaled->blRadiusY;
     } else {

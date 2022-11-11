@@ -43,7 +43,7 @@ String KeyDataCls::_quotedCharCode() {
     if (character == nullptr)     {
         return __s("");
     }
-    Iterable<String> hexChars = character!->codeUnits->map([=] (int code) {
+    Iterable<String> hexChars = character!->codeUnits()->map([=] (int code) {
     code->toRadixString(16)->padLeft(2, __s("0"));
 });
     return __s(" (0x${hexChars.join(' ')})");

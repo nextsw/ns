@@ -15,7 +15,7 @@ void _AutomaticKeepAliveStateCls::didUpdateWidget(AutomaticKeepAlive oldWidget) 
 
 void _AutomaticKeepAliveStateCls::dispose() {
     if (_handles != nullptr) {
-        for (Listenable handle : _handles!->keys) {
+        for (Listenable handle : _handles!->keys()) {
             handle->removeListener(_handles![handle]!);
         }
     }

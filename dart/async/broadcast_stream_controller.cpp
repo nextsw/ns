@@ -120,7 +120,7 @@ template<typename T> Future _BroadcastStreamControllerCls<T>::addStream(bool can
         ;
     }
     _state = _STATE_ADDSTREAMCls;
-    auto addStreamState = make<_AddStreamStateCls>(this, stream(), cancelOnError or false);
+    auto addStreamState = make<_AddStreamStateCls>(this, stream, cancelOnError or false);
     _addStreamState = addStreamState;
     return addStreamState->addStreamFuture;
 }

@@ -94,7 +94,7 @@ bool RenderFlowCls::isRepaintBoundary() {
 }
 
 double RenderFlowCls::computeMinIntrinsicWidth(double height) {
-    double width = _getSize(BoxConstraintsCls->tightForFinite(height))->width;
+    double width = _getSize(BoxConstraintsCls->tightForFinite(height))->width();
     if (width->isFinite) {
         return width;
     }
@@ -102,7 +102,7 @@ double RenderFlowCls::computeMinIntrinsicWidth(double height) {
 }
 
 double RenderFlowCls::computeMaxIntrinsicWidth(double height) {
-    double width = _getSize(BoxConstraintsCls->tightForFinite(height))->width;
+    double width = _getSize(BoxConstraintsCls->tightForFinite(height))->width();
     if (width->isFinite) {
         return width;
     }
@@ -110,7 +110,7 @@ double RenderFlowCls::computeMaxIntrinsicWidth(double height) {
 }
 
 double RenderFlowCls::computeMinIntrinsicHeight(double width) {
-    double height = _getSize(BoxConstraintsCls->tightForFinite(width))->height;
+    double height = _getSize(BoxConstraintsCls->tightForFinite(width))->height();
     if (height->isFinite) {
         return height;
     }
@@ -118,7 +118,7 @@ double RenderFlowCls::computeMinIntrinsicHeight(double width) {
 }
 
 double RenderFlowCls::computeMaxIntrinsicHeight(double width) {
-    double height = _getSize(BoxConstraintsCls->tightForFinite(width))->height;
+    double height = _getSize(BoxConstraintsCls->tightForFinite(width))->height();
     if (height->isFinite) {
         return height;
     }
@@ -147,10 +147,10 @@ void RenderFlowCls::performLayout() {
 }
 
 Size RenderFlowCls::getChildSize(int i) {
-    if ( < 0 || i >= _randomAccessChildren->length) {
+    if ( < 0 || i >= _randomAccessChildren->length()) {
         return nullptr;
     }
-    return _randomAccessChildren[i]->size;
+    return _randomAccessChildren[i]->size();
 }
 
 void RenderFlowCls::paintChild(int i, double opacity, Matrix4 transform) {
@@ -179,11 +179,11 @@ void RenderFlowCls::paintChild(int i, double opacity, Matrix4 transform) {
 }
 
 void RenderFlowCls::paint(PaintingContext context, Offset offset) {
-    _clipRectLayer->layer = context->pushClipRect(needsCompositing, offset, OffsetCls::zero & size, _paintWithDelegateclipBehavior, _clipRectLayer->layer);
+    _clipRectLayer->layer() = context->pushClipRect(needsCompositing, offset, OffsetCls::zero & size, _paintWithDelegateclipBehavior(), _clipRectLayer->layer());
 }
 
 void RenderFlowCls::dispose() {
-    _clipRectLayer->layer = nullptr;
+    _clipRectLayer->layer() = nullptr;
     super->dispose();
 }
 
@@ -191,7 +191,7 @@ bool RenderFlowCls::hitTestChildren(Offset position, BoxHitTestResult result) {
     List<RenderBox> children = getChildrenAsList();
     for (; i >= 0; --i) {
         int childIndex = _lastPaintOrder[i];
-        if (childIndex >= children->length) {
+        if (childIndex >= children->length()) {
             continue;
         }
         RenderBox child = children[childIndex];

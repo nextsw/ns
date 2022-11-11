@@ -10,7 +10,7 @@ Map<String, dynamic> SemanticsEventCls::toMap(int nodeId) {
 String SemanticsEventCls::toString() {
     List<String> pairs = makeList();
     Map<String, dynamic> dataMap = getDataMap();
-    auto _c1 = dataMap->keys->toList();_c1.sort();List<String> sortedKeys = _c1;
+    auto _c1 = dataMap->keys()->toList();_c1.sort();List<String> sortedKeys = _c1;
     for (String key : sortedKeys) {
         pairs->add(__s("$key: ${dataMap[key]}"));
     }

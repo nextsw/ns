@@ -37,7 +37,7 @@ bool debugItemsHaveDuplicateKeys(Iterable<Widget> items) {
 
 bool debugCheckHasTable(BuildContext context) {
     assert([=] () {
-        if (!is<Table>(context->widget) && context-><Table>findAncestorWidgetOfExactType() == nullptr) {
+        if (!is<Table>(context->widget()) && context-><Table>findAncestorWidgetOfExactType() == nullptr) {
             ;
         }
         return true;
@@ -47,7 +47,7 @@ bool debugCheckHasTable(BuildContext context) {
 
 bool debugCheckHasMediaQuery(BuildContext context) {
     assert([=] () {
-        if (!is<MediaQuery>(context->widget) && context-><MediaQuery>getElementForInheritedWidgetOfExactType() == nullptr) {
+        if (!is<MediaQuery>(context->widget()) && context-><MediaQuery>getElementForInheritedWidgetOfExactType() == nullptr) {
             ;
         }
         return true;
@@ -57,7 +57,7 @@ bool debugCheckHasMediaQuery(BuildContext context) {
 
 bool debugCheckHasDirectionality(String alternative, BuildContext context, String hint, String why) {
     assert([=] () {
-        if (!is<Directionality>(context->widget) && context-><Directionality>getElementForInheritedWidgetOfExactType() == nullptr) {
+        if (!is<Directionality>(context->widget()) && context-><Directionality>getElementForInheritedWidgetOfExactType() == nullptr) {
             why = why == nullptr? __s("") : __s(" $why");
             ;
         }
@@ -90,7 +90,7 @@ bool debugCheckHasWidgetsLocalizations(BuildContext context) {
 
 bool debugCheckHasOverlay(BuildContext context) {
     assert([=] () {
-        if (!is<Overlay>(context->widget) && context-><Overlay>findAncestorWidgetOfExactType() == nullptr) {
+        if (!is<Overlay>(context->widget()) && context-><Overlay>findAncestorWidgetOfExactType() == nullptr) {
             ;
         }
         return true;

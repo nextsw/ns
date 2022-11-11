@@ -1,10 +1,10 @@
 #include "animation.hpp"
 template<typename T> bool AnimationCls<T>::isDismissed() {
-    return status == AnimationStatusCls::dismissed;
+    return status() == AnimationStatusCls::dismissed;
 }
 
 template<typename T> bool AnimationCls<T>::isCompleted() {
-    return status == AnimationStatusCls::completed;
+    return status() == AnimationStatusCls::completed;
 }
 
 template<typename T> Animation<U> AnimationCls<T>::drivetemplate<typename U> (Animatable<U> child) {
@@ -17,6 +17,6 @@ template<typename T> String AnimationCls<T>::toString() {
 }
 
 template<typename T> String AnimationCls<T>::toStringDetails() {
-    assert(status != nullptr);
+    assert(status() != nullptr);
     ;
 }

@@ -136,7 +136,7 @@ void RenderSliverEdgeInsetsPaddingCls::debugPaint(PaintingContext context, Offse
                 assert(innerRect->right <= outerRect->right);
                 assert(innerRect->bottom <= outerRect->bottom);
             }
-            debugPaintPadding(context->canvas, outerRect, innerRect);
+            debugPaintPadding(context->canvas(), outerRect, innerRect);
         }
         return true;
     }());
@@ -164,7 +164,7 @@ EdgeInsetsGeometry RenderSliverPaddingCls::padding() {
 
 void RenderSliverPaddingCls::padding(EdgeInsetsGeometry value) {
     assert(value != nullptr);
-    assert(padding->isNonNegative());
+    assert(padding()->isNonNegative());
     if (_padding == value) {
         return;
     }
@@ -191,15 +191,15 @@ void RenderSliverPaddingCls::performLayout() {
 
 void RenderSliverPaddingCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<EdgeInsetsGeometry>make<DiagnosticsPropertyCls>(__s("padding"), padding));
-    properties->add(<TextDirection>make<EnumPropertyCls>(__s("textDirection"), textDirectionnullptr));
+    properties->add(<EdgeInsetsGeometry>make<DiagnosticsPropertyCls>(__s("padding"), padding()));
+    properties->add(<TextDirection>make<EnumPropertyCls>(__s("textDirection"), textDirection()nullptr));
 }
 
 void RenderSliverPaddingCls::_resolve() {
     if (resolvedPadding() != nullptr) {
         return;
     }
-    _resolvedPadding = padding->resolve(textDirection);
+    _resolvedPadding = padding()->resolve(textDirection());
     assert(resolvedPadding()!->isNonNegative);
 }
 

@@ -68,10 +68,10 @@ String BeveledRectangleBorderCls::toString() {
 }
 
 Path BeveledRectangleBorderCls::_getPath(RRect rrect) {
-    Offset centerLeft = make<OffsetCls>(rrect->left, rrect->center->dy);
-    Offset centerRight = make<OffsetCls>(rrect->right, rrect->center->dy);
-    Offset centerTop = make<OffsetCls>(rrect->center->dx, rrect->top);
-    Offset centerBottom = make<OffsetCls>(rrect->center->dx, rrect->bottom);
+    Offset centerLeft = make<OffsetCls>(rrect->left, rrect->center()->dy());
+    Offset centerRight = make<OffsetCls>(rrect->right, rrect->center()->dy());
+    Offset centerTop = make<OffsetCls>(rrect->center()->dx(), rrect->top);
+    Offset centerBottom = make<OffsetCls>(rrect->center()->dx(), rrect->bottom);
     double tlRadiusX = math->max(0.0, rrect->tlRadiusX);
     double tlRadiusY = math->max(0.0, rrect->tlRadiusY);
     double trRadiusX = math->max(0.0, rrect->trRadiusX);

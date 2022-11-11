@@ -45,7 +45,7 @@ List<InlineSpanSemanticsInformation> combineSemanticsInfo(List<InlineSpanSemanti
             workingText = info->text;
             String effectiveLabel = info->semanticsLabel or info->text;
             for (StringAttribute infoAttribute : info->stringAttributes) {
-                workingAttributes->add(infoAttribute->copy(make<TextRangeCls>(infoAttribute->range->start + workingLabel->length, infoAttribute->range->end + workingLabel->length)));
+                workingAttributes->add(infoAttribute->copy(make<TextRangeCls>(infoAttribute->range->start + workingLabel->length(), infoAttribute->range->end + workingLabel->length())));
             }
             workingLabel = effectiveLabel;
         }
@@ -105,7 +105,7 @@ bool InlineSpanCls::==(Object other) {
 }
 
 int InlineSpanCls::hashCode() {
-    return style->hashCode;
+    return style->hashCode();
 }
 
 void InlineSpanCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {

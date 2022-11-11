@@ -5,10 +5,10 @@ Widget ImageIconCls::build(BuildContext context) {
     if (image == nullptr) {
         return make<SemanticsCls>(semanticLabel, make<SizedBoxCls>(iconSize, iconSize));
     }
-    double iconOpacity = iconTheme->opacity;
+    double iconOpacity = iconTheme->opacity();
     Color iconColor = color or iconTheme->color!;
     if (iconOpacity != nullptr && iconOpacity != 1.0) {
-        iconColor = iconColor->withOpacity(iconColor->opacity * iconOpacity);
+        iconColor = iconColor->withOpacity(iconColor->opacity() * iconOpacity);
     }
     return make<SemanticsCls>(semanticLabel, make<ImageCls>(image!, iconSize, iconSize, iconColor, BoxFitCls::scaleDown, true));
 }

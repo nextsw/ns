@@ -212,7 +212,7 @@ void _ScreenshotContainerLayerCls::addToScene(SceneBuilder builder) {
 
 Offset _ScreenshotDataCls::screenshotOffset() {
     assert(foundTarget);
-    return containerLayer->offset;
+    return containerLayer->offset();
 }
 
 void _ScreenshotDataCls::screenshotOffset(Offset offset) {
@@ -274,7 +274,7 @@ void _ScreenshotPaintingContextCls::paintChild(RenderObject child, Offset offset
         assert(!_data->includeInScreenshot);
         assert(!_data->foundTarget);
         _data->foundTarget = true;
-        _data->screenshotOffset = offset;
+        _data->screenshotOffset() = offset;
         _data->includeInScreenshot = true;
     }
     super->paintChild(child, offset);
@@ -296,7 +296,7 @@ Future<Image> _ScreenshotPaintingContextCls::toImage(bool debugPaint, double pix
         data->containerLayer->append(make<_ProxyLayerCls>(repaintBoundary->debugLayer()!));
         data->foundTarget = true;
         OffsetLayer offsetLayer = as<OffsetLayer>(repaintBoundary->debugLayer()!);
-        data->screenshotOffset() = offsetLayer->offset;
+        data->screenshotOffset() = offsetLayer->offset();
     } else {
         PaintingContextCls->debugInstrumentRepaintCompositedChild(repaintBoundarycontext);
     }
@@ -358,7 +358,7 @@ void _ScreenshotPaintingContextCls::_stopRecordingScreenshotIfNeeded() {
     if (!_isScreenshotRecording()) {
         return;
     }
-    _screenshotCurrentLayer!->picture = _screenshotRecorder!->endRecording();
+    _screenshotCurrentLayer!->picture() = _screenshotRecorder!->endRecording();
     _screenshotCurrentLayer = nullptr;
     _screenshotRecorder = nullptr;
     _multicastCanvas = nullptr;
@@ -378,13 +378,13 @@ List<_DiagnosticsPathNode> _followDiagnosticableChain(List<Diagnosticable> chain
         return path;
     }
     DiagnosticsNode diagnostic = chain->first->toDiagnosticsNode(name, style);
-    for (;  < chain->length; i = 1) {
+    for (;  < chain->length(); i = 1) {
         Diagnosticable target = chain[i];
         bool foundMatch = false;
         List<DiagnosticsNode> children = diagnostic->getChildren();
-        for (;  < children->length; j = 1) {
+        for (;  < children->length(); j = 1) {
             DiagnosticsNode child = children[j];
-            if (child->value == target) {
+            if (child->value() == target) {
                 foundMatch = true;
                 path->add(make<_DiagnosticsPathNodeCls>(diagnostic, children, j));
                 diagnostic = child;
@@ -616,7 +616,7 @@ Object WidgetInspectorServiceCls::toObject(String groupName, String id) {
 Object WidgetInspectorServiceCls::toObjectForSourceLocation(String groupName, String id) {
     Object object = toObject(id);
     if (is<Element>(object)) {
-        return as<ElementCls>(object)->widget;
+        return as<ElementCls>(object)->widget();
     }
     return object;
 }
@@ -676,17 +676,17 @@ bool WidgetInspectorServiceCls::setSelectionById(String groupName, String id) {
 bool WidgetInspectorServiceCls::setSelection(String groupName, Object object) {
     if (is<Element>(object) || is<RenderObject>(object)) {
         if (is<Element>(object)) {
-            if (as<ElementCls>(object) == selection->currentElement) {
+            if (as<ElementCls>(object) == selection->currentElement()) {
                 return false;
             }
-            selection->currentElement = as<ElementCls>(object);
-            developer->inspect(selection->currentElement);
+            selection->currentElement() = as<ElementCls>(object);
+            developer->inspect(selection->currentElement());
         } else {
-            if (object == selection->current) {
+            if (object == selection->current()) {
                 return false;
             }
-            selection->current = as<RenderObject>(object!);
-            developer->inspect(selection->current);
+            selection->current() = as<RenderObject>(object!);
+            developer->inspect(selection->current());
         }
         if (selectionChangedCallback != nullptr) {
             if (SchedulerBindingCls::instance->schedulerPhase == SchedulerPhaseCls::idle) {
@@ -763,7 +763,7 @@ Future<Image> WidgetInspectorServiceCls::screenshot(bool debugPaint, double heig
         return nullptr;
     }
     if (renderObject->debugNeedsLayout()) {
-        PipelineOwner owner = renderObject->owner!;
+        PipelineOwner owner = renderObject->owner()!;
         assert(owner != nullptr);
         assert(!owner->debugDoingLayout());
             auto _c1 = owner;    _c1.auto _c2 = flushLayout();    _c2.auto _c3 = flushCompositingBits();    _c3.flushPaint();    _c3;    _c2;_c1;
@@ -923,7 +923,7 @@ Map<String, Object> WidgetInspectorServiceCls::_pathNodeToJson(InspectorSerializ
 List<Element> WidgetInspectorServiceCls::_getRawElementParentChain(Element element, int numLocalParents) {
     List<Element> elements = element->debugGetDiagnosticChain();
     if (numLocalParents != nullptr) {
-        for (;  < elements->length; i = 1) {
+        for (;  < elements->length(); i = 1) {
             if (_isValueCreatedByLocalProject(elements[i])) {
                 numLocalParents = numLocalParents! - 1;
                 if (numLocalParents <= 0) {
@@ -933,7 +933,7 @@ List<Element> WidgetInspectorServiceCls::_getRawElementParentChain(Element eleme
             }
         }
     }
-    return elements->reversed->toList();
+    return elements->reversed()->toList();
 }
 
 List<_DiagnosticsPathNode> WidgetInspectorServiceCls::_getElementParentChain(Element element, String groupName, int numLocalParents) {
@@ -946,7 +946,7 @@ List<_DiagnosticsPathNode> WidgetInspectorServiceCls::_getRenderObjectParentChai
         chain->add(renderObject);
         renderObject = as<RenderObject>(renderObject->parent);
     }
-    return _followDiagnosticableChain(chain->reversed->toList());
+    return _followDiagnosticableChain(chain->reversed()->toList());
 }
 
 Map<String, Object> WidgetInspectorServiceCls::_nodeToJson(InspectorSerializationDelegate delegate, DiagnosticsNode node) {
@@ -987,7 +987,7 @@ bool WidgetInspectorServiceCls::_isLocalCreationLocation(String locationUri) {
 String WidgetInspectorServiceCls::_safeJsonEncode(Object object) {
     String jsonString = json->encode(object);
     _serializeRing[_serializeRingIndex] = jsonString;
-    _serializeRingIndex = (_serializeRingIndex + 1) % _serializeRing->length;
+    _serializeRingIndex = (_serializeRingIndex + 1) % _serializeRing->length();
     return jsonString;
 }
 
@@ -1033,10 +1033,10 @@ List<Object> WidgetInspectorServiceCls::_getChildrenDetailsSubtree(String diagno
 }
 
 bool WidgetInspectorServiceCls::_shouldShowInSummaryTree(DiagnosticsNode node) {
-    if (node->level == DiagnosticLevelCls::error) {
+    if (node->level() == DiagnosticLevelCls::error) {
         return true;
     }
-    Object value = node->value;
+    Object value = node->value();
     if (!is<Diagnosticable>(value)) {
         return true;
     }
@@ -1077,13 +1077,13 @@ Map<String, Object> WidgetInspectorServiceCls::_getDetailsSubtree(String groupNa
 
 Map<String, Object> WidgetInspectorServiceCls::_getSelectedRenderObject(String groupName, String previousSelectionId) {
     DiagnosticsNode previousSelection = as<DiagnosticsNode>(toObject(previousSelectionId));
-    RenderObject current = selection->current;
+    RenderObject current = selection->current();
     return _nodeToJson(current == previousSelection?->value? previousSelection : current?->toDiagnosticsNode(), make<InspectorSerializationDelegateCls>(groupName, this));
 }
 
 Map<String, Object> WidgetInspectorServiceCls::_getSelectedWidget(String groupName, String previousSelectionId) {
     DiagnosticsNode previousSelection = as<DiagnosticsNode>(toObject(previousSelectionId));
-    Element current = selection->currentElement;
+    Element current = selection->currentElement();
     return _nodeToJson(current == previousSelection?->value? previousSelection : current?->toDiagnosticsNode(), make<InspectorSerializationDelegateCls>(groupName, this));
 }
 
@@ -1092,7 +1092,7 @@ Map<String, Object> WidgetInspectorServiceCls::_getSelectedSummaryWidget(String 
         return _getSelectedWidget(previousSelectionId, groupName);
     }
     DiagnosticsNode previousSelection = as<DiagnosticsNode>(toObject(previousSelectionId));
-    Element current = selection->currentElement;
+    Element current = selection->currentElement();
     if (current != nullptr && !_isValueCreatedByLocalProject(current)) {
         Element firstLocal;
         for (Element candidate : current->debugGetDiagnosticChain()) {
@@ -1160,7 +1160,7 @@ void _LocationCountCls::increment() {
 }
 
 void _ElementLocationStatsTrackerCls::add(Element element) {
-    Object widget = element->widget;
+    Object widget = element->widget();
     if (!is<_HasCreationLocation>(widget)) {
         return;
     }
@@ -1168,8 +1168,8 @@ void _ElementLocationStatsTrackerCls::add(Element element) {
     _Location location = creationLocationSource->_location();
     int id = _toLocationId(location);
     _LocationCount entry;
-    if (id >= _stats->length || _stats[id] == nullptr) {
-        while (id >= _stats->length) {
+    if (id >= _stats->length() || _stats[id] == nullptr) {
+        while (id >= _stats->length()) {
             _stats->add(nullptr);
         }
         entry = make<_LocationCountCls>(location, id, WidgetInspectorServiceCls::instance->_isLocalCreationLocation(location->file));
@@ -1181,7 +1181,7 @@ void _ElementLocationStatsTrackerCls::add(Element element) {
         entry = _stats[id]!;
     }
     if (entry->local) {
-        if (entry->count == 0) {
+        if (entry->count() == 0) {
             active->add(entry);
         }
         entry->increment();
@@ -1196,7 +1196,7 @@ void _ElementLocationStatsTrackerCls::resetCounts() {
 }
 
 Map<String, dynamic> _ElementLocationStatsTrackerCls::exportToJson(Duration startTime) {
-    List<int> events = <int>filled(active->length * 2, 0);
+    List<int> events = <int>filled(active->length() * 2, 0);
     int j = 0;
     for (_LocationCount stat : active) {
         events[j++] = stat->id;
@@ -1296,10 +1296,10 @@ bool _WidgetInspectorStateCls::_hitTestHelper(List<RenderObject> edgeHits, List<
     for (; i >= 0; i = 1) {
         DiagnosticsNode diagnostics = children[i];
         assert(diagnostics != nullptr);
-        if (diagnostics->style == DiagnosticsTreeStyleCls::offstage || !is<RenderObject>(diagnostics->value)) {
+        if (diagnostics->style == DiagnosticsTreeStyleCls::offstage || !is<RenderObject>(diagnostics->value())) {
             continue;
         }
-        RenderObject child = as<RenderObject>(diagnostics->value!);
+        RenderObject child = as<RenderObject>(diagnostics->value()!);
         Rect paintClip = object->describeApproximatePaintClip(child);
         if (paintClip != nullptr && !paintClip->contains(localPosition)) {
             continue;
@@ -1331,7 +1331,7 @@ void _WidgetInspectorStateCls::_inspectAt(Offset position) {
     RenderObject userRender = ignorePointer->child!;
     List<RenderObject> selected = hitTest(position, userRender);
     setState([=] () {
-        selection->candidates = selected;
+        selection->candidates() = selected;
     });
 }
 
@@ -1346,7 +1346,7 @@ void _WidgetInspectorStateCls::_handlePanUpdate(DragUpdateDetails event) {
 }
 
 void _WidgetInspectorStateCls::_handlePanEnd(DragEndDetails details) {
-    Rect bounds = (OffsetCls::zero & (WidgetsBindingCls::instance->window->physicalSize() / WidgetsBindingCls::instance->window->devicePixelRatio))->deflate(_kOffScreenMargin);
+    Rect bounds = (OffsetCls::zero & (WidgetsBindingCls::instance->window->physicalSize / WidgetsBindingCls::instance->window->devicePixelRatio))->deflate(_kOffScreenMargin);
     if (!bounds->contains(_lastPointerLocation!)) {
         setState([=] () {
             selection->clear();
@@ -1360,7 +1360,7 @@ void _WidgetInspectorStateCls::_handleTap() {
     }
     if (_lastPointerLocation != nullptr) {
         _inspectAt(_lastPointerLocation!);
-        developer->inspect(selection->current);
+        developer->inspect(selection->current());
     }
     setState([=] () {
         if (widget->selectButtonBuilder != nullptr) {
@@ -1432,8 +1432,8 @@ bool InspectorSelectionCls::active() {
 }
 
 void InspectorSelectionCls::_computeCurrent() {
-    if ( < candidates->length) {
-        _current = candidates[index];
+    if ( < candidates()->length()) {
+        _current = candidates()[index()];
         _currentElement = (as<DebugCreator>(_current?->debugCreator))?->element;
     } else {
         _current = nullptr;
@@ -1474,7 +1474,7 @@ Size _RenderInspectorOverlayCls::computeDryLayout(BoxConstraints constraints) {
 
 void _RenderInspectorOverlayCls::paint(PaintingContext context, Offset offset) {
     assert(needsCompositing);
-    context->addLayer(make<_InspectorOverlayLayerCls>(RectCls->fromLTWH(offset->dx, offset->dy, size->width, size->height), selection, is<RenderObject>(parent)? as<RenderObject>(parent!) : nullptr));
+    context->addLayer(make<_InspectorOverlayLayerCls>(RectCls->fromLTWH(offset->dx(), offset->dy(), size->width, size->height), selection(), is<RenderObject>(parent)? as<RenderObject>(parent!) : nullptr));
 }
 
 _RenderInspectorOverlayCls::_RenderInspectorOverlayCls(InspectorSelection selection) {
@@ -1517,7 +1517,7 @@ void _InspectorOverlayLayerCls::addToScene(SceneBuilder builder) {
     if (!selection->active()) {
         return;
     }
-    RenderObject selected = selection->current!;
+    RenderObject selected = selection->current()!;
     if (!_isInInspectorRenderObjectTree(selected)) {
         return;
     }
@@ -1560,27 +1560,27 @@ _InspectorOverlayLayerCls::_InspectorOverlayLayerCls(Rect overlayRect, RenderObj
 Picture _InspectorOverlayLayerCls::_buildPicture(_InspectorOverlayRenderState state) {
     PictureRecorder recorder = ui->make<PictureRecorderCls>();
     Canvas canvas = make<CanvasCls>(recorder, state->overlayRect);
-    Size size = state->overlayRect->size;
+    Size size = state->overlayRect->size();
     canvas->translate(state->overlayRect->left, state->overlayRect->top);
     auto _c1 = make<PaintCls>();_c1.style = auto _c2 = PaintingStyleCls::fill;_c2.color = _kHighlightedRenderObjectFillColor;_c2;Paint fillPaint = _c1;
     auto _c3 = make<PaintCls>();_c3.style = auto _c4 = PaintingStyleCls::stroke;_c4.strokeWidth = auto _c5 = 1.0;_c5.color = _kHighlightedRenderObjectBorderColor;_c5;_c4;Paint borderPaint = _c3;
     Rect selectedPaintRect = state->selected->rect->deflate(0.5);
     auto _c6 = canvas;_c6.auto _c7 = save();_c7.auto _c8 = transform(state->selected->transform->storage());_c8.auto _c9 = drawRect(selectedPaintRect, fillPaint);_c9.auto _c10 = drawRect(selectedPaintRect, borderPaint);_c10.restore();_c10;_c9;_c8;_c7;_c6;
     for (_TransformedRect transformedRect : state->candidates) {
-            auto _c11 = canvas;    _c11.auto _c12 = save();    _c12.auto _c13 = transform(transformedRect->transform->storage());    _c13.auto _c14 = drawRect(transformedRect->rect->deflate(0.5), borderPaint);    _c14.restore();    _c14;    _c13;    _c12;_c11;
+            auto _c11 = canvas;    _c11.auto _c12 = save();    _c12.auto _c13 = transform(transformedRect->transform->storage);    _c13.auto _c14 = drawRect(transformedRect->rect->deflate(0.5), borderPaint);    _c14.restore();    _c14;    _c13;    _c12;_c11;
     }
     Rect targetRect = MatrixUtilsCls->transformRect(state->selected->transform, state->selected->rect);
-    Offset target = make<OffsetCls>(targetRect->left, targetRect->center->dy);
+    Offset target = make<OffsetCls>(targetRect->left, targetRect->center()->dy());
     double offsetFromWidget = 9.0;
-    double verticalOffset = (targetRect->height) / 2 + offsetFromWidget;
+    double verticalOffset = (targetRect->height()) / 2 + offsetFromWidget;
     _paintDescription(canvas, state->tooltip, state->textDirection, target, verticalOffset, size, targetRect);
     return recorder->endRecording();
 }
 
 void _InspectorOverlayLayerCls::_paintDescription(Canvas canvas, String message, Size size, Offset target, Rect targetRect, TextDirection textDirection, double verticalOffset) {
     canvas->save();
-    double maxWidth = size->width - 2 * (_kScreenEdgeMargin + _kTooltipPadding);
-    TextSpan textSpan = as<TextSpan>(_textPainter?->text);
+    double maxWidth = size->width() - 2 * (_kScreenEdgeMargin + _kTooltipPadding);
+    TextSpan textSpan = as<TextSpan>(_textPainter?->text());
     if (_textPainter == nullptr || textSpan!->text != message || _textPainterMaxWidth != maxWidth) {
         _textPainterMaxWidth = maxWidth;
             auto _c1 = make<TextPainterCls>();    _c1.maxLines = auto _c2 = _kMaxTooltipLines;    _c2.ellipsis = auto _c3 = __s("...");    _c3.text = auto _c4 = make<TextSpanCls>(_messageStyle, message);    _c4.textDirection = auto _c5 = textDirection;    _c5.layout(maxWidth);    _c5;    _c4;    _c3;    _c2;_textPainter = _c1;
@@ -1588,15 +1588,15 @@ void _InspectorOverlayLayerCls::_paintDescription(Canvas canvas, String message,
     Size tooltipSize = _textPainter!->size + make<OffsetCls>(_kTooltipPadding * 2, _kTooltipPadding * 2);
     Offset tipOffset = positionDependentBox(size, tooltipSize, target, verticalOffset, false);
     auto _c6 = make<PaintCls>();_c6.style = auto _c7 = PaintingStyleCls::fill;_c7.color = _kTooltipBackgroundColor;_c7;Paint tooltipBackground = _c6;
-    canvas->drawRect(RectCls->fromPoints(tipOffset, tipOffset->translate(tooltipSize->width, tooltipSize->height)), tooltipBackground);
-    double wedgeY = tipOffset->dy;
-    bool tooltipBelow = tipOffset->dy > target->dy;
+    canvas->drawRect(RectCls->fromPoints(tipOffset, tipOffset->translate(tooltipSize->width(), tooltipSize->height())), tooltipBackground);
+    double wedgeY = tipOffset->dy();
+    bool tooltipBelow = tipOffset->dy() > target->dy();
     if (!tooltipBelow) {
-        wedgeY = tooltipSize->height;
+        wedgeY = tooltipSize->height();
     }
     double wedgeSize = _kTooltipPadding * 2;
-    double wedgeX = math->max(tipOffset->dx, target->dx) + wedgeSize * 2;
-    wedgeX = math->min(wedgeX, tipOffset->dx + tooltipSize->width - wedgeSize * 2);
+    double wedgeX = math->max(tipOffset->dx(), target->dx()) + wedgeSize * 2;
+    wedgeX = math->min(wedgeX, tipOffset->dx() + tooltipSize->width() - wedgeSize * 2);
     List<Offset> wedge = makeList(ArrayItem, ArrayItem, ArrayItem);
     auto _c8 = make<PathCls>();_c8.addPolygon(wedge, true);canvas->drawPath(_c8, tooltipBackground);
     _textPainter!->paint(canvas, tipOffset + make<OffsetCls>(_kTooltipPadding, _kTooltipPadding));
@@ -1671,7 +1671,7 @@ Iterable<DiagnosticsNode> debugTransformDebugCreator(Iterable<DiagnosticsNode> p
 Iterable<DiagnosticsNode> _parseDiagnosticsNode(ErrorSummary errorSummary, DiagnosticsNode node) {
     assert(_isDebugCreator(node));
     try {
-        DebugCreator debugCreator = as<DebugCreator>(node->value!);
+        DebugCreator debugCreator = as<DebugCreator>(node->value()!);
         Element element = debugCreator->element;
         return _describeRelevantUserCode(element, errorSummary);
     } catch (Unknown error) {
@@ -1748,7 +1748,7 @@ int _toLocationId(_Location location) {
 
 Map<String, Object> InspectorSerializationDelegateCls::additionalNodeProperties(DiagnosticsNode node) {
     Map<String, Object> result = makeMap(makeList(), makeList();
-    Object value = node->value;
+    Object value = node->value();
     if (_interactive()) {
         result[__s("objectId")] = service->toId(node, groupName!);
         result[__s("valueId")] = service->toId(value, groupName!);
@@ -1787,7 +1787,7 @@ List<DiagnosticsNode> InspectorSerializationDelegateCls::filterProperties(List<D
 }
 
 List<DiagnosticsNode> InspectorSerializationDelegateCls::truncateNodesList(List<DiagnosticsNode> nodes, DiagnosticsNode owner) {
-    if (maxDescendentsTruncatableNode >= 0 && owner!->allowTruncate == true && nodes->length > maxDescendentsTruncatableNode) {
+    if (maxDescendentsTruncatableNode >= 0 && owner!->allowTruncate() == true && nodes->length() > maxDescendentsTruncatableNode) {
         nodes = service->_truncateNodes(nodes, maxDescendentsTruncatableNode);
     }
     return nodes;

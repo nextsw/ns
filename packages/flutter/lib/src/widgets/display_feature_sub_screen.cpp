@@ -7,12 +7,12 @@ Widget DisplayFeatureSubScreenCls::build(BuildContext context) {
     Offset resolvedAnchorPoint = _capOffset(anchorPoint or _fallbackAnchorPoint(context), parentSize);
     Iterable<Rect> subScreens = subScreensInBounds(wantedBounds, avoidBounds(mediaQuery));
     Rect closestSubScreen = _closestToAnchorPoint(subScreens, resolvedAnchorPoint);
-    return make<PaddingCls>(EdgeInsetsCls->only(closestSubScreen->left, closestSubScreen->top, parentSize->width - closestSubScreen->right, parentSize->height - closestSubScreen->bottom), make<MediaQueryCls>(mediaQuery->removeDisplayFeatures(closestSubScreen), child));
+    return make<PaddingCls>(EdgeInsetsCls->only(closestSubScreen->left, closestSubScreen->top, parentSize->width() - closestSubScreen->right, parentSize->height() - closestSubScreen->bottom), make<MediaQueryCls>(mediaQuery->removeDisplayFeatures(closestSubScreen), child));
 }
 
 Iterable<Rect> DisplayFeatureSubScreenCls::avoidBounds(MediaQueryData mediaQuery) {
     return mediaQuery->displayFeatures->where([=] (DisplayFeature d)     {
-        d->bounds->shortestSide() > 0 || d->state == DisplayFeatureStateCls::postureHalfOpened;
+        d->bounds->shortestSide > 0 || d->state == DisplayFeatureStateCls::postureHalfOpened;
     })->map([=] (DisplayFeature d)     {
         d->bounds;
     });
@@ -54,7 +54,7 @@ Offset DisplayFeatureSubScreenCls::_fallbackAnchorPoint(BuildContext context) {
 }
 
 Rect DisplayFeatureSubScreenCls::_closestToAnchorPoint(Offset anchorPoint, Iterable<Rect> subScreens) {
-    Rect closestScreen = subScreens->first;
+    Rect closestScreen = subScreens->first();
     double closestDistance = _distanceFromPointToRect(anchorPoint, closestScreen);
     for (Rect screen : subScreens) {
         double subScreenDistance = _distanceFromPointToRect(anchorPoint, screen);
@@ -67,33 +67,33 @@ Rect DisplayFeatureSubScreenCls::_closestToAnchorPoint(Offset anchorPoint, Itera
 }
 
 double DisplayFeatureSubScreenCls::_distanceFromPointToRect(Offset point, Rect rect) {
-    if (point->dx < rect->left) {
-        if (point->dy < rect->top) {
-            return (point - rect->topLeft)->distance;
+    if (point->dx() < rect->left) {
+        if (point->dy() < rect->top) {
+            return (point - rect->topLeft())->distance();
         } else         {
-            if (point->dy > rect->bottom) {
-            return (point - rect->bottomLeft)->distance;
+            if (point->dy() > rect->bottom) {
+            return (point - rect->bottomLeft())->distance();
         } else {
-            return rect->left - point->dx;
+            return rect->left - point->dx();
         }
 ;
         }    } else     {
-        if (point->dx > rect->right) {
-        if (point->dy < rect->top) {
-            return (point - rect->topRight)->distance;
+        if (point->dx() > rect->right) {
+        if (point->dy() < rect->top) {
+            return (point - rect->topRight())->distance();
         } else         {
-            if (point->dy > rect->bottom) {
-            return (point - rect->bottomRight)->distance;
+            if (point->dy() > rect->bottom) {
+            return (point - rect->bottomRight())->distance();
         } else {
-            return point->dx - rect->right;
+            return point->dx() - rect->right;
         }
 ;
         }    } else {
-        if (point->dy < rect->top) {
-            return rect->top - point->dy;
+        if (point->dy() < rect->top) {
+            return rect->top - point->dy();
         } else         {
-            if (point->dy > rect->bottom) {
-            return point->dy - rect->bottom;
+            if (point->dy() > rect->bottom) {
+            return point->dy() - rect->bottom;
         } else {
             return 0;
         }
@@ -103,9 +103,9 @@ double DisplayFeatureSubScreenCls::_distanceFromPointToRect(Offset point, Rect r
     }}
 
 Offset DisplayFeatureSubScreenCls::_capOffset(Size maximum, Offset offset) {
-    if (offset->dx >= 0 && offset->dx <= maximum->width && offset->dy >= 0 && offset->dy <= maximum->height) {
+    if (offset->dx() >= 0 && offset->dx() <= maximum->width() && offset->dy() >= 0 && offset->dy() <= maximum->height()) {
         return offset;
     } else {
-        return make<OffsetCls>(math->min(math->max(0, offset->dx), maximum->width), math->min(math->max(0, offset->dy), maximum->height));
+        return make<OffsetCls>(math->min(math->max(0, offset->dx()), maximum->width()), math->min(math->max(0, offset->dy()), maximum->height()));
     }
 }

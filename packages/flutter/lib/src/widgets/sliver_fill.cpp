@@ -84,7 +84,7 @@ void _RenderSliverFractionalPaddingCls::_resolve() {
         return;
     }
     assert(constraints->axis != nullptr);
-    double paddingValue = constraints->viewportMainAxisExtent * viewportFraction;
+    double paddingValue = constraints->viewportMainAxisExtent * viewportFraction();
     _lastResolvedConstraints = constraints;
     ;
     return;

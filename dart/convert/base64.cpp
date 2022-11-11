@@ -32,7 +32,7 @@ Uint8List Base64CodecCls::decode(String encoded) {
 }
 
 String Base64CodecCls::normalize(int end, String source, int start) {
-    end = RangeErrorCls->checkValidRange(start, end, source->length);
+    end = RangeErrorCls->checkValidRange(start, end, source->length());
     percent = 0x25;
     equals = 0x3d;
     StringBuffer buffer;
@@ -67,7 +67,7 @@ String Base64CodecCls::normalize(int end, String source, int start) {
             } else             {
                 if (value == _Base64DecoderCls::_padding) {
                 if ( < 0) {
-                    firstPadding = (buffer?->length or 0) + (sliceEnd - sliceStart);
+                    firstPadding = (buffer?->length() or 0) + (sliceEnd - sliceStart);
                     firstPaddingSourceIndex = sliceEnd;
                 }
                 paddingCount++;
@@ -87,9 +87,9 @@ String Base64CodecCls::normalize(int end, String source, int start) {
     if (buffer != nullptr) {
         buffer->write(source->substring(sliceStart, end));
         if (firstPadding >= 0) {
-            _checkPadding(source, firstPaddingSourceIndex, end, firstPadding, paddingCount, buffer->length);
+            _checkPadding(source, firstPaddingSourceIndex, end, firstPadding, paddingCount, buffer->length());
         } else {
-            auto endLength = ((buffer->length - 1) % 4) + 1;
+            auto endLength = ((buffer->length() - 1) % 4) + 1;
             if (endLength == 1) {
                 ;
             }
@@ -140,7 +140,7 @@ String Base64EncoderCls::convert(List<int> input) {
         return __s("");
     }
     auto encoder = make<_Base64EncoderCls>(_urlSafe);
-    auto buffer = encoder->encode(input, 0, input->length, true)!;
+    auto buffer = encoder->encode(input, 0, input->length(), true)!;
     return StringCls->fromCharCodes(buffer);
 }
 
@@ -158,7 +158,7 @@ Uint8List _Base64EncoderCls::createBuffer(int bufferLength) {
 Uint8List _Base64EncoderCls::encode(List<int> bytes, int end, bool isLast, int start) {
     assert(0 <= start);
     assert(start <= end);
-    assert(end <= bytes->length);
+    assert(end <= bytes->length());
     auto length = end - start;
     auto count = _stateCount(_state);
     auto byteCount = (count + length);
@@ -259,7 +259,7 @@ _BufferCachingBase64EncoderCls::_BufferCachingBase64EncoderCls(bool urlSafe) : _
 }
 
 void _Base64EncoderSinkCls::add(List<int> source) {
-    _add(source, 0, source->length, false);
+    _add(source, 0, source->length(), false);
 }
 
 void _Base64EncoderSinkCls::close() {
@@ -270,7 +270,7 @@ void _Base64EncoderSinkCls::addSlice(int end, bool isLast, List<int> source, int
     if (end == nullptr)     {
         ;
     }
-    RangeErrorCls->checkValidRange(start, end, source->length);
+    RangeErrorCls->checkValidRange(start, end, source->length());
     _add(source, start, end, isLast);
 }
 
@@ -305,7 +305,7 @@ void _Utf8Base64EncoderSinkCls::_add(int end, bool isLast, List<int> source, int
 }
 
 Uint8List Base64DecoderCls::convert(int end, String input, int start) {
-    end = RangeErrorCls->checkValidRange(start, end, input->length);
+    end = RangeErrorCls->checkValidRange(start, end, input->length());
     if (start == end)     {
         return make<Uint8ListCls>(0);
     }
@@ -322,7 +322,7 @@ StringConversionSink Base64DecoderCls::startChunkedConversion(Sink<List<int>> si
 Uint8List _Base64DecoderCls::decode(int end, String input, int start) {
     assert(0 <= start);
     assert(start <= end);
-    assert(end <= input->length);
+    assert(end <= input->length());
     if (_hasSeenPadding(_state)) {
         _state = _checkPadding(input, start, end, _state);
         return nullptr;
@@ -552,7 +552,7 @@ void _Base64DecoderSinkCls::add(String stringValue) {
     if (stringValue->isEmpty())     {
         return;
     }
-    auto buffer = _decoder->decode(stringValue, 0, stringValue->length);
+    auto buffer = _decoder->decode(stringValue, 0, stringValue->length());
     if (buffer != nullptr)     {
         _sink->add(buffer);
     }
@@ -564,7 +564,7 @@ void _Base64DecoderSinkCls::close() {
 }
 
 void _Base64DecoderSinkCls::addSlice(int end, bool isLast, int start, String stringValue) {
-    RangeErrorCls->checkValidRange(start, end, stringValue->length);
+    RangeErrorCls->checkValidRange(start, end, stringValue->length());
     if (start == end)     {
         return;
     }

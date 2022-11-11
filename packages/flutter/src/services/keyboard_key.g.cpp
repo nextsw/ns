@@ -39,7 +39,7 @@ LogicalKeyboardKey LogicalKeyboardKeyCls::findKeyByKeyId(int keyId) {
 }
 
 bool LogicalKeyboardKeyCls::isControlCharacter(String label) {
-    if (label->length != 1) {
+    if (label->length() != 1) {
         return false;
     }
     int codeUnit = label->codeUnitAt(0);
@@ -68,7 +68,7 @@ void LogicalKeyboardKeyCls::debugFillProperties(DiagnosticPropertiesBuilder prop
     super->debugFillProperties(properties);
     properties->add(make<StringPropertyCls>(__s("keyId"), __s("0x${keyId.toRadixString(16).padLeft(8, '0')}")));
     properties->add(make<StringPropertyCls>(__s("keyLabel"), keyLabel()));
-    properties->add(make<StringPropertyCls>(__s("debugName"), debugNamenullptr));
+    properties->add(make<StringPropertyCls>(__s("debugName"), debugName()nullptr));
 }
 
 Iterable<LogicalKeyboardKey> LogicalKeyboardKeyCls::knownLogicalKeys() {
@@ -126,7 +126,7 @@ PhysicalKeyboardKey PhysicalKeyboardKeyCls::findKeyByCode(int usageCode) {
 void PhysicalKeyboardKeyCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
     properties->add(make<StringPropertyCls>(__s("usbHidUsage"), __s("0x${usbHidUsage.toRadixString(16).padLeft(8, '0')}")));
-    properties->add(make<StringPropertyCls>(__s("debugName"), debugNamenullptr));
+    properties->add(make<StringPropertyCls>(__s("debugName"), debugName()nullptr));
 }
 
 Iterable<PhysicalKeyboardKey> PhysicalKeyboardKeyCls::knownPhysicalKeys() {

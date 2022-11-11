@@ -1,7 +1,7 @@
 #include "app.hpp"
 Locale basicLocaleListResolution(List<Locale> preferredLocales, Iterable<Locale> supportedLocales) {
     if (preferredLocales == nullptr || preferredLocales->isEmpty) {
-        return supportedLocales->first;
+        return supportedLocales->first();
     }
     Map<String, Locale> allSupportedLocales = <String, Locale>make<HashMapCls>();
     Map<String, Locale> languageAndCountryLocales = <String, Locale>make<HashMapCls>();
@@ -17,7 +17,7 @@ Locale basicLocaleListResolution(List<Locale> preferredLocales, Iterable<Locale>
     }
     Locale matchesLanguageCode;
     Locale matchesCountryCode;
-    for (;  < preferredLocales->length; localeIndex = 1) {
+    for (;  < preferredLocales->length(); localeIndex = 1) {
         Locale userLocale = preferredLocales[localeIndex];
         if (allSupportedLocales->containsKey(__s("${userLocale.languageCode}_${userLocale.scriptCode}_${userLocale.countryCode}"))) {
             return userLocale;
@@ -40,7 +40,7 @@ Locale basicLocaleListResolution(List<Locale> preferredLocales, Iterable<Locale>
         Locale match = languageLocales[userLocale->languageCode];
         if (match != nullptr) {
             matchesLanguageCode = match;
-            if (localeIndex == 0 && !(localeIndex + 1 < preferredLocales->length && preferredLocales[localeIndex + 1]->languageCode == userLocale->languageCode)) {
+            if (localeIndex == 0 && !(localeIndex + 1 < preferredLocales->length() && preferredLocales[localeIndex + 1]->languageCode == userLocale->languageCode)) {
                 return matchesLanguageCode;
             }
         }
@@ -51,7 +51,7 @@ Locale basicLocaleListResolution(List<Locale> preferredLocales, Iterable<Locale>
             }
         }
     }
-    Locale resolvedLocale = matchesLanguageCode or matchesCountryCode or supportedLocales->first;
+    Locale resolvedLocale = matchesLanguageCode or matchesCountryCode or supportedLocales->first();
     return resolvedLocale;
 }
 
@@ -271,7 +271,7 @@ bool _WidgetsAppStateCls::_usesRouterWithConfig() {
 }
 
 bool _WidgetsAppStateCls::_usesNavigator() {
-    return widget->home != nullptr || (widget->routes?->isNotEmpty() or false) || widget->onGenerateRoute != nullptr || widget->onUnknownRoute != nullptr;
+    return widget->home != nullptr || (widget->routes?->isNotEmpty or false) || widget->onGenerateRoute != nullptr || widget->onUnknownRoute != nullptr;
 }
 
 RouteInformationProvider _WidgetsAppStateCls::_effectiveRouteInformationProvider() {

@@ -135,7 +135,7 @@ Future<void> DefaultPlatformMenuDelegateCls::_methodCallHandler(MethodCall call)
         item->onOpen()?->call();
     } else     {
         if (call->method == _kMenuItemClosedMethod) {
-        item->onClose?->call();
+        item->onClose()?->call();
     }
 ;
     };
@@ -241,7 +241,7 @@ Iterable<Map<String, Object>> PlatformMenuItemGroupCls::toChannelRepresentation(
 Iterable<Map<String, Object>> PlatformMenuItemGroupCls::serialize(PlatformMenuDelegate delegate, MenuItemSerializableIdGenerator getId, MenuItem group) {
     List<Map<String, Object>> result = makeList();
     Map<String, Object> map1 = make<MapCls<>>();map1.set(_kIdKey, getId(group));map1.set(_kIsDividerKey, true);result->add(list1);
-    for (MenuItem item : group->members) {
+    for (MenuItem item : group->members()) {
         result->addAll(item->toChannelRepresentation(delegategetId));
     }
     Map<String, Object> map2 = make<MapCls<>>();map2.set(_kIdKey, getId(group));map2.set(_kIsDividerKey, true);result->add(list2);

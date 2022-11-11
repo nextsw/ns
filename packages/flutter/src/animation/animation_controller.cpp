@@ -41,7 +41,7 @@ void AnimationControllerCls::value(double newValue) {
 }
 
 void AnimationControllerCls::reset() {
-    value = lowerBound;
+    value() = lowerBound;
 }
 
 double AnimationControllerCls::velocity() {
@@ -73,7 +73,7 @@ TickerFuture AnimationControllerCls::forward(double from) {
     assert(_ticker != nullptr, __s("AnimationController.forward() called after AnimationController.dispose()\nAnimationController methods should not be used after calling dispose."));
     _direction = _AnimationDirectionCls::forward;
     if (from != nullptr) {
-        value = from;
+        value() = from;
     }
     return _animateToInternal(upperBound);
 }
@@ -88,7 +88,7 @@ TickerFuture AnimationControllerCls::reverse(double from) {
     assert(_ticker != nullptr, __s("AnimationController.reverse() called after AnimationController.dispose()\nAnimationController methods should not be used after calling dispose."));
     _direction = _AnimationDirectionCls::reverse;
     if (from != nullptr) {
-        value = from;
+        value() = from;
     }
     return _animateToInternal(lowerBound);
 }
@@ -143,8 +143,8 @@ TickerFuture AnimationControllerCls::fling(AnimationBehavior animationBehavior, 
     if (SemanticsBindingCls::instance->disableAnimations) {
         ;
     }
-    auto _c1 = make<SpringSimulationCls>(springDescription, value, target, velocity * scale);_c1.tolerance = _kFlingTolerance;SpringSimulation simulation = _c1;
-    assert(simulation->type != SpringTypeCls::underDamped, __s("The resulting spring simulation is of type SpringType.underDamped.\nThis can lead to unexpected look of the animation, please adjust the springDescription parameter"));
+    auto _c1 = make<SpringSimulationCls>(springDescription, value(), target, velocity * scale);_c1.tolerance = _kFlingTolerance;SpringSimulation simulation = _c1;
+    assert(simulation->type() != SpringTypeCls::underDamped, __s("The resulting spring simulation is of type SpringType.underDamped.\nThis can lead to unexpected look of the animation, please adjust the springDescription parameter"));
     stop();
     return _startSimulation(simulation);
 }
@@ -212,13 +212,13 @@ TickerFuture AnimationControllerCls::_animateToInternal(Curve curve, Duration du
         Duration directionDuration = (_direction == _AnimationDirectionCls::reverse && reverseDuration != nullptr)? reverseDuration! : this->duration!;
         simulationDuration = directionDuration * remainingFraction;
     } else     {
-        if (target == value) {
+        if (target == value()) {
         simulationDuration = DurationCls::zero;
     }
 ;
     }    stop();
     if (simulationDuration == DurationCls::zero) {
-        if (value != target) {
+        if (value() != target) {
             _value = clampDouble(target, lowerBound, upperBound);
             notifyListeners();
         }
@@ -250,7 +250,7 @@ TickerFuture AnimationControllerCls::_startSimulation(Simulation simulation) {
 }
 
 void AnimationControllerCls::_checkStatusChanged() {
-    AnimationStatus newStatus = status;
+    AnimationStatus newStatus = status();
     if (_lastReportedStatus != newStatus) {
         _lastReportedStatus = newStatus;
         notifyStatusListeners(newStatus);

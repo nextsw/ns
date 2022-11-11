@@ -25,7 +25,7 @@ RenderComparison StrutStyleCls::compareTo(StrutStyle other) {
     if (identical(this, other)) {
         return RenderComparisonCls::identical;
     }
-    if (fontFamily != other->fontFamily || fontSize != other->fontSize || fontWeight != other->fontWeight || fontStyle != other->fontStyle || height != other->height || leading != other->leading || forceStrutHeight != other->forceStrutHeight || !listEquals(fontFamilyFallback, other->fontFamilyFallback)) {
+    if (fontFamily != other->fontFamily || fontSize != other->fontSize || fontWeight != other->fontWeight || fontStyle != other->fontStyle || height != other->height || leading != other->leading || forceStrutHeight != other->forceStrutHeight || !listEquals(fontFamilyFallback(), other->fontFamilyFallback())) {
         return RenderComparisonCls::layout;
     }
     return RenderComparisonCls::identical;
@@ -35,7 +35,7 @@ StrutStyle StrutStyleCls::inheritFromTextStyle(TextStyle other) {
     if (other == nullptr) {
         return this;
     }
-    return make<StrutStyleCls>(fontFamily or other->fontFamily, fontFamilyFallback or other->fontFamilyFallback, fontSize or other->fontSize, height or other->height, leading, fontWeight or other->fontWeight, fontStyle or other->fontStyle, forceStrutHeight, debugLabel or other->debugLabel);
+    return make<StrutStyleCls>(fontFamily or other->fontFamily, fontFamilyFallback() or other->fontFamilyFallback(), fontSize or other->fontSize, height or other->height, leading, fontWeight or other->fontWeight, fontStyle or other->fontStyle, forceStrutHeight, debugLabel or other->debugLabel);
 }
 
 bool StrutStyleCls::==(Object other) {

@@ -54,13 +54,13 @@ TextEditingValue FilteringTextInputFormatterCls::formatEditUpdate(TextEditingVal
     Match previousMatch;
     for (Match match : matches) {
         assert(match->end >= match->start);
-        _processRegion(allow, previousMatch?->end or 0, match->start, formatState);
+        _processRegion(allow, previousMatch?->end() or 0, match->start, formatState);
         assert(!formatState->debugFinalized);
         _processRegion(!allow, match->start, match->end, formatState);
         assert(!formatState->debugFinalized);
         previousMatch = match;
     }
-    _processRegion(allow, previousMatch?->end or 0, newValue->text->length, formatState);
+    _processRegion(allow, previousMatch?->end() or 0, newValue->text->length(), formatState);
     assert(!formatState->debugFinalized);
     return formatState->finalize();
 }
@@ -68,7 +68,7 @@ TextEditingValue FilteringTextInputFormatterCls::formatEditUpdate(TextEditingVal
 void FilteringTextInputFormatterCls::_processRegion(bool isBannedRegion, int regionEnd, int regionStart, _TextEditingValueAccumulator state) {
     String replacementString = isBannedRegion? (regionStart == regionEnd? __s("") : this->replacementString) : state->inputValue->text->substring(regionStart, regionEnd);
     state->stringBuffer->write(replacementString);
-    if (replacementString->length == regionEnd - regionStart) {
+    if (replacementString->length() == regionEnd - regionStart) {
         return;
     }
     InlineMethod;
@@ -98,7 +98,7 @@ TextEditingValue LengthLimitingTextInputFormatterCls::truncate(int maxLength, Te
         iterator->expandNext(maxLength);
     }
     String truncated = iterator->current;
-    return make<TextEditingValueCls>(truncated, value->selection->copyWith(math->min(value->selection->start, truncated->length), math->min(value->selection->end, truncated->length)), !value->composing->isCollapsed && truncated->length > value->composing->start? make<TextRangeCls>(value->composing->start, math->min(value->composing->end, truncated->length)) : TextRangeCls::empty);
+    return make<TextEditingValueCls>(truncated, value->selection->copyWith(math->min(value->selection->start, truncated->length()), math->min(value->selection->end, truncated->length())), !value->composing->isCollapsed() && truncated->length() > value->composing->start? make<TextRangeCls>(value->composing->start, math->min(value->composing->end, truncated->length())) : TextRangeCls::empty);
 }
 
 TextEditingValue LengthLimitingTextInputFormatterCls::formatEditUpdate(TextEditingValue newValue, TextEditingValue oldValue) {

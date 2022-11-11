@@ -90,7 +90,7 @@ template<typename S, typename T> Stream<T> _StreamSinkTransformerCls<S, T>::bind
 }
 
 template<typename S, typename T> bool _BoundSinkStreamCls<S, T>::isBroadcast() {
-    return _stream->isBroadcast;
+    return _stream->isBroadcast();
 }
 
 template<typename S, typename T> StreamSubscription<T> _BoundSinkStreamCls<S, T>::listen(bool cancelOnError, void onData(T event) , void onDone() , void  onError() ) {
@@ -158,7 +158,7 @@ template<typename S, typename T> Stream<T> _StreamSubscriptionTransformerCls<S, 
 }
 
 template<typename S, typename T> bool _BoundSubscriptionStreamCls<S, T>::isBroadcast() {
-    return _stream->isBroadcast;
+    return _stream->isBroadcast();
 }
 
 template<typename S, typename T> StreamSubscription<T> _BoundSubscriptionStreamCls<S, T>::listen(bool cancelOnError, void onData(T event) , void onDone() , void  onError() ) {

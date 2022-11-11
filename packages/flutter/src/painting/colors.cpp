@@ -63,9 +63,9 @@ Color _colorFromHue(double alpha, double chroma, double hue, double match, doubl
 void HSVColorCls::fromAHSV(double alpha, double hue, double saturation, double value)
 
 void HSVColorCls::fromColor(Color color) {
-    double red = color->red / 0xFF;
-    double green = color->green / 0xFF;
-    double blue = color->blue / 0xFF;
+    double red = color->red() / 0xFF;
+    double green = color->green() / 0xFF;
+    double blue = color->blue() / 0xFF;
     double max = math->max(red, math->max(green, blue));
     double min = math->min(red, math->min(green, blue));
     double delta = max - min;
@@ -134,9 +134,9 @@ HSVColor HSVColorCls::_scaleAlpha(double factor) {
 void HSLColorCls::fromAHSL(double alpha, double hue, double lightness, double saturation)
 
 void HSLColorCls::fromColor(Color color) {
-    double red = color->red / 0xFF;
-    double green = color->green / 0xFF;
-    double blue = color->blue / 0xFF;
+    double red = color->red() / 0xFF;
+    double green = color->green() / 0xFF;
+    double blue = color->blue() / 0xFF;
     double max = math->max(red, math->max(green, blue));
     double min = math->min(red, math->min(green, blue));
     double delta = max - min;

@@ -39,8 +39,8 @@ bool MatrixUtilsCls::isIdentity(Matrix4 a) {
 
 Offset MatrixUtilsCls::transformPoint(Offset point, Matrix4 transform) {
     Float64List storage = transform->storage();
-    double x = point->dx;
-    double y = point->dy;
+    double x = point->dx();
+    double y = point->dy();
     double rx = storage[0] * x + storage[4] * y + storage[12];
     double ry = storage[1] * x + storage[5] * y + storage[13];
     double rw = storage[3] * x + storage[7] * y + storage[15];
@@ -128,7 +128,7 @@ Matrix4 MatrixUtilsCls::createCylindricalProjectionTransform(double angle, Axis 
 }
 
 Matrix4 MatrixUtilsCls::forceToPoint(Offset offset) {
-    auto _c1 = Matrix4Cls->identity();_c1.auto _c2 = setRow(0, make<Vector4Cls>(0, 0, 0, offset->dx));_c2.setRow(1, make<Vector4Cls>(0, 0, 0, offset->dy));_c2;return _c1;
+    auto _c1 = Matrix4Cls->identity();_c1.auto _c2 = setRow(0, make<Vector4Cls>(0, 0, 0, offset->dx()));_c2.setRow(1, make<Vector4Cls>(0, 0, 0, offset->dy()));_c2;return _c1;
 }
 
 Rect MatrixUtilsCls::_safeTransformRect(Rect rect, Matrix4 transform) {

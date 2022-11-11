@@ -66,7 +66,7 @@ SchedulerBinding SchedulerBindingCls::instance() {
 
 void SchedulerBindingCls::addTimingsCallback(TimingsCallback callback) {
     _timingsCallbacks->add(callback);
-    if (_timingsCallbacks->length == 1) {
+    if (_timingsCallbacks->length() == 1) {
         assert(platformDispatcher->onReportTimings == nullptr);
         platformDispatcher->onReportTimings = _executeTimingsCallbacks;
     }
@@ -104,7 +104,7 @@ void SchedulerBindingCls::handleAppLifecycleStateChanged(AppLifecycleState state
 
 Future<T> SchedulerBindingCls::scheduleTasktemplate<typename T> (String debugLabel, Flow flow, Priority priority, TaskCallback<T> task) {
     bool isFirstTask = _taskQueue->isEmpty();
-    _TaskEntry<T> entry = <T>make<_TaskEntryCls>(task, priority->value, debugLabel, flow);
+    _TaskEntry<T> entry = <T>make<_TaskEntryCls>(task, priority->value(), debugLabel, flow);
     _taskQueue->add(entry);
     if (isFirstTask && !locked) {
         _ensureEventLoopCallback();
@@ -144,7 +144,7 @@ bool SchedulerBindingCls::handleEventLoopCallback() {
 }
 
 int SchedulerBindingCls::transientCallbackCount() {
-    return _transientCallbacks->length;
+    return _transientCallbacks->length();
 }
 
 int SchedulerBindingCls::scheduleFrameCallback(FrameCallback callback, bool rescheduling) {
@@ -165,7 +165,7 @@ bool SchedulerBindingCls::debugAssertNoTransientCallbacks(String reason) {
         if (transientCallbackCount() > 0) {
             int count = transientCallbackCount();
             Map<int, _FrameCallbackEntry> callbacks = <int, _FrameCallbackEntry>of(_transientCallbacks);
-                    List<DiagnosticsNode> list1 = make<ListCls<>>();        if (count == 1) {            list1.add(ArrayItem);        } else {            list1.add(ArrayItem);        }for (int id : callbacks->keys)             {                        ;                    }        {            list1.add(ArrayItem);        }FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(reason, __s("scheduler library"), [=] ()             {
+                    List<DiagnosticsNode> list1 = make<ListCls<>>();        if (count == 1) {            list1.add(ArrayItem);        } else {            list1.add(ArrayItem);        }for (int id : callbacks->keys())             {                        ;                    }        {            list1.add(ArrayItem);        }FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(reason, __s("scheduler library"), [=] ()             {
                 list1;
             }));
         }
@@ -360,7 +360,7 @@ void SchedulerBindingCls::handleDrawFrame() {
         _frameTimelineTask?->finish();
         assert([=] () {
             if (debugPrintEndFrameBanner) {
-                debugPrint(__s("▀") * _debugBanner!->length);
+                debugPrint(__s("▀") * _debugBanner!->length());
             }
             _debugBanner = nullptr;
             return true;

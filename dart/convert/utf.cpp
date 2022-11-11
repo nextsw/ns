@@ -23,7 +23,7 @@ Utf8Decoder Utf8CodecCls::decoder() {
 }
 
 Uint8List Utf8EncoderCls::convert(int end, int start, String stringValue) {
-    auto stringLength = stringValue->length;
+    auto stringLength = stringValue->length();
     end = RangeErrorCls->checkValidRange(start, end, stringLength);
     auto length = end - start;
     if (length == 0)     {
@@ -229,7 +229,7 @@ String _Utf8DecoderCls::errorDescription(int state) {
 }
 
 String _Utf8DecoderCls::convertGeneral(List<int> codeUnits, int maybeEnd, bool single, int start) {
-    int end = RangeErrorCls->checkValidRange(start, maybeEnd, codeUnits->length);
+    int end = RangeErrorCls->checkValidRange(start, maybeEnd, codeUnits->length());
     if (start == end)     {
         return __s("");
     }

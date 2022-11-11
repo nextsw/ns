@@ -118,14 +118,14 @@ double CubicCls::_evaluateCubic(double a, double b, double m) {
 }
 
 double ThreePointCubicCls::transformInternal(double t) {
-    bool firstCurve =  < midpoint->dx;
-    double scaleX = firstCurve? midpoint->dx : 1.0 - midpoint->dx;
-    double scaleY = firstCurve? midpoint->dy : 1.0 - midpoint->dy;
-    double scaledT = (t - (firstCurve? 0.0 : midpoint->dx)) / scaleX;
+    bool firstCurve =  < midpoint->dx();
+    double scaleX = firstCurve? midpoint->dx() : 1.0 - midpoint->dx();
+    double scaleY = firstCurve? midpoint->dy() : 1.0 - midpoint->dy();
+    double scaledT = (t - (firstCurve? 0.0 : midpoint->dx())) / scaleX;
     if (firstCurve) {
-        return make<CubicCls>(a1->dx / scaleX, a1->dy / scaleY, b1->dx / scaleX, b1->dy / scaleY)->transform(scaledT) * scaleY;
+        return make<CubicCls>(a1->dx() / scaleX, a1->dy() / scaleY, b1->dx() / scaleX, b1->dy() / scaleY)->transform(scaledT) * scaleY;
     } else {
-        return make<CubicCls>((a2->dx - midpoint->dx) / scaleX, (a2->dy - midpoint->dy) / scaleY, (b2->dx - midpoint->dx) / scaleX, (b2->dy - midpoint->dy) / scaleY)->transform(scaledT) * scaleY + midpoint->dy;
+        return make<CubicCls>((a2->dx() - midpoint->dx()) / scaleX, (a2->dy() - midpoint->dy()) / scaleY, (b2->dx() - midpoint->dx()) / scaleX, (b2->dy() - midpoint->dy()) / scaleY)->transform(scaledT) * scaleY + midpoint->dy();
     }
 }
 
@@ -144,7 +144,7 @@ Iterable<Curve2DSample> Curve2DCls::generateSamples(double end, double start, do
     Curve2DSample last = make<Curve2DSampleCls>(end, transform(end));
     List<Curve2DSample> samples = makeList(ArrayItem);
     InlineMethod;
-    sample(first, last(first->value->dx - last->value->dx)->abs() < tolerance && (first->value->dy - last->value->dy)->abs() < tolerance);
+    sample(first, last(first->value->dx() - last->value->dx())->abs() < tolerance && (first->value->dy() - last->value->dy())->abs() < tolerance);
     return samples;
 }
 
@@ -191,7 +191,7 @@ CatmullRomSplineCls::CatmullRomSplineCls(List<Offset> controlPoints, Offset endH
         assert(tension != nullptr);
         assert(tension <= 1.0, __s("tension $tension must not be greater than 1.0."));
         assert(tension >= 0.0, __s("tension $tension must not be negative."));
-        assert(controlPoints->length > 3, __s("There must be at least four control points to create a CatmullRomSpline."));
+        assert(controlPoints->length() > 3, __s("There must be at least four control points to create a CatmullRomSpline."));
         _controlPoints = controlPoints;
         _startHandle = startHandle;
         _endHandle = endHandle;
@@ -205,12 +205,12 @@ void CatmullRomSplineCls::precompute(List<Offset> controlPoints, Offset endHandl
 int CatmullRomSplineCls::samplingSeed() {
     _initializeIfNeeded();
     Offset seedPoint = _cubicSegments[0][1];
-    return ((seedPoint->dx + seedPoint->dy) * 10000)->round();
+    return ((seedPoint->dx() + seedPoint->dy()) * 10000)->round();
 }
 
 Offset CatmullRomSplineCls::transformInternal(double t) {
     _initializeIfNeeded();
-    double length = _cubicSegments->length->toDouble();
+    double length = _cubicSegments->length()->toDouble();
     double position;
     double localT;
     int index;
@@ -230,19 +230,19 @@ Offset CatmullRomSplineCls::transformInternal(double t) {
 
 List<List<Offset>> CatmullRomSplineCls::_computeSegments(List<Offset> controlPoints, Offset endHandle, Offset startHandle, double tension) {
     startHandle = controlPoints[0] * 2.0 - controlPoints[1];
-    endHandle = controlPoints->last * 2.0 - controlPoints[controlPoints->length - 2];
+    endHandle = controlPoints->last * 2.0 - controlPoints[controlPoints->length() - 2];
     List<Offset> list1 = make<ListCls<>>();list1.add(ArrayItem);for (auto _x1 : controlPoints) {{    list1.add(_x1);}list1.add(ArrayItem);List<Offset> allPoints = list1;
     double alpha = 0.5;
     double reverseTension = 1.0 - tension;
     List<List<Offset>> result = makeList();
-    for (;  < allPoints->length - 3; ++i) {
+    for (;  < allPoints->length() - 3; ++i) {
         List<Offset> curve = makeList(ArrayItem, ArrayItem, ArrayItem, ArrayItem);
         Offset diffCurve10 = curve[1] - curve[0];
         Offset diffCurve21 = curve[2] - curve[1];
         Offset diffCurve32 = curve[3] - curve[2];
-        double t01 = math->pow(diffCurve10->distance, alpha)->toDouble();
-        double t12 = math->pow(diffCurve21->distance, alpha)->toDouble();
-        double t23 = math->pow(diffCurve32->distance, alpha)->toDouble();
+        double t01 = math->pow(diffCurve10->distance(), alpha)->toDouble();
+        double t12 = math->pow(diffCurve21->distance(), alpha)->toDouble();
+        double t23 = math->pow(diffCurve32->distance(), alpha)->toDouble();
         Offset m1 = (diffCurve21 + (diffCurve10 / t01 - (curve[2] - curve[0]) / (t01 + t12)) * t12) * reverseTension;
         Offset m2 = (diffCurve21 + (diffCurve32 / t23 - (curve[3] - curve[1]) / (t12 + t23)) * t12) * reverseTension;
         Offset sumM12 = m1 + m2;
@@ -280,7 +280,7 @@ bool CatmullRomCurveCls::validateControlPoints(List<Offset> controlPoints, List<
         }());
         return false;
     }
-    if (controlPoints->length < 2) {
+    if (controlPoints->length() < 2) {
         assert([=] () {
             reasons?->add(__s("There must be at least two points supplied to create a valid curve."));
             return true;
@@ -289,25 +289,25 @@ bool CatmullRomCurveCls::validateControlPoints(List<Offset> controlPoints, List<
     }
     List<Offset> list1 = make<ListCls<>>();list1.add(ArrayItem);for (auto _x1 : controlPoints) {{    list1.add(_x1);}list1.add(ArrayItem);controlPoints = list1;
     Offset startHandle = controlPoints[0] * 2.0 - controlPoints[1];
-    Offset endHandle = controlPoints->last * 2.0 - controlPoints[controlPoints->length - 2];
+    Offset endHandle = controlPoints->last * 2.0 - controlPoints[controlPoints->length() - 2];
     List<Offset> list2 = make<ListCls<>>();list2.add(ArrayItem);for (auto _x2 : controlPoints) {{    list2.add(_x2);}list2.add(ArrayItem);controlPoints = list2;
     double lastX = -double->infinity;
-    for (;  < controlPoints->length; ++i) {
-        if (i > 1 &&  < controlPoints->length - 2 && (controlPoints[i]->dx <= 0.0 || controlPoints[i]->dx >= 1.0)) {
+    for (;  < controlPoints->length(); ++i) {
+        if (i > 1 &&  < controlPoints->length() - 2 && (controlPoints[i]->dx() <= 0.0 || controlPoints[i]->dx() >= 1.0)) {
             assert([=] () {
                 reasons?->add(__s("Control points must have X values between 0.0 and 1.0, exclusive. Point $i has an x value (${controlPoints![i].dx}) which is outside the range."));
                 return true;
             }());
             return false;
         }
-        if (controlPoints[i]->dx <= lastX) {
+        if (controlPoints[i]->dx() <= lastX) {
             assert([=] () {
                 reasons?->add(__s("Each X coordinate must be greater than the preceding X coordinate (i.e. must be monotonically increasing in X). Point $i has an x value of ${controlPoints![i].dx}, which is not greater than $lastX"));
                 return true;
             }());
             return false;
         }
-        lastX = controlPoints[i]->dx;
+        lastX = controlPoints[i]->dx();
     }
     bool success = true;
     lastX = -double->infinity;
@@ -316,7 +316,7 @@ bool CatmullRomCurveCls::validateControlPoints(List<Offset> controlPoints, List<
     double start = testSpline->findInverse(0.0);
     double end = testSpline->findInverse(1.0);
     Iterable<Curve2DSample> samplePoints = testSpline->generateSamples(start, end);
-    if (samplePoints->first->value->dy->abs() > tolerance || (1.0 - samplePoints->last()->value->dy)->abs() > tolerance) {
+    if (samplePoints->first()->value->dy->abs() > tolerance || (1.0 - samplePoints->last()->value->dy)->abs() > tolerance) {
         bool bail = true;
         success = false;
         assert([=] () {
@@ -331,7 +331,7 @@ bool CatmullRomCurveCls::validateControlPoints(List<Offset> controlPoints, List<
     for (Curve2DSample sample : samplePoints) {
         Offset point = sample->value;
         double t = sample->t;
-        double x = point->dx;
+        double x = point->dx();
         if (t >= start && t <= end && ( < -1e-3 || x > 1.0 + 1e-3)) {
             bool bail = true;
             success = false;
@@ -366,7 +366,7 @@ double CatmullRomCurveCls::transformInternal(double t) {
         _precomputedSamples->addAll(_computeSamples(controlPoints, tension));
     }
     int start = 0;
-    int end = _precomputedSamples->length - 1;
+    int end = _precomputedSamples->length() - 1;
     int mid;
     Offset value;
     Offset startValue = _precomputedSamples[start]->value;
@@ -374,7 +374,7 @@ double CatmullRomCurveCls::transformInternal(double t) {
     while (end - start > 1) {
         mid = (end + start) ~/ 2;
         value = _precomputedSamples[mid]->value;
-        if (t >= value->dx) {
+        if (t >= value->dx()) {
             start = mid;
             startValue = value;
         } else {
@@ -382,8 +382,8 @@ double CatmullRomCurveCls::transformInternal(double t) {
             endValue = value;
         }
     }
-    double t2 = (t - startValue->dx) / (endValue->dx - startValue->dx);
-    return lerpDouble(startValue->dy, endValue->dy, t2)!;
+    double t2 = (t - startValue->dx()) / (endValue->dx() - startValue->dx());
+    return lerpDouble(startValue->dy(), endValue->dy(), t2)!;
 }
 
 List<Curve2DSample> CatmullRomCurveCls::_computeSamples(List<Offset> controlPoints, double tension) {

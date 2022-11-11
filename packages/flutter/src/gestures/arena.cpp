@@ -68,7 +68,7 @@ void GestureArenaManagerCls::sweep(int pointer) {
     if (state->members->isNotEmpty) {
         assert(_debugLogDiagnostic(pointer, __s("Winner: ${state.members.first}")));
         state->members->first->acceptGesture(pointer);
-        for (;  < state->members->length; i++) {
+        for (;  < state->members->length(); i++) {
             state->members[i]->rejectGesture(pointer);
         }
     }
@@ -122,7 +122,7 @@ void GestureArenaManagerCls::_resolve(GestureDisposition disposition, GestureAre
 void GestureArenaManagerCls::_tryToResolveArena(int pointer, _GestureArena state) {
     assert(_arenas[pointer] == state);
     assert(!state->isOpen);
-    if (state->members->length == 1) {
+    if (state->members->length() == 1) {
         scheduleMicrotask([=] ()         {
             _resolveByDefault(pointer, state);
         });
@@ -146,7 +146,7 @@ void GestureArenaManagerCls::_resolveByDefault(int pointer, _GestureArena state)
     assert(_arenas[pointer] == state);
     assert(!state->isOpen);
     List<GestureArenaMember> members = state->members;
-    assert(members->length == 1);
+    assert(members->length() == 1);
     _arenas->remove(pointer);
     assert(_debugLogDiagnostic(pointer, __s("Default winner: ${state.members.first}")));
     state->members->first->acceptGesture(pointer);
@@ -169,7 +169,7 @@ void GestureArenaManagerCls::_resolveInFavorOf(GestureArenaMember member, int po
 bool GestureArenaManagerCls::_debugLogDiagnostic(String message, int pointer, _GestureArena state) {
     assert([=] () {
         if (debugPrintGestureArenaDiagnostics) {
-            int count = state?->members->length;
+            int count = state?->members->length();
             String s = count != 1? __s("s") : __s("");
             debugPrint(__s("Gesture arena ${pointer.toString().padRight(4)} ❙ $message${ count != null ? " with $count member$s." : ""}"));
         }

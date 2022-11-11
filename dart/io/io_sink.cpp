@@ -6,14 +6,14 @@ template<typename T> void _StreamSinkImplCls<T>::add(T data) {
     if (_isClosed) {
         ;
     }
-    _controller->add(data);
+    _controller()->add(data);
 }
 
 template<typename T> void _StreamSinkImplCls<T>::addError(error , StackTrace stackTrace) {
     if (_isClosed) {
         ;
     }
-    _controller->addError(error, stackTrace);
+    _controller()->addError(error, stackTrace);
 }
 
 template<typename T> Future _StreamSinkImplCls<T>::addStream(Stream<T> stream) {
@@ -94,7 +94,7 @@ template<typename T> StreamController<T> _StreamSinkImplCls<T>::_controller() {
     if (_controllerInstance == nullptr) {
         _controllerInstance = <T>make<StreamControllerCls>(true);
         _controllerCompleter = make<CompleterCls>();
-        _target->addStream(_controller->stream)->then([=] () {
+        _target->addStream(_controller()->stream())->then([=] () {
             if (_isBound) {
                 _controllerCompleter!->complete(this);
                 _controllerCompleter = nullptr;

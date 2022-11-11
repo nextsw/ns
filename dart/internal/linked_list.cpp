@@ -77,7 +77,7 @@ template<typename T> bool _LinkedListIteratorCls<T>::moveNext() {
         if (list == nullptr)         {
             return false;
         }
-        assert(list->length > 0);
+        assert(list->length() > 0);
         _current = list->first();
         _list = nullptr;
         return true;
@@ -91,7 +91,7 @@ template<typename T> _LinkedListIteratorCls<T>::_LinkedListIteratorCls(LinkedLis
         _list = list;
     }
     {
-        if (list->length == 0)         {
+        if (list->length() == 0)         {
             _list = nullptr;
         }
     }

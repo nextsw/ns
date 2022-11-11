@@ -27,7 +27,7 @@ template<typename E> bool DefaultEqualityCls<E>::equals(Object e1, Object e2) {
 }
 
 template<typename E> int DefaultEqualityCls<E>::hash(Object e) {
-    return e->hashCode;
+    return e->hashCode();
 }
 
 template<typename E> bool DefaultEqualityCls<E>::isValidKey(Object o) {
@@ -109,7 +109,7 @@ template<typename E> bool ListEqualityCls<E>::equals(List<E> list1, List<E> list
     if (list1 == nullptr || list2 == nullptr)     {
         return false;
     }
-    auto length = list1->length;
+    auto length = list1->length();
     if (length != list2->length)     {
         return false;
     }
@@ -126,7 +126,7 @@ template<typename E> int ListEqualityCls<E>::hash(List<E> list) {
         return nullptr->hashCode;
     }
     auto hash = 0;
-    for (;  < list->length; i++) {
+    for (;  < list->length(); i++) {
         auto c = _elementEquality->hash(list[i]);
         hash = (hash + c) & _hashMask;
         hash = (hash + (hash << 10)) & _hashMask;
@@ -218,17 +218,17 @@ template<typename K, typename V> bool MapEqualityCls<K, V>::equals(Map<K, V> map
     if (map1 == nullptr || map2 == nullptr)     {
         return false;
     }
-    auto length = map1->length;
+    auto length = map1->length();
     if (length != map2->length)     {
         return false;
     }
     Map<_MapEntry, int> equalElementCounts = make<HashMapCls>();
-    for (auto key : map1->keys) {
+    for (auto key : map1->keys()) {
         auto entry = make<_MapEntryCls>(this, key, map1[key]);
         auto count = equalElementCounts[entry] or 0;
         equalElementCounts[entry] = count + 1;
     }
-    for (auto key : map2->keys) {
+    for (auto key : map2->keys()) {
         auto entry = make<_MapEntryCls>(this, key, map2[key]);
         auto count = equalElementCounts[entry];
         if (count == nullptr || count == 0)         {
@@ -244,7 +244,7 @@ template<typename K, typename V> int MapEqualityCls<K, V>::hash(Map<K, V> map) {
         return nullptr->hashCode;
     }
     auto hash = 0;
-    for (auto key : map->keys) {
+    for (auto key : map->keys()) {
         auto keyHash = _keyEquality->hash(key);
         auto valueHash = _valueEquality->hash(as<V>(map[key]));
         hash = (hash + 3 * keyHash + 7 * valueHash) & _hashMask;

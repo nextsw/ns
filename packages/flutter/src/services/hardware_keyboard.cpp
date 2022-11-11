@@ -17,11 +17,11 @@ HardwareKeyboard HardwareKeyboardCls::instance() {
 }
 
 Set<PhysicalKeyboardKey> HardwareKeyboardCls::physicalKeysPressed() {
-    return _pressedKeys->keys->toSet();
+    return _pressedKeys->keys()->toSet();
 }
 
 Set<LogicalKeyboardKey> HardwareKeyboardCls::logicalKeysPressed() {
-    return _pressedKeys->values->toSet();
+    return _pressedKeys->values()->toSet();
 }
 
 LogicalKeyboardKey HardwareKeyboardCls::lookUpLayout(PhysicalKeyboardKey physicalKey) {
@@ -201,8 +201,8 @@ bool KeyEventManagerCls::_dispatchKeyMessage(List<KeyEvent> keyEvents, RawKeyEve
 }
 
 void KeyEventManagerCls::_convertRawEventAndStore(RawKeyEvent rawEvent) {
-    PhysicalKeyboardKey physicalKey = rawEvent->physicalKey;
-    LogicalKeyboardKey logicalKey = rawEvent->logicalKey;
+    PhysicalKeyboardKey physicalKey = rawEvent->physicalKey();
+    LogicalKeyboardKey logicalKey = rawEvent->logicalKey();
     Set<PhysicalKeyboardKey> physicalKeysPressed = _hardwareKeyboard->physicalKeysPressed();
     List<KeyEvent> eventAfterwards = makeList();
     KeyEvent mainEvent;

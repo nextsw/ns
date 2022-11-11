@@ -57,7 +57,7 @@ PointerEvent _MouseTrackerUpdateDetailsCls::latestEvent() {
 
 void _MouseTrackerUpdateDetailsCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(make<IntPropertyCls>(__s("device"), device));
+    properties->add(make<IntPropertyCls>(__s("device"), device()));
     properties->add(<PointerEvent>make<DiagnosticsPropertyCls>(__s("previousEvent"), previousEvent));
     properties->add(<PointerEvent>make<DiagnosticsPropertyCls>(__s("triggeringEvent"), triggeringEvent));
     properties->add(<Map<MouseTrackerAnnotation, Matrix4>>make<DiagnosticsPropertyCls>(__s("lastAnnotations"), lastAnnotations));
@@ -105,7 +105,7 @@ void MouseTrackerCls::updateWithEvent(PointerEvent event, ValueGetter<HitTestRes
 
 void MouseTrackerCls::updateAllDevices(MouseDetectorAnnotationFinder hitTest) {
     _deviceUpdatePhase([=] () {
-        for (_MouseState dirtyState : _mouseStates->values) {
+        for (_MouseState dirtyState : _mouseStates->values()) {
             PointerEvent lastEvent = dirtyState->latestEvent;
             LinkedHashMap<MouseTrackerAnnotation, Matrix4> nextAnnotations = _findAnnotations(dirtyState, hitTest);
             LinkedHashMap<MouseTrackerAnnotation, Matrix4> lastAnnotations = dirtyState->replaceAnnotations(nextAnnotations);
@@ -156,7 +156,7 @@ bool MouseTrackerCls::_shouldMarkStateDirty(PointerEvent event, _MouseState stat
 LinkedHashMap<MouseTrackerAnnotation, Matrix4> MouseTrackerCls::_hitTestResultToAnnotations(HitTestResult result) {
     assert(result != nullptr);
     LinkedHashMap<MouseTrackerAnnotation, Matrix4> annotations = <MouseTrackerAnnotation, Matrix4>make<LinkedHashMapCls>();
-    for (HitTestEntry entry : result->path) {
+    for (HitTestEntry entry : result->path()) {
         Object target = entry->target;
         if (is<MouseTrackerAnnotation>(target)) {
             annotations[as<MouseTrackerAnnotationCls>(target)] = entry->transform!;
@@ -169,7 +169,7 @@ LinkedHashMap<MouseTrackerAnnotation, Matrix4> MouseTrackerCls::_findAnnotations
     assert(state != nullptr);
     assert(hitTest != nullptr);
     Offset globalPosition = state->latestEvent()->position;
-    int device = state->device;
+    int device = state->device();
     if (!_mouseStates->containsKey(device)) {
         return <MouseTrackerAnnotation, Matrix4>make<LinkedHashMapCls>();
     }
@@ -179,7 +179,7 @@ LinkedHashMap<MouseTrackerAnnotation, Matrix4> MouseTrackerCls::_findAnnotations
 void MouseTrackerCls::_handleDeviceUpdate(_MouseTrackerUpdateDetails details) {
     assert(_debugDuringDeviceUpdate);
     _handleDeviceUpdateMouseEvents(details);
-    _mouseCursorMixin->handleDeviceCursorUpdate(details->device, details->triggeringEvent, details->nextAnnotations->keys->map([=] (MouseTrackerAnnotation annotation)     {
+    _mouseCursorMixin->handleDeviceCursorUpdate(details->device(), details->triggeringEvent, details->nextAnnotations->keys->map([=] (MouseTrackerAnnotation annotation)     {
         annotation->cursor;
     }));
 }
@@ -200,7 +200,7 @@ void MouseTrackerCls::_handleDeviceUpdateMouseEvents(_MouseTrackerUpdateDetails 
     !lastAnnotations->containsKey(annotation);
 })->toList();
     PointerEnterEvent baseEnterEvent = PointerEnterEventCls->fromMouseEvent(latestEvent);
-    for (MouseTrackerAnnotation annotation : enteringAnnotations->reversed) {
+    for (MouseTrackerAnnotation annotation : enteringAnnotations->reversed()) {
         if (annotation->validForMouseTracker && annotation->onEnter != nullptr) {
             annotation->onEnter!(baseEnterEvent->transformed(nextAnnotations[annotation]));
         }

@@ -23,7 +23,7 @@ bool _ImageFilterRenderObjectCls::enabled() {
 }
 
 void _ImageFilterRenderObjectCls::enabled(bool value) {
-    if (enabled == value) {
+    if (enabled() == value) {
         return;
     }
     _enabled = value;
@@ -43,20 +43,20 @@ void _ImageFilterRenderObjectCls::imageFilter(ImageFilter value) {
 }
 
 bool _ImageFilterRenderObjectCls::alwaysNeedsCompositing() {
-    return child != nullptr && enabled;
+    return child != nullptr && enabled();
 }
 
 void _ImageFilterRenderObjectCls::paint(PaintingContext context, Offset offset) {
-    assert(imageFilter != nullptr);
-    if (!enabled) {
+    assert(imageFilter() != nullptr);
+    if (!enabled()) {
         layer = nullptr;
         return super->paint(context, offset);
     }
     if (layer == nullptr) {
-        layer = make<ImageFilterLayerCls>(imageFilter);
+        layer = make<ImageFilterLayerCls>(imageFilter());
     } else {
         ImageFilterLayer filterLayer = as<ImageFilterLayer>(layer!);
-        filterLayer->imageFilter = imageFilter;
+        filterLayer->imageFilter() = imageFilter();
     }
     context->pushLayer(layer!, super->paint, offset);
     assert([=] () {

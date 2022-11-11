@@ -4,9 +4,9 @@ BoxConstraints TextSelectionToolbarLayoutDelegateCls::getConstraintsForChild(Box
 }
 
 Offset TextSelectionToolbarLayoutDelegateCls::getPositionForChild(Size childSize, Size size) {
-    bool fitsAbove = this->fitsAbove or anchorAbove->dy >= childSize->height;
+    bool fitsAbove = this->fitsAbove or anchorAbove->dy() >= childSize->height();
     Offset anchor = fitsAbove? anchorAbove : anchorBelow;
-    return make<OffsetCls>(_centerOn(anchor->dx, childSize->width, size->width), fitsAbove? math->max(0.0, anchor->dy - childSize->height) : anchor->dy);
+    return make<OffsetCls>(_centerOn(anchor->dx(), childSize->width(), size->width()), fitsAbove? math->max(0.0, anchor->dy() - childSize->height()) : anchor->dy());
 }
 
 bool TextSelectionToolbarLayoutDelegateCls::shouldRelayout(TextSelectionToolbarLayoutDelegate oldDelegate) {

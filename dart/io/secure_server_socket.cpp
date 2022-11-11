@@ -12,7 +12,7 @@ StreamSubscription<SecureSocket> SecureServerSocketCls::listen(bool cancelOnErro
 }
 
 int SecureServerSocketCls::port() {
-    return _socket->port;
+    return _socket->port();
 }
 
 InternetAddress SecureServerSocketCls::address() {
@@ -36,11 +36,11 @@ Future<RawSecureServerSocket> RawSecureServerSocketCls::bind(address , int backl
 }
 
 StreamSubscription<RawSecureSocket> RawSecureServerSocketCls::listen(bool cancelOnError, void onData(RawSecureSocket s) , void onDone() , void  onError() ) {
-    return _controller->stream->listen(onDataonError, onDone, cancelOnError);
+    return _controller->stream()->listen(onDataonError, onDone, cancelOnError);
 }
 
 int RawSecureServerSocketCls::port() {
-    return _socket->port;
+    return _socket->port();
 }
 
 InternetAddress RawSecureServerSocketCls::address() {
@@ -79,7 +79,7 @@ void RawSecureServerSocketCls::_onData(RawSocket connection) {
 }
 
 void RawSecureServerSocketCls::_onPauseStateChange() {
-    if (_controller->isPaused) {
+    if (_controller->isPaused()) {
         _subscription!->pause();
     } else {
         _subscription!->resume();
@@ -87,7 +87,7 @@ void RawSecureServerSocketCls::_onPauseStateChange() {
 }
 
 void RawSecureServerSocketCls::_onSubscriptionStateChange() {
-    if (_controller->hasListener) {
+    if (_controller->hasListener()) {
         _subscription = _socket->listen(_onData_controller->addError, _controller->close);
     } else {
         close();

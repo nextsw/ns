@@ -5,5 +5,5 @@ Size ChildLayoutHelperCls::dryLayoutChild(RenderBox child, BoxConstraints constr
 
 Size ChildLayoutHelperCls::layoutChild(RenderBox child, BoxConstraints constraints) {
     child->layout(constraintstrue);
-    return child->size;
+    return child->size();
 }

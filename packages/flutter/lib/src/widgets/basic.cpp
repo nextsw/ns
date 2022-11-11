@@ -518,7 +518,7 @@ RenderConstrainedBox SizedBoxCls::createRenderObject(BuildContext context) {
 }
 
 void SizedBoxCls::updateRenderObject(BuildContext context, RenderConstrainedBox renderObject) {
-    renderObject->additionalConstraints = _additionalConstraints();
+    renderObject->additionalConstraints() = _additionalConstraints();
 }
 
 String SizedBoxCls::toStringShort() {
@@ -563,7 +563,7 @@ RenderConstrainedBox ConstrainedBoxCls::createRenderObject(BuildContext context)
 }
 
 void ConstrainedBoxCls::updateRenderObject(BuildContext context, RenderConstrainedBox renderObject) {
-    renderObject->additionalConstraints = constraints;
+    renderObject->additionalConstraints() = constraints;
 }
 
 void ConstrainedBoxCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
@@ -864,7 +864,7 @@ RenderListBody ListBodyCls::createRenderObject(BuildContext context) {
 }
 
 void ListBodyCls::updateRenderObject(BuildContext context, RenderListBody renderObject) {
-    renderObject->axisDirection = _getDirection(context);
+    renderObject->axisDirection() = _getDirection(context);
 }
 
 AxisDirection ListBodyCls::_getDirection(BuildContext context) {
@@ -1309,7 +1309,7 @@ RenderRepaintBoundary RepaintBoundaryCls::createRenderObject(BuildContext contex
 
 IgnorePointerCls::IgnorePointerCls(Unknown child, bool ignoring, bool ignoringSemantics, Unknown key) {
     {
-            List<RepaintBoundary> list1 = make<ListCls<>>();    for (;  < widgets->length; ++i)     {            ;        }    {        list1.add(ArrayItem);    }assert(ignoring != nullptr);
+            List<RepaintBoundary> list1 = make<ListCls<>>();    for (;  < widgets->length(); ++i)     {            ;        }    {        list1.add(ArrayItem);    }assert(ignoring != nullptr);
     }
 }
 
@@ -1537,7 +1537,7 @@ void _RenderColoredBoxCls::color(Color value) {
 
 void _RenderColoredBoxCls::paint(PaintingContext context, Offset offset) {
     if (size > SizeCls::zero) {
-            auto _c1 = make<PaintCls>();    _c1.color = color;context->canvas->drawRect(offset & size, _c1);
+            auto _c1 = make<PaintCls>();    _c1.color() = color();context->canvas()->drawRect(offset & size, _c1);
     }
     if (child != nullptr) {
         context->paintChild(child!, offset);

@@ -132,7 +132,7 @@ void MultiDragGestureRecognizerCls::rejectGesture(int pointer) {
 }
 
 void MultiDragGestureRecognizerCls::dispose() {
-    _pointers!->keys->toList()->forEach(_removeState);
+    _pointers!->keys()->toList()->forEach(_removeState);
     assert(_pointers!->isEmpty());
     _pointers = nullptr;
     super->dispose();

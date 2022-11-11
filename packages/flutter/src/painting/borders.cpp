@@ -181,7 +181,7 @@ ShapeBorder _CompoundBorderCls::add(ShapeBorder other, bool reversed) {
         ShapeBorder merged = ours->add(as<_CompoundBorderCls>(other)reversed) or as<_CompoundBorderCls>(other)->add(ours!reversed);
         if (merged != nullptr) {
                     List<ShapeBorder> list1 = make<ListCls<>>();        for (auto _x1 : borders) {        {            list1.add(_x1);        }List<ShapeBorder> result = list1;
-            result[reversed? result->length - 1 : 0] = merged;
+            result[reversed? result->length() - 1 : 0] = merged;
             return make<_CompoundBorderCls>(result);
         }
     }
@@ -209,7 +209,7 @@ _CompoundBorder _CompoundBorderCls::lerp(ShapeBorder a, ShapeBorder b, double t)
     List<ShapeBorder> aList = is<_CompoundBorder>(a)? a->borders : makeList(ArrayItem);
     List<ShapeBorder> bList = is<_CompoundBorder>(b)? b->borders : makeList(ArrayItem);
     List<ShapeBorder> results = makeList();
-    int length = math->max(aList->length, bList->length);
+    int length = math->max(aList->length(), bList->length());
     for (;  < length; index = 1) {
         ShapeBorder localA =  < aList->length? aList[index] : nullptr;
         ShapeBorder localB =  < bList->length? bList[index] : nullptr;
@@ -231,7 +231,7 @@ _CompoundBorder _CompoundBorderCls::lerp(ShapeBorder a, ShapeBorder b, double t)
 }
 
 Path _CompoundBorderCls::getInnerPath(Rect rect, TextDirection textDirection) {
-    for (;  < borders->length - 1; index = 1) {
+    for (;  < borders->length() - 1; index = 1) {
         rect = borders[index]->dimensions()->resolve(textDirection)->deflateRect(rect);
     }
     return borders->last->getInnerPath(recttextDirection);
@@ -263,7 +263,7 @@ int _CompoundBorderCls::hashCode() {
 }
 
 String _CompoundBorderCls::toString() {
-    return borders->reversed-><String>map([=] (ShapeBorder border)     {
+    return borders->reversed()-><String>map([=] (ShapeBorder border)     {
         border->toString();
     })->join(__s(" + "));
 }
@@ -271,7 +271,7 @@ String _CompoundBorderCls::toString() {
 _CompoundBorderCls::_CompoundBorderCls(List<ShapeBorder> borders) {
     {
         assert(borders != nullptr);
-        assert(borders->length >= 2);
+        assert(borders->length() >= 2);
         assert(!borders->any([=] (ShapeBorder border)         {
             is<_CompoundBorder>(border);
         }));

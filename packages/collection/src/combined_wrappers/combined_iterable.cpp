@@ -19,6 +19,6 @@ template<typename T> bool CombinedIterableViewCls<T>::isEmpty() {
 
 template<typename T> int CombinedIterableViewCls<T>::length() {
     return _iterables->fold(0, [=] (Unknown  length,Unknown  i)     {
-        length + i->length;
+        length() + i->length;
     });
 }

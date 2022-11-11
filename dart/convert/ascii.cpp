@@ -30,7 +30,7 @@ AsciiDecoder AsciiCodecCls::decoder() {
 }
 
 Uint8List _UnicodeSubsetEncoderCls::convert(int end, int start, String stringValue) {
-    auto stringLength = stringValue->length;
+    auto stringLength = stringValue->length();
     end = RangeErrorCls->checkValidRange(start, end, stringLength);
     auto length = end - start;
     auto result = make<Uint8ListCls>(length);
@@ -60,7 +60,7 @@ void _UnicodeSubsetEncoderSinkCls::close() {
 }
 
 void _UnicodeSubsetEncoderSinkCls::addSlice(int end, bool isLast, String source, int start) {
-    RangeErrorCls->checkValidRange(start, end, source->length);
+    RangeErrorCls->checkValidRange(start, end, source->length());
     for (;  < end; i++) {
         auto codeUnit = source->codeUnitAt(i);
         if ((codeUnit & ~_subsetMask) != 0) {
@@ -74,7 +74,7 @@ void _UnicodeSubsetEncoderSinkCls::addSlice(int end, bool isLast, String source,
 }
 
 String _UnicodeSubsetDecoderCls::convert(List<int> bytes, int end, int start) {
-    end = RangeErrorCls->checkValidRange(start, end, bytes->length);
+    end = RangeErrorCls->checkValidRange(start, end, bytes->length());
     for (;  < end; i++) {
         auto byte = bytes[i];
         if ((byte & ~_subsetMask) != 0) {
@@ -125,11 +125,11 @@ void _ErrorHandlingAsciiDecoderSinkCls::close() {
 }
 
 void _ErrorHandlingAsciiDecoderSinkCls::add(List<int> source) {
-    addSlice(source, 0, source->length, false);
+    addSlice(source, 0, source->length(), false);
 }
 
 void _ErrorHandlingAsciiDecoderSinkCls::addSlice(int end, bool isLast, List<int> source, int start) {
-    RangeErrorCls->checkValidRange(start, end, source->length);
+    RangeErrorCls->checkValidRange(start, end, source->length());
     for (;  < end; i++) {
         if ((source[i] & ~_asciiMask) != 0) {
             if (i > start)             {
@@ -153,7 +153,7 @@ void _SimpleAsciiDecoderSinkCls::close() {
 }
 
 void _SimpleAsciiDecoderSinkCls::add(List<int> source) {
-    for (;  < source->length; i++) {
+    for (;  < source->length(); i++) {
         if ((source[i] & ~_asciiMask) != 0) {
             ;
         }
@@ -162,7 +162,7 @@ void _SimpleAsciiDecoderSinkCls::add(List<int> source) {
 }
 
 void _SimpleAsciiDecoderSinkCls::addSlice(int end, bool isLast, List<int> source, int start) {
-    Unknown length = source->length;
+    Unknown length = source->length();
     RangeErrorCls->checkValidRange(start, end, length);
     if ( < end) {
         if (start != 0 || end != length) {

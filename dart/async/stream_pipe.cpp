@@ -52,7 +52,7 @@ void _cancelAndValue(value , _Future future, StreamSubscription subscription) {
 }
 
 template<typename S, typename T> bool _ForwardingStreamCls<S, T>::isBroadcast() {
-    return _source->isBroadcast;
+    return _source->isBroadcast();
 }
 
 template<typename S, typename T> StreamSubscription<T> _ForwardingStreamCls<S, T>::listen(bool cancelOnError, void onData(T value) , void onDone() , void  onError() ) {

@@ -3,7 +3,7 @@ BytesBuilderCls::BytesBuilderCls(bool copy) {
 }
 
 void _CopyingBytesBuilderCls::add(List<int> bytes) {
-    int byteCount = bytes->length;
+    int byteCount = bytes->length();
     if (byteCount == 0)     {
         return;
     }
@@ -117,7 +117,7 @@ Uint8List _BytesBuilderCls::takeBytes() {
     if (_length == 0)     {
         return _CopyingBytesBuilderCls::_emptyList;
     }
-    if (_chunks->length == 1) {
+    if (_chunks->length() == 1) {
         auto buffer = _chunks[0];
         _clear();
         return buffer;

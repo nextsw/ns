@@ -10,7 +10,7 @@ String HtmlEscapeModeCls::toString() {
 }
 
 String HtmlEscapeCls::convert(String text) {
-    auto val = _convert(text, 0, text->length);
+    auto val = _convert(text, 0, text->length());
     return val == nullptr? text : val;
 }
 

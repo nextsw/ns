@@ -21,13 +21,13 @@ bool listEqualstemplate<typename T> (List<T> a, List<T> b) {
     if (a == nullptr) {
         return b == nullptr;
     }
-    if (b == nullptr || a->length != b->length) {
+    if (b == nullptr || a->length() != b->length()) {
         return false;
     }
     if (identical(a, b)) {
         return true;
     }
-    for (;  < a->length; index = 1) {
+    for (;  < a->length(); index = 1) {
         if (a[index] != b[index]) {
             return false;
         }
@@ -39,13 +39,13 @@ bool mapEqualstemplate<typename T, typename U> (Map<T, U> a, Map<T, U> b) {
     if (a == nullptr) {
         return b == nullptr;
     }
-    if (b == nullptr || a->length != b->length) {
+    if (b == nullptr || a->length() != b->length()) {
         return false;
     }
     if (identical(a, b)) {
         return true;
     }
-    for (T key : a->keys) {
+    for (T key : a->keys()) {
         if (!b->containsKey(key) || b[key] != a[key]) {
             return false;
         }
@@ -55,7 +55,7 @@ bool mapEqualstemplate<typename T, typename U> (Map<T, U> a, Map<T, U> b) {
 
 int binarySearchtemplate<typename T> (List<T> sortedList, T value) {
     int min = 0;
-    int max = sortedList->length;
+    int max = sortedList->length();
     while ( < max) {
         int mid = min + ((max - min) >> 1);
         T element = sortedList[mid];
@@ -73,7 +73,7 @@ int binarySearchtemplate<typename T> (List<T> sortedList, T value) {
 }
 
 void mergeSorttemplate<typename T> (int compare(T , T ) , int end, List<T> list, int start) {
-    end = list->length;
+    end = list->length();
     compare = <T>_defaultCompare();
     int length = end - start;
     if ( < 2) {
@@ -101,7 +101,7 @@ Comparator<T> _defaultComparetemplate<typename T> () {
 
 void _insertionSorttemplate<typename T> (int compare(T , T ) , int end, List<T> list, int start) {
     compare = <T>_defaultCompare();
-    end = list->length;
+    end = list->length();
     for (;  < end; pos++) {
         int min = start;
         int max = pos;

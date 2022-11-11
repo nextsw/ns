@@ -24,7 +24,7 @@ MediaQueryDataCls::MediaQueryDataCls(bool accessibleNavigation, bool alwaysUse24
 void MediaQueryDataCls::fromWindow(FlutterView window)
 
 Orientation MediaQueryDataCls::orientation() {
-    return size->width > size->height? OrientationCls::landscape : OrientationCls::portrait;
+    return size->width() > size->height()? OrientationCls::landscape : OrientationCls::portrait;
 }
 
 MediaQueryData MediaQueryDataCls::copyWith(bool accessibleNavigation, bool alwaysUse24HourFormat, bool boldText, double devicePixelRatio, bool disableAnimations, List<DisplayFeature> displayFeatures, DeviceGestureSettings gestureSettings, bool highContrast, bool invertColors, NavigationMode navigationMode, EdgeInsets padding, Brightness platformBrightness, Size size, EdgeInsets systemGestureInsets, double textScaleFactor, EdgeInsets viewInsets, EdgeInsets viewPadding) {
@@ -53,12 +53,12 @@ MediaQueryData MediaQueryDataCls::removeViewPadding(bool removeBottom, bool remo
 }
 
 MediaQueryData MediaQueryDataCls::removeDisplayFeatures(Rect subScreen) {
-    assert(subScreen->left >= 0.0 && subScreen->top >= 0.0 && subScreen->right <= size->width && subScreen->bottom <= size->height, __s("'subScreen' argument cannot be outside the bounds of the screen"));
-    if (subScreen->size == size && subScreen->topLeft == OffsetCls::zero) {
+    assert(subScreen->left >= 0.0 && subScreen->top >= 0.0 && subScreen->right <= size->width() && subScreen->bottom <= size->height(), __s("'subScreen' argument cannot be outside the bounds of the screen"));
+    if (subScreen->size == size && subScreen->topLeft() == OffsetCls::zero) {
         return this;
     }
-    double rightInset = size->width - subScreen->right;
-    double bottomInset = size->height - subScreen->bottom;
+    double rightInset = size->width() - subScreen->right;
+    double bottomInset = size->height() - subScreen->bottom;
     return copyWith(EdgeInsetsCls->only(math->max(0.0, padding->left - subScreen->left), math->max(0.0, padding->top - subScreen->top), math->max(0.0, padding->right - rightInset), math->max(0.0, padding->bottom - bottomInset)), EdgeInsetsCls->only(math->max(0.0, viewPadding->left - subScreen->left), math->max(0.0, viewPadding->top - subScreen->top), math->max(0.0, viewPadding->right - rightInset), math->max(0.0, viewPadding->bottom - bottomInset)), EdgeInsetsCls->only(math->max(0.0, viewInsets->left - subScreen->left), math->max(0.0, viewInsets->top - subScreen->top), math->max(0.0, viewInsets->right - rightInset), math->max(0.0, viewInsets->bottom - bottomInset)), displayFeatures->where([=] (DisplayFeature displayFeature)     {
         subScreen->overlaps(displayFeature->bounds);
     })->toList());

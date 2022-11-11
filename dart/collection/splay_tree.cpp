@@ -592,7 +592,7 @@ template<typename K, typename V> void _SplayTreeMapEntryIteratorCls<K, V>::_repl
     auto last = _path->removeLast();
     auto newLast = last->_replaceValue(value);
     if (_path->isEmpty) {
-        _tree->_root() = newLast;
+        _tree->_root = newLast;
     } else {
         auto parent = _path->last;
         if (identical(last, parent->_left)) {

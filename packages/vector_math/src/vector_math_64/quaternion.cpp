@@ -202,7 +202,7 @@ void QuaternionCls::setEuler(double pitch, double roll, double yaw) {
 }
 
 double QuaternionCls::normalize() {
-    Unknown l = length;
+    Unknown l = length();
     if (l == 0.0) {
         return 0.0;
     }
@@ -397,14 +397,14 @@ String QuaternionCls::toString() {
 
 double QuaternionCls::relativeError(Quaternion correct) {
     Unknown diff = correct - this;
-    Unknown norm_diff = diff->length;
-    Unknown correct_norm = correct->length;
+    Unknown norm_diff = diff->length();
+    Unknown correct_norm = correct->length();
     return norm_diff / correct_norm;
 }
 
 double QuaternionCls::absoluteError(Quaternion correct) {
-    Unknown this_norm = length;
-    Unknown correct_norm = correct->length;
+    Unknown this_norm = length();
+    Unknown correct_norm = correct->length();
     Unknown norm_diff = (this_norm - correct_norm)->abs();
     return norm_diff;
 }

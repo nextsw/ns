@@ -113,7 +113,7 @@ ClipPathEngineLayer SceneBuilderCls::pushClipPath(Clip clipBehavior, ClipPathEng
 OpacityEngineLayer SceneBuilderCls::pushOpacity(int alpha, Offset offset, OpacityEngineLayer oldLayer) {
     assert(_debugCheckCanBeUsedAsOldLayer(oldLayer, __s("pushOpacity")));
     EngineLayer engineLayer = EngineLayerCls->_();
-    _pushOpacity(engineLayer, alpha, offset!->dx, offset->dy, oldLayer?->_nativeLayer);
+    _pushOpacity(engineLayer, alpha, offset!->dx(), offset->dy(), oldLayer?->_nativeLayer);
     OpacityEngineLayer layer = OpacityEngineLayerCls->_(engineLayer);
     assert(_debugPushLayer(layer));
     return layer;
@@ -197,17 +197,17 @@ void SceneBuilderCls::addPerformanceOverlay(Rect bounds, int enabledOptions) {
 void SceneBuilderCls::addPicture(bool isComplexHint, Offset offset, Picture picture, bool willChangeHint) {
     assert(!picture->debugDisposed());
     int hints = (isComplexHint? 1 : 0) | (willChangeHint? 2 : 0);
-    _addPicture(offset->dx, offset->dy, picture, hints);
+    _addPicture(offset->dx(), offset->dy(), picture, hints);
 }
 
 void SceneBuilderCls::addTexture(FilterQuality filterQuality, bool freeze, double height, Offset offset, int textureId, double width) {
     assert(offset != nullptr, __s("Offset argument was null"));
-    _addTexture(offset->dx, offset->dy, width, height, textureId, freeze, filterQuality->index);
+    _addTexture(offset->dx(), offset->dy(), width, height, textureId, freeze, filterQuality->index);
 }
 
 void SceneBuilderCls::addPlatformView(double height, Offset offset, int viewId, double width) {
     assert(offset != nullptr, __s("Offset argument was null"));
-    _addPlatformView(offset->dx, offset->dy, width, height, viewId);
+    _addPlatformView(offset->dx(), offset->dy(), width, height, viewId);
 }
 
 Scene SceneBuilderCls::build() {

@@ -9,7 +9,7 @@ void _TranspilerCls::transpile() {
     }
     if (uniformDeclarations->isNotEmpty()) {
         src->writeln();
-        List<int> locations = uniformDeclarations->keys->toList();
+        List<int> locations = uniformDeclarations->keys()->toList();
         locations->sort([=] (int a,int b)         {
             a - b;
         });
@@ -19,7 +19,7 @@ void _TranspilerCls::transpile() {
     }
     if (samplerSizeDeclarations->isNotEmpty()) {
         src->writeln();
-        List<int> locations = samplerSizeDeclarations->keys->toList();
+        List<int> locations = samplerSizeDeclarations->keys()->toList();
         locations->sort([=] (int a,int b)         {
             a - b;
         });
@@ -174,7 +174,7 @@ void _TranspilerCls::ref(int id) {
 
 void _TranspilerCls::addToCurrentBlock(_Instruction inst) {
     if (inst->isResult()) {
-        results[inst->id] = inst;
+        results[inst->id()] = inst;
     }
     currentBlock!->_add(inst);
 }
@@ -435,7 +435,7 @@ void _TranspilerCls::opFunctionCall() {
     String functionName = resolveName(functionId);
     currentFunction!->deps->add(functionId);
     List<int> args = <int>filled(nextPosition - position, 0);
-    for (;  < args->length; i++) {
+    for (;  < args->length(); i++) {
         int id = readWord();
         ref(id);
         args[i] = id;
@@ -495,7 +495,7 @@ void _TranspilerCls::opAccessChain() {
     int base = readWord();
     ref(base);
     List<int> indices = <int>filled(nextPosition - position, 0);
-    for (;  < indices->length; i++) {
+    for (;  < indices->length(); i++) {
         int id = readWord();
         ref(id);
         indices[i] = id;
@@ -515,7 +515,7 @@ void _TranspilerCls::opVectorShuffle() {
     int vector = readWord();
     position++;
     List<int> indices = <int>filled(nextPosition - position, 0);
-    for (;  < indices->length; i++) {
+    for (;  < indices->length(); i++) {
         ref(vector);
         int id = readWord();
         indices[i] = id;
@@ -527,7 +527,7 @@ void _TranspilerCls::opCompositeConstruct() {
     int type = readWord();
     int name = readWord();
     List<int> components = <int>filled(nextPosition - position, 0);
-    for (;  < components->length; i++) {
+    for (;  < components->length(); i++) {
         int id = readWord();
         ref(id);
         components[i] = id;
@@ -541,7 +541,7 @@ void _TranspilerCls::opCompositeExtract() {
     int src = readWord();
     ref(src);
     List<int> indices = <int>filled(nextPosition - position, 0);
-    for (;  < indices->length; i++) {
+    for (;  < indices->length(); i++) {
         int index = readWord();
         indices[i] = index;
     }
@@ -620,7 +620,7 @@ void _TranspilerCls::parseBuiltinFunction(String functionName) {
     int type = readWord();
     int name = readWord();
     List<int> args = <int>filled(nextPosition - position, 0);
-    for (;  < args->length; i++) {
+    for (;  < args->length(); i++) {
         int id = readWord();
         ref(id);
         args[i] = id;

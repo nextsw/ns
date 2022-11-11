@@ -68,7 +68,7 @@ void _RenderSingleChildViewportCls::axisDirection(AxisDirection value) {
 }
 
 Axis _RenderSingleChildViewportCls::axis() {
-    return axisDirectionToAxis(axisDirection);
+    return axisDirectionToAxis(axisDirection());
 }
 
 ViewportOffset _RenderSingleChildViewportCls::offset() {
@@ -180,8 +180,8 @@ void _RenderSingleChildViewportCls::performLayout() {
         child!->layout(_getInnerConstraints(constraints)true);
         size = constraints->constrain(child!->size);
     }
-    offset->applyViewportDimension(_viewportExtent());
-    offset->applyContentDimensions(_minScrollExtent(), _maxScrollExtent());
+    offset()->applyViewportDimension(_viewportExtent());
+    offset()->applyContentDimensions(_minScrollExtent(), _maxScrollExtent());
 }
 
 void _RenderSingleChildViewportCls::paint(PaintingContext context, Offset offset) {
@@ -189,22 +189,22 @@ void _RenderSingleChildViewportCls::paint(PaintingContext context, Offset offset
         Offset paintOffset = _paintOffset();
         InlineMethod;
         if (_shouldClipAtPaintOffset(paintOffset)) {
-            _clipRectLayer->layer = context->pushClipRect(needsCompositing, offset, OffsetCls::zero & size, paintContentsclipBehavior, _clipRectLayer->layer);
+            _clipRectLayer->layer() = context->pushClipRect(needsCompositing, offset, OffsetCls::zero & size, paintContentsclipBehavior(), _clipRectLayer->layer());
         } else {
-            _clipRectLayer->layer = nullptr;
+            _clipRectLayer->layer() = nullptr;
             paintContents(context, offset);
         }
     }
 }
 
 void _RenderSingleChildViewportCls::dispose() {
-    _clipRectLayer->layer = nullptr;
+    _clipRectLayer->layer() = nullptr;
     super->dispose();
 }
 
 void _RenderSingleChildViewportCls::applyPaintTransform(RenderBox child, Matrix4 transform) {
     Offset paintOffset = _paintOffset();
-    transform->translate(paintOffset->dx, paintOffset->dy);
+    transform->translate(paintOffset->dx(), paintOffset->dy());
 }
 
 Rect _RenderSingleChildViewportCls::describeApproximatePaintClip(RenderObject child) {
@@ -227,7 +227,7 @@ bool _RenderSingleChildViewportCls::hitTestChildren(Offset position, BoxHitTestR
 RevealedOffset _RenderSingleChildViewportCls::getOffsetToReveal(double alignment, Rect rect, RenderObject target) {
     rect = target->paintBounds();
     if (!is<RenderBox>(target)) {
-        return make<RevealedOffsetCls>(offset->pixels, rect);
+        return make<RevealedOffsetCls>(offset()->pixels(), rect);
     }
     RenderBox targetBox = target;
     Matrix4 transform = targetBox->getTransformTo(child);
@@ -236,7 +236,7 @@ RevealedOffset _RenderSingleChildViewportCls::getOffsetToReveal(double alignment
     double leadingScrollOffset;
     double targetMainAxisExtent;
     double mainAxisExtent;
-    assert(axisDirection != nullptr);
+    assert(axisDirection() != nullptr);
     ;
     double targetOffset = leadingScrollOffset - (mainAxisExtent - targetMainAxisExtent) * alignment;
     Rect targetRect = bounds->shift(_paintOffsetForPosition(targetOffset));
@@ -244,10 +244,10 @@ RevealedOffset _RenderSingleChildViewportCls::getOffsetToReveal(double alignment
 }
 
 void _RenderSingleChildViewportCls::showOnScreen(Curve curve, RenderObject descendant, Duration duration, Rect rect) {
-    if (!offset->allowImplicitScrolling) {
+    if (!offset()->allowImplicitScrolling()) {
         return super->showOnScreen(descendant, rect, duration, curve);
     }
-    Rect newRect = RenderViewportBaseCls->showInViewport(descendant, this, offset, rect, duration, curve);
+    Rect newRect = RenderViewportBaseCls->showInViewport(descendant, this, offset(), rect, duration, curve);
     super->showOnScreen(newRect, duration, curve);
 }
 
@@ -257,7 +257,7 @@ void _RenderSingleChildViewportCls::debugFillProperties(DiagnosticPropertiesBuil
 }
 
 Rect _RenderSingleChildViewportCls::describeSemanticsClip(RenderObject child) {
-    assert(axis != nullptr);
+    assert(axis() != nullptr);
     ;
 }
 
@@ -305,11 +305,11 @@ BoxConstraints _RenderSingleChildViewportCls::_getInnerConstraints(BoxConstraint
 }
 
 Offset _RenderSingleChildViewportCls::_paintOffset() {
-    return _paintOffsetForPosition(offset->pixels);
+    return _paintOffsetForPosition(offset()->pixels());
 }
 
 Offset _RenderSingleChildViewportCls::_paintOffsetForPosition(double position) {
-    assert(axisDirection != nullptr);
+    assert(axisDirection() != nullptr);
     ;
 }
 

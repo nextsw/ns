@@ -211,14 +211,14 @@ template<typename T> void _DragAvatarCls<T>::updateDrag(Offset globalPosition) {
     _entry!->markNeedsBuild();
     HitTestResult result = make<HitTestResultCls>();
     WidgetsBindingCls::instance->hitTest(result, globalPosition + feedbackOffset);
-    List<_DragTargetState<Object>> targets = _getDragTargets(result->path)->toList();
+    List<_DragTargetState<Object>> targets = _getDragTargets(result->path())->toList();
     bool listsMatch = false;
-    if (targets->length >= _enteredTargets->length && _enteredTargets->isNotEmpty) {
+    if (targets->length() >= _enteredTargets->length() && _enteredTargets->isNotEmpty) {
         listsMatch = true;
         Iterator<_DragTargetState<Object>> iterator = targets->iterator;
-        for (;  < _enteredTargets->length; i = 1) {
+        for (;  < _enteredTargets->length(); i = 1) {
             iterator->moveNext();
-            if (iterator->current != _enteredTargets[i]) {
+            if (iterator->current() != _enteredTargets[i]) {
                 listsMatch = false;
                                 break;
             }
@@ -291,7 +291,7 @@ template<typename T> Iterable<_DragTargetState<Object>> _DragAvatarCls<T>::_getD
 }
 
 template<typename T> void _DragAvatarCls<T>::_leaveAllEntered() {
-    for (;  < _enteredTargets->length; i = 1) {
+    for (;  < _enteredTargets->length(); i = 1) {
         _enteredTargets[i]->didLeave(this);
     }
     _enteredTargets->clear();
@@ -300,7 +300,7 @@ template<typename T> void _DragAvatarCls<T>::_leaveAllEntered() {
 template<typename T> Widget _DragAvatarCls<T>::_build(BuildContext context) {
     RenderBox box = as<RenderBox>(overlayState->context->findRenderObject()!);
     Offset overlayTopLeft = box->localToGlobal(OffsetCls::zero);
-    return make<PositionedCls>(_lastOffset!->dx - overlayTopLeft->dx, _lastOffset!->dy - overlayTopLeft->dy, make<IgnorePointerCls>(ignoringFeedbackPointer, ignoringFeedbackSemantics, feedback));
+    return make<PositionedCls>(_lastOffset!->dx() - overlayTopLeft->dx(), _lastOffset!->dy() - overlayTopLeft->dy(), make<IgnorePointerCls>(ignoringFeedbackPointer, ignoringFeedbackSemantics, feedback));
 }
 
 template<typename T> Velocity _DragAvatarCls<T>::_restrictVelocityAxis(Velocity velocity) {
@@ -315,7 +315,7 @@ template<typename T> Offset _DragAvatarCls<T>::_restrictAxis(Offset offset) {
         return offset;
     }
     if (axis == AxisCls::horizontal) {
-        return make<OffsetCls>(offset->dx, 0.0);
+        return make<OffsetCls>(offset->dx(), 0.0);
     }
-    return make<OffsetCls>(0.0, offset->dy);
+    return make<OffsetCls>(0.0, offset->dy());
 }

@@ -104,7 +104,7 @@ void _AnimatedSwitcherStateCls::_addEntryForNewChild(bool animate) {
         controller->forward();
     } else {
         assert(_outgoingEntries->isEmpty);
-        controller->value = 1.0;
+        controller->value() = 1.0;
     }
 }
 
@@ -136,6 +136,6 @@ void _AnimatedSwitcherStateCls::_rebuildOutgoingWidgetsIfNeeded() {
     _outgoingWidgets = <Widget>unmodifiable(_outgoingEntries-><Widget>map([=] (_ChildEntry entry)     {
         entry->transition;
     }));
-    assert(_outgoingEntries->length == _outgoingWidgets!->length);
+    assert(_outgoingEntries->length == _outgoingWidgets!->length());
     assert(_outgoingEntries->isEmpty || _outgoingEntries->last->transition == _outgoingWidgets!->last);
 }

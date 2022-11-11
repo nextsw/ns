@@ -18,7 +18,7 @@ Path ShapeDecorationCls::getClipPath(Rect rect, TextDirection textDirection) {
 }
 
 EdgeInsetsGeometry ShapeDecorationCls::padding() {
-    return shape->dimensions;
+    return shape->dimensions();
 }
 
 bool ShapeDecorationCls::isComplex() {
@@ -131,15 +131,15 @@ void _ShapeDecorationPainterCls::_precache(Rect rect, TextDirection textDirectio
     if (_interiorPaint == nullptr && (_decoration->color != nullptr || _decoration->gradient != nullptr)) {
         _interiorPaint = make<PaintCls>();
         if (_decoration->color != nullptr) {
-            _interiorPaint!->color = _decoration->color!;
+            _interiorPaint!->color() = _decoration->color!;
         }
     }
     if (_decoration->gradient != nullptr) {
-        _interiorPaint!->shader = _decoration->gradient!->createShader(recttextDirection);
+        _interiorPaint!->shader() = _decoration->gradient!->createShader(recttextDirection);
     }
     if (_decoration->shadows != nullptr) {
         if (_shadowCount == nullptr) {
-            _shadowCount = _decoration->shadows!->length;
+            _shadowCount = _decoration->shadows!->length();
                     List<Paint> list1 = make<ListCls<>>();        for (auto _x1 : _decoration->shadows!->map([=] (BoxShadow shadow)             {                        shadow->toPaint();                    })) {        {            list1.add(_x1);        }_shadowPaints = list1;
         }
                     })) {    {        list2.add(_x2);    }_shadowPaths =         List<Path> list2 = make<ListCls<>>();        for (auto _x2 : _decoration->shadows!->map([=] (BoxShadow shadow) {                    return _decoration->shape->getOuterPath(rect->shift(shadow->offset)->inflate(shadow->spreadRadius)textDirection);list2;
@@ -172,6 +172,6 @@ void _ShapeDecorationPainterCls::_paintImage(Canvas canvas, ImageConfiguration c
     if (_decoration->image == nullptr) {
         return;
     }
-    _imagePainter = _decoration->image!->createPainter(onChanged);
+    _imagePainter = _decoration->image!->createPainter(onChanged());
     _imagePainter!->paint(canvas, _lastRect!, _innerPath, configuration);
 }

@@ -23,11 +23,11 @@ RepetitiveStackFrameFilterCls::RepetitiveStackFrameFilterCls(List<PartialStackFr
 }
 
 int RepetitiveStackFrameFilterCls::numFrames() {
-    return frames->length;
+    return frames->length();
 }
 
 void RepetitiveStackFrameFilterCls::filter(List<String> reasons, List<StackFrame> stackFrames) {
-    for (;  < stackFrames->length - numFrames(); index = 1) {
+    for (;  < stackFrames->length() - numFrames(); index = 1) {
         if (_matchesFrames(stackFrames->skip(index)->take(numFrames())->toList())) {
             reasons->setRange(index, index + numFrames(), _replacements());
             index = numFrames() - 1;
@@ -40,10 +40,10 @@ List<String> RepetitiveStackFrameFilterCls::_replacements() {
 }
 
 bool RepetitiveStackFrameFilterCls::_matchesFrames(List<StackFrame> stackFrames) {
-    if (stackFrames->length < numFrames()) {
+    if (stackFrames->length() < numFrames()) {
         return false;
     }
-    for (;  < stackFrames->length; index++) {
+    for (;  < stackFrames->length(); index++) {
         if (!frames[index]->matches(stackFrames[index])) {
             return false;
         }
@@ -56,7 +56,7 @@ List<Object> _ErrorDiagnosticCls::value() {
 }
 
 String _ErrorDiagnosticCls::valueToString(TextTreeConfiguration parentConfiguration) {
-    return value->join();
+    return value()->join();
 }
 
 _ErrorDiagnosticCls::_ErrorDiagnosticCls(DiagnosticLevel level, String message, DiagnosticsTreeStyle style) : DiagnosticsProperty<List<Object>>(nullptr, makeList(ArrayItem)false, false, nullptr, style, level) {
@@ -101,9 +101,9 @@ String FlutterErrorDetailsCls::exceptionAsString() {
         Object message = (as<AssertionError>(as<AssertionErrorCls>(exception)))->message;
         String fullMessage = as<AssertionErrorCls>(exception)->toString();
         if (is<String>(message) && message != fullMessage) {
-            if (fullMessage->length > message->length) {
+            if (fullMessage->length() > message->length) {
                 int position = fullMessage->lastIndexOf(message);
-                if (position == fullMessage->length - message->length && position > 2 && fullMessage->substring(position - 2, position) == __s(": ")) {
+                if (position == fullMessage->length() - message->length && position > 2 && fullMessage->substring(position - 2, position) == __s(": ")) {
                     String body = fullMessage->substring(0, position - 2);
                     int splitPoint = body->indexOf(__s(" Failed assertion:"));
                     if (splitPoint >= 0) {
@@ -182,7 +182,7 @@ void FlutterErrorDetailsCls::debugFillProperties(DiagnosticPropertiesBuilder pro
             String prefix = __s("${exception.runtimeType}: ");
             String message = exceptionAsString();
             if (message->startsWith(prefix)) {
-                message = message->substring(prefix->length);
+                message = message->substring(prefix->length());
             }
             properties->add(make<ErrorSummaryCls>(message));
         }
@@ -193,7 +193,7 @@ void FlutterErrorDetailsCls::debugFillProperties(DiagnosticPropertiesBuilder pro
             List<StackFrame> stackFrames = StackFrameCls->fromStackTrace(FlutterErrorCls->demangleStackTrace(stack!))->skipWhile([=] (StackFrame frame) {
     frame->packageScheme == __s("dart");
 })->toList();
-            bool ourFault = stackFrames->length >= 2 && stackFrames[0]->package == __s("flutter") && stackFrames[1]->package == __s("flutter");
+            bool ourFault = stackFrames->length() >= 2 && stackFrames[0]->package == __s("flutter") && stackFrames[1]->package == __s("flutter");
             if (ourFault) {
                 properties->add(make<ErrorSpacerCls>());
                 properties->add(make<ErrorHintCls>(__s("Either the assertion indicates an error in the framework itself, or we should provide substantially more information in this error message to help you determine and fix the underlying cause.\nIn either case, please report this assertion by filing a bug on GitHub:\n  https://github.com/flutter/flutter/issues/new?template=2_bug.md")));
@@ -244,7 +244,7 @@ void FlutterErrorCls::fromParts(List<DiagnosticsNode> diagnostics) {
         Iterable<DiagnosticsNode> summaries = diagnostics->where([=] (DiagnosticsNode node) {
     node->level == DiagnosticLevelCls::summary;
 });
-        if (summaries->length > 1) {
+        if (summaries->length() > 1) {
             List<DiagnosticsNode> message = makeList(ArrayItem, ArrayItem, ArrayItem, ArrayItem);
             int i = 1;
             for (DiagnosticsNode summary : summaries) {
@@ -298,7 +298,7 @@ Iterable<String> FlutterErrorCls::defaultStackFilter(Iterable<String> frames) {
     Map<String, int> map1 = make<MapCls<>>();map1.set(__s("dart:async-patch"), 0);map1.set(__s("dart:async"), 0);map1.set(__s("package:stack_trace"), 0);map1.set(__s("class _AssertionError"), 0);map1.set(__s("class _FakeAsync"), 0);map1.set(__s("class _FrameCallbackEntry"), 0);map1.set(__s("class _Timer"), 0);map1.set(__s("class _RawReceivePortImpl"), 0);Map<String, int> removedPackagesAndClasses = list1;
     int skipped = 0;
     List<StackFrame> parsedFrames = StackFrameCls->fromStackString(frames->join(__s("\n")));
-    for (;  < parsedFrames->length; index = 1) {
+    for (;  < parsedFrames->length(); index = 1) {
         StackFrame frame = parsedFrames[index];
         String className = __s("class ${frame.className}");
         String package = __s("${frame.packageScheme}:${frame.package}");
@@ -320,14 +320,14 @@ Iterable<String> FlutterErrorCls::defaultStackFilter(Iterable<String> frames) {
         }
 ;
         }    }
-    List<String> reasons = <String>filled(parsedFrames->length, nullptr);
+    List<String> reasons = <String>filled(parsedFrames->length(), nullptr);
     for (StackFilter filter : _stackFilters) {
         filter->filter(parsedFrames, reasons);
     }
     List<String> result = makeList();
-    for (;  < parsedFrames->length; index = 1) {
+    for (;  < parsedFrames->length(); index = 1) {
         int start = index;
-        while ( < reasons->length - 1 && reasons[index] != nullptr && reasons[index + 1] == reasons[index]) {
+        while ( < reasons->length() - 1 && reasons[index] != nullptr && reasons[index + 1] == reasons[index]) {
             index++;
         }
         String suffix = __s("");
@@ -341,15 +341,15 @@ Iterable<String> FlutterErrorCls::defaultStackFilter(Iterable<String> frames) {
         String resultLine = __s("${reasons[index] ?? parsedFrames[index].source}$suffix");
         result->add(resultLine);
     }
-    auto _c2 = List<String> list3 = make<ListCls<>>();for (MapEntry<String, int> entry : removedPackagesAndClasses->entries) {    ;}{    list3.add(ArrayItem);}list3;_c2.sort();List<String> where = _c2;
+    auto _c2 = List<String> list3 = make<ListCls<>>();for (MapEntry<String, int> entry : removedPackagesAndClasses->entries()) {    ;}{    list3.add(ArrayItem);}list3;_c2.sort();List<String> where = _c2;
     if (skipped == 1) {
         result->add(__s("(elided one frame from ${where.single})"));
     } else     {
         if (skipped > 1) {
-        if (where->length > 1) {
-            where[where->length - 1] = __s("and ${where.last}");
+        if (where->length() > 1) {
+            where[where->length() - 1] = __s("and ${where.last}");
         }
-        if (where->length > 2) {
+        if (where->length() > 2) {
             result->add(__s("(elided $skipped frames from ${where.join(", ")})"));
         } else {
             result->add(__s("(elided $skipped frames from ${where.join(" ")})"));

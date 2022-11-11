@@ -57,9 +57,9 @@ TableCls::TableCls(TableBorder border, List<TableRow> children, Map<int, TableCo
         }());
         assert([=] () {
             if (children->isNotEmpty) {
-                int cellCount = children->first->children!->length;
+                int cellCount = children->first->children!->length();
                 if (children->any([=] (TableRow row)                 {
-                    row->children!->length != cellCount;
+                    row->children!->length() != cellCount;
                 })) {
                     ;
                 }
@@ -91,13 +91,13 @@ RenderObjectElement TableCls::createElement() {
 
 RenderTable TableCls::createRenderObject(BuildContext context) {
     assert(debugCheckHasDirectionality(context));
-    return make<RenderTableCls>(children->isNotEmpty? children[0]->children!->length : 0, children->length, columnWidths, defaultColumnWidth, textDirection or DirectionalityCls->of(context), border, _rowDecorations, createLocalImageConfiguration(context), defaultVerticalAlignment, textBaseline);
+    return make<RenderTableCls>(children->isNotEmpty? children[0]->children!->length() : 0, children->length(), columnWidths, defaultColumnWidth, textDirection or DirectionalityCls->of(context), border, _rowDecorations, createLocalImageConfiguration(context), defaultVerticalAlignment, textBaseline);
 }
 
 void TableCls::updateRenderObject(BuildContext context, RenderTable renderObject) {
     assert(debugCheckHasDirectionality(context));
-    assert(renderObject->columns == (children->isNotEmpty? children[0]->children!->length : 0));
-    assert(renderObject->rows == children->length);
+    assert(renderObject->columns() == (children->isNotEmpty? children[0]->children!->length() : 0));
+    assert(renderObject->rows() == children->length());
     auto _c1 = renderObject;_c1.columnWidths = auto _c2 = columnWidths;_c2.defaultColumnWidth = auto _c3 = defaultColumnWidth;_c3.textDirection = auto _c4 = textDirection or DirectionalityCls->of(context);_c4.border = auto _c5 = border;_c5.rowDecorations = auto _c6 = _rowDecorations;_c6.configuration = auto _c7 = createLocalImageConfiguration(context);_c7.defaultVerticalAlignment = auto _c8 = defaultVerticalAlignment;_c8.textBaseline = textBaseline;_c8;_c7;_c6;_c5;_c4;_c3;_c2;_c1;
 }
 
@@ -124,9 +124,9 @@ void _TableElementCls::mount(Object newSlot, Element parent) {
 }
 
 void _TableElementCls::insertRenderObjectChild(RenderBox child, _TableSlot slot) {
-    renderObject->setupParentData(child);
+    renderObject()->setupParentData(child);
     if (!_doingMountOrUpdate) {
-        renderObject->setChild(slot->column, slot->row, child);
+        renderObject()->setChild(slot->column, slot->row, child);
     }
 }
 
@@ -135,7 +135,7 @@ void _TableElementCls::moveRenderObjectChild(RenderBox child, _TableSlot newSlot
 }
 
 void _TableElementCls::removeRenderObjectChild(RenderBox child, _TableSlot slot) {
-    renderObject->setChild(slot->column, slot->row, nullptr);
+    renderObject()->setChild(slot->column, slot->row, nullptr);
 }
 
 void _TableElementCls::update(Table newWidget) {
@@ -152,7 +152,7 @@ void _TableElementCls::update(Table newWidget) {
 })->iterator;
     List<_TableElementRow> newChildren = makeList();
     Set<List<Element>> taken = makeSet();
-    for (;  < newWidget->children->length; rowIndex++) {
+    for (;  < newWidget->children->length(); rowIndex++) {
         TableRow row = newWidget->children[rowIndex];
         List<Element> oldChildren;
         if (row->key != nullptr && oldKeyedRows->containsKey(row->key)) {
@@ -160,20 +160,20 @@ void _TableElementCls::update(Table newWidget) {
             taken->add(oldChildren);
         } else         {
             if (row->key == nullptr && oldUnkeyedRows->moveNext()) {
-            oldChildren = oldUnkeyedRows->current->children;
+            oldChildren = oldUnkeyedRows->current()->children;
         } else {
             oldChildren = makeList();
         }
 ;
-        }        List<_TableSlot> slots = <_TableSlot>generate(row->children!->length, [=] (int columnIndex) {
+        }        List<_TableSlot> slots = <_TableSlot>generate(row->children!->length(), [=] (int columnIndex) {
     make<_TableSlotCls>(columnIndex, rowIndex);
 });
         newChildren->add(make<_TableElementRowCls>(row->key, updateChildren(oldChildren, row->children!_forgottenChildren, slots)));
     }
     while (oldUnkeyedRows->moveNext()) {
-        updateChildren(oldUnkeyedRows->current->children, makeList()_forgottenChildren);
+        updateChildren(oldUnkeyedRows->current()->children, makeList()_forgottenChildren);
     }
-    for (List<Element> oldChildren : oldKeyedRows->values->where([=] (List<Element> list)     {
+    for (List<Element> oldChildren : oldKeyedRows->values()->where([=] (List<Element> list)     {
         !taken->contains(list);
     })) {
         updateChildren(oldChildren, makeList()_forgottenChildren);
@@ -204,8 +204,8 @@ bool _TableElementCls::forgetChild(Element child) {
 }
 
 void _TableElementCls::_updateRenderObjectChildren() {
-    assert(renderObject != nullptr);
-    renderObject->setFlatChildren(_children->isNotEmpty? _children[0]->children->length : 0, _children-><RenderBox>expand([=] (_TableElementRow row) {
+    assert(renderObject() != nullptr);
+    renderObject()->setFlatChildren(_children->isNotEmpty? _children[0]->children->length() : 0, _children-><RenderBox>expand([=] (_TableElementRow row) {
         return row->children-><RenderBox>map([=] (Element child) {
             RenderBox box = as<RenderBox>(child->renderObject!);
             return box;

@@ -7,7 +7,7 @@ template<typename T> ScrollAwareImageProviderCls<T>::ScrollAwareImageProviderCls
 }
 
 template<typename T> void ScrollAwareImageProviderCls<T>::resolveStreamForKey(ImageConfiguration configuration, ImageErrorListener handleError, T key, ImageStream stream) {
-    if (stream->completer != nullptr || PaintingBindingCls::instance->imageCache->containsKey(key)) {
+    if (stream->completer() != nullptr || PaintingBindingCls::instance->imageCache->containsKey(key)) {
         imageProvider->resolveStreamForKey(configuration, stream, key, handleError);
         return;
     }

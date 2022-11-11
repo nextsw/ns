@@ -124,7 +124,7 @@ void _AndroidViewStateCls::_createNewAndroidView() {
 }
 
 void _AndroidViewStateCls::_onFocusChange(bool isFocused) {
-    if (!_controller->isCreated) {
+    if (!_controller->isCreated()) {
         return;
     }
     if (!isFocused) {
@@ -244,7 +244,7 @@ RenderObject _UiKitPlatformViewCls::createRenderObject(BuildContext context) {
 }
 
 void _UiKitPlatformViewCls::updateRenderObject(BuildContext context, RenderUiKitView renderObject) {
-    renderObject->viewController = controller;
+    renderObject->viewController() = controller;
     renderObject->hitTestBehavior = hitTestBehavior;
     renderObject->updateGestureRecognizers(gestureRecognizers);
 }

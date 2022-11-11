@@ -122,10 +122,10 @@ void StandardMessageCodecCls::writeValue(WriteBuffer buffer, Object value) {
     } else     {
         if (is<String>(value)) {
         buffer->putUint8(_valueString);
-        Uint8List asciiBytes = make<Uint8ListCls>(as<StringCls>(value)->length);
+        Uint8List asciiBytes = make<Uint8ListCls>(as<StringCls>(value)->length());
         Uint8List utf8Bytes;
         int utf8Offset = 0;
-        for (;  < as<StringCls>(value)->length; i = 1) {
+        for (;  < as<StringCls>(value)->length(); i = 1) {
             int char = value->codeUnitAt(i);
             if (char <= 0x7f) {
                 asciiBytes[i] = char;
@@ -171,14 +171,14 @@ void StandardMessageCodecCls::writeValue(WriteBuffer buffer, Object value) {
     } else     {
         if (is<List>(value)) {
         buffer->putUint8(_valueList);
-        writeSize(buffer, as<ListCls>(value)->length);
+        writeSize(buffer, as<ListCls>(value)->length());
         for (Object item : as<ListCls>(value)) {
             writeValue(buffer, item);
         }
     } else     {
         if (is<Map>(value)) {
         buffer->putUint8(_valueMap);
-        writeSize(buffer, as<MapCls>(value)->length);
+        writeSize(buffer, as<MapCls>(value)->length());
         as<MapCls>(value)->forEach([=] (Object key,Object value) {
             writeValue(buffer, key);
             writeValue(buffer, value);

@@ -94,21 +94,21 @@ void RenderAndroidViewCls::performResize() {
 }
 
 void RenderAndroidViewCls::paint(PaintingContext context, Offset offset) {
-    if (_viewController->textureId == nullptr || _currentTextureSize == nullptr) {
+    if (_viewController->textureId() == nullptr || _currentTextureSize == nullptr) {
         return;
     }
-    bool isTextureLargerThanWidget = _currentTextureSize!->width > size->width || _currentTextureSize!->height > size->height;
-    if (isTextureLargerThanWidget && clipBehavior != ClipCls::none) {
-        _clipRectLayer->layer = context->pushClipRect(true, offset, offset & size, _paintTextureclipBehavior, _clipRectLayer->layer);
+    bool isTextureLargerThanWidget = _currentTextureSize!->width() > size->width || _currentTextureSize!->height() > size->height;
+    if (isTextureLargerThanWidget && clipBehavior() != ClipCls::none) {
+        _clipRectLayer->layer() = context->pushClipRect(true, offset, offset & size, _paintTextureclipBehavior(), _clipRectLayer->layer());
         return;
     }
-    _clipRectLayer->layer = nullptr;
+    _clipRectLayer->layer() = nullptr;
     _paintTexture(context, offset);
 }
 
 void RenderAndroidViewCls::dispose() {
     _isDisposed = true;
-    _clipRectLayer->layer = nullptr;
+    _clipRectLayer->layer() = nullptr;
     _viewController->removeOnPlatformViewCreatedListener(_onPlatformViewCreated);
     super->dispose();
 }
@@ -116,7 +116,7 @@ void RenderAndroidViewCls::dispose() {
 void RenderAndroidViewCls::describeSemanticsConfiguration(SemanticsConfiguration config) {
     config->isSemanticBoundary() = true;
     if (_viewController->isCreated()) {
-        config->platformViewId = _viewController->viewId;
+        config->platformViewId() = _viewController->viewId;
     }
 }
 
@@ -126,7 +126,7 @@ void RenderAndroidViewCls::_onPlatformViewCreated(int id) {
 }
 
 Future<void> RenderAndroidViewCls::_sizePlatformView() {
-    if (_state == _PlatformViewStateCls::resizing || size->isEmpty()) {
+    if (_state == _PlatformViewStateCls::resizing || size->isEmpty) {
         return;
     }
     _state = _PlatformViewStateCls::resizing;
@@ -158,7 +158,7 @@ void RenderAndroidViewCls::_paintTexture(PaintingContext context, Offset offset)
     if (_currentTextureSize == nullptr) {
         return;
     }
-    context->addLayer(make<TextureLayerCls>(offset & _currentTextureSize!, _viewController->textureId!));
+    context->addLayer(make<TextureLayerCls>(offset & _currentTextureSize!, _viewController->textureId()!));
 }
 
 RenderUiKitViewCls::RenderUiKitViewCls(Set<Factory<OneSequenceGestureRecognizer>> gestureRecognizers, PlatformViewHitTestBehavior hitTestBehavior, UiKitViewController viewController) {
@@ -194,7 +194,7 @@ void RenderUiKitViewCls::updateGestureRecognizers(Set<Factory<OneSequenceGesture
         return;
     }
     _gestureRecognizer?->dispose();
-    _gestureRecognizer = make<_UiKitViewGestureRecognizerCls>(viewController, gestureRecognizers);
+    _gestureRecognizer = make<_UiKitViewGestureRecognizerCls>(viewController(), gestureRecognizers);
 }
 
 bool RenderUiKitViewCls::sizedByParent() {
@@ -240,7 +240,7 @@ void RenderUiKitViewCls::handleEvent(HitTestEntry entry, PointerEvent event) {
 void RenderUiKitViewCls::describeSemanticsConfiguration(SemanticsConfiguration config) {
     super->describeSemanticsConfiguration(config);
     config->isSemanticBoundary() = true;
-    config->platformViewId = _viewController->id;
+    config->platformViewId() = _viewController->id;
 }
 
 void RenderUiKitViewCls::attach(PipelineOwner owner) {
@@ -363,7 +363,7 @@ void _PlatformViewGestureRecognizerCls::stopTrackingPointer(int pointer) {
 void _PlatformViewGestureRecognizerCls::reset() {
     forwardedPointers->forEach(super->stopTrackingPointer);
     forwardedPointers->clear();
-    cachedEvents->keys->forEach(super->stopTrackingPointer);
+    cachedEvents->keys()->forEach(super->stopTrackingPointer);
     cachedEvents->clear();
     resolve(GestureDispositionCls::rejected);
 }
@@ -407,7 +407,7 @@ void _PlatformViewGestureRecognizerCls::_flushPointerCache(int pointer) {
 
 PlatformViewRenderBoxCls::PlatformViewRenderBoxCls(PlatformViewController controller, Set<Factory<OneSequenceGestureRecognizer>> gestureRecognizers, PlatformViewHitTestBehavior hitTestBehavior) {
     {
-        assert(controller != nullptr && controller->viewId != nullptr && controller->viewId > -1);
+        assert(controller != nullptr && controller->viewId() != nullptr && controller->viewId() > -1);
         assert(hitTestBehavior != nullptr);
         assert(gestureRecognizers != nullptr);
         _controller = controller;
@@ -424,11 +424,11 @@ PlatformViewController PlatformViewRenderBoxCls::controller() {
 
 void PlatformViewRenderBoxCls::controller(PlatformViewController controller) {
     assert(controller != nullptr);
-    assert(controller->viewId != nullptr && controller->viewId > -1);
+    assert(controller->viewId() != nullptr && controller->viewId() > -1);
     if (_controller == controller) {
         return;
     }
-    bool needsSemanticsUpdate = _controller->viewId != controller->viewId;
+    bool needsSemanticsUpdate = _controller->viewId() != controller->viewId();
     _controller = controller;
     markNeedsPaint();
     if (needsSemanticsUpdate) {
@@ -457,15 +457,15 @@ Size PlatformViewRenderBoxCls::computeDryLayout(BoxConstraints constraints) {
 }
 
 void PlatformViewRenderBoxCls::paint(PaintingContext context, Offset offset) {
-    assert(_controller->viewId != nullptr);
-    context->addLayer(make<PlatformViewLayerCls>(offset & size, _controller->viewId));
+    assert(_controller->viewId() != nullptr);
+    context->addLayer(make<PlatformViewLayerCls>(offset & size, _controller->viewId()));
 }
 
 void PlatformViewRenderBoxCls::describeSemanticsConfiguration(SemanticsConfiguration config) {
     super->describeSemanticsConfiguration(config);
-    assert(_controller->viewId != nullptr);
+    assert(_controller->viewId() != nullptr);
     config->isSemanticBoundary() = true;
-    config->platformViewId = _controller->viewId;
+    config->platformViewId() = _controller->viewId();
 }
 
 void _PlatformViewGestureMixinCls::hitTestBehavior(PlatformViewHitTestBehavior value) {

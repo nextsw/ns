@@ -5,7 +5,7 @@ int binarySearchtemplate<typename E> (int compare(E , E ) , List<E> sortedList, 
 }
 
 int binarySearchBytemplate<typename E, typename K> (int compare(K , K ) , int end, K keyOf(E element) , List<E> sortedList, int start, E value) {
-    end = RangeErrorCls->checkValidRange(start, end, sortedList->length);
+    end = RangeErrorCls->checkValidRange(start, end, sortedList->length());
     auto min = start;
     auto max = end;
     auto key = keyOf(value);
@@ -31,7 +31,7 @@ int lowerBoundtemplate<typename E> (int compare(E , E ) , List<E> sortedList, E 
 }
 
 int lowerBoundBytemplate<typename E, typename K> (int compare(K , K ) , int end, K keyOf(E element) , List<E> sortedList, int start, E value) {
-    end = RangeErrorCls->checkValidRange(start, end, sortedList->length);
+    end = RangeErrorCls->checkValidRange(start, end, sortedList->length());
     auto min = start;
     auto max = end;
     auto key = keyOf(value);
@@ -50,7 +50,7 @@ int lowerBoundBytemplate<typename E, typename K> (int compare(K , K ) , int end,
 
 void shuffle(List elements, int end, Random random, int start) {
     random = make<RandomCls>();
-    end = elements->length;
+    end = elements->length();
     auto length = end - start;
     while (length > 1) {
         auto pos = random->nextInt(length);
@@ -62,7 +62,7 @@ void shuffle(List elements, int end, Random random, int start) {
 }
 
 void reversetemplate<typename E> (List<E> elements, int end, int start) {
-    end = RangeErrorCls->checkValidRange(start, end, elements->length);
+    end = RangeErrorCls->checkValidRange(start, end, elements->length());
     <E>_reverse(elements, start, end);
 }
 
@@ -76,7 +76,7 @@ void _reversetemplate<typename E> (List<E> elements, int end, int start) {
 
 void insertionSorttemplate<typename E> (int compare(E , E ) , List<E> elements, int end, int start) {
     compare = defaultCompare;
-    end = elements->length;
+    end = elements->length();
     for (;  < end; pos++) {
         auto min = start;
         auto max = pos;
@@ -96,6 +96,6 @@ void insertionSorttemplate<typename E> (int compare(E , E ) , List<E> elements, 
 }
 
 void insertionSortBytemplate<typename E, typename K> (int compare(K a, K b) , List<E> elements, int end, K keyOf(E element) , int start) {
-    end = RangeErrorCls->checkValidRange(start, end, elements->length);
+    end = RangeErrorCls->checkValidRange(start, end, elements->length());
     _movingInsertionSort(elements, keyOf, compare, start, end, elements, start);
 }

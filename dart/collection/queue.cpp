@@ -282,7 +282,7 @@ template<typename E> ListQueueCls<E>::ListQueueCls(int initialCapacity) {
 
 template<typename E> void ListQueueCls<E>::from(Iterable<dynamic> elements) {
     if (is<List<dynamic>>(elements)) {
-        int length = as<ListCls>(elements)->length;
+        int length = as<ListCls>(elements)->length();
         ListQueue<E> queue = <E>make<ListQueueCls>(length + 1);
         assert(queue->_table->length > length);
         for (;  < length; i++) {
@@ -293,7 +293,7 @@ template<typename E> void ListQueueCls<E>::from(Iterable<dynamic> elements) {
     } else {
         int capacity = _INITIAL_CAPACITYCls;
         if (is<EfficientLengthIterable>(elements)) {
-            capacity = as<EfficientLengthIterableCls>(elements)->length;
+            capacity = as<EfficientLengthIterableCls>(elements)->length();
         }
         ListQueue<E> result = <E>make<ListQueueCls>(capacity);
         for (auto element : elements) {
@@ -317,7 +317,7 @@ template<typename E> Iterator<E> ListQueueCls<E>::iterator() {
 
 template<typename E> void ListQueueCls<E>::forEach(void f(E element) ) {
     auto _c1 = <E>make<ListQueueCls>();_c1.addAll(elements);int modificationCount = _modificationCount;
-    for (; i != _tail; i = (i + 1) & (_table->length - 1)) {
+    for (; i != _tail; i = (i + 1) & (_table->length() - 1)) {
         f(as<E>(_table[i]));
         _checkModification(modificationCount);
     }
@@ -328,7 +328,7 @@ template<typename E> bool ListQueueCls<E>::isEmpty() {
 }
 
 template<typename E> int ListQueueCls<E>::length() {
-    return (_tail - _head) & (_table->length - 1);
+    return (_tail - _head) & (_table->length() - 1);
 }
 
 template<typename E> E ListQueueCls<E>::first() {
@@ -342,14 +342,14 @@ template<typename E> E ListQueueCls<E>::last() {
     if (_head == _tail)     {
         ;
     }
-    return as<E>(_table[(_tail - 1) & (_table->length - 1)]);
+    return as<E>(_table[(_tail - 1) & (_table->length() - 1)]);
 }
 
 template<typename E> E ListQueueCls<E>::single() {
     if (_head == _tail)     {
         ;
     }
-    if (length > 1)     {
+    if (length() > 1)     {
         ;
     }
     return as<E>(_table[_head]);
@@ -357,11 +357,11 @@ template<typename E> E ListQueueCls<E>::single() {
 
 template<typename E> E ListQueueCls<E>::elementAt(int index) {
     RangeErrorCls->checkValidIndex(index, this);
-    return as<E>(_table[(_head + index) & (_table->length - 1)]);
+    return as<E>(_table[(_head + index) & (_table->length() - 1)]);
 }
 
 template<typename E> List<E> ListQueueCls<E>::toList(bool growable) {
-    int mask = _table->length - 1;
+    int mask = _table->length() - 1;
     int length = (_tail - _head) & mask;
     if (length == 0)     {
         return <E>empty(growable);
@@ -380,8 +380,8 @@ template<typename E> void ListQueueCls<E>::add(E value) {
 template<typename E> void ListQueueCls<E>::addAll(Iterable<E> elements) {
     if (is<List<E>>(elements)) {
         List<E> list = as<ListCls>(elements);
-        int addCount = list->length;
-        int length = this->length;
+        int addCount = list->length();
+        int length = this->length();
         if (length + addCount >= _table->length) {
             _preGrow(length + addCount);
             _table->setRange(length, length + addCount, list, 0);
@@ -407,7 +407,7 @@ template<typename E> void ListQueueCls<E>::addAll(Iterable<E> elements) {
 }
 
 template<typename E> bool ListQueueCls<E>::remove(Object value) {
-    for (; i != _tail; i = (i + 1) & (_table->length - 1)) {
+    for (; i != _tail; i = (i + 1) & (_table->length() - 1)) {
         E element = _table[i];
         if (element == value) {
             _remove(i);
@@ -428,7 +428,7 @@ template<typename E> void ListQueueCls<E>::retainWhere(bool test(E element) ) {
 
 template<typename E> void ListQueueCls<E>::clear() {
     if (_head != _tail) {
-        for (; i != _tail; i = (i + 1) & (_table->length - 1)) {
+        for (; i != _tail; i = (i + 1) & (_table->length() - 1)) {
             _table[i] = nullptr;
         }
         _head = _tail = 0;
@@ -445,7 +445,7 @@ template<typename E> void ListQueueCls<E>::addLast(E value) {
 }
 
 template<typename E> void ListQueueCls<E>::addFirst(E value) {
-    _head = (_head - 1) & (_table->length - 1);
+    _head = (_head - 1) & (_table->length() - 1);
     _table[_head] = value;
     if (_head == _tail)     {
         _grow();
@@ -460,7 +460,7 @@ template<typename E> E ListQueueCls<E>::removeFirst() {
     _modificationCount++;
     E result = as<E>(_table[_head]);
     _table[_head] = nullptr;
-    _head = (_head + 1) & (_table->length - 1);
+    _head = (_head + 1) & (_table->length() - 1);
     return result;
 }
 
@@ -469,7 +469,7 @@ template<typename E> E ListQueueCls<E>::removeLast() {
         ;
     }
     _modificationCount++;
-    _tail = (_tail - 1) & (_table->length - 1);
+    _tail = (_tail - 1) & (_table->length() - 1);
     E result = as<E>(_table[_tail]);
     _table[_tail] = nullptr;
     return result;
@@ -498,7 +498,7 @@ template<typename E> void ListQueueCls<E>::_filterWhere(bool removeMatching, boo
             i = _remove(i);
             modificationCount = ++_modificationCount;
         } else {
-            i = (i + 1) & (_table->length - 1);
+            i = (i + 1) & (_table->length() - 1);
         }
     }
 }
@@ -527,7 +527,7 @@ template<typename E> void ListQueueCls<E>::_checkModification(int expectedModifi
 
 template<typename E> void ListQueueCls<E>::_add(E element) {
     _table[_tail] = element;
-    _tail = (_tail + 1) & (_table->length - 1);
+    _tail = (_tail + 1) & (_table->length() - 1);
     if (_head == _tail)     {
         _grow();
     }
@@ -535,7 +535,7 @@ template<typename E> void ListQueueCls<E>::_add(E element) {
 }
 
 template<typename E> int ListQueueCls<E>::_remove(int offset) {
-    int mask = _table->length - 1;
+    int mask = _table->length() - 1;
     int startDistance = (offset - _head) & mask;
     int endDistance = (_tail - offset) & mask;
     if ( < endDistance) {
@@ -562,23 +562,23 @@ template<typename E> int ListQueueCls<E>::_remove(int offset) {
 }
 
 template<typename E> void ListQueueCls<E>::_grow() {
-    List<E> newTable = <E>filled(_table->length * 2, nullptr);
-    int split = _table->length - _head;
+    List<E> newTable = <E>filled(_table->length() * 2, nullptr);
+    int split = _table->length() - _head;
     newTable->setRange(0, split, _table, _head);
     newTable->setRange(split, split + _head, _table, 0);
     _head = 0;
-    _tail = _table->length;
+    _tail = _table->length();
     _table = newTable;
 }
 
 template<typename E> int ListQueueCls<E>::_writeToList(List<E> target) {
-    assert(target->length >= length);
+    assert(target->length() >= length());
     if (_head <= _tail) {
         int length = _tail - _head;
         target->setRange(0, length, _table, _head);
         return length;
     } else {
-        int firstPartSize = _table->length - _head;
+        int firstPartSize = _table->length() - _head;
         target->setRange(0, firstPartSize, _table, _head);
         target->setRange(firstPartSize, firstPartSize + _tail, _table, 0);
         return _tail + firstPartSize;
@@ -586,7 +586,7 @@ template<typename E> int ListQueueCls<E>::_writeToList(List<E> target) {
 }
 
 template<typename E> void ListQueueCls<E>::_preGrow(int newElementCount) {
-    assert(newElementCount >= length);
+    assert(newElementCount >= length());
     newElementCount = newElementCount >> 1;
     int newCapacity = _nextPowerOf2(newElementCount);
     List<E> newTable = <E>filled(newCapacity, nullptr);
@@ -606,7 +606,7 @@ template<typename E> bool _ListQueueIteratorCls<E>::moveNext() {
         return false;
     }
     _current = _queue->_table[_position];
-    _position = (_position + 1) & (_queue->_table->length - 1);
+    _position = (_position + 1) & (_queue->_table->length() - 1);
     return true;
 }
 

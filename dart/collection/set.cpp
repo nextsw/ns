@@ -1,10 +1,10 @@
 #include "set.hpp"
 template<typename E> bool SetMixinCls<E>::isEmpty() {
-    return length == 0;
+    return length() == 0;
 }
 
 template<typename E> bool SetMixinCls<E>::isNotEmpty() {
-    return length != 0;
+    return length() != 0;
 }
 
 template<typename E> Set<R> SetMixinCls<E>::casttemplate<typename R> () {
@@ -105,7 +105,7 @@ template<typename E> Iterable<T> SetMixinCls<E>::maptemplate<typename T> (T f(E 
 }
 
 template<typename E> E SetMixinCls<E>::single() {
-    if (length > 1)     {
+    if (length() > 1)     {
         ;
     }
     Iterator<E> it = iterator();
@@ -365,15 +365,15 @@ template<typename E> bool _UnmodifiableSetCls<E>::contains(Object element) {
 }
 
 template<typename E> Iterator<E> _UnmodifiableSetCls<E>::iterator() {
-    return _map->keys->iterator();
+    return _map->keys()->iterator();
 }
 
 template<typename E> int _UnmodifiableSetCls<E>::length() {
-    return _map->length;
+    return _map->length();
 }
 
 template<typename E> E _UnmodifiableSetCls<E>::lookup(Object element) {
-    for (auto key : _map->keys) {
+    for (auto key : _map->keys()) {
         if (key == element)         {
             return key;
         }

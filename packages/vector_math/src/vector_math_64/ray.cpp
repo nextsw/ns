@@ -121,8 +121,8 @@ double RayCls::intersectsWithQuad(Quad other) {
 }
 
 double RayCls::intersectsWithAabb3(Aabb3 other) {
-    Unknown otherMin = other->min;
-    Unknown otherMax = other->max;
+    Unknown otherMin = other->min();
+    Unknown otherMax = other->max();
     auto tNear = -double->maxFinite;
     auto tFar = double->maxFinite;
     for (;  < 3; ++i) {

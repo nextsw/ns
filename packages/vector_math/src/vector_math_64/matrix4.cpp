@@ -1524,7 +1524,7 @@ void Matrix4Cls::copyFromArray(List<double> array, int offset) {
 }
 
 List<double> Matrix4Cls::applyToVector3Array(List<double> array, int offset) {
-    for (;  < array->length; i = 3, j = 3) {
+    for (;  < array->length(); i = 3, j = 3) {
             auto _c1 = Vector3Cls->array(array, j);    _c1.applyMatrix4(this);Unknown v = _c1;
         array[j] = v->storage[0];
         array[j + 1] = v->storage[1];

@@ -94,7 +94,7 @@ void TimelineTaskCls::start(Map arguments, String name) {
     _stack->add(block);
     auto map = makeMap(makeList(), makeList();
     if (arguments != nullptr) {
-        for (auto key : arguments->keys) {
+        for (auto key : arguments->keys()) {
             map[key] = arguments[key];
         }
     }
@@ -130,7 +130,7 @@ void TimelineTaskCls::finish(Map arguments) {
     if (!_hasTimeline) {
         return;
     }
-    if (_stack->length == 0) {
+    if (_stack->length() == 0) {
         ;
     }
     if (_filterKey != nullptr) {
@@ -145,7 +145,7 @@ void TimelineTaskCls::finish(Map arguments) {
 }
 
 int TimelineTaskCls::pass() {
-    if (_stack->length > 0) {
+    if (_stack->length() > 0) {
         ;
     }
     int r = _taskId;
@@ -173,7 +173,7 @@ void _SyncBlockCls::_startSync() {
 }
 
 String _argumentsAsJson(Map arguments) {
-    if ((arguments == nullptr) || (arguments->length == 0)) {
+    if ((arguments == nullptr) || (arguments->length() == 0)) {
         return __s("{}");
     }
     return json->encode(arguments);

@@ -31,11 +31,11 @@ Path CircleBorderCls::getInnerPath(Rect rect, TextDirection textDirection) {
     double radius = rect->shortestSide() / 2.0;
     double adjustedRadius;
     ;
-    auto _c1 = make<PathCls>();_c1.addOval(RectCls->fromCircle(rect->center, math->max(0.0, adjustedRadius)));return _c1;
+    auto _c1 = make<PathCls>();_c1.addOval(RectCls->fromCircle(rect->center(), math->max(0.0, adjustedRadius)));return _c1;
 }
 
 Path CircleBorderCls::getOuterPath(Rect rect, TextDirection textDirection) {
-    auto _c1 = make<PathCls>();_c1.addOval(RectCls->fromCircle(rect->center, rect->shortestSide() / 2.0));return _c1;
+    auto _c1 = make<PathCls>();_c1.addOval(RectCls->fromCircle(rect->center(), rect->shortestSide() / 2.0));return _c1;
 }
 
 CircleBorder CircleBorderCls::copyWith(BorderSide side) {
@@ -54,7 +54,7 @@ bool CircleBorderCls::==(Object other) {
 }
 
 int CircleBorderCls::hashCode() {
-    return side->hashCode;
+    return side->hashCode();
 }
 
 String CircleBorderCls::toString() {

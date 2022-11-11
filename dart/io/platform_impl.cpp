@@ -116,15 +116,15 @@ template<typename V> void _CaseInsensitiveStringMapCls<V>::forEach(void f(String
 }
 
 template<typename V> Iterable<String> _CaseInsensitiveStringMapCls<V>::keys() {
-    return _map->keys;
+    return _map->keys();
 }
 
 template<typename V> Iterable<V> _CaseInsensitiveStringMapCls<V>::values() {
-    return _map->values;
+    return _map->values();
 }
 
 template<typename V> int _CaseInsensitiveStringMapCls<V>::length() {
-    return _map->length;
+    return _map->length();
 }
 
 template<typename V> bool _CaseInsensitiveStringMapCls<V>::isEmpty() {
@@ -136,7 +136,7 @@ template<typename V> bool _CaseInsensitiveStringMapCls<V>::isNotEmpty() {
 }
 
 template<typename V> Iterable<MapEntry<String, V>> _CaseInsensitiveStringMapCls<V>::entries() {
-    return _map->entries;
+    return _map->entries();
 }
 
 template<typename V> Map<K2, V2> _CaseInsensitiveStringMapCls<V>::maptemplate<typename K2, typename V2> (MapEntry<K2, V2> transform(String key, V value) ) {

@@ -122,14 +122,14 @@ void LongPressGestureRecognizerCls::_checkLongPressStart() {
 }
 
 void LongPressGestureRecognizerCls::_checkLongPressMoveUpdate(PointerEvent event) {
-    LongPressMoveUpdateDetails details = make<LongPressMoveUpdateDetailsCls>(event->position, event->localPosition, event->position - _longPressOrigin!->global, event->localPosition - _longPressOrigin!->local);
+    LongPressMoveUpdateDetails details = make<LongPressMoveUpdateDetailsCls>(event->position, event->localPosition(), event->position - _longPressOrigin!->global, event->localPosition() - _longPressOrigin!->local);
     ;
 }
 
 void LongPressGestureRecognizerCls::_checkLongPressEnd(PointerEvent event) {
     VelocityEstimate estimate = _velocityTracker!->getVelocityEstimate();
     Velocity velocity = estimate == nullptr? VelocityCls::zero : make<VelocityCls>(estimate->pixelsPerSecond);
-    LongPressEndDetails details = make<LongPressEndDetailsCls>(event->position, event->localPosition, velocity);
+    LongPressEndDetails details = make<LongPressEndDetailsCls>(event->position, event->localPosition(), velocity);
     _velocityTracker = nullptr;
     ;
 }

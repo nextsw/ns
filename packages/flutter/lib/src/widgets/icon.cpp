@@ -8,10 +8,10 @@ Widget IconCls::build(BuildContext context) {
     if (icon == nullptr) {
         return make<SemanticsCls>(semanticLabel, make<SizedBoxCls>(iconSize, iconSize));
     }
-    double iconOpacity = iconTheme->opacity or 1.0;
+    double iconOpacity = iconTheme->opacity() or 1.0;
     Color iconColor = color or iconTheme->color!;
     if (iconOpacity != 1.0) {
-        iconColor = iconColor->withOpacity(iconColor->opacity * iconOpacity);
+        iconColor = iconColor->withOpacity(iconColor->opacity() * iconOpacity);
     }
     Widget iconWidget = make<RichTextCls>(TextOverflowCls::visible, textDirection, make<TextSpanCls>(StringCls->fromCharCode(icon!->codePoint), make<TextStyleCls>(false, iconColor, iconSize, icon!->fontFamily, icon!->fontPackage, iconShadows)));
     if (icon!->matchTextDirection) {

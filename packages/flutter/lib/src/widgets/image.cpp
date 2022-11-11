@@ -212,7 +212,7 @@ void _ImageStateCls::_replaceImage(ImageInfo info) {
 }
 
 void _ImageStateCls::_updateSourceStream(ImageStream newStream) {
-    if (_imageStream?->key == newStream->key) {
+    if (_imageStream?->key() == newStream->key()) {
         return;
     }
     if (_isListeningToStream) {
@@ -249,7 +249,7 @@ void _ImageStateCls::_stopListeningToStream(bool keepStreamAlive) {
         return;
     }
     if (keepStreamAlive && _completerHandle == nullptr && _imageStream?->completer != nullptr) {
-        _completerHandle = _imageStream!->completer!->keepAlive();
+        _completerHandle = _imageStream!->completer()!->keepAlive();
     }
     _imageStream!->removeListener(_getListener());
     _isListeningToStream = false;

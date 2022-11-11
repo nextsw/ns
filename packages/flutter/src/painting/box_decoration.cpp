@@ -140,13 +140,13 @@ Paint _BoxDecorationPainterCls::_getBackgroundPaint(Rect rect, TextDirection tex
     if (_cachedBackgroundPaint == nullptr || (_decoration->gradient != nullptr && _rectForCachedBackgroundPaint != rect)) {
         Paint paint = make<PaintCls>();
         if (_decoration->backgroundBlendMode != nullptr) {
-            paint->blendMode = _decoration->backgroundBlendMode!;
+            paint->blendMode() = _decoration->backgroundBlendMode!;
         }
         if (_decoration->color != nullptr) {
-            paint->color = _decoration->color!;
+            paint->color() = _decoration->color!;
         }
         if (_decoration->gradient != nullptr) {
-            paint->shader = _decoration->gradient!->createShader(recttextDirection);
+            paint->shader() = _decoration->gradient!->createShader(recttextDirection);
             _rectForCachedBackgroundPaint = rect;
         }
         _cachedBackgroundPaint = paint;

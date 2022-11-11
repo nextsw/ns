@@ -19,15 +19,15 @@ BoxBorder BoxBorderCls::lerp(BoxBorder a, BoxBorder b, double t) {
     }
     if (is<Border>(a) && is<BorderDirectional>(b)) {
         if (b->start == BorderSideCls::none && b->end == BorderSideCls::none) {
-            return make<BorderCls>(BorderSideCls->lerp(a->top, b->top, t), BorderSideCls->lerp(a->right, BorderSideCls::none, t), BorderSideCls->lerp(a->bottom, b->bottom, t), BorderSideCls->lerp(a->left, BorderSideCls::none, t));
+            return make<BorderCls>(BorderSideCls->lerp(a->top(), b->top(), t), BorderSideCls->lerp(a->right, BorderSideCls::none, t), BorderSideCls->lerp(a->bottom(), b->bottom(), t), BorderSideCls->lerp(a->left, BorderSideCls::none, t));
         }
         if (a->left == BorderSideCls::none && a->right == BorderSideCls::none) {
-            return make<BorderDirectionalCls>(BorderSideCls->lerp(a->top, b->top, t), BorderSideCls->lerp(BorderSideCls::none, b->start, t), BorderSideCls->lerp(BorderSideCls::none, b->end, t), BorderSideCls->lerp(a->bottom, b->bottom, t));
+            return make<BorderDirectionalCls>(BorderSideCls->lerp(a->top(), b->top(), t), BorderSideCls->lerp(BorderSideCls::none, b->start, t), BorderSideCls->lerp(BorderSideCls::none, b->end, t), BorderSideCls->lerp(a->bottom(), b->bottom(), t));
         }
         if ( < 0.5) {
-            return make<BorderCls>(BorderSideCls->lerp(a->top, b->top, t), BorderSideCls->lerp(a->right, BorderSideCls::none, t * 2.0), BorderSideCls->lerp(a->bottom, b->bottom, t), BorderSideCls->lerp(a->left, BorderSideCls::none, t * 2.0));
+            return make<BorderCls>(BorderSideCls->lerp(a->top(), b->top(), t), BorderSideCls->lerp(a->right, BorderSideCls::none, t * 2.0), BorderSideCls->lerp(a->bottom(), b->bottom(), t), BorderSideCls->lerp(a->left, BorderSideCls::none, t * 2.0));
         }
-        return make<BorderDirectionalCls>(BorderSideCls->lerp(a->top, b->top, t), BorderSideCls->lerp(BorderSideCls::none, b->start, (t - 0.5) * 2.0), BorderSideCls->lerp(BorderSideCls::none, b->end, (t - 0.5) * 2.0), BorderSideCls->lerp(a->bottom, b->bottom, t));
+        return make<BorderDirectionalCls>(BorderSideCls->lerp(a->top(), b->top(), t), BorderSideCls->lerp(BorderSideCls::none, b->start, (t - 0.5) * 2.0), BorderSideCls->lerp(BorderSideCls::none, b->end, (t - 0.5) * 2.0), BorderSideCls->lerp(a->bottom(), b->bottom(), t));
     }
     ;
 }
@@ -75,7 +75,7 @@ void BoxBorderCls::_paintUniformBorderWithCircle(Canvas canvas, Rect rect, Borde
     Paint paint = side->toPaint();
     double radius;
     ;
-    canvas->drawCircle(rect->center, radius, paint);
+    canvas->drawCircle(rect->center(), radius, paint);
 }
 
 void BoxBorderCls::_paintUniformBorderWithRectangle(Canvas canvas, Rect rect, BorderSide side) {

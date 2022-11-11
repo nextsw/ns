@@ -136,7 +136,7 @@ template<typename E> void UnmodifiableListMixinCls<E>::fillRange(int end, E fill
 }
 
 int _ListIndicesIterableCls::length() {
-    return _backedList->length;
+    return _backedList->length();
 }
 
 int _ListIndicesIterableCls::elementAt(int index) {
@@ -149,7 +149,7 @@ template<typename E> E ListMapViewCls<E>::[](Object key) {
 }
 
 template<typename E> int ListMapViewCls<E>::length() {
-    return _values->length;
+    return _values->length();
 }
 
 template<typename E> Iterable<E> ListMapViewCls<E>::values() {
@@ -173,11 +173,11 @@ template<typename E> bool ListMapViewCls<E>::containsValue(Object value) {
 }
 
 template<typename E> bool ListMapViewCls<E>::containsKey(Object key) {
-    return is<int>(key) && key >= 0 &&  < length;
+    return is<int>(key) && key >= 0 &&  < length();
 }
 
 template<typename E> void ListMapViewCls<E>::forEach(void f(int key, E value) ) {
-    int length = _values->length;
+    int length = _values->length();
     for (;  < length; i++) {
         f(i, _values[i]);
         if (length != _values->length) {
@@ -187,11 +187,11 @@ template<typename E> void ListMapViewCls<E>::forEach(void f(int key, E value) ) 
 }
 
 template<typename E> int ReversedListIterableCls<E>::length() {
-    return _source->length;
+    return _source->length();
 }
 
 template<typename E> E ReversedListIterableCls<E>::elementAt(int index) {
-    return _source->elementAt(_source->length - 1 - index);
+    return _source->elementAt(_source->length() - 1 - index);
 }
 
 UnsupportedError UnmodifiableListErrorCls::add() {

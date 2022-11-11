@@ -32,7 +32,7 @@ void _debugPrintTask() {
     }
     while ( < _kDebugPrintCapacity && _debugPrintBuffer->isNotEmpty) {
         String line = _debugPrintBuffer->removeFirst();
-        _debugPrintedCharacters = line->length;
+        _debugPrintedCharacters = line->length();
         print(line);
     }
     if (_debugPrintBuffer->isNotEmpty) {
@@ -52,16 +52,16 @@ Future<void> debugPrintDone() {
 }
 
 Iterable<String> debugWordWrap(String message, int width, String wrapIndent) {
-    if (message->length < width || message->trimLeft()[0] == __s("#")) {
+    if (message->length() < width || message->trimLeft()[0] == __s("#")) {
         return makeList(ArrayItem);
     }
     List<String> wrapped = makeList();
     Match prefixMatch = _indentPattern->matchAsPrefix(message)!;
-    String prefix = wrapIndent + __s(" ") * prefixMatch->group(0)!->length;
+    String prefix = wrapIndent + __s(" ") * prefixMatch->group(0)!->length();
     int start = 0;
     int startForLengthCalculations = 0;
     bool addPrefix = false;
-    int index = prefix->length;
+    int index = prefix->length();
     _WordWrapParseMode mode = _WordWrapParseModeCls::inSpace;
     int lastWordStart;
     int lastWordEnd;

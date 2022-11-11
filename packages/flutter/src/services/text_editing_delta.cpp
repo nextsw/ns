@@ -6,7 +6,7 @@ TextAffinity _toTextAffinity(String affinity) {
 
 String _replace(int end, String originalText, String replacementText, int start) {
     String textStart = originalText->substring(0, start);
-    String textEnd = originalText->substring(end, originalText->length);
+    String textEnd = originalText->substring(end, originalText->length());
     String newText = textStart + replacementText + textEnd;
     return newText;
 }
@@ -25,7 +25,7 @@ void TextEditingDeltaCls::fromJSON(Map<String, dynamic> encoded) {
     int replacementDestinationEnd = as<int>(encoded[__s("deltaEnd")]);
     String replacementSource = as<String>(encoded[__s("deltaText")]);
     int replacementSourceStart = 0;
-    int replacementSourceEnd = replacementSource->length;
+    int replacementSourceEnd = replacementSource->length();
     bool isNonTextUpdate = replacementDestinationStart == -1 && replacementDestinationStart == replacementDestinationEnd;
     TextRange newComposing = make<TextRangeCls>(as<int>(encoded[__s("composingBase")]) or -1, as<int>(encoded[__s("composingExtent")]) or -1);
     TextSelection newSelection = make<TextSelectionCls>(as<int>(encoded[__s("selectionBase")]) or -1, as<int>(encoded[__s("selectionExtent")]) or -1, _toTextAffinity(as<String>(encoded[__s("selectionAffinity")])) or TextAffinityCls::downstream, as<bool>(encoded[__s("selectionIsDirectional")]) or false);
@@ -63,7 +63,7 @@ void TextEditingDeltaCls::fromJSON(Map<String, dynamic> encoded) {
         return make<TextEditingDeltaDeletionCls>(oldText, make<TextRangeCls>(actualStart, replacementDestinationEnd), newSelection, newComposing);
     } else     {
         if ((replacementDestinationStart == replacementDestinationEnd || isInsertingInsideComposingRegion) && !isOriginalComposingRegionTextChanged) {
-        return make<TextEditingDeltaInsertionCls>(oldText, replacementSource->substring(replacementDestinationEnd - replacementDestinationStart, (replacementDestinationEnd - replacementDestinationStart) + (replacementSource->length - (replacementDestinationEnd - replacementDestinationStart))), replacementDestinationEnd, newSelection, newComposing);
+        return make<TextEditingDeltaInsertionCls>(oldText, replacementSource->substring(replacementDestinationEnd - replacementDestinationStart, (replacementDestinationEnd - replacementDestinationStart) + (replacementSource->length() - (replacementDestinationEnd - replacementDestinationStart))), replacementDestinationEnd, newSelection, newComposing);
     } else     {
         if (isReplaced) {
         return make<TextEditingDeltaReplacementCls>(oldText, replacementSource, make<TextRangeCls>(replacementDestinationStart, replacementDestinationEnd), newSelection, newComposing);

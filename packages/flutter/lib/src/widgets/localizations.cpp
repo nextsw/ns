@@ -31,9 +31,9 @@ Future<Map<Type, dynamic>> _loadAll(Iterable<LocalizationsDelegate<dynamic>> all
     return FutureCls-><dynamic>wait(pendingList-><Future<dynamic>>map([=] (_Pending p)     {
         p->futureValue;
     }))-><Map<Type, dynamic>>then([=] (List<dynamic> values) {
-        assert(values->length == pendingList!->length);
+        assert(values->length == pendingList!->length());
         for (;  < values->length; i = 1) {
-            Type type = pendingList![i]->delegate->type;
+            Type type = pendingList![i]->delegate->type();
             assert(!output->containsKey(type));
             output[type] = values[i];
         }
@@ -114,18 +114,18 @@ Locale LocalizationsCls::localeOf(BuildContext context) {
         if (scope == nullptr) {
             ;
         }
-        if (scope->localizationsState->locale == nullptr) {
+        if (scope->localizationsState->locale() == nullptr) {
             ;
         }
         return true;
     }());
-    return scope!->localizationsState->locale!;
+    return scope!->localizationsState->locale()!;
 }
 
 Locale LocalizationsCls::maybeLocaleOf(BuildContext context) {
     assert(context != nullptr);
     _LocalizationsScope scope = context-><_LocalizationsScope>dependOnInheritedWidgetOfExactType();
-    return scope?->localizationsState->locale;
+    return scope?->localizationsState->locale();
 }
 
 T LocalizationsCls::oftemplate<typename T> (BuildContext context, Type type) {
@@ -209,12 +209,12 @@ Widget _LocalizationsStateCls::build(BuildContext context) {
 }
 
 bool _LocalizationsStateCls::_anyDelegatesShouldReload(Localizations old) {
-    if (widget->delegates->length != old->delegates->length) {
+    if (widget->delegates->length != old->delegates->length()) {
         return true;
     }
     List<LocalizationsDelegate<dynamic>> delegates = widget->delegates->toList();
     List<LocalizationsDelegate<dynamic>> oldDelegates = old->delegates->toList();
-    for (;  < delegates->length; i = 1) {
+    for (;  < delegates->length(); i = 1) {
         LocalizationsDelegate<dynamic> delegate = delegates[i];
         LocalizationsDelegate<dynamic> oldDelegate = oldDelegates[i];
         if (delegate->runtimeType != oldDelegate->runtimeType || delegate->shouldReload(oldDelegate)) {
@@ -227,5 +227,5 @@ bool _LocalizationsStateCls::_anyDelegatesShouldReload(Localizations old) {
 TextDirection _LocalizationsStateCls::_textDirection() {
     WidgetsLocalizations resources = as<WidgetsLocalizations>(_typeToResources[WidgetsLocalizationsCls]);
     assert(resources != nullptr);
-    return resources->textDirection;
+    return resources->textDirection();
 }

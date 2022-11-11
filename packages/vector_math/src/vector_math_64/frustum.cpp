@@ -111,7 +111,7 @@ bool FrustumCls::intersectsWithAabb3(Aabb3 aabb) {
 
 bool FrustumCls::intersectsWithSphere(Sphere sphere) {
     Unknown negativeRadius = -sphere->radius;
-    Unknown center = sphere->center;
+    Unknown center = sphere->center();
     if (_plane0->distanceToVector3(center) < negativeRadius) {
         return false;
     }
@@ -147,25 +147,25 @@ void FrustumCls::calculateCorners(Vector3 corner0, Vector3 corner1, Vector3 corn
 bool FrustumCls::_intersectsWithAabb3CheckPlane(Aabb3 aabb, Plane plane) {
     double outPx, outPy, outPz, outNx, outNy, outNz;
     if (plane->_normal->x < 0.0) {
-        outPx = aabb->min->x;
-        outNx = aabb->max->x;
+        outPx = aabb->min()->x;
+        outNx = aabb->max()->x;
     } else {
-        outPx = aabb->max->x;
-        outNx = aabb->min->x;
+        outPx = aabb->max()->x;
+        outNx = aabb->min()->x;
     }
     if (plane->_normal->y < 0.0) {
-        outPy = aabb->min->y;
-        outNy = aabb->max->y;
+        outPy = aabb->min()->y;
+        outNy = aabb->max()->y;
     } else {
-        outPy = aabb->max->y;
-        outNy = aabb->min->y;
+        outPy = aabb->max()->y;
+        outNy = aabb->min()->y;
     }
     if (plane->_normal->z < 0.0) {
-        outPz = aabb->min->z;
-        outNz = aabb->max->z;
+        outPz = aabb->min()->z;
+        outNz = aabb->max()->z;
     } else {
-        outPz = aabb->max->z;
-        outNz = aabb->min->z;
+        outPz = aabb->max()->z;
+        outNz = aabb->min()->z;
     }
     Unknown d1 = plane->_normal->x * outPx + plane->_normal->y * outPy + plane->_normal->z * outPz + plane->constant;
     Unknown d2 = plane->_normal->x * outNx + plane->_normal->y * outNy + plane->_normal->z * outNz + plane->constant;

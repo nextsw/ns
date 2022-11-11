@@ -14,7 +14,7 @@ String FontWeightCls::toString() {
 FontFeatureCls::FontFeatureCls(String feature, int value) {
     {
         assert(feature != nullptr);
-        assert(feature->length == 4, __s("Feature tag must be exactly four characters long."));
+        assert(feature->length() == 4, __s("Feature tag must be exactly four characters long."));
         assert(value != nullptr);
         assert(value >= 0, __s("Feature value must be zero or a positive integer."));
     }
@@ -98,7 +98,7 @@ String FontFeatureCls::toString() {
 }
 
 void FontFeatureCls::_encode(ByteData byteData) {
-    assert(feature->codeUnits->every([=] (int c)     {
+    assert(feature->codeUnits()->every([=] (int c)     {
         c >= 0x20 && c <= 0x7F;
     }));
     for (;  < 4; i++) {
@@ -110,7 +110,7 @@ void FontFeatureCls::_encode(ByteData byteData) {
 FontVariationCls::FontVariationCls(String axis, double value) {
     {
         assert(axis != nullptr);
-        assert(axis->length == 4, __s("Axis tag must be exactly four characters long."));
+        assert(axis->length() == 4, __s("Axis tag must be exactly four characters long."));
         assert(value != nullptr);
     }
 }
@@ -131,7 +131,7 @@ String FontVariationCls::toString() {
 }
 
 void FontVariationCls::_encode(ByteData byteData) {
-    assert(axis->codeUnits->every([=] (int c)     {
+    assert(axis->codeUnits()->every([=] (int c)     {
         c >= 0x20 && c <= 0x7F;
     }));
     for (;  < 4; i++) {
@@ -174,7 +174,7 @@ String TextDecorationCls::toString() {
     if (_mask & lineThrough->_mask != 0)     {
         values->add(__s("lineThrough"));
     }
-    if (values->length == 1)     {
+    if (values->length() == 1)     {
         return __s("TextDecoration.${values[0]}");
     }
     return __s("TextDecoration.combine([${values.join(", ")}])");
@@ -205,10 +205,10 @@ bool _listEqualstemplate<typename T> (List<T> a, List<T> b) {
     if (a == nullptr)     {
         return b == nullptr;
     }
-    if (b == nullptr || a->length != b->length)     {
+    if (b == nullptr || a->length() != b->length())     {
         return false;
     }
-    for (;  < a->length; index = 1) {
+    for (;  < a->length(); index = 1) {
         if (a[index] != b[index])         {
             return false;
         }
@@ -628,7 +628,7 @@ List<TextBox> ParagraphCls::getBoxesForPlaceholders() {
 }
 
 TextPosition ParagraphCls::getPositionForOffset(Offset offset) {
-    List<int> encoded = _getPositionForOffset(offset->dx, offset->dy);
+    List<int> encoded = _getPositionForOffset(offset->dx(), offset->dy());
     return make<TextPositionCls>(encoded[0], TextAffinityCls::values[encoded[1]]);
 }
 
@@ -715,7 +715,7 @@ void ParagraphBuilderCls::pushStyle(TextStyle style) {
     ByteData encodedFontFeatures;
     List<FontFeature> fontFeatures = style->_fontFeatures;
     if (fontFeatures != nullptr) {
-        encodedFontFeatures = make<ByteDataCls>(fontFeatures->length * FontFeatureCls::_kEncodedSize);
+        encodedFontFeatures = make<ByteDataCls>(fontFeatures->length() * FontFeatureCls::_kEncodedSize);
         int byteOffset = 0;
         for (FontFeature feature : fontFeatures) {
             feature->_encode(ByteDataCls->view(encodedFontFeatures->buffer, byteOffset, FontFeatureCls::_kEncodedSize));
@@ -725,7 +725,7 @@ void ParagraphBuilderCls::pushStyle(TextStyle style) {
     ByteData encodedFontVariations;
     List<FontVariation> fontVariations = style->_fontVariations;
     if (fontVariations != nullptr) {
-        encodedFontVariations = make<ByteDataCls>(fontVariations->length * FontVariationCls::_kEncodedSize);
+        encodedFontVariations = make<ByteDataCls>(fontVariations->length() * FontVariationCls::_kEncodedSize);
         int byteOffset = 0;
         for (FontVariation variation : fontVariations) {
             variation->_encode(ByteDataCls->view(encodedFontVariations->buffer, byteOffset, FontVariationCls::_kEncodedSize));

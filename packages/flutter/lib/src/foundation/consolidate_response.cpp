@@ -25,7 +25,7 @@ Future<Uint8List> consolidateHttpClientResponseBytes(bool autoUncompress, BytesR
         }
     }[=] () {
         sink->close();
-        completer->complete(output->bytes);
+        completer->complete(output->bytes());
     }, completer->completeError, true);
     return completer->future;
 }
@@ -33,7 +33,7 @@ Future<Uint8List> consolidateHttpClientResponseBytes(bool autoUncompress, BytesR
 void _OutputBufferCls::add(List<int> chunk) {
     assert(_bytes == nullptr);
     _chunks!->add(chunk);
-    _contentLength = chunk->length;
+    _contentLength = chunk->length();
 }
 
 void _OutputBufferCls::close() {

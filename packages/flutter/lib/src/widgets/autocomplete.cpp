@@ -64,7 +64,7 @@ template<typename T> Widget _RawAutocompleteStateCls<T>::build(BuildContext cont
 }
 
 template<typename T> bool _RawAutocompleteStateCls<T>::_shouldShowOptions() {
-    return !_userHidOptions && _focusNode->hasFocus && _selection == nullptr && _options->isNotEmpty();
+    return !_userHidOptions && _focusNode->hasFocus() && _selection == nullptr && _options->isNotEmpty();
 }
 
 template<typename T> Future<void> _RawAutocompleteStateCls<T>::_onChangedField() {
@@ -84,7 +84,7 @@ template<typename T> Future<void> _RawAutocompleteStateCls<T>::_onChangedField()
 }
 
 template<typename T> void _RawAutocompleteStateCls<T>::_onChangedFocus() {
-    _userHidOptions = !_focusNode->hasFocus;
+    _userHidOptions = !_focusNode->hasFocus();
     _updateActions();
     _updateOverlay();
 }
@@ -93,7 +93,7 @@ template<typename T> void _RawAutocompleteStateCls<T>::_onFieldSubmitted() {
     if (_options->isEmpty() || _userHidOptions) {
         return;
     }
-    _select(_options->elementAt(_highlightedOptionIndex->value));
+    _select(_options->elementAt(_highlightedOptionIndex->value()));
 }
 
 template<typename T> void _RawAutocompleteStateCls<T>::_select(T nextSelection) {
@@ -102,14 +102,14 @@ template<typename T> void _RawAutocompleteStateCls<T>::_select(T nextSelection) 
     }
     _selection = nextSelection;
     String selectionString = widget->displayStringForOption(nextSelection);
-    _textEditingController->value = make<TextEditingValueCls>(TextSelectionCls->collapsed(selectionString->length), selectionString);
+    _textEditingController->value = make<TextEditingValueCls>(TextSelectionCls->collapsed(selectionString->length()), selectionString);
     _updateActions();
     _updateOverlay();
     widget->onSelected?->call(_selection!);
 }
 
 template<typename T> void _RawAutocompleteStateCls<T>::_updateHighlight(int newIndex) {
-    _highlightedOptionIndex->value = _options->isEmpty()? 0 : newIndex % _options->length;
+    _highlightedOptionIndex->value() = _options->isEmpty()? 0 : newIndex % _options->length();
 }
 
 template<typename T> void _RawAutocompleteStateCls<T>::_highlightPreviousOption(AutocompletePreviousOptionIntent intent) {
@@ -119,7 +119,7 @@ template<typename T> void _RawAutocompleteStateCls<T>::_highlightPreviousOption(
         _updateOverlay();
         return;
     }
-    _updateHighlight(_highlightedOptionIndex->value - 1);
+    _updateHighlight(_highlightedOptionIndex->value() - 1);
 }
 
 template<typename T> void _RawAutocompleteStateCls<T>::_highlightNextOption(AutocompleteNextOptionIntent intent) {
@@ -129,7 +129,7 @@ template<typename T> void _RawAutocompleteStateCls<T>::_highlightNextOption(Auto
         _updateOverlay();
         return;
     }
-    _updateHighlight(_highlightedOptionIndex->value + 1);
+    _updateHighlight(_highlightedOptionIndex->value() + 1);
 }
 
 template<typename T> Object _RawAutocompleteStateCls<T>::_hideOptions(DismissIntent intent) {
@@ -149,7 +149,7 @@ template<typename T> void _RawAutocompleteStateCls<T>::_setActionsEnabled(bool e
 }
 
 template<typename T> void _RawAutocompleteStateCls<T>::_updateActions() {
-    _setActionsEnabled(_focusNode->hasFocus && _selection == nullptr && _options->isNotEmpty());
+    _setActionsEnabled(_focusNode->hasFocus() && _selection == nullptr && _options->isNotEmpty());
 }
 
 template<typename T> void _RawAutocompleteStateCls<T>::_updateOverlay() {

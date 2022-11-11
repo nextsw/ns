@@ -70,7 +70,7 @@ bool StadiumBorderCls::==(Object other) {
 }
 
 int StadiumBorderCls::hashCode() {
-    return side->hashCode;
+    return side->hashCode();
 }
 
 String StadiumBorderCls::toString() {
@@ -152,14 +152,14 @@ _StadiumToCircleBorderCls::_StadiumToCircleBorderCls(double circleness, Unknown 
 }
 
 Rect _StadiumToCircleBorderCls::_adjustRect(Rect rect) {
-    if (circleness == 0.0 || rect->width == rect->height) {
+    if (circleness == 0.0 || rect->width() == rect->height()) {
         return rect;
     }
-    if (rect->width < rect->height) {
-        double delta = circleness * (rect->height - rect->width) / 2.0;
+    if (rect->width() < rect->height()) {
+        double delta = circleness * (rect->height() - rect->width()) / 2.0;
         return RectCls->fromLTRB(rect->left, rect->top + delta, rect->right, rect->bottom - delta);
     } else {
-        double delta = circleness * (rect->width - rect->height) / 2.0;
+        double delta = circleness * (rect->width() - rect->height()) / 2.0;
         return RectCls->fromLTRB(rect->left + delta, rect->top, rect->right - delta, rect->bottom);
     }
 }

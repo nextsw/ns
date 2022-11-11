@@ -60,7 +60,7 @@ bool SliverConstraintsCls::debugAssertIsValid(InformationCollector informationCo
         StringBuffer errorMessage = make<StringBufferCls>(__s("\n"));
         InlineMethod;
         InlineMethod;
-        verify(axis != nullptr, __s("The "axis" is null."));
+        verify(axis() != nullptr, __s("The "axis" is null."));
         verify(growthDirection != nullptr, __s("The "growthDirection" is null."));
         verifyDouble(scrollOffset, __s("scrollOffset"));
         verifyDouble(overlap, __s("overlap"));
@@ -210,7 +210,7 @@ String SliverLogicalParentDataCls::toString() {
 }
 
 void SliverPhysicalParentDataCls::applyPaintTransform(Matrix4 transform) {
-    transform->translate(paintOffset->dx, paintOffset->dy);
+    transform->translate(paintOffset->dx(), paintOffset->dy());
 }
 
 String SliverPhysicalParentDataCls::toString() {
@@ -243,7 +243,7 @@ void RenderSliverCls::geometry(SliverGeometry value) {
             violation = make<ErrorDescriptionCls>(__s("It appears that the geometry setter was called from performLayout()."));
         } else {
             violation = make<ErrorDescriptionCls>(__s("The geometry setter was called from outside layout (neither performResize() nor performLayout() were being run for this object)."));
-            if (owner != nullptr && owner!->debugDoingLayout()) {
+            if (owner != nullptr && owner!->debugDoingLayout) {
                 hint = make<ErrorDescriptionCls>(__s("Only the object itself can set its geometry. It is a contract violation for other objects to set it."));
             }
         }
@@ -263,7 +263,7 @@ Rect RenderSliverCls::semanticBounds() {
 }
 
 Rect RenderSliverCls::paintBounds() {
-    assert(constraints->axis != nullptr);
+    assert(constraints()->axis() != nullptr);
     ;
 }
 
@@ -275,7 +275,7 @@ void RenderSliverCls::debugAssertDoesMeetConstraints() {
         makeList(ArrayItem);
     }));
     assert([=] () {
-        if (geometry()!->paintOrigin + geometry()!->paintExtent > constraints->remainingPaintExtent) {
+        if (geometry()!->paintOrigin + geometry()!->paintExtent > constraints()->remainingPaintExtent) {
             ;
         }
         return true;
@@ -291,7 +291,7 @@ double RenderSliverCls::centerOffsetAdjustment() {
 }
 
 bool RenderSliverCls::hitTest(double crossAxisPosition, double mainAxisPosition, SliverHitTestResult result) {
-    if (mainAxisPosition >= 0.0 &&  < geometry()!->hitTestExtent && crossAxisPosition >= 0.0 &&  < constraints->crossAxisExtent) {
+    if (mainAxisPosition >= 0.0 &&  < geometry()!->hitTestExtent && crossAxisPosition >= 0.0 &&  < constraints()->crossAxisExtent) {
         if (hitTestChildren(resultmainAxisPosition, crossAxisPosition) || hitTestSelf(mainAxisPosition, crossAxisPosition)) {
             result->add(make<SliverHitTestEntryCls>(thismainAxisPosition, crossAxisPosition));
             return true;
@@ -363,7 +363,7 @@ void RenderSliverCls::debugPaint(PaintingContext context, Offset offset) {
                     auto _c1 = make<PaintCls>();        _c1.color = auto _c2 = make<ColorCls>(0xFF33CC33);        _c2.strokeWidth = auto _c3 = strokeWidth;        _c3.style = auto _c4 = PaintingStyleCls::stroke;        _c4.maskFilter = MaskFilterCls->blur(BlurStyleCls::solid, strokeWidth);        _c4;        _c3;        _c2;Paint paint = _c1;
             double arrowExtent = geometry()!->paintExtent;
             double padding = math->max(2.0, strokeWidth);
-            Canvas canvas = context->canvas;
+            Canvas canvas = context->canvas();
             canvas->drawCircle(offset->translate(padding, padding), padding * 0.5, paint);
             ;
         }
@@ -384,17 +384,17 @@ void RenderSliverCls::_debugDrawArrow(Canvas canvas, GrowthDirection direction, 
         if (p0 == p1) {
             return true;
         }
-        assert(p0->dx == p1->dx || p0->dy == p1->dy);
-        double d = (p1 - p0)->distance * 0.2;
+        assert(p0->dx() == p1->dx() || p0->dy() == p1->dy());
+        double d = (p1 - p0)->distance() * 0.2;
         Offset temp;
         double dx1, dx2, dy1, dy2;
         ;
-        if (p0->dx == p1->dx) {
+        if (p0->dx() == p1->dx()) {
             dx2 = -dx2;
         } else {
             dy2 = -dy2;
         }
-            auto _c1 = make<PathCls>();    _c1.auto _c2 = moveTo(p0->dx, p0->dy);    _c2.auto _c3 = lineTo(p1->dx, p1->dy);    _c3.auto _c4 = moveTo(p1->dx - dx1, p1->dy - dy1);    _c4.auto _c5 = lineTo(p1->dx, p1->dy);    _c5.lineTo(p1->dx - dx2, p1->dy - dy2);    _c5;    _c4;    _c3;    _c2;canvas->drawPath(_c1, paint);
+            auto _c1 = make<PathCls>();    _c1.auto _c2 = moveTo(p0->dx(), p0->dy());    _c2.auto _c3 = lineTo(p1->dx(), p1->dy());    _c3.auto _c4 = moveTo(p1->dx() - dx1, p1->dy() - dy1);    _c4.auto _c5 = lineTo(p1->dx(), p1->dy());    _c5.lineTo(p1->dx() - dx2, p1->dy() - dy2);    _c5;    _c4;    _c3;    _c2;canvas->drawPath(_c1, paint);
         return true;
     }());
 }

@@ -30,7 +30,7 @@ void PointerRouterCls::removeGlobalRoute(PointerRoute route) {
 int PointerRouterCls::debugGlobalRouteCount() {
     int count;
     assert([=] () {
-        count = _globalRoutes->length;
+        count = _globalRoutes->length();
         return true;
     }());
     if (count != nullptr) {

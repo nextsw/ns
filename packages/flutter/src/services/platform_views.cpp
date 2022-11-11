@@ -114,8 +114,8 @@ AndroidMotionEventCls::AndroidMotionEventCls(int action, int buttonState, int de
         assert(edgeFlags != nullptr);
         assert(source != nullptr);
         assert(flags != nullptr);
-        assert(pointerProperties->length == pointerCount);
-        assert(pointerCoords->length == pointerCount);
+        assert(pointerProperties->length() == pointerCount);
+        assert(pointerCoords->length() == pointerCount);
     }
 }
 
@@ -137,8 +137,8 @@ void _AndroidMotionEventConverterCls::pointTransformer(PointTransformer transfor
 }
 
 void _AndroidMotionEventConverterCls::handlePointerDownEvent(PointerDownEvent event) {
-    if (pointerProperties->isEmpty) {
-        downTimeMillis = event->timeStamp->inMilliseconds();
+    if (pointerProperties->isEmpty()) {
+        downTimeMillis = event->timeStamp->inMilliseconds;
     }
     int androidPointerId = 0;
     while (usedAndroidPointerIds->contains(androidPointerId)) {
@@ -150,7 +150,7 @@ void _AndroidMotionEventConverterCls::handlePointerDownEvent(PointerDownEvent ev
 
 void _AndroidMotionEventConverterCls::updatePointerPositions(PointerEvent event) {
     Offset position = _pointTransformer(event->position);
-    pointerPositions[event->pointer] = make<AndroidPointerCoordsCls>(event->orientation, event->pressure, event->size, event->radiusMajor, event->radiusMinor, event->radiusMajor, event->radiusMinor, position->dx, position->dy);
+    pointerPositions[event->pointer] = make<AndroidPointerCoordsCls>(event->orientation, event->pressure, event->size, event->radiusMajor, event->radiusMinor, event->radiusMajor, event->radiusMinor, position->dx(), position->dy());
 }
 
 void _AndroidMotionEventConverterCls::handlePointerUpEvent(PointerUpEvent event) {
@@ -162,9 +162,9 @@ void _AndroidMotionEventConverterCls::handlePointerCancelEvent(PointerCancelEven
 }
 
 AndroidMotionEvent _AndroidMotionEventConverterCls::toAndroidMotionEvent(PointerEvent event) {
-    List<int> pointers = pointerPositions->keys->toList();
+    List<int> pointers = pointerPositions->keys()->toList();
     int pointerIdx = pointers->indexOf(event->pointer);
-    int numPointers = pointers->length;
+    int numPointers = pointers->length();
     int kPointerDataFlagBatched = 1;
     if (event->platformData == kPointerDataFlagBatched || (isSinglePointerAction(event) &&  < numPointers - 1)) {
         return nullptr;
@@ -187,7 +187,7 @@ AndroidMotionEvent _AndroidMotionEventConverterCls::toAndroidMotionEvent(Pointer
 ;
     };
     };
-    }    return make<AndroidMotionEventCls>(downTimeMillis!, event->timeStamp->inMilliseconds(), action, pointerPositions->length, pointers-><AndroidPointerProperties>map([=] (int i)     {
+    }    return make<AndroidMotionEventCls>(downTimeMillis!, event->timeStamp->inMilliseconds(), action, pointerPositions->length(), pointers-><AndroidPointerProperties>map([=] (int i)     {
         pointerProperties[i]!;
     })->toList(), pointers-><AndroidPointerCoords>map([=] (int i)     {
         pointerPositions[i]!;
@@ -208,7 +208,7 @@ void _AndroidMotionEventConverterCls::_remove(int pointer) {
     pointerPositions->remove(pointer);
     usedAndroidPointerIds->remove(pointerProperties[pointer]!->id);
     pointerProperties->remove(pointer);
-    if (pointerProperties->isEmpty) {
+    if (pointerProperties->isEmpty()) {
         downTimeMillis = nullptr;
     }
 }
@@ -380,7 +380,7 @@ Future<void> TextureAndroidViewControllerCls::setOffset(Offset off) {
         return;
     }
     _off = off;
-    Map<String, dynamic> map1 = make<MapCls<>>();map1.set(__s("id"), viewId);map1.set(__s("top"), off->dy);map1.set(__s("left"), off->dx);await await SystemChannelsCls::platform_views-><void>invokeMethod(__s("offset"), list1);
+    Map<String, dynamic> map1 = make<MapCls<>>();map1.set(__s("id"), viewId);map1.set(__s("top"), off->dy());map1.set(__s("left"), off->dx());await await SystemChannelsCls::platform_views-><void>invokeMethod(__s("offset"), list1);
 }
 
 void TextureAndroidViewControllerCls::_(Unknown creationParams, Unknown creationParamsCodec, Unknown layoutDirection, Unknown viewId, Unknown viewType)
@@ -389,7 +389,7 @@ Future<Size> TextureAndroidViewControllerCls::_sendResizeMessage(Size size) {
     assert(_state != _AndroidViewStateCls::waitingForSize, __s("Android view must have an initial size. View id: $viewId"));
     assert(size != nullptr);
     assert(!size->isEmpty());
-    Map<String, dynamic> map1 = make<MapCls<>>();map1.set(__s("id"), viewId);map1.set(__s("width"), size->width);map1.set(__s("height"), size->height);Map<Object, Object> meta = await SystemChannelsCls::platform_views-><Object, Object>invokeMapMethod(__s("resize"), list1);
+    Map<String, dynamic> map1 = make<MapCls<>>();map1.set(__s("id"), viewId);map1.set(__s("width"), size->width());map1.set(__s("height"), size->height());Map<Object, Object> meta = await SystemChannelsCls::platform_views-><Object, Object>invokeMapMethod(__s("resize"), list1);
     assert(meta != nullptr);
     assert(meta!->containsKey(__s("width")));
     assert(meta!->containsKey(__s("height")));
@@ -402,7 +402,7 @@ bool TextureAndroidViewControllerCls::_createRequiresSize() {
 
 Future<void> TextureAndroidViewControllerCls::_sendCreateMessage(Size size) {
     assert(!size->isEmpty(), __s("trying to create $TextureAndroidViewController without setting a valid size."));
-    Map<String, dynamic> map1 = make<MapCls<>>();map1.set(__s("id"), viewId);map1.set(__s("viewType"), _viewType);map1.set(__s("width"), size->width);map1.set(__s("height"), size->height);map1.set(__s("direction"), AndroidViewControllerCls->_getAndroidDirection(_layoutDirection));Map<String, dynamic> args = list1;
+    Map<String, dynamic> map1 = make<MapCls<>>();map1.set(__s("id"), viewId);map1.set(__s("viewType"), _viewType);map1.set(__s("width"), size->width());map1.set(__s("height"), size->height());map1.set(__s("direction"), AndroidViewControllerCls->_getAndroidDirection(_layoutDirection));Map<String, dynamic> args = list1;
     if (_creationParams != nullptr) {
         ByteData paramsByteData = _creationParamsCodec!->encodeMessage(_creationParams)!;
         args[__s("params")] = Uint8ListCls->view(paramsByteData->buffer, 0, paramsByteData->lengthInBytes);

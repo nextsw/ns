@@ -141,7 +141,7 @@ template<typename T> void _RouterStateCls<T>::_reportRouteInformation(Duration t
 }
 
 template<typename T> RouteInformation _RouterStateCls<T>::_retrieveNewRouteInformation() {
-    T configuration = widget->routerDelegate->currentConfiguration();
+    T configuration = widget->routerDelegate->currentConfiguration;
     if (configuration == nullptr) {
         return nullptr;
     }
@@ -268,7 +268,7 @@ bool BackButtonDispatcherCls::hasCallbacks() {
 Future<bool> BackButtonDispatcherCls::invokeCallback(Future<bool> defaultValue) {
     if (_children->isNotEmpty) {
         List<ChildBackButtonDispatcher> children = _children->toList();
-        int childIndex = children->length - 1;
+        int childIndex = children->length() - 1;
         InlineMethod;
         return children[childIndex]->notifiedByParent(defaultValue)-><bool>then(notifyNextChild);
     }
@@ -457,7 +457,7 @@ void PlatformRouteInformationProviderCls::_platformReportsNewRouteInformation(Ro
 }
 
 template<typename T> Future<bool> PopNavigatorRouterDelegateMixinCls<T>::popRoute() {
-    NavigatorState navigator = navigatorKey?->currentState();
+    NavigatorState navigator = navigatorKey()?->currentState();
     if (navigator == nullptr) {
         return <bool>make<SynchronousFutureCls>(false);
     }

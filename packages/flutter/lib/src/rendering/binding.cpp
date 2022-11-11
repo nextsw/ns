@@ -59,7 +59,7 @@ void RendererBindingCls::initServiceExtensions() {
             return <void>value();
         });
         registerServiceExtension(__s("debugDumpLayerTree"), [=] (Map<String, String> parameters) {
-            String data = RendererBindingCls::instance->renderView()->debugLayer?->toStringDeep() or __s("Layer tree unavailable.");
+            String data = RendererBindingCls::instance->renderView->debugLayer?->toStringDeep() or __s("Layer tree unavailable.");
                     Map<String, Object> map1 = make<MapCls<>>();        map1.set(__s("data"), data);return list1;
         });
         registerBoolServiceExtension(__s("debugDisableClipLayers"), [=] ()         {
@@ -93,15 +93,15 @@ void RendererBindingCls::initServiceExtensions() {
     }());
     if (!kReleaseMode) {
         registerServiceExtension(__s("debugDumpRenderTree"), [=] (Map<String, String> parameters) {
-            String data = RendererBindingCls::instance->renderView()->toStringDeep();
+            String data = RendererBindingCls::instance->renderView->toStringDeep();
                     Map<String, Object> map2 = make<MapCls<>>();        map2.set(__s("data"), data);return list2;
         });
         registerServiceExtension(__s("debugDumpSemanticsTreeInTraversalOrder"), [=] (Map<String, String> parameters) {
-            String data = RendererBindingCls::instance->renderView()->debugSemantics?->toStringDeep() or __s("Semantics not collected.");
+            String data = RendererBindingCls::instance->renderView->debugSemantics?->toStringDeep() or __s("Semantics not collected.");
                     Map<String, Object> map3 = make<MapCls<>>();        map3.set(__s("data"), data);return list3;
         });
         registerServiceExtension(__s("debugDumpSemanticsTreeInInverseHitTestOrder"), [=] (Map<String, String> parameters) {
-            String data = RendererBindingCls::instance->renderView()->debugSemantics?->toStringDeep(DebugSemanticsDumpOrderCls::inverseHitTest) or __s("Semantics not collected.");
+            String data = RendererBindingCls::instance->renderView->debugSemantics?->toStringDeep(DebugSemanticsDumpOrderCls::inverseHitTest) or __s("Semantics not collected.");
                     Map<String, Object> map4 = make<MapCls<>>();        map4.set(__s("data"), data);return list4;
         });
         registerBoolServiceExtension(__s("profileRenderObjectPaints"), [=] ()         {
@@ -150,7 +150,7 @@ void RendererBindingCls::renderView(RenderView value) {
 
 void RendererBindingCls::handleMetricsChanged() {
     assert(renderView() != nullptr);
-    renderView()->configuration = createViewConfiguration();
+    renderView()->configuration() = createViewConfiguration();
     if (renderView()->child != nullptr) {
         scheduleForcedFrame();
     }
@@ -164,7 +164,7 @@ void RendererBindingCls::handlePlatformBrightnessChanged() {
 
 ViewConfiguration RendererBindingCls::createViewConfiguration() {
     double devicePixelRatio = window->devicePixelRatio;
-    return make<ViewConfigurationCls>(window->physicalSize() / devicePixelRatio, devicePixelRatio);
+    return make<ViewConfigurationCls>(window->physicalSize / devicePixelRatio, devicePixelRatio);
 }
 
 void RendererBindingCls::initMouseTracker(MouseTracker tracker) {
@@ -296,7 +296,7 @@ Future<void> RendererBindingCls::_forceRepaint() {
         child->markNeedsPaint();
         child->visitChildren(visitor);
     };
-    instance->renderView()->visitChildren(visitor);
+    instance()->renderView()->visitChildren(visitor);
     return endOfFrame;
 }
 

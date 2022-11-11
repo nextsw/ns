@@ -133,7 +133,7 @@ double _RenderOverflowBarCls::computeMinIntrinsicHeight(double width) {
         barWidth = child->getMinIntrinsicWidth(double->infinity);
         child = childAfter(child);
     }
-    barWidth = spacing * (childCount - 1);
+    barWidth = spacing() * (childCount - 1);
     double height = 0.0;
     if (barWidth > width) {
         child = firstChild;
@@ -141,7 +141,7 @@ double _RenderOverflowBarCls::computeMinIntrinsicHeight(double width) {
             height = child->getMinIntrinsicHeight(width);
             child = childAfter(child);
         }
-        return height + overflowSpacing * (childCount - 1);
+        return height + overflowSpacing() * (childCount - 1);
     } else {
         child = firstChild;
         while (child != nullptr) {
@@ -162,7 +162,7 @@ double _RenderOverflowBarCls::computeMaxIntrinsicHeight(double width) {
         barWidth = child->getMinIntrinsicWidth(double->infinity);
         child = childAfter(child);
     }
-    barWidth = spacing * (childCount - 1);
+    barWidth = spacing() * (childCount - 1);
     double height = 0.0;
     if (barWidth > width) {
         child = firstChild;
@@ -170,7 +170,7 @@ double _RenderOverflowBarCls::computeMaxIntrinsicHeight(double width) {
             height = child->getMaxIntrinsicHeight(width);
             child = childAfter(child);
         }
-        return height + overflowSpacing * (childCount - 1);
+        return height + overflowSpacing() * (childCount - 1);
     } else {
         child = firstChild;
         while (child != nullptr) {
@@ -191,7 +191,7 @@ double _RenderOverflowBarCls::computeMinIntrinsicWidth(double height) {
         width = child->getMinIntrinsicWidth(double->infinity);
         child = childAfter(child);
     }
-    return width + spacing * (childCount - 1);
+    return width + spacing() * (childCount - 1);
 }
 
 double _RenderOverflowBarCls::computeMaxIntrinsicWidth(double height) {
@@ -204,7 +204,7 @@ double _RenderOverflowBarCls::computeMaxIntrinsicWidth(double height) {
         width = child->getMaxIntrinsicWidth(double->infinity);
         child = childAfter(child);
     }
-    return width + spacing * (childCount - 1);
+    return width + spacing() * (childCount - 1);
 }
 
 double _RenderOverflowBarCls::computeDistanceToActualBaseline(TextBaseline baseline) {
@@ -222,16 +222,16 @@ Size _RenderOverflowBarCls::computeDryLayout(BoxConstraints constraints) {
     double y = 0.0;
     while (child != nullptr) {
         Size childSize = child->getDryLayout(childConstraints);
-        childrenWidth = childSize->width;
-        maxChildHeight = math->max(maxChildHeight, childSize->height);
-        y = childSize->height + overflowSpacing;
+        childrenWidth = childSize->width();
+        maxChildHeight = math->max(maxChildHeight, childSize->height());
+        y = childSize->height() + overflowSpacing();
         child = childAfter(child);
     }
-    double actualWidth = childrenWidth + spacing * (childCount - 1);
+    double actualWidth = childrenWidth + spacing() * (childCount - 1);
     if (actualWidth > constraints->maxWidth) {
-        return constraints->constrain(make<SizeCls>(constraints->maxWidth, y - overflowSpacing));
+        return constraints->constrain(make<SizeCls>(constraints->maxWidth, y - overflowSpacing()));
     } else {
-        double overallWidth = alignment == nullptr? actualWidth : constraints->maxWidth;
+        double overallWidth = alignment() == nullptr? actualWidth : constraints->maxWidth;
         return constraints->constrain(make<SizeCls>(overallWidth, maxChildHeight));
     }
 }
@@ -239,7 +239,7 @@ Size _RenderOverflowBarCls::computeDryLayout(BoxConstraints constraints) {
 void _RenderOverflowBarCls::performLayout() {
     RenderBox child = firstChild;
     if (child == nullptr) {
-        size = constraints->smallest();
+        size = constraints->smallest;
         return;
     }
     BoxConstraints childConstraints = constraints->loosen();
@@ -248,15 +248,15 @@ void _RenderOverflowBarCls::performLayout() {
     double maxChildWidth = 0;
     while (child != nullptr) {
         child->layout(childConstraintstrue);
-        childrenWidth = child->size->width;
-        maxChildHeight = math->max(maxChildHeight, child->size->height);
-        maxChildWidth = math->max(maxChildWidth, child->size->width);
+        childrenWidth = child->size()->width();
+        maxChildHeight = math->max(maxChildHeight, child->size()->height());
+        maxChildWidth = math->max(maxChildWidth, child->size()->width());
         child = childAfter(child);
     }
-    bool rtl = textDirection == TextDirectionCls::rtl;
-    double actualWidth = childrenWidth + spacing * (childCount - 1);
+    bool rtl = textDirection() == TextDirectionCls::rtl;
+    double actualWidth = childrenWidth + spacing() * (childCount - 1);
     if (actualWidth > constraints->maxWidth) {
-        child = overflowDirection == VerticalDirectionCls::down? firstChild : lastChild;
+        child = overflowDirection() == VerticalDirectionCls::down? firstChild : lastChild;
         InlineMethod;
         double y = 0;
         while (child != nullptr) {
@@ -265,27 +265,27 @@ void _RenderOverflowBarCls::performLayout() {
             ;
             assert(x != nullptr);
             childParentData->offset = make<OffsetCls>(x, y);
-            y = child->size->height + overflowSpacing;
+            y = child->size()->height() + overflowSpacing();
             child = nextChild();
         }
-        size = constraints->constrain(make<SizeCls>(constraints->maxWidth, y - overflowSpacing));
+        size = constraints->constrain(make<SizeCls>(constraints->maxWidth, y - overflowSpacing()));
     } else {
         child = firstChild;
-        double firstChildWidth = child!->size->width;
-        double overallWidth = alignment == nullptr? actualWidth : constraints->maxWidth;
+        double firstChildWidth = child!->size()->width();
+        double overallWidth = alignment() == nullptr? actualWidth : constraints->maxWidth;
         size = constraints->constrain(make<SizeCls>(overallWidth, maxChildHeight));
         double x;
-        double layoutSpacing = spacing;
+        double layoutSpacing = spacing();
         ;
         while (child != nullptr) {
             _OverflowBarParentData childParentData = as<_OverflowBarParentData>(child->parentData!);
-            childParentData->offset = make<OffsetCls>(x, (maxChildHeight - child->size->height) / 2);
+            childParentData->offset = make<OffsetCls>(x, (maxChildHeight - child->size()->height()) / 2);
             if (!rtl) {
-                x = child->size->width + layoutSpacing;
+                x = child->size()->width() + layoutSpacing;
             }
             child = childAfter(child);
             if (rtl && child != nullptr) {
-                x = child->size->width + layoutSpacing;
+                x = child->size()->width() + layoutSpacing;
             }
         }
     }
@@ -301,11 +301,11 @@ void _RenderOverflowBarCls::paint(PaintingContext context, Offset offset) {
 
 void _RenderOverflowBarCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(make<DoublePropertyCls>(__s("spacing"), spacing0));
-    properties->add(make<DoublePropertyCls>(__s("overflowSpacing"), overflowSpacing0));
-    properties->add(<OverflowBarAlignment>make<EnumPropertyCls>(__s("overflowAlignment"), overflowAlignmentOverflowBarAlignmentCls::start));
-    properties->add(<VerticalDirection>make<EnumPropertyCls>(__s("overflowDirection"), overflowDirectionVerticalDirectionCls::down));
-    properties->add(<TextDirection>make<EnumPropertyCls>(__s("textDirection"), textDirectionnullptr));
+    properties->add(make<DoublePropertyCls>(__s("spacing"), spacing()0));
+    properties->add(make<DoublePropertyCls>(__s("overflowSpacing"), overflowSpacing()0));
+    properties->add(<OverflowBarAlignment>make<EnumPropertyCls>(__s("overflowAlignment"), overflowAlignment()OverflowBarAlignmentCls::start));
+    properties->add(<VerticalDirection>make<EnumPropertyCls>(__s("overflowDirection"), overflowDirection()VerticalDirectionCls::down));
+    properties->add(<TextDirection>make<EnumPropertyCls>(__s("textDirection"), textDirection()nullptr));
 }
 
 _RenderOverflowBarCls::_RenderOverflowBarCls(MainAxisAlignment alignment, List<RenderBox> children, Clip clipBehavior, OverflowBarAlignment overflowAlignment, VerticalDirection overflowDirection, double overflowSpacing, double spacing, TextDirection textDirection) {

@@ -62,9 +62,9 @@ void TableBorderCls::paint(Canvas canvas, Iterable<double> columns, Rect rect, I
     assert(canvas != nullptr);
     assert(rect != nullptr);
     assert(rows != nullptr);
-    assert(rows->isEmpty() || (rows->first >= 0.0 && rows->last() <= rect->height));
+    assert(rows->isEmpty() || (rows->first() >= 0.0 && rows->last() <= rect->height()));
     assert(columns != nullptr);
-    assert(columns->isEmpty() || (columns->first >= 0.0 && columns->last() <= rect->width));
+    assert(columns->isEmpty() || (columns->first() >= 0.0 && columns->last() <= rect->width()));
     if (columns->isNotEmpty() || rows->isNotEmpty()) {
         Paint paint = make<PaintCls>();
         Path path = make<PathCls>();

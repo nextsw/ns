@@ -48,7 +48,7 @@ StackFrame StackFrameCls::fromStackTraceLine(String line) {
     String method = match->group(2)!->replaceAll(__s(".<anonymous closure>"), __s(""));
     if (method->startsWith(__s("new"))) {
         List<String> methodParts = method->split(__s(" "));
-        className = methodParts->length > 1? method->split(__s(" "))[1] : __s("<unknown>");
+        className = methodParts->length() > 1? method->split(__s(" "))[1] : __s("<unknown>");
         method = __s("");
         if (className->contains(__s("."))) {
             List<String> parts = className->split(__s("."));
@@ -120,7 +120,7 @@ StackFrame StackFrameCls::_parseWebNonDebugFrame(String line) {
         return nullptr;
     }
     List<String> classAndMethod = match->group(1)!->split(__s("."));
-    String className = classAndMethod->length > 1? classAndMethod->first : __s("<unknown>");
-    String method = classAndMethod->length > 1? classAndMethod->skip(1)->join(__s(".")) : classAndMethod->single;
+    String className = classAndMethod->length() > 1? classAndMethod->first : __s("<unknown>");
+    String method = classAndMethod->length() > 1? classAndMethod->skip(1)->join(__s(".")) : classAndMethod->single;
     return make<StackFrameCls>(-1, __s("<unknown>"), __s("<unknown>"), __s("<unknown>"), -1, -1, className, method, line);
 }

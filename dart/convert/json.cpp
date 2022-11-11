@@ -107,7 +107,7 @@ List<int> JsonUtf8EncoderCls::convert(Object object) {
     auto bytes = makeList();
     InlineMethod;
     _JsonUtf8StringifierCls->stringify(object, _indent, _toEncodable, _bufferSize, addChunk);
-    if (bytes->length == 1)     {
+    if (bytes->length() == 1)     {
         return bytes[0];
     }
     auto length = 0;
@@ -147,7 +147,7 @@ List<int> JsonUtf8EncoderCls::_utf8Encode(String stringValue) {
     }
     checkAscii:;
     {
-        for (;  < stringValue->length; i++) {
+        for (;  < stringValue->length(); i++) {
             if (stringValue->codeUnitAt(i) >= 0x80)             {
                             break checkAscii;
             }
@@ -213,7 +213,7 @@ int _JsonStringifierCls::hexDigit(int x) {
 
 void _JsonStringifierCls::writeStringContent(String s) {
     auto offset = 0;
-    Unknown length = s->length;
+    Unknown length = s->length();
     for (;  < length; i++) {
         auto charCode = s->codeUnitAt(i);
         if (charCode > backslash) {
@@ -328,7 +328,7 @@ void _JsonStringifierCls::writeList(List<Object> list) {
     writeString(__s("["));
     if (list->isNotEmpty) {
         writeObject(list[0]);
-        for (;  < list->length; i++) {
+        for (;  < list->length(); i++) {
             writeString(__s(","));
             writeObject(list[i]);
         }
@@ -341,7 +341,7 @@ bool _JsonStringifierCls::writeMap(Map<Object, Object> map) {
         writeString(__s("{}"));
         return true;
     }
-    auto keyValueList = <Object>filled(map->length * 2, nullptr);
+    auto keyValueList = <Object>filled(map->length() * 2, nullptr);
     auto i = 0;
     auto allStringKeys = true;
     map->forEach([=] (Unknown  key,Unknown  value) {
@@ -374,7 +374,7 @@ _JsonStringifierCls::_JsonStringifierCls(dynamic toEncodable(dynamic o) ) {
 }
 
 void _JsonStringifierCls::_checkCycle(Object object) {
-    for (;  < _seen->length; i++) {
+    for (;  < _seen->length(); i++) {
         if (identical(object, _seen[i])) {
             ;
         }
@@ -396,7 +396,7 @@ void _JsonPrettyPrintMixinCls::writeList(List<Object> list) {
         _indentLevel++;
         writeIndentation(_indentLevel);
         writeObject(list[0]);
-        for (;  < list->length; i++) {
+        for (;  < list->length(); i++) {
             writeString(__s(",\n"));
             writeIndentation(_indentLevel);
             writeObject(list[i]);
@@ -413,7 +413,7 @@ bool _JsonPrettyPrintMixinCls::writeMap(Map<Object, Object> map) {
         writeString(__s("{}"));
         return true;
     }
-    auto keyValueList = <Object>filled(map->length * 2, nullptr);
+    auto keyValueList = <Object>filled(map->length() * 2, nullptr);
     auto i = 0;
     auto allStringKeys = true;
     map->forEach([=] (Unknown  key,Unknown  value) {
@@ -517,7 +517,7 @@ void _JsonUtf8StringifierCls::writeNumber(num number) {
 }
 
 void _JsonUtf8StringifierCls::writeAsciiString(String stringValue) {
-    for (;  < stringValue->length; i++) {
+    for (;  < stringValue->length(); i++) {
         auto char = stringValue->codeUnitAt(i);
         assert(char <= 0x7f);
         writeByte(char);
@@ -525,7 +525,7 @@ void _JsonUtf8StringifierCls::writeAsciiString(String stringValue) {
 }
 
 void _JsonUtf8StringifierCls::writeString(String stringValue) {
-    writeStringSlice(stringValue, 0, stringValue->length);
+    writeStringSlice(stringValue, 0, stringValue->length());
 }
 
 void _JsonUtf8StringifierCls::writeStringSlice(int end, int start, String stringValue) {
@@ -605,7 +605,7 @@ String _JsonUtf8StringifierCls::_partialResult() {
 
 void _JsonUtf8StringifierPrettyCls::writeIndentation(int count) {
     auto indent = this->indent;
-    auto indentLength = indent->length;
+    auto indentLength = indent->length();
     if (indentLength == 1) {
         auto char = indent[0];
         while (count > 0) {

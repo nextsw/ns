@@ -1,6 +1,6 @@
 #include "tween.hpp"
 template<typename T> T AnimatableCls<T>::evaluate(Animation<double> animation) {
-    return transform(animation->value);
+    return transform(animation->value());
 }
 
 template<typename T> Animation<T> AnimatableCls<T>::animate(Animation<double> parent) {

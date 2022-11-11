@@ -34,7 +34,7 @@ void BoolListCls::generate(bool generator(int ) , bool growable, int length) {
 }
 
 void BoolListCls::of(Iterable<bool> elements, bool growable) {
-    auto _c1 = BoolListCls->_selectType(elements->length, growable);_c1.setAll(0, elements);return _c1;
+    auto _c1 = BoolListCls->_selectType(elements->length(), growable);_c1.setAll(0, elements);return _c1;
 }
 
 int BoolListCls::length() {
@@ -154,7 +154,7 @@ bool _BoolListIteratorCls::moveNext() {
     if (_boolList->_length != _length) {
         ;
     }
-    if ( < _boolList->length) {
+    if ( < _boolList->length()) {
         auto pos = _pos++;
         _current = _boolList->_data[pos >> BoolListCls::_entryShift] & (1 << (pos & BoolListCls::_entrySignBitIndex)) != 0;
         return true;

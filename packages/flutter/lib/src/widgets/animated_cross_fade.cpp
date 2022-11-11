@@ -34,7 +34,7 @@ void _AnimatedCrossFadeStateCls::initState() {
     super->initState();
     _controller = make<AnimationControllerCls>(widget->duration, widget->reverseDuration, this);
     if (widget->crossFadeState == CrossFadeStateCls::showSecond) {
-        _controller->value = 1.0;
+        _controller->value() = 1.0;
     }
     _firstAnimation = _initAnimation(widget->firstCurve, true);
     _secondAnimation = _initAnimation(widget->secondCurve, false);
@@ -71,7 +71,7 @@ void _AnimatedCrossFadeStateCls::didUpdateWidget(AnimatedCrossFade oldWidget) {
 Widget _AnimatedCrossFadeStateCls::build(BuildContext context) {
     Key kFirstChildKey = <CrossFadeState>make<ValueKeyCls>(CrossFadeStateCls::showFirst);
     Key kSecondChildKey = <CrossFadeState>make<ValueKeyCls>(CrossFadeStateCls::showSecond);
-    bool transitioningForwards = _controller->status == AnimationStatusCls::completed || _controller->status == AnimationStatusCls::forward;
+    bool transitioningForwards = _controller->status() == AnimationStatusCls::completed || _controller->status() == AnimationStatusCls::forward;
     Key topKey;
     Widget topChild;
     Animation<double> topAnimation;
@@ -114,5 +114,5 @@ Animation<double> _AnimatedCrossFadeStateCls::_initAnimation(Curve curve, bool i
 }
 
 bool _AnimatedCrossFadeStateCls::_isTransitioning() {
-    return _controller->status == AnimationStatusCls::forward || _controller->status == AnimationStatusCls::reverse;
+    return _controller->status() == AnimationStatusCls::forward || _controller->status() == AnimationStatusCls::reverse;
 }

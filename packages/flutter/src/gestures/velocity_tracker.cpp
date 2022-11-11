@@ -22,10 +22,10 @@ Velocity VelocityCls::clampMagnitude(double maxValue, double minValue) {
     assert(maxValue != nullptr && maxValue >= 0.0 && maxValue >= minValue);
     double valueSquared = pixelsPerSecond->distanceSquared();
     if (valueSquared > maxValue * maxValue) {
-        return make<VelocityCls>((pixelsPerSecond / pixelsPerSecond->distance) * maxValue);
+        return make<VelocityCls>((pixelsPerSecond / pixelsPerSecond->distance()) * maxValue);
     }
     if ( < minValue * minValue) {
-        return make<VelocityCls>((pixelsPerSecond / pixelsPerSecond->distance) * minValue);
+        return make<VelocityCls>((pixelsPerSecond / pixelsPerSecond->distance()) * minValue);
     }
     return this;
 }
@@ -35,7 +35,7 @@ bool VelocityCls::==(Object other) {
 }
 
 int VelocityCls::hashCode() {
-    return pixelsPerSecond->hashCode;
+    return pixelsPerSecond->hashCode();
 }
 
 String VelocityCls::toString() {
@@ -100,8 +100,8 @@ VelocityEstimate VelocityTrackerCls::getVelocityEstimate() {
         }
         oldestSample = sample;
         Offset position = sample->point;
-        x->add(position->dx);
-        y->add(position->dy);
+        x->add(position->dx());
+        y->add(position->dy());
         w->add(1.0);
         time->add(-age);
         index = (index == 0? _historySize : index) - 1;

@@ -18,7 +18,7 @@ Animation<Color> AnimatedModalBarrierCls::color() {
 }
 
 Widget AnimatedModalBarrierCls::build(BuildContext context) {
-    return make<ModalBarrierCls>(color->value, dismissible, semanticsLabel, barrierSemanticsDismissible, onDismiss);
+    return make<ModalBarrierCls>(color()->value(), dismissible, semanticsLabel, barrierSemanticsDismissible, onDismiss);
 }
 
 bool _AnyTapGestureRecognizerCls::isPointerAllowed(PointerDownEvent event) {
@@ -43,7 +43,7 @@ String _AnyTapGestureRecognizerCls::debugDescription() {
 }
 
 void _ModalBarrierSemanticsDelegateCls::assignSemantics(RenderSemanticsGestureHandler renderObject) {
-    renderObject->onTap = onDismiss;
+    renderObject->onTap() = onDismiss;
 }
 
 _AnyTapGestureRecognizer _AnyTapGestureRecognizerFactoryCls::constructor() {

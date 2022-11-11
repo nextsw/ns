@@ -35,8 +35,8 @@ List<BoxShadow> BoxShadowCls::lerpList(List<BoxShadow> a, List<BoxShadow> b, dou
     }
     a = makeList();
     b = makeList();
-    int commonLength = math->min(a->length, b->length);
-    List<BoxShadow> list1 = make<ListCls<>>();for (;  < commonLength; i = 1)     {        ;    }{    list1.add(ArrayItem);}for (;  < a->length; i = 1)     {        ;    }{    list1.add(ArrayItem);}for (;  < b->length; i = 1)     {        ;    }{    list1.add(ArrayItem);}return list1;
+    int commonLength = math->min(a->length(), b->length());
+    List<BoxShadow> list1 = make<ListCls<>>();for (;  < commonLength; i = 1)     {        ;    }{    list1.add(ArrayItem);}for (;  < a->length(); i = 1)     {        ;    }{    list1.add(ArrayItem);}for (;  < b->length(); i = 1)     {        ;    }{    list1.add(ArrayItem);}return list1;
 }
 
 bool BoxShadowCls::==(Object other) {

@@ -3,10 +3,10 @@ void paintZigZag(Canvas canvas, Offset end, Paint paint, Offset start, double wi
     assert(zigs->isFinite);
     assert(zigs > 0);
     canvas->save();
-    canvas->translate(start->dx, start->dy);
+    canvas->translate(start->dx(), start->dy());
     end = end - start;
-    canvas->rotate(math->atan2(end->dy, end->dx));
-    double length = end->distance;
+    canvas->rotate(math->atan2(end->dy(), end->dx()));
+    double length = end->distance();
     double spacing = length / (zigs * 2.0);
     auto _c1 = make<PathCls>();_c1.moveTo(0.0, 0.0);Path path = _c1;
     for (;  < zigs; index = 1) {

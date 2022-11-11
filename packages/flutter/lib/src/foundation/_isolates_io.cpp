@@ -12,7 +12,7 @@ Future<R> computetemplate<typename Q, typename R> (ComputeCallback<Q, R> callbac
         completer->complete(msg);
     };
     try {
-        await await IsolateCls-><_IsolateConfiguration<Q, R>>spawn(_spawn, <Q, R>make<_IsolateConfigurationCls>(callback, message, port->sendPort, debugLabel, flow->id)port->sendPort, port->sendPort, debugLabel);
+        await await IsolateCls-><_IsolateConfiguration<Q, R>>spawn(_spawn, <Q, R>make<_IsolateConfigurationCls>(callback, message, port->sendPort(), debugLabel, flow->id)port->sendPort(), port->sendPort(), debugLabel);
     } catch (Object null) {
         timeEndAndCleanup();
         throw;

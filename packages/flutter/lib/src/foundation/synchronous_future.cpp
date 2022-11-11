@@ -3,7 +3,7 @@ template<typename T> Stream<T> SynchronousFutureCls<T>::asStream() {
     StreamController<T> controller = <T>make<StreamControllerCls>();
     controller->add(_value);
     controller->close();
-    return controller->stream;
+    return controller->stream();
 }
 
 template<typename T> Future<T> SynchronousFutureCls<T>::catchError(void  onError() , bool test(Object error) ) {

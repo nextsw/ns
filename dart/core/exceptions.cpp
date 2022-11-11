@@ -19,11 +19,11 @@ String FormatExceptionCls::toString() {
     int offset = this->offset;
     Object source = this->source;
     if (is<String>(source)) {
-        if (offset != nullptr && ( < 0 || offset > as<StringCls>(source)->length)) {
+        if (offset != nullptr && ( < 0 || offset > as<StringCls>(source)->length())) {
             offset = nullptr;
         }
         if (offset == nullptr) {
-            if (source->length > 78) {
+            if (source->length() > 78) {
                 source = source->substring(0, 75) + __s("...");
             }
             return __s("$report\n$source");
@@ -52,8 +52,8 @@ String FormatExceptionCls::toString() {
         } else {
             report = __s(" (at character ${offset + 1})\n");
         }
-        int lineEnd = as<StringCls>(source)->length;
-        for (;  < as<StringCls>(source)->length; i++) {
+        int lineEnd = as<StringCls>(source)->length();
+        for (;  < as<StringCls>(source)->length(); i++) {
             int char = source->codeUnitAt(i);
             if (char == 0x0a || char == 0x0d) {
                 lineEnd = i;

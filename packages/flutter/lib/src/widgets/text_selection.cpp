@@ -4,11 +4,11 @@ String ToolbarItemsParentDataCls::toString() {
 }
 
 bool TextSelectionControlsCls::canCut(TextSelectionDelegate delegate) {
-    return delegate->cutEnabled() && !delegate->textEditingValue->selection->isCollapsed;
+    return delegate->cutEnabled() && !delegate->textEditingValue()->selection->isCollapsed;
 }
 
 bool TextSelectionControlsCls::canCopy(TextSelectionDelegate delegate) {
-    return delegate->copyEnabled() && !delegate->textEditingValue->selection->isCollapsed;
+    return delegate->copyEnabled() && !delegate->textEditingValue()->selection->isCollapsed;
 }
 
 bool TextSelectionControlsCls::canPaste(TextSelectionDelegate delegate) {
@@ -16,7 +16,7 @@ bool TextSelectionControlsCls::canPaste(TextSelectionDelegate delegate) {
 }
 
 bool TextSelectionControlsCls::canSelectAll(TextSelectionDelegate delegate) {
-    return delegate->selectAllEnabled() && delegate->textEditingValue->text->isNotEmpty() && delegate->textEditingValue->selection->isCollapsed;
+    return delegate->selectAllEnabled() && delegate->textEditingValue()->text->isNotEmpty() && delegate->textEditingValue()->selection->isCollapsed;
 }
 
 void TextSelectionControlsCls::handleCut(ClipboardStatusNotifier clipboardStatus, TextSelectionDelegate delegate) {
@@ -33,7 +33,7 @@ Future<void> TextSelectionControlsCls::handlePaste(TextSelectionDelegate delegat
 
 void TextSelectionControlsCls::handleSelectAll(TextSelectionDelegate delegate) {
     delegate->selectAll(SelectionChangedCauseCls::toolbar);
-    delegate->bringIntoView(delegate->textEditingValue->selection->extent);
+    delegate->bringIntoView(delegate->textEditingValue()->selection->extent());
 }
 
 TextSelectionOverlayCls::TextSelectionOverlayCls(ClipboardStatusNotifier clipboardStatus, BuildContext context, Widget debugRequiredFor, DragStartBehavior dragStartBehavior, LayerLink endHandleLayerLink, bool handlesVisible, VoidCallback onSelectionHandleTapped, RenderEditable renderObject, TextSelectionControls selectionControls, TextSelectionDelegate selectionDelegate, LayerLink startHandleLayerLink, LayerLink toolbarLayerLink, TextEditingValue value) {
@@ -48,7 +48,7 @@ TextSelectionOverlayCls::TextSelectionOverlayCls(ClipboardStatusNotifier clipboa
         renderObject->selectionStartInViewport()->addListener(_updateTextSelectionOverlayVisibilities);
         renderObject->selectionEndInViewport()->addListener(_updateTextSelectionOverlayVisibilities);
         _updateTextSelectionOverlayVisibilities();
-        _selectionOverlay = make<SelectionOverlayCls>(context, debugRequiredFor, TextSelectionHandleTypeCls::collapsed, _effectiveStartHandleVisibility, 0.0, _handleSelectionStartHandleDragStart, _handleSelectionStartHandleDragUpdate, TextSelectionHandleTypeCls::collapsed, _effectiveEndHandleVisibility, 0.0, _handleSelectionEndHandleDragStart, _handleSelectionEndHandleDragUpdate, _effectiveToolbarVisibility, makeList(), selectionControls, selectionDelegate, clipboardStatus, startHandleLayerLink, endHandleLayerLink, toolbarLayerLink, onSelectionHandleTapped, dragStartBehavior, renderObject->lastSecondaryTapDownPosition);
+        _selectionOverlay = make<SelectionOverlayCls>(context, debugRequiredFor, TextSelectionHandleTypeCls::collapsed, _effectiveStartHandleVisibility, 0.0, _handleSelectionStartHandleDragStart, _handleSelectionStartHandleDragUpdate, TextSelectionHandleTypeCls::collapsed, _effectiveEndHandleVisibility, 0.0, _handleSelectionEndHandleDragStart, _handleSelectionEndHandleDragUpdate, _effectiveToolbarVisibility, makeList(), selectionControls, selectionDelegate, clipboardStatus, startHandleLayerLink, endHandleLayerLink, toolbarLayerLink, onSelectionHandleTapped, dragStartBehavior, renderObject->lastSecondaryTapDownPosition());
     }
 }
 
@@ -96,7 +96,7 @@ void TextSelectionOverlayCls::updateForScroll() {
 }
 
 bool TextSelectionOverlayCls::handlesAreVisible() {
-    return _selectionOverlay->_handles != nullptr && handlesVisible;
+    return _selectionOverlay->_handles != nullptr && handlesVisible();
 }
 
 bool TextSelectionOverlayCls::toolbarIsVisible() {
@@ -125,19 +125,19 @@ TextSelection TextSelectionOverlayCls::_selection() {
 }
 
 void TextSelectionOverlayCls::_updateTextSelectionOverlayVisibilities() {
-    _effectiveStartHandleVisibility->value = _handlesVisible && renderObject->selectionStartInViewport()->value;
-    _effectiveEndHandleVisibility->value = _handlesVisible && renderObject->selectionEndInViewport()->value;
-    _effectiveToolbarVisibility->value = renderObject->selectionStartInViewport()->value || renderObject->selectionEndInViewport()->value;
+    _effectiveStartHandleVisibility->value() = _handlesVisible && renderObject->selectionStartInViewport()->value();
+    _effectiveEndHandleVisibility->value() = _handlesVisible && renderObject->selectionEndInViewport()->value();
+    _effectiveToolbarVisibility->value() = renderObject->selectionStartInViewport()->value() || renderObject->selectionEndInViewport()->value();
 }
 
 void TextSelectionOverlayCls::_updateSelectionOverlay() {
-    auto _c1 = _selectionOverlay;_c1.startHandleType = auto _c2 = _chooseType(renderObject->textDirection, TextSelectionHandleTypeCls::left, TextSelectionHandleTypeCls::right);_c2.lineHeightAtStart = auto _c3 = _getStartGlyphHeight();_c3.endHandleType = auto _c4 = _chooseType(renderObject->textDirection, TextSelectionHandleTypeCls::right, TextSelectionHandleTypeCls::left);_c4.lineHeightAtEnd = auto _c5 = _getEndGlyphHeight();_c5.selectionEndpoints = auto _c6 = renderObject->getEndpointsForSelection(_selection());_c6.toolbarLocation = renderObject->lastSecondaryTapDownPosition;_c6;_c5;_c4;_c3;_c2;_c1;
+    auto _c1 = _selectionOverlay;_c1.startHandleType = auto _c2 = _chooseType(renderObject->textDirection(), TextSelectionHandleTypeCls::left, TextSelectionHandleTypeCls::right);_c2.lineHeightAtStart = auto _c3 = _getStartGlyphHeight();_c3.endHandleType = auto _c4 = _chooseType(renderObject->textDirection(), TextSelectionHandleTypeCls::right, TextSelectionHandleTypeCls::left);_c4.lineHeightAtEnd = auto _c5 = _getEndGlyphHeight();_c5.selectionEndpoints = auto _c6 = renderObject->getEndpointsForSelection(_selection());_c6.toolbarLocation = renderObject->lastSecondaryTapDownPosition();_c6;_c5;_c4;_c3;_c2;_c1;
 }
 
 double TextSelectionOverlayCls::_getStartGlyphHeight() {
-    InlineSpan span = renderObject->text!;
+    InlineSpan span = renderObject->text()!;
     String prevText = span->toPlainText();
-    String currText = selectionDelegate->textEditingValue->text;
+    String currText = selectionDelegate->textEditingValue()->text;
     int firstSelectedGraphemeExtent;
     Rect startHandleRect;
     if (prevText == currText && _selection() != nullptr && _selection()->isValid && !_selection()->isCollapsed) {
@@ -145,13 +145,13 @@ double TextSelectionOverlayCls::_getStartGlyphHeight() {
         firstSelectedGraphemeExtent = selectedGraphemes->characters->first->length;
         startHandleRect = renderObject->getRectForComposingRange(make<TextRangeCls>(_selection()->start, _selection()->start + firstSelectedGraphemeExtent));
     }
-    return startHandleRect?->height or renderObject->preferredLineHeight();
+    return startHandleRect?->height() or renderObject->preferredLineHeight();
 }
 
 double TextSelectionOverlayCls::_getEndGlyphHeight() {
-    InlineSpan span = renderObject->text!;
+    InlineSpan span = renderObject->text()!;
     String prevText = span->toPlainText();
-    String currText = selectionDelegate->textEditingValue->text;
+    String currText = selectionDelegate->textEditingValue()->text;
     int lastSelectedGraphemeExtent;
     Rect endHandleRect;
     if (prevText == currText && _selection() != nullptr && _selection()->isValid && !_selection()->isCollapsed) {
@@ -159,12 +159,12 @@ double TextSelectionOverlayCls::_getEndGlyphHeight() {
         lastSelectedGraphemeExtent = selectedGraphemes->characters->last->length;
         endHandleRect = renderObject->getRectForComposingRange(make<TextRangeCls>(_selection()->end - lastSelectedGraphemeExtent, _selection()->end));
     }
-    return endHandleRect?->height or renderObject->preferredLineHeight();
+    return endHandleRect?->height() or renderObject->preferredLineHeight();
 }
 
 void TextSelectionOverlayCls::_handleSelectionEndHandleDragStart(DragStartDetails details) {
     Size handleSize = selectionControls!->getHandleSize(renderObject->preferredLineHeight());
-    _dragEndPosition = details->globalPosition + make<OffsetCls>(0.0, -handleSize->height);
+    _dragEndPosition = details->globalPosition + make<OffsetCls>(0.0, -handleSize->height());
 }
 
 void TextSelectionOverlayCls::_handleSelectionEndHandleDragUpdate(DragUpdateDetails details) {
@@ -181,7 +181,7 @@ void TextSelectionOverlayCls::_handleSelectionEndHandleDragUpdate(DragUpdateDeta
 
 void TextSelectionOverlayCls::_handleSelectionStartHandleDragStart(DragStartDetails details) {
     Size handleSize = selectionControls!->getHandleSize(renderObject->preferredLineHeight());
-    _dragStartPosition = details->globalPosition + make<OffsetCls>(0.0, -handleSize->height);
+    _dragStartPosition = details->globalPosition + make<OffsetCls>(0.0, -handleSize->height());
 }
 
 void TextSelectionOverlayCls::_handleSelectionStartHandleDragUpdate(DragUpdateDetails details) {
@@ -197,7 +197,7 @@ void TextSelectionOverlayCls::_handleSelectionStartHandleDragUpdate(DragUpdateDe
 }
 
 void TextSelectionOverlayCls::_handleSelectionHandleChanged(bool isEnd, TextSelection newSelection) {
-    TextPosition textPosition = isEnd? newSelection->extent : newSelection->base;
+    TextPosition textPosition = isEnd? newSelection->extent() : newSelection->base();
     selectionDelegate->userUpdateTextEditingValue(_value->copyWith(newSelection), SelectionChangedCauseCls::drag);
     selectionDelegate->bringIntoView(textPosition);
 }
@@ -396,11 +396,11 @@ Widget SelectionOverlayCls::_buildToolbar(BuildContext context) {
         return make<ContainerCls>();
     }
     RenderBox renderBox = as<RenderBox>(this->context->findRenderObject()!);
-    Rect editingRegion = RectCls->fromPoints(renderBox->localToGlobal(OffsetCls::zero), renderBox->localToGlobal(renderBox->size->bottomRight(OffsetCls::zero)));
-    bool isMultiline = selectionEndpoints->last->point->dy - selectionEndpoints->first->point->dy > lineHeightAtEnd / 2;
-    double midX = isMultiline? editingRegion->width / 2 : (selectionEndpoints->first->point->dx + selectionEndpoints->last->point->dx) / 2;
-    Offset midpoint = make<OffsetCls>(midX, selectionEndpoints->first->point->dy - lineHeightAtStart);
-    return make<DirectionalityCls>(DirectionalityCls->of(this->context), make<_SelectionToolbarOverlayCls>(lineHeightAtStart, toolbarLocation, toolbarLayerLink, editingRegion, selectionControls, midpoint, selectionEndpoints, toolbarVisible, selectionDelegate, clipboardStatus));
+    Rect editingRegion = RectCls->fromPoints(renderBox->localToGlobal(OffsetCls::zero), renderBox->localToGlobal(renderBox->size()->bottomRight(OffsetCls::zero)));
+    bool isMultiline = selectionEndpoints()->last->point->dy - selectionEndpoints()->first->point->dy > lineHeightAtEnd() / 2;
+    double midX = isMultiline? editingRegion->width() / 2 : (selectionEndpoints()->first->point->dx + selectionEndpoints()->last->point->dx) / 2;
+    Offset midpoint = make<OffsetCls>(midX, selectionEndpoints()->first->point->dy - lineHeightAtStart());
+    return make<DirectionalityCls>(DirectionalityCls->of(this->context), make<_SelectionToolbarOverlayCls>(lineHeightAtStart(), toolbarLocation(), toolbarLayerLink, editingRegion, selectionControls, midpoint, selectionEndpoints(), toolbarVisible, selectionDelegate, clipboardStatus));
 }
 
 _SelectionToolbarOverlayState _SelectionToolbarOverlayCls::createState() {
@@ -431,13 +431,13 @@ void _SelectionToolbarOverlayStateCls::dispose() {
 }
 
 Widget _SelectionToolbarOverlayStateCls::build(BuildContext context) {
-    return make<FadeTransitionCls>(_opacity, make<CompositedTransformFollowerCls>(widget->layerLink, false, -widget->editingRegion->topLeft, make<BuilderCls>([=] (BuildContext context) {
+    return make<FadeTransitionCls>(_opacity(), make<CompositedTransformFollowerCls>(widget->layerLink, false, -widget->editingRegion->topLeft, make<BuilderCls>([=] (BuildContext context) {
         return widget->selectionControls!->buildToolbar(context, widget->editingRegion, widget->preferredLineHeight, widget->midpoint, widget->selectionEndpoints, widget->selectionDelegate!, widget->clipboardStatus, widget->toolbarLocation);
     })));
 }
 
 Animation<double> _SelectionToolbarOverlayStateCls::_opacity() {
-    return _controller->view;
+    return _controller->view();
 }
 
 void _SelectionToolbarOverlayStateCls::_toolbarVisibilityChanged() {
@@ -475,14 +475,14 @@ void _SelectionHandleOverlayStateCls::dispose() {
 Widget _SelectionHandleOverlayStateCls::build(BuildContext context) {
     Offset handleAnchor = widget->selectionControls->getHandleAnchor(widget->type, widget->preferredLineHeight);
     Size handleSize = widget->selectionControls->getHandleSize(widget->preferredLineHeight);
-    Rect handleRect = RectCls->fromLTWH(-handleAnchor->dx, -handleAnchor->dy, handleSize->width, handleSize->height);
-    Rect interactiveRect = handleRect->expandToInclude(RectCls->fromCircle(handleRect->center, kMinInteractiveDimension / 2));
-    RelativeRect padding = RelativeRectCls->fromLTRB(math->max((interactiveRect->width - handleRect->width) / 2, 0), math->max((interactiveRect->height - handleRect->height) / 2, 0), math->max((interactiveRect->width - handleRect->width) / 2, 0), math->max((interactiveRect->height - handleRect->height) / 2, 0));
-        }));return make<CompositedTransformFollowerCls>(widget->handleLayerLink, interactiveRect->topLeft, false, make<FadeTransitionCls>(_opacity, make<ContainerCls>(AlignmentCls::topLeft, interactiveRect->width, interactiveRect->height, make<RawGestureDetectorCls>(HitTestBehaviorCls::translucent,     Map<Type, GestureRecognizerFactory> map1 = make<MapCls<>>();    map1.set(PanGestureRecognizerCls, <PanGestureRecognizer>make<GestureRecognizerFactoryWithHandlersCls>([=] ()     {            make<PanGestureRecognizerCls>(this, makeSet(ArrayItem, ArrayItem, ArrayItem));        }, [=] (PanGestureRecognizer instance) {            auto _c2 = instance;    _c2.dragStartBehavior = auto _c3 = widget->dragStartBehavior;    _c3.onStart = auto _c4 = widget->onSelectionHandleDragStart;    _c4.onUpdate = auto _c5 = widget->onSelectionHandleDragUpdate;    _c5.onEnd = widget->onSelectionHandleDragEnd;    _c5;    _c4;    _c3;    _c2;list1, make<PaddingCls>(EdgeInsetsCls->only(padding->left, padding->top, padding->right, padding->bottom), widget->selectionControls->buildHandle(context, widget->type, widget->preferredLineHeight, widget->onSelectionHandleTapped))))));
+    Rect handleRect = RectCls->fromLTWH(-handleAnchor->dx(), -handleAnchor->dy(), handleSize->width(), handleSize->height());
+    Rect interactiveRect = handleRect->expandToInclude(RectCls->fromCircle(handleRect->center(), kMinInteractiveDimension / 2));
+    RelativeRect padding = RelativeRectCls->fromLTRB(math->max((interactiveRect->width() - handleRect->width()) / 2, 0), math->max((interactiveRect->height() - handleRect->height()) / 2, 0), math->max((interactiveRect->width() - handleRect->width()) / 2, 0), math->max((interactiveRect->height() - handleRect->height()) / 2, 0));
+        }));return make<CompositedTransformFollowerCls>(widget->handleLayerLink, interactiveRect->topLeft(), false, make<FadeTransitionCls>(_opacity(), make<ContainerCls>(AlignmentCls::topLeft, interactiveRect->width(), interactiveRect->height(), make<RawGestureDetectorCls>(HitTestBehaviorCls::translucent,     Map<Type, GestureRecognizerFactory> map1 = make<MapCls<>>();    map1.set(PanGestureRecognizerCls, <PanGestureRecognizer>make<GestureRecognizerFactoryWithHandlersCls>([=] ()     {            make<PanGestureRecognizerCls>(this, makeSet(ArrayItem, ArrayItem, ArrayItem));        }, [=] (PanGestureRecognizer instance) {            auto _c2 = instance;    _c2.dragStartBehavior = auto _c3 = widget->dragStartBehavior;    _c3.onStart = auto _c4 = widget->onSelectionHandleDragStart;    _c4.onUpdate = auto _c5 = widget->onSelectionHandleDragUpdate;    _c5.onEnd = widget->onSelectionHandleDragEnd;    _c5;    _c4;    _c3;    _c2;list1, make<PaddingCls>(EdgeInsetsCls->only(padding->left, padding->top, padding->right, padding->bottom), widget->selectionControls->buildHandle(context, widget->type, widget->preferredLineHeight, widget->onSelectionHandleTapped))))));
 }
 
 Animation<double> _SelectionHandleOverlayStateCls::_opacity() {
-    return _controller->view;
+    return _controller->view();
 }
 
 void _SelectionHandleOverlayStateCls::_handleVisibilityChanged() {
@@ -508,17 +508,17 @@ EditableTextState TextSelectionGestureDetectorBuilderCls::editableText() {
 }
 
 RenderEditable TextSelectionGestureDetectorBuilderCls::renderEditable() {
-    return editableText()->renderEditable;
+    return editableText()->renderEditable();
 }
 
 void TextSelectionGestureDetectorBuilderCls::onTapDown(TapDownDetails details) {
     if (!delegate->selectionEnabled()) {
         return;
     }
-    renderEditable->handleTapDown(details);
+    renderEditable()->handleTapDown(details);
     PointerDeviceKind kind = details->kind;
     _shouldShowSelectionToolbar = kind == nullptr || kind == PointerDeviceKindCls::touch || kind == PointerDeviceKindCls::stylus;
-    bool isShiftPressedValid = _isShiftPressed() && renderEditable->selection?->baseOffset != nullptr;
+    bool isShiftPressedValid = _isShiftPressed() && renderEditable()->selection()?->baseOffset != nullptr;
     ;
 }
 
@@ -526,13 +526,13 @@ void TextSelectionGestureDetectorBuilderCls::onForcePressStart(ForcePressDetails
     assert(delegate->forcePressEnabled());
     _shouldShowSelectionToolbar = true;
     if (delegate->selectionEnabled()) {
-        renderEditable->selectWordsInRange(details->globalPosition, SelectionChangedCauseCls::forcePress);
+        renderEditable()->selectWordsInRange(details->globalPosition, SelectionChangedCauseCls::forcePress);
     }
 }
 
 void TextSelectionGestureDetectorBuilderCls::onForcePressEnd(ForcePressDetails details) {
     assert(delegate->forcePressEnabled());
-    renderEditable->selectWordsInRange(details->globalPosition, SelectionChangedCauseCls::forcePress);
+    renderEditable()->selectWordsInRange(details->globalPosition, SelectionChangedCauseCls::forcePress);
     if (shouldShowSelectionToolbar()) {
         editableText()->showToolbar();
     }
@@ -540,7 +540,7 @@ void TextSelectionGestureDetectorBuilderCls::onForcePressEnd(ForcePressDetails d
 
 void TextSelectionGestureDetectorBuilderCls::onSingleTapUp(TapUpDetails details) {
     if (delegate->selectionEnabled()) {
-        bool isShiftPressedValid = _isShiftPressed() && renderEditable->selection?->baseOffset != nullptr;
+        bool isShiftPressedValid = _isShiftPressed() && renderEditable()->selection()?->baseOffset != nullptr;
         ;
     }
 }
@@ -550,13 +550,13 @@ void TextSelectionGestureDetectorBuilderCls::onSingleTapCancel() {
 
 void TextSelectionGestureDetectorBuilderCls::onSingleLongTapStart(LongPressStartDetails details) {
     if (delegate->selectionEnabled()) {
-        renderEditable->selectPositionAt(details->globalPosition, SelectionChangedCauseCls::longPress);
+        renderEditable()->selectPositionAt(details->globalPosition, SelectionChangedCauseCls::longPress);
     }
 }
 
 void TextSelectionGestureDetectorBuilderCls::onSingleLongTapMoveUpdate(LongPressMoveUpdateDetails details) {
     if (delegate->selectionEnabled()) {
-        renderEditable->selectPositionAt(details->globalPosition, SelectionChangedCauseCls::longPress);
+        renderEditable()->selectPositionAt(details->globalPosition, SelectionChangedCauseCls::longPress);
     }
 }
 
@@ -574,13 +574,13 @@ void TextSelectionGestureDetectorBuilderCls::onSecondaryTap() {
 }
 
 void TextSelectionGestureDetectorBuilderCls::onSecondaryTapDown(TapDownDetails details) {
-    renderEditable->handleSecondaryTapDown(details);
+    renderEditable()->handleSecondaryTapDown(details);
     _shouldShowSelectionToolbar = true;
 }
 
 void TextSelectionGestureDetectorBuilderCls::onDoubleTapDown(TapDownDetails details) {
     if (delegate->selectionEnabled()) {
-        renderEditable->selectWord(SelectionChangedCauseCls::tap);
+        renderEditable()->selectWord(SelectionChangedCauseCls::tap);
         if (shouldShowSelectionToolbar()) {
             editableText()->showToolbar();
         }
@@ -593,14 +593,14 @@ void TextSelectionGestureDetectorBuilderCls::onDragSelectionStart(DragStartDetai
     }
     PointerDeviceKind kind = details->kind;
     _shouldShowSelectionToolbar = kind == nullptr || kind == PointerDeviceKindCls::touch || kind == PointerDeviceKindCls::stylus;
-    if (_isShiftPressed() && renderEditable->selection != nullptr && renderEditable->selection!->isValid) {
+    if (_isShiftPressed() && renderEditable()->selection() != nullptr && renderEditable()->selection()!->isValid) {
         _isShiftTapping = true;
         ;
-        _shiftTapDragSelection = renderEditable->selection;
+        _shiftTapDragSelection = renderEditable()->selection();
     } else {
-        renderEditable->selectPositionAt(details->globalPosition, SelectionChangedCauseCls::drag);
+        renderEditable()->selectPositionAt(details->globalPosition, SelectionChangedCauseCls::drag);
     }
-    _dragStartViewportOffset = renderEditable->offset->pixels;
+    _dragStartViewportOffset = renderEditable()->offset()->pixels();
 }
 
 void TextSelectionGestureDetectorBuilderCls::onDragSelectionUpdate(DragStartDetails startDetails, DragUpdateDetails updateDetails) {
@@ -608,21 +608,21 @@ void TextSelectionGestureDetectorBuilderCls::onDragSelectionUpdate(DragStartDeta
         return;
     }
     if (!_isShiftTapping) {
-        Offset startOffset = renderEditable->maxLines == 1? make<OffsetCls>(renderEditable->offset->pixels - _dragStartViewportOffset, 0.0) : make<OffsetCls>(0.0, renderEditable->offset->pixels - _dragStartViewportOffset);
-        return renderEditable->selectPositionAt(startDetails->globalPosition - startOffset, updateDetails->globalPosition, SelectionChangedCauseCls::drag);
+        Offset startOffset = renderEditable()->maxLines() == 1? make<OffsetCls>(renderEditable()->offset()->pixels() - _dragStartViewportOffset, 0.0) : make<OffsetCls>(0.0, renderEditable()->offset()->pixels() - _dragStartViewportOffset);
+        return renderEditable()->selectPositionAt(startDetails->globalPosition - startOffset, updateDetails->globalPosition, SelectionChangedCauseCls::drag);
     }
     if (_shiftTapDragSelection!->isCollapsed || (defaultTargetPlatform != TargetPlatformCls::iOS && defaultTargetPlatform != TargetPlatformCls::macOS)) {
         return _extendSelection(updateDetails->globalPosition, SelectionChangedCauseCls::drag);
     }
-    TextSelection selection = editableText()->textEditingValue->selection;
-    TextPosition nextExtent = renderEditable->getPositionForPoint(updateDetails->globalPosition);
+    TextSelection selection = editableText()->textEditingValue()->selection;
+    TextPosition nextExtent = renderEditable()->getPositionForPoint(updateDetails->globalPosition);
     bool isShiftTapDragSelectionForward = _shiftTapDragSelection!->baseOffset < _shiftTapDragSelection!->extentOffset;
     bool isInverted = isShiftTapDragSelectionForward? nextExtent->offset < _shiftTapDragSelection!->baseOffset : nextExtent->offset > _shiftTapDragSelection!->baseOffset;
     if (isInverted && selection->baseOffset == _shiftTapDragSelection!->baseOffset) {
-        editableText()->userUpdateTextEditingValue(editableText()->textEditingValue->copyWith(make<TextSelectionCls>(_shiftTapDragSelection!->extentOffset, nextExtent->offset)), SelectionChangedCauseCls::drag);
+        editableText()->userUpdateTextEditingValue(editableText()->textEditingValue()->copyWith(make<TextSelectionCls>(_shiftTapDragSelection!->extentOffset, nextExtent->offset)), SelectionChangedCauseCls::drag);
     } else     {
         if (!isInverted && nextExtent->offset != _shiftTapDragSelection!->baseOffset && selection->baseOffset != _shiftTapDragSelection!->baseOffset) {
-        editableText()->userUpdateTextEditingValue(editableText()->textEditingValue->copyWith(make<TextSelectionCls>(_shiftTapDragSelection!->baseOffset, nextExtent->offset)), SelectionChangedCauseCls::drag);
+        editableText()->userUpdateTextEditingValue(editableText()->textEditingValue()->copyWith(make<TextSelectionCls>(_shiftTapDragSelection!->baseOffset, nextExtent->offset)), SelectionChangedCauseCls::drag);
     } else {
         _extendSelection(updateDetails->globalPosition, SelectionChangedCauseCls::drag);
     }
@@ -641,33 +641,33 @@ Widget TextSelectionGestureDetectorBuilderCls::buildGestureDetector(HitTestBehav
 }
 
 bool TextSelectionGestureDetectorBuilderCls::_lastSecondaryTapWasOnSelection() {
-    assert(renderEditable->lastSecondaryTapDownPosition != nullptr);
-    if (renderEditable->selection == nullptr) {
+    assert(renderEditable()->lastSecondaryTapDownPosition() != nullptr);
+    if (renderEditable()->selection() == nullptr) {
         return false;
     }
-    TextPosition textPosition = renderEditable->getPositionForPoint(renderEditable->lastSecondaryTapDownPosition!);
-    return renderEditable->selection!->start <= textPosition->offset && renderEditable->selection!->end >= textPosition->offset;
+    TextPosition textPosition = renderEditable()->getPositionForPoint(renderEditable()->lastSecondaryTapDownPosition()!);
+    return renderEditable()->selection()!->start <= textPosition->offset && renderEditable()->selection()!->end >= textPosition->offset;
 }
 
 void TextSelectionGestureDetectorBuilderCls::_expandSelection(SelectionChangedCause cause, TextSelection fromSelection, Offset offset) {
     assert(cause != nullptr);
     assert(offset != nullptr);
-    assert(renderEditable->selection?->baseOffset != nullptr);
-    TextPosition tappedPosition = renderEditable->getPositionForPoint(offset);
-    TextSelection selection = fromSelection or renderEditable->selection!;
+    assert(renderEditable()->selection()?->baseOffset != nullptr);
+    TextPosition tappedPosition = renderEditable()->getPositionForPoint(offset);
+    TextSelection selection = fromSelection or renderEditable()->selection()!;
     bool baseIsCloser = (tappedPosition->offset - selection->baseOffset)->abs() < (tappedPosition->offset - selection->extentOffset)->abs();
     TextSelection nextSelection = selection->copyWith(baseIsCloser? selection->extentOffset : selection->baseOffset, tappedPosition->offset);
-    editableText()->userUpdateTextEditingValue(editableText()->textEditingValue->copyWith(nextSelection), cause);
+    editableText()->userUpdateTextEditingValue(editableText()->textEditingValue()->copyWith(nextSelection), cause);
 }
 
 void TextSelectionGestureDetectorBuilderCls::_extendSelection(SelectionChangedCause cause, Offset offset) {
     assert(cause != nullptr);
     assert(offset != nullptr);
-    assert(renderEditable->selection?->baseOffset != nullptr);
-    TextPosition tappedPosition = renderEditable->getPositionForPoint(offset);
-    TextSelection selection = renderEditable->selection!;
+    assert(renderEditable()->selection()?->baseOffset != nullptr);
+    TextPosition tappedPosition = renderEditable()->getPositionForPoint(offset);
+    TextSelection selection = renderEditable()->selection()!;
     TextSelection nextSelection = selection->copyWith(tappedPosition->offset);
-    editableText()->userUpdateTextEditingValue(editableText()->textEditingValue->copyWith(nextSelection), cause);
+    editableText()->userUpdateTextEditingValue(editableText()->textEditingValue()->copyWith(nextSelection), cause);
 }
 
 bool TextSelectionGestureDetectorBuilderCls::_isShiftPressed() {
@@ -815,7 +815,7 @@ bool _TextSelectionGestureDetectorStateCls::_isWithinDoubleTapTolerance(Offset s
         return false;
     }
     Offset difference = secondTapOffset - _lastTapOffset!;
-    return difference->distance <= kDoubleTapSlop;
+    return difference->distance() <= kDoubleTapSlop;
 }
 
 ClipboardStatusNotifierCls::ClipboardStatusNotifierCls(ClipboardStatus value) : ValueNotifier<ClipboardStatus>(value) {

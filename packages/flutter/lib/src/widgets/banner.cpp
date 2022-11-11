@@ -13,10 +13,10 @@ void BannerPainterCls::paint(Canvas canvas, Size size) {
     if (!_prepared) {
         _prepare();
     }
-    auto _c1 = canvas;_c1.auto _c2 = translate(_translationX(size->width), _translationY(size->height));_c2.auto _c3 = rotate(_rotation());_c3.auto _c4 = drawRect(_kRect, _paintShadow);_c4.drawRect(_kRect, _paintBanner);_c4;_c3;_c2;_c1;
+    auto _c1 = canvas;_c1.auto _c2 = translate(_translationX(size->width()), _translationY(size->height()));_c2.auto _c3 = rotate(_rotation());_c3.auto _c4 = drawRect(_kRect, _paintShadow);_c4.drawRect(_kRect, _paintBanner);_c4;_c3;_c2;_c1;
     double width = _kOffset * 2.0;
     _textPainter->layout(width, width);
-    _textPainter->paint(canvas, _kRect->topLeft + make<OffsetCls>(0.0, (_kRect->height - _textPainter->height) / 2.0));
+    _textPainter->paint(canvas, _kRect->topLeft + make<OffsetCls>(0.0, (_kRect->height - _textPainter->height()) / 2.0));
 }
 
 bool BannerPainterCls::shouldRepaint(BannerPainter oldDelegate) {

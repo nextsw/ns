@@ -48,12 +48,12 @@ template<typename T> int KeySetCls<T>::_computeHashCodetemplate<typename T> (Set
     int length = keys->length;
     Iterator<T> iterator = keys->iterator();
     iterator->moveNext();
-    int h1 = iterator->current->hashCode;
+    int h1 = iterator->current()->hashCode;
     if (length == 1) {
         return h1;
     }
     iterator->moveNext();
-    int h2 = iterator->current->hashCode;
+    int h2 = iterator->current()->hashCode;
     if (length == 2) {
         return  < h2? ObjectCls->hash(h1, h2) : ObjectCls->hash(h2, h1);
     }
@@ -61,17 +61,17 @@ template<typename T> int KeySetCls<T>::_computeHashCodetemplate<typename T> (Set
     sortedHashes[0] = h1;
     sortedHashes[1] = h2;
     iterator->moveNext();
-    sortedHashes[2] = iterator->current->hashCode;
+    sortedHashes[2] = iterator->current()->hashCode;
     if (length == 4) {
         iterator->moveNext();
-        sortedHashes[3] = iterator->current->hashCode;
+        sortedHashes[3] = iterator->current()->hashCode;
     }
     sortedHashes->sort();
     return ObjectCls->hashAll(sortedHashes);
 }
 
 bool ShortcutActivatorCls::isActivatedBy(ShortcutActivator activator, RawKeyEvent event) {
-    return (activator->triggers()?->contains(event->logicalKey) or true) && activator->accepts(event, RawKeyboardCls::instance);
+    return (activator->triggers()?->contains(event->logicalKey()) or true) && activator->accepts(event, RawKeyboardCls::instance);
 }
 
 void LogicalKeySetCls::fromSet(Unknown keys)

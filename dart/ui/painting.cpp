@@ -13,7 +13,7 @@ bool _rrectIsValid(RRect rrect) {
 
 bool _offsetIsValid(Offset offset) {
     assert(offset != nullptr, __s("Offset argument was null."));
-    assert(!offset->dx->isNaN && !offset->dy->isNaN, __s("Offset argument contained a NaN value."));
+    assert(!offset->dx()->isNaN && !offset->dy()->isNaN, __s("Offset argument contained a NaN value."));
     return true;
 }
 
@@ -33,7 +33,7 @@ bool _radiusIsValid(Radius radius) {
 }
 
 Color _scaleAlpha(Color a, double factor) {
-    return a->withAlpha((a->alpha * factor)->round()->clamp(0, 255));
+    return a->withAlpha((a->alpha() * factor)->round()->clamp(0, 255));
 }
 
 ColorCls::ColorCls(int value) {
@@ -51,7 +51,7 @@ int ColorCls::alpha() {
 }
 
 double ColorCls::opacity() {
-    return alpha / 0xFF;
+    return alpha() / 0xFF;
 }
 
 int ColorCls::red() {
@@ -76,15 +76,15 @@ Color ColorCls::withOpacity(double opacity) {
 }
 
 Color ColorCls::withRed(int r) {
-    return ColorCls->fromARGB(alpha, r, green(), blue());
+    return ColorCls->fromARGB(alpha(), r, green(), blue());
 }
 
 Color ColorCls::withGreen(int g) {
-    return ColorCls->fromARGB(alpha, red(), g, blue());
+    return ColorCls->fromARGB(alpha(), red(), g, blue());
 }
 
 Color ColorCls::withBlue(int b) {
-    return ColorCls->fromARGB(alpha, red(), green(), b);
+    return ColorCls->fromARGB(alpha(), red(), green(), b);
 }
 
 double ColorCls::computeLuminance() {
@@ -106,13 +106,13 @@ Color ColorCls::lerp(Color a, Color b, double t) {
         if (a == nullptr) {
             return _scaleAlpha(b, t);
         } else {
-            return ColorCls->fromARGB(_clampInt(_lerpInt(a->alpha, b->alpha, t)->toInt(), 0, 255), _clampInt(_lerpInt(a->red(), b->red(), t)->toInt(), 0, 255), _clampInt(_lerpInt(a->green(), b->green(), t)->toInt(), 0, 255), _clampInt(_lerpInt(a->blue(), b->blue(), t)->toInt(), 0, 255));
+            return ColorCls->fromARGB(_clampInt(_lerpInt(a->alpha(), b->alpha(), t)->toInt(), 0, 255), _clampInt(_lerpInt(a->red(), b->red(), t)->toInt(), 0, 255), _clampInt(_lerpInt(a->green(), b->green(), t)->toInt(), 0, 255), _clampInt(_lerpInt(a->blue(), b->blue(), t)->toInt(), 0, 255));
         }
     }
 }
 
 Color ColorCls::alphaBlend(Color background, Color foreground) {
-    int alpha = foreground->alpha;
+    int alpha = foreground->alpha();
     if (alpha == 0x00) {
         return background;
     }
@@ -332,7 +332,7 @@ String PaintCls::toString() {
     StringBuffer result = make<StringBufferCls>();
     String semicolon = __s("");
     result->write(__s("Paint("));
-    if (style == PaintingStyleCls::stroke) {
+    if (style() == PaintingStyleCls::stroke) {
         result->write(__s("$style"));
         if (strokeWidth() != 0.0)         {
             result->write(__s(" ${strokeWidth.toStringAsFixed(1)}"));
@@ -355,11 +355,11 @@ String PaintCls::toString() {
         result->write(__s("${semicolon}antialias off"));
         semicolon = __s("; ");
     }
-    if (color != make<ColorCls>(_kColorDefault)) {
+    if (color() != make<ColorCls>(_kColorDefault)) {
         result->write(__s("$semicolon$color"));
         semicolon = __s("; ");
     }
-    if (blendMode->index != _kBlendModeDefault) {
+    if (blendMode()->index != _kBlendModeDefault) {
         result->write(__s("$semicolon$blendMode"));
         semicolon = __s("; ");
     }
@@ -371,11 +371,11 @@ String PaintCls::toString() {
         result->write(__s("${semicolon}maskFilter: $maskFilter"));
         semicolon = __s("; ");
     }
-    if (filterQuality != FilterQualityCls::none) {
+    if (filterQuality() != FilterQualityCls::none) {
         result->write(__s("${semicolon}filterQuality: $filterQuality"));
         semicolon = __s("; ");
     }
-    if (shader != nullptr) {
+    if (shader() != nullptr) {
         result->write(__s("${semicolon}shader: $shader"));
         semicolon = __s("; ");
     }
@@ -515,11 +515,11 @@ Future<Codec> instantiateImageCodec(bool allowUpscaling, Uint8List list, int tar
 Future<Codec> instantiateImageCodecFromBuffer(bool allowUpscaling, ImmutableBuffer buffer, int targetHeight, int targetWidth) {
     ImageDescriptor descriptor = await ImageDescriptorCls->encoded(buffer);
     if (!allowUpscaling) {
-        if (targetWidth != nullptr && targetWidth > descriptor->width) {
-            targetWidth = descriptor->width;
+        if (targetWidth != nullptr && targetWidth > descriptor->width()) {
+            targetWidth = descriptor->width();
         }
-        if (targetHeight != nullptr && targetHeight > descriptor->height) {
-            targetHeight = descriptor->height;
+        if (targetHeight != nullptr && targetHeight > descriptor->height()) {
+            targetHeight = descriptor->height();
         }
     }
     buffer->dispose();
@@ -593,13 +593,13 @@ void PathCls::arcTo(bool forceMoveTo, Rect rect, double startAngle, double sweep
 void PathCls::arcToPoint(Offset arcEnd, bool clockwise, bool largeArc, Radius radius, double rotation) {
     assert(_offsetIsValid(arcEnd));
     assert(_radiusIsValid(radius));
-    _arcToPoint(arcEnd->dx, arcEnd->dy, radius->x, radius->y, rotation, largeArc, clockwise);
+    _arcToPoint(arcEnd->dx(), arcEnd->dy(), radius->x, radius->y, rotation, largeArc, clockwise);
 }
 
 void PathCls::relativeArcToPoint(Offset arcEndDelta, bool clockwise, bool largeArc, Radius radius, double rotation) {
     assert(_offsetIsValid(arcEndDelta));
     assert(_radiusIsValid(radius));
-    _relativeArcToPoint(arcEndDelta->dx, arcEndDelta->dy, radius->x, radius->y, rotation, largeArc, clockwise);
+    _relativeArcToPoint(arcEndDelta->dx(), arcEndDelta->dy(), radius->x, radius->y, rotation, largeArc, clockwise);
 }
 
 void PathCls::addRect(Rect rect) {
@@ -632,9 +632,9 @@ void PathCls::addPath(Float64List matrix4, Offset offset, Path path) {
     assert(_offsetIsValid(offset));
     if (matrix4 != nullptr) {
         assert(_matrix4IsValid(matrix4));
-        _addPathWithMatrix(path, offset->dx, offset->dy, matrix4);
+        _addPathWithMatrix(path, offset->dx(), offset->dy(), matrix4);
     } else {
-        _addPath(path, offset->dx, offset->dy);
+        _addPath(path, offset->dx(), offset->dy());
     }
 }
 
@@ -643,21 +643,21 @@ void PathCls::extendWithPath(Float64List matrix4, Offset offset, Path path) {
     assert(_offsetIsValid(offset));
     if (matrix4 != nullptr) {
         assert(_matrix4IsValid(matrix4));
-        _extendWithPathAndMatrix(path, offset->dx, offset->dy, matrix4);
+        _extendWithPathAndMatrix(path, offset->dx(), offset->dy(), matrix4);
     } else {
-        _extendWithPath(path, offset->dx, offset->dy);
+        _extendWithPath(path, offset->dx(), offset->dy());
     }
 }
 
 bool PathCls::contains(Offset point) {
     assert(_offsetIsValid(point));
-    return _contains(point->dx, point->dy);
+    return _contains(point->dx(), point->dy());
 }
 
 Path PathCls::shift(Offset offset) {
     assert(_offsetIsValid(offset));
     Path path = PathCls->_();
-    _shift(path, offset->dx, offset->dy);
+    _shift(path, offset->dx(), offset->dy());
     return path;
 }
 
@@ -699,7 +699,7 @@ void TangentCls::fromAngle(double angle, Offset position) {
 }
 
 double TangentCls::angle() {
-    return -math->atan2(vector->dy, vector->dx);
+    return -math->atan2(vector->dy(), vector->dx());
 }
 
 Iterator<PathMetric> PathMetricsCls::iterator() {
@@ -1040,7 +1040,7 @@ void _ImageFilterCls::composed(_ComposeImageFilter filter) {
 }
 
 Int32List _encodeColorList(List<Color> colors) {
-    int colorCount = colors->length;
+    int colorCount = colors->length();
     Int32List result = make<Int32ListCls>(colorCount);
     for (;  < colorCount; ++i)     {
         result[i] = colors[i]->value;
@@ -1050,15 +1050,15 @@ Int32List _encodeColorList(List<Color> colors) {
 
 Float32List _encodePointList(List<Offset> points) {
     assert(points != nullptr);
-    int pointCount = points->length;
+    int pointCount = points->length();
     Float32List result = make<Float32ListCls>(pointCount * 2);
     for (;  < pointCount; ++i) {
         int xIndex = i * 2;
         int yIndex = xIndex + 1;
         Offset point = points[i];
         assert(_offsetIsValid(point));
-        result[xIndex] = point->dx;
-        result[yIndex] = point->dy;
+        result[xIndex] = point->dx();
+        result[yIndex] = point->dy();
     }
     return result;
 }
@@ -1067,10 +1067,10 @@ Float32List _encodeTwoPoints(Offset pointA, Offset pointB) {
     assert(_offsetIsValid(pointA));
     assert(_offsetIsValid(pointB));
     Float32List result = make<Float32ListCls>(4);
-    result[0] = pointA->dx;
-    result[1] = pointA->dy;
-    result[2] = pointB->dx;
-    result[3] = pointB->dy;
+    result[0] = pointA->dx();
+    result[1] = pointA->dy();
+    result[2] = pointB->dx();
+    result[3] = pointB->dy();
     return result;
 }
 
@@ -1089,11 +1089,11 @@ void GradientCls::radial(Offset center, List<double> colorStops, List<Color> col
     Float32List colorStopsBuffer = colorStops == nullptr? nullptr : Float32ListCls->fromList(colorStops);
     if (focal == nullptr || (focal == center && focalRadius == 0.0)) {
         _constructor();
-        _initRadial(center->dx, center->dy, radius, colorsBuffer, colorStopsBuffer, tileMode->index, matrix4);
+        _initRadial(center->dx(), center->dy(), radius, colorsBuffer, colorStopsBuffer, tileMode->index, matrix4);
     } else {
         assert(center != OffsetCls::zero || focal != OffsetCls::zero);
         _constructor();
-        _initConical(focal->dx, focal->dy, focalRadius, center->dx, center->dy, radius, colorsBuffer, colorStopsBuffer, tileMode->index, matrix4);
+        _initConical(focal->dx(), focal->dy(), focalRadius, center->dx(), center->dy(), radius, colorsBuffer, colorStopsBuffer, tileMode->index, matrix4);
     }
 }
 
@@ -1102,16 +1102,16 @@ void GradientCls::sweep(Offset center, List<double> colorStops, List<Color> colo
     Int32List colorsBuffer = _encodeColorList(colors);
     Float32List colorStopsBuffer = colorStops == nullptr? nullptr : Float32ListCls->fromList(colorStops);
     _constructor();
-    _initSweep(center->dx, center->dy, colorsBuffer, colorStopsBuffer, tileMode->index, startAngle, endAngle, matrix4);
+    _initSweep(center->dx(), center->dy(), colorsBuffer, colorStopsBuffer, tileMode->index, startAngle, endAngle, matrix4);
 }
 
 void GradientCls::_validateColorStops(List<double> colorStops, List<Color> colors) {
     if (colorStops == nullptr) {
-        if (colors->length != 2)         {
+        if (colors->length() != 2)         {
             ;
         }
     } else {
-        if (colors->length != colorStops->length)         {
+        if (colors->length() != colorStops->length())         {
             ;
         }
     }
@@ -1150,7 +1150,7 @@ Shader FragmentProgramCls::shader(Float32List floatUniforms, List<ImageShader> s
     if (floatUniforms->length != _uniformFloatCount) {
         ;
     }
-    if (_samplerCount > 0 && (samplerUniforms == nullptr || samplerUniforms->length != _samplerCount)) {
+    if (_samplerCount > 0 && (samplerUniforms == nullptr || samplerUniforms->length() != _samplerCount)) {
         ;
     }
     if (samplerUniforms == nullptr) {
@@ -1197,14 +1197,14 @@ VerticesCls::VerticesCls(List<Color> colors, List<int> indices, VertexMode mode,
         assert(positions != nullptr);
     }
     {
-        if (textureCoordinates != nullptr && textureCoordinates->length != positions->length)         {
+        if (textureCoordinates != nullptr && textureCoordinates->length() != positions->length())         {
             ;
         }
-        if (colors != nullptr && colors->length != positions->length)         {
+        if (colors != nullptr && colors->length() != positions->length())         {
             ;
         }
         if (indices != nullptr && indices->any([=] (int i)         {
-             < 0 || i >= positions->length;
+             < 0 || i >= positions->length();
         }))         {
             ;
         }
@@ -1319,7 +1319,7 @@ void CanvasCls::drawLine(Offset p1, Offset p2, Paint paint) {
     assert(_offsetIsValid(p1));
     assert(_offsetIsValid(p2));
     assert(paint != nullptr);
-    _drawLine(p1->dx, p1->dy, p2->dx, p2->dy, paint->_objects, paint->_data);
+    _drawLine(p1->dx(), p1->dy(), p2->dx(), p2->dy(), paint->_objects, paint->_data);
 }
 
 void CanvasCls::drawPaint(Paint paint) {
@@ -1355,7 +1355,7 @@ void CanvasCls::drawOval(Paint paint, Rect rect) {
 void CanvasCls::drawCircle(Offset c, Paint paint, double radius) {
     assert(_offsetIsValid(c));
     assert(paint != nullptr);
-    _drawCircle(c->dx, c->dy, radius, paint->_objects, paint->_data);
+    _drawCircle(c->dx(), c->dy(), radius, paint->_objects, paint->_data);
 }
 
 void CanvasCls::drawArc(Paint paint, Rect rect, double startAngle, double sweepAngle, bool useCenter) {
@@ -1374,7 +1374,7 @@ void CanvasCls::drawImage(Image image, Offset offset, Paint paint) {
     assert(image != nullptr);
     assert(_offsetIsValid(offset));
     assert(paint != nullptr);
-    String error = _drawImage(image->_image, offset->dx, offset->dy, paint->_objects, paint->_data, paint->filterQuality->index);
+    String error = _drawImage(image->_image, offset->dx(), offset->dy(), paint->_objects, paint->_data, paint->filterQuality()->index);
     if (error != nullptr) {
         ;
     }
@@ -1385,7 +1385,7 @@ void CanvasCls::drawImageRect(Rect dst, Image image, Paint paint, Rect src) {
     assert(_rectIsValid(src));
     assert(_rectIsValid(dst));
     assert(paint != nullptr);
-    String error = _drawImageRect(image->_image, src->left, src->top, src->right, src->bottom, dst->left, dst->top, dst->right, dst->bottom, paint->_objects, paint->_data, paint->filterQuality->index);
+    String error = _drawImageRect(image->_image, src->left, src->top, src->right, src->bottom, dst->left, dst->top, dst->right, dst->bottom, paint->_objects, paint->_data, paint->filterQuality()->index);
     if (error != nullptr) {
         ;
     }
@@ -1396,7 +1396,7 @@ void CanvasCls::drawImageNine(Rect center, Rect dst, Image image, Paint paint) {
     assert(_rectIsValid(center));
     assert(_rectIsValid(dst));
     assert(paint != nullptr);
-    String error = _drawImageNine(image->_image, center->left, center->top, center->right, center->bottom, dst->left, dst->top, dst->right, dst->bottom, paint->_objects, paint->_data, paint->filterQuality->index);
+    String error = _drawImageNine(image->_image, center->left, center->top, center->right, center->bottom, dst->left, dst->top, dst->right, dst->bottom, paint->_objects, paint->_data, paint->filterQuality()->index);
     if (error != nullptr) {
         ;
     }
@@ -1411,7 +1411,7 @@ void CanvasCls::drawParagraph(Offset offset, Paragraph paragraph) {
     assert(paragraph != nullptr);
     assert(_offsetIsValid(offset));
     assert(!paragraph->_needsLayout);
-    paragraph->_paint(this, offset->dx, offset->dy);
+    paragraph->_paint(this, offset->dx(), offset->dy());
 }
 
 void CanvasCls::drawPoints(Paint paint, PointMode pointMode, List<Offset> points) {
@@ -1444,11 +1444,11 @@ void CanvasCls::drawAtlas(Image atlas, BlendMode blendMode, List<Color> colors, 
     assert(rects != nullptr);
     assert(colors == nullptr || colors->isEmpty || blendMode != nullptr);
     assert(paint != nullptr);
-    int rectCount = rects->length;
-    if (transforms->length != rectCount)     {
+    int rectCount = rects->length();
+    if (transforms->length() != rectCount)     {
         ;
     }
-    if (colors != nullptr && colors->isNotEmpty && colors->length != rectCount)     {
+    if (colors != nullptr && colors->isNotEmpty && colors->length() != rectCount)     {
         ;
     }
     Float32List rstTransformBuffer = make<Float32ListCls>(rectCount * 4);
@@ -1461,10 +1461,10 @@ void CanvasCls::drawAtlas(Image atlas, BlendMode blendMode, List<Color> colors, 
         RSTransform rstTransform = transforms[i];
         Rect rect = rects[i];
         assert(_rectIsValid(rect));
-        rstTransformBuffer[index0] = rstTransform->scos;
-        rstTransformBuffer[index1] = rstTransform->ssin;
-        rstTransformBuffer[index2] = rstTransform->tx;
-        rstTransformBuffer[index3] = rstTransform->ty;
+        rstTransformBuffer[index0] = rstTransform->scos();
+        rstTransformBuffer[index1] = rstTransform->ssin();
+        rstTransformBuffer[index2] = rstTransform->tx();
+        rstTransformBuffer[index3] = rstTransform->ty();
         rectBuffer[index0] = rect->left;
         rectBuffer[index1] = rect->top;
         rectBuffer[index2] = rect->right;
@@ -1472,7 +1472,7 @@ void CanvasCls::drawAtlas(Image atlas, BlendMode blendMode, List<Color> colors, 
     }
     Int32List colorBuffer = (colors == nullptr || colors->isEmpty)? nullptr : _encodeColorList(colors);
     Float32List cullRectBuffer = cullRect?->_getValue32();
-    int qualityIndex = paint->filterQuality->index;
+    int qualityIndex = paint->filterQuality()->index;
     String error = _drawAtlas(paint->_objects, paint->_data, qualityIndex, atlas->_image, rstTransformBuffer, rectBuffer, colorBuffer, (blendMode or BlendModeCls::src)->index, cullRectBuffer);
     if (error != nullptr) {
         ;
@@ -1495,7 +1495,7 @@ void CanvasCls::drawRawAtlas(Image atlas, BlendMode blendMode, Int32List colors,
     if (colors != nullptr && colors->length * 4 != rectCount)     {
         ;
     }
-    int qualityIndex = paint->filterQuality->index;
+    int qualityIndex = paint->filterQuality()->index;
     String error = _drawAtlas(paint->_objects, paint->_data, qualityIndex, atlas->_image, rstTransforms, rects, colors, (blendMode or BlendModeCls::src)->index, cullRect?->_getValue32());
     if (error != nullptr) {
         ;
@@ -1613,14 +1613,14 @@ List<Shadow> ShadowCls::lerpList(List<Shadow> a, List<Shadow> b, double t) {
     a = makeList();
     b = makeList();
     List<Shadow> result = makeList();
-    int commonLength = math->min(a->length, b->length);
+    int commonLength = math->min(a->length(), b->length());
     for (;  < commonLength; i = 1)     {
         result->add(ShadowCls->lerp(a[i], b[i], t)!);
     }
-    for (;  < a->length; i = 1)     {
+    for (;  < a->length(); i = 1)     {
         result->add(a[i]->scale(1.0 - t));
     }
-    for (;  < b->length; i = 1)     {
+    for (;  < b->length(); i = 1)     {
         result->add(b[i]->scale(t));
     }
     return result;
@@ -1645,16 +1645,16 @@ ByteData ShadowCls::_encodeShadows(List<Shadow> shadows) {
     if (shadows == nullptr)     {
         return make<ByteDataCls>(0);
     }
-    int byteCount = shadows->length * _kBytesPerShadow;
+    int byteCount = shadows->length() * _kBytesPerShadow;
     ByteData shadowsData = make<ByteDataCls>(byteCount);
     int shadowOffset = 0;
-    for (;  < shadows->length; ++shadowIndex) {
+    for (;  < shadows->length(); ++shadowIndex) {
         Shadow shadow = shadows[shadowIndex];
         if (shadow != nullptr) {
             shadowOffset = shadowIndex * _kBytesPerShadow;
             shadowsData->setInt32(_kColorOffset + shadowOffset, shadow->color->value ^ ShadowCls::_kColorDefault, _kFakeHostEndian);
-            shadowsData->setFloat32(_kXOffset + shadowOffset, shadow->offset->dx, _kFakeHostEndian);
-            shadowsData->setFloat32(_kYOffset + shadowOffset, shadow->offset->dy, _kFakeHostEndian);
+            shadowsData->setFloat32(_kXOffset + shadowOffset, shadow->offset->dx(), _kFakeHostEndian);
+            shadowsData->setFloat32(_kYOffset + shadowOffset, shadow->offset->dy(), _kFakeHostEndian);
             double blurSigma = ShadowCls->convertRadiusToSigma(shadow->blurRadius);
             shadowsData->setFloat32(_kBlurOffset + shadowOffset, blurSigma, _kFakeHostEndian);
         }
@@ -1739,16 +1739,16 @@ Future<Codec> ImageDescriptorCls::instantiateCodec(int targetHeight, int targetW
         targetHeight = nullptr;
     }
     if (targetWidth == nullptr && targetHeight == nullptr) {
-        targetWidth = width;
-        targetHeight = height;
+        targetWidth = width();
+        targetHeight = height();
     } else     {
         if (targetWidth == nullptr && targetHeight != nullptr) {
-        targetWidth = (targetHeight * (width / height))->round();
+        targetWidth = (targetHeight * (width() / height()))->round();
         targetHeight = targetHeight;
     } else     {
         if (targetHeight == nullptr && targetWidth != nullptr) {
         targetWidth = targetWidth;
-        targetHeight = targetWidth ~/ (width / height);
+        targetHeight = targetWidth ~/ (width() / height());
     }
 ;
     };

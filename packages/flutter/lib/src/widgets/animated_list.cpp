@@ -190,9 +190,9 @@ SliverChildDelegate SliverAnimatedListStateCls::_createDelegate() {
 Widget SliverAnimatedListStateCls::_itemBuilder(BuildContext context, int itemIndex) {
     _ActiveItem outgoingItem = _activeItemAt(_outgoingItems, itemIndex);
     if (outgoingItem != nullptr) {
-        return outgoingItem->removedItemBuilder!(context, outgoingItem->controller!->view);
+        return outgoingItem->removedItemBuilder!(context, outgoingItem->controller!->view());
     }
     _ActiveItem incomingItem = _activeItemAt(_incomingItems, itemIndex);
-    Animation<double> animation = incomingItem?->controller?->view or kAlwaysCompleteAnimation;
+    Animation<double> animation = incomingItem?->controller?->view() or kAlwaysCompleteAnimation;
     return widget->itemBuilder(context, _itemIndexToIndex(itemIndex), animation);
 }

@@ -20,7 +20,7 @@ _StoredMessageCls::_StoredMessageCls(PlatformMessageResponseCallback _callback, 
 }
 
 int _ChannelCls::length() {
-    return _queue->length;
+    return _queue->length();
 }
 
 int _ChannelCls::capacity() {
@@ -70,7 +70,7 @@ _ChannelCls::_ChannelCls(int _capacity) {
 
 bool _ChannelCls::_dropOverflowMessages(int lengthLimit) {
     bool result = false;
-    while (_queue->length > lengthLimit) {
+    while (_queue->length() > lengthLimit) {
         _StoredMessage message = _queue->removeFirst();
         message->invoke(nullptr);
         result = true;
@@ -139,7 +139,7 @@ void ChannelBuffersCls::handleMessage(ByteData data) {
         ;
     } else {
         List<String> parts = utf8->decode(bytes)->split(__s("\r"));
-        if (parts->length == 1 + 2 && parts[0] == __s("resize")) {
+        if (parts->length() == 1 + 2 && parts[0] == __s("resize")) {
             resize(parts[1], intValue->parse(parts[2]));
         } else {
             ;

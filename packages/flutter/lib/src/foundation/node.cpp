@@ -4,7 +4,7 @@ int AbstractNodeCls::depth() {
 }
 
 void AbstractNodeCls::redepthChild(AbstractNode child) {
-    assert(child->owner == owner);
+    assert(child->owner() == owner());
     if (child->_depth <= _depth) {
         child->_depth = _depth + 1;
         child->redepthChildren();
@@ -31,7 +31,7 @@ void AbstractNodeCls::attach(Object owner) {
 void AbstractNodeCls::detach() {
     assert(_owner != nullptr);
     _owner = nullptr;
-    assert(parent == nullptr || attached() == parent!->attached);
+    assert(parent() == nullptr || attached() == parent()!->attached());
 }
 
 AbstractNode AbstractNodeCls::parent() {
@@ -43,8 +43,8 @@ void AbstractNodeCls::adoptChild(AbstractNode child) {
     assert(child->_parent == nullptr);
     assert([=] () {
         AbstractNode node = this;
-        while (node->parent != nullptr) {
-            node = node->parent!;
+        while (node->parent() != nullptr) {
+            node = node->parent()!;
         }
         assert(node != child);
         return true;

@@ -114,7 +114,7 @@ Stream<LicenseEntry> ServicesBindingCls::_addLicenses() {
         licenses->forEach(controller->add);
         await await controller->close();
     });
-    return controller->stream;
+    return controller->stream();
 }
 
 List<LicenseEntry> ServicesBindingCls::_parseLicenses(String rawLicenses) {

@@ -107,7 +107,7 @@ void _ZLibEncoderSinkCls::_(List<int> dictionary, bool gzip, int level, int memL
 void _ZLibDecoderSinkCls::_(List<int> dictionary, bool raw, ByteConversionSink sink, int windowBits)
 
 void _FilterSinkCls::add(List<int> data) {
-    addSlice(data, 0, data->length, false);
+    addSlice(data, 0, data->length(), false);
 }
 
 void _FilterSinkCls::addSlice(List<int> data, int end, bool isLast, int start) {
@@ -115,7 +115,7 @@ void _FilterSinkCls::addSlice(List<int> data, int end, bool isLast, int start) {
     if (_closed)     {
         return;
     }
-    RangeErrorCls->checkValidRange(start, end, data->length);
+    RangeErrorCls->checkValidRange(start, end, data->length());
     try {
         _empty = false;
         _BufferAndStart bufferAndStart = _ensureFastAndSerializableByteData(data, start, end);

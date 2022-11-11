@@ -51,23 +51,23 @@ SelectionResult SelectionUtilsCls::getResultBasedOnRect(Offset point, Rect targe
     if (targetRect->contains(point)) {
         return SelectionResultCls::end;
     }
-    if (point->dy < targetRect->top) {
+    if (point->dy() < targetRect->top) {
         return SelectionResultCls::previous;
     }
-    if (point->dy > targetRect->bottom) {
+    if (point->dy() > targetRect->bottom) {
         return SelectionResultCls::next;
     }
-    return point->dx >= targetRect->right? SelectionResultCls::next : SelectionResultCls::previous;
+    return point->dx() >= targetRect->right? SelectionResultCls::next : SelectionResultCls::previous;
 }
 
 Offset SelectionUtilsCls::adjustDragOffset(TextDirection direction, Offset point, Rect targetRect) {
     if (targetRect->contains(point)) {
         return point;
     }
-    if (point->dy <= targetRect->top || point->dy <= targetRect->bottom && point->dx <= targetRect->left) {
-        return direction == TextDirectionCls::ltr? targetRect->topLeft : targetRect->topRight;
+    if (point->dy() <= targetRect->top || point->dy() <= targetRect->bottom && point->dx() <= targetRect->left) {
+        return direction == TextDirectionCls::ltr? targetRect->topLeft() : targetRect->topRight();
     } else {
-        return direction == TextDirectionCls::ltr? targetRect->bottomRight : targetRect->bottomLeft;
+        return direction == TextDirectionCls::ltr? targetRect->bottomRight() : targetRect->bottomLeft();
     }
 }
 

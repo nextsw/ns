@@ -40,7 +40,7 @@ LogicalKeyboardKey RawKeyEventDataMacOsCls::logicalKey() {
     int character;
     if (keyLabel()->isNotEmpty()) {
         List<int> codePoints = keyLabel()->runes()->toList();
-        if (codePoints->length == 1 && !LogicalKeyboardKeyCls->isControlCharacter(keyLabel()) && !_isUnprintableKey(keyLabel())) {
+        if (codePoints->length() == 1 && !LogicalKeyboardKeyCls->isControlCharacter(keyLabel()) && !_isUnprintableKey(keyLabel())) {
             character = runeToLowerCase(codePoints[0]);
         }
     }
@@ -65,7 +65,7 @@ KeyboardSide RawKeyEventDataMacOsCls::getModifierSide(ModifierKey key) {
 }
 
 bool RawKeyEventDataMacOsCls::shouldDispatchEvent() {
-    return logicalKey != LogicalKeyboardKeyCls::fn;
+    return logicalKey() != LogicalKeyboardKeyCls::fn;
 }
 
 void RawKeyEventDataMacOsCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
@@ -100,7 +100,7 @@ bool RawKeyEventDataMacOsCls::_isLeftRightModifierPressed(int anyMask, int leftM
 }
 
 bool RawKeyEventDataMacOsCls::_isUnprintableKey(String label) {
-    if (label->length != 1) {
+    if (label->length() != 1) {
         return false;
     }
     int codeUnit = label->codeUnitAt(0);

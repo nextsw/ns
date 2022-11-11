@@ -31,7 +31,7 @@ Offset PointerEventCls::transformPosition(Offset position, Matrix4 transform) {
     if (transform == nullptr) {
         return position;
     }
-    Vector3 position3 = make<Vector3Cls>(position->dx, position->dy, 0.0);
+    Vector3 position3 = make<Vector3Cls>(position->dx(), position->dy(), 0.0);
     Vector3 transformed3 = transform->perspectiveTransform(position3);
     return make<OffsetCls>(transformed3->x, transformed3->y);
 }
@@ -86,59 +86,59 @@ String _PointerEventDescriptionCls::toStringFull() {
 }
 
 int _TransformedPointerEventCls::embedderId() {
-    return original->embedderId;
+    return original()->embedderId;
 }
 
 Duration _TransformedPointerEventCls::timeStamp() {
-    return original->timeStamp;
+    return original()->timeStamp;
 }
 
 int _TransformedPointerEventCls::pointer() {
-    return original->pointer;
+    return original()->pointer;
 }
 
 PointerDeviceKind _TransformedPointerEventCls::kind() {
-    return original->kind;
+    return original()->kind;
 }
 
 int _TransformedPointerEventCls::device() {
-    return original->device;
+    return original()->device;
 }
 
 Offset _TransformedPointerEventCls::position() {
-    return original->position;
+    return original()->position;
 }
 
 Offset _TransformedPointerEventCls::delta() {
-    return original->delta;
+    return original()->delta;
 }
 
 int _TransformedPointerEventCls::buttons() {
-    return original->buttons;
+    return original()->buttons;
 }
 
 bool _TransformedPointerEventCls::down() {
-    return original->down;
+    return original()->down;
 }
 
 bool _TransformedPointerEventCls::obscured() {
-    return original->obscured;
+    return original()->obscured;
 }
 
 double _TransformedPointerEventCls::pressure() {
-    return original->pressure;
+    return original()->pressure;
 }
 
 double _TransformedPointerEventCls::pressureMin() {
-    return original->pressureMin;
+    return original()->pressureMin;
 }
 
 double _TransformedPointerEventCls::pressureMax() {
-    return original->pressureMax;
+    return original()->pressureMax;
 }
 
 double _TransformedPointerEventCls::distance() {
-    return original->distance;
+    return original()->distance;
 }
 
 double _TransformedPointerEventCls::distanceMin() {
@@ -146,43 +146,43 @@ double _TransformedPointerEventCls::distanceMin() {
 }
 
 double _TransformedPointerEventCls::distanceMax() {
-    return original->distanceMax;
+    return original()->distanceMax;
 }
 
 double _TransformedPointerEventCls::size() {
-    return original->size;
+    return original()->size;
 }
 
 double _TransformedPointerEventCls::radiusMajor() {
-    return original->radiusMajor;
+    return original()->radiusMajor;
 }
 
 double _TransformedPointerEventCls::radiusMinor() {
-    return original->radiusMinor;
+    return original()->radiusMinor;
 }
 
 double _TransformedPointerEventCls::radiusMin() {
-    return original->radiusMin;
+    return original()->radiusMin;
 }
 
 double _TransformedPointerEventCls::radiusMax() {
-    return original->radiusMax;
+    return original()->radiusMax;
 }
 
 double _TransformedPointerEventCls::orientation() {
-    return original->orientation;
+    return original()->orientation;
 }
 
 double _TransformedPointerEventCls::tilt() {
-    return original->tilt;
+    return original()->tilt;
 }
 
 int _TransformedPointerEventCls::platformData() {
-    return original->platformData;
+    return original()->platformData;
 }
 
 bool _TransformedPointerEventCls::synthesized() {
-    return original->synthesized;
+    return original()->synthesized;
 }
 
 PointerAddedEvent _CopyPointerAddedEventCls::copyWith(int buttons, Offset delta, int device, double distance, double distanceMax, int embedderId, PointerDeviceKind kind, bool obscured, double orientation, int pointer, Offset position, double pressure, double pressureMax, double pressureMin, double radiusMajor, double radiusMax, double radiusMin, double radiusMinor, double size, bool synthesized, double tilt, Duration timeStamp) {
@@ -429,7 +429,7 @@ PointerScrollEvent _TransformedPointerScrollEventCls::transformed(Matrix4 transf
 
 void _TransformedPointerScrollEventCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<Offset>make<DiagnosticsPropertyCls>(__s("scrollDelta"), scrollDelta));
+    properties->add(<Offset>make<DiagnosticsPropertyCls>(__s("scrollDelta"), scrollDelta()));
 }
 
 _TransformedPointerScrollEventCls::_TransformedPointerScrollEventCls(PointerScrollEvent original, Matrix4 transform) {

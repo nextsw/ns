@@ -5,7 +5,7 @@ Uri ServiceProtocolInfoCls::serverWebSocketUri() {
         Unknown pathSegments = makeList();
         if (uri->pathSegments->isNotEmpty()) {
             pathSegments->addAll(uri->pathSegments->where([=] (Unknown  s)             {
-                s->isNotEmpty();
+                s->isNotEmpty;
             }));
         }
         pathSegments->add(__s("ws"));

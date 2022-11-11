@@ -174,7 +174,7 @@ Future _StdSinkCls::close() {
 }
 
 Future _StdSinkCls::done() {
-    return _sink->done;
+    return _sink->done();
 }
 
 String StdioTypeCls::toString() {

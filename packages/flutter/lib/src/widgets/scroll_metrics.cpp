@@ -4,28 +4,28 @@ ScrollMetrics ScrollMetricsCls::copyWith(AxisDirection axisDirection, double max
 }
 
 Axis ScrollMetricsCls::axis() {
-    return axisDirectionToAxis(axisDirection);
+    return axisDirectionToAxis(axisDirection());
 }
 
 bool ScrollMetricsCls::outOfRange() {
-    return  < minScrollExtent || pixels > maxScrollExtent;
+    return  < minScrollExtent() || pixels() > maxScrollExtent();
 }
 
 bool ScrollMetricsCls::atEdge() {
-    return pixels == minScrollExtent || pixels == maxScrollExtent;
+    return pixels() == minScrollExtent() || pixels() == maxScrollExtent();
 }
 
 double ScrollMetricsCls::extentBefore() {
-    return math->max(pixels - minScrollExtent, 0.0);
+    return math->max(pixels() - minScrollExtent(), 0.0);
 }
 
 double ScrollMetricsCls::extentInside() {
-    assert(minScrollExtent <= maxScrollExtent);
-    return viewportDimension - clampDouble(minScrollExtent - pixels, 0, viewportDimension) - clampDouble(pixels - maxScrollExtent, 0, viewportDimension);
+    assert(minScrollExtent() <= maxScrollExtent());
+    return viewportDimension() - clampDouble(minScrollExtent() - pixels(), 0, viewportDimension()) - clampDouble(pixels() - maxScrollExtent(), 0, viewportDimension());
 }
 
 double ScrollMetricsCls::extentAfter() {
-    return math->max(maxScrollExtent - pixels, 0.0);
+    return math->max(maxScrollExtent() - pixels(), 0.0);
 }
 
 FixedScrollMetricsCls::FixedScrollMetricsCls(AxisDirection axisDirection, double maxScrollExtent, double minScrollExtent, double pixels, double viewportDimension) {

@@ -113,7 +113,7 @@ template<typename T> bool FormFieldStateCls<T>::isValid() {
 }
 
 template<typename T> void FormFieldStateCls<T>::save() {
-    widget->onSaved?->call(value);
+    widget->onSaved?->call(value());
 }
 
 template<typename T> void FormFieldStateCls<T>::reset() {

@@ -24,7 +24,7 @@ Stream IsolateCls::errors() {
         this->removeErrorListener(listenPort->sendPort());
         listenPort->close();
     };
-    return controller->stream;
+    return controller->stream();
 }
 
 RemoteErrorCls::RemoteErrorCls(String description, String stackDescription) {

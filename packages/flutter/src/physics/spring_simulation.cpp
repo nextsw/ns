@@ -13,7 +13,7 @@ SpringSimulationCls::SpringSimulationCls(double end, SpringDescription spring, d
 }
 
 SpringType SpringSimulationCls::type() {
-    return _solution->type;
+    return _solution->type();
 }
 
 double SpringSimulationCls::x(double time) {

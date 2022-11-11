@@ -10,7 +10,7 @@ Iterable<LicenseParagraph> LicenseEntryWithLineBreaksCls::paragraphs() {
     List<LicenseParagraph> result = makeList();
     InlineMethod;
     InlineMethod;
-    while ( < text->length) {
+    while ( < text->length()) {
         ;
         currentPosition = 1;
     }
@@ -34,7 +34,7 @@ Stream<LicenseEntry> LicenseRegistryCls::licenses() {
         }
         await await controller->close();
     });
-    return controller->stream;
+    return controller->stream();
 }
 
 void LicenseRegistryCls::reset() {

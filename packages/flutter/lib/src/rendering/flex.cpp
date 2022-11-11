@@ -194,22 +194,22 @@ void RenderFlexCls::performLayout() {
     double actualSize = sizes->mainSize;
     double crossSize = sizes->crossSize;
     double maxBaselineDistance = 0.0;
-    if (crossAxisAlignment == CrossAxisAlignmentCls::baseline) {
+    if (crossAxisAlignment() == CrossAxisAlignmentCls::baseline) {
         RenderBox child = firstChild;
         double maxSizeAboveBaseline = 0;
         double maxSizeBelowBaseline = 0;
         while (child != nullptr) {
             assert([=] () {
-                if (textBaseline == nullptr) {
+                if (textBaseline() == nullptr) {
                     ;
                 }
                 return true;
             }());
-            double distance = child->getDistanceToBaseline(textBaseline!true);
+            double distance = child->getDistanceToBaseline(textBaseline()!true);
             if (distance != nullptr) {
                 maxBaselineDistance = math->max(maxBaselineDistance, distance);
                 maxSizeAboveBaseline = math->max(distance, maxSizeAboveBaseline);
-                maxSizeBelowBaseline = math->max(child->size->height - distance, maxSizeBelowBaseline);
+                maxSizeBelowBaseline = math->max(child->size()->height() - distance, maxSizeBelowBaseline);
                 crossSize = math->max(maxSizeAboveBaseline + maxSizeBelowBaseline, crossSize);
             }
             FlexParentData childParentData = as<FlexParentData>(child->parentData!);
@@ -222,7 +222,7 @@ void RenderFlexCls::performLayout() {
     double remainingSpace = math->max(0.0, actualSizeDelta);
     double leadingSpace;
     double betweenSpace;
-    bool flipMainAxis = !(_startIsTopLeft(direction, textDirection, verticalDirection) or true);
+    bool flipMainAxis = !(_startIsTopLeft(direction(), textDirection(), verticalDirection()) or true);
     ;
     double childMainPosition = flipMainAxis? actualSize - leadingSpace : leadingSpace;
     RenderBox child = firstChild;
@@ -231,13 +231,13 @@ void RenderFlexCls::performLayout() {
         double childCrossPosition;
         ;
         if (flipMainAxis) {
-            childMainPosition = _getMainSize(child->size);
+            childMainPosition = _getMainSize(child->size());
         }
         ;
         if (flipMainAxis) {
             childMainPosition = betweenSpace;
         } else {
-            childMainPosition = _getMainSize(child->size) + betweenSpace;
+            childMainPosition = _getMainSize(child->size()) + betweenSpace;
         }
         child = childParentData->nextSibling;
     }
@@ -252,10 +252,10 @@ void RenderFlexCls::paint(PaintingContext context, Offset offset) {
         defaultPaint(context, offset);
         return;
     }
-    if (size->isEmpty()) {
+    if (size->isEmpty) {
         return;
     }
-    _clipRectLayer->layer = context->pushClipRect(needsCompositing, offset, OffsetCls::zero & size, defaultPaintclipBehavior, _clipRectLayer->layer);
+    _clipRectLayer->layer() = context->pushClipRect(needsCompositing, offset, OffsetCls::zero & size, defaultPaintclipBehavior(), _clipRectLayer->layer());
     assert([=] () {
         List<DiagnosticsNode> debugOverflowHints = makeList(ArrayItem, ArrayItem, ArrayItem, ArrayItem);
         Rect overflowChildRect;
@@ -266,7 +266,7 @@ void RenderFlexCls::paint(PaintingContext context, Offset offset) {
 }
 
 void RenderFlexCls::dispose() {
-    _clipRectLayer->layer = nullptr;
+    _clipRectLayer->layer() = nullptr;
     super->dispose();
 }
 
@@ -286,25 +286,25 @@ String RenderFlexCls::toStringShort() {
 
 void RenderFlexCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<Axis>make<EnumPropertyCls>(__s("direction"), direction));
-    properties->add(<MainAxisAlignment>make<EnumPropertyCls>(__s("mainAxisAlignment"), mainAxisAlignment));
-    properties->add(<MainAxisSize>make<EnumPropertyCls>(__s("mainAxisSize"), mainAxisSize));
-    properties->add(<CrossAxisAlignment>make<EnumPropertyCls>(__s("crossAxisAlignment"), crossAxisAlignment));
-    properties->add(<TextDirection>make<EnumPropertyCls>(__s("textDirection"), textDirectionnullptr));
-    properties->add(<VerticalDirection>make<EnumPropertyCls>(__s("verticalDirection"), verticalDirectionnullptr));
-    properties->add(<TextBaseline>make<EnumPropertyCls>(__s("textBaseline"), textBaselinenullptr));
+    properties->add(<Axis>make<EnumPropertyCls>(__s("direction"), direction()));
+    properties->add(<MainAxisAlignment>make<EnumPropertyCls>(__s("mainAxisAlignment"), mainAxisAlignment()));
+    properties->add(<MainAxisSize>make<EnumPropertyCls>(__s("mainAxisSize"), mainAxisSize()));
+    properties->add(<CrossAxisAlignment>make<EnumPropertyCls>(__s("crossAxisAlignment"), crossAxisAlignment()));
+    properties->add(<TextDirection>make<EnumPropertyCls>(__s("textDirection"), textDirection()nullptr));
+    properties->add(<VerticalDirection>make<EnumPropertyCls>(__s("verticalDirection"), verticalDirection()nullptr));
+    properties->add(<TextBaseline>make<EnumPropertyCls>(__s("textBaseline"), textBaseline()nullptr));
 }
 
 bool RenderFlexCls::_debugHasNecessaryDirections() {
-    assert(direction != nullptr);
-    assert(crossAxisAlignment != nullptr);
+    assert(direction() != nullptr);
+    assert(crossAxisAlignment() != nullptr);
     if (firstChild != nullptr && lastChild != firstChild) {
         ;
     }
-    if (mainAxisAlignment == MainAxisAlignmentCls::start || mainAxisAlignment == MainAxisAlignmentCls::end) {
+    if (mainAxisAlignment() == MainAxisAlignmentCls::start || mainAxisAlignment() == MainAxisAlignmentCls::end) {
         ;
     }
-    if (crossAxisAlignment == CrossAxisAlignmentCls::start || crossAxisAlignment == CrossAxisAlignmentCls::end) {
+    if (crossAxisAlignment() == CrossAxisAlignmentCls::start || crossAxisAlignment() == CrossAxisAlignmentCls::end) {
         ;
     }
     return true;
@@ -315,7 +315,7 @@ bool RenderFlexCls::_hasOverflow() {
 }
 
 bool RenderFlexCls::_canComputeIntrinsics() {
-    return crossAxisAlignment != CrossAxisAlignmentCls::baseline;
+    return crossAxisAlignment() != CrossAxisAlignmentCls::baseline;
 }
 
 double RenderFlexCls::_getIntrinsicSize(_ChildSizingFunction childSize, double extent, Axis sizingDirection) {
@@ -406,7 +406,7 @@ FlutterError RenderFlexCls::_debugCheckConstraints(BoxConstraints constraints, b
                 String dimension = _direction == AxisCls::horizontal? __s("width") : __s("height");
                 DiagnosticsNode error, message;
                 List<DiagnosticsNode> addendum = makeList();
-                if (!canFlex && (mainAxisSize == MainAxisSizeCls::max || _getFit(child) == FlexFitCls::tight)) {
+                if (!canFlex && (mainAxisSize() == MainAxisSizeCls::max || _getFit(child) == FlexFitCls::tight)) {
                     error = make<ErrorSummaryCls>(__s("RenderFlex children have non-zero flex but incoming $dimension constraints are unbounded."));
                     message = make<ErrorDescriptionCls>(__s("When a $identity is in a parent that does not provide a finite $dimension constraint, for example if it is in a $axis scrollable, it will try to shrink-wrap its children along the $axis axis. Setting a flex on a child (e.g. using Expanded) indicates that the child is to expand to fill the remaining space in the $axis direction."));
                     if (reportParentConstraints) {
@@ -448,7 +448,7 @@ _LayoutSizes RenderFlexCls::_computeSizes(BoxConstraints constraints, ChildLayou
             lastFlexChild = child;
         } else {
             BoxConstraints innerConstraints;
-            if (crossAxisAlignment == CrossAxisAlignmentCls::stretch) {
+            if (crossAxisAlignment() == CrossAxisAlignmentCls::stretch) {
                 ;
             } else {
                 ;
@@ -473,7 +473,7 @@ _LayoutSizes RenderFlexCls::_computeSizes(BoxConstraints constraints, ChildLayou
                 ;
                 assert(minChildExtent != nullptr);
                 BoxConstraints innerConstraints;
-                if (crossAxisAlignment == CrossAxisAlignmentCls::stretch) {
+                if (crossAxisAlignment() == CrossAxisAlignmentCls::stretch) {
                     ;
                 } else {
                     ;
@@ -489,6 +489,6 @@ _LayoutSizes RenderFlexCls::_computeSizes(BoxConstraints constraints, ChildLayou
             child = childParentData->nextSibling;
         }
     }
-    double idealSize = canFlex && mainAxisSize == MainAxisSizeCls::max? maxMainSize : allocatedSize;
+    double idealSize = canFlex && mainAxisSize() == MainAxisSizeCls::max? maxMainSize : allocatedSize;
     return make<_LayoutSizesCls>(idealSize, crossSize, allocatedSize);
 }

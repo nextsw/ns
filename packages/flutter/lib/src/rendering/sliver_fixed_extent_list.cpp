@@ -39,7 +39,7 @@ void RenderSliverFixedExtentBoxAdaptorCls::performLayout() {
     SliverConstraints constraints = this->constraints;
     childManager->didStartLayout();
     childManager->setDidUnderflow(false);
-    double itemExtent = this->itemExtent;
+    double itemExtent = this->itemExtent();
     double scrollOffset = constraints->scrollOffset + constraints->cacheOrigin;
     assert(scrollOffset >= 0.0);
     double remainingExtent = constraints->remainingCacheExtent;

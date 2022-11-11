@@ -174,7 +174,7 @@ void RenderSliverGridCls::performLayout() {
     }
     SliverGridGeometry firstChildGridGeometry = layout->getGeometryForChildIndex(firstIndex);
     double leadingScrollOffset = firstChildGridGeometry->scrollOffset;
-    double trailingScrollOffset = firstChildGridGeometry->trailingScrollOffset;
+    double trailingScrollOffset = firstChildGridGeometry->trailingScrollOffset();
     if (firstChild == nullptr) {
         if (!addInitialChild(firstIndex, firstChildGridGeometry->scrollOffset)) {
             double max = layout->computeMaxScrollOffset(childManager->childCount);

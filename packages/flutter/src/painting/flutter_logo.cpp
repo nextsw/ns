@@ -98,7 +98,7 @@ bool FlutterLogoDecorationCls::_inTransition() {
 }
 
 void _FlutterLogoPainterCls::paint(Canvas canvas, ImageConfiguration configuration, Offset offset) {
-    offset = _config->margin->topLeft;
+    offset = _config->margin->topLeft();
     Size canvasSize = _config->margin->deflateSize(configuration->size!);
     if (canvasSize->isEmpty()) {
         return;
@@ -117,14 +117,14 @@ void _FlutterLogoPainterCls::paint(Canvas canvas, ImageConfiguration configurati
     assert(fittedSize->source == logoSize);
     Rect rect = AlignmentCls::center->inscribe(fittedSize->destination, offset & canvasSize);
     double centerSquareHeight = canvasSize->shortestSide();
-    Rect centerSquare = RectCls->fromLTWH(offset->dx + (canvasSize->width - centerSquareHeight) / 2.0, offset->dy + (canvasSize->height - centerSquareHeight) / 2.0, centerSquareHeight, centerSquareHeight);
+    Rect centerSquare = RectCls->fromLTWH(offset->dx() + (canvasSize->width() - centerSquareHeight) / 2.0, offset->dy() + (canvasSize->height() - centerSquareHeight) / 2.0, centerSquareHeight, centerSquareHeight);
     Rect logoTargetSquare;
     if (_config->_position > 0.0) {
-        logoTargetSquare = RectCls->fromLTWH(rect->left, rect->top, rect->height, rect->height);
+        logoTargetSquare = RectCls->fromLTWH(rect->left, rect->top, rect->height(), rect->height());
     } else     {
         if (_config->_position < 0.0) {
-        double logoHeight = rect->height * 191.0 / 306.0;
-        logoTargetSquare = RectCls->fromLTWH(rect->left + (rect->width - logoHeight) / 2.0, rect->top, logoHeight, logoHeight);
+        double logoHeight = rect->height() * 191.0 / 306.0;
+        logoTargetSquare = RectCls->fromLTWH(rect->left + (rect->width() - logoHeight) / 2.0, rect->top, logoHeight, logoHeight);
     } else {
         logoTargetSquare = centerSquare;
     }
@@ -135,35 +135,35 @@ void _FlutterLogoPainterCls::paint(Canvas canvas, ImageConfiguration configurati
     }
     if (_config->_position != 0.0) {
         if (_config->_position > 0.0) {
-            double fontSize = 2.0 / 3.0 * logoSquare->height * (1 - (10.4 * 2.0) / 202.0);
+            double fontSize = 2.0 / 3.0 * logoSquare->height() * (1 - (10.4 * 2.0) / 202.0);
             double scale = fontSize / 100.0;
-            double finalLeftTextPosition = (256.4 / 820.0) * rect->width - (32.0 / 350.0) * fontSize;
-            double initialLeftTextPosition = rect->width / 2.0 - _textBoundingRect->width * scale;
-            Offset textOffset = make<OffsetCls>(rect->left + ui->lerpDouble(initialLeftTextPosition, finalLeftTextPosition, _config->_position)!, rect->top + (rect->height - _textBoundingRect->height * scale) / 2.0);
+            double finalLeftTextPosition = (256.4 / 820.0) * rect->width() - (32.0 / 350.0) * fontSize;
+            double initialLeftTextPosition = rect->width() / 2.0 - _textBoundingRect->width() * scale;
+            Offset textOffset = make<OffsetCls>(rect->left + ui->lerpDouble(initialLeftTextPosition, finalLeftTextPosition, _config->_position)!, rect->top + (rect->height() - _textBoundingRect->height() * scale) / 2.0);
             canvas->save();
             if (_config->_position < 1.0) {
-                Offset center = logoSquare->center;
-                            auto _c2 = make<PathCls>();            _c2.auto _c3 = moveTo(center->dx, center->dy);            _c3.auto _c4 = lineTo(center->dx + rect->width, center->dy - rect->width);            _c4.auto _c5 = lineTo(center->dx + rect->width, center->dy + rect->width);            _c5.close();            _c5;            _c4;            _c3;Path path = _c2;
+                Offset center = logoSquare->center();
+                            auto _c2 = make<PathCls>();            _c2.auto _c3 = moveTo(center->dx(), center->dy());            _c3.auto _c4 = lineTo(center->dx() + rect->width(), center->dy() - rect->width());            _c4.auto _c5 = lineTo(center->dx() + rect->width(), center->dy() + rect->width());            _c5.close();            _c5;            _c4;            _c3;Path path = _c2;
                 canvas->clipPath(path);
             }
-            canvas->translate(textOffset->dx, textOffset->dy);
+            canvas->translate(textOffset->dx(), textOffset->dy());
             canvas->scale(scale, scale);
             _textPainter->paint(canvas, OffsetCls::zero);
             canvas->restore();
         } else         {
             if (_config->_position < 0.0) {
-            double fontSize = 0.35 * logoTargetSquare->height * (1 - (10.4 * 2.0) / 202.0);
+            double fontSize = 0.35 * logoTargetSquare->height() * (1 - (10.4 * 2.0) / 202.0);
             double scale = fontSize / 100.0;
             if (_config->_position > -1.0) {
                 canvas->saveLayer(_textBoundingRect, make<PaintCls>());
             } else {
                 canvas->save();
             }
-            canvas->translate(logoTargetSquare->center->dx - (_textBoundingRect->width * scale / 2.0), logoTargetSquare->bottom);
+            canvas->translate(logoTargetSquare->center()->dx() - (_textBoundingRect->width() * scale / 2.0), logoTargetSquare->bottom);
             canvas->scale(scale, scale);
             _textPainter->paint(canvas, OffsetCls::zero);
             if (_config->_position > -1.0) {
-                            auto _c6 = make<PaintCls>();            _c6.blendMode = auto _c7 = BlendModeCls::modulate;            _c7.shader = ui->GradientCls->linear(make<OffsetCls>(_textBoundingRect->width * -0.5, 0.0), make<OffsetCls>(_textBoundingRect->width * 1.5, 0.0), makeList(ArrayItem, ArrayItem, ArrayItem, ArrayItem), makeList(ArrayItem, ArrayItem, ArrayItem, ArrayItem));            _c7;canvas->drawRect(_textBoundingRect->inflate(_textBoundingRect->width * 0.5), _c6);
+                            auto _c6 = make<PaintCls>();            _c6.blendMode = auto _c7 = BlendModeCls::modulate;            _c7.shader = ui->GradientCls->linear(make<OffsetCls>(_textBoundingRect->width() * -0.5, 0.0), make<OffsetCls>(_textBoundingRect->width() * 1.5, 0.0), makeList(ArrayItem, ArrayItem, ArrayItem, ArrayItem), makeList(ArrayItem, ArrayItem, ArrayItem, ArrayItem));            _c7;canvas->drawRect(_textBoundingRect->inflate(_textBoundingRect->width() * 0.5), _c6);
             }
             canvas->restore();
         }
@@ -189,14 +189,14 @@ void _FlutterLogoPainterCls::_prepareText() {
     String kLabel = __s("Flutter");
     _textPainter = make<TextPainterCls>(make<TextSpanCls>(kLabel, make<TextStyleCls>(_config->textColor, __s("Roboto"), 100.0 * 350.0 / 247.0, FontWeightCls::w300, TextBaselineCls::alphabetic)), TextDirectionCls::ltr);
     _textPainter->layout();
-    TextBox textSize = _textPainter->getBoxesForSelection(make<TextSelectionCls>(0, kLabel->length))->single;
+    TextBox textSize = _textPainter->getBoxesForSelection(make<TextSelectionCls>(0, kLabel->length()))->single;
     _textBoundingRect = RectCls->fromLTRB(textSize->left, textSize->top, textSize->right, textSize->bottom);
 }
 
 void _FlutterLogoPainterCls::_paintLogo(Canvas canvas, Rect rect) {
     canvas->save();
     canvas->translate(rect->left, rect->top);
-    canvas->scale(rect->width / 202.0, rect->height / 202.0);
+    canvas->scale(rect->width() / 202.0, rect->height() / 202.0);
     canvas->translate((202.0 - 166.0) / 2.0, 0.0);
     auto _c1 = make<PaintCls>();_c1.color = make<ColorCls>(0xFF54C5F8);Paint lightPaint = _c1;
     auto _c2 = make<PaintCls>();_c2.color = make<ColorCls>(0xFF29B6F6);Paint mediumPaint = _c2;

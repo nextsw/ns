@@ -30,7 +30,7 @@ Size MultiChildLayoutDelegateCls::layoutChild(Object childId, BoxConstraints con
         return true;
     }());
     child!->layout(constraintstrue);
-    return child->size;
+    return child->size();
 }
 
 void MultiChildLayoutDelegateCls::positionChild(Object childId, Offset offset) {
@@ -150,7 +150,7 @@ void RenderCustomMultiChildLayoutBoxCls::detach() {
 }
 
 double RenderCustomMultiChildLayoutBoxCls::computeMinIntrinsicWidth(double height) {
-    double width = _getSize(BoxConstraintsCls->tightForFinite(height))->width;
+    double width = _getSize(BoxConstraintsCls->tightForFinite(height))->width();
     if (width->isFinite) {
         return width;
     }
@@ -158,7 +158,7 @@ double RenderCustomMultiChildLayoutBoxCls::computeMinIntrinsicWidth(double heigh
 }
 
 double RenderCustomMultiChildLayoutBoxCls::computeMaxIntrinsicWidth(double height) {
-    double width = _getSize(BoxConstraintsCls->tightForFinite(height))->width;
+    double width = _getSize(BoxConstraintsCls->tightForFinite(height))->width();
     if (width->isFinite) {
         return width;
     }
@@ -166,7 +166,7 @@ double RenderCustomMultiChildLayoutBoxCls::computeMaxIntrinsicWidth(double heigh
 }
 
 double RenderCustomMultiChildLayoutBoxCls::computeMinIntrinsicHeight(double width) {
-    double height = _getSize(BoxConstraintsCls->tightForFinite(width))->height;
+    double height = _getSize(BoxConstraintsCls->tightForFinite(width))->height();
     if (height->isFinite) {
         return height;
     }
@@ -174,7 +174,7 @@ double RenderCustomMultiChildLayoutBoxCls::computeMinIntrinsicHeight(double widt
 }
 
 double RenderCustomMultiChildLayoutBoxCls::computeMaxIntrinsicHeight(double width) {
-    double height = _getSize(BoxConstraintsCls->tightForFinite(width))->height;
+    double height = _getSize(BoxConstraintsCls->tightForFinite(width))->height();
     if (height->isFinite) {
         return height;
     }
@@ -187,7 +187,7 @@ Size RenderCustomMultiChildLayoutBoxCls::computeDryLayout(BoxConstraints constra
 
 void RenderCustomMultiChildLayoutBoxCls::performLayout() {
     size = _getSize(constraints);
-    delegate->_callPerformLayout(size, firstChild);
+    delegate()->_callPerformLayout(size, firstChild);
 }
 
 void RenderCustomMultiChildLayoutBoxCls::paint(PaintingContext context, Offset offset) {

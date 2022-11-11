@@ -17,12 +17,12 @@ template<typename T> int CombinedListViewCls<T>::length() {
 
 template<typename T> T CombinedListViewCls<T>::[](int index) {
     auto initialIndex = index;
-    for (;  < _lists->length; i++) {
+    for (;  < _lists->length(); i++) {
         auto list = _lists[i];
-        if ( < list->length) {
+        if ( < list->length()) {
             return list[index];
         }
-        index = list->length;
+        index = list->length();
     }
     ;
 }

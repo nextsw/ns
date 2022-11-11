@@ -1,6 +1,6 @@
 #include "alignment.hpp"
 AlignmentGeometry AlignmentGeometryCls::add(AlignmentGeometry other) {
-    return make<_MixedAlignmentCls>(_x() + other->_x(), _start + other->_start, _y() + other->_y());
+    return make<_MixedAlignmentCls>(_x() + other->_x(), _start() + other->_start(), _y() + other->_y());
 }
 
 AlignmentGeometry AlignmentGeometryCls::lerp(AlignmentGeometry a, AlignmentGeometry b, double t) {
@@ -20,25 +20,25 @@ AlignmentGeometry AlignmentGeometryCls::lerp(AlignmentGeometry a, AlignmentGeome
     if (is<AlignmentDirectional>(a) && is<AlignmentDirectional>(b)) {
         return AlignmentDirectionalCls->lerp(a, b, t);
     }
-    return make<_MixedAlignmentCls>(ui->lerpDouble(a->_x(), b->_x(), t)!, ui->lerpDouble(a->_start, b->_start, t)!, ui->lerpDouble(a->_y(), b->_y(), t)!);
+    return make<_MixedAlignmentCls>(ui->lerpDouble(a->_x(), b->_x(), t)!, ui->lerpDouble(a->_start(), b->_start(), t)!, ui->lerpDouble(a->_y(), b->_y(), t)!);
 }
 
 String AlignmentGeometryCls::toString() {
-    if (_start == 0.0) {
+    if (_start() == 0.0) {
         return AlignmentCls->_stringify(_x(), _y());
     }
     if (_x() == 0.0) {
-        return AlignmentDirectionalCls->_stringify(_start, _y());
+        return AlignmentDirectionalCls->_stringify(_start(), _y());
     }
     return __s("${Alignment._stringify(_x, _y)} + ${AlignmentDirectional._stringify(_start, 0.0)}");
 }
 
 bool AlignmentGeometryCls::==(Object other) {
-    return is<AlignmentGeometry>(other) && other->_x == _x() && other->_start == _start && other->_y == _y();
+    return is<AlignmentGeometry>(other) && other->_x == _x() && other->_start == _start() && other->_y == _y();
 }
 
 int AlignmentGeometryCls::hashCode() {
-    return ObjectCls->hash(_x(), _start, _y());
+    return ObjectCls->hash(_x(), _start(), _y());
 }
 
 AlignmentCls::AlignmentCls(double x, double y) {
@@ -84,27 +84,27 @@ Alignment AlignmentCls::%(double other) {
 }
 
 Offset AlignmentCls::alongOffset(Offset other) {
-    double centerX = other->dx / 2.0;
-    double centerY = other->dy / 2.0;
+    double centerX = other->dx() / 2.0;
+    double centerY = other->dy() / 2.0;
     return make<OffsetCls>(centerX + x * centerX, centerY + y * centerY);
 }
 
 Offset AlignmentCls::alongSize(Size other) {
-    double centerX = other->width / 2.0;
-    double centerY = other->height / 2.0;
+    double centerX = other->width() / 2.0;
+    double centerY = other->height() / 2.0;
     return make<OffsetCls>(centerX + x * centerX, centerY + y * centerY);
 }
 
 Offset AlignmentCls::withinRect(Rect rect) {
-    double halfWidth = rect->width / 2.0;
-    double halfHeight = rect->height / 2.0;
+    double halfWidth = rect->width() / 2.0;
+    double halfHeight = rect->height() / 2.0;
     return make<OffsetCls>(rect->left + halfWidth + x * halfWidth, rect->top + halfHeight + y * halfHeight);
 }
 
 Rect AlignmentCls::inscribe(Rect rect, Size size) {
-    double halfWidthDelta = (rect->width - size->width) / 2.0;
-    double halfHeightDelta = (rect->height - size->height) / 2.0;
-    return RectCls->fromLTWH(rect->left + halfWidthDelta + x * halfWidthDelta, rect->top + halfHeightDelta + y * halfHeightDelta, size->width, size->height);
+    double halfWidthDelta = (rect->width() - size->width()) / 2.0;
+    double halfHeightDelta = (rect->height() - size->height()) / 2.0;
+    return RectCls->fromLTWH(rect->left + halfWidthDelta + x * halfWidthDelta, rect->top + halfHeightDelta + y * halfHeightDelta, size->width(), size->height());
 }
 
 Alignment AlignmentCls::lerp(Alignment a, Alignment b, double t) {
