@@ -48,7 +48,7 @@ String MouseCursorCls::toString(DiagnosticLevel minLevel) {
 
 MouseCursorSession _DeferringMouseCursorCls::createSession(int device) {
     assert(false, __s("_DeferringMouseCursor can not create a session"));
-    ;
+    throw make<UnimplementedErrorCls>();
 }
 
 String _DeferringMouseCursorCls::debugDescription() {

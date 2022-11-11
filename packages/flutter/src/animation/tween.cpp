@@ -50,9 +50,9 @@ T TweenCls<T>::lerp(double t) {
             as<T>(result);
             return true;
         } catch (NoSuchMethodError null) {
-            ;
+                    List<DiagnosticsNode> list1 = make<ListCls<>>();        list1.add(ArrayItem);        list1.add(ArrayItem);        if (is<Color>(begin) || is<Color>(end)) {            list1.add(ArrayItem);        } else {            list1.add(ArrayItem);        }throw FlutterErrorCls->fromParts(list1);
         } catch (TypeError null) {
-            ;
+                    List<DiagnosticsNode> list2 = make<ListCls<>>();        list2.add(ArrayItem);        list2.add(ArrayItem);        if (is<int>(begin) || is<int>(end)) {            list2.add(ArrayItem);        } else {            list2.add(ArrayItem);        }throw FlutterErrorCls->fromParts(list2);
         };
     }());
     return as<T>((as<dynamic>(begin)) + ((as<dynamic>(end)) - (as<dynamic>(begin))) * t);
@@ -75,7 +75,7 @@ String TweenCls<T>::toString() {
 }
 
 template<typename T>
-ReverseTweenCls<T>::ReverseTweenCls(Tween<T> parent) {
+ReverseTweenCls<T>::ReverseTweenCls(Tween<T> parent) : Tween<T>(parent->end, parent->begin) {
     {
         assert(parent != nullptr);
     }
@@ -107,7 +107,7 @@ int StepTweenCls::lerp(double t) {
 }
 
 template<typename T>
-ConstantTweenCls<T>::ConstantTweenCls(T value) {
+ConstantTweenCls<T>::ConstantTweenCls(T value) : Tween<T>(value, value) {
 }
 
 template<typename T>

@@ -172,7 +172,7 @@ Action<T> ActionsCls::find(BuildContext context, T intent) {
     assert([=] () {
         if (action == nullptr) {
             Type type = intent?->runtimeType or TCls;
-            ;
+            throw make<FlutterErrorCls>(__s("Unable to find an action for a $type in an $Actions widget in the given context.\n$Actions.find() was called on a context that doesn't contain an $Actions widget with a mapping for the given intent type.\nThe context used was:\n  $context\nThe intent type requested was:\n  $type"));
         }
         return true;
     }());
@@ -218,7 +218,7 @@ Object ActionsCls::invoke(BuildContext context, T intent) {
 });
     assert([=] () {
         if (!actionFound) {
-            ;
+            throw make<FlutterErrorCls>(__s("Unable to find an action for an Intent with type ${intent.runtimeType} in an $Actions widget in the given context.\n$Actions.invoke() was unable to find an $Actions widget that contained a mapping for the given intent, or the intent type isn't the same as the type argument to invoke (which is $T - try supplying a type argument to invoke if one was not given)\nThe context used was:\n  $context\nThe intent type requested was:\n  ${intent.runtimeType}"));
         }
         return true;
     }());

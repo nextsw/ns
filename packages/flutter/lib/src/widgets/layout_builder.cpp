@@ -180,7 +180,7 @@ void _RenderLayoutBuilderCls::paint(PaintingContext context, Offset offset) {
 bool _RenderLayoutBuilderCls::_debugThrowIfNotCheckingIntrinsics() {
     assert([=] () {
         if (!RenderObjectCls->debugCheckingIntrinsics) {
-            ;
+            throw make<FlutterErrorCls>(__s("LayoutBuilder does not support returning intrinsic dimensions.\nCalculating the intrinsic dimensions would require running the layout callback speculatively, which might mutate the live render object tree."));
         }
         return true;
     }());

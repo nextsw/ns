@@ -72,7 +72,7 @@ _DoubleLinkedQueueElement<E> _DoubleLinkedQueueElementCls<E>::_asNonSentinelEntr
 
 template<typename E>
 E _DoubleLinkedQueueSentinelCls<E>::element() {
-    ;
+    throw IterableElementErrorCls->noElement();
 }
 
 template<typename E>
@@ -90,7 +90,7 @@ Null _DoubleLinkedQueueSentinelCls<E>::_asNonSentinelEntry() {
 
 template<typename E>
 E _DoubleLinkedQueueSentinelCls<E>::_remove() {
-    ;
+    throw IterableElementErrorCls->noElement();
 }
 
 template<typename E>
@@ -168,7 +168,7 @@ bool DoubleLinkedQueueCls<E>::remove(Object o) {
         }
         bool equals = (elementEntry->element == o);
         if (!identical(this, elementEntry->_queue)) {
-            ;
+            throw make<ConcurrentModificationErrorCls>(this);
         }
         if (equals) {
             entry->_remove();
@@ -204,7 +204,7 @@ E DoubleLinkedQueueCls<E>::single() {
     if (identical(_sentinel->_nextLink, _sentinel->_previousLink)) {
         return _sentinel->_nextLink!->element;
     }
-    ;
+    throw IterableElementErrorCls->tooMany();
 }
 
 template<typename E>
@@ -247,7 +247,7 @@ void DoubleLinkedQueueCls<E>::forEachEntry(std::function<void(DoubleLinkedQueueE
             break;
         }
         if (!identical(element->_queue, this)) {
-            ;
+            throw make<ConcurrentModificationErrorCls>(this);
         }
         cursor = cursor->_nextLink!;
         action(element);
@@ -277,7 +277,7 @@ void DoubleLinkedQueueCls<E>::_filter(bool removeMatching, std::function<bool(E 
         }
         bool matches = test(elementEntry->element);
         if (!identical(this, elementEntry->_queue)) {
-            ;
+            throw make<ConcurrentModificationErrorCls>(this);
         }
         auto next = entry->_nextLink!;
         if (identical(removeMatching, matches)) {
@@ -298,7 +298,7 @@ bool _DoubleLinkedQueueIteratorCls<E>::moveNext() {
         return false;
     }
     if (!identical(_queue, nextElement->_queue)) {
-        ;
+        throw make<ConcurrentModificationErrorCls>(_queue);
     }
     _current = nextElement->element;
     _nextEntry = nextElement->_nextLink;
@@ -388,7 +388,7 @@ int ListQueueCls<E>::length() {
 template<typename E>
 E ListQueueCls<E>::first() {
     if (_head == _tail)     {
-        ;
+        throw IterableElementErrorCls->noElement();
     }
     return as<E>(_table[_head]);
 }
@@ -396,7 +396,7 @@ E ListQueueCls<E>::first() {
 template<typename E>
 E ListQueueCls<E>::last() {
     if (_head == _tail)     {
-        ;
+        throw IterableElementErrorCls->noElement();
     }
     return as<E>(_table[(_tail - 1) & (_table->length() - 1)]);
 }
@@ -404,10 +404,10 @@ E ListQueueCls<E>::last() {
 template<typename E>
 E ListQueueCls<E>::single() {
     if (_head == _tail)     {
-        ;
+        throw IterableElementErrorCls->noElement();
     }
     if (length() > 1)     {
-        ;
+        throw IterableElementErrorCls->tooMany();
     }
     return as<E>(_table[_head]);
 }
@@ -524,7 +524,7 @@ void ListQueueCls<E>::addFirst(E value) {
 template<typename E>
 E ListQueueCls<E>::removeFirst() {
     if (_head == _tail)     {
-        ;
+        throw IterableElementErrorCls->noElement();
     }
     _modificationCount++;
     E result = as<E>(_table[_head]);
@@ -536,7 +536,7 @@ E ListQueueCls<E>::removeFirst() {
 template<typename E>
 E ListQueueCls<E>::removeLast() {
     if (_head == _tail)     {
-        ;
+        throw IterableElementErrorCls->noElement();
     }
     _modificationCount++;
     _tail = (_tail - 1) & (_table->length() - 1);
@@ -596,7 +596,7 @@ int ListQueueCls<E>::_nextPowerOf2(int number) {
 template<typename E>
 void ListQueueCls<E>::_checkModification(int expectedModificationCount) {
     if (expectedModificationCount != _modificationCount) {
-        ;
+        throw make<ConcurrentModificationErrorCls>(this);
     }
 }
 

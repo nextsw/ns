@@ -17,7 +17,7 @@ void InternetAddressTypeCls::_from(int value) {
     if (value == unix->_value)     {
         return unix;
     }
-    ;
+    throw make<ArgumentErrorCls>(__s("Invalid type: $value"));
 }
 
 Future<ServerSocket> ServerSocketCls::bind(address , int backlog, int port, bool shared, bool v6Only) {

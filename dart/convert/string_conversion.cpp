@@ -135,7 +135,7 @@ ByteConversionSink _StringCallbackSinkCls::asUtf8Sink(bool allowMalformed) {
     return make<_Utf8StringSinkAdapterCls>(this, _stringSink, allowMalformed);
 }
 
-_StringCallbackSinkCls::_StringCallbackSinkCls(std::function<void(String )> _callback) {
+_StringCallbackSinkCls::_StringCallbackSinkCls(std::function<void(String )> _callback) : _StringSinkConversionSink<StringBuffer>(make<StringBufferCls>()) {
 }
 
 void _StringAdapterSinkCls::add(String str) {

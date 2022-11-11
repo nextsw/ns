@@ -1,6 +1,6 @@
 #include "unique_widget.hpp"
 template<typename T>
-UniqueWidgetCls<T>::UniqueWidgetCls(GlobalKey<T> key) {
+UniqueWidgetCls<T>::UniqueWidgetCls(GlobalKey<T> key) : StatefulWidget(key) {
     {
         assert(key != nullptr);
     }

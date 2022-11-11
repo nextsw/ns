@@ -37,7 +37,7 @@ Uint8List _UnicodeSubsetEncoderCls::convert(int end, int start, String stringVal
     for (;  < length; i++) {
         auto codeUnit = stringValue->codeUnitAt(start + i);
         if ((codeUnit & ~_subsetMask) != 0) {
-            ;
+            throw ArgumentErrorCls->value(stringValue, __s("string"), __s("Contains invalid characters."));
         }
         result[i] = codeUnit;
     }
@@ -52,7 +52,7 @@ Stream<List<int>> _UnicodeSubsetEncoderCls::bind(Stream<String> stream) {
     return super->bind(stream);
 }
 
-AsciiEncoderCls::AsciiEncoderCls() {
+AsciiEncoderCls::AsciiEncoderCls() : _UnicodeSubsetEncoder(_asciiMask) {
 }
 
 void _UnicodeSubsetEncoderSinkCls::close() {
@@ -64,7 +64,7 @@ void _UnicodeSubsetEncoderSinkCls::addSlice(int end, bool isLast, String source,
     for (;  < end; i++) {
         auto codeUnit = source->codeUnitAt(i);
         if ((codeUnit & ~_subsetMask) != 0) {
-            ;
+            throw make<ArgumentErrorCls>(__s("Source contains invalid character with code point: $codeUnit."));
         }
     }
     _sink->add(source->codeUnits()->sublist(start, end));
@@ -79,7 +79,7 @@ String _UnicodeSubsetDecoderCls::convert(List<int> bytes, int end, int start) {
         auto byte = bytes[i];
         if ((byte & ~_subsetMask) != 0) {
             if (!_allowInvalid) {
-                ;
+                throw make<FormatExceptionCls>(__s("Invalid value in input: $byte"));
             }
             return _convertInvalid(bytes, start, end);
         }
@@ -103,7 +103,7 @@ String _UnicodeSubsetDecoderCls::_convertInvalid(List<int> bytes, int end, int s
     return buffer->toString();
 }
 
-AsciiDecoderCls::AsciiDecoderCls(bool allowInvalid) {
+AsciiDecoderCls::AsciiDecoderCls(bool allowInvalid) : _UnicodeSubsetDecoder(allowInvalid, _asciiMask) {
 }
 
 ByteConversionSink AsciiDecoderCls::startChunkedConversion(Sink<String> sink) {
@@ -155,7 +155,7 @@ void _SimpleAsciiDecoderSinkCls::close() {
 void _SimpleAsciiDecoderSinkCls::add(List<int> source) {
     for (;  < source->length(); i++) {
         if ((source[i] & ~_asciiMask) != 0) {
-            ;
+            throw make<FormatExceptionCls>(__s("Source contains non-ASCII bytes."));
         }
     }
     _sink->add(StringCls->fromCharCodes(source));

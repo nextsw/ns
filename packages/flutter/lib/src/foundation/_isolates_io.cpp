@@ -20,7 +20,7 @@ Future<R> compute(ComputeCallback<Q, R> callback, String debugLabel, Q message) 
     };
     dynamic response = await completer->future;
     if (response == nullptr) {
-        ;
+        throw make<RemoteErrorCls>(__s("Isolate exited without result or error."), __s(""));
     }
     assert(is<List<dynamic>>(response));
     as<List<dynamic>>(response);

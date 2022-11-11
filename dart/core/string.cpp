@@ -5,7 +5,7 @@ RuneIterator RunesCls::iterator() {
 
 int RunesCls::last() {
     if (stringValue->length() == 0) {
-        ;
+        throw make<StateErrorCls>(__s("No elements."));
     }
     int length = stringValue->length();
     int code = stringValue->codeUnitAt(length - 1);
@@ -122,6 +122,6 @@ bool RuneIteratorCls::movePrevious() {
 
 void RuneIteratorCls::_checkSplitSurrogate(int index) {
     if (index > 0 &&  < stringValue->length() && _isLeadSurrogate(stringValue->codeUnitAt(index - 1)) && _isTrailSurrogate(stringValue->codeUnitAt(index))) {
-        ;
+        throw make<ArgumentErrorCls>(__s("Index inside surrogate pair: $index"));
     }
 }

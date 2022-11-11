@@ -463,7 +463,7 @@ void CustomSingleChildLayoutCls::updateRenderObject(BuildContext context, Render
     renderObject->delegate = delegate;
 }
 
-LayoutIdCls::LayoutIdCls(Unknown child, Object id, Key key) {
+LayoutIdCls::LayoutIdCls(Unknown child, Object id, Key key) : ParentDataWidget<MultiChildLayoutParentData>(key or <Object>make<ValueKeyCls>(id)) {
     {
         assert(child != nullptr);
         assert(id != nullptr);
@@ -830,7 +830,7 @@ RenderSliverToBoxAdapter SliverToBoxAdapterCls::createRenderObject(BuildContext 
     return make<RenderSliverToBoxAdapterCls>();
 }
 
-SliverPaddingCls::SliverPaddingCls(Unknown key, EdgeInsetsGeometry padding, Widget sliver) {
+SliverPaddingCls::SliverPaddingCls(Unknown key, EdgeInsetsGeometry padding, Widget sliver) : SingleChildRenderObjectWidget(sliver) {
     {
         assert(padding != nullptr);
     }
@@ -902,7 +902,7 @@ bool StackCls::_debugCheckHasDirectionality(BuildContext context) {
     return true;
 }
 
-IndexedStackCls::IndexedStackCls(Unknown alignment, Unknown children, int index, Unknown key, StackFit sizing, Unknown textDirection) {
+IndexedStackCls::IndexedStackCls(Unknown alignment, Unknown children, int index, Unknown key, StackFit sizing, Unknown textDirection) : Stack(sizing) {
 }
 
 RenderIndexedStack IndexedStackCls::createRenderObject(BuildContext context) {
@@ -1030,10 +1030,10 @@ bool FlexCls::_needTextDirection() {
     ;
 }
 
-RowCls::RowCls(Unknown children, Unknown crossAxisAlignment, Unknown key, Unknown mainAxisAlignment, Unknown mainAxisSize, Unknown textBaseline, Unknown textDirection, Unknown verticalDirection) {
+RowCls::RowCls(Unknown children, Unknown crossAxisAlignment, Unknown key, Unknown mainAxisAlignment, Unknown mainAxisSize, Unknown textBaseline, Unknown textDirection, Unknown verticalDirection) : Flex(AxisCls::horizontal) {
 }
 
-ColumnCls::ColumnCls(Unknown children, Unknown crossAxisAlignment, Unknown key, Unknown mainAxisAlignment, Unknown mainAxisSize, Unknown textBaseline, Unknown textDirection, Unknown verticalDirection) {
+ColumnCls::ColumnCls(Unknown children, Unknown crossAxisAlignment, Unknown key, Unknown mainAxisAlignment, Unknown mainAxisSize, Unknown textBaseline, Unknown textDirection, Unknown verticalDirection) : Flex(AxisCls::vertical) {
 }
 
 void FlexibleCls::applyParentData(RenderObject renderObject) {
@@ -1065,7 +1065,7 @@ void FlexibleCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     properties->add(make<IntPropertyCls>(__s("flex"), flex));
 }
 
-ExpandedCls::ExpandedCls(Unknown child, Unknown flex, Unknown key) {
+ExpandedCls::ExpandedCls(Unknown child, Unknown flex, Unknown key) : Flexible(FlexFitCls::tight) {
 }
 
 WrapCls::WrapCls(WrapAlignment alignment, Unknown children, Clip clipBehavior, WrapCrossAlignment crossAxisAlignment, Axis direction, Unknown key, WrapAlignment runAlignment, double runSpacing, double spacing, TextDirection textDirection, VerticalDirection verticalDirection) {
@@ -1094,7 +1094,7 @@ void WrapCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     properties->add(<VerticalDirection>make<EnumPropertyCls>(__s("verticalDirection"), verticalDirectionVerticalDirectionCls::down));
 }
 
-FlowCls::FlowCls(List<Widget> children, Clip clipBehavior, FlowDelegate delegate, Unknown key) {
+FlowCls::FlowCls(List<Widget> children, Clip clipBehavior, FlowDelegate delegate, Unknown key) : MultiChildRenderObjectWidget(RepaintBoundaryCls->wrapAll(children)) {
     {
         assert(delegate != nullptr);
         assert(clipBehavior != nullptr);
@@ -1112,7 +1112,7 @@ void FlowCls::updateRenderObject(BuildContext context, RenderFlow renderObject) 
     renderObject->clipBehavior = clipBehavior;
 }
 
-RichTextCls::RichTextCls(Unknown key, Locale locale, int maxLines, TextOverflow overflow, Color selectionColor, SelectionRegistrar selectionRegistrar, bool softWrap, StrutStyle strutStyle, InlineSpan text, TextAlign textAlign, TextDirection textDirection, TextHeightBehavior textHeightBehavior, double textScaleFactor, TextWidthBasis textWidthBasis) {
+RichTextCls::RichTextCls(Unknown key, Locale locale, int maxLines, TextOverflow overflow, Color selectionColor, SelectionRegistrar selectionRegistrar, bool softWrap, StrutStyle strutStyle, InlineSpan text, TextAlign textAlign, TextDirection textDirection, TextHeightBehavior textHeightBehavior, double textScaleFactor, TextWidthBasis textWidthBasis) : MultiChildRenderObjectWidget(_extractChildren(text)) {
     {
         assert(text != nullptr);
         assert(textAlign != nullptr);
@@ -1221,7 +1221,7 @@ bool DefaultAssetBundleCls::updateShouldNotify(DefaultAssetBundle oldWidget) {
     return bundle != oldWidget->bundle;
 }
 
-WidgetToRenderBoxAdapterCls::WidgetToRenderBoxAdapterCls(VoidCallback onBuild, VoidCallback onUnmount, RenderBox renderBox) {
+WidgetToRenderBoxAdapterCls::WidgetToRenderBoxAdapterCls(VoidCallback onBuild, VoidCallback onUnmount, RenderBox renderBox) : LeafRenderObjectWidget(make<GlobalObjectKeyCls>(renderBox)) {
     {
         assert(renderBox != nullptr);
     }
@@ -1544,7 +1544,7 @@ void _RenderColoredBoxCls::paint(PaintingContext context, Offset offset) {
     }
 }
 
-_RenderColoredBoxCls::_RenderColoredBoxCls(Color color) {
+_RenderColoredBoxCls::_RenderColoredBoxCls(Color color) : RenderProxyBoxWithHitTestBehavior(HitTestBehaviorCls::opaque) {
     {
         _color = color;
     }

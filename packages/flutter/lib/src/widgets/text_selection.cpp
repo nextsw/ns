@@ -818,7 +818,7 @@ bool _TextSelectionGestureDetectorStateCls::_isWithinDoubleTapTolerance(Offset s
     return difference->distance() <= kDoubleTapSlop;
 }
 
-ClipboardStatusNotifierCls::ClipboardStatusNotifierCls(ClipboardStatus value) {
+ClipboardStatusNotifierCls::ClipboardStatusNotifierCls(ClipboardStatus value) : ValueNotifier<ClipboardStatus>(value) {
 }
 
 bool ClipboardStatusNotifierCls::disposed() {

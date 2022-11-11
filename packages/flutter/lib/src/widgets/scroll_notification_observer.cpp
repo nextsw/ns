@@ -57,7 +57,7 @@ void ScrollNotificationObserverStateCls::dispose() {
 bool ScrollNotificationObserverStateCls::_debugAssertNotDisposed() {
     assert([=] () {
         if (_listeners == nullptr) {
-            ;
+            throw make<FlutterErrorCls>(__s("A $runtimeType was used after being disposed.\nOnce you have called dispose() on a $runtimeType, it can no longer be used."));
         }
         return true;
     }());

@@ -43,31 +43,31 @@ ByteData JSONMethodCodecCls::encodeMethodCall(MethodCall methodCall) {
 MethodCall JSONMethodCodecCls::decodeMethodCall(ByteData methodCall) {
     Object decoded = make<JSONMessageCodecCls>()->decodeMessage(methodCall);
     if (!is<Map>(decoded)) {
-        ;
+        throw make<FormatExceptionCls>(__s("Expected method call Map, got $decoded"));
     }
     Object method = decoded[__s("method")];
     Object arguments = decoded[__s("args")];
     if (is<String>(method)) {
         return make<MethodCallCls>(as<StringCls>(method), arguments);
     }
-    ;
+    throw make<FormatExceptionCls>(__s("Invalid method call: $decoded"));
 }
 
 dynamic JSONMethodCodecCls::decodeEnvelope(ByteData envelope) {
     Object decoded = make<JSONMessageCodecCls>()->decodeMessage(envelope);
     if (!is<List>(decoded)) {
-        ;
+        throw make<FormatExceptionCls>(__s("Expected envelope List, got $decoded"));
     }
     if (decoded->length == 1) {
         return decoded[0];
     }
     if (decoded->length == 3 && is<String>(decoded[0]) && (decoded[1] == nullptr || is<String>(decoded[1]))) {
-        ;
+        throw make<PlatformExceptionCls>(as<String>(decoded[0]), as<String>(decoded[1]), decoded[2]);
     }
     if (decoded->length == 4 && is<String>(decoded[0]) && (decoded[1] == nullptr || is<String>(decoded[1])) && (decoded[3] == nullptr || is<String>(decoded[3]))) {
-        ;
+        throw make<PlatformExceptionCls>(as<String>(decoded[0]), as<String>(decoded[1]), decoded[2], as<String>(decoded[3]));
     }
-    ;
+    throw make<FormatExceptionCls>(__s("Invalid envelope: $decoded"));
 }
 
 ByteData JSONMethodCodecCls::encodeSuccessEnvelope(Object result) {
@@ -95,7 +95,7 @@ dynamic StandardMessageCodecCls::decodeMessage(ByteData message) {
     ReadBuffer buffer = make<ReadBufferCls>(message);
     Object result = readValue(buffer);
     if (buffer->hasRemaining()) {
-        ;
+        throw make<FormatExceptionCls>(__s("Message corrupted"));
     }
     return result;
 }
@@ -184,7 +184,7 @@ void StandardMessageCodecCls::writeValue(WriteBuffer buffer, Object value) {
             writeValue(buffer, value);
         });
     } else {
-        ;
+        throw ArgumentErrorCls->value(value);
     }
 ;
     };
@@ -201,7 +201,7 @@ void StandardMessageCodecCls::writeValue(WriteBuffer buffer, Object value) {
 
 Object StandardMessageCodecCls::readValue(ReadBuffer buffer) {
     if (!buffer->hasRemaining()) {
-        ;
+        throw make<FormatExceptionCls>(__s("Message corrupted"));
     }
     int type = buffer->getUint8();
     return readValueOfType(type, buffer);
@@ -245,7 +245,7 @@ MethodCall StandardMethodCodecCls::decodeMethodCall(ByteData methodCall) {
     if (is<String>(method) && !buffer->hasRemaining()) {
         return make<MethodCallCls>(method, arguments);
     } else {
-        ;
+        throw make<FormatExceptionCls>(__s("Invalid method call"));
     }
 }
 
@@ -267,7 +267,7 @@ ByteData StandardMethodCodecCls::encodeErrorEnvelope(String code, Object details
 
 dynamic StandardMethodCodecCls::decodeEnvelope(ByteData envelope) {
     if (envelope->lengthInBytes == 0) {
-        ;
+        throw make<FormatExceptionCls>(__s("Expected envelope, got nothing"));
     }
     ReadBuffer buffer = make<ReadBufferCls>(envelope);
     if (buffer->getUint8() == 0) {
@@ -278,8 +278,8 @@ dynamic StandardMethodCodecCls::decodeEnvelope(ByteData envelope) {
     Object errorDetails = messageCodec->readValue(buffer);
     String errorStacktrace = (buffer->hasRemaining())? as<String>(messageCodec->readValue(buffer)) : nullptr;
     if (is<String>(errorCode) && (errorMessage == nullptr || is<String>(errorMessage)) && !buffer->hasRemaining()) {
-        ;
+        throw make<PlatformExceptionCls>(errorCode, as<String>(errorMessage), errorDetails, errorStacktrace);
     } else {
-        ;
+        throw make<FormatExceptionCls>(__s("Invalid envelope"));
     }
 }

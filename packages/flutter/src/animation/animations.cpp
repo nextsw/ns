@@ -240,7 +240,7 @@ double CurvedAnimationCls::value() {
             double transformedValue = activeCurve->transform(t);
             double roundedTransformedValue = transformedValue->round()->toDouble();
             if (roundedTransformedValue != t) {
-                ;
+                throw make<FlutterErrorCls>(__s("Invalid curve endpoint at $t.\nCurves must map 0.0 to near zero and 1.0 to near one but ${activeCurve.runtimeType} mapped $t to $transformedValue, which is near $roundedTransformedValue."));
             }
             return true;
         }());
@@ -410,7 +410,7 @@ void CompoundAnimationCls<T>::_maybeNotifyListeners() {
     }
 }
 
-AnimationMeanCls::AnimationMeanCls(Animation<double> left, Animation<double> right) {
+AnimationMeanCls::AnimationMeanCls(Animation<double> left, Animation<double> right) : CompoundAnimation<double>(left, right) {
 }
 
 double AnimationMeanCls::value() {
@@ -418,7 +418,7 @@ double AnimationMeanCls::value() {
 }
 
 template<typename T>
-AnimationMaxCls<T>::AnimationMaxCls(Animation<T> first, Animation<T> next) {
+AnimationMaxCls<T>::AnimationMaxCls(Animation<T> first, Animation<T> next) : CompoundAnimation<T>(first, next) {
 }
 
 template<typename T>
@@ -427,7 +427,7 @@ T AnimationMaxCls<T>::value() {
 }
 
 template<typename T>
-AnimationMinCls<T>::AnimationMinCls(Animation<T> first, Animation<T> next) {
+AnimationMinCls<T>::AnimationMinCls(Animation<T> first, Animation<T> next) : CompoundAnimation<T>(first, next) {
 }
 
 template<typename T>

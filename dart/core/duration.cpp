@@ -19,7 +19,7 @@ Duration DurationCls::*(num factor) {
 
 Duration DurationCls::~/(int quotient) {
     if (quotient == 0)     {
-        ;
+        throw make<IntegerDivisionByZeroExceptionCls>();
     }
     return DurationCls->_microseconds(_duration ~/ quotient);
 }

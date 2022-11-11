@@ -203,7 +203,7 @@ ClampingScrollPhysics ClampingScrollPhysicsCls::applyTo(ScrollPhysics ancestor) 
 double ClampingScrollPhysicsCls::applyBoundaryConditions(ScrollMetrics position, double value) {
     assert([=] () {
         if (value == position->pixels()) {
-            ;
+            throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem, ArrayItem, ArrayItem));
         }
         return true;
     }());

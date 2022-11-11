@@ -10,11 +10,11 @@ Uint8List SecurityContextCls::_protocolsToLengthEncoding(List<String> protocols)
         if (length > 0 && length <= 255) {
             expectedLength = length;
         } else {
-            ;
+            throw make<ArgumentErrorCls>(__s("Length of protocol must be between 1 and 255 (was: $length)."));
         }
     }
     if (expectedLength >= (1 << 13)) {
-        ;
+        throw make<ArgumentErrorCls>(__s("The maximum message length supported is 2^13-1."));
     }
     auto bytes = make<Uint8ListCls>(expectedLength);
     int bytesOffset = 0;
@@ -41,7 +41,7 @@ Uint8List SecurityContextCls::_protocolsToLengthEncodingNonAsciiBailout(List<Str
         addProtocol(bytes, protocols[i]);
     }
     if (bytes->length() >= (1 << 13)) {
-        ;
+        throw make<ArgumentErrorCls>(__s("The maximum message length supported is 2^13-1."));
     }
     return Uint8ListCls->fromList(bytes);
 }

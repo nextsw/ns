@@ -279,7 +279,7 @@ void PlatformMenuItemCls::debugFillProperties(DiagnosticPropertiesBuilder proper
     properties->add(make<FlagPropertyCls>(__s("enabled")onSelected != nullptr, __s("DISABLED")));
 }
 
-PlatformProvidedMenuItemCls::PlatformProvidedMenuItemCls(bool enabled, PlatformProvidedMenuItemType type) {
+PlatformProvidedMenuItemCls::PlatformProvidedMenuItemCls(bool enabled, PlatformProvidedMenuItemType type) : PlatformMenuItem(__s("")) {
 }
 
 bool PlatformProvidedMenuItemCls::hasMenu(PlatformProvidedMenuItemType menu) {
@@ -289,7 +289,7 @@ bool PlatformProvidedMenuItemCls::hasMenu(PlatformProvidedMenuItemType menu) {
 Iterable<Map<String, Object>> PlatformProvidedMenuItemCls::toChannelRepresentation(PlatformMenuDelegate delegate, MenuItemSerializableIdGenerator getId) {
     assert([=] () {
         if (!hasMenu(type)) {
-            ;
+            throw make<ArgumentErrorCls>(__s("Platform ${defaultTargetPlatform.name} has no platform provided menu for $type. Call PlatformProvidedMenuItem.hasMenu to determine this before instantiating one."));
         }
         return true;
     }());

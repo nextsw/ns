@@ -17,7 +17,7 @@ String SemanticsEventCls::toString() {
     return __s("${objectRuntimeType(this, 'SemanticsEvent')}(${pairs.join(', ')})");
 }
 
-AnnounceSemanticsEventCls::AnnounceSemanticsEventCls(String message, TextDirection textDirection) {
+AnnounceSemanticsEventCls::AnnounceSemanticsEventCls(String message, TextDirection textDirection) : SemanticsEvent(__s("announce")) {
     {
         assert(message != nullptr);
         assert(textDirection != nullptr);
@@ -28,21 +28,21 @@ Map<String, dynamic> AnnounceSemanticsEventCls::getDataMap() {
     Map<String, dynamic> map1 = make<MapCls<>>();map1.set(__s("message"), message);map1.set(__s("textDirection"), textDirection->index);return list1;
 }
 
-TooltipSemanticsEventCls::TooltipSemanticsEventCls(String message) {
+TooltipSemanticsEventCls::TooltipSemanticsEventCls(String message) : SemanticsEvent(__s("tooltip")) {
 }
 
 Map<String, dynamic> TooltipSemanticsEventCls::getDataMap() {
     Map<String, dynamic> map1 = make<MapCls<>>();map1.set(__s("message"), message);return list1;
 }
 
-LongPressSemanticsEventCls::LongPressSemanticsEventCls() {
+LongPressSemanticsEventCls::LongPressSemanticsEventCls() : SemanticsEvent(__s("longPress")) {
 }
 
 Map<String, dynamic> LongPressSemanticsEventCls::getDataMap() {
     return makeMap(makeList(), makeList();
 }
 
-TapSemanticEventCls::TapSemanticEventCls() {
+TapSemanticEventCls::TapSemanticEventCls() : SemanticsEvent(__s("tap")) {
 }
 
 Map<String, dynamic> TapSemanticEventCls::getDataMap() {

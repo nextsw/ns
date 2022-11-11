@@ -8,7 +8,7 @@ T ParametricCurveCls<T>::transform(double t) {
 
 template<typename T>
 T ParametricCurveCls<T>::transformInternal(double t) {
-    ;
+    throw make<UnimplementedErrorCls>();
 }
 
 template<typename T>

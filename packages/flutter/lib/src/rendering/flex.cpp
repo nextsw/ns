@@ -185,7 +185,7 @@ void RenderFlexCls::performLayout() {
     assert([=] () {
         FlutterError constraintsError = _debugCheckConstraints(constraints, true);
         if (constraintsError != nullptr) {
-            ;
+            throw constraintsError;
         }
         return true;
     }());
@@ -201,7 +201,7 @@ void RenderFlexCls::performLayout() {
         while (child != nullptr) {
             assert([=] () {
                 if (textBaseline() == nullptr) {
-                    ;
+                    throw make<FlutterErrorCls>(__s("To use FlexAlignItems.baseline, you must also specify which baseline to use using the "baseline" argument."));
                 }
                 return true;
             }());

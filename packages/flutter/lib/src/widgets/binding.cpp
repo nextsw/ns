@@ -362,7 +362,7 @@ Future<dynamic> WidgetsBindingCls::_handleNavigationInvocation(MethodCall method
 void WidgetsBindingCls::_handleBuildScheduled() {
     assert([=] () {
         if (debugBuildingDirtyElements) {
-            ;
+            throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem, ArrayItem));
         }
         return true;
     }());
@@ -390,7 +390,7 @@ void debugDumpApp() {
 }
 
 template<typename T>
-RenderObjectToWidgetAdapterCls<T>::RenderObjectToWidgetAdapterCls(Widget child, RenderObjectWithChildMixin<T> container, String debugShortDescription) {
+RenderObjectToWidgetAdapterCls<T>::RenderObjectToWidgetAdapterCls(Widget child, RenderObjectWithChildMixin<T> container, String debugShortDescription) : RenderObjectWidget(make<GlobalObjectKeyCls>(container)) {
 }
 
 template<typename T>

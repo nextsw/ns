@@ -1,6 +1,6 @@
 #include "splay_tree.hpp"
 template<typename K>
-_SplayTreeSetNodeCls<K>::_SplayTreeSetNodeCls(K key) {
+_SplayTreeSetNodeCls<K>::_SplayTreeSetNodeCls(K key) : _SplayTreeNode<K, _SplayTreeSetNode<K>>(key) {
 }
 
 template<typename K, typename V>
@@ -9,7 +9,7 @@ String _SplayTreeMapNodeCls<K, V>::toString() {
 }
 
 template<typename K, typename V>
-_SplayTreeMapNodeCls<K, V>::_SplayTreeMapNodeCls(K key, V value) {
+_SplayTreeMapNodeCls<K, V>::_SplayTreeMapNodeCls(K key, V value) : _SplayTreeNode<K, _SplayTreeMapNode<K, V>>(key) {
 }
 
 template<typename K, typename V>
@@ -305,7 +305,7 @@ V SplayTreeMapCls<K, V>::putIfAbsent(std::function<V()> ifAbsent, K key) {
     int splayCount = _splayCount;
     V value = ifAbsent();
     if (modificationCount != _modificationCount) {
-        ;
+        throw make<ConcurrentModificationErrorCls>(this);
     }
     if (splayCount != _splayCount) {
         comp = _splay(key);
@@ -323,7 +323,7 @@ V SplayTreeMapCls<K, V>::update(std::function<V()> ifAbsent, K key, std::functio
         auto splayCount = _splayCount;
         auto newValue = update(_root!->value);
         if (modificationCount != _modificationCount) {
-            ;
+            throw make<ConcurrentModificationErrorCls>(this);
         }
         if (splayCount != _splayCount) {
             _splay(key);
@@ -337,7 +337,7 @@ V SplayTreeMapCls<K, V>::update(std::function<V()> ifAbsent, K key, std::functio
         auto splayCount = _splayCount;
         auto newValue = ifAbsent();
         if (modificationCount != _modificationCount) {
-            ;
+            throw make<ConcurrentModificationErrorCls>(this);
         }
         if (splayCount != _splayCount) {
             comp = _splay(key);
@@ -345,7 +345,7 @@ V SplayTreeMapCls<K, V>::update(std::function<V()> ifAbsent, K key, std::functio
         _addNewRoot(make<_SplayTreeMapNodeCls>(key, newValue), comp);
         return newValue;
     }
-    ;
+    throw ArgumentErrorCls->value(key, __s("key"), __s("Key not in map."));
 }
 
 template<typename K, typename V>
@@ -444,7 +444,7 @@ K SplayTreeMapCls<K, V>::lastKey() {
 template<typename K, typename V>
 K SplayTreeMapCls<K, V>::lastKeyBefore(K key) {
     if (key == nullptr)     {
-        ;
+        throw make<ArgumentErrorCls>(key);
     }
     if (_root == nullptr)     {
         return nullptr;
@@ -468,7 +468,7 @@ K SplayTreeMapCls<K, V>::lastKeyBefore(K key) {
 template<typename K, typename V>
 K SplayTreeMapCls<K, V>::firstKeyAfter(K key) {
     if (key == nullptr)     {
-        ;
+        throw make<ArgumentErrorCls>(key);
     }
     if (_root == nullptr)     {
         return nullptr;
@@ -510,7 +510,7 @@ bool _SplayTreeIteratorCls<K, Node, T>::moveNext() {
             }
             return _path->isNotEmpty;
         }
-        ;
+        throw make<ConcurrentModificationErrorCls>(_tree);
     }
     if (_path->isEmpty)     {
         return false;
@@ -617,7 +617,7 @@ Iterator<MapEntry<K, V>> _SplayTreeMapEntryIterableCls<K, V>::iterator() {
 }
 
 template<typename K, typename Node>
-_SplayTreeKeyIteratorCls<K, Node>::_SplayTreeKeyIteratorCls(_SplayTree<K, Node> map) {
+_SplayTreeKeyIteratorCls<K, Node>::_SplayTreeKeyIteratorCls(_SplayTree<K, Node> map) : _SplayTreeIterator<K, Node, K>(map) {
 }
 
 template<typename K, typename Node>
@@ -626,7 +626,7 @@ K _SplayTreeKeyIteratorCls<K, Node>::_getValue(Node node) {
 }
 
 template<typename K, typename V>
-_SplayTreeValueIteratorCls<K, V>::_SplayTreeValueIteratorCls(SplayTreeMap<K, V> map) {
+_SplayTreeValueIteratorCls<K, V>::_SplayTreeValueIteratorCls(SplayTreeMap<K, V> map) : _SplayTreeIterator<K, _SplayTreeMapNode<K, V>, V>(map) {
 }
 
 template<typename K, typename V>
@@ -635,7 +635,7 @@ V _SplayTreeValueIteratorCls<K, V>::_getValue(_SplayTreeMapNode<K, V> node) {
 }
 
 template<typename K, typename V>
-_SplayTreeMapEntryIteratorCls<K, V>::_SplayTreeMapEntryIteratorCls(SplayTreeMap<K, V> tree) {
+_SplayTreeMapEntryIteratorCls<K, V>::_SplayTreeMapEntryIteratorCls(SplayTreeMap<K, V> tree) : _SplayTreeIterator<K, _SplayTreeMapNode<K, V>, MapEntry<K, V>>(tree) {
 }
 
 template<typename K, typename V>
@@ -647,7 +647,7 @@ template<typename K, typename V>
 void _SplayTreeMapEntryIteratorCls<K, V>::_replaceValue(V value) {
     assert(_path->isNotEmpty);
     if (_modificationCount != _tree->_modificationCount) {
-        ;
+        throw make<ConcurrentModificationErrorCls>(_tree);
     }
     if (_splayCount != _tree->_splayCount) {
         _rebuildPath(_path->last->key);
@@ -725,7 +725,7 @@ bool SplayTreeSetCls<E>::isNotEmpty() {
 template<typename E>
 E SplayTreeSetCls<E>::first() {
     auto _c1 = make<SplayTreeSetCls>(compare, isValidKey);_c1.addAll(elements);if (_count == 0)     {
-        ;
+        throw IterableElementErrorCls->noElement();
     }
     return _first!->key;
 }
@@ -733,7 +733,7 @@ E SplayTreeSetCls<E>::first() {
 template<typename E>
 E SplayTreeSetCls<E>::last() {
     if (_count == 0)     {
-        ;
+        throw IterableElementErrorCls->noElement();
     }
     return _last!->key;
 }
@@ -741,10 +741,10 @@ E SplayTreeSetCls<E>::last() {
 template<typename E>
 E SplayTreeSetCls<E>::single() {
     if (_count == 0)     {
-        ;
+        throw IterableElementErrorCls->noElement();
     }
     if (_count > 1)     {
-        ;
+        throw IterableElementErrorCls->tooMany();
     }
     return _root!->key;
 }
@@ -789,7 +789,7 @@ void SplayTreeSetCls<E>::retainAll(Iterable<Object> elements) {
     int modificationCount = _modificationCount;
     for (Object object : elements) {
         if (modificationCount != _modificationCount) {
-            ;
+            throw make<ConcurrentModificationErrorCls>(this);
         }
         if (_validKey(object) && _splay(as<E>(object)) == 0) {
             retainSet->add(_root!->key);

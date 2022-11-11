@@ -28,7 +28,7 @@ void ServiceExtensionResponseCls::_validateErrorCode(int errorCode) {
     if ((errorCode >= extensionErrorMin) && (errorCode <= extensionErrorMax)) {
         return;
     }
-    ;
+    throw ArgumentErrorCls->value(errorCode, __s("errorCode"), __s("Out of range"));
 }
 
 String ServiceExtensionResponseCls::_toString() {
@@ -38,10 +38,10 @@ String ServiceExtensionResponseCls::_toString() {
 void registerExtension(ServiceExtensionHandler handler, String method) {
     checkNotNullable(method, __s("method"));
     if (!method->startsWith(__s("ext."))) {
-        ;
+        throw ArgumentErrorCls->value(method, __s("method"), __s("Must begin with ext."));
     }
     if (_lookupExtension(method) != nullptr) {
-        ;
+        throw make<ArgumentErrorCls>(__s("Extension already registered: $method"));
     }
     checkNotNullable(handler, __s("handler"));
     _registerExtension(method, handler);

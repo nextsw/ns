@@ -268,12 +268,12 @@ void TextInputConnectionCls::_(TextInputClient _client)
 
 TextInputAction _toTextInputAction(String action) {
     ;
-    ;
+    throw FlutterErrorCls->fromParts(makeList(ArrayItem));
 }
 
 FloatingCursorDragState _toTextCursorAction(String state) {
     ;
-    ;
+    throw FlutterErrorCls->fromParts(makeList(ArrayItem));
 }
 
 RawFloatingCursorPoint _toTextPoint(Map<String, dynamic> encoded, FloatingCursorDragState state) {

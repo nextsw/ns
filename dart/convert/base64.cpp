@@ -82,7 +82,7 @@ String Base64CodecCls::normalize(int end, String source, int start) {
                 continue;
             }
         }
-        ;
+        throw make<FormatExceptionCls>(__s("Invalid base64 data"), source, sliceEnd);
     }
     if (buffer != nullptr) {
         buffer->write(source->substring(sliceStart, end));
@@ -91,7 +91,7 @@ String Base64CodecCls::normalize(int end, String source, int start) {
         } else {
             auto endLength = ((buffer->length() - 1) % 4) + 1;
             if (endLength == 1) {
-                ;
+                throw make<FormatExceptionCls>(__s("Invalid base64 encoding length "), source, end);
             }
             while ( < 4) {
                 buffer->write(__s("="));
@@ -106,7 +106,7 @@ String Base64CodecCls::normalize(int end, String source, int start) {
     } else {
         auto endLength = length % 4;
         if (endLength == 1) {
-            ;
+            throw make<FormatExceptionCls>(__s("Invalid base64 encoding length "), source, end);
         }
         if (endLength > 1) {
             source = source->replaceRange(end, end, (endLength == 2)? __s("==") : __s("="));
@@ -117,13 +117,13 @@ String Base64CodecCls::normalize(int end, String source, int start) {
 
 void Base64CodecCls::_checkPadding(int firstPadding, int length, int paddingCount, String source, int sourceEnd, int sourceIndex) {
     if (length % 4 != 0) {
-        ;
+        throw make<FormatExceptionCls>(__s("Invalid base64 padding, padded length must be multiple of four, is $length"), source, sourceEnd);
     }
     if (firstPadding + paddingCount != length) {
-        ;
+        throw make<FormatExceptionCls>(__s("Invalid base64 padding, '=' not at the end"), source, sourceIndex);
     }
     if (paddingCount > 2) {
-        ;
+        throw make<FormatExceptionCls>(__s("Invalid base64 padding, more than two '=' characters"), source, sourceIndex);
     }
 }
 
@@ -209,7 +209,7 @@ int _Base64EncoderCls::encodeChunk(String alphabet, List<int> bytes, int end, bo
         }
         i++;
     }
-    ;
+    throw ArgumentErrorCls->value(bytes, __s("Not a byte value at index $i: 0x${bytes[i].toRadixString(16)}"));
 }
 
 void _Base64EncoderCls::writeFinalChunk(String alphabet, int bits, int count, Uint8List output, int outputIndex) {
@@ -255,7 +255,7 @@ Uint8List _BufferCachingBase64EncoderCls::createBuffer(int bufferLength) {
     return Uint8ListCls->view(buffer->buffer, buffer->offsetInBytes, bufferLength);
 }
 
-_BufferCachingBase64EncoderCls::_BufferCachingBase64EncoderCls(bool urlSafe) {
+_BufferCachingBase64EncoderCls::_BufferCachingBase64EncoderCls(bool urlSafe) : _Base64Encoder(urlSafe) {
 }
 
 void _Base64EncoderSinkCls::add(List<int> source) {
@@ -268,7 +268,7 @@ void _Base64EncoderSinkCls::close() {
 
 void _Base64EncoderSinkCls::addSlice(int end, bool isLast, List<int> source, int start) {
     if (end == nullptr)     {
-        ;
+        throw ArgumentErrorCls->notNull(__s("end"));
     }
     RangeErrorCls->checkValidRange(start, end, source->length());
     _add(source, start, end, isLast);
@@ -337,10 +337,10 @@ Uint8List _Base64DecoderCls::decode(int end, String input, int start) {
 
 void _Base64DecoderCls::close(int end, String input) {
     if ( < _encodePaddingState(0)) {
-        ;
+        throw make<FormatExceptionCls>(__s("Missing padding character"), input, end);
     }
     if (_state > 0) {
-        ;
+        throw make<FormatExceptionCls>(__s("Invalid length, must be multiple of four"), input, end);
     }
     _state = _encodePaddingState(0);
 }
@@ -377,13 +377,13 @@ int _Base64DecoderCls::decodeChunk(int end, String input, int outIndex, Uint8Lis
             }
             if (count == 3) {
                 if ((bits & 0x03) != 0) {
-                    ;
+                    throw make<FormatExceptionCls>(__s("Invalid encoding before padding"), input, i);
                 }
                 output[outIndex++] = bits >> 10;
                 output[outIndex++] = bits >> 2;
             } else {
                 if ((bits & 0x0F) != 0) {
-                    ;
+                    throw make<FormatExceptionCls>(__s("Invalid encoding before padding"), input, i);
                 }
                 output[outIndex++] = bits >> 4;
             }
@@ -395,7 +395,7 @@ int _Base64DecoderCls::decodeChunk(int end, String input, int outIndex, Uint8Lis
             return _checkPadding(input, i + 1, end, state);
         }
 ;
-        }        ;
+        }        throw make<FormatExceptionCls>(__s("Invalid character"), input, i);
     }
     if (charOr >= 0 && charOr <= asciiMax) {
         return _encodeCharacterState(count, bits);
@@ -407,7 +407,7 @@ int _Base64DecoderCls::decodeChunk(int end, String input, int outIndex, Uint8Lis
             break;
         }
     }
-    ;
+    throw make<FormatExceptionCls>(__s("Invalid character"), input, i);
 }
 
 int _Base64DecoderCls::_encodeCharacterState(int bits, int count) {
@@ -543,7 +543,7 @@ int _Base64DecoderCls::_checkPadding(int end, String input, int start, int state
         }
     }
     if (start != end) {
-        ;
+        throw make<FormatExceptionCls>(__s("Invalid padding character"), input, start);
     }
     return _encodePaddingState(expectedPadding);
 }

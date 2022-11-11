@@ -102,7 +102,7 @@ T AsyncSnapshotCls<T>::requireData() {
     if (hasError()) {
         ErrorCls->throwWithStackTrace(error!, stackTrace!);
     }
-    ;
+    throw make<StateErrorCls>(__s("Snapshot has neither data nor error"));
 }
 
 template<typename T>

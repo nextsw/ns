@@ -141,10 +141,10 @@ void _RawSecureSocketCls::readEventsEnabled(bool value) {
 
 Uint8List _RawSecureSocketCls::read(int length) {
     if (length != nullptr &&  < 0) {
-        ;
+        throw make<ArgumentErrorCls>(__s("Invalid length parameter in SecureSocket.read (length: $length)"));
     }
     if (_closedRead) {
-        ;
+        throw make<SocketExceptionCls>(__s("Reading from a closed socket"));
     }
     if (_status != connectedStatus) {
         return nullptr;
@@ -155,16 +155,16 @@ Uint8List _RawSecureSocketCls::read(int length) {
 }
 
 SocketMessage _RawSecureSocketCls::readMessage(int count) {
-    ;
+    throw make<UnsupportedErrorCls>(__s("Message-passing not supported by secure sockets"));
 }
 
 int _RawSecureSocketCls::write(int bytes, List<int> data, int offset) {
     if (bytes != nullptr &&  < 0) {
-        ;
+        throw make<ArgumentErrorCls>(__s("Invalid bytes parameter in SecureSocket.read (bytes: $bytes)"));
     }
     offset = _fixOffset(offset);
     if ( < 0) {
-        ;
+        throw make<ArgumentErrorCls>(__s("Invalid offset parameter in SecureSocket.read (offset: $offset)"));
     }
     if (_closedWrite) {
         _controller->addError(make<SocketExceptionCls>(__s("Writing to a closed socket")));
@@ -183,7 +183,7 @@ int _RawSecureSocketCls::write(int bytes, List<int> data, int offset) {
 }
 
 int _RawSecureSocketCls::sendMessage(List<SocketControlMessage> controlMessages, int count, List<int> data, int offset) {
-    ;
+    throw make<UnsupportedErrorCls>(__s("Message-passing not supported by secure sockets"));
 }
 
 X509Certificate _RawSecureSocketCls::peerCertificate() {
@@ -208,7 +208,7 @@ void _RawSecureSocketCls::setRawOption(RawSocketOption option) {
 
 void _RawSecureSocketCls::renegotiate(bool requestClientCertificate, bool requireClientCertificate, bool useSessionCache) {
     if (_status != connectedStatus) {
-        ;
+        throw make<HandshakeExceptionCls>(__s("Called renegotiate on a non-connected socket"));
     }
     _status = handshakeStatus;
     _filterStatus->writeEmpty = false;
@@ -249,7 +249,7 @@ _RawSecureSocketCls::_RawSecureSocketCls(List<int> _bufferedData, RawSocket _soc
             _socketSubscription = subscription;
             if (_socketSubscription->isPaused) {
                 _socket->close();
-                ;
+                throw make<ArgumentErrorCls>(__s("Subscription passed to TLS upgrade is paused"));
             }
             dynamic s = _socket;
             if (s->_socket->closedReadEventSent) {
@@ -269,11 +269,11 @@ _RawSecureSocketCls::_RawSecureSocketCls(List<int> _bufferedData, RawSocket _soc
 
 void _RawSecureSocketCls::_verifyFields(host , bool requestClientCertificate, int requestedPort, bool requireClientCertificate) {
     if (!is<String>(host) && !is<InternetAddress>(host)) {
-        ;
+        throw make<ArgumentErrorCls>(__s("host is not a String or an InternetAddress"));
     }
     ArgumentErrorCls->checkNotNull(requestedPort, __s("requestedPort"));
     if ( < 0 || requestedPort > 65535) {
-        ;
+        throw make<ArgumentErrorCls>(__s("requestedPort is not in the range 0..65535"));
     }
     ArgumentErrorCls->checkNotNull(requestClientCertificate, __s("requestClientCertificate"));
     ArgumentErrorCls->checkNotNull(requireClientCertificate, __s("requireClientCertificate"));
@@ -481,7 +481,7 @@ Future<void> _RawSecureSocketCls::_tryFilter() {
                 if (_status == handshakeStatus) {
                     _secureFilter!->handshake();
                     if (_status == handshakeStatus) {
-                        ;
+                        throw make<HandshakeExceptionCls>(__s("Connection terminated during handshake"));
                     }
                 }
                 _closeHandler();

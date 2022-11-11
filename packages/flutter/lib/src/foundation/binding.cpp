@@ -37,22 +37,22 @@ template<typename T>
 T BindingBaseCls::checkInstance(T instance) {
     assert([=] () {
         if (_debugInitializedType == nullptr && instance == nullptr) {
-            ;
+            throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem));
         }
         if (instance == nullptr) {
             assert(_debugInitializedType == nullptr);
-            ;
+            throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem));
         }
         try {
             assert(instance != nullptr);
             if (instance->_debugConstructed && _debugInitializedType == nullptr) {
-                ;
+                throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem, ArrayItem, ArrayItem));
             }
             if (!instance->_debugConstructed) {
-                ;
+                throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem, ArrayItem));
             }
         } catch (NoSuchMethodError null) {
-            ;
+            throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem, ArrayItem));
         };
         return true;
     }());
@@ -239,7 +239,7 @@ Future<void> _exitApplication() {
 DebugReassembleConfigCls::DebugReassembleConfigCls(String widgetName) {
     {
         if (!kDebugMode) {
-            ;
+            throw make<FlutterErrorCls>(__s("Cannot instantiate DebugReassembleConfig in profile or release mode."));
         }
     }
 }

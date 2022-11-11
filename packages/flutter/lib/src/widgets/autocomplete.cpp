@@ -250,7 +250,7 @@ bool _AutocompleteCallbackActionCls<T>::consumesKey(T intent) {
     return enabled;
 }
 
-AutocompleteHighlightedOptionCls::AutocompleteHighlightedOptionCls(Unknown child, ValueNotifier<int> highlightIndexNotifier, Unknown key) {
+AutocompleteHighlightedOptionCls::AutocompleteHighlightedOptionCls(Unknown child, ValueNotifier<int> highlightIndexNotifier, Unknown key) : InheritedNotifier<ValueNotifier<int>>(highlightIndexNotifier) {
 }
 
 int AutocompleteHighlightedOptionCls::of(BuildContext context) {

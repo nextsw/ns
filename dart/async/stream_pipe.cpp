@@ -78,7 +78,7 @@ void _ForwardingStreamCls<S, T>::_handleDone(_EventSink<T> sink) {
 }
 
 template<typename S, typename T>
-_ForwardingStreamSubscriptionCls<S, T>::_ForwardingStreamSubscriptionCls(_ForwardingStream<S, T> _stream, bool cancelOnError, std::function<void(T data)> onData, std::function<void()> onDone, std::function<void ()> onError) {
+_ForwardingStreamSubscriptionCls<S, T>::_ForwardingStreamSubscriptionCls(_ForwardingStream<S, T> _stream, bool cancelOnError, std::function<void(T data)> onData, std::function<void()> onDone, std::function<void ()> onError) : _BufferingStreamSubscription<T>(onData, onError, onDone, cancelOnError) {
     {
         _subscription = _stream->_source->listen(_handleData_handleError, _handleDone);
     }
@@ -145,7 +145,7 @@ void _addErrorWithReplacement(Object error, _EventSink sink, StackTrace stackTra
 }
 
 template<typename T>
-_WhereStreamCls<T>::_WhereStreamCls(Stream<T> source, std::function<bool(T value)> test) {
+_WhereStreamCls<T>::_WhereStreamCls(Stream<T> source, std::function<bool(T value)> test) : _ForwardingStream<T, T>(source) {
     {
         _test = test;
     }
@@ -166,7 +166,7 @@ void _WhereStreamCls<T>::_handleData(T inputEvent, _EventSink<T> sink) {
 }
 
 template<typename S, typename T>
-_MapStreamCls<S, T>::_MapStreamCls(Stream<S> source, std::function<T(S event)> transform) {
+_MapStreamCls<S, T>::_MapStreamCls(Stream<S> source, std::function<T(S event)> transform) : _ForwardingStream<S, T>(source) {
     {
         this->_transform = transform;
     }
@@ -185,7 +185,7 @@ void _MapStreamCls<S, T>::_handleData(S inputEvent, _EventSink<T> sink) {
 }
 
 template<typename S, typename T>
-_ExpandStreamCls<S, T>::_ExpandStreamCls(std::function<Iterable<T>(S event)> expand, Stream<S> source) {
+_ExpandStreamCls<S, T>::_ExpandStreamCls(std::function<Iterable<T>(S event)> expand, Stream<S> source) : _ForwardingStream<S, T>(source) {
     {
         this->_expand = expand;
     }
@@ -203,7 +203,7 @@ void _ExpandStreamCls<S, T>::_handleData(S inputEvent, _EventSink<T> sink) {
 }
 
 template<typename T>
-_HandleErrorStreamCls<T>::_HandleErrorStreamCls(std::function<void(Object , StackTrace )> _onError, std::function<bool(Object )> _test, Stream<T> source) {
+_HandleErrorStreamCls<T>::_HandleErrorStreamCls(std::function<void(Object , StackTrace )> _onError, std::function<bool(Object )> _test, Stream<T> source) : _ForwardingStream<T, T>(source) {
 }
 
 template<typename T>
@@ -240,7 +240,7 @@ void _HandleErrorStreamCls<T>::_handleError(Object error, _EventSink<T> sink, St
 }
 
 template<typename T>
-_TakeStreamCls<T>::_TakeStreamCls(int count, Stream<T> source) {
+_TakeStreamCls<T>::_TakeStreamCls(int count, Stream<T> source) : _ForwardingStream<T, T>(source) {
     {
         this->_count = count;
     }
@@ -270,11 +270,11 @@ void _TakeStreamCls<T>::_handleData(T inputEvent, _EventSink<T> sink) {
 }
 
 template<typename S, typename T>
-_StateStreamSubscriptionCls<S, T>::_StateStreamSubscriptionCls(S _subState, bool cancelOnError, std::function<void(T data)> onData, std::function<void()> onDone, std::function<void ()> onError, _ForwardingStream<T, T> stream) {
+_StateStreamSubscriptionCls<S, T>::_StateStreamSubscriptionCls(S _subState, bool cancelOnError, std::function<void(T data)> onData, std::function<void()> onDone, std::function<void ()> onError, _ForwardingStream<T, T> stream) : _ForwardingStreamSubscription<T, T>(stream, onData, onError, onDone, cancelOnError) {
 }
 
 template<typename T>
-_TakeWhileStreamCls<T>::_TakeWhileStreamCls(Stream<T> source, std::function<bool(T value)> test) {
+_TakeWhileStreamCls<T>::_TakeWhileStreamCls(Stream<T> source, std::function<bool(T value)> test) : _ForwardingStream<T, T>(source) {
     {
         this->_test = test;
     }
@@ -298,7 +298,7 @@ void _TakeWhileStreamCls<T>::_handleData(T inputEvent, _EventSink<T> sink) {
 }
 
 template<typename T>
-_SkipStreamCls<T>::_SkipStreamCls(int count, Stream<T> source) {
+_SkipStreamCls<T>::_SkipStreamCls(int count, Stream<T> source) : _ForwardingStream<T, T>(source) {
     {
         this->_count = count;
     }
@@ -324,7 +324,7 @@ void _SkipStreamCls<T>::_handleData(T inputEvent, _EventSink<T> sink) {
 }
 
 template<typename T>
-_SkipWhileStreamCls<T>::_SkipWhileStreamCls(Stream<T> source, std::function<bool(T value)> test) {
+_SkipWhileStreamCls<T>::_SkipWhileStreamCls(Stream<T> source, std::function<bool(T value)> test) : _ForwardingStream<T, T>(source) {
     {
         this->_test = test;
     }
@@ -358,7 +358,7 @@ void _SkipWhileStreamCls<T>::_handleData(T inputEvent, _EventSink<T> sink) {
 }
 
 template<typename T>
-_DistinctStreamCls<T>::_DistinctStreamCls(std::function<bool(T a, T b)> equals, Stream<T> source) {
+_DistinctStreamCls<T>::_DistinctStreamCls(std::function<bool(T a, T b)> equals, Stream<T> source) : _ForwardingStream<T, T>(source) {
     {
         _equals = equals;
     }

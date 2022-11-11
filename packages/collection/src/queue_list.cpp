@@ -89,7 +89,7 @@ void QueueListCls<E>::addFirst(E element) {
 template<typename E>
 E QueueListCls<E>::removeFirst() {
     if (_head == _tail)     {
-        ;
+        throw make<StateErrorCls>(__s("No element"));
     }
     auto result = as<E>(_table[_head]);
     _table[_head] = nullptr;
@@ -100,7 +100,7 @@ E QueueListCls<E>::removeFirst() {
 template<typename E>
 E QueueListCls<E>::removeLast() {
     if (_head == _tail)     {
-        ;
+        throw make<StateErrorCls>(__s("No element"));
     }
     _tail = (_tail - 1) & (_table->length() - 1);
     auto result = as<E>(_table[_tail]);
@@ -116,10 +116,10 @@ int QueueListCls<E>::length() {
 template<typename E>
 void QueueListCls<E>::length(int value) {
     if ( < 0)     {
-        ;
+        throw make<RangeErrorCls>(__s("Length $value may not be negative."));
     }
     if (value > length() && !is<E>(nullptr)) {
-        ;
+        throw make<UnsupportedErrorCls>(__s("The length can only be increased when the element type is nullable, but the current element type is `$E`."));
     }
     auto delta = value - length();
     if (delta >= 0) {
@@ -143,7 +143,7 @@ void QueueListCls<E>::length(int value) {
 template<typename E>
 E QueueListCls<E>::[](int index) {
     if ( < 0 || index >= length()) {
-        ;
+        throw make<RangeErrorCls>(__s("Index $index must be in the range [0..$length)."));
     }
     return as<E>(_table[(_head + index) & (_table->length() - 1)]);
 }
@@ -151,7 +151,7 @@ E QueueListCls<E>::[](int index) {
 template<typename E>
 void QueueListCls<E>::[]=(int index, E value) {
     if ( < 0 || index >= length()) {
-        ;
+        throw make<RangeErrorCls>(__s("Index $index must be in the range [0..$length)."));
     }
     _table[(_head + index) & (_table->length() - 1)] = value;
 }

@@ -44,7 +44,7 @@ void CastStreamSubscriptionCls<S, T>::onError(std::function<void ()> handleError
         if (is<std::function<void(Object )>>(handleError)) {
         _handleError = _zone-><dynamic, Object>registerUnaryCallback(handleError);
     } else {
-        ;
+        throw make<ArgumentErrorCls>(__s("handleError callback must take either an Object (the error), or both an Object (the error) and a StackTrace."));
     }
 ;
     };

@@ -689,7 +689,7 @@ bool RawScrollbarStateCls<T>::_debugCheckHasValidScrollPosition() {
     }    assert(scrollController != nullptr, __s("A ScrollController is required when $when. ${tryPrimary ? 'The Scrollbar was not provided a ScrollController, '      'and attempted to use the PrimaryScrollController, but none was found.' :''}"));
     assert([=] () {
         if (!scrollController!->hasClients()) {
-            ;
+            throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem, ArrayItem));
         }
         return true;
     }());
@@ -700,7 +700,7 @@ bool RawScrollbarStateCls<T>::_debugCheckHasValidScrollPosition() {
             if (scrollController == nullptr || scrollController->positions()->length() <= 1) {
                 throw;
             }
-            ;
+            throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem, ArrayItem));
         };
         return true;
     }());
@@ -848,7 +848,7 @@ bool _ThumbPressGestureRecognizerCls::isPointerAllowed(PointerDownEvent event) {
     return super->isPointerAllowed(event);
 }
 
-_ThumbPressGestureRecognizerCls::_ThumbPressGestureRecognizerCls(GlobalKey customPaintKey, Object debugOwner, Duration pressDuration) {
+_ThumbPressGestureRecognizerCls::_ThumbPressGestureRecognizerCls(GlobalKey customPaintKey, Object debugOwner, Duration pressDuration) : LongPressGestureRecognizer(pressDuration) {
     {
         _customPaintKey = customPaintKey;
     }
@@ -871,7 +871,7 @@ bool _TrackTapGestureRecognizerCls::isPointerAllowed(PointerDownEvent event) {
     return super->isPointerAllowed(event);
 }
 
-_TrackTapGestureRecognizerCls::_TrackTapGestureRecognizerCls(GlobalKey customPaintKey, Object debugOwner) {
+_TrackTapGestureRecognizerCls::_TrackTapGestureRecognizerCls(GlobalKey customPaintKey, Object debugOwner) : TapGestureRecognizer(debugOwner) {
     {
         _customPaintKey = customPaintKey;
     }

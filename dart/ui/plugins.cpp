@@ -32,5 +32,5 @@ std::function<void ()> PluginUtilitiesCls::getCallbackFromHandle(CallbackHandle 
 }
 
 void PluginUtilitiesCls::_() {
-    return ;
+    return throw make<UnsupportedErrorCls>(__s("Namespace"));
 }

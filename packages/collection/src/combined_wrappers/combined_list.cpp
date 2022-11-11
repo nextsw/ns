@@ -28,7 +28,7 @@ T CombinedListViewCls<T>::[](int index) {
         }
         index = list->length();
     }
-    ;
+    throw RangeErrorCls->index(initialIndex, this, __s("index"), nullptr, length);
 }
 
 template<typename T>
@@ -58,5 +58,5 @@ void CombinedListViewCls<T>::retainWhere(std::function<bool(T )> test) {
 
 template<typename T>
 Never CombinedListViewCls<T>::_throw() {
-    ;
+    throw make<UnsupportedErrorCls>(__s("Cannot modify an unmodifiable List"));
 }

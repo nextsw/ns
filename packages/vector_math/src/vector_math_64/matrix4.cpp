@@ -137,7 +137,7 @@ void Matrix4Cls::inverted(Matrix4 other) {
     auto _c1 = Matrix4Cls->zero();_c1.setValues(values[0], values[1], values[2], values[3], values[4], values[5], values[6], values[7], values[8], values[9], values[10], values[11], values[12], values[13], values[14], values[15]);auto _c1 = Matrix4Cls->zero();_c1.setIdentity();auto _c1 = Matrix4Cls->zero();_c1.setFrom(other);Unknown r = Matrix4Cls->zero();
     Unknown determinant = r->copyInverse(other);
     if (determinant == 0.0) {
-        ;
+        throw ArgumentErrorCls->value(other, __s("other"), __s("Matrix cannot be inverted"));
     }
     return r;
 }
@@ -494,7 +494,7 @@ dynamic Matrix4Cls::*(dynamic arg) {
     if (is<Matrix4>(arg)) {
         return multiplied(as<Matrix4Cls>(arg));
     }
-    ;
+    throw make<ArgumentErrorCls>(arg);
 }
 
 Matrix4 Matrix4Cls::+(Matrix4 arg) {
@@ -525,7 +525,7 @@ void Matrix4Cls::translate(dynamic x, double y, double z) {
         ty = y;
         tz = z;
     } else {
-        ;
+        throw make<UnimplementedErrorCls>();
     }
 ;
     };
@@ -559,7 +559,7 @@ void Matrix4Cls::leftTranslate(dynamic x, double y, double z) {
         ty = y;
         tz = z;
     } else {
-        ;
+        throw make<UnimplementedErrorCls>();
     }
 ;
     };
@@ -708,7 +708,7 @@ void Matrix4Cls::scale(dynamic x, double y, double z) {
         sy = y or as<doubleCls>(x);
         sz = z or as<doubleCls>(x);
     } else {
-        ;
+        throw make<UnimplementedErrorCls>();
     }
 ;
     };

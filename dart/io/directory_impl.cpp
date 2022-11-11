@@ -8,7 +8,7 @@ String _DirectoryCls::path() {
 Directory _DirectoryCls::current() {
     auto result = _current(_NamespaceCls::_namespace);
     if (is<OSError>(result)) {
-        ;
+        throw make<FileSystemExceptionCls>(__s("Getting current working directory failed"), __s(""), as<OSErrorCls>(result));
     }
     return make<_DirectoryCls>(result);
 }
@@ -24,19 +24,19 @@ void _DirectoryCls::current(path ) {
         if (is<String>(path)) {
         _rawPath = FileSystemEntityCls->_toUtf8Array(as<StringCls>(path));
     } else {
-        ;
+        throw make<ArgumentErrorCls>(__s("${Error.safeToString(path)} is not a String or Directory"));
     }
 ;
     };
     }    if (!_EmbedderConfigCls->_mayChdir) {
-        ;
+        throw make<UnsupportedErrorCls>(__s("This embedder disallows setting Directory.current"));
     }
     auto result = _setCurrent(_NamespaceCls::_namespace, _rawPath);
     if (is<ArgumentError>(result))     {
-        ;
+        throw result;
     }
     if (is<OSError>(result)) {
-        ;
+        throw make<FileSystemExceptionCls>(__s("Setting current working directory failed"), path->toString(), as<OSErrorCls>(result));
     }
 }
 
@@ -47,7 +47,7 @@ Uri _DirectoryCls::uri() {
 Future<bool> _DirectoryCls::exists() {
     return _FileCls->_dispatchWithNamespace(_IOServiceCls::directoryExists, makeList(ArrayItem, ArrayItem))->then([=] (Unknown  response) {
         if (_isErrorResponse(response)) {
-            ;
+            throw _exceptionOrErrorFromResponse(response, __s("Exists failed"));
         }
         return response == 1;
     });
@@ -56,7 +56,7 @@ Future<bool> _DirectoryCls::exists() {
 bool _DirectoryCls::existsSync() {
     auto result = _exists(_NamespaceCls::_namespace, _rawPath);
     if (is<OSError>(result)) {
-        ;
+        throw make<FileSystemExceptionCls>(__s("Exists failed"), path(), as<OSErrorCls>(result));
     }
     return (result == 1);
 }
@@ -82,7 +82,7 @@ Future<Directory> _DirectoryCls::create(bool recursive) {
     } else {
         return _FileCls->_dispatchWithNamespace(_IOServiceCls::directoryCreate, makeList(ArrayItem, ArrayItem))->then([=] (Unknown  response) {
             if (_isErrorResponse(response)) {
-                ;
+                throw _exceptionOrErrorFromResponse(response, __s("Creation failed"));
             }
             return this;
         });
@@ -100,7 +100,7 @@ void _DirectoryCls::createSync(bool recursive) {
     }
     auto result = _create(_NamespaceCls::_namespace, _rawPath);
     if (is<OSError>(result)) {
-        ;
+        throw make<FileSystemExceptionCls>(__s("Creation failed"), path(), as<OSErrorCls>(result));
     }
 }
 
@@ -111,7 +111,7 @@ Directory _DirectoryCls::systemTemp() {
 Future<Directory> _DirectoryCls::createTemp(String prefix) {
     prefix = __s("");
     if (path() == __s("")) {
-        ;
+        throw make<ArgumentErrorCls>(__s("Directory.createTemp called with an empty path. To use the system temp directory, use Directory.systemTemp"));
     }
     String fullPrefix;
     if (path()->endsWith(__s("/")) || (PlatformCls::isWindows && path()->endsWith(__s("\\")))) {
@@ -121,7 +121,7 @@ Future<Directory> _DirectoryCls::createTemp(String prefix) {
     }
     return _FileCls->_dispatchWithNamespace(_IOServiceCls::directoryCreateTemp, makeList(ArrayItem, ArrayItem))->then([=] (Unknown  response) {
         if (_isErrorResponse(response)) {
-            ;
+            throw _exceptionOrErrorFromResponse(response, __s("Creation of temporary directory failed"));
         }
         return make<DirectoryCls>(response);
     });
@@ -130,7 +130,7 @@ Future<Directory> _DirectoryCls::createTemp(String prefix) {
 Directory _DirectoryCls::createTempSync(String prefix) {
     prefix = __s("");
     if (path() == __s("")) {
-        ;
+        throw make<ArgumentErrorCls>(__s("Directory.createTemp called with an empty path. To use the system temp directory, use Directory.systemTemp"));
     }
     String fullPrefix;
     if (path()->endsWith(__s("/")) || (PlatformCls::isWindows && path()->endsWith(__s("\\")))) {
@@ -140,7 +140,7 @@ Directory _DirectoryCls::createTempSync(String prefix) {
     }
     auto result = _createTemp(_NamespaceCls::_namespace, FileSystemEntityCls->_toUtf8Array(fullPrefix));
     if (is<OSError>(result)) {
-        ;
+        throw make<FileSystemExceptionCls>(__s("Creation of temporary directory failed"), fullPrefix, as<OSErrorCls>(result));
     }
     return make<DirectoryCls>(result);
 }
@@ -148,7 +148,7 @@ Directory _DirectoryCls::createTempSync(String prefix) {
 Future<Directory> _DirectoryCls::rename(String newPath) {
     return _FileCls->_dispatchWithNamespace(_IOServiceCls::directoryRename, makeList(ArrayItem, ArrayItem, ArrayItem))->then([=] (Unknown  response) {
         if (_isErrorResponse(response)) {
-            ;
+            throw _exceptionOrErrorFromResponse(response, __s("Rename failed"));
         }
         return make<DirectoryCls>(newPath);
     });
@@ -158,7 +158,7 @@ Directory _DirectoryCls::renameSync(String newPath) {
     ArgumentErrorCls->checkNotNull(newPath, __s("newPath"));
     auto result = _rename(_NamespaceCls::_namespace, _rawPath, newPath);
     if (is<OSError>(result)) {
-        ;
+        throw make<FileSystemExceptionCls>(__s("Rename failed"), path(), as<OSErrorCls>(result));
     }
     return make<DirectoryCls>(newPath);
 }
@@ -189,7 +189,7 @@ _DirectoryCls::_DirectoryCls(String path) {
 Future<Directory> _DirectoryCls::_delete(bool recursive) {
     return _FileCls->_dispatchWithNamespace(_IOServiceCls::directoryDelete, makeList(ArrayItem, ArrayItem, ArrayItem))->then([=] (Unknown  response) {
         if (_isErrorResponse(response)) {
-            ;
+            throw _exceptionOrErrorFromResponse(response, __s("Deletion failed"));
         }
         return this;
     });
@@ -198,7 +198,7 @@ Future<Directory> _DirectoryCls::_delete(bool recursive) {
 void _DirectoryCls::_deleteSync(bool recursive) {
     auto result = _deleteNative(_NamespaceCls::_namespace, _rawPath, recursive);
     if (is<OSError>(result)) {
-        ;
+        throw make<FileSystemExceptionCls>(__s("Deletion failed"), path(), as<OSErrorCls>(result));
     }
 }
 

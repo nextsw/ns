@@ -488,7 +488,7 @@ int SliverMultiBoxAdaptorElementCls::childCount() {
                 if ( < max) {
                 hi = max;
             } else {
-                ;
+                throw make<FlutterErrorCls>(__s("Could not find the number of children in ${adaptorWidget.delegate}.\nThe childCount getter was called (implying that the delegate's builder returned null for a positive index), but even building the child with index $hi (the maximum possible integer) did not return null. Consider implementing childCount to avoid the cost of searching for the final child."));
             }
 ;
             }        }
@@ -584,7 +584,7 @@ double SliverMultiBoxAdaptorElementCls::_extrapolateMaxScrollOffset(int childCou
     return trailingScrollOffset + averageExtent * remainingCount;
 }
 
-SliverOpacityCls::SliverOpacityCls(bool alwaysIncludeSemantics, Unknown key, double opacity, Widget sliver) {
+SliverOpacityCls::SliverOpacityCls(bool alwaysIncludeSemantics, Unknown key, double opacity, Widget sliver) : SingleChildRenderObjectWidget(sliver) {
     {
         assert(opacity != nullptr && opacity >= 0.0 && opacity <= 1.0);
         assert(alwaysIncludeSemantics != nullptr);
@@ -605,7 +605,7 @@ void SliverOpacityCls::debugFillProperties(DiagnosticPropertiesBuilder propertie
     properties->add(make<FlagPropertyCls>(__s("alwaysIncludeSemantics")alwaysIncludeSemantics, __s("alwaysIncludeSemantics")));
 }
 
-SliverIgnorePointerCls::SliverIgnorePointerCls(bool ignoring, bool ignoringSemantics, Unknown key, Widget sliver) {
+SliverIgnorePointerCls::SliverIgnorePointerCls(bool ignoring, bool ignoringSemantics, Unknown key, Widget sliver) : SingleChildRenderObjectWidget(sliver) {
     {
         assert(ignoring != nullptr);
     }
@@ -625,7 +625,7 @@ void SliverIgnorePointerCls::debugFillProperties(DiagnosticPropertiesBuilder pro
     properties->add(<bool>make<DiagnosticsPropertyCls>(__s("ignoringSemantics"), ignoringSemanticsnullptr));
 }
 
-SliverOffstageCls::SliverOffstageCls(Unknown key, bool offstage, Widget sliver) {
+SliverOffstageCls::SliverOffstageCls(Unknown key, bool offstage, Widget sliver) : SingleChildRenderObjectWidget(sliver) {
     {
         assert(offstage != nullptr);
     }

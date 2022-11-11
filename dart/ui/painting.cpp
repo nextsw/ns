@@ -422,7 +422,7 @@ bool ImageCls::debugDisposed() {
         disposed = _disposed;
         return true;
     }());
-    return disposed or ();
+    return disposed or (throw make<StateErrorCls>(__s("Image.debugDisposed is only available when asserts are enabled.")));
 }
 
 Future<ByteData> ImageCls::toByteData(ImageByteFormat format) {
@@ -443,7 +443,7 @@ List<StackTrace> ImageCls::debugGetOpenHandleStackTraces() {
 
 Image ImageCls::clone() {
     if (_disposed) {
-        ;
+        throw make<StateErrorCls>(__s("Cannot clone a disposed image.\nThe clone() method of a previously-disposed Image was called. Once an Image object has been disposed, it can no longer be used to create handles, as the underlying data may have been released."));
     }
     assert(!_image->_disposed);
     return ImageCls->_(_image, width, height);
@@ -502,7 +502,7 @@ Future<FrameInfo> CodecCls::getNextFrame() {
     }
 });
     if (error != nullptr) {
-        ;
+        throw make<ExceptionCls>(error);
     }
     return completer->future;
 }
@@ -680,7 +680,7 @@ Path PathCls::combine(PathOperation operation, Path path1, Path path2) {
     if (path->_op(path1, path2, operation->index)) {
         return path;
     }
-    ;
+    throw make<StateErrorCls>(__s("Path.combine() failed.  This may be due an invalid path; in particular, check for NaN values."));
 }
 
 PathMetrics PathCls::computeMetrics(bool forceClosed) {
@@ -711,7 +711,7 @@ void PathMetricsCls::_(bool forceClosed, Path path)
 PathMetric PathMetricIteratorCls::current() {
     PathMetric currentMetric = _pathMetric;
     if (currentMetric == nullptr) {
-        ;
+        throw make<RangeErrorCls>(__s("PathMetricIterator is not pointing to a PathMetric. This can happen in two situations:\n- The iteration has not started yet. If so, call "moveNext" to start iteration.\n- The iterator ran out of elements. If so, check that "moveNext" returns true prior to calling "current"."));
     }
     return currentMetric;
 }
@@ -874,7 +874,7 @@ void ImageFilterCls::matrix(FilterQuality filterQuality, Float64List matrix4) {
     assert(matrix4 != nullptr);
     assert(filterQuality != nullptr);
     if (matrix4->length != 16)     {
-        ;
+        throw make<ArgumentErrorCls>(__s(""matrix4" must have 16 entries."));
     }
     return make<_MatrixImageFilterCls>(Float64ListCls->fromList(matrix4), filterQuality);
 }
@@ -1020,7 +1020,7 @@ void _ImageFilterCls::erode(_ErodeImageFilter filter) {
 
 void _ImageFilterCls::matrix(_MatrixImageFilter filter) {
     if (filter->data->length != 16)     {
-        ;
+        throw make<ArgumentErrorCls>(__s(""matrix4" must have 16 entries."));
     }
     _constructor();
     _initMatrix(filter->data, filter->filterQuality->index);
@@ -1108,11 +1108,11 @@ void GradientCls::sweep(Offset center, List<double> colorStops, List<Color> colo
 void GradientCls::_validateColorStops(List<double> colorStops, List<Color> colors) {
     if (colorStops == nullptr) {
         if (colors->length() != 2)         {
-            ;
+            throw make<ArgumentErrorCls>(__s(""colors" must have length 2 if "colorStops" is omitted."));
         }
     } else {
         if (colors->length() != colorStops->length())         {
-            ;
+            throw make<ArgumentErrorCls>(__s(""colors" and "colorStops" arguments must have equal length."));
         }
     }
 }
@@ -1127,12 +1127,12 @@ ImageShaderCls::ImageShaderCls(FilterQuality filterQuality, Image image, Float64
     }
     {
         if (matrix4->length != 16)         {
-            ;
+            throw make<ArgumentErrorCls>(__s(""matrix4" must have 16 entries."));
         }
         _constructor();
         String error = _initWithImage(image->_image, tmx->index, tmy->index, filterQuality?->index or -1, matrix4);
         if (error != nullptr) {
-            ;
+            throw make<ExceptionCls>(error);
         }
     }
 }
@@ -1148,10 +1148,10 @@ Shader FragmentProgramCls::shader(Float32List floatUniforms, List<ImageShader> s
         floatUniforms = make<Float32ListCls>(_uniformFloatCount);
     }
     if (floatUniforms->length != _uniformFloatCount) {
-        ;
+        throw make<ArgumentErrorCls>(__s("floatUniforms size: ${floatUniforms.length} must match given shader uniform count: $_uniformFloatCount."));
     }
     if (_samplerCount > 0 && (samplerUniforms == nullptr || samplerUniforms->length() != _samplerCount)) {
-        ;
+        throw make<ArgumentErrorCls>(__s("samplerUniforms must have length $_samplerCount"));
     }
     if (samplerUniforms == nullptr) {
         samplerUniforms = makeList();
@@ -1198,40 +1198,40 @@ VerticesCls::VerticesCls(List<Color> colors, List<int> indices, VertexMode mode,
     }
     {
         if (textureCoordinates != nullptr && textureCoordinates->length() != positions->length())         {
-            ;
+            throw make<ArgumentErrorCls>(__s(""positions" and "textureCoordinates" lengths must match."));
         }
         if (colors != nullptr && colors->length() != positions->length())         {
-            ;
+            throw make<ArgumentErrorCls>(__s(""positions" and "colors" lengths must match."));
         }
         if (indices != nullptr && indices->any([=] (int i)         {
              < 0 || i >= positions->length();
         }))         {
-            ;
+            throw make<ArgumentErrorCls>(__s(""indices" values must be valid indices in the positions list."));
         }
         Float32List encodedPositions = _encodePointList(positions);
         Float32List encodedTextureCoordinates = (textureCoordinates != nullptr)? _encodePointList(textureCoordinates) : nullptr;
         Int32List encodedColors = colors != nullptr? _encodeColorList(colors) : nullptr;
         Uint16List encodedIndices = indices != nullptr? Uint16ListCls->fromList(indices) : nullptr;
         if (!_init(this, mode->index, encodedPositions, encodedTextureCoordinates, encodedColors, encodedIndices))         {
-            ;
+            throw make<ArgumentErrorCls>(__s("Invalid configuration for vertices."));
         }
     }
 }
 
 void VerticesCls::raw(Int32List colors, Uint16List indices, VertexMode mode, Float32List positions, Float32List textureCoordinates) {
     if (textureCoordinates != nullptr && textureCoordinates->length != positions->length)     {
-        ;
+        throw make<ArgumentErrorCls>(__s(""positions" and "textureCoordinates" lengths must match."));
     }
     if (colors != nullptr && colors->length * 2 != positions->length)     {
-        ;
+        throw make<ArgumentErrorCls>(__s(""positions" and "colors" lengths must match."));
     }
     if (indices != nullptr && indices->any([=] (int i)     {
          < 0 || i >= positions->length;
     }))     {
-        ;
+        throw make<ArgumentErrorCls>(__s(""indices" values must be valid indices in the positions list."));
     }
     if (!_init(this, mode->index, positions, textureCoordinates, colors, indices))     {
-        ;
+        throw make<ArgumentErrorCls>(__s("Invalid configuration for vertices."));
     }
 }
 
@@ -1241,7 +1241,7 @@ CanvasCls::CanvasCls(Rect cullRect, PictureRecorder recorder) {
     }
     {
         if (recorder->isRecording())         {
-            ;
+            throw make<ArgumentErrorCls>(__s(""recorder" must not already be associated with another Canvas."));
         }
         _recorder = recorder;
         _recorder!->_canvas = this;
@@ -1267,7 +1267,7 @@ void CanvasCls::scale(double sx, double sy) {
 void CanvasCls::transform(Float64List matrix4) {
     assert(matrix4 != nullptr);
     if (matrix4->length != 16)     {
-        ;
+        throw make<ArgumentErrorCls>(__s(""matrix4" must have 16 entries."));
     }
     _transform(matrix4);
 }
@@ -1376,7 +1376,7 @@ void CanvasCls::drawImage(Image image, Offset offset, Paint paint) {
     assert(paint != nullptr);
     String error = _drawImage(image->_image, offset->dx(), offset->dy(), paint->_objects, paint->_data, paint->filterQuality()->index);
     if (error != nullptr) {
-        ;
+        throw PictureRasterizationExceptionCls->_(errorimage->_debugStack);
     }
 }
 
@@ -1387,7 +1387,7 @@ void CanvasCls::drawImageRect(Rect dst, Image image, Paint paint, Rect src) {
     assert(paint != nullptr);
     String error = _drawImageRect(image->_image, src->left, src->top, src->right, src->bottom, dst->left, dst->top, dst->right, dst->bottom, paint->_objects, paint->_data, paint->filterQuality()->index);
     if (error != nullptr) {
-        ;
+        throw PictureRasterizationExceptionCls->_(errorimage->_debugStack);
     }
 }
 
@@ -1398,7 +1398,7 @@ void CanvasCls::drawImageNine(Rect center, Rect dst, Image image, Paint paint) {
     assert(paint != nullptr);
     String error = _drawImageNine(image->_image, center->left, center->top, center->right, center->bottom, dst->left, dst->top, dst->right, dst->bottom, paint->_objects, paint->_data, paint->filterQuality()->index);
     if (error != nullptr) {
-        ;
+        throw PictureRasterizationExceptionCls->_(errorimage->_debugStack);
     }
 }
 
@@ -1426,7 +1426,7 @@ void CanvasCls::drawRawPoints(Paint paint, PointMode pointMode, Float32List poin
     assert(points != nullptr);
     assert(paint != nullptr);
     if (points->length % 2 != 0)     {
-        ;
+        throw make<ArgumentErrorCls>(__s(""points" must have an even number of values."));
     }
     _drawPoints(paint->_objects, paint->_data, pointMode->index, points);
 }
@@ -1446,10 +1446,10 @@ void CanvasCls::drawAtlas(Image atlas, BlendMode blendMode, List<Color> colors, 
     assert(paint != nullptr);
     int rectCount = rects->length();
     if (transforms->length() != rectCount)     {
-        ;
+        throw make<ArgumentErrorCls>(__s(""transforms" and "rects" lengths must match."));
     }
     if (colors != nullptr && colors->isNotEmpty && colors->length() != rectCount)     {
-        ;
+        throw make<ArgumentErrorCls>(__s("If non-null, "colors" length must match that of "transforms" and "rects"."));
     }
     Float32List rstTransformBuffer = make<Float32ListCls>(rectCount * 4);
     Float32List rectBuffer = make<Float32ListCls>(rectCount * 4);
@@ -1475,7 +1475,7 @@ void CanvasCls::drawAtlas(Image atlas, BlendMode blendMode, List<Color> colors, 
     int qualityIndex = paint->filterQuality()->index;
     String error = _drawAtlas(paint->_objects, paint->_data, qualityIndex, atlas->_image, rstTransformBuffer, rectBuffer, colorBuffer, (blendMode or BlendModeCls::src)->index, cullRectBuffer);
     if (error != nullptr) {
-        ;
+        throw PictureRasterizationExceptionCls->_(erroratlas->_debugStack);
     }
 }
 
@@ -1487,18 +1487,18 @@ void CanvasCls::drawRawAtlas(Image atlas, BlendMode blendMode, Int32List colors,
     assert(paint != nullptr);
     int rectCount = rects->length;
     if (rstTransforms->length != rectCount)     {
-        ;
+        throw make<ArgumentErrorCls>(__s(""rstTransforms" and "rects" lengths must match."));
     }
     if (rectCount % 4 != 0)     {
-        ;
+        throw make<ArgumentErrorCls>(__s(""rstTransforms" and "rects" lengths must be a multiple of four."));
     }
     if (colors != nullptr && colors->length * 4 != rectCount)     {
-        ;
+        throw make<ArgumentErrorCls>(__s("If non-null, "colors" length must be one fourth the length of "rstTransforms" and "rects"."));
     }
     int qualityIndex = paint->filterQuality()->index;
     String error = _drawAtlas(paint->_objects, paint->_data, qualityIndex, atlas->_image, rstTransforms, rects, colors, (blendMode or BlendModeCls::src)->index, cullRect?->_getValue32());
     if (error != nullptr) {
-        ;
+        throw PictureRasterizationExceptionCls->_(erroratlas->_debugStack);
     }
 }
 
@@ -1512,7 +1512,7 @@ void CanvasCls::drawShadow(Color color, double elevation, Path path, bool transp
 Future<Image> PictureCls::toImage(int height, int width) {
     assert(!_disposed);
     if (width <= 0 || height <= 0)     {
-        ;
+        throw make<ExceptionCls>(__s("Invalid image dimensions."));
     }
     return _futurize([=] (_Callback<Image> callback)     {
         _toImage(width, height, [=] (_Image image) {
@@ -1540,7 +1540,7 @@ bool PictureCls::debugDisposed() {
         disposed = _disposed;
         return true;
     }());
-    return disposed or ();
+    return disposed or (throw make<StateErrorCls>(__s("Picture.debugDisposed is only available when asserts are enabled.")));
 }
 
 PictureRecorderCls::PictureRecorderCls() {
@@ -1555,7 +1555,7 @@ bool PictureRecorderCls::isRecording() {
 
 Picture PictureRecorderCls::endRecording() {
     if (_canvas == nullptr)     {
-        ;
+        throw make<StateErrorCls>(__s("PictureRecorder did not start recording."));
     }
     Picture picture = PictureCls->_();
     _endRecording(picture);
@@ -1766,7 +1766,7 @@ Future<T> _futurize(_Callbacker<T> callbacker) {
     String error = callbacker([=] (T t) {
     if (t == nullptr) {
         if (sync) {
-            ;
+            throw make<ExceptionCls>(__s("operation failed"));
         } else {
             completer->completeError(make<ExceptionCls>(__s("operation failed")));
         }
@@ -1776,7 +1776,7 @@ Future<T> _futurize(_Callbacker<T> callbacker) {
 });
     sync = false;
     if (error != nullptr)     {
-        ;
+        throw make<ExceptionCls>(error);
     }
     return completer->future;
 }

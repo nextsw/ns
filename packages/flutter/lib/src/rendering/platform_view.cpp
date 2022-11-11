@@ -17,7 +17,7 @@ Set<Type> _factoriesTypeSet(Set<Factory<T>> factories) {
     })->toSet();
 }
 
-RenderAndroidViewCls::RenderAndroidViewCls(Clip clipBehavior, Set<Factory<OneSequenceGestureRecognizer>> gestureRecognizers, PlatformViewHitTestBehavior hitTestBehavior, AndroidViewController viewController) {
+RenderAndroidViewCls::RenderAndroidViewCls(Clip clipBehavior, Set<Factory<OneSequenceGestureRecognizer>> gestureRecognizers, PlatformViewHitTestBehavior hitTestBehavior, AndroidViewController viewController) : PlatformViewRenderBox(viewController, hitTestBehavior, gestureRecognizers) {
     {
         assert(viewController != nullptr);
         assert(hitTestBehavior != nullptr);

@@ -21,7 +21,7 @@ void debugPaintPadding(Canvas canvas, Rect innerRect, Rect outerRect, double out
 bool debugAssertAllRenderVarsUnset(bool debugCheckIntrinsicSizesOverride, String reason) {
     assert([=] () {
         if (debugPaintSizeEnabled || debugPaintBaselinesEnabled || debugPaintLayerBordersEnabled || debugPaintPointersEnabled || debugRepaintRainbowEnabled || debugRepaintTextRainbowEnabled || debugCurrentRepaintColor != _kDebugDefaultRepaintColor || debugPrintMarkNeedsLayoutStacks || debugPrintMarkNeedsPaintStacks || debugPrintLayouts || debugCheckIntrinsicSizes != debugCheckIntrinsicSizesOverride || debugProfileLayoutsEnabled || debugProfilePaintsEnabled || debugOnProfilePaint != nullptr || debugDisableClipLayers || debugDisablePhysicalShapeLayers || debugDisableOpacityLayers) {
-            ;
+            throw make<FlutterErrorCls>(reason);
         }
         return true;
     }());

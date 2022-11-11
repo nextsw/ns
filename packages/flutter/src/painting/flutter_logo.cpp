@@ -175,7 +175,7 @@ void _FlutterLogoPainterCls::paint(Canvas canvas, ImageConfiguration configurati
     }
 }
 
-_FlutterLogoPainterCls::_FlutterLogoPainterCls(FlutterLogoDecoration _config) {
+_FlutterLogoPainterCls::_FlutterLogoPainterCls(FlutterLogoDecoration _config) : BoxPainter(nullptr) {
     {
         assert(_config != nullptr);
         assert(_config->debugAssertIsValid());

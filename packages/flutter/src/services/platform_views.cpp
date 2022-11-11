@@ -338,11 +338,11 @@ int AndroidViewControllerCls::_getAndroidDirection(TextDirection direction) {
 void SurfaceAndroidViewControllerCls::_(Unknown creationParams, Unknown creationParamsCodec, Unknown layoutDirection, Unknown viewId, Unknown viewType)
 
 int ExpensiveAndroidViewControllerCls::textureId() {
-    ;
+    throw make<UnimplementedErrorCls>(__s("Not supported for $SurfaceAndroidViewController."));
 }
 
 Future<void> ExpensiveAndroidViewControllerCls::setOffset(Offset off) {
-    ;
+    throw make<UnimplementedErrorCls>(__s("Not supported for $SurfaceAndroidViewController."));
 }
 
 void ExpensiveAndroidViewControllerCls::_(Unknown creationParams, Unknown creationParamsCodec, Unknown layoutDirection, Unknown viewId, Unknown viewType)
@@ -365,7 +365,7 @@ Future<void> ExpensiveAndroidViewControllerCls::_sendDisposeMessage() {
 }
 
 Future<Size> ExpensiveAndroidViewControllerCls::_sendResizeMessage(Size size) {
-    ;
+    throw make<UnimplementedErrorCls>(__s("Not supported for $SurfaceAndroidViewController."));
 }
 
 int TextureAndroidViewControllerCls::textureId() {

@@ -66,7 +66,7 @@ bool RenderShiftedBoxCls::hitTestChildren(Offset position, BoxHitTestResult resu
     return false;
 }
 
-RenderPaddingCls::RenderPaddingCls(RenderBox child, EdgeInsetsGeometry padding, TextDirection textDirection) {
+RenderPaddingCls::RenderPaddingCls(RenderBox child, EdgeInsetsGeometry padding, TextDirection textDirection) : RenderShiftedBox(child) {
     {
         assert(padding != nullptr);
         assert(padding->isNonNegative());
@@ -195,7 +195,7 @@ void RenderPaddingCls::_markNeedResolution() {
     markNeedsLayout();
 }
 
-RenderAligningShiftedBoxCls::RenderAligningShiftedBoxCls(AlignmentGeometry alignment, RenderBox child, TextDirection textDirection) {
+RenderAligningShiftedBoxCls::RenderAligningShiftedBoxCls(AlignmentGeometry alignment, RenderBox child, TextDirection textDirection) : RenderShiftedBox(child) {
     {
         assert(alignment != nullptr);
         _alignment = alignment;
@@ -547,7 +547,7 @@ String RenderConstraintsTransformBoxCls::toStringShort() {
     return header;
 }
 
-RenderUnconstrainedBoxCls::RenderUnconstrainedBoxCls(Unknown alignment, Unknown child, Unknown clipBehavior, Axis constrainedAxis, Unknown textDirection) {
+RenderUnconstrainedBoxCls::RenderUnconstrainedBoxCls(Unknown alignment, Unknown child, Unknown clipBehavior, Axis constrainedAxis, Unknown textDirection) : RenderConstraintsTransformBox(_convertAxis(constrainedAxis)) {
     {
         assert(alignment != nullptr);
         assert(clipBehavior != nullptr);
@@ -782,7 +782,7 @@ Offset SingleChildLayoutDelegateCls::getPositionForChild(Size childSize, Size si
     return OffsetCls::zero;
 }
 
-RenderCustomSingleChildLayoutBoxCls::RenderCustomSingleChildLayoutBoxCls(RenderBox child, SingleChildLayoutDelegate delegate) {
+RenderCustomSingleChildLayoutBoxCls::RenderCustomSingleChildLayoutBoxCls(RenderBox child, SingleChildLayoutDelegate delegate) : RenderShiftedBox(child) {
     {
         assert(delegate != nullptr);
         _delegate = delegate;
@@ -870,7 +870,7 @@ Size RenderCustomSingleChildLayoutBoxCls::_getSize(BoxConstraints constraints) {
     return constraints->constrain(_delegate->getSize(constraints));
 }
 
-RenderBaselineCls::RenderBaselineCls(double baseline, TextBaseline baselineType, RenderBox child) {
+RenderBaselineCls::RenderBaselineCls(double baseline, TextBaseline baselineType, RenderBox child) : RenderShiftedBox(child) {
     {
         assert(baseline != nullptr);
         assert(baselineType != nullptr);

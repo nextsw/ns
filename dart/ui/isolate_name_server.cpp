@@ -16,5 +16,5 @@ bool IsolateNameServerCls::removePortNameMapping(String name) {
 }
 
 void IsolateNameServerCls::_() {
-    return ;
+    return throw make<UnsupportedErrorCls>(__s("Namespace"));
 }

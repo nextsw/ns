@@ -259,7 +259,7 @@ void _TapGestureCls::cancel() {
     }
 }
 
-_TapGestureCls::_TapGestureCls(PointerEvent event, MultiTapGestureRecognizer gestureRecognizer, Unknown gestureSettings, Duration longTapDelay) {
+_TapGestureCls::_TapGestureCls(PointerEvent event, MultiTapGestureRecognizer gestureRecognizer, Unknown gestureSettings, Duration longTapDelay) : _TapTracker(as<PointerDownEvent>(event), GestureBindingCls::instance->gestureArena->add(event->pointer, gestureRecognizer), kDoubleTapMinTime) {
     {
         _lastPosition = OffsetPairCls->fromEventPosition(event);
     }

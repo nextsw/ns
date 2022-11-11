@@ -1,5 +1,5 @@
 #include "fractional_offset.hpp"
-FractionalOffsetCls::FractionalOffsetCls(double dx, double dy) {
+FractionalOffsetCls::FractionalOffsetCls(double dx, double dy) : Alignment(dx * 2.0 - 1.0, dy * 2.0 - 1.0) {
     {
         assert(dx != nullptr);
         assert(dy != nullptr);

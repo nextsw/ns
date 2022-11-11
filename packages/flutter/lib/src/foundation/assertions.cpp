@@ -59,7 +59,7 @@ String _ErrorDiagnosticCls::valueToString(TextTreeConfiguration parentConfigurat
     return value()->join();
 }
 
-_ErrorDiagnosticCls::_ErrorDiagnosticCls(DiagnosticLevel level, String message, DiagnosticsTreeStyle style) {
+_ErrorDiagnosticCls::_ErrorDiagnosticCls(DiagnosticLevel level, String message, DiagnosticsTreeStyle style) : DiagnosticsProperty<List<Object>>(nullptr, makeList(ArrayItem)false, false, nullptr, style, level) {
     {
         assert(message != nullptr);
     }
@@ -67,22 +67,22 @@ _ErrorDiagnosticCls::_ErrorDiagnosticCls(DiagnosticLevel level, String message, 
 
 void _ErrorDiagnosticCls::_fromParts(DiagnosticLevel level, List<Object> messageParts, DiagnosticsTreeStyle style)
 
-ErrorDescriptionCls::ErrorDescriptionCls(Unknown message) {
+ErrorDescriptionCls::ErrorDescriptionCls(Unknown message) : _ErrorDiagnostic(DiagnosticLevelCls::info) {
 }
 
 void ErrorDescriptionCls::_fromParts(Unknown messageParts)
 
-ErrorSummaryCls::ErrorSummaryCls(Unknown message) {
+ErrorSummaryCls::ErrorSummaryCls(Unknown message) : _ErrorDiagnostic(DiagnosticLevelCls::summary) {
 }
 
 void ErrorSummaryCls::_fromParts(Unknown messageParts)
 
-ErrorHintCls::ErrorHintCls(Unknown message) {
+ErrorHintCls::ErrorHintCls(Unknown message) : _ErrorDiagnostic(DiagnosticLevelCls::hint) {
 }
 
 void ErrorHintCls::_fromParts(Unknown messageParts)
 
-ErrorSpacerCls::ErrorSpacerCls() {
+ErrorSpacerCls::ErrorSpacerCls() : DiagnosticsProperty<void>(__s(""), nullptr__s(""), false) {
 }
 
 FlutterErrorDetailsCls::FlutterErrorDetailsCls(DiagnosticsNode context, Object exception, InformationCollector informationCollector, String library, bool silent, StackTrace stack, IterableFilter<String> stackFilter) {
@@ -252,7 +252,7 @@ void FlutterErrorCls::fromParts(List<DiagnosticsNode> diagnostics) {
                 i = 1;
             }
             message->add(make<ErrorDescriptionCls>(__s("\nThis error should still help you solve your problem, however please also report this malformed error in the framework by filing a bug on GitHub:\n  https://github.com/flutter/flutter/issues/new?template=2_bug.md")));
-            ;
+            throw FlutterErrorCls->fromParts(message);
         }
         return true;
     }());
@@ -409,7 +409,7 @@ void debugPrintStack(String label, int maxFrames, StackTrace stackTrace) {
     debugPrint(FlutterErrorCls->defaultStackFilter(lines)->join(__s("\n")));
 }
 
-DiagnosticsStackTraceCls::DiagnosticsStackTraceCls(String name, Unknown showSeparator, StackTrace stack, IterableFilter<String> stackFilter) {
+DiagnosticsStackTraceCls::DiagnosticsStackTraceCls(String name, Unknown showSeparator, StackTrace stack, IterableFilter<String> stackFilter) : DiagnosticsBlock(name, stack, _applyStackFilter(stack, stackFilter), DiagnosticsTreeStyleCls::flat, true) {
 }
 
 void DiagnosticsStackTraceCls::singleFrame(String frame, String name, Unknown showSeparator)

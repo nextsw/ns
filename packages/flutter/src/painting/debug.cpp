@@ -33,7 +33,7 @@ int ImageSizeInfoCls::_sizeToBytes(Size size) {
 bool debugAssertAllPaintingVarsUnset(bool debugDisableShadowsOverride, String reason) {
     assert([=] () {
         if (debugDisableShadows != debugDisableShadowsOverride || debugNetworkImageHttpClientProvider != nullptr || debugOnPaintImage != nullptr || debugInvertOversizedImages == true || debugImageOverheadAllowance != _imageOverheadAllowanceDefault) {
-            ;
+            throw make<FlutterErrorCls>(reason);
         }
         return true;
     }());

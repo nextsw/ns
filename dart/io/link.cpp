@@ -45,7 +45,7 @@ Future<Link> _LinkCls::create(bool recursive, String target) {
         _FileCls->_dispatchWithNamespace(_IOServiceCls::fileCreateLink, makeList(ArrayItem, ArrayItem, ArrayItem));
     })->then([=] (Unknown  response) {
         if (_isErrorResponse(response)) {
-            ;
+            throw _exceptionFromResponse(response, __s("Cannot create link to target '$target'"), path());
         }
         return this;
     });
@@ -73,7 +73,7 @@ Future<Link> _LinkCls::update(String target) {
 Future<Link> _LinkCls::rename(String newPath) {
     return _FileCls->_dispatchWithNamespace(_IOServiceCls::fileRenameLink, makeList(ArrayItem, ArrayItem, ArrayItem))->then([=] (Unknown  response) {
         if (_isErrorResponse(response)) {
-            ;
+            throw _exceptionFromResponse(response, __s("Cannot rename link to '$newPath'"), path());
         }
         return make<LinkCls>(newPath);
     });
@@ -88,7 +88,7 @@ Link _LinkCls::renameSync(String newPath) {
 Future<String> _LinkCls::target() {
     return _FileCls->_dispatchWithNamespace(_IOServiceCls::fileLinkTarget, makeList(ArrayItem, ArrayItem))->then([=] (Unknown  response) {
         if (_isErrorResponse(response)) {
-            ;
+            throw _exceptionFromResponse(response, __s("Cannot get target of link"), path());
         }
         return response;
     });
@@ -102,7 +102,7 @@ String _LinkCls::targetSync() {
 
 void _LinkCls::throwIfError(String msg, String path, Object result) {
     if (is<OSError>(result)) {
-        ;
+        throw make<FileSystemExceptionCls>(msg, path, as<OSErrorCls>(result));
     }
 }
 
@@ -121,7 +121,7 @@ Future<Link> _LinkCls::_delete(bool recursive) {
     }
     return _FileCls->_dispatchWithNamespace(_IOServiceCls::fileDeleteLink, makeList(ArrayItem, ArrayItem))->then([=] (Unknown  response) {
         if (_isErrorResponse(response)) {
-            ;
+            throw _exceptionFromResponse(response, __s("Cannot delete link"), path());
         }
         return this;
     });

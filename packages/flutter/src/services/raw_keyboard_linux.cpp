@@ -79,7 +79,7 @@ KeyHelperCls::KeyHelperCls(String toolkit) {
             if (toolkit == __s("gtk")) {
             return make<GtkKeyHelperCls>();
         } else {
-            ;
+            throw make<FlutterErrorCls>(__s("Window toolkit not recognized: $toolkit"));
         }
 ;
         }    }

@@ -10,7 +10,7 @@ Widget ModalBarrierCls::build(BuildContext context) {
     return make<BlockSemanticsCls>(make<ExcludeSemanticsCls>(!semanticsDismissible || !modalBarrierSemanticsDismissible, make<_ModalBarrierGestureDetectorCls>(handleDismiss, make<SemanticsCls>(semanticsDismissible? semanticsLabel : nullptr, semanticsDismissible? handleDismiss : nullptr, semanticsDismissible && semanticsLabel != nullptr? DirectionalityCls->of(context) : nullptr, make<MouseRegionCls>(SystemMouseCursorsCls::basic, make<ConstrainedBoxCls>(BoxConstraintsCls->expand(), color == nullptr? nullptr : make<ColoredBoxCls>(color!)))))));
 }
 
-AnimatedModalBarrierCls::AnimatedModalBarrierCls(bool barrierSemanticsDismissible, Animation<Color> color, bool dismissible, Unknown key, VoidCallback onDismiss, String semanticsLabel) {
+AnimatedModalBarrierCls::AnimatedModalBarrierCls(bool barrierSemanticsDismissible, Animation<Color> color, bool dismissible, Unknown key, VoidCallback onDismiss, String semanticsLabel) : AnimatedWidget(color) {
 }
 
 Animation<Color> AnimatedModalBarrierCls::color() {

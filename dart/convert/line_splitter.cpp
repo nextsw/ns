@@ -127,7 +127,7 @@ void _LineSplitterEventSinkCls::addError(Object o, StackTrace stackTrace) {
     _eventSink->addError(o, stackTrace);
 }
 
-_LineSplitterEventSinkCls::_LineSplitterEventSinkCls(EventSink<String> eventSink) {
+_LineSplitterEventSinkCls::_LineSplitterEventSinkCls(EventSink<String> eventSink) : _LineSplitterSink(StringConversionSinkCls->from(eventSink)) {
     {
         _eventSink = eventSink;
     }

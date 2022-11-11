@@ -667,7 +667,7 @@ bool RenderObjectCls::debugDoingThisLayoutWithCallback() {
 
 Constraints RenderObjectCls::constraints() {
     if (_constraints == nullptr) {
-        ;
+        throw make<StateErrorCls>(__s("A RenderObject does not have any constraints before it has been laid out."));
     }
     return _constraints!;
 }
@@ -1288,7 +1288,7 @@ bool RenderObjectCls::_debugCanPerformMutations() {
     bool result;
     assert([=] () {
         if (_debugDisposed) {
-            ;
+            throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem));
         }
         PipelineOwner owner = this->owner();
         if (owner == nullptr || !owner->debugDoingLayout()) {
@@ -1315,15 +1315,15 @@ bool RenderObjectCls::_debugCanPerformMutations() {
         String culpritFullMethodName = __s("${debugActiveLayout.runtimeType}.$culpritMethodName");
         result = false;
         if (activeLayoutRoot == nullptr) {
-            ;
+            throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem, ArrayItem, ArrayItem));
         }
         if (activeLayoutRoot == this) {
-            ;
+            throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem, ArrayItem, ArrayItem));
         }
         ErrorSummary summary = make<ErrorSummaryCls>(__s("A $runtimeType was mutated in $culpritFullMethodName."));
         bool isMutatedByAncestor = activeLayoutRoot == debugActiveLayout;
         String description = isMutatedByAncestor? __s("A RenderObject must not mutate its descendants in its $culpritMethodName method.") : __s("A RenderObject must not mutate another RenderObject from a different render subtree in its $culpritMethodName method.");
-        ;
+            List<DiagnosticsNode> list1 = make<ListCls<>>();    list1.add(ArrayItem);    list1.add(ArrayItem);    list1.add(ArrayItem);    list1.add(ArrayItem);    if (!isMutatedByAncestor) {        list1.add(ArrayItem);    }list1.add(ArrayItem);throw FlutterErrorCls->fromParts(list1);
     }());
     return result;
 }
@@ -1460,7 +1460,7 @@ void RenderObjectCls::_paintWithContext(PaintingContext context, Offset offset) 
     assert(!_debugDisposed);
     assert([=] () {
         if (_debugDoingThisPaint) {
-            ;
+            throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem, ArrayItem));
         }
         return true;
     }());
@@ -1488,10 +1488,10 @@ void RenderObjectCls::_paintWithContext(PaintingContext context, Offset offset) 
                     }
                 });
                 if (!visitedByParent) {
-                    ;
+                    throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem));
                 }
             }
-            ;
+            throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem, ArrayItem, ArrayItem));
         }
         return true;
     }());
@@ -1617,7 +1617,7 @@ template<typename ChildType>
 bool RenderObjectWithChildMixinCls<ChildType>::debugValidateChild(RenderObject child) {
     assert([=] () {
         if (!is<ChildType>(child)) {
-            ;
+            throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem));
         }
         return true;
     }());
@@ -1691,7 +1691,7 @@ template<typename ChildType, typename ParentDataType>
 bool ContainerRenderObjectMixinCls<ChildType, ParentDataType>::debugValidateChild(RenderObject child) {
     assert([=] () {
         if (!is<ChildType>(child)) {
-            ;
+            throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem));
         }
         return true;
     }());
@@ -2196,7 +2196,7 @@ Rect _SemanticsGeometryCls::_intersectRects(Rect a, Rect b) {
     return a->intersect(b);
 }
 
-DiagnosticsDebugCreatorCls::DiagnosticsDebugCreatorCls(Object value) {
+DiagnosticsDebugCreatorCls::DiagnosticsDebugCreatorCls(Object value) : DiagnosticsProperty<Object>(__s("debugCreator"), valueDiagnosticLevelCls::hidden) {
     {
         assert(value != nullptr);
     }

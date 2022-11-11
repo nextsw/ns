@@ -58,7 +58,7 @@ void LinkedListCls<E>::clear() {
 template<typename E>
 E LinkedListCls<E>::first() {
     if (isEmpty()) {
-        ;
+        throw make<StateErrorCls>(__s("No such element"));
     }
     return _first!;
 }
@@ -66,7 +66,7 @@ E LinkedListCls<E>::first() {
 template<typename E>
 E LinkedListCls<E>::last() {
     if (isEmpty()) {
-        ;
+        throw make<StateErrorCls>(__s("No such element"));
     }
     return _first!->_previous!;
 }
@@ -74,10 +74,10 @@ E LinkedListCls<E>::last() {
 template<typename E>
 E LinkedListCls<E>::single() {
     if (isEmpty()) {
-        ;
+        throw make<StateErrorCls>(__s("No such element"));
     }
     if (_length > 1) {
-        ;
+        throw make<StateErrorCls>(__s("Too many elements"));
     }
     return _first!;
 }
@@ -92,7 +92,7 @@ void LinkedListCls<E>::forEach(std::function<void(E entry)> action) {
     do {
         action(current);
         if (modificationCount != _modificationCount) {
-            ;
+            throw make<ConcurrentModificationErrorCls>(this);
         }
         current = current->_next!;
     } while (!identical(current, _first));
@@ -106,7 +106,7 @@ bool LinkedListCls<E>::isEmpty() {
 template<typename E>
 void LinkedListCls<E>::_insertBefore(E entry, E newEntry, bool updateFirst) {
     if (newEntry->list != nullptr) {
-        ;
+        throw make<StateErrorCls>(__s("LinkedListEntry is already in a LinkedList"));
     }
     _modificationCount++;
     newEntry->_list = this;
@@ -153,7 +153,7 @@ E _LinkedListIteratorCls<E>::current() {
 template<typename E>
 bool _LinkedListIteratorCls<E>::moveNext() {
     if (_modificationCount != _list->_modificationCount) {
-        ;
+        throw make<ConcurrentModificationErrorCls>(this);
     }
     if (_list->isEmpty() || (_visitedFirst && identical(_next, _list->first()))) {
         _current = nullptr;

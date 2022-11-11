@@ -97,7 +97,7 @@ _OverlayEntryWidgetState _OverlayEntryWidgetCls::createState() {
     return make<_OverlayEntryWidgetStateCls>();
 }
 
-_OverlayEntryWidgetCls::_OverlayEntryWidgetCls(OverlayEntry entry, Key key, bool tickerEnabled) {
+_OverlayEntryWidgetCls::_OverlayEntryWidgetCls(OverlayEntry entry, Key key, bool tickerEnabled) : StatefulWidget(key) {
     {
         assert(key != nullptr);
         assert(entry != nullptr);
@@ -137,7 +137,7 @@ OverlayState OverlayCls::of(BuildContext context, Widget debugRequiredFor, bool 
     assert([=] () {
         if (debugRequiredFor != nullptr && result == nullptr) {
                     List<DiagnosticsNode> list1 = make<ListCls<>>();        list1.add(ArrayItem);        list1.add(ArrayItem);        list1.add(ArrayItem);        list1.add(ArrayItem);        if (context->widget() != debugRequiredFor) {            list1.add(ArrayItem);        }List<DiagnosticsNode> information = list1;
-            ;
+            throw FlutterErrorCls->fromParts(information);
         }
         return true;
     }());

@@ -70,7 +70,7 @@ Future<E> _BufferingStreamSubscriptionCls<T>::asFuture(E futureValue) {
     E resultValue;
     if (futureValue == nullptr) {
         if (!<E>typeAcceptsNull()) {
-            ;
+            throw ArgumentErrorCls->notNull(__s("futureValue"));
         }
         resultValue = as<dynamic>(futureValue);
     } else {
@@ -133,7 +133,7 @@ std::function<void ()> _BufferingStreamSubscriptionCls<T>::_registerErrorHandler
     if (is<std::function<void(Object )>>(handleError)) {
         return zone-><dynamic, Object>registerUnaryCallback(handleError);
     }
-    ;
+    throw make<ArgumentErrorCls>(__s("handleError callback must take either an Object (the error), or both an Object (the error) and a StackTrace."));
 }
 
 template<typename T>
@@ -413,7 +413,7 @@ _DelayedEvent _DelayedDoneCls::next() {
 }
 
 void _DelayedDoneCls::next(_DelayedEvent _) {
-    ;
+    throw make<StateErrorCls>(__s("No events after a done."));
 }
 
 template<typename T>
@@ -538,7 +538,7 @@ Future<E> _DoneStreamSubscriptionCls<T>::asFuture(E futureValue) {
     E resultValue;
     if (futureValue == nullptr) {
         if (!<E>typeAcceptsNull()) {
-            ;
+            throw ArgumentErrorCls->notNull(__s("futureValue"));
         }
         resultValue = as<dynamic>(futureValue);
     } else {
@@ -672,17 +672,17 @@ bool _AsBroadcastStreamCls<T>::_isSubscriptionPaused() {
 
 template<typename T>
 void _BroadcastSubscriptionWrapperCls<T>::onData(std::function<void(T data)> handleData) {
-    ;
+    throw make<UnsupportedErrorCls>(__s("Cannot change handlers of asBroadcastStream source subscription."));
 }
 
 template<typename T>
 void _BroadcastSubscriptionWrapperCls<T>::onError(std::function<void ()> handleError) {
-    ;
+    throw make<UnsupportedErrorCls>(__s("Cannot change handlers of asBroadcastStream source subscription."));
 }
 
 template<typename T>
 void _BroadcastSubscriptionWrapperCls<T>::onDone(std::function<void()> handleDone) {
-    ;
+    throw make<UnsupportedErrorCls>(__s("Cannot change handlers of asBroadcastStream source subscription."));
 }
 
 template<typename T>
@@ -709,7 +709,7 @@ bool _BroadcastSubscriptionWrapperCls<T>::isPaused() {
 template<typename T>
 template<typename E>
 Future<E> _BroadcastSubscriptionWrapperCls<T>::asFuture(E futureValue) {
-    ;
+    throw make<UnsupportedErrorCls>(__s("Cannot change handlers of asBroadcastStream source subscription."));
 }
 
 template<typename T>
@@ -731,7 +731,7 @@ Future<bool> _StreamIteratorCls<T>::moveNext() {
             subscription->resume();
             return future;
         }
-        ;
+        throw make<StateErrorCls>(__s("Already waiting for next."));
     }
     return _initializeOrDone();
 }
@@ -847,7 +847,7 @@ StreamSubscription<T> _MultiStreamCls<T>::listen(bool cancelOnError, std::functi
 template<typename T>
 void _MultiStreamControllerCls<T>::addSync(T data) {
     if (!_mayAddEvent)     {
-        ;
+        throw _badEventState();
     }
     if (hasListener)     {
         _subscription->_add(data);
@@ -857,7 +857,7 @@ void _MultiStreamControllerCls<T>::addSync(T data) {
 template<typename T>
 void _MultiStreamControllerCls<T>::addErrorSync(Object error, StackTrace stackTrace) {
     if (!_mayAddEvent)     {
-        ;
+        throw _badEventState();
     }
     if (hasListener) {
         _subscription->_addError(error, stackTrace or StackTraceCls::empty);
@@ -870,7 +870,7 @@ void _MultiStreamControllerCls<T>::closeSync() {
         return;
     }
     if (!_mayAddEvent)     {
-        ;
+        throw _badEventState();
     }
     _state = _StreamControllerCls::_STATE_CLOSEDCls;
     if (hasListener)     {
@@ -880,9 +880,9 @@ void _MultiStreamControllerCls<T>::closeSync() {
 
 template<typename T>
 Stream<T> _MultiStreamControllerCls<T>::stream() {
-    ;
+    throw make<UnsupportedErrorCls>(__s("Not available"));
 }
 
 template<typename T>
-_MultiStreamControllerCls<T>::_MultiStreamControllerCls() {
+_MultiStreamControllerCls<T>::_MultiStreamControllerCls() : _AsyncStreamController<T>(nullptr, nullptr, nullptr, nullptr) {
 }

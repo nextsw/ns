@@ -434,7 +434,7 @@ bool DiagnosticsNodeCls::allowTruncate() {
 Map<String, String> DiagnosticsNodeCls::toTimelineArguments() {
     if (!kReleaseMode) {
         if (kProfileMode) {
-            ;
+            throw make<FlutterErrorCls>(__s("$DiagnosticsNode.toTimelineArguments used in non-debug build.\nThe $DiagnosticsNode.toTimelineArguments API is expensive and causes timeline traces to be non-representative. As such, it should not be used in profile builds. However, this application is compiled in profile mode and yet still invoked the method."));
         }
         Map<String, String> result = makeMap(makeList(), makeList();
         for (DiagnosticsNode property : getProperties()) {
@@ -515,7 +515,7 @@ String DiagnosticsNodeCls::_separator() {
     return showSeparator? __s(":") : __s("");
 }
 
-MessagePropertyCls::MessagePropertyCls(DiagnosticLevel level, String message, String name, DiagnosticsTreeStyle style) {
+MessagePropertyCls::MessagePropertyCls(DiagnosticLevel level, String message, String name, DiagnosticsTreeStyle style) : DiagnosticsProperty<void>(name, nullptrmessage, style, level) {
     {
         assert(name != nullptr);
         assert(message != nullptr);
@@ -622,7 +622,7 @@ String PercentPropertyCls::numberToString() {
     return __s("${(clampDouble(v, 0.0, 1.0) * 100.0).toStringAsFixed(1)}%");
 }
 
-FlagPropertyCls::FlagPropertyCls(Object defaultValue, String ifFalse, String ifTrue, DiagnosticLevel level, String name, bool showName, bool value) {
+FlagPropertyCls::FlagPropertyCls(Object defaultValue, String ifFalse, String ifTrue, DiagnosticLevel level, String name, bool showName, bool value) : DiagnosticsProperty<bool>(name, valueshowName, defaultValue, level) {
     {
         assert(showName != nullptr);
         assert(level != nullptr);
@@ -861,7 +861,7 @@ Iterable<String> FlagsSummaryCls<T>::_formattedValues() {
 }
 
 template<typename T>
-DiagnosticsPropertyCls<T>::DiagnosticsPropertyCls(bool allowNameWrap, bool allowWrap, Object defaultValue, String description, bool expandableValue, String ifEmpty, String ifNull, DiagnosticLevel level, Unknown linePrefix, bool missingIfNull, String name, Unknown showName, Unknown showSeparator, DiagnosticsTreeStyle style, String tooltip, T value) {
+DiagnosticsPropertyCls<T>::DiagnosticsPropertyCls(bool allowNameWrap, bool allowWrap, Object defaultValue, String description, bool expandableValue, String ifEmpty, String ifNull, DiagnosticLevel level, Unknown linePrefix, bool missingIfNull, String name, Unknown showName, Unknown showSeparator, DiagnosticsTreeStyle style, String tooltip, T value) : DiagnosticsNode(name) {
     {
         assert(showName != nullptr);
         assert(showSeparator != nullptr);
@@ -1214,7 +1214,7 @@ List<DiagnosticsNode> DiagnosticableTreeMixinCls::debugDescribeChildren() {
 void DiagnosticableTreeMixinCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
 }
 
-DiagnosticsBlockCls::DiagnosticsBlockCls(bool allowTruncate, List<DiagnosticsNode> children, String description, DiagnosticLevel level, Unknown linePrefix, Unknown name, List<DiagnosticsNode> properties, bool showName, Unknown showSeparator, DiagnosticsTreeStyle style, Object value) {
+DiagnosticsBlockCls::DiagnosticsBlockCls(bool allowTruncate, List<DiagnosticsNode> children, String description, DiagnosticLevel level, Unknown linePrefix, Unknown name, List<DiagnosticsNode> properties, bool showName, Unknown showSeparator, DiagnosticsTreeStyle style, Object value) : DiagnosticsNode(showName && name != nullptr) {
     {
         _description = description or __s("");
         _children = children;

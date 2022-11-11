@@ -31,7 +31,7 @@ TableCls::TableCls(TableBorder border, List<TableRow> children, Map<int, TableCo
             if (children->any([=] (TableRow row)             {
                 row->children == nullptr;
             })) {
-                ;
+                throw make<FlutterErrorCls>(__s("One of the rows of the table had null children.\nThe children property of TableRow must not be null."));
             }
             return true;
         }());
@@ -41,7 +41,7 @@ TableCls::TableCls(TableBorder border, List<TableRow> children, Map<int, TableCo
                 cell == nullptr;
             });
             })) {
-                ;
+                throw make<FlutterErrorCls>(__s("One of the children of one of the rows of the table was null.\nThe children of a TableRow must not be null."));
             }
             return true;
         }());
@@ -51,7 +51,7 @@ TableCls::TableCls(TableBorder border, List<TableRow> children, Map<int, TableCo
                 row1 != row2 && row1->key == row2->key;
             });
             })) {
-                ;
+                throw make<FlutterErrorCls>(__s("Two or more TableRow children of this Table had the same key.\nAll the keyed TableRow children of a Table must have different Keys."));
             }
             return true;
         }());
@@ -61,7 +61,7 @@ TableCls::TableCls(TableBorder border, List<TableRow> children, Map<int, TableCo
                 if (children->any([=] (TableRow row)                 {
                     row->children!->length() != cellCount;
                 })) {
-                    ;
+                    throw make<FlutterErrorCls>(__s("Table contains irregular row lengths.\nEvery TableRow in a Table must have the same number of children, so that every cell is filled. Otherwise, the table will contain holes."));
                 }
             }
             return true;
@@ -78,7 +78,7 @@ TableCls::TableCls(TableBorder border, List<TableRow> children, Map<int, TableCo
     row->children!;
 })->toList(false);
             if (debugChildrenHaveDuplicateKeys(this, flatChildren)) {
-                ;
+                throw make<FlutterErrorCls>(__s("Two or more cells in this Table contain widgets with the same key.\nEvery widget child of every TableRow in a Table must have different keys. The cells of a Table are flattened out for processing, so separate cells cannot have duplicate keys even if they are in different rows."));
             }
             return true;
         }());

@@ -285,7 +285,7 @@ dynamic Matrix3Cls::*(dynamic arg) {
     if (is<Matrix3>(arg)) {
         return multiplied(as<Matrix3Cls>(arg));
     }
-    ;
+    throw make<ArgumentErrorCls>(arg);
 }
 
 Matrix3 Matrix3Cls::+(Matrix3 arg) {

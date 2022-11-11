@@ -171,7 +171,7 @@ bool RenderViewportBaseCls<ParentDataClass>::debugThrowIfNotCheckingIntrinsics()
     assert([=] () {
         if (!RenderObjectCls->debugCheckingIntrinsics) {
             assert(!is<RenderShrinkWrappingViewport>(this));
-            ;
+            throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem, ArrayItem));
         }
         return true;
     }());
@@ -588,7 +588,7 @@ void RenderViewportCls::performLayout() {
     assert([=] () {
         if (count >= _maxLayoutCycles) {
             assert(count != 1);
-            ;
+            throw make<FlutterErrorCls>(__s("A RenderViewport exceeded its maximum number of layout cycles.\nRenderViewport render objects, during layout, can retry if either their slivers or their ViewportOffset decide that the offset should be corrected to take into account information collected during that layout.\nIn the case of this RenderViewport object, however, this happened $count times and still there was no consensus on the scroll offset. This usually indicates a bug. Specifically, it means that one of the following three problems is being experienced by the RenderViewport object:\n * One of the RenderSliver children or the ViewportOffset have a bug such that they always think that they need to correct the offset regardless.\n * Some combination of the RenderSliver children and the ViewportOffset have a bad interaction such that one applies a correction then another applies a reverse correction, leading to an infinite loop of corrections.\n * There is a pathological case that would eventually resolve, but it is so complicated that it cannot be resolved in any reasonable number of layout passes."));
         }
         return true;
     }());
@@ -747,7 +747,7 @@ void RenderShrinkWrappingViewportCls::setupParentData(RenderObject child) {
 bool RenderShrinkWrappingViewportCls::debugThrowIfNotCheckingIntrinsics() {
     assert([=] () {
         if (!RenderObjectCls->debugCheckingIntrinsics) {
-            ;
+            throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem, ArrayItem));
         }
         return true;
     }());

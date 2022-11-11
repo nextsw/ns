@@ -2,7 +2,7 @@
 bool debugAssertAllFoundationVarsUnset(DebugPrintCallback debugPrintOverride, String reason) {
     assert([=] () {
         if (debugPrint != debugPrintOverride || debugDefaultTargetPlatformOverride != nullptr || debugDoublePrecision != nullptr || debugBrightnessOverride != nullptr) {
-            ;
+            throw make<FlutterErrorCls>(reason);
         }
         return true;
     }());

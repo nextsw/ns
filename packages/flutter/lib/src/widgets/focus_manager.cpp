@@ -446,7 +446,7 @@ void FocusNodeCls::_setAsFocusedChildForScope() {
     }
 }
 
-FocusScopeNodeCls::FocusScopeNodeCls(Unknown canRequestFocus, Unknown debugLabel, Unknown onKey, Unknown onKeyEvent, Unknown skipTraversal) {
+FocusScopeNodeCls::FocusScopeNodeCls(Unknown canRequestFocus, Unknown debugLabel, Unknown onKey, Unknown onKeyEvent, Unknown skipTraversal) : FocusNode(true) {
     {
         assert(skipTraversal != nullptr);
         assert(canRequestFocus != nullptr);

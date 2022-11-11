@@ -75,7 +75,7 @@ void WriteBufferCls::putFloat64List(Float64List list) {
 
 ByteData WriteBufferCls::done() {
     if (_isDone) {
-        ;
+        throw make<StateErrorCls>(__s("done() must not be called more than once on the same $runtimeType."));
     }
     ByteData result = _buffer->buffer->asByteData(0, _currentSize);
     _buffer = make<Uint8ListCls>(0);

@@ -4,5 +4,5 @@ String NullCls::toString() {
 }
 
 void NullCls::_uninstantiable() {
-    auto _c1 = makeMap(makeList(), makeList();_c1.addEntries(entries);;
+    auto _c1 = makeMap(makeList(), makeList();_c1.addEntries(entries);throw make<UnsupportedErrorCls>(__s("class Null cannot be instantiated"));
 }

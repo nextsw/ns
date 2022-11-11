@@ -3,7 +3,7 @@ template<typename T>
 void _CompleterCls<T>::completeError(Object error, StackTrace stackTrace) {
     checkNotNullable(error, __s("error"));
     if (!future->_mayComplete)     {
-        ;
+        throw make<StateErrorCls>(__s("Future already completed"));
     }
     AsyncError replacement = ZoneCls::current->errorCallback(error, stackTrace);
     if (replacement != nullptr) {
@@ -23,7 +23,7 @@ bool _CompleterCls<T>::isCompleted() {
 template<typename T>
 void _AsyncCompleterCls<T>::complete(FutureOr<T> value) {
     if (!future->_mayComplete)     {
-        ;
+        throw make<StateErrorCls>(__s("Future already completed"));
     }
     future->_asyncComplete(value == nullptr? as<dynamic>(value) : value);
 }
@@ -36,7 +36,7 @@ void _AsyncCompleterCls<T>::_completeError(Object error, StackTrace stackTrace) 
 template<typename T>
 void _SyncCompleterCls<T>::complete(FutureOr<T> value) {
     if (!future->_mayComplete)     {
-        ;
+        throw make<StateErrorCls>(__s("Future already completed"));
     }
     future->_complete(value == nullptr? as<dynamic>(value) : value);
 }
@@ -111,9 +111,9 @@ FutureOr<T> _FutureListenerCls<S, T>::handleError(AsyncError asyncError) {
         return result;
     } catch (TypeError null) {
         if (handlesValue()) {
-            ;
+            throw make<ArgumentErrorCls>(__s("The error handler of Future.then must return a value of the returned future's type"), __s("onError"));
         }
-        ;
+        throw make<ArgumentErrorCls>(__s("The error handler of Future.catchError must return a value of the future's type"), __s("onError"));
     };
 }
 

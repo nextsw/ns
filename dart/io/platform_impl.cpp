@@ -2,7 +2,7 @@
 String _PlatformCls::localeName() {
     Unknown result = (_localeClosure == nullptr)? _localeName() : _localeClosure!();
     if (is<OSError>(result)) {
-        ;
+        throw as<OSErrorCls>(result);
     }
     return result;
 }
@@ -27,7 +27,7 @@ String _PlatformCls::operatingSystemVersion() {
     if (_cachedOSVersion == nullptr) {
         auto result = _operatingSystemVersion();
         if (is<OSError>(result)) {
-            ;
+            throw as<OSErrorCls>(result);
         }
         _cachedOSVersion = result;
     }
@@ -37,7 +37,7 @@ String _PlatformCls::operatingSystemVersion() {
 String _PlatformCls::localHostname() {
     auto result = _localHostname();
     if (is<OSError>(result)) {
-        ;
+        throw as<OSErrorCls>(result);
     }
     return result;
 }
@@ -67,7 +67,7 @@ Map<String, String> _PlatformCls::environment() {
         }
     }
     if (is<OSError>(_environmentCache)) {
-        ;
+        throw as<OSErrorCls>(_environmentCache);
     } else {
         return _environmentCache!;
     }

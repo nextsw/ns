@@ -36,10 +36,10 @@ void MapBaseCls<K, V>::_fillMapWithMappedIterable(Iterable<Object> iterable, std
     key = _id;
     value = _id;
     if (key == nullptr)     {
-        ;
+        throw __s("!");
     }
     if (value == nullptr)     {
-        ;
+        throw __s("!");
     }
     for (auto element : iterable) {
         map[key(element)] = value(element);
@@ -58,7 +58,7 @@ void MapBaseCls<K, V>::_fillMapWithIterables(Iterable<Object> keys, Map<Object, 
         hasNextValue = valueIterator->moveNext();
     }
     if (hasNextKey || hasNextValue) {
-        ;
+        throw make<ArgumentErrorCls>(__s("Iterables do not have same length."));
     }
 }
 
@@ -108,7 +108,7 @@ V MapMixinCls<K, V>::update(std::function<V()> ifAbsent, K key, std::function<V(
     if (ifAbsent != nullptr) {
         return this[key] = ifAbsent();
     }
-    ;
+    throw ArgumentErrorCls->value(key, __s("key"), __s("Key not in map."));
 }
 
 template<typename K, typename V>
@@ -246,47 +246,47 @@ _MapBaseValueIteratorCls<K, V>::_MapBaseValueIteratorCls(Map<K, V> map) {
 
 template<typename K, typename V>
 void _UnmodifiableMapMixinCls<K, V>::[]=(K key, V value) {
-    ;
+    throw make<UnsupportedErrorCls>(__s("Cannot modify unmodifiable map"));
 }
 
 template<typename K, typename V>
 void _UnmodifiableMapMixinCls<K, V>::addAll(Map<K, V> other) {
-    ;
+    throw make<UnsupportedErrorCls>(__s("Cannot modify unmodifiable map"));
 }
 
 template<typename K, typename V>
 void _UnmodifiableMapMixinCls<K, V>::addEntries(Iterable<MapEntry<K, V>> entries) {
-    ;
+    throw make<UnsupportedErrorCls>(__s("Cannot modify unmodifiable map"));
 }
 
 template<typename K, typename V>
 void _UnmodifiableMapMixinCls<K, V>::clear() {
-    ;
+    throw make<UnsupportedErrorCls>(__s("Cannot modify unmodifiable map"));
 }
 
 template<typename K, typename V>
 V _UnmodifiableMapMixinCls<K, V>::remove(Object key) {
-    ;
+    throw make<UnsupportedErrorCls>(__s("Cannot modify unmodifiable map"));
 }
 
 template<typename K, typename V>
 void _UnmodifiableMapMixinCls<K, V>::removeWhere(std::function<bool(K key, V value)> test) {
-    ;
+    throw make<UnsupportedErrorCls>(__s("Cannot modify unmodifiable map"));
 }
 
 template<typename K, typename V>
 V _UnmodifiableMapMixinCls<K, V>::putIfAbsent(std::function<V()> ifAbsent, K key) {
-    ;
+    throw make<UnsupportedErrorCls>(__s("Cannot modify unmodifiable map"));
 }
 
 template<typename K, typename V>
 V _UnmodifiableMapMixinCls<K, V>::update(std::function<V()> ifAbsent, K key, std::function<V(V value)> update) {
-    ;
+    throw make<UnsupportedErrorCls>(__s("Cannot modify unmodifiable map"));
 }
 
 template<typename K, typename V>
 void _UnmodifiableMapMixinCls<K, V>::updateAll(std::function<V(K key, V value)> update) {
-    ;
+    throw make<UnsupportedErrorCls>(__s("Cannot modify unmodifiable map"));
 }
 
 template<typename K, typename V>
@@ -409,7 +409,7 @@ void MapViewCls<K, V>::removeWhere(std::function<bool(K key, V value)> test) {
 }
 
 template<typename K, typename V>
-UnmodifiableMapViewCls<K, V>::UnmodifiableMapViewCls(Map<K, V> map) {
+UnmodifiableMapViewCls<K, V>::UnmodifiableMapViewCls(Map<K, V> map) : MapView<K, V>(map) {
 }
 
 template<typename K, typename V>

@@ -48,7 +48,7 @@ void _InheritedNotifierElementCls<T>::unmount() {
 }
 
 template<typename T>
-_InheritedNotifierElementCls<T>::_InheritedNotifierElementCls(InheritedNotifier<T> widget) {
+_InheritedNotifierElementCls<T>::_InheritedNotifierElementCls(InheritedNotifier<T> widget) : InheritedElement(widget) {
     {
         widget->notifier?->addListener(_handleUpdate);
     }

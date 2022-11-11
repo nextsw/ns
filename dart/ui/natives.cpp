@@ -27,7 +27,7 @@ void _setupHooks() {
 }
 
 List<int> saveCompilationTrace() {
-    ;
+    throw make<UnimplementedErrorCls>();
 }
 
 _PrintClosure _getPrintClosure() {

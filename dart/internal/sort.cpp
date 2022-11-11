@@ -7,7 +7,7 @@ void SortCls::sort(List<E> a, std::function<int(E a, E b)> compare) {
 template<typename E>
 void SortCls::sortRange(List<E> a, std::function<int(E a, E b)> compare, int from, int to) {
     if (( < 0) || (to > a->length) || ( < from)) {
-        ;
+        throw __s("OutOfRange");
     }
     _doSort(a, from, to - 1, compare);
 }

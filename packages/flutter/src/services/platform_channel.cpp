@@ -159,7 +159,7 @@ Future<T> MethodChannelCls::_invokeMethod(dynamic arguments, String method, bool
         if (missingOk) {
             return nullptr;
         }
-        ;
+        throw make<MissingPluginExceptionCls>(__s("No implementation found for method $method on channel $name"));
     }
     return as<T>(codec->decodeEnvelope(result));
 }

@@ -34,11 +34,11 @@ GestureDetectorCls::GestureDetectorCls(HitTestBehavior behavior, Widget child, D
             bool haveScale = onScaleStart != nullptr || onScaleUpdate != nullptr || onScaleEnd != nullptr;
             if (havePan || haveScale) {
                 if (havePan && haveScale) {
-                    ;
+                    throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem, ArrayItem));
                 }
                 String recognizer = havePan? __s("pan") : __s("scale");
                 if (haveVerticalDrag && haveHorizontalDrag) {
-                    ;
+                    throw make<FlutterErrorCls>(__s("Incorrect GestureDetector arguments.\nSimultaneously having a vertical drag gesture recognizer, a horizontal drag gesture recognizer, and a $recognizer gesture recognizer will result in the $recognizer gesture recognizer being ignored, since the other two will catch all drags."));
                 }
             }
             return true;
@@ -141,7 +141,7 @@ void RawGestureDetectorStateCls::didUpdateWidget(RawGestureDetector oldWidget) {
 void RawGestureDetectorStateCls::replaceGestureRecognizers(Map<Type, GestureRecognizerFactory> gestures) {
     assert([=] () {
         if (!context->findRenderObject()!->owner!->debugDoingLayout) {
-            ;
+            throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem, ArrayItem));
         }
         return true;
     }());
@@ -159,7 +159,7 @@ void RawGestureDetectorStateCls::replaceSemanticsActions(Set<SemanticsAction> ac
     RenderSemanticsGestureHandler semanticsGestureHandler = as<RenderSemanticsGestureHandler>(context->findRenderObject());
     assert([=] () {
         if (semanticsGestureHandler == nullptr) {
-            ;
+            throw make<FlutterErrorCls>(__s("Unexpected call to replaceSemanticsActions() method of RawGestureDetectorState.\nThe replaceSemanticsActions() method can only be called after the RenderSemanticsGestureHandler has been created."));
         }
         return true;
     }());

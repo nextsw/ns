@@ -11,7 +11,7 @@ ReorderableListState ReorderableListCls::of(BuildContext context) {
     ReorderableListState result = context-><ReorderableListState>findAncestorStateOfType();
     assert([=] () {
         if (result == nullptr) {
-            ;
+            throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem, ArrayItem, ArrayItem));
         }
         return true;
     }());
@@ -55,7 +55,7 @@ SliverReorderableListState SliverReorderableListCls::of(BuildContext context) {
     SliverReorderableListState result = context-><SliverReorderableListState>findAncestorStateOfType();
     assert([=] () {
         if (result == nullptr) {
-            ;
+            throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem, ArrayItem, ArrayItem));
         }
         return true;
     }());
@@ -105,7 +105,7 @@ void SliverReorderableListStateCls::startItemDragReorder(PointerDownEvent event,
                     auto _c1 = recognizer;        _c1.onStart = auto _c2 = _dragStart;        _c2.addPointer(event);        _c2;_recognizer = _c1;
             _recognizerPointer = event->pointer;
         } else {
-            ;
+            throw make<ExceptionCls>(__s("Attempting to start a drag on a non-visible item"));
         }
     });
 }
@@ -345,7 +345,7 @@ _ReorderableItemState _ReorderableItemCls::createState() {
     return make<_ReorderableItemStateCls>();
 }
 
-_ReorderableItemCls::_ReorderableItemCls(CapturedThemes capturedThemes, Widget child, int index, Key key) {
+_ReorderableItemCls::_ReorderableItemCls(CapturedThemes capturedThemes, Widget child, int index, Key key) : StatefulWidget(key) {
 }
 
 Key _ReorderableItemStateCls::key() {
@@ -570,5 +570,5 @@ int _ReorderableItemGlobalKeyCls::hashCode() {
     return ObjectCls->hash(subKey, index, state);
 }
 
-_ReorderableItemGlobalKeyCls::_ReorderableItemGlobalKeyCls(int index, SliverReorderableListState state, Key subKey) {
+_ReorderableItemGlobalKeyCls::_ReorderableItemGlobalKeyCls(int index, SliverReorderableListState state, Key subKey) : GlobalObjectKey(subKey) {
 }

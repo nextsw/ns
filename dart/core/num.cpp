@@ -5,7 +5,7 @@ num numCls::parse(String input, std::function<num(String input)> onError) {
         return result;
     }
     if (onError == nullptr)     {
-        ;
+        throw make<FormatExceptionCls>(input);
     }
     return onError(input);
 }

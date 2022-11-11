@@ -430,7 +430,7 @@ R _rootRun(std::function<R()> f, ZoneDelegate parent, Zone self, Zone zone) {
         return f();
     }
     if (!is<_Zone>(zone)) {
-        ;
+        throw ArgumentErrorCls->value(as<_ZoneCls>(zone), __s("zone"), __s("Can only run in platform zones"));
     }
     _Zone old = ZoneCls->_enter(zone);
     try {
@@ -446,7 +446,7 @@ R _rootRunUnary(T arg, std::function<R(T arg)> f, ZoneDelegate parent, Zone self
         return f(arg);
     }
     if (!is<_Zone>(zone)) {
-        ;
+        throw ArgumentErrorCls->value(as<_ZoneCls>(zone), __s("zone"), __s("Can only run in platform zones"));
     }
     _Zone old = ZoneCls->_enter(zone);
     try {
@@ -462,7 +462,7 @@ R _rootRunBinary(T1 arg1, T2 arg2, std::function<R(T1 arg1, T2 arg2)> f, ZoneDel
         return f(arg1, arg2);
     }
     if (!is<_Zone>(zone)) {
-        ;
+        throw ArgumentErrorCls->value(as<_ZoneCls>(zone), __s("zone"), __s("Can only run in platform zones"));
     }
     _Zone old = ZoneCls->_enter(zone);
     try {
@@ -527,7 +527,7 @@ void _printToZone(String line) {
 
 Zone _rootFork(ZoneDelegate parent, Zone self, ZoneSpecification specification, Zone zone, Map<Object, Object> zoneValues) {
     if (!is<_Zone>(zone)) {
-        ;
+        throw ArgumentErrorCls->value(as<_ZoneCls>(zone), __s("zone"), __s("Can only fork a platform zone"));
     }
     printToZone = _printToZone;
     if (specification == nullptr) {
@@ -544,7 +544,7 @@ Zone _rootFork(ZoneDelegate parent, Zone self, ZoneSpecification specification, 
         valueMap = <Object, Object>from(zoneValues);
     }
     if (specification == nullptr)     {
-        ;
+        throw __s("unreachable");
     }
     return make<_CustomZoneCls>(zone, specification, valueMap);
 }
@@ -782,7 +782,7 @@ R runZoned(std::function<R()> body, std::function<void ()> onError, ZoneSpecific
                     originalOnError(error);
                 };
             } else {
-                ;
+                throw ArgumentErrorCls->value(onError, __s("onError"), __s("Must be Function(Object) or Function(Object, StackTrace)"));
             }
         }
         return as<R>(runZonedGuarded(body, onErrorzoneSpecification, zoneValues));

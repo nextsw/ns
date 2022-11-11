@@ -141,7 +141,7 @@ void IOSScrollViewFlingVelocityTrackerCls::addPosition(Offset position, Duration
         if (previousPoint == nullptr || previousPoint->time <= time) {
             return true;
         }
-        ;
+        throw make<FlutterErrorCls>(__s("The position being added ($position) has a smaller timestamp ($time) than its predecessor: $previousPoint."));
     }());
     _index = (_index + 1) % _sampleSize;
     _touchSamples[_index] = make<_PointAtTimeCls>(position, time);

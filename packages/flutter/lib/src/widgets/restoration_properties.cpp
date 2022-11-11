@@ -42,7 +42,7 @@ Object _RestorablePrimitiveValueNCls<T>::toPrimitives() {
 }
 
 template<typename T>
-_RestorablePrimitiveValueNCls<T>::_RestorablePrimitiveValueNCls(T _defaultValue) {
+_RestorablePrimitiveValueNCls<T>::_RestorablePrimitiveValueNCls(T _defaultValue) : RestorableValue<T>() {
     {
         assert(debugIsSerializableForRestoration(_defaultValue));
     }

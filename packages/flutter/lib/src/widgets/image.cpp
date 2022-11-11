@@ -177,7 +177,7 @@ ImageStreamListener _ImageStateCls::_getListener(bool recreateListener) {
             });
             assert([=] () {
                 if (widget->errorBuilder == nullptr) {
-                    ;
+                    throw error;
                 }
                 return true;
             }());

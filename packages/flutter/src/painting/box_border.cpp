@@ -29,7 +29,7 @@ BoxBorder BoxBorderCls::lerp(BoxBorder a, BoxBorder b, double t) {
         }
         return make<BorderDirectionalCls>(BorderSideCls->lerp(a->top(), b->top(), t), BorderSideCls->lerp(BorderSideCls::none, b->start, (t - 0.5) * 2.0), BorderSideCls->lerp(BorderSideCls::none, b->end, (t - 0.5) * 2.0), BorderSideCls->lerp(a->bottom(), b->bottom(), t));
     }
-    ;
+    throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem, ArrayItem));
 }
 
 Path BoxBorderCls::getInnerPath(Rect rect, TextDirection textDirection) {
@@ -171,19 +171,19 @@ void BorderCls::paint(BorderRadius borderRadius, Canvas canvas, Rect rect, BoxSh
     }
     assert([=] () {
         if (borderRadius != nullptr) {
-            ;
+                    List<DiagnosticsNode> list1 = make<ListCls<>>();        list1.add(ArrayItem);        list1.add(ArrayItem);        if (!_colorIsUniform()) {            list1.add(ArrayItem);        }if (!_widthIsUniform()) {            list1.add(ArrayItem);        }if (!_styleIsUniform()) {            list1.add(ArrayItem);        }if (!_strokeAlignIsUniform()) {            list1.add(ArrayItem);        }throw FlutterErrorCls->fromParts(list1);
         }
         return true;
     }());
     assert([=] () {
         if (shape != BoxShapeCls::rectangle) {
-            ;
+                    List<DiagnosticsNode> list2 = make<ListCls<>>();        list2.add(ArrayItem);        list2.add(ArrayItem);        if (!_colorIsUniform()) {            list2.add(ArrayItem);        }if (!_widthIsUniform()) {            list2.add(ArrayItem);        }if (!_styleIsUniform()) {            list2.add(ArrayItem);        }if (!_strokeAlignIsUniform()) {            list2.add(ArrayItem);        }throw FlutterErrorCls->fromParts(list2);
         }
         return true;
     }());
     assert([=] () {
         if (!_strokeAlignIsUniform() || top->strokeAlign != StrokeAlignCls::inside) {
-            ;
+            throw FlutterErrorCls->fromParts(makeList(ArrayItem));
         }
         return true;
     }());

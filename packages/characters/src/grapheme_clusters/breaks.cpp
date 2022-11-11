@@ -94,7 +94,7 @@ int lookAhead(String base, int cursor, int start, int state) {
         }
         return stateExtend;
     }
-    ;
+    throw make<StateErrorCls>(__s("Unexpected state: ${state.toRadixString(16)}"));
 }
 
 int lookAheadRegional(String base, int cursor, int start) {

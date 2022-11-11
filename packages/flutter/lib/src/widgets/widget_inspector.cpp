@@ -318,7 +318,7 @@ Future<Image> _ScreenshotPaintingContextCls::toImage(bool debugPaint, double pix
     return data->containerLayer->toImage(renderBoundspixelRatio);
 }
 
-_ScreenshotPaintingContextCls::_ScreenshotPaintingContextCls(ContainerLayer containerLayer, Rect estimatedBounds, _ScreenshotData screenshotData) {
+_ScreenshotPaintingContextCls::_ScreenshotPaintingContextCls(ContainerLayer containerLayer, Rect estimatedBounds, _ScreenshotData screenshotData) : PaintingContext(containerLayer, estimatedBounds) {
     {
         _data = screenshotData;
     }
@@ -609,7 +609,7 @@ Object WidgetInspectorServiceCls::toObject(String groupName, String id) {
     }
     _InspectorReferenceData data = _idToReferenceData[id];
     if (data == nullptr) {
-        ;
+        throw FlutterErrorCls->fromParts(makeList(ArrayItem));
     }
     return data->object;
 }
@@ -628,10 +628,10 @@ void WidgetInspectorServiceCls::disposeId(String groupName, String id) {
     }
     _InspectorReferenceData referenceData = _idToReferenceData[id];
     if (referenceData == nullptr) {
-        ;
+        throw FlutterErrorCls->fromParts(makeList(ArrayItem));
     }
     if (_groups[groupName]?->remove(referenceData) != true) {
-        ;
+        throw FlutterErrorCls->fromParts(makeList(ArrayItem));
     }
     _decrementReferenceCount(referenceData);
 }
@@ -906,7 +906,7 @@ List<Object> WidgetInspectorServiceCls::_getParentChain(String groupName, String
         if (is<Element>(value)) {
         path = _getElementParentChain(as<ElementCls>(value), groupName);
     } else {
-        ;
+        throw FlutterErrorCls->fromParts(makeList(ArrayItem));
     }
 ;
     }    return path-><Object>map([=] (_DiagnosticsPathNode node)     {
@@ -1235,7 +1235,7 @@ Map<String, dynamic> _ElementLocationStatsTrackerCls::exportToJson(Duration star
 }
 
 Element _WidgetForTypeTestsCls::createElement() {
-    return ;
+    return throw make<UnimplementedErrorCls>();
 }
 
 WidgetInspectorCls::WidgetInspectorCls(Widget child, Unknown key, InspectorSelectButtonBuilder selectButtonBuilder) {
@@ -1554,7 +1554,7 @@ _InspectorOverlayLayerCls::_InspectorOverlayLayerCls(Rect overlayRect, RenderObj
             return true;
         }());
         if (inDebugMode == false) {
-            ;
+            throw FlutterErrorCls->fromParts(makeList(ArrayItem));
         }
     }
 }
@@ -1699,7 +1699,7 @@ Iterable<DiagnosticsNode> _describeRelevantUserCode(Element element, ErrorSummar
     return nodes;
 }
 
-DevToolsDeepLinkPropertyCls::DevToolsDeepLinkPropertyCls(String description, String url) {
+DevToolsDeepLinkPropertyCls::DevToolsDeepLinkPropertyCls(String description, String url) : DiagnosticsProperty<String>(__s(""), urldescription, DiagnosticLevelCls::info) {
     {
         assert(description != nullptr);
         assert(url != nullptr);

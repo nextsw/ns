@@ -69,7 +69,7 @@ Ticker SingleTickerProviderStateMixinCls<T>::createTicker(TickerCallback onTick)
         if (_ticker == nullptr) {
             return true;
         }
-        ;
+        throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem, ArrayItem));
     }());
     _ticker = make<TickerCls>(onTickkDebugMode? __s("created by ${describeIdentity(this)}") : nullptr);
     _updateTickerModeNotifier();
@@ -83,7 +83,7 @@ void SingleTickerProviderStateMixinCls<T>::dispose() {
         if (_ticker == nullptr || !_ticker!->isActive()) {
             return true;
         }
-        ;
+        throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem, ArrayItem, ArrayItem));
     }());
     _tickerModeNotifier?->removeListener(_updateTicker);
     _tickerModeNotifier = nullptr;
@@ -162,7 +162,7 @@ void TickerProviderStateMixinCls<T>::dispose() {
         if (_tickers != nullptr) {
             for (Ticker ticker : _tickers!) {
                 if (ticker->isActive) {
-                    ;
+                    throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem, ArrayItem, ArrayItem));
                 }
             }
         }

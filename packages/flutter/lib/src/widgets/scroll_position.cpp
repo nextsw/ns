@@ -81,7 +81,7 @@ double ScrollPositionCls::setPixels(double newPixels) {
         assert([=] () {
             double delta = newPixels - pixels();
             if (overscroll->abs() > delta->abs()) {
-                ;
+                throw make<FlutterErrorCls>(__s("$runtimeType.applyBoundaryConditions returned invalid overscroll value.\nsetPixels() was called to change the scroll offset from $pixels to $newPixels.\nThat is a delta of $delta units.\n$runtimeType.applyBoundaryConditions reported an overscroll of $overscroll units."));
             }
             return true;
         }());
@@ -153,7 +153,7 @@ double ScrollPositionCls::applyBoundaryConditions(double value) {
     assert([=] () {
         double delta = value - pixels();
         if (result->abs() > delta->abs()) {
-            ;
+            throw make<FlutterErrorCls>(__s("${physics.runtimeType}.applyBoundaryConditions returned invalid overscroll value.\nThe method was called to consider a change from $pixels to $value, which is a delta of ${delta.toStringAsFixed(1)} units. However, it returned an overscroll of ${result.toStringAsFixed(1)} units, which has a greater magnitude than the delta. The applyBoundaryConditions method is only supposed to reduce the possible range of movement, not increase it.\nThe scroll extents are $minScrollExtent .. $maxScrollExtent, and the viewport dimension is $viewportDimension."));
         }
         return true;
     }());

@@ -263,7 +263,7 @@ void TextPainterCls::paint(Canvas canvas, Offset offset) {
     double minWidth = _lastMinWidth;
     double maxWidth = _lastMaxWidth;
     if (_paragraph == nullptr || minWidth == nullptr || maxWidth == nullptr) {
-        ;
+        throw make<StateErrorCls>(__s("TextPainter.paint called when text geometry was not yet calculated.\nPlease call layout() before paint() to position the text before painting it."));
     }
     if (_rebuildParagraphForPaint) {
         Size debugSize;
@@ -359,7 +359,7 @@ void TextPainterCls::_createParagraph() {
     assert(_paragraph == nullptr || _rebuildParagraphForPaint);
     InlineSpan text = this->text();
     if (text == nullptr) {
-        ;
+        throw make<StateErrorCls>(__s("TextPainter.text must be set to a non-null value before using the TextPainter."));
     }
     ParagraphBuilder builder = ui->make<ParagraphBuilderCls>(_createParagraphStyle());
     text->build(buildertextScaleFactor(), _placeholderDimensions);

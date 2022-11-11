@@ -311,7 +311,7 @@ Size BoxConstraintsCls::_debugPropagateDebugSize(Size result, Size size) {
     return result;
 }
 
-BoxHitTestResultCls::BoxHitTestResultCls() {
+BoxHitTestResultCls::BoxHitTestResultCls() : HitTestResult() {
 }
 
 void BoxHitTestResultCls::wrap(Unknown result)
@@ -408,10 +408,10 @@ void RenderBoxCls::setupParentData(RenderObject child) {
 double RenderBoxCls::getMinIntrinsicWidth(double height) {
     assert([=] () {
         if (height == nullptr) {
-            ;
+            throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem, ArrayItem));
         }
         if ( < 0.0) {
-            ;
+            throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem, ArrayItem));
         }
         return true;
     }());
@@ -425,10 +425,10 @@ double RenderBoxCls::computeMinIntrinsicWidth(double height) {
 double RenderBoxCls::getMaxIntrinsicWidth(double height) {
     assert([=] () {
         if (height == nullptr) {
-            ;
+            throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem, ArrayItem));
         }
         if ( < 0.0) {
-            ;
+            throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem, ArrayItem));
         }
         return true;
     }());
@@ -442,10 +442,10 @@ double RenderBoxCls::computeMaxIntrinsicWidth(double height) {
 double RenderBoxCls::getMinIntrinsicHeight(double width) {
     assert([=] () {
         if (width == nullptr) {
-            ;
+            throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem, ArrayItem));
         }
         if ( < 0.0) {
-            ;
+            throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem, ArrayItem));
         }
         return true;
     }());
@@ -459,10 +459,10 @@ double RenderBoxCls::computeMinIntrinsicHeight(double width) {
 double RenderBoxCls::getMaxIntrinsicHeight(double width) {
     assert([=] () {
         if (width == nullptr) {
-            ;
+            throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem, ArrayItem));
         }
         if ( < 0.0) {
-            ;
+            throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem, ArrayItem));
         }
         return true;
     }());
@@ -524,10 +524,10 @@ bool RenderBoxCls::debugCannotComputeDryLayout(FlutterError error, String reason
         if (!RenderObjectCls->debugCheckingIntrinsics) {
             if (reason != nullptr) {
                 assert(error == nullptr);
-                ;
+                            List<DiagnosticsNode> list1 = make<ListCls<>>();            list1.add(ArrayItem);            if (reason->isNotEmpty()) {                list1.add(ArrayItem);            }throw FlutterErrorCls->fromParts(list1);
             }
             assert(error != nullptr);
-            ;
+            throw error!;
         }
         _dryLayoutCalculationValid = false;
         return true;
@@ -578,7 +578,7 @@ void RenderBoxCls::size(Size value) {
         } else {
             information->add(make<ErrorDescriptionCls>(__s("Because this RenderBox has sizedByParent set to false, it must set its size in performLayout().")));
         }
-        ;
+        throw FlutterErrorCls->fromParts(information);
     }());
     assert([=] () {
         value = debugAdoptSize(value);
@@ -597,10 +597,10 @@ Size RenderBoxCls::debugAdoptSize(Size value) {
         if (is<_DebugSize>(value)) {
             if (as<_DebugSizeCls>(value)->_owner != this) {
                 if (value->_owner->parent != this) {
-                    ;
+                    throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem));
                 }
                 if (!value->_canBeUsedByParent) {
-                    ;
+                    throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem, ArrayItem, ArrayItem));
                 }
             }
         }
@@ -669,7 +669,7 @@ void RenderBoxCls::debugAssertDoesMeetConstraints() {
             } else {
                 contract = make<ErrorDescriptionCls>(__s("Because this RenderBox has sizedByParent set to false, it must set its size in performLayout()."));
             }
-            ;
+            throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem, ArrayItem, ArrayItem));
         }
         if (!_size!->isFinite) {
             List<DiagnosticsNode> information = makeList(ArrayItem, ArrayItem);
@@ -687,10 +687,10 @@ void RenderBoxCls::debugAssertDoesMeetConstraints() {
                 }
                 information->add(node->describeForError(__s("The nearest ancestor providing an unbounded height constraint is")));
             }
-            ;
+                    List<DiagnosticsNode> list1 = make<ListCls<>>();        for (auto _x1 : information) {        {            list1.add(_x1);        }list1.add(ArrayItem);        list1.add(ArrayItem);        list1.add(ArrayItem);throw FlutterErrorCls->fromParts(list1);
         }
         if (!constraints()->isSatisfiedBy(_size!)) {
-            ;
+            throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem, ArrayItem, ArrayItem));
         }
         if (debugCheckIntrinsicSizes) {
             assert(!RenderObjectCls->debugCheckingIntrinsics);
@@ -708,7 +708,7 @@ void RenderBoxCls::debugAssertDoesMeetConstraints() {
             }
             RenderObjectCls::debugCheckingIntrinsics = false;
             if (failures->isNotEmpty) {
-                ;
+                            List<DiagnosticsNode> list2 = make<ListCls<>>();            list2.add(ArrayItem);            list2.add(ArrayItem);            for (auto _x2 : failures) {            {                list2.add(_x2);            }list2.add(ArrayItem);throw FlutterErrorCls->fromParts(list2);
             }
             _dryLayoutCalculationValid = true;
             RenderObjectCls::debugCheckingIntrinsics = true;
@@ -719,7 +719,7 @@ void RenderBoxCls::debugAssertDoesMeetConstraints() {
                 RenderObjectCls::debugCheckingIntrinsics = false;
             };
             if (_dryLayoutCalculationValid && dryLayoutSize != size()) {
-                ;
+                throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem, ArrayItem, ArrayItem));
             }
         }
         return true;
@@ -749,7 +749,7 @@ void RenderBoxCls::performResize() {
 void RenderBoxCls::performLayout() {
     assert([=] () {
         if (!sizedByParent) {
-            ;
+            throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem));
         }
         return true;
     }());
@@ -759,9 +759,9 @@ bool RenderBoxCls::hitTest(Offset position, BoxHitTestResult result) {
     assert([=] () {
         if (!hasSize()) {
             if (debugNeedsLayout) {
-                ;
+                throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem, ArrayItem, ArrayItem));
             }
-            ;
+            throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem, ArrayItem, ArrayItem));
         }
         return true;
     }());
@@ -787,7 +787,7 @@ void RenderBoxCls::applyPaintTransform(RenderObject child, Matrix4 transform) {
     assert(child->parent == this);
     assert([=] () {
         if (!is<BoxParentData>(child->parentData)) {
-            ;
+            throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem));
         }
         return true;
     }());

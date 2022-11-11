@@ -25,7 +25,7 @@ void ListMixinCls<E>::forEach(std::function<void(E element)> action) {
     for (;  < length; i++) {
         action(this[i]);
         if (length != this->length) {
-            ;
+            throw make<ConcurrentModificationErrorCls>(this);
         }
     }
 }
@@ -43,7 +43,7 @@ bool ListMixinCls<E>::isNotEmpty() {
 template<typename E>
 E ListMixinCls<E>::first() {
     if (length == 0)     {
-        ;
+        throw IterableElementErrorCls->noElement();
     }
     return this[0];
 }
@@ -51,7 +51,7 @@ E ListMixinCls<E>::first() {
 template<typename E>
 void ListMixinCls<E>::first(E value) {
     if (length == 0)     {
-        ;
+        throw IterableElementErrorCls->noElement();
     }
     this[0] = value;
 }
@@ -59,7 +59,7 @@ void ListMixinCls<E>::first(E value) {
 template<typename E>
 E ListMixinCls<E>::last() {
     if (length == 0)     {
-        ;
+        throw IterableElementErrorCls->noElement();
     }
     return this[length - 1];
 }
@@ -67,7 +67,7 @@ E ListMixinCls<E>::last() {
 template<typename E>
 void ListMixinCls<E>::last(E value) {
     if (length == 0)     {
-        ;
+        throw IterableElementErrorCls->noElement();
     }
     this[length - 1] = value;
 }
@@ -75,10 +75,10 @@ void ListMixinCls<E>::last(E value) {
 template<typename E>
 E ListMixinCls<E>::single() {
     if (length == 0)     {
-        ;
+        throw IterableElementErrorCls->noElement();
     }
     if (length > 1)     {
-        ;
+        throw IterableElementErrorCls->tooMany();
     }
     return this[0];
 }
@@ -91,7 +91,7 @@ bool ListMixinCls<E>::contains(Object element) {
             return true;
         }
         if (length != this->length) {
-            ;
+            throw make<ConcurrentModificationErrorCls>(this);
         }
     }
     return false;
@@ -105,7 +105,7 @@ bool ListMixinCls<E>::every(std::function<bool(E element)> test) {
             return false;
         }
         if (length != this->length) {
-            ;
+            throw make<ConcurrentModificationErrorCls>(this);
         }
     }
     return true;
@@ -119,7 +119,7 @@ bool ListMixinCls<E>::any(std::function<bool(E element)> test) {
             return true;
         }
         if (length != this->length) {
-            ;
+            throw make<ConcurrentModificationErrorCls>(this);
         }
     }
     return false;
@@ -134,13 +134,13 @@ E ListMixinCls<E>::firstWhere(std::function<E()> orElse, std::function<bool(E el
             return element;
         }
         if (length != this->length) {
-            ;
+            throw make<ConcurrentModificationErrorCls>(this);
         }
     }
     if (orElse != nullptr)     {
         return orElse();
     }
-    ;
+    throw IterableElementErrorCls->noElement();
 }
 
 template<typename E>
@@ -152,13 +152,13 @@ E ListMixinCls<E>::lastWhere(std::function<E()> orElse, std::function<bool(E ele
             return element;
         }
         if (length != this->length) {
-            ;
+            throw make<ConcurrentModificationErrorCls>(this);
         }
     }
     if (orElse != nullptr)     {
         return orElse();
     }
-    ;
+    throw IterableElementErrorCls->noElement();
 }
 
 template<typename E>
@@ -170,13 +170,13 @@ E ListMixinCls<E>::singleWhere(std::function<E()> orElse, std::function<bool(E e
         E element = this[i];
         if (test(element)) {
             if (matchFound) {
-                ;
+                throw IterableElementErrorCls->tooMany();
             }
             matchFound = true;
             match = element;
         }
         if (length != this->length) {
-            ;
+            throw make<ConcurrentModificationErrorCls>(this);
         }
     }
     if (matchFound)     {
@@ -185,7 +185,7 @@ E ListMixinCls<E>::singleWhere(std::function<E()> orElse, std::function<bool(E e
     if (orElse != nullptr)     {
         return orElse();
     }
-    ;
+    throw IterableElementErrorCls->noElement();
 }
 
 template<typename E>
@@ -224,13 +224,13 @@ template<typename E>
 E ListMixinCls<E>::reduce(std::function<E(E element, E previousValue)> combine) {
     int length = this->length;
     if (length == 0)     {
-        ;
+        throw IterableElementErrorCls->noElement();
     }
     E value = this[0];
     for (;  < length; i++) {
         value = combine(value, this[i]);
         if (length != this->length) {
-            ;
+            throw make<ConcurrentModificationErrorCls>(this);
         }
     }
     return value;
@@ -244,7 +244,7 @@ T ListMixinCls<E>::fold(std::function<T(E element, T previousValue)> combine, T 
     for (;  < length; i++) {
         value = combine(value, this[i]);
         if (length != this->length) {
-            ;
+            throw make<ConcurrentModificationErrorCls>(this);
         }
     }
     return value;
@@ -301,7 +301,7 @@ template<typename E>
 void ListMixinCls<E>::addAll(Iterable<E> iterable) {
     int i = this->length;
     for (E element : iterable) {
-        assert(this->length == i || ());
+        assert(this->length == i || (throw make<ConcurrentModificationErrorCls>(this)));
         add(element);
         i++;
     }
@@ -342,7 +342,7 @@ List<R> ListMixinCls<E>::cast() {
 template<typename E>
 E ListMixinCls<E>::removeLast() {
     if (length == 0) {
-        ;
+        throw IterableElementErrorCls->noElement();
     }
     E result = this[length - 1];
     length--;
@@ -358,7 +358,7 @@ template<typename E>
 void ListMixinCls<E>::shuffle(Random random) {
     random = make<RandomCls>();
     if (random == nullptr)     {
-        ;
+        throw __s("!");
     }
     int length = this->length;
     while (length > 1) {
@@ -385,7 +385,7 @@ List<E> ListMixinCls<E>::sublist(int end, int start) {
     for (auto _x1 : this) {{    list1.add(_x1);}for (auto _x1 : other) {{    list1.add(_x1);}int listLength = this->length;
     end = listLength;
     if (end == nullptr)     {
-        ;
+        throw __s("!");
     }
     RangeErrorCls->checkValidRange(start, end, listLength);
     return ListCls->from(getRange(start, end));
@@ -432,7 +432,7 @@ void ListMixinCls<E>::setRange(int end, Iterable<E> iterable, int skipCount, int
         otherStart = 0;
     }
     if (otherStart + length > otherList->length) {
-        ;
+        throw IterableElementErrorCls->tooFew();
     }
     if ( < start) {
         for (; i >= 0; i--) {
@@ -521,7 +521,7 @@ int ListMixinCls<E>::lastIndexOf(Object element, int start) {
         start = this->length - 1;
     }
     if (start == nullptr)     {
-        ;
+        throw __s("!");
     }
     for (; i >= 0; i--) {
         if (this[i] == element)         {
@@ -537,7 +537,7 @@ int ListMixinCls<E>::lastIndexWhere(int start, std::function<bool(E element)> te
         start = this->length - 1;
     }
     if (start == nullptr)     {
-        ;
+        throw __s("!");
     }
     for (; i >= 0; i--) {
         if (test(this[i]))         {
@@ -586,7 +586,7 @@ void ListMixinCls<E>::insertAll(int index, Iterable<E> iterable) {
     }
     if (iterable->length() != insertionLength) {
         this->length = insertionLength;
-        ;
+        throw make<ConcurrentModificationErrorCls>(iterable);
     }
     int oldCopyStart = index + insertionLength;
     if ( < oldLength) {
@@ -639,7 +639,7 @@ void ListMixinCls<E>::_filter(bool retainMatching, std::function<bool(E element)
             retained->add(element);
         }
         if (length != this->length) {
-            ;
+            throw make<ConcurrentModificationErrorCls>(this);
         }
     }
     if (retained->length != this->length) {

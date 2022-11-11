@@ -30,7 +30,7 @@ Converter<List<int>, String> SystemEncodingCls::decoder() {
 List<int> _WindowsCodePageEncoderCls::convert(String input) {
     List<int> encoded = _encodeString(input);
     if (encoded == nullptr) {
-        ;
+        throw make<FormatExceptionCls>(__s("Invalid character for encoding"));
     }
     return encoded;
 }
@@ -46,7 +46,7 @@ void _WindowsCodePageEncoderSinkCls::close() {
 void _WindowsCodePageEncoderSinkCls::add(String stringValue) {
     List<int> encoded = _WindowsCodePageEncoderCls->_encodeString(stringValue);
     if (encoded == nullptr) {
-        ;
+        throw make<FormatExceptionCls>(__s("Invalid character for encoding"));
     }
     _sink->add(encoded);
 }

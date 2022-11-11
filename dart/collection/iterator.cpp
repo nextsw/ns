@@ -10,7 +10,7 @@ bool HasNextIteratorCls<E>::hasNext() {
 template<typename E>
 E HasNextIteratorCls<E>::next() {
     if (!hasNext())     {
-        ;
+        throw make<StateErrorCls>(__s("No more elements"));
     }
     assert(_state == _HAS_NEXT_AND_NEXT_IN_CURRENTCls);
     E result = _iterator->current();

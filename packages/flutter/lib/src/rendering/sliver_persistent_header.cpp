@@ -55,7 +55,7 @@ void RenderSliverPersistentHeaderCls::layoutChild(double maxExtent, bool overlap
         if (minExtent() <= maxExtent) {
             return true;
         }
-        ;
+        throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem, ArrayItem));
     }());
     double stretchOffset = 0.0;
     if (stretchConfiguration != nullptr && constraints->scrollOffset == 0.0) {

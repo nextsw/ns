@@ -4,7 +4,7 @@ String TextParentDataCls::toString() {
     return values->join(__s("; "));
 }
 
-PlaceholderSpanIndexSemanticsTagCls::PlaceholderSpanIndexSemanticsTagCls(int index) {
+PlaceholderSpanIndexSemanticsTagCls::PlaceholderSpanIndexSemanticsTagCls(int index) : SemanticsTag(__s("PlaceholderSpanIndexSemanticsTag($index)")) {
 }
 
 bool PlaceholderSpanIndexSemanticsTagCls::==(Object other) {

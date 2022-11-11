@@ -199,7 +199,7 @@ dynamic Matrix2Cls::*(dynamic arg) {
     if (is<Matrix2>(arg)) {
         return multiplied(as<Matrix2Cls>(arg));
     }
-    ;
+    throw make<ArgumentErrorCls>(arg);
 }
 
 Matrix2 Matrix2Cls::+(Matrix2 arg) {

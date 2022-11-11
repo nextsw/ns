@@ -739,7 +739,7 @@ void ParagraphBuilderCls::pushStyle(TextStyle style) {
 void ParagraphBuilderCls::addText(String text) {
     String error = _addText(text);
     if (error != nullptr)     {
-        ;
+        throw make<ArgumentErrorCls>(error);
     }
 }
 

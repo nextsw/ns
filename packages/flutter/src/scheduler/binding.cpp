@@ -39,7 +39,7 @@ _FrameCallbackEntryCls::_FrameCallbackEntryCls(FrameCallback callback, bool resc
             if (rescheduling) {
                 assert([=] () {
                     if (debugCurrentCallbackStack == nullptr) {
-                        ;
+                        throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem, ArrayItem));
                     }
                     return true;
                 }());

@@ -154,7 +154,7 @@ void _FilterSinkCls::close() {
         }
     } catch (Unknown e) {
         _closed = true;
-        ;
+        throw e;
     };
     _closed = true;
     _sink->close();
@@ -162,25 +162,25 @@ void _FilterSinkCls::close() {
 
 void _validateZLibWindowBits(int windowBits) {
     if (ZLibOptionCls::minWindowBits > windowBits || ZLibOptionCls::maxWindowBits < windowBits) {
-        ;
+        throw RangeErrorCls->range(windowBits, ZLibOptionCls::minWindowBits, ZLibOptionCls::maxWindowBits);
     }
 }
 
 void _validateZLibeLevel(int level) {
     if (ZLibOptionCls::minLevel > level || ZLibOptionCls::maxLevel < level) {
-        ;
+        throw RangeErrorCls->range(level, ZLibOptionCls::minLevel, ZLibOptionCls::maxLevel);
     }
 }
 
 void _validateZLibMemLevel(int memLevel) {
     if (ZLibOptionCls::minMemLevel > memLevel || ZLibOptionCls::maxMemLevel < memLevel) {
-        ;
+        throw RangeErrorCls->range(memLevel, ZLibOptionCls::minMemLevel, ZLibOptionCls::maxMemLevel);
     }
 }
 
 void _validateZLibStrategy(int strategy) {
     strategies = makeList(ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem);
     if (strategies->indexOf(strategy) == -1) {
-        ;
+        throw make<ArgumentErrorCls>(__s("Unsupported 'strategy'"));
     }
 }

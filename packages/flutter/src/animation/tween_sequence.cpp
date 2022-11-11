@@ -32,7 +32,7 @@ T TweenSequenceCls<T>::transform(double t) {
             return _evaluateAt(t, index);
         }
     }
-    ;
+    throw make<StateErrorCls>(__s("TweenSequence.evaluate() could not find an interval for $t"));
 }
 
 template<typename T>

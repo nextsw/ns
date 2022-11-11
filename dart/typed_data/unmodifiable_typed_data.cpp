@@ -172,7 +172,7 @@ ByteBuffer UnmodifiableByteDataViewCls::buffer() {
 }
 
 void UnmodifiableByteDataViewCls::_unsupported() {
-    ;
+    throw make<UnsupportedErrorCls>(__s("An UnmodifiableByteDataView may not be modified"));
 }
 
 template<typename N, typename L, typename TD>

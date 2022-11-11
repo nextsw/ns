@@ -112,7 +112,7 @@ String _TranspilerCls::resolveName(int id) {
 String _TranspilerCls::resolveType(int type) {
     _Type t = types[type];
     if (t == nullptr) {
-        ;
+        throw failure(__s("The id "$type" has not been asgined a type"));
     }
     return _typeName(t, target);
 }
@@ -134,7 +134,7 @@ String _TranspilerCls::resolveResult(int name) {
 
 int _TranspilerCls::readWord() {
     if (nextPosition != 0 && position > nextPosition) {
-        ;
+        throw failure(__s("Read past the current instruction."));
     }
     int word = spirv[position];
     position++;
@@ -143,7 +143,7 @@ int _TranspilerCls::readWord() {
 
 void _TranspilerCls::parseHeader() {
     if (spirv[0] != _magicNumber) {
-        ;
+        throw failure(__s("Magic number not detected in the header"));
     }
     position = 5;
 }
@@ -160,7 +160,7 @@ String _TranspilerCls::readStringLiteral() {
             literal->add(octet);
         }
     }
-    ;
+    throw failure(__s("No null-terminating character found for string literal"));
 }
 
 void _TranspilerCls::ref(int id) {
@@ -199,7 +199,7 @@ void _TranspilerCls::opExtInstImport() {
     glslExtImport = readWord();
     String ext = readStringLiteral();
     if (ext != _glslStd450) {
-        ;
+        throw failure(__s("only "$_glslStd450" is supported. Got "$ext"."));
     }
 }
 
@@ -208,17 +208,17 @@ void _TranspilerCls::opExtInst() {
     int id = readWord();
     int set = readWord();
     if (set != glslExtImport) {
-        ;
+        throw failure(__s("only imported glsl instructions are supported"));
     }
     parseGLSLInst(id, type);
 }
 
 void _TranspilerCls::opMemoryModel() {
     if (readWord() != _addressingModelLogical) {
-        ;
+        throw failure(__s("only the logical addressing model is supported"));
     }
     if (readWord() != _memoryModelGLSL450) {
-        ;
+        throw failure(__s("only the GLSL450 memory model is supported"));
     }
 }
 
@@ -231,7 +231,7 @@ void _TranspilerCls::opExecutionMode() {
     position++;
     int executionMode = readWord();
     if (executionMode != _originLowerLeft) {
-        ;
+        throw failure(__s("only OriginLowerLeft is supported as an execution mode"));
     }
 }
 
@@ -254,7 +254,7 @@ void _TranspilerCls::opTypeInt() {
     intType = id;
     int width = readWord();
     if (width != 32) {
-        ;
+        throw failure(__s("int width must be 32"));
     }
 }
 
@@ -264,7 +264,7 @@ void _TranspilerCls::opTypeFloat() {
     floatType = id;
     int width = readWord();
     if (width != 32) {
-        ;
+        throw failure(__s("float width must be 32"));
     }
 }
 
@@ -273,7 +273,7 @@ void _TranspilerCls::opTypeVector() {
     _Type t;
     int componentType = readWord();
     if (componentType != floatType) {
-        ;
+        throw failure(__s("only float vectors are supported"));
     }
     int componentCount = readWord();
     ;
@@ -288,54 +288,54 @@ void _TranspilerCls::opTypeMatrix() {
     _Type expected = _TypeCls::float2;
     ;
     if (types[columnType] != expected) {
-        ;
+        throw failure(__s("Only square matrix dimensions are supported"));
     }
     types[id] = t;
 }
 
 void _TranspilerCls::opTypeImage() {
     if (imageType != 0) {
-        ;
+        throw failure(__s("Image type was previously declared."));
     }
     int id = readWord();
     int sampledType = readWord();
     if (types[sampledType] != _TypeCls::float) {
-        ;
+        throw failure(__s("Sampled type must be float."));
     }
     int dimensionality = readWord();
     if (dimensionality != _dim2D) {
-        ;
+        throw failure(__s("Dimensionality must be 2D."));
     }
     int depth = readWord();
     if (depth != 0) {
-        ;
+        throw failure(__s("Depth must be 0."));
     }
     int arrayed = readWord();
     if (arrayed != 0) {
-        ;
+        throw failure(__s("Arrayed must be 0."));
     }
     int multisampled = readWord();
     if (multisampled != 0) {
-        ;
+        throw failure(__s("Multisampled must be 0."));
     }
     int sampled = readWord();
     if (sampled != 1) {
-        ;
+        throw failure(__s("Sampled must be 1."));
     }
     imageType = id;
 }
 
 void _TranspilerCls::opTypeSampledImage() {
     if (sampledImageType != 0) {
-        ;
+        throw failure(__s("imageSampledType was previously declared."));
     }
     if (imageType == 0) {
-        ;
+        throw failure(__s("imageType has not yet been declared."));
     }
     int id = readWord();
     int imgType = readWord();
     if (imgType != imageType) {
-        ;
+        throw failure(__s("Invalid image type."));
     }
     sampledImageType = id;
     types[id] = _TypeCls::sampledImage;
@@ -346,7 +346,7 @@ void _TranspilerCls::opTypePointer() {
     position++;
     _Type t = types[readWord()];
     if (t == nullptr) {
-        ;
+        throw failure(__s("$t is not a registered type"));
     }
     types[id] = t;
 }
@@ -406,10 +406,10 @@ void _TranspilerCls::opFunction() {
     int typeIndex = readWord();
     _FunctionType functionType = functionTypes[typeIndex];
     if (functionType == nullptr) {
-        ;
+        throw failure(__s("$typeIndex is not a registered function type"));
     }
     if (returnType != functionType->returnType) {
-        ;
+        throw failure(__s("function $id has return type mismatch"));
     }
     _Function f = make<_FunctionCls>(this, functionType, id);
     functions[id] = f;
@@ -635,7 +635,7 @@ void _TranspilerCls::parseGLSLInst(int id, int type) {
     }
     String opName = _glslStd450OpNames[inst];
     if (opName == nullptr) {
-        ;
+        throw failure(__s("$id is not a supported GLSL instruction."));
     }
     int argc = _glslStd450OpArgc[inst]!;
     List<int> args = <int>filled(argc, 0);

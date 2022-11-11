@@ -42,7 +42,7 @@ Iterable<E> HeapPriorityQueueCls<E>::unorderedElements() {
 template<typename E>
 E HeapPriorityQueueCls<E>::first() {
     if (_length == 0)     {
-        ;
+        throw make<StateErrorCls>(__s("No element"));
     }
     return _elementAt(0);
 }
@@ -94,7 +94,7 @@ Iterable<E> HeapPriorityQueueCls<E>::removeAll() {
 template<typename E>
 E HeapPriorityQueueCls<E>::removeFirst() {
     if (_length == 0)     {
-        ;
+        throw make<StateErrorCls>(__s("No element"));
     }
     _modificationCount++;
     auto result = _elementAt(0);
@@ -257,7 +257,7 @@ Iterator<E> _UnorderedElementsIterableCls<E>::iterator() {
 template<typename E>
 bool _UnorderedElementsIteratorCls<E>::moveNext() {
     if (_initialModificationCount != _queue->_modificationCount) {
-        ;
+        throw make<ConcurrentModificationErrorCls>(_queue);
     }
     auto nextIndex = _index + 1;
     if (0 <= nextIndex &&  < _queue->length()) {
@@ -272,7 +272,7 @@ bool _UnorderedElementsIteratorCls<E>::moveNext() {
 
 template<typename E>
 E _UnorderedElementsIteratorCls<E>::current() {
-    return  < 0?  : (_current or as<E>(nullptr));
+    return  < 0? throw make<StateErrorCls>(__s("No element")) : (_current or as<E>(nullptr));
 }
 
 template<typename E>

@@ -41,7 +41,7 @@ void DecorationImagePainterCls::paint(Canvas canvas, Path clipPath, ImageConfigu
     if (_details->matchTextDirection) {
         assert([=] () {
             if (configuration->textDirection == nullptr) {
-                ;
+                throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem, ArrayItem, ArrayItem));
             }
             return true;
         }());

@@ -128,7 +128,7 @@ String _BoxDecorationPainterCls::toString() {
     return __s("BoxPainter for $_decoration");
 }
 
-_BoxDecorationPainterCls::_BoxDecorationPainterCls(BoxDecoration _decoration, VoidCallback onChanged) {
+_BoxDecorationPainterCls::_BoxDecorationPainterCls(BoxDecoration _decoration, VoidCallback onChanged) : BoxPainter(onChanged) {
     {
         assert(_decoration != nullptr);
     }

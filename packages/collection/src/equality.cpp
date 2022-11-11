@@ -203,7 +203,7 @@ int _UnorderedEqualityCls<E, T>::hash(T elements) {
 }
 
 template<typename E>
-UnorderedIterableEqualityCls<E>::UnorderedIterableEqualityCls(Equality<E> elementEquality) {
+UnorderedIterableEqualityCls<E>::UnorderedIterableEqualityCls(Equality<E> elementEquality) : _UnorderedEquality<E, Iterable<E>>(elementEquality) {
 }
 
 template<typename E>
@@ -212,7 +212,7 @@ bool UnorderedIterableEqualityCls<E>::isValidKey(Object o) {
 }
 
 template<typename E>
-SetEqualityCls<E>::SetEqualityCls(Equality<E> elementEquality) {
+SetEqualityCls<E>::SetEqualityCls(Equality<E> elementEquality) : _UnorderedEquality<E, Set<E>>(elementEquality) {
 }
 
 template<typename E>

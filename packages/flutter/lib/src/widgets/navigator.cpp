@@ -267,7 +267,7 @@ Iterable<RouteTransitionRecord> TransitionDelegateCls<T>::_transition(Map<RouteT
 }
 
 template<typename T>
-DefaultTransitionDelegateCls<T>::DefaultTransitionDelegateCls() {
+DefaultTransitionDelegateCls<T>::DefaultTransitionDelegateCls() : TransitionDelegate<T>() {
 }
 
 template<typename T>
@@ -429,7 +429,7 @@ NavigatorState NavigatorCls::of(BuildContext context, bool rootNavigator) {
     }
     assert([=] () {
         if (navigator == nullptr) {
-            ;
+            throw make<FlutterErrorCls>(__s("Navigator operation requested with a context that does not include a Navigator.\nThe context used to push or pop routes from the Navigator must be that of a widget that is a descendant of a Navigator widget."));
         }
         return true;
     }());
@@ -1678,7 +1678,7 @@ Route<T> NavigatorStateCls::_routeNamed(bool allowNull, Object arguments, String
     }
     assert([=] () {
         if (widget->onGenerateRoute == nullptr) {
-            ;
+            throw make<FlutterErrorCls>(__s("Navigator.onGenerateRoute was null, but the route named "$name" was referenced.\nTo use the Navigator API with named routes (pushNamed, pushReplacementNamed, or pushNamedAndRemoveUntil), the Navigator must be provided with an onGenerateRoute handler.\nThe Navigator was:\n  $this"));
         }
         return true;
     }());
@@ -1687,14 +1687,14 @@ Route<T> NavigatorStateCls::_routeNamed(bool allowNull, Object arguments, String
     if (route == nullptr && !allowNull) {
         assert([=] () {
             if (widget->onUnknownRoute == nullptr) {
-                ;
+                throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem, ArrayItem));
             }
             return true;
         }());
         route = as<Route<T>>(widget->onUnknownRoute!(settings));
         assert([=] () {
             if (route == nullptr) {
-                ;
+                throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem, ArrayItem));
             }
             return true;
         }());
@@ -1957,7 +1957,7 @@ Route<dynamic> _NamedRestorationInformationCls::createRoute(NavigatorState navig
     return route;
 }
 
-_NamedRestorationInformationCls::_NamedRestorationInformationCls(Object arguments, String name, int restorationScopeId) {
+_NamedRestorationInformationCls::_NamedRestorationInformationCls(Object arguments, String name, int restorationScopeId) : _RestorationInformation(_RouteRestorationTypeCls::named) {
     {
         assert(name != nullptr);
     }
@@ -1986,7 +1986,7 @@ Route<dynamic> _AnonymousRestorationInformationCls::createRoute(NavigatorState n
     return result;
 }
 
-_AnonymousRestorationInformationCls::_AnonymousRestorationInformationCls(Object arguments, int restorationScopeId, RestorableRouteBuilder<Object> routeBuilder) {
+_AnonymousRestorationInformationCls::_AnonymousRestorationInformationCls(Object arguments, int restorationScopeId, RestorableRouteBuilder<Object> routeBuilder) : _RestorationInformation(_RouteRestorationTypeCls::anonymous) {
     {
         assert(routeBuilder != nullptr);
     }

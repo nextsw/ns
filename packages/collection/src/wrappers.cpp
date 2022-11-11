@@ -240,7 +240,7 @@ void DelegatingListCls<E>::fillRange(int end, E fillValue, int start) {
 template<typename E>
 void DelegatingListCls<E>::first(E value) {
     if (isEmpty)     {
-        ;
+        throw RangeErrorCls->index(0, this);
     }
     this[0] = value;
 }
@@ -273,7 +273,7 @@ void DelegatingListCls<E>::insertAll(int index, Iterable<E> iterable) {
 template<typename E>
 void DelegatingListCls<E>::last(E value) {
     if (isEmpty)     {
-        ;
+        throw RangeErrorCls->index(0, this);
     }
     this[length - 1] = value;
 }
@@ -718,7 +718,7 @@ Set<E> MapKeySetCls<E>::intersection(Set<Object> other) {
 
 template<typename E>
 E MapKeySetCls<E>::lookup(Object element) {
-    return ;
+    return throw make<UnsupportedErrorCls>(__s("MapKeySet doesn't support lookup()."));
 }
 
 template<typename E>

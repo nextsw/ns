@@ -248,7 +248,7 @@ String _Utf8DecoderCls::convertGeneral(List<int> codeUnits, int maybeEnd, bool s
     if (isErrorState(_state)) {
         String message = errorDescription(_state);
         _state = initial;
-        ;
+        throw make<FormatExceptionCls>(message, codeUnits, errorOffset + _charOrIndex);
     }
     return result;
 }
@@ -262,7 +262,7 @@ void _Utf8DecoderCls::flush(StringSink sink) {
     if (allowMalformed) {
         sink->writeCharCode(unicodeReplacementCharacterRune);
     } else {
-        ;
+        throw make<FormatExceptionCls>(errorDescription(errorUnfinished), nullptr, nullptr);
     }
 }
 

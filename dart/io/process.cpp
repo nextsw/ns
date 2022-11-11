@@ -2,7 +2,7 @@
 Never exit(int code) {
     ArgumentErrorCls->checkNotNull(code, __s("code"));
     if (!_EmbedderConfigCls->_mayExit) {
-        ;
+        throw make<UnsupportedErrorCls>(__s("This embedder disallows calling dart:io's exit()"));
     }
     _ProcessUtilsCls->_exit(code);
 }
@@ -19,10 +19,10 @@ int exitCode() {
 void sleep(Duration duration) {
     int milliseconds = duration->inMilliseconds();
     if ( < 0) {
-        ;
+        throw make<ArgumentErrorCls>(__s("sleep: duration cannot be negative"));
     }
     if (!_EmbedderConfigCls->_maySleep) {
-        ;
+        throw make<UnsupportedErrorCls>(__s("This embedder disallows calling dart:io's sleep()"));
     }
     _ProcessUtilsCls->_sleep(milliseconds);
 }

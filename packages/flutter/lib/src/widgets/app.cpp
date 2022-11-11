@@ -302,14 +302,14 @@ Route<dynamic> _WidgetsAppStateCls::_onGenerateRoute(RouteSettings settings) {
 Route<dynamic> _WidgetsAppStateCls::_onUnknownRoute(RouteSettings settings) {
     assert([=] () {
         if (widget->onUnknownRoute == nullptr) {
-            ;
+            throw make<FlutterErrorCls>(__s("Could not find a generator for route $settings in the $runtimeType.\nMake sure your root app widget has provided a way to generate \nthis route.\nGenerators for routes are searched for in the following order:\n 1. For the "/" route, the "home" property, if non-null, is used.\n 2. Otherwise, the "routes" table is used, if it has an entry for the route.\n 3. Otherwise, onGenerateRoute is called. It should return a non-null value for any valid route not handled by "home" and "routes".\n 4. Finally if all else fails onUnknownRoute is called.\nUnfortunately, onUnknownRoute was not set."));
         }
         return true;
     }());
     Route<dynamic> result = widget->onUnknownRoute!(settings);
     assert([=] () {
         if (result == nullptr) {
-            ;
+            throw make<FlutterErrorCls>(__s("The onUnknownRoute callback returned null.\nWhen the $runtimeType requested the route $settings from its onUnknownRoute callback, the callback returned null. Such callbacks must never return null."));
         }
         return true;
     }());

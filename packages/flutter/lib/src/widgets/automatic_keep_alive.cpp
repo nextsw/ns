@@ -80,7 +80,7 @@ VoidCallback _AutomaticKeepAliveStateCls::_createCallback(Listenable handle) {
     return [=] () {
         assert([=] () {
             if (!mounted) {
-                ;
+                throw make<FlutterErrorCls>(__s("AutomaticKeepAlive handle triggered after AutomaticKeepAlive was disposed.\nWidgets should always trigger their KeepAliveNotification handle when they are deactivated, so that they (or their handle) do not send spurious events later when they are no longer in the tree."));
             }
             return true;
         }());
@@ -165,5 +165,5 @@ void AutomaticKeepAliveClientMixinCls<T>::_releaseKeepAlive() {
 }
 
 Widget _NullWidgetCls::build(BuildContext context) {
-    ;
+    throw make<FlutterErrorCls>(__s("Widgets that mix AutomaticKeepAliveClientMixin into their State must call super.build() but must ignore the return value of the superclass."));
 }

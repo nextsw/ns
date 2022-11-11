@@ -30,7 +30,7 @@ void TimelineCls::finishSync() {
         return;
     }
     if (_stack->isEmpty) {
-        ;
+        throw make<StateErrorCls>(__s("Uneven calls to startSync and finishSync"));
     }
     auto block = _stack->removeLast();
     if (block == nullptr) {
@@ -132,7 +132,7 @@ void TimelineTaskCls::finish(Map arguments) {
         return;
     }
     if (_stack->length() == 0) {
-        ;
+        throw make<StateErrorCls>(__s("Uneven calls to start and finish"));
     }
     if (_filterKey != nullptr) {
         arguments = makeMap(makeList(), makeList();
@@ -147,7 +147,7 @@ void TimelineTaskCls::finish(Map arguments) {
 
 int TimelineTaskCls::pass() {
     if (_stack->length() > 0) {
-        ;
+        throw make<StateErrorCls>(__s("You cannot pass a TimelineTask without finishing all started operations"));
     }
     int r = _taskId;
     return r;

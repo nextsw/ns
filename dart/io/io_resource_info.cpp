@@ -37,7 +37,7 @@ Map<String, dynamic> _ReadWriteResourceInfoCls::fullValueMap() {
     return list1;
 }
 
-_ReadWriteResourceInfoCls::_ReadWriteResourceInfoCls(String type) {
+_ReadWriteResourceInfoCls::_ReadWriteResourceInfoCls(String type) : _IOResourceInfo(type) {
     {
             map1.set(__s("type"), type);    map1.set(__s("id"), id);    map1.set(__s("name"), name);    map1.set(__s("readBytes"), readBytes);    map1.set(__s("writeBytes"), writeBytes);    map1.set(__s("readCount"), readCount);    map1.set(__s("writeCount"), writeCount);    map1.set(__s("lastReadTime"), lastReadTime);    map1.set(__s("lastWriteTime"), lastWriteTime);readBytes = 0;
         writeBytes = 0;
@@ -86,7 +86,7 @@ String _FileResourceInfoCls::name() {
     return file->path;
 }
 
-_FileResourceInfoCls::_FileResourceInfoCls(Unknown file) {
+_FileResourceInfoCls::_FileResourceInfoCls(Unknown file) : _ReadWriteResourceInfo(_type) {
     {
         fileOpened(this);
     }
@@ -134,7 +134,7 @@ Future<ServiceExtensionResponse> _SpawnedProcessResourceInfoCls::getProcessInfoM
     return FutureCls->value(ServiceExtensionResponseCls->result(jsonValue));
 }
 
-_SpawnedProcessResourceInfoCls::_SpawnedProcessResourceInfoCls(Unknown process) {
+_SpawnedProcessResourceInfoCls::_SpawnedProcessResourceInfoCls(Unknown process) : _IOResourceInfo(_type) {
     {
         startedAt = _IOResourceInfoCls::timestamp;
     }

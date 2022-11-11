@@ -58,7 +58,7 @@ template<typename E>
 E IterableMixinCls<E>::reduce(std::function<E(E element, E value)> combine) {
     Iterator<E> iterator = this->iterator;
     if (!iterator->moveNext()) {
-        ;
+        throw IterableElementErrorCls->noElement();
     }
     E value = iterator->current();
     while (iterator->moveNext()) {
@@ -173,7 +173,7 @@ template<typename E>
 E IterableMixinCls<E>::first() {
     Iterator<E> it = iterator;
     if (!it->moveNext()) {
-        ;
+        throw IterableElementErrorCls->noElement();
     }
     return it->current();
 }
@@ -182,7 +182,7 @@ template<typename E>
 E IterableMixinCls<E>::last() {
     Iterator<E> it = iterator;
     if (!it->moveNext()) {
-        ;
+        throw IterableElementErrorCls->noElement();
     }
     E result;
     do {
@@ -195,11 +195,11 @@ template<typename E>
 E IterableMixinCls<E>::single() {
     Iterator<E> it = iterator;
     if (!it->moveNext())     {
-        ;
+        throw IterableElementErrorCls->noElement();
     }
     E result = it->current();
     if (it->moveNext())     {
-        ;
+        throw IterableElementErrorCls->tooMany();
     }
     return result;
 }
@@ -214,7 +214,7 @@ E IterableMixinCls<E>::firstWhere(std::function<E()> orElse, std::function<bool(
     if (orElse != nullptr)     {
         return orElse();
     }
-    ;
+    throw IterableElementErrorCls->noElement();
 }
 
 template<typename E>
@@ -233,7 +233,7 @@ E IterableMixinCls<E>::lastWhere(std::function<E()> orElse, std::function<bool(E
     if (orElse != nullptr)     {
         return orElse();
     }
-    ;
+    throw IterableElementErrorCls->noElement();
 }
 
 template<typename E>
@@ -243,7 +243,7 @@ E IterableMixinCls<E>::singleWhere(std::function<E()> orElse, std::function<bool
     for (E element : this) {
         if (test(element)) {
             if (foundMatching) {
-                ;
+                throw IterableElementErrorCls->tooMany();
             }
             result = element;
             foundMatching = true;
@@ -255,7 +255,7 @@ E IterableMixinCls<E>::singleWhere(std::function<E()> orElse, std::function<bool
     if (orElse != nullptr)     {
         return orElse();
     }
-    ;
+    throw IterableElementErrorCls->noElement();
 }
 
 template<typename E>
@@ -269,7 +269,7 @@ E IterableMixinCls<E>::elementAt(int index) {
         }
         elementIndex++;
     }
-    ;
+    throw RangeErrorCls->index(index, this, __s("index"), nullptr, elementIndex);
 }
 
 template<typename E>

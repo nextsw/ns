@@ -80,10 +80,10 @@ void _BlockCls::_add(_Instruction i) {
 void _BlockCls::_writeContinue(_BlockContext ctx) {
     List<_CompoundAssignment> assignments = instructions-><_CompoundAssignment>whereType()->toList();
     if (assignments->isEmpty) {
-        ;
+        throw TranspileExceptionCls->_(_opLoopMerge, __s("loop continue block $id has no compound assignments."));
     }
     if (assignments->length() > 1) {
-        ;
+        throw TranspileExceptionCls->_(_opLoopMerge, __s("loop continue block $id has multiple compound assignments."));
     }
     assignments[0]->write(transpiler(), ctx->out);
 }
@@ -98,13 +98,13 @@ void _BlockCls::_preprocess() {
         if (condition == 0) {
             _Block branchBlock = function->block(branch);
             if (!branchBlock->_isSimple() || branchBlock->condition == 0) {
-                ;
+                throw TranspileExceptionCls->_(_opBranch, __s("block $id has a loop structure but does not immediately branch to a single-expression conditional block."));
             }
             conditionId = branchBlock->condition;
         }
         List<_Variable> deps = function->variableDeps(conditionId);
         if (deps->length() != 1) {
-            ;
+            throw TranspileExceptionCls->_(_opLoopMerge, __s("block $id has a loop structure with a condition using more or fewer than one local variable."));
         }
         deps[0]->liftToBlock = id;
     }
@@ -156,7 +156,7 @@ void _BlockCls::_writeLoopStructure(_BlockContext ctx) {
         }    } else {
         _Block branchBlock = function->block(branch);
         if (!branchBlock->_isSimple() || branchBlock->condition == 0) {
-            ;
+            throw TranspileExceptionCls->_(_opBranch, __s("block $id has a loop structure but does not immediately branch to a single-expression conditional block."));
         }
         conditionString = transpiler()->resolveResult(branchBlock->condition);
         if (branchBlock->truthyBlock == mergeBlock) {
@@ -169,7 +169,7 @@ void _BlockCls::_writeLoopStructure(_BlockContext ctx) {
 ;
         }    }
     if (loopBody == 0) {
-        ;
+        throw TranspileExceptionCls->_(_opLoopMerge, __s("block $id does not conditionally branch to its loop merge block."));
     }
     ctx->writeIndent();
     ctx->out->write(__s("for("));

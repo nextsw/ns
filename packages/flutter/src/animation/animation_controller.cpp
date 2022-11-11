@@ -66,7 +66,7 @@ AnimationStatus AnimationControllerCls::status() {
 TickerFuture AnimationControllerCls::forward(double from) {
     assert([=] () {
         if (duration == nullptr) {
-            ;
+            throw make<FlutterErrorCls>(__s("AnimationController.forward() called with no default duration.\nThe "duration" property should be set, either in the constructor or later, before calling the forward() function."));
         }
         return true;
     }());
@@ -81,7 +81,7 @@ TickerFuture AnimationControllerCls::forward(double from) {
 TickerFuture AnimationControllerCls::reverse(double from) {
     assert([=] () {
         if (duration == nullptr && reverseDuration == nullptr) {
-            ;
+            throw make<FlutterErrorCls>(__s("AnimationController.reverse() called with no default duration or reverseDuration.\nThe "duration" or "reverseDuration" property should be set, either in the constructor or later, before calling the reverse() function."));
         }
         return true;
     }());
@@ -96,7 +96,7 @@ TickerFuture AnimationControllerCls::reverse(double from) {
 TickerFuture AnimationControllerCls::animateTo(Curve curve, Duration duration, double target) {
     assert([=] () {
         if (this->duration == nullptr && duration == nullptr) {
-            ;
+            throw make<FlutterErrorCls>(__s("AnimationController.animateTo() called with no explicit duration and no default duration.\nEither the "duration" argument to the animateTo() method should be provided, or the "duration" property should be set, either in the constructor or later, before calling the animateTo() function."));
         }
         return true;
     }());
@@ -108,7 +108,7 @@ TickerFuture AnimationControllerCls::animateTo(Curve curve, Duration duration, d
 TickerFuture AnimationControllerCls::animateBack(Curve curve, Duration duration, double target) {
     assert([=] () {
         if (this->duration == nullptr && reverseDuration == nullptr && duration == nullptr) {
-            ;
+            throw make<FlutterErrorCls>(__s("AnimationController.animateBack() called with no explicit duration and no default duration or reverseDuration.\nEither the "duration" argument to the animateBack() method should be provided, or the "duration" or "reverseDuration" property should be set, either in the constructor or later, before calling the animateBack() function."));
         }
         return true;
     }());
@@ -123,7 +123,7 @@ TickerFuture AnimationControllerCls::repeat(double max, double min, Duration per
     period = duration;
     assert([=] () {
         if (period == nullptr) {
-            ;
+            throw make<FlutterErrorCls>(__s("AnimationController.repeat() called without an explicit period and with no default Duration.\nEither the "period" argument to the repeat() method should be provided, or the "duration" property should be set, either in the constructor or later, before calling the repeat() function."));
         }
         return true;
     }());
@@ -166,7 +166,7 @@ void AnimationControllerCls::stop(bool canceled) {
 void AnimationControllerCls::dispose() {
     assert([=] () {
         if (_ticker == nullptr) {
-            ;
+            throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem, ArrayItem));
         }
         return true;
     }());

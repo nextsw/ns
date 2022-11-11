@@ -362,7 +362,7 @@ int SystemHashCls::smear(int x) {
 template<typename T>
 T checkNotNullable(String name, T value) {
     if ((as<dynamic>(value)) == nullptr) {
-        ;
+        throw <T>make<NotNullableErrorCls>(name);
     }
     return value;
 }

@@ -88,11 +88,11 @@ bool RenderListBodyCls::hitTestChildren(Offset position, BoxHitTestResult result
 bool RenderListBodyCls::_debugCheckConstraints(BoxConstraints constraints) {
     assert([=] () {
         ;
-        ;
+        throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem, ArrayItem));
     }());
     assert([=] () {
         ;
-        ;
+        throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem, ArrayItem));
     }());
     return true;
 }

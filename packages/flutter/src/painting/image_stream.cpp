@@ -258,7 +258,7 @@ void ImageStreamCompleterCls::_maybeDispose() {
 
 void ImageStreamCompleterCls::_checkDisposed() {
     if (_disposed) {
-        ;
+        throw make<StateErrorCls>(__s("Stream has been disposed.\nAn ImageStream is considered disposed once at least one listener has been added and subsequently all listeners have been removed and no handles are outstanding from the keepAlive method.\nTo resolve this error, maintain at least one listener on the stream, or create an ImageStreamCompleterHandle from the keepAlive method, or create a new stream for the image."));
     }
 }
 

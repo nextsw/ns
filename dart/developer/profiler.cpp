@@ -2,7 +2,7 @@
 MetricCls::MetricCls(String description, String name) {
     {
         if ((name == __s("vm")) || name->contains(__s("/"))) {
-            ;
+            throw make<ArgumentErrorCls>(__s("Invalid Metric name."));
         }
     }
 }
@@ -22,7 +22,7 @@ void GaugeCls::value(double v) {
     }    _value = v;
 }
 
-GaugeCls::GaugeCls(String description, double max, double min, String name) {
+GaugeCls::GaugeCls(String description, double max, double min, String name) : Metric(name, description) {
     {
         _value = min;
     }
@@ -30,7 +30,7 @@ GaugeCls::GaugeCls(String description, double max, double min, String name) {
         ArgumentErrorCls->checkNotNull(min, __s("min"));
         ArgumentErrorCls->checkNotNull(max, __s("max"));
         if (!( < max))         {
-            ;
+            throw make<ArgumentErrorCls>(__s("min must be less than max"));
         }
     }
 }
@@ -40,7 +40,7 @@ Map GaugeCls::_toJSON() {
     return map;
 }
 
-CounterCls::CounterCls(String description, String name) {
+CounterCls::CounterCls(String description, String name) : Metric(name, description) {
 }
 
 double CounterCls::value() {
@@ -59,7 +59,7 @@ Map CounterCls::_toJSON() {
 void MetricsCls::register(Metric metric) {
     ArgumentErrorCls->checkNotNull(metric, __s("metric"));
     if (_metrics[metric->name] != nullptr) {
-        ;
+        throw make<ArgumentErrorCls>(__s("Registered metrics have unique names"));
     }
     _metrics[metric->name] = metric;
 }

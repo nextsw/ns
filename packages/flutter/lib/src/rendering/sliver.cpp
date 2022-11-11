@@ -75,7 +75,7 @@ bool SliverConstraintsCls::debugAssertIsValid(InformationCollector informationCo
         verifyDouble(precedingScrollExtent, __s("precedingScrollExtent")true);
         verify(isNormalized(), __s("The constraints are not normalized."));
         if (hasErrors) {
-            ;
+                    List<DiagnosticsNode> list1 = make<ListCls<>>();        list1.add(ArrayItem);        if (informationCollector != nullptr) {            list1.add(ArrayItem);        }list1.add(ArrayItem);throw FlutterErrorCls->fromParts(list1);
         }
         return true;
     }());
@@ -173,7 +173,7 @@ void SliverGeometryCls::debugFillProperties(DiagnosticPropertiesBuilder properti
     properties->add(make<DoublePropertyCls>(__s("cacheExtent"), cacheExtent0.0));
 }
 
-SliverHitTestResultCls::SliverHitTestResultCls() {
+SliverHitTestResultCls::SliverHitTestResultCls() : HitTestResult() {
 }
 
 void SliverHitTestResultCls::wrap(Unknown result)
@@ -253,7 +253,7 @@ void RenderSliverCls::geometry(SliverGeometry value) {
             contract = make<ErrorDescriptionCls>(__s("Because this RenderSliver has sizedByParent set to false, it must set its geometry in performLayout()."));
         }
             List<DiagnosticsNode> list1 = make<ListCls<>>();    list1.add(ArrayItem);    list1.add(ArrayItem);    if (hint != nullptr) {        list1.add(ArrayItem);    }list1.add(ArrayItem);    list1.add(ArrayItem);List<DiagnosticsNode> information = list1;
-        ;
+        throw FlutterErrorCls->fromParts(information);
     }());
     _geometry = value;
 }
@@ -276,7 +276,7 @@ void RenderSliverCls::debugAssertDoesMeetConstraints() {
     }));
     assert([=] () {
         if (geometry()!->paintOrigin + geometry()!->paintExtent > constraints()->remainingPaintExtent) {
-            ;
+                    List<DiagnosticsNode> list1 = make<ListCls<>>();        list1.add(ArrayItem);        list1.add(ArrayItem);        for (auto _x1 : _debugCompareFloats(__s("remainingPaintExtent"), constraints()->remainingPaintExtent, __s("paintOrigin + paintExtent"), geometry()!->paintOrigin + geometry()!->paintExtent)) {        {            list1.add(_x1);        }list1.add(ArrayItem);throw FlutterErrorCls->fromParts(list1);
         }
         return true;
     }());
@@ -324,7 +324,7 @@ double RenderSliverCls::calculateCacheOffset(SliverConstraints constraints, doub
 
 double RenderSliverCls::childMainAxisPosition(RenderObject child) {
     assert([=] () {
-        ;
+        throw make<FlutterErrorCls>(__s("${objectRuntimeType(this, 'RenderSliver')} does not implement childPosition."));
     }());
     return 0.0;
 }
@@ -340,7 +340,7 @@ double RenderSliverCls::childScrollOffset(RenderObject child) {
 
 void RenderSliverCls::applyPaintTransform(RenderObject child, Matrix4 transform) {
     assert([=] () {
-        ;
+        throw make<FlutterErrorCls>(__s("${objectRuntimeType(this, 'RenderSliver')} does not implement applyPaintTransform."));
     }());
 }
 

@@ -8,22 +8,22 @@ CharacterRange StringCharactersCls::iteratorAtEnd() {
 }
 
 String StringCharactersCls::first() {
-    return stringValue->isEmpty()?  : stringValue->substring(0, make<BreaksCls>(stringValue, 0, stringValue->length(), stateSoTNoBreak)->nextBreak());
+    return stringValue->isEmpty()? throw make<StateErrorCls>(__s("No element")) : stringValue->substring(0, make<BreaksCls>(stringValue, 0, stringValue->length(), stateSoTNoBreak)->nextBreak());
 }
 
 String StringCharactersCls::last() {
-    return stringValue->isEmpty()?  : stringValue->substring(make<BackBreaksCls>(stringValue, stringValue->length(), 0, stateEoTNoBreak)->nextBreak());
+    return stringValue->isEmpty()? throw make<StateErrorCls>(__s("No element")) : stringValue->substring(make<BackBreaksCls>(stringValue, stringValue->length(), 0, stateEoTNoBreak)->nextBreak());
 }
 
 String StringCharactersCls::single() {
     if (stringValue->isEmpty())     {
-        ;
+        throw make<StateErrorCls>(__s("No element"));
     }
     auto firstEnd = make<BreaksCls>(stringValue, 0, stringValue->length(), stateSoTNoBreak)->nextBreak();
     if (firstEnd == stringValue->length())     {
         return stringValue;
     }
-    ;
+    throw make<StateErrorCls>(__s("Too many elements"));
 }
 
 bool StringCharactersCls::isEmpty() {
@@ -78,7 +78,7 @@ String StringCharactersCls::lastWhere(std::function<String()> orElse, std::funct
     if (orElse != nullptr)     {
         return orElse();
     }
-    ;
+    throw make<StateErrorCls>(__s("No element"));
 }
 
 String StringCharactersCls::elementAt(int index) {
@@ -96,7 +96,7 @@ String StringCharactersCls::elementAt(int index) {
             start = end;
         }
     }
-    ;
+    throw RangeErrorCls->index(index, this, __s("index"), nullptr, count);
 }
 
 bool StringCharactersCls::contains(Object singleCharacterString) {
@@ -200,7 +200,7 @@ Characters StringCharactersCls::getRange(int end, int start) {
         return _skip(start);
     }
     if ( < start)     {
-        ;
+        throw RangeErrorCls->range(end, start, nullptr, __s("end"));
     }
     if (end == start)     {
         return CharactersCls::empty;
@@ -227,12 +227,12 @@ Characters StringCharactersCls::characterAt(int position) {
         position--;
         start = breaks->nextBreak();
         if ( < 0)         {
-            ;
+            throw make<StateErrorCls>(__s("No element"));
         }
     }
     auto end = breaks->nextBreak();
     if ( < 0)     {
-        ;
+        throw make<StateErrorCls>(__s("No element"));
     }
     if (start == 0 && end == stringValue->length())     {
         return this;
@@ -923,7 +923,7 @@ bool StringCharacterRangeCls::_advanceEnd(int count, int newStart) {
         _move(newStart, _end);
         return true;
     } else {
-        ;
+        throw RangeErrorCls->range(count, 0, nullptr, __s("count"));
     }
 ;
     }}

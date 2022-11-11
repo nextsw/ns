@@ -2,7 +2,7 @@
 bool debugAssertAllSchedulerVarsUnset(String reason) {
     assert([=] () {
         if (debugPrintBeginFrameBanner || debugPrintEndFrameBanner) {
-            ;
+            throw make<FlutterErrorCls>(reason);
         }
         return true;
     }());

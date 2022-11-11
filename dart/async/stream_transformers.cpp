@@ -15,7 +15,7 @@ void _EventSinkWrapperCls<T>::close() {
 }
 
 template<typename S, typename T>
-_SinkTransformerStreamSubscriptionCls<S, T>::_SinkTransformerStreamSubscriptionCls(bool cancelOnError, _SinkMapper<S, T> mapper, std::function<void(T data)> onData, std::function<void()> onDone, std::function<void ()> onError, Stream<S> source) {
+_SinkTransformerStreamSubscriptionCls<S, T>::_SinkTransformerStreamSubscriptionCls(bool cancelOnError, _SinkMapper<S, T> mapper, std::function<void(T data)> onData, std::function<void()> onDone, std::function<void ()> onError, Stream<S> source) : _BufferingStreamSubscription<T>(onData, onError, onDone, cancelOnError) {
     {
         _transformerSink = mapper(<T>make<_EventSinkWrapperCls>(this));
         _subscription = source->listen(_handleData_handleError, _handleDone);
@@ -25,7 +25,7 @@ _SinkTransformerStreamSubscriptionCls<S, T>::_SinkTransformerStreamSubscriptionC
 template<typename S, typename T>
 void _SinkTransformerStreamSubscriptionCls<S, T>::_add(T data) {
     if (_isClosed) {
-        ;
+        throw make<StateErrorCls>(__s("Stream is already closed"));
     }
     super->_add(data);
 }
@@ -33,7 +33,7 @@ void _SinkTransformerStreamSubscriptionCls<S, T>::_add(T data) {
 template<typename S, typename T>
 void _SinkTransformerStreamSubscriptionCls<S, T>::_addError(Object error, StackTrace stackTrace) {
     if (_isClosed) {
-        ;
+        throw make<StateErrorCls>(__s("Stream is already closed"));
     }
     super->_addError(error, stackTrace);
 }
@@ -41,7 +41,7 @@ void _SinkTransformerStreamSubscriptionCls<S, T>::_addError(Object error, StackT
 template<typename S, typename T>
 void _SinkTransformerStreamSubscriptionCls<S, T>::_close() {
     if (_isClosed) {
-        ;
+        throw make<StateErrorCls>(__s("Stream is already closed"));
     }
     super->_close();
 }
@@ -118,7 +118,7 @@ template<typename S, typename T>
 void _HandlerEventSinkCls<S, T>::add(S data) {
     auto sink = _sink;
     if (sink == nullptr) {
-        ;
+        throw make<StateErrorCls>(__s("Sink is closed"));
     }
     auto handleData = _handleData;
     if (handleData != nullptr) {
@@ -133,7 +133,7 @@ void _HandlerEventSinkCls<S, T>::addError(Object error, StackTrace stackTrace) {
     checkNotNullable(error, __s("error"));
     auto sink = _sink;
     if (sink == nullptr) {
-        ;
+        throw make<StateErrorCls>(__s("Sink is closed"));
     }
     auto handleError = _handleError;
     stackTrace = AsyncErrorCls->defaultStackTrace(error);
@@ -165,7 +165,9 @@ Stream<T> _StreamHandlerTransformerCls<S, T>::bind(Stream<S> stream) {
 }
 
 template<typename S, typename T>
-_StreamHandlerTransformerCls<S, T>::_StreamHandlerTransformerCls(std::function<void(S data, EventSink<T> sink)> handleData, std::function<void(EventSink<T> sink)> handleDone, std::function<void(Object error, EventSink<T> sink, StackTrace stackTrace)> handleError) {
+_StreamHandlerTransformerCls<S, T>::_StreamHandlerTransformerCls(std::function<void(S data, EventSink<T> sink)> handleData, std::function<void(EventSink<T> sink)> handleDone, std::function<void(Object error, EventSink<T> sink, StackTrace stackTrace)> handleError) : _StreamSinkTransformer<S, T>([=] (EventSink<T> outputSink) {
+    return <S, T>make<_HandlerEventSinkCls>(handleData, handleError, handleDone, outputSink);
+}) {
 }
 
 template<typename S, typename T>

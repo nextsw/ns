@@ -43,7 +43,7 @@ EmptyUnmodifiableSet<T> EmptyUnmodifiableSetCls<E>::retype() {
 
 template<typename E>
 E EmptyUnmodifiableSetCls<E>::singleWhere(std::function<E()> orElse, std::function<bool(E )> test) {
-    return orElse != nullptr? orElse() : ;
+    return orElse != nullptr? orElse() : throw make<StateErrorCls>(__s("No element"));
 }
 
 template<typename E>

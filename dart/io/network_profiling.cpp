@@ -47,11 +47,11 @@ String _getHttpEnableTimelineLogging() {
 String _setHttpEnableTimelineLogging(Map<String, String> parameters) {
     map1.set(__s("type"), __s("Success"));map1.set(__s("type"), __s("HttpTimelineLoggingState"));map1.set(__s("enabled"), HttpClientCls::enableTimelineLogging);String kEnable = __s("enable");
     if (!parameters->containsKey(kEnable)) {
-        ;
+        throw _missingArgument(kEnable);
     }
     Unknown enable = parameters[kEnable]!->toLowerCase();
     if (enable != __s("true") && enable != __s("false")) {
-        ;
+        throw _invalidArgument(kEnable, enable);
     }
     HttpClientCls::enableTimelineLogging = enable == __s("true");
     return _success();
@@ -59,15 +59,15 @@ String _setHttpEnableTimelineLogging(Map<String, String> parameters) {
 
 String _getHttpProfileRequest(Map<String, String> parameters) {
     if (!parameters->containsKey(__s("id"))) {
-        ;
+        throw _missingArgument(__s("id"));
     }
     Unknown id = intValue->tryParse(parameters[__s("id")]!);
     if (id == nullptr) {
-        ;
+        throw _invalidArgument(__s("id"), parameters[__s("id")]!);
     }
     Unknown request = HttpProfilerCls->getHttpProfileRequest(id);
     if (request == nullptr) {
-        ;
+        throw __s("Unable to find request with id: '$id'");
     }
     return json->encode(request->toJson(false));
 }
@@ -77,7 +77,7 @@ String _socketProfilingEnabled(Map<String, String> parameters) {
     if (parameters->containsKey(kEnabled)) {
         Unknown enable = parameters[kEnabled]!->toLowerCase();
         if (enable != __s("true") && enable != __s("false")) {
-            ;
+            throw _invalidArgument(kEnabled, enable);
         }
         enable == __s("true")? _SocketProfileCls->start() : _SocketProfileCls->pause();
     }

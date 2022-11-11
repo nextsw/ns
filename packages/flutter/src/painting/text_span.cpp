@@ -136,7 +136,7 @@ bool TextSpanCls::debugAssertIsValid() {
         if (children != nullptr) {
             for (InlineSpan child : children!) {
                 if (child == nullptr) {
-                    ;
+                    throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem, ArrayItem));
                 }
                 assert(child->debugAssertIsValid());
             }

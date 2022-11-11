@@ -20,7 +20,7 @@ T EnumByNameCls<T>::byName(String name) {
             return value;
         }
     }
-    ;
+    throw ArgumentErrorCls->value(name, __s("name"), __s("No enum value with that name"));
 }
 
 template<typename T>

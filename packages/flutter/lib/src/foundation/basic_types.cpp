@@ -72,7 +72,7 @@ template<typename E>
 E _LazyListIteratorCls<E>::current() {
     assert(_index >= 0);
     if ( < 0 || _index == _owner->_results->length()) {
-        ;
+        throw make<StateErrorCls>(__s("current can not be call after moveNext has returned false"));
     }
     return _owner->_results[_index];
 }

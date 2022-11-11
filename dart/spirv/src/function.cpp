@@ -21,7 +21,7 @@ _Variable _FunctionCls::variable(int id) {
 void _FunctionCls::declareParam(int id, int paramType) {
     int i = declaredParams;
     if (paramType != type->params[i]) {
-        ;
+        throw TranspileExceptionCls->_(_opFunctionParameter, __s("type mismatch for param $i of function $name"));
     }
     params[i] = id;
     declaredParams++;
@@ -41,10 +41,10 @@ List<_Variable> _FunctionCls::variableDeps(int id) {
 
 void _FunctionCls::write(StringBuffer out) {
     if (declaredParams != params->length()) {
-        ;
+        throw transpiler->failure(__s("not all parameters declared for function $name"));
     }
     if (entry == nullptr) {
-        ;
+        throw transpiler->failure(__s("function $name has no entry block"));
     }
     String returnTypeString = transpiler->resolveType(type->returnType);
     if (transpiler->target == TargetLanguageCls::sksl && name == transpiler->entryPoint) {

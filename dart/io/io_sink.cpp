@@ -5,7 +5,7 @@ IOSinkCls::IOSinkCls(Encoding encoding, StreamConsumer<List<int>> target) {
 template<typename T>
 void _StreamSinkImplCls<T>::add(T data) {
     if (_isClosed) {
-        ;
+        throw make<StateErrorCls>(__s("StreamSink is closed"));
     }
     _controller()->add(data);
 }
@@ -13,7 +13,7 @@ void _StreamSinkImplCls<T>::add(T data) {
 template<typename T>
 void _StreamSinkImplCls<T>::addError(error , StackTrace stackTrace) {
     if (_isClosed) {
-        ;
+        throw make<StateErrorCls>(__s("StreamSink is closed"));
     }
     _controller()->addError(error, stackTrace);
 }
@@ -21,7 +21,7 @@ void _StreamSinkImplCls<T>::addError(error , StackTrace stackTrace) {
 template<typename T>
 Future _StreamSinkImplCls<T>::addStream(Stream<T> stream) {
     if (_isBound) {
-        ;
+        throw make<StateErrorCls>(__s("StreamSink is already bound to a stream"));
     }
     if (_hasError)     {
         return done();
@@ -39,7 +39,7 @@ Future _StreamSinkImplCls<T>::addStream(Stream<T> stream) {
 template<typename T>
 Future _StreamSinkImplCls<T>::flush() {
     if (_isBound) {
-        ;
+        throw make<StateErrorCls>(__s("StreamSink is bound to a stream"));
     }
     if (_controllerInstance == nullptr)     {
         return FutureCls->value(this);
@@ -55,7 +55,7 @@ Future _StreamSinkImplCls<T>::flush() {
 template<typename T>
 Future _StreamSinkImplCls<T>::close() {
     if (_isBound) {
-        ;
+        throw make<StateErrorCls>(__s("StreamSink is bound to a stream"));
     }
     if (!_isClosed) {
         _isClosed = true;
@@ -96,10 +96,10 @@ void _StreamSinkImplCls<T>::_completeDoneError(error , StackTrace stackTrace) {
 template<typename T>
 StreamController<T> _StreamSinkImplCls<T>::_controller() {
     if (_isBound) {
-        ;
+        throw make<StateErrorCls>(__s("StreamSink is bound to a stream"));
     }
     if (_isClosed) {
-        ;
+        throw make<StateErrorCls>(__s("StreamSink is closed"));
     }
     if (_controllerInstance == nullptr) {
         _controllerInstance = <T>make<StreamControllerCls>(true);
@@ -131,7 +131,7 @@ Encoding _IOSinkImplCls::encoding() {
 
 void _IOSinkImplCls::encoding(Encoding value) {
     if (!_encodingMutable) {
-        ;
+        throw make<StateErrorCls>(__s("IOSink encoding is not mutable"));
     }
     _encoding = value;
 }
@@ -171,5 +171,5 @@ void _IOSinkImplCls::writeCharCode(int charCode) {
     write(StringCls->fromCharCode(charCode));
 }
 
-_IOSinkImplCls::_IOSinkImplCls(Encoding _encoding, StreamConsumer<List<int>> target) {
+_IOSinkImplCls::_IOSinkImplCls(Encoding _encoding, StreamConsumer<List<int>> target) : _StreamSinkImpl<List<int>>(target) {
 }

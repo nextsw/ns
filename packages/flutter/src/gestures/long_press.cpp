@@ -29,7 +29,7 @@ LongPressEndDetailsCls::LongPressEndDetailsCls(Offset globalPosition, Offset loc
     }
 }
 
-LongPressGestureRecognizerCls::LongPressGestureRecognizerCls(Unknown debugOwner, Duration duration, Unknown kind, Unknown postAcceptSlopTolerance, Unknown supportedDevices) {
+LongPressGestureRecognizerCls::LongPressGestureRecognizerCls(Unknown debugOwner, Duration duration, Unknown kind, Unknown postAcceptSlopTolerance, Unknown supportedDevices) : PrimaryPointerGestureRecognizer(duration or kLongPressTimeout) {
 }
 
 bool LongPressGestureRecognizerCls::isPointerAllowed(PointerDownEvent event) {

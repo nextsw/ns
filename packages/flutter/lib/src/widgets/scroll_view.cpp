@@ -88,7 +88,7 @@ void BoxScrollViewCls::debugFillProperties(DiagnosticPropertiesBuilder propertie
     properties->add(<EdgeInsetsGeometry>make<DiagnosticsPropertyCls>(__s("padding"), paddingnullptr));
 }
 
-ListViewCls::ListViewCls(bool addAutomaticKeepAlives, bool addRepaintBoundaries, bool addSemanticIndexes, Unknown cacheExtent, List<Widget> children, Unknown clipBehavior, Unknown controller, Unknown dragStartBehavior, double itemExtent, Unknown key, Unknown keyboardDismissBehavior, Unknown padding, Unknown physics, Unknown primary, Widget prototypeItem, Unknown restorationId, Unknown reverse, Unknown scrollDirection, int semanticChildCount, Unknown shrinkWrap) {
+ListViewCls::ListViewCls(bool addAutomaticKeepAlives, bool addRepaintBoundaries, bool addSemanticIndexes, Unknown cacheExtent, List<Widget> children, Unknown clipBehavior, Unknown controller, Unknown dragStartBehavior, double itemExtent, Unknown key, Unknown keyboardDismissBehavior, Unknown padding, Unknown physics, Unknown primary, Widget prototypeItem, Unknown restorationId, Unknown reverse, Unknown scrollDirection, int semanticChildCount, Unknown shrinkWrap) : BoxScrollView(semanticChildCount or children->length()) {
     {
         assert(itemExtent == nullptr || prototypeItem == nullptr, __s("You can only pass itemExtent or prototypeItem, not both."));
         childrenDelegate = make<SliverChildListDelegateCls>(childrenaddAutomaticKeepAlives, addRepaintBoundaries, addSemanticIndexes);
@@ -121,7 +121,7 @@ int ListViewCls::_computeActualChildCount(int itemCount) {
     return math->max(0, itemCount * 2 - 1);
 }
 
-GridViewCls::GridViewCls(bool addAutomaticKeepAlives, bool addRepaintBoundaries, bool addSemanticIndexes, Unknown cacheExtent, List<Widget> children, Unknown clipBehavior, Unknown controller, Unknown dragStartBehavior, SliverGridDelegate gridDelegate, Unknown key, Unknown keyboardDismissBehavior, Unknown padding, Unknown physics, Unknown primary, Unknown restorationId, Unknown reverse, Unknown scrollDirection, int semanticChildCount, Unknown shrinkWrap) {
+GridViewCls::GridViewCls(bool addAutomaticKeepAlives, bool addRepaintBoundaries, bool addSemanticIndexes, Unknown cacheExtent, List<Widget> children, Unknown clipBehavior, Unknown controller, Unknown dragStartBehavior, SliverGridDelegate gridDelegate, Unknown key, Unknown keyboardDismissBehavior, Unknown padding, Unknown physics, Unknown primary, Unknown restorationId, Unknown reverse, Unknown scrollDirection, int semanticChildCount, Unknown shrinkWrap) : BoxScrollView(semanticChildCount or children->length()) {
     {
         assert(gridDelegate != nullptr);
         childrenDelegate = make<SliverChildListDelegateCls>(childrenaddAutomaticKeepAlives, addRepaintBoundaries, addSemanticIndexes);

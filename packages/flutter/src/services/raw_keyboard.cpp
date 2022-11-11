@@ -93,7 +93,7 @@ void RawKeyEventCls::debugFillProperties(DiagnosticPropertiesBuilder properties)
     }
 }
 
-RawKeyUpEventCls::RawKeyUpEventCls(Unknown character, Unknown data) {
+RawKeyUpEventCls::RawKeyUpEventCls(Unknown character, Unknown data) : RawKeyEvent(false) {
 }
 
 void RawKeyboardCls::addListener(ValueChanged<RawKeyEvent> listener) {

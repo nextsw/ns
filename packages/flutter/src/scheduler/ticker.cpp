@@ -49,7 +49,7 @@ bool TickerCls::isActive() {
 TickerFuture TickerCls::start() {
     assert([=] () {
         if (isActive()) {
-            ;
+            throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem, ArrayItem));
         }
         return true;
     }());

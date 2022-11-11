@@ -715,7 +715,7 @@ void _RenderScrollSemanticsCls::clearSemantics() {
     _innerNode = nullptr;
 }
 
-_RenderScrollSemanticsCls::_RenderScrollSemanticsCls(bool allowImplicitScrolling, RenderBox child, ScrollPosition position, int semanticChildCount) {
+_RenderScrollSemanticsCls::_RenderScrollSemanticsCls(bool allowImplicitScrolling, RenderBox child, ScrollPosition position, int semanticChildCount) : RenderProxyBox(child) {
     {
         _position = position;
         _allowImplicitScrolling = allowImplicitScrolling;
@@ -760,7 +760,7 @@ void ScrollActionCls::invoke(ScrollIntent intent) {
         ScrollController primaryScrollController = PrimaryScrollControllerCls->of(primaryFocus!->context!);
         assert([=] () {
             if (primaryScrollController!->positions()->length() != 1) {
-                ;
+                throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem, ArrayItem));
             }
             return true;
         }());

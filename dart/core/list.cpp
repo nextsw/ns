@@ -11,11 +11,11 @@ void ListCls<E>::copyRange(int at, int end, List<T> source, int start, List<T> t
     start = 0;
     end = RangeErrorCls->checkValidRange(start, end, source->length());
     if (end == nullptr) {
-        ;
+        throw __s("unreachable");
     }
     int length = end - start;
     if (target->length < at + length) {
-        ;
+        throw ArgumentErrorCls->value(target, __s("target"), __s("Not big enough to hold $length elements at position $at"));
     }
     if (!identical(source, target) || start >= at) {
         for (;  < length; i++) {
@@ -36,7 +36,7 @@ void ListCls<E>::writeIterable(int at, Iterable<T> source, List<T> target) {
     int targetLength = target->length();
     for (auto element : source) {
         if (index == targetLength) {
-            ;
+            throw make<IndexErrorCls>(targetLength, target);
         }
         target[index] = element;
         index++;

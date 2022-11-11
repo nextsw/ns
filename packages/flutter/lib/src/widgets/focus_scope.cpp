@@ -49,13 +49,13 @@ FocusNode FocusCls::of(BuildContext context, bool scopeOk) {
     FocusNode node = marker?->notifier;
     assert([=] () {
         if (node == nullptr) {
-            ;
+            throw make<FlutterErrorCls>(__s("Focus.of() was called with a context that does not contain a Focus widget.\nNo Focus widget ancestor could be found starting from the context that was passed to Focus.of(). This can happen because you are using a widget that looks for a Focus ancestor, and do not have a Focus widget descendant in the nearest FocusScope.\nThe context used was:\n  $context"));
         }
         return true;
     }());
     assert([=] () {
         if (!scopeOk && is<FocusScopeNode>(node)) {
-            ;
+            throw make<FlutterErrorCls>(__s("Focus.of() was called with a context that does not contain a Focus between the given context and the nearest FocusScope widget.\nNo Focus ancestor could be found starting from the context that was passed to Focus.of() to the point where it found the nearest FocusScope widget. This can happen because you are using a widget that looks for a Focus ancestor, and do not have a Focus widget ancestor in the current FocusScope.\nThe context used was:\n  $context"));
         }
         return true;
     }());
@@ -261,7 +261,7 @@ void _FocusStateCls::_handleFocusChanged() {
     }
 }
 
-FocusScopeCls::FocusScopeCls(Unknown autofocus, Unknown canRequestFocus, Unknown child, Unknown debugLabel, Unknown key, FocusScopeNode node, Unknown onFocusChange, Unknown onKey, Unknown onKeyEvent, Unknown skipTraversal) {
+FocusScopeCls::FocusScopeCls(Unknown autofocus, Unknown canRequestFocus, Unknown child, Unknown debugLabel, Unknown key, FocusScopeNode node, Unknown onFocusChange, Unknown onKey, Unknown onKeyEvent, Unknown skipTraversal) : Focus(node) {
     {
         assert(child != nullptr);
         assert(autofocus != nullptr);
@@ -306,7 +306,7 @@ String _FocusScopeWithExternalFocusNodeCls::debugLabel() {
     return focusNode!->debugLabel;
 }
 
-_FocusScopeWithExternalFocusNodeCls::_FocusScopeWithExternalFocusNodeCls(Unknown autofocus, Unknown child, FocusScopeNode focusScopeNode, Unknown key, Unknown onFocusChange) {
+_FocusScopeWithExternalFocusNodeCls::_FocusScopeWithExternalFocusNodeCls(Unknown autofocus, Unknown child, FocusScopeNode focusScopeNode, Unknown key, Unknown onFocusChange) : FocusScope(focusScopeNode) {
 }
 
 bool _FocusScopeWithExternalFocusNodeCls::_usingExternalFocus() {
@@ -322,7 +322,7 @@ FocusScopeNode _FocusScopeStateCls::_createNode() {
     return make<FocusScopeNodeCls>(widget->debugLabel, widget->canRequestFocus, widget->skipTraversal);
 }
 
-_FocusMarkerCls::_FocusMarkerCls(Unknown child, FocusNode node) {
+_FocusMarkerCls::_FocusMarkerCls(Unknown child, FocusNode node) : InheritedNotifier<FocusNode>(node) {
     {
         assert(node != nullptr);
         assert(child != nullptr);

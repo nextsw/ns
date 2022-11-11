@@ -497,7 +497,7 @@ FocusOrder FocusTraversalOrderCls::of(BuildContext context) {
     FocusTraversalOrder marker = as<FocusTraversalOrder>(context-><FocusTraversalOrder>getElementForInheritedWidgetOfExactType()?->widget);
     assert([=] () {
         if (marker == nullptr) {
-            ;
+            throw make<FlutterErrorCls>(__s("FocusTraversalOrder.of() was called with a context that does not contain a FocusTraversalOrder widget. No TraversalOrder widget ancestor could be found starting from the context that was passed to FocusTraversalOrder.of().\nThe context used was:\n  $context"));
         }
         return true;
     }());
@@ -532,7 +532,7 @@ FocusTraversalPolicy FocusTraversalGroupCls::of(BuildContext context) {
     _FocusTraversalGroupMarker inherited = context-><_FocusTraversalGroupMarker>dependOnInheritedWidgetOfExactType();
     assert([=] () {
         if (inherited == nullptr) {
-            ;
+            throw make<FlutterErrorCls>(__s("Unable to find a FocusTraversalGroup widget in the context.\nFocusTraversalGroup.of() was called with a context that does not contain a FocusTraversalGroup.\nNo FocusTraversalGroup ancestor could be found starting from the context that was passed to FocusTraversalGroup.of(). This can happen because there is not a WidgetsApp or MaterialApp widget (those widgets introduce a FocusTraversalGroup), or it can happen if the context comes from a widget above those widgets.\nThe context used was:\n  $context"));
         }
         return true;
     }());

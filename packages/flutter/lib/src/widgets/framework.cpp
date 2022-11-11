@@ -141,7 +141,7 @@ template<typename T>
 BuildContext StateCls<T>::context() {
     assert([=] () {
         if (_element == nullptr) {
-            ;
+            throw make<FlutterErrorCls>(__s("This widget has been unmounted, so the State no longer has a context (and should be considered defunct). \nConsider canceling any active work during "dispose" or using the "mounted" getter to determine if the State is still active."));
         }
         return true;
     }());
@@ -171,17 +171,17 @@ void StateCls<T>::setState(VoidCallback fn) {
     assert(fn != nullptr);
     assert([=] () {
         if (_debugLifecycleState == _StateLifecycleCls::defunct) {
-            ;
+            throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem, ArrayItem, ArrayItem));
         }
         if (_debugLifecycleState == _StateLifecycleCls::created && !mounted()) {
-            ;
+            throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem));
         }
         return true;
     }());
     Object result = as<dynamic>(fn());
     assert([=] () {
         if (is<Future>(result)) {
-            ;
+            throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem, ArrayItem));
         }
         return true;
     }());
@@ -277,7 +277,7 @@ MultiChildRenderObjectWidgetCls::MultiChildRenderObjectWidgetCls(List<Widget> ch
         assert([=] () {
             for (;  < children->length(); index++) {
                 if (children[index] == nullptr) {
-                    ;
+                    throw make<FlutterErrorCls>(__s("$runtimeType's children must not contain any null values, but a null value was found at index $index"));
                 }
             }
             return true;
@@ -371,7 +371,7 @@ void BuildOwnerCls::scheduleBuildFor(Element element) {
             debugPrintStack(__s("scheduleBuildFor() called for $element${_dirtyElements.contains(element) ? " (ALREADY IN LIST)" : ""}"));
         }
         if (!element->dirty()) {
-            ;
+            throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem, ArrayItem, ArrayItem));
         }
         return true;
     }());
@@ -381,7 +381,7 @@ void BuildOwnerCls::scheduleBuildFor(Element element) {
                 debugPrintStack(__s("BuildOwner.scheduleBuildFor() called; _dirtyElementsNeedsResorting was $_dirtyElementsNeedsResorting (now true); dirty list is: $_dirtyElements"));
             }
             if (!_debugIsInBuildScope()) {
-                ;
+                throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem));
             }
             return true;
         }());
@@ -483,7 +483,7 @@ void BuildOwnerCls::buildScope(VoidCallback callback, Element context) {
             assert(element->_inDirtyList);
             assert([=] () {
                 if (element->_lifecycleState == _ElementLifecycleCls::active && !element->_debugIsInScope(context)) {
-                    ;
+                    throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem));
                 }
                 return true;
             }());
@@ -522,7 +522,7 @@ void BuildOwnerCls::buildScope(VoidCallback callback, Element context) {
             if (_dirtyElements->any([=] (Element element)             {
                 element->_lifecycleState == _ElementLifecycleCls::active && element->dirty;
             })) {
-                ;
+                throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem, ArrayItem));
             }
             return true;
         }());
@@ -625,7 +625,7 @@ void BuildOwnerCls::finalizeTree() {
                         String they = elementLabels->length() == 1? __s("it") : __s("they");
                         String think = elementLabels->length() == 1? __s("thinks") : __s("think");
                         String are = elementLabels->length() == 1? __s("is") : __s("are");
-                        ;
+                        throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem));
                     }
                 }
             } finally {
@@ -760,7 +760,7 @@ void BuildOwnerCls::_debugVerifyGlobalKeyReservation() {
                             }
                         });
                     }
-                    ;
+                    throw error;
                 } else {
                     keyToParent[key] = parent;
                 }
@@ -798,7 +798,7 @@ void BuildOwnerCls::_debugVerifyIllFatedPopulation() {
                 information->add(ElementCls->describeElements(__s("The key $key was used by ${elements.length} widgets"), elements));
             }
             information->add(make<ErrorDescriptionCls>(__s("A GlobalKey can only be specified on one widget at a time in the widget tree.")));
-            ;
+            throw FlutterErrorCls->fromParts(information);
         }
         return true;
     }());
@@ -837,7 +837,7 @@ Object ElementCls::slot() {
 int ElementCls::depth() {
     assert([=] () {
         if (_lifecycleState == _ElementLifecycleCls::initial) {
-            ;
+            throw make<FlutterErrorCls>(__s("Depth is only available when element has been mounted."));
         }
         return true;
     }());
@@ -935,7 +935,7 @@ void ElementCls::visitChildElements(ElementVisitor visitor) {
         if (owner() == nullptr || !owner()!->_debugStateLocked()) {
             return true;
         }
-        ;
+        throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem));
     }());
     visitChildren(visitor);
 }
@@ -1187,7 +1187,7 @@ void ElementCls::unmount() {
 RenderObject ElementCls::findRenderObject() {
     assert([=] () {
         if (_lifecycleState != _ElementLifecycleCls::active) {
-            ;
+            throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem, ArrayItem));
         }
         return true;
     }());
@@ -1197,30 +1197,30 @@ RenderObject ElementCls::findRenderObject() {
 Size ElementCls::size() {
     assert([=] () {
         if (_lifecycleState != _ElementLifecycleCls::active) {
-            ;
+            throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem, ArrayItem));
         }
         if (owner()!->_debugBuilding) {
-            ;
+            throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem));
         }
         return true;
     }());
     RenderObject renderObject = findRenderObject();
     assert([=] () {
         if (renderObject == nullptr) {
-            ;
+            throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem, ArrayItem));
         }
         if (is<RenderSliver>(renderObject)) {
-            ;
+            throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem, ArrayItem, ArrayItem));
         }
         if (!is<RenderBox>(renderObject)) {
-            ;
+            throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem, ArrayItem, ArrayItem));
         }
         RenderBox box = renderObject;
         if (!box->hasSize()) {
-            ;
+            throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem, ArrayItem, ArrayItem));
         }
         if (box->debugNeedsLayout) {
-            ;
+            throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem));
         }
         return true;
     }());
@@ -1415,13 +1415,13 @@ void ElementCls::markNeedsBuild() {
                 if (owner()!->_debugCurrentBuildTarget != nullptr) {
                     information->add(owner()!->_debugCurrentBuildTarget!->describeWidget(__s("The widget which was currently being built when the offending call was made was")));
                 }
-                ;
+                throw FlutterErrorCls->fromParts(information);
             }
             assert(dirty());
         } else         {
             if (owner()!->_debugStateLocked()) {
             assert(!_debugAllowIgnoredCallsToMarkNeedsBuild);
-            ;
+            throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem, ArrayItem));
         }
 ;
         }        return true;
@@ -1536,7 +1536,7 @@ Element ElementCls::_retakeInactiveElement(GlobalKey key, Widget newWidget) {
     if (parent != nullptr) {
         assert([=] () {
             if (parent == this) {
-                ;
+                throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem));
             }
             parent->owner()!->_debugTrackElementThatWillNeedToBeRebuiltDueToGlobalKeyShenanigans(parent, key);
             return true;
@@ -1586,7 +1586,7 @@ void ElementCls::_activateRecursively(Element element) {
 bool ElementCls::_debugCheckStateIsActiveForAncestorLookup() {
     assert([=] () {
         if (_lifecycleState != _ElementLifecycleCls::active) {
-            ;
+            throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem, ArrayItem));
         }
         return true;
     }());
@@ -1601,7 +1601,7 @@ void ElementCls::_updateInheritance() {
 bool ElementCls::_debugCheckOwnerBuildTargetExists(String methodName) {
     assert([=] () {
         if (owner()!->_debugCurrentBuildTarget == nullptr) {
-            ;
+            throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem, ArrayItem));
         }
         return true;
     }());
@@ -1624,7 +1624,7 @@ Map<String, Object> _ElementDiagnosticableTreeNodeCls::toJsonMap(DiagnosticsSeri
     return json;
 }
 
-ErrorWidgetCls::ErrorWidgetCls(Object exception) {
+ErrorWidgetCls::ErrorWidgetCls(Object exception) : LeafRenderObjectWidget(make<UniqueKeyCls>()) {
     {
         message = _stringify(exception);
         _flutterError = is<FlutterError>(exception)? exception : nullptr;
@@ -1737,14 +1737,14 @@ void StatelessElementCls::update(StatelessWidget newWidget) {
     rebuild();
 }
 
-StatefulElementCls::StatefulElementCls(StatefulWidget widget) {
+StatefulElementCls::StatefulElementCls(StatefulWidget widget) : ComponentElement(widget) {
     {
         _state = widget->createState();
     }
     {
         assert([=] () {
             if (!state()->_debugTypesAreRight(widget)) {
-                ;
+                throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem));
             }
             return true;
         }());
@@ -1790,7 +1790,7 @@ void StatefulElementCls::update(StatefulWidget newWidget) {
         Object debugCheckForReturnedFuture = as<dynamic>(state()->didUpdateWidget(oldWidget));
         assert([=] () {
             if (is<Future>(debugCheckForReturnedFuture)) {
-                ;
+                throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem, ArrayItem));
             }
             return true;
         }());
@@ -1819,7 +1819,7 @@ void StatefulElementCls::unmount() {
         if (state()->_debugLifecycleState == _StateLifecycleCls::defunct) {
             return true;
         }
-        ;
+        throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem));
     }());
     state()->_element = nullptr;
     _state = nullptr;
@@ -1830,10 +1830,10 @@ InheritedWidget StatefulElementCls::dependOnInheritedElement(Element ancestor, O
     assert([=] () {
         Type targetType = ancestor->widget()->runtimeType;
         if (state()->_debugLifecycleState == _StateLifecycleCls::created) {
-            ;
+            throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem, ArrayItem));
         }
         if (state()->_debugLifecycleState == _StateLifecycleCls::defunct) {
-            ;
+            throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem, ArrayItem, ArrayItem));
         }
         return true;
     }());
@@ -1861,7 +1861,7 @@ void StatefulElementCls::_firstBuild() {
         Object debugCheckForReturnedFuture = as<dynamic>(state()->initState());
         assert([=] () {
             if (is<Future>(debugCheckForReturnedFuture)) {
-                ;
+                throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem, ArrayItem));
             }
             return true;
         }());
@@ -2163,19 +2163,19 @@ void RenderObjectElementCls::detachRenderObject() {
 
 void RenderObjectElementCls::insertRenderObjectChild(RenderObject child, Object slot) {
     assert([=] () {
-        ;
+        throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem, ArrayItem, ArrayItem));
     }());
 }
 
 void RenderObjectElementCls::moveRenderObjectChild(RenderObject child, Object newSlot, Object oldSlot) {
     assert([=] () {
-        ;
+        throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem, ArrayItem, ArrayItem));
     }());
 }
 
 void RenderObjectElementCls::removeRenderObjectChild(RenderObject child, Object slot) {
     assert([=] () {
-        ;
+        throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem, ArrayItem, ArrayItem));
     }());
 }
 
@@ -2217,7 +2217,7 @@ ParentDataElement<ParentData> RenderObjectElementCls::_findAncestorParentDataEle
         if (badAncestors->isNotEmpty) {
             badAncestors->insert(0, result);
             try {
-                ;
+                            List<DiagnosticsNode> list1 = make<ListCls<>>();            list1.add(ArrayItem);            list1.add(ArrayItem);            for (ParentDataElement<ParentData> ancestor : badAncestors)                 {                                ;                            }            {                list1.add(ArrayItem);            }list1.add(ArrayItem);            list1.add(ArrayItem);            list1.add(ArrayItem);throw FlutterErrorCls->fromParts(list1);
             } catch (FlutterError e) {
                 _debugReportException(make<ErrorSummaryCls>(__s("while looking for parent data.")), e, e->stackTrace);
             };
@@ -2253,7 +2253,7 @@ void RenderObjectElementCls::_updateParentData(ParentDataWidget<ParentData> pare
         try {
             if (!parentDataWidget->debugIsValidRenderObject(renderObject())) {
                 applyParentData = false;
-                ;
+                            List<DiagnosticsNode> list1 = make<ListCls<>>();            list1.add(ArrayItem);            for (auto _x1 : parentDataWidget->_debugDescribeIncorrectParentDataType(renderObject()->parentData, as<RenderObjectWidget>(_ancestorRenderObjectElement!->widget), make<ErrorDescriptionCls>(debugGetCreatorChain(10)))) {            {                list1.add(_x1);            }throw FlutterErrorCls->fromParts(list1);
             }
         } catch (FlutterError e) {
             _debugReportException(make<ErrorSummaryCls>(__s("while applying parent data.")), e, e->stackTrace);
@@ -2461,18 +2461,18 @@ int IndexedSlotCls<T>::hashCode() {
 }
 
 bool _NullElementCls::debugDoingBuild() {
-    return ;
+    return throw make<UnimplementedErrorCls>();
 }
 
 void _NullElementCls::performRebuild() {
-    return ;
+    return throw make<UnimplementedErrorCls>();
 }
 
-_NullElementCls::_NullElementCls() {
+_NullElementCls::_NullElementCls() : Element(make<_NullWidgetCls>()) {
 }
 
 Element _NullWidgetCls::createElement() {
-    return ;
+    return throw make<UnimplementedErrorCls>();
 }
 
 bool _debugShouldReassemble(DebugReassembleConfig config, Widget widget) {

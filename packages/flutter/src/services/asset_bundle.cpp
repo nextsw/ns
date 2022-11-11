@@ -7,7 +7,7 @@ Future<ImmutableBuffer> AssetBundleCls::loadBuffer(String key) {
 Future<String> AssetBundleCls::loadString(bool cache, String key) {
     ByteData data = await load(key);
     if (data == nullptr) {
-        ;
+        throw make<FlutterErrorCls>(__s("Unable to load asset: $key"));
     }
     if (data->lengthInBytes < 50 * 1024) {
         return utf8->decode(data->buffer->asUint8List());
@@ -40,7 +40,7 @@ Future<ByteData> NetworkAssetBundleCls::load(String key) {
     HttpClientRequest request = await _httpClient->getUrl(_urlFromKey(key));
     HttpClientResponse response = await request->close();
     if (response->statusCode != HttpStatusCls::ok) {
-        ;
+        throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem));
     }
     Uint8List bytes = await consolidateHttpClientResponseBytes(response);
     return bytes->buffer->asByteData();
@@ -113,7 +113,7 @@ Future<ByteData> PlatformAssetBundleCls::load(String key) {
     Uint8List encoded = utf8->encoder->convert(make<UriCls>(UriCls->encodeFull(key))->path);
     ByteData asset = await ServicesBindingCls::instance->defaultBinaryMessenger->send(__s("flutter/assets"), encoded->buffer->asByteData());
     if (asset == nullptr) {
-        ;
+        throw make<FlutterErrorCls>(__s("Unable to load asset: $key"));
     }
     return asset;
 }
@@ -137,7 +137,7 @@ Future<ImmutableBuffer> PlatformAssetBundleCls::loadBuffer(String key) {
     try {
         return await ui->ImmutableBufferCls->fromAsset(key);
     } catch (Exception null) {
-        ;
+        throw make<FlutterErrorCls>(__s("Unable to load asset: $key."));
     };
 }
 

@@ -327,7 +327,7 @@ bool RestorationBucketCls::_debugAssertIntegrity() {
             assert(_claimedChildren->containsKey(id));
                     List<DiagnosticsNode> list1 = make<ListCls<>>();        list1.add(ArrayItem);        for (auto _x1 : buckets->map([=] (RestorationBucket bucket)             {                        make<ErrorDescriptionCls>(__s("   * ${bucket.debugOwner}"));                    })) {        {            list1.add(_x1);        }list1.add(ArrayItem);error->addAll(list1);
         }
-        ;
+        throw FlutterErrorCls->fromParts(error);
     }());
     return true;
 }
@@ -391,7 +391,7 @@ void RestorationBucketCls::_visitChildren(bool concurrentModification, _BucketVi
 bool RestorationBucketCls::_debugAssertNotDisposed() {
     assert([=] () {
         if (_debugDisposed) {
-            ;
+            throw make<FlutterErrorCls>(__s("A $runtimeType was used after being disposed.\nOnce you have called dispose() on a $runtimeType, it can no longer be used."));
         }
         return true;
     }());

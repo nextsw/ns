@@ -207,7 +207,7 @@ StdioType stdioType(object ) {
         int stdiofd = object == stdout? _stdoutFD : _stderrFD;
         Unknown type = _StdIOUtilsCls->_getStdioHandleType(stdiofd);
         if (is<OSError>(type)) {
-            ;
+            throw make<FileSystemExceptionCls>(__s("Failed to get type of stdio handle (fd $stdiofd)"), __s(""), as<OSErrorCls>(type));
         }
         ;
     }

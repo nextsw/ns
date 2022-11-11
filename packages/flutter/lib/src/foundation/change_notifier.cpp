@@ -2,7 +2,7 @@
 bool ChangeNotifierCls::debugAssertNotDisposed(ChangeNotifier notifier) {
     assert([=] () {
         if (notifier->_debugDisposed) {
-            ;
+            throw make<FlutterErrorCls>(__s("A ${notifier.runtimeType} was used after being disposed.\nOnce you have called dispose() on a ${notifier.runtimeType}, it can no longer be used."));
         }
         return true;
     }());

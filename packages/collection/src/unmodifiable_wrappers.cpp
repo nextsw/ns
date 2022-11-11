@@ -1,6 +1,6 @@
 #include "unmodifiable_wrappers.hpp"
 template<typename E>
-NonGrowableListViewCls<E>::NonGrowableListViewCls(List<E> listBase) {
+NonGrowableListViewCls<E>::NonGrowableListViewCls(List<E> listBase) : DelegatingList<E>(listBase) {
 }
 
 template<typename E>
@@ -70,11 +70,11 @@ void NonGrowableListMixinCls<E>::clear() {
 
 template<typename E>
 Never NonGrowableListMixinCls<E>::_throw() {
-    ;
+    throw make<UnsupportedErrorCls>(__s("Cannot change the length of a fixed-length list"));
 }
 
 template<typename E>
-UnmodifiableSetViewCls<E>::UnmodifiableSetViewCls(Set<E> setBase) {
+UnmodifiableSetViewCls<E>::UnmodifiableSetViewCls(Set<E> setBase) : DelegatingSet<E>(setBase) {
 }
 
 template<typename E>
@@ -119,7 +119,7 @@ void UnmodifiableSetMixinCls<E>::clear() {
 
 template<typename E>
 Never UnmodifiableSetMixinCls<E>::_throw() {
-    ;
+    throw make<UnsupportedErrorCls>(__s("Cannot modify an unmodifiable Set"));
 }
 
 template<typename K, typename V>
@@ -159,5 +159,5 @@ void UnmodifiableMapMixinCls<K, V>::last(_ ) {
 
 template<typename K, typename V>
 Never UnmodifiableMapMixinCls<K, V>::_throw() {
-    ;
+    throw make<UnsupportedErrorCls>(__s("Cannot modify an unmodifiable Map"));
 }

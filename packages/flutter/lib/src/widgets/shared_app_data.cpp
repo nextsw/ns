@@ -20,7 +20,7 @@ void SharedAppDataCls::setValue(BuildContext context, K key, V value) {
 bool SharedAppDataCls::_debugHasSharedAppData(BuildContext context, String methodName, _SharedAppModel model) {
     assert([=] () {
         if (model == nullptr) {
-            ;
+            throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem));
         }
         return true;
     }());

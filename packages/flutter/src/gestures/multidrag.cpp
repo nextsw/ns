@@ -277,7 +277,7 @@ void _DelayedPointerStateCls::dispose() {
     super->dispose();
 }
 
-_DelayedPointerStateCls::_DelayedPointerStateCls(Duration delay, DeviceGestureSettings deviceGestureSettings, Offset initialPosition, PointerDeviceKind kind) {
+_DelayedPointerStateCls::_DelayedPointerStateCls(Duration delay, DeviceGestureSettings deviceGestureSettings, Offset initialPosition, PointerDeviceKind kind) : MultiDragPointerState(initialPosition, kind, deviceGestureSettings) {
     {
         assert(delay != nullptr);
     }

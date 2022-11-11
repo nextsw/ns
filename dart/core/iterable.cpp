@@ -72,7 +72,7 @@ template<typename E>
 E IterableCls<E>::reduce(std::function<E(E element, E value)> combine) {
     Iterator<E> iterator = this->iterator();
     if (!iterator->moveNext()) {
-        ;
+        throw IterableElementErrorCls->noElement();
     }
     E value = iterator->current();
     while (iterator->moveNext()) {
@@ -187,7 +187,7 @@ template<typename E>
 E IterableCls<E>::first() {
     Iterator<E> it = iterator();
     if (!it->moveNext()) {
-        ;
+        throw IterableElementErrorCls->noElement();
     }
     return it->current();
 }
@@ -196,7 +196,7 @@ template<typename E>
 E IterableCls<E>::last() {
     Iterator<E> it = iterator();
     if (!it->moveNext()) {
-        ;
+        throw IterableElementErrorCls->noElement();
     }
     E result;
     do {
@@ -209,11 +209,11 @@ template<typename E>
 E IterableCls<E>::single() {
     Iterator<E> it = iterator();
     if (!it->moveNext())     {
-        ;
+        throw IterableElementErrorCls->noElement();
     }
     E result = it->current();
     if (it->moveNext())     {
-        ;
+        throw IterableElementErrorCls->tooMany();
     }
     return result;
 }
@@ -228,7 +228,7 @@ E IterableCls<E>::firstWhere(std::function<E()> orElse, std::function<bool(E ele
     if (orElse != nullptr)     {
         return orElse();
     }
-    ;
+    throw IterableElementErrorCls->noElement();
 }
 
 template<typename E>
@@ -247,7 +247,7 @@ E IterableCls<E>::lastWhere(std::function<E()> orElse, std::function<bool(E elem
     if (orElse != nullptr)     {
         return orElse();
     }
-    ;
+    throw IterableElementErrorCls->noElement();
 }
 
 template<typename E>
@@ -257,7 +257,7 @@ E IterableCls<E>::singleWhere(std::function<E()> orElse, std::function<bool(E el
     for (E element : this) {
         if (test(element)) {
             if (foundMatching) {
-                ;
+                throw IterableElementErrorCls->tooMany();
             }
             result = element;
             foundMatching = true;
@@ -269,7 +269,7 @@ E IterableCls<E>::singleWhere(std::function<E()> orElse, std::function<bool(E el
     if (orElse != nullptr)     {
         return orElse();
     }
-    ;
+    throw IterableElementErrorCls->noElement();
 }
 
 template<typename E>
@@ -282,7 +282,7 @@ E IterableCls<E>::elementAt(int index) {
         }
         elementIndex++;
     }
-    ;
+    throw RangeErrorCls->index(index, this, __s("index"), nullptr, elementIndex);
 }
 
 template<typename E>

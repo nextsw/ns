@@ -322,7 +322,7 @@ Widget _InteractiveViewerBuiltCls::build(BuildContext context) {
     return make<ClipRectCls>(clipBehavior, child);
 }
 
-TransformationControllerCls::TransformationControllerCls(Matrix4 value) {
+TransformationControllerCls::TransformationControllerCls(Matrix4 value) : ValueNotifier<Matrix4>(value or Matrix4Cls->identity()) {
 }
 
 Offset TransformationControllerCls::toScene(Offset viewportPoint) {

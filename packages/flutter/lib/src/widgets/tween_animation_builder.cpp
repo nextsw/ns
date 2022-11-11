@@ -28,7 +28,7 @@ void _TweenAnimationBuilderStateCls<T>::forEachTween(TweenVisitor<dynamic> visit
     assert(widget->tween->end != nullptr, __s("Tween provided to TweenAnimationBuilder must have non-null Tween.end value."));
     _currentTween = as<Tween<T>>(visitor(_currentTween, widget->tween->end, [=] (dynamic value) {
         assert(false);
-        ;
+        throw make<StateErrorCls>(__s("Constructor will never be called because null is never provided as current tween."));
     }));
 }
 

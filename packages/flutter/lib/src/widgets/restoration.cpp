@@ -270,7 +270,7 @@ void RestorationMixinCls<S>::_doRestore(RestorationBucket oldBucket) {
     _firstRestorePending = false;
     assert([=] () {
         if (_debugPropertiesWaitingForReregistration!->isNotEmpty) {
-            ;
+                    List<DiagnosticsNode> list1 = make<ListCls<>>();        list1.add(ArrayItem);        list1.add(ArrayItem);        for (auto _x1 : _debugPropertiesWaitingForReregistration!->map([=] (RestorableProperty<Object> property)             {                        make<ErrorDescriptionCls>(__s(" * ${property._restorationId}"));                    })) {        {            list1.add(_x1);        }throw FlutterErrorCls->fromParts(list1);
         }
         _debugPropertiesWaitingForReregistration = nullptr;
         return true;

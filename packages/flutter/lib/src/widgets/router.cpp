@@ -25,7 +25,7 @@ Router<T> RouterCls<T>::of(BuildContext context) {
     _RouterScope scope = context-><_RouterScope>dependOnInheritedWidgetOfExactType();
     assert([=] () {
         if (scope == nullptr) {
-            ;
+            throw make<FlutterErrorCls>(__s("Router operation requested with a context that does not include a Router.\nThe context used to retrieve the Router must be that of a widget that is a descendant of a Router widget."));
         }
         return true;
     }());
@@ -404,7 +404,7 @@ Widget _BackButtonListenerStateCls::build(BuildContext context) {
 
 template<typename T>
 Future<T> RouteInformationParserCls<T>::parseRouteInformation(RouteInformation routeInformation) {
-    ;
+    throw make<UnimplementedErrorCls>(__s("One of the parseRouteInformation or parseRouteInformationWithDependencies must be implemented"));
 }
 
 template<typename T>

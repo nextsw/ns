@@ -17,15 +17,15 @@ Size MultiChildLayoutDelegateCls::layoutChild(Object childId, BoxConstraints con
     RenderBox child = _idToChild![childId];
     assert([=] () {
         if (child == nullptr) {
-            ;
+            throw make<FlutterErrorCls>(__s("The $this custom multichild layout delegate tried to lay out a non-existent child.\nThere is no child with the id "$childId"."));
         }
         if (!_debugChildrenNeedingLayout!->remove(child)) {
-            ;
+            throw make<FlutterErrorCls>(__s("The $this custom multichild layout delegate tried to lay out the child with id "$childId" more than once.\nEach child must be laid out exactly once."));
         }
         try {
             assert(constraints->debugAssertIsValid(true));
         } catch (AssertionError exception) {
-            ;
+            throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem, ArrayItem));
         };
         return true;
     }());
@@ -37,10 +37,10 @@ void MultiChildLayoutDelegateCls::positionChild(Object childId, Offset offset) {
     RenderBox child = _idToChild![childId];
     assert([=] () {
         if (child == nullptr) {
-            ;
+            throw make<FlutterErrorCls>(__s("The $this custom multichild layout delegate tried to position out a non-existent child:\nThere is no child with the id "$childId"."));
         }
         if (offset == nullptr) {
-            ;
+            throw make<FlutterErrorCls>(__s("The $this custom multichild layout delegate provided a null position for the child with id "$childId"."));
         }
         return true;
     }());
@@ -76,7 +76,7 @@ void MultiChildLayoutDelegateCls::_callPerformLayout(RenderBox firstChild, Size 
             MultiChildLayoutParentData childParentData = as<MultiChildLayoutParentData>(child->parentData!);
             assert([=] () {
                 if (childParentData->id == nullptr) {
-                    ;
+                    throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem));
                 }
                 return true;
             }());
@@ -90,7 +90,7 @@ void MultiChildLayoutDelegateCls::_callPerformLayout(RenderBox firstChild, Size 
         performLayout(size);
         assert([=] () {
             if (_debugChildrenNeedingLayout!->isNotEmpty) {
-                ;
+                throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem));
             }
             return true;
         }());

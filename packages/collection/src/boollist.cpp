@@ -152,7 +152,7 @@ bool _BoolListIteratorCls::current() {
 
 bool _BoolListIteratorCls::moveNext() {
     if (_boolList->_length != _length) {
-        ;
+        throw make<ConcurrentModificationErrorCls>(_boolList);
     }
     if ( < _boolList->length()) {
         auto pos = _pos++;

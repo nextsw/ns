@@ -36,7 +36,7 @@ CustomPainterSemanticsCls::CustomPainterSemanticsCls(Key key, SemanticsPropertie
     }
 }
 
-RenderCustomPaintCls::RenderCustomPaintCls(RenderBox child, CustomPainter foregroundPainter, bool isComplex, CustomPainter painter, Size preferredSize, bool willChange) {
+RenderCustomPaintCls::RenderCustomPaintCls(RenderBox child, CustomPainter foregroundPainter, bool isComplex, CustomPainter painter, Size preferredSize, bool willChange) : RenderProxyBox(child) {
     {
         assert(preferredSize != nullptr);
         _painter = painter;
@@ -166,7 +166,7 @@ void RenderCustomPaintCls::describeSemanticsConfiguration(SemanticsConfiguration
 void RenderCustomPaintCls::assembleSemanticsNode(Iterable<SemanticsNode> children, SemanticsConfiguration config, SemanticsNode node) {
     assert([=] () {
         if (child == nullptr && children->isNotEmpty()) {
-            ;
+            throw FlutterErrorCls->fromParts(makeList(ArrayItem));
         }
         return true;
     }());
@@ -234,10 +234,10 @@ void RenderCustomPaintCls::_paintWithPainter(Canvas canvas, Offset offset, Custo
     assert([=] () {
         int debugNewCanvasSaveCount = canvas->getSaveCount();
         if (debugNewCanvasSaveCount > debugPreviousCanvasSaveCount) {
-            ;
+            throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem, ArrayItem));
         }
         if ( < debugPreviousCanvasSaveCount) {
-            ;
+            throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem, ArrayItem));
         }
         return debugNewCanvasSaveCount == debugPreviousCanvasSaveCount;
     }());
@@ -270,7 +270,7 @@ List<SemanticsNode> RenderCustomPaintCls::_updateSemanticsChildren(List<CustomPa
         }
         if (information->isNotEmpty) {
             information->insert(0, make<ErrorSummaryCls>(__s("Failed to update the list of CustomPainterSemantics:")));
-            ;
+            throw FlutterErrorCls->fromParts(information);
         }
         return true;
     }());

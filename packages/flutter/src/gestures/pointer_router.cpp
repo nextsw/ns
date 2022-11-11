@@ -36,7 +36,7 @@ int PointerRouterCls::debugGlobalRouteCount() {
     if (count != nullptr) {
         return count!;
     }
-    ;
+    throw make<UnsupportedErrorCls>(__s("debugGlobalRouteCount is not supported in release builds"));
 }
 
 void PointerRouterCls::route(PointerEvent event) {

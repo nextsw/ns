@@ -131,7 +131,7 @@ void ChannelBuffersCls::handleMessage(ByteData data) {
     if (bytes[0] == 0x07) {
         int methodNameLength = bytes[1];
         if (methodNameLength >= 254)         {
-            ;
+            throw make<ExceptionCls>(__s("Unrecognized message sent to $kControlChannelName (method name too long)"));
         }
         int index = 2;
         String methodName = utf8->decode(bytes->sublist(index, index + methodNameLength));
@@ -142,7 +142,7 @@ void ChannelBuffersCls::handleMessage(ByteData data) {
         if (parts->length() == 1 + 2 && parts[0] == __s("resize")) {
             resize(parts[1], intValue->parse(parts[2]));
         } else {
-            ;
+            throw make<ExceptionCls>(__s("Unrecognized message $parts sent to $kControlChannelName."));
         }
     }
 }

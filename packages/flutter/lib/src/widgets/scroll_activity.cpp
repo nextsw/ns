@@ -53,7 +53,7 @@ double IdleScrollActivityCls::velocity() {
     return 0.0;
 }
 
-HoldScrollActivityCls::HoldScrollActivityCls(ScrollActivityDelegate delegate, VoidCallback onHoldCanceled) {
+HoldScrollActivityCls::HoldScrollActivityCls(ScrollActivityDelegate delegate, VoidCallback onHoldCanceled) : ScrollActivity(delegate) {
 }
 
 bool HoldScrollActivityCls::shouldIgnorePointer() {

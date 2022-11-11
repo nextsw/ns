@@ -75,7 +75,7 @@ Uri FileSystemEntityCls::uri() {
 Future<String> FileSystemEntityCls::resolveSymbolicLinks() {
     return _FileCls->_dispatchWithNamespace(_IOServiceCls::fileResolveSymbolicLinks, makeList(ArrayItem, ArrayItem))->then([=] (Unknown  response) {
         if (_isErrorResponse(response)) {
-            ;
+            throw _exceptionFromResponse(response, __s("Cannot resolve symbolic links"), path());
         }
         return response;
     });
@@ -213,7 +213,7 @@ Directory FileSystemEntityCls::parent() {
 Future<bool> FileSystemEntityCls::_identical(String path1, String path2) {
     return _FileCls->_dispatchWithNamespace(_IOServiceCls::fileIdentical, makeList(ArrayItem, ArrayItem, ArrayItem))->then([=] (Unknown  response) {
         if (_isErrorResponse(response)) {
-            ;
+            throw _exceptionFromResponse(response, __s("Error in FileSystemEntity.identical($path1, $path2)"), __s(""));
         }
         return response;
     });
@@ -344,7 +344,7 @@ FileSystemEntityType FileSystemEntityCls::_getTypeSync(bool followLinks, Uint8Li
 Future<FileSystemEntityType> FileSystemEntityCls::_getTypeRequest(bool followLinks, Uint8List rawPath) {
     return _FileCls->_dispatchWithNamespace(_IOServiceCls::fileType, makeList(ArrayItem, ArrayItem, ArrayItem))->then([=] (Unknown  response) {
         if (_isErrorResponse(response)) {
-            ;
+            throw _exceptionFromResponse(response, __s("Error getting type"), utf8->decode(rawPathtrue));
         }
         return FileSystemEntityTypeCls->_lookup(response);
     });
@@ -360,10 +360,10 @@ Future<FileSystemEntityType> FileSystemEntityCls::_getType(bool followLinks, Uin
 
 void FileSystemEntityCls::_throwIfError(String msg, String path, Object result) {
     if (is<OSError>(result)) {
-        ;
+        throw make<FileSystemExceptionCls>(msg, path, as<OSErrorCls>(result));
     } else     {
         if (is<ArgumentError>(result)) {
-        ;
+        throw result;
     }
 ;
     }}

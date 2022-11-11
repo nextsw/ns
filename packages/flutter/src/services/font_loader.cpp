@@ -8,7 +8,7 @@ FontLoaderCls::FontLoaderCls(String family) {
 
 void FontLoaderCls::addFont(Future<ByteData> bytes) {
     if (_loaded) {
-        ;
+        throw make<StateErrorCls>(__s("FontLoader is already loaded"));
     }
     _fontFutures->add(bytes->then([=] (ByteData data)     {
         Uint8ListCls->view(data->buffer, data->offsetInBytes, data->lengthInBytes);
@@ -17,7 +17,7 @@ void FontLoaderCls::addFont(Future<ByteData> bytes) {
 
 Future<void> FontLoaderCls::load() {
     if (_loaded) {
-        ;
+        throw make<StateErrorCls>(__s("FontLoader is already loaded"));
     }
     _loaded = true;
     Iterable<Future<void>> loadFutures = _fontFutures->map([=] (Future<Uint8List> f) {

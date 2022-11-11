@@ -791,7 +791,7 @@ void SemanticsNodeCls::_replaceChildren(List<SemanticsNode> newChildren) {
                 }
             }
             if (mutationErrors->isNotEmpty) {
-                ;
+                            List<DiagnosticsNode> list1 = make<ListCls<>>();            list1.add(ArrayItem);            list1.add(ArrayItem);            list1.add(ArrayItem);            for (auto _x1 : mutationErrors) {            {                list1.add(_x1);            }throw FlutterErrorCls->fromParts(list1);
             }
         }
         assert(!newChildren->any([=] (SemanticsNode node)         {

@@ -1640,7 +1640,7 @@ Size _RenderEditableCustomPaintCls::computeDryLayout(BoxConstraints constraints)
     return constraints->biggest();
 }
 
-_RenderEditableCustomPaintCls::_RenderEditableCustomPaintCls(RenderEditablePainter painter) {
+_RenderEditableCustomPaintCls::_RenderEditableCustomPaintCls(RenderEditablePainter painter) : RenderBox() {
     {
         _painter = painter;
     }

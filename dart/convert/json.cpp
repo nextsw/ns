@@ -10,7 +10,7 @@ String JsonUnsupportedObjectErrorCls::toString() {
     return __s("$prefix $safeString");
 }
 
-JsonCyclicErrorCls::JsonCyclicErrorCls(Object object) {
+JsonCyclicErrorCls::JsonCyclicErrorCls(Object object) : JsonUnsupportedObjectError(object) {
 }
 
 String JsonCyclicErrorCls::toString() {
@@ -159,7 +159,7 @@ List<int> JsonUtf8EncoderCls::_utf8Encode(String stringValue) {
 
 void _JsonEncoderSinkCls::add(Object o) {
     if (_isDone) {
-        ;
+        throw make<StateErrorCls>(__s("Only one call to add allowed"));
     }
     _isDone = true;
     auto stringSink = _sink->asStringSink();
@@ -172,7 +172,7 @@ void _JsonEncoderSinkCls::close() {
 
 void _JsonUtf8EncoderSinkCls::add(Object object) {
     if (_isDone) {
-        ;
+        throw make<StateErrorCls>(__s("Only one call to add allowed"));
     }
     _isDone = true;
     _JsonUtf8StringifierCls->stringify(object, _indent, _toEncodable, _bufferSize, _addChunk);
@@ -269,11 +269,11 @@ void _JsonStringifierCls::writeObject(Object object) {
     try {
         auto customJson = _toEncodable(object);
         if (!writeJsonValue(customJson)) {
-            ;
+            throw make<JsonUnsupportedObjectErrorCls>(object_partialResult());
         }
         _removeSeen(object);
     } catch (Unknown e) {
-        ;
+        throw make<JsonUnsupportedObjectErrorCls>(objecte, _partialResult());
     };
 }
 
@@ -377,7 +377,7 @@ _JsonStringifierCls::_JsonStringifierCls(std::function<dynamic(dynamic o)> toEnc
 void _JsonStringifierCls::_checkCycle(Object object) {
     for (;  < _seen->length(); i++) {
         if (identical(object, _seen[i])) {
-            ;
+            throw make<JsonCyclicErrorCls>(object);
         }
     }
     _seen->add(object);
@@ -478,7 +478,7 @@ void _JsonStringStringifierCls::writeCharCode(int charCode) {
     _sink->writeCharCode(charCode);
 }
 
-_JsonStringStringifierCls::_JsonStringStringifierCls(StringSink _sink, std::function<dynamic(dynamic object)> _toEncodable) {
+_JsonStringStringifierCls::_JsonStringStringifierCls(StringSink _sink, std::function<dynamic(dynamic object)> _toEncodable) : _JsonStringifier(_toEncodable) {
 }
 
 String _JsonStringStringifierCls::_partialResult() {
@@ -491,7 +491,7 @@ void _JsonStringStringifierPrettyCls::writeIndentation(int count) {
     }
 }
 
-_JsonStringStringifierPrettyCls::_JsonStringStringifierPrettyCls(String _indent, StringSink sink, std::function<dynamic(dynamic o)> toEncodable) {
+_JsonStringStringifierPrettyCls::_JsonStringStringifierPrettyCls(String _indent, StringSink sink, std::function<dynamic(dynamic o)> toEncodable) : _JsonStringStringifier(sink, toEncodable) {
 }
 
 void _JsonUtf8StringifierCls::stringify(std::function<void(Uint8List chunk, int end, int start)> addChunk, int bufferSize, List<int> indent, Object object, std::function<dynamic(dynamic o)> toEncodable) {
@@ -594,7 +594,7 @@ void _JsonUtf8StringifierCls::writeByte(int byte) {
     buffer[index++] = byte;
 }
 
-_JsonUtf8StringifierCls::_JsonUtf8StringifierCls(std::function<void(int end, Uint8List list, int start)> addChunk, int bufferSize, std::function<dynamic(dynamic o)> toEncodable) {
+_JsonUtf8StringifierCls::_JsonUtf8StringifierCls(std::function<void(int end, Uint8List list, int start)> addChunk, int bufferSize, std::function<dynamic(dynamic o)> toEncodable) : _JsonStringifier(toEncodable) {
     {
         buffer = make<Uint8ListCls>(bufferSize);
     }
@@ -629,5 +629,5 @@ void _JsonUtf8StringifierPrettyCls::writeIndentation(int count) {
     }
 }
 
-_JsonUtf8StringifierPrettyCls::_JsonUtf8StringifierPrettyCls(std::function<void(Uint8List buffer, int end, int start)> addChunk, int bufferSize, List<int> indent, std::function<dynamic(dynamic o)> toEncodable) {
+_JsonUtf8StringifierPrettyCls::_JsonUtf8StringifierPrettyCls(std::function<void(Uint8List buffer, int end, int start)> addChunk, int bufferSize, List<int> indent, std::function<dynamic(dynamic o)> toEncodable) : _JsonUtf8Stringifier(toEncodable, bufferSize, addChunk) {
 }

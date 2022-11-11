@@ -61,13 +61,13 @@ Future<Codec> NetworkImageCls::_loadAsync(StreamController<ImageChunkEvent> chun
         HttpClientResponse response = await request->close();
         if (response->statusCode != HttpStatusCls::ok) {
             await await response-><List<int>>drain(makeList());
-            ;
+            throw image_provider->make<NetworkImageLoadExceptionCls>(response->statusCode, resolved);
         }
         Uint8List bytes = await consolidateHttpClientResponseBytes(response[=] (int cumulative,int total) {
     chunkEvents->add(make<ImageChunkEventCls>(cumulative, total));
 });
         if (bytes->lengthInBytes == 0) {
-            ;
+            throw make<ExceptionCls>(__s("NetworkImage is an empty file: $resolved"));
         }
         if (decode != nullptr) {
             ImmutableBuffer buffer = await ui->ImmutableBufferCls->fromUint8List(bytes);

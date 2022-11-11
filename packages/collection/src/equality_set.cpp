@@ -1,6 +1,6 @@
 #include "equality_set.hpp"
 template<typename E>
-EqualitySetCls<E>::EqualitySetCls(Equality<E> equality) {
+EqualitySetCls<E>::EqualitySetCls(Equality<E> equality) : DelegatingSet<E>(make<LinkedHashSetCls>(equality->equals, equality->hash, equality->isValidKey)) {
 }
 
 template<typename E>

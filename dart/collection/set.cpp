@@ -127,11 +127,11 @@ Iterable<T> SetMixinCls<E>::map(std::function<T(E element)> f) {
 template<typename E>
 E SetMixinCls<E>::single() {
     if (length() > 1)     {
-        ;
+        throw IterableElementErrorCls->tooMany();
     }
     Iterator<E> it = iterator();
     if (!it->moveNext())     {
-        ;
+        throw IterableElementErrorCls->noElement();
     }
     E result = it->current();
     return result;
@@ -164,7 +164,7 @@ template<typename E>
 E SetMixinCls<E>::reduce(std::function<E(E element, E value)> combine) {
     Iterator<E> iterator = this->iterator();
     if (!iterator->moveNext()) {
-        ;
+        throw IterableElementErrorCls->noElement();
     }
     E value = iterator->current();
     while (iterator->moveNext()) {
@@ -248,7 +248,7 @@ template<typename E>
 E SetMixinCls<E>::first() {
     Iterator<E> it = iterator();
     if (!it->moveNext()) {
-        ;
+        throw IterableElementErrorCls->noElement();
     }
     return it->current();
 }
@@ -257,7 +257,7 @@ template<typename E>
 E SetMixinCls<E>::last() {
     Iterator<E> it = iterator();
     if (!it->moveNext()) {
-        ;
+        throw IterableElementErrorCls->noElement();
     }
     E result;
     do {
@@ -276,7 +276,7 @@ E SetMixinCls<E>::firstWhere(std::function<E()> orElse, std::function<bool(E val
     if (orElse != nullptr)     {
         return orElse();
     }
-    ;
+    throw IterableElementErrorCls->noElement();
 }
 
 template<typename E>
@@ -295,7 +295,7 @@ E SetMixinCls<E>::lastWhere(std::function<E()> orElse, std::function<bool(E valu
     if (orElse != nullptr)     {
         return orElse();
     }
-    ;
+    throw IterableElementErrorCls->noElement();
 }
 
 template<typename E>
@@ -305,7 +305,7 @@ E SetMixinCls<E>::singleWhere(std::function<E()> orElse, std::function<bool(E va
     for (E element : this) {
         if (test(element)) {
             if (foundMatching) {
-                ;
+                throw IterableElementErrorCls->tooMany();
             }
             result = element;
             foundMatching = true;
@@ -317,7 +317,7 @@ E SetMixinCls<E>::singleWhere(std::function<E()> orElse, std::function<bool(E va
     if (orElse != nullptr)     {
         return orElse();
     }
-    ;
+    throw IterableElementErrorCls->noElement();
 }
 
 template<typename E>
@@ -331,7 +331,7 @@ E SetMixinCls<E>::elementAt(int index) {
         }
         elementIndex++;
     }
-    ;
+    throw RangeErrorCls->index(index, this, __s("index"), nullptr, elementIndex);
 }
 
 template<typename E>
@@ -414,7 +414,7 @@ bool _UnmodifiableSetMixinCls<E>::remove(Object value) {
 
 template<typename E>
 Never _UnmodifiableSetMixinCls<E>::_throwUnmodifiable() {
-    auto _c1 = _newSet();_c1.addAll(this);;
+    auto _c1 = _newSet();_c1.addAll(this);throw make<UnsupportedErrorCls>(__s("Cannot change an unmodifiable set"));
 }
 
 template<typename E>
