@@ -324,7 +324,7 @@ void _BroadcastStreamControllerCls<T>::_callOnCancel() {
     assert(_isEmpty());
     if (isClosed()) {
         auto doneFuture = _doneFuture!;
-        if (doneFuture->_mayComplete) {
+        if (doneFuture->_mayComplete()) {
             doneFuture->_asyncComplete(nullptr);
         }
     }
@@ -385,7 +385,7 @@ void _SyncBroadcastStreamControllerCls<T>::_sendDone() {
             subscription->_close();
         });
     } else {
-        assert(_doneFuture != nullptr && _doneFuture!->_mayComplete);
+        assert(_doneFuture != nullptr && _doneFuture!->_mayComplete());
         _doneFuture!->_asyncComplete(nullptr);
     }
 }
@@ -415,7 +415,7 @@ void _AsyncBroadcastStreamControllerCls<T>::_sendDone() {
             subscription->_addPending(make<_DelayedDoneCls>());
         }
     } else {
-        assert(_doneFuture != nullptr && _doneFuture!->_mayComplete);
+        assert(_doneFuture != nullptr && _doneFuture!->_mayComplete());
         _doneFuture!->_asyncComplete(nullptr);
     }
 }

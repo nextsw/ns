@@ -34,7 +34,7 @@ void OverlayRouteCls<T>::dispose() {
 
 template<typename T>
 Future<T> TransitionRouteCls<T>::completed() {
-    return _transitionCompleter->future;
+    return _transitionCompleter->future();
 }
 
 template<typename T>
@@ -64,7 +64,7 @@ Animation<double> TransitionRouteCls<T>::secondaryAnimation() {
 
 template<typename T>
 AnimationController TransitionRouteCls<T>::createAnimationController() {
-    assert(!_transitionCompleter->isCompleted, __s("Cannot reuse a $runtimeType after disposing it."));
+    assert(!_transitionCompleter->isCompleted(), __s("Cannot reuse a $runtimeType after disposing it."));
     Duration duration = transitionDuration();
     Duration reverseDuration = reverseTransitionDuration();
     assert(duration != nullptr && duration >= DurationCls::zero);
@@ -73,14 +73,14 @@ AnimationController TransitionRouteCls<T>::createAnimationController() {
 
 template<typename T>
 Animation<double> TransitionRouteCls<T>::createAnimation() {
-    assert(!_transitionCompleter->isCompleted, __s("Cannot reuse a $runtimeType after disposing it."));
+    assert(!_transitionCompleter->isCompleted(), __s("Cannot reuse a $runtimeType after disposing it."));
     assert(_controller != nullptr);
     return _controller!->view();
 }
 
 template<typename T>
 void TransitionRouteCls<T>::install() {
-    assert(!_transitionCompleter->isCompleted, __s("Cannot install a $runtimeType after disposing it."));
+    assert(!_transitionCompleter->isCompleted(), __s("Cannot install a $runtimeType after disposing it."));
     _controller = createAnimationController();
     assert(_controller != nullptr, __s("$runtimeType.createAnimationController() returned null."));
     auto _c1 = createAnimation();_c1.addStatusListener(_handleStatusChanged);_animation = _c1;
@@ -94,7 +94,7 @@ void TransitionRouteCls<T>::install() {
 template<typename T>
 TickerFuture TransitionRouteCls<T>::didPush() {
     assert(_controller != nullptr, __s("$runtimeType.didPush called before calling install() or after calling dispose()."));
-    assert(!_transitionCompleter->isCompleted, __s("Cannot reuse a $runtimeType after disposing it."));
+    assert(!_transitionCompleter->isCompleted(), __s("Cannot reuse a $runtimeType after disposing it."));
     super->didPush();
     return _controller!->forward();
 }
@@ -102,7 +102,7 @@ TickerFuture TransitionRouteCls<T>::didPush() {
 template<typename T>
 void TransitionRouteCls<T>::didAdd() {
     assert(_controller != nullptr, __s("$runtimeType.didPush called before calling install() or after calling dispose()."));
-    assert(!_transitionCompleter->isCompleted, __s("Cannot reuse a $runtimeType after disposing it."));
+    assert(!_transitionCompleter->isCompleted(), __s("Cannot reuse a $runtimeType after disposing it."));
     super->didAdd();
     _controller!->value() = _controller!->upperBound;
 }
@@ -110,7 +110,7 @@ void TransitionRouteCls<T>::didAdd() {
 template<typename T>
 void TransitionRouteCls<T>::didReplace(Route<dynamic> oldRoute) {
     assert(_controller != nullptr, __s("$runtimeType.didReplace called before calling install() or after calling dispose()."));
-    assert(!_transitionCompleter->isCompleted, __s("Cannot reuse a $runtimeType after disposing it."));
+    assert(!_transitionCompleter->isCompleted(), __s("Cannot reuse a $runtimeType after disposing it."));
     if (is<TransitionRoute>(oldRoute)) {
         _controller!->value() = as<TransitionRouteCls>(oldRoute)->_controller!->value();
     }
@@ -120,7 +120,7 @@ void TransitionRouteCls<T>::didReplace(Route<dynamic> oldRoute) {
 template<typename T>
 bool TransitionRouteCls<T>::didPop(T result) {
     assert(_controller != nullptr, __s("$runtimeType.didPop called before calling install() or after calling dispose()."));
-    assert(!_transitionCompleter->isCompleted, __s("Cannot reuse a $runtimeType after disposing it."));
+    assert(!_transitionCompleter->isCompleted(), __s("Cannot reuse a $runtimeType after disposing it."));
     _result = result;
     _controller!->reverse();
     return super->didPop(result);
@@ -129,7 +129,7 @@ bool TransitionRouteCls<T>::didPop(T result) {
 template<typename T>
 void TransitionRouteCls<T>::didPopNext(Route<dynamic> nextRoute) {
     assert(_controller != nullptr, __s("$runtimeType.didPopNext called before calling install() or after calling dispose()."));
-    assert(!_transitionCompleter->isCompleted, __s("Cannot reuse a $runtimeType after disposing it."));
+    assert(!_transitionCompleter->isCompleted(), __s("Cannot reuse a $runtimeType after disposing it."));
     _updateSecondaryAnimation(nextRoute);
     super->didPopNext(nextRoute);
 }
@@ -137,7 +137,7 @@ void TransitionRouteCls<T>::didPopNext(Route<dynamic> nextRoute) {
 template<typename T>
 void TransitionRouteCls<T>::didChangeNext(Route<dynamic> nextRoute) {
     assert(_controller != nullptr, __s("$runtimeType.didChangeNext called before calling install() or after calling dispose()."));
-    assert(!_transitionCompleter->isCompleted, __s("Cannot reuse a $runtimeType after disposing it."));
+    assert(!_transitionCompleter->isCompleted(), __s("Cannot reuse a $runtimeType after disposing it."));
     _updateSecondaryAnimation(nextRoute);
     super->didChangeNext(nextRoute);
 }
@@ -154,7 +154,7 @@ bool TransitionRouteCls<T>::canTransitionFrom(TransitionRoute<dynamic> previousR
 
 template<typename T>
 void TransitionRouteCls<T>::dispose() {
-    assert(!_transitionCompleter->isCompleted, __s("Cannot dispose a $runtimeType twice."));
+    assert(!_transitionCompleter->isCompleted(), __s("Cannot dispose a $runtimeType twice."));
     _animation?->removeStatusListener(_handleStatusChanged);
     if (willDisposeAnimationController) {
         _controller?->dispose();

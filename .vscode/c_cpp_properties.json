@@ -14,7 +14,7 @@
             "cStandard": "c17",
             "cppStandard": "c++17",
             "intelliSenseMode": "macos-clang-x64",
-            "compilerArgs": ["-ferror-limit=5000000"]
+            "compilerArgs": ["-ferror-limit=500"]
         }
     ],
     "version": 4

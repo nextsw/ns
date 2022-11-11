@@ -9,14 +9,14 @@ Future<void> precacheImage(ImageProvider provider, BuildContext context, ImageEr
     ImageStream stream = provider->resolve(config);
     ImageStreamListener listener;
     listener = make<ImageStreamListenerCls>([=] (ImageInfo image,bool sync) {
-        if (!completer->isCompleted) {
+        if (!completer->isCompleted()) {
             completer->complete();
         }
         SchedulerBindingCls::instance->addPostFrameCallback([=] (Duration timeStamp) {
             stream->removeListener(listener!);
         });
     }, [=] (Object exception,StackTrace stackTrace) {
-        if (!completer->isCompleted) {
+        if (!completer->isCompleted()) {
             completer->complete();
         }
         stream->removeListener(listener!);
@@ -27,7 +27,7 @@ Future<void> precacheImage(ImageProvider provider, BuildContext context, ImageEr
         }
     });
     stream->addListener(listener);
-    return completer->future;
+    return completer->future();
 }
 
 ImageCls::ImageCls(AlignmentGeometry alignment, Rect centerSlice, Color color, BlendMode colorBlendMode, ImageErrorWidgetBuilder errorBuilder, bool excludeFromSemantics, FilterQuality filterQuality, BoxFit fit, ImageFrameBuilder frameBuilder, bool gaplessPlayback, double height, ImageProvider image, bool isAntiAlias, Key key, ImageLoadingBuilder loadingBuilder, bool matchTextDirection, Animation<double> opacity, ImageRepeat repeat, String semanticLabel, double width) {

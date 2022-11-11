@@ -667,7 +667,7 @@ void _AsBroadcastStreamCls<T>::_resumeSubscription() {
 
 template<typename T>
 bool _AsBroadcastStreamCls<T>::_isSubscriptionPaused() {
-    return _subscription?->isPaused | false;
+    return _subscription?->isPaused() | false;
 }
 
 template<typename T>

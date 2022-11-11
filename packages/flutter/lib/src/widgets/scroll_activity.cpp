@@ -307,7 +307,7 @@ DrivenScrollActivityCls::DrivenScrollActivityCls(Unknown delegate, Curve curve, 
 }
 
 Future<void> DrivenScrollActivityCls::done() {
-    return _completer->future;
+    return _completer->future();
 }
 
 void DrivenScrollActivityCls::dispatchOverscrollNotification(ScrollMetrics metrics, BuildContext context, double overscroll) {

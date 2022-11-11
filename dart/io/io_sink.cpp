@@ -27,7 +27,7 @@ Future _StreamSinkImplCls<T>::addStream(Stream<T> stream) {
         return done();
     }
     _isBound = true;
-    auto future = _controllerCompleter == nullptr? _target->addStream(stream) : _controllerCompleter!->future->then([=] () {
+    auto future = _controllerCompleter == nullptr? _target->addStream(stream) : _controllerCompleter!->future()->then([=] () {
     _target->addStream(stream);
 });
     _controllerInstance?->close();
@@ -45,7 +45,7 @@ Future _StreamSinkImplCls<T>::flush() {
         return FutureCls->value(this);
     }
     _isBound = true;
-    auto future = _controllerCompleter!->future;
+    auto future = _controllerCompleter!->future();
     _controllerInstance!->close();
     return future->whenComplete([=] () {
         _isBound = false;
@@ -70,7 +70,7 @@ Future _StreamSinkImplCls<T>::close() {
 
 template<typename T>
 Future _StreamSinkImplCls<T>::done() {
-    return _doneCompleter->future;
+    return _doneCompleter->future();
 }
 
 template<typename T>
@@ -80,14 +80,14 @@ void _StreamSinkImplCls<T>::_closeTarget() {
 
 template<typename T>
 void _StreamSinkImplCls<T>::_completeDoneValue(value ) {
-    if (!_doneCompleter->isCompleted) {
+    if (!_doneCompleter->isCompleted()) {
         _doneCompleter->complete(value);
     }
 }
 
 template<typename T>
 void _StreamSinkImplCls<T>::_completeDoneError(error , StackTrace stackTrace) {
-    if (!_doneCompleter->isCompleted) {
+    if (!_doneCompleter->isCompleted()) {
         _hasError = true;
         _doneCompleter->completeError(error, stackTrace);
     }

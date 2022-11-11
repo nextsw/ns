@@ -17,7 +17,7 @@ template<typename R>
 Future<R> SynchronousFutureCls<T>::then(std::function<FutureOr<R>(T value)> onValue, std::function<void ()> onError) {
     dynamic result = onValue(_value);
     if (is<Future<R>>(result)) {
-        return result;
+        return as<FutureCls>(result);
     }
     return <R>make<SynchronousFutureCls>(as<R>(result));
 }
@@ -32,7 +32,7 @@ Future<T> SynchronousFutureCls<T>::whenComplete(std::function<FutureOr<dynamic>(
     try {
         FutureOr<dynamic> result = action();
         if (is<Future>(result)) {
-            return result-><T>then([=] (dynamic value) {
+            return as<FutureCls>(result)-><T>then([=] (dynamic value) {
                 _value;
             });
         }

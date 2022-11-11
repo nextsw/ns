@@ -504,7 +504,7 @@ Future<FrameInfo> CodecCls::getNextFrame() {
     if (error != nullptr) {
         throw make<ExceptionCls>(error);
     }
-    return completer->future;
+    return completer->future();
 }
 
 Future<Codec> instantiateImageCodec(Uint8List list, bool allowUpscaling, int targetHeight, int targetWidth) {
@@ -1778,7 +1778,7 @@ Future<T> _futurize(_Callbacker<T> callbacker) {
     if (error != nullptr) {
         throw make<ExceptionCls>(error);
     }
-    return completer->future;
+    return completer->future();
 }
 
 String PictureRasterizationExceptionCls::toString() {

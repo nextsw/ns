@@ -168,7 +168,7 @@ Future<ByteData> _DefaultBinaryMessengerCls::send(String channel, ByteData messa
             FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(exception, stack, __s("services library"), make<ErrorDescriptionCls>(__s("during a platform message response callback"))));
         };
     });
-    return completer->future;
+    return completer->future();
 }
 
 void _DefaultBinaryMessengerCls::setMessageHandler(String channel, MessageHandler handler) {

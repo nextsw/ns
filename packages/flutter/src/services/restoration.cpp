@@ -17,7 +17,7 @@ Future<RestorationBucket> RestorationManagerCls::rootBucket() {
         _pendingRootBucket = <RestorationBucket>make<CompleterCls>();
         _getRootBucketFromEngine();
     }
-    return _pendingRootBucket!->future;
+    return _pendingRootBucket!->future();
 }
 
 bool RestorationManagerCls::isReplacing() {
@@ -36,7 +36,7 @@ void RestorationManagerCls::handleRestorationUpdateFromEngine(Uint8List data, bo
     RestorationBucket oldRoot = _rootBucket;
     _rootBucket = enabled? RestorationBucketCls->root(this, _decodeRestorationData(data)) : nullptr;
     _rootBucketIsValid = true;
-    assert(_pendingRootBucket == nullptr || !_pendingRootBucket!->isCompleted);
+    assert(_pendingRootBucket == nullptr || !_pendingRootBucket!->isCompleted());
     _pendingRootBucket?->complete(_rootBucket);
     _pendingRootBucket = nullptr;
     if (_rootBucket != oldRoot) {

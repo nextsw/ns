@@ -257,7 +257,7 @@ Future<void> _StreamControllerCls<T>::_recordCancel(StreamSubscription<T> subscr
             try {
                 auto cancelResult = onCancel();
                 if (is<Future<void>>(cancelResult)) {
-                    result = cancelResult;
+                    result = as<FutureCls>(cancelResult);
                 }
             } catch (Unknown e) {
                             auto _c1 = make<_FutureCls>();            _c1._asyncCompleteError(e, s);result = _c1;

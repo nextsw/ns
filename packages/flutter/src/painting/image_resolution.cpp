@@ -31,7 +31,7 @@ Future<AssetBundleImageKey> AssetImageCls::obtainKey(ImageConfiguration configur
         return result!;
     }
     completer = <AssetBundleImageKey>make<CompleterCls>();
-    return completer->future;
+    return completer->future();
 }
 
 bool AssetImageCls::==(Object other) {

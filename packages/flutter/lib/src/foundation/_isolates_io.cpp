@@ -18,7 +18,7 @@ Future<R> compute(ComputeCallback<Q, R> callback, Q message, String debugLabel) 
         timeEndAndCleanup();
         throw;
     };
-    dynamic response = await completer->future;
+    dynamic response = await completer->future();
     if (response == nullptr) {
         throw make<RemoteErrorCls>(__s("Isolate exited without result or error."), __s(""));
     }

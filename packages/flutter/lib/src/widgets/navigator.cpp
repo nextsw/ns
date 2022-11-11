@@ -65,7 +65,7 @@ T RouteCls<T>::currentResult() {
 
 template<typename T>
 Future<T> RouteCls<T>::popped() {
-    return _popCompleter->future;
+    return _popCompleter->future();
 }
 
 template<typename T>
@@ -588,7 +588,7 @@ bool _RouteEntryCls::handlePop(NavigatorState navigator, Route<dynamic> previous
     assert(navigator->_debugLocked);
     assert(route->_navigator == navigator);
     currentState = _RouteLifecycleCls::popping;
-    if (route->_popCompleter->isCompleted) {
+    if (route->_popCompleter->isCompleted()) {
         assert(hasPage());
         assert(pendingResult == nullptr);
         return true;
@@ -604,7 +604,7 @@ bool _RouteEntryCls::handlePop(NavigatorState navigator, Route<dynamic> previous
 void _RouteEntryCls::handleComplete() {
     route->didComplete(pendingResult);
     pendingResult = nullptr;
-    assert(route->_popCompleter->isCompleted);
+    assert(route->_popCompleter->isCompleted());
     currentState = _RouteLifecycleCls::remove;
 }
 
@@ -1176,7 +1176,7 @@ void NavigatorStateCls::pop(T result) {
     _RouteEntry entry = _history->lastWhere(_RouteEntryCls::isPresentPredicate);
     if (entry->hasPage()) {
         if (widget()->onPopPage!(entry->route, result) && entry->currentState == _RouteLifecycleCls::idle) {
-            assert(entry->route->_popCompleter->isCompleted);
+            assert(entry->route->_popCompleter->isCompleted());
             entry->currentState = _RouteLifecycleCls::pop;
         }
     } else {
@@ -1186,7 +1186,7 @@ void NavigatorStateCls::pop(T result) {
     if (entry->currentState == _RouteLifecycleCls::pop) {
         _flushHistoryUpdates(false);
     }
-    assert(entry->currentState == _RouteLifecycleCls::idle || entry->route->_popCompleter->isCompleted);
+    assert(entry->currentState == _RouteLifecycleCls::idle || entry->route->_popCompleter->isCompleted());
     assert([=] () {
         _debugLocked = false;
         return true;

@@ -112,7 +112,7 @@ Future<T> SchedulerBindingCls::scheduleTask(TaskCallback<T> task, Priority prior
     if (isFirstTask && !locked) {
         _ensureEventLoopCallback();
     }
-    return entry->completer->future;
+    return entry->completer->future();
 }
 
 void SchedulerBindingCls::unlocked() {
@@ -208,7 +208,7 @@ Future<void> SchedulerBindingCls::endOfFrame() {
             _nextFrameCompleter = nullptr;
         });
     }
-    return _nextFrameCompleter!->future;
+    return _nextFrameCompleter!->future();
 }
 
 bool SchedulerBindingCls::hasScheduledFrame() {

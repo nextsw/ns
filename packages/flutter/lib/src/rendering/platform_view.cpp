@@ -310,7 +310,7 @@ _UiKitViewGestureRecognizerCls::_UiKitViewGestureRecognizerCls(UiKitViewControll
                 };
             } else {
                 if (is<DragGestureRecognizer>(gestureRecognizer)) {
-                gestureRecognizer->onDown |= [=] () {
+                as<DragGestureRecognizerCls>(gestureRecognizer)->onDown |= [=] () {
                 };
             } else {
                 if (is<TapGestureRecognizer>(gestureRecognizer)) {
@@ -381,7 +381,7 @@ _PlatformViewGestureRecognizerCls::_PlatformViewGestureRecognizerCls(_HandlePoin
                 };
             } else {
                 if (is<DragGestureRecognizer>(gestureRecognizer)) {
-                gestureRecognizer->onDown |= [=] () {
+                as<DragGestureRecognizerCls>(gestureRecognizer)->onDown |= [=] () {
                 };
             } else {
                 if (is<TapGestureRecognizer>(gestureRecognizer)) {

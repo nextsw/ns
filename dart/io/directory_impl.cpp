@@ -249,7 +249,7 @@ Future _AsyncDirectoryListerCls::onCancel() {
     if (!nextRunning) {
         close();
     }
-    return closeCompleter->future;
+    return closeCompleter->future();
 }
 
 void _AsyncDirectoryListerCls::next() {

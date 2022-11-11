@@ -27,7 +27,7 @@ Future<Uint8List> consolidateHttpClientResponseBytes(HttpClientResponse response
         sink->close();
         completer->complete(output->bytes());
     }, completer->completeError, true);
-    return completer->future;
+    return completer->future();
 }
 
 void _OutputBufferCls::add(List<int> chunk) {

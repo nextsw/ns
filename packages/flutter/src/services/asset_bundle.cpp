@@ -90,8 +90,8 @@ Future<T> CachingAssetBundleCls::loadStructuredData(String key, std::function<Fu
         return result!;
     }
     completer = <T>make<CompleterCls>();
-    _structuredDataCache[key] = completer->future;
-    return completer->future;
+    _structuredDataCache[key] = completer->future();
+    return completer->future();
 }
 
 void CachingAssetBundleCls::evict(String key) {

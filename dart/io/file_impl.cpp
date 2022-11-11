@@ -17,12 +17,12 @@ _FileStreamCls::_FileStreamCls(String _path, int position, int _end) {
 
 Future _FileStreamCls::_closeFile() {
     if (_readInProgress || _closed) {
-        return _closeCompleter->future;
+        return _closeCompleter->future();
     }
     _closed = true;
     InlineMethod;
     _openedFile->close()->catchError(_controller->addError)->whenComplete(done);
-    return _closeCompleter->future;
+    return _closeCompleter->future();
 }
 
 void _FileStreamCls::_readBlock() {
@@ -116,7 +116,7 @@ Future<File> _FileStreamConsumerCls::addStream(Stream<List<int>> stream) {
             completer->complete(_file);
         }, error, true);
     })->catchError(completer->completeError);
-    return completer->future;
+    return completer->future();
 }
 
 Future<File> _FileStreamConsumerCls::close() {

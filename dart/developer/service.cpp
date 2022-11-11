@@ -29,7 +29,7 @@ Future<ServiceProtocolInfo> ServiceCls::getInfo() {
         completer->complete(uriString);
     };
     _getServerInfo(receivePort->sendPort());
-    String uriString = await completer->future;
+    String uriString = await completer->future();
     Uri uri = uriString == nullptr? nullptr : UriCls->parse(uriString);
     receivePort->close();
     return make<ServiceProtocolInfoCls>(uri);
@@ -43,7 +43,7 @@ Future<ServiceProtocolInfo> ServiceCls::controlWebServer(bool enable, bool silen
         completer->complete(uriString);
     };
     _webServerControl(receivePort->sendPort(), enable, silenceOutput);
-    String uriString = await completer->future;
+    String uriString = await completer->future();
     Uri uri = uriString == nullptr? nullptr : UriCls->parse(uriString);
     receivePort->close();
     return make<ServiceProtocolInfoCls>(uri);

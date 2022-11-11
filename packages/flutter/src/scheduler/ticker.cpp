@@ -188,28 +188,28 @@ Future<void> TickerFutureCls::orCancel() {
             }
         }
     }
-    return _secondaryCompleter!->future;
+    return _secondaryCompleter!->future();
 }
 
 Stream<void> TickerFutureCls::asStream() {
-    return _primaryCompleter->future->asStream();
+    return _primaryCompleter->future()->asStream();
 }
 
 Future<void> TickerFutureCls::catchError(std::function<void ()> onError, std::function<bool(Object )> test) {
-    return _primaryCompleter->future->catchError(onError, test);
+    return _primaryCompleter->future()->catchError(onError, test);
 }
 
 template<typename R>
 Future<R> TickerFutureCls::then(std::function<FutureOr<R>(void value)> onValue, std::function<void ()> onError) {
-    return _primaryCompleter->future-><R>then(onValue, onError);
+    return _primaryCompleter->future()-><R>then(onValue, onError);
 }
 
 Future<void> TickerFutureCls::timeout(Duration timeLimit, std::function<FutureOr<void>()> onTimeout) {
-    return _primaryCompleter->future->timeout(timeLimit, onTimeout);
+    return _primaryCompleter->future()->timeout(timeLimit, onTimeout);
 }
 
 Future<void> TickerFutureCls::whenComplete(std::function<dynamic()> action) {
-    return _primaryCompleter->future->whenComplete(action);
+    return _primaryCompleter->future()->whenComplete(action);
 }
 
 String TickerFutureCls::toString() {

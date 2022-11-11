@@ -93,7 +93,7 @@ int _RawSecureSocketCls::available() {
 
 Future<RawSecureSocket> _RawSecureSocketCls::close() {
     shutdown(SocketDirectionCls::both);
-    return _closeCompleter->future;
+    return _closeCompleter->future();
 }
 
 void _RawSecureSocketCls::shutdown(SocketDirection direction) {
@@ -247,7 +247,7 @@ _RawSecureSocketCls::_RawSecureSocketCls(InternetAddress address, int requestedP
             _socketSubscription = _socket->listen(_eventDispatcher, _reportError, _doneHandler);
         } else {
             _socketSubscription = subscription;
-            if (_socketSubscription->isPaused) {
+            if (_socketSubscription->isPaused()) {
                 _socket->close();
                 throw make<ArgumentErrorCls>(__s("Subscription passed to TLS upgrade is paused"));
             }
@@ -284,7 +284,7 @@ void _RawSecureSocketCls::_owner(owner ) {
 }
 
 void _RawSecureSocketCls::_completeCloseCompleter(RawSocket dummy) {
-    if (!_closeCompleter->isCompleted) {
+    if (!_closeCompleter->isCompleted()) {
         _closeCompleter->complete(this);
     }
 }

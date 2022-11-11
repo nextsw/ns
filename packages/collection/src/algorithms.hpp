@@ -34,6 +34,30 @@ template<typename E, typename K>
 
 int _mergeSortLimit;
 
+template<typename E>
+ void mergeSort(List<E> elements, std::function<int(E , E )> compare, int end, int start);
+
+template<typename E, typename K>
+ void mergeSortBy(List<E> elements, std::function<K(E element)> keyOf, std::function<int(K a, K b)> compare, int start, int end);
+
+template<typename E, typename K>
+ void _movingInsertionSort(List<E> list, std::function<K(E element)> keyOf, std::function<int(K , K )> compare, int start, int end, List<E> target, int targetOffset);
+
+template<typename E, typename K>
+ void _mergeSort(List<E> elements, std::function<K(E element)> keyOf, std::function<int(K , K )> compare, int start, int end, List<E> target, int targetOffset);
+
+template<typename E, typename K>
+ void _merge(std::function<K(E element)> keyOf, std::function<int(K , K )> compare, List<E> firstList, int firstStart, int firstEnd, List<E> secondList, int secondStart, int secondEnd, List<E> target, int targetOffset);
+
+template<typename E>
+ void quickSort(List<E> elements, std::function<int(E a, E b)> compare, int start, int end);
+
+template<typename E, typename K>
+ void quickSortBy(List<E> list, std::function<K(E element)> keyOf, std::function<int(K a, K b)> compare, int start, int end);
+
+template<typename E, typename K>
+ void _quickSort(List<E> list, std::function<K(E element)> keyOf, std::function<int(K a, K b)> compare, Random random, int start, int end);
+
 
 
 #endif

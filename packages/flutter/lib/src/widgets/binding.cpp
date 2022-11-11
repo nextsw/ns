@@ -220,11 +220,11 @@ void WidgetsBindingCls::handleMemoryPressure() {
 }
 
 bool WidgetsBindingCls::firstFrameRasterized() {
-    return _firstFrameCompleter->isCompleted;
+    return _firstFrameCompleter->isCompleted();
 }
 
 Future<void> WidgetsBindingCls::waitUntilFirstFrameRasterized() {
-    return _firstFrameCompleter->future;
+    return _firstFrameCompleter->future();
 }
 
 bool WidgetsBindingCls::debugDidSendFirstFrameEvent() {
@@ -239,7 +239,7 @@ void WidgetsBindingCls::drawFrame() {
     }());
     TimingsCallback firstFrameCallback;
     if (_needToReportFirstFrame) {
-        assert(!_firstFrameCompleter->isCompleted);
+        assert(!_firstFrameCompleter->isCompleted());
         firstFrameCallback = [=] (List<FrameTiming> timings) {
             assert(sendFramesToEngine);
             if (!kReleaseMode) {
