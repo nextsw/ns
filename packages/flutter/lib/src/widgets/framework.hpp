@@ -123,7 +123,7 @@ public:
 
     virtual int hashCode();
 
-    static bool canUpdate(Widget newWidget, Widget oldWidget);
+    static bool canUpdate(Widget oldWidget, Widget newWidget);
 
 private:
 
@@ -382,13 +382,13 @@ public:
 
     virtual void lockState(VoidCallback callback);
 
-    virtual void buildScope(VoidCallback callback, Element context);
+    virtual void buildScope(Element context, VoidCallback callback);
 
     virtual int globalKeyCount();
 
     virtual void finalizeTree();
 
-    virtual void reassemble(DebugReassembleConfig reassembleConfig, Element root);
+    virtual void reassemble(Element root, DebugReassembleConfig reassembleConfig);
 
 private:
     _InactiveElements _inactiveElements;
@@ -418,17 +418,17 @@ private:
 
     virtual bool _debugStateLocked();
 
-    virtual void _debugTrackElementThatWillNeedToBeRebuiltDueToGlobalKeyShenanigans(GlobalKey key, Element node);
+    virtual void _debugTrackElementThatWillNeedToBeRebuiltDueToGlobalKeyShenanigans(Element node, GlobalKey key);
 
     virtual void _debugElementWasRebuilt(Element node);
 
-    virtual void _debugRemoveGlobalKeyReservationFor(Element child, Element parent);
+    virtual void _debugRemoveGlobalKeyReservationFor(Element parent, Element child);
 
-    virtual void _registerGlobalKey(Element element, GlobalKey key);
+    virtual void _registerGlobalKey(GlobalKey key, Element element);
 
-    virtual void _unregisterGlobalKey(Element element, GlobalKey key);
+    virtual void _unregisterGlobalKey(GlobalKey key, Element element);
 
-    virtual void _debugReserveGlobalKeyFor(Element child, GlobalKey key, Element parent);
+    virtual void _debugReserveGlobalKeyFor(Element parent, Element child, GlobalKey key);
 
     virtual void _debugVerifyGlobalKeyReservation();
 
@@ -459,7 +459,7 @@ public:
 
 private:
 
-     _NotificationNodeCls(NotifiableElementMixin current, _NotificationNode parent);
+     _NotificationNodeCls(_NotificationNode parent, NotifiableElementMixin current);
 };
 using _NotificationNode = std::shared_ptr<_NotificationNodeCls>;
 bool _isProfileBuildsEnabledFor(Widget widget);
@@ -490,7 +490,7 @@ public:
 
     virtual List<DiagnosticsNode> describeMissingAncestor(Type expectedAncestorType);
 
-    static DiagnosticsNode describeElements(Iterable<Element> elements, String name);
+    static DiagnosticsNode describeElements(String name, Iterable<Element> elements);
 
     virtual DiagnosticsNode describeElement(String name, DiagnosticsTreeStyle style);
 
@@ -504,9 +504,9 @@ public:
 
     virtual void visitChildElements(ElementVisitor visitor);
 
-    virtual Element updateChild(Element child, Object newSlot, Widget newWidget);
+    virtual Element updateChild(Element child, Widget newWidget, Object newSlot);
 
-    virtual void mount(Object newSlot, Element parent);
+    virtual void mount(Element parent, Object newSlot);
 
     virtual void update(Widget newWidget);
 
@@ -516,7 +516,7 @@ public:
 
     virtual void attachRenderObject(Object newSlot);
 
-    virtual Element inflateWidget(Object newSlot, Widget newWidget);
+    virtual Element inflateWidget(Widget newWidget, Object newSlot);
 
     virtual void deactivateChild(Element child);
 
@@ -633,7 +633,7 @@ private:
 
     virtual void _debugCheckForCycles(Element newChild);
 
-    virtual void _activateWithParent(Object newSlot, Element parent);
+    virtual void _activateWithParent(Element parent, Object newSlot);
 
     static void _activateRecursively(Element element);
 
@@ -693,7 +693,7 @@ public:
      ComponentElementCls(Unknown widget);
     virtual bool debugDoingBuild();
 
-    virtual void mount(Object newSlot, Element parent);
+    virtual void mount(Element parent, Object newSlot);
 
     virtual void performRebuild();
 
@@ -809,9 +809,9 @@ public:
 
     virtual void setDependencies(Element dependent, Object value);
 
-    virtual void updateDependencies(Object aspect, Element dependent);
+    virtual void updateDependencies(Element dependent, Object aspect);
 
-    virtual void notifyDependent(Element dependent, InheritedWidget oldWidget);
+    virtual void notifyDependent(InheritedWidget oldWidget, Element dependent);
 
     virtual void updated(InheritedWidget oldWidget);
 
@@ -834,13 +834,13 @@ public:
 
     virtual bool debugDoingBuild();
 
-    virtual void mount(Object newSlot, Element parent);
+    virtual void mount(Element parent, Object newSlot);
 
     virtual void update(RenderObjectWidget newWidget);
 
     virtual void performRebuild();
 
-    virtual List<Element> updateChildren(Set<Element> forgottenChildren, List<Widget> newWidgets, List<Element> oldChildren, List<Object> slots);
+    virtual List<Element> updateChildren(List<Element> oldChildren, List<Widget> newWidgets, Set<Element> forgottenChildren, List<Object> slots);
 
     virtual void deactivate();
 
@@ -852,7 +852,7 @@ public:
 
     virtual void insertRenderObjectChild(RenderObject child, Object slot);
 
-    virtual void moveRenderObjectChild(RenderObject child, Object newSlot, Object oldSlot);
+    virtual void moveRenderObjectChild(RenderObject child, Object oldSlot, Object newSlot);
 
     virtual void removeRenderObjectChild(RenderObject child, Object slot);
 
@@ -887,7 +887,7 @@ public:
      RootRenderObjectElementCls(Unknown widget);
     virtual void assignOwner(BuildOwner owner);
 
-    virtual void mount(Object newSlot, Element parent);
+    virtual void mount(Element parent, Object newSlot);
 
 private:
 
@@ -902,7 +902,7 @@ public:
 
     virtual void insertRenderObjectChild(RenderObject child, Object slot);
 
-    virtual void moveRenderObjectChild(RenderObject child, Object newSlot, Object oldSlot);
+    virtual void moveRenderObjectChild(RenderObject child, Object oldSlot, Object newSlot);
 
     virtual void removeRenderObjectChild(RenderObject child, Object slot);
 
@@ -921,13 +921,13 @@ public:
 
     virtual void forgetChild(Element child);
 
-    virtual void mount(Object newSlot, Element parent);
+    virtual void mount(Element parent, Object newSlot);
 
     virtual void update(SingleChildRenderObjectWidget newWidget);
 
     virtual void insertRenderObjectChild(RenderObject child, Object slot);
 
-    virtual void moveRenderObjectChild(RenderObject child, Object newSlot, Object oldSlot);
+    virtual void moveRenderObjectChild(RenderObject child, Object oldSlot, Object newSlot);
 
     virtual void removeRenderObjectChild(RenderObject child, Object slot);
 
@@ -949,7 +949,7 @@ public:
 
     virtual void insertRenderObjectChild(RenderObject child, IndexedSlot<Element> slot);
 
-    virtual void moveRenderObjectChild(RenderObject child, IndexedSlot<Element> newSlot, IndexedSlot<Element> oldSlot);
+    virtual void moveRenderObjectChild(RenderObject child, IndexedSlot<Element> oldSlot, IndexedSlot<Element> newSlot);
 
     virtual void removeRenderObjectChild(RenderObject child, Object slot);
 
@@ -957,9 +957,9 @@ public:
 
     virtual void forgetChild(Element child);
 
-    virtual Element inflateWidget(Object newSlot, Widget newWidget);
+    virtual Element inflateWidget(Widget newWidget, Object newSlot);
 
-    virtual void mount(Object newSlot, Element parent);
+    virtual void mount(Element parent, Object newSlot);
 
     virtual void update(MultiChildRenderObjectWidget newWidget);
 
@@ -986,7 +986,7 @@ private:
 
 };
 using DebugCreator = std::shared_ptr<DebugCreatorCls>;
-FlutterErrorDetails _debugReportException(DiagnosticsNode context, Object exception, InformationCollector informationCollector, StackTrace stack);
+FlutterErrorDetails _debugReportException(DiagnosticsNode context, Object exception, StackTrace stack, InformationCollector informationCollector);
 
 
 template<typename T>

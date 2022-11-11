@@ -4,7 +4,7 @@ Future<ImmutableBuffer> AssetBundleCls::loadBuffer(String key) {
     return ui->ImmutableBufferCls->fromUint8List(data->buffer->asUint8List());
 }
 
-Future<String> AssetBundleCls::loadString(bool cache, String key) {
+Future<String> AssetBundleCls::loadString(String key, bool cache) {
     ByteData data = await load(key);
     if (data == nullptr) {
         throw make<FlutterErrorCls>(__s("Unable to load asset: $key"));
@@ -61,7 +61,7 @@ Uri NetworkAssetBundleCls::_urlFromKey(String key) {
     return _baseUrl->resolve(key);
 }
 
-Future<String> CachingAssetBundleCls::loadString(bool cache, String key) {
+Future<String> CachingAssetBundleCls::loadString(String key, bool cache) {
     if (cache) {
         return _stringCache->putIfAbsent(key, [=] ()         {
             super->loadString(key);

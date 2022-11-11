@@ -20,7 +20,7 @@ InteractiveViewerCls::InteractiveViewerCls(bool alignPanAxis, EdgeInsets boundar
 
 void InteractiveViewerCls::builder(bool alignPanAxis, EdgeInsets boundaryMargin, InteractiveViewerWidgetBuilder builder, Clip clipBehavior, Unknown key, double maxScale, double minScale, GestureScaleEndCallback onInteractionEnd, GestureScaleStartCallback onInteractionStart, GestureScaleUpdateCallback onInteractionUpdate, bool panEnabled, bool scaleEnabled, double scaleFactor, TransformationController transformationController)
 
-Vector3 InteractiveViewerCls::getNearestPointOnLine(Vector3 l1, Vector3 l2, Vector3 point) {
+Vector3 InteractiveViewerCls::getNearestPointOnLine(Vector3 point, Vector3 l1, Vector3 l2) {
     double lengthSquared = math->pow(l2->x - l1->x, 2.0)->toDouble() + math->pow(l2->y - l1->y, 2.0)->toDouble();
     if (lengthSquared == 0) {
         return l1;
@@ -73,7 +73,7 @@ State<InteractiveViewer> InteractiveViewerCls::createState() {
 
 void _InteractiveViewerStateCls::initState() {
     super->initState();
-    _transformationController = widget->transformationController or make<TransformationControllerCls>();
+    _transformationController = widget->transformationController | make<TransformationControllerCls>();
     _transformationController!->addListener(_onTransformationControllerChange);
     _controller = make<AnimationControllerCls>(this);
 }
@@ -189,7 +189,7 @@ Matrix4 _InteractiveViewerStateCls::_matrixScale(Matrix4 matrix, double scale) {
     auto _c1 = matrix->clone();_c1.scale(clampedScale);return _c1;
 }
 
-Matrix4 _InteractiveViewerStateCls::_matrixRotate(Offset focalPoint, Matrix4 matrix, double rotation) {
+Matrix4 _InteractiveViewerStateCls::_matrixRotate(Matrix4 matrix, double rotation, Offset focalPoint) {
     if (rotation == 0) {
         return matrix->clone();
     }
@@ -236,7 +236,7 @@ void _InteractiveViewerStateCls::_onScaleUpdate(ScaleUpdateDetails details) {
     if (_gestureType == _GestureTypeCls::pan) {
         _gestureType = _getGestureType(details);
     } else {
-        _gestureType = _getGestureType(details);
+        _gestureType |= _getGestureType(details);
     }
     if (!_gestureIsSupported(_gestureType)) {
         widget->onInteractionUpdate?->call(details);
@@ -322,7 +322,7 @@ Widget _InteractiveViewerBuiltCls::build(BuildContext context) {
     return make<ClipRectCls>(clipBehavior, child);
 }
 
-TransformationControllerCls::TransformationControllerCls(Matrix4 value) : ValueNotifier<Matrix4>(value or Matrix4Cls->identity()) {
+TransformationControllerCls::TransformationControllerCls(Matrix4 value) : ValueNotifier<Matrix4>(value | Matrix4Cls->identity()) {
 }
 
 Offset TransformationControllerCls::toScene(Offset viewportPoint) {
@@ -331,7 +331,7 @@ Offset TransformationControllerCls::toScene(Offset viewportPoint) {
     return make<OffsetCls>(untransformed->x, untransformed->y);
 }
 
-double _getFinalTime(double drag, double velocity) {
+double _getFinalTime(double velocity, double drag) {
     double effectivelyMotionless = 10.0;
     return math->log(effectivelyMotionless / velocity) / math->log(drag / 100);
 }
@@ -372,7 +372,7 @@ Offset _round(Offset offset) {
     return make<OffsetCls>(double->parse(offset->dx()->toStringAsFixed(9)), double->parse(offset->dy()->toStringAsFixed(9)));
 }
 
-Offset _alignAxis(Axis axis, Offset offset) {
+Offset _alignAxis(Offset offset, Axis axis) {
     ;
 }
 

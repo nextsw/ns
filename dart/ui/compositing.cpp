@@ -1,5 +1,5 @@
 #include "compositing.hpp"
-Future<Image> SceneCls::toImage(int height, int width) {
+Future<Image> SceneCls::toImage(int width, int height) {
     if (width <= 0 || height <= 0) {
         throw make<ExceptionCls>(__s("Invalid image dimensions."));
     }
@@ -77,7 +77,7 @@ OffsetEngineLayer SceneBuilderCls::pushOffset(double dx, double dy, OffsetEngine
     return layer;
 }
 
-ClipRectEngineLayer SceneBuilderCls::pushClipRect(Clip clipBehavior, ClipRectEngineLayer oldLayer, Rect rect) {
+ClipRectEngineLayer SceneBuilderCls::pushClipRect(Rect rect, Clip clipBehavior, ClipRectEngineLayer oldLayer) {
     assert(clipBehavior != nullptr);
     assert(clipBehavior != ClipCls::none);
     assert(_debugCheckCanBeUsedAsOldLayer(oldLayer, __s("pushClipRect")));
@@ -88,7 +88,7 @@ ClipRectEngineLayer SceneBuilderCls::pushClipRect(Clip clipBehavior, ClipRectEng
     return layer;
 }
 
-ClipRRectEngineLayer SceneBuilderCls::pushClipRRect(Clip clipBehavior, ClipRRectEngineLayer oldLayer, RRect rrect) {
+ClipRRectEngineLayer SceneBuilderCls::pushClipRRect(RRect rrect, Clip clipBehavior, ClipRRectEngineLayer oldLayer) {
     assert(clipBehavior != nullptr);
     assert(clipBehavior != ClipCls::none);
     assert(_debugCheckCanBeUsedAsOldLayer(oldLayer, __s("pushClipRRect")));
@@ -99,7 +99,7 @@ ClipRRectEngineLayer SceneBuilderCls::pushClipRRect(Clip clipBehavior, ClipRRect
     return layer;
 }
 
-ClipPathEngineLayer SceneBuilderCls::pushClipPath(Clip clipBehavior, ClipPathEngineLayer oldLayer, Path path) {
+ClipPathEngineLayer SceneBuilderCls::pushClipPath(Path path, Clip clipBehavior, ClipPathEngineLayer oldLayer) {
     assert(clipBehavior != nullptr);
     assert(clipBehavior != ClipCls::none);
     assert(_debugCheckCanBeUsedAsOldLayer(oldLayer, __s("pushClipPath")));
@@ -143,7 +143,7 @@ ImageFilterEngineLayer SceneBuilderCls::pushImageFilter(ImageFilter filter, Imag
     return layer;
 }
 
-BackdropFilterEngineLayer SceneBuilderCls::pushBackdropFilter(BlendMode blendMode, ImageFilter filter, BackdropFilterEngineLayer oldLayer) {
+BackdropFilterEngineLayer SceneBuilderCls::pushBackdropFilter(ImageFilter filter, BlendMode blendMode, BackdropFilterEngineLayer oldLayer) {
     assert(_debugCheckCanBeUsedAsOldLayer(oldLayer, __s("pushBackdropFilter")));
     EngineLayer engineLayer = EngineLayerCls->_();
     _pushBackdropFilter(engineLayer, filter->_toNativeImageFilter(), blendMode->index, oldLayer?->_nativeLayer);
@@ -152,7 +152,7 @@ BackdropFilterEngineLayer SceneBuilderCls::pushBackdropFilter(BlendMode blendMod
     return layer;
 }
 
-ShaderMaskEngineLayer SceneBuilderCls::pushShaderMask(BlendMode blendMode, FilterQuality filterQuality, Rect maskRect, ShaderMaskEngineLayer oldLayer, Shader shader) {
+ShaderMaskEngineLayer SceneBuilderCls::pushShaderMask(Shader shader, Rect maskRect, BlendMode blendMode, FilterQuality filterQuality, ShaderMaskEngineLayer oldLayer) {
     assert(_debugCheckCanBeUsedAsOldLayer(oldLayer, __s("pushShaderMask")));
     EngineLayer engineLayer = EngineLayerCls->_();
     _pushShaderMask(engineLayer, shader, maskRect->left, maskRect->right, maskRect->top, maskRect->bottom, blendMode->index, filterQuality->index, oldLayer?->_nativeLayer);
@@ -164,7 +164,7 @@ ShaderMaskEngineLayer SceneBuilderCls::pushShaderMask(BlendMode blendMode, Filte
 PhysicalShapeEngineLayer SceneBuilderCls::pushPhysicalShape(Clip clipBehavior, Color color, double elevation, PhysicalShapeEngineLayer oldLayer, Path path, Color shadowColor) {
     assert(_debugCheckCanBeUsedAsOldLayer(oldLayer, __s("pushPhysicalShape")));
     EngineLayer engineLayer = EngineLayerCls->_();
-    _pushPhysicalShape(engineLayer, path, elevation, color->value, shadowColor?->value or 0xFF000000, clipBehavior->index, oldLayer?->_nativeLayer);
+    _pushPhysicalShape(engineLayer, path, elevation, color->value, shadowColor?->value | 0xFF000000, clipBehavior->index, oldLayer?->_nativeLayer);
     PhysicalShapeEngineLayer layer = PhysicalShapeEngineLayerCls->_(engineLayer);
     assert(_debugPushLayer(layer));
     return layer;
@@ -190,22 +190,22 @@ void SceneBuilderCls::addRetained(EngineLayer retainedLayer) {
     _addRetained(wrapper->_nativeLayer!);
 }
 
-void SceneBuilderCls::addPerformanceOverlay(Rect bounds, int enabledOptions) {
+void SceneBuilderCls::addPerformanceOverlay(int enabledOptions, Rect bounds) {
     _addPerformanceOverlay(enabledOptions, bounds->left, bounds->right, bounds->top, bounds->bottom);
 }
 
-void SceneBuilderCls::addPicture(bool isComplexHint, Offset offset, Picture picture, bool willChangeHint) {
+void SceneBuilderCls::addPicture(Offset offset, Picture picture, bool isComplexHint, bool willChangeHint) {
     assert(!picture->debugDisposed());
     int hints = (isComplexHint? 1 : 0) | (willChangeHint? 2 : 0);
     _addPicture(offset->dx(), offset->dy(), picture, hints);
 }
 
-void SceneBuilderCls::addTexture(FilterQuality filterQuality, bool freeze, double height, Offset offset, int textureId, double width) {
+void SceneBuilderCls::addTexture(int textureId, FilterQuality filterQuality, bool freeze, double height, Offset offset, double width) {
     assert(offset != nullptr, __s("Offset argument was null"));
     _addTexture(offset->dx(), offset->dy(), width, height, textureId, freeze, filterQuality->index);
 }
 
-void SceneBuilderCls::addPlatformView(double height, Offset offset, int viewId, double width) {
+void SceneBuilderCls::addPlatformView(int viewId, double height, Offset offset, double width) {
     assert(offset != nullptr, __s("Offset argument was null"));
     _addPlatformView(offset->dx(), offset->dy(), width, height, viewId);
 }
@@ -243,7 +243,7 @@ bool SceneBuilderCls::_debugPushLayer(_EngineLayerWrapper newLayer) {
     assert([=] () {
         if (_layerStack->isNotEmpty) {
             _EngineLayerWrapper currentLayer = _layerStack->last;
-            currentLayer->_debugChildren = makeList();
+            currentLayer->_debugChildren |= makeList();
             currentLayer->_debugChildren!->add(newLayer);
         }
         _layerStack->add(newLayer);

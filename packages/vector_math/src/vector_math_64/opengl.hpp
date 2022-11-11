@@ -4,37 +4,37 @@
 
 #include <dart/core/core.hpp>
 
-void setRotationMatrix(Vector3 forwardDirection, Matrix4 rotationMatrix, Vector3 upDirection);
+void setRotationMatrix(Matrix4 rotationMatrix, Vector3 forwardDirection, Vector3 upDirection);
 
-void setModelMatrix(Vector3 forwardDirection, Matrix4 modelMatrix, double tx, double ty, double tz, Vector3 upDirection);
+void setModelMatrix(Matrix4 modelMatrix, Vector3 forwardDirection, Vector3 upDirection, double tx, double ty, double tz);
 
-void setViewMatrix(Vector3 cameraFocusPosition, Vector3 cameraPosition, Vector3 upDirection, Matrix4 viewMatrix);
+void setViewMatrix(Matrix4 viewMatrix, Vector3 cameraPosition, Vector3 cameraFocusPosition, Vector3 upDirection);
 
-Matrix4 makeViewMatrix(Vector3 cameraFocusPosition, Vector3 cameraPosition, Vector3 upDirection);
+Matrix4 makeViewMatrix(Vector3 cameraPosition, Vector3 cameraFocusPosition, Vector3 upDirection);
 
-void setPerspectiveMatrix(double aspectRatio, double fovYRadians, Matrix4 perspectiveMatrix, double zFar, double zNear);
+void setPerspectiveMatrix(Matrix4 perspectiveMatrix, double fovYRadians, double aspectRatio, double zNear, double zFar);
 
-Matrix4 makePerspectiveMatrix(double aspectRatio, double fovYRadians, double zFar, double zNear);
+Matrix4 makePerspectiveMatrix(double fovYRadians, double aspectRatio, double zNear, double zFar);
 
-void setInfiniteMatrix(double aspectRatio, double fovYRadians, Matrix4 infiniteMatrix, double zNear);
+void setInfiniteMatrix(Matrix4 infiniteMatrix, double fovYRadians, double aspectRatio, double zNear);
 
-Matrix4 makeInfiniteMatrix(double aspectRatio, double fovYRadians, double zNear);
+Matrix4 makeInfiniteMatrix(double fovYRadians, double aspectRatio, double zNear);
 
-void setFrustumMatrix(double bottom, double far, double left, double near, Matrix4 perspectiveMatrix, double right, double top);
+void setFrustumMatrix(Matrix4 perspectiveMatrix, double left, double right, double bottom, double top, double near, double far);
 
-Matrix4 makeFrustumMatrix(double bottom, double far, double left, double near, double right, double top);
+Matrix4 makeFrustumMatrix(double left, double right, double bottom, double top, double near, double far);
 
-void setOrthographicMatrix(double bottom, double far, double left, double near, Matrix4 orthographicMatrix, double right, double top);
+void setOrthographicMatrix(Matrix4 orthographicMatrix, double left, double right, double bottom, double top, double near, double far);
 
-Matrix4 makeOrthographicMatrix(double bottom, double far, double left, double near, double right, double top);
+Matrix4 makeOrthographicMatrix(double left, double right, double bottom, double top, double near, double far);
 
 Matrix4 makePlaneProjection(Vector3 planeNormal, Vector3 planePoint);
 
 Matrix4 makePlaneReflection(Vector3 planeNormal, Vector3 planePoint);
 
-bool unproject(Matrix4 cameraMatrix, Vector3 pickWorld, num pickX, num pickY, num pickZ, num viewportHeight, num viewportWidth, num viewportX, num viewportY);
+bool unproject(Matrix4 cameraMatrix, num viewportX, num viewportWidth, num viewportY, num viewportHeight, num pickX, num pickY, num pickZ, Vector3 pickWorld);
 
-bool pickRay(Matrix4 cameraMatrix, num pickX, num pickY, Vector3 rayFar, Vector3 rayNear, num viewportHeight, num viewportWidth, num viewportX, num viewportY);
+bool pickRay(Matrix4 cameraMatrix, num viewportX, num viewportWidth, num viewportY, num viewportHeight, num pickX, num pickY, Vector3 rayNear, Vector3 rayFar);
 
 
 

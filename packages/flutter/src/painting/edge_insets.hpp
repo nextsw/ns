@@ -34,7 +34,7 @@ public:
 
     virtual EdgeInsetsGeometry add(EdgeInsetsGeometry other);
 
-    virtual EdgeInsetsGeometry clamp(EdgeInsetsGeometry max, EdgeInsetsGeometry min);
+    virtual EdgeInsetsGeometry clamp(EdgeInsetsGeometry min, EdgeInsetsGeometry max);
 
     virtual EdgeInsetsGeometry operator-();
     virtual EdgeInsetsGeometry operator*(double other);
@@ -74,13 +74,13 @@ public:
     double bottom;
 
 
-    virtual void  fromLTRB(double bottom, double left, double right, double top);
+    virtual void  fromLTRB(double left, double top, double right, double bottom);
     virtual void  all(double value);
 
     virtual void  only(double bottom, double left, double right, double top);
     virtual void  symmetric(double horizontal, double vertical);
 
-    virtual void  fromWindowPadding(double devicePixelRatio, WindowPadding padding);
+    virtual void  fromWindowPadding(WindowPadding padding, double devicePixelRatio);
 
     virtual Offset topLeft();
 
@@ -100,7 +100,7 @@ public:
 
     virtual EdgeInsetsGeometry add(EdgeInsetsGeometry other);
 
-    virtual EdgeInsetsGeometry clamp(EdgeInsetsGeometry max, EdgeInsetsGeometry min);
+    virtual EdgeInsetsGeometry clamp(EdgeInsetsGeometry min, EdgeInsetsGeometry max);
 
     virtual EdgeInsets operator-(EdgeInsets other);
 
@@ -152,7 +152,7 @@ public:
     double bottom;
 
 
-    virtual void  fromSTEB(double bottom, double end, double start, double top);
+    virtual void  fromSTEB(double start, double top, double end, double bottom);
     virtual void  only(double bottom, double end, double start, double top);
     virtual void  all(double value);
 
@@ -202,7 +202,7 @@ using EdgeInsetsDirectional = std::shared_ptr<EdgeInsetsDirectionalCls>;
 class _MixedEdgeInsetsCls : public EdgeInsetsGeometryCls {
 public:
 
-    virtual void  fromLRSETB(double _bottom, double _end, double _left, double _right, double _start, double _top);
+    virtual void  fromLRSETB(double _left, double _right, double _start, double _end, double _top, double _bottom);
     virtual bool isNonNegative();
 
     virtual _MixedEdgeInsets operator-();

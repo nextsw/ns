@@ -43,7 +43,7 @@ CustomSemanticsAction CustomSemanticsActionCls::getAction(int id) {
     return _actions[id];
 }
 
-AttributedStringCls::AttributedStringCls(List<StringAttribute> attributes, String string) {
+AttributedStringCls::AttributedStringCls(String string, List<StringAttribute> attributes) {
     {
         assert(stringValue->isNotEmpty() || attributes->isEmpty);
         assert([=] () {
@@ -87,7 +87,7 @@ String AttributedStringCls::toString() {
     return __s("${objectRuntimeType(this, 'AttributedString')}('$string', attributes: $attributes)");
 }
 
-AttributedStringPropertyCls::AttributedStringPropertyCls(Unknown defaultValue, Unknown description, Unknown level, String name, Unknown showName, bool showWhenEmpty, Unknown value) {
+AttributedStringPropertyCls::AttributedStringPropertyCls(String name, Unknown value, Unknown defaultValue, Unknown description, Unknown level, Unknown showName, bool showWhenEmpty) {
     {
         assert(showName != nullptr);
         assert(level != nullptr);
@@ -184,7 +184,7 @@ void SemanticsDataCls::debugFillProperties(DiagnosticPropertiesBuilder propertie
     properties->add(make<AttributedStringPropertyCls>(__s("hint"), attributedHint));
     properties->add(make<StringPropertyCls>(__s("tooltip"), tooltip__s("")));
     properties->add(<TextDirection>make<EnumPropertyCls>(__s("textDirection"), textDirectionnullptr));
-    if (textSelection?->isValid or false) {
+    if (textSelection?->isValid | false) {
         properties->add(make<MessagePropertyCls>(__s("textSelection"), __s("[${textSelection!.start}, ${textSelection!.end}]")));
     }
     properties->add(make<IntPropertyCls>(__s("platformViewId"), platformViewIdnullptr));
@@ -358,7 +358,7 @@ bool SemanticsNodeCls::mergeAllDescendantsIntoThisNode() {
 }
 
 bool SemanticsNodeCls::hasChildren() {
-    return _children?->isNotEmpty or false;
+    return _children?->isNotEmpty | false;
 }
 
 int SemanticsNodeCls::childrenCount() {
@@ -535,7 +535,7 @@ int SemanticsNodeCls::currentValueLength() {
 }
 
 void SemanticsNodeCls::updateWith(List<SemanticsNode> childrenInInversePaintOrder, SemanticsConfiguration config) {
-    config = _kEmptyConfig;
+    config |= _kEmptyConfig;
     if (_isDifferentFromCurrentSemanticAnnotation(config)) {
         _markDirty();
     }
@@ -567,7 +567,7 @@ void SemanticsNodeCls::updateWith(List<SemanticsNode> childrenInInversePaintOrde
     _platformViewId = config->_platformViewId;
     _maxValueLength = config->_maxValueLength;
     _currentValueLength = config->_currentValueLength;
-    _replaceChildren(childrenInInversePaintOrder or makeList());
+    _replaceChildren(childrenInInversePaintOrder | makeList());
     assert(!_canPerformAction(SemanticsActionCls::increase) || (value() == __s("")) == (increasedValue() == __s("")), __s("A SemanticsNode with action "increase" needs to be annotated with either both "value" and "increasedValue" or neither"));
     assert(!_canPerformAction(SemanticsActionCls::decrease) || (value() == __s("")) == (decreasedValue() == __s("")), __s("A SemanticsNode with action "increase" needs to be annotated with either both "value" and "decreasedValue" or neither"));
 }
@@ -611,18 +611,18 @@ SemanticsData SemanticsNodeCls::getSemanticsData() {
     if (mergeAllDescendantsIntoThisNode()) {
         _visitDescendants([=] (SemanticsNode node) {
             assert(node->isMergedIntoParent);
-            flags = node->_flags;
-            actions = node->_actionsAsBits;
-            textDirection = node->_textDirection;
-            textSelection = node->_textSelection;
-            scrollChildCount = node->_scrollChildCount;
-            scrollIndex = node->_scrollIndex;
-            scrollPosition = node->_scrollPosition;
-            scrollExtentMax = node->_scrollExtentMax;
-            scrollExtentMin = node->_scrollExtentMin;
-            platformViewId = node->_platformViewId;
-            maxValueLength = node->_maxValueLength;
-            currentValueLength = node->_currentValueLength;
+            flags |= node->_flags;
+            actions |= node->_actionsAsBits;
+            textDirection |= node->_textDirection;
+            textSelection |= node->_textSelection;
+            scrollChildCount |= node->_scrollChildCount;
+            scrollIndex |= node->_scrollIndex;
+            scrollPosition |= node->_scrollPosition;
+            scrollExtentMax |= node->_scrollExtentMax;
+            scrollExtentMin |= node->_scrollExtentMin;
+            platformViewId |= node->_platformViewId;
+            maxValueLength |= node->_maxValueLength;
+            currentValueLength |= node->_currentValueLength;
             if (attributedValue == nullptr || attributedValue->stringValue == __s("")) {
                 attributedValue = node->_attributedValue;
             }
@@ -636,7 +636,7 @@ SemanticsData SemanticsNodeCls::getSemanticsData() {
                 tooltip = node->_tooltip;
             }
             if (node->tags != nullptr) {
-                mergedTags = makeSet();
+                mergedTags |= makeSet();
                 mergedTags!->addAll(node->tags!);
             }
             for (CustomSemanticsAction action : _customSemanticsActions->keys()) {
@@ -726,7 +726,7 @@ void SemanticsNodeCls::debugFillProperties(DiagnosticPropertiesBuilder propertie
     properties->add(make<StringPropertyCls>(__s("tooltip"), _tooltip__s("")));
     properties->add(<TextDirection>make<EnumPropertyCls>(__s("textDirection"), _textDirectionnullptr));
     properties->add(<SemanticsSortKey>make<DiagnosticsPropertyCls>(__s("sortKey"), sortKey()nullptr));
-    if (_textSelection?->isValid or false) {
+    if (_textSelection?->isValid | false) {
         properties->add(make<MessagePropertyCls>(__s("text selection"), __s("[${_textSelection!.start}, ${_textSelection!.end}]")));
     }
     properties->add(make<IntPropertyCls>(__s("platformViewId"), platformViewId()nullptr));
@@ -906,23 +906,23 @@ void SemanticsNodeCls::_addToUpdate(SemanticsUpdateBuilder builder, Set<int> cus
         int childCount = _children!->length();
         List<SemanticsNode> sortedChildren = _childrenInTraversalOrder();
         childrenInTraversalOrder = make<Int32ListCls>(childCount);
-        for (;  < childCount; i = 1) {
+        for (;  < childCount; i += 1) {
             childrenInTraversalOrder[i] = sortedChildren[i]->id();
         }
         childrenInHitTestOrder = make<Int32ListCls>(childCount);
-        for (; i >= 0; i = 1) {
+        for (; i >= 0; i -= 1) {
             childrenInHitTestOrder[i] = _children![childCount - i - 1]->id();
         }
     }
     Int32List customSemanticsActionIds;
-    if (data->customSemanticsActionIds?->isNotEmpty or false) {
+    if (data->customSemanticsActionIds?->isNotEmpty | false) {
         customSemanticsActionIds = make<Int32ListCls>(data->customSemanticsActionIds!->length);
         for (;  < data->customSemanticsActionIds!->length; i++) {
             customSemanticsActionIds[i] = data->customSemanticsActionIds![i];
             customSemanticsActionIdsUpdate->add(data->customSemanticsActionIds![i]);
         }
     }
-    builder->updateNode(id(), data->flags, data->actions, data->rect, data->attributedLabel->stringValue, data->attributedLabel->attributes, data->attributedValue->stringValue, data->attributedValue->attributes, data->attributedIncreasedValue->stringValue, data->attributedIncreasedValue->attributes, data->attributedDecreasedValue->stringValue, data->attributedDecreasedValue->attributes, data->attributedHint->stringValue, data->attributedHint->attributes, data->tooltip, data->textDirection, data->textSelection != nullptr? data->textSelection!->baseOffset : -1, data->textSelection != nullptr? data->textSelection!->extentOffset : -1, data->platformViewId or -1, data->maxValueLength or -1, data->currentValueLength or -1, data->scrollChildCount or 0, data->scrollIndex or 0, data->scrollPosition or double->nan, data->scrollExtentMax or double->nan, data->scrollExtentMin or double->nan, data->transform?->storage() or _kIdentityTransform, data->elevation, data->thickness, childrenInTraversalOrder, childrenInHitTestOrder, customSemanticsActionIds or _kEmptyCustomSemanticsActionsList);
+    builder->updateNode(id(), data->flags, data->actions, data->rect, data->attributedLabel->stringValue, data->attributedLabel->attributes, data->attributedValue->stringValue, data->attributedValue->attributes, data->attributedIncreasedValue->stringValue, data->attributedIncreasedValue->attributes, data->attributedDecreasedValue->stringValue, data->attributedDecreasedValue->attributes, data->attributedHint->stringValue, data->attributedHint->attributes, data->tooltip, data->textDirection, data->textSelection != nullptr? data->textSelection!->baseOffset : -1, data->textSelection != nullptr? data->textSelection!->extentOffset : -1, data->platformViewId | -1, data->maxValueLength | -1, data->currentValueLength | -1, data->scrollChildCount | 0, data->scrollIndex | 0, data->scrollPosition | double->nan, data->scrollExtentMax | double->nan, data->scrollExtentMin | double->nan, data->transform?->storage() | _kIdentityTransform, data->elevation, data->thickness, childrenInTraversalOrder, childrenInHitTestOrder, customSemanticsActionIds | _kEmptyCustomSemanticsActionsList);
     _dirty = false;
 }
 
@@ -942,7 +942,7 @@ List<SemanticsNode> SemanticsNodeCls::_childrenInTraversalOrder() {
     List<_TraversalSortNode> everythingSorted = makeList();
     List<_TraversalSortNode> sortNodes = makeList();
     SemanticsSortKey lastSortKey;
-    for (;  < childrenInDefaultOrder!->length(); position = 1) {
+    for (;  < childrenInDefaultOrder!->length(); position += 1) {
         SemanticsNode child = childrenInDefaultOrder[position];
         SemanticsSortKey sortKey = child->sortKey();
         lastSortKey = position > 0? childrenInDefaultOrder[position - 1]->sortKey : nullptr;
@@ -995,11 +995,11 @@ List<SemanticsNode> _SemanticsSortGroupCls::sortedWithinVerticalGroup() {
     int depth = 0;
     for (_BoxEdge edge : edges) {
         if (edge->isLeadingEdge) {
-            depth = 1;
-            group = make<_SemanticsSortGroupCls>(edge->offset, textDirection);
+            depth += 1;
+            group |= make<_SemanticsSortGroupCls>(edge->offset, textDirection);
             group->nodes->add(edge->node);
         } else {
-            depth = 1;
+            depth -= 1;
         }
         if (depth == 0) {
             horizontalGroups->add(group!);
@@ -1079,11 +1079,11 @@ List<SemanticsNode> _childrenInDefaultOrder(List<SemanticsNode> children, TextDi
     int depth = 0;
     for (_BoxEdge edge : edges) {
         if (edge->isLeadingEdge) {
-            depth = 1;
-            group = make<_SemanticsSortGroupCls>(edge->offset, textDirection);
+            depth += 1;
+            group |= make<_SemanticsSortGroupCls>(edge->offset, textDirection);
             group->nodes->add(edge->node);
         } else {
-            depth = 1;
+            depth -= 1;
         }
         if (depth == 0) {
             verticalGroups->add(group!);
@@ -1162,13 +1162,13 @@ void SemanticsOwnerCls::sendSemanticsUpdate() {
     _dirtyNodes->clear();
     for (int actionId : customSemanticsActionIds) {
         CustomSemanticsAction action = CustomSemanticsActionCls->getAction(actionId)!;
-        builder->updateCustomAction(actionId, action->label, action->hint, action->action?->index or -1);
+        builder->updateCustomAction(actionId, action->label, action->hint, action->action?->index | -1);
     }
     SemanticsBindingCls::instance->platformDispatcher->updateSemantics(builder->build());
     notifyListeners();
 }
 
-void SemanticsOwnerCls::performAction(SemanticsAction action, Object args, int id) {
+void SemanticsOwnerCls::performAction(int id, SemanticsAction action, Object args) {
     assert(action != nullptr);
     SemanticsActionHandler handler = _getSemanticsActionHandlerForId(id, action);
     if (handler != nullptr) {
@@ -1180,7 +1180,7 @@ void SemanticsOwnerCls::performAction(SemanticsAction action, Object args, int i
     }
 }
 
-void SemanticsOwnerCls::performActionAt(SemanticsAction action, Object args, Offset position) {
+void SemanticsOwnerCls::performActionAt(Offset position, SemanticsAction action, Object args) {
     assert(action != nullptr);
     SemanticsNode node = rootSemanticsNode();
     if (node == nullptr) {
@@ -1196,7 +1196,7 @@ String SemanticsOwnerCls::toString() {
     return describeIdentity(this);
 }
 
-SemanticsActionHandler SemanticsOwnerCls::_getSemanticsActionHandlerForId(SemanticsAction action, int id) {
+SemanticsActionHandler SemanticsOwnerCls::_getSemanticsActionHandlerForId(int id, SemanticsAction action) {
     SemanticsNode result = _nodes[id];
     if (result != nullptr && result->isPartOfNodeMerging() && !result->_canPerformAction(action)) {
         result->_visitDescendants([=] (SemanticsNode node) {
@@ -1213,7 +1213,7 @@ SemanticsActionHandler SemanticsOwnerCls::_getSemanticsActionHandlerForId(Semant
     return result!->_actions[action];
 }
 
-SemanticsActionHandler SemanticsOwnerCls::_getSemanticsActionHandlerForPosition(SemanticsAction action, SemanticsNode node, Offset position) {
+SemanticsActionHandler SemanticsOwnerCls::_getSemanticsActionHandlerForPosition(SemanticsNode node, Offset position, SemanticsAction action) {
     if (node->transform() != nullptr) {
         Matrix4 inverse = Matrix4Cls->identity();
         if (inverse->copyInverse(node->transform()!) == 0.0) {
@@ -1574,7 +1574,7 @@ Map<CustomSemanticsAction, VoidCallback> SemanticsConfigurationCls::customSemant
 
 void SemanticsConfigurationCls::customSemanticsActions(Map<CustomSemanticsAction, VoidCallback> value) {
     _hasBeenAnnotated = true;
-    _actionsAsBits = SemanticsActionCls::customAction->index;
+    _actionsAsBits |= SemanticsActionCls::customAction->index;
     _customSemanticsActions = value;
     _actions[SemanticsActionCls::customAction] = _onCustomSemanticsAction;
 }
@@ -1954,7 +1954,7 @@ Iterable<SemanticsTag> SemanticsConfigurationCls::tagsForChildren() {
 }
 
 void SemanticsConfigurationCls::addTagForChildren(SemanticsTag tag) {
-    _tagsForChildren = makeSet();
+    _tagsForChildren |= makeSet();
     _tagsForChildren!->add(tag);
 }
 
@@ -1990,21 +1990,21 @@ void SemanticsConfigurationCls::absorb(SemanticsConfiguration child) {
     }
     _actions->addAll(child->_actions);
     _customSemanticsActions->addAll(child->_customSemanticsActions);
-    _actionsAsBits = child->_actionsAsBits;
-    _flags = child->_flags;
-    _textSelection = child->_textSelection;
-    _scrollPosition = child->_scrollPosition;
-    _scrollExtentMax = child->_scrollExtentMax;
-    _scrollExtentMin = child->_scrollExtentMin;
-    _hintOverrides = child->_hintOverrides;
-    _indexInParent = child->indexInParent();
-    _scrollIndex = child->_scrollIndex;
-    _scrollChildCount = child->_scrollChildCount;
-    _platformViewId = child->_platformViewId;
-    _maxValueLength = child->_maxValueLength;
-    _currentValueLength = child->_currentValueLength;
-    textDirection() = child->textDirection();
-    _sortKey = child->_sortKey;
+    _actionsAsBits |= child->_actionsAsBits;
+    _flags |= child->_flags;
+    _textSelection |= child->_textSelection;
+    _scrollPosition |= child->_scrollPosition;
+    _scrollExtentMax |= child->_scrollExtentMax;
+    _scrollExtentMin |= child->_scrollExtentMin;
+    _hintOverrides |= child->_hintOverrides;
+    _indexInParent |= child->indexInParent();
+    _scrollIndex |= child->_scrollIndex;
+    _scrollChildCount |= child->_scrollChildCount;
+    _platformViewId |= child->_platformViewId;
+    _maxValueLength |= child->_maxValueLength;
+    _currentValueLength |= child->_currentValueLength;
+    textDirection() |= child->textDirection();
+    _sortKey |= child->_sortKey;
     _attributedLabel = _concatAttributedString(_attributedLabel, textDirection(), child->_attributedLabel, child->textDirection());
     if (_attributedValue == nullptr || _attributedValue->stringValue == __s("")) {
         _attributedValue = child->_attributedValue;
@@ -2030,7 +2030,7 @@ SemanticsConfiguration SemanticsConfigurationCls::copy() {
 void SemanticsConfigurationCls::_addAction(SemanticsAction action, SemanticsActionHandler handler) {
     assert(handler != nullptr);
     _actions[action] = handler;
-    _actionsAsBits = action->index;
+    _actionsAsBits |= action->index;
     _hasBeenAnnotated = true;
 }
 
@@ -2055,9 +2055,9 @@ void SemanticsConfigurationCls::_onCustomSemanticsAction(Object args) {
 
 void SemanticsConfigurationCls::_setFlag(SemanticsFlag flag, bool value) {
     if (value) {
-        _flags = flag->index;
+        _flags |= flag->index;
     } else {
-        _flags = ~flag->index;
+        _flags &= ~flag->index;
     }
     _hasBeenAnnotated = true;
 }
@@ -2099,7 +2099,7 @@ void SemanticsSortKeyCls::debugFillProperties(DiagnosticPropertiesBuilder proper
     properties->add(make<StringPropertyCls>(__s("name"), namenullptr));
 }
 
-OrdinalSortKeyCls::OrdinalSortKeyCls(Unknown name, double order) {
+OrdinalSortKeyCls::OrdinalSortKeyCls(double order, Unknown name) {
     {
         assert(order != nullptr);
         assert(order != double->nan);

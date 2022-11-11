@@ -1,5 +1,5 @@
 #include "io_sink.hpp"
-IOSinkCls::IOSinkCls(Encoding encoding, StreamConsumer<List<int>> target) {
+IOSinkCls::IOSinkCls(StreamConsumer<List<int>> target, Encoding encoding) {
 }
 
 template<typename T>
@@ -171,5 +171,5 @@ void _IOSinkImplCls::writeCharCode(int charCode) {
     write(StringCls->fromCharCode(charCode));
 }
 
-_IOSinkImplCls::_IOSinkImplCls(Encoding _encoding, StreamConsumer<List<int>> target) : _StreamSinkImpl<List<int>>(target) {
+_IOSinkImplCls::_IOSinkImplCls(StreamConsumer<List<int>> target, Encoding _encoding) : _StreamSinkImpl<List<int>>(target) {
 }

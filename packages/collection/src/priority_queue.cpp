@@ -2,7 +2,7 @@
 template<typename E>
 HeapPriorityQueueCls<E>::HeapPriorityQueueCls(std::function<int(E , E )> comparison) {
     {
-        comparison = comparison or defaultCompare;
+        comparison = comparison | defaultCompare;
     }
 }
 
@@ -19,7 +19,7 @@ void HeapPriorityQueueCls<E>::addAll(Iterable<E> elements) {
         modified = 1;
         _add(element);
     }
-    _modificationCount = modified;
+    _modificationCount += modified;
 }
 
 template<typename E>
@@ -131,7 +131,7 @@ String HeapPriorityQueueCls<E>::toString() {
 
 template<typename E>
 E HeapPriorityQueueCls<E>::_elementAt(int index) {
-    return _queue[index] or (as<E>(nullptr));
+    return _queue[index] | (as<E>(nullptr));
 }
 
 template<typename E>
@@ -169,9 +169,9 @@ int HeapPriorityQueueCls<E>::_locate(E object) {
         }
         do {
             while (position->isOdd()) {
-                position = 1;
+                position >>= 1;
             }
-            position = 1;
+            position += 1;
         } while (position > _length);
     } while (position != 1);
     return -1;
@@ -272,7 +272,7 @@ bool _UnorderedElementsIteratorCls<E>::moveNext() {
 
 template<typename E>
 E _UnorderedElementsIteratorCls<E>::current() {
-    return  < 0? throw make<StateErrorCls>(__s("No element")) : (_current or as<E>(nullptr));
+    return  < 0? throw make<StateErrorCls>(__s("No element")) : (_current | as<E>(nullptr));
 }
 
 template<typename E>

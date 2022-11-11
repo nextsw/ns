@@ -191,7 +191,7 @@ void DoubleTapGestureRecognizerCls::_freezeTracker(_TapTracker tracker) {
 }
 
 void DoubleTapGestureRecognizerCls::_startDoubleTapTimer() {
-    _doubleTapTimer = make<TimerCls>(kDoubleTapTimeout, _reset);
+    _doubleTapTimer |= make<TimerCls>(kDoubleTapTimeout, _reset);
 }
 
 void DoubleTapGestureRecognizerCls::_stopDoubleTapTimer() {
@@ -339,7 +339,7 @@ void MultiTapGestureRecognizerCls::_dispatchTap(int pointer, OffsetPair position
     }
 }
 
-void MultiTapGestureRecognizerCls::_dispatchLongTap(OffsetPair lastPosition, int pointer) {
+void MultiTapGestureRecognizerCls::_dispatchLongTap(int pointer, OffsetPair lastPosition) {
     assert(_gestureMap->containsKey(pointer));
     if (onLongTapDown != nullptr) {
         <void>invokeCallback(__s("onLongTapDown"), [=] () {
@@ -351,7 +351,7 @@ void MultiTapGestureRecognizerCls::_dispatchLongTap(OffsetPair lastPosition, int
 SerialTapDownDetailsCls::SerialTapDownDetailsCls(int buttons, int count, Offset globalPosition, PointerDeviceKind kind, Offset localPosition) {
     {
         assert(count > 0);
-        localPosition = localPosition or globalPosition;
+        localPosition = localPosition | globalPosition;
     }
 }
 
@@ -365,7 +365,7 @@ SerialTapCancelDetailsCls::SerialTapCancelDetailsCls(int count) {
 SerialTapUpDetailsCls::SerialTapUpDetailsCls(int count, Offset globalPosition, PointerDeviceKind kind, Offset localPosition) {
     {
         assert(count > 0);
-        localPosition = localPosition or globalPosition;
+        localPosition = localPosition | globalPosition;
     }
 }
 
@@ -407,7 +407,7 @@ String SerialTapGestureRecognizerCls::debugDescription() {
     return __s("serial tap");
 }
 
-bool SerialTapGestureRecognizerCls::_representsSameSeries(PointerDownEvent event, _TapTracker tap) {
+bool SerialTapGestureRecognizerCls::_representsSameSeries(_TapTracker tap, PointerDownEvent event) {
     return tap->hasElapsedMinTime() && tap->hasSameButton(event) && tap->isWithinGlobalTolerance(event, kDoubleTapSlop);
 }
 
@@ -485,7 +485,7 @@ void SerialTapGestureRecognizerCls::_stopTrackingPointer(_TapTracker tracker) {
 }
 
 void SerialTapGestureRecognizerCls::_startSerialTapTimer() {
-    _serialTapTimer = make<TimerCls>(kDoubleTapTimeout, _reset);
+    _serialTapTimer |= make<TimerCls>(kDoubleTapTimeout, _reset);
 }
 
 void SerialTapGestureRecognizerCls::_stopSerialTapTimer() {

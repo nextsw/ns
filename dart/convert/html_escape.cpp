@@ -18,14 +18,14 @@ StringConversionSink HtmlEscapeCls::startChunkedConversion(Sink<String> sink) {
     return make<_HtmlEscapeSinkCls>(this, is<StringConversionSink>(sink)? sink : StringConversionSinkCls->from(sink));
 }
 
-String HtmlEscapeCls::_convert(int end, int start, String text) {
+String HtmlEscapeCls::_convert(String text, int start, int end) {
     StringBuffer result;
     for (;  < end; i++) {
         auto ch = text[i];
         String replacement;
         ;
         if (replacement != nullptr) {
-            result = make<StringBufferCls>();
+            result |= make<StringBufferCls>();
             if (i > start)             {
                 result->write(text->substring(start, i));
             }
@@ -42,7 +42,7 @@ String HtmlEscapeCls::_convert(int end, int start, String text) {
     return result->toString();
 }
 
-void _HtmlEscapeSinkCls::addSlice(String chunk, int end, bool isLast, int start) {
+void _HtmlEscapeSinkCls::addSlice(String chunk, int start, int end, bool isLast) {
     auto val = _escape->_convert(chunk, start, end);
     if (val == nullptr) {
         _sink->addSlice(chunk, start, end, isLast);

@@ -47,7 +47,7 @@ public:
 
     virtual void paint(PaintingContext context, Offset offset);
 
-    virtual bool hitTestChildren(Offset position, BoxHitTestResult result);
+    virtual bool hitTestChildren(BoxHitTestResult result, Offset position);
 
 private:
     AxisDirection _axisDirection;

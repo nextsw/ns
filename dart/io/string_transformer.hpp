@@ -47,7 +47,7 @@ public:
 
     virtual void add(String stringValue);
 
-    virtual void addSlice(int end, bool isLast, String source, int start);
+    virtual void addSlice(String source, int start, int end, bool isLast);
 
 private:
     Sink<List<int>> _sink;

@@ -62,7 +62,7 @@ public:
 
     virtual Future<void> performReassemble();
 
-    virtual void hitTest(Offset position, HitTestResult result);
+    virtual void hitTest(HitTestResult result, Offset position);
 
 private:
     static RendererBinding _instance;
@@ -86,7 +86,7 @@ private:
 
     virtual void _handleWebFirstFrame(Duration _);
 
-    virtual void _handleSemanticsAction(SemanticsAction action, ByteData args, int id);
+    virtual void _handleSemanticsAction(int id, SemanticsAction action, ByteData args);
 
     virtual void _handleSemanticsOwnerCreated();
 

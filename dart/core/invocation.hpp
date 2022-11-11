@@ -9,12 +9,12 @@ class InvocationCls : public ObjectCls {
 public:
 
      InvocationCls();
-    virtual void  method(Symbol memberName, Map<Symbol, Object> namedArguments, Iterable<Object> positionalArguments);
+    virtual void  method(Symbol memberName, Iterable<Object> positionalArguments, Map<Symbol, Object> namedArguments);
 
-    virtual void  genericMethod(Symbol memberName, Map<Symbol, Object> namedArguments, Iterable<Object> positionalArguments, Iterable<Type> typeArguments);
+    virtual void  genericMethod(Symbol memberName, Iterable<Type> typeArguments, Iterable<Object> positionalArguments, Map<Symbol, Object> namedArguments);
 
     virtual void  getter(Symbol name);
-    virtual void  setter(Object argument, Symbol memberName);
+    virtual void  setter(Symbol memberName, Object argument);
     virtual Symbol memberName();
     virtual List<Type> typeArguments();
 
@@ -37,11 +37,11 @@ public:
     List<Type> typeArguments;
 
 
-    virtual void  method(Symbol memberName, Map<Symbol, Object> named, Iterable<Object> positional, Iterable<Type> types);
+    virtual void  method(Symbol memberName, Iterable<Type> types, Iterable<Object> positional, Map<Symbol, Object> named);
 
     virtual void  getter(Symbol memberName);
 
-    virtual void  setter(Object argument, Symbol memberName);
+    virtual void  setter(Symbol memberName, Object argument);
 
     virtual List<dynamic> positionalArguments();
 

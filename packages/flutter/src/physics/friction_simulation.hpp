@@ -12,9 +12,9 @@
 class FrictionSimulationCls : public SimulationCls {
 public:
 
-     FrictionSimulationCls(double drag, double position, Unknown tolerance, double velocity);
+     FrictionSimulationCls(double drag, double position, double velocity, Unknown tolerance);
 
-    virtual void  through(double endPosition, double endVelocity, double startPosition, double startVelocity);
+    virtual void  through(double startPosition, double endPosition, double startVelocity, double endVelocity);
 
     virtual double x(double time);
 
@@ -38,7 +38,7 @@ private:
     double _v;
 
 
-    static double _dragFor(double endPosition, double endVelocity, double startPosition, double startVelocity);
+    static double _dragFor(double startPosition, double endPosition, double startVelocity, double endVelocity);
 
 };
 using FrictionSimulation = std::shared_ptr<FrictionSimulationCls>;
@@ -46,7 +46,7 @@ using FrictionSimulation = std::shared_ptr<FrictionSimulationCls>;
 class BoundedFrictionSimulationCls : public FrictionSimulationCls {
 public:
 
-     BoundedFrictionSimulationCls(double _maxX, double _minX, Unknown drag, Unknown position, Unknown velocity);
+     BoundedFrictionSimulationCls(Unknown drag, Unknown position, Unknown velocity, double _minX, double _maxX);
 
     virtual double x(double time);
 

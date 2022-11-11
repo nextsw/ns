@@ -20,7 +20,7 @@ enum SelectionResult{
 class SelectionHandlerCls : public ObjectCls {
 public:
 
-    virtual void pushHandleLayers(LayerLink endHandle, LayerLink startHandle);
+    virtual void pushHandleLayers(LayerLink startHandle, LayerLink endHandle);
     virtual SelectedContent getSelectedContent();
     virtual SelectionResult dispatchSelectionEvent(SelectionEvent event);
 private:
@@ -75,9 +75,9 @@ using SelectionRegistrant = std::shared_ptr<SelectionRegistrantCls>;
 class SelectionUtilsCls : public ObjectCls {
 public:
 
-    static SelectionResult getResultBasedOnRect(Offset point, Rect targetRect);
+    static SelectionResult getResultBasedOnRect(Rect targetRect, Offset point);
 
-    static Offset adjustDragOffset(TextDirection direction, Offset point, Rect targetRect);
+    static Offset adjustDragOffset(Rect targetRect, Offset point, TextDirection direction);
 
 private:
 

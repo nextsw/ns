@@ -1,7 +1,7 @@
 #include "_isolates_io.hpp"
 template<typename Q, typename R>
-Future<R> compute(ComputeCallback<Q, R> callback, String debugLabel, Q message) {
-    debugLabel = kReleaseMode? __s("compute") : callback->toString();
+Future<R> compute(ComputeCallback<Q, R> callback, Q message, String debugLabel) {
+    debugLabel |= kReleaseMode? __s("compute") : callback->toString();
     Flow flow = FlowCls->begin();
     TimelineCls->startSync(__s("$debugLabel: start")flow);
     RawReceivePort port = make<RawReceivePortCls>();

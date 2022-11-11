@@ -18,7 +18,7 @@ public:
 
     virtual int childCount();
     virtual bool childExistsAt(int index);
-    virtual void createChild(RenderBox after, int index);
+    virtual void createChild(int index, RenderBox after);
     virtual void removeChild(RenderBox child);
 private:
 
@@ -132,9 +132,9 @@ public:
 
     virtual Rect describeApproximatePaintClip(RenderObject child);
 
-    virtual bool hitTestChildren(Offset position, BoxHitTestResult result);
+    virtual bool hitTestChildren(BoxHitTestResult result, Offset position);
 
-    virtual RevealedOffset getOffsetToReveal(double alignment, Rect rect, RenderObject target);
+    virtual RevealedOffset getOffsetToReveal(RenderObject target, double alignment, Rect rect);
 
     virtual void showOnScreen(Curve curve, RenderObject descendant, Duration duration, Rect rect);
 
@@ -180,7 +180,7 @@ private:
 
     virtual double _getIntrinsicCrossAxis(_ChildSizingFunction childSize);
 
-    virtual void _createChild(RenderBox after, int index);
+    virtual void _createChild(int index, RenderBox after);
 
     virtual void _destroyChild(RenderBox child);
 
@@ -190,11 +190,11 @@ private:
 
     virtual void _paintVisibleChildren(PaintingContext context, Offset offset);
 
-    virtual void _paintTransformedChild(RenderBox child, PaintingContext context, Offset layoutOffset, Offset offset);
+    virtual void _paintTransformedChild(RenderBox child, PaintingContext context, Offset offset, Offset layoutOffset);
 
-    virtual void _paintChildWithMagnifier(RenderBox child, PaintingContext context, Matrix4 cylindricalTransform, Offset offset, Offset offsetToCenter, Offset untransformedPaintingCoordinates);
+    virtual void _paintChildWithMagnifier(PaintingContext context, Offset offset, RenderBox child, Matrix4 cylindricalTransform, Offset offsetToCenter, Offset untransformedPaintingCoordinates);
 
-    virtual void _paintChildCylindrically(RenderBox child, PaintingContext context, Matrix4 cylindricalTransform, Offset offset, Offset offsetToCenter);
+    virtual void _paintChildCylindrically(PaintingContext context, Offset offset, RenderBox child, Matrix4 cylindricalTransform, Offset offsetToCenter);
 
     virtual Matrix4 _magnifyTransform();
 

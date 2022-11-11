@@ -11,21 +11,21 @@ class ByteBufferCls : public ObjectCls {
 public:
 
     virtual int lengthInBytes();
-    virtual Uint8List asUint8List(int length, int offsetInBytes);
-    virtual Int8List asInt8List(int length, int offsetInBytes);
-    virtual Uint8ClampedList asUint8ClampedList(int length, int offsetInBytes);
-    virtual Uint16List asUint16List(int length, int offsetInBytes);
-    virtual Int16List asInt16List(int length, int offsetInBytes);
-    virtual Uint32List asUint32List(int length, int offsetInBytes);
-    virtual Int32List asInt32List(int length, int offsetInBytes);
-    virtual Uint64List asUint64List(int length, int offsetInBytes);
-    virtual Int64List asInt64List(int length, int offsetInBytes);
-    virtual Int32x4List asInt32x4List(int length, int offsetInBytes);
-    virtual Float32List asFloat32List(int length, int offsetInBytes);
-    virtual Float64List asFloat64List(int length, int offsetInBytes);
-    virtual Float32x4List asFloat32x4List(int length, int offsetInBytes);
-    virtual Float64x2List asFloat64x2List(int length, int offsetInBytes);
-    virtual ByteData asByteData(int length, int offsetInBytes);
+    virtual Uint8List asUint8List(int offsetInBytes, int length);
+    virtual Int8List asInt8List(int offsetInBytes, int length);
+    virtual Uint8ClampedList asUint8ClampedList(int offsetInBytes, int length);
+    virtual Uint16List asUint16List(int offsetInBytes, int length);
+    virtual Int16List asInt16List(int offsetInBytes, int length);
+    virtual Uint32List asUint32List(int offsetInBytes, int length);
+    virtual Int32List asInt32List(int offsetInBytes, int length);
+    virtual Uint64List asUint64List(int offsetInBytes, int length);
+    virtual Int64List asInt64List(int offsetInBytes, int length);
+    virtual Int32x4List asInt32x4List(int offsetInBytes, int length);
+    virtual Float32List asFloat32List(int offsetInBytes, int length);
+    virtual Float64List asFloat64List(int offsetInBytes, int length);
+    virtual Float32x4List asFloat32x4List(int offsetInBytes, int length);
+    virtual Float64x2List asFloat64x2List(int offsetInBytes, int length);
+    virtual ByteData asByteData(int offsetInBytes, int length);
 private:
 
 };
@@ -82,30 +82,30 @@ class ByteDataCls : public ObjectCls {
 public:
 
      ByteDataCls(int length);
-    virtual void  view(ByteBuffer buffer, int length, int offsetInBytes);
+    virtual void  view(ByteBuffer buffer, int offsetInBytes, int length);
 
-    virtual void  sublistView(TypedData data, int end, int start);
+    virtual void  sublistView(TypedData data, int start, int end);
 
     virtual int getInt8(int byteOffset);
     virtual void setInt8(int byteOffset, int value);
     virtual int getUint8(int byteOffset);
     virtual void setUint8(int byteOffset, int value);
     virtual int getInt16(int byteOffset, Endian endian);
-    virtual void setInt16(int byteOffset, Endian endian, int value);
+    virtual void setInt16(int byteOffset, int value, Endian endian);
     virtual int getUint16(int byteOffset, Endian endian);
-    virtual void setUint16(int byteOffset, Endian endian, int value);
+    virtual void setUint16(int byteOffset, int value, Endian endian);
     virtual int getInt32(int byteOffset, Endian endian);
-    virtual void setInt32(int byteOffset, Endian endian, int value);
+    virtual void setInt32(int byteOffset, int value, Endian endian);
     virtual int getUint32(int byteOffset, Endian endian);
-    virtual void setUint32(int byteOffset, Endian endian, int value);
+    virtual void setUint32(int byteOffset, int value, Endian endian);
     virtual int getInt64(int byteOffset, Endian endian);
-    virtual void setInt64(int byteOffset, Endian endian, int value);
+    virtual void setInt64(int byteOffset, int value, Endian endian);
     virtual int getUint64(int byteOffset, Endian endian);
-    virtual void setUint64(int byteOffset, Endian endian, int value);
+    virtual void setUint64(int byteOffset, int value, Endian endian);
     virtual double getFloat32(int byteOffset, Endian endian);
-    virtual void setFloat32(int byteOffset, Endian endian, double value);
+    virtual void setFloat32(int byteOffset, double value, Endian endian);
     virtual double getFloat64(int byteOffset, Endian endian);
-    virtual void setFloat64(int byteOffset, Endian endian, double value);
+    virtual void setFloat64(int byteOffset, double value, Endian endian);
 private:
 
 };
@@ -118,11 +118,11 @@ public:
 
      Int8ListCls(int length);
     void  fromList(List<int> elements);
-    virtual void  view(ByteBuffer buffer, int length, int offsetInBytes);
+    virtual void  view(ByteBuffer buffer, int offsetInBytes, int length);
 
-    virtual void  sublistView(TypedData data, int end, int start);
+    virtual void  sublistView(TypedData data, int start, int end);
 
-    virtual Int8List sublist(int end, int start);
+    virtual Int8List sublist(int start, int end);
 private:
 
 };
@@ -135,12 +135,12 @@ public:
 
      Uint8ListCls(int length);
     void  fromList(List<int> elements);
-    virtual void  view(ByteBuffer buffer, int length, int offsetInBytes);
+    virtual void  view(ByteBuffer buffer, int offsetInBytes, int length);
 
-    virtual void  sublistView(TypedData data, int end, int start);
+    virtual void  sublistView(TypedData data, int start, int end);
 
     virtual List<int> operator+(List<int> other);
-    virtual Uint8List sublist(int end, int start);
+    virtual Uint8List sublist(int start, int end);
 private:
 
 };
@@ -153,11 +153,11 @@ public:
 
      Uint8ClampedListCls(int length);
     void  fromList(List<int> elements);
-    virtual void  view(ByteBuffer buffer, int length, int offsetInBytes);
+    virtual void  view(ByteBuffer buffer, int offsetInBytes, int length);
 
-    virtual void  sublistView(TypedData data, int end, int start);
+    virtual void  sublistView(TypedData data, int start, int end);
 
-    virtual Uint8ClampedList sublist(int end, int start);
+    virtual Uint8ClampedList sublist(int start, int end);
 private:
 
 };
@@ -170,11 +170,11 @@ public:
 
      Int16ListCls(int length);
     void  fromList(List<int> elements);
-    virtual void  view(ByteBuffer buffer, int length, int offsetInBytes);
+    virtual void  view(ByteBuffer buffer, int offsetInBytes, int length);
 
-    virtual void  sublistView(TypedData data, int end, int start);
+    virtual void  sublistView(TypedData data, int start, int end);
 
-    virtual Int16List sublist(int end, int start);
+    virtual Int16List sublist(int start, int end);
 private:
 
 };
@@ -187,11 +187,11 @@ public:
 
      Uint16ListCls(int length);
     void  fromList(List<int> elements);
-    virtual void  view(ByteBuffer buffer, int length, int offsetInBytes);
+    virtual void  view(ByteBuffer buffer, int offsetInBytes, int length);
 
-    virtual void  sublistView(TypedData data, int end, int start);
+    virtual void  sublistView(TypedData data, int start, int end);
 
-    virtual Uint16List sublist(int end, int start);
+    virtual Uint16List sublist(int start, int end);
 private:
 
 };
@@ -204,11 +204,11 @@ public:
 
      Int32ListCls(int length);
     void  fromList(List<int> elements);
-    virtual void  view(ByteBuffer buffer, int length, int offsetInBytes);
+    virtual void  view(ByteBuffer buffer, int offsetInBytes, int length);
 
-    virtual void  sublistView(TypedData data, int end, int start);
+    virtual void  sublistView(TypedData data, int start, int end);
 
-    virtual Int32List sublist(int end, int start);
+    virtual Int32List sublist(int start, int end);
 private:
 
 };
@@ -221,11 +221,11 @@ public:
 
      Uint32ListCls(int length);
     void  fromList(List<int> elements);
-    virtual void  view(ByteBuffer buffer, int length, int offsetInBytes);
+    virtual void  view(ByteBuffer buffer, int offsetInBytes, int length);
 
-    virtual void  sublistView(TypedData data, int end, int start);
+    virtual void  sublistView(TypedData data, int start, int end);
 
-    virtual Uint32List sublist(int end, int start);
+    virtual Uint32List sublist(int start, int end);
 private:
 
 };
@@ -238,11 +238,11 @@ public:
 
      Int64ListCls(int length);
     void  fromList(List<int> elements);
-    virtual void  view(ByteBuffer buffer, int length, int offsetInBytes);
+    virtual void  view(ByteBuffer buffer, int offsetInBytes, int length);
 
-    virtual void  sublistView(TypedData data, int end, int start);
+    virtual void  sublistView(TypedData data, int start, int end);
 
-    virtual Int64List sublist(int end, int start);
+    virtual Int64List sublist(int start, int end);
 private:
 
 };
@@ -255,11 +255,11 @@ public:
 
      Uint64ListCls(int length);
     void  fromList(List<int> elements);
-    virtual void  view(ByteBuffer buffer, int length, int offsetInBytes);
+    virtual void  view(ByteBuffer buffer, int offsetInBytes, int length);
 
-    virtual void  sublistView(TypedData data, int end, int start);
+    virtual void  sublistView(TypedData data, int start, int end);
 
-    virtual Uint64List sublist(int end, int start);
+    virtual Uint64List sublist(int start, int end);
 private:
 
 };
@@ -272,11 +272,11 @@ public:
 
      Float32ListCls(int length);
     void  fromList(List<double> elements);
-    virtual void  view(ByteBuffer buffer, int length, int offsetInBytes);
+    virtual void  view(ByteBuffer buffer, int offsetInBytes, int length);
 
-    virtual void  sublistView(TypedData data, int end, int start);
+    virtual void  sublistView(TypedData data, int start, int end);
 
-    virtual Float32List sublist(int end, int start);
+    virtual Float32List sublist(int start, int end);
 private:
 
 };
@@ -289,11 +289,11 @@ public:
 
      Float64ListCls(int length);
     void  fromList(List<double> elements);
-    virtual void  view(ByteBuffer buffer, int length, int offsetInBytes);
+    virtual void  view(ByteBuffer buffer, int offsetInBytes, int length);
 
-    virtual void  sublistView(TypedData data, int end, int start);
+    virtual void  sublistView(TypedData data, int start, int end);
 
-    virtual Float64List sublist(int end, int start);
+    virtual Float64List sublist(int start, int end);
 private:
 
 };
@@ -306,12 +306,12 @@ public:
 
      Float32x4ListCls(int length);
     void  fromList(List<Float32x4> elements);
-    virtual void  view(ByteBuffer buffer, int length, int offsetInBytes);
+    virtual void  view(ByteBuffer buffer, int offsetInBytes, int length);
 
-    virtual void  sublistView(TypedData data, int end, int start);
+    virtual void  sublistView(TypedData data, int start, int end);
 
     virtual List<Float32x4> operator+(List<Float32x4> other);
-    virtual Float32x4List sublist(int end, int start);
+    virtual Float32x4List sublist(int start, int end);
 private:
 
 };
@@ -324,12 +324,12 @@ public:
 
      Int32x4ListCls(int length);
     void  fromList(List<Int32x4> elements);
-    virtual void  view(ByteBuffer buffer, int length, int offsetInBytes);
+    virtual void  view(ByteBuffer buffer, int offsetInBytes, int length);
 
-    virtual void  sublistView(TypedData data, int end, int start);
+    virtual void  sublistView(TypedData data, int start, int end);
 
     virtual List<Int32x4> operator+(List<Int32x4> other);
-    virtual Int32x4List sublist(int end, int start);
+    virtual Int32x4List sublist(int start, int end);
 private:
 
 };
@@ -343,11 +343,11 @@ public:
      Float64x2ListCls(int length);
     void  fromList(List<Float64x2> elements);
     virtual List<Float64x2> operator+(List<Float64x2> other);
-    virtual void  view(ByteBuffer buffer, int length, int offsetInBytes);
+    virtual void  view(ByteBuffer buffer, int offsetInBytes, int length);
 
-    virtual void  sublistView(TypedData data, int end, int start);
+    virtual void  sublistView(TypedData data, int start, int end);
 
-    virtual Float64x2List sublist(int end, int start);
+    virtual Float64x2List sublist(int start, int end);
 private:
 
 };
@@ -868,7 +868,7 @@ public:
     static int wwww;
 
 
-     Float32x4Cls(double w, double x, double y, double z);
+     Float32x4Cls(double x, double y, double z, double w);
     void  splat(double v);
     void  zero();
     void  fromInt32x4Bits(Int32x4 x);
@@ -893,7 +893,7 @@ public:
     virtual double w();
     virtual int signMask();
     virtual Float32x4 shuffle(int mask);
-    virtual Float32x4 shuffleMix(int mask, Float32x4 other);
+    virtual Float32x4 shuffleMix(Float32x4 other, int mask);
     virtual Float32x4 withX(double x);
     virtual Float32x4 withY(double y);
     virtual Float32x4 withZ(double z);
@@ -1423,8 +1423,8 @@ public:
     static int wwww;
 
 
-     Int32x4Cls(int w, int x, int y, int z);
-    void  boolValue(bool w, bool x, bool y, bool z);
+     Int32x4Cls(int x, int y, int z, int w);
+    void  boolValue(bool x, bool y, bool z, bool w);
     void  fromFloat32x4Bits(Float32x4 x);
     virtual Int32x4 operator|(Int32x4 other);
     virtual Int32x4 operator&(Int32x4 other);
@@ -1437,7 +1437,7 @@ public:
     virtual int w();
     virtual int signMask();
     virtual Int32x4 shuffle(int mask);
-    virtual Int32x4 shuffleMix(int mask, Int32x4 other);
+    virtual Int32x4 shuffleMix(Int32x4 other, int mask);
     virtual Int32x4 withX(int x);
     virtual Int32x4 withY(int y);
     virtual Int32x4 withZ(int z);
@@ -1450,7 +1450,7 @@ public:
     virtual Int32x4 withFlagY(bool y);
     virtual Int32x4 withFlagZ(bool z);
     virtual Int32x4 withFlagW(bool w);
-    virtual Float32x4 select(Float32x4 falseValue, Float32x4 trueValue);
+    virtual Float32x4 select(Float32x4 trueValue, Float32x4 falseValue);
 private:
 
 };

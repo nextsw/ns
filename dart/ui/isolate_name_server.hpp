@@ -10,7 +10,7 @@ public:
 
     static SendPort lookupPortByName(String name);
 
-    static bool registerPortWithName(String name, SendPort port);
+    static bool registerPortWithName(SendPort port, String name);
 
     static bool removePortNameMapping(String name);
 
@@ -19,7 +19,7 @@ private:
     virtual void  _();
 
     static SendPort _lookupPortByName(String name);
-    static bool _registerPortWithName(String name, SendPort port);
+    static bool _registerPortWithName(SendPort port, String name);
     static bool _removePortNameMapping(String name);
 };
 using IsolateNameServer = std::shared_ptr<IsolateNameServerCls>;

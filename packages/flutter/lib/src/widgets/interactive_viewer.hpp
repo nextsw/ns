@@ -52,7 +52,7 @@ public:
 
     virtual void  builder(bool alignPanAxis, EdgeInsets boundaryMargin, InteractiveViewerWidgetBuilder builder, Clip clipBehavior, Unknown key, double maxScale, double minScale, GestureScaleEndCallback onInteractionEnd, GestureScaleStartCallback onInteractionStart, GestureScaleUpdateCallback onInteractionUpdate, bool panEnabled, bool scaleEnabled, double scaleFactor, TransformationController transformationController);
 
-    static Vector3 getNearestPointOnLine(Vector3 l1, Vector3 l2, Vector3 point);
+    static Vector3 getNearestPointOnLine(Vector3 point, Vector3 l1, Vector3 l2);
 
     static Quad getAxisAlignedBoundingBox(Quad quad);
 
@@ -114,7 +114,7 @@ private:
 
     virtual Matrix4 _matrixScale(Matrix4 matrix, double scale);
 
-    virtual Matrix4 _matrixRotate(Offset focalPoint, Matrix4 matrix, double rotation);
+    virtual Matrix4 _matrixRotate(Matrix4 matrix, double rotation, Offset focalPoint);
 
     virtual bool _gestureIsSupported(_GestureType gestureType);
 
@@ -173,7 +173,7 @@ enum _GestureType{
     scale,
     rotate,
 } // end _GestureType
-double _getFinalTime(double drag, double velocity);
+double _getFinalTime(double velocity, double drag);
 
 Offset _getMatrixTranslation(Matrix4 matrix);
 
@@ -185,7 +185,7 @@ Offset _exceedsBy(Quad boundary, Quad viewport);
 
 Offset _round(Offset offset);
 
-Offset _alignAxis(Axis axis, Offset offset);
+Offset _alignAxis(Offset offset, Axis axis);
 
 Axis _getPanAxis(Offset point1, Offset point2);
 

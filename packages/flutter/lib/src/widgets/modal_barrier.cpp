@@ -5,7 +5,7 @@ Widget ModalBarrierCls::build(BuildContext context) {
     ;
     assert(platformSupportsDismissingBarrier != nullptr);
     bool semanticsDismissible = dismissible && platformSupportsDismissingBarrier;
-    bool modalBarrierSemanticsDismissible = barrierSemanticsDismissible or semanticsDismissible;
+    bool modalBarrierSemanticsDismissible = barrierSemanticsDismissible | semanticsDismissible;
     InlineMethod;
     return make<BlockSemanticsCls>(make<ExcludeSemanticsCls>(!semanticsDismissible || !modalBarrierSemanticsDismissible, make<_ModalBarrierGestureDetectorCls>(handleDismiss, make<SemanticsCls>(semanticsDismissible? semanticsLabel : nullptr, semanticsDismissible? handleDismiss : nullptr, semanticsDismissible && semanticsLabel != nullptr? DirectionalityCls->of(context) : nullptr, make<MouseRegionCls>(SystemMouseCursorsCls::basic, make<ConstrainedBoxCls>(BoxConstraintsCls->expand(), color == nullptr? nullptr : make<ColoredBoxCls>(color!)))))));
 }

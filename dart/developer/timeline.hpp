@@ -35,14 +35,14 @@ using Flow = std::shared_ptr<FlowCls>;
 class TimelineCls : public ObjectCls {
 public:
 
-    static void startSync(Map arguments, Flow flow, String name);
+    static void startSync(String name, Map arguments, Flow flow);
 
     static void finishSync();
 
-    static void instantSync(Map arguments, String name);
+    static void instantSync(String name, Map arguments);
 
     template<typename T>
- static T timeSync(Map arguments, Flow flow, TimelineSyncFunction<T> function, String name);
+ static T timeSync(String name, TimelineSyncFunction<T> function, Map arguments, Flow flow);
 
     static int now();
 
@@ -58,11 +58,11 @@ public:
 
      TimelineTaskCls(String filterKey, TimelineTask parent);
 
-    virtual void  withTaskId(String filterKey, int taskId);
+    virtual void  withTaskId(int taskId, String filterKey);
 
-    virtual void start(Map arguments, String name);
+    virtual void start(String name, Map arguments);
 
-    virtual void instant(Map arguments, String name);
+    virtual void instant(String name, Map arguments);
 
     virtual void finish(Map arguments);
 
@@ -94,7 +94,7 @@ private:
     int _taskId;
 
 
-    virtual void  _(int _taskId, String name);
+    virtual void  _(String name, int _taskId);
     virtual void _start(Map arguments);
 
     virtual void _finish(Map arguments);
@@ -119,7 +119,7 @@ private:
     String _jsonArguments;
 
 
-    virtual void  _(Map arguments, Flow flow, String name);
+    virtual void  _(String name, Map arguments, Flow flow);
     virtual void _startSync();
 
 };
@@ -129,9 +129,9 @@ String _argumentsAsJson(Map arguments);
 bool _isDartStreamEnabled();
 int _getNextAsyncId();
 int _getTraceClock();
-void _reportTaskEvent(String argumentsAsJson, String category, String name, String phase, int taskId);
-void _reportFlowEvent(String argumentsAsJson, String category, int id, String name, int type);
-void _reportInstantEvent(String argumentsAsJson, String category, String name);
+void _reportTaskEvent(int taskId, String phase, String category, String name, String argumentsAsJson);
+void _reportFlowEvent(String category, String name, int type, int id, String argumentsAsJson);
+void _reportInstantEvent(String category, String name, String argumentsAsJson);
 
 
 #endif

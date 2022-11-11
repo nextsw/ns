@@ -90,7 +90,7 @@ public:
 
     virtual void detach();
 
-    virtual bool hitTestChildren(Offset position, BoxHitTestResult result);
+    virtual bool hitTestChildren(BoxHitTestResult result, Offset position);
 
     virtual bool hitTestSelf(Offset position);
 
@@ -102,7 +102,7 @@ public:
 
     virtual void describeSemanticsConfiguration(SemanticsConfiguration config);
 
-    virtual void assembleSemanticsNode(Iterable<SemanticsNode> children, SemanticsConfiguration config, SemanticsNode node);
+    virtual void assembleSemanticsNode(SemanticsNode node, SemanticsConfiguration config, Iterable<SemanticsNode> children);
 
     virtual void clearSemantics();
 
@@ -130,11 +130,11 @@ private:
 
     virtual void _setRasterCacheHints(PaintingContext context);
 
-    static List<SemanticsNode> _updateSemanticsChildren(List<CustomPainterSemantics> newChildSemantics, List<SemanticsNode> oldSemantics);
+    static List<SemanticsNode> _updateSemanticsChildren(List<SemanticsNode> oldSemantics, List<CustomPainterSemantics> newChildSemantics);
 
-    static bool _canUpdateSemanticsChild(CustomPainterSemantics newSemantics, SemanticsNode oldChild);
+    static bool _canUpdateSemanticsChild(SemanticsNode oldChild, CustomPainterSemantics newSemantics);
 
-    static SemanticsNode _updateSemanticsChild(CustomPainterSemantics newSemantics, SemanticsNode oldChild);
+    static SemanticsNode _updateSemanticsChild(SemanticsNode oldChild, CustomPainterSemantics newSemantics);
 
 };
 using RenderCustomPaint = std::shared_ptr<RenderCustomPaintCls>;

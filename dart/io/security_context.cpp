@@ -8,7 +8,7 @@ Uint8List SecurityContextCls::_protocolsToLengthEncoding(List<String> protocols)
     for (;  < protocolsLength; i++) {
         int length = protocols[i]->length();
         if (length > 0 && length <= 255) {
-            expectedLength = length;
+            expectedLength += length;
         } else {
             throw make<ArgumentErrorCls>(__s("Length of protocol must be between 1 and 255 (was: $length)."));
         }
@@ -24,7 +24,7 @@ Uint8List SecurityContextCls::_protocolsToLengthEncoding(List<String> protocols)
         int bits = 0;
         for (;  < proto->length(); j++) {
             auto char = proto->codeUnitAt(j);
-            bits = charValue;
+            bits |= charValue;
             bytes[bytesOffset++] = charValue & 0xff;
         }
         if (bits > 0x7f) {

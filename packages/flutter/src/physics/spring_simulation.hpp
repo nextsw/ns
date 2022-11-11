@@ -38,7 +38,7 @@ enum SpringType{
 class SpringSimulationCls : public SimulationCls {
 public:
 
-     SpringSimulationCls(double end, SpringDescription spring, double start, Unknown tolerance, double velocity);
+     SpringSimulationCls(SpringDescription spring, double start, double end, double velocity, Unknown tolerance);
 
     virtual SpringType type();
 
@@ -62,7 +62,7 @@ using SpringSimulation = std::shared_ptr<SpringSimulationCls>;
 class ScrollSpringSimulationCls : public SpringSimulationCls {
 public:
 
-     ScrollSpringSimulationCls(Unknown end, Unknown spring, Unknown start, Unknown tolerance, Unknown velocity);
+     ScrollSpringSimulationCls(Unknown spring, Unknown start, Unknown end, Unknown velocity, Unknown tolerance);
     virtual double x(double time);
 
 private:
@@ -78,7 +78,7 @@ public:
     virtual SpringType type();
 private:
 
-     _SpringSolutionCls(double initialPosition, double initialVelocity, SpringDescription spring);
+     _SpringSolutionCls(SpringDescription spring, double initialPosition, double initialVelocity);
 
 };
 using _SpringSolution = std::shared_ptr<_SpringSolutionCls>;

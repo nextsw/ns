@@ -87,11 +87,11 @@ private:
 
     virtual void _deviceUpdatePhase(VoidCallback task);
 
-    static bool _shouldMarkStateDirty(PointerEvent event, _MouseState state);
+    static bool _shouldMarkStateDirty(_MouseState state, PointerEvent event);
 
     virtual LinkedHashMap<MouseTrackerAnnotation, Matrix4> _hitTestResultToAnnotations(HitTestResult result);
 
-    virtual LinkedHashMap<MouseTrackerAnnotation, Matrix4> _findAnnotations(MouseDetectorAnnotationFinder hitTest, _MouseState state);
+    virtual LinkedHashMap<MouseTrackerAnnotation, Matrix4> _findAnnotations(_MouseState state, MouseDetectorAnnotationFinder hitTest);
 
     virtual void _handleDeviceUpdate(_MouseTrackerUpdateDetails details);
 

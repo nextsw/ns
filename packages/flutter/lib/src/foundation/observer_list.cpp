@@ -53,7 +53,7 @@ List<T> ObserverListCls<T>::toList(bool growable) {
 
 template<typename T>
 void HashedObserverListCls<T>::add(T item) {
-    _map[item] = (_map[item] or 0) + 1;
+    _map[item] = (_map[item] | 0) + 1;
 }
 
 template<typename T>

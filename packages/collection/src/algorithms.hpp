@@ -7,30 +7,30 @@
 #include "utils.hpp"
 
 template<typename E>
- int binarySearch(std::function<int(E , E )> compare, List<E> sortedList, E value);
+ int binarySearch(List<E> sortedList, E value, std::function<int(E , E )> compare);
 
 template<typename E, typename K>
- int binarySearchBy(std::function<int(K , K )> compare, int end, std::function<K(E element)> keyOf, List<E> sortedList, int start, E value);
+ int binarySearchBy(List<E> sortedList, std::function<K(E element)> keyOf, std::function<int(K , K )> compare, E value, int start, int end);
 
 template<typename E>
- int lowerBound(std::function<int(E , E )> compare, List<E> sortedList, E value);
+ int lowerBound(List<E> sortedList, E value, std::function<int(E , E )> compare);
 
 template<typename E, typename K>
- int lowerBoundBy(std::function<int(K , K )> compare, int end, std::function<K(E element)> keyOf, List<E> sortedList, int start, E value);
+ int lowerBoundBy(List<E> sortedList, std::function<K(E element)> keyOf, std::function<int(K , K )> compare, E value, int start, int end);
 
-void shuffle(List elements, int end, Random random, int start);
-
-template<typename E>
- void reverse(List<E> elements, int end, int start);
+void shuffle(List elements, int start, int end, Random random);
 
 template<typename E>
- void _reverse(List<E> elements, int end, int start);
+ void reverse(List<E> elements, int start, int end);
 
 template<typename E>
- void insertionSort(std::function<int(E , E )> compare, List<E> elements, int end, int start);
+ void _reverse(List<E> elements, int start, int end);
+
+template<typename E>
+ void insertionSort(List<E> elements, std::function<int(E , E )> compare, int end, int start);
 
 template<typename E, typename K>
- void insertionSortBy(std::function<int(K a, K b)> compare, List<E> elements, int end, std::function<K(E element)> keyOf, int start);
+ void insertionSortBy(List<E> elements, std::function<K(E element)> keyOf, std::function<int(K a, K b)> compare, int start, int end);
 
 int _mergeSortLimit;
 

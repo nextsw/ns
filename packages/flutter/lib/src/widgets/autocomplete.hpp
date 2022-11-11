@@ -122,9 +122,9 @@ private:
 
     virtual void _updateOverlay();
 
-    virtual void _updateTextEditingController(TextEditingController current, TextEditingController old);
+    virtual void _updateTextEditingController(TextEditingController old, TextEditingController current);
 
-    virtual void _updateFocusNode(FocusNode current, FocusNode old);
+    virtual void _updateFocusNode(FocusNode old, FocusNode current);
 
 };
 template<typename T>

@@ -75,7 +75,7 @@ public:
     Curve curve;
 
 
-     IntervalCls(double begin, Curve curve, double end);
+     IntervalCls(double begin, double end, Curve curve);
 
     virtual double transformInternal(double t);
 
@@ -139,7 +139,7 @@ public:
     Offset b2;
 
 
-     ThreePointCubicCls(Offset a1, Offset a2, Offset b1, Offset b2, Offset midpoint);
+     ThreePointCubicCls(Offset a1, Offset b1, Offset midpoint, Offset a2, Offset b2);
     virtual double transformInternal(double t);
 
     virtual String toString();
@@ -203,7 +203,7 @@ private:
     double _tension;
 
 
-    static List<List<Offset>> _computeSegments(List<Offset> controlPoints, Offset endHandle, Offset startHandle, double tension);
+    static List<List<Offset>> _computeSegments(List<Offset> controlPoints, double tension, Offset endHandle, Offset startHandle);
 
     virtual void _initializeIfNeeded();
 

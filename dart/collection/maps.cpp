@@ -32,9 +32,9 @@ Object MapBaseCls<K, V>::_id(Object x) {
 }
 
 template<typename K, typename V>
-void MapBaseCls<K, V>::_fillMapWithMappedIterable(Iterable<Object> iterable, std::function<Object(Object element)> key, Map<Object, Object> map, std::function<Object(Object element)> value) {
-    key = _id;
-    value = _id;
+void MapBaseCls<K, V>::_fillMapWithMappedIterable(Map<Object, Object> map, Iterable<Object> iterable, std::function<Object(Object element)> key, std::function<Object(Object element)> value) {
+    key |= _id;
+    value |= _id;
     if (key == nullptr)     {
         throw __s("!");
     }
@@ -47,7 +47,7 @@ void MapBaseCls<K, V>::_fillMapWithMappedIterable(Iterable<Object> iterable, std
 }
 
 template<typename K, typename V>
-void MapBaseCls<K, V>::_fillMapWithIterables(Iterable<Object> keys, Map<Object, Object> map, Iterable<Object> values) {
+void MapBaseCls<K, V>::_fillMapWithIterables(Map<Object, Object> map, Iterable<Object> keys, Iterable<Object> values) {
     Iterator<Object> keyIterator = keys->iterator();
     Iterator<Object> valueIterator = values->iterator();
     bool hasNextKey = keyIterator->moveNext();
@@ -93,7 +93,7 @@ bool MapMixinCls<K, V>::containsValue(Object value) {
 }
 
 template<typename K, typename V>
-V MapMixinCls<K, V>::putIfAbsent(std::function<V()> ifAbsent, K key) {
+V MapMixinCls<K, V>::putIfAbsent(K key, std::function<V()> ifAbsent) {
     if (containsKey(key)) {
         return as<V>(this[key]);
     }
@@ -101,7 +101,7 @@ V MapMixinCls<K, V>::putIfAbsent(std::function<V()> ifAbsent, K key) {
 }
 
 template<typename K, typename V>
-V MapMixinCls<K, V>::update(std::function<V()> ifAbsent, K key, std::function<V(V value)> update) {
+V MapMixinCls<K, V>::update(K key, std::function<V(V value)> update, std::function<V()> ifAbsent) {
     if (this->containsKey(key)) {
         return this[key] = update(as<V>(this[key]));
     }
@@ -275,12 +275,12 @@ void _UnmodifiableMapMixinCls<K, V>::removeWhere(std::function<bool(K key, V val
 }
 
 template<typename K, typename V>
-V _UnmodifiableMapMixinCls<K, V>::putIfAbsent(std::function<V()> ifAbsent, K key) {
+V _UnmodifiableMapMixinCls<K, V>::putIfAbsent(K key, std::function<V()> ifAbsent) {
     throw make<UnsupportedErrorCls>(__s("Cannot modify unmodifiable map"));
 }
 
 template<typename K, typename V>
-V _UnmodifiableMapMixinCls<K, V>::update(std::function<V()> ifAbsent, K key, std::function<V(V value)> update) {
+V _UnmodifiableMapMixinCls<K, V>::update(K key, std::function<V(V value)> update, std::function<V()> ifAbsent) {
     throw make<UnsupportedErrorCls>(__s("Cannot modify unmodifiable map"));
 }
 
@@ -323,7 +323,7 @@ void MapViewCls<K, V>::clear() {
 }
 
 template<typename K, typename V>
-V MapViewCls<K, V>::putIfAbsent(std::function<V()> ifAbsent, K key) {
+V MapViewCls<K, V>::putIfAbsent(K key, std::function<V()> ifAbsent) {
     return _map->putIfAbsent(key, ifAbsent);
 }
 
@@ -394,7 +394,7 @@ Map<K2, V2> MapViewCls<K, V>::map(std::function<MapEntry<K2, V2>(K key, V value)
 }
 
 template<typename K, typename V>
-V MapViewCls<K, V>::update(std::function<V()> ifAbsent, K key, std::function<V(V value)> update) {
+V MapViewCls<K, V>::update(K key, std::function<V(V value)> update, std::function<V()> ifAbsent) {
     return _map->update(key, updateifAbsent);
 }
 

@@ -67,7 +67,7 @@ public:
     ChildIndexGetter findChildIndexCallback;
 
 
-     SliverChildBuilderDelegateCls(bool addAutomaticKeepAlives, bool addRepaintBoundaries, bool addSemanticIndexes, NullableIndexedWidgetBuilder builder, int childCount, ChildIndexGetter findChildIndexCallback, SemanticIndexCallback semanticIndexCallback, int semanticIndexOffset);
+     SliverChildBuilderDelegateCls(NullableIndexedWidgetBuilder builder, bool addAutomaticKeepAlives, bool addRepaintBoundaries, bool addSemanticIndexes, int childCount, ChildIndexGetter findChildIndexCallback, SemanticIndexCallback semanticIndexCallback, int semanticIndexOffset);
 
     virtual int findIndexByKey(Key key);
 
@@ -97,9 +97,9 @@ public:
     List<Widget> children;
 
 
-     SliverChildListDelegateCls(bool addAutomaticKeepAlives, bool addRepaintBoundaries, bool addSemanticIndexes, List<Widget> children, SemanticIndexCallback semanticIndexCallback, int semanticIndexOffset);
+     SliverChildListDelegateCls(List<Widget> children, bool addAutomaticKeepAlives, bool addRepaintBoundaries, bool addSemanticIndexes, SemanticIndexCallback semanticIndexCallback, int semanticIndexOffset);
 
-    virtual void  fixed(bool addAutomaticKeepAlives, bool addRepaintBoundaries, bool addSemanticIndexes, List<Widget> children, SemanticIndexCallback semanticIndexCallback, int semanticIndexOffset);
+    virtual void  fixed(List<Widget> children, bool addAutomaticKeepAlives, bool addRepaintBoundaries, bool addSemanticIndexes, SemanticIndexCallback semanticIndexCallback, int semanticIndexOffset);
 
     virtual int findIndexByKey(Key key);
 
@@ -162,7 +162,7 @@ private:
     bool _wantKeepAlive;
 
 
-    virtual void _updateSelectablesWithSelections(bool add, Selectable selectable);
+    virtual void _updateSelectablesWithSelections(Selectable selectable, bool add);
 
 };
 using _SelectionKeepAliveState = std::shared_ptr<_SelectionKeepAliveStateCls>;
@@ -248,7 +248,7 @@ using SliverGrid = std::shared_ptr<SliverGridCls>;
 class SliverMultiBoxAdaptorElementCls : public RenderObjectElementCls {
 public:
 
-     SliverMultiBoxAdaptorElementCls(bool replaceMovedChildren, SliverMultiBoxAdaptorWidget widget);
+     SliverMultiBoxAdaptorElementCls(SliverMultiBoxAdaptorWidget widget, bool replaceMovedChildren);
 
     virtual RenderSliverMultiBoxAdaptor renderObject();
 
@@ -256,9 +256,9 @@ public:
 
     virtual void performRebuild();
 
-    virtual void createChild(RenderBox after, int index);
+    virtual void createChild(int index, RenderBox after);
 
-    virtual Element updateChild(Element child, Object newSlot, Widget newWidget);
+    virtual Element updateChild(Element child, Widget newWidget, Object newSlot);
 
     virtual void forgetChild(Element child);
 
@@ -282,7 +282,7 @@ public:
 
     virtual void insertRenderObjectChild(RenderObject child, int slot);
 
-    virtual void moveRenderObjectChild(RenderObject child, int newSlot, int oldSlot);
+    virtual void moveRenderObjectChild(RenderObject child, int oldSlot, int newSlot);
 
     virtual void removeRenderObjectChild(RenderObject child, int slot);
 
@@ -304,7 +304,7 @@ private:
 
     virtual Widget _build(int index, SliverMultiBoxAdaptorWidget widget);
 
-    static double _extrapolateMaxScrollOffset(int childCount, int firstIndex, int lastIndex, double leadingScrollOffset, double trailingScrollOffset);
+    static double _extrapolateMaxScrollOffset(int firstIndex, int lastIndex, double leadingScrollOffset, double trailingScrollOffset, int childCount);
 
 };
 using SliverMultiBoxAdaptorElement = std::shared_ptr<SliverMultiBoxAdaptorElementCls>;

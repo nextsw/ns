@@ -184,7 +184,7 @@ Animation<Rect> RelativePositionedTransitionCls::rect() {
 }
 
 Widget RelativePositionedTransitionCls::build(BuildContext context) {
-    RelativeRect offsets = RelativeRectCls->fromSize(rect()->value() or RectCls::zero, size);
+    RelativeRect offsets = RelativeRectCls->fromSize(rect()->value() | RectCls::zero, size);
     return make<PositionedCls>(offsets->top, offsets->right, offsets->bottom, offsets->left, child);
 }
 

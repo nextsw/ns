@@ -27,7 +27,7 @@ public:
 
     static Decoration lerp(Decoration a, Decoration b, double t);
 
-    virtual bool hitTest(Offset position, Size size, TextDirection textDirection);
+    virtual bool hitTest(Size size, Offset position, TextDirection textDirection);
 
     virtual BoxPainter createBoxPainter(VoidCallback onChanged);
     virtual Path getClipPath(Rect rect, TextDirection textDirection);
@@ -43,7 +43,7 @@ public:
 
 
      BoxPainterCls(VoidCallback onChanged);
-    virtual void paint(Canvas canvas, ImageConfiguration configuration, Offset offset);
+    virtual void paint(Canvas canvas, Offset offset, ImageConfiguration configuration);
     virtual void dispose();
 
 private:

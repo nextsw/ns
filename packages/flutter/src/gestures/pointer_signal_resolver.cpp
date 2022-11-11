@@ -1,9 +1,9 @@
 #include "pointer_signal_resolver.hpp"
 bool _isSameEvent(PointerSignalEvent event1, PointerSignalEvent event2) {
-    return (event1->original or event1) == (event2->original or event2);
+    return (event1->original | event1) == (event2->original | event2);
 }
 
-void PointerSignalResolverCls::register(PointerSignalResolvedCallback callback, PointerSignalEvent event) {
+void PointerSignalResolverCls::register(PointerSignalEvent event, PointerSignalResolvedCallback callback) {
     assert(event != nullptr);
     assert(callback != nullptr);
     assert(_currentEvent == nullptr || _isSameEvent(_currentEvent!, event));

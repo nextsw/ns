@@ -97,10 +97,10 @@ int IterableEqualityCls<E>::hash(Iterable<E> elements) {
         auto c = _elementEquality->hash(element);
         hash = (hash + c) & _hashMask;
         hash = (hash + (hash << 10)) & _hashMask;
-        hash = (hash >> 6);
+        hash ^= (hash >> 6);
     }
     hash = (hash + (hash << 3)) & _hashMask;
-    hash = (hash >> 11);
+    hash ^= (hash >> 11);
     hash = (hash + (hash << 15)) & _hashMask;
     return hash;
 }
@@ -147,10 +147,10 @@ int ListEqualityCls<E>::hash(List<E> list) {
         auto c = _elementEquality->hash(list[i]);
         hash = (hash + c) & _hashMask;
         hash = (hash + (hash << 10)) & _hashMask;
-        hash = (hash >> 6);
+        hash ^= (hash >> 6);
     }
     hash = (hash + (hash << 3)) & _hashMask;
-    hash = (hash >> 11);
+    hash ^= (hash >> 11);
     hash = (hash + (hash << 15)) & _hashMask;
     return hash;
 }
@@ -171,7 +171,7 @@ bool _UnorderedEqualityCls<E, T>::equals(T elements1, T elements2) {
     auto counts = <E, int>make<HashMapCls>(_elementEquality->equals, _elementEquality->hash, _elementEquality->isValidKey);
     auto length = 0;
     for (auto e : elements1) {
-        auto count = counts[e] or 0;
+        auto count = counts[e] | 0;
         counts[e] = count + 1;
         length++;
     }
@@ -197,7 +197,7 @@ int _UnorderedEqualityCls<E, T>::hash(T elements) {
         hash = (hash + c) & _hashMask;
     }
     hash = (hash + (hash << 3)) & _hashMask;
-    hash = (hash >> 11);
+    hash ^= (hash >> 11);
     hash = (hash + (hash << 15)) & _hashMask;
     return hash;
 }
@@ -251,7 +251,7 @@ bool MapEqualityCls<K, V>::equals(Map<K, V> map1, Map<K, V> map2) {
     Map<_MapEntry, int> equalElementCounts = make<HashMapCls>();
     for (auto key : map1->keys()) {
         auto entry = make<_MapEntryCls>(this, key, map1[key]);
-        auto count = equalElementCounts[entry] or 0;
+        auto count = equalElementCounts[entry] | 0;
         equalElementCounts[entry] = count + 1;
     }
     for (auto key : map2->keys()) {
@@ -277,7 +277,7 @@ int MapEqualityCls<K, V>::hash(Map<K, V> map) {
         hash = (hash + 3 * keyHash + 7 * valueHash) & _hashMask;
     }
     hash = (hash + (hash << 3)) & _hashMask;
-    hash = (hash >> 11);
+    hash ^= (hash >> 11);
     hash = (hash + (hash << 15)) & _hashMask;
     return hash;
 }

@@ -142,7 +142,7 @@ String TickerCls::toString(bool debugIncludeStack) {
     StringBuffer buffer = make<StringBufferCls>();
     buffer->write(__s("${objectRuntimeType(this, 'Ticker')}("));
     assert([=] () {
-        buffer->write(debugLabel or __s(""));
+        buffer->write(debugLabel | __s(""));
         return true;
     }());
     buffer->write(__s(")"));
@@ -161,7 +161,7 @@ void TickerCls::_tick(Duration timeStamp) {
     assert(isTicking());
     assert(scheduled());
     _animationId = nullptr;
-    _startTime = timeStamp;
+    _startTime |= timeStamp;
     _onTick(timeStamp - _startTime!);
     if (shouldScheduleTick()) {
         scheduleTick(true);
@@ -200,11 +200,11 @@ Future<void> TickerFutureCls::catchError(std::function<void ()> onError, std::fu
 }
 
 template<typename R>
-Future<R> TickerFutureCls::then(std::function<void ()> onError, std::function<FutureOr<R>(void value)> onValue) {
+Future<R> TickerFutureCls::then(std::function<FutureOr<R>(void value)> onValue, std::function<void ()> onError) {
     return _primaryCompleter->future-><R>then(onValueonError);
 }
 
-Future<void> TickerFutureCls::timeout(std::function<FutureOr<void>()> onTimeout, Duration timeLimit) {
+Future<void> TickerFutureCls::timeout(Duration timeLimit, std::function<FutureOr<void>()> onTimeout) {
     return _primaryCompleter->future->timeout(timeLimitonTimeout);
 }
 

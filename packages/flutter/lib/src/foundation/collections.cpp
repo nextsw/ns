@@ -29,7 +29,7 @@ bool listEquals(List<T> a, List<T> b) {
     if (identical(a, b)) {
         return true;
     }
-    for (;  < a->length(); index = 1) {
+    for (;  < a->length(); index += 1) {
         if (a[index] != b[index]) {
             return false;
         }
@@ -77,9 +77,9 @@ int binarySearch(List<T> sortedList, T value) {
 }
 
 template<typename T>
-void mergeSort(std::function<int(T , T )> compare, int end, List<T> list, int start) {
-    end = list->length();
-    compare = <T>_defaultCompare();
+void mergeSort(List<T> list, std::function<int(T , T )> compare, int end, int start) {
+    end |= list->length();
+    compare |= <T>_defaultCompare();
     int length = end - start;
     if ( < 2) {
         return;
@@ -106,9 +106,9 @@ Comparator<T> _defaultCompare() {
 }
 
 template<typename T>
-void _insertionSort(std::function<int(T , T )> compare, int end, List<T> list, int start) {
-    compare = <T>_defaultCompare();
-    end = list->length();
+void _insertionSort(List<T> list, std::function<int(T , T )> compare, int end, int start) {
+    compare |= <T>_defaultCompare();
+    end |= list->length();
     for (;  < end; pos++) {
         int min = start;
         int max = pos;
@@ -128,7 +128,7 @@ void _insertionSort(std::function<int(T , T )> compare, int end, List<T> list, i
 }
 
 template<typename T>
-void _movingInsertionSort(std::function<int(T , T )> compare, int end, List<T> list, int start, List<T> target, int targetOffset) {
+void _movingInsertionSort(List<T> list, std::function<int(T , T )> compare, int start, int end, List<T> target, int targetOffset) {
     int length = end - start;
     if (length == 0) {
         return;
@@ -152,7 +152,7 @@ void _movingInsertionSort(std::function<int(T , T )> compare, int end, List<T> l
 }
 
 template<typename T>
-void _mergeSort(std::function<int(T , T )> compare, int end, List<T> list, int start, List<T> target, int targetOffset) {
+void _mergeSort(List<T> list, std::function<int(T , T )> compare, int start, int end, List<T> target, int targetOffset) {
     int length = end - start;
     if ( < _kMergeSortLimit) {
         <T>_movingInsertionSort(list, compare, start, end, target, targetOffset);
@@ -168,7 +168,7 @@ void _mergeSort(std::function<int(T , T )> compare, int end, List<T> list, int s
 }
 
 template<typename T>
-void _merge(std::function<int(T , T )> compare, int firstEnd, List<T> firstList, int firstStart, int secondEnd, List<T> secondList, int secondStart, List<T> target, int targetOffset) {
+void _merge(std::function<int(T , T )> compare, List<T> firstList, int firstStart, int firstEnd, List<T> secondList, int secondStart, int secondEnd, List<T> target, int targetOffset) {
     assert( < firstEnd);
     assert( < secondEnd);
     int cursor1 = firstStart;

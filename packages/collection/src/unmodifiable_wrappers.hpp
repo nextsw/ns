@@ -30,7 +30,7 @@ public:
 
     virtual void addAll(Iterable<E> iterable);
 
-    virtual void insert(E element, int index);
+    virtual void insert(int index, E element);
 
     virtual void insertAll(int index, Iterable<E> iterable);
 
@@ -44,9 +44,9 @@ public:
 
     virtual void retainWhere(std::function<bool(E )> test);
 
-    virtual void removeRange(int end, int start);
+    virtual void removeRange(int start, int end);
 
-    virtual void replaceRange(int end, Iterable<E> iterable, int start);
+    virtual void replaceRange(int start, int end, Iterable<E> iterable);
 
     virtual void clear();
 
@@ -105,7 +105,7 @@ public:
 
     virtual void operator[]=(K key, V value);
 
-    virtual V putIfAbsent(std::function<V()> ifAbsent, K key);
+    virtual V putIfAbsent(K key, std::function<V()> ifAbsent);
 
     virtual void addAll(Map<K, V> other);
 

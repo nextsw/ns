@@ -26,7 +26,7 @@ public:
 
     static RenderAbstractViewport of(RenderObject object);
 
-    virtual RevealedOffset getOffsetToReveal(double alignment, Rect rect, RenderObject target);
+    virtual RevealedOffset getOffsetToReveal(RenderObject target, double alignment, Rect rect);
 private:
 
     virtual void  _();
@@ -113,19 +113,19 @@ public:
 
     virtual void debugPaintSize(PaintingContext context, Offset offset);
 
-    virtual bool hitTestChildren(Offset position, BoxHitTestResult result);
+    virtual bool hitTestChildren(BoxHitTestResult result, Offset position);
 
-    virtual RevealedOffset getOffsetToReveal(double alignment, Rect rect, RenderObject target);
+    virtual RevealedOffset getOffsetToReveal(RenderObject target, double alignment, Rect rect);
 
-    virtual Offset computeAbsolutePaintOffset(RenderSliver child, GrowthDirection growthDirection, double layoutOffset);
+    virtual Offset computeAbsolutePaintOffset(RenderSliver child, double layoutOffset, GrowthDirection growthDirection);
 
     virtual void debugFillProperties(DiagnosticPropertiesBuilder properties);
 
     virtual List<DiagnosticsNode> debugDescribeChildren();
 
     virtual bool hasVisualOverflow();
-    virtual void updateOutOfBandData(SliverGeometry childLayoutGeometry, GrowthDirection growthDirection);
-    virtual void updateChildLayoutOffset(RenderSliver child, GrowthDirection growthDirection, double layoutOffset);
+    virtual void updateOutOfBandData(GrowthDirection growthDirection, SliverGeometry childLayoutGeometry);
+    virtual void updateChildLayoutOffset(RenderSliver child, double layoutOffset, GrowthDirection growthDirection);
     virtual Offset paintOffsetOf(RenderSliver child);
     virtual double scrollOffsetOf(RenderSliver child, double scrollOffsetWithinChild);
     virtual double maxScrollObstructionExtentBefore(RenderSliver child);
@@ -189,9 +189,9 @@ public:
 
     virtual bool hasVisualOverflow();
 
-    virtual void updateOutOfBandData(SliverGeometry childLayoutGeometry, GrowthDirection growthDirection);
+    virtual void updateOutOfBandData(GrowthDirection growthDirection, SliverGeometry childLayoutGeometry);
 
-    virtual void updateChildLayoutOffset(RenderSliver child, GrowthDirection growthDirection, double layoutOffset);
+    virtual void updateChildLayoutOffset(RenderSliver child, double layoutOffset, GrowthDirection growthDirection);
 
     virtual Offset paintOffsetOf(RenderSliver child);
 
@@ -227,7 +227,7 @@ private:
     bool _hasVisualOverflow;
 
 
-    virtual double _attemptLayout(double correctedOffset, double crossAxisExtent, double mainAxisExtent);
+    virtual double _attemptLayout(double mainAxisExtent, double crossAxisExtent, double correctedOffset);
 
 };
 using RenderViewport = std::shared_ptr<RenderViewportCls>;
@@ -245,9 +245,9 @@ public:
 
     virtual bool hasVisualOverflow();
 
-    virtual void updateOutOfBandData(SliverGeometry childLayoutGeometry, GrowthDirection growthDirection);
+    virtual void updateOutOfBandData(GrowthDirection growthDirection, SliverGeometry childLayoutGeometry);
 
-    virtual void updateChildLayoutOffset(RenderSliver child, GrowthDirection growthDirection, double layoutOffset);
+    virtual void updateChildLayoutOffset(RenderSliver child, double layoutOffset, GrowthDirection growthDirection);
 
     virtual Offset paintOffsetOf(RenderSliver child);
 
@@ -275,7 +275,7 @@ private:
     bool _hasVisualOverflow;
 
 
-    virtual double _attemptLayout(double correctedOffset, double crossAxisExtent, double mainAxisExtent);
+    virtual double _attemptLayout(double mainAxisExtent, double crossAxisExtent, double correctedOffset);
 
 };
 using RenderShrinkWrappingViewport = std::shared_ptr<RenderShrinkWrappingViewportCls>;

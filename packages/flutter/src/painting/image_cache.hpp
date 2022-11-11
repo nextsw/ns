@@ -30,7 +30,7 @@ public:
 
     virtual void clear();
 
-    virtual bool evict(bool includeLive, Object key);
+    virtual bool evict(Object key, bool includeLive);
 
     virtual ImageStreamCompleter putIfAbsent(Object key, std::function<ImageStreamCompleter()> loader, ImageErrorListener onError);
 
@@ -58,9 +58,9 @@ private:
     int _currentSizeBytes;
 
 
-    virtual void _touch(_CachedImage image, Object key, TimelineTask timelineTask);
+    virtual void _touch(Object key, _CachedImage image, TimelineTask timelineTask);
 
-    virtual void _trackLiveImage(ImageStreamCompleter completer, Object key, int sizeBytes);
+    virtual void _trackLiveImage(Object key, ImageStreamCompleter completer, int sizeBytes);
 
     virtual void _checkCacheSize(TimelineTask timelineTask);
 

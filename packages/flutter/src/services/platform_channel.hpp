@@ -30,9 +30,9 @@ public:
     String codecTypeName;
 
 
-    virtual Future<void> handlePlatformMessage(PlatformMessageResponseCallback callback, String channel, ByteData data);
+    virtual Future<void> handlePlatformMessage(String channel, ByteData data, PlatformMessageResponseCallback callback);
 
-    virtual Future<ByteData> sendWithPostfix(String channel, ByteData message, String postfix);
+    virtual Future<ByteData> sendWithPostfix(String channel, String postfix, ByteData message);
 
     virtual Future<ByteData> send(String channel, ByteData message);
 
@@ -40,7 +40,7 @@ public:
 
 private:
 
-     _ProfiledBinaryMessengerCls(String channelTypeName, String codecTypeName, BinaryMessenger proxy);
+     _ProfiledBinaryMessengerCls(BinaryMessenger proxy, String channelTypeName, String codecTypeName);
 };
 using _ProfiledBinaryMessenger = std::shared_ptr<_ProfiledBinaryMessengerCls>;
 
@@ -82,9 +82,9 @@ Map<String, _PlatformChannelStats> _debugProfilePlatformChannelsStats;
 
 Future<void> _debugLaunchProfilePlatformChannels();
 
-void _debugRecordUpStream(ByteData bytes, String channelTypeName, String codecTypeName, String name);
+void _debugRecordUpStream(String channelTypeName, String name, String codecTypeName, ByteData bytes);
 
-void _debugRecordDownStream(ByteData bytes, String channelTypeName, String codecTypeName, String name);
+void _debugRecordDownStream(String channelTypeName, String name, String codecTypeName, ByteData bytes);
 
 
 template<typename T>
@@ -95,7 +95,7 @@ public:
     MessageCodec<T> codec;
 
 
-     BasicMessageChannelCls(BinaryMessenger binaryMessenger, MessageCodec<T> codec, String name);
+     BasicMessageChannelCls(String name, MessageCodec<T> codec, BinaryMessenger binaryMessenger);
 
     virtual BinaryMessenger binaryMessenger();
 
@@ -118,18 +118,18 @@ public:
     MethodCodec codec;
 
 
-     MethodChannelCls(BinaryMessenger binaryMessenger, MethodCodec codec, String name);
+     MethodChannelCls(String name, MethodCodec codec, BinaryMessenger binaryMessenger);
 
     virtual BinaryMessenger binaryMessenger();
 
     template<typename T>
- virtual Future<T> invokeMethod(dynamic arguments, String method);
+ virtual Future<T> invokeMethod(String method, dynamic arguments);
 
     template<typename T>
- virtual Future<List<T>> invokeListMethod(dynamic arguments, String method);
+ virtual Future<List<T>> invokeListMethod(String method, dynamic arguments);
 
     template<typename K, typename V>
- virtual Future<Map<K, V>> invokeMapMethod(dynamic arguments, String method);
+ virtual Future<Map<K, V>> invokeMapMethod(String method, dynamic arguments);
 
     virtual void setMethodCallHandler(std::function<Future<dynamic>(MethodCall call)> handler);
 
@@ -138,9 +138,9 @@ private:
 
 
     template<typename T>
- virtual Future<T> _invokeMethod(dynamic arguments, String method, bool missingOk);
+ virtual Future<T> _invokeMethod(String method, dynamic arguments, bool missingOk);
 
-    virtual Future<ByteData> _handleAsMethodCall(std::function<Future<dynamic>(MethodCall call)> handler, ByteData message);
+    virtual Future<ByteData> _handleAsMethodCall(ByteData message, std::function<Future<dynamic>(MethodCall call)> handler);
 
 };
 using MethodChannel = std::shared_ptr<MethodChannelCls>;
@@ -148,9 +148,9 @@ using MethodChannel = std::shared_ptr<MethodChannelCls>;
 class OptionalMethodChannelCls : public MethodChannelCls {
 public:
 
-     OptionalMethodChannelCls(Unknown binaryMessenger, Unknown codec, Unknown name);
+     OptionalMethodChannelCls(Unknown name, Unknown codec, Unknown binaryMessenger);
     template<typename T>
- virtual Future<T> invokeMethod(dynamic arguments, String method);
+ virtual Future<T> invokeMethod(String method, dynamic arguments);
 
 private:
 
@@ -164,7 +164,7 @@ public:
     MethodCodec codec;
 
 
-     EventChannelCls(BinaryMessenger binaryMessenger, MethodCodec codec, String name);
+     EventChannelCls(String name, MethodCodec codec, BinaryMessenger binaryMessenger);
 
     virtual BinaryMessenger binaryMessenger();
 

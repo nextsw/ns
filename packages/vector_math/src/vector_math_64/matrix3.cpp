@@ -3,7 +3,7 @@ Float64List Matrix3Cls::storage() {
     return _m3storage;
 }
 
-void Matrix3Cls::solve2(Matrix3 A, Vector2 b, Vector2 x) {
+void Matrix3Cls::solve2(Matrix3 A, Vector2 x, Vector2 b) {
     Unknown a11 = A->entry(0, 0);
     Unknown a12 = A->entry(0, 1);
     Unknown a21 = A->entry(1, 0);
@@ -17,7 +17,7 @@ void Matrix3Cls::solve2(Matrix3 A, Vector2 b, Vector2 x) {
     auto _c1 = x;_c1.x = auto _c2 = det * (a22 * bx - a12 * by);_c2.y = det * (a11 * by - a21 * bx);_c2;_c1;
 }
 
-void Matrix3Cls::solve(Matrix3 A, Vector3 b, Vector3 x) {
+void Matrix3Cls::solve(Matrix3 A, Vector3 x, Vector3 b) {
     Unknown A0x = A->entry(0, 0);
     Unknown A0y = A->entry(1, 0);
     Unknown A0z = A->entry(2, 0);
@@ -48,17 +48,17 @@ void Matrix3Cls::solve(Matrix3 A, Vector3 b, Vector3 x) {
     auto _c1 = x;_c1.x = auto _c2 = x_;_c2.y = auto _c3 = y_;_c3.z = z_;_c3;_c2;_c1;
 }
 
-int Matrix3Cls::index(int col, int row) {
+int Matrix3Cls::index(int row, int col) {
     return (col * 3) + row;
 }
 
-double Matrix3Cls::entry(int col, int row) {
+double Matrix3Cls::entry(int row, int col) {
     assert((row >= 0) && ( < dimension()));
     assert((col >= 0) && ( < dimension()));
     return _m3storage[index(row, col)];
 }
 
-void Matrix3Cls::setEntry(int col, int row, double v) {
+void Matrix3Cls::setEntry(int row, int col, double v) {
     assert((row >= 0) && ( < dimension()));
     assert((col >= 0) && ( < dimension()));
     _m3storage[index(row, col)] = v;
@@ -223,7 +223,7 @@ void Matrix3Cls::row2(Vector3 arg) {
     return setRow(2, arg);
 }
 
-void Matrix3Cls::setRow(Vector3 arg, int row) {
+void Matrix3Cls::setRow(int row, Vector3 arg) {
     Unknown argStorage = arg->_v3storage;
     _m3storage[index(row, 0)] = argStorage[0];
     _m3storage[index(row, 1)] = argStorage[1];
@@ -239,7 +239,7 @@ Vector3 Matrix3Cls::getRow(int row) {
     return r;
 }
 
-void Matrix3Cls::setColumn(Vector3 arg, int column) {
+void Matrix3Cls::setColumn(int column, Vector3 arg) {
     Unknown argStorage = arg->_v3storage;
     Unknown entry = column * 3;
     _m3storage[entry + 2] = argStorage[2];
@@ -375,9 +375,9 @@ double Matrix3Cls::dotColumn(int j, Vector3 v) {
 
 double Matrix3Cls::trace() {
     auto t = 0.0;
-    t = _m3storage[0];
-    t = _m3storage[4];
-    t = _m3storage[8];
+    t += _m3storage[0];
+    t += _m3storage[4];
+    t += _m3storage[8];
     return t;
 }
 
@@ -385,21 +385,21 @@ double Matrix3Cls::infinityNorm() {
     auto norm = 0.0;
     {
         auto row_norm = 0.0;
-        row_norm = _m3storage[0]->abs();
-        row_norm = _m3storage[1]->abs();
-        row_norm = _m3storage[2]->abs();
+        row_norm += _m3storage[0]->abs();
+        row_norm += _m3storage[1]->abs();
+        row_norm += _m3storage[2]->abs();
         norm = row_norm > norm? row_norm : norm;
     }    {
         auto row_norm = 0.0;
-        row_norm = _m3storage[3]->abs();
-        row_norm = _m3storage[4]->abs();
-        row_norm = _m3storage[5]->abs();
+        row_norm += _m3storage[3]->abs();
+        row_norm += _m3storage[4]->abs();
+        row_norm += _m3storage[5]->abs();
         norm = row_norm > norm? row_norm : norm;
     }    {
         auto row_norm = 0.0;
-        row_norm = _m3storage[6]->abs();
-        row_norm = _m3storage[7]->abs();
-        row_norm = _m3storage[8]->abs();
+        row_norm += _m3storage[6]->abs();
+        row_norm += _m3storage[7]->abs();
+        row_norm += _m3storage[8]->abs();
         norm = row_norm > norm? row_norm : norm;
     }    return norm;
 }
@@ -739,7 +739,7 @@ void Matrix3Cls::copyFromArray(List<double> array, int offset) {
 }
 
 List<double> Matrix3Cls::applyToVector3Array(List<double> array, int offset) {
-    for (;  < array->length(); i = 3, j = 3) {
+    for (;  < array->length(); i += 3, j += 3) {
             auto _c1 = Vector3Cls->array(array, j);    _c1.applyMatrix3(this);Unknown v = _c1;
         array[j] = v->storage[0];
         array[j + 1] = v->storage[1];

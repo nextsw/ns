@@ -87,7 +87,7 @@ int FixedExtentScrollControllerCls::selectedItem() {
     return position->itemIndex();
 }
 
-Future<void> FixedExtentScrollControllerCls::animateToItem(Curve curve, Duration duration, int itemIndex) {
+Future<void> FixedExtentScrollControllerCls::animateToItem(int itemIndex, Curve curve, Duration duration) {
     if (!hasClients) {
         return;
     }
@@ -100,19 +100,19 @@ void FixedExtentScrollControllerCls::jumpToItem(int itemIndex) {
     }
 }
 
-ScrollPosition FixedExtentScrollControllerCls::createScrollPosition(ScrollContext context, ScrollPosition oldPosition, ScrollPhysics physics) {
+ScrollPosition FixedExtentScrollControllerCls::createScrollPosition(ScrollPhysics physics, ScrollContext context, ScrollPosition oldPosition) {
     return make<_FixedExtentScrollPositionCls>(physics, context, initialItem, oldPosition);
 }
 
 FixedExtentMetrics FixedExtentMetricsCls::copyWith(AxisDirection axisDirection, int itemIndex, double maxScrollExtent, double minScrollExtent, double pixels, double viewportDimension) {
-    return make<FixedExtentMetricsCls>(minScrollExtent or (hasContentDimensions? this->minScrollExtent : nullptr), maxScrollExtent or (hasContentDimensions? this->maxScrollExtent : nullptr), pixels or (hasPixels? this->pixels : nullptr), viewportDimension or (hasViewportDimension? this->viewportDimension : nullptr), axisDirection or this->axisDirection, itemIndex or this->itemIndex);
+    return make<FixedExtentMetricsCls>(minScrollExtent | (hasContentDimensions? this->minScrollExtent : nullptr), maxScrollExtent | (hasContentDimensions? this->maxScrollExtent : nullptr), pixels | (hasPixels? this->pixels : nullptr), viewportDimension | (hasViewportDimension? this->viewportDimension : nullptr), axisDirection | this->axisDirection, itemIndex | this->itemIndex);
 }
 
 int _getItemFromOffset(double itemExtent, double maxScrollExtent, double minScrollExtent, double offset) {
     return (_clipOffsetToScrollableRange(offset, minScrollExtent, maxScrollExtent) / itemExtent)->round();
 }
 
-double _clipOffsetToScrollableRange(double maxScrollExtent, double minScrollExtent, double offset) {
+double _clipOffsetToScrollableRange(double offset, double minScrollExtent, double maxScrollExtent) {
     return math->min(math->max(offset, minScrollExtent), maxScrollExtent);
 }
 
@@ -125,7 +125,7 @@ int _FixedExtentScrollPositionCls::itemIndex() {
 }
 
 FixedExtentMetrics _FixedExtentScrollPositionCls::copyWith(AxisDirection axisDirection, int itemIndex, double maxScrollExtent, double minScrollExtent, double pixels, double viewportDimension) {
-    return make<FixedExtentMetricsCls>(minScrollExtent or (hasContentDimensions? this->minScrollExtent : nullptr), maxScrollExtent or (hasContentDimensions? this->maxScrollExtent : nullptr), pixels or (hasPixels? this->pixels : nullptr), viewportDimension or (hasViewportDimension? this->viewportDimension : nullptr), axisDirection or this->axisDirection, itemIndex or this->itemIndex);
+    return make<FixedExtentMetricsCls>(minScrollExtent | (hasContentDimensions? this->minScrollExtent : nullptr), maxScrollExtent | (hasContentDimensions? this->maxScrollExtent : nullptr), pixels | (hasPixels? this->pixels : nullptr), viewportDimension | (hasViewportDimension? this->viewportDimension : nullptr), axisDirection | this->axisDirection, itemIndex | this->itemIndex);
 }
 
 _FixedExtentScrollPositionCls::_FixedExtentScrollPositionCls(Unknown context, int initialItem, Unknown oldPosition, Unknown physics) : ScrollPositionWithSingleContext(_getItemExtentFromScrollContext(context) * initialItem) {
@@ -162,7 +162,7 @@ Simulation FixedExtentScrollPhysicsCls::createBallisticSimulation(ScrollMetrics 
     if (testFrictionSimulation != nullptr && (testFrictionSimulation->x(double->infinity) == metrics->minScrollExtent || testFrictionSimulation->x(double->infinity) == metrics->maxScrollExtent)) {
         return super->createBallisticSimulation(metrics, velocity);
     }
-    int settlingItemIndex = _getItemFromOffset(testFrictionSimulation?->x(double->infinity) or metrics->pixels, metrics->itemExtent(), metrics->minScrollExtent, metrics->maxScrollExtent);
+    int settlingItemIndex = _getItemFromOffset(testFrictionSimulation?->x(double->infinity) | metrics->pixels, metrics->itemExtent(), metrics->minScrollExtent, metrics->maxScrollExtent);
     double settlingPixels = settlingItemIndex * metrics->itemExtent();
     if (velocity->abs() < tolerance->velocity && (settlingPixels - metrics->pixels)->abs() < tolerance->distance) {
         return nullptr;
@@ -203,7 +203,7 @@ State<ListWheelScrollView> ListWheelScrollViewCls::createState() {
 
 void _ListWheelScrollViewStateCls::initState() {
     super->initState();
-    scrollController = widget->controller or make<FixedExtentScrollControllerCls>();
+    scrollController = widget->controller | make<FixedExtentScrollControllerCls>();
     if (is<FixedExtentScrollController>(widget->controller)) {
         FixedExtentScrollController controller = as<FixedExtentScrollController>(widget->controller!);
         _lastReportedItemIndex = controller->initialItem;
@@ -222,7 +222,7 @@ void _ListWheelScrollViewStateCls::didUpdateWidget(ListWheelScrollView oldWidget
 }
 
 Widget _ListWheelScrollViewStateCls::build(BuildContext context) {
-    return <ScrollNotification>make<NotificationListenerCls>(_handleScrollNotification, make<_FixedExtentScrollableCls>(scrollController, widget->physics, widget->itemExtent, widget->restorationId, widget->scrollBehavior or ScrollConfigurationCls->of(context)->copyWith(false), [=] (BuildContext context,ViewportOffset offset) {
+    return <ScrollNotification>make<NotificationListenerCls>(_handleScrollNotification, make<_FixedExtentScrollableCls>(scrollController, widget->physics, widget->itemExtent, widget->restorationId, widget->scrollBehavior | ScrollConfigurationCls->of(context)->copyWith(false), [=] (BuildContext context,ViewportOffset offset) {
         return make<ListWheelViewportCls>(widget->diameterRatio, widget->perspective, widget->offAxisFraction, widget->useMagnifier, widget->magnification, widget->overAndUnderCenterOpacity, widget->itemExtent, widget->squeeze, widget->renderChildrenOutsideViewport, offset, widget->childDelegate, widget->clipBehavior);
     }));
 }
@@ -287,7 +287,7 @@ bool ListWheelElementCls::childExistsAt(int index) {
     return retrieveWidget(index) != nullptr;
 }
 
-void ListWheelElementCls::createChild(RenderBox after, int index) {
+void ListWheelElementCls::createChild(int index, RenderBox after) {
     owner!->buildScope(this, [=] () {
         bool insertFirst = after == nullptr;
         assert(insertFirst || _childElements[index - 1] != nullptr);
@@ -311,7 +311,7 @@ void ListWheelElementCls::removeChild(RenderBox child) {
     });
 }
 
-Element ListWheelElementCls::updateChild(Element child, Object newSlot, Widget newWidget) {
+Element ListWheelElementCls::updateChild(Element child, Widget newWidget, Object newSlot) {
     ListWheelParentData oldParentData = as<ListWheelParentData>(child?->renderObject()?->parentData);
     Element newChild = super->updateChild(child, newWidget, newSlot);
     ListWheelParentData newParentData = as<ListWheelParentData>(newChild?->renderObject()?->parentData);
@@ -331,7 +331,7 @@ void ListWheelElementCls::insertRenderObjectChild(RenderObject child, int slot) 
     assert(renderObject == this->renderObject);
 }
 
-void ListWheelElementCls::moveRenderObjectChild(RenderObject child, int newSlot, int oldSlot) {
+void ListWheelElementCls::moveRenderObjectChild(RenderObject child, int oldSlot, int newSlot) {
     String moveChildRenderObjectErrorMessage = __s("Currently we maintain the list in contiguous increasing order, so moving children around is not allowed.");
     assert(false, moveChildRenderObjectErrorMessage);
 }

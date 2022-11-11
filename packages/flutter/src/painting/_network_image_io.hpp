@@ -22,13 +22,13 @@ public:
     Map<String, String> headers;
 
 
-     NetworkImageCls(Map<String, String> headers, double scale, String url);
+     NetworkImageCls(String url, Map<String, String> headers, double scale);
 
     virtual Future<NetworkImage> obtainKey(ImageConfiguration configuration);
 
-    virtual ImageStreamCompleter load(DecoderCallback decode, NetworkImage key);
+    virtual ImageStreamCompleter load(NetworkImage key, DecoderCallback decode);
 
-    virtual ImageStreamCompleter loadBuffer(DecoderBufferCallback decode, NetworkImage key);
+    virtual ImageStreamCompleter loadBuffer(NetworkImage key, DecoderBufferCallback decode);
 
     virtual bool operator==(Object other);
 
@@ -42,7 +42,7 @@ private:
 
     static HttpClient _httpClient();
 
-    virtual Future<Codec> _loadAsync(StreamController<ImageChunkEvent> chunkEvents, DecoderBufferCallback decode, DecoderCallback decodeDepreacted, NetworkImage key);
+    virtual Future<Codec> _loadAsync(NetworkImage key, StreamController<ImageChunkEvent> chunkEvents, DecoderBufferCallback decode, DecoderCallback decodeDepreacted);
 
 };
 using NetworkImage = std::shared_ptr<NetworkImageCls>;

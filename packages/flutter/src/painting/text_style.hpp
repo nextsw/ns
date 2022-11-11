@@ -94,7 +94,7 @@ public:
 
     virtual String toStringShort();
 
-    virtual void debugFillProperties(String prefix, DiagnosticPropertiesBuilder properties);
+    virtual void debugFillProperties(DiagnosticPropertiesBuilder properties, String prefix);
 
 private:
     List<String> _fontFamilyFallback;

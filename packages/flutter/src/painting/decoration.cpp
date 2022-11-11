@@ -29,10 +29,10 @@ Decoration DecorationCls::lerp(Decoration a, Decoration b, double t) {
         return nullptr;
     }
     if (a == nullptr) {
-        return b!->lerpFrom(nullptr, t) or b;
+        return b!->lerpFrom(nullptr, t) | b;
     }
     if (b == nullptr) {
-        return a->lerpTo(nullptr, t) or a;
+        return a->lerpTo(nullptr, t) | a;
     }
     if (t == 0.0) {
         return a;
@@ -40,10 +40,10 @@ Decoration DecorationCls::lerp(Decoration a, Decoration b, double t) {
     if (t == 1.0) {
         return b;
     }
-    return b->lerpFrom(a, t) or a->lerpTo(b, t) or ( < 0.5? (a->lerpTo(nullptr, t * 2.0) or a) : (b->lerpFrom(nullptr, (t - 0.5) * 2.0) or b));
+    return b->lerpFrom(a, t) | a->lerpTo(b, t) | ( < 0.5? (a->lerpTo(nullptr, t * 2.0) | a) : (b->lerpFrom(nullptr, (t - 0.5) * 2.0) | b));
 }
 
-bool DecorationCls::hitTest(Offset position, Size size, TextDirection textDirection) {
+bool DecorationCls::hitTest(Size size, Offset position, TextDirection textDirection) {
     return true;
 }
 

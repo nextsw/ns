@@ -42,7 +42,7 @@ ShapeBorder StadiumBorderCls::lerpTo(ShapeBorder b, double t) {
 }
 
 StadiumBorder StadiumBorderCls::copyWith(BorderSide side) {
-    return make<StadiumBorderCls>(side or this->side);
+    return make<StadiumBorderCls>(side | this->side);
 }
 
 Path StadiumBorderCls::getInnerPath(Rect rect, TextDirection textDirection) {
@@ -122,7 +122,7 @@ Path _StadiumToCircleBorderCls::getOuterPath(Rect rect, TextDirection textDirect
 }
 
 _StadiumToCircleBorder _StadiumToCircleBorderCls::copyWith(double circleness, BorderSide side) {
-    return make<_StadiumToCircleBorderCls>(side or this->side, circleness or this->circleness);
+    return make<_StadiumToCircleBorderCls>(side | this->side, circleness | this->circleness);
 }
 
 void _StadiumToCircleBorderCls::paint(Canvas canvas, Rect rect, TextDirection textDirection) {
@@ -216,7 +216,7 @@ Path _StadiumToRoundedRectangleBorderCls::getOuterPath(Rect rect, TextDirection 
 }
 
 _StadiumToRoundedRectangleBorder _StadiumToRoundedRectangleBorderCls::copyWith(BorderRadius borderRadius, double rectness, BorderSide side) {
-    return make<_StadiumToRoundedRectangleBorderCls>(side or this->side, borderRadius or this->borderRadius, rectness or this->rectness);
+    return make<_StadiumToRoundedRectangleBorderCls>(side | this->side, borderRadius | this->borderRadius, rectness | this->rectness);
 }
 
 void _StadiumToRoundedRectangleBorderCls::paint(Canvas canvas, Rect rect, TextDirection textDirection) {

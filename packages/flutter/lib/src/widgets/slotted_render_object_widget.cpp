@@ -59,7 +59,7 @@ List<DiagnosticsNode> SlottedContainerRenderObjectMixinCls<S>::debugDescribeChil
 }
 
 template<typename S>
-void SlottedContainerRenderObjectMixinCls<S>::_addDiagnostics(RenderBox child, String name, List<DiagnosticsNode> value) {
+void SlottedContainerRenderObjectMixinCls<S>::_addDiagnostics(RenderBox child, List<DiagnosticsNode> value, String name) {
     value->add(child->toDiagnosticsNode(name));
 }
 
@@ -96,7 +96,7 @@ void SlottedRenderObjectElementCls<S>::forgetChild(Element child) {
 }
 
 template<typename S>
-void SlottedRenderObjectElementCls<S>::mount(Object newSlot, Element parent) {
+void SlottedRenderObjectElementCls<S>::mount(Element parent, Object newSlot) {
     super->mount(parent, newSlot);
     _updateChildren();
 }
@@ -122,7 +122,7 @@ void SlottedRenderObjectElementCls<S>::removeRenderObjectChild(RenderBox child, 
 }
 
 template<typename S>
-void SlottedRenderObjectElementCls<S>::moveRenderObjectChild(RenderBox child, Object newSlot, Object oldSlot) {
+void SlottedRenderObjectElementCls<S>::moveRenderObjectChild(RenderBox child, Object oldSlot, Object newSlot) {
     assert(false, __s("not reachable"));
 }
 
@@ -130,7 +130,7 @@ template<typename S>
 void SlottedRenderObjectElementCls<S>::_updateChildren() {
     SlottedMultiChildRenderObjectWidgetMixin<S> slottedMultiChildRenderObjectWidgetMixin = as<SlottedMultiChildRenderObjectWidgetMixin<S>>(widget);
     assert([=] () {
-        _debugPreviousSlots = slottedMultiChildRenderObjectWidgetMixin->slots()->toList();
+        _debugPreviousSlots |= slottedMultiChildRenderObjectWidgetMixin->slots()->toList();
         return listEquals(_debugPreviousSlots, slottedMultiChildRenderObjectWidgetMixin->slots()->toList());
     }(), __s("${widget.runtimeType}.slots must not change."));
     assert(slottedMultiChildRenderObjectWidgetMixin->slots()->toSet()->length == slottedMultiChildRenderObjectWidgetMixin->slots()->length(), __s("slots must be unique"));
@@ -140,7 +140,7 @@ void SlottedRenderObjectElementCls<S>::_updateChildren() {
 }
 
 template<typename S>
-void SlottedRenderObjectElementCls<S>::_updateChild(S slot, Widget widget) {
+void SlottedRenderObjectElementCls<S>::_updateChild(Widget widget, S slot) {
     Element oldChild = _slotToChild[slot];
     assert(oldChild == nullptr || oldChild->slot == slot);
     Element newChild = updateChild(oldChild, widget, slot);

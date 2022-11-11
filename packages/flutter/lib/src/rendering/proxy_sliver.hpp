@@ -24,7 +24,7 @@ public:
 
     virtual void paint(PaintingContext context, Offset offset);
 
-    virtual bool hitTestChildren(double crossAxisPosition, double mainAxisPosition, SliverHitTestResult result);
+    virtual bool hitTestChildren(SliverHitTestResult result, double crossAxisPosition, double mainAxisPosition);
 
     virtual double childMainAxisPosition(RenderSliver child);
 
@@ -80,7 +80,7 @@ public:
 
     virtual void  ignoringSemantics(bool value);
 
-    virtual bool hitTest(double crossAxisPosition, double mainAxisPosition, SliverHitTestResult result);
+    virtual bool hitTest(SliverHitTestResult result, double crossAxisPosition, double mainAxisPosition);
 
     virtual void visitChildrenForSemantics(RenderObjectVisitor visitor);
 
@@ -108,9 +108,9 @@ public:
 
     virtual void performLayout();
 
-    virtual bool hitTest(double crossAxisPosition, double mainAxisPosition, SliverHitTestResult result);
+    virtual bool hitTest(SliverHitTestResult result, double crossAxisPosition, double mainAxisPosition);
 
-    virtual bool hitTestChildren(double crossAxisPosition, double mainAxisPosition, SliverHitTestResult result);
+    virtual bool hitTestChildren(SliverHitTestResult result, double crossAxisPosition, double mainAxisPosition);
 
     virtual void paint(PaintingContext context, Offset offset);
 

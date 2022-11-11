@@ -1,5 +1,5 @@
 #include "channel_buffers.hpp"
-void _ChannelCallbackRecordCls::invoke(PlatformMessageResponseCallback callbackArg, ByteData dataArg) {
+void _ChannelCallbackRecordCls::invoke(ByteData dataArg, PlatformMessageResponseCallback callbackArg) {
     <ByteData, PlatformMessageResponseCallback>_invoke2(_callback, _zone, dataArg, callbackArg);
 }
 
@@ -13,7 +13,7 @@ void _StoredMessageCls::invoke(ByteData dataArg) {
     _invoke1(_callback, _zone, dataArg);
 }
 
-_StoredMessageCls::_StoredMessageCls(PlatformMessageResponseCallback _callback, ByteData data) {
+_StoredMessageCls::_StoredMessageCls(ByteData data, PlatformMessageResponseCallback _callback) {
     {
         _zone = ZoneCls::current;
     }
@@ -95,7 +95,7 @@ void _ChannelCls::_drainStep() {
     }
 }
 
-void ChannelBuffersCls::push(PlatformMessageResponseCallback callback, ByteData data, String name) {
+void ChannelBuffersCls::push(String name, ByteData data, PlatformMessageResponseCallback callback) {
     _Channel channel = _channels->putIfAbsent(name, [=] () {
     make<_ChannelCls>();
 });
@@ -104,7 +104,7 @@ void ChannelBuffersCls::push(PlatformMessageResponseCallback callback, ByteData 
     }
 }
 
-void ChannelBuffersCls::setListener(ChannelCallback callback, String name) {
+void ChannelBuffersCls::setListener(String name, ChannelCallback callback) {
     _Channel channel = _channels->putIfAbsent(name, [=] () {
     make<_ChannelCls>();
 });
@@ -118,7 +118,7 @@ void ChannelBuffersCls::clearListener(String name) {
     }
 }
 
-Future<void> ChannelBuffersCls::drain(DrainChannelCallback callback, String name) {
+Future<void> ChannelBuffersCls::drain(String name, DrainChannelCallback callback) {
     _Channel channel = _channels[name];
     while (channel != nullptr && !channel->_queue->isEmpty()) {
         _StoredMessage message = channel->pop();
@@ -135,7 +135,7 @@ void ChannelBuffersCls::handleMessage(ByteData data) {
         }
         int index = 2;
         String methodName = utf8->decode(bytes->sublist(index, index + methodNameLength));
-        index = methodNameLength;
+        index += methodNameLength;
         ;
     } else {
         List<String> parts = utf8->decode(bytes)->split(__s("\r"));
@@ -157,7 +157,7 @@ void ChannelBuffersCls::resize(String name, int newSize) {
     }
 }
 
-void ChannelBuffersCls::allowOverflow(bool allowed, String name) {
+void ChannelBuffersCls::allowOverflow(String name, bool allowed) {
     assert([=] () {
         _Channel channel = _channels[name];
         if (channel == nullptr && allowed) {

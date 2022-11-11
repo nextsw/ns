@@ -15,31 +15,31 @@ FocusCls::FocusCls(bool autofocus, bool canRequestFocus, Widget child, String de
 }
 
 FocusOnKeyEventCallback FocusCls::onKeyEvent() {
-    return _onKeyEvent or focusNode?->onKeyEvent();
+    return _onKeyEvent | focusNode?->onKeyEvent();
 }
 
 FocusOnKeyCallback FocusCls::onKey() {
-    return _onKey or focusNode?->onKey();
+    return _onKey | focusNode?->onKey();
 }
 
 bool FocusCls::canRequestFocus() {
-    return _canRequestFocus or focusNode?->canRequestFocus or true;
+    return _canRequestFocus | focusNode?->canRequestFocus | true;
 }
 
 bool FocusCls::skipTraversal() {
-    return _skipTraversal or focusNode?->skipTraversal or false;
+    return _skipTraversal | focusNode?->skipTraversal | false;
 }
 
 bool FocusCls::descendantsAreFocusable() {
-    return _descendantsAreFocusable or focusNode?->descendantsAreFocusable or true;
+    return _descendantsAreFocusable | focusNode?->descendantsAreFocusable | true;
 }
 
 bool FocusCls::descendantsAreTraversable() {
-    return _descendantsAreTraversable or focusNode?->descendantsAreTraversable or true;
+    return _descendantsAreTraversable | focusNode?->descendantsAreTraversable | true;
 }
 
 String FocusCls::debugLabel() {
-    return _debugLabel or focusNode?->debugLabel;
+    return _debugLabel | focusNode?->debugLabel;
 }
 
 FocusNode FocusCls::of(BuildContext context, bool scopeOk) {
@@ -77,7 +77,7 @@ FocusNode FocusCls::maybeOf(BuildContext context, bool scopeOk) {
 }
 
 bool FocusCls::isAt(BuildContext context) {
-    return FocusCls->maybeOf(context)?->hasFocus or false;
+    return FocusCls->maybeOf(context)?->hasFocus | false;
 }
 
 void FocusCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
@@ -131,7 +131,7 @@ bool _FocusWithExternalFocusNodeCls::_descendantsAreTraversable() {
 }
 
 FocusNode _FocusStateCls::focusNode() {
-    return widget->focusNode or _internalNode!;
+    return widget->focusNode | _internalNode!;
 }
 
 void _FocusStateCls::initState() {
@@ -204,7 +204,7 @@ Widget _FocusStateCls::build(BuildContext context) {
 
 void _FocusStateCls::_initNode() {
     if (widget->focusNode == nullptr) {
-        _internalNode = _createNode();
+        _internalNode |= _createNode();
     }
     focusNode()->descendantsAreFocusable() = widget->descendantsAreFocusable;
     focusNode()->descendantsAreTraversable() = widget->descendantsAreTraversable;
@@ -271,7 +271,7 @@ FocusScopeCls::FocusScopeCls(Unknown autofocus, Unknown canRequestFocus, Unknown
 FocusScopeNode FocusScopeCls::of(BuildContext context) {
     assert(context != nullptr);
     _FocusMarker marker = context-><_FocusMarker>dependOnInheritedWidgetOfExactType();
-    return marker?->notifier?->nearestScope or context->owner()!->focusManager->rootScope;
+    return marker?->notifier?->nearestScope | context->owner()!->focusManager->rootScope;
 }
 
 State<Focus> FocusScopeCls::createState() {

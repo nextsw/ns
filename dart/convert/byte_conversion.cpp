@@ -1,5 +1,5 @@
 #include "byte_conversion.hpp"
-void ByteConversionSinkBaseCls::addSlice(List<int> chunk, int end, bool isLast, int start) {
+void ByteConversionSinkBaseCls::addSlice(List<int> chunk, int start, int end, bool isLast) {
     add(chunk->sublist(start, end));
     if (isLast)     {
         close();
@@ -24,7 +24,7 @@ void _ByteCallbackSinkCls::add(Iterable<int> chunk) {
         _buffer = grown;
     }
     _buffer->setRange(_bufferIndex, _bufferIndex + chunk->length(), chunk);
-    _bufferIndex = chunk->length();
+    _bufferIndex += chunk->length();
 }
 
 void _ByteCallbackSinkCls::close() {
@@ -40,11 +40,11 @@ _ByteCallbackSinkCls::_ByteCallbackSinkCls(std::function<void(List<int> accumula
 int _ByteCallbackSinkCls::_roundToPowerOf2(int v) {
     assert(v > 0);
     v--;
-    v = v >> 1;
-    v = v >> 2;
-    v = v >> 4;
-    v = v >> 8;
-    v = v >> 16;
+    v |= v >> 1;
+    v |= v >> 2;
+    v |= v >> 4;
+    v |= v >> 8;
+    v |= v >> 16;
     v++;
     return v;
 }

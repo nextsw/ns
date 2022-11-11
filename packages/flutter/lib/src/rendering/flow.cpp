@@ -9,7 +9,7 @@ Size FlowDelegateCls::getSize(BoxConstraints constraints) {
     return constraints->biggest();
 }
 
-BoxConstraints FlowDelegateCls::getConstraintsForChild(BoxConstraints constraints, int i) {
+BoxConstraints FlowDelegateCls::getConstraintsForChild(int i, BoxConstraints constraints) {
     return constraints;
 }
 
@@ -142,7 +142,7 @@ void RenderFlowCls::performLayout() {
         FlowParentData childParentData = as<FlowParentData>(child->parentData!);
         childParentData->offset = OffsetCls::zero;
         child = childParentData->nextSibling;
-        i = 1;
+        i += 1;
     }
 }
 
@@ -154,7 +154,7 @@ Size RenderFlowCls::getChildSize(int i) {
 }
 
 void RenderFlowCls::paintChild(int i, double opacity, Matrix4 transform) {
-    transform = Matrix4Cls->identity();
+    transform |= Matrix4Cls->identity();
     RenderBox child = _randomAccessChildren[i];
     FlowParentData childParentData = as<FlowParentData>(child->parentData!);
     assert([=] () {
@@ -187,7 +187,7 @@ void RenderFlowCls::dispose() {
     super->dispose();
 }
 
-bool RenderFlowCls::hitTestChildren(Offset position, BoxHitTestResult result) {
+bool RenderFlowCls::hitTestChildren(BoxHitTestResult result, Offset position) {
     List<RenderBox> children = getChildrenAsList();
     for (; i >= 0; --i) {
         int childIndex = _lastPaintOrder[i];

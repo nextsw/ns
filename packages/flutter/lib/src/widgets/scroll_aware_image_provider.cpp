@@ -8,7 +8,7 @@ ScrollAwareImageProviderCls<T>::ScrollAwareImageProviderCls(DisposableBuildConte
 }
 
 template<typename T>
-void ScrollAwareImageProviderCls<T>::resolveStreamForKey(ImageConfiguration configuration, ImageErrorListener handleError, T key, ImageStream stream) {
+void ScrollAwareImageProviderCls<T>::resolveStreamForKey(ImageConfiguration configuration, ImageStream stream, T key, ImageErrorListener handleError) {
     if (stream->completer() != nullptr || PaintingBindingCls::instance->imageCache->containsKey(key)) {
         imageProvider->resolveStreamForKey(configuration, stream, key, handleError);
         return;
@@ -28,12 +28,12 @@ void ScrollAwareImageProviderCls<T>::resolveStreamForKey(ImageConfiguration conf
 }
 
 template<typename T>
-ImageStreamCompleter ScrollAwareImageProviderCls<T>::load(DecoderCallback decode, T key) {
+ImageStreamCompleter ScrollAwareImageProviderCls<T>::load(T key, DecoderCallback decode) {
     return imageProvider->load(key, decode);
 }
 
 template<typename T>
-ImageStreamCompleter ScrollAwareImageProviderCls<T>::loadBuffer(DecoderBufferCallback decode, T key) {
+ImageStreamCompleter ScrollAwareImageProviderCls<T>::loadBuffer(T key, DecoderBufferCallback decode) {
     return imageProvider->loadBuffer(key, decode);
 }
 

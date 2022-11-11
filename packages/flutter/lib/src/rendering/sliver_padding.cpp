@@ -77,7 +77,7 @@ void RenderSliverEdgeInsetsPaddingCls::performLayout() {
     assert(crossAxisPadding == this->crossAxisPadding);
 }
 
-bool RenderSliverEdgeInsetsPaddingCls::hitTestChildren(double crossAxisPosition, double mainAxisPosition, SliverHitTestResult result) {
+bool RenderSliverEdgeInsetsPaddingCls::hitTestChildren(SliverHitTestResult result, double crossAxisPosition, double mainAxisPosition) {
     if (child != nullptr && child!->geometry!->hitTestExtent > 0.0) {
         SliverPhysicalParentData childParentData = as<SliverPhysicalParentData>(child!->parentData!);
         result->addWithAxisOffset(mainAxisPosition, crossAxisPosition, childMainAxisPosition(child!), childCrossAxisPosition(child!), childParentData->paintOffset, child!->hitTest);

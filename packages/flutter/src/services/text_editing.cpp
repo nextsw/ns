@@ -64,10 +64,10 @@ int TextSelectionCls::hashCode() {
 }
 
 TextSelection TextSelectionCls::copyWith(TextAffinity affinity, int baseOffset, int extentOffset, bool isDirectional) {
-    return make<TextSelectionCls>(baseOffset or this->baseOffset, extentOffset or this->extentOffset, affinity or this->affinity, isDirectional or this->isDirectional);
+    return make<TextSelectionCls>(baseOffset | this->baseOffset, extentOffset | this->extentOffset, affinity | this->affinity, isDirectional | this->isDirectional);
 }
 
-TextSelection TextSelectionCls::expandTo(bool extentAtIndex, TextPosition position) {
+TextSelection TextSelectionCls::expandTo(TextPosition position, bool extentAtIndex) {
     if (position->offset >= start && position->offset <= end) {
         return this;
     }

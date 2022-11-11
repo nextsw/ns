@@ -96,7 +96,7 @@ private:
     static int _sourceJoystick;
 
 
-    virtual bool _isLeftRightModifierPressed(int anyMask, int leftMask, int rightMask, KeyboardSide side);
+    virtual bool _isLeftRightModifierPressed(KeyboardSide side, int anyMask, int leftMask, int rightMask);
 
 };
 using RawKeyEventDataAndroid = std::shared_ptr<RawKeyEventDataAndroidCls>;

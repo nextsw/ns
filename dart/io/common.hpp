@@ -42,7 +42,7 @@ public:
     int errorCode;
 
 
-     OSErrorCls(int errorCode, String message);
+     OSErrorCls(String message, int errorCode);
     virtual String toString();
 
 private:
@@ -62,7 +62,7 @@ private:
      _BufferAndStartCls(List<int> buffer, int start);
 };
 using _BufferAndStart = std::shared_ptr<_BufferAndStartCls>;
-_BufferAndStart _ensureFastAndSerializableByteData(List<int> buffer, int end, int start);
+_BufferAndStart _ensureFastAndSerializableByteData(List<int> buffer, int start, int end);
 
 bool _isDirectIOCapableTypedList(List<int> buffer);
 

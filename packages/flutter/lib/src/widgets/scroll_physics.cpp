@@ -1,13 +1,13 @@
 #include "scroll_physics.hpp"
 ScrollPhysics ScrollPhysicsCls::buildParent(ScrollPhysics ancestor) {
-    return parent?->applyTo(ancestor) or ancestor;
+    return parent?->applyTo(ancestor) | ancestor;
 }
 
 ScrollPhysics ScrollPhysicsCls::applyTo(ScrollPhysics ancestor) {
     return make<ScrollPhysicsCls>(buildParent(ancestor));
 }
 
-double ScrollPhysicsCls::applyPhysicsToUserOffset(double offset, ScrollMetrics position) {
+double ScrollPhysicsCls::applyPhysicsToUserOffset(ScrollMetrics position, double offset) {
     if (parent == nullptr) {
         return offset;
     }
@@ -21,7 +21,7 @@ bool ScrollPhysicsCls::shouldAcceptUserOffset(ScrollMetrics position) {
     return parent!->shouldAcceptUserOffset(position);
 }
 
-bool ScrollPhysicsCls::recommendDeferredLoading(BuildContext context, ScrollMetrics metrics, double velocity) {
+bool ScrollPhysicsCls::recommendDeferredLoading(double velocity, ScrollMetrics metrics, BuildContext context) {
     assert(velocity != nullptr);
     assert(metrics != nullptr);
     assert(context != nullptr);
@@ -54,23 +54,23 @@ Simulation ScrollPhysicsCls::createBallisticSimulation(ScrollMetrics position, d
 }
 
 SpringDescription ScrollPhysicsCls::spring() {
-    return parent?->spring() or _kDefaultSpring;
+    return parent?->spring() | _kDefaultSpring;
 }
 
 Tolerance ScrollPhysicsCls::tolerance() {
-    return parent?->tolerance() or _kDefaultTolerance;
+    return parent?->tolerance() | _kDefaultTolerance;
 }
 
 double ScrollPhysicsCls::minFlingDistance() {
-    return parent?->minFlingDistance() or kTouchSlop;
+    return parent?->minFlingDistance() | kTouchSlop;
 }
 
 double ScrollPhysicsCls::minFlingVelocity() {
-    return parent?->minFlingVelocity() or kMinFlingVelocity;
+    return parent?->minFlingVelocity() | kMinFlingVelocity;
 }
 
 double ScrollPhysicsCls::maxFlingVelocity() {
-    return parent?->maxFlingVelocity() or kMaxFlingVelocity;
+    return parent?->maxFlingVelocity() | kMaxFlingVelocity;
 }
 
 double ScrollPhysicsCls::carriedMomentum(double existingVelocity) {
@@ -143,7 +143,7 @@ double BouncingScrollPhysicsCls::frictionFactor(double overscrollFraction) {
     return 0.52 * math->pow(1 - overscrollFraction, 2);
 }
 
-double BouncingScrollPhysicsCls::applyPhysicsToUserOffset(double offset, ScrollMetrics position) {
+double BouncingScrollPhysicsCls::applyPhysicsToUserOffset(ScrollMetrics position, double offset) {
     assert(offset != 0.0);
     assert(position->minScrollExtent() <= position->maxScrollExtent());
     if (!position->outOfRange()) {
@@ -182,7 +182,7 @@ double BouncingScrollPhysicsCls::dragStartDistanceMotionThreshold() {
     return 3.5;
 }
 
-double BouncingScrollPhysicsCls::_applyFriction(double absDelta, double extentOutside, double gamma) {
+double BouncingScrollPhysicsCls::_applyFriction(double extentOutside, double absDelta, double gamma) {
     assert(absDelta > 0);
     double total = 0.0;
     if (extentOutside > 0) {
@@ -190,8 +190,8 @@ double BouncingScrollPhysicsCls::_applyFriction(double absDelta, double extentOu
         if ( < deltaToLimit) {
             return absDelta * gamma;
         }
-        total = extentOutside;
-        absDelta = deltaToLimit;
+        total += extentOutside;
+        absDelta -= deltaToLimit;
     }
     return total + absDelta;
 }

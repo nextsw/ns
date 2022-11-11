@@ -46,11 +46,11 @@ bool debugDisablePhysicalShapeLayers;
 
 bool debugDisableOpacityLayers;
 
-void _debugDrawDoubleRect(Canvas canvas, Color color, Rect innerRect, Rect outerRect);
+void _debugDrawDoubleRect(Canvas canvas, Rect outerRect, Rect innerRect, Color color);
 
-void debugPaintPadding(Canvas canvas, Rect innerRect, Rect outerRect, double outlineWidth);
+void debugPaintPadding(Canvas canvas, Rect outerRect, Rect innerRect, double outlineWidth);
 
-bool debugAssertAllRenderVarsUnset(bool debugCheckIntrinsicSizesOverride, String reason);
+bool debugAssertAllRenderVarsUnset(String reason, bool debugCheckIntrinsicSizesOverride);
 
 
 

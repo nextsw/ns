@@ -16,7 +16,7 @@ RayCls::RayCls() {
 
 void RayCls::copy(Ray other)
 
-void RayCls::originDirection(Vector3 direction, Vector3 origin)
+void RayCls::originDirection(Vector3 origin, Vector3 direction)
 
 void RayCls::copyFrom(Ray other) {
     _origin->setFrom(other->_origin);

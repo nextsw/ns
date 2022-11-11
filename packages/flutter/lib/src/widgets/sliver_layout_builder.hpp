@@ -32,7 +32,7 @@ public:
 
     virtual void paint(PaintingContext context, Offset offset);
 
-    virtual bool hitTestChildren(double crossAxisPosition, double mainAxisPosition, SliverHitTestResult result);
+    virtual bool hitTestChildren(SliverHitTestResult result, double crossAxisPosition, double mainAxisPosition);
 
 private:
 

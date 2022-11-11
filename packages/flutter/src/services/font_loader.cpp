@@ -28,6 +28,6 @@ Future<void> FontLoaderCls::load() {
     await await FutureCls->wait(loadFutures->toList());
 }
 
-Future<void> FontLoaderCls::loadFont(String family, Uint8List list) {
+Future<void> FontLoaderCls::loadFont(Uint8List list, String family) {
     return loadFontFromList(listfamily);
 }

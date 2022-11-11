@@ -1,5 +1,5 @@
 #include "hooks.hpp"
-void _updateWindowMetrics(double devicePixelRatio, List<double> displayFeaturesBounds, List<int> displayFeaturesState, List<int> displayFeaturesType, double height, Object id, double physicalTouchSlop, double systemGestureInsetBottom, double systemGestureInsetLeft, double systemGestureInsetRight, double systemGestureInsetTop, double viewInsetBottom, double viewInsetLeft, double viewInsetRight, double viewInsetTop, double viewPaddingBottom, double viewPaddingLeft, double viewPaddingRight, double viewPaddingTop, double width) {
+void _updateWindowMetrics(Object id, double devicePixelRatio, double width, double height, double viewPaddingTop, double viewPaddingRight, double viewPaddingBottom, double viewPaddingLeft, double viewInsetTop, double viewInsetRight, double viewInsetBottom, double viewInsetLeft, double systemGestureInsetTop, double systemGestureInsetRight, double systemGestureInsetBottom, double systemGestureInsetLeft, double physicalTouchSlop, List<double> displayFeaturesBounds, List<int> displayFeaturesType, List<int> displayFeaturesState) {
     PlatformDispatcherCls::instance->_updateWindowMetrics(id, devicePixelRatio, width, height, viewPaddingTop, viewPaddingRight, viewPaddingBottom, viewPaddingLeft, viewInsetTop, viewInsetRight, viewInsetBottom, viewInsetLeft, systemGestureInsetTop, systemGestureInsetRight, systemGestureInsetBottom, systemGestureInsetLeft, physicalTouchSlop, displayFeaturesBounds, displayFeaturesType, displayFeaturesState);
 }
 
@@ -27,7 +27,7 @@ void _updateAccessibilityFeatures(int values) {
     PlatformDispatcherCls::instance->_updateAccessibilityFeatures(values);
 }
 
-void _dispatchPlatformMessage(ByteData data, String name, int responseId) {
+void _dispatchPlatformMessage(String name, ByteData data, int responseId) {
     PlatformDispatcherCls::instance->_dispatchPlatformMessage(name, data, responseId);
 }
 
@@ -35,11 +35,11 @@ void _dispatchPointerDataPacket(ByteData packet) {
     PlatformDispatcherCls::instance->_dispatchPointerDataPacket(packet);
 }
 
-void _dispatchSemanticsAction(int action, ByteData args, int id) {
+void _dispatchSemanticsAction(int id, int action, ByteData args) {
     PlatformDispatcherCls::instance->_dispatchSemanticsAction(id, action, args);
 }
 
-void _beginFrame(int frameNumber, int microseconds) {
+void _beginFrame(int microseconds, int frameNumber) {
     PlatformDispatcherCls::instance->_beginFrame(microseconds);
     PlatformDispatcherCls::instance->_updateFrameData(frameNumber);
 }
@@ -53,10 +53,10 @@ void _drawFrame() {
 }
 
 bool _onError(Object error, StackTrace stackTrace) {
-    return PlatformDispatcherCls::instance->_dispatchError(error, stackTrace or StackTraceCls::empty);
+    return PlatformDispatcherCls::instance->_dispatchError(error, stackTrace | StackTraceCls::empty);
 }
 
-void _runMain(List<String> args, std::function<void ()> startMainIsolateFunction, std::function<void ()> userMainFunction) {
+void _runMain(std::function<void ()> startMainIsolateFunction, std::function<void ()> userMainFunction, List<String> args) {
     startMainIsolateFunction([=] () {
         if (is<_ListStringArgFunction>(userMainFunction)) {
             userMainFunction(args);
@@ -79,7 +79,7 @@ void _invoke(std::function<void()> callback, Zone zone) {
 }
 
 template<typename A>
-void _invoke1(A arg, std::function<void(A a)> callback, Zone zone) {
+void _invoke1(std::function<void(A a)> callback, Zone zone, A arg) {
     if (callback == nullptr) {
         return;
     }
@@ -92,7 +92,7 @@ void _invoke1(A arg, std::function<void(A a)> callback, Zone zone) {
 }
 
 template<typename A1, typename A2>
-void _invoke2(A1 arg1, A2 arg2, std::function<void(A1 a1, A2 a2)> callback, Zone zone) {
+void _invoke2(std::function<void(A1 a1, A2 a2)> callback, Zone zone, A1 arg1, A2 arg2) {
     if (callback == nullptr) {
         return;
     }
@@ -107,7 +107,7 @@ void _invoke2(A1 arg1, A2 arg2, std::function<void(A1 a1, A2 a2)> callback, Zone
 }
 
 template<typename A1, typename A2, typename A3>
-void _invoke3(A1 arg1, A2 arg2, A3 arg3, std::function<void(A1 a1, A2 a2, A3 a3)> callback, Zone zone) {
+void _invoke3(std::function<void(A1 a1, A2 a2, A3 a3)> callback, Zone zone, A1 arg1, A2 arg2, A3 arg3) {
     if (callback == nullptr) {
         return;
     }

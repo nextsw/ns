@@ -270,8 +270,8 @@ public:
 
     static RoutePredicate withName(String name);
 
-    virtual Widget buildPage(Animation<double> animation, BuildContext context, Animation<double> secondaryAnimation);
-    virtual Widget buildTransitions(Animation<double> animation, Widget child, BuildContext context, Animation<double> secondaryAnimation);
+    virtual Widget buildPage(BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation);
+    virtual Widget buildTransitions(BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child);
 
     virtual void install();
 
@@ -370,13 +370,13 @@ public:
 
     virtual bool debugObservingRoute(R route);
 
-    virtual void subscribe(R route, RouteAware routeAware);
+    virtual void subscribe(RouteAware routeAware, R route);
 
     virtual void unsubscribe(RouteAware routeAware);
 
-    virtual void didPop(Route<dynamic> previousRoute, Route<dynamic> route);
+    virtual void didPop(Route<dynamic> route, Route<dynamic> previousRoute);
 
-    virtual void didPush(Route<dynamic> previousRoute, Route<dynamic> route);
+    virtual void didPush(Route<dynamic> route, Route<dynamic> previousRoute);
 
 private:
     Map<R, Set<RouteAware>> _listeners;
@@ -418,9 +418,9 @@ public:
 
     virtual Duration transitionDuration();
 
-    virtual Widget buildPage(Animation<double> animation, BuildContext context, Animation<double> secondaryAnimation);
+    virtual Widget buildPage(BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation);
 
-    virtual Widget buildTransitions(Animation<double> animation, Widget child, BuildContext context, Animation<double> secondaryAnimation);
+    virtual Widget buildTransitions(BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child);
 
 private:
     RoutePageBuilder _pageBuilder;
@@ -495,9 +495,9 @@ public:
 
     virtual void  focusScopeNode(FocusScopeNode value);
 
-    virtual bool hitTest(Offset position, BoxHitTestResult result);
+    virtual bool hitTest(BoxHitTestResult result, Offset position);
 
-    virtual void handleEvent(HitTestEntry entry, PointerEvent event);
+    virtual void handleEvent(PointerEvent event, HitTestEntry entry);
 
 private:
     FocusScopeNode _focusScopeNode;

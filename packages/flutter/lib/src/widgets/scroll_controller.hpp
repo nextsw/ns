@@ -30,7 +30,7 @@ public:
 
     virtual double offset();
 
-    virtual Future<void> animateTo(Curve curve, Duration duration, double offset);
+    virtual Future<void> animateTo(double offset, Curve curve, Duration duration);
 
     virtual void jumpTo(double value);
 
@@ -40,7 +40,7 @@ public:
 
     virtual void dispose();
 
-    virtual ScrollPosition createScrollPosition(ScrollContext context, ScrollPosition oldPosition, ScrollPhysics physics);
+    virtual ScrollPosition createScrollPosition(ScrollPhysics physics, ScrollContext context, ScrollPosition oldPosition);
 
     virtual String toString();
 

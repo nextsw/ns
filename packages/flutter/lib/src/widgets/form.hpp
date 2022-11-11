@@ -134,7 +134,7 @@ public:
 
     virtual String restorationId();
 
-    virtual void restoreState(bool initialRestore, RestorationBucket oldBucket);
+    virtual void restoreState(RestorationBucket oldBucket, bool initialRestore);
 
     virtual void deactivate();
 

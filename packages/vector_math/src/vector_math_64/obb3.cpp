@@ -31,7 +31,7 @@ Obb3Cls::Obb3Cls() {
 
 void Obb3Cls::copy(Obb3 other)
 
-void Obb3Cls::centerExtentsAxes(Vector3 axis0, Vector3 axis1, Vector3 axis2, Vector3 center, Vector3 halfExtents)
+void Obb3Cls::centerExtentsAxes(Vector3 center, Vector3 halfExtents, Vector3 axis0, Vector3 axis1, Vector3 axis2)
 
 void Obb3Cls::copyFrom(Obb3 other) {
     _center->setFrom(other->_center);
@@ -69,7 +69,7 @@ void Obb3Cls::transform(Matrix4 t) {
     auto _c8 = _halfExtents;_c8.x = auto _c9 = _axis0->normalize();_c9.y = auto _c10 = _axis1->normalize();_c10.z = _axis2->normalize();_c10;_c9;_c8;
 }
 
-void Obb3Cls::copyCorner(Vector3 corner, int cornerIndex) {
+void Obb3Cls::copyCorner(int cornerIndex, Vector3 corner) {
     assert(cornerIndex >= 0 ||  < 8);
     corner->setFrom(_center);
     ;
@@ -89,7 +89,7 @@ void Obb3Cls::closestPointTo(Vector3 p, Vector3 q) {
     q->addScaled(_axis2, dist);
 }
 
-bool Obb3Cls::intersectsWithObb3(double epsilon, Obb3 other) {
+bool Obb3Cls::intersectsWithObb3(Obb3 other, double epsilon) {
     auto _c1 = _r;_c1.auto _c2 = setEntry(0, 0, _axis0->dot(other->_axis0));_c2.auto _c3 = setEntry(1, 0, _axis1->dot(other->_axis0));_c3.auto _c4 = setEntry(2, 0, _axis2->dot(other->_axis0));_c4.auto _c5 = setEntry(0, 1, _axis0->dot(other->_axis1));_c5.auto _c6 = setEntry(1, 1, _axis1->dot(other->_axis1));_c6.auto _c7 = setEntry(2, 1, _axis2->dot(other->_axis1));_c7.auto _c8 = setEntry(0, 2, _axis0->dot(other->_axis2));_c8.auto _c9 = setEntry(1, 2, _axis1->dot(other->_axis2));_c9.setEntry(2, 2, _axis2->dot(other->_axis2));_c9;_c8;_c7;_c6;_c5;_c4;_c3;_c2;_c1;
     auto _c10 = _t;_c10.auto _c11 = setFrom(other->_center);_c11.sub(_center);_c11;_c10;
     _t->setValues(_t->dot(_axis0), _t->dot(_axis1), _t->dot(_axis2));

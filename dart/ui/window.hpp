@@ -140,7 +140,7 @@ public:
 
     virtual void updateSemantics(SemanticsUpdate update);
 
-    virtual void sendPlatformMessage(PlatformMessageResponseCallback callback, ByteData data, String name);
+    virtual void sendPlatformMessage(String name, ByteData data, PlatformMessageResponseCallback callback);
 
     virtual PlatformMessageCallback onPlatformMessage();
 
@@ -150,7 +150,7 @@ public:
 
 private:
 
-    virtual void  _(PlatformDispatcher platformDispatcher, Object windowId);
+    virtual void  _(Object windowId, PlatformDispatcher platformDispatcher);
 
 };
 using SingletonFlutterWindow = std::shared_ptr<SingletonFlutterWindowCls>;

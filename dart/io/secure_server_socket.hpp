@@ -8,9 +8,9 @@
 class SecureServerSocketCls : public StreamCls<SecureSocket> {
 public:
 
-    static Future<SecureServerSocket> bind(address , int backlog, SecurityContext context, int port, bool requestClientCertificate, bool requireClientCertificate, bool shared, List<String> supportedProtocols, bool v6Only);
+    static Future<SecureServerSocket> bind(address , int port, SecurityContext context, int backlog, bool requestClientCertificate, bool requireClientCertificate, bool shared, List<String> supportedProtocols, bool v6Only);
 
-    virtual StreamSubscription<SecureSocket> listen(bool cancelOnError, std::function<void(SecureSocket socket)> onData, std::function<void()> onDone, std::function<void ()> onError);
+    virtual StreamSubscription<SecureSocket> listen(std::function<void(SecureSocket socket)> onData, bool cancelOnError, std::function<void()> onDone, std::function<void ()> onError);
 
     virtual int port();
 
@@ -37,9 +37,9 @@ public:
     List<String> supportedProtocols;
 
 
-    static Future<RawSecureServerSocket> bind(address , int backlog, SecurityContext context, int port, bool requestClientCertificate, bool requireClientCertificate, bool shared, List<String> supportedProtocols, bool v6Only);
+    static Future<RawSecureServerSocket> bind(address , int port, SecurityContext context, int backlog, bool requestClientCertificate, bool requireClientCertificate, bool shared, List<String> supportedProtocols, bool v6Only);
 
-    virtual StreamSubscription<RawSecureSocket> listen(bool cancelOnError, std::function<void(RawSecureSocket s)> onData, std::function<void()> onDone, std::function<void ()> onError);
+    virtual StreamSubscription<RawSecureSocket> listen(std::function<void(RawSecureSocket s)> onData, bool cancelOnError, std::function<void()> onDone, std::function<void ()> onError);
 
     virtual int port();
 
@@ -59,7 +59,7 @@ private:
     bool _closed;
 
 
-    virtual void  _(SecurityContext _context, RawServerSocket _socket, bool requestClientCertificate, bool requireClientCertificate, List<String> supportedProtocols);
+    virtual void  _(RawServerSocket _socket, SecurityContext _context, bool requestClientCertificate, bool requireClientCertificate, List<String> supportedProtocols);
 
     virtual void _onData(RawSocket connection);
 

@@ -4,7 +4,7 @@
 
 #include <dart/core/core.hpp>
 
-double clampDouble(double max, double min, double x);
+double clampDouble(double x, double min, double max);
 
 
 

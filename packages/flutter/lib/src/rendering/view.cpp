@@ -76,7 +76,7 @@ void RenderViewCls::performLayout() {
     }
 }
 
-bool RenderViewCls::hitTest(Offset position, HitTestResult result) {
+bool RenderViewCls::hitTest(HitTestResult result, Offset position) {
     if (child != nullptr) {
         child!->hitTest(BoxHitTestResultCls->wrap(result)position);
     }

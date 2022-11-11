@@ -1,6 +1,6 @@
 #include "instructions.hpp"
 _BlockContext _BlockContextCls::child(int continueBlock, int loopHeader, int loopMerge, int merge) {
-    return make<_BlockContextCls>(out, indent + 1, merge or this->merge, continueBlock or this->continueBlock, loopHeader or this->loopHeader, loopMerge or this->loopMerge);
+    return make<_BlockContextCls>(out, indent + 1, merge | this->merge, continueBlock | this->continueBlock, loopHeader | this->loopHeader, loopMerge | this->loopMerge);
 }
 
 void _BlockContextCls::writeIndent() {
@@ -217,7 +217,7 @@ List<int> _FunctionCallCls::deps() {
     return args;
 }
 
-void _FunctionCallCls::write(StringBuffer out, _Transpiler t) {
+void _FunctionCallCls::write(_Transpiler t, StringBuffer out) {
     out->write(__s("$function("));
     for (;  < args->length(); i++) {
         out->write(t->resolveResult(args[i]));
@@ -228,7 +228,7 @@ void _FunctionCallCls::write(StringBuffer out, _Transpiler t) {
     out->write(__s(")"));
 }
 
-void _ReturnCls::write(StringBuffer out, _Transpiler t) {
+void _ReturnCls::write(_Transpiler t, StringBuffer out) {
     out->write(__s("return"));
 }
 
@@ -236,14 +236,14 @@ List<int> _SelectCls::deps() {
     return makeList(ArrayItem, ArrayItem, ArrayItem);
 }
 
-void _SelectCls::write(StringBuffer out, _Transpiler t) {
+void _SelectCls::write(_Transpiler t, StringBuffer out) {
     String aName = t->resolveResult(a);
     String bName = t->resolveResult(b);
     String conditionName = t->resolveResult(condition);
     out->write(__s("$conditionName ? $aName : $bName"));
 }
 
-void _CompoundAssignmentCls::write(StringBuffer out, _Transpiler t) {
+void _CompoundAssignmentCls::write(_Transpiler t, StringBuffer out) {
     String pointerName = t->resolveResult(pointer);
     String objectName = t->resolveResult(object);
     String operatorString = _operatorString(op);
@@ -254,7 +254,7 @@ List<int> _StoreCls::deps() {
     return makeList(ArrayItem, ArrayItem);
 }
 
-void _StoreCls::write(StringBuffer out, _Transpiler t) {
+void _StoreCls::write(_Transpiler t, StringBuffer out) {
     String pointerName = t->resolveResult(pointer);
     if (selfModifyObject > 0) {
         String objectName = t->resolveResult(selfModifyObject);
@@ -273,7 +273,7 @@ List<int> _AccessChainCls::deps() {
     return list1;
 }
 
-void _AccessChainCls::write(StringBuffer out, _Transpiler t) {
+void _AccessChainCls::write(_Transpiler t, StringBuffer out) {
     List<int> list1 = make<ListCls<>>();list1.add(ArrayItem);for (auto _x1 : indices) {{    list1.add(_x1);}out->write(t->resolveResult(base));
     for (;  < indices->length(); i++) {
         String indexString = t->resolveResult(indices[i]);
@@ -285,7 +285,7 @@ List<int> _VectorShuffleCls::deps() {
     return makeList(ArrayItem);
 }
 
-void _VectorShuffleCls::write(StringBuffer out, _Transpiler t) {
+void _VectorShuffleCls::write(_Transpiler t, StringBuffer out) {
     String typeString = t->resolveType(type);
     String vectorString = t->resolveName(vector);
     out->write(__s("$typeString("));
@@ -303,7 +303,7 @@ List<int> _CompositeConstructCls::deps() {
     return components;
 }
 
-void _CompositeConstructCls::write(StringBuffer out, _Transpiler t) {
+void _CompositeConstructCls::write(_Transpiler t, StringBuffer out) {
     String typeString = t->resolveType(type);
     out->write(__s("$typeString("));
     for (;  < components->length(); i++) {
@@ -319,7 +319,7 @@ List<int> _CompositeExtractCls::deps() {
     return makeList(ArrayItem);
 }
 
-void _CompositeExtractCls::write(StringBuffer out, _Transpiler t) {
+void _CompositeExtractCls::write(_Transpiler t, StringBuffer out) {
     out->write(t->resolveResult(src));
     for (;  < indices->length(); i++) {
         out->write(__s("[${indices[i]}]"));
@@ -330,7 +330,7 @@ List<int> _ImageSampleImplicitLodCls::deps() {
     return makeList(ArrayItem);
 }
 
-void _ImageSampleImplicitLodCls::write(StringBuffer out, _Transpiler t) {
+void _ImageSampleImplicitLodCls::write(_Transpiler t, StringBuffer out) {
     String sampledImageString = t->resolveName(sampledImage);
     String coordinateString = t->resolveResult(coordinate);
     if (t->target == TargetLanguageCls::sksl) {
@@ -344,7 +344,7 @@ List<int> _UnaryOperatorCls::deps() {
     return makeList(ArrayItem);
 }
 
-void _UnaryOperatorCls::write(StringBuffer out, _Transpiler t) {
+void _UnaryOperatorCls::write(_Transpiler t, StringBuffer out) {
     out->write(_operatorString(op));
     out->write(t->resolveResult(operand));
 }
@@ -353,7 +353,7 @@ List<int> _ReturnValueCls::deps() {
     return makeList(ArrayItem);
 }
 
-void _ReturnValueCls::write(StringBuffer out, _Transpiler t) {
+void _ReturnValueCls::write(_Transpiler t, StringBuffer out) {
     String valueString = t->resolveResult(value);
     out->write(__s("return $valueString"));
 }
@@ -362,7 +362,7 @@ List<int> _BinaryOperatorCls::deps() {
     return makeList(ArrayItem, ArrayItem);
 }
 
-void _BinaryOperatorCls::write(StringBuffer out, _Transpiler t) {
+void _BinaryOperatorCls::write(_Transpiler t, StringBuffer out) {
     String aStr = t->resolveResult(a);
     String bStr = t->resolveResult(b);
     String opString = _operatorString(op);
@@ -373,7 +373,7 @@ List<int> _BuiltinFunctionCls::deps() {
     return args;
 }
 
-void _BuiltinFunctionCls::write(StringBuffer out, _Transpiler t) {
+void _BuiltinFunctionCls::write(_Transpiler t, StringBuffer out) {
     out->write(__s("$function("));
     for (;  < args->length(); i++) {
         out->write(t->resolveResult(args[i]));
@@ -388,7 +388,7 @@ List<int> _TypeCastCls::deps() {
     return makeList(ArrayItem);
 }
 
-void _TypeCastCls::write(StringBuffer out, _Transpiler t) {
+void _TypeCastCls::write(_Transpiler t, StringBuffer out) {
     String typeString = t->resolveType(type);
     String valueString = t->resolveResult(value);
     out->write(__s("$typeString($valueString)"));

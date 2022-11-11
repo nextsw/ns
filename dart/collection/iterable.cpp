@@ -55,7 +55,7 @@ void IterableMixinCls<E>::forEach(std::function<void(E element)> action) {
 }
 
 template<typename E>
-E IterableMixinCls<E>::reduce(std::function<E(E element, E value)> combine) {
+E IterableMixinCls<E>::reduce(std::function<E(E value, E element)> combine) {
     Iterator<E> iterator = this->iterator;
     if (!iterator->moveNext()) {
         throw IterableElementErrorCls->noElement();
@@ -69,7 +69,7 @@ E IterableMixinCls<E>::reduce(std::function<E(E element, E value)> combine) {
 
 template<typename E>
 template<typename T>
-T IterableMixinCls<E>::fold(std::function<T(E element, T previousValue)> combine, T initialValue) {
+T IterableMixinCls<E>::fold(T initialValue, std::function<T(T previousValue, E element)> combine) {
     auto value = initialValue;
     for (E element : this)     {
         value = combine(value, element);
@@ -205,7 +205,7 @@ E IterableMixinCls<E>::single() {
 }
 
 template<typename E>
-E IterableMixinCls<E>::firstWhere(std::function<E()> orElse, std::function<bool(E value)> test) {
+E IterableMixinCls<E>::firstWhere(std::function<bool(E value)> test, std::function<E()> orElse) {
     for (E element : this) {
         if (test(element))         {
             return element;
@@ -218,7 +218,7 @@ E IterableMixinCls<E>::firstWhere(std::function<E()> orElse, std::function<bool(
 }
 
 template<typename E>
-E IterableMixinCls<E>::lastWhere(std::function<E()> orElse, std::function<bool(E value)> test) {
+E IterableMixinCls<E>::lastWhere(std::function<bool(E value)> test, std::function<E()> orElse) {
     E result;
     bool foundMatching = false;
     for (E element : this) {
@@ -237,7 +237,7 @@ E IterableMixinCls<E>::lastWhere(std::function<E()> orElse, std::function<bool(E
 }
 
 template<typename E>
-E IterableMixinCls<E>::singleWhere(std::function<E()> orElse, std::function<bool(E element)> test) {
+E IterableMixinCls<E>::singleWhere(std::function<bool(E element)> test, std::function<E()> orElse) {
     E result;
     bool foundMatching = false;
     for (E element : this) {
@@ -338,7 +338,7 @@ void _iterablePartsToStrings(Iterable<Object> iterable, List<String> parts) {
         }
         String next = __s("${it.current}");
         parts->add(next);
-        length = next->length + overhead;
+        length += next->length + overhead;
         count++;
     }
     String penultimateString;
@@ -359,7 +359,7 @@ void _iterablePartsToStrings(Iterable<Object> iterable, List<String> parts) {
             }
             ultimateString = __s("$penultimate");
             penultimateString = parts->removeLast();
-            length = ultimateString->length + overhead;
+            length += ultimateString->length + overhead;
         } else {
             Object ultimate = it->current();
             count++;
@@ -370,7 +370,7 @@ void _iterablePartsToStrings(Iterable<Object> iterable, List<String> parts) {
                 count++;
                 if (count > maxCount) {
                     while (length > lengthLimit - ellipsisSize - overhead && count > headCount) {
-                        length = parts->removeLast()->length + overhead;
+                        length -= parts->removeLast()->length + overhead;
                         count--;
                     }
                     parts->add(__s("..."));
@@ -379,19 +379,19 @@ void _iterablePartsToStrings(Iterable<Object> iterable, List<String> parts) {
             }
             penultimateString = __s("$penultimate");
             ultimateString = __s("$ultimate");
-            length = ultimateString->length + penultimateString->length + 2 * overhead;
+            length += ultimateString->length + penultimateString->length + 2 * overhead;
         }
     }
     String elision;
     if (count > parts->length + tailCount) {
         elision = __s("...");
-        length = ellipsisSize + overhead;
+        length += ellipsisSize + overhead;
     }
     while (length > lengthLimit && parts->length > headCount) {
-        length = parts->removeLast()->length + overhead;
+        length -= parts->removeLast()->length + overhead;
         if (elision == nullptr) {
             elision = __s("...");
-            length = ellipsisSize + overhead;
+            length += ellipsisSize + overhead;
         }
     }
     if (elision != nullptr) {

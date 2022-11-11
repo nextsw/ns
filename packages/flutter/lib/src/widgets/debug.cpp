@@ -13,7 +13,7 @@ Key _firstNonUniqueKey(Iterable<Widget> widgets) {
     return nullptr;
 }
 
-bool debugChildrenHaveDuplicateKeys(Iterable<Widget> children, Widget parent) {
+bool debugChildrenHaveDuplicateKeys(Widget parent, Iterable<Widget> children) {
     assert([=] () {
         Key nonUniqueKey = _firstNonUniqueKey(children);
         if (nonUniqueKey != nullptr) {
@@ -55,7 +55,7 @@ bool debugCheckHasMediaQuery(BuildContext context) {
     return true;
 }
 
-bool debugCheckHasDirectionality(String alternative, BuildContext context, String hint, String why) {
+bool debugCheckHasDirectionality(BuildContext context, String alternative, String hint, String why) {
     assert([=] () {
         if (!is<Directionality>(context->widget()) && context-><Directionality>getElementForInheritedWidgetOfExactType() == nullptr) {
             why = why == nullptr? __s("") : __s(" $why");
@@ -66,7 +66,7 @@ bool debugCheckHasDirectionality(String alternative, BuildContext context, Strin
     return true;
 }
 
-void debugWidgetBuilderValue(Widget built, Widget widget) {
+void debugWidgetBuilderValue(Widget widget, Widget built) {
     assert([=] () {
         if (built == nullptr) {
             throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem, ArrayItem, ArrayItem));

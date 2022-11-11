@@ -189,7 +189,7 @@ private:
 
     virtual void _dispatchTap(int pointer, OffsetPair position);
 
-    virtual void _dispatchLongTap(OffsetPair lastPosition, int pointer);
+    virtual void _dispatchLongTap(int pointer, OffsetPair lastPosition);
 
 };
 using MultiTapGestureRecognizer = std::shared_ptr<MultiTapGestureRecognizerCls>;
@@ -278,7 +278,7 @@ private:
     _TapTracker _pendingTap;
 
 
-    virtual bool _representsSameSeries(PointerDownEvent event, _TapTracker tap);
+    virtual bool _representsSameSeries(_TapTracker tap, PointerDownEvent event);
 
     virtual void _trackTap(PointerDownEvent event);
 

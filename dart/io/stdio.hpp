@@ -20,7 +20,7 @@ int _stdioHandleTypeError;
 class _StdStreamCls : public StreamCls<List<int>> {
 public:
 
-    virtual StreamSubscription<List<int>> listen(bool cancelOnError, std::function<void(List<int> event)> onData, std::function<void()> onDone, std::function<void ()> onError);
+    virtual StreamSubscription<List<int>> listen(std::function<void(List<int> event)> onData, bool cancelOnError, std::function<void()> onDone, std::function<void ()> onError);
 
 private:
     Stream<List<int>> _stream;
@@ -49,7 +49,7 @@ private:
     int _fd;
 
 
-    virtual void  _(int _fd, Stream<List<int>> stream);
+    virtual void  _(Stream<List<int>> stream, int _fd);
 
 };
 using Stdin = std::shared_ptr<StdinCls>;
@@ -73,7 +73,7 @@ private:
     IOSink _nonBlocking;
 
 
-    virtual void  _(int _fd, IOSink sink);
+    virtual void  _(IOSink sink, int _fd);
 
     bool _hasTerminal(int fd);
     int _terminalColumns(int fd);
@@ -195,7 +195,7 @@ int _stdoutFD;
 
 int _stderrFD;
 
-void _setStdioFDs(int stderr, int stdin, int stdout);
+void _setStdioFDs(int stdin, int stdout, int stderr);
 
 Stdin stdin();
 

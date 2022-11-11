@@ -4,7 +4,7 @@ SingleChildScrollViewCls::SingleChildScrollViewCls(Widget child, Clip clipBehavi
         assert(scrollDirection != nullptr);
         assert(dragStartBehavior != nullptr);
         assert(clipBehavior != nullptr);
-        assert(!(controller != nullptr && (primary or false)), __s("Primary ScrollViews obtain their ScrollController via inheritance from a PrimaryScrollController widget. You cannot both set primary to true and pass an explicit controller."));
+        assert(!(controller != nullptr && (primary | false)), __s("Primary ScrollViews obtain their ScrollController via inheritance from a PrimaryScrollController widget. You cannot both set primary to true and pass an explicit controller."));
     }
 }
 
@@ -14,7 +14,7 @@ Widget SingleChildScrollViewCls::build(BuildContext context) {
     if (padding != nullptr) {
         contents = make<PaddingCls>(padding!, contents);
     }
-    bool effectivePrimary = primary or controller == nullptr && PrimaryScrollControllerCls->shouldInherit(context, scrollDirection);
+    bool effectivePrimary = primary | controller == nullptr && PrimaryScrollControllerCls->shouldInherit(context, scrollDirection);
     ScrollController scrollController = effectivePrimary? PrimaryScrollControllerCls->of(context) : controller;
     Widget scrollable = make<ScrollableCls>(dragStartBehavior, axisDirection, scrollController, physics, restorationId, [=] (BuildContext context,ViewportOffset offset) {
     return make<_SingleChildViewportCls>(axisDirection, offset, clipBehavior, contents);
@@ -214,7 +214,7 @@ Rect _RenderSingleChildViewportCls::describeApproximatePaintClip(RenderObject ch
     return nullptr;
 }
 
-bool _RenderSingleChildViewportCls::hitTestChildren(Offset position, BoxHitTestResult result) {
+bool _RenderSingleChildViewportCls::hitTestChildren(BoxHitTestResult result, Offset position) {
     if (child != nullptr) {
         return result->addWithPaintOffset(_paintOffset(), position, [=] (BoxHitTestResult result,Offset transformed) {
             assert(transformed == position + -_paintOffset());
@@ -224,8 +224,8 @@ bool _RenderSingleChildViewportCls::hitTestChildren(Offset position, BoxHitTestR
     return false;
 }
 
-RevealedOffset _RenderSingleChildViewportCls::getOffsetToReveal(double alignment, Rect rect, RenderObject target) {
-    rect = target->paintBounds();
+RevealedOffset _RenderSingleChildViewportCls::getOffsetToReveal(RenderObject target, double alignment, Rect rect) {
+    rect |= target->paintBounds();
     if (!is<RenderBox>(target)) {
         return make<RevealedOffsetCls>(offset()->pixels(), rect);
     }

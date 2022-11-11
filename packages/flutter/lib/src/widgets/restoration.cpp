@@ -17,7 +17,7 @@ String _RestorationScopeStateCls::restorationId() {
     return widget->restorationId;
 }
 
-void _RestorationScopeStateCls::restoreState(bool initialRestore, RestorationBucket oldBucket) {
+void _RestorationScopeStateCls::restoreState(RestorationBucket oldBucket, bool initialRestore) {
 }
 
 Widget _RestorationScopeStateCls::build(BuildContext context) {
@@ -48,7 +48,7 @@ void _RootRestorationScopeStateCls::didChangeDependencies() {
     super->didChangeDependencies();
     _ancestorBucket = RestorationScopeCls->of(context);
     _loadRootBucketIfNecessary();
-    _okToRenderBlankContainer = widget->restorationId != nullptr && _needsRootBucketInserted();
+    _okToRenderBlankContainer |= widget->restorationId != nullptr && _needsRootBucketInserted();
 }
 
 void _RootRestorationScopeStateCls::didUpdateWidget(RootRestorationScope oldWidget) {
@@ -67,7 +67,7 @@ Widget _RootRestorationScopeStateCls::build(BuildContext context) {
     if (_okToRenderBlankContainer! && _isWaitingForRootBucket()) {
         return SizedBoxCls->shrink();
     }
-    return make<UnmanagedRestorationScopeCls>(_ancestorBucket or _rootBucket, make<RestorationScopeCls>(widget->restorationId, widget->child));
+    return make<UnmanagedRestorationScopeCls>(_ancestorBucket | _rootBucket, make<RestorationScopeCls>(widget->restorationId, widget->child));
 }
 
 bool _RootRestorationScopeStateCls::_needsRootBucketInserted() {
@@ -132,7 +132,7 @@ bool RestorablePropertyCls<T>::isRegistered() {
 }
 
 template<typename T>
-void RestorablePropertyCls<T>::_register(RestorationMixin owner, String restorationId) {
+void RestorablePropertyCls<T>::_register(String restorationId, RestorationMixin owner) {
     assert(ChangeNotifierCls->debugAssertNotDisposed(this));
     assert(restorationId != nullptr);
     assert(owner != nullptr);
@@ -167,7 +167,7 @@ void RestorationMixinCls<S>::registerForRestoration(RestorableProperty<Object> p
     assert(_debugDoingRestore() || !_properties->keys()->map([=] (RestorableProperty<Object> r)     {
         r->_restorationId;
     })->contains(restorationId), __s(""$restorationId" is already registered to another property."));
-    bool hasSerializedValue = bucket()?->contains(restorationId) or false;
+    bool hasSerializedValue = bucket()?->contains(restorationId) | false;
     Object initialValue = hasSerializedValue? property->fromPrimitives(bucket()!-><Object>read(restorationId)) : property->createDefaultValue();
     if (!property->isRegistered()) {
         property->_register(restorationId, this);
@@ -224,7 +224,7 @@ bool RestorationMixinCls<S>::restorePending() {
         return false;
     }
     RestorationBucket potentialNewParent = RestorationScopeCls->of(context);
-    return potentialNewParent != _currentParent && (potentialNewParent?->isReplacing() or false);
+    return potentialNewParent != _currentParent && (potentialNewParent?->isReplacing() | false);
 }
 
 template<typename S>

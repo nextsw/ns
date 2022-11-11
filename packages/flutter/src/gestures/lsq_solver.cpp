@@ -1,5 +1,5 @@
 #include "lsq_solver.hpp"
-void _VectorCls::fromVOL(int length, int offset, List<double> values)
+void _VectorCls::fromVOL(List<double> values, int offset, int length)
 
 double _VectorCls::[](int i) {
     return _elements[i + _offset];
@@ -11,8 +11,8 @@ void _VectorCls::[]=(int i, double value) {
 
 double _VectorCls::*(_Vector a) {
     double result = 0.0;
-    for (;  < _length; i = 1) {
-        result = this[i] * a[i];
+    for (;  < _length; i += 1) {
+        result += this[i] * a[i];
     }
     return result;
 }
@@ -29,11 +29,11 @@ _VectorCls::_VectorCls(int size) {
     }
 }
 
-double _MatrixCls::get(int col, int row) {
+double _MatrixCls::get(int row, int col) {
     return _elements[row * _columns + col];
 }
 
-void _MatrixCls::set(int col, int row, double value) {
+void _MatrixCls::set(int row, int col, double value) {
     _elements[row * _columns + col] = value;
 }
 
@@ -41,7 +41,7 @@ _Vector _MatrixCls::getRow(int row) {
     return _VectorCls->fromVOL(_elements, row * _columns, _columns);
 }
 
-_MatrixCls::_MatrixCls(int cols, int rows) {
+_MatrixCls::_MatrixCls(int rows, int cols) {
     {
         _columns = cols;
         _elements = make<Float64ListCls>(rows * cols);
@@ -54,7 +54,7 @@ PolynomialFitCls::PolynomialFitCls(int degree) {
     }
 }
 
-LeastSquaresSolverCls::LeastSquaresSolverCls(List<double> w, List<double> x, List<double> y) {
+LeastSquaresSolverCls::LeastSquaresSolverCls(List<double> x, List<double> y, List<double> w) {
     {
         assert(x->length() == y->length());
         assert(y->length() == w->length());
@@ -69,21 +69,21 @@ PolynomialFit LeastSquaresSolverCls::solve(int degree) {
     int m = x->length();
     int n = degree + 1;
     _Matrix a = make<_MatrixCls>(n, m);
-    for (;  < m; h = 1) {
+    for (;  < m; h += 1) {
         a->set(0, h, w[h]);
-        for (;  < n; i = 1) {
+        for (;  < n; i += 1) {
             a->set(i, h, a->get(i - 1, h) * x[h]);
         }
     }
     _Matrix q = make<_MatrixCls>(n, m);
     _Matrix r = make<_MatrixCls>(n, n);
-    for (;  < n; j = 1) {
-        for (;  < m; h = 1) {
+    for (;  < n; j += 1) {
+        for (;  < m; h += 1) {
             q->set(j, h, a->get(j, h));
         }
-        for (;  < j; i = 1) {
+        for (;  < j; i += 1) {
             double dot = q->getRow(j) * q->getRow(i);
-            for (;  < m; h = 1) {
+            for (;  < m; h += 1) {
                 q->set(j, h, q->get(j, h) - dot * q->get(i, h));
             }
         }
@@ -92,41 +92,41 @@ PolynomialFit LeastSquaresSolverCls::solve(int degree) {
             return nullptr;
         }
         double inverseNorm = 1.0 / norm;
-        for (;  < m; h = 1) {
+        for (;  < m; h += 1) {
             q->set(j, h, q->get(j, h) * inverseNorm);
         }
-        for (;  < n; i = 1) {
+        for (;  < n; i += 1) {
             r->set(j, i,  < j? 0.0 : q->getRow(j) * a->getRow(i));
         }
     }
     _Vector wy = make<_VectorCls>(m);
-    for (;  < m; h = 1) {
+    for (;  < m; h += 1) {
         wy[h] = y[h] * w[h];
     }
-    for (; i >= 0; i = 1) {
+    for (; i >= 0; i -= 1) {
         result->coefficients[i] = q->getRow(i) * wy;
-        for (; j > i; j = 1) {
-            result->coefficients[i] = r->get(i, j) * result->coefficients[j];
+        for (; j > i; j -= 1) {
+            result->coefficients[i] -= r->get(i, j) * result->coefficients[j];
         }
-        result->coefficients[i] = r->get(i, i);
+        result->coefficients[i] /= r->get(i, i);
     }
     double yMean = 0.0;
-    for (;  < m; h = 1) {
-        yMean = y[h];
+    for (;  < m; h += 1) {
+        yMean += y[h];
     }
-    yMean = m;
+    yMean /= m;
     double sumSquaredError = 0.0;
     double sumSquaredTotal = 0.0;
-    for (;  < m; h = 1) {
+    for (;  < m; h += 1) {
         double term = 1.0;
         double err = y[h] - result->coefficients[0];
-        for (;  < n; i = 1) {
-            term = x[h];
-            err = term * result->coefficients[i];
+        for (;  < n; i += 1) {
+            term *= x[h];
+            err -= term * result->coefficients[i];
         }
-        sumSquaredError = w[h] * w[h] * err * err;
+        sumSquaredError += w[h] * w[h] * err * err;
         double v = y[h] - yMean;
-        sumSquaredTotal = w[h] * w[h] * v * v;
+        sumSquaredTotal += w[h] * w[h] * v * v;
     }
     result->confidence = sumSquaredTotal <= precisionErrorTolerance? 1.0 : 1.0 - (sumSquaredError / sumSquaredTotal);
     return result;

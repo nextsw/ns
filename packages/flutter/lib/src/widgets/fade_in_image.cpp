@@ -26,10 +26,10 @@ Widget _FadeInImageStateCls::build(BuildContext context) {
     if (wasSynchronouslyLoaded || frame != nullptr) {
         targetLoaded = true;
     }
-    return make<_AnimatedFadeOutFadeInCls>(child, _imageAnimation, _image(widget->placeholder, widget->placeholderErrorBuilder, _placeholderAnimation, widget->placeholderFit or widget->fit), _placeholderAnimation, targetLoaded, wasSynchronouslyLoaded, widget->fadeInDuration, widget->fadeOutDuration, widget->fadeInCurve, widget->fadeOutCurve);
+    return make<_AnimatedFadeOutFadeInCls>(child, _imageAnimation, _image(widget->placeholder, widget->placeholderErrorBuilder, _placeholderAnimation, widget->placeholderFit | widget->fit), _placeholderAnimation, targetLoaded, wasSynchronouslyLoaded, widget->fadeInDuration, widget->fadeOutDuration, widget->fadeInCurve, widget->fadeOutCurve);
 });
     if (!widget->excludeFromSemantics) {
-        result = make<SemanticsCls>(widget->imageSemanticLabel != nullptr, true, widget->imageSemanticLabel or __s(""), result);
+        result = make<SemanticsCls>(widget->imageSemanticLabel != nullptr, true, widget->imageSemanticLabel | __s(""), result);
     }
     return result;
 }

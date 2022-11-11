@@ -196,30 +196,30 @@ void RenderWrapCls::performLayout() {
         double childCrossAxisExtent = _getCrossAxisExtent(child->size());
         if (childCount > 0 && runMainAxisExtent + spacing + childMainAxisExtent > mainAxisLimit) {
             mainAxisExtent = math->max(mainAxisExtent, runMainAxisExtent);
-            crossAxisExtent = runCrossAxisExtent;
+            crossAxisExtent += runCrossAxisExtent;
             if (runMetrics->isNotEmpty) {
-                crossAxisExtent = runSpacing;
+                crossAxisExtent += runSpacing;
             }
             runMetrics->add(make<_RunMetricsCls>(runMainAxisExtent, runCrossAxisExtent, childCount));
             runMainAxisExtent = 0.0;
             runCrossAxisExtent = 0.0;
             childCount = 0;
         }
-        runMainAxisExtent = childMainAxisExtent;
+        runMainAxisExtent += childMainAxisExtent;
         if (childCount > 0) {
-            runMainAxisExtent = spacing;
+            runMainAxisExtent += spacing;
         }
         runCrossAxisExtent = math->max(runCrossAxisExtent, childCrossAxisExtent);
-        childCount = 1;
+        childCount += 1;
         WrapParentData childParentData = as<WrapParentData>(child->parentData!);
         childParentData->_runIndex = runMetrics->length();
         child = childParentData->nextSibling;
     }
     if (childCount > 0) {
         mainAxisExtent = math->max(mainAxisExtent, runMainAxisExtent);
-        crossAxisExtent = runCrossAxisExtent;
+        crossAxisExtent += runCrossAxisExtent;
         if (runMetrics->isNotEmpty) {
-            crossAxisExtent = runSpacing;
+            crossAxisExtent += runSpacing;
         }
         runMetrics->add(make<_RunMetricsCls>(runMainAxisExtent, runCrossAxisExtent, childCount));
     }
@@ -233,7 +233,7 @@ void RenderWrapCls::performLayout() {
     double runLeadingSpace = 0.0;
     double runBetweenSpace = 0.0;
     ;
-    runBetweenSpace = runSpacing;
+    runBetweenSpace += runSpacing;
     double crossAxisOffset = flipCrossAxis? containerCrossAxisExtent - runLeadingSpace : runLeadingSpace;
     child = firstChild;
     for (;  < runCount; ++i) {
@@ -245,10 +245,10 @@ void RenderWrapCls::performLayout() {
         double childLeadingSpace = 0.0;
         double childBetweenSpace = 0.0;
         ;
-        childBetweenSpace = spacing;
+        childBetweenSpace += spacing;
         double childMainPosition = flipMainAxis? containerMainAxisExtent - childLeadingSpace : childLeadingSpace;
         if (flipCrossAxis) {
-            crossAxisOffset = runCrossAxisExtent;
+            crossAxisOffset -= runCrossAxisExtent;
         }
         while (child != nullptr) {
             WrapParentData childParentData = as<WrapParentData>(child->parentData!);
@@ -259,25 +259,25 @@ void RenderWrapCls::performLayout() {
             double childCrossAxisExtent = _getCrossAxisExtent(child->size());
             double childCrossAxisOffset = _getChildCrossAxisOffset(flipCrossAxis, runCrossAxisExtent, childCrossAxisExtent);
             if (flipMainAxis) {
-                childMainPosition = childMainAxisExtent;
+                childMainPosition -= childMainAxisExtent;
             }
             childParentData->offset = _getOffset(childMainPosition, crossAxisOffset + childCrossAxisOffset);
             if (flipMainAxis) {
-                childMainPosition = childBetweenSpace;
+                childMainPosition -= childBetweenSpace;
             } else {
-                childMainPosition = childMainAxisExtent + childBetweenSpace;
+                childMainPosition += childMainAxisExtent + childBetweenSpace;
             }
             child = childParentData->nextSibling;
         }
         if (flipCrossAxis) {
-            crossAxisOffset = runBetweenSpace;
+            crossAxisOffset -= runBetweenSpace;
         } else {
-            crossAxisOffset = runCrossAxisExtent + runBetweenSpace;
+            crossAxisOffset += runCrossAxisExtent + runBetweenSpace;
         }
     }
 }
 
-bool RenderWrapCls::hitTestChildren(Offset position, BoxHitTestResult result) {
+bool RenderWrapCls::hitTestChildren(BoxHitTestResult result, Offset position) {
     return defaultHitTestChildren(resultposition);
 }
 
@@ -335,11 +335,11 @@ double RenderWrapCls::_getCrossAxisExtent(Size childSize) {
     ;
 }
 
-Offset RenderWrapCls::_getOffset(double crossAxisOffset, double mainAxisOffset) {
+Offset RenderWrapCls::_getOffset(double mainAxisOffset, double crossAxisOffset) {
     ;
 }
 
-double RenderWrapCls::_getChildCrossAxisOffset(double childCrossAxisExtent, bool flipCrossAxis, double runCrossAxisExtent) {
+double RenderWrapCls::_getChildCrossAxisOffset(bool flipCrossAxis, double runCrossAxisExtent, double childCrossAxisExtent) {
     double freeSpace = runCrossAxisExtent - childCrossAxisExtent;
     ;
 }
@@ -360,20 +360,20 @@ Size RenderWrapCls::_computeDryLayout(BoxConstraints constraints, ChildLayouter 
         double childCrossAxisExtent = _getCrossAxisExtent(childSize);
         if (childCount > 0 && runMainAxisExtent + childMainAxisExtent + spacing() > mainAxisLimit) {
             mainAxisExtent = math->max(mainAxisExtent, runMainAxisExtent);
-            crossAxisExtent = runCrossAxisExtent + runSpacing();
+            crossAxisExtent += runCrossAxisExtent + runSpacing();
             runMainAxisExtent = 0.0;
             runCrossAxisExtent = 0.0;
             childCount = 0;
         }
-        runMainAxisExtent = childMainAxisExtent;
+        runMainAxisExtent += childMainAxisExtent;
         runCrossAxisExtent = math->max(runCrossAxisExtent, childCrossAxisExtent);
         if (childCount > 0) {
-            runMainAxisExtent = spacing();
+            runMainAxisExtent += spacing();
         }
-        childCount = 1;
+        childCount += 1;
         child = childAfter(child);
     }
-    crossAxisExtent = runCrossAxisExtent;
+    crossAxisExtent += runCrossAxisExtent;
     mainAxisExtent = math->max(mainAxisExtent, runMainAxisExtent);
     ;
 }

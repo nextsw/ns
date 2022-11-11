@@ -6,7 +6,7 @@ void _EventSinkWrapperCls<T>::add(T data) {
 
 template<typename T>
 void _EventSinkWrapperCls<T>::addError(Object error, StackTrace stackTrace) {
-    _sink->_addError(error, stackTrace or AsyncErrorCls->defaultStackTrace(error));
+    _sink->_addError(error, stackTrace | AsyncErrorCls->defaultStackTrace(error));
 }
 
 template<typename T>
@@ -15,7 +15,7 @@ void _EventSinkWrapperCls<T>::close() {
 }
 
 template<typename S, typename T>
-_SinkTransformerStreamSubscriptionCls<S, T>::_SinkTransformerStreamSubscriptionCls(bool cancelOnError, _SinkMapper<S, T> mapper, std::function<void(T data)> onData, std::function<void()> onDone, std::function<void ()> onError, Stream<S> source) : _BufferingStreamSubscription<T>(onData, onError, onDone, cancelOnError) {
+_SinkTransformerStreamSubscriptionCls<S, T>::_SinkTransformerStreamSubscriptionCls(Stream<S> source, _SinkMapper<S, T> mapper, std::function<void(T data)> onData, std::function<void ()> onError, std::function<void()> onDone, bool cancelOnError) : _BufferingStreamSubscription<T>(onData, onError, onDone, cancelOnError) {
     {
         _transformerSink = mapper(<T>make<_EventSinkWrapperCls>(this));
         _subscription = source->listen(_handleData_handleError, _handleDone);
@@ -109,8 +109,8 @@ bool _BoundSinkStreamCls<S, T>::isBroadcast() {
 }
 
 template<typename S, typename T>
-StreamSubscription<T> _BoundSinkStreamCls<S, T>::listen(bool cancelOnError, std::function<void(T event)> onData, std::function<void()> onDone, std::function<void ()> onError) {
-    StreamSubscription<T> subscription = <S, T>make<_SinkTransformerStreamSubscriptionCls>(_stream, _sinkMapper, onData, onError, onDone, cancelOnError or false);
+StreamSubscription<T> _BoundSinkStreamCls<S, T>::listen(std::function<void(T event)> onData, bool cancelOnError, std::function<void()> onDone, std::function<void ()> onError) {
+    StreamSubscription<T> subscription = <S, T>make<_SinkTransformerStreamSubscriptionCls>(_stream, _sinkMapper, onData, onError, onDone, cancelOnError | false);
     return subscription;
 }
 
@@ -136,7 +136,7 @@ void _HandlerEventSinkCls<S, T>::addError(Object error, StackTrace stackTrace) {
         throw make<StateErrorCls>(__s("Sink is closed"));
     }
     auto handleError = _handleError;
-    stackTrace = AsyncErrorCls->defaultStackTrace(error);
+    stackTrace |= AsyncErrorCls->defaultStackTrace(error);
     if (handleError != nullptr) {
         handleError(error, stackTrace, sink);
     } else {
@@ -165,7 +165,7 @@ Stream<T> _StreamHandlerTransformerCls<S, T>::bind(Stream<S> stream) {
 }
 
 template<typename S, typename T>
-_StreamHandlerTransformerCls<S, T>::_StreamHandlerTransformerCls(std::function<void(S data, EventSink<T> sink)> handleData, std::function<void(EventSink<T> sink)> handleDone, std::function<void(Object error, EventSink<T> sink, StackTrace stackTrace)> handleError) : _StreamSinkTransformer<S, T>([=] (EventSink<T> outputSink) {
+_StreamHandlerTransformerCls<S, T>::_StreamHandlerTransformerCls(std::function<void(S data, EventSink<T> sink)> handleData, std::function<void(EventSink<T> sink)> handleDone, std::function<void(Object error, StackTrace stackTrace, EventSink<T> sink)> handleError) : _StreamSinkTransformer<S, T>([=] (EventSink<T> outputSink) {
     return <S, T>make<_HandlerEventSinkCls>(handleData, handleError, handleDone, outputSink);
 }) {
 }
@@ -186,8 +186,8 @@ bool _BoundSubscriptionStreamCls<S, T>::isBroadcast() {
 }
 
 template<typename S, typename T>
-StreamSubscription<T> _BoundSubscriptionStreamCls<S, T>::listen(bool cancelOnError, std::function<void(T event)> onData, std::function<void()> onDone, std::function<void ()> onError) {
-    StreamSubscription<T> result = _onListen(_stream, cancelOnError or false);
+StreamSubscription<T> _BoundSubscriptionStreamCls<S, T>::listen(std::function<void(T event)> onData, bool cancelOnError, std::function<void()> onDone, std::function<void ()> onError) {
+    StreamSubscription<T> result = _onListen(_stream, cancelOnError | false);
     result->onData(onData);
     result->onError(onError);
     result->onDone(onDone);

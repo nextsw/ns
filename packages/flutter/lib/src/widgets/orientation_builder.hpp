@@ -20,7 +20,7 @@ public:
 
 private:
 
-    virtual Widget _buildWithConstraints(BoxConstraints constraints, BuildContext context);
+    virtual Widget _buildWithConstraints(BuildContext context, BoxConstraints constraints);
 
 };
 using OrientationBuilder = std::shared_ptr<OrientationBuilderCls>;

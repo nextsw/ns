@@ -1,5 +1,5 @@
 #include "debug.hpp"
-bool debugAssertAllFoundationVarsUnset(DebugPrintCallback debugPrintOverride, String reason) {
+bool debugAssertAllFoundationVarsUnset(String reason, DebugPrintCallback debugPrintOverride) {
     assert([=] () {
         if (debugPrint != debugPrintOverride || debugDefaultTargetPlatformOverride != nullptr || debugDoublePrecision != nullptr || debugBrightnessOverride != nullptr) {
             throw make<FlutterErrorCls>(reason);
@@ -10,7 +10,7 @@ bool debugAssertAllFoundationVarsUnset(DebugPrintCallback debugPrintOverride, St
 }
 
 template<typename T>
-Future<T> debugInstrumentAction(std::function<Future<T>()> action, String description) {
+Future<T> debugInstrumentAction(String description, std::function<Future<T>()> action) {
     bool instrument = false;
     assert([=] () {
         instrument = debugInstrumentationEnabled;

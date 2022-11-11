@@ -179,7 +179,7 @@ void LayerCls::remove() {
 }
 
 template<typename S>
-bool LayerCls::findAnnotations(Offset localPosition, bool onlyFirst, AnnotationResult<S> result) {
+bool LayerCls::findAnnotations(AnnotationResult<S> result, Offset localPosition, bool onlyFirst) {
     return false;
 }
 
@@ -213,7 +213,7 @@ void LayerCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
 
 void LayerCls::_updateSubtreeCompositionObserverCount(int delta) {
     assert(delta != 0);
-    _compositionCallbackCount = delta;
+    _compositionCallbackCount += delta;
     assert(_compositionCallbackCount >= 0);
     if (parent() != nullptr) {
         parent()!->_updateSubtreeCompositionObserverCount(delta);
@@ -229,7 +229,7 @@ void LayerCls::_fireCompositionCallbacks(bool includeChildren) {
 void LayerCls::_unref() {
     assert(!_debugMutationsLocked);
     assert(_refCount > 0);
-    _refCount = 1;
+    _refCount -= 1;
     if (_refCount == 0) {
         dispose();
     }
@@ -249,7 +249,7 @@ template<typename T>
 LayerHandleCls<T>::LayerHandleCls(T _layer) {
     {
         if (_layer != nullptr) {
-            _layer!->_refCount = 1;
+            _layer!->_refCount += 1;
         }
     }
 }
@@ -268,7 +268,7 @@ void LayerHandleCls<T>::layer(T layer) {
     _layer?->_unref();
     _layer = layer;
     if (_layer != nullptr) {
-        _layer!->_refCount = 1;
+        _layer!->_refCount += 1;
     }
 }
 
@@ -328,7 +328,7 @@ void PictureLayerCls::debugFillProperties(DiagnosticPropertiesBuilder properties
 }
 
 template<typename S>
-bool PictureLayerCls::findAnnotations(Offset localPosition, bool onlyFirst, AnnotationResult<S> result) {
+bool PictureLayerCls::findAnnotations(AnnotationResult<S> result, Offset localPosition, bool onlyFirst) {
     return false;
 }
 
@@ -344,7 +344,7 @@ void TextureLayerCls::addToScene(SceneBuilder builder) {
 }
 
 template<typename S>
-bool TextureLayerCls::findAnnotations(Offset localPosition, bool onlyFirst, AnnotationResult<S> result) {
+bool TextureLayerCls::findAnnotations(AnnotationResult<S> result, Offset localPosition, bool onlyFirst) {
     return false;
 }
 
@@ -385,7 +385,7 @@ void PerformanceOverlayLayerCls::addToScene(SceneBuilder builder) {
 }
 
 template<typename S>
-bool PerformanceOverlayLayerCls::findAnnotations(Offset localPosition, bool onlyFirst, AnnotationResult<S> result) {
+bool PerformanceOverlayLayerCls::findAnnotations(AnnotationResult<S> result, Offset localPosition, bool onlyFirst) {
     return false;
 }
 
@@ -429,7 +429,7 @@ void ContainerLayerCls::updateSubtreeNeedsAddToScene() {
 }
 
 template<typename S>
-bool ContainerLayerCls::findAnnotations(Offset localPosition, bool onlyFirst, AnnotationResult<S> result) {
+bool ContainerLayerCls::findAnnotations(AnnotationResult<S> result, Offset localPosition, bool onlyFirst) {
     for (; child != nullptr; child = child->previousSibling) {
         bool isAbsorbed = child-><S>findAnnotations(result, localPositiononlyFirst);
         if (isAbsorbed) {
@@ -487,7 +487,7 @@ void ContainerLayerCls::append(Layer child) {
         lastChild()!->_nextSibling = child;
     }
     _lastChild = child;
-    _firstChild = child;
+    _firstChild |= child;
     child->_parentHandle->layer() = child;
     assert(child->attached == attached);
 }
@@ -554,7 +554,7 @@ List<DiagnosticsNode> ContainerLayerCls::debugDescribeChildren() {
         if (child == lastChild()) {
             break;
         }
-        count = 1;
+        count += 1;
         child = child->nextSibling();
     }
     return children;
@@ -640,7 +640,7 @@ void OffsetLayerCls::offset(Offset value) {
 }
 
 template<typename S>
-bool OffsetLayerCls::findAnnotations(Offset localPosition, bool onlyFirst, AnnotationResult<S> result) {
+bool OffsetLayerCls::findAnnotations(AnnotationResult<S> result, Offset localPosition, bool onlyFirst) {
     return super-><S>findAnnotations(result, localPosition - offset()onlyFirst);
 }
 
@@ -714,7 +714,7 @@ void ClipRectLayerCls::clipBehavior(Clip value) {
 }
 
 template<typename S>
-bool ClipRectLayerCls::findAnnotations(Offset localPosition, bool onlyFirst, AnnotationResult<S> result) {
+bool ClipRectLayerCls::findAnnotations(AnnotationResult<S> result, Offset localPosition, bool onlyFirst) {
     if (!clipRect()!->contains(localPosition)) {
         return false;
     }
@@ -784,7 +784,7 @@ void ClipRRectLayerCls::clipBehavior(Clip value) {
 }
 
 template<typename S>
-bool ClipRRectLayerCls::findAnnotations(Offset localPosition, bool onlyFirst, AnnotationResult<S> result) {
+bool ClipRRectLayerCls::findAnnotations(AnnotationResult<S> result, Offset localPosition, bool onlyFirst) {
     if (!clipRRect()!->contains(localPosition)) {
         return false;
     }
@@ -854,7 +854,7 @@ void ClipPathLayerCls::clipBehavior(Clip value) {
 }
 
 template<typename S>
-bool ClipPathLayerCls::findAnnotations(Offset localPosition, bool onlyFirst, AnnotationResult<S> result) {
+bool ClipPathLayerCls::findAnnotations(AnnotationResult<S> result, Offset localPosition, bool onlyFirst) {
     if (!clipPath()!->contains(localPosition)) {
         return false;
     }
@@ -980,7 +980,7 @@ void TransformLayerCls::addToScene(SceneBuilder builder) {
 }
 
 template<typename S>
-bool TransformLayerCls::findAnnotations(Offset localPosition, bool onlyFirst, AnnotationResult<S> result) {
+bool TransformLayerCls::findAnnotations(AnnotationResult<S> result, Offset localPosition, bool onlyFirst) {
     Offset transformedOffset = _transformOffset(localPosition);
     if (transformedOffset == nullptr) {
         return false;
@@ -1230,7 +1230,7 @@ void PhysicalModelLayerCls::shadowColor(Color value) {
 }
 
 template<typename S>
-bool PhysicalModelLayerCls::findAnnotations(Offset localPosition, bool onlyFirst, AnnotationResult<S> result) {
+bool PhysicalModelLayerCls::findAnnotations(AnnotationResult<S> result, Offset localPosition, bool onlyFirst) {
     if (!clipPath()!->contains(localPosition)) {
         return false;
     }
@@ -1277,7 +1277,7 @@ void LayerLinkCls::_registerLeader(LeaderLayer leader) {
     assert(_leader != leader);
     assert([=] () {
         if (_leader != nullptr) {
-            _debugPreviousLeaders = makeSet();
+            _debugPreviousLeaders |= makeSet();
             _debugScheduleLeadersCleanUpCheck();
             return _debugPreviousLeaders!->add(_leader!);
         }
@@ -1359,7 +1359,7 @@ void LeaderLayerCls::detach() {
 }
 
 template<typename S>
-bool LeaderLayerCls::findAnnotations(Offset localPosition, bool onlyFirst, AnnotationResult<S> result) {
+bool LeaderLayerCls::findAnnotations(AnnotationResult<S> result, Offset localPosition, bool onlyFirst) {
     return super-><S>findAnnotations(result, localPosition - offset()onlyFirst);
 }
 
@@ -1403,7 +1403,7 @@ void FollowerLayerCls::link(LayerLink value) {
 }
 
 template<typename S>
-bool FollowerLayerCls::findAnnotations(Offset localPosition, bool onlyFirst, AnnotationResult<S> result) {
+bool FollowerLayerCls::findAnnotations(AnnotationResult<S> result, Offset localPosition, bool onlyFirst) {
     if (_link->leader() == nullptr) {
         if (showWhenUnlinked!) {
             return super->findAnnotations(result, localPosition - unlinkedOffset!onlyFirst);
@@ -1487,13 +1487,13 @@ Offset FollowerLayerCls::_transformOffset(Offset localPosition) {
 
 Matrix4 FollowerLayerCls::_collectTransformForLayerChain(List<ContainerLayer> layers) {
     Matrix4 result = Matrix4Cls->identity();
-    for (; index > 0; index = 1) {
+    for (; index > 0; index -= 1) {
         layers[index]?->applyTransform(layers[index - 1], result);
     }
     return result;
 }
 
-Layer FollowerLayerCls::_pathsToCommonAncestor(Layer a, List<ContainerLayer> ancestorsA, List<ContainerLayer> ancestorsB, Layer b) {
+Layer FollowerLayerCls::_pathsToCommonAncestor(Layer a, Layer b, List<ContainerLayer> ancestorsA, List<ContainerLayer> ancestorsB) {
     if (a == nullptr || b == nullptr) {
         return nullptr;
     }
@@ -1514,7 +1514,7 @@ Layer FollowerLayerCls::_pathsToCommonAncestor(Layer a, List<ContainerLayer> anc
     return _pathsToCommonAncestor(a->parent(), b->parent(), ancestorsA, ancestorsB);
 }
 
-bool FollowerLayerCls::_debugCheckLeaderBeforeFollower(List<ContainerLayer> followerToCommonAncestor, List<ContainerLayer> leaderToCommonAncestor) {
+bool FollowerLayerCls::_debugCheckLeaderBeforeFollower(List<ContainerLayer> leaderToCommonAncestor, List<ContainerLayer> followerToCommonAncestor) {
     if (followerToCommonAncestor->length() <= 1) {
         return false;
     }
@@ -1559,17 +1559,17 @@ void FollowerLayerCls::_establishTransform() {
 }
 
 template<typename T>
-AnnotatedRegionLayerCls<T>::AnnotatedRegionLayerCls(Offset offset, bool opaque, Size size, T value) {
+AnnotatedRegionLayerCls<T>::AnnotatedRegionLayerCls(T value, Offset offset, bool opaque, Size size) {
     {
         assert(value != nullptr);
         assert(opaque != nullptr);
-        offset = offset or OffsetCls::zero;
+        offset = offset | OffsetCls::zero;
     }
 }
 
 template<typename T>
 template<typename S>
-bool AnnotatedRegionLayerCls<T>::findAnnotations(Offset localPosition, bool onlyFirst, AnnotationResult<S> result) {
+bool AnnotatedRegionLayerCls<T>::findAnnotations(AnnotationResult<S> result, Offset localPosition, bool onlyFirst) {
     bool isAbsorbed = super->findAnnotations(result, localPositiononlyFirst);
     if (result->entries()->isNotEmpty() && onlyFirst) {
         return isAbsorbed;

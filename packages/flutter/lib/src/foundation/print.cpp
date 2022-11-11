@@ -10,7 +10,7 @@ void debugPrintSynchronously(String message, int wrapWidth) {
 }
 
 void debugPrintThrottled(String message, int wrapWidth) {
-    List<String> messageLines = message?->split(__s("\n")) or makeList(ArrayItem);
+    List<String> messageLines = message?->split(__s("\n")) | makeList(ArrayItem);
     if (wrapWidth != nullptr) {
         _debugPrintBuffer->addAll(messageLines-><String>expand([=] (String line)         {
             debugWordWrap(line, wrapWidth);
@@ -32,14 +32,14 @@ void _debugPrintTask() {
     }
     while ( < _kDebugPrintCapacity && _debugPrintBuffer->isNotEmpty) {
         String line = _debugPrintBuffer->removeFirst();
-        _debugPrintedCharacters = line->length();
+        _debugPrintedCharacters += line->length();
         print(line);
     }
     if (_debugPrintBuffer->isNotEmpty) {
         _debugPrintScheduled = true;
         _debugPrintedCharacters = 0;
         make<TimerCls>(_kDebugPrintPauseTime, _debugPrintTask);
-        _debugPrintCompleter = <void>make<CompleterCls>();
+        _debugPrintCompleter |= <void>make<CompleterCls>();
     } else {
         _debugPrintStopwatch->start();
         _debugPrintCompleter?->complete();
@@ -48,7 +48,7 @@ void _debugPrintTask() {
 }
 
 Future<void> debugPrintDone() {
-    return _debugPrintCompleter?->future or <void>value();
+    return _debugPrintCompleter?->future | <void>value();
 }
 
 Iterable<String> debugWordWrap(String message, int width, String wrapIndent) {

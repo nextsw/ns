@@ -11,9 +11,9 @@ template<typename E>
 class UnionSetCls : public SetBaseCls<E> {
 public:
 
-     UnionSetCls(bool disjoint, Set<Set<E>> sets);
+     UnionSetCls(Set<Set<E>> sets, bool disjoint);
 
-    virtual void  from(bool disjoint, Iterable<Set<E>> sets);
+    virtual void  from(Iterable<Set<E>> sets, bool disjoint);
 
     virtual int length();
 

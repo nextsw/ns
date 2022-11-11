@@ -1,5 +1,5 @@
 #include "math.hpp"
-double clampDouble(double max, double min, double x) {
+double clampDouble(double x, double min, double max) {
     assert(min <= max && !max->isNaN && !min->isNaN);
     if ( < min) {
         return min;

@@ -89,7 +89,7 @@ public:
 
     virtual bool contains(String restorationId);
 
-    virtual RestorationBucket claimChild(Object debugOwner, String restorationId);
+    virtual RestorationBucket claimChild(String restorationId, Object debugOwner);
 
     virtual void adoptChild(RestorationBucket child);
 
@@ -145,7 +145,7 @@ private:
 
     virtual void _finalizeAddChildData(RestorationBucket child);
 
-    virtual void _visitChildren(bool concurrentModification, _BucketVisitor visitor);
+    virtual void _visitChildren(_BucketVisitor visitor, bool concurrentModification);
 
     virtual bool _debugAssertNotDisposed();
 

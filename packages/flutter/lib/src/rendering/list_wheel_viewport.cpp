@@ -273,7 +273,7 @@ void RenderListWheelViewportCls::performLayout() {
     offset()->applyContentDimensions(_minEstimatedScrollExtent(), _maxEstimatedScrollExtent());
     double visibleHeight = size->height * _squeeze;
     if (renderChildrenOutsideViewport()) {
-        visibleHeight = 2;
+        visibleHeight *= 2;
     }
     double firstVisibleOffset = offset()->pixels() + _itemExtent / 2 - visibleHeight / 2;
     double lastVisibleOffset = firstVisibleOffset + visibleHeight;
@@ -360,12 +360,12 @@ Rect RenderListWheelViewportCls::describeApproximatePaintClip(RenderObject child
     return nullptr;
 }
 
-bool RenderListWheelViewportCls::hitTestChildren(Offset position, BoxHitTestResult result) {
+bool RenderListWheelViewportCls::hitTestChildren(BoxHitTestResult result, Offset position) {
     return false;
 }
 
-RevealedOffset RenderListWheelViewportCls::getOffsetToReveal(double alignment, Rect rect, RenderObject target) {
-    rect = target->paintBounds();
+RevealedOffset RenderListWheelViewportCls::getOffsetToReveal(RenderObject target, double alignment, Rect rect) {
+    rect |= target->paintBounds();
     RenderObject child = target;
     while (child->parent != this) {
         child = as<RenderObject>(child->parent!);
@@ -443,7 +443,7 @@ double RenderListWheelViewportCls::_getIntrinsicCrossAxis(_ChildSizingFunction c
     return extent;
 }
 
-void RenderListWheelViewportCls::_createChild(RenderBox after, int index) {
+void RenderListWheelViewportCls::_createChild(int index, RenderBox after) {
     <BoxConstraints>invokeLayoutCallback([=] (BoxConstraints constraints) {
         assert(constraints == this->constraints);
         childManager->createChild(indexafter);
@@ -478,7 +478,7 @@ void RenderListWheelViewportCls::_paintVisibleChildren(PaintingContext context, 
     }
 }
 
-void RenderListWheelViewportCls::_paintTransformedChild(RenderBox child, PaintingContext context, Offset layoutOffset, Offset offset) {
+void RenderListWheelViewportCls::_paintTransformedChild(RenderBox child, PaintingContext context, Offset offset, Offset layoutOffset) {
     Offset untransformedPaintingCoordinates = offset + make<OffsetCls>(layoutOffset->dx(), _getUntransformedPaintingCoordinateY(layoutOffset->dy()));
     double fractionalY = (untransformedPaintingCoordinates->dy() + _itemExtent / 2.0) / size->height;
     double angle = -(fractionalY - 0.5) * 2.0 * _maxVisibleRadian() / squeeze();
@@ -495,7 +495,7 @@ void RenderListWheelViewportCls::_paintTransformedChild(RenderBox child, Paintin
     }
 }
 
-void RenderListWheelViewportCls::_paintChildWithMagnifier(RenderBox child, PaintingContext context, Matrix4 cylindricalTransform, Offset offset, Offset offsetToCenter, Offset untransformedPaintingCoordinates) {
+void RenderListWheelViewportCls::_paintChildWithMagnifier(PaintingContext context, Offset offset, RenderBox child, Matrix4 cylindricalTransform, Offset offsetToCenter, Offset untransformedPaintingCoordinates) {
     double magnifierTopLinePosition = size->height / 2 - _itemExtent * _magnification / 2;
     double magnifierBottomLinePosition = size->height / 2 + _itemExtent * _magnification / 2;
     bool isAfterMagnifierTopLine = untransformedPaintingCoordinates->dy() >= magnifierTopLinePosition - _itemExtent * _magnification;
@@ -517,7 +517,7 @@ void RenderListWheelViewportCls::_paintChildWithMagnifier(RenderBox child, Paint
     }
 }
 
-void RenderListWheelViewportCls::_paintChildCylindrically(RenderBox child, PaintingContext context, Matrix4 cylindricalTransform, Offset offset, Offset offsetToCenter) {
+void RenderListWheelViewportCls::_paintChildCylindrically(PaintingContext context, Offset offset, RenderBox child, Matrix4 cylindricalTransform, Offset offsetToCenter) {
     InlineMethod;
     InlineMethod;
     context->pushTransform(needsCompositing, offset, _centerOriginTransform(cylindricalTransform), overAndUnderCenterOpacity() == 1? painter : opacityPainter);

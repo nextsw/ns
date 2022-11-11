@@ -19,7 +19,7 @@ int ImageInfoCls::sizeBytes() {
 }
 
 void ImageInfoCls::dispose() {
-    assert((image->debugGetOpenHandleStackTraces()?->length or 1) > 0);
+    assert((image->debugGetOpenHandleStackTraces()?->length | 1) > 0);
     image->dispose();
 }
 
@@ -38,7 +38,7 @@ bool ImageInfoCls::==(Object other) {
     return is<ImageInfo>(other) && other->image == image && other->scale == scale && other->debugLabel == debugLabel;
 }
 
-ImageStreamListenerCls::ImageStreamListenerCls(ImageChunkListener onChunk, ImageErrorListener onError, ImageListener onImage) {
+ImageStreamListenerCls::ImageStreamListenerCls(ImageListener onImage, ImageChunkListener onChunk, ImageErrorListener onError) {
     {
         assert(onImage != nullptr);
     }
@@ -88,7 +88,7 @@ void ImageStreamCls::addListener(ImageStreamListener listener) {
     if (_completer != nullptr) {
         return _completer!->addListener(listener);
     }
-    _listeners = makeList();
+    _listeners |= makeList();
     _listeners!->add(listener);
 }
 
@@ -97,7 +97,7 @@ void ImageStreamCls::removeListener(ImageStreamListener listener) {
         return _completer!->removeListener(listener);
     }
     assert(_listeners != nullptr);
-    for (;  < _listeners!->length(); i = 1) {
+    for (;  < _listeners!->length(); i += 1) {
         if (_listeners![i] == listener) {
             _listeners!->removeAt(i);
             break;
@@ -106,7 +106,7 @@ void ImageStreamCls::removeListener(ImageStreamListener listener) {
 }
 
 Object ImageStreamCls::key() {
-    return _completer or this;
+    return _completer | this;
 }
 
 void ImageStreamCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
@@ -120,13 +120,13 @@ void ImageStreamCompleterHandleCls::dispose() {
     assert(_completer != nullptr);
     assert(_completer!->_keepAliveHandles > 0);
     assert(!_completer!->_disposed);
-    _completer!->_keepAliveHandles = 1;
+    _completer!->_keepAliveHandles -= 1;
     _completer!->_maybeDispose();
     _completer = nullptr;
 }
 
 void ImageStreamCompleterHandleCls::_(ImageStreamCompleter _completer) {
-    _completer!->_keepAliveHandles = 1;
+    _completer!->_keepAliveHandles += 1;
 }
 
 bool ImageStreamCompleterCls::hasListeners() {
@@ -162,7 +162,7 @@ ImageStreamCompleterHandle ImageStreamCompleterCls::keepAlive() {
 
 void ImageStreamCompleterCls::removeListener(ImageStreamListener listener) {
     _checkDisposed();
-    for (;  < _listeners->length(); i = 1) {
+    for (;  < _listeners->length(); i += 1) {
         if (_listeners[i] == listener) {
             _listeners->removeAt(i);
             break;
@@ -378,7 +378,7 @@ void MultiFrameImageStreamCompleterCls::_scheduleAppFrame() {
 
 void MultiFrameImageStreamCompleterCls::_emitFrame(ImageInfo imageInfo) {
     setImage(imageInfo);
-    _framesEmitted = 1;
+    _framesEmitted += 1;
 }
 
 void MultiFrameImageStreamCompleterCls::_maybeDispose() {

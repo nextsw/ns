@@ -1,6 +1,6 @@
 #include "overrides.hpp"
 IOOverrides IOOverridesCls::current() {
-    return ZoneCls::current[_ioOverridesToken] or _global;
+    return ZoneCls::current[_ioOverridesToken] | _global;
 }
 
 void IOOverridesCls::global(IOOverrides overrides) {
@@ -54,15 +54,15 @@ bool IOOverridesCls::fseIdenticalSync(String path1, String path2) {
     return FileSystemEntityCls->_identicalSync(path1, path2);
 }
 
-Future<FileSystemEntityType> IOOverridesCls::fseGetType(bool followLinks, String path) {
+Future<FileSystemEntityType> IOOverridesCls::fseGetType(String path, bool followLinks) {
     return FileSystemEntityCls->_getTypeRequest(utf8->encoder->convert(path), followLinks);
 }
 
-FileSystemEntityType IOOverridesCls::fseGetTypeSync(bool followLinks, String path) {
+FileSystemEntityType IOOverridesCls::fseGetTypeSync(String path, bool followLinks) {
     return FileSystemEntityCls->_getTypeSyncHelper(utf8->encoder->convert(path), followLinks);
 }
 
-Stream<FileSystemEvent> IOOverridesCls::fsWatch(int events, String path, bool recursive) {
+Stream<FileSystemEvent> IOOverridesCls::fsWatch(String path, int events, bool recursive) {
     return _FileSystemWatcherCls->_watch(path, events, recursive);
 }
 
@@ -74,15 +74,15 @@ Link IOOverridesCls::createLink(String path) {
     return make<_LinkCls>(path);
 }
 
-Future<Socket> IOOverridesCls::socketConnect(host , sourceAddress , int port, int sourcePort, Duration timeout) {
+Future<Socket> IOOverridesCls::socketConnect(host , int port, sourceAddress , int sourcePort, Duration timeout) {
     return SocketCls->_connect(host, portsourceAddress, sourcePort, timeout);
 }
 
-Future<ConnectionTask<Socket>> IOOverridesCls::socketStartConnect(host , sourceAddress , int port, int sourcePort) {
+Future<ConnectionTask<Socket>> IOOverridesCls::socketStartConnect(host , int port, sourceAddress , int sourcePort) {
     return SocketCls->_startConnect(host, portsourceAddress, sourcePort);
 }
 
-Future<ServerSocket> IOOverridesCls::serverSocketBind(address , int backlog, int port, bool shared, bool v6Only) {
+Future<ServerSocket> IOOverridesCls::serverSocketBind(address , int port, int backlog, bool shared, bool v6Only) {
     return ServerSocketCls->_bind(address, portbacklog, v6Only, shared);
 }
 
@@ -190,7 +190,7 @@ bool _IOOverridesScopeCls::fseIdenticalSync(String path1, String path2) {
     return super->fseIdenticalSync(path1, path2);
 }
 
-Future<FileSystemEntityType> _IOOverridesScopeCls::fseGetType(bool followLinks, String path) {
+Future<FileSystemEntityType> _IOOverridesScopeCls::fseGetType(String path, bool followLinks) {
     if (_fseGetType != nullptr)     {
         return _fseGetType!(path, followLinks);
     }
@@ -200,7 +200,7 @@ Future<FileSystemEntityType> _IOOverridesScopeCls::fseGetType(bool followLinks, 
     return super->fseGetType(path, followLinks);
 }
 
-FileSystemEntityType _IOOverridesScopeCls::fseGetTypeSync(bool followLinks, String path) {
+FileSystemEntityType _IOOverridesScopeCls::fseGetTypeSync(String path, bool followLinks) {
     if (_fseGetTypeSync != nullptr)     {
         return _fseGetTypeSync!(path, followLinks);
     }
@@ -210,7 +210,7 @@ FileSystemEntityType _IOOverridesScopeCls::fseGetTypeSync(bool followLinks, Stri
     return super->fseGetTypeSync(path, followLinks);
 }
 
-Stream<FileSystemEvent> _IOOverridesScopeCls::fsWatch(int events, String path, bool recursive) {
+Stream<FileSystemEvent> _IOOverridesScopeCls::fsWatch(String path, int events, bool recursive) {
     if (_fsWatch != nullptr)     {
         return _fsWatch!(path, events, recursive);
     }
@@ -240,7 +240,7 @@ Link _IOOverridesScopeCls::createLink(String path) {
     return super->createLink(path);
 }
 
-Future<Socket> _IOOverridesScopeCls::socketConnect(host , sourceAddress , int port, int sourcePort, Duration timeout) {
+Future<Socket> _IOOverridesScopeCls::socketConnect(host , int port, sourceAddress , int sourcePort, Duration timeout) {
     if (_socketConnect != nullptr) {
         return _socketConnect!(host, portsourceAddress, timeout);
     }
@@ -250,7 +250,7 @@ Future<Socket> _IOOverridesScopeCls::socketConnect(host , sourceAddress , int po
     return super->socketConnect(host, portsourceAddress, sourcePort, timeout);
 }
 
-Future<ConnectionTask<Socket>> _IOOverridesScopeCls::socketStartConnect(host , sourceAddress , int port, int sourcePort) {
+Future<ConnectionTask<Socket>> _IOOverridesScopeCls::socketStartConnect(host , int port, sourceAddress , int sourcePort) {
     if (_socketStartConnect != nullptr) {
         return _socketStartConnect!(host, portsourceAddress, sourcePort);
     }
@@ -260,7 +260,7 @@ Future<ConnectionTask<Socket>> _IOOverridesScopeCls::socketStartConnect(host , s
     return super->socketStartConnect(host, portsourceAddress, sourcePort);
 }
 
-Future<ServerSocket> _IOOverridesScopeCls::serverSocketBind(address , int backlog, int port, bool shared, bool v6Only) {
+Future<ServerSocket> _IOOverridesScopeCls::serverSocketBind(address , int port, int backlog, bool shared, bool v6Only) {
     if (_serverSocketBind != nullptr) {
         return _serverSocketBind!(address, portbacklog, v6Only, shared);
     }
@@ -271,13 +271,13 @@ Future<ServerSocket> _IOOverridesScopeCls::serverSocketBind(address , int backlo
 }
 
 Stdin _IOOverridesScopeCls::stdin() {
-    return _stdin?->call() or _previous?->stdin or super->stdin;
+    return _stdin?->call() | _previous?->stdin | super->stdin;
 }
 
 Stdout _IOOverridesScopeCls::stdout() {
-    return _stdout?->call() or _previous?->stdout or super->stdout;
+    return _stdout?->call() | _previous?->stdout | super->stdout;
 }
 
 Stdout _IOOverridesScopeCls::stderr() {
-    return _stderr?->call() or _previous?->stderr or super->stderr;
+    return _stderr?->call() | _previous?->stderr | super->stderr;
 }

@@ -37,13 +37,13 @@ bool ScrollableCls::recommendDeferredLoadingForContext(BuildContext context) {
     return widget->position->recommendDeferredLoading(context);
 }
 
-Future<void> ScrollableCls::ensureVisible(double alignment, ScrollPositionAlignmentPolicy alignmentPolicy, BuildContext context, Curve curve, Duration duration) {
+Future<void> ScrollableCls::ensureVisible(BuildContext context, double alignment, ScrollPositionAlignmentPolicy alignmentPolicy, Curve curve, Duration duration) {
     List<Future<void>> futures = makeList();
     RenderObject targetRenderObject;
     ScrollableState scrollable = ScrollableCls->of(context);
     while (scrollable != nullptr) {
         futures->add(scrollable->position()->ensureVisible(context->findRenderObject()!alignment, duration, curve, alignmentPolicy, targetRenderObject));
-        targetRenderObject = targetRenderObject or context->findRenderObject();
+        targetRenderObject = targetRenderObject | context->findRenderObject();
         context = scrollable->context;
         scrollable = ScrollableCls->of(context);
     }
@@ -77,7 +77,7 @@ AxisDirection ScrollableStateCls::axisDirection() {
     return widget->axisDirection;
 }
 
-void ScrollableStateCls::restoreState(bool initialRestore, RestorationBucket oldBucket) {
+void ScrollableStateCls::restoreState(RestorationBucket oldBucket, bool initialRestore) {
     registerForRestoration(_persistedScrollOffset, __s("offset"));
     assert(_position != nullptr);
     if (_persistedScrollOffset->value != nullptr) {
@@ -210,11 +210,11 @@ String ScrollableStateCls::restorationId() {
 }
 
 ScrollController ScrollableStateCls::_effectiveScrollController() {
-    return widget->controller or _fallbackScrollController!;
+    return widget->controller | _fallbackScrollController!;
 }
 
 void ScrollableStateCls::_updatePosition() {
-    _configuration = widget->scrollBehavior or ScrollConfigurationCls->of(context);
+    _configuration = widget->scrollBehavior | ScrollConfigurationCls->of(context);
     _physics = _configuration->getScrollPhysics(context);
     if (widget->physics != nullptr) {
         _physics = widget->physics!->applyTo(_physics);
@@ -234,8 +234,8 @@ void ScrollableStateCls::_updatePosition() {
 }
 
 bool ScrollableStateCls::_shouldUpdatePosition(Scrollable oldWidget) {
-    ScrollPhysics newPhysics = widget->physics or widget->scrollBehavior?->getScrollPhysics(context);
-    ScrollPhysics oldPhysics = oldWidget->physics or oldWidget->scrollBehavior?->getScrollPhysics(context);
+    ScrollPhysics newPhysics = widget->physics | widget->scrollBehavior?->getScrollPhysics(context);
+    ScrollPhysics oldPhysics = oldWidget->physics | oldWidget->scrollBehavior?->getScrollPhysics(context);
     do {
         if (newPhysics?->runtimeType != oldPhysics?->runtimeType()) {
             return true;
@@ -293,7 +293,7 @@ double ScrollableStateCls::_targetScrollOffsetForPointerScroll(double delta) {
 double ScrollableStateCls::_pointerSignalEventDelta(PointerScrollEvent event) {
     double delta = widget->axis == AxisCls::horizontal? event->scrollDelta->dx() : event->scrollDelta->dy();
     if (axisDirectionIsReversed(widget->axisDirection)) {
-        delta = -1;
+        delta *= -1;
     }
     return delta;
 }
@@ -378,7 +378,7 @@ double EdgeDraggingAutoScrollerCls::_offsetExtent(Offset offset, Axis scrollDire
     ;
 }
 
-double EdgeDraggingAutoScrollerCls::_sizeExtent(Axis scrollDirection, Size size) {
+double EdgeDraggingAutoScrollerCls::_sizeExtent(Size size, Axis scrollDirection) {
     ;
 }
 
@@ -517,7 +517,7 @@ SelectionResult _ScrollableSelectionContainerDelegateCls::handleSelectWord(Selec
     return result;
 }
 
-SelectionResult _ScrollableSelectionContainerDelegateCls::dispatchSelectionEventToChild(SelectionEvent event, Selectable selectable) {
+SelectionResult _ScrollableSelectionContainerDelegateCls::dispatchSelectionEventToChild(Selectable selectable, SelectionEvent event) {
     ;
     return super->dispatchSelectionEventToChild(selectable, event);
 }
@@ -684,12 +684,12 @@ void _RenderScrollSemanticsCls::describeSemanticsConfiguration(SemanticsConfigur
     }
 }
 
-void _RenderScrollSemanticsCls::assembleSemanticsNode(Iterable<SemanticsNode> children, SemanticsConfiguration config, SemanticsNode node) {
+void _RenderScrollSemanticsCls::assembleSemanticsNode(SemanticsNode node, SemanticsConfiguration config, Iterable<SemanticsNode> children) {
     if (children->isEmpty() || !children->first()->isTagged(RenderViewportCls::useTwoPaneSemantics)) {
         super->assembleSemanticsNode(node, config, children);
         return;
     }
-    _innerNode = make<SemanticsNodeCls>(showOnScreen);
+    _innerNode |= make<SemanticsNodeCls>(showOnScreen);
     auto _c1 = _innerNode!;_c1.isMergedIntoParent = auto _c2 = node->isPartOfNodeMerging();_c2.rect = node->rect();_c2;_c1;
     int firstVisibleIndex;
     List<SemanticsNode> excluded = makeList(ArrayItem);
@@ -700,7 +700,7 @@ void _RenderScrollSemanticsCls::assembleSemanticsNode(Iterable<SemanticsNode> ch
             excluded->add(child);
         } else {
             if (!child->hasFlag(SemanticsFlagCls::isHidden)) {
-                firstVisibleIndex = child->indexInParent;
+                firstVisibleIndex |= child->indexInParent;
             }
             included->add(child);
         }
@@ -798,7 +798,7 @@ double ScrollActionCls::_calculateScrollIncrement(ScrollableState state, ScrollI
     ;
 }
 
-double ScrollActionCls::_getIncrement(ScrollIntent intent, ScrollableState state) {
+double ScrollActionCls::_getIncrement(ScrollableState state, ScrollIntent intent) {
     double increment = _calculateScrollIncrement(stateintent->type);
     ;
 }

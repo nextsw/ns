@@ -11,11 +11,11 @@
 class BoolListCls : public ObjectCls {
 public:
 
-     BoolListCls(bool fill, bool growable, int length);
+     BoolListCls(int length, bool fill, bool growable);
 
     virtual void  empty(int capacity, bool growable);
 
-    virtual void  generate(std::function<bool(int )> generator, bool growable, int length);
+    virtual void  generate(int length, std::function<bool(int )> generator, bool growable);
 
     virtual void  of(Iterable<bool> elements, bool growable);
 
@@ -25,7 +25,7 @@ public:
 
     virtual void operator[]=(int index, bool value);
 
-    virtual void fillRange(int end, bool fill, int start);
+    virtual void fillRange(int start, int end, bool fill);
 
     virtual Iterator<bool> iterator();
 
@@ -42,7 +42,7 @@ private:
 
 
     virtual void  _(Uint32List _data, int _length);
-    virtual void  _selectType(bool growable, int length);
+    virtual void  _selectType(int length, bool growable);
 
     virtual void _setBit(int index, bool value);
 
@@ -60,7 +60,7 @@ private:
     static int _growthFactor;
 
 
-    virtual void  _withCapacity(int capacity, int length);
+    virtual void  _withCapacity(int length, int capacity);
 
      _GrowableBoolListCls(int length);
 
@@ -76,7 +76,7 @@ public:
 
 private:
 
-    virtual void  _withCapacity(int capacity, int length);
+    virtual void  _withCapacity(int length, int capacity);
 
      _NonGrowableBoolListCls(int length);
 

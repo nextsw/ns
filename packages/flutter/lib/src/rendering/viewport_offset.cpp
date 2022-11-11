@@ -3,13 +3,13 @@ ScrollDirection flipScrollDirection(ScrollDirection direction) {
     ;
 }
 
-Future<void> ViewportOffsetCls::moveTo(bool clamp, Curve curve, Duration duration, double to) {
+Future<void> ViewportOffsetCls::moveTo(double to, bool clamp, Curve curve, Duration duration) {
     assert(to != nullptr);
     if (duration == nullptr || duration == DurationCls::zero) {
         jumpTo(to);
         return <void>value();
     } else {
-        return animateTo(toduration, curve or CurvesCls::ease);
+        return animateTo(toduration, curve | CurvesCls::ease);
     }
 }
 
@@ -39,18 +39,18 @@ bool _FixedViewportOffsetCls::applyViewportDimension(double viewportDimension) {
     return true;
 }
 
-bool _FixedViewportOffsetCls::applyContentDimensions(double maxScrollExtent, double minScrollExtent) {
+bool _FixedViewportOffsetCls::applyContentDimensions(double minScrollExtent, double maxScrollExtent) {
     return true;
 }
 
 void _FixedViewportOffsetCls::correctBy(double correction) {
-    _pixels = correction;
+    _pixels += correction;
 }
 
 void _FixedViewportOffsetCls::jumpTo(double pixels) {
 }
 
-Future<void> _FixedViewportOffsetCls::animateTo(Curve curve, Duration duration, double to) {
+Future<void> _FixedViewportOffsetCls::animateTo(double to, Curve curve, Duration duration) {
 }
 
 ScrollDirection _FixedViewportOffsetCls::userScrollDirection() {

@@ -42,7 +42,7 @@ public:
 
 private:
 
-     _TaskEntryCls(String debugLabel, Flow flow, int priority, TaskCallback<T> task);
+     _TaskEntryCls(TaskCallback<T> task, int priority, String debugLabel, Flow flow);
 
 };
 template<typename T>
@@ -92,7 +92,7 @@ public:
     virtual void handleAppLifecycleStateChanged(AppLifecycleState state);
 
     template<typename T>
- virtual Future<T> scheduleTask(String debugLabel, Flow flow, Priority priority, TaskCallback<T> task);
+ virtual Future<T> scheduleTask(TaskCallback<T> task, Priority priority, String debugLabel, Flow flow);
 
     virtual void unlocked();
 
@@ -206,9 +206,9 @@ private:
 
     virtual void _profileFramePostEvent(FrameTiming frameTiming);
 
-    static void _debugDescribeTimeStamp(StringBuffer buffer, Duration timeStamp);
+    static void _debugDescribeTimeStamp(Duration timeStamp, StringBuffer buffer);
 
-    virtual void _invokeFrameCallback(FrameCallback callback, StackTrace callbackStack, Duration timeStamp);
+    virtual void _invokeFrameCallback(FrameCallback callback, Duration timeStamp, StackTrace callbackStack);
 
 };
 using SchedulerBinding = std::shared_ptr<SchedulerBindingCls>;

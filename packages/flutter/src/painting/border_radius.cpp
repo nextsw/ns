@@ -12,8 +12,8 @@ BorderRadiusGeometry BorderRadiusGeometryCls::lerp(BorderRadiusGeometry a, Borde
     if (a == nullptr && b == nullptr) {
         return nullptr;
     }
-    a = BorderRadiusCls::zero;
-    b = BorderRadiusCls::zero;
+    a |= BorderRadiusCls::zero;
+    b |= BorderRadiusCls::zero;
     return a->add((b->subtract(a)) * t);
 }
 
@@ -132,7 +132,7 @@ void BorderRadiusCls::vertical(Radius bottom, Radius top)
 void BorderRadiusCls::horizontal(Radius left, Radius right)
 
 BorderRadius BorderRadiusCls::copyWith(Radius bottomLeft, Radius bottomRight, Radius topLeft, Radius topRight) {
-    return BorderRadiusCls->only(topLeft or this->topLeft, topRight or this->topRight, bottomLeft or this->bottomLeft, bottomRight or this->bottomRight);
+    return BorderRadiusCls->only(topLeft | this->topLeft, topRight | this->topRight, bottomLeft | this->bottomLeft, bottomRight | this->bottomRight);
 }
 
 RRect BorderRadiusCls::toRRect(Rect rect) {

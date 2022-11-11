@@ -24,16 +24,16 @@ PlaneCls::PlaneCls() {
 
 void PlaneCls::copy(Plane other)
 
-void PlaneCls::components(double constant, double x, double y, double z)
+void PlaneCls::components(double x, double y, double z, double constant)
 
-void PlaneCls::normalconstant(double constant, Vector3 normal_)
+void PlaneCls::normalconstant(Vector3 normal_, double constant)
 
 void PlaneCls::copyFrom(Plane o) {
     _normal->setFrom(o->_normal);
     constant = o->constant;
 }
 
-void PlaneCls::setFromComponents(double w, double x, double y, double z) {
+void PlaneCls::setFromComponents(double x, double y, double z, double w) {
     _normal->setValues(x, y, z);
     constant = w;
 }
@@ -41,7 +41,7 @@ void PlaneCls::setFromComponents(double w, double x, double y, double z) {
 void PlaneCls::normalize() {
     Unknown inverseLength = 1.0 / normal()->length;
     _normal->scale(inverseLength);
-    constant = inverseLength;
+    constant *= inverseLength;
 }
 
 double PlaneCls::distanceToVector3(Vector3 point) {

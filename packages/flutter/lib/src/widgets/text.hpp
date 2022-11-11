@@ -40,7 +40,7 @@ public:
 
     virtual bool updateShouldNotify(DefaultTextStyle oldWidget);
 
-    virtual Widget wrap(Widget child, BuildContext context);
+    virtual Widget wrap(BuildContext context, Widget child);
 
     virtual void debugFillProperties(DiagnosticPropertiesBuilder properties);
 
@@ -71,7 +71,7 @@ public:
 
     virtual bool updateShouldNotify(DefaultTextHeightBehavior oldWidget);
 
-    virtual Widget wrap(Widget child, BuildContext context);
+    virtual Widget wrap(BuildContext context, Widget child);
 
     virtual void debugFillProperties(DiagnosticPropertiesBuilder properties);
 
@@ -115,7 +115,7 @@ public:
 
      TextCls(String data, Unknown key, Locale locale, int maxLines, TextOverflow overflow, Color selectionColor, String semanticsLabel, bool softWrap, StrutStyle strutStyle, TextStyle style, TextAlign textAlign, TextDirection textDirection, TextHeightBehavior textHeightBehavior, double textScaleFactor, TextWidthBasis textWidthBasis);
 
-    virtual void  rich(Unknown key, Locale locale, int maxLines, TextOverflow overflow, Color selectionColor, String semanticsLabel, bool softWrap, StrutStyle strutStyle, TextStyle style, TextAlign textAlign, TextDirection textDirection, TextHeightBehavior textHeightBehavior, double textScaleFactor, InlineSpan textSpan, TextWidthBasis textWidthBasis);
+    virtual void  rich(InlineSpan textSpan, Unknown key, Locale locale, int maxLines, TextOverflow overflow, Color selectionColor, String semanticsLabel, bool softWrap, StrutStyle strutStyle, TextStyle style, TextAlign textAlign, TextDirection textDirection, TextHeightBehavior textHeightBehavior, double textScaleFactor, TextWidthBasis textWidthBasis);
 
     virtual Widget build(BuildContext context);
 

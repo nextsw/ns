@@ -14,7 +14,7 @@
 
 BuildContext _getAncestor(BuildContext context, int count);
 
-void _focusAndEnsureVisible(ScrollPositionAlignmentPolicy alignmentPolicy, FocusNode node);
+void _focusAndEnsureVisible(FocusNode node, ScrollPositionAlignmentPolicy alignmentPolicy);
 
 
 class _FocusTraversalGroupInfoCls : public ObjectCls {
@@ -28,7 +28,7 @@ public:
 
 private:
 
-     _FocusTraversalGroupInfoCls(FocusTraversalPolicy defaultPolicy, _FocusTraversalGroupMarker marker, List<FocusNode> members);
+     _FocusTraversalGroupInfoCls(_FocusTraversalGroupMarker marker, FocusTraversalPolicy defaultPolicy, List<FocusNode> members);
 
 };
 using _FocusTraversalGroupInfo = std::shared_ptr<_FocusTraversalGroupInfoCls>;
@@ -58,14 +58,14 @@ public:
     virtual bool previous(FocusNode currentNode);
 
     virtual bool inDirection(FocusNode currentNode, TraversalDirection direction);
-    virtual Iterable<FocusNode> sortDescendants(FocusNode currentNode, Iterable<FocusNode> descendants);
+    virtual Iterable<FocusNode> sortDescendants(Iterable<FocusNode> descendants, FocusNode currentNode);
 private:
 
     virtual FocusNode _findInitialFocus(FocusNode currentNode, bool fromEnd);
 
     virtual _FocusTraversalGroupMarker _getMarker(BuildContext context);
 
-    virtual List<FocusNode> _sortAllDescendants(FocusNode currentNode, FocusScopeNode scope);
+    virtual List<FocusNode> _sortAllDescendants(FocusScopeNode scope, FocusNode currentNode);
 
     virtual bool _moveFocus(FocusNode currentNode, bool forward);
 
@@ -115,13 +115,13 @@ private:
 
     virtual FocusNode _sortAndFindInitial(FocusNode currentNode, bool first, bool vertical);
 
-    virtual Iterable<FocusNode> _sortAndFilterHorizontally(TraversalDirection direction, FocusNode nearestScope, Rect target);
+    virtual Iterable<FocusNode> _sortAndFilterHorizontally(TraversalDirection direction, Rect target, FocusNode nearestScope);
 
-    virtual Iterable<FocusNode> _sortAndFilterVertically(TraversalDirection direction, Iterable<FocusNode> nodes, Rect target);
+    virtual Iterable<FocusNode> _sortAndFilterVertically(TraversalDirection direction, Rect target, Iterable<FocusNode> nodes);
 
-    virtual bool _popPolicyDataIfNeeded(TraversalDirection direction, FocusNode focusedChild, FocusScopeNode nearestScope);
+    virtual bool _popPolicyDataIfNeeded(TraversalDirection direction, FocusScopeNode nearestScope, FocusNode focusedChild);
 
-    virtual void _pushPolicyData(TraversalDirection direction, FocusNode focusedChild, FocusScopeNode nearestScope);
+    virtual void _pushPolicyData(TraversalDirection direction, FocusScopeNode nearestScope, FocusNode focusedChild);
 
 };
 using DirectionalFocusTraversalPolicyMixin = std::shared_ptr<DirectionalFocusTraversalPolicyMixinCls>;
@@ -129,7 +129,7 @@ using DirectionalFocusTraversalPolicyMixin = std::shared_ptr<DirectionalFocusTra
 class WidgetOrderTraversalPolicyCls : public FocusTraversalPolicyCls {
 public:
 
-    virtual Iterable<FocusNode> sortDescendants(FocusNode currentNode, Iterable<FocusNode> descendants);
+    virtual Iterable<FocusNode> sortDescendants(Iterable<FocusNode> descendants, FocusNode currentNode);
 
 private:
 
@@ -147,7 +147,7 @@ public:
 
     static TextDirection commonDirectionalityOf(List<_ReadingOrderSortData> list);
 
-    static void sortWithDirectionality(TextDirection directionality, List<_ReadingOrderSortData> list);
+    static void sortWithDirectionality(List<_ReadingOrderSortData> list, TextDirection directionality);
 
     virtual Iterable<Directionality> directionalAncestors();
 
@@ -175,7 +175,7 @@ public:
 
     virtual List<Directionality> memberAncestors();
 
-    static void sortWithDirectionality(TextDirection directionality, List<_ReadingOrderDirectionalGroupData> list);
+    static void sortWithDirectionality(List<_ReadingOrderDirectionalGroupData> list, TextDirection directionality);
 
     virtual void debugFillProperties(DiagnosticPropertiesBuilder properties);
 
@@ -192,7 +192,7 @@ using _ReadingOrderDirectionalGroupData = std::shared_ptr<_ReadingOrderDirection
 class ReadingOrderTraversalPolicyCls : public FocusTraversalPolicyCls {
 public:
 
-    virtual Iterable<FocusNode> sortDescendants(FocusNode currentNode, Iterable<FocusNode> descendants);
+    virtual Iterable<FocusNode> sortDescendants(Iterable<FocusNode> descendants, FocusNode currentNode);
 
 private:
 
@@ -267,7 +267,7 @@ public:
 
 
      OrderedTraversalPolicyCls(FocusTraversalPolicy secondary);
-    virtual Iterable<FocusNode> sortDescendants(FocusNode currentNode, Iterable<FocusNode> descendants);
+    virtual Iterable<FocusNode> sortDescendants(Iterable<FocusNode> descendants, FocusNode currentNode);
 
 private:
 

@@ -37,7 +37,7 @@ public:
 
     static TableBorder lerp(TableBorder a, TableBorder b, double t);
 
-    virtual void paint(Canvas canvas, Iterable<double> columns, Rect rect, Iterable<double> rows);
+    virtual void paint(Canvas canvas, Rect rect, Iterable<double> columns, Iterable<double> rows);
 
     virtual bool operator==(Object other);
 

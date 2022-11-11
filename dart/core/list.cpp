@@ -7,8 +7,8 @@ List<T> ListCls<E>::castFrom(List<S> source) {
 
 template<typename E>
 template<typename T>
-void ListCls<E>::copyRange(int at, int end, List<T> source, int start, List<T> target) {
-    start = 0;
+void ListCls<E>::copyRange(List<T> target, int at, List<T> source, int start, int end) {
+    start |= 0;
     end = RangeErrorCls->checkValidRange(start, end, source->length());
     if (end == nullptr) {
         throw __s("unreachable");
@@ -30,7 +30,7 @@ void ListCls<E>::copyRange(int at, int end, List<T> source, int start, List<T> t
 
 template<typename E>
 template<typename T>
-void ListCls<E>::writeIterable(int at, Iterable<T> source, List<T> target) {
+void ListCls<E>::writeIterable(List<T> target, int at, Iterable<T> source) {
     RangeErrorCls->checkValueInInterval(at, 0, target->length(), __s("at"));
     int index = at;
     int targetLength = target->length();

@@ -37,13 +37,13 @@ public:
 
     virtual void resetActivity();
 
-    virtual void dispatchScrollStartNotification(BuildContext context, ScrollMetrics metrics);
+    virtual void dispatchScrollStartNotification(ScrollMetrics metrics, BuildContext context);
 
-    virtual void dispatchScrollUpdateNotification(BuildContext context, ScrollMetrics metrics, double scrollDelta);
+    virtual void dispatchScrollUpdateNotification(ScrollMetrics metrics, BuildContext context, double scrollDelta);
 
-    virtual void dispatchOverscrollNotification(BuildContext context, ScrollMetrics metrics, double overscroll);
+    virtual void dispatchOverscrollNotification(ScrollMetrics metrics, BuildContext context, double overscroll);
 
-    virtual void dispatchScrollEndNotification(BuildContext context, ScrollMetrics metrics);
+    virtual void dispatchScrollEndNotification(ScrollMetrics metrics, BuildContext context);
 
     virtual void applyNewDimensions();
 
@@ -168,15 +168,15 @@ using ScrollDragController = std::shared_ptr<ScrollDragControllerCls>;
 class DragScrollActivityCls : public ScrollActivityCls {
 public:
 
-     DragScrollActivityCls(ScrollDragController controller, Unknown delegate);
+     DragScrollActivityCls(Unknown delegate, ScrollDragController controller);
 
-    virtual void dispatchScrollStartNotification(BuildContext context, ScrollMetrics metrics);
+    virtual void dispatchScrollStartNotification(ScrollMetrics metrics, BuildContext context);
 
-    virtual void dispatchScrollUpdateNotification(BuildContext context, ScrollMetrics metrics, double scrollDelta);
+    virtual void dispatchScrollUpdateNotification(ScrollMetrics metrics, BuildContext context, double scrollDelta);
 
-    virtual void dispatchOverscrollNotification(BuildContext context, ScrollMetrics metrics, double overscroll);
+    virtual void dispatchOverscrollNotification(ScrollMetrics metrics, BuildContext context, double overscroll);
 
-    virtual void dispatchScrollEndNotification(BuildContext context, ScrollMetrics metrics);
+    virtual void dispatchScrollEndNotification(ScrollMetrics metrics, BuildContext context);
 
     virtual bool shouldIgnorePointer();
 
@@ -206,7 +206,7 @@ public:
 
     virtual bool applyMoveTo(double value);
 
-    virtual void dispatchOverscrollNotification(BuildContext context, ScrollMetrics metrics, double overscroll);
+    virtual void dispatchOverscrollNotification(ScrollMetrics metrics, BuildContext context, double overscroll);
 
     virtual bool shouldIgnorePointer();
 
@@ -232,11 +232,11 @@ using BallisticScrollActivity = std::shared_ptr<BallisticScrollActivityCls>;
 class DrivenScrollActivityCls : public ScrollActivityCls {
 public:
 
-     DrivenScrollActivityCls(Curve curve, Unknown delegate, Duration duration, double from, double to, TickerProvider vsync);
+     DrivenScrollActivityCls(Unknown delegate, Curve curve, Duration duration, double from, double to, TickerProvider vsync);
 
     virtual Future<void> done();
 
-    virtual void dispatchOverscrollNotification(BuildContext context, ScrollMetrics metrics, double overscroll);
+    virtual void dispatchOverscrollNotification(ScrollMetrics metrics, BuildContext context, double overscroll);
 
     virtual bool shouldIgnorePointer();
 

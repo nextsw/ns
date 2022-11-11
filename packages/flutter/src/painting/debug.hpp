@@ -48,7 +48,7 @@ int _imageOverheadAllowanceDefault;
 
 int debugImageOverheadAllowance;
 
-bool debugAssertAllPaintingVarsUnset(bool debugDisableShadowsOverride, String reason);
+bool debugAssertAllPaintingVarsUnset(String reason, bool debugDisableShadowsOverride);
 
 ShaderWarmUpPictureCallback debugCaptureShaderWarmUpPicture;
 

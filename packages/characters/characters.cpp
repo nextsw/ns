@@ -15,10 +15,10 @@ int high(int lead, int tail) {
     return (pair >> 4) & -bit | (pair & 0xF) & (bit - 1);
 }
 
-int move(int inputCategory, int state) {
+int move(int state, int inputCategory) {
     return _stateMachine->codeUnitAt((state & 0xF0) | inputCategory);
 }
 
-int moveBack(int inputCategory, int state) {
+int moveBack(int state, int inputCategory) {
     return _backStateMachine->codeUnitAt((state & 0xF0) | inputCategory);
 }

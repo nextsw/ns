@@ -39,7 +39,7 @@ Path ContinuousRectangleBorderCls::getOuterPath(Rect rect, TextDirection textDir
 }
 
 ContinuousRectangleBorder ContinuousRectangleBorderCls::copyWith(BorderRadiusGeometry borderRadius, BorderSide side) {
-    return make<ContinuousRectangleBorderCls>(side or this->side, borderRadius or this->borderRadius);
+    return make<ContinuousRectangleBorderCls>(side | this->side, borderRadius | this->borderRadius);
 }
 
 void ContinuousRectangleBorderCls::paint(Canvas canvas, Rect rect, TextDirection textDirection) {

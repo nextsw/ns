@@ -26,7 +26,7 @@ bool _isTrailSurrogate(int code) {
     return (code & 0xFC00) == 0xDC00;
 }
 
-int _combineSurrogatePair(int end, int start) {
+int _combineSurrogatePair(int start, int end) {
     return 0x10000 + ((start & 0x3FF) << 10) + (end & 0x3FF);
 }
 
@@ -38,7 +38,7 @@ RuneIteratorCls::RuneIteratorCls(String stringValue) {
     }
 }
 
-void RuneIteratorCls::at(int index, String stringValue) {
+void RuneIteratorCls::at(String stringValue, int index) {
     RangeErrorCls->checkValueInInterval(index, 0, stringValue->length());
     _checkSplitSurrogate(index);
 }

@@ -10,7 +10,7 @@ String AssetImageCls::keyName() {
 }
 
 Future<AssetBundleImageKey> AssetImageCls::obtainKey(ImageConfiguration configuration) {
-    AssetBundle chosenBundle = bundle or configuration->bundle or rootBundle;
+    AssetBundle chosenBundle = bundle | configuration->bundle | rootBundle;
     Completer<AssetBundleImageKey> completer;
     Future<AssetBundleImageKey> result;
     chosenBundle-><Map<String, List<String>>>loadStructuredData(_kAssetManifestFileName, _manifestParser)-><void>then([=] (Map<String, List<String>> manifest) {
@@ -59,7 +59,7 @@ Future<Map<String, List<String>>> AssetImageCls::_manifestParser(String jsonData
     return <Map<String, List<String>>>make<SynchronousFutureCls>(parsedManifest);
 }
 
-String AssetImageCls::_chooseVariant(List<String> candidates, ImageConfiguration config, String main) {
+String AssetImageCls::_chooseVariant(String main, ImageConfiguration config, List<String> candidates) {
     if (config->devicePixelRatio == nullptr || candidates == nullptr || candidates->isEmpty) {
         return main;
     }

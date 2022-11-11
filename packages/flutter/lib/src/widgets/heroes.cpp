@@ -69,8 +69,8 @@ Animation<double> _HeroFlightManifestCls::animation() {
 }
 
 Tween<Rect> _HeroFlightManifestCls::createHeroRectTween(Rect begin, Rect end) {
-    CreateRectTween createRectTween = toHero->widget->createRectTween or this->createRectTween;
-    return createRectTween?->call(begin, end) or make<RectTweenCls>(begin, end);
+    CreateRectTween createRectTween = toHero->widget->createRectTween | this->createRectTween;
+    return createRectTween?->call(begin, end) | make<RectTweenCls>(begin, end);
 }
 
 String _HeroFlightManifestCls::toString() {
@@ -83,7 +83,7 @@ _HeroFlightManifestCls::_HeroFlightManifestCls(CreateRectTween createRectTween, 
     }
 }
 
-Rect _HeroFlightManifestCls::_boundingBoxFor(BuildContext ancestorContext, BuildContext context) {
+Rect _HeroFlightManifestCls::_boundingBoxFor(BuildContext context, BuildContext ancestorContext) {
     assert(ancestorContext != nullptr);
     RenderBox box = as<RenderBox>(context->findRenderObject()!);
     assert(box != nullptr && box->hasSize() && box->size()->isFinite);
@@ -187,7 +187,7 @@ _HeroFlightCls::_HeroFlightCls(_OnFlightEnded onFlightEnded) {
 
 Widget _HeroFlightCls::_buildOverlay(BuildContext context) {
     assert(manifest != nullptr);
-    shuttle = manifest->shuttleBuilder(context, manifest->animation(), manifest->type, manifest->fromHero->context, manifest->toHero->context);
+    shuttle |= manifest->shuttleBuilder(context, manifest->animation(), manifest->type, manifest->fromHero->context, manifest->toHero->context);
     assert(shuttle != nullptr);
     return make<AnimatedBuilderCls>(_proxyAnimation, shuttle, [=] (BuildContext context,Widget child) {
         Rect rect = heroRectTween->evaluate(_proxyAnimation)!;
@@ -224,13 +224,13 @@ void _HeroFlightCls::_handleAnimationUpdate(AnimationStatus status) {
     navigator->userGestureInProgressNotifier->addListener(delayedPerformAnimationUpdate);
 }
 
-void HeroControllerCls::didPush(Route<dynamic> previousRoute, Route<dynamic> route) {
+void HeroControllerCls::didPush(Route<dynamic> route, Route<dynamic> previousRoute) {
     assert(navigator != nullptr);
     assert(route != nullptr);
     _maybeStartHeroTransition(previousRoute, route, HeroFlightDirectionCls::push, false);
 }
 
-void HeroControllerCls::didPop(Route<dynamic> previousRoute, Route<dynamic> route) {
+void HeroControllerCls::didPop(Route<dynamic> route, Route<dynamic> previousRoute) {
     assert(navigator != nullptr);
     assert(route != nullptr);
     if (!navigator!->userGestureInProgress) {
@@ -240,12 +240,12 @@ void HeroControllerCls::didPop(Route<dynamic> previousRoute, Route<dynamic> rout
 
 void HeroControllerCls::didReplace(Route<dynamic> newRoute, Route<dynamic> oldRoute) {
     assert(navigator != nullptr);
-    if (newRoute?->isCurrent() or false) {
+    if (newRoute?->isCurrent() | false) {
         _maybeStartHeroTransition(oldRoute, newRoute, HeroFlightDirectionCls::push, false);
     }
 }
 
-void HeroControllerCls::didStartUserGesture(Route<dynamic> previousRoute, Route<dynamic> route) {
+void HeroControllerCls::didStartUserGesture(Route<dynamic> route, Route<dynamic> previousRoute) {
     assert(navigator != nullptr);
     assert(route != nullptr);
     _maybeStartHeroTransition(route, previousRoute, HeroFlightDirectionCls::pop, true);
@@ -262,7 +262,7 @@ void HeroControllerCls::didStopUserGesture() {
     }
 }
 
-void HeroControllerCls::_maybeStartHeroTransition(HeroFlightDirection flightType, Route<dynamic> fromRoute, bool isUserGestureTransition, Route<dynamic> toRoute) {
+void HeroControllerCls::_maybeStartHeroTransition(Route<dynamic> fromRoute, Route<dynamic> toRoute, HeroFlightDirection flightType, bool isUserGestureTransition) {
     if (toRoute != fromRoute && is<PageRoute<dynamic>>(toRoute) && is<PageRoute<dynamic>>(fromRoute)) {
         PageRoute<dynamic> from = fromRoute;
         PageRoute<dynamic> to = toRoute;
@@ -278,7 +278,7 @@ void HeroControllerCls::_maybeStartHeroTransition(HeroFlightDirection flightType
     }
 }
 
-void HeroControllerCls::_startHeroTransition(HeroFlightDirection flightType, PageRoute<dynamic> from, bool isUserGestureTransition, PageRoute<dynamic> to) {
+void HeroControllerCls::_startHeroTransition(PageRoute<dynamic> from, PageRoute<dynamic> to, HeroFlightDirection flightType, bool isUserGestureTransition) {
     to->offstage = false;
     NavigatorState navigator = this->navigator;
     OverlayState overlay = navigator?->overlay();
@@ -300,7 +300,7 @@ void HeroControllerCls::_startHeroTransition(HeroFlightDirection flightType, Pag
         _HeroState fromHero = fromHeroEntry->value;
         _HeroState toHero = toHeroes[tag];
         _HeroFlight existingFlight = _flights[tag];
-        _HeroFlightManifest manifest = toHero == nullptr? nullptr : make<_HeroFlightManifestCls>(flightType, overlay, navigatorRenderObject->size, from, to, fromHero, toHero, createRectTween, toHero->widget->flightShuttleBuilder or fromHero->widget->flightShuttleBuilder or _defaultHeroFlightShuttleBuilder, isUserGestureTransition, existingFlight != nullptr);
+        _HeroFlightManifest manifest = toHero == nullptr? nullptr : make<_HeroFlightManifestCls>(flightType, overlay, navigatorRenderObject->size, from, to, fromHero, toHero, createRectTween, toHero->widget->flightShuttleBuilder | fromHero->widget->flightShuttleBuilder | _defaultHeroFlightShuttleBuilder, isUserGestureTransition, existingFlight != nullptr);
         if (manifest != nullptr && manifest->isValid) {
             toHeroes->remove(tag);
             if (existingFlight != nullptr) {
@@ -321,7 +321,7 @@ void HeroControllerCls::_handleFlightEnded(_HeroFlight flight) {
     _flights->remove(flight->manifest->tag());
 }
 
-Widget HeroControllerCls::_defaultHeroFlightShuttleBuilder(Animation<double> animation, BuildContext flightContext, HeroFlightDirection flightDirection, BuildContext fromHeroContext, BuildContext toHeroContext) {
+Widget HeroControllerCls::_defaultHeroFlightShuttleBuilder(BuildContext flightContext, Animation<double> animation, HeroFlightDirection flightDirection, BuildContext fromHeroContext, BuildContext toHeroContext) {
     Hero toHero = as<Hero>(toHeroContext->widget());
     MediaQueryData toMediaQueryData = MediaQueryCls->maybeOf(toHeroContext);
     MediaQueryData fromMediaQueryData = MediaQueryCls->maybeOf(fromHeroContext);

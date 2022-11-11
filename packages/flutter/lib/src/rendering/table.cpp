@@ -162,9 +162,9 @@ RenderTableCls::RenderTableCls(TableBorder border, List<List<RenderBox>> childre
         assert(textDirection != nullptr);
         assert(configuration != nullptr);
         _textDirection = textDirection;
-        _columns = columns or (children != nullptr && children->isNotEmpty? children->first->length : 0);
-        _rows = rows or 0;
-        _columnWidths = columnWidths or <int, TableColumnWidth>make<HashMapCls>();
+        _columns = columns | (children != nullptr && children->isNotEmpty? children->first->length : 0);
+        _rows = rows | 0;
+        _columnWidths = columnWidths | <int, TableColumnWidth>make<HashMapCls>();
         _defaultColumnWidth = defaultColumnWidth;
         _border = border;
         _textBaseline = textBaseline;
@@ -193,14 +193,14 @@ void RenderTableCls::columns(int value) {
     _columns = value;
     _children = <RenderBox>filled(columns() * rows(), nullptr);
     int columnsToCopy = math->min(columns(), oldColumns);
-    for (;  < rows(); y = 1) {
-        for (;  < columnsToCopy; x = 1) {
+    for (;  < rows(); y += 1) {
+        for (;  < columnsToCopy; x += 1) {
             _children[x + y * columns()] = oldChildren[x + y * oldColumns];
         }
     }
     if (oldColumns > columns()) {
-        for (;  < rows(); y = 1) {
-            for (;  < oldColumns; x = 1) {
+        for (;  < rows(); y += 1) {
+            for (;  < oldColumns; x += 1) {
                 int xy = x + y * oldColumns;
                 if (oldChildren[xy] != nullptr) {
                     dropChild(oldChildren[xy]!);
@@ -222,7 +222,7 @@ void RenderTableCls::rows(int value) {
         return;
     }
     if (_rows > value) {
-        for (;  < _children->length(); xy = 1) {
+        for (;  < _children->length(); xy += 1) {
             if (_children[xy] != nullptr) {
                 dropChild(_children[xy]!);
             }
@@ -244,7 +244,7 @@ void RenderTableCls::columnWidths(Map<int, TableColumnWidth> value) {
     if (_columnWidths->isEmpty() && value == nullptr) {
         return;
     }
-    _columnWidths = value or <int, TableColumnWidth>make<HashMapCls>();
+    _columnWidths = value | <int, TableColumnWidth>make<HashMapCls>();
     markNeedsLayout();
 }
 
@@ -295,7 +295,7 @@ void RenderTableCls::border(TableBorder value) {
 }
 
 List<Decoration> RenderTableCls::rowDecorations() {
-    return <Decoration>unmodifiable(_rowDecorations or makeList());
+    return <Decoration>unmodifiable(_rowDecorations | makeList());
 }
 
 void RenderTableCls::rowDecorations(List<Decoration> value) {
@@ -355,7 +355,7 @@ void RenderTableCls::setupParentData(RenderObject child) {
     }
 }
 
-void RenderTableCls::setFlatChildren(List<RenderBox> cells, int columns) {
+void RenderTableCls::setFlatChildren(int columns, List<RenderBox> cells) {
     if (cells == _children && columns == _columns) {
         return;
     }
@@ -380,8 +380,8 @@ void RenderTableCls::setFlatChildren(List<RenderBox> cells, int columns) {
     assert(cells != nullptr);
     assert(cells->length() % columns == 0);
     Set<RenderBox> lostChildren = <RenderBox>make<HashSetCls>();
-    for (;  < _rows; y = 1) {
-        for (;  < _columns; x = 1) {
+    for (;  < _rows; y += 1) {
+        for (;  < _columns; x += 1) {
             int xyOld = x + y * _columns;
             int xyNew = x + y * columns;
             if (_children[xyOld] != nullptr && (x >= columns || xyNew >= cells->length() || _children[xyOld] != cells[xyNew])) {
@@ -391,7 +391,7 @@ void RenderTableCls::setFlatChildren(List<RenderBox> cells, int columns) {
     }
     int y = 0;
     while (y *  < cells->length()) {
-        for (;  < columns; x = 1) {
+        for (;  < columns; x += 1) {
             int xyNew = x + y * columns;
             int xyOld = x + y * _columns;
             if (cells[xyNew] != nullptr && (x >= _columns || y >= _rows || _children[xyOld] != cells[xyNew])) {
@@ -400,7 +400,7 @@ void RenderTableCls::setFlatChildren(List<RenderBox> cells, int columns) {
                 }
             }
         }
-        y = 1;
+        y += 1;
     }
     lostChildren->forEach(dropChild);
     _columns = columns;
@@ -430,7 +430,7 @@ void RenderTableCls::setChildren(List<List<RenderBox>> cells) {
 void RenderTableCls::addRow(List<RenderBox> cells) {
     assert(cells->length() == columns());
     assert(_children->length() == rows() * columns());
-    _rows = 1;
+    _rows += 1;
     _children->addAll(cells);
     for (RenderBox cell : cells) {
         if (cell != nullptr) {
@@ -440,7 +440,7 @@ void RenderTableCls::addRow(List<RenderBox> cells) {
     markNeedsLayout();
 }
 
-void RenderTableCls::setChild(RenderBox value, int x, int y) {
+void RenderTableCls::setChild(int x, int y, RenderBox value) {
     assert(x != nullptr);
     assert(y != nullptr);
     assert(x >= 0 &&  < columns() && y >= 0 &&  < rows());
@@ -491,10 +491,10 @@ void RenderTableCls::visitChildren(RenderObjectVisitor visitor) {
 double RenderTableCls::computeMinIntrinsicWidth(double height) {
     assert(_children->length() == rows() * columns());
     double totalMinWidth = 0.0;
-    for (;  < columns(); x = 1) {
-        TableColumnWidth columnWidth = _columnWidths[x] or defaultColumnWidth();
+    for (;  < columns(); x += 1) {
+        TableColumnWidth columnWidth = _columnWidths[x] | defaultColumnWidth();
         Iterable<RenderBox> columnCells = column(x);
-        totalMinWidth = columnWidth->minIntrinsicWidth(columnCells, double->infinity);
+        totalMinWidth += columnWidth->minIntrinsicWidth(columnCells, double->infinity);
     }
     return totalMinWidth;
 }
@@ -502,10 +502,10 @@ double RenderTableCls::computeMinIntrinsicWidth(double height) {
 double RenderTableCls::computeMaxIntrinsicWidth(double height) {
     assert(_children->length() == rows() * columns());
     double totalMaxWidth = 0.0;
-    for (;  < columns(); x = 1) {
-        TableColumnWidth columnWidth = _columnWidths[x] or defaultColumnWidth();
+    for (;  < columns(); x += 1) {
+        TableColumnWidth columnWidth = _columnWidths[x] | defaultColumnWidth();
         Iterable<RenderBox> columnCells = column(x);
-        totalMaxWidth = columnWidth->maxIntrinsicWidth(columnCells, double->infinity);
+        totalMaxWidth += columnWidth->maxIntrinsicWidth(columnCells, double->infinity);
     }
     return totalMaxWidth;
 }
@@ -514,16 +514,16 @@ double RenderTableCls::computeMinIntrinsicHeight(double width) {
     assert(_children->length() == rows() * columns());
     List<double> widths = _computeColumnWidths(BoxConstraintsCls->tightForFinite(width));
     double rowTop = 0.0;
-    for (;  < rows(); y = 1) {
+    for (;  < rows(); y += 1) {
         double rowHeight = 0.0;
-        for (;  < columns(); x = 1) {
+        for (;  < columns(); x += 1) {
             int xy = x + y * columns();
             RenderBox child = _children[xy];
             if (child != nullptr) {
                 rowHeight = math->max(rowHeight, child->getMaxIntrinsicHeight(widths[x]));
             }
         }
-        rowTop = rowHeight;
+        rowTop += rowHeight;
     }
     return rowTop;
 }
@@ -538,7 +538,7 @@ double RenderTableCls::computeDistanceToActualBaseline(TextBaseline baseline) {
 }
 
 Iterable<RenderBox> RenderTableCls::column(int x) {
-    for (;  < rows(); y = 1) {
+    for (;  < rows(); y += 1) {
         int xy = x + y * columns();
         RenderBox child = _children[xy];
         if (child != nullptr) {
@@ -551,7 +551,7 @@ Iterable<RenderBox> RenderTableCls::column(int x) {
 Iterable<RenderBox> RenderTableCls::row(int y) {
     int start = y * columns();
     int end = (y + 1) * columns();
-    for (;  < end; xy = 1) {
+    for (;  < end; xy += 1) {
         RenderBox child = _children[xy];
         if (child != nullptr) {
             yield yield;
@@ -576,9 +576,9 @@ Size RenderTableCls::computeDryLayout(BoxConstraints constraints) {
     a + b;
 });
     double rowTop = 0.0;
-    for (;  < rows(); y = 1) {
+    for (;  < rows(); y += 1) {
         double rowHeight = 0.0;
-        for (;  < columns(); x = 1) {
+        for (;  < columns(); x += 1) {
             int xy = x + y * columns();
             RenderBox child = _children[xy];
             if (child != nullptr) {
@@ -587,7 +587,7 @@ Size RenderTableCls::computeDryLayout(BoxConstraints constraints) {
                 ;
             }
         }
-        rowTop = rowHeight;
+        rowTop += rowHeight;
     }
     return constraints->constrain(make<SizeCls>(tableWidth, rowTop));
 }
@@ -608,14 +608,14 @@ void RenderTableCls::performLayout() {
     _rowTops->clear();
     _baselineDistance = nullptr;
     double rowTop = 0.0;
-    for (;  < rows; y = 1) {
+    for (;  < rows; y += 1) {
         _rowTops->add(rowTop);
         double rowHeight = 0.0;
         bool haveBaseline = false;
         double beforeBaselineDistance = 0.0;
         double afterBaselineDistance = 0.0;
         List<double> baselines = <double>filled(columns, 0.0);
-        for (;  < columns; x = 1) {
+        for (;  < columns; x += 1) {
             int xy = x + y * columns;
             RenderBox child = _children[xy];
             if (child != nullptr) {
@@ -632,7 +632,7 @@ void RenderTableCls::performLayout() {
             }
             rowHeight = math->max(rowHeight, beforeBaselineDistance + afterBaselineDistance);
         }
-        for (;  < columns; x = 1) {
+        for (;  < columns; x += 1) {
             int xy = x + y * columns;
             RenderBox child = _children[xy];
             if (child != nullptr) {
@@ -640,16 +640,16 @@ void RenderTableCls::performLayout() {
                 ;
             }
         }
-        rowTop = rowHeight;
+        rowTop += rowHeight;
     }
     _rowTops->add(rowTop);
     size = constraints->constrain(make<SizeCls>(_tableWidth, rowTop));
     assert(_rowTops->length() == rows + 1);
 }
 
-bool RenderTableCls::hitTestChildren(Offset position, BoxHitTestResult result) {
+bool RenderTableCls::hitTestChildren(BoxHitTestResult result, Offset position) {
     assert(_children->length() == rows() * columns());
-    for (; index >= 0; index = 1) {
+    for (; index >= 0; index -= 1) {
         RenderBox child = _children[index];
         if (child != nullptr) {
             BoxParentData childParentData = as<BoxParentData>(child->parentData!);
@@ -678,17 +678,17 @@ void RenderTableCls::paint(PaintingContext context, Offset offset) {
     if (_rowDecorations != nullptr) {
         assert(_rowDecorations!->length() == _rowDecorationPainters!->length());
         Canvas canvas = context->canvas();
-        for (;  < rows(); y = 1) {
+        for (;  < rows(); y += 1) {
             if (_rowDecorations!->length() <= y) {
                 break;
             }
             if (_rowDecorations![y] != nullptr) {
-                _rowDecorationPainters![y] = _rowDecorations![y]!->createBoxPainter(markNeedsPaint);
+                _rowDecorationPainters![y] |= _rowDecorations![y]!->createBoxPainter(markNeedsPaint);
                 _rowDecorationPainters![y]!->paint(canvas, make<OffsetCls>(offset->dx(), offset->dy() + _rowTops[y]), configuration()->copyWith(make<SizeCls>(size->width, _rowTops[y + 1] - _rowTops[y])));
             }
         }
     }
-    for (;  < _children->length(); index = 1) {
+    for (;  < _children->length(); index += 1) {
         RenderBox child = _children[index];
         if (child != nullptr) {
             BoxParentData childParentData = as<BoxParentData>(child->parentData!);
@@ -720,8 +720,8 @@ List<DiagnosticsNode> RenderTableCls::debugDescribeChildren() {
         return makeList(ArrayItem);
     }
     List<DiagnosticsNode> children = makeList();
-    for (;  < rows(); y = 1) {
-        for (;  < columns(); x = 1) {
+    for (;  < rows(); y += 1) {
+        for (;  < columns(); x += 1) {
             int xy = x + y * columns();
             RenderBox child = _children[xy];
             String name = __s("child ($x, $y)");
@@ -744,14 +744,14 @@ List<double> RenderTableCls::_computeColumnWidths(BoxConstraints constraints) {
     double tableWidth = 0.0;
     double unflexedTableWidth = 0.0;
     double totalFlex = 0.0;
-    for (;  < columns(); x = 1) {
-        TableColumnWidth columnWidth = _columnWidths[x] or defaultColumnWidth();
+    for (;  < columns(); x += 1) {
+        TableColumnWidth columnWidth = _columnWidths[x] | defaultColumnWidth();
         Iterable<RenderBox> columnCells = column(x);
         double maxIntrinsicWidth = columnWidth->maxIntrinsicWidth(columnCells, constraints->maxWidth);
         assert(maxIntrinsicWidth->isFinite);
         assert(maxIntrinsicWidth >= 0.0);
         widths[x] = maxIntrinsicWidth;
-        tableWidth = maxIntrinsicWidth;
+        tableWidth += maxIntrinsicWidth;
         double minIntrinsicWidth = columnWidth->minIntrinsicWidth(columnCells, constraints->maxWidth);
         assert(minIntrinsicWidth->isFinite);
         assert(minIntrinsicWidth >= 0.0);
@@ -762,7 +762,7 @@ List<double> RenderTableCls::_computeColumnWidths(BoxConstraints constraints) {
             assert(flex->isFinite);
             assert(flex > 0.0);
             flexes[x] = flex;
-            totalFlex = flex;
+            totalFlex += flex;
         } else {
             unflexedTableWidth = unflexedTableWidth + maxIntrinsicWidth;
         }
@@ -780,14 +780,14 @@ List<double> RenderTableCls::_computeColumnWidths(BoxConstraints constraints) {
             double remainingWidth = targetWidth - unflexedTableWidth;
             assert(remainingWidth->isFinite);
             assert(remainingWidth >= 0.0);
-            for (;  < columns(); x = 1) {
+            for (;  < columns(); x += 1) {
                 if (flexes[x] != nullptr) {
                     double flexedWidth = remainingWidth * flexes[x]! / totalFlex;
                     assert(flexedWidth->isFinite);
                     assert(flexedWidth >= 0.0);
                     if (widths[x] < flexedWidth) {
                         double delta = flexedWidth - widths[x];
-                        tableWidth = delta;
+                        tableWidth += delta;
                         widths[x] = flexedWidth;
                     }
                 }
@@ -797,7 +797,7 @@ List<double> RenderTableCls::_computeColumnWidths(BoxConstraints constraints) {
     } else     {
         if ( < minWidthConstraint) {
         double delta = (minWidthConstraint - tableWidth) / columns();
-        for (;  < columns(); x = 1) {
+        for (;  < columns(); x += 1) {
             widths[x] = widths[x] + delta;
         }
         tableWidth = minWidthConstraint;
@@ -808,19 +808,19 @@ List<double> RenderTableCls::_computeColumnWidths(BoxConstraints constraints) {
         int availableColumns = columns();
         while (deficit > precisionErrorTolerance && totalFlex > precisionErrorTolerance) {
             double newTotalFlex = 0.0;
-            for (;  < columns(); x = 1) {
+            for (;  < columns(); x += 1) {
                 if (flexes[x] != nullptr) {
                     double newWidth = widths[x] - deficit * flexes[x]! / totalFlex;
                     assert(newWidth->isFinite);
                     if (newWidth <= minWidths[x]) {
-                        deficit = widths[x] - minWidths[x];
+                        deficit -= widths[x] - minWidths[x];
                         widths[x] = minWidths[x];
                         flexes[x] = nullptr;
-                        availableColumns = 1;
+                        availableColumns -= 1;
                     } else {
-                        deficit = widths[x] - newWidth;
+                        deficit -= widths[x] - newWidth;
                         widths[x] = newWidth;
-                        newTotalFlex = flexes[x]!;
+                        newTotalFlex += flexes[x]!;
                     }
                     assert(widths[x] >= 0.0);
                 }
@@ -831,16 +831,16 @@ List<double> RenderTableCls::_computeColumnWidths(BoxConstraints constraints) {
             double delta = deficit / availableColumns;
             assert(delta != 0);
             int newAvailableColumns = 0;
-            for (;  < columns(); x = 1) {
+            for (;  < columns(); x += 1) {
                 double availableDelta = widths[x] - minWidths[x];
                 if (availableDelta > 0.0) {
                     if (availableDelta <= delta) {
-                        deficit = widths[x] - minWidths[x];
+                        deficit -= widths[x] - minWidths[x];
                         widths[x] = minWidths[x];
                     } else {
-                        deficit = delta;
+                        deficit -= delta;
                         widths[x] = widths[x] - delta;
-                        newAvailableColumns = 1;
+                        newAvailableColumns += 1;
                     }
                 }
             }

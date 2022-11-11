@@ -170,9 +170,9 @@ void _GlowControllerCls::absorbImpact(double velocity) {
     _state = _GlowStateCls::absorb;
 }
 
-void _GlowControllerCls::pull(double crossAxisOffset, double crossExtent, double extent, double overscroll) {
+void _GlowControllerCls::pull(double overscroll, double extent, double crossAxisOffset, double crossExtent) {
     _pullRecedeTimer?->cancel();
-    _pullDistance = overscroll / 200.0;
+    _pullDistance += overscroll / 200.0;
     _glowOpacityTween->begin = _glowOpacity->value();
     _glowOpacityTween->end = math->min(_glowOpacity->value() + overscroll / extent * _pullOpacityGlowFactor, _maxOpacity);
     double height = math->min(extent, crossExtent * _widthToHeightFactor);
@@ -298,7 +298,7 @@ String _GlowingOverscrollIndicatorPainterCls::toString() {
     return __s("_GlowingOverscrollIndicatorPainter($leadingController, $trailingController)");
 }
 
-void _GlowingOverscrollIndicatorPainterCls::_paintSide(AxisDirection axisDirection, Canvas canvas, _GlowController controller, GrowthDirection growthDirection, Size size) {
+void _GlowingOverscrollIndicatorPainterCls::_paintSide(Canvas canvas, Size size, _GlowController controller, AxisDirection axisDirection, GrowthDirection growthDirection) {
     if (controller == nullptr) {
         return;
     }
@@ -339,8 +339,8 @@ Widget _StretchingOverscrollIndicatorStateCls::build(BuildContext context) {
         double x = 1.0;
         double y = 1.0;
         ;
-        AlignmentDirectional alignment = _getAlignmentForAxisDirection(_lastOverscrollNotification?->overscroll or 0.0);
-        double viewportDimension = _lastOverscrollNotification?->metrics->viewportDimension or mainAxisSize;
+        AlignmentDirectional alignment = _getAlignmentForAxisDirection(_lastOverscrollNotification?->overscroll | 0.0);
+        double viewportDimension = _lastOverscrollNotification?->metrics->viewportDimension | mainAxisSize;
         Widget transform = make<TransformCls>(alignment, Matrix4Cls->diagonal3Values(x, y, 1.0), widget->child);
         return make<ClipRectCls>(stretch != 0.0 && viewportDimension != mainAxisSize? widget->clipBehavior : ClipCls::none, transform);
     }));

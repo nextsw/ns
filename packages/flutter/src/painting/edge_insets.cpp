@@ -40,7 +40,7 @@ EdgeInsetsGeometry EdgeInsetsGeometryCls::add(EdgeInsetsGeometry other) {
     return _MixedEdgeInsetsCls->fromLRSETB(_left() + other->_left(), _right() + other->_right(), _start() + other->_start(), _end() + other->_end(), _top() + other->_top(), _bottom() + other->_bottom());
 }
 
-EdgeInsetsGeometry EdgeInsetsGeometryCls::clamp(EdgeInsetsGeometry max, EdgeInsetsGeometry min) {
+EdgeInsetsGeometry EdgeInsetsGeometryCls::clamp(EdgeInsetsGeometry min, EdgeInsetsGeometry max) {
     return _MixedEdgeInsetsCls->fromLRSETB(clampDouble(_left(), min->_left(), max->_left()), clampDouble(_right(), min->_right(), max->_right()), clampDouble(_start(), min->_start(), max->_start()), clampDouble(_end(), min->_end(), max->_end()), clampDouble(_top(), min->_top(), max->_top()), clampDouble(_bottom(), min->_bottom(), max->_bottom()));
 }
 
@@ -92,7 +92,7 @@ void EdgeInsetsCls::all(double value)
 
 void EdgeInsetsCls::symmetric(double horizontal, double vertical)
 
-void EdgeInsetsCls::fromWindowPadding(double devicePixelRatio, WindowPadding padding)
+void EdgeInsetsCls::fromWindowPadding(WindowPadding padding, double devicePixelRatio)
 
 Offset EdgeInsetsCls::topLeft() {
     return make<OffsetCls>(left, top);
@@ -136,7 +136,7 @@ EdgeInsetsGeometry EdgeInsetsCls::add(EdgeInsetsGeometry other) {
     return super->add(other);
 }
 
-EdgeInsetsGeometry EdgeInsetsCls::clamp(EdgeInsetsGeometry max, EdgeInsetsGeometry min) {
+EdgeInsetsGeometry EdgeInsetsCls::clamp(EdgeInsetsGeometry min, EdgeInsetsGeometry max) {
     return EdgeInsetsCls->fromLTRB(clampDouble(_left(), min->_left(), max->_left()), clampDouble(_top(), min->_top(), max->_top()), clampDouble(_right(), min->_right(), max->_right()), clampDouble(_bottom(), min->_bottom(), max->_bottom()));
 }
 
@@ -187,7 +187,7 @@ EdgeInsets EdgeInsetsCls::resolve(TextDirection direction) {
 }
 
 EdgeInsets EdgeInsetsCls::copyWith(double bottom, double left, double right, double top) {
-    return EdgeInsetsCls->only(left or this->left, top or this->top, right or this->right, bottom or this->bottom);
+    return EdgeInsetsCls->only(left | this->left, top | this->top, right | this->right, bottom | this->bottom);
 }
 
 double EdgeInsetsCls::_left() {

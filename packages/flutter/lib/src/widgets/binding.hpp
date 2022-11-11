@@ -167,7 +167,7 @@ public:
 
     virtual void updateRenderObject(BuildContext context, RenderObject renderObject);
 
-    virtual RenderObjectToWidgetElement<T> attachToRenderTree(RenderObjectToWidgetElement<T> element, BuildOwner owner);
+    virtual RenderObjectToWidgetElement<T> attachToRenderTree(BuildOwner owner, RenderObjectToWidgetElement<T> element);
 
     virtual String toStringShort();
 
@@ -186,7 +186,7 @@ public:
 
     virtual void forgetChild(Element child);
 
-    virtual void mount(Object newSlot, Element parent);
+    virtual void mount(Element parent, Object newSlot);
 
     virtual void update(RenderObjectToWidgetAdapter<T> newWidget);
 
@@ -196,7 +196,7 @@ public:
 
     virtual void insertRenderObjectChild(RenderObject child, Object slot);
 
-    virtual void moveRenderObjectChild(RenderObject child, Object newSlot, Object oldSlot);
+    virtual void moveRenderObjectChild(RenderObject child, Object oldSlot, Object newSlot);
 
     virtual void removeRenderObjectChild(RenderObject child, Object slot);
 

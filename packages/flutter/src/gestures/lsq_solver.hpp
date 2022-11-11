@@ -10,7 +10,7 @@
 class _VectorCls : public ObjectCls {
 public:
 
-    virtual void  fromVOL(int length, int offset, List<double> values);
+    virtual void  fromVOL(List<double> values, int offset, int length);
 
     virtual double operator[](int i);
 
@@ -36,9 +36,9 @@ using _Vector = std::shared_ptr<_VectorCls>;
 class _MatrixCls : public ObjectCls {
 public:
 
-    virtual double get(int col, int row);
+    virtual double get(int row, int col);
 
-    virtual void set(int col, int row, double value);
+    virtual void set(int row, int col, double value);
 
     virtual _Vector getRow(int row);
 
@@ -48,7 +48,7 @@ private:
     List<double> _elements;
 
 
-     _MatrixCls(int cols, int rows);
+     _MatrixCls(int rows, int cols);
 
 };
 using _Matrix = std::shared_ptr<_MatrixCls>;
@@ -76,7 +76,7 @@ public:
     List<double> w;
 
 
-     LeastSquaresSolverCls(List<double> w, List<double> x, List<double> y);
+     LeastSquaresSolverCls(List<double> x, List<double> y, List<double> w);
 
     virtual PolynomialFit solve(int degree);
 

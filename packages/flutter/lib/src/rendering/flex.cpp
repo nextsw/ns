@@ -222,7 +222,7 @@ void RenderFlexCls::performLayout() {
     double remainingSpace = math->max(0.0, actualSizeDelta);
     double leadingSpace;
     double betweenSpace;
-    bool flipMainAxis = !(_startIsTopLeft(direction(), textDirection(), verticalDirection()) or true);
+    bool flipMainAxis = !(_startIsTopLeft(direction(), textDirection(), verticalDirection()) | true);
     ;
     double childMainPosition = flipMainAxis? actualSize - leadingSpace : leadingSpace;
     RenderBox child = firstChild;
@@ -231,19 +231,19 @@ void RenderFlexCls::performLayout() {
         double childCrossPosition;
         ;
         if (flipMainAxis) {
-            childMainPosition = _getMainSize(child->size());
+            childMainPosition -= _getMainSize(child->size());
         }
         ;
         if (flipMainAxis) {
-            childMainPosition = betweenSpace;
+            childMainPosition -= betweenSpace;
         } else {
-            childMainPosition = _getMainSize(child->size()) + betweenSpace;
+            childMainPosition += _getMainSize(child->size()) + betweenSpace;
         }
         child = childParentData->nextSibling;
     }
 }
 
-bool RenderFlexCls::hitTestChildren(Offset position, BoxHitTestResult result) {
+bool RenderFlexCls::hitTestChildren(BoxHitTestResult result, Offset position) {
     return defaultHitTestChildren(resultposition);
 }
 
@@ -278,7 +278,7 @@ String RenderFlexCls::toStringShort() {
     String header = super->toStringShort();
     if (!kReleaseMode) {
         if (_hasOverflow()) {
-            header = __s(" OVERFLOWING");
+            header += __s(" OVERFLOWING");
         }
     }
     return header;
@@ -330,12 +330,12 @@ double RenderFlexCls::_getIntrinsicSize(_ChildSizingFunction childSize, double e
         RenderBox child = firstChild;
         while (child != nullptr) {
             int flex = _getFlex(child);
-            totalFlex = flex;
+            totalFlex += flex;
             if (flex > 0) {
                 double flexFraction = childSize(child, extent) / _getFlex(child);
                 maxFlexFractionSoFar = math->max(maxFlexFractionSoFar, flexFraction);
             } else {
-                inflexibleSpace = childSize(child, extent);
+                inflexibleSpace += childSize(child, extent);
             }
             FlexParentData childParentData = as<FlexParentData>(child->parentData!);
             child = childParentData->nextSibling;
@@ -349,12 +349,12 @@ double RenderFlexCls::_getIntrinsicSize(_ChildSizingFunction childSize, double e
         RenderBox child = firstChild;
         while (child != nullptr) {
             int flex = _getFlex(child);
-            totalFlex = flex;
+            totalFlex += flex;
             double mainSize;
             double crossSize;
             if (flex == 0) {
                 ;
-                inflexibleSpace = mainSize;
+                inflexibleSpace += mainSize;
                 maxCrossSize = math->max(maxCrossSize, crossSize);
             }
             FlexParentData childParentData = as<FlexParentData>(child->parentData!);
@@ -376,12 +376,12 @@ double RenderFlexCls::_getIntrinsicSize(_ChildSizingFunction childSize, double e
 
 int RenderFlexCls::_getFlex(RenderBox child) {
     FlexParentData childParentData = as<FlexParentData>(child->parentData!);
-    return childParentData->flex or 0;
+    return childParentData->flex | 0;
 }
 
 FlexFit RenderFlexCls::_getFit(RenderBox child) {
     FlexParentData childParentData = as<FlexParentData>(child->parentData!);
-    return childParentData->fit or FlexFitCls::tight;
+    return childParentData->fit | FlexFitCls::tight;
 }
 
 double RenderFlexCls::_getCrossSize(Size size) {
@@ -444,7 +444,7 @@ _LayoutSizes RenderFlexCls::_computeSizes(BoxConstraints constraints, ChildLayou
         FlexParentData childParentData = as<FlexParentData>(child->parentData!);
         int flex = _getFlex(child);
         if (flex > 0) {
-            totalFlex = flex;
+            totalFlex += flex;
             lastFlexChild = child;
         } else {
             BoxConstraints innerConstraints;
@@ -454,7 +454,7 @@ _LayoutSizes RenderFlexCls::_computeSizes(BoxConstraints constraints, ChildLayou
                 ;
             }
             Size childSize = layoutChild(child, innerConstraints);
-            allocatedSize = _getMainSize(childSize);
+            allocatedSize += _getMainSize(childSize);
             crossSize = math->max(crossSize, _getCrossSize(childSize));
         }
         assert(child->parentData == childParentData);
@@ -481,8 +481,8 @@ _LayoutSizes RenderFlexCls::_computeSizes(BoxConstraints constraints, ChildLayou
                 Size childSize = layoutChild(child, innerConstraints);
                 double childMainSize = _getMainSize(childSize);
                 assert(childMainSize <= maxChildExtent);
-                allocatedSize = childMainSize;
-                allocatedFlexSpace = maxChildExtent;
+                allocatedSize += childMainSize;
+                allocatedFlexSpace += maxChildExtent;
                 crossSize = math->max(crossSize, _getCrossSize(childSize));
             }
             FlexParentData childParentData = as<FlexParentData>(child->parentData!);

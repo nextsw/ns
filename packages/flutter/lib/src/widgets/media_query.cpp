@@ -28,7 +28,7 @@ Orientation MediaQueryDataCls::orientation() {
 }
 
 MediaQueryData MediaQueryDataCls::copyWith(bool accessibleNavigation, bool alwaysUse24HourFormat, bool boldText, double devicePixelRatio, bool disableAnimations, List<DisplayFeature> displayFeatures, DeviceGestureSettings gestureSettings, bool highContrast, bool invertColors, NavigationMode navigationMode, EdgeInsets padding, Brightness platformBrightness, Size size, EdgeInsets systemGestureInsets, double textScaleFactor, EdgeInsets viewInsets, EdgeInsets viewPadding) {
-    return make<MediaQueryDataCls>(size or this->size, devicePixelRatio or this->devicePixelRatio, textScaleFactor or this->textScaleFactor, platformBrightness or this->platformBrightness, padding or this->padding, viewPadding or this->viewPadding, viewInsets or this->viewInsets, systemGestureInsets or this->systemGestureInsets, alwaysUse24HourFormat or this->alwaysUse24HourFormat, invertColors or this->invertColors, highContrast or this->highContrast, disableAnimations or this->disableAnimations, accessibleNavigation or this->accessibleNavigation, boldText or this->boldText, navigationMode or this->navigationMode, gestureSettings or this->gestureSettings, displayFeatures or this->displayFeatures);
+    return make<MediaQueryDataCls>(size | this->size, devicePixelRatio | this->devicePixelRatio, textScaleFactor | this->textScaleFactor, platformBrightness | this->platformBrightness, padding | this->padding, viewPadding | this->viewPadding, viewInsets | this->viewInsets, systemGestureInsets | this->systemGestureInsets, alwaysUse24HourFormat | this->alwaysUse24HourFormat, invertColors | this->invertColors, highContrast | this->highContrast, disableAnimations | this->disableAnimations, accessibleNavigation | this->accessibleNavigation, boldText | this->boldText, navigationMode | this->navigationMode, gestureSettings | this->gestureSettings, displayFeatures | this->displayFeatures);
 }
 
 MediaQueryData MediaQueryDataCls::removePadding(bool removeBottom, bool removeLeft, bool removeRight, bool removeTop) {
@@ -115,19 +115,19 @@ MediaQueryData MediaQueryCls::maybeOf(BuildContext context) {
 }
 
 double MediaQueryCls::textScaleFactorOf(BuildContext context) {
-    return MediaQueryCls->maybeOf(context)?->textScaleFactor or 1.0;
+    return MediaQueryCls->maybeOf(context)?->textScaleFactor | 1.0;
 }
 
 Brightness MediaQueryCls::platformBrightnessOf(BuildContext context) {
-    return MediaQueryCls->maybeOf(context)?->platformBrightness or BrightnessCls::light;
+    return MediaQueryCls->maybeOf(context)?->platformBrightness | BrightnessCls::light;
 }
 
 bool MediaQueryCls::highContrastOf(BuildContext context) {
-    return MediaQueryCls->maybeOf(context)?->highContrast or false;
+    return MediaQueryCls->maybeOf(context)?->highContrast | false;
 }
 
 bool MediaQueryCls::boldTextOverride(BuildContext context) {
-    return MediaQueryCls->maybeOf(context)?->boldText or false;
+    return MediaQueryCls->maybeOf(context)?->boldText | false;
 }
 
 bool MediaQueryCls::updateShouldNotify(MediaQuery oldWidget) {

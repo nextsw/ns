@@ -133,7 +133,7 @@ void ScrollPositionCls::restoreScrollOffset() {
     }
 }
 
-void ScrollPositionCls::restoreOffset(bool initialRestore, double offset) {
+void ScrollPositionCls::restoreOffset(double offset, bool initialRestore) {
     assert(initialRestore != nullptr);
     assert(offset != nullptr);
     if (initialRestore) {
@@ -168,7 +168,7 @@ bool ScrollPositionCls::applyViewportDimension(double viewportDimension) {
     return true;
 }
 
-bool ScrollPositionCls::applyContentDimensions(double maxScrollExtent, double minScrollExtent) {
+bool ScrollPositionCls::applyContentDimensions(double minScrollExtent, double maxScrollExtent) {
     assert(minScrollExtent != nullptr);
     assert(maxScrollExtent != nullptr);
     assert(haveDimensions() == (_lastMetrics != nullptr));
@@ -203,7 +203,7 @@ bool ScrollPositionCls::applyContentDimensions(double maxScrollExtent, double mi
     return true;
 }
 
-bool ScrollPositionCls::correctForNewDimensions(ScrollMetrics newPosition, ScrollMetrics oldPosition) {
+bool ScrollPositionCls::correctForNewDimensions(ScrollMetrics oldPosition, ScrollMetrics newPosition) {
     double newPixels = physics->adjustPositionForNewDimensions(oldPosition, newPosition, activity()!->isScrolling(), activity()!->velocity());
     if (newPixels != pixels()) {
         correctPixels(newPixels);
@@ -219,7 +219,7 @@ void ScrollPositionCls::applyNewDimensions() {
     _updateSemanticActions();
 }
 
-Future<void> ScrollPositionCls::ensureVisible(double alignment, ScrollPositionAlignmentPolicy alignmentPolicy, Curve curve, Duration duration, RenderObject object, RenderObject targetRenderObject) {
+Future<void> ScrollPositionCls::ensureVisible(RenderObject object, double alignment, ScrollPositionAlignmentPolicy alignmentPolicy, Curve curve, Duration duration, RenderObject targetRenderObject) {
     assert(alignmentPolicy != nullptr);
     assert(object->attached);
     RenderAbstractViewport viewport = RenderAbstractViewportCls->of(object)!;
@@ -240,7 +240,7 @@ Future<void> ScrollPositionCls::ensureVisible(double alignment, ScrollPositionAl
     return animateTo(targetduration, curve);
 }
 
-Future<void> ScrollPositionCls::moveTo(bool clamp, Curve curve, Duration duration, double to) {
+Future<void> ScrollPositionCls::moveTo(double to, bool clamp, Curve curve, Duration duration) {
     assert(to != nullptr);
     assert(clamp != nullptr);
     if (clamp!) {

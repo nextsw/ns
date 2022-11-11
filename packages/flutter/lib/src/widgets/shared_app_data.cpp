@@ -4,7 +4,7 @@ State<StatefulWidget> SharedAppDataCls::createState() {
 }
 
 template<typename K, typename V>
-V SharedAppDataCls::getValue(BuildContext context, SharedAppDataInitCallback<V> init, K key) {
+V SharedAppDataCls::getValue(BuildContext context, K key, SharedAppDataInitCallback<V> init) {
     _SharedAppModel model = InheritedModelCls-><_SharedAppModel>inheritFrom(contextkey);
     assert(_debugHasSharedAppData(model, context, __s("getValue")));
     return model!->sharedAppDataState-><K, V>getValue(key, init);
@@ -17,7 +17,7 @@ void SharedAppDataCls::setValue(BuildContext context, K key, V value) {
     model!->sharedAppDataState-><K, V>setValue(key, value);
 }
 
-bool SharedAppDataCls::_debugHasSharedAppData(BuildContext context, String methodName, _SharedAppModel model) {
+bool SharedAppDataCls::_debugHasSharedAppData(_SharedAppModel model, BuildContext context, String methodName) {
     assert([=] () {
         if (model == nullptr) {
             throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem));
@@ -32,8 +32,8 @@ Widget _SharedAppDataStateCls::build(BuildContext context) {
 }
 
 template<typename K, typename V>
-V _SharedAppDataStateCls::getValue(SharedAppDataInitCallback<V> init, K key) {
-    data[key] = init();
+V _SharedAppDataStateCls::getValue(K key, SharedAppDataInitCallback<V> init) {
+    data[key] |= init();
     return as<V>(data[key]);
 }
 
@@ -51,7 +51,7 @@ bool _SharedAppModelCls::updateShouldNotify(_SharedAppModel old) {
     return data != old->data;
 }
 
-bool _SharedAppModelCls::updateShouldNotifyDependent(Set<Object> keys, _SharedAppModel old) {
+bool _SharedAppModelCls::updateShouldNotifyDependent(_SharedAppModel old, Set<Object> keys) {
     for (Object key : keys) {
         if (data[key] != old->data[key]) {
             return true;

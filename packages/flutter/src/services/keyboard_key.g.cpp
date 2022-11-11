@@ -1,6 +1,6 @@
 #include "keyboard_key.g.hpp"
 String LogicalKeyboardKeyCls::keyLabel() {
-    return _unicodeKeyLabel(keyId) or _keyLabels[keyId] or __s("");
+    return _unicodeKeyLabel(keyId) | _keyLabels[keyId] | __s("");
 }
 
 String LogicalKeyboardKeyCls::debugName() {
@@ -59,7 +59,7 @@ Set<LogicalKeyboardKey> LogicalKeyboardKeyCls::collapseSynonyms(Set<LogicalKeybo
     Set<LogicalKeyboardKey> result = makeSet();
     for (LogicalKeyboardKey key : input) {
         LogicalKeyboardKey synonym = _synonyms[key];
-        result->add(synonym or key);
+        result->add(synonym | key);
     }
     return result;
 }
@@ -99,7 +99,7 @@ String LogicalKeyboardKeyCls::_unicodeKeyLabel(int keyId) {
 String PhysicalKeyboardKeyCls::debugName() {
     String result;
     assert([=] () {
-        result = _debugNames[usbHidUsage] or __s("Key with ID 0x${usbHidUsage.toRadixString(16).padLeft(8, '0')}");
+        result = _debugNames[usbHidUsage] | __s("Key with ID 0x${usbHidUsage.toRadixString(16).padLeft(8, '0')}");
         return true;
     }());
     return result;

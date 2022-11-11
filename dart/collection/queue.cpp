@@ -6,7 +6,7 @@ Queue<T> QueueCls<E>::castFrom(Queue<S> source) {
 }
 
 template<typename E>
-void _DoubleLinkedQueueEntryCls<E>::_link(_DoubleLinkedQueueEntry<E> next, _DoubleLinkedQueueEntry<E> previous) {
+void _DoubleLinkedQueueEntryCls<E>::_link(_DoubleLinkedQueueEntry<E> previous, _DoubleLinkedQueueEntry<E> next) {
     _nextLink = next;
     _previousLink = previous;
     previous?->_nextLink = this;
@@ -268,7 +268,7 @@ String DoubleLinkedQueueCls<E>::toString() {
 }
 
 template<typename E>
-void DoubleLinkedQueueCls<E>::_filter(bool removeMatching, std::function<bool(E element)> test) {
+void DoubleLinkedQueueCls<E>::_filter(std::function<bool(E element)> test, bool removeMatching) {
     _DoubleLinkedQueueEntry<E> entry = _sentinel->_nextLink!;
     while (true) {
         auto elementEntry = entry->_asNonSentinelEntry();
@@ -446,12 +446,12 @@ void ListQueueCls<E>::addAll(Iterable<E> elements) {
         if (length + addCount >= _table->length) {
             _preGrow(length + addCount);
             _table->setRange(length, length + addCount, list, 0);
-            _tail = addCount;
+            _tail += addCount;
         } else {
             int endSpace = _table->length - _tail;
             if ( < endSpace) {
                 _table->setRange(_tail, _tail + addCount, list, 0);
-                _tail = addCount;
+                _tail += addCount;
             } else {
                 int preSpace = addCount - endSpace;
                 _table->setRange(_tail, _tail + endSpace, list, 0);
@@ -559,7 +559,7 @@ int ListQueueCls<E>::_calculateCapacity(int initialCapacity) {
 }
 
 template<typename E>
-void ListQueueCls<E>::_filterWhere(bool removeMatching, std::function<bool(E element)> test) {
+void ListQueueCls<E>::_filterWhere(std::function<bool(E element)> test, bool removeMatching) {
     int modificationCount = _modificationCount;
     int i = _head;
     while (i != _tail) {
@@ -667,7 +667,7 @@ int ListQueueCls<E>::_writeToList(List<E> target) {
 template<typename E>
 void ListQueueCls<E>::_preGrow(int newElementCount) {
     assert(newElementCount >= length());
-    newElementCount = newElementCount >> 1;
+    newElementCount += newElementCount >> 1;
     int newCapacity = _nextPowerOf2(newElementCount);
     List<E> newTable = <E>filled(newCapacity, nullptr);
     _tail = _writeToList(newTable);

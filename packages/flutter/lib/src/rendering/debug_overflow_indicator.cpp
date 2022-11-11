@@ -1,5 +1,5 @@
 #include "debug_overflow_indicator.hpp"
-void DebugOverflowIndicatorMixinCls::paintOverflowIndicator(Rect childRect, Rect containerRect, PaintingContext context, Offset offset, List<DiagnosticsNode> overflowHints) {
+void DebugOverflowIndicatorMixinCls::paintOverflowIndicator(PaintingContext context, Offset offset, Rect containerRect, Rect childRect, List<DiagnosticsNode> overflowHints) {
     RelativeRect overflow = RelativeRectCls->fromRect(containerRect, childRect);
     if (overflow->left <= 0.0 && overflow->right <= 0.0 && overflow->top <= 0.0 && overflow->bottom <= 0.0) {
         return;
@@ -51,7 +51,7 @@ String DebugOverflowIndicatorMixinCls::_formatPixels(double value) {
     }    return pixels;
 }
 
-List<_OverflowRegionData> DebugOverflowIndicatorMixinCls::_calculateOverflowRegions(Rect containerRect, RelativeRect overflow) {
+List<_OverflowRegionData> DebugOverflowIndicatorMixinCls::_calculateOverflowRegions(RelativeRect overflow, Rect containerRect) {
     List<_OverflowRegionData> regions = makeList();
     if (overflow->left > 0.0) {
         Rect markerRect = RectCls->fromLTWH(0.0, 0.0, containerRect->width() * _indicatorFraction, containerRect->height());
@@ -73,7 +73,7 @@ List<_OverflowRegionData> DebugOverflowIndicatorMixinCls::_calculateOverflowRegi
 }
 
 void DebugOverflowIndicatorMixinCls::_reportOverflow(RelativeRect overflow, List<DiagnosticsNode> overflowHints) {
-    overflowHints = makeList();
+    overflowHints |= makeList();
     if (overflowHints->isEmpty) {
         overflowHints->add(make<ErrorDescriptionCls>(__s("The edge of the $runtimeType that is overflowing has been marked in the rendering with a yellow and black striped pattern. This is usually caused by the contents being too big for the $runtimeType.")));
         overflowHints->add(make<ErrorHintCls>(__s("This is considered an error condition because it indicates that there is content that cannot be seen. If the content is legitimately bigger than the available space, consider clipping it with a ClipRect widget before putting it in the $runtimeType, or using a scrollable container, like a ListView.")));

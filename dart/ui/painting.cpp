@@ -42,9 +42,9 @@ ColorCls::ColorCls(int value) {
     }
 }
 
-void ColorCls::fromARGB(int a, int b, int g, int r)
+void ColorCls::fromARGB(int a, int r, int g, int b)
 
-void ColorCls::fromRGBO(int b, int g, double opacity, int r)
+void ColorCls::fromRGBO(int r, int g, int b, double opacity)
 
 int ColorCls::alpha() {
     return (0xff000000 & value) >> 24;
@@ -111,7 +111,7 @@ Color ColorCls::lerp(Color a, Color b, double t) {
     }
 }
 
-Color ColorCls::alphaBlend(Color background, Color foreground) {
+Color ColorCls::alphaBlend(Color foreground, Color background) {
     int alpha = foreground->alpha();
     if (alpha == 0x00) {
         return background;
@@ -422,7 +422,7 @@ bool ImageCls::debugDisposed() {
         disposed = _disposed;
         return true;
     }());
-    return disposed or (throw make<StateErrorCls>(__s("Image.debugDisposed is only available when asserts are enabled.")));
+    return disposed | (throw make<StateErrorCls>(__s("Image.debugDisposed is only available when asserts are enabled.")));
 }
 
 Future<ByteData> ImageCls::toByteData(ImageByteFormat format) {
@@ -457,7 +457,7 @@ String ImageCls::toString() {
     return _image->toString();
 }
 
-void ImageCls::_(_Image _image, int height, int width) {
+void ImageCls::_(_Image _image, int width, int height) {
     assert([=] () {
         _debugStack = StackTraceCls::current;
         return true;
@@ -507,12 +507,12 @@ Future<FrameInfo> CodecCls::getNextFrame() {
     return completer->future;
 }
 
-Future<Codec> instantiateImageCodec(bool allowUpscaling, Uint8List list, int targetHeight, int targetWidth) {
+Future<Codec> instantiateImageCodec(Uint8List list, bool allowUpscaling, int targetHeight, int targetWidth) {
     ImmutableBuffer buffer = await ImmutableBufferCls->fromUint8List(list);
     return instantiateImageCodecFromBuffer(buffertargetWidth, targetHeight, allowUpscaling);
 }
 
-Future<Codec> instantiateImageCodecFromBuffer(bool allowUpscaling, ImmutableBuffer buffer, int targetHeight, int targetWidth) {
+Future<Codec> instantiateImageCodecFromBuffer(ImmutableBuffer buffer, bool allowUpscaling, int targetHeight, int targetWidth) {
     ImageDescriptor descriptor = await ImageDescriptorCls->encoded(buffer);
     if (!allowUpscaling) {
         if (targetWidth != nullptr && targetWidth > descriptor->width()) {
@@ -526,17 +526,17 @@ Future<Codec> instantiateImageCodecFromBuffer(bool allowUpscaling, ImmutableBuff
     return descriptor->instantiateCodec(targetWidth, targetHeight);
 }
 
-void decodeImageFromList(ImageDecoderCallback callback, Uint8List list) {
+void decodeImageFromList(Uint8List list, ImageDecoderCallback callback) {
     _decodeImageFromListAsync(list, callback);
 }
 
-Future<void> _decodeImageFromListAsync(ImageDecoderCallback callback, Uint8List list) {
+Future<void> _decodeImageFromListAsync(Uint8List list, ImageDecoderCallback callback) {
     Codec codec = await instantiateImageCodec(list);
     FrameInfo frameInfo = await codec->getNextFrame();
     callback(frameInfo->image);
 }
 
-void decodeImageFromPixels(bool allowUpscaling, ImageDecoderCallback callback, PixelFormat format, int height, Uint8List pixels, int rowBytes, int targetHeight, int targetWidth, int width) {
+void decodeImageFromPixels(Uint8List pixels, int width, int height, PixelFormat format, ImageDecoderCallback callback, bool allowUpscaling, int rowBytes, int targetHeight, int targetWidth) {
     if (targetWidth != nullptr) {
         assert(allowUpscaling || targetWidth <= width);
     }
@@ -585,7 +585,7 @@ void PathCls::fillType(PathFillType value) {
     return _setFillType(value->index);
 }
 
-void PathCls::arcTo(bool forceMoveTo, Rect rect, double startAngle, double sweepAngle) {
+void PathCls::arcTo(Rect rect, double startAngle, double sweepAngle, bool forceMoveTo) {
     assert(_rectIsValid(rect));
     _arcTo(rect->left, rect->top, rect->right, rect->bottom, startAngle, sweepAngle, forceMoveTo);
 }
@@ -617,7 +617,7 @@ void PathCls::addArc(Rect oval, double startAngle, double sweepAngle) {
     _addArc(oval->left, oval->top, oval->right, oval->bottom, startAngle, sweepAngle);
 }
 
-void PathCls::addPolygon(bool close, List<Offset> points) {
+void PathCls::addPolygon(List<Offset> points, bool close) {
     assert(points != nullptr);
     _addPolygon(_encodePointList(points), close);
 }
@@ -627,7 +627,7 @@ void PathCls::addRRect(RRect rrect) {
     _addRRect(rrect->_getValue32());
 }
 
-void PathCls::addPath(Float64List matrix4, Offset offset, Path path) {
+void PathCls::addPath(Path path, Offset offset, Float64List matrix4) {
     assert(path != nullptr);
     assert(_offsetIsValid(offset));
     if (matrix4 != nullptr) {
@@ -638,7 +638,7 @@ void PathCls::addPath(Float64List matrix4, Offset offset, Path path) {
     }
 }
 
-void PathCls::extendWithPath(Float64List matrix4, Offset offset, Path path) {
+void PathCls::extendWithPath(Path path, Offset offset, Float64List matrix4) {
     assert(path != nullptr);
     assert(_offsetIsValid(offset));
     if (matrix4 != nullptr) {
@@ -694,7 +694,7 @@ TangentCls::TangentCls(Offset position, Offset vector) {
     }
 }
 
-void TangentCls::fromAngle(double angle, Offset position) {
+void TangentCls::fromAngle(Offset position, double angle) {
     return make<TangentCls>(position, make<OffsetCls>(math->cos(angle), math->sin(angle)));
 }
 
@@ -706,7 +706,7 @@ Iterator<PathMetric> PathMetricsCls::iterator() {
     return _iterator;
 }
 
-void PathMetricsCls::_(bool forceClosed, Path path)
+void PathMetricsCls::_(Path path, bool forceClosed)
 
 PathMetric PathMetricIteratorCls::current() {
     PathMetric currentMetric = _pathMetric;
@@ -731,7 +731,7 @@ Tangent PathMetricCls::getTangentForOffset(double distance) {
     return _measure->getTangentForOffset(contourIndex, distance);
 }
 
-Path PathMetricCls::extractPath(double end, double start, bool startWithMoveTo) {
+Path PathMetricCls::extractPath(double start, double end, bool startWithMoveTo) {
     return _measure->extractPath(contourIndex, start, endstartWithMoveTo);
 }
 
@@ -756,7 +756,7 @@ Tangent _PathMeasureCls::getTangentForOffset(int contourIndex, double distance) 
     }
 }
 
-Path _PathMeasureCls::extractPath(int contourIndex, double end, double start, bool startWithMoveTo) {
+Path _PathMeasureCls::extractPath(int contourIndex, double start, double end, bool startWithMoveTo) {
     assert(contourIndex <= currentContourIndex, __s("Iterator must be advanced before index $contourIndex can be used."));
     Path path = PathCls->_();
     _extractPath(path, contourIndex, start, endstartWithMoveTo);
@@ -768,7 +768,7 @@ bool _PathMeasureCls::isClosed(int contourIndex) {
     return _isClosed(contourIndex);
 }
 
-_PathMeasureCls::_PathMeasureCls(bool forceClosed, Path path) {
+_PathMeasureCls::_PathMeasureCls(Path path, bool forceClosed) {
     {
         _constructor(path, forceClosed);
     }
@@ -782,7 +782,7 @@ bool _PathMeasureCls::_nextContour() {
     return next;
 }
 
-void MaskFilterCls::blur(double _sigma, BlurStyle _style)
+void MaskFilterCls::blur(BlurStyle _style, double _sigma)
 
 bool MaskFilterCls::==(Object other) {
     return is<MaskFilter>(other) && other->_style == _style && other->_sigma == _sigma;
@@ -796,7 +796,7 @@ String MaskFilterCls::toString() {
     return __s("MaskFilter.blur($_style, ${_sigma.toStringAsFixed(1)})");
 }
 
-void ColorFilterCls::mode(BlendMode blendMode, Color color)
+void ColorFilterCls::mode(Color color, BlendMode blendMode)
 
 void ColorFilterCls::matrix(List<double> matrix)
 
@@ -870,7 +870,7 @@ void ImageFilterCls::erode(double radiusX, double radiusY) {
     return make<_ErodeImageFilterCls>(radiusX, radiusY);
 }
 
-void ImageFilterCls::matrix(FilterQuality filterQuality, Float64List matrix4) {
+void ImageFilterCls::matrix(Float64List matrix4, FilterQuality filterQuality) {
     assert(matrix4 != nullptr);
     assert(filterQuality != nullptr);
     if (matrix4->length != 16)     {
@@ -1074,7 +1074,7 @@ Float32List _encodeTwoPoints(Offset pointA, Offset pointB) {
     return result;
 }
 
-void GradientCls::linear(List<double> colorStops, List<Color> colors, Offset from, Float64List matrix4, TileMode tileMode, Offset to) {
+void GradientCls::linear(Offset from, Offset to, List<Color> colors, List<double> colorStops, TileMode tileMode, Float64List matrix4) {
     _validateColorStops(colors, colorStops);
     Float32List endPointsBuffer = _encodeTwoPoints(from, to);
     Int32List colorsBuffer = _encodeColorList(colors);
@@ -1083,7 +1083,7 @@ void GradientCls::linear(List<double> colorStops, List<Color> colors, Offset fro
     _initLinear(endPointsBuffer, colorsBuffer, colorStopsBuffer, tileMode->index, matrix4);
 }
 
-void GradientCls::radial(Offset center, List<double> colorStops, List<Color> colors, Offset focal, double focalRadius, Float64List matrix4, double radius, TileMode tileMode) {
+void GradientCls::radial(Offset center, double radius, List<Color> colors, List<double> colorStops, TileMode tileMode, Float64List matrix4, Offset focal, double focalRadius) {
     _validateColorStops(colors, colorStops);
     Int32List colorsBuffer = _encodeColorList(colors);
     Float32List colorStopsBuffer = colorStops == nullptr? nullptr : Float32ListCls->fromList(colorStops);
@@ -1097,7 +1097,7 @@ void GradientCls::radial(Offset center, List<double> colorStops, List<Color> col
     }
 }
 
-void GradientCls::sweep(Offset center, List<double> colorStops, List<Color> colors, double endAngle, Float64List matrix4, double startAngle, TileMode tileMode) {
+void GradientCls::sweep(Offset center, List<Color> colors, List<double> colorStops, TileMode tileMode, double startAngle, double endAngle, Float64List matrix4) {
     _validateColorStops(colors, colorStops);
     Int32List colorsBuffer = _encodeColorList(colors);
     Float32List colorStopsBuffer = colorStops == nullptr? nullptr : Float32ListCls->fromList(colorStops);
@@ -1105,7 +1105,7 @@ void GradientCls::sweep(Offset center, List<double> colorStops, List<Color> colo
     _initSweep(center->dx(), center->dy(), colorsBuffer, colorStopsBuffer, tileMode->index, startAngle, endAngle, matrix4);
 }
 
-void GradientCls::_validateColorStops(List<double> colorStops, List<Color> colors) {
+void GradientCls::_validateColorStops(List<Color> colors, List<double> colorStops) {
     if (colorStops == nullptr) {
         if (colors->length() != 2)         {
             throw make<ArgumentErrorCls>(__s(""colors" must have length 2 if "colorStops" is omitted."));
@@ -1117,7 +1117,7 @@ void GradientCls::_validateColorStops(List<double> colorStops, List<Color> color
     }
 }
 
-ImageShaderCls::ImageShaderCls(FilterQuality filterQuality, Image image, Float64List matrix4, TileMode tmx, TileMode tmy) {
+ImageShaderCls::ImageShaderCls(Image image, TileMode tmx, TileMode tmy, Float64List matrix4, FilterQuality filterQuality) {
     {
         assert(image != nullptr);
         assert(tmx != nullptr);
@@ -1130,7 +1130,7 @@ ImageShaderCls::ImageShaderCls(FilterQuality filterQuality, Image image, Float64
             throw make<ArgumentErrorCls>(__s(""matrix4" must have 16 entries."));
         }
         _constructor();
-        String error = _initWithImage(image->_image, tmx->index, tmy->index, filterQuality?->index or -1, matrix4);
+        String error = _initWithImage(image->_image, tmx->index, tmy->index, filterQuality?->index | -1, matrix4);
         if (error != nullptr) {
             throw make<ExceptionCls>(error);
         }
@@ -1191,7 +1191,7 @@ _FragmentShaderCls::_FragmentShaderCls(FragmentProgram _builder, Float32List _fl
     }
 }
 
-VerticesCls::VerticesCls(List<Color> colors, List<int> indices, VertexMode mode, List<Offset> positions, List<Offset> textureCoordinates) {
+VerticesCls::VerticesCls(VertexMode mode, List<Offset> positions, List<Color> colors, List<int> indices, List<Offset> textureCoordinates) {
     {
         assert(mode != nullptr);
         assert(positions != nullptr);
@@ -1218,7 +1218,7 @@ VerticesCls::VerticesCls(List<Color> colors, List<int> indices, VertexMode mode,
     }
 }
 
-void VerticesCls::raw(Int32List colors, Uint16List indices, VertexMode mode, Float32List positions, Float32List textureCoordinates) {
+void VerticesCls::raw(VertexMode mode, Float32List positions, Int32List colors, Uint16List indices, Float32List textureCoordinates) {
     if (textureCoordinates != nullptr && textureCoordinates->length != positions->length)     {
         throw make<ArgumentErrorCls>(__s(""positions" and "textureCoordinates" lengths must match."));
     }
@@ -1235,7 +1235,7 @@ void VerticesCls::raw(Int32List colors, Uint16List indices, VertexMode mode, Flo
     }
 }
 
-CanvasCls::CanvasCls(Rect cullRect, PictureRecorder recorder) {
+CanvasCls::CanvasCls(PictureRecorder recorder, Rect cullRect) {
     {
         assert(recorder != nullptr);
     }
@@ -1245,7 +1245,7 @@ CanvasCls::CanvasCls(Rect cullRect, PictureRecorder recorder) {
         }
         _recorder = recorder;
         _recorder!->_canvas = this;
-        cullRect = RectCls::largest;
+        cullRect |= RectCls::largest;
         _constructor(recorder, cullRect->left, cullRect->top, cullRect->right, cullRect->bottom);
     }
 }
@@ -1261,7 +1261,7 @@ void CanvasCls::saveLayer(Rect bounds, Paint paint) {
 }
 
 void CanvasCls::scale(double sx, double sy) {
-    return _scale(sx, sy or sx);
+    return _scale(sx, sy | sx);
 }
 
 void CanvasCls::transform(Float64List matrix4) {
@@ -1278,20 +1278,20 @@ Float64List CanvasCls::getTransform() {
     return matrix4;
 }
 
-void CanvasCls::clipRect(ClipOp clipOp, bool doAntiAlias, Rect rect) {
+void CanvasCls::clipRect(Rect rect, ClipOp clipOp, bool doAntiAlias) {
     assert(_rectIsValid(rect));
     assert(clipOp != nullptr);
     assert(doAntiAlias != nullptr);
     _clipRect(rect->left, rect->top, rect->right, rect->bottom, clipOp->index, doAntiAlias);
 }
 
-void CanvasCls::clipRRect(bool doAntiAlias, RRect rrect) {
+void CanvasCls::clipRRect(RRect rrect, bool doAntiAlias) {
     assert(_rrectIsValid(rrect));
     assert(doAntiAlias != nullptr);
     _clipRRect(rrect->_getValue32(), doAntiAlias);
 }
 
-void CanvasCls::clipPath(bool doAntiAlias, Path path) {
+void CanvasCls::clipPath(Path path, bool doAntiAlias) {
     assert(path != nullptr);
     assert(doAntiAlias != nullptr);
     _clipPath(path, doAntiAlias);
@@ -1309,7 +1309,7 @@ Rect CanvasCls::getDestinationClipBounds() {
     return RectCls->fromLTRB(bounds[0], bounds[1], bounds[2], bounds[3]);
 }
 
-void CanvasCls::drawColor(BlendMode blendMode, Color color) {
+void CanvasCls::drawColor(Color color, BlendMode blendMode) {
     assert(color != nullptr);
     assert(blendMode != nullptr);
     _drawColor(color->value, blendMode->index);
@@ -1327,44 +1327,44 @@ void CanvasCls::drawPaint(Paint paint) {
     _drawPaint(paint->_objects, paint->_data);
 }
 
-void CanvasCls::drawRect(Paint paint, Rect rect) {
+void CanvasCls::drawRect(Rect rect, Paint paint) {
     assert(_rectIsValid(rect));
     assert(paint != nullptr);
     _drawRect(rect->left, rect->top, rect->right, rect->bottom, paint->_objects, paint->_data);
 }
 
-void CanvasCls::drawRRect(Paint paint, RRect rrect) {
+void CanvasCls::drawRRect(RRect rrect, Paint paint) {
     assert(_rrectIsValid(rrect));
     assert(paint != nullptr);
     _drawRRect(rrect->_getValue32(), paint->_objects, paint->_data);
 }
 
-void CanvasCls::drawDRRect(RRect inner, RRect outer, Paint paint) {
+void CanvasCls::drawDRRect(RRect outer, RRect inner, Paint paint) {
     assert(_rrectIsValid(outer));
     assert(_rrectIsValid(inner));
     assert(paint != nullptr);
     _drawDRRect(outer->_getValue32(), inner->_getValue32(), paint->_objects, paint->_data);
 }
 
-void CanvasCls::drawOval(Paint paint, Rect rect) {
+void CanvasCls::drawOval(Rect rect, Paint paint) {
     assert(_rectIsValid(rect));
     assert(paint != nullptr);
     _drawOval(rect->left, rect->top, rect->right, rect->bottom, paint->_objects, paint->_data);
 }
 
-void CanvasCls::drawCircle(Offset c, Paint paint, double radius) {
+void CanvasCls::drawCircle(Offset c, double radius, Paint paint) {
     assert(_offsetIsValid(c));
     assert(paint != nullptr);
     _drawCircle(c->dx(), c->dy(), radius, paint->_objects, paint->_data);
 }
 
-void CanvasCls::drawArc(Paint paint, Rect rect, double startAngle, double sweepAngle, bool useCenter) {
+void CanvasCls::drawArc(Rect rect, double startAngle, double sweepAngle, bool useCenter, Paint paint) {
     assert(_rectIsValid(rect));
     assert(paint != nullptr);
     _drawArc(rect->left, rect->top, rect->right, rect->bottom, startAngle, sweepAngle, useCenter, paint->_objects, paint->_data);
 }
 
-void CanvasCls::drawPath(Paint paint, Path path) {
+void CanvasCls::drawPath(Path path, Paint paint) {
     assert(path != nullptr);
     assert(paint != nullptr);
     _drawPath(path, paint->_objects, paint->_data);
@@ -1380,7 +1380,7 @@ void CanvasCls::drawImage(Image image, Offset offset, Paint paint) {
     }
 }
 
-void CanvasCls::drawImageRect(Rect dst, Image image, Paint paint, Rect src) {
+void CanvasCls::drawImageRect(Image image, Rect src, Rect dst, Paint paint) {
     assert(image != nullptr);
     assert(_rectIsValid(src));
     assert(_rectIsValid(dst));
@@ -1391,7 +1391,7 @@ void CanvasCls::drawImageRect(Rect dst, Image image, Paint paint, Rect src) {
     }
 }
 
-void CanvasCls::drawImageNine(Rect center, Rect dst, Image image, Paint paint) {
+void CanvasCls::drawImageNine(Image image, Rect center, Rect dst, Paint paint) {
     assert(image != nullptr);
     assert(_rectIsValid(center));
     assert(_rectIsValid(dst));
@@ -1407,21 +1407,21 @@ void CanvasCls::drawPicture(Picture picture) {
     _drawPicture(picture);
 }
 
-void CanvasCls::drawParagraph(Offset offset, Paragraph paragraph) {
+void CanvasCls::drawParagraph(Paragraph paragraph, Offset offset) {
     assert(paragraph != nullptr);
     assert(_offsetIsValid(offset));
     assert(!paragraph->_needsLayout);
     paragraph->_paint(this, offset->dx(), offset->dy());
 }
 
-void CanvasCls::drawPoints(Paint paint, PointMode pointMode, List<Offset> points) {
+void CanvasCls::drawPoints(PointMode pointMode, List<Offset> points, Paint paint) {
     assert(pointMode != nullptr);
     assert(points != nullptr);
     assert(paint != nullptr);
     _drawPoints(paint->_objects, paint->_data, pointMode->index, _encodePointList(points));
 }
 
-void CanvasCls::drawRawPoints(Paint paint, PointMode pointMode, Float32List points) {
+void CanvasCls::drawRawPoints(PointMode pointMode, Float32List points, Paint paint) {
     assert(pointMode != nullptr);
     assert(points != nullptr);
     assert(paint != nullptr);
@@ -1431,14 +1431,14 @@ void CanvasCls::drawRawPoints(Paint paint, PointMode pointMode, Float32List poin
     _drawPoints(paint->_objects, paint->_data, pointMode->index, points);
 }
 
-void CanvasCls::drawVertices(BlendMode blendMode, Paint paint, Vertices vertices) {
+void CanvasCls::drawVertices(Vertices vertices, BlendMode blendMode, Paint paint) {
     assert(vertices != nullptr);
     assert(paint != nullptr);
     assert(blendMode != nullptr);
     _drawVertices(vertices, blendMode->index, paint->_objects, paint->_data);
 }
 
-void CanvasCls::drawAtlas(Image atlas, BlendMode blendMode, List<Color> colors, Rect cullRect, Paint paint, List<Rect> rects, List<RSTransform> transforms) {
+void CanvasCls::drawAtlas(Image atlas, List<RSTransform> transforms, List<Rect> rects, List<Color> colors, BlendMode blendMode, Rect cullRect, Paint paint) {
     assert(atlas != nullptr);
     assert(transforms != nullptr);
     assert(rects != nullptr);
@@ -1473,13 +1473,13 @@ void CanvasCls::drawAtlas(Image atlas, BlendMode blendMode, List<Color> colors, 
     Int32List colorBuffer = (colors == nullptr || colors->isEmpty)? nullptr : _encodeColorList(colors);
     Float32List cullRectBuffer = cullRect?->_getValue32();
     int qualityIndex = paint->filterQuality()->index;
-    String error = _drawAtlas(paint->_objects, paint->_data, qualityIndex, atlas->_image, rstTransformBuffer, rectBuffer, colorBuffer, (blendMode or BlendModeCls::src)->index, cullRectBuffer);
+    String error = _drawAtlas(paint->_objects, paint->_data, qualityIndex, atlas->_image, rstTransformBuffer, rectBuffer, colorBuffer, (blendMode | BlendModeCls::src)->index, cullRectBuffer);
     if (error != nullptr) {
         throw PictureRasterizationExceptionCls->_(erroratlas->_debugStack);
     }
 }
 
-void CanvasCls::drawRawAtlas(Image atlas, BlendMode blendMode, Int32List colors, Rect cullRect, Paint paint, Float32List rects, Float32List rstTransforms) {
+void CanvasCls::drawRawAtlas(Image atlas, Float32List rstTransforms, Float32List rects, Int32List colors, BlendMode blendMode, Rect cullRect, Paint paint) {
     assert(atlas != nullptr);
     assert(rstTransforms != nullptr);
     assert(rects != nullptr);
@@ -1496,20 +1496,20 @@ void CanvasCls::drawRawAtlas(Image atlas, BlendMode blendMode, Int32List colors,
         throw make<ArgumentErrorCls>(__s("If non-null, "colors" length must be one fourth the length of "rstTransforms" and "rects"."));
     }
     int qualityIndex = paint->filterQuality()->index;
-    String error = _drawAtlas(paint->_objects, paint->_data, qualityIndex, atlas->_image, rstTransforms, rects, colors, (blendMode or BlendModeCls::src)->index, cullRect?->_getValue32());
+    String error = _drawAtlas(paint->_objects, paint->_data, qualityIndex, atlas->_image, rstTransforms, rects, colors, (blendMode | BlendModeCls::src)->index, cullRect?->_getValue32());
     if (error != nullptr) {
         throw PictureRasterizationExceptionCls->_(erroratlas->_debugStack);
     }
 }
 
-void CanvasCls::drawShadow(Color color, double elevation, Path path, bool transparentOccluder) {
+void CanvasCls::drawShadow(Path path, Color color, double elevation, bool transparentOccluder) {
     assert(path != nullptr);
     assert(color != nullptr);
     assert(transparentOccluder != nullptr);
     _drawShadow(path, color->value, elevation, transparentOccluder);
 }
 
-Future<Image> PictureCls::toImage(int height, int width) {
+Future<Image> PictureCls::toImage(int width, int height) {
     assert(!_disposed);
     if (width <= 0 || height <= 0)     {
         throw make<ExceptionCls>(__s("Invalid image dimensions."));
@@ -1540,7 +1540,7 @@ bool PictureCls::debugDisposed() {
         disposed = _disposed;
         return true;
     }());
-    return disposed or (throw make<StateErrorCls>(__s("Picture.debugDisposed is only available when asserts are enabled.")));
+    return disposed | (throw make<StateErrorCls>(__s("Picture.debugDisposed is only available when asserts are enabled.")));
 }
 
 PictureRecorderCls::PictureRecorderCls() {
@@ -1610,17 +1610,17 @@ List<Shadow> ShadowCls::lerpList(List<Shadow> a, List<Shadow> b, double t) {
     if (a == nullptr && b == nullptr)     {
         return nullptr;
     }
-    a = makeList();
-    b = makeList();
+    a |= makeList();
+    b |= makeList();
     List<Shadow> result = makeList();
     int commonLength = math->min(a->length(), b->length());
-    for (;  < commonLength; i = 1)     {
+    for (;  < commonLength; i += 1)     {
         result->add(ShadowCls->lerp(a[i], b[i], t)!);
     }
-    for (;  < a->length(); i = 1)     {
+    for (;  < a->length(); i += 1)     {
         result->add(a[i]->scale(1.0 - t));
     }
-    for (;  < b->length(); i = 1)     {
+    for (;  < b->length(); i += 1)     {
         result->add(b[i]->scale(t));
     }
     return result;
@@ -1716,7 +1716,7 @@ void ImageDescriptorCls::raw(ImmutableBuffer buffer, int height, PixelFormat pix
     _width = width;
     _height = height;
     _bytesPerPixel = 4;
-    _initRaw(this, buffer, width, height, rowBytes or -1, pixelFormat->index);
+    _initRaw(this, buffer, width, height, rowBytes | -1, pixelFormat->index);
 }
 
 int ImageDescriptorCls::width() {

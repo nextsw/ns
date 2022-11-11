@@ -14,7 +14,7 @@ public:
 
     virtual double noise3D(double xin, double yin, double zin);
 
-    virtual double noise4D(double w, double x, double y, double z);
+    virtual double noise4D(double x, double y, double z, double w);
 
 private:
     static List<List<double>> _grad3;
@@ -42,7 +42,7 @@ private:
 
     virtual double _dot3(List<double> g, double x, double y, double z);
 
-    virtual double _dot4(List<double> g, double w, double x, double y, double z);
+    virtual double _dot4(List<double> g, double x, double y, double z, double w);
 
 };
 using SimplexNoise = std::shared_ptr<SimplexNoiseCls>;

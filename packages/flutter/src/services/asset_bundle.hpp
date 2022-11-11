@@ -19,7 +19,7 @@ public:
     virtual Future<ByteData> load(String key);
     virtual Future<ImmutableBuffer> loadBuffer(String key);
 
-    virtual Future<String> loadString(bool cache, String key);
+    virtual Future<String> loadString(String key, bool cache);
 
     template<typename T>
  virtual Future<T> loadStructuredData(String key, std::function<Future<T>(String value)> parser);
@@ -62,7 +62,7 @@ using NetworkAssetBundle = std::shared_ptr<NetworkAssetBundleCls>;
 class CachingAssetBundleCls : public AssetBundleCls {
 public:
 
-    virtual Future<String> loadString(bool cache, String key);
+    virtual Future<String> loadString(String key, bool cache);
 
     template<typename T>
  virtual Future<T> loadStructuredData(String key, std::function<Future<T>(String value)> parser);

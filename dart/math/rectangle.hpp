@@ -60,7 +60,7 @@ public:
     T height;
 
 
-     RectangleCls(T height, T left, T top, T width);
+     RectangleCls(T left, T top, T width, T height);
 
     virtual void  fromPoints(Point<T> a, Point<T> b);
 
@@ -78,7 +78,7 @@ public:
     T top;
 
 
-     MutableRectangleCls(T height, T left, T top, T width);
+     MutableRectangleCls(T left, T top, T width, T height);
 
     virtual void  fromPoints(Point<T> a, Point<T> b);
 

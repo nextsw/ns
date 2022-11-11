@@ -73,9 +73,9 @@ public:
     template<typename T>
  static Router<T> maybeOf(BuildContext context);
 
-    static void navigate(VoidCallback callback, BuildContext context);
+    static void navigate(BuildContext context, VoidCallback callback);
 
-    static void neglect(VoidCallback callback, BuildContext context);
+    static void neglect(BuildContext context, VoidCallback callback);
 
     virtual State<Router<T>> createState();
 
@@ -99,7 +99,7 @@ public:
 
     virtual void initState();
 
-    virtual void restoreState(bool initialRestore, RestorationBucket oldBucket);
+    virtual void restoreState(RestorationBucket oldBucket, bool initialRestore);
 
     virtual void didChangeDependencies();
 
@@ -127,13 +127,13 @@ private:
 
     virtual RouteInformation _retrieveNewRouteInformation();
 
-    virtual void _setStateWithExplicitReportStatus(VoidCallback fn, RouteInformationReportingType status);
+    virtual void _setStateWithExplicitReportStatus(RouteInformationReportingType status, VoidCallback fn);
 
     virtual void _maybeNeedToReportRouteInformation();
 
-    virtual void _processRouteInformation(ValueGetter<_RouteSetter<T>> delegateRouteSetter, RouteInformation information);
+    virtual void _processRouteInformation(RouteInformation information, ValueGetter<_RouteSetter<T>> delegateRouteSetter);
 
-    virtual _RouteSetter<T> _processParsedRouteInformation(ValueGetter<_RouteSetter<T>> delegateRouteSetter, Object transaction);
+    virtual _RouteSetter<T> _processParsedRouteInformation(Object transaction, ValueGetter<_RouteSetter<T>> delegateRouteSetter);
 
     virtual void _handleRouteInformationProviderNotification();
 
@@ -288,7 +288,7 @@ public:
      RouteInformationParserCls();
     virtual Future<T> parseRouteInformation(RouteInformation routeInformation);
 
-    virtual Future<T> parseRouteInformationWithDependencies(BuildContext context, RouteInformation routeInformation);
+    virtual Future<T> parseRouteInformationWithDependencies(RouteInformation routeInformation, BuildContext context);
 
     virtual RouteInformation restoreRouteInformation(T configuration);
 

@@ -1,5 +1,5 @@
 #include "friction_simulation.hpp"
-FrictionSimulationCls::FrictionSimulationCls(double drag, double position, Unknown tolerance, double velocity) {
+FrictionSimulationCls::FrictionSimulationCls(double drag, double position, double velocity, Unknown tolerance) {
     {
         _drag = drag;
         _dragLog = math->log(drag);
@@ -8,7 +8,7 @@ FrictionSimulationCls::FrictionSimulationCls(double drag, double position, Unkno
     }
 }
 
-void FrictionSimulationCls::through(double endPosition, double endVelocity, double startPosition, double startVelocity) {
+void FrictionSimulationCls::through(double startPosition, double endPosition, double startVelocity, double endVelocity) {
     assert(startVelocity == 0.0 || endVelocity == 0.0 || startVelocity->sign() == endVelocity->sign());
     assert(startVelocity->abs() >= endVelocity->abs());
     assert((endPosition - startPosition)->sign() == startVelocity->sign());
@@ -45,11 +45,11 @@ String FrictionSimulationCls::toString() {
     return __s("${objectRuntimeType(this, 'FrictionSimulation')}(cₓ: ${_drag.toStringAsFixed(1)}, x₀: ${_x.toStringAsFixed(1)}, dx₀: ${_v.toStringAsFixed(1)})");
 }
 
-double FrictionSimulationCls::_dragFor(double endPosition, double endVelocity, double startPosition, double startVelocity) {
+double FrictionSimulationCls::_dragFor(double startPosition, double endPosition, double startVelocity, double endVelocity) {
     return as<double>(math->pow(math->e, (startVelocity - endVelocity) / (startPosition - endPosition)));
 }
 
-BoundedFrictionSimulationCls::BoundedFrictionSimulationCls(double _maxX, double _minX, Unknown drag, Unknown position, Unknown velocity) {
+BoundedFrictionSimulationCls::BoundedFrictionSimulationCls(Unknown drag, Unknown position, Unknown velocity, double _minX, double _maxX) {
     {
         assert(clampDouble(position, _minX, _maxX) == position);
     }

@@ -297,7 +297,7 @@ void RenderImageCls::paint(PaintingContext context, Offset offset) {
     _resolve();
     assert(_resolvedAlignment != nullptr);
     assert(_flipHorizontally != nullptr);
-    paintImage(context->canvas(), offset & size, _image!, debugImageLabel, _scale, _opacity?->value() or 1.0, _colorFilter, _fit, _resolvedAlignment!, _centerSlice, _repeat, _flipHorizontally!, invertColors(), _filterQuality, _isAntiAlias);
+    paintImage(context->canvas(), offset & size, _image!, debugImageLabel, _scale, _opacity?->value() | 1.0, _colorFilter, _fit, _resolvedAlignment!, _centerSlice, _repeat, _flipHorizontally!, invertColors(), _filterQuality, _isAntiAlias);
 }
 
 void RenderImageCls::dispose() {
@@ -343,7 +343,7 @@ void RenderImageCls::_updateColorFilter() {
     if (_color == nullptr) {
         _colorFilter = nullptr;
     } else {
-        _colorFilter = ColorFilterCls->mode(_color!, _colorBlendMode or BlendModeCls::srcIn);
+        _colorFilter = ColorFilterCls->mode(_color!, _colorBlendMode | BlendModeCls::srcIn);
     }
 }
 

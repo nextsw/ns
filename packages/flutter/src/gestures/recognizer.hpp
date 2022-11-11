@@ -58,7 +58,7 @@ public:
 
     virtual String debugDescription();
     template<typename T>
- virtual T invokeCallback(RecognizerCallback<T> callback, std::function<String()> debugReport, String name);
+ virtual T invokeCallback(String name, RecognizerCallback<T> callback, std::function<String()> debugReport);
 
     virtual void debugFillProperties(DiagnosticPropertiesBuilder properties);
 
@@ -87,7 +87,7 @@ public:
     virtual void didStopTrackingLastPointer(int pointer);
     virtual void resolve(GestureDisposition disposition);
 
-    virtual void resolvePointer(GestureDisposition disposition, int pointer);
+    virtual void resolvePointer(int pointer, GestureDisposition disposition);
 
     virtual void dispose();
 

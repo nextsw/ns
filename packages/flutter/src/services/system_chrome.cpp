@@ -4,7 +4,7 @@ String SystemUiOverlayStyleCls::toString() {
 }
 
 SystemUiOverlayStyle SystemUiOverlayStyleCls::copyWith(Brightness statusBarBrightness, Color statusBarColor, Brightness statusBarIconBrightness, Color systemNavigationBarColor, bool systemNavigationBarContrastEnforced, Color systemNavigationBarDividerColor, Brightness systemNavigationBarIconBrightness, bool systemStatusBarContrastEnforced) {
-    return make<SystemUiOverlayStyleCls>(systemNavigationBarColor or this->systemNavigationBarColor, systemNavigationBarDividerColor or this->systemNavigationBarDividerColor, systemNavigationBarContrastEnforced or this->systemNavigationBarContrastEnforced, statusBarColor or this->statusBarColor, statusBarIconBrightness or this->statusBarIconBrightness, statusBarBrightness or this->statusBarBrightness, systemStatusBarContrastEnforced or this->systemStatusBarContrastEnforced, systemNavigationBarIconBrightness or this->systemNavigationBarIconBrightness);
+    return make<SystemUiOverlayStyleCls>(systemNavigationBarColor | this->systemNavigationBarColor, systemNavigationBarDividerColor | this->systemNavigationBarDividerColor, systemNavigationBarContrastEnforced | this->systemNavigationBarContrastEnforced, statusBarColor | this->statusBarColor, statusBarIconBrightness | this->statusBarIconBrightness, statusBarBrightness | this->statusBarBrightness, systemStatusBarContrastEnforced | this->systemStatusBarContrastEnforced, systemNavigationBarIconBrightness | this->systemNavigationBarIconBrightness);
 }
 
 int SystemUiOverlayStyleCls::hashCode() {

@@ -11,7 +11,7 @@ public:
      ByteConversionSinkCls();
     virtual void  withCallback(std::function<void(List<int> accumulated)> callback) override;
     virtual void  from(Sink<List<int>> sink);
-    virtual void addSlice(List<int> chunk, int end, bool isLast, int start);
+    virtual void addSlice(List<int> chunk, int start, int end, bool isLast);
 private:
 
 };
@@ -22,7 +22,7 @@ public:
 
     virtual void add(List<int> chunk);
     virtual void close();
-    virtual void addSlice(List<int> chunk, int end, bool isLast, int start);
+    virtual void addSlice(List<int> chunk, int start, int end, bool isLast);
 
 private:
 

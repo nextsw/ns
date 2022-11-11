@@ -9,63 +9,63 @@ int UnmodifiableByteBufferViewCls::lengthInBytes() {
     return _data->lengthInBytes();
 }
 
-Uint8List UnmodifiableByteBufferViewCls::asUint8List(int length, int offsetInBytes) {
+Uint8List UnmodifiableByteBufferViewCls::asUint8List(int offsetInBytes, int length) {
     return make<UnmodifiableUint8ListViewCls>(_data->asUint8List(offsetInBytes, length));
 }
 
-Int8List UnmodifiableByteBufferViewCls::asInt8List(int length, int offsetInBytes) {
+Int8List UnmodifiableByteBufferViewCls::asInt8List(int offsetInBytes, int length) {
     return make<UnmodifiableInt8ListViewCls>(_data->asInt8List(offsetInBytes, length));
 }
 
-Uint8ClampedList UnmodifiableByteBufferViewCls::asUint8ClampedList(int length, int offsetInBytes) {
+Uint8ClampedList UnmodifiableByteBufferViewCls::asUint8ClampedList(int offsetInBytes, int length) {
     return make<UnmodifiableUint8ClampedListViewCls>(_data->asUint8ClampedList(offsetInBytes, length));
 }
 
-Uint16List UnmodifiableByteBufferViewCls::asUint16List(int length, int offsetInBytes) {
+Uint16List UnmodifiableByteBufferViewCls::asUint16List(int offsetInBytes, int length) {
     return make<UnmodifiableUint16ListViewCls>(_data->asUint16List(offsetInBytes, length));
 }
 
-Int16List UnmodifiableByteBufferViewCls::asInt16List(int length, int offsetInBytes) {
+Int16List UnmodifiableByteBufferViewCls::asInt16List(int offsetInBytes, int length) {
     return make<UnmodifiableInt16ListViewCls>(_data->asInt16List(offsetInBytes, length));
 }
 
-Uint32List UnmodifiableByteBufferViewCls::asUint32List(int length, int offsetInBytes) {
+Uint32List UnmodifiableByteBufferViewCls::asUint32List(int offsetInBytes, int length) {
     return make<UnmodifiableUint32ListViewCls>(_data->asUint32List(offsetInBytes, length));
 }
 
-Int32List UnmodifiableByteBufferViewCls::asInt32List(int length, int offsetInBytes) {
+Int32List UnmodifiableByteBufferViewCls::asInt32List(int offsetInBytes, int length) {
     return make<UnmodifiableInt32ListViewCls>(_data->asInt32List(offsetInBytes, length));
 }
 
-Uint64List UnmodifiableByteBufferViewCls::asUint64List(int length, int offsetInBytes) {
+Uint64List UnmodifiableByteBufferViewCls::asUint64List(int offsetInBytes, int length) {
     return make<UnmodifiableUint64ListViewCls>(_data->asUint64List(offsetInBytes, length));
 }
 
-Int64List UnmodifiableByteBufferViewCls::asInt64List(int length, int offsetInBytes) {
+Int64List UnmodifiableByteBufferViewCls::asInt64List(int offsetInBytes, int length) {
     return make<UnmodifiableInt64ListViewCls>(_data->asInt64List(offsetInBytes, length));
 }
 
-Int32x4List UnmodifiableByteBufferViewCls::asInt32x4List(int length, int offsetInBytes) {
+Int32x4List UnmodifiableByteBufferViewCls::asInt32x4List(int offsetInBytes, int length) {
     return make<UnmodifiableInt32x4ListViewCls>(_data->asInt32x4List(offsetInBytes, length));
 }
 
-Float32List UnmodifiableByteBufferViewCls::asFloat32List(int length, int offsetInBytes) {
+Float32List UnmodifiableByteBufferViewCls::asFloat32List(int offsetInBytes, int length) {
     return make<UnmodifiableFloat32ListViewCls>(_data->asFloat32List(offsetInBytes, length));
 }
 
-Float64List UnmodifiableByteBufferViewCls::asFloat64List(int length, int offsetInBytes) {
+Float64List UnmodifiableByteBufferViewCls::asFloat64List(int offsetInBytes, int length) {
     return make<UnmodifiableFloat64ListViewCls>(_data->asFloat64List(offsetInBytes, length));
 }
 
-Float32x4List UnmodifiableByteBufferViewCls::asFloat32x4List(int length, int offsetInBytes) {
+Float32x4List UnmodifiableByteBufferViewCls::asFloat32x4List(int offsetInBytes, int length) {
     return make<UnmodifiableFloat32x4ListViewCls>(_data->asFloat32x4List(offsetInBytes, length));
 }
 
-Float64x2List UnmodifiableByteBufferViewCls::asFloat64x2List(int length, int offsetInBytes) {
+Float64x2List UnmodifiableByteBufferViewCls::asFloat64x2List(int offsetInBytes, int length) {
     return make<UnmodifiableFloat64x2ListViewCls>(_data->asFloat64x2List(offsetInBytes, length));
 }
 
-ByteData UnmodifiableByteBufferViewCls::asByteData(int length, int offsetInBytes) {
+ByteData UnmodifiableByteBufferViewCls::asByteData(int offsetInBytes, int length) {
     return make<UnmodifiableByteDataViewCls>(_data->asByteData(offsetInBytes, length));
 }
 
@@ -95,7 +95,7 @@ int UnmodifiableByteDataViewCls::getInt16(int byteOffset, Endian endian) {
     return _data->getInt16(byteOffset, endian);
 }
 
-void UnmodifiableByteDataViewCls::setInt16(int byteOffset, Endian endian, int value) {
+void UnmodifiableByteDataViewCls::setInt16(int byteOffset, int value, Endian endian) {
     return _unsupported();
 }
 
@@ -103,7 +103,7 @@ int UnmodifiableByteDataViewCls::getUint16(int byteOffset, Endian endian) {
     return _data->getUint16(byteOffset, endian);
 }
 
-void UnmodifiableByteDataViewCls::setUint16(int byteOffset, Endian endian, int value) {
+void UnmodifiableByteDataViewCls::setUint16(int byteOffset, int value, Endian endian) {
     return _unsupported();
 }
 
@@ -111,7 +111,7 @@ int UnmodifiableByteDataViewCls::getInt32(int byteOffset, Endian endian) {
     return _data->getInt32(byteOffset, endian);
 }
 
-void UnmodifiableByteDataViewCls::setInt32(int byteOffset, Endian endian, int value) {
+void UnmodifiableByteDataViewCls::setInt32(int byteOffset, int value, Endian endian) {
     return _unsupported();
 }
 
@@ -119,7 +119,7 @@ int UnmodifiableByteDataViewCls::getUint32(int byteOffset, Endian endian) {
     return _data->getUint32(byteOffset, endian);
 }
 
-void UnmodifiableByteDataViewCls::setUint32(int byteOffset, Endian endian, int value) {
+void UnmodifiableByteDataViewCls::setUint32(int byteOffset, int value, Endian endian) {
     return _unsupported();
 }
 
@@ -127,7 +127,7 @@ int UnmodifiableByteDataViewCls::getInt64(int byteOffset, Endian endian) {
     return _data->getInt64(byteOffset, endian);
 }
 
-void UnmodifiableByteDataViewCls::setInt64(int byteOffset, Endian endian, int value) {
+void UnmodifiableByteDataViewCls::setInt64(int byteOffset, int value, Endian endian) {
     return _unsupported();
 }
 
@@ -135,7 +135,7 @@ int UnmodifiableByteDataViewCls::getUint64(int byteOffset, Endian endian) {
     return _data->getUint64(byteOffset, endian);
 }
 
-void UnmodifiableByteDataViewCls::setUint64(int byteOffset, Endian endian, int value) {
+void UnmodifiableByteDataViewCls::setUint64(int byteOffset, int value, Endian endian) {
     return _unsupported();
 }
 
@@ -143,7 +143,7 @@ double UnmodifiableByteDataViewCls::getFloat32(int byteOffset, Endian endian) {
     return _data->getFloat32(byteOffset, endian);
 }
 
-void UnmodifiableByteDataViewCls::setFloat32(int byteOffset, Endian endian, double value) {
+void UnmodifiableByteDataViewCls::setFloat32(int byteOffset, double value, Endian endian) {
     return _unsupported();
 }
 
@@ -151,7 +151,7 @@ double UnmodifiableByteDataViewCls::getFloat64(int byteOffset, Endian endian) {
     return _data->getFloat64(byteOffset, endian);
 }
 
-void UnmodifiableByteDataViewCls::setFloat64(int byteOffset, Endian endian, double value) {
+void UnmodifiableByteDataViewCls::setFloat64(int byteOffset, double value, Endian endian) {
     return _unsupported();
 }
 
@@ -206,7 +206,7 @@ ByteBuffer _UnmodifiableListMixinCls<N, L, TD>::buffer() {
 }
 
 template<typename N, typename L, typename TD>
-L _UnmodifiableListMixinCls<N, L, TD>::sublist(int end, int start) {
+L _UnmodifiableListMixinCls<N, L, TD>::sublist(int start, int end) {
     int endIndex = RangeErrorCls->checkValidRange(start, end!, length());
     int sublistLength = endIndex - start;
     L result = _createList(sublistLength);

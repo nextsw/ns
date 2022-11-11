@@ -20,7 +20,7 @@ Aabb2Cls::Aabb2Cls() {
 
 void Aabb2Cls::copy(Aabb2 other)
 
-void Aabb2Cls::minMax(Vector2 max, Vector2 min)
+void Aabb2Cls::minMax(Vector2 min, Vector2 max)
 
 void Aabb2Cls::centerAndHalfExtents(Vector2 center, Vector2 halfExtents) {
     return _c1;
@@ -57,11 +57,11 @@ void Aabb2Cls::rotate(Matrix3 t) {
     auto _c3 = _max;_c3.auto _c4 = setFrom(_center);_c4.add(_halfExtents);_c4;_c3;
 }
 
-Aabb2 Aabb2Cls::transformed(Aabb2 out, Matrix3 t) {
+Aabb2 Aabb2Cls::transformed(Matrix3 t, Aabb2 out) {
     return _c1;
 }
 
-Aabb2 Aabb2Cls::rotated(Aabb2 out, Matrix3 t) {
+Aabb2 Aabb2Cls::rotated(Matrix3 t, Aabb2 out) {
     return _c1;
 }
 

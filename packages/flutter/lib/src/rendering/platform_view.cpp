@@ -219,7 +219,7 @@ void RenderUiKitViewCls::paint(PaintingContext context, Offset offset) {
     context->addLayer(make<PlatformViewLayerCls>(offset & size, _viewController->id));
 }
 
-bool RenderUiKitViewCls::hitTest(Offset position, BoxHitTestResult result) {
+bool RenderUiKitViewCls::hitTest(BoxHitTestResult result, Offset position) {
     if (hitTestBehavior == PlatformViewHitTestBehaviorCls::transparent || !size->contains(position!)) {
         return false;
     }
@@ -231,12 +231,12 @@ bool RenderUiKitViewCls::hitTestSelf(Offset position) {
     return hitTestBehavior != PlatformViewHitTestBehaviorCls::transparent;
 }
 
-void RenderUiKitViewCls::handleEvent(HitTestEntry entry, PointerEvent event) {
+void RenderUiKitViewCls::handleEvent(PointerEvent event, HitTestEntry entry) {
     if (!is<PointerDownEvent>(event)) {
         return;
     }
     _gestureRecognizer!->addPointer(event);
-    _lastPointerDownEvent = event->original or event;
+    _lastPointerDownEvent = event->original | event;
 }
 
 void RenderUiKitViewCls::describeSemanticsConfiguration(SemanticsConfiguration config) {
@@ -263,7 +263,7 @@ void RenderUiKitViewCls::_handleGlobalPointerEvent(PointerEvent event) {
     if (!(OffsetCls::zero & size)->contains(globalToLocal(event->position))) {
         return;
     }
-    if ((event->original or event) != _lastPointerDownEvent) {
+    if ((event->original | event) != _lastPointerDownEvent) {
         _viewController->rejectGesture();
     }
     _lastPointerDownEvent = nullptr;
@@ -306,15 +306,15 @@ _UiKitViewGestureRecognizerCls::_UiKitViewGestureRecognizerCls(UiKitViewControll
             OneSequenceGestureRecognizer gestureRecognizer = recognizerFactory->constructor();
             gestureRecognizer->team() = team;
             if (is<LongPressGestureRecognizer>(gestureRecognizer)) {
-                as<LongPressGestureRecognizerCls>(gestureRecognizer)->onLongPress = [=] () {
+                as<LongPressGestureRecognizerCls>(gestureRecognizer)->onLongPress |= [=] () {
                 };
             } else             {
                 if (is<DragGestureRecognizer>(gestureRecognizer)) {
-                gestureRecognizer->onDown = [=] () {
+                gestureRecognizer->onDown |= [=] () {
                 };
             } else             {
                 if (is<TapGestureRecognizer>(gestureRecognizer)) {
-                as<TapGestureRecognizerCls>(gestureRecognizer)->onTapDown = [=] () {
+                as<TapGestureRecognizerCls>(gestureRecognizer)->onTapDown |= [=] () {
                 };
             }
 ;
@@ -370,22 +370,22 @@ void _PlatformViewGestureRecognizerCls::reset() {
     resolve(GestureDispositionCls::rejected);
 }
 
-_PlatformViewGestureRecognizerCls::_PlatformViewGestureRecognizerCls(Set<Factory<OneSequenceGestureRecognizer>> gestureRecognizerFactories, _HandlePointerEvent handlePointerEvent) {
+_PlatformViewGestureRecognizerCls::_PlatformViewGestureRecognizerCls(_HandlePointerEvent handlePointerEvent, Set<Factory<OneSequenceGestureRecognizer>> gestureRecognizerFactories) {
     {
             auto _c1 = make<GestureArenaTeamCls>();    _c1.captain = this;team = _c1;
         _gestureRecognizers = gestureRecognizerFactories->map([=] (Factory<OneSequenceGestureRecognizer> recognizerFactory) {
             OneSequenceGestureRecognizer gestureRecognizer = recognizerFactory->constructor();
             gestureRecognizer->team() = team;
             if (is<LongPressGestureRecognizer>(gestureRecognizer)) {
-                as<LongPressGestureRecognizerCls>(gestureRecognizer)->onLongPress = [=] () {
+                as<LongPressGestureRecognizerCls>(gestureRecognizer)->onLongPress |= [=] () {
                 };
             } else             {
                 if (is<DragGestureRecognizer>(gestureRecognizer)) {
-                gestureRecognizer->onDown = [=] () {
+                gestureRecognizer->onDown |= [=] () {
                 };
             } else             {
                 if (is<TapGestureRecognizer>(gestureRecognizer)) {
-                as<TapGestureRecognizerCls>(gestureRecognizer)->onTapDown = [=] () {
+                as<TapGestureRecognizerCls>(gestureRecognizer)->onTapDown |= [=] () {
                 };
             }
 ;
@@ -479,7 +479,7 @@ void _PlatformViewGestureMixinCls::hitTestBehavior(PlatformViewHitTestBehavior v
     }
 }
 
-bool _PlatformViewGestureMixinCls::hitTest(Offset position, BoxHitTestResult result) {
+bool _PlatformViewGestureMixinCls::hitTest(BoxHitTestResult result, Offset position) {
     if (_hitTestBehavior == PlatformViewHitTestBehaviorCls::transparent || !size->contains(position)) {
         return false;
     }
@@ -507,7 +507,7 @@ bool _PlatformViewGestureMixinCls::validForMouseTracker() {
     return true;
 }
 
-void _PlatformViewGestureMixinCls::handleEvent(HitTestEntry entry, PointerEvent event) {
+void _PlatformViewGestureMixinCls::handleEvent(PointerEvent event, HitTestEntry entry) {
     if (is<PointerDownEvent>(event)) {
         _gestureRecognizer!->addPointer(as<PointerDownEventCls>(event));
     }

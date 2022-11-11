@@ -98,7 +98,7 @@ void _CaseInsensitiveStringMapCls<V>::[]=(String key, V value) {
 }
 
 template<typename V>
-V _CaseInsensitiveStringMapCls<V>::putIfAbsent(std::function<V()> ifAbsent, String key) {
+V _CaseInsensitiveStringMapCls<V>::putIfAbsent(String key, std::function<V()> ifAbsent) {
     return _map->putIfAbsent(key->toUpperCase(), ifAbsent);
 }
 
@@ -161,7 +161,7 @@ Map<K2, V2> _CaseInsensitiveStringMapCls<V>::map(std::function<MapEntry<K2, V2>(
 }
 
 template<typename V>
-V _CaseInsensitiveStringMapCls<V>::update(std::function<V()> ifAbsent, String key, std::function<V(V value)> update) {
+V _CaseInsensitiveStringMapCls<V>::update(String key, std::function<V(V value)> update, std::function<V()> ifAbsent) {
     return _map->update(key->toUpperCase(), updateifAbsent);
 }
 

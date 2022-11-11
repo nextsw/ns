@@ -28,7 +28,7 @@ public:
 
 private:
 
-     _FunctionTypeCls(List<int> params, int returnType);
+     _FunctionTypeCls(int returnType, List<int> params);
 };
 using _FunctionType = std::shared_ptr<_FunctionTypeCls>;
 String _typeName(_Type t, TargetLanguage target);

@@ -23,7 +23,7 @@ private:
     List<_Interval> _intervals;
 
 
-    virtual T _evaluateAt(int index, double t);
+    virtual T _evaluateAt(double t, int index);
 
 };
 template<typename T>
@@ -72,7 +72,7 @@ public:
 
 private:
 
-     _IntervalCls(double end, double start);
+     _IntervalCls(double start, double end);
 
 };
 using _Interval = std::shared_ptr<_IntervalCls>;

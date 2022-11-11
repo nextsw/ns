@@ -138,7 +138,7 @@ String OffsetCls::toString() {
     return __s("Offset(${dx.toStringAsFixed(1)}, ${dy.toStringAsFixed(1)})");
 }
 
-SizeCls::SizeCls(double height, double width) : OffsetBase(width, height) {
+SizeCls::SizeCls(double width, double height) : OffsetBase(width, height) {
 }
 
 void SizeCls::copy(Size source)
@@ -287,9 +287,9 @@ String SizeCls::toString() {
     return __s("Size(${width.toStringAsFixed(1)}, ${height.toStringAsFixed(1)})");
 }
 
-void RectCls::fromLTRB(double bottom, double left, double right, double top)
+void RectCls::fromLTRB(double left, double top, double right, double bottom)
 
-void RectCls::fromLTWH(double height, double left, double top, double width)
+void RectCls::fromLTWH(double left, double top, double width, double height)
 
 void RectCls::fromCircle(Offset center, double radius)
 
@@ -518,17 +518,17 @@ String RadiusCls::toString() {
     return x == y? __s("Radius.circular(${x.toStringAsFixed(1)})") : __s("Radius.elliptical(${x.toStringAsFixed(1)}, ${y.toStringAsFixed(1)})");
 }
 
-void RRectCls::fromLTRBXY(double bottom, double left, double radiusX, double radiusY, double right, double top)
+void RRectCls::fromLTRBXY(double left, double top, double right, double bottom, double radiusX, double radiusY)
 
-void RRectCls::fromLTRBR(double bottom, double left, Radius radius, double right, double top)
+void RRectCls::fromLTRBR(double left, double top, double right, double bottom, Radius radius)
 
-void RRectCls::fromRectXY(double radiusX, double radiusY, Rect rect)
+void RRectCls::fromRectXY(Rect rect, double radiusX, double radiusY)
 
-void RRectCls::fromRectAndRadius(Radius radius, Rect rect)
+void RRectCls::fromRectAndRadius(Rect rect, Radius radius)
 
-void RRectCls::fromLTRBAndCorners(double bottom, Radius bottomLeft, Radius bottomRight, double left, double right, double top, Radius topLeft, Radius topRight)
+void RRectCls::fromLTRBAndCorners(double left, double top, double right, double bottom, Radius bottomLeft, Radius bottomRight, Radius topLeft, Radius topRight)
 
-void RRectCls::fromRectAndCorners(Radius bottomLeft, Radius bottomRight, Rect rect, Radius topLeft, Radius topRight)
+void RRectCls::fromRectAndCorners(Rect rect, Radius bottomLeft, Radius bottomRight, Radius topLeft, Radius topRight)
 
 Radius RRectCls::tlRadius() {
     return RadiusCls->elliptical(tlRadiusX, tlRadiusY);
@@ -759,7 +759,7 @@ Float32List RRectCls::_getValue32() {
     return result;
 }
 
-double RRectCls::_getMin(double limit, double min, double radius1, double radius2) {
+double RRectCls::_getMin(double min, double radius1, double radius2, double limit) {
     double sum = radius1 + radius2;
     if (sum > limit && sum != 0.0)     {
         return math->min(min, limit / sum);

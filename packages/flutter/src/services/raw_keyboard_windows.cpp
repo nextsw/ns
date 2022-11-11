@@ -13,7 +13,7 @@ String RawKeyEventDataWindowsCls::keyLabel() {
 }
 
 PhysicalKeyboardKey RawKeyEventDataWindowsCls::physicalKey() {
-    return kWindowsToPhysicalKey[scanCode] or make<PhysicalKeyboardKeyCls>(LogicalKeyboardKeyCls::windowsPlane + scanCode);
+    return kWindowsToPhysicalKey[scanCode] | make<PhysicalKeyboardKeyCls>(LogicalKeyboardKeyCls::windowsPlane + scanCode);
 }
 
 LogicalKeyboardKey RawKeyEventDataWindowsCls::logicalKey() {
@@ -23,7 +23,7 @@ LogicalKeyboardKey RawKeyEventDataWindowsCls::logicalKey() {
     }
     if (keyLabel()->isNotEmpty() && !LogicalKeyboardKeyCls->isControlCharacter(keyLabel())) {
         int keyId = LogicalKeyboardKeyCls::unicodePlane | (characterCodePoint & LogicalKeyboardKeyCls::valueMask);
-        return LogicalKeyboardKeyCls->findKeyByKeyId(keyId) or make<LogicalKeyboardKeyCls>(keyId);
+        return LogicalKeyboardKeyCls->findKeyByKeyId(keyId) | make<LogicalKeyboardKeyCls>(keyId);
     }
     LogicalKeyboardKey newKey = kWindowsToLogicalKey[keyCode];
     if (newKey != nullptr) {
@@ -70,7 +70,7 @@ int RawKeyEventDataWindowsCls::hashCode() {
     return ObjectCls->hash(keyCode, scanCode, characterCodePoint, modifiers);
 }
 
-bool RawKeyEventDataWindowsCls::_isLeftRightModifierPressed(int anyMask, int leftMask, int rightMask, KeyboardSide side) {
+bool RawKeyEventDataWindowsCls::_isLeftRightModifierPressed(KeyboardSide side, int anyMask, int leftMask, int rightMask) {
     if (modifiers & anyMask == 0 && modifiers & leftMask == 0 && modifiers & rightMask == 0) {
         return false;
     }

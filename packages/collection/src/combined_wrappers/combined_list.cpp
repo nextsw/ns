@@ -26,7 +26,7 @@ T CombinedListViewCls<T>::[](int index) {
         if ( < list->length()) {
             return list[index];
         }
-        index = list->length();
+        index -= list->length();
     }
     throw RangeErrorCls->index(initialIndex, this, __s("index"), nullptr, length);
 }

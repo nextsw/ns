@@ -66,7 +66,7 @@ public:
     bool continuesAtWrap;
 
 
-     DirectionalCaretMovementIntentCls(bool collapseAtReversal, bool collapseSelection, bool continuesAtWrap, Unknown forward);
+     DirectionalCaretMovementIntentCls(Unknown forward, bool collapseSelection, bool collapseAtReversal, bool continuesAtWrap);
 
 private:
 
@@ -224,7 +224,7 @@ public:
     SelectionChangedCause cause;
 
 
-     ReplaceTextIntentCls(SelectionChangedCause cause, TextEditingValue currentTextEditingValue, TextRange replacementRange, String replacementText);
+     ReplaceTextIntentCls(TextEditingValue currentTextEditingValue, String replacementText, TextRange replacementRange, SelectionChangedCause cause);
 private:
 
 };
@@ -250,7 +250,7 @@ public:
     SelectionChangedCause cause;
 
 
-     UpdateSelectionIntentCls(SelectionChangedCause cause, TextEditingValue currentTextEditingValue, TextSelection newSelection);
+     UpdateSelectionIntentCls(TextEditingValue currentTextEditingValue, TextSelection newSelection, SelectionChangedCause cause);
 private:
 
 };

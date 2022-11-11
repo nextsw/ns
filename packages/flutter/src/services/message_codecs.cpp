@@ -125,7 +125,7 @@ void StandardMessageCodecCls::writeValue(WriteBuffer buffer, Object value) {
         Uint8List asciiBytes = make<Uint8ListCls>(as<StringCls>(value)->length());
         Uint8List utf8Bytes;
         int utf8Offset = 0;
-        for (;  < as<StringCls>(value)->length(); i = 1) {
+        for (;  < as<StringCls>(value)->length(); i += 1) {
             int char = value->codeUnitAt(i);
             if (charValue <= 0x7f) {
                 asciiBytes[i] = charValue;
@@ -207,7 +207,7 @@ Object StandardMessageCodecCls::readValue(ReadBuffer buffer) {
     return readValueOfType(type, buffer);
 }
 
-Object StandardMessageCodecCls::readValueOfType(ReadBuffer buffer, int type) {
+Object StandardMessageCodecCls::readValueOfType(int type, ReadBuffer buffer) {
     ;
 }
 

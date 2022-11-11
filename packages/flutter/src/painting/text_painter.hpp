@@ -141,11 +141,11 @@ public:
 
     virtual int getOffsetBefore(int offset);
 
-    virtual Offset getOffsetForCaret(Rect caretPrototype, TextPosition position);
+    virtual Offset getOffsetForCaret(TextPosition position, Rect caretPrototype);
 
-    virtual double getFullHeightForCaret(Rect caretPrototype, TextPosition position);
+    virtual double getFullHeightForCaret(TextPosition position, Rect caretPrototype);
 
-    virtual List<TextBox> getBoxesForSelection(BoxHeightStyle boxHeightStyle, BoxWidthStyle boxWidthStyle, TextSelection selection);
+    virtual List<TextBox> getBoxesForSelection(TextSelection selection, BoxHeightStyle boxHeightStyle, BoxWidthStyle boxWidthStyle);
 
     virtual TextPosition getPositionForOffset(Offset offset);
 
@@ -213,19 +213,19 @@ private:
 
     virtual void _createParagraph();
 
-    virtual void _layoutParagraph(double maxWidth, double minWidth);
+    virtual void _layoutParagraph(double minWidth, double maxWidth);
 
     static bool _isUtf16Surrogate(int value);
 
     static bool _isUnicodeDirectionality(int value);
 
-    virtual Rect _getRectFromUpstream(Rect caretPrototype, int offset);
+    virtual Rect _getRectFromUpstream(int offset, Rect caretPrototype);
 
-    virtual Rect _getRectFromDownstream(Rect caretPrototype, int offset);
+    virtual Rect _getRectFromDownstream(int offset, Rect caretPrototype);
 
     virtual Offset _emptyOffset();
 
-    virtual void _computeCaretMetrics(Rect caretPrototype, TextPosition position);
+    virtual void _computeCaretMetrics(TextPosition position, Rect caretPrototype);
 
 };
 using TextPainter = std::shared_ptr<TextPainterCls>;

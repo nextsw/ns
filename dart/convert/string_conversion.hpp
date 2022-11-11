@@ -12,7 +12,7 @@ public:
     virtual void  withCallback(std::function<void(String accumulated)> callback) override;
     virtual void  from(Sink<String> sink);
     virtual void  fromStringSink(StringSink sink);
-    virtual void addSlice(String chunk, int end, bool isLast, int start);
+    virtual void addSlice(String chunk, int start, int end, bool isLast);
     virtual ByteConversionSink asUtf8Sink(bool allowMalformed);
     virtual ClosableStringSink asStringSink();
 private:
@@ -23,7 +23,7 @@ using StringConversionSink = std::shared_ptr<StringConversionSinkCls>;
 class ClosableStringSinkCls : public StringSinkCls {
 public:
 
-    virtual void  fromStringSink(std::function<void()> onClose, StringSink sink);
+    virtual void  fromStringSink(StringSink sink, std::function<void()> onClose);
     virtual void close();
 private:
 
@@ -49,7 +49,7 @@ private:
     StringSink _sink;
 
 
-     _ClosableStringSinkCls(std::function<void()> _callback, StringSink _sink);
+     _ClosableStringSinkCls(StringSink _sink, std::function<void()> _callback);
 };
 using _ClosableStringSink = std::shared_ptr<_ClosableStringSinkCls>;
 
@@ -92,7 +92,7 @@ using StringConversionSinkBase = std::shared_ptr<StringConversionSinkBaseCls>;
 class StringConversionSinkMixinCls : public ObjectCls {
 public:
 
-    virtual void addSlice(int end, bool isLast, int start, String str);
+    virtual void addSlice(String str, int start, int end, bool isLast);
     virtual void close();
     virtual void add(String str);
 
@@ -111,7 +111,7 @@ public:
 
     virtual void close();
 
-    virtual void addSlice(int end, bool isLast, int start, String str);
+    virtual void addSlice(String str, int start, int end, bool isLast);
 
     virtual void add(String str);
 
@@ -149,7 +149,7 @@ public:
 
     virtual void add(String str);
 
-    virtual void addSlice(int end, bool isLast, int start, String str);
+    virtual void addSlice(String str, int start, int end, bool isLast);
 
     virtual void close();
 
@@ -168,7 +168,7 @@ public:
 
     virtual void add(List<int> chunk);
 
-    virtual void addSlice(List<int> codeUnits, int endIndex, bool isLast, int startIndex);
+    virtual void addSlice(List<int> codeUnits, int startIndex, int endIndex, bool isLast);
 
 private:
     _Utf8Decoder _decoder;
@@ -190,7 +190,7 @@ public:
 
     virtual void add(List<int> chunk);
 
-    virtual void addSlice(List<int> chunk, int endIndex, bool isLast, int startIndex);
+    virtual void addSlice(List<int> chunk, int startIndex, int endIndex, bool isLast);
 
 private:
     _Utf8Decoder _decoder;
@@ -200,9 +200,9 @@ private:
     StringBuffer _buffer;
 
 
-     _Utf8ConversionSinkCls(bool allowMalformed, StringConversionSink sink);
+     _Utf8ConversionSinkCls(StringConversionSink sink, bool allowMalformed);
 
-    virtual void  _(StringConversionSink _chunkedSink, bool allowMalformed, StringBuffer stringBuffer);
+    virtual void  _(StringConversionSink _chunkedSink, StringBuffer stringBuffer, bool allowMalformed);
 
 };
 using _Utf8ConversionSink = std::shared_ptr<_Utf8ConversionSinkCls>;

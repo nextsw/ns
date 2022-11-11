@@ -92,7 +92,7 @@ public:
     virtual void remove();
 
     template<typename S>
- virtual bool findAnnotations(Offset localPosition, bool onlyFirst, AnnotationResult<S> result);
+ virtual bool findAnnotations(AnnotationResult<S> result, Offset localPosition, bool onlyFirst);
 
     template<typename S>
  virtual S find(Offset localPosition);
@@ -185,7 +185,7 @@ public:
     virtual void debugFillProperties(DiagnosticPropertiesBuilder properties);
 
     template<typename S>
- virtual bool findAnnotations(Offset localPosition, bool onlyFirst, AnnotationResult<S> result);
+ virtual bool findAnnotations(AnnotationResult<S> result, Offset localPosition, bool onlyFirst);
 
 private:
     Picture _picture;
@@ -214,7 +214,7 @@ public:
     virtual void addToScene(SceneBuilder builder);
 
     template<typename S>
- virtual bool findAnnotations(Offset localPosition, bool onlyFirst, AnnotationResult<S> result);
+ virtual bool findAnnotations(AnnotationResult<S> result, Offset localPosition, bool onlyFirst);
 
 private:
 
@@ -257,7 +257,7 @@ public:
     virtual void addToScene(SceneBuilder builder);
 
     template<typename S>
- virtual bool findAnnotations(Offset localPosition, bool onlyFirst, AnnotationResult<S> result);
+ virtual bool findAnnotations(AnnotationResult<S> result, Offset localPosition, bool onlyFirst);
 
 private:
     Rect _overlayRect;
@@ -282,7 +282,7 @@ public:
     virtual void updateSubtreeNeedsAddToScene();
 
     template<typename S>
- virtual bool findAnnotations(Offset localPosition, bool onlyFirst, AnnotationResult<S> result);
+ virtual bool findAnnotations(AnnotationResult<S> result, Offset localPosition, bool onlyFirst);
 
     virtual void attach(Object owner);
 
@@ -329,7 +329,7 @@ public:
     virtual void  offset(Offset value);
 
     template<typename S>
- virtual bool findAnnotations(Offset localPosition, bool onlyFirst, AnnotationResult<S> result);
+ virtual bool findAnnotations(AnnotationResult<S> result, Offset localPosition, bool onlyFirst);
 
     virtual void applyTransform(Layer child, Matrix4 transform);
 
@@ -362,7 +362,7 @@ public:
     virtual void  clipBehavior(Clip value);
 
     template<typename S>
- virtual bool findAnnotations(Offset localPosition, bool onlyFirst, AnnotationResult<S> result);
+ virtual bool findAnnotations(AnnotationResult<S> result, Offset localPosition, bool onlyFirst);
 
     virtual void addToScene(SceneBuilder builder);
 
@@ -393,7 +393,7 @@ public:
     virtual void  clipBehavior(Clip value);
 
     template<typename S>
- virtual bool findAnnotations(Offset localPosition, bool onlyFirst, AnnotationResult<S> result);
+ virtual bool findAnnotations(AnnotationResult<S> result, Offset localPosition, bool onlyFirst);
 
     virtual void addToScene(SceneBuilder builder);
 
@@ -424,7 +424,7 @@ public:
     virtual void  clipBehavior(Clip value);
 
     template<typename S>
- virtual bool findAnnotations(Offset localPosition, bool onlyFirst, AnnotationResult<S> result);
+ virtual bool findAnnotations(AnnotationResult<S> result, Offset localPosition, bool onlyFirst);
 
     virtual void addToScene(SceneBuilder builder);
 
@@ -491,7 +491,7 @@ public:
     virtual void addToScene(SceneBuilder builder);
 
     template<typename S>
- virtual bool findAnnotations(Offset localPosition, bool onlyFirst, AnnotationResult<S> result);
+ virtual bool findAnnotations(AnnotationResult<S> result, Offset localPosition, bool onlyFirst);
 
     virtual void applyTransform(Layer child, Matrix4 transform);
 
@@ -616,7 +616,7 @@ public:
     virtual void  shadowColor(Color value);
 
     template<typename S>
- virtual bool findAnnotations(Offset localPosition, bool onlyFirst, AnnotationResult<S> result);
+ virtual bool findAnnotations(AnnotationResult<S> result, Offset localPosition, bool onlyFirst);
 
     virtual void addToScene(SceneBuilder builder);
 
@@ -681,7 +681,7 @@ public:
     virtual void detach();
 
     template<typename S>
- virtual bool findAnnotations(Offset localPosition, bool onlyFirst, AnnotationResult<S> result);
+ virtual bool findAnnotations(AnnotationResult<S> result, Offset localPosition, bool onlyFirst);
 
     virtual void addToScene(SceneBuilder builder);
 
@@ -714,7 +714,7 @@ public:
     virtual void  link(LayerLink value);
 
     template<typename S>
- virtual bool findAnnotations(Offset localPosition, bool onlyFirst, AnnotationResult<S> result);
+ virtual bool findAnnotations(AnnotationResult<S> result, Offset localPosition, bool onlyFirst);
 
     virtual Matrix4 getLastTransform();
 
@@ -742,9 +742,9 @@ private:
 
     static Matrix4 _collectTransformForLayerChain(List<ContainerLayer> layers);
 
-    static Layer _pathsToCommonAncestor(Layer a, List<ContainerLayer> ancestorsA, List<ContainerLayer> ancestorsB, Layer b);
+    static Layer _pathsToCommonAncestor(Layer a, Layer b, List<ContainerLayer> ancestorsA, List<ContainerLayer> ancestorsB);
 
-    virtual bool _debugCheckLeaderBeforeFollower(List<ContainerLayer> followerToCommonAncestor, List<ContainerLayer> leaderToCommonAncestor);
+    virtual bool _debugCheckLeaderBeforeFollower(List<ContainerLayer> leaderToCommonAncestor, List<ContainerLayer> followerToCommonAncestor);
 
     virtual void _establishTransform();
 
@@ -763,10 +763,10 @@ public:
     bool opaque;
 
 
-     AnnotatedRegionLayerCls(Offset offset, bool opaque, Size size, T value);
+     AnnotatedRegionLayerCls(T value, Offset offset, bool opaque, Size size);
 
     template<typename S>
- virtual bool findAnnotations(Offset localPosition, bool onlyFirst, AnnotationResult<S> result);
+ virtual bool findAnnotations(AnnotationResult<S> result, Offset localPosition, bool onlyFirst);
 
     virtual void debugFillProperties(DiagnosticPropertiesBuilder properties);
 

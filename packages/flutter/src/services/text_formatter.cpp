@@ -3,7 +3,7 @@ TextInputFormatter TextInputFormatterCls::withFunction(TextInputFormatFunction f
     return make<_SimpleTextInputFormatterCls>(formatFunction);
 }
 
-TextEditingValue _SimpleTextInputFormatterCls::formatEditUpdate(TextEditingValue newValue, TextEditingValue oldValue) {
+TextEditingValue _SimpleTextInputFormatterCls::formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
     return formatFunction(oldValue, newValue);
 }
 
@@ -35,7 +35,7 @@ _TextEditingValueAccumulatorCls::_TextEditingValueAccumulatorCls(TextEditingValu
     }
 }
 
-FilteringTextInputFormatterCls::FilteringTextInputFormatterCls(bool allow, Pattern filterPattern, String replacementString) {
+FilteringTextInputFormatterCls::FilteringTextInputFormatterCls(Pattern filterPattern, bool allow, String replacementString) {
     {
         assert(filterPattern != nullptr);
         assert(allow != nullptr);
@@ -47,35 +47,35 @@ void FilteringTextInputFormatterCls::allow(Pattern filterPattern, String replace
 
 void FilteringTextInputFormatterCls::deny(Pattern filterPattern, String replacementString)
 
-TextEditingValue FilteringTextInputFormatterCls::formatEditUpdate(TextEditingValue newValue, TextEditingValue oldValue) {
+TextEditingValue FilteringTextInputFormatterCls::formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
     _TextEditingValueAccumulator formatState = make<_TextEditingValueAccumulatorCls>(newValue);
     assert(!formatState->debugFinalized);
     Iterable<Match> matches = filterPattern->allMatches(newValue->text);
     Match previousMatch;
     for (Match match : matches) {
         assert(match->end >= match->start);
-        _processRegion(allow, previousMatch?->end() or 0, match->start, formatState);
+        _processRegion(allow, previousMatch?->end() | 0, match->start, formatState);
         assert(!formatState->debugFinalized);
         _processRegion(!allow, match->start, match->end, formatState);
         assert(!formatState->debugFinalized);
         previousMatch = match;
     }
-    _processRegion(allow, previousMatch?->end() or 0, newValue->text->length(), formatState);
+    _processRegion(allow, previousMatch?->end() | 0, newValue->text->length(), formatState);
     assert(!formatState->debugFinalized);
     return formatState->finalize();
 }
 
-void FilteringTextInputFormatterCls::_processRegion(bool isBannedRegion, int regionEnd, int regionStart, _TextEditingValueAccumulator state) {
+void FilteringTextInputFormatterCls::_processRegion(bool isBannedRegion, int regionStart, int regionEnd, _TextEditingValueAccumulator state) {
     String replacementString = isBannedRegion? (regionStart == regionEnd? __s("") : this->replacementString) : state->inputValue->text->substring(regionStart, regionEnd);
     state->stringBuffer->write(replacementString);
     if (replacementString->length() == regionEnd - regionStart) {
         return;
     }
     InlineMethod;
-    state->selection?->base = adjustIndex(state->inputValue->selection->baseOffset);
-    state->selection?->extent = adjustIndex(state->inputValue->selection->extentOffset);
-    state->composingRegion?->base = adjustIndex(state->inputValue->composing->start);
-    state->composingRegion?->extent = adjustIndex(state->inputValue->composing->end);
+    state->selection?->base += adjustIndex(state->inputValue->selection->baseOffset);
+    state->selection?->extent += adjustIndex(state->inputValue->selection->extentOffset);
+    state->composingRegion?->base += adjustIndex(state->inputValue->composing->start);
+    state->composingRegion?->extent += adjustIndex(state->inputValue->composing->end);
 }
 
 LengthLimitingTextInputFormatterCls::LengthLimitingTextInputFormatterCls(int maxLength, MaxLengthEnforcement maxLengthEnforcement) {
@@ -92,7 +92,7 @@ MaxLengthEnforcement LengthLimitingTextInputFormatterCls::getDefaultMaxLengthEnf
     }
 }
 
-TextEditingValue LengthLimitingTextInputFormatterCls::truncate(int maxLength, TextEditingValue value) {
+TextEditingValue LengthLimitingTextInputFormatterCls::truncate(TextEditingValue value, int maxLength) {
     CharacterRange iterator = make<CharacterRangeCls>(value->text);
     if (value->text->characters->length > maxLength) {
         iterator->expandNext(maxLength);
@@ -101,7 +101,7 @@ TextEditingValue LengthLimitingTextInputFormatterCls::truncate(int maxLength, Te
     return make<TextEditingValueCls>(truncated, value->selection->copyWith(math->min(value->selection->start, truncated->length()), math->min(value->selection->end, truncated->length())), !value->composing->isCollapsed() && truncated->length() > value->composing->start? make<TextRangeCls>(value->composing->start, math->min(value->composing->end, truncated->length())) : TextRangeCls::empty);
 }
 
-TextEditingValue LengthLimitingTextInputFormatterCls::formatEditUpdate(TextEditingValue newValue, TextEditingValue oldValue) {
+TextEditingValue LengthLimitingTextInputFormatterCls::formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
     int maxLength = this->maxLength;
     if (maxLength == nullptr || maxLength == -1 || newValue->text->characters->length <= maxLength) {
         return newValue;

@@ -8,9 +8,9 @@
 class TimerCls : public ObjectCls {
 public:
 
-     TimerCls(std::function<void()> callback, Duration duration);
+     TimerCls(Duration duration, std::function<void()> callback);
 
-    virtual void  periodic(std::function<void(Timer timer)> callback, Duration duration);
+    virtual void  periodic(Duration duration, std::function<void(Timer timer)> callback);
 
     static void run(std::function<void()> callback);
 
@@ -19,8 +19,8 @@ public:
     virtual bool isActive();
 private:
 
-    static Timer _createTimer(std::function<void()> callback, Duration duration);
-    static Timer _createPeriodicTimer(std::function<void(Timer timer)> callback, Duration duration);
+    static Timer _createTimer(Duration duration, std::function<void()> callback);
+    static Timer _createPeriodicTimer(Duration duration, std::function<void(Timer timer)> callback);
 };
 using Timer = std::shared_ptr<TimerCls>;
 

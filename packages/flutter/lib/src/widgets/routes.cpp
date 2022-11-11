@@ -245,13 +245,13 @@ template<typename T>
 void LocalHistoryRouteCls<T>::addLocalHistoryEntry(LocalHistoryEntry entry) {
     assert(entry->_owner == nullptr);
     entry->_owner = this;
-    _localHistory = makeList();
+    _localHistory |= makeList();
     bool wasEmpty = _localHistory!->isEmpty;
     _localHistory!->add(entry);
     bool internalStateChanged = false;
     if (entry->impliesAppBarDismissal) {
         internalStateChanged = _entriesImpliesAppBarDismissal == 0;
-        _entriesImpliesAppBarDismissal = 1;
+        _entriesImpliesAppBarDismissal += 1;
     }
     if (wasEmpty || internalStateChanged) {
         changedInternalState();
@@ -265,7 +265,7 @@ void LocalHistoryRouteCls<T>::removeLocalHistoryEntry(LocalHistoryEntry entry) {
     assert(_localHistory!->contains(entry));
     bool internalStateChanged = false;
     if (_localHistory!->remove(entry) && entry->impliesAppBarDismissal) {
-        _entriesImpliesAppBarDismissal = 1;
+        _entriesImpliesAppBarDismissal -= 1;
         internalStateChanged = _entriesImpliesAppBarDismissal == 0;
     }
     entry->_owner = nullptr;
@@ -299,7 +299,7 @@ bool LocalHistoryRouteCls<T>::didPop(T result) {
         entry->_notifyRemoved();
         bool internalStateChanged = false;
         if (entry->impliesAppBarDismissal) {
-            _entriesImpliesAppBarDismissal = 1;
+            _entriesImpliesAppBarDismissal -= 1;
             internalStateChanged = _entriesImpliesAppBarDismissal == 0;
         }
         if (_localHistory!->isEmpty || internalStateChanged) {
@@ -387,7 +387,7 @@ Widget _ModalScopeStateCls<T>::build(BuildContext context) {
         return make<RestorationScopeCls>(widget->route->restorationScopeId->value, child!);
     }, make<_ModalScopeStatusCls>(widget->route, widget->route->isCurrent, widget->route->canPop, widget->route->impliesAppBarDismissal, make<OffstageCls>(widget->route->offstage, make<PageStorageCls>(widget->route->_storageBucket, make<BuilderCls>([=] (BuildContext context) {
         return make<ActionsCls>(list1, make<PrimaryScrollControllerCls>(primaryScrollController, make<FocusScopeCls>(focusScopeNode, make<FocusTrapCls>(focusScopeNode, make<RepaintBoundaryCls>(make<AnimatedBuilderCls>(_listenable, [=] (BuildContext context,Widget child) {
-            return widget->route->buildTransitions(context, widget->route->animation!, widget->route->secondaryAnimation!, make<AnimatedBuilderCls>(widget->route->navigator?->userGestureInProgressNotifier or <bool>make<ValueNotifierCls>(false), [=] (BuildContext context,Widget child) {
+            return widget->route->buildTransitions(context, widget->route->animation!, widget->route->secondaryAnimation!, make<AnimatedBuilderCls>(widget->route->navigator?->userGestureInProgressNotifier | <bool>make<ValueNotifierCls>(false), [=] (BuildContext context,Widget child) {
                             Map<Type, Action<Intent>> map1 = make<MapCls<>>();            map1.set(DismissIntentCls, make<_DismissModalActionCls>(context));bool ignoreEvents = _shouldIgnoreFocusRequest();
                 focusScopeNode->canRequestFocus = !ignoreEvents;
                 return make<IgnorePointerCls>(ignoreEvents, child);
@@ -407,7 +407,7 @@ void _ModalScopeStateCls<T>::_forceRebuildPage() {
 
 template<typename T>
 bool _ModalScopeStateCls<T>::_shouldIgnoreFocusRequest() {
-    return widget->route->animation?->status == AnimationStatusCls::reverse || (widget->route->navigator?->userGestureInProgress or false);
+    return widget->route->animation?->status == AnimationStatusCls::reverse || (widget->route->navigator?->userGestureInProgress | false);
 }
 
 template<typename T>
@@ -447,7 +447,7 @@ RoutePredicate ModalRouteCls<T>::withName(String name) {
 }
 
 template<typename T>
-Widget ModalRouteCls<T>::buildTransitions(Animation<double> animation, Widget child, BuildContext context, Animation<double> secondaryAnimation) {
+Widget ModalRouteCls<T>::buildTransitions(BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) {
     return child;
 }
 
@@ -636,7 +636,7 @@ bool RouteObserverCls<R>::debugObservingRoute(R route) {
 }
 
 template<typename R>
-void RouteObserverCls<R>::subscribe(R route, RouteAware routeAware) {
+void RouteObserverCls<R>::subscribe(RouteAware routeAware, R route) {
     assert(routeAware != nullptr);
     assert(route != nullptr);
     Set<RouteAware> subscribers = _listeners->putIfAbsent(route, [=] () {
@@ -663,7 +663,7 @@ void RouteObserverCls<R>::unsubscribe(RouteAware routeAware) {
 }
 
 template<typename R>
-void RouteObserverCls<R>::didPop(Route<dynamic> previousRoute, Route<dynamic> route) {
+void RouteObserverCls<R>::didPop(Route<dynamic> route, Route<dynamic> previousRoute) {
     if (is<R>(route) && is<R>(previousRoute)) {
         List<RouteAware> previousSubscribers = _listeners[previousRoute]?->toList();
         if (previousSubscribers != nullptr) {
@@ -681,7 +681,7 @@ void RouteObserverCls<R>::didPop(Route<dynamic> previousRoute, Route<dynamic> ro
 }
 
 template<typename R>
-void RouteObserverCls<R>::didPush(Route<dynamic> previousRoute, Route<dynamic> route) {
+void RouteObserverCls<R>::didPush(Route<dynamic> route, Route<dynamic> previousRoute) {
     if (is<R>(route) && is<R>(previousRoute)) {
         Set<RouteAware> previousSubscribers = _listeners[previousRoute];
         if (previousSubscribers != nullptr) {
@@ -738,12 +738,12 @@ Duration RawDialogRouteCls<T>::transitionDuration() {
 }
 
 template<typename T>
-Widget RawDialogRouteCls<T>::buildPage(Animation<double> animation, BuildContext context, Animation<double> secondaryAnimation) {
+Widget RawDialogRouteCls<T>::buildPage(BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation) {
     return make<SemanticsCls>(true, true, make<DisplayFeatureSubScreenCls>(anchorPoint, _pageBuilder(context, animation, secondaryAnimation)));
 }
 
 template<typename T>
-Widget RawDialogRouteCls<T>::buildTransitions(Animation<double> animation, Widget child, BuildContext context, Animation<double> secondaryAnimation) {
+Widget RawDialogRouteCls<T>::buildTransitions(BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) {
     if (_transitionBuilder == nullptr) {
         return make<FadeTransitionCls>(make<CurvedAnimationCls>(animation, CurvesCls::linear), child);
     }
@@ -789,7 +789,7 @@ void _RenderFocusTrapCls::focusScopeNode(FocusScopeNode value) {
     _focusScopeNode = value;
 }
 
-bool _RenderFocusTrapCls::hitTest(Offset position, BoxHitTestResult result) {
+bool _RenderFocusTrapCls::hitTest(BoxHitTestResult result, Offset position) {
     bool hitTarget = false;
     if (size->contains(position)) {
         hitTarget = hitTestChildren(resultposition) || hitTestSelf(position);
@@ -802,7 +802,7 @@ bool _RenderFocusTrapCls::hitTest(Offset position, BoxHitTestResult result) {
     return hitTarget;
 }
 
-void _RenderFocusTrapCls::handleEvent(HitTestEntry entry, PointerEvent event) {
+void _RenderFocusTrapCls::handleEvent(PointerEvent event, HitTestEntry entry) {
     assert(debugHandleEvent(event, entry));
     if (!is<PointerDownEvent>(event) || event->buttons != kPrimaryButton || event->kind != PointerDeviceKindCls::mouse || _shouldIgnoreEvents() || _focusScopeNode->focusedChild() == nullptr) {
         return;

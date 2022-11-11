@@ -135,9 +135,9 @@ public:
 
     virtual Rect describeApproximatePaintClip(RenderObject child);
 
-    virtual bool hitTestChildren(Offset position, BoxHitTestResult result);
+    virtual bool hitTestChildren(BoxHitTestResult result, Offset position);
 
-    virtual RevealedOffset getOffsetToReveal(double alignment, Rect rect, RenderObject target);
+    virtual RevealedOffset getOffsetToReveal(RenderObject target, double alignment, Rect rect);
 
     virtual void showOnScreen(Curve curve, RenderObject descendant, Duration duration, Rect rect);
 

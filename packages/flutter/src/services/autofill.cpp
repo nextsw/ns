@@ -26,7 +26,7 @@ _AutofillScopeTextInputConfigurationCls::_AutofillScopeTextInputConfigurationCls
     }
 }
 
-TextInputConnection AutofillScopeMixinCls::attach(TextInputConfiguration configuration, TextInputClient trigger) {
+TextInputConnection AutofillScopeMixinCls::attach(TextInputClient trigger, TextInputConfiguration configuration) {
     assert(trigger != nullptr);
     assert(!autofillClients->any([=] (AutofillClient client)     {
         !client->textInputConfiguration->autofillConfiguration->enabled;

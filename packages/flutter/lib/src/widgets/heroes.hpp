@@ -113,7 +113,7 @@ private:
 
      _HeroFlightManifestCls(CreateRectTween createRectTween, _HeroState fromHero, PageRoute<dynamic> fromRoute, bool isDiverted, bool isUserGestureTransition, Size navigatorSize, OverlayState overlay, HeroFlightShuttleBuilder shuttleBuilder, _HeroState toHero, PageRoute<dynamic> toRoute, HeroFlightDirection type);
 
-    static Rect _boundingBoxFor(BuildContext ancestorContext, BuildContext context);
+    static Rect _boundingBoxFor(BuildContext context, BuildContext ancestorContext);
 
 };
 using _HeroFlightManifest = std::shared_ptr<_HeroFlightManifestCls>;
@@ -170,13 +170,13 @@ public:
 
 
      HeroControllerCls(CreateRectTween createRectTween);
-    virtual void didPush(Route<dynamic> previousRoute, Route<dynamic> route);
+    virtual void didPush(Route<dynamic> route, Route<dynamic> previousRoute);
 
-    virtual void didPop(Route<dynamic> previousRoute, Route<dynamic> route);
+    virtual void didPop(Route<dynamic> route, Route<dynamic> previousRoute);
 
     virtual void didReplace(Route<dynamic> newRoute, Route<dynamic> oldRoute);
 
-    virtual void didStartUserGesture(Route<dynamic> previousRoute, Route<dynamic> route);
+    virtual void didStartUserGesture(Route<dynamic> route, Route<dynamic> previousRoute);
 
     virtual void didStopUserGesture();
 
@@ -184,13 +184,13 @@ private:
     Map<Object, _HeroFlight> _flights;
 
 
-    virtual void _maybeStartHeroTransition(HeroFlightDirection flightType, Route<dynamic> fromRoute, bool isUserGestureTransition, Route<dynamic> toRoute);
+    virtual void _maybeStartHeroTransition(Route<dynamic> fromRoute, Route<dynamic> toRoute, HeroFlightDirection flightType, bool isUserGestureTransition);
 
-    virtual void _startHeroTransition(HeroFlightDirection flightType, PageRoute<dynamic> from, bool isUserGestureTransition, PageRoute<dynamic> to);
+    virtual void _startHeroTransition(PageRoute<dynamic> from, PageRoute<dynamic> to, HeroFlightDirection flightType, bool isUserGestureTransition);
 
     virtual void _handleFlightEnded(_HeroFlight flight);
 
-    virtual Widget _defaultHeroFlightShuttleBuilder(Animation<double> animation, BuildContext flightContext, HeroFlightDirection flightDirection, BuildContext fromHeroContext, BuildContext toHeroContext);
+    virtual Widget _defaultHeroFlightShuttleBuilder(BuildContext flightContext, Animation<double> animation, HeroFlightDirection flightDirection, BuildContext fromHeroContext, BuildContext toHeroContext);
 
 };
 using HeroController = std::shared_ptr<HeroControllerCls>;

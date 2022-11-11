@@ -65,7 +65,7 @@ public:
 
 private:
 
-     _BlockCls(_Function function, int id);
+     _BlockCls(int id, _Function function);
     virtual void _add(_Instruction i);
 
     virtual void _writeContinue(_BlockContext ctx);
@@ -94,7 +94,7 @@ public:
 
     virtual List<int> deps();
 
-    virtual void write(StringBuffer out, _Transpiler t);
+    virtual void write(_Transpiler t, StringBuffer out);
 private:
 
 };
@@ -113,18 +113,18 @@ public:
 
     virtual List<int> deps();
 
-    virtual void write(StringBuffer out, _Transpiler t);
+    virtual void write(_Transpiler t, StringBuffer out);
 
 private:
 
-     _FunctionCallCls(List<int> args, String function, int id, int type);
+     _FunctionCallCls(int type, int id, String function, List<int> args);
 };
 using _FunctionCall = std::shared_ptr<_FunctionCallCls>;
 
 class _ReturnCls : public _InstructionCls {
 public:
 
-    virtual void write(StringBuffer out, _Transpiler t);
+    virtual void write(_Transpiler t, StringBuffer out);
 
 private:
 
@@ -146,11 +146,11 @@ public:
 
     virtual List<int> deps();
 
-    virtual void write(StringBuffer out, _Transpiler t);
+    virtual void write(_Transpiler t, StringBuffer out);
 
 private:
 
-     _SelectCls(int a, int b, int condition, int id, int type);
+     _SelectCls(int type, int id, int condition, int a, int b);
 };
 using _Select = std::shared_ptr<_SelectCls>;
 
@@ -163,11 +163,11 @@ public:
     int object;
 
 
-    virtual void write(StringBuffer out, _Transpiler t);
+    virtual void write(_Transpiler t, StringBuffer out);
 
 private:
 
-     _CompoundAssignmentCls(int object, _Operator op, int pointer);
+     _CompoundAssignmentCls(int pointer, _Operator op, int object);
 };
 using _CompoundAssignment = std::shared_ptr<_CompoundAssignmentCls>;
 
@@ -188,11 +188,11 @@ public:
 
     virtual List<int> deps();
 
-    virtual void write(StringBuffer out, _Transpiler t);
+    virtual void write(_Transpiler t, StringBuffer out);
 
 private:
 
-     _StoreCls(int declarationType, int object, int pointer, bool shouldDeclare);
+     _StoreCls(int pointer, int object, int declarationType, bool shouldDeclare);
 };
 using _Store = std::shared_ptr<_StoreCls>;
 
@@ -209,11 +209,11 @@ public:
 
     virtual List<int> deps();
 
-    virtual void write(StringBuffer out, _Transpiler t);
+    virtual void write(_Transpiler t, StringBuffer out);
 
 private:
 
-     _AccessChainCls(int base, int id, List<int> indices, int type);
+     _AccessChainCls(int type, int id, int base, List<int> indices);
 };
 using _AccessChain = std::shared_ptr<_AccessChainCls>;
 
@@ -230,11 +230,11 @@ public:
 
     virtual List<int> deps();
 
-    virtual void write(StringBuffer out, _Transpiler t);
+    virtual void write(_Transpiler t, StringBuffer out);
 
 private:
 
-     _VectorShuffleCls(int id, List<int> indices, int type, int vector);
+     _VectorShuffleCls(int type, int id, int vector, List<int> indices);
 };
 using _VectorShuffle = std::shared_ptr<_VectorShuffleCls>;
 
@@ -249,11 +249,11 @@ public:
 
     virtual List<int> deps();
 
-    virtual void write(StringBuffer out, _Transpiler t);
+    virtual void write(_Transpiler t, StringBuffer out);
 
 private:
 
-     _CompositeConstructCls(List<int> components, int id, int type);
+     _CompositeConstructCls(int type, int id, List<int> components);
 };
 using _CompositeConstruct = std::shared_ptr<_CompositeConstructCls>;
 
@@ -270,11 +270,11 @@ public:
 
     virtual List<int> deps();
 
-    virtual void write(StringBuffer out, _Transpiler t);
+    virtual void write(_Transpiler t, StringBuffer out);
 
 private:
 
-     _CompositeExtractCls(int id, List<int> indices, int src, int type);
+     _CompositeExtractCls(int type, int id, int src, List<int> indices);
 };
 using _CompositeExtract = std::shared_ptr<_CompositeExtractCls>;
 
@@ -291,11 +291,11 @@ public:
 
     virtual List<int> deps();
 
-    virtual void write(StringBuffer out, _Transpiler t);
+    virtual void write(_Transpiler t, StringBuffer out);
 
 private:
 
-     _ImageSampleImplicitLodCls(int coordinate, int id, int sampledImage, int type);
+     _ImageSampleImplicitLodCls(int type, int id, int sampledImage, int coordinate);
 };
 using _ImageSampleImplicitLod = std::shared_ptr<_ImageSampleImplicitLodCls>;
 
@@ -312,11 +312,11 @@ public:
 
     virtual List<int> deps();
 
-    virtual void write(StringBuffer out, _Transpiler t);
+    virtual void write(_Transpiler t, StringBuffer out);
 
 private:
 
-     _UnaryOperatorCls(int id, _Operator op, int operand, int type);
+     _UnaryOperatorCls(int type, int id, _Operator op, int operand);
 };
 using _UnaryOperator = std::shared_ptr<_UnaryOperatorCls>;
 
@@ -327,7 +327,7 @@ public:
 
     virtual List<int> deps();
 
-    virtual void write(StringBuffer out, _Transpiler t);
+    virtual void write(_Transpiler t, StringBuffer out);
 
 private:
 
@@ -350,11 +350,11 @@ public:
 
     virtual List<int> deps();
 
-    virtual void write(StringBuffer out, _Transpiler t);
+    virtual void write(_Transpiler t, StringBuffer out);
 
 private:
 
-     _BinaryOperatorCls(int a, int b, int id, _Operator op, int type);
+     _BinaryOperatorCls(int type, int id, _Operator op, int a, int b);
 };
 using _BinaryOperator = std::shared_ptr<_BinaryOperatorCls>;
 
@@ -371,11 +371,11 @@ public:
 
     virtual List<int> deps();
 
-    virtual void write(StringBuffer out, _Transpiler t);
+    virtual void write(_Transpiler t, StringBuffer out);
 
 private:
 
-     _BuiltinFunctionCls(List<int> args, String function, int id, int type);
+     _BuiltinFunctionCls(int type, int id, String function, List<int> args);
 };
 using _BuiltinFunction = std::shared_ptr<_BuiltinFunctionCls>;
 
@@ -390,11 +390,11 @@ public:
 
     virtual List<int> deps();
 
-    virtual void write(StringBuffer out, _Transpiler t);
+    virtual void write(_Transpiler t, StringBuffer out);
 
 private:
 
-     _TypeCastCls(int id, int type, int value);
+     _TypeCastCls(int type, int id, int value);
 };
 using _TypeCast = std::shared_ptr<_TypeCastCls>;
 

@@ -12,7 +12,7 @@ class NotchedShapeCls : public ObjectCls {
 public:
 
      NotchedShapeCls();
-    virtual Path getOuterPath(Rect guest, Rect host);
+    virtual Path getOuterPath(Rect host, Rect guest);
 private:
 
 };
@@ -22,7 +22,7 @@ class CircularNotchedRectangleCls : public NotchedShapeCls {
 public:
 
      CircularNotchedRectangleCls();
-    virtual Path getOuterPath(Rect guest, Rect host);
+    virtual Path getOuterPath(Rect host, Rect guest);
 
 private:
 
@@ -36,8 +36,8 @@ public:
     ShapeBorder guest;
 
 
-     AutomaticNotchedShapeCls(ShapeBorder guest, ShapeBorder host);
-    virtual Path getOuterPath(Rect guestRect, Rect hostRect);
+     AutomaticNotchedShapeCls(ShapeBorder host, ShapeBorder guest);
+    virtual Path getOuterPath(Rect hostRect, Rect guestRect);
 
 private:
 

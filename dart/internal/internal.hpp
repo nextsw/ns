@@ -47,7 +47,7 @@ private:
 using ExternalName = std::shared_ptr<ExternalNameCls>;
 int hexDigitValue(int charValue);
 
-int parseHexByte(int index, String source);
+int parseHexByte(String source, int index);
 
 Future<Null> nullFuture;
 
@@ -59,43 +59,43 @@ public:
 
     static int finish(int hash);
 
-    static int hash2(int seed, int v1, int v2);
+    static int hash2(int v1, int v2, int seed);
 
-    static int hash3(int seed, int v1, int v2, int v3);
+    static int hash3(int v1, int v2, int v3, int seed);
 
-    static int hash4(int seed, int v1, int v2, int v3, int v4);
+    static int hash4(int v1, int v2, int v3, int v4, int seed);
 
-    static int hash5(int seed, int v1, int v2, int v3, int v4, int v5);
+    static int hash5(int v1, int v2, int v3, int v4, int v5, int seed);
 
-    static int hash6(int seed, int v1, int v2, int v3, int v4, int v5, int v6);
+    static int hash6(int v1, int v2, int v3, int v4, int v5, int v6, int seed);
 
-    static int hash7(int seed, int v1, int v2, int v3, int v4, int v5, int v6, int v7);
+    static int hash7(int v1, int v2, int v3, int v4, int v5, int v6, int v7, int seed);
 
-    static int hash8(int seed, int v1, int v2, int v3, int v4, int v5, int v6, int v7, int v8);
+    static int hash8(int v1, int v2, int v3, int v4, int v5, int v6, int v7, int v8, int seed);
 
-    static int hash9(int seed, int v1, int v2, int v3, int v4, int v5, int v6, int v7, int v8, int v9);
+    static int hash9(int v1, int v2, int v3, int v4, int v5, int v6, int v7, int v8, int v9, int seed);
 
-    static int hash10(int seed, int v1, int v10, int v2, int v3, int v4, int v5, int v6, int v7, int v8, int v9);
+    static int hash10(int v1, int v2, int v3, int v4, int v5, int v6, int v7, int v8, int v9, int v10, int seed);
 
-    static int hash11(int seed, int v1, int v10, int v11, int v2, int v3, int v4, int v5, int v6, int v7, int v8, int v9);
+    static int hash11(int v1, int v2, int v3, int v4, int v5, int v6, int v7, int v8, int v9, int v10, int v11, int seed);
 
-    static int hash12(int seed, int v1, int v10, int v11, int v12, int v2, int v3, int v4, int v5, int v6, int v7, int v8, int v9);
+    static int hash12(int v1, int v2, int v3, int v4, int v5, int v6, int v7, int v8, int v9, int v10, int v11, int v12, int seed);
 
-    static int hash13(int seed, int v1, int v10, int v11, int v12, int v13, int v2, int v3, int v4, int v5, int v6, int v7, int v8, int v9);
+    static int hash13(int v1, int v2, int v3, int v4, int v5, int v6, int v7, int v8, int v9, int v10, int v11, int v12, int v13, int seed);
 
-    static int hash14(int seed, int v1, int v10, int v11, int v12, int v13, int v14, int v2, int v3, int v4, int v5, int v6, int v7, int v8, int v9);
+    static int hash14(int v1, int v2, int v3, int v4, int v5, int v6, int v7, int v8, int v9, int v10, int v11, int v12, int v13, int v14, int seed);
 
-    static int hash15(int seed, int v1, int v10, int v11, int v12, int v13, int v14, int v15, int v2, int v3, int v4, int v5, int v6, int v7, int v8, int v9);
+    static int hash15(int v1, int v2, int v3, int v4, int v5, int v6, int v7, int v8, int v9, int v10, int v11, int v12, int v13, int v14, int v15, int seed);
 
-    static int hash16(int seed, int v1, int v10, int v11, int v12, int v13, int v14, int v15, int v16, int v2, int v3, int v4, int v5, int v6, int v7, int v8, int v9);
+    static int hash16(int v1, int v2, int v3, int v4, int v5, int v6, int v7, int v8, int v9, int v10, int v11, int v12, int v13, int v14, int v15, int v16, int seed);
 
-    static int hash17(int seed, int v1, int v10, int v11, int v12, int v13, int v14, int v15, int v16, int v17, int v2, int v3, int v4, int v5, int v6, int v7, int v8, int v9);
+    static int hash17(int v1, int v2, int v3, int v4, int v5, int v6, int v7, int v8, int v9, int v10, int v11, int v12, int v13, int v14, int v15, int v16, int v17, int seed);
 
-    static int hash18(int seed, int v1, int v10, int v11, int v12, int v13, int v14, int v15, int v16, int v17, int v18, int v2, int v3, int v4, int v5, int v6, int v7, int v8, int v9);
+    static int hash18(int v1, int v2, int v3, int v4, int v5, int v6, int v7, int v8, int v9, int v10, int v11, int v12, int v13, int v14, int v15, int v16, int v17, int v18, int seed);
 
-    static int hash19(int seed, int v1, int v10, int v11, int v12, int v13, int v14, int v15, int v16, int v17, int v18, int v19, int v2, int v3, int v4, int v5, int v6, int v7, int v8, int v9);
+    static int hash19(int v1, int v2, int v3, int v4, int v5, int v6, int v7, int v8, int v9, int v10, int v11, int v12, int v13, int v14, int v15, int v16, int v17, int v18, int v19, int seed);
 
-    static int hash20(int seed, int v1, int v10, int v11, int v12, int v13, int v14, int v15, int v16, int v17, int v18, int v19, int v2, int v20, int v3, int v4, int v5, int v6, int v7, int v8, int v9);
+    static int hash20(int v1, int v2, int v3, int v4, int v5, int v6, int v7, int v8, int v9, int v10, int v11, int v12, int v13, int v14, int v15, int v16, int v17, int v18, int v19, int v20, int seed);
 
     static int smear(int x);
 
@@ -117,7 +117,7 @@ using SentinelValue = std::shared_ptr<SentinelValueCls>;
 Object sentinelValue;
 
 template<typename T>
- Object extractTypeArguments(std::function<void ()> extract, T instance);
+ Object extractTypeArguments(T instance, std::function<void ()> extract);
 
 class SinceCls : public ObjectCls {
 public:
@@ -130,7 +130,7 @@ private:
 };
 using Since = std::shared_ptr<SinceCls>;
 template<typename T>
- T checkNotNullable(String name, T value);
+ T checkNotNullable(T value, String name);
 
 
 template<typename T>
@@ -148,7 +148,7 @@ private:
 template<typename T>
 using NotNullableError = std::shared_ptr<NotNullableErrorCls<T>>;
 template<typename T>
- T valueOfNonNullableParamWithDefault(T defaultVal, T value);
+ T valueOfNonNullableParamWithDefault(T value, T defaultVal);
 
 
 class HttpStatusCls : public ObjectCls {
@@ -394,7 +394,7 @@ private:
     DoubleLinkedQueueEntry<E> _nextLink;
 
 
-    virtual void _link(DoubleLinkedQueueEntry<E> next, DoubleLinkedQueueEntry<E> previous);
+    virtual void _link(DoubleLinkedQueueEntry<E> previous, DoubleLinkedQueueEntry<E> next);
 
 };
 template<typename E>

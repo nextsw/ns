@@ -1,5 +1,5 @@
 #include "box.hpp"
-_DebugSizeCls::_DebugSizeCls(bool _canBeUsedByParent, RenderBox _owner, Unknown source) {
+_DebugSizeCls::_DebugSizeCls(Unknown source, RenderBox _owner, bool _canBeUsedByParent) {
     {
         super->copy();
     }
@@ -25,7 +25,7 @@ void BoxConstraintsCls::loose(Size size)
 void BoxConstraintsCls::expand(double height, double width)
 
 BoxConstraints BoxConstraintsCls::copyWith(double maxHeight, double maxWidth, double minHeight, double minWidth) {
-    return make<BoxConstraintsCls>(minWidth or this->minWidth, maxWidth or this->maxWidth, minHeight or this->minHeight, maxHeight or this->maxHeight);
+    return make<BoxConstraintsCls>(minWidth | this->minWidth, maxWidth | this->maxWidth, minHeight | this->minHeight, maxHeight | this->maxHeight);
 }
 
 BoxConstraints BoxConstraintsCls::deflate(EdgeInsets edges) {
@@ -82,7 +82,7 @@ Size BoxConstraintsCls::constrain(Size size) {
     return result;
 }
 
-Size BoxConstraintsCls::constrainDimensions(double height, double width) {
+Size BoxConstraintsCls::constrainDimensions(double width, double height) {
     return make<SizeCls>(constrainWidth(width), constrainHeight(height));
 }
 
@@ -301,7 +301,7 @@ String BoxConstraintsCls::toString() {
     return __s("BoxConstraints($width, $height$annotation)");
 }
 
-Size BoxConstraintsCls::_debugPropagateDebugSize(Size result, Size size) {
+Size BoxConstraintsCls::_debugPropagateDebugSize(Size size, Size result) {
     assert([=] () {
         if (is<_DebugSize>(size)) {
             result = make<_DebugSizeCls>(result, as<_DebugSizeCls>(size)->_owner, as<_DebugSizeCls>(size)->_canBeUsedByParent);
@@ -377,7 +377,7 @@ bool BoxHitTestResultCls::addWithOutOfBandPosition(BoxHitTestWithOutOfBandPositi
     return isHit;
 }
 
-BoxHitTestEntryCls::BoxHitTestEntryCls(Offset localPosition, Unknown target) {
+BoxHitTestEntryCls::BoxHitTestEntryCls(Unknown target, Offset localPosition) {
     {
         assert(localPosition != nullptr);
     }
@@ -496,14 +496,14 @@ Size RenderBoxCls::getDryLayout(BoxConstraints constraints) {
             if (debugProfileLayoutsEnabled || _debugIntrinsicsDepth == 0) {
                 TimelineCls->startSync(__s("$runtimeType.getDryLayout")debugTimelineArguments);
             }
-            _debugIntrinsicsDepth = 1;
+            _debugIntrinsicsDepth += 1;
         }
-        _cachedDryLayoutSizes = makeMap(makeList(), makeList();
+        _cachedDryLayoutSizes |= makeMap(makeList(), makeList();
         Size result = _cachedDryLayoutSizes!->putIfAbsent(constraints, [=] () {
     _computeDryLayout(constraints);
 });
         if (!kReleaseMode) {
-            _debugIntrinsicsDepth = 1;
+            _debugIntrinsicsDepth -= 1;
             if (debugProfileLayoutsEnabled || _debugIntrinsicsDepth == 0) {
                 TimelineCls->finishSync();
             }
@@ -643,7 +643,7 @@ double RenderBoxCls::getDistanceToBaseline(TextBaseline baseline, bool onlyReal)
 
 double RenderBoxCls::getDistanceToActualBaseline(TextBaseline baseline) {
     assert(_debugDoingBaseline, __s("Please see the documentation for computeDistanceToActualBaseline for the required calling conventions of this method."));
-    _cachedBaselines = makeMap(makeList(), makeList();
+    _cachedBaselines |= makeMap(makeList(), makeList();
     _cachedBaselines!->putIfAbsent(baseline, [=] ()     {
         computeDistanceToActualBaseline(baseline);
     });
@@ -755,7 +755,7 @@ void RenderBoxCls::performLayout() {
     }());
 }
 
-bool RenderBoxCls::hitTest(Offset position, BoxHitTestResult result) {
+bool RenderBoxCls::hitTest(BoxHitTestResult result, Offset position) {
     assert([=] () {
         if (!hasSize()) {
             if (debugNeedsLayout) {
@@ -778,7 +778,7 @@ bool RenderBoxCls::hitTestSelf(Offset position) {
     return false;
 }
 
-bool RenderBoxCls::hitTestChildren(Offset position, BoxHitTestResult result) {
+bool RenderBoxCls::hitTestChildren(BoxHitTestResult result, Offset position) {
     return false;
 }
 
@@ -796,7 +796,7 @@ void RenderBoxCls::applyPaintTransform(RenderObject child, Matrix4 transform) {
     transform->translate(offset->dx(), offset->dy());
 }
 
-Offset RenderBoxCls::globalToLocal(RenderObject ancestor, Offset point) {
+Offset RenderBoxCls::globalToLocal(Offset point, RenderObject ancestor) {
     Matrix4 transform = getTransformTo(ancestor);
     double det = transform->invert();
     if (det == 0.0) {
@@ -810,7 +810,7 @@ Offset RenderBoxCls::globalToLocal(RenderObject ancestor, Offset point) {
     return make<OffsetCls>(p->x, p->y);
 }
 
-Offset RenderBoxCls::localToGlobal(RenderObject ancestor, Offset point) {
+Offset RenderBoxCls::localToGlobal(Offset point, RenderObject ancestor) {
     return MatrixUtilsCls->transformPoint(getTransformTo(ancestor), point);
 }
 
@@ -818,18 +818,18 @@ Rect RenderBoxCls::paintBounds() {
     return OffsetCls::zero & size();
 }
 
-void RenderBoxCls::handleEvent(BoxHitTestEntry entry, PointerEvent event) {
+void RenderBoxCls::handleEvent(PointerEvent event, BoxHitTestEntry entry) {
     super->handleEvent(event, entry);
 }
 
-bool RenderBoxCls::debugHandleEvent(HitTestEntry entry, PointerEvent event) {
+bool RenderBoxCls::debugHandleEvent(PointerEvent event, HitTestEntry entry) {
     assert([=] () {
         if (debugPaintPointersEnabled) {
             if (is<PointerDownEvent>(event)) {
-                _debugActivePointers = 1;
+                _debugActivePointers += 1;
             } else             {
                 if (is<PointerUpEvent>(event) || is<PointerCancelEvent>(event)) {
-                _debugActivePointers = 1;
+                _debugActivePointers -= 1;
             }
 ;
             }            markNeedsPaint();
@@ -901,7 +901,7 @@ void RenderBoxCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     properties->add(<Size>make<DiagnosticsPropertyCls>(__s("size"), _sizetrue));
 }
 
-double RenderBoxCls::_computeIntrinsicDimension(double argument, std::function<double(double argument)> computer, _IntrinsicDimension dimension) {
+double RenderBoxCls::_computeIntrinsicDimension(_IntrinsicDimension dimension, double argument, std::function<double(double argument)> computer) {
     assert(RenderObjectCls::debugCheckingIntrinsics || !debugDoingThisResize);
     bool shouldCache = true;
     assert([=] () {
@@ -926,14 +926,14 @@ double RenderBoxCls::_computeIntrinsicDimension(double argument, std::function<d
             if (debugProfileLayoutsEnabled || _debugIntrinsicsDepth == 0) {
                 TimelineCls->startSync(__s("$runtimeType intrinsics")debugTimelineArguments);
             }
-            _debugIntrinsicsDepth = 1;
+            _debugIntrinsicsDepth += 1;
         }
-        _cachedIntrinsicDimensions = makeMap(makeList(), makeList();
+        _cachedIntrinsicDimensions |= makeMap(makeList(), makeList();
         double result = _cachedIntrinsicDimensions!->putIfAbsent(make<_IntrinsicDimensionsCacheEntryCls>(dimension, argument), [=] () {
     computer(argument);
 });
         if (!kReleaseMode) {
-            _debugIntrinsicsDepth = 1;
+            _debugIntrinsicsDepth -= 1;
             if (debugProfileLayoutsEnabled || _debugIntrinsicsDepth == 0) {
                 TimelineCls->finishSync();
             }
@@ -997,7 +997,7 @@ double RenderBoxContainerDefaultsMixinCls<ChildType, ParentDataType>::defaultCom
         ParentDataType childParentData = as<ParentDataType>(child->parentData!);
         double candidate = child->getDistanceToActualBaseline(baseline);
         if (candidate != nullptr) {
-            candidate = childParentData->offset->dy;
+            candidate += childParentData->offset->dy;
             if (result != nullptr) {
                 result = math->min(result, candidate);
             } else {
@@ -1010,7 +1010,7 @@ double RenderBoxContainerDefaultsMixinCls<ChildType, ParentDataType>::defaultCom
 }
 
 template<typename ChildType, typename ParentDataType>
-bool RenderBoxContainerDefaultsMixinCls<ChildType, ParentDataType>::defaultHitTestChildren(Offset position, BoxHitTestResult result) {
+bool RenderBoxContainerDefaultsMixinCls<ChildType, ParentDataType>::defaultHitTestChildren(BoxHitTestResult result, Offset position) {
     ChildType child = lastChild;
     while (child != nullptr) {
         ParentDataType childParentData = as<ParentDataType>(child->parentData!);

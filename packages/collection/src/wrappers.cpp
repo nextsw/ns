@@ -37,13 +37,13 @@ E _DelegatingIterableBaseCls<E>::first() {
 }
 
 template<typename E>
-E _DelegatingIterableBaseCls<E>::firstWhere(std::function<E()> orElse, std::function<bool(E )> test) {
+E _DelegatingIterableBaseCls<E>::firstWhere(std::function<bool(E )> test, std::function<E()> orElse) {
     return _base()->firstWhere(testorElse);
 }
 
 template<typename E>
 template<typename T>
-T _DelegatingIterableBaseCls<E>::fold(std::function<T(E element, T previousValue)> combine, T initialValue) {
+T _DelegatingIterableBaseCls<E>::fold(T initialValue, std::function<T(T previousValue, E element)> combine) {
     return _base()->fold(initialValue, combine);
 }
 
@@ -83,7 +83,7 @@ E _DelegatingIterableBaseCls<E>::last() {
 }
 
 template<typename E>
-E _DelegatingIterableBaseCls<E>::lastWhere(std::function<E()> orElse, std::function<bool(E )> test) {
+E _DelegatingIterableBaseCls<E>::lastWhere(std::function<bool(E )> test, std::function<E()> orElse) {
     return _base()->lastWhere(testorElse);
 }
 
@@ -99,7 +99,7 @@ Iterable<T> _DelegatingIterableBaseCls<E>::map(std::function<T(E )> f) {
 }
 
 template<typename E>
-E _DelegatingIterableBaseCls<E>::reduce(std::function<E(E element, E value)> combine) {
+E _DelegatingIterableBaseCls<E>::reduce(std::function<E(E value, E element)> combine) {
     return _base()->reduce(combine);
 }
 
@@ -115,7 +115,7 @@ E _DelegatingIterableBaseCls<E>::single() {
 }
 
 template<typename E>
-E _DelegatingIterableBaseCls<E>::singleWhere(std::function<E()> orElse, std::function<bool(E )> test) {
+E _DelegatingIterableBaseCls<E>::singleWhere(std::function<bool(E )> test, std::function<E()> orElse) {
     return _base()->singleWhere(testorElse);
 }
 
@@ -233,7 +233,7 @@ void DelegatingListCls<E>::clear() {
 }
 
 template<typename E>
-void DelegatingListCls<E>::fillRange(int end, E fillValue, int start) {
+void DelegatingListCls<E>::fillRange(int start, int end, E fillValue) {
     _base->fillRange(start, end, fillValue);
 }
 
@@ -246,7 +246,7 @@ void DelegatingListCls<E>::first(E value) {
 }
 
 template<typename E>
-Iterable<E> DelegatingListCls<E>::getRange(int end, int start) {
+Iterable<E> DelegatingListCls<E>::getRange(int start, int end) {
     return _base->getRange(start, end);
 }
 
@@ -256,12 +256,12 @@ int DelegatingListCls<E>::indexOf(E element, int start) {
 }
 
 template<typename E>
-int DelegatingListCls<E>::indexWhere(int start, std::function<bool(E )> test) {
+int DelegatingListCls<E>::indexWhere(std::function<bool(E )> test, int start) {
     return _base->indexWhere(test, start);
 }
 
 template<typename E>
-void DelegatingListCls<E>::insert(E element, int index) {
+void DelegatingListCls<E>::insert(int index, E element) {
     _base->insert(index, element);
 }
 
@@ -284,7 +284,7 @@ int DelegatingListCls<E>::lastIndexOf(E element, int start) {
 }
 
 template<typename E>
-int DelegatingListCls<E>::lastIndexWhere(int start, std::function<bool(E )> test) {
+int DelegatingListCls<E>::lastIndexWhere(std::function<bool(E )> test, int start) {
     return _base->lastIndexWhere(test, start);
 }
 
@@ -309,7 +309,7 @@ E DelegatingListCls<E>::removeLast() {
 }
 
 template<typename E>
-void DelegatingListCls<E>::removeRange(int end, int start) {
+void DelegatingListCls<E>::removeRange(int start, int end) {
     _base->removeRange(start, end);
 }
 
@@ -319,7 +319,7 @@ void DelegatingListCls<E>::removeWhere(std::function<bool(E )> test) {
 }
 
 template<typename E>
-void DelegatingListCls<E>::replaceRange(int end, Iterable<E> iterable, int start) {
+void DelegatingListCls<E>::replaceRange(int start, int end, Iterable<E> iterable) {
     _base->replaceRange(start, end, iterable);
 }
 
@@ -345,7 +345,7 @@ void DelegatingListCls<E>::setAll(int index, Iterable<E> iterable) {
 }
 
 template<typename E>
-void DelegatingListCls<E>::setRange(int end, Iterable<E> iterable, int skipCount, int start) {
+void DelegatingListCls<E>::setRange(int start, int end, Iterable<E> iterable, int skipCount) {
     _base->setRange(start, end, iterable, skipCount);
 }
 
@@ -360,7 +360,7 @@ void DelegatingListCls<E>::sort(std::function<int(E , E )> compare) {
 }
 
 template<typename E>
-List<E> DelegatingListCls<E>::sublist(int end, int start) {
+List<E> DelegatingListCls<E>::sublist(int start, int end) {
     return _base->sublist(start, end);
 }
 
@@ -625,7 +625,7 @@ Map<K2, V2> DelegatingMapCls<K, V>::map(std::function<MapEntry<K2, V2>(K , V )> 
 }
 
 template<typename K, typename V>
-V DelegatingMapCls<K, V>::putIfAbsent(std::function<V()> ifAbsent, K key) {
+V DelegatingMapCls<K, V>::putIfAbsent(K key, std::function<V()> ifAbsent) {
     return _base->putIfAbsent(key, ifAbsent);
 }
 
@@ -656,7 +656,7 @@ String DelegatingMapCls<K, V>::toString() {
 }
 
 template<typename K, typename V>
-V DelegatingMapCls<K, V>::update(std::function<V()> ifAbsent, K key, std::function<V(V )> update) {
+V DelegatingMapCls<K, V>::update(K key, std::function<V(V )> update, std::function<V()> ifAbsent) {
     return _base->update(key, updateifAbsent);
 }
 
@@ -862,7 +862,7 @@ void MapValueSetCls<K, V>::retainAll(Iterable<Object> elements) {
         if (!_baseMap->containsKey(key))         {
             continue;
         }
-        valuesToRetain->add(_baseMap[key] or as<V>(nullptr));
+        valuesToRetain->add(_baseMap[key] | as<V>(nullptr));
     }
     auto keysToRemove = makeList();
     _baseMap->forEach([=] (Unknown  k,Unknown  v) {

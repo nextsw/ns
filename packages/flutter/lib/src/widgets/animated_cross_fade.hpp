@@ -44,7 +44,7 @@ public:
 
      AnimatedCrossFadeCls(AlignmentGeometry alignment, CrossFadeState crossFadeState, Duration duration, bool excludeBottomFocus, Widget firstChild, Curve firstCurve, Unknown key, AnimatedCrossFadeBuilder layoutBuilder, Duration reverseDuration, Widget secondChild, Curve secondCurve, Curve sizeCurve);
 
-    static Widget defaultLayoutBuilder(Widget bottomChild, Key bottomChildKey, Widget topChild, Key topChildKey);
+    static Widget defaultLayoutBuilder(Widget topChild, Key topChildKey, Widget bottomChild, Key bottomChildKey);
 
     virtual State<AnimatedCrossFade> createState();
 

@@ -144,11 +144,11 @@ public:
 
     virtual bool isCurrentLineEmpty();
 
-    virtual void write(bool allowWrap, String s);
+    virtual void write(String s, bool allowWrap);
 
     virtual void writeRawLines(String lines);
 
-    virtual void writeStretched(int targetLineLength, String text);
+    virtual void writeStretched(String text, int targetLineLength);
 
     virtual String build();
 
@@ -170,11 +170,11 @@ private:
 
     virtual void _finalizeLine(bool addTrailingLineBreak);
 
-    static Iterable<String> _wordWrapLine(String message, int otherLineOffset, int startOffset, int width, List<int> wrapRanges);
+    static Iterable<String> _wordWrapLine(String message, List<int> wrapRanges, int width, int otherLineOffset, int startOffset);
 
     virtual void _updatePrefix();
 
-    virtual void _writeLine(bool firstLine, bool includeLineBreak, String line);
+    virtual void _writeLine(String line, bool firstLine, bool includeLineBreak);
 
     virtual String _getCurrentPrefix(bool firstLine);
 
@@ -233,7 +233,7 @@ public:
 
      DiagnosticsNodeCls(String linePrefix, String name, bool showName, bool showSeparator, DiagnosticsTreeStyle style);
 
-    virtual void  message(bool allowWrap, DiagnosticLevel level, String message, DiagnosticsTreeStyle style);
+    virtual void  message(String message, bool allowWrap, DiagnosticLevel level, DiagnosticsTreeStyle style);
 
     virtual String toDescription(TextTreeConfiguration parentConfiguration);
     virtual bool isFiltered(DiagnosticLevel minLevel);
@@ -255,7 +255,7 @@ public:
 
     virtual Map<String, Object> toJsonMap(DiagnosticsSerializationDelegate delegate);
 
-    static List<Map<String, Object>> toJsonList(DiagnosticsSerializationDelegate delegate, List<DiagnosticsNode> nodes, DiagnosticsNode parent);
+    static List<Map<String, Object>> toJsonList(List<DiagnosticsNode> nodes, DiagnosticsNode parent, DiagnosticsSerializationDelegate delegate);
 
     virtual String toString(DiagnosticLevel minLevel, TextTreeConfiguration parentConfiguration);
 
@@ -273,7 +273,7 @@ using DiagnosticsNode = std::shared_ptr<DiagnosticsNodeCls>;
 class MessagePropertyCls : public DiagnosticsPropertyCls<void> {
 public:
 
-     MessagePropertyCls(DiagnosticLevel level, String message, String name, DiagnosticsTreeStyle style);
+     MessagePropertyCls(String name, String message, DiagnosticLevel level, DiagnosticsTreeStyle style);
 
 private:
 
@@ -285,7 +285,7 @@ public:
     bool quoted;
 
 
-     StringPropertyCls(Unknown defaultValue, Unknown description, Unknown ifEmpty, Unknown level, String name, bool quoted, Unknown showName, Unknown style, Unknown tooltip, Unknown value);
+     StringPropertyCls(String name, Unknown value, Unknown defaultValue, Unknown description, Unknown ifEmpty, Unknown level, bool quoted, Unknown showName, Unknown style, Unknown tooltip);
 
     virtual Map<String, Object> toJsonMap(DiagnosticsSerializationDelegate delegate);
 
@@ -302,7 +302,7 @@ public:
     String unit;
 
 
-    virtual void  lazy(Unknown computeValue, Unknown defaultValue, Unknown ifNull, Unknown level, String name, Unknown showName, Unknown style, Unknown tooltip, String unit);
+    virtual void  lazy(String name, Unknown computeValue, Unknown defaultValue, Unknown ifNull, Unknown level, Unknown showName, Unknown style, Unknown tooltip, String unit);
 
     virtual Map<String, Object> toJsonMap(DiagnosticsSerializationDelegate delegate);
 
@@ -311,7 +311,7 @@ public:
 
 private:
 
-     _NumPropertyCls(Unknown defaultValue, Unknown ifNull, Unknown level, String name, Unknown showName, Unknown style, Unknown tooltip, String unit, Unknown value);
+     _NumPropertyCls(String name, Unknown value, Unknown defaultValue, Unknown ifNull, Unknown level, Unknown showName, Unknown style, Unknown tooltip, String unit);
 };
 template<typename T>
 using _NumProperty = std::shared_ptr<_NumPropertyCls<T>>;
@@ -319,9 +319,9 @@ using _NumProperty = std::shared_ptr<_NumPropertyCls<T>>;
 class DoublePropertyCls : public _NumPropertyCls<double> {
 public:
 
-     DoublePropertyCls(Unknown defaultValue, Unknown ifNull, Unknown level, Unknown name, Unknown showName, Unknown style, Unknown tooltip, Unknown unit, Unknown value);
+     DoublePropertyCls(Unknown name, Unknown value, Unknown defaultValue, Unknown ifNull, Unknown level, Unknown showName, Unknown style, Unknown tooltip, Unknown unit);
 
-    virtual void  lazy(Unknown computeValue, Unknown defaultValue, Unknown ifNull, Unknown level, Unknown name, Unknown showName, Unknown tooltip, Unknown unit);
+    virtual void  lazy(Unknown name, Unknown computeValue, Unknown defaultValue, Unknown ifNull, Unknown level, Unknown showName, Unknown tooltip, Unknown unit);
 
     virtual String numberToString();
 
@@ -333,7 +333,7 @@ using DoubleProperty = std::shared_ptr<DoublePropertyCls>;
 class IntPropertyCls : public _NumPropertyCls<int> {
 public:
 
-     IntPropertyCls(Unknown defaultValue, Unknown ifNull, Unknown level, Unknown name, Unknown showName, Unknown style, Unknown unit, Unknown value);
+     IntPropertyCls(Unknown name, Unknown value, Unknown defaultValue, Unknown ifNull, Unknown level, Unknown showName, Unknown style, Unknown unit);
 
     virtual String numberToString();
 
@@ -345,7 +345,7 @@ using IntProperty = std::shared_ptr<IntPropertyCls>;
 class PercentPropertyCls : public DoublePropertyCls {
 public:
 
-     PercentPropertyCls(Unknown fraction, Unknown ifNull, Unknown level, Unknown name, Unknown showName, Unknown tooltip, Unknown unit);
+     PercentPropertyCls(Unknown name, Unknown fraction, Unknown ifNull, Unknown level, Unknown showName, Unknown tooltip, Unknown unit);
 
     virtual String valueToString(TextTreeConfiguration parentConfiguration);
 
@@ -363,7 +363,7 @@ public:
     String ifFalse;
 
 
-     FlagPropertyCls(Object defaultValue, String ifFalse, String ifTrue, DiagnosticLevel level, String name, bool showName, bool value);
+     FlagPropertyCls(String name, Object defaultValue, String ifFalse, String ifTrue, DiagnosticLevel level, bool showName, bool value);
 
     virtual Map<String, Object> toJsonMap(DiagnosticsSerializationDelegate delegate);
 
@@ -382,7 +382,7 @@ template<typename T>
 class IterablePropertyCls : public DiagnosticsPropertyCls<Iterable<T>> {
 public:
 
-     IterablePropertyCls(Unknown defaultValue, Unknown ifEmpty, Unknown ifNull, Unknown level, String name, Unknown showName, Unknown showSeparator, Unknown style, Unknown value);
+     IterablePropertyCls(String name, Unknown value, Unknown defaultValue, Unknown ifEmpty, Unknown ifNull, Unknown level, Unknown showName, Unknown showSeparator, Unknown style);
 
     virtual String valueToString(TextTreeConfiguration parentConfiguration);
 
@@ -400,7 +400,7 @@ template<typename T>
 class EnumPropertyCls : public DiagnosticsPropertyCls<T> {
 public:
 
-     EnumPropertyCls(Unknown defaultValue, Unknown level, String name, Unknown value);
+     EnumPropertyCls(String name, Unknown value, Unknown defaultValue, Unknown level);
 
     virtual String valueToString(TextTreeConfiguration parentConfiguration);
 
@@ -416,9 +416,9 @@ public:
     String ifPresent;
 
 
-     ObjectFlagPropertyCls(Unknown ifNull, String ifPresent, Unknown level, String name, Unknown showName, Unknown value);
+     ObjectFlagPropertyCls(String name, Unknown value, Unknown ifNull, String ifPresent, Unknown level, Unknown showName);
 
-    virtual void  has(Unknown level, String name, Unknown value);
+    virtual void  has(String name, Unknown value, Unknown level);
 
     virtual String valueToString(TextTreeConfiguration parentConfiguration);
 
@@ -438,7 +438,7 @@ template<typename T>
 class FlagsSummaryCls : public DiagnosticsPropertyCls<Map<String, T>> {
 public:
 
-     FlagsSummaryCls(Unknown ifEmpty, Unknown level, String name, Unknown showName, Unknown showSeparator, Map<String, T> value);
+     FlagsSummaryCls(String name, Map<String, T> value, Unknown ifEmpty, Unknown level, Unknown showName, Unknown showSeparator);
 
     virtual Map<String, T> value();
 
@@ -478,9 +478,9 @@ public:
     Object defaultValue;
 
 
-     DiagnosticsPropertyCls(bool allowNameWrap, bool allowWrap, Object defaultValue, String description, bool expandableValue, String ifEmpty, String ifNull, DiagnosticLevel level, Unknown linePrefix, bool missingIfNull, String name, Unknown showName, Unknown showSeparator, DiagnosticsTreeStyle style, String tooltip, T value);
+     DiagnosticsPropertyCls(String name, T value, bool allowNameWrap, bool allowWrap, Object defaultValue, String description, bool expandableValue, String ifEmpty, String ifNull, DiagnosticLevel level, Unknown linePrefix, bool missingIfNull, Unknown showName, Unknown showSeparator, DiagnosticsTreeStyle style, String tooltip);
 
-    virtual void  lazy(bool allowNameWrap, bool allowWrap, ComputePropertyValueCallback<T> computeValue, Object defaultValue, String description, bool expandableValue, String ifEmpty, String ifNull, DiagnosticLevel level, bool missingIfNull, String name, Unknown showName, Unknown showSeparator, DiagnosticsTreeStyle style, String tooltip);
+    virtual void  lazy(String name, ComputePropertyValueCallback<T> computeValue, bool allowNameWrap, bool allowWrap, Object defaultValue, String description, bool expandableValue, String ifEmpty, String ifNull, DiagnosticLevel level, bool missingIfNull, Unknown showName, Unknown showSeparator, DiagnosticsTreeStyle style, String tooltip);
 
     virtual Map<String, Object> toJsonMap(DiagnosticsSerializationDelegate delegate);
 

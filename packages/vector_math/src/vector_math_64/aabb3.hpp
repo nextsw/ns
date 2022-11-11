@@ -18,7 +18,7 @@ public:
 
     virtual void  copy(Aabb3 other);
 
-    virtual void  minMax(Vector3 max, Vector3 min);
+    virtual void  minMax(Vector3 min, Vector3 max);
 
     virtual void  fromSphere(Sphere sphere);
 
@@ -28,7 +28,7 @@ public:
 
     virtual void  fromObb3(Obb3 obb);
 
-    virtual void  fromRay(double limitMax, double limitMin, Ray ray);
+    virtual void  fromRay(Ray ray, double limitMin, double limitMax);
 
     virtual void  centerAndHalfExtents(Vector3 center, Vector3 halfExtents);
 
@@ -44,7 +44,7 @@ public:
 
     virtual void setObb3(Obb3 obb);
 
-    virtual void setRay(double limitMax, double limitMin, Ray ray);
+    virtual void setRay(Ray ray, double limitMin, double limitMax);
 
     virtual void copyCenterAndHalfExtents(Vector3 center, Vector3 halfExtents);
 
@@ -56,11 +56,11 @@ public:
 
     virtual void rotate(Matrix4 t);
 
-    virtual Aabb3 transformed(Aabb3 out, Matrix4 t);
+    virtual Aabb3 transformed(Matrix4 t, Aabb3 out);
 
-    virtual Aabb3 rotated(Aabb3 out, Matrix4 t);
+    virtual Aabb3 rotated(Matrix4 t, Aabb3 out);
 
-    virtual void getPN(Vector3 outN, Vector3 outP, Vector3 planeNormal);
+    virtual void getPN(Vector3 planeNormal, Vector3 outP, Vector3 outN);
 
     virtual void hull(Aabb3 other);
 
@@ -80,7 +80,7 @@ public:
 
     virtual bool intersectsWithVector3(Vector3 other);
 
-    virtual bool intersectsWithTriangle(double epsilon, Triangle other, IntersectionResult result);
+    virtual bool intersectsWithTriangle(Triangle other, double epsilon, IntersectionResult result);
 
     virtual bool intersectsWithPlane(Plane other, IntersectionResult result);
 

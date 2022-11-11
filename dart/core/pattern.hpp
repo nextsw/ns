@@ -8,8 +8,8 @@
 class PatternCls : public ObjectCls {
 public:
 
-    virtual Iterable<Match> allMatches(int start, String stringValue);
-    virtual Match matchAsPrefix(int start, String stringValue);
+    virtual Iterable<Match> allMatches(String stringValue, int start);
+    virtual Match matchAsPrefix(String stringValue, int start);
 private:
 
 };

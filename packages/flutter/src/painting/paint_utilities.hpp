@@ -6,7 +6,7 @@
 #include <dart/math/math.hpp>
 #include "basic_types.hpp"
 
-void paintZigZag(Canvas canvas, Offset end, Paint paint, Offset start, double width, int zigs);
+void paintZigZag(Canvas canvas, Paint paint, Offset start, Offset end, int zigs, double width);
 
 
 

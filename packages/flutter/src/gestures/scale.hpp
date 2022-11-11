@@ -215,7 +215,7 @@ private:
 
     virtual bool _reconfigure(int pointer);
 
-    virtual void _advanceStateMachine(PointerDeviceKind pointerDeviceKind, bool shouldStartIfAccepted);
+    virtual void _advanceStateMachine(bool shouldStartIfAccepted, PointerDeviceKind pointerDeviceKind);
 
     virtual void _dispatchOnStartCallbackIfNeeded();
 

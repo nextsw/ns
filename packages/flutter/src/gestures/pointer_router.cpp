@@ -64,7 +64,7 @@ void PointerRouterCls::_dispatch(PointerEvent event, PointerRoute route, Matrix4
     };
 }
 
-void PointerRouterCls::_dispatchEventToRoutes(Map<PointerRoute, Matrix4> copiedRoutes, PointerEvent event, Map<PointerRoute, Matrix4> referenceRoutes) {
+void PointerRouterCls::_dispatchEventToRoutes(PointerEvent event, Map<PointerRoute, Matrix4> referenceRoutes, Map<PointerRoute, Matrix4> copiedRoutes) {
     copiedRoutes->forEach([=] (PointerRoute route,Matrix4 transform) {
         if (referenceRoutes->containsKey(route)) {
             _dispatch(event, route, transform);

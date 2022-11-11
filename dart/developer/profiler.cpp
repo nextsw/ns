@@ -1,5 +1,5 @@
 #include "profiler.hpp"
-MetricCls::MetricCls(String description, String name) {
+MetricCls::MetricCls(String name, String description) {
     {
         if ((name == __s("vm")) || name->contains(__s("/"))) {
             throw make<ArgumentErrorCls>(__s("Invalid Metric name."));
@@ -22,7 +22,7 @@ void GaugeCls::value(double v) {
     }    _value = v;
 }
 
-GaugeCls::GaugeCls(String description, double max, double min, String name) : Metric(name, description) {
+GaugeCls::GaugeCls(String name, String description, double min, double max) : Metric(name, description) {
     {
         _value = min;
     }
@@ -40,7 +40,7 @@ Map GaugeCls::_toJSON() {
     return map;
 }
 
-CounterCls::CounterCls(String description, String name) : Metric(name, description) {
+CounterCls::CounterCls(String name, String description) : Metric(name, description) {
 }
 
 double CounterCls::value() {

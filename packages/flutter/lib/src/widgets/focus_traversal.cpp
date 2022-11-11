@@ -12,16 +12,16 @@ BuildContext _getAncestor(BuildContext context, int count) {
     return target;
 }
 
-void _focusAndEnsureVisible(ScrollPositionAlignmentPolicy alignmentPolicy, FocusNode node) {
+void _focusAndEnsureVisible(FocusNode node, ScrollPositionAlignmentPolicy alignmentPolicy) {
     node->requestFocus();
     ScrollableCls->ensureVisible(node->context()!1.0, alignmentPolicy);
 }
 
-_FocusTraversalGroupInfoCls::_FocusTraversalGroupInfoCls(FocusTraversalPolicy defaultPolicy, _FocusTraversalGroupMarker marker, List<FocusNode> members) {
+_FocusTraversalGroupInfoCls::_FocusTraversalGroupInfoCls(_FocusTraversalGroupMarker marker, FocusTraversalPolicy defaultPolicy, List<FocusNode> members) {
     {
         groupNode = marker?->focusNode;
-        policy = marker?->policy or defaultPolicy or make<ReadingOrderTraversalPolicyCls>();
-        members = members or makeList();
+        policy = marker?->policy | defaultPolicy | make<ReadingOrderTraversalPolicyCls>();
+        members = members | makeList();
     }
 }
 
@@ -59,7 +59,7 @@ FocusNode FocusTraversalPolicyCls::_findInitialFocus(FocusNode currentNode, bool
             candidate = fromEnd? sorted->last() : sorted->first();
         }
     }
-    candidate = currentNode;
+    candidate |= currentNode;
     return candidate;
 }
 
@@ -67,10 +67,10 @@ _FocusTraversalGroupMarker FocusTraversalPolicyCls::_getMarker(BuildContext cont
     return as<_FocusTraversalGroupMarker>(context?-><_FocusTraversalGroupMarker>getElementForInheritedWidgetOfExactType()?->widget);
 }
 
-List<FocusNode> FocusTraversalPolicyCls::_sortAllDescendants(FocusNode currentNode, FocusScopeNode scope) {
+List<FocusNode> FocusTraversalPolicyCls::_sortAllDescendants(FocusScopeNode scope, FocusNode currentNode) {
     assert(scope != nullptr);
     _FocusTraversalGroupMarker scopeGroupMarker = _getMarker(scope->context);
-    FocusTraversalPolicy defaultPolicy = scopeGroupMarker?->policy or make<ReadingOrderTraversalPolicyCls>();
+    FocusTraversalPolicy defaultPolicy = scopeGroupMarker?->policy | make<ReadingOrderTraversalPolicyCls>();
     Map<FocusNode, _FocusTraversalGroupInfo> groups = makeMap(makeList(), makeList();
     for (FocusNode node : scope->descendants) {
         _FocusTraversalGroupMarker groupMarker = _getMarker(node->context);
@@ -79,13 +79,13 @@ List<FocusNode> FocusTraversalPolicyCls::_sortAllDescendants(FocusNode currentNo
             BuildContext parentContext = _getAncestor(groupNode!->context()!2);
             _FocusTraversalGroupMarker parentMarker = _getMarker(parentContext);
             FocusNode parentNode = parentMarker?->focusNode;
-            groups[parentNode] = make<_FocusTraversalGroupInfoCls>(parentMarkermakeList(), defaultPolicy);
+            groups[parentNode] |= make<_FocusTraversalGroupInfoCls>(parentMarkermakeList(), defaultPolicy);
             assert(!groups[parentNode]!->members->contains(node));
             groups[parentNode]!->members->add(groupNode);
             continue;
         }
         if (node->canRequestFocus && !node->skipTraversal) {
-            groups[groupNode] = make<_FocusTraversalGroupInfoCls>(groupMarkermakeList(), defaultPolicy);
+            groups[groupNode] |= make<_FocusTraversalGroupInfoCls>(groupMarkermakeList(), defaultPolicy);
             assert(!groups[groupNode]!->members->contains(node));
             groups[groupNode]!->members->add(node);
         }
@@ -180,7 +180,7 @@ bool DirectionalFocusTraversalPolicyMixinCls::inDirection(FocusNode currentNode,
     FocusScopeNode nearestScope = currentNode->nearestScope()!;
     FocusNode focusedChild = nearestScope->focusedChild();
     if (focusedChild == nullptr) {
-        FocusNode firstFocus = findFirstFocusInDirection(currentNode, direction) or currentNode;
+        FocusNode firstFocus = findFirstFocusInDirection(currentNode, direction) | currentNode;
         ;
         return true;
     }
@@ -222,7 +222,7 @@ FocusNode DirectionalFocusTraversalPolicyMixinCls::_sortAndFindInitial(FocusNode
     return nullptr;
 }
 
-Iterable<FocusNode> DirectionalFocusTraversalPolicyMixinCls::_sortAndFilterHorizontally(TraversalDirection direction, FocusNode nearestScope, Rect target) {
+Iterable<FocusNode> DirectionalFocusTraversalPolicyMixinCls::_sortAndFilterHorizontally(TraversalDirection direction, Rect target, FocusNode nearestScope) {
     assert(direction == TraversalDirectionCls::left || direction == TraversalDirectionCls::right);
     Iterable<FocusNode> nodes = nearestScope->traversalDescendants();
     assert(!nodes->contains(nearestScope));
@@ -235,7 +235,7 @@ Iterable<FocusNode> DirectionalFocusTraversalPolicyMixinCls::_sortAndFilterHoriz
     return result;
 }
 
-Iterable<FocusNode> DirectionalFocusTraversalPolicyMixinCls::_sortAndFilterVertically(TraversalDirection direction, Iterable<FocusNode> nodes, Rect target) {
+Iterable<FocusNode> DirectionalFocusTraversalPolicyMixinCls::_sortAndFilterVertically(TraversalDirection direction, Rect target, Iterable<FocusNode> nodes) {
     List<FocusNode> sorted = nodes->toList();
     <FocusNode>mergeSort(sorted[=] (FocusNode a,FocusNode b)     {
         a->rect->center->dy->compareTo(b->rect->center->dy);
@@ -245,7 +245,7 @@ Iterable<FocusNode> DirectionalFocusTraversalPolicyMixinCls::_sortAndFilterVerti
     return nullptr;
 }
 
-bool DirectionalFocusTraversalPolicyMixinCls::_popPolicyDataIfNeeded(TraversalDirection direction, FocusNode focusedChild, FocusScopeNode nearestScope) {
+bool DirectionalFocusTraversalPolicyMixinCls::_popPolicyDataIfNeeded(TraversalDirection direction, FocusScopeNode nearestScope, FocusNode focusedChild) {
     _DirectionalPolicyData policyData = _policyData[nearestScope];
     if (policyData != nullptr && policyData->history->isNotEmpty && policyData->history->first->direction != direction) {
         if (policyData->history->last->node->parent == nullptr) {
@@ -261,7 +261,7 @@ bool DirectionalFocusTraversalPolicyMixinCls::_popPolicyDataIfNeeded(TraversalDi
     return false;
 }
 
-void DirectionalFocusTraversalPolicyMixinCls::_pushPolicyData(TraversalDirection direction, FocusNode focusedChild, FocusScopeNode nearestScope) {
+void DirectionalFocusTraversalPolicyMixinCls::_pushPolicyData(TraversalDirection direction, FocusScopeNode nearestScope, FocusNode focusedChild) {
     _DirectionalPolicyData policyData = _policyData[nearestScope];
     _DirectionalPolicyDataEntry newEntry = make<_DirectionalPolicyDataEntryCls>(focusedChild, direction);
     if (policyData != nullptr) {
@@ -271,7 +271,7 @@ void DirectionalFocusTraversalPolicyMixinCls::_pushPolicyData(TraversalDirection
     }
 }
 
-Iterable<FocusNode> WidgetOrderTraversalPolicyCls::sortDescendants(FocusNode currentNode, Iterable<FocusNode> descendants) {
+Iterable<FocusNode> WidgetOrderTraversalPolicyCls::sortDescendants(Iterable<FocusNode> descendants, FocusNode currentNode) {
     return descendants;
 }
 
@@ -281,7 +281,7 @@ TextDirection _ReadingOrderSortDataCls::commonDirectionalityOf(List<_ReadingOrde
 });
     Set<Directionality> common;
     for (Set<Directionality> ancestorSet : allAncestors) {
-        common = ancestorSet;
+        common |= ancestorSet;
         common = common->intersection(ancestorSet);
     }
     if (common!->isEmpty) {
@@ -290,7 +290,7 @@ TextDirection _ReadingOrderSortDataCls::commonDirectionalityOf(List<_ReadingOrde
     return list->first->directionalAncestors->firstWhere(common->contains)->textDirection;
 }
 
-void _ReadingOrderSortDataCls::sortWithDirectionality(TextDirection directionality, List<_ReadingOrderSortData> list) {
+void _ReadingOrderSortDataCls::sortWithDirectionality(List<_ReadingOrderSortData> list, TextDirection directionality) {
     <_ReadingOrderSortData>mergeSort(list[=] (_ReadingOrderSortData a,_ReadingOrderSortData b) {
         ;
     });
@@ -298,7 +298,7 @@ void _ReadingOrderSortDataCls::sortWithDirectionality(TextDirection directionali
 
 Iterable<Directionality> _ReadingOrderSortDataCls::directionalAncestors() {
     InlineMethod;
-    _directionalAncestors = getDirectionalityAncestors(node->context()!);
+    _directionalAncestors |= getDirectionalityAncestors(node->context()!);
     return _directionalAncestors!;
 }
 
@@ -330,7 +330,7 @@ Rect _ReadingOrderDirectionalGroupDataCls::rect() {
         for (Rect rect : members-><Rect>map([=] (_ReadingOrderSortData data)         {
             data->rect;
         })) {
-            _rect = rect();
+            _rect |= rect();
             _rect = _rect!->expandToInclude(rect());
         }
     }
@@ -347,7 +347,7 @@ List<Directionality> _ReadingOrderDirectionalGroupDataCls::memberAncestors() {
     return _memberAncestors!;
 }
 
-void _ReadingOrderDirectionalGroupDataCls::sortWithDirectionality(TextDirection directionality, List<_ReadingOrderDirectionalGroupData> list) {
+void _ReadingOrderDirectionalGroupDataCls::sortWithDirectionality(List<_ReadingOrderDirectionalGroupData> list, TextDirection directionality) {
     <_ReadingOrderDirectionalGroupData>mergeSort(list[=] (_ReadingOrderDirectionalGroupData a,_ReadingOrderDirectionalGroupData b) {
         ;
     });
@@ -362,7 +362,7 @@ void _ReadingOrderDirectionalGroupDataCls::debugFillProperties(DiagnosticPropert
     })));
 }
 
-Iterable<FocusNode> ReadingOrderTraversalPolicyCls::sortDescendants(FocusNode currentNode, Iterable<FocusNode> descendants) {
+Iterable<FocusNode> ReadingOrderTraversalPolicyCls::sortDescendants(Iterable<FocusNode> descendants, FocusNode currentNode) {
     assert(descendants != nullptr);
     if (descendants->length() <= 1) {
         return descendants;
@@ -470,8 +470,8 @@ _OrderedFocusInfoCls::_OrderedFocusInfoCls(FocusNode node, FocusOrder order) {
     }
 }
 
-Iterable<FocusNode> OrderedTraversalPolicyCls::sortDescendants(FocusNode currentNode, Iterable<FocusNode> descendants) {
-    FocusTraversalPolicy secondaryPolicy = secondary or make<ReadingOrderTraversalPolicyCls>();
+Iterable<FocusNode> OrderedTraversalPolicyCls::sortDescendants(Iterable<FocusNode> descendants, FocusNode currentNode) {
+    FocusTraversalPolicy secondaryPolicy = secondary | make<ReadingOrderTraversalPolicyCls>();
     Iterable<FocusNode> sortedDescendants = secondaryPolicy->sortDescendants(descendants, currentNode);
     List<FocusNode> unordered = makeList();
     List<_OrderedFocusInfo> ordered = makeList();
@@ -523,7 +523,7 @@ FocusTraversalGroupCls::FocusTraversalGroupCls(Widget child, bool descendantsAre
     {
         assert(descendantsAreFocusable != nullptr);
         assert(descendantsAreTraversable != nullptr);
-        policy = policy or make<ReadingOrderTraversalPolicyCls>();
+        policy = policy | make<ReadingOrderTraversalPolicyCls>();
     }
 }
 

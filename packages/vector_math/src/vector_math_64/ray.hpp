@@ -16,7 +16,7 @@ public:
 
     virtual void  copy(Ray other);
 
-    virtual void  originDirection(Vector3 direction, Vector3 origin);
+    virtual void  originDirection(Vector3 origin, Vector3 direction);
 
     virtual void copyFrom(Ray other);
 

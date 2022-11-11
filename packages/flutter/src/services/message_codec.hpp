@@ -27,7 +27,7 @@ public:
     dynamic arguments;
 
 
-     MethodCallCls(dynamic arguments, String method);
+     MethodCallCls(String method, dynamic arguments);
 
     virtual String toString();
 

@@ -66,7 +66,7 @@ public:
 
     virtual void cutSelection(SelectionChangedCause cause);
 
-    virtual void userUpdateTextEditingValue(SelectionChangedCause cause, TextEditingValue value);
+    virtual void userUpdateTextEditingValue(TextEditingValue value, SelectionChangedCause cause);
 
     virtual Future<void> pasteText(SelectionChangedCause cause);
 
@@ -186,8 +186,8 @@ template<typename T>
 class _NonOverrideActionCls : public ContextActionCls<T> {
 public:
 
-    virtual Object invokeAction(BuildContext context, T intent);
-    virtual Object invoke(BuildContext context, T intent);
+    virtual Object invokeAction(T intent, BuildContext context);
+    virtual Object invoke(T intent, BuildContext context);
 
 private:
 
@@ -200,7 +200,7 @@ public:
     _SelectableRegionState state;
 
 
-    virtual void invokeAction(BuildContext context, SelectAllTextIntent intent);
+    virtual void invokeAction(SelectAllTextIntent intent, BuildContext context);
 
 private:
 
@@ -213,7 +213,7 @@ public:
     _SelectableRegionState state;
 
 
-    virtual void invokeAction(BuildContext context, CopySelectionTextIntent intent);
+    virtual void invokeAction(CopySelectionTextIntent intent, BuildContext context);
 
 private:
 
@@ -236,7 +236,7 @@ public:
 
     virtual void dispose();
 
-    virtual SelectionResult dispatchSelectionEventToChild(SelectionEvent event, Selectable selectable);
+    virtual SelectionResult dispatchSelectionEventToChild(Selectable selectable, SelectionEvent event);
 
     virtual void ensureChildUpdated(Selectable selectable);
 
@@ -280,7 +280,7 @@ public:
 
     virtual SelectionGeometry getSelectionGeometry();
 
-    virtual void pushHandleLayers(LayerLink endHandle, LayerLink startHandle);
+    virtual void pushHandleLayers(LayerLink startHandle, LayerLink endHandle);
 
     virtual SelectedContent getSelectedContent();
 
@@ -297,7 +297,7 @@ public:
     virtual void dispose();
 
     virtual void ensureChildUpdated(Selectable selectable);
-    virtual SelectionResult dispatchSelectionEventToChild(SelectionEvent event, Selectable selectable);
+    virtual SelectionResult dispatchSelectionEventToChild(Selectable selectable, SelectionEvent event);
 
 private:
     static double _kSelectionHandleDrawableAreaPadding;

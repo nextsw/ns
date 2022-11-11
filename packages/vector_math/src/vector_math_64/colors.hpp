@@ -8,25 +8,25 @@
 class ColorsCls : public ObjectCls {
 public:
 
-    static void fromRgba(int a, int b, int g, int r, Vector4 result);
+    static void fromRgba(int r, int g, int b, int a, Vector4 result);
 
-    static void fromHexString(Vector4 result, String value);
+    static void fromHexString(String value, Vector4 result);
 
-    static String toHexString(bool alpha, Vector4 input, bool short);
+    static String toHexString(Vector4 input, bool alpha, bool short);
 
-    static void alphaBlend(Vector4 background, Vector4 foreground, Vector4 result);
+    static void alphaBlend(Vector4 foreground, Vector4 background, Vector4 result);
 
     static void toGrayscale(Vector4 input, Vector4 result);
 
-    static void linearToGamma(double gamma, Vector4 gammaColor, Vector4 linearColor);
+    static void linearToGamma(Vector4 linearColor, Vector4 gammaColor, double gamma);
 
-    static void gammaToLinear(double gamma, Vector4 gammaColor, Vector4 linearColor);
+    static void gammaToLinear(Vector4 gammaColor, Vector4 linearColor, double gamma);
 
-    static void rgbToHsv(Vector4 hsvColor, Vector4 rgbColor);
+    static void rgbToHsv(Vector4 rgbColor, Vector4 hsvColor);
 
     static void hsvToRgb(Vector4 hsvColor, Vector4 rgbColor);
 
-    static void rgbToHsl(Vector4 hslColor, Vector4 rgbColor);
+    static void rgbToHsl(Vector4 rgbColor, Vector4 hslColor);
 
     static void hslToRgb(Vector4 hslColor, Vector4 rgbColor);
 

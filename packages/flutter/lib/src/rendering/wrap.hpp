@@ -36,7 +36,7 @@ public:
 
 private:
 
-     _RunMetricsCls(int childCount, double crossAxisExtent, double mainAxisExtent);
+     _RunMetricsCls(double mainAxisExtent, double crossAxisExtent, int childCount);
 };
 using _RunMetrics = std::shared_ptr<_RunMetricsCls>;
 
@@ -107,7 +107,7 @@ public:
 
     virtual void performLayout();
 
-    virtual bool hitTestChildren(Offset position, BoxHitTestResult result);
+    virtual bool hitTestChildren(BoxHitTestResult result, Offset position);
 
     virtual void paint(PaintingContext context, Offset offset);
 
@@ -145,9 +145,9 @@ private:
 
     virtual double _getCrossAxisExtent(Size childSize);
 
-    virtual Offset _getOffset(double crossAxisOffset, double mainAxisOffset);
+    virtual Offset _getOffset(double mainAxisOffset, double crossAxisOffset);
 
-    virtual double _getChildCrossAxisOffset(double childCrossAxisExtent, bool flipCrossAxis, double runCrossAxisExtent);
+    virtual double _getChildCrossAxisOffset(bool flipCrossAxis, double runCrossAxisExtent, double childCrossAxisExtent);
 
     virtual Size _computeDryLayout(BoxConstraints constraints, ChildLayouter layoutChild);
 

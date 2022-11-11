@@ -2,7 +2,7 @@
 _Block _FunctionCls::addBlock(int id) {
     _Block b = make<_BlockCls>(id, this);
     blocks[id] = b;
-    entry = b;
+    entry |= b;
     return b;
 }
 
@@ -81,7 +81,7 @@ void _FunctionCls::write(StringBuffer out) {
     out->writeln();
 }
 
-_FunctionCls::_FunctionCls(int name, _Transpiler transpiler, _FunctionType type) {
+_FunctionCls::_FunctionCls(_Transpiler transpiler, _FunctionType type, int name) {
     {
         params = <int>filled(type->params->length(), 0);
     }

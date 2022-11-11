@@ -21,7 +21,7 @@ void _ResamplerCls::addOrDispatch(PointerEvent event) {
     }
 }
 
-void _ResamplerCls::sample(SamplingClock clock, Duration samplingOffset) {
+void _ResamplerCls::sample(Duration samplingOffset, SamplingClock clock) {
     SchedulerBinding scheduler = SchedulerBindingCls::instance;
     assert(scheduler != nullptr);
     if (_frameTime == DurationCls::zero) {
@@ -118,7 +118,7 @@ void GestureBindingCls::handlePointerEvent(PointerEvent event) {
     _handlePointerEventImmediately(event);
 }
 
-void GestureBindingCls::hitTest(Offset position, HitTestResult result) {
+void GestureBindingCls::hitTest(HitTestResult result, Offset position) {
     result->add(make<HitTestEntryCls>(this));
 }
 
@@ -146,7 +146,7 @@ void GestureBindingCls::dispatchEvent(PointerEvent event, HitTestResult hitTestR
     }
 }
 
-void GestureBindingCls::handleEvent(HitTestEntry entry, PointerEvent event) {
+void GestureBindingCls::handleEvent(PointerEvent event, HitTestEntry entry) {
     pointerRouter->route(event);
     if (is<PointerDownEvent>(event) || is<PointerPanZoomStartEvent>(event)) {
         gestureArena->close(event->pointer);

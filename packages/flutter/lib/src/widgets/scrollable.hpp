@@ -71,7 +71,7 @@ public:
 
     static bool recommendDeferredLoadingForContext(BuildContext context);
 
-    static Future<void> ensureVisible(double alignment, ScrollPositionAlignmentPolicy alignmentPolicy, BuildContext context, Curve curve, Duration duration);
+    static Future<void> ensureVisible(BuildContext context, double alignment, ScrollPositionAlignmentPolicy alignmentPolicy, Curve curve, Duration duration);
 
 private:
 
@@ -101,7 +101,7 @@ public:
 
     virtual AxisDirection axisDirection();
 
-    virtual void restoreState(bool initialRestore, RestorationBucket oldBucket);
+    virtual void restoreState(RestorationBucket oldBucket, bool initialRestore);
 
     virtual void saveOffset(double offset);
 
@@ -242,7 +242,7 @@ public:
     double velocityScalar;
 
 
-     EdgeDraggingAutoScrollerCls(VoidCallback onScrollViewScrolled, ScrollableState scrollable, double velocityScalar);
+     EdgeDraggingAutoScrollerCls(ScrollableState scrollable, VoidCallback onScrollViewScrolled, double velocityScalar);
     virtual bool scrolling();
 
     virtual void startAutoScrollIfNecessary(Rect dragTarget);
@@ -259,7 +259,7 @@ private:
 
     virtual double _offsetExtent(Offset offset, Axis scrollDirection);
 
-    virtual double _sizeExtent(Axis scrollDirection, Size size);
+    virtual double _sizeExtent(Size size, Axis scrollDirection);
 
     virtual AxisDirection _axisDirection();
 
@@ -289,7 +289,7 @@ public:
 
     virtual SelectionResult handleSelectWord(SelectWordSelectionEvent event);
 
-    virtual SelectionResult dispatchSelectionEventToChild(SelectionEvent event, Selectable selectable);
+    virtual SelectionResult dispatchSelectionEventToChild(Selectable selectable, SelectionEvent event);
 
     virtual void ensureChildUpdated(Selectable selectable);
 
@@ -386,7 +386,7 @@ public:
 
     virtual void describeSemanticsConfiguration(SemanticsConfiguration config);
 
-    virtual void assembleSemanticsNode(Iterable<SemanticsNode> children, SemanticsConfiguration config, SemanticsNode node);
+    virtual void assembleSemanticsNode(SemanticsNode node, SemanticsConfiguration config, Iterable<SemanticsNode> children);
 
     virtual void clearSemantics();
 
@@ -449,7 +449,7 @@ private:
 
     virtual double _calculateScrollIncrement(ScrollableState state, ScrollIncrementType type);
 
-    virtual double _getIncrement(ScrollIntent intent, ScrollableState state);
+    virtual double _getIncrement(ScrollableState state, ScrollIntent intent);
 
 };
 using ScrollAction = std::shared_ptr<ScrollActionCls>;

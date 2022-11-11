@@ -21,13 +21,13 @@ String RawKeyEventDataMacOsCls::keyLabel() {
 }
 
 PhysicalKeyboardKey RawKeyEventDataMacOsCls::physicalKey() {
-    return kMacOsToPhysicalKey[keyCode] or make<PhysicalKeyboardKeyCls>(LogicalKeyboardKeyCls::windowsPlane + keyCode);
+    return kMacOsToPhysicalKey[keyCode] | make<PhysicalKeyboardKeyCls>(LogicalKeyboardKeyCls::windowsPlane + keyCode);
 }
 
 LogicalKeyboardKey RawKeyEventDataMacOsCls::logicalKey() {
     if (specifiedLogicalKey != nullptr) {
         int key = specifiedLogicalKey!;
-        return LogicalKeyboardKeyCls->findKeyByKeyId(key) or make<LogicalKeyboardKeyCls>(key);
+        return LogicalKeyboardKeyCls->findKeyByKeyId(key) | make<LogicalKeyboardKeyCls>(key);
     }
     LogicalKeyboardKey numPadKey = kMacOsNumPadMap[keyCode];
     if (numPadKey != nullptr) {
@@ -46,7 +46,7 @@ LogicalKeyboardKey RawKeyEventDataMacOsCls::logicalKey() {
     }
     if (character != nullptr) {
         int keyId = LogicalKeyboardKeyCls::unicodePlane | (character & LogicalKeyboardKeyCls::valueMask);
-        return LogicalKeyboardKeyCls->findKeyByKeyId(keyId) or make<LogicalKeyboardKeyCls>(keyId);
+        return LogicalKeyboardKeyCls->findKeyByKeyId(keyId) | make<LogicalKeyboardKeyCls>(keyId);
     }
     return make<LogicalKeyboardKeyCls>(keyCode | LogicalKeyboardKeyCls::macosPlane);
 }
@@ -91,7 +91,7 @@ int RawKeyEventDataMacOsCls::hashCode() {
     return ObjectCls->hash(characters, charactersIgnoringModifiers, keyCode, modifiers);
 }
 
-bool RawKeyEventDataMacOsCls::_isLeftRightModifierPressed(int anyMask, int leftMask, int rightMask, KeyboardSide side) {
+bool RawKeyEventDataMacOsCls::_isLeftRightModifierPressed(KeyboardSide side, int anyMask, int leftMask, int rightMask) {
     if (modifiers & anyMask == 0) {
         return false;
     }

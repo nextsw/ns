@@ -179,7 +179,7 @@ private:
 
     virtual Drag _dragStart(Offset position);
 
-    virtual void _dragUpdate(Offset delta, _DragInfo item, Offset position);
+    virtual void _dragUpdate(_DragInfo item, Offset position, Offset delta);
 
     virtual void _dragCancel(_DragInfo item);
 
@@ -245,7 +245,7 @@ public:
 
     virtual Offset offset();
 
-    virtual void updateForGap(bool animate, double gapExtent, int gapIndex, bool reverse);
+    virtual void updateForGap(int gapIndex, double gapExtent, bool animate, bool reverse);
 
     virtual void resetGap();
 
@@ -384,7 +384,7 @@ private:
      _DragItemProxyCls(AnimationController animation, Widget child, int index, SliverReorderableListState listState, Offset position, ReorderItemProxyDecorator proxyDecorator, Size size);
 };
 using _DragItemProxy = std::shared_ptr<_DragItemProxyCls>;
-double _sizeExtent(Axis scrollDirection, Size size);
+double _sizeExtent(Size size, Axis scrollDirection);
 
 double _offsetExtent(Offset offset, Axis scrollDirection);
 
@@ -408,7 +408,7 @@ public:
 
 private:
 
-     _ReorderableItemGlobalKeyCls(int index, SliverReorderableListState state, Key subKey);
+     _ReorderableItemGlobalKeyCls(Key subKey, int index, SliverReorderableListState state);
 
 };
 using _ReorderableItemGlobalKey = std::shared_ptr<_ReorderableItemGlobalKeyCls>;

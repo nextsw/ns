@@ -5,7 +5,7 @@ AxisDirection applyGrowthDirectionToAxisDirection(AxisDirection axisDirection, G
     ;
 }
 
-ScrollDirection applyGrowthDirectionToScrollDirection(GrowthDirection growthDirection, ScrollDirection scrollDirection) {
+ScrollDirection applyGrowthDirectionToScrollDirection(ScrollDirection scrollDirection, GrowthDirection growthDirection) {
     assert(scrollDirection != nullptr);
     assert(growthDirection != nullptr);
     ;
@@ -29,7 +29,7 @@ SliverConstraintsCls::SliverConstraintsCls(AxisDirection axisDirection, double c
 }
 
 SliverConstraints SliverConstraintsCls::copyWith(AxisDirection axisDirection, double cacheOrigin, AxisDirection crossAxisDirection, double crossAxisExtent, GrowthDirection growthDirection, double overlap, double precedingScrollExtent, double remainingCacheExtent, double remainingPaintExtent, double scrollOffset, ScrollDirection userScrollDirection, double viewportMainAxisExtent) {
-    return make<SliverConstraintsCls>(axisDirection or this->axisDirection, growthDirection or this->growthDirection, userScrollDirection or this->userScrollDirection, scrollOffset or this->scrollOffset, precedingScrollExtent or this->precedingScrollExtent, overlap or this->overlap, remainingPaintExtent or this->remainingPaintExtent, crossAxisExtent or this->crossAxisExtent, crossAxisDirection or this->crossAxisDirection, viewportMainAxisExtent or this->viewportMainAxisExtent, remainingCacheExtent or this->remainingCacheExtent, cacheOrigin or this->cacheOrigin);
+    return make<SliverConstraintsCls>(axisDirection | this->axisDirection, growthDirection | this->growthDirection, userScrollDirection | this->userScrollDirection, scrollOffset | this->scrollOffset, precedingScrollExtent | this->precedingScrollExtent, overlap | this->overlap, remainingPaintExtent | this->remainingPaintExtent, crossAxisExtent | this->crossAxisExtent, crossAxisDirection | this->crossAxisDirection, viewportMainAxisExtent | this->viewportMainAxisExtent, remainingCacheExtent | this->remainingCacheExtent, cacheOrigin | this->cacheOrigin);
 }
 
 Axis SliverConstraintsCls::axis() {
@@ -50,7 +50,7 @@ bool SliverConstraintsCls::isNormalized() {
 }
 
 BoxConstraints SliverConstraintsCls::asBoxConstraints(double crossAxisExtent, double maxExtent, double minExtent) {
-    crossAxisExtent = this->crossAxisExtent;
+    crossAxisExtent |= this->crossAxisExtent;
     ;
 }
 
@@ -110,10 +110,10 @@ SliverGeometryCls::SliverGeometryCls(double cacheExtent, bool hasVisualOverflow,
         assert(maxPaintExtent != nullptr);
         assert(hasVisualOverflow != nullptr);
         assert(scrollOffsetCorrection != 0.0);
-        layoutExtent = layoutExtent or paintExtent;
-        hitTestExtent = hitTestExtent or paintExtent;
-        cacheExtent = cacheExtent or layoutExtent or paintExtent;
-        visible = visible or paintExtent > 0.0;
+        layoutExtent = layoutExtent | paintExtent;
+        hitTestExtent = hitTestExtent | paintExtent;
+        cacheExtent = cacheExtent | layoutExtent | paintExtent;
+        visible = visible | paintExtent > 0.0;
     }
 }
 
@@ -194,7 +194,7 @@ bool SliverHitTestResultCls::addWithAxisOffset(double crossAxisOffset, double cr
     return isHit;
 }
 
-SliverHitTestEntryCls::SliverHitTestEntryCls(double crossAxisPosition, double mainAxisPosition, Unknown target) {
+SliverHitTestEntryCls::SliverHitTestEntryCls(Unknown target, double crossAxisPosition, double mainAxisPosition) {
     {
         assert(mainAxisPosition != nullptr);
         assert(crossAxisPosition != nullptr);
@@ -217,7 +217,7 @@ String SliverPhysicalParentDataCls::toString() {
     return __s("paintOffset=$paintOffset");
 }
 
-List<DiagnosticsNode> _debugCompareFloats(String labelA, String labelB, double valueA, double valueB) {
+List<DiagnosticsNode> _debugCompareFloats(String labelA, double valueA, String labelB, double valueB) {
     List<DiagnosticsNode> list1 = make<ListCls<>>();if (valueA->toStringAsFixed(1) != valueB->toStringAsFixed(1)) {    list1.add(ArrayItem);} else {    list1.add(ArrayItem);}return list1;
 }
 
@@ -290,7 +290,7 @@ double RenderSliverCls::centerOffsetAdjustment() {
     return 0.0;
 }
 
-bool RenderSliverCls::hitTest(double crossAxisPosition, double mainAxisPosition, SliverHitTestResult result) {
+bool RenderSliverCls::hitTest(SliverHitTestResult result, double crossAxisPosition, double mainAxisPosition) {
     if (mainAxisPosition >= 0.0 &&  < geometry()!->hitTestExtent && crossAxisPosition >= 0.0 &&  < constraints()->crossAxisExtent) {
         if (hitTestChildren(resultmainAxisPosition, crossAxisPosition) || hitTestSelf(mainAxisPosition, crossAxisPosition)) {
             result->add(make<SliverHitTestEntryCls>(thismainAxisPosition, crossAxisPosition));
@@ -304,7 +304,7 @@ bool RenderSliverCls::hitTestSelf(double crossAxisPosition, double mainAxisPosit
     return false;
 }
 
-bool RenderSliverCls::hitTestChildren(double crossAxisPosition, double mainAxisPosition, SliverHitTestResult result) {
+bool RenderSliverCls::hitTestChildren(SliverHitTestResult result, double crossAxisPosition, double mainAxisPosition) {
     return false;
 }
 
@@ -371,7 +371,7 @@ void RenderSliverCls::debugPaint(PaintingContext context, Offset offset) {
     }());
 }
 
-void RenderSliverCls::handleEvent(SliverHitTestEntry entry, PointerEvent event) {
+void RenderSliverCls::handleEvent(PointerEvent event, SliverHitTestEntry entry) {
 }
 
 void RenderSliverCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
@@ -379,7 +379,7 @@ void RenderSliverCls::debugFillProperties(DiagnosticPropertiesBuilder properties
     properties->add(<SliverGeometry>make<DiagnosticsPropertyCls>(__s("geometry"), geometry()));
 }
 
-void RenderSliverCls::_debugDrawArrow(Canvas canvas, GrowthDirection direction, Offset p0, Offset p1, Paint paint) {
+void RenderSliverCls::_debugDrawArrow(Canvas canvas, Paint paint, Offset p0, Offset p1, GrowthDirection direction) {
     assert([=] () {
         if (p0 == p1) {
             return true;
@@ -399,7 +399,7 @@ void RenderSliverCls::_debugDrawArrow(Canvas canvas, GrowthDirection direction, 
     }());
 }
 
-bool RenderSliverHelpersCls::hitTestBoxChild(RenderBox child, double crossAxisPosition, double mainAxisPosition, BoxHitTestResult result) {
+bool RenderSliverHelpersCls::hitTestBoxChild(BoxHitTestResult result, RenderBox child, double crossAxisPosition, double mainAxisPosition) {
     bool rightWayUp = _getRightWayUp(constraints);
     double delta = childMainAxisPosition(child);
     double crossAxisDelta = childCrossAxisPosition(child);
@@ -454,7 +454,7 @@ void RenderSliverSingleBoxAdapterCls::setChildParentData(RenderObject child, Sli
     assert(childParentData->paintOffset != nullptr);
 }
 
-bool RenderSliverSingleBoxAdapterCls::hitTestChildren(double crossAxisPosition, double mainAxisPosition, SliverHitTestResult result) {
+bool RenderSliverSingleBoxAdapterCls::hitTestChildren(SliverHitTestResult result, double crossAxisPosition, double mainAxisPosition) {
     assert(geometry!->hitTestExtent > 0.0);
     if (child != nullptr) {
         return hitTestBoxChild(BoxHitTestResultCls->wrap(result), child!mainAxisPosition, crossAxisPosition);

@@ -57,7 +57,7 @@ int BackBreaksCls::nextBreak() {
             auto prevChar = base->codeUnitAt(cursor - 1);
             if (prevChar & 0xFC00 == 0xD800) {
                 category = high(prevChar, charValue);
-                cursor = 1;
+                cursor -= 1;
             }
         }
         state = moveBack(state, category);
@@ -82,7 +82,7 @@ int BackBreaksCls::_lookAhead(int state) {
     return lookAhead(base, start, cursor, state);
 }
 
-int lookAhead(String base, int cursor, int start, int state) {
+int lookAhead(String base, int start, int cursor, int state) {
     assert(state >= stateLookaheadMin);
     if (state == stateRegionalLookahead) {
         return lookAheadRegional(base, start, cursor);
@@ -97,7 +97,7 @@ int lookAhead(String base, int cursor, int start, int state) {
     throw make<StateErrorCls>(__s("Unexpected state: ${state.toRadixString(16)}"));
 }
 
-int lookAheadRegional(String base, int cursor, int start) {
+int lookAheadRegional(String base, int start, int cursor) {
     auto count = 0;
     auto index = cursor;
     while (index - 2 >= start) {
@@ -113,8 +113,8 @@ int lookAheadRegional(String base, int cursor, int start) {
         if (category != categoryRegionalIndicator)         {
             break;
         }
-        index = 2;
-        count = 1;
+        index -= 2;
+        count ^= 1;
     }
     if (count == 0) {
         return stateRegionalEven | stateNoBreak;
@@ -123,7 +123,7 @@ int lookAheadRegional(String base, int cursor, int start) {
     }
 }
 
-int lookAheadPictorgraphicExtend(String base, int cursor, int start) {
+int lookAheadPictorgraphicExtend(String base, int start, int cursor) {
     auto index = cursor;
     while (index > start) {
         auto char = base->codeUnitAt(--index);
@@ -148,7 +148,7 @@ int lookAheadPictorgraphicExtend(String base, int cursor, int start) {
     return -1;
 }
 
-bool isGraphemeClusterBoundary(int end, int index, int start, String text) {
+bool isGraphemeClusterBoundary(String text, int start, int end, int index) {
     assert(0 <= start);
     assert(start <= index);
     assert(index <= end);
@@ -176,9 +176,9 @@ bool isGraphemeClusterBoundary(int end, int index, int start, String text) {
         }        auto catBefore = categoryControl;
         if (prevChar & 0xFC00 != 0xDC00) {
             catBefore = low(prevChar);
-            index = 1;
+            index -= 1;
         } else {
-            index = 2;
+            index -= 2;
             if (start <= index) {
                 auto prevPrevChar = text->codeUnitAt(index);
                 if (prevPrevChar & 0xFC00 != 0xD800) {
@@ -200,7 +200,7 @@ bool isGraphemeClusterBoundary(int end, int index, int start, String text) {
     return start != end;
 }
 
-int previousBreak(int end, int index, int start, String text) {
+int previousBreak(String text, int start, int end, int index) {
     assert(0 <= start);
     assert(start <= index);
     assert(index <= end);
@@ -226,14 +226,14 @@ int previousBreak(int end, int index, int start, String text) {
         auto prevChar = text->codeUnitAt(index - 1);
         if (prevChar & 0xFC00 == 0xD800) {
             category = high(prevChar, nextChar);
-            indexBefore = 1;
+            indexBefore -= 1;
         }
     }
 ;
     }    return make<BackBreaksCls>(text, indexBefore, start, moveBack(stateEoTNoBreak, category))->nextBreak();
 }
 
-int nextBreak(int end, int index, int start, String text) {
+int nextBreak(String text, int start, int end, int index) {
     assert(0 <= start);
     assert(start <= index);
     assert(index <= end);
@@ -250,7 +250,7 @@ int nextBreak(int end, int index, int start, String text) {
         if (prevChar & 0xFC00 == 0xD800) {
         auto nextChar = text->codeUnitAt(index);
         if (nextChar & 0xFC00 == 0xDC00) {
-            index = 1;
+            index += 1;
             if (index == end)             {
                 return end;
             }

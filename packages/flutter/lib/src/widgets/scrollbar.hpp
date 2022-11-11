@@ -108,9 +108,9 @@ public:
 
     virtual void  ignorePointer(bool value);
 
-    virtual void update(AxisDirection axisDirection, ScrollMetrics metrics);
+    virtual void update(ScrollMetrics metrics, AxisDirection axisDirection);
 
-    virtual void updateThickness(Radius nextRadius, double nextThickness);
+    virtual void updateThickness(double nextThickness, Radius nextRadius);
 
     virtual void dispose();
 
@@ -118,9 +118,9 @@ public:
 
     virtual void paint(Canvas canvas, Size size);
 
-    virtual bool hitTestInteractive(bool forHover, PointerDeviceKind kind, Offset position);
+    virtual bool hitTestInteractive(Offset position, PointerDeviceKind kind, bool forHover);
 
-    virtual bool hitTestOnlyThumbInteractive(PointerDeviceKind kind, Offset position);
+    virtual bool hitTestOnlyThumbInteractive(Offset position, PointerDeviceKind kind);
 
     virtual bool hitTest(Offset position);
 
@@ -182,7 +182,7 @@ private:
 
     virtual Paint _paintTrack(bool isBorder);
 
-    virtual void _paintScrollbar(Canvas canvas, AxisDirection direction, Size size, double thumbExtent);
+    virtual void _paintScrollbar(Canvas canvas, Size size, double thumbExtent, AxisDirection direction);
 
     virtual double _thumbExtent();
 
@@ -291,11 +291,11 @@ public:
 
     virtual void handleThumbPressEnd(Offset localPosition, Velocity velocity);
 
-    virtual bool isPointerOverTrack(PointerDeviceKind kind, Offset position);
+    virtual bool isPointerOverTrack(Offset position, PointerDeviceKind kind);
 
-    virtual bool isPointerOverThumb(PointerDeviceKind kind, Offset position);
+    virtual bool isPointerOverThumb(Offset position, PointerDeviceKind kind);
 
-    virtual bool isPointerOverScrollbar(bool forHover, PointerDeviceKind kind, Offset position);
+    virtual bool isPointerOverScrollbar(Offset position, PointerDeviceKind kind, bool forHover);
 
     virtual void handleHover(PointerHoverEvent event);
 
@@ -358,7 +358,7 @@ private:
 
      _ThumbPressGestureRecognizerCls(GlobalKey customPaintKey, Object debugOwner, Duration pressDuration);
 
-    virtual bool _hitTestInteractive(GlobalKey customPaintKey, PointerDeviceKind kind, Offset offset);
+    virtual bool _hitTestInteractive(GlobalKey customPaintKey, Offset offset, PointerDeviceKind kind);
 
 };
 using _ThumbPressGestureRecognizer = std::shared_ptr<_ThumbPressGestureRecognizerCls>;
@@ -374,11 +374,11 @@ private:
 
      _TrackTapGestureRecognizerCls(GlobalKey customPaintKey, Object debugOwner);
 
-    virtual bool _hitTestInteractive(GlobalKey customPaintKey, PointerDeviceKind kind, Offset offset);
+    virtual bool _hitTestInteractive(GlobalKey customPaintKey, Offset offset, PointerDeviceKind kind);
 
 };
 using _TrackTapGestureRecognizer = std::shared_ptr<_TrackTapGestureRecognizerCls>;
-Offset _getLocalOffset(Offset position, GlobalKey scrollbarPainterKey);
+Offset _getLocalOffset(GlobalKey scrollbarPainterKey, Offset position);
 
 
 

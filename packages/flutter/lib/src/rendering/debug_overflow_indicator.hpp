@@ -39,7 +39,7 @@ using _OverflowRegionData = std::shared_ptr<_OverflowRegionDataCls>;
 class DebugOverflowIndicatorMixinCls : public ObjectCls {
 public:
 
-    virtual void paintOverflowIndicator(Rect childRect, Rect containerRect, PaintingContext context, Offset offset, List<DiagnosticsNode> overflowHints);
+    virtual void paintOverflowIndicator(PaintingContext context, Offset offset, Rect containerRect, Rect childRect, List<DiagnosticsNode> overflowHints);
 
     virtual void reassemble();
 
@@ -67,7 +67,7 @@ private:
 
     virtual String _formatPixels(double value);
 
-    virtual List<_OverflowRegionData> _calculateOverflowRegions(Rect containerRect, RelativeRect overflow);
+    virtual List<_OverflowRegionData> _calculateOverflowRegions(RelativeRect overflow, Rect containerRect);
 
     virtual void _reportOverflow(RelativeRect overflow, List<DiagnosticsNode> overflowHints);
 

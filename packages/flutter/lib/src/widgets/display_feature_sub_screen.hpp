@@ -23,17 +23,17 @@ public:
 
     static Iterable<Rect> avoidBounds(MediaQueryData mediaQuery);
 
-    static Iterable<Rect> subScreensInBounds(Iterable<Rect> avoidBounds, Rect wantedBounds);
+    static Iterable<Rect> subScreensInBounds(Rect wantedBounds, Iterable<Rect> avoidBounds);
 
 private:
 
     static Offset _fallbackAnchorPoint(BuildContext context);
 
-    static Rect _closestToAnchorPoint(Offset anchorPoint, Iterable<Rect> subScreens);
+    static Rect _closestToAnchorPoint(Iterable<Rect> subScreens, Offset anchorPoint);
 
     static double _distanceFromPointToRect(Offset point, Rect rect);
 
-    static Offset _capOffset(Size maximum, Offset offset);
+    static Offset _capOffset(Offset offset, Size maximum);
 
 };
 using DisplayFeatureSubScreen = std::shared_ptr<DisplayFeatureSubScreenCls>;

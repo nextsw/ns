@@ -49,7 +49,7 @@ void TextPainterCls::text(InlineSpan value) {
     if (_text?->style != value?->style) {
         _layoutTemplate = nullptr;
     }
-    RenderComparison comparison = value == nullptr? RenderComparisonCls::layout : _text?->compareTo(value) or RenderComparisonCls::layout;
+    RenderComparison comparison = value == nullptr? RenderComparisonCls::layout : _text?->compareTo(value) | RenderComparisonCls::layout;
     _text = value;
     if (comparison->index >= RenderComparisonCls::layout->index) {
         markNeedsLayout();
@@ -191,7 +191,7 @@ void TextPainterCls::setPlaceholderDimensions(List<PlaceholderDimensions> value)
         int placeholderCount = 0;
         text()!->visitChildren([=] (InlineSpan span) {
             if (is<PlaceholderSpan>(span)) {
-                placeholderCount = 1;
+                placeholderCount += 1;
             }
             return true;
         });
@@ -294,17 +294,17 @@ int TextPainterCls::getOffsetBefore(int offset) {
     return _isUtf16Surrogate(prevCodeUnit)? offset - 2 : offset - 1;
 }
 
-Offset TextPainterCls::getOffsetForCaret(Rect caretPrototype, TextPosition position) {
+Offset TextPainterCls::getOffsetForCaret(TextPosition position, Rect caretPrototype) {
     _computeCaretMetrics(position, caretPrototype);
     return _caretMetrics->offset;
 }
 
-double TextPainterCls::getFullHeightForCaret(Rect caretPrototype, TextPosition position) {
+double TextPainterCls::getFullHeightForCaret(TextPosition position, Rect caretPrototype) {
     _computeCaretMetrics(position, caretPrototype);
     return _caretMetrics->fullHeight;
 }
 
-List<TextBox> TextPainterCls::getBoxesForSelection(BoxHeightStyle boxHeightStyle, BoxWidthStyle boxWidthStyle, TextSelection selection) {
+List<TextBox> TextPainterCls::getBoxesForSelection(TextSelection selection, BoxHeightStyle boxHeightStyle, BoxWidthStyle boxWidthStyle) {
     assert(!_debugNeedsLayout());
     assert(boxHeightStyle != nullptr);
     assert(boxWidthStyle != nullptr);
@@ -338,7 +338,7 @@ bool TextPainterCls::_debugNeedsLayout() {
 ParagraphStyle TextPainterCls::_createParagraphStyle(TextDirection defaultTextDirection) {
     assert(textAlign() != nullptr);
     assert(textDirection() != nullptr || defaultTextDirection != nullptr, __s("TextPainter.textDirection must be set to a non-null value before using the TextPainter."));
-    return _text!->style?->getParagraphStyle(textAlign(), textDirection() or defaultTextDirection, textScaleFactor(), _maxLines, _textHeightBehavior, _ellipsis, _locale, _strutStyle) or ui->make<ParagraphStyleCls>(textAlign(), textDirection() or defaultTextDirection, _kDefaultFontSize * textScaleFactor(), maxLines(), _textHeightBehavior, ellipsis(), locale());
+    return _text!->style?->getParagraphStyle(textAlign(), textDirection() | defaultTextDirection, textScaleFactor(), _maxLines, _textHeightBehavior, _ellipsis, _locale, _strutStyle) | ui->make<ParagraphStyleCls>(textAlign(), textDirection() | defaultTextDirection, _kDefaultFontSize * textScaleFactor(), maxLines(), _textHeightBehavior, ellipsis(), locale());
 }
 
 Paragraph TextPainterCls::_createLayoutTemplate() {
@@ -368,7 +368,7 @@ void TextPainterCls::_createParagraph() {
     _rebuildParagraphForPaint = false;
 }
 
-void TextPainterCls::_layoutParagraph(double maxWidth, double minWidth) {
+void TextPainterCls::_layoutParagraph(double minWidth, double maxWidth) {
     _paragraph!->layout(ui->make<ParagraphConstraintsCls>(maxWidth));
     if (minWidth != maxWidth) {
         double newWidth;
@@ -388,7 +388,7 @@ bool TextPainterCls::_isUnicodeDirectionality(int value) {
     return value == 0x200F || value == 0x200E;
 }
 
-Rect TextPainterCls::_getRectFromUpstream(Rect caretPrototype, int offset) {
+Rect TextPainterCls::_getRectFromUpstream(int offset, Rect caretPrototype) {
     String flattenedText = _text!->toPlainText(false);
     int prevCodeUnit = _text!->codeUnitAt(max(0, offset - 1));
     if (prevCodeUnit == nullptr) {
@@ -408,7 +408,7 @@ Rect TextPainterCls::_getRectFromUpstream(Rect caretPrototype, int offset) {
             if ( < -flattenedText->length()) {
                 break;
             }
-            graphemeClusterLength = 2;
+            graphemeClusterLength *= 2;
             continue;
         }
         TextBox box = boxes->first;
@@ -422,7 +422,7 @@ Rect TextPainterCls::_getRectFromUpstream(Rect caretPrototype, int offset) {
     return nullptr;
 }
 
-Rect TextPainterCls::_getRectFromDownstream(Rect caretPrototype, int offset) {
+Rect TextPainterCls::_getRectFromDownstream(int offset, Rect caretPrototype) {
     String flattenedText = _text!->toPlainText(false);
     int nextCodeUnit = _text!->codeUnitAt(min(offset, flattenedText->length() - 1));
     if (nextCodeUnit == nullptr) {
@@ -441,7 +441,7 @@ Rect TextPainterCls::_getRectFromDownstream(Rect caretPrototype, int offset) {
             if (nextRuneOffset >= flattenedText->length() << 1) {
                 break;
             }
-            graphemeClusterLength = 2;
+            graphemeClusterLength *= 2;
             continue;
         }
         TextBox box = boxes->last;
@@ -458,7 +458,7 @@ Offset TextPainterCls::_emptyOffset() {
     ;
 }
 
-void TextPainterCls::_computeCaretMetrics(Rect caretPrototype, TextPosition position) {
+void TextPainterCls::_computeCaretMetrics(TextPosition position, Rect caretPrototype) {
     assert(!_debugNeedsLayout());
     if (position == _previousCaretPosition && caretPrototype == _previousCaretPrototype) {
         return;

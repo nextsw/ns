@@ -8,7 +8,7 @@
 class RegExpCls : public ObjectCls {
 public:
 
-     RegExpCls(bool caseSensitive, bool dotAll, bool multiLine, String source, bool unicode);
+     RegExpCls(String source, bool caseSensitive, bool dotAll, bool multiLine, bool unicode);
     static String escape(String text);
     virtual RegExpMatch firstMatch(String input);
     virtual Iterable<RegExpMatch> allMatches(String input, int start);

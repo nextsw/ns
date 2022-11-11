@@ -48,7 +48,7 @@ public:
     ImageErrorListener onError;
 
 
-     ImageStreamListenerCls(ImageChunkListener onChunk, ImageErrorListener onError, ImageListener onImage);
+     ImageStreamListenerCls(ImageListener onImage, ImageChunkListener onChunk, ImageErrorListener onError);
 
     virtual int hashCode();
 

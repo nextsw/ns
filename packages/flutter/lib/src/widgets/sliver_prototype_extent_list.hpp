@@ -33,13 +33,13 @@ public:
 
     virtual void didAdoptChild(RenderBox child);
 
-    virtual void moveRenderObjectChild(RenderBox child, Object newSlot, Object oldSlot);
+    virtual void moveRenderObjectChild(RenderBox child, Object oldSlot, Object newSlot);
 
     virtual void removeRenderObjectChild(RenderBox child, Object slot);
 
     virtual void visitChildren(ElementVisitor visitor);
 
-    virtual void mount(Object newSlot, Element parent);
+    virtual void mount(Element parent, Object newSlot);
 
     virtual void update(SliverPrototypeExtentList newWidget);
 

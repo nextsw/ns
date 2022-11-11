@@ -10,7 +10,7 @@ void ViewportNotificationMixinCls::debugFillDescription(List<String> description
 
 bool ViewportElementMixinCls::onNotification(Notification notification) {
     if (is<ViewportNotificationMixin>(notification)) {
-        as<ViewportNotificationMixinCls>(notification)->_depth = 1;
+        as<ViewportNotificationMixinCls>(notification)->_depth += 1;
     }
     return false;
 }

@@ -76,7 +76,7 @@ private:
 
     virtual Node _remove(K key);
 
-    virtual void _addNewRoot(int comp, Node node);
+    virtual void _addNewRoot(Node node, int comp);
 
     virtual Node _first();
 
@@ -101,13 +101,13 @@ public:
 
      SplayTreeMapCls(std::function<int(K key1, K key2)> compare, std::function<bool(dynamic potentialKey)> isValidKey);
 
-    virtual void  from(std::function<int(K key1, K key2)> compare, std::function<bool(dynamic potentialKey)> isValidKey, Map<dynamic, dynamic> other);
+    virtual void  from(Map<dynamic, dynamic> other, std::function<int(K key1, K key2)> compare, std::function<bool(dynamic potentialKey)> isValidKey);
 
-    virtual void  of(std::function<int(K key1, K key2)> compare, std::function<bool(dynamic potentialKey)> isValidKey, Map<K, V> other);
+    virtual void  of(Map<K, V> other, std::function<int(K key1, K key2)> compare, std::function<bool(dynamic potentialKey)> isValidKey);
 
-    virtual void  fromIterable(std::function<int(K key1, K key2)> compare, std::function<bool(dynamic potentialKey)> isValidKey, Iterable iterable, std::function<K(dynamic element)> key, std::function<V(dynamic element)> value);
+    virtual void  fromIterable(Iterable iterable, std::function<int(K key1, K key2)> compare, std::function<bool(dynamic potentialKey)> isValidKey, std::function<K(dynamic element)> key, std::function<V(dynamic element)> value);
 
-    virtual void  fromIterables(std::function<int(K key1, K key2)> compare, std::function<bool(dynamic potentialKey)> isValidKey, Iterable<K> keys, Iterable<V> values);
+    virtual void  fromIterables(Iterable<K> keys, Iterable<V> values, std::function<int(K key1, K key2)> compare, std::function<bool(dynamic potentialKey)> isValidKey);
 
     virtual V operator[](Object key);
 
@@ -115,9 +115,9 @@ public:
 
     virtual void operator[]=(K key, V value);
 
-    virtual V putIfAbsent(std::function<V()> ifAbsent, K key);
+    virtual V putIfAbsent(K key, std::function<V()> ifAbsent);
 
-    virtual V update(std::function<V()> ifAbsent, K key, std::function<V(V value)> update);
+    virtual V update(K key, std::function<V(V value)> update, std::function<V()> ifAbsent);
 
     virtual void updateAll(std::function<V(K key, V value)> update);
 
@@ -303,9 +303,9 @@ public:
 
      SplayTreeSetCls(std::function<int(E key1, E key2)> compare, std::function<bool(dynamic potentialKey)> isValidKey);
 
-    virtual void  from(std::function<int(E key1, E key2)> compare, Iterable elements, std::function<bool(dynamic potentialKey)> isValidKey);
+    virtual void  from(Iterable elements, std::function<int(E key1, E key2)> compare, std::function<bool(dynamic potentialKey)> isValidKey);
 
-    virtual void  of(std::function<int(E key1, E key2)> compare, Iterable<E> elements, std::function<bool(dynamic potentialKey)> isValidKey);
+    virtual void  of(Iterable<E> elements, std::function<int(E key1, E key2)> compare, std::function<bool(dynamic potentialKey)> isValidKey);
 
     template<typename R>
  virtual Set<R> cast();

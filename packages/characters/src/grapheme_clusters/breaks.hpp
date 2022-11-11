@@ -50,17 +50,17 @@ private:
 
 };
 using BackBreaks = std::shared_ptr<BackBreaksCls>;
-int lookAhead(String base, int cursor, int start, int state);
+int lookAhead(String base, int start, int cursor, int state);
 
-int lookAheadRegional(String base, int cursor, int start);
+int lookAheadRegional(String base, int start, int cursor);
 
-int lookAheadPictorgraphicExtend(String base, int cursor, int start);
+int lookAheadPictorgraphicExtend(String base, int start, int cursor);
 
-bool isGraphemeClusterBoundary(int end, int index, int start, String text);
+bool isGraphemeClusterBoundary(String text, int start, int end, int index);
 
-int previousBreak(int end, int index, int start, String text);
+int previousBreak(String text, int start, int end, int index);
 
-int nextBreak(int end, int index, int start, String text);
+int nextBreak(String text, int start, int end, int index);
 
 
 

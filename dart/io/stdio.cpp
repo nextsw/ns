@@ -1,5 +1,5 @@
 #include "stdio.hpp"
-StreamSubscription<List<int>> _StdStreamCls::listen(bool cancelOnError, std::function<void(List<int> event)> onData, std::function<void()> onDone, std::function<void ()> onError) {
+StreamSubscription<List<int>> _StdStreamCls::listen(std::function<void(List<int> event)> onData, bool cancelOnError, std::function<void()> onDone, std::function<void ()> onError) {
     return _stream->listen(onDataonError, onDone, cancelOnError);
 }
 
@@ -72,7 +72,7 @@ bool StdinCls::hasTerminal() {
     };
 }
 
-void StdinCls::_(int _fd, Stream<List<int>> stream)
+void StdinCls::_(Stream<List<int>> stream, int _fd)
 
 bool StdoutCls::hasTerminal() {
     return _hasTerminal(_fd);
@@ -94,7 +94,7 @@ IOSink StdoutCls::nonBlocking() {
     return _nonBlocking ??= make<IOSinkCls>(_FileStreamConsumerCls->fromStdio(_fd));
 }
 
-void StdoutCls::_(int _fd, IOSink sink)
+void StdoutCls::_(IOSink sink, int _fd)
 
 String StdoutExceptionCls::toString() {
     return __s("StdoutException: $message${osError == null ? "" : ", $osError"}");
@@ -181,22 +181,22 @@ String StdioTypeCls::toString() {
     return __s("StdioType: $name");
 }
 
-void _setStdioFDs(int stderr, int stdin, int stdout) {
+void _setStdioFDs(int stdin, int stdout, int stderr) {
     _stdinFD = stdin;
     _stdoutFD = stdout;
     _stderrFD = stderr;
 }
 
 Stdin stdin() {
-    return IOOverridesCls::current?->stdin or _stdin;
+    return IOOverridesCls::current?->stdin | _stdin;
 }
 
 Stdout stdout() {
-    return IOOverridesCls::current?->stdout or _stdout;
+    return IOOverridesCls::current?->stdout | _stdout;
 }
 
 Stdout stderr() {
-    return IOOverridesCls::current?->stderr or _stderr;
+    return IOOverridesCls::current?->stderr | _stderr;
 }
 
 StdioType stdioType(object ) {

@@ -10,15 +10,15 @@ class ClipContextCls : public ObjectCls {
 public:
 
     virtual Canvas canvas();
-    virtual void clipPathAndPaint(Rect bounds, Clip clipBehavior, VoidCallback painter, Path path);
+    virtual void clipPathAndPaint(Path path, Clip clipBehavior, Rect bounds, VoidCallback painter);
 
-    virtual void clipRRectAndPaint(Rect bounds, Clip clipBehavior, VoidCallback painter, RRect rrect);
+    virtual void clipRRectAndPaint(RRect rrect, Clip clipBehavior, Rect bounds, VoidCallback painter);
 
-    virtual void clipRectAndPaint(Rect bounds, Clip clipBehavior, VoidCallback painter, Rect rect);
+    virtual void clipRectAndPaint(Rect rect, Clip clipBehavior, Rect bounds, VoidCallback painter);
 
 private:
 
-    virtual void _clipAndPaint(Rect bounds, std::function<void(bool doAntiAlias)> canvasClipCall, Clip clipBehavior, VoidCallback painter);
+    virtual void _clipAndPaint(std::function<void(bool doAntiAlias)> canvasClipCall, Clip clipBehavior, Rect bounds, VoidCallback painter);
 
 };
 using ClipContext = std::shared_ptr<ClipContextCls>;

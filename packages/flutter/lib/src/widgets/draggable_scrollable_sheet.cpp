@@ -23,7 +23,7 @@ double DraggableScrollableControllerCls::pixelsToSize(double pixels) {
     return _attachedController!->extent->pixelsToSize(pixels);
 }
 
-Future<void> DraggableScrollableControllerCls::animateTo(Curve curve, Duration duration, double size) {
+Future<void> DraggableScrollableControllerCls::animateTo(double size, Curve curve, Duration duration) {
     _assertAttached();
     assert(size >= 0 && size <= 1);
     assert(duration != DurationCls::zero);
@@ -162,7 +162,7 @@ void _DraggableSheetExtentCls::startActivity(VoidCallback onCanceled) {
     _cancelActivity = onCanceled;
 }
 
-void _DraggableSheetExtentCls::addPixelDelta(BuildContext context, double delta) {
+void _DraggableSheetExtentCls::addPixelDelta(double delta, BuildContext context) {
     _cancelActivity?->call();
     _cancelActivity = nullptr;
     hasDragged = true;
@@ -172,7 +172,7 @@ void _DraggableSheetExtentCls::addPixelDelta(BuildContext context, double delta)
     updateSize(currentSize() + pixelsToSize(delta), context);
 }
 
-void _DraggableSheetExtentCls::updateSize(BuildContext context, double newSize) {
+void _DraggableSheetExtentCls::updateSize(double newSize, BuildContext context) {
     assert(newSize != nullptr);
     _currentSize->value() = clampDouble(newSize, minSize, maxSize);
     make<DraggableScrollableNotificationCls>(minSize, maxSize, currentSize(), initialSize, context)->dispatch(context);
@@ -203,9 +203,9 @@ _DraggableSheetExtentCls::_DraggableSheetExtentCls(ValueNotifier<double> current
         assert(maxSize <= 1);
         assert(minSize <= initialSize);
         assert(initialSize <= maxSize);
-            auto _c1 = (currentSize or <double>make<ValueNotifierCls>(initialSize));    _c1.addListener(onSizeChanged);_currentSize = _c1;
+            auto _c1 = (currentSize | <double>make<ValueNotifierCls>(initialSize));    _c1.addListener(onSizeChanged);_currentSize = _c1;
         availablePixels = double->infinity;
-        hasDragged = hasDragged or false;
+        hasDragged = hasDragged | false;
     }
 }
 
@@ -244,7 +244,7 @@ void _DraggableScrollableSheetStateCls::dispose() {
 }
 
 List<double> _DraggableScrollableSheetStateCls::_impliedSnapSizes() {
-    for (;  < (widget->snapSizes?->length or 0); index = 1) {
+    for (;  < (widget->snapSizes?->length | 0); index += 1) {
         double snapSize = widget->snapSizes![index];
         assert(snapSize >= widget->minChildSize && snapSize <= widget->maxChildSize, __s("${_snapSizeErrorMessage(index)}\nSnap sizes must be between `minChildSize` and `maxChildSize`. "));
         assert(index == 0 || snapSize > widget->snapSizes![index - 1], __s("${_snapSizeErrorMessage(index)}\nSnap sizes must be in ascending order. "));
@@ -287,7 +287,7 @@ String _DraggableScrollableSheetStateCls::_snapSizeErrorMessage(int invalidIndex
     return __s("Invalid snapSize '${widget.snapSizes![invalidIndex]}' at index $invalidIndex of:\n  $snapSizesWithIndicator");
 }
 
-_DraggableScrollableSheetScrollPosition _DraggableScrollableSheetScrollControllerCls::createScrollPosition(ScrollContext context, ScrollPosition oldPosition, ScrollPhysics physics) {
+_DraggableScrollableSheetScrollPosition _DraggableScrollableSheetScrollControllerCls::createScrollPosition(ScrollPhysics physics, ScrollContext context, ScrollPosition oldPosition) {
     return make<_DraggableScrollableSheetScrollPositionCls>(physics, context, oldPosition, [=] ()     {
         extent;
     });
@@ -349,7 +349,7 @@ void _DraggableScrollableSheetScrollPositionCls::beginActivity(ScrollActivity ne
     super->beginActivity(newActivity);
 }
 
-bool _DraggableScrollableSheetScrollPositionCls::applyContentDimensions(double maxScrollSize, double minScrollSize) {
+bool _DraggableScrollableSheetScrollPositionCls::applyContentDimensions(double minScrollSize, double maxScrollSize) {
     return super->applyContentDimensions(minScrollSize - extent()->additionalMinSize(), maxScrollSize + extent()->additionalMaxSize());
 }
 

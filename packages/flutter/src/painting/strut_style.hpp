@@ -34,7 +34,7 @@ public:
 
      StrutStyleCls(String debugLabel, String fontFamily, List<String> fontFamilyFallback, double fontSize, FontStyle fontStyle, FontWeight fontWeight, bool forceStrutHeight, double height, double leading, TextLeadingDistribution leadingDistribution, String package);
 
-    virtual void  fromTextStyle(String debugLabel, String fontFamily, List<String> fontFamilyFallback, double fontSize, FontStyle fontStyle, FontWeight fontWeight, bool forceStrutHeight, double height, double leading, TextLeadingDistribution leadingDistribution, String package, TextStyle textStyle);
+    virtual void  fromTextStyle(TextStyle textStyle, String debugLabel, String fontFamily, List<String> fontFamilyFallback, double fontSize, FontStyle fontStyle, FontWeight fontWeight, bool forceStrutHeight, double height, double leading, TextLeadingDistribution leadingDistribution, String package);
 
     virtual List<String> fontFamilyFallback();
 
@@ -48,7 +48,7 @@ public:
 
     virtual String toStringShort();
 
-    virtual void debugFillProperties(String prefix, DiagnosticPropertiesBuilder properties);
+    virtual void debugFillProperties(DiagnosticPropertiesBuilder properties, String prefix);
 
 private:
     List<String> _fontFamilyFallback;

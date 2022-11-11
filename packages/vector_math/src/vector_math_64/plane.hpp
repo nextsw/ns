@@ -18,13 +18,13 @@ public:
 
     virtual void  copy(Plane other);
 
-    virtual void  components(double constant, double x, double y, double z);
+    virtual void  components(double x, double y, double z, double constant);
 
-    virtual void  normalconstant(double constant, Vector3 normal_);
+    virtual void  normalconstant(Vector3 normal_, double constant);
 
     virtual void copyFrom(Plane o);
 
-    virtual void setFromComponents(double w, double x, double y, double z);
+    virtual void setFromComponents(double x, double y, double z, double w);
 
     virtual void normalize();
 

@@ -23,7 +23,7 @@ private:
      _PendingCls(LocalizationsDelegate<dynamic> delegate, Future<dynamic> futureValue);
 };
 using _Pending = std::shared_ptr<_PendingCls>;
-Future<Map<Type, dynamic>> _loadAll(Iterable<LocalizationsDelegate<dynamic>> allDelegates, Locale locale);
+Future<Map<Type, dynamic>> _loadAll(Locale locale, Iterable<LocalizationsDelegate<dynamic>> allDelegates);
 
 
 template<typename T>

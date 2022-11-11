@@ -1,5 +1,5 @@
 #include "message_codec.hpp"
-MethodCallCls::MethodCallCls(dynamic arguments, String method) {
+MethodCallCls::MethodCallCls(String method, dynamic arguments) {
     {
         assert(method != nullptr);
     }

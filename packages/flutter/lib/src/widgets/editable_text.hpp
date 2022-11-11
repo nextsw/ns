@@ -345,7 +345,7 @@ public:
 
     virtual TextEditingValue textEditingValue();
 
-    virtual void userUpdateTextEditingValue(SelectionChangedCause cause, TextEditingValue value);
+    virtual void userUpdateTextEditingValue(TextEditingValue value, SelectionChangedCause cause);
 
     virtual void bringIntoView(TextPosition position);
 
@@ -365,7 +365,7 @@ public:
 
     virtual void autofill(TextEditingValue value);
 
-    virtual void showAutocorrectionPromptRect(int end, int start);
+    virtual void showAutocorrectionPromptRect(int start, int end);
 
     virtual Widget build(BuildContext context);
 
@@ -515,13 +515,13 @@ private:
 
     virtual void _createSelectionOverlay();
 
-    virtual void _handleSelectionChanged(SelectionChangedCause cause, TextSelection selection);
+    virtual void _handleSelectionChanged(TextSelection selection, SelectionChangedCause cause);
 
     virtual void _handleCaretChanged(Rect caretRect);
 
     virtual void _scheduleShowCaretOnScreen(bool withAnimation);
 
-    virtual void _formatAndSetValue(SelectionChangedCause cause, bool userInteraction, TextEditingValue value);
+    virtual void _formatAndSetValue(TextEditingValue value, SelectionChangedCause cause, bool userInteraction);
 
     virtual void _onCursorColorTick();
 
@@ -578,7 +578,7 @@ private:
 
     virtual void _expandSelectionToLinebreak(ExpandSelectionToLineBreakIntent intent);
 
-    virtual void _expandSelection(bool extentAtIndex, bool forward, _TextBoundary textBoundary);
+    virtual void _expandSelection(bool forward, _TextBoundary textBoundary, bool extentAtIndex);
 
     virtual Object _hideToolbarIfVisible(DismissIntent intent);
 
@@ -820,7 +820,7 @@ public:
 
 private:
 
-     _WordBoundaryCls(TextEditingValue textEditingValue, TextLayoutMetrics textLayout);
+     _WordBoundaryCls(TextLayoutMetrics textLayout, TextEditingValue textEditingValue);
 };
 using _WordBoundary = std::shared_ptr<_WordBoundaryCls>;
 
@@ -837,7 +837,7 @@ public:
 
 private:
 
-     _LineBreakCls(TextEditingValue textEditingValue, TextLayoutMetrics textLayout);
+     _LineBreakCls(TextLayoutMetrics textLayout, TextEditingValue textEditingValue);
 };
 using _LineBreak = std::shared_ptr<_LineBreakCls>;
 
@@ -921,13 +921,13 @@ public:
     std::function<_TextBoundary(T intent)> getTextBoundariesForIntent;
 
 
-    virtual Object invoke(BuildContext context, T intent);
+    virtual Object invoke(T intent, BuildContext context);
 
     virtual bool isActionEnabled();
 
 private:
 
-     _DeleteTextActionCls(std::function<_TextBoundary(T intent)> getTextBoundariesForIntent, EditableTextState state);
+     _DeleteTextActionCls(EditableTextState state, std::function<_TextBoundary(T intent)> getTextBoundariesForIntent);
     virtual TextRange _expandNonCollapsedRange(TextEditingValue value);
 
 };
@@ -946,13 +946,13 @@ public:
     static int NEWLINE_CODE_UNIT;
 
 
-    virtual Object invoke(BuildContext context, T intent);
+    virtual Object invoke(T intent, BuildContext context);
 
     virtual bool isActionEnabled();
 
 private:
 
-     _UpdateTextSelectionActionCls(std::function<_TextBoundary(T intent)> getTextBoundariesForIntent, bool ignoreNonCollapsedSelection, EditableTextState state);
+     _UpdateTextSelectionActionCls(EditableTextState state, bool ignoreNonCollapsedSelection, std::function<_TextBoundary(T intent)> getTextBoundariesForIntent);
     virtual bool _isAtWordwrapUpstream(TextPosition position);
 
     virtual bool _isAtWordwrapDownstream(TextPosition position);
@@ -968,13 +968,13 @@ public:
     std::function<_TextBoundary(ExtendSelectionToNextWordBoundaryOrCaretLocationIntent intent)> getTextBoundariesForIntent;
 
 
-    virtual Object invoke(BuildContext context, ExtendSelectionToNextWordBoundaryOrCaretLocationIntent intent);
+    virtual Object invoke(ExtendSelectionToNextWordBoundaryOrCaretLocationIntent intent, BuildContext context);
 
     virtual bool isActionEnabled();
 
 private:
 
-     _ExtendSelectionOrCaretPositionActionCls(std::function<_TextBoundary(ExtendSelectionToNextWordBoundaryOrCaretLocationIntent intent)> getTextBoundariesForIntent, EditableTextState state);
+     _ExtendSelectionOrCaretPositionActionCls(EditableTextState state, std::function<_TextBoundary(ExtendSelectionToNextWordBoundaryOrCaretLocationIntent intent)> getTextBoundariesForIntent);
 };
 using _ExtendSelectionOrCaretPositionAction = std::shared_ptr<_ExtendSelectionOrCaretPositionActionCls>;
 
@@ -986,7 +986,7 @@ public:
 
     virtual void stopCurrentVerticalRunIfSelectionChanges();
 
-    virtual void invoke(BuildContext context, T intent);
+    virtual void invoke(T intent, BuildContext context);
 
     virtual bool isActionEnabled();
 
@@ -1006,7 +1006,7 @@ public:
     EditableTextState state;
 
 
-    virtual Object invoke(BuildContext context, SelectAllTextIntent intent);
+    virtual Object invoke(SelectAllTextIntent intent, BuildContext context);
 
     virtual bool isActionEnabled();
 
@@ -1021,7 +1021,7 @@ public:
     EditableTextState state;
 
 
-    virtual void invoke(BuildContext context, CopySelectionTextIntent intent);
+    virtual void invoke(CopySelectionTextIntent intent, BuildContext context);
 
     virtual bool isActionEnabled();
 

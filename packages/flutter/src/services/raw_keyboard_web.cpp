@@ -14,11 +14,11 @@ RawKeyEventDataWebCls::RawKeyEventDataWebCls(String code, String key, int keyCod
 }
 
 String RawKeyEventDataWebCls::keyLabel() {
-    return key == __s("Unidentified")? __s("") : _unicodeChar(key) or __s("");
+    return key == __s("Unidentified")? __s("") : _unicodeChar(key) | __s("");
 }
 
 PhysicalKeyboardKey RawKeyEventDataWebCls::physicalKey() {
-    return kWebToPhysicalKey[code] or make<PhysicalKeyboardKeyCls>(LogicalKeyboardKeyCls::webPlane + code->hashCode());
+    return kWebToPhysicalKey[code] | make<PhysicalKeyboardKeyCls>(LogicalKeyboardKeyCls::webPlane + code->hashCode());
 }
 
 LogicalKeyboardKey RawKeyEventDataWebCls::logicalKey() {

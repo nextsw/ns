@@ -8,11 +8,11 @@ double degrees(double radians);
 
 double radians(double degrees);
 
-double mix(double a, double max, double min);
+double mix(double min, double max, double a);
 
-double smoothStep(double amount, double edge0, double edge1);
+double smoothStep(double edge0, double edge1, double amount);
 
-double catmullRom(double amount, double edge0, double edge1, double edge2, double edge3);
+double catmullRom(double edge0, double edge1, double edge2, double edge3, double amount);
 
 
 

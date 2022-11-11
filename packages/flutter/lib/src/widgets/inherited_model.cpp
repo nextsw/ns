@@ -11,7 +11,7 @@ bool InheritedModelCls<T>::isSupportedAspect(Object aspect) {
 
 template<typename T>
 template<typename T>
-T InheritedModelCls<T>::inheritFrom(Object aspect, BuildContext context) {
+T InheritedModelCls<T>::inheritFrom(BuildContext context, Object aspect) {
     if (aspect == nullptr) {
         return context-><T>dependOnInheritedWidgetOfExactType();
     }
@@ -33,7 +33,7 @@ T InheritedModelCls<T>::inheritFrom(Object aspect, BuildContext context) {
 
 template<typename T>
 template<typename T>
-void InheritedModelCls<T>::_findModels(Object aspect, BuildContext context, List<InheritedElement> results) {
+void InheritedModelCls<T>::_findModels(BuildContext context, Object aspect, List<InheritedElement> results) {
     InheritedElement model = context-><T>getElementForInheritedWidgetOfExactType();
     if (model == nullptr) {
         return;
@@ -56,7 +56,7 @@ void InheritedModelCls<T>::_findModels(Object aspect, BuildContext context, List
 }
 
 template<typename T>
-void InheritedModelElementCls<T>::updateDependencies(Object aspect, Element dependent) {
+void InheritedModelElementCls<T>::updateDependencies(Element dependent, Object aspect) {
     Set<T> dependencies = as<Set<T>>(getDependencies(dependent));
     if (dependencies != nullptr && dependencies->isEmpty) {
         return;
@@ -65,12 +65,12 @@ void InheritedModelElementCls<T>::updateDependencies(Object aspect, Element depe
         setDependencies(dependent, <T>make<HashSetCls>());
     } else {
         assert(is<T>(aspect));
-            auto _c1 = (dependencies or <T>make<HashSetCls>());    _c1.add(as<T>(aspect));setDependencies(dependent, _c1);
+            auto _c1 = (dependencies | <T>make<HashSetCls>());    _c1.add(as<T>(aspect));setDependencies(dependent, _c1);
     }
 }
 
 template<typename T>
-void InheritedModelElementCls<T>::notifyDependent(Element dependent, InheritedModel<T> oldWidget) {
+void InheritedModelElementCls<T>::notifyDependent(InheritedModel<T> oldWidget, Element dependent) {
     Set<T> dependencies = as<Set<T>>(getDependencies(dependent));
     if (dependencies == nullptr) {
         return;

@@ -89,7 +89,7 @@ using ServicesBinding = std::shared_ptr<ServicesBindingCls>;
 class _DefaultBinaryMessengerCls : public BinaryMessengerCls {
 public:
 
-    virtual Future<void> handlePlatformMessage(PlatformMessageResponseCallback callback, String channel, ByteData message);
+    virtual Future<void> handlePlatformMessage(String channel, ByteData message, PlatformMessageResponseCallback callback);
 
     virtual Future<ByteData> send(String channel, ByteData message);
 

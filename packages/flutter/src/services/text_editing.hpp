@@ -37,7 +37,7 @@ public:
 
     virtual TextSelection copyWith(TextAffinity affinity, int baseOffset, int extentOffset, bool isDirectional);
 
-    virtual TextSelection expandTo(bool extentAtIndex, TextPosition position);
+    virtual TextSelection expandTo(TextPosition position, bool extentAtIndex);
 
     virtual TextSelection extendTo(TextPosition position);
 

@@ -19,7 +19,7 @@ enum GrowthDirection{
 } // end GrowthDirection
 AxisDirection applyGrowthDirectionToAxisDirection(AxisDirection axisDirection, GrowthDirection growthDirection);
 
-ScrollDirection applyGrowthDirectionToScrollDirection(GrowthDirection growthDirection, ScrollDirection scrollDirection);
+ScrollDirection applyGrowthDirectionToScrollDirection(ScrollDirection scrollDirection, GrowthDirection growthDirection);
 
 
 class SliverConstraintsCls : public ConstraintsCls {
@@ -137,7 +137,7 @@ public:
     double crossAxisPosition;
 
 
-     SliverHitTestEntryCls(double crossAxisPosition, double mainAxisPosition, Unknown target);
+     SliverHitTestEntryCls(Unknown target, double crossAxisPosition, double mainAxisPosition);
 
     virtual String toString();
 
@@ -187,7 +187,7 @@ private:
 
 };
 using SliverPhysicalContainerParentData = std::shared_ptr<SliverPhysicalContainerParentDataCls>;
-List<DiagnosticsNode> _debugCompareFloats(String labelA, String labelB, double valueA, double valueB);
+List<DiagnosticsNode> _debugCompareFloats(String labelA, double valueA, String labelB, double valueB);
 
 
 class RenderSliverCls : public RenderObjectCls {
@@ -211,11 +211,11 @@ public:
 
     virtual double centerOffsetAdjustment();
 
-    virtual bool hitTest(double crossAxisPosition, double mainAxisPosition, SliverHitTestResult result);
+    virtual bool hitTest(SliverHitTestResult result, double crossAxisPosition, double mainAxisPosition);
 
     virtual bool hitTestSelf(double crossAxisPosition, double mainAxisPosition);
 
-    virtual bool hitTestChildren(double crossAxisPosition, double mainAxisPosition, SliverHitTestResult result);
+    virtual bool hitTestChildren(SliverHitTestResult result, double crossAxisPosition, double mainAxisPosition);
 
     virtual double calculatePaintOffset(SliverConstraints constraints, double from, double to);
 
@@ -235,7 +235,7 @@ public:
 
     virtual void debugPaint(PaintingContext context, Offset offset);
 
-    virtual void handleEvent(SliverHitTestEntry entry, PointerEvent event);
+    virtual void handleEvent(PointerEvent event, SliverHitTestEntry entry);
 
     virtual void debugFillProperties(DiagnosticPropertiesBuilder properties);
 
@@ -243,7 +243,7 @@ private:
     SliverGeometry _geometry;
 
 
-    virtual void _debugDrawArrow(Canvas canvas, GrowthDirection direction, Offset p0, Offset p1, Paint paint);
+    virtual void _debugDrawArrow(Canvas canvas, Paint paint, Offset p0, Offset p1, GrowthDirection direction);
 
 };
 using RenderSliver = std::shared_ptr<RenderSliverCls>;
@@ -251,7 +251,7 @@ using RenderSliver = std::shared_ptr<RenderSliverCls>;
 class RenderSliverHelpersCls : public ObjectCls {
 public:
 
-    virtual bool hitTestBoxChild(RenderBox child, double crossAxisPosition, double mainAxisPosition, BoxHitTestResult result);
+    virtual bool hitTestBoxChild(BoxHitTestResult result, RenderBox child, double crossAxisPosition, double mainAxisPosition);
 
     virtual void applyPaintTransformForBoxChild(RenderBox child, Matrix4 transform);
 
@@ -271,7 +271,7 @@ public:
 
     virtual void setChildParentData(RenderObject child, SliverConstraints constraints, SliverGeometry geometry);
 
-    virtual bool hitTestChildren(double crossAxisPosition, double mainAxisPosition, SliverHitTestResult result);
+    virtual bool hitTestChildren(SliverHitTestResult result, double crossAxisPosition, double mainAxisPosition);
 
     virtual double childMainAxisPosition(RenderBox child);
 

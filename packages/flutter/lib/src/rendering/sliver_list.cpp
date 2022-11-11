@@ -25,7 +25,7 @@ void RenderSliverListCls::performLayout() {
         int leadingChildrenWithoutLayoutOffset = 0;
         while (earliestUsefulChild != nullptr && childScrollOffset(earliestUsefulChild) == nullptr) {
             earliestUsefulChild = childAfter(earliestUsefulChild);
-            leadingChildrenWithoutLayoutOffset = 1;
+            leadingChildrenWithoutLayoutOffset += 1;
         }
         collectGarbage(leadingChildrenWithoutLayoutOffset, 0);
         if (firstChild == nullptr) {
@@ -46,7 +46,7 @@ void RenderSliverListCls::performLayout() {
                 firstChild!->layout(childConstraintstrue);
                 earliestUsefulChild = firstChild;
                 leadingChildWithLayout = earliestUsefulChild;
-                trailingChildWithLayout = earliestUsefulChild;
+                trailingChildWithLayout |= earliestUsefulChild;
                 break;
             } else {
                 geometry = make<SliverGeometryCls>(-scrollOffset);
@@ -64,7 +64,7 @@ void RenderSliverListCls::performLayout() {
         childParentData->layoutOffset = firstChildScrollOffset;
         assert(earliestUsefulChild == firstChild);
         leadingChildWithLayout = earliestUsefulChild;
-        trailingChildWithLayout = earliestUsefulChild;
+        trailingChildWithLayout |= earliestUsefulChild;
     }
     assert(childScrollOffset(firstChild!)! > -precisionErrorTolerance);
     if ( < precisionErrorTolerance) {
@@ -94,7 +94,7 @@ void RenderSliverListCls::performLayout() {
     double endScrollOffset = childScrollOffset(child)! + paintExtentOf(child);
     InlineMethod;
     while ( < scrollOffset) {
-        leadingGarbage = 1;
+        leadingGarbage += 1;
         if (!advance()) {
             assert(leadingGarbage == childCount);
             assert(child == nullptr);
@@ -114,7 +114,7 @@ void RenderSliverListCls::performLayout() {
     if (child != nullptr) {
         child = childAfter(child!);
         while (child != nullptr) {
-            trailingGarbage = 1;
+            trailingGarbage += 1;
             child = childAfter(child!);
         }
     }

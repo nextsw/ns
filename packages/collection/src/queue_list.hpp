@@ -57,7 +57,7 @@ private:
 
     virtual void  _init(int initialCapacity);
 
-    virtual void  _(int _head, List<E> _table, int _tail);
+    virtual void  _(int _head, int _tail, List<E> _table);
     static int _computeInitialCapacity(int initialCapacity);
 
     static bool _isPowerOf2(int number);

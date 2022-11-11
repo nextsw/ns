@@ -47,9 +47,9 @@ private:
      _CombiningGestureArenaMemberCls(GestureArenaTeam _owner, int _pointer);
     virtual void _close();
 
-    virtual GestureArenaEntry _add(GestureArenaMember member, int pointer);
+    virtual GestureArenaEntry _add(int pointer, GestureArenaMember member);
 
-    virtual void _resolve(GestureDisposition disposition, GestureArenaMember member);
+    virtual void _resolve(GestureArenaMember member, GestureDisposition disposition);
 
 };
 using _CombiningGestureArenaMember = std::shared_ptr<_CombiningGestureArenaMemberCls>;
@@ -59,7 +59,7 @@ public:
     GestureArenaMember captain;
 
 
-    virtual GestureArenaEntry add(GestureArenaMember member, int pointer);
+    virtual GestureArenaEntry add(int pointer, GestureArenaMember member);
 
 private:
     Map<int, _CombiningGestureArenaMember> _combiners;

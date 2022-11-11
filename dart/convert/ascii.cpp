@@ -13,8 +13,8 @@ Uint8List AsciiCodecCls::encode(String source) {
     return encoder()->convert(source);
 }
 
-String AsciiCodecCls::decode(bool allowInvalid, List<int> bytes) {
-    if (allowInvalid or _allowInvalid) {
+String AsciiCodecCls::decode(List<int> bytes, bool allowInvalid) {
+    if (allowInvalid | _allowInvalid) {
         return make<AsciiDecoderCls>(true)->convert(bytes);
     } else {
         return make<AsciiDecoderCls>(false)->convert(bytes);
@@ -29,7 +29,7 @@ AsciiDecoder AsciiCodecCls::decoder() {
     return _allowInvalid? make<AsciiDecoderCls>(true) : make<AsciiDecoderCls>(false);
 }
 
-Uint8List _UnicodeSubsetEncoderCls::convert(int end, int start, String stringValue) {
+Uint8List _UnicodeSubsetEncoderCls::convert(String stringValue, int start, int end) {
     auto stringLength = stringValue->length();
     end = RangeErrorCls->checkValidRange(start, end, stringLength);
     auto length = end - start;
@@ -59,7 +59,7 @@ void _UnicodeSubsetEncoderSinkCls::close() {
     _sink->close();
 }
 
-void _UnicodeSubsetEncoderSinkCls::addSlice(int end, bool isLast, String source, int start) {
+void _UnicodeSubsetEncoderSinkCls::addSlice(String source, int start, int end, bool isLast) {
     RangeErrorCls->checkValidRange(start, end, source->length());
     for (;  < end; i++) {
         auto codeUnit = source->codeUnitAt(i);
@@ -73,7 +73,7 @@ void _UnicodeSubsetEncoderSinkCls::addSlice(int end, bool isLast, String source,
     }
 }
 
-String _UnicodeSubsetDecoderCls::convert(List<int> bytes, int end, int start) {
+String _UnicodeSubsetDecoderCls::convert(List<int> bytes, int start, int end) {
     end = RangeErrorCls->checkValidRange(start, end, bytes->length());
     for (;  < end; i++) {
         auto byte = bytes[i];
@@ -91,7 +91,7 @@ Stream<String> _UnicodeSubsetDecoderCls::bind(Stream<List<int>> stream) {
     return super->bind(stream);
 }
 
-String _UnicodeSubsetDecoderCls::_convertInvalid(List<int> bytes, int end, int start) {
+String _UnicodeSubsetDecoderCls::_convertInvalid(List<int> bytes, int start, int end) {
     auto buffer = make<StringBufferCls>();
     for (;  < end; i++) {
         auto value = bytes[i];
@@ -128,7 +128,7 @@ void _ErrorHandlingAsciiDecoderSinkCls::add(List<int> source) {
     addSlice(source, 0, source->length(), false);
 }
 
-void _ErrorHandlingAsciiDecoderSinkCls::addSlice(int end, bool isLast, List<int> source, int start) {
+void _ErrorHandlingAsciiDecoderSinkCls::addSlice(List<int> source, int start, int end, bool isLast) {
     RangeErrorCls->checkValidRange(start, end, source->length());
     for (;  < end; i++) {
         if ((source[i] & ~_asciiMask) != 0) {
@@ -161,7 +161,7 @@ void _SimpleAsciiDecoderSinkCls::add(List<int> source) {
     _sink->add(StringCls->fromCharCodes(source));
 }
 
-void _SimpleAsciiDecoderSinkCls::addSlice(int end, bool isLast, List<int> source, int start) {
+void _SimpleAsciiDecoderSinkCls::addSlice(List<int> source, int start, int end, bool isLast) {
     Unknown length = source->length();
     RangeErrorCls->checkValidRange(start, end, length);
     if ( < end) {

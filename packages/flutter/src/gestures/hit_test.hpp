@@ -14,7 +14,7 @@
 class HitTestableCls : public ObjectCls {
 public:
 
-    virtual void hitTest(Offset position, HitTestResult result);
+    virtual void hitTest(HitTestResult result, Offset position);
 private:
 
     virtual void  _();
@@ -34,7 +34,7 @@ using HitTestDispatcher = std::shared_ptr<HitTestDispatcherCls>;
 class HitTestTargetCls : public ObjectCls {
 public:
 
-    virtual void handleEvent(HitTestEntry<HitTestTarget> entry, PointerEvent event);
+    virtual void handleEvent(PointerEvent event, HitTestEntry<HitTestTarget> entry);
 private:
 
     virtual void  _();

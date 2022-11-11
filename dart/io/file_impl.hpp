@@ -12,7 +12,7 @@ public:
 
     virtual void  forStdin();
 
-    virtual StreamSubscription<Uint8List> listen(bool cancelOnError, std::function<void(Uint8List event)> onData, std::function<void()> onDone, std::function<void ()> onError);
+    virtual StreamSubscription<Uint8List> listen(std::function<void(Uint8List event)> onData, bool cancelOnError, std::function<void()> onDone, std::function<void ()> onError);
 
 private:
     StreamController<Uint8List> _controller;
@@ -36,7 +36,7 @@ private:
     bool _atEnd;
 
 
-     _FileStreamCls(int _end, String _path, int position);
+     _FileStreamCls(String _path, int position, int _end);
 
     virtual Future _closeFile();
 
@@ -116,7 +116,7 @@ public:
 
     virtual RandomAccessFile openSync(FileMode mode);
 
-    virtual Stream<List<int>> openRead(int end, int start);
+    virtual Stream<List<int>> openRead(int start, int end);
 
     virtual IOSink openWrite(Encoding encoding, FileMode mode);
 
@@ -142,7 +142,7 @@ public:
 
     virtual String toString();
 
-    static void  throwIfError(String msg, String path, Object result);
+    static void  throwIfError(Object result, String msg, String path);
 
 private:
     String _path;
@@ -154,7 +154,7 @@ private:
 
     static int _namespacePointer();
 
-    static Future _dispatchWithNamespace(List data, int request);
+    static Future _dispatchWithNamespace(int request, List data);
 
     static void  _exists(_Namespace namespace, Uint8List rawPath);
     static void  _create(_Namespace namespace, Uint8List rawPath);
@@ -166,22 +166,22 @@ private:
     static void  _deleteLinkNative(_Namespace namespace, Uint8List rawPath);
     virtual void _deleteSync(bool recursive);
 
-    static void  _rename(_Namespace namespace, String newPath, Uint8List oldPath);
-    static void  _renameLink(_Namespace namespace, String newPath, Uint8List oldPath);
-    static void  _copy(_Namespace namespace, String newPath, Uint8List oldPath);
+    static void  _rename(_Namespace namespace, Uint8List oldPath, String newPath);
+    static void  _renameLink(_Namespace namespace, Uint8List oldPath, String newPath);
+    static void  _copy(_Namespace namespace, Uint8List oldPath, String newPath);
     static void  _lengthFromPath(_Namespace namespace, Uint8List rawPath);
     static void  _lastAccessed(_Namespace namespace, Uint8List rawPath);
-    static void  _setLastAccessed(int millis, _Namespace namespace, Uint8List rawPath);
+    static void  _setLastAccessed(_Namespace namespace, Uint8List rawPath, int millis);
     static void  _lastModified(_Namespace namespace, Uint8List rawPath);
-    static void  _setLastModified(int millis, _Namespace namespace, Uint8List rawPath);
-    static void  _open(int mode, _Namespace namespace, Uint8List rawPath);
+    static void  _setLastModified(_Namespace namespace, Uint8List rawPath, int millis);
+    static void  _open(_Namespace namespace, Uint8List rawPath, int mode);
     static int _openStdio(int fd);
     static RandomAccessFile _openStdioSync(int fd);
 
     virtual String _tryDecode(List<int> bytes, Encoding encoding);
 
     template<typename T>
- static T _checkNotNull(String name, T t);
+ static T _checkNotNull(T t, String name);
 
 };
 using _File = std::shared_ptr<_FileCls>;
@@ -194,15 +194,15 @@ public:
     virtual int close();
     virtual void  readByte();
     virtual void  read(int bytes);
-    virtual void  readInto(List<int> buffer, int end, int start);
+    virtual void  readInto(List<int> buffer, int start, int end);
     virtual void  writeByte(int value);
-    virtual void  writeFrom(List<int> buffer, int end, int start);
+    virtual void  writeFrom(List<int> buffer, int start, int end);
     virtual void  position();
     virtual void  setPosition(int position);
     virtual void  truncate(int length);
     virtual void  length();
     virtual void  flush();
-    virtual void  lock(int end, int lock, int start);
+    virtual void  lock(int lock, int start, int end);
 private:
 
      _RandomAccessFileOpsCls(int pointer);
@@ -230,21 +230,21 @@ public:
 
     virtual Uint8List readSync(int bytes);
 
-    virtual Future<int> readInto(List<int> buffer, int end, int start);
+    virtual Future<int> readInto(List<int> buffer, int start, int end);
 
-    virtual int readIntoSync(List<int> buffer, int end, int start);
+    virtual int readIntoSync(List<int> buffer, int start, int end);
 
     virtual Future<RandomAccessFile> writeByte(int value);
 
     virtual int writeByteSync(int value);
 
-    virtual Future<RandomAccessFile> writeFrom(List<int> buffer, int end, int start);
+    virtual Future<RandomAccessFile> writeFrom(List<int> buffer, int start, int end);
 
-    virtual void writeFromSync(List<int> buffer, int end, int start);
+    virtual void writeFromSync(List<int> buffer, int start, int end);
 
-    virtual Future<RandomAccessFile> writeString(Encoding encoding, String stringValue);
+    virtual Future<RandomAccessFile> writeString(String stringValue, Encoding encoding);
 
-    virtual void writeStringSync(Encoding encoding, String stringValue);
+    virtual void writeStringSync(String stringValue, Encoding encoding);
 
     virtual Future<int> position();
 
@@ -266,13 +266,13 @@ public:
 
     virtual void flushSync();
 
-    virtual Future<RandomAccessFile> lock(int end, FileLock mode, int start);
+    virtual Future<RandomAccessFile> lock(FileLock mode, int start, int end);
 
-    virtual Future<RandomAccessFile> unlock(int end, int start);
+    virtual Future<RandomAccessFile> unlock(int start, int end);
 
-    virtual void lockSync(int end, FileLock mode, int start);
+    virtual void lockSync(FileLock mode, int start, int end);
 
-    virtual void unlockSync(int end, int start);
+    virtual void unlockSync(int start, int end);
 
     virtual int fd();
 
@@ -286,7 +286,7 @@ private:
     _RandomAccessFileOps _ops;
 
 
-     _RandomAccessFileCls(String path, int pointer);
+     _RandomAccessFileCls(int pointer, String path);
 
     virtual void _maybePerformCleanup();
 
@@ -296,7 +296,7 @@ private:
 
     virtual int _pointer();
 
-    virtual Future _dispatch(List data, bool markClosed, int request);
+    virtual Future _dispatch(int request, List data, bool markClosed);
 
     virtual void _checkAvailable();
 

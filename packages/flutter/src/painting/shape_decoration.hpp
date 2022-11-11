@@ -54,7 +54,7 @@ public:
 
     virtual void debugFillProperties(DiagnosticPropertiesBuilder properties);
 
-    virtual bool hitTest(Offset position, Size size, TextDirection textDirection);
+    virtual bool hitTest(Size size, Offset position, TextDirection textDirection);
 
     virtual BoxPainter createBoxPainter(VoidCallback onChanged);
 
@@ -70,7 +70,7 @@ public:
 
     virtual void dispose();
 
-    virtual void paint(Canvas canvas, ImageConfiguration configuration, Offset offset);
+    virtual void paint(Canvas canvas, Offset offset, ImageConfiguration configuration);
 
 private:
     ShapeDecoration _decoration;

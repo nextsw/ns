@@ -40,7 +40,7 @@ public:
 
     virtual double page();
 
-    virtual Future<void> animateToPage(Curve curve, Duration duration, int page);
+    virtual Future<void> animateToPage(int page, Curve curve, Duration duration);
 
     virtual void jumpToPage(int page);
 
@@ -48,7 +48,7 @@ public:
 
     virtual Future<void> previousPage(Curve curve, Duration duration);
 
-    virtual ScrollPosition createScrollPosition(ScrollContext context, ScrollPosition oldPosition, ScrollPhysics physics);
+    virtual ScrollPosition createScrollPosition(ScrollPhysics physics, ScrollContext context, ScrollPosition oldPosition);
 
     virtual void attach(ScrollPosition position);
 
@@ -77,7 +77,7 @@ public:
     int initialPage;
 
 
-    virtual Future<void> ensureVisible(double alignment, ScrollPositionAlignmentPolicy alignmentPolicy, Curve curve, Duration duration, RenderObject object, RenderObject targetRenderObject);
+    virtual Future<void> ensureVisible(RenderObject object, double alignment, ScrollPositionAlignmentPolicy alignmentPolicy, Curve curve, Duration duration, RenderObject targetRenderObject);
 
     virtual double viewportFraction();
 
@@ -95,13 +95,13 @@ public:
 
     virtual void saveOffset();
 
-    virtual void restoreOffset(bool initialRestore, double offset);
+    virtual void restoreOffset(double offset, bool initialRestore);
 
     virtual bool applyViewportDimension(double viewportDimension);
 
     virtual void absorb(ScrollPosition other);
 
-    virtual bool applyContentDimensions(double maxScrollExtent, double minScrollExtent);
+    virtual bool applyContentDimensions(double minScrollExtent, double maxScrollExtent);
 
     virtual PageMetrics copyWith(AxisDirection axisDirection, double maxScrollExtent, double minScrollExtent, double pixels, double viewportDimension, double viewportFraction);
 
@@ -148,7 +148,7 @@ private:
 
     virtual double _getPage(ScrollMetrics position);
 
-    virtual double _getPixels(double page, ScrollMetrics position);
+    virtual double _getPixels(ScrollMetrics position, double page);
 
     virtual double _getTargetPixels(ScrollMetrics position, Tolerance tolerance, double velocity);
 

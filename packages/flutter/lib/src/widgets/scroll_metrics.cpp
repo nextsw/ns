@@ -1,6 +1,6 @@
 #include "scroll_metrics.hpp"
 ScrollMetrics ScrollMetricsCls::copyWith(AxisDirection axisDirection, double maxScrollExtent, double minScrollExtent, double pixels, double viewportDimension) {
-    return make<FixedScrollMetricsCls>(minScrollExtent or (hasContentDimensions()? this->minScrollExtent : nullptr), maxScrollExtent or (hasContentDimensions()? this->maxScrollExtent : nullptr), pixels or (hasPixels()? this->pixels : nullptr), viewportDimension or (hasViewportDimension()? this->viewportDimension : nullptr), axisDirection or this->axisDirection);
+    return make<FixedScrollMetricsCls>(minScrollExtent | (hasContentDimensions()? this->minScrollExtent : nullptr), maxScrollExtent | (hasContentDimensions()? this->maxScrollExtent : nullptr), pixels | (hasPixels()? this->pixels : nullptr), viewportDimension | (hasViewportDimension()? this->viewportDimension : nullptr), axisDirection | this->axisDirection);
 }
 
 Axis ScrollMetricsCls::axis() {

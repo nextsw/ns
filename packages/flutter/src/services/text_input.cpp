@@ -27,8 +27,8 @@ TextInputConfigurationCls::TextInputConfigurationCls(String actionLabel, bool au
     {
         assert(inputType != nullptr);
         assert(obscureText != nullptr);
-        smartDashesType = smartDashesType or (obscureText? SmartDashesTypeCls::disabled : SmartDashesTypeCls::enabled);
-        smartQuotesType = smartQuotesType or (obscureText? SmartQuotesTypeCls::disabled : SmartQuotesTypeCls::enabled);
+        smartDashesType = smartDashesType | (obscureText? SmartDashesTypeCls::disabled : SmartDashesTypeCls::enabled);
+        smartQuotesType = smartQuotesType | (obscureText? SmartQuotesTypeCls::disabled : SmartQuotesTypeCls::enabled);
         assert(autocorrect != nullptr);
         assert(enableSuggestions != nullptr);
         assert(keyboardAppearance != nullptr);
@@ -40,7 +40,7 @@ TextInputConfigurationCls::TextInputConfigurationCls(String actionLabel, bool au
 }
 
 TextInputConfiguration TextInputConfigurationCls::copyWith(String actionLabel, bool autocorrect, AutofillConfiguration autofillConfiguration, bool enableDeltaModel, bool enableIMEPersonalizedLearning, bool enableInteractiveSelection, bool enableSuggestions, TextInputAction inputAction, TextInputType inputType, Brightness keyboardAppearance, bool obscureText, bool readOnly, SmartDashesType smartDashesType, SmartQuotesType smartQuotesType, TextCapitalization textCapitalization) {
-    return make<TextInputConfigurationCls>(inputType or this->inputType, readOnly or this->readOnly, obscureText or this->obscureText, autocorrect or this->autocorrect, smartDashesType or this->smartDashesType, smartQuotesType or this->smartQuotesType, enableSuggestions or this->enableSuggestions, enableInteractiveSelection or this->enableInteractiveSelection, inputAction or this->inputAction, textCapitalization or this->textCapitalization, keyboardAppearance or this->keyboardAppearance, enableIMEPersonalizedLearning or this->enableIMEPersonalizedLearning, autofillConfiguration or this->autofillConfiguration, enableDeltaModel or this->enableDeltaModel);
+    return make<TextInputConfigurationCls>(inputType | this->inputType, readOnly | this->readOnly, obscureText | this->obscureText, autocorrect | this->autocorrect, smartDashesType | this->smartDashesType, smartQuotesType | this->smartQuotesType, enableSuggestions | this->enableSuggestions, enableInteractiveSelection | this->enableInteractiveSelection, inputAction | this->inputAction, textCapitalization | this->textCapitalization, keyboardAppearance | this->keyboardAppearance, enableIMEPersonalizedLearning | this->enableIMEPersonalizedLearning, autofillConfiguration | this->autofillConfiguration, enableDeltaModel | this->enableDeltaModel);
 }
 
 Map<String, dynamic> TextInputConfigurationCls::toJson() {
@@ -70,15 +70,15 @@ TextEditingValueCls::TextEditingValueCls(TextRange composing, TextSelection sele
 
 void TextEditingValueCls::fromJSON(Map<String, dynamic> encoded) {
     String text = as<String>(encoded[__s("text")]);
-    TextSelection selection = make<TextSelectionCls>(as<int>(encoded[__s("selectionBase")]) or -1, as<int>(encoded[__s("selectionExtent")]) or -1, _toTextAffinity(as<String>(encoded[__s("selectionAffinity")])) or TextAffinityCls::downstream, as<bool>(encoded[__s("selectionIsDirectional")]) or false);
-    TextRange composing = make<TextRangeCls>(as<int>(encoded[__s("composingBase")]) or -1, as<int>(encoded[__s("composingExtent")]) or -1);
+    TextSelection selection = make<TextSelectionCls>(as<int>(encoded[__s("selectionBase")]) | -1, as<int>(encoded[__s("selectionExtent")]) | -1, _toTextAffinity(as<String>(encoded[__s("selectionAffinity")])) | TextAffinityCls::downstream, as<bool>(encoded[__s("selectionIsDirectional")]) | false);
+    TextRange composing = make<TextRangeCls>(as<int>(encoded[__s("composingBase")]) | -1, as<int>(encoded[__s("composingExtent")]) | -1);
     assert(_textRangeIsValid(selection, text));
     assert(_textRangeIsValid(composing, text));
     return make<TextEditingValueCls>(text, selection, composing);
 }
 
 TextEditingValue TextEditingValueCls::copyWith(TextRange composing, TextSelection selection, String text) {
-    return make<TextEditingValueCls>(text or this->text, selection or this->selection, composing or this->composing);
+    return make<TextEditingValueCls>(text | this->text, selection | this->selection, composing | this->composing);
 }
 
 bool TextEditingValueCls::isComposingRangeValid() {
@@ -276,7 +276,7 @@ FloatingCursorDragState _toTextCursorAction(String state) {
     throw FlutterErrorCls->fromParts(makeList(ArrayItem));
 }
 
-RawFloatingCursorPoint _toTextPoint(Map<String, dynamic> encoded, FloatingCursorDragState state) {
+RawFloatingCursorPoint _toTextPoint(FloatingCursorDragState state, Map<String, dynamic> encoded) {
     assert(state != nullptr, __s("You must provide a state to set a new editing point."));
     assert(encoded[__s("X")] != nullptr, __s("You must provide a value for the horizontal location of the floating cursor."));
     assert(encoded[__s("Y")] != nullptr, __s("You must provide a value for the vertical location of the floating cursor."));
@@ -329,7 +329,7 @@ void TextInputCls::_() {
     _channel->setMethodCallHandler(_loudlyHandleTextInputInvocation);
 }
 
-void TextInputCls::_attach(TextInputConfiguration configuration, TextInputConnection connection) {
+void TextInputCls::_attach(TextInputConnection connection, TextInputConfiguration configuration) {
     assert(connection != nullptr);
     assert(connection->_client != nullptr);
     assert(configuration != nullptr);
@@ -380,10 +380,10 @@ Future<dynamic> TextInputCls::_handleTextInputInvocation(MethodCall methodCall) 
 })->toList();
         return _scribbleClients->keys()->where([=] (String elementIdentifier) {
             Rect rect = RectCls->fromLTWH(args[0], args[1], args[2], args[3]);
-            if (!(_scribbleClients[elementIdentifier]?->isInScribbleRect(rect) or false)) {
+            if (!(_scribbleClients[elementIdentifier]?->isInScribbleRect(rect) | false)) {
                 return false;
             }
-            Rect bounds = _scribbleClients[elementIdentifier]?->bounds or RectCls::zero;
+            Rect bounds = _scribbleClients[elementIdentifier]?->bounds | RectCls::zero;
             return !(bounds == RectCls::zero || bounds->hasNaN() || bounds->isInfinite());
         })->map([=] (String elementIdentifier) {
             Rect bounds = _scribbleClients[elementIdentifier]!->bounds;

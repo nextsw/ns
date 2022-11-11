@@ -226,7 +226,7 @@ public:
     int viewId;
 
 
-    static int pointerAction(int action, int pointerId);
+    static int pointerAction(int pointerId, int action);
 
     virtual bool awaitingCreation();
 

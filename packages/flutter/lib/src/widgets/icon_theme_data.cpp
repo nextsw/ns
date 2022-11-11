@@ -8,7 +8,7 @@ IconThemeDataCls::IconThemeDataCls(Color color, double opacity, List<Shadow> sha
 void IconThemeDataCls::fallback()
 
 IconThemeData IconThemeDataCls::copyWith(Color color, double opacity, List<Shadow> shadows, double size) {
-    return make<IconThemeDataCls>(color or this->color, opacity or this->opacity, size or this->size, shadows or this->shadows);
+    return make<IconThemeDataCls>(color | this->color, opacity | this->opacity, size | this->size, shadows | this->shadows);
 }
 
 IconThemeData IconThemeDataCls::merge(IconThemeData other) {

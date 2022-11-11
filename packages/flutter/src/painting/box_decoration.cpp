@@ -7,7 +7,7 @@ BoxDecorationCls::BoxDecorationCls(BlendMode backgroundBlendMode, BoxBorder bord
 }
 
 BoxDecoration BoxDecorationCls::copyWith(BlendMode backgroundBlendMode, BoxBorder border, BorderRadiusGeometry borderRadius, List<BoxShadow> boxShadow, Color color, Gradient gradient, DecorationImage image, BoxShape shape) {
-    return make<BoxDecorationCls>(color or this->color, image or this->image, border or this->border, borderRadius or this->borderRadius, boxShadow or this->boxShadow, gradient or this->gradient, backgroundBlendMode or this->backgroundBlendMode, shape or this->shape);
+    return make<BoxDecorationCls>(color | this->color, image | this->image, border | this->border, borderRadius | this->borderRadius, boxShadow | this->boxShadow, gradient | this->gradient, backgroundBlendMode | this->backgroundBlendMode, shape | this->shape);
 }
 
 bool BoxDecorationCls::debugAssertIsValid() {
@@ -97,7 +97,7 @@ void BoxDecorationCls::debugFillProperties(DiagnosticPropertiesBuilder propertie
     properties->add(<BoxShape>make<EnumPropertyCls>(__s("shape"), shapeBoxShapeCls::rectangle));
 }
 
-bool BoxDecorationCls::hitTest(Offset position, Size size, TextDirection textDirection) {
+bool BoxDecorationCls::hitTest(Size size, Offset position, TextDirection textDirection) {
     assert(shape != nullptr);
     assert((OffsetCls::zero & size)->contains(position));
     ;
@@ -113,7 +113,7 @@ void _BoxDecorationPainterCls::dispose() {
     super->dispose();
 }
 
-void _BoxDecorationPainterCls::paint(Canvas canvas, ImageConfiguration configuration, Offset offset) {
+void _BoxDecorationPainterCls::paint(Canvas canvas, Offset offset, ImageConfiguration configuration) {
     assert(configuration != nullptr);
     assert(configuration->size != nullptr);
     Rect rect = offset & configuration->size!;
@@ -154,7 +154,7 @@ Paint _BoxDecorationPainterCls::_getBackgroundPaint(Rect rect, TextDirection tex
     return _cachedBackgroundPaint!;
 }
 
-void _BoxDecorationPainterCls::_paintBox(Canvas canvas, Paint paint, Rect rect, TextDirection textDirection) {
+void _BoxDecorationPainterCls::_paintBox(Canvas canvas, Rect rect, Paint paint, TextDirection textDirection) {
     ;
 }
 
@@ -175,11 +175,11 @@ void _BoxDecorationPainterCls::_paintBackgroundColor(Canvas canvas, Rect rect, T
     }
 }
 
-void _BoxDecorationPainterCls::_paintBackgroundImage(Canvas canvas, ImageConfiguration configuration, Rect rect) {
+void _BoxDecorationPainterCls::_paintBackgroundImage(Canvas canvas, Rect rect, ImageConfiguration configuration) {
     if (_decoration->image == nullptr) {
         return;
     }
-    _imagePainter = _decoration->image!->createPainter(onChanged!);
+    _imagePainter |= _decoration->image!->createPainter(onChanged!);
     Path clipPath;
     ;
     _imagePainter!->paint(canvas, rect, clipPath, configuration);

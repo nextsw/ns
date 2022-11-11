@@ -12,14 +12,14 @@ Iterable<LicenseParagraph> LicenseEntryWithLineBreaksCls::paragraphs() {
     InlineMethod;
     while ( < text->length()) {
         ;
-        currentPosition = 1;
+        currentPosition += 1;
     }
     ;
     return result;
 }
 
 void LicenseRegistryCls::addLicense(LicenseEntryCollector collector) {
-    _collectors = makeList();
+    _collectors |= makeList();
     _collectors!->add(collector);
 }
 

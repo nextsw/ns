@@ -12,11 +12,11 @@ public:
 
     static void max(Vector4 a, Vector4 b, Vector4 result);
 
-    static void mix(double a, Vector4 max, Vector4 min, Vector4 result);
+    static void mix(Vector4 min, Vector4 max, double a, Vector4 result);
 
     virtual Float64List storage();
 
-     Vector4Cls(double w, double x, double y, double z);
+     Vector4Cls(double x, double y, double z, double w);
 
     virtual void  array(List<double> array, int offset);
 
@@ -33,7 +33,7 @@ public:
 
     virtual void  random(Random rng);
 
-    virtual void setValues(double w_, double x_, double y_, double z_);
+    virtual void setValues(double x_, double y_, double z_, double w_);
 
     virtual void setZero();
 
@@ -111,9 +111,9 @@ public:
 
     virtual void absolute();
 
-    virtual void clamp(Vector4 max, Vector4 min);
+    virtual void clamp(Vector4 min, Vector4 max);
 
-    virtual void clampScalar(double max, double min);
+    virtual void clampScalar(double min, double max);
 
     virtual void floor();
 

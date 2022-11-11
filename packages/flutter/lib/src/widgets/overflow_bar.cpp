@@ -10,11 +10,11 @@ OverflowBarCls::OverflowBarCls(MainAxisAlignment alignment, Unknown children, Cl
 }
 
 RenderObject OverflowBarCls::createRenderObject(BuildContext context) {
-    return make<_RenderOverflowBarCls>(spacing, alignment, overflowSpacing, overflowAlignment, overflowDirection, textDirection or DirectionalityCls->of(context), clipBehavior);
+    return make<_RenderOverflowBarCls>(spacing, alignment, overflowSpacing, overflowAlignment, overflowDirection, textDirection | DirectionalityCls->of(context), clipBehavior);
 }
 
 void OverflowBarCls::updateRenderObject(BuildContext context, RenderObject renderObject) {
-    auto _c1 = (as<_RenderOverflowBar>(renderObject));_c1.spacing = auto _c2 = spacing;_c2.alignment = auto _c3 = alignment;_c3.overflowSpacing = auto _c4 = overflowSpacing;_c4.overflowAlignment = auto _c5 = overflowAlignment;_c5.overflowDirection = auto _c6 = overflowDirection;_c6.textDirection = auto _c7 = textDirection or DirectionalityCls->of(context);_c7.clipBehavior = clipBehavior;_c7;_c6;_c5;_c4;_c3;_c2;_c1;
+    auto _c1 = (as<_RenderOverflowBar>(renderObject));_c1.spacing = auto _c2 = spacing;_c2.alignment = auto _c3 = alignment;_c3.overflowSpacing = auto _c4 = overflowSpacing;_c4.overflowAlignment = auto _c5 = overflowAlignment;_c5.overflowDirection = auto _c6 = overflowDirection;_c6.textDirection = auto _c7 = textDirection | DirectionalityCls->of(context);_c7.clipBehavior = clipBehavior;_c7;_c6;_c5;_c4;_c3;_c2;_c1;
 }
 
 void OverflowBarCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
@@ -130,15 +130,15 @@ double _RenderOverflowBarCls::computeMinIntrinsicHeight(double width) {
     }
     double barWidth = 0.0;
     while (child != nullptr) {
-        barWidth = child->getMinIntrinsicWidth(double->infinity);
+        barWidth += child->getMinIntrinsicWidth(double->infinity);
         child = childAfter(child);
     }
-    barWidth = spacing() * (childCount - 1);
+    barWidth += spacing() * (childCount - 1);
     double height = 0.0;
     if (barWidth > width) {
         child = firstChild;
         while (child != nullptr) {
-            height = child->getMinIntrinsicHeight(width);
+            height += child->getMinIntrinsicHeight(width);
             child = childAfter(child);
         }
         return height + overflowSpacing() * (childCount - 1);
@@ -159,15 +159,15 @@ double _RenderOverflowBarCls::computeMaxIntrinsicHeight(double width) {
     }
     double barWidth = 0.0;
     while (child != nullptr) {
-        barWidth = child->getMinIntrinsicWidth(double->infinity);
+        barWidth += child->getMinIntrinsicWidth(double->infinity);
         child = childAfter(child);
     }
-    barWidth = spacing() * (childCount - 1);
+    barWidth += spacing() * (childCount - 1);
     double height = 0.0;
     if (barWidth > width) {
         child = firstChild;
         while (child != nullptr) {
-            height = child->getMaxIntrinsicHeight(width);
+            height += child->getMaxIntrinsicHeight(width);
             child = childAfter(child);
         }
         return height + overflowSpacing() * (childCount - 1);
@@ -188,7 +188,7 @@ double _RenderOverflowBarCls::computeMinIntrinsicWidth(double height) {
     }
     double width = 0.0;
     while (child != nullptr) {
-        width = child->getMinIntrinsicWidth(double->infinity);
+        width += child->getMinIntrinsicWidth(double->infinity);
         child = childAfter(child);
     }
     return width + spacing() * (childCount - 1);
@@ -201,7 +201,7 @@ double _RenderOverflowBarCls::computeMaxIntrinsicWidth(double height) {
     }
     double width = 0.0;
     while (child != nullptr) {
-        width = child->getMaxIntrinsicWidth(double->infinity);
+        width += child->getMaxIntrinsicWidth(double->infinity);
         child = childAfter(child);
     }
     return width + spacing() * (childCount - 1);
@@ -222,9 +222,9 @@ Size _RenderOverflowBarCls::computeDryLayout(BoxConstraints constraints) {
     double y = 0.0;
     while (child != nullptr) {
         Size childSize = child->getDryLayout(childConstraints);
-        childrenWidth = childSize->width();
+        childrenWidth += childSize->width();
         maxChildHeight = math->max(maxChildHeight, childSize->height());
-        y = childSize->height() + overflowSpacing();
+        y += childSize->height() + overflowSpacing();
         child = childAfter(child);
     }
     double actualWidth = childrenWidth + spacing() * (childCount - 1);
@@ -248,7 +248,7 @@ void _RenderOverflowBarCls::performLayout() {
     double maxChildWidth = 0;
     while (child != nullptr) {
         child->layout(childConstraintstrue);
-        childrenWidth = child->size()->width();
+        childrenWidth += child->size()->width();
         maxChildHeight = math->max(maxChildHeight, child->size()->height());
         maxChildWidth = math->max(maxChildWidth, child->size()->width());
         child = childAfter(child);
@@ -265,7 +265,7 @@ void _RenderOverflowBarCls::performLayout() {
             ;
             assert(x != nullptr);
             childParentData->offset = make<OffsetCls>(x, y);
-            y = child->size()->height() + overflowSpacing();
+            y += child->size()->height() + overflowSpacing();
             child = nextChild();
         }
         size = constraints->constrain(make<SizeCls>(constraints->maxWidth, y - overflowSpacing()));
@@ -281,17 +281,17 @@ void _RenderOverflowBarCls::performLayout() {
             _OverflowBarParentData childParentData = as<_OverflowBarParentData>(child->parentData!);
             childParentData->offset = make<OffsetCls>(x, (maxChildHeight - child->size()->height()) / 2);
             if (!rtl) {
-                x = child->size()->width() + layoutSpacing;
+                x += child->size()->width() + layoutSpacing;
             }
             child = childAfter(child);
             if (rtl && child != nullptr) {
-                x = child->size()->width() + layoutSpacing;
+                x -= child->size()->width() + layoutSpacing;
             }
         }
     }
 }
 
-bool _RenderOverflowBarCls::hitTestChildren(Offset position, BoxHitTestResult result) {
+bool _RenderOverflowBarCls::hitTestChildren(BoxHitTestResult result, Offset position) {
     return defaultHitTestChildren(resultposition);
 }
 

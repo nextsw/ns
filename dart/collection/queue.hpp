@@ -44,7 +44,7 @@ private:
     _DoubleLinkedQueueEntry<E> _nextLink;
 
 
-    virtual void _link(_DoubleLinkedQueueEntry<E> next, _DoubleLinkedQueueEntry<E> previous);
+    virtual void _link(_DoubleLinkedQueueEntry<E> previous, _DoubleLinkedQueueEntry<E> next);
 
     virtual void _unlink();
 
@@ -78,7 +78,7 @@ private:
     DoubleLinkedQueue<E> _queue;
 
 
-     _DoubleLinkedQueueElementCls(DoubleLinkedQueue<E> _queue, E element);
+     _DoubleLinkedQueueElementCls(E element, DoubleLinkedQueue<E> _queue);
     virtual E _remove();
 
     virtual _DoubleLinkedQueueElement<E> _asNonSentinelEntry();
@@ -163,7 +163,7 @@ private:
     int _elementCount;
 
 
-    virtual void _filter(bool removeMatching, std::function<bool(E element)> test);
+    virtual void _filter(std::function<bool(E element)> test, bool removeMatching);
 
 };
 template<typename E>
@@ -258,7 +258,7 @@ private:
 
     static int _calculateCapacity(int initialCapacity);
 
-    virtual void _filterWhere(bool removeMatching, std::function<bool(E element)> test);
+    virtual void _filterWhere(std::function<bool(E element)> test, bool removeMatching);
 
     static bool _isPowerOf2(int number);
 

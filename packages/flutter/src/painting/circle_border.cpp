@@ -39,7 +39,7 @@ Path CircleBorderCls::getOuterPath(Rect rect, TextDirection textDirection) {
 }
 
 CircleBorder CircleBorderCls::copyWith(BorderSide side) {
-    return make<CircleBorderCls>(side or this->side);
+    return make<CircleBorderCls>(side | this->side);
 }
 
 void CircleBorderCls::paint(Canvas canvas, Rect rect, TextDirection textDirection) {

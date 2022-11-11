@@ -31,7 +31,7 @@ void _LayoutBuilderElementCls<ConstraintType>::forgetChild(Element child) {
 }
 
 template<typename ConstraintType>
-void _LayoutBuilderElementCls<ConstraintType>::mount(Object newSlot, Element parent) {
+void _LayoutBuilderElementCls<ConstraintType>::mount(Element parent, Object newSlot) {
     super->mount(parent, newSlot);
     renderObject()->updateCallback(_layout);
 }
@@ -67,7 +67,7 @@ void _LayoutBuilderElementCls<ConstraintType>::insertRenderObjectChild(RenderObj
 }
 
 template<typename ConstraintType>
-void _LayoutBuilderElementCls<ConstraintType>::moveRenderObjectChild(RenderObject child, Object newSlot, Object oldSlot) {
+void _LayoutBuilderElementCls<ConstraintType>::moveRenderObjectChild(RenderObject child, Object oldSlot, Object newSlot) {
     assert(false);
 }
 
@@ -167,8 +167,8 @@ double _RenderLayoutBuilderCls::computeDistanceToActualBaseline(TextBaseline bas
     return super->computeDistanceToActualBaseline(baseline);
 }
 
-bool _RenderLayoutBuilderCls::hitTestChildren(Offset position, BoxHitTestResult result) {
-    return child?->hitTest(resultposition) or false;
+bool _RenderLayoutBuilderCls::hitTestChildren(BoxHitTestResult result, Offset position) {
+    return child?->hitTest(resultposition) | false;
 }
 
 void _RenderLayoutBuilderCls::paint(PaintingContext context, Offset offset) {
@@ -187,7 +187,7 @@ bool _RenderLayoutBuilderCls::_debugThrowIfNotCheckingIntrinsics() {
     return true;
 }
 
-FlutterErrorDetails _debugReportException(DiagnosticsNode context, Object exception, InformationCollector informationCollector, StackTrace stack) {
+FlutterErrorDetails _debugReportException(DiagnosticsNode context, Object exception, StackTrace stack, InformationCollector informationCollector) {
     FlutterErrorDetails details = make<FlutterErrorDetailsCls>(exception, stack, __s("widgets library"), context, informationCollector);
     FlutterErrorCls->reportError(details);
     return details;

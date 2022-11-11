@@ -34,7 +34,7 @@ public:
     TextDirection direction;
 
 
-     TextSelectionPointCls(TextDirection direction, Offset point);
+     TextSelectionPointCls(Offset point, TextDirection direction);
 
     virtual String toString();
 
@@ -70,7 +70,7 @@ private:
     Map<int, MapEntry<Offset, TextPosition>> _positionCache;
 
 
-    virtual void  _(int _currentLine, Offset _currentOffset, TextPosition _currentTextPosition, RenderEditable _editable, List<LineMetrics> _lineMetrics);
+    virtual void  _(RenderEditable _editable, List<LineMetrics> _lineMetrics, TextPosition _currentTextPosition, int _currentLine, Offset _currentOffset);
     virtual MapEntry<Offset, TextPosition> _getTextPositionForLine(int lineNumber);
 
 };
@@ -271,7 +271,7 @@ public:
 
     virtual void describeSemanticsConfiguration(SemanticsConfiguration config);
 
-    virtual void assembleSemanticsNode(Iterable<SemanticsNode> children, SemanticsConfiguration config, SemanticsNode node);
+    virtual void assembleSemanticsNode(SemanticsNode node, SemanticsConfiguration config, Iterable<SemanticsNode> children);
 
     virtual void attach(PipelineOwner owner);
 
@@ -303,9 +303,9 @@ public:
 
     virtual bool hitTestSelf(Offset position);
 
-    virtual bool hitTestChildren(Offset position, BoxHitTestResult result);
+    virtual bool hitTestChildren(BoxHitTestResult result, Offset position);
 
-    virtual void handleEvent(BoxHitTestEntry entry, PointerEvent event);
+    virtual void handleEvent(PointerEvent event, BoxHitTestEntry entry);
 
     virtual Offset lastSecondaryTapDownPosition();
 
@@ -335,7 +335,7 @@ public:
 
     virtual Offset calculateBoundedFloatingCursorOffset(Offset rawCursorOffset);
 
-    virtual void setFloatingCursor(Offset boundedOffset, TextPosition lastTextPosition, double resetLerpValue, FloatingCursorDragState state);
+    virtual void setFloatingCursor(FloatingCursorDragState state, Offset boundedOffset, TextPosition lastTextPosition, double resetLerpValue);
 
     virtual VerticalCaretMovementRun startVerticalCaretMovement(TextPosition startPosition);
 
@@ -483,9 +483,9 @@ private:
 
     virtual void _updateSelectionExtentsVisibility(Offset effectiveOffset);
 
-    virtual void _setTextEditingValue(SelectionChangedCause cause, TextEditingValue newValue);
+    virtual void _setTextEditingValue(TextEditingValue newValue, SelectionChangedCause cause);
 
-    virtual void _setSelection(SelectionChangedCause cause, TextSelection nextSelection);
+    virtual void _setSelection(TextSelection nextSelection, SelectionChangedCause cause);
 
     virtual String _plainText();
 
@@ -549,7 +549,7 @@ private:
 
     virtual bool _canComputeDryLayout();
 
-    virtual MapEntry<int, Offset> _lineNumberFor(List<LineMetrics> metrics, TextPosition startPosition);
+    virtual MapEntry<int, Offset> _lineNumberFor(TextPosition startPosition, List<LineMetrics> metrics);
 
     virtual void _paintContents(PaintingContext context, Offset offset);
 
@@ -592,7 +592,7 @@ class RenderEditablePainterCls : public ChangeNotifierCls {
 public:
 
     virtual bool shouldRepaint(RenderEditablePainter oldDelegate);
-    virtual void paint(Canvas canvas, RenderEditable renderEditable, Size size);
+    virtual void paint(Canvas canvas, Size size, RenderEditable renderEditable);
 private:
 
 };
@@ -619,7 +619,7 @@ public:
 
     virtual void  selectionWidthStyle(BoxWidthStyle value);
 
-    virtual void paint(Canvas canvas, RenderEditable renderEditable, Size size);
+    virtual void paint(Canvas canvas, Size size, RenderEditable renderEditable);
 
     virtual bool shouldRepaint(RenderEditablePainter oldDelegate);
 
@@ -673,9 +673,9 @@ public:
 
     virtual void  floatingCursorRect(Rect value);
 
-    virtual void paintRegularCursor(Canvas canvas, Color caretColor, RenderEditable renderEditable, TextPosition textPosition);
+    virtual void paintRegularCursor(Canvas canvas, RenderEditable renderEditable, Color caretColor, TextPosition textPosition);
 
-    virtual void paint(Canvas canvas, RenderEditable renderEditable, Size size);
+    virtual void paint(Canvas canvas, Size size, RenderEditable renderEditable);
 
     virtual bool shouldRepaint(RenderEditablePainter oldDelegate);
 
@@ -706,7 +706,7 @@ public:
 
     virtual void removeListener(VoidCallback listener);
 
-    virtual void paint(Canvas canvas, RenderEditable renderEditable, Size size);
+    virtual void paint(Canvas canvas, Size size, RenderEditable renderEditable);
 
     virtual bool shouldRepaint(RenderEditablePainter oldDelegate);
 

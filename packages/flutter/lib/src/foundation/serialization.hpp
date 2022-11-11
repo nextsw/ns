@@ -15,15 +15,15 @@ public:
 
     virtual void putUint8(int byte);
 
-    virtual void putUint16(Endian endian, int value);
+    virtual void putUint16(int value, Endian endian);
 
-    virtual void putUint32(Endian endian, int value);
+    virtual void putUint32(int value, Endian endian);
 
-    virtual void putInt32(Endian endian, int value);
+    virtual void putInt32(int value, Endian endian);
 
-    virtual void putInt64(Endian endian, int value);
+    virtual void putInt64(int value, Endian endian);
 
-    virtual void putFloat64(Endian endian, double value);
+    virtual void putFloat64(double value, Endian endian);
 
     virtual void putUint8List(Uint8List list);
 
@@ -56,7 +56,7 @@ private:
 
     virtual void _append(Uint8List other);
 
-    virtual void _addAll(Uint8List data, int end, int start);
+    virtual void _addAll(Uint8List data, int start, int end);
 
     virtual void _resize(int requiredLength);
 

@@ -10,15 +10,15 @@ public:
 
     virtual Float64List storage();
 
-    static void solve2(Matrix3 A, Vector2 b, Vector2 x);
+    static void solve2(Matrix3 A, Vector2 x, Vector2 b);
 
-    static void solve(Matrix3 A, Vector3 b, Vector3 x);
+    static void solve(Matrix3 A, Vector3 x, Vector3 b);
 
-    virtual int index(int col, int row);
+    virtual int index(int row, int col);
 
-    virtual double entry(int col, int row);
+    virtual double entry(int row, int col);
 
-    virtual void setEntry(int col, int row, double v);
+    virtual void setEntry(int row, int col, double v);
 
      Matrix3Cls(double arg0, double arg1, double arg2, double arg3, double arg4, double arg5, double arg6, double arg7, double arg8);
 
@@ -78,11 +78,11 @@ public:
 
     virtual void  row2(Vector3 arg);
 
-    virtual void setRow(Vector3 arg, int row);
+    virtual void setRow(int row, Vector3 arg);
 
     virtual Vector3 getRow(int row);
 
-    virtual void setColumn(Vector3 arg, int column);
+    virtual void setColumn(int column, Vector3 arg);
 
     virtual Vector3 getColumn(int column);
 

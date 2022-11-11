@@ -264,7 +264,7 @@ void CurvedAnimationCls::_updateCurveDirection(AnimationStatus status) {
 }
 
 bool CurvedAnimationCls::_useForwardCurve() {
-    return reverseCurve == nullptr || (_curveDirection or parent->status()) != AnimationStatusCls::reverse;
+    return reverseCurve == nullptr || (_curveDirection | parent->status()) != AnimationStatusCls::reverse;
 }
 
 TrainHoppingAnimationCls::TrainHoppingAnimationCls(Animation<double> _currentTrain, Animation<double> _nextTrain, VoidCallback onSwitchedTrain) {

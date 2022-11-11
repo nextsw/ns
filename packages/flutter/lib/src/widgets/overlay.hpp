@@ -116,11 +116,11 @@ public:
 
     virtual void initState();
 
-    virtual void insert(OverlayEntry above, OverlayEntry below, OverlayEntry entry);
+    virtual void insert(OverlayEntry entry, OverlayEntry above, OverlayEntry below);
 
-    virtual void insertAll(OverlayEntry above, OverlayEntry below, Iterable<OverlayEntry> entries);
+    virtual void insertAll(Iterable<OverlayEntry> entries, OverlayEntry above, OverlayEntry below);
 
-    virtual void rearrange(OverlayEntry above, OverlayEntry below, Iterable<OverlayEntry> newEntries);
+    virtual void rearrange(Iterable<OverlayEntry> newEntries, OverlayEntry above, OverlayEntry below);
 
     virtual bool debugIsVisible(OverlayEntry entry);
 
@@ -132,7 +132,7 @@ private:
     List<OverlayEntry> _entries;
 
 
-    virtual int _insertionIndex(OverlayEntry above, OverlayEntry below);
+    virtual int _insertionIndex(OverlayEntry below, OverlayEntry above);
 
     virtual bool _debugVerifyInsertPosition(OverlayEntry above, OverlayEntry below, Iterable<OverlayEntry> newEntries);
 
@@ -211,7 +211,7 @@ public:
 
     virtual void performLayout();
 
-    virtual bool hitTestChildren(Offset position, BoxHitTestResult result);
+    virtual bool hitTestChildren(BoxHitTestResult result, Offset position);
 
     virtual void paintStack(PaintingContext context, Offset offset);
 

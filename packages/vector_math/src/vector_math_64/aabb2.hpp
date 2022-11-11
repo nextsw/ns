@@ -18,7 +18,7 @@ public:
 
     virtual void  copy(Aabb2 other);
 
-    virtual void  minMax(Vector2 max, Vector2 min);
+    virtual void  minMax(Vector2 min, Vector2 max);
 
     virtual void  centerAndHalfExtents(Vector2 center, Vector2 halfExtents);
 
@@ -34,9 +34,9 @@ public:
 
     virtual void rotate(Matrix3 t);
 
-    virtual Aabb2 transformed(Aabb2 out, Matrix3 t);
+    virtual Aabb2 transformed(Matrix3 t, Aabb2 out);
 
-    virtual Aabb2 rotated(Aabb2 out, Matrix3 t);
+    virtual Aabb2 rotated(Matrix3 t, Aabb2 out);
 
     virtual void hull(Aabb2 other);
 

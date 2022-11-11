@@ -28,7 +28,7 @@ String OSErrorCls::toString() {
     }    return sb->toString();
 }
 
-_BufferAndStart _ensureFastAndSerializableByteData(List<int> buffer, int end, int start) {
+_BufferAndStart _ensureFastAndSerializableByteData(List<int> buffer, int start, int end) {
     if (_isDirectIOCapableTypedList(buffer)) {
         return make<_BufferAndStartCls>(buffer, start);
     }

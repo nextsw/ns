@@ -52,7 +52,7 @@ TableBorder TableBorderCls::lerp(TableBorder a, TableBorder b, double t) {
     return make<TableBorderCls>(BorderSideCls->lerp(a->top, b->top, t), BorderSideCls->lerp(a->right, b->right, t), BorderSideCls->lerp(a->bottom, b->bottom, t), BorderSideCls->lerp(a->left, b->left, t), BorderSideCls->lerp(a->horizontalInside, b->horizontalInside, t), BorderSideCls->lerp(a->verticalInside, b->verticalInside, t));
 }
 
-void TableBorderCls::paint(Canvas canvas, Iterable<double> columns, Rect rect, Iterable<double> rows) {
+void TableBorderCls::paint(Canvas canvas, Rect rect, Iterable<double> columns, Iterable<double> rows) {
     assert(top != nullptr);
     assert(right != nullptr);
     assert(bottom != nullptr);

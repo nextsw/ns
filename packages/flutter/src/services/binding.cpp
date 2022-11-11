@@ -151,7 +151,7 @@ AppLifecycleState ServicesBindingCls::_parseAppLifecycleMessage(String message) 
     return nullptr;
 }
 
-Future<void> _DefaultBinaryMessengerCls::handlePlatformMessage(PlatformMessageResponseCallback callback, String channel, ByteData message) {
+Future<void> _DefaultBinaryMessengerCls::handlePlatformMessage(String channel, ByteData message, PlatformMessageResponseCallback callback) {
     ui->channelBuffers->push(channel, message, [=] (ByteData data) {
         if (callback != nullptr) {
             callback(data);

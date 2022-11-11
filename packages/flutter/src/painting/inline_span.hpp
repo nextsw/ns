@@ -44,7 +44,7 @@ public:
     List<StringAttribute> stringAttributes;
 
 
-     InlineSpanSemanticsInformationCls(bool isPlaceholder, GestureRecognizer recognizer, String semanticsLabel, List<StringAttribute> stringAttributes, String text);
+     InlineSpanSemanticsInformationCls(String text, bool isPlaceholder, GestureRecognizer recognizer, String semanticsLabel, List<StringAttribute> stringAttributes);
 
     virtual bool operator==(Object other);
 
@@ -69,7 +69,7 @@ public:
     virtual bool visitChildren(InlineSpanVisitor visitor);
     virtual InlineSpan getSpanForPosition(TextPosition position);
 
-    virtual InlineSpan getSpanForPositionVisitor(Accumulator offset, TextPosition position);
+    virtual InlineSpan getSpanForPositionVisitor(TextPosition position, Accumulator offset);
     virtual String toPlainText(bool includePlaceholders, bool includeSemanticsLabels);
 
     virtual List<InlineSpanSemanticsInformation> getSemanticsInformation();

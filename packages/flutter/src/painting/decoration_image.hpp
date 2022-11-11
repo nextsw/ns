@@ -71,7 +71,7 @@ using DecorationImage = std::shared_ptr<DecorationImageCls>;
 class DecorationImagePainterCls : public ObjectCls {
 public:
 
-    virtual void paint(Canvas canvas, Path clipPath, ImageConfiguration configuration, Rect rect);
+    virtual void paint(Canvas canvas, Rect rect, Path clipPath, ImageConfiguration configuration);
 
     virtual void dispose();
 
@@ -89,7 +89,7 @@ private:
 
     virtual void  _(DecorationImage _details, VoidCallback _onChanged);
 
-    virtual void _handleImage(bool synchronousCall, ImageInfo value);
+    virtual void _handleImage(ImageInfo value, bool synchronousCall);
 
 };
 using DecorationImagePainter = std::shared_ptr<DecorationImagePainterCls>;
@@ -101,7 +101,7 @@ void debugFlushLastFrameImageSizeInfo();
 
 void paintImage(Alignment alignment, Canvas canvas, Rect centerSlice, ColorFilter colorFilter, String debugImageLabel, FilterQuality filterQuality, BoxFit fit, bool flipHorizontally, Image image, bool invertColors, bool isAntiAlias, double opacity, Rect rect, ImageRepeat repeat, double scale);
 
-Iterable<Rect> _generateImageTileRects(Rect fundamentalRect, Rect outputRect, ImageRepeat repeat);
+Iterable<Rect> _generateImageTileRects(Rect outputRect, Rect fundamentalRect, ImageRepeat repeat);
 
 Rect _scaleRect(Rect rect, double scale);
 

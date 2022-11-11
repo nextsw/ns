@@ -234,7 +234,7 @@ using TextHeightBehavior = std::shared_ptr<TextHeightBehaviorCls>;
 template<typename T>
  bool _listEquals(List<T> a, List<T> b);
 
-Int32List _encodeTextStyle(Paint background, Color color, TextDecoration decoration, Color decorationColor, TextDecorationStyle decorationStyle, double decorationThickness, String fontFamily, List<String> fontFamilyFallback, List<FontFeature> fontFeatures, double fontSize, FontStyle fontStyle, List<FontVariation> fontVariations, FontWeight fontWeight, Paint foreground, double height, double letterSpacing, Locale locale, List<Shadow> shadows, TextBaseline textBaseline, double wordSpacing);
+Int32List _encodeTextStyle(Color color, TextDecoration decoration, Color decorationColor, TextDecorationStyle decorationStyle, double decorationThickness, FontWeight fontWeight, FontStyle fontStyle, TextBaseline textBaseline, String fontFamily, List<String> fontFamilyFallback, double fontSize, double letterSpacing, double wordSpacing, double height, Locale locale, Paint background, Paint foreground, List<Shadow> shadows, List<FontFeature> fontFeatures, List<FontVariation> fontVariations);
 
 
 class TextStyleCls : public ObjectCls {
@@ -282,7 +282,7 @@ private:
 
 };
 using TextStyle = std::shared_ptr<TextStyleCls>;
-Int32List _encodeParagraphStyle(String ellipsis, String fontFamily, double fontSize, FontStyle fontStyle, FontWeight fontWeight, double height, Locale locale, int maxLines, StrutStyle strutStyle, TextAlign textAlign, TextDirection textDirection, TextHeightBehavior textHeightBehavior);
+Int32List _encodeParagraphStyle(TextAlign textAlign, TextDirection textDirection, int maxLines, String fontFamily, double fontSize, double height, TextHeightBehavior textHeightBehavior, FontWeight fontWeight, FontStyle fontStyle, StrutStyle strutStyle, String ellipsis, Locale locale);
 
 
 class ParagraphStyleCls : public ObjectCls {
@@ -316,7 +316,7 @@ private:
 
 };
 using ParagraphStyle = std::shared_ptr<ParagraphStyleCls>;
-ByteData _encodeStrut(String fontFamily, List<String> fontFamilyFallback, double fontSize, FontStyle fontStyle, FontWeight fontWeight, bool forceStrutHeight, double height, double leading, TextLeadingDistribution leadingDistribution);
+ByteData _encodeStrut(String fontFamily, List<String> fontFamilyFallback, double fontSize, double height, TextLeadingDistribution leadingDistribution, double leading, FontWeight fontWeight, FontStyle fontStyle, bool forceStrutHeight);
 
 
 class StrutStyleCls : public ObjectCls {
@@ -361,7 +361,7 @@ public:
     TextDirection direction;
 
 
-    virtual void  fromLTRBD(double bottom, TextDirection direction, double left, double right, double top);
+    virtual void  fromLTRBD(double left, double top, double right, double bottom, TextDirection direction);
     virtual Rect toRect();
 
     virtual double start();
@@ -527,7 +527,7 @@ public:
     virtual bool didExceedMaxLines();
     virtual void layout(ParagraphConstraints constraints);
 
-    virtual List<TextBox> getBoxesForRange(BoxHeightStyle boxHeightStyle, BoxWidthStyle boxWidthStyle, int end, int start);
+    virtual List<TextBox> getBoxesForRange(int start, int end, BoxHeightStyle boxHeightStyle, BoxWidthStyle boxWidthStyle);
 
     virtual List<TextBox> getBoxesForPlaceholders();
 
@@ -547,7 +547,7 @@ private:
     virtual void _layout(double width);
     virtual List<TextBox> _decodeTextBoxes(Float32List encoded);
 
-    virtual Float32List _getBoxesForRange(int boxHeightStyle, int boxWidthStyle, int end, int start);
+    virtual Float32List _getBoxesForRange(int start, int end, int boxHeightStyle, int boxWidthStyle);
     virtual Float32List _getBoxesForPlaceholders();
     virtual List<int> _getPositionForOffset(double dx, double dy);
     virtual List<int> _getWordBoundary(int offset);
@@ -571,7 +571,7 @@ public:
     virtual void pop();
     virtual void addText(String text);
 
-    virtual void addPlaceholder(PlaceholderAlignment alignment, TextBaseline baseline, double baselineOffset, double height, double scale, double width);
+    virtual void addPlaceholder(double width, double height, PlaceholderAlignment alignment, TextBaseline baseline, double baselineOffset, double scale);
 
     virtual Paragraph build();
 
@@ -583,16 +583,16 @@ private:
     TextLeadingDistribution _defaultLeadingDistribution;
 
 
-    virtual void _constructor(String ellipsis, Int32List encoded, String fontFamily, double fontSize, double height, String locale, ByteData strutData, List<Object> strutFontFamily);
-    virtual void _pushStyle(ByteData backgroundData, List<Object> backgroundObjects, double decorationThickness, Int32List encoded, List<Object> fontFamilies, ByteData fontFeaturesData, double fontSize, ByteData fontVariationsData, ByteData foregroundData, List<Object> foregroundObjects, double height, double letterSpacing, String locale, ByteData shadowsData, double wordSpacing);
+    virtual void _constructor(Int32List encoded, ByteData strutData, String fontFamily, List<Object> strutFontFamily, double fontSize, double height, String ellipsis, String locale);
+    virtual void _pushStyle(Int32List encoded, List<Object> fontFamilies, double fontSize, double letterSpacing, double wordSpacing, double height, double decorationThickness, String locale, List<Object> backgroundObjects, ByteData backgroundData, List<Object> foregroundObjects, ByteData foregroundData, ByteData shadowsData, ByteData fontFeaturesData, ByteData fontVariationsData);
     static String _encodeLocale(Locale locale);
 
     virtual String _addText(String text);
-    virtual String _addPlaceholder(int alignment, int baseline, double baselineOffset, double height, double width);
+    virtual String _addPlaceholder(double width, double height, int alignment, double baselineOffset, int baseline);
     virtual void _build(Paragraph outParagraph);
 };
 using ParagraphBuilder = std::shared_ptr<ParagraphBuilderCls>;
-Future<void> loadFontFromList(String fontFamily, Uint8List list);
+Future<void> loadFontFromList(Uint8List list, String fontFamily);
 
 ByteData _fontChangeMessage;
 

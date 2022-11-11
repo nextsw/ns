@@ -13,7 +13,7 @@ String RawKeyEventDataIosCls::keyLabel() {
 }
 
 PhysicalKeyboardKey RawKeyEventDataIosCls::physicalKey() {
-    return kIosToPhysicalKey[keyCode] or make<PhysicalKeyboardKeyCls>(LogicalKeyboardKeyCls::iosPlane + keyCode);
+    return kIosToPhysicalKey[keyCode] | make<PhysicalKeyboardKeyCls>(LogicalKeyboardKeyCls::iosPlane + keyCode);
 }
 
 LogicalKeyboardKey RawKeyEventDataIosCls::logicalKey() {
@@ -37,7 +37,7 @@ LogicalKeyboardKey RawKeyEventDataIosCls::logicalKey() {
             codeUnit = (codeUnit << 16) | secondCode;
         }
         int keyId = LogicalKeyboardKeyCls::unicodePlane | (codeUnit & LogicalKeyboardKeyCls::valueMask);
-        return LogicalKeyboardKeyCls->findKeyByKeyId(keyId) or make<LogicalKeyboardKeyCls>(keyId);
+        return LogicalKeyboardKeyCls->findKeyByKeyId(keyId) | make<LogicalKeyboardKeyCls>(keyId);
     }
     return make<LogicalKeyboardKeyCls>(keyCode | LogicalKeyboardKeyCls::iosPlane);
 }
@@ -85,7 +85,7 @@ bool RawKeyEventDataIosCls::_isUnprintableKey(String label) {
     return codeUnit >= 0xF700 && codeUnit <= 0xF8FF;
 }
 
-bool RawKeyEventDataIosCls::_isLeftRightModifierPressed(int anyMask, int leftMask, int rightMask, KeyboardSide side) {
+bool RawKeyEventDataIosCls::_isLeftRightModifierPressed(KeyboardSide side, int anyMask, int leftMask, int rightMask) {
     if (modifiers & anyMask == 0) {
         return false;
     }

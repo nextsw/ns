@@ -65,7 +65,7 @@ Future<void> _HtmlElementViewControllerCls::_initialize() {
 }
 
 Widget _AndroidViewStateCls::build(BuildContext context) {
-    return make<FocusCls>(_focusNode, _onFocusChange, make<_AndroidPlatformViewCls>(_controller, widget->hitTestBehavior, widget->gestureRecognizers or _emptyRecognizersSet, widget->clipBehavior));
+    return make<FocusCls>(_focusNode, _onFocusChange, make<_AndroidPlatformViewCls>(_controller, widget->hitTestBehavior, widget->gestureRecognizers | _emptyRecognizersSet, widget->clipBehavior));
 }
 
 void _AndroidViewStateCls::didChangeDependencies() {
@@ -110,7 +110,7 @@ void _AndroidViewStateCls::_initializeOnce() {
 
 TextDirection _AndroidViewStateCls::_findLayoutDirection() {
     assert(widget->layoutDirection != nullptr || debugCheckHasDirectionality(context));
-    return widget->layoutDirection or DirectionalityCls->of(context);
+    return widget->layoutDirection | DirectionalityCls->of(context);
 }
 
 void _AndroidViewStateCls::_createNewAndroidView() {
@@ -149,7 +149,7 @@ Widget _UiKitViewStateCls::build(BuildContext context) {
     }
     return make<FocusCls>(_focusNode, [=] (bool isFocused)     {
         _onFocusChange(isFocused, controller);
-    }, make<_UiKitPlatformViewCls>(_controller!, widget->hitTestBehavior, widget->gestureRecognizers or _emptyRecognizersSet));
+    }, make<_UiKitPlatformViewCls>(_controller!, widget->hitTestBehavior, widget->gestureRecognizers | _emptyRecognizersSet));
 }
 
 void _UiKitViewStateCls::didChangeDependencies() {
@@ -193,7 +193,7 @@ void _UiKitViewStateCls::_initializeOnce() {
 
 TextDirection _UiKitViewStateCls::_findLayoutDirection() {
     assert(widget->layoutDirection != nullptr || debugCheckHasDirectionality(context));
-    return widget->layoutDirection or DirectionalityCls->of(context);
+    return widget->layoutDirection | DirectionalityCls->of(context);
 }
 
 Future<void> _UiKitViewStateCls::_createNewUiKitView() {
@@ -212,7 +212,7 @@ Future<void> _UiKitViewStateCls::_createNewUiKitView() {
     });
 }
 
-void _UiKitViewStateCls::_onFocusChange(UiKitViewController controller, bool isFocused) {
+void _UiKitViewStateCls::_onFocusChange(bool isFocused, UiKitViewController controller) {
     if (!isFocused) {
         return;
     }
@@ -285,7 +285,7 @@ Widget _PlatformViewLinkStateCls::build(BuildContext context) {
             }
         });
     }
-    _surface = widget->_surfaceFactory(context, controller);
+    _surface |= widget->_surfaceFactory(context, controller);
     return make<FocusCls>(_focusNode, _handleFrameworkFocusChanged, _surface!);
 }
 

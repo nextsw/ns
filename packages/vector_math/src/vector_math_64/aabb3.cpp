@@ -20,7 +20,7 @@ Aabb3Cls::Aabb3Cls() {
 
 void Aabb3Cls::copy(Aabb3 other)
 
-void Aabb3Cls::minMax(Vector3 max, Vector3 min)
+void Aabb3Cls::minMax(Vector3 min, Vector3 max)
 
 void Aabb3Cls::fromSphere(Sphere sphere) {
     return _c1;
@@ -38,7 +38,7 @@ void Aabb3Cls::fromObb3(Obb3 obb) {
     return _c1;
 }
 
-void Aabb3Cls::fromRay(double limitMax, double limitMin, Ray ray) {
+void Aabb3Cls::fromRay(Ray ray, double limitMin, double limitMax) {
     return _c1;
 }
 
@@ -89,7 +89,7 @@ void Aabb3Cls::setObb3(Obb3 obb) {
     hullPoint(corner);
 }
 
-void Aabb3Cls::setRay(double limitMax, double limitMin, Ray ray) {
+void Aabb3Cls::setRay(Ray ray, double limitMin, double limitMax) {
     auto _c1 = ray;_c1.auto _c2 = copyAt(_min, limitMin);_c2.copyAt(_max, limitMax);_c2;_c1;
     if (_max->x < _min->x) {
         Unknown temp = _max->x;
@@ -136,15 +136,15 @@ void Aabb3Cls::rotate(Matrix4 t) {
     auto _c3 = _max;_c3.auto _c4 = setFrom(_center);_c4.add(_halfExtents);_c4;_c3;
 }
 
-Aabb3 Aabb3Cls::transformed(Aabb3 out, Matrix4 t) {
+Aabb3 Aabb3Cls::transformed(Matrix4 t, Aabb3 out) {
     return _c1;
 }
 
-Aabb3 Aabb3Cls::rotated(Aabb3 out, Matrix4 t) {
+Aabb3 Aabb3Cls::rotated(Matrix4 t, Aabb3 out) {
     return _c1;
 }
 
-void Aabb3Cls::getPN(Vector3 outN, Vector3 outP, Vector3 planeNormal) {
+void Aabb3Cls::getPN(Vector3 planeNormal, Vector3 outP, Vector3 outN) {
     if (planeNormal->x < 0.0) {
             auto _c1 = out;    _c1.auto _c2 = copyFrom(this);    _c2.transform(t);    _c2;    auto _c1 = out;    _c1.auto _c2 = copyFrom(this);    _c2.rotate(t);    _c2;outP->x = _min->x;
         outN->x = _max->x;
@@ -231,7 +231,7 @@ bool Aabb3Cls::intersectsWithVector3(Vector3 other) {
     return (_min->x <= other->x) && (_min->y <= other->y) && (_min->z <= other->z) && (_max->x >= other->x) && (_max->y >= other->y) && (_max->z >= other->z);
 }
 
-bool Aabb3Cls::intersectsWithTriangle(double epsilon, Triangle other, IntersectionResult result) {
+bool Aabb3Cls::intersectsWithTriangle(Triangle other, double epsilon, IntersectionResult result) {
     double p0, p1, p2, r, len;
     double a;
     copyCenterAndHalfExtents(_aabbCenter, _aabbHalfExtents);

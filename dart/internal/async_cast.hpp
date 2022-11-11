@@ -12,7 +12,7 @@ public:
      CastStreamCls(Stream<S> _source);
     virtual bool isBroadcast();
 
-    virtual StreamSubscription<T> listen(bool cancelOnError, std::function<void(T data)> onData, std::function<void()> onDone, std::function<void ()> onError);
+    virtual StreamSubscription<T> listen(std::function<void(T data)> onData, bool cancelOnError, std::function<void()> onDone, std::function<void ()> onError);
 
     template<typename R>
  virtual Stream<R> cast();

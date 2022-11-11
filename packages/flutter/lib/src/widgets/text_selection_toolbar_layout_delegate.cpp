@@ -3,8 +3,8 @@ BoxConstraints TextSelectionToolbarLayoutDelegateCls::getConstraintsForChild(Box
     return constraints->loosen();
 }
 
-Offset TextSelectionToolbarLayoutDelegateCls::getPositionForChild(Size childSize, Size size) {
-    bool fitsAbove = this->fitsAbove or anchorAbove->dy() >= childSize->height();
+Offset TextSelectionToolbarLayoutDelegateCls::getPositionForChild(Size size, Size childSize) {
+    bool fitsAbove = this->fitsAbove | anchorAbove->dy() >= childSize->height();
     Offset anchor = fitsAbove? anchorAbove : anchorBelow;
     return make<OffsetCls>(_centerOn(anchor->dx(), childSize->width(), size->width()), fitsAbove? math->max(0.0, anchor->dy() - childSize->height()) : anchor->dy());
 }
@@ -13,7 +13,7 @@ bool TextSelectionToolbarLayoutDelegateCls::shouldRelayout(TextSelectionToolbarL
     return anchorAbove != oldDelegate->anchorAbove || anchorBelow != oldDelegate->anchorBelow || fitsAbove != oldDelegate->fitsAbove;
 }
 
-double TextSelectionToolbarLayoutDelegateCls::_centerOn(double max, double position, double width) {
+double TextSelectionToolbarLayoutDelegateCls::_centerOn(double position, double width, double max) {
     if (position - width / 2.0 < 0.0) {
         return 0.0;
     }

@@ -13,7 +13,7 @@
 class RenderSliverBoxChildManagerCls : public ObjectCls {
 public:
 
-    virtual void createChild(RenderBox after, int index);
+    virtual void createChild(int index, RenderBox after);
     virtual void removeChild(RenderBox child);
     virtual double estimateMaxScrollOffset(SliverConstraints constraints, int firstIndex, int lastIndex, double leadingScrollOffset, double trailingScrollOffset);
     virtual int childCount();
@@ -82,9 +82,9 @@ public:
 
     virtual void adoptChild(RenderObject child);
 
-    virtual void insert(RenderBox after, RenderBox child);
+    virtual void insert(RenderBox child, RenderBox after);
 
-    virtual void move(RenderBox after, RenderBox child);
+    virtual void move(RenderBox child, RenderBox after);
 
     virtual void remove(RenderBox child);
 
@@ -104,7 +104,7 @@ public:
 
     virtual RenderBox insertAndLayoutLeadingChild(BoxConstraints childConstraints, bool parentUsesSize);
 
-    virtual RenderBox insertAndLayoutChild(RenderBox after, BoxConstraints childConstraints, bool parentUsesSize);
+    virtual RenderBox insertAndLayoutChild(BoxConstraints childConstraints, RenderBox after, bool parentUsesSize);
 
     virtual void collectGarbage(int leadingGarbage, int trailingGarbage);
 
@@ -112,7 +112,7 @@ public:
 
     virtual double paintExtentOf(RenderBox child);
 
-    virtual bool hitTestChildren(double crossAxisPosition, double mainAxisPosition, SliverHitTestResult result);
+    virtual bool hitTestChildren(SliverHitTestResult result, double crossAxisPosition, double mainAxisPosition);
 
     virtual double childMainAxisPosition(RenderBox child);
 
@@ -144,7 +144,7 @@ private:
 
     virtual bool _debugVerifyChildOrder();
 
-    virtual void _createOrObtainChild(RenderBox after, int index);
+    virtual void _createOrObtainChild(int index, RenderBox after);
 
     virtual void _destroyOrCacheChild(RenderBox child);
 

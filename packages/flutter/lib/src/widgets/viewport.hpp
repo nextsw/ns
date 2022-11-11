@@ -32,7 +32,7 @@ public:
 
      ViewportCls(double anchor, AxisDirection axisDirection, double cacheExtent, CacheExtentStyle cacheExtentStyle, Key center, Clip clipBehavior, AxisDirection crossAxisDirection, Unknown key, ViewportOffset offset, List<Widget> slivers);
 
-    static AxisDirection getDefaultCrossAxisDirection(AxisDirection axisDirection, BuildContext context);
+    static AxisDirection getDefaultCrossAxisDirection(BuildContext context, AxisDirection axisDirection);
 
     virtual RenderViewport createRenderObject(BuildContext context);
 
@@ -52,13 +52,13 @@ public:
 
     virtual RenderViewport renderObject();
 
-    virtual void mount(Object newSlot, Element parent);
+    virtual void mount(Element parent, Object newSlot);
 
     virtual void update(MultiChildRenderObjectWidget newWidget);
 
     virtual void insertRenderObjectChild(RenderObject child, IndexedSlot<Element> slot);
 
-    virtual void moveRenderObjectChild(RenderObject child, IndexedSlot<Element> newSlot, IndexedSlot<Element> oldSlot);
+    virtual void moveRenderObjectChild(RenderObject child, IndexedSlot<Element> oldSlot, IndexedSlot<Element> newSlot);
 
     virtual void removeRenderObjectChild(RenderObject child, Object slot);
 

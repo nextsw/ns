@@ -31,7 +31,7 @@ public:
 
     virtual bool contains(Object other);
 
-    virtual T lastWhere(std::function<T()> orElse, std::function<bool(T element)> test);
+    virtual T lastWhere(std::function<bool(T element)> test, std::function<T()> orElse);
 
     virtual String toString();
 
@@ -107,11 +107,11 @@ public:
 
     virtual void shuffle(Random random);
 
-    virtual void insert(T element, int index);
+    virtual void insert(int index, T element);
 
-    virtual void insertAll(Iterable<T> elements, int index);
+    virtual void insertAll(int index, Iterable<T> elements);
 
-    virtual void setAll(Iterable<T> elements, int index);
+    virtual void setAll(int index, Iterable<T> elements);
 
     virtual bool remove(Object value);
 
@@ -123,15 +123,15 @@ public:
 
     virtual void retainWhere(std::function<bool(T element)> test);
 
-    virtual Iterable<T> getRange(int end, int start);
+    virtual Iterable<T> getRange(int start, int end);
 
-    virtual void setRange(int end, Iterable<T> iterable, int skipCount, int start);
+    virtual void setRange(int start, int end, Iterable<T> iterable, int skipCount);
 
-    virtual void removeRange(int end, int start);
+    virtual void removeRange(int start, int end);
 
-    virtual void fillRange(int end, T fillValue, int start);
+    virtual void fillRange(int start, int end, T fillValue);
 
-    virtual void replaceRange(int end, Iterable<T> replacement, int start);
+    virtual void replaceRange(int start, int end, Iterable<T> replacement);
 
 private:
 
@@ -160,7 +160,7 @@ template<typename S, typename T>
 class CastSetCls : public _CastIterableBaseCls<S, T> {
 public:
 
-     CastSetCls(std::function<Set<R>()> _emptySet, Set<S> _source);
+     CastSetCls(Set<S> _source, std::function<Set<R>()> _emptySet);
     template<typename R>
  virtual Set<R> cast();
 
@@ -222,7 +222,7 @@ public:
 
     virtual void operator[]=(K key, V value);
 
-    virtual V putIfAbsent(std::function<V()> ifAbsent, K key);
+    virtual V putIfAbsent(K key, std::function<V()> ifAbsent);
 
     virtual void addAll(Map<K, V> other);
 
@@ -242,7 +242,7 @@ public:
 
     virtual bool isNotEmpty();
 
-    virtual V update(std::function<V()> ifAbsent, K key, std::function<V(V value)> update);
+    virtual V update(K key, std::function<V(V value)> update, std::function<V()> ifAbsent);
 
     virtual void updateAll(std::function<V(K key, V value)> update);
 

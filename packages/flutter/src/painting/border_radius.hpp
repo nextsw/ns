@@ -209,7 +209,7 @@ private:
     Radius _bottomEnd;
 
 
-     _MixedBorderRadiusCls(Radius _bottomEnd, Radius _bottomLeft, Radius _bottomRight, Radius _bottomStart, Radius _topEnd, Radius _topLeft, Radius _topRight, Radius _topStart);
+     _MixedBorderRadiusCls(Radius _topLeft, Radius _topRight, Radius _bottomLeft, Radius _bottomRight, Radius _topStart, Radius _topEnd, Radius _bottomStart, Radius _bottomEnd);
 };
 using _MixedBorderRadius = std::shared_ptr<_MixedBorderRadiusCls>;
 

@@ -25,11 +25,11 @@ public:
     double bottom;
 
 
-    virtual void  fromLTRB(double bottom, double left, double right, double top);
+    virtual void  fromLTRB(double left, double top, double right, double bottom);
 
-    virtual void  fromSize(Size container, Rect rect);
+    virtual void  fromSize(Rect rect, Size container);
 
-    virtual void  fromRect(Rect container, Rect rect);
+    virtual void  fromRect(Rect rect, Rect container);
 
     virtual void  fromDirectional(double bottom, double end, double start, TextDirection textDirection, double top);
 
@@ -129,13 +129,13 @@ public:
 
     virtual double computeDistanceToActualBaseline(TextBaseline baseline);
 
-    static bool layoutPositionedChild(Alignment alignment, RenderBox child, StackParentData childParentData, Size size);
+    static bool layoutPositionedChild(RenderBox child, StackParentData childParentData, Size size, Alignment alignment);
 
     virtual Size computeDryLayout(BoxConstraints constraints);
 
     virtual void performLayout();
 
-    virtual bool hitTestChildren(Offset position, BoxHitTestResult result);
+    virtual bool hitTestChildren(BoxHitTestResult result, Offset position);
 
     virtual void paintStack(PaintingContext context, Offset offset);
 
@@ -183,7 +183,7 @@ public:
 
     virtual void  index(int value);
 
-    virtual bool hitTestChildren(Offset position, BoxHitTestResult result);
+    virtual bool hitTestChildren(BoxHitTestResult result, Offset position);
 
     virtual void paintStack(PaintingContext context, Offset offset);
 

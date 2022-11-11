@@ -1,5 +1,5 @@
 #include "_network_image_io.hpp"
-NetworkImageCls::NetworkImageCls(Map<String, String> headers, double scale, String url) {
+NetworkImageCls::NetworkImageCls(String url, Map<String, String> headers, double scale) {
     {
         assert(url != nullptr);
         assert(scale != nullptr);
@@ -10,14 +10,14 @@ Future<NetworkImage> NetworkImageCls::obtainKey(ImageConfiguration configuration
     return <NetworkImage>make<SynchronousFutureCls>(this);
 }
 
-ImageStreamCompleter NetworkImageCls::load(DecoderCallback decode, NetworkImage key) {
+ImageStreamCompleter NetworkImageCls::load(NetworkImage key, DecoderCallback decode) {
     StreamController<ImageChunkEvent> chunkEvents = <ImageChunkEvent>make<StreamControllerCls>();
     return make<MultiFrameImageStreamCompleterCls>(_loadAsync(as<NetworkImage>(key), chunkEvents, nullptr, decode), chunkEvents->stream(), key->scale, key->url, [=] ()     {
         makeList(ArrayItem, ArrayItem);
     });
 }
 
-ImageStreamCompleter NetworkImageCls::loadBuffer(DecoderBufferCallback decode, NetworkImage key) {
+ImageStreamCompleter NetworkImageCls::loadBuffer(NetworkImage key, DecoderBufferCallback decode) {
     StreamController<ImageChunkEvent> chunkEvents = <ImageChunkEvent>make<StreamControllerCls>();
     return make<MultiFrameImageStreamCompleterCls>(_loadAsync(as<NetworkImage>(key), chunkEvents, decode, nullptr), chunkEvents->stream(), key->scale, key->url, [=] ()     {
         makeList(ArrayItem, ArrayItem);
@@ -50,7 +50,7 @@ HttpClient NetworkImageCls::_httpClient() {
     return client;
 }
 
-Future<Codec> NetworkImageCls::_loadAsync(StreamController<ImageChunkEvent> chunkEvents, DecoderBufferCallback decode, DecoderCallback decodeDepreacted, NetworkImage key) {
+Future<Codec> NetworkImageCls::_loadAsync(NetworkImage key, StreamController<ImageChunkEvent> chunkEvents, DecoderBufferCallback decode, DecoderCallback decodeDepreacted) {
     try {
         assert(key == this);
         Uri resolved = UriCls::base->resolve(key->url);

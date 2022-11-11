@@ -11,7 +11,7 @@ void Vector3Cls::max(Vector3 a, Vector3 b, Vector3 result) {
     auto _c1 = result;_c1.x = auto _c2 = math->max(a->x, b->x);_c2.y = auto _c3 = math->max(a->y, b->y);_c3.z = math->max(a->z, b->z);_c3;_c2;_c1;
 }
 
-void Vector3Cls::mix(double a, Vector3 max, Vector3 min, Vector3 result) {
+void Vector3Cls::mix(Vector3 min, Vector3 max, double a, Vector3 result) {
     auto _c1 = result;_c1.x = auto _c2 = min->x + a * (max->x - min->x);_c2.y = auto _c3 = min->y + a * (max->y - min->y);_c3.z = min->z + a * (max->z - min->z);_c3;_c2;_c1;
 }
 
@@ -35,7 +35,7 @@ void Vector3Cls::copy(Vector3 other) {
 void Vector3Cls::fromBuffer(ByteBuffer buffer, int offset)
 
 void Vector3Cls::random(Random rng) {
-    auto _c1 = Vector3Cls->zero();_c1.copyFromArray(array, offset);auto _c1 = Vector3Cls->zero();_c1.splat(value);auto _c1 = Vector3Cls->zero();_c1.setFrom(other);rng = math->make<RandomCls>();
+    auto _c1 = Vector3Cls->zero();_c1.copyFromArray(array, offset);auto _c1 = Vector3Cls->zero();_c1.splat(value);auto _c1 = Vector3Cls->zero();_c1.setFrom(other);rng |= math->make<RandomCls>();
     return make<Vector3Cls>(rng->nextDouble(), rng->nextDouble(), rng->nextDouble());
 }
 
@@ -113,9 +113,9 @@ void Vector3Cls::length(double value) {
             return;
         }
         l = value / l;
-        _v3storage[0] = l;
-        _v3storage[1] = l;
-        _v3storage[2] = l;
+        _v3storage[0] *= l;
+        _v3storage[1] *= l;
+        _v3storage[2] *= l;
     }
 }
 
@@ -126,8 +126,8 @@ double Vector3Cls::length() {
 double Vector3Cls::length2() {
     double sum;
     sum = _v3storage[0] * _v3storage[0];
-    sum = _v3storage[1] * _v3storage[1];
-    sum = _v3storage[2] * _v3storage[2];
+    sum += _v3storage[1] * _v3storage[1];
+    sum += _v3storage[2] * _v3storage[2];
     return sum;
 }
 
@@ -137,9 +137,9 @@ double Vector3Cls::normalize() {
         return 0.0;
     }
     Unknown d = 1.0 / l;
-    _v3storage[0] = d;
-    _v3storage[1] = d;
-    _v3storage[2] = d;
+    _v3storage[0] *= d;
+    _v3storage[1] *= d;
+    _v3storage[2] *= d;
     return l;
 }
 
@@ -177,7 +177,7 @@ double Vector3Cls::angleTo(Vector3 other) {
     return math->acos(d->clamp(-1.0, 1.0));
 }
 
-double Vector3Cls::angleToSigned(Vector3 normal, Vector3 other) {
+double Vector3Cls::angleToSigned(Vector3 other, Vector3 normal) {
     Unknown angle = angleTo(other);
     Unknown c = cross(other);
     Unknown d = c->dot(normal);
@@ -188,8 +188,8 @@ double Vector3Cls::dot(Vector3 other) {
     Unknown otherStorage = other->_v3storage;
     double sum;
     sum = _v3storage[0] * otherStorage[0];
-    sum = _v3storage[1] * otherStorage[1];
-    sum = _v3storage[2] * otherStorage[2];
+    sum += _v3storage[1] * otherStorage[1];
+    sum += _v3storage[2] * otherStorage[2];
     return sum;
 }
 
@@ -248,7 +248,7 @@ void Vector3Cls::applyProjection(Matrix4 arg) {
     _v3storage[2] = (argStorage[2] * x + argStorage[6] * y + argStorage[10] * z + argStorage[14]) * d;
 }
 
-void Vector3Cls::applyAxisAngle(double angle, Vector3 axis) {
+void Vector3Cls::applyAxisAngle(Vector3 axis, double angle) {
     applyQuaternion(QuaternionCls->axisAngle(axis, angle));
 }
 
@@ -373,7 +373,7 @@ void Vector3Cls::absolute() {
     _v3storage[2] = _v3storage[2]->abs();
 }
 
-void Vector3Cls::clamp(Vector3 max, Vector3 min) {
+void Vector3Cls::clamp(Vector3 min, Vector3 max) {
     Unknown minStorage = min->storage();
     Unknown maxStorage = max->storage();
     _v3storage[0] = _v3storage[0]->clamp(minStorage[0], maxStorage[0])->toDouble();
@@ -381,7 +381,7 @@ void Vector3Cls::clamp(Vector3 max, Vector3 min) {
     _v3storage[2] = _v3storage[2]->clamp(minStorage[2], maxStorage[2])->toDouble();
 }
 
-void Vector3Cls::clampScalar(double max, double min) {
+void Vector3Cls::clampScalar(double min, double max) {
     _v3storage[0] = _v3storage[0]->clamp(min, max)->toDouble();
     _v3storage[1] = _v3storage[1]->clamp(min, max)->toDouble();
     _v3storage[2] = _v3storage[2]->clamp(min, max)->toDouble();

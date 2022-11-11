@@ -5,7 +5,7 @@ bool CastStreamCls<S, T>::isBroadcast() {
 }
 
 template<typename S, typename T>
-StreamSubscription<T> CastStreamCls<S, T>::listen(bool cancelOnError, std::function<void(T data)> onData, std::function<void()> onDone, std::function<void ()> onError) {
+StreamSubscription<T> CastStreamCls<S, T>::listen(std::function<void(T data)> onData, bool cancelOnError, std::function<void()> onDone, std::function<void ()> onError) {
     auto _c1 = <S, T>make<CastStreamSubscriptionCls>(_source->listen(nullptronDone, cancelOnError));_c1.auto _c2 = onData(onData);_c2.onError(onError);_c2;return _c1;
 }
 

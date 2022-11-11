@@ -83,9 +83,9 @@ public:
 
     virtual void  waiting();
 
-    virtual void  withData(T data, ConnectionState state);
+    virtual void  withData(ConnectionState state, T data);
 
-    virtual void  withError(Object error, StackTrace stackTrace, ConnectionState state);
+    virtual void  withError(ConnectionState state, Object error, StackTrace stackTrace);
 
     virtual T requireData();
 

@@ -25,7 +25,7 @@ public:
     Size destination;
 
 
-     FittedSizesCls(Size destination, Size source);
+     FittedSizesCls(Size source, Size destination);
 private:
 
 };

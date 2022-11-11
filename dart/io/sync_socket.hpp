@@ -11,10 +11,10 @@ public:
     static RawSynchronousSocket connectSync(host , int port);
     virtual int available();
     virtual void closeSync();
-    virtual int readIntoSync(List<int> buffer, int end, int start);
+    virtual int readIntoSync(List<int> buffer, int start, int end);
     virtual List<int> readSync(int bytes);
     virtual void shutdown(SocketDirection direction);
-    virtual void writeFromSync(List<int> buffer, int end, int start);
+    virtual void writeFromSync(List<int> buffer, int start, int end);
     virtual int port();
     virtual int remotePort();
     virtual InternetAddress address();

@@ -13,7 +13,7 @@ public:
 
     virtual void addEvent(PointerEvent event);
 
-    virtual void sample(HandleEventCallback callback, Duration nextSampleTime, Duration sampleTime);
+    virtual void sample(Duration sampleTime, Duration nextSampleTime, HandleEventCallback callback);
 
     virtual void stop(HandleEventCallback callback);
 
@@ -41,19 +41,19 @@ private:
     int _hasButtons;
 
 
-    virtual PointerEvent _toHoverEvent(int buttons, Offset delta, PointerEvent event, Offset position, Duration timeStamp);
+    virtual PointerEvent _toHoverEvent(PointerEvent event, Offset position, Offset delta, Duration timeStamp, int buttons);
 
-    virtual PointerEvent _toMoveEvent(int buttons, Offset delta, PointerEvent event, int pointerIdentifier, Offset position, Duration timeStamp);
+    virtual PointerEvent _toMoveEvent(PointerEvent event, Offset position, Offset delta, int pointerIdentifier, Duration timeStamp, int buttons);
 
-    virtual PointerEvent _toMoveOrHoverEvent(int buttons, Offset delta, PointerEvent event, bool isDown, int pointerIdentifier, Offset position, Duration timeStamp);
+    virtual PointerEvent _toMoveOrHoverEvent(PointerEvent event, Offset position, Offset delta, int pointerIdentifier, Duration timeStamp, bool isDown, int buttons);
 
     virtual Offset _positionAt(Duration sampleTime);
 
     virtual void _processPointerEvents(Duration sampleTime);
 
-    virtual void _dequeueAndSampleNonHoverOrMovePointerEventsUntil(HandleEventCallback callback, Duration nextSampleTime, Duration sampleTime);
+    virtual void _dequeueAndSampleNonHoverOrMovePointerEventsUntil(Duration sampleTime, Duration nextSampleTime, HandleEventCallback callback);
 
-    virtual void _samplePointerPosition(HandleEventCallback callback, Duration sampleTime);
+    virtual void _samplePointerPosition(Duration sampleTime, HandleEventCallback callback);
 
 };
 using PointerEventResampler = std::shared_ptr<PointerEventResamplerCls>;

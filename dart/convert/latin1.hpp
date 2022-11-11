@@ -18,7 +18,7 @@ public:
 
     virtual Uint8List encode(String source);
 
-    virtual String decode(bool allowInvalid, List<int> bytes);
+    virtual String decode(List<int> bytes, bool allowInvalid);
 
     virtual Latin1Encoder encoder();
 
@@ -60,18 +60,18 @@ public:
 
     virtual void add(List<int> source);
 
-    virtual void addSlice(int end, bool isLast, List<int> source, int start);
+    virtual void addSlice(List<int> source, int start, int end, bool isLast);
 
 private:
     StringConversionSink _sink;
 
 
      _Latin1DecoderSinkCls(StringConversionSink _sink);
-    virtual void _addSliceToSink(int end, bool isLast, List<int> source, int start);
+    virtual void _addSliceToSink(List<int> source, int start, int end, bool isLast);
 
-    static void _checkValidLatin1(int end, List<int> source, int start);
+    static void _checkValidLatin1(List<int> source, int start, int end);
 
-    static void _reportInvalidLatin1(int end, List<int> source, int start);
+    static void _reportInvalidLatin1(List<int> source, int start, int end);
 
 };
 using _Latin1DecoderSink = std::shared_ptr<_Latin1DecoderSinkCls>;
@@ -79,7 +79,7 @@ using _Latin1DecoderSink = std::shared_ptr<_Latin1DecoderSinkCls>;
 class _Latin1AllowInvalidDecoderSinkCls : public _Latin1DecoderSinkCls {
 public:
 
-    virtual void addSlice(int end, bool isLast, List<int> source, int start);
+    virtual void addSlice(List<int> source, int start, int end, bool isLast);
 
 private:
 

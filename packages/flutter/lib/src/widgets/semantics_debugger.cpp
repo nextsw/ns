@@ -88,7 +88,7 @@ void _SemanticsDebuggerStateCls::_handlePanEnd(DragEndDetails details) {
     });
 }
 
-void _SemanticsDebuggerStateCls::_performAction(SemanticsAction action, Offset position) {
+void _SemanticsDebuggerStateCls::_performAction(Offset position, SemanticsAction action) {
     _pipelineOwner()->semanticsOwner()?->performActionAt(position, action);
 }
 
@@ -109,7 +109,7 @@ _SemanticsClientCls::_SemanticsClientCls(PipelineOwner pipelineOwner) {
 }
 
 void _SemanticsClientCls::_didUpdateSemantics() {
-    generation = 1;
+    generation += 1;
     notifyListeners();
 }
 

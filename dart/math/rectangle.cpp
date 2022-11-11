@@ -83,7 +83,7 @@ Point<T> _RectangleBaseCls<T>::bottomLeft() {
 }
 
 template<typename T>
-RectangleCls<T>::RectangleCls(T height, T left, T top, T width) {
+RectangleCls<T>::RectangleCls(T left, T top, T width, T height) {
     {
         width = ( < 0)? as<dynamic>((width == double->negativeInfinity? 0.0 : (-width * 0))) : (as<dynamic>(width + 0));
         height = ( < 0)? as<dynamic>((height == double->negativeInfinity? 0.0 : (-height * 0))) : (as<dynamic>(height + 0));
@@ -100,7 +100,7 @@ void RectangleCls<T>::fromPoints(Point<T> a, Point<T> b) {
 }
 
 template<typename T>
-MutableRectangleCls<T>::MutableRectangleCls(T height, T left, T top, T width) {
+MutableRectangleCls<T>::MutableRectangleCls(T left, T top, T width, T height) {
     {
         this->_width = ( < 0)? <T>_clampToZero(width) : (as<dynamic>(width + 0));
         this->_height = ( < 0)? <T>_clampToZero(height) : (as<dynamic>(height + 0));

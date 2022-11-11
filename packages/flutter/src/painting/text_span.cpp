@@ -1,7 +1,7 @@
 #include "text_span.hpp"
 TextSpanCls::TextSpanCls(List<InlineSpan> children, Locale locale, MouseCursor mouseCursor, PointerEnterEventListener onEnter, PointerExitEventListener onExit, GestureRecognizer recognizer, String semanticsLabel, bool spellOut, Unknown style, String text) {
     {
-        mouseCursor = mouseCursor or (recognizer == nullptr? MouseCursorCls::defer : SystemMouseCursorsCls::click);
+        mouseCursor = mouseCursor | (recognizer == nullptr? MouseCursorCls::defer : SystemMouseCursorsCls::click);
         assert(!(text == nullptr && semanticsLabel != nullptr));
     }
 }
@@ -14,7 +14,7 @@ bool TextSpanCls::validForMouseTracker() {
     return true;
 }
 
-void TextSpanCls::handleEvent(HitTestEntry entry, PointerEvent event) {
+void TextSpanCls::handleEvent(PointerEvent event, HitTestEntry entry) {
     if (is<PointerDownEvent>(event)) {
         recognizer?->addPointer(as<PointerDownEventCls>(event));
     }
@@ -61,7 +61,7 @@ bool TextSpanCls::visitChildren(InlineSpanVisitor visitor) {
     return true;
 }
 
-InlineSpan TextSpanCls::getSpanForPositionVisitor(Accumulator offset, TextPosition position) {
+InlineSpan TextSpanCls::getSpanForPositionVisitor(TextPosition position, Accumulator offset) {
     if (text == nullptr) {
         return nullptr;
     }
@@ -93,10 +93,10 @@ void TextSpanCls::computeToPlainText(StringBuffer buffer, bool includePlaceholde
 
 void TextSpanCls::computeSemanticsInformation(List<InlineSpanSemanticsInformation> collector, Locale inheritedLocale, bool inheritedSpellOut) {
     assert(debugAssertIsValid());
-    Locale effectiveLocale = locale or inheritedLocale;
-    bool effectiveSpellOut = spellOut or inheritedSpellOut;
+    Locale effectiveLocale = locale | inheritedLocale;
+    bool effectiveSpellOut = spellOut | inheritedSpellOut;
     if (text != nullptr) {
-        int textLength = semanticsLabel?->length() or text!->length();
+        int textLength = semanticsLabel?->length() | text!->length();
             List<StringAttribute> list1 = make<ListCls<>>();    if (effectiveSpellOut && textLength > 0) {        list1.add(ArrayItem);    }if (effectiveLocale != nullptr && textLength > 0) {        list1.add(ArrayItem);    }collector->add(make<InlineSpanSemanticsInformationCls>(text!list1, semanticsLabel, recognizer));
     }
     if (children != nullptr) {
@@ -121,9 +121,9 @@ int TextSpanCls::codeUnitAtVisitor(int index, Accumulator offset) {
     return nullptr;
 }
 
-void TextSpanCls::describeSemantics(Accumulator offset, List<dynamic> semanticsElements, List<int> semanticsOffsets) {
+void TextSpanCls::describeSemantics(Accumulator offset, List<int> semanticsOffsets, List<dynamic> semanticsElements) {
     if (recognizer != nullptr && (is<TapGestureRecognizer>(recognizer) || is<LongPressGestureRecognizer>(recognizer))) {
-        int length = semanticsLabel?->length() or text!->length();
+        int length = semanticsLabel?->length() | text!->length();
         semanticsOffsets->add(offset->value());
         semanticsOffsets->add(offset->value() + length);
         semanticsElements->add(recognizer);
@@ -168,7 +168,7 @@ RenderComparison TextSpanCls::compareTo(InlineSpan other) {
         }
     }
     if (children != nullptr) {
-        for (;  < children!->length(); index = 1) {
+        for (;  < children!->length(); index += 1) {
             RenderComparison candidate = children![index]->compareTo(textSpan->children![index]);
             if (candidate->index > result->index) {
                 result = candidate;

@@ -1,5 +1,5 @@
 #include "object.hpp"
-int ObjectCls::hash(Object object1, Object object10, Object object11, Object object12, Object object13, Object object14, Object object15, Object object16, Object object17, Object object18, Object object19, Object object2, Object object20, Object object3, Object object4, Object object5, Object object6, Object object7, Object object8, Object object9) {
+int ObjectCls::hash(Object object1, Object object2, Object object3, Object object4, Object object5, Object object6, Object object7, Object object8, Object object9, Object object10, Object object11, Object object12, Object object13, Object object14, Object object15, Object object16, Object object17, Object object18, Object object19, Object object20) {
     if (sentinelValue == object3) {
         return SystemHashCls->hash2(object1->hashCode(), object2->hashCode(), _hashSeed);
     }
@@ -72,7 +72,7 @@ int ObjectCls::hashAllUnordered(Iterable<Object> objects) {
     for (auto object : objects) {
         int objectHash = SystemHashCls->smear(object->hashCode());
         sum = (sum + objectHash) & mask;
-        count = 1;
+        count += 1;
     }
     return SystemHashCls->hash2(sum, count);
 }

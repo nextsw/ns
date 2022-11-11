@@ -89,10 +89,10 @@ template<typename T>
 void AsyncSnapshotCls<T>::waiting()
 
 template<typename T>
-void AsyncSnapshotCls<T>::withData(T data, ConnectionState state)
+void AsyncSnapshotCls<T>::withData(ConnectionState state, T data)
 
 template<typename T>
-void AsyncSnapshotCls<T>::withError(Object error, StackTrace stackTrace, ConnectionState state)
+void AsyncSnapshotCls<T>::withError(ConnectionState state, Object error, StackTrace stackTrace)
 
 template<typename T>
 T AsyncSnapshotCls<T>::requireData() {

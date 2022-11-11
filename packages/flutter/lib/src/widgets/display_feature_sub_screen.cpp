@@ -4,7 +4,7 @@ Widget DisplayFeatureSubScreenCls::build(BuildContext context) {
     MediaQueryData mediaQuery = MediaQueryCls->of(context);
     Size parentSize = mediaQuery->size;
     Rect wantedBounds = OffsetCls::zero & parentSize;
-    Offset resolvedAnchorPoint = _capOffset(anchorPoint or _fallbackAnchorPoint(context), parentSize);
+    Offset resolvedAnchorPoint = _capOffset(anchorPoint | _fallbackAnchorPoint(context), parentSize);
     Iterable<Rect> subScreens = subScreensInBounds(wantedBounds, avoidBounds(mediaQuery));
     Rect closestSubScreen = _closestToAnchorPoint(subScreens, resolvedAnchorPoint);
     return make<PaddingCls>(EdgeInsetsCls->only(closestSubScreen->left, closestSubScreen->top, parentSize->width() - closestSubScreen->right, parentSize->height() - closestSubScreen->bottom), make<MediaQueryCls>(mediaQuery->removeDisplayFeatures(closestSubScreen), child));
@@ -18,7 +18,7 @@ Iterable<Rect> DisplayFeatureSubScreenCls::avoidBounds(MediaQueryData mediaQuery
     });
 }
 
-Iterable<Rect> DisplayFeatureSubScreenCls::subScreensInBounds(Iterable<Rect> avoidBounds, Rect wantedBounds) {
+Iterable<Rect> DisplayFeatureSubScreenCls::subScreensInBounds(Rect wantedBounds, Iterable<Rect> avoidBounds) {
     Iterable<Rect> subScreens = makeList(ArrayItem);
     for (Rect bounds : avoidBounds) {
         List<Rect> newSubScreens = makeList();
@@ -53,7 +53,7 @@ Offset DisplayFeatureSubScreenCls::_fallbackAnchorPoint(BuildContext context) {
     ;
 }
 
-Rect DisplayFeatureSubScreenCls::_closestToAnchorPoint(Offset anchorPoint, Iterable<Rect> subScreens) {
+Rect DisplayFeatureSubScreenCls::_closestToAnchorPoint(Iterable<Rect> subScreens, Offset anchorPoint) {
     Rect closestScreen = subScreens->first();
     double closestDistance = _distanceFromPointToRect(anchorPoint, closestScreen);
     for (Rect screen : subScreens) {
@@ -102,7 +102,7 @@ double DisplayFeatureSubScreenCls::_distanceFromPointToRect(Offset point, Rect r
 ;
     }}
 
-Offset DisplayFeatureSubScreenCls::_capOffset(Size maximum, Offset offset) {
+Offset DisplayFeatureSubScreenCls::_capOffset(Offset offset, Size maximum) {
     if (offset->dx() >= 0 && offset->dx() <= maximum->width() && offset->dy() >= 0 && offset->dy() <= maximum->height()) {
         return offset;
     } else {

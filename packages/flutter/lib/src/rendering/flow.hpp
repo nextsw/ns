@@ -30,7 +30,7 @@ public:
 
     virtual Size getSize(BoxConstraints constraints);
 
-    virtual BoxConstraints getConstraintsForChild(BoxConstraints constraints, int i);
+    virtual BoxConstraints getConstraintsForChild(int i, BoxConstraints constraints);
 
     virtual void paintChildren(FlowPaintingContext context);
     virtual bool shouldRelayout(FlowDelegate oldDelegate);
@@ -96,7 +96,7 @@ public:
 
     virtual void dispose();
 
-    virtual bool hitTestChildren(Offset position, BoxHitTestResult result);
+    virtual bool hitTestChildren(BoxHitTestResult result, Offset position);
 
     virtual void applyPaintTransform(RenderBox child, Matrix4 transform);
 

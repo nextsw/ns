@@ -67,7 +67,7 @@ public:
     virtual AxisDirection getDirection(BuildContext context);
 
     virtual List<Widget> buildSlivers(BuildContext context);
-    virtual Widget buildViewport(AxisDirection axisDirection, BuildContext context, ViewportOffset offset, List<Widget> slivers);
+    virtual Widget buildViewport(BuildContext context, ViewportOffset offset, AxisDirection axisDirection, List<Widget> slivers);
 
     virtual Widget build(BuildContext context);
 

@@ -8,7 +8,7 @@ DeleteToNextWordBoundaryIntentCls::DeleteToNextWordBoundaryIntentCls(bool forwar
 DeleteToLineBreakIntentCls::DeleteToLineBreakIntentCls(bool forward) : DirectionalTextEditingIntent(forward) {
 }
 
-DirectionalCaretMovementIntentCls::DirectionalCaretMovementIntentCls(bool collapseAtReversal, bool collapseSelection, bool continuesAtWrap, Unknown forward) {
+DirectionalCaretMovementIntentCls::DirectionalCaretMovementIntentCls(Unknown forward, bool collapseSelection, bool collapseAtReversal, bool continuesAtWrap) {
     {
         assert(!collapseSelection || !collapseAtReversal);
     }

@@ -74,12 +74,12 @@ void BindingBaseCls::initServiceExtensions() {
             registerSignalServiceExtension(__s("exit"), _exitApplication);
         }
         registerStringServiceExtension(__s("connectedVmServiceUri"), [=] ()         {
-            connectedVmServiceUri or __s("");
+            connectedVmServiceUri | __s("");
         }, [=] (String uri) {
             connectedVmServiceUri = uri;
         });
         registerStringServiceExtension(__s("activeDevToolsServerAddress"), [=] ()         {
-            activeDevToolsServerAddress or __s("");
+            activeDevToolsServerAddress | __s("");
         }, [=] (String serverAddress) {
             activeDevToolsServerAddress = serverAddress;
         });
@@ -98,10 +98,10 @@ void BindingBaseCls::initServiceExtensions() {
         registerServiceExtension(brightnessOverrideExtensionName, [=] (Map<String, String> parameters) {
             if (parameters->containsKey(__s("value"))) {
                 ;
-                _postExtensionStateChangedEvent(brightnessOverrideExtensionName, (debugBrightnessOverride or platformDispatcher()->platformBrightness)->toString());
+                _postExtensionStateChangedEvent(brightnessOverrideExtensionName, (debugBrightnessOverride | platformDispatcher()->platformBrightness)->toString());
                 await await reassembleApplication();
             }
-                    Map<String, dynamic> map2 = make<MapCls<>>();        map2.set(__s("value"), (debugBrightnessOverride or platformDispatcher()->platformBrightness)->toString());return list2;
+                    Map<String, dynamic> map2 = make<MapCls<>>();        map2.set(__s("value"), (debugBrightnessOverride | platformDispatcher()->platformBrightness)->toString());return list2;
         });
         return true;
     }());
@@ -118,11 +118,11 @@ bool BindingBaseCls::locked() {
 Future<void> BindingBaseCls::lockEvents(std::function<Future<void>()> callback) {
     auto _c1 = developer->make<TimelineTaskCls>();_c1.start(__s("Lock events"));TimelineTask timelineTask = _c1;
     assert(callback != nullptr);
-    _lockCount = 1;
+    _lockCount += 1;
     Future<void> future = callback();
     assert(future != nullptr, __s("The lockEvents() callback returned null; it should return a Future<void> that completes when the lock is to expire."));
     future->whenComplete([=] () {
-        _lockCount = 1;
+        _lockCount -= 1;
         if (!locked()) {
             timelineTask->finish();
             unlocked();
@@ -179,7 +179,7 @@ void BindingBaseCls::registerNumericServiceExtension(AsyncValueGetter<double> ge
     });
 }
 
-void BindingBaseCls::postEvent(Map<String, dynamic> eventData, String eventKind) {
+void BindingBaseCls::postEvent(String eventKind, Map<String, dynamic> eventData) {
     developer->postEvent(eventKind, eventData);
 }
 

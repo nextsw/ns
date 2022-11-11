@@ -15,7 +15,7 @@ public:
 
 private:
 
-     _ZoneFunctionCls(T function, _Zone zone);
+     _ZoneFunctionCls(_Zone zone, T function);
 };
 template<typename T>
 using _ZoneFunction = std::shared_ptr<_ZoneFunctionCls<T>>;
@@ -24,7 +24,7 @@ class ZoneSpecificationCls : public ObjectCls {
 public:
 
      ZoneSpecificationCls(CreatePeriodicTimerHandler createPeriodicTimer, CreateTimerHandler createTimer, ErrorCallbackHandler errorCallback, ForkHandler fork, HandleUncaughtErrorHandler handleUncaughtError, PrintHandler print, RegisterBinaryCallbackHandler registerBinaryCallback, RegisterCallbackHandler registerCallback, RegisterUnaryCallbackHandler registerUnaryCallback, RunHandler run, RunBinaryHandler runBinary, RunUnaryHandler runUnary, ScheduleMicrotaskHandler scheduleMicrotask);
-    virtual void  from(CreatePeriodicTimerHandler createPeriodicTimer, CreateTimerHandler createTimer, ErrorCallbackHandler errorCallback, ForkHandler fork, HandleUncaughtErrorHandler handleUncaughtError, ZoneSpecification other, PrintHandler print, RegisterBinaryCallbackHandler registerBinaryCallback, RegisterCallbackHandler registerCallback, RegisterUnaryCallbackHandler registerUnaryCallback, RunHandler run, RunBinaryHandler runBinary, RunUnaryHandler runUnary, ScheduleMicrotaskHandler scheduleMicrotask);
+    virtual void  from(ZoneSpecification other, CreatePeriodicTimerHandler createPeriodicTimer, CreateTimerHandler createTimer, ErrorCallbackHandler errorCallback, ForkHandler fork, HandleUncaughtErrorHandler handleUncaughtError, PrintHandler print, RegisterBinaryCallbackHandler registerBinaryCallback, RegisterCallbackHandler registerCallback, RegisterUnaryCallbackHandler registerUnaryCallback, RunHandler run, RunBinaryHandler runBinary, RunUnaryHandler runUnary, ScheduleMicrotaskHandler scheduleMicrotask);
 
     virtual HandleUncaughtErrorHandler handleUncaughtError();
     virtual RunHandler run();
@@ -82,25 +82,25 @@ using _ZoneSpecification = std::shared_ptr<_ZoneSpecificationCls>;
 class ZoneDelegateCls : public ObjectCls {
 public:
 
-    virtual void handleUncaughtError(Object error, StackTrace stackTrace, Zone zone);
+    virtual void handleUncaughtError(Zone zone, Object error, StackTrace stackTrace);
     template<typename R>
- virtual R run(std::function<R()> f, Zone zone);
+ virtual R run(Zone zone, std::function<R()> f);
     template<typename R, typename T>
- virtual R runUnary(T arg, std::function<R(T arg)> f, Zone zone);
+ virtual R runUnary(Zone zone, std::function<R(T arg)> f, T arg);
     template<typename R, typename T1, typename T2>
- virtual R runBinary(T1 arg1, T2 arg2, std::function<R(T1 arg1, T2 arg2)> f, Zone zone);
+ virtual R runBinary(Zone zone, std::function<R(T1 arg1, T2 arg2)> f, T1 arg1, T2 arg2);
     template<typename R>
- virtual ZoneCallback<R> registerCallback(std::function<R()> f, Zone zone);
+ virtual ZoneCallback<R> registerCallback(Zone zone, std::function<R()> f);
     template<typename R, typename T>
- virtual ZoneUnaryCallback<R, T> registerUnaryCallback(std::function<R(T arg)> f, Zone zone);
+ virtual ZoneUnaryCallback<R, T> registerUnaryCallback(Zone zone, std::function<R(T arg)> f);
     template<typename R, typename T1, typename T2>
- virtual ZoneBinaryCallback<R, T1, T2> registerBinaryCallback(std::function<R(T1 arg1, T2 arg2)> f, Zone zone);
-    virtual AsyncError errorCallback(Object error, StackTrace stackTrace, Zone zone);
-    virtual void scheduleMicrotask(std::function<void()> f, Zone zone);
-    virtual Timer createTimer(Duration duration, std::function<void()> f, Zone zone);
-    virtual Timer createPeriodicTimer(std::function<void(Timer timer)> f, Duration period, Zone zone);
-    virtual void print(String line, Zone zone);
-    virtual Zone fork(ZoneSpecification specification, Zone zone, Map zoneValues);
+ virtual ZoneBinaryCallback<R, T1, T2> registerBinaryCallback(Zone zone, std::function<R(T1 arg1, T2 arg2)> f);
+    virtual AsyncError errorCallback(Zone zone, Object error, StackTrace stackTrace);
+    virtual void scheduleMicrotask(Zone zone, std::function<void()> f);
+    virtual Timer createTimer(Zone zone, Duration duration, std::function<void()> f);
+    virtual Timer createPeriodicTimer(Zone zone, Duration period, std::function<void(Timer timer)> f);
+    virtual void print(Zone zone, String line);
+    virtual Zone fork(Zone zone, ZoneSpecification specification, Map zoneValues);
 private:
 
 };
@@ -148,8 +148,8 @@ public:
  virtual std::function<void(T1 , T2 )> bindBinaryCallbackGuarded(std::function<void(T1 argument1, T2 argument2)> callback);
     virtual AsyncError errorCallback(Object error, StackTrace stackTrace);
     virtual void scheduleMicrotask(std::function<void()> callback);
-    virtual Timer createTimer(std::function<void()> callback, Duration duration);
-    virtual Timer createPeriodicTimer(std::function<void(Timer timer)> callback, Duration period);
+    virtual Timer createTimer(Duration duration, std::function<void()> callback);
+    virtual Timer createPeriodicTimer(Duration period, std::function<void(Timer timer)> callback);
     virtual void print(String line);
     virtual dynamic operator[](Object key);
 private:
@@ -167,37 +167,37 @@ using Zone = std::shared_ptr<ZoneCls>;
 class _ZoneDelegateCls : public ObjectCls {
 public:
 
-    virtual void handleUncaughtError(Object error, StackTrace stackTrace, Zone zone);
+    virtual void handleUncaughtError(Zone zone, Object error, StackTrace stackTrace);
 
     template<typename R>
- virtual R run(std::function<R()> f, Zone zone);
+ virtual R run(Zone zone, std::function<R()> f);
 
     template<typename R, typename T>
- virtual R runUnary(T arg, std::function<R(T arg)> f, Zone zone);
+ virtual R runUnary(Zone zone, std::function<R(T arg)> f, T arg);
 
     template<typename R, typename T1, typename T2>
- virtual R runBinary(T1 arg1, T2 arg2, std::function<R(T1 arg1, T2 arg2)> f, Zone zone);
+ virtual R runBinary(Zone zone, std::function<R(T1 arg1, T2 arg2)> f, T1 arg1, T2 arg2);
 
     template<typename R>
- virtual ZoneCallback<R> registerCallback(std::function<R()> f, Zone zone);
+ virtual ZoneCallback<R> registerCallback(Zone zone, std::function<R()> f);
 
     template<typename R, typename T>
- virtual ZoneUnaryCallback<R, T> registerUnaryCallback(std::function<R(T arg)> f, Zone zone);
+ virtual ZoneUnaryCallback<R, T> registerUnaryCallback(Zone zone, std::function<R(T arg)> f);
 
     template<typename R, typename T1, typename T2>
- virtual ZoneBinaryCallback<R, T1, T2> registerBinaryCallback(std::function<R(T1 arg1, T2 arg2)> f, Zone zone);
+ virtual ZoneBinaryCallback<R, T1, T2> registerBinaryCallback(Zone zone, std::function<R(T1 arg1, T2 arg2)> f);
 
-    virtual AsyncError errorCallback(Object error, StackTrace stackTrace, Zone zone);
+    virtual AsyncError errorCallback(Zone zone, Object error, StackTrace stackTrace);
 
-    virtual void scheduleMicrotask(f , Zone zone);
+    virtual void scheduleMicrotask(Zone zone, f );
 
-    virtual Timer createTimer(Duration duration, std::function<void()> f, Zone zone);
+    virtual Timer createTimer(Zone zone, Duration duration, std::function<void()> f);
 
-    virtual Timer createPeriodicTimer(std::function<void(Timer timer)> f, Duration period, Zone zone);
+    virtual Timer createPeriodicTimer(Zone zone, Duration period, std::function<void(Timer timer)> f);
 
-    virtual void print(String line, Zone zone);
+    virtual void print(Zone zone, String line);
 
-    virtual Zone fork(ZoneSpecification specification, Zone zone, Map<Object, Object> zoneValues);
+    virtual Zone fork(Zone zone, ZoneSpecification specification, Map<Object, Object> zoneValues);
 
 private:
     _Zone _delegationTarget;
@@ -232,7 +232,7 @@ private:
     virtual ZoneDelegate _delegate();
     virtual ZoneDelegate _parentDelegate();
     virtual Map<Object, Object> _map();
-    virtual void _processUncaughtError(Object error, StackTrace stackTrace, Zone zone);
+    virtual void _processUncaughtError(Zone zone, Object error, StackTrace stackTrace);
 
 };
 using _Zone = std::shared_ptr<_ZoneCls>;
@@ -247,10 +247,10 @@ public:
     virtual void runGuarded(std::function<void()> f);
 
     template<typename T>
- virtual void runUnaryGuarded(T arg, std::function<void(T arg)> f);
+ virtual void runUnaryGuarded(std::function<void(T arg)> f, T arg);
 
     template<typename T1, typename T2>
- virtual void runBinaryGuarded(T1 arg1, T2 arg2, std::function<void(T1 arg1, T2 arg2)> f);
+ virtual void runBinaryGuarded(std::function<void(T1 arg1, T2 arg2)> f, T1 arg1, T2 arg2);
 
     template<typename R>
  virtual ZoneCallback<R> bindCallback(std::function<R()> f);
@@ -279,10 +279,10 @@ public:
  virtual R run(std::function<R()> f);
 
     template<typename R, typename T>
- virtual R runUnary(T arg, std::function<R(T arg)> f);
+ virtual R runUnary(std::function<R(T arg)> f, T arg);
 
     template<typename R, typename T1, typename T2>
- virtual R runBinary(T1 arg1, T2 arg2, std::function<R(T1 arg1, T2 arg2)> f);
+ virtual R runBinary(std::function<R(T1 arg1, T2 arg2)> f, T1 arg1, T2 arg2);
 
     template<typename R>
  virtual ZoneCallback<R> registerCallback(std::function<R()> callback);
@@ -339,45 +339,45 @@ private:
 
     virtual ZoneDelegate _parentDelegate();
 
-     _CustomZoneCls(Map<Object, Object> _map, _Zone parent, ZoneSpecification specification);
+     _CustomZoneCls(_Zone parent, ZoneSpecification specification, Map<Object, Object> _map);
 
 };
 using _CustomZone = std::shared_ptr<_CustomZoneCls>;
-void _rootHandleUncaughtError(Object error, ZoneDelegate parent, Zone self, StackTrace stackTrace, Zone zone);
+void _rootHandleUncaughtError(Zone self, ZoneDelegate parent, Zone zone, Object error, StackTrace stackTrace);
 
 void _rootHandleError(Object error, StackTrace stackTrace);
 
 template<typename R>
- R _rootRun(std::function<R()> f, ZoneDelegate parent, Zone self, Zone zone);
+ R _rootRun(Zone self, ZoneDelegate parent, Zone zone, std::function<R()> f);
 
 template<typename R, typename T>
- R _rootRunUnary(T arg, std::function<R(T arg)> f, ZoneDelegate parent, Zone self, Zone zone);
+ R _rootRunUnary(Zone self, ZoneDelegate parent, Zone zone, std::function<R(T arg)> f, T arg);
 
 template<typename R, typename T1, typename T2>
- R _rootRunBinary(T1 arg1, T2 arg2, std::function<R(T1 arg1, T2 arg2)> f, ZoneDelegate parent, Zone self, Zone zone);
+ R _rootRunBinary(Zone self, ZoneDelegate parent, Zone zone, std::function<R(T1 arg1, T2 arg2)> f, T1 arg1, T2 arg2);
 
 template<typename R>
- ZoneCallback<R> _rootRegisterCallback(std::function<R()> f, ZoneDelegate parent, Zone self, Zone zone);
+ ZoneCallback<R> _rootRegisterCallback(Zone self, ZoneDelegate parent, Zone zone, std::function<R()> f);
 
 template<typename R, typename T>
- ZoneUnaryCallback<R, T> _rootRegisterUnaryCallback(std::function<R(T arg)> f, ZoneDelegate parent, Zone self, Zone zone);
+ ZoneUnaryCallback<R, T> _rootRegisterUnaryCallback(Zone self, ZoneDelegate parent, Zone zone, std::function<R(T arg)> f);
 
 template<typename R, typename T1, typename T2>
- ZoneBinaryCallback<R, T1, T2> _rootRegisterBinaryCallback(std::function<R(T1 arg1, T2 arg2)> f, ZoneDelegate parent, Zone self, Zone zone);
+ ZoneBinaryCallback<R, T1, T2> _rootRegisterBinaryCallback(Zone self, ZoneDelegate parent, Zone zone, std::function<R(T1 arg1, T2 arg2)> f);
 
-AsyncError _rootErrorCallback(Object error, ZoneDelegate parent, Zone self, StackTrace stackTrace, Zone zone);
+AsyncError _rootErrorCallback(Zone self, ZoneDelegate parent, Zone zone, Object error, StackTrace stackTrace);
 
-void _rootScheduleMicrotask(std::function<void()> f, ZoneDelegate parent, Zone self, Zone zone);
+void _rootScheduleMicrotask(Zone self, ZoneDelegate parent, Zone zone, std::function<void()> f);
 
-Timer _rootCreateTimer(std::function<void()> callback, Duration duration, ZoneDelegate parent, Zone self, Zone zone);
+Timer _rootCreateTimer(Zone self, ZoneDelegate parent, Zone zone, Duration duration, std::function<void()> callback);
 
-Timer _rootCreatePeriodicTimer(std::function<void(Timer timer)> callback, Duration duration, ZoneDelegate parent, Zone self, Zone zone);
+Timer _rootCreatePeriodicTimer(Zone self, ZoneDelegate parent, Zone zone, Duration duration, std::function<void(Timer timer)> callback);
 
-void _rootPrint(String line, ZoneDelegate parent, Zone self, Zone zone);
+void _rootPrint(Zone self, ZoneDelegate parent, Zone zone, String line);
 
 void _printToZone(String line);
 
-Zone _rootFork(ZoneDelegate parent, Zone self, ZoneSpecification specification, Zone zone, Map<Object, Object> zoneValues);
+Zone _rootFork(Zone self, ZoneDelegate parent, Zone zone, ZoneSpecification specification, Map<Object, Object> zoneValues);
 
 
 class _RootZoneCls : public _ZoneCls {
@@ -390,10 +390,10 @@ public:
     virtual void runGuarded(std::function<void()> f);
 
     template<typename T>
- virtual void runUnaryGuarded(T arg, std::function<void(T arg)> f);
+ virtual void runUnaryGuarded(std::function<void(T arg)> f, T arg);
 
     template<typename T1, typename T2>
- virtual void runBinaryGuarded(T1 arg1, T2 arg2, std::function<void(T1 arg1, T2 arg2)> f);
+ virtual void runBinaryGuarded(std::function<void(T1 arg1, T2 arg2)> f, T1 arg1, T2 arg2);
 
     template<typename R>
  virtual ZoneCallback<R> bindCallback(std::function<R()> f);
@@ -422,10 +422,10 @@ public:
  virtual R run(std::function<R()> f);
 
     template<typename R, typename T>
- virtual R runUnary(T arg, std::function<R(T arg)> f);
+ virtual R runUnary(std::function<R(T arg)> f, T arg);
 
     template<typename R, typename T1, typename T2>
- virtual R runBinary(T1 arg1, T2 arg2, std::function<R(T1 arg1, T2 arg2)> f);
+ virtual R runBinary(std::function<R(T1 arg1, T2 arg2)> f, T1 arg1, T2 arg2);
 
     template<typename R>
  virtual ZoneCallback<R> registerCallback(std::function<R()> f);
@@ -496,7 +496,7 @@ template<typename R>
  R runZonedGuarded(std::function<R()> body, std::function<void(Object error, StackTrace stack)> onError, ZoneSpecification zoneSpecification, Map<Object, Object> zoneValues);
 
 template<typename R>
- R _runZoned(std::function<R()> body, ZoneSpecification specification, Map<Object, Object> zoneValues);
+ R _runZoned(std::function<R()> body, Map<Object, Object> zoneValues, ZoneSpecification specification);
 
 
 

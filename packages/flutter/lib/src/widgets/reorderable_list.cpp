@@ -178,7 +178,7 @@ Drag SliverReorderableListStateCls::_dragStart(Offset position) {
     return _dragInfo;
 }
 
-void SliverReorderableListStateCls::_dragUpdate(Offset delta, _DragInfo item, Offset position) {
+void SliverReorderableListStateCls::_dragUpdate(_DragInfo item, Offset position, Offset delta) {
     setState([=] () {
         _overlayEntry?->markNeedsBuild();
         _dragUpdateItems();
@@ -409,7 +409,7 @@ Offset _ReorderableItemStateCls::offset() {
     return _targetOffset;
 }
 
-void _ReorderableItemStateCls::updateForGap(bool animate, double gapExtent, int gapIndex, bool reverse) {
+void _ReorderableItemStateCls::updateForGap(int gapIndex, double gapExtent, bool animate, bool reverse) {
     Offset newTargetOffset = (gapIndex <= index())? _extentOffset(reverse? -gapExtent : gapExtent, _listState->_scrollDirection()) : OffsetCls::zero;
     if (newTargetOffset != _targetOffset) {
         _targetOffset = newTargetOffset;
@@ -484,7 +484,7 @@ void _DragInfoCls::startDrag() {
 
 void _DragInfoCls::update(DragUpdateDetails details) {
     Offset delta = _restrictAxis(details->delta, scrollDirection);
-    dragPosition = delta;
+    dragPosition += delta;
     onUpdate?->call(this, dragPosition, details->delta);
 }
 
@@ -531,7 +531,7 @@ Offset _overlayOrigin(BuildContext context) {
 }
 
 Widget _DragItemProxyCls::build(BuildContext context) {
-    Widget proxyChild = proxyDecorator?->call(child, index, animation->view()) or child;
+    Widget proxyChild = proxyDecorator?->call(child, index, animation->view()) | child;
     Offset overlayOrigin = _overlayOrigin(context);
     return make<MediaQueryCls>(MediaQueryCls->of(context)->removePadding(true), make<AnimatedBuilderCls>(animation, [=] (BuildContext context,Widget child) {
         Offset effectivePosition = position;
@@ -543,7 +543,7 @@ Widget _DragItemProxyCls::build(BuildContext context) {
     }, proxyChild));
 }
 
-double _sizeExtent(Axis scrollDirection, Size size) {
+double _sizeExtent(Size size, Axis scrollDirection) {
     ;
 }
 
@@ -570,5 +570,5 @@ int _ReorderableItemGlobalKeyCls::hashCode() {
     return ObjectCls->hash(subKey, index, state);
 }
 
-_ReorderableItemGlobalKeyCls::_ReorderableItemGlobalKeyCls(int index, SliverReorderableListState state, Key subKey) : GlobalObjectKey(subKey) {
+_ReorderableItemGlobalKeyCls::_ReorderableItemGlobalKeyCls(Key subKey, int index, SliverReorderableListState state) : GlobalObjectKey(subKey) {
 }

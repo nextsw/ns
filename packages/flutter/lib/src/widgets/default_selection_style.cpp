@@ -2,10 +2,10 @@
 void DefaultSelectionStyleCls::fallback(Unknown key)
 
 DefaultSelectionStyle DefaultSelectionStyleCls::of(BuildContext context) {
-    return context-><DefaultSelectionStyle>dependOnInheritedWidgetOfExactType() or DefaultSelectionStyleCls->fallback();
+    return context-><DefaultSelectionStyle>dependOnInheritedWidgetOfExactType() | DefaultSelectionStyleCls->fallback();
 }
 
-Widget DefaultSelectionStyleCls::wrap(Widget child, BuildContext context) {
+Widget DefaultSelectionStyleCls::wrap(BuildContext context, Widget child) {
     return make<DefaultSelectionStyleCls>(cursorColor, selectionColor, child);
 }
 

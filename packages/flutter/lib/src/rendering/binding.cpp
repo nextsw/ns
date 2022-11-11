@@ -59,7 +59,7 @@ void RendererBindingCls::initServiceExtensions() {
             return <void>value();
         });
         registerServiceExtension(__s("debugDumpLayerTree"), [=] (Map<String, String> parameters) {
-            String data = RendererBindingCls::instance->renderView->debugLayer?->toStringDeep() or __s("Layer tree unavailable.");
+            String data = RendererBindingCls::instance->renderView->debugLayer?->toStringDeep() | __s("Layer tree unavailable.");
                     Map<String, Object> map1 = make<MapCls<>>();        map1.set(__s("data"), data);return list1;
         });
         registerBoolServiceExtension(__s("debugDisableClipLayers"), [=] ()         {
@@ -97,11 +97,11 @@ void RendererBindingCls::initServiceExtensions() {
                     Map<String, Object> map2 = make<MapCls<>>();        map2.set(__s("data"), data);return list2;
         });
         registerServiceExtension(__s("debugDumpSemanticsTreeInTraversalOrder"), [=] (Map<String, String> parameters) {
-            String data = RendererBindingCls::instance->renderView->debugSemantics?->toStringDeep() or __s("Semantics not collected.");
+            String data = RendererBindingCls::instance->renderView->debugSemantics?->toStringDeep() | __s("Semantics not collected.");
                     Map<String, Object> map3 = make<MapCls<>>();        map3.set(__s("data"), data);return list3;
         });
         registerServiceExtension(__s("debugDumpSemanticsTreeInInverseHitTestOrder"), [=] (Map<String, String> parameters) {
-            String data = RendererBindingCls::instance->renderView->debugSemantics?->toStringDeep(DebugSemanticsDumpOrderCls::inverseHitTest) or __s("Semantics not collected.");
+            String data = RendererBindingCls::instance->renderView->debugSemantics?->toStringDeep(DebugSemanticsDumpOrderCls::inverseHitTest) | __s("Semantics not collected.");
                     Map<String, Object> map4 = make<MapCls<>>();        map4.set(__s("data"), data);return list4;
         });
         registerBoolServiceExtension(__s("profileRenderObjectPaints"), [=] ()         {
@@ -169,7 +169,7 @@ ViewConfiguration RendererBindingCls::createViewConfiguration() {
 
 void RendererBindingCls::initMouseTracker(MouseTracker tracker) {
     _mouseTracker?->dispose();
-    _mouseTracker = tracker or make<MouseTrackerCls>();
+    _mouseTracker = tracker | make<MouseTrackerCls>();
 }
 
 void RendererBindingCls::dispatchEvent(PointerEvent event, HitTestResult hitTestResult) {
@@ -181,7 +181,7 @@ void RendererBindingCls::dispatchEvent(PointerEvent event, HitTestResult hitTest
 
 void RendererBindingCls::setSemanticsEnabled(bool enabled) {
     if (enabled) {
-        _semanticsHandle = _pipelineOwner->ensureSemantics();
+        _semanticsHandle |= _pipelineOwner->ensureSemantics();
     } else {
         _semanticsHandle?->dispose();
         _semanticsHandle = nullptr;
@@ -194,12 +194,12 @@ bool RendererBindingCls::sendFramesToEngine() {
 
 void RendererBindingCls::deferFirstFrame() {
     assert(_firstFrameDeferredCount >= 0);
-    _firstFrameDeferredCount = 1;
+    _firstFrameDeferredCount += 1;
 }
 
 void RendererBindingCls::allowFirstFrame() {
     assert(_firstFrameDeferredCount > 0);
-    _firstFrameDeferredCount = 1;
+    _firstFrameDeferredCount -= 1;
     if (!_firstFrameSent) {
         scheduleWarmUpFrame();
     }
@@ -239,7 +239,7 @@ Future<void> RendererBindingCls::performReassemble() {
     await await endOfFrame;
 }
 
-void RendererBindingCls::hitTest(Offset position, HitTestResult result) {
+void RendererBindingCls::hitTest(HitTestResult result, Offset position) {
     assert(renderView() != nullptr);
     assert(result != nullptr);
     assert(position != nullptr);
@@ -257,7 +257,7 @@ void RendererBindingCls::_handleWebFirstFrame(Duration _) {
     methodChannel-><void>invokeMethod(__s("first-frame"));
 }
 
-void RendererBindingCls::_handleSemanticsAction(SemanticsAction action, ByteData args, int id) {
+void RendererBindingCls::_handleSemanticsAction(int id, SemanticsAction action, ByteData args) {
     _pipelineOwner->semanticsOwner()?->performAction(id, action, args != nullptr? make<StandardMessageCodecCls>()->decodeMessage(args) : nullptr);
 }
 
@@ -309,7 +309,7 @@ void debugDumpLayerTree() {
 }
 
 void debugDumpSemanticsTree(DebugSemanticsDumpOrder childOrder) {
-    debugPrint(RendererBindingCls::instance->renderView->debugSemantics?->toStringDeep(childOrder) or __s("Semantics not collected."));
+    debugPrint(RendererBindingCls::instance->renderView->debugSemantics?->toStringDeep(childOrder) | __s("Semantics not collected."));
 }
 
 RenderingFlutterBindingCls::RenderingFlutterBindingCls(RenderBox root) {

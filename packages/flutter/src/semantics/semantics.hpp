@@ -73,7 +73,7 @@ public:
     List<StringAttribute> attributes;
 
 
-     AttributedStringCls(List<StringAttribute> attributes, String string);
+     AttributedStringCls(String string, List<StringAttribute> attributes);
 
     virtual AttributedString operator+(AttributedString other);
 
@@ -93,7 +93,7 @@ public:
     bool showWhenEmpty;
 
 
-     AttributedStringPropertyCls(Unknown defaultValue, Unknown description, Unknown level, String name, Unknown showName, bool showWhenEmpty, Unknown value);
+     AttributedStringPropertyCls(String name, Unknown value, Unknown defaultValue, Unknown description, Unknown level, Unknown showName, bool showWhenEmpty);
 
     virtual bool isInteresting();
 
@@ -660,9 +660,9 @@ public:
 
     virtual void sendSemanticsUpdate();
 
-    virtual void performAction(SemanticsAction action, Object args, int id);
+    virtual void performAction(int id, SemanticsAction action, Object args);
 
-    virtual void performActionAt(SemanticsAction action, Object args, Offset position);
+    virtual void performActionAt(Offset position, SemanticsAction action, Object args);
 
     virtual String toString();
 
@@ -674,9 +674,9 @@ private:
     Set<SemanticsNode> _detachedNodes;
 
 
-    virtual SemanticsActionHandler _getSemanticsActionHandlerForId(SemanticsAction action, int id);
+    virtual SemanticsActionHandler _getSemanticsActionHandlerForId(int id, SemanticsAction action);
 
-    virtual SemanticsActionHandler _getSemanticsActionHandlerForPosition(SemanticsAction action, SemanticsNode node, Offset position);
+    virtual SemanticsActionHandler _getSemanticsActionHandlerForPosition(SemanticsNode node, Offset position, SemanticsAction action);
 
 };
 using SemanticsOwner = std::shared_ptr<SemanticsOwnerCls>;
@@ -1133,7 +1133,7 @@ public:
     double order;
 
 
-     OrdinalSortKeyCls(Unknown name, double order);
+     OrdinalSortKeyCls(double order, Unknown name);
 
     virtual int doCompare(OrdinalSortKey other);
 

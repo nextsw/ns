@@ -37,7 +37,7 @@ ShapeBorder RoundedRectangleBorderCls::lerpTo(ShapeBorder b, double t) {
 }
 
 RoundedRectangleBorder RoundedRectangleBorderCls::copyWith(BorderRadiusGeometry borderRadius, BorderSide side) {
-    return make<RoundedRectangleBorderCls>(side or this->side, borderRadius or this->borderRadius);
+    return make<RoundedRectangleBorderCls>(side | this->side, borderRadius | this->borderRadius);
 }
 
 Path RoundedRectangleBorderCls::getInnerPath(Rect rect, TextDirection textDirection) {
@@ -117,7 +117,7 @@ Path _RoundedRectangleToCircleBorderCls::getOuterPath(Rect rect, TextDirection t
 }
 
 _RoundedRectangleToCircleBorder _RoundedRectangleToCircleBorderCls::copyWith(BorderRadiusGeometry borderRadius, double circleness, BorderSide side) {
-    return make<_RoundedRectangleToCircleBorderCls>(side or this->side, borderRadius or this->borderRadius, circleness or this->circleness);
+    return make<_RoundedRectangleToCircleBorderCls>(side | this->side, borderRadius | this->borderRadius, circleness | this->circleness);
 }
 
 void _RoundedRectangleToCircleBorderCls::paint(Canvas canvas, Rect rect, TextDirection textDirection) {

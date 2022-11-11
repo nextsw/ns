@@ -72,7 +72,7 @@ public:
 
     virtual void restoreScrollOffset();
 
-    virtual void restoreOffset(bool initialRestore, double offset);
+    virtual void restoreOffset(double offset, bool initialRestore);
 
     virtual void saveOffset();
 
@@ -80,18 +80,18 @@ public:
 
     virtual bool applyViewportDimension(double viewportDimension);
 
-    virtual bool applyContentDimensions(double maxScrollExtent, double minScrollExtent);
+    virtual bool applyContentDimensions(double minScrollExtent, double maxScrollExtent);
 
-    virtual bool correctForNewDimensions(ScrollMetrics newPosition, ScrollMetrics oldPosition);
+    virtual bool correctForNewDimensions(ScrollMetrics oldPosition, ScrollMetrics newPosition);
 
     virtual void applyNewDimensions();
 
-    virtual Future<void> ensureVisible(double alignment, ScrollPositionAlignmentPolicy alignmentPolicy, Curve curve, Duration duration, RenderObject object, RenderObject targetRenderObject);
+    virtual Future<void> ensureVisible(RenderObject object, double alignment, ScrollPositionAlignmentPolicy alignmentPolicy, Curve curve, Duration duration, RenderObject targetRenderObject);
 
-    virtual Future<void> animateTo(Curve curve, Duration duration, double to) override;
+    virtual Future<void> animateTo(double to, Curve curve, Duration duration) override;
     virtual void jumpTo(double value) override;
     virtual void pointerScroll(double delta);
-    virtual Future<void> moveTo(bool clamp, Curve curve, Duration duration, double to);
+    virtual Future<void> moveTo(double to, bool clamp, Curve curve, Duration duration);
 
     virtual bool allowImplicitScrolling();
 

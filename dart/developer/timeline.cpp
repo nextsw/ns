@@ -1,6 +1,6 @@
 #include "timeline.hpp"
 Flow FlowCls::begin(int id) {
-    return FlowCls->_(_begin, id or _getNextAsyncId());
+    return FlowCls->_(_begin, id | _getNextAsyncId());
 }
 
 Flow FlowCls::step(int id) {
@@ -11,7 +11,7 @@ Flow FlowCls::end(int id) {
     return FlowCls->_(_end, id);
 }
 
-void TimelineCls::startSync(Map arguments, Flow flow, String name) {
+void TimelineCls::startSync(String name, Map arguments, Flow flow) {
     if (!_hasTimeline)     {
         return;
     }
@@ -39,7 +39,7 @@ void TimelineCls::finishSync() {
     block->finish();
 }
 
-void TimelineCls::instantSync(Map arguments, String name) {
+void TimelineCls::instantSync(String name, Map arguments) {
     if (!_hasTimeline)     {
         return;
     }
@@ -55,7 +55,7 @@ void TimelineCls::instantSync(Map arguments, String name) {
 }
 
 template<typename T>
-T TimelineCls::timeSync(Map arguments, Flow flow, TimelineSyncFunction<T> function, String name) {
+T TimelineCls::timeSync(String name, TimelineSyncFunction<T> function, Map arguments, Flow flow) {
     startSync(namearguments, flow);
     try {
         return function();
@@ -78,11 +78,11 @@ TimelineTaskCls::TimelineTaskCls(String filterKey, TimelineTask parent) {
     }
 }
 
-void TimelineTaskCls::withTaskId(String filterKey, int taskId) {
+void TimelineTaskCls::withTaskId(int taskId, String filterKey) {
     ArgumentErrorCls->checkNotNull(taskId, __s("taskId"));
 }
 
-void TimelineTaskCls::start(Map arguments, String name) {
+void TimelineTaskCls::start(String name, Map arguments) {
     if (!_hasTimeline)     {
         return;
     }
@@ -108,7 +108,7 @@ void TimelineTaskCls::start(Map arguments, String name) {
     block->_start(map);
 }
 
-void TimelineTaskCls::instant(Map arguments, String name) {
+void TimelineTaskCls::instant(String name, Map arguments) {
     if (!_hasTimeline)     {
         return;
     }
@@ -121,7 +121,7 @@ void TimelineTaskCls::instant(Map arguments, String name) {
         instantArguments = MapCls->from(arguments);
     }
     if (_filterKey != nullptr) {
-        instantArguments = makeMap(makeList(), makeList();
+        instantArguments |= makeMap(makeList(), makeList();
         instantArguments[_kFilterKey] = _filterKey;
     }
     _reportTaskEvent(_taskId, __s("n"), __s("Dart"), name, _argumentsAsJson(instantArguments));
@@ -135,7 +135,7 @@ void TimelineTaskCls::finish(Map arguments) {
         throw make<StateErrorCls>(__s("Uneven calls to start and finish"));
     }
     if (_filterKey != nullptr) {
-        arguments = makeMap(makeList(), makeList();
+        arguments |= makeMap(makeList(), makeList();
         arguments[_kFilterKey] = _filterKey;
     }
     auto block = _stack->removeLast();

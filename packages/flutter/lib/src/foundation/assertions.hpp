@@ -38,7 +38,7 @@ class StackFilterCls : public ObjectCls {
 public:
 
      StackFilterCls();
-    virtual void filter(List<String> reasons, List<StackFrame> stackFrames);
+    virtual void filter(List<StackFrame> stackFrames, List<String> reasons);
 private:
 
 };
@@ -55,7 +55,7 @@ public:
 
     virtual int numFrames();
 
-    virtual void filter(List<String> reasons, List<StackFrame> stackFrames);
+    virtual void filter(List<StackFrame> stackFrames, List<String> reasons);
 
 private:
 
@@ -75,9 +75,9 @@ public:
 
 private:
 
-     _ErrorDiagnosticCls(DiagnosticLevel level, String message, DiagnosticsTreeStyle style);
+     _ErrorDiagnosticCls(String message, DiagnosticLevel level, DiagnosticsTreeStyle style);
 
-    virtual void  _fromParts(DiagnosticLevel level, List<Object> messageParts, DiagnosticsTreeStyle style);
+    virtual void  _fromParts(List<Object> messageParts, DiagnosticLevel level, DiagnosticsTreeStyle style);
 
 };
 using _ErrorDiagnostic = std::shared_ptr<_ErrorDiagnosticCls>;
@@ -221,9 +221,9 @@ void debugPrintStack(String label, int maxFrames, StackTrace stackTrace);
 class DiagnosticsStackTraceCls : public DiagnosticsBlockCls {
 public:
 
-     DiagnosticsStackTraceCls(String name, Unknown showSeparator, StackTrace stack, IterableFilter<String> stackFilter);
+     DiagnosticsStackTraceCls(String name, StackTrace stack, Unknown showSeparator, IterableFilter<String> stackFilter);
 
-    virtual void  singleFrame(String frame, String name, Unknown showSeparator);
+    virtual void  singleFrame(String name, String frame, Unknown showSeparator);
 
     virtual bool allowTruncate();
 

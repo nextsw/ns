@@ -72,7 +72,7 @@ void ImageCacheCls::clear() {
     _currentSizeBytes = 0;
 }
 
-bool ImageCacheCls::evict(bool includeLive, Object key) {
+bool ImageCacheCls::evict(Object key, bool includeLive) {
     assert(includeLive != nullptr);
     if (includeLive) {
         _LiveImage image = _liveImages->remove(key);
@@ -91,7 +91,7 @@ bool ImageCacheCls::evict(bool includeLive, Object key) {
         if (!kReleaseMode) {
                     Map<String, dynamic> map2 = make<MapCls<>>();        map2.set(__s("type"), __s("keepAlive"));        map2.set(__s("sizeInBytes"), image->sizeBytes);TimelineCls->instantSync(__s("ImageCache.evict")list2);
         }
-        _currentSizeBytes = image->sizeBytes!;
+        _currentSizeBytes -= image->sizeBytes!;
         image->dispose();
         return true;
     }
@@ -186,10 +186,10 @@ void ImageCacheCls::clearLiveImages() {
     _liveImages->clear();
 }
 
-void ImageCacheCls::_touch(_CachedImage image, Object key, TimelineTask timelineTask) {
+void ImageCacheCls::_touch(Object key, _CachedImage image, TimelineTask timelineTask) {
     assert(timelineTask != nullptr);
     if (image->sizeBytes != nullptr && image->sizeBytes! <= maximumSizeBytes() && maximumSize() > 0) {
-        _currentSizeBytes = image->sizeBytes!;
+        _currentSizeBytes += image->sizeBytes!;
         _cache[key] = image;
         _checkCacheSize(timelineTask);
     } else {
@@ -197,12 +197,12 @@ void ImageCacheCls::_touch(_CachedImage image, Object key, TimelineTask timeline
     }
 }
 
-void ImageCacheCls::_trackLiveImage(ImageStreamCompleter completer, Object key, int sizeBytes) {
+void ImageCacheCls::_trackLiveImage(Object key, ImageStreamCompleter completer, int sizeBytes) {
     _liveImages->putIfAbsent(key, [=] () {
         return make<_LiveImageCls>(completer, [=] () {
             _liveImages->remove(key);
         });
-    })->sizeBytes = sizeBytes;
+    })->sizeBytes |= sizeBytes;
 }
 
 void ImageCacheCls::_checkCacheSize(TimelineTask timelineTask) {
@@ -217,7 +217,7 @@ void ImageCacheCls::_checkCacheSize(TimelineTask timelineTask) {
     while (_currentSizeBytes > _maximumSizeBytes || _cache->length() > _maximumSize) {
         Object key = _cache->keys()->first();
         _CachedImage image = _cache[key]!;
-        _currentSizeBytes = image->sizeBytes!;
+        _currentSizeBytes -= image->sizeBytes!;
         image->dispose();
         _cache->remove(key);
         if (!kReleaseMode) {

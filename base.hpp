@@ -51,6 +51,16 @@ List makeList();
 #ifdef DART_CORE_OBJECT
 #ifndef DART_CORE_OBJECT_OR
 
+template<class T>
+std::shared_ptr<T> operator |(std::shared_ptr<T> a, std::shared_ptr<T> b) { 
+    return a == nullptr? b : a;
+}
+
+template<class T>
+std::shared_ptr<T> operator |=(std::shared_ptr<T> a, std::shared_ptr<T> b) { 
+    return a = (a == nullptr? b : a);
+}
+
 define operator(std::shared_ptr, myOr, std::shared_ptr, std::shared_ptr) { // Arguments are the return type, the name of the operator, the left operand type and the right operand type, respectively
     return a == nullptr? b : a;
 }

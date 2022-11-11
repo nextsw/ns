@@ -101,10 +101,10 @@ double RenderPerformanceOverlayCls::_intrinsicHeight() {
     double kDefaultGraphHeight = 80.0;
     double result = 0.0;
     if ((optionsMask() | (1 << PerformanceOverlayOptionCls::displayRasterizerStatistics->index) > 0) || (optionsMask() | (1 << PerformanceOverlayOptionCls::visualizeRasterizerStatistics->index) > 0)) {
-        result = kDefaultGraphHeight;
+        result += kDefaultGraphHeight;
     }
     if ((optionsMask() | (1 << PerformanceOverlayOptionCls::displayEngineStatistics->index) > 0) || (optionsMask() | (1 << PerformanceOverlayOptionCls::visualizeEngineStatistics->index) > 0)) {
-        result = kDefaultGraphHeight;
+        result += kDefaultGraphHeight;
     }
     return result;
 }

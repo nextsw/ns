@@ -19,11 +19,11 @@ bool TextSelectionControlsCls::canSelectAll(TextSelectionDelegate delegate) {
     return delegate->selectAllEnabled() && delegate->textEditingValue()->text->isNotEmpty() && delegate->textEditingValue()->selection->isCollapsed;
 }
 
-void TextSelectionControlsCls::handleCut(ClipboardStatusNotifier clipboardStatus, TextSelectionDelegate delegate) {
+void TextSelectionControlsCls::handleCut(TextSelectionDelegate delegate, ClipboardStatusNotifier clipboardStatus) {
     delegate->cutSelection(SelectionChangedCauseCls::toolbar);
 }
 
-void TextSelectionControlsCls::handleCopy(ClipboardStatusNotifier clipboardStatus, TextSelectionDelegate delegate) {
+void TextSelectionControlsCls::handleCopy(TextSelectionDelegate delegate, ClipboardStatusNotifier clipboardStatus) {
     delegate->copySelection(SelectionChangedCauseCls::toolbar);
 }
 
@@ -145,7 +145,7 @@ double TextSelectionOverlayCls::_getStartGlyphHeight() {
         firstSelectedGraphemeExtent = selectedGraphemes->characters->first->length;
         startHandleRect = renderObject->getRectForComposingRange(make<TextRangeCls>(_selection()->start, _selection()->start + firstSelectedGraphemeExtent));
     }
-    return startHandleRect?->height() or renderObject->preferredLineHeight();
+    return startHandleRect?->height() | renderObject->preferredLineHeight();
 }
 
 double TextSelectionOverlayCls::_getEndGlyphHeight() {
@@ -159,7 +159,7 @@ double TextSelectionOverlayCls::_getEndGlyphHeight() {
         lastSelectedGraphemeExtent = selectedGraphemes->characters->last->length;
         endHandleRect = renderObject->getRectForComposingRange(make<TextRangeCls>(_selection()->end - lastSelectedGraphemeExtent, _selection()->end));
     }
-    return endHandleRect?->height() or renderObject->preferredLineHeight();
+    return endHandleRect?->height() | renderObject->preferredLineHeight();
 }
 
 void TextSelectionOverlayCls::_handleSelectionEndHandleDragStart(DragStartDetails details) {
@@ -168,7 +168,7 @@ void TextSelectionOverlayCls::_handleSelectionEndHandleDragStart(DragStartDetail
 }
 
 void TextSelectionOverlayCls::_handleSelectionEndHandleDragUpdate(DragUpdateDetails details) {
-    _dragEndPosition = details->delta;
+    _dragEndPosition += details->delta;
     TextPosition position = renderObject->getPositionForPoint(_dragEndPosition);
     if (_selection()->isCollapsed) {
         _handleSelectionHandleChanged(TextSelectionCls->fromPosition(position)true);
@@ -185,7 +185,7 @@ void TextSelectionOverlayCls::_handleSelectionStartHandleDragStart(DragStartDeta
 }
 
 void TextSelectionOverlayCls::_handleSelectionStartHandleDragUpdate(DragUpdateDetails details) {
-    _dragStartPosition = details->delta;
+    _dragStartPosition += details->delta;
     TextPosition position = renderObject->getPositionForPoint(_dragStartPosition);
     if (_selection()->isCollapsed) {
         _handleSelectionHandleChanged(TextSelectionCls->fromPosition(position)false);
@@ -196,13 +196,13 @@ void TextSelectionOverlayCls::_handleSelectionStartHandleDragUpdate(DragUpdateDe
     _handleSelectionHandleChanged(newSelectionfalse);
 }
 
-void TextSelectionOverlayCls::_handleSelectionHandleChanged(bool isEnd, TextSelection newSelection) {
+void TextSelectionOverlayCls::_handleSelectionHandleChanged(TextSelection newSelection, bool isEnd) {
     TextPosition textPosition = isEnd? newSelection->extent() : newSelection->base();
     selectionDelegate->userUpdateTextEditingValue(_value->copyWith(newSelection), SelectionChangedCauseCls::drag);
     selectionDelegate->bringIntoView(textPosition);
 }
 
-TextSelectionHandleType TextSelectionOverlayCls::_chooseType(TextSelectionHandleType ltrType, TextSelectionHandleType rtlType, TextDirection textDirection) {
+TextSelectionHandleType TextSelectionOverlayCls::_chooseType(TextDirection textDirection, TextSelectionHandleType ltrType, TextSelectionHandleType rtlType) {
     if (_selection()->isCollapsed) {
         return TextSelectionHandleTypeCls::collapsed;
     }
@@ -441,7 +441,7 @@ Animation<double> _SelectionToolbarOverlayStateCls::_opacity() {
 }
 
 void _SelectionToolbarOverlayStateCls::_toolbarVisibilityChanged() {
-    if (widget->visibility?->value or true) {
+    if (widget->visibility?->value | true) {
         _controller->forward();
     } else {
         _controller->reverse();
@@ -486,7 +486,7 @@ Animation<double> _SelectionHandleOverlayStateCls::_opacity() {
 }
 
 void _SelectionHandleOverlayStateCls::_handleVisibilityChanged() {
-    if (widget->visibility?->value or true) {
+    if (widget->visibility?->value | true) {
         _controller->forward();
     } else {
         _controller->reverse();
@@ -649,18 +649,18 @@ bool TextSelectionGestureDetectorBuilderCls::_lastSecondaryTapWasOnSelection() {
     return renderEditable()->selection()!->start <= textPosition->offset && renderEditable()->selection()!->end >= textPosition->offset;
 }
 
-void TextSelectionGestureDetectorBuilderCls::_expandSelection(SelectionChangedCause cause, TextSelection fromSelection, Offset offset) {
+void TextSelectionGestureDetectorBuilderCls::_expandSelection(Offset offset, SelectionChangedCause cause, TextSelection fromSelection) {
     assert(cause != nullptr);
     assert(offset != nullptr);
     assert(renderEditable()->selection()?->baseOffset != nullptr);
     TextPosition tappedPosition = renderEditable()->getPositionForPoint(offset);
-    TextSelection selection = fromSelection or renderEditable()->selection()!;
+    TextSelection selection = fromSelection | renderEditable()->selection()!;
     bool baseIsCloser = (tappedPosition->offset - selection->baseOffset)->abs() < (tappedPosition->offset - selection->extentOffset)->abs();
     TextSelection nextSelection = selection->copyWith(baseIsCloser? selection->extentOffset : selection->baseOffset, tappedPosition->offset);
     editableText()->userUpdateTextEditingValue(editableText()->textEditingValue()->copyWith(nextSelection), cause);
 }
 
-void TextSelectionGestureDetectorBuilderCls::_extendSelection(SelectionChangedCause cause, Offset offset) {
+void TextSelectionGestureDetectorBuilderCls::_extendSelection(Offset offset, SelectionChangedCause cause) {
     assert(cause != nullptr);
     assert(offset != nullptr);
     assert(renderEditable()->selection()?->baseOffset != nullptr);
@@ -752,7 +752,7 @@ void _TextSelectionGestureDetectorStateCls::_handleDragStart(DragStartDetails de
 
 void _TextSelectionGestureDetectorStateCls::_handleDragUpdate(DragUpdateDetails details) {
     _lastDragUpdateDetails = details;
-    _dragUpdateThrottleTimer = make<TimerCls>(_kDragSelectionUpdateThrottle, _handleDragUpdateThrottled);
+    _dragUpdateThrottleTimer |= make<TimerCls>(_kDragSelectionUpdateThrottle, _handleDragUpdateThrottled);
 }
 
 void _TextSelectionGestureDetectorStateCls::_handleDragUpdateThrottled() {

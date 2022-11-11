@@ -35,7 +35,7 @@ template<typename T>
 class _BufferingStreamSubscriptionCls : public ObjectCls {
 public:
 
-    virtual void  zoned(Zone _zone, bool cancelOnError, std::function<void(T data)> onData, std::function<void()> onDone, std::function<void ()> onError);
+    virtual void  zoned(Zone _zone, std::function<void(T data)> onData, std::function<void ()> onError, std::function<void()> onDone, bool cancelOnError);
 
     virtual void onData(std::function<void(T event)> handleData);
 
@@ -86,16 +86,16 @@ private:
     _PendingEvents<T> _pending;
 
 
-     _BufferingStreamSubscriptionCls(bool cancelOnError, std::function<void(T data)> onData, std::function<void()> onDone, std::function<void ()> onError);
+     _BufferingStreamSubscriptionCls(std::function<void(T data)> onData, std::function<void ()> onError, std::function<void()> onDone, bool cancelOnError);
 
     virtual void _setPendingEvents(_PendingEvents<T> pendingEvents);
 
     template<typename T>
- static std::function<void(T )> _registerDataHandler(std::function<void(T )> handleData, Zone zone);
+ static std::function<void(T )> _registerDataHandler(Zone zone, std::function<void(T )> handleData);
 
-    static std::function<void ()> _registerErrorHandler(std::function<void ()> handleError, Zone zone);
+    static std::function<void ()> _registerErrorHandler(Zone zone, std::function<void ()> handleError);
 
-    static std::function<void()> _registerDoneHandler(std::function<void()> handleDone, Zone zone);
+    static std::function<void()> _registerDoneHandler(Zone zone, std::function<void()> handleDone);
 
     virtual bool _isInputPaused();
 
@@ -153,11 +153,11 @@ template<typename T>
 class _StreamImplCls : public StreamCls<T> {
 public:
 
-    virtual StreamSubscription<T> listen(bool cancelOnError, std::function<void(T data)> onData, std::function<void()> onDone, std::function<void ()> onError);
+    virtual StreamSubscription<T> listen(std::function<void(T data)> onData, bool cancelOnError, std::function<void()> onDone, std::function<void ()> onError);
 
 private:
 
-    virtual StreamSubscription<T> _createSubscription(bool cancelOnError, std::function<void(T data)> onData, std::function<void()> onDone, std::function<void ()> onError);
+    virtual StreamSubscription<T> _createSubscription(std::function<void(T data)> onData, std::function<void ()> onError, std::function<void()> onDone, bool cancelOnError);
 
     virtual void _onListen(StreamSubscription subscription);
 
@@ -322,7 +322,7 @@ public:
 
     virtual bool isBroadcast();
 
-    virtual StreamSubscription<T> listen(bool cancelOnError, std::function<void(T data)> onData, std::function<void()> onDone, std::function<void ()> onError);
+    virtual StreamSubscription<T> listen(std::function<void(T data)> onData, bool cancelOnError, std::function<void()> onDone, std::function<void ()> onError);
 
 private:
     Stream<T> _source;
@@ -338,7 +338,7 @@ private:
     StreamSubscription<T> _subscription;
 
 
-     _AsBroadcastStreamCls(Stream<T> _source, std::function<void(StreamSubscription<T> subscription)> onCancelHandler, std::function<void(StreamSubscription<T> subscription)> onListenHandler);
+     _AsBroadcastStreamCls(Stream<T> _source, std::function<void(StreamSubscription<T> subscription)> onListenHandler, std::function<void(StreamSubscription<T> subscription)> onCancelHandler);
 
     virtual void _onCancel();
 
@@ -424,7 +424,7 @@ public:
 
     virtual bool isBroadcast();
 
-    virtual StreamSubscription<T> listen(bool cancelOnError, std::function<void(T data)> onData, std::function<void()> onDone, std::function<void ()> onError);
+    virtual StreamSubscription<T> listen(std::function<void(T data)> onData, bool cancelOnError, std::function<void()> onDone, std::function<void ()> onError);
 
 private:
 
@@ -440,7 +440,7 @@ public:
     bool isBroadcast;
 
 
-    virtual StreamSubscription<T> listen(bool cancelOnError, std::function<void(T event)> onData, std::function<void()> onDone, std::function<void ()> onError);
+    virtual StreamSubscription<T> listen(std::function<void(T event)> onData, bool cancelOnError, std::function<void()> onDone, std::function<void ()> onError);
 
 private:
     std::function<void(MultiStreamController<T> )> _onListen;

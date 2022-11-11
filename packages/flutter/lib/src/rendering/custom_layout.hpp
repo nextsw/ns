@@ -47,7 +47,7 @@ private:
 
     virtual DiagnosticsNode _debugDescribeChild(RenderBox child);
 
-    virtual void _callPerformLayout(RenderBox firstChild, Size size);
+    virtual void _callPerformLayout(Size size, RenderBox firstChild);
 
 };
 using MultiChildLayoutDelegate = std::shared_ptr<MultiChildLayoutDelegateCls>;
@@ -81,7 +81,7 @@ public:
 
     virtual void paint(PaintingContext context, Offset offset);
 
-    virtual bool hitTestChildren(Offset position, BoxHitTestResult result);
+    virtual bool hitTestChildren(BoxHitTestResult result, Offset position);
 
 private:
     MultiChildLayoutDelegate _delegate;

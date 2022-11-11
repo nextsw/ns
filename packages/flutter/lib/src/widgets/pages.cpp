@@ -19,7 +19,7 @@ bool PageRouteCls<T>::canTransitionFrom(TransitionRoute<dynamic> previousRoute) 
     return is<PageRoute>(previousRoute);
 }
 
-Widget _defaultTransitionsBuilder(Animation<double> animation, Widget child, BuildContext context, Animation<double> secondaryAnimation) {
+Widget _defaultTransitionsBuilder(BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) {
     return child;
 }
 
@@ -36,11 +36,11 @@ PageRouteBuilderCls<T>::PageRouteBuilderCls(Color barrierColor, bool barrierDism
 }
 
 template<typename T>
-Widget PageRouteBuilderCls<T>::buildPage(Animation<double> animation, BuildContext context, Animation<double> secondaryAnimation) {
+Widget PageRouteBuilderCls<T>::buildPage(BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation) {
     return pageBuilder(context, animation, secondaryAnimation);
 }
 
 template<typename T>
-Widget PageRouteBuilderCls<T>::buildTransitions(Animation<double> animation, Widget child, BuildContext context, Animation<double> secondaryAnimation) {
+Widget PageRouteBuilderCls<T>::buildTransitions(BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) {
     return transitionsBuilder(context, animation, secondaryAnimation, child);
 }

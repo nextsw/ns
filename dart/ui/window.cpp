@@ -216,7 +216,7 @@ void SingletonFlutterWindowCls::updateSemantics(SemanticsUpdate update) {
     return platformDispatcher->updateSemantics(update);
 }
 
-void SingletonFlutterWindowCls::sendPlatformMessage(PlatformMessageResponseCallback callback, ByteData data, String name) {
+void SingletonFlutterWindowCls::sendPlatformMessage(String name, ByteData data, PlatformMessageResponseCallback callback) {
     platformDispatcher->sendPlatformMessage(name, data, callback);
 }
 
@@ -232,7 +232,7 @@ void SingletonFlutterWindowCls::setIsolateDebugName(String name) {
     return PlatformDispatcherCls::instance->setIsolateDebugName(name);
 }
 
-void SingletonFlutterWindowCls::_(PlatformDispatcher platformDispatcher, Object windowId)
+void SingletonFlutterWindowCls::_(Object windowId, PlatformDispatcher platformDispatcher)
 
 bool AccessibilityFeaturesCls::accessibleNavigation() {
     return _kAccessibleNavigationIndex & _index != 0;
@@ -300,7 +300,7 @@ int AccessibilityFeaturesCls::hashCode() {
 }
 
 GestureSettings GestureSettingsCls::copyWith(double physicalDoubleTapSlop, double physicalTouchSlop) {
-    return make<GestureSettingsCls>(physicalTouchSlop or this->physicalTouchSlop, physicalDoubleTapSlop or this->physicalDoubleTapSlop);
+    return make<GestureSettingsCls>(physicalTouchSlop | this->physicalTouchSlop, physicalDoubleTapSlop | this->physicalDoubleTapSlop);
 }
 
 bool GestureSettingsCls::==(Object other) {

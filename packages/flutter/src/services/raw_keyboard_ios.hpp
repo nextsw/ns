@@ -80,7 +80,7 @@ private:
 
     static bool _isUnprintableKey(String label);
 
-    virtual bool _isLeftRightModifierPressed(int anyMask, int leftMask, int rightMask, KeyboardSide side);
+    virtual bool _isLeftRightModifierPressed(KeyboardSide side, int anyMask, int leftMask, int rightMask);
 
 };
 using RawKeyEventDataIos = std::shared_ptr<RawKeyEventDataIosCls>;

@@ -40,21 +40,21 @@ public:
 
     virtual bool fseIdenticalSync(String path1, String path2);
 
-    virtual Future<FileSystemEntityType> fseGetType(bool followLinks, String path);
+    virtual Future<FileSystemEntityType> fseGetType(String path, bool followLinks);
 
-    virtual FileSystemEntityType fseGetTypeSync(bool followLinks, String path);
+    virtual FileSystemEntityType fseGetTypeSync(String path, bool followLinks);
 
-    virtual Stream<FileSystemEvent> fsWatch(int events, String path, bool recursive);
+    virtual Stream<FileSystemEvent> fsWatch(String path, int events, bool recursive);
 
     virtual bool fsWatchIsSupported();
 
     virtual Link createLink(String path);
 
-    virtual Future<Socket> socketConnect(host , sourceAddress , int port, int sourcePort, Duration timeout);
+    virtual Future<Socket> socketConnect(host , int port, sourceAddress , int sourcePort, Duration timeout);
 
-    virtual Future<ConnectionTask<Socket>> socketStartConnect(host , sourceAddress , int port, int sourcePort);
+    virtual Future<ConnectionTask<Socket>> socketStartConnect(host , int port, sourceAddress , int sourcePort);
 
-    virtual Future<ServerSocket> serverSocketBind(address , int backlog, int port, bool shared, bool v6Only);
+    virtual Future<ServerSocket> serverSocketBind(address , int port, int backlog, bool shared, bool v6Only);
 
     virtual Stdin stdin();
 
@@ -90,21 +90,21 @@ public:
 
     virtual bool fseIdenticalSync(String path1, String path2);
 
-    virtual Future<FileSystemEntityType> fseGetType(bool followLinks, String path);
+    virtual Future<FileSystemEntityType> fseGetType(String path, bool followLinks);
 
-    virtual FileSystemEntityType fseGetTypeSync(bool followLinks, String path);
+    virtual FileSystemEntityType fseGetTypeSync(String path, bool followLinks);
 
-    virtual Stream<FileSystemEvent> fsWatch(int events, String path, bool recursive);
+    virtual Stream<FileSystemEvent> fsWatch(String path, int events, bool recursive);
 
     virtual bool fsWatchIsSupported();
 
     virtual Link createLink(String path);
 
-    virtual Future<Socket> socketConnect(host , sourceAddress , int port, int sourcePort, Duration timeout);
+    virtual Future<Socket> socketConnect(host , int port, sourceAddress , int sourcePort, Duration timeout);
 
-    virtual Future<ConnectionTask<Socket>> socketStartConnect(host , sourceAddress , int port, int sourcePort);
+    virtual Future<ConnectionTask<Socket>> socketStartConnect(host , int port, sourceAddress , int sourcePort);
 
-    virtual Future<ServerSocket> serverSocketBind(address , int backlog, int port, bool shared, bool v6Only);
+    virtual Future<ServerSocket> serverSocketBind(address , int port, int backlog, bool shared, bool v6Only);
 
     virtual Stdin stdin();
 
@@ -156,7 +156,7 @@ private:
     std::function<Stdout()> _stderr;
 
 
-     _IOOverridesScopeCls(std::function<Directory(String )> _createDirectory, std::function<File(String )> _createFile, std::function<Link(String )> _createLink, std::function<Stream<FileSystemEvent>(String , int , bool )> _fsWatch, std::function<bool()> _fsWatchIsSupported, std::function<Future<FileSystemEntityType>(String , bool )> _fseGetType, std::function<FileSystemEntityType(String , bool )> _fseGetTypeSync, std::function<Future<bool>(String , String )> _fseIdentical, std::function<bool(String , String )> _fseIdenticalSync, std::function<Directory()> _getCurrentDirectory, std::function<Directory()> _getSystemTempDirectory, std::function<Future<ServerSocket>(dynamic , int , int backlog, bool shared, bool v6Only)> _serverSocketBind, std::function<void(String )> _setCurrentDirectory, std::function<Future<Socket>(dynamic , int , dynamic sourceAddress, int sourcePort, Duration timeout)> _socketConnect, std::function<Future<ConnectionTask<Socket>>(dynamic , int , dynamic sourceAddress, int sourcePort)> _socketStartConnect, std::function<Future<FileStat>(String )> _stat, std::function<FileStat(String )> _statSync, std::function<Stdout()> _stderr, std::function<Stdin()> _stdin, std::function<Stdout()> _stdout);
+     _IOOverridesScopeCls(std::function<Directory(String )> _createDirectory, std::function<Directory()> _getCurrentDirectory, std::function<void(String )> _setCurrentDirectory, std::function<Directory()> _getSystemTempDirectory, std::function<File(String )> _createFile, std::function<Future<FileStat>(String )> _stat, std::function<FileStat(String )> _statSync, std::function<Future<bool>(String , String )> _fseIdentical, std::function<bool(String , String )> _fseIdenticalSync, std::function<Future<FileSystemEntityType>(String , bool )> _fseGetType, std::function<FileSystemEntityType(String , bool )> _fseGetTypeSync, std::function<Stream<FileSystemEvent>(String , int , bool )> _fsWatch, std::function<bool()> _fsWatchIsSupported, std::function<Link(String )> _createLink, std::function<Future<Socket>(dynamic , int , dynamic sourceAddress, int sourcePort, Duration timeout)> _socketConnect, std::function<Future<ConnectionTask<Socket>>(dynamic , int , dynamic sourceAddress, int sourcePort)> _socketStartConnect, std::function<Future<ServerSocket>(dynamic , int , int backlog, bool shared, bool v6Only)> _serverSocketBind, std::function<Stdin()> _stdin, std::function<Stdout()> _stdout, std::function<Stdout()> _stderr);
 };
 using _IOOverridesScope = std::shared_ptr<_IOOverridesScopeCls>;
 

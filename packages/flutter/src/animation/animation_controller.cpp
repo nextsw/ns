@@ -9,7 +9,7 @@ AnimationControllerCls::AnimationControllerCls(AnimationBehavior animationBehavi
     }
     {
         _ticker = vsync->createTicker(_tick);
-        _internalSetValue(value or lowerBound);
+        _internalSetValue(value | lowerBound);
     }
 }
 
@@ -93,7 +93,7 @@ TickerFuture AnimationControllerCls::reverse(double from) {
     return _animateToInternal(lowerBound);
 }
 
-TickerFuture AnimationControllerCls::animateTo(Curve curve, Duration duration, double target) {
+TickerFuture AnimationControllerCls::animateTo(double target, Curve curve, Duration duration) {
     assert([=] () {
         if (this->duration == nullptr && duration == nullptr) {
             throw make<FlutterErrorCls>(__s("AnimationController.animateTo() called with no explicit duration and no default duration.\nEither the "duration" argument to the animateTo() method should be provided, or the "duration" property should be set, either in the constructor or later, before calling the animateTo() function."));
@@ -105,7 +105,7 @@ TickerFuture AnimationControllerCls::animateTo(Curve curve, Duration duration, d
     return _animateToInternal(targetduration, curve);
 }
 
-TickerFuture AnimationControllerCls::animateBack(Curve curve, Duration duration, double target) {
+TickerFuture AnimationControllerCls::animateBack(double target, Curve curve, Duration duration) {
     assert([=] () {
         if (this->duration == nullptr && reverseDuration == nullptr && duration == nullptr) {
             throw make<FlutterErrorCls>(__s("AnimationController.animateBack() called with no explicit duration and no default duration or reverseDuration.\nEither the "duration" argument to the animateBack() method should be provided, or the "duration" or "reverseDuration" property should be set, either in the constructor or later, before calling the animateBack() function."));
@@ -118,9 +118,9 @@ TickerFuture AnimationControllerCls::animateBack(Curve curve, Duration duration,
 }
 
 TickerFuture AnimationControllerCls::repeat(double max, double min, Duration period, bool reverse) {
-    min = lowerBound;
-    max = upperBound;
-    period = duration;
+    min |= lowerBound;
+    max |= upperBound;
+    period |= duration;
     assert([=] () {
         if (period == nullptr) {
             throw make<FlutterErrorCls>(__s("AnimationController.repeat() called without an explicit period and with no default Duration.\nEither the "period" argument to the repeat() method should be provided, or the "duration" property should be set, either in the constructor or later, before calling the repeat() function."));
@@ -135,11 +135,11 @@ TickerFuture AnimationControllerCls::repeat(double max, double min, Duration per
 }
 
 TickerFuture AnimationControllerCls::fling(AnimationBehavior animationBehavior, SpringDescription springDescription, double velocity) {
-    springDescription = _kFlingSpringDescription;
+    springDescription |= _kFlingSpringDescription;
     _direction =  < 0.0? _AnimationDirectionCls::reverse : _AnimationDirectionCls::forward;
     double target =  < 0.0? lowerBound - _kFlingTolerance->distance : upperBound + _kFlingTolerance->distance;
     double scale = 1.0;
-    AnimationBehavior behavior = animationBehavior or this->animationBehavior;
+    AnimationBehavior behavior = animationBehavior | this->animationBehavior;
     if (SemanticsBindingCls::instance->disableAnimations) {
         ;
     }
@@ -198,7 +198,7 @@ void AnimationControllerCls::_internalSetValue(double newValue) {
 ;
     }}
 
-TickerFuture AnimationControllerCls::_animateToInternal(Curve curve, Duration duration, double target) {
+TickerFuture AnimationControllerCls::_animateToInternal(double target, Curve curve, Duration duration) {
     double scale = 1.0;
     if (SemanticsBindingCls::instance->disableAnimations) {
         ;
@@ -292,7 +292,7 @@ bool _InterpolationSimulationCls::isDone(double timeInSeconds) {
     return timeInSeconds > _durationInSeconds;
 }
 
-_InterpolationSimulationCls::_InterpolationSimulationCls(double _begin, Curve _curve, double _end, Duration duration, double scale) {
+_InterpolationSimulationCls::_InterpolationSimulationCls(double _begin, double _end, Duration duration, Curve _curve, double scale) {
     {
         assert(_begin != nullptr);
         assert(_end != nullptr);
@@ -323,7 +323,7 @@ bool _RepeatingSimulationCls::isDone(double timeInSeconds) {
     return false;
 }
 
-_RepeatingSimulationCls::_RepeatingSimulationCls(_DirectionSetter directionSetter, double initialValue, double max, double min, Duration period, bool reverse) {
+_RepeatingSimulationCls::_RepeatingSimulationCls(double initialValue, double min, double max, bool reverse, Duration period, _DirectionSetter directionSetter) {
     {
         _periodInSeconds = period->inMicroseconds() / DurationCls::microsecondsPerSecond;
         _initialT = (max == min)? 0.0 : (initialValue / (max - min)) * (period->inMicroseconds() / DurationCls::microsecondsPerSecond);

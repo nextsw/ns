@@ -1,5 +1,5 @@
 #include "consolidate_response.hpp"
-Future<Uint8List> consolidateHttpClientResponseBytes(bool autoUncompress, BytesReceivedCallback onBytesReceived, HttpClientResponse response) {
+Future<Uint8List> consolidateHttpClientResponseBytes(HttpClientResponse response, bool autoUncompress, BytesReceivedCallback onBytesReceived) {
     assert(autoUncompress != nullptr);
     Completer<Uint8List> completer = <Uint8List>sync();
     _OutputBuffer output = make<_OutputBufferCls>();
@@ -14,7 +14,7 @@ Future<Uint8List> consolidateHttpClientResponseBytes(bool autoUncompress, BytesR
     subscription = response->listen([=] (List<int> chunk) {
         sink->add(chunk);
         if (onBytesReceived != nullptr) {
-            bytesReceived = chunk->length;
+            bytesReceived += chunk->length;
             try {
                 onBytesReceived(bytesReceived, expectedContentLength);
             } catch (Unknown error) {
@@ -33,7 +33,7 @@ Future<Uint8List> consolidateHttpClientResponseBytes(bool autoUncompress, BytesR
 void _OutputBufferCls::add(List<int> chunk) {
     assert(_bytes == nullptr);
     _chunks!->add(chunk);
-    _contentLength = chunk->length();
+    _contentLength += chunk->length();
 }
 
 void _OutputBufferCls::close() {
@@ -44,7 +44,7 @@ void _OutputBufferCls::close() {
     int offset = 0;
     for (List<int> chunk : _chunks!) {
         _bytes!->setRange(offset, offset + chunk->length, chunk);
-        offset = chunk->length;
+        offset += chunk->length;
     }
     _chunks = nullptr;
 }

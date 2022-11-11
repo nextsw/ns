@@ -37,7 +37,7 @@ bool MatrixUtilsCls::isIdentity(Matrix4 a) {
     return a->storage()[0] == 1.0 && a->storage()[1] == 0.0 && a->storage()[2] == 0.0 && a->storage()[3] == 0.0 && a->storage()[4] == 0.0 && a->storage()[5] == 1.0 && a->storage()[6] == 0.0 && a->storage()[7] == 0.0 && a->storage()[8] == 0.0 && a->storage()[9] == 0.0 && a->storage()[10] == 1.0 && a->storage()[11] == 0.0 && a->storage()[12] == 0.0 && a->storage()[13] == 0.0 && a->storage()[14] == 0.0 && a->storage()[15] == 1.0;
 }
 
-Offset MatrixUtilsCls::transformPoint(Offset point, Matrix4 transform) {
+Offset MatrixUtilsCls::transformPoint(Matrix4 transform, Offset point) {
     Float64List storage = transform->storage();
     double x = point->dx();
     double y = point->dy();
@@ -51,7 +51,7 @@ Offset MatrixUtilsCls::transformPoint(Offset point, Matrix4 transform) {
     }
 }
 
-Rect MatrixUtilsCls::transformRect(Rect rect, Matrix4 transform) {
+Rect MatrixUtilsCls::transformRect(Matrix4 transform, Rect rect) {
     Float64List storage = transform->storage();
     double x = rect->left;
     double y = rect->top;
@@ -70,26 +70,26 @@ Rect MatrixUtilsCls::transformRect(Rect rect, Matrix4 transform) {
         double left = rx;
         double right = rx;
         if ( < 0) {
-            left = wx;
+            left += wx;
         } else {
-            right = wx;
+            right += wx;
         }
         if ( < 0) {
-            left = hx;
+            left += hx;
         } else {
-            right = hx;
+            right += hx;
         }
         double top = ry;
         double bottom = ry;
         if ( < 0) {
-            top = wy;
+            top += wy;
         } else {
-            bottom = wy;
+            bottom += wy;
         }
         if ( < 0) {
-            top = hy;
+            top += hy;
         } else {
-            bottom = hy;
+            bottom += hy;
         }
         return RectCls->fromLTRB(left, top, right, bottom);
     } else {
@@ -108,7 +108,7 @@ Rect MatrixUtilsCls::transformRect(Rect rect, Matrix4 transform) {
     }
 }
 
-Rect MatrixUtilsCls::inverseTransformRect(Rect rect, Matrix4 transform) {
+Rect MatrixUtilsCls::inverseTransformRect(Matrix4 transform, Rect rect) {
     assert(rect != nullptr);
     if (isIdentity(transform)) {
         return rect;
@@ -131,7 +131,7 @@ Matrix4 MatrixUtilsCls::forceToPoint(Offset offset) {
     auto _c1 = Matrix4Cls->identity();_c1.auto _c2 = setRow(0, make<Vector4Cls>(0, 0, 0, offset->dx()));_c2.setRow(1, make<Vector4Cls>(0, 0, 0, offset->dy()));_c2;return _c1;
 }
 
-Rect MatrixUtilsCls::_safeTransformRect(Rect rect, Matrix4 transform) {
+Rect MatrixUtilsCls::_safeTransformRect(Matrix4 transform, Rect rect) {
     Float64List storage = transform->storage();
     bool isAffine = storage[3] == 0.0 && storage[7] == 0.0 && storage[15] == 1.0;
     _accumulate(storage, rect->left, rect->top, true, isAffine);
@@ -141,7 +141,7 @@ Rect MatrixUtilsCls::_safeTransformRect(Rect rect, Matrix4 transform) {
     return RectCls->fromLTRB(_minMax[0], _minMax[1], _minMax[2], _minMax[3]);
 }
 
-void MatrixUtilsCls::_accumulate(bool first, bool isAffine, Float64List m, double x, double y) {
+void MatrixUtilsCls::_accumulate(Float64List m, double x, double y, bool first, bool isAffine) {
     double w = isAffine? 1.0 : 1.0 / (m[3] * x + m[7] * y + m[15]);
     double tx = (m[0] * x + m[4] * y + m[12]) * w;
     double ty = (m[1] * x + m[5] * y + m[13]) * w;
@@ -183,7 +183,7 @@ List<String> debugDescribeTransform(Matrix4 transform) {
     return makeList(ArrayItem, ArrayItem, ArrayItem, ArrayItem);
 }
 
-TransformPropertyCls::TransformPropertyCls(Unknown defaultValue, Unknown level, String name, Unknown showName, Unknown value) {
+TransformPropertyCls::TransformPropertyCls(String name, Unknown value, Unknown defaultValue, Unknown level, Unknown showName) {
     {
         assert(showName != nullptr);
         assert(level != nullptr);

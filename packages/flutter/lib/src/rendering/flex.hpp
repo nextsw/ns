@@ -108,7 +108,7 @@ public:
 
     virtual void performLayout();
 
-    virtual bool hitTestChildren(Offset position, BoxHitTestResult result);
+    virtual bool hitTestChildren(BoxHitTestResult result, Offset position);
 
     virtual void paint(PaintingContext context, Offset offset);
 

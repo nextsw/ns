@@ -13,9 +13,9 @@
 #include "media_query.hpp"
 #include "overlay.hpp"
 
-Offset childDragAnchorStrategy(BuildContext context, Draggable<Object> draggable, Offset position);
+Offset childDragAnchorStrategy(Draggable<Object> draggable, BuildContext context, Offset position);
 
-Offset pointerDragAnchorStrategy(BuildContext context, Draggable<Object> draggable, Offset position);
+Offset pointerDragAnchorStrategy(Draggable<Object> draggable, BuildContext context, Offset position);
 
 
 enum DragAnchor{

@@ -1,5 +1,5 @@
 #include "inherited_theme.hpp"
-Widget InheritedThemeCls::captureAll(Widget child, BuildContext context, BuildContext to) {
+Widget InheritedThemeCls::captureAll(BuildContext context, Widget child, BuildContext to) {
     assert(child != nullptr);
     assert(context != nullptr);
     return capture(context, to)->wrap(child);

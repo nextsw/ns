@@ -13,7 +13,7 @@ bool _isSameEvent(PointerSignalEvent event1, PointerSignalEvent event2);
 class PointerSignalResolverCls : public ObjectCls {
 public:
 
-    virtual void register(PointerSignalResolvedCallback callback, PointerSignalEvent event);
+    virtual void register(PointerSignalEvent event, PointerSignalResolvedCallback callback);
 
     virtual void resolve(PointerSignalEvent event);
 

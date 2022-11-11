@@ -19,7 +19,7 @@ public:
 private:
 
     virtual void  _();
-    static double _toLogicalPixels(double devicePixelRatio, double physicalPixels);
+    static double _toLogicalPixels(double physicalPixels, double devicePixelRatio);
 
 };
 using PointerEventConverter = std::shared_ptr<PointerEventConverterCls>;

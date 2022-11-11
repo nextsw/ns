@@ -57,7 +57,7 @@ public:
 
     virtual void performLayout();
 
-    virtual bool hitTest(Offset position, HitTestResult result);
+    virtual bool hitTest(HitTestResult result, Offset position);
 
     virtual HitTestResult hitTestMouseTrackers(Offset position);
 

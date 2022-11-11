@@ -1,11 +1,11 @@
 #include "secure_server_socket.hpp"
-Future<SecureServerSocket> SecureServerSocketCls::bind(address , int backlog, SecurityContext context, int port, bool requestClientCertificate, bool requireClientCertificate, bool shared, List<String> supportedProtocols, bool v6Only) {
+Future<SecureServerSocket> SecureServerSocketCls::bind(address , int port, SecurityContext context, int backlog, bool requestClientCertificate, bool requireClientCertificate, bool shared, List<String> supportedProtocols, bool v6Only) {
     return RawSecureServerSocketCls->bind(address, port, contextbacklog, v6Only, requestClientCertificate, requireClientCertificate, supportedProtocols, shared)->then([=] (Unknown  serverSocket)     {
         SecureServerSocketCls->_(serverSocket);
     });
 }
 
-StreamSubscription<SecureSocket> SecureServerSocketCls::listen(bool cancelOnError, std::function<void(SecureSocket socket)> onData, std::function<void()> onDone, std::function<void ()> onError) {
+StreamSubscription<SecureSocket> SecureServerSocketCls::listen(std::function<void(SecureSocket socket)> onData, bool cancelOnError, std::function<void()> onDone, std::function<void ()> onError) {
     return _socket->map([=] (Unknown  rawSocket)     {
         SecureSocketCls->_(rawSocket);
     })->listen(onDataonError, onDone, cancelOnError);
@@ -29,13 +29,13 @@ void SecureServerSocketCls::_owner(owner ) {
     _socket->_owner = owner;
 }
 
-Future<RawSecureServerSocket> RawSecureServerSocketCls::bind(address , int backlog, SecurityContext context, int port, bool requestClientCertificate, bool requireClientCertificate, bool shared, List<String> supportedProtocols, bool v6Only) {
+Future<RawSecureServerSocket> RawSecureServerSocketCls::bind(address , int port, SecurityContext context, int backlog, bool requestClientCertificate, bool requireClientCertificate, bool shared, List<String> supportedProtocols, bool v6Only) {
     return RawServerSocketCls->bind(address, portbacklog, v6Only, shared)->then([=] (Unknown  serverSocket)     {
         RawSecureServerSocketCls->_(serverSocket, context, requestClientCertificate, requireClientCertificate, supportedProtocols);
     });
 }
 
-StreamSubscription<RawSecureSocket> RawSecureServerSocketCls::listen(bool cancelOnError, std::function<void(RawSecureSocket s)> onData, std::function<void()> onDone, std::function<void ()> onError) {
+StreamSubscription<RawSecureSocket> RawSecureServerSocketCls::listen(std::function<void(RawSecureSocket s)> onData, bool cancelOnError, std::function<void()> onDone, std::function<void ()> onError) {
     return _controller->stream()->listen(onDataonError, onDone, cancelOnError);
 }
 
@@ -54,7 +54,7 @@ Future<RawSecureServerSocket> RawSecureServerSocketCls::close() {
     });
 }
 
-void RawSecureServerSocketCls::_(SecurityContext _context, RawServerSocket _socket, bool requestClientCertificate, bool requireClientCertificate, List<String> supportedProtocols) {
+void RawSecureServerSocketCls::_(RawServerSocket _socket, SecurityContext _context, bool requestClientCertificate, bool requireClientCertificate, List<String> supportedProtocols) {
     _controller = <RawSecureSocket>make<StreamControllerCls>(true, _onSubscriptionStateChange, _onPauseStateChange, _onPauseStateChange, _onSubscriptionStateChange);
 }
 

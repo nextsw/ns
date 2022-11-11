@@ -16,19 +16,19 @@ Widget DefaultTextStyleCls::merge(Widget child, Key key, int maxLines, TextOverf
     assert(child != nullptr);
     return make<BuilderCls>([=] (BuildContext context) {
         DefaultTextStyle parent = DefaultTextStyleCls->of(context);
-        return make<DefaultTextStyleCls>(key, parent->style->merge(style), textAlign or parent->textAlign, softWrap or parent->softWrap, overflow or parent->overflow, maxLines or parent->maxLines, textWidthBasis or parent->textWidthBasis, child);
+        return make<DefaultTextStyleCls>(key, parent->style->merge(style), textAlign | parent->textAlign, softWrap | parent->softWrap, overflow | parent->overflow, maxLines | parent->maxLines, textWidthBasis | parent->textWidthBasis, child);
     });
 }
 
 DefaultTextStyle DefaultTextStyleCls::of(BuildContext context) {
-    return context-><DefaultTextStyle>dependOnInheritedWidgetOfExactType() or DefaultTextStyleCls->fallback();
+    return context-><DefaultTextStyle>dependOnInheritedWidgetOfExactType() | DefaultTextStyleCls->fallback();
 }
 
 bool DefaultTextStyleCls::updateShouldNotify(DefaultTextStyle oldWidget) {
     return style != oldWidget->style || textAlign != oldWidget->textAlign || softWrap != oldWidget->softWrap || overflow != oldWidget->overflow || maxLines != oldWidget->maxLines || textWidthBasis != oldWidget->textWidthBasis || textHeightBehavior != oldWidget->textHeightBehavior;
 }
 
-Widget DefaultTextStyleCls::wrap(Widget child, BuildContext context) {
+Widget DefaultTextStyleCls::wrap(BuildContext context, Widget child) {
     return make<DefaultTextStyleCls>(style, textAlign, softWrap, overflow, maxLines, textWidthBasis, textHeightBehavior, child);
 }
 
@@ -62,7 +62,7 @@ bool DefaultTextHeightBehaviorCls::updateShouldNotify(DefaultTextHeightBehavior 
     return textHeightBehavior != oldWidget->textHeightBehavior;
 }
 
-Widget DefaultTextHeightBehaviorCls::wrap(Widget child, BuildContext context) {
+Widget DefaultTextHeightBehaviorCls::wrap(BuildContext context, Widget child) {
     return make<DefaultTextHeightBehaviorCls>(textHeightBehavior, child);
 }
 
@@ -78,7 +78,7 @@ TextCls::TextCls(String data, Unknown key, Locale locale, int maxLines, TextOver
     }
 }
 
-void TextCls::rich(Unknown key, Locale locale, int maxLines, TextOverflow overflow, Color selectionColor, String semanticsLabel, bool softWrap, StrutStyle strutStyle, TextStyle style, TextAlign textAlign, TextDirection textDirection, TextHeightBehavior textHeightBehavior, double textScaleFactor, InlineSpan textSpan, TextWidthBasis textWidthBasis)
+void TextCls::rich(InlineSpan textSpan, Unknown key, Locale locale, int maxLines, TextOverflow overflow, Color selectionColor, String semanticsLabel, bool softWrap, StrutStyle strutStyle, TextStyle style, TextAlign textAlign, TextDirection textDirection, TextHeightBehavior textHeightBehavior, double textScaleFactor, TextWidthBasis textWidthBasis)
 
 Widget TextCls::build(BuildContext context) {
     DefaultTextStyle defaultTextStyle = DefaultTextStyleCls->of(context);
@@ -90,7 +90,7 @@ Widget TextCls::build(BuildContext context) {
         effectiveTextStyle = effectiveTextStyle!->merge(make<TextStyleCls>(FontWeightCls::bold));
     }
     SelectionRegistrar registrar = SelectionContainerCls->maybeOf(context);
-    Widget result = make<RichTextCls>(textAlign or defaultTextStyle->textAlign or TextAlignCls::start, textDirection, locale, softWrap or defaultTextStyle->softWrap, overflow or effectiveTextStyle?->overflow or defaultTextStyle->overflow, textScaleFactor or MediaQueryCls->textScaleFactorOf(context), maxLines or defaultTextStyle->maxLines, strutStyle, textWidthBasis or defaultTextStyle->textWidthBasis, textHeightBehavior or defaultTextStyle->textHeightBehavior or DefaultTextHeightBehaviorCls->of(context), registrar, selectionColor or DefaultSelectionStyleCls->of(context)->selectionColor, make<TextSpanCls>(effectiveTextStyle, data, textSpan != nullptr? makeList(ArrayItem) : nullptr));
+    Widget result = make<RichTextCls>(textAlign | defaultTextStyle->textAlign | TextAlignCls::start, textDirection, locale, softWrap | defaultTextStyle->softWrap, overflow | effectiveTextStyle?->overflow | defaultTextStyle->overflow, textScaleFactor | MediaQueryCls->textScaleFactorOf(context), maxLines | defaultTextStyle->maxLines, strutStyle, textWidthBasis | defaultTextStyle->textWidthBasis, textHeightBehavior | defaultTextStyle->textHeightBehavior | DefaultTextHeightBehaviorCls->of(context), registrar, selectionColor | DefaultSelectionStyleCls->of(context)->selectionColor, make<TextSpanCls>(effectiveTextStyle, data, textSpan != nullptr? makeList(ArrayItem) : nullptr));
     if (registrar != nullptr) {
         result = make<MouseRegionCls>(SystemMouseCursorsCls::text, result);
     }

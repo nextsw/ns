@@ -84,7 +84,7 @@ public:
 
     virtual void collectDeps(Set<int> collectedDeps, int id);
 
-    virtual void writeFunctionAndDeps(int function, Set<int> visited);
+    virtual void writeFunctionAndDeps(Set<int> visited, int function);
 
     virtual void writeHeader();
 

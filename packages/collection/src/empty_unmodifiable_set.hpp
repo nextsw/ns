@@ -30,7 +30,7 @@ public:
     template<typename T>
  virtual EmptyUnmodifiableSet<T> retype();
 
-    virtual E singleWhere(std::function<E()> orElse, std::function<bool(E )> test);
+    virtual E singleWhere(std::function<bool(E )> test, std::function<E()> orElse);
 
     template<typename T>
  virtual Iterable<T> whereType();

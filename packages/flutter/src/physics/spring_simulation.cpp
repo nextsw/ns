@@ -5,7 +5,7 @@ String SpringDescriptionCls::toString() {
     return __s("${objectRuntimeType(this, 'SpringDescription')}(mass: ${mass.toStringAsFixed(1)}, stiffness: ${stiffness.toStringAsFixed(1)}, damping: ${damping.toStringAsFixed(1)})");
 }
 
-SpringSimulationCls::SpringSimulationCls(double end, SpringDescription spring, double start, Unknown tolerance, double velocity) {
+SpringSimulationCls::SpringSimulationCls(SpringDescription spring, double start, double end, double velocity, Unknown tolerance) {
     {
         _endPosition = end;
         _solution = make<_SpringSolutionCls>(spring, start - end, velocity);
@@ -36,7 +36,7 @@ double ScrollSpringSimulationCls::x(double time) {
     return isDone(time)? _endPosition : super->x(time);
 }
 
-_SpringSolutionCls::_SpringSolutionCls(double initialPosition, double initialVelocity, SpringDescription spring) {
+_SpringSolutionCls::_SpringSolutionCls(SpringDescription spring, double initialPosition, double initialVelocity) {
     {
         assert(spring != nullptr);
         assert(spring->mass != nullptr);

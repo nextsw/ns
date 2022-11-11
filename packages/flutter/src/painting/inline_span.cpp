@@ -5,10 +5,10 @@ int AccumulatorCls::value() {
 
 void AccumulatorCls::increment(int addend) {
     assert(addend >= 0);
-    _value = addend;
+    _value += addend;
 }
 
-InlineSpanSemanticsInformationCls::InlineSpanSemanticsInformationCls(bool isPlaceholder, GestureRecognizer recognizer, String semanticsLabel, List<StringAttribute> stringAttributes, String text) {
+InlineSpanSemanticsInformationCls::InlineSpanSemanticsInformationCls(String text, bool isPlaceholder, GestureRecognizer recognizer, String semanticsLabel, List<StringAttribute> stringAttributes) {
     {
         assert(text != nullptr);
         assert(isPlaceholder != nullptr);
@@ -42,12 +42,12 @@ List<InlineSpanSemanticsInformation> combineSemanticsInfo(List<InlineSpanSemanti
             workingAttributes = makeList();
             combined->add(info);
         } else {
-            workingText = info->text;
-            String effectiveLabel = info->semanticsLabel or info->text;
+            workingText += info->text;
+            String effectiveLabel = info->semanticsLabel | info->text;
             for (StringAttribute infoAttribute : info->stringAttributes) {
                 workingAttributes->add(infoAttribute->copy(make<TextRangeCls>(infoAttribute->range->start + workingLabel->length(), infoAttribute->range->end + workingLabel->length())));
             }
-            workingLabel = effectiveLabel;
+            workingLabel += effectiveLabel;
         }
     }
     combined->add(make<InlineSpanSemanticsInformationCls>(workingTextworkingLabel, workingAttributes));

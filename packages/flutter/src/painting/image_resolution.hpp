@@ -44,7 +44,7 @@ private:
 
     static Future<Map<String, List<String>>> _manifestParser(String jsonData);
 
-    virtual String _chooseVariant(List<String> candidates, ImageConfiguration config, String main);
+    virtual String _chooseVariant(String main, ImageConfiguration config, List<String> candidates);
 
     virtual String _findBestVariant(SplayTreeMap<double, String> candidates, double value);
 

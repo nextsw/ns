@@ -89,11 +89,11 @@ void _CopyingBytesBuilderCls::_clear() {
 int _CopyingBytesBuilderCls::_pow2roundup(int x) {
     assert(x > 0);
     --x;
-    x = x >> 1;
-    x = x >> 2;
-    x = x >> 4;
-    x = x >> 8;
-    x = x >> 16;
+    x |= x >> 1;
+    x |= x >> 2;
+    x |= x >> 4;
+    x |= x >> 8;
+    x |= x >> 16;
     return x + 1;
 }
 
@@ -105,7 +105,7 @@ void _BytesBuilderCls::add(List<int> bytes) {
         typedBytes = Uint8ListCls->fromList(bytes);
     }
     _chunks->add(typedBytes);
-    _length = typedBytes->length;
+    _length += typedBytes->length;
 }
 
 void _BytesBuilderCls::addByte(int byte) {
@@ -126,7 +126,7 @@ Uint8List _BytesBuilderCls::takeBytes() {
     int offset = 0;
     for (auto chunk : _chunks) {
         buffer->setRange(offset, offset + chunk->length, chunk);
-        offset = chunk->length;
+        offset += chunk->length;
     }
     _clear();
     return buffer;
@@ -140,7 +140,7 @@ Uint8List _BytesBuilderCls::toBytes() {
     int offset = 0;
     for (auto chunk : _chunks) {
         buffer->setRange(offset, offset + chunk->length, chunk);
-        offset = chunk->length;
+        offset += chunk->length;
     }
     return buffer;
 }

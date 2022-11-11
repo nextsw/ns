@@ -69,7 +69,7 @@ void IterableCls<E>::forEach(std::function<void(E element)> action) {
 }
 
 template<typename E>
-E IterableCls<E>::reduce(std::function<E(E element, E value)> combine) {
+E IterableCls<E>::reduce(std::function<E(E value, E element)> combine) {
     Iterator<E> iterator = this->iterator();
     if (!iterator->moveNext()) {
         throw IterableElementErrorCls->noElement();
@@ -83,7 +83,7 @@ E IterableCls<E>::reduce(std::function<E(E element, E value)> combine) {
 
 template<typename E>
 template<typename T>
-T IterableCls<E>::fold(std::function<T(E element, T previousValue)> combine, T initialValue) {
+T IterableCls<E>::fold(T initialValue, std::function<T(T previousValue, E element)> combine) {
     auto value = initialValue;
     for (E element : this)     {
         value = combine(value, element);
@@ -219,7 +219,7 @@ E IterableCls<E>::single() {
 }
 
 template<typename E>
-E IterableCls<E>::firstWhere(std::function<E()> orElse, std::function<bool(E element)> test) {
+E IterableCls<E>::firstWhere(std::function<bool(E element)> test, std::function<E()> orElse) {
     for (E element : this) {
         if (test(element))         {
             return element;
@@ -232,7 +232,7 @@ E IterableCls<E>::firstWhere(std::function<E()> orElse, std::function<bool(E ele
 }
 
 template<typename E>
-E IterableCls<E>::lastWhere(std::function<E()> orElse, std::function<bool(E element)> test) {
+E IterableCls<E>::lastWhere(std::function<bool(E element)> test, std::function<E()> orElse) {
     E result;
     bool foundMatching = false;
     for (E element : this) {
@@ -251,7 +251,7 @@ E IterableCls<E>::lastWhere(std::function<E()> orElse, std::function<bool(E elem
 }
 
 template<typename E>
-E IterableCls<E>::singleWhere(std::function<E()> orElse, std::function<bool(E element)> test) {
+E IterableCls<E>::singleWhere(std::function<bool(E element)> test, std::function<E()> orElse) {
     E result;
     bool foundMatching = false;
     for (E element : this) {
@@ -297,9 +297,9 @@ E _GeneratorIterableCls<E>::elementAt(int index) {
 }
 
 template<typename E>
-_GeneratorIterableCls<E>::_GeneratorIterableCls(std::function<E(int index)> generator, int length) {
+_GeneratorIterableCls<E>::_GeneratorIterableCls(int length, std::function<E(int index)> generator) {
     {
-        _generator = generator or (as<std::function<E(int )>>(_id));
+        _generator = generator | (as<std::function<E(int )>>(_id));
     }
 }
 

@@ -14,7 +14,7 @@ String RawKeyEventDataFuchsiaCls::keyLabel() {
 LogicalKeyboardKey RawKeyEventDataFuchsiaCls::logicalKey() {
     if (codePoint != 0) {
         int flutterId = LogicalKeyboardKeyCls::unicodePlane | codePoint & LogicalKeyboardKeyCls::valueMask;
-        return kFuchsiaToLogicalKey[flutterId] or make<LogicalKeyboardKeyCls>(LogicalKeyboardKeyCls::unicodePlane | codePoint & LogicalKeyboardKeyCls::valueMask);
+        return kFuchsiaToLogicalKey[flutterId] | make<LogicalKeyboardKeyCls>(LogicalKeyboardKeyCls::unicodePlane | codePoint & LogicalKeyboardKeyCls::valueMask);
     }
     LogicalKeyboardKey newKey = kFuchsiaToLogicalKey[hidUsage | LogicalKeyboardKeyCls::fuchsiaPlane];
     if (newKey != nullptr) {
@@ -24,7 +24,7 @@ LogicalKeyboardKey RawKeyEventDataFuchsiaCls::logicalKey() {
 }
 
 PhysicalKeyboardKey RawKeyEventDataFuchsiaCls::physicalKey() {
-    return kFuchsiaToPhysicalKey[hidUsage] or make<PhysicalKeyboardKeyCls>(LogicalKeyboardKeyCls::fuchsiaPlane + hidUsage);
+    return kFuchsiaToPhysicalKey[hidUsage] | make<PhysicalKeyboardKeyCls>(LogicalKeyboardKeyCls::fuchsiaPlane + hidUsage);
 }
 
 bool RawKeyEventDataFuchsiaCls::isModifierPressed(ModifierKey key, KeyboardSide side) {
@@ -58,7 +58,7 @@ int RawKeyEventDataFuchsiaCls::hashCode() {
     return ObjectCls->hash(hidUsage, codePoint, modifiers);
 }
 
-bool RawKeyEventDataFuchsiaCls::_isLeftRightModifierPressed(int anyMask, int leftMask, int rightMask, KeyboardSide side) {
+bool RawKeyEventDataFuchsiaCls::_isLeftRightModifierPressed(KeyboardSide side, int anyMask, int leftMask, int rightMask) {
     if (modifiers & anyMask == 0) {
         return false;
     }

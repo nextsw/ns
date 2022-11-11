@@ -8,13 +8,13 @@ double dot2(Vector2 x, Vector2 y);
 
 double dot3(Vector3 x, Vector3 y);
 
-void cross3(Vector3 out, Vector3 x, Vector3 y);
+void cross3(Vector3 x, Vector3 y, Vector3 out);
 
 double cross2(Vector2 x, Vector2 y);
 
-void cross2A(Vector2 out, double x, Vector2 y);
+void cross2A(double x, Vector2 y, Vector2 out);
 
-void cross2B(Vector2 out, Vector2 x, double y);
+void cross2B(Vector2 x, double y, Vector2 out);
 
 void buildPlaneVectors(Vector3 planeNormal, Vector3 u, Vector3 v);
 

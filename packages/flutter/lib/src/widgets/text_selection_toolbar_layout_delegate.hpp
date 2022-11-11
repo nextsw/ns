@@ -19,13 +19,13 @@ public:
      TextSelectionToolbarLayoutDelegateCls(Offset anchorAbove, Offset anchorBelow, bool fitsAbove);
     virtual BoxConstraints getConstraintsForChild(BoxConstraints constraints);
 
-    virtual Offset getPositionForChild(Size childSize, Size size);
+    virtual Offset getPositionForChild(Size size, Size childSize);
 
     virtual bool shouldRelayout(TextSelectionToolbarLayoutDelegate oldDelegate);
 
 private:
 
-    static double _centerOn(double max, double position, double width);
+    static double _centerOn(double position, double width, double max);
 
 };
 using TextSelectionToolbarLayoutDelegate = std::shared_ptr<TextSelectionToolbarLayoutDelegateCls>;

@@ -48,7 +48,7 @@ public:
 
     virtual Size computeSizeForNoChild(BoxConstraints constraints);
 
-    virtual bool hitTestChildren(Offset position, BoxHitTestResult result);
+    virtual bool hitTestChildren(BoxHitTestResult result, Offset position);
 
     virtual void applyPaintTransform(RenderObject child, Matrix4 transform);
 
@@ -73,7 +73,7 @@ public:
 
      RenderProxyBoxWithHitTestBehaviorCls(HitTestBehavior behavior, RenderBox child);
 
-    virtual bool hitTest(Offset position, BoxHitTestResult result);
+    virtual bool hitTest(BoxHitTestResult result, Offset position);
 
     virtual bool hitTestSelf(Offset position);
 
@@ -478,7 +478,7 @@ public:
 
      RenderClipRectCls(Unknown child, Unknown clipBehavior, Unknown clipper);
 
-    virtual bool hitTest(Offset position, BoxHitTestResult result);
+    virtual bool hitTest(BoxHitTestResult result, Offset position);
 
     virtual void paint(PaintingContext context, Offset offset);
 
@@ -504,7 +504,7 @@ public:
 
     virtual void  textDirection(TextDirection value);
 
-    virtual bool hitTest(Offset position, BoxHitTestResult result);
+    virtual bool hitTest(BoxHitTestResult result, Offset position);
 
     virtual void paint(PaintingContext context, Offset offset);
 
@@ -526,7 +526,7 @@ public:
 
      RenderClipOvalCls(Unknown child, Unknown clipBehavior, Unknown clipper);
 
-    virtual bool hitTest(Offset position, BoxHitTestResult result);
+    virtual bool hitTest(BoxHitTestResult result, Offset position);
 
     virtual void paint(PaintingContext context, Offset offset);
 
@@ -550,7 +550,7 @@ public:
 
      RenderClipPathCls(Unknown child, Unknown clipBehavior, Unknown clipper);
 
-    virtual bool hitTest(Offset position, BoxHitTestResult result);
+    virtual bool hitTest(BoxHitTestResult result, Offset position);
 
     virtual void paint(PaintingContext context, Offset offset);
 
@@ -612,7 +612,7 @@ public:
 
     virtual void  borderRadius(BorderRadius value);
 
-    virtual bool hitTest(Offset position, BoxHitTestResult result);
+    virtual bool hitTest(BoxHitTestResult result, Offset position);
 
     virtual void paint(PaintingContext context, Offset offset);
 
@@ -634,7 +634,7 @@ public:
 
      RenderPhysicalShapeCls(Unknown child, Unknown clipBehavior, CustomClipper<Path> clipper, Unknown color, Unknown elevation, Unknown shadowColor);
 
-    virtual bool hitTest(Offset position, BoxHitTestResult result);
+    virtual bool hitTest(BoxHitTestResult result, Offset position);
 
     virtual void paint(PaintingContext context, Offset offset);
 
@@ -729,9 +729,9 @@ public:
 
     virtual void scale(double x, double y, double z);
 
-    virtual bool hitTest(Offset position, BoxHitTestResult result);
+    virtual bool hitTest(BoxHitTestResult result, Offset position);
 
-    virtual bool hitTestChildren(Offset position, BoxHitTestResult result);
+    virtual bool hitTestChildren(BoxHitTestResult result, Offset position);
 
     virtual void paint(PaintingContext context, Offset offset);
 
@@ -783,7 +783,7 @@ public:
 
     virtual void paint(PaintingContext context, Offset offset);
 
-    virtual bool hitTestChildren(Offset position, BoxHitTestResult result);
+    virtual bool hitTestChildren(BoxHitTestResult result, Offset position);
 
     virtual bool paintsChild(RenderBox child);
 
@@ -833,9 +833,9 @@ public:
 
     virtual void  translation(Offset value);
 
-    virtual bool hitTest(Offset position, BoxHitTestResult result);
+    virtual bool hitTest(BoxHitTestResult result, Offset position);
 
-    virtual bool hitTestChildren(Offset position, BoxHitTestResult result);
+    virtual bool hitTestChildren(BoxHitTestResult result, Offset position);
 
     virtual void paint(PaintingContext context, Offset offset);
 
@@ -874,7 +874,7 @@ public:
      RenderPointerListenerCls(Unknown behavior, Unknown child, PointerCancelEventListener onPointerCancel, PointerDownEventListener onPointerDown, PointerHoverEventListener onPointerHover, PointerMoveEventListener onPointerMove, PointerPanZoomEndEventListener onPointerPanZoomEnd, PointerPanZoomStartEventListener onPointerPanZoomStart, PointerPanZoomUpdateEventListener onPointerPanZoomUpdate, PointerSignalEventListener onPointerSignal, PointerUpEventListener onPointerUp);
     virtual Size computeSizeForNoChild(BoxConstraints constraints);
 
-    virtual void handleEvent(HitTestEntry entry, PointerEvent event);
+    virtual void handleEvent(PointerEvent event, HitTestEntry entry);
 
     virtual void debugFillProperties(DiagnosticPropertiesBuilder properties);
 
@@ -894,9 +894,9 @@ public:
 
      RenderMouseRegionCls(Unknown child, MouseCursor cursor, HitTestBehavior hitTestBehavior, PointerEnterEventListener onEnter, PointerExitEventListener onExit, PointerHoverEventListener onHover, bool opaque, bool validForMouseTracker);
 
-    virtual bool hitTest(Offset position, BoxHitTestResult result);
+    virtual bool hitTest(BoxHitTestResult result, Offset position);
 
-    virtual void handleEvent(HitTestEntry entry, PointerEvent event);
+    virtual void handleEvent(PointerEvent event, HitTestEntry entry);
 
     virtual bool opaque();
 
@@ -972,7 +972,7 @@ public:
 
     virtual void  ignoringSemantics(bool value);
 
-    virtual bool hitTest(Offset position, BoxHitTestResult result);
+    virtual bool hitTest(BoxHitTestResult result, Offset position);
 
     virtual void visitChildrenForSemantics(RenderObjectVisitor visitor);
 
@@ -1016,7 +1016,7 @@ public:
 
     virtual void performLayout();
 
-    virtual bool hitTest(Offset position, BoxHitTestResult result);
+    virtual bool hitTest(BoxHitTestResult result, Offset position);
 
     virtual bool paintsChild(RenderBox child);
 
@@ -1048,7 +1048,7 @@ public:
 
     virtual void  ignoringSemantics(bool value);
 
-    virtual bool hitTest(Offset position, BoxHitTestResult result);
+    virtual bool hitTest(BoxHitTestResult result, Offset position);
 
     virtual void visitChildrenForSemantics(RenderObjectVisitor visitor);
 
@@ -1371,9 +1371,9 @@ public:
 
     virtual Matrix4 getCurrentTransform();
 
-    virtual bool hitTest(Offset position, BoxHitTestResult result);
+    virtual bool hitTest(BoxHitTestResult result, Offset position);
 
-    virtual bool hitTestChildren(Offset position, BoxHitTestResult result);
+    virtual bool hitTestChildren(BoxHitTestResult result, Offset position);
 
     virtual void paint(PaintingContext context, Offset offset);
 

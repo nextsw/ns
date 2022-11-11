@@ -39,9 +39,9 @@ private:
     double _timeOffset;
 
 
-    virtual Simulation _underscrollSimulation(double dx, double x);
+    virtual Simulation _underscrollSimulation(double x, double dx);
 
-    virtual Simulation _overscrollSimulation(double dx, double x);
+    virtual Simulation _overscrollSimulation(double x, double dx);
 
     virtual Simulation _simulation(double time);
 

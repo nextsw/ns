@@ -97,7 +97,7 @@ void _StringSinkConversionSinkCls<TStringSink>::close() {
 }
 
 template<typename TStringSink>
-void _StringSinkConversionSinkCls<TStringSink>::addSlice(int end, bool isLast, int start, String str) {
+void _StringSinkConversionSinkCls<TStringSink>::addSlice(String str, int start, int end, bool isLast) {
     if (start != 0 || end != str->length()) {
         for (;  < end; i++) {
             _stringSink->writeCharCode(str->codeUnitAt(i));
@@ -142,7 +142,7 @@ void _StringAdapterSinkCls::add(String str) {
     _sink->add(str);
 }
 
-void _StringAdapterSinkCls::addSlice(int end, bool isLast, int start, String str) {
+void _StringAdapterSinkCls::addSlice(String str, int start, int end, bool isLast) {
     if (start == 0 && end == str->length()) {
         add(str);
     } else {
@@ -166,7 +166,7 @@ void _Utf8StringSinkAdapterCls::add(List<int> chunk) {
     addSlice(chunk, 0, chunk->length(), false);
 }
 
-void _Utf8StringSinkAdapterCls::addSlice(List<int> codeUnits, int endIndex, bool isLast, int startIndex) {
+void _Utf8StringSinkAdapterCls::addSlice(List<int> codeUnits, int startIndex, int endIndex, bool isLast) {
     _stringSink->write(_decoder->convertChunked(codeUnits, startIndex, endIndex));
     if (isLast)     {
         close();
@@ -194,7 +194,7 @@ void _Utf8ConversionSinkCls::add(List<int> chunk) {
     addSlice(chunk, 0, chunk->length(), false);
 }
 
-void _Utf8ConversionSinkCls::addSlice(List<int> chunk, int endIndex, bool isLast, int startIndex) {
+void _Utf8ConversionSinkCls::addSlice(List<int> chunk, int startIndex, int endIndex, bool isLast) {
     _buffer->write(_decoder->convertChunked(chunk, startIndex, endIndex));
     if (_buffer->isNotEmpty()) {
         auto accumulated = _buffer->toString();
@@ -207,10 +207,10 @@ void _Utf8ConversionSinkCls::addSlice(List<int> chunk, int endIndex, bool isLast
     }
 }
 
-_Utf8ConversionSinkCls::_Utf8ConversionSinkCls(bool allowMalformed, StringConversionSink sink) {
+_Utf8ConversionSinkCls::_Utf8ConversionSinkCls(StringConversionSink sink, bool allowMalformed) {
     {
         this->_(sink, make<StringBufferCls>(), allowMalformed);
     }
 }
 
-void _Utf8ConversionSinkCls::_(StringConversionSink _chunkedSink, bool allowMalformed, StringBuffer stringBuffer)
+void _Utf8ConversionSinkCls::_(StringConversionSink _chunkedSink, StringBuffer stringBuffer, bool allowMalformed)

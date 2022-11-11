@@ -2,11 +2,11 @@
 void _GridPaperPainterCls::paint(Canvas canvas, Size size) {
     auto _c1 = make<PaintCls>();_c1.color = color;Paint linePaint = _c1;
     double allDivisions = (divisions * subdivisions)->toDouble();
-    for (; x <= size->width(); x = interval / allDivisions) {
+    for (; x <= size->width(); x += interval / allDivisions) {
         linePaint->strokeWidth() = (x % interval == 0.0)? 1.0 : (x % (interval / subdivisions) == 0.0)? 0.5 : 0.25;
         canvas->drawLine(make<OffsetCls>(x, 0.0), make<OffsetCls>(x, size->height()), linePaint);
     }
-    for (; y <= size->height(); y = interval / allDivisions) {
+    for (; y <= size->height(); y += interval / allDivisions) {
         linePaint->strokeWidth() = (y % interval == 0.0)? 1.0 : (y % (interval / subdivisions) == 0.0)? 0.5 : 0.25;
         canvas->drawLine(make<OffsetCls>(0.0, y), make<OffsetCls>(size->width(), y), linePaint);
     }

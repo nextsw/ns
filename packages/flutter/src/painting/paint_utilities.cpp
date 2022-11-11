@@ -1,5 +1,5 @@
 #include "paint_utilities.hpp"
-void paintZigZag(Canvas canvas, Offset end, Paint paint, Offset start, double width, int zigs) {
+void paintZigZag(Canvas canvas, Paint paint, Offset start, Offset end, int zigs, double width) {
     assert(zigs->isFinite);
     assert(zigs > 0);
     canvas->save();
@@ -9,7 +9,7 @@ void paintZigZag(Canvas canvas, Offset end, Paint paint, Offset start, double wi
     double length = end->distance();
     double spacing = length / (zigs * 2.0);
     auto _c1 = make<PathCls>();_c1.moveTo(0.0, 0.0);Path path = _c1;
-    for (;  < zigs; index = 1) {
+    for (;  < zigs; index += 1) {
         double x = (index * 2.0 + 1.0) * spacing;
         double y = width * ((index % 2.0) * 2.0 - 1.0);
         path->lineTo(x, y);

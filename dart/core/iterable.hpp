@@ -37,10 +37,10 @@ public:
 
     virtual void forEach(std::function<void(E element)> action);
 
-    virtual E reduce(std::function<E(E element, E value)> combine);
+    virtual E reduce(std::function<E(E value, E element)> combine);
 
     template<typename T>
- virtual T fold(std::function<T(E element, T previousValue)> combine, T initialValue);
+ virtual T fold(T initialValue, std::function<T(T previousValue, E element)> combine);
 
     virtual bool every(std::function<bool(E element)> test);
 
@@ -72,11 +72,11 @@ public:
 
     virtual E single();
 
-    virtual E firstWhere(std::function<E()> orElse, std::function<bool(E element)> test);
+    virtual E firstWhere(std::function<bool(E element)> test, std::function<E()> orElse);
 
-    virtual E lastWhere(std::function<E()> orElse, std::function<bool(E element)> test);
+    virtual E lastWhere(std::function<bool(E element)> test, std::function<E()> orElse);
 
-    virtual E singleWhere(std::function<E()> orElse, std::function<bool(E element)> test);
+    virtual E singleWhere(std::function<bool(E element)> test, std::function<E()> orElse);
 
     virtual E elementAt(int index);
 
@@ -100,7 +100,7 @@ private:
     std::function<E(int )> _generator;
 
 
-     _GeneratorIterableCls(std::function<E(int index)> generator, int length);
+     _GeneratorIterableCls(int length, std::function<E(int index)> generator);
 
     static int _id(int n);
 

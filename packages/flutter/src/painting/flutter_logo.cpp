@@ -58,7 +58,7 @@ FlutterLogoDecoration FlutterLogoDecorationCls::lerpTo(Decoration b, double t) {
     return as<FlutterLogoDecoration>(super->lerpTo(b, t));
 }
 
-bool FlutterLogoDecorationCls::hitTest(Offset position, Size size, TextDirection textDirection) {
+bool FlutterLogoDecorationCls::hitTest(Size size, Offset position, TextDirection textDirection) {
     return true;
 }
 
@@ -97,8 +97,8 @@ bool FlutterLogoDecorationCls::_inTransition() {
     return _opacity != 1.0 || (_position != -1.0 && _position != 0.0 && _position != 1.0);
 }
 
-void _FlutterLogoPainterCls::paint(Canvas canvas, ImageConfiguration configuration, Offset offset) {
-    offset = _config->margin->topLeft();
+void _FlutterLogoPainterCls::paint(Canvas canvas, Offset offset, ImageConfiguration configuration) {
+    offset += _config->margin->topLeft();
     Size canvasSize = _config->margin->deflateSize(configuration->size!);
     if (canvasSize->isEmpty()) {
         return;

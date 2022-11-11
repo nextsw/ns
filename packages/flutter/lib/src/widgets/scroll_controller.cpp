@@ -29,9 +29,9 @@ double ScrollControllerCls::offset() {
     return position()->pixels();
 }
 
-Future<void> ScrollControllerCls::animateTo(Curve curve, Duration duration, double offset) {
+Future<void> ScrollControllerCls::animateTo(double offset, Curve curve, Duration duration) {
     assert(_positions->isNotEmpty, __s("ScrollController not attached to any scroll views."));
-    List<Future<void>> list1 = make<ListCls<>>();for (;  < _positions->length(); i = 1)     {        ;    }{    list1.add(ArrayItem);}await await FutureCls-><void>wait(list1);
+    List<Future<void>> list1 = make<ListCls<>>();for (;  < _positions->length(); i += 1)     {        ;    }{    list1.add(ArrayItem);}await await FutureCls-><void>wait(list1);
 }
 
 void ScrollControllerCls::jumpTo(double value) {
@@ -60,7 +60,7 @@ void ScrollControllerCls::dispose() {
     super->dispose();
 }
 
-ScrollPosition ScrollControllerCls::createScrollPosition(ScrollContext context, ScrollPosition oldPosition, ScrollPhysics physics) {
+ScrollPosition ScrollControllerCls::createScrollPosition(ScrollPhysics physics, ScrollContext context, ScrollPosition oldPosition) {
     return make<ScrollPositionWithSingleContextCls>(physics, context, initialScrollOffset(), keepScrollOffset, oldPosition, debugLabel);
 }
 
@@ -93,7 +93,7 @@ ScrollPosition TrackingScrollControllerCls::mostRecentlyUpdatedPosition() {
 }
 
 double TrackingScrollControllerCls::initialScrollOffset() {
-    return _lastUpdatedOffset or super->initialScrollOffset;
+    return _lastUpdatedOffset | super->initialScrollOffset;
 }
 
 void TrackingScrollControllerCls::attach(ScrollPosition position) {

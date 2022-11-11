@@ -30,7 +30,7 @@ BorderSide BorderSideCls::merge(BorderSide a, BorderSide b) {
 
 BorderSide BorderSideCls::copyWith(Color color, BorderStyle style, double width) {
     assert(width == nullptr || width >= 0.0);
-    return make<BorderSideCls>(color or this->color, width or this->width, style or this->style);
+    return make<BorderSideCls>(color | this->color, width | this->width, style | this->style);
 }
 
 BorderSide BorderSideCls::scale(double t) {
@@ -104,7 +104,7 @@ ShapeBorder ShapeBorderCls::add(ShapeBorder other, bool reversed) {
 }
 
 ShapeBorder ShapeBorderCls::+(ShapeBorder other) {
-    return add(other) or other->add(thistrue) or make<_CompoundBorderCls>(makeList(ArrayItem, ArrayItem));
+    return add(other) | other->add(thistrue) | make<_CompoundBorderCls>(makeList(ArrayItem, ArrayItem));
 }
 
 ShapeBorder ShapeBorderCls::lerpFrom(ShapeBorder a, double t) {
@@ -130,7 +130,7 @@ ShapeBorder ShapeBorderCls::lerp(ShapeBorder a, ShapeBorder b, double t) {
     if (result == nullptr && a != nullptr) {
         result = a->lerpTo(b, t);
     }
-    return result or ( < 0.5? a : b);
+    return result | ( < 0.5? a : b);
 }
 
 String ShapeBorderCls::toString() {
@@ -166,7 +166,7 @@ OutlinedBorder OutlinedBorderCls::lerp(OutlinedBorder a, OutlinedBorder b, doubl
     if (result == nullptr && a != nullptr) {
         result = a->lerpTo(b, t);
     }
-    return as<OutlinedBorder>(result) or ( < 0.5? a : b);
+    return as<OutlinedBorder>(result) | ( < 0.5? a : b);
 }
 
 EdgeInsetsGeometry _CompoundBorderCls::dimensions() {
@@ -178,7 +178,7 @@ EdgeInsetsGeometry _CompoundBorderCls::dimensions() {
 ShapeBorder _CompoundBorderCls::add(ShapeBorder other, bool reversed) {
     if (!is<_CompoundBorder>(other)) {
         ShapeBorder ours = reversed? borders->last : borders->first;
-        ShapeBorder merged = ours->add(as<_CompoundBorderCls>(other)reversed) or as<_CompoundBorderCls>(other)->add(ours!reversed);
+        ShapeBorder merged = ours->add(as<_CompoundBorderCls>(other)reversed) | as<_CompoundBorderCls>(other)->add(ours!reversed);
         if (merged != nullptr) {
                     List<ShapeBorder> list1 = make<ListCls<>>();        for (auto _x1 : borders) {        {            list1.add(_x1);        }List<ShapeBorder> result = list1;
             result[reversed? result->length() - 1 : 0] = merged;
@@ -210,11 +210,11 @@ _CompoundBorder _CompoundBorderCls::lerp(ShapeBorder a, ShapeBorder b, double t)
     List<ShapeBorder> bList = is<_CompoundBorder>(b)? b->borders : makeList(ArrayItem);
     List<ShapeBorder> results = makeList();
     int length = math->max(aList->length(), bList->length());
-    for (;  < length; index = 1) {
+    for (;  < length; index += 1) {
         ShapeBorder localA =  < aList->length? aList[index] : nullptr;
         ShapeBorder localB =  < bList->length? bList[index] : nullptr;
         if (localA != nullptr && localB != nullptr) {
-            ShapeBorder localResult = localA->lerpTo(localB, t) or localB->lerpFrom(localA, t);
+            ShapeBorder localResult = localA->lerpTo(localB, t) | localB->lerpFrom(localA, t);
             if (localResult != nullptr) {
                 results->add(localResult);
                 continue;
@@ -231,7 +231,7 @@ _CompoundBorder _CompoundBorderCls::lerp(ShapeBorder a, ShapeBorder b, double t)
 }
 
 Path _CompoundBorderCls::getInnerPath(Rect rect, TextDirection textDirection) {
-    for (;  < borders->length() - 1; index = 1) {
+    for (;  < borders->length() - 1; index += 1) {
         rect = borders[index]->dimensions()->resolve(textDirection)->deflateRect(rect);
     }
     return borders->last->getInnerPath(recttextDirection);
@@ -278,7 +278,7 @@ _CompoundBorderCls::_CompoundBorderCls(List<ShapeBorder> borders) {
     }
 }
 
-void paintBorder(BorderSide bottom, Canvas canvas, BorderSide left, Rect rect, BorderSide right, BorderSide top) {
+void paintBorder(Canvas canvas, Rect rect, BorderSide bottom, BorderSide left, BorderSide right, BorderSide top) {
     assert(canvas != nullptr);
     assert(rect != nullptr);
     assert(top != nullptr);

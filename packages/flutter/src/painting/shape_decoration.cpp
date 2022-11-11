@@ -87,7 +87,7 @@ void ShapeDecorationCls::debugFillProperties(DiagnosticPropertiesBuilder propert
     properties->add(<ShapeBorder>make<DiagnosticsPropertyCls>(__s("shape"), shape));
 }
 
-bool ShapeDecorationCls::hitTest(Offset position, Size size, TextDirection textDirection) {
+bool ShapeDecorationCls::hitTest(Size size, Offset position, TextDirection textDirection) {
     return shape->getOuterPath(OffsetCls::zero & sizetextDirection)->contains(position);
 }
 
@@ -105,7 +105,7 @@ void _ShapeDecorationPainterCls::dispose() {
     super->dispose();
 }
 
-void _ShapeDecorationPainterCls::paint(Canvas canvas, ImageConfiguration configuration, Offset offset) {
+void _ShapeDecorationPainterCls::paint(Canvas canvas, Offset offset, ImageConfiguration configuration) {
     assert(configuration != nullptr);
     assert(configuration->size != nullptr);
     Rect rect = offset & configuration->size!;
@@ -156,7 +156,7 @@ void _ShapeDecorationPainterCls::_precache(Rect rect, TextDirection textDirectio
 
 void _ShapeDecorationPainterCls::_paintShadows(Canvas canvas) {
     if (_shadowCount != nullptr) {
-        for (;  < _shadowCount!; index = 1) {
+        for (;  < _shadowCount!; index += 1) {
             canvas->drawPath(_shadowPaths[index], _shadowPaints[index]);
         }
     }
@@ -172,6 +172,6 @@ void _ShapeDecorationPainterCls::_paintImage(Canvas canvas, ImageConfiguration c
     if (_decoration->image == nullptr) {
         return;
     }
-    _imagePainter = _decoration->image!->createPainter(onChanged());
+    _imagePainter |= _decoration->image!->createPainter(onChanged());
     _imagePainter!->paint(canvas, _lastRect!, _innerPath, configuration);
 }

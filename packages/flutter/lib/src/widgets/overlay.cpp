@@ -153,7 +153,7 @@ void OverlayStateCls::initState() {
     insertAll(widget->initialEntries);
 }
 
-void OverlayStateCls::insert(OverlayEntry above, OverlayEntry below, OverlayEntry entry) {
+void OverlayStateCls::insert(OverlayEntry entry, OverlayEntry above, OverlayEntry below) {
     assert(_debugVerifyInsertPosition(above, below));
     assert(!_entries->contains(entry), __s("The specified entry is already present in the Overlay."));
     assert(entry->_overlay == nullptr, __s("The specified entry is already present in another Overlay."));
@@ -163,7 +163,7 @@ void OverlayStateCls::insert(OverlayEntry above, OverlayEntry below, OverlayEntr
     });
 }
 
-void OverlayStateCls::insertAll(OverlayEntry above, OverlayEntry below, Iterable<OverlayEntry> entries) {
+void OverlayStateCls::insertAll(Iterable<OverlayEntry> entries, OverlayEntry above, OverlayEntry below) {
     assert(_debugVerifyInsertPosition(above, below));
     assert(entries->every([=] (OverlayEntry entry)     {
         !_entries->contains(entry);
@@ -183,7 +183,7 @@ void OverlayStateCls::insertAll(OverlayEntry above, OverlayEntry below, Iterable
     });
 }
 
-void OverlayStateCls::rearrange(OverlayEntry above, OverlayEntry below, Iterable<OverlayEntry> newEntries) {
+void OverlayStateCls::rearrange(Iterable<OverlayEntry> newEntries, OverlayEntry above, OverlayEntry below) {
     List<OverlayEntry> newEntriesList = is<List<OverlayEntry>>(newEntries)? newEntries : newEntries->toList(false);
     assert(_debugVerifyInsertPosition(above, belownewEntriesList));
     assert(newEntriesList->every([=] (OverlayEntry entry)     {
@@ -200,7 +200,7 @@ void OverlayStateCls::rearrange(OverlayEntry above, OverlayEntry below, Iterable
     }
     LinkedHashSet<OverlayEntry> old = <OverlayEntry>of(_entries);
     for (OverlayEntry entry : newEntriesList) {
-        entry->_overlay = this;
+        entry->_overlay |= this;
     }
     setState([=] () {
         _entries->clear();
@@ -214,7 +214,7 @@ bool OverlayStateCls::debugIsVisible(OverlayEntry entry) {
     bool result = false;
     assert(_entries->contains(entry));
     assert([=] () {
-        for (; i > 0; i = 1) {
+        for (; i > 0; i -= 1) {
             OverlayEntry candidate = _entries[i];
             if (candidate == entry) {
                 result = true;
@@ -233,10 +233,10 @@ Widget OverlayStateCls::build(BuildContext context) {
     List<Widget> children = makeList();
     bool onstage = true;
     int onstageCount = 0;
-    for (; i >= 0; i = 1) {
+    for (; i >= 0; i -= 1) {
         OverlayEntry entry = _entries[i];
         if (onstage) {
-            onstageCount = 1;
+            onstageCount += 1;
             children->add(make<_OverlayEntryWidgetCls>(entry->_key, entry));
             if (entry->opaque()) {
                 onstage = false;
@@ -255,7 +255,7 @@ void OverlayStateCls::debugFillProperties(DiagnosticPropertiesBuilder properties
     properties->add(<List<OverlayEntry>>make<DiagnosticsPropertyCls>(__s("entries"), _entries));
 }
 
-int OverlayStateCls::_insertionIndex(OverlayEntry above, OverlayEntry below) {
+int OverlayStateCls::_insertionIndex(OverlayEntry below, OverlayEntry above) {
     assert(above == nullptr || below == nullptr);
     if (below != nullptr) {
         return _entries->indexOf(below);
@@ -268,8 +268,8 @@ int OverlayStateCls::_insertionIndex(OverlayEntry above, OverlayEntry below) {
 
 bool OverlayStateCls::_debugVerifyInsertPosition(OverlayEntry above, OverlayEntry below, Iterable<OverlayEntry> newEntries) {
     assert(above == nullptr || below == nullptr, __s("Only one of `above` and `below` may be specified."));
-    assert(above == nullptr || (above->_overlay == this && _entries->contains(above) && (newEntries?->contains(above) or true)), __s("The provided entry used for `above` must be present in the Overlay${newEntries != null ? ' and in the `newEntriesList`' : ''}."));
-    assert(below == nullptr || (below->_overlay == this && _entries->contains(below) && (newEntries?->contains(below) or true)), __s("The provided entry used for `below` must be present in the Overlay${newEntries != null ? ' and in the `newEntriesList`' : ''}."));
+    assert(above == nullptr || (above->_overlay == this && _entries->contains(above) && (newEntries?->contains(above) | true)), __s("The provided entry used for `above` must be present in the Overlay${newEntries != null ? ' and in the `newEntriesList`' : ''}."));
+    assert(below == nullptr || (below->_overlay == this && _entries->contains(below) && (newEntries?->contains(below) | true)), __s("The provided entry used for `below` must be present in the Overlay${newEntries != null ? ' and in the `newEntriesList`' : ''}."));
     return true;
 }
 
@@ -398,7 +398,7 @@ double _RenderTheatreCls::computeDistanceToActualBaseline(TextBaseline baseline)
         StackParentData childParentData = as<StackParentData>(child->parentData!);
         double candidate = child->getDistanceToActualBaseline(baseline);
         if (candidate != nullptr) {
-            candidate = childParentData->offset->dy;
+            candidate += childParentData->offset->dy;
             if (result != nullptr) {
                 result = math->min(result, candidate);
             } else {
@@ -441,7 +441,7 @@ void _RenderTheatreCls::performLayout() {
     }
 }
 
-bool _RenderTheatreCls::hitTestChildren(Offset position, BoxHitTestResult result) {
+bool _RenderTheatreCls::hitTestChildren(BoxHitTestResult result, Offset position) {
     RenderBox child = _lastOnstageChild();
     for (;  < _onstageChildCount(); i++) {
         assert(child != nullptr);
@@ -519,7 +519,7 @@ List<DiagnosticsNode> _RenderTheatreCls::debugDescribeChildren() {
         }
         StackParentData childParentData = as<StackParentData>(child->parentData!);
         child = childParentData->nextSibling;
-        count = 1;
+        count += 1;
     }
     List<DiagnosticsNode> list1 = make<ListCls<>>();for (auto _x1 : onstageChildren) {{    list1.add(_x1);}if (offstageChildren->isNotEmpty) {    list1.add(ArrayItem);} else {    list1.add(ArrayItem);}return list1;
 }

@@ -36,7 +36,7 @@ public:
 
     virtual String join(String separator);
 
-    virtual String lastWhere(std::function<String()> orElse, std::function<bool(String element)> test);
+    virtual String lastWhere(std::function<bool(String element)> test, std::function<String()> orElse);
 
     virtual String elementAt(int index);
 
@@ -50,7 +50,7 @@ public:
 
     virtual Characters replaceFirst(Characters pattern, Characters replacement);
 
-    virtual Iterable<Characters> split(int maxParts, Characters pattern);
+    virtual Iterable<Characters> split(Characters pattern, int maxParts);
 
     virtual bool containsAll(Characters characters);
 
@@ -58,7 +58,7 @@ public:
 
     virtual Characters take(int count);
 
-    virtual Characters getRange(int end, int start);
+    virtual Characters getRange(int start, int end);
 
     virtual Characters characterAt(int position);
 
@@ -96,7 +96,7 @@ private:
 
     virtual StringCharacterRange _rangeAll();
 
-    virtual int _skipIndices(Breaks breaks, int count, int cursor);
+    virtual int _skipIndices(int count, int cursor, Breaks breaks);
 
     virtual Characters _skip(int count);
 
@@ -110,7 +110,7 @@ public:
 
      StringCharacterRangeCls(String stringValue);
 
-    virtual void  at(int endIndex, int startIndex, String stringValue);
+    virtual void  at(String stringValue, int startIndex, int endIndex);
 
     virtual String current();
 
@@ -214,7 +214,7 @@ public:
 
     virtual int stringBeforeLength();
 
-    virtual Iterable<CharacterRange> split(int maxParts, Characters pattern);
+    virtual Iterable<CharacterRange> split(Characters pattern, int maxParts);
 
 private:
     String _string;
@@ -226,8 +226,8 @@ private:
     String _currentCache;
 
 
-    virtual void  _(int _end, int _start, String _string);
-    virtual void _move(int end, int start);
+    virtual void  _(String _string, int _start, int _end);
+    virtual void _move(int start, int end);
 
     virtual Breaks _breaksFromEnd();
 
@@ -235,33 +235,33 @@ private:
 
     virtual bool _advanceEnd(int count, int newStart);
 
-    virtual bool _moveNextPattern(int end, String patternString, int start);
+    virtual bool _moveNextPattern(String patternString, int start, int end);
 
     virtual bool _retractStart(int count, int newEnd);
 
-    virtual bool _movePreviousPattern(int end, String patternString, int start);
+    virtual bool _movePreviousPattern(String patternString, int start, int end);
 
-    virtual bool _retractStartUntil(int newEnd, String targetString);
+    virtual bool _retractStartUntil(String targetString, int newEnd);
 
-    virtual bool _advanceEndUntil(int newStart, String targetString);
+    virtual bool _advanceEndUntil(String targetString, int newStart);
 
-    static StringCharacterRange _expandRange(int end, int start, String stringValue);
+    static StringCharacterRange _expandRange(String stringValue, int start, int end);
 
-    virtual bool _endsWith(int end, int start, String stringValue);
+    virtual bool _endsWith(int start, int end, String stringValue);
 
-    virtual bool _startsWith(int end, int start, String stringValue);
+    virtual bool _startsWith(int start, int end, String stringValue);
 
 };
 using StringCharacterRange = std::shared_ptr<StringCharacterRangeCls>;
-String _explodeReplace(int end, String internalReplacement, String outerReplacement, int start, String stringValue);
+String _explodeReplace(String stringValue, int start, int end, String internalReplacement, String outerReplacement);
 
-int _indexOf(int end, String pattern, String source, int start);
+int _indexOf(String source, String pattern, int start, int end);
 
-int _gcIndexOf(int end, String pattern, String source, int start);
+int _gcIndexOf(String source, String pattern, int start, int end);
 
-int _lastIndexOf(int end, String pattern, String source, int start);
+int _lastIndexOf(String source, String pattern, int start, int end);
 
-int _gcLastIndexOf(int end, String pattern, String source, int start);
+int _gcLastIndexOf(String source, String pattern, int start, int end);
 
 
 

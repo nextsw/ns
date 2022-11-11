@@ -34,7 +34,7 @@ public:
 
     virtual String restorationId();
 
-    virtual void restoreState(bool initialRestore, RestorationBucket oldBucket);
+    virtual void restoreState(RestorationBucket oldBucket, bool initialRestore);
 
     virtual Widget build(BuildContext context);
 
@@ -131,7 +131,7 @@ private:
     RestorationMixin _owner;
 
 
-    virtual void _register(RestorationMixin owner, String restorationId);
+    virtual void _register(String restorationId, RestorationMixin owner);
 
     virtual void _unregister();
 
@@ -146,7 +146,7 @@ public:
     virtual String restorationId();
     virtual RestorationBucket bucket();
 
-    virtual void restoreState(bool initialRestore, RestorationBucket oldBucket);
+    virtual void restoreState(RestorationBucket oldBucket, bool initialRestore);
     virtual void didToggleBucket(RestorationBucket oldBucket);
 
     virtual void registerForRestoration(RestorableProperty<Object> property, String restorationId);

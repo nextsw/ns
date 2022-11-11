@@ -160,12 +160,12 @@ public:
 
     virtual void  inflateFilter(List<int> dictionary, bool raw, int windowBits);
 
-    virtual void process(List<int> data, int end, int start);
+    virtual void process(List<int> data, int start, int end);
     virtual List<int> processed(bool end, bool flush);
 private:
 
-    static RawZLibFilter _makeZLibDeflateFilter(List<int> dictionary, bool gzip, int level, int memLevel, bool raw, int strategy, int windowBits);
-    static RawZLibFilter _makeZLibInflateFilter(List<int> dictionary, bool raw, int windowBits);
+    static RawZLibFilter _makeZLibDeflateFilter(bool gzip, int level, int windowBits, int memLevel, int strategy, List<int> dictionary, bool raw);
+    static RawZLibFilter _makeZLibInflateFilter(int windowBits, List<int> dictionary, bool raw);
 };
 using RawZLibFilter = std::shared_ptr<RawZLibFilterCls>;
 
@@ -176,7 +176,7 @@ public:
 
     virtual void add(List<int> chunk);
 
-    virtual void addSlice(List<int> chunk, int end, bool isLast, int start);
+    virtual void addSlice(List<int> chunk, int start, int end, bool isLast);
 
     virtual void close();
 
@@ -190,7 +190,7 @@ public:
 
 private:
 
-    virtual void  _(List<int> dictionary, bool gzip, int level, int memLevel, bool raw, ByteConversionSink sink, int strategy, int windowBits);
+    virtual void  _(ByteConversionSink sink, bool gzip, int level, int windowBits, int memLevel, int strategy, List<int> dictionary, bool raw);
 
 };
 using _ZLibEncoderSink = std::shared_ptr<_ZLibEncoderSinkCls>;
@@ -200,7 +200,7 @@ public:
 
 private:
 
-    virtual void  _(List<int> dictionary, bool raw, ByteConversionSink sink, int windowBits);
+    virtual void  _(ByteConversionSink sink, int windowBits, List<int> dictionary, bool raw);
 
 };
 using _ZLibDecoderSink = std::shared_ptr<_ZLibDecoderSinkCls>;
@@ -210,7 +210,7 @@ public:
 
     virtual void add(List<int> data);
 
-    virtual void addSlice(List<int> data, int end, bool isLast, int start);
+    virtual void addSlice(List<int> data, int start, int end, bool isLast);
 
     virtual void close();
 
@@ -224,7 +224,7 @@ private:
     bool _empty;
 
 
-     _FilterSinkCls(RawZLibFilter _filter, ByteConversionSink _sink);
+     _FilterSinkCls(ByteConversionSink _sink, RawZLibFilter _filter);
 };
 using _FilterSink = std::shared_ptr<_FilterSinkCls>;
 void _validateZLibWindowBits(int windowBits);

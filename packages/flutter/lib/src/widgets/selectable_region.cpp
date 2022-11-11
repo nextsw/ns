@@ -77,7 +77,7 @@ void _SelectableRegionStateCls::cutSelection(SelectionChangedCause cause) {
     assert(false);
 }
 
-void _SelectableRegionStateCls::userUpdateTextEditingValue(SelectionChangedCause cause, TextEditingValue value) {
+void _SelectableRegionStateCls::userUpdateTextEditingValue(TextEditingValue value, SelectionChangedCause cause) {
 }
 
 Future<void> _SelectableRegionStateCls::pasteText(SelectionChangedCause cause) {
@@ -282,16 +282,16 @@ void _SelectableRegionStateCls::_createSelectionOverlay() {
     SelectionPoint start = _selectionDelegate->value->startSelectionPoint;
     SelectionPoint end = _selectionDelegate->value->endSelectionPoint;
     List<TextSelectionPoint> points;
-    Offset startLocalPosition = start?->localPosition or end!->localPosition;
-    Offset endLocalPosition = end?->localPosition or start!->localPosition;
+    Offset startLocalPosition = start?->localPosition | end!->localPosition;
+    Offset endLocalPosition = end?->localPosition | start!->localPosition;
     if (startLocalPosition->dy() > endLocalPosition->dy()) {
         points = makeList(ArrayItem, ArrayItem);
     } else {
         points = makeList(ArrayItem, ArrayItem);
     }
-    _selectionOverlay = make<SelectionOverlayCls>(context, widget, start?->handleType or TextSelectionHandleTypeCls::left, start?->lineHeight or end!->lineHeight, _handleSelectionStartHandleDragStart, _handleSelectionStartHandleDragUpdate, [=] (DragEndDetails details)     {
+    _selectionOverlay = make<SelectionOverlayCls>(context, widget, start?->handleType | TextSelectionHandleTypeCls::left, start?->lineHeight | end!->lineHeight, _handleSelectionStartHandleDragStart, _handleSelectionStartHandleDragUpdate, [=] (DragEndDetails details)     {
         _stopSelectionStartEdgeUpdate();
-    }, end?->handleType or TextSelectionHandleTypeCls::right, end?->lineHeight or start!->lineHeight, _handleSelectionEndHandleDragStart, _handleSelectionEndHandleDragUpdate, [=] (DragEndDetails details)     {
+    }, end?->handleType | TextSelectionHandleTypeCls::right, end?->lineHeight | start!->lineHeight, _handleSelectionEndHandleDragStart, _handleSelectionEndHandleDragUpdate, [=] (DragEndDetails details)     {
         _stopSelectionEndEdgeUpdate();
     }, points, widget->selectionControls, this, nullptr, _startHandleLayerLink, _endHandleLayerLink, _toolbarLayerLink);
 }
@@ -304,14 +304,14 @@ void _SelectableRegionStateCls::_updateSelectionOverlay() {
     SelectionPoint start = _selectionDelegate->value->startSelectionPoint;
     SelectionPoint end = _selectionDelegate->value->endSelectionPoint;
     List<TextSelectionPoint> points;
-    Offset startLocalPosition = start?->localPosition or end!->localPosition;
-    Offset endLocalPosition = end?->localPosition or start!->localPosition;
+    Offset startLocalPosition = start?->localPosition | end!->localPosition;
+    Offset endLocalPosition = end?->localPosition | start!->localPosition;
     if (startLocalPosition->dy() > endLocalPosition->dy()) {
         points = makeList(ArrayItem, ArrayItem);
     } else {
         points = makeList(ArrayItem, ArrayItem);
     }
-    auto _c1 = _selectionOverlay!;_c1.startHandleType = auto _c2 = start?->handleType or TextSelectionHandleTypeCls::left;_c2.lineHeightAtStart = auto _c3 = start?->lineHeight or end!->lineHeight;_c3.endHandleType = auto _c4 = end?->handleType or TextSelectionHandleTypeCls::right;_c4.lineHeightAtEnd = auto _c5 = end?->lineHeight or start!->lineHeight;_c5.selectionEndpoints = points;_c5;_c4;_c3;_c2;_c1;
+    auto _c1 = _selectionOverlay!;_c1.startHandleType = auto _c2 = start?->handleType | TextSelectionHandleTypeCls::left;_c2.lineHeightAtStart = auto _c3 = start?->lineHeight | end!->lineHeight;_c3.endHandleType = auto _c4 = end?->handleType | TextSelectionHandleTypeCls::right;_c4.lineHeightAtEnd = auto _c5 = end?->lineHeight | start!->lineHeight;_c5.selectionEndpoints = points;_c5;_c4;_c3;_c2;_c1;
 }
 
 bool _SelectableRegionStateCls::_showHandles() {
@@ -388,18 +388,18 @@ Future<void> _SelectableRegionStateCls::_copy() {
 }
 
 template<typename T>
-Object _NonOverrideActionCls<T>::invoke(BuildContext context, T intent) {
+Object _NonOverrideActionCls<T>::invoke(T intent, BuildContext context) {
     if (callingAction != nullptr) {
         return callingAction!->invoke(intent);
     }
     return invokeAction(intent, context);
 }
 
-void _SelectAllActionCls::invokeAction(BuildContext context, SelectAllTextIntent intent) {
+void _SelectAllActionCls::invokeAction(SelectAllTextIntent intent, BuildContext context) {
     state->selectAll(SelectionChangedCauseCls::keyboard);
 }
 
-void _CopySelectionActionCls::invokeAction(BuildContext context, CopySelectionTextIntent intent) {
+void _CopySelectionActionCls::invokeAction(CopySelectionTextIntent intent, BuildContext context) {
     state->_copy();
 }
 
@@ -455,7 +455,7 @@ void _SelectableRegionContainerDelegateCls::dispose() {
     super->dispose();
 }
 
-SelectionResult _SelectableRegionContainerDelegateCls::dispatchSelectionEventToChild(SelectionEvent event, Selectable selectable) {
+SelectionResult _SelectableRegionContainerDelegateCls::dispatchSelectionEventToChild(Selectable selectable, SelectionEvent event) {
     ;
     return super->dispatchSelectionEventToChild(selectable, event);
 }
@@ -547,7 +547,7 @@ SelectionGeometry MultiSelectableSelectionContainerDelegateCls::getSelectionGeom
     bool forwardSelection = currentSelectionEndIndex >= currentSelectionStartIndex;
     int startIndexWalker = currentSelectionStartIndex;
     while (startIndexWalker != currentSelectionEndIndex && startGeometry->startSelectionPoint == nullptr) {
-        startIndexWalker = forwardSelection? 1 : -1;
+        startIndexWalker += forwardSelection? 1 : -1;
         startGeometry = selectables[startIndexWalker]->value;
     }
     SelectionPoint startPoint;
@@ -561,7 +561,7 @@ SelectionGeometry MultiSelectableSelectionContainerDelegateCls::getSelectionGeom
     SelectionGeometry endGeometry = selectables[currentSelectionEndIndex]->value;
     int endIndexWalker = currentSelectionEndIndex;
     while (endIndexWalker != currentSelectionStartIndex && endGeometry->endSelectionPoint == nullptr) {
-        endIndexWalker = forwardSelection? -1 : 1;
+        endIndexWalker += forwardSelection? -1 : 1;
         endGeometry = selectables[endIndexWalker]->value;
     }
     SelectionPoint endPoint;
@@ -575,7 +575,7 @@ SelectionGeometry MultiSelectableSelectionContainerDelegateCls::getSelectionGeom
     return make<SelectionGeometryCls>(startPoint, endPoint, startGeometry != endGeometry? SelectionStatusCls::uncollapsed : startGeometry->status, true);
 }
 
-void MultiSelectableSelectionContainerDelegateCls::pushHandleLayers(LayerLink endHandle, LayerLink startHandle) {
+void MultiSelectableSelectionContainerDelegateCls::pushHandleLayers(LayerLink startHandle, LayerLink endHandle) {
     if (_startHandleLayer == startHandle && _endHandleLayer == endHandle) {
         return;
     }
@@ -612,7 +612,7 @@ SelectionResult MultiSelectableSelectionContainerDelegateCls::handleSelectAll(Se
 }
 
 SelectionResult MultiSelectableSelectionContainerDelegateCls::handleSelectWord(SelectWordSelectionEvent event) {
-    for (;  < selectables->length(); index = 1) {
+    for (;  < selectables->length(); index += 1) {
         Rect localRect = RectCls->fromLTWH(0, 0, selectables[index]->size()->width(), selectables[index]->size()->height());
         Matrix4 transform = selectables[index]->getTransformTo(nullptr);
         Rect globalRect = MatrixUtilsCls->transformRect(transform, localRect);
@@ -672,7 +672,7 @@ void MultiSelectableSelectionContainerDelegateCls::dispose() {
     super->dispose();
 }
 
-SelectionResult MultiSelectableSelectionContainerDelegateCls::dispatchSelectionEventToChild(SelectionEvent event, Selectable selectable) {
+SelectionResult MultiSelectableSelectionContainerDelegateCls::dispatchSelectionEventToChild(Selectable selectable, SelectionEvent event) {
     return selectable->dispatchSelectionEvent(event);
 }
 
@@ -713,7 +713,7 @@ void MultiSelectableSelectionContainerDelegateCls::_flushAdditions() {
                 selectionEndIndex = selectables->length();
             }
             selectables->add(existingSelectables[existingIndex]);
-            existingIndex = 1;
+            existingIndex += 1;
             continue;
         }
         Selectable mergingSelectable = mergingSelectables[mergingIndex];
@@ -722,7 +722,7 @@ void MultiSelectableSelectionContainerDelegateCls::_flushAdditions() {
         }
         mergingSelectable->addListener(_handleSelectableGeometryChange);
         selectables->add(mergingSelectable);
-        mergingIndex = 1;
+        mergingIndex += 1;
     }
     assert(mergingIndex == mergingSelectables->length() && existingIndex == existingSelectables->length() && selectables->length() == existingIndex + mergingIndex);
     assert(selectionStartIndex >= -1 ||  < selectables->length());
@@ -739,10 +739,10 @@ void MultiSelectableSelectionContainerDelegateCls::_removeSelectable(Selectable 
     int index = selectables->indexOf(selectable);
     selectables->removeAt(index);
     if (index <= currentSelectionEndIndex) {
-        currentSelectionEndIndex = 1;
+        currentSelectionEndIndex -= 1;
     }
     if (index <= currentSelectionStartIndex) {
-        currentSelectionStartIndex = 1;
+        currentSelectionStartIndex -= 1;
     }
     selectable->removeListener(_handleSelectableGeometryChange);
 }
@@ -799,7 +799,7 @@ void MultiSelectableSelectionContainerDelegateCls::_handleSelectableGeometryChan
 int MultiSelectableSelectionContainerDelegateCls::_adjustSelectionIndexBasedOnSelectionGeometry(int currentIndex, int towardIndex) {
     bool forward = towardIndex > currentIndex;
     while (currentIndex != towardIndex && selectables[currentIndex]->value->status != SelectionStatusCls::uncollapsed) {
-        currentIndex = forward? 1 : -1;
+        currentIndex += forward? 1 : -1;
     }
     return currentIndex;
 }
@@ -847,7 +847,7 @@ SelectionResult MultiSelectableSelectionContainerDelegateCls::_initSelection(Sel
     int newIndex = -1;
     bool hasFoundEdgeIndex = false;
     SelectionResult result;
-    for (;  < selectables->length() && !hasFoundEdgeIndex; index = 1) {
+    for (;  < selectables->length() && !hasFoundEdgeIndex; index += 1) {
         Selectable child = selectables[index];
         SelectionResult childResult = dispatchSelectionEventToChild(child, event);
         ;
@@ -861,7 +861,7 @@ SelectionResult MultiSelectableSelectionContainerDelegateCls::_initSelection(Sel
     } else {
         currentSelectionStartIndex = newIndex;
     }
-    return result or SelectionResultCls::next;
+    return result | SelectionResultCls::next;
 }
 
 SelectionResult MultiSelectableSelectionContainerDelegateCls::_adjustSelection(SelectionEdgeUpdateEvent event, bool isEnd) {

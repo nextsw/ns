@@ -109,7 +109,7 @@ Directory _DirectoryCls::systemTemp() {
 }
 
 Future<Directory> _DirectoryCls::createTemp(String prefix) {
-    prefix = __s("");
+    prefix |= __s("");
     if (path() == __s("")) {
         throw make<ArgumentErrorCls>(__s("Directory.createTemp called with an empty path. To use the system temp directory, use Directory.systemTemp"));
     }
@@ -128,7 +128,7 @@ Future<Directory> _DirectoryCls::createTemp(String prefix) {
 }
 
 Directory _DirectoryCls::createTempSync(String prefix) {
-    prefix = __s("");
+    prefix |= __s("");
     if (path() == __s("")) {
         throw make<ArgumentErrorCls>(__s("Directory.createTemp called with an empty path. To use the system temp directory, use Directory.systemTemp"));
     }
@@ -212,7 +212,7 @@ void _DirectoryCls::_exceptionOrErrorFromResponse(response , String message) {
 }
 
 template<typename T>
-T _DirectoryCls::_checkNotNull(String name, T t) {
+T _DirectoryCls::_checkNotNull(T t, String name) {
     ArgumentErrorCls->checkNotNull(t, name);
     return t;
 }
@@ -319,7 +319,7 @@ void _AsyncDirectoryListerCls::error(message ) {
 ;
     }}
 
-_AsyncDirectoryListerCls::_AsyncDirectoryListerCls(bool followLinks, Uint8List rawPath, bool recursive) {
+_AsyncDirectoryListerCls::_AsyncDirectoryListerCls(Uint8List rawPath, bool recursive, bool followLinks) {
     {
             auto _c1 = controller;    _c1.onListen = auto _c2 = onListen;    _c2.onResume = auto _c3 = onResume;    _c3.onCancel = onCancel;    _c3;    _c2;_c1;
     }

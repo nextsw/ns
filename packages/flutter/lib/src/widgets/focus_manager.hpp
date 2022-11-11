@@ -16,7 +16,7 @@
 
 bool debugFocusChanges;
 
-bool _focusDebug(Iterable<String> details, String message);
+bool _focusDebug(String message, Iterable<String> details);
 
 
 enum KeyEventResult{

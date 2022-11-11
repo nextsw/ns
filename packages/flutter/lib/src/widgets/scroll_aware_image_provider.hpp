@@ -21,11 +21,11 @@ public:
 
      ScrollAwareImageProviderCls(DisposableBuildContext context, ImageProvider<T> imageProvider);
 
-    virtual void resolveStreamForKey(ImageConfiguration configuration, ImageErrorListener handleError, T key, ImageStream stream);
+    virtual void resolveStreamForKey(ImageConfiguration configuration, ImageStream stream, T key, ImageErrorListener handleError);
 
-    virtual ImageStreamCompleter load(DecoderCallback decode, T key);
+    virtual ImageStreamCompleter load(T key, DecoderCallback decode);
 
-    virtual ImageStreamCompleter loadBuffer(DecoderBufferCallback decode, T key);
+    virtual ImageStreamCompleter loadBuffer(T key, DecoderBufferCallback decode);
 
     virtual Future<T> obtainKey(ImageConfiguration configuration);
 

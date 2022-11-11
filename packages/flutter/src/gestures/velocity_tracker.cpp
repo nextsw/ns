@@ -17,7 +17,7 @@ Velocity VelocityCls::+(Velocity other) {
     return make<VelocityCls>(pixelsPerSecond + other->pixelsPerSecond);
 }
 
-Velocity VelocityCls::clampMagnitude(double maxValue, double minValue) {
+Velocity VelocityCls::clampMagnitude(double minValue, double maxValue) {
     assert(minValue != nullptr && minValue >= 0.0);
     assert(maxValue != nullptr && maxValue >= 0.0 && maxValue >= minValue);
     double valueSquared = pixelsPerSecond->distanceSquared();
@@ -66,8 +66,8 @@ _PointAtTimeCls::_PointAtTimeCls(Offset point, Duration time) {
     }
 }
 
-void VelocityTrackerCls::addPosition(Offset position, Duration time) {
-    _index = 1;
+void VelocityTrackerCls::addPosition(Duration time, Offset position) {
+    _index += 1;
     if (_index == _historySize) {
         _index = 0;
     }
@@ -105,7 +105,7 @@ VelocityEstimate VelocityTrackerCls::getVelocityEstimate() {
         w->add(1.0);
         time->add(-age);
         index = (index == 0? _historySize : index) - 1;
-        sampleCount = 1;
+        sampleCount += 1;
     } while ( < _historySize);
     if (sampleCount >= _minSampleSize) {
         LeastSquaresSolver xSolver = make<LeastSquaresSolverCls>(time, x, w);
@@ -135,7 +135,7 @@ IOSScrollViewFlingVelocityTrackerCls::IOSScrollViewFlingVelocityTrackerCls(Unkno
     }
 }
 
-void IOSScrollViewFlingVelocityTrackerCls::addPosition(Offset position, Duration time) {
+void IOSScrollViewFlingVelocityTrackerCls::addPosition(Duration time, Offset position) {
     assert([=] () {
         _PointAtTime previousPoint = _touchSamples[_index];
         if (previousPoint == nullptr || previousPoint->time <= time) {
@@ -151,7 +151,7 @@ VelocityEstimate IOSScrollViewFlingVelocityTrackerCls::getVelocityEstimate() {
     Offset estimatedVelocity = _previousVelocityAt(-2) * 0.6 + _previousVelocityAt(-1) * 0.35 + _previousVelocityAt(0) * 0.05;
     _PointAtTime newestSample = _touchSamples[_index];
     _PointAtTime oldestNonNullSample;
-    for (; i <= _sampleSize; i = 1) {
+    for (; i <= _sampleSize; i += 1) {
         oldestNonNullSample = _touchSamples[(_index + i) % _sampleSize];
         if (oldestNonNullSample != nullptr) {
             break;

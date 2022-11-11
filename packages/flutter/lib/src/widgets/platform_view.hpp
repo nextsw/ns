@@ -174,7 +174,7 @@ private:
 
     virtual Future<void> _createNewUiKitView();
 
-    virtual void _onFocusChange(UiKitViewController controller, bool isFocused);
+    virtual void _onFocusChange(bool isFocused, UiKitViewController controller);
 
 };
 using _UiKitViewState = std::shared_ptr<_UiKitViewStateCls>;

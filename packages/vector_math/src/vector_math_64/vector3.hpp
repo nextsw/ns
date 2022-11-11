@@ -14,7 +14,7 @@ public:
 
     static void max(Vector3 a, Vector3 b, Vector3 result);
 
-    static void mix(double a, Vector3 max, Vector3 min, Vector3 result);
+    static void mix(Vector3 min, Vector3 max, double a, Vector3 result);
 
      Vector3Cls(double x, double y, double z);
 
@@ -79,7 +79,7 @@ public:
 
     virtual double angleTo(Vector3 other);
 
-    virtual double angleToSigned(Vector3 normal, Vector3 other);
+    virtual double angleToSigned(Vector3 other, Vector3 normal);
 
     virtual double dot(Vector3 other);
 
@@ -95,7 +95,7 @@ public:
 
     virtual void applyProjection(Matrix4 arg);
 
-    virtual void applyAxisAngle(double angle, Vector3 axis);
+    virtual void applyAxisAngle(Vector3 axis, double angle);
 
     virtual void applyQuaternion(Quaternion arg);
 
@@ -129,9 +129,9 @@ public:
 
     virtual void absolute();
 
-    virtual void clamp(Vector3 max, Vector3 min);
+    virtual void clamp(Vector3 min, Vector3 max);
 
-    virtual void clampScalar(double max, double min);
+    virtual void clampScalar(double min, double max);
 
     virtual void floor();
 

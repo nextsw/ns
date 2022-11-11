@@ -11,8 +11,8 @@ public:
     static BigInt zero();
     static BigInt one();
     static BigInt two();
-    static BigInt parse(int radix, String source);
-    static BigInt tryParse(int radix, String source);
+    static BigInt parse(String source, int radix);
+    static BigInt tryParse(String source, int radix);
     void  from(num value);
     virtual BigInt abs();
     virtual BigInt operator-();

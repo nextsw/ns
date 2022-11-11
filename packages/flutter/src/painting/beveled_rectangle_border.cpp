@@ -31,7 +31,7 @@ ShapeBorder BeveledRectangleBorderCls::lerpTo(ShapeBorder b, double t) {
 }
 
 BeveledRectangleBorder BeveledRectangleBorderCls::copyWith(BorderRadiusGeometry borderRadius, BorderSide side) {
-    return make<BeveledRectangleBorderCls>(side or this->side, borderRadius or this->borderRadius);
+    return make<BeveledRectangleBorderCls>(side | this->side, borderRadius | this->borderRadius);
 }
 
 Path BeveledRectangleBorderCls::getInnerPath(Rect rect, TextDirection textDirection) {

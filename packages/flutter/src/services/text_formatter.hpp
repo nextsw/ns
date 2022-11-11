@@ -20,7 +20,7 @@ enum MaxLengthEnforcement{
 class TextInputFormatterCls : public ObjectCls {
 public:
 
-    virtual TextEditingValue formatEditUpdate(TextEditingValue newValue, TextEditingValue oldValue);
+    virtual TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue);
     static TextInputFormatter withFunction(TextInputFormatFunction formatFunction);
 
 private:
@@ -33,7 +33,7 @@ public:
     TextInputFormatFunction formatFunction;
 
 
-    virtual TextEditingValue formatEditUpdate(TextEditingValue newValue, TextEditingValue oldValue);
+    virtual TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue);
 
 private:
 
@@ -94,17 +94,17 @@ public:
     static TextInputFormatter digitsOnly;
 
 
-     FilteringTextInputFormatterCls(bool allow, Pattern filterPattern, String replacementString);
+     FilteringTextInputFormatterCls(Pattern filterPattern, bool allow, String replacementString);
 
     virtual void  allow(Pattern filterPattern, String replacementString);
 
     virtual void  deny(Pattern filterPattern, String replacementString);
 
-    virtual TextEditingValue formatEditUpdate(TextEditingValue newValue, TextEditingValue oldValue);
+    virtual TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue);
 
 private:
 
-    virtual void _processRegion(bool isBannedRegion, int regionEnd, int regionStart, _TextEditingValueAccumulator state);
+    virtual void _processRegion(bool isBannedRegion, int regionStart, int regionEnd, _TextEditingValueAccumulator state);
 
 };
 using FilteringTextInputFormatter = std::shared_ptr<FilteringTextInputFormatterCls>;
@@ -120,9 +120,9 @@ public:
 
     static MaxLengthEnforcement getDefaultMaxLengthEnforcement(TargetPlatform platform);
 
-    static TextEditingValue truncate(int maxLength, TextEditingValue value);
+    static TextEditingValue truncate(TextEditingValue value, int maxLength);
 
-    virtual TextEditingValue formatEditUpdate(TextEditingValue newValue, TextEditingValue oldValue);
+    virtual TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue);
 
 private:
 

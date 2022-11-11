@@ -2,7 +2,7 @@
 AsyncErrorCls::AsyncErrorCls(Object error, StackTrace stackTrace) {
     {
         error = checkNotNullable(error, __s("error"));
-        stackTrace = stackTrace or defaultStackTrace(error);
+        stackTrace = stackTrace | defaultStackTrace(error);
     }
 }
 

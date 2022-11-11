@@ -1,5 +1,5 @@
 #include "boollist.hpp"
-BoolListCls::BoolListCls(bool fill, bool growable, int length) {
+BoolListCls::BoolListCls(int length, bool fill, bool growable) {
     {
         RangeErrorCls->checkNotNegative(length, __s("length"));
         BoolList boolist;
@@ -24,7 +24,7 @@ void BoolListCls::empty(int capacity, bool growable) {
     }
 }
 
-void BoolListCls::generate(std::function<bool(int )> generator, bool growable, int length) {
+void BoolListCls::generate(int length, std::function<bool(int )> generator, bool growable) {
     RangeErrorCls->checkNotNegative(length, __s("length"));
     auto instance = BoolListCls->_selectType(length, growable);
     for (;  < length; i++) {
@@ -51,28 +51,28 @@ void BoolListCls::[]=(int index, bool value) {
     _setBit(index, value);
 }
 
-void BoolListCls::fillRange(int end, bool fill, int start) {
+void BoolListCls::fillRange(int start, int end, bool fill) {
     RangeErrorCls->checkValidRange(start, end, _length);
-    fill = false;
+    fill |= false;
     auto startWord = start >> _entryShift;
     auto endWord = (end - 1) >> _entryShift;
     auto startBit = start & _entrySignBitIndex;
     auto endBit = (end - 1) & _entrySignBitIndex;
     if ( < endWord) {
         if (fill) {
-            _data[startWord] = -1 << startBit;
+            _data[startWord] |= -1 << startBit;
             _data->fillRange(startWord + 1, endWord, -1);
-            _data[endWord] = (1 << (endBit + 1)) - 1;
+            _data[endWord] |= (1 << (endBit + 1)) - 1;
         } else {
-            _data[startWord] = (1 << startBit) - 1;
+            _data[startWord] &= (1 << startBit) - 1;
             _data->fillRange(startWord + 1, endWord, 0);
-            _data[endWord] = -1 << (endBit + 1);
+            _data[endWord] &= -1 << (endBit + 1);
         }
     } else {
         if (fill) {
-            _data[startWord] = ((1 << (endBit - startBit + 1)) - 1) << startBit;
+            _data[startWord] |= ((1 << (endBit - startBit + 1)) - 1) << startBit;
         } else {
-            _data[startWord] = ((1 << startBit) - 1) | (-1 << (endBit + 1));
+            _data[startWord] &= ((1 << startBit) - 1) | (-1 << (endBit + 1));
         }
     }
 }
@@ -81,7 +81,7 @@ Iterator<bool> BoolListCls::iterator() {
     return make<_BoolListIteratorCls>(this);
 }
 
-void BoolListCls::_selectType(bool growable, int length) {
+void BoolListCls::_selectType(int length, bool growable) {
     if (growable) {
         return make<_GrowableBoolListCls>(length);
     } else {
@@ -91,9 +91,9 @@ void BoolListCls::_selectType(bool growable, int length) {
 
 void BoolListCls::_setBit(int index, bool value) {
     if (value) {
-        _data[index >> _entryShift] = 1 << (index & _entrySignBitIndex);
+        _data[index >> _entryShift] |= 1 << (index & _entrySignBitIndex);
     } else {
-        _data[index >> _entryShift] = ~(1 << (index & _entrySignBitIndex));
+        _data[index >> _entryShift] &= ~(1 << (index & _entrySignBitIndex));
     }
 }
 
@@ -112,7 +112,7 @@ void _GrowableBoolListCls::length(int length) {
 ;
     }}
 
-void _GrowableBoolListCls::_withCapacity(int capacity, int length)
+void _GrowableBoolListCls::_withCapacity(int length, int capacity)
 
 _GrowableBoolListCls::_GrowableBoolListCls(int length) {
     {
@@ -138,7 +138,7 @@ void _GrowableBoolListCls::_shrink(int length) {
     _length = length;
 }
 
-void _NonGrowableBoolListCls::_withCapacity(int capacity, int length)
+void _NonGrowableBoolListCls::_withCapacity(int length, int capacity)
 
 _NonGrowableBoolListCls::_NonGrowableBoolListCls(int length) {
     {

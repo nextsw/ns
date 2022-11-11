@@ -1,9 +1,9 @@
 #include "platform_channel.hpp"
-Future<void> _ProfiledBinaryMessengerCls::handlePlatformMessage(PlatformMessageResponseCallback callback, String channel, ByteData data) {
+Future<void> _ProfiledBinaryMessengerCls::handlePlatformMessage(String channel, ByteData data, PlatformMessageResponseCallback callback) {
     return proxy->handlePlatformMessage(channel, data, callback);
 }
 
-Future<ByteData> _ProfiledBinaryMessengerCls::sendWithPostfix(String channel, ByteData message, String postfix) {
+Future<ByteData> _ProfiledBinaryMessengerCls::sendWithPostfix(String channel, String postfix, ByteData message) {
     TimelineTask task = make<TimelineTaskCls>();
     _debugRecordUpStream(channelTypeName, __s("$channel$postfix"), codecTypeName, message);
     task->start(__s("Platform Channel send $channel$postfix"));
@@ -30,8 +30,8 @@ int _PlatformChannelStatsCls::upBytes() {
 }
 
 void _PlatformChannelStatsCls::addUpStream(int bytes) {
-    _upCount = 1;
-    _upBytes = bytes;
+    _upCount += 1;
+    _upBytes += bytes;
 }
 
 int _PlatformChannelStatsCls::downBytes() {
@@ -39,8 +39,8 @@ int _PlatformChannelStatsCls::downBytes() {
 }
 
 void _PlatformChannelStatsCls::addDownStream(int bytes) {
-    _downCount = 1;
-    _downBytes = bytes;
+    _downCount += 1;
+    _downBytes += bytes;
 }
 
 double _PlatformChannelStatsCls::averageUpPayload() {
@@ -70,20 +70,20 @@ Future<void> _debugLaunchProfilePlatformChannels() {
     }
 }
 
-void _debugRecordUpStream(ByteData bytes, String channelTypeName, String codecTypeName, String name) {
+void _debugRecordUpStream(String channelTypeName, String name, String codecTypeName, ByteData bytes) {
     _PlatformChannelStats stats = _debugProfilePlatformChannelsStats[name] ??= make<_PlatformChannelStatsCls>(name, codecTypeName, channelTypeName);
-    stats->addUpStream(bytes?->lengthInBytes or 0);
+    stats->addUpStream(bytes?->lengthInBytes | 0);
     _debugLaunchProfilePlatformChannels();
 }
 
-void _debugRecordDownStream(ByteData bytes, String channelTypeName, String codecTypeName, String name) {
+void _debugRecordDownStream(String channelTypeName, String name, String codecTypeName, ByteData bytes) {
     _PlatformChannelStats stats = _debugProfilePlatformChannelsStats[name] ??= make<_PlatformChannelStatsCls>(name, codecTypeName, channelTypeName);
-    stats->addDownStream(bytes?->lengthInBytes or 0);
+    stats->addDownStream(bytes?->lengthInBytes | 0);
     _debugLaunchProfilePlatformChannels();
 }
 
 template<typename T>
-BasicMessageChannelCls<T>::BasicMessageChannelCls(BinaryMessenger binaryMessenger, MessageCodec<T> codec, String name) {
+BasicMessageChannelCls<T>::BasicMessageChannelCls(String name, MessageCodec<T> codec, BinaryMessenger binaryMessenger) {
     {
         assert(name != nullptr);
         assert(codec != nullptr);
@@ -93,7 +93,7 @@ BasicMessageChannelCls<T>::BasicMessageChannelCls(BinaryMessenger binaryMessenge
 
 template<typename T>
 BinaryMessenger BasicMessageChannelCls<T>::binaryMessenger() {
-    BinaryMessenger result = _binaryMessenger or ServicesBindingCls::instance->defaultBinaryMessenger;
+    BinaryMessenger result = _binaryMessenger | ServicesBindingCls::instance->defaultBinaryMessenger;
     return !kReleaseMode && debugProfilePlatformChannels? _debugBinaryMessengers[this] ??= make<_ProfiledBinaryMessengerCls>(result, runtimeType->toString(), codec->runtimeType->toString()) : result;
 }
 
@@ -113,7 +113,7 @@ void BasicMessageChannelCls<T>::setMessageHandler(std::function<Future<T>(T mess
     }
 }
 
-MethodChannelCls::MethodChannelCls(BinaryMessenger binaryMessenger, MethodCodec codec, String name) {
+MethodChannelCls::MethodChannelCls(String name, MethodCodec codec, BinaryMessenger binaryMessenger) {
     {
         assert(name != nullptr);
         assert(codec != nullptr);
@@ -122,23 +122,23 @@ MethodChannelCls::MethodChannelCls(BinaryMessenger binaryMessenger, MethodCodec 
 }
 
 BinaryMessenger MethodChannelCls::binaryMessenger() {
-    BinaryMessenger result = _binaryMessenger or ServicesBindingCls::instance->defaultBinaryMessenger;
+    BinaryMessenger result = _binaryMessenger | ServicesBindingCls::instance->defaultBinaryMessenger;
     return !kReleaseMode && debugProfilePlatformChannels? _debugBinaryMessengers[this] ??= make<_ProfiledBinaryMessengerCls>(result, runtimeType->toString(), codec->runtimeType->toString()) : result;
 }
 
 template<typename T>
-Future<T> MethodChannelCls::invokeMethod(dynamic arguments, String method) {
+Future<T> MethodChannelCls::invokeMethod(String method, dynamic arguments) {
     return <T>_invokeMethod(methodfalse, arguments);
 }
 
 template<typename T>
-Future<List<T>> MethodChannelCls::invokeListMethod(dynamic arguments, String method) {
+Future<List<T>> MethodChannelCls::invokeListMethod(String method, dynamic arguments) {
     List<dynamic> result = await <List<dynamic>>invokeMethod(method, arguments);
     return result?-><T>cast();
 }
 
 template<typename K, typename V>
-Future<Map<K, V>> MethodChannelCls::invokeMapMethod(dynamic arguments, String method) {
+Future<Map<K, V>> MethodChannelCls::invokeMapMethod(String method, dynamic arguments) {
     Map<dynamic, dynamic> result = await <Map<dynamic, dynamic>>invokeMethod(method, arguments);
     return result?-><K, V>cast();
 }
@@ -151,7 +151,7 @@ void MethodChannelCls::setMethodCallHandler(std::function<Future<dynamic>(Method
 }
 
 template<typename T>
-Future<T> MethodChannelCls::_invokeMethod(dynamic arguments, String method, bool missingOk) {
+Future<T> MethodChannelCls::_invokeMethod(String method, dynamic arguments, bool missingOk) {
     assert(method != nullptr);
     ByteData input = codec->encodeMethodCall(make<MethodCallCls>(method, arguments));
     ByteData result = !kReleaseMode && debugProfilePlatformChannels? await (as<_ProfiledBinaryMessenger>(binaryMessenger()))->sendWithPostfix(name, __s("#$method"), input) : await binaryMessenger()->send(name, input);
@@ -164,7 +164,7 @@ Future<T> MethodChannelCls::_invokeMethod(dynamic arguments, String method, bool
     return as<T>(codec->decodeEnvelope(result));
 }
 
-Future<ByteData> MethodChannelCls::_handleAsMethodCall(std::function<Future<dynamic>(MethodCall call)> handler, ByteData message) {
+Future<ByteData> MethodChannelCls::_handleAsMethodCall(ByteData message, std::function<Future<dynamic>(MethodCall call)> handler) {
     MethodCall call = codec->decodeMethodCall(message);
     try {
         return codec->encodeSuccessEnvelope(await handler(call));
@@ -178,11 +178,11 @@ Future<ByteData> MethodChannelCls::_handleAsMethodCall(std::function<Future<dyna
 }
 
 template<typename T>
-Future<T> OptionalMethodChannelCls::invokeMethod(dynamic arguments, String method) {
+Future<T> OptionalMethodChannelCls::invokeMethod(String method, dynamic arguments) {
     return super-><T>_invokeMethod(methodtrue, arguments);
 }
 
-EventChannelCls::EventChannelCls(BinaryMessenger binaryMessenger, MethodCodec codec, String name) {
+EventChannelCls::EventChannelCls(String name, MethodCodec codec, BinaryMessenger binaryMessenger) {
     {
         assert(name != nullptr);
         assert(codec != nullptr);
@@ -191,7 +191,7 @@ EventChannelCls::EventChannelCls(BinaryMessenger binaryMessenger, MethodCodec co
 }
 
 BinaryMessenger EventChannelCls::binaryMessenger() {
-    return _binaryMessenger or ServicesBindingCls::instance->defaultBinaryMessenger;
+    return _binaryMessenger | ServicesBindingCls::instance->defaultBinaryMessenger;
 }
 
 Stream<dynamic> EventChannelCls::receiveBroadcastStream(dynamic arguments) {

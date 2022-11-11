@@ -53,7 +53,7 @@ void _TranspilerCls::collectDeps(Set<int> collectedDeps, int id) {
     }
 }
 
-void _TranspilerCls::writeFunctionAndDeps(int function, Set<int> visited) {
+void _TranspilerCls::writeFunctionAndDeps(Set<int> visited, int function) {
     if (visited->contains(function)) {
         return;
     }

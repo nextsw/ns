@@ -126,7 +126,7 @@ bool ListMixinCls<E>::any(std::function<bool(E element)> test) {
 }
 
 template<typename E>
-E ListMixinCls<E>::firstWhere(std::function<E()> orElse, std::function<bool(E element)> test) {
+E ListMixinCls<E>::firstWhere(std::function<bool(E element)> test, std::function<E()> orElse) {
     int length = this->length;
     for (;  < length; i++) {
         E element = this[i];
@@ -144,7 +144,7 @@ E ListMixinCls<E>::firstWhere(std::function<E()> orElse, std::function<bool(E el
 }
 
 template<typename E>
-E ListMixinCls<E>::lastWhere(std::function<E()> orElse, std::function<bool(E element)> test) {
+E ListMixinCls<E>::lastWhere(std::function<bool(E element)> test, std::function<E()> orElse) {
     int length = this->length;
     for (; i >= 0; i--) {
         E element = this[i];
@@ -162,7 +162,7 @@ E ListMixinCls<E>::lastWhere(std::function<E()> orElse, std::function<bool(E ele
 }
 
 template<typename E>
-E ListMixinCls<E>::singleWhere(std::function<E()> orElse, std::function<bool(E element)> test) {
+E ListMixinCls<E>::singleWhere(std::function<bool(E element)> test, std::function<E()> orElse) {
     int length = this->length;
     E match;
     bool matchFound = false;
@@ -221,7 +221,7 @@ Iterable<T> ListMixinCls<E>::expand(std::function<Iterable<T>(E element)> f) {
 }
 
 template<typename E>
-E ListMixinCls<E>::reduce(std::function<E(E element, E previousValue)> combine) {
+E ListMixinCls<E>::reduce(std::function<E(E previousValue, E element)> combine) {
     int length = this->length;
     if (length == 0)     {
         throw IterableElementErrorCls->noElement();
@@ -238,7 +238,7 @@ E ListMixinCls<E>::reduce(std::function<E(E element, E previousValue)> combine) 
 
 template<typename E>
 template<typename T>
-T ListMixinCls<E>::fold(std::function<T(E element, T previousValue)> combine, T initialValue) {
+T ListMixinCls<E>::fold(T initialValue, std::function<T(T previousValue, E element)> combine) {
     auto value = initialValue;
     int length = this->length;
     for (;  < length; i++) {
@@ -351,19 +351,19 @@ E ListMixinCls<E>::removeLast() {
 
 template<typename E>
 void ListMixinCls<E>::sort(std::function<int(E a, E b)> compare) {
-    SortCls->sort(this, compare or _compareAny);
+    SortCls->sort(this, compare | _compareAny);
 }
 
 template<typename E>
 void ListMixinCls<E>::shuffle(Random random) {
-    random = make<RandomCls>();
+    random |= make<RandomCls>();
     if (random == nullptr)     {
         throw __s("!");
     }
     int length = this->length;
     while (length > 1) {
         int pos = random->nextInt(length);
-        length = 1;
+        length -= 1;
         auto tmp = this[length];
         this[length] = this[pos];
         this[pos] = tmp;
@@ -381,9 +381,9 @@ List<E> ListMixinCls<E>::+(List<E> other) {
 }
 
 template<typename E>
-List<E> ListMixinCls<E>::sublist(int end, int start) {
+List<E> ListMixinCls<E>::sublist(int start, int end) {
     for (auto _x1 : this) {{    list1.add(_x1);}for (auto _x1 : other) {{    list1.add(_x1);}int listLength = this->length;
-    end = listLength;
+    end |= listLength;
     if (end == nullptr)     {
         throw __s("!");
     }
@@ -392,13 +392,13 @@ List<E> ListMixinCls<E>::sublist(int end, int start) {
 }
 
 template<typename E>
-Iterable<E> ListMixinCls<E>::getRange(int end, int start) {
+Iterable<E> ListMixinCls<E>::getRange(int start, int end) {
     RangeErrorCls->checkValidRange(start, end, this->length);
     return <E>make<SubListIterableCls>(this, start, end);
 }
 
 template<typename E>
-void ListMixinCls<E>::removeRange(int end, int start) {
+void ListMixinCls<E>::removeRange(int start, int end) {
     RangeErrorCls->checkValidRange(start, end, this->length);
     if (end > start) {
         _closeGap(start, end);
@@ -406,7 +406,7 @@ void ListMixinCls<E>::removeRange(int end, int start) {
 }
 
 template<typename E>
-void ListMixinCls<E>::fillRange(int end, E fill, int start) {
+void ListMixinCls<E>::fillRange(int start, int end, E fill) {
     E value = as<E>(fill);
     RangeErrorCls->checkValidRange(start, end, this->length);
     for (;  < end; i++) {
@@ -415,7 +415,7 @@ void ListMixinCls<E>::fillRange(int end, E fill, int start) {
 }
 
 template<typename E>
-void ListMixinCls<E>::setRange(int end, Iterable<E> iterable, int skipCount, int start) {
+void ListMixinCls<E>::setRange(int start, int end, Iterable<E> iterable, int skipCount) {
     RangeErrorCls->checkValidRange(start, end, this->length);
     int length = end - start;
     if (length == 0)     {
@@ -446,7 +446,7 @@ void ListMixinCls<E>::setRange(int end, Iterable<E> iterable, int skipCount, int
 }
 
 template<typename E>
-void ListMixinCls<E>::replaceRange(int end, Iterable<E> newContents, int start) {
+void ListMixinCls<E>::replaceRange(int start, int end, Iterable<E> newContents) {
     RangeErrorCls->checkValidRange(start, end, this->length);
     if (start == this->length) {
         addAll(newContents);
@@ -503,7 +503,7 @@ int ListMixinCls<E>::indexOf(Object element, int start) {
 }
 
 template<typename E>
-int ListMixinCls<E>::indexWhere(int start, std::function<bool(E element)> test) {
+int ListMixinCls<E>::indexWhere(std::function<bool(E element)> test, int start) {
     if ( < 0)     {
         start = 0;
     }
@@ -532,7 +532,7 @@ int ListMixinCls<E>::lastIndexOf(Object element, int start) {
 }
 
 template<typename E>
-int ListMixinCls<E>::lastIndexWhere(int start, std::function<bool(E element)> test) {
+int ListMixinCls<E>::lastIndexWhere(std::function<bool(E element)> test, int start) {
     if (start == nullptr || start >= this->length)     {
         start = this->length - 1;
     }
@@ -548,7 +548,7 @@ int ListMixinCls<E>::lastIndexWhere(int start, std::function<bool(E element)> te
 }
 
 template<typename E>
-void ListMixinCls<E>::insert(E element, int index) {
+void ListMixinCls<E>::insert(int index, E element) {
     checkNotNullable(index, __s("index"));
     auto length = this->length;
     RangeErrorCls->checkValueInInterval(index, 0, length, __s("index"));
@@ -585,7 +585,7 @@ void ListMixinCls<E>::insertAll(int index, Iterable<E> iterable) {
         add(this[i > 0? i : 0]);
     }
     if (iterable->length() != insertionLength) {
-        this->length = insertionLength;
+        this->length -= insertionLength;
         throw make<ConcurrentModificationErrorCls>(iterable);
     }
     int oldCopyStart = index + insertionLength;
@@ -617,7 +617,7 @@ String ListMixinCls<E>::toString() {
 }
 
 template<typename E>
-void ListMixinCls<E>::_closeGap(int end, int start) {
+void ListMixinCls<E>::_closeGap(int start, int end) {
     int length = this->length;
     assert(0 <= start);
     assert( < end);
@@ -630,7 +630,7 @@ void ListMixinCls<E>::_closeGap(int end, int start) {
 }
 
 template<typename E>
-void ListMixinCls<E>::_filter(bool retainMatching, std::function<bool(E element)> test) {
+void ListMixinCls<E>::_filter(std::function<bool(E element)> test, bool retainMatching) {
     List<E> retained = makeList();
     int length = this->length;
     for (;  < length; i++) {

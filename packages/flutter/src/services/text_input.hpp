@@ -225,7 +225,7 @@ class TextSelectionDelegateCls : public ObjectCls {
 public:
 
     virtual TextEditingValue textEditingValue();
-    virtual void userUpdateTextEditingValue(SelectionChangedCause cause, TextEditingValue value);
+    virtual void userUpdateTextEditingValue(TextEditingValue value, SelectionChangedCause cause);
     virtual void hideToolbar(bool hideHandles);
     virtual void bringIntoView(TextPosition position);
     virtual bool cutEnabled();
@@ -254,7 +254,7 @@ public:
     virtual void performAction(TextInputAction action);
     virtual void performPrivateCommand(String action, Map<String, dynamic> data);
     virtual void updateFloatingCursor(RawFloatingCursorPoint point);
-    virtual void showAutocorrectionPromptRect(int end, int start);
+    virtual void showAutocorrectionPromptRect(int start, int end);
     virtual void connectionClosed();
     virtual void showToolbar();
 
@@ -364,7 +364,7 @@ TextInputAction _toTextInputAction(String action);
 
 FloatingCursorDragState _toTextCursorAction(String state);
 
-RawFloatingCursorPoint _toTextPoint(Map<String, dynamic> encoded, FloatingCursorDragState state);
+RawFloatingCursorPoint _toTextPoint(FloatingCursorDragState state, Map<String, dynamic> encoded);
 
 
 class TextInputCls : public ObjectCls {
@@ -408,7 +408,7 @@ private:
 
     virtual void  _();
 
-    virtual void _attach(TextInputConfiguration configuration, TextInputConnection connection);
+    virtual void _attach(TextInputConnection connection, TextInputConfiguration configuration);
 
     static bool _debugEnsureInputActionWorksOnPlatform(TextInputAction inputAction);
 

@@ -42,7 +42,7 @@ public:
 
     virtual void addOrDispatch(PointerEvent event);
 
-    virtual void sample(SamplingClock clock, Duration samplingOffset);
+    virtual void sample(Duration samplingOffset, SamplingClock clock);
 
     virtual void stop();
 
@@ -101,11 +101,11 @@ public:
 
     virtual void handlePointerEvent(PointerEvent event);
 
-    virtual void hitTest(Offset position, HitTestResult result);
+    virtual void hitTest(HitTestResult result, Offset position);
 
     virtual void dispatchEvent(PointerEvent event, HitTestResult hitTestResult);
 
-    virtual void handleEvent(HitTestEntry entry, PointerEvent event);
+    virtual void handleEvent(PointerEvent event, HitTestEntry entry);
 
     virtual void resetGestureBinding();
 

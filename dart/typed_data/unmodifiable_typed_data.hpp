@@ -12,35 +12,35 @@ public:
 
     virtual int lengthInBytes();
 
-    virtual Uint8List asUint8List(int length, int offsetInBytes);
+    virtual Uint8List asUint8List(int offsetInBytes, int length);
 
-    virtual Int8List asInt8List(int length, int offsetInBytes);
+    virtual Int8List asInt8List(int offsetInBytes, int length);
 
-    virtual Uint8ClampedList asUint8ClampedList(int length, int offsetInBytes);
+    virtual Uint8ClampedList asUint8ClampedList(int offsetInBytes, int length);
 
-    virtual Uint16List asUint16List(int length, int offsetInBytes);
+    virtual Uint16List asUint16List(int offsetInBytes, int length);
 
-    virtual Int16List asInt16List(int length, int offsetInBytes);
+    virtual Int16List asInt16List(int offsetInBytes, int length);
 
-    virtual Uint32List asUint32List(int length, int offsetInBytes);
+    virtual Uint32List asUint32List(int offsetInBytes, int length);
 
-    virtual Int32List asInt32List(int length, int offsetInBytes);
+    virtual Int32List asInt32List(int offsetInBytes, int length);
 
-    virtual Uint64List asUint64List(int length, int offsetInBytes);
+    virtual Uint64List asUint64List(int offsetInBytes, int length);
 
-    virtual Int64List asInt64List(int length, int offsetInBytes);
+    virtual Int64List asInt64List(int offsetInBytes, int length);
 
-    virtual Int32x4List asInt32x4List(int length, int offsetInBytes);
+    virtual Int32x4List asInt32x4List(int offsetInBytes, int length);
 
-    virtual Float32List asFloat32List(int length, int offsetInBytes);
+    virtual Float32List asFloat32List(int offsetInBytes, int length);
 
-    virtual Float64List asFloat64List(int length, int offsetInBytes);
+    virtual Float64List asFloat64List(int offsetInBytes, int length);
 
-    virtual Float32x4List asFloat32x4List(int length, int offsetInBytes);
+    virtual Float32x4List asFloat32x4List(int offsetInBytes, int length);
 
-    virtual Float64x2List asFloat64x2List(int length, int offsetInBytes);
+    virtual Float64x2List asFloat64x2List(int offsetInBytes, int length);
 
-    virtual ByteData asByteData(int length, int offsetInBytes);
+    virtual ByteData asByteData(int offsetInBytes, int length);
 
 private:
     ByteBuffer _data;
@@ -64,35 +64,35 @@ public:
 
     virtual int getInt16(int byteOffset, Endian endian);
 
-    virtual void setInt16(int byteOffset, Endian endian, int value);
+    virtual void setInt16(int byteOffset, int value, Endian endian);
 
     virtual int getUint16(int byteOffset, Endian endian);
 
-    virtual void setUint16(int byteOffset, Endian endian, int value);
+    virtual void setUint16(int byteOffset, int value, Endian endian);
 
     virtual int getInt32(int byteOffset, Endian endian);
 
-    virtual void setInt32(int byteOffset, Endian endian, int value);
+    virtual void setInt32(int byteOffset, int value, Endian endian);
 
     virtual int getUint32(int byteOffset, Endian endian);
 
-    virtual void setUint32(int byteOffset, Endian endian, int value);
+    virtual void setUint32(int byteOffset, int value, Endian endian);
 
     virtual int getInt64(int byteOffset, Endian endian);
 
-    virtual void setInt64(int byteOffset, Endian endian, int value);
+    virtual void setInt64(int byteOffset, int value, Endian endian);
 
     virtual int getUint64(int byteOffset, Endian endian);
 
-    virtual void setUint64(int byteOffset, Endian endian, int value);
+    virtual void setUint64(int byteOffset, int value, Endian endian);
 
     virtual double getFloat32(int byteOffset, Endian endian);
 
-    virtual void setFloat32(int byteOffset, Endian endian, double value);
+    virtual void setFloat32(int byteOffset, double value, Endian endian);
 
     virtual double getFloat64(int byteOffset, Endian endian);
 
-    virtual void setFloat64(int byteOffset, Endian endian, double value);
+    virtual void setFloat64(int byteOffset, double value, Endian endian);
 
     virtual int elementSizeInBytes();
 
@@ -127,7 +127,7 @@ public:
 
     virtual ByteBuffer buffer();
 
-    virtual L sublist(int end, int start);
+    virtual L sublist(int start, int end);
 
 private:
 

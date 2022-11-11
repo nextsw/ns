@@ -8,7 +8,7 @@
 class boolCls : public ObjectCls {
 public:
 
-    void  fromEnvironment(bool defaultValue, String name);
+    void  fromEnvironment(String name, bool defaultValue);
     void  hasEnvironment(String name);
     int hashCode();
     virtual bool operator&(bool other);

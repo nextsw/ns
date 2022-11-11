@@ -50,16 +50,16 @@ bool _StreamControllerCls<T>::isPaused() {
 }
 
 template<typename T>
-Future _StreamControllerCls<T>::addStream(bool cancelOnError, Stream<T> source) {
+Future _StreamControllerCls<T>::addStream(Stream<T> source, bool cancelOnError) {
     if (!_mayAddEvent())     {
         throw _badEventState();
     }
     if (_isCanceled())     {
         return _FutureCls->immediate(nullptr);
     }
-    _StreamControllerAddStreamState<T> addState = <T>make<_StreamControllerAddStreamStateCls>(this, _varData, source, cancelOnError or false);
+    _StreamControllerAddStreamState<T> addState = <T>make<_StreamControllerAddStreamStateCls>(this, _varData, source, cancelOnError | false);
     _varData = addState;
-    _state = _STATE_ADDSTREAM;
+    _state |= _STATE_ADDSTREAM;
     return addState->addStreamFuture;
 }
 
@@ -87,7 +87,7 @@ void _StreamControllerCls<T>::addError(Object error, StackTrace stackTrace) {
         error = replacement->error;
         stackTrace = replacement->stackTrace;
     } else {
-        stackTrace = AsyncErrorCls->defaultStackTrace(error);
+        stackTrace |= AsyncErrorCls->defaultStackTrace(error);
     }
     _addError(error, stackTrace);
 }
@@ -179,7 +179,7 @@ Future<void> _StreamControllerCls<T>::_ensureDoneFuture() {
 
 template<typename T>
 void _StreamControllerCls<T>::_closeUnchecked() {
-    _state = _STATE_CLOSED;
+    _state |= _STATE_CLOSED;
     if (hasListener()) {
         _sendDone();
     } else     {
@@ -216,18 +216,18 @@ void _StreamControllerCls<T>::_close() {
     assert(_isAddingStream());
     _StreamControllerAddStreamState<T> addState = as<dynamic>(_varData);
     _varData = addState->varData;
-    _state = ~_STATE_ADDSTREAM;
+    _state &= ~_STATE_ADDSTREAM;
     addState->complete();
 }
 
 template<typename T>
-StreamSubscription<T> _StreamControllerCls<T>::_subscribe(bool cancelOnError, std::function<void(T data)> onData, std::function<void()> onDone, std::function<void ()> onError) {
+StreamSubscription<T> _StreamControllerCls<T>::_subscribe(std::function<void(T data)> onData, std::function<void ()> onError, std::function<void()> onDone, bool cancelOnError) {
     if (!_isInitialState()) {
         throw make<StateErrorCls>(__s("Stream has already been listened to."));
     }
     _ControllerSubscription<T> subscription = <T>make<_ControllerSubscriptionCls>(this, onData, onError, onDone, cancelOnError);
     _PendingEvents<T> pendingEvents = _pendingEvents();
-    _state = _STATE_SUBSCRIBED;
+    _state |= _STATE_SUBSCRIBED;
     if (_isAddingStream()) {
         _StreamControllerAddStreamState<T> addState = as<dynamic>(_varData);
         addState->varData = subscription;
@@ -348,12 +348,12 @@ bool _ControllerStreamCls<T>::==(Object other) {
 }
 
 template<typename T>
-StreamSubscription<T> _ControllerStreamCls<T>::_createSubscription(bool cancelOnError, std::function<void(T data)> onData, std::function<void()> onDone, std::function<void ()> onError) {
+StreamSubscription<T> _ControllerStreamCls<T>::_createSubscription(std::function<void(T data)> onData, std::function<void ()> onError, std::function<void()> onDone, bool cancelOnError) {
     return _controller->_subscribe(onData, onError, onDone, cancelOnError);
 }
 
 template<typename T>
-_ControllerSubscriptionCls<T>::_ControllerSubscriptionCls(_StreamControllerLifecycle<T> _controller, bool cancelOnError, std::function<void(T data)> onData, std::function<void()> onDone, std::function<void ()> onError) : _BufferingStreamSubscription<T>(onData, onError, onDone, cancelOnError) {
+_ControllerSubscriptionCls<T>::_ControllerSubscriptionCls(_StreamControllerLifecycle<T> _controller, std::function<void(T data)> onData, std::function<void ()> onError, std::function<void()> onDone, bool cancelOnError) : _BufferingStreamSubscription<T>(onData, onError, onDone, cancelOnError) {
 }
 
 template<typename T>
@@ -432,7 +432,7 @@ void _AddStreamStateCls<T>::complete() {
 }
 
 template<typename T>
-_AddStreamStateCls<T>::_AddStreamStateCls(bool cancelOnError, _EventSink<T> controller, Stream<T> source) {
+_AddStreamStateCls<T>::_AddStreamStateCls(_EventSink<T> controller, Stream<T> source, bool cancelOnError) {
     {
         addStreamFuture = make<_FutureCls>();
         addSubscription = source->listen(controller->_addcancelOnError? makeErrorHandler(controller) : controller->_addError, controller->_close, cancelOnError);
@@ -440,7 +440,7 @@ _AddStreamStateCls<T>::_AddStreamStateCls(bool cancelOnError, _EventSink<T> cont
 }
 
 template<typename T>
-_StreamControllerAddStreamStateCls<T>::_StreamControllerAddStreamStateCls(bool cancelOnError, _StreamController<T> controller, Stream<T> source, auto varData) : _AddStreamState<T>(controller, source, cancelOnError) {
+_StreamControllerAddStreamStateCls<T>::_StreamControllerAddStreamStateCls(_StreamController<T> controller, auto varData, Stream<T> source, bool cancelOnError) : _AddStreamState<T>(controller, source, cancelOnError) {
     {
         if (controller->isPaused()) {
             addSubscription->pause();

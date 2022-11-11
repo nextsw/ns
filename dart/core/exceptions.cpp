@@ -48,9 +48,9 @@ String FormatExceptionCls::toString() {
 ;
             }        }
         if (lineNum > 1) {
-            report = __s(" (at line $lineNum, character ${offset - lineStart + 1})\n");
+            report += __s(" (at line $lineNum, character ${offset - lineStart + 1})\n");
         } else {
-            report = __s(" (at character ${offset + 1})\n");
+            report += __s(" (at character ${offset + 1})\n");
         }
         int lineEnd = as<StringCls>(source)->length();
         for (;  < as<StringCls>(source)->length(); i++) {
@@ -86,7 +86,7 @@ String FormatExceptionCls::toString() {
         return __s("$report$prefix$slice$postfix\n${" " * markOffset}^\n");
     } else {
         if (offset != nullptr) {
-            report = __s(" (at offset $offset)");
+            report += __s(" (at offset $offset)");
         }
         return report;
     }

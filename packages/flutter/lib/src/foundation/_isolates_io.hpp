@@ -12,7 +12,7 @@
 #include "isolates.hpp"
 
 template<typename Q, typename R>
- Future<R> compute(ComputeCallback<Q, R> callback, String debugLabel, Q message);
+ Future<R> compute(ComputeCallback<Q, R> callback, Q message, String debugLabel);
 
 
 template<typename Q, typename R>
@@ -33,7 +33,7 @@ public:
 
 private:
 
-     _IsolateConfigurationCls(ComputeCallback<Q, R> callback, String debugLabel, int flowId, Q message, SendPort resultPort);
+     _IsolateConfigurationCls(ComputeCallback<Q, R> callback, Q message, SendPort resultPort, String debugLabel, int flowId);
 };
 template<typename Q, typename R>
 using _IsolateConfiguration = std::shared_ptr<_IsolateConfigurationCls<Q, R>>;

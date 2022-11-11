@@ -85,7 +85,7 @@ public:
 
     virtual Offset withinRect(Rect rect);
 
-    virtual Rect inscribe(Rect rect, Size size);
+    virtual Rect inscribe(Size size, Rect rect);
 
     static Alignment lerp(Alignment a, Alignment b, double t);
 
@@ -191,7 +191,7 @@ private:
     double _y;
 
 
-     _MixedAlignmentCls(double _start, double _x, double _y);
+     _MixedAlignmentCls(double _x, double _start, double _y);
 };
 using _MixedAlignment = std::shared_ptr<_MixedAlignmentCls>;
 

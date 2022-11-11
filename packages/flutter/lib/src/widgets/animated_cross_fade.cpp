@@ -14,7 +14,7 @@ AnimatedCrossFadeCls::AnimatedCrossFadeCls(AlignmentGeometry alignment, CrossFad
     }
 }
 
-Widget AnimatedCrossFadeCls::defaultLayoutBuilder(Widget bottomChild, Key bottomChildKey, Widget topChild, Key topChildKey) {
+Widget AnimatedCrossFadeCls::defaultLayoutBuilder(Widget topChild, Key topChildKey, Widget bottomChild, Key bottomChildKey) {
     return make<StackCls>(ClipCls::none, makeList(ArrayItem, ArrayItem));
 }
 

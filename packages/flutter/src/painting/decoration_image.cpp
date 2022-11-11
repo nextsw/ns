@@ -33,7 +33,7 @@ String DecorationImageCls::toString() {
     return __s("${objectRuntimeType(this, 'DecorationImage')}(${properties.join(", ")})");
 }
 
-void DecorationImagePainterCls::paint(Canvas canvas, Path clipPath, ImageConfiguration configuration, Rect rect) {
+void DecorationImagePainterCls::paint(Canvas canvas, Rect rect, Path clipPath, ImageConfiguration configuration) {
     assert(canvas != nullptr);
     assert(rect != nullptr);
     assert(configuration != nullptr);
@@ -81,7 +81,7 @@ String DecorationImagePainterCls::toString() {
 
 void DecorationImagePainterCls::_(DecorationImage _details, VoidCallback _onChanged)
 
-void DecorationImagePainterCls::_handleImage(bool synchronousCall, ImageInfo value) {
+void DecorationImagePainterCls::_handleImage(ImageInfo value, bool synchronousCall) {
     if (_image == value) {
         return;
     }
@@ -111,7 +111,7 @@ void paintImage(Alignment alignment, Canvas canvas, Rect centerSlice, ColorFilte
     assert(repeat != nullptr);
     assert(flipHorizontally != nullptr);
     assert(isAntiAlias != nullptr);
-    assert(image->debugGetOpenHandleStackTraces()?->isNotEmpty or true, __s("Cannot paint an image that is disposed.\nThe caller of paintImage is expected to wait to dispose the image until after painting has completed."));
+    assert(image->debugGetOpenHandleStackTraces()?->isNotEmpty | true, __s("Cannot paint an image that is disposed.\nThe caller of paintImage is expected to wait to dispose the image until after painting has completed."));
     if (rect->isEmpty()) {
         return;
     }
@@ -123,14 +123,14 @@ void paintImage(Alignment alignment, Canvas canvas, Rect centerSlice, ColorFilte
         outputSize = as<Size>(outputSize - sliceBorder);
         inputSize = as<Size>(inputSize - sliceBorder * scale);
     }
-    fit = centerSlice == nullptr? BoxFitCls::scaleDown : BoxFitCls::fill;
+    fit |= centerSlice == nullptr? BoxFitCls::scaleDown : BoxFitCls::fill;
     assert(centerSlice == nullptr || (fit != BoxFitCls::none && fit != BoxFitCls::cover));
     FittedSizes fittedSizes = applyBoxFit(fit, inputSize / scale, outputSize);
     Size sourceSize = fittedSizes->source * scale;
     Size destinationSize = fittedSizes->destination;
     if (centerSlice != nullptr) {
-        outputSize = sliceBorder!;
-        destinationSize = sliceBorder;
+        outputSize += sliceBorder!;
+        destinationSize += sliceBorder;
         assert(sourceSize == inputSize, __s("centerSlice was used with a BoxFit that does not guarantee that the image is fully visible."));
     }
     if (repeat != ImageRepeatCls::noRepeat && destinationSize == outputSize) {
@@ -151,7 +151,7 @@ void paintImage(Alignment alignment, Canvas canvas, Rect centerSlice, ColorFilte
     Rect destinationRect = destinationPosition & destinationSize;
     bool invertedCanvas = false;
     if (!kReleaseMode) {
-        ImageSizeInfo sizeInfo = make<ImageSizeInfoCls>(debugImageLabel or __s("<Unknown Image(${image.width}×${image.height})>"), make<SizeCls>(image->width->toDouble(), image->height->toDouble()), outputSize * PaintingBindingCls::instance->window->devicePixelRatio);
+        ImageSizeInfo sizeInfo = make<ImageSizeInfoCls>(debugImageLabel | __s("<Unknown Image(${image.width}×${image.height})>"), make<SizeCls>(image->width->toDouble(), image->height->toDouble()), outputSize * PaintingBindingCls::instance->window->devicePixelRatio);
         assert([=] () {
             if (debugInvertOversizedImages && sizeInfo->decodedSizeInBytes() > sizeInfo->displaySizeInBytes() + debugImageOverheadAllowance) {
                 int overheadInKilobytes = (sizeInfo->decodedSizeInBytes() - sizeInfo->displaySizeInBytes()) ~/ 1024;
@@ -223,7 +223,7 @@ void paintImage(Alignment alignment, Canvas canvas, Rect centerSlice, ColorFilte
     }
 }
 
-Iterable<Rect> _generateImageTileRects(Rect fundamentalRect, Rect outputRect, ImageRepeat repeat) {
+Iterable<Rect> _generateImageTileRects(Rect outputRect, Rect fundamentalRect, ImageRepeat repeat) {
     int startX = 0;
     int startY = 0;
     int stopX = 0;

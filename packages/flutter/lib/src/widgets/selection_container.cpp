@@ -77,7 +77,7 @@ void _SelectionContainerStateCls::removeListener(VoidCallback listener) {
     _listeners->remove(listener);
 }
 
-void _SelectionContainerStateCls::pushHandleLayers(LayerLink endHandle, LayerLink startHandle) {
+void _SelectionContainerStateCls::pushHandleLayers(LayerLink startHandle, LayerLink endHandle) {
     assert(!widget->_disabled);
     widget->delegate!->pushHandleLayers(startHandle, endHandle);
 }

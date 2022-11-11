@@ -34,7 +34,7 @@ private:
     String _name;
 
 
-    virtual void  _(String _name, bool escapeApos, bool escapeLtGt, bool escapeQuot, bool escapeSlash);
+    virtual void  _(String _name, bool escapeLtGt, bool escapeQuot, bool escapeApos, bool escapeSlash);
 };
 using HtmlEscapeMode = std::shared_ptr<HtmlEscapeModeCls>;
 
@@ -50,7 +50,7 @@ public:
 
 private:
 
-    virtual String _convert(int end, int start, String text);
+    virtual String _convert(String text, int start, int end);
 
 };
 using HtmlEscape = std::shared_ptr<HtmlEscapeCls>;
@@ -58,7 +58,7 @@ using HtmlEscape = std::shared_ptr<HtmlEscapeCls>;
 class _HtmlEscapeSinkCls : public StringConversionSinkBaseCls {
 public:
 
-    virtual void addSlice(String chunk, int end, bool isLast, int start);
+    virtual void addSlice(String chunk, int start, int end, bool isLast);
 
     virtual void close();
 

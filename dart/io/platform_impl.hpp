@@ -70,7 +70,7 @@ public:
 
     virtual void operator[]=(String key, V value);
 
-    virtual V putIfAbsent(std::function<V()> ifAbsent, String key);
+    virtual V putIfAbsent(String key, std::function<V()> ifAbsent);
 
     virtual void addAll(Map<String, V> other);
 
@@ -95,7 +95,7 @@ public:
     template<typename K2, typename V2>
  virtual Map<K2, V2> map(std::function<MapEntry<K2, V2>(String key, V value)> transform);
 
-    virtual V update(std::function<V()> ifAbsent, String key, std::function<V(V value)> update);
+    virtual V update(String key, std::function<V(V value)> update, std::function<V()> ifAbsent);
 
     virtual void updateAll(std::function<V(String key, V value)> update);
 

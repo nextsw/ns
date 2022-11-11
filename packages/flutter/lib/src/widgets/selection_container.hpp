@@ -44,7 +44,7 @@ public:
 
     virtual void removeListener(VoidCallback listener);
 
-    virtual void pushHandleLayers(LayerLink endHandle, LayerLink startHandle);
+    virtual void pushHandleLayers(LayerLink startHandle, LayerLink endHandle);
 
     virtual SelectedContent getSelectedContent();
 

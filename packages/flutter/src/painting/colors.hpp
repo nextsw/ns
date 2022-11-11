@@ -7,9 +7,9 @@
 #include <dart/ui/ui.hpp>
 #include <packages/flutter/lib/foundation.hpp>
 
-double _getHue(double blue, double delta, double green, double max, double red);
+double _getHue(double red, double green, double blue, double max, double delta);
 
-Color _colorFromHue(double alpha, double chroma, double hue, double match, double secondary);
+Color _colorFromHue(double alpha, double hue, double chroma, double secondary, double match);
 
 
 class HSVColorCls : public ObjectCls {
@@ -63,7 +63,7 @@ public:
     double lightness;
 
 
-    virtual void  fromAHSL(double alpha, double hue, double lightness, double saturation);
+    virtual void  fromAHSL(double alpha, double hue, double saturation, double lightness);
 
     virtual void  fromColor(Color color);
 
@@ -96,7 +96,7 @@ template<typename T>
 class ColorSwatchCls : public ColorCls {
 public:
 
-     ColorSwatchCls(Map<T, Color> _swatch, Unknown primary);
+     ColorSwatchCls(Unknown primary, Map<T, Color> _swatch);
     virtual Color operator[](T index);
 
     virtual bool operator==(Object other);
@@ -119,7 +119,7 @@ using ColorSwatch = std::shared_ptr<ColorSwatchCls<T>>;
 class ColorPropertyCls : public DiagnosticsPropertyCls<Color> {
 public:
 
-     ColorPropertyCls(Unknown defaultValue, Unknown level, String name, Unknown showName, Unknown style, Unknown value);
+     ColorPropertyCls(String name, Unknown value, Unknown defaultValue, Unknown level, Unknown showName, Unknown style);
 
     virtual Map<String, Object> toJsonMap(DiagnosticsSerializationDelegate delegate);
 

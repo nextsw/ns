@@ -31,7 +31,7 @@ ContainerCls::ContainerCls(AlignmentGeometry alignment, Widget child, Clip clipB
         assert(clipBehavior != nullptr);
         assert(decoration != nullptr || clipBehavior == ClipCls::none);
         assert(color == nullptr || decoration == nullptr, __s("Cannot provide both a color and a decoration\nTo provide both, use "decoration: BoxDecoration(color: color)"."));
-        constraints = (width != nullptr || height != nullptr)? constraints?->tighten(width, height) or BoxConstraintsCls->tightFor(width, height) : constraints;
+        constraints = (width != nullptr || height != nullptr)? constraints?->tighten(width, height) | BoxConstraintsCls->tightFor(width, height) : constraints;
     }
 }
 
@@ -111,6 +111,6 @@ bool _DecorationClipperCls::shouldReclip(_DecorationClipper oldClipper) {
 _DecorationClipperCls::_DecorationClipperCls(Decoration decoration, TextDirection textDirection) {
     {
         assert(decoration != nullptr);
-        textDirection = textDirection or TextDirectionCls::ltr;
+        textDirection = textDirection | TextDirectionCls::ltr;
     }
 }

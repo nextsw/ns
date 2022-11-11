@@ -39,7 +39,7 @@ class FinalizerCls : public ObjectCls {
 public:
 
      FinalizerCls(std::function<void(T )> callback);
-    virtual void attach(Object detach, T finalizationToken, Object value);
+    virtual void attach(Object value, T finalizationToken, Object detach);
     virtual void detach(Object detach);
 private:
 

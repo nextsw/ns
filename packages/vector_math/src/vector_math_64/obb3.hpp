@@ -22,7 +22,7 @@ public:
 
     virtual void  copy(Obb3 other);
 
-    virtual void  centerExtentsAxes(Vector3 axis0, Vector3 axis1, Vector3 axis2, Vector3 center, Vector3 halfExtents);
+    virtual void  centerExtentsAxes(Vector3 center, Vector3 halfExtents, Vector3 axis0, Vector3 axis1, Vector3 axis2);
 
     virtual void copyFrom(Obb3 other);
 
@@ -36,11 +36,11 @@ public:
 
     virtual void transform(Matrix4 t);
 
-    virtual void copyCorner(Vector3 corner, int cornerIndex);
+    virtual void copyCorner(int cornerIndex, Vector3 corner);
 
     virtual void closestPointTo(Vector3 p, Vector3 q);
 
-    virtual bool intersectsWithObb3(double epsilon, Obb3 other);
+    virtual bool intersectsWithObb3(Obb3 other, double epsilon);
 
     virtual bool intersectsWithTriangle(Triangle other, IntersectionResult result);
 

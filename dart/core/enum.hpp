@@ -30,7 +30,7 @@ private:
     String _name;
 
 
-     _EnumCls(String _name, int index);
+     _EnumCls(int index, String _name);
 };
 using _Enum = std::shared_ptr<_EnumCls>;
 

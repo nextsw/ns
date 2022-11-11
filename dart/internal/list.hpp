@@ -31,9 +31,9 @@ public:
 
     virtual E removeLast();
 
-    virtual void removeRange(int end, int start);
+    virtual void removeRange(int start, int end);
 
-    virtual void replaceRange(int end, Iterable<E> iterable, int start);
+    virtual void replaceRange(int start, int end, Iterable<E> iterable);
 
 private:
 
@@ -57,7 +57,7 @@ public:
 
     virtual void add(E value);
 
-    virtual void insert(E element, int index);
+    virtual void insert(int index, E element);
 
     virtual void insertAll(int at, Iterable<E> iterable);
 
@@ -79,13 +79,13 @@ public:
 
     virtual E removeLast();
 
-    virtual void setRange(int end, Iterable<E> iterable, int skipCount, int start);
+    virtual void setRange(int start, int end, Iterable<E> iterable, int skipCount);
 
-    virtual void removeRange(int end, int start);
+    virtual void removeRange(int start, int end);
 
-    virtual void replaceRange(int end, Iterable<E> iterable, int start);
+    virtual void replaceRange(int start, int end, Iterable<E> iterable);
 
-    virtual void fillRange(int end, E fillValue, int start);
+    virtual void fillRange(int start, int end, E fillValue);
 
 private:
 

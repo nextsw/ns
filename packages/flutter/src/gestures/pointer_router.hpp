@@ -32,7 +32,7 @@ private:
 
     virtual void _dispatch(PointerEvent event, PointerRoute route, Matrix4 transform);
 
-    virtual void _dispatchEventToRoutes(Map<PointerRoute, Matrix4> copiedRoutes, PointerEvent event, Map<PointerRoute, Matrix4> referenceRoutes);
+    virtual void _dispatchEventToRoutes(PointerEvent event, Map<PointerRoute, Matrix4> referenceRoutes, Map<PointerRoute, Matrix4> copiedRoutes);
 
 };
 using PointerRouter = std::shared_ptr<PointerRouterCls>;

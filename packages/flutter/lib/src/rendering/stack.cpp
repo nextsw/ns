@@ -1,11 +1,11 @@
 #include "stack.hpp"
-void RelativeRectCls::fromLTRB(double bottom, double left, double right, double top)
+void RelativeRectCls::fromLTRB(double left, double top, double right, double bottom)
 
-void RelativeRectCls::fromSize(Size container, Rect rect) {
+void RelativeRectCls::fromSize(Rect rect, Size container) {
     return RelativeRectCls->fromLTRB(rect->left, rect->top, container->width() - rect->right, container->height() - rect->bottom);
 }
 
-void RelativeRectCls::fromRect(Rect container, Rect rect) {
+void RelativeRectCls::fromRect(Rect rect, Rect container) {
     return RelativeRectCls->fromLTRB(rect->left - container->left, rect->top - container->top, container->right - rect->right, container->bottom - rect->bottom);
 }
 
@@ -211,7 +211,7 @@ double RenderStackCls::computeDistanceToActualBaseline(TextBaseline baseline) {
     return defaultComputeDistanceToHighestActualBaseline(baseline);
 }
 
-bool RenderStackCls::layoutPositionedChild(Alignment alignment, RenderBox child, StackParentData childParentData, Size size) {
+bool RenderStackCls::layoutPositionedChild(RenderBox child, StackParentData childParentData, Size size, Alignment alignment) {
     assert(childParentData->isPositioned());
     assert(child->parentData == childParentData);
     bool hasVisualOverflow = false;
@@ -283,7 +283,7 @@ void RenderStackCls::performLayout() {
     }
 }
 
-bool RenderStackCls::hitTestChildren(Offset position, BoxHitTestResult result) {
+bool RenderStackCls::hitTestChildren(BoxHitTestResult result, Offset position) {
     return defaultHitTestChildren(resultposition);
 }
 
@@ -388,7 +388,7 @@ void RenderIndexedStackCls::index(int value) {
     }
 }
 
-bool RenderIndexedStackCls::hitTestChildren(Offset position, BoxHitTestResult result) {
+bool RenderIndexedStackCls::hitTestChildren(BoxHitTestResult result, Offset position) {
     if (firstChild == nullptr || index() == nullptr) {
         return false;
     }
@@ -422,7 +422,7 @@ List<DiagnosticsNode> RenderIndexedStackCls::debugDescribeChildren() {
     while (child != nullptr) {
         children->add(child->toDiagnosticsNode(__s("child ${i + 1}"), i != index()!? DiagnosticsTreeStyleCls::offstage : nullptr));
         child = (as<StackParentData>(child->parentData!))->nextSibling;
-        i = 1;
+        i += 1;
     }
     return children;
 }
@@ -434,7 +434,7 @@ RenderBox RenderIndexedStackCls::_childAtIndex() {
     while (child != nullptr &&  < index()!) {
         StackParentData childParentData = as<StackParentData>(child->parentData!);
         child = childParentData->nextSibling;
-        i = 1;
+        i += 1;
     }
     assert(i == index());
     assert(child != nullptr);

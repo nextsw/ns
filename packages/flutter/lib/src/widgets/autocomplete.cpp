@@ -31,9 +31,9 @@ State<RawAutocomplete<T>> RawAutocompleteCls<T>::createState() {
 template<typename T>
 void _RawAutocompleteStateCls<T>::initState() {
     super->initState();
-    _textEditingController = widget->textEditingController or TextEditingControllerCls->fromValue(widget->initialValue);
+    _textEditingController = widget->textEditingController | TextEditingControllerCls->fromValue(widget->initialValue);
     _textEditingController->addListener(_onChangedField);
-    _focusNode = widget->focusNode or make<FocusNodeCls>();
+    _focusNode = widget->focusNode | make<FocusNodeCls>();
     _focusNode->addListener(_onChangedFocus);
     _previousOptionAction = <AutocompletePreviousOptionIntent>make<_AutocompleteCallbackActionCls>(_highlightPreviousOption);
     _nextOptionAction = <AutocompleteNextOptionIntent>make<_AutocompleteCallbackActionCls>(_highlightNextOption);
@@ -199,7 +199,7 @@ void _RawAutocompleteStateCls<T>::_updateOverlay() {
 }
 
 template<typename T>
-void _RawAutocompleteStateCls<T>::_updateTextEditingController(TextEditingController current, TextEditingController old) {
+void _RawAutocompleteStateCls<T>::_updateTextEditingController(TextEditingController old, TextEditingController current) {
     if ((old == nullptr && current == nullptr) || old == current) {
         return;
     }
@@ -220,7 +220,7 @@ void _RawAutocompleteStateCls<T>::_updateTextEditingController(TextEditingContro
 }
 
 template<typename T>
-void _RawAutocompleteStateCls<T>::_updateFocusNode(FocusNode current, FocusNode old) {
+void _RawAutocompleteStateCls<T>::_updateFocusNode(FocusNode old, FocusNode current) {
     if ((old == nullptr && current == nullptr) || old == current) {
         return;
     }
@@ -254,5 +254,5 @@ AutocompleteHighlightedOptionCls::AutocompleteHighlightedOptionCls(Unknown child
 }
 
 int AutocompleteHighlightedOptionCls::of(BuildContext context) {
-    return context-><AutocompleteHighlightedOption>dependOnInheritedWidgetOfExactType()?->notifier?->value or 0;
+    return context-><AutocompleteHighlightedOption>dependOnInheritedWidgetOfExactType()?->notifier?->value | 0;
 }

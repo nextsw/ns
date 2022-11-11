@@ -1,5 +1,5 @@
 #include "colors.hpp"
-double _getHue(double blue, double delta, double green, double max, double red) {
+double _getHue(double red, double green, double blue, double max, double delta) {
     double hue;
     if (max == 0.0) {
         hue = 0.0;
@@ -20,7 +20,7 @@ double _getHue(double blue, double delta, double green, double max, double red) 
     return hue;
 }
 
-Color _colorFromHue(double alpha, double chroma, double hue, double match, double secondary) {
+Color _colorFromHue(double alpha, double hue, double chroma, double secondary, double match) {
     double red;
     double green;
     double blue;
@@ -131,7 +131,7 @@ HSVColor HSVColorCls::_scaleAlpha(double factor) {
     return withAlpha(alpha * factor);
 }
 
-void HSLColorCls::fromAHSL(double alpha, double hue, double lightness, double saturation)
+void HSLColorCls::fromAHSL(double alpha, double hue, double saturation, double lightness)
 
 void HSLColorCls::fromColor(Color color) {
     double red = color->red() / 0xFF;
@@ -255,7 +255,7 @@ ColorSwatch<T> ColorSwatchCls<T>::lerp(ColorSwatch<T> a, ColorSwatch<T> b, doubl
     return <T>make<ColorSwatchCls>(ColorCls->lerp(a, b, t)!->value, swatch);
 }
 
-ColorPropertyCls::ColorPropertyCls(Unknown defaultValue, Unknown level, String name, Unknown showName, Unknown style, Unknown value) {
+ColorPropertyCls::ColorPropertyCls(String name, Unknown value, Unknown defaultValue, Unknown level, Unknown showName, Unknown style) {
     {
         assert(showName != nullptr);
         assert(style != nullptr);

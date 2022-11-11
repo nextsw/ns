@@ -140,11 +140,11 @@ bool FileSystemEntityCls::isWatchSupported() {
     return overrides->fsWatchIsSupported();
 }
 
-Future<FileSystemEntityType> FileSystemEntityCls::type(bool followLinks, String path) {
+Future<FileSystemEntityType> FileSystemEntityCls::type(String path, bool followLinks) {
     return _getType(_toUtf8Array(path), followLinks);
 }
 
-FileSystemEntityType FileSystemEntityCls::typeSync(bool followLinks, String path) {
+FileSystemEntityType FileSystemEntityCls::typeSync(String path, bool followLinks) {
     return _getTypeSync(_toUtf8Array(path), followLinks);
 }
 
@@ -327,13 +327,13 @@ bool FileSystemEntityCls::_isLinkRawSync(rawPath ) {
     return (_getTypeSync(rawPath, false) == FileSystemEntityTypeCls::link);
 }
 
-FileSystemEntityType FileSystemEntityCls::_getTypeSyncHelper(bool followLinks, Uint8List rawPath) {
+FileSystemEntityType FileSystemEntityCls::_getTypeSyncHelper(Uint8List rawPath, bool followLinks) {
     auto result = _getTypeNative(_NamespaceCls::_namespace, rawPath, followLinks);
     _throwIfError(result, __s("Error getting type of FileSystemEntity"));
     return FileSystemEntityTypeCls->_lookup(result);
 }
 
-FileSystemEntityType FileSystemEntityCls::_getTypeSync(bool followLinks, Uint8List rawPath) {
+FileSystemEntityType FileSystemEntityCls::_getTypeSync(Uint8List rawPath, bool followLinks) {
     IOOverrides overrides = IOOverridesCls::current;
     if (overrides == nullptr) {
         return _getTypeSyncHelper(rawPath, followLinks);
@@ -341,7 +341,7 @@ FileSystemEntityType FileSystemEntityCls::_getTypeSync(bool followLinks, Uint8Li
     return overrides->fseGetTypeSync(_toStringFromUtf8Array(rawPath), followLinks);
 }
 
-Future<FileSystemEntityType> FileSystemEntityCls::_getTypeRequest(bool followLinks, Uint8List rawPath) {
+Future<FileSystemEntityType> FileSystemEntityCls::_getTypeRequest(Uint8List rawPath, bool followLinks) {
     return _FileCls->_dispatchWithNamespace(_IOServiceCls::fileType, makeList(ArrayItem, ArrayItem, ArrayItem))->then([=] (Unknown  response) {
         if (_isErrorResponse(response)) {
             throw _exceptionFromResponse(response, __s("Error getting type"), utf8->decode(rawPathtrue));
@@ -350,7 +350,7 @@ Future<FileSystemEntityType> FileSystemEntityCls::_getTypeRequest(bool followLin
     });
 }
 
-Future<FileSystemEntityType> FileSystemEntityCls::_getType(bool followLinks, Uint8List rawPath) {
+Future<FileSystemEntityType> FileSystemEntityCls::_getType(Uint8List rawPath, bool followLinks) {
     IOOverrides overrides = IOOverridesCls::current;
     if (overrides == nullptr) {
         return _getTypeRequest(rawPath, followLinks);
@@ -358,7 +358,7 @@ Future<FileSystemEntityType> FileSystemEntityCls::_getType(bool followLinks, Uin
     return overrides->fseGetType(_toStringFromUtf8Array(rawPath), followLinks);
 }
 
-void FileSystemEntityCls::_throwIfError(String msg, String path, Object result) {
+void FileSystemEntityCls::_throwIfError(Object result, String msg, String path) {
     if (is<OSError>(result)) {
         throw make<FileSystemExceptionCls>(msg, path, as<OSErrorCls>(result));
     } else     {

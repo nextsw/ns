@@ -14,11 +14,11 @@ int high(int lead, int tail);
 
 auto  _stateMachine;
 
-int move(int inputCategory, int state);
+int move(int state, int inputCategory);
 
 auto  _backStateMachine;
 
-int moveBack(int inputCategory, int state);
+int moveBack(int state, int inputCategory);
 
 
 

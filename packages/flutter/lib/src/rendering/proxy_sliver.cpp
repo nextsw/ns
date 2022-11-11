@@ -23,7 +23,7 @@ void RenderProxySliverCls::paint(PaintingContext context, Offset offset) {
     }
 }
 
-bool RenderProxySliverCls::hitTestChildren(double crossAxisPosition, double mainAxisPosition, SliverHitTestResult result) {
+bool RenderProxySliverCls::hitTestChildren(SliverHitTestResult result, double crossAxisPosition, double mainAxisPosition) {
     return child != nullptr && child!->geometry!->hitTestExtent > 0 && child!->hitTest(resultmainAxisPosition, crossAxisPosition);
 }
 
@@ -159,7 +159,7 @@ void RenderSliverIgnorePointerCls::ignoringSemantics(bool value) {
     }
 }
 
-bool RenderSliverIgnorePointerCls::hitTest(double crossAxisPosition, double mainAxisPosition, SliverHitTestResult result) {
+bool RenderSliverIgnorePointerCls::hitTest(SliverHitTestResult result, double crossAxisPosition, double mainAxisPosition) {
     return !ignoring() && super->hitTest(resultmainAxisPosition, crossAxisPosition);
 }
 
@@ -176,7 +176,7 @@ void RenderSliverIgnorePointerCls::debugFillProperties(DiagnosticPropertiesBuild
 }
 
 bool RenderSliverIgnorePointerCls::_effectiveIgnoringSemantics() {
-    return ignoringSemantics() or ignoring();
+    return ignoringSemantics() | ignoring();
 }
 
 RenderSliverOffstageCls::RenderSliverOffstageCls(bool offstage, RenderSliver sliver) {
@@ -212,11 +212,11 @@ void RenderSliverOffstageCls::performLayout() {
     }
 }
 
-bool RenderSliverOffstageCls::hitTest(double crossAxisPosition, double mainAxisPosition, SliverHitTestResult result) {
+bool RenderSliverOffstageCls::hitTest(SliverHitTestResult result, double crossAxisPosition, double mainAxisPosition) {
     return !offstage() && super->hitTest(resultmainAxisPosition, crossAxisPosition);
 }
 
-bool RenderSliverOffstageCls::hitTestChildren(double crossAxisPosition, double mainAxisPosition, SliverHitTestResult result) {
+bool RenderSliverOffstageCls::hitTestChildren(SliverHitTestResult result, double crossAxisPosition, double mainAxisPosition) {
     return !offstage() && child != nullptr && child!->geometry!->hitTestExtent > 0 && child!->hitTest(resultmainAxisPosition, crossAxisPosition);
 }
 

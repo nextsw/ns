@@ -28,10 +28,10 @@ public:
 
     virtual E first();
 
-    virtual E firstWhere(std::function<E()> orElse, std::function<bool(E )> test);
+    virtual E firstWhere(std::function<bool(E )> test, std::function<E()> orElse);
 
     template<typename T>
- virtual T fold(std::function<T(E element, T previousValue)> combine, T initialValue);
+ virtual T fold(T initialValue, std::function<T(T previousValue, E element)> combine);
 
     virtual Iterable<E> followedBy(Iterable<E> other);
 
@@ -47,21 +47,21 @@ public:
 
     virtual E last();
 
-    virtual E lastWhere(std::function<E()> orElse, std::function<bool(E )> test);
+    virtual E lastWhere(std::function<bool(E )> test, std::function<E()> orElse);
 
     virtual int length();
 
     template<typename T>
  virtual Iterable<T> map(std::function<T(E )> f);
 
-    virtual E reduce(std::function<E(E element, E value)> combine);
+    virtual E reduce(std::function<E(E value, E element)> combine);
 
     template<typename T>
  virtual Iterable<T> retype();
 
     virtual E single();
 
-    virtual E singleWhere(std::function<E()> orElse, std::function<bool(E )> test);
+    virtual E singleWhere(std::function<bool(E )> test, std::function<E()> orElse);
 
     virtual Iterable<E> skip(int n);
 
@@ -133,17 +133,17 @@ public:
 
     virtual void clear();
 
-    virtual void fillRange(int end, E fillValue, int start);
+    virtual void fillRange(int start, int end, E fillValue);
 
     virtual void  first(E value);
 
-    virtual Iterable<E> getRange(int end, int start);
+    virtual Iterable<E> getRange(int start, int end);
 
     virtual int indexOf(E element, int start);
 
-    virtual int indexWhere(int start, std::function<bool(E )> test);
+    virtual int indexWhere(std::function<bool(E )> test, int start);
 
-    virtual void insert(E element, int index);
+    virtual void insert(int index, E element);
 
     virtual void insertAll(int index, Iterable<E> iterable);
 
@@ -151,7 +151,7 @@ public:
 
     virtual int lastIndexOf(E element, int start);
 
-    virtual int lastIndexWhere(int start, std::function<bool(E )> test);
+    virtual int lastIndexWhere(std::function<bool(E )> test, int start);
 
     virtual void  length(int newLength);
 
@@ -161,11 +161,11 @@ public:
 
     virtual E removeLast();
 
-    virtual void removeRange(int end, int start);
+    virtual void removeRange(int start, int end);
 
     virtual void removeWhere(std::function<bool(E )> test);
 
-    virtual void replaceRange(int end, Iterable<E> iterable, int start);
+    virtual void replaceRange(int start, int end, Iterable<E> iterable);
 
     virtual void retainWhere(std::function<bool(E )> test);
 
@@ -176,13 +176,13 @@ public:
 
     virtual void setAll(int index, Iterable<E> iterable);
 
-    virtual void setRange(int end, Iterable<E> iterable, int skipCount, int start);
+    virtual void setRange(int start, int end, Iterable<E> iterable, int skipCount);
 
     virtual void shuffle(Random random);
 
     virtual void sort(std::function<int(E , E )> compare);
 
-    virtual List<E> sublist(int end, int start);
+    virtual List<E> sublist(int start, int end);
 
 private:
     List<E> _base;
@@ -327,7 +327,7 @@ public:
     template<typename K2, typename V2>
  virtual Map<K2, V2> map(std::function<MapEntry<K2, V2>(K , V )> transform);
 
-    virtual V putIfAbsent(std::function<V()> ifAbsent, K key);
+    virtual V putIfAbsent(K key, std::function<V()> ifAbsent);
 
     virtual V remove(Object key);
 
@@ -340,7 +340,7 @@ public:
 
     virtual String toString();
 
-    virtual V update(std::function<V()> ifAbsent, K key, std::function<V(V )> update);
+    virtual V update(K key, std::function<V(V )> update, std::function<V()> ifAbsent);
 
     virtual void updateAll(std::function<V(K , V )> update);
 

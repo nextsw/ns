@@ -21,7 +21,7 @@ public:
     virtual void setClientAuthorities(String file, String password);
     virtual void setClientAuthoritiesBytes(List<int> authCertBytes, String password);
     static bool alpnSupported();
-    virtual void setAlpnProtocols(bool isServer, List<String> protocols);
+    virtual void setAlpnProtocols(List<String> protocols, bool isServer);
 private:
 
     static Uint8List _protocolsToLengthEncoding(List<String> protocols);

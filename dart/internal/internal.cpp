@@ -27,7 +27,7 @@ int hexDigitValue(int charValue) {
     return -1;
 }
 
-int parseHexByte(int index, String source) {
+int parseHexByte(String source, int index) {
     assert(index + 2 <= source->length());
     int digit1 = hexDigitValue(source->codeUnitAt(index));
     int digit2 = hexDigitValue(source->codeUnitAt(index + 1));
@@ -46,14 +46,14 @@ int SystemHashCls::finish(int hash) {
     return 0x1fffffff & (hash + ((0x00003fff & hash) << 15));
 }
 
-int SystemHashCls::hash2(int seed, int v1, int v2) {
+int SystemHashCls::hash2(int v1, int v2, int seed) {
     int hash = seed;
     hash = combine(hash, v1);
     hash = combine(hash, v2);
     return finish(hash);
 }
 
-int SystemHashCls::hash3(int seed, int v1, int v2, int v3) {
+int SystemHashCls::hash3(int v1, int v2, int v3, int seed) {
     int hash = seed;
     hash = combine(hash, v1);
     hash = combine(hash, v2);
@@ -61,7 +61,7 @@ int SystemHashCls::hash3(int seed, int v1, int v2, int v3) {
     return finish(hash);
 }
 
-int SystemHashCls::hash4(int seed, int v1, int v2, int v3, int v4) {
+int SystemHashCls::hash4(int v1, int v2, int v3, int v4, int seed) {
     int hash = seed;
     hash = combine(hash, v1);
     hash = combine(hash, v2);
@@ -70,7 +70,7 @@ int SystemHashCls::hash4(int seed, int v1, int v2, int v3, int v4) {
     return finish(hash);
 }
 
-int SystemHashCls::hash5(int seed, int v1, int v2, int v3, int v4, int v5) {
+int SystemHashCls::hash5(int v1, int v2, int v3, int v4, int v5, int seed) {
     int hash = seed;
     hash = combine(hash, v1);
     hash = combine(hash, v2);
@@ -80,7 +80,7 @@ int SystemHashCls::hash5(int seed, int v1, int v2, int v3, int v4, int v5) {
     return finish(hash);
 }
 
-int SystemHashCls::hash6(int seed, int v1, int v2, int v3, int v4, int v5, int v6) {
+int SystemHashCls::hash6(int v1, int v2, int v3, int v4, int v5, int v6, int seed) {
     int hash = seed;
     hash = combine(hash, v1);
     hash = combine(hash, v2);
@@ -91,7 +91,7 @@ int SystemHashCls::hash6(int seed, int v1, int v2, int v3, int v4, int v5, int v
     return finish(hash);
 }
 
-int SystemHashCls::hash7(int seed, int v1, int v2, int v3, int v4, int v5, int v6, int v7) {
+int SystemHashCls::hash7(int v1, int v2, int v3, int v4, int v5, int v6, int v7, int seed) {
     int hash = seed;
     hash = combine(hash, v1);
     hash = combine(hash, v2);
@@ -103,7 +103,7 @@ int SystemHashCls::hash7(int seed, int v1, int v2, int v3, int v4, int v5, int v
     return finish(hash);
 }
 
-int SystemHashCls::hash8(int seed, int v1, int v2, int v3, int v4, int v5, int v6, int v7, int v8) {
+int SystemHashCls::hash8(int v1, int v2, int v3, int v4, int v5, int v6, int v7, int v8, int seed) {
     int hash = seed;
     hash = combine(hash, v1);
     hash = combine(hash, v2);
@@ -116,7 +116,7 @@ int SystemHashCls::hash8(int seed, int v1, int v2, int v3, int v4, int v5, int v
     return finish(hash);
 }
 
-int SystemHashCls::hash9(int seed, int v1, int v2, int v3, int v4, int v5, int v6, int v7, int v8, int v9) {
+int SystemHashCls::hash9(int v1, int v2, int v3, int v4, int v5, int v6, int v7, int v8, int v9, int seed) {
     int hash = seed;
     hash = combine(hash, v1);
     hash = combine(hash, v2);
@@ -130,7 +130,7 @@ int SystemHashCls::hash9(int seed, int v1, int v2, int v3, int v4, int v5, int v
     return finish(hash);
 }
 
-int SystemHashCls::hash10(int seed, int v1, int v10, int v2, int v3, int v4, int v5, int v6, int v7, int v8, int v9) {
+int SystemHashCls::hash10(int v1, int v2, int v3, int v4, int v5, int v6, int v7, int v8, int v9, int v10, int seed) {
     int hash = seed;
     hash = combine(hash, v1);
     hash = combine(hash, v2);
@@ -145,7 +145,7 @@ int SystemHashCls::hash10(int seed, int v1, int v10, int v2, int v3, int v4, int
     return finish(hash);
 }
 
-int SystemHashCls::hash11(int seed, int v1, int v10, int v11, int v2, int v3, int v4, int v5, int v6, int v7, int v8, int v9) {
+int SystemHashCls::hash11(int v1, int v2, int v3, int v4, int v5, int v6, int v7, int v8, int v9, int v10, int v11, int seed) {
     int hash = seed;
     hash = combine(hash, v1);
     hash = combine(hash, v2);
@@ -161,7 +161,7 @@ int SystemHashCls::hash11(int seed, int v1, int v10, int v11, int v2, int v3, in
     return finish(hash);
 }
 
-int SystemHashCls::hash12(int seed, int v1, int v10, int v11, int v12, int v2, int v3, int v4, int v5, int v6, int v7, int v8, int v9) {
+int SystemHashCls::hash12(int v1, int v2, int v3, int v4, int v5, int v6, int v7, int v8, int v9, int v10, int v11, int v12, int seed) {
     int hash = seed;
     hash = combine(hash, v1);
     hash = combine(hash, v2);
@@ -178,7 +178,7 @@ int SystemHashCls::hash12(int seed, int v1, int v10, int v11, int v12, int v2, i
     return finish(hash);
 }
 
-int SystemHashCls::hash13(int seed, int v1, int v10, int v11, int v12, int v13, int v2, int v3, int v4, int v5, int v6, int v7, int v8, int v9) {
+int SystemHashCls::hash13(int v1, int v2, int v3, int v4, int v5, int v6, int v7, int v8, int v9, int v10, int v11, int v12, int v13, int seed) {
     int hash = seed;
     hash = combine(hash, v1);
     hash = combine(hash, v2);
@@ -196,7 +196,7 @@ int SystemHashCls::hash13(int seed, int v1, int v10, int v11, int v12, int v13, 
     return finish(hash);
 }
 
-int SystemHashCls::hash14(int seed, int v1, int v10, int v11, int v12, int v13, int v14, int v2, int v3, int v4, int v5, int v6, int v7, int v8, int v9) {
+int SystemHashCls::hash14(int v1, int v2, int v3, int v4, int v5, int v6, int v7, int v8, int v9, int v10, int v11, int v12, int v13, int v14, int seed) {
     int hash = seed;
     hash = combine(hash, v1);
     hash = combine(hash, v2);
@@ -215,7 +215,7 @@ int SystemHashCls::hash14(int seed, int v1, int v10, int v11, int v12, int v13, 
     return finish(hash);
 }
 
-int SystemHashCls::hash15(int seed, int v1, int v10, int v11, int v12, int v13, int v14, int v15, int v2, int v3, int v4, int v5, int v6, int v7, int v8, int v9) {
+int SystemHashCls::hash15(int v1, int v2, int v3, int v4, int v5, int v6, int v7, int v8, int v9, int v10, int v11, int v12, int v13, int v14, int v15, int seed) {
     int hash = seed;
     hash = combine(hash, v1);
     hash = combine(hash, v2);
@@ -235,7 +235,7 @@ int SystemHashCls::hash15(int seed, int v1, int v10, int v11, int v12, int v13, 
     return finish(hash);
 }
 
-int SystemHashCls::hash16(int seed, int v1, int v10, int v11, int v12, int v13, int v14, int v15, int v16, int v2, int v3, int v4, int v5, int v6, int v7, int v8, int v9) {
+int SystemHashCls::hash16(int v1, int v2, int v3, int v4, int v5, int v6, int v7, int v8, int v9, int v10, int v11, int v12, int v13, int v14, int v15, int v16, int seed) {
     int hash = seed;
     hash = combine(hash, v1);
     hash = combine(hash, v2);
@@ -256,7 +256,7 @@ int SystemHashCls::hash16(int seed, int v1, int v10, int v11, int v12, int v13, 
     return finish(hash);
 }
 
-int SystemHashCls::hash17(int seed, int v1, int v10, int v11, int v12, int v13, int v14, int v15, int v16, int v17, int v2, int v3, int v4, int v5, int v6, int v7, int v8, int v9) {
+int SystemHashCls::hash17(int v1, int v2, int v3, int v4, int v5, int v6, int v7, int v8, int v9, int v10, int v11, int v12, int v13, int v14, int v15, int v16, int v17, int seed) {
     int hash = seed;
     hash = combine(hash, v1);
     hash = combine(hash, v2);
@@ -278,7 +278,7 @@ int SystemHashCls::hash17(int seed, int v1, int v10, int v11, int v12, int v13, 
     return finish(hash);
 }
 
-int SystemHashCls::hash18(int seed, int v1, int v10, int v11, int v12, int v13, int v14, int v15, int v16, int v17, int v18, int v2, int v3, int v4, int v5, int v6, int v7, int v8, int v9) {
+int SystemHashCls::hash18(int v1, int v2, int v3, int v4, int v5, int v6, int v7, int v8, int v9, int v10, int v11, int v12, int v13, int v14, int v15, int v16, int v17, int v18, int seed) {
     int hash = seed;
     hash = combine(hash, v1);
     hash = combine(hash, v2);
@@ -301,7 +301,7 @@ int SystemHashCls::hash18(int seed, int v1, int v10, int v11, int v12, int v13, 
     return finish(hash);
 }
 
-int SystemHashCls::hash19(int seed, int v1, int v10, int v11, int v12, int v13, int v14, int v15, int v16, int v17, int v18, int v19, int v2, int v3, int v4, int v5, int v6, int v7, int v8, int v9) {
+int SystemHashCls::hash19(int v1, int v2, int v3, int v4, int v5, int v6, int v7, int v8, int v9, int v10, int v11, int v12, int v13, int v14, int v15, int v16, int v17, int v18, int v19, int seed) {
     int hash = seed;
     hash = combine(hash, v1);
     hash = combine(hash, v2);
@@ -325,7 +325,7 @@ int SystemHashCls::hash19(int seed, int v1, int v10, int v11, int v12, int v13, 
     return finish(hash);
 }
 
-int SystemHashCls::hash20(int seed, int v1, int v10, int v11, int v12, int v13, int v14, int v15, int v16, int v17, int v18, int v19, int v2, int v20, int v3, int v4, int v5, int v6, int v7, int v8, int v9) {
+int SystemHashCls::hash20(int v1, int v2, int v3, int v4, int v5, int v6, int v7, int v8, int v9, int v10, int v11, int v12, int v13, int v14, int v15, int v16, int v17, int v18, int v19, int v20, int seed) {
     int hash = seed;
     hash = combine(hash, v1);
     hash = combine(hash, v2);
@@ -351,16 +351,16 @@ int SystemHashCls::hash20(int seed, int v1, int v10, int v11, int v12, int v13, 
 }
 
 int SystemHashCls::smear(int x) {
-    x = x >> 16;
+    x ^= x >> 16;
     x = (x * 0x7feb352d) & 0xFFFFFFFF;
-    x = x >> 15;
+    x ^= x >> 15;
     x = (x * 0x846ca68b) & 0xFFFFFFFF;
-    x = x >> 16;
+    x ^= x >> 16;
     return x;
 }
 
 template<typename T>
-T checkNotNullable(String name, T value) {
+T checkNotNullable(T value, String name) {
     if ((as<dynamic>(value)) == nullptr) {
         throw <T>make<NotNullableErrorCls>(name);
     }
@@ -373,7 +373,7 @@ String NotNullableErrorCls<T>::toString() {
 }
 
 template<typename T>
-T valueOfNonNullableParamWithDefault(T defaultVal, T value) {
+T valueOfNonNullableParamWithDefault(T value, T defaultVal) {
     if ((as<dynamic>(value)) == nullptr) {
         return defaultVal;
     } else {
@@ -411,7 +411,7 @@ DoubleLinkedQueueEntry<E> DoubleLinkedQueueEntryCls<E>::nextEntry() {
 }
 
 template<typename E>
-void DoubleLinkedQueueEntryCls<E>::_link(DoubleLinkedQueueEntry<E> next, DoubleLinkedQueueEntry<E> previous) {
+void DoubleLinkedQueueEntryCls<E>::_link(DoubleLinkedQueueEntry<E> previous, DoubleLinkedQueueEntry<E> next) {
     _nextLink = next;
     _previousLink = previous;
     previous?->_nextLink = this;

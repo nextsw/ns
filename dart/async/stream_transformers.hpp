@@ -34,7 +34,7 @@ private:
     StreamSubscription<S> _subscription;
 
 
-     _SinkTransformerStreamSubscriptionCls(bool cancelOnError, _SinkMapper<S, T> mapper, std::function<void(T data)> onData, std::function<void()> onDone, std::function<void ()> onError, Stream<S> source);
+     _SinkTransformerStreamSubscriptionCls(Stream<S> source, _SinkMapper<S, T> mapper, std::function<void(T data)> onData, std::function<void ()> onError, std::function<void()> onDone, bool cancelOnError);
 
     virtual void _add(T data);
 
@@ -79,7 +79,7 @@ public:
 
     virtual bool isBroadcast();
 
-    virtual StreamSubscription<T> listen(bool cancelOnError, std::function<void(T event)> onData, std::function<void()> onDone, std::function<void ()> onError);
+    virtual StreamSubscription<T> listen(std::function<void(T event)> onData, bool cancelOnError, std::function<void()> onDone, std::function<void ()> onError);
 
 private:
     _SinkMapper<S, T> _sinkMapper;
@@ -87,7 +87,7 @@ private:
     Stream<S> _stream;
 
 
-     _BoundSinkStreamCls(_SinkMapper<S, T> _sinkMapper, Stream<S> _stream);
+     _BoundSinkStreamCls(Stream<S> _stream, _SinkMapper<S, T> _sinkMapper);
 };
 template<typename S, typename T>
 using _BoundSinkStream = std::shared_ptr<_BoundSinkStreamCls<S, T>>;
@@ -112,7 +112,7 @@ private:
     EventSink<T> _sink;
 
 
-     _HandlerEventSinkCls(_TransformDataHandler<S, T> _handleData, _TransformDoneHandler<T> _handleDone, _TransformErrorHandler<T> _handleError, EventSink<T> _sink);
+     _HandlerEventSinkCls(_TransformDataHandler<S, T> _handleData, _TransformErrorHandler<T> _handleError, _TransformDoneHandler<T> _handleDone, EventSink<T> _sink);
 };
 template<typename S, typename T>
 using _HandlerEventSink = std::shared_ptr<_HandlerEventSinkCls<S, T>>;
@@ -125,7 +125,7 @@ public:
 
 private:
 
-     _StreamHandlerTransformerCls(std::function<void(S data, EventSink<T> sink)> handleData, std::function<void(EventSink<T> sink)> handleDone, std::function<void(Object error, EventSink<T> sink, StackTrace stackTrace)> handleError);
+     _StreamHandlerTransformerCls(std::function<void(S data, EventSink<T> sink)> handleData, std::function<void(EventSink<T> sink)> handleDone, std::function<void(Object error, StackTrace stackTrace, EventSink<T> sink)> handleError);
 
 };
 template<typename S, typename T>
@@ -167,7 +167,7 @@ public:
 
     virtual bool isBroadcast();
 
-    virtual StreamSubscription<T> listen(bool cancelOnError, std::function<void(T event)> onData, std::function<void()> onDone, std::function<void ()> onError);
+    virtual StreamSubscription<T> listen(std::function<void(T event)> onData, bool cancelOnError, std::function<void()> onDone, std::function<void ()> onError);
 
 private:
     _SubscriptionTransformer<S, T> _onListen;
@@ -175,7 +175,7 @@ private:
     Stream<S> _stream;
 
 
-     _BoundSubscriptionStreamCls(_SubscriptionTransformer<S, T> _onListen, Stream<S> _stream);
+     _BoundSubscriptionStreamCls(Stream<S> _stream, _SubscriptionTransformer<S, T> _onListen);
 };
 template<typename S, typename T>
 using _BoundSubscriptionStream = std::shared_ptr<_BoundSubscriptionStreamCls<S, T>>;

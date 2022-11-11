@@ -55,7 +55,7 @@ bool _CastIterableBaseCls<S, T>::contains(Object other) {
 }
 
 template<typename S, typename T>
-T _CastIterableBaseCls<S, T>::lastWhere(std::function<T()> orElse, std::function<bool(T element)> test) {
+T _CastIterableBaseCls<S, T>::lastWhere(std::function<bool(T element)> test, std::function<T()> orElse) {
     return as<T>(_source()->lastWhere([=] (S element)     {
         test(as<T>(element));
     }(orElse == nullptr)? nullptr : [=] ()     {
@@ -139,17 +139,17 @@ void _CastListBaseCls<S, T>::shuffle(Random random) {
 }
 
 template<typename S, typename T>
-void _CastListBaseCls<S, T>::insert(T element, int index) {
+void _CastListBaseCls<S, T>::insert(int index, T element) {
     _source()->insert(index, as<S>(element));
 }
 
 template<typename S, typename T>
-void _CastListBaseCls<S, T>::insertAll(Iterable<T> elements, int index) {
+void _CastListBaseCls<S, T>::insertAll(int index, Iterable<T> elements) {
     _source()->insertAll(index, <T, S>make<CastIterableCls>(elements));
 }
 
 template<typename S, typename T>
-void _CastListBaseCls<S, T>::setAll(Iterable<T> elements, int index) {
+void _CastListBaseCls<S, T>::setAll(int index, Iterable<T> elements) {
     _source()->setAll(index, <T, S>make<CastIterableCls>(elements));
 }
 
@@ -183,27 +183,27 @@ void _CastListBaseCls<S, T>::retainWhere(std::function<bool(T element)> test) {
 }
 
 template<typename S, typename T>
-Iterable<T> _CastListBaseCls<S, T>::getRange(int end, int start) {
+Iterable<T> _CastListBaseCls<S, T>::getRange(int start, int end) {
     return <S, T>make<CastIterableCls>(_source()->getRange(start, end));
 }
 
 template<typename S, typename T>
-void _CastListBaseCls<S, T>::setRange(int end, Iterable<T> iterable, int skipCount, int start) {
+void _CastListBaseCls<S, T>::setRange(int start, int end, Iterable<T> iterable, int skipCount) {
     _source()->setRange(start, end, <T, S>make<CastIterableCls>(iterable), skipCount);
 }
 
 template<typename S, typename T>
-void _CastListBaseCls<S, T>::removeRange(int end, int start) {
+void _CastListBaseCls<S, T>::removeRange(int start, int end) {
     _source()->removeRange(start, end);
 }
 
 template<typename S, typename T>
-void _CastListBaseCls<S, T>::fillRange(int end, T fillValue, int start) {
+void _CastListBaseCls<S, T>::fillRange(int start, int end, T fillValue) {
     _source()->fillRange(start, end, as<S>(fillValue));
 }
 
 template<typename S, typename T>
-void _CastListBaseCls<S, T>::replaceRange(int end, Iterable<T> replacement, int start) {
+void _CastListBaseCls<S, T>::replaceRange(int start, int end, Iterable<T> replacement) {
     _source()->replaceRange(start, end, <T, S>make<CastIterableCls>(replacement));
 }
 
@@ -347,7 +347,7 @@ void CastMapCls<SK, SV, K, V>::[]=(K key, V value) {
 }
 
 template<typename SK, typename SV, typename K, typename V>
-V CastMapCls<SK, SV, K, V>::putIfAbsent(std::function<V()> ifAbsent, K key) {
+V CastMapCls<SK, SV, K, V>::putIfAbsent(K key, std::function<V()> ifAbsent) {
     return as<V>(_source->putIfAbsent(as<SK>(key), [=] ()     {
         as<SV>(ifAbsent());
     }));
@@ -401,7 +401,7 @@ bool CastMapCls<SK, SV, K, V>::isNotEmpty() {
 }
 
 template<typename SK, typename SV, typename K, typename V>
-V CastMapCls<SK, SV, K, V>::update(std::function<V()> ifAbsent, K key, std::function<V(V value)> update) {
+V CastMapCls<SK, SV, K, V>::update(K key, std::function<V(V value)> update, std::function<V()> ifAbsent) {
     return as<V>(_source->update(as<SK>(key), [=] (SV value)     {
         as<SV>(update(as<V>(value)));
     }(ifAbsent == nullptr)? nullptr : [=] ()     {

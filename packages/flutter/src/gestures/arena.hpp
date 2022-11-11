@@ -36,7 +36,7 @@ private:
     GestureArenaMember _member;
 
 
-    virtual void  _(GestureArenaManager _arena, GestureArenaMember _member, int _pointer);
+    virtual void  _(GestureArenaManager _arena, int _pointer, GestureArenaMember _member);
 };
 using GestureArenaEntry = std::shared_ptr<GestureArenaEntryCls>;
 
@@ -65,7 +65,7 @@ using _GestureArena = std::shared_ptr<_GestureArenaCls>;
 class GestureArenaManagerCls : public ObjectCls {
 public:
 
-    virtual GestureArenaEntry add(GestureArenaMember member, int pointer);
+    virtual GestureArenaEntry add(int pointer, GestureArenaMember member);
 
     virtual void close(int pointer);
 
@@ -79,15 +79,15 @@ private:
     Map<int, _GestureArena> _arenas;
 
 
-    virtual void _resolve(GestureDisposition disposition, GestureArenaMember member, int pointer);
+    virtual void _resolve(int pointer, GestureArenaMember member, GestureDisposition disposition);
 
     virtual void _tryToResolveArena(int pointer, _GestureArena state);
 
     virtual void _resolveByDefault(int pointer, _GestureArena state);
 
-    virtual void _resolveInFavorOf(GestureArenaMember member, int pointer, _GestureArena state);
+    virtual void _resolveInFavorOf(int pointer, _GestureArena state, GestureArenaMember member);
 
-    virtual bool _debugLogDiagnostic(String message, int pointer, _GestureArena state);
+    virtual bool _debugLogDiagnostic(int pointer, String message, _GestureArena state);
 
 };
 using GestureArenaManager = std::shared_ptr<GestureArenaManagerCls>;

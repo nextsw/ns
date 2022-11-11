@@ -13,34 +13,34 @@ void WriteBufferCls::putUint8(int byte) {
     _add(byte);
 }
 
-void WriteBufferCls::putUint16(Endian endian, int value) {
+void WriteBufferCls::putUint16(int value, Endian endian) {
     assert(!_isDone);
-    _eightBytes->setUint16(0, value, endian or EndianCls::host);
+    _eightBytes->setUint16(0, value, endian | EndianCls::host);
     _addAll(_eightBytesAsList, 0, 2);
 }
 
-void WriteBufferCls::putUint32(Endian endian, int value) {
+void WriteBufferCls::putUint32(int value, Endian endian) {
     assert(!_isDone);
-    _eightBytes->setUint32(0, value, endian or EndianCls::host);
+    _eightBytes->setUint32(0, value, endian | EndianCls::host);
     _addAll(_eightBytesAsList, 0, 4);
 }
 
-void WriteBufferCls::putInt32(Endian endian, int value) {
+void WriteBufferCls::putInt32(int value, Endian endian) {
     assert(!_isDone);
-    _eightBytes->setInt32(0, value, endian or EndianCls::host);
+    _eightBytes->setInt32(0, value, endian | EndianCls::host);
     _addAll(_eightBytesAsList, 0, 4);
 }
 
-void WriteBufferCls::putInt64(Endian endian, int value) {
+void WriteBufferCls::putInt64(int value, Endian endian) {
     assert(!_isDone);
-    _eightBytes->setInt64(0, value, endian or EndianCls::host);
+    _eightBytes->setInt64(0, value, endian | EndianCls::host);
     _addAll(_eightBytesAsList, 0, 8);
 }
 
-void WriteBufferCls::putFloat64(Endian endian, double value) {
+void WriteBufferCls::putFloat64(double value, Endian endian) {
     assert(!_isDone);
     _alignTo(8);
-    _eightBytes->setFloat64(0, value, endian or EndianCls::host);
+    _eightBytes->setFloat64(0, value, endian | EndianCls::host);
     _addAll(_eightBytesAsList);
 }
 
@@ -88,7 +88,7 @@ void WriteBufferCls::_add(int byte) {
         _resize();
     }
     _buffer[_currentSize] = byte;
-    _currentSize = 1;
+    _currentSize += 1;
 }
 
 void WriteBufferCls::_append(Uint8List other) {
@@ -97,11 +97,11 @@ void WriteBufferCls::_append(Uint8List other) {
         _resize(newSize);
     }
     _buffer->setRange(_currentSize, newSize, other);
-    _currentSize = other->length;
+    _currentSize += other->length;
 }
 
-void WriteBufferCls::_addAll(Uint8List data, int end, int start) {
-    int newEnd = end or _eightBytesAsList->length;
+void WriteBufferCls::_addAll(Uint8List data, int start, int end) {
+    int newEnd = end | _eightBytesAsList->length;
     int newSize = _currentSize + (newEnd - start);
     if (newSize >= _buffer->length) {
         _resize(newSize);
@@ -112,7 +112,7 @@ void WriteBufferCls::_addAll(Uint8List data, int end, int start) {
 
 void WriteBufferCls::_resize(int requiredLength) {
     int doubleLength = _buffer->length * 2;
-    int newLength = math->max(requiredLength or 0, doubleLength);
+    int newLength = math->max(requiredLength | 0, doubleLength);
     Uint8List newBuffer = make<Uint8ListCls>(newLength);
     newBuffer->setRange(0, _buffer->length, _buffer);
     _buffer = newBuffer;
@@ -141,73 +141,73 @@ int ReadBufferCls::getUint8() {
 }
 
 int ReadBufferCls::getUint16(Endian endian) {
-    int value = data->getUint16(_position, endian or EndianCls::host);
-    _position = 2;
+    int value = data->getUint16(_position, endian | EndianCls::host);
+    _position += 2;
     return value;
 }
 
 int ReadBufferCls::getUint32(Endian endian) {
-    int value = data->getUint32(_position, endian or EndianCls::host);
-    _position = 4;
+    int value = data->getUint32(_position, endian | EndianCls::host);
+    _position += 4;
     return value;
 }
 
 int ReadBufferCls::getInt32(Endian endian) {
-    int value = data->getInt32(_position, endian or EndianCls::host);
-    _position = 4;
+    int value = data->getInt32(_position, endian | EndianCls::host);
+    _position += 4;
     return value;
 }
 
 int ReadBufferCls::getInt64(Endian endian) {
-    int value = data->getInt64(_position, endian or EndianCls::host);
-    _position = 8;
+    int value = data->getInt64(_position, endian | EndianCls::host);
+    _position += 8;
     return value;
 }
 
 double ReadBufferCls::getFloat64(Endian endian) {
     _alignTo(8);
-    double value = data->getFloat64(_position, endian or EndianCls::host);
-    _position = 8;
+    double value = data->getFloat64(_position, endian | EndianCls::host);
+    _position += 8;
     return value;
 }
 
 Uint8List ReadBufferCls::getUint8List(int length) {
     Uint8List list = data->buffer->asUint8List(data->offsetInBytes + _position, length);
-    _position = length;
+    _position += length;
     return list;
 }
 
 Int32List ReadBufferCls::getInt32List(int length) {
     _alignTo(4);
     Int32List list = data->buffer->asInt32List(data->offsetInBytes + _position, length);
-    _position = 4 * length;
+    _position += 4 * length;
     return list;
 }
 
 Int64List ReadBufferCls::getInt64List(int length) {
     _alignTo(8);
     Int64List list = data->buffer->asInt64List(data->offsetInBytes + _position, length);
-    _position = 8 * length;
+    _position += 8 * length;
     return list;
 }
 
 Float32List ReadBufferCls::getFloat32List(int length) {
     _alignTo(4);
     Float32List list = data->buffer->asFloat32List(data->offsetInBytes + _position, length);
-    _position = 4 * length;
+    _position += 4 * length;
     return list;
 }
 
 Float64List ReadBufferCls::getFloat64List(int length) {
     _alignTo(8);
     Float64List list = data->buffer->asFloat64List(data->offsetInBytes + _position, length);
-    _position = 8 * length;
+    _position += 8 * length;
     return list;
 }
 
 void ReadBufferCls::_alignTo(int alignment) {
     int mod = _position % alignment;
     if (mod != 0) {
-        _position = alignment - mod;
+        _position += alignment - mod;
     }
 }

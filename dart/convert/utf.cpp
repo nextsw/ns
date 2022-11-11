@@ -9,8 +9,8 @@ String Utf8CodecCls::name() {
     return __s("utf-8");
 }
 
-String Utf8CodecCls::decode(bool allowMalformed, List<int> codeUnits) {
-    Utf8Decoder decoder = allowMalformed or _allowMalformed? make<Utf8DecoderCls>(true) : make<Utf8DecoderCls>(false);
+String Utf8CodecCls::decode(List<int> codeUnits, bool allowMalformed) {
+    Utf8Decoder decoder = allowMalformed | _allowMalformed? make<Utf8DecoderCls>(true) : make<Utf8DecoderCls>(false);
     return decoder->convert(codeUnits);
 }
 
@@ -22,7 +22,7 @@ Utf8Decoder Utf8CodecCls::decoder() {
     return _allowMalformed? make<Utf8DecoderCls>(true) : make<Utf8DecoderCls>(false);
 }
 
-Uint8List Utf8EncoderCls::convert(int end, int start, String stringValue) {
+Uint8List Utf8EncoderCls::convert(String stringValue, int start, int end) {
     auto stringLength = stringValue->length();
     end = RangeErrorCls->checkValidRange(start, end, stringLength);
     auto length = end - start;
@@ -82,7 +82,7 @@ bool _Utf8EncoderCls::_writeSurrogate(int leadingSurrogate, int nextCodeUnit) {
     }
 }
 
-int _Utf8EncoderCls::_fillBuffer(int end, int start, String str) {
+int _Utf8EncoderCls::_fillBuffer(String str, int start, int end) {
     if (start != end && _isLeadSurrogate(str->codeUnitAt(end - 1))) {
         end--;
     }
@@ -142,7 +142,7 @@ void _Utf8EncoderSinkCls::close() {
     _sink->close();
 }
 
-void _Utf8EncoderSinkCls::addSlice(int end, bool isLast, int start, String str) {
+void _Utf8EncoderSinkCls::addSlice(String str, int start, int end, bool isLast) {
     _bufferIndex = 0;
     if (start == end && !isLast) {
         return;
@@ -186,7 +186,7 @@ Utf8DecoderCls::Utf8DecoderCls(bool allowMalformed) {
     }
 }
 
-String Utf8DecoderCls::convert(List<int> codeUnits, int end, int start) {
+String Utf8DecoderCls::convert(List<int> codeUnits, int start, int end) {
     auto result = _convertIntercepted(_allowMalformed, codeUnits, start, end);
     if (result != nullptr) {
         return result;
@@ -228,7 +228,7 @@ String _Utf8DecoderCls::errorDescription(int state) {
     ;
 }
 
-String _Utf8DecoderCls::convertGeneral(List<int> codeUnits, int maybeEnd, bool single, int start) {
+String _Utf8DecoderCls::convertGeneral(List<int> codeUnits, int start, int maybeEnd, bool single) {
     int end = RangeErrorCls->checkValidRange(start, maybeEnd, codeUnits->length());
     if (start == end)     {
         return __s("");
@@ -241,7 +241,7 @@ String _Utf8DecoderCls::convertGeneral(List<int> codeUnits, int maybeEnd, bool s
     } else {
         bytes = _makeUint8List(codeUnits, start, end);
         errorOffset = start;
-        end = start;
+        end -= start;
         start = 0;
     }
     String result = _convertRecursive(bytes, start, end, single);
@@ -266,7 +266,7 @@ void _Utf8DecoderCls::flush(StringSink sink) {
     }
 }
 
-String _Utf8DecoderCls::decodeGeneral(Uint8List bytes, int end, bool single, int start) {
+String _Utf8DecoderCls::decodeGeneral(Uint8List bytes, int start, int end, bool single) {
     String typeTable = _Utf8DecoderCls::typeTable;
     String transitionTable = _Utf8DecoderCls::transitionTable;
     int state = _state;
@@ -342,7 +342,7 @@ String _Utf8DecoderCls::decodeGeneral(Uint8List bytes, int end, bool single, int
     return buffer->toString();
 }
 
-String _Utf8DecoderCls::_convertRecursive(Uint8List bytes, int end, bool single, int start) {
+String _Utf8DecoderCls::_convertRecursive(Uint8List bytes, int start, int end, bool single) {
     if (end - start > 1000) {
         int mid = (start + end) ~/ 2;
         String s1 = _convertRecursive(bytes, start, mid, false);
@@ -355,7 +355,7 @@ String _Utf8DecoderCls::_convertRecursive(Uint8List bytes, int end, bool single,
     return decodeGeneral(bytes, start, end, single);
 }
 
-Uint8List _Utf8DecoderCls::_makeUint8List(List<int> codeUnits, int end, int start) {
+Uint8List _Utf8DecoderCls::_makeUint8List(List<int> codeUnits, int start, int end) {
     int length = end - start;
     Uint8List bytes = make<Uint8ListCls>(length);
     for (;  < length; i++) {

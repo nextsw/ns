@@ -51,7 +51,7 @@ void _WindowsCodePageEncoderSinkCls::add(String stringValue) {
     _sink->add(encoded);
 }
 
-void _WindowsCodePageEncoderSinkCls::addSlice(int end, bool isLast, String source, int start) {
+void _WindowsCodePageEncoderSinkCls::addSlice(String source, int start, int end, bool isLast) {
     if (start != 0 || end != source->length()) {
         source = source->substring(start, end);
     }

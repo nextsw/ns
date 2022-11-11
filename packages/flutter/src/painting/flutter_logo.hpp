@@ -45,7 +45,7 @@ public:
 
     virtual FlutterLogoDecoration lerpTo(Decoration b, double t);
 
-    virtual bool hitTest(Offset position, Size size, TextDirection textDirection);
+    virtual bool hitTest(Size size, Offset position, TextDirection textDirection);
 
     virtual BoxPainter createBoxPainter(VoidCallback onChanged);
 
@@ -63,7 +63,7 @@ private:
     double _opacity;
 
 
-    virtual void  _(double _opacity, double _position, EdgeInsets margin, FlutterLogoStyle style, Color textColor);
+    virtual void  _(Color textColor, FlutterLogoStyle style, EdgeInsets margin, double _position, double _opacity);
     virtual bool _inTransition();
 
 };
@@ -72,7 +72,7 @@ using FlutterLogoDecoration = std::shared_ptr<FlutterLogoDecorationCls>;
 class _FlutterLogoPainterCls : public BoxPainterCls {
 public:
 
-    virtual void paint(Canvas canvas, ImageConfiguration configuration, Offset offset);
+    virtual void paint(Canvas canvas, Offset offset, ImageConfiguration configuration);
 
 private:
     FlutterLogoDecoration _config;

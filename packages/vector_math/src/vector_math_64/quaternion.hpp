@@ -26,11 +26,11 @@ public:
 
     virtual void  w(double w);
 
-     QuaternionCls(double w, double x, double y, double z);
+     QuaternionCls(double x, double y, double z, double w);
 
     virtual void  fromRotation(Matrix3 rotationMatrix);
 
-    virtual void  axisAngle(double angle, Vector3 axis);
+    virtual void  axisAngle(Vector3 axis, double angle);
 
     virtual void  fromTwoVectors(Vector3 a, Vector3 b);
 
@@ -40,9 +40,9 @@ public:
 
     virtual void  identity();
 
-    virtual void  dq(Vector3 omega, Quaternion q);
+    virtual void  dq(Quaternion q, Vector3 omega);
 
-    virtual void  euler(double pitch, double roll, double yaw);
+    virtual void  euler(double yaw, double pitch, double roll);
 
     virtual void  fromFloat64List(Float64List _qStorage);
     virtual void  fromBuffer(ByteBuffer buffer, int offset);
@@ -51,7 +51,7 @@ public:
 
     virtual void setFrom(Quaternion source);
 
-    virtual void setValues(double w, double x, double y, double z);
+    virtual void setValues(double x, double y, double z, double w);
 
     virtual void setAxisAngle(Vector3 axis, double radians);
 
@@ -61,9 +61,9 @@ public:
 
     virtual void setRandom(Random rn);
 
-    virtual void setDQ(Vector3 omega, Quaternion q);
+    virtual void setDQ(Quaternion q, Vector3 omega);
 
-    virtual void setEuler(double pitch, double roll, double yaw);
+    virtual void setEuler(double yaw, double pitch, double roll);
 
     virtual double normalize();
 
@@ -107,7 +107,7 @@ public:
 
     virtual double operator[](int i);
 
-    virtual void operator[]=(double arg, int i);
+    virtual void operator[]=(int i, double arg);
 
     virtual Matrix3 asRotationMatrix();
 

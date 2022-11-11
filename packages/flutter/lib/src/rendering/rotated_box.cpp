@@ -69,7 +69,7 @@ void RenderRotatedBoxCls::performLayout() {
     }
 }
 
-bool RenderRotatedBoxCls::hitTestChildren(Offset position, BoxHitTestResult result) {
+bool RenderRotatedBoxCls::hitTestChildren(BoxHitTestResult result, Offset position) {
     assert(_paintTransform != nullptr || debugNeedsLayout || child == nullptr);
     if (child == nullptr || _paintTransform == nullptr) {
         return false;

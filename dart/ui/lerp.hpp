@@ -10,7 +10,7 @@ double _lerpDouble(double a, double b, double t);
 
 double _lerpInt(int a, int b, double t);
 
-int _clampInt(int max, int min, int value);
+int _clampInt(int value, int min, int max);
 
 
 

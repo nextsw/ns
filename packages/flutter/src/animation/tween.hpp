@@ -45,7 +45,7 @@ private:
     Animatable<T> _evaluatable;
 
 
-     _AnimatedEvaluationCls(Animatable<T> _evaluatable, Animation<double> parent);
+     _AnimatedEvaluationCls(Animation<double> parent, Animatable<T> _evaluatable);
 };
 template<typename T>
 using _AnimatedEvaluation = std::shared_ptr<_AnimatedEvaluationCls<T>>;
@@ -64,7 +64,7 @@ private:
     Animatable<T> _evaluatable;
 
 
-     _ChainedEvaluationCls(Animatable<T> _evaluatable, Animatable<double> _parent);
+     _ChainedEvaluationCls(Animatable<double> _parent, Animatable<T> _evaluatable);
 };
 template<typename T>
 using _ChainedEvaluation = std::shared_ptr<_ChainedEvaluationCls<T>>;

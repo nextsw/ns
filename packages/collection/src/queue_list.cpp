@@ -35,12 +35,12 @@ void QueueListCls<E>::addAll(Iterable<E> iterable) {
         if (length + addCount >= _table->length) {
             _preGrow(length + addCount);
             _table->setRange(length, length + addCount, list, 0);
-            _tail = addCount;
+            _tail += addCount;
         } else {
             auto endSpace = _table->length - _tail;
             if ( < endSpace) {
                 _table->setRange(_tail, _tail + addCount, list, 0);
-                _tail = addCount;
+                _tail += addCount;
             } else {
                 auto preSpace = addCount - endSpace;
                 _table->setRange(_tail, _tail + endSpace, list, 0);
@@ -133,7 +133,7 @@ void QueueListCls<E>::length(int value) {
     if (newTail >= 0) {
         _table->fillRange(newTail, _tail, nullptr);
     } else {
-        newTail = _table->length();
+        newTail += _table->length();
         _table->fillRange(0, _tail, nullptr);
         _table->fillRange(newTail, _table->length(), nullptr);
     }
@@ -170,7 +170,7 @@ int QueueListCls<E>::_computeInitialCapacity(int initialCapacity) {
     if (initialCapacity == nullptr ||  < _initialCapacity) {
         return _initialCapacity;
     }
-    initialCapacity = 1;
+    initialCapacity += 1;
     if (_isPowerOf2(initialCapacity)) {
         return initialCapacity;
     }
@@ -233,7 +233,7 @@ int QueueListCls<E>::_writeToList(List<E> target) {
 template<typename E>
 void QueueListCls<E>::_preGrow(int newElementCount) {
     assert(newElementCount >= length());
-    newElementCount = newElementCount >> 1;
+    newElementCount += newElementCount >> 1;
     auto newCapacity = _nextPowerOf2(newElementCount);
     auto newTable = <E>filled(newCapacity, nullptr);
     _tail = _writeToList(newTable);

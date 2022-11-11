@@ -47,7 +47,7 @@ void SelectionRegistrantCls::_removeSelectionRegistrarSubscription() {
     }
 }
 
-SelectionResult SelectionUtilsCls::getResultBasedOnRect(Offset point, Rect targetRect) {
+SelectionResult SelectionUtilsCls::getResultBasedOnRect(Rect targetRect, Offset point) {
     if (targetRect->contains(point)) {
         return SelectionResultCls::end;
     }
@@ -60,7 +60,7 @@ SelectionResult SelectionUtilsCls::getResultBasedOnRect(Offset point, Rect targe
     return point->dx() >= targetRect->right? SelectionResultCls::next : SelectionResultCls::previous;
 }
 
-Offset SelectionUtilsCls::adjustDragOffset(TextDirection direction, Offset point, Rect targetRect) {
+Offset SelectionUtilsCls::adjustDragOffset(Rect targetRect, Offset point, TextDirection direction) {
     if (targetRect->contains(point)) {
         return point;
     }
@@ -104,7 +104,7 @@ bool SelectionGeometryCls::hasSelection() {
 }
 
 SelectionGeometry SelectionGeometryCls::copyWith(SelectionPoint endSelectionPoint, bool hasContent, SelectionPoint startSelectionPoint, SelectionStatus status) {
-    return make<SelectionGeometryCls>(startSelectionPoint or this->startSelectionPoint, endSelectionPoint or this->endSelectionPoint, status or this->status, hasContent or this->hasContent);
+    return make<SelectionGeometryCls>(startSelectionPoint | this->startSelectionPoint, endSelectionPoint | this->endSelectionPoint, status | this->status, hasContent | this->hasContent);
 }
 
 bool SelectionGeometryCls::==(Object other) {

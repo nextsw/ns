@@ -7,12 +7,12 @@ TickerModeCls::TickerModeCls(Widget child, bool enabled, Unknown key) {
 
 bool TickerModeCls::of(BuildContext context) {
     _EffectiveTickerMode widget = context-><_EffectiveTickerMode>dependOnInheritedWidgetOfExactType();
-    return widget?->enabled or true;
+    return widget?->enabled | true;
 }
 
 ValueNotifier<bool> TickerModeCls::getNotifier(BuildContext context) {
     _EffectiveTickerMode widget = as<_EffectiveTickerMode>(context-><_EffectiveTickerMode>getElementForInheritedWidgetOfExactType()?->widget);
-    return widget?->notifier or <bool>make<ValueNotifierCls>(true);
+    return widget?->notifier | <bool>make<ValueNotifierCls>(true);
 }
 
 State<TickerMode> TickerModeCls::createState() {
@@ -143,7 +143,7 @@ Ticker TickerProviderStateMixinCls<T>::createTicker(TickerCallback onTick) {
         _updateTickerModeNotifier();
     }
     assert(_tickerModeNotifier != nullptr);
-    _tickers = makeSet();
+    _tickers |= makeSet();
     auto _c1 = make<_WidgetTickerCls>(onTick, thiskDebugMode? __s("created by ${describeIdentity(this)}") : nullptr);_c1.muted = !_tickerModeNotifier!->value();_WidgetTicker result = _c1;
     _tickers!->add(result);
     return result;

@@ -33,7 +33,7 @@ void _SliverPrototypeExtentListElementCls::didAdoptChild(RenderBox child) {
     }
 }
 
-void _SliverPrototypeExtentListElementCls::moveRenderObjectChild(RenderBox child, Object newSlot, Object oldSlot) {
+void _SliverPrototypeExtentListElementCls::moveRenderObjectChild(RenderBox child, Object oldSlot, Object newSlot) {
     if (newSlot == _prototypeSlot) {
         assert(false);
     } else {
@@ -56,7 +56,7 @@ void _SliverPrototypeExtentListElementCls::visitChildren(ElementVisitor visitor)
     super->visitChildren(visitor);
 }
 
-void _SliverPrototypeExtentListElementCls::mount(Object newSlot, Element parent) {
+void _SliverPrototypeExtentListElementCls::mount(Element parent, Object newSlot) {
     super->mount(parent, newSlot);
     _prototype = updateChild(_prototype, (as<SliverPrototypeExtentList>(widget))->prototypeItem, _prototypeSlot);
 }

@@ -23,7 +23,7 @@ public:
 
     virtual bool updateShouldNotify(IconTheme oldWidget);
 
-    virtual Widget wrap(Widget child, BuildContext context);
+    virtual Widget wrap(BuildContext context, Widget child);
 
     virtual void debugFillProperties(DiagnosticPropertiesBuilder properties);
 

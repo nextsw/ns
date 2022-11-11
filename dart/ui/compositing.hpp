@@ -8,13 +8,13 @@
 class SceneCls : public NativeFieldWrapperClass1Cls {
 public:
 
-    virtual Future<Image> toImage(int height, int width);
+    virtual Future<Image> toImage(int width, int height);
 
     virtual void dispose();
 private:
 
     virtual void  _();
-    virtual String _toImage(_Callback<_Image> callback, int height, int width);
+    virtual String _toImage(int width, int height, _Callback<_Image> callback);
 };
 using Scene = std::shared_ptr<SceneCls>;
 
@@ -157,11 +157,11 @@ public:
 
     virtual OffsetEngineLayer pushOffset(double dx, double dy, OffsetEngineLayer oldLayer);
 
-    virtual ClipRectEngineLayer pushClipRect(Clip clipBehavior, ClipRectEngineLayer oldLayer, Rect rect);
+    virtual ClipRectEngineLayer pushClipRect(Rect rect, Clip clipBehavior, ClipRectEngineLayer oldLayer);
 
-    virtual ClipRRectEngineLayer pushClipRRect(Clip clipBehavior, ClipRRectEngineLayer oldLayer, RRect rrect);
+    virtual ClipRRectEngineLayer pushClipRRect(RRect rrect, Clip clipBehavior, ClipRRectEngineLayer oldLayer);
 
-    virtual ClipPathEngineLayer pushClipPath(Clip clipBehavior, ClipPathEngineLayer oldLayer, Path path);
+    virtual ClipPathEngineLayer pushClipPath(Path path, Clip clipBehavior, ClipPathEngineLayer oldLayer);
 
     virtual OpacityEngineLayer pushOpacity(int alpha, Offset offset, OpacityEngineLayer oldLayer);
 
@@ -169,9 +169,9 @@ public:
 
     virtual ImageFilterEngineLayer pushImageFilter(ImageFilter filter, ImageFilterEngineLayer oldLayer);
 
-    virtual BackdropFilterEngineLayer pushBackdropFilter(BlendMode blendMode, ImageFilter filter, BackdropFilterEngineLayer oldLayer);
+    virtual BackdropFilterEngineLayer pushBackdropFilter(ImageFilter filter, BlendMode blendMode, BackdropFilterEngineLayer oldLayer);
 
-    virtual ShaderMaskEngineLayer pushShaderMask(BlendMode blendMode, FilterQuality filterQuality, Rect maskRect, ShaderMaskEngineLayer oldLayer, Shader shader);
+    virtual ShaderMaskEngineLayer pushShaderMask(Shader shader, Rect maskRect, BlendMode blendMode, FilterQuality filterQuality, ShaderMaskEngineLayer oldLayer);
 
     virtual PhysicalShapeEngineLayer pushPhysicalShape(Clip clipBehavior, Color color, double elevation, PhysicalShapeEngineLayer oldLayer, Path path, Color shadowColor);
 
@@ -179,13 +179,13 @@ public:
 
     virtual void addRetained(EngineLayer retainedLayer);
 
-    virtual void addPerformanceOverlay(Rect bounds, int enabledOptions);
+    virtual void addPerformanceOverlay(int enabledOptions, Rect bounds);
 
-    virtual void addPicture(bool isComplexHint, Offset offset, Picture picture, bool willChangeHint);
+    virtual void addPicture(Offset offset, Picture picture, bool isComplexHint, bool willChangeHint);
 
-    virtual void addTexture(FilterQuality filterQuality, bool freeze, double height, Offset offset, int textureId, double width);
+    virtual void addTexture(int textureId, FilterQuality filterQuality, bool freeze, double height, Offset offset, double width);
 
-    virtual void addPlatformView(double height, Offset offset, int viewId, double width);
+    virtual void addPlatformView(int viewId, double height, Offset offset, double width);
 
     virtual void setRasterizerTracingThreshold(int frameInterval);
     virtual void setCheckerboardRasterCacheImages(bool checkerboard);
@@ -206,22 +206,22 @@ private:
     virtual bool _debugPushLayer(_EngineLayerWrapper newLayer);
 
     virtual void _pushTransform(EngineLayer layer, Float64List matrix4, EngineLayer oldLayer);
-    virtual void _pushOffset(double dx, double dy, EngineLayer layer, EngineLayer oldLayer);
-    virtual void _pushClipRect(double bottom, int clipBehavior, double left, EngineLayer oldLayer, EngineLayer outEngineLayer, double right, double top);
-    virtual void _pushClipRRect(int clipBehavior, EngineLayer layer, EngineLayer oldLayer, Float32List rrect);
-    virtual void _pushClipPath(int clipBehavior, EngineLayer layer, EngineLayer oldLayer, Path path);
-    virtual void _pushOpacity(int alpha, double dx, double dy, EngineLayer layer, EngineLayer oldLayer);
-    virtual void _pushColorFilter(_ColorFilter filter, EngineLayer layer, EngineLayer oldLayer);
-    virtual void _pushImageFilter(_ImageFilter filter, EngineLayer oldLayer, EngineLayer outEngineLayer);
-    virtual void _pushBackdropFilter(int blendMode, _ImageFilter filter, EngineLayer oldLayer, EngineLayer outEngineLayer);
-    virtual void _pushShaderMask(int blendMode, EngineLayer engineLayer, int filterQualityIndex, double maskRectBottom, double maskRectLeft, double maskRectRight, double maskRectTop, EngineLayer oldLayer, Shader shader);
-    virtual void _pushPhysicalShape(int clipBehavior, int color, double elevation, EngineLayer oldLayer, EngineLayer outEngineLayer, Path path, int shadowColor);
+    virtual void _pushOffset(EngineLayer layer, double dx, double dy, EngineLayer oldLayer);
+    virtual void _pushClipRect(EngineLayer outEngineLayer, double left, double right, double top, double bottom, int clipBehavior, EngineLayer oldLayer);
+    virtual void _pushClipRRect(EngineLayer layer, Float32List rrect, int clipBehavior, EngineLayer oldLayer);
+    virtual void _pushClipPath(EngineLayer layer, Path path, int clipBehavior, EngineLayer oldLayer);
+    virtual void _pushOpacity(EngineLayer layer, int alpha, double dx, double dy, EngineLayer oldLayer);
+    virtual void _pushColorFilter(EngineLayer layer, _ColorFilter filter, EngineLayer oldLayer);
+    virtual void _pushImageFilter(EngineLayer outEngineLayer, _ImageFilter filter, EngineLayer oldLayer);
+    virtual void _pushBackdropFilter(EngineLayer outEngineLayer, _ImageFilter filter, int blendMode, EngineLayer oldLayer);
+    virtual void _pushShaderMask(EngineLayer engineLayer, Shader shader, double maskRectLeft, double maskRectRight, double maskRectTop, double maskRectBottom, int blendMode, int filterQualityIndex, EngineLayer oldLayer);
+    virtual void _pushPhysicalShape(EngineLayer outEngineLayer, Path path, double elevation, int color, int shadowColor, int clipBehavior, EngineLayer oldLayer);
     virtual void _pop();
     virtual void _addRetained(EngineLayer retainedLayer);
-    virtual void _addPerformanceOverlay(double bottom, int enabledOptions, double left, double right, double top);
-    virtual void _addPicture(double dx, double dy, int hints, Picture picture);
-    virtual void _addTexture(double dx, double dy, int filterQuality, bool freeze, double height, int textureId, double width);
-    virtual void _addPlatformView(double dx, double dy, double height, int viewId, double width);
+    virtual void _addPerformanceOverlay(int enabledOptions, double left, double right, double top, double bottom);
+    virtual void _addPicture(double dx, double dy, Picture picture, int hints);
+    virtual void _addTexture(double dx, double dy, double width, double height, int textureId, bool freeze, int filterQuality);
+    virtual void _addPlatformView(double dx, double dy, double width, double height, int viewId);
     virtual void _build(Scene outScene);
 };
 using SceneBuilder = std::shared_ptr<SceneBuilderCls>;

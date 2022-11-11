@@ -16,7 +16,7 @@ public:
     static int centeredIndent;
 
 
-     LicenseParagraphCls(int indent, String text);
+     LicenseParagraphCls(String text, int indent);
 private:
 
 };

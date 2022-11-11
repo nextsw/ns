@@ -30,7 +30,7 @@ public:
 
     virtual void paint(PaintingContext context, Offset offset);
 
-    virtual bool hitTestChildren(Offset position, BoxHitTestResult result);
+    virtual bool hitTestChildren(BoxHitTestResult result, Offset position);
 
 private:
 
@@ -340,7 +340,7 @@ public:
 
     virtual BoxConstraints getConstraintsForChild(BoxConstraints constraints);
 
-    virtual Offset getPositionForChild(Size childSize, Size size);
+    virtual Offset getPositionForChild(Size size, Size childSize);
 
     virtual bool shouldRelayout(SingleChildLayoutDelegate oldDelegate);
 private:

@@ -1,5 +1,5 @@
 #include "localizations.hpp"
-Future<Map<Type, dynamic>> _loadAll(Iterable<LocalizationsDelegate<dynamic>> allDelegates, Locale locale) {
+Future<Map<Type, dynamic>> _loadAll(Locale locale, Iterable<LocalizationsDelegate<dynamic>> allDelegates) {
     Map<Type, dynamic> output = makeMap(makeList(), makeList();
     List<_Pending> pendingList;
     Set<Type> types = makeSet();
@@ -21,7 +21,7 @@ Future<Map<Type, dynamic>> _loadAll(Iterable<LocalizationsDelegate<dynamic>> all
             assert(!output->containsKey(type));
             output[type] = completedValue;
         } else {
-            pendingList = makeList();
+            pendingList |= makeList();
             pendingList->add(make<_PendingCls>(delegate, futureValue));
         }
     }
@@ -32,7 +32,7 @@ Future<Map<Type, dynamic>> _loadAll(Iterable<LocalizationsDelegate<dynamic>> all
         p->futureValue;
     }))-><Map<Type, dynamic>>then([=] (List<dynamic> values) {
         assert(values->length == pendingList!->length());
-        for (;  < values->length; i = 1) {
+        for (;  < values->length; i += 1) {
             Type type = pendingList![i]->delegate->type();
             assert(!output->containsKey(type));
             output[type] = values[i];
@@ -106,7 +106,7 @@ void LocalizationsCls::override(Widget child, BuildContext context, List<Localiz
     if (delegates != nullptr) {
         mergedDelegates->insertAll(0, delegates);
     }
-    return make<LocalizationsCls>(key, locale or LocalizationsCls->localeOf(context), mergedDelegates, child);
+    return make<LocalizationsCls>(key, locale | LocalizationsCls->localeOf(context), mergedDelegates, child);
 }
 
 Locale LocalizationsCls::localeOf(BuildContext context) {
@@ -218,7 +218,7 @@ bool _LocalizationsStateCls::_anyDelegatesShouldReload(Localizations old) {
     }
     List<LocalizationsDelegate<dynamic>> delegates = widget->delegates->toList();
     List<LocalizationsDelegate<dynamic>> oldDelegates = old->delegates->toList();
-    for (;  < delegates->length(); i = 1) {
+    for (;  < delegates->length(); i += 1) {
         LocalizationsDelegate<dynamic> delegate = delegates[i];
         LocalizationsDelegate<dynamic> oldDelegate = oldDelegates[i];
         if (delegate->runtimeType != oldDelegate->runtimeType || delegate->shouldReload(oldDelegate)) {

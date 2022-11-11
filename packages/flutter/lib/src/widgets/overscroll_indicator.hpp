@@ -96,7 +96,7 @@ public:
 
     virtual void absorbImpact(double velocity);
 
-    virtual void pull(double crossAxisOffset, double crossExtent, double extent, double overscroll);
+    virtual void pull(double overscroll, double extent, double crossAxisOffset, double crossExtent);
 
     virtual void scrollEnd();
 
@@ -193,7 +193,7 @@ public:
 private:
 
      _GlowingOverscrollIndicatorPainterCls(AxisDirection axisDirection, _GlowController leadingController, Unknown repaint, _GlowController trailingController);
-    virtual void _paintSide(AxisDirection axisDirection, Canvas canvas, _GlowController controller, GrowthDirection growthDirection, Size size);
+    virtual void _paintSide(Canvas canvas, Size size, _GlowController controller, AxisDirection axisDirection, GrowthDirection growthDirection);
 
 };
 using _GlowingOverscrollIndicatorPainter = std::shared_ptr<_GlowingOverscrollIndicatorPainterCls>;

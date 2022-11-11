@@ -9,7 +9,7 @@ AndroidViewController PlatformViewsServiceCls::initAndroidView(dynamic creationP
     assert(layoutDirection != nullptr);
     assert(creationParams == nullptr || creationParamsCodec != nullptr);
     TextureAndroidViewController controller = TextureAndroidViewControllerCls->_(id, viewType, layoutDirection, creationParams, creationParamsCodec);
-    _instance->_focusCallbacks[id] = onFocus or [=] () {
+    _instance->_focusCallbacks[id] = onFocus | [=] () {
     };
     return controller;
 }
@@ -20,14 +20,14 @@ SurfaceAndroidViewController PlatformViewsServiceCls::initSurfaceAndroidView(dyn
     assert(layoutDirection != nullptr);
     assert(creationParams == nullptr || creationParamsCodec != nullptr);
     SurfaceAndroidViewController controller = SurfaceAndroidViewControllerCls->_(id, viewType, layoutDirection, creationParams, creationParamsCodec);
-    _instance->_focusCallbacks[id] = onFocus or [=] () {
+    _instance->_focusCallbacks[id] = onFocus | [=] () {
     };
     return controller;
 }
 
 ExpensiveAndroidViewController PlatformViewsServiceCls::initExpensiveAndroidView(dynamic creationParams, MessageCodec<dynamic> creationParamsCodec, int id, TextDirection layoutDirection, VoidCallback onFocus, String viewType) {
     ExpensiveAndroidViewController controller = ExpensiveAndroidViewControllerCls->_(id, viewType, layoutDirection, creationParams, creationParamsCodec);
-    _instance->_focusCallbacks[id] = onFocus or [=] () {
+    _instance->_focusCallbacks[id] = onFocus | [=] () {
     };
     return controller;
 }
@@ -213,7 +213,7 @@ void _AndroidMotionEventConverterCls::_remove(int pointer) {
     }
 }
 
-int AndroidViewControllerCls::pointerAction(int action, int pointerId) {
+int AndroidViewControllerCls::pointerAction(int pointerId, int action) {
     return ((pointerId << 8) & 0xff00) | (action & 0xff);
 }
 

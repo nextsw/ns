@@ -4,12 +4,12 @@ void AnimationLazyListenerMixinCls::didRegisterListener() {
     if (_listenerCounter == 0) {
         didStartListening();
     }
-    _listenerCounter = 1;
+    _listenerCounter += 1;
 }
 
 void AnimationLazyListenerMixinCls::didUnregisterListener() {
     assert(_listenerCounter >= 1);
-    _listenerCounter = 1;
+    _listenerCounter -= 1;
     if (_listenerCounter == 0) {
         didStopListening();
     }

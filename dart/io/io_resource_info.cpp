@@ -18,7 +18,7 @@ _IOResourceInfoCls::_IOResourceInfoCls(String type) {
 }
 
 void _ReadWriteResourceInfoCls::addRead(int bytes) {
-    readBytes = bytes;
+    readBytes += bytes;
     readCount++;
     lastReadTime = _IOResourceInfoCls::timestamp;
 }
@@ -28,7 +28,7 @@ void _ReadWriteResourceInfoCls::didRead() {
 }
 
 void _ReadWriteResourceInfoCls::addWrite(int bytes) {
-    writeBytes = bytes;
+    writeBytes += bytes;
     writeCount++;
     lastWriteTime = _IOResourceInfoCls::timestamp;
 }

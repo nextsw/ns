@@ -15,7 +15,7 @@ class SliverPersistentHeaderDelegateCls : public ObjectCls {
 public:
 
      SliverPersistentHeaderDelegateCls();
-    virtual Widget build(BuildContext context, bool overlapsContent, double shrinkOffset);
+    virtual Widget build(BuildContext context, double shrinkOffset, bool overlapsContent);
     virtual double minExtent();
     virtual double maxExtent();
     virtual TickerProvider vsync();
@@ -94,7 +94,7 @@ public:
 
     virtual _RenderSliverPersistentHeaderForWidgetsMixin renderObject();
 
-    virtual void mount(Object newSlot, Element parent);
+    virtual void mount(Element parent, Object newSlot);
 
     virtual void unmount();
 
@@ -106,7 +106,7 @@ public:
 
     virtual void insertRenderObjectChild(RenderBox child, Object slot);
 
-    virtual void moveRenderObjectChild(RenderObject child, Object newSlot, Object oldSlot);
+    virtual void moveRenderObjectChild(RenderObject child, Object oldSlot, Object newSlot);
 
     virtual void removeRenderObjectChild(RenderObject child, Object slot);
 
@@ -114,9 +114,9 @@ public:
 
 private:
 
-     _SliverPersistentHeaderElementCls(bool floating, _SliverPersistentHeaderRenderObjectWidget widget);
+     _SliverPersistentHeaderElementCls(_SliverPersistentHeaderRenderObjectWidget widget, bool floating);
 
-    virtual void _build(bool overlapsContent, double shrinkOffset);
+    virtual void _build(double shrinkOffset, bool overlapsContent);
 
 };
 using _SliverPersistentHeaderElement = std::shared_ptr<_SliverPersistentHeaderElementCls>;
@@ -147,7 +147,7 @@ public:
 
     virtual double maxExtent();
 
-    virtual void updateChild(bool overlapsContent, double shrinkOffset);
+    virtual void updateChild(double shrinkOffset, bool overlapsContent);
 
     virtual void triggerRebuild();
 

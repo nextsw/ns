@@ -30,10 +30,10 @@ public:
 
     virtual Path getOuterPath(Rect rect, TextDirection textDirection);
 
-    virtual void paint(BorderRadius borderRadius, Canvas canvas, Rect rect, BoxShape shape, TextDirection textDirection) override;
+    virtual void paint(Canvas canvas, Rect rect, BorderRadius borderRadius, BoxShape shape, TextDirection textDirection) override;
 private:
 
-    static void _paintUniformBorderWithRadius(BorderRadius borderRadius, Canvas canvas, Rect rect, BorderSide side);
+    static void _paintUniformBorderWithRadius(Canvas canvas, Rect rect, BorderSide side, BorderRadius borderRadius);
 
     static void _paintUniformBorderWithCircle(Canvas canvas, Rect rect, BorderSide side);
 
@@ -77,7 +77,7 @@ public:
 
     static Border lerp(Border a, Border b, double t);
 
-    virtual void paint(BorderRadius borderRadius, Canvas canvas, Rect rect, BoxShape shape, TextDirection textDirection);
+    virtual void paint(Canvas canvas, Rect rect, BorderRadius borderRadius, BoxShape shape, TextDirection textDirection);
 
     virtual bool operator==(Object other);
 
@@ -127,7 +127,7 @@ public:
 
     static BorderDirectional lerp(BorderDirectional a, BorderDirectional b, double t);
 
-    virtual void paint(BorderRadius borderRadius, Canvas canvas, Rect rect, BoxShape shape, TextDirection textDirection);
+    virtual void paint(Canvas canvas, Rect rect, BorderRadius borderRadius, BoxShape shape, TextDirection textDirection);
 
     virtual bool operator==(Object other);
 

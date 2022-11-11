@@ -102,11 +102,11 @@ public:
 
     virtual int selectedItem();
 
-    virtual Future<void> animateToItem(Curve curve, Duration duration, int itemIndex);
+    virtual Future<void> animateToItem(int itemIndex, Curve curve, Duration duration);
 
     virtual void jumpToItem(int itemIndex);
 
-    virtual ScrollPosition createScrollPosition(ScrollContext context, ScrollPosition oldPosition, ScrollPhysics physics);
+    virtual ScrollPosition createScrollPosition(ScrollPhysics physics, ScrollContext context, ScrollPosition oldPosition);
 
 private:
 
@@ -127,7 +127,7 @@ private:
 using FixedExtentMetrics = std::shared_ptr<FixedExtentMetricsCls>;
 int _getItemFromOffset(double itemExtent, double maxScrollExtent, double minScrollExtent, double offset);
 
-double _clipOffsetToScrollableRange(double maxScrollExtent, double minScrollExtent, double offset);
+double _clipOffsetToScrollableRange(double offset, double minScrollExtent, double maxScrollExtent);
 
 
 class _FixedExtentScrollPositionCls : public ScrollPositionWithSingleContextCls {
@@ -266,15 +266,15 @@ public:
 
     virtual bool childExistsAt(int index);
 
-    virtual void createChild(RenderBox after, int index);
+    virtual void createChild(int index, RenderBox after);
 
     virtual void removeChild(RenderBox child);
 
-    virtual Element updateChild(Element child, Object newSlot, Widget newWidget);
+    virtual Element updateChild(Element child, Widget newWidget, Object newSlot);
 
     virtual void insertRenderObjectChild(RenderObject child, int slot);
 
-    virtual void moveRenderObjectChild(RenderObject child, int newSlot, int oldSlot);
+    virtual void moveRenderObjectChild(RenderObject child, int oldSlot, int newSlot);
 
     virtual void removeRenderObjectChild(RenderObject child, int slot);
 

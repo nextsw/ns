@@ -58,7 +58,7 @@ public:
 
     virtual String debugToolkit();
     virtual KeyboardSide getModifierSide(ModifierKey key);
-    virtual bool isModifierPressed(bool isDown, ModifierKey key, int keyCode, int modifiers, KeyboardSide side);
+    virtual bool isModifierPressed(ModifierKey key, int modifiers, bool isDown, int keyCode, KeyboardSide side);
     virtual LogicalKeyboardKey numpadKey(int keyCode);
     virtual LogicalKeyboardKey logicalKey(int keyCode);
     virtual int platformPlane();
@@ -84,7 +84,7 @@ public:
 
     virtual String debugToolkit();
 
-    virtual bool isModifierPressed(bool isDown, ModifierKey key, int keyCode, int modifiers, KeyboardSide side);
+    virtual bool isModifierPressed(ModifierKey key, int modifiers, bool isDown, int keyCode, KeyboardSide side);
 
     virtual KeyboardSide getModifierSide(ModifierKey key);
 
@@ -118,7 +118,7 @@ public:
 
     virtual String debugToolkit();
 
-    virtual bool isModifierPressed(bool isDown, ModifierKey key, int keyCode, int modifiers, KeyboardSide side);
+    virtual bool isModifierPressed(ModifierKey key, int modifiers, bool isDown, int keyCode, KeyboardSide side);
 
     virtual KeyboardSide getModifierSide(ModifierKey key);
 

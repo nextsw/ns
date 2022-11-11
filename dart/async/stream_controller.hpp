@@ -30,7 +30,7 @@ public:
     virtual void addError(Object error, StackTrace stackTrace);
     virtual Future close();
     virtual Future done();
-    virtual Future addStream(bool cancelOnError, Stream<T> source);
+    virtual Future addStream(Stream<T> source, bool cancelOnError);
 private:
 
 };
@@ -56,7 +56,7 @@ public:
 
 private:
 
-    virtual StreamSubscription<T> _subscribe(bool cancelOnError, std::function<void(T data)> onData, std::function<void()> onDone, std::function<void ()> onError);
+    virtual StreamSubscription<T> _subscribe(std::function<void(T data)> onData, std::function<void ()> onError, std::function<void()> onDone, bool cancelOnError);
     virtual void _recordPause(StreamSubscription<T> subscription);
 
     virtual void _recordResume(StreamSubscription<T> subscription);
@@ -99,7 +99,7 @@ public:
 
     virtual bool isPaused();
 
-    virtual Future addStream(bool cancelOnError, Stream<T> source);
+    virtual Future addStream(Stream<T> source, bool cancelOnError);
 
     virtual Future<void> done();
 
@@ -129,7 +129,7 @@ private:
     _Future<void> _doneFuture;
 
 
-     _StreamControllerCls(std::function<FutureOr<void>()> onCancel, std::function<void()> onListen, std::function<void()> onPause, std::function<void()> onResume);
+     _StreamControllerCls(std::function<void()> onListen, std::function<void()> onPause, std::function<void()> onResume, std::function<FutureOr<void>()> onCancel);
     virtual bool _isCanceled();
 
     virtual bool _isInitialState();
@@ -156,7 +156,7 @@ private:
 
     virtual void _close();
 
-    virtual StreamSubscription<T> _subscribe(bool cancelOnError, std::function<void(T data)> onData, std::function<void()> onDone, std::function<void ()> onError);
+    virtual StreamSubscription<T> _subscribe(std::function<void(T data)> onData, std::function<void ()> onError, std::function<void()> onDone, bool cancelOnError);
 
     virtual Future<void> _recordCancel(StreamSubscription<T> subscription);
 
@@ -235,7 +235,7 @@ private:
 
 
      _ControllerStreamCls(_StreamControllerLifecycle<T> _controller);
-    virtual StreamSubscription<T> _createSubscription(bool cancelOnError, std::function<void(T data)> onData, std::function<void()> onDone, std::function<void ()> onError);
+    virtual StreamSubscription<T> _createSubscription(std::function<void(T data)> onData, std::function<void ()> onError, std::function<void()> onDone, bool cancelOnError);
 
 };
 template<typename T>
@@ -249,7 +249,7 @@ private:
     _StreamControllerLifecycle<T> _controller;
 
 
-     _ControllerSubscriptionCls(_StreamControllerLifecycle<T> _controller, bool cancelOnError, std::function<void(T data)> onData, std::function<void()> onDone, std::function<void ()> onError);
+     _ControllerSubscriptionCls(_StreamControllerLifecycle<T> _controller, std::function<void(T data)> onData, std::function<void ()> onError, std::function<void()> onDone, bool cancelOnError);
 
     virtual Future<void> _onCancel();
 
@@ -304,7 +304,7 @@ public:
 
 private:
 
-     _AddStreamStateCls(bool cancelOnError, _EventSink<T> controller, Stream<T> source);
+     _AddStreamStateCls(_EventSink<T> controller, Stream<T> source, bool cancelOnError);
 
 };
 template<typename T>
@@ -318,7 +318,7 @@ public:
 
 private:
 
-     _StreamControllerAddStreamStateCls(bool cancelOnError, _StreamController<T> controller, Stream<T> source, auto varData);
+     _StreamControllerAddStreamStateCls(_StreamController<T> controller, auto varData, Stream<T> source, bool cancelOnError);
 
 };
 template<typename T>

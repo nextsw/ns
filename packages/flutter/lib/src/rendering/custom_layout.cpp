@@ -61,7 +61,7 @@ DiagnosticsNode MultiChildLayoutDelegateCls::_debugDescribeChild(RenderBox child
     return <RenderBox>make<DiagnosticsPropertyCls>(__s("${childParentData.id}"), child);
 }
 
-void MultiChildLayoutDelegateCls::_callPerformLayout(RenderBox firstChild, Size size) {
+void MultiChildLayoutDelegateCls::_callPerformLayout(Size size, RenderBox firstChild) {
     Map<Object, RenderBox> previousIdToChild = _idToChild;
     Set<RenderBox> debugPreviousChildrenNeedingLayout;
     assert([=] () {
@@ -194,7 +194,7 @@ void RenderCustomMultiChildLayoutBoxCls::paint(PaintingContext context, Offset o
     defaultPaint(context, offset);
 }
 
-bool RenderCustomMultiChildLayoutBoxCls::hitTestChildren(Offset position, BoxHitTestResult result) {
+bool RenderCustomMultiChildLayoutBoxCls::hitTestChildren(BoxHitTestResult result, Offset position) {
     return defaultHitTestChildren(resultposition);
 }
 

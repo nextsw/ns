@@ -14,7 +14,7 @@ public:
 
     static void max(Vector2 a, Vector2 b, Vector2 result);
 
-    static void mix(double a, Vector2 max, Vector2 min, Vector2 result);
+    static void mix(Vector2 min, Vector2 max, double a, Vector2 result);
 
      Vector2Cls(double x, double y);
 
@@ -87,7 +87,7 @@ public:
 
     virtual double cross(Vector2 other);
 
-    virtual Vector2 scaleOrthogonalInto(Vector2 out, double scale);
+    virtual Vector2 scaleOrthogonalInto(double scale, Vector2 out);
 
     virtual void reflect(Vector2 normal);
 
@@ -119,9 +119,9 @@ public:
 
     virtual void absolute();
 
-    virtual void clamp(Vector2 max, Vector2 min);
+    virtual void clamp(Vector2 min, Vector2 max);
 
-    virtual void clampScalar(double max, double min);
+    virtual void clampScalar(double min, double max);
 
     virtual void floor();
 

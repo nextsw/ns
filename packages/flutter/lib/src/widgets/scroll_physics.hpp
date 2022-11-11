@@ -25,11 +25,11 @@ public:
 
     virtual ScrollPhysics applyTo(ScrollPhysics ancestor);
 
-    virtual double applyPhysicsToUserOffset(double offset, ScrollMetrics position);
+    virtual double applyPhysicsToUserOffset(ScrollMetrics position, double offset);
 
     virtual bool shouldAcceptUserOffset(ScrollMetrics position);
 
-    virtual bool recommendDeferredLoading(BuildContext context, ScrollMetrics metrics, double velocity);
+    virtual bool recommendDeferredLoading(double velocity, ScrollMetrics metrics, BuildContext context);
 
     virtual double applyBoundaryConditions(ScrollMetrics position, double value);
 
@@ -85,7 +85,7 @@ public:
 
     virtual double frictionFactor(double overscrollFraction);
 
-    virtual double applyPhysicsToUserOffset(double offset, ScrollMetrics position);
+    virtual double applyPhysicsToUserOffset(ScrollMetrics position, double offset);
 
     virtual double applyBoundaryConditions(ScrollMetrics position, double value);
 
@@ -99,7 +99,7 @@ public:
 
 private:
 
-    static double _applyFriction(double absDelta, double extentOutside, double gamma);
+    static double _applyFriction(double extentOutside, double absDelta, double gamma);
 
 };
 using BouncingScrollPhysics = std::shared_ptr<BouncingScrollPhysicsCls>;

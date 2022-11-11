@@ -3,7 +3,7 @@ ForcePressDetailsCls::ForcePressDetailsCls(Offset globalPosition, Offset localPo
     {
         assert(globalPosition != nullptr);
         assert(pressure != nullptr);
-        localPosition = localPosition or globalPosition;
+        localPosition = localPosition | globalPosition;
     }
 }
 
@@ -108,7 +108,7 @@ String ForcePressGestureRecognizerCls::debugDescription() {
     return __s("force press");
 }
 
-double ForcePressGestureRecognizerCls::_inverseLerp(double max, double min, double t) {
+double ForcePressGestureRecognizerCls::_inverseLerp(double min, double max, double t) {
     assert(min <= max);
     double value = (t - min) / (max - min);
     if (!value->isNaN) {

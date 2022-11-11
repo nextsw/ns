@@ -4,7 +4,7 @@ String IsolateSpawnExceptionCls::toString() {
 }
 
 Capability IsolateCls::pause(Capability resumeCapability) {
-    resumeCapability = make<CapabilityCls>();
+    resumeCapability |= make<CapabilityCls>();
     _pause(resumeCapability);
     return resumeCapability;
 }

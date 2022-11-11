@@ -2,14 +2,14 @@
 TapDownDetailsCls::TapDownDetailsCls(Offset globalPosition, PointerDeviceKind kind, Offset localPosition) {
     {
         assert(globalPosition != nullptr);
-        localPosition = localPosition or globalPosition;
+        localPosition = localPosition | globalPosition;
     }
 }
 
 TapUpDetailsCls::TapUpDetailsCls(Offset globalPosition, PointerDeviceKind kind, Offset localPosition) {
     {
         assert(globalPosition != nullptr);
-        localPosition = localPosition or globalPosition;
+        localPosition = localPosition | globalPosition;
     }
 }
 

@@ -7,7 +7,7 @@ void Vector4Cls::max(Vector4 a, Vector4 b, Vector4 result) {
     auto _c1 = result;_c1.x = auto _c2 = math->max(a->x, b->x);_c2.y = auto _c3 = math->max(a->y, b->y);_c3.z = auto _c4 = math->max(a->z, b->z);_c4.w = math->max(a->w, b->w);_c4;_c3;_c2;_c1;
 }
 
-void Vector4Cls::mix(double a, Vector4 max, Vector4 min, Vector4 result) {
+void Vector4Cls::mix(Vector4 min, Vector4 max, double a, Vector4 result) {
     auto _c1 = result;_c1.x = auto _c2 = min->x + a * (max->x - min->x);_c2.y = auto _c3 = min->y + a * (max->y - min->y);_c3.z = auto _c4 = min->z + a * (max->z - min->z);_c4.w = min->w + a * (max->w - min->w);_c4;_c3;_c2;_c1;
 }
 
@@ -15,7 +15,7 @@ Float64List Vector4Cls::storage() {
     return _v4storage;
 }
 
-Vector4Cls::Vector4Cls(double w, double x, double y, double z) {
+Vector4Cls::Vector4Cls(double x, double y, double z, double w) {
 }
 
 void Vector4Cls::array(List<double> array, int offset) {
@@ -39,11 +39,11 @@ void Vector4Cls::copy(Vector4 other) {
 void Vector4Cls::fromBuffer(ByteBuffer buffer, int offset)
 
 void Vector4Cls::random(Random rng) {
-    auto _c1 = Vector4Cls->zero();_c1.copyFromArray(array, offset);auto _c1 = Vector4Cls->zero();_c1.setIdentity();auto _c1 = Vector4Cls->zero();_c1.splat(value);auto _c1 = Vector4Cls->zero();_c1.setFrom(other);rng = math->make<RandomCls>();
+    auto _c1 = Vector4Cls->zero();_c1.copyFromArray(array, offset);auto _c1 = Vector4Cls->zero();_c1.setIdentity();auto _c1 = Vector4Cls->zero();_c1.splat(value);auto _c1 = Vector4Cls->zero();_c1.setFrom(other);rng |= math->make<RandomCls>();
     return make<Vector4Cls>(rng->nextDouble(), rng->nextDouble(), rng->nextDouble(), rng->nextDouble());
 }
 
-void Vector4Cls::setValues(double w_, double x_, double y_, double z_) {
+void Vector4Cls::setValues(double x_, double y_, double z_, double w_) {
     _v4storage[3] = w_;
     _v4storage[2] = z_;
     _v4storage[1] = y_;
@@ -128,10 +128,10 @@ void Vector4Cls::length(double value) {
             return;
         }
         l = value / l;
-        _v4storage[0] = l;
-        _v4storage[1] = l;
-        _v4storage[2] = l;
-        _v4storage[3] = l;
+        _v4storage[0] *= l;
+        _v4storage[1] *= l;
+        _v4storage[2] *= l;
+        _v4storage[3] *= l;
     }
 }
 
@@ -142,9 +142,9 @@ double Vector4Cls::length() {
 double Vector4Cls::length2() {
     double sum;
     sum = _v4storage[0] * _v4storage[0];
-    sum = _v4storage[1] * _v4storage[1];
-    sum = _v4storage[2] * _v4storage[2];
-    sum = _v4storage[3] * _v4storage[3];
+    sum += _v4storage[1] * _v4storage[1];
+    sum += _v4storage[2] * _v4storage[2];
+    sum += _v4storage[3] * _v4storage[3];
     return sum;
 }
 
@@ -154,10 +154,10 @@ double Vector4Cls::normalize() {
         return 0.0;
     }
     Unknown d = 1.0 / l;
-    _v4storage[0] = d;
-    _v4storage[1] = d;
-    _v4storage[2] = d;
-    _v4storage[3] = d;
+    _v4storage[0] *= d;
+    _v4storage[1] *= d;
+    _v4storage[2] *= d;
+    _v4storage[3] *= d;
     return l;
 }
 
@@ -191,9 +191,9 @@ double Vector4Cls::dot(Vector4 other) {
     Unknown otherStorage = other->_v4storage;
     double sum;
     sum = _v4storage[0] * otherStorage[0];
-    sum = _v4storage[1] * otherStorage[1];
-    sum = _v4storage[2] * otherStorage[2];
-    sum = _v4storage[3] * otherStorage[3];
+    sum += _v4storage[1] * otherStorage[1];
+    sum += _v4storage[2] * otherStorage[2];
+    sum += _v4storage[3] * otherStorage[3];
     return sum;
 }
 
@@ -302,7 +302,7 @@ void Vector4Cls::absolute() {
     _v4storage[0] = _v4storage[0]->abs();
 }
 
-void Vector4Cls::clamp(Vector4 max, Vector4 min) {
+void Vector4Cls::clamp(Vector4 min, Vector4 max) {
     Unknown minStorage = min->storage();
     Unknown maxStorage = max->storage();
     _v4storage[0] = _v4storage[0]->clamp(minStorage[0], maxStorage[0])->toDouble();
@@ -311,7 +311,7 @@ void Vector4Cls::clamp(Vector4 max, Vector4 min) {
     _v4storage[3] = _v4storage[3]->clamp(minStorage[3], maxStorage[3])->toDouble();
 }
 
-void Vector4Cls::clampScalar(double max, double min) {
+void Vector4Cls::clampScalar(double min, double max) {
     _v4storage[0] = _v4storage[0]->clamp(min, max)->toDouble();
     _v4storage[1] = _v4storage[1]->clamp(min, max)->toDouble();
     _v4storage[2] = _v4storage[2]->clamp(min, max)->toDouble();

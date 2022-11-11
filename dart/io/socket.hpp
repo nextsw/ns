@@ -71,7 +71,7 @@ using NetworkInterface = std::shared_ptr<NetworkInterfaceCls>;
 class RawServerSocketCls : public ObjectCls {
 public:
 
-    static Future<RawServerSocket> bind(address , int backlog, int port, bool shared, bool v6Only);
+    static Future<RawServerSocket> bind(address , int port, int backlog, bool shared, bool v6Only);
     virtual int port();
     virtual InternetAddress address();
     virtual Future<RawServerSocket> close();
@@ -83,14 +83,14 @@ using RawServerSocket = std::shared_ptr<RawServerSocketCls>;
 class ServerSocketCls : public ObjectCls {
 public:
 
-    static Future<ServerSocket> bind(address , int backlog, int port, bool shared, bool v6Only);
+    static Future<ServerSocket> bind(address , int port, int backlog, bool shared, bool v6Only);
 
     virtual int port();
     virtual InternetAddress address();
     virtual Future<ServerSocket> close();
 private:
 
-    static Future<ServerSocket> _bind(address , int backlog, int port, bool shared, bool v6Only);
+    static Future<ServerSocket> _bind(address , int port, int backlog, bool shared, bool v6Only);
 };
 using ServerSocket = std::shared_ptr<ServerSocketCls>;
 
@@ -209,7 +209,7 @@ private:
     std::function<void()> _onCancel;
 
 
-    virtual void  _(std::function<void()> onCancel, Future<S> socket);
+    virtual void  _(Future<S> socket, std::function<void()> onCancel);
 
 };
 template<typename S>
@@ -222,20 +222,20 @@ public:
     bool writeEventsEnabled;
 
 
-    static Future<RawSocket> connect(host , sourceAddress , int port, int sourcePort, Duration timeout);
-    static Future<ConnectionTask<RawSocket>> startConnect(host , sourceAddress , int port, int sourcePort);
+    static Future<RawSocket> connect(host , int port, sourceAddress , int sourcePort, Duration timeout);
+    static Future<ConnectionTask<RawSocket>> startConnect(host , int port, sourceAddress , int sourcePort);
     virtual int available();
     virtual Uint8List read(int len);
     virtual SocketMessage readMessage(int count);
-    virtual int write(List<int> buffer, int count, int offset);
-    virtual int sendMessage(List<SocketControlMessage> controlMessages, int count, List<int> data, int offset);
+    virtual int write(List<int> buffer, int offset, int count);
+    virtual int sendMessage(List<SocketControlMessage> controlMessages, List<int> data, int offset, int count);
     virtual int port();
     virtual int remotePort();
     virtual InternetAddress address();
     virtual InternetAddress remoteAddress();
     virtual Future<RawSocket> close();
     virtual void shutdown(SocketDirection direction);
-    virtual bool setOption(bool enabled, SocketOption option);
+    virtual bool setOption(SocketOption option, bool enabled);
     virtual Uint8List getRawOption(RawSocketOption option);
     virtual void setRawOption(RawSocketOption option);
 private:
@@ -246,12 +246,12 @@ using RawSocket = std::shared_ptr<RawSocketCls>;
 class SocketCls : public ObjectCls {
 public:
 
-    static Future<Socket> connect(host , sourceAddress , int port, int sourcePort, Duration timeout);
+    static Future<Socket> connect(host , int port, sourceAddress , int sourcePort, Duration timeout);
 
-    static Future<ConnectionTask<Socket>> startConnect(host , sourceAddress , int port, int sourcePort);
+    static Future<ConnectionTask<Socket>> startConnect(host , int port, sourceAddress , int sourcePort);
 
     virtual void destroy();
-    virtual bool setOption(bool enabled, SocketOption option);
+    virtual bool setOption(SocketOption option, bool enabled);
     virtual Uint8List getRawOption(RawSocketOption option);
     virtual void setRawOption(RawSocketOption option);
     virtual int port();
@@ -262,8 +262,8 @@ public:
     virtual Future done();
 private:
 
-    static Future<Socket> _connect(host , sourceAddress , int port, int sourcePort, Duration timeout);
-    static Future<ConnectionTask<Socket>> _startConnect(host , sourceAddress , int port, int sourcePort);
+    static Future<Socket> _connect(host , int port, sourceAddress , int sourcePort, Duration timeout);
+    static Future<ConnectionTask<Socket>> _startConnect(host , int port, sourceAddress , int sourcePort);
 };
 using Socket = std::shared_ptr<SocketCls>;
 
@@ -276,7 +276,7 @@ public:
     int port;
 
 
-     DatagramCls(InternetAddress address, Uint8List data, int port);
+     DatagramCls(Uint8List data, InternetAddress address, int port);
 private:
 
 };
@@ -320,7 +320,7 @@ public:
     List<SocketControlMessage> controlMessages;
 
 
-     SocketMessageCls(List<SocketControlMessage> controlMessages, Uint8List data);
+     SocketMessageCls(Uint8List data, List<SocketControlMessage> controlMessages);
 private:
 
 };
@@ -345,7 +345,7 @@ public:
     virtual int port();
     virtual InternetAddress address();
     virtual void close();
-    virtual int send(InternetAddress address, List<int> buffer, int port);
+    virtual int send(List<int> buffer, InternetAddress address, int port);
     virtual Datagram receive();
     virtual void joinMulticast(InternetAddress group, NetworkInterface interface);
     virtual void leaveMulticast(InternetAddress group, NetworkInterface interface);
@@ -367,7 +367,7 @@ public:
     int port;
 
 
-     SocketExceptionCls(InternetAddress address, String message, OSError osError, int port);
+     SocketExceptionCls(String message, InternetAddress address, OSError osError, int port);
     virtual void  closed();
 
     virtual String toString();

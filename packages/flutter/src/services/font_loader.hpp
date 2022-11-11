@@ -19,7 +19,7 @@ public:
 
     virtual Future<void> load();
 
-    virtual Future<void> loadFont(String family, Uint8List list);
+    virtual Future<void> loadFont(Uint8List list, String family);
 
 private:
     bool _loaded;

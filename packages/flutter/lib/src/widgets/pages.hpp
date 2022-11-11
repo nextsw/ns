@@ -28,7 +28,7 @@ private:
 };
 template<typename T>
 using PageRoute = std::shared_ptr<PageRouteCls<T>>;
-Widget _defaultTransitionsBuilder(Animation<double> animation, Widget child, BuildContext context, Animation<double> secondaryAnimation);
+Widget _defaultTransitionsBuilder(BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child);
 
 
 template<typename T>
@@ -55,9 +55,9 @@ public:
 
      PageRouteBuilderCls(Color barrierColor, bool barrierDismissible, String barrierLabel, Unknown fullscreenDialog, bool maintainState, bool opaque, RoutePageBuilder pageBuilder, Duration reverseTransitionDuration, Unknown settings, Duration transitionDuration, RouteTransitionsBuilder transitionsBuilder);
 
-    virtual Widget buildPage(Animation<double> animation, BuildContext context, Animation<double> secondaryAnimation);
+    virtual Widget buildPage(BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation);
 
-    virtual Widget buildTransitions(Animation<double> animation, Widget child, BuildContext context, Animation<double> secondaryAnimation);
+    virtual Widget buildTransitions(BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child);
 
 private:
 

@@ -8,7 +8,7 @@
 class _ChannelCallbackRecordCls : public ObjectCls {
 public:
 
-    virtual void invoke(PlatformMessageResponseCallback callbackArg, ByteData dataArg);
+    virtual void invoke(ByteData dataArg, PlatformMessageResponseCallback callbackArg);
 
 private:
     ChannelCallback _callback;
@@ -34,7 +34,7 @@ private:
     Zone _zone;
 
 
-     _StoredMessageCls(PlatformMessageResponseCallback _callback, ByteData data);
+     _StoredMessageCls(ByteData data, PlatformMessageResponseCallback _callback);
 
 };
 using _StoredMessage = std::shared_ptr<_StoredMessageCls>;
@@ -87,19 +87,19 @@ public:
 
 
      ChannelBuffersCls();
-    virtual void push(PlatformMessageResponseCallback callback, ByteData data, String name);
+    virtual void push(String name, ByteData data, PlatformMessageResponseCallback callback);
 
-    virtual void setListener(ChannelCallback callback, String name);
+    virtual void setListener(String name, ChannelCallback callback);
 
     virtual void clearListener(String name);
 
-    virtual Future<void> drain(DrainChannelCallback callback, String name);
+    virtual Future<void> drain(String name, DrainChannelCallback callback);
 
     virtual void handleMessage(ByteData data);
 
     virtual void resize(String name, int newSize);
 
-    virtual void allowOverflow(bool allowed, String name);
+    virtual void allowOverflow(String name, bool allowed);
 
 private:
     Map<String, _Channel> _channels;

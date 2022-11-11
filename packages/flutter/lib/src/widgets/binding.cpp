@@ -408,7 +408,7 @@ void RenderObjectToWidgetAdapterCls<T>::updateRenderObject(BuildContext context,
 }
 
 template<typename T>
-RenderObjectToWidgetElement<T> RenderObjectToWidgetAdapterCls<T>::attachToRenderTree(RenderObjectToWidgetElement<T> element, BuildOwner owner) {
+RenderObjectToWidgetElement<T> RenderObjectToWidgetAdapterCls<T>::attachToRenderTree(BuildOwner owner, RenderObjectToWidgetElement<T> element) {
     if (element == nullptr) {
         owner->lockState([=] () {
             element = createElement();
@@ -427,7 +427,7 @@ RenderObjectToWidgetElement<T> RenderObjectToWidgetAdapterCls<T>::attachToRender
 
 template<typename T>
 String RenderObjectToWidgetAdapterCls<T>::toStringShort() {
-    return debugShortDescription or super->toStringShort();
+    return debugShortDescription | super->toStringShort();
 }
 
 template<typename T>
@@ -445,7 +445,7 @@ void RenderObjectToWidgetElementCls<T>::forgetChild(Element child) {
 }
 
 template<typename T>
-void RenderObjectToWidgetElementCls<T>::mount(Object newSlot, Element parent) {
+void RenderObjectToWidgetElementCls<T>::mount(Element parent, Object newSlot) {
     assert(parent == nullptr);
     super->mount(parent, newSlot);
     _rebuild();
@@ -483,7 +483,7 @@ void RenderObjectToWidgetElementCls<T>::insertRenderObjectChild(RenderObject chi
 }
 
 template<typename T>
-void RenderObjectToWidgetElementCls<T>::moveRenderObjectChild(RenderObject child, Object newSlot, Object oldSlot) {
+void RenderObjectToWidgetElementCls<T>::moveRenderObjectChild(RenderObject child, Object oldSlot, Object newSlot) {
     assert(false);
 }
 

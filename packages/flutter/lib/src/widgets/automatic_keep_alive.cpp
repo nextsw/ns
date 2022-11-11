@@ -38,7 +38,7 @@ void _AutomaticKeepAliveStateCls::_updateChild() {
 
 bool _AutomaticKeepAliveStateCls::_addClient(KeepAliveNotification notification) {
     Listenable handle = notification->handle;
-    _handles = makeMap(makeList(), makeList();
+    _handles |= makeMap(makeList(), makeList();
     assert(!_handles!->containsKey(handle));
     _handles![handle] = _createCallback(handle);
     handle->addListener(_handles![handle]!);

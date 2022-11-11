@@ -16,7 +16,7 @@ ImplicitlyAnimatedWidgetState<ImplicitlyAnimatedWidget> TweenAnimationBuilderCls
 template<typename T>
 void _TweenAnimationBuilderStateCls<T>::initState() {
     _currentTween = widget->tween;
-    _currentTween!->begin = _currentTween!->end;
+    _currentTween!->begin |= _currentTween!->end;
     super->initState();
     if (_currentTween!->begin != _currentTween!->end) {
         controller->forward();

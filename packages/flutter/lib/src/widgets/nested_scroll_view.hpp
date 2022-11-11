@@ -56,7 +56,7 @@ public:
 
 private:
 
-    virtual List<Widget> _buildSlivers(bool bodyIsScrolled, BuildContext context, ScrollController innerController);
+    virtual List<Widget> _buildSlivers(BuildContext context, ScrollController innerController, bool bodyIsScrolled);
 
 };
 using NestedScrollView = std::shared_ptr<NestedScrollViewCls>;
@@ -96,7 +96,7 @@ public:
     SliverOverlapAbsorberHandle handle;
 
 
-    virtual Widget buildViewport(AxisDirection axisDirection, BuildContext context, ViewportOffset offset, List<Widget> slivers);
+    virtual Widget buildViewport(BuildContext context, ViewportOffset offset, AxisDirection axisDirection, List<Widget> slivers);
 
 private:
 
@@ -148,7 +148,7 @@ public:
 
     virtual void updateUserScrollDirection(ScrollDirection value);
 
-    virtual void beginActivity(_NestedScrollActivityGetter innerActivityGetter, ScrollActivity newOuterActivity);
+    virtual void beginActivity(ScrollActivity newOuterActivity, _NestedScrollActivityGetter innerActivityGetter);
 
     virtual AxisDirection axisDirection();
 
@@ -160,13 +160,13 @@ public:
 
     virtual ScrollActivity createInnerBallisticScrollActivity(_NestedScrollPosition position, double velocity);
 
-    virtual double unnestOffset(_NestedScrollPosition source, double value);
+    virtual double unnestOffset(double value, _NestedScrollPosition source);
 
-    virtual double nestOffset(_NestedScrollPosition target, double value);
+    virtual double nestOffset(double value, _NestedScrollPosition target);
 
     virtual void updateCanDrag();
 
-    virtual Future<void> animateTo(Curve curve, Duration duration, double to);
+    virtual Future<void> animateTo(double to, Curve curve, Duration duration);
 
     virtual void jumpTo(double to);
 
@@ -208,7 +208,7 @@ private:
     ScrollDragController _currentDrag;
 
 
-     _NestedScrollCoordinatorCls(bool _floatHeaderSlivers, VoidCallback _onHasScrolledBodyChanged, ScrollController _parent, NestedScrollViewState _state);
+     _NestedScrollCoordinatorCls(NestedScrollViewState _state, ScrollController _parent, VoidCallback _onHasScrolledBodyChanged, bool _floatHeaderSlivers);
 
     virtual _NestedScrollPosition _outerPosition();
 
@@ -226,7 +226,7 @@ public:
     _NestedScrollCoordinator coordinator;
 
 
-    virtual ScrollPosition createScrollPosition(ScrollContext context, ScrollPosition oldPosition, ScrollPhysics physics);
+    virtual ScrollPosition createScrollPosition(ScrollPhysics physics, ScrollContext context, ScrollPosition oldPosition);
 
     virtual void attach(ScrollPosition position);
 
@@ -265,7 +265,7 @@ public:
 
     virtual ScrollDirection userScrollDirection();
 
-    virtual DrivenScrollActivity createDrivenScrollActivity(Curve curve, Duration duration, double to);
+    virtual DrivenScrollActivity createDrivenScrollActivity(double to, Duration duration, Curve curve);
 
     virtual double applyUserOffset(double delta);
 
@@ -273,9 +273,9 @@ public:
 
     virtual void goBallistic(double velocity);
 
-    virtual ScrollActivity createBallisticScrollActivity(_NestedScrollMetrics metrics, _NestedBallisticScrollActivityMode mode, Simulation simulation);
+    virtual ScrollActivity createBallisticScrollActivity(Simulation simulation, _NestedScrollMetrics metrics, _NestedBallisticScrollActivityMode mode);
 
-    virtual Future<void> animateTo(Curve curve, Duration duration, double to);
+    virtual Future<void> animateTo(double to, Curve curve, Duration duration);
 
     virtual void jumpTo(double value);
 
@@ -347,7 +347,7 @@ public:
 
 private:
 
-     _NestedOuterBallisticScrollActivityCls(_NestedScrollCoordinator coordinator, _NestedScrollMetrics metrics, _NestedScrollPosition position, Simulation simulation, TickerProvider vsync);
+     _NestedOuterBallisticScrollActivityCls(_NestedScrollCoordinator coordinator, _NestedScrollPosition position, _NestedScrollMetrics metrics, Simulation simulation, TickerProvider vsync);
 
 };
 using _NestedOuterBallisticScrollActivity = std::shared_ptr<_NestedOuterBallisticScrollActivityCls>;
@@ -411,7 +411,7 @@ public:
 
     virtual void applyPaintTransform(RenderObject child, Matrix4 transform);
 
-    virtual bool hitTestChildren(double crossAxisPosition, double mainAxisPosition, SliverHitTestResult result);
+    virtual bool hitTestChildren(SliverHitTestResult result, double crossAxisPosition, double mainAxisPosition);
 
     virtual void paint(PaintingContext context, Offset offset);
 

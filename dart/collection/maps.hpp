@@ -15,9 +15,9 @@ private:
 
     static Object _id(Object x);
 
-    static void _fillMapWithMappedIterable(Iterable<Object> iterable, std::function<Object(Object element)> key, Map<Object, Object> map, std::function<Object(Object element)> value);
+    static void _fillMapWithMappedIterable(Map<Object, Object> map, Iterable<Object> iterable, std::function<Object(Object element)> key, std::function<Object(Object element)> value);
 
-    static void _fillMapWithIterables(Iterable<Object> keys, Map<Object, Object> map, Iterable<Object> values);
+    static void _fillMapWithIterables(Map<Object, Object> map, Iterable<Object> keys, Iterable<Object> values);
 
 };
 template<typename K, typename V>
@@ -41,9 +41,9 @@ public:
 
     virtual bool containsValue(Object value);
 
-    virtual V putIfAbsent(std::function<V()> ifAbsent, K key);
+    virtual V putIfAbsent(K key, std::function<V()> ifAbsent);
 
-    virtual V update(std::function<V()> ifAbsent, K key, std::function<V(V value)> update);
+    virtual V update(K key, std::function<V(V value)> update, std::function<V()> ifAbsent);
 
     virtual void updateAll(std::function<V(K key, V value)> update);
 
@@ -149,9 +149,9 @@ public:
 
     virtual void removeWhere(std::function<bool(K key, V value)> test);
 
-    virtual V putIfAbsent(std::function<V()> ifAbsent, K key);
+    virtual V putIfAbsent(K key, std::function<V()> ifAbsent);
 
-    virtual V update(std::function<V()> ifAbsent, K key, std::function<V(V value)> update);
+    virtual V update(K key, std::function<V(V value)> update, std::function<V()> ifAbsent);
 
     virtual void updateAll(std::function<V(K key, V value)> update);
 
@@ -178,7 +178,7 @@ public:
 
     virtual void clear();
 
-    virtual V putIfAbsent(std::function<V()> ifAbsent, K key);
+    virtual V putIfAbsent(K key, std::function<V()> ifAbsent);
 
     virtual bool containsKey(Object key);
 
@@ -207,7 +207,7 @@ public:
     template<typename K2, typename V2>
  virtual Map<K2, V2> map(std::function<MapEntry<K2, V2>(K key, V value)> transform);
 
-    virtual V update(std::function<V()> ifAbsent, K key, std::function<V(V value)> update);
+    virtual V update(K key, std::function<V(V value)> update, std::function<V()> ifAbsent);
 
     virtual void updateAll(std::function<V(K key, V value)> update);
 

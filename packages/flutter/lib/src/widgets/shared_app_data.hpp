@@ -16,14 +16,14 @@ public:
     virtual State<StatefulWidget> createState();
 
     template<typename K, typename V>
- static V getValue(BuildContext context, SharedAppDataInitCallback<V> init, K key);
+ static V getValue(BuildContext context, K key, SharedAppDataInitCallback<V> init);
 
     template<typename K, typename V>
  static void setValue(BuildContext context, K key, V value);
 
 private:
 
-    static bool _debugHasSharedAppData(BuildContext context, String methodName, _SharedAppModel model);
+    static bool _debugHasSharedAppData(_SharedAppModel model, BuildContext context, String methodName);
 
 };
 using SharedAppData = std::shared_ptr<SharedAppDataCls>;
@@ -36,7 +36,7 @@ public:
     virtual Widget build(BuildContext context);
 
     template<typename K, typename V>
- virtual V getValue(SharedAppDataInitCallback<V> init, K key);
+ virtual V getValue(K key, SharedAppDataInitCallback<V> init);
 
     template<typename K, typename V>
  virtual void setValue(K key, V value);
@@ -55,7 +55,7 @@ public:
 
     virtual bool updateShouldNotify(_SharedAppModel old);
 
-    virtual bool updateShouldNotifyDependent(Set<Object> keys, _SharedAppModel old);
+    virtual bool updateShouldNotifyDependent(_SharedAppModel old, Set<Object> keys);
 
 private:
 

@@ -35,7 +35,7 @@ public:
 
     virtual double pixelsToSize(double pixels);
 
-    virtual Future<void> animateTo(Curve curve, Duration duration, double size);
+    virtual Future<void> animateTo(double size, Curve curve, Duration duration);
 
     virtual void jumpTo(double size);
 
@@ -145,9 +145,9 @@ public:
 
     virtual void startActivity(VoidCallback onCanceled);
 
-    virtual void addPixelDelta(BuildContext context, double delta);
+    virtual void addPixelDelta(double delta, BuildContext context);
 
-    virtual void updateSize(BuildContext context, double newSize);
+    virtual void updateSize(double newSize, BuildContext context);
 
     virtual double pixelsToSize(double pixels);
 
@@ -205,7 +205,7 @@ public:
     VoidCallback onPositionDetached;
 
 
-    virtual _DraggableScrollableSheetScrollPosition createScrollPosition(ScrollContext context, ScrollPosition oldPosition, ScrollPhysics physics);
+    virtual _DraggableScrollableSheetScrollPosition createScrollPosition(ScrollPhysics physics, ScrollContext context, ScrollPosition oldPosition);
 
     virtual void debugFillDescription(List<String> description);
 
@@ -235,7 +235,7 @@ public:
 
     virtual void beginActivity(ScrollActivity newActivity);
 
-    virtual bool applyContentDimensions(double maxScrollSize, double minScrollSize);
+    virtual bool applyContentDimensions(double minScrollSize, double maxScrollSize);
 
     virtual void applyUserOffset(double delta);
 

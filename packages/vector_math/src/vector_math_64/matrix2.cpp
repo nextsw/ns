@@ -3,7 +3,7 @@ Float64List Matrix2Cls::storage() {
     return _m2storage;
 }
 
-void Matrix2Cls::solve(Matrix2 A, Vector2 b, Vector2 x) {
+void Matrix2Cls::solve(Matrix2 A, Vector2 x, Vector2 b) {
     Unknown a11 = A->entry(0, 0);
     Unknown a12 = A->entry(0, 1);
     Unknown a21 = A->entry(1, 0);
@@ -17,17 +17,17 @@ void Matrix2Cls::solve(Matrix2 A, Vector2 b, Vector2 x) {
     auto _c1 = x;_c1.x = auto _c2 = det * (a22 * bx - a12 * by);_c2.y = det * (a11 * by - a21 * bx);_c2;_c1;
 }
 
-int Matrix2Cls::index(int col, int row) {
+int Matrix2Cls::index(int row, int col) {
     return (col * 2) + row;
 }
 
-double Matrix2Cls::entry(int col, int row) {
+double Matrix2Cls::entry(int row, int col) {
     assert((row >= 0) && ( < dimension()));
     assert((col >= 0) && ( < dimension()));
     return _m2storage[index(row, col)];
 }
 
-void Matrix2Cls::setEntry(int col, int row, double v) {
+void Matrix2Cls::setEntry(int row, int col, double v) {
     assert((row >= 0) && ( < dimension()));
     assert((col >= 0) && ( < dimension()));
     _m2storage[index(row, col)] = v;
@@ -146,7 +146,7 @@ void Matrix2Cls::row1(Vector2 arg) {
     return setRow(1, arg);
 }
 
-void Matrix2Cls::setRow(Vector2 arg, int row) {
+void Matrix2Cls::setRow(int row, Vector2 arg) {
     Unknown argStorage = arg->_v2storage;
     _m2storage[index(row, 0)] = argStorage[0];
     _m2storage[index(row, 1)] = argStorage[1];
@@ -160,7 +160,7 @@ Vector2 Matrix2Cls::getRow(int row) {
     return r;
 }
 
-void Matrix2Cls::setColumn(Vector2 arg, int column) {
+void Matrix2Cls::setColumn(int column, Vector2 arg) {
     Unknown argStorage = arg->_v2storage;
     Unknown entry = column * 2;
     _m2storage[entry + 1] = argStorage[1];
@@ -264,8 +264,8 @@ double Matrix2Cls::dotColumn(int j, Vector2 v) {
 
 double Matrix2Cls::trace() {
     auto t = 0.0;
-    t = _m2storage[0];
-    t = _m2storage[3];
+    t += _m2storage[0];
+    t += _m2storage[3];
     return t;
 }
 
@@ -273,13 +273,13 @@ double Matrix2Cls::infinityNorm() {
     auto norm = 0.0;
     {
         auto rowNorm = 0.0;
-        rowNorm = _m2storage[0]->abs();
-        rowNorm = _m2storage[1]->abs();
+        rowNorm += _m2storage[0]->abs();
+        rowNorm += _m2storage[1]->abs();
         norm = rowNorm > norm? rowNorm : norm;
     }    {
         auto rowNorm = 0.0;
-        rowNorm = _m2storage[2]->abs();
-        rowNorm = _m2storage[3]->abs();
+        rowNorm += _m2storage[2]->abs();
+        rowNorm += _m2storage[3]->abs();
         norm = rowNorm > norm? rowNorm : norm;
     }    return norm;
 }

@@ -64,10 +64,10 @@ public:
 
     virtual void forEach(std::function<void(E element)> f);
 
-    virtual E reduce(std::function<E(E element, E value)> combine);
+    virtual E reduce(std::function<E(E value, E element)> combine);
 
     template<typename T>
- virtual T fold(std::function<T(E element, T previousValue)> combine, T initialValue);
+ virtual T fold(T initialValue, std::function<T(T previousValue, E element)> combine);
 
     virtual bool every(std::function<bool(E element)> f);
 
@@ -87,11 +87,11 @@ public:
 
     virtual E last();
 
-    virtual E firstWhere(std::function<E()> orElse, std::function<bool(E value)> test);
+    virtual E firstWhere(std::function<bool(E value)> test, std::function<E()> orElse);
 
-    virtual E lastWhere(std::function<E()> orElse, std::function<bool(E value)> test);
+    virtual E lastWhere(std::function<bool(E value)> test, std::function<E()> orElse);
 
-    virtual E singleWhere(std::function<E()> orElse, std::function<bool(E value)> test);
+    virtual E singleWhere(std::function<bool(E value)> test, std::function<E()> orElse);
 
     virtual E elementAt(int index);
 

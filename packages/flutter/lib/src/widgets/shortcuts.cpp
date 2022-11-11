@@ -77,7 +77,7 @@ int KeySetCls<T>::_computeHashCode(Set<T> keys) {
 }
 
 bool ShortcutActivatorCls::isActivatedBy(ShortcutActivator activator, RawKeyEvent event) {
-    return (activator->triggers()?->contains(event->logicalKey()) or true) && activator->accepts(event, RawKeyboardCls::instance);
+    return (activator->triggers()?->contains(event->logicalKey()) | true) && activator->accepts(event, RawKeyboardCls::instance);
 }
 
 void LogicalKeySetCls::fromSet(Unknown keys)

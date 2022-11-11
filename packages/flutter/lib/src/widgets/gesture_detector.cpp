@@ -126,14 +126,14 @@ RawGestureDetectorState RawGestureDetectorCls::createState() {
 
 void RawGestureDetectorStateCls::initState() {
     super->initState();
-    _semantics = widget->semantics or make<_DefaultSemanticsGestureDelegateCls>(this);
+    _semantics = widget->semantics | make<_DefaultSemanticsGestureDelegateCls>(this);
     _syncAll(widget->gestures);
 }
 
 void RawGestureDetectorStateCls::didUpdateWidget(RawGestureDetector oldWidget) {
     super->didUpdateWidget(oldWidget);
     if (!(oldWidget->semantics == nullptr && widget->semantics == nullptr)) {
-        _semantics = widget->semantics or make<_DefaultSemanticsGestureDelegateCls>(this);
+        _semantics = widget->semantics | make<_DefaultSemanticsGestureDelegateCls>(this);
     }
     _syncAll(widget->gestures);
 }
@@ -175,9 +175,9 @@ void RawGestureDetectorStateCls::dispose() {
 }
 
 Widget RawGestureDetectorStateCls::build(BuildContext context) {
-    Widget result = make<ListenerCls>(_handlePointerDown, _handlePointerPanZoomStart, widget->behavior or _defaultBehavior(), widget->child);
+    Widget result = make<ListenerCls>(_handlePointerDown, _handlePointerPanZoomStart, widget->behavior | _defaultBehavior(), widget->child);
     if (!widget->excludeFromSemantics) {
-        result = make<_GestureSemanticsCls>(widget->behavior or _defaultBehavior(), _updateSemanticsForRenderObject, result);
+        result = make<_GestureSemanticsCls>(widget->behavior | _defaultBehavior(), _updateSemanticsForRenderObject, result);
     }
     return result;
 }
@@ -208,7 +208,7 @@ void RawGestureDetectorStateCls::_syncAll(Map<Type, GestureRecognizerFactory> ge
         assert(gestures[type] != nullptr);
         assert(gestures[type]!->_debugAssertTypeMatches(type));
         assert(!_recognizers!->containsKey(type));
-        _recognizers![type] = oldRecognizers[type] or gestures[type]!->constructor();
+        _recognizers![type] = oldRecognizers[type] | gestures[type]!->constructor();
         assert(_recognizers![type]->runtimeType == type, __s("GestureRecognizerFactory of type $type created a GestureRecognizer of type ${_recognizers![type].runtimeType}. The GestureRecognizerFactory must be specialized with the type of the class that it returns from its constructor method."));
         gestures[type]!->initializer(_recognizers![type]!);
     }

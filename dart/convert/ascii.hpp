@@ -18,7 +18,7 @@ public:
 
     virtual Uint8List encode(String source);
 
-    virtual String decode(bool allowInvalid, List<int> bytes);
+    virtual String decode(List<int> bytes, bool allowInvalid);
 
     virtual AsciiEncoder encoder();
 
@@ -34,7 +34,7 @@ using AsciiCodec = std::shared_ptr<AsciiCodecCls>;
 class _UnicodeSubsetEncoderCls : public ConverterCls<String, List<int>> {
 public:
 
-    virtual Uint8List convert(int end, int start, String stringValue);
+    virtual Uint8List convert(String stringValue, int start, int end);
 
     virtual StringConversionSink startChunkedConversion(Sink<List<int>> sink);
 
@@ -63,7 +63,7 @@ public:
 
     virtual void close();
 
-    virtual void addSlice(int end, bool isLast, String source, int start);
+    virtual void addSlice(String source, int start, int end, bool isLast);
 
 private:
     ByteConversionSink _sink;
@@ -71,14 +71,14 @@ private:
     int _subsetMask;
 
 
-     _UnicodeSubsetEncoderSinkCls(ByteConversionSink _sink, int _subsetMask);
+     _UnicodeSubsetEncoderSinkCls(int _subsetMask, ByteConversionSink _sink);
 };
 using _UnicodeSubsetEncoderSink = std::shared_ptr<_UnicodeSubsetEncoderSinkCls>;
 
 class _UnicodeSubsetDecoderCls : public ConverterCls<List<int>, String> {
 public:
 
-    virtual String convert(List<int> bytes, int end, int start);
+    virtual String convert(List<int> bytes, int start, int end);
 
     virtual ByteConversionSink startChunkedConversion(Sink<String> sink) override;
     virtual Stream<String> bind(Stream<List<int>> stream);
@@ -90,7 +90,7 @@ private:
 
 
      _UnicodeSubsetDecoderCls(bool _allowInvalid, int _subsetMask);
-    virtual String _convertInvalid(List<int> bytes, int end, int start);
+    virtual String _convertInvalid(List<int> bytes, int start, int end);
 
 };
 using _UnicodeSubsetDecoder = std::shared_ptr<_UnicodeSubsetDecoderCls>;
@@ -114,7 +114,7 @@ public:
 
     virtual void add(List<int> source);
 
-    virtual void addSlice(int end, bool isLast, List<int> source, int start);
+    virtual void addSlice(List<int> source, int start, int end, bool isLast);
 
 private:
     ByteConversionSink _utf8Sink;
@@ -131,7 +131,7 @@ public:
 
     virtual void add(List<int> source);
 
-    virtual void addSlice(int end, bool isLast, List<int> source, int start);
+    virtual void addSlice(List<int> source, int start, int end, bool isLast);
 
 private:
     Sink _sink;

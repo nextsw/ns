@@ -1,7 +1,7 @@
 #include "platform_menu_bar.hpp"
 void ShortcutSerializationCls::character(String character)
 
-void ShortcutSerializationCls::modifier(bool alt, bool control, bool meta, bool shift, LogicalKeyboardKey trigger)
+void ShortcutSerializationCls::modifier(LogicalKeyboardKey trigger, bool alt, bool control, bool meta, bool shift)
 
 LogicalKeyboardKey ShortcutSerializationCls::trigger() {
     return _trigger;
@@ -65,7 +65,7 @@ List<MenuItem> MenuItemCls::members() {
 
 DefaultPlatformMenuDelegateCls::DefaultPlatformMenuDelegateCls(MethodChannel channel) {
     {
-        channel = channel or SystemChannelsCls::menu;
+        channel = channel | SystemChannelsCls::menu;
         _idMap = makeMap(makeList(), makeList();
     }
     {
@@ -112,7 +112,7 @@ bool DefaultPlatformMenuDelegateCls::debugUnlockDelegate(BuildContext context) {
 }
 
 int DefaultPlatformMenuDelegateCls::_getId(MenuItem item) {
-    _serial = 1;
+    _serial += 1;
     _idMap[_serial] = item;
     return _serial;
 }
@@ -180,7 +180,7 @@ void _PlatformMenuBarStateCls::didUpdateWidget(PlatformMenuBar oldWidget) {
 }
 
 Widget _PlatformMenuBarStateCls::build(BuildContext context) {
-    return widget->child or widget->body or make<SizedBoxCls>();
+    return widget->child | widget->body | make<SizedBoxCls>();
 }
 
 void _PlatformMenuBarStateCls::_updateMenu() {
@@ -199,7 +199,7 @@ Iterable<Map<String, Object>> PlatformMenuCls::toChannelRepresentation(PlatformM
     return makeList(ArrayItem);
 }
 
-Map<String, Object> PlatformMenuCls::serialize(PlatformMenuDelegate delegate, MenuItemSerializableIdGenerator getId, PlatformMenu item) {
+Map<String, Object> PlatformMenuCls::serialize(PlatformMenu item, PlatformMenuDelegate delegate, MenuItemSerializableIdGenerator getId) {
     List<Map<String, Object>> result = makeList();
     for (MenuItem childItem : item->menus) {
         result->addAll(childItem->toChannelRepresentation(delegategetId));
@@ -238,7 +238,7 @@ Iterable<Map<String, Object>> PlatformMenuItemGroupCls::toChannelRepresentation(
     return serialize(this, delegategetId);
 }
 
-Iterable<Map<String, Object>> PlatformMenuItemGroupCls::serialize(PlatformMenuDelegate delegate, MenuItemSerializableIdGenerator getId, MenuItem group) {
+Iterable<Map<String, Object>> PlatformMenuItemGroupCls::serialize(MenuItem group, PlatformMenuDelegate delegate, MenuItemSerializableIdGenerator getId) {
     List<Map<String, Object>> result = makeList();
     Map<String, Object> map1 = make<MapCls<>>();map1.set(_kIdKey, getId(group));map1.set(_kIsDividerKey, true);result->add(list1);
     for (MenuItem item : group->members()) {
@@ -263,7 +263,7 @@ Iterable<Map<String, Object>> PlatformMenuItemCls::toChannelRepresentation(Platf
     return makeList(ArrayItem);
 }
 
-Map<String, Object> PlatformMenuItemCls::serialize(PlatformMenuDelegate delegate, MenuItemSerializableIdGenerator getId, PlatformMenuItem item) {
+Map<String, Object> PlatformMenuItemCls::serialize(PlatformMenuItem item, PlatformMenuDelegate delegate, MenuItemSerializableIdGenerator getId) {
     MenuSerializableShortcut shortcut = item->shortcut;
     Map<String, Object> map1 = make<MapCls<>>();map1.set(_kIdKey, getId(item));map1.set(_kLabelKey, item->label);map1.set(_kEnabledKey, item->onSelected != nullptr);NeedMapItemHerereturn list1;
 }

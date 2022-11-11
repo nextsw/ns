@@ -59,8 +59,8 @@ private:
     static void  _exists(_Namespace namespace, Uint8List rawPath);
     static void  _create(_Namespace namespace, Uint8List rawPath);
     static void  _deleteNative(_Namespace namespace, Uint8List rawPath, bool recursive);
-    static void  _rename(_Namespace namespace, String newPath, Uint8List rawPath);
-    static void _fillWithDirectoryListing(bool followLinks, List<FileSystemEntity> list, _Namespace namespace, Uint8List rawPath, bool recursive);
+    static void  _rename(_Namespace namespace, Uint8List rawPath, String newPath);
+    static void _fillWithDirectoryListing(_Namespace namespace, List<FileSystemEntity> list, Uint8List rawPath, bool recursive, bool followLinks);
     virtual Future<Directory> _delete(bool recursive);
 
     virtual void _deleteSync(bool recursive);
@@ -70,7 +70,7 @@ private:
     virtual void  _exceptionOrErrorFromResponse(response , String message);
 
     template<typename T>
- static T _checkNotNull(String name, T t);
+ static T _checkNotNull(T t, String name);
 
 };
 using _Directory = std::shared_ptr<_DirectoryCls>;
@@ -140,7 +140,7 @@ private:
     _AsyncDirectoryListerOps _ops;
 
 
-     _AsyncDirectoryListerCls(bool followLinks, Uint8List rawPath, bool recursive);
+     _AsyncDirectoryListerCls(Uint8List rawPath, bool recursive, bool followLinks);
 
     virtual int _pointer();
 

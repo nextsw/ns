@@ -18,7 +18,7 @@ public:
 
     virtual String name();
 
-    virtual String decode(bool allowMalformed, List<int> codeUnits);
+    virtual String decode(List<int> codeUnits, bool allowMalformed);
 
     virtual Utf8Encoder encoder();
 
@@ -35,7 +35,7 @@ class Utf8EncoderCls : public ConverterCls<String, List<int>> {
 public:
 
      Utf8EncoderCls();
-    virtual Uint8List convert(int end, int start, String stringValue);
+    virtual Uint8List convert(String stringValue, int start, int end);
 
     virtual StringConversionSink startChunkedConversion(Sink<List<int>> sink);
 
@@ -69,7 +69,7 @@ private:
 
     virtual bool _writeSurrogate(int leadingSurrogate, int nextCodeUnit);
 
-    virtual int _fillBuffer(int end, int start, String str);
+    virtual int _fillBuffer(String str, int start, int end);
 
 };
 using _Utf8Encoder = std::shared_ptr<_Utf8EncoderCls>;
@@ -79,7 +79,7 @@ public:
 
     virtual void close();
 
-    virtual void addSlice(int end, bool isLast, int start, String str);
+    virtual void addSlice(String str, int start, int end, bool isLast);
 
 private:
     ByteConversionSink _sink;
@@ -94,7 +94,7 @@ public:
 
      Utf8DecoderCls(bool allowMalformed);
 
-    virtual String convert(List<int> codeUnits, int end, int start);
+    virtual String convert(List<int> codeUnits, int start, int end);
 
     virtual ByteConversionSink startChunkedConversion(Sink<String> sink);
 
@@ -106,7 +106,7 @@ private:
     bool _allowMalformed;
 
 
-    static String _convertIntercepted(bool allowMalformed, List<int> codeUnits, int end, int start);
+    static String _convertIntercepted(bool allowMalformed, List<int> codeUnits, int start, int end);
 };
 using Utf8Decoder = std::shared_ptr<Utf8DecoderCls>;
 int _ONE_BYTE_LIMIT;
@@ -209,13 +209,13 @@ public:
 
     static String errorDescription(int state);
 
-    String convertSingle(List<int> codeUnits, int maybeEnd, int start);
-    String convertChunked(List<int> codeUnits, int maybeEnd, int start);
-    virtual String convertGeneral(List<int> codeUnits, int maybeEnd, bool single, int start);
+    String convertSingle(List<int> codeUnits, int start, int maybeEnd);
+    String convertChunked(List<int> codeUnits, int start, int maybeEnd);
+    virtual String convertGeneral(List<int> codeUnits, int start, int maybeEnd, bool single);
 
     virtual void flush(StringSink sink);
 
-    virtual String decodeGeneral(Uint8List bytes, int end, bool single, int start);
+    virtual String decodeGeneral(Uint8List bytes, int start, int end, bool single);
 
 private:
     int _state;
@@ -262,9 +262,9 @@ private:
 
 
      _Utf8DecoderCls(bool allowMalformed);
-    virtual String _convertRecursive(Uint8List bytes, int end, bool single, int start);
+    virtual String _convertRecursive(Uint8List bytes, int start, int end, bool single);
 
-    static Uint8List _makeUint8List(List<int> codeUnits, int end, int start);
+    static Uint8List _makeUint8List(List<int> codeUnits, int start, int end);
 
 };
 using _Utf8Decoder = std::shared_ptr<_Utf8DecoderCls>;

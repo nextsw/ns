@@ -32,7 +32,7 @@ String _GestureArenaCls::toString() {
     return buffer->toString();
 }
 
-GestureArenaEntry GestureArenaManagerCls::add(GestureArenaMember member, int pointer) {
+GestureArenaEntry GestureArenaManagerCls::add(int pointer, GestureArenaMember member) {
     _GestureArena state = _arenas->putIfAbsent(pointer, [=] () {
     assert(_debugLogDiagnostic(pointer, __s("★ Opening new gesture arena.")));
     return make<_GestureArenaCls>();
@@ -95,7 +95,7 @@ void GestureArenaManagerCls::release(int pointer) {
     }
 }
 
-void GestureArenaManagerCls::_resolve(GestureDisposition disposition, GestureArenaMember member, int pointer) {
+void GestureArenaManagerCls::_resolve(int pointer, GestureArenaMember member, GestureDisposition disposition) {
     _GestureArena state = _arenas[pointer];
     if (state == nullptr) {
         return;
@@ -111,7 +111,7 @@ void GestureArenaManagerCls::_resolve(GestureDisposition disposition, GestureAre
     } else {
         assert(disposition == GestureDispositionCls::accepted);
         if (state->isOpen) {
-            state->eagerWinner = member;
+            state->eagerWinner |= member;
         } else {
             assert(_debugLogDiagnostic(pointer, __s("Self-declared winner: $member")));
             _resolveInFavorOf(pointer, state, member);
@@ -152,7 +152,7 @@ void GestureArenaManagerCls::_resolveByDefault(int pointer, _GestureArena state)
     state->members->first->acceptGesture(pointer);
 }
 
-void GestureArenaManagerCls::_resolveInFavorOf(GestureArenaMember member, int pointer, _GestureArena state) {
+void GestureArenaManagerCls::_resolveInFavorOf(int pointer, _GestureArena state, GestureArenaMember member) {
     assert(state == _arenas[pointer]);
     assert(state != nullptr);
     assert(state->eagerWinner == nullptr || state->eagerWinner == member);
@@ -166,7 +166,7 @@ void GestureArenaManagerCls::_resolveInFavorOf(GestureArenaMember member, int po
     member->acceptGesture(pointer);
 }
 
-bool GestureArenaManagerCls::_debugLogDiagnostic(String message, int pointer, _GestureArena state) {
+bool GestureArenaManagerCls::_debugLogDiagnostic(int pointer, String message, _GestureArena state) {
     assert([=] () {
         if (debugPrintGestureArenaDiagnostics) {
             int count = state?->members->length();

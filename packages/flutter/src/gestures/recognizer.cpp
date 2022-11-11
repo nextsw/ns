@@ -53,7 +53,7 @@ void GestureRecognizerCls::dispose() {
 }
 
 template<typename T>
-T GestureRecognizerCls::invokeCallback(RecognizerCallback<T> callback, std::function<String()> debugReport, String name) {
+T GestureRecognizerCls::invokeCallback(String name, RecognizerCallback<T> callback, std::function<String()> debugReport) {
     assert(callback != nullptr);
     T result;
     try {
@@ -106,7 +106,7 @@ void OneSequenceGestureRecognizerCls::resolve(GestureDisposition disposition) {
     }
 }
 
-void OneSequenceGestureRecognizerCls::resolvePointer(GestureDisposition disposition, int pointer) {
+void OneSequenceGestureRecognizerCls::resolvePointer(int pointer, GestureDisposition disposition) {
     GestureArenaEntry entry = _entries[pointer];
     if (entry != nullptr) {
         _entries->remove(pointer);

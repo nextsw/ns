@@ -22,7 +22,7 @@
 
 ImageConfiguration createLocalImageConfiguration(BuildContext context, Size size);
 
-Future<void> precacheImage(BuildContext context, ImageErrorListener onError, ImageProvider provider, Size size);
+Future<void> precacheImage(ImageProvider provider, BuildContext context, ImageErrorListener onError, Size size);
 
 
 class ImageCls : public StatefulWidgetCls {
@@ -68,13 +68,13 @@ public:
 
      ImageCls(AlignmentGeometry alignment, Rect centerSlice, Color color, BlendMode colorBlendMode, ImageErrorWidgetBuilder errorBuilder, bool excludeFromSemantics, FilterQuality filterQuality, BoxFit fit, ImageFrameBuilder frameBuilder, bool gaplessPlayback, double height, ImageProvider image, bool isAntiAlias, Unknown key, ImageLoadingBuilder loadingBuilder, bool matchTextDirection, Animation<double> opacity, ImageRepeat repeat, String semanticLabel, double width);
 
-    virtual void  network(AlignmentGeometry alignment, int cacheHeight, int cacheWidth, Rect centerSlice, Color color, BlendMode colorBlendMode, ImageErrorWidgetBuilder errorBuilder, bool excludeFromSemantics, FilterQuality filterQuality, BoxFit fit, ImageFrameBuilder frameBuilder, bool gaplessPlayback, Map<String, String> headers, double height, bool isAntiAlias, Unknown key, ImageLoadingBuilder loadingBuilder, bool matchTextDirection, Animation<double> opacity, ImageRepeat repeat, double scale, String semanticLabel, String src, double width);
+    virtual void  network(String src, AlignmentGeometry alignment, int cacheHeight, int cacheWidth, Rect centerSlice, Color color, BlendMode colorBlendMode, ImageErrorWidgetBuilder errorBuilder, bool excludeFromSemantics, FilterQuality filterQuality, BoxFit fit, ImageFrameBuilder frameBuilder, bool gaplessPlayback, Map<String, String> headers, double height, bool isAntiAlias, Unknown key, ImageLoadingBuilder loadingBuilder, bool matchTextDirection, Animation<double> opacity, ImageRepeat repeat, double scale, String semanticLabel, double width);
 
-    virtual void  file(AlignmentGeometry alignment, int cacheHeight, int cacheWidth, Rect centerSlice, Color color, BlendMode colorBlendMode, ImageErrorWidgetBuilder errorBuilder, bool excludeFromSemantics, File file, FilterQuality filterQuality, BoxFit fit, ImageFrameBuilder frameBuilder, bool gaplessPlayback, double height, bool isAntiAlias, Unknown key, bool matchTextDirection, Animation<double> opacity, ImageRepeat repeat, double scale, String semanticLabel, double width);
+    virtual void  file(File file, AlignmentGeometry alignment, int cacheHeight, int cacheWidth, Rect centerSlice, Color color, BlendMode colorBlendMode, ImageErrorWidgetBuilder errorBuilder, bool excludeFromSemantics, FilterQuality filterQuality, BoxFit fit, ImageFrameBuilder frameBuilder, bool gaplessPlayback, double height, bool isAntiAlias, Unknown key, bool matchTextDirection, Animation<double> opacity, ImageRepeat repeat, double scale, String semanticLabel, double width);
 
-    virtual void  asset(AlignmentGeometry alignment, AssetBundle bundle, int cacheHeight, int cacheWidth, Rect centerSlice, Color color, BlendMode colorBlendMode, ImageErrorWidgetBuilder errorBuilder, bool excludeFromSemantics, FilterQuality filterQuality, BoxFit fit, ImageFrameBuilder frameBuilder, bool gaplessPlayback, double height, bool isAntiAlias, Unknown key, bool matchTextDirection, String name, Animation<double> opacity, String package, ImageRepeat repeat, double scale, String semanticLabel, double width);
+    virtual void  asset(String name, AlignmentGeometry alignment, AssetBundle bundle, int cacheHeight, int cacheWidth, Rect centerSlice, Color color, BlendMode colorBlendMode, ImageErrorWidgetBuilder errorBuilder, bool excludeFromSemantics, FilterQuality filterQuality, BoxFit fit, ImageFrameBuilder frameBuilder, bool gaplessPlayback, double height, bool isAntiAlias, Unknown key, bool matchTextDirection, Animation<double> opacity, String package, ImageRepeat repeat, double scale, String semanticLabel, double width);
 
-    virtual void  memory(AlignmentGeometry alignment, Uint8List bytes, int cacheHeight, int cacheWidth, Rect centerSlice, Color color, BlendMode colorBlendMode, ImageErrorWidgetBuilder errorBuilder, bool excludeFromSemantics, FilterQuality filterQuality, BoxFit fit, ImageFrameBuilder frameBuilder, bool gaplessPlayback, double height, bool isAntiAlias, Unknown key, bool matchTextDirection, Animation<double> opacity, ImageRepeat repeat, double scale, String semanticLabel, double width);
+    virtual void  memory(Uint8List bytes, AlignmentGeometry alignment, int cacheHeight, int cacheWidth, Rect centerSlice, Color color, BlendMode colorBlendMode, ImageErrorWidgetBuilder errorBuilder, bool excludeFromSemantics, FilterQuality filterQuality, BoxFit fit, ImageFrameBuilder frameBuilder, bool gaplessPlayback, double height, bool isAntiAlias, Unknown key, bool matchTextDirection, Animation<double> opacity, ImageRepeat repeat, double scale, String semanticLabel, double width);
 
     virtual State<Image> createState();
 

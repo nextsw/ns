@@ -1,9 +1,9 @@
 #include "colors.hpp"
-void ColorsCls::fromRgba(int a, int b, int g, int r, Vector4 result) {
+void ColorsCls::fromRgba(int r, int g, int b, int a, Vector4 result) {
     result->setValues(r / 255.0, g / 255.0, b / 255.0, a / 255.0);
 }
 
-void ColorsCls::fromHexString(Vector4 result, String value) {
+void ColorsCls::fromHexString(String value, Vector4 result) {
     Unknown fullMatch = _hexStringFullRegex->matchAsPrefix(value);
     if (fullMatch != nullptr) {
         if (fullMatch[4] == nullptr) {
@@ -41,7 +41,7 @@ void ColorsCls::fromHexString(Vector4 result, String value) {
     throw make<FormatExceptionCls>(__s("Could not parse hex color $value"));
 }
 
-String ColorsCls::toHexString(bool alpha, Vector4 input, bool short) {
+String ColorsCls::toHexString(Vector4 input, bool alpha, bool short) {
     Unknown r = (input->r * 0xFF)->floor() & 0xFF;
     Unknown g = (input->g * 0xFF)->floor() & 0xFF;
     Unknown b = (input->b * 0xFF)->floor() & 0xFF;
@@ -56,7 +56,7 @@ String ColorsCls::toHexString(bool alpha, Vector4 input, bool short) {
     }
 }
 
-void ColorsCls::alphaBlend(Vector4 background, Vector4 foreground, Vector4 result) {
+void ColorsCls::alphaBlend(Vector4 foreground, Vector4 background, Vector4 result) {
     Unknown a = foreground->a + (1.0 - foreground->a) * background->a;
     Unknown factor = 1.0 / a;
     Unknown r = factor * (foreground->a * foreground->r + (1.0 - foreground->a) * background->a * background->r);
@@ -70,16 +70,16 @@ void ColorsCls::toGrayscale(Vector4 input, Vector4 result) {
     auto _c1 = result;_c1.r = auto _c2 = value;_c2.g = auto _c3 = value;_c3.b = auto _c4 = value;_c4.a = input->a;_c4;_c3;_c2;_c1;
 }
 
-void ColorsCls::linearToGamma(double gamma, Vector4 gammaColor, Vector4 linearColor) {
+void ColorsCls::linearToGamma(Vector4 linearColor, Vector4 gammaColor, double gamma) {
     Unknown exponent = 1.0 / gamma;
     auto _c1 = gammaColor;_c1.r = auto _c2 = math->pow(linearColor->r, exponent)->toDouble();_c2.g = auto _c3 = math->pow(linearColor->g, exponent)->toDouble();_c3.b = auto _c4 = math->pow(linearColor->b, exponent)->toDouble();_c4.a = linearColor->a;_c4;_c3;_c2;_c1;
 }
 
-void ColorsCls::gammaToLinear(double gamma, Vector4 gammaColor, Vector4 linearColor) {
+void ColorsCls::gammaToLinear(Vector4 gammaColor, Vector4 linearColor, double gamma) {
     auto _c1 = linearColor;_c1.r = auto _c2 = math->pow(gammaColor->r, gamma)->toDouble();_c2.g = auto _c3 = math->pow(gammaColor->g, gamma)->toDouble();_c3.b = auto _c4 = math->pow(gammaColor->b, gamma)->toDouble();_c4.a = gammaColor->a;_c4;_c3;_c2;_c1;
 }
 
-void ColorsCls::rgbToHsv(Vector4 hsvColor, Vector4 rgbColor) {
+void ColorsCls::rgbToHsv(Vector4 rgbColor, Vector4 hsvColor) {
     Unknown max = math->max(math->max(rgbColor->r, rgbColor->g), rgbColor->b);
     Unknown min = math->min(math->min(rgbColor->r, rgbColor->g), rgbColor->b);
     Unknown d = max - min;
@@ -96,7 +96,7 @@ void ColorsCls::rgbToHsv(Vector4 hsvColor, Vector4 rgbColor) {
             h = (rgbColor->r - rgbColor->g) / d + 4.0;
         }
 ;
-        }        h = 6.0;
+        }        h /= 6.0;
     }
     hsvColor->setValues(h, s, v, rgbColor->a);
 }
@@ -110,7 +110,7 @@ void ColorsCls::hsvToRgb(Vector4 hsvColor, Vector4 rgbColor) {
     ;
 }
 
-void ColorsCls::rgbToHsl(Vector4 hslColor, Vector4 rgbColor) {
+void ColorsCls::rgbToHsl(Vector4 rgbColor, Vector4 hslColor) {
     Unknown max = math->max(math->max(rgbColor->r, rgbColor->g), rgbColor->b);
     Unknown min = math->min(math->min(rgbColor->r, rgbColor->g), rgbColor->b);
     Unknown l = (max + min) / 2.0;
@@ -128,7 +128,7 @@ void ColorsCls::rgbToHsl(Vector4 hslColor, Vector4 rgbColor) {
             h = (rgbColor->r - rgbColor->g) / d + 4.0;
         }
 ;
-        }        h = 6.0;
+        }        h /= 6.0;
     }
     hslColor->setValues(h, s, l, rgbColor->a);
 }
@@ -712,10 +712,10 @@ Vector4 ColorsCls::yellowGreen() {
 
 double ColorsCls::_hueToRgb(double p, double q, double t) {
     if ( < 0.0) {
-        t = 1.0;
+        t += 1.0;
     } else     {
         if (t > 1.0) {
-        t = 1.0;
+        t -= 1.0;
     }
 ;
     }    if ( < 1.0 / 6.0) {

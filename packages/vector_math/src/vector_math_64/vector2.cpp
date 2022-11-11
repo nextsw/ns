@@ -11,7 +11,7 @@ void Vector2Cls::max(Vector2 a, Vector2 b, Vector2 result) {
     auto _c1 = result;_c1.x = auto _c2 = math->max(a->x, b->x);_c2.y = math->max(a->y, b->y);_c2;_c1;
 }
 
-void Vector2Cls::mix(double a, Vector2 max, Vector2 min, Vector2 result) {
+void Vector2Cls::mix(Vector2 min, Vector2 max, double a, Vector2 result) {
     auto _c1 = result;_c1.x = auto _c2 = min->x + a * (max->x - min->x);_c2.y = min->y + a * (max->y - min->y);_c2;_c1;
 }
 
@@ -35,7 +35,7 @@ void Vector2Cls::copy(Vector2 other) {
 void Vector2Cls::fromBuffer(ByteBuffer buffer, int offset)
 
 void Vector2Cls::random(Random rng) {
-    auto _c1 = Vector2Cls->zero();_c1.copyFromArray(array, offset);auto _c1 = Vector2Cls->zero();_c1.splat(value);auto _c1 = Vector2Cls->zero();_c1.setFrom(other);rng = math->make<RandomCls>();
+    auto _c1 = Vector2Cls->zero();_c1.copyFromArray(array, offset);auto _c1 = Vector2Cls->zero();_c1.splat(value);auto _c1 = Vector2Cls->zero();_c1.setFrom(other);rng |= math->make<RandomCls>();
     return make<Vector2Cls>(rng->nextDouble(), rng->nextDouble());
 }
 
@@ -109,8 +109,8 @@ void Vector2Cls::length(double value) {
             return;
         }
         l = value / l;
-        _v2storage[0] = l;
-        _v2storage[1] = l;
+        _v2storage[0] *= l;
+        _v2storage[1] *= l;
     }
 }
 
@@ -121,7 +121,7 @@ double Vector2Cls::length() {
 double Vector2Cls::length2() {
     double sum;
     sum = _v2storage[0] * _v2storage[0];
-    sum = _v2storage[1] * _v2storage[1];
+    sum += _v2storage[1] * _v2storage[1];
     return sum;
 }
 
@@ -131,8 +131,8 @@ double Vector2Cls::normalize() {
         return 0.0;
     }
     Unknown d = 1.0 / l;
-    _v2storage[0] = d;
-    _v2storage[1] = d;
+    _v2storage[0] *= d;
+    _v2storage[1] *= d;
     return l;
 }
 
@@ -182,7 +182,7 @@ double Vector2Cls::dot(Vector2 other) {
     Unknown otherStorage = other->_v2storage;
     double sum;
     sum = _v2storage[0] * otherStorage[0];
-    sum = _v2storage[1] * otherStorage[1];
+    sum += _v2storage[1] * otherStorage[1];
     return sum;
 }
 
@@ -199,7 +199,7 @@ double Vector2Cls::cross(Vector2 other) {
     return _v2storage[0] * otherStorage[1] - _v2storage[1] * otherStorage[0];
 }
 
-Vector2 Vector2Cls::scaleOrthogonalInto(Vector2 out, double scale) {
+Vector2 Vector2Cls::scaleOrthogonalInto(double scale, Vector2 out) {
     out->setValues(-scale * _v2storage[1], scale * _v2storage[0]);
     return out;
 }
@@ -285,14 +285,14 @@ void Vector2Cls::absolute() {
     _v2storage[0] = _v2storage[0]->abs();
 }
 
-void Vector2Cls::clamp(Vector2 max, Vector2 min) {
+void Vector2Cls::clamp(Vector2 min, Vector2 max) {
     Unknown minStorage = min->storage();
     Unknown maxStorage = max->storage();
     _v2storage[0] = _v2storage[0]->clamp(minStorage[0], maxStorage[0])->toDouble();
     _v2storage[1] = _v2storage[1]->clamp(minStorage[1], maxStorage[1])->toDouble();
 }
 
-void Vector2Cls::clampScalar(double max, double min) {
+void Vector2Cls::clampScalar(double min, double max) {
     _v2storage[0] = _v2storage[0]->clamp(min, max)->toDouble();
     _v2storage[1] = _v2storage[1]->clamp(min, max)->toDouble();
 }

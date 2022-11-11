@@ -32,10 +32,10 @@ void ServiceExtensionResponseCls::_validateErrorCode(int errorCode) {
 }
 
 String ServiceExtensionResponseCls::_toString() {
-    map1.set(__s("code"), errorCode!);map1.set(__s("message"), _errorCodeMessage(errorCode!));map1.set(__s("data"), map2.set(__s("details"), errorDetail!);list2);return result or json->encode(list1);
+    map1.set(__s("code"), errorCode!);map1.set(__s("message"), _errorCodeMessage(errorCode!));map1.set(__s("data"), map2.set(__s("details"), errorDetail!);list2);return result | json->encode(list1);
 }
 
-void registerExtension(ServiceExtensionHandler handler, String method) {
+void registerExtension(String method, ServiceExtensionHandler handler) {
     checkNotNullable(method, __s("method"));
     if (!method->startsWith(__s("ext."))) {
         throw ArgumentErrorCls->value(method, __s("method"), __s("Must begin with ext."));
@@ -47,7 +47,7 @@ void registerExtension(ServiceExtensionHandler handler, String method) {
     _registerExtension(method, handler);
 }
 
-void postEvent(Map eventData, String eventKind) {
+void postEvent(String eventKind, Map eventData) {
     if (!extensionStreamHasListener) {
         return;
     }

@@ -24,7 +24,7 @@ public:
 
     virtual Velocity operator+(Velocity other);
 
-    virtual Velocity clampMagnitude(double maxValue, double minValue);
+    virtual Velocity clampMagnitude(double minValue, double maxValue);
 
     virtual bool operator==(Object other);
 
@@ -79,7 +79,7 @@ public:
 
 
     virtual void  withKind(PointerDeviceKind kind);
-    virtual void addPosition(Offset position, Duration time);
+    virtual void addPosition(Duration time, Offset position);
 
     virtual VelocityEstimate getVelocityEstimate();
 
@@ -107,7 +107,7 @@ public:
 
      IOSScrollViewFlingVelocityTrackerCls(Unknown kind);
 
-    virtual void addPosition(Offset position, Duration time);
+    virtual void addPosition(Duration time, Offset position);
 
     virtual VelocityEstimate getVelocityEstimate();
 

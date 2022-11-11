@@ -34,7 +34,7 @@ Set<KeyboardLockMode> HardwareKeyboardCls::lockModesEnabled() {
 
 void HardwareKeyboardCls::addHandler(KeyEventCallback handler) {
     if (_duringDispatch) {
-            List<KeyEventCallback> list1 = make<ListCls<>>();    for (auto _x1 : _handlers) {    {        list1.add(_x1);    }_modifiedHandlers = list1;
+            List<KeyEventCallback> list1 = make<ListCls<>>();    for (auto _x1 : _handlers) {    {        list1.add(_x1);    }_modifiedHandlers |= list1;
         _modifiedHandlers!->add(handler);
     } else {
         _handlers->add(handler);
@@ -43,7 +43,7 @@ void HardwareKeyboardCls::addHandler(KeyEventCallback handler) {
 
 void HardwareKeyboardCls::removeHandler(KeyEventCallback handler) {
     if (_duringDispatch) {
-            List<KeyEventCallback> list1 = make<ListCls<>>();    for (auto _x1 : _handlers) {    {        list1.add(_x1);    }_modifiedHandlers = list1;
+            List<KeyEventCallback> list1 = make<ListCls<>>();    for (auto _x1 : _handlers) {    {        list1.add(_x1);    }_modifiedHandlers |= list1;
         _modifiedHandlers!->remove(handler);
     } else {
         _handlers->remove(handler);
@@ -131,7 +131,7 @@ String KeyMessageCls::toString() {
 }
 
 bool KeyEventManagerCls::handleKeyData(KeyData data) {
-    _transitMode = KeyDataTransitModeCls::keyDataThenRawKeyData;
+    _transitMode |= KeyDataTransitModeCls::keyDataThenRawKeyData;
     ;
 }
 
@@ -243,8 +243,8 @@ void KeyEventManagerCls::_convertRawEventAndStore(RawKeyEvent rawEvent) {
 }
 
 KeyEvent KeyEventManagerCls::_eventFromData(KeyData keyData) {
-    PhysicalKeyboardKey physicalKey = PhysicalKeyboardKeyCls->findKeyByCode(keyData->physical) or make<PhysicalKeyboardKeyCls>(keyData->physical);
-    LogicalKeyboardKey logicalKey = LogicalKeyboardKeyCls->findKeyByKeyId(keyData->logical) or make<LogicalKeyboardKeyCls>(keyData->logical);
+    PhysicalKeyboardKey physicalKey = PhysicalKeyboardKeyCls->findKeyByCode(keyData->physical) | make<PhysicalKeyboardKeyCls>(keyData->physical);
+    LogicalKeyboardKey logicalKey = LogicalKeyboardKeyCls->findKeyByKeyId(keyData->logical) | make<LogicalKeyboardKeyCls>(keyData->logical);
     Duration timeStamp = keyData->timeStamp;
     ;
 }

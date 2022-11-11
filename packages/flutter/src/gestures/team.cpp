@@ -7,7 +7,7 @@ void _CombiningGestureArenaMemberCls::acceptGesture(int pointer) {
     assert(_pointer == pointer);
     assert(_winner != nullptr || _members->isNotEmpty);
     _close();
-    _winner = _owner->captain or _members[0];
+    _winner |= _owner->captain | _members[0];
     for (GestureArenaMember member : _members) {
         if (member != _winner) {
             member->rejectGesture(pointer);
@@ -31,15 +31,15 @@ void _CombiningGestureArenaMemberCls::_close() {
     assert(combiner == this);
 }
 
-GestureArenaEntry _CombiningGestureArenaMemberCls::_add(GestureArenaMember member, int pointer) {
+GestureArenaEntry _CombiningGestureArenaMemberCls::_add(int pointer, GestureArenaMember member) {
     assert(!_resolved);
     assert(_pointer == pointer);
     _members->add(member);
-    _entry = GestureBindingCls::instance->gestureArena->add(pointer, this);
+    _entry |= GestureBindingCls::instance->gestureArena->add(pointer, this);
     return make<_CombiningGestureArenaEntryCls>(this, member);
 }
 
-void _CombiningGestureArenaMemberCls::_resolve(GestureDisposition disposition, GestureArenaMember member) {
+void _CombiningGestureArenaMemberCls::_resolve(GestureArenaMember member, GestureDisposition disposition) {
     if (_resolved) {
         return;
     }
@@ -51,12 +51,12 @@ void _CombiningGestureArenaMemberCls::_resolve(GestureDisposition disposition, G
         }
     } else {
         assert(disposition == GestureDispositionCls::accepted);
-        _winner = _owner->captain or member;
+        _winner |= _owner->captain | member;
         _entry!->resolve(disposition);
     }
 }
 
-GestureArenaEntry GestureArenaTeamCls::add(GestureArenaMember member, int pointer) {
+GestureArenaEntry GestureArenaTeamCls::add(int pointer, GestureArenaMember member) {
     _CombiningGestureArenaMember combiner = _combiners->putIfAbsent(pointer, [=] () {
     make<_CombiningGestureArenaMemberCls>(this, pointer);
 });

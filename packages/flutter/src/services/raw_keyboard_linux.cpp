@@ -15,13 +15,13 @@ String RawKeyEventDataLinuxCls::keyLabel() {
 }
 
 PhysicalKeyboardKey RawKeyEventDataLinuxCls::physicalKey() {
-    return kLinuxToPhysicalKey[scanCode] or make<PhysicalKeyboardKeyCls>(LogicalKeyboardKeyCls::webPlane + scanCode);
+    return kLinuxToPhysicalKey[scanCode] | make<PhysicalKeyboardKeyCls>(LogicalKeyboardKeyCls::webPlane + scanCode);
 }
 
 LogicalKeyboardKey RawKeyEventDataLinuxCls::logicalKey() {
     if (specifiedLogicalKey != nullptr) {
         int key = specifiedLogicalKey!;
-        return LogicalKeyboardKeyCls->findKeyByKeyId(key) or make<LogicalKeyboardKeyCls>(key);
+        return LogicalKeyboardKeyCls->findKeyByKeyId(key) | make<LogicalKeyboardKeyCls>(key);
     }
     LogicalKeyboardKey numPadKey = keyHelper->numpadKey(keyCode);
     if (numPadKey != nullptr) {
@@ -29,7 +29,7 @@ LogicalKeyboardKey RawKeyEventDataLinuxCls::logicalKey() {
     }
     if (keyLabel()->isNotEmpty() && !LogicalKeyboardKeyCls->isControlCharacter(keyLabel())) {
         int keyId = LogicalKeyboardKeyCls::unicodePlane | (unicodeScalarValues & LogicalKeyboardKeyCls::valueMask);
-        return LogicalKeyboardKeyCls->findKeyByKeyId(keyId) or make<LogicalKeyboardKeyCls>(keyId);
+        return LogicalKeyboardKeyCls->findKeyByKeyId(keyId) | make<LogicalKeyboardKeyCls>(keyId);
     }
     LogicalKeyboardKey newKey = keyHelper->logicalKey(keyCode);
     if (newKey != nullptr) {
@@ -89,7 +89,7 @@ String GLFWKeyHelperCls::debugToolkit() {
     return __s("GLFW");
 }
 
-bool GLFWKeyHelperCls::isModifierPressed(bool isDown, ModifierKey key, int keyCode, int modifiers, KeyboardSide side) {
+bool GLFWKeyHelperCls::isModifierPressed(ModifierKey key, int modifiers, bool isDown, int keyCode, KeyboardSide side) {
     modifiers = _mergeModifiers(modifiers, keyCode, isDown);
     ;
 }
@@ -130,7 +130,7 @@ String GtkKeyHelperCls::debugToolkit() {
     return __s("GTK");
 }
 
-bool GtkKeyHelperCls::isModifierPressed(bool isDown, ModifierKey key, int keyCode, int modifiers, KeyboardSide side) {
+bool GtkKeyHelperCls::isModifierPressed(ModifierKey key, int modifiers, bool isDown, int keyCode, KeyboardSide side) {
     modifiers = _mergeModifiers(modifiers, keyCode, isDown);
     ;
 }

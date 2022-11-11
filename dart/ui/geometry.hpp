@@ -98,7 +98,7 @@ public:
     static Size infinite;
 
 
-     SizeCls(double height, double width);
+     SizeCls(double width, double height);
 
     virtual void  copy(Size source);
 
@@ -184,9 +184,9 @@ public:
     static Rect largest;
 
 
-    virtual void  fromLTRB(double bottom, double left, double right, double top);
+    virtual void  fromLTRB(double left, double top, double right, double bottom);
 
-    virtual void  fromLTWH(double height, double left, double top, double width);
+    virtual void  fromLTWH(double left, double top, double width, double height);
 
     virtual void  fromCircle(Offset center, double radius);
 
@@ -331,17 +331,17 @@ public:
     static RRect zero;
 
 
-    virtual void  fromLTRBXY(double bottom, double left, double radiusX, double radiusY, double right, double top);
+    virtual void  fromLTRBXY(double left, double top, double right, double bottom, double radiusX, double radiusY);
 
-    virtual void  fromLTRBR(double bottom, double left, Radius radius, double right, double top);
+    virtual void  fromLTRBR(double left, double top, double right, double bottom, Radius radius);
 
-    virtual void  fromRectXY(double radiusX, double radiusY, Rect rect);
+    virtual void  fromRectXY(Rect rect, double radiusX, double radiusY);
 
-    virtual void  fromRectAndRadius(Radius radius, Rect rect);
+    virtual void  fromRectAndRadius(Rect rect, Radius radius);
 
-    virtual void  fromLTRBAndCorners(double bottom, Radius bottomLeft, Radius bottomRight, double left, double right, double top, Radius topLeft, Radius topRight);
+    virtual void  fromLTRBAndCorners(double left, double top, double right, double bottom, Radius bottomLeft, Radius bottomRight, Radius topLeft, Radius topRight);
 
-    virtual void  fromRectAndCorners(Radius bottomLeft, Radius bottomRight, Rect rect, Radius topLeft, Radius topRight);
+    virtual void  fromRectAndCorners(Rect rect, Radius bottomLeft, Radius bottomRight, Radius topLeft, Radius topRight);
 
     virtual Radius tlRadius();
 
@@ -409,7 +409,7 @@ private:
 
     virtual Float32List _getValue32();
 
-    virtual double _getMin(double limit, double min, double radius1, double radius2);
+    virtual double _getMin(double min, double radius1, double radius2, double limit);
 
 };
 using RRect = std::shared_ptr<RRectCls>;

@@ -10,7 +10,7 @@ void _CompleterCls<T>::completeError(Object error, StackTrace stackTrace) {
         error = replacement->error;
         stackTrace = replacement->stackTrace;
     } else {
-        stackTrace = AsyncErrorCls->defaultStackTrace(error);
+        stackTrace |= AsyncErrorCls->defaultStackTrace(error);
     }
     _completeError(error, stackTrace);
 }
@@ -47,16 +47,16 @@ void _SyncCompleterCls<T>::_completeError(Object error, StackTrace stackTrace) {
 }
 
 template<typename S, typename T>
-void _FutureListenerCls<S, T>::then(std::function<void ()> errorCallback, std::function<FutureOr<T>(S )> onValue, _Future<T> result)
+void _FutureListenerCls<S, T>::then(_Future<T> result, std::function<FutureOr<T>(S )> onValue, std::function<void ()> errorCallback)
 
 template<typename S, typename T>
-void _FutureListenerCls<S, T>::thenAwait(std::function<void ()> errorCallback, std::function<FutureOr<T>(S )> onValue, _Future<T> result)
+void _FutureListenerCls<S, T>::thenAwait(_Future<T> result, std::function<FutureOr<T>(S )> onValue, std::function<void ()> errorCallback)
 
 template<typename S, typename T>
-void _FutureListenerCls<S, T>::catchError(std::function<void ()> callback, std::function<void ()> errorCallback, _Future<T> result)
+void _FutureListenerCls<S, T>::catchError(_Future<T> result, std::function<void ()> errorCallback, std::function<void ()> callback)
 
 template<typename S, typename T>
-void _FutureListenerCls<S, T>::whenComplete(std::function<void ()> callback, _Future<T> result)
+void _FutureListenerCls<S, T>::whenComplete(_Future<T> result, std::function<void ()> callback)
 
 template<typename S, typename T>
 bool _FutureListenerCls<S, T>::handlesValue() {

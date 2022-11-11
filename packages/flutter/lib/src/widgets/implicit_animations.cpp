@@ -111,12 +111,12 @@ CurvedAnimation ImplicitlyAnimatedWidgetStateCls<T>::_createCurve() {
 }
 
 template<typename T>
-bool ImplicitlyAnimatedWidgetStateCls<T>::_shouldAnimateTween(dynamic targetValue, Tween<dynamic> tween) {
-    return targetValue != (tween->end or tween->begin);
+bool ImplicitlyAnimatedWidgetStateCls<T>::_shouldAnimateTween(Tween<dynamic> tween, dynamic targetValue) {
+    return targetValue != (tween->end | tween->begin);
 }
 
 template<typename T>
-void ImplicitlyAnimatedWidgetStateCls<T>::_updateTween(dynamic targetValue, Tween<dynamic> tween) {
+void ImplicitlyAnimatedWidgetStateCls<T>::_updateTween(Tween<dynamic> tween, dynamic targetValue) {
     if (tween == nullptr) {
         return;
     }
@@ -128,11 +128,11 @@ bool ImplicitlyAnimatedWidgetStateCls<T>::_constructTweens() {
     bool shouldStartAnimation = false;
     forEachTween([=] (Tween<dynamic> tween,dynamic targetValue,TweenConstructor<dynamic> constructor) {
         if (targetValue != nullptr) {
-            tween = constructor(targetValue);
+            tween |= constructor(targetValue);
             if (_shouldAnimateTween(tween, targetValue)) {
                 shouldStartAnimation = true;
             } else {
-                tween->end = tween->begin;
+                tween->end |= tween->begin;
             }
         } else {
             tween = nullptr;
@@ -161,8 +161,8 @@ AnimatedContainerCls::AnimatedContainerCls(AlignmentGeometry alignment, Widget c
         assert(decoration == nullptr || decoration->debugAssertIsValid());
         assert(constraints == nullptr || constraints->debugAssertIsValid());
         assert(color == nullptr || decoration == nullptr, __s("Cannot provide both a color and a decoration\nThe color argument is just a shorthand for "decoration: BoxDecoration(color: color)"."));
-        decoration = decoration or (color != nullptr? make<BoxDecorationCls>(color) : nullptr);
-        constraints = (width != nullptr || height != nullptr)? constraints?->tighten(width, height) or BoxConstraintsCls->tightFor(width, height) : constraints;
+        decoration = decoration | (color != nullptr? make<BoxDecorationCls>(color) : nullptr);
+        constraints = (width != nullptr || height != nullptr)? constraints?->tighten(width, height) | BoxConstraintsCls->tightFor(width, height) : constraints;
     }
 }
 

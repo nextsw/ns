@@ -14,16 +14,16 @@ public:
      InheritedModelCls(Unknown child, Unknown key);
     virtual InheritedModelElement<T> createElement();
 
-    virtual bool updateShouldNotifyDependent(Set<T> dependencies, InheritedModel<T> oldWidget);
+    virtual bool updateShouldNotifyDependent(InheritedModel<T> oldWidget, Set<T> dependencies);
     virtual bool isSupportedAspect(Object aspect);
 
     template<typename T>
- static T inheritFrom(Object aspect, BuildContext context);
+ static T inheritFrom(BuildContext context, Object aspect);
 
 private:
 
     template<typename T>
- static void _findModels(Object aspect, BuildContext context, List<InheritedElement> results);
+ static void _findModels(BuildContext context, Object aspect, List<InheritedElement> results);
 
 };
 template<typename T>
@@ -34,9 +34,9 @@ class InheritedModelElementCls : public InheritedElementCls {
 public:
 
      InheritedModelElementCls(InheritedModel<T> widget);
-    virtual void updateDependencies(Object aspect, Element dependent);
+    virtual void updateDependencies(Element dependent, Object aspect);
 
-    virtual void notifyDependent(Element dependent, InheritedModel<T> oldWidget);
+    virtual void notifyDependent(InheritedModel<T> oldWidget, Element dependent);
 
 private:
 

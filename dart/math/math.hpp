@@ -26,7 +26,7 @@ template<typename T>
 template<typename T>
  T max(T a, T b);
 double atan2(num a, num b);
-num pow(num exponent, num x);
+num pow(num x, num exponent);
 double sin(num radians);
 double cos(num radians);
 double tan(num radians);

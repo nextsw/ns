@@ -35,7 +35,7 @@ public:
 
     virtual void forgetChild(Element child);
 
-    virtual void mount(Object newSlot, Element parent);
+    virtual void mount(Element parent, Object newSlot);
 
     virtual void update(ConstrainedLayoutBuilder<ConstraintType> newWidget);
 
@@ -45,7 +45,7 @@ public:
 
     virtual void insertRenderObjectChild(RenderObject child, Object slot);
 
-    virtual void moveRenderObjectChild(RenderObject child, Object newSlot, Object oldSlot);
+    virtual void moveRenderObjectChild(RenderObject child, Object oldSlot, Object newSlot);
 
     virtual void removeRenderObjectChild(RenderObject child, Object slot);
 
@@ -113,7 +113,7 @@ public:
 
     virtual double computeDistanceToActualBaseline(TextBaseline baseline);
 
-    virtual bool hitTestChildren(Offset position, BoxHitTestResult result);
+    virtual bool hitTestChildren(BoxHitTestResult result, Offset position);
 
     virtual void paint(PaintingContext context, Offset offset);
 
@@ -123,7 +123,7 @@ private:
 
 };
 using _RenderLayoutBuilder = std::shared_ptr<_RenderLayoutBuilderCls>;
-FlutterErrorDetails _debugReportException(DiagnosticsNode context, Object exception, InformationCollector informationCollector, StackTrace stack);
+FlutterErrorDetails _debugReportException(DiagnosticsNode context, Object exception, StackTrace stack, InformationCollector informationCollector);
 
 
 

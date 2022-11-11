@@ -82,7 +82,7 @@ public:
 
 private:
 
-    virtual bool _isLeftRightModifierPressed(int anyMask, int leftMask, int rightMask, KeyboardSide side);
+    virtual bool _isLeftRightModifierPressed(KeyboardSide side, int anyMask, int leftMask, int rightMask);
 
     static bool _isUnprintableKey(String label);
 

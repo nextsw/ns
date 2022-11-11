@@ -40,7 +40,7 @@ double RenderShiftedBoxCls::computeDistanceToActualBaseline(TextBaseline baselin
         result = child!->getDistanceToActualBaseline(baseline);
         BoxParentData childParentData = as<BoxParentData>(child!->parentData!);
         if (result != nullptr) {
-            result = childParentData->offset->dy();
+            result += childParentData->offset->dy();
         }
     } else {
         result = super->computeDistanceToActualBaseline(baseline);
@@ -55,7 +55,7 @@ void RenderShiftedBoxCls::paint(PaintingContext context, Offset offset) {
     }
 }
 
-bool RenderShiftedBoxCls::hitTestChildren(Offset position, BoxHitTestResult result) {
+bool RenderShiftedBoxCls::hitTestChildren(BoxHitTestResult result, Offset position) {
     if (child != nullptr) {
         BoxParentData childParentData = as<BoxParentData>(child!->parentData!);
         return result->addWithPaintOffset(childParentData->offset, position, [=] (BoxHitTestResult result,Offset transformed) {
@@ -297,7 +297,7 @@ Size RenderPositionedBoxCls::computeDryLayout(BoxConstraints constraints) {
     bool shrinkWrapHeight = _heightFactor != nullptr || constraints->maxHeight == double->infinity;
     if (child != nullptr) {
         Size childSize = child!->getDryLayout(constraints->loosen());
-        return constraints->constrain(make<SizeCls>(shrinkWrapWidth? childSize->width() * (_widthFactor or 1.0) : double->infinity, shrinkWrapHeight? childSize->height() * (_heightFactor or 1.0) : double->infinity));
+        return constraints->constrain(make<SizeCls>(shrinkWrapWidth? childSize->width() * (_widthFactor | 1.0) : double->infinity, shrinkWrapHeight? childSize->height() * (_heightFactor | 1.0) : double->infinity));
     }
     return constraints->constrain(make<SizeCls>(shrinkWrapWidth? 0.0 : double->infinity, shrinkWrapHeight? 0.0 : double->infinity));
 }
@@ -308,7 +308,7 @@ void RenderPositionedBoxCls::performLayout() {
     bool shrinkWrapHeight = _heightFactor != nullptr || constraints->maxHeight == double->infinity;
     if (child != nullptr) {
         child!->layout(constraints->loosen()true);
-        size = constraints->constrain(make<SizeCls>(shrinkWrapWidth? child!->size->width * (_widthFactor or 1.0) : double->infinity, shrinkWrapHeight? child!->size->height * (_heightFactor or 1.0) : double->infinity));
+        size = constraints->constrain(make<SizeCls>(shrinkWrapWidth? child!->size->width * (_widthFactor | 1.0) : double->infinity, shrinkWrapHeight? child!->size->height * (_heightFactor | 1.0) : double->infinity));
         alignChild();
     } else {
         size = constraints->constrain(make<SizeCls>(shrinkWrapWidth? 0.0 : double->infinity, shrinkWrapHeight? 0.0 : double->infinity));
@@ -429,7 +429,7 @@ void RenderConstrainedOverflowBoxCls::debugFillProperties(DiagnosticPropertiesBu
 }
 
 BoxConstraints RenderConstrainedOverflowBoxCls::_getInnerConstraints(BoxConstraints constraints) {
-    return make<BoxConstraintsCls>(_minWidth or constraints->minWidth, _maxWidth or constraints->maxWidth, _minHeight or constraints->minHeight, _maxHeight or constraints->maxHeight);
+    return make<BoxConstraintsCls>(_minWidth | constraints->minWidth, _maxWidth | constraints->maxWidth, _minHeight | constraints->minHeight, _maxHeight | constraints->maxHeight);
 }
 
 RenderConstraintsTransformBoxCls::RenderConstraintsTransformBoxCls(Unknown alignment, Unknown child, Clip clipBehavior, BoxConstraintsTransform constraintsTransform, Unknown textDirection) {
@@ -541,7 +541,7 @@ String RenderConstraintsTransformBoxCls::toStringShort() {
     String header = super->toStringShort();
     if (!kReleaseMode) {
         if (_isOverflowing) {
-            header = __s(" OVERFLOWING");
+            header += __s(" OVERFLOWING");
         }
     }
     return header;
@@ -683,10 +683,10 @@ double RenderFractionallySizedOverflowBoxCls::computeMinIntrinsicWidth(double he
     if (child == nullptr) {
         result = super->computeMinIntrinsicWidth(height);
     } else {
-        result = child!->getMinIntrinsicWidth(height * (_heightFactor or 1.0));
+        result = child!->getMinIntrinsicWidth(height * (_heightFactor | 1.0));
     }
     assert(result->isFinite);
-    return result / (_widthFactor or 1.0);
+    return result / (_widthFactor | 1.0);
 }
 
 double RenderFractionallySizedOverflowBoxCls::computeMaxIntrinsicWidth(double height) {
@@ -694,10 +694,10 @@ double RenderFractionallySizedOverflowBoxCls::computeMaxIntrinsicWidth(double he
     if (child == nullptr) {
         result = super->computeMaxIntrinsicWidth(height);
     } else {
-        result = child!->getMaxIntrinsicWidth(height * (_heightFactor or 1.0));
+        result = child!->getMaxIntrinsicWidth(height * (_heightFactor | 1.0));
     }
     assert(result->isFinite);
-    return result / (_widthFactor or 1.0);
+    return result / (_widthFactor | 1.0);
 }
 
 double RenderFractionallySizedOverflowBoxCls::computeMinIntrinsicHeight(double width) {
@@ -705,10 +705,10 @@ double RenderFractionallySizedOverflowBoxCls::computeMinIntrinsicHeight(double w
     if (child == nullptr) {
         result = super->computeMinIntrinsicHeight(width);
     } else {
-        result = child!->getMinIntrinsicHeight(width * (_widthFactor or 1.0));
+        result = child!->getMinIntrinsicHeight(width * (_widthFactor | 1.0));
     }
     assert(result->isFinite);
-    return result / (_heightFactor or 1.0);
+    return result / (_heightFactor | 1.0);
 }
 
 double RenderFractionallySizedOverflowBoxCls::computeMaxIntrinsicHeight(double width) {
@@ -716,10 +716,10 @@ double RenderFractionallySizedOverflowBoxCls::computeMaxIntrinsicHeight(double w
     if (child == nullptr) {
         result = super->computeMaxIntrinsicHeight(width);
     } else {
-        result = child!->getMaxIntrinsicHeight(width * (_widthFactor or 1.0));
+        result = child!->getMaxIntrinsicHeight(width * (_widthFactor | 1.0));
     }
     assert(result->isFinite);
-    return result / (_heightFactor or 1.0);
+    return result / (_heightFactor | 1.0);
 }
 
 Size RenderFractionallySizedOverflowBoxCls::computeDryLayout(BoxConstraints constraints) {
@@ -778,7 +778,7 @@ BoxConstraints SingleChildLayoutDelegateCls::getConstraintsForChild(BoxConstrain
     return constraints;
 }
 
-Offset SingleChildLayoutDelegateCls::getPositionForChild(Size childSize, Size size) {
+Offset SingleChildLayoutDelegateCls::getPositionForChild(Size size, Size childSize) {
     return OffsetCls::zero;
 }
 

@@ -77,7 +77,7 @@ private:
     static auto  _notFound;
 
 
-    virtual void  _internal(DateTime accessed, DateTime changed, int mode, DateTime modified, int size, FileSystemEntityType type);
+    virtual void  _internal(DateTime changed, DateTime modified, DateTime accessed, FileSystemEntityType type, int mode, int size);
     static void  _statSync(_Namespace namespace, String path);
     static FileStat _statSyncInternal(String path);
 
@@ -119,9 +119,9 @@ public:
 
     static bool isWatchSupported();
 
-    static Future<FileSystemEntityType> type(bool followLinks, String path);
+    static Future<FileSystemEntityType> type(String path, bool followLinks);
 
-    static FileSystemEntityType typeSync(bool followLinks, String path);
+    static FileSystemEntityType typeSync(String path, bool followLinks);
 
     static Future<bool> isLink(String path);
 
@@ -177,18 +177,18 @@ private:
 
     static bool _isLinkRawSync(rawPath );
 
-    static void  _getTypeNative(bool followLinks, _Namespace namespace, Uint8List rawPath);
+    static void  _getTypeNative(_Namespace namespace, Uint8List rawPath, bool followLinks);
     static void  _identicalNative(_Namespace namespace, String path1, String path2);
     static void  _resolveSymbolicLinks(_Namespace namespace, Uint8List path);
-    static FileSystemEntityType _getTypeSyncHelper(bool followLinks, Uint8List rawPath);
+    static FileSystemEntityType _getTypeSyncHelper(Uint8List rawPath, bool followLinks);
 
-    static FileSystemEntityType _getTypeSync(bool followLinks, Uint8List rawPath);
+    static FileSystemEntityType _getTypeSync(Uint8List rawPath, bool followLinks);
 
-    static Future<FileSystemEntityType> _getTypeRequest(bool followLinks, Uint8List rawPath);
+    static Future<FileSystemEntityType> _getTypeRequest(Uint8List rawPath, bool followLinks);
 
-    static Future<FileSystemEntityType> _getType(bool followLinks, Uint8List rawPath);
+    static Future<FileSystemEntityType> _getType(Uint8List rawPath, bool followLinks);
 
-    static void  _throwIfError(String msg, String path, Object result);
+    static void  _throwIfError(Object result, String msg, String path);
 
     static String _trimTrailingPathSeparators(String path);
 
@@ -224,7 +224,7 @@ private:
     static int _isDir;
 
 
-    virtual void  _(bool isDirectory, String path, int type);
+    virtual void  _(int type, String path, bool isDirectory);
 };
 using FileSystemEvent = std::shared_ptr<FileSystemEventCls>;
 
@@ -286,7 +286,7 @@ public:
     static bool isSupported();
 private:
 
-    static Stream<FileSystemEvent> _watch(int events, String path, bool recursive);
+    static Stream<FileSystemEvent> _watch(String path, int events, bool recursive);
 };
 using _FileSystemWatcher = std::shared_ptr<_FileSystemWatcherCls>;
 

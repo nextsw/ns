@@ -29,7 +29,7 @@ public:
     PointerDeviceKind kind;
 
 
-     MultiDragPointerStateCls(DeviceGestureSettings gestureSettings, Offset initialPosition, PointerDeviceKind kind);
+     MultiDragPointerStateCls(Offset initialPosition, PointerDeviceKind kind, DeviceGestureSettings gestureSettings);
 
     virtual Offset pendingDelta();
 
@@ -104,7 +104,7 @@ public:
 
 private:
 
-     _ImmediatePointerStateCls(Unknown deviceGestureSettings, Unknown initialPosition, Unknown kind);
+     _ImmediatePointerStateCls(Unknown initialPosition, Unknown kind, Unknown deviceGestureSettings);
 };
 using _ImmediatePointerState = std::shared_ptr<_ImmediatePointerStateCls>;
 
@@ -130,7 +130,7 @@ public:
 
 private:
 
-     _HorizontalPointerStateCls(Unknown deviceGestureSettings, Unknown initialPosition, Unknown kind);
+     _HorizontalPointerStateCls(Unknown initialPosition, Unknown kind, Unknown deviceGestureSettings);
 };
 using _HorizontalPointerState = std::shared_ptr<_HorizontalPointerStateCls>;
 
@@ -156,7 +156,7 @@ public:
 
 private:
 
-     _VerticalPointerStateCls(Unknown deviceGestureSettings, Unknown initialPosition, Unknown kind);
+     _VerticalPointerStateCls(Unknown initialPosition, Unknown kind, Unknown deviceGestureSettings);
 };
 using _VerticalPointerState = std::shared_ptr<_VerticalPointerStateCls>;
 
@@ -188,7 +188,7 @@ private:
     GestureMultiDragStartCallback _starter;
 
 
-     _DelayedPointerStateCls(Duration delay, DeviceGestureSettings deviceGestureSettings, Offset initialPosition, PointerDeviceKind kind);
+     _DelayedPointerStateCls(Offset initialPosition, Duration delay, PointerDeviceKind kind, DeviceGestureSettings deviceGestureSettings);
 
     virtual void _delayPassed();
 

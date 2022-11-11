@@ -8,7 +8,7 @@
 class intCls : public numCls {
 public:
 
-    void  fromEnvironment(int defaultValue, String name);
+    void  fromEnvironment(String name, int defaultValue);
     virtual int operator&(int other);
     virtual int operator|(int other);
     virtual int operator^(int other);
@@ -37,8 +37,8 @@ public:
     virtual double truncateToDouble() override;
     virtual String toString() override;
     virtual String toRadixString(int radix);
-    static int parse(std::function<int(String source)> onError, int radix, String source) override;
-    static int tryParse(int radix, String source) override;
+    static int parse(String source, std::function<int(String source)> onError, int radix) override;
+    static int tryParse(String source, int radix) override;
 private:
 
 };

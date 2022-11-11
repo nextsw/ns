@@ -19,7 +19,7 @@ public:
 
     virtual MouseCursor debugDeviceActiveCursor(int device);
 
-    virtual void handleDeviceCursorUpdate(Iterable<MouseCursor> cursorCandidates, int device, PointerEvent triggeringEvent);
+    virtual void handleDeviceCursorUpdate(int device, PointerEvent triggeringEvent, Iterable<MouseCursor> cursorCandidates);
 
 private:
     Map<int, MouseCursorSession> _lastSession;

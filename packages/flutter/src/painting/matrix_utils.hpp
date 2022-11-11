@@ -19,11 +19,11 @@ public:
 
     static bool isIdentity(Matrix4 a);
 
-    static Offset transformPoint(Offset point, Matrix4 transform);
+    static Offset transformPoint(Matrix4 transform, Offset point);
 
-    static Rect transformRect(Rect rect, Matrix4 transform);
+    static Rect transformRect(Matrix4 transform, Rect rect);
 
-    static Rect inverseTransformRect(Rect rect, Matrix4 transform);
+    static Rect inverseTransformRect(Matrix4 transform, Rect rect);
 
     static Matrix4 createCylindricalProjectionTransform(double angle, Axis orientation, double perspective, double radius);
 
@@ -34,9 +34,9 @@ private:
 
 
     virtual void  _();
-    static Rect _safeTransformRect(Rect rect, Matrix4 transform);
+    static Rect _safeTransformRect(Matrix4 transform, Rect rect);
 
-    static void _accumulate(bool first, bool isAffine, Float64List m, double x, double y);
+    static void _accumulate(Float64List m, double x, double y, bool first, bool isAffine);
 
     static double _min4(double a, double b, double c, double d);
 
@@ -50,7 +50,7 @@ List<String> debugDescribeTransform(Matrix4 transform);
 class TransformPropertyCls : public DiagnosticsPropertyCls<Matrix4> {
 public:
 
-     TransformPropertyCls(Unknown defaultValue, Unknown level, String name, Unknown showName, Unknown value);
+     TransformPropertyCls(String name, Unknown value, Unknown defaultValue, Unknown level, Unknown showName);
 
     virtual String valueToString(TextTreeConfiguration parentConfiguration);
 

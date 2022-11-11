@@ -1,12 +1,12 @@
 #include "image_icon.hpp"
 Widget ImageIconCls::build(BuildContext context) {
     IconThemeData iconTheme = IconThemeCls->of(context);
-    double iconSize = size or iconTheme->size;
+    double iconSize = size | iconTheme->size;
     if (image == nullptr) {
         return make<SemanticsCls>(semanticLabel, make<SizedBoxCls>(iconSize, iconSize));
     }
     double iconOpacity = iconTheme->opacity();
-    Color iconColor = color or iconTheme->color!;
+    Color iconColor = color | iconTheme->color!;
     if (iconOpacity != nullptr && iconOpacity != 1.0) {
         iconColor = iconColor->withOpacity(iconColor->opacity() * iconOpacity);
     }

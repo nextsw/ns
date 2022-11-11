@@ -110,7 +110,7 @@ public:
 
     virtual PointerEvent transformed(Matrix4 transform);
     virtual PointerEvent copyWith(int buttons, Offset delta, int device, double distance, double distanceMax, int embedderId, PointerDeviceKind kind, bool obscured, double orientation, int pointer, Offset position, double pressure, double pressureMax, double pressureMin, double radiusMajor, double radiusMax, double radiusMin, double radiusMinor, double size, bool synthesized, double tilt, Duration timeStamp);
-    static Offset transformPosition(Offset position, Matrix4 transform);
+    static Offset transformPosition(Matrix4 transform, Offset position);
 
     static Offset transformDeltaViaPositions(Matrix4 transform, Offset transformedEndPosition, Offset untransformedDelta, Offset untransformedEndPosition);
 

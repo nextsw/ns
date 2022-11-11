@@ -16,7 +16,7 @@ double _RenderSliverLayoutBuilderCls::childMainAxisPosition(RenderObject child) 
 void _RenderSliverLayoutBuilderCls::performLayout() {
     rebuildIfNecessary();
     child?->layout(constraintstrue);
-    geometry = child?->geometry or SliverGeometryCls::zero;
+    geometry = child?->geometry | SliverGeometryCls::zero;
 }
 
 void _RenderSliverLayoutBuilderCls::applyPaintTransform(RenderObject child, Matrix4 transform) {
@@ -25,11 +25,11 @@ void _RenderSliverLayoutBuilderCls::applyPaintTransform(RenderObject child, Matr
 }
 
 void _RenderSliverLayoutBuilderCls::paint(PaintingContext context, Offset offset) {
-    if (child?->geometry?->visible or false) {
+    if (child?->geometry?->visible | false) {
         context->paintChild(child!, offset);
     }
 }
 
-bool _RenderSliverLayoutBuilderCls::hitTestChildren(double crossAxisPosition, double mainAxisPosition, SliverHitTestResult result) {
+bool _RenderSliverLayoutBuilderCls::hitTestChildren(SliverHitTestResult result, double crossAxisPosition, double mainAxisPosition) {
     return child != nullptr && child!->geometry!->hitTestExtent > 0 && child!->hitTest(resultmainAxisPosition, crossAxisPosition);
 }

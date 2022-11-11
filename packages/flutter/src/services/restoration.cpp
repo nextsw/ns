@@ -156,7 +156,7 @@ Object RestorationBucketCls::debugOwner() {
 }
 
 bool RestorationBucketCls::isReplacing() {
-    return _manager?->isReplacing() or false;
+    return _manager?->isReplacing() | false;
 }
 
 String RestorationBucketCls::restorationId() {
@@ -203,7 +203,7 @@ bool RestorationBucketCls::contains(String restorationId) {
     return _rawValues()->containsKey(restorationId);
 }
 
-RestorationBucket RestorationBucketCls::claimChild(Object debugOwner, String restorationId) {
+RestorationBucket RestorationBucketCls::claimChild(String restorationId, Object debugOwner) {
     assert(_debugAssertNotDisposed());
     assert(restorationId != nullptr);
     if (_claimedChildren->containsKey(restorationId) || !_rawChildren()->containsKey(restorationId)) {
@@ -352,7 +352,7 @@ void RestorationBucketCls::_removeChildData(RestorationBucket child) {
         return;
     }
     _childrenToAdd[child->restorationId()]?->remove(child);
-    if (_childrenToAdd[child->restorationId()]?->isEmpty() or false) {
+    if (_childrenToAdd[child->restorationId()]?->isEmpty() | false) {
         _childrenToAdd->remove(child->restorationId());
     }
 }
@@ -378,7 +378,7 @@ void RestorationBucketCls::_finalizeAddChildData(RestorationBucket child) {
     _rawChildren()[child->restorationId()] = child->_rawData;
 }
 
-void RestorationBucketCls::_visitChildren(bool concurrentModification, _BucketVisitor visitor) {
+void RestorationBucketCls::_visitChildren(_BucketVisitor visitor, bool concurrentModification) {
     Iterable<RestorationBucket> children = _claimedChildren->values()->followedBy(_childrenToAdd->values()->expand([=] (List<RestorationBucket> buckets) {
     buckets;
 }));

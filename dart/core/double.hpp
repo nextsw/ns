@@ -37,7 +37,7 @@ public:
     virtual double ceilToDouble() override;
     virtual double truncateToDouble() override;
     virtual String toString() override;
-    static double parse(std::function<double(String source)> onError, String source) override;
+    static double parse(String source, std::function<double(String source)> onError) override;
     static double tryParse(String source) override;
 private:
 

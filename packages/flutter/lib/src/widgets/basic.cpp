@@ -314,7 +314,7 @@ Matrix4 TransformCls::_computeRotation(double radians) {
     return _createZRotation(sin, cos);
 }
 
-Matrix4 TransformCls::_createZRotation(double cos, double sin) {
+Matrix4 TransformCls::_createZRotation(double sin, double cos) {
     Matrix4 result = Matrix4Cls->zero();
     result->storage()[0] = cos;
     result->storage()[1] = sin;
@@ -463,7 +463,7 @@ void CustomSingleChildLayoutCls::updateRenderObject(BuildContext context, Render
     renderObject->delegate = delegate;
 }
 
-LayoutIdCls::LayoutIdCls(Unknown child, Object id, Key key) : ParentDataWidget<MultiChildLayoutParentData>(key or <Object>make<ValueKeyCls>(id)) {
+LayoutIdCls::LayoutIdCls(Unknown child, Object id, Key key) : ParentDataWidget<MultiChildLayoutParentData>(key | <Object>make<ValueKeyCls>(id)) {
     {
         assert(child != nullptr);
         assert(id != nullptr);
@@ -610,11 +610,11 @@ BoxConstraints ConstraintsTransformBoxCls::maxUnconstrained(BoxConstraints const
 }
 
 RenderConstraintsTransformBox ConstraintsTransformBoxCls::createRenderObject(BuildContext context) {
-    return make<RenderConstraintsTransformBoxCls>(textDirection or DirectionalityCls->maybeOf(context), alignment, constraintsTransform, clipBehavior);
+    return make<RenderConstraintsTransformBoxCls>(textDirection | DirectionalityCls->maybeOf(context), alignment, constraintsTransform, clipBehavior);
 }
 
 void ConstraintsTransformBoxCls::updateRenderObject(BuildContext context, RenderConstraintsTransformBox renderObject) {
-    auto _c1 = renderObject;_c1.textDirection = auto _c2 = textDirection or DirectionalityCls->maybeOf(context);_c2.constraintsTransform = auto _c3 = constraintsTransform;_c3.alignment = auto _c4 = alignment;_c4.clipBehavior = clipBehavior;_c4;_c3;_c2;_c1;
+    auto _c1 = renderObject;_c1.textDirection = auto _c2 = textDirection | DirectionalityCls->maybeOf(context);_c2.constraintsTransform = auto _c3 = constraintsTransform;_c3.alignment = auto _c4 = alignment;_c4.clipBehavior = clipBehavior;_c4;_c3;_c2;_c1;
 }
 
 void ConstraintsTransformBoxCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
@@ -849,7 +849,7 @@ void SliverPaddingCls::debugFillProperties(DiagnosticPropertiesBuilder propertie
     properties->add(<EdgeInsetsGeometry>make<DiagnosticsPropertyCls>(__s("padding"), padding));
 }
 
-AxisDirection getAxisDirectionFromAxisReverseAndDirectionality(Axis axis, BuildContext context, bool reverse) {
+AxisDirection getAxisDirectionFromAxisReverseAndDirectionality(BuildContext context, Axis axis, bool reverse) {
     ;
 }
 
@@ -879,12 +879,12 @@ StackCls::StackCls(AlignmentGeometry alignment, Unknown children, Clip clipBehav
 
 RenderStack StackCls::createRenderObject(BuildContext context) {
     assert(_debugCheckHasDirectionality(context));
-    return make<RenderStackCls>(alignment, textDirection or DirectionalityCls->maybeOf(context), fit, clipBehavior);
+    return make<RenderStackCls>(alignment, textDirection | DirectionalityCls->maybeOf(context), fit, clipBehavior);
 }
 
 void StackCls::updateRenderObject(BuildContext context, RenderStack renderObject) {
     assert(_debugCheckHasDirectionality(context));
-    auto _c1 = renderObject;_c1.alignment = auto _c2 = alignment;_c2.textDirection = auto _c3 = textDirection or DirectionalityCls->maybeOf(context);_c3.fit = auto _c4 = fit;_c4.clipBehavior = clipBehavior;_c4;_c3;_c2;_c1;
+    auto _c1 = renderObject;_c1.alignment = auto _c2 = alignment;_c2.textDirection = auto _c3 = textDirection | DirectionalityCls->maybeOf(context);_c3.fit = auto _c4 = fit;_c4.clipBehavior = clipBehavior;_c4;_c3;_c2;_c1;
 }
 
 void StackCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
@@ -907,12 +907,12 @@ IndexedStackCls::IndexedStackCls(Unknown alignment, Unknown children, int index,
 
 RenderIndexedStack IndexedStackCls::createRenderObject(BuildContext context) {
     assert(_debugCheckHasDirectionality(context));
-    return make<RenderIndexedStackCls>(index, alignment, textDirection or DirectionalityCls->maybeOf(context));
+    return make<RenderIndexedStackCls>(index, alignment, textDirection | DirectionalityCls->maybeOf(context));
 }
 
 void IndexedStackCls::updateRenderObject(BuildContext context, RenderIndexedStack renderObject) {
     assert(_debugCheckHasDirectionality(context));
-    auto _c1 = renderObject;_c1.index = auto _c2 = index;_c2.alignment = auto _c3 = alignment;_c3.textDirection = textDirection or DirectionalityCls->maybeOf(context);_c3;_c2;_c1;
+    auto _c1 = renderObject;_c1.index = auto _c2 = index;_c2.alignment = auto _c3 = alignment;_c3.textDirection = textDirection | DirectionalityCls->maybeOf(context);_c3;_c2;_c1;
 }
 
 PositionedCls::PositionedCls(double bottom, Unknown child, double height, Unknown key, double left, double right, double top, double width) {
@@ -1003,7 +1003,7 @@ FlexCls::FlexCls(Unknown children, Clip clipBehavior, CrossAxisAlignment crossAx
 }
 
 TextDirection FlexCls::getEffectiveTextDirection(BuildContext context) {
-    return textDirection or (_needTextDirection()? DirectionalityCls->maybeOf(context) : nullptr);
+    return textDirection | (_needTextDirection()? DirectionalityCls->maybeOf(context) : nullptr);
 }
 
 RenderFlex FlexCls::createRenderObject(BuildContext context) {
@@ -1075,11 +1075,11 @@ WrapCls::WrapCls(WrapAlignment alignment, Unknown children, Clip clipBehavior, W
 }
 
 RenderWrap WrapCls::createRenderObject(BuildContext context) {
-    return make<RenderWrapCls>(direction, alignment, spacing, runAlignment, runSpacing, crossAxisAlignment, textDirection or DirectionalityCls->maybeOf(context), verticalDirection, clipBehavior);
+    return make<RenderWrapCls>(direction, alignment, spacing, runAlignment, runSpacing, crossAxisAlignment, textDirection | DirectionalityCls->maybeOf(context), verticalDirection, clipBehavior);
 }
 
 void WrapCls::updateRenderObject(BuildContext context, RenderWrap renderObject) {
-    auto _c1 = renderObject;_c1.direction = auto _c2 = direction;_c2.alignment = auto _c3 = alignment;_c3.spacing = auto _c4 = spacing;_c4.runAlignment = auto _c5 = runAlignment;_c5.runSpacing = auto _c6 = runSpacing;_c6.crossAxisAlignment = auto _c7 = crossAxisAlignment;_c7.textDirection = auto _c8 = textDirection or DirectionalityCls->maybeOf(context);_c8.verticalDirection = auto _c9 = verticalDirection;_c9.clipBehavior = clipBehavior;_c9;_c8;_c7;_c6;_c5;_c4;_c3;_c2;_c1;
+    auto _c1 = renderObject;_c1.direction = auto _c2 = direction;_c2.alignment = auto _c3 = alignment;_c3.spacing = auto _c4 = spacing;_c4.runAlignment = auto _c5 = runAlignment;_c5.runSpacing = auto _c6 = runSpacing;_c6.crossAxisAlignment = auto _c7 = crossAxisAlignment;_c7.textDirection = auto _c8 = textDirection | DirectionalityCls->maybeOf(context);_c8.verticalDirection = auto _c9 = verticalDirection;_c9.clipBehavior = clipBehavior;_c9;_c8;_c7;_c6;_c5;_c4;_c3;_c2;_c1;
 }
 
 void WrapCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
@@ -1127,12 +1127,12 @@ RichTextCls::RichTextCls(Unknown key, Locale locale, int maxLines, TextOverflow 
 
 RenderParagraph RichTextCls::createRenderObject(BuildContext context) {
     assert(textDirection != nullptr || debugCheckHasDirectionality(context));
-    return make<RenderParagraphCls>(texttextAlign, textDirection or DirectionalityCls->of(context), softWrap, overflow, textScaleFactor, maxLines, strutStyle, textWidthBasis, textHeightBehavior, locale or LocalizationsCls->maybeLocaleOf(context), selectionRegistrar, selectionColor);
+    return make<RenderParagraphCls>(texttextAlign, textDirection | DirectionalityCls->of(context), softWrap, overflow, textScaleFactor, maxLines, strutStyle, textWidthBasis, textHeightBehavior, locale | LocalizationsCls->maybeLocaleOf(context), selectionRegistrar, selectionColor);
 }
 
 void RichTextCls::updateRenderObject(BuildContext context, RenderParagraph renderObject) {
     assert(textDirection != nullptr || debugCheckHasDirectionality(context));
-    auto _c1 = renderObject;_c1.text = auto _c2 = text;_c2.textAlign = auto _c3 = textAlign;_c3.textDirection = auto _c4 = textDirection or DirectionalityCls->of(context);_c4.softWrap = auto _c5 = softWrap;_c5.overflow = auto _c6 = overflow;_c6.textScaleFactor = auto _c7 = textScaleFactor;_c7.maxLines = auto _c8 = maxLines;_c8.strutStyle = auto _c9 = strutStyle;_c9.textWidthBasis = auto _c10 = textWidthBasis;_c10.textHeightBehavior = auto _c11 = textHeightBehavior;_c11.locale = auto _c12 = locale or LocalizationsCls->maybeLocaleOf(context);_c12.registrar = auto _c13 = selectionRegistrar;_c13.selectionColor = selectionColor;_c13;_c12;_c11;_c10;_c9;_c8;_c7;_c6;_c5;_c4;_c3;_c2;_c1;
+    auto _c1 = renderObject;_c1.text = auto _c2 = text;_c2.textAlign = auto _c3 = textAlign;_c3.textDirection = auto _c4 = textDirection | DirectionalityCls->of(context);_c4.softWrap = auto _c5 = softWrap;_c5.overflow = auto _c6 = overflow;_c6.textScaleFactor = auto _c7 = textScaleFactor;_c7.maxLines = auto _c8 = maxLines;_c8.strutStyle = auto _c9 = strutStyle;_c9.textWidthBasis = auto _c10 = textWidthBasis;_c10.textHeightBehavior = auto _c11 = textHeightBehavior;_c11.locale = auto _c12 = locale | LocalizationsCls->maybeLocaleOf(context);_c12.registrar = auto _c13 = selectionRegistrar;_c13.selectionColor = selectionColor;_c13;_c12;_c11;_c10;_c9;_c8;_c7;_c6;_c5;_c4;_c3;_c2;_c1;
 }
 
 void RichTextCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
@@ -1174,12 +1174,12 @@ RawImageCls::RawImageCls(AlignmentGeometry alignment, Rect centerSlice, Color co
 
 RenderImage RawImageCls::createRenderObject(BuildContext context) {
     assert((!matchTextDirection && is<Alignment>(alignment)) || debugCheckHasDirectionality(context));
-    assert(image?->debugGetOpenHandleStackTraces()?->isNotEmpty or true, __s("Creator of a RawImage disposed of the image when the RawImage still needed it."));
+    assert(image?->debugGetOpenHandleStackTraces()?->isNotEmpty | true, __s("Creator of a RawImage disposed of the image when the RawImage still needed it."));
     return make<RenderImageCls>(image?->clone(), debugImageLabel, width, height, scale, color, opacity, colorBlendMode, fit, alignment, repeat, centerSlice, matchTextDirection, matchTextDirection || !is<Alignment>(alignment)? DirectionalityCls->of(context) : nullptr, invertColors, isAntiAlias, filterQuality);
 }
 
 void RawImageCls::updateRenderObject(BuildContext context, RenderImage renderObject) {
-    assert(image?->debugGetOpenHandleStackTraces()?->isNotEmpty or true, __s("Creator of a RawImage disposed of the image when the RawImage still needed it."));
+    assert(image?->debugGetOpenHandleStackTraces()?->isNotEmpty | true, __s("Creator of a RawImage disposed of the image when the RawImage still needed it."));
     auto _c1 = renderObject;_c1.image = auto _c2 = image?->clone();_c2.debugImageLabel = auto _c3 = debugImageLabel;_c3.width = auto _c4 = width;_c4.height = auto _c5 = height;_c5.scale = auto _c6 = scale;_c6.color = auto _c7 = color;_c7.opacity = auto _c8 = opacity;_c8.colorBlendMode = auto _c9 = colorBlendMode;_c9.fit = auto _c10 = fit;_c10.alignment = auto _c11 = alignment;_c11.repeat = auto _c12 = repeat;_c12.centerSlice = auto _c13 = centerSlice;_c13.matchTextDirection = auto _c14 = matchTextDirection;_c14.textDirection = matchTextDirection || !is<Alignment>(alignment)? DirectionalityCls->of(context) : auto _c15 = nullptr;_c15.invertColors = auto _c16 = invertColors;_c16.isAntiAlias = auto _c17 = isAntiAlias;_c17.filterQuality = filterQuality;_c17;_c16;_c15;_c14;_c13;_c12;_c11;_c10;_c9;_c8;_c7;_c6;_c5;_c4;_c3;_c2;_c1;
 }
 
@@ -1214,7 +1214,7 @@ DefaultAssetBundleCls::DefaultAssetBundleCls(AssetBundle bundle, Unknown child, 
 
 AssetBundle DefaultAssetBundleCls::of(BuildContext context) {
     DefaultAssetBundle result = context-><DefaultAssetBundle>dependOnInheritedWidgetOfExactType();
-    return result?->bundle or rootBundle;
+    return result?->bundle | rootBundle;
 }
 
 bool DefaultAssetBundleCls::updateShouldNotify(DefaultAssetBundle oldWidget) {
@@ -1461,7 +1461,7 @@ void KeyedSubtreeCls::wrap(Widget child, int childIndex) {
     return make<KeyedSubtreeCls>(key, child);
 }
 
-List<Widget> KeyedSubtreeCls::ensureUniqueKeysForList(int baseIndex, List<Widget> items) {
+List<Widget> KeyedSubtreeCls::ensureUniqueKeysForList(List<Widget> items, int baseIndex) {
     if (items == nullptr || items->isEmpty) {
         return items;
     }
@@ -1469,7 +1469,7 @@ List<Widget> KeyedSubtreeCls::ensureUniqueKeysForList(int baseIndex, List<Widget
     int itemIndex = baseIndex;
     for (Widget item : items) {
         itemsWithUniqueKeys->add(KeyedSubtreeCls->wrap(item, itemIndex));
-        itemIndex = 1;
+        itemIndex += 1;
     }
     assert(!debugItemsHaveDuplicateKeys(itemsWithUniqueKeys));
     return itemsWithUniqueKeys;

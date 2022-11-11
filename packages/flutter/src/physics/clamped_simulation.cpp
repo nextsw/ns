@@ -1,5 +1,5 @@
 #include "clamped_simulation.hpp"
-ClampedSimulationCls::ClampedSimulationCls(double dxMax, double dxMin, Simulation simulation, double xMax, double xMin) {
+ClampedSimulationCls::ClampedSimulationCls(Simulation simulation, double dxMax, double dxMin, double xMax, double xMin) {
     {
         assert(simulation != nullptr);
         assert(xMax >= xMin);

@@ -59,7 +59,7 @@ public:
 
 private:
 
-     _FunctionCls(int name, _Transpiler transpiler, _FunctionType type);
+     _FunctionCls(_Transpiler transpiler, _FunctionType type, int name);
 
 };
 using _Function = std::shared_ptr<_FunctionCls>;

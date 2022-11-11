@@ -56,7 +56,7 @@ private:
 
     virtual void _handlePanEnd(DragEndDetails details);
 
-    virtual void _performAction(SemanticsAction action, Offset position);
+    virtual void _performAction(Offset position, SemanticsAction action);
 
     virtual PipelineOwner _pipelineOwner();
 
@@ -102,7 +102,7 @@ public:
 
 private:
 
-     _SemanticsDebuggerPainterCls(double devicePixelRatio, int generation, TextStyle labelStyle, PipelineOwner owner, Offset pointerPosition);
+     _SemanticsDebuggerPainterCls(PipelineOwner owner, int generation, Offset pointerPosition, double devicePixelRatio, TextStyle labelStyle);
     virtual SemanticsNode _rootSemanticsNode();
 
     virtual void _paintMessage(Canvas canvas, SemanticsNode node);

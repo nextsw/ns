@@ -2,14 +2,14 @@
 LongPressDownDetailsCls::LongPressDownDetailsCls(Offset globalPosition, PointerDeviceKind kind, Offset localPosition) {
     {
         assert(globalPosition != nullptr);
-        localPosition = localPosition or globalPosition;
+        localPosition = localPosition | globalPosition;
     }
 }
 
 LongPressStartDetailsCls::LongPressStartDetailsCls(Offset globalPosition, Offset localPosition) {
     {
         assert(globalPosition != nullptr);
-        localPosition = localPosition or globalPosition;
+        localPosition = localPosition | globalPosition;
     }
 }
 
@@ -17,19 +17,19 @@ LongPressMoveUpdateDetailsCls::LongPressMoveUpdateDetailsCls(Offset globalPositi
     {
         assert(globalPosition != nullptr);
         assert(offsetFromOrigin != nullptr);
-        localPosition = localPosition or globalPosition;
-        localOffsetFromOrigin = localOffsetFromOrigin or offsetFromOrigin;
+        localPosition = localPosition | globalPosition;
+        localOffsetFromOrigin = localOffsetFromOrigin | offsetFromOrigin;
     }
 }
 
 LongPressEndDetailsCls::LongPressEndDetailsCls(Offset globalPosition, Offset localPosition, Velocity velocity) {
     {
         assert(globalPosition != nullptr);
-        localPosition = localPosition or globalPosition;
+        localPosition = localPosition | globalPosition;
     }
 }
 
-LongPressGestureRecognizerCls::LongPressGestureRecognizerCls(Unknown debugOwner, Duration duration, Unknown kind, Unknown postAcceptSlopTolerance, Unknown supportedDevices) : PrimaryPointerGestureRecognizer(duration or kLongPressTimeout) {
+LongPressGestureRecognizerCls::LongPressGestureRecognizerCls(Unknown debugOwner, Duration duration, Unknown kind, Unknown postAcceptSlopTolerance, Unknown supportedDevices) : PrimaryPointerGestureRecognizer(duration | kLongPressTimeout) {
 }
 
 bool LongPressGestureRecognizerCls::isPointerAllowed(PointerDownEvent event) {

@@ -30,15 +30,15 @@ int compareAsciiLowerCaseNatural(String a, String b);
 
 int compareAsciiUpperCaseNatural(String a, String b);
 
-int _compareNaturally(String a, int aChar, String b, int bChar, int index);
+int _compareNaturally(String a, String b, int index, int aChar, int bChar);
 
-int _compareNumerically(String a, int aChar, String b, int bChar, int index);
+int _compareNumerically(String a, String b, int aChar, int bChar, int index);
 
 int _compareDigitCount(String a, String b, int i, int j);
 
 bool _isDigit(int charCode);
 
-bool _isNonZeroNumberSuffix(int index, String stringValue);
+bool _isNonZeroNumberSuffix(String stringValue, int index);
 
 
 

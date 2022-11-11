@@ -10,7 +10,7 @@
 #include <dart/io/io.hpp>
 #include <dart/typed_data/typed_data.hpp>
 
-Future<Uint8List> consolidateHttpClientResponseBytes(bool autoUncompress, BytesReceivedCallback onBytesReceived, HttpClientResponse response);
+Future<Uint8List> consolidateHttpClientResponseBytes(HttpClientResponse response, bool autoUncompress, BytesReceivedCallback onBytesReceived);
 
 
 class _OutputBufferCls : public ByteConversionSinkBaseCls {

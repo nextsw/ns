@@ -148,9 +148,9 @@ private:
 
     virtual CurvedAnimation _createCurve();
 
-    virtual bool _shouldAnimateTween(dynamic targetValue, Tween<dynamic> tween);
+    virtual bool _shouldAnimateTween(Tween<dynamic> tween, dynamic targetValue);
 
-    virtual void _updateTween(dynamic targetValue, Tween<dynamic> tween);
+    virtual void _updateTween(Tween<dynamic> tween, dynamic targetValue);
 
     virtual bool _constructTweens();
 

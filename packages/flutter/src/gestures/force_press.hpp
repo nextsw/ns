@@ -73,7 +73,7 @@ private:
     _ForceState _state;
 
 
-    static double _inverseLerp(double max, double min, double t);
+    static double _inverseLerp(double min, double max, double t);
 
 };
 using ForcePressGestureRecognizer = std::shared_ptr<ForcePressGestureRecognizerCls>;

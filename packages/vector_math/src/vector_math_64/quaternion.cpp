@@ -35,14 +35,14 @@ void QuaternionCls::w(double w) {
     _qStorage[3] = w;
 }
 
-QuaternionCls::QuaternionCls(double w, double x, double y, double z) {
+QuaternionCls::QuaternionCls(double x, double y, double z, double w) {
 }
 
 void QuaternionCls::fromRotation(Matrix3 rotationMatrix) {
     return _c1;
 }
 
-void QuaternionCls::axisAngle(double angle, Vector3 axis) {
+void QuaternionCls::axisAngle(Vector3 axis, double angle) {
     return _c1;
 }
 
@@ -62,11 +62,11 @@ void QuaternionCls::identity() {
     return _c1;
 }
 
-void QuaternionCls::dq(Vector3 omega, Quaternion q) {
+void QuaternionCls::dq(Quaternion q, Vector3 omega) {
     return _c1;
 }
 
-void QuaternionCls::euler(double pitch, double roll, double yaw) {
+void QuaternionCls::euler(double yaw, double pitch, double roll) {
     return _c1;
 }
 
@@ -84,7 +84,7 @@ void QuaternionCls::setFrom(Quaternion source) {
     _qStorage[3] = sourceStorage[3];
 }
 
-void QuaternionCls::setValues(double w, double x, double y, double z) {
+void QuaternionCls::setValues(double x, double y, double z, double w) {
     _qStorage[0] = x;
     _qStorage[1] = y;
     _qStorage[2] = z;
@@ -165,7 +165,7 @@ void QuaternionCls::setRandom(Random rn) {
     _qStorage[3] = c2 * r2;
 }
 
-void QuaternionCls::setDQ(Vector3 omega, Quaternion q) {
+void QuaternionCls::setDQ(Quaternion q, Vector3 omega) {
     Unknown qStorage = q->_qStorage;
     Unknown omegaStorage = omega->storage();
     Unknown qx = qStorage[0];
@@ -185,7 +185,7 @@ void QuaternionCls::setDQ(Vector3 omega, Quaternion q) {
     _qStorage[3] = _w * 0.5;
 }
 
-void QuaternionCls::setEuler(double pitch, double roll, double yaw) {
+void QuaternionCls::setEuler(double yaw, double pitch, double roll) {
     Unknown halfYaw = yaw * 0.5;
     Unknown halfPitch = pitch * 0.5;
     Unknown halfRoll = roll * 0.5;
@@ -207,10 +207,10 @@ double QuaternionCls::normalize() {
         return 0.0;
     }
     Unknown d = 1.0 / l;
-    _qStorage[0] = d;
-    _qStorage[1] = d;
-    _qStorage[2] = d;
-    _qStorage[3] = d;
+    _qStorage[0] *= d;
+    _qStorage[1] *= d;
+    _qStorage[2] *= d;
+    _qStorage[3] *= d;
     return l;
 }
 
@@ -350,7 +350,7 @@ double QuaternionCls::[](int i) {
     return _qStorage[i];
 }
 
-void QuaternionCls::[]=(double arg, int i) {
+void QuaternionCls::[]=(int i, double arg) {
     auto _c1 = clone();_c1.add(other);auto _c1 = clone();_c1.sub(other);_qStorage[i] = arg;
 }
 

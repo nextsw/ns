@@ -80,11 +80,11 @@ public:
 
     virtual RenderTable renderObject();
 
-    virtual void mount(Object newSlot, Element parent);
+    virtual void mount(Element parent, Object newSlot);
 
     virtual void insertRenderObjectChild(RenderBox child, _TableSlot slot);
 
-    virtual void moveRenderObjectChild(RenderBox child, _TableSlot newSlot, _TableSlot oldSlot);
+    virtual void moveRenderObjectChild(RenderBox child, _TableSlot oldSlot, _TableSlot newSlot);
 
     virtual void removeRenderObjectChild(RenderBox child, _TableSlot slot);
 

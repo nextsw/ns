@@ -14,7 +14,7 @@
 #include "viewport.hpp"
 #include "viewport_offset.hpp"
 
-Rect _trim(double bottom, double left, Rect original, double right, double top);
+Rect _trim(Rect original, double bottom, double left, double right, double top);
 
 
 class OverScrollHeaderStretchConfigurationCls : public ObjectCls {
@@ -56,15 +56,15 @@ public:
     virtual double minExtent();
     virtual double childExtent();
 
-    virtual void updateChild(bool overlapsContent, double shrinkOffset);
+    virtual void updateChild(double shrinkOffset, bool overlapsContent);
 
     virtual void markNeedsLayout();
 
-    virtual void layoutChild(double maxExtent, bool overlapsContent, double scrollOffset);
+    virtual void layoutChild(double scrollOffset, double maxExtent, bool overlapsContent);
 
     virtual double childMainAxisPosition(RenderObject child);
 
-    virtual bool hitTestChildren(double crossAxisPosition, double mainAxisPosition, SliverHitTestResult result);
+    virtual bool hitTestChildren(SliverHitTestResult result, double crossAxisPosition, double mainAxisPosition);
 
     virtual void applyPaintTransform(RenderObject child, Matrix4 transform);
 
@@ -182,7 +182,7 @@ private:
     TickerProvider _vsync;
 
 
-    virtual void _updateAnimation(Curve curve, Duration duration, double endValue);
+    virtual void _updateAnimation(Duration duration, double endValue, Curve curve);
 
 };
 using RenderSliverFloatingPersistentHeader = std::shared_ptr<RenderSliverFloatingPersistentHeaderCls>;

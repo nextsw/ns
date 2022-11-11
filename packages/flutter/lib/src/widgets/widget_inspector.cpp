@@ -4,46 +4,46 @@ void _ProxyLayerCls::addToScene(SceneBuilder builder) {
 }
 
 template<typename S>
-bool _ProxyLayerCls::findAnnotations(Offset localPosition, bool onlyFirst, AnnotationResult<S> result) {
+bool _ProxyLayerCls::findAnnotations(AnnotationResult<S> result, Offset localPosition, bool onlyFirst) {
     return _layer->findAnnotations(result, localPositiononlyFirst);
 }
 
-void _MulticastCanvasCls::clipPath(bool doAntiAlias, Path path) {
+void _MulticastCanvasCls::clipPath(Path path, bool doAntiAlias) {
     _main->clipPath(pathdoAntiAlias);
     _screenshot->clipPath(pathdoAntiAlias);
 }
 
-void _MulticastCanvasCls::clipRRect(bool doAntiAlias, RRect rrect) {
+void _MulticastCanvasCls::clipRRect(RRect rrect, bool doAntiAlias) {
     _main->clipRRect(rrectdoAntiAlias);
     _screenshot->clipRRect(rrectdoAntiAlias);
 }
 
-void _MulticastCanvasCls::clipRect(ClipOp clipOp, bool doAntiAlias, Rect rect) {
+void _MulticastCanvasCls::clipRect(Rect rect, ClipOp clipOp, bool doAntiAlias) {
     _main->clipRect(rectclipOp, doAntiAlias);
     _screenshot->clipRect(rectclipOp, doAntiAlias);
 }
 
-void _MulticastCanvasCls::drawArc(Paint paint, Rect rect, double startAngle, double sweepAngle, bool useCenter) {
+void _MulticastCanvasCls::drawArc(Rect rect, double startAngle, double sweepAngle, bool useCenter, Paint paint) {
     _main->drawArc(rect, startAngle, sweepAngle, useCenter, paint);
     _screenshot->drawArc(rect, startAngle, sweepAngle, useCenter, paint);
 }
 
-void _MulticastCanvasCls::drawAtlas(Image atlas, BlendMode blendMode, List<Color> colors, Rect cullRect, Paint paint, List<Rect> rects, List<RSTransform> transforms) {
+void _MulticastCanvasCls::drawAtlas(Image atlas, List<RSTransform> transforms, List<Rect> rects, List<Color> colors, BlendMode blendMode, Rect cullRect, Paint paint) {
     _main->drawAtlas(atlas, transforms, rects, colors, blendMode, cullRect, paint);
     _screenshot->drawAtlas(atlas, transforms, rects, colors, blendMode, cullRect, paint);
 }
 
-void _MulticastCanvasCls::drawCircle(Offset c, Paint paint, double radius) {
+void _MulticastCanvasCls::drawCircle(Offset c, double radius, Paint paint) {
     _main->drawCircle(c, radius, paint);
     _screenshot->drawCircle(c, radius, paint);
 }
 
-void _MulticastCanvasCls::drawColor(BlendMode blendMode, Color color) {
+void _MulticastCanvasCls::drawColor(Color color, BlendMode blendMode) {
     _main->drawColor(color, blendMode);
     _screenshot->drawColor(color, blendMode);
 }
 
-void _MulticastCanvasCls::drawDRRect(RRect inner, RRect outer, Paint paint) {
+void _MulticastCanvasCls::drawDRRect(RRect outer, RRect inner, Paint paint) {
     _main->drawDRRect(outer, inner, paint);
     _screenshot->drawDRRect(outer, inner, paint);
 }
@@ -53,12 +53,12 @@ void _MulticastCanvasCls::drawImage(Image image, Offset p, Paint paint) {
     _screenshot->drawImage(image, p, paint);
 }
 
-void _MulticastCanvasCls::drawImageNine(Rect center, Rect dst, Image image, Paint paint) {
+void _MulticastCanvasCls::drawImageNine(Image image, Rect center, Rect dst, Paint paint) {
     _main->drawImageNine(image, center, dst, paint);
     _screenshot->drawImageNine(image, center, dst, paint);
 }
 
-void _MulticastCanvasCls::drawImageRect(Rect dst, Image image, Paint paint, Rect src) {
+void _MulticastCanvasCls::drawImageRect(Image image, Rect src, Rect dst, Paint paint) {
     _main->drawImageRect(image, src, dst, paint);
     _screenshot->drawImageRect(image, src, dst, paint);
 }
@@ -68,7 +68,7 @@ void _MulticastCanvasCls::drawLine(Offset p1, Offset p2, Paint paint) {
     _screenshot->drawLine(p1, p2, paint);
 }
 
-void _MulticastCanvasCls::drawOval(Paint paint, Rect rect) {
+void _MulticastCanvasCls::drawOval(Rect rect, Paint paint) {
     _main->drawOval(rect, paint);
     _screenshot->drawOval(rect, paint);
 }
@@ -78,12 +78,12 @@ void _MulticastCanvasCls::drawPaint(Paint paint) {
     _screenshot->drawPaint(paint);
 }
 
-void _MulticastCanvasCls::drawParagraph(Offset offset, Paragraph paragraph) {
+void _MulticastCanvasCls::drawParagraph(Paragraph paragraph, Offset offset) {
     _main->drawParagraph(paragraph, offset);
     _screenshot->drawParagraph(paragraph, offset);
 }
 
-void _MulticastCanvasCls::drawPath(Paint paint, Path path) {
+void _MulticastCanvasCls::drawPath(Path path, Paint paint) {
     _main->drawPath(path, paint);
     _screenshot->drawPath(path, paint);
 }
@@ -93,37 +93,37 @@ void _MulticastCanvasCls::drawPicture(Picture picture) {
     _screenshot->drawPicture(picture);
 }
 
-void _MulticastCanvasCls::drawPoints(Paint paint, PointMode pointMode, List<Offset> points) {
+void _MulticastCanvasCls::drawPoints(PointMode pointMode, List<Offset> points, Paint paint) {
     _main->drawPoints(pointMode, points, paint);
     _screenshot->drawPoints(pointMode, points, paint);
 }
 
-void _MulticastCanvasCls::drawRRect(Paint paint, RRect rrect) {
+void _MulticastCanvasCls::drawRRect(RRect rrect, Paint paint) {
     _main->drawRRect(rrect, paint);
     _screenshot->drawRRect(rrect, paint);
 }
 
-void _MulticastCanvasCls::drawRawAtlas(Image atlas, BlendMode blendMode, Int32List colors, Rect cullRect, Paint paint, Float32List rects, Float32List rstTransforms) {
+void _MulticastCanvasCls::drawRawAtlas(Image atlas, Float32List rstTransforms, Float32List rects, Int32List colors, BlendMode blendMode, Rect cullRect, Paint paint) {
     _main->drawRawAtlas(atlas, rstTransforms, rects, colors, blendMode, cullRect, paint);
     _screenshot->drawRawAtlas(atlas, rstTransforms, rects, colors, blendMode, cullRect, paint);
 }
 
-void _MulticastCanvasCls::drawRawPoints(Paint paint, PointMode pointMode, Float32List points) {
+void _MulticastCanvasCls::drawRawPoints(PointMode pointMode, Float32List points, Paint paint) {
     _main->drawRawPoints(pointMode, points, paint);
     _screenshot->drawRawPoints(pointMode, points, paint);
 }
 
-void _MulticastCanvasCls::drawRect(Paint paint, Rect rect) {
+void _MulticastCanvasCls::drawRect(Rect rect, Paint paint) {
     _main->drawRect(rect, paint);
     _screenshot->drawRect(rect, paint);
 }
 
-void _MulticastCanvasCls::drawShadow(Color color, double elevation, Path path, bool transparentOccluder) {
+void _MulticastCanvasCls::drawShadow(Path path, Color color, double elevation, bool transparentOccluder) {
     _main->drawShadow(path, color, elevation, transparentOccluder);
     _screenshot->drawShadow(path, color, elevation, transparentOccluder);
 }
 
-void _MulticastCanvasCls::drawVertices(BlendMode blendMode, Paint paint, Vertices vertices) {
+void _MulticastCanvasCls::drawVertices(Vertices vertices, BlendMode blendMode, Paint paint) {
     _main->drawVertices(vertices, blendMode, paint);
     _screenshot->drawVertices(vertices, blendMode, paint);
 }
@@ -261,7 +261,7 @@ void _ScreenshotPaintingContextCls::appendLayer(Layer layer) {
     }
 }
 
-PaintingContext _ScreenshotPaintingContextCls::createChildContext(Rect bounds, ContainerLayer childLayer) {
+PaintingContext _ScreenshotPaintingContextCls::createChildContext(ContainerLayer childLayer, Rect bounds) {
     if (_data->foundTarget) {
         return super->createChildContext(childLayer, bounds);
     } else {
@@ -285,7 +285,7 @@ void _ScreenshotPaintingContextCls::paintChild(RenderObject child, Offset offset
     }
 }
 
-Future<Image> _ScreenshotPaintingContextCls::toImage(bool debugPaint, double pixelRatio, Rect renderBounds, RenderObject renderObject) {
+Future<Image> _ScreenshotPaintingContextCls::toImage(RenderObject renderObject, Rect renderBounds, bool debugPaint, double pixelRatio) {
     RenderObject repaintBoundary = renderObject;
     while (repaintBoundary != nullptr && !repaintBoundary->isRepaintBoundary()) {
         repaintBoundary = as<RenderObject>(repaintBoundary->parent!);
@@ -379,11 +379,11 @@ List<_DiagnosticsPathNode> _followDiagnosticableChain(List<Diagnosticable> chain
         return path;
     }
     DiagnosticsNode diagnostic = chain->first->toDiagnosticsNode(name, style);
-    for (;  < chain->length(); i = 1) {
+    for (;  < chain->length(); i += 1) {
         Diagnosticable target = chain[i];
         bool foundMatch = false;
         List<DiagnosticsNode> children = diagnostic->getChildren();
-        for (;  < children->length(); j = 1) {
+        for (;  < children->length(); j += 1) {
             DiagnosticsNode child = children[j];
             if (child->value() == target) {
                 foundMatch = true;
@@ -574,7 +574,7 @@ void WidgetInspectorServiceCls::disposeGroup(String name) {
     references->forEach(_decrementReferenceCount);
 }
 
-String WidgetInspectorServiceCls::toId(String groupName, Object object) {
+String WidgetInspectorServiceCls::toId(Object object, String groupName) {
     if (object == nullptr) {
         return nullptr;
     }
@@ -585,7 +585,7 @@ String WidgetInspectorServiceCls::toId(String groupName, Object object) {
     _InspectorReferenceData referenceData;
     if (id == nullptr) {
         id = __s("inspector-$_nextId");
-        _nextId = 1;
+        _nextId += 1;
         _objectToId[object] = id;
         referenceData = make<_InspectorReferenceDataCls>(object);
         _idToReferenceData[id] = referenceData;
@@ -593,7 +593,7 @@ String WidgetInspectorServiceCls::toId(String groupName, Object object) {
     } else {
         referenceData = _idToReferenceData[id]!;
         if (group->add(referenceData)) {
-            referenceData->count = 1;
+            referenceData->count += 1;
         }
     }
     return id;
@@ -603,7 +603,7 @@ bool WidgetInspectorServiceCls::isWidgetTreeReady(String groupName) {
     return WidgetsBindingCls::instance != nullptr && WidgetsBindingCls::instance->debugDidSendFirstFrameEvent;
 }
 
-Object WidgetInspectorServiceCls::toObject(String groupName, String id) {
+Object WidgetInspectorServiceCls::toObject(String id, String groupName) {
     if (id == nullptr) {
         return nullptr;
     }
@@ -614,7 +614,7 @@ Object WidgetInspectorServiceCls::toObject(String groupName, String id) {
     return data->object;
 }
 
-Object WidgetInspectorServiceCls::toObjectForSourceLocation(String groupName, String id) {
+Object WidgetInspectorServiceCls::toObjectForSourceLocation(String id, String groupName) {
     Object object = toObject(id);
     if (is<Element>(object)) {
         return as<ElementCls>(object)->widget();
@@ -622,7 +622,7 @@ Object WidgetInspectorServiceCls::toObjectForSourceLocation(String groupName, St
     return object;
 }
 
-void WidgetInspectorServiceCls::disposeId(String groupName, String id) {
+void WidgetInspectorServiceCls::disposeId(String id, String groupName) {
     if (id == nullptr) {
         return;
     }
@@ -670,11 +670,11 @@ void WidgetInspectorServiceCls::removePubRootDirectories(List<String> pubRootDir
     _isLocalCreationCache->clear();
 }
 
-bool WidgetInspectorServiceCls::setSelectionById(String groupName, String id) {
+bool WidgetInspectorServiceCls::setSelectionById(String id, String groupName) {
     return setSelection(toObject(id), groupName);
 }
 
-bool WidgetInspectorServiceCls::setSelection(String groupName, Object object) {
+bool WidgetInspectorServiceCls::setSelection(Object object, String groupName) {
     if (is<Element>(object) || is<RenderObject>(object)) {
         if (is<Element>(object)) {
             if (as<ElementCls>(object) == selection->currentElement()) {
@@ -711,7 +711,7 @@ String WidgetInspectorServiceCls::devToolsInspectorUri(String inspectorRef) {
     return __s("${devToolsInspectorUri.substring(0, startQueryParamIndex)}/#/inspector${devToolsInspectorUri.substring(startQueryParamIndex)}");
 }
 
-String WidgetInspectorServiceCls::getParentChain(String groupName, String id) {
+String WidgetInspectorServiceCls::getParentChain(String id, String groupName) {
     return _safeJsonEncode(_getParentChain(id, groupName));
 }
 
@@ -743,19 +743,19 @@ String WidgetInspectorServiceCls::getRootRenderObject(String groupName) {
     return _safeJsonEncode(_getRootRenderObject(groupName));
 }
 
-String WidgetInspectorServiceCls::getDetailsSubtree(String groupName, String id, int subtreeDepth) {
+String WidgetInspectorServiceCls::getDetailsSubtree(String id, String groupName, int subtreeDepth) {
     return _safeJsonEncode(_getDetailsSubtree(id, groupName, subtreeDepth));
 }
 
-String WidgetInspectorServiceCls::getSelectedRenderObject(String groupName, String previousSelectionId) {
+String WidgetInspectorServiceCls::getSelectedRenderObject(String previousSelectionId, String groupName) {
     return _safeJsonEncode(_getSelectedRenderObject(previousSelectionId, groupName));
 }
 
-String WidgetInspectorServiceCls::getSelectedWidget(String groupName, String previousSelectionId) {
+String WidgetInspectorServiceCls::getSelectedWidget(String previousSelectionId, String groupName) {
     return _safeJsonEncode(_getSelectedWidget(previousSelectionId, groupName));
 }
 
-Future<Image> WidgetInspectorServiceCls::screenshot(bool debugPaint, double height, double margin, double maxPixelRatio, Object object, double width) {
+Future<Image> WidgetInspectorServiceCls::screenshot(Object object, bool debugPaint, double height, double margin, double maxPixelRatio, double width) {
     if (!is<Element>(object) && !is<RenderObject>(object)) {
         return nullptr;
     }
@@ -783,16 +783,16 @@ Future<Image> WidgetInspectorServiceCls::screenshot(bool debugPaint, double heig
     return _ScreenshotPaintingContextCls->toImage(renderObject, renderBoundspixelRatio, debugPaint);
 }
 
-String WidgetInspectorServiceCls::getSelectedSummaryWidget(String groupName, String previousSelectionId) {
+String WidgetInspectorServiceCls::getSelectedSummaryWidget(String previousSelectionId, String groupName) {
     return _safeJsonEncode(_getSelectedSummaryWidget(previousSelectionId, groupName));
 }
 
 bool WidgetInspectorServiceCls::isWidgetCreationTracked() {
-    _widgetCreationTracked = is<_HasCreationLocation>(make<_WidgetForTypeTestsCls>());
+    _widgetCreationTracked |= is<_HasCreationLocation>(make<_WidgetForTypeTestsCls>());
     return _widgetCreationTracked!;
 }
 
-void WidgetInspectorServiceCls::postEvent(Map<Object, Object> eventData, String eventKind) {
+void WidgetInspectorServiceCls::postEvent(String eventKind, Map<Object, Object> eventData) {
     developer->postEvent(eventKind, eventData);
 }
 
@@ -831,7 +831,7 @@ void WidgetInspectorServiceCls::_postExtensionStateChangedEvent(String name, Obj
     Map<String, Object> map1 = make<MapCls<>>();map1.set(__s("extension"), __s("ext.flutter.inspector.$name"));map1.set(__s("value"), value);postEvent(__s("Flutter.ServiceExtensionStateChanged"), list1);
 }
 
-void WidgetInspectorServiceCls::_registerServiceExtensionWithArg(std::function<FutureOr<Object>(String objectGroup, String objectId)> callback, String name) {
+void WidgetInspectorServiceCls::_registerServiceExtensionWithArg(std::function<FutureOr<Object>(String objectId, String objectGroup)> callback, String name) {
     registerServiceExtension(name, [=] (Map<String, String> parameters) {
         assert(parameters->containsKey(__s("objectGroup")));
             Map<String, Object> map1 = make<MapCls<>>();    map1.set(__s("result"), await callback(parameters[__s("arg")], parameters[__s("objectGroup")]!));return list1;
@@ -864,7 +864,7 @@ void WidgetInspectorServiceCls::_reportStructuredError(FlutterErrorDetails detai
     } else {
         errorJson[__s("renderedErrorText")] = __s("Another exception was thrown: ${details.summary}");
     }
-    _errorsSinceReload = 1;
+    _errorsSinceReload += 1;
     postEvent(__s("Flutter.Error"), errorJson);
 }
 
@@ -878,7 +878,7 @@ void WidgetInspectorServiceCls::_clearStats() {
 }
 
 void WidgetInspectorServiceCls::_decrementReferenceCount(_InspectorReferenceData reference) {
-    reference->count = 1;
+    reference->count -= 1;
     assert(reference->count >= 0);
     if (reference->count == 0) {
         String id = _objectToId->remove(reference->object);
@@ -897,7 +897,7 @@ String WidgetInspectorServiceCls::_devToolsInspectorUriForElement(Element elemen
     return nullptr;
 }
 
-List<Object> WidgetInspectorServiceCls::_getParentChain(String groupName, String id) {
+List<Object> WidgetInspectorServiceCls::_getParentChain(String id, String groupName) {
     Object value = toObject(id);
     List<_DiagnosticsPathNode> path;
     if (is<RenderObject>(value)) {
@@ -914,7 +914,7 @@ List<Object> WidgetInspectorServiceCls::_getParentChain(String groupName, String
     })->toList();
 }
 
-Map<String, Object> WidgetInspectorServiceCls::_pathNodeToJson(InspectorSerializationDelegate delegate, _DiagnosticsPathNode pathNode) {
+Map<String, Object> WidgetInspectorServiceCls::_pathNodeToJson(_DiagnosticsPathNode pathNode, InspectorSerializationDelegate delegate) {
     if (pathNode == nullptr) {
         return nullptr;
     }
@@ -924,7 +924,7 @@ Map<String, Object> WidgetInspectorServiceCls::_pathNodeToJson(InspectorSerializ
 List<Element> WidgetInspectorServiceCls::_getRawElementParentChain(Element element, int numLocalParents) {
     List<Element> elements = element->debugGetDiagnosticChain();
     if (numLocalParents != nullptr) {
-        for (;  < elements->length(); i = 1) {
+        for (;  < elements->length(); i += 1) {
             if (_isValueCreatedByLocalProject(elements[i])) {
                 numLocalParents = numLocalParents! - 1;
                 if (numLocalParents <= 0) {
@@ -938,10 +938,10 @@ List<Element> WidgetInspectorServiceCls::_getRawElementParentChain(Element eleme
 }
 
 List<_DiagnosticsPathNode> WidgetInspectorServiceCls::_getElementParentChain(Element element, String groupName, int numLocalParents) {
-    return _followDiagnosticableChain(_getRawElementParentChain(elementnumLocalParents)) or makeList();
+    return _followDiagnosticableChain(_getRawElementParentChain(elementnumLocalParents)) | makeList();
 }
 
-List<_DiagnosticsPathNode> WidgetInspectorServiceCls::_getRenderObjectParentChain(String groupName, RenderObject renderObject) {
+List<_DiagnosticsPathNode> WidgetInspectorServiceCls::_getRenderObjectParentChain(RenderObject renderObject, String groupName) {
     List<RenderObject> chain = makeList();
     while (renderObject != nullptr) {
         chain->add(renderObject);
@@ -950,7 +950,7 @@ List<_DiagnosticsPathNode> WidgetInspectorServiceCls::_getRenderObjectParentChai
     return _followDiagnosticableChain(chain->reversed()->toList());
 }
 
-Map<String, Object> WidgetInspectorServiceCls::_nodeToJson(InspectorSerializationDelegate delegate, DiagnosticsNode node) {
+Map<String, Object> WidgetInspectorServiceCls::_nodeToJson(DiagnosticsNode node, InspectorSerializationDelegate delegate) {
     return node?->toJsonMap(delegate);
 }
 
@@ -992,7 +992,7 @@ String WidgetInspectorServiceCls::_safeJsonEncode(Object object) {
     return jsonString;
 }
 
-List<DiagnosticsNode> WidgetInspectorServiceCls::_truncateNodes(int maxDescendentsTruncatableNode, Iterable<DiagnosticsNode> nodes) {
+List<DiagnosticsNode> WidgetInspectorServiceCls::_truncateNodes(Iterable<DiagnosticsNode> nodes, int maxDescendentsTruncatableNode) {
     if (nodes->every([=] (DiagnosticsNode node)     {
         is<Element>(node->value);
     }) && isWidgetCreationTracked()) {
@@ -1006,7 +1006,7 @@ List<DiagnosticsNode> WidgetInspectorServiceCls::_truncateNodes(int maxDescenden
     return nodes->take(maxDescendentsTruncatableNode)->toList();
 }
 
-List<Map<String, Object>> WidgetInspectorServiceCls::_nodesToJson(InspectorSerializationDelegate delegate, List<DiagnosticsNode> nodes, DiagnosticsNode parent) {
+List<Map<String, Object>> WidgetInspectorServiceCls::_nodesToJson(List<DiagnosticsNode> nodes, InspectorSerializationDelegate delegate, DiagnosticsNode parent) {
     return DiagnosticsNodeCls->toJsonList(nodes, parent, delegate);
 }
 
@@ -1047,11 +1047,11 @@ bool WidgetInspectorServiceCls::_shouldShowInSummaryTree(DiagnosticsNode node) {
     return _isValueCreatedByLocalProject(value);
 }
 
-List<DiagnosticsNode> WidgetInspectorServiceCls::_getChildrenFiltered(InspectorSerializationDelegate delegate, DiagnosticsNode node) {
+List<DiagnosticsNode> WidgetInspectorServiceCls::_getChildrenFiltered(DiagnosticsNode node, InspectorSerializationDelegate delegate) {
     return _filterChildren(node->getChildren(), delegate);
 }
 
-List<DiagnosticsNode> WidgetInspectorServiceCls::_filterChildren(InspectorSerializationDelegate delegate, List<DiagnosticsNode> nodes) {
+List<DiagnosticsNode> WidgetInspectorServiceCls::_filterChildren(List<DiagnosticsNode> nodes, InspectorSerializationDelegate delegate) {
     List<DiagnosticsNode> list1 = make<ListCls<>>();for (DiagnosticsNode child : nodes) {    ;}{    list1.add(ArrayItem);}List<DiagnosticsNode> children = list1;
     return children;
 }
@@ -1068,7 +1068,7 @@ Map<String, Object> WidgetInspectorServiceCls::_getRootRenderObject(String group
     return _nodeToJson(RendererBindingCls::instance->renderView->toDiagnosticsNode(), make<InspectorSerializationDelegateCls>(groupName, this));
 }
 
-Map<String, Object> WidgetInspectorServiceCls::_getDetailsSubtree(String groupName, String id, int subtreeDepth) {
+Map<String, Object> WidgetInspectorServiceCls::_getDetailsSubtree(String id, String groupName, int subtreeDepth) {
     DiagnosticsNode root = as<DiagnosticsNode>(toObject(id));
     if (root == nullptr) {
         return nullptr;
@@ -1076,19 +1076,19 @@ Map<String, Object> WidgetInspectorServiceCls::_getDetailsSubtree(String groupNa
     return _nodeToJson(root, make<InspectorSerializationDelegateCls>(groupName, subtreeDepth, true, this));
 }
 
-Map<String, Object> WidgetInspectorServiceCls::_getSelectedRenderObject(String groupName, String previousSelectionId) {
+Map<String, Object> WidgetInspectorServiceCls::_getSelectedRenderObject(String previousSelectionId, String groupName) {
     DiagnosticsNode previousSelection = as<DiagnosticsNode>(toObject(previousSelectionId));
     RenderObject current = selection->current();
     return _nodeToJson(current == previousSelection?->value? previousSelection : current?->toDiagnosticsNode(), make<InspectorSerializationDelegateCls>(groupName, this));
 }
 
-Map<String, Object> WidgetInspectorServiceCls::_getSelectedWidget(String groupName, String previousSelectionId) {
+Map<String, Object> WidgetInspectorServiceCls::_getSelectedWidget(String previousSelectionId, String groupName) {
     DiagnosticsNode previousSelection = as<DiagnosticsNode>(toObject(previousSelectionId));
     Element current = selection->currentElement();
     return _nodeToJson(current == previousSelection?->value? previousSelection : current?->toDiagnosticsNode(), make<InspectorSerializationDelegateCls>(groupName, this));
 }
 
-Map<String, Object> WidgetInspectorServiceCls::_getSelectedSummaryWidget(String groupName, String previousSelectionId) {
+Map<String, Object> WidgetInspectorServiceCls::_getSelectedSummaryWidget(String previousSelectionId, String groupName) {
     if (!isWidgetCreationTracked()) {
         return _getSelectedWidget(previousSelectionId, groupName);
     }
@@ -1125,7 +1125,7 @@ void WidgetInspectorServiceCls::_postStatsEvent(String eventName, _ElementLocati
     postEvent(eventName, stats->exportToJson(_frameStart));
 }
 
-void WidgetInspectorServiceCls::_onRebuildWidget(bool builtOnce, Element element) {
+void WidgetInspectorServiceCls::_onRebuildWidget(Element element, bool builtOnce) {
     _rebuildStats->add(element);
 }
 
@@ -1286,7 +1286,7 @@ _WidgetInspectorStateCls::_WidgetInspectorStateCls() {
     }
 }
 
-bool _WidgetInspectorStateCls::_hitTestHelper(List<RenderObject> edgeHits, List<RenderObject> hits, RenderObject object, Offset position, Matrix4 transform) {
+bool _WidgetInspectorStateCls::_hitTestHelper(List<RenderObject> hits, List<RenderObject> edgeHits, Offset position, RenderObject object, Matrix4 transform) {
     bool hit = false;
     Matrix4 inverse = Matrix4Cls->tryInvert(transform);
     if (inverse == nullptr) {
@@ -1294,7 +1294,7 @@ bool _WidgetInspectorStateCls::_hitTestHelper(List<RenderObject> edgeHits, List<
     }
     Offset localPosition = MatrixUtilsCls->transformPoint(inverse, position);
     List<DiagnosticsNode> children = object->debugDescribeChildren();
-    for (; i >= 0; i = 1) {
+    for (; i >= 0; i -= 1) {
         DiagnosticsNode diagnostics = children[i];
         assert(diagnostics != nullptr);
         if (diagnostics->style == DiagnosticsTreeStyleCls::offstage || !is<RenderObject>(diagnostics->value())) {
@@ -1413,11 +1413,11 @@ void InspectorSelectionCls::current(RenderObject value) {
 }
 
 Element InspectorSelectionCls::currentElement() {
-    return _currentElement?->debugIsDefunct() or true? nullptr : _currentElement;
+    return _currentElement?->debugIsDefunct() | true? nullptr : _currentElement;
 }
 
 void InspectorSelectionCls::currentElement(Element element) {
-    if (element?->debugIsDefunct() or false) {
+    if (element?->debugIsDefunct() | false) {
         _currentElement = nullptr;
         _current = nullptr;
         return;
@@ -1496,7 +1496,7 @@ int _TransformedRectCls::hashCode() {
     return ObjectCls->hash(rect, transform);
 }
 
-_TransformedRectCls::_TransformedRectCls(RenderObject ancestor, RenderObject object) {
+_TransformedRectCls::_TransformedRectCls(RenderObject object, RenderObject ancestor) {
     {
         rect = object->semanticBounds();
         transform = object->getTransformTo(ancestor);
@@ -1538,7 +1538,7 @@ void _InspectorOverlayLayerCls::addToScene(SceneBuilder builder) {
 }
 
 template<typename S>
-bool _InspectorOverlayLayerCls::findAnnotations(Offset localPosition, bool onlyFirst, AnnotationResult<S> result) {
+bool _InspectorOverlayLayerCls::findAnnotations(AnnotationResult<S> result, Offset localPosition, bool onlyFirst) {
     return false;
 }
 
@@ -1579,7 +1579,7 @@ Picture _InspectorOverlayLayerCls::_buildPicture(_InspectorOverlayRenderState st
     return recorder->endRecording();
 }
 
-void _InspectorOverlayLayerCls::_paintDescription(Canvas canvas, String message, Size size, Offset target, Rect targetRect, TextDirection textDirection, double verticalOffset) {
+void _InspectorOverlayLayerCls::_paintDescription(Canvas canvas, String message, TextDirection textDirection, Offset target, double verticalOffset, Size size, Rect targetRect) {
     canvas->save();
     double maxWidth = size->width() - 2 * (_kScreenEdgeMargin + _kTooltipPadding);
     TextSpan textSpan = as<TextSpan>(_textPainter?->text());
@@ -1594,7 +1594,7 @@ void _InspectorOverlayLayerCls::_paintDescription(Canvas canvas, String message,
     double wedgeY = tipOffset->dy();
     bool tooltipBelow = tipOffset->dy() > target->dy();
     if (!tooltipBelow) {
-        wedgeY = tooltipSize->height();
+        wedgeY += tooltipSize->height();
     }
     double wedgeSize = _kTooltipPadding * 2;
     double wedgeX = math->max(tipOffset->dx(), target->dx()) + wedgeSize * 2;
@@ -1670,7 +1670,7 @@ Iterable<DiagnosticsNode> debugTransformDebugCreator(Iterable<DiagnosticsNode> p
     return result;
 }
 
-Iterable<DiagnosticsNode> _parseDiagnosticsNode(ErrorSummary errorSummary, DiagnosticsNode node) {
+Iterable<DiagnosticsNode> _parseDiagnosticsNode(DiagnosticsNode node, ErrorSummary errorSummary) {
     assert(_isDebugCreator(node));
     try {
         DebugCreator debugCreator = as<DebugCreator>(node->value()!);
@@ -1768,7 +1768,7 @@ Map<String, Object> InspectorSerializationDelegateCls::additionalNodeProperties(
         }
     }
     if (addAdditionalPropertiesCallback != nullptr) {
-        result->addAll(addAdditionalPropertiesCallback!(node, this) or makeMap(makeList(), makeList());
+        result->addAll(addAdditionalPropertiesCallback!(node, this) | makeMap(makeList(), makeList());
     }
     return result;
 }
@@ -1796,7 +1796,7 @@ List<DiagnosticsNode> InspectorSerializationDelegateCls::truncateNodesList(List<
 }
 
 DiagnosticsSerializationDelegate InspectorSerializationDelegateCls::copyWith(bool includeProperties, int subtreeDepth) {
-    return make<InspectorSerializationDelegateCls>(groupName, summaryTree, maxDescendentsTruncatableNode, expandPropertyValues, subtreeDepth or this->subtreeDepth, includeProperties or this->includeProperties, service, addAdditionalPropertiesCallback);
+    return make<InspectorSerializationDelegateCls>(groupName, summaryTree, maxDescendentsTruncatableNode, expandPropertyValues, subtreeDepth | this->subtreeDepth, includeProperties | this->includeProperties, service, addAdditionalPropertiesCallback);
 }
 
 bool InspectorSerializationDelegateCls::_interactive() {

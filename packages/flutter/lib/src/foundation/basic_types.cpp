@@ -82,7 +82,7 @@ bool _LazyListIteratorCls<E>::moveNext() {
     if (_index >= _owner->_results->length()) {
         return false;
     }
-    _index = 1;
+    _index += 1;
     if (_index == _owner->_results->length()) {
         return _owner->_fillNext();
     }

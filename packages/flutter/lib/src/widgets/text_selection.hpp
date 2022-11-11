@@ -41,9 +41,9 @@ using ToolbarItemsParentData = std::shared_ptr<ToolbarItemsParentDataCls>;
 class TextSelectionControlsCls : public ObjectCls {
 public:
 
-    virtual Widget buildHandle(BuildContext context, VoidCallback onTap, double textLineHeight, TextSelectionHandleType type);
-    virtual Offset getHandleAnchor(double textLineHeight, TextSelectionHandleType type);
-    virtual Widget buildToolbar(ClipboardStatusNotifier clipboardStatus, BuildContext context, TextSelectionDelegate delegate, List<TextSelectionPoint> endpoints, Rect globalEditableRegion, Offset lastSecondaryTapDownPosition, Offset position, double textLineHeight);
+    virtual Widget buildHandle(BuildContext context, TextSelectionHandleType type, double textLineHeight, VoidCallback onTap);
+    virtual Offset getHandleAnchor(TextSelectionHandleType type, double textLineHeight);
+    virtual Widget buildToolbar(BuildContext context, Rect globalEditableRegion, double textLineHeight, Offset position, List<TextSelectionPoint> endpoints, TextSelectionDelegate delegate, ClipboardStatusNotifier clipboardStatus, Offset lastSecondaryTapDownPosition);
     virtual Size getHandleSize(double textLineHeight);
     virtual bool canCut(TextSelectionDelegate delegate);
 
@@ -53,9 +53,9 @@ public:
 
     virtual bool canSelectAll(TextSelectionDelegate delegate);
 
-    virtual void handleCut(ClipboardStatusNotifier clipboardStatus, TextSelectionDelegate delegate);
+    virtual void handleCut(TextSelectionDelegate delegate, ClipboardStatusNotifier clipboardStatus);
 
-    virtual void handleCopy(ClipboardStatusNotifier clipboardStatus, TextSelectionDelegate delegate);
+    virtual void handleCopy(TextSelectionDelegate delegate, ClipboardStatusNotifier clipboardStatus);
 
     virtual Future<void> handlePaste(TextSelectionDelegate delegate);
 
@@ -141,9 +141,9 @@ private:
 
     virtual void _handleSelectionStartHandleDragUpdate(DragUpdateDetails details);
 
-    virtual void _handleSelectionHandleChanged(bool isEnd, TextSelection newSelection);
+    virtual void _handleSelectionHandleChanged(TextSelection newSelection, bool isEnd);
 
-    virtual TextSelectionHandleType _chooseType(TextSelectionHandleType ltrType, TextSelectionHandleType rtlType, TextDirection textDirection);
+    virtual TextSelectionHandleType _chooseType(TextDirection textDirection, TextSelectionHandleType ltrType, TextSelectionHandleType rtlType);
 
 };
 using TextSelectionOverlay = std::shared_ptr<TextSelectionOverlayCls>;
@@ -432,9 +432,9 @@ private:
 
     virtual bool _lastSecondaryTapWasOnSelection();
 
-    virtual void _expandSelection(SelectionChangedCause cause, TextSelection fromSelection, Offset offset);
+    virtual void _expandSelection(Offset offset, SelectionChangedCause cause, TextSelection fromSelection);
 
-    virtual void _extendSelection(SelectionChangedCause cause, Offset offset);
+    virtual void _extendSelection(Offset offset, SelectionChangedCause cause);
 
     virtual bool _isShiftPressed();
 

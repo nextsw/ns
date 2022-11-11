@@ -42,7 +42,7 @@ Path BoxBorderCls::getOuterPath(Rect rect, TextDirection textDirection) {
     auto _c1 = make<PathCls>();_c1.addRect(rect);return _c1;
 }
 
-void BoxBorderCls::_paintUniformBorderWithRadius(BorderRadius borderRadius, Canvas canvas, Rect rect, BorderSide side) {
+void BoxBorderCls::_paintUniformBorderWithRadius(Canvas canvas, Rect rect, BorderSide side, BorderRadius borderRadius) {
     assert(side->style != BorderStyleCls::none);
     auto _c1 = make<PaintCls>();_c1.color = side->color;Paint paint = _c1;
     double width = side->width;
@@ -165,7 +165,7 @@ Border BorderCls::lerp(Border a, Border b, double t) {
     return make<BorderCls>(BorderSideCls->lerp(a->top, b->top, t), BorderSideCls->lerp(a->right, b->right, t), BorderSideCls->lerp(a->bottom, b->bottom, t), BorderSideCls->lerp(a->left, b->left, t));
 }
 
-void BorderCls::paint(BorderRadius borderRadius, Canvas canvas, Rect rect, BoxShape shape, TextDirection textDirection) {
+void BorderCls::paint(Canvas canvas, Rect rect, BorderRadius borderRadius, BoxShape shape, TextDirection textDirection) {
     if (isUniform()) {
         ;
     }
@@ -337,7 +337,7 @@ BorderDirectional BorderDirectionalCls::lerp(BorderDirectional a, BorderDirectio
     return make<BorderDirectionalCls>(BorderSideCls->lerp(a->top, b->top, t), BorderSideCls->lerp(a->end, b->end, t), BorderSideCls->lerp(a->bottom, b->bottom, t), BorderSideCls->lerp(a->start, b->start, t));
 }
 
-void BorderDirectionalCls::paint(BorderRadius borderRadius, Canvas canvas, Rect rect, BoxShape shape, TextDirection textDirection) {
+void BorderDirectionalCls::paint(Canvas canvas, Rect rect, BorderRadius borderRadius, BoxShape shape, TextDirection textDirection) {
     if (isUniform()) {
         ;
     }

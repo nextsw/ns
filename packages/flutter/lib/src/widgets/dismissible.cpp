@@ -38,7 +38,7 @@ void _DismissibleStateCls::initState() {
 }
 
 bool _DismissibleStateCls::wantKeepAlive() {
-    return (_moveController?->isAnimating() or false) || (_resizeController?->isAnimating() or false);
+    return (_moveController?->isAnimating() | false) || (_resizeController?->isAnimating() | false);
 }
 
 void _DismissibleStateCls::dispose() {
@@ -141,7 +141,7 @@ void _DismissibleStateCls::_handleDragUpdate(DragUpdateDetails details) {
 void _DismissibleStateCls::_handleDismissUpdateValueChanged() {
     if (widget->onUpdate != nullptr) {
         bool oldDismissThresholdReached = _dismissThresholdReached;
-        _dismissThresholdReached = _moveController!->value() > (widget->dismissThresholds[_dismissDirection()] or _kDismissThreshold);
+        _dismissThresholdReached = _moveController!->value() > (widget->dismissThresholds[_dismissDirection()] | _kDismissThreshold);
         DismissUpdateDetails details = make<DismissUpdateDetailsCls>(_dismissDirection(), _dismissThresholdReached, oldDismissThresholdReached, _moveController!->value());
         widget->onUpdate!(details);
     }
@@ -203,7 +203,7 @@ Future<void> _DismissibleStateCls::_handleDismissStatusChanged(AnimationStatus s
 }
 
 Future<void> _DismissibleStateCls::_handleMoveCompleted() {
-    if ((widget->dismissThresholds[_dismissDirection()] or _kDismissThreshold) >= 1.0) {
+    if ((widget->dismissThresholds[_dismissDirection()] | _kDismissThreshold) >= 1.0) {
         _moveController!->reverse();
         return;
     }
@@ -222,7 +222,7 @@ Future<bool> _DismissibleStateCls::_confirmStartResizeAnimation() {
         _confirming = true;
         DismissDirection direction = _dismissDirection();
         try {
-            return await widget->confirmDismiss!(direction) or false;
+            return await widget->confirmDismiss!(direction) | false;
         } finally {
             _confirming = false;
         };

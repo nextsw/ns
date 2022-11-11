@@ -15,7 +15,7 @@ void timeDilation(double value) {
 template<typename T>
 void _TaskEntryCls<T>::run() {
     if (!kReleaseMode) {
-        TimelineCls->timeSync(debugLabel or __s("Scheduled Task"), [=] () {
+        TimelineCls->timeSync(debugLabel | __s("Scheduled Task"), [=] () {
             completer->complete(task());
         }flow != nullptr? FlowCls->step(flow!->id) : nullptr);
     } else {
@@ -24,7 +24,7 @@ void _TaskEntryCls<T>::run() {
 }
 
 template<typename T>
-_TaskEntryCls<T>::_TaskEntryCls(String debugLabel, Flow flow, int priority, TaskCallback<T> task) {
+_TaskEntryCls<T>::_TaskEntryCls(TaskCallback<T> task, int priority, String debugLabel, Flow flow) {
     {
         assert([=] () {
             debugStack = StackTraceCls::current;
@@ -105,7 +105,7 @@ void SchedulerBindingCls::handleAppLifecycleStateChanged(AppLifecycleState state
 }
 
 template<typename T>
-Future<T> SchedulerBindingCls::scheduleTask(String debugLabel, Flow flow, Priority priority, TaskCallback<T> task) {
+Future<T> SchedulerBindingCls::scheduleTask(TaskCallback<T> task, Priority priority, String debugLabel, Flow flow) {
     bool isFirstTask = _taskQueue->isEmpty();
     _TaskEntry<T> entry = <T>make<_TaskEntryCls>(task, priority->value(), debugLabel, flow);
     _taskQueue->add(entry);
@@ -152,7 +152,7 @@ int SchedulerBindingCls::transientCallbackCount() {
 
 int SchedulerBindingCls::scheduleFrameCallback(FrameCallback callback, bool rescheduling) {
     scheduleFrame();
-    _nextFrameCallbackId = 1;
+    _nextFrameCallbackId += 1;
     _transientCallbacks[_nextFrameCallbackId] = make<_FrameCallbackEntryCls>(callbackrescheduling);
     return _nextFrameCallbackId;
 }
@@ -224,8 +224,8 @@ bool SchedulerBindingCls::framesEnabled() {
 }
 
 void SchedulerBindingCls::ensureFrameCallbacksRegistered() {
-    platformDispatcher->onBeginFrame = _handleBeginFrame;
-    platformDispatcher->onDrawFrame = _handleDrawFrame;
+    platformDispatcher->onBeginFrame |= _handleBeginFrame;
+    platformDispatcher->onDrawFrame |= _handleDrawFrame;
 }
 
 void SchedulerBindingCls::ensureVisualUpdate() {
@@ -305,13 +305,13 @@ Duration SchedulerBindingCls::currentSystemFrameTimeStamp() {
 
 void SchedulerBindingCls::handleBeginFrame(Duration rawTimeStamp) {
     _frameTimelineTask?->start(__s("Frame"));
-    _firstRawTimeStampInEpoch = rawTimeStamp;
-    _currentFrameTimeStamp = _adjustForEpoch(rawTimeStamp or _lastRawTimeStamp);
+    _firstRawTimeStampInEpoch |= rawTimeStamp;
+    _currentFrameTimeStamp = _adjustForEpoch(rawTimeStamp | _lastRawTimeStamp);
     if (rawTimeStamp != nullptr) {
         _lastRawTimeStamp = rawTimeStamp;
     }
     assert([=] () {
-        _debugFrameNumber = 1;
+        _debugFrameNumber += 1;
         if (debugPrintBeginFrameBanner || debugPrintEndFrameBanner) {
             StringBuffer frameTimeStampDescription = make<StringBufferCls>();
             if (rawTimeStamp != nullptr) {
@@ -453,7 +453,7 @@ void SchedulerBindingCls::_profileFramePostEvent(FrameTiming frameTiming) {
     Map<String, dynamic> map1 = make<MapCls<>>();map1.set(__s("number"), frameTiming->frameNumber);map1.set(__s("startTime"), frameTiming->timestampInMicroseconds(FramePhaseCls::buildStart));map1.set(__s("elapsed"), frameTiming->totalSpan->inMicroseconds);map1.set(__s("build"), frameTiming->buildDuration->inMicroseconds);map1.set(__s("raster"), frameTiming->rasterDuration->inMicroseconds);map1.set(__s("vsyncOverhead"), frameTiming->vsyncOverhead->inMicroseconds);postEvent(__s("Flutter.Frame"), list1);
 }
 
-void SchedulerBindingCls::_debugDescribeTimeStamp(StringBuffer buffer, Duration timeStamp) {
+void SchedulerBindingCls::_debugDescribeTimeStamp(Duration timeStamp, StringBuffer buffer) {
     if (timeStamp->inDays() > 0) {
         buffer->write(__s("${timeStamp.inDays}d "));
     }
@@ -474,7 +474,7 @@ void SchedulerBindingCls::_debugDescribeTimeStamp(StringBuffer buffer, Duration 
     buffer->write(__s("ms"));
 }
 
-void SchedulerBindingCls::_invokeFrameCallback(FrameCallback callback, StackTrace callbackStack, Duration timeStamp) {
+void SchedulerBindingCls::_invokeFrameCallback(FrameCallback callback, Duration timeStamp, StackTrace callbackStack) {
     assert(callback != nullptr);
     assert(_FrameCallbackEntryCls::debugCurrentCallbackStack == nullptr);
     assert([=] () {

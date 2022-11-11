@@ -1,10 +1,10 @@
 #include "drag_target.hpp"
-Offset childDragAnchorStrategy(BuildContext context, Draggable<Object> draggable, Offset position) {
+Offset childDragAnchorStrategy(Draggable<Object> draggable, BuildContext context, Offset position) {
     RenderBox renderObject = as<RenderBox>(context->findRenderObject()!);
     return renderObject->globalToLocal(position);
 }
 
-Offset pointerDragAnchorStrategy(BuildContext context, Draggable<Object> draggable, Offset position) {
+Offset pointerDragAnchorStrategy(Draggable<Object> draggable, BuildContext context, Offset position) {
     return OffsetCls::zero;
 }
 
@@ -89,7 +89,7 @@ _DragAvatar<T> _DraggableStateCls<T>::_startDrag(Offset position) {
         dragStartPoint = widget->dragAnchorStrategy!(widget, context, position);
     }
     setState([=] () {
-        _activeCount = 1;
+        _activeCount += 1;
     });
     _DragAvatar<T> avatar = <T>make<_DragAvatarCls>(OverlayCls->of(contextwidget, widget->rootOverlay)!, widget->data, widget->axis, position, dragStartPoint, widget->feedback, widget->feedbackOffset, widget->ignoringFeedbackSemantics, widget->ignoringFeedbackPointer, [=] (DragUpdateDetails details) {
     if (mounted && widget->onDragUpdate != nullptr) {
@@ -98,10 +98,10 @@ _DragAvatar<T> _DraggableStateCls<T>::_startDrag(Offset position) {
 }, [=] (Velocity velocity,Offset offset,bool wasAccepted) {
     if (mounted) {
         setState([=] () {
-            _activeCount = 1;
+            _activeCount -= 1;
         });
     } else {
-        _activeCount = 1;
+        _activeCount -= 1;
         _disposeRecognizerIfInactive();
     }
     if (mounted && widget->onDragEnd != nullptr) {
@@ -212,7 +212,7 @@ Widget _DragTargetStateCls<T>::build(BuildContext context) {
 template<typename T>
 void _DragAvatarCls<T>::update(DragUpdateDetails details) {
     Offset oldPosition = _position;
-    _position = _restrictAxis(details->delta);
+    _position += _restrictAxis(details->delta);
     updateDrag(_position);
     if (onDragUpdate != nullptr && _position != oldPosition) {
         onDragUpdate!(details);
@@ -240,7 +240,7 @@ void _DragAvatarCls<T>::updateDrag(Offset globalPosition) {
     if (targets->length() >= _enteredTargets->length() && _enteredTargets->isNotEmpty) {
         listsMatch = true;
         Iterator<_DragTargetState<Object>> iterator = targets->iterator;
-        for (;  < _enteredTargets->length(); i = 1) {
+        for (;  < _enteredTargets->length(); i += 1) {
             iterator->moveNext();
             if (iterator->current() != _enteredTargets[i]) {
                 listsMatch = false;
@@ -282,7 +282,7 @@ void _DragAvatarCls<T>::finishDrag(_DragEndKind endKind, Velocity velocity) {
     _activeTarget = nullptr;
     _entry!->remove();
     _entry = nullptr;
-    onDragEnd?->call(velocity or VelocityCls::zero, _lastOffset!, wasAccepted);
+    onDragEnd?->call(velocity | VelocityCls::zero, _lastOffset!, wasAccepted);
 }
 
 template<typename T>
@@ -319,7 +319,7 @@ Iterable<_DragTargetState<Object>> _DragAvatarCls<T>::_getDragTargets(Iterable<H
 
 template<typename T>
 void _DragAvatarCls<T>::_leaveAllEntered() {
-    for (;  < _enteredTargets->length(); i = 1) {
+    for (;  < _enteredTargets->length(); i += 1) {
         _enteredTargets[i]->didLeave(this);
     }
     _enteredTargets->clear();

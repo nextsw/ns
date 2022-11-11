@@ -25,7 +25,7 @@ bool WidgetSpanCls::visitChildren(InlineSpanVisitor visitor) {
     return visitor(this);
 }
 
-InlineSpan WidgetSpanCls::getSpanForPositionVisitor(Accumulator offset, TextPosition position) {
+InlineSpan WidgetSpanCls::getSpanForPositionVisitor(TextPosition position, Accumulator offset) {
     if (position->offset == offset->value()) {
         return this;
     }

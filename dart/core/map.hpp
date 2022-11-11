@@ -31,10 +31,10 @@ public:
     template<typename K2, typename V2>
  virtual Map<K2, V2> map(std::function<MapEntry<K2, V2>(K key, V value)> convert);
     virtual void addEntries(Iterable<MapEntry<K, V>> newEntries);
-    virtual V update(std::function<V()> ifAbsent, K key, std::function<V(V value)> update);
+    virtual V update(K key, std::function<V(V value)> update, std::function<V()> ifAbsent);
     virtual void updateAll(std::function<V(K key, V value)> update);
     virtual void removeWhere(std::function<bool(K key, V value)> test);
-    virtual V putIfAbsent(std::function<V()> ifAbsent, K key);
+    virtual V putIfAbsent(K key, std::function<V()> ifAbsent);
     virtual void addAll(Map<K, V> other);
     virtual V remove(Object key);
     virtual void clear();

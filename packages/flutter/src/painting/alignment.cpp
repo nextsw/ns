@@ -101,7 +101,7 @@ Offset AlignmentCls::withinRect(Rect rect) {
     return make<OffsetCls>(rect->left + halfWidth + x * halfWidth, rect->top + halfHeight + y * halfHeight);
 }
 
-Rect AlignmentCls::inscribe(Rect rect, Size size) {
+Rect AlignmentCls::inscribe(Size size, Rect rect) {
     double halfWidthDelta = (rect->width() - size->width()) / 2.0;
     double halfHeightDelta = (rect->height() - size->height()) / 2.0;
     return RectCls->fromLTWH(rect->left + halfWidthDelta + x * halfWidthDelta, rect->top + halfHeightDelta + y * halfHeightDelta, size->width(), size->height());

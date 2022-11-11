@@ -10,13 +10,13 @@ public:
 
     virtual Float64List storage();
 
-    static void solve(Matrix2 A, Vector2 b, Vector2 x);
+    static void solve(Matrix2 A, Vector2 x, Vector2 b);
 
-    virtual int index(int col, int row);
+    virtual int index(int row, int col);
 
-    virtual double entry(int col, int row);
+    virtual double entry(int row, int col);
 
-    virtual void setEntry(int col, int row, double v);
+    virtual void setEntry(int row, int col, double v);
 
      Matrix2Cls(double arg0, double arg1, double arg2, double arg3);
 
@@ -66,11 +66,11 @@ public:
 
     virtual void  row1(Vector2 arg);
 
-    virtual void setRow(Vector2 arg, int row);
+    virtual void setRow(int row, Vector2 arg);
 
     virtual Vector2 getRow(int row);
 
-    virtual void setColumn(Vector2 arg, int column);
+    virtual void setColumn(int column, Vector2 arg);
 
     virtual Vector2 getColumn(int column);
 

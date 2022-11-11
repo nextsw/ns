@@ -48,7 +48,7 @@ private:
     Map<S, RenderBox> _slotToChild;
 
 
-    virtual void _addDiagnostics(RenderBox child, String name, List<DiagnosticsNode> value);
+    virtual void _addDiagnostics(RenderBox child, List<DiagnosticsNode> value, String name);
 
     virtual void _setChild(RenderBox child, S slot);
 
@@ -67,7 +67,7 @@ public:
 
     virtual void forgetChild(Element child);
 
-    virtual void mount(Object newSlot, Element parent);
+    virtual void mount(Element parent, Object newSlot);
 
     virtual void update(SlottedMultiChildRenderObjectWidgetMixin<S> newWidget);
 
@@ -75,7 +75,7 @@ public:
 
     virtual void removeRenderObjectChild(RenderBox child, S slot);
 
-    virtual void moveRenderObjectChild(RenderBox child, Object newSlot, Object oldSlot);
+    virtual void moveRenderObjectChild(RenderBox child, Object oldSlot, Object newSlot);
 
 private:
     Map<S, Element> _slotToChild;
@@ -85,7 +85,7 @@ private:
 
     virtual void _updateChildren();
 
-    virtual void _updateChild(S slot, Widget widget);
+    virtual void _updateChild(Widget widget, S slot);
 
 };
 template<typename S>

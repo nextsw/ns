@@ -10,7 +10,7 @@ public:
     Encoding encoding;
 
 
-     IOSinkCls(Encoding encoding, StreamConsumer<List<int>> target);
+     IOSinkCls(StreamConsumer<List<int>> target, Encoding encoding);
 
     virtual void add(List<int> data);
     virtual void write(Object object);
@@ -93,7 +93,7 @@ private:
     bool _encodingMutable;
 
 
-     _IOSinkImplCls(Encoding _encoding, StreamConsumer<List<int>> target);
+     _IOSinkImplCls(StreamConsumer<List<int>> target, Encoding _encoding);
 
 };
 using _IOSinkImpl = std::shared_ptr<_IOSinkImplCls>;

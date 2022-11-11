@@ -99,14 +99,14 @@ String _SocketProfileCls::toJson() {
     return json->encode(list1);
 }
 
-void _SocketProfileCls::collectNewSocket(InternetAddress addr, int id, int port, String type) {
+void _SocketProfileCls::collectNewSocket(int id, String type, InternetAddress addr, int port) {
     map1.set(__s("type"), _kType);map1.set(__s("sockets"), _idToSocketStatistic->values->map([=] (Unknown  f)     {        f->toMap();    })->toList());_SocketProfileCls->collectStatistic(id, _SocketProfileTypeCls::startTime);
     _SocketProfileCls->collectStatistic(id, _SocketProfileTypeCls::socketType, type);
     _SocketProfileCls->collectStatistic(id, _SocketProfileTypeCls::address, addr);
     _SocketProfileCls->collectStatistic(id, _SocketProfileTypeCls::port, port);
 }
 
-void _SocketProfileCls::collectStatistic(int id, dynamic object, _SocketProfileType type) {
+void _SocketProfileCls::collectStatistic(int id, _SocketProfileType type, dynamic object) {
     if (!_enableSocketProfiling) {
         return;
     }

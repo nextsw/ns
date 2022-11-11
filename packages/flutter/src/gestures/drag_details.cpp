@@ -2,7 +2,7 @@
 DragDownDetailsCls::DragDownDetailsCls(Offset globalPosition, Offset localPosition) {
     {
         assert(globalPosition != nullptr);
-        localPosition = localPosition or globalPosition;
+        localPosition = localPosition | globalPosition;
     }
 }
 
@@ -13,7 +13,7 @@ String DragDownDetailsCls::toString() {
 DragStartDetailsCls::DragStartDetailsCls(Offset globalPosition, PointerDeviceKind kind, Offset localPosition, Duration sourceTimeStamp) {
     {
         assert(globalPosition != nullptr);
-        localPosition = localPosition or globalPosition;
+        localPosition = localPosition | globalPosition;
     }
 }
 
@@ -25,7 +25,7 @@ DragUpdateDetailsCls::DragUpdateDetailsCls(Offset delta, Offset globalPosition, 
     {
         assert(delta != nullptr);
         assert(primaryDelta == nullptr || (primaryDelta == delta->dx() && delta->dy() == 0.0) || (primaryDelta == delta->dy() && delta->dx() == 0.0));
-        localPosition = localPosition or globalPosition;
+        localPosition = localPosition | globalPosition;
     }
 }
 

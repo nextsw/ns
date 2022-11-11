@@ -55,12 +55,12 @@ E FixedLengthListMixinCls<E>::removeLast() {
 }
 
 template<typename E>
-void FixedLengthListMixinCls<E>::removeRange(int end, int start) {
+void FixedLengthListMixinCls<E>::removeRange(int start, int end) {
     throw make<UnsupportedErrorCls>(__s("Cannot remove from a fixed-length list"));
 }
 
 template<typename E>
-void FixedLengthListMixinCls<E>::replaceRange(int end, Iterable<E> iterable, int start) {
+void FixedLengthListMixinCls<E>::replaceRange(int start, int end, Iterable<E> iterable) {
     throw make<UnsupportedErrorCls>(__s("Cannot remove from a fixed-length list"));
 }
 
@@ -95,7 +95,7 @@ void UnmodifiableListMixinCls<E>::add(E value) {
 }
 
 template<typename E>
-void UnmodifiableListMixinCls<E>::insert(E element, int index) {
+void UnmodifiableListMixinCls<E>::insert(int index, E element) {
     throw make<UnsupportedErrorCls>(__s("Cannot add to an unmodifiable list"));
 }
 
@@ -150,22 +150,22 @@ E UnmodifiableListMixinCls<E>::removeLast() {
 }
 
 template<typename E>
-void UnmodifiableListMixinCls<E>::setRange(int end, Iterable<E> iterable, int skipCount, int start) {
+void UnmodifiableListMixinCls<E>::setRange(int start, int end, Iterable<E> iterable, int skipCount) {
     throw make<UnsupportedErrorCls>(__s("Cannot modify an unmodifiable list"));
 }
 
 template<typename E>
-void UnmodifiableListMixinCls<E>::removeRange(int end, int start) {
+void UnmodifiableListMixinCls<E>::removeRange(int start, int end) {
     throw make<UnsupportedErrorCls>(__s("Cannot remove from an unmodifiable list"));
 }
 
 template<typename E>
-void UnmodifiableListMixinCls<E>::replaceRange(int end, Iterable<E> iterable, int start) {
+void UnmodifiableListMixinCls<E>::replaceRange(int start, int end, Iterable<E> iterable) {
     throw make<UnsupportedErrorCls>(__s("Cannot remove from an unmodifiable list"));
 }
 
 template<typename E>
-void UnmodifiableListMixinCls<E>::fillRange(int end, E fillValue, int start) {
+void UnmodifiableListMixinCls<E>::fillRange(int start, int end, E fillValue) {
     throw make<UnsupportedErrorCls>(__s("Cannot modify an unmodifiable list"));
 }
 

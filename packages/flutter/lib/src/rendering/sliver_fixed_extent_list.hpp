@@ -15,11 +15,11 @@ public:
 
      RenderSliverFixedExtentBoxAdaptorCls(Unknown childManager);
     virtual double itemExtent();
-    virtual double indexToLayoutOffset(int index, double itemExtent);
+    virtual double indexToLayoutOffset(double itemExtent, int index);
 
-    virtual int getMinChildIndexForScrollOffset(double itemExtent, double scrollOffset);
+    virtual int getMinChildIndexForScrollOffset(double scrollOffset, double itemExtent);
 
-    virtual int getMaxChildIndexForScrollOffset(double itemExtent, double scrollOffset);
+    virtual int getMaxChildIndexForScrollOffset(double scrollOffset, double itemExtent);
 
     virtual double estimateMaxScrollOffset(SliverConstraints constraints, int firstIndex, int lastIndex, double leadingScrollOffset, double trailingScrollOffset);
 

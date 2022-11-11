@@ -73,7 +73,7 @@ public:
     virtual void setLastModifiedSync(DateTime time);
     virtual Future<RandomAccessFile> open(FileMode mode);
     virtual RandomAccessFile openSync(FileMode mode);
-    virtual Stream<List<int>> openRead(int end, int start);
+    virtual Stream<List<int>> openRead(int start, int end);
     virtual IOSink openWrite(Encoding encoding, FileMode mode);
     virtual Future<Uint8List> readAsBytes();
     virtual Uint8List readAsBytesSync();
@@ -100,14 +100,14 @@ public:
     virtual int readByteSync();
     virtual Future<Uint8List> read(int count);
     virtual Uint8List readSync(int count);
-    virtual Future<int> readInto(List<int> buffer, int end, int start);
-    virtual int readIntoSync(List<int> buffer, int end, int start);
+    virtual Future<int> readInto(List<int> buffer, int start, int end);
+    virtual int readIntoSync(List<int> buffer, int start, int end);
     virtual Future<RandomAccessFile> writeByte(int value);
     virtual int writeByteSync(int value);
-    virtual Future<RandomAccessFile> writeFrom(List<int> buffer, int end, int start);
-    virtual void writeFromSync(List<int> buffer, int end, int start);
-    virtual Future<RandomAccessFile> writeString(Encoding encoding, String stringValue);
-    virtual void writeStringSync(Encoding encoding, String stringValue);
+    virtual Future<RandomAccessFile> writeFrom(List<int> buffer, int start, int end);
+    virtual void writeFromSync(List<int> buffer, int start, int end);
+    virtual Future<RandomAccessFile> writeString(String stringValue, Encoding encoding);
+    virtual void writeStringSync(String stringValue, Encoding encoding);
     virtual Future<int> position();
     virtual int positionSync();
     virtual Future<RandomAccessFile> setPosition(int position);
@@ -118,10 +118,10 @@ public:
     virtual int lengthSync();
     virtual Future<RandomAccessFile> flush();
     virtual void flushSync();
-    virtual Future<RandomAccessFile> lock(int end, FileLock mode, int start);
-    virtual void lockSync(int end, FileLock mode, int start);
-    virtual Future<RandomAccessFile> unlock(int end, int start);
-    virtual void unlockSync(int end, int start);
+    virtual Future<RandomAccessFile> lock(FileLock mode, int start, int end);
+    virtual void lockSync(FileLock mode, int start, int end);
+    virtual Future<RandomAccessFile> unlock(int start, int end);
+    virtual void unlockSync(int start, int end);
     virtual String toString();
     virtual String path();
 private:
@@ -138,7 +138,7 @@ public:
     OSError osError;
 
 
-     FileSystemExceptionCls(String message, OSError osError, String path);
+     FileSystemExceptionCls(String message, String path, OSError osError);
     virtual String toString();
 
 private:

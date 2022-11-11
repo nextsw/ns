@@ -27,7 +27,7 @@ public:
     String description;
 
 
-     MetricCls(String description, String name);
+     MetricCls(String name, String description);
 
 private:
 
@@ -46,7 +46,7 @@ public:
 
     virtual void  value(double v);
 
-     GaugeCls(String description, double max, double min, String name);
+     GaugeCls(String name, String description, double min, double max);
 
 private:
     double _value;
@@ -60,7 +60,7 @@ using Gauge = std::shared_ptr<GaugeCls>;
 class CounterCls : public MetricCls {
 public:
 
-     CounterCls(String description, String name);
+     CounterCls(String name, String description);
 
     virtual double value();
 

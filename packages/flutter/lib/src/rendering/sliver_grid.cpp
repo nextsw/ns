@@ -67,7 +67,7 @@ SliverGridLayout SliverGridDelegateWithFixedCrossAxisCountCls::getLayout(SliverC
     assert(_debugAssertIsValid());
     double usableCrossAxisExtent = math->max(0.0, constraints->crossAxisExtent - crossAxisSpacing * (crossAxisCount - 1));
     double childCrossAxisExtent = usableCrossAxisExtent / crossAxisCount;
-    double childMainAxisExtent = mainAxisExtent or childCrossAxisExtent / childAspectRatio;
+    double childMainAxisExtent = mainAxisExtent | childCrossAxisExtent / childAspectRatio;
     return make<SliverGridRegularTileLayoutCls>(crossAxisCount, childMainAxisExtent + mainAxisSpacing, childCrossAxisExtent + crossAxisSpacing, childMainAxisExtent, childCrossAxisExtent, axisDirectionIsReversed(constraints->crossAxisDirection));
 }
 
@@ -97,7 +97,7 @@ SliverGridLayout SliverGridDelegateWithMaxCrossAxisExtentCls::getLayout(SliverCo
     int crossAxisCount = (constraints->crossAxisExtent / (maxCrossAxisExtent + crossAxisSpacing))->ceil();
     double usableCrossAxisExtent = math->max(0.0, constraints->crossAxisExtent - crossAxisSpacing * (crossAxisCount - 1));
     double childCrossAxisExtent = usableCrossAxisExtent / crossAxisCount;
-    double childMainAxisExtent = mainAxisExtent or childCrossAxisExtent / childAspectRatio;
+    double childMainAxisExtent = mainAxisExtent | childCrossAxisExtent / childAspectRatio;
     return make<SliverGridRegularTileLayoutCls>(crossAxisCount, childMainAxisExtent + mainAxisSpacing, childCrossAxisExtent + crossAxisSpacing, childMainAxisExtent, childCrossAxisExtent, axisDirectionIsReversed(constraints->crossAxisDirection));
 }
 
@@ -191,7 +191,7 @@ void RenderSliverGridCls::performLayout() {
         childParentData->layoutOffset = gridGeometry->scrollOffset;
         childParentData->crossAxisOffset = gridGeometry->crossAxisOffset;
         assert(childParentData->index == index);
-        trailingChildWithLayout = child;
+        trailingChildWithLayout |= child;
         trailingScrollOffset = math->max(trailingScrollOffset, gridGeometry->trailingScrollOffset);
     }
     if (trailingChildWithLayout == nullptr) {

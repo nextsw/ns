@@ -91,7 +91,7 @@ _RenderSliverPersistentHeaderForWidgetsMixin _SliverPersistentHeaderElementCls::
     return as<_RenderSliverPersistentHeaderForWidgetsMixin>(super->renderObject);
 }
 
-void _SliverPersistentHeaderElementCls::mount(Object newSlot, Element parent) {
+void _SliverPersistentHeaderElementCls::mount(Element parent, Object newSlot) {
     super->mount(parent, newSlot);
     renderObject()->_element = this;
 }
@@ -127,7 +127,7 @@ void _SliverPersistentHeaderElementCls::insertRenderObjectChild(RenderBox child,
     renderObject()->child = child;
 }
 
-void _SliverPersistentHeaderElementCls::moveRenderObjectChild(RenderObject child, Object newSlot, Object oldSlot) {
+void _SliverPersistentHeaderElementCls::moveRenderObjectChild(RenderObject child, Object oldSlot, Object newSlot) {
     assert(false);
 }
 
@@ -141,13 +141,13 @@ void _SliverPersistentHeaderElementCls::visitChildren(ElementVisitor visitor) {
     }
 }
 
-_SliverPersistentHeaderElementCls::_SliverPersistentHeaderElementCls(bool floating, _SliverPersistentHeaderRenderObjectWidget widget) {
+_SliverPersistentHeaderElementCls::_SliverPersistentHeaderElementCls(_SliverPersistentHeaderRenderObjectWidget widget, bool floating) {
     {
         assert(floating != nullptr);
     }
 }
 
-void _SliverPersistentHeaderElementCls::_build(bool overlapsContent, double shrinkOffset) {
+void _SliverPersistentHeaderElementCls::_build(double shrinkOffset, bool overlapsContent) {
     owner!->buildScope(this, [=] () {
         _SliverPersistentHeaderRenderObjectWidget sliverPersistentHeaderRenderObjectWidget = as<_SliverPersistentHeaderRenderObjectWidget>(widget);
         child = updateChild(child, floating? make<_FloatingHeaderCls>(sliverPersistentHeaderRenderObjectWidget->delegate->build(this, shrinkOffset, overlapsContent)) : sliverPersistentHeaderRenderObjectWidget->delegate->build(this, shrinkOffset, overlapsContent), nullptr);
@@ -178,7 +178,7 @@ double _RenderSliverPersistentHeaderForWidgetsMixinCls::maxExtent() {
     return (as<_SliverPersistentHeaderRenderObjectWidget>(_element!->widget))->delegate->maxExtent();
 }
 
-void _RenderSliverPersistentHeaderForWidgetsMixinCls::updateChild(bool overlapsContent, double shrinkOffset) {
+void _RenderSliverPersistentHeaderForWidgetsMixinCls::updateChild(double shrinkOffset, bool overlapsContent) {
     assert(_element != nullptr);
     _element!->_build(shrinkOffset, overlapsContent);
 }

@@ -9,11 +9,11 @@ TweenSequenceCls<T>::TweenSequenceCls(List<TweenSequenceItem<T>> items) {
         _items->addAll(items);
         double totalWeight = 0.0;
         for (TweenSequenceItem<T> item : _items) {
-            totalWeight = item->weight;
+            totalWeight += item->weight;
         }
         assert(totalWeight > 0.0);
         double start = 0.0;
-        for (;  < _items->length(); i = 1) {
+        for (;  < _items->length(); i += 1) {
             double end = i == _items->length() - 1? 1.0 : start + _items[i]->weight / totalWeight;
             _intervals->add(make<_IntervalCls>(start, end));
             start = end;
@@ -41,7 +41,7 @@ String TweenSequenceCls<T>::toString() {
 }
 
 template<typename T>
-T TweenSequenceCls<T>::_evaluateAt(int index, double t) {
+T TweenSequenceCls<T>::_evaluateAt(double t, int index) {
     TweenSequenceItem<T> element = _items[index];
     double tInterval = _intervals[index]->value(t);
     return element->tween->transform(tInterval);
@@ -78,7 +78,7 @@ String _IntervalCls::toString() {
     return __s("<$start, $end>");
 }
 
-_IntervalCls::_IntervalCls(double end, double start) {
+_IntervalCls::_IntervalCls(double start, double end) {
     {
         assert(end > start);
     }

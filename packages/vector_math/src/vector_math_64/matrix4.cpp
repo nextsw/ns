@@ -3,7 +3,7 @@ Float64List Matrix4Cls::storage() {
     return _m4storage;
 }
 
-void Matrix4Cls::solve2(Matrix4 A, Vector2 b, Vector2 x) {
+void Matrix4Cls::solve2(Matrix4 A, Vector2 x, Vector2 b) {
     Unknown a11 = A->entry(0, 0);
     Unknown a12 = A->entry(0, 1);
     Unknown a21 = A->entry(1, 0);
@@ -17,7 +17,7 @@ void Matrix4Cls::solve2(Matrix4 A, Vector2 b, Vector2 x) {
     auto _c1 = x;_c1.x = auto _c2 = det * (a22 * bx - a12 * by);_c2.y = det * (a11 * by - a21 * bx);_c2;_c1;
 }
 
-void Matrix4Cls::solve3(Matrix4 A, Vector3 b, Vector3 x) {
+void Matrix4Cls::solve3(Matrix4 A, Vector3 x, Vector3 b) {
     Unknown A0x = A->entry(0, 0);
     Unknown A0y = A->entry(1, 0);
     Unknown A0z = A->entry(2, 0);
@@ -51,7 +51,7 @@ void Matrix4Cls::solve3(Matrix4 A, Vector3 b, Vector3 x) {
     auto _c1 = x;_c1.x = auto _c2 = x_;_c2.y = auto _c3 = y_;_c3.z = z_;_c3;_c2;_c1;
 }
 
-void Matrix4Cls::solve(Matrix4 A, Vector4 b, Vector4 x) {
+void Matrix4Cls::solve(Matrix4 A, Vector4 x, Vector4 b) {
     Unknown a00 = A::_m4storage[0];
     Unknown a01 = A::_m4storage[1];
     Unknown a02 = A::_m4storage[2];
@@ -100,23 +100,23 @@ Matrix4 Matrix4Cls::tryInvert(Matrix4 other) {
     return r;
 }
 
-int Matrix4Cls::index(int col, int row) {
+int Matrix4Cls::index(int row, int col) {
     return (col * 4) + row;
 }
 
-double Matrix4Cls::entry(int col, int row) {
+double Matrix4Cls::entry(int row, int col) {
     assert((row >= 0) && ( < dimension()));
     assert((col >= 0) && ( < dimension()));
     return _m4storage[index(row, col)];
 }
 
-void Matrix4Cls::setEntry(int col, int row, double v) {
+void Matrix4Cls::setEntry(int row, int col, double v) {
     assert((row >= 0) && ( < dimension()));
     assert((col >= 0) && ( < dimension()));
     _m4storage[index(row, col)] = v;
 }
 
-Matrix4Cls::Matrix4Cls(double arg0, double arg1, double arg10, double arg11, double arg12, double arg13, double arg14, double arg15, double arg2, double arg3, double arg4, double arg5, double arg6, double arg7, double arg8, double arg9) {
+Matrix4Cls::Matrix4Cls(double arg0, double arg1, double arg2, double arg3, double arg4, double arg5, double arg6, double arg7, double arg8, double arg9, double arg10, double arg11, double arg12, double arg13, double arg14, double arg15) {
 }
 
 void Matrix4Cls::fromList(List<double> values) {
@@ -206,7 +206,7 @@ void Matrix4Cls::skew(double alpha, double beta) {
 
 void Matrix4Cls::fromBuffer(ByteBuffer buffer, int offset)
 
-void Matrix4Cls::compose(Quaternion rotation, Vector3 scale, Vector3 translation) {
+void Matrix4Cls::compose(Vector3 translation, Quaternion rotation, Vector3 scale) {
     return _c1;
 }
 
@@ -217,7 +217,7 @@ void Matrix4Cls::splatDiagonal(double arg) {
     _m4storage[15] = arg;
 }
 
-void Matrix4Cls::setValues(double arg0, double arg1, double arg10, double arg11, double arg12, double arg13, double arg14, double arg15, double arg2, double arg3, double arg4, double arg5, double arg6, double arg7, double arg8, double arg9) {
+void Matrix4Cls::setValues(double arg0, double arg1, double arg2, double arg3, double arg4, double arg5, double arg6, double arg7, double arg8, double arg9, double arg10, double arg11, double arg12, double arg13, double arg14, double arg15) {
     _m4storage[15] = arg15;
     _m4storage[14] = arg14;
     _m4storage[13] = arg13;
@@ -316,7 +316,7 @@ void Matrix4Cls::setFromTranslationRotation(Vector3 arg0, Quaternion arg1) {
     _m4storage[15] = 1.0;
 }
 
-void Matrix4Cls::setFromTranslationRotationScale(Quaternion rotation, Vector3 scale, Vector3 translation) {
+void Matrix4Cls::setFromTranslationRotationScale(Vector3 translation, Quaternion rotation, Vector3 scale) {
     setFromTranslationRotation(translation, rotation);
     this->scale(scale);
 }
@@ -414,7 +414,7 @@ void Matrix4Cls::row3(Vector4 arg) {
     return setRow(3, arg);
 }
 
-void Matrix4Cls::setRow(Vector4 arg, int row) {
+void Matrix4Cls::setRow(int row, Vector4 arg) {
     Unknown argStorage = arg->_v4storage;
     _m4storage[index(row, 0)] = argStorage[0];
     _m4storage[index(row, 1)] = argStorage[1];
@@ -432,7 +432,7 @@ Vector4 Matrix4Cls::getRow(int row) {
     return r;
 }
 
-void Matrix4Cls::setColumn(Vector4 arg, int column) {
+void Matrix4Cls::setColumn(int column, Vector4 arg) {
     Unknown entry = column * 4;
     Unknown argStorage = arg->_v4storage;
     _m4storage[entry + 3] = argStorage[3];
@@ -563,25 +563,25 @@ void Matrix4Cls::leftTranslate(dynamic x, double y, double z) {
     }
 ;
     };
-    }    _m4storage[0] = tx * _m4storage[3];
-    _m4storage[1] = ty * _m4storage[3];
-    _m4storage[2] = tz * _m4storage[3];
+    }    _m4storage[0] += tx * _m4storage[3];
+    _m4storage[1] += ty * _m4storage[3];
+    _m4storage[2] += tz * _m4storage[3];
     _m4storage[3] = tw * _m4storage[3];
-    _m4storage[4] = tx * _m4storage[7];
-    _m4storage[5] = ty * _m4storage[7];
-    _m4storage[6] = tz * _m4storage[7];
+    _m4storage[4] += tx * _m4storage[7];
+    _m4storage[5] += ty * _m4storage[7];
+    _m4storage[6] += tz * _m4storage[7];
     _m4storage[7] = tw * _m4storage[7];
-    _m4storage[8] = tx * _m4storage[11];
-    _m4storage[9] = ty * _m4storage[11];
-    _m4storage[10] = tz * _m4storage[11];
+    _m4storage[8] += tx * _m4storage[11];
+    _m4storage[9] += ty * _m4storage[11];
+    _m4storage[10] += tz * _m4storage[11];
     _m4storage[11] = tw * _m4storage[11];
-    _m4storage[12] = tx * _m4storage[15];
-    _m4storage[13] = ty * _m4storage[15];
-    _m4storage[14] = tz * _m4storage[15];
+    _m4storage[12] += tx * _m4storage[15];
+    _m4storage[13] += ty * _m4storage[15];
+    _m4storage[14] += tz * _m4storage[15];
     _m4storage[15] = tw * _m4storage[15];
 }
 
-void Matrix4Cls::rotate(double angle, Vector3 axis) {
+void Matrix4Cls::rotate(Vector3 axis, double angle) {
     Unknown len = axis->length;
     Unknown axisStorage = axis->_v3storage;
     Unknown x = axisStorage[0] / len;
@@ -705,29 +705,29 @@ void Matrix4Cls::scale(dynamic x, double y, double z) {
     } else     {
         if (is<double>(x)) {
         sx = as<doubleCls>(x);
-        sy = y or as<doubleCls>(x);
-        sz = z or as<doubleCls>(x);
+        sy = y | as<doubleCls>(x);
+        sz = z | as<doubleCls>(x);
     } else {
         throw make<UnimplementedErrorCls>();
     }
 ;
     };
-    }    _m4storage[0] = sx;
-    _m4storage[1] = sx;
-    _m4storage[2] = sx;
-    _m4storage[3] = sx;
-    _m4storage[4] = sy;
-    _m4storage[5] = sy;
-    _m4storage[6] = sy;
-    _m4storage[7] = sy;
-    _m4storage[8] = sz;
-    _m4storage[9] = sz;
-    _m4storage[10] = sz;
-    _m4storage[11] = sz;
-    _m4storage[12] = sw;
-    _m4storage[13] = sw;
-    _m4storage[14] = sw;
-    _m4storage[15] = sw;
+    }    _m4storage[0] *= sx;
+    _m4storage[1] *= sx;
+    _m4storage[2] *= sx;
+    _m4storage[3] *= sx;
+    _m4storage[4] *= sy;
+    _m4storage[5] *= sy;
+    _m4storage[6] *= sy;
+    _m4storage[7] *= sy;
+    _m4storage[8] *= sz;
+    _m4storage[9] *= sz;
+    _m4storage[10] *= sz;
+    _m4storage[11] *= sz;
+    _m4storage[12] *= sw;
+    _m4storage[13] *= sw;
+    _m4storage[14] *= sw;
+    _m4storage[15] *= sw;
 }
 
 Matrix4 Matrix4Cls::scaled(dynamic x, double y, double z) {
@@ -846,10 +846,10 @@ double Matrix4Cls::dotColumn(int j, Vector4 v) {
 
 double Matrix4Cls::trace() {
     auto t = 0.0;
-    t = _m4storage[0];
-    t = _m4storage[5];
-    t = _m4storage[10];
-    t = _m4storage[15];
+    t += _m4storage[0];
+    t += _m4storage[5];
+    t += _m4storage[10];
+    t += _m4storage[15];
     return t;
 }
 
@@ -857,31 +857,31 @@ double Matrix4Cls::infinityNorm() {
     auto norm = 0.0;
     {
         auto row_norm = 0.0;
-        row_norm = _m4storage[0]->abs();
-        row_norm = _m4storage[1]->abs();
-        row_norm = _m4storage[2]->abs();
-        row_norm = _m4storage[3]->abs();
+        row_norm += _m4storage[0]->abs();
+        row_norm += _m4storage[1]->abs();
+        row_norm += _m4storage[2]->abs();
+        row_norm += _m4storage[3]->abs();
         norm = row_norm > norm? row_norm : norm;
     }    {
         auto row_norm = 0.0;
-        row_norm = _m4storage[4]->abs();
-        row_norm = _m4storage[5]->abs();
-        row_norm = _m4storage[6]->abs();
-        row_norm = _m4storage[7]->abs();
+        row_norm += _m4storage[4]->abs();
+        row_norm += _m4storage[5]->abs();
+        row_norm += _m4storage[6]->abs();
+        row_norm += _m4storage[7]->abs();
         norm = row_norm > norm? row_norm : norm;
     }    {
         auto row_norm = 0.0;
-        row_norm = _m4storage[8]->abs();
-        row_norm = _m4storage[9]->abs();
-        row_norm = _m4storage[10]->abs();
-        row_norm = _m4storage[11]->abs();
+        row_norm += _m4storage[8]->abs();
+        row_norm += _m4storage[9]->abs();
+        row_norm += _m4storage[10]->abs();
+        row_norm += _m4storage[11]->abs();
         norm = row_norm > norm? row_norm : norm;
     }    {
         auto row_norm = 0.0;
-        row_norm = _m4storage[12]->abs();
-        row_norm = _m4storage[13]->abs();
-        row_norm = _m4storage[14]->abs();
-        row_norm = _m4storage[15]->abs();
+        row_norm += _m4storage[12]->abs();
+        row_norm += _m4storage[13]->abs();
+        row_norm += _m4storage[14]->abs();
+        row_norm += _m4storage[15]->abs();
         norm = row_norm > norm? row_norm : norm;
     }    return norm;
 }
@@ -1376,7 +1376,7 @@ void Matrix4Cls::multiplyTranspose(Matrix4 arg) {
     _m4storage[15] = (m30 * argStorage[3]) + (m31 * argStorage[7]) + (m32 * argStorage[11]) + (m33 * argStorage[15]);
 }
 
-void Matrix4Cls::decompose(Quaternion rotation, Vector3 scale, Vector3 translation) {
+void Matrix4Cls::decompose(Vector3 translation, Quaternion rotation, Vector3 scale) {
     Unknown v = _decomposeV ??= Vector3Cls->zero();
     auto _c1 = v;_c1.setValues(_m4storage[0], _m4storage[1], _m4storage[2]);auto _c2 = v;_c2.setValues(_m4storage[0], _m4storage[1], _m4storage[2]);auto sx = (_c2)->length;
     auto _c3 = v;_c3.setValues(_m4storage[4], _m4storage[5], _m4storage[6]);auto _c4 = v;_c4.setValues(_m4storage[4], _m4storage[5], _m4storage[6]);Unknown sy = (_c4)->length;
@@ -1392,15 +1392,15 @@ void Matrix4Cls::decompose(Quaternion rotation, Vector3 scale, Vector3 translati
     Unknown invSZ = 1.0 / sz;
     Unknown m = _decomposeM ??= Matrix4Cls->zero();
     m->setFrom(this);
-    m->_m4storage[0] = invSX;
-    m->_m4storage[1] = invSX;
-    m->_m4storage[2] = invSX;
-    m->_m4storage[4] = invSY;
-    m->_m4storage[5] = invSY;
-    m->_m4storage[6] = invSY;
-    m->_m4storage[8] = invSZ;
-    m->_m4storage[9] = invSZ;
-    m->_m4storage[10] = invSZ;
+    m->_m4storage[0] *= invSX;
+    m->_m4storage[1] *= invSX;
+    m->_m4storage[2] *= invSX;
+    m->_m4storage[4] *= invSY;
+    m->_m4storage[5] *= invSY;
+    m->_m4storage[6] *= invSY;
+    m->_m4storage[8] *= invSZ;
+    m->_m4storage[9] *= invSZ;
+    m->_m4storage[10] *= invSZ;
     Unknown r = _decomposeR ??= Matrix3Cls->zero();
     m->copyRotation(r);
     rotation->setFromRotation(r);
@@ -1524,7 +1524,7 @@ void Matrix4Cls::copyFromArray(List<double> array, int offset) {
 }
 
 List<double> Matrix4Cls::applyToVector3Array(List<double> array, int offset) {
-    for (;  < array->length(); i = 3, j = 3) {
+    for (;  < array->length(); i += 3, j += 3) {
             auto _c1 = Vector3Cls->array(array, j);    _c1.applyMatrix4(this);Unknown v = _c1;
         array[j] = v->storage[0];
         array[j + 1] = v->storage[1];

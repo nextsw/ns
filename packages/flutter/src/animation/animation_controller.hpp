@@ -72,9 +72,9 @@ public:
 
     virtual TickerFuture reverse(double from);
 
-    virtual TickerFuture animateTo(Curve curve, Duration duration, double target);
+    virtual TickerFuture animateTo(double target, Curve curve, Duration duration);
 
-    virtual TickerFuture animateBack(Curve curve, Duration duration, double target);
+    virtual TickerFuture animateBack(double target, Curve curve, Duration duration);
 
     virtual TickerFuture repeat(double max, double min, Duration period, bool reverse);
 
@@ -106,7 +106,7 @@ private:
 
     virtual void _internalSetValue(double newValue);
 
-    virtual TickerFuture _animateToInternal(Curve curve, Duration duration, double target);
+    virtual TickerFuture _animateToInternal(double target, Curve curve, Duration duration);
 
     virtual void _directionSetter(_AnimationDirection direction);
 
@@ -138,7 +138,7 @@ private:
     Curve _curve;
 
 
-     _InterpolationSimulationCls(double _begin, Curve _curve, double _end, Duration duration, double scale);
+     _InterpolationSimulationCls(double _begin, double _end, Duration duration, Curve _curve, double scale);
 
 };
 using _InterpolationSimulation = std::shared_ptr<_InterpolationSimulationCls>;
@@ -166,7 +166,7 @@ private:
     double _initialT;
 
 
-     _RepeatingSimulationCls(_DirectionSetter directionSetter, double initialValue, double max, double min, Duration period, bool reverse);
+     _RepeatingSimulationCls(double initialValue, double min, double max, bool reverse, Duration period, _DirectionSetter directionSetter);
 
 };
 using _RepeatingSimulation = std::shared_ptr<_RepeatingSimulationCls>;

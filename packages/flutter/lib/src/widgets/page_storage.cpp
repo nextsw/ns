@@ -25,7 +25,7 @@ _StorageEntryIdentifierCls::_StorageEntryIdentifierCls(List<PageStorageKey<dynam
 }
 
 void PageStorageBucketCls::writeState(BuildContext context, dynamic data, Object identifier) {
-    _storage = makeMap(makeList(), makeList();
+    _storage |= makeMap(makeList(), makeList();
     if (identifier != nullptr) {
         _storage![identifier] = data;
     } else {

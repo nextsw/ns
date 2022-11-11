@@ -5,7 +5,7 @@ void SortCls::sort(List<E> a, std::function<int(E a, E b)> compare) {
 }
 
 template<typename E>
-void SortCls::sortRange(List<E> a, std::function<int(E a, E b)> compare, int from, int to) {
+void SortCls::sortRange(List<E> a, int from, int to, std::function<int(E a, E b)> compare) {
     if (( < 0) || (to > a->length) || ( < from)) {
         throw __s("OutOfRange");
     }
@@ -13,7 +13,7 @@ void SortCls::sortRange(List<E> a, std::function<int(E a, E b)> compare, int fro
 }
 
 template<typename E>
-void SortCls::_doSort(List<E> a, std::function<int(E a, E b)> compare, int left, int right) {
+void SortCls::_doSort(List<E> a, int left, int right, std::function<int(E a, E b)> compare) {
     if ((right - left) <= _INSERTION_SORT_THRESHOLD) {
         _insertionSort(a, left, right, compare);
     } else {
@@ -22,7 +22,7 @@ void SortCls::_doSort(List<E> a, std::function<int(E a, E b)> compare, int left,
 }
 
 template<typename E>
-void SortCls::_insertionSort(List<E> a, std::function<int(E a, E b)> compare, int left, int right) {
+void SortCls::_insertionSort(List<E> a, int left, int right, std::function<int(E a, E b)> compare) {
     for (; i <= right; i++) {
         auto el = a[i];
         int j = i;
@@ -35,7 +35,7 @@ void SortCls::_insertionSort(List<E> a, std::function<int(E a, E b)> compare, in
 }
 
 template<typename E>
-void SortCls::_dualPivotQuicksort(List<E> a, std::function<int(E a, E b)> compare, int left, int right) {
+void SortCls::_dualPivotQuicksort(List<E> a, int left, int right, std::function<int(E a, E b)> compare) {
     assert(right - left > _INSERTION_SORT_THRESHOLD);
     int sixth = (right - left + 1) ~/ 6;
     int index1 = left + sixth;

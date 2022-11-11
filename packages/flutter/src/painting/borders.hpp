@@ -140,7 +140,7 @@ private:
 
 };
 using _CompoundBorder = std::shared_ptr<_CompoundBorderCls>;
-void paintBorder(BorderSide bottom, Canvas canvas, BorderSide left, Rect rect, BorderSide right, BorderSide top);
+void paintBorder(Canvas canvas, Rect rect, BorderSide bottom, BorderSide left, BorderSide right, BorderSide top);
 
 
 

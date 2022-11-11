@@ -62,7 +62,7 @@ public:
 
     virtual void debugFillProperties(DiagnosticPropertiesBuilder properties);
 
-    virtual bool hitTest(Offset position, Size size, TextDirection textDirection);
+    virtual bool hitTest(Size size, Offset position, TextDirection textDirection);
 
     virtual BoxPainter createBoxPainter(VoidCallback onChanged);
 
@@ -76,7 +76,7 @@ public:
 
     virtual void dispose();
 
-    virtual void paint(Canvas canvas, ImageConfiguration configuration, Offset offset);
+    virtual void paint(Canvas canvas, Offset offset, ImageConfiguration configuration);
 
     virtual String toString();
 
@@ -94,13 +94,13 @@ private:
 
     virtual Paint _getBackgroundPaint(Rect rect, TextDirection textDirection);
 
-    virtual void _paintBox(Canvas canvas, Paint paint, Rect rect, TextDirection textDirection);
+    virtual void _paintBox(Canvas canvas, Rect rect, Paint paint, TextDirection textDirection);
 
     virtual void _paintShadows(Canvas canvas, Rect rect, TextDirection textDirection);
 
     virtual void _paintBackgroundColor(Canvas canvas, Rect rect, TextDirection textDirection);
 
-    virtual void _paintBackgroundImage(Canvas canvas, ImageConfiguration configuration, Rect rect);
+    virtual void _paintBackgroundImage(Canvas canvas, Rect rect, ImageConfiguration configuration);
 
 };
 using _BoxDecorationPainter = std::shared_ptr<_BoxDecorationPainterCls>;

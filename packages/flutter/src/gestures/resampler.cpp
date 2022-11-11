@@ -3,7 +3,7 @@ void PointerEventResamplerCls::addEvent(PointerEvent event) {
     _queuedEvents->add(event);
 }
 
-void PointerEventResamplerCls::sample(HandleEventCallback callback, Duration nextSampleTime, Duration sampleTime) {
+void PointerEventResamplerCls::sample(Duration sampleTime, Duration nextSampleTime, HandleEventCallback callback) {
     _processPointerEvents(sampleTime);
     _dequeueAndSampleNonHoverOrMovePointerEventsUntil(sampleTime, nextSampleTime, callback);
     if (_isTracked) {
@@ -35,28 +35,28 @@ bool PointerEventResamplerCls::isDown() {
     return _isDown;
 }
 
-PointerEvent PointerEventResamplerCls::_toHoverEvent(int buttons, Offset delta, PointerEvent event, Offset position, Duration timeStamp) {
+PointerEvent PointerEventResamplerCls::_toHoverEvent(PointerEvent event, Offset position, Offset delta, Duration timeStamp, int buttons) {
     return make<PointerHoverEventCls>(timeStamp, event->kind, event->device, position, delta, event->buttons, event->obscured, event->pressureMin, event->pressureMax, event->distance, event->distanceMax, event->size, event->radiusMajor, event->radiusMinor, event->radiusMin, event->radiusMax, event->orientation, event->tilt, event->synthesized, event->embedderId);
 }
 
-PointerEvent PointerEventResamplerCls::_toMoveEvent(int buttons, Offset delta, PointerEvent event, int pointerIdentifier, Offset position, Duration timeStamp) {
+PointerEvent PointerEventResamplerCls::_toMoveEvent(PointerEvent event, Offset position, Offset delta, int pointerIdentifier, Duration timeStamp, int buttons) {
     return make<PointerMoveEventCls>(timeStamp, pointerIdentifier, event->kind, event->device, position, delta, buttons, event->obscured, event->pressure, event->pressureMin, event->pressureMax, event->distanceMax, event->size, event->radiusMajor, event->radiusMinor, event->radiusMin, event->radiusMax, event->orientation, event->tilt, event->platformData, event->synthesized, event->embedderId);
 }
 
-PointerEvent PointerEventResamplerCls::_toMoveOrHoverEvent(int buttons, Offset delta, PointerEvent event, bool isDown, int pointerIdentifier, Offset position, Duration timeStamp) {
+PointerEvent PointerEventResamplerCls::_toMoveOrHoverEvent(PointerEvent event, Offset position, Offset delta, int pointerIdentifier, Duration timeStamp, bool isDown, int buttons) {
     return isDown? _toMoveEvent(event, position, delta, pointerIdentifier, timeStamp, buttons) : _toHoverEvent(event, position, delta, timeStamp, buttons);
 }
 
 Offset PointerEventResamplerCls::_positionAt(Duration sampleTime) {
-    double x = _next?->position->dx() or 0.0;
-    double y = _next?->position->dy() or 0.0;
-    Duration nextTimeStamp = _next?->timeStamp or DurationCls::zero;
-    Duration lastTimeStamp = _last?->timeStamp or DurationCls::zero;
+    double x = _next?->position->dx() | 0.0;
+    double y = _next?->position->dy() | 0.0;
+    Duration nextTimeStamp = _next?->timeStamp | DurationCls::zero;
+    Duration lastTimeStamp = _last?->timeStamp | DurationCls::zero;
     if (nextTimeStamp > sampleTime && nextTimeStamp > lastTimeStamp) {
         double interval = (nextTimeStamp - lastTimeStamp)->inMicroseconds()->toDouble();
         double scalar = (sampleTime - lastTimeStamp)->inMicroseconds()->toDouble() / interval;
-        double lastX = _last?->position->dx() or 0.0;
-        double lastY = _last?->position->dy() or 0.0;
+        double lastX = _last?->position->dx() | 0.0;
+        double lastY = _last?->position->dy() | 0.0;
         x = lastX + (x - lastX) * scalar;
         y = lastY + (y - lastY) * scalar;
     }
@@ -72,7 +72,7 @@ void PointerEventResamplerCls::_processPointerEvents(Duration sampleTime) {
             _next = event;
             continue;
         }
-        Duration nextTimeStamp = _next?->timeStamp or DurationCls::zero;
+        Duration nextTimeStamp = _next?->timeStamp | DurationCls::zero;
         if ( < sampleTime) {
             _next = event;
             break;
@@ -80,7 +80,7 @@ void PointerEventResamplerCls::_processPointerEvents(Duration sampleTime) {
     }
 }
 
-void PointerEventResamplerCls::_dequeueAndSampleNonHoverOrMovePointerEventsUntil(HandleEventCallback callback, Duration nextSampleTime, Duration sampleTime) {
+void PointerEventResamplerCls::_dequeueAndSampleNonHoverOrMovePointerEventsUntil(Duration sampleTime, Duration nextSampleTime, HandleEventCallback callback) {
     Duration endTime = sampleTime;
     Iterator<PointerEvent> it = _queuedEvents->iterator;
     while (it->moveNext()) {
@@ -128,7 +128,7 @@ void PointerEventResamplerCls::_dequeueAndSampleNonHoverOrMovePointerEventsUntil
     }
 }
 
-void PointerEventResamplerCls::_samplePointerPosition(HandleEventCallback callback, Duration sampleTime) {
+void PointerEventResamplerCls::_samplePointerPosition(Duration sampleTime, HandleEventCallback callback) {
     Offset position = _positionAt(sampleTime);
     PointerEvent next = _next;
     if (position != _position && next != nullptr) {

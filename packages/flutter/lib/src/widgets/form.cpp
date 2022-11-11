@@ -2,7 +2,7 @@
 FormCls::FormCls(AutovalidateMode autovalidateMode, Widget child, Unknown key, VoidCallback onChanged, WillPopCallback onWillPop) {
     {
         assert(child != nullptr);
-        autovalidateMode = autovalidateMode or AutovalidateModeCls::disabled;
+        autovalidateMode = autovalidateMode | AutovalidateModeCls::disabled;
     }
 }
 
@@ -89,7 +89,7 @@ template<typename T>
 FormFieldCls<T>::FormFieldCls(AutovalidateMode autovalidateMode, FormFieldBuilder<T> builder, bool enabled, T initialValue, Unknown key, FormFieldSetter<T> onSaved, String restorationId, FormFieldValidator<T> validator) {
     {
         assert(builder != nullptr);
-        autovalidateMode = autovalidateMode or AutovalidateModeCls::disabled;
+        autovalidateMode = autovalidateMode | AutovalidateModeCls::disabled;
     }
 }
 
@@ -161,7 +161,7 @@ String FormFieldStateCls<T>::restorationId() {
 }
 
 template<typename T>
-void FormFieldStateCls<T>::restoreState(bool initialRestore, RestorationBucket oldBucket) {
+void FormFieldStateCls<T>::restoreState(RestorationBucket oldBucket, bool initialRestore) {
     registerForRestoration(_errorText, __s("error_text"));
     registerForRestoration(_hasInteractedByUser, __s("has_interacted_by_user"));
 }

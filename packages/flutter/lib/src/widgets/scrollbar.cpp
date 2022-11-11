@@ -29,7 +29,7 @@ ScrollbarPainterCls::ScrollbarPainterCls(Color color, double crossAxisMargin, An
         _trackBorderColor = trackBorderColor;
         _trackRadius = trackRadius;
         _scrollbarOrientation = scrollbarOrientation;
-        _minOverscrollLength = minOverscrollLength or minLength;
+        _minOverscrollLength = minOverscrollLength | minLength;
         _ignorePointer = ignorePointer;
     }
     {
@@ -229,7 +229,7 @@ void ScrollbarPainterCls::ignorePointer(bool value) {
     notifyListeners();
 }
 
-void ScrollbarPainterCls::update(AxisDirection axisDirection, ScrollMetrics metrics) {
+void ScrollbarPainterCls::update(ScrollMetrics metrics, AxisDirection axisDirection) {
     if (_lastMetrics != nullptr && _lastMetrics!->extentBefore() == metrics->extentBefore() && _lastMetrics!->extentInside() == metrics->extentInside() && _lastMetrics!->extentAfter() == metrics->extentAfter() && _lastAxisDirection == axisDirection) {
         return;
     }
@@ -243,7 +243,7 @@ void ScrollbarPainterCls::update(AxisDirection axisDirection, ScrollMetrics metr
     notifyListeners();
 }
 
-void ScrollbarPainterCls::updateThickness(Radius nextRadius, double nextThickness) {
+void ScrollbarPainterCls::updateThickness(double nextThickness, Radius nextRadius) {
     thickness() = nextThickness;
     radius() = nextRadius;
 }
@@ -277,7 +277,7 @@ void ScrollbarPainterCls::paint(Canvas canvas, Size size) {
     return _paintScrollbar(canvas, size, thumbExtent, _lastAxisDirection!);
 }
 
-bool ScrollbarPainterCls::hitTestInteractive(bool forHover, PointerDeviceKind kind, Offset position) {
+bool ScrollbarPainterCls::hitTestInteractive(Offset position, PointerDeviceKind kind, bool forHover) {
     if (_trackRect == nullptr) {
         return false;
     }
@@ -298,7 +298,7 @@ bool ScrollbarPainterCls::hitTestInteractive(bool forHover, PointerDeviceKind ki
     ;
 }
 
-bool ScrollbarPainterCls::hitTestOnlyThumbInteractive(PointerDeviceKind kind, Offset position) {
+bool ScrollbarPainterCls::hitTestOnlyThumbInteractive(Offset position, PointerDeviceKind kind) {
     if (_thumbRect == nullptr) {
         return false;
     }
@@ -365,7 +365,7 @@ Paint ScrollbarPainterCls::_paintTrack(bool isBorder) {
     auto _c4 = make<PaintCls>();_c4.color() = trackColor()->withOpacity(trackColor()->opacity() * fadeoutOpacityAnimation->value());return _c4;
 }
 
-void ScrollbarPainterCls::_paintScrollbar(Canvas canvas, AxisDirection direction, Size size, double thumbExtent) {
+void ScrollbarPainterCls::_paintScrollbar(Canvas canvas, Size size, double thumbExtent, AxisDirection direction) {
     assert(textDirection() != nullptr, __s("A TextDirection must be provided before a Scrollbar can be painted."));
     ScrollbarOrientation resolvedOrientation;
     if (scrollbarOrientation() == nullptr) {
@@ -456,7 +456,7 @@ RawScrollbarCls::RawScrollbarCls(Widget child, ScrollController controller, doub
     {
         assert(child != nullptr);
         assert(thumbVisibility == nullptr || isAlwaysShown == nullptr, __s("Scrollbar thumb appearance should only be controlled with thumbVisibility, isAlwaysShown is deprecated."));
-        assert(!((thumbVisibility == false || isAlwaysShown == false) && (trackVisibility or false)), __s("A scrollbar track cannot be drawn without a scrollbar thumb."));
+        assert(!((thumbVisibility == false || isAlwaysShown == false) && (trackVisibility | false)), __s("A scrollbar track cannot be drawn without a scrollbar thumb."));
         assert(minThumbLength != nullptr);
         assert(minThumbLength >= 0);
         assert(minOverscrollLength == nullptr || minOverscrollLength <= minThumbLength);
@@ -476,12 +476,12 @@ RawScrollbarState<RawScrollbar> RawScrollbarCls::createState() {
 
 template<typename T>
 bool RawScrollbarStateCls<T>::showScrollbar() {
-    return widget->isAlwaysShown or widget->thumbVisibility or false;
+    return widget->isAlwaysShown | widget->thumbVisibility | false;
 }
 
 template<typename T>
 bool RawScrollbarStateCls<T>::enableGestures() {
-    return widget->interactive or true;
+    return widget->interactive | true;
 }
 
 template<typename T>
@@ -489,7 +489,7 @@ void RawScrollbarStateCls<T>::initState() {
     super->initState();
     auto _c1 = make<AnimationControllerCls>(this, widget->fadeDuration);_c1.addStatusListener(_validateInteractions);_fadeoutAnimationController = _c1;
     _fadeoutOpacityAnimation = make<CurvedAnimationCls>(_fadeoutAnimationController, CurvesCls::fastOutSlowIn);
-    scrollbarPainter = make<ScrollbarPainterCls>(widget->thumbColor or make<ColorCls>(0x66BCBCBC), _fadeoutOpacityAnimation, widget->thickness or _kScrollbarThickness, widget->radius, widget->trackRadius, widget->scrollbarOrientation, widget->mainAxisMargin, widget->shape, widget->crossAxisMargin, widget->minThumbLength, widget->minOverscrollLength or widget->minThumbLength);
+    scrollbarPainter = make<ScrollbarPainterCls>(widget->thumbColor | make<ColorCls>(0x66BCBCBC), _fadeoutOpacityAnimation, widget->thickness | _kScrollbarThickness, widget->radius, widget->trackRadius, widget->scrollbarOrientation, widget->mainAxisMargin, widget->shape, widget->crossAxisMargin, widget->minThumbLength, widget->minOverscrollLength | widget->minThumbLength);
 }
 
 template<typename T>
@@ -500,14 +500,14 @@ void RawScrollbarStateCls<T>::didChangeDependencies() {
 
 template<typename T>
 void RawScrollbarStateCls<T>::updateScrollbarPainter() {
-    auto _c1 = scrollbarPainter;_c1.color = widget->thumbColor or auto _c2 = make<ColorCls>(0x66BCBCBC);_c2.trackRadius = auto _c3 = widget->trackRadius;_c3.trackColor = _showTrack()? widget->trackColor or make<ColorCls>(0x08000000) : auto _c4 = make<ColorCls>(0x00000000);_c4.trackBorderColor = _showTrack()? widget->trackBorderColor or make<ColorCls>(0x1a000000) : auto _c5 = make<ColorCls>(0x00000000);_c5.textDirection = auto _c6 = DirectionalityCls->of(context);_c6.thickness = auto _c7 = widget->thickness or _kScrollbarThickness;_c7.radius = auto _c8 = widget->radius;_c8.padding = auto _c9 = MediaQueryCls->of(context)->padding;_c9.scrollbarOrientation = auto _c10 = widget->scrollbarOrientation;_c10.mainAxisMargin = auto _c11 = widget->mainAxisMargin;_c11.shape = auto _c12 = widget->shape;_c12.crossAxisMargin = auto _c13 = widget->crossAxisMargin;_c13.minLength = auto _c14 = widget->minThumbLength;_c14.minOverscrollLength = auto _c15 = widget->minOverscrollLength or widget->minThumbLength;_c15.ignorePointer = !enableGestures();_c15;_c14;_c13;_c12;_c11;_c10;_c9;_c8;_c7;_c6;_c5;_c4;_c3;_c2;_c1;
+    auto _c1 = scrollbarPainter;_c1.color = widget->thumbColor | auto _c2 = make<ColorCls>(0x66BCBCBC);_c2.trackRadius = auto _c3 = widget->trackRadius;_c3.trackColor = _showTrack()? widget->trackColor | make<ColorCls>(0x08000000) : auto _c4 = make<ColorCls>(0x00000000);_c4.trackBorderColor = _showTrack()? widget->trackBorderColor | make<ColorCls>(0x1a000000) : auto _c5 = make<ColorCls>(0x00000000);_c5.textDirection = auto _c6 = DirectionalityCls->of(context);_c6.thickness = auto _c7 = widget->thickness | _kScrollbarThickness;_c7.radius = auto _c8 = widget->radius;_c8.padding = auto _c9 = MediaQueryCls->of(context)->padding;_c9.scrollbarOrientation = auto _c10 = widget->scrollbarOrientation;_c10.mainAxisMargin = auto _c11 = widget->mainAxisMargin;_c11.shape = auto _c12 = widget->shape;_c12.crossAxisMargin = auto _c13 = widget->crossAxisMargin;_c13.minLength = auto _c14 = widget->minThumbLength;_c14.minOverscrollLength = auto _c15 = widget->minOverscrollLength | widget->minThumbLength;_c15.ignorePointer = !enableGestures();_c15;_c14;_c13;_c12;_c11;_c10;_c9;_c8;_c7;_c6;_c5;_c4;_c3;_c2;_c1;
 }
 
 template<typename T>
 void RawScrollbarStateCls<T>::didUpdateWidget(T oldWidget) {
     super->didUpdateWidget(oldWidget);
     if (widget->isAlwaysShown != oldWidget->isAlwaysShown || widget->thumbVisibility != oldWidget->thumbVisibility) {
-        if ((widget->isAlwaysShown or false) || (widget->thumbVisibility or false)) {
+        if ((widget->isAlwaysShown | false) || (widget->thumbVisibility | false)) {
             assert(_debugScheduleCheckHasValidScrollPosition());
             _fadeoutTimer?->cancel();
             _fadeoutAnimationController->animateTo(1.0);
@@ -538,7 +538,7 @@ void RawScrollbarStateCls<T>::handleThumbPress() {
 template<typename T>
 void RawScrollbarStateCls<T>::handleThumbPressStart(Offset localPosition) {
     assert(_debugCheckHasValidScrollPosition());
-    _currentController = widget->controller or PrimaryScrollControllerCls->of(context);
+    _currentController = widget->controller | PrimaryScrollControllerCls->of(context);
     Axis direction = getScrollbarDirection();
     if (direction == nullptr) {
         return;
@@ -572,7 +572,7 @@ void RawScrollbarStateCls<T>::handleThumbPressEnd(Offset localPosition, Velocity
 }
 
 template<typename T>
-bool RawScrollbarStateCls<T>::isPointerOverTrack(PointerDeviceKind kind, Offset position) {
+bool RawScrollbarStateCls<T>::isPointerOverTrack(Offset position, PointerDeviceKind kind) {
     if (_scrollbarPainterKey->currentContext() == nullptr) {
         return false;
     }
@@ -581,7 +581,7 @@ bool RawScrollbarStateCls<T>::isPointerOverTrack(PointerDeviceKind kind, Offset 
 }
 
 template<typename T>
-bool RawScrollbarStateCls<T>::isPointerOverThumb(PointerDeviceKind kind, Offset position) {
+bool RawScrollbarStateCls<T>::isPointerOverThumb(Offset position, PointerDeviceKind kind) {
     if (_scrollbarPainterKey->currentContext() == nullptr) {
         return false;
     }
@@ -590,7 +590,7 @@ bool RawScrollbarStateCls<T>::isPointerOverThumb(PointerDeviceKind kind, Offset 
 }
 
 template<typename T>
-bool RawScrollbarStateCls<T>::isPointerOverScrollbar(bool forHover, PointerDeviceKind kind, Offset position) {
+bool RawScrollbarStateCls<T>::isPointerOverScrollbar(Offset position, PointerDeviceKind kind, bool forHover) {
     if (_scrollbarPainterKey->currentContext() == nullptr) {
         return false;
     }
@@ -638,7 +638,7 @@ Widget RawScrollbarStateCls<T>::build(BuildContext context) {
 
 template<typename T>
 bool RawScrollbarStateCls<T>::_showTrack() {
-    return showScrollbar() && (widget->trackVisibility or false);
+    return showScrollbar() && (widget->trackVisibility | false);
 }
 
 template<typename T>
@@ -654,7 +654,7 @@ bool RawScrollbarStateCls<T>::_debugScheduleCheckHasValidScrollPosition() {
 
 template<typename T>
 void RawScrollbarStateCls<T>::_validateInteractions(AnimationStatus status) {
-    ScrollController scrollController = widget->controller or PrimaryScrollControllerCls->of(context);
+    ScrollController scrollController = widget->controller | PrimaryScrollControllerCls->of(context);
     if (status == AnimationStatusCls::dismissed) {
         assert(_fadeoutOpacityAnimation->value() == 0.0);
     } else     {
@@ -669,14 +669,14 @@ bool RawScrollbarStateCls<T>::_debugCheckHasValidScrollPosition() {
     if (!mounted) {
         return true;
     }
-    ScrollController scrollController = widget->controller or PrimaryScrollControllerCls->of(context);
+    ScrollController scrollController = widget->controller | PrimaryScrollControllerCls->of(context);
     bool tryPrimary = widget->controller == nullptr;
     String controllerForError = tryPrimary? __s("PrimaryScrollController") : __s("provided ScrollController");
     String when = __s("");
-    if (widget->isAlwaysShown or false) {
+    if (widget->isAlwaysShown | false) {
         when = __s("Scrollbar.isAlwaysShown is true");
     } else     {
-        if (widget->thumbVisibility or false) {
+        if (widget->thumbVisibility | false) {
         when = __s("Scrollbar.thumbVisibility is true");
     } else     {
         if (enableGestures()) {
@@ -738,7 +738,7 @@ void RawScrollbarStateCls<T>::_maybeStartFadeoutTimer() {
 template<typename T>
 void RawScrollbarStateCls<T>::_handleTrackTapDown(TapDownDetails details) {
     assert(_debugCheckHasValidScrollPosition());
-    _currentController = widget->controller or PrimaryScrollControllerCls->of(context);
+    _currentController = widget->controller | PrimaryScrollControllerCls->of(context);
     double scrollIncrement;
     ScrollIncrementCalculator calculator = ScrollableCls->of(_currentController!->position()->context->notificationContext()!)?->widget->incrementCalculator;
     if (calculator != nullptr) {
@@ -752,7 +752,7 @@ void RawScrollbarStateCls<T>::_handleTrackTapDown(TapDownDetails details) {
 
 template<typename T>
 bool RawScrollbarStateCls<T>::_shouldUpdatePainter(Axis notificationAxis) {
-    ScrollController scrollController = widget->controller or PrimaryScrollControllerCls->of(context);
+    ScrollController scrollController = widget->controller | PrimaryScrollControllerCls->of(context);
     if (scrollController == nullptr) {
         return true;
     }
@@ -815,7 +815,7 @@ bool RawScrollbarStateCls<T>::_handleScrollNotification(ScrollNotification notif
 template<typename T>
 Map<Type, GestureRecognizerFactory> RawScrollbarStateCls<T>::_gestures() {
     Map<Type, GestureRecognizerFactory> gestures = makeMap(makeList(), makeList();
-    ScrollController controller = widget->controller or PrimaryScrollControllerCls->of(context);
+    ScrollController controller = widget->controller | PrimaryScrollControllerCls->of(context);
     if (controller == nullptr || !enableGestures()) {
         return gestures;
     }
@@ -854,7 +854,7 @@ _ThumbPressGestureRecognizerCls::_ThumbPressGestureRecognizerCls(GlobalKey custo
     }
 }
 
-bool _ThumbPressGestureRecognizerCls::_hitTestInteractive(GlobalKey customPaintKey, PointerDeviceKind kind, Offset offset) {
+bool _ThumbPressGestureRecognizerCls::_hitTestInteractive(GlobalKey customPaintKey, Offset offset, PointerDeviceKind kind) {
     if (customPaintKey->currentContext() == nullptr) {
         return false;
     }
@@ -877,7 +877,7 @@ _TrackTapGestureRecognizerCls::_TrackTapGestureRecognizerCls(GlobalKey customPai
     }
 }
 
-bool _TrackTapGestureRecognizerCls::_hitTestInteractive(GlobalKey customPaintKey, PointerDeviceKind kind, Offset offset) {
+bool _TrackTapGestureRecognizerCls::_hitTestInteractive(GlobalKey customPaintKey, Offset offset, PointerDeviceKind kind) {
     if (customPaintKey->currentContext() == nullptr) {
         return false;
     }
@@ -887,7 +887,7 @@ bool _TrackTapGestureRecognizerCls::_hitTestInteractive(GlobalKey customPaintKey
     return painter->hitTestInteractive(localOffset, kind) && !painter->hitTestOnlyThumbInteractive(localOffset, kind);
 }
 
-Offset _getLocalOffset(Offset position, GlobalKey scrollbarPainterKey) {
+Offset _getLocalOffset(GlobalKey scrollbarPainterKey, Offset position) {
     RenderBox renderBox = as<RenderBox>(scrollbarPainterKey->currentContext()!->findRenderObject()!);
     return renderBox->globalToLocal(position);
 }

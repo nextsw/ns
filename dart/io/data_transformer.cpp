@@ -90,7 +90,7 @@ void _BufferSinkCls::add(List<int> chunk) {
     builder->add(chunk);
 }
 
-void _BufferSinkCls::addSlice(List<int> chunk, int end, bool isLast, int start) {
+void _BufferSinkCls::addSlice(List<int> chunk, int start, int end, bool isLast) {
     if (is<Uint8List>(chunk)) {
         Uint8List list = as<Uint8ListCls>(chunk);
         builder->add(Uint8ListCls->view(list->buffer, list->offsetInBytes + start, end - start));
@@ -102,15 +102,15 @@ void _BufferSinkCls::addSlice(List<int> chunk, int end, bool isLast, int start) 
 void _BufferSinkCls::close() {
 }
 
-void _ZLibEncoderSinkCls::_(List<int> dictionary, bool gzip, int level, int memLevel, bool raw, ByteConversionSink sink, int strategy, int windowBits)
+void _ZLibEncoderSinkCls::_(ByteConversionSink sink, bool gzip, int level, int windowBits, int memLevel, int strategy, List<int> dictionary, bool raw)
 
-void _ZLibDecoderSinkCls::_(List<int> dictionary, bool raw, ByteConversionSink sink, int windowBits)
+void _ZLibDecoderSinkCls::_(ByteConversionSink sink, int windowBits, List<int> dictionary, bool raw)
 
 void _FilterSinkCls::add(List<int> data) {
     addSlice(data, 0, data->length(), false);
 }
 
-void _FilterSinkCls::addSlice(List<int> data, int end, bool isLast, int start) {
+void _FilterSinkCls::addSlice(List<int> data, int start, int end, bool isLast) {
     ArgumentErrorCls->checkNotNull(end, __s("end"));
     if (_closed)     {
         return;

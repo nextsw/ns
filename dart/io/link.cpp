@@ -39,7 +39,7 @@ Link _LinkCls::absolute() {
     return isAbsolute? this : make<_LinkCls>(_absolutePath);
 }
 
-Future<Link> _LinkCls::create(bool recursive, String target) {
+Future<Link> _LinkCls::create(String target, bool recursive) {
     auto result = recursive? parent->create(true) : FutureCls->value(nullptr);
     return result->then([=] ()     {
         _FileCls->_dispatchWithNamespace(_IOServiceCls::fileCreateLink, makeList(ArrayItem, ArrayItem, ArrayItem));
@@ -51,7 +51,7 @@ Future<Link> _LinkCls::create(bool recursive, String target) {
     });
 }
 
-void _LinkCls::createSync(bool recursive, String target) {
+void _LinkCls::createSync(String target, bool recursive) {
     if (recursive) {
         parent->createSync(true);
     }
@@ -100,7 +100,7 @@ String _LinkCls::targetSync() {
     return result;
 }
 
-void _LinkCls::throwIfError(String msg, String path, Object result) {
+void _LinkCls::throwIfError(Object result, String msg, String path) {
     if (is<OSError>(result)) {
         throw make<FileSystemExceptionCls>(msg, path, as<OSErrorCls>(result));
     }

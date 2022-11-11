@@ -124,15 +124,15 @@ void RenderCustomPaintCls::detach() {
     super->detach();
 }
 
-bool RenderCustomPaintCls::hitTestChildren(Offset position, BoxHitTestResult result) {
-    if (_foregroundPainter != nullptr && (_foregroundPainter!->hitTest(position) or false)) {
+bool RenderCustomPaintCls::hitTestChildren(BoxHitTestResult result, Offset position) {
+    if (_foregroundPainter != nullptr && (_foregroundPainter!->hitTest(position) | false)) {
         return true;
     }
     return super->hitTestChildren(resultposition);
 }
 
 bool RenderCustomPaintCls::hitTestSelf(Offset position) {
-    return _painter != nullptr && (_painter!->hitTest(position) or true);
+    return _painter != nullptr && (_painter!->hitTest(position) | true);
 }
 
 void RenderCustomPaintCls::performLayout() {
@@ -163,7 +163,7 @@ void RenderCustomPaintCls::describeSemanticsConfiguration(SemanticsConfiguration
     config->isSemanticBoundary() = _backgroundSemanticsBuilder != nullptr || _foregroundSemanticsBuilder != nullptr;
 }
 
-void RenderCustomPaintCls::assembleSemanticsNode(Iterable<SemanticsNode> children, SemanticsConfiguration config, SemanticsNode node) {
+void RenderCustomPaintCls::assembleSemanticsNode(SemanticsNode node, SemanticsConfiguration config, Iterable<SemanticsNode> children) {
     assert([=] () {
         if (child == nullptr && children->isNotEmpty()) {
             throw FlutterErrorCls->fromParts(makeList(ArrayItem));
@@ -253,13 +253,13 @@ void RenderCustomPaintCls::_setRasterCacheHints(PaintingContext context) {
     }
 }
 
-List<SemanticsNode> RenderCustomPaintCls::_updateSemanticsChildren(List<CustomPainterSemantics> newChildSemantics, List<SemanticsNode> oldSemantics) {
-    oldSemantics = oldSemantics or makeList();
-    newChildSemantics = newChildSemantics or makeList();
+List<SemanticsNode> RenderCustomPaintCls::_updateSemanticsChildren(List<SemanticsNode> oldSemantics, List<CustomPainterSemantics> newChildSemantics) {
+    oldSemantics = oldSemantics | makeList();
+    newChildSemantics = newChildSemantics | makeList();
     assert([=] () {
         Map<Key, int> keys = <Key, int>make<HashMapCls>();
         List<DiagnosticsNode> information = makeList();
-        for (;  < newChildSemantics!->length(); i = 1) {
+        for (;  < newChildSemantics!->length(); i += 1) {
             CustomPainterSemantics child = newChildSemantics[i];
             if (child->key != nullptr) {
                 if (keys->containsKey(child->key)) {
@@ -287,8 +287,8 @@ List<SemanticsNode> RenderCustomPaintCls::_updateSemanticsChildren(List<CustomPa
         }
         SemanticsNode newChild = _updateSemanticsChild(oldChild, newSemantics);
         newChildren[newChildrenTop] = newChild;
-        newChildrenTop = 1;
-        oldChildrenTop = 1;
+        newChildrenTop += 1;
+        oldChildrenTop += 1;
     }
     while ((oldChildrenTop <= oldChildrenBottom) && (newChildrenTop <= newChildrenBottom)) {
         SemanticsNode oldChild = oldSemantics[oldChildrenBottom];
@@ -296,8 +296,8 @@ List<SemanticsNode> RenderCustomPaintCls::_updateSemanticsChildren(List<CustomPa
         if (!_canUpdateSemanticsChild(oldChild, newChild)) {
             break;
         }
-        oldChildrenBottom = 1;
-        newChildrenBottom = 1;
+        oldChildrenBottom -= 1;
+        newChildrenBottom -= 1;
     }
     bool haveOldChildren = oldChildrenTop <= oldChildrenBottom;
     Map<Key, SemanticsNode> oldKeyedChildren;
@@ -308,7 +308,7 @@ List<SemanticsNode> RenderCustomPaintCls::_updateSemanticsChildren(List<CustomPa
             if (oldChild->key != nullptr) {
                 oldKeyedChildren[oldChild->key!] = oldChild;
             }
-            oldChildrenTop = 1;
+            oldChildrenTop += 1;
         }
     }
     while (newChildrenTop <= newChildrenBottom) {
@@ -331,7 +331,7 @@ List<SemanticsNode> RenderCustomPaintCls::_updateSemanticsChildren(List<CustomPa
         SemanticsNode newChild = _updateSemanticsChild(oldChild, newSemantics);
         assert(oldChild == newChild || oldChild == nullptr);
         newChildren[newChildrenTop] = newChild;
-        newChildrenTop = 1;
+        newChildrenTop += 1;
     }
     assert(oldChildrenTop == oldChildrenBottom + 1);
     assert(newChildrenTop == newChildrenBottom + 1);
@@ -345,8 +345,8 @@ List<SemanticsNode> RenderCustomPaintCls::_updateSemanticsChildren(List<CustomPa
         SemanticsNode newChild = _updateSemanticsChild(oldChild, newSemantics);
         assert(oldChild == newChild);
         newChildren[newChildrenTop] = newChild;
-        newChildrenTop = 1;
-        oldChildrenTop = 1;
+        newChildrenTop += 1;
+        oldChildrenTop += 1;
     }
     assert([=] () {
         for (SemanticsNode node : newChildren) {
@@ -357,13 +357,13 @@ List<SemanticsNode> RenderCustomPaintCls::_updateSemanticsChildren(List<CustomPa
     return newChildren-><SemanticsNode>cast();
 }
 
-bool RenderCustomPaintCls::_canUpdateSemanticsChild(CustomPainterSemantics newSemantics, SemanticsNode oldChild) {
+bool RenderCustomPaintCls::_canUpdateSemanticsChild(SemanticsNode oldChild, CustomPainterSemantics newSemantics) {
     return oldChild->key == newSemantics->key;
 }
 
-SemanticsNode RenderCustomPaintCls::_updateSemanticsChild(CustomPainterSemantics newSemantics, SemanticsNode oldChild) {
+SemanticsNode RenderCustomPaintCls::_updateSemanticsChild(SemanticsNode oldChild, CustomPainterSemantics newSemantics) {
     assert(oldChild == nullptr || _canUpdateSemanticsChild(oldChild, newSemantics));
-    SemanticsNode newChild = oldChild or make<SemanticsNodeCls>(newSemantics->key);
+    SemanticsNode newChild = oldChild | make<SemanticsNodeCls>(newSemantics->key);
     SemanticsProperties properties = newSemantics->properties;
     SemanticsConfiguration config = make<SemanticsConfigurationCls>();
     if (properties->sortKey != nullptr) {

@@ -14,7 +14,7 @@ String IconDataCls::toString() {
     return __s("IconData(U+${codePoint.toRadixString(16).toUpperCase().padLeft(5, '0')})");
 }
 
-IconDataPropertyCls::IconDataPropertyCls(Unknown ifNull, Unknown level, String name, Unknown showName, Unknown style, Unknown value) {
+IconDataPropertyCls::IconDataPropertyCls(String name, Unknown value, Unknown ifNull, Unknown level, Unknown showName, Unknown style) {
     {
         assert(showName != nullptr);
         assert(style != nullptr);

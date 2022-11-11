@@ -105,7 +105,7 @@ template<typename T>
 class ContextActionCls : public ActionCls<T> {
 public:
 
-    virtual Object invoke(BuildContext context, T intent) override;
+    virtual Object invoke(T intent, BuildContext context) override;
 private:
 
     virtual ContextAction<T> _makeOverridableAction(BuildContext context);
@@ -134,7 +134,7 @@ class ActionDispatcherCls : public ObjectCls {
 public:
 
      ActionDispatcherCls();
-    virtual Object invokeAction(Action<Intent> action, BuildContext context, Intent intent);
+    virtual Object invokeAction(Action<Intent> action, Intent intent, BuildContext context);
 
 private:
 
@@ -463,10 +463,10 @@ public:
 
     virtual Action<T> defaultAction();
     virtual BuildContext lookupContext();
-    virtual Object invokeDefaultAction(BuildContext context, Action<T> fromAction, T intent);
+    virtual Object invokeDefaultAction(T intent, Action<T> fromAction, BuildContext context);
     virtual Action<T> getOverrideAction(bool declareDependency);
 
-    virtual Object invoke(BuildContext context, T intent);
+    virtual Object invoke(T intent, BuildContext context);
 
     virtual bool isOverrideActionEnabled(Action<T> overrideAction);
 
@@ -482,7 +482,7 @@ private:
 
     virtual void _updateCallingAction(Action<T> value);
 
-    virtual Object _invokeOverride(BuildContext context, T intent, Action<T> overrideAction);
+    virtual Object _invokeOverride(Action<T> overrideAction, T intent, BuildContext context);
 
 };
 template<typename T>
@@ -496,7 +496,7 @@ public:
     BuildContext lookupContext;
 
 
-    virtual Object invokeDefaultAction(BuildContext context, Action<T> fromAction, T intent);
+    virtual Object invokeDefaultAction(T intent, Action<T> fromAction, BuildContext context);
 
 private:
 
@@ -515,12 +515,12 @@ public:
     BuildContext lookupContext;
 
 
-    virtual Object invokeDefaultAction(BuildContext context, Action<T> fromAction, T intent);
+    virtual Object invokeDefaultAction(T intent, Action<T> fromAction, BuildContext context);
 
 private:
 
      _OverridableContextActionCls(ContextAction<T> defaultAction, BuildContext lookupContext);
-    virtual Object _invokeOverride(BuildContext context, T intent, Action<T> overrideAction);
+    virtual Object _invokeOverride(Action<T> overrideAction, T intent, BuildContext context);
 
     virtual ContextAction<T> _makeOverridableAction(BuildContext context);
 

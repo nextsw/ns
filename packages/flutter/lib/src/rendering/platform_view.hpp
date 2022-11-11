@@ -108,11 +108,11 @@ public:
 
     virtual void paint(PaintingContext context, Offset offset);
 
-    virtual bool hitTest(Offset position, BoxHitTestResult result);
+    virtual bool hitTest(BoxHitTestResult result, Offset position);
 
     virtual bool hitTestSelf(Offset position);
 
-    virtual void handleEvent(HitTestEntry entry, PointerEvent event);
+    virtual void handleEvent(PointerEvent event, HitTestEntry entry);
 
     virtual void describeSemanticsConfiguration(SemanticsConfiguration config);
 
@@ -194,7 +194,7 @@ private:
     Set<OneSequenceGestureRecognizer> _gestureRecognizers;
 
 
-     _PlatformViewGestureRecognizerCls(Set<Factory<OneSequenceGestureRecognizer>> gestureRecognizerFactories, _HandlePointerEvent handlePointerEvent);
+     _PlatformViewGestureRecognizerCls(_HandlePointerEvent handlePointerEvent, Set<Factory<OneSequenceGestureRecognizer>> gestureRecognizerFactories);
 
     virtual void _cacheEvent(PointerEvent event);
 
@@ -238,7 +238,7 @@ public:
 
     virtual void  hitTestBehavior(PlatformViewHitTestBehavior value);
 
-    virtual bool hitTest(Offset position, BoxHitTestResult result);
+    virtual bool hitTest(BoxHitTestResult result, Offset position);
 
     virtual bool hitTestSelf(Offset position);
 
@@ -250,7 +250,7 @@ public:
 
     virtual bool validForMouseTracker();
 
-    virtual void handleEvent(HitTestEntry entry, PointerEvent event);
+    virtual void handleEvent(PointerEvent event, HitTestEntry entry);
 
     virtual void detach();
 

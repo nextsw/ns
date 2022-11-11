@@ -1,5 +1,5 @@
 #include "sliver_persistent_header.hpp"
-Rect _trim(double bottom, double left, Rect original, double right, double top) {
+Rect _trim(Rect original, double bottom, double left, double right, double top) {
     return original?->intersect(RectCls->fromLTRB(left, top, right, bottom));
 }
 
@@ -30,7 +30,7 @@ double RenderSliverPersistentHeaderCls::childExtent() {
     ;
 }
 
-void RenderSliverPersistentHeaderCls::updateChild(bool overlapsContent, double shrinkOffset) {
+void RenderSliverPersistentHeaderCls::updateChild(double shrinkOffset, bool overlapsContent) {
 }
 
 void RenderSliverPersistentHeaderCls::markNeedsLayout() {
@@ -38,7 +38,7 @@ void RenderSliverPersistentHeaderCls::markNeedsLayout() {
     super->markNeedsLayout();
 }
 
-void RenderSliverPersistentHeaderCls::layoutChild(double maxExtent, bool overlapsContent, double scrollOffset) {
+void RenderSliverPersistentHeaderCls::layoutChild(double scrollOffset, double maxExtent, bool overlapsContent) {
     assert(maxExtent != nullptr);
     double shrinkOffset = math->min(scrollOffset, maxExtent);
     if (_needsUpdateChild || _lastShrinkOffset != shrinkOffset || _lastOverlapsContent != overlapsContent) {
@@ -59,7 +59,7 @@ void RenderSliverPersistentHeaderCls::layoutChild(double maxExtent, bool overlap
     }());
     double stretchOffset = 0.0;
     if (stretchConfiguration != nullptr && constraints->scrollOffset == 0.0) {
-        stretchOffset = constraints->overlap->abs();
+        stretchOffset += constraints->overlap->abs();
     }
     child?->layout(constraints->asBoxConstraints(math->max(minExtent(), maxExtent - shrinkOffset) + stretchOffset)true);
     if (stretchConfiguration != nullptr && stretchConfiguration!->onStretchTrigger != nullptr && stretchOffset >= stretchConfiguration!->stretchTriggerOffset && _lastStretchOffset <= stretchConfiguration!->stretchTriggerOffset) {
@@ -72,7 +72,7 @@ double RenderSliverPersistentHeaderCls::childMainAxisPosition(RenderObject child
     return super->childMainAxisPosition(child);
 }
 
-bool RenderSliverPersistentHeaderCls::hitTestChildren(double crossAxisPosition, double mainAxisPosition, SliverHitTestResult result) {
+bool RenderSliverPersistentHeaderCls::hitTestChildren(SliverHitTestResult result, double crossAxisPosition, double mainAxisPosition) {
     assert(geometry!->hitTestExtent > 0.0);
     if (child != nullptr) {
         return hitTestBoxChild(BoxHitTestResultCls->wrap(result), child!mainAxisPosition, crossAxisPosition);
@@ -112,7 +112,7 @@ void RenderSliverPersistentHeaderCls::debugFillProperties(DiagnosticPropertiesBu
 double RenderSliverScrollingPersistentHeaderCls::updateGeometry() {
     double stretchOffset = 0.0;
     if (stretchConfiguration != nullptr) {
-        stretchOffset = constraints->overlap->abs();
+        stretchOffset += constraints->overlap->abs();
     }
     double maxExtent = this->maxExtent;
     double paintExtent = maxExtent - constraints->scrollOffset;
@@ -151,7 +151,7 @@ double RenderSliverPinnedPersistentHeaderCls::childMainAxisPosition(RenderBox ch
 }
 
 void RenderSliverPinnedPersistentHeaderCls::showOnScreen(Curve curve, RenderObject descendant, Duration duration, Rect rect) {
-    Rect localBounds = descendant != nullptr? MatrixUtilsCls->transformRect(descendant->getTransformTo(this), rect or descendant->paintBounds()) : rect;
+    Rect localBounds = descendant != nullptr? MatrixUtilsCls->transformRect(descendant->getTransformTo(this), rect | descendant->paintBounds()) : rect;
     Rect newRect;
     ;
     super->showOnScreen(this, newRect, duration, curve);
@@ -196,7 +196,7 @@ void RenderSliverFloatingPersistentHeaderCls::vsync(TickerProvider value) {
 double RenderSliverFloatingPersistentHeaderCls::updateGeometry() {
     double stretchOffset = 0.0;
     if (stretchConfiguration != nullptr) {
-        stretchOffset = constraints->overlap->abs();
+        stretchOffset += constraints->overlap->abs();
     }
     double maxExtent = this->maxExtent;
     double paintExtent = maxExtent - _effectiveScrollOffset!;
@@ -259,7 +259,7 @@ void RenderSliverFloatingPersistentHeaderCls::showOnScreen(Curve curve, RenderOb
         return super->showOnScreen(descendant, rect, duration, curve);
     }
     assert(child != nullptr || descendant == nullptr);
-    Rect childBounds = descendant != nullptr? MatrixUtilsCls->transformRect(descendant->getTransformTo(child), rect or descendant->paintBounds()) : rect;
+    Rect childBounds = descendant != nullptr? MatrixUtilsCls->transformRect(descendant->getTransformTo(child), rect | descendant->paintBounds()) : rect;
     double targetExtent;
     Rect targetRect;
     ;
@@ -276,7 +276,7 @@ void RenderSliverFloatingPersistentHeaderCls::showOnScreen(Curve curve, RenderOb
 
 double RenderSliverFloatingPersistentHeaderCls::childMainAxisPosition(RenderBox child) {
     assert(child == this->child);
-    return _childPosition or 0.0;
+    return _childPosition | 0.0;
 }
 
 void RenderSliverFloatingPersistentHeaderCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
@@ -284,7 +284,7 @@ void RenderSliverFloatingPersistentHeaderCls::debugFillProperties(DiagnosticProp
     properties->add(make<DoublePropertyCls>(__s("effective scroll offset"), _effectiveScrollOffset));
 }
 
-void RenderSliverFloatingPersistentHeaderCls::_updateAnimation(Curve curve, Duration duration, double endValue) {
+void RenderSliverFloatingPersistentHeaderCls::_updateAnimation(Duration duration, double endValue, Curve curve) {
     assert(duration != nullptr);
     assert(endValue != nullptr);
     assert(curve != nullptr);

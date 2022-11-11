@@ -1,5 +1,5 @@
 #include "multidrag.hpp"
-MultiDragPointerStateCls::MultiDragPointerStateCls(DeviceGestureSettings gestureSettings, Offset initialPosition, PointerDeviceKind kind) {
+MultiDragPointerStateCls::MultiDragPointerStateCls(Offset initialPosition, PointerDeviceKind kind, DeviceGestureSettings gestureSettings) {
     {
         assert(initialPosition != nullptr);
         _velocityTracker = VelocityTrackerCls->withKind(kind);
@@ -277,7 +277,7 @@ void _DelayedPointerStateCls::dispose() {
     super->dispose();
 }
 
-_DelayedPointerStateCls::_DelayedPointerStateCls(Duration delay, DeviceGestureSettings deviceGestureSettings, Offset initialPosition, PointerDeviceKind kind) : MultiDragPointerState(initialPosition, kind, deviceGestureSettings) {
+_DelayedPointerStateCls::_DelayedPointerStateCls(Offset initialPosition, Duration delay, PointerDeviceKind kind, DeviceGestureSettings deviceGestureSettings) : MultiDragPointerState(initialPosition, kind, deviceGestureSettings) {
     {
         assert(delay != nullptr);
     }

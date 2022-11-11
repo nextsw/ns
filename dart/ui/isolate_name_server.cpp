@@ -4,7 +4,7 @@ SendPort IsolateNameServerCls::lookupPortByName(String name) {
     return _lookupPortByName(name);
 }
 
-bool IsolateNameServerCls::registerPortWithName(String name, SendPort port) {
+bool IsolateNameServerCls::registerPortWithName(SendPort port, String name) {
     assert(port != nullptr, __s("'port' cannot be null."));
     assert(name != nullptr, __s("'name' cannot be null."));
     return _registerPortWithName(port, name);

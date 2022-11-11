@@ -43,7 +43,7 @@ LogicalKeyboardKey RawKeyEventDataAndroidCls::logicalKey() {
     if (keyLabel()->isNotEmpty() && !LogicalKeyboardKeyCls->isControlCharacter(keyLabel())) {
         int combinedCodePoint = plainCodePoint & _kCombiningCharacterMask;
         int keyId = LogicalKeyboardKeyCls::unicodePlane | (combinedCodePoint & LogicalKeyboardKeyCls::valueMask);
-        return LogicalKeyboardKeyCls->findKeyByKeyId(keyId) or make<LogicalKeyboardKeyCls>(keyId);
+        return LogicalKeyboardKeyCls->findKeyByKeyId(keyId) | make<LogicalKeyboardKeyCls>(keyId);
     }
     LogicalKeyboardKey newKey = kAndroidToLogicalKey[keyCode];
     if (newKey != nullptr) {
@@ -86,7 +86,7 @@ int RawKeyEventDataAndroidCls::hashCode() {
     return ObjectCls->hash(flags, codePoint, plainCodePoint, keyCode, scanCode, metaState);
 }
 
-bool RawKeyEventDataAndroidCls::_isLeftRightModifierPressed(int anyMask, int leftMask, int rightMask, KeyboardSide side) {
+bool RawKeyEventDataAndroidCls::_isLeftRightModifierPressed(KeyboardSide side, int anyMask, int leftMask, int rightMask) {
     if (metaState & anyMask == 0) {
         return false;
     }

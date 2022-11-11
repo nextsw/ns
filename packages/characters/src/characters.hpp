@@ -25,7 +25,7 @@ public:
     virtual Characters where(std::function<bool(String )> test);
     virtual Characters skip(int count);
     virtual Characters take(int count);
-    virtual Characters getRange(int end, int start);
+    virtual Characters getRange(int start, int end);
     virtual Characters characterAt(int position);
     virtual Characters skipLast(int count);
     virtual Characters takeLast(int count);
@@ -35,7 +35,7 @@ public:
     virtual Characters takeLastWhile(std::function<bool(String )> test);
     virtual Characters operator+(Characters other);
     virtual Characters replaceAll(Characters pattern, Characters replacement);
-    virtual Iterable<Characters> split(int maxParts, Characters pattern);
+    virtual Iterable<Characters> split(Characters pattern, int maxParts);
     virtual Characters replaceFirst(Characters pattern, Characters replacement);
     virtual Characters toLowerCase();
     virtual Characters toUpperCase();
@@ -51,7 +51,7 @@ class CharacterRangeCls : public ObjectCls {
 public:
 
      CharacterRangeCls(String stringValue);
-    virtual void  at(int endIndex, int startIndex, String stringValue);
+    virtual void  at(String stringValue, int startIndex, int endIndex);
     virtual Characters source();
     virtual Iterable<int> utf16CodeUnits();
     virtual Runes runes();
@@ -97,7 +97,7 @@ public:
     virtual void dropBackWhile(std::function<bool(String )> test);
     virtual CharacterRange replaceRange(Characters replacement);
     virtual CharacterRange replaceAll(Characters pattern, Characters replacement);
-    virtual Iterable<CharacterRange> split(int maxParts, Characters pattern);
+    virtual Iterable<CharacterRange> split(Characters pattern, int maxParts);
     virtual CharacterRange replaceFirst(Characters pattern, Characters replacement);
     virtual bool startsWith(Characters characters);
     virtual bool endsWith(Characters characters);

@@ -81,7 +81,7 @@ void RenderListBodyCls::paint(PaintingContext context, Offset offset) {
     defaultPaint(context, offset);
 }
 
-bool RenderListBodyCls::hitTestChildren(Offset position, BoxHitTestResult result) {
+bool RenderListBodyCls::hitTestChildren(BoxHitTestResult result, Offset position) {
     return defaultHitTestChildren(resultposition);
 }
 
@@ -112,7 +112,7 @@ double RenderListBodyCls::_getIntrinsicMainAxis(_ChildSizingFunction childSize) 
     double extent = 0.0;
     RenderBox child = firstChild;
     while (child != nullptr) {
-        extent = childSize(child);
+        extent += childSize(child);
         ListBodyParentData childParentData = as<ListBodyParentData>(child->parentData!);
         child = childParentData->nextSibling;
     }

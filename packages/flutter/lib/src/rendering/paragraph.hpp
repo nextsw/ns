@@ -49,7 +49,7 @@ using PlaceholderSpanIndexSemanticsTag = std::shared_ptr<PlaceholderSpanIndexSem
 class RenderParagraphCls : public RenderBoxCls {
 public:
 
-     RenderParagraphCls(List<RenderBox> children, Locale locale, int maxLines, TextOverflow overflow, SelectionRegistrar registrar, Color selectionColor, bool softWrap, StrutStyle strutStyle, InlineSpan text, TextAlign textAlign, TextDirection textDirection, TextHeightBehavior textHeightBehavior, double textScaleFactor, TextWidthBasis textWidthBasis);
+     RenderParagraphCls(InlineSpan text, List<RenderBox> children, Locale locale, int maxLines, TextOverflow overflow, SelectionRegistrar registrar, Color selectionColor, bool softWrap, StrutStyle strutStyle, TextAlign textAlign, TextDirection textDirection, TextHeightBehavior textHeightBehavior, double textScaleFactor, TextWidthBasis textWidthBasis);
 
     virtual void setupParentData(RenderBox child);
 
@@ -123,7 +123,7 @@ public:
 
     virtual bool hitTestSelf(Offset position);
 
-    virtual bool hitTestChildren(Offset position, BoxHitTestResult result);
+    virtual bool hitTestChildren(BoxHitTestResult result, Offset position);
 
     virtual bool debugHasOverflowShader();
 
@@ -135,11 +135,11 @@ public:
 
     virtual void paint(PaintingContext context, Offset offset);
 
-    virtual Offset getOffsetForCaret(Rect caretPrototype, TextPosition position);
+    virtual Offset getOffsetForCaret(TextPosition position, Rect caretPrototype);
 
     virtual double getFullHeightForCaret(TextPosition position);
 
-    virtual List<TextBox> getBoxesForSelection(BoxHeightStyle boxHeightStyle, BoxWidthStyle boxWidthStyle, TextSelection selection);
+    virtual List<TextBox> getBoxesForSelection(TextSelection selection, BoxHeightStyle boxHeightStyle, BoxWidthStyle boxWidthStyle);
 
     virtual TextPosition getPositionForOffset(Offset offset);
 
@@ -149,7 +149,7 @@ public:
 
     virtual void describeSemanticsConfiguration(SemanticsConfiguration config);
 
-    virtual void assembleSemanticsNode(Iterable<SemanticsNode> children, SemanticsConfiguration config, SemanticsNode node);
+    virtual void assembleSemanticsNode(SemanticsNode node, SemanticsConfiguration config, Iterable<SemanticsNode> children);
 
     virtual void clearSemantics();
 
@@ -243,7 +243,7 @@ public:
 
     virtual Matrix4 getTransformTo(RenderObject ancestor);
 
-    virtual void pushHandleLayers(LayerLink endHandle, LayerLink startHandle);
+    virtual void pushHandleLayers(LayerLink startHandle, LayerLink endHandle);
 
     virtual void didChangeParagraphLayout();
 
@@ -277,7 +277,7 @@ private:
 
     virtual TextPosition _clampTextPosition(TextPosition position);
 
-    virtual void _setSelectionPosition(bool isEnd, TextPosition position);
+    virtual void _setSelectionPosition(TextPosition position, bool isEnd);
 
     virtual SelectionResult _handleClearSelection();
 
@@ -287,7 +287,7 @@ private:
 
     virtual bool _positionIsWithinCurrentSelection(TextPosition position);
 
-    static int _compareTextPositions(TextPosition otherPosition, TextPosition position);
+    static int _compareTextPositions(TextPosition position, TextPosition otherPosition);
 
     virtual Rect _rect();
 

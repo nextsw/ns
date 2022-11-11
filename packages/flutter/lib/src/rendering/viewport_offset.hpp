@@ -24,11 +24,11 @@ public:
     virtual double pixels();
     virtual bool hasPixels();
     virtual bool applyViewportDimension(double viewportDimension);
-    virtual bool applyContentDimensions(double maxScrollExtent, double minScrollExtent);
+    virtual bool applyContentDimensions(double minScrollExtent, double maxScrollExtent);
     virtual void correctBy(double correction);
     virtual void jumpTo(double pixels);
-    virtual Future<void> animateTo(Curve curve, Duration duration, double to);
-    virtual Future<void> moveTo(bool clamp, Curve curve, Duration duration, double to);
+    virtual Future<void> animateTo(double to, Curve curve, Duration duration);
+    virtual Future<void> moveTo(double to, bool clamp, Curve curve, Duration duration);
 
     virtual ScrollDirection userScrollDirection();
     virtual bool allowImplicitScrolling();
@@ -52,13 +52,13 @@ public:
 
     virtual bool applyViewportDimension(double viewportDimension);
 
-    virtual bool applyContentDimensions(double maxScrollExtent, double minScrollExtent);
+    virtual bool applyContentDimensions(double minScrollExtent, double maxScrollExtent);
 
     virtual void correctBy(double correction);
 
     virtual void jumpTo(double pixels);
 
-    virtual Future<void> animateTo(Curve curve, Duration duration, double to);
+    virtual Future<void> animateTo(double to, Curve curve, Duration duration);
 
     virtual ScrollDirection userScrollDirection();
 

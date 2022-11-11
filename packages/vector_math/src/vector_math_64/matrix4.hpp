@@ -10,21 +10,21 @@ public:
 
     virtual Float64List storage();
 
-    static void solve2(Matrix4 A, Vector2 b, Vector2 x);
+    static void solve2(Matrix4 A, Vector2 x, Vector2 b);
 
-    static void solve3(Matrix4 A, Vector3 b, Vector3 x);
+    static void solve3(Matrix4 A, Vector3 x, Vector3 b);
 
-    static void solve(Matrix4 A, Vector4 b, Vector4 x);
+    static void solve(Matrix4 A, Vector4 x, Vector4 b);
 
     static Matrix4 tryInvert(Matrix4 other);
 
-    virtual int index(int col, int row);
+    virtual int index(int row, int col);
 
-    virtual double entry(int col, int row);
+    virtual double entry(int row, int col);
 
-    virtual void setEntry(int col, int row, double v);
+    virtual void setEntry(int row, int col, double v);
 
-     Matrix4Cls(double arg0, double arg1, double arg10, double arg11, double arg12, double arg13, double arg14, double arg15, double arg2, double arg3, double arg4, double arg5, double arg6, double arg7, double arg8, double arg9);
+     Matrix4Cls(double arg0, double arg1, double arg2, double arg3, double arg4, double arg5, double arg6, double arg7, double arg8, double arg9, double arg10, double arg11, double arg12, double arg13, double arg14, double arg15);
 
     virtual void  fromList(List<double> values);
 
@@ -63,11 +63,11 @@ public:
     virtual void  fromFloat64List(Float64List _m4storage);
     virtual void  fromBuffer(ByteBuffer buffer, int offset);
 
-    virtual void  compose(Quaternion rotation, Vector3 scale, Vector3 translation);
+    virtual void  compose(Vector3 translation, Quaternion rotation, Vector3 scale);
 
     virtual void splatDiagonal(double arg);
 
-    virtual void setValues(double arg0, double arg1, double arg10, double arg11, double arg12, double arg13, double arg14, double arg15, double arg2, double arg3, double arg4, double arg5, double arg6, double arg7, double arg8, double arg9);
+    virtual void setValues(double arg0, double arg1, double arg2, double arg3, double arg4, double arg5, double arg6, double arg7, double arg8, double arg9, double arg10, double arg11, double arg12, double arg13, double arg14, double arg15);
 
     virtual void setColumns(Vector4 arg0, Vector4 arg1, Vector4 arg2, Vector4 arg3);
 
@@ -75,7 +75,7 @@ public:
 
     virtual void setFromTranslationRotation(Vector3 arg0, Quaternion arg1);
 
-    virtual void setFromTranslationRotationScale(Quaternion rotation, Vector3 scale, Vector3 translation);
+    virtual void setFromTranslationRotationScale(Vector3 translation, Quaternion rotation, Vector3 scale);
 
     virtual void setUpper2x2(Matrix2 arg);
 
@@ -111,11 +111,11 @@ public:
 
     virtual void  row3(Vector4 arg);
 
-    virtual void setRow(Vector4 arg, int row);
+    virtual void setRow(int row, Vector4 arg);
 
     virtual Vector4 getRow(int row);
 
-    virtual void setColumn(Vector4 arg, int column);
+    virtual void setColumn(int column, Vector4 arg);
 
     virtual Vector4 getColumn(int column);
 
@@ -135,7 +135,7 @@ public:
 
     virtual void leftTranslate(dynamic x, double y, double z);
 
-    virtual void rotate(double angle, Vector3 axis);
+    virtual void rotate(Vector3 axis, double angle);
 
     virtual void rotateX(double angle);
 
@@ -219,7 +219,7 @@ public:
 
     virtual void multiplyTranspose(Matrix4 arg);
 
-    virtual void decompose(Quaternion rotation, Vector3 scale, Vector3 translation);
+    virtual void decompose(Vector3 translation, Quaternion rotation, Vector3 scale);
 
     virtual Vector3 rotate3(Vector3 arg);
 

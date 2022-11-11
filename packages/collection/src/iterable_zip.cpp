@@ -33,7 +33,7 @@ bool _IteratorZipCls<T>::moveNext() {
 
 template<typename T>
 List<T> _IteratorZipCls<T>::current() {
-    return _current or (throw make<StateErrorCls>(__s("No element")));
+    return _current | (throw make<StateErrorCls>(__s("No element")));
 }
 
 template<typename T>

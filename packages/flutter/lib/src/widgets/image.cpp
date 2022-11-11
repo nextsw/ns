@@ -1,9 +1,9 @@
 #include "image.hpp"
 ImageConfiguration createLocalImageConfiguration(BuildContext context, Size size) {
-    return make<ImageConfigurationCls>(DefaultAssetBundleCls->of(context), MediaQueryCls->maybeOf(context)?->devicePixelRatio or 1.0, LocalizationsCls->maybeLocaleOf(context), DirectionalityCls->maybeOf(context), size, defaultTargetPlatform);
+    return make<ImageConfigurationCls>(DefaultAssetBundleCls->of(context), MediaQueryCls->maybeOf(context)?->devicePixelRatio | 1.0, LocalizationsCls->maybeLocaleOf(context), DirectionalityCls->maybeOf(context), size, defaultTargetPlatform);
 }
 
-Future<void> precacheImage(BuildContext context, ImageErrorListener onError, ImageProvider provider, Size size) {
+Future<void> precacheImage(ImageProvider provider, BuildContext context, ImageErrorListener onError, Size size) {
     ImageConfiguration config = createLocalImageConfiguration(contextsize);
     Completer<void> completer = <void>make<CompleterCls>();
     ImageStream stream = provider->resolve(config);
@@ -41,13 +41,13 @@ ImageCls::ImageCls(AlignmentGeometry alignment, Rect centerSlice, Color color, B
     }
 }
 
-void ImageCls::network(AlignmentGeometry alignment, int cacheHeight, int cacheWidth, Rect centerSlice, Color color, BlendMode colorBlendMode, ImageErrorWidgetBuilder errorBuilder, bool excludeFromSemantics, FilterQuality filterQuality, BoxFit fit, ImageFrameBuilder frameBuilder, bool gaplessPlayback, Map<String, String> headers, double height, bool isAntiAlias, Unknown key, ImageLoadingBuilder loadingBuilder, bool matchTextDirection, Animation<double> opacity, ImageRepeat repeat, double scale, String semanticLabel, String src, double width)
+void ImageCls::network(String src, AlignmentGeometry alignment, int cacheHeight, int cacheWidth, Rect centerSlice, Color color, BlendMode colorBlendMode, ImageErrorWidgetBuilder errorBuilder, bool excludeFromSemantics, FilterQuality filterQuality, BoxFit fit, ImageFrameBuilder frameBuilder, bool gaplessPlayback, Map<String, String> headers, double height, bool isAntiAlias, Unknown key, ImageLoadingBuilder loadingBuilder, bool matchTextDirection, Animation<double> opacity, ImageRepeat repeat, double scale, String semanticLabel, double width)
 
-void ImageCls::file(AlignmentGeometry alignment, int cacheHeight, int cacheWidth, Rect centerSlice, Color color, BlendMode colorBlendMode, ImageErrorWidgetBuilder errorBuilder, bool excludeFromSemantics, File file, FilterQuality filterQuality, BoxFit fit, ImageFrameBuilder frameBuilder, bool gaplessPlayback, double height, bool isAntiAlias, Unknown key, bool matchTextDirection, Animation<double> opacity, ImageRepeat repeat, double scale, String semanticLabel, double width)
+void ImageCls::file(File file, AlignmentGeometry alignment, int cacheHeight, int cacheWidth, Rect centerSlice, Color color, BlendMode colorBlendMode, ImageErrorWidgetBuilder errorBuilder, bool excludeFromSemantics, FilterQuality filterQuality, BoxFit fit, ImageFrameBuilder frameBuilder, bool gaplessPlayback, double height, bool isAntiAlias, Unknown key, bool matchTextDirection, Animation<double> opacity, ImageRepeat repeat, double scale, String semanticLabel, double width)
 
-void ImageCls::asset(AlignmentGeometry alignment, AssetBundle bundle, int cacheHeight, int cacheWidth, Rect centerSlice, Color color, BlendMode colorBlendMode, ImageErrorWidgetBuilder errorBuilder, bool excludeFromSemantics, FilterQuality filterQuality, BoxFit fit, ImageFrameBuilder frameBuilder, bool gaplessPlayback, double height, bool isAntiAlias, Unknown key, bool matchTextDirection, String name, Animation<double> opacity, String package, ImageRepeat repeat, double scale, String semanticLabel, double width)
+void ImageCls::asset(String name, AlignmentGeometry alignment, AssetBundle bundle, int cacheHeight, int cacheWidth, Rect centerSlice, Color color, BlendMode colorBlendMode, ImageErrorWidgetBuilder errorBuilder, bool excludeFromSemantics, FilterQuality filterQuality, BoxFit fit, ImageFrameBuilder frameBuilder, bool gaplessPlayback, double height, bool isAntiAlias, Unknown key, bool matchTextDirection, Animation<double> opacity, String package, ImageRepeat repeat, double scale, String semanticLabel, double width)
 
-void ImageCls::memory(AlignmentGeometry alignment, Uint8List bytes, int cacheHeight, int cacheWidth, Rect centerSlice, Color color, BlendMode colorBlendMode, ImageErrorWidgetBuilder errorBuilder, bool excludeFromSemantics, FilterQuality filterQuality, BoxFit fit, ImageFrameBuilder frameBuilder, bool gaplessPlayback, double height, bool isAntiAlias, Unknown key, bool matchTextDirection, Animation<double> opacity, ImageRepeat repeat, double scale, String semanticLabel, double width)
+void ImageCls::memory(Uint8List bytes, AlignmentGeometry alignment, int cacheHeight, int cacheWidth, Rect centerSlice, Color color, BlendMode colorBlendMode, ImageErrorWidgetBuilder errorBuilder, bool excludeFromSemantics, FilterQuality filterQuality, BoxFit fit, ImageFrameBuilder frameBuilder, bool gaplessPlayback, double height, bool isAntiAlias, Unknown key, bool matchTextDirection, Animation<double> opacity, ImageRepeat repeat, double scale, String semanticLabel, double width)
 
 State<Image> ImageCls::createState() {
     return make<_ImageStateCls>();
@@ -133,9 +133,9 @@ Widget _ImageStateCls::build(BuildContext context) {
             return _debugBuildErrorWidget(context, _lastException!);
         }
     }
-    Widget result = make<RawImageCls>(_imageInfo?->image, _imageInfo?->debugLabel, widget->width, widget->height, _imageInfo?->scale or 1.0, widget->color, widget->opacity, widget->colorBlendMode, widget->fit, widget->alignment, widget->repeat, widget->centerSlice, widget->matchTextDirection, _invertColors, widget->isAntiAlias, widget->filterQuality);
+    Widget result = make<RawImageCls>(_imageInfo?->image, _imageInfo?->debugLabel, widget->width, widget->height, _imageInfo?->scale | 1.0, widget->color, widget->opacity, widget->colorBlendMode, widget->fit, widget->alignment, widget->repeat, widget->centerSlice, widget->matchTextDirection, _invertColors, widget->isAntiAlias, widget->filterQuality);
     if (!widget->excludeFromSemantics) {
-        result = make<SemanticsCls>(widget->semanticLabel != nullptr, true, widget->semanticLabel or __s(""), result);
+        result = make<SemanticsCls>(widget->semanticLabel != nullptr, true, widget->semanticLabel | __s(""), result);
     }
     if (widget->frameBuilder != nullptr) {
         result = widget->frameBuilder!(context, result, _frameNumber, _wasSynchronouslyLoaded);
@@ -156,7 +156,7 @@ void _ImageStateCls::debugFillProperties(DiagnosticPropertiesBuilder description
 }
 
 void _ImageStateCls::_updateInvertColors() {
-    _invertColors = MediaQueryCls->maybeOf(context)?->invertColors or SemanticsBindingCls::instance->accessibilityFeatures->invertColors;
+    _invertColors = MediaQueryCls->maybeOf(context)?->invertColors | SemanticsBindingCls::instance->accessibilityFeatures->invertColors;
 }
 
 void _ImageStateCls::_resolveImage() {

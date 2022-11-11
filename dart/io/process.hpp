@@ -66,9 +66,9 @@ class ProcessCls : public ObjectCls {
 public:
 
     virtual Future<int> exitCode();
-    static Future<Process> start(List<String> arguments, Map<String, String> environment, String executable, bool includeParentEnvironment, ProcessStartMode mode, bool runInShell, String workingDirectory);
-    static Future<ProcessResult> run(List<String> arguments, Map<String, String> environment, String executable, bool includeParentEnvironment, bool runInShell, Encoding stderrEncoding, Encoding stdoutEncoding, String workingDirectory);
-    static ProcessResult runSync(List<String> arguments, Map<String, String> environment, String executable, bool includeParentEnvironment, bool runInShell, Encoding stderrEncoding, Encoding stdoutEncoding, String workingDirectory);
+    static Future<Process> start(String executable, List<String> arguments, Map<String, String> environment, bool includeParentEnvironment, ProcessStartMode mode, bool runInShell, String workingDirectory);
+    static Future<ProcessResult> run(String executable, List<String> arguments, Map<String, String> environment, bool includeParentEnvironment, bool runInShell, Encoding stderrEncoding, Encoding stdoutEncoding, String workingDirectory);
+    static ProcessResult runSync(String executable, List<String> arguments, Map<String, String> environment, bool includeParentEnvironment, bool runInShell, Encoding stderrEncoding, Encoding stdoutEncoding, String workingDirectory);
     static bool killPid(int pid, ProcessSignal signal);
     virtual Stream<List<int>> stdout();
     virtual Stream<List<int>> stderr();
@@ -91,7 +91,7 @@ public:
     int pid;
 
 
-     ProcessResultCls(int exitCode, int pid, Unknown stderr, Unknown stdout);
+     ProcessResultCls(int pid, int exitCode, Unknown stdout, Unknown stderr);
 private:
 
 };
@@ -168,7 +168,7 @@ private:
     String _name;
 
 
-    virtual void  _(String _name, int _signalNumber);
+    virtual void  _(int _signalNumber, String _name);
 };
 using ProcessSignal = std::shared_ptr<ProcessSignalCls>;
 
@@ -198,7 +198,7 @@ public:
     int errorCode;
 
 
-     ProcessExceptionCls(List<String> arguments, int errorCode, String executable, String message);
+     ProcessExceptionCls(String executable, List<String> arguments, String message, int errorCode);
     virtual String toString();
 
 private:

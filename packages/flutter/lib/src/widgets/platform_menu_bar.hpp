@@ -45,7 +45,7 @@ public:
 
     virtual void  character(String character);
 
-    virtual void  modifier(bool alt, bool control, bool meta, bool shift, LogicalKeyboardKey trigger);
+    virtual void  modifier(LogicalKeyboardKey trigger, bool alt, bool control, bool meta, bool shift);
 
     virtual LogicalKeyboardKey trigger();
 
@@ -224,7 +224,7 @@ public:
 
     virtual Iterable<Map<String, Object>> toChannelRepresentation(PlatformMenuDelegate delegate, MenuItemSerializableIdGenerator getId);
 
-    static Map<String, Object> serialize(PlatformMenuDelegate delegate, MenuItemSerializableIdGenerator getId, PlatformMenu item);
+    static Map<String, Object> serialize(PlatformMenu item, PlatformMenuDelegate delegate, MenuItemSerializableIdGenerator getId);
 
     virtual List<DiagnosticsNode> debugDescribeChildren();
 
@@ -243,7 +243,7 @@ public:
      PlatformMenuItemGroupCls(List<MenuItem> members);
     virtual Iterable<Map<String, Object>> toChannelRepresentation(PlatformMenuDelegate delegate, MenuItemSerializableIdGenerator getId);
 
-    static Iterable<Map<String, Object>> serialize(PlatformMenuDelegate delegate, MenuItemSerializableIdGenerator getId, MenuItem group);
+    static Iterable<Map<String, Object>> serialize(MenuItem group, PlatformMenuDelegate delegate, MenuItemSerializableIdGenerator getId);
 
     virtual void debugFillProperties(DiagnosticPropertiesBuilder properties);
 
@@ -267,7 +267,7 @@ public:
 
     virtual Iterable<Map<String, Object>> toChannelRepresentation(PlatformMenuDelegate delegate, MenuItemSerializableIdGenerator getId);
 
-    static Map<String, Object> serialize(PlatformMenuDelegate delegate, MenuItemSerializableIdGenerator getId, PlatformMenuItem item);
+    static Map<String, Object> serialize(PlatformMenuItem item, PlatformMenuDelegate delegate, MenuItemSerializableIdGenerator getId);
 
     virtual String toStringShort();
 

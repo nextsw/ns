@@ -33,7 +33,7 @@ bool debugHighlightDeprecatedWidgets;
 
 Key _firstNonUniqueKey(Iterable<Widget> widgets);
 
-bool debugChildrenHaveDuplicateKeys(Iterable<Widget> children, Widget parent);
+bool debugChildrenHaveDuplicateKeys(Widget parent, Iterable<Widget> children);
 
 bool debugItemsHaveDuplicateKeys(Iterable<Widget> items);
 
@@ -41,9 +41,9 @@ bool debugCheckHasTable(BuildContext context);
 
 bool debugCheckHasMediaQuery(BuildContext context);
 
-bool debugCheckHasDirectionality(String alternative, BuildContext context, String hint, String why);
+bool debugCheckHasDirectionality(BuildContext context, String alternative, String hint, String why);
 
-void debugWidgetBuilderValue(Widget built, Widget widget);
+void debugWidgetBuilderValue(Widget widget, Widget built);
 
 bool debugCheckHasWidgetsLocalizations(BuildContext context);
 

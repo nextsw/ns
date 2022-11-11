@@ -12,17 +12,17 @@ ViewportCls::ViewportCls(double anchor, AxisDirection axisDirection, double cach
     }
 }
 
-AxisDirection ViewportCls::getDefaultCrossAxisDirection(AxisDirection axisDirection, BuildContext context) {
+AxisDirection ViewportCls::getDefaultCrossAxisDirection(BuildContext context, AxisDirection axisDirection) {
     assert(axisDirection != nullptr);
     ;
 }
 
 RenderViewport ViewportCls::createRenderObject(BuildContext context) {
-    return make<RenderViewportCls>(axisDirection, crossAxisDirection or ViewportCls->getDefaultCrossAxisDirection(context, axisDirection), anchor, offset, cacheExtent, cacheExtentStyle, clipBehavior);
+    return make<RenderViewportCls>(axisDirection, crossAxisDirection | ViewportCls->getDefaultCrossAxisDirection(context, axisDirection), anchor, offset, cacheExtent, cacheExtentStyle, clipBehavior);
 }
 
 void ViewportCls::updateRenderObject(BuildContext context, RenderViewport renderObject) {
-    auto _c1 = renderObject;_c1.axisDirection = auto _c2 = axisDirection;_c2.crossAxisDirection = auto _c3 = crossAxisDirection or ViewportCls->getDefaultCrossAxisDirection(context, axisDirection);_c3.anchor = auto _c4 = anchor;_c4.offset = auto _c5 = offset;_c5.cacheExtent = auto _c6 = cacheExtent;_c6.cacheExtentStyle = auto _c7 = cacheExtentStyle;_c7.clipBehavior = clipBehavior;_c7;_c6;_c5;_c4;_c3;_c2;_c1;
+    auto _c1 = renderObject;_c1.axisDirection = auto _c2 = axisDirection;_c2.crossAxisDirection = auto _c3 = crossAxisDirection | ViewportCls->getDefaultCrossAxisDirection(context, axisDirection);_c3.anchor = auto _c4 = anchor;_c4.offset = auto _c5 = offset;_c5.cacheExtent = auto _c6 = cacheExtent;_c6.cacheExtentStyle = auto _c7 = cacheExtentStyle;_c7.clipBehavior = clipBehavior;_c7;_c6;_c5;_c4;_c3;_c2;_c1;
 }
 
 MultiChildRenderObjectElement ViewportCls::createElement() {
@@ -50,7 +50,7 @@ RenderViewport _ViewportElementCls::renderObject() {
     return as<RenderViewport>(super->renderObject);
 }
 
-void _ViewportElementCls::mount(Object newSlot, Element parent) {
+void _ViewportElementCls::mount(Element parent, Object newSlot) {
     assert(!_doingMountOrUpdate);
     _doingMountOrUpdate = true;
     super->mount(parent, newSlot);
@@ -75,7 +75,7 @@ void _ViewportElementCls::insertRenderObjectChild(RenderObject child, IndexedSlo
     }
 }
 
-void _ViewportElementCls::moveRenderObjectChild(RenderObject child, IndexedSlot<Element> newSlot, IndexedSlot<Element> oldSlot) {
+void _ViewportElementCls::moveRenderObjectChild(RenderObject child, IndexedSlot<Element> oldSlot, IndexedSlot<Element> newSlot) {
     super->moveRenderObjectChild(child, oldSlot, newSlot);
     assert(_doingMountOrUpdate);
 }
@@ -125,11 +125,11 @@ ShrinkWrappingViewportCls::ShrinkWrappingViewportCls(AxisDirection axisDirection
 }
 
 RenderShrinkWrappingViewport ShrinkWrappingViewportCls::createRenderObject(BuildContext context) {
-    return make<RenderShrinkWrappingViewportCls>(axisDirection, crossAxisDirection or ViewportCls->getDefaultCrossAxisDirection(context, axisDirection), offset, clipBehavior);
+    return make<RenderShrinkWrappingViewportCls>(axisDirection, crossAxisDirection | ViewportCls->getDefaultCrossAxisDirection(context, axisDirection), offset, clipBehavior);
 }
 
 void ShrinkWrappingViewportCls::updateRenderObject(BuildContext context, RenderShrinkWrappingViewport renderObject) {
-    auto _c1 = renderObject;_c1.axisDirection = auto _c2 = axisDirection;_c2.crossAxisDirection = auto _c3 = crossAxisDirection or ViewportCls->getDefaultCrossAxisDirection(context, axisDirection);_c3.offset = auto _c4 = offset;_c4.clipBehavior = clipBehavior;_c4;_c3;_c2;_c1;
+    auto _c1 = renderObject;_c1.axisDirection = auto _c2 = axisDirection;_c2.crossAxisDirection = auto _c3 = crossAxisDirection | ViewportCls->getDefaultCrossAxisDirection(context, axisDirection);_c3.offset = auto _c4 = offset;_c4.clipBehavior = clipBehavior;_c4;_c3;_c2;_c1;
 }
 
 void ShrinkWrappingViewportCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {

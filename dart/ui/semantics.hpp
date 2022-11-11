@@ -248,7 +248,7 @@ public:
 
 private:
 
-    virtual void _initSpellOutStringAttribute(int end, SpellOutStringAttribute instance, int start);
+    virtual void _initSpellOutStringAttribute(SpellOutStringAttribute instance, int start, int end);
 };
 using SpellOutStringAttribute = std::shared_ptr<SpellOutStringAttributeCls>;
 
@@ -265,7 +265,7 @@ public:
 
 private:
 
-    virtual void _initLocaleStringAttribute(int end, LocaleStringAttribute instance, String locale, int start);
+    virtual void _initLocaleStringAttribute(LocaleStringAttribute instance, int start, int end, String locale);
 };
 using LocaleStringAttribute = std::shared_ptr<LocaleStringAttributeCls>;
 
@@ -283,8 +283,8 @@ public:
 private:
 
     virtual void _constructor();
-    virtual void _updateNode(int actions, Int32List additionalActions, double bottom, Int32List childrenInHitTestOrder, Int32List childrenInTraversalOrder, int currentValueLength, String decreasedValue, List<StringAttribute> decreasedValueAttributes, double elevation, int flags, String hint, List<StringAttribute> hintAttributes, int id, String increasedValue, List<StringAttribute> increasedValueAttributes, String label, List<StringAttribute> labelAttributes, double left, int maxValueLength, int platformViewId, double right, int scrollChildren, double scrollExtentMax, double scrollExtentMin, int scrollIndex, double scrollPosition, int textDirection, int textSelectionBase, int textSelectionExtent, double thickness, String tooltip, double top, Float64List transform, String value, List<StringAttribute> valueAttributes);
-    virtual void _updateCustomAction(String hint, int id, String label, int overrideId);
+    virtual void _updateNode(int id, int flags, int actions, int maxValueLength, int currentValueLength, int textSelectionBase, int textSelectionExtent, int platformViewId, int scrollChildren, int scrollIndex, double scrollPosition, double scrollExtentMax, double scrollExtentMin, double left, double top, double right, double bottom, double elevation, double thickness, String label, List<StringAttribute> labelAttributes, String value, List<StringAttribute> valueAttributes, String increasedValue, List<StringAttribute> increasedValueAttributes, String decreasedValue, List<StringAttribute> decreasedValueAttributes, String hint, List<StringAttribute> hintAttributes, String tooltip, int textDirection, Float64List transform, Int32List childrenInTraversalOrder, Int32List childrenInHitTestOrder, Int32List additionalActions);
+    virtual void _updateCustomAction(int id, String label, String hint, int overrideId);
     virtual void _build(SemanticsUpdate outSemanticsUpdate);
 };
 using SemanticsUpdateBuilder = std::shared_ptr<SemanticsUpdateBuilderCls>;

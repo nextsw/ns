@@ -25,7 +25,7 @@ State<AnimatedSwitcher> AnimatedSwitcherCls::createState() {
     return make<_AnimatedSwitcherStateCls>();
 }
 
-Widget AnimatedSwitcherCls::defaultTransitionBuilder(Animation<double> animation, Widget child) {
+Widget AnimatedSwitcherCls::defaultTransitionBuilder(Widget child, Animation<double> animation) {
     return make<FadeTransitionCls>(animation, child);
 }
 
@@ -56,7 +56,7 @@ void _AnimatedSwitcherStateCls::didUpdateWidget(AnimatedSwitcher oldWidget) {
     bool hasNewChild = widget->child != nullptr;
     bool hasOldChild = _currentEntry != nullptr;
     if (hasNewChild != hasOldChild || hasNewChild && !WidgetCls->canUpdate(widget->child!, _currentEntry!->widgetChild)) {
-        _childNumber = 1;
+        _childNumber += 1;
         _addEntryForNewChild(true);
     } else     {
         if (_currentEntry != nullptr) {
@@ -133,7 +133,7 @@ void _AnimatedSwitcherStateCls::_updateTransitionForEntry(_ChildEntry entry) {
 }
 
 void _AnimatedSwitcherStateCls::_rebuildOutgoingWidgetsIfNeeded() {
-    _outgoingWidgets = <Widget>unmodifiable(_outgoingEntries-><Widget>map([=] (_ChildEntry entry)     {
+    _outgoingWidgets |= <Widget>unmodifiable(_outgoingEntries-><Widget>map([=] (_ChildEntry entry)     {
         entry->transition;
     }));
     assert(_outgoingEntries->length == _outgoingWidgets!->length());

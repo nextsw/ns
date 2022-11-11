@@ -74,9 +74,9 @@ public:
 
     static String toJson();
 
-    static void collectNewSocket(InternetAddress addr, int id, int port, String type);
+    static void collectNewSocket(int id, String type, InternetAddress addr, int port);
 
-    static void collectStatistic(int id, dynamic object, _SocketProfileType type);
+    static void collectStatistic(int id, _SocketProfileType type, dynamic object);
 
     static String start();
 

@@ -37,11 +37,11 @@ public:
 
     virtual Set<PointerDeviceKind> dragDevices();
 
-    virtual Widget buildViewportChrome(AxisDirection axisDirection, Widget child, BuildContext context);
+    virtual Widget buildViewportChrome(BuildContext context, Widget child, AxisDirection axisDirection);
 
-    virtual Widget buildScrollbar(Widget child, BuildContext context, ScrollableDetails details);
+    virtual Widget buildScrollbar(BuildContext context, Widget child, ScrollableDetails details);
 
-    virtual Widget buildOverscrollIndicator(Widget child, BuildContext context, ScrollableDetails details);
+    virtual Widget buildOverscrollIndicator(BuildContext context, Widget child, ScrollableDetails details);
 
     virtual GestureVelocityTrackerBuilder velocityTrackerBuilder(BuildContext context);
 
@@ -79,11 +79,11 @@ public:
 
     virtual AndroidOverscrollIndicator androidOverscrollIndicator();
 
-    virtual Widget buildOverscrollIndicator(Widget child, BuildContext context, ScrollableDetails details);
+    virtual Widget buildOverscrollIndicator(BuildContext context, Widget child, ScrollableDetails details);
 
-    virtual Widget buildScrollbar(Widget child, BuildContext context, ScrollableDetails details);
+    virtual Widget buildScrollbar(BuildContext context, Widget child, ScrollableDetails details);
 
-    virtual Widget buildViewportChrome(AxisDirection axisDirection, Widget child, BuildContext context);
+    virtual Widget buildViewportChrome(BuildContext context, Widget child, AxisDirection axisDirection);
 
     virtual ScrollBehavior copyWith(AndroidOverscrollIndicator androidOverscrollIndicator, Set<PointerDeviceKind> dragDevices, bool overscroll, ScrollPhysics physics, TargetPlatform platform, bool scrollbars);
 

@@ -134,12 +134,12 @@ Object CallbackActionCls<T>::invoke(T intent) {
     return onInvoke(intent);
 }
 
-Object ActionDispatcherCls::invokeAction(Action<Intent> action, BuildContext context, Intent intent) {
+Object ActionDispatcherCls::invokeAction(Action<Intent> action, Intent intent, BuildContext context) {
     assert(action != nullptr);
     assert(intent != nullptr);
     assert(action->isEnabled(intent), __s("Action must be enabled when calling invokeAction"));
     if (is<ContextAction>(action)) {
-        context = primaryFocus?->context;
+        context |= primaryFocus?->context;
         return as<ContextActionCls>(action)->invoke(intent, context);
     } else {
         return action->invoke(intent);
@@ -171,7 +171,7 @@ Action<T> ActionsCls::find(BuildContext context, T intent) {
     Action<T> action = maybeFind(contextintent);
     assert([=] () {
         if (action == nullptr) {
-            Type type = intent?->runtimeType or T;
+            Type type = intent?->runtimeType | T;
             throw make<FlutterErrorCls>(__s("Unable to find an action for a $type in an $Actions widget in the given context.\n$Actions.find() was called on a context that doesn't contain an $Actions widget with a mapping for the given intent type.\nThe context used was:\n  $context\nThe intent type requested was:\n  $type"));
         }
         return true;
@@ -182,7 +182,7 @@ Action<T> ActionsCls::find(BuildContext context, T intent) {
 template<typename T>
 Action<T> ActionsCls::maybeFind(BuildContext context, T intent) {
     Action<T> action;
-    Type type = intent?->runtimeType or T;
+    Type type = intent?->runtimeType | T;
     assert(type != IntentCls, __s("The type passed to "find" resolved to "Intent": either a non-Intent generic type argument or an example intent derived from Intent must be specified. Intent may be used as the generic type as long as the optional "intent" argument is passed."));
     _visitActionsAncestors(context, [=] (InheritedElement element) {
         _ActionsMarker actions = as<_ActionsMarker>(element->widget);
@@ -200,7 +200,7 @@ Action<T> ActionsCls::maybeFind(BuildContext context, T intent) {
 ActionDispatcher ActionsCls::of(BuildContext context) {
     assert(context != nullptr);
     _ActionsMarker marker = context-><_ActionsMarker>dependOnInheritedWidgetOfExactType();
-    return marker?->dispatcher or _findDispatcher(context);
+    return marker?->dispatcher | _findDispatcher(context);
 }
 
 template<typename T>
@@ -273,13 +273,13 @@ ActionDispatcher ActionsCls::_findDispatcher(BuildContext context) {
         }
         return false;
     });
-    return dispatcher or make<ActionDispatcherCls>();
+    return dispatcher | make<ActionDispatcherCls>();
 }
 
 template<typename T>
 Action<T> ActionsCls::_maybeFindWithoutDependingOn(BuildContext context, T intent) {
     Action<T> action;
-    Type type = intent?->runtimeType or T;
+    Type type = intent?->runtimeType | T;
     assert(type != IntentCls, __s("The type passed to "find" resolved to "Intent": either a non-Intent generic type argument or an example intent derived from Intent must be specified. Intent may be used as the generic type as long as the optional "intent" argument is passed."));
     _visitActionsAncestors(context, [=] (InheritedElement element) {
         _ActionsMarker actions = as<_ActionsMarker>(element->widget);
@@ -295,7 +295,7 @@ Action<T> ActionsCls::_maybeFindWithoutDependingOn(BuildContext context, T inten
 
 template<typename T>
 Action<T> ActionsCls::_castAction(_ActionsMarker actionsMarker, T intent) {
-    Action<Intent> mappedAction = actionsMarker->actions[intent?->runtimeType or T];
+    Action<Intent> mappedAction = actionsMarker->actions[intent?->runtimeType | T];
     if (is<Action<T>>(mappedAction)) {
         return as<ActionCls>(mappedAction);
     } else {
@@ -445,7 +445,7 @@ void _FocusableActionDetectorStateCls::_mayTriggerCallback(FocusableActionDetect
     InlineMethod;
     InlineMethod;
     assert(SchedulerBindingCls::instance->schedulerPhase != SchedulerPhaseCls::persistentCallbacks);
-    FocusableActionDetector oldTarget = oldWidget or widget;
+    FocusableActionDetector oldTarget = oldWidget | widget;
     bool didShowHoverHighlight = shouldShowHoverHighlight(oldTarget);
     bool didShowFocusHighlight = shouldShowFocusHighlight(oldTarget);
     if (task != nullptr) {
@@ -462,7 +462,7 @@ void _FocusableActionDetectorStateCls::_mayTriggerCallback(FocusableActionDetect
 }
 
 bool _FocusableActionDetectorStateCls::_canRequestFocus() {
-    NavigationMode mode = MediaQueryCls->maybeOf(context)?->navigationMode or NavigationModeCls::traditional;
+    NavigationMode mode = MediaQueryCls->maybeOf(context)?->navigationMode | NavigationModeCls::traditional;
     ;
 }
 
@@ -520,7 +520,7 @@ Action<T> _OverridableActionMixinCls<T>::getOverrideAction(bool declareDependenc
 }
 
 template<typename T>
-Object _OverridableActionMixinCls<T>::invoke(BuildContext context, T intent) {
+Object _OverridableActionMixinCls<T>::invoke(T intent, BuildContext context) {
     Action<T> overrideAction = getOverrideAction();
     Object returnValue = overrideAction == nullptr? invokeDefaultAction(intent, callingAction, context) : _invokeOverride(overrideAction, intent, context);
     return returnValue;
@@ -559,7 +559,7 @@ bool _OverridableActionMixinCls<T>::isEnabled(T intent) {
     }());
     Action<T> overrideAction = getOverrideAction();
     overrideAction?->_updateCallingAction(defaultAction());
-    bool returnValue = (overrideAction or defaultAction())->isEnabled(intent);
+    bool returnValue = (overrideAction | defaultAction())->isEnabled(intent);
     overrideAction?->_updateCallingAction(nullptr);
     assert([=] () {
         debugAssertIsEnabledMutuallyRecursive = false;
@@ -577,7 +577,7 @@ bool _OverridableActionMixinCls<T>::consumesKey(T intent) {
     }());
     Action<T> overrideAction = getOverrideAction();
     overrideAction?->_updateCallingAction(defaultAction());
-    bool isEnabled = (overrideAction or defaultAction())->consumesKey(intent);
+    bool isEnabled = (overrideAction | defaultAction())->consumesKey(intent);
     overrideAction?->_updateCallingAction(nullptr);
     assert([=] () {
         debugAssertConsumeKeyMutuallyRecursive = false;
@@ -599,7 +599,7 @@ void _OverridableActionMixinCls<T>::_updateCallingAction(Action<T> value) {
 }
 
 template<typename T>
-Object _OverridableActionMixinCls<T>::_invokeOverride(BuildContext context, T intent, Action<T> overrideAction) {
+Object _OverridableActionMixinCls<T>::_invokeOverride(Action<T> overrideAction, T intent, BuildContext context) {
     assert(!debugAssertMutuallyRecursive);
     assert([=] () {
         debugAssertMutuallyRecursive = true;
@@ -616,7 +616,7 @@ Object _OverridableActionMixinCls<T>::_invokeOverride(BuildContext context, T in
 }
 
 template<typename T>
-Object _OverridableActionCls<T>::invokeDefaultAction(BuildContext context, Action<T> fromAction, T intent) {
+Object _OverridableActionCls<T>::invokeDefaultAction(T intent, Action<T> fromAction, BuildContext context) {
     if (fromAction == nullptr) {
         return defaultAction->invoke(intent);
     } else {
@@ -631,7 +631,7 @@ ContextAction<T> _OverridableActionCls<T>::_makeOverridableAction(BuildContext c
 }
 
 template<typename T>
-Object _OverridableContextActionCls<T>::invokeDefaultAction(BuildContext context, Action<T> fromAction, T intent) {
+Object _OverridableContextActionCls<T>::invokeDefaultAction(T intent, Action<T> fromAction, BuildContext context) {
     if (fromAction == nullptr) {
         return defaultAction->invoke(intent, context);
     } else {
@@ -641,7 +641,7 @@ Object _OverridableContextActionCls<T>::invokeDefaultAction(BuildContext context
 }
 
 template<typename T>
-Object _OverridableContextActionCls<T>::_invokeOverride(BuildContext context, T intent, Action<T> overrideAction) {
+Object _OverridableContextActionCls<T>::_invokeOverride(Action<T> overrideAction, T intent, BuildContext context) {
     assert(context != nullptr);
     assert(!debugAssertMutuallyRecursive);
     assert([=] () {

@@ -58,13 +58,13 @@ SemanticsUpdateBuilderCls::SemanticsUpdateBuilderCls() {
 void SemanticsUpdateBuilderCls::updateNode(int actions, Int32List additionalActions, Int32List childrenInHitTestOrder, Int32List childrenInTraversalOrder, int currentValueLength, String decreasedValue, List<StringAttribute> decreasedValueAttributes, double elevation, int flags, String hint, List<StringAttribute> hintAttributes, int id, String increasedValue, List<StringAttribute> increasedValueAttributes, String label, List<StringAttribute> labelAttributes, int maxValueLength, int platformViewId, Rect rect, int scrollChildren, double scrollExtentMax, double scrollExtentMin, int scrollIndex, double scrollPosition, TextDirection textDirection, int textSelectionBase, int textSelectionExtent, double thickness, String tooltip, Float64List transform, String value, List<StringAttribute> valueAttributes) {
     assert(_matrix4IsValid(transform));
     assert(scrollChildren == 0 || scrollChildren == nullptr || (scrollChildren > 0 && childrenInHitTestOrder != nullptr), __s("If a node has scrollChildren, it must have childrenInHitTestOrder"));
-    _updateNode(id, flags, actions, maxValueLength, currentValueLength, textSelectionBase, textSelectionExtent, platformViewId, scrollChildren, scrollIndex, scrollPosition, scrollExtentMax, scrollExtentMin, rect->left, rect->top, rect->right, rect->bottom, elevation, thickness, label, labelAttributes, value, valueAttributes, increasedValue, increasedValueAttributes, decreasedValue, decreasedValueAttributes, hint, hintAttributes, tooltip or __s(""), textDirection != nullptr? textDirection->index + 1 : 0, transform, childrenInTraversalOrder, childrenInHitTestOrder, additionalActions);
+    _updateNode(id, flags, actions, maxValueLength, currentValueLength, textSelectionBase, textSelectionExtent, platformViewId, scrollChildren, scrollIndex, scrollPosition, scrollExtentMax, scrollExtentMin, rect->left, rect->top, rect->right, rect->bottom, elevation, thickness, label, labelAttributes, value, valueAttributes, increasedValue, increasedValueAttributes, decreasedValue, decreasedValueAttributes, hint, hintAttributes, tooltip | __s(""), textDirection != nullptr? textDirection->index + 1 : 0, transform, childrenInTraversalOrder, childrenInHitTestOrder, additionalActions);
 }
 
 void SemanticsUpdateBuilderCls::updateCustomAction(String hint, int id, String label, int overrideId) {
     assert(id != nullptr);
     assert(overrideId != nullptr);
-    _updateCustomAction(id, label or __s(""), hint or __s(""), overrideId);
+    _updateCustomAction(id, label | __s(""), hint | __s(""), overrideId);
 }
 
 SemanticsUpdate SemanticsUpdateBuilderCls::build() {

@@ -62,7 +62,7 @@ BannerCls::BannerCls(Widget child, Color color, Unknown key, TextDirection layou
 
 Widget BannerCls::build(BuildContext context) {
     assert((textDirection != nullptr && layoutDirection != nullptr) || debugCheckHasDirectionality(context));
-    return make<CustomPaintCls>(make<BannerPainterCls>(message, textDirection or DirectionalityCls->of(context), location, layoutDirection or DirectionalityCls->of(context), color, textStyle), child);
+    return make<CustomPaintCls>(make<BannerPainterCls>(message, textDirection | DirectionalityCls->of(context), location, layoutDirection | DirectionalityCls->of(context), color, textStyle), child);
 }
 
 void BannerCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {

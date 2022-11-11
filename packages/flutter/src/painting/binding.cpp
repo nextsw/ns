@@ -18,14 +18,14 @@ ImageCache PaintingBindingCls::createImageCache() {
     return make<ImageCacheCls>();
 }
 
-Future<Codec> PaintingBindingCls::instantiateImageCodec(bool allowUpscaling, Uint8List bytes, int cacheHeight, int cacheWidth) {
+Future<Codec> PaintingBindingCls::instantiateImageCodec(Uint8List bytes, bool allowUpscaling, int cacheHeight, int cacheWidth) {
     assert(cacheWidth == nullptr || cacheWidth > 0);
     assert(cacheHeight == nullptr || cacheHeight > 0);
     assert(allowUpscaling != nullptr);
     return ui->instantiateImageCodec(bytescacheWidth, cacheHeight, allowUpscaling);
 }
 
-Future<Codec> PaintingBindingCls::instantiateImageCodecFromBuffer(bool allowUpscaling, ImmutableBuffer buffer, int cacheHeight, int cacheWidth) {
+Future<Codec> PaintingBindingCls::instantiateImageCodecFromBuffer(ImmutableBuffer buffer, bool allowUpscaling, int cacheHeight, int cacheWidth) {
     assert(cacheWidth == nullptr || cacheWidth > 0);
     assert(cacheHeight == nullptr || cacheHeight > 0);
     assert(allowUpscaling != nullptr);

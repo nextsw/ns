@@ -64,14 +64,14 @@ void RenderSliverMultiBoxAdaptorCls::adoptChild(RenderObject child) {
     }
 }
 
-void RenderSliverMultiBoxAdaptorCls::insert(RenderBox after, RenderBox child) {
+void RenderSliverMultiBoxAdaptorCls::insert(RenderBox child, RenderBox after) {
     assert(!_keepAliveBucket->containsValue(child));
     super->insert(childafter);
     assert(firstChild != nullptr);
     assert(_debugVerifyChildOrder());
 }
 
-void RenderSliverMultiBoxAdaptorCls::move(RenderBox after, RenderBox child) {
+void RenderSliverMultiBoxAdaptorCls::move(RenderBox child, RenderBox after) {
     SliverMultiBoxAdaptorParentData childParentData = as<SliverMultiBoxAdaptorParentData>(child->parentData!);
     if (!childParentData->keptAlive()) {
         super->move(childafter);
@@ -172,7 +172,7 @@ RenderBox RenderSliverMultiBoxAdaptorCls::insertAndLayoutLeadingChild(BoxConstra
     return nullptr;
 }
 
-RenderBox RenderSliverMultiBoxAdaptorCls::insertAndLayoutChild(RenderBox after, BoxConstraints childConstraints, bool parentUsesSize) {
+RenderBox RenderSliverMultiBoxAdaptorCls::insertAndLayoutChild(BoxConstraints childConstraints, RenderBox after, bool parentUsesSize) {
     assert(_debugAssertChildListLocked());
     assert(after != nullptr);
     int index = indexOf(after!) + 1;
@@ -192,11 +192,11 @@ void RenderSliverMultiBoxAdaptorCls::collectGarbage(int leadingGarbage, int trai
     <SliverConstraints>invokeLayoutCallback([=] (SliverConstraints constraints) {
         while (leadingGarbage > 0) {
             _destroyOrCacheChild(firstChild!);
-            leadingGarbage = 1;
+            leadingGarbage -= 1;
         }
         while (trailingGarbage > 0) {
             _destroyOrCacheChild(lastChild!);
-            trailingGarbage = 1;
+            trailingGarbage -= 1;
         }
         _keepAliveBucket->values()->where([=] (RenderBox child) {
             SliverMultiBoxAdaptorParentData childParentData = as<SliverMultiBoxAdaptorParentData>(child->parentData!);
@@ -222,7 +222,7 @@ double RenderSliverMultiBoxAdaptorCls::paintExtentOf(RenderBox child) {
     ;
 }
 
-bool RenderSliverMultiBoxAdaptorCls::hitTestChildren(double crossAxisPosition, double mainAxisPosition, SliverHitTestResult result) {
+bool RenderSliverMultiBoxAdaptorCls::hitTestChildren(SliverHitTestResult result, double crossAxisPosition, double mainAxisPosition) {
     RenderBox child = lastChild;
     BoxHitTestResult boxResult = BoxHitTestResultCls->wrap(result);
     while (child != nullptr) {
@@ -273,7 +273,7 @@ void RenderSliverMultiBoxAdaptorCls::paint(PaintingContext context, Offset offse
         double crossAxisDelta = childCrossAxisPosition(child);
         Offset childOffset = make<OffsetCls>(originOffset->dx() + mainAxisUnit->dx() * mainAxisDelta + crossAxisUnit->dx() * crossAxisDelta, originOffset->dy() + mainAxisUnit->dy() * mainAxisDelta + crossAxisUnit->dy() * crossAxisDelta);
         if (addExtent) {
-            childOffset = mainAxisUnit * paintExtentOf(child);
+            childOffset += mainAxisUnit * paintExtentOf(child);
         }
         if ( < constraints->remainingPaintExtent && mainAxisDelta + paintExtentOf(child) > 0) {
             context->paintChild(child, childOffset);
@@ -293,7 +293,7 @@ bool RenderSliverMultiBoxAdaptorCls::debugAssertChildListIsNonEmptyAndContiguous
         int index = indexOf(firstChild!);
         RenderBox child = childAfter(firstChild!);
         while (child != nullptr) {
-            index = 1;
+            index += 1;
             assert(indexOf(child) == index);
             child = childAfter(child);
         }
@@ -341,7 +341,7 @@ bool RenderSliverMultiBoxAdaptorCls::_debugVerifyChildOrder() {
     return true;
 }
 
-void RenderSliverMultiBoxAdaptorCls::_createOrObtainChild(RenderBox after, int index) {
+void RenderSliverMultiBoxAdaptorCls::_createOrObtainChild(int index, RenderBox after) {
     <SliverConstraints>invokeLayoutCallback([=] (SliverConstraints constraints) {
         assert(constraints == this->constraints);
         if (_keepAliveBucket->containsKey(index)) {

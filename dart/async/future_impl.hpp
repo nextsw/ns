@@ -85,13 +85,13 @@ public:
     std::function<void ()> errorCallback;
 
 
-    virtual void  then(std::function<void ()> errorCallback, std::function<FutureOr<T>(S )> onValue, _Future<T> result);
+    virtual void  then(_Future<T> result, std::function<FutureOr<T>(S )> onValue, std::function<void ()> errorCallback);
 
-    virtual void  thenAwait(std::function<void ()> errorCallback, std::function<FutureOr<T>(S )> onValue, _Future<T> result);
+    virtual void  thenAwait(_Future<T> result, std::function<FutureOr<T>(S )> onValue, std::function<void ()> errorCallback);
 
-    virtual void  catchError(std::function<void ()> callback, std::function<void ()> errorCallback, _Future<T> result);
+    virtual void  catchError(_Future<T> result, std::function<void ()> errorCallback, std::function<void ()> callback);
 
-    virtual void  whenComplete(std::function<void ()> callback, _Future<T> result);
+    virtual void  whenComplete(_Future<T> result, std::function<void ()> callback);
 
     virtual bool handlesValue();
 

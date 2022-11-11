@@ -16,9 +16,9 @@ public:
     virtual Future<T> catchError(std::function<void ()> onError, std::function<bool(Object error)> test);
 
     template<typename R>
- virtual Future<R> then(std::function<void ()> onError, std::function<FutureOr<R>(T value)> onValue);
+ virtual Future<R> then(std::function<FutureOr<R>(T value)> onValue, std::function<void ()> onError);
 
-    virtual Future<T> timeout(std::function<FutureOr<T>()> onTimeout, Duration timeLimit);
+    virtual Future<T> timeout(Duration timeLimit, std::function<FutureOr<T>()> onTimeout);
 
     virtual Future<T> whenComplete(std::function<FutureOr<dynamic>()> action);
 

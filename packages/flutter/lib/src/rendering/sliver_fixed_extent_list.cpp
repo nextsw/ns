@@ -1,9 +1,9 @@
 #include "sliver_fixed_extent_list.hpp"
-double RenderSliverFixedExtentBoxAdaptorCls::indexToLayoutOffset(int index, double itemExtent) {
+double RenderSliverFixedExtentBoxAdaptorCls::indexToLayoutOffset(double itemExtent, int index) {
     return itemExtent * index;
 }
 
-int RenderSliverFixedExtentBoxAdaptorCls::getMinChildIndexForScrollOffset(double itemExtent, double scrollOffset) {
+int RenderSliverFixedExtentBoxAdaptorCls::getMinChildIndexForScrollOffset(double scrollOffset, double itemExtent) {
     if (itemExtent > 0.0) {
         double actual = scrollOffset / itemExtent;
         int round = actual->round();
@@ -15,7 +15,7 @@ int RenderSliverFixedExtentBoxAdaptorCls::getMinChildIndexForScrollOffset(double
     return 0;
 }
 
-int RenderSliverFixedExtentBoxAdaptorCls::getMaxChildIndexForScrollOffset(double itemExtent, double scrollOffset) {
+int RenderSliverFixedExtentBoxAdaptorCls::getMaxChildIndexForScrollOffset(double scrollOffset, double itemExtent) {
     if (itemExtent > 0.0) {
         double actual = scrollOffset / itemExtent - 1;
         int round = actual->round();
@@ -78,7 +78,7 @@ void RenderSliverFixedExtentBoxAdaptorCls::performLayout() {
         SliverMultiBoxAdaptorParentData childParentData = as<SliverMultiBoxAdaptorParentData>(child->parentData!);
         childParentData->layoutOffset = indexToLayoutOffset(itemExtent, index);
         assert(childParentData->index == index);
-        trailingChildWithLayout = child;
+        trailingChildWithLayout |= child;
     }
     if (trailingChildWithLayout == nullptr) {
         firstChild!->layout(childConstraints);
@@ -127,7 +127,7 @@ int RenderSliverFixedExtentBoxAdaptorCls::_calculateLeadingGarbage(int firstInde
     RenderBox walker = firstChild;
     int leadingGarbage = 0;
     while (walker != nullptr && indexOf(walker) < firstIndex) {
-        leadingGarbage = 1;
+        leadingGarbage += 1;
         walker = childAfter(walker);
     }
     return leadingGarbage;
@@ -137,7 +137,7 @@ int RenderSliverFixedExtentBoxAdaptorCls::_calculateTrailingGarbage(int targetLa
     RenderBox walker = lastChild;
     int trailingGarbage = 0;
     while (walker != nullptr && indexOf(walker) > targetLastIndex) {
-        trailingGarbage = 1;
+        trailingGarbage += 1;
         walker = childBefore(walker);
     }
     return trailingGarbage;

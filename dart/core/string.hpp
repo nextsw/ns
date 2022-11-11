@@ -8,9 +8,9 @@
 class StringCls : public ObjectCls {
 public:
 
-    void  fromCharCodes(Iterable<int> charCodes, int end, int start);
+    void  fromCharCodes(Iterable<int> charCodes, int start, int end);
     void  fromCharCode(int charCode);
-    void  fromEnvironment(String defaultValue, String name);
+    void  fromEnvironment(String name, String defaultValue);
     virtual String operator[](int index);
     virtual int codeUnitAt(int index);
     virtual int length();
@@ -18,27 +18,27 @@ public:
     virtual bool operator==(Object other);
     virtual int compareTo(String other);
     virtual bool endsWith(String other);
-    virtual bool startsWith(int index, Pattern pattern);
+    virtual bool startsWith(Pattern pattern, int index);
     virtual int indexOf(Pattern pattern, int start);
     virtual int lastIndexOf(Pattern pattern, int start);
     virtual bool isEmpty();
     virtual bool isNotEmpty();
     virtual String operator+(String other);
-    virtual String substring(int end, int start);
+    virtual String substring(int start, int end);
     virtual String trim();
     virtual String trimLeft();
     virtual String trimRight();
     virtual String operator*(int times);
-    virtual String padLeft(String padding, int width);
-    virtual String padRight(String padding, int width);
+    virtual String padLeft(int width, String padding);
+    virtual String padRight(int width, String padding);
     virtual bool contains(Pattern other, int startIndex);
-    virtual String replaceFirst(Pattern from, int startIndex, String to);
+    virtual String replaceFirst(Pattern from, String to, int startIndex);
     virtual String replaceFirstMapped(Pattern from, std::function<String(Match match)> replace, int startIndex);
     virtual String replaceAll(Pattern from, String replace);
     virtual String replaceAllMapped(Pattern from, std::function<String(Match match)> replace);
-    virtual String replaceRange(int end, String replacement, int start);
+    virtual String replaceRange(int start, int end, String replacement);
     virtual List<String> split(Pattern pattern);
-    virtual String splitMapJoin(std::function<String(Match )> onMatch, std::function<String(String )> onNonMatch, Pattern pattern);
+    virtual String splitMapJoin(Pattern pattern, std::function<String(Match )> onMatch, std::function<String(String )> onNonMatch);
     virtual List<int> codeUnits();
     virtual Runes runes();
     virtual String toLowerCase();
@@ -66,7 +66,7 @@ bool _isLeadSurrogate(int code);
 
 bool _isTrailSurrogate(int code);
 
-int _combineSurrogatePair(int end, int start);
+int _combineSurrogatePair(int start, int end);
 
 
 class RuneIteratorCls : public ObjectCls {
@@ -76,7 +76,7 @@ public:
 
      RuneIteratorCls(String stringValue);
 
-    virtual void  at(int index, String stringValue);
+    virtual void  at(String stringValue, int index);
 
     virtual int rawIndex();
 

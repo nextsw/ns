@@ -10,7 +10,7 @@
 
 bool debugger(String message, bool when);
 Object inspect(Object object);
-void log(Object error, int level, String message, String name, int sequenceNumber, StackTrace stackTrace, DateTime time, Zone zone);
+void log(String message, Object error, int level, String name, int sequenceNumber, StackTrace stackTrace, DateTime time, Zone zone);
 
 // Parts
 #include "extension.hpp"

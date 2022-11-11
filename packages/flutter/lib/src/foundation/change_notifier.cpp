@@ -85,11 +85,11 @@ void ChangeNotifierCls::notifyListeners() {
             }
             _listeners = newListeners;
         } else {
-            for (;  < newLength; i = 1) {
+            for (;  < newLength; i += 1) {
                 if (_listeners[i] == nullptr) {
                     int swapIndex = i + 1;
                     while (_listeners[swapIndex] == nullptr) {
-                        swapIndex = 1;
+                        swapIndex += 1;
                     }
                     _listeners[i] = _listeners[swapIndex];
                     _listeners[swapIndex] = nullptr;
@@ -102,7 +102,7 @@ void ChangeNotifierCls::notifyListeners() {
 }
 
 void ChangeNotifierCls::_removeAt(int index) {
-    _count = 1;
+    _count -= 1;
     if (_count * 2 <= _listeners->length()) {
         List<VoidCallback> newListeners = <VoidCallback>filled(_count, nullptr);
         for (;  < index; i++) {

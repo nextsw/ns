@@ -9,15 +9,15 @@ Locale basicLocaleListResolution(List<Locale> preferredLocales, Iterable<Locale>
     Map<String, Locale> languageLocales = <String, Locale>make<HashMapCls>();
     Map<String, Locale> countryLocales = <String, Locale>make<HashMapCls>();
     for (Locale locale : supportedLocales) {
-        allSupportedLocales[__s("${locale.languageCode}_${locale.scriptCode}_${locale.countryCode}")] = locale;
-        languageAndScriptLocales[__s("${locale.languageCode}_${locale.scriptCode}")] = locale;
-        languageAndCountryLocales[__s("${locale.languageCode}_${locale.countryCode}")] = locale;
-        languageLocales[locale->languageCode] = locale;
-        countryLocales[locale->countryCode] = locale;
+        allSupportedLocales[__s("${locale.languageCode}_${locale.scriptCode}_${locale.countryCode}")] |= locale;
+        languageAndScriptLocales[__s("${locale.languageCode}_${locale.scriptCode}")] |= locale;
+        languageAndCountryLocales[__s("${locale.languageCode}_${locale.countryCode}")] |= locale;
+        languageLocales[locale->languageCode] |= locale;
+        countryLocales[locale->countryCode] |= locale;
     }
     Locale matchesLanguageCode;
     Locale matchesCountryCode;
-    for (;  < preferredLocales->length(); localeIndex = 1) {
+    for (;  < preferredLocales->length(); localeIndex += 1) {
         Locale userLocale = preferredLocales[localeIndex];
         if (allSupportedLocales->containsKey(__s("${userLocale.languageCode}_${userLocale.scriptCode}_${userLocale.countryCode}"))) {
             return userLocale;
@@ -51,7 +51,7 @@ Locale basicLocaleListResolution(List<Locale> preferredLocales, Iterable<Locale>
             }
         }
     }
-    Locale resolvedLocale = matchesLanguageCode or matchesCountryCode or supportedLocales->first();
+    Locale resolvedLocale = matchesLanguageCode | matchesCountryCode | supportedLocales->first();
     return resolvedLocale;
 }
 
@@ -214,11 +214,11 @@ Widget _WidgetsAppStateCls::build(BuildContext context) {
     if (!widget->useInheritedMediaQuery || data == nullptr) {
         child = MediaQueryCls->fromWindow(child);
     }
-    return make<RootRestorationScopeCls>(widget->restorationScopeId, make<SharedAppDataCls>(make<ShortcutsCls>(__s("<Default WidgetsApp Shortcuts>"), widget->shortcuts or WidgetsAppCls::defaultShortcuts, make<DefaultTextEditingShortcutsCls>(make<ActionsCls>(widget->actions or WidgetsAppCls::defaultActions, make<FocusTraversalGroupCls>(make<ReadingOrderTraversalPolicyCls>(), make<ShortcutRegistrarCls>(child)))))));
+    return make<RootRestorationScopeCls>(widget->restorationScopeId, make<SharedAppDataCls>(make<ShortcutsCls>(__s("<Default WidgetsApp Shortcuts>"), widget->shortcuts | WidgetsAppCls::defaultShortcuts, make<DefaultTextEditingShortcutsCls>(make<ActionsCls>(widget->actions | WidgetsAppCls::defaultActions, make<FocusTraversalGroupCls>(make<ReadingOrderTraversalPolicyCls>(), make<ShortcutRegistrarCls>(child)))))));
 }
 
 String _WidgetsAppStateCls::_initialRouteName() {
-    return WidgetsBindingCls::instance->platformDispatcher->defaultRouteName != NavigatorCls::defaultRouteName? WidgetsBindingCls::instance->platformDispatcher->defaultRouteName : widget->initialRoute or WidgetsBindingCls::instance->platformDispatcher->defaultRouteName;
+    return WidgetsBindingCls::instance->platformDispatcher->defaultRouteName != NavigatorCls::defaultRouteName? WidgetsBindingCls::instance->platformDispatcher->defaultRouteName : widget->initialRoute | WidgetsBindingCls::instance->platformDispatcher->defaultRouteName;
 }
 
 void _WidgetsAppStateCls::_clearRouterResource() {
@@ -236,20 +236,20 @@ void _WidgetsAppStateCls::_updateRouting(WidgetsApp oldWidget) {
         assert(!_usesNavigator() && !_usesRouterWithConfig());
         _clearNavigatorResource();
         if (widget->routeInformationProvider == nullptr && widget->routeInformationParser != nullptr) {
-            _defaultRouteInformationProvider = make<PlatformRouteInformationProviderCls>(make<RouteInformationCls>(_initialRouteName()));
+            _defaultRouteInformationProvider |= make<PlatformRouteInformationProviderCls>(make<RouteInformationCls>(_initialRouteName()));
         } else {
             _defaultRouteInformationProvider?->dispose();
             _defaultRouteInformationProvider = nullptr;
         }
         if (widget->backButtonDispatcher == nullptr) {
-            _defaultBackButtonDispatcher = make<RootBackButtonDispatcherCls>();
+            _defaultBackButtonDispatcher |= make<RootBackButtonDispatcherCls>();
         }
     } else     {
         if (_usesNavigator()) {
         assert(!_usesRouterWithDelegates() && !_usesRouterWithConfig());
         _clearRouterResource();
         if (_navigator == nullptr || widget->navigatorKey != oldWidget!->navigatorKey) {
-            _navigator = widget->navigatorKey or <NavigatorState>make<GlobalObjectKeyCls>(this);
+            _navigator = widget->navigatorKey | <NavigatorState>make<GlobalObjectKeyCls>(this);
         }
         assert(_navigator != nullptr);
     } else {
@@ -271,15 +271,15 @@ bool _WidgetsAppStateCls::_usesRouterWithConfig() {
 }
 
 bool _WidgetsAppStateCls::_usesNavigator() {
-    return widget->home != nullptr || (widget->routes?->isNotEmpty or false) || widget->onGenerateRoute != nullptr || widget->onUnknownRoute != nullptr;
+    return widget->home != nullptr || (widget->routes?->isNotEmpty | false) || widget->onGenerateRoute != nullptr || widget->onUnknownRoute != nullptr;
 }
 
 RouteInformationProvider _WidgetsAppStateCls::_effectiveRouteInformationProvider() {
-    return widget->routeInformationProvider or _defaultRouteInformationProvider;
+    return widget->routeInformationProvider | _defaultRouteInformationProvider;
 }
 
 BackButtonDispatcher _WidgetsAppStateCls::_effectiveBackButtonDispatcher() {
-    return widget->backButtonDispatcher or _defaultBackButtonDispatcher!;
+    return widget->backButtonDispatcher | _defaultBackButtonDispatcher!;
 }
 
 Route<dynamic> _WidgetsAppStateCls::_onGenerateRoute(RouteSettings settings) {

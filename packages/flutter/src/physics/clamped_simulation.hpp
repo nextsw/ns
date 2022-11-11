@@ -21,7 +21,7 @@ public:
     double dxMax;
 
 
-     ClampedSimulationCls(double dxMax, double dxMin, Simulation simulation, double xMax, double xMin);
+     ClampedSimulationCls(Simulation simulation, double dxMax, double dxMin, double xMax, double xMin);
 
     virtual double x(double time);
 

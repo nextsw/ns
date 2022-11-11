@@ -40,13 +40,13 @@ Router<T> RouterCls<T>::maybeOf(BuildContext context) {
 }
 
 template<typename T>
-void RouterCls<T>::navigate(VoidCallback callback, BuildContext context) {
+void RouterCls<T>::navigate(BuildContext context, VoidCallback callback) {
     _RouterScope scope = as<_RouterScope>(context-><_RouterScope>getElementForInheritedWidgetOfExactType()!->widget);
     scope->routerState->_setStateWithExplicitReportStatus(RouteInformationReportingTypeCls::navigate, callback);
 }
 
 template<typename T>
-void RouterCls<T>::neglect(VoidCallback callback, BuildContext context) {
+void RouterCls<T>::neglect(BuildContext context, VoidCallback callback) {
     _RouterScope scope = as<_RouterScope>(context-><_RouterScope>getElementForInheritedWidgetOfExactType()!->widget);
     scope->routerState->_setStateWithExplicitReportStatus(RouteInformationReportingTypeCls::neglect, callback);
 }
@@ -70,7 +70,7 @@ void _RouterStateCls<T>::initState() {
 }
 
 template<typename T>
-void _RouterStateCls<T>::restoreState(bool initialRestore, RestorationBucket oldBucket) {
+void _RouterStateCls<T>::restoreState(RestorationBucket oldBucket, bool initialRestore) {
     registerForRestoration(_routeInformation, __s("route"));
     if (_routeInformation->value != nullptr) {
         assert(widget->routeInformationParser != nullptr);
@@ -169,7 +169,7 @@ RouteInformation _RouterStateCls<T>::_retrieveNewRouteInformation() {
 }
 
 template<typename T>
-void _RouterStateCls<T>::_setStateWithExplicitReportStatus(VoidCallback fn, RouteInformationReportingType status) {
+void _RouterStateCls<T>::_setStateWithExplicitReportStatus(RouteInformationReportingType status, VoidCallback fn) {
     assert(status != nullptr);
     assert(status->index >= RouteInformationReportingTypeCls::neglect->index);
     assert([=] () {
@@ -186,12 +186,12 @@ void _RouterStateCls<T>::_setStateWithExplicitReportStatus(VoidCallback fn, Rout
 template<typename T>
 void _RouterStateCls<T>::_maybeNeedToReportRouteInformation() {
     _routeInformation->value = _retrieveNewRouteInformation();
-    _currentIntentionToReport = RouteInformationReportingTypeCls::none;
+    _currentIntentionToReport |= RouteInformationReportingTypeCls::none;
     _scheduleRouteInformationReportingTask();
 }
 
 template<typename T>
-void _RouterStateCls<T>::_processRouteInformation(ValueGetter<_RouteSetter<T>> delegateRouteSetter, RouteInformation information) {
+void _RouterStateCls<T>::_processRouteInformation(RouteInformation information, ValueGetter<_RouteSetter<T>> delegateRouteSetter) {
     assert(_routeParsePending);
     _routeParsePending = false;
     _currentRouterTransaction = make<ObjectCls>();
@@ -199,7 +199,7 @@ void _RouterStateCls<T>::_processRouteInformation(ValueGetter<_RouteSetter<T>> d
 }
 
 template<typename T>
-_RouteSetter<T> _RouterStateCls<T>::_processParsedRouteInformation(ValueGetter<_RouteSetter<T>> delegateRouteSetter, Object transaction) {
+_RouteSetter<T> _RouterStateCls<T>::_processParsedRouteInformation(Object transaction, ValueGetter<_RouteSetter<T>> delegateRouteSetter) {
     return [=] (T data) {
         if (_currentRouterTransaction != transaction) {
             return;
@@ -408,7 +408,7 @@ Future<T> RouteInformationParserCls<T>::parseRouteInformation(RouteInformation r
 }
 
 template<typename T>
-Future<T> RouteInformationParserCls<T>::parseRouteInformationWithDependencies(BuildContext context, RouteInformation routeInformation) {
+Future<T> RouteInformationParserCls<T>::parseRouteInformationWithDependencies(RouteInformation routeInformation, BuildContext context) {
     return parseRouteInformation(routeInformation);
 }
 

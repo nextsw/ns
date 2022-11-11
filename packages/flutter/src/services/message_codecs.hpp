@@ -84,7 +84,7 @@ public:
 
     virtual Object readValue(ReadBuffer buffer);
 
-    virtual Object readValueOfType(ReadBuffer buffer, int type);
+    virtual Object readValueOfType(int type, ReadBuffer buffer);
 
     virtual void writeSize(WriteBuffer buffer, int value);
 

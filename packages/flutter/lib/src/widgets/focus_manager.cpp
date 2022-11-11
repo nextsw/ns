@@ -1,5 +1,5 @@
 #include "focus_manager.hpp"
-bool _focusDebug(Iterable<String> details, String message) {
+bool _focusDebug(String message, Iterable<String> details) {
     if (debugFocusChanges) {
         debugPrint(__s("FOCUS: $message"));
         if (details != nullptr && details->isNotEmpty()) {
@@ -53,8 +53,8 @@ void FocusAttachmentCls::reparent(FocusNode parent) {
     assert(_node != nullptr);
     if (isAttached()) {
         assert(_node->context() != nullptr);
-        parent = FocusCls->maybeOf(_node->context()!true);
-        parent = _node->context()!->owner()!->focusManager->rootScope;
+        parent |= FocusCls->maybeOf(_node->context()!true);
+        parent |= _node->context()!->owner()!->focusManager->rootScope;
         assert(parent != nullptr);
         parent->_reparent(_node);
     }
@@ -215,7 +215,7 @@ Iterable<FocusNode> FocusNodeCls::ancestors() {
 }
 
 bool FocusNodeCls::hasFocus() {
-    return hasPrimaryFocus() || (_manager?->primaryFocus()?->ancestors()->contains(this) or false);
+    return hasPrimaryFocus() || (_manager?->primaryFocus()?->ancestors()->contains(this) | false);
 }
 
 bool FocusNodeCls::hasPrimaryFocus() {
@@ -280,8 +280,8 @@ bool FocusNodeCls::consumeKeyboardToken() {
 
 FocusAttachment FocusNodeCls::attach(BuildContext context, FocusOnKeyCallback onKey, FocusOnKeyEventCallback onKeyEvent) {
     _context = context;
-    this->onKey = onKey or this->onKey;
-    this->onKeyEvent = onKeyEvent or this->onKeyEvent;
+    this->onKey = onKey | this->onKey;
+    this->onKeyEvent = onKeyEvent | this->onKeyEvent;
     _attachment = FocusAttachmentCls->_(this);
     return _attachment!;
 }
@@ -566,7 +566,7 @@ void FocusManagerCls::highlightStrategy(FocusHighlightStrategy highlightStrategy
 }
 
 FocusHighlightMode FocusManagerCls::highlightMode() {
-    return _highlightMode or _defaultModeForPlatform();
+    return _highlightMode | _defaultModeForPlatform();
 }
 
 void FocusManagerCls::addHighlightModeListener(ValueChanged<FocusHighlightMode> listener) {
@@ -714,7 +714,7 @@ void FocusManagerCls::_applyFocusChange() {
     }
     assert(_focusDebug(__s("Refreshing focus state. Next focus will be $_markedForFocus")));
     if (_markedForFocus != nullptr && _markedForFocus != _primaryFocus) {
-        Set<FocusNode> previousPath = previousFocus?->ancestors()->toSet() or makeSet();
+        Set<FocusNode> previousPath = previousFocus?->ancestors()->toSet() | makeSet();
         Set<FocusNode> nextPath = _markedForFocus!->ancestors()->toSet();
         _dirtyNodes->addAll(nextPath->difference(previousPath));
         _dirtyNodes->addAll(previousPath->difference(nextPath));
@@ -760,7 +760,7 @@ String debugDescribeFocusTree() {
         result = FocusManagerCls::instance->toStringDeep();
         return true;
     }());
-    return result or __s("");
+    return result | __s("");
 }
 
 void debugDumpFocusTree() {

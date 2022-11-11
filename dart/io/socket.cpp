@@ -20,7 +20,7 @@ void InternetAddressTypeCls::_from(int value) {
     throw make<ArgumentErrorCls>(__s("Invalid type: $value"));
 }
 
-Future<ServerSocket> ServerSocketCls::bind(address , int backlog, int port, bool shared, bool v6Only) {
+Future<ServerSocket> ServerSocketCls::bind(address , int port, int backlog, bool shared, bool v6Only) {
     IOOverrides overrides = IOOverridesCls::current;
     if (overrides == nullptr) {
         return ServerSocketCls->_bind(address, portbacklog, v6Only, shared);
@@ -77,9 +77,9 @@ void ConnectionTaskCls<S>::cancel() {
 }
 
 template<typename S>
-void ConnectionTaskCls<S>::_(std::function<void()> onCancel, Future<S> socket)
+void ConnectionTaskCls<S>::_(Future<S> socket, std::function<void()> onCancel)
 
-Future<Socket> SocketCls::connect(host , sourceAddress , int port, int sourcePort, Duration timeout) {
+Future<Socket> SocketCls::connect(host , int port, sourceAddress , int sourcePort, Duration timeout) {
     IOOverrides overrides = IOOverridesCls::current;
     if (overrides == nullptr) {
         return SocketCls->_connect(host, portsourceAddress, sourcePort, timeout);
@@ -87,7 +87,7 @@ Future<Socket> SocketCls::connect(host , sourceAddress , int port, int sourcePor
     return overrides->socketConnect(host, portsourceAddress, sourcePort, timeout);
 }
 
-Future<ConnectionTask<Socket>> SocketCls::startConnect(host , sourceAddress , int port, int sourcePort) {
+Future<ConnectionTask<Socket>> SocketCls::startConnect(host , int port, sourceAddress , int sourcePort) {
     IOOverrides overrides = IOOverridesCls::current;
     if (overrides == nullptr) {
         return SocketCls->_startConnect(host, portsourceAddress, sourcePort);

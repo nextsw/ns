@@ -217,13 +217,13 @@ public:
 
     virtual void setupParentData(RenderObject child);
 
-    virtual void setFlatChildren(List<RenderBox> cells, int columns);
+    virtual void setFlatChildren(int columns, List<RenderBox> cells);
 
     virtual void setChildren(List<List<RenderBox>> cells);
 
     virtual void addRow(List<RenderBox> cells);
 
-    virtual void setChild(RenderBox value, int x, int y);
+    virtual void setChild(int x, int y, RenderBox value);
 
     virtual void attach(PipelineOwner owner);
 
@@ -251,7 +251,7 @@ public:
 
     virtual void performLayout();
 
-    virtual bool hitTestChildren(Offset position, BoxHitTestResult result);
+    virtual bool hitTestChildren(BoxHitTestResult result, Offset position);
 
     virtual void paint(PaintingContext context, Offset offset);
 

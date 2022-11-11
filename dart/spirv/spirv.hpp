@@ -27,7 +27,7 @@ public:
 
 private:
 
-    virtual void  _(TargetLanguage language, int samplerCount, String src, int uniformFloatCount);
+    virtual void  _(String src, int uniformFloatCount, int samplerCount, TargetLanguage language);
 };
 using TranspileResult = std::shared_ptr<TranspileResultCls>;
 
@@ -42,7 +42,7 @@ public:
 
 private:
 
-    virtual void  _(String message, int op);
+    virtual void  _(int op, String message);
 };
 using TranspileException = std::shared_ptr<TranspileExceptionCls>;
 TranspileResult transpile(ByteBuffer spirv, TargetLanguage target);

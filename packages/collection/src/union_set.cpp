@@ -1,6 +1,6 @@
 #include "union_set.hpp"
 template<typename E>
-UnionSetCls<E>::UnionSetCls(bool disjoint, Set<Set<E>> sets) {
+UnionSetCls<E>::UnionSetCls(Set<Set<E>> sets, bool disjoint) {
     {
         _sets = sets;
         _disjoint = disjoint;
@@ -8,7 +8,7 @@ UnionSetCls<E>::UnionSetCls(bool disjoint, Set<Set<E>> sets) {
 }
 
 template<typename E>
-void UnionSetCls<E>::from(bool disjoint, Iterable<Set<E>> sets)
+void UnionSetCls<E>::from(Iterable<Set<E>> sets, bool disjoint)
 
 template<typename E>
 int UnionSetCls<E>::length() {

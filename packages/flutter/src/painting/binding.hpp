@@ -23,9 +23,9 @@ public:
 
     virtual ImageCache createImageCache();
 
-    virtual Future<Codec> instantiateImageCodec(bool allowUpscaling, Uint8List bytes, int cacheHeight, int cacheWidth);
+    virtual Future<Codec> instantiateImageCodec(Uint8List bytes, bool allowUpscaling, int cacheHeight, int cacheWidth);
 
-    virtual Future<Codec> instantiateImageCodecFromBuffer(bool allowUpscaling, ImmutableBuffer buffer, int cacheHeight, int cacheWidth);
+    virtual Future<Codec> instantiateImageCodecFromBuffer(ImmutableBuffer buffer, bool allowUpscaling, int cacheHeight, int cacheWidth);
 
     virtual void evict(String asset);
 

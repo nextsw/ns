@@ -325,7 +325,7 @@ private:
 
     static Matrix4 _computeRotation(double radians);
 
-    static Matrix4 _createZRotation(double cos, double sin);
+    static Matrix4 _createZRotation(double sin, double cos);
 
 };
 using Transform = std::shared_ptr<TransformCls>;
@@ -857,7 +857,7 @@ private:
 
 };
 using SliverPadding = std::shared_ptr<SliverPaddingCls>;
-AxisDirection getAxisDirectionFromAxisReverseAndDirectionality(Axis axis, BuildContext context, bool reverse);
+AxisDirection getAxisDirectionFromAxisReverseAndDirectionality(BuildContext context, Axis axis, bool reverse);
 
 
 class ListBodyCls : public MultiChildRenderObjectWidgetCls {
@@ -1493,7 +1493,7 @@ public:
 
     virtual void  wrap(Widget child, int childIndex);
 
-    static List<Widget> ensureUniqueKeysForList(int baseIndex, List<Widget> items);
+    static List<Widget> ensureUniqueKeysForList(List<Widget> items, int baseIndex);
 
     virtual Widget build(BuildContext context);
 

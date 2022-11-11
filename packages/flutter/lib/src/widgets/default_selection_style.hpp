@@ -20,7 +20,7 @@ public:
 
     static DefaultSelectionStyle of(BuildContext context);
 
-    virtual Widget wrap(Widget child, BuildContext context);
+    virtual Widget wrap(BuildContext context, Widget child);
 
     virtual bool updateShouldNotify(DefaultSelectionStyle oldWidget);
 

@@ -54,11 +54,11 @@ String BouncingScrollSimulationCls::toString() {
     return __s("${objectRuntimeType(this, 'BouncingScrollSimulation')}(leadingExtent: $leadingExtent, trailingExtent: $trailingExtent)");
 }
 
-Simulation BouncingScrollSimulationCls::_underscrollSimulation(double dx, double x) {
+Simulation BouncingScrollSimulationCls::_underscrollSimulation(double x, double dx) {
     return make<ScrollSpringSimulationCls>(spring, x, leadingExtent, dx);
 }
 
-Simulation BouncingScrollSimulationCls::_overscrollSimulation(double dx, double x) {
+Simulation BouncingScrollSimulationCls::_overscrollSimulation(double x, double dx) {
     return make<ScrollSpringSimulationCls>(spring, x, trailingExtent, dx);
 }
 

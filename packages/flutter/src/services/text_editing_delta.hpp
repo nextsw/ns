@@ -13,7 +13,7 @@
 
 TextAffinity _toTextAffinity(String affinity);
 
-String _replace(int end, String originalText, String replacementText, int start);
+String _replace(String originalText, String replacementText, int start, int end);
 
 
 class TextEditingDeltaCls : public ObjectCls {

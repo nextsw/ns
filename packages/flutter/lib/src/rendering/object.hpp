@@ -58,21 +58,21 @@ public:
 
     virtual void addLayer(Layer layer);
 
-    virtual void pushLayer(ContainerLayer childLayer, Rect childPaintBounds, Offset offset, PaintingContextCallback painter);
+    virtual void pushLayer(ContainerLayer childLayer, PaintingContextCallback painter, Offset offset, Rect childPaintBounds);
 
-    virtual PaintingContext createChildContext(Rect bounds, ContainerLayer childLayer);
+    virtual PaintingContext createChildContext(ContainerLayer childLayer, Rect bounds);
 
-    virtual ClipRectLayer pushClipRect(Clip clipBehavior, Rect clipRect, bool needsCompositing, Offset offset, ClipRectLayer oldLayer, PaintingContextCallback painter);
+    virtual ClipRectLayer pushClipRect(bool needsCompositing, Offset offset, Rect clipRect, PaintingContextCallback painter, Clip clipBehavior, ClipRectLayer oldLayer);
 
-    virtual ClipRRectLayer pushClipRRect(Rect bounds, Clip clipBehavior, RRect clipRRect, bool needsCompositing, Offset offset, ClipRRectLayer oldLayer, PaintingContextCallback painter);
+    virtual ClipRRectLayer pushClipRRect(bool needsCompositing, Offset offset, Rect bounds, RRect clipRRect, PaintingContextCallback painter, Clip clipBehavior, ClipRRectLayer oldLayer);
 
-    virtual ClipPathLayer pushClipPath(Rect bounds, Clip clipBehavior, Path clipPath, bool needsCompositing, Offset offset, ClipPathLayer oldLayer, PaintingContextCallback painter);
+    virtual ClipPathLayer pushClipPath(bool needsCompositing, Offset offset, Rect bounds, Path clipPath, PaintingContextCallback painter, Clip clipBehavior, ClipPathLayer oldLayer);
 
-    virtual ColorFilterLayer pushColorFilter(ColorFilter colorFilter, Offset offset, ColorFilterLayer oldLayer, PaintingContextCallback painter);
+    virtual ColorFilterLayer pushColorFilter(Offset offset, ColorFilter colorFilter, PaintingContextCallback painter, ColorFilterLayer oldLayer);
 
-    virtual TransformLayer pushTransform(bool needsCompositing, Offset offset, TransformLayer oldLayer, PaintingContextCallback painter, Matrix4 transform);
+    virtual TransformLayer pushTransform(bool needsCompositing, Offset offset, Matrix4 transform, PaintingContextCallback painter, TransformLayer oldLayer);
 
-    virtual OpacityLayer pushOpacity(int alpha, Offset offset, OpacityLayer oldLayer, PaintingContextCallback painter);
+    virtual OpacityLayer pushOpacity(Offset offset, int alpha, PaintingContextCallback painter, OpacityLayer oldLayer);
 
     virtual String toString();
 
@@ -121,7 +121,7 @@ private:
     PipelineOwner _owner;
 
 
-    virtual void  _(VoidCallback listener, PipelineOwner owner);
+    virtual void  _(PipelineOwner owner, VoidCallback listener);
 
 };
 using SemanticsHandle = std::shared_ptr<SemanticsHandleCls>;
@@ -320,9 +320,9 @@ public:
 
     virtual void visitChildrenForSemantics(RenderObjectVisitor visitor);
 
-    virtual void assembleSemanticsNode(Iterable<SemanticsNode> children, SemanticsConfiguration config, SemanticsNode node);
+    virtual void assembleSemanticsNode(SemanticsNode node, SemanticsConfiguration config, Iterable<SemanticsNode> children);
 
-    virtual void handleEvent(HitTestEntry entry, PointerEvent event);
+    virtual void handleEvent(PointerEvent event, HitTestEntry entry);
 
     virtual String toStringShort();
 
@@ -384,7 +384,7 @@ private:
     SemanticsNode _semantics;
 
 
-    virtual void _debugReportException(Object exception, String method, StackTrace stack);
+    virtual void _debugReportException(String method, Object exception, StackTrace stack);
 
     virtual bool _debugCanPerformMutations();
 
@@ -467,7 +467,7 @@ public:
 
     virtual bool debugValidateChild(RenderObject child);
 
-    virtual void insert(ChildType after, ChildType child);
+    virtual void insert(ChildType child, ChildType after);
 
     virtual void add(ChildType child);
 
@@ -477,7 +477,7 @@ public:
 
     virtual void removeAll();
 
-    virtual void move(ChildType after, ChildType child);
+    virtual void move(ChildType child, ChildType after);
 
     virtual void attach(PipelineOwner owner);
 
@@ -509,7 +509,7 @@ private:
 
     virtual bool _debugUltimateNextSiblingOf(ChildType child, ChildType equals);
 
-    virtual void _insertIntoChildList(ChildType after, ChildType child);
+    virtual void _insertIntoChildList(ChildType child, ChildType after);
 
     virtual void _removeFromChildList(ChildType child);
 
@@ -668,11 +668,11 @@ private:
 
      _SemanticsGeometryCls(List<RenderObject> ancestors, Rect parentPaintClipRect, Rect parentSemanticsClipRect);
 
-    virtual void _computeValues(List<RenderObject> ancestors, Rect parentPaintClipRect, Rect parentSemanticsClipRect);
+    virtual void _computeValues(Rect parentSemanticsClipRect, Rect parentPaintClipRect, List<RenderObject> ancestors);
 
     static Rect _transformRect(Rect rect, Matrix4 transform);
 
-    static void _applyIntermediatePaintTransforms(RenderObject ancestor, RenderObject child, Matrix4 clipRectTransform, Matrix4 transform);
+    static void _applyIntermediatePaintTransforms(RenderObject ancestor, RenderObject child, Matrix4 transform, Matrix4 clipRectTransform);
 
     static Rect _intersectRects(Rect a, Rect b);
 

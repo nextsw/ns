@@ -13,8 +13,8 @@ Uint8List Latin1CodecCls::encode(String source) {
     return encoder()->convert(source);
 }
 
-String Latin1CodecCls::decode(bool allowInvalid, List<int> bytes) {
-    if (allowInvalid or _allowInvalid) {
+String Latin1CodecCls::decode(List<int> bytes, bool allowInvalid) {
+    if (allowInvalid | _allowInvalid) {
         return make<Latin1DecoderCls>(true)->convert(bytes);
     } else {
         return make<Latin1DecoderCls>(false)->convert(bytes);
@@ -57,7 +57,7 @@ void _Latin1DecoderSinkCls::add(List<int> source) {
     addSlice(source, 0, source->length(), false);
 }
 
-void _Latin1DecoderSinkCls::addSlice(int end, bool isLast, List<int> source, int start) {
+void _Latin1DecoderSinkCls::addSlice(List<int> source, int start, int end, bool isLast) {
     RangeErrorCls->checkValidRange(start, end, source->length());
     if (start == end)     {
         return;
@@ -68,17 +68,17 @@ void _Latin1DecoderSinkCls::addSlice(int end, bool isLast, List<int> source, int
     _addSliceToSink(source, start, end, isLast);
 }
 
-void _Latin1DecoderSinkCls::_addSliceToSink(int end, bool isLast, List<int> source, int start) {
+void _Latin1DecoderSinkCls::_addSliceToSink(List<int> source, int start, int end, bool isLast) {
     _sink!->add(StringCls->fromCharCodes(source, start, end));
     if (isLast)     {
         close();
     }
 }
 
-void _Latin1DecoderSinkCls::_checkValidLatin1(int end, List<int> source, int start) {
+void _Latin1DecoderSinkCls::_checkValidLatin1(List<int> source, int start, int end) {
     auto mask = 0;
     for (;  < end; i++) {
-        mask = source[i];
+        mask |= source[i];
     }
     if (mask >= 0 && mask <= _latin1Mask) {
         return;
@@ -86,7 +86,7 @@ void _Latin1DecoderSinkCls::_checkValidLatin1(int end, List<int> source, int sta
     _reportInvalidLatin1(source, start, end);
 }
 
-void _Latin1DecoderSinkCls::_reportInvalidLatin1(int end, List<int> source, int start) {
+void _Latin1DecoderSinkCls::_reportInvalidLatin1(List<int> source, int start, int end) {
     for (;  < end; i++) {
         auto char = source[i];
         if ( < 0 || charValue > _latin1Mask) {
@@ -96,7 +96,7 @@ void _Latin1DecoderSinkCls::_reportInvalidLatin1(int end, List<int> source, int 
     assert(false);
 }
 
-void _Latin1AllowInvalidDecoderSinkCls::addSlice(int end, bool isLast, List<int> source, int start) {
+void _Latin1AllowInvalidDecoderSinkCls::addSlice(List<int> source, int start, int end, bool isLast) {
     RangeErrorCls->checkValidRange(start, end, source->length());
     for (;  < end; i++) {
         auto char = source[i];

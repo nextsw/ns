@@ -41,7 +41,7 @@ public:
 
     virtual void updateUserScrollDirection(ScrollDirection value);
 
-    virtual Future<void> animateTo(Curve curve, Duration duration, double to);
+    virtual Future<void> animateTo(double to, Curve curve, Duration duration);
 
     virtual void jumpTo(double value);
 

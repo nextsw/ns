@@ -21,6 +21,6 @@ Iterable<PointerEvent> PointerEventConverterCls::expand(Iterable<PointerData> da
     });
 }
 
-double PointerEventConverterCls::_toLogicalPixels(double devicePixelRatio, double physicalPixels) {
+double PointerEventConverterCls::_toLogicalPixels(double physicalPixels, double devicePixelRatio) {
     return physicalPixels / devicePixelRatio;
 }

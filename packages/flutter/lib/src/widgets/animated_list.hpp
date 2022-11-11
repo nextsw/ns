@@ -75,9 +75,9 @@ using AnimatedList = std::shared_ptr<AnimatedListCls>;
 class AnimatedListStateCls : public StateCls<AnimatedList> {
 public:
 
-    virtual void insertItem(Duration duration, int index);
+    virtual void insertItem(int index, Duration duration);
 
-    virtual void removeItem(AnimatedListRemovedItemBuilder builder, Duration duration, int index);
+    virtual void removeItem(int index, AnimatedListRemovedItemBuilder builder, Duration duration);
 
     virtual Widget build(BuildContext context);
 
@@ -117,9 +117,9 @@ public:
 
     virtual void dispose();
 
-    virtual void insertItem(Duration duration, int index);
+    virtual void insertItem(int index, Duration duration);
 
-    virtual void removeItem(AnimatedListRemovedItemBuilder builder, Duration duration, int index);
+    virtual void removeItem(int index, AnimatedListRemovedItemBuilder builder, Duration duration);
 
     virtual Widget build(BuildContext context);
 
@@ -131,9 +131,9 @@ private:
     int _itemsCount;
 
 
-    virtual _ActiveItem _removeActiveItemAt(int itemIndex, List<_ActiveItem> items);
+    virtual _ActiveItem _removeActiveItemAt(List<_ActiveItem> items, int itemIndex);
 
-    virtual _ActiveItem _activeItemAt(int itemIndex, List<_ActiveItem> items);
+    virtual _ActiveItem _activeItemAt(List<_ActiveItem> items, int itemIndex);
 
     virtual int _indexToItemIndex(int index);
 

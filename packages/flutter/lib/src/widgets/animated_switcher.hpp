@@ -51,7 +51,7 @@ public:
 
     virtual State<AnimatedSwitcher> createState();
 
-    static Widget defaultTransitionBuilder(Animation<double> animation, Widget child);
+    static Widget defaultTransitionBuilder(Widget child, Animation<double> animation);
 
     static Widget defaultLayoutBuilder(Widget currentChild, List<Widget> previousChildren);
 

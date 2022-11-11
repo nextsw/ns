@@ -14,8 +14,8 @@ public:
 
     virtual void  fromUri(Uri uri);
 
-    virtual Future<Link> create(bool recursive, String target);
-    virtual void createSync(bool recursive, String target);
+    virtual Future<Link> create(String target, bool recursive);
+    virtual void createSync(String target, bool recursive);
     virtual void updateSync(String target);
     virtual Future<Link> update(String target);
     virtual Future<String> resolveSymbolicLinks();
@@ -45,9 +45,9 @@ public:
 
     virtual Link absolute();
 
-    virtual Future<Link> create(bool recursive, String target);
+    virtual Future<Link> create(String target, bool recursive);
 
-    virtual void createSync(bool recursive, String target);
+    virtual void createSync(String target, bool recursive);
 
     virtual void updateSync(String target);
 
@@ -61,7 +61,7 @@ public:
 
     virtual String targetSync();
 
-    static void  throwIfError(String msg, String path, Object result);
+    static void  throwIfError(Object result, String msg, String path);
 
 private:
     String _path;

@@ -14,13 +14,13 @@ MouseCursor MouseCursorManagerCls::debugDeviceActiveCursor(int device) {
     return result;
 }
 
-void MouseCursorManagerCls::handleDeviceCursorUpdate(Iterable<MouseCursor> cursorCandidates, int device, PointerEvent triggeringEvent) {
+void MouseCursorManagerCls::handleDeviceCursorUpdate(int device, PointerEvent triggeringEvent, Iterable<MouseCursor> cursorCandidates) {
     if (is<PointerRemovedEvent>(triggeringEvent)) {
         _lastSession->remove(device);
         return;
     }
     MouseCursorSession lastSession = _lastSession[device];
-    MouseCursor nextCursor = _DeferringMouseCursorCls->firstNonDeferred(cursorCandidates) or fallbackMouseCursor;
+    MouseCursor nextCursor = _DeferringMouseCursorCls->firstNonDeferred(cursorCandidates) | fallbackMouseCursor;
     assert(!is<_DeferringMouseCursor>(nextCursor));
     if (lastSession?->cursor == nextCursor) {
         return;

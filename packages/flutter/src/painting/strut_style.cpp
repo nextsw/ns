@@ -10,7 +10,7 @@ StrutStyleCls::StrutStyleCls(String debugLabel, String fontFamily, List<String> 
     }
 }
 
-void StrutStyleCls::fromTextStyle(String debugLabel, String fontFamily, List<String> fontFamilyFallback, double fontSize, FontStyle fontStyle, FontWeight fontWeight, bool forceStrutHeight, double height, double leading, TextLeadingDistribution leadingDistribution, String package, TextStyle textStyle)
+void StrutStyleCls::fromTextStyle(TextStyle textStyle, String debugLabel, String fontFamily, List<String> fontFamilyFallback, double fontSize, FontStyle fontStyle, FontWeight fontWeight, bool forceStrutHeight, double height, double leading, TextLeadingDistribution leadingDistribution, String package)
 
 List<String> StrutStyleCls::fontFamilyFallback() {
     if (_package != nullptr && _fontFamilyFallback != nullptr) {
@@ -35,7 +35,7 @@ StrutStyle StrutStyleCls::inheritFromTextStyle(TextStyle other) {
     if (other == nullptr) {
         return this;
     }
-    return make<StrutStyleCls>(fontFamily or other->fontFamily, fontFamilyFallback() or other->fontFamilyFallback(), fontSize or other->fontSize, height or other->height, leading, fontWeight or other->fontWeight, fontStyle or other->fontStyle, forceStrutHeight, debugLabel or other->debugLabel);
+    return make<StrutStyleCls>(fontFamily | other->fontFamily, fontFamilyFallback() | other->fontFamilyFallback(), fontSize | other->fontSize, height | other->height, leading, fontWeight | other->fontWeight, fontStyle | other->fontStyle, forceStrutHeight, debugLabel | other->debugLabel);
 }
 
 bool StrutStyleCls::==(Object other) {
@@ -56,7 +56,7 @@ String StrutStyleCls::toStringShort() {
     return objectRuntimeType(this, __s("StrutStyle"));
 }
 
-void StrutStyleCls::debugFillProperties(String prefix, DiagnosticPropertiesBuilder properties) {
+void StrutStyleCls::debugFillProperties(DiagnosticPropertiesBuilder properties, String prefix) {
     super->debugFillProperties(properties);
     if (debugLabel != nullptr) {
         properties->add(make<MessagePropertyCls>(__s("${prefix}debugLabel"), debugLabel!));

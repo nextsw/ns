@@ -38,7 +38,7 @@ SawToothCls::SawToothCls(int count) {
 }
 
 double SawToothCls::transformInternal(double t) {
-    t = count;
+    t *= count;
     return t - t->truncateToDouble();
 }
 
@@ -46,7 +46,7 @@ String SawToothCls::toString() {
     return __s("${objectRuntimeType(this, 'SawTooth')}($count)");
 }
 
-IntervalCls::IntervalCls(double begin, Curve curve, double end) {
+IntervalCls::IntervalCls(double begin, double end, Curve curve) {
     {
         assert(begin != nullptr);
         assert(end != nullptr);
@@ -231,9 +231,9 @@ Offset CatmullRomSplineCls::transformInternal(double t) {
     return cubicControlPoints[0] * localT2 * localT + cubicControlPoints[1] * localT2 + cubicControlPoints[2] * localT + cubicControlPoints[3];
 }
 
-List<List<Offset>> CatmullRomSplineCls::_computeSegments(List<Offset> controlPoints, Offset endHandle, Offset startHandle, double tension) {
-    startHandle = controlPoints[0] * 2.0 - controlPoints[1];
-    endHandle = controlPoints->last * 2.0 - controlPoints[controlPoints->length() - 2];
+List<List<Offset>> CatmullRomSplineCls::_computeSegments(List<Offset> controlPoints, double tension, Offset endHandle, Offset startHandle) {
+    startHandle |= controlPoints[0] * 2.0 - controlPoints[1];
+    endHandle |= controlPoints->last * 2.0 - controlPoints[controlPoints->length() - 2];
     List<Offset> list1 = make<ListCls<>>();list1.add(ArrayItem);for (auto _x1 : controlPoints) {{    list1.add(_x1);}list1.add(ArrayItem);List<Offset> allPoints = list1;
     double alpha = 0.5;
     double reverseTension = 1.0 - tension;
@@ -417,16 +417,16 @@ double _bounce(double t) {
         return 7.5625 * t * t;
     } else     {
         if ( < 2 / 2.75) {
-        t = 1.5 / 2.75;
+        t -= 1.5 / 2.75;
         return 7.5625 * t * t + 0.75;
     } else     {
         if ( < 2.5 / 2.75) {
-        t = 2.25 / 2.75;
+        t -= 2.25 / 2.75;
         return 7.5625 * t * t + 0.9375;
     }
 ;
     };
-    }    t = 2.625 / 2.75;
+    }    t -= 2.625 / 2.75;
     return 7.5625 * t * t + 0.984375;
 }
 

@@ -161,7 +161,7 @@ void SetMixinCls<E>::forEach(std::function<void(E element)> f) {
 }
 
 template<typename E>
-E SetMixinCls<E>::reduce(std::function<E(E element, E value)> combine) {
+E SetMixinCls<E>::reduce(std::function<E(E value, E element)> combine) {
     Iterator<E> iterator = this->iterator();
     if (!iterator->moveNext()) {
         throw IterableElementErrorCls->noElement();
@@ -175,7 +175,7 @@ E SetMixinCls<E>::reduce(std::function<E(E element, E value)> combine) {
 
 template<typename E>
 template<typename T>
-T SetMixinCls<E>::fold(std::function<T(E element, T previousValue)> combine, T initialValue) {
+T SetMixinCls<E>::fold(T initialValue, std::function<T(T previousValue, E element)> combine) {
     auto value = initialValue;
     for (E element : this)     {
         value = combine(value, element);
@@ -267,7 +267,7 @@ E SetMixinCls<E>::last() {
 }
 
 template<typename E>
-E SetMixinCls<E>::firstWhere(std::function<E()> orElse, std::function<bool(E value)> test) {
+E SetMixinCls<E>::firstWhere(std::function<bool(E value)> test, std::function<E()> orElse) {
     for (E element : this) {
         if (test(element))         {
             return element;
@@ -280,7 +280,7 @@ E SetMixinCls<E>::firstWhere(std::function<E()> orElse, std::function<bool(E val
 }
 
 template<typename E>
-E SetMixinCls<E>::lastWhere(std::function<E()> orElse, std::function<bool(E value)> test) {
+E SetMixinCls<E>::lastWhere(std::function<bool(E value)> test, std::function<E()> orElse) {
     E result;
     bool foundMatching = false;
     for (E element : this) {
@@ -299,7 +299,7 @@ E SetMixinCls<E>::lastWhere(std::function<E()> orElse, std::function<bool(E valu
 }
 
 template<typename E>
-E SetMixinCls<E>::singleWhere(std::function<E()> orElse, std::function<bool(E value)> test) {
+E SetMixinCls<E>::singleWhere(std::function<bool(E value)> test, std::function<E()> orElse) {
     E result;
     bool foundMatching = false;
     for (E element : this) {

@@ -37,7 +37,7 @@ public:
     int offset;
 
 
-     FormatExceptionCls(String message, int offset, dynamic source);
+     FormatExceptionCls(String message, dynamic source, int offset);
     virtual String toString();
 
 private:

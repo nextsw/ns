@@ -191,7 +191,7 @@ public:
 
     virtual AutofillClient getAutofillClient(String autofillId);
     virtual Iterable<AutofillClient> autofillClients();
-    virtual TextInputConnection attach(TextInputConfiguration configuration, TextInputClient trigger);
+    virtual TextInputConnection attach(TextInputClient trigger, TextInputConfiguration configuration);
 private:
 
 };
@@ -214,7 +214,7 @@ using _AutofillScopeTextInputConfiguration = std::shared_ptr<_AutofillScopeTextI
 class AutofillScopeMixinCls : public ObjectCls {
 public:
 
-    virtual TextInputConnection attach(TextInputConfiguration configuration, TextInputClient trigger);
+    virtual TextInputConnection attach(TextInputClient trigger, TextInputConfiguration configuration);
 
 private:
 

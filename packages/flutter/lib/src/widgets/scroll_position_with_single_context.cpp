@@ -87,7 +87,7 @@ void ScrollPositionWithSingleContextCls::updateUserScrollDirection(ScrollDirecti
     didUpdateScrollDirection(value);
 }
 
-Future<void> ScrollPositionWithSingleContextCls::animateTo(Curve curve, Duration duration, double to) {
+Future<void> ScrollPositionWithSingleContextCls::animateTo(double to, Curve curve, Duration duration) {
     if (nearEqual(to, pixels, physics->tolerance->distance)) {
         jumpTo(to);
         return <void>value();

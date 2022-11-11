@@ -31,7 +31,7 @@ Uint8List Base64CodecCls::decode(String encoded) {
     return decoder()->convert(encoded);
 }
 
-String Base64CodecCls::normalize(int end, String source, int start) {
+String Base64CodecCls::normalize(String source, int start, int end) {
     end = RangeErrorCls->checkValidRange(start, end, source->length());
     percent = 0x25;
     equals = 0x3d;
@@ -49,7 +49,7 @@ String Base64CodecCls::normalize(int end, String source, int start) {
         if (charValue == percent) {
             if (i + 2 <= end) {
                 charValue = parseHexByte(source, i);
-                i = 2;
+                i += 2;
                 if (charValue == percent)                 {
                     charValue = -1;
                 }
@@ -67,7 +67,7 @@ String Base64CodecCls::normalize(int end, String source, int start) {
             } else             {
                 if (value == _Base64DecoderCls::_padding) {
                 if ( < 0) {
-                    firstPadding = (buffer?->length() or 0) + (sliceEnd - sliceStart);
+                    firstPadding = (buffer?->length() | 0) + (sliceEnd - sliceStart);
                     firstPaddingSourceIndex = sliceEnd;
                 }
                 paddingCount++;
@@ -115,7 +115,7 @@ String Base64CodecCls::normalize(int end, String source, int start) {
     return source;
 }
 
-void Base64CodecCls::_checkPadding(int firstPadding, int length, int paddingCount, String source, int sourceEnd, int sourceIndex) {
+void Base64CodecCls::_checkPadding(String source, int sourceIndex, int sourceEnd, int firstPadding, int paddingCount, int length) {
     if (length % 4 != 0) {
         throw make<FormatExceptionCls>(__s("Invalid base64 padding, padded length must be multiple of four, is $length"), source, sourceEnd);
     }
@@ -155,7 +155,7 @@ Uint8List _Base64EncoderCls::createBuffer(int bufferLength) {
     return make<Uint8ListCls>(bufferLength);
 }
 
-Uint8List _Base64EncoderCls::encode(List<int> bytes, int end, bool isLast, int start) {
+Uint8List _Base64EncoderCls::encode(List<int> bytes, int start, int end, bool isLast) {
     assert(0 <= start);
     assert(start <= end);
     assert(end <= bytes->length());
@@ -166,7 +166,7 @@ Uint8List _Base64EncoderCls::encode(List<int> bytes, int end, bool isLast, int s
     auto partialChunkLength = byteCount - fullChunks * 3;
     auto bufferLength = fullChunks * 4;
     if (isLast && partialChunkLength > 0) {
-        bufferLength = 4;
+        bufferLength += 4;
     }
     auto output = createBuffer(bufferLength);
     _state = encodeChunk(_alphabet, bytes, start, end, isLast, output, 0, _state);
@@ -176,13 +176,13 @@ Uint8List _Base64EncoderCls::encode(List<int> bytes, int end, bool isLast, int s
     return nullptr;
 }
 
-int _Base64EncoderCls::encodeChunk(String alphabet, List<int> bytes, int end, bool isLast, Uint8List output, int outputIndex, int start, int state) {
+int _Base64EncoderCls::encodeChunk(String alphabet, List<int> bytes, int start, int end, bool isLast, Uint8List output, int outputIndex, int state) {
     auto bits = _stateBits(state);
     auto expectedChars = 3 - _stateCount(state);
     auto byteOr = 0;
     for (;  < end; i++) {
         auto byte = bytes[i];
-        byteOr = byte;
+        byteOr |= byte;
         bits = ((bits << 8) | byte) & 0xFFFFFF;
         expectedChars--;
         if (expectedChars == 0) {
@@ -212,7 +212,7 @@ int _Base64EncoderCls::encodeChunk(String alphabet, List<int> bytes, int end, bo
     throw ArgumentErrorCls->value(bytes, __s("Not a byte value at index $i: 0x${bytes[i].toRadixString(16)}"));
 }
 
-void _Base64EncoderCls::writeFinalChunk(String alphabet, int bits, int count, Uint8List output, int outputIndex) {
+void _Base64EncoderCls::writeFinalChunk(String alphabet, Uint8List output, int outputIndex, int count, int bits) {
     assert(count > 0);
     if (count == 1) {
         output[outputIndex++] = alphabet->codeUnitAt((bits >> 2) & _sixBitMask);
@@ -234,7 +234,7 @@ _Base64EncoderCls::_Base64EncoderCls(bool urlSafe) {
     }
 }
 
-int _Base64EncoderCls::_encodeState(int bits, int count) {
+int _Base64EncoderCls::_encodeState(int count, int bits) {
     assert(count <= _countMask);
     return bits << _valueShift | count;
 }
@@ -266,7 +266,7 @@ void _Base64EncoderSinkCls::close() {
     _add(makeList(), 0, 0, true);
 }
 
-void _Base64EncoderSinkCls::addSlice(int end, bool isLast, List<int> source, int start) {
+void _Base64EncoderSinkCls::addSlice(List<int> source, int start, int end, bool isLast) {
     if (end == nullptr)     {
         throw ArgumentErrorCls->notNull(__s("end"));
     }
@@ -280,7 +280,7 @@ _AsciiBase64EncoderSinkCls::_AsciiBase64EncoderSinkCls(Sink<String> _sink, bool 
     }
 }
 
-void _AsciiBase64EncoderSinkCls::_add(int end, bool isLast, List<int> source, int start) {
+void _AsciiBase64EncoderSinkCls::_add(List<int> source, int start, int end, bool isLast) {
     auto buffer = _encoder->encode(source, start, end, isLast);
     if (buffer != nullptr) {
         auto string = StringCls->fromCharCodes(buffer);
@@ -297,14 +297,14 @@ _Utf8Base64EncoderSinkCls::_Utf8Base64EncoderSinkCls(ByteConversionSink _sink, b
     }
 }
 
-void _Utf8Base64EncoderSinkCls::_add(int end, bool isLast, List<int> source, int start) {
+void _Utf8Base64EncoderSinkCls::_add(List<int> source, int start, int end, bool isLast) {
     auto buffer = _encoder->encode(source, start, end, isLast);
     if (buffer != nullptr) {
         _sink->addSlice(buffer, 0, buffer->length, isLast);
     }
 }
 
-Uint8List Base64DecoderCls::convert(int end, String input, int start) {
+Uint8List Base64DecoderCls::convert(String input, int start, int end) {
     end = RangeErrorCls->checkValidRange(start, end, input->length());
     if (start == end)     {
         return make<Uint8ListCls>(0);
@@ -319,7 +319,7 @@ StringConversionSink Base64DecoderCls::startChunkedConversion(Sink<List<int>> si
     return make<_Base64DecoderSinkCls>(sink);
 }
 
-Uint8List _Base64DecoderCls::decode(int end, String input, int start) {
+Uint8List _Base64DecoderCls::decode(String input, int start, int end) {
     assert(0 <= start);
     assert(start <= end);
     assert(end <= input->length());
@@ -335,7 +335,7 @@ Uint8List _Base64DecoderCls::decode(int end, String input, int start) {
     return buffer;
 }
 
-void _Base64DecoderCls::close(int end, String input) {
+void _Base64DecoderCls::close(String input, int end) {
     if ( < _encodePaddingState(0)) {
         throw make<FormatExceptionCls>(__s("Missing padding character"), input, end);
     }
@@ -345,7 +345,7 @@ void _Base64DecoderCls::close(int end, String input) {
     _state = _encodePaddingState(0);
 }
 
-int _Base64DecoderCls::decodeChunk(int end, String input, int outIndex, Uint8List output, int start, int state) {
+int _Base64DecoderCls::decodeChunk(String input, int start, int end, Uint8List output, int outIndex, int state) {
     assert(!_hasSeenPadding(state));
     asciiMask = 127;
     asciiMax = 127;
@@ -357,7 +357,7 @@ int _Base64DecoderCls::decodeChunk(int end, String input, int outIndex, Uint8Lis
     Unknown inverseAlphabet = _Base64DecoderCls::_inverseAlphabet;
     for (;  < end; i++) {
         auto char = input->codeUnitAt(i);
-        charOr = charValue;
+        charOr |= charValue;
         auto code = inverseAlphabet[charValue & asciiMask];
         if (code >= 0) {
             bits = ((bits << bitsPerCharacter) | code) & 0xFFFFFF;
@@ -389,7 +389,7 @@ int _Base64DecoderCls::decodeChunk(int end, String input, int outIndex, Uint8Lis
             }
             auto expectedPadding = (3 - count) * 3;
             if (charValue == _char_percent)             {
-                expectedPadding = 2;
+                expectedPadding += 2;
             }
             state = _encodePaddingState(expectedPadding);
             return _checkPadding(input, i + 1, end, state);
@@ -410,7 +410,7 @@ int _Base64DecoderCls::decodeChunk(int end, String input, int outIndex, Uint8Lis
     throw make<FormatExceptionCls>(__s("Invalid character"), input, i);
 }
 
-int _Base64DecoderCls::_encodeCharacterState(int bits, int count) {
+int _Base64DecoderCls::_encodeCharacterState(int count, int bits) {
     assert(count == (count & _countMask));
     return (bits << _valueShift | count);
 }
@@ -440,14 +440,14 @@ bool _Base64DecoderCls::_hasSeenPadding(int state) {
     return  < 0;
 }
 
-Uint8List _Base64DecoderCls::_allocateBuffer(int end, String input, int start, int state) {
+Uint8List _Base64DecoderCls::_allocateBuffer(String input, int start, int end, int state) {
     assert(state >= 0);
     auto paddingStart = _trimPaddingChars(input, start, end);
     auto length = _stateCount(state) + (paddingStart - start);
     auto bufferLength = (length >> 2) * 3;
     auto remainderLength = length & 3;
     if (remainderLength != 0 &&  < end) {
-        bufferLength = remainderLength - 1;
+        bufferLength += remainderLength - 1;
     }
     if (bufferLength > 0)     {
         return make<Uint8ListCls>(bufferLength);
@@ -455,7 +455,7 @@ Uint8List _Base64DecoderCls::_allocateBuffer(int end, String input, int start, i
     return _emptyBuffer;
 }
 
-int _Base64DecoderCls::_trimPaddingChars(int end, String input, int start) {
+int _Base64DecoderCls::_trimPaddingChars(String input, int start, int end) {
     auto padding = 0;
     auto index = end;
     auto newEnd = end;
@@ -491,7 +491,7 @@ int _Base64DecoderCls::_trimPaddingChars(int end, String input, int start) {
     return newEnd;
 }
 
-int _Base64DecoderCls::_checkPadding(int end, String input, int start, int state) {
+int _Base64DecoderCls::_checkPadding(String input, int start, int end, int state) {
     assert(_hasSeenPadding(state));
     if (start == end)     {
         return state;
@@ -503,7 +503,7 @@ int _Base64DecoderCls::_checkPadding(int end, String input, int start, int state
         auto char = input->codeUnitAt(start);
         if (expectedPadding == 3) {
             if (charValue == _paddingChar) {
-                expectedPadding = 3;
+                expectedPadding -= 3;
                 start++;
                 break;
             }
@@ -520,7 +520,7 @@ int _Base64DecoderCls::_checkPadding(int end, String input, int start, int state
         }
         auto expectedPartialPadding = expectedPadding;
         if (expectedPartialPadding > 3)         {
-            expectedPartialPadding = 3;
+            expectedPartialPadding -= 3;
         }
         if (expectedPartialPadding == 2) {
             if (charValue != _char_3)             {
@@ -563,7 +563,7 @@ void _Base64DecoderSinkCls::close() {
     _sink->close();
 }
 
-void _Base64DecoderSinkCls::addSlice(int end, bool isLast, int start, String stringValue) {
+void _Base64DecoderSinkCls::addSlice(String stringValue, int start, int end, bool isLast) {
     RangeErrorCls->checkValidRange(start, end, stringValue->length());
     if (start == end)     {
         return;

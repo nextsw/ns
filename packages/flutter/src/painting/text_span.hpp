@@ -39,13 +39,13 @@ public:
 
     virtual bool validForMouseTracker();
 
-    virtual void handleEvent(HitTestEntry entry, PointerEvent event);
+    virtual void handleEvent(PointerEvent event, HitTestEntry entry);
 
     virtual void build(ParagraphBuilder builder, List<PlaceholderDimensions> dimensions, double textScaleFactor);
 
     virtual bool visitChildren(InlineSpanVisitor visitor);
 
-    virtual InlineSpan getSpanForPositionVisitor(Accumulator offset, TextPosition position);
+    virtual InlineSpan getSpanForPositionVisitor(TextPosition position, Accumulator offset);
 
     virtual void computeToPlainText(StringBuffer buffer, bool includePlaceholders, bool includeSemanticsLabels);
 
@@ -53,7 +53,7 @@ public:
 
     virtual int codeUnitAtVisitor(int index, Accumulator offset);
 
-    virtual void describeSemantics(Accumulator offset, List<dynamic> semanticsElements, List<int> semanticsOffsets);
+    virtual void describeSemantics(Accumulator offset, List<int> semanticsOffsets, List<dynamic> semanticsElements);
 
     virtual bool debugAssertIsValid();
 

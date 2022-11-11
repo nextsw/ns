@@ -11,19 +11,19 @@ void ScrollActivityCls::updateDelegate(ScrollActivityDelegate value) {
 void ScrollActivityCls::resetActivity() {
 }
 
-void ScrollActivityCls::dispatchScrollStartNotification(BuildContext context, ScrollMetrics metrics) {
+void ScrollActivityCls::dispatchScrollStartNotification(ScrollMetrics metrics, BuildContext context) {
     make<ScrollStartNotificationCls>(metrics, context)->dispatch(context);
 }
 
-void ScrollActivityCls::dispatchScrollUpdateNotification(BuildContext context, ScrollMetrics metrics, double scrollDelta) {
+void ScrollActivityCls::dispatchScrollUpdateNotification(ScrollMetrics metrics, BuildContext context, double scrollDelta) {
     make<ScrollUpdateNotificationCls>(metrics, context, scrollDelta)->dispatch(context);
 }
 
-void ScrollActivityCls::dispatchOverscrollNotification(BuildContext context, ScrollMetrics metrics, double overscroll) {
+void ScrollActivityCls::dispatchOverscrollNotification(ScrollMetrics metrics, BuildContext context, double overscroll) {
     make<OverscrollNotificationCls>(metrics, context, overscroll)->dispatch(context);
 }
 
-void ScrollActivityCls::dispatchScrollEndNotification(BuildContext context, ScrollMetrics metrics) {
+void ScrollActivityCls::dispatchScrollEndNotification(ScrollMetrics metrics, BuildContext context) {
     make<ScrollEndNotificationCls>(metrics, context)->dispatch(context);
 }
 
@@ -128,7 +128,7 @@ void ScrollDragControllerCls::end(DragEndDetails details) {
         bool isFlingingInSameDirection = velocity->sign() == carriedVelocity!->sign();
         bool isVelocityNotSubstantiallyLessThanCarriedMomentum = velocity->abs() > carriedVelocity!->abs() * momentumRetainVelocityThresholdFactor;
         if (isFlingingInSameDirection && isVelocityNotSubstantiallyLessThanCarriedMomentum) {
-            velocity = carriedVelocity!;
+            velocity += carriedVelocity!;
         }
     }
     delegate()->goBallistic(velocity);
@@ -189,31 +189,31 @@ double ScrollDragControllerCls::_adjustForScrollStartThreshold(double offset, Du
     }
 }
 
-DragScrollActivityCls::DragScrollActivityCls(ScrollDragController controller, Unknown delegate) {
+DragScrollActivityCls::DragScrollActivityCls(Unknown delegate, ScrollDragController controller) {
     {
         _controller = controller;
     }
 }
 
-void DragScrollActivityCls::dispatchScrollStartNotification(BuildContext context, ScrollMetrics metrics) {
+void DragScrollActivityCls::dispatchScrollStartNotification(ScrollMetrics metrics, BuildContext context) {
     dynamic lastDetails = _controller!->lastDetails();
     assert(is<DragStartDetails>(lastDetails));
     make<ScrollStartNotificationCls>(metrics, context, as<DragStartDetails>(lastDetails))->dispatch(context);
 }
 
-void DragScrollActivityCls::dispatchScrollUpdateNotification(BuildContext context, ScrollMetrics metrics, double scrollDelta) {
+void DragScrollActivityCls::dispatchScrollUpdateNotification(ScrollMetrics metrics, BuildContext context, double scrollDelta) {
     dynamic lastDetails = _controller!->lastDetails();
     assert(is<DragUpdateDetails>(lastDetails));
     make<ScrollUpdateNotificationCls>(metrics, context, scrollDelta, as<DragUpdateDetails>(lastDetails))->dispatch(context);
 }
 
-void DragScrollActivityCls::dispatchOverscrollNotification(BuildContext context, ScrollMetrics metrics, double overscroll) {
+void DragScrollActivityCls::dispatchOverscrollNotification(ScrollMetrics metrics, BuildContext context, double overscroll) {
     dynamic lastDetails = _controller!->lastDetails();
     assert(is<DragUpdateDetails>(lastDetails));
     make<OverscrollNotificationCls>(metrics, context, overscroll, as<DragUpdateDetails>(lastDetails))->dispatch(context);
 }
 
-void DragScrollActivityCls::dispatchScrollEndNotification(BuildContext context, ScrollMetrics metrics) {
+void DragScrollActivityCls::dispatchScrollEndNotification(ScrollMetrics metrics, BuildContext context) {
     dynamic lastDetails = _controller!->lastDetails();
     make<ScrollEndNotificationCls>(metrics, context, is<DragEndDetails>(lastDetails)? lastDetails : nullptr)->dispatch(context);
 }
@@ -257,7 +257,7 @@ bool BallisticScrollActivityCls::applyMoveTo(double value) {
     return delegate->setPixels(value)->abs() < precisionErrorTolerance;
 }
 
-void BallisticScrollActivityCls::dispatchOverscrollNotification(BuildContext context, ScrollMetrics metrics, double overscroll) {
+void BallisticScrollActivityCls::dispatchOverscrollNotification(ScrollMetrics metrics, BuildContext context, double overscroll) {
     make<OverscrollNotificationCls>(metrics, context, overscroll, velocity())->dispatch(context);
 }
 
@@ -292,7 +292,7 @@ void BallisticScrollActivityCls::_end() {
     delegate->goBallistic(0.0);
 }
 
-DrivenScrollActivityCls::DrivenScrollActivityCls(Curve curve, Unknown delegate, Duration duration, double from, double to, TickerProvider vsync) {
+DrivenScrollActivityCls::DrivenScrollActivityCls(Unknown delegate, Curve curve, Duration duration, double from, double to, TickerProvider vsync) {
     {
         assert(from != nullptr);
         assert(to != nullptr);
@@ -310,7 +310,7 @@ Future<void> DrivenScrollActivityCls::done() {
     return _completer->future;
 }
 
-void DrivenScrollActivityCls::dispatchOverscrollNotification(BuildContext context, ScrollMetrics metrics, double overscroll) {
+void DrivenScrollActivityCls::dispatchOverscrollNotification(ScrollMetrics metrics, BuildContext context, double overscroll) {
     make<OverscrollNotificationCls>(metrics, context, overscroll, velocity())->dispatch(context);
 }
 

@@ -50,7 +50,7 @@ private:
     ImageFilter _imageFilter;
 
 
-     _ImageFilterRenderObjectCls(bool _enabled, ImageFilter _imageFilter);
+     _ImageFilterRenderObjectCls(ImageFilter _imageFilter, bool _enabled);
 };
 using _ImageFilterRenderObject = std::shared_ptr<_ImageFilterRenderObjectCls>;
 

@@ -26,7 +26,7 @@ public:
     virtual void addToScene(SceneBuilder builder);
 
     template<typename S>
- virtual bool findAnnotations(Offset localPosition, bool onlyFirst, AnnotationResult<S> result);
+ virtual bool findAnnotations(AnnotationResult<S> result, Offset localPosition, bool onlyFirst);
 
 private:
     Layer _layer;
@@ -39,53 +39,53 @@ using _ProxyLayer = std::shared_ptr<_ProxyLayerCls>;
 class _MulticastCanvasCls : public ObjectCls {
 public:
 
-    virtual void clipPath(bool doAntiAlias, Path path);
+    virtual void clipPath(Path path, bool doAntiAlias);
 
-    virtual void clipRRect(bool doAntiAlias, RRect rrect);
+    virtual void clipRRect(RRect rrect, bool doAntiAlias);
 
-    virtual void clipRect(ClipOp clipOp, bool doAntiAlias, Rect rect);
+    virtual void clipRect(Rect rect, ClipOp clipOp, bool doAntiAlias);
 
-    virtual void drawArc(Paint paint, Rect rect, double startAngle, double sweepAngle, bool useCenter);
+    virtual void drawArc(Rect rect, double startAngle, double sweepAngle, bool useCenter, Paint paint);
 
-    virtual void drawAtlas(Image atlas, BlendMode blendMode, List<Color> colors, Rect cullRect, Paint paint, List<Rect> rects, List<RSTransform> transforms);
+    virtual void drawAtlas(Image atlas, List<RSTransform> transforms, List<Rect> rects, List<Color> colors, BlendMode blendMode, Rect cullRect, Paint paint);
 
-    virtual void drawCircle(Offset c, Paint paint, double radius);
+    virtual void drawCircle(Offset c, double radius, Paint paint);
 
-    virtual void drawColor(BlendMode blendMode, Color color);
+    virtual void drawColor(Color color, BlendMode blendMode);
 
-    virtual void drawDRRect(RRect inner, RRect outer, Paint paint);
+    virtual void drawDRRect(RRect outer, RRect inner, Paint paint);
 
     virtual void drawImage(Image image, Offset p, Paint paint);
 
-    virtual void drawImageNine(Rect center, Rect dst, Image image, Paint paint);
+    virtual void drawImageNine(Image image, Rect center, Rect dst, Paint paint);
 
-    virtual void drawImageRect(Rect dst, Image image, Paint paint, Rect src);
+    virtual void drawImageRect(Image image, Rect src, Rect dst, Paint paint);
 
     virtual void drawLine(Offset p1, Offset p2, Paint paint);
 
-    virtual void drawOval(Paint paint, Rect rect);
+    virtual void drawOval(Rect rect, Paint paint);
 
     virtual void drawPaint(Paint paint);
 
-    virtual void drawParagraph(Offset offset, Paragraph paragraph);
+    virtual void drawParagraph(Paragraph paragraph, Offset offset);
 
-    virtual void drawPath(Paint paint, Path path);
+    virtual void drawPath(Path path, Paint paint);
 
     virtual void drawPicture(Picture picture);
 
-    virtual void drawPoints(Paint paint, PointMode pointMode, List<Offset> points);
+    virtual void drawPoints(PointMode pointMode, List<Offset> points, Paint paint);
 
-    virtual void drawRRect(Paint paint, RRect rrect);
+    virtual void drawRRect(RRect rrect, Paint paint);
 
-    virtual void drawRawAtlas(Image atlas, BlendMode blendMode, Int32List colors, Rect cullRect, Paint paint, Float32List rects, Float32List rstTransforms);
+    virtual void drawRawAtlas(Image atlas, Float32List rstTransforms, Float32List rects, Int32List colors, BlendMode blendMode, Rect cullRect, Paint paint);
 
-    virtual void drawRawPoints(Paint paint, PointMode pointMode, Float32List points);
+    virtual void drawRawPoints(PointMode pointMode, Float32List points, Paint paint);
 
-    virtual void drawRect(Paint paint, Rect rect);
+    virtual void drawRect(Rect rect, Paint paint);
 
-    virtual void drawShadow(Color color, double elevation, Path path, bool transparentOccluder);
+    virtual void drawShadow(Path path, Color color, double elevation, bool transparentOccluder);
 
-    virtual void drawVertices(BlendMode blendMode, Paint paint, Vertices vertices);
+    virtual void drawVertices(Vertices vertices, BlendMode blendMode, Paint paint);
 
     virtual int getSaveCount();
 
@@ -165,11 +165,11 @@ public:
 
     virtual void appendLayer(Layer layer);
 
-    virtual PaintingContext createChildContext(Rect bounds, ContainerLayer childLayer);
+    virtual PaintingContext createChildContext(ContainerLayer childLayer, Rect bounds);
 
     virtual void paintChild(RenderObject child, Offset offset);
 
-    static Future<Image> toImage(bool debugPaint, double pixelRatio, Rect renderBounds, RenderObject renderObject);
+    static Future<Image> toImage(RenderObject renderObject, Rect renderBounds, bool debugPaint, double pixelRatio);
 
 private:
     _ScreenshotData _data;
@@ -260,15 +260,15 @@ public:
 
     virtual void disposeGroup(String name);
 
-    virtual String toId(String groupName, Object object);
+    virtual String toId(Object object, String groupName);
 
     virtual bool isWidgetTreeReady(String groupName);
 
-    virtual Object toObject(String groupName, String id);
+    virtual Object toObject(String id, String groupName);
 
-    virtual Object toObjectForSourceLocation(String groupName, String id);
+    virtual Object toObjectForSourceLocation(String id, String groupName);
 
-    virtual void disposeId(String groupName, String id);
+    virtual void disposeId(String id, String groupName);
 
     virtual void setPubRootDirectories(List<String> pubRootDirectories);
 
@@ -278,13 +278,13 @@ public:
 
     virtual void removePubRootDirectories(List<String> pubRootDirectories);
 
-    virtual bool setSelectionById(String groupName, String id);
+    virtual bool setSelectionById(String id, String groupName);
 
-    virtual bool setSelection(String groupName, Object object);
+    virtual bool setSelection(Object object, String groupName);
 
     virtual String devToolsInspectorUri(String inspectorRef);
 
-    virtual String getParentChain(String groupName, String id);
+    virtual String getParentChain(String id, String groupName);
 
     virtual String getProperties(String diagnosticsNodeId, String groupName);
 
@@ -300,19 +300,19 @@ public:
 
     virtual String getRootRenderObject(String groupName);
 
-    virtual String getDetailsSubtree(String groupName, String id, int subtreeDepth);
+    virtual String getDetailsSubtree(String id, String groupName, int subtreeDepth);
 
-    virtual String getSelectedRenderObject(String groupName, String previousSelectionId);
+    virtual String getSelectedRenderObject(String previousSelectionId, String groupName);
 
-    virtual String getSelectedWidget(String groupName, String previousSelectionId);
+    virtual String getSelectedWidget(String previousSelectionId, String groupName);
 
-    virtual Future<Image> screenshot(bool debugPaint, double height, double margin, double maxPixelRatio, Object object, double width);
+    virtual Future<Image> screenshot(Object object, bool debugPaint, double height, double margin, double maxPixelRatio, double width);
 
-    virtual String getSelectedSummaryWidget(String groupName, String previousSelectionId);
+    virtual String getSelectedSummaryWidget(String previousSelectionId, String groupName);
 
     virtual bool isWidgetCreationTracked();
 
-    virtual void postEvent(Map<Object, Object> eventData, String eventKind);
+    virtual void postEvent(String eventKind, Map<Object, Object> eventData);
 
     virtual void performReassemble();
 
@@ -364,7 +364,7 @@ private:
 
     virtual void _postExtensionStateChangedEvent(String name, Object value);
 
-    virtual void _registerServiceExtensionWithArg(std::function<FutureOr<Object>(String objectGroup, String objectId)> callback, String name);
+    virtual void _registerServiceExtensionWithArg(std::function<FutureOr<Object>(String objectId, String objectGroup)> callback, String name);
 
     virtual void _registerServiceExtensionVarArgs(std::function<FutureOr<Object>(List<String> args)> callback, String name);
 
@@ -378,17 +378,17 @@ private:
 
     virtual String _devToolsInspectorUriForElement(Element element);
 
-    virtual List<Object> _getParentChain(String groupName, String id);
+    virtual List<Object> _getParentChain(String id, String groupName);
 
-    virtual Map<String, Object> _pathNodeToJson(InspectorSerializationDelegate delegate, _DiagnosticsPathNode pathNode);
+    virtual Map<String, Object> _pathNodeToJson(_DiagnosticsPathNode pathNode, InspectorSerializationDelegate delegate);
 
     virtual List<Element> _getRawElementParentChain(Element element, int numLocalParents);
 
     virtual List<_DiagnosticsPathNode> _getElementParentChain(Element element, String groupName, int numLocalParents);
 
-    virtual List<_DiagnosticsPathNode> _getRenderObjectParentChain(String groupName, RenderObject renderObject);
+    virtual List<_DiagnosticsPathNode> _getRenderObjectParentChain(RenderObject renderObject, String groupName);
 
-    virtual Map<String, Object> _nodeToJson(InspectorSerializationDelegate delegate, DiagnosticsNode node);
+    virtual Map<String, Object> _nodeToJson(DiagnosticsNode node, InspectorSerializationDelegate delegate);
 
     virtual bool _isValueCreatedByLocalProject(Object value);
 
@@ -398,9 +398,9 @@ private:
 
     virtual String _safeJsonEncode(Object object);
 
-    virtual List<DiagnosticsNode> _truncateNodes(int maxDescendentsTruncatableNode, Iterable<DiagnosticsNode> nodes);
+    virtual List<DiagnosticsNode> _truncateNodes(Iterable<DiagnosticsNode> nodes, int maxDescendentsTruncatableNode);
 
-    virtual List<Map<String, Object>> _nodesToJson(InspectorSerializationDelegate delegate, List<DiagnosticsNode> nodes, DiagnosticsNode parent);
+    virtual List<Map<String, Object>> _nodesToJson(List<DiagnosticsNode> nodes, InspectorSerializationDelegate delegate, DiagnosticsNode parent);
 
     virtual List<Object> _getProperties(String diagnosticsNodeId, String groupName);
 
@@ -412,9 +412,9 @@ private:
 
     virtual bool _shouldShowInSummaryTree(DiagnosticsNode node);
 
-    virtual List<DiagnosticsNode> _getChildrenFiltered(InspectorSerializationDelegate delegate, DiagnosticsNode node);
+    virtual List<DiagnosticsNode> _getChildrenFiltered(DiagnosticsNode node, InspectorSerializationDelegate delegate);
 
-    virtual List<DiagnosticsNode> _filterChildren(InspectorSerializationDelegate delegate, List<DiagnosticsNode> nodes);
+    virtual List<DiagnosticsNode> _filterChildren(List<DiagnosticsNode> nodes, InspectorSerializationDelegate delegate);
 
     virtual Map<String, Object> _getRootWidget(String groupName);
 
@@ -422,13 +422,13 @@ private:
 
     virtual Map<String, Object> _getRootRenderObject(String groupName);
 
-    virtual Map<String, Object> _getDetailsSubtree(String groupName, String id, int subtreeDepth);
+    virtual Map<String, Object> _getDetailsSubtree(String id, String groupName, int subtreeDepth);
 
-    virtual Map<String, Object> _getSelectedRenderObject(String groupName, String previousSelectionId);
+    virtual Map<String, Object> _getSelectedRenderObject(String previousSelectionId, String groupName);
 
-    virtual Map<String, Object> _getSelectedWidget(String groupName, String previousSelectionId);
+    virtual Map<String, Object> _getSelectedWidget(String previousSelectionId, String groupName);
 
-    virtual Map<String, Object> _getSelectedSummaryWidget(String groupName, String previousSelectionId);
+    virtual Map<String, Object> _getSelectedSummaryWidget(String previousSelectionId, String groupName);
 
     virtual void _onFrameStart(Duration timeStamp);
 
@@ -436,7 +436,7 @@ private:
 
     virtual void _postStatsEvent(String eventName, _ElementLocationStatsTracker stats);
 
-    virtual void _onRebuildWidget(bool builtOnce, Element element);
+    virtual void _onRebuildWidget(Element element, bool builtOnce);
 
     virtual void _onPaint(RenderObject renderObject);
 
@@ -540,7 +540,7 @@ private:
 
      _WidgetInspectorStateCls();
 
-    virtual bool _hitTestHelper(List<RenderObject> edgeHits, List<RenderObject> hits, RenderObject object, Offset position, Matrix4 transform);
+    virtual bool _hitTestHelper(List<RenderObject> hits, List<RenderObject> edgeHits, Offset position, RenderObject object, Matrix4 transform);
 
     virtual void _inspectAt(Offset position);
 
@@ -647,7 +647,7 @@ public:
 
 private:
 
-     _TransformedRectCls(RenderObject ancestor, RenderObject object);
+     _TransformedRectCls(RenderObject object, RenderObject ancestor);
 
 };
 using _TransformedRect = std::shared_ptr<_TransformedRectCls>;
@@ -695,7 +695,7 @@ public:
     virtual void addToScene(SceneBuilder builder);
 
     template<typename S>
- virtual bool findAnnotations(Offset localPosition, bool onlyFirst, AnnotationResult<S> result);
+ virtual bool findAnnotations(AnnotationResult<S> result, Offset localPosition, bool onlyFirst);
 
 private:
     _InspectorOverlayRenderState _lastState;
@@ -711,7 +711,7 @@ private:
 
     virtual Picture _buildPicture(_InspectorOverlayRenderState state);
 
-    virtual void _paintDescription(Canvas canvas, String message, Size size, Offset target, Rect targetRect, TextDirection textDirection, double verticalOffset);
+    virtual void _paintDescription(Canvas canvas, String message, TextDirection textDirection, Offset target, double verticalOffset, Size size, Rect targetRect);
 
     virtual bool _isInInspectorRenderObjectTree(RenderObject child);
 
@@ -761,7 +761,7 @@ bool _isDebugCreator(DiagnosticsNode node);
 
 Iterable<DiagnosticsNode> debugTransformDebugCreator(Iterable<DiagnosticsNode> properties);
 
-Iterable<DiagnosticsNode> _parseDiagnosticsNode(ErrorSummary errorSummary, DiagnosticsNode node);
+Iterable<DiagnosticsNode> _parseDiagnosticsNode(DiagnosticsNode node, ErrorSummary errorSummary);
 
 Iterable<DiagnosticsNode> _describeRelevantUserCode(Element element, ErrorSummary errorSummary);
 

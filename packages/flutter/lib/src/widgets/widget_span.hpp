@@ -19,7 +19,7 @@ public:
 
     virtual bool visitChildren(InlineSpanVisitor visitor);
 
-    virtual InlineSpan getSpanForPositionVisitor(Accumulator offset, TextPosition position);
+    virtual InlineSpan getSpanForPositionVisitor(TextPosition position, Accumulator offset);
 
     virtual int codeUnitAtVisitor(int index, Accumulator offset);
 

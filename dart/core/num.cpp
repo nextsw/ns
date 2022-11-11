@@ -12,5 +12,5 @@ num numCls::parse(String input, std::function<num(String input)> onError) {
 
 num numCls::tryParse(String input) {
     String source = input->trim();
-    return intValue->tryParse(source) or double->tryParse(source);
+    return intValue->tryParse(source) | double->tryParse(source);
 }

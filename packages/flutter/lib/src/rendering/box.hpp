@@ -22,7 +22,7 @@ private:
     bool _canBeUsedByParent;
 
 
-     _DebugSizeCls(bool _canBeUsedByParent, RenderBox _owner, Unknown source);
+     _DebugSizeCls(Unknown source, RenderBox _owner, bool _canBeUsedByParent);
 
 };
 using _DebugSize = std::shared_ptr<_DebugSizeCls>;
@@ -72,7 +72,7 @@ public:
 
     virtual Size constrain(Size size);
 
-    virtual Size constrainDimensions(double height, double width);
+    virtual Size constrainDimensions(double width, double height);
 
     virtual Size constrainSizeAndAttemptToPreserveAspectRatio(Size size);
 
@@ -120,7 +120,7 @@ public:
 
 private:
 
-    virtual Size _debugPropagateDebugSize(Size result, Size size);
+    virtual Size _debugPropagateDebugSize(Size size, Size result);
 
 };
 using BoxConstraints = std::shared_ptr<BoxConstraintsCls>;
@@ -150,7 +150,7 @@ public:
     Offset localPosition;
 
 
-     BoxHitTestEntryCls(Offset localPosition, Unknown target);
+     BoxHitTestEntryCls(Unknown target, Offset localPosition);
 
     virtual String toString();
 
@@ -201,7 +201,7 @@ public:
 
 private:
 
-     _IntrinsicDimensionsCacheEntryCls(double argument, _IntrinsicDimension dimension);
+     _IntrinsicDimensionsCacheEntryCls(_IntrinsicDimension dimension, double argument);
 };
 using _IntrinsicDimensionsCacheEntry = std::shared_ptr<_IntrinsicDimensionsCacheEntryCls>;
 
@@ -262,23 +262,23 @@ public:
 
     virtual void performLayout();
 
-    virtual bool hitTest(Offset position, BoxHitTestResult result);
+    virtual bool hitTest(BoxHitTestResult result, Offset position);
 
     virtual bool hitTestSelf(Offset position);
 
-    virtual bool hitTestChildren(Offset position, BoxHitTestResult result);
+    virtual bool hitTestChildren(BoxHitTestResult result, Offset position);
 
     virtual void applyPaintTransform(RenderObject child, Matrix4 transform);
 
-    virtual Offset globalToLocal(RenderObject ancestor, Offset point);
+    virtual Offset globalToLocal(Offset point, RenderObject ancestor);
 
-    virtual Offset localToGlobal(RenderObject ancestor, Offset point);
+    virtual Offset localToGlobal(Offset point, RenderObject ancestor);
 
     virtual Rect paintBounds();
 
-    virtual void handleEvent(BoxHitTestEntry entry, PointerEvent event);
+    virtual void handleEvent(PointerEvent event, BoxHitTestEntry entry);
 
-    virtual bool debugHandleEvent(HitTestEntry entry, PointerEvent event);
+    virtual bool debugHandleEvent(PointerEvent event, HitTestEntry entry);
 
     virtual void debugPaint(PaintingContext context, Offset offset);
 
@@ -310,7 +310,7 @@ private:
     int _debugActivePointers;
 
 
-    virtual double _computeIntrinsicDimension(double argument, std::function<double(double argument)> computer, _IntrinsicDimension dimension);
+    virtual double _computeIntrinsicDimension(_IntrinsicDimension dimension, double argument, std::function<double(double argument)> computer);
 
     virtual Size _computeDryLayout(BoxConstraints constraints);
 
@@ -329,7 +329,7 @@ public:
 
     virtual double defaultComputeDistanceToHighestActualBaseline(TextBaseline baseline);
 
-    virtual bool defaultHitTestChildren(Offset position, BoxHitTestResult result);
+    virtual bool defaultHitTestChildren(BoxHitTestResult result, Offset position);
 
     virtual void defaultPaint(PaintingContext context, Offset offset);
 

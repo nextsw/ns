@@ -16,7 +16,7 @@ public:
     virtual void  unmodifiable(Iterable<E> elements);
 
     template<typename S, typename T>
- static Set<T> castFrom(std::function<Set<R>()> newSet, Set<S> source);
+ static Set<T> castFrom(Set<S> source, std::function<Set<R>()> newSet);
 
     template<typename R>
  virtual Set<R> cast();

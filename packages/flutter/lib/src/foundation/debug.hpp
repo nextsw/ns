@@ -10,12 +10,12 @@
 #include "platform.hpp"
 #include "print.hpp"
 
-bool debugAssertAllFoundationVarsUnset(DebugPrintCallback debugPrintOverride, String reason);
+bool debugAssertAllFoundationVarsUnset(String reason, DebugPrintCallback debugPrintOverride);
 
 bool debugInstrumentationEnabled;
 
 template<typename T>
- Future<T> debugInstrumentAction(std::function<Future<T>()> action, String description);
+ Future<T> debugInstrumentAction(String description, std::function<Future<T>()> action);
 
 int debugDoublePrecision;
 

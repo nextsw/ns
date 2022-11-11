@@ -13,7 +13,7 @@ class LineSplitterCls : public StreamTransformerBaseCls<String, String> {
 public:
 
      LineSplitterCls();
-    static Iterable<String> split(int end, String lines, int start);
+    static Iterable<String> split(String lines, int start, int end);
 
     virtual List<String> convert(String data);
 
@@ -29,7 +29,7 @@ using LineSplitter = std::shared_ptr<LineSplitterCls>;
 class _LineSplitterSinkCls : public StringConversionSinkBaseCls {
 public:
 
-    virtual void addSlice(String chunk, int end, bool isLast, int start);
+    virtual void addSlice(String chunk, int start, int end, bool isLast);
 
     virtual void close();
 
@@ -42,7 +42,7 @@ private:
 
 
      _LineSplitterSinkCls(StringConversionSink _sink);
-    virtual void _addLines(int end, String lines, int start);
+    virtual void _addLines(String lines, int start, int end);
 
 };
 using _LineSplitterSink = std::shared_ptr<_LineSplitterSinkCls>;

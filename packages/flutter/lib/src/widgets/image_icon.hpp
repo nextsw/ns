@@ -23,7 +23,7 @@ public:
     String semanticLabel;
 
 
-     ImageIconCls(Color color, ImageProvider image, Unknown key, String semanticLabel, double size);
+     ImageIconCls(ImageProvider image, Color color, Unknown key, String semanticLabel, double size);
     virtual Widget build(BuildContext context);
 
     virtual void debugFillProperties(DiagnosticPropertiesBuilder properties);
