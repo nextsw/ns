@@ -38,7 +38,7 @@ String ScrollActivityCls::toString() {
 }
 
 void IdleScrollActivityCls::applyNewDimensions() {
-    delegate->goBallistic(0.0);
+    delegate()->goBallistic(0.0);
 }
 
 bool IdleScrollActivityCls::shouldIgnorePointer() {
@@ -69,7 +69,7 @@ double HoldScrollActivityCls::velocity() {
 }
 
 void HoldScrollActivityCls::cancel() {
-    delegate->goBallistic(0.0);
+    delegate()->goBallistic(0.0);
 }
 
 void HoldScrollActivityCls::dispose() {
@@ -246,15 +246,15 @@ BallisticScrollActivityCls::BallisticScrollActivityCls(Unknown delegate, Simulat
 }
 
 void BallisticScrollActivityCls::resetActivity() {
-    delegate->goBallistic(velocity());
+    delegate()->goBallistic(velocity());
 }
 
 void BallisticScrollActivityCls::applyNewDimensions() {
-    delegate->goBallistic(velocity());
+    delegate()->goBallistic(velocity());
 }
 
 bool BallisticScrollActivityCls::applyMoveTo(double value) {
-    return delegate->setPixels(value)->abs() < precisionErrorTolerance;
+    return delegate()->setPixels(value)->abs() < precisionErrorTolerance;
 }
 
 void BallisticScrollActivityCls::dispatchOverscrollNotification(ScrollMetrics metrics, BuildContext context, double overscroll) {
@@ -284,12 +284,12 @@ String BallisticScrollActivityCls::toString() {
 
 void BallisticScrollActivityCls::_tick() {
     if (!applyMoveTo(_controller->value())) {
-        delegate->goIdle();
+        delegate()->goIdle();
     }
 }
 
 void BallisticScrollActivityCls::_end() {
-    delegate->goBallistic(0.0);
+    delegate()->goBallistic(0.0);
 }
 
 DrivenScrollActivityCls::DrivenScrollActivityCls(Unknown delegate, Curve curve, Duration duration, double from, double to, TickerProvider vsync) {
@@ -337,11 +337,11 @@ String DrivenScrollActivityCls::toString() {
 }
 
 void DrivenScrollActivityCls::_tick() {
-    if (delegate->setPixels(_controller->value()) != 0.0) {
-        delegate->goIdle();
+    if (delegate()->setPixels(_controller->value()) != 0.0) {
+        delegate()->goIdle();
     }
 }
 
 void DrivenScrollActivityCls::_end() {
-    delegate->goBallistic(velocity());
+    delegate()->goBallistic(velocity());
 }

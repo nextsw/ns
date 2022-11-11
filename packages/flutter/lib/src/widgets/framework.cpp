@@ -341,7 +341,7 @@ void _InactiveElementsCls::_unmountAll() {
     try {
         elements->reversed()->forEach(_unmount);
     } finally {
-        assert(_elements->isEmpty);
+        assert(_elements->isEmpty());
         _locked = false;
     };
 }
@@ -425,7 +425,7 @@ void BuildOwnerCls::lockState(VoidCallback callback) {
 }
 
 void BuildOwnerCls::buildScope(Element context, VoidCallback callback) {
-    if (callback == nullptr && _dirtyElements->isEmpty) {
+    if (callback == nullptr && _dirtyElements->isEmpty()) {
         return;
     }
     assert(context != nullptr);
@@ -571,7 +571,7 @@ void BuildOwnerCls::finalizeTree() {
                             keys->addAll(_debugElementsThatWillNeedToBeRebuiltDueToGlobalKeyShenanigans![element]!);
                         }
                     }
-                    if (keys->isNotEmpty) {
+                    if (keys->isNotEmpty()) {
                         Map<String, int> keyStringCount = <String, int>make<HashMapCls>();
                         for (String key : keys-><String>map([=] (GlobalKey key) {
                             key->toString();
@@ -613,13 +613,13 @@ void BuildOwnerCls::finalizeTree() {
                                 elementLabels->add(__s("$element ($count different affected elements had this toString representation)"));
                             }
                         });
-                        assert(keyLabels->isNotEmpty);
-                        String the = keys->length == 1? __s(" the") : __s("");
-                        String s = keys->length == 1? __s("") : __s("s");
-                        String were = keys->length == 1? __s("was") : __s("were");
-                        String their = keys->length == 1? __s("its") : __s("their");
+                        assert(keyLabels->isNotEmpty());
+                        String the = keys->length() == 1? __s(" the") : __s("");
+                        String s = keys->length() == 1? __s("") : __s("s");
+                        String were = keys->length() == 1? __s("was") : __s("were");
+                        String their = keys->length() == 1? __s("its") : __s("their");
                         String respective = elementLabels->length() == 1? __s("") : __s(" respective");
-                        String those = keys->length == 1? __s("that") : __s("those");
+                        String those = keys->length() == 1? __s("that") : __s("those");
                         String s2 = elementLabels->length() == 1? __s("") : __s("s");
                         String those2 = elementLabels->length() == 1? __s("that") : __s("those");
                         String they = elementLabels->length() == 1? __s("it") : __s("they");
@@ -897,7 +897,7 @@ List<DiagnosticsNode> ElementCls::describeMissingAncestor(Type expectedAncestorT
         return true;
     });
     information->add(<Element>make<DiagnosticsPropertyCls>(__s("The specific widget that could not find a $expectedAncestorType ancestor was"), this, DiagnosticsTreeStyleCls::errorProperty));
-    if (ancestors->isNotEmpty) {
+    if (ancestors->isNotEmpty()) {
         information->add(describeElements(__s("The ancestors of this widget were"), ancestors));
     } else {
         information->add(make<ErrorDescriptionCls>(__s("This widget is the root of the tree, so it has no ancestors, let alone a "$expectedAncestorType" ancestor.")));
@@ -1139,7 +1139,7 @@ void ElementCls::activate() {
     assert(widget() != nullptr);
     assert(owner() != nullptr);
     assert(depth() != nullptr);
-    bool hadDependencies = (_dependencies != nullptr && _dependencies!->isNotEmpty) || _hadUnsatisfiedDependencies;
+    bool hadDependencies = (_dependencies != nullptr && _dependencies!->isNotEmpty()) || _hadUnsatisfiedDependencies;
     _lifecycleState = _ElementLifecycleCls::active;
     _dependencies?->clear();
     _hadUnsatisfiedDependencies = false;
@@ -1157,7 +1157,7 @@ void ElementCls::deactivate() {
     assert(_lifecycleState == _ElementLifecycleCls::active);
     assert(_widget != nullptr);
     assert(depth() != nullptr);
-    if (_dependencies != nullptr && _dependencies!->isNotEmpty) {
+    if (_dependencies != nullptr && _dependencies!->isNotEmpty()) {
         for (InheritedElement dependency : _dependencies!) {
             dependency->_dependents->remove(this);
         }
@@ -1219,7 +1219,7 @@ Size ElementCls::size() {
         if (!box->hasSize()) {
             throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem, ArrayItem, ArrayItem));
         }
-        if (box->debugNeedsLayout) {
+        if (box->debugNeedsLayout()) {
             throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem));
         }
         return true;
@@ -1239,7 +1239,7 @@ InheritedWidget ElementCls::dependOnInheritedElement(InheritedElement ancestor, 
     _dependencies |= <InheritedElement>make<HashSetCls>();
     _dependencies!->add(ancestor);
     ancestor->updateDependencies(this, aspect);
-    return as<InheritedWidget>(ancestor->widget);
+    return as<InheritedWidget>(ancestor->widget());
 }
 
 template<typename T>
@@ -1375,7 +1375,7 @@ void ElementCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     _widget?->debugFillProperties(properties);
     properties->add(make<FlagPropertyCls>(__s("dirty"), dirty(), __s("dirty")));
     Set<InheritedElement> deps = _dependencies;
-    if (deps != nullptr && deps->isNotEmpty) {
+    if (deps != nullptr && deps->isNotEmpty()) {
             auto _c1 = deps->toList();    _c1.sort([=] (InheritedElement a,InheritedElement b) {        a->toStringShort()->compareTo(b->toStringShort());    });List<InheritedElement> sortedDependencies = _c1;
         List<DiagnosticsNode> diagnosticsDependencies = sortedDependencies->map([=] (InheritedElement element) {
     element->widget->toDiagnosticsNode(DiagnosticsTreeStyleCls::sparse);
@@ -1689,7 +1689,7 @@ void ComponentElementCls::performRebuild() {
             _debugDoingBuild = false;
             return true;
         }());
-        debugWidgetBuilderValue(widget, built);
+        debugWidgetBuilderValue(widget(), built);
     } catch (Unknown e) {
         _debugDoingBuild = false;
             List<DiagnosticsNode> list1 = make<ListCls<>>();    if (kDebugMode) {        list1.add(ArrayItem);    }built = ErrorWidgetCls->builder(_debugReportException(make<ErrorDescriptionCls>(__s("building $this")), e, stack, [=] () {
@@ -1700,13 +1700,13 @@ void ComponentElementCls::performRebuild() {
         assert(_debugSetAllowIgnoredCallsToMarkNeedsBuild(false));
     };
     try {
-        _child = updateChild(_child, built, slot);
+        _child = updateChild(_child, built, slot());
         assert(_child != nullptr);
     } catch (Unknown e) {
             List<DiagnosticsNode> list2 = make<ListCls<>>();    if (kDebugMode) {        list2.add(ArrayItem);    }built = ErrorWidgetCls->builder(_debugReportException(make<ErrorDescriptionCls>(__s("building $this")), e, stack, [=] () {
             list2;
         }));
-        _child = updateChild(nullptr, built, slot);
+        _child = updateChild(nullptr, built, slot());
     };
 }
 
@@ -1727,12 +1727,12 @@ void ComponentElementCls::_firstBuild() {
 }
 
 Widget StatelessElementCls::build() {
-    return (as<StatelessWidget>(widget))->build(this);
+    return (as<StatelessWidget>(widget()))->build(this);
 }
 
 void StatelessElementCls::update(StatelessWidget newWidget) {
     super->update(newWidget);
-    assert(widget == newWidget);
+    assert(widget() == newWidget);
     _dirty = true;
     rebuild();
 }
@@ -1781,10 +1781,10 @@ void StatefulElementCls::performRebuild() {
 
 void StatefulElementCls::update(StatefulWidget newWidget) {
     super->update(newWidget);
-    assert(widget == newWidget);
+    assert(widget() == newWidget);
     StatefulWidget oldWidget = state()->_widget!;
     _dirty = true;
-    state()->_widget = as<StatefulWidget>(widget);
+    state()->_widget = as<StatefulWidget>(widget());
     try {
         _debugSetAllowIgnoredCallsToMarkNeedsBuild(true);
         Object debugCheckForReturnedFuture = as<dynamic>(state()->didUpdateWidget(oldWidget));
@@ -1881,15 +1881,15 @@ void StatefulElementCls::_firstBuild() {
 }
 
 Widget ProxyElementCls::build() {
-    return (as<ProxyWidget>(widget))->child;
+    return (as<ProxyWidget>(widget()))->child;
 }
 
 void ProxyElementCls::update(ProxyWidget newWidget) {
-    ProxyWidget oldWidget = as<ProxyWidget>(widget);
-    assert(widget != nullptr);
-    assert(widget != newWidget);
+    ProxyWidget oldWidget = as<ProxyWidget>(widget());
+    assert(widget() != nullptr);
+    assert(widget() != newWidget);
     super->update(newWidget);
-    assert(widget == newWidget);
+    assert(widget() == newWidget);
     updated(oldWidget);
     _dirty = true;
     rebuild();
@@ -1903,13 +1903,13 @@ template<typename T>
 void ParentDataElementCls<T>::applyWidgetOutOfTurn(ParentDataWidget<T> newWidget) {
     assert(newWidget != nullptr);
     assert(newWidget->debugCanApplyOutOfTurn());
-    assert(newWidget->child == (as<ParentDataWidget<T>>(widget))->child);
+    assert(newWidget->child == (as<ParentDataWidget<T>>(widget()))->child);
     _applyParentData(newWidget);
 }
 
 template<typename T>
 void ParentDataElementCls<T>::notifyClients(ParentDataWidget<T> oldWidget) {
-    _applyParentData(as<ParentDataWidget<T>>(widget));
+    _applyParentData(as<ParentDataWidget<T>>(widget()));
 }
 
 template<typename T>
@@ -1943,7 +1943,7 @@ void InheritedElementCls::notifyDependent(InheritedWidget oldWidget, Element dep
 }
 
 void InheritedElementCls::updated(InheritedWidget oldWidget) {
-    if ((as<InheritedWidget>(widget))->updateShouldNotify(oldWidget)) {
+    if ((as<InheritedWidget>(widget()))->updateShouldNotify(oldWidget)) {
         super->updated(oldWidget);
     }
 }
@@ -1971,7 +1971,7 @@ void InheritedElementCls::_updateInheritance() {
     } else {
         _inheritedWidgets = <Type, InheritedElement>make<HashMapCls>();
     }
-    _inheritedWidgets![widget->runtimeType()] = this;
+    _inheritedWidgets![widget()->runtimeType] = this;
 }
 
 RenderObject RenderObjectElementCls::renderObject() {
@@ -1989,7 +1989,7 @@ void RenderObjectElementCls::mount(Element parent, Object newSlot) {
         _debugDoingBuild = true;
         return true;
     }());
-    _renderObject = (as<RenderObjectWidget>(widget))->createRenderObject(this);
+    _renderObject = (as<RenderObjectWidget>(widget()))->createRenderObject(this);
     assert(!_renderObject!->debugDisposed()!);
     assert([=] () {
         _debugDoingBuild = false;
@@ -2006,7 +2006,7 @@ void RenderObjectElementCls::mount(Element parent, Object newSlot) {
 
 void RenderObjectElementCls::update(RenderObjectWidget newWidget) {
     super->update(newWidget);
-    assert(widget == newWidget);
+    assert(widget() == newWidget);
     assert([=] () {
         _debugUpdateRenderObjectOwner();
         return true;
@@ -2129,14 +2129,14 @@ List<Element> RenderObjectElementCls::updateChildren(List<Element> oldChildren, 
 
 void RenderObjectElementCls::deactivate() {
     super->deactivate();
-    assert(!renderObject()->attached, __s("A RenderObject was still attached when attempting to deactivate its RenderObjectElement: $renderObject"));
+    assert(!renderObject()->attached(), __s("A RenderObject was still attached when attempting to deactivate its RenderObjectElement: $renderObject"));
 }
 
 void RenderObjectElementCls::unmount() {
     assert(!renderObject()->debugDisposed()!, __s("A RenderObject was disposed prior to its owning element being unmounted: $renderObject"));
-    RenderObjectWidget oldWidget = as<RenderObjectWidget>(widget);
+    RenderObjectWidget oldWidget = as<RenderObjectWidget>(widget());
     super->unmount();
-    assert(!renderObject()->attached, __s("A RenderObject was still attached when attempting to unmount its RenderObjectElement: $renderObject"));
+    assert(!renderObject()->attached(), __s("A RenderObject was still attached when attempting to unmount its RenderObjectElement: $renderObject"));
     oldWidget->didUnmountRenderObject(renderObject());
     _renderObject!->dispose();
     _renderObject = nullptr;
@@ -2149,13 +2149,13 @@ void RenderObjectElementCls::attachRenderObject(Object newSlot) {
     _ancestorRenderObjectElement?->insertRenderObjectChild(renderObject(), newSlot);
     ParentDataElement<ParentData> parentDataElement = _findAncestorParentDataElement();
     if (parentDataElement != nullptr) {
-        _updateParentData(as<ParentDataWidget<ParentData>>(parentDataElement->widget));
+        _updateParentData(as<ParentDataWidget<ParentData>>(parentDataElement->widget()));
     }
 }
 
 void RenderObjectElementCls::detachRenderObject() {
     if (_ancestorRenderObjectElement != nullptr) {
-        _ancestorRenderObjectElement!->removeRenderObjectChild(renderObject(), slot);
+        _ancestorRenderObjectElement!->removeRenderObjectChild(renderObject(), slot());
         _ancestorRenderObjectElement = nullptr;
     }
     _slot = nullptr;
@@ -2214,7 +2214,7 @@ ParentDataElement<ParentData> RenderObjectElementCls::_findAncestorParentDataEle
             }
             ancestor = ancestor!->_parent;
         }
-        if (badAncestors->isNotEmpty) {
+        if (badAncestors->isNotEmpty()) {
             badAncestors->insert(0, result);
             try {
                             List<DiagnosticsNode> list1 = make<ListCls<>>();            list1.add(ArrayItem);            list1.add(ArrayItem);            for (ParentDataElement<ParentData> ancestor : badAncestors) {                                ;                            }            {                list1.add(ArrayItem);            }list1.add(ArrayItem);            list1.add(ArrayItem);            list1.add(ArrayItem);throw FlutterErrorCls->fromParts(list1);
@@ -2239,7 +2239,7 @@ void RenderObjectElementCls::_performRebuild() {
         _debugDoingBuild = true;
         return true;
     }());
-    (as<RenderObjectWidget>(widget))->updateRenderObject(this, renderObject());
+    (as<RenderObjectWidget>(widget()))->updateRenderObject(this, renderObject());
     assert([=] () {
         _debugDoingBuild = false;
         return true;
@@ -2253,7 +2253,7 @@ void RenderObjectElementCls::_updateParentData(ParentDataWidget<ParentData> pare
         try {
             if (!parentDataWidget->debugIsValidRenderObject(renderObject())) {
                 applyParentData = false;
-                            List<DiagnosticsNode> list1 = make<ListCls<>>();            list1.add(ArrayItem);            for (auto _x1 : parentDataWidget->_debugDescribeIncorrectParentDataType(renderObject()->parentData, as<RenderObjectWidget>(_ancestorRenderObjectElement!->widget), make<ErrorDescriptionCls>(debugGetCreatorChain(10)))) {            {                list1.add(_x1);            }throw FlutterErrorCls->fromParts(list1);
+                            List<DiagnosticsNode> list1 = make<ListCls<>>();            list1.add(ArrayItem);            for (auto _x1 : parentDataWidget->_debugDescribeIncorrectParentDataType(renderObject()->parentData, as<RenderObjectWidget>(_ancestorRenderObjectElement!->widget()), make<ErrorDescriptionCls>(debugGetCreatorChain(10)))) {            {                list1.add(_x1);            }throw FlutterErrorCls->fromParts(list1);
             }
         } catch (FlutterError e) {
             _debugReportException(make<ErrorSummaryCls>(__s("while applying parent data.")), e, e->stackTrace);
@@ -2266,11 +2266,11 @@ void RenderObjectElementCls::_updateParentData(ParentDataWidget<ParentData> pare
 }
 
 void RenderObjectElementCls::_updateSlot(Object newSlot) {
-    Object oldSlot = slot;
+    Object oldSlot = slot();
     assert(oldSlot != newSlot);
     super->_updateSlot(newSlot);
-    assert(slot == newSlot);
-    _ancestorRenderObjectElement!->moveRenderObjectChild(renderObject(), oldSlot, slot);
+    assert(slot() == newSlot);
+    _ancestorRenderObjectElement!->moveRenderObjectChild(renderObject(), oldSlot, slot());
 }
 
 void RootRenderObjectElementCls::assignOwner(BuildOwner owner) {
@@ -2301,7 +2301,7 @@ void LeafRenderObjectElementCls::removeRenderObjectChild(RenderObject child, Obj
 }
 
 List<DiagnosticsNode> LeafRenderObjectElementCls::debugDescribeChildren() {
-    return widget->debugDescribeChildren();
+    return widget()->debugDescribeChildren();
 }
 
 void SingleChildRenderObjectElementCls::visitChildren(ElementVisitor visitor) {
@@ -2318,17 +2318,17 @@ void SingleChildRenderObjectElementCls::forgetChild(Element child) {
 
 void SingleChildRenderObjectElementCls::mount(Element parent, Object newSlot) {
     super->mount(parent, newSlot);
-    _child = updateChild(_child, (as<SingleChildRenderObjectWidget>(widget))->child, nullptr);
+    _child = updateChild(_child, (as<SingleChildRenderObjectWidget>(widget()))->child, nullptr);
 }
 
 void SingleChildRenderObjectElementCls::update(SingleChildRenderObjectWidget newWidget) {
     super->update(newWidget);
-    assert(widget == newWidget);
-    _child = updateChild(_child, (as<SingleChildRenderObjectWidget>(widget))->child, nullptr);
+    assert(widget() == newWidget);
+    _child = updateChild(_child, (as<SingleChildRenderObjectWidget>(widget()))->child, nullptr);
 }
 
 void SingleChildRenderObjectElementCls::insertRenderObjectChild(RenderObject child, Object slot) {
-    RenderObjectWithChildMixin<RenderObject> renderObject = as<RenderObjectWithChildMixin<RenderObject>>(this->renderObject);
+    RenderObjectWithChildMixin<RenderObject> renderObject = as<RenderObjectWithChildMixin<RenderObject>>(this->renderObject());
     assert(slot == nullptr);
     assert(renderObject->debugValidateChild(child));
     renderObject->child = child;
@@ -2340,7 +2340,7 @@ void SingleChildRenderObjectElementCls::moveRenderObjectChild(RenderObject child
 }
 
 void SingleChildRenderObjectElementCls::removeRenderObjectChild(RenderObject child, Object slot) {
-    RenderObjectWithChildMixin<RenderObject> renderObject = as<RenderObjectWithChildMixin<RenderObject>>(this->renderObject);
+    RenderObjectWithChildMixin<RenderObject> renderObject = as<RenderObjectWithChildMixin<RenderObject>>(this->renderObject());
     assert(slot == nullptr);
     assert(renderObject->child == child);
     renderObject->child = nullptr;
@@ -2372,14 +2372,14 @@ void MultiChildRenderObjectElementCls::insertRenderObjectChild(RenderObject chil
 
 void MultiChildRenderObjectElementCls::moveRenderObjectChild(RenderObject child, IndexedSlot<Element> oldSlot, IndexedSlot<Element> newSlot) {
     ContainerRenderObjectMixin<RenderObject, ContainerParentDataMixin<RenderObject>> renderObject = this->renderObject();
-    assert(child->parent == renderObject);
+    assert(child->parent() == renderObject);
     renderObject->move(child, newSlot->value?->renderObject);
     assert(renderObject == this->renderObject);
 }
 
 void MultiChildRenderObjectElementCls::removeRenderObjectChild(RenderObject child, Object slot) {
     ContainerRenderObjectMixin<RenderObject, ContainerParentDataMixin<RenderObject>> renderObject = this->renderObject();
-    assert(child->parent == renderObject);
+    assert(child->parent() == renderObject);
     renderObject->remove(child);
     assert(renderObject == this->renderObject);
 }
@@ -2407,7 +2407,7 @@ Element MultiChildRenderObjectElementCls::inflateWidget(Widget newWidget, Object
 
 void MultiChildRenderObjectElementCls::mount(Element parent, Object newSlot) {
     super->mount(parent, newSlot);
-    MultiChildRenderObjectWidget multiChildRenderObjectWidget = as<MultiChildRenderObjectWidget>(widget);
+    MultiChildRenderObjectWidget multiChildRenderObjectWidget = as<MultiChildRenderObjectWidget>(widget());
     List<Element> children = <Element>filled(multiChildRenderObjectWidget->children->length(), _NullElementCls::instance);
     Element previousChild;
     for (;  < children->length(); i += 1) {
@@ -2420,9 +2420,9 @@ void MultiChildRenderObjectElementCls::mount(Element parent, Object newSlot) {
 
 void MultiChildRenderObjectElementCls::update(MultiChildRenderObjectWidget newWidget) {
     super->update(newWidget);
-    MultiChildRenderObjectWidget multiChildRenderObjectWidget = as<MultiChildRenderObjectWidget>(widget);
-    assert(widget == newWidget);
-    assert(!debugChildrenHaveDuplicateKeys(widget, multiChildRenderObjectWidget->children));
+    MultiChildRenderObjectWidget multiChildRenderObjectWidget = as<MultiChildRenderObjectWidget>(widget());
+    assert(widget() == newWidget);
+    assert(!debugChildrenHaveDuplicateKeys(widget(), multiChildRenderObjectWidget->children));
     _children = updateChildren(_children, multiChildRenderObjectWidget->children, _forgottenChildren);
     _forgottenChildren->clear();
 }

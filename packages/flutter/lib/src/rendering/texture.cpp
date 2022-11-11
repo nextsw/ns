@@ -65,5 +65,5 @@ bool TextureBoxCls::hitTestSelf(Offset position) {
 }
 
 void TextureBoxCls::paint(PaintingContext context, Offset offset) {
-    context->addLayer(make<TextureLayerCls>(RectCls->fromLTWH(offset->dx(), offset->dy(), size->width, size->height), _textureId, freeze(), _filterQuality));
+    context->addLayer(make<TextureLayerCls>(RectCls->fromLTWH(offset->dx(), offset->dy(), size()->width(), size()->height()), _textureId, freeze(), _filterQuality));
 }

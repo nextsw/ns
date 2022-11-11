@@ -1,13 +1,13 @@
 #include "restoration_properties.hpp"
 template<typename T>
 T RestorableValueCls<T>::value() {
-    assert(isRegistered);
+    assert(isRegistered());
     return as<T>(_value);
 }
 
 template<typename T>
 void RestorableValueCls<T>::value(T newValue) {
-    assert(isRegistered);
+    assert(isRegistered());
     if (newValue != _value) {
         T oldValue = _value;
         _value = newValue;
@@ -27,7 +27,7 @@ T _RestorablePrimitiveValueNCls<T>::createDefaultValue() {
 
 template<typename T>
 void _RestorablePrimitiveValueNCls<T>::didUpdateValue(T oldValue) {
-    assert(debugIsSerializableForRestoration(value));
+    assert(debugIsSerializableForRestoration(value()));
     notifyListeners();
 }
 
@@ -38,7 +38,7 @@ T _RestorablePrimitiveValueNCls<T>::fromPrimitives(Object serialized) {
 
 template<typename T>
 Object _RestorablePrimitiveValueNCls<T>::toPrimitives() {
-    return value;
+    return value();
 }
 
 template<typename T>
@@ -116,7 +116,7 @@ DateTime RestorableDateTimeCls::createDefaultValue() {
 }
 
 void RestorableDateTimeCls::didUpdateValue(DateTime oldValue) {
-    assert(debugIsSerializableForRestoration(value->millisecondsSinceEpoch));
+    assert(debugIsSerializableForRestoration(value()->millisecondsSinceEpoch));
     notifyListeners();
 }
 
@@ -125,7 +125,7 @@ DateTime RestorableDateTimeCls::fromPrimitives(Object data) {
 }
 
 Object RestorableDateTimeCls::toPrimitives() {
-    return value->millisecondsSinceEpoch;
+    return value()->millisecondsSinceEpoch;
 }
 
 RestorableDateTimeNCls::RestorableDateTimeNCls(DateTime defaultValue) {
@@ -139,7 +139,7 @@ DateTime RestorableDateTimeNCls::createDefaultValue() {
 }
 
 void RestorableDateTimeNCls::didUpdateValue(DateTime oldValue) {
-    assert(debugIsSerializableForRestoration(value?->millisecondsSinceEpoch));
+    assert(debugIsSerializableForRestoration(value()?->millisecondsSinceEpoch));
     notifyListeners();
 }
 
@@ -148,12 +148,12 @@ DateTime RestorableDateTimeNCls::fromPrimitives(Object data) {
 }
 
 Object RestorableDateTimeNCls::toPrimitives() {
-    return value?->millisecondsSinceEpoch;
+    return value()?->millisecondsSinceEpoch;
 }
 
 template<typename T>
 T RestorableListenableCls<T>::value() {
-    assert(isRegistered);
+    assert(isRegistered());
     return _value!;
 }
 
@@ -204,5 +204,5 @@ TextEditingController RestorableTextEditingControllerCls::fromPrimitives(Object 
 }
 
 Object RestorableTextEditingControllerCls::toPrimitives() {
-    return value->text;
+    return value()->text;
 }

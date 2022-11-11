@@ -15,34 +15,34 @@ State<StatefulWidget> ValueListenableBuilderCls<T>::createState() {
 template<typename T>
 void _ValueListenableBuilderStateCls<T>::initState() {
     super->initState();
-    value = widget->valueListenable->value;
-    widget->valueListenable->addListener(_valueChanged);
+    value = widget()->valueListenable->value;
+    widget()->valueListenable->addListener(_valueChanged);
 }
 
 template<typename T>
 void _ValueListenableBuilderStateCls<T>::didUpdateWidget(ValueListenableBuilder<T> oldWidget) {
     super->didUpdateWidget(oldWidget);
-    if (oldWidget->valueListenable != widget->valueListenable) {
+    if (oldWidget->valueListenable != widget()->valueListenable) {
         oldWidget->valueListenable->removeListener(_valueChanged);
-        value = widget->valueListenable->value;
-        widget->valueListenable->addListener(_valueChanged);
+        value = widget()->valueListenable->value;
+        widget()->valueListenable->addListener(_valueChanged);
     }
 }
 
 template<typename T>
 void _ValueListenableBuilderStateCls<T>::dispose() {
-    widget->valueListenable->removeListener(_valueChanged);
+    widget()->valueListenable->removeListener(_valueChanged);
     super->dispose();
 }
 
 template<typename T>
 Widget _ValueListenableBuilderStateCls<T>::build(BuildContext context) {
-    return widget->builder(context, value, widget->child);
+    return widget()->builder(context, value, widget()->child);
 }
 
 template<typename T>
 void _ValueListenableBuilderStateCls<T>::_valueChanged() {
     setState([=] () {
-        value = widget->valueListenable->value;
+        value = widget()->valueListenable->value;
     });
 }

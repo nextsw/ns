@@ -16,7 +16,7 @@ double _getHue(double red, double green, double blue, double max, double delta) 
 ;
     };
     };
-    }    hue = hue->isNaN? 0.0 : hue;
+    }    hue = hue->isNaN()? 0.0 : hue;
     return hue;
 }
 
@@ -265,8 +265,8 @@ ColorPropertyCls::ColorPropertyCls(String name, Unknown value, Unknown defaultVa
 
 Map<String, Object> ColorPropertyCls::toJsonMap(DiagnosticsSerializationDelegate delegate) {
     Map<String, Object> json = super->toJsonMap(delegate);
-    if (value != nullptr) {
-            Map<String, Object> map1 = make<MapCls<>>();    map1.set(__s("red"), value!->red);    map1.set(__s("green"), value!->green);    map1.set(__s("blue"), value!->blue);    map1.set(__s("alpha"), value!->alpha);json[__s("valueProperties")] = list1;
+    if (value() != nullptr) {
+            Map<String, Object> map1 = make<MapCls<>>();    map1.set(__s("red"), value()!->red);    map1.set(__s("green"), value()!->green);    map1.set(__s("blue"), value()!->blue);    map1.set(__s("alpha"), value()!->alpha);json[__s("valueProperties")] = list1;
     }
     return json;
 }

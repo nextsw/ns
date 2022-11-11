@@ -16,7 +16,7 @@ Iterator<List<T>> IterableZipCls<T>::iterator() {
 
 template<typename T>
 bool _IteratorZipCls<T>::moveNext() {
-    if (_iterators->isEmpty) {
+    if (_iterators->isEmpty()) {
         return false;
     }
     for (;  < _iterators->length(); i++) {

@@ -12,7 +12,7 @@ ScrollbarPainterCls::ScrollbarPainterCls(Color color, double crossAxisMargin, An
         assert(minOverscrollLength == nullptr || minOverscrollLength <= minLength);
         assert(minOverscrollLength == nullptr || minOverscrollLength >= 0);
         assert(padding != nullptr);
-        assert(padding->isNonNegative);
+        assert(padding->isNonNegative());
         assert(trackColor != nullptr);
         assert(trackBorderColor != nullptr);
         assert(ignorePointer != nullptr);
@@ -271,7 +271,7 @@ void ScrollbarPainterCls::paint(Canvas canvas, Size size) {
     double thumbExtent = _thumbExtent();
     double thumbOffsetLocal = _getScrollToTrack(_lastMetrics!, thumbExtent);
     _thumbOffset = thumbOffsetLocal + mainAxisMargin() + beforePadding;
-    if (_lastMetrics!->maxScrollExtent()->isInfinite) {
+    if (_lastMetrics!->maxScrollExtent()->isInfinite()) {
         return;
     }
     return _paintScrollbar(canvas, size, thumbExtent, _lastAxisDirection!);
@@ -431,7 +431,7 @@ double ScrollbarPainterCls::_afterExtent() {
 }
 
 double ScrollbarPainterCls::_mainAxisPadding() {
-    return _isVertical()? padding()->vertical : padding()->horizontal;
+    return _isVertical()? padding()->vertical() : padding()->horizontal();
 }
 
 double ScrollbarPainterCls::_trackExtent() {
@@ -476,20 +476,20 @@ RawScrollbarState<RawScrollbar> RawScrollbarCls::createState() {
 
 template<typename T>
 bool RawScrollbarStateCls<T>::showScrollbar() {
-    return widget->isAlwaysShown | widget->thumbVisibility | false;
+    return widget()->isAlwaysShown | widget()->thumbVisibility | false;
 }
 
 template<typename T>
 bool RawScrollbarStateCls<T>::enableGestures() {
-    return widget->interactive | true;
+    return widget()->interactive | true;
 }
 
 template<typename T>
 void RawScrollbarStateCls<T>::initState() {
     super->initState();
-    auto _c1 = make<AnimationControllerCls>(this, widget->fadeDuration);_c1.addStatusListener(_validateInteractions);_fadeoutAnimationController = _c1;
+    auto _c1 = make<AnimationControllerCls>(this, widget()->fadeDuration);_c1.addStatusListener(_validateInteractions);_fadeoutAnimationController = _c1;
     _fadeoutOpacityAnimation = make<CurvedAnimationCls>(_fadeoutAnimationController, CurvesCls::fastOutSlowIn);
-    scrollbarPainter = make<ScrollbarPainterCls>(widget->thumbColor | make<ColorCls>(0x66BCBCBC), _fadeoutOpacityAnimation, widget->thickness | _kScrollbarThickness, widget->radius, widget->trackRadius, widget->scrollbarOrientation, widget->mainAxisMargin, widget->shape, widget->crossAxisMargin, widget->minThumbLength, widget->minOverscrollLength | widget->minThumbLength);
+    scrollbarPainter = make<ScrollbarPainterCls>(widget()->thumbColor | make<ColorCls>(0x66BCBCBC), _fadeoutOpacityAnimation, widget()->thickness | _kScrollbarThickness, widget()->radius, widget()->trackRadius, widget()->scrollbarOrientation, widget()->mainAxisMargin, widget()->shape, widget()->crossAxisMargin, widget()->minThumbLength, widget()->minOverscrollLength | widget()->minThumbLength);
 }
 
 template<typename T>
@@ -500,14 +500,14 @@ void RawScrollbarStateCls<T>::didChangeDependencies() {
 
 template<typename T>
 void RawScrollbarStateCls<T>::updateScrollbarPainter() {
-    auto _c1 = scrollbarPainter;_c1.color = widget->thumbColor | auto _c2 = make<ColorCls>(0x66BCBCBC);_c2.trackRadius = auto _c3 = widget->trackRadius;_c3.trackColor = _showTrack()? widget->trackColor | make<ColorCls>(0x08000000) : auto _c4 = make<ColorCls>(0x00000000);_c4.trackBorderColor = _showTrack()? widget->trackBorderColor | make<ColorCls>(0x1a000000) : auto _c5 = make<ColorCls>(0x00000000);_c5.textDirection = auto _c6 = DirectionalityCls->of(context);_c6.thickness = auto _c7 = widget->thickness | _kScrollbarThickness;_c7.radius = auto _c8 = widget->radius;_c8.padding = auto _c9 = MediaQueryCls->of(context)->padding;_c9.scrollbarOrientation = auto _c10 = widget->scrollbarOrientation;_c10.mainAxisMargin = auto _c11 = widget->mainAxisMargin;_c11.shape = auto _c12 = widget->shape;_c12.crossAxisMargin = auto _c13 = widget->crossAxisMargin;_c13.minLength = auto _c14 = widget->minThumbLength;_c14.minOverscrollLength = auto _c15 = widget->minOverscrollLength | widget->minThumbLength;_c15.ignorePointer = !enableGestures();_c15;_c14;_c13;_c12;_c11;_c10;_c9;_c8;_c7;_c6;_c5;_c4;_c3;_c2;_c1;
+    auto _c1 = scrollbarPainter;_c1.color = widget()->thumbColor | auto _c2 = make<ColorCls>(0x66BCBCBC);_c2.trackRadius = auto _c3 = widget()->trackRadius;_c3.trackColor = _showTrack()? widget()->trackColor | make<ColorCls>(0x08000000) : auto _c4 = make<ColorCls>(0x00000000);_c4.trackBorderColor = _showTrack()? widget()->trackBorderColor | make<ColorCls>(0x1a000000) : auto _c5 = make<ColorCls>(0x00000000);_c5.textDirection = auto _c6 = DirectionalityCls->of(context());_c6.thickness = auto _c7 = widget()->thickness | _kScrollbarThickness;_c7.radius = auto _c8 = widget()->radius;_c8.padding = auto _c9 = MediaQueryCls->of(context())->padding;_c9.scrollbarOrientation = auto _c10 = widget()->scrollbarOrientation;_c10.mainAxisMargin = auto _c11 = widget()->mainAxisMargin;_c11.shape = auto _c12 = widget()->shape;_c12.crossAxisMargin = auto _c13 = widget()->crossAxisMargin;_c13.minLength = auto _c14 = widget()->minThumbLength;_c14.minOverscrollLength = auto _c15 = widget()->minOverscrollLength | widget()->minThumbLength;_c15.ignorePointer = !enableGestures();_c15;_c14;_c13;_c12;_c11;_c10;_c9;_c8;_c7;_c6;_c5;_c4;_c3;_c2;_c1;
 }
 
 template<typename T>
 void RawScrollbarStateCls<T>::didUpdateWidget(T oldWidget) {
     super->didUpdateWidget(oldWidget);
-    if (widget->isAlwaysShown != oldWidget->isAlwaysShown || widget->thumbVisibility != oldWidget->thumbVisibility) {
-        if ((widget->isAlwaysShown | false) || (widget->thumbVisibility | false)) {
+    if (widget()->isAlwaysShown != oldWidget->isAlwaysShown || widget()->thumbVisibility != oldWidget->thumbVisibility) {
+        if ((widget()->isAlwaysShown | false) || (widget()->thumbVisibility | false)) {
             assert(_debugScheduleCheckHasValidScrollPosition());
             _fadeoutTimer?->cancel();
             _fadeoutAnimationController->animateTo(1.0);
@@ -538,7 +538,7 @@ void RawScrollbarStateCls<T>::handleThumbPress() {
 template<typename T>
 void RawScrollbarStateCls<T>::handleThumbPressStart(Offset localPosition) {
     assert(_debugCheckHasValidScrollPosition());
-    _currentController = widget->controller | PrimaryScrollControllerCls->of(context);
+    _currentController = widget()->controller | PrimaryScrollControllerCls->of(context());
     Axis direction = getScrollbarDirection();
     if (direction == nullptr) {
         return;
@@ -633,12 +633,12 @@ Widget RawScrollbarStateCls<T>::build(BuildContext context) {
         ;
     }, [=] (PointerHoverEvent event) {
         ;
-    }, make<CustomPaintCls>(_scrollbarPainterKey, scrollbarPainter, make<RepaintBoundaryCls>(widget->child)))))));
+    }, make<CustomPaintCls>(_scrollbarPainterKey, scrollbarPainter, make<RepaintBoundaryCls>(widget()->child)))))));
 }
 
 template<typename T>
 bool RawScrollbarStateCls<T>::_showTrack() {
-    return showScrollbar() && (widget->trackVisibility | false);
+    return showScrollbar() && (widget()->trackVisibility | false);
 }
 
 template<typename T>
@@ -654,7 +654,7 @@ bool RawScrollbarStateCls<T>::_debugScheduleCheckHasValidScrollPosition() {
 
 template<typename T>
 void RawScrollbarStateCls<T>::_validateInteractions(AnimationStatus status) {
-    ScrollController scrollController = widget->controller | PrimaryScrollControllerCls->of(context);
+    ScrollController scrollController = widget()->controller | PrimaryScrollControllerCls->of(context());
     if (status == AnimationStatusCls::dismissed) {
         assert(_fadeoutOpacityAnimation->value() == 0.0);
     } else {
@@ -666,17 +666,17 @@ void RawScrollbarStateCls<T>::_validateInteractions(AnimationStatus status) {
 
 template<typename T>
 bool RawScrollbarStateCls<T>::_debugCheckHasValidScrollPosition() {
-    if (!mounted) {
+    if (!mounted()) {
         return true;
     }
-    ScrollController scrollController = widget->controller | PrimaryScrollControllerCls->of(context);
-    bool tryPrimary = widget->controller == nullptr;
+    ScrollController scrollController = widget()->controller | PrimaryScrollControllerCls->of(context());
+    bool tryPrimary = widget()->controller == nullptr;
     String controllerForError = tryPrimary? __s("PrimaryScrollController") : __s("provided ScrollController");
     String when = __s("");
-    if (widget->isAlwaysShown | false) {
+    if (widget()->isAlwaysShown | false) {
         when = __s("Scrollbar.isAlwaysShown is true");
     } else {
-        if (widget->thumbVisibility | false) {
+        if (widget()->thumbVisibility | false) {
         when = __s("Scrollbar.thumbVisibility is true");
     } else {
         if (enableGestures()) {
@@ -728,7 +728,7 @@ template<typename T>
 void RawScrollbarStateCls<T>::_maybeStartFadeoutTimer() {
     if (!showScrollbar()) {
         _fadeoutTimer?->cancel();
-        _fadeoutTimer = make<TimerCls>(widget->timeToFade, [=] () {
+        _fadeoutTimer = make<TimerCls>(widget()->timeToFade, [=] () {
             _fadeoutAnimationController->reverse();
             _fadeoutTimer = nullptr;
         });
@@ -738,7 +738,7 @@ void RawScrollbarStateCls<T>::_maybeStartFadeoutTimer() {
 template<typename T>
 void RawScrollbarStateCls<T>::_handleTrackTapDown(TapDownDetails details) {
     assert(_debugCheckHasValidScrollPosition());
-    _currentController = widget->controller | PrimaryScrollControllerCls->of(context);
+    _currentController = widget()->controller | PrimaryScrollControllerCls->of(context());
     double scrollIncrement;
     ScrollIncrementCalculator calculator = ScrollableCls->of(_currentController!->position()->context->notificationContext()!)?->widget->incrementCalculator;
     if (calculator != nullptr) {
@@ -752,7 +752,7 @@ void RawScrollbarStateCls<T>::_handleTrackTapDown(TapDownDetails details) {
 
 template<typename T>
 bool RawScrollbarStateCls<T>::_shouldUpdatePainter(Axis notificationAxis) {
-    ScrollController scrollController = widget->controller | PrimaryScrollControllerCls->of(context);
+    ScrollController scrollController = widget()->controller | PrimaryScrollControllerCls->of(context());
     if (scrollController == nullptr) {
         return true;
     }
@@ -764,7 +764,7 @@ bool RawScrollbarStateCls<T>::_shouldUpdatePainter(Axis notificationAxis) {
 
 template<typename T>
 bool RawScrollbarStateCls<T>::_handleScrollMetricsNotification(ScrollMetricsNotification notification) {
-    if (!widget->notificationPredicate(make<ScrollUpdateNotificationCls>(notification->metrics, notification->context, notification->depth))) {
+    if (!widget()->notificationPredicate(make<ScrollUpdateNotificationCls>(notification->metrics, notification->context, notification->depth))) {
         return false;
     }
     if (showScrollbar()) {
@@ -781,7 +781,7 @@ bool RawScrollbarStateCls<T>::_handleScrollMetricsNotification(ScrollMetricsNoti
 
 template<typename T>
 bool RawScrollbarStateCls<T>::_handleScrollNotification(ScrollNotification notification) {
-    if (!widget->notificationPredicate(notification)) {
+    if (!widget()->notificationPredicate(notification)) {
         return false;
     }
     ScrollMetrics metrics = notification->metrics;
@@ -815,12 +815,12 @@ bool RawScrollbarStateCls<T>::_handleScrollNotification(ScrollNotification notif
 template<typename T>
 Map<Type, GestureRecognizerFactory> RawScrollbarStateCls<T>::_gestures() {
     Map<Type, GestureRecognizerFactory> gestures = makeMap(makeList(), makeList();
-    ScrollController controller = widget->controller | PrimaryScrollControllerCls->of(context);
+    ScrollController controller = widget()->controller | PrimaryScrollControllerCls->of(context());
     if (controller == nullptr || !enableGestures()) {
         return gestures;
     }
     gestures[_ThumbPressGestureRecognizerCls] = <_ThumbPressGestureRecognizer>make<GestureRecognizerFactoryWithHandlersCls>([=] () {
-        make<_ThumbPressGestureRecognizerCls>(this, _scrollbarPainterKey, widget->pressDuration);
+        make<_ThumbPressGestureRecognizerCls>(this, _scrollbarPainterKey, widget()->pressDuration);
     }, [=] (_ThumbPressGestureRecognizer instance) {
         instance->onLongPress = handleThumbPress;
         instance->onLongPressStart = [=] (LongPressStartDetails details) {

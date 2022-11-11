@@ -205,7 +205,7 @@ void _SelectionKeepAliveStateCls::wantKeepAlive(bool value) {
 
 VoidCallback _SelectionKeepAliveStateCls::listensTo(Selectable selectable) {
     return [=] () {
-        if (selectable->value->hasSelection) {
+        if (selectable->value()->hasSelection) {
             _updateSelectablesWithSelections(selectable, true);
         } else {
             _updateSelectablesWithSelections(selectable, false);
@@ -215,7 +215,7 @@ VoidCallback _SelectionKeepAliveStateCls::listensTo(Selectable selectable) {
 
 void _SelectionKeepAliveStateCls::didChangeDependencies() {
     super->didChangeDependencies();
-    SelectionRegistrar newRegistrar = SelectionContainerCls->maybeOf(context);
+    SelectionRegistrar newRegistrar = SelectionContainerCls->maybeOf(context());
     if (_registrar != newRegistrar) {
         if (_registrar != nullptr) {
             _selectableAttachments?->keys()->forEach(_registrar!->remove);
@@ -233,7 +233,7 @@ void _SelectionKeepAliveStateCls::add(Selectable selectable) {
     _selectableAttachments |= makeMap(makeList(), makeList();
     _selectableAttachments![selectable] = attachment;
     _registrar!->add(selectable);
-    if (selectable->value->hasSelection) {
+    if (selectable->value()->hasSelection) {
         _updateSelectablesWithSelections(selectable, true);
     }
 }
@@ -264,20 +264,20 @@ void _SelectionKeepAliveStateCls::dispose() {
 Widget _SelectionKeepAliveStateCls::build(BuildContext context) {
     super->build(context);
     if (_registrar == nullptr) {
-        return widget->child;
+        return widget()->child;
     }
-    return make<SelectionRegistrarScopeCls>(this, widget->child);
+    return make<SelectionRegistrarScopeCls>(this, widget()->child);
 }
 
 void _SelectionKeepAliveStateCls::_updateSelectablesWithSelections(Selectable selectable, bool add) {
     if (add) {
-        assert(selectable->value->hasSelection);
+        assert(selectable->value()->hasSelection);
         _selectablesWithSelections |= makeSet();
         _selectablesWithSelections!->add(selectable);
     } else {
         _selectablesWithSelections?->remove(selectable);
     }
-    wantKeepAlive() = _selectablesWithSelections?->isNotEmpty | false;
+    wantKeepAlive() = _selectablesWithSelections?->isNotEmpty() | false;
 }
 
 SliverMultiBoxAdaptorWidgetCls::SliverMultiBoxAdaptorWidgetCls(SliverChildDelegate delegate, Unknown key) {
@@ -332,7 +332,7 @@ void SliverGridCls::updateRenderObject(BuildContext context, RenderSliverGrid re
 }
 
 double SliverGridCls::estimateMaxScrollOffset(SliverConstraints constraints, int firstIndex, int lastIndex, double leadingScrollOffset, double trailingScrollOffset) {
-    return super->estimateMaxScrollOffset(constraints, firstIndex, lastIndex, leadingScrollOffset, trailingScrollOffset) | gridDelegate->getLayout(constraints!)->computeMaxScrollOffset(delegate->estimatedChildCount!);
+    return super->estimateMaxScrollOffset(constraints, firstIndex, lastIndex, leadingScrollOffset, trailingScrollOffset) | gridDelegate->getLayout(constraints!)->computeMaxScrollOffset(delegate->estimatedChildCount()!);
 }
 
 SliverMultiBoxAdaptorElementCls::SliverMultiBoxAdaptorElementCls(SliverMultiBoxAdaptorWidget widget, bool replaceMovedChildren) {
@@ -346,7 +346,7 @@ RenderSliverMultiBoxAdaptor SliverMultiBoxAdaptorElementCls::renderObject() {
 }
 
 void SliverMultiBoxAdaptorElementCls::update(SliverMultiBoxAdaptorWidget newWidget) {
-    SliverMultiBoxAdaptorWidget oldWidget = as<SliverMultiBoxAdaptorWidget>(widget);
+    SliverMultiBoxAdaptorWidget oldWidget = as<SliverMultiBoxAdaptorWidget>(widget());
     super->update(newWidget);
     SliverChildDelegate newDelegate = newWidget->delegate;
     SliverChildDelegate oldDelegate = oldWidget->delegate;
@@ -363,7 +363,7 @@ void SliverMultiBoxAdaptorElementCls::performRebuild() {
     try {
         SplayTreeMap<int, Element> newChildren = <int, Element>make<SplayTreeMapCls>();
         Map<int, double> indexToLayoutOffset = <int, double>make<HashMapCls>();
-        SliverMultiBoxAdaptorWidget adaptorWidget = as<SliverMultiBoxAdaptorWidget>(widget);
+        SliverMultiBoxAdaptorWidget adaptorWidget = as<SliverMultiBoxAdaptorWidget>(widget());
         InlineMethod;
         for (int index : _childElements->keys()->toList()) {
             Key key = _childElements[index]!->widget->key;
@@ -405,13 +405,13 @@ void SliverMultiBoxAdaptorElementCls::performRebuild() {
 
 void SliverMultiBoxAdaptorElementCls::createChild(int index, RenderBox after) {
     assert(_currentlyUpdatingChildIndex == nullptr);
-    owner!->buildScope(this, [=] () {
+    owner()!->buildScope(this, [=] () {
         bool insertFirst = after == nullptr;
         assert(insertFirst || _childElements[index - 1] != nullptr);
         _currentBeforeChild = insertFirst? nullptr : (as<RenderBox>(_childElements[index - 1]!->renderObject));
         Element newChild;
         try {
-            SliverMultiBoxAdaptorWidget adaptorWidget = as<SliverMultiBoxAdaptorWidget>(widget);
+            SliverMultiBoxAdaptorWidget adaptorWidget = as<SliverMultiBoxAdaptorWidget>(widget());
             _currentlyUpdatingChildIndex = index;
             newChild = updateChild(_childElements[index], _build(index, adaptorWidget), index);
         } finally {
@@ -447,7 +447,7 @@ void SliverMultiBoxAdaptorElementCls::removeChild(RenderBox child) {
     int index = renderObject()->indexOf(child);
     assert(_currentlyUpdatingChildIndex == nullptr);
     assert(index >= 0);
-    owner!->buildScope(this, [=] () {
+    owner()!->buildScope(this, [=] () {
         assert(_childElements->containsKey(index));
         try {
             _currentlyUpdatingChildIndex = index;
@@ -466,11 +466,11 @@ double SliverMultiBoxAdaptorElementCls::estimateMaxScrollOffset(SliverConstraint
     if (childCount == nullptr) {
         return double->infinity;
     }
-    return (as<SliverMultiBoxAdaptorWidget>(widget))->estimateMaxScrollOffset(constraints, firstIndex!, lastIndex!, leadingScrollOffset!, trailingScrollOffset!) | _extrapolateMaxScrollOffset(firstIndex, lastIndex, leadingScrollOffset, trailingScrollOffset, childCount);
+    return (as<SliverMultiBoxAdaptorWidget>(widget()))->estimateMaxScrollOffset(constraints, firstIndex!, lastIndex!, leadingScrollOffset!, trailingScrollOffset!) | _extrapolateMaxScrollOffset(firstIndex, lastIndex, leadingScrollOffset, trailingScrollOffset, childCount);
 }
 
 int SliverMultiBoxAdaptorElementCls::estimatedChildCount() {
-    return (as<SliverMultiBoxAdaptorWidget>(widget))->delegate->estimatedChildCount();
+    return (as<SliverMultiBoxAdaptorWidget>(widget()))->delegate->estimatedChildCount();
 }
 
 int SliverMultiBoxAdaptorElementCls::childCount() {
@@ -478,7 +478,7 @@ int SliverMultiBoxAdaptorElementCls::childCount() {
     if (result == nullptr) {
         int lo = 0;
         int hi = 1;
-        SliverMultiBoxAdaptorWidget adaptorWidget = as<SliverMultiBoxAdaptorWidget>(widget);
+        SliverMultiBoxAdaptorWidget adaptorWidget = as<SliverMultiBoxAdaptorWidget>(widget());
         int max = kIsWeb? 9007199254740992 : ((1 << 63) - 1);
         while (_build(hi - 1, adaptorWidget) != nullptr) {
             lo = hi - 1;
@@ -513,7 +513,7 @@ void SliverMultiBoxAdaptorElementCls::didFinishLayout() {
     assert(debugAssertChildListLocked());
     int firstIndex = _childElements->firstKey() | 0;
     int lastIndex = _childElements->lastKey() | 0;
-    (as<SliverMultiBoxAdaptorWidget>(widget))->delegate->didFinishLayout(firstIndex, lastIndex);
+    (as<SliverMultiBoxAdaptorWidget>(widget()))->delegate->didFinishLayout(firstIndex, lastIndex);
 }
 
 bool SliverMultiBoxAdaptorElementCls::debugAssertChildListLocked() {
@@ -566,7 +566,7 @@ void SliverMultiBoxAdaptorElementCls::debugVisitOnstageChildren(ElementVisitor v
         SliverMultiBoxAdaptorParentData parentData = as<SliverMultiBoxAdaptorParentData>(child->renderObject!->parentData!);
         double itemExtent;
         ;
-        return parentData->layoutOffset != nullptr && parentData->layoutOffset! < renderObject()->constraints->scrollOffset + renderObject()->constraints->remainingPaintExtent && parentData->layoutOffset! + itemExtent > renderObject()->constraints->scrollOffset;
+        return parentData->layoutOffset != nullptr && parentData->layoutOffset! < renderObject()->constraints()->scrollOffset + renderObject()->constraints()->remainingPaintExtent && parentData->layoutOffset! + itemExtent > renderObject()->constraints()->scrollOffset;
     })->forEach(visitor);
 }
 
@@ -649,7 +649,7 @@ SingleChildRenderObjectElement SliverOffstageCls::createElement() {
 }
 
 void _SliverOffstageElementCls::debugVisitOnstageChildren(ElementVisitor visitor) {
-    if (!(as<SliverOffstage>(widget))->offstage) {
+    if (!(as<SliverOffstage>(widget()))->offstage) {
         super->debugVisitOnstageChildren(visitor);
     }
 }
@@ -666,7 +666,7 @@ void KeepAliveCls::applyParentData(RenderObject renderObject) {
     KeepAliveParentDataMixin parentData = as<KeepAliveParentDataMixin>(renderObject->parentData!);
     if (parentData->keepAlive != keepAlive) {
         parentData->keepAlive = keepAlive;
-        AbstractNode targetParent = renderObject->parent;
+        AbstractNode targetParent = renderObject->parent();
         if (is<RenderObject>(targetParent) && !keepAlive) {
             targetParent->markNeedsLayout();
         }

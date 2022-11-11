@@ -38,9 +38,9 @@ void _LayoutBuilderElementCls<ConstraintType>::mount(Element parent, Object newS
 
 template<typename ConstraintType>
 void _LayoutBuilderElementCls<ConstraintType>::update(ConstrainedLayoutBuilder<ConstraintType> newWidget) {
-    assert(widget != newWidget);
+    assert(widget() != newWidget);
     super->update(newWidget);
-    assert(widget == newWidget);
+    assert(widget() == newWidget);
     renderObject()->updateCallback(_layout);
     renderObject()->markNeedsBuild();
 }
@@ -82,7 +82,7 @@ void _LayoutBuilderElementCls<ConstraintType>::removeRenderObjectChild(RenderObj
 template<typename ConstraintType>
 void _LayoutBuilderElementCls<ConstraintType>::_layout(ConstraintType constraints) {
     InlineMethod;
-    owner!->buildScope(this, layoutCallback);
+    owner()!->buildScope(this, layoutCallback);
 }
 
 template<typename ConstraintType, typename ChildType>
@@ -150,13 +150,13 @@ Size _RenderLayoutBuilderCls::computeDryLayout(BoxConstraints constraints) {
 }
 
 void _RenderLayoutBuilderCls::performLayout() {
-    BoxConstraints constraints = this->constraints;
+    BoxConstraints constraints = this->constraints();
     rebuildIfNecessary();
     if (child != nullptr) {
         child!->layout(constraints, true);
-        size = constraints->constrain(child!->size);
+        size() = constraints->constrain(child!->size);
     } else {
-        size = constraints->biggest();
+        size() = constraints->biggest();
     }
 }
 

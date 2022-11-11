@@ -60,7 +60,7 @@ Future<Map<String, List<String>>> AssetImageCls::_manifestParser(String jsonData
 }
 
 String AssetImageCls::_chooseVariant(String main, ImageConfiguration config, List<String> candidates) {
-    if (config->devicePixelRatio == nullptr || candidates == nullptr || candidates->isEmpty) {
+    if (config->devicePixelRatio == nullptr || candidates == nullptr || candidates->isEmpty()) {
         return main;
     }
     SplayTreeMap<double, String> mapping = <double, String>make<SplayTreeMapCls>();

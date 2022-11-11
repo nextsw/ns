@@ -200,12 +200,12 @@ Iterable<int> ListMapViewCls<E>::keys() {
 
 template<typename E>
 bool ListMapViewCls<E>::isEmpty() {
-    return _values->isEmpty;
+    return _values->isEmpty();
 }
 
 template<typename E>
 bool ListMapViewCls<E>::isNotEmpty() {
-    return _values->isNotEmpty;
+    return _values->isNotEmpty();
 }
 
 template<typename E>

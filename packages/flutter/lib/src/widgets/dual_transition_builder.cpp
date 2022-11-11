@@ -13,27 +13,27 @@ State<DualTransitionBuilder> DualTransitionBuilderCls::createState() {
 
 void _DualTransitionBuilderStateCls::initState() {
     super->initState();
-    _effectiveAnimationStatus = widget->animation->status;
-    widget->animation->addStatusListener(_animationListener);
+    _effectiveAnimationStatus = widget()->animation->status;
+    widget()->animation->addStatusListener(_animationListener);
     _updateAnimations();
 }
 
 void _DualTransitionBuilderStateCls::didUpdateWidget(DualTransitionBuilder oldWidget) {
     super->didUpdateWidget(oldWidget);
-    if (oldWidget->animation != widget->animation) {
+    if (oldWidget->animation != widget()->animation) {
         oldWidget->animation->removeStatusListener(_animationListener);
-        widget->animation->addStatusListener(_animationListener);
-        _animationListener(widget->animation->status);
+        widget()->animation->addStatusListener(_animationListener);
+        _animationListener(widget()->animation->status);
     }
 }
 
 void _DualTransitionBuilderStateCls::dispose() {
-    widget->animation->removeStatusListener(_animationListener);
+    widget()->animation->removeStatusListener(_animationListener);
     super->dispose();
 }
 
 Widget _DualTransitionBuilderStateCls::build(BuildContext context) {
-    return widget->forwardBuilder(context, _forwardAnimation, widget->reverseBuilder(context, _reverseAnimation, widget->child));
+    return widget()->forwardBuilder(context, _forwardAnimation, widget()->reverseBuilder(context, _reverseAnimation, widget()->child));
 }
 
 void _DualTransitionBuilderStateCls::_animationListener(AnimationStatus animationStatus) {

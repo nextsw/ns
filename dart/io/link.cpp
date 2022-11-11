@@ -36,11 +36,11 @@ bool _LinkCls::existsSync() {
 }
 
 Link _LinkCls::absolute() {
-    return isAbsolute? this : make<_LinkCls>(_absolutePath);
+    return isAbsolute()? this : make<_LinkCls>(_absolutePath());
 }
 
 Future<Link> _LinkCls::create(String target, bool recursive) {
-    auto result = recursive? parent->create(true) : FutureCls->value(nullptr);
+    auto result = recursive? parent()->create(true) : FutureCls->value(nullptr);
     return result->then([=] () {
         _FileCls->_dispatchWithNamespace(_IOServiceCls::fileCreateLink, makeList(ArrayItem, ArrayItem, ArrayItem));
     })->then([=] (Unknown  response) {
@@ -53,7 +53,7 @@ Future<Link> _LinkCls::create(String target, bool recursive) {
 
 void _LinkCls::createSync(String target, bool recursive) {
     if (recursive) {
-        parent->createSync(true);
+        parent()->createSync(true);
     }
     auto result = _FileCls->_createLink(_NamespaceCls::_namespace, _rawPath, target);
     throwIfError(result, __s("Cannot create link"), path());

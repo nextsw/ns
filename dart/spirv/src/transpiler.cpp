@@ -2,7 +2,7 @@
 void _TranspilerCls::transpile() {
     parseHeader();
     writeHeader();
-    while ( < spirv->length) {
+    while ( < spirv->length()) {
         int lastPosition = position;
         parseInstruction();
         assert(position > lastPosition);

@@ -288,7 +288,7 @@ void _ScreenshotPaintingContextCls::paintChild(RenderObject child, Offset offset
 Future<Image> _ScreenshotPaintingContextCls::toImage(RenderObject renderObject, Rect renderBounds, bool debugPaint, double pixelRatio) {
     RenderObject repaintBoundary = renderObject;
     while (repaintBoundary != nullptr && !repaintBoundary->isRepaintBoundary()) {
-        repaintBoundary = as<RenderObject>(repaintBoundary->parent!);
+        repaintBoundary = as<RenderObject>(repaintBoundary->parent()!);
     }
     assert(repaintBoundary != nullptr);
     _ScreenshotData data = make<_ScreenshotDataCls>(renderObject);
@@ -375,7 +375,7 @@ _DiagnosticsPathNodeCls::_DiagnosticsPathNodeCls(int childIndex, List<Diagnostic
 
 List<_DiagnosticsPathNode> _followDiagnosticableChain(List<Diagnosticable> chain, String name, DiagnosticsTreeStyle style) {
     List<_DiagnosticsPathNode> path = makeList();
-    if (chain->isEmpty) {
+    if (chain->isEmpty()) {
         return path;
     }
     DiagnosticsNode diagnostic = chain->first->toDiagnosticsNode(name, style);
@@ -549,7 +549,7 @@ void WidgetInspectorServiceCls::initServiceExtensions(RegisterServiceExtensionCa
                     Map<String, Object> map2 = make<MapCls<>>();        map2.set(__s("result"), nullptr);return list2;
         }
         ByteData byteData = await image->toByteData(ui->ImageByteFormatCls::png);
-            Map<String, Object> map3 = make<MapCls<>>();    map3.set(__s("result"), base64->encoder->convert(Uint8ListCls->view(byteData!->buffer)));return list3;
+            Map<String, Object> map3 = make<MapCls<>>();    map3.set(__s("result"), base64->encoder->convert(Uint8ListCls->view(byteData!->buffer())));return list3;
     });
 }
 
@@ -760,7 +760,7 @@ Future<Image> WidgetInspectorServiceCls::screenshot(Object object, bool debugPai
         return nullptr;
     }
     RenderObject renderObject = is<Element>(object)? object->renderObject : (as<RenderObject>(object));
-    if (renderObject == nullptr || !renderObject->attached) {
+    if (renderObject == nullptr || !renderObject->attached()) {
         return nullptr;
     }
     if (renderObject->debugNeedsLayout()) {
@@ -945,7 +945,7 @@ List<_DiagnosticsPathNode> WidgetInspectorServiceCls::_getRenderObjectParentChai
     List<RenderObject> chain = makeList();
     while (renderObject != nullptr) {
         chain->add(renderObject);
-        renderObject = as<RenderObject>(renderObject->parent);
+        renderObject = as<RenderObject>(renderObject->parent());
     }
     return _followDiagnosticableChain(chain->reversed()->toList());
 }
@@ -999,7 +999,7 @@ List<DiagnosticsNode> WidgetInspectorServiceCls::_truncateNodes(Iterable<Diagnos
         List<DiagnosticsNode> localNodes = nodes->where([=] (DiagnosticsNode node) {
     _isValueCreatedByLocalProject(node->value);
 })->toList();
-        if (localNodes->isNotEmpty) {
+        if (localNodes->isNotEmpty()) {
             return localNodes;
         }
     }
@@ -1204,7 +1204,7 @@ Map<String, dynamic> _ElementLocationStatsTrackerCls::exportToJson(Duration star
         events[j++] = stat->count;
     }
     Map<String, dynamic> map1 = make<MapCls<>>();map1.set(__s("startTime"), startTime->inMicroseconds());map1.set(__s("events"), events);Map<String, dynamic> json = list1;
-    if (newLocations->isNotEmpty) {
+    if (newLocations->isNotEmpty()) {
         Map<String, List<int>> locationsJson = makeMap(makeList(), makeList();
         for (_LocationCount entry : newLocations) {
             _Location location = entry->location;
@@ -1215,7 +1215,7 @@ Map<String, dynamic> _ElementLocationStatsTrackerCls::exportToJson(Duration star
         }
         json[__s("newLocations")] = locationsJson;
     }
-    if (newLocations->isNotEmpty) {
+    if (newLocations->isNotEmpty()) {
         Map<String, Map<String, List<Object>>> fileLocationsMap = makeMap(makeList(), makeList();
         for (_LocationCount entry : newLocations) {
             _Location location = entry->location;
@@ -1277,7 +1277,7 @@ List<RenderObject> _WidgetInspectorStateCls::hitTest(Offset position, RenderObje
 }
 
 Widget _WidgetInspectorStateCls::build(BuildContext context) {
-    List<Widget> list1 = make<ListCls<>>();list1.add(ArrayItem);if (!isSelectMode && widget->selectButtonBuilder != nullptr) {    list1.add(ArrayItem);}list1.add(ArrayItem);return make<StackCls>(list1);
+    List<Widget> list1 = make<ListCls<>>();list1.add(ArrayItem);if (!isSelectMode && widget()->selectButtonBuilder != nullptr) {    list1.add(ArrayItem);}list1.add(ArrayItem);return make<StackCls>(list1);
 }
 
 _WidgetInspectorStateCls::_WidgetInspectorStateCls() {
@@ -1364,7 +1364,7 @@ void _WidgetInspectorStateCls::_handleTap() {
         developer->inspect(selection->current());
     }
     setState([=] () {
-        if (widget->selectButtonBuilder != nullptr) {
+        if (widget()->selectButtonBuilder != nullptr) {
             isSelectMode = false;
         }
     });
@@ -1429,7 +1429,7 @@ void InspectorSelectionCls::currentElement(Element element) {
 }
 
 bool InspectorSelectionCls::active() {
-    return _current != nullptr && _current!->attached;
+    return _current != nullptr && _current!->attached();
 }
 
 void InspectorSelectionCls::_computeCurrent() {
@@ -1474,8 +1474,8 @@ Size _RenderInspectorOverlayCls::computeDryLayout(BoxConstraints constraints) {
 }
 
 void _RenderInspectorOverlayCls::paint(PaintingContext context, Offset offset) {
-    assert(needsCompositing);
-    context->addLayer(make<_InspectorOverlayLayerCls>(RectCls->fromLTWH(offset->dx(), offset->dy(), size->width, size->height), selection(), is<RenderObject>(parent)? as<RenderObject>(parent!) : nullptr));
+    assert(needsCompositing());
+    context->addLayer(make<_InspectorOverlayLayerCls>(RectCls->fromLTWH(offset->dx(), offset->dy(), size()->width(), size()->height()), selection(), is<RenderObject>(parent())? as<RenderObject>(parent()!) : nullptr));
 }
 
 _RenderInspectorOverlayCls::_RenderInspectorOverlayCls(InspectorSelection selection) {
@@ -1606,12 +1606,12 @@ void _InspectorOverlayLayerCls::_paintDescription(Canvas canvas, String message,
 }
 
 bool _InspectorOverlayLayerCls::_isInInspectorRenderObjectTree(RenderObject child) {
-    RenderObject current = as<RenderObject>(child->parent);
+    RenderObject current = as<RenderObject>(child->parent());
     while (current != nullptr) {
         if (is<RenderStack>(current) && is<_RenderInspectorOverlay>(current->lastChild)) {
             return rootRenderObject == current;
         }
-        current = as<RenderObject>(current->parent);
+        current = as<RenderObject>(current->parent());
     }
     return false;
 }

@@ -16,7 +16,7 @@ bool BoxDecorationCls::debugAssertIsValid() {
 }
 
 EdgeInsetsGeometry BoxDecorationCls::padding() {
-    return border?->dimensions;
+    return border?->dimensions();
 }
 
 Path BoxDecorationCls::getClipPath(Rect rect, TextDirection textDirection) {

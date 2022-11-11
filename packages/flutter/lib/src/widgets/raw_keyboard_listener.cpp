@@ -19,29 +19,29 @@ void RawKeyboardListenerCls::debugFillProperties(DiagnosticPropertiesBuilder pro
 
 void _RawKeyboardListenerStateCls::initState() {
     super->initState();
-    widget->focusNode->addListener(_handleFocusChanged);
+    widget()->focusNode->addListener(_handleFocusChanged);
 }
 
 void _RawKeyboardListenerStateCls::didUpdateWidget(RawKeyboardListener oldWidget) {
     super->didUpdateWidget(oldWidget);
-    if (widget->focusNode != oldWidget->focusNode) {
+    if (widget()->focusNode != oldWidget->focusNode) {
         oldWidget->focusNode->removeListener(_handleFocusChanged);
-        widget->focusNode->addListener(_handleFocusChanged);
+        widget()->focusNode->addListener(_handleFocusChanged);
     }
 }
 
 void _RawKeyboardListenerStateCls::dispose() {
-    widget->focusNode->removeListener(_handleFocusChanged);
+    widget()->focusNode->removeListener(_handleFocusChanged);
     _detachKeyboardIfAttached();
     super->dispose();
 }
 
 Widget _RawKeyboardListenerStateCls::build(BuildContext context) {
-    return make<FocusCls>(widget->focusNode, widget->autofocus, widget->includeSemantics, widget->child);
+    return make<FocusCls>(widget()->focusNode, widget()->autofocus, widget()->includeSemantics, widget()->child);
 }
 
 void _RawKeyboardListenerStateCls::_handleFocusChanged() {
-    if (widget->focusNode->hasFocus) {
+    if (widget()->focusNode->hasFocus) {
         _attachKeyboardIfDetached();
     } else {
         _detachKeyboardIfAttached();
@@ -65,5 +65,5 @@ void _RawKeyboardListenerStateCls::_detachKeyboardIfAttached() {
 }
 
 void _RawKeyboardListenerStateCls::_handleRawKeyEvent(RawKeyEvent event) {
-    widget->onKey?->call(event);
+    widget()->onKey?->call(event);
 }

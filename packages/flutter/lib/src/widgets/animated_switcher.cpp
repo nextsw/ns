@@ -46,23 +46,23 @@ void _AnimatedSwitcherStateCls::initState() {
 
 void _AnimatedSwitcherStateCls::didUpdateWidget(AnimatedSwitcher oldWidget) {
     super->didUpdateWidget(oldWidget);
-    if (widget->transitionBuilder != oldWidget->transitionBuilder) {
+    if (widget()->transitionBuilder != oldWidget->transitionBuilder) {
         _outgoingEntries->forEach(_updateTransitionForEntry);
         if (_currentEntry != nullptr) {
             _updateTransitionForEntry(_currentEntry!);
         }
         _markChildWidgetCacheAsDirty();
     }
-    bool hasNewChild = widget->child != nullptr;
+    bool hasNewChild = widget()->child != nullptr;
     bool hasOldChild = _currentEntry != nullptr;
-    if (hasNewChild != hasOldChild || hasNewChild && !WidgetCls->canUpdate(widget->child!, _currentEntry!->widgetChild)) {
+    if (hasNewChild != hasOldChild || hasNewChild && !WidgetCls->canUpdate(widget()->child!, _currentEntry!->widgetChild)) {
         _childNumber += 1;
         _addEntryForNewChild(true);
     } else {
         if (_currentEntry != nullptr) {
         assert(hasOldChild && hasNewChild);
-        assert(WidgetCls->canUpdate(widget->child!, _currentEntry!->widgetChild));
-        _currentEntry!->widgetChild = widget->child!;
+        assert(WidgetCls->canUpdate(widget()->child!, _currentEntry!->widgetChild));
+        _currentEntry!->widgetChild = widget()->child!;
         _updateTransitionForEntry(_currentEntry!);
         _markChildWidgetCacheAsDirty();
     }
@@ -81,7 +81,7 @@ void _AnimatedSwitcherStateCls::dispose() {
 
 Widget _AnimatedSwitcherStateCls::build(BuildContext context) {
     _rebuildOutgoingWidgetsIfNeeded();
-    return widget->layoutBuilder(_currentEntry?->transition, _outgoingWidgets!);
+    return widget()->layoutBuilder(_currentEntry?->transition, _outgoingWidgets!);
 }
 
 void _AnimatedSwitcherStateCls::_addEntryForNewChild(bool animate) {
@@ -94,16 +94,16 @@ void _AnimatedSwitcherStateCls::_addEntryForNewChild(bool animate) {
         _markChildWidgetCacheAsDirty();
         _currentEntry = nullptr;
     }
-    if (widget->child == nullptr) {
+    if (widget()->child == nullptr) {
         return;
     }
-    AnimationController controller = make<AnimationControllerCls>(widget->duration, widget->reverseDuration, this);
-    Animation<double> animation = make<CurvedAnimationCls>(controller, widget->switchInCurve, widget->switchOutCurve);
-    _currentEntry = _newEntry(widget->child!, controller, animation, widget->transitionBuilder);
+    AnimationController controller = make<AnimationControllerCls>(widget()->duration, widget()->reverseDuration, this);
+    Animation<double> animation = make<CurvedAnimationCls>(controller, widget()->switchInCurve, widget()->switchOutCurve);
+    _currentEntry = _newEntry(widget()->child!, controller, animation, widget()->transitionBuilder);
     if (animate) {
         controller->forward();
     } else {
-        assert(_outgoingEntries->isEmpty);
+        assert(_outgoingEntries->isEmpty());
         controller->value() = 1.0;
     }
 }
@@ -113,7 +113,7 @@ _ChildEntry _AnimatedSwitcherStateCls::_newEntry(Animation<double> animation, An
     animation->addStatusListener([=] (AnimationStatus status) {
         if (status == AnimationStatusCls::dismissed) {
             setState([=] () {
-                assert(mounted);
+                assert(mounted());
                 assert(_outgoingEntries->contains(entry));
                 _outgoingEntries->remove(entry);
                 _markChildWidgetCacheAsDirty();
@@ -129,13 +129,13 @@ void _AnimatedSwitcherStateCls::_markChildWidgetCacheAsDirty() {
 }
 
 void _AnimatedSwitcherStateCls::_updateTransitionForEntry(_ChildEntry entry) {
-    entry->transition = make<KeyedSubtreeCls>(entry->transition->key, widget->transitionBuilder(entry->widgetChild, entry->animation));
+    entry->transition = make<KeyedSubtreeCls>(entry->transition->key, widget()->transitionBuilder(entry->widgetChild, entry->animation));
 }
 
 void _AnimatedSwitcherStateCls::_rebuildOutgoingWidgetsIfNeeded() {
     _outgoingWidgets |= <Widget>unmodifiable(_outgoingEntries-><Widget>map([=] (_ChildEntry entry) {
         entry->transition;
     }));
-    assert(_outgoingEntries->length == _outgoingWidgets!->length());
-    assert(_outgoingEntries->isEmpty || _outgoingEntries->last->transition == _outgoingWidgets!->last);
+    assert(_outgoingEntries->length() == _outgoingWidgets!->length());
+    assert(_outgoingEntries->isEmpty() || _outgoingEntries->last()->transition == _outgoingWidgets!->last);
 }

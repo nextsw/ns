@@ -46,7 +46,7 @@ bool _StreamControllerCls<T>::isClosed() {
 
 template<typename T>
 bool _StreamControllerCls<T>::isPaused() {
-    return hasListener()? _subscription()->_isInputPaused : !_isCanceled();
+    return hasListener()? _subscription()->_isInputPaused() : !_isCanceled();
 }
 
 template<typename T>
@@ -295,32 +295,32 @@ void _StreamControllerCls<T>::_recordResume(StreamSubscription<T> subscription) 
 
 template<typename T>
 void _SyncStreamControllerDispatchCls<T>::_sendData(T data) {
-    _subscription->_add(data);
+    _subscription()->_add(data);
 }
 
 template<typename T>
 void _SyncStreamControllerDispatchCls<T>::_sendError(Object error, StackTrace stackTrace) {
-    _subscription->_addError(error, stackTrace);
+    _subscription()->_addError(error, stackTrace);
 }
 
 template<typename T>
 void _SyncStreamControllerDispatchCls<T>::_sendDone() {
-    _subscription->_close();
+    _subscription()->_close();
 }
 
 template<typename T>
 void _AsyncStreamControllerDispatchCls<T>::_sendData(T data) {
-    _subscription->_addPending(<T>make<_DelayedDataCls>(data));
+    _subscription()->_addPending(<T>make<_DelayedDataCls>(data));
 }
 
 template<typename T>
 void _AsyncStreamControllerDispatchCls<T>::_sendError(Object error, StackTrace stackTrace) {
-    _subscription->_addPending(make<_DelayedErrorCls>(error, stackTrace));
+    _subscription()->_addPending(make<_DelayedErrorCls>(error, stackTrace));
 }
 
 template<typename T>
 void _AsyncStreamControllerDispatchCls<T>::_sendDone() {
-    _subscription->_addPending(make<_DelayedDoneCls>());
+    _subscription()->_addPending(make<_DelayedDoneCls>());
 }
 
 void _runGuarded(std::function<void()> notificationHandler) {

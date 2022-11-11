@@ -601,7 +601,7 @@ bool _AsBroadcastStreamCls<T>::isBroadcast() {
 template<typename T>
 StreamSubscription<T> _AsBroadcastStreamCls<T>::listen(std::function<void(T data)> onData, bool cancelOnError, std::function<void()> onDone, std::function<void ()> onError) {
     auto controller = _controller;
-    if (controller == nullptr || controller->isClosed) {
+    if (controller == nullptr || controller->isClosed()) {
         return <T>make<_DoneStreamSubscriptionCls>(onDone);
     }
     _subscription |= _source->listen(controller->add, controller->addError, controller->close);
@@ -623,7 +623,7 @@ _AsBroadcastStreamCls<T>::_AsBroadcastStreamCls(Stream<T> _source, std::function
 template<typename T>
 void _AsBroadcastStreamCls<T>::_onCancel() {
     auto controller = _controller;
-    bool shutdown = (controller == nullptr) || controller->isClosed;
+    bool shutdown = (controller == nullptr) || controller->isClosed();
     auto cancelHandler = _onCancelHandler;
     if (cancelHandler != nullptr) {
         _zone->runUnary(cancelHandler, <T>make<_BroadcastSubscriptionWrapperCls>(this));
@@ -846,35 +846,35 @@ StreamSubscription<T> _MultiStreamCls<T>::listen(std::function<void(T event)> on
 
 template<typename T>
 void _MultiStreamControllerCls<T>::addSync(T data) {
-    if (!_mayAddEvent) {
+    if (!_mayAddEvent()) {
         throw _badEventState();
     }
-    if (hasListener) {
-        _subscription->_add(data);
+    if (hasListener()) {
+        _subscription()->_add(data);
     }
 }
 
 template<typename T>
 void _MultiStreamControllerCls<T>::addErrorSync(Object error, StackTrace stackTrace) {
-    if (!_mayAddEvent) {
+    if (!_mayAddEvent()) {
         throw _badEventState();
     }
-    if (hasListener) {
-        _subscription->_addError(error, stackTrace | StackTraceCls::empty);
+    if (hasListener()) {
+        _subscription()->_addError(error, stackTrace | StackTraceCls::empty);
     }
 }
 
 template<typename T>
 void _MultiStreamControllerCls<T>::closeSync() {
-    if (isClosed) {
+    if (isClosed()) {
         return;
     }
-    if (!_mayAddEvent) {
+    if (!_mayAddEvent()) {
         throw _badEventState();
     }
     _state |= _StreamControllerCls::_STATE_CLOSED;
-    if (hasListener) {
-        _subscription->_close();
+    if (hasListener()) {
+        _subscription()->_close();
     }
 }
 

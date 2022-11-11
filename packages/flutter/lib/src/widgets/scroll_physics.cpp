@@ -111,7 +111,7 @@ double RangeMaintainingScrollPhysicsCls::adjustPositionForNewDimensions(bool isS
     }
     if (oldPosition->pixels() != newPosition->pixels()) {
         maintainOverscroll = false;
-        if (oldPosition->minScrollExtent()->isFinite && oldPosition->maxScrollExtent()->isFinite && newPosition->minScrollExtent()->isFinite && newPosition->maxScrollExtent()->isFinite) {
+        if (oldPosition->minScrollExtent()->isFinite() && oldPosition->maxScrollExtent()->isFinite() && newPosition->minScrollExtent()->isFinite() && newPosition->maxScrollExtent()->isFinite()) {
             enforceBoundary = false;
         }
     }
@@ -163,9 +163,9 @@ double BouncingScrollPhysicsCls::applyBoundaryConditions(ScrollMetrics position,
 }
 
 Simulation BouncingScrollPhysicsCls::createBallisticSimulation(ScrollMetrics position, double velocity) {
-    Tolerance tolerance = this->tolerance;
+    Tolerance tolerance = this->tolerance();
     if (velocity->abs() >= tolerance->velocity || position->outOfRange()) {
-        return make<BouncingScrollSimulationCls>(spring, position->pixels(), velocity, position->minScrollExtent(), position->maxScrollExtent(), tolerance);
+        return make<BouncingScrollSimulationCls>(spring(), position->pixels(), velocity, position->minScrollExtent(), position->maxScrollExtent(), tolerance);
     }
     return nullptr;
 }
@@ -223,7 +223,7 @@ double ClampingScrollPhysicsCls::applyBoundaryConditions(ScrollMetrics position,
 }
 
 Simulation ClampingScrollPhysicsCls::createBallisticSimulation(ScrollMetrics position, double velocity) {
-    Tolerance tolerance = this->tolerance;
+    Tolerance tolerance = this->tolerance();
     if (position->outOfRange()) {
         double end;
         if (position->pixels() > position->maxScrollExtent()) {
@@ -233,7 +233,7 @@ Simulation ClampingScrollPhysicsCls::createBallisticSimulation(ScrollMetrics pos
             end = position->minScrollExtent();
         }
         assert(end != nullptr);
-        return make<ScrollSpringSimulationCls>(spring, position->pixels(), end!, math->min(0.0, velocity), tolerance);
+        return make<ScrollSpringSimulationCls>(spring(), position->pixels(), end!, math->min(0.0, velocity), tolerance);
     }
     if (velocity->abs() < tolerance->velocity) {
         return nullptr;

@@ -51,7 +51,7 @@ FocusNode FocusTraversalPolicyCls::_findInitialFocus(FocusNode currentNode, bool
     assert(currentNode != nullptr);
     FocusScopeNode scope = currentNode->nearestScope()!;
     FocusNode candidate = scope->focusedChild();
-    if (candidate == nullptr && scope->descendants->isNotEmpty) {
+    if (candidate == nullptr && scope->descendants()->isNotEmpty()) {
         Iterable<FocusNode> sorted = _sortAllDescendants(scope, currentNode);
         if (sorted->isEmpty()) {
             candidate = nullptr;
@@ -64,15 +64,15 @@ FocusNode FocusTraversalPolicyCls::_findInitialFocus(FocusNode currentNode, bool
 }
 
 _FocusTraversalGroupMarker FocusTraversalPolicyCls::_getMarker(BuildContext context) {
-    return as<_FocusTraversalGroupMarker>(context?-><_FocusTraversalGroupMarker>getElementForInheritedWidgetOfExactType()?->widget);
+    return as<_FocusTraversalGroupMarker>(context?-><_FocusTraversalGroupMarker>getElementForInheritedWidgetOfExactType()?->widget());
 }
 
 List<FocusNode> FocusTraversalPolicyCls::_sortAllDescendants(FocusScopeNode scope, FocusNode currentNode) {
     assert(scope != nullptr);
-    _FocusTraversalGroupMarker scopeGroupMarker = _getMarker(scope->context);
+    _FocusTraversalGroupMarker scopeGroupMarker = _getMarker(scope->context());
     FocusTraversalPolicy defaultPolicy = scopeGroupMarker?->policy | make<ReadingOrderTraversalPolicyCls>();
     Map<FocusNode, _FocusTraversalGroupInfo> groups = makeMap(makeList(), makeList();
-    for (FocusNode node : scope->descendants) {
+    for (FocusNode node : scope->descendants()) {
         _FocusTraversalGroupMarker groupMarker = _getMarker(node->context);
         FocusNode groupNode = groupMarker?->focusNode;
         if (node == groupNode) {
@@ -120,7 +120,7 @@ bool FocusTraversalPolicyCls::_moveFocus(FocusNode currentNode, bool forward) {
         }
     }
     List<FocusNode> sortedNodes = _sortAllDescendants(nearestScope, currentNode);
-    if (sortedNodes->isEmpty) {
+    if (sortedNodes->isEmpty()) {
         return false;
     }
     if (forward && focusedChild == sortedNodes->last) {
@@ -216,7 +216,7 @@ FocusNode DirectionalFocusTraversalPolicyMixinCls::_sortAndFindInitial(FocusNode
             }
         }
     });
-    if (sorted->isNotEmpty) {
+    if (sorted->isNotEmpty()) {
         return sorted->first;
     }
     return nullptr;
@@ -247,7 +247,7 @@ Iterable<FocusNode> DirectionalFocusTraversalPolicyMixinCls::_sortAndFilterVerti
 
 bool DirectionalFocusTraversalPolicyMixinCls::_popPolicyDataIfNeeded(TraversalDirection direction, FocusScopeNode nearestScope, FocusNode focusedChild) {
     _DirectionalPolicyData policyData = _policyData[nearestScope];
-    if (policyData != nullptr && policyData->history->isNotEmpty && policyData->history->first->direction != direction) {
+    if (policyData != nullptr && policyData->history->isNotEmpty() && policyData->history->first->direction != direction) {
         if (policyData->history->last->node->parent == nullptr) {
             invalidateScopeData(nearestScope);
             return false;
@@ -255,7 +255,7 @@ bool DirectionalFocusTraversalPolicyMixinCls::_popPolicyDataIfNeeded(TraversalDi
         InlineMethod;
         ;
     }
-    if (policyData != nullptr && policyData->history->isEmpty) {
+    if (policyData != nullptr && policyData->history->isEmpty()) {
         invalidateScopeData(nearestScope);
     }
     return false;
@@ -284,7 +284,7 @@ TextDirection _ReadingOrderSortDataCls::commonDirectionalityOf(List<_ReadingOrde
         common |= ancestorSet;
         common = common->intersection(ancestorSet);
     }
-    if (common!->isEmpty) {
+    if (common!->isEmpty()) {
         return list->first->directionality;
     }
     return list->first->directionalAncestors->firstWhere(common->contains)->textDirection;
@@ -318,7 +318,7 @@ _ReadingOrderSortDataCls::_ReadingOrderSortDataCls(FocusNode node) {
 }
 
 TextDirection _ReadingOrderSortDataCls::_findDirectionality(BuildContext context) {
-    return (as<Directionality>(context-><Directionality>getElementForInheritedWidgetOfExactType()?->widget))?->textDirection;
+    return (as<Directionality>(context-><Directionality>getElementForInheritedWidgetOfExactType()?->widget()))?->textDirection;
 }
 
 TextDirection _ReadingOrderDirectionalGroupDataCls::directionality() {
@@ -373,7 +373,7 @@ Iterable<FocusNode> ReadingOrderTraversalPolicyCls::sortDescendants(Iterable<Foc
     _ReadingOrderSortData current = _pickNext(unplaced);
     sortedList->add(current->node);
     unplaced->remove(current);
-    while (unplaced->isNotEmpty) {
+    while (unplaced->isNotEmpty()) {
         _ReadingOrderSortData next = _pickNext(unplaced);
         current = next;
         sortedList->add(current->node);
@@ -395,7 +395,7 @@ List<_ReadingOrderDirectionalGroupData> ReadingOrderTraversalPolicyCls::_collect
         result->add(make<_ReadingOrderDirectionalGroupDataCls>(currentGroup));
         currentGroup = makeList(ArrayItem);
     }
-    if (currentGroup->isNotEmpty) {
+    if (currentGroup->isNotEmpty()) {
         result->add(make<_ReadingOrderDirectionalGroupDataCls>(currentGroup));
     }
     for (_ReadingOrderDirectionalGroupData bandGroup : result) {
@@ -414,7 +414,7 @@ _ReadingOrderSortData ReadingOrderTraversalPolicyCls::_pickNext(List<_ReadingOrd
     _ReadingOrderSortData topmost = candidates->first;
     InlineMethod;
     List<_ReadingOrderSortData> inBandOfTop = inBand(topmost, candidates);
-    assert(topmost->rect->isEmpty() || inBandOfTop->isNotEmpty);
+    assert(topmost->rect->isEmpty() || inBandOfTop->isNotEmpty());
     if (inBandOfTop->length() <= 1) {
         return topmost;
     }
@@ -494,7 +494,7 @@ Iterable<FocusNode> OrderedTraversalPolicyCls::sortDescendants(Iterable<FocusNod
 
 FocusOrder FocusTraversalOrderCls::of(BuildContext context) {
     assert(context != nullptr);
-    FocusTraversalOrder marker = as<FocusTraversalOrder>(context-><FocusTraversalOrder>getElementForInheritedWidgetOfExactType()?->widget);
+    FocusTraversalOrder marker = as<FocusTraversalOrder>(context-><FocusTraversalOrder>getElementForInheritedWidgetOfExactType()?->widget());
     assert([=] () {
         if (marker == nullptr) {
             throw make<FlutterErrorCls>(__s("FocusTraversalOrder.of() was called with a context that does not contain a FocusTraversalOrder widget. No TraversalOrder widget ancestor could be found starting from the context that was passed to FocusTraversalOrder.of().\nThe context used was:\n  $context"));
@@ -506,7 +506,7 @@ FocusOrder FocusTraversalOrderCls::of(BuildContext context) {
 
 FocusOrder FocusTraversalOrderCls::maybeOf(BuildContext context) {
     assert(context != nullptr);
-    FocusTraversalOrder marker = as<FocusTraversalOrder>(context-><FocusTraversalOrder>getElementForInheritedWidgetOfExactType()?->widget);
+    FocusTraversalOrder marker = as<FocusTraversalOrder>(context-><FocusTraversalOrder>getElementForInheritedWidgetOfExactType()?->widget());
     return marker?->order;
 }
 
@@ -565,7 +565,7 @@ void _FocusTraversalGroupStateCls::dispose() {
 }
 
 Widget _FocusTraversalGroupStateCls::build(BuildContext context) {
-    return make<_FocusTraversalGroupMarkerCls>(widget->policy, focusNode!, make<FocusCls>(focusNode, false, true, false, widget->descendantsAreFocusable, widget->descendantsAreTraversable, widget->child));
+    return make<_FocusTraversalGroupMarkerCls>(widget()->policy, focusNode!, make<FocusCls>(focusNode, false, true, false, widget()->descendantsAreFocusable, widget()->descendantsAreTraversable, widget()->child));
 }
 
 bool _FocusTraversalGroupMarkerCls::updateShouldNotify(InheritedWidget oldWidget) {

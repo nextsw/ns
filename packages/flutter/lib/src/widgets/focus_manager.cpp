@@ -20,7 +20,7 @@ KeyEventResult combineKeyEventResults(Iterable<KeyEventResult> results) {
 }
 
 void _AutofocusCls::applyIfValid(FocusManager manager) {
-    bool shouldApply = (scope->parent != nullptr || identical(scope, manager->rootScope)) && identical(scope->_manager, manager) && scope->focusedChild() == nullptr && autofocusNode->ancestors()->contains(scope);
+    bool shouldApply = (scope->parent() != nullptr || identical(scope, manager->rootScope)) && identical(scope->_manager, manager) && scope->focusedChild() == nullptr && autofocusNode->ancestors()->contains(scope);
     if (shouldApply) {
         assert(_focusDebug(__s("Applying autofocus: $autofocusNode")));
         autofocusNode->_doRequestFocus(true);
@@ -101,7 +101,7 @@ bool FocusNodeCls::canRequestFocus() {
         return false;
     }
     FocusScopeNode scope = enclosingScope();
-    if (scope != nullptr && !scope->canRequestFocus) {
+    if (scope != nullptr && !scope->canRequestFocus()) {
         return false;
     }
     for (FocusNode ancestor : ancestors()) {
@@ -364,7 +364,7 @@ void FocusNodeCls::_removeChild(FocusNode node, bool removeScopeFocus) {
         ancestor->_descendants = nullptr;
     }
     _descendants = nullptr;
-    assert(_manager == nullptr || !_manager!->rootScope->descendants->contains(node));
+    assert(_manager == nullptr || !_manager!->rootScope->descendants()->contains(node));
 }
 
 void FocusNodeCls::_updateManager(FocusManager manager) {
@@ -458,23 +458,23 @@ FocusScopeNode FocusScopeNodeCls::nearestScope() {
 }
 
 bool FocusScopeNodeCls::isFirstFocus() {
-    return enclosingScope!->focusedChild == this;
+    return enclosingScope()!->focusedChild() == this;
 }
 
 FocusNode FocusScopeNodeCls::focusedChild() {
-    assert(_focusedChildren->isEmpty || _focusedChildren->last->enclosingScope == this, __s("Focused child does not have the same idea of its enclosing scope as the scope does."));
-    return _focusedChildren->isNotEmpty? _focusedChildren->last : nullptr;
+    assert(_focusedChildren->isEmpty() || _focusedChildren->last->enclosingScope == this, __s("Focused child does not have the same idea of its enclosing scope as the scope does."));
+    return _focusedChildren->isNotEmpty()? _focusedChildren->last : nullptr;
 }
 
 Iterable<FocusNode> FocusScopeNodeCls::traversalChildren() {
-    if (!canRequestFocus) {
+    if (!canRequestFocus()) {
         return <FocusNode>empty();
     }
     return super->traversalChildren;
 }
 
 Iterable<FocusNode> FocusScopeNodeCls::traversalDescendants() {
-    if (!canRequestFocus) {
+    if (!canRequestFocus()) {
         return <FocusNode>empty();
     }
     return super->traversalDescendants;
@@ -487,8 +487,8 @@ void FocusScopeNodeCls::setFirstFocus(FocusScopeNode scope) {
     if (scope->_parent == nullptr) {
         _reparent(scope);
     }
-    assert(scope->ancestors->contains(this), __s("$FocusScopeNode $scope must be a child of $this to set it as first focus."));
-    if (hasFocus) {
+    assert(scope->ancestors()->contains(this), __s("$FocusScopeNode $scope must be a child of $this to set it as first focus."));
+    if (hasFocus()) {
         scope->_doRequestFocus(true);
     } else {
         scope->_setAsFocusedChildForScope();
@@ -507,7 +507,7 @@ void FocusScopeNodeCls::autofocus(FocusNode node) {
 
 void FocusScopeNodeCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    if (_focusedChildren->isEmpty) {
+    if (_focusedChildren->isEmpty()) {
         return;
     }
     List<String> childList = _focusedChildren->reversed()-><String>map([=] (FocusNode child) {
@@ -523,7 +523,7 @@ void FocusScopeNodeCls::_doRequestFocus(bool findFirstFocus) {
     }
     FocusNode focusedChild = this->focusedChild();
     if (!findFirstFocus || focusedChild == nullptr) {
-        if (canRequestFocus) {
+        if (canRequestFocus()) {
             _setAsFocusedChildForScope();
             _markNextFocus(this);
         }

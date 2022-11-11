@@ -38,7 +38,7 @@ void ViewportCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     if (center != nullptr) {
         properties->add(<Key>make<DiagnosticsPropertyCls>(__s("center"), center));
     } else {
-        if (children->isNotEmpty && children->first->key != nullptr) {
+        if (children->isNotEmpty() && children->first->key != nullptr) {
         properties->add(<Key>make<DiagnosticsPropertyCls>(__s("center"), children->first->key, __s("implicit")));
     }
 ;
@@ -88,28 +88,28 @@ void _ViewportElementCls::removeRenderObjectChild(RenderObject child, Object slo
 }
 
 void _ViewportElementCls::debugVisitOnstageChildren(ElementVisitor visitor) {
-    children->where([=] (Element e) {
+    children()->where([=] (Element e) {
         RenderSliver renderSliver = as<RenderSliver>(e->renderObject!);
         return renderSliver->geometry()!->visible;
     })->forEach(visitor);
 }
 
 void _ViewportElementCls::_updateCenter() {
-    Viewport viewport = as<Viewport>(widget);
+    Viewport viewport = as<Viewport>(widget());
     if (viewport->center != nullptr) {
         int elementIndex = 0;
-        for (Element e : children) {
+        for (Element e : children()) {
             if (e->widget->key == viewport->center) {
                 renderObject()->center() = as<RenderSliver>(e->renderObject);
                 break;
             }
             elementIndex++;
         }
-        assert( < children->length);
+        assert( < children()->length());
         _centerSlotIndex = elementIndex;
     } else {
-        if (children->isNotEmpty) {
-        renderObject()->center() = as<RenderSliver>(children->first->renderObject);
+        if (children()->isNotEmpty()) {
+        renderObject()->center() = as<RenderSliver>(children()->first()->renderObject());
         _centerSlotIndex = 0;
     } else {
         renderObject()->center() = nullptr;

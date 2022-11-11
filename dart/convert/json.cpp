@@ -327,7 +327,7 @@ bool _JsonStringifierCls::writeJsonValue(Object object) {
 
 void _JsonStringifierCls::writeList(List<Object> list) {
     writeString(__s("["));
-    if (list->isNotEmpty) {
+    if (list->isNotEmpty()) {
         writeObject(list[0]);
         for (;  < list->length(); i++) {
             writeString(__s(","));
@@ -384,13 +384,13 @@ void _JsonStringifierCls::_checkCycle(Object object) {
 }
 
 void _JsonStringifierCls::_removeSeen(Object object) {
-    assert(_seen->isNotEmpty);
+    assert(_seen->isNotEmpty());
     assert(identical(_seen->last, object));
     _seen->removeLast();
 }
 
 void _JsonPrettyPrintMixinCls::writeList(List<Object> list) {
-    if (list->isEmpty) {
+    if (list->isEmpty()) {
         writeString(__s("[]"));
     } else {
         writeString(__s("[\n"));
@@ -586,7 +586,7 @@ void _JsonUtf8StringifierCls::writeFourByteCharCode(int charCode) {
 
 void _JsonUtf8StringifierCls::writeByte(int byte) {
     assert(byte <= 0xff);
-    if (index == buffer->length) {
+    if (index == buffer->length()) {
         addChunk(buffer, 0, index);
         buffer = make<Uint8ListCls>(bufferSize);
         index = 0;
@@ -618,7 +618,7 @@ void _JsonUtf8StringifierPrettyCls::writeIndentation(int count) {
     while (count > 0) {
         count--;
         auto end = index + indentLength;
-        if (end <= buffer->length) {
+        if (end <= buffer->length()) {
             buffer->setRange(index, end, indent);
             index = end;
         } else {

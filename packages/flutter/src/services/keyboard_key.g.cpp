@@ -21,7 +21,7 @@ String LogicalKeyboardKeyCls::debugName() {
 }
 
 int LogicalKeyboardKeyCls::hashCode() {
-    return keyId->hashCode;
+    return keyId->hashCode();
 }
 
 bool LogicalKeyboardKeyCls::==(Object other) {
@@ -106,7 +106,7 @@ String PhysicalKeyboardKeyCls::debugName() {
 }
 
 int PhysicalKeyboardKeyCls::hashCode() {
-    return usbHidUsage->hashCode;
+    return usbHidUsage->hashCode();
 }
 
 bool PhysicalKeyboardKeyCls::==(Object other) {

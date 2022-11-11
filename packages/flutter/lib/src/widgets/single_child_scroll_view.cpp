@@ -22,7 +22,7 @@ Widget SingleChildScrollViewCls::build(BuildContext context) {
     if (keyboardDismissBehavior == ScrollViewKeyboardDismissBehaviorCls::onDrag) {
         scrollable = <ScrollUpdateNotification>make<NotificationListenerCls>(scrollable, [=] (ScrollUpdateNotification notification) {
             FocusScopeNode focusNode = FocusScopeCls->of(context);
-            if (notification->dragDetails != nullptr && focusNode->hasFocus) {
+            if (notification->dragDetails != nullptr && focusNode->hasFocus()) {
                 focusNode->unfocus();
             }
             return false;
@@ -80,11 +80,11 @@ void _RenderSingleChildViewportCls::offset(ViewportOffset value) {
     if (value == _offset) {
         return;
     }
-    if (attached) {
+    if (attached()) {
         _offset->removeListener(_hasScrolled);
     }
     _offset = value;
-    if (attached) {
+    if (attached()) {
         _offset->addListener(_hasScrolled);
     }
     markNeedsLayout();
@@ -173,12 +173,12 @@ Size _RenderSingleChildViewportCls::computeDryLayout(BoxConstraints constraints)
 }
 
 void _RenderSingleChildViewportCls::performLayout() {
-    BoxConstraints constraints = this->constraints;
+    BoxConstraints constraints = this->constraints();
     if (child == nullptr) {
-        size = constraints->smallest();
+        size() = constraints->smallest();
     } else {
         child!->layout(_getInnerConstraints(constraints), true);
-        size = constraints->constrain(child!->size);
+        size() = constraints->constrain(child!->size);
     }
     offset()->applyViewportDimension(_viewportExtent());
     offset()->applyContentDimensions(_minScrollExtent(), _maxScrollExtent());
@@ -189,7 +189,7 @@ void _RenderSingleChildViewportCls::paint(PaintingContext context, Offset offset
         Offset paintOffset = _paintOffset();
         InlineMethod;
         if (_shouldClipAtPaintOffset(paintOffset)) {
-            _clipRectLayer->layer() = context->pushClipRect(needsCompositing, offset, OffsetCls::zero & size, paintContents, clipBehavior(), _clipRectLayer->layer());
+            _clipRectLayer->layer() = context->pushClipRect(needsCompositing(), offset, OffsetCls::zero & size(), paintContents, clipBehavior(), _clipRectLayer->layer());
         } else {
             _clipRectLayer->layer() = nullptr;
             paintContents(context, offset);
@@ -209,7 +209,7 @@ void _RenderSingleChildViewportCls::applyPaintTransform(RenderBox child, Matrix4
 
 Rect _RenderSingleChildViewportCls::describeApproximatePaintClip(RenderObject child) {
     if (child != nullptr && _shouldClipAtPaintOffset(_paintOffset())) {
-        return OffsetCls::zero & size;
+        return OffsetCls::zero & size();
     }
     return nullptr;
 }
@@ -283,17 +283,17 @@ void _RenderSingleChildViewportCls::_hasScrolled() {
 }
 
 double _RenderSingleChildViewportCls::_viewportExtent() {
-    assert(hasSize);
+    assert(hasSize());
     ;
 }
 
 double _RenderSingleChildViewportCls::_minScrollExtent() {
-    assert(hasSize);
+    assert(hasSize());
     return 0.0;
 }
 
 double _RenderSingleChildViewportCls::_maxScrollExtent() {
-    assert(hasSize);
+    assert(hasSize());
     if (child == nullptr) {
         return 0.0;
     }

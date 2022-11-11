@@ -86,28 +86,28 @@ void RenderCustomPaintCls::preferredSize(Size value) {
 
 double RenderCustomPaintCls::computeMinIntrinsicWidth(double height) {
     if (child == nullptr) {
-        return preferredSize()->width()->isFinite? preferredSize()->width() : 0;
+        return preferredSize()->width()->isFinite()? preferredSize()->width() : 0;
     }
     return super->computeMinIntrinsicWidth(height);
 }
 
 double RenderCustomPaintCls::computeMaxIntrinsicWidth(double height) {
     if (child == nullptr) {
-        return preferredSize()->width()->isFinite? preferredSize()->width() : 0;
+        return preferredSize()->width()->isFinite()? preferredSize()->width() : 0;
     }
     return super->computeMaxIntrinsicWidth(height);
 }
 
 double RenderCustomPaintCls::computeMinIntrinsicHeight(double width) {
     if (child == nullptr) {
-        return preferredSize()->height()->isFinite? preferredSize()->height() : 0;
+        return preferredSize()->height()->isFinite()? preferredSize()->height() : 0;
     }
     return super->computeMinIntrinsicHeight(width);
 }
 
 double RenderCustomPaintCls::computeMaxIntrinsicHeight(double width) {
     if (child == nullptr) {
-        return preferredSize()->height()->isFinite? preferredSize()->height() : 0;
+        return preferredSize()->height()->isFinite()? preferredSize()->height() : 0;
     }
     return super->computeMaxIntrinsicHeight(width);
 }
@@ -170,12 +170,12 @@ void RenderCustomPaintCls::assembleSemanticsNode(SemanticsNode node, SemanticsCo
         }
         return true;
     }());
-    List<CustomPainterSemantics> backgroundSemantics = _backgroundSemanticsBuilder != nullptr? _backgroundSemanticsBuilder!(size) : makeList();
+    List<CustomPainterSemantics> backgroundSemantics = _backgroundSemanticsBuilder != nullptr? _backgroundSemanticsBuilder!(size()) : makeList();
     _backgroundSemanticsNodes = _updateSemanticsChildren(_backgroundSemanticsNodes, backgroundSemantics);
-    List<CustomPainterSemantics> foregroundSemantics = _foregroundSemanticsBuilder != nullptr? _foregroundSemanticsBuilder!(size) : makeList();
+    List<CustomPainterSemantics> foregroundSemantics = _foregroundSemanticsBuilder != nullptr? _foregroundSemanticsBuilder!(size()) : makeList();
     _foregroundSemanticsNodes = _updateSemanticsChildren(_foregroundSemanticsNodes, foregroundSemantics);
-    bool hasBackgroundSemantics = _backgroundSemanticsNodes != nullptr && _backgroundSemanticsNodes!->isNotEmpty;
-    bool hasForegroundSemantics = _foregroundSemanticsNodes != nullptr && _foregroundSemanticsNodes!->isNotEmpty;
+    bool hasBackgroundSemantics = _backgroundSemanticsNodes != nullptr && _backgroundSemanticsNodes!->isNotEmpty();
+    bool hasForegroundSemantics = _foregroundSemanticsNodes != nullptr && _foregroundSemanticsNodes!->isNotEmpty();
     List<SemanticsNode> list1 = make<ListCls<>>();if (hasBackgroundSemantics) {    list1.add(ArrayItem);}for (auto _x1 : children) {{    list1.add(_x1);}if (hasForegroundSemantics) {    list1.add(ArrayItem);}List<SemanticsNode> finalChildren = list1;
     super->assembleSemanticsNode(node, config, finalChildren);
 }
@@ -204,13 +204,13 @@ void RenderCustomPaintCls::_didUpdatePainter(CustomPainter newPainter, CustomPai
         markNeedsPaint();
     }
 ;
-    }    if (attached) {
+    }    if (attached()) {
         oldPainter?->removeListener(markNeedsPaint);
         newPainter?->addListener(markNeedsPaint);
     }
     if (newPainter == nullptr) {
         assert(oldPainter != nullptr);
-        if (attached) {
+        if (attached()) {
             markNeedsSemanticsUpdate();
         }
     } else {
@@ -230,7 +230,7 @@ void RenderCustomPaintCls::_paintWithPainter(Canvas canvas, Offset offset, Custo
     if (offset != OffsetCls::zero) {
         canvas->translate(offset->dx(), offset->dy());
     }
-    painter->paint(canvas, size);
+    painter->paint(canvas, size());
     assert([=] () {
         int debugNewCanvasSaveCount = canvas->getSaveCount();
         if (debugNewCanvasSaveCount > debugPreviousCanvasSaveCount) {
@@ -268,7 +268,7 @@ List<SemanticsNode> RenderCustomPaintCls::_updateSemanticsChildren(List<Semantic
                 keys[child->key!] = i;
             }
         }
-        if (information->isNotEmpty) {
+        if (information->isNotEmpty()) {
             information->insert(0, make<ErrorSummaryCls>(__s("Failed to update the list of CustomPainterSemantics:")));
             throw FlutterErrorCls->fromParts(information);
         }

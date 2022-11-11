@@ -28,12 +28,12 @@ void _SemanticsDebuggerStateCls::didChangeMetrics() {
 }
 
 Widget _SemanticsDebuggerStateCls::build(BuildContext context) {
-    return make<CustomPaintCls>(make<_SemanticsDebuggerPainterCls>(_pipelineOwner(), _client->generation, _lastPointerDownLocation, WidgetsBindingCls::instance->window->devicePixelRatio, widget->labelStyle), make<GestureDetectorCls>(HitTestBehaviorCls::opaque, _handleTap, _handleLongPress, _handlePanEnd, true, make<ListenerCls>(_handlePointerDown, HitTestBehaviorCls::opaque, make<IgnorePointerCls>(false, widget->child))));
+    return make<CustomPaintCls>(make<_SemanticsDebuggerPainterCls>(_pipelineOwner(), _client->generation, _lastPointerDownLocation, WidgetsBindingCls::instance->window->devicePixelRatio, widget()->labelStyle), make<GestureDetectorCls>(HitTestBehaviorCls::opaque, _handleTap, _handleLongPress, _handlePanEnd, true, make<ListenerCls>(_handlePointerDown, HitTestBehaviorCls::opaque, make<IgnorePointerCls>(false, widget()->child))));
 }
 
 void _SemanticsDebuggerStateCls::_update() {
     SchedulerBindingCls::instance->addPostFrameCallback([=] (Duration timeStamp) {
-        if (mounted) {
+        if (mounted()) {
             setState([=] () {
             });
         }
@@ -177,7 +177,7 @@ String _SemanticsDebuggerPainterCls::getMessage(SemanticsNode node) {
         } else {
             ;
         }
-        if (annotations->isEmpty) {
+        if (annotations->isEmpty()) {
             message = effectivelabel;
         } else {
             message = __s("$effectivelabel (${annotations.join('; ')})");

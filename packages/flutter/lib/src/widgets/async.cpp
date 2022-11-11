@@ -27,17 +27,17 @@ State<StreamBuilderBase<T, S>> StreamBuilderBaseCls<T, S>::createState() {
 template<typename T, typename S>
 void _StreamBuilderBaseStateCls<T, S>::initState() {
     super->initState();
-    _summary = widget->initial();
+    _summary = widget()->initial();
     _subscribe();
 }
 
 template<typename T, typename S>
 void _StreamBuilderBaseStateCls<T, S>::didUpdateWidget(StreamBuilderBase<T, S> oldWidget) {
     super->didUpdateWidget(oldWidget);
-    if (oldWidget->stream != widget->stream) {
+    if (oldWidget->stream != widget()->stream) {
         if (_subscription != nullptr) {
             _unsubscribe();
-            _summary = widget->afterDisconnected(_summary);
+            _summary = widget()->afterDisconnected(_summary);
         }
         _subscribe();
     }
@@ -45,7 +45,7 @@ void _StreamBuilderBaseStateCls<T, S>::didUpdateWidget(StreamBuilderBase<T, S> o
 
 template<typename T, typename S>
 Widget _StreamBuilderBaseStateCls<T, S>::build(BuildContext context) {
-    return widget->build(context, _summary);
+    return widget()->build(context, _summary);
 }
 
 template<typename T, typename S>
@@ -56,21 +56,21 @@ void _StreamBuilderBaseStateCls<T, S>::dispose() {
 
 template<typename T, typename S>
 void _StreamBuilderBaseStateCls<T, S>::_subscribe() {
-    if (widget->stream != nullptr) {
-        _subscription = widget->stream!->listen([=] (T data) {
+    if (widget()->stream != nullptr) {
+        _subscription = widget()->stream!->listen([=] (T data) {
             setState([=] () {
-                _summary = widget->afterData(_summary, data);
+                _summary = widget()->afterData(_summary, data);
             });
         }, [=] (Object error,StackTrace stackTrace) {
             setState([=] () {
-                _summary = widget->afterError(_summary, error, stackTrace);
+                _summary = widget()->afterError(_summary, error, stackTrace);
             });
         }, [=] () {
             setState([=] () {
-                _summary = widget->afterDone(_summary);
+                _summary = widget()->afterDone(_summary);
             });
         });
-        _summary = widget->afterConnected(_summary);
+        _summary = widget()->afterConnected(_summary);
     }
 }
 
@@ -198,14 +198,14 @@ State<FutureBuilder<T>> FutureBuilderCls<T>::createState() {
 template<typename T>
 void _FutureBuilderStateCls<T>::initState() {
     super->initState();
-    _snapshot = widget->initialData == nullptr? <T>nothing() : <T>withData(ConnectionStateCls::none, as<T>(widget->initialData));
+    _snapshot = widget()->initialData == nullptr? <T>nothing() : <T>withData(ConnectionStateCls::none, as<T>(widget()->initialData));
     _subscribe();
 }
 
 template<typename T>
 void _FutureBuilderStateCls<T>::didUpdateWidget(FutureBuilder<T> oldWidget) {
     super->didUpdateWidget(oldWidget);
-    if (oldWidget->future != widget->future) {
+    if (oldWidget->future != widget()->future) {
         if (_activeCallbackIdentity != nullptr) {
             _unsubscribe();
             _snapshot = _snapshot->inState(ConnectionStateCls::none);
@@ -216,7 +216,7 @@ void _FutureBuilderStateCls<T>::didUpdateWidget(FutureBuilder<T> oldWidget) {
 
 template<typename T>
 Widget _FutureBuilderStateCls<T>::build(BuildContext context) {
-    return widget->builder(context, _snapshot);
+    return widget()->builder(context, _snapshot);
 }
 
 template<typename T>
@@ -227,10 +227,10 @@ void _FutureBuilderStateCls<T>::dispose() {
 
 template<typename T>
 void _FutureBuilderStateCls<T>::_subscribe() {
-    if (widget->future != nullptr) {
+    if (widget()->future != nullptr) {
         Object callbackIdentity = make<ObjectCls>();
         _activeCallbackIdentity = callbackIdentity;
-        widget->future!-><void>then([=] (T data) {
+        widget()->future!-><void>then([=] (T data) {
             if (_activeCallbackIdentity == callbackIdentity) {
                 setState([=] () {
                     _snapshot = <T>withData(ConnectionStateCls::done, data);

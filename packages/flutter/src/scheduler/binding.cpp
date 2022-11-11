@@ -78,7 +78,7 @@ void SchedulerBindingCls::addTimingsCallback(TimingsCallback callback) {
 void SchedulerBindingCls::removeTimingsCallback(TimingsCallback callback) {
     assert(_timingsCallbacks->contains(callback));
     _timingsCallbacks->remove(callback);
-    if (_timingsCallbacks->isEmpty) {
+    if (_timingsCallbacks->isEmpty()) {
         platformDispatcher->onReportTimings = nullptr;
     }
 }

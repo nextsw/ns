@@ -4,7 +4,7 @@ bool setEquals(Set<T> a, Set<T> b) {
     if (a == nullptr) {
         return b == nullptr;
     }
-    if (b == nullptr || a->length != b->length) {
+    if (b == nullptr || a->length() != b->length()) {
         return false;
     }
     if (identical(a, b)) {

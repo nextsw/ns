@@ -230,24 +230,24 @@ SliverGeometry RenderSliverCls::geometry() {
 }
 
 void RenderSliverCls::geometry(SliverGeometry value) {
-    assert(!(debugDoingThisResize && debugDoingThisLayout));
-    assert(sizedByParent || !debugDoingThisResize);
+    assert(!(debugDoingThisResize() && debugDoingThisLayout()));
+    assert(sizedByParent() || !debugDoingThisResize());
     assert([=] () {
-        if ((sizedByParent && debugDoingThisResize) || (!sizedByParent && debugDoingThisLayout)) {
+        if ((sizedByParent() && debugDoingThisResize()) || (!sizedByParent() && debugDoingThisLayout())) {
             return true;
         }
-        assert(!debugDoingThisResize);
+        assert(!debugDoingThisResize());
         DiagnosticsNode contract, violation, hint;
-        if (debugDoingThisLayout) {
-            assert(sizedByParent);
+        if (debugDoingThisLayout()) {
+            assert(sizedByParent());
             violation = make<ErrorDescriptionCls>(__s("It appears that the geometry setter was called from performLayout()."));
         } else {
             violation = make<ErrorDescriptionCls>(__s("The geometry setter was called from outside layout (neither performResize() nor performLayout() were being run for this object)."));
-            if (owner != nullptr && owner!->debugDoingLayout) {
+            if (owner() != nullptr && owner()!->debugDoingLayout()) {
                 hint = make<ErrorDescriptionCls>(__s("Only the object itself can set its geometry. It is a contract violation for other objects to set it."));
             }
         }
-        if (sizedByParent) {
+        if (sizedByParent()) {
             contract = make<ErrorDescriptionCls>(__s("Because this RenderSliver has sizedByParent set to true, it must set its geometry in performResize()."));
         } else {
             contract = make<ErrorDescriptionCls>(__s("Because this RenderSliver has sizedByParent set to false, it must set its geometry in performLayout()."));
@@ -334,7 +334,7 @@ double RenderSliverCls::childCrossAxisPosition(RenderObject child) {
 }
 
 double RenderSliverCls::childScrollOffset(RenderObject child) {
-    assert(child->parent == this);
+    assert(child->parent() == this);
     return 0.0;
 }
 
@@ -346,13 +346,13 @@ void RenderSliverCls::applyPaintTransform(RenderObject child, Matrix4 transform)
 
 Size RenderSliverCls::getAbsoluteSizeRelativeToOrigin() {
     assert(geometry() != nullptr);
-    assert(!debugNeedsLayout);
+    assert(!debugNeedsLayout());
     ;
 }
 
 Size RenderSliverCls::getAbsoluteSize() {
     assert(geometry() != nullptr);
-    assert(!debugNeedsLayout);
+    assert(!debugNeedsLayout());
     ;
 }
 
@@ -400,13 +400,13 @@ void RenderSliverCls::_debugDrawArrow(Canvas canvas, Paint paint, Offset p0, Off
 }
 
 bool RenderSliverHelpersCls::hitTestBoxChild(BoxHitTestResult result, RenderBox child, double crossAxisPosition, double mainAxisPosition) {
-    bool rightWayUp = _getRightWayUp(constraints);
+    bool rightWayUp = _getRightWayUp(constraints());
     double delta = childMainAxisPosition(child);
     double crossAxisDelta = childCrossAxisPosition(child);
     double absolutePosition = mainAxisPosition - delta;
     double absoluteCrossAxisPosition = crossAxisPosition - crossAxisDelta;
     Offset paintOffset, transformedPosition;
-    assert(constraints->axis != nullptr);
+    assert(constraints()->axis() != nullptr);
     ;
     assert(paintOffset != nullptr);
     assert(transformedPosition != nullptr);
@@ -416,10 +416,10 @@ bool RenderSliverHelpersCls::hitTestBoxChild(BoxHitTestResult result, RenderBox 
 }
 
 void RenderSliverHelpersCls::applyPaintTransformForBoxChild(RenderBox child, Matrix4 transform) {
-    bool rightWayUp = _getRightWayUp(constraints);
+    bool rightWayUp = _getRightWayUp(constraints());
     double delta = childMainAxisPosition(child);
     double crossAxisDelta = childCrossAxisPosition(child);
-    assert(constraints->axis != nullptr);
+    assert(constraints()->axis() != nullptr);
     ;
 }
 
@@ -455,7 +455,7 @@ void RenderSliverSingleBoxAdapterCls::setChildParentData(RenderObject child, Sli
 }
 
 bool RenderSliverSingleBoxAdapterCls::hitTestChildren(SliverHitTestResult result, double crossAxisPosition, double mainAxisPosition) {
-    assert(geometry!->hitTestExtent > 0.0);
+    assert(geometry()!->hitTestExtent > 0.0);
     if (child != nullptr) {
         return hitTestBoxChild(BoxHitTestResultCls->wrap(result), child!, mainAxisPosition, crossAxisPosition);
     }
@@ -463,7 +463,7 @@ bool RenderSliverSingleBoxAdapterCls::hitTestChildren(SliverHitTestResult result
 }
 
 double RenderSliverSingleBoxAdapterCls::childMainAxisPosition(RenderBox child) {
-    return -constraints->scrollOffset;
+    return -constraints()->scrollOffset;
 }
 
 void RenderSliverSingleBoxAdapterCls::applyPaintTransform(RenderObject child, Matrix4 transform) {
@@ -474,7 +474,7 @@ void RenderSliverSingleBoxAdapterCls::applyPaintTransform(RenderObject child, Ma
 }
 
 void RenderSliverSingleBoxAdapterCls::paint(PaintingContext context, Offset offset) {
-    if (child != nullptr && geometry!->visible) {
+    if (child != nullptr && geometry()!->visible) {
         SliverPhysicalParentData childParentData = as<SliverPhysicalParentData>(child!->parentData!);
         context->paintChild(child!, offset + childParentData->paintOffset);
     }
@@ -482,18 +482,18 @@ void RenderSliverSingleBoxAdapterCls::paint(PaintingContext context, Offset offs
 
 void RenderSliverToBoxAdapterCls::performLayout() {
     if (child == nullptr) {
-        geometry = SliverGeometryCls::zero;
+        geometry() = SliverGeometryCls::zero;
         return;
     }
-    SliverConstraints constraints = this->constraints;
+    SliverConstraints constraints = this->constraints();
     child!->layout(constraints->asBoxConstraints(), true);
     double childExtent;
     ;
     assert(childExtent != nullptr);
     double paintedChildSize = calculatePaintOffset(constraints, 0.0, childExtent);
     double cacheExtent = calculateCacheOffset(constraints, 0.0, childExtent);
-    assert(paintedChildSize->isFinite);
+    assert(paintedChildSize->isFinite());
     assert(paintedChildSize >= 0.0);
-    geometry = make<SliverGeometryCls>(childExtent, paintedChildSize, cacheExtent, childExtent, paintedChildSize, childExtent > constraints->remainingPaintExtent || constraints->scrollOffset > 0.0);
-    setChildParentData(child!, constraints, geometry!);
+    geometry() = make<SliverGeometryCls>(childExtent, paintedChildSize, cacheExtent, childExtent, paintedChildSize, childExtent > constraints->remainingPaintExtent || constraints->scrollOffset > 0.0);
+    setChildParentData(child!, constraints, geometry()!);
 }

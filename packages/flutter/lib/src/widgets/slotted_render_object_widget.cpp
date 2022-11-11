@@ -104,7 +104,7 @@ void SlottedRenderObjectElementCls<S>::mount(Element parent, Object newSlot) {
 template<typename S>
 void SlottedRenderObjectElementCls<S>::update(SlottedMultiChildRenderObjectWidgetMixin<S> newWidget) {
     super->update(newWidget);
-    assert(widget == newWidget);
+    assert(widget() == newWidget);
     _updateChildren();
 }
 
@@ -128,14 +128,14 @@ void SlottedRenderObjectElementCls<S>::moveRenderObjectChild(RenderBox child, Ob
 
 template<typename S>
 void SlottedRenderObjectElementCls<S>::_updateChildren() {
-    SlottedMultiChildRenderObjectWidgetMixin<S> slottedMultiChildRenderObjectWidgetMixin = as<SlottedMultiChildRenderObjectWidgetMixin<S>>(widget);
+    SlottedMultiChildRenderObjectWidgetMixin<S> slottedMultiChildRenderObjectWidgetMixin = as<SlottedMultiChildRenderObjectWidgetMixin<S>>(widget());
     assert([=] () {
         _debugPreviousSlots |= slottedMultiChildRenderObjectWidgetMixin->slots()->toList();
         return listEquals(_debugPreviousSlots, slottedMultiChildRenderObjectWidgetMixin->slots()->toList());
     }(), __s("${widget.runtimeType}.slots must not change."));
-    assert(slottedMultiChildRenderObjectWidgetMixin->slots()->toSet()->length == slottedMultiChildRenderObjectWidgetMixin->slots()->length(), __s("slots must be unique"));
+    assert(slottedMultiChildRenderObjectWidgetMixin->slots()->toSet()->length() == slottedMultiChildRenderObjectWidgetMixin->slots()->length(), __s("slots must be unique"));
     for (S slot : slottedMultiChildRenderObjectWidgetMixin->slots()) {
-        _updateChild(slottedMultiChildRenderObjectWidgetMixin->childForSlot(slot), slot);
+        _updateChild(slottedMultiChildRenderObjectWidgetMixin->childForSlot(slot()), slot());
     }
 }
 

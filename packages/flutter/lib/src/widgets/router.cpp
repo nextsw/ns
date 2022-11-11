@@ -29,25 +29,25 @@ Router<T> RouterCls<T>::of(BuildContext context) {
         }
         return true;
     }());
-    return as<Router<T>>(scope!->routerState->widget);
+    return as<Router<T>>(scope!->routerState->widget());
 }
 
 template<typename T>
 template<typename T>
 Router<T> RouterCls<T>::maybeOf(BuildContext context) {
     _RouterScope scope = context-><_RouterScope>dependOnInheritedWidgetOfExactType();
-    return as<Router<T>>(scope?->routerState->widget);
+    return as<Router<T>>(scope?->routerState->widget());
 }
 
 template<typename T>
 void RouterCls<T>::navigate(BuildContext context, VoidCallback callback) {
-    _RouterScope scope = as<_RouterScope>(context-><_RouterScope>getElementForInheritedWidgetOfExactType()!->widget);
+    _RouterScope scope = as<_RouterScope>(context-><_RouterScope>getElementForInheritedWidgetOfExactType()!->widget());
     scope->routerState->_setStateWithExplicitReportStatus(RouteInformationReportingTypeCls::navigate, callback);
 }
 
 template<typename T>
 void RouterCls<T>::neglect(BuildContext context, VoidCallback callback) {
-    _RouterScope scope = as<_RouterScope>(context-><_RouterScope>getElementForInheritedWidgetOfExactType()!->widget);
+    _RouterScope scope = as<_RouterScope>(context-><_RouterScope>getElementForInheritedWidgetOfExactType()!->widget());
     scope->routerState->_setStateWithExplicitReportStatus(RouteInformationReportingTypeCls::neglect, callback);
 }
 
@@ -58,29 +58,29 @@ State<Router<T>> RouterCls<T>::createState() {
 
 template<typename T>
 String _RouterStateCls<T>::restorationId() {
-    return widget->restorationScopeId;
+    return widget()->restorationScopeId;
 }
 
 template<typename T>
 void _RouterStateCls<T>::initState() {
     super->initState();
-    widget->routeInformationProvider?->addListener(_handleRouteInformationProviderNotification);
-    widget->backButtonDispatcher?->addCallback(_handleBackButtonDispatcherNotification);
-    widget->routerDelegate->addListener(_handleRouterDelegateNotification);
+    widget()->routeInformationProvider?->addListener(_handleRouteInformationProviderNotification);
+    widget()->backButtonDispatcher?->addCallback(_handleBackButtonDispatcherNotification);
+    widget()->routerDelegate->addListener(_handleRouterDelegateNotification);
 }
 
 template<typename T>
 void _RouterStateCls<T>::restoreState(RestorationBucket oldBucket, bool initialRestore) {
     registerForRestoration(_routeInformation, __s("route"));
-    if (_routeInformation->value != nullptr) {
-        assert(widget->routeInformationParser != nullptr);
-        _processRouteInformation(_routeInformation->value!, [=] () {
-            widget->routerDelegate->setRestoredRoutePath;
+    if (_routeInformation->value() != nullptr) {
+        assert(widget()->routeInformationParser != nullptr);
+        _processRouteInformation(_routeInformation->value()!, [=] () {
+            widget()->routerDelegate->setRestoredRoutePath;
         });
     } else {
-        if (widget->routeInformationProvider != nullptr) {
-        _processRouteInformation(widget->routeInformationProvider!->value, [=] () {
-            widget->routerDelegate->setInitialRoutePath;
+        if (widget()->routeInformationProvider != nullptr) {
+        _processRouteInformation(widget()->routeInformationProvider!->value, [=] () {
+            widget()->routerDelegate->setInitialRoutePath;
         });
     }
 ;
@@ -90,9 +90,9 @@ template<typename T>
 void _RouterStateCls<T>::didChangeDependencies() {
     _routeParsePending = true;
     super->didChangeDependencies();
-    if (widget->routeInformationProvider != nullptr && _routeParsePending) {
-        _processRouteInformation(widget->routeInformationProvider!->value, [=] () {
-            widget->routerDelegate->setNewRoutePath;
+    if (widget()->routeInformationProvider != nullptr && _routeParsePending) {
+        _processRouteInformation(widget()->routeInformationProvider!->value, [=] () {
+            widget()->routerDelegate->setNewRoutePath;
         });
     }
     _routeParsePending = false;
@@ -102,44 +102,44 @@ void _RouterStateCls<T>::didChangeDependencies() {
 template<typename T>
 void _RouterStateCls<T>::didUpdateWidget(Router<T> oldWidget) {
     super->didUpdateWidget(oldWidget);
-    if (widget->routeInformationProvider != oldWidget->routeInformationProvider || widget->backButtonDispatcher != oldWidget->backButtonDispatcher || widget->routeInformationParser != oldWidget->routeInformationParser || widget->routerDelegate != oldWidget->routerDelegate) {
+    if (widget()->routeInformationProvider != oldWidget->routeInformationProvider || widget()->backButtonDispatcher != oldWidget->backButtonDispatcher || widget()->routeInformationParser != oldWidget->routeInformationParser || widget()->routerDelegate != oldWidget->routerDelegate) {
         _currentRouterTransaction = make<ObjectCls>();
     }
-    if (widget->routeInformationProvider != oldWidget->routeInformationProvider) {
+    if (widget()->routeInformationProvider != oldWidget->routeInformationProvider) {
         oldWidget->routeInformationProvider?->removeListener(_handleRouteInformationProviderNotification);
-        widget->routeInformationProvider?->addListener(_handleRouteInformationProviderNotification);
-        if (oldWidget->routeInformationProvider?->value != widget->routeInformationProvider?->value) {
+        widget()->routeInformationProvider?->addListener(_handleRouteInformationProviderNotification);
+        if (oldWidget->routeInformationProvider?->value() != widget()->routeInformationProvider?->value) {
             _handleRouteInformationProviderNotification();
         }
     }
-    if (widget->backButtonDispatcher != oldWidget->backButtonDispatcher) {
+    if (widget()->backButtonDispatcher != oldWidget->backButtonDispatcher) {
         oldWidget->backButtonDispatcher?->removeCallback(_handleBackButtonDispatcherNotification);
-        widget->backButtonDispatcher?->addCallback(_handleBackButtonDispatcherNotification);
+        widget()->backButtonDispatcher?->addCallback(_handleBackButtonDispatcherNotification);
     }
-    if (widget->routerDelegate != oldWidget->routerDelegate) {
+    if (widget()->routerDelegate != oldWidget->routerDelegate) {
         oldWidget->routerDelegate->removeListener(_handleRouterDelegateNotification);
-        widget->routerDelegate->addListener(_handleRouterDelegateNotification);
+        widget()->routerDelegate->addListener(_handleRouterDelegateNotification);
         _maybeNeedToReportRouteInformation();
     }
 }
 
 template<typename T>
 void _RouterStateCls<T>::dispose() {
-    widget->routeInformationProvider?->removeListener(_handleRouteInformationProviderNotification);
-    widget->backButtonDispatcher?->removeCallback(_handleBackButtonDispatcherNotification);
-    widget->routerDelegate->removeListener(_handleRouterDelegateNotification);
+    widget()->routeInformationProvider?->removeListener(_handleRouteInformationProviderNotification);
+    widget()->backButtonDispatcher?->removeCallback(_handleBackButtonDispatcherNotification);
+    widget()->routerDelegate->removeListener(_handleRouterDelegateNotification);
     _currentRouterTransaction = nullptr;
     super->dispose();
 }
 
 template<typename T>
 Widget _RouterStateCls<T>::build(BuildContext context) {
-    return make<UnmanagedRestorationScopeCls>(bucket, make<_RouterScopeCls>(widget->routeInformationProvider, widget->backButtonDispatcher, widget->routeInformationParser, widget->routerDelegate, this, make<BuilderCls>(widget->routerDelegate->build)));
+    return make<UnmanagedRestorationScopeCls>(bucket, make<_RouterScopeCls>(widget()->routeInformationProvider, widget()->backButtonDispatcher, widget()->routeInformationParser, widget()->routerDelegate, this, make<BuilderCls>(widget()->routerDelegate->build)));
 }
 
 template<typename T>
 void _RouterStateCls<T>::_scheduleRouteInformationReportingTask() {
-    if (_routeInformationReportingTaskScheduled || widget->routeInformationProvider == nullptr) {
+    if (_routeInformationReportingTaskScheduled || widget()->routeInformationProvider == nullptr) {
         return;
     }
     assert(_currentIntentionToReport != nullptr);
@@ -151,21 +151,21 @@ template<typename T>
 void _RouterStateCls<T>::_reportRouteInformation(Duration timestamp) {
     assert(_routeInformationReportingTaskScheduled);
     _routeInformationReportingTaskScheduled = false;
-    if (_routeInformation->value != nullptr) {
-        RouteInformation currentRouteInformation = _routeInformation->value!;
+    if (_routeInformation->value() != nullptr) {
+        RouteInformation currentRouteInformation = _routeInformation->value()!;
         assert(_currentIntentionToReport != nullptr);
-        widget->routeInformationProvider!->routerReportsNewRouteInformation(currentRouteInformation, _currentIntentionToReport!);
+        widget()->routeInformationProvider!->routerReportsNewRouteInformation(currentRouteInformation, _currentIntentionToReport!);
     }
     _currentIntentionToReport = RouteInformationReportingTypeCls::none;
 }
 
 template<typename T>
 RouteInformation _RouterStateCls<T>::_retrieveNewRouteInformation() {
-    T configuration = widget->routerDelegate->currentConfiguration;
+    T configuration = widget()->routerDelegate->currentConfiguration;
     if (configuration == nullptr) {
         return nullptr;
     }
-    return widget->routeInformationParser?->restoreRouteInformation(configuration);
+    return widget()->routeInformationParser?->restoreRouteInformation(configuration);
 }
 
 template<typename T>
@@ -185,7 +185,7 @@ void _RouterStateCls<T>::_setStateWithExplicitReportStatus(RouteInformationRepor
 
 template<typename T>
 void _RouterStateCls<T>::_maybeNeedToReportRouteInformation() {
-    _routeInformation->value = _retrieveNewRouteInformation();
+    _routeInformation->value() = _retrieveNewRouteInformation();
     _currentIntentionToReport |= RouteInformationReportingTypeCls::none;
     _scheduleRouteInformationReportingTask();
 }
@@ -195,7 +195,7 @@ void _RouterStateCls<T>::_processRouteInformation(RouteInformation information, 
     assert(_routeParsePending);
     _routeParsePending = false;
     _currentRouterTransaction = make<ObjectCls>();
-    widget->routeInformationParser!->parseRouteInformationWithDependencies(information, context)-><void>then(_processParsedRouteInformation(_currentRouterTransaction, delegateRouteSetter));
+    widget()->routeInformationParser!->parseRouteInformationWithDependencies(information, context())-><void>then(_processParsedRouteInformation(_currentRouterTransaction, delegateRouteSetter));
 }
 
 template<typename T>
@@ -213,17 +213,17 @@ _RouteSetter<T> _RouterStateCls<T>::_processParsedRouteInformation(Object transa
 
 template<typename T>
 void _RouterStateCls<T>::_handleRouteInformationProviderNotification() {
-    assert(widget->routeInformationProvider!->value != nullptr);
+    assert(widget()->routeInformationProvider!->value != nullptr);
     _routeParsePending = true;
-    _processRouteInformation(widget->routeInformationProvider!->value, [=] () {
-        widget->routerDelegate->setNewRoutePath;
+    _processRouteInformation(widget()->routeInformationProvider!->value, [=] () {
+        widget()->routerDelegate->setNewRoutePath;
     });
 }
 
 template<typename T>
 Future<bool> _RouterStateCls<T>::_handleBackButtonDispatcherNotification() {
     _currentRouterTransaction = make<ObjectCls>();
-    return widget->routerDelegate->popRoute()-><bool>then(_handleRoutePopped(_currentRouterTransaction));
+    return widget()->routerDelegate->popRoute()-><bool>then(_handleRoutePopped(_currentRouterTransaction));
 }
 
 template<typename T>
@@ -295,11 +295,11 @@ T _CallbackHookProviderCls<T>::invokeCallback(T defaultValue) {
 }
 
 bool BackButtonDispatcherCls::hasCallbacks() {
-    return super->hasCallbacks || (_children->isNotEmpty);
+    return super->hasCallbacks || (_children->isNotEmpty());
 }
 
 Future<bool> BackButtonDispatcherCls::invokeCallback(Future<bool> defaultValue) {
-    if (_children->isNotEmpty) {
+    if (_children->isNotEmpty()) {
         List<ChildBackButtonDispatcher> children = _children->toList();
         int childIndex = children->length() - 1;
         InlineMethod;
@@ -327,7 +327,7 @@ void BackButtonDispatcherCls::forget(ChildBackButtonDispatcher child) {
 }
 
 void RootBackButtonDispatcherCls::addCallback(ValueGetter<Future<bool>> callback) {
-    if (!hasCallbacks) {
+    if (!hasCallbacks()) {
         WidgetsBindingCls::instance->addObserver(this);
     }
     super->addCallback(callback);
@@ -335,7 +335,7 @@ void RootBackButtonDispatcherCls::addCallback(ValueGetter<Future<bool>> callback
 
 void RootBackButtonDispatcherCls::removeCallback(ValueGetter<Future<bool>> callback) {
     super->removeCallback(callback);
-    if (!hasCallbacks) {
+    if (!hasCallbacks()) {
         WidgetsBindingCls::instance->removeObserver(this);
     }
 }
@@ -360,14 +360,14 @@ void ChildBackButtonDispatcherCls::takePriority() {
 }
 
 void ChildBackButtonDispatcherCls::deferTo(ChildBackButtonDispatcher child) {
-    assert(hasCallbacks);
+    assert(hasCallbacks());
     parent->deferTo(this);
     super->deferTo(child);
 }
 
 void ChildBackButtonDispatcherCls::removeCallback(ValueGetter<Future<bool>> callback) {
     super->removeCallback(callback);
-    if (!hasCallbacks) {
+    if (!hasCallbacks()) {
         parent->forget(this);
     }
 }
@@ -377,29 +377,29 @@ State<BackButtonListener> BackButtonListenerCls::createState() {
 }
 
 void _BackButtonListenerStateCls::didChangeDependencies() {
-    dispatcher?->removeCallback(widget->onBackButtonPressed);
-    BackButtonDispatcher rootBackDispatcher = RouterCls->of(context)->backButtonDispatcher;
+    dispatcher?->removeCallback(widget()->onBackButtonPressed);
+    BackButtonDispatcher rootBackDispatcher = RouterCls->of(context())->backButtonDispatcher;
     assert(rootBackDispatcher != nullptr, __s("The parent router must have a backButtonDispatcher to use this widget"));
-    auto _c1 = rootBackDispatcher!->createChildBackButtonDispatcher();_c1.auto _c2 = addCallback(widget->onBackButtonPressed);_c2.takePriority();_c2;dispatcher = _c1;
+    auto _c1 = rootBackDispatcher!->createChildBackButtonDispatcher();_c1.auto _c2 = addCallback(widget()->onBackButtonPressed);_c2.takePriority();_c2;dispatcher = _c1;
     super->didChangeDependencies();
 }
 
 void _BackButtonListenerStateCls::didUpdateWidget(BackButtonListener oldWidget) {
     super->didUpdateWidget(oldWidget);
-    if (oldWidget->onBackButtonPressed != widget->onBackButtonPressed) {
+    if (oldWidget->onBackButtonPressed != widget()->onBackButtonPressed) {
         dispatcher?->removeCallback(oldWidget->onBackButtonPressed);
-        dispatcher?->addCallback(widget->onBackButtonPressed);
+        dispatcher?->addCallback(widget()->onBackButtonPressed);
         dispatcher?->takePriority();
     }
 }
 
 void _BackButtonListenerStateCls::dispose() {
-    dispatcher?->removeCallback(widget->onBackButtonPressed);
+    dispatcher?->removeCallback(widget()->onBackButtonPressed);
     super->dispose();
 }
 
 Widget _BackButtonListenerStateCls::build(BuildContext context) {
-    return widget->child;
+    return widget()->child;
 }
 
 template<typename T>
@@ -522,5 +522,5 @@ RouteInformation _RestorableRouteInformationCls::fromPrimitives(Object data) {
 }
 
 Object _RestorableRouteInformationCls::toPrimitives() {
-    return value == nullptr? nullptr : makeList(ArrayItem, ArrayItem);
+    return value() == nullptr? nullptr : makeList(ArrayItem, ArrayItem);
 }

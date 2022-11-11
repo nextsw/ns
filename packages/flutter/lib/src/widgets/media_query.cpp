@@ -173,7 +173,7 @@ Widget _MediaQueryFromWindowStateCls::build(BuildContext context) {
     if (!kReleaseMode) {
         data = data->copyWith(debugBrightnessOverride);
     }
-    return make<MediaQueryCls>(data, widget->child);
+    return make<MediaQueryCls>(data, widget()->child);
 }
 
 void _MediaQueryFromWindowStateCls::dispose() {

@@ -99,9 +99,9 @@ void RenderAndroidViewCls::paint(PaintingContext context, Offset offset) {
     if (_viewController->textureId() == nullptr || _currentTextureSize == nullptr) {
         return;
     }
-    bool isTextureLargerThanWidget = _currentTextureSize!->width() > size->width || _currentTextureSize!->height() > size->height;
+    bool isTextureLargerThanWidget = _currentTextureSize!->width() > size()->width() || _currentTextureSize!->height() > size()->height();
     if (isTextureLargerThanWidget && clipBehavior() != ClipCls::none) {
-        _clipRectLayer->layer() = context->pushClipRect(true, offset, offset & size, _paintTexture, clipBehavior(), _clipRectLayer->layer());
+        _clipRectLayer->layer() = context->pushClipRect(true, offset, offset & size(), _paintTexture, clipBehavior(), _clipRectLayer->layer());
         return;
     }
     _clipRectLayer->layer() = nullptr;
@@ -128,19 +128,19 @@ void RenderAndroidViewCls::_onPlatformViewCreated(int id) {
 }
 
 Future<void> RenderAndroidViewCls::_sizePlatformView() {
-    if (_state == _PlatformViewStateCls::resizing || size->isEmpty) {
+    if (_state == _PlatformViewStateCls::resizing || size()->isEmpty()) {
         return;
     }
     _state = _PlatformViewStateCls::resizing;
     markNeedsPaint();
     Size targetSize;
     do {
-        targetSize = size;
+        targetSize = size();
         _currentTextureSize = await _viewController->setSize(targetSize);
         if (_isDisposed) {
             return;
         }
-    } while (size != targetSize);
+    } while (size() != targetSize);
     _state = _PlatformViewStateCls::ready;
     markNeedsPaint();
 }
@@ -148,7 +148,7 @@ Future<void> RenderAndroidViewCls::_sizePlatformView() {
 void RenderAndroidViewCls::_setOffset() {
     SchedulerBindingCls::instance->addPostFrameCallback([=] () {
         if (!_isDisposed) {
-            if (attached) {
+            if (attached()) {
                 await await _viewController->setOffset(localToGlobal(OffsetCls::zero));
             }
             _setOffset();
@@ -191,7 +191,7 @@ void RenderUiKitViewCls::viewController(UiKitViewController viewController) {
 
 void RenderUiKitViewCls::updateGestureRecognizers(Set<Factory<OneSequenceGestureRecognizer>> gestureRecognizers) {
     assert(gestureRecognizers != nullptr);
-    assert(_factoriesTypeSet(gestureRecognizers)->length == gestureRecognizers->length, __s("There were multiple gesture recognizer factories for the same type, there must only be a single gesture recognizer factory for each gesture recognizer type."));
+    assert(_factoriesTypeSet(gestureRecognizers)->length() == gestureRecognizers->length(), __s("There were multiple gesture recognizer factories for the same type, there must only be a single gesture recognizer factory for each gesture recognizer type."));
     if (_factoryTypesSetEquals(gestureRecognizers, _gestureRecognizer?->gestureRecognizerFactories)) {
         return;
     }
@@ -216,11 +216,11 @@ Size RenderUiKitViewCls::computeDryLayout(BoxConstraints constraints) {
 }
 
 void RenderUiKitViewCls::paint(PaintingContext context, Offset offset) {
-    context->addLayer(make<PlatformViewLayerCls>(offset & size, _viewController->id));
+    context->addLayer(make<PlatformViewLayerCls>(offset & size(), _viewController->id));
 }
 
 bool RenderUiKitViewCls::hitTest(BoxHitTestResult result, Offset position) {
-    if (hitTestBehavior == PlatformViewHitTestBehaviorCls::transparent || !size->contains(position!)) {
+    if (hitTestBehavior == PlatformViewHitTestBehaviorCls::transparent || !size()->contains(position!)) {
         return false;
     }
     result->add(make<BoxHitTestEntryCls>(this, position));
@@ -260,7 +260,7 @@ void RenderUiKitViewCls::_handleGlobalPointerEvent(PointerEvent event) {
     if (!is<PointerDownEvent>(event)) {
         return;
     }
-    if (!(OffsetCls::zero & size)->contains(globalToLocal(event->position))) {
+    if (!(OffsetCls::zero & size())->contains(globalToLocal(event->position))) {
         return;
     }
     if ((event->original | event) != _lastPointerDownEvent) {
@@ -301,10 +301,10 @@ void _UiKitViewGestureRecognizerCls::reset() {
 
 _UiKitViewGestureRecognizerCls::_UiKitViewGestureRecognizerCls(UiKitViewController controller, Set<Factory<OneSequenceGestureRecognizer>> gestureRecognizerFactories) {
     {
-            auto _c1 = make<GestureArenaTeamCls>();    _c1.captain = this;team = _c1;
+            auto _c1 = make<GestureArenaTeamCls>();    _c1.captain = this;team() = _c1;
         _gestureRecognizers = gestureRecognizerFactories->map([=] (Factory<OneSequenceGestureRecognizer> recognizerFactory) {
             OneSequenceGestureRecognizer gestureRecognizer = recognizerFactory->constructor();
-            gestureRecognizer->team() = team;
+            gestureRecognizer->team() = team();
             if (is<LongPressGestureRecognizer>(gestureRecognizer)) {
                 as<LongPressGestureRecognizerCls>(gestureRecognizer)->onLongPress |= [=] () {
                 };
@@ -372,10 +372,10 @@ void _PlatformViewGestureRecognizerCls::reset() {
 
 _PlatformViewGestureRecognizerCls::_PlatformViewGestureRecognizerCls(_HandlePointerEvent handlePointerEvent, Set<Factory<OneSequenceGestureRecognizer>> gestureRecognizerFactories) {
     {
-            auto _c1 = make<GestureArenaTeamCls>();    _c1.captain = this;team = _c1;
+            auto _c1 = make<GestureArenaTeamCls>();    _c1.captain = this;team() = _c1;
         _gestureRecognizers = gestureRecognizerFactories->map([=] (Factory<OneSequenceGestureRecognizer> recognizerFactory) {
             OneSequenceGestureRecognizer gestureRecognizer = recognizerFactory->constructor();
-            gestureRecognizer->team() = team;
+            gestureRecognizer->team() = team();
             if (is<LongPressGestureRecognizer>(gestureRecognizer)) {
                 as<LongPressGestureRecognizerCls>(gestureRecognizer)->onLongPress |= [=] () {
                 };
@@ -460,7 +460,7 @@ Size PlatformViewRenderBoxCls::computeDryLayout(BoxConstraints constraints) {
 
 void PlatformViewRenderBoxCls::paint(PaintingContext context, Offset offset) {
     assert(_controller->viewId() != nullptr);
-    context->addLayer(make<PlatformViewLayerCls>(offset & size, _controller->viewId()));
+    context->addLayer(make<PlatformViewLayerCls>(offset & size(), _controller->viewId()));
 }
 
 void PlatformViewRenderBoxCls::describeSemanticsConfiguration(SemanticsConfiguration config) {
@@ -523,7 +523,7 @@ void _PlatformViewGestureMixinCls::detach() {
 
 void _PlatformViewGestureMixinCls::_updateGestureRecognizersWithCallBack(Set<Factory<OneSequenceGestureRecognizer>> gestureRecognizers, _HandlePointerEvent handlePointerEvent) {
     assert(gestureRecognizers != nullptr);
-    assert(_factoriesTypeSet(gestureRecognizers)->length == gestureRecognizers->length, __s("There were multiple gesture recognizer factories for the same type, there must only be a single gesture recognizer factory for each gesture recognizer type."));
+    assert(_factoriesTypeSet(gestureRecognizers)->length() == gestureRecognizers->length(), __s("There were multiple gesture recognizer factories for the same type, there must only be a single gesture recognizer factory for each gesture recognizer type."));
     if (_factoryTypesSetEquals(gestureRecognizers, _gestureRecognizer?->gestureRecognizerFactories)) {
         return;
     }

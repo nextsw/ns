@@ -106,7 +106,7 @@ Map<Object, Object> RestorationManagerCls::_decodeRestorationData(Uint8List data
 
 Uint8List RestorationManagerCls::_encodeRestorationData(Map<Object, Object> data) {
     ByteData encoded = make<StandardMessageCodecCls>()->encodeMessage(data)!;
-    return encoded->buffer->asUint8List(encoded->offsetInBytes, encoded->lengthInBytes);
+    return encoded->buffer()->asUint8List(encoded->offsetInBytes(), encoded->lengthInBytes());
 }
 
 void RestorationManagerCls::_doSerialization() {
@@ -323,7 +323,7 @@ bool RestorationBucketCls::_debugAssertIntegrity() {
         for (MapEntry<String, List<RestorationBucket>> child : _childrenToAdd->entries()) {
             String id = child->key;
             List<RestorationBucket> buckets = child->value;
-            assert(buckets->isNotEmpty);
+            assert(buckets->isNotEmpty());
             assert(_claimedChildren->containsKey(id));
                     List<DiagnosticsNode> list1 = make<ListCls<>>();        list1.add(ArrayItem);        for (auto _x1 : buckets->map([=] (RestorationBucket bucket) {                        make<ErrorDescriptionCls>(__s("   * ${bucket.debugOwner}"));                    })) {        {            list1.add(_x1);        }list1.add(ArrayItem);error->addAll(list1);
         }
@@ -341,7 +341,7 @@ void RestorationBucketCls::_removeChildData(RestorationBucket child) {
         if (pendingChildren != nullptr) {
             RestorationBucket toAdd = pendingChildren->removeLast();
             _finalizeAddChildData(toAdd);
-            if (pendingChildren->isEmpty) {
+            if (pendingChildren->isEmpty()) {
                 _childrenToAdd->remove(child->restorationId());
             }
         }

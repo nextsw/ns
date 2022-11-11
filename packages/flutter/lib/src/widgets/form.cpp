@@ -17,7 +17,7 @@ FormState FormCls::createState() {
 
 Widget FormStateCls::build(BuildContext context) {
     ;
-    return make<WillPopScopeCls>(widget->onWillPop, make<_FormScopeCls>(this, _generation, widget->child));
+    return make<WillPopScopeCls>(widget()->onWillPop, make<_FormScopeCls>(this, _generation, widget()->child));
 }
 
 void FormStateCls::save() {
@@ -41,7 +41,7 @@ bool FormStateCls::validate() {
 }
 
 void FormStateCls::_fieldDidChange() {
-    widget->onChanged?->call();
+    widget()->onChanged?->call();
     _hasInteractedByUser = _fields->any([=] (FormFieldState<dynamic> field) {
         field->_hasInteractedByUser->value;
     });
@@ -71,7 +71,7 @@ bool FormStateCls::_validate() {
 }
 
 Form _FormScopeCls::form() {
-    return _formState->widget;
+    return _formState->widget();
 }
 
 bool _FormScopeCls::updateShouldNotify(_FormScope old) {
@@ -105,32 +105,32 @@ T FormFieldStateCls<T>::value() {
 
 template<typename T>
 String FormFieldStateCls<T>::errorText() {
-    return _errorText->value;
+    return _errorText->value();
 }
 
 template<typename T>
 bool FormFieldStateCls<T>::hasError() {
-    return _errorText->value != nullptr;
+    return _errorText->value() != nullptr;
 }
 
 template<typename T>
 bool FormFieldStateCls<T>::isValid() {
-    return widget->validator?->call(_value) == nullptr;
+    return widget()->validator?->call(_value) == nullptr;
 }
 
 template<typename T>
 void FormFieldStateCls<T>::save() {
-    widget->onSaved?->call(value());
+    widget()->onSaved?->call(value());
 }
 
 template<typename T>
 void FormFieldStateCls<T>::reset() {
     setState([=] () {
-        _value = widget->initialValue;
+        _value = widget()->initialValue;
         _hasInteractedByUser->value = false;
-        _errorText->value = nullptr;
+        _errorText->value() = nullptr;
     });
-    FormCls->of(context)?->_fieldDidChange();
+    FormCls->of(context())?->_fieldDidChange();
 }
 
 template<typename T>
@@ -147,7 +147,7 @@ void FormFieldStateCls<T>::didChange(T value) {
         _value = value;
         _hasInteractedByUser->value = true;
     });
-    FormCls->of(context)?->_fieldDidChange();
+    FormCls->of(context())?->_fieldDidChange();
 }
 
 template<typename T>
@@ -157,7 +157,7 @@ void FormFieldStateCls<T>::setValue(T value) {
 
 template<typename T>
 String FormFieldStateCls<T>::restorationId() {
-    return widget->restorationId;
+    return widget()->restorationId();
 }
 
 template<typename T>
@@ -168,22 +168,22 @@ void FormFieldStateCls<T>::restoreState(RestorationBucket oldBucket, bool initia
 
 template<typename T>
 void FormFieldStateCls<T>::deactivate() {
-    FormCls->of(context)?->_unregister(this);
+    FormCls->of(context())?->_unregister(this);
     super->deactivate();
 }
 
 template<typename T>
 Widget FormFieldStateCls<T>::build(BuildContext context) {
-    if (widget->enabled) {
+    if (widget()->enabled) {
         ;
     }
     FormCls->of(context)?->_register(this);
-    return widget->builder(this);
+    return widget()->builder(this);
 }
 
 template<typename T>
 void FormFieldStateCls<T>::_validate() {
-    if (widget->validator != nullptr) {
-        _errorText->value = widget->validator!(_value);
+    if (widget()->validator != nullptr) {
+        _errorText->value() = widget()->validator!(_value);
     }
 }

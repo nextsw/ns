@@ -13,13 +13,13 @@ bool _rrectIsValid(RRect rrect) {
 
 bool _offsetIsValid(Offset offset) {
     assert(offset != nullptr, __s("Offset argument was null."));
-    assert(!offset->dx()->isNaN && !offset->dy()->isNaN, __s("Offset argument contained a NaN value."));
+    assert(!offset->dx()->isNaN() && !offset->dy()->isNaN(), __s("Offset argument contained a NaN value."));
     return true;
 }
 
 bool _matrix4IsValid(Float64List matrix4) {
     assert(matrix4 != nullptr, __s("Matrix4 argument was null."));
-    assert(matrix4->length == 16, __s("Matrix4 must have 16 entries."));
+    assert(matrix4->length() == 16, __s("Matrix4 must have 16 entries."));
     assert(matrix4->every([=] (double value) {
         value->isFinite;
     }), __s("Matrix4 entries must be finite."));
@@ -28,7 +28,7 @@ bool _matrix4IsValid(Float64List matrix4) {
 
 bool _radiusIsValid(Radius radius) {
     assert(radius != nullptr, __s("Radius argument was null."));
-    assert(!radius->x->isNaN && !radius->y->isNaN, __s("Radius argument contained a NaN value."));
+    assert(!radius->x->isNaN() && !radius->y->isNaN(), __s("Radius argument contained a NaN value."));
     return true;
 }
 
@@ -144,7 +144,7 @@ bool ColorCls::==(Object other) {
 }
 
 int ColorCls::hashCode() {
-    return value->hashCode;
+    return value->hashCode();
 }
 
 String ColorCls::toString() {
@@ -411,7 +411,7 @@ void ImageCls::dispose() {
     _disposed = true;
     bool removed = _image->_handles->remove(this);
     assert(removed);
-    if (_image->_handles->isEmpty) {
+    if (_image->_handles->isEmpty()) {
         _image->dispose();
     }
 }
@@ -475,7 +475,7 @@ Future<ByteData> _ImageCls::toByteData(ImageByteFormat format) {
 
 void _ImageCls::dispose() {
     assert(!_disposed);
-    assert(_handles->isEmpty, __s("Attempted to dispose of an Image object that has ${_handles.length} open handles.\nIf you see this, it is a bug in dart:ui. Please file an issue at https://github.com/flutter/flutter/issues/new."));
+    assert(_handles->isEmpty(), __s("Attempted to dispose of an Image object that has ${_handles.length} open handles.\nIf you see this, it is a bug in dart:ui. Please file an issue at https://github.com/flutter/flutter/issues/new."));
     _disposed = true;
     _dispose();
 }
@@ -873,7 +873,7 @@ void ImageFilterCls::erode(double radiusX, double radiusY) {
 void ImageFilterCls::matrix(Float64List matrix4, FilterQuality filterQuality) {
     assert(matrix4 != nullptr);
     assert(filterQuality != nullptr);
-    if (matrix4->length != 16) {
+    if (matrix4->length() != 16) {
         throw make<ArgumentErrorCls>(__s(""matrix4" must have 16 entries."));
     }
     return make<_MatrixImageFilterCls>(Float64ListCls->fromList(matrix4), filterQuality);
@@ -1019,7 +1019,7 @@ void _ImageFilterCls::erode(_ErodeImageFilter filter) {
 }
 
 void _ImageFilterCls::matrix(_MatrixImageFilter filter) {
-    if (filter->data->length != 16) {
+    if (filter->data->length() != 16) {
         throw make<ArgumentErrorCls>(__s(""matrix4" must have 16 entries."));
     }
     _constructor();
@@ -1126,7 +1126,7 @@ ImageShaderCls::ImageShaderCls(Image image, TileMode tmx, TileMode tmy, Float64L
         super->_();
     }
     {
-        if (matrix4->length != 16) {
+        if (matrix4->length() != 16) {
             throw make<ArgumentErrorCls>(__s(""matrix4" must have 16 entries."));
         }
         _constructor();
@@ -1147,7 +1147,7 @@ Shader FragmentProgramCls::shader(Float32List floatUniforms, List<ImageShader> s
     if (floatUniforms == nullptr) {
         floatUniforms = make<Float32ListCls>(_uniformFloatCount);
     }
-    if (floatUniforms->length != _uniformFloatCount) {
+    if (floatUniforms->length() != _uniformFloatCount) {
         throw make<ArgumentErrorCls>(__s("floatUniforms size: ${floatUniforms.length} must match given shader uniform count: $_uniformFloatCount."));
     }
     if (_samplerCount > 0 && (samplerUniforms == nullptr || samplerUniforms->length() != _samplerCount)) {
@@ -1219,14 +1219,14 @@ VerticesCls::VerticesCls(VertexMode mode, List<Offset> positions, List<Color> co
 }
 
 void VerticesCls::raw(VertexMode mode, Float32List positions, Int32List colors, Uint16List indices, Float32List textureCoordinates) {
-    if (textureCoordinates != nullptr && textureCoordinates->length != positions->length) {
+    if (textureCoordinates != nullptr && textureCoordinates->length() != positions->length()) {
         throw make<ArgumentErrorCls>(__s(""positions" and "textureCoordinates" lengths must match."));
     }
-    if (colors != nullptr && colors->length * 2 != positions->length) {
+    if (colors != nullptr && colors->length() * 2 != positions->length()) {
         throw make<ArgumentErrorCls>(__s(""positions" and "colors" lengths must match."));
     }
     if (indices != nullptr && indices->any([=] (int i) {
-         < 0 || i >= positions->length;
+         < 0 || i >= positions->length();
     })) {
         throw make<ArgumentErrorCls>(__s(""indices" values must be valid indices in the positions list."));
     }
@@ -1266,7 +1266,7 @@ void CanvasCls::scale(double sx, double sy) {
 
 void CanvasCls::transform(Float64List matrix4) {
     assert(matrix4 != nullptr);
-    if (matrix4->length != 16) {
+    if (matrix4->length() != 16) {
         throw make<ArgumentErrorCls>(__s(""matrix4" must have 16 entries."));
     }
     _transform(matrix4);
@@ -1425,7 +1425,7 @@ void CanvasCls::drawRawPoints(PointMode pointMode, Float32List points, Paint pai
     assert(pointMode != nullptr);
     assert(points != nullptr);
     assert(paint != nullptr);
-    if (points->length % 2 != 0) {
+    if (points->length() % 2 != 0) {
         throw make<ArgumentErrorCls>(__s(""points" must have an even number of values."));
     }
     _drawPoints(paint->_objects, paint->_data, pointMode->index, points);
@@ -1442,13 +1442,13 @@ void CanvasCls::drawAtlas(Image atlas, List<RSTransform> transforms, List<Rect> 
     assert(atlas != nullptr);
     assert(transforms != nullptr);
     assert(rects != nullptr);
-    assert(colors == nullptr || colors->isEmpty || blendMode != nullptr);
+    assert(colors == nullptr || colors->isEmpty() || blendMode != nullptr);
     assert(paint != nullptr);
     int rectCount = rects->length();
     if (transforms->length() != rectCount) {
         throw make<ArgumentErrorCls>(__s(""transforms" and "rects" lengths must match."));
     }
-    if (colors != nullptr && colors->isNotEmpty && colors->length() != rectCount) {
+    if (colors != nullptr && colors->isNotEmpty() && colors->length() != rectCount) {
         throw make<ArgumentErrorCls>(__s("If non-null, "colors" length must match that of "transforms" and "rects"."));
     }
     Float32List rstTransformBuffer = make<Float32ListCls>(rectCount * 4);
@@ -1470,7 +1470,7 @@ void CanvasCls::drawAtlas(Image atlas, List<RSTransform> transforms, List<Rect> 
         rectBuffer[index2] = rect->right;
         rectBuffer[index3] = rect->bottom;
     }
-    Int32List colorBuffer = (colors == nullptr || colors->isEmpty)? nullptr : _encodeColorList(colors);
+    Int32List colorBuffer = (colors == nullptr || colors->isEmpty())? nullptr : _encodeColorList(colors);
     Float32List cullRectBuffer = cullRect?->_getValue32();
     int qualityIndex = paint->filterQuality()->index;
     String error = _drawAtlas(paint->_objects, paint->_data, qualityIndex, atlas->_image, rstTransformBuffer, rectBuffer, colorBuffer, (blendMode | BlendModeCls::src)->index, cullRectBuffer);
@@ -1485,14 +1485,14 @@ void CanvasCls::drawRawAtlas(Image atlas, Float32List rstTransforms, Float32List
     assert(rects != nullptr);
     assert(colors == nullptr || blendMode != nullptr);
     assert(paint != nullptr);
-    int rectCount = rects->length;
-    if (rstTransforms->length != rectCount) {
+    int rectCount = rects->length();
+    if (rstTransforms->length() != rectCount) {
         throw make<ArgumentErrorCls>(__s(""rstTransforms" and "rects" lengths must match."));
     }
     if (rectCount % 4 != 0) {
         throw make<ArgumentErrorCls>(__s(""rstTransforms" and "rects" lengths must be a multiple of four."));
     }
-    if (colors != nullptr && colors->length * 4 != rectCount) {
+    if (colors != nullptr && colors->length() * 4 != rectCount) {
         throw make<ArgumentErrorCls>(__s("If non-null, "colors" length must be one fourth the length of "rstTransforms" and "rects"."));
     }
     int qualityIndex = paint->filterQuality()->index;
@@ -1663,7 +1663,7 @@ ByteData ShadowCls::_encodeShadows(List<Shadow> shadows) {
 }
 
 Future<ImmutableBuffer> ImmutableBufferCls::fromUint8List(Uint8List list) {
-    ImmutableBuffer instance = ImmutableBufferCls->_(list->length);
+    ImmutableBuffer instance = ImmutableBufferCls->_(list->length());
     return _futurize([=] (_Callback<void> callback) {
         instance->_init(list, callback);
     })->then([=] () {

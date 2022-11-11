@@ -239,7 +239,7 @@ void DelegatingListCls<E>::fillRange(int start, int end, E fillValue) {
 
 template<typename E>
 void DelegatingListCls<E>::first(E value) {
-    if (isEmpty) {
+    if (isEmpty()) {
         throw RangeErrorCls->index(0, this);
     }
     this[0] = value;
@@ -272,7 +272,7 @@ void DelegatingListCls<E>::insertAll(int index, Iterable<E> iterable) {
 
 template<typename E>
 void DelegatingListCls<E>::last(E value) {
-    if (isEmpty) {
+    if (isEmpty()) {
         throw RangeErrorCls->index(0, this);
     }
     this[length - 1] = value;

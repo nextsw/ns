@@ -156,19 +156,19 @@ void UnmodifiableByteDataViewCls::setFloat64(int byteOffset, double value, Endia
 }
 
 int UnmodifiableByteDataViewCls::elementSizeInBytes() {
-    return _data->elementSizeInBytes;
+    return _data->elementSizeInBytes();
 }
 
 int UnmodifiableByteDataViewCls::offsetInBytes() {
-    return _data->offsetInBytes;
+    return _data->offsetInBytes();
 }
 
 int UnmodifiableByteDataViewCls::lengthInBytes() {
-    return _data->lengthInBytes;
+    return _data->lengthInBytes();
 }
 
 ByteBuffer UnmodifiableByteDataViewCls::buffer() {
-    return make<UnmodifiableByteBufferViewCls>(_data->buffer);
+    return make<UnmodifiableByteBufferViewCls>(_data->buffer());
 }
 
 void UnmodifiableByteDataViewCls::_unsupported() {

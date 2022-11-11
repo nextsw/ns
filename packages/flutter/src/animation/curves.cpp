@@ -256,7 +256,7 @@ List<List<Offset>> CatmullRomSplineCls::_computeSegments(List<Offset> controlPoi
 }
 
 void CatmullRomSplineCls::_initializeIfNeeded() {
-    if (_cubicSegments->isNotEmpty) {
+    if (_cubicSegments->isNotEmpty()) {
         return;
     }
     _cubicSegments->addAll(_computeSegments(_controlPoints!, _tension!, _startHandle, _endHandle));
@@ -365,7 +365,7 @@ bool CatmullRomCurveCls::validateControlPoints(List<Offset> controlPoints, List<
 }
 
 double CatmullRomCurveCls::transformInternal(double t) {
-    if (_precomputedSamples->isEmpty) {
+    if (_precomputedSamples->isEmpty()) {
         _precomputedSamples->addAll(_computeSamples(controlPoints, tension));
     }
     int start = 0;

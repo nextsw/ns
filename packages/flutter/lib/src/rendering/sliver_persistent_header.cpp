@@ -26,7 +26,7 @@ double RenderSliverPersistentHeaderCls::childExtent() {
         return 0.0;
     }
     assert(child!->hasSize);
-    assert(constraints->axis != nullptr);
+    assert(constraints()->axis() != nullptr);
     ;
 }
 
@@ -43,7 +43,7 @@ void RenderSliverPersistentHeaderCls::layoutChild(double scrollOffset, double ma
     double shrinkOffset = math->min(scrollOffset, maxExtent);
     if (_needsUpdateChild || _lastShrinkOffset != shrinkOffset || _lastOverlapsContent != overlapsContent) {
         <SliverConstraints>invokeLayoutCallback([=] (SliverConstraints constraints) {
-            assert(constraints == this->constraints);
+            assert(constraints() == this->constraints());
             updateChild(shrinkOffset, overlapsContent);
         });
         _lastShrinkOffset = shrinkOffset;
@@ -58,10 +58,10 @@ void RenderSliverPersistentHeaderCls::layoutChild(double scrollOffset, double ma
         throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem, ArrayItem));
     }());
     double stretchOffset = 0.0;
-    if (stretchConfiguration != nullptr && constraints->scrollOffset == 0.0) {
-        stretchOffset += constraints->overlap->abs();
+    if (stretchConfiguration != nullptr && constraints()->scrollOffset == 0.0) {
+        stretchOffset += constraints()->overlap->abs();
     }
-    child?->layout(constraints->asBoxConstraints(math->max(minExtent(), maxExtent - shrinkOffset) + stretchOffset), true);
+    child?->layout(constraints()->asBoxConstraints(math->max(minExtent(), maxExtent - shrinkOffset) + stretchOffset), true);
     if (stretchConfiguration != nullptr && stretchConfiguration!->onStretchTrigger != nullptr && stretchOffset >= stretchConfiguration!->stretchTriggerOffset && _lastStretchOffset <= stretchConfiguration!->stretchTriggerOffset) {
         stretchConfiguration!->onStretchTrigger!();
     }
@@ -73,7 +73,7 @@ double RenderSliverPersistentHeaderCls::childMainAxisPosition(RenderObject child
 }
 
 bool RenderSliverPersistentHeaderCls::hitTestChildren(SliverHitTestResult result, double crossAxisPosition, double mainAxisPosition) {
-    assert(geometry!->hitTestExtent > 0.0);
+    assert(geometry()!->hitTestExtent > 0.0);
     if (child != nullptr) {
         return hitTestBoxChild(BoxHitTestResultCls->wrap(result), child!, mainAxisPosition, crossAxisPosition);
     }
@@ -87,8 +87,8 @@ void RenderSliverPersistentHeaderCls::applyPaintTransform(RenderObject child, Ma
 }
 
 void RenderSliverPersistentHeaderCls::paint(PaintingContext context, Offset offset) {
-    if (child != nullptr && geometry!->visible) {
-        assert(constraints->axisDirection != nullptr);
+    if (child != nullptr && geometry()!->visible) {
+        assert(constraints()->axisDirection != nullptr);
         ;
         context->paintChild(child!, offset);
     }
@@ -112,20 +112,20 @@ void RenderSliverPersistentHeaderCls::debugFillProperties(DiagnosticPropertiesBu
 double RenderSliverScrollingPersistentHeaderCls::updateGeometry() {
     double stretchOffset = 0.0;
     if (stretchConfiguration != nullptr) {
-        stretchOffset += constraints->overlap->abs();
+        stretchOffset += constraints()->overlap->abs();
     }
-    double maxExtent = this->maxExtent;
-    double paintExtent = maxExtent - constraints->scrollOffset;
-    geometry = make<SliverGeometryCls>(maxExtent, math->min(constraints->overlap, 0.0), clampDouble(paintExtent, 0.0, constraints->remainingPaintExtent), maxExtent + stretchOffset, true);
-    return stretchOffset > 0? 0.0 : math->min(0.0, paintExtent - childExtent);
+    double maxExtent = this->maxExtent();
+    double paintExtent = maxExtent - constraints()->scrollOffset;
+    geometry() = make<SliverGeometryCls>(maxExtent, math->min(constraints()->overlap, 0.0), clampDouble(paintExtent, 0.0, constraints()->remainingPaintExtent), maxExtent + stretchOffset, true);
+    return stretchOffset > 0? 0.0 : math->min(0.0, paintExtent - childExtent());
 }
 
 void RenderSliverScrollingPersistentHeaderCls::performLayout() {
-    SliverConstraints constraints = this->constraints;
-    double maxExtent = this->maxExtent;
+    SliverConstraints constraints = this->constraints();
+    double maxExtent = this->maxExtent();
     layoutChild(constraints->scrollOffset, maxExtent);
     double paintExtent = maxExtent - constraints->scrollOffset;
-    geometry = make<SliverGeometryCls>(maxExtent, math->min(constraints->overlap, 0.0), clampDouble(paintExtent, 0.0, constraints->remainingPaintExtent), maxExtent, true);
+    geometry() = make<SliverGeometryCls>(maxExtent, math->min(constraints->overlap, 0.0), clampDouble(paintExtent, 0.0, constraints->remainingPaintExtent), maxExtent, true);
     _childPosition = updateGeometry();
 }
 
@@ -136,14 +136,14 @@ double RenderSliverScrollingPersistentHeaderCls::childMainAxisPosition(RenderBox
 }
 
 void RenderSliverPinnedPersistentHeaderCls::performLayout() {
-    SliverConstraints constraints = this->constraints;
-    double maxExtent = this->maxExtent;
+    SliverConstraints constraints = this->constraints();
+    double maxExtent = this->maxExtent();
     bool overlapsContent = constraints->overlap > 0.0;
     layoutChild(constraints->scrollOffset, maxExtent, overlapsContent);
     double effectiveRemainingPaintExtent = math->max(0, constraints->remainingPaintExtent - constraints->overlap);
     double layoutExtent = clampDouble(maxExtent - constraints->scrollOffset, 0.0, effectiveRemainingPaintExtent);
     double stretchOffset = stretchConfiguration != nullptr? constraints->overlap->abs() : 0.0;
-    geometry = make<SliverGeometryCls>(maxExtent, constraints->overlap, math->min(childExtent, effectiveRemainingPaintExtent), layoutExtent, maxExtent + stretchOffset, minExtent, layoutExtent > 0.0? -constraints->cacheOrigin + layoutExtent : layoutExtent, true);
+    geometry() = make<SliverGeometryCls>(maxExtent, constraints->overlap, math->min(childExtent(), effectiveRemainingPaintExtent), layoutExtent, maxExtent + stretchOffset, minExtent(), layoutExtent > 0.0? -constraints->cacheOrigin + layoutExtent : layoutExtent, true);
 }
 
 double RenderSliverPinnedPersistentHeaderCls::childMainAxisPosition(RenderBox child) {
@@ -196,13 +196,13 @@ void RenderSliverFloatingPersistentHeaderCls::vsync(TickerProvider value) {
 double RenderSliverFloatingPersistentHeaderCls::updateGeometry() {
     double stretchOffset = 0.0;
     if (stretchConfiguration != nullptr) {
-        stretchOffset += constraints->overlap->abs();
+        stretchOffset += constraints()->overlap->abs();
     }
-    double maxExtent = this->maxExtent;
+    double maxExtent = this->maxExtent();
     double paintExtent = maxExtent - _effectiveScrollOffset!;
-    double layoutExtent = maxExtent - constraints->scrollOffset;
-    geometry = make<SliverGeometryCls>(maxExtent, math->min(constraints->overlap, 0.0), clampDouble(paintExtent, 0.0, constraints->remainingPaintExtent), clampDouble(layoutExtent, 0.0, constraints->remainingPaintExtent), maxExtent + stretchOffset, true);
-    return stretchOffset > 0? 0.0 : math->min(0.0, paintExtent - childExtent);
+    double layoutExtent = maxExtent - constraints()->scrollOffset;
+    geometry() = make<SliverGeometryCls>(maxExtent, math->min(constraints()->overlap, 0.0), clampDouble(paintExtent, 0.0, constraints()->remainingPaintExtent), clampDouble(layoutExtent, 0.0, constraints()->remainingPaintExtent), maxExtent + stretchOffset, true);
+    return stretchOffset > 0? 0.0 : math->min(0.0, paintExtent - childExtent());
 }
 
 void RenderSliverFloatingPersistentHeaderCls::updateScrollStartDirection(ScrollDirection direction) {
@@ -217,10 +217,10 @@ void RenderSliverFloatingPersistentHeaderCls::maybeStartSnapAnimation(ScrollDire
     if (direction == ScrollDirectionCls::forward && _effectiveScrollOffset! <= 0.0) {
         return;
     }
-    if (direction == ScrollDirectionCls::reverse && _effectiveScrollOffset! >= maxExtent) {
+    if (direction == ScrollDirectionCls::reverse && _effectiveScrollOffset! >= maxExtent()) {
         return;
     }
-    _updateAnimation(snap->duration, direction == ScrollDirectionCls::forward? 0.0 : maxExtent, snap->curve);
+    _updateAnimation(snap->duration, direction == ScrollDirectionCls::forward? 0.0 : maxExtent(), snap->curve);
     _controller?->forward(0.0);
 }
 
@@ -229,8 +229,8 @@ void RenderSliverFloatingPersistentHeaderCls::maybeStopSnapAnimation(ScrollDirec
 }
 
 void RenderSliverFloatingPersistentHeaderCls::performLayout() {
-    SliverConstraints constraints = this->constraints;
-    double maxExtent = this->maxExtent;
+    SliverConstraints constraints = this->constraints();
+    double maxExtent = this->maxExtent();
     if (_lastActualScrollOffset != nullptr && ((constraints->scrollOffset < _lastActualScrollOffset!) || (_effectiveScrollOffset! < maxExtent))) {
         double delta = _lastActualScrollOffset! - constraints->scrollOffset;
         bool allowFloatingExpansion = constraints->userScrollDirection == ScrollDirectionCls::forward || (_lastStartedScrollDirection != nullptr && _lastStartedScrollDirection == ScrollDirectionCls::forward);
@@ -263,10 +263,10 @@ void RenderSliverFloatingPersistentHeaderCls::showOnScreen(Curve curve, RenderOb
     double targetExtent;
     Rect targetRect;
     ;
-    double effectiveMaxExtent = math->max(childExtent, maxExtent);
-    targetExtent = clampDouble(clampDouble(targetExtent, showOnScreen->minShowOnScreenExtent, showOnScreen->maxShowOnScreenExtent), childExtent, effectiveMaxExtent);
-    if (targetExtent > childExtent) {
-        double targetScrollOffset = maxExtent - targetExtent;
+    double effectiveMaxExtent = math->max(childExtent(), maxExtent());
+    targetExtent = clampDouble(clampDouble(targetExtent, showOnScreen->minShowOnScreenExtent, showOnScreen->maxShowOnScreenExtent), childExtent(), effectiveMaxExtent);
+    if (targetExtent > childExtent()) {
+        double targetScrollOffset = maxExtent() - targetExtent;
         assert(vsync() != nullptr, __s("vsync must not be null if the floating header changes size animatedly."));
         _updateAnimation(duration, targetScrollOffset, curve);
         _controller?->forward(0.0);
@@ -294,13 +294,13 @@ void RenderSliverFloatingPersistentHeaderCls::_updateAnimation(Duration duration
 }
 
 double RenderSliverFloatingPinnedPersistentHeaderCls::updateGeometry() {
-    double minExtent = this->minExtent;
-    double minAllowedExtent = constraints->remainingPaintExtent > minExtent? minExtent : constraints->remainingPaintExtent;
-    double maxExtent = this->maxExtent;
+    double minExtent = this->minExtent();
+    double minAllowedExtent = constraints()->remainingPaintExtent > minExtent? minExtent : constraints()->remainingPaintExtent;
+    double maxExtent = this->maxExtent();
     double paintExtent = maxExtent - _effectiveScrollOffset!;
-    double clampedPaintExtent = clampDouble(paintExtent, minAllowedExtent, constraints->remainingPaintExtent);
-    double layoutExtent = maxExtent - constraints->scrollOffset;
-    double stretchOffset = stretchConfiguration != nullptr? constraints->overlap->abs() : 0.0;
-    geometry = make<SliverGeometryCls>(maxExtent, math->min(constraints->overlap, 0.0), clampedPaintExtent, clampDouble(layoutExtent, 0.0, clampedPaintExtent), maxExtent + stretchOffset, minExtent, true);
+    double clampedPaintExtent = clampDouble(paintExtent, minAllowedExtent, constraints()->remainingPaintExtent);
+    double layoutExtent = maxExtent - constraints()->scrollOffset;
+    double stretchOffset = stretchConfiguration != nullptr? constraints()->overlap->abs() : 0.0;
+    geometry() = make<SliverGeometryCls>(maxExtent, math->min(constraints()->overlap, 0.0), clampedPaintExtent, clampDouble(layoutExtent, 0.0, clampedPaintExtent), maxExtent + stretchOffset, minExtent, true);
     return 0.0;
 }

@@ -31,8 +31,8 @@ BoxConstraints BoxConstraintsCls::copyWith(double maxHeight, double maxWidth, do
 BoxConstraints BoxConstraintsCls::deflate(EdgeInsets edges) {
     assert(edges != nullptr);
     assert(debugAssertIsValid());
-    double horizontal = edges->horizontal;
-    double vertical = edges->vertical;
+    double horizontal = edges->horizontal();
+    double vertical = edges->vertical();
     double deflatedMinWidth = math->max(0.0, minWidth - horizontal);
     double deflatedMinHeight = math->max(0.0, minHeight - vertical);
     return make<BoxConstraintsCls>(deflatedMinWidth, math->max(deflatedMinWidth, maxWidth - horizontal), deflatedMinHeight, math->max(deflatedMinHeight, maxHeight - vertical));
@@ -194,11 +194,11 @@ BoxConstraints BoxConstraintsCls::lerp(BoxConstraints a, BoxConstraints b, doubl
     }
     assert(a->debugAssertIsValid());
     assert(b->debugAssertIsValid());
-    assert((a->minWidth->isFinite && b->minWidth->isFinite) || (a->minWidth == double->infinity && b->minWidth == double->infinity), __s("Cannot interpolate between finite constraints and unbounded constraints."));
-    assert((a->maxWidth->isFinite && b->maxWidth->isFinite) || (a->maxWidth == double->infinity && b->maxWidth == double->infinity), __s("Cannot interpolate between finite constraints and unbounded constraints."));
-    assert((a->minHeight->isFinite && b->minHeight->isFinite) || (a->minHeight == double->infinity && b->minHeight == double->infinity), __s("Cannot interpolate between finite constraints and unbounded constraints."));
-    assert((a->maxHeight->isFinite && b->maxHeight->isFinite) || (a->maxHeight == double->infinity && b->maxHeight == double->infinity), __s("Cannot interpolate between finite constraints and unbounded constraints."));
-    return make<BoxConstraintsCls>(a->minWidth->isFinite? ui->lerpDouble(a->minWidth, b->minWidth, t)! : double->infinity, a->maxWidth->isFinite? ui->lerpDouble(a->maxWidth, b->maxWidth, t)! : double->infinity, a->minHeight->isFinite? ui->lerpDouble(a->minHeight, b->minHeight, t)! : double->infinity, a->maxHeight->isFinite? ui->lerpDouble(a->maxHeight, b->maxHeight, t)! : double->infinity);
+    assert((a->minWidth->isFinite() && b->minWidth->isFinite()) || (a->minWidth == double->infinity && b->minWidth == double->infinity), __s("Cannot interpolate between finite constraints and unbounded constraints."));
+    assert((a->maxWidth->isFinite() && b->maxWidth->isFinite()) || (a->maxWidth == double->infinity && b->maxWidth == double->infinity), __s("Cannot interpolate between finite constraints and unbounded constraints."));
+    assert((a->minHeight->isFinite() && b->minHeight->isFinite()) || (a->minHeight == double->infinity && b->minHeight == double->infinity), __s("Cannot interpolate between finite constraints and unbounded constraints."));
+    assert((a->maxHeight->isFinite() && b->maxHeight->isFinite()) || (a->maxHeight == double->infinity && b->maxHeight == double->infinity), __s("Cannot interpolate between finite constraints and unbounded constraints."));
+    return make<BoxConstraintsCls>(a->minWidth->isFinite()? ui->lerpDouble(a->minWidth, b->minWidth, t)! : double->infinity, a->maxWidth->isFinite()? ui->lerpDouble(a->maxWidth, b->maxWidth, t)! : double->infinity, a->minHeight->isFinite()? ui->lerpDouble(a->minHeight, b->minHeight, t)! : double->infinity, a->maxHeight->isFinite()? ui->lerpDouble(a->maxHeight, b->maxHeight, t)! : double->infinity);
 }
 
 bool BoxConstraintsCls::isNormalized() {
@@ -208,9 +208,9 @@ bool BoxConstraintsCls::isNormalized() {
 bool BoxConstraintsCls::debugAssertIsValid(InformationCollector informationCollector, bool isAppliedConstraint) {
     assert([=] () {
         InlineMethod;
-        if (minWidth->isNaN || maxWidth->isNaN || minHeight->isNaN || maxHeight->isNaN) {
-                    List<String> list1 = make<ListCls<>>();        if (minWidth->isNaN) {            list1.add(ArrayItem);        }if (maxWidth->isNaN) {            list1.add(ArrayItem);        }if (minHeight->isNaN) {            list1.add(ArrayItem);        }if (maxHeight->isNaN) {            list1.add(ArrayItem);        }List<String> affectedFieldsList = list1;
-            assert(affectedFieldsList->isNotEmpty);
+        if (minWidth->isNaN() || maxWidth->isNaN() || minHeight->isNaN() || maxHeight->isNaN()) {
+                    List<String> list1 = make<ListCls<>>();        if (minWidth->isNaN()) {            list1.add(ArrayItem);        }if (maxWidth->isNaN()) {            list1.add(ArrayItem);        }if (minHeight->isNaN()) {            list1.add(ArrayItem);        }if (maxHeight->isNaN()) {            list1.add(ArrayItem);        }List<String> affectedFieldsList = list1;
+            assert(affectedFieldsList->isNotEmpty());
             if (affectedFieldsList->length() > 1) {
                 affectedFieldsList->add(__s("and ${affectedFieldsList.removeLast()}"));
             }
@@ -221,7 +221,7 @@ bool BoxConstraintsCls::debugAssertIsValid(InformationCollector informationColle
                 if (affectedFieldsList->length() == 2) {
                 whichFields = affectedFieldsList->join(__s(" "));
             } else {
-                whichFields = affectedFieldsList->single;
+                whichFields = affectedFieldsList->single();
             }
 ;
             }            throwError(make<ErrorSummaryCls>(__s("BoxConstraints has ${affectedFieldsList.length == 1 ? 'a NaN value' : 'NaN values' } in $whichFields.")));
@@ -245,13 +245,13 @@ bool BoxConstraintsCls::debugAssertIsValid(InformationCollector informationColle
             throwError(make<ErrorSummaryCls>(__s("BoxConstraints has non-normalized height constraints.")));
         }
         if (isAppliedConstraint) {
-            if (minWidth->isInfinite && minHeight->isInfinite) {
+            if (minWidth->isInfinite() && minHeight->isInfinite()) {
                 throwError(make<ErrorSummaryCls>(__s("BoxConstraints forces an infinite width and infinite height.")));
             }
-            if (minWidth->isInfinite) {
+            if (minWidth->isInfinite()) {
                 throwError(make<ErrorSummaryCls>(__s("BoxConstraints forces an infinite width.")));
             }
-            if (minHeight->isInfinite) {
+            if (minHeight->isInfinite()) {
                 throwError(make<ErrorSummaryCls>(__s("BoxConstraints forces an infinite height.")));
             }
         }
@@ -546,7 +546,7 @@ Size RenderBoxCls::size() {
         if (is<_DebugSize>(size)) {
             assert(as<_DebugSizeCls>(size)->_owner == this);
             if (RenderObjectCls::debugActiveLayout != nullptr && !RenderObjectCls->debugActiveLayout!->debugDoingThisLayoutWithCallback) {
-                assert(debugDoingThisResize || debugDoingThisLayout || _computingThisDryLayout || (RenderObjectCls::debugActiveLayout == parent && size->_canBeUsedByParent), __s("RenderBox.size accessed beyond the scope of resize, layout, or permitted parent access. RenderBox can always access its own size, otherwise, the only object that is allowed to read RenderBox.size is its parent, if they have said they will. It you hit this assert trying to access a child\'s size, pass "parentUsesSize: true" to that child's layout()."));
+                assert(debugDoingThisResize() || debugDoingThisLayout() || _computingThisDryLayout || (RenderObjectCls::debugActiveLayout == parent() && size->_canBeUsedByParent), __s("RenderBox.size accessed beyond the scope of resize, layout, or permitted parent access. RenderBox can always access its own size, otherwise, the only object that is allowed to read RenderBox.size is its parent, if they have said they will. It you hit this assert trying to access a child\'s size, pass "parentUsesSize: true" to that child's layout()."));
             }
             assert(as<_DebugSizeCls>(size) == _size);
         }
@@ -556,24 +556,24 @@ Size RenderBoxCls::size() {
 }
 
 void RenderBoxCls::size(Size value) {
-    assert(!(debugDoingThisResize && debugDoingThisLayout));
-    assert(sizedByParent || !debugDoingThisResize);
+    assert(!(debugDoingThisResize() && debugDoingThisLayout()));
+    assert(sizedByParent() || !debugDoingThisResize());
     assert([=] () {
-        if ((sizedByParent && debugDoingThisResize) || (!sizedByParent && debugDoingThisLayout)) {
+        if ((sizedByParent() && debugDoingThisResize()) || (!sizedByParent() && debugDoingThisLayout())) {
             return true;
         }
-        assert(!debugDoingThisResize);
+        assert(!debugDoingThisResize());
         List<DiagnosticsNode> information = makeList(ArrayItem);
-        if (debugDoingThisLayout) {
-            assert(sizedByParent);
+        if (debugDoingThisLayout()) {
+            assert(sizedByParent());
             information->add(make<ErrorDescriptionCls>(__s("It appears that the size setter was called from performLayout().")));
         } else {
             information->add(make<ErrorDescriptionCls>(__s("The size setter was called from outside layout (neither performResize() nor performLayout() were being run for this object).")));
-            if (owner != nullptr && owner!->debugDoingLayout) {
+            if (owner() != nullptr && owner()!->debugDoingLayout()) {
                 information->add(make<ErrorDescriptionCls>(__s("Only the object itself can set its size. It is a contract violation for other objects to set it.")));
             }
         }
-        if (sizedByParent) {
+        if (sizedByParent()) {
             information->add(make<ErrorDescriptionCls>(__s("Because this RenderBox has sizedByParent set to true, it must set its size in performResize().")));
         } else {
             information->add(make<ErrorDescriptionCls>(__s("Because this RenderBox has sizedByParent set to false, it must set its size in performLayout().")));
@@ -596,7 +596,7 @@ Size RenderBoxCls::debugAdoptSize(Size value) {
     assert([=] () {
         if (is<_DebugSize>(value)) {
             if (as<_DebugSizeCls>(value)->_owner != this) {
-                if (value->_owner->parent != this) {
+                if (value->_owner->parent() != this) {
                     throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem));
                 }
                 if (!value->_canBeUsedByParent) {
@@ -604,7 +604,7 @@ Size RenderBoxCls::debugAdoptSize(Size value) {
                 }
             }
         }
-        result = make<_DebugSizeCls>(value, this, debugCanParentUseSize);
+        result = make<_DebugSizeCls>(value, this, debugCanParentUseSize());
         return true;
     }());
     return result;
@@ -620,14 +620,14 @@ void RenderBoxCls::debugResetSize() {
 
 double RenderBoxCls::getDistanceToBaseline(TextBaseline baseline, bool onlyReal) {
     assert(!_debugDoingBaseline, __s("Please see the documentation for computeDistanceToActualBaseline for the required calling conventions of this method."));
-    assert(!debugNeedsLayout);
+    assert(!debugNeedsLayout());
     assert([=] () {
-        RenderObject parent = as<RenderObject>(this->parent);
-        if (owner!->debugDoingLayout) {
+        RenderObject parent = as<RenderObject>(this->parent());
+        if (owner()!->debugDoingLayout()) {
             return (RenderObjectCls::debugActiveLayout == parent) && parent!->debugDoingThisLayout();
         }
-        if (owner!->debugDoingPaint) {
-            return ((RenderObjectCls::debugActivePaint == parent) && parent!->debugDoingThisPaint()) || ((RenderObjectCls::debugActivePaint == this) && debugDoingThisPaint);
+        if (owner()!->debugDoingPaint()) {
+            return ((RenderObjectCls::debugActivePaint == parent) && parent!->debugDoingThisPaint()) || ((RenderObjectCls::debugActivePaint == this) && debugDoingThisPaint());
         }
         assert(parent == this->parent);
         return false;
@@ -664,26 +664,26 @@ void RenderBoxCls::debugAssertDoesMeetConstraints() {
     assert([=] () {
         if (!hasSize()) {
             DiagnosticsNode contract;
-            if (sizedByParent) {
+            if (sizedByParent()) {
                 contract = make<ErrorDescriptionCls>(__s("Because this RenderBox has sizedByParent set to true, it must set its size in performResize()."));
             } else {
                 contract = make<ErrorDescriptionCls>(__s("Because this RenderBox has sizedByParent set to false, it must set its size in performLayout()."));
             }
             throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem, ArrayItem, ArrayItem));
         }
-        if (!_size!->isFinite) {
+        if (!_size!->isFinite()) {
             List<DiagnosticsNode> information = makeList(ArrayItem, ArrayItem);
             if (!constraints()->hasBoundedWidth()) {
                 RenderBox node = this;
-                while (!node->constraints()->hasBoundedWidth() && is<RenderBox>(node->parent)) {
-                    node = as<RenderBox>(node->parent!);
+                while (!node->constraints()->hasBoundedWidth() && is<RenderBox>(node->parent())) {
+                    node = as<RenderBox>(node->parent()!);
                 }
                 information->add(node->describeForError(__s("The nearest ancestor providing an unbounded width constraint is")));
             }
             if (!constraints()->hasBoundedHeight()) {
                 RenderBox node = this;
-                while (!node->constraints()->hasBoundedHeight() && is<RenderBox>(node->parent)) {
-                    node = as<RenderBox>(node->parent!);
+                while (!node->constraints()->hasBoundedHeight() && is<RenderBox>(node->parent())) {
+                    node = as<RenderBox>(node->parent()!);
                 }
                 information->add(node->describeForError(__s("The nearest ancestor providing an unbounded height constraint is")));
             }
@@ -707,7 +707,7 @@ void RenderBoxCls::debugAssertDoesMeetConstraints() {
                 testIntrinsicsForValues(getMinIntrinsicHeight, getMaxIntrinsicHeight, __s("Height"), constraints()->maxWidth);
             }
             RenderObjectCls::debugCheckingIntrinsics = false;
-            if (failures->isNotEmpty) {
+            if (failures->isNotEmpty()) {
                             List<DiagnosticsNode> list2 = make<ListCls<>>();            list2.add(ArrayItem);            list2.add(ArrayItem);            for (auto _x2 : failures) {            {                list2.add(_x2);            }list2.add(ArrayItem);throw FlutterErrorCls->fromParts(list2);
             }
             _dryLayoutCalculationValid = true;
@@ -727,7 +727,7 @@ void RenderBoxCls::debugAssertDoesMeetConstraints() {
 }
 
 void RenderBoxCls::markNeedsLayout() {
-    if (_clearCachedData() && is<RenderObject>(parent)) {
+    if (_clearCachedData() && is<RenderObject>(parent())) {
         markParentNeedsLayout();
         return;
     }
@@ -743,12 +743,12 @@ void RenderBoxCls::layout(Constraints constraints, bool parentUsesSize) {
 
 void RenderBoxCls::performResize() {
     size() = computeDryLayout(constraints());
-    assert(size()->isFinite);
+    assert(size()->isFinite());
 }
 
 void RenderBoxCls::performLayout() {
     assert([=] () {
-        if (!sizedByParent) {
+        if (!sizedByParent()) {
             throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem));
         }
         return true;
@@ -758,7 +758,7 @@ void RenderBoxCls::performLayout() {
 bool RenderBoxCls::hitTest(BoxHitTestResult result, Offset position) {
     assert([=] () {
         if (!hasSize()) {
-            if (debugNeedsLayout) {
+            if (debugNeedsLayout()) {
                 throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem, ArrayItem, ArrayItem));
             }
             throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem, ArrayItem, ArrayItem));
@@ -784,7 +784,7 @@ bool RenderBoxCls::hitTestChildren(BoxHitTestResult result, Offset position) {
 
 void RenderBoxCls::applyPaintTransform(RenderObject child, Matrix4 transform) {
     assert(child != nullptr);
-    assert(child->parent == this);
+    assert(child->parent() == this);
     assert([=] () {
         if (!is<BoxParentData>(child->parentData)) {
             throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem));
@@ -889,7 +889,7 @@ void RenderBoxCls::debugPaintBaselines(PaintingContext context, Offset offset) {
 void RenderBoxCls::debugPaintPointers(PaintingContext context, Offset offset) {
     assert([=] () {
         if (_debugActivePointers > 0) {
-                    auto _c1 = make<PaintCls>();        _c1.color = make<ColorCls>(0x00BBBB | ((0x04000000 * depth) & 0xFF000000));Paint paint = _c1;
+                    auto _c1 = make<PaintCls>();        _c1.color = make<ColorCls>(0x00BBBB | ((0x04000000 * depth()) & 0xFF000000));Paint paint = _c1;
             context->canvas()->drawRect(offset & size(), paint);
         }
         return true;
@@ -902,7 +902,7 @@ void RenderBoxCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
 }
 
 double RenderBoxCls::_computeIntrinsicDimension(_IntrinsicDimension dimension, double argument, std::function<double(double argument)> computer) {
-    assert(RenderObjectCls::debugCheckingIntrinsics || !debugDoingThisResize);
+    assert(RenderObjectCls::debugCheckingIntrinsics || !debugDoingThisResize());
     bool shouldCache = true;
     assert([=] () {
         if (RenderObjectCls::debugCheckingIntrinsics) {
@@ -976,7 +976,7 @@ bool RenderBoxCls::_clearCachedData() {
 template<typename ChildType, typename ParentDataType>
 double RenderBoxContainerDefaultsMixinCls<ChildType, ParentDataType>::defaultComputeDistanceToFirstActualBaseline(TextBaseline baseline) {
     assert(!debugNeedsLayout);
-    ChildType child = firstChild;
+    ChildType child = firstChild();
     while (child != nullptr) {
         ParentDataType childParentData = as<ParentDataType>(child->parentData);
         double result = child->getDistanceToActualBaseline(baseline);
@@ -992,7 +992,7 @@ template<typename ChildType, typename ParentDataType>
 double RenderBoxContainerDefaultsMixinCls<ChildType, ParentDataType>::defaultComputeDistanceToHighestActualBaseline(TextBaseline baseline) {
     assert(!debugNeedsLayout);
     double result;
-    ChildType child = firstChild;
+    ChildType child = firstChild();
     while (child != nullptr) {
         ParentDataType childParentData = as<ParentDataType>(child->parentData!);
         double candidate = child->getDistanceToActualBaseline(baseline);
@@ -1011,7 +1011,7 @@ double RenderBoxContainerDefaultsMixinCls<ChildType, ParentDataType>::defaultCom
 
 template<typename ChildType, typename ParentDataType>
 bool RenderBoxContainerDefaultsMixinCls<ChildType, ParentDataType>::defaultHitTestChildren(BoxHitTestResult result, Offset position) {
-    ChildType child = lastChild;
+    ChildType child = lastChild();
     while (child != nullptr) {
         ParentDataType childParentData = as<ParentDataType>(child->parentData!);
         bool isHit = result->addWithPaintOffset(childParentData->offset, position, [=] (BoxHitTestResult result,Offset transformed) {
@@ -1028,7 +1028,7 @@ bool RenderBoxContainerDefaultsMixinCls<ChildType, ParentDataType>::defaultHitTe
 
 template<typename ChildType, typename ParentDataType>
 void RenderBoxContainerDefaultsMixinCls<ChildType, ParentDataType>::defaultPaint(PaintingContext context, Offset offset) {
-    ChildType child = firstChild;
+    ChildType child = firstChild();
     while (child != nullptr) {
         ParentDataType childParentData = as<ParentDataType>(child->parentData!);
         context->paintChild(child, childParentData->offset + offset);
@@ -1039,7 +1039,7 @@ void RenderBoxContainerDefaultsMixinCls<ChildType, ParentDataType>::defaultPaint
 template<typename ChildType, typename ParentDataType>
 List<ChildType> RenderBoxContainerDefaultsMixinCls<ChildType, ParentDataType>::getChildrenAsList() {
     List<ChildType> result = makeList();
-    RenderBox child = firstChild;
+    RenderBox child = firstChild();
     while (child != nullptr) {
         ParentDataType childParentData = as<ParentDataType>(child->parentData!);
         result->add(as<ChildType>(child));

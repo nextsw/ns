@@ -52,7 +52,7 @@ void RenderSliverMultiBoxAdaptorCls::debugChildIntegrityEnabled(bool enabled) {
     assert(enabled != nullptr);
     assert([=] () {
         _debugChildIntegrityEnabled = enabled;
-        return _debugVerifyChildOrder() && (!_debugChildIntegrityEnabled || _debugDanglingKeepAlives->isEmpty);
+        return _debugVerifyChildOrder() && (!_debugChildIntegrityEnabled || _debugDanglingKeepAlives->isEmpty());
     }());
 }
 
@@ -235,12 +235,12 @@ bool RenderSliverMultiBoxAdaptorCls::hitTestChildren(SliverHitTestResult result,
 }
 
 double RenderSliverMultiBoxAdaptorCls::childMainAxisPosition(RenderBox child) {
-    return childScrollOffset(child)! - constraints->scrollOffset;
+    return childScrollOffset(child)! - constraints()->scrollOffset;
 }
 
 double RenderSliverMultiBoxAdaptorCls::childScrollOffset(RenderObject child) {
     assert(child != nullptr);
-    assert(child->parent == this);
+    assert(child->parent() == this);
     SliverMultiBoxAdaptorParentData childParentData = as<SliverMultiBoxAdaptorParentData>(child->parentData!);
     return childParentData->layoutOffset;
 }
@@ -275,7 +275,7 @@ void RenderSliverMultiBoxAdaptorCls::paint(PaintingContext context, Offset offse
         if (addExtent) {
             childOffset += mainAxisUnit * paintExtentOf(child);
         }
-        if ( < constraints->remainingPaintExtent && mainAxisDelta + paintExtentOf(child) > 0) {
+        if ( < constraints()->remainingPaintExtent && mainAxisDelta + paintExtentOf(child) > 0) {
             context->paintChild(child, childOffset);
         }
         child = childAfter(child);
@@ -343,7 +343,7 @@ bool RenderSliverMultiBoxAdaptorCls::_debugVerifyChildOrder() {
 
 void RenderSliverMultiBoxAdaptorCls::_createOrObtainChild(int index, RenderBox after) {
     <SliverConstraints>invokeLayoutCallback([=] (SliverConstraints constraints) {
-        assert(constraints == this->constraints);
+        assert(constraints() == this->constraints());
         if (_keepAliveBucket->containsKey(index)) {
             RenderBox child = _keepAliveBucket->remove(index)!;
             SliverMultiBoxAdaptorParentData childParentData = as<SliverMultiBoxAdaptorParentData>(child->parentData!);
@@ -368,8 +368,8 @@ void RenderSliverMultiBoxAdaptorCls::_destroyOrCacheChild(RenderBox child) {
         super->adoptChild(child);
         childParentData->_keptAlive = true;
     } else {
-        assert(child->parent == this);
+        assert(child->parent() == this);
         _childManager->removeChild(child);
-        assert(child->parent == nullptr);
+        assert(child->parent() == nullptr);
     }
 }

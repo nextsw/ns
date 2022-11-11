@@ -28,17 +28,17 @@ int RenderSliverFixedExtentBoxAdaptorCls::getMaxChildIndexForScrollOffset(double
 }
 
 double RenderSliverFixedExtentBoxAdaptorCls::estimateMaxScrollOffset(SliverConstraints constraints, int firstIndex, int lastIndex, double leadingScrollOffset, double trailingScrollOffset) {
-    return childManager->estimateMaxScrollOffset(constraints, firstIndex, lastIndex, leadingScrollOffset, trailingScrollOffset);
+    return childManager()->estimateMaxScrollOffset(constraints, firstIndex, lastIndex, leadingScrollOffset, trailingScrollOffset);
 }
 
 double RenderSliverFixedExtentBoxAdaptorCls::computeMaxScrollOffset(SliverConstraints constraints, double itemExtent) {
-    return childManager->childCount * itemExtent;
+    return childManager()->childCount() * itemExtent;
 }
 
 void RenderSliverFixedExtentBoxAdaptorCls::performLayout() {
-    SliverConstraints constraints = this->constraints;
-    childManager->didStartLayout();
-    childManager->setDidUnderflow(false);
+    SliverConstraints constraints = this->constraints();
+    childManager()->didStartLayout();
+    childManager()->setDidUnderflow(false);
     double itemExtent = this->itemExtent();
     double scrollOffset = constraints->scrollOffset + constraints->cacheOrigin;
     assert(scrollOffset >= 0.0);
@@ -47,7 +47,7 @@ void RenderSliverFixedExtentBoxAdaptorCls::performLayout() {
     double targetEndScrollOffset = scrollOffset + remainingExtent;
     BoxConstraints childConstraints = constraints->asBoxConstraints(itemExtent, itemExtent);
     int firstIndex = getMinChildIndexForScrollOffset(scrollOffset, itemExtent);
-    int targetLastIndex = targetEndScrollOffset->isFinite? getMaxChildIndexForScrollOffset(targetEndScrollOffset, itemExtent) : nullptr;
+    int targetLastIndex = targetEndScrollOffset->isFinite()? getMaxChildIndexForScrollOffset(targetEndScrollOffset, itemExtent) : nullptr;
     if (firstChild != nullptr) {
         int leadingGarbage = _calculateLeadingGarbage(firstIndex);
         int trailingGarbage = targetLastIndex != nullptr? _calculateTrailingGarbage(targetLastIndex) : 0;
@@ -63,8 +63,8 @@ void RenderSliverFixedExtentBoxAdaptorCls::performLayout() {
             } else {
                 max = computeMaxScrollOffset(constraints, itemExtent);
             }
-            geometry = make<SliverGeometryCls>(max, max);
-            childManager->didFinishLayout();
+            geometry() = make<SliverGeometryCls>(max, max);
+            childManager()->didFinishLayout();
             return;
         }
     }
@@ -72,7 +72,7 @@ void RenderSliverFixedExtentBoxAdaptorCls::performLayout() {
     for (; index >= firstIndex; --index) {
         RenderBox child = insertAndLayoutLeadingChild(childConstraints);
         if (child == nullptr) {
-            geometry = make<SliverGeometryCls>(index * itemExtent);
+            geometry() = make<SliverGeometryCls>(index * itemExtent);
             return;
         }
         SliverMultiBoxAdaptorParentData childParentData = as<SliverMultiBoxAdaptorParentData>(child->parentData!);
@@ -115,12 +115,12 @@ void RenderSliverFixedExtentBoxAdaptorCls::performLayout() {
     double paintExtent = calculatePaintOffset(constraints, leadingScrollOffset, trailingScrollOffset);
     double cacheExtent = calculateCacheOffset(constraints, leadingScrollOffset, trailingScrollOffset);
     double targetEndScrollOffsetForPaint = constraints->scrollOffset + constraints->remainingPaintExtent;
-    int targetLastIndexForPaint = targetEndScrollOffsetForPaint->isFinite? getMaxChildIndexForScrollOffset(targetEndScrollOffsetForPaint, itemExtent) : nullptr;
-    geometry = make<SliverGeometryCls>(estimatedMaxScrollOffset, paintExtent, cacheExtent, estimatedMaxScrollOffset, (targetLastIndexForPaint != nullptr && lastIndex >= targetLastIndexForPaint) || constraints->scrollOffset > 0.0);
+    int targetLastIndexForPaint = targetEndScrollOffsetForPaint->isFinite()? getMaxChildIndexForScrollOffset(targetEndScrollOffsetForPaint, itemExtent) : nullptr;
+    geometry() = make<SliverGeometryCls>(estimatedMaxScrollOffset, paintExtent, cacheExtent, estimatedMaxScrollOffset, (targetLastIndexForPaint != nullptr && lastIndex >= targetLastIndexForPaint) || constraints->scrollOffset > 0.0);
     if (estimatedMaxScrollOffset == trailingScrollOffset) {
-        childManager->setDidUnderflow(true);
+        childManager()->setDidUnderflow(true);
     }
-    childManager->didFinishLayout();
+    childManager()->didFinishLayout();
 }
 
 int RenderSliverFixedExtentBoxAdaptorCls::_calculateLeadingGarbage(int firstIndex) {

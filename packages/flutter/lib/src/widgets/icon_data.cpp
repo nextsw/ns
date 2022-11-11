@@ -24,8 +24,8 @@ IconDataPropertyCls::IconDataPropertyCls(String name, Unknown value, Unknown ifN
 
 Map<String, Object> IconDataPropertyCls::toJsonMap(DiagnosticsSerializationDelegate delegate) {
     Map<String, Object> json = super->toJsonMap(delegate);
-    if (value != nullptr) {
-            Map<String, Object> map1 = make<MapCls<>>();    map1.set(__s("codePoint"), value!->codePoint);json[__s("valueProperties")] = list1;
+    if (value() != nullptr) {
+            Map<String, Object> map1 = make<MapCls<>>();    map1.set(__s("codePoint"), value()!->codePoint);json[__s("valueProperties")] = list1;
     }
     return json;
 }

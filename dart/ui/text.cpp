@@ -157,7 +157,7 @@ bool TextDecorationCls::==(Object other) {
 }
 
 int TextDecorationCls::hashCode() {
-    return _mask->hashCode;
+    return _mask->hashCode();
 }
 
 String TextDecorationCls::toString() {
@@ -250,7 +250,7 @@ Int32List _encodeTextStyle(Color color, TextDecoration decoration, Color decorat
     if (decorationThickness != nullptr) {
         result[0] |= 1 << 8;
     }
-    if (fontFamily != nullptr || (fontFamilyFallback != nullptr && fontFamilyFallback->isNotEmpty)) {
+    if (fontFamily != nullptr || (fontFamilyFallback != nullptr && fontFamilyFallback->isNotEmpty())) {
         result[0] |= 1 << 9;
     }
     if (fontSize != nullptr) {
@@ -417,7 +417,7 @@ ByteData _encodeStrut(String fontFamily, List<String> fontFamilyFallback, double
         data->setInt8(byteCount, fontStyle->index);
         byteCount += 1;
     }
-    if (fontFamily != nullptr || (fontFamilyFallback != nullptr && fontFamilyFallback->isNotEmpty)) {
+    if (fontFamily != nullptr || (fontFamilyFallback != nullptr && fontFamilyFallback->isNotEmpty())) {
         bitmask |= 1 << 2;
     }
     if (fontSize != nullptr) {
@@ -441,7 +441,7 @@ ByteData _encodeStrut(String fontFamily, List<String> fontFamilyFallback, double
     data->setInt8(0, bitmask);
     assert(byteCount <= 16);
     assert(bitmask >> 8 == 0, __s("strut bitmask overflow: $bitmask"));
-    return ByteDataCls->view(data->buffer, 0, byteCount);
+    return ByteDataCls->view(data->buffer(), 0, byteCount);
 }
 
 StrutStyleCls::StrutStyleCls(String fontFamily, List<String> fontFamilyFallback, double fontSize, FontStyle fontStyle, FontWeight fontWeight, bool forceStrutHeight, double height, double leading, TextLeadingDistribution leadingDistribution) {
@@ -460,15 +460,15 @@ bool StrutStyleCls::==(Object other) {
     if (other->runtimeType() != runtimeType) {
         return false;
     }
-    return is<StrutStyle>(other) && other->_fontFamily == _fontFamily && other->_leadingDistribution == _leadingDistribution && <String>_listEquals(other->_fontFamilyFallback, _fontFamilyFallback) && <int>_listEquals(other->_encoded->buffer->asInt8List(), _encoded->buffer->asInt8List());
+    return is<StrutStyle>(other) && other->_fontFamily == _fontFamily && other->_leadingDistribution == _leadingDistribution && <String>_listEquals(other->_fontFamilyFallback, _fontFamilyFallback) && <int>_listEquals(other->_encoded->buffer()->asInt8List(), _encoded->buffer()->asInt8List());
 }
 
 int StrutStyleCls::hashCode() {
-    return ObjectCls->hash(ObjectCls->hashAll(_encoded->buffer->asInt8List()), _fontFamily, _leadingDistribution);
+    return ObjectCls->hash(ObjectCls->hashAll(_encoded->buffer()->asInt8List()), _fontFamily, _leadingDistribution);
 }
 
 bool StrutStyleCls::_enabled() {
-    return _encoded->lengthInBytes > 0;
+    return _encoded->lengthInBytes() > 0;
 }
 
 Rect TextBoxCls::toRect() {
@@ -567,7 +567,7 @@ bool TextRangeCls::==(Object other) {
 }
 
 int TextRangeCls::hashCode() {
-    return ObjectCls->hash(start->hashCode, end->hashCode);
+    return ObjectCls->hash(start->hashCode(), end->hashCode());
 }
 
 String TextRangeCls::toString() {
@@ -588,7 +588,7 @@ bool ParagraphConstraintsCls::==(Object other) {
 }
 
 int ParagraphConstraintsCls::hashCode() {
-    return width->hashCode;
+    return width->hashCode();
 }
 
 String ParagraphConstraintsCls::toString() {
@@ -655,14 +655,14 @@ TextRange ParagraphCls::getLineBoundary(TextPosition position) {
 
 List<LineMetrics> ParagraphCls::computeLineMetrics() {
     Float64List encoded = _computeLineMetrics();
-    int count = encoded->length ~/ 9;
+    int count = encoded->length() ~/ 9;
     int position = 0;
     List<LineMetrics> list1 = make<ListCls<>>();for (;  < count; index += 1) {    ;}{    list1.add(ArrayItem);}List<LineMetrics> metrics = list1;
     return metrics;
 }
 
 List<TextBox> ParagraphCls::_decodeTextBoxes(Float32List encoded) {
-    int count = encoded->length ~/ 5;
+    int count = encoded->length() ~/ 5;
     List<TextBox> boxes = makeList();
     int position = 0;
     for (;  < count; index += 1) {
@@ -719,7 +719,7 @@ void ParagraphBuilderCls::pushStyle(TextStyle style) {
         encodedFontFeatures = make<ByteDataCls>(fontFeatures->length() * FontFeatureCls::_kEncodedSize);
         int byteOffset = 0;
         for (FontFeature feature : fontFeatures) {
-            feature->_encode(ByteDataCls->view(encodedFontFeatures->buffer, byteOffset, FontFeatureCls::_kEncodedSize));
+            feature->_encode(ByteDataCls->view(encodedFontFeatures->buffer(), byteOffset, FontFeatureCls::_kEncodedSize));
             byteOffset += FontFeatureCls::_kEncodedSize;
         }
     }
@@ -729,7 +729,7 @@ void ParagraphBuilderCls::pushStyle(TextStyle style) {
         encodedFontVariations = make<ByteDataCls>(fontVariations->length() * FontVariationCls::_kEncodedSize);
         int byteOffset = 0;
         for (FontVariation variation : fontVariations) {
-            variation->_encode(ByteDataCls->view(encodedFontVariations->buffer, byteOffset, FontVariationCls::_kEncodedSize));
+            variation->_encode(ByteDataCls->view(encodedFontVariations->buffer(), byteOffset, FontVariationCls::_kEncodedSize));
             byteOffset += FontVariationCls::_kEncodedSize;
         }
     }

@@ -18,7 +18,7 @@ InheritedElement InheritedNotifierCls<T>::createElement() {
 
 template<typename T>
 void _InheritedNotifierElementCls<T>::update(InheritedNotifier<T> newWidget) {
-    T oldNotifier = (as<InheritedNotifier<T>>(widget))->notifier;
+    T oldNotifier = (as<InheritedNotifier<T>>(widget()))->notifier;
     T newNotifier = newWidget->notifier;
     if (oldNotifier != newNotifier) {
         oldNotifier?->removeListener(_handleUpdate);
@@ -30,7 +30,7 @@ void _InheritedNotifierElementCls<T>::update(InheritedNotifier<T> newWidget) {
 template<typename T>
 Widget _InheritedNotifierElementCls<T>::build() {
     if (_dirty) {
-        notifyClients(as<InheritedNotifier<T>>(widget));
+        notifyClients(as<InheritedNotifier<T>>(widget()));
     }
     return super->build();
 }
@@ -43,7 +43,7 @@ void _InheritedNotifierElementCls<T>::notifyClients(InheritedNotifier<T> oldWidg
 
 template<typename T>
 void _InheritedNotifierElementCls<T>::unmount() {
-    (as<InheritedNotifier<T>>(widget))->notifier?->removeListener(_handleUpdate);
+    (as<InheritedNotifier<T>>(widget()))->notifier?->removeListener(_handleUpdate);
     super->unmount();
 }
 

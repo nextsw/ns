@@ -29,8 +29,8 @@ Map<Object, _HeroState> HeroCls::_allHeroesFor(BuildContext context, bool isUser
 
 void _HeroStateCls::startFlight(bool shouldIncludedChildInPlaceholder) {
     _shouldIncludeChild = shouldIncludedChildInPlaceholder;
-    assert(mounted);
-    RenderBox box = as<RenderBox>(context->findRenderObject()!);
+    assert(mounted());
+    RenderBox box = as<RenderBox>(context()->findRenderObject()!);
     assert(box != nullptr && box->hasSize());
     setState([=] () {
         _placeholderSize = box->size();
@@ -42,7 +42,7 @@ void _HeroStateCls::endFlight(bool keepPlaceholder) {
         return;
     }
     _placeholderSize = nullptr;
-    if (mounted) {
+    if (mounted()) {
         setState([=] () {
         });
     }
@@ -51,25 +51,25 @@ void _HeroStateCls::endFlight(bool keepPlaceholder) {
 Widget _HeroStateCls::build(BuildContext context) {
     assert(context-><Hero>findAncestorWidgetOfExactType() == nullptr, __s("A Hero widget cannot be the descendant of another Hero widget."));
     bool showPlaceholder = _placeholderSize != nullptr;
-    if (showPlaceholder && widget->placeholderBuilder != nullptr) {
-        return widget->placeholderBuilder!(context, _placeholderSize!, widget->child);
+    if (showPlaceholder && widget()->placeholderBuilder != nullptr) {
+        return widget()->placeholderBuilder!(context, _placeholderSize!, widget()->child);
     }
     if (showPlaceholder && !_shouldIncludeChild) {
         return make<SizedBoxCls>(_placeholderSize!->width(), _placeholderSize!->height());
     }
-    return make<SizedBoxCls>(_placeholderSize?->width(), _placeholderSize?->height(), make<OffstageCls>(showPlaceholder, make<TickerModeCls>(!showPlaceholder, make<KeyedSubtreeCls>(_key, widget->child))));
+    return make<SizedBoxCls>(_placeholderSize?->width(), _placeholderSize?->height(), make<OffstageCls>(showPlaceholder, make<TickerModeCls>(!showPlaceholder, make<KeyedSubtreeCls>(_key, widget()->child))));
 }
 
 Object _HeroFlightManifestCls::tag() {
-    return fromHero->widget->tag;
+    return fromHero->widget()->tag();
 }
 
 Animation<double> _HeroFlightManifestCls::animation() {
-    return make<CurvedAnimationCls>((type == HeroFlightDirectionCls::push)? toRoute->animation! : fromRoute->animation!, CurvesCls::fastOutSlowIn, isDiverted? nullptr : CurvesCls::fastOutSlowIn->flipped);
+    return make<CurvedAnimationCls>((type == HeroFlightDirectionCls::push)? toRoute->animation()! : fromRoute->animation()!, CurvesCls::fastOutSlowIn, isDiverted? nullptr : CurvesCls::fastOutSlowIn->flipped);
 }
 
 Tween<Rect> _HeroFlightManifestCls::createHeroRectTween(Rect begin, Rect end) {
-    CreateRectTween createRectTween = toHero->widget->createRectTween | this->createRectTween;
+    CreateRectTween createRectTween = toHero->widget()->createRectTween | this->createRectTween;
     return createRectTween?->call(begin, end) | make<RectTweenCls>(begin, end);
 }
 
@@ -79,21 +79,21 @@ String _HeroFlightManifestCls::toString() {
 
 _HeroFlightManifestCls::_HeroFlightManifestCls(CreateRectTween createRectTween, _HeroState fromHero, PageRoute<dynamic> fromRoute, bool isDiverted, bool isUserGestureTransition, Size navigatorSize, OverlayState overlay, HeroFlightShuttleBuilder shuttleBuilder, _HeroState toHero, PageRoute<dynamic> toRoute, HeroFlightDirection type) {
     {
-        assert(fromHero->widget->tag == toHero->widget->tag);
+        assert(fromHero->widget()->tag() == toHero->widget()->tag());
     }
 }
 
 Rect _HeroFlightManifestCls::_boundingBoxFor(BuildContext context, BuildContext ancestorContext) {
     assert(ancestorContext != nullptr);
     RenderBox box = as<RenderBox>(context->findRenderObject()!);
-    assert(box != nullptr && box->hasSize() && box->size()->isFinite);
+    assert(box != nullptr && box->hasSize() && box->size()->isFinite());
     return MatrixUtilsCls->transformRect(box->getTransformTo(ancestorContext?->findRenderObject()), OffsetCls::zero & box->size());
 }
 
 void _HeroFlightCls::onTick() {
-    RenderBox toHeroBox = (!_aborted && manifest->toHero->mounted)? as<RenderBox>(manifest->toHero->context->findRenderObject()) : nullptr;
-    Offset toHeroOrigin = toHeroBox != nullptr && toHeroBox->attached && toHeroBox->hasSize()? toHeroBox->localToGlobal(OffsetCls::zero, as<RenderBox>(manifest->toRoute->subtreeContext?->findRenderObject())) : nullptr;
-    if (toHeroOrigin != nullptr && toHeroOrigin->isFinite) {
+    RenderBox toHeroBox = (!_aborted && manifest->toHero->mounted())? as<RenderBox>(manifest->toHero->context()->findRenderObject()) : nullptr;
+    Offset toHeroOrigin = toHeroBox != nullptr && toHeroBox->attached() && toHeroBox->hasSize()? toHeroBox->localToGlobal(OffsetCls::zero, as<RenderBox>(manifest->toRoute->subtreeContext()?->findRenderObject())) : nullptr;
+    if (toHeroOrigin != nullptr && toHeroOrigin->isFinite()) {
         if (toHeroOrigin != heroRectTween->end!->topLeft) {
             Rect heroRectEnd = toHeroOrigin & heroRectTween->end!->size;
             heroRectTween = manifest->createHeroRectTween(heroRectTween->begin, heroRectEnd);
@@ -103,7 +103,7 @@ void _HeroFlightCls::onTick() {
         _heroOpacity = _proxyAnimation->drive(_reverseTween->chain(make<CurveTweenCls>(make<IntervalCls>(_proxyAnimation->value(), 1.0))));
     }
 ;
-    }    _aborted = toHeroOrigin == nullptr || !toHeroOrigin->isFinite;
+    }    _aborted = toHeroOrigin == nullptr || !toHeroOrigin->isFinite();
 }
 
 void _HeroFlightCls::start(_HeroFlightManifest initialManifest) {
@@ -173,8 +173,8 @@ void _HeroFlightCls::abort() {
 }
 
 String _HeroFlightCls::toString() {
-    RouteSettings from = manifest->fromRoute->settings;
-    RouteSettings to = manifest->toRoute->settings;
+    RouteSettings from = manifest->fromRoute->settings();
+    RouteSettings to = manifest->toRoute->settings();
     Object tag = manifest->tag();
     return __s("HeroFlight(for: $tag, from: $from, to: $to ${_proxyAnimation.parent})");
 }
@@ -210,14 +210,14 @@ void _HeroFlightCls::_performAnimationUpdate(AnimationStatus status) {
 }
 
 void _HeroFlightCls::_handleAnimationUpdate(AnimationStatus status) {
-    if (manifest->fromRoute->navigator?->userGestureInProgress != true) {
+    if (manifest->fromRoute->navigator()?->userGestureInProgress() != true) {
         _performAnimationUpdate(status);
         return;
     }
     if (_scheduledPerformAnimationUpdate) {
         return;
     }
-    NavigatorState navigator = manifest->fromRoute->navigator!;
+    NavigatorState navigator = manifest->fromRoute->navigator()!;
     InlineMethod;
     assert(navigator->userGestureInProgress());
     _scheduledPerformAnimationUpdate = true;
@@ -225,34 +225,34 @@ void _HeroFlightCls::_handleAnimationUpdate(AnimationStatus status) {
 }
 
 void HeroControllerCls::didPush(Route<dynamic> route, Route<dynamic> previousRoute) {
-    assert(navigator != nullptr);
+    assert(navigator() != nullptr);
     assert(route != nullptr);
     _maybeStartHeroTransition(previousRoute, route, HeroFlightDirectionCls::push, false);
 }
 
 void HeroControllerCls::didPop(Route<dynamic> route, Route<dynamic> previousRoute) {
-    assert(navigator != nullptr);
+    assert(navigator() != nullptr);
     assert(route != nullptr);
-    if (!navigator!->userGestureInProgress) {
+    if (!navigator()!->userGestureInProgress()) {
         _maybeStartHeroTransition(route, previousRoute, HeroFlightDirectionCls::pop, false);
     }
 }
 
 void HeroControllerCls::didReplace(Route<dynamic> newRoute, Route<dynamic> oldRoute) {
-    assert(navigator != nullptr);
+    assert(navigator() != nullptr);
     if (newRoute?->isCurrent() | false) {
         _maybeStartHeroTransition(oldRoute, newRoute, HeroFlightDirectionCls::push, false);
     }
 }
 
 void HeroControllerCls::didStartUserGesture(Route<dynamic> route, Route<dynamic> previousRoute) {
-    assert(navigator != nullptr);
+    assert(navigator() != nullptr);
     assert(route != nullptr);
     _maybeStartHeroTransition(route, previousRoute, HeroFlightDirectionCls::pop, true);
 }
 
 void HeroControllerCls::didStopUserGesture() {
-    if (navigator!->userGestureInProgress) {
+    if (navigator()!->userGestureInProgress()) {
         return;
     }
     InlineMethod;
@@ -267,10 +267,10 @@ void HeroControllerCls::_maybeStartHeroTransition(Route<dynamic> fromRoute, Rout
         PageRoute<dynamic> from = fromRoute;
         PageRoute<dynamic> to = toRoute;
         ;
-        if (isUserGestureTransition && flightType == HeroFlightDirectionCls::pop && to->maintainState) {
+        if (isUserGestureTransition && flightType == HeroFlightDirectionCls::pop && to->maintainState()) {
             _startHeroTransition(from, to, flightType, isUserGestureTransition);
         } else {
-            to->offstage = to->animation!->value == 0.0;
+            to->offstage() = to->animation()!->value() == 0.0;
             WidgetsBindingCls::instance->addPostFrameCallback([=] (Duration value) {
                 _startHeroTransition(from, to, flightType, isUserGestureTransition);
             });
@@ -279,28 +279,28 @@ void HeroControllerCls::_maybeStartHeroTransition(Route<dynamic> fromRoute, Rout
 }
 
 void HeroControllerCls::_startHeroTransition(PageRoute<dynamic> from, PageRoute<dynamic> to, HeroFlightDirection flightType, bool isUserGestureTransition) {
-    to->offstage = false;
-    NavigatorState navigator = this->navigator;
+    to->offstage() = false;
+    NavigatorState navigator = this->navigator();
     OverlayState overlay = navigator?->overlay();
     if (navigator == nullptr || overlay == nullptr) {
         return;
     }
-    RenderObject navigatorRenderObject = navigator->context->findRenderObject();
+    RenderObject navigatorRenderObject = navigator->context()->findRenderObject();
     if (!is<RenderBox>(navigatorRenderObject)) {
         assert(false, __s("Navigator $navigator has an invalid RenderObject type ${navigatorRenderObject.runtimeType}."));
         return;
     }
     assert(navigatorRenderObject->hasSize);
-    BuildContext fromSubtreeContext = from->subtreeContext;
+    BuildContext fromSubtreeContext = from->subtreeContext();
     Map<Object, _HeroState> fromHeroes = fromSubtreeContext != nullptr? HeroCls->_allHeroesFor(fromSubtreeContext, isUserGestureTransition, navigator) : makeMap(makeList(), makeList();
-    BuildContext toSubtreeContext = to->subtreeContext;
+    BuildContext toSubtreeContext = to->subtreeContext();
     Map<Object, _HeroState> toHeroes = toSubtreeContext != nullptr? HeroCls->_allHeroesFor(toSubtreeContext, isUserGestureTransition, navigator) : makeMap(makeList(), makeList();
     for (MapEntry<Object, _HeroState> fromHeroEntry : fromHeroes->entries()) {
         Object tag = fromHeroEntry->key;
         _HeroState fromHero = fromHeroEntry->value;
         _HeroState toHero = toHeroes[tag];
         _HeroFlight existingFlight = _flights[tag];
-        _HeroFlightManifest manifest = toHero == nullptr? nullptr : make<_HeroFlightManifestCls>(flightType, overlay, navigatorRenderObject->size, from, to, fromHero, toHero, createRectTween, toHero->widget->flightShuttleBuilder | fromHero->widget->flightShuttleBuilder | _defaultHeroFlightShuttleBuilder, isUserGestureTransition, existingFlight != nullptr);
+        _HeroFlightManifest manifest = toHero == nullptr? nullptr : make<_HeroFlightManifestCls>(flightType, overlay, navigatorRenderObject->size, from, to, fromHero, toHero, createRectTween, toHero->widget()->flightShuttleBuilder | fromHero->widget()->flightShuttleBuilder | _defaultHeroFlightShuttleBuilder, isUserGestureTransition, existingFlight != nullptr);
         if (manifest != nullptr && manifest->isValid) {
             toHeroes->remove(tag);
             if (existingFlight != nullptr) {

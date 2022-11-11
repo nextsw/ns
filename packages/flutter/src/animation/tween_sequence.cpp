@@ -3,7 +3,7 @@ template<typename T>
 TweenSequenceCls<T>::TweenSequenceCls(List<TweenSequenceItem<T>> items) {
     {
         assert(items != nullptr);
-        assert(items->isNotEmpty);
+        assert(items->isNotEmpty());
     }
     {
         _items->addAll(items);

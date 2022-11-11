@@ -6,7 +6,7 @@ List<OverlayEntry> OverlayRouteCls<T>::overlayEntries() {
 
 template<typename T>
 void OverlayRouteCls<T>::install() {
-    assert(_overlayEntries->isEmpty);
+    assert(_overlayEntries->isEmpty());
     _overlayEntries->addAll(createOverlayEntries());
     super->install();
 }
@@ -21,7 +21,7 @@ bool OverlayRouteCls<T>::didPop(T result) {
     bool returnValue = super->didPop(result);
     assert(returnValue);
     if (finishedWhenPopped()) {
-        navigator!->finalizeRoute(this);
+        navigator()!->finalizeRoute(this);
     }
     return returnValue;
 }
@@ -68,7 +68,7 @@ AnimationController TransitionRouteCls<T>::createAnimationController() {
     Duration duration = transitionDuration();
     Duration reverseDuration = reverseTransitionDuration();
     assert(duration != nullptr && duration >= DurationCls::zero);
-    return make<AnimationControllerCls>(duration, reverseDuration, debugLabel(), navigator!);
+    return make<AnimationControllerCls>(duration, reverseDuration, debugLabel(), navigator()!);
 }
 
 template<typename T>
@@ -86,8 +86,8 @@ void TransitionRouteCls<T>::install() {
     auto _c1 = createAnimation();_c1.addStatusListener(_handleStatusChanged);_animation = _c1;
     assert(_animation != nullptr, __s("$runtimeType.createAnimation() returned null."));
     super->install();
-    if (_animation!->isCompleted() && overlayEntries->isNotEmpty) {
-        overlayEntries->first->opaque = opaque();
+    if (_animation!->isCompleted() && overlayEntries()->isNotEmpty()) {
+        overlayEntries()->first->opaque = opaque();
     }
 }
 
@@ -246,7 +246,7 @@ void LocalHistoryRouteCls<T>::addLocalHistoryEntry(LocalHistoryEntry entry) {
     assert(entry->_owner == nullptr);
     entry->_owner = this;
     _localHistory |= makeList();
-    bool wasEmpty = _localHistory!->isEmpty;
+    bool wasEmpty = _localHistory!->isEmpty();
     _localHistory!->add(entry);
     bool internalStateChanged = false;
     if (entry->impliesAppBarDismissal) {
@@ -270,7 +270,7 @@ void LocalHistoryRouteCls<T>::removeLocalHistoryEntry(LocalHistoryEntry entry) {
     }
     entry->_owner = nullptr;
     entry->_notifyRemoved();
-    if (_localHistory!->isEmpty || internalStateChanged) {
+    if (_localHistory!->isEmpty() || internalStateChanged) {
         assert(_entriesImpliesAppBarDismissal == 0);
         if (SchedulerBindingCls::instance->schedulerPhase == SchedulerPhaseCls::persistentCallbacks) {
             SchedulerBindingCls::instance->addPostFrameCallback([=] (Duration duration) {
@@ -292,7 +292,7 @@ Future<RoutePopDisposition> LocalHistoryRouteCls<T>::willPop() {
 
 template<typename T>
 bool LocalHistoryRouteCls<T>::didPop(T result) {
-    if (_localHistory != nullptr && _localHistory!->isNotEmpty) {
+    if (_localHistory != nullptr && _localHistory!->isNotEmpty()) {
         LocalHistoryEntry entry = _localHistory!->removeLast();
         assert(entry->_owner == this);
         entry->_owner = nullptr;
@@ -302,7 +302,7 @@ bool LocalHistoryRouteCls<T>::didPop(T result) {
             _entriesImpliesAppBarDismissal -= 1;
             internalStateChanged = _entriesImpliesAppBarDismissal == 0;
         }
-        if (_localHistory!->isEmpty || internalStateChanged) {
+        if (_localHistory!->isEmpty() || internalStateChanged) {
             changedInternalState();
         }
         return false;
@@ -312,7 +312,7 @@ bool LocalHistoryRouteCls<T>::didPop(T result) {
 
 template<typename T>
 bool LocalHistoryRouteCls<T>::willHandlePopInternally() {
-    return _localHistory != nullptr && _localHistory!->isNotEmpty;
+    return _localHistory != nullptr && _localHistory!->isNotEmpty();
 }
 
 bool _DismissModalActionCls::isEnabled(DismissIntent intent) {
@@ -352,19 +352,19 @@ _ModalScopeState<T> _ModalScopeCls<T>::createState() {
 template<typename T>
 void _ModalScopeStateCls<T>::initState() {
     super->initState();
-    List<Listenable> list1 = make<ListCls<>>();if (widget->route->animation != nullptr) {    list1.add(ArrayItem);}if (widget->route->secondaryAnimation != nullptr) {    list1.add(ArrayItem);}List<Listenable> animations = list1;
+    List<Listenable> list1 = make<ListCls<>>();if (widget()->route->animation != nullptr) {    list1.add(ArrayItem);}if (widget()->route->secondaryAnimation != nullptr) {    list1.add(ArrayItem);}List<Listenable> animations = list1;
     _listenable = ListenableCls->merge(animations);
-    if (widget->route->isCurrent && _shouldRequestFocus()) {
-        widget->route->navigator!->focusScopeNode->setFirstFocus(focusScopeNode);
+    if (widget()->route->isCurrent && _shouldRequestFocus()) {
+        widget()->route->navigator!->focusScopeNode->setFirstFocus(focusScopeNode);
     }
 }
 
 template<typename T>
 void _ModalScopeStateCls<T>::didUpdateWidget(_ModalScope<T> oldWidget) {
     super->didUpdateWidget(oldWidget);
-    assert(widget->route == oldWidget->route);
-    if (widget->route->isCurrent && _shouldRequestFocus()) {
-        widget->route->navigator!->focusScopeNode->setFirstFocus(focusScopeNode);
+    assert(widget()->route == oldWidget->route);
+    if (widget()->route->isCurrent && _shouldRequestFocus()) {
+        widget()->route->navigator!->focusScopeNode->setFirstFocus(focusScopeNode);
     }
 }
 
@@ -382,18 +382,18 @@ void _ModalScopeStateCls<T>::dispose() {
 
 template<typename T>
 Widget _ModalScopeStateCls<T>::build(BuildContext context) {
-    return make<AnimatedBuilderCls>(widget->route->restorationScopeId, [=] (BuildContext context,Widget child) {
+    return make<AnimatedBuilderCls>(widget()->route->restorationScopeId, [=] (BuildContext context,Widget child) {
         assert(child != nullptr);
-        return make<RestorationScopeCls>(widget->route->restorationScopeId->value, child!);
-    }, make<_ModalScopeStatusCls>(widget->route, widget->route->isCurrent, widget->route->canPop, widget->route->impliesAppBarDismissal, make<OffstageCls>(widget->route->offstage, make<PageStorageCls>(widget->route->_storageBucket, make<BuilderCls>([=] (BuildContext context) {
+        return make<RestorationScopeCls>(widget()->route->restorationScopeId->value, child!);
+    }, make<_ModalScopeStatusCls>(widget()->route, widget()->route->isCurrent, widget()->route->canPop, widget()->route->impliesAppBarDismissal, make<OffstageCls>(widget()->route->offstage, make<PageStorageCls>(widget()->route->_storageBucket, make<BuilderCls>([=] (BuildContext context) {
         return make<ActionsCls>(list1, make<PrimaryScrollControllerCls>(primaryScrollController, make<FocusScopeCls>(focusScopeNode, make<FocusTrapCls>(focusScopeNode, make<RepaintBoundaryCls>(make<AnimatedBuilderCls>(_listenable, [=] (BuildContext context,Widget child) {
-            return widget->route->buildTransitions(context, widget->route->animation!, widget->route->secondaryAnimation!, make<AnimatedBuilderCls>(widget->route->navigator?->userGestureInProgressNotifier | <bool>make<ValueNotifierCls>(false), [=] (BuildContext context,Widget child) {
+            return widget()->route->buildTransitions(context, widget()->route->animation!, widget()->route->secondaryAnimation!, make<AnimatedBuilderCls>(widget()->route->navigator?->userGestureInProgressNotifier | <bool>make<ValueNotifierCls>(false), [=] (BuildContext context,Widget child) {
                             Map<Type, Action<Intent>> map1 = make<MapCls<>>();            map1.set(DismissIntentCls, make<_DismissModalActionCls>(context));bool ignoreEvents = _shouldIgnoreFocusRequest();
-                focusScopeNode->canRequestFocus = !ignoreEvents;
+                focusScopeNode->canRequestFocus() = !ignoreEvents;
                 return make<IgnorePointerCls>(ignoreEvents, child);
             }, child));
-        }, _page ??= make<RepaintBoundaryCls>(widget->route->_subtreeKey, make<BuilderCls>([=] (BuildContext context) {
-            return widget->route->buildPage(context, widget->route->animation!, widget->route->secondaryAnimation!);
+        }, _page ??= make<RepaintBoundaryCls>(widget()->route->_subtreeKey, make<BuilderCls>([=] (BuildContext context) {
+            return widget()->route->buildPage(context, widget()->route->animation!, widget()->route->secondaryAnimation!);
         }))))))));
     })))));
 }
@@ -407,18 +407,18 @@ void _ModalScopeStateCls<T>::_forceRebuildPage() {
 
 template<typename T>
 bool _ModalScopeStateCls<T>::_shouldIgnoreFocusRequest() {
-    return widget->route->animation?->status == AnimationStatusCls::reverse || (widget->route->navigator?->userGestureInProgress | false);
+    return widget()->route->animation?->status == AnimationStatusCls::reverse || (widget()->route->navigator?->userGestureInProgress | false);
 }
 
 template<typename T>
 bool _ModalScopeStateCls<T>::_shouldRequestFocus() {
-    return widget->route->navigator!->widget->requestFocus;
+    return widget()->route->navigator!->widget->requestFocus;
 }
 
 template<typename T>
 void _ModalScopeStateCls<T>::_routeSetState(VoidCallback fn) {
-    if (widget->route->isCurrent && !_shouldIgnoreFocusRequest() && _shouldRequestFocus()) {
-        widget->route->navigator!->focusScopeNode->setFirstFocus(focusScopeNode);
+    if (widget()->route->isCurrent && !_shouldIgnoreFocusRequest() && _shouldRequestFocus()) {
+        widget()->route->navigator!->focusScopeNode->setFirstFocus(focusScopeNode);
     }
     setState(fn);
 }
@@ -460,16 +460,16 @@ void ModalRouteCls<T>::install() {
 
 template<typename T>
 TickerFuture ModalRouteCls<T>::didPush() {
-    if (_scopeKey->currentState() != nullptr && navigator!->widget->requestFocus) {
-        navigator!->focusScopeNode->setFirstFocus(_scopeKey->currentState()!->focusScopeNode);
+    if (_scopeKey->currentState() != nullptr && navigator()!->widget()->requestFocus) {
+        navigator()!->focusScopeNode->setFirstFocus(_scopeKey->currentState()!->focusScopeNode);
     }
     return super->didPush();
 }
 
 template<typename T>
 void ModalRouteCls<T>::didAdd() {
-    if (_scopeKey->currentState() != nullptr && navigator!->widget->requestFocus) {
-        navigator!->focusScopeNode->setFirstFocus(_scopeKey->currentState()!->focusScopeNode);
+    if (_scopeKey->currentState() != nullptr && navigator()!->widget()->requestFocus) {
+        navigator()!->focusScopeNode->setFirstFocus(_scopeKey->currentState()!->focusScopeNode);
     }
     super->didAdd();
 }
@@ -543,7 +543,7 @@ void ModalRouteCls<T>::removeScopedWillPopCallback(WillPopCallback callback) {
 
 template<typename T>
 bool ModalRouteCls<T>::hasScopedWillPopCallback() {
-    return _willPopCallbacks->isNotEmpty;
+    return _willPopCallbacks->isNotEmpty();
 }
 
 template<typename T>
@@ -572,12 +572,12 @@ void ModalRouteCls<T>::changedExternalState() {
 
 template<typename T>
 bool ModalRouteCls<T>::canPop() {
-    return hasActiveRouteBelow || willHandlePopInternally;
+    return hasActiveRouteBelow() || willHandlePopInternally();
 }
 
 template<typename T>
 bool ModalRouteCls<T>::impliesAppBarDismissal() {
-    return hasActiveRouteBelow || _entriesImpliesAppBarDismissal > 0;
+    return hasActiveRouteBelow() || _entriesImpliesAppBarDismissal > 0;
 }
 
 template<typename T>
@@ -655,7 +655,7 @@ void RouteObserverCls<R>::unsubscribe(RouteAware routeAware) {
         Set<RouteAware> subscribers = _listeners[route];
         if (subscribers != nullptr) {
             subscribers->remove(routeAware);
-            if (subscribers->isEmpty) {
+            if (subscribers->isEmpty()) {
                 _listeners->remove(route);
             }
         }
@@ -791,7 +791,7 @@ void _RenderFocusTrapCls::focusScopeNode(FocusScopeNode value) {
 
 bool _RenderFocusTrapCls::hitTest(BoxHitTestResult result, Offset position) {
     bool hitTarget = false;
-    if (size->contains(position)) {
+    if (size()->contains(position)) {
         hitTarget = hitTestChildren(result, position) || hitTestSelf(position);
         if (hitTarget) {
             BoxHitTestEntry entry = make<BoxHitTestEntryCls>(this, position);
@@ -817,7 +817,7 @@ void _RenderFocusTrapCls::handleEvent(PointerEvent event, HitTestEntry entry) {
         return;
     }
     bool hitCurrentFocus = false;
-    for (HitTestEntry entry : result->path) {
+    for (HitTestEntry entry : result->path()) {
         HitTestTarget target = entry->target;
         if (target == renderObject) {
             hitCurrentFocus = true;

@@ -126,37 +126,37 @@ RawGestureDetectorState RawGestureDetectorCls::createState() {
 
 void RawGestureDetectorStateCls::initState() {
     super->initState();
-    _semantics = widget->semantics | make<_DefaultSemanticsGestureDelegateCls>(this);
-    _syncAll(widget->gestures);
+    _semantics = widget()->semantics | make<_DefaultSemanticsGestureDelegateCls>(this);
+    _syncAll(widget()->gestures);
 }
 
 void RawGestureDetectorStateCls::didUpdateWidget(RawGestureDetector oldWidget) {
     super->didUpdateWidget(oldWidget);
-    if (!(oldWidget->semantics == nullptr && widget->semantics == nullptr)) {
-        _semantics = widget->semantics | make<_DefaultSemanticsGestureDelegateCls>(this);
+    if (!(oldWidget->semantics == nullptr && widget()->semantics == nullptr)) {
+        _semantics = widget()->semantics | make<_DefaultSemanticsGestureDelegateCls>(this);
     }
-    _syncAll(widget->gestures);
+    _syncAll(widget()->gestures);
 }
 
 void RawGestureDetectorStateCls::replaceGestureRecognizers(Map<Type, GestureRecognizerFactory> gestures) {
     assert([=] () {
-        if (!context->findRenderObject()!->owner!->debugDoingLayout) {
+        if (!context()->findRenderObject()!->owner()!->debugDoingLayout()) {
             throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem, ArrayItem));
         }
         return true;
     }());
     _syncAll(gestures);
-    if (!widget->excludeFromSemantics) {
-        RenderSemanticsGestureHandler semanticsGestureHandler = as<RenderSemanticsGestureHandler>(context->findRenderObject()!);
+    if (!widget()->excludeFromSemantics) {
+        RenderSemanticsGestureHandler semanticsGestureHandler = as<RenderSemanticsGestureHandler>(context()->findRenderObject()!);
         _updateSemanticsForRenderObject(semanticsGestureHandler);
     }
 }
 
 void RawGestureDetectorStateCls::replaceSemanticsActions(Set<SemanticsAction> actions) {
-    if (widget->excludeFromSemantics) {
+    if (widget()->excludeFromSemantics) {
         return;
     }
-    RenderSemanticsGestureHandler semanticsGestureHandler = as<RenderSemanticsGestureHandler>(context->findRenderObject());
+    RenderSemanticsGestureHandler semanticsGestureHandler = as<RenderSemanticsGestureHandler>(context()->findRenderObject());
     assert([=] () {
         if (semanticsGestureHandler == nullptr) {
             throw make<FlutterErrorCls>(__s("Unexpected call to replaceSemanticsActions() method of RawGestureDetectorState.\nThe replaceSemanticsActions() method can only be called after the RenderSemanticsGestureHandler has been created."));
@@ -175,9 +175,9 @@ void RawGestureDetectorStateCls::dispose() {
 }
 
 Widget RawGestureDetectorStateCls::build(BuildContext context) {
-    Widget result = make<ListenerCls>(_handlePointerDown, _handlePointerPanZoomStart, widget->behavior | _defaultBehavior(), widget->child);
-    if (!widget->excludeFromSemantics) {
-        result = make<_GestureSemanticsCls>(widget->behavior | _defaultBehavior(), _updateSemanticsForRenderObject, result);
+    Widget result = make<ListenerCls>(_handlePointerDown, _handlePointerPanZoomStart, widget()->behavior | _defaultBehavior(), widget()->child);
+    if (!widget()->excludeFromSemantics) {
+        result = make<_GestureSemanticsCls>(widget()->behavior | _defaultBehavior(), _updateSemanticsForRenderObject, result);
     }
     return result;
 }
@@ -192,12 +192,12 @@ void RawGestureDetectorStateCls::debugFillProperties(DiagnosticPropertiesBuilder
 })->toList();
         properties->add(<String>make<IterablePropertyCls>(__s("gestures"), gestures, __s("<none>")));
         properties->add(<GestureRecognizer>make<IterablePropertyCls>(__s("recognizers"), _recognizers!->values(), DiagnosticLevelCls::fine));
-        properties->add(<bool>make<DiagnosticsPropertyCls>(__s("excludeFromSemantics"), widget->excludeFromSemantics, false));
-        if (!widget->excludeFromSemantics) {
-            properties->add(<SemanticsGestureDelegate>make<DiagnosticsPropertyCls>(__s("semantics"), widget->semantics, nullptr));
+        properties->add(<bool>make<DiagnosticsPropertyCls>(__s("excludeFromSemantics"), widget()->excludeFromSemantics, false));
+        if (!widget()->excludeFromSemantics) {
+            properties->add(<SemanticsGestureDelegate>make<DiagnosticsPropertyCls>(__s("semantics"), widget()->semantics, nullptr));
         }
     }
-    properties->add(<HitTestBehavior>make<EnumPropertyCls>(__s("behavior"), widget->behavior, nullptr));
+    properties->add(<HitTestBehavior>make<EnumPropertyCls>(__s("behavior"), widget()->behavior, nullptr));
 }
 
 void RawGestureDetectorStateCls::_syncAll(Map<Type, GestureRecognizerFactory> gestures) {
@@ -234,11 +234,11 @@ void RawGestureDetectorStateCls::_handlePointerPanZoomStart(PointerPanZoomStartE
 }
 
 HitTestBehavior RawGestureDetectorStateCls::_defaultBehavior() {
-    return widget->child == nullptr? HitTestBehaviorCls::translucent : HitTestBehaviorCls::deferToChild;
+    return widget()->child == nullptr? HitTestBehaviorCls::translucent : HitTestBehaviorCls::deferToChild;
 }
 
 void RawGestureDetectorStateCls::_updateSemanticsForRenderObject(RenderSemanticsGestureHandler renderObject) {
-    assert(!widget->excludeFromSemantics);
+    assert(!widget()->excludeFromSemantics);
     assert(_semantics != nullptr);
     _semantics!->assignSemantics(renderObject);
 }
@@ -265,7 +265,7 @@ String SemanticsGestureDelegateCls::toString() {
 }
 
 void _DefaultSemanticsGestureDelegateCls::assignSemantics(RenderSemanticsGestureHandler renderObject) {
-    assert(!detectorState->widget->excludeFromSemantics);
+    assert(!detectorState->widget()->excludeFromSemantics);
     Map<Type, GestureRecognizer> recognizers = detectorState->_recognizers!;
     auto _c1 = renderObject;_c1.onTap = auto _c2 = _getTapHandler(recognizers);_c2.onLongPress = auto _c3 = _getLongPressHandler(recognizers);_c3.onHorizontalDragUpdate = auto _c4 = _getHorizontalDragUpdateHandler(recognizers);_c4.onVerticalDragUpdate = _getVerticalDragUpdateHandler(recognizers);_c4;_c3;_c2;_c1;
 }

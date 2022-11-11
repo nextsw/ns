@@ -34,7 +34,7 @@ BoxBorder BoxBorderCls::lerp(BoxBorder a, BoxBorder b, double t) {
 
 Path BoxBorderCls::getInnerPath(Rect rect, TextDirection textDirection) {
     assert(textDirection != nullptr, __s("The textDirection argument to $runtimeType.getInnerPath must not be null."));
-    auto _c1 = make<PathCls>();_c1.addRect(dimensions->resolve(textDirection)->deflateRect(rect));return _c1;
+    auto _c1 = make<PathCls>();_c1.addRect(dimensions()->resolve(textDirection)->deflateRect(rect));return _c1;
 }
 
 Path BoxBorderCls::getOuterPath(Rect rect, TextDirection textDirection) {

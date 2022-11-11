@@ -7,10 +7,10 @@ RenderObject SizeChangedLayoutNotifierCls::createRenderObject(BuildContext conte
 
 void _RenderSizeChangedWithCallbackCls::performLayout() {
     super->performLayout();
-    if (_oldSize != nullptr && size != _oldSize) {
+    if (_oldSize != nullptr && size() != _oldSize) {
         onLayoutChangedCallback();
     }
-    _oldSize = size;
+    _oldSize = size();
 }
 
 _RenderSizeChangedWithCallbackCls::_RenderSizeChangedWithCallbackCls(RenderBox child, VoidCallback onLayoutChangedCallback) : RenderProxyBox(child) {

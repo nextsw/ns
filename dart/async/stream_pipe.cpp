@@ -86,7 +86,7 @@ _ForwardingStreamSubscriptionCls<S, T>::_ForwardingStreamSubscriptionCls(_Forwar
 
 template<typename S, typename T>
 void _ForwardingStreamSubscriptionCls<S, T>::_add(T data) {
-    if (_isClosed) {
+    if (_isClosed()) {
         return;
     }
     super->_add(data);
@@ -94,7 +94,7 @@ void _ForwardingStreamSubscriptionCls<S, T>::_add(T data) {
 
 template<typename S, typename T>
 void _ForwardingStreamSubscriptionCls<S, T>::_addError(Object error, StackTrace stackTrace) {
-    if (_isClosed) {
+    if (_isClosed()) {
         return;
     }
     super->_addError(error, stackTrace);

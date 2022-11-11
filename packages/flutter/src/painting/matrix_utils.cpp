@@ -57,7 +57,7 @@ Rect MatrixUtilsCls::transformRect(Matrix4 transform, Rect rect) {
     double y = rect->top;
     double w = rect->right - x;
     double h = rect->bottom - y;
-    if (!w->isFinite || !h->isFinite) {
+    if (!w->isFinite() || !h->isFinite()) {
         return _safeTransformRect(transform, rect);
     }
     double wx = storage[0] * w;
@@ -195,5 +195,5 @@ String TransformPropertyCls::valueToString(TextTreeConfiguration parentConfigura
         List<String> values = makeList(ArrayItem, ArrayItem, ArrayItem, ArrayItem);
         return __s("[${values.join('; ')}]");
     }
-    return debugDescribeTransform(value)->join(__s("\n"));
+    return debugDescribeTransform(value())->join(__s("\n"));
 }

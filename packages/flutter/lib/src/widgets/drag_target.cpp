@@ -37,7 +37,7 @@ DelayedMultiDragGestureRecognizer LongPressDraggableCls<T>::createRecognizer(Ges
 template<typename T>
 void _DraggableStateCls<T>::initState() {
     super->initState();
-    _recognizer = widget->createRecognizer(_startDrag);
+    _recognizer = widget()->createRecognizer(_startDrag);
 }
 
 template<typename T>
@@ -48,16 +48,16 @@ void _DraggableStateCls<T>::dispose() {
 
 template<typename T>
 void _DraggableStateCls<T>::didChangeDependencies() {
-    _recognizer!->gestureSettings = MediaQueryCls->maybeOf(context)?->gestureSettings;
+    _recognizer!->gestureSettings = MediaQueryCls->maybeOf(context())?->gestureSettings;
     super->didChangeDependencies();
 }
 
 template<typename T>
 Widget _DraggableStateCls<T>::build(BuildContext context) {
-    assert(OverlayCls->of(context, widget, widget->rootOverlay) != nullptr);
-    bool canDrag = widget->maxSimultaneousDrags == nullptr ||  < widget->maxSimultaneousDrags!;
-    bool showChild = _activeCount == 0 || widget->childWhenDragging == nullptr;
-    return make<ListenerCls>(widget->hitTestBehavior, canDrag? _routePointer : nullptr, showChild? widget->child : widget->childWhenDragging);
+    assert(OverlayCls->of(context, widget(), widget()->rootOverlay) != nullptr);
+    bool canDrag = widget()->maxSimultaneousDrags == nullptr ||  < widget()->maxSimultaneousDrags!;
+    bool showChild = _activeCount == 0 || widget()->childWhenDragging == nullptr;
+    return make<ListenerCls>(widget()->hitTestBehavior, canDrag? _routePointer : nullptr, showChild? widget()->child : widget()->childWhenDragging);
 }
 
 template<typename T>
@@ -71,7 +71,7 @@ void _DraggableStateCls<T>::_disposeRecognizerIfInactive() {
 
 template<typename T>
 void _DraggableStateCls<T>::_routePointer(PointerDownEvent event) {
-    if (widget->maxSimultaneousDrags != nullptr && _activeCount >= widget->maxSimultaneousDrags!) {
+    if (widget()->maxSimultaneousDrags != nullptr && _activeCount >= widget()->maxSimultaneousDrags!) {
         return;
     }
     _recognizer!->addPointer(event);
@@ -79,24 +79,24 @@ void _DraggableStateCls<T>::_routePointer(PointerDownEvent event) {
 
 template<typename T>
 _DragAvatar<T> _DraggableStateCls<T>::_startDrag(Offset position) {
-    if (widget->maxSimultaneousDrags != nullptr && _activeCount >= widget->maxSimultaneousDrags!) {
+    if (widget()->maxSimultaneousDrags != nullptr && _activeCount >= widget()->maxSimultaneousDrags!) {
         return nullptr;
     }
     Offset dragStartPoint;
-    if (widget->dragAnchorStrategy == nullptr) {
+    if (widget()->dragAnchorStrategy == nullptr) {
         ;
     } else {
-        dragStartPoint = widget->dragAnchorStrategy!(widget, context, position);
+        dragStartPoint = widget()->dragAnchorStrategy!(widget(), context(), position);
     }
     setState([=] () {
         _activeCount += 1;
     });
-    _DragAvatar<T> avatar = <T>make<_DragAvatarCls>(OverlayCls->of(context, widget, widget->rootOverlay)!, widget->data, widget->axis, position, dragStartPoint, widget->feedback, widget->feedbackOffset, widget->ignoringFeedbackSemantics, widget->ignoringFeedbackPointer, [=] (DragUpdateDetails details) {
-    if (mounted && widget->onDragUpdate != nullptr) {
-        widget->onDragUpdate!(details);
+    _DragAvatar<T> avatar = <T>make<_DragAvatarCls>(OverlayCls->of(context(), widget(), widget()->rootOverlay)!, widget()->data, widget()->axis, position, dragStartPoint, widget()->feedback, widget()->feedbackOffset, widget()->ignoringFeedbackSemantics, widget()->ignoringFeedbackPointer, [=] (DragUpdateDetails details) {
+    if (mounted() && widget()->onDragUpdate != nullptr) {
+        widget()->onDragUpdate!(details);
     }
 }, [=] (Velocity velocity,Offset offset,bool wasAccepted) {
-    if (mounted) {
+    if (mounted()) {
         setState([=] () {
             _activeCount -= 1;
         });
@@ -104,17 +104,17 @@ _DragAvatar<T> _DraggableStateCls<T>::_startDrag(Offset position) {
         _activeCount -= 1;
         _disposeRecognizerIfInactive();
     }
-    if (mounted && widget->onDragEnd != nullptr) {
-        widget->onDragEnd!(make<DraggableDetailsCls>(wasAccepted, velocity, offset));
+    if (mounted() && widget()->onDragEnd != nullptr) {
+        widget()->onDragEnd!(make<DraggableDetailsCls>(wasAccepted, velocity, offset));
     }
-    if (wasAccepted && widget->onDragCompleted != nullptr) {
-        widget->onDragCompleted!();
+    if (wasAccepted && widget()->onDragCompleted != nullptr) {
+        widget()->onDragCompleted!();
     }
-    if (!wasAccepted && widget->onDraggableCanceled != nullptr) {
-        widget->onDraggableCanceled!(velocity, offset);
+    if (!wasAccepted && widget()->onDraggableCanceled != nullptr) {
+        widget()->onDraggableCanceled!(velocity, offset);
     }
 });
-    widget->onDragStarted?->call();
+    widget()->onDragStarted?->call();
     return avatar;
 }
 
@@ -156,7 +156,7 @@ template<typename T>
 bool _DragTargetStateCls<T>::didEnter(_DragAvatar<Object> avatar) {
     assert(!_candidateAvatars->contains(avatar));
     assert(!_rejectedAvatars->contains(avatar));
-    if (widget->onWillAccept == nullptr || widget->onWillAccept!(as<T>(avatar->data))) {
+    if (widget()->onWillAccept == nullptr || widget()->onWillAccept!(as<T>(avatar->data))) {
         setState([=] () {
             _candidateAvatars->add(avatar);
         });
@@ -172,41 +172,41 @@ bool _DragTargetStateCls<T>::didEnter(_DragAvatar<Object> avatar) {
 template<typename T>
 void _DragTargetStateCls<T>::didLeave(_DragAvatar<Object> avatar) {
     assert(_candidateAvatars->contains(avatar) || _rejectedAvatars->contains(avatar));
-    if (!mounted) {
+    if (!mounted()) {
         return;
     }
     setState([=] () {
         _candidateAvatars->remove(avatar);
         _rejectedAvatars->remove(avatar);
     });
-    widget->onLeave?->call(as<T>(avatar->data));
+    widget()->onLeave?->call(as<T>(avatar->data));
 }
 
 template<typename T>
 void _DragTargetStateCls<T>::didDrop(_DragAvatar<Object> avatar) {
     assert(_candidateAvatars->contains(avatar));
-    if (!mounted) {
+    if (!mounted()) {
         return;
     }
     setState([=] () {
         _candidateAvatars->remove(avatar);
     });
-    widget->onAccept?->call(as<T>(avatar->data!));
-    widget->onAcceptWithDetails?->call(<T>make<DragTargetDetailsCls>(as<T>(avatar->data!), avatar->_lastOffset!));
+    widget()->onAccept?->call(as<T>(avatar->data!));
+    widget()->onAcceptWithDetails?->call(<T>make<DragTargetDetailsCls>(as<T>(avatar->data!), avatar->_lastOffset!));
 }
 
 template<typename T>
 void _DragTargetStateCls<T>::didMove(_DragAvatar<Object> avatar) {
-    if (!mounted) {
+    if (!mounted()) {
         return;
     }
-    widget->onMove?->call(<T>make<DragTargetDetailsCls>(as<T>(avatar->data!), avatar->_lastOffset!));
+    widget()->onMove?->call(<T>make<DragTargetDetailsCls>(as<T>(avatar->data!), avatar->_lastOffset!));
 }
 
 template<typename T>
 Widget _DragTargetStateCls<T>::build(BuildContext context) {
-    assert(widget->builder != nullptr);
-    return make<MetaDataCls>(this, widget->hitTestBehavior, widget->builder(context, <T>_mapAvatarsToData(_candidateAvatars), <Object>_mapAvatarsToData(_rejectedAvatars)));
+    assert(widget()->builder != nullptr);
+    return make<MetaDataCls>(this, widget()->hitTestBehavior, widget()->builder(context, <T>_mapAvatarsToData(_candidateAvatars), <Object>_mapAvatarsToData(_rejectedAvatars)));
 }
 
 template<typename T>
@@ -237,9 +237,9 @@ void _DragAvatarCls<T>::updateDrag(Offset globalPosition) {
     WidgetsBindingCls::instance->hitTest(result, globalPosition + feedbackOffset);
     List<_DragTargetState<Object>> targets = _getDragTargets(result->path())->toList();
     bool listsMatch = false;
-    if (targets->length() >= _enteredTargets->length() && _enteredTargets->isNotEmpty) {
+    if (targets->length() >= _enteredTargets->length() && _enteredTargets->isNotEmpty()) {
         listsMatch = true;
-        Iterator<_DragTargetState<Object>> iterator = targets->iterator;
+        Iterator<_DragTargetState<Object>> iterator = targets->iterator();
         for (;  < _enteredTargets->length(); i += 1) {
             iterator->moveNext();
             if (iterator->current() != _enteredTargets[i]) {

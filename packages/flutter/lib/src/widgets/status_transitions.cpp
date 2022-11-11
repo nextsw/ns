@@ -11,24 +11,24 @@ State<StatusTransitionWidget> StatusTransitionWidgetCls::createState() {
 
 void _StatusTransitionStateCls::initState() {
     super->initState();
-    widget->animation->addStatusListener(_animationStatusChanged);
+    widget()->animation->addStatusListener(_animationStatusChanged);
 }
 
 void _StatusTransitionStateCls::didUpdateWidget(StatusTransitionWidget oldWidget) {
     super->didUpdateWidget(oldWidget);
-    if (widget->animation != oldWidget->animation) {
+    if (widget()->animation != oldWidget->animation) {
         oldWidget->animation->removeStatusListener(_animationStatusChanged);
-        widget->animation->addStatusListener(_animationStatusChanged);
+        widget()->animation->addStatusListener(_animationStatusChanged);
     }
 }
 
 void _StatusTransitionStateCls::dispose() {
-    widget->animation->removeStatusListener(_animationStatusChanged);
+    widget()->animation->removeStatusListener(_animationStatusChanged);
     super->dispose();
 }
 
 Widget _StatusTransitionStateCls::build(BuildContext context) {
-    return widget->build(context);
+    return widget()->build(context);
 }
 
 void _StatusTransitionStateCls::_animationStatusChanged(AnimationStatus status) {

@@ -195,8 +195,8 @@ void MultiDragGestureRecognizerCls::_removeState(int pointer) {
 }
 
 void _ImmediatePointerStateCls::checkForResolutionAfterMove() {
-    assert(pendingDelta != nullptr);
-    if (pendingDelta!->distance > computeHitSlop(kind, gestureSettings)) {
+    assert(pendingDelta() != nullptr);
+    if (pendingDelta()!->distance() > computeHitSlop(kind, gestureSettings)) {
         resolve(GestureDispositionCls::accepted);
     }
 }
@@ -214,8 +214,8 @@ String ImmediateMultiDragGestureRecognizerCls::debugDescription() {
 }
 
 void _HorizontalPointerStateCls::checkForResolutionAfterMove() {
-    assert(pendingDelta != nullptr);
-    if (pendingDelta!->dx->abs() > computeHitSlop(kind, gestureSettings)) {
+    assert(pendingDelta() != nullptr);
+    if (pendingDelta()!->dx()->abs() > computeHitSlop(kind, gestureSettings)) {
         resolve(GestureDispositionCls::accepted);
     }
 }
@@ -233,8 +233,8 @@ String HorizontalMultiDragGestureRecognizerCls::debugDescription() {
 }
 
 void _VerticalPointerStateCls::checkForResolutionAfterMove() {
-    assert(pendingDelta != nullptr);
-    if (pendingDelta!->dy->abs() > computeHitSlop(kind, gestureSettings)) {
+    assert(pendingDelta() != nullptr);
+    if (pendingDelta()!->dy()->abs() > computeHitSlop(kind, gestureSettings)) {
         resolve(GestureDispositionCls::accepted);
     }
 }
@@ -265,8 +265,8 @@ void _DelayedPointerStateCls::checkForResolutionAfterMove() {
         assert(_starter != nullptr);
         return;
     }
-    assert(pendingDelta != nullptr);
-    if (pendingDelta!->distance > computeHitSlop(kind, gestureSettings)) {
+    assert(pendingDelta() != nullptr);
+    if (pendingDelta()!->distance() > computeHitSlop(kind, gestureSettings)) {
         resolve(GestureDispositionCls::rejected);
         _ensureTimerStopped();
     }
@@ -288,8 +288,8 @@ _DelayedPointerStateCls::_DelayedPointerStateCls(Offset initialPosition, Duratio
 
 void _DelayedPointerStateCls::_delayPassed() {
     assert(_timer != nullptr);
-    assert(pendingDelta != nullptr);
-    assert(pendingDelta!->distance <= computeHitSlop(kind, gestureSettings));
+    assert(pendingDelta() != nullptr);
+    assert(pendingDelta()!->distance() <= computeHitSlop(kind, gestureSettings));
     _timer = nullptr;
     if (_starter != nullptr) {
         _starter!(initialPosition);

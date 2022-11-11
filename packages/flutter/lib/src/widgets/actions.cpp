@@ -96,25 +96,25 @@ State<ActionListener> ActionListenerCls::createState() {
 
 void _ActionListenerStateCls::initState() {
     super->initState();
-    widget->action->addActionListener(widget->listener);
+    widget()->action->addActionListener(widget()->listener);
 }
 
 void _ActionListenerStateCls::didUpdateWidget(ActionListener oldWidget) {
     super->didUpdateWidget(oldWidget);
-    if (oldWidget->action == widget->action && oldWidget->listener == widget->listener) {
+    if (oldWidget->action == widget()->action && oldWidget->listener == widget()->listener) {
         return;
     }
     oldWidget->action->removeActionListener(oldWidget->listener);
-    widget->action->addActionListener(widget->listener);
+    widget()->action->addActionListener(widget()->listener);
 }
 
 void _ActionListenerStateCls::dispose() {
-    widget->action->removeActionListener(widget->listener);
+    widget()->action->removeActionListener(widget()->listener);
     super->dispose();
 }
 
 Widget _ActionListenerStateCls::build(BuildContext context) {
-    return widget->child;
+    return widget()->child;
 }
 
 template<typename T>
@@ -323,7 +323,7 @@ void _ActionsStateCls::dispose() {
 }
 
 Widget _ActionsStateCls::build(BuildContext context) {
-    return make<_ActionsMarkerCls>(widget->actions, widget->dispatcher, rebuildKey, widget->child);
+    return make<_ActionsMarkerCls>(widget()->actions, widget()->dispatcher, rebuildKey, widget()->child);
 }
 
 void _ActionsStateCls::_handleActionChanged(Action<Intent> action) {
@@ -333,7 +333,7 @@ void _ActionsStateCls::_handleActionChanged(Action<Intent> action) {
 }
 
 void _ActionsStateCls::_updateActionListeners() {
-    Set<Action<Intent>> widgetActions = widget->actions->values->toSet();
+    Set<Action<Intent>> widgetActions = widget()->actions->values->toSet();
     Set<Action<Intent>> removedActions = listenedActions!->difference(widgetActions);
     Set<Action<Intent>> addedActions = widgetActions->difference(listenedActions!);
     for (Action<Intent> action : removedActions) {
@@ -384,7 +384,7 @@ void _FocusableActionDetectorStateCls::dispose() {
 
 void _FocusableActionDetectorStateCls::didUpdateWidget(FocusableActionDetector oldWidget) {
     super->didUpdateWidget(oldWidget);
-    if (widget->enabled != oldWidget->enabled) {
+    if (widget()->enabled != oldWidget->enabled) {
         SchedulerBindingCls::instance->addPostFrameCallback([=] (Duration duration) {
             _mayTriggerCallback(oldWidget);
         });
@@ -392,12 +392,12 @@ void _FocusableActionDetectorStateCls::didUpdateWidget(FocusableActionDetector o
 }
 
 Widget _FocusableActionDetectorStateCls::build(BuildContext context) {
-    Widget child = make<MouseRegionCls>(_mouseRegionKey, _handleMouseEnter, _handleMouseExit, widget->mouseCursor, make<FocusCls>(widget->focusNode, widget->autofocus, widget->descendantsAreFocusable, widget->descendantsAreTraversable, _canRequestFocus(), _handleFocusChange, widget->child));
-    if (widget->enabled && widget->actions != nullptr && widget->actions!->isNotEmpty) {
-        child = make<ActionsCls>(widget->actions!, child);
+    Widget child = make<MouseRegionCls>(_mouseRegionKey, _handleMouseEnter, _handleMouseExit, widget()->mouseCursor, make<FocusCls>(widget()->focusNode, widget()->autofocus, widget()->descendantsAreFocusable, widget()->descendantsAreTraversable, _canRequestFocus(), _handleFocusChange, widget()->child));
+    if (widget()->enabled && widget()->actions != nullptr && widget()->actions!->isNotEmpty) {
+        child = make<ActionsCls>(widget()->actions!, child);
     }
-    if (widget->enabled && widget->shortcuts != nullptr && widget->shortcuts!->isNotEmpty) {
-        child = make<ShortcutsCls>(widget->shortcuts!, child);
+    if (widget()->enabled && widget()->shortcuts != nullptr && widget()->shortcuts!->isNotEmpty) {
+        child = make<ShortcutsCls>(widget()->shortcuts!, child);
     }
     return child;
 }
@@ -409,7 +409,7 @@ void _FocusableActionDetectorStateCls::_updateHighlightMode(FocusHighlightMode m
 }
 
 void _FocusableActionDetectorStateCls::_handleFocusHighlightModeChange(FocusHighlightMode mode) {
-    if (!mounted) {
+    if (!mounted()) {
         return;
     }
     _updateHighlightMode(mode);
@@ -436,7 +436,7 @@ void _FocusableActionDetectorStateCls::_handleFocusChange(bool focused) {
         _mayTriggerCallback([=] () {
             _focused = focused;
         });
-        widget->onFocusChange?->call(_focused);
+        widget()->onFocusChange?->call(_focused);
     }
 }
 
@@ -445,24 +445,24 @@ void _FocusableActionDetectorStateCls::_mayTriggerCallback(FocusableActionDetect
     InlineMethod;
     InlineMethod;
     assert(SchedulerBindingCls::instance->schedulerPhase != SchedulerPhaseCls::persistentCallbacks);
-    FocusableActionDetector oldTarget = oldWidget | widget;
+    FocusableActionDetector oldTarget = oldWidget | widget();
     bool didShowHoverHighlight = shouldShowHoverHighlight(oldTarget);
     bool didShowFocusHighlight = shouldShowFocusHighlight(oldTarget);
     if (task != nullptr) {
         task();
     }
-    bool doShowHoverHighlight = shouldShowHoverHighlight(widget);
-    bool doShowFocusHighlight = shouldShowFocusHighlight(widget);
+    bool doShowHoverHighlight = shouldShowHoverHighlight(widget());
+    bool doShowFocusHighlight = shouldShowFocusHighlight(widget());
     if (didShowFocusHighlight != doShowFocusHighlight) {
-        widget->onShowFocusHighlight?->call(doShowFocusHighlight);
+        widget()->onShowFocusHighlight?->call(doShowFocusHighlight);
     }
     if (didShowHoverHighlight != doShowHoverHighlight) {
-        widget->onShowHoverHighlight?->call(doShowHoverHighlight);
+        widget()->onShowHoverHighlight?->call(doShowHoverHighlight);
     }
 }
 
 bool _FocusableActionDetectorStateCls::_canRequestFocus() {
-    NavigationMode mode = MediaQueryCls->maybeOf(context)?->navigationMode | NavigationModeCls::traditional;
+    NavigationMode mode = MediaQueryCls->maybeOf(context())?->navigationMode | NavigationModeCls::traditional;
     ;
 }
 
@@ -666,7 +666,7 @@ ContextAction<T> _OverridableContextActionCls<T>::_makeOverridableAction(BuildCo
 
 template<typename T>
 Action<T> _ContextActionToActionAdapterCls<T>::callingAction() {
-    return action->callingAction;
+    return action->callingAction();
 }
 
 template<typename T>
@@ -676,7 +676,7 @@ bool _ContextActionToActionAdapterCls<T>::isEnabled(T intent) {
 
 template<typename T>
 bool _ContextActionToActionAdapterCls<T>::isActionEnabled() {
-    return action->isActionEnabled;
+    return action->isActionEnabled();
 }
 
 template<typename T>

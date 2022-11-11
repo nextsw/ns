@@ -10,7 +10,7 @@ void _GestureArenaCls::add(GestureArenaMember member) {
 
 String _GestureArenaCls::toString() {
     StringBuffer buffer = make<StringBufferCls>();
-    if (members->isEmpty) {
+    if (members->isEmpty()) {
         buffer->write(__s("<empty>"));
     } else {
         buffer->write(members-><String>map([=] (GestureArenaMember member) {
@@ -65,7 +65,7 @@ void GestureArenaManagerCls::sweep(int pointer) {
     }
     assert(_debugLogDiagnostic(pointer, __s("Sweeping"), state));
     _arenas->remove(pointer);
-    if (state->members->isNotEmpty) {
+    if (state->members->isNotEmpty()) {
         assert(_debugLogDiagnostic(pointer, __s("Winner: ${state.members.first}")));
         state->members->first->acceptGesture(pointer);
         for (;  < state->members->length(); i++) {
@@ -127,7 +127,7 @@ void GestureArenaManagerCls::_tryToResolveArena(int pointer, _GestureArena state
             _resolveByDefault(pointer, state);
         });
     } else {
-        if (state->members->isEmpty) {
+        if (state->members->isEmpty()) {
         _arenas->remove(pointer);
         assert(_debugLogDiagnostic(pointer, __s("Arena empty.")));
     } else {

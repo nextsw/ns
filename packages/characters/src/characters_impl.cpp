@@ -511,7 +511,7 @@ bool StringCharacterRangeCls::dropFirst(int count) {
 
 bool StringCharacterRangeCls::dropTo(Characters target) {
     if (_start == _end) {
-        return target->isEmpty;
+        return target->isEmpty();
     }
     auto targetString = target->stringValue();
     auto index = _indexOf(_string, targetString, _start, _end);
@@ -524,7 +524,7 @@ bool StringCharacterRangeCls::dropTo(Characters target) {
 
 bool StringCharacterRangeCls::dropUntil(Characters target) {
     if (_start == _end) {
-        return target->isEmpty;
+        return target->isEmpty();
     }
     auto targetString = target->stringValue();
     auto index = _indexOf(_string, targetString, _start, _end);
@@ -570,7 +570,7 @@ bool StringCharacterRangeCls::dropLast(int count) {
 
 bool StringCharacterRangeCls::dropBackTo(Characters target) {
     if (_start == _end) {
-        return target->isEmpty;
+        return target->isEmpty();
     }
     auto targetString = target->stringValue();
     auto index = _lastIndexOf(_string, targetString, _start, _end);
@@ -583,7 +583,7 @@ bool StringCharacterRangeCls::dropBackTo(Characters target) {
 
 bool StringCharacterRangeCls::dropBackUntil(Characters target) {
     if (_start == _end) {
-        return target->isEmpty;
+        return target->isEmpty();
     }
     auto targetString = target->stringValue();
     auto index = _lastIndexOf(_string, targetString, _start, _end);

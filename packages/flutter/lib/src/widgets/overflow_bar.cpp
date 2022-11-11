@@ -239,10 +239,10 @@ Size _RenderOverflowBarCls::computeDryLayout(BoxConstraints constraints) {
 void _RenderOverflowBarCls::performLayout() {
     RenderBox child = firstChild;
     if (child == nullptr) {
-        size = constraints->smallest;
+        size() = constraints()->smallest();
         return;
     }
-    BoxConstraints childConstraints = constraints->loosen();
+    BoxConstraints childConstraints = constraints()->loosen();
     double childrenWidth = 0;
     double maxChildHeight = 0;
     double maxChildWidth = 0;
@@ -255,7 +255,7 @@ void _RenderOverflowBarCls::performLayout() {
     }
     bool rtl = textDirection() == TextDirectionCls::rtl;
     double actualWidth = childrenWidth + spacing() * (childCount - 1);
-    if (actualWidth > constraints->maxWidth) {
+    if (actualWidth > constraints()->maxWidth) {
         child = overflowDirection() == VerticalDirectionCls::down? firstChild : lastChild;
         InlineMethod;
         double y = 0;
@@ -268,12 +268,12 @@ void _RenderOverflowBarCls::performLayout() {
             y += child->size()->height() + overflowSpacing();
             child = nextChild();
         }
-        size = constraints->constrain(make<SizeCls>(constraints->maxWidth, y - overflowSpacing()));
+        size() = constraints()->constrain(make<SizeCls>(constraints()->maxWidth, y - overflowSpacing()));
     } else {
         child = firstChild;
         double firstChildWidth = child!->size()->width();
-        double overallWidth = alignment() == nullptr? actualWidth : constraints->maxWidth;
-        size = constraints->constrain(make<SizeCls>(overallWidth, maxChildHeight));
+        double overallWidth = alignment() == nullptr? actualWidth : constraints()->maxWidth;
+        size() = constraints()->constrain(make<SizeCls>(overallWidth, maxChildHeight));
         double x;
         double layoutSpacing = spacing();
         ;

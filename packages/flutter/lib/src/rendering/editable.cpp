@@ -174,7 +174,7 @@ void RenderEditableCls::painter(RenderEditablePainter newPainter) {
 }
 
 void RenderEditableCls::debugAssertLayoutUpToDate() {
-    assert(_textLayoutLastMaxWidth == constraints->maxWidth && _textLayoutLastMinWidth == constraints->minWidth, __s("Last width ($_textLayoutLastMinWidth, $_textLayoutLastMaxWidth) not the same as max width constraint (${constraints.minWidth}, ${constraints.maxWidth})."));
+    assert(_textLayoutLastMaxWidth == constraints()->maxWidth && _textLayoutLastMinWidth == constraints()->minWidth, __s("Last width ($_textLayoutLastMinWidth, $_textLayoutLastMaxWidth) not the same as max width constraint (${constraints.minWidth}, ${constraints.maxWidth})."));
 }
 
 TextHeightBehavior RenderEditableCls::textHeightBehavior() {
@@ -400,11 +400,11 @@ void RenderEditableCls::showCursor(ValueNotifier<bool> value) {
     if (_showCursor == value) {
         return;
     }
-    if (attached) {
+    if (attached()) {
         _showCursor->removeListener(_showHideCursor);
     }
     _showCursor = value;
-    if (attached) {
+    if (attached()) {
         _showHideCursor();
         _showCursor->addListener(_showHideCursor);
     }
@@ -532,11 +532,11 @@ void RenderEditableCls::offset(ViewportOffset value) {
     if (_offset == value) {
         return;
     }
-    if (attached) {
+    if (attached()) {
         _offset->removeListener(markNeedsPaint);
     }
     _offset = value;
-    if (attached) {
+    if (attached()) {
         _offset->addListener(markNeedsPaint);
     }
     markNeedsLayout();
@@ -710,7 +710,7 @@ void RenderEditableCls::describeSemanticsConfiguration(SemanticsConfiguration co
     if (hasFocus() && !readOnly()) {
         config->onSetText() = _handleSetText;
     }
-    if (selectionEnabled() && (selection()?->isValid | false)) {
+    if (selectionEnabled() && (selection()?->isValid() | false)) {
         config->textSelection() = selection();
         if (_textPainter->getOffsetBefore(selection()!->extentOffset) != nullptr) {
                     auto _c10 = config;        _c10.onMoveCursorBackwardByWord = auto _c11 = _handleMoveCursorBackwardByWord;        _c11.onMoveCursorBackwardByCharacter = _handleMoveCursorBackwardByCharacter;        _c11;_c10;
@@ -722,7 +722,7 @@ void RenderEditableCls::describeSemanticsConfiguration(SemanticsConfiguration co
 }
 
 void RenderEditableCls::assembleSemanticsNode(SemanticsNode node, SemanticsConfiguration config, Iterable<SemanticsNode> children) {
-    assert(_semanticsInfo != nullptr && _semanticsInfo!->isNotEmpty);
+    assert(_semanticsInfo != nullptr && _semanticsInfo!->isNotEmpty());
     List<SemanticsNode> newChildren = makeList();
     TextDirection currentDirection = textDirection();
     Rect currentRect;
@@ -750,7 +750,7 @@ void RenderEditableCls::assembleSemanticsNode(SemanticsNode node, SemanticsConfi
         } else {
             TextDirection initialDirection = currentDirection;
             List<TextBox> rects = _textPainter->getBoxesForSelection(selection);
-            if (rects->isEmpty) {
+            if (rects->isEmpty()) {
                 continue;
             }
             Rect rect = rects->first->toRect();
@@ -759,7 +759,7 @@ void RenderEditableCls::assembleSemanticsNode(SemanticsNode node, SemanticsConfi
                 rect = rect->expandToInclude(textBox->toRect());
                 currentDirection = textBox->direction;
             }
-            rect = RectCls->fromLTWH(math->max(0.0, rect->left), math->max(0.0, rect->top), math->min(rect->width(), constraints->maxWidth), math->min(rect->height(), constraints->maxHeight));
+            rect = RectCls->fromLTWH(math->max(0.0, rect->left), math->max(0.0, rect->top), math->min(rect->width(), constraints()->maxWidth), math->min(rect->height(), constraints()->maxHeight));
             currentRect = RectCls->fromLTRB(rect->left->floorToDouble() - 4.0, rect->top->floorToDouble() - 4.0, rect->right->ceilToDouble() + 4.0, rect->bottom->ceilToDouble() + 4.0);
                     auto _c1 = make<SemanticsConfigurationCls>();        _c1.sortKey = auto _c2 = make<OrdinalSortKeyCls>(ordinal++);        _c2.textDirection() = auto _c3 = initialDirection;        _c3.attributedLabel = make<AttributedStringCls>(info->semanticsLabel | info->text, info->stringAttributes);        _c3;        _c2;SemanticsConfiguration configuration = _c1;
             GestureRecognizer recognizer = info->recognizer;
@@ -791,8 +791,8 @@ void RenderEditableCls::assembleSemanticsNode(SemanticsNode node, SemanticsConfi
                 configuration->isHidden() = paintRect->isEmpty() && !currentRect->isEmpty();
             }
             SemanticsNode newChild;
-            if (_cachedChildNodes?->isNotEmpty | false) {
-                newChild = _cachedChildNodes!->remove(_cachedChildNodes!->keys->first)!;
+            if (_cachedChildNodes?->isNotEmpty() | false) {
+                newChild = _cachedChildNodes!->remove(_cachedChildNodes!->keys()->first())!;
             } else {
                 UniqueKey key = make<UniqueKeyCls>();
                 newChild = make<SemanticsNodeCls>(key, _createShowOnScreenFor(key));
@@ -854,8 +854,8 @@ void RenderEditableCls::visitChildren(RenderObjectVisitor visitor) {
 List<TextSelectionPoint> RenderEditableCls::getEndpointsForSelection(TextSelection selection) {
     _computeTextMetricsIfNeeded();
     Offset paintOffset = _paintOffset();
-    List<TextBox> boxes = selection->isCollapsed? makeList() : _textPainter->getBoxesForSelection(selection, selectionHeightStyle(), selectionWidthStyle());
-    if (boxes->isEmpty) {
+    List<TextBox> boxes = selection->isCollapsed()? makeList() : _textPainter->getBoxesForSelection(selection, selectionHeightStyle(), selectionWidthStyle());
+    if (boxes->isEmpty()) {
         Offset caretOffset = _textPainter->getOffsetForCaret(selection->extent(), _caretPrototype);
         Offset start = make<OffsetCls>(0.0, preferredLineHeight()) + caretOffset + paintOffset;
         return makeList(ArrayItem);
@@ -934,7 +934,7 @@ bool RenderEditableCls::hitTestChildren(BoxHitTestResult result, Offset position
     int childIndex = 0;
     while (child != nullptr &&  < _textPainter->inlinePlaceholderBoxes()!->length()) {
         TextParentData textParentData = as<TextParentData>(child->parentData!);
-            auto _c1 = Matrix4Cls->translationValues(textParentData->offset->dx, textParentData->offset->dy, 0.0);    _c1.scale(textParentData->scale, textParentData->scale, textParentData->scale);Matrix4 transform = _c1;
+            auto _c1 = Matrix4Cls->translationValues(textParentData->offset->dx(), textParentData->offset->dy(), 0.0);    _c1.scale(textParentData->scale, textParentData->scale, textParentData->scale);Matrix4 transform = _c1;
         bool isHit = result->addWithPaintTransform(transform, position, [=] (BoxHitTestResult result,Offset transformed) {
     assert([=] () {
         Offset manualPosition = (position - textParentData->offset) / textParentData->scale!;
@@ -954,7 +954,7 @@ bool RenderEditableCls::hitTestChildren(BoxHitTestResult result, Offset position
 void RenderEditableCls::handleEvent(PointerEvent event, BoxHitTestEntry entry) {
     assert(debugHandleEvent(event, entry));
     if (is<PointerDownEvent>(event)) {
-        assert(!debugNeedsLayout);
+        assert(!debugNeedsLayout());
         if (!ignorePointer) {
             _tap->addPointer(event);
             _longPress->addPointer(event);
@@ -994,7 +994,7 @@ void RenderEditableCls::selectPosition(SelectionChangedCause cause) {
 void RenderEditableCls::selectPositionAt(SelectionChangedCause cause, Offset from, Offset to) {
     assert(cause != nullptr);
     assert(from != nullptr);
-    _layoutText(constraints->minWidth, constraints->maxWidth);
+    _layoutText(constraints()->minWidth, constraints()->maxWidth);
     TextPosition fromPosition = _textPainter->getPositionForOffset(globalToLocal(from - _paintOffset()));
     TextPosition toPosition = to == nullptr? nullptr : _textPainter->getPositionForOffset(globalToLocal(to - _paintOffset()));
     int baseOffset = fromPosition->offset;
@@ -1044,7 +1044,7 @@ Size RenderEditableCls::computeDryLayout(BoxConstraints constraints) {
 }
 
 void RenderEditableCls::performLayout() {
-    BoxConstraints constraints = this->constraints;
+    BoxConstraints constraints = this->constraints();
     _placeholderDimensions = _layoutChildren(constraints);
     _textPainter->setPlaceholderDimensions(_placeholderDimensions);
     _computeTextMetricsIfNeeded();
@@ -1052,7 +1052,7 @@ void RenderEditableCls::performLayout() {
     _computeCaretPrototype();
     Size textPainterSize = _textPainter->size();
     double width = forceLine()? constraints->maxWidth : constraints->constrainWidth(_textPainter->size()->width() + _caretMargin());
-    size = make<SizeCls>(width, constraints->constrainHeight(_preferredHeight(constraints->maxWidth)));
+    size() = make<SizeCls>(width, constraints->constrainHeight(_preferredHeight(constraints->maxWidth)));
     Size contentSize = make<SizeCls>(textPainterSize->width + _caretMargin(), textPainterSize->height());
     BoxConstraints painterConstraints = BoxConstraintsCls->tight(contentSize);
     _foregroundRenderObject?->layout(painterConstraints);
@@ -1146,12 +1146,12 @@ VerticalCaretMovementRun RenderEditableCls::startVerticalCaretMovement(TextPosit
 void RenderEditableCls::paint(PaintingContext context, Offset offset) {
     _computeTextMetricsIfNeeded();
     if (_hasVisualOverflow() && clipBehavior() != ClipCls::none) {
-        _clipRectLayer->layer() = context->pushClipRect(needsCompositing, offset, OffsetCls::zero & size, _paintContents, clipBehavior(), _clipRectLayer->layer());
+        _clipRectLayer->layer() = context->pushClipRect(needsCompositing(), offset, OffsetCls::zero & size(), _paintContents, clipBehavior(), _clipRectLayer->layer());
     } else {
         _clipRectLayer->layer() = nullptr;
         _paintContents(context, offset);
     }
-    if (selection()!->isValid) {
+    if (selection()!->isValid()) {
         _paintHandleLayers(context, getEndpointsForSelection(selection()!));
     }
 }
@@ -1243,7 +1243,7 @@ TextPosition RenderEditableCls::_getTextPositionVertical(TextPosition position, 
 
 void RenderEditableCls::_updateSelectionExtentsVisibility(Offset effectiveOffset) {
     assert(selection() != nullptr);
-    Rect visibleRegion = OffsetCls::zero & size;
+    Rect visibleRegion = OffsetCls::zero & size();
     Offset startOffset = _textPainter->getOffsetForCaret(make<TextPositionCls>(selection()!->start, selection()!->affinity), _caretPrototype);
     double visibleRegionSlop = 0.5;
     _selectionStartInViewport->value() = visibleRegion->inflate(visibleRegionSlop)->contains(startOffset + effectiveOffset);
@@ -1256,7 +1256,7 @@ void RenderEditableCls::_setTextEditingValue(TextEditingValue newValue, Selectio
 }
 
 void RenderEditableCls::_setSelection(TextSelection nextSelection, SelectionChangedCause cause) {
-    if (nextSelection->isValid) {
+    if (nextSelection->isValid()) {
         int textLength = textSelectionDelegate->textEditingValue()->text->length();
         nextSelection = nextSelection->copyWith(math->min(nextSelection->baseOffset, textLength), math->min(nextSelection->extentOffset, textLength));
     }
@@ -1383,12 +1383,12 @@ Offset RenderEditableCls::_paintOffset() {
 }
 
 double RenderEditableCls::_viewportExtent() {
-    assert(hasSize);
+    assert(hasSize());
     ;
 }
 
 double RenderEditableCls::_getMaxScrollExtent(Size contentSize) {
-    assert(hasSize);
+    assert(hasSize());
     ;
 }
 
@@ -1513,8 +1513,8 @@ void RenderEditableCls::_layoutText(double maxWidth, double minWidth) {
 }
 
 void RenderEditableCls::_computeTextMetricsIfNeeded() {
-    assert(constraints != nullptr);
-    _layoutText(constraints->minWidth, constraints->maxWidth);
+    assert(constraints() != nullptr);
+    _layoutText(constraints()->minWidth, constraints()->maxWidth);
 }
 
 void RenderEditableCls::_computeCaretPrototype() {
@@ -1525,7 +1525,7 @@ void RenderEditableCls::_computeCaretPrototype() {
 Offset RenderEditableCls::_snapToPhysicalPixel(Offset sourceOffset) {
     Offset globalOffset = localToGlobal(sourceOffset);
     double pixelMultiple = 1.0 / _devicePixelRatio;
-    return make<OffsetCls>(globalOffset->dx()->isFinite? (globalOffset->dx() / pixelMultiple)->round() * pixelMultiple - globalOffset->dx() : 0, globalOffset->dy()->isFinite? (globalOffset->dy() / pixelMultiple)->round() * pixelMultiple - globalOffset->dy() : 0);
+    return make<OffsetCls>(globalOffset->dx()->isFinite()? (globalOffset->dx() / pixelMultiple)->round() * pixelMultiple - globalOffset->dx() : 0, globalOffset->dy()->isFinite()? (globalOffset->dy() / pixelMultiple)->round() * pixelMultiple - globalOffset->dy() : 0);
 }
 
 bool RenderEditableCls::_canComputeDryLayout() {
@@ -1543,7 +1543,7 @@ MapEntry<int, Offset> RenderEditableCls::_lineNumberFor(TextPosition startPositi
         }
     }
     assert(startPosition->offset == 0, __s("unable to find the line for $startPosition"));
-    return <int, Offset>make<MapEntryCls>(math->max(0, metrics->length() - 1), make<OffsetCls>(offset->dx(), metrics->isNotEmpty? metrics->last->baseline + metrics->last->descent : 0.0));
+    return <int, Offset>make<MapEntryCls>(math->max(0, metrics->length() - 1), make<OffsetCls>(offset->dx(), metrics->isNotEmpty()? metrics->last->baseline + metrics->last->descent : 0.0));
 }
 
 void RenderEditableCls::_paintContents(PaintingContext context, Offset offset) {
@@ -1563,7 +1563,7 @@ void RenderEditableCls::_paintContents(PaintingContext context, Offset offset) {
     while (child != nullptr &&  < _textPainter->inlinePlaceholderBoxes()!->length()) {
         TextParentData textParentData = as<TextParentData>(child->parentData!);
         double scale = textParentData->scale!;
-        context->pushTransform(needsCompositing, effectiveOffset + textParentData->offset, Matrix4Cls->diagonal3Values(scale, scale, scale), [=] (PaintingContext context,Offset offset) {
+        context->pushTransform(needsCompositing(), effectiveOffset + textParentData->offset, Matrix4Cls->diagonal3Values(scale, scale, scale), [=] (PaintingContext context,Offset offset) {
             context->paintChild(child!, offset);
         });
         child = childAfter(child);
@@ -1576,11 +1576,11 @@ void RenderEditableCls::_paintContents(PaintingContext context, Offset offset) {
 
 void RenderEditableCls::_paintHandleLayers(PaintingContext context, List<TextSelectionPoint> endpoints) {
     Offset startPoint = endpoints[0]->point;
-    startPoint = make<OffsetCls>(clampDouble(startPoint->dx(), 0.0, size->width), clampDouble(startPoint->dy(), 0.0, size->height));
+    startPoint = make<OffsetCls>(clampDouble(startPoint->dx(), 0.0, size()->width()), clampDouble(startPoint->dy(), 0.0, size()->height()));
     context->pushLayer(make<LeaderLayerCls>(startHandleLayerLink(), startPoint), super->paint, OffsetCls::zero);
     if (endpoints->length() == 2) {
         Offset endPoint = endpoints[1]->point;
-        endPoint = make<OffsetCls>(clampDouble(endPoint->dx(), 0.0, size->width), clampDouble(endPoint->dy(), 0.0, size->height));
+        endPoint = make<OffsetCls>(clampDouble(endPoint->dx(), 0.0, size()->width()), clampDouble(endPoint->dy(), 0.0, size()->height()));
         context->pushLayer(make<LeaderLayerCls>(endHandleLayerLink(), endPoint), super->paint, OffsetCls::zero);
     }
 }
@@ -1610,7 +1610,7 @@ void _RenderEditableCustomPaintCls::painter(RenderEditablePainter newValue) {
     if (newValue?->shouldRepaint(oldPainter) | true) {
         markNeedsPaint();
     }
-    if (attached) {
+    if (attached()) {
         oldPainter?->removeListener(markNeedsPaint);
         newValue?->addListener(markNeedsPaint);
     }
@@ -1622,7 +1622,7 @@ void _RenderEditableCustomPaintCls::paint(PaintingContext context, Offset offset
     RenderEditablePainter painter = this->painter();
     if (painter != nullptr && parent != nullptr) {
         parent->_computeTextMetricsIfNeeded();
-        painter->paint(context->canvas(), size, parent);
+        painter->paint(context->canvas(), size(), parent);
     }
 }
 
@@ -1827,7 +1827,7 @@ void _FloatingCursorPainterCls::paintRegularCursor(Canvas canvas, RenderEditable
 void _FloatingCursorPainterCls::paint(Canvas canvas, Size size, RenderEditable renderEditable) {
     assert(renderEditable != nullptr);
     TextSelection selection = renderEditable->selection();
-    if (selection == nullptr || !selection->isCollapsed) {
+    if (selection == nullptr || !selection->isCollapsed()) {
         return;
     }
     Rect floatingCursorRect = this->floatingCursorRect();
@@ -1878,8 +1878,8 @@ bool _CompositeRenderEditablePainterCls::shouldRepaint(RenderEditablePainter old
     if (!is<_CompositeRenderEditablePainter>(oldDelegate) || oldDelegate->painters->length() != painters->length()) {
         return true;
     }
-    Iterator<RenderEditablePainter> oldPainters = oldDelegate->painters->iterator;
-    Iterator<RenderEditablePainter> newPainters = painters->iterator;
+    Iterator<RenderEditablePainter> oldPainters = oldDelegate->painters->iterator();
+    Iterator<RenderEditablePainter> newPainters = painters->iterator();
     while (oldPainters->moveNext() && newPainters->moveNext()) {
         if (newPainters->current()->shouldRepaint(oldPainters->current())) {
             return true;

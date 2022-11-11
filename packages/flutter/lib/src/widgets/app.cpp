@@ -1,6 +1,6 @@
 #include "app.hpp"
 Locale basicLocaleListResolution(List<Locale> preferredLocales, Iterable<Locale> supportedLocales) {
-    if (preferredLocales == nullptr || preferredLocales->isEmpty) {
+    if (preferredLocales == nullptr || preferredLocales->isEmpty()) {
         return supportedLocales->first();
     }
     Map<String, Locale> allSupportedLocales = <String, Locale>make<HashMapCls>();
@@ -62,7 +62,7 @@ WidgetsAppCls::WidgetsAppCls(Map<Type, Action<Intent>> actions, TransitionBuilde
         assert(home == nullptr || onGenerateInitialRoutes == nullptr, __s("If onGenerateInitialRoutes is specified, the home argument will be redundant."));
         assert(home == nullptr || !routes->containsKey(NavigatorCls::defaultRouteName), __s("If the home property is specified, the routes table cannot include an entry for "/", since it would be redundant."));
         assert(builder != nullptr || home != nullptr || routes->containsKey(NavigatorCls::defaultRouteName) || onGenerateRoute != nullptr || onUnknownRoute != nullptr, __s("Either the home property must be specified, or the routes table must include an entry for "/", or there must be on onGenerateRoute callback specified, or there must be an onUnknownRoute callback specified, or the builder property must be specified, because otherwise there is nothing to fall back on if the app is started with an intent that specifies an unknown route."));
-        assert((home != nullptr || routes->isNotEmpty() || onGenerateRoute != nullptr || onUnknownRoute != nullptr) || (builder != nullptr && navigatorKey == nullptr && initialRoute == nullptr && navigatorObservers->isEmpty), __s("If no route is provided using home, routes, onGenerateRoute, or onUnknownRoute, a non-null callback for the builder property must be provided, and the other navigator-related properties, navigatorKey, initialRoute, and navigatorObservers, must have their initial values (null, null, and the empty list, respectively)."));
+        assert((home != nullptr || routes->isNotEmpty() || onGenerateRoute != nullptr || onUnknownRoute != nullptr) || (builder != nullptr && navigatorKey == nullptr && initialRoute == nullptr && navigatorObservers->isEmpty()), __s("If no route is provided using home, routes, onGenerateRoute, or onUnknownRoute, a non-null callback for the builder property must be provided, and the other navigator-related properties, navigatorKey, initialRoute, and navigatorObservers, must have their initial values (null, null, and the empty list, respectively)."));
         assert(builder != nullptr || onGenerateRoute != nullptr || pageRouteBuilder != nullptr, __s("If neither builder nor onGenerateRoute are provided, the pageRouteBuilder must be specified so that the default handler will know what kind of PageRoute transition to build."));
         assert(title != nullptr);
         assert(color != nullptr);
@@ -97,7 +97,7 @@ State<WidgetsApp> WidgetsAppCls::createState() {
 void _WidgetsAppStateCls::initState() {
     super->initState();
     _updateRouting();
-    _locale = _resolveLocales(WidgetsBindingCls::instance->platformDispatcher->locales, widget->supportedLocales);
+    _locale = _resolveLocales(WidgetsBindingCls::instance->platformDispatcher->locales, widget()->supportedLocales);
     WidgetsBindingCls::instance->addObserver(this);
 }
 
@@ -113,7 +113,7 @@ void _WidgetsAppStateCls::dispose() {
 }
 
 Future<bool> _WidgetsAppStateCls::didPopRoute() {
-    assert(mounted);
+    assert(mounted());
     if (_usesRouterWithDelegates()) {
         return false;
     }
@@ -125,7 +125,7 @@ Future<bool> _WidgetsAppStateCls::didPopRoute() {
 }
 
 Future<bool> _WidgetsAppStateCls::didPushRoute(String route) {
-    assert(mounted);
+    assert(mounted());
     if (_usesRouterWithDelegates()) {
         return false;
     }
@@ -138,7 +138,7 @@ Future<bool> _WidgetsAppStateCls::didPushRoute(String route) {
 }
 
 void _WidgetsAppStateCls::didChangeLocales(List<Locale> locales) {
-    Locale newLocale = _resolveLocales(locales, widget->supportedLocales);
+    Locale newLocale = _resolveLocales(locales, widget()->supportedLocales);
     if (newLocale != _locale) {
         setState([=] () {
             _locale = newLocale;
@@ -149,76 +149,76 @@ void _WidgetsAppStateCls::didChangeLocales(List<Locale> locales) {
 Widget _WidgetsAppStateCls::build(BuildContext context) {
     Widget routing;
     if (_usesRouterWithDelegates()) {
-        routing = <Object>make<RouterCls>(__s("router"), _effectiveRouteInformationProvider(), widget->routeInformationParser, widget->routerDelegate!, _effectiveBackButtonDispatcher());
+        routing = <Object>make<RouterCls>(__s("router"), _effectiveRouteInformationProvider(), widget()->routeInformationParser, widget()->routerDelegate!, _effectiveBackButtonDispatcher());
     } else {
         if (_usesNavigator()) {
         assert(_navigator != nullptr);
-        routing = make<NavigatorCls>(__s("nav"), _navigator, _initialRouteName(), _onGenerateRoute, widget->onGenerateInitialRoutes == nullptr? NavigatorCls::defaultGenerateInitialRoutes : [=] (NavigatorState navigator,String initialRouteName) {
-            return widget->onGenerateInitialRoutes!(initialRouteName);
-        }, _onUnknownRoute, widget->navigatorObservers!, true);
+        routing = make<NavigatorCls>(__s("nav"), _navigator, _initialRouteName(), _onGenerateRoute, widget()->onGenerateInitialRoutes == nullptr? NavigatorCls::defaultGenerateInitialRoutes : [=] (NavigatorState navigator,String initialRouteName) {
+            return widget()->onGenerateInitialRoutes!(initialRouteName);
+        }, _onUnknownRoute, widget()->navigatorObservers!, true);
     } else {
         if (_usesRouterWithConfig()) {
-        routing = <Object>withConfig(__s("router"), widget->routerConfig!);
+        routing = <Object>withConfig(__s("router"), widget()->routerConfig!);
     }
 ;
     };
     }    Widget result;
-    if (widget->builder != nullptr) {
+    if (widget()->builder != nullptr) {
         result = make<BuilderCls>([=] (BuildContext context) {
-            return widget->builder!(context, routing);
+            return widget()->builder!(context, routing);
         });
     } else {
         assert(routing != nullptr);
         result = routing!;
     }
-    if (widget->textStyle != nullptr) {
-        result = make<DefaultTextStyleCls>(widget->textStyle!, result);
+    if (widget()->textStyle != nullptr) {
+        result = make<DefaultTextStyleCls>(widget()->textStyle!, result);
     }
     PerformanceOverlay performanceOverlay;
-    if (widget->showPerformanceOverlay || WidgetsAppCls::showPerformanceOverlayOverride) {
-        performanceOverlay = PerformanceOverlayCls->allEnabled(widget->checkerboardRasterCacheImages, widget->checkerboardOffscreenLayers);
+    if (widget()->showPerformanceOverlay || WidgetsAppCls::showPerformanceOverlayOverride) {
+        performanceOverlay = PerformanceOverlayCls->allEnabled(widget()->checkerboardRasterCacheImages, widget()->checkerboardOffscreenLayers);
     } else {
-        if (widget->checkerboardRasterCacheImages || widget->checkerboardOffscreenLayers) {
-        performanceOverlay = make<PerformanceOverlayCls>(widget->checkerboardRasterCacheImages, widget->checkerboardOffscreenLayers);
+        if (widget()->checkerboardRasterCacheImages || widget()->checkerboardOffscreenLayers) {
+        performanceOverlay = make<PerformanceOverlayCls>(widget()->checkerboardRasterCacheImages, widget()->checkerboardOffscreenLayers);
     }
 ;
     }    if (performanceOverlay != nullptr) {
         result = make<StackCls>(makeList(ArrayItem, ArrayItem));
     }
-    if (widget->showSemanticsDebugger) {
+    if (widget()->showSemanticsDebugger) {
         result = make<SemanticsDebuggerCls>(result);
     }
     assert([=] () {
-        if (widget->debugShowWidgetInspector || WidgetsAppCls::debugShowWidgetInspectorOverride) {
-            result = make<WidgetInspectorCls>(widget->inspectorSelectButtonBuilder, result);
+        if (widget()->debugShowWidgetInspector || WidgetsAppCls::debugShowWidgetInspectorOverride) {
+            result = make<WidgetInspectorCls>(widget()->inspectorSelectButtonBuilder, result);
         }
-        if (widget->debugShowCheckedModeBanner && WidgetsAppCls::debugAllowBannerOverride) {
+        if (widget()->debugShowCheckedModeBanner && WidgetsAppCls::debugAllowBannerOverride) {
             result = make<CheckedModeBannerCls>(result);
         }
         return true;
     }());
     Widget title;
-    if (widget->onGenerateTitle != nullptr) {
+    if (widget()->onGenerateTitle != nullptr) {
         title = make<BuilderCls>([=] (BuildContext context) {
-            String title = widget->onGenerateTitle!(context);
+            String title = widget()->onGenerateTitle!(context);
             assert(title != nullptr, __s("onGenerateTitle must return a non-null String"));
-            return make<TitleCls>(title, widget->color->withOpacity(1.0), result);
+            return make<TitleCls>(title, widget()->color->withOpacity(1.0), result);
         });
     } else {
-        title = make<TitleCls>(widget->title, widget->color->withOpacity(1.0), result);
+        title = make<TitleCls>(widget()->title, widget()->color->withOpacity(1.0), result);
     }
-    Locale appLocale = widget->locale != nullptr? _resolveLocales(makeList(ArrayItem), widget->supportedLocales) : _locale!;
+    Locale appLocale = widget()->locale != nullptr? _resolveLocales(makeList(ArrayItem), widget()->supportedLocales) : _locale!;
     assert(_debugCheckLocalizations(appLocale));
     Widget child = make<LocalizationsCls>(appLocale, _localizationsDelegates()->toList(), title);
     MediaQueryData data = MediaQueryCls->maybeOf(context);
-    if (!widget->useInheritedMediaQuery || data == nullptr) {
+    if (!widget()->useInheritedMediaQuery || data == nullptr) {
         child = MediaQueryCls->fromWindow(child);
     }
-    return make<RootRestorationScopeCls>(widget->restorationScopeId, make<SharedAppDataCls>(make<ShortcutsCls>(__s("<Default WidgetsApp Shortcuts>"), widget->shortcuts | WidgetsAppCls::defaultShortcuts, make<DefaultTextEditingShortcutsCls>(make<ActionsCls>(widget->actions | WidgetsAppCls::defaultActions, make<FocusTraversalGroupCls>(make<ReadingOrderTraversalPolicyCls>(), make<ShortcutRegistrarCls>(child)))))));
+    return make<RootRestorationScopeCls>(widget()->restorationScopeId, make<SharedAppDataCls>(make<ShortcutsCls>(__s("<Default WidgetsApp Shortcuts>"), widget()->shortcuts | WidgetsAppCls::defaultShortcuts, make<DefaultTextEditingShortcutsCls>(make<ActionsCls>(widget()->actions | WidgetsAppCls::defaultActions, make<FocusTraversalGroupCls>(make<ReadingOrderTraversalPolicyCls>(), make<ShortcutRegistrarCls>(child)))))));
 }
 
 String _WidgetsAppStateCls::_initialRouteName() {
-    return WidgetsBindingCls::instance->platformDispatcher->defaultRouteName != NavigatorCls::defaultRouteName? WidgetsBindingCls::instance->platformDispatcher->defaultRouteName : widget->initialRoute | WidgetsBindingCls::instance->platformDispatcher->defaultRouteName;
+    return WidgetsBindingCls::instance->platformDispatcher->defaultRouteName != NavigatorCls::defaultRouteName? WidgetsBindingCls::instance->platformDispatcher->defaultRouteName : widget()->initialRoute | WidgetsBindingCls::instance->platformDispatcher->defaultRouteName;
 }
 
 void _WidgetsAppStateCls::_clearRouterResource() {
@@ -235,25 +235,25 @@ void _WidgetsAppStateCls::_updateRouting(WidgetsApp oldWidget) {
     if (_usesRouterWithDelegates()) {
         assert(!_usesNavigator() && !_usesRouterWithConfig());
         _clearNavigatorResource();
-        if (widget->routeInformationProvider == nullptr && widget->routeInformationParser != nullptr) {
+        if (widget()->routeInformationProvider == nullptr && widget()->routeInformationParser != nullptr) {
             _defaultRouteInformationProvider |= make<PlatformRouteInformationProviderCls>(make<RouteInformationCls>(_initialRouteName()));
         } else {
             _defaultRouteInformationProvider?->dispose();
             _defaultRouteInformationProvider = nullptr;
         }
-        if (widget->backButtonDispatcher == nullptr) {
+        if (widget()->backButtonDispatcher == nullptr) {
             _defaultBackButtonDispatcher |= make<RootBackButtonDispatcherCls>();
         }
     } else {
         if (_usesNavigator()) {
         assert(!_usesRouterWithDelegates() && !_usesRouterWithConfig());
         _clearRouterResource();
-        if (_navigator == nullptr || widget->navigatorKey != oldWidget!->navigatorKey) {
-            _navigator = widget->navigatorKey | <NavigatorState>make<GlobalObjectKeyCls>(this);
+        if (_navigator == nullptr || widget()->navigatorKey != oldWidget!->navigatorKey) {
+            _navigator = widget()->navigatorKey | <NavigatorState>make<GlobalObjectKeyCls>(this);
         }
         assert(_navigator != nullptr);
     } else {
-        assert(widget->builder != nullptr || _usesRouterWithConfig());
+        assert(widget()->builder != nullptr || _usesRouterWithConfig());
         assert(!_usesRouterWithDelegates() && !_usesNavigator());
         _clearRouterResource();
         _clearNavigatorResource();
@@ -263,50 +263,50 @@ void _WidgetsAppStateCls::_updateRouting(WidgetsApp oldWidget) {
 }
 
 bool _WidgetsAppStateCls::_usesRouterWithDelegates() {
-    return widget->routerDelegate != nullptr;
+    return widget()->routerDelegate != nullptr;
 }
 
 bool _WidgetsAppStateCls::_usesRouterWithConfig() {
-    return widget->routerConfig != nullptr;
+    return widget()->routerConfig != nullptr;
 }
 
 bool _WidgetsAppStateCls::_usesNavigator() {
-    return widget->home != nullptr || (widget->routes?->isNotEmpty | false) || widget->onGenerateRoute != nullptr || widget->onUnknownRoute != nullptr;
+    return widget()->home != nullptr || (widget()->routes?->isNotEmpty | false) || widget()->onGenerateRoute != nullptr || widget()->onUnknownRoute != nullptr;
 }
 
 RouteInformationProvider _WidgetsAppStateCls::_effectiveRouteInformationProvider() {
-    return widget->routeInformationProvider | _defaultRouteInformationProvider;
+    return widget()->routeInformationProvider | _defaultRouteInformationProvider;
 }
 
 BackButtonDispatcher _WidgetsAppStateCls::_effectiveBackButtonDispatcher() {
-    return widget->backButtonDispatcher | _defaultBackButtonDispatcher!;
+    return widget()->backButtonDispatcher | _defaultBackButtonDispatcher!;
 }
 
 Route<dynamic> _WidgetsAppStateCls::_onGenerateRoute(RouteSettings settings) {
     String name = settings->name;
-    WidgetBuilder pageContentBuilder = name == NavigatorCls::defaultRouteName && widget->home != nullptr? [=] (BuildContext context) {
-    widget->home!;
-} : widget->routes![name];
+    WidgetBuilder pageContentBuilder = name == NavigatorCls::defaultRouteName && widget()->home != nullptr? [=] (BuildContext context) {
+    widget()->home!;
+} : widget()->routes![name];
     if (pageContentBuilder != nullptr) {
-        assert(widget->pageRouteBuilder != nullptr, __s("The default onGenerateRoute handler for WidgetsApp must have a pageRouteBuilder set if the home or routes properties are set."));
-        Route<dynamic> route = widget->pageRouteBuilder;
+        assert(widget()->pageRouteBuilder != nullptr, __s("The default onGenerateRoute handler for WidgetsApp must have a pageRouteBuilder set if the home or routes properties are set."));
+        Route<dynamic> route = widget()->pageRouteBuilder;
         assert(route != nullptr, __s("The pageRouteBuilder for WidgetsApp must return a valid non-null Route."));
         return route;
     }
-    if (widget->onGenerateRoute != nullptr) {
-        return widget->onGenerateRoute!(settings);
+    if (widget()->onGenerateRoute != nullptr) {
+        return widget()->onGenerateRoute!(settings);
     }
     return nullptr;
 }
 
 Route<dynamic> _WidgetsAppStateCls::_onUnknownRoute(RouteSettings settings) {
     assert([=] () {
-        if (widget->onUnknownRoute == nullptr) {
+        if (widget()->onUnknownRoute == nullptr) {
             throw make<FlutterErrorCls>(__s("Could not find a generator for route $settings in the $runtimeType.\nMake sure your root app widget has provided a way to generate \nthis route.\nGenerators for routes are searched for in the following order:\n 1. For the "/" route, the "home" property, if non-null, is used.\n 2. Otherwise, the "routes" table is used, if it has an entry for the route.\n 3. Otherwise, onGenerateRoute is called. It should return a non-null value for any valid route not handled by "home" and "routes".\n 4. Finally if all else fails onUnknownRoute is called.\nUnfortunately, onUnknownRoute was not set."));
         }
         return true;
     }());
-    Route<dynamic> result = widget->onUnknownRoute!(settings);
+    Route<dynamic> result = widget()->onUnknownRoute!(settings);
     assert([=] () {
         if (result == nullptr) {
             throw make<FlutterErrorCls>(__s("The onUnknownRoute callback returned null.\nWhen the $runtimeType requested the route $settings from its onUnknownRoute callback, the callback returned null. Such callbacks must never return null."));
@@ -317,14 +317,14 @@ Route<dynamic> _WidgetsAppStateCls::_onUnknownRoute(RouteSettings settings) {
 }
 
 Locale _WidgetsAppStateCls::_resolveLocales(List<Locale> preferredLocales, Iterable<Locale> supportedLocales) {
-    if (widget->localeListResolutionCallback != nullptr) {
-        Locale locale = widget->localeListResolutionCallback!(preferredLocales, widget->supportedLocales);
+    if (widget()->localeListResolutionCallback != nullptr) {
+        Locale locale = widget()->localeListResolutionCallback!(preferredLocales, widget()->supportedLocales);
         if (locale != nullptr) {
             return locale;
         }
     }
-    if (widget->localeResolutionCallback != nullptr) {
-        Locale locale = widget->localeResolutionCallback!(preferredLocales != nullptr && preferredLocales->isNotEmpty? preferredLocales->first : nullptr, widget->supportedLocales);
+    if (widget()->localeResolutionCallback != nullptr) {
+        Locale locale = widget()->localeResolutionCallback!(preferredLocales != nullptr && preferredLocales->isNotEmpty()? preferredLocales->first : nullptr, widget()->supportedLocales);
         if (locale != nullptr) {
             return locale;
         }
@@ -333,7 +333,7 @@ Locale _WidgetsAppStateCls::_resolveLocales(List<Locale> preferredLocales, Itera
 }
 
 Iterable<LocalizationsDelegate<dynamic>> _WidgetsAppStateCls::_localizationsDelegates() {
-    List<LocalizationsDelegate<dynamic>> list1 = make<ListCls<>>();if (widget->localizationsDelegates != nullptr) {    list1.add(ArrayItem);}list1.add(ArrayItem);return list1;
+    List<LocalizationsDelegate<dynamic>> list1 = make<ListCls<>>();if (widget()->localizationsDelegates != nullptr) {    list1.add(ArrayItem);}list1.add(ArrayItem);return list1;
 }
 
 bool _WidgetsAppStateCls::_debugCheckLocalizations(Locale appLocale) {
@@ -349,10 +349,10 @@ bool _WidgetsAppStateCls::_debugCheckLocalizations(Locale appLocale) {
                 unsupportedTypes->remove(delegate->type);
             }
         }
-        if (unsupportedTypes->isEmpty) {
+        if (unsupportedTypes->isEmpty()) {
             return true;
         }
-            List<DiagnosticsNode> list1 = make<ListCls<>>();    for (Type unsupportedType : unsupportedTypes) {                ;            }    {        list1.add(ArrayItem);    }list1.add(ArrayItem);    if (unsupportedTypes->length == 1 && unsupportedTypes->single->toString() == __s("CupertinoLocalizations")) {        list1.add(ArrayItem);    }list1.add(ArrayItem);    list1.add(ArrayItem);    list1.add(ArrayItem);FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(__s("Warning: This application's locale, $appLocale, is not supported by all of its localization delegates."), __s("widgets"), [=] () {
+            List<DiagnosticsNode> list1 = make<ListCls<>>();    for (Type unsupportedType : unsupportedTypes) {                ;            }    {        list1.add(ArrayItem);    }list1.add(ArrayItem);    if (unsupportedTypes->length() == 1 && unsupportedTypes->single()->toString() == __s("CupertinoLocalizations")) {        list1.add(ArrayItem);    }list1.add(ArrayItem);    list1.add(ArrayItem);    list1.add(ArrayItem);FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(__s("Warning: This application's locale, $appLocale, is not supported by all of its localization delegates."), __s("widgets"), [=] () {
             list1;
         }));
         return true;

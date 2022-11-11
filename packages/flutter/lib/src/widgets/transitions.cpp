@@ -16,24 +16,24 @@ void AnimatedWidgetCls::debugFillProperties(DiagnosticPropertiesBuilder properti
 
 void _AnimatedStateCls::initState() {
     super->initState();
-    widget->listenable->addListener(_handleChange);
+    widget()->listenable->addListener(_handleChange);
 }
 
 void _AnimatedStateCls::didUpdateWidget(AnimatedWidget oldWidget) {
     super->didUpdateWidget(oldWidget);
-    if (widget->listenable != oldWidget->listenable) {
+    if (widget()->listenable != oldWidget->listenable) {
         oldWidget->listenable->removeListener(_handleChange);
-        widget->listenable->addListener(_handleChange);
+        widget()->listenable->addListener(_handleChange);
     }
 }
 
 void _AnimatedStateCls::dispose() {
-    widget->listenable->removeListener(_handleChange);
+    widget()->listenable->removeListener(_handleChange);
     super->dispose();
 }
 
 Widget _AnimatedStateCls::build(BuildContext context) {
-    return widget->build(context);
+    return widget()->build(context);
 }
 
 void _AnimatedStateCls::_handleChange() {

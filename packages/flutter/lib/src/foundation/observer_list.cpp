@@ -33,17 +33,17 @@ bool ObserverListCls<T>::contains(Object element) {
 
 template<typename T>
 Iterator<T> ObserverListCls<T>::iterator() {
-    return _list->iterator;
+    return _list->iterator();
 }
 
 template<typename T>
 bool ObserverListCls<T>::isEmpty() {
-    return _list->isEmpty;
+    return _list->isEmpty();
 }
 
 template<typename T>
 bool ObserverListCls<T>::isNotEmpty() {
-    return _list->isNotEmpty;
+    return _list->isNotEmpty();
 }
 
 template<typename T>
@@ -77,15 +77,15 @@ bool HashedObserverListCls<T>::contains(Object element) {
 
 template<typename T>
 Iterator<T> HashedObserverListCls<T>::iterator() {
-    return _map->keys->iterator;
+    return _map->keys()->iterator();
 }
 
 template<typename T>
 bool HashedObserverListCls<T>::isEmpty() {
-    return _map->isEmpty;
+    return _map->isEmpty();
 }
 
 template<typename T>
 bool HashedObserverListCls<T>::isNotEmpty() {
-    return _map->isNotEmpty;
+    return _map->isNotEmpty();
 }

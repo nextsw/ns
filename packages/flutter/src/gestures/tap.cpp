@@ -18,7 +18,7 @@ BaseTapGestureRecognizerCls::BaseTapGestureRecognizerCls(Unknown debugOwner, Unk
 
 void BaseTapGestureRecognizerCls::addAllowedPointer(PointerDownEvent event) {
     assert(event != nullptr);
-    if (state == GestureRecognizerStateCls::ready) {
+    if (state() == GestureRecognizerStateCls::ready) {
         if (_down != nullptr && _up != nullptr) {
             assert(_down!->pointer == _up!->pointer);
             _reset();
@@ -50,7 +50,7 @@ void BaseTapGestureRecognizerCls::handlePrimaryPointer(PointerEvent event) {
     } else {
         if (event->buttons != _down!->buttons) {
         resolve(GestureDispositionCls::rejected);
-        stopTrackingPointer(primaryPointer!);
+        stopTrackingPointer(primaryPointer()!);
     }
 ;
     };
@@ -71,7 +71,7 @@ void BaseTapGestureRecognizerCls::didExceedDeadline() {
 
 void BaseTapGestureRecognizerCls::acceptGesture(int pointer) {
     super->acceptGesture(pointer);
-    if (pointer == primaryPointer) {
+    if (pointer == primaryPointer()) {
         _checkDown();
         _wonArenaForPrimaryPointer = true;
         _checkUp();
@@ -80,8 +80,8 @@ void BaseTapGestureRecognizerCls::acceptGesture(int pointer) {
 
 void BaseTapGestureRecognizerCls::rejectGesture(int pointer) {
     super->rejectGesture(pointer);
-    if (pointer == primaryPointer) {
-        assert(state != GestureRecognizerStateCls::possible);
+    if (pointer == primaryPointer()) {
+        assert(state() != GestureRecognizerStateCls::possible);
         if (_sentTapDown) {
             _checkCancel(nullptr, __s("forced"));
         }
@@ -97,7 +97,7 @@ void BaseTapGestureRecognizerCls::debugFillProperties(DiagnosticPropertiesBuilde
     super->debugFillProperties(properties);
     properties->add(make<FlagPropertyCls>(__s("wonArenaForPrimaryPointer"), _wonArenaForPrimaryPointer, __s("won arena")));
     properties->add(<Offset>make<DiagnosticsPropertyCls>(__s("finalPosition"), _up?->position, nullptr));
-    properties->add(<Offset>make<DiagnosticsPropertyCls>(__s("finalLocalPosition"), _up?->localPosition, _up?->position));
+    properties->add(<Offset>make<DiagnosticsPropertyCls>(__s("finalLocalPosition"), _up?->localPosition(), _up?->position));
     properties->add(<int>make<DiagnosticsPropertyCls>(__s("button"), _down?->buttons, nullptr));
     properties->add(make<FlagPropertyCls>(__s("sentTapDown"), _sentTapDown, __s("sent tap down")));
 }
@@ -136,12 +136,12 @@ bool TapGestureRecognizerCls::isPointerAllowed(PointerDownEvent event) {
 }
 
 void TapGestureRecognizerCls::handleTapDown(PointerDownEvent down) {
-    TapDownDetails details = make<TapDownDetailsCls>(down->position, down->localPosition, getKindForPointer(down->pointer));
+    TapDownDetails details = make<TapDownDetailsCls>(down->position, down->localPosition(), getKindForPointer(down->pointer));
     ;
 }
 
 void TapGestureRecognizerCls::handleTapUp(PointerDownEvent down, PointerUpEvent up) {
-    TapUpDetails details = make<TapUpDetailsCls>(up->kind, up->position, up->localPosition);
+    TapUpDetails details = make<TapUpDetailsCls>(up->kind, up->position, up->localPosition());
     ;
 }
 

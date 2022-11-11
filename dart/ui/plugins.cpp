@@ -13,7 +13,7 @@ bool CallbackHandleCls::==(Object other) {
 }
 
 int CallbackHandleCls::hashCode() {
-    return _handle->hashCode;
+    return _handle->hashCode();
 }
 
 CallbackHandle PluginUtilitiesCls::getCallbackHandle(std::function<void ()> callback) {

@@ -43,7 +43,7 @@ Future<UiKitViewController> PlatformViewsServiceCls::initUiKitView(dynamic creat
     Map<String, dynamic> map1 = make<MapCls<>>();map1.set(__s("id"), id);map1.set(__s("viewType"), viewType);Map<String, dynamic> args = list1;
     if (creationParams != nullptr) {
         ByteData paramsByteData = creationParamsCodec!->encodeMessage(creationParams)!;
-        args[__s("params")] = Uint8ListCls->view(paramsByteData->buffer, 0, paramsByteData->lengthInBytes);
+        args[__s("params")] = Uint8ListCls->view(paramsByteData->buffer(), 0, paramsByteData->lengthInBytes());
     }
     await await SystemChannelsCls::platform_views-><void>invokeMethod(__s("create"), args);
     if (onFocus != nullptr) {
@@ -138,7 +138,7 @@ void _AndroidMotionEventConverterCls::pointTransformer(PointTransformer transfor
 
 void _AndroidMotionEventConverterCls::handlePointerDownEvent(PointerDownEvent event) {
     if (pointerProperties->isEmpty()) {
-        downTimeMillis = event->timeStamp->inMilliseconds;
+        downTimeMillis = event->timeStamp->inMilliseconds();
     }
     int androidPointerId = 0;
     while (usedAndroidPointerIds->contains(androidPointerId)) {
@@ -355,7 +355,7 @@ Future<void> ExpensiveAndroidViewControllerCls::_sendCreateMessage(Size size) {
     Map<String, dynamic> map1 = make<MapCls<>>();map1.set(__s("id"), viewId);map1.set(__s("viewType"), _viewType);map1.set(__s("direction"), AndroidViewControllerCls->_getAndroidDirection(_layoutDirection));map1.set(__s("hybrid"), true);Map<String, dynamic> args = list1;
     if (_creationParams != nullptr) {
         ByteData paramsByteData = _creationParamsCodec!->encodeMessage(_creationParams)!;
-        args[__s("params")] = Uint8ListCls->view(paramsByteData->buffer, 0, paramsByteData->lengthInBytes);
+        args[__s("params")] = Uint8ListCls->view(paramsByteData->buffer(), 0, paramsByteData->lengthInBytes());
     }
     await await SystemChannelsCls::platform_views-><void>invokeMethod(__s("create"), args);
 }
@@ -405,7 +405,7 @@ Future<void> TextureAndroidViewControllerCls::_sendCreateMessage(Size size) {
     Map<String, dynamic> map1 = make<MapCls<>>();map1.set(__s("id"), viewId);map1.set(__s("viewType"), _viewType);map1.set(__s("width"), size->width());map1.set(__s("height"), size->height());map1.set(__s("direction"), AndroidViewControllerCls->_getAndroidDirection(_layoutDirection));Map<String, dynamic> args = list1;
     if (_creationParams != nullptr) {
         ByteData paramsByteData = _creationParamsCodec!->encodeMessage(_creationParams)!;
-        args[__s("params")] = Uint8ListCls->view(paramsByteData->buffer, 0, paramsByteData->lengthInBytes);
+        args[__s("params")] = Uint8ListCls->view(paramsByteData->buffer(), 0, paramsByteData->lengthInBytes());
     }
     _textureId = await SystemChannelsCls::platform_views-><int>invokeMethod(__s("create"), args);
 }

@@ -12,7 +12,7 @@ void PointerEventResamplerCls::sample(Duration sampleTime, Duration nextSampleTi
 }
 
 void PointerEventResamplerCls::stop(HandleEventCallback callback) {
-    while (_queuedEvents->isNotEmpty) {
+    while (_queuedEvents->isNotEmpty()) {
         callback(_queuedEvents->removeFirst());
     }
     _pointerIdentifier = 0;
@@ -24,7 +24,7 @@ void PointerEventResamplerCls::stop(HandleEventCallback callback) {
 }
 
 bool PointerEventResamplerCls::hasPendingEvents() {
-    return _queuedEvents->isNotEmpty;
+    return _queuedEvents->isNotEmpty();
 }
 
 bool PointerEventResamplerCls::isTracked() {
@@ -64,7 +64,7 @@ Offset PointerEventResamplerCls::_positionAt(Duration sampleTime) {
 }
 
 void PointerEventResamplerCls::_processPointerEvents(Duration sampleTime) {
-    Iterator<PointerEvent> it = _queuedEvents->iterator;
+    Iterator<PointerEvent> it = _queuedEvents->iterator();
     while (it->moveNext()) {
         PointerEvent event = it->current();
         if (event->timeStamp <= sampleTime || _last == nullptr) {
@@ -82,7 +82,7 @@ void PointerEventResamplerCls::_processPointerEvents(Duration sampleTime) {
 
 void PointerEventResamplerCls::_dequeueAndSampleNonHoverOrMovePointerEventsUntil(Duration sampleTime, Duration nextSampleTime, HandleEventCallback callback) {
     Duration endTime = sampleTime;
-    Iterator<PointerEvent> it = _queuedEvents->iterator;
+    Iterator<PointerEvent> it = _queuedEvents->iterator();
     while (it->moveNext()) {
         PointerEvent event = it->current();
         if (event->timeStamp > sampleTime) {
@@ -98,8 +98,8 @@ void PointerEventResamplerCls::_dequeueAndSampleNonHoverOrMovePointerEventsUntil
             }
         }
     }
-    while (_queuedEvents->isNotEmpty) {
-        PointerEvent event = _queuedEvents->first;
+    while (_queuedEvents->isNotEmpty()) {
+        PointerEvent event = _queuedEvents->first();
         if (event->timeStamp > endTime) {
             break;
         }

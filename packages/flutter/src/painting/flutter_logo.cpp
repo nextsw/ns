@@ -10,7 +10,7 @@ FlutterLogoDecorationCls::FlutterLogoDecorationCls(EdgeInsets margin, FlutterLog
 }
 
 bool FlutterLogoDecorationCls::debugAssertIsValid() {
-    assert(textColor != nullptr && style != nullptr && margin != nullptr && _position != nullptr && _position->isFinite && _opacity != nullptr && _opacity >= 0.0 && _opacity <= 1.0);
+    assert(textColor != nullptr && style != nullptr && margin != nullptr && _position != nullptr && _position->isFinite() && _opacity != nullptr && _opacity >= 0.0 && _opacity <= 1.0);
     return true;
 }
 
@@ -189,7 +189,7 @@ void _FlutterLogoPainterCls::_prepareText() {
     String kLabel = __s("Flutter");
     _textPainter = make<TextPainterCls>(make<TextSpanCls>(kLabel, make<TextStyleCls>(_config->textColor, __s("Roboto"), 100.0 * 350.0 / 247.0, FontWeightCls::w300, TextBaselineCls::alphabetic)), TextDirectionCls::ltr);
     _textPainter->layout();
-    TextBox textSize = _textPainter->getBoxesForSelection(make<TextSelectionCls>(0, kLabel->length()))->single;
+    TextBox textSize = _textPainter->getBoxesForSelection(make<TextSelectionCls>(0, kLabel->length()))->single();
     _textBoundingRect = RectCls->fromLTRB(textSize->left, textSize->top, textSize->right, textSize->bottom);
 }
 

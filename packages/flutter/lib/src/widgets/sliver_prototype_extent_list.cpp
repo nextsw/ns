@@ -58,13 +58,13 @@ void _SliverPrototypeExtentListElementCls::visitChildren(ElementVisitor visitor)
 
 void _SliverPrototypeExtentListElementCls::mount(Element parent, Object newSlot) {
     super->mount(parent, newSlot);
-    _prototype = updateChild(_prototype, (as<SliverPrototypeExtentList>(widget))->prototypeItem, _prototypeSlot);
+    _prototype = updateChild(_prototype, (as<SliverPrototypeExtentList>(widget()))->prototypeItem, _prototypeSlot);
 }
 
 void _SliverPrototypeExtentListElementCls::update(SliverPrototypeExtentList newWidget) {
     super->update(newWidget);
-    assert(widget == newWidget);
-    _prototype = updateChild(_prototype, (as<SliverPrototypeExtentList>(widget))->prototypeItem, _prototypeSlot);
+    assert(widget() == newWidget);
+    _prototype = updateChild(_prototype, (as<SliverPrototypeExtentList>(widget()))->prototypeItem, _prototypeSlot);
 }
 
 RenderBox _RenderSliverPrototypeExtentListCls::child() {
@@ -83,7 +83,7 @@ void _RenderSliverPrototypeExtentListCls::child(RenderBox value) {
 }
 
 void _RenderSliverPrototypeExtentListCls::performLayout() {
-    child()!->layout(constraints->asBoxConstraints(), true);
+    child()!->layout(constraints()->asBoxConstraints(), true);
     super->performLayout();
 }
 
@@ -117,7 +117,7 @@ void _RenderSliverPrototypeExtentListCls::visitChildren(RenderObjectVisitor visi
 
 double _RenderSliverPrototypeExtentListCls::itemExtent() {
     assert(child() != nullptr && child()!->hasSize());
-    return constraints->axis == AxisCls::vertical? child()!->size()->height() : child()!->size()->width();
+    return constraints()->axis() == AxisCls::vertical? child()!->size()->height() : child()!->size()->width();
 }
 
 _RenderSliverPrototypeExtentListCls::_RenderSliverPrototypeExtentListCls(_SliverPrototypeExtentListElement childManager) : RenderSliverFixedExtentBoxAdaptor(childManager) {

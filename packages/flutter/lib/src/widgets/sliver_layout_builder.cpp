@@ -15,8 +15,8 @@ double _RenderSliverLayoutBuilderCls::childMainAxisPosition(RenderObject child) 
 
 void _RenderSliverLayoutBuilderCls::performLayout() {
     rebuildIfNecessary();
-    child?->layout(constraints, true);
-    geometry = child?->geometry | SliverGeometryCls::zero;
+    child?->layout(constraints(), true);
+    geometry() = child?->geometry | SliverGeometryCls::zero;
 }
 
 void _RenderSliverLayoutBuilderCls::applyPaintTransform(RenderObject child, Matrix4 transform) {

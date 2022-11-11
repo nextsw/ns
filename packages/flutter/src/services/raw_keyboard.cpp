@@ -128,10 +128,10 @@ void RawKeyboardCls::keyEventHandler(RawKeyEventHandler handler) {
 
 bool RawKeyboardCls::handleRawKeyEvent(RawKeyEvent event) {
     if (is<RawKeyDownEvent>(event)) {
-        _keysPressed[as<RawKeyDownEventCls>(event)->physicalKey] = as<RawKeyDownEventCls>(event)->logicalKey;
+        _keysPressed[as<RawKeyDownEventCls>(event)->physicalKey()] = as<RawKeyDownEventCls>(event)->logicalKey();
     } else {
         if (is<RawKeyUpEvent>(event)) {
-        _keysPressed->remove(as<RawKeyUpEventCls>(event)->physicalKey);
+        _keysPressed->remove(as<RawKeyUpEventCls>(event)->physicalKey());
     }
 ;
     }    _synchronizeModifiers(event);

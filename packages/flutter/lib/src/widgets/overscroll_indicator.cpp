@@ -40,18 +40,18 @@ void GlowingOverscrollIndicatorCls::debugFillProperties(DiagnosticPropertiesBuil
 
 void _GlowingOverscrollIndicatorStateCls::initState() {
     super->initState();
-    _leadingController = make<_GlowControllerCls>(this, widget->color, widget->axis);
-    _trailingController = make<_GlowControllerCls>(this, widget->color, widget->axis);
+    _leadingController = make<_GlowControllerCls>(this, widget()->color, widget()->axis);
+    _trailingController = make<_GlowControllerCls>(this, widget()->color, widget()->axis);
     _leadingAndTrailingListener = ListenableCls->merge(makeList(ArrayItem, ArrayItem));
 }
 
 void _GlowingOverscrollIndicatorStateCls::didUpdateWidget(GlowingOverscrollIndicator oldWidget) {
     super->didUpdateWidget(oldWidget);
-    if (oldWidget->color != widget->color || oldWidget->axis() != widget->axis) {
-        _leadingController!->color() = widget->color;
-        _leadingController!->axis() = widget->axis;
-        _trailingController!->color() = widget->color;
-        _trailingController!->axis() = widget->axis;
+    if (oldWidget->color != widget()->color || oldWidget->axis() != widget()->axis) {
+        _leadingController!->color() = widget()->color;
+        _leadingController!->axis() = widget()->axis;
+        _trailingController!->color() = widget()->color;
+        _trailingController!->axis() = widget()->axis;
     }
 }
 
@@ -62,11 +62,11 @@ void _GlowingOverscrollIndicatorStateCls::dispose() {
 }
 
 Widget _GlowingOverscrollIndicatorStateCls::build(BuildContext context) {
-    return <ScrollNotification>make<NotificationListenerCls>(_handleScrollNotification, make<RepaintBoundaryCls>(make<CustomPaintCls>(make<_GlowingOverscrollIndicatorPainterCls>(widget->showLeading? _leadingController : nullptr, widget->showTrailing? _trailingController : nullptr, widget->axisDirection, _leadingAndTrailingListener), make<RepaintBoundaryCls>(widget->child))));
+    return <ScrollNotification>make<NotificationListenerCls>(_handleScrollNotification, make<RepaintBoundaryCls>(make<CustomPaintCls>(make<_GlowingOverscrollIndicatorPainterCls>(widget()->showLeading? _leadingController : nullptr, widget()->showTrailing? _trailingController : nullptr, widget()->axisDirection, _leadingAndTrailingListener), make<RepaintBoundaryCls>(widget()->child))));
 }
 
 bool _GlowingOverscrollIndicatorStateCls::_handleScrollNotification(ScrollNotification notification) {
-    if (!widget->notificationPredicate(notification)) {
+    if (!widget()->notificationPredicate(notification)) {
         return false;
     }
     _leadingController!->_paintOffsetScrollPixels = -math->min(notification->metrics->pixels() - notification->metrics->minScrollExtent(), _leadingController!->_paintOffset);
@@ -85,14 +85,14 @@ bool _GlowingOverscrollIndicatorStateCls::_handleScrollNotification(ScrollNotifi
         }        bool isLeading = controller == _leadingController;
         if (!is<OverscrollNotification>(_lastNotificationType)) {
             OverscrollIndicatorNotification confirmationNotification = make<OverscrollIndicatorNotificationCls>(isLeading);
-            confirmationNotification->dispatch(context);
+            confirmationNotification->dispatch(context());
             _accepted[isLeading] = confirmationNotification->accepted;
             if (_accepted[isLeading]!) {
                 controller!->_paintOffset = confirmationNotification->paintOffset;
             }
         }
         assert(controller != nullptr);
-        assert(as<OverscrollNotificationCls>(notification)->metrics->axis == widget->axis);
+        assert(as<OverscrollNotificationCls>(notification)->metrics->axis() == widget()->axis);
         if (_accepted[isLeading]!) {
             if (notification->velocity != 0.0) {
                 assert(notification->dragDetails == nullptr);
@@ -340,24 +340,24 @@ Widget _StretchingOverscrollIndicatorStateCls::build(BuildContext context) {
         double y = 1.0;
         ;
         AlignmentDirectional alignment = _getAlignmentForAxisDirection(_lastOverscrollNotification?->overscroll | 0.0);
-        double viewportDimension = _lastOverscrollNotification?->metrics->viewportDimension | mainAxisSize;
-        Widget transform = make<TransformCls>(alignment, Matrix4Cls->diagonal3Values(x, y, 1.0), widget->child);
-        return make<ClipRectCls>(stretch != 0.0 && viewportDimension != mainAxisSize? widget->clipBehavior : ClipCls::none, transform);
+        double viewportDimension = _lastOverscrollNotification?->metrics->viewportDimension() | mainAxisSize;
+        Widget transform = make<TransformCls>(alignment, Matrix4Cls->diagonal3Values(x, y, 1.0), widget()->child);
+        return make<ClipRectCls>(stretch != 0.0 && viewportDimension != mainAxisSize? widget()->clipBehavior : ClipCls::none, transform);
     }));
 }
 
 bool _StretchingOverscrollIndicatorStateCls::_handleScrollNotification(ScrollNotification notification) {
-    if (!widget->notificationPredicate(notification)) {
+    if (!widget()->notificationPredicate(notification)) {
         return false;
     }
     if (is<OverscrollNotification>(notification)) {
         _lastOverscrollNotification = as<OverscrollNotificationCls>(notification);
         if (!is<OverscrollNotification>(_lastNotification->runtimeType)) {
             OverscrollIndicatorNotification confirmationNotification = make<OverscrollIndicatorNotificationCls>(notification->overscroll < 0.0);
-            confirmationNotification->dispatch(context);
+            confirmationNotification->dispatch(context());
             _accepted = confirmationNotification->accepted;
         }
-        assert(as<OverscrollNotificationCls>(notification)->metrics->axis == widget->axis);
+        assert(as<OverscrollNotificationCls>(notification)->metrics->axis() == widget()->axis);
         if (_accepted) {
             if (notification->velocity != 0.0) {
                 assert(notification->dragDetails == nullptr);
@@ -365,7 +365,7 @@ bool _StretchingOverscrollIndicatorStateCls::_handleScrollNotification(ScrollNot
             } else {
                 assert(notification->overscroll != 0.0);
                 if (notification->dragDetails != nullptr) {
-                    double viewportDimension = notification->metrics->viewportDimension;
+                    double viewportDimension = notification->metrics->viewportDimension();
                     double distanceForPull = (notification->overscroll->abs() / viewportDimension) + _stretchController->pullDistance();
                     double clampedOverscroll = clampDouble(distanceForPull, 0, 1.0);
                     _stretchController->pull(clampedOverscroll);

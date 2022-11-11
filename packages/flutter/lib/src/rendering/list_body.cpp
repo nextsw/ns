@@ -40,12 +40,12 @@ Size RenderListBodyCls::computeDryLayout(BoxConstraints constraints) {
 }
 
 void RenderListBodyCls::performLayout() {
-    BoxConstraints constraints = this->constraints;
+    BoxConstraints constraints = this->constraints();
     assert(_debugCheckConstraints(constraints));
     double mainAxisExtent = 0.0;
     RenderBox child = firstChild;
     ;
-    assert(size->isFinite);
+    assert(size()->isFinite());
 }
 
 void RenderListBodyCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {

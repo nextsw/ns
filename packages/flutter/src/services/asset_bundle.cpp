@@ -1,7 +1,7 @@
 #include "asset_bundle.hpp"
 Future<ImmutableBuffer> AssetBundleCls::loadBuffer(String key) {
     ByteData data = await load(key);
-    return ui->ImmutableBufferCls->fromUint8List(data->buffer->asUint8List());
+    return ui->ImmutableBufferCls->fromUint8List(data->buffer()->asUint8List());
 }
 
 Future<String> AssetBundleCls::loadString(String key, bool cache) {
@@ -9,8 +9,8 @@ Future<String> AssetBundleCls::loadString(String key, bool cache) {
     if (data == nullptr) {
         throw make<FlutterErrorCls>(__s("Unable to load asset: $key"));
     }
-    if (data->lengthInBytes < 50 * 1024) {
-        return utf8->decode(data->buffer->asUint8List());
+    if (data->lengthInBytes() < 50 * 1024) {
+        return utf8->decode(data->buffer()->asUint8List());
     }
     return compute(_utf8decode, data, __s("UTF8 decode for "$key""));
 }
@@ -26,7 +26,7 @@ String AssetBundleCls::toString() {
 }
 
 String AssetBundleCls::_utf8decode(ByteData data) {
-    return utf8->decode(data->buffer->asUint8List());
+    return utf8->decode(data->buffer()->asUint8List());
 }
 
 NetworkAssetBundleCls::NetworkAssetBundleCls(Uri baseUrl) {
@@ -106,7 +106,7 @@ void CachingAssetBundleCls::clear() {
 
 Future<ImmutableBuffer> CachingAssetBundleCls::loadBuffer(String key) {
     ByteData data = await load(key);
-    return ui->ImmutableBufferCls->fromUint8List(data->buffer->asUint8List());
+    return ui->ImmutableBufferCls->fromUint8List(data->buffer()->asUint8List());
 }
 
 Future<ByteData> PlatformAssetBundleCls::load(String key) {
@@ -121,7 +121,7 @@ Future<ByteData> PlatformAssetBundleCls::load(String key) {
 Future<ImmutableBuffer> PlatformAssetBundleCls::loadBuffer(String key) {
     if (kIsWeb) {
         ByteData bytes = await load(key);
-        return ui->ImmutableBufferCls->fromUint8List(bytes->buffer->asUint8List());
+        return ui->ImmutableBufferCls->fromUint8List(bytes->buffer()->asUint8List());
     }
     bool debugUsePlatformChannel = false;
     assert([=] () {
@@ -132,7 +132,7 @@ Future<ImmutableBuffer> PlatformAssetBundleCls::loadBuffer(String key) {
     }());
     if (debugUsePlatformChannel) {
         ByteData bytes = await load(key);
-        return ui->ImmutableBufferCls->fromUint8List(bytes->buffer->asUint8List());
+        return ui->ImmutableBufferCls->fromUint8List(bytes->buffer()->asUint8List());
     }
     try {
         return await ui->ImmutableBufferCls->fromAsset(key);

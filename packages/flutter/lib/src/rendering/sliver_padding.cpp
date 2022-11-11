@@ -1,30 +1,30 @@
 #include "sliver_padding.hpp"
 double RenderSliverEdgeInsetsPaddingCls::beforePadding() {
-    assert(constraints != nullptr);
-    assert(constraints->axisDirection != nullptr);
-    assert(constraints->growthDirection != nullptr);
+    assert(constraints() != nullptr);
+    assert(constraints()->axisDirection != nullptr);
+    assert(constraints()->growthDirection != nullptr);
     assert(resolvedPadding() != nullptr);
     ;
 }
 
 double RenderSliverEdgeInsetsPaddingCls::afterPadding() {
-    assert(constraints != nullptr);
-    assert(constraints->axisDirection != nullptr);
-    assert(constraints->growthDirection != nullptr);
+    assert(constraints() != nullptr);
+    assert(constraints()->axisDirection != nullptr);
+    assert(constraints()->growthDirection != nullptr);
     assert(resolvedPadding() != nullptr);
     ;
 }
 
 double RenderSliverEdgeInsetsPaddingCls::mainAxisPadding() {
-    assert(constraints != nullptr);
-    assert(constraints->axis != nullptr);
+    assert(constraints() != nullptr);
+    assert(constraints()->axis() != nullptr);
     assert(resolvedPadding() != nullptr);
-    return resolvedPadding()!->along(constraints->axis);
+    return resolvedPadding()!->along(constraints()->axis());
 }
 
 double RenderSliverEdgeInsetsPaddingCls::crossAxisPadding() {
-    assert(constraints != nullptr);
-    assert(constraints->axis != nullptr);
+    assert(constraints() != nullptr);
+    assert(constraints()->axis() != nullptr);
     assert(resolvedPadding() != nullptr);
     ;
 }
@@ -36,7 +36,7 @@ void RenderSliverEdgeInsetsPaddingCls::setupParentData(RenderObject child) {
 }
 
 void RenderSliverEdgeInsetsPaddingCls::performLayout() {
-    SliverConstraints constraints = this->constraints;
+    SliverConstraints constraints = this->constraints();
     assert(resolvedPadding() != nullptr);
     double beforePadding = this->beforePadding();
     double afterPadding = this->afterPadding();
@@ -45,7 +45,7 @@ void RenderSliverEdgeInsetsPaddingCls::performLayout() {
     if (child == nullptr) {
         double paintExtent = calculatePaintOffset(constraints, 0.0, mainAxisPadding);
         double cacheExtent = calculateCacheOffset(constraints, 0.0, mainAxisPadding);
-        geometry = make<SliverGeometryCls>(mainAxisPadding, math->min(paintExtent, constraints->remainingPaintExtent), mainAxisPadding, cacheExtent);
+        geometry() = make<SliverGeometryCls>(mainAxisPadding, math->min(paintExtent, constraints->remainingPaintExtent), mainAxisPadding, cacheExtent);
         return;
     }
     double beforePaddingPaintExtent = calculatePaintOffset(constraints, 0.0, beforePadding);
@@ -56,7 +56,7 @@ void RenderSliverEdgeInsetsPaddingCls::performLayout() {
     child!->layout(constraints->copyWith(math->max(0.0, constraints->scrollOffset - beforePadding), math->min(0.0, constraints->cacheOrigin + beforePadding), overlap, constraints->remainingPaintExtent - calculatePaintOffset(constraints, 0.0, beforePadding), constraints->remainingCacheExtent - calculateCacheOffset(constraints, 0.0, beforePadding), math->max(0.0, constraints->crossAxisExtent - crossAxisPadding), beforePadding + constraints->precedingScrollExtent), true);
     SliverGeometry childLayoutGeometry = child!->geometry!;
     if (childLayoutGeometry->scrollOffsetCorrection != nullptr) {
-        geometry = make<SliverGeometryCls>(childLayoutGeometry->scrollOffsetCorrection);
+        geometry() = make<SliverGeometryCls>(childLayoutGeometry->scrollOffsetCorrection);
         return;
     }
     double afterPaddingPaintExtent = calculatePaintOffset(constraints, beforePadding + childLayoutGeometry->scrollExtent, mainAxisPadding + childLayoutGeometry->scrollExtent);
@@ -65,7 +65,7 @@ void RenderSliverEdgeInsetsPaddingCls::performLayout() {
     double afterPaddingCacheExtent = calculateCacheOffset(constraints, beforePadding + childLayoutGeometry->scrollExtent, mainAxisPadding + childLayoutGeometry->scrollExtent);
     double mainAxisPaddingCacheExtent = afterPaddingCacheExtent + beforePaddingCacheExtent;
     double paintExtent = math->min(beforePaddingPaintExtent + math->max(childLayoutGeometry->paintExtent, childLayoutGeometry->layoutExtent + afterPaddingPaintExtent), constraints->remainingPaintExtent);
-    geometry = make<SliverGeometryCls>(childLayoutGeometry->paintOrigin, mainAxisPadding + childLayoutGeometry->scrollExtent, paintExtent, math->min(mainAxisPaddingPaintExtent + childLayoutGeometry->layoutExtent, paintExtent), math->min(mainAxisPaddingCacheExtent + childLayoutGeometry->cacheExtent, constraints->remainingCacheExtent), mainAxisPadding + childLayoutGeometry->maxPaintExtent, math->max(mainAxisPaddingPaintExtent + childLayoutGeometry->paintExtent, beforePaddingPaintExtent + childLayoutGeometry->hitTestExtent), childLayoutGeometry->hasVisualOverflow);
+    geometry() = make<SliverGeometryCls>(childLayoutGeometry->paintOrigin, mainAxisPadding + childLayoutGeometry->scrollExtent, paintExtent, math->min(mainAxisPaddingPaintExtent + childLayoutGeometry->layoutExtent, paintExtent), math->min(mainAxisPaddingCacheExtent + childLayoutGeometry->cacheExtent, constraints->remainingCacheExtent), mainAxisPadding + childLayoutGeometry->maxPaintExtent, math->max(mainAxisPaddingPaintExtent + childLayoutGeometry->paintExtent, beforePaddingPaintExtent + childLayoutGeometry->hitTestExtent), childLayoutGeometry->hasVisualOverflow);
     SliverPhysicalParentData childParentData = as<SliverPhysicalParentData>(child!->parentData!);
     assert(constraints->axisDirection != nullptr);
     assert(constraints->growthDirection != nullptr);
@@ -88,21 +88,21 @@ bool RenderSliverEdgeInsetsPaddingCls::hitTestChildren(SliverHitTestResult resul
 double RenderSliverEdgeInsetsPaddingCls::childMainAxisPosition(RenderSliver child) {
     assert(child != nullptr);
     assert(child == this->child);
-    return calculatePaintOffset(constraints, 0.0, beforePadding());
+    return calculatePaintOffset(constraints(), 0.0, beforePadding());
 }
 
 double RenderSliverEdgeInsetsPaddingCls::childCrossAxisPosition(RenderSliver child) {
     assert(child != nullptr);
     assert(child == this->child);
-    assert(constraints != nullptr);
-    assert(constraints->axisDirection != nullptr);
-    assert(constraints->growthDirection != nullptr);
+    assert(constraints() != nullptr);
+    assert(constraints()->axisDirection != nullptr);
+    assert(constraints()->growthDirection != nullptr);
     assert(resolvedPadding() != nullptr);
     ;
 }
 
 double RenderSliverEdgeInsetsPaddingCls::childScrollOffset(RenderObject child) {
-    assert(child->parent == this);
+    assert(child->parent() == this);
     return beforePadding();
 }
 
@@ -200,7 +200,7 @@ void RenderSliverPaddingCls::_resolve() {
         return;
     }
     _resolvedPadding = padding()->resolve(textDirection());
-    assert(resolvedPadding()!->isNonNegative);
+    assert(resolvedPadding()!->isNonNegative());
 }
 
 void RenderSliverPaddingCls::_markNeedsResolution() {

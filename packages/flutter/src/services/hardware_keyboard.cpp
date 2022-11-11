@@ -145,14 +145,14 @@ Future<Map<String, dynamic>> KeyEventManagerCls::handleRawKeyMessage(dynamic mes
     if (is<RawKeyDownEvent>(rawEvent)) {
         if (!as<RawKeyDownEventCls>(rawEvent)->data->shouldDispatchEvent()) {
             shouldDispatch = false;
-            _skippedRawKeysPressed->add(rawEvent->physicalKey);
+            _skippedRawKeysPressed->add(rawEvent->physicalKey());
         } else {
-            _skippedRawKeysPressed->remove(rawEvent->physicalKey);
+            _skippedRawKeysPressed->remove(rawEvent->physicalKey());
         }
     } else {
         if (is<RawKeyUpEvent>(rawEvent)) {
-        if (_skippedRawKeysPressed->contains(as<RawKeyUpEventCls>(rawEvent)->physicalKey)) {
-            _skippedRawKeysPressed->remove(rawEvent->physicalKey);
+        if (_skippedRawKeysPressed->contains(as<RawKeyUpEventCls>(rawEvent)->physicalKey())) {
+            _skippedRawKeysPressed->remove(rawEvent->physicalKey());
             shouldDispatch = false;
         }
     }

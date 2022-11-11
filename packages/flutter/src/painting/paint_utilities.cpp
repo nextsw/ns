@@ -1,6 +1,6 @@
 #include "paint_utilities.hpp"
 void paintZigZag(Canvas canvas, Paint paint, Offset start, Offset end, int zigs, double width) {
-    assert(zigs->isFinite);
+    assert(zigs->isFinite());
     assert(zigs > 0);
     canvas->save();
     canvas->translate(start->dx(), start->dy());

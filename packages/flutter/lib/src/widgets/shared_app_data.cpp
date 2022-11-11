@@ -12,7 +12,7 @@ V SharedAppDataCls::getValue(BuildContext context, K key, SharedAppDataInitCallb
 
 template<typename K, typename V>
 void SharedAppDataCls::setValue(BuildContext context, K key, V value) {
-    _SharedAppModel model = as<_SharedAppModel>(context-><_SharedAppModel>getElementForInheritedWidgetOfExactType()?->widget);
+    _SharedAppModel model = as<_SharedAppModel>(context-><_SharedAppModel>getElementForInheritedWidgetOfExactType()?->widget());
     assert(_debugHasSharedAppData(model, context, __s("setValue")));
     model!->sharedAppDataState-><K, V>setValue(key, value);
 }
@@ -28,7 +28,7 @@ bool SharedAppDataCls::_debugHasSharedAppData(_SharedAppModel model, BuildContex
 }
 
 Widget _SharedAppDataStateCls::build(BuildContext context) {
-    return make<_SharedAppModelCls>(this, widget->child);
+    return make<_SharedAppModelCls>(this, widget()->child);
 }
 
 template<typename K, typename V>

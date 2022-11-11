@@ -181,7 +181,7 @@ Size RenderFlexCls::computeDryLayout(BoxConstraints constraints) {
 
 void RenderFlexCls::performLayout() {
     assert(_debugHasNecessaryDirections());
-    BoxConstraints constraints = this->constraints;
+    BoxConstraints constraints = this->constraints();
     assert([=] () {
         FlutterError constraintsError = _debugCheckConstraints(constraints, true);
         if (constraintsError != nullptr) {
@@ -252,15 +252,15 @@ void RenderFlexCls::paint(PaintingContext context, Offset offset) {
         defaultPaint(context, offset);
         return;
     }
-    if (size->isEmpty) {
+    if (size()->isEmpty()) {
         return;
     }
-    _clipRectLayer->layer() = context->pushClipRect(needsCompositing, offset, OffsetCls::zero & size, defaultPaint, clipBehavior(), _clipRectLayer->layer());
+    _clipRectLayer->layer() = context->pushClipRect(needsCompositing(), offset, OffsetCls::zero & size(), defaultPaint, clipBehavior(), _clipRectLayer->layer());
     assert([=] () {
         List<DiagnosticsNode> debugOverflowHints = makeList(ArrayItem, ArrayItem, ArrayItem, ArrayItem);
         Rect overflowChildRect;
         ;
-        paintOverflowIndicator(context, offset, OffsetCls::zero & size, overflowChildRect, debugOverflowHints);
+        paintOverflowIndicator(context, offset, OffsetCls::zero & size(), overflowChildRect, debugOverflowHints);
         return true;
     }());
 }

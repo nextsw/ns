@@ -40,7 +40,7 @@ bool LongPressGestureRecognizerCls::isPointerAllowed(PointerDownEvent event) {
 void LongPressGestureRecognizerCls::didExceedDeadline() {
     resolve(GestureDispositionCls::accepted);
     _longPressAccepted = true;
-    super->acceptGesture(primaryPointer!);
+    super->acceptGesture(primaryPointer()!);
     _checkLongPressStart();
 }
 
@@ -48,11 +48,11 @@ void LongPressGestureRecognizerCls::handlePrimaryPointer(PointerEvent event) {
     if (!event->synthesized) {
         if (is<PointerDownEvent>(event)) {
             _velocityTracker = VelocityTrackerCls->withKind(as<PointerDownEventCls>(event)->kind);
-            _velocityTracker!->addPosition(as<PointerDownEventCls>(event)->timeStamp, as<PointerDownEventCls>(event)->localPosition);
+            _velocityTracker!->addPosition(as<PointerDownEventCls>(event)->timeStamp, as<PointerDownEventCls>(event)->localPosition());
         }
         if (is<PointerMoveEvent>(event)) {
             assert(_velocityTracker != nullptr);
-            _velocityTracker!->addPosition(as<PointerMoveEventCls>(event)->timeStamp, as<PointerMoveEventCls>(event)->localPosition);
+            _velocityTracker!->addPosition(as<PointerMoveEventCls>(event)->timeStamp, as<PointerMoveEventCls>(event)->localPosition());
         }
     }
     if (is<PointerUpEvent>(event)) {
@@ -75,7 +75,7 @@ void LongPressGestureRecognizerCls::handlePrimaryPointer(PointerEvent event) {
         if (is<PointerMoveEvent>(event)) {
         if (as<PointerMoveEventCls>(event)->buttons != _initialButtons) {
             resolve(GestureDispositionCls::rejected);
-            stopTrackingPointer(primaryPointer!);
+            stopTrackingPointer(primaryPointer()!);
         } else {
             if (_longPressAccepted) {
             _checkLongPressMoveUpdate(event);
@@ -112,7 +112,7 @@ void LongPressGestureRecognizerCls::_checkLongPressDown(PointerDownEvent event) 
 }
 
 void LongPressGestureRecognizerCls::_checkLongPressCancel() {
-    if (state == GestureRecognizerStateCls::possible) {
+    if (state() == GestureRecognizerStateCls::possible) {
         ;
     }
 }

@@ -3,7 +3,7 @@ WriteBufferCls::WriteBufferCls(int startCapacity) {
     {
         assert(startCapacity > 0);
         ByteData eightBytes = make<ByteDataCls>(8);
-        Uint8List eightBytesAsList = eightBytes->buffer->asUint8List();
+        Uint8List eightBytesAsList = eightBytes->buffer()->asUint8List();
         return WriteBufferCls->_(make<Uint8ListCls>(startCapacity), eightBytes, eightBytesAsList);
     }
 }
@@ -52,25 +52,25 @@ void WriteBufferCls::putUint8List(Uint8List list) {
 void WriteBufferCls::putInt32List(Int32List list) {
     assert(!_isDone);
     _alignTo(4);
-    _append(list->buffer->asUint8List(list->offsetInBytes, 4 * list->length));
+    _append(list->buffer->asUint8List(list->offsetInBytes, 4 * list->length()));
 }
 
 void WriteBufferCls::putInt64List(Int64List list) {
     assert(!_isDone);
     _alignTo(8);
-    _append(list->buffer->asUint8List(list->offsetInBytes, 8 * list->length));
+    _append(list->buffer->asUint8List(list->offsetInBytes, 8 * list->length()));
 }
 
 void WriteBufferCls::putFloat32List(Float32List list) {
     assert(!_isDone);
     _alignTo(4);
-    _append(list->buffer->asUint8List(list->offsetInBytes, 4 * list->length));
+    _append(list->buffer->asUint8List(list->offsetInBytes, 4 * list->length()));
 }
 
 void WriteBufferCls::putFloat64List(Float64List list) {
     assert(!_isDone);
     _alignTo(8);
-    _append(list->buffer->asUint8List(list->offsetInBytes, 8 * list->length));
+    _append(list->buffer->asUint8List(list->offsetInBytes, 8 * list->length()));
 }
 
 ByteData WriteBufferCls::done() {
@@ -84,7 +84,7 @@ ByteData WriteBufferCls::done() {
 }
 
 void WriteBufferCls::_add(int byte) {
-    if (_currentSize == _buffer->length) {
+    if (_currentSize == _buffer->length()) {
         _resize();
     }
     _buffer[_currentSize] = byte;
@@ -92,18 +92,18 @@ void WriteBufferCls::_add(int byte) {
 }
 
 void WriteBufferCls::_append(Uint8List other) {
-    int newSize = _currentSize + other->length;
-    if (newSize >= _buffer->length) {
+    int newSize = _currentSize + other->length();
+    if (newSize >= _buffer->length()) {
         _resize(newSize);
     }
     _buffer->setRange(_currentSize, newSize, other);
-    _currentSize += other->length;
+    _currentSize += other->length();
 }
 
 void WriteBufferCls::_addAll(Uint8List data, int start, int end) {
-    int newEnd = end | _eightBytesAsList->length;
+    int newEnd = end | _eightBytesAsList->length();
     int newSize = _currentSize + (newEnd - start);
-    if (newSize >= _buffer->length) {
+    if (newSize >= _buffer->length()) {
         _resize(newSize);
     }
     _buffer->setRange(_currentSize, newSize, data);
@@ -111,10 +111,10 @@ void WriteBufferCls::_addAll(Uint8List data, int start, int end) {
 }
 
 void WriteBufferCls::_resize(int requiredLength) {
-    int doubleLength = _buffer->length * 2;
+    int doubleLength = _buffer->length() * 2;
     int newLength = math->max(requiredLength | 0, doubleLength);
     Uint8List newBuffer = make<Uint8ListCls>(newLength);
-    newBuffer->setRange(0, _buffer->length, _buffer);
+    newBuffer->setRange(0, _buffer->length(), _buffer);
     _buffer = newBuffer;
 }
 
@@ -133,7 +133,7 @@ ReadBufferCls::ReadBufferCls(ByteData data) {
 }
 
 bool ReadBufferCls::hasRemaining() {
-    return  < data->lengthInBytes;
+    return  < data->lengthInBytes();
 }
 
 int ReadBufferCls::getUint8() {
@@ -172,35 +172,35 @@ double ReadBufferCls::getFloat64(Endian endian) {
 }
 
 Uint8List ReadBufferCls::getUint8List(int length) {
-    Uint8List list = data->buffer->asUint8List(data->offsetInBytes + _position, length);
+    Uint8List list = data->buffer()->asUint8List(data->offsetInBytes() + _position, length);
     _position += length;
     return list;
 }
 
 Int32List ReadBufferCls::getInt32List(int length) {
     _alignTo(4);
-    Int32List list = data->buffer->asInt32List(data->offsetInBytes + _position, length);
+    Int32List list = data->buffer()->asInt32List(data->offsetInBytes() + _position, length);
     _position += 4 * length;
     return list;
 }
 
 Int64List ReadBufferCls::getInt64List(int length) {
     _alignTo(8);
-    Int64List list = data->buffer->asInt64List(data->offsetInBytes + _position, length);
+    Int64List list = data->buffer()->asInt64List(data->offsetInBytes() + _position, length);
     _position += 8 * length;
     return list;
 }
 
 Float32List ReadBufferCls::getFloat32List(int length) {
     _alignTo(4);
-    Float32List list = data->buffer->asFloat32List(data->offsetInBytes + _position, length);
+    Float32List list = data->buffer()->asFloat32List(data->offsetInBytes() + _position, length);
     _position += 4 * length;
     return list;
 }
 
 Float64List ReadBufferCls::getFloat64List(int length) {
     _alignTo(8);
-    Float64List list = data->buffer->asFloat64List(data->offsetInBytes + _position, length);
+    Float64List list = data->buffer()->asFloat64List(data->offsetInBytes() + _position, length);
     _position += 8 * length;
     return list;
 }

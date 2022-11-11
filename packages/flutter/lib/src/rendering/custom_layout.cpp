@@ -89,7 +89,7 @@ void MultiChildLayoutDelegateCls::_callPerformLayout(Size size, RenderBox firstC
         }
         performLayout(size);
         assert([=] () {
-            if (_debugChildrenNeedingLayout!->isNotEmpty) {
+            if (_debugChildrenNeedingLayout!->isNotEmpty()) {
                 throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem));
             }
             return true;
@@ -133,7 +133,7 @@ void RenderCustomMultiChildLayoutBoxCls::delegate(MultiChildLayoutDelegate newDe
         markNeedsLayout();
     }
     _delegate = newDelegate;
-    if (attached) {
+    if (attached()) {
         oldDelegate->_relayout?->removeListener(markNeedsLayout);
         newDelegate->_relayout?->addListener(markNeedsLayout);
     }
@@ -151,7 +151,7 @@ void RenderCustomMultiChildLayoutBoxCls::detach() {
 
 double RenderCustomMultiChildLayoutBoxCls::computeMinIntrinsicWidth(double height) {
     double width = _getSize(BoxConstraintsCls->tightForFinite(height))->width();
-    if (width->isFinite) {
+    if (width->isFinite()) {
         return width;
     }
     return 0.0;
@@ -159,7 +159,7 @@ double RenderCustomMultiChildLayoutBoxCls::computeMinIntrinsicWidth(double heigh
 
 double RenderCustomMultiChildLayoutBoxCls::computeMaxIntrinsicWidth(double height) {
     double width = _getSize(BoxConstraintsCls->tightForFinite(height))->width();
-    if (width->isFinite) {
+    if (width->isFinite()) {
         return width;
     }
     return 0.0;
@@ -167,7 +167,7 @@ double RenderCustomMultiChildLayoutBoxCls::computeMaxIntrinsicWidth(double heigh
 
 double RenderCustomMultiChildLayoutBoxCls::computeMinIntrinsicHeight(double width) {
     double height = _getSize(BoxConstraintsCls->tightForFinite(width))->height();
-    if (height->isFinite) {
+    if (height->isFinite()) {
         return height;
     }
     return 0.0;
@@ -175,7 +175,7 @@ double RenderCustomMultiChildLayoutBoxCls::computeMinIntrinsicHeight(double widt
 
 double RenderCustomMultiChildLayoutBoxCls::computeMaxIntrinsicHeight(double width) {
     double height = _getSize(BoxConstraintsCls->tightForFinite(width))->height();
-    if (height->isFinite) {
+    if (height->isFinite()) {
         return height;
     }
     return 0.0;
@@ -186,8 +186,8 @@ Size RenderCustomMultiChildLayoutBoxCls::computeDryLayout(BoxConstraints constra
 }
 
 void RenderCustomMultiChildLayoutBoxCls::performLayout() {
-    size = _getSize(constraints);
-    delegate()->_callPerformLayout(size, firstChild);
+    size() = _getSize(constraints());
+    delegate()->_callPerformLayout(size(), firstChild);
 }
 
 void RenderCustomMultiChildLayoutBoxCls::paint(PaintingContext context, Offset offset) {

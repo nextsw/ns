@@ -44,7 +44,7 @@ void AnimatedListStateCls::removeItem(int index, AnimatedListRemovedItemBuilder 
 }
 
 Widget AnimatedListStateCls::build(BuildContext context) {
-    return make<CustomScrollViewCls>(widget->scrollDirection, widget->reverse, widget->controller, widget->primary, widget->physics, widget->shrinkWrap, widget->clipBehavior, makeList(ArrayItem));
+    return make<CustomScrollViewCls>(widget()->scrollDirection, widget()->reverse, widget()->controller, widget()->primary, widget()->physics, widget()->shrinkWrap, widget()->clipBehavior, makeList(ArrayItem));
 }
 
 SliverAnimatedListCls::SliverAnimatedListCls(ChildIndexGetter findChildIndexCallback, int initialItemCount, AnimatedListItemBuilder itemBuilder, Unknown key) {
@@ -77,7 +77,7 @@ SliverAnimatedListState SliverAnimatedListCls::maybeOf(BuildContext context) {
 
 void SliverAnimatedListStateCls::initState() {
     super->initState();
-    _itemsCount = widget->initialItemCount;
+    _itemsCount = widget()->initialItemCount;
 }
 
 void SliverAnimatedListStateCls::dispose() {
@@ -184,7 +184,7 @@ int SliverAnimatedListStateCls::_itemIndexToIndex(int itemIndex) {
 }
 
 SliverChildDelegate SliverAnimatedListStateCls::_createDelegate() {
-    return make<SliverChildBuilderDelegateCls>(_itemBuilder, _itemsCount, widget->findChildIndexCallback);
+    return make<SliverChildBuilderDelegateCls>(_itemBuilder, _itemsCount, widget()->findChildIndexCallback);
 }
 
 Widget SliverAnimatedListStateCls::_itemBuilder(BuildContext context, int itemIndex) {
@@ -194,5 +194,5 @@ Widget SliverAnimatedListStateCls::_itemBuilder(BuildContext context, int itemIn
     }
     _ActiveItem incomingItem = _activeItemAt(_incomingItems, itemIndex);
     Animation<double> animation = incomingItem?->controller?->view() | kAlwaysCompleteAnimation;
-    return widget->itemBuilder(context, _itemIndexToIndex(itemIndex), animation);
+    return widget()->itemBuilder(context, _itemIndexToIndex(itemIndex), animation);
 }

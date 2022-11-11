@@ -9,14 +9,14 @@ PageControllerCls::PageControllerCls(int initialPage, bool keepPage, double view
 }
 
 double PageControllerCls::page() {
-    assert(positions->isNotEmpty, __s("PageController.page cannot be accessed before a PageView is built with it."));
-    assert(positions->length == 1, __s("The page property cannot be read when multiple PageViews are attached to the same PageController."));
-    _PagePosition position = as<_PagePosition>(this->position);
+    assert(positions()->isNotEmpty(), __s("PageController.page cannot be accessed before a PageView is built with it."));
+    assert(positions()->length() == 1, __s("The page property cannot be read when multiple PageViews are attached to the same PageController."));
+    _PagePosition position = as<_PagePosition>(this->position());
     return position->page();
 }
 
 Future<void> PageControllerCls::animateToPage(int page, Curve curve, Duration duration) {
-    _PagePosition position = as<_PagePosition>(this->position);
+    _PagePosition position = as<_PagePosition>(this->position());
     if (position->_cachedPage != nullptr) {
         position->_cachedPage = page->toDouble();
         return <void>value();
@@ -25,7 +25,7 @@ Future<void> PageControllerCls::animateToPage(int page, Curve curve, Duration du
 }
 
 void PageControllerCls::jumpToPage(int page) {
-    _PagePosition position = as<_PagePosition>(this->position);
+    _PagePosition position = as<_PagePosition>(this->position());
     if (position->_cachedPage != nullptr) {
         position->_cachedPage = page->toDouble();
         return;
@@ -52,11 +52,11 @@ void PageControllerCls::attach(ScrollPosition position) {
 }
 
 PageMetrics PageMetricsCls::copyWith(AxisDirection axisDirection, double maxScrollExtent, double minScrollExtent, double pixels, double viewportDimension, double viewportFraction) {
-    return make<PageMetricsCls>(minScrollExtent | (hasContentDimensions? this->minScrollExtent : nullptr), maxScrollExtent | (hasContentDimensions? this->maxScrollExtent : nullptr), pixels | (hasPixels? this->pixels : nullptr), viewportDimension | (hasViewportDimension? this->viewportDimension : nullptr), axisDirection | this->axisDirection, viewportFraction | this->viewportFraction);
+    return make<PageMetricsCls>(minScrollExtent | (hasContentDimensions()? this->minScrollExtent : nullptr), maxScrollExtent | (hasContentDimensions()? this->maxScrollExtent : nullptr), pixels | (hasPixels()? this->pixels : nullptr), viewportDimension | (hasViewportDimension()? this->viewportDimension : nullptr), axisDirection | this->axisDirection, viewportFraction | this->viewportFraction);
 }
 
 double PageMetricsCls::page() {
-    return math->max(0.0, clampDouble(pixels, minScrollExtent, maxScrollExtent)) / math->max(1.0, viewportDimension * viewportFraction);
+    return math->max(0.0, clampDouble(pixels(), minScrollExtent(), maxScrollExtent())) / math->max(1.0, viewportDimension() * viewportFraction);
 }
 
 Future<void> _PagePositionCls::ensureVisible(RenderObject object, double alignment, ScrollPositionAlignmentPolicy alignmentPolicy, Curve curve, Duration duration, RenderObject targetRenderObject) {
@@ -89,21 +89,21 @@ double _PagePositionCls::getPageFromPixels(double pixels, double viewportDimensi
 }
 
 double _PagePositionCls::getPixelsFromPage(double page) {
-    return page * viewportDimension * viewportFraction() + _initialPageOffset();
+    return page * viewportDimension() * viewportFraction() + _initialPageOffset();
 }
 
 double _PagePositionCls::page() {
-    assert(!hasPixels || hasContentDimensions, __s("Page value is only available after content dimensions are established."));
-    return !hasPixels || !hasContentDimensions? nullptr : _cachedPage | getPageFromPixels(clampDouble(pixels, minScrollExtent, maxScrollExtent), viewportDimension);
+    assert(!hasPixels() || hasContentDimensions(), __s("Page value is only available after content dimensions are established."));
+    return !hasPixels() || !hasContentDimensions()? nullptr : _cachedPage | getPageFromPixels(clampDouble(pixels(), minScrollExtent(), maxScrollExtent()), viewportDimension());
 }
 
 void _PagePositionCls::saveScrollOffset() {
-    PageStorageCls->of(context->storageContext)?->writeState(context->storageContext, _cachedPage | getPageFromPixels(pixels, viewportDimension));
+    PageStorageCls->of(context->storageContext())?->writeState(context->storageContext(), _cachedPage | getPageFromPixels(pixels(), viewportDimension()));
 }
 
 void _PagePositionCls::restoreScrollOffset() {
-    if (!hasPixels) {
-        double value = as<double>(PageStorageCls->of(context->storageContext)?->readState(context->storageContext));
+    if (!hasPixels()) {
+        double value = as<double>(PageStorageCls->of(context->storageContext())?->readState(context->storageContext()));
         if (value != nullptr) {
             _pageToUseOnStartup = value;
         }
@@ -111,7 +111,7 @@ void _PagePositionCls::restoreScrollOffset() {
 }
 
 void _PagePositionCls::saveOffset() {
-    context->saveOffset(_cachedPage | getPageFromPixels(pixels, viewportDimension));
+    context->saveOffset(_cachedPage | getPageFromPixels(pixels(), viewportDimension()));
 }
 
 void _PagePositionCls::restoreOffset(double offset, bool initialRestore) {
@@ -125,12 +125,12 @@ void _PagePositionCls::restoreOffset(double offset, bool initialRestore) {
 }
 
 bool _PagePositionCls::applyViewportDimension(double viewportDimension) {
-    double oldViewportDimensions = hasViewportDimension? this->viewportDimension : nullptr;
+    double oldViewportDimensions = hasViewportDimension()? this->viewportDimension : nullptr;
     if (viewportDimension == oldViewportDimensions) {
         return true;
     }
     bool result = super->applyViewportDimension(viewportDimension);
-    double oldPixels = hasPixels? pixels : nullptr;
+    double oldPixels = hasPixels()? pixels() : nullptr;
     double page;
     if (oldPixels == nullptr) {
         page = _pageToUseOnStartup;
@@ -167,7 +167,7 @@ bool _PagePositionCls::applyContentDimensions(double minScrollExtent, double max
 }
 
 PageMetrics _PagePositionCls::copyWith(AxisDirection axisDirection, double maxScrollExtent, double minScrollExtent, double pixels, double viewportDimension, double viewportFraction) {
-    return make<PageMetricsCls>(minScrollExtent | (hasContentDimensions? this->minScrollExtent : nullptr), maxScrollExtent | (hasContentDimensions? this->maxScrollExtent : nullptr), pixels | (hasPixels? this->pixels : nullptr), viewportDimension | (hasViewportDimension? this->viewportDimension : nullptr), axisDirection | this->axisDirection, viewportFraction | this->viewportFraction);
+    return make<PageMetricsCls>(minScrollExtent | (hasContentDimensions()? this->minScrollExtent : nullptr), maxScrollExtent | (hasContentDimensions()? this->maxScrollExtent : nullptr), pixels | (hasPixels()? this->pixels : nullptr), viewportDimension | (hasViewportDimension()? this->viewportDimension : nullptr), axisDirection | this->axisDirection, viewportFraction | this->viewportFraction);
 }
 
 _PagePositionCls::_PagePositionCls(Unknown context, int initialPage, bool keepPage, Unknown oldPosition, Unknown physics, double viewportFraction) : ScrollPositionWithSingleContext(nullptr, keepPage) {
@@ -182,7 +182,7 @@ _PagePositionCls::_PagePositionCls(Unknown context, int initialPage, bool keepPa
 }
 
 double _PagePositionCls::_initialPageOffset() {
-    return math->max(0, viewportDimension * (viewportFraction() - 1) / 2);
+    return math->max(0, viewportDimension() * (viewportFraction() - 1) / 2);
 }
 
 _ForceImplicitScrollPhysics _ForceImplicitScrollPhysicsCls::applyTo(ScrollPhysics ancestor) {
@@ -203,10 +203,10 @@ Simulation PageScrollPhysicsCls::createBallisticSimulation(ScrollMetrics positio
     if ((velocity <= 0.0 && position->pixels() <= position->minScrollExtent()) || (velocity >= 0.0 && position->pixels() >= position->maxScrollExtent())) {
         return super->createBallisticSimulation(position, velocity);
     }
-    Tolerance tolerance = this->tolerance;
+    Tolerance tolerance = this->tolerance();
     double target = _getTargetPixels(position, tolerance, velocity);
     if (target != position->pixels()) {
-        return make<ScrollSpringSimulationCls>(spring, position->pixels(), target, velocity, tolerance);
+        return make<ScrollSpringSimulationCls>(spring(), position->pixels(), target, velocity, tolerance);
     }
     return nullptr;
 }
@@ -260,35 +260,35 @@ State<PageView> PageViewCls::createState() {
 
 void _PageViewStateCls::initState() {
     super->initState();
-    _lastReportedPage = widget->controller->initialPage;
+    _lastReportedPage = widget()->controller->initialPage;
 }
 
 Widget _PageViewStateCls::build(BuildContext context) {
     AxisDirection axisDirection = _getDirection(context);
-    ScrollPhysics physics = make<_ForceImplicitScrollPhysicsCls>(widget->allowImplicitScrolling)->applyTo(widget->pageSnapping? _kPagePhysics->applyTo(widget->physics | widget->scrollBehavior?->getScrollPhysics(context)) : widget->physics | widget->scrollBehavior?->getScrollPhysics(context));
+    ScrollPhysics physics = make<_ForceImplicitScrollPhysicsCls>(widget()->allowImplicitScrolling)->applyTo(widget()->pageSnapping? _kPagePhysics->applyTo(widget()->physics | widget()->scrollBehavior?->getScrollPhysics(context)) : widget()->physics | widget()->scrollBehavior?->getScrollPhysics(context));
     return <ScrollNotification>make<NotificationListenerCls>([=] (ScrollNotification notification) {
-        if (notification->depth == 0 && widget->onPageChanged != nullptr && is<ScrollUpdateNotification>(notification)) {
+        if (notification->depth == 0 && widget()->onPageChanged != nullptr && is<ScrollUpdateNotification>(notification)) {
             PageMetrics metrics = as<PageMetrics>(notification->metrics);
             int currentPage = metrics->page()!->round();
             if (currentPage != _lastReportedPage) {
                 _lastReportedPage = currentPage;
-                widget->onPageChanged!(currentPage);
+                widget()->onPageChanged!(currentPage);
             }
         }
         return false;
-    }, make<ScrollableCls>(widget->dragStartBehavior, axisDirection, widget->controller, physics, widget->restorationId, widget->scrollBehavior | ScrollConfigurationCls->of(context)->copyWith(false), [=] (BuildContext context,ViewportOffset position) {
-        return make<ViewportCls>(widget->allowImplicitScrolling? 1.0 : 0.0, CacheExtentStyleCls::viewport, axisDirection, position, widget->clipBehavior, makeList(ArrayItem));
+    }, make<ScrollableCls>(widget()->dragStartBehavior, axisDirection, widget()->controller, physics, widget()->restorationId, widget()->scrollBehavior | ScrollConfigurationCls->of(context)->copyWith(false), [=] (BuildContext context,ViewportOffset position) {
+        return make<ViewportCls>(widget()->allowImplicitScrolling? 1.0 : 0.0, CacheExtentStyleCls::viewport, axisDirection, position, widget()->clipBehavior, makeList(ArrayItem));
     }));
 }
 
 void _PageViewStateCls::debugFillProperties(DiagnosticPropertiesBuilder description) {
     super->debugFillProperties(description);
-    description->add(<Axis>make<EnumPropertyCls>(__s("scrollDirection"), widget->scrollDirection));
-    description->add(make<FlagPropertyCls>(__s("reverse"), widget->reverse, __s("reversed")));
-    description->add(<PageController>make<DiagnosticsPropertyCls>(__s("controller"), widget->controller, false));
-    description->add(<ScrollPhysics>make<DiagnosticsPropertyCls>(__s("physics"), widget->physics, false));
-    description->add(make<FlagPropertyCls>(__s("pageSnapping"), widget->pageSnapping, __s("snapping disabled")));
-    description->add(make<FlagPropertyCls>(__s("allowImplicitScrolling"), widget->allowImplicitScrolling, __s("allow implicit scrolling")));
+    description->add(<Axis>make<EnumPropertyCls>(__s("scrollDirection"), widget()->scrollDirection));
+    description->add(make<FlagPropertyCls>(__s("reverse"), widget()->reverse, __s("reversed")));
+    description->add(<PageController>make<DiagnosticsPropertyCls>(__s("controller"), widget()->controller, false));
+    description->add(<ScrollPhysics>make<DiagnosticsPropertyCls>(__s("physics"), widget()->physics, false));
+    description->add(make<FlagPropertyCls>(__s("pageSnapping"), widget()->pageSnapping, __s("snapping disabled")));
+    description->add(make<FlagPropertyCls>(__s("allowImplicitScrolling"), widget()->allowImplicitScrolling, __s("allow implicit scrolling")));
 }
 
 AxisDirection _PageViewStateCls::_getDirection(BuildContext context) {

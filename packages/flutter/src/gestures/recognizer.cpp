@@ -131,7 +131,7 @@ GestureArenaTeam OneSequenceGestureRecognizerCls::team() {
 void OneSequenceGestureRecognizerCls::team(GestureArenaTeam value) {
     assert(value != nullptr);
     assert(_entries->isEmpty());
-    assert(_trackedPointers->isEmpty);
+    assert(_trackedPointers->isEmpty());
     assert(_team == nullptr);
     _team = value;
 }
@@ -147,7 +147,7 @@ void OneSequenceGestureRecognizerCls::stopTrackingPointer(int pointer) {
     if (_trackedPointers->contains(pointer)) {
         GestureBindingCls::instance->pointerRouter->removeRoute(pointer, handleEvent);
         _trackedPointers->remove(pointer);
-        if (_trackedPointers->isEmpty) {
+        if (_trackedPointers->isEmpty()) {
             didStopTrackingLastPointer(pointer);
         }
     }
@@ -190,7 +190,7 @@ void PrimaryPointerGestureRecognizerCls::addAllowedPointer(PointerDownEvent even
     if (state() == GestureRecognizerStateCls::ready) {
         _state = GestureRecognizerStateCls::possible;
         _primaryPointer = event->pointer;
-        _initialPosition = make<OffsetPairCls>(event->localPosition, event->position);
+        _initialPosition = make<OffsetPairCls>(event->localPosition(), event->position);
         if (deadline != nullptr) {
             _timer = make<TimerCls>(deadline!, [=] () {
                 didExceedDeadlineWithEvent(event);

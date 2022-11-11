@@ -14,14 +14,14 @@ State<RestorationScope> RestorationScopeCls::createState() {
 }
 
 String _RestorationScopeStateCls::restorationId() {
-    return widget->restorationId;
+    return widget()->restorationId();
 }
 
 void _RestorationScopeStateCls::restoreState(RestorationBucket oldBucket, bool initialRestore) {
 }
 
 Widget _RestorationScopeStateCls::build(BuildContext context) {
-    return make<UnmanagedRestorationScopeCls>(bucket, widget->child);
+    return make<UnmanagedRestorationScopeCls>(bucket, widget()->child);
 }
 
 UnmanagedRestorationScopeCls::UnmanagedRestorationScopeCls(RestorationBucket bucket, Unknown child, Unknown key) {
@@ -46,9 +46,9 @@ State<RootRestorationScope> RootRestorationScopeCls::createState() {
 
 void _RootRestorationScopeStateCls::didChangeDependencies() {
     super->didChangeDependencies();
-    _ancestorBucket = RestorationScopeCls->of(context);
+    _ancestorBucket = RestorationScopeCls->of(context());
     _loadRootBucketIfNecessary();
-    _okToRenderBlankContainer |= widget->restorationId != nullptr && _needsRootBucketInserted();
+    _okToRenderBlankContainer |= widget()->restorationId != nullptr && _needsRootBucketInserted();
 }
 
 void _RootRestorationScopeStateCls::didUpdateWidget(RootRestorationScope oldWidget) {
@@ -67,7 +67,7 @@ Widget _RootRestorationScopeStateCls::build(BuildContext context) {
     if (_okToRenderBlankContainer! && _isWaitingForRootBucket()) {
         return SizedBoxCls->shrink();
     }
-    return make<UnmanagedRestorationScopeCls>(_ancestorBucket | _rootBucket, make<RestorationScopeCls>(widget->restorationId, widget->child));
+    return make<UnmanagedRestorationScopeCls>(_ancestorBucket | _rootBucket, make<RestorationScopeCls>(widget()->restorationId, widget()->child));
 }
 
 bool _RootRestorationScopeStateCls::_needsRootBucketInserted() {
@@ -75,7 +75,7 @@ bool _RootRestorationScopeStateCls::_needsRootBucketInserted() {
 }
 
 bool _RootRestorationScopeStateCls::_isWaitingForRootBucket() {
-    return widget->restorationId != nullptr && _needsRootBucketInserted() && !_rootBucketValid;
+    return widget()->restorationId != nullptr && _needsRootBucketInserted() && !_rootBucketValid;
 }
 
 void _RootRestorationScopeStateCls::_loadRootBucketIfNecessary() {
@@ -84,7 +84,7 @@ void _RootRestorationScopeStateCls::_loadRootBucketIfNecessary() {
         RendererBindingCls::instance->deferFirstFrame();
         ServicesBindingCls::instance->restorationManager->rootBucket->then([=] (RestorationBucket bucket) {
             _isLoadingRootBucket = false;
-            if (mounted) {
+            if (mounted()) {
                 ServicesBindingCls::instance->restorationManager->addListener(_replaceRootBucket);
                 setState([=] () {
                     _rootBucket = bucket;
@@ -269,7 +269,7 @@ void RestorationMixinCls<S>::_doRestore(RestorationBucket oldBucket) {
     restoreState(oldBucket, _firstRestorePending);
     _firstRestorePending = false;
     assert([=] () {
-        if (_debugPropertiesWaitingForReregistration!->isNotEmpty) {
+        if (_debugPropertiesWaitingForReregistration!->isNotEmpty()) {
                     List<DiagnosticsNode> list1 = make<ListCls<>>();        list1.add(ArrayItem);        list1.add(ArrayItem);        for (auto _x1 : _debugPropertiesWaitingForReregistration!->map([=] (RestorableProperty<Object> property) {                        make<ErrorDescriptionCls>(__s(" * ${property._restorationId}"));                    })) {        {            list1.add(_x1);        }throw FlutterErrorCls->fromParts(list1);
         }
         _debugPropertiesWaitingForReregistration = nullptr;

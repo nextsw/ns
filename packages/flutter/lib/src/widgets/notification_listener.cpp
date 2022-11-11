@@ -19,7 +19,7 @@ Element NotificationListenerCls<T>::createElement() {
 
 template<typename T>
 bool _NotificationElementCls<T>::onNotification(Notification notification) {
-    NotificationListener<T> listener = as<NotificationListener<T>>(widget);
+    NotificationListener<T> listener = as<NotificationListener<T>>(widget());
     if (listener->onNotification != nullptr && is<T>(notification)) {
         return listener->onNotification!(notification);
     }

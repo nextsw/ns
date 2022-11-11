@@ -92,7 +92,7 @@ void _ImageStateCls::dispose() {
 void _ImageStateCls::didChangeDependencies() {
     _updateInvertColors();
     _resolveImage();
-    if (TickerModeCls->of(context)) {
+    if (TickerModeCls->of(context())) {
         _listenToStream();
     } else {
         _stopListeningToStream(true);
@@ -102,12 +102,12 @@ void _ImageStateCls::didChangeDependencies() {
 
 void _ImageStateCls::didUpdateWidget(Image oldWidget) {
     super->didUpdateWidget(oldWidget);
-    if (_isListeningToStream && (widget->loadingBuilder == nullptr) != (oldWidget->loadingBuilder == nullptr)) {
+    if (_isListeningToStream && (widget()->loadingBuilder == nullptr) != (oldWidget->loadingBuilder == nullptr)) {
         ImageStreamListener oldListener = _getListener();
         _imageStream!->addListener(_getListener(true));
         _imageStream!->removeListener(oldListener);
     }
-    if (widget->image != oldWidget->image) {
+    if (widget()->image != oldWidget->image) {
         _resolveImage();
     }
 }
@@ -126,22 +126,22 @@ void _ImageStateCls::reassemble() {
 
 Widget _ImageStateCls::build(BuildContext context) {
     if (_lastException != nullptr) {
-        if (widget->errorBuilder != nullptr) {
-            return widget->errorBuilder!(context, _lastException!, _lastStack);
+        if (widget()->errorBuilder != nullptr) {
+            return widget()->errorBuilder!(context, _lastException!, _lastStack);
         }
         if (kDebugMode) {
             return _debugBuildErrorWidget(context, _lastException!);
         }
     }
-    Widget result = make<RawImageCls>(_imageInfo?->image, _imageInfo?->debugLabel, widget->width, widget->height, _imageInfo?->scale | 1.0, widget->color, widget->opacity, widget->colorBlendMode, widget->fit, widget->alignment, widget->repeat, widget->centerSlice, widget->matchTextDirection, _invertColors, widget->isAntiAlias, widget->filterQuality);
-    if (!widget->excludeFromSemantics) {
-        result = make<SemanticsCls>(widget->semanticLabel != nullptr, true, widget->semanticLabel | __s(""), result);
+    Widget result = make<RawImageCls>(_imageInfo?->image, _imageInfo?->debugLabel, widget()->width, widget()->height, _imageInfo?->scale | 1.0, widget()->color, widget()->opacity, widget()->colorBlendMode, widget()->fit, widget()->alignment, widget()->repeat, widget()->centerSlice, widget()->matchTextDirection, _invertColors, widget()->isAntiAlias, widget()->filterQuality);
+    if (!widget()->excludeFromSemantics) {
+        result = make<SemanticsCls>(widget()->semanticLabel != nullptr, true, widget()->semanticLabel | __s(""), result);
     }
-    if (widget->frameBuilder != nullptr) {
-        result = widget->frameBuilder!(context, result, _frameNumber, _wasSynchronouslyLoaded);
+    if (widget()->frameBuilder != nullptr) {
+        result = widget()->frameBuilder!(context, result, _frameNumber, _wasSynchronouslyLoaded);
     }
-    if (widget->loadingBuilder != nullptr) {
-        result = widget->loadingBuilder!(context, result, _loadingProgress);
+    if (widget()->loadingBuilder != nullptr) {
+        result = widget()->loadingBuilder!(context, result, _loadingProgress);
     }
     return result;
 }
@@ -156,12 +156,12 @@ void _ImageStateCls::debugFillProperties(DiagnosticPropertiesBuilder description
 }
 
 void _ImageStateCls::_updateInvertColors() {
-    _invertColors = MediaQueryCls->maybeOf(context)?->invertColors | SemanticsBindingCls::instance->accessibilityFeatures->invertColors;
+    _invertColors = MediaQueryCls->maybeOf(context())?->invertColors | SemanticsBindingCls::instance->accessibilityFeatures->invertColors;
 }
 
 void _ImageStateCls::_resolveImage() {
-    ScrollAwareImageProvider provider = <Object>make<ScrollAwareImageProviderCls>(_scrollAwareContext, widget->image);
-    ImageStream newStream = provider->resolve(createLocalImageConfiguration(context, widget->width != nullptr && widget->height != nullptr? make<SizeCls>(widget->width!, widget->height!) : nullptr));
+    ScrollAwareImageProvider provider = <Object>make<ScrollAwareImageProviderCls>(_scrollAwareContext, widget()->image);
+    ImageStream newStream = provider->resolve(createLocalImageConfiguration(context(), widget()->width != nullptr && widget()->height != nullptr? make<SizeCls>(widget()->width!, widget()->height!) : nullptr));
     assert(newStream != nullptr);
     _updateSourceStream(newStream);
 }
@@ -170,13 +170,13 @@ ImageStreamListener _ImageStateCls::_getListener(bool recreateListener) {
     if (_imageStreamListener == nullptr || recreateListener) {
         _lastException = nullptr;
         _lastStack = nullptr;
-        _imageStreamListener = make<ImageStreamListenerCls>(_handleImageFrame, widget->loadingBuilder == nullptr? nullptr : _handleImageChunk, widget->errorBuilder != nullptr || kDebugMode? [=] (Object error,StackTrace stackTrace) {
+        _imageStreamListener = make<ImageStreamListenerCls>(_handleImageFrame, widget()->loadingBuilder == nullptr? nullptr : _handleImageChunk, widget()->errorBuilder != nullptr || kDebugMode? [=] (Object error,StackTrace stackTrace) {
             setState([=] () {
                 _lastException = error;
                 _lastStack = stackTrace;
             });
             assert([=] () {
-                if (widget->errorBuilder == nullptr) {
+                if (widget()->errorBuilder == nullptr) {
                     throw error;
                 }
                 return true;
@@ -198,7 +198,7 @@ void _ImageStateCls::_handleImageFrame(ImageInfo imageInfo, bool synchronousCall
 }
 
 void _ImageStateCls::_handleImageChunk(ImageChunkEvent event) {
-    assert(widget->loadingBuilder != nullptr);
+    assert(widget()->loadingBuilder != nullptr);
     setState([=] () {
         _loadingProgress = event;
         _lastException = nullptr;
@@ -218,7 +218,7 @@ void _ImageStateCls::_updateSourceStream(ImageStream newStream) {
     if (_isListeningToStream) {
         _imageStream!->removeListener(_getListener());
     }
-    if (!widget->gaplessPlayback) {
+    if (!widget()->gaplessPlayback) {
         setState([=] () {
             _replaceImage(nullptr);
         });

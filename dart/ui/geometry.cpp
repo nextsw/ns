@@ -11,7 +11,7 @@ bool OffsetBaseCls::isInfinite() {
 }
 
 bool OffsetBaseCls::isFinite() {
-    return _dx->isFinite && _dy->isFinite;
+    return _dx->isFinite() && _dy->isFinite();
 }
 
 bool OffsetBaseCls::<(OffsetBase other) {
@@ -310,7 +310,7 @@ Size RectCls::size() {
 }
 
 bool RectCls::hasNaN() {
-    return left->isNaN || top->isNaN || right->isNaN || bottom->isNaN;
+    return left->isNaN() || top->isNaN() || right->isNaN() || bottom->isNaN();
 }
 
 bool RectCls::isInfinite() {
@@ -318,7 +318,7 @@ bool RectCls::isInfinite() {
 }
 
 bool RectCls::isFinite() {
-    return left->isFinite && top->isFinite && right->isFinite && bottom->isFinite;
+    return left->isFinite() && top->isFinite() && right->isFinite() && bottom->isFinite();
 }
 
 bool RectCls::isEmpty() {
@@ -604,7 +604,7 @@ bool RRectCls::isEmpty() {
 }
 
 bool RRectCls::isFinite() {
-    return left->isFinite && top->isFinite && right->isFinite && bottom->isFinite;
+    return left->isFinite() && top->isFinite() && right->isFinite() && bottom->isFinite();
 }
 
 bool RRectCls::isRect() {
@@ -632,7 +632,7 @@ double RRectCls::longestSide() {
 }
 
 bool RRectCls::hasNaN() {
-    return left->isNaN || top->isNaN || right->isNaN || bottom->isNaN || trRadiusX->isNaN || trRadiusY->isNaN || tlRadiusX->isNaN || tlRadiusY->isNaN || brRadiusX->isNaN || brRadiusY->isNaN || blRadiusX->isNaN || blRadiusY->isNaN;
+    return left->isNaN() || top->isNaN() || right->isNaN() || bottom->isNaN() || trRadiusX->isNaN() || trRadiusY->isNaN() || tlRadiusX->isNaN() || tlRadiusY->isNaN() || brRadiusX->isNaN() || brRadiusY->isNaN() || blRadiusX->isNaN() || blRadiusY->isNaN();
 }
 
 Offset RRectCls::center() {

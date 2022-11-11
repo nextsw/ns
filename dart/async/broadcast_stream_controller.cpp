@@ -337,12 +337,12 @@ _SyncBroadcastStreamControllerCls<T>::_SyncBroadcastStreamControllerCls(std::fun
 
 template<typename T>
 bool _SyncBroadcastStreamControllerCls<T>::_mayAddEvent() {
-    return super->_mayAddEvent && !_isFiring;
+    return super->_mayAddEvent && !_isFiring();
 }
 
 template<typename T>
 void _SyncBroadcastStreamControllerCls<T>::_addEventError() {
-    if (_isFiring) {
+    if (_isFiring()) {
         return make<StateErrorCls>(__s("Cannot fire new event. Controller is already firing an event"));
     }
     return super->_addEventError();
@@ -350,15 +350,15 @@ void _SyncBroadcastStreamControllerCls<T>::_addEventError() {
 
 template<typename T>
 void _SyncBroadcastStreamControllerCls<T>::_sendData(T data) {
-    if (_isEmpty) {
+    if (_isEmpty()) {
         return;
     }
-    if (_hasOneListener) {
+    if (_hasOneListener()) {
         _state |= _BroadcastStreamControllerCls::_STATE_FIRING;
         _BroadcastSubscription<T> firstSubscription = as<dynamic>(_firstSubscription);
         firstSubscription->_add(data);
         _state &= ~_BroadcastStreamControllerCls->_STATE_FIRING;
-        if (_isEmpty) {
+        if (_isEmpty()) {
             _callOnCancel();
         }
         return;
@@ -370,7 +370,7 @@ void _SyncBroadcastStreamControllerCls<T>::_sendData(T data) {
 
 template<typename T>
 void _SyncBroadcastStreamControllerCls<T>::_sendError(Object error, StackTrace stackTrace) {
-    if (_isEmpty) {
+    if (_isEmpty()) {
         return;
     }
     _forEachListener([=] (_BufferingStreamSubscription<T> subscription) {
@@ -380,7 +380,7 @@ void _SyncBroadcastStreamControllerCls<T>::_sendError(Object error, StackTrace s
 
 template<typename T>
 void _SyncBroadcastStreamControllerCls<T>::_sendDone() {
-    if (!_isEmpty) {
+    if (!_isEmpty()) {
         _forEachListener([=] (_BufferingStreamSubscription<T> subscription) {
             subscription->_close();
         });
@@ -410,7 +410,7 @@ void _AsyncBroadcastStreamControllerCls<T>::_sendError(Object error, StackTrace 
 
 template<typename T>
 void _AsyncBroadcastStreamControllerCls<T>::_sendDone() {
-    if (!_isEmpty) {
+    if (!_isEmpty()) {
         for (; subscription != nullptr; subscription = subscription->_next) {
             subscription->_addPending(make<_DelayedDoneCls>());
         }
@@ -422,7 +422,7 @@ void _AsyncBroadcastStreamControllerCls<T>::_sendDone() {
 
 template<typename T>
 void _AsBroadcastStreamControllerCls<T>::add(T data) {
-    if (!isClosed && _isFiring) {
+    if (!isClosed() && _isFiring()) {
         _addPendingEvent(<T>make<_DelayedDataCls>(data));
         return;
     }
@@ -434,11 +434,11 @@ template<typename T>
 void _AsBroadcastStreamControllerCls<T>::addError(Object error, StackTrace stackTrace) {
     checkNotNullable(error, __s("error"));
     stackTrace |= AsyncErrorCls->defaultStackTrace(error);
-    if (!isClosed && _isFiring) {
+    if (!isClosed() && _isFiring()) {
         _addPendingEvent(make<_DelayedErrorCls>(error, stackTrace));
         return;
     }
-    if (!_mayAddEvent) {
+    if (!_mayAddEvent()) {
         throw _addEventError();
     }
     _sendError(error, stackTrace);
@@ -447,7 +447,7 @@ void _AsBroadcastStreamControllerCls<T>::addError(Object error, StackTrace stack
 
 template<typename T>
 Future _AsBroadcastStreamControllerCls<T>::close() {
-    if (!isClosed && _isFiring) {
+    if (!isClosed() && _isFiring()) {
         _addPendingEvent(make<_DelayedDoneCls>());
         _state |= _BroadcastStreamControllerCls::_STATE_CLOSED;
         return super->done;

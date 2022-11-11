@@ -167,12 +167,12 @@ Size RenderWrapCls::computeDryLayout(BoxConstraints constraints) {
 }
 
 void RenderWrapCls::performLayout() {
-    BoxConstraints constraints = this->constraints;
+    BoxConstraints constraints = this->constraints();
     assert(_debugHasNecessaryDirections());
     _hasVisualOverflow = false;
     RenderBox child = firstChild;
     if (child == nullptr) {
-        size = constraints->smallest();
+        size() = constraints->smallest();
         return;
     }
     BoxConstraints childConstraints;
@@ -197,7 +197,7 @@ void RenderWrapCls::performLayout() {
         if (childCount > 0 && runMainAxisExtent + spacing + childMainAxisExtent > mainAxisLimit) {
             mainAxisExtent = math->max(mainAxisExtent, runMainAxisExtent);
             crossAxisExtent += runCrossAxisExtent;
-            if (runMetrics->isNotEmpty) {
+            if (runMetrics->isNotEmpty()) {
                 crossAxisExtent += runSpacing;
             }
             runMetrics->add(make<_RunMetricsCls>(runMainAxisExtent, runCrossAxisExtent, childCount));
@@ -218,7 +218,7 @@ void RenderWrapCls::performLayout() {
     if (childCount > 0) {
         mainAxisExtent = math->max(mainAxisExtent, runMainAxisExtent);
         crossAxisExtent += runCrossAxisExtent;
-        if (runMetrics->isNotEmpty) {
+        if (runMetrics->isNotEmpty()) {
             crossAxisExtent += runSpacing;
         }
         runMetrics->add(make<_RunMetricsCls>(runMainAxisExtent, runCrossAxisExtent, childCount));
@@ -283,7 +283,7 @@ bool RenderWrapCls::hitTestChildren(BoxHitTestResult result, Offset position) {
 
 void RenderWrapCls::paint(PaintingContext context, Offset offset) {
     if (_hasVisualOverflow && clipBehavior() != ClipCls::none) {
-        _clipRectLayer->layer() = context->pushClipRect(needsCompositing, offset, OffsetCls::zero & size, defaultPaint, clipBehavior(), _clipRectLayer->layer());
+        _clipRectLayer->layer() = context->pushClipRect(needsCompositing(), offset, OffsetCls::zero & size(), defaultPaint, clipBehavior(), _clipRectLayer->layer());
     } else {
         _clipRectLayer->layer() = nullptr;
         defaultPaint(context, offset);

@@ -1,9 +1,9 @@
 #include "gradient.hpp"
 Color _sample(List<Color> colors, List<double> stops, double t) {
     assert(colors != nullptr);
-    assert(colors->isNotEmpty);
+    assert(colors->isNotEmpty());
     assert(stops != nullptr);
-    assert(stops->isNotEmpty);
+    assert(stops->isNotEmpty());
     assert(t != nullptr);
     if (t <= stops->first) {
         return colors->first;
@@ -52,7 +52,7 @@ bool GradientRotationCls::==(Object other) {
 }
 
 int GradientRotationCls::hashCode() {
-    return radians->hashCode;
+    return radians->hashCode();
 }
 
 String GradientRotationCls::toString() {

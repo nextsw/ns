@@ -74,13 +74,13 @@ List<_OverflowRegionData> DebugOverflowIndicatorMixinCls::_calculateOverflowRegi
 
 void DebugOverflowIndicatorMixinCls::_reportOverflow(RelativeRect overflow, List<DiagnosticsNode> overflowHints) {
     overflowHints |= makeList();
-    if (overflowHints->isEmpty) {
+    if (overflowHints->isEmpty()) {
         overflowHints->add(make<ErrorDescriptionCls>(__s("The edge of the $runtimeType that is overflowing has been marked in the rendering with a yellow and black striped pattern. This is usually caused by the contents being too big for the $runtimeType.")));
         overflowHints->add(make<ErrorHintCls>(__s("This is considered an error condition because it indicates that there is content that cannot be seen. If the content is legitimately bigger than the available space, consider clipping it with a ClipRect widget before putting it in the $runtimeType, or using a scrollable container, like a ListView.")));
     }
     List<String> list1 = make<ListCls<>>();if (overflow->left > 0.0) {    list1.add(ArrayItem);}if (overflow->top > 0.0) {    list1.add(ArrayItem);}if (overflow->bottom > 0.0) {    list1.add(ArrayItem);}if (overflow->right > 0.0) {    list1.add(ArrayItem);}List<String> overflows = list1;
     String overflowText = __s("");
-    assert(overflows->isNotEmpty, __s("Somehow $runtimeType didn't actually overflow like it thought it did."));
+    assert(overflows->isNotEmpty(), __s("Somehow $runtimeType didn't actually overflow like it thought it did."));
     ;
     List<DiagnosticsNode> list2 = make<ListCls<>>();if (kDebugMode && debugCreator != nullptr) {    list2.add(ArrayItem);}for (auto _x2 : overflowHints!) {{    list2.add(_x2);}list2.add(ArrayItem);list2.add(ArrayItem);FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(make<FlutterErrorCls>(__s("A $runtimeType overflowed by $overflowText.")), __s("rendering library"), make<ErrorDescriptionCls>(__s("during layout")), [=] () {
         list2;

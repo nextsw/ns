@@ -121,6 +121,6 @@ StackFrame StackFrameCls::_parseWebNonDebugFrame(String line) {
     }
     List<String> classAndMethod = match->group(1)!->split(__s("."));
     String className = classAndMethod->length() > 1? classAndMethod->first : __s("<unknown>");
-    String method = classAndMethod->length() > 1? classAndMethod->skip(1)->join(__s(".")) : classAndMethod->single;
+    String method = classAndMethod->length() > 1? classAndMethod->skip(1)->join(__s(".")) : classAndMethod->single();
     return make<StackFrameCls>(-1, __s("<unknown>"), __s("<unknown>"), __s("<unknown>"), -1, -1, className, method, line);
 }

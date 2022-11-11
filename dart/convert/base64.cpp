@@ -136,7 +136,7 @@ Base64EncoderCls::Base64EncoderCls() {
 void Base64EncoderCls::urlSafe()
 
 String Base64EncoderCls::convert(List<int> input) {
-    if (input->isEmpty) {
+    if (input->isEmpty()) {
         return __s("");
     }
     auto encoder = make<_Base64EncoderCls>(_urlSafe);
@@ -249,7 +249,7 @@ int _Base64EncoderCls::_stateCount(int state) {
 
 Uint8List _BufferCachingBase64EncoderCls::createBuffer(int bufferLength) {
     Uint8List buffer = bufferCache;
-    if (buffer == nullptr || buffer->length < bufferLength) {
+    if (buffer == nullptr || buffer->length() < bufferLength) {
         bufferCache = buffer = make<Uint8ListCls>(bufferLength);
     }
     return Uint8ListCls->view(buffer->buffer, buffer->offsetInBytes, bufferLength);
@@ -300,7 +300,7 @@ _Utf8Base64EncoderSinkCls::_Utf8Base64EncoderSinkCls(ByteConversionSink _sink, b
 void _Utf8Base64EncoderSinkCls::_add(List<int> source, int start, int end, bool isLast) {
     auto buffer = _encoder->encode(source, start, end, isLast);
     if (buffer != nullptr) {
-        _sink->addSlice(buffer, 0, buffer->length, isLast);
+        _sink->addSlice(buffer, 0, buffer->length(), isLast);
     }
 }
 
@@ -363,7 +363,7 @@ int _Base64DecoderCls::decodeChunk(String input, int start, int end, Uint8List o
             bits = ((bits << bitsPerCharacter) | code) & 0xFFFFFF;
             count = (count + 1) & 3;
             if (count == 0) {
-                assert(outIndex + 3 <= output->length);
+                assert(outIndex + 3 <= output->length());
                 output[outIndex++] = (bits >> 16) & eightBitMask;
                 output[outIndex++] = (bits >> 8) & eightBitMask;
                 output[outIndex++] = bits & eightBitMask;

@@ -11,7 +11,7 @@ String TableRowCls::toString() {
     if (children == nullptr) {
         result->write(__s("child list is null"));
     } else {
-        if (children!->isEmpty) {
+        if (children!->isEmpty()) {
         result->write(__s("no children"));
     } else {
         result->write(__s("$children"));
@@ -56,7 +56,7 @@ TableCls::TableCls(TableBorder border, List<TableRow> children, Map<int, TableCo
             return true;
         }());
         assert([=] () {
-            if (children->isNotEmpty) {
+            if (children->isNotEmpty()) {
                 int cellCount = children->first->children!->length();
                 if (children->any([=] (TableRow row) {
                     row->children!->length() != cellCount;
@@ -91,12 +91,12 @@ RenderObjectElement TableCls::createElement() {
 
 RenderTable TableCls::createRenderObject(BuildContext context) {
     assert(debugCheckHasDirectionality(context));
-    return make<RenderTableCls>(children->isNotEmpty? children[0]->children!->length() : 0, children->length(), columnWidths, defaultColumnWidth, textDirection | DirectionalityCls->of(context), border, _rowDecorations, createLocalImageConfiguration(context), defaultVerticalAlignment, textBaseline);
+    return make<RenderTableCls>(children->isNotEmpty()? children[0]->children!->length() : 0, children->length(), columnWidths, defaultColumnWidth, textDirection | DirectionalityCls->of(context), border, _rowDecorations, createLocalImageConfiguration(context), defaultVerticalAlignment, textBaseline);
 }
 
 void TableCls::updateRenderObject(BuildContext context, RenderTable renderObject) {
     assert(debugCheckHasDirectionality(context));
-    assert(renderObject->columns() == (children->isNotEmpty? children[0]->children!->length() : 0));
+    assert(renderObject->columns() == (children->isNotEmpty()? children[0]->children!->length() : 0));
     assert(renderObject->rows() == children->length());
     auto _c1 = renderObject;_c1.columnWidths = auto _c2 = columnWidths;_c2.defaultColumnWidth = auto _c3 = defaultColumnWidth;_c3.textDirection = auto _c4 = textDirection | DirectionalityCls->of(context);_c4.border = auto _c5 = border;_c5.rowDecorations = auto _c6 = _rowDecorations;_c6.configuration = auto _c7 = createLocalImageConfiguration(context);_c7.defaultVerticalAlignment = auto _c8 = defaultVerticalAlignment;_c8.textBaseline = textBaseline;_c8;_c7;_c6;_c5;_c4;_c3;_c2;_c1;
 }
@@ -110,7 +110,7 @@ void _TableElementCls::mount(Element parent, Object newSlot) {
     _doingMountOrUpdate = true;
     super->mount(parent, newSlot);
     int rowIndex = -1;
-    _children = (as<Table>(widget))->children-><_TableElementRow>map([=] (TableRow row) {
+    _children = (as<Table>(widget()))->children-><_TableElementRow>map([=] (TableRow row) {
         int columnIndex = 0;
         rowIndex += 1;
         return make<_TableElementRowCls>(row->key, row->children!-><Element>map([=] (Widget child) {
@@ -182,7 +182,7 @@ void _TableElementCls::update(Table newWidget) {
     _updateRenderObjectChildren();
     _forgottenChildren->clear();
     super->update(newWidget);
-    assert(widget == newWidget);
+    assert(widget() == newWidget);
     assert(_doingMountOrUpdate);
     _doingMountOrUpdate = false;
 }
@@ -205,7 +205,7 @@ bool _TableElementCls::forgetChild(Element child) {
 
 void _TableElementCls::_updateRenderObjectChildren() {
     assert(renderObject() != nullptr);
-    renderObject()->setFlatChildren(_children->isNotEmpty? _children[0]->children->length() : 0, _children-><RenderBox>expand([=] (_TableElementRow row) {
+    renderObject()->setFlatChildren(_children->isNotEmpty()? _children[0]->children->length() : 0, _children-><RenderBox>expand([=] (_TableElementRow row) {
         return row->children-><RenderBox>map([=] (Element child) {
             RenderBox box = as<RenderBox>(child->renderObject!);
             return box;
@@ -217,7 +217,7 @@ void TableCellCls::applyParentData(RenderObject renderObject) {
     TableCellParentData parentData = as<TableCellParentData>(renderObject->parentData!);
     if (parentData->verticalAlignment != verticalAlignment) {
         parentData->verticalAlignment = verticalAlignment;
-        AbstractNode targetParent = renderObject->parent;
+        AbstractNode targetParent = renderObject->parent();
         if (is<RenderObject>(targetParent)) {
             as<RenderObjectCls>(targetParent)->markNeedsLayout();
         }

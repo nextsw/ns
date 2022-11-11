@@ -17,7 +17,7 @@ T InheritedModelCls<T>::inheritFrom(BuildContext context, Object aspect) {
     }
     List<InheritedElement> models = makeList();
     <T>_findModels(context, aspect, models);
-    if (models->isEmpty) {
+    if (models->isEmpty()) {
         return nullptr;
     }
     InheritedElement lastModel = models->last;
@@ -39,8 +39,8 @@ void InheritedModelCls<T>::_findModels(BuildContext context, Object aspect, List
         return;
     }
     results->add(model);
-    assert(is<T>(model->widget));
-    T modelWidget = as<T>(model->widget);
+    assert(is<T>(model->widget()));
+    T modelWidget = as<T>(model->widget());
     if (modelWidget->isSupportedAspect(aspect)) {
         return;
     }
@@ -58,7 +58,7 @@ void InheritedModelCls<T>::_findModels(BuildContext context, Object aspect, List
 template<typename T>
 void InheritedModelElementCls<T>::updateDependencies(Element dependent, Object aspect) {
     Set<T> dependencies = as<Set<T>>(getDependencies(dependent));
-    if (dependencies != nullptr && dependencies->isEmpty) {
+    if (dependencies != nullptr && dependencies->isEmpty()) {
         return;
     }
     if (aspect == nullptr) {
@@ -75,7 +75,7 @@ void InheritedModelElementCls<T>::notifyDependent(InheritedModel<T> oldWidget, E
     if (dependencies == nullptr) {
         return;
     }
-    if (dependencies->isEmpty || (as<InheritedModel<T>>(widget))->updateShouldNotifyDependent(oldWidget, dependencies)) {
+    if (dependencies->isEmpty() || (as<InheritedModel<T>>(widget()))->updateShouldNotifyDependent(oldWidget, dependencies)) {
         dependent->didChangeDependencies();
     }
 }

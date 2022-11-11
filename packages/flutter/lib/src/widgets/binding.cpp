@@ -455,7 +455,7 @@ void RenderObjectToWidgetElementCls<T>::mount(Element parent, Object newSlot) {
 template<typename T>
 void RenderObjectToWidgetElementCls<T>::update(RenderObjectToWidgetAdapter<T> newWidget) {
     super->update(newWidget);
-    assert(widget == newWidget);
+    assert(widget() == newWidget);
     _rebuild();
 }
 
@@ -496,7 +496,7 @@ void RenderObjectToWidgetElementCls<T>::removeRenderObjectChild(RenderObject chi
 template<typename T>
 void RenderObjectToWidgetElementCls<T>::_rebuild() {
     try {
-        _child = updateChild(_child, (as<RenderObjectToWidgetAdapter<T>>(widget))->child, _rootChildSlot);
+        _child = updateChild(_child, (as<RenderObjectToWidgetAdapter<T>>(widget()))->child, _rootChildSlot);
     } catch (Unknown exception) {
         FlutterErrorDetails details = make<FlutterErrorDetailsCls>(exception, stack, __s("widgets library"), make<ErrorDescriptionCls>(__s("attaching to the render tree")));
         FlutterErrorCls->reportError(details);

@@ -80,7 +80,7 @@ void DefaultPlatformMenuDelegateCls::clearMenus() {
 void DefaultPlatformMenuDelegateCls::setMenus(List<MenuItem> topLevelMenus) {
     _idMap->clear();
     List<Map<String, Object>> representation = makeList();
-    if (topLevelMenus->isNotEmpty) {
+    if (topLevelMenus->isNotEmpty()) {
         for (MenuItem childItem : topLevelMenus) {
             representation->addAll(childItem->toChannelRepresentation(this, _getId));
         }
@@ -159,20 +159,20 @@ List<DiagnosticsNode> PlatformMenuBarCls::debugDescribeChildren() {
 
 void _PlatformMenuBarStateCls::initState() {
     super->initState();
-    assert(WidgetsBindingCls::instance->platformMenuDelegate->debugLockDelegate(context), __s("More than one active $PlatformMenuBar detected. Only one active platform-rendered menu bar is allowed at a time."));
+    assert(WidgetsBindingCls::instance->platformMenuDelegate->debugLockDelegate(context()), __s("More than one active $PlatformMenuBar detected. Only one active platform-rendered menu bar is allowed at a time."));
     WidgetsBindingCls::instance->platformMenuDelegate->clearMenus();
     _updateMenu();
 }
 
 void _PlatformMenuBarStateCls::dispose() {
-    assert(WidgetsBindingCls::instance->platformMenuDelegate->debugUnlockDelegate(context), __s("tried to unlock the $DefaultPlatformMenuDelegate more than once with context $context."));
+    assert(WidgetsBindingCls::instance->platformMenuDelegate->debugUnlockDelegate(context()), __s("tried to unlock the $DefaultPlatformMenuDelegate more than once with context $context."));
     WidgetsBindingCls::instance->platformMenuDelegate->clearMenus();
     super->dispose();
 }
 
 void _PlatformMenuBarStateCls::didUpdateWidget(PlatformMenuBar oldWidget) {
     super->didUpdateWidget(oldWidget);
-    List<MenuItem> list1 = make<ListCls<>>();for (MenuItem item : widget->menus) {    ;}{    list1.add(ArrayItem);}List<MenuItem> newDescendants = list1;
+    List<MenuItem> list1 = make<ListCls<>>();for (MenuItem item : widget()->menus) {    ;}{    list1.add(ArrayItem);}List<MenuItem> newDescendants = list1;
     if (!listEquals(newDescendants, descendants)) {
         descendants = newDescendants;
         _updateMenu();
@@ -180,11 +180,11 @@ void _PlatformMenuBarStateCls::didUpdateWidget(PlatformMenuBar oldWidget) {
 }
 
 Widget _PlatformMenuBarStateCls::build(BuildContext context) {
-    return widget->child | widget->body | make<SizedBoxCls>();
+    return widget()->child | widget()->body | make<SizedBoxCls>();
 }
 
 void _PlatformMenuBarStateCls::_updateMenu() {
-    WidgetsBindingCls::instance->platformMenuDelegate->setMenus(widget->menus);
+    WidgetsBindingCls::instance->platformMenuDelegate->setMenus(widget()->menus);
 }
 
 List<MenuItem> PlatformMenuCls::descendants() {
@@ -215,10 +215,10 @@ Map<String, Object> PlatformMenuCls::serialize(PlatformMenu item, PlatformMenuDe
         previousItem = item;
         return false;
     });
-    if (result->isNotEmpty && result->last[_kIsDividerKey] == true) {
+    if (result->isNotEmpty() && result->last[_kIsDividerKey] == true) {
         result->removeLast();
     }
-    Map<String, Object> map1 = make<MapCls<>>();map1.set(_kIdKey, getId(item));map1.set(_kLabelKey, item->label);map1.set(_kEnabledKey, item->menus->isNotEmpty);map1.set(_kChildrenKey, result);return list1;
+    Map<String, Object> map1 = make<MapCls<>>();map1.set(_kIdKey, getId(item));map1.set(_kLabelKey, item->label);map1.set(_kEnabledKey, item->menus->isNotEmpty());map1.set(_kChildrenKey, result);return list1;
 }
 
 List<DiagnosticsNode> PlatformMenuCls::debugDescribeChildren() {
@@ -230,11 +230,11 @@ List<DiagnosticsNode> PlatformMenuCls::debugDescribeChildren() {
 void PlatformMenuCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
     properties->add(make<StringPropertyCls>(__s("label"), label));
-    properties->add(make<FlagPropertyCls>(__s("enabled"), menus->isNotEmpty, __s("DISABLED")));
+    properties->add(make<FlagPropertyCls>(__s("enabled"), menus->isNotEmpty(), __s("DISABLED")));
 }
 
 Iterable<Map<String, Object>> PlatformMenuItemGroupCls::toChannelRepresentation(PlatformMenuDelegate delegate, MenuItemSerializableIdGenerator getId) {
-    assert(members->isNotEmpty, __s("There must be at least one member in a PlatformMenuItemGroup"));
+    assert(members->isNotEmpty(), __s("There must be at least one member in a PlatformMenuItemGroup"));
     return serialize(this, delegate, getId);
 }
 

@@ -33,7 +33,7 @@ void _AutomaticKeepAliveStateCls::debugFillProperties(DiagnosticPropertiesBuilde
 }
 
 void _AutomaticKeepAliveStateCls::_updateChild() {
-    _child = <KeepAliveNotification>make<NotificationListenerCls>(_addClient, widget->child);
+    _child = <KeepAliveNotification>make<NotificationListenerCls>(_addClient, widget()->child);
 }
 
 bool _AutomaticKeepAliveStateCls::_addClient(KeepAliveNotification notification) {
@@ -49,7 +49,7 @@ bool _AutomaticKeepAliveStateCls::_addClient(KeepAliveNotification notification)
             _updateParentDataOfChild(childElement);
         } else {
             SchedulerBindingCls::instance->addPostFrameCallback([=] (Duration timeStamp) {
-                if (!mounted) {
+                if (!mounted()) {
                     return;
                 }
                 ParentDataElement<KeepAliveParentDataMixin> childElement = _getChildElement();
@@ -62,8 +62,8 @@ bool _AutomaticKeepAliveStateCls::_addClient(KeepAliveNotification notification)
 }
 
 ParentDataElement<KeepAliveParentDataMixin> _AutomaticKeepAliveStateCls::_getChildElement() {
-    assert(mounted);
-    Element element = as<Element>(context);
+    assert(mounted());
+    Element element = as<Element>(context());
     Element childElement;
     element->visitChildren([=] (Element child) {
         childElement = child;
@@ -73,13 +73,13 @@ ParentDataElement<KeepAliveParentDataMixin> _AutomaticKeepAliveStateCls::_getChi
 }
 
 void _AutomaticKeepAliveStateCls::_updateParentDataOfChild(ParentDataElement<KeepAliveParentDataMixin> childElement) {
-    childElement->applyWidgetOutOfTurn(as<ParentDataWidget<KeepAliveParentDataMixin>>(build(context)));
+    childElement->applyWidgetOutOfTurn(as<ParentDataWidget<KeepAliveParentDataMixin>>(build(context())));
 }
 
 VoidCallback _AutomaticKeepAliveStateCls::_createCallback(Listenable handle) {
     return [=] () {
         assert([=] () {
-            if (!mounted) {
+            if (!mounted()) {
                 throw make<FlutterErrorCls>(__s("AutomaticKeepAlive handle triggered after AutomaticKeepAlive was disposed.\nWidgets should always trigger their KeepAliveNotification handle when they are deactivated, so that they (or their handle) do not send spurious events later when they are no longer in the tree."));
             }
             return true;
@@ -93,7 +93,7 @@ VoidCallback _AutomaticKeepAliveStateCls::_createCallback(Listenable handle) {
             } else {
                 _keepingAlive = false;
                 scheduleMicrotask([=] () {
-                    if (mounted && _handles!->isEmpty()) {
+                    if (mounted() && _handles!->isEmpty()) {
                         setState([=] () {
                             assert(!_keepingAlive);
                         });

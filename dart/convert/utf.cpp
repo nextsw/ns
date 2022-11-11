@@ -90,13 +90,13 @@ int _Utf8EncoderCls::_fillBuffer(String str, int start, int end) {
     for (stringIndex = start;  < end; stringIndex++) {
         auto codeUnit = str->codeUnitAt(stringIndex);
         if (codeUnit <= _ONE_BYTE_LIMIT) {
-            if (_bufferIndex >= _buffer->length) {
+            if (_bufferIndex >= _buffer->length()) {
                 break;
             }
             _buffer[_bufferIndex++] = codeUnit;
         } else {
             if (_isLeadSurrogate(codeUnit)) {
-            if (_bufferIndex + 4 > _buffer->length) {
+            if (_bufferIndex + 4 > _buffer->length()) {
                 break;
             }
             auto nextCodeUnit = str->codeUnitAt(stringIndex + 1);
@@ -106,21 +106,21 @@ int _Utf8EncoderCls::_fillBuffer(String str, int start, int end) {
             }
         } else {
             if (_isTailSurrogate(codeUnit)) {
-            if (_bufferIndex + 3 > _buffer->length) {
+            if (_bufferIndex + 3 > _buffer->length()) {
                 break;
             }
             _writeReplacementCharacter();
         } else {
             auto rune = codeUnit;
             if (rune <= _TWO_BYTE_LIMIT) {
-                if (_bufferIndex + 1 >= _buffer->length) {
+                if (_bufferIndex + 1 >= _buffer->length()) {
                     break;
                 }
                 _buffer[_bufferIndex++] = 0xC0 | (rune >> 6);
                 _buffer[_bufferIndex++] = 0x80 | (rune & 0x3f);
             } else {
                 assert(rune <= _THREE_BYTE_LIMIT);
-                if (_bufferIndex + 2 >= _buffer->length) {
+                if (_bufferIndex + 2 >= _buffer->length()) {
                     break;
                 }
                 _buffer[_bufferIndex++] = 0xE0 | (rune >> 12);
@@ -165,7 +165,7 @@ void _Utf8EncoderSinkCls::addSlice(String str, int start, int end, bool isLast) 
         start = _fillBuffer(str, start, end);
         auto isLastSlice = isLast && (start == end);
         if (start == end - 1 && _isLeadSurrogate(str->codeUnitAt(start))) {
-            if (isLast &&  < _buffer->length - 3) {
+            if (isLast &&  < _buffer->length() - 3) {
                 _writeReplacementCharacter();
             } else {
                 _carry = str->codeUnitAt(start);

@@ -79,7 +79,7 @@ void _BlockCls::_add(_Instruction i) {
 
 void _BlockCls::_writeContinue(_BlockContext ctx) {
     List<_CompoundAssignment> assignments = instructions-><_CompoundAssignment>whereType()->toList();
-    if (assignments->isEmpty) {
+    if (assignments->isEmpty()) {
         throw TranspileExceptionCls->_(_opLoopMerge, __s("loop continue block $id has no compound assignments."));
     }
     if (assignments->length() > 1) {

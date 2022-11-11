@@ -118,7 +118,7 @@ Zone _ZoneDelegateCls::fork(Zone zone, ZoneSpecification specification, Map<Obje
 }
 
 bool _ZoneCls::inSameErrorZone(Zone otherZone) {
-    return identical(this, otherZone) || identical(errorZone, otherZone->errorZone());
+    return identical(this, otherZone) || identical(errorZone(), otherZone->errorZone());
 }
 
 void _ZoneCls::_processUncaughtError(Zone zone, Object error, StackTrace stackTrace) {

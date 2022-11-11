@@ -46,7 +46,7 @@ void ScrollUpdateNotificationCls::debugFillDescription(List<String> description)
 OverscrollNotificationCls::OverscrollNotificationCls(BuildContext context, DragUpdateDetails dragDetails, Unknown metrics, double overscroll, double velocity) {
     {
         assert(overscroll != nullptr);
-        assert(overscroll->isFinite);
+        assert(overscroll->isFinite());
         assert(overscroll != 0.0);
         assert(velocity != nullptr);
     }

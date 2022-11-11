@@ -18,7 +18,7 @@ _MutableTextRange _MutableTextRangeCls::fromComposingRange(TextRange range) {
 }
 
 _MutableTextRange _MutableTextRangeCls::fromTextSelection(TextSelection selection) {
-    return selection->isValid? make<_MutableTextRangeCls>(selection->baseOffset, selection->extentOffset) : nullptr;
+    return selection->isValid()? make<_MutableTextRangeCls>(selection->baseOffset, selection->extentOffset) : nullptr;
 }
 
 TextEditingValue _TextEditingValueAccumulatorCls::finalize() {
@@ -97,7 +97,7 @@ TextEditingValue LengthLimitingTextInputFormatterCls::truncate(TextEditingValue 
     if (value->text->characters->length > maxLength) {
         iterator->expandNext(maxLength);
     }
-    String truncated = iterator->current;
+    String truncated = iterator->current();
     return make<TextEditingValueCls>(truncated, value->selection->copyWith(math->min(value->selection->start, truncated->length()), math->min(value->selection->end, truncated->length())), !value->composing->isCollapsed() && truncated->length() > value->composing->start? make<TextRangeCls>(value->composing->start, math->min(value->composing->end, truncated->length())) : TextRangeCls::empty);
 }
 

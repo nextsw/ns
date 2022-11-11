@@ -62,7 +62,7 @@ bool _DirectoryCls::existsSync() {
 }
 
 Directory _DirectoryCls::absolute() {
-    return make<DirectoryCls>(_absolutePath);
+    return make<DirectoryCls>(_absolutePath());
 }
 
 Future<Directory> _DirectoryCls::create(bool recursive) {
@@ -71,8 +71,8 @@ Future<Directory> _DirectoryCls::create(bool recursive) {
             if (exists) {
                 return this;
             }
-            if (path() != parent->path) {
-                return parent->create(true)->then([=] () {
+            if (path() != parent()->path()) {
+                return parent()->create(true)->then([=] () {
                     return create();
                 });
             } else {
@@ -94,8 +94,8 @@ void _DirectoryCls::createSync(bool recursive) {
         if (existsSync()) {
             return;
         }
-        if (path() != parent->path) {
-            parent->createSync(true);
+        if (path() != parent()->path()) {
+            parent()->createSync(true);
         }
     }
     auto result = _create(_NamespaceCls::_namespace, _rawPath);

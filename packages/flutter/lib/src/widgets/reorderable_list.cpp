@@ -36,7 +36,7 @@ void ReorderableListStateCls::cancelReorder() {
 }
 
 Widget ReorderableListStateCls::build(BuildContext context) {
-    return make<CustomScrollViewCls>(widget->scrollDirection, widget->reverse, widget->controller, widget->primary, widget->physics, widget->shrinkWrap, widget->anchor, widget->cacheExtent, widget->dragStartBehavior, widget->keyboardDismissBehavior, widget->restorationId, widget->clipBehavior, makeList(ArrayItem));
+    return make<CustomScrollViewCls>(widget()->scrollDirection, widget()->reverse, widget()->controller, widget()->primary, widget()->physics, widget()->shrinkWrap, widget()->anchor, widget()->cacheExtent, widget()->dragStartBehavior, widget()->keyboardDismissBehavior, widget()->restorationId, widget()->clipBehavior, makeList(ArrayItem));
 }
 
 SliverReorderableListCls::SliverReorderableListCls(ChildIndexGetter findChildIndexCallback, IndexedWidgetBuilder itemBuilder, int itemCount, double itemExtent, Unknown key, ReorderCallback onReorder, std::function<void(int )> onReorderEnd, std::function<void(int )> onReorderStart, Widget prototypeItem, ReorderItemProxyDecorator proxyDecorator) {
@@ -69,7 +69,7 @@ SliverReorderableListState SliverReorderableListCls::maybeOf(BuildContext contex
 
 void SliverReorderableListStateCls::didChangeDependencies() {
     super->didChangeDependencies();
-    _scrollable = ScrollableCls->of(context)!;
+    _scrollable = ScrollableCls->of(context())!;
     if (_autoScroller?->scrollable != _scrollable) {
         _autoScroller?->stopAutoScroll();
         _autoScroller = make<EdgeDraggingAutoScrollerCls>(_scrollable, _handleScrollableAutoScrolled);
@@ -78,7 +78,7 @@ void SliverReorderableListStateCls::didChangeDependencies() {
 
 void SliverReorderableListStateCls::didUpdateWidget(SliverReorderableList oldWidget) {
     super->didUpdateWidget(oldWidget);
-    if (widget->itemCount != oldWidget->itemCount) {
+    if (widget()->itemCount != oldWidget->itemCount) {
         cancelReorder();
     }
 }
@@ -89,7 +89,7 @@ void SliverReorderableListStateCls::dispose() {
 }
 
 void SliverReorderableListStateCls::startItemDragReorder(PointerDownEvent event, int index, MultiDragGestureRecognizer recognizer) {
-    assert(0 <= index &&  < widget->itemCount);
+    assert(0 <= index &&  < widget()->itemCount);
     setState([=] () {
         if (_dragInfo != nullptr) {
             cancelReorder();
@@ -118,12 +118,12 @@ void SliverReorderableListStateCls::cancelReorder() {
 
 Widget SliverReorderableListStateCls::build(BuildContext context) {
     assert(debugCheckHasOverlay(context));
-    SliverChildBuilderDelegate childrenDelegate = make<SliverChildBuilderDelegateCls>(_itemBuilder, widget->itemCount + (_dragInfo != nullptr? 1 : 0), widget->findChildIndexCallback);
-    if (widget->itemExtent != nullptr) {
-        return make<SliverFixedExtentListCls>(childrenDelegate, widget->itemExtent!);
+    SliverChildBuilderDelegate childrenDelegate = make<SliverChildBuilderDelegateCls>(_itemBuilder, widget()->itemCount + (_dragInfo != nullptr? 1 : 0), widget()->findChildIndexCallback);
+    if (widget()->itemExtent != nullptr) {
+        return make<SliverFixedExtentListCls>(childrenDelegate, widget()->itemExtent!);
     } else {
-        if (widget->prototypeItem != nullptr) {
-        return make<SliverPrototypeExtentListCls>(childrenDelegate, widget->prototypeItem!);
+        if (widget()->prototypeItem != nullptr) {
+        return make<SliverPrototypeExtentListCls>(childrenDelegate, widget()->prototypeItem!);
     }
 ;
     }    return make<SliverListCls>(childrenDelegate);
@@ -156,16 +156,16 @@ Drag SliverReorderableListStateCls::_dragStart(Offset position) {
     assert(_dragInfo == nullptr);
     _ReorderableItemState item = _items[_dragIndex!]!;
     item->dragging() = true;
-    widget->onReorderStart?->call(_dragIndex!);
+    widget()->onReorderStart?->call(_dragIndex!);
     item->rebuild();
     _dragStartTransitionComplete = false;
     SchedulerBindingCls::instance->addPostFrameCallback([=] (Duration duration) {
         _dragStartTransitionComplete = true;
     });
     _insertIndex = item->index();
-    _dragInfo = make<_DragInfoCls>(item, position, _scrollDirection(), _dragUpdate, _dragCancel, _dragEnd, _dropCompleted, widget->proxyDecorator, this);
+    _dragInfo = make<_DragInfoCls>(item, position, _scrollDirection(), _dragUpdate, _dragCancel, _dragEnd, _dropCompleted, widget()->proxyDecorator, this);
     _dragInfo!->startDrag();
-    OverlayState overlay = OverlayCls->of(context)!;
+    OverlayState overlay = OverlayCls->of(context())!;
     assert(_overlayEntry == nullptr);
     _overlayEntry = make<OverlayEntryCls>(_dragInfo!->createProxy);
     overlay->insert(_overlayEntry!);
@@ -194,7 +194,7 @@ void SliverReorderableListStateCls::_dragCancel(_DragInfo item) {
 
 void SliverReorderableListStateCls::_dragEnd(_DragInfo item) {
     setState([=] () {
-        if (_insertIndex! < widget->itemCount - 1) {
+        if (_insertIndex! < widget()->itemCount - 1) {
             _finalDropPosition = _itemOffsetAt(_insertIndex! + (_reverse()? 1 : 0));
         } else {
             int itemIndex = _items->length() > 1? _insertIndex! - 1 : _insertIndex!;
@@ -205,14 +205,14 @@ void SliverReorderableListStateCls::_dragEnd(_DragInfo item) {
             }
         }
     });
-    widget->onReorderEnd?->call(_insertIndex!);
+    widget()->onReorderEnd?->call(_insertIndex!);
 }
 
 void SliverReorderableListStateCls::_dropCompleted() {
     int fromIndex = _dragIndex!;
     int toIndex = _insertIndex!;
     if (fromIndex != toIndex) {
-        widget->onReorder->call(fromIndex, toIndex);
+        widget()->onReorder->call(fromIndex, toIndex);
     }
     setState([=] () {
         _dragReset();
@@ -332,10 +332,10 @@ Offset SliverReorderableListStateCls::_itemOffsetAt(int index) {
 }
 
 Widget SliverReorderableListStateCls::_itemBuilder(BuildContext context, int index) {
-    if (_dragInfo != nullptr && index >= widget->itemCount) {
+    if (_dragInfo != nullptr && index >= widget()->itemCount) {
         ;
     }
-    Widget child = widget->itemBuilder(context, index);
+    Widget child = widget()->itemBuilder(context, index);
     assert(child->key != nullptr, __s("All list items must have a key"));
     OverlayState overlay = OverlayCls->of(context)!;
     return make<_ReorderableItemCls>(make<_ReorderableItemGlobalKeyCls>(child->key!, index, this), index, InheritedThemeCls->capture(context, overlay->context), child);
@@ -349,11 +349,11 @@ _ReorderableItemCls::_ReorderableItemCls(CapturedThemes capturedThemes, Widget c
 }
 
 Key _ReorderableItemStateCls::key() {
-    return widget->key!;
+    return widget()->key()!;
 }
 
 int _ReorderableItemStateCls::index() {
-    return widget->index;
+    return widget()->index();
 }
 
 bool _ReorderableItemStateCls::dragging() {
@@ -361,7 +361,7 @@ bool _ReorderableItemStateCls::dragging() {
 }
 
 void _ReorderableItemStateCls::dragging(bool dragging) {
-    if (mounted) {
+    if (mounted()) {
         setState([=] () {
             _dragging = dragging;
         });
@@ -369,7 +369,7 @@ void _ReorderableItemStateCls::dragging(bool dragging) {
 }
 
 void _ReorderableItemStateCls::initState() {
-    _listState = SliverReorderableListCls->of(context);
+    _listState = SliverReorderableListCls->of(context());
     _listState->_registerItem(this);
     super->initState();
 }
@@ -382,7 +382,7 @@ void _ReorderableItemStateCls::dispose() {
 
 void _ReorderableItemStateCls::didUpdateWidget(_ReorderableItem oldWidget) {
     super->didUpdateWidget(oldWidget);
-    if (oldWidget->index != widget->index) {
+    if (oldWidget->index != widget()->index()) {
         _listState->_unregisterItem(oldWidget->index, this);
         _listState->_registerItem(this);
     }
@@ -393,7 +393,7 @@ Widget _ReorderableItemStateCls::build(BuildContext context) {
         return make<SizedBoxCls>();
     }
     _listState->_registerItem(this);
-    return make<TransformCls>(Matrix4Cls->translationValues(offset()->dx(), offset()->dy(), 0.0), widget->child);
+    return make<TransformCls>(Matrix4Cls->translationValues(offset()->dx(), offset()->dy(), 0.0), widget()->child);
 }
 
 void _ReorderableItemStateCls::deactivate() {
@@ -442,13 +442,13 @@ void _ReorderableItemStateCls::resetGap() {
 }
 
 Rect _ReorderableItemStateCls::targetGeometry() {
-    RenderBox itemRenderBox = as<RenderBox>(context->findRenderObject()!);
+    RenderBox itemRenderBox = as<RenderBox>(context()->findRenderObject()!);
     Offset itemPosition = itemRenderBox->localToGlobal(OffsetCls::zero) + _targetOffset;
     return itemPosition & itemRenderBox->size();
 }
 
 void _ReorderableItemStateCls::rebuild() {
-    if (mounted) {
+    if (mounted()) {
         setState([=] () {
         });
     }
@@ -505,16 +505,16 @@ Widget _DragInfoCls::createProxy(BuildContext context) {
 
 _DragInfoCls::_DragInfoCls(Offset initialPosition, _ReorderableItemState item, _DragItemCallback onCancel, VoidCallback onDropCompleted, _DragItemCallback onEnd, _DragItemUpdate onUpdate, ReorderItemProxyDecorator proxyDecorator, Axis scrollDirection, TickerProvider tickerProvider) {
     {
-        RenderBox itemRenderBox = as<RenderBox>(item->context->findRenderObject()!);
+        RenderBox itemRenderBox = as<RenderBox>(item->context()->findRenderObject()!);
         listState = item->_listState;
         index = item->index;
-        child = item->widget->child;
-        capturedThemes = item->widget->capturedThemes;
+        child = item->widget()->child;
+        capturedThemes = item->widget()->capturedThemes;
         dragPosition = initialPosition;
         dragOffset = itemRenderBox->globalToLocal(initialPosition);
-        itemSize = item->context->size!;
+        itemSize = item->context()->size()!;
         itemExtent = _sizeExtent(itemSize, scrollDirection);
-        scrollable = ScrollableCls->of(item->context);
+        scrollable = ScrollableCls->of(item->context());
     }
 }
 

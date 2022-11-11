@@ -1,6 +1,6 @@
 #include "page_storage.hpp"
 bool _StorageEntryIdentifierCls::isNotEmpty() {
-    return keys->isNotEmpty;
+    return keys->isNotEmpty();
 }
 
 bool _StorageEntryIdentifierCls::==(Object other) {

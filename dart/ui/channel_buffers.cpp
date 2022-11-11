@@ -127,7 +127,7 @@ Future<void> ChannelBuffersCls::drain(String name, DrainChannelCallback callback
 }
 
 void ChannelBuffersCls::handleMessage(ByteData data) {
-    Uint8List bytes = data->buffer->asUint8List(data->offsetInBytes, data->lengthInBytes);
+    Uint8List bytes = data->buffer()->asUint8List(data->offsetInBytes(), data->lengthInBytes());
     if (bytes[0] == 0x07) {
         int methodNameLength = bytes[1];
         if (methodNameLength >= 254) {

@@ -1,8 +1,8 @@
 #include "sliver_list.hpp"
 void RenderSliverListCls::performLayout() {
-    SliverConstraints constraints = this->constraints;
-    childManager->didStartLayout();
-    childManager->setDidUnderflow(false);
+    SliverConstraints constraints = this->constraints();
+    childManager()->didStartLayout();
+    childManager()->setDidUnderflow(false);
     double scrollOffset = constraints->scrollOffset + constraints->cacheOrigin;
     assert(scrollOffset >= 0.0);
     double remainingExtent = constraints->remainingCacheExtent;
@@ -14,8 +14,8 @@ void RenderSliverListCls::performLayout() {
     bool reachedEnd = false;
     if (firstChild == nullptr) {
         if (!addInitialChild()) {
-            geometry = SliverGeometryCls::zero;
-            childManager->didFinishLayout();
+            geometry() = SliverGeometryCls::zero;
+            childManager()->didFinishLayout();
             return;
         }
     }
@@ -30,8 +30,8 @@ void RenderSliverListCls::performLayout() {
         collectGarbage(leadingChildrenWithoutLayoutOffset, 0);
         if (firstChild == nullptr) {
             if (!addInitialChild()) {
-                geometry = SliverGeometryCls::zero;
-                childManager->didFinishLayout();
+                geometry() = SliverGeometryCls::zero;
+                childManager()->didFinishLayout();
                 return;
             }
         }
@@ -49,13 +49,13 @@ void RenderSliverListCls::performLayout() {
                 trailingChildWithLayout |= earliestUsefulChild;
                 break;
             } else {
-                geometry = make<SliverGeometryCls>(-scrollOffset);
+                geometry() = make<SliverGeometryCls>(-scrollOffset);
                 return;
             }
         }
         double firstChildScrollOffset = earliestScrollOffset - paintExtentOf(firstChild!);
         if ( < -precisionErrorTolerance) {
-            geometry = make<SliverGeometryCls>(-firstChildScrollOffset);
+            geometry() = make<SliverGeometryCls>(-firstChildScrollOffset);
             SliverMultiBoxAdaptorParentData childParentData = as<SliverMultiBoxAdaptorParentData>(firstChild!->parentData!);
             childParentData->layoutOffset = 0.0;
             return;
@@ -76,7 +76,7 @@ void RenderSliverListCls::performLayout() {
             SliverMultiBoxAdaptorParentData childParentData = as<SliverMultiBoxAdaptorParentData>(firstChild!->parentData!);
             childParentData->layoutOffset = 0.0;
             if ( < -precisionErrorTolerance) {
-                geometry = make<SliverGeometryCls>(-firstChildScrollOffset);
+                geometry() = make<SliverGeometryCls>(-firstChildScrollOffset);
                 return;
             }
         }
@@ -101,7 +101,7 @@ void RenderSliverListCls::performLayout() {
             collectGarbage(leadingGarbage - 1, 0);
             assert(firstChild == lastChild);
             double extent = childScrollOffset(lastChild!)! + paintExtentOf(lastChild!);
-            geometry = make<SliverGeometryCls>(extent, extent);
+            geometry() = make<SliverGeometryCls>(extent, extent);
             return;
         }
     }
@@ -124,15 +124,15 @@ void RenderSliverListCls::performLayout() {
     if (reachedEnd) {
         estimatedMaxScrollOffset = endScrollOffset;
     } else {
-        estimatedMaxScrollOffset = childManager->estimateMaxScrollOffset(constraints, indexOf(firstChild!), indexOf(lastChild!), childScrollOffset(firstChild!), endScrollOffset);
+        estimatedMaxScrollOffset = childManager()->estimateMaxScrollOffset(constraints, indexOf(firstChild!), indexOf(lastChild!), childScrollOffset(firstChild!), endScrollOffset);
         assert(estimatedMaxScrollOffset >= endScrollOffset - childScrollOffset(firstChild!)!);
     }
     double paintExtent = calculatePaintOffset(constraints, childScrollOffset(firstChild!)!, endScrollOffset);
     double cacheExtent = calculateCacheOffset(constraints, childScrollOffset(firstChild!)!, endScrollOffset);
     double targetEndScrollOffsetForPaint = constraints->scrollOffset + constraints->remainingPaintExtent;
-    geometry = make<SliverGeometryCls>(estimatedMaxScrollOffset, paintExtent, cacheExtent, estimatedMaxScrollOffset, endScrollOffset > targetEndScrollOffsetForPaint || constraints->scrollOffset > 0.0);
+    geometry() = make<SliverGeometryCls>(estimatedMaxScrollOffset, paintExtent, cacheExtent, estimatedMaxScrollOffset, endScrollOffset > targetEndScrollOffsetForPaint || constraints->scrollOffset > 0.0);
     if (estimatedMaxScrollOffset == endScrollOffset) {
-        childManager->setDidUnderflow(true);
+        childManager()->setDidUnderflow(true);
     }
-    childManager->didFinishLayout();
+    childManager()->didFinishLayout();
 }

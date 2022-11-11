@@ -32,7 +32,7 @@ void ForcePressGestureRecognizerCls::handleEvent(PointerEvent event) {
     assert(_state != _ForceStateCls::ready);
     if (is<PointerMoveEvent>(event) || is<PointerDownEvent>(event)) {
         double pressure = interpolation(event->pressureMin, event->pressureMax, event->pressure);
-        assert((pressure >= 0.0 && pressure <= 1.0) || pressure->isNaN);
+        assert((pressure >= 0.0 && pressure <= 1.0) || pressure->isNaN());
         _lastPosition = OffsetPairCls->fromEventPosition(event);
         _lastPressure = pressure;
         if (_state == _ForceStateCls::possible) {
@@ -61,7 +61,7 @@ void ForcePressGestureRecognizerCls::handleEvent(PointerEvent event) {
                 });
             }
         }
-        if (onUpdate != nullptr && !pressure->isNaN && (_state == _ForceStateCls::started || _state == _ForceStateCls::peaked)) {
+        if (onUpdate != nullptr && !pressure->isNaN() && (_state == _ForceStateCls::started || _state == _ForceStateCls::peaked)) {
             if (onUpdate != nullptr) {
                 <void>invokeCallback(__s("onUpdate"), [=] () {
                     onUpdate!(make<ForcePressDetailsCls>(pressure, event->position, event->localPosition()));
@@ -111,7 +111,7 @@ String ForcePressGestureRecognizerCls::debugDescription() {
 double ForcePressGestureRecognizerCls::_inverseLerp(double min, double max, double t) {
     assert(min <= max);
     double value = (t - min) / (max - min);
-    if (!value->isNaN) {
+    if (!value->isNaN()) {
         value = clampDouble(value, 0.0, 1.0);
     }
     return value;

@@ -221,7 +221,7 @@ void ScrollPositionCls::applyNewDimensions() {
 
 Future<void> ScrollPositionCls::ensureVisible(RenderObject object, double alignment, ScrollPositionAlignmentPolicy alignmentPolicy, Curve curve, Duration duration, RenderObject targetRenderObject) {
     assert(alignmentPolicy != nullptr);
-    assert(object->attached);
+    assert(object->attached());
     RenderAbstractViewport viewport = RenderAbstractViewportCls->of(object)!;
     assert(viewport != nullptr);
     Rect targetRect;

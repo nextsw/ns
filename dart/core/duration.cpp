@@ -69,7 +69,7 @@ bool DurationCls::==(Object other) {
 }
 
 int DurationCls::hashCode() {
-    return _duration->hashCode;
+    return _duration->hashCode();
 }
 
 int DurationCls::compareTo(Duration other) {

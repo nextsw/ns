@@ -15,7 +15,7 @@ double DraggableScrollableControllerCls::sizeToPixels(double size) {
 }
 
 bool DraggableScrollableControllerCls::isAttached() {
-    return _attachedController != nullptr && _attachedController!->hasClients;
+    return _attachedController != nullptr && _attachedController!->hasClients();
 }
 
 double DraggableScrollableControllerCls::pixelsToSize(double pixels) {
@@ -27,7 +27,7 @@ Future<void> DraggableScrollableControllerCls::animateTo(double size, Curve curv
     _assertAttached();
     assert(size >= 0 && size <= 1);
     assert(duration != DurationCls::zero);
-    AnimationController animationController = AnimationControllerCls->unbounded(_attachedController!->position()->context->vsync, _attachedController!->extent->currentSize());
+    AnimationController animationController = AnimationControllerCls->unbounded(_attachedController!->position()->context->vsync(), _attachedController!->extent->currentSize());
     _animationControllers->add(animationController);
     _attachedController!->position()->goIdle();
     _attachedController!->extent->hasDragged = false;
@@ -37,7 +37,7 @@ Future<void> DraggableScrollableControllerCls::animateTo(double size, Curve curv
         }
     });
     animationController->addListener([=] () {
-        _attachedController!->extent->updateSize(animationController->value(), _attachedController!->position()->context->notificationContext!);
+        _attachedController!->extent->updateSize(animationController->value(), _attachedController!->position()->context->notificationContext()!);
         if (animationController->value() > _attachedController!->extent->maxSize || animationController->value() < _attachedController!->extent->minSize) {
             animationController->stop(false);
         }
@@ -52,7 +52,7 @@ void DraggableScrollableControllerCls::jumpTo(double size) {
     });
     _attachedController!->position()->goIdle();
     _attachedController!->extent->hasDragged = false;
-    _attachedController!->extent->updateSize(size, _attachedController!->position()->context->notificationContext!);
+    _attachedController!->extent->updateSize(size, _attachedController!->position()->context->notificationContext()!);
 }
 
 void DraggableScrollableControllerCls::reset() {
@@ -211,9 +211,9 @@ _DraggableSheetExtentCls::_DraggableSheetExtentCls(ValueNotifier<double> current
 
 void _DraggableScrollableSheetStateCls::initState() {
     super->initState();
-    _extent = make<_DraggableSheetExtentCls>(widget->minChildSize, widget->maxChildSize, widget->snap, _impliedSnapSizes(), widget->initialChildSize, _setExtent);
+    _extent = make<_DraggableSheetExtentCls>(widget()->minChildSize, widget()->maxChildSize, widget()->snap, _impliedSnapSizes(), widget()->initialChildSize, _setExtent);
     _scrollController = make<_DraggableScrollableSheetScrollControllerCls>(_extent);
-    widget->controller?->_attach(_scrollController);
+    widget()->controller?->_attach(_scrollController);
 }
 
 void _DraggableScrollableSheetStateCls::didUpdateWidget(DraggableScrollableSheet oldWidget) {
@@ -223,36 +223,36 @@ void _DraggableScrollableSheetStateCls::didUpdateWidget(DraggableScrollableSheet
 
 void _DraggableScrollableSheetStateCls::didChangeDependencies() {
     super->didChangeDependencies();
-    if (_InheritedResetNotifierCls->shouldReset(context)) {
+    if (_InheritedResetNotifierCls->shouldReset(context())) {
         _scrollController->reset();
     }
 }
 
 Widget _DraggableScrollableSheetStateCls::build(BuildContext context) {
     return make<LayoutBuilderCls>([=] (BuildContext context,BoxConstraints constraints) {
-        _extent->availablePixels = widget->maxChildSize * constraints->biggest->height;
-        Widget sheet = make<FractionallySizedBoxCls>(_extent->currentSize(), AlignmentCls::bottomCenter, widget->builder(context, _scrollController));
-        return widget->expand? SizedBoxCls->expand(sheet) : sheet;
+        _extent->availablePixels = widget()->maxChildSize * constraints->biggest->height;
+        Widget sheet = make<FractionallySizedBoxCls>(_extent->currentSize(), AlignmentCls::bottomCenter, widget()->builder(context, _scrollController));
+        return widget()->expand? SizedBoxCls->expand(sheet) : sheet;
     });
 }
 
 void _DraggableScrollableSheetStateCls::dispose() {
-    widget->controller?->_detach();
+    widget()->controller?->_detach();
     _scrollController->dispose();
     _extent->dispose();
     super->dispose();
 }
 
 List<double> _DraggableScrollableSheetStateCls::_impliedSnapSizes() {
-    for (;  < (widget->snapSizes?->length | 0); index += 1) {
-        double snapSize = widget->snapSizes![index];
-        assert(snapSize >= widget->minChildSize && snapSize <= widget->maxChildSize, __s("${_snapSizeErrorMessage(index)}\nSnap sizes must be between `minChildSize` and `maxChildSize`. "));
-        assert(index == 0 || snapSize > widget->snapSizes![index - 1], __s("${_snapSizeErrorMessage(index)}\nSnap sizes must be in ascending order. "));
+    for (;  < (widget()->snapSizes?->length | 0); index += 1) {
+        double snapSize = widget()->snapSizes![index];
+        assert(snapSize >= widget()->minChildSize && snapSize <= widget()->maxChildSize, __s("${_snapSizeErrorMessage(index)}\nSnap sizes must be between `minChildSize` and `maxChildSize`. "));
+        assert(index == 0 || snapSize > widget()->snapSizes![index - 1], __s("${_snapSizeErrorMessage(index)}\nSnap sizes must be in ascending order. "));
     }
-    if (widget->snapSizes == nullptr || widget->snapSizes!->isEmpty) {
+    if (widget()->snapSizes == nullptr || widget()->snapSizes!->isEmpty) {
         return makeList(ArrayItem, ArrayItem);
     }
-    List<double> list1 = make<ListCls<>>();if (widget->snapSizes!->first != widget->minChildSize) {    list1.add(ArrayItem);}for (auto _x1 : widget->snapSizes!) {{    list1.add(_x1);}if (widget->snapSizes!->last != widget->maxChildSize) {    list1.add(ArrayItem);}return list1;
+    List<double> list1 = make<ListCls<>>();if (widget()->snapSizes!->first != widget()->minChildSize) {    list1.add(ArrayItem);}for (auto _x1 : widget()->snapSizes!) {{    list1.add(_x1);}if (widget()->snapSizes!->last != widget()->maxChildSize) {    list1.add(ArrayItem);}return list1;
 }
 
 void _DraggableScrollableSheetStateCls::_setExtent() {
@@ -263,13 +263,13 @@ void _DraggableScrollableSheetStateCls::_setExtent() {
 void _DraggableScrollableSheetStateCls::_replaceExtent(DraggableScrollableSheet oldWidget) {
     _DraggableSheetExtent previousExtent = _extent;
     _extent->dispose();
-    _extent = _extent->copyWith(widget->minChildSize, widget->maxChildSize, widget->snap, _impliedSnapSizes(), widget->initialChildSize, _setExtent);
+    _extent = _extent->copyWith(widget()->minChildSize, widget()->maxChildSize, widget()->snap, _impliedSnapSizes(), widget()->initialChildSize, _setExtent);
     _scrollController->extent = _extent;
-    widget->controller?->_onExtentReplaced(previousExtent);
-    if (widget->snap && (widget->snap != oldWidget->snap || widget->snapSizes != oldWidget->snapSizes) && _scrollController->hasClients) {
+    widget()->controller?->_onExtentReplaced(previousExtent);
+    if (widget()->snap && (widget()->snap != oldWidget->snap || widget()->snapSizes != oldWidget->snapSizes) && _scrollController->hasClients()) {
         WidgetsBindingCls::instance->addPostFrameCallback([=] (Duration timeStamp) {
-            for (;  < _scrollController->positions->length; index++) {
-                _DraggableScrollableSheetScrollPosition position = as<_DraggableScrollableSheetScrollPosition>(_scrollController->positions->elementAt(index));
+            for (;  < _scrollController->positions()->length(); index++) {
+                _DraggableScrollableSheetScrollPosition position = as<_DraggableScrollableSheetScrollPosition>(_scrollController->positions()->elementAt(index));
                 position->goBallistic(0);
             }
         });
@@ -277,8 +277,8 @@ void _DraggableScrollableSheetStateCls::_replaceExtent(DraggableScrollableSheet 
 }
 
 String _DraggableScrollableSheetStateCls::_snapSizeErrorMessage(int invalidIndex) {
-    List<String> snapSizesWithIndicator = widget->snapSizes!->asMap()->keys->map([=] (int index) {
-    String snapSizeString = widget->snapSizes![index]->toString();
+    List<String> snapSizesWithIndicator = widget()->snapSizes!->asMap()->keys->map([=] (int index) {
+    String snapSizeString = widget()->snapSizes![index]->toString();
     if (index == invalidIndex) {
         return __s(">>> $snapSizeString <<<");
     }
@@ -305,10 +305,10 @@ _DraggableScrollableSheetScrollPosition _DraggableScrollableSheetScrollControlle
 void _DraggableScrollableSheetScrollControllerCls::reset() {
     extent->_cancelActivity?->call();
     extent->hasDragged = false;
-    if (offset != 0.0) {
+    if (offset() != 0.0) {
         animateTo(0.0, make<DurationCls>(1), CurvesCls::linear);
     }
-    extent->updateSize(extent->initialSize, position()->context->notificationContext!);
+    extent->updateSize(extent->initialSize, position()->context->notificationContext()!);
 }
 
 void _DraggableScrollableSheetScrollControllerCls::detach(ScrollPosition position) {
@@ -323,7 +323,7 @@ _DraggableScrollableSheetScrollControllerCls::_DraggableScrollableSheetScrollCon
 }
 
 bool _DraggableScrollableSheetScrollPositionCls::listShouldScroll() {
-    return pixels > 0.0;
+    return pixels() > 0.0;
 }
 
 _DraggableSheetExtent _DraggableScrollableSheetScrollPositionCls::extent() {
@@ -355,7 +355,7 @@ bool _DraggableScrollableSheetScrollPositionCls::applyContentDimensions(double m
 
 void _DraggableScrollableSheetScrollPositionCls::applyUserOffset(double delta) {
     if (!listShouldScroll() && (!(extent()->isAtMin() || extent()->isAtMax()) || (extent()->isAtMin() &&  < 0) || (extent()->isAtMax() && delta > 0))) {
-        extent()->addPixelDelta(-delta, context->notificationContext!);
+        extent()->addPixelDelta(-delta, context->notificationContext()!);
     } else {
         super->applyUserOffset(delta);
     }
@@ -378,11 +378,11 @@ void _DraggableScrollableSheetScrollPositionCls::goBallistic(double velocity) {
     _dragCancelCallback = nullptr;
     Simulation simulation;
     if (extent()->snap) {
-        simulation = make<_SnappingSimulationCls>(extent()->currentPixels(), velocity, extent()->pixelSnapSizes(), physics->tolerance);
+        simulation = make<_SnappingSimulationCls>(extent()->currentPixels(), velocity, extent()->pixelSnapSizes(), physics->tolerance());
     } else {
-        simulation = make<ClampingScrollSimulationCls>(extent()->currentPixels(), velocity, physics->tolerance);
+        simulation = make<ClampingScrollSimulationCls>(extent()->currentPixels(), velocity, physics->tolerance());
     }
-    AnimationController ballisticController = AnimationControllerCls->unbounded(objectRuntimeType(this, __s("_DraggableScrollableSheetPosition")), context->vsync);
+    AnimationController ballisticController = AnimationControllerCls->unbounded(objectRuntimeType(this, __s("_DraggableScrollableSheetPosition")), context->vsync());
     _ballisticControllers->add(ballisticController);
     double lastPosition = extent()->currentPixels();
     InlineMethod;
@@ -396,7 +396,7 @@ Drag _DraggableScrollableSheetScrollPositionCls::drag(DragStartDetails details, 
 
 bool _DraggableScrollableSheetScrollPositionCls::_isAtSnapSize() {
     return extent()->snapSizes->any([=] (double snapSize) {
-        return (extent()->currentSize() - snapSize)->abs() <= extent()->pixelsToSize(physics->tolerance->distance);
+        return (extent()->currentSize() - snapSize)->abs() <= extent()->pixelsToSize(physics->tolerance()->distance);
     });
 }
 
@@ -417,7 +417,7 @@ Widget DraggableScrollableActuatorCls::build(BuildContext context) {
 }
 
 bool _ResetNotifierCls::sendReset() {
-    if (!hasListeners) {
+    if (!hasListeners()) {
         return false;
     }
     _wasCalled = true;

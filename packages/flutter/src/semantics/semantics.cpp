@@ -45,7 +45,7 @@ CustomSemanticsAction CustomSemanticsActionCls::getAction(int id) {
 
 AttributedStringCls::AttributedStringCls(String string, List<StringAttribute> attributes) {
     {
-        assert(stringValue->isNotEmpty() || attributes->isEmpty);
+        assert(stringValue->isNotEmpty() || attributes->isEmpty());
         assert([=] () {
             for (StringAttribute attribute : attributes) {
                 assert(stringValue->length() >= attribute->range->start && stringValue->length() >= attribute->range->end, __s("The range in $attribute is outside of the string $string"));
@@ -64,7 +64,7 @@ AttributedString AttributedStringCls::+(AttributedString other) {
     }
     String newString = stringValue + other->stringValue;
     List<StringAttribute> newAttributes = <StringAttribute>of(attributes);
-    if (other->attributes->isNotEmpty) {
+    if (other->attributes->isNotEmpty()) {
         int offset = stringValue->length();
         for (StringAttribute attribute : other->attributes) {
             TextRange newRange = make<TextRangeCls>(attribute->range->start + offset, attribute->range->end + offset);
@@ -95,18 +95,18 @@ AttributedStringPropertyCls::AttributedStringPropertyCls(String name, Unknown va
 }
 
 bool AttributedStringPropertyCls::isInteresting() {
-    return super->isInteresting && (showWhenEmpty || (value != nullptr && value!->stringValue->isNotEmpty));
+    return super->isInteresting && (showWhenEmpty || (value() != nullptr && value()!->stringValue->isNotEmpty));
 }
 
 String AttributedStringPropertyCls::valueToString(TextTreeConfiguration parentConfiguration) {
-    if (value == nullptr) {
+    if (value() == nullptr) {
         return __s("null");
     }
-    String text = value!->stringValue;
+    String text = value()!->stringValue;
     if (parentConfiguration != nullptr && !parentConfiguration->lineBreakProperties) {
         text = text->replaceAll(__s("\n"), __s("\n"));
     }
-    if (value!->attributes->isEmpty) {
+    if (value()!->attributes->isEmpty) {
         return __s(""$text"");
     }
     return __s(""$text" ${value!.attributes}");
@@ -184,7 +184,7 @@ void SemanticsDataCls::debugFillProperties(DiagnosticPropertiesBuilder propertie
     properties->add(make<AttributedStringPropertyCls>(__s("hint"), attributedHint));
     properties->add(make<StringPropertyCls>(__s("tooltip"), tooltip, __s("")));
     properties->add(<TextDirection>make<EnumPropertyCls>(__s("textDirection"), textDirection, nullptr));
-    if (textSelection?->isValid | false) {
+    if (textSelection?->isValid() | false) {
         properties->add(make<MessagePropertyCls>(__s("textSelection"), __s("[${textSelection!.start}, ${textSelection!.end}]")));
     }
     properties->add(make<IntPropertyCls>(__s("platformViewId"), platformViewId, nullptr));
@@ -358,7 +358,7 @@ bool SemanticsNodeCls::mergeAllDescendantsIntoThisNode() {
 }
 
 bool SemanticsNodeCls::hasChildren() {
-    return _children?->isNotEmpty | false;
+    return _children?->isNotEmpty() | false;
 }
 
 int SemanticsNodeCls::childrenCount() {
@@ -539,7 +539,7 @@ void SemanticsNodeCls::updateWith(List<SemanticsNode> childrenInInversePaintOrde
     if (_isDifferentFromCurrentSemanticAnnotation(config)) {
         _markDirty();
     }
-    assert(config->platformViewId() == nullptr || childrenInInversePaintOrder == nullptr || childrenInInversePaintOrder->isEmpty, __s("SemanticsNodes with children must not specify a platformViewId."));
+    assert(config->platformViewId() == nullptr || childrenInInversePaintOrder == nullptr || childrenInInversePaintOrder->isEmpty(), __s("SemanticsNodes with children must not specify a platformViewId."));
     _attributedLabel = config->attributedLabel();
     _attributedValue = config->attributedValue();
     _attributedIncreasedValue = config->attributedIncreasedValue();
@@ -662,7 +662,7 @@ SemanticsData SemanticsNodeCls::getSemanticsData() {
 }
 
 void SemanticsNodeCls::sendEvent(SemanticsEvent event) {
-    if (!attached) {
+    if (!attached()) {
         return;
     }
     SystemChannelsCls::accessibility->send(event->toMap(id()));
@@ -726,7 +726,7 @@ void SemanticsNodeCls::debugFillProperties(DiagnosticPropertiesBuilder propertie
     properties->add(make<StringPropertyCls>(__s("tooltip"), _tooltip, __s("")));
     properties->add(<TextDirection>make<EnumPropertyCls>(__s("textDirection"), _textDirection, nullptr));
     properties->add(<SemanticsSortKey>make<DiagnosticsPropertyCls>(__s("sortKey"), sortKey(), nullptr));
-    if (_textSelection?->isValid | false) {
+    if (_textSelection?->isValid() | false) {
         properties->add(make<MessagePropertyCls>(__s("text selection"), __s("[${_textSelection!.start}, ${_textSelection!.end}]")));
     }
     properties->add(make<IntPropertyCls>(__s("platformViewId"), platformViewId(), nullptr));
@@ -781,7 +781,7 @@ void SemanticsNodeCls::_replaceChildren(List<SemanticsNode> newChildren) {
             } else {
                 for (;  < newChildren->length(); i++) {
                     if (!identical(newChildren[i], _debugPreviousSnapshot[i])) {
-                        if (mutationErrors->isNotEmpty) {
+                        if (mutationErrors->isNotEmpty()) {
                             mutationErrors->add(make<ErrorSpacerCls>());
                         }
                         mutationErrors->add(make<ErrorDescriptionCls>(__s("Child node at position $i was replaced:")));
@@ -790,7 +790,7 @@ void SemanticsNodeCls::_replaceChildren(List<SemanticsNode> newChildren) {
                     }
                 }
             }
-            if (mutationErrors->isNotEmpty) {
+            if (mutationErrors->isNotEmpty()) {
                             List<DiagnosticsNode> list1 = make<ListCls<>>();            list1.add(ArrayItem);            list1.add(ArrayItem);            list1.add(ArrayItem);            for (auto _x1 : mutationErrors) {            {                list1.add(_x1);            }throw FlutterErrorCls->fromParts(list1);
             }
         }
@@ -876,7 +876,7 @@ void SemanticsNodeCls::_markDirty() {
         return;
     }
     _dirty = true;
-    if (attached) {
+    if (attached()) {
         assert(!owner()!->_detachedNodes->contains(this));
         owner()!->_dirtyNodes->add(this);
     }
@@ -915,9 +915,9 @@ void SemanticsNodeCls::_addToUpdate(SemanticsUpdateBuilder builder, Set<int> cus
         }
     }
     Int32List customSemanticsActionIds;
-    if (data->customSemanticsActionIds?->isNotEmpty | false) {
-        customSemanticsActionIds = make<Int32ListCls>(data->customSemanticsActionIds!->length);
-        for (;  < data->customSemanticsActionIds!->length; i++) {
+    if (data->customSemanticsActionIds?->isNotEmpty() | false) {
+        customSemanticsActionIds = make<Int32ListCls>(data->customSemanticsActionIds!->length());
+        for (;  < data->customSemanticsActionIds!->length(); i++) {
             customSemanticsActionIds[i] = data->customSemanticsActionIds![i];
             customSemanticsActionIdsUpdate->add(data->customSemanticsActionIds![i]);
         }
@@ -947,7 +947,7 @@ List<SemanticsNode> SemanticsNodeCls::_childrenInTraversalOrder() {
         SemanticsSortKey sortKey = child->sortKey();
         lastSortKey = position > 0? childrenInDefaultOrder[position - 1]->sortKey : nullptr;
         bool isCompatibleWithPreviousSortKey = position == 0 || sortKey->runtimeType == lastSortKey->runtimeType && (sortKey == nullptr || sortKey->name == lastSortKey!->name);
-        if (!isCompatibleWithPreviousSortKey && sortNodes->isNotEmpty) {
+        if (!isCompatibleWithPreviousSortKey && sortNodes->isNotEmpty()) {
             if (lastSortKey != nullptr) {
                 sortNodes->sort();
             }
@@ -973,7 +973,7 @@ _BoxEdgeCls::_BoxEdgeCls(bool isLeadingEdge, SemanticsNode node, double offset) 
     {
         assert(isLeadingEdge != nullptr);
         assert(offset != nullptr);
-        assert(offset->isFinite);
+        assert(offset->isFinite());
         assert(node != nullptr);
     }
 }
@@ -1122,12 +1122,12 @@ void SemanticsOwnerCls::dispose() {
 }
 
 void SemanticsOwnerCls::sendSemanticsUpdate() {
-    if (_dirtyNodes->isEmpty) {
+    if (_dirtyNodes->isEmpty()) {
         return;
     }
     Set<int> customSemanticsActionIds = makeSet();
     List<SemanticsNode> visitedNodes = makeList();
-    while (_dirtyNodes->isNotEmpty) {
+    while (_dirtyNodes->isNotEmpty()) {
         List<SemanticsNode> localDirtyNodes = _dirtyNodes->where([=] (SemanticsNode node) {
     !_detachedNodes->contains(node);
 })->toList();

@@ -56,7 +56,7 @@ void IterableMixinCls<E>::forEach(std::function<void(E element)> action) {
 
 template<typename E>
 E IterableMixinCls<E>::reduce(std::function<E(E value, E element)> combine) {
-    Iterator<E> iterator = this->iterator;
+    Iterator<E> iterator = this->iterator();
     if (!iterator->moveNext()) {
         throw IterableElementErrorCls->noElement();
     }
@@ -89,7 +89,7 @@ bool IterableMixinCls<E>::every(std::function<bool(E element)> test) {
 
 template<typename E>
 String IterableMixinCls<E>::join(String separator) {
-    Iterator<E> iterator = this->iterator;
+    Iterator<E> iterator = this->iterator();
     if (!iterator->moveNext()) {
         return __s("");
     }
@@ -132,7 +132,7 @@ template<typename E>
 int IterableMixinCls<E>::length() {
     assert(!is<EfficientLengthIterable>(this));
     int count = 0;
-    Iterator it = iterator;
+    Iterator it = iterator();
     while (it->moveNext()) {
         count++;
     }
@@ -141,7 +141,7 @@ int IterableMixinCls<E>::length() {
 
 template<typename E>
 bool IterableMixinCls<E>::isEmpty() {
-    return !iterator->moveNext();
+    return !iterator()->moveNext();
 }
 
 template<typename E>
@@ -171,7 +171,7 @@ Iterable<E> IterableMixinCls<E>::skipWhile(std::function<bool(E value)> test) {
 
 template<typename E>
 E IterableMixinCls<E>::first() {
-    Iterator<E> it = iterator;
+    Iterator<E> it = iterator();
     if (!it->moveNext()) {
         throw IterableElementErrorCls->noElement();
     }
@@ -180,7 +180,7 @@ E IterableMixinCls<E>::first() {
 
 template<typename E>
 E IterableMixinCls<E>::last() {
-    Iterator<E> it = iterator;
+    Iterator<E> it = iterator();
     if (!it->moveNext()) {
         throw IterableElementErrorCls->noElement();
     }
@@ -193,7 +193,7 @@ E IterableMixinCls<E>::last() {
 
 template<typename E>
 E IterableMixinCls<E>::single() {
-    Iterator<E> it = iterator;
+    Iterator<E> it = iterator();
     if (!it->moveNext()) {
         throw IterableElementErrorCls->noElement();
     }

@@ -72,13 +72,13 @@ Future<void> _debugLaunchProfilePlatformChannels() {
 
 void _debugRecordUpStream(String channelTypeName, String name, String codecTypeName, ByteData bytes) {
     _PlatformChannelStats stats = _debugProfilePlatformChannelsStats[name] ??= make<_PlatformChannelStatsCls>(name, codecTypeName, channelTypeName);
-    stats->addUpStream(bytes?->lengthInBytes | 0);
+    stats->addUpStream(bytes?->lengthInBytes() | 0);
     _debugLaunchProfilePlatformChannels();
 }
 
 void _debugRecordDownStream(String channelTypeName, String name, String codecTypeName, ByteData bytes) {
     _PlatformChannelStats stats = _debugProfilePlatformChannelsStats[name] ??= make<_PlatformChannelStatsCls>(name, codecTypeName, channelTypeName);
-    stats->addDownStream(bytes?->lengthInBytes | 0);
+    stats->addDownStream(bytes?->lengthInBytes() | 0);
     _debugLaunchProfilePlatformChannels();
 }
 

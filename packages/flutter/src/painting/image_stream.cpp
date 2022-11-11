@@ -130,7 +130,7 @@ void ImageStreamCompleterHandleCls::_(ImageStreamCompleter _completer) {
 }
 
 bool ImageStreamCompleterCls::hasListeners() {
-    return _listeners->isNotEmpty;
+    return _listeners->isNotEmpty();
 }
 
 void ImageStreamCompleterCls::addListener(ImageStreamListener listener) {
@@ -168,7 +168,7 @@ void ImageStreamCompleterCls::removeListener(ImageStreamListener listener) {
             break;
         }
     }
-    if (_listeners->isEmpty) {
+    if (_listeners->isEmpty()) {
         List<VoidCallback> callbacks = _onLastListenerRemovedCallbacks->toList();
         for (VoidCallback callback : callbacks) {
             callback();
@@ -194,7 +194,7 @@ void ImageStreamCompleterCls::setImage(ImageInfo image) {
     _checkDisposed();
     _currentImage?->dispose();
     _currentImage = image;
-    if (_listeners->isEmpty) {
+    if (_listeners->isEmpty()) {
         return;
     }
     List<ImageStreamListener> localListeners = <ImageStreamListener>of(_listeners);
@@ -248,7 +248,7 @@ void ImageStreamCompleterCls::debugFillProperties(DiagnosticPropertiesBuilder de
 }
 
 void ImageStreamCompleterCls::_maybeDispose() {
-    if (!_hadAtLeastOneListener || _disposed || _listeners->isNotEmpty || _keepAliveHandles != 0) {
+    if (!_hadAtLeastOneListener || _disposed || _listeners->isNotEmpty() || _keepAliveHandles != 0) {
         return;
     }
     _currentImage?->dispose();
@@ -293,7 +293,7 @@ MultiFrameImageStreamCompleterCls::MultiFrameImageStreamCompleterCls(Stream<Imag
 }
 
 void MultiFrameImageStreamCompleterCls::addListener(ImageStreamListener listener) {
-    if (!hasListeners && _codec != nullptr && (_currentImage == nullptr || _codec!->frameCount() > 1)) {
+    if (!hasListeners() && _codec != nullptr && (_currentImage == nullptr || _codec!->frameCount() > 1)) {
         _decodeNextFrameAndSchedule();
     }
     super->addListener(listener);
@@ -301,7 +301,7 @@ void MultiFrameImageStreamCompleterCls::addListener(ImageStreamListener listener
 
 void MultiFrameImageStreamCompleterCls::removeListener(ImageStreamListener listener) {
     super->removeListener(listener);
-    if (!hasListeners) {
+    if (!hasListeners()) {
         _timer?->cancel();
         _timer = nullptr;
     }
@@ -310,14 +310,14 @@ void MultiFrameImageStreamCompleterCls::removeListener(ImageStreamListener liste
 void MultiFrameImageStreamCompleterCls::_handleCodecReady(Codec codec) {
     _codec = codec;
     assert(_codec != nullptr);
-    if (hasListeners) {
+    if (hasListeners()) {
         _decodeNextFrameAndSchedule();
     }
 }
 
 void MultiFrameImageStreamCompleterCls::_handleAppFrame(Duration timestamp) {
     _frameCallbackScheduled = false;
-    if (!hasListeners) {
+    if (!hasListeners()) {
         return;
     }
     assert(_nextFrame != nullptr);
@@ -357,7 +357,7 @@ Future<void> MultiFrameImageStreamCompleterCls::_decodeNextFrameAndSchedule() {
         return;
     };
     if (_codec!->frameCount() == 1) {
-        if (!hasListeners) {
+        if (!hasListeners()) {
             return;
         }
         _emitFrame(make<ImageInfoCls>(_nextFrame!->image->clone(), _scale, debugLabel));

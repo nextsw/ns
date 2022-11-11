@@ -156,11 +156,11 @@ bool _FileCls::existsSync() {
 }
 
 File _FileCls::absolute() {
-    return make<FileCls>(_absolutePath);
+    return make<FileCls>(_absolutePath());
 }
 
 Future<File> _FileCls::create(bool recursive) {
-    auto result = recursive? parent->create(true) : FutureCls->value(nullptr);
+    auto result = recursive? parent()->create(true) : FutureCls->value(nullptr);
     return result->then([=] () {
         _dispatchWithNamespace(_IOServiceCls::fileCreate, makeList(ArrayItem, ArrayItem));
     })->then([=] (Unknown  response) {
@@ -173,7 +173,7 @@ Future<File> _FileCls::create(bool recursive) {
 
 void _FileCls::createSync(bool recursive) {
     if (recursive) {
-        parent->createSync(true);
+        parent()->createSync(true);
     }
     auto result = _create(_NamespaceCls::_namespace, _rawPath);
     throwIfError(result, __s("Cannot create file"), path());

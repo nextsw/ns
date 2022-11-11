@@ -22,21 +22,21 @@ State<FadeInImage> FadeInImageCls::createState() {
 }
 
 Widget _FadeInImageStateCls::build(BuildContext context) {
-    Widget result = _image(widget->image, widget->imageErrorBuilder, _imageAnimation, widget->fit, [=] (BuildContext context,Widget child,int frame,bool wasSynchronouslyLoaded) {
+    Widget result = _image(widget()->image, widget()->imageErrorBuilder, _imageAnimation, widget()->fit, [=] (BuildContext context,Widget child,int frame,bool wasSynchronouslyLoaded) {
     if (wasSynchronouslyLoaded || frame != nullptr) {
         targetLoaded = true;
     }
-    return make<_AnimatedFadeOutFadeInCls>(child, _imageAnimation, _image(widget->placeholder, widget->placeholderErrorBuilder, _placeholderAnimation, widget->placeholderFit | widget->fit), _placeholderAnimation, targetLoaded, wasSynchronouslyLoaded, widget->fadeInDuration, widget->fadeOutDuration, widget->fadeInCurve, widget->fadeOutCurve);
+    return make<_AnimatedFadeOutFadeInCls>(child, _imageAnimation, _image(widget()->placeholder, widget()->placeholderErrorBuilder, _placeholderAnimation, widget()->placeholderFit | widget()->fit), _placeholderAnimation, targetLoaded, wasSynchronouslyLoaded, widget()->fadeInDuration, widget()->fadeOutDuration, widget()->fadeInCurve, widget()->fadeOutCurve);
 });
-    if (!widget->excludeFromSemantics) {
-        result = make<SemanticsCls>(widget->imageSemanticLabel != nullptr, true, widget->imageSemanticLabel | __s(""), result);
+    if (!widget()->excludeFromSemantics) {
+        result = make<SemanticsCls>(widget()->imageSemanticLabel != nullptr, true, widget()->imageSemanticLabel | __s(""), result);
     }
     return result;
 }
 
 Image _FadeInImageStateCls::_image(ImageErrorWidgetBuilder errorBuilder, BoxFit fit, ImageFrameBuilder frameBuilder, ImageProvider image, Animation<double> opacity) {
     assert(image != nullptr);
-    return make<ImageCls>(image, errorBuilder, frameBuilder, opacity, widget->width, widget->height, fit, widget->alignment, widget->repeat, widget->matchTextDirection, true, true);
+    return make<ImageCls>(image, errorBuilder, frameBuilder, opacity, widget()->width, widget()->height, fit, widget()->alignment, widget()->repeat, widget()->matchTextDirection, true, true);
 }
 
 _AnimatedFadeOutFadeInState _AnimatedFadeOutFadeInCls::createState() {
@@ -57,27 +57,27 @@ _AnimatedFadeOutFadeInCls::_AnimatedFadeOutFadeInCls(Curve fadeInCurve, Duration
 }
 
 void _AnimatedFadeOutFadeInStateCls::forEachTween(TweenVisitor<dynamic> visitor) {
-    _targetOpacity = as<Tween<double>>(visitor(_targetOpacity, widget->isTargetLoaded? 1.0 : 0.0, [=] (dynamic value) {
+    _targetOpacity = as<Tween<double>>(visitor(_targetOpacity, widget()->isTargetLoaded? 1.0 : 0.0, [=] (dynamic value) {
         <double>make<TweenCls>(as<double>(value));
     }));
-    _placeholderOpacity = as<Tween<double>>(visitor(_placeholderOpacity, widget->isTargetLoaded? 0.0 : 1.0, [=] (dynamic value) {
+    _placeholderOpacity = as<Tween<double>>(visitor(_placeholderOpacity, widget()->isTargetLoaded? 0.0 : 1.0, [=] (dynamic value) {
         <double>make<TweenCls>(as<double>(value));
     }));
 }
 
 void _AnimatedFadeOutFadeInStateCls::didUpdateTweens() {
-    if (widget->wasSynchronouslyLoaded) {
+    if (widget()->wasSynchronouslyLoaded) {
         return;
     }
-        });_placeholderOpacityAnimation =             }        auto _c1 = animation->drive(<double>make<TweenSequenceCls>(makeList(ArrayItem, ArrayItem)));        _c1.addStatusListener([=] (AnimationStatus status) {                if (_placeholderOpacityAnimation!->isCompleted()) {                    setState([=] () {                    });_c1;
-    _targetOpacityAnimation = animation->drive(<double>make<TweenSequenceCls>(makeList(ArrayItem, ArrayItem)));
-    widget->targetProxyAnimation->parent = _targetOpacityAnimation;
-    widget->placeholderProxyAnimation->parent = _placeholderOpacityAnimation;
+        });_placeholderOpacityAnimation =             }        auto _c1 = animation()->drive(<double>make<TweenSequenceCls>(makeList(ArrayItem, ArrayItem)));        _c1.addStatusListener([=] (AnimationStatus status) {                if (_placeholderOpacityAnimation!->isCompleted()) {                    setState([=] () {                    });_c1;
+    _targetOpacityAnimation = animation()->drive(<double>make<TweenSequenceCls>(makeList(ArrayItem, ArrayItem)));
+    widget()->targetProxyAnimation->parent = _targetOpacityAnimation;
+    widget()->placeholderProxyAnimation->parent = _placeholderOpacityAnimation;
 }
 
 Widget _AnimatedFadeOutFadeInStateCls::build(BuildContext context) {
-    if (widget->wasSynchronouslyLoaded || _placeholderOpacityAnimation!->isCompleted()) {
-        return widget->target;
+    if (widget()->wasSynchronouslyLoaded || _placeholderOpacityAnimation!->isCompleted()) {
+        return widget()->target;
     }
     return make<StackCls>(StackFitCls::passthrough, AlignmentDirectionalCls::center, TextDirectionCls::ltr, makeList(ArrayItem, ArrayItem));
 }

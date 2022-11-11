@@ -1,22 +1,22 @@
 #include "scroll_position_with_single_context.hpp"
 ScrollPositionWithSingleContextCls::ScrollPositionWithSingleContextCls(Unknown context, Unknown debugLabel, double initialPixels, Unknown keepScrollOffset, Unknown oldPosition, Unknown physics) {
     {
-        if (!hasPixels && initialPixels != nullptr) {
+        if (!hasPixels() && initialPixels != nullptr) {
             correctPixels(initialPixels);
         }
-        if (activity == nullptr) {
+        if (activity() == nullptr) {
             goIdle();
         }
-        assert(activity != nullptr);
+        assert(activity() != nullptr);
     }
 }
 
 AxisDirection ScrollPositionWithSingleContextCls::axisDirection() {
-    return context->axisDirection;
+    return context->axisDirection();
 }
 
 double ScrollPositionWithSingleContextCls::setPixels(double newPixels) {
-    assert(activity!->isScrolling);
+    assert(activity()!->isScrolling());
     return super->setPixels(newPixels);
 }
 
@@ -26,7 +26,7 @@ void ScrollPositionWithSingleContextCls::absorb(ScrollPosition other) {
         goIdle();
         return;
     }
-    activity!->updateDelegate(this);
+    activity()!->updateDelegate(this);
     _userScrollDirection = other->_userScrollDirection;
     assert(_currentDrag == nullptr);
     if (other->_currentDrag != nullptr) {
@@ -50,14 +50,14 @@ void ScrollPositionWithSingleContextCls::beginActivity(ScrollActivity newActivit
     super->beginActivity(newActivity);
     _currentDrag?->dispose();
     _currentDrag = nullptr;
-    if (!activity!->isScrolling) {
+    if (!activity()!->isScrolling()) {
         updateUserScrollDirection(ScrollDirectionCls::idle);
     }
 }
 
 void ScrollPositionWithSingleContextCls::applyUserOffset(double delta) {
     updateUserScrollDirection(delta > 0.0? ScrollDirectionCls::forward : ScrollDirectionCls::reverse);
-    setPixels(pixels - physics->applyPhysicsToUserOffset(this, delta));
+    setPixels(pixels() - physics->applyPhysicsToUserOffset(this, delta));
 }
 
 void ScrollPositionWithSingleContextCls::goIdle() {
@@ -65,10 +65,10 @@ void ScrollPositionWithSingleContextCls::goIdle() {
 }
 
 void ScrollPositionWithSingleContextCls::goBallistic(double velocity) {
-    assert(hasPixels);
+    assert(hasPixels());
     Simulation simulation = physics->createBallisticSimulation(this, velocity);
     if (simulation != nullptr) {
-        beginActivity(make<BallisticScrollActivityCls>(this, simulation, context->vsync));
+        beginActivity(make<BallisticScrollActivityCls>(this, simulation, context->vsync()));
     } else {
         goIdle();
     }
@@ -88,22 +88,22 @@ void ScrollPositionWithSingleContextCls::updateUserScrollDirection(ScrollDirecti
 }
 
 Future<void> ScrollPositionWithSingleContextCls::animateTo(double to, Curve curve, Duration duration) {
-    if (nearEqual(to, pixels, physics->tolerance->distance)) {
+    if (nearEqual(to, pixels(), physics->tolerance()->distance)) {
         jumpTo(to);
         return <void>value();
     }
-    DrivenScrollActivity activity = make<DrivenScrollActivityCls>(this, pixels, to, duration, curve, context->vsync);
+    DrivenScrollActivity activity = make<DrivenScrollActivityCls>(this, pixels(), to, duration, curve, context->vsync());
     beginActivity(activity);
     return activity->done();
 }
 
 void ScrollPositionWithSingleContextCls::jumpTo(double value) {
     goIdle();
-    if (pixels != value) {
-        double oldPixels = pixels;
+    if (pixels() != value) {
+        double oldPixels = pixels();
         forcePixels(value);
         didStartScroll();
-        didUpdateScrollPositionBy(pixels - oldPixels);
+        didUpdateScrollPositionBy(pixels() - oldPixels);
         didEndScroll();
     }
     goBallistic(0.0);
@@ -111,15 +111,15 @@ void ScrollPositionWithSingleContextCls::jumpTo(double value) {
 
 void ScrollPositionWithSingleContextCls::pointerScroll(double delta) {
     assert(delta != 0.0);
-    double targetPixels = math->min(math->max(pixels + delta, minScrollExtent), maxScrollExtent);
-    if (targetPixels != pixels) {
+    double targetPixels = math->min(math->max(pixels() + delta, minScrollExtent()), maxScrollExtent());
+    if (targetPixels != pixels()) {
         goIdle();
         updateUserScrollDirection(-delta > 0.0? ScrollDirectionCls::forward : ScrollDirectionCls::reverse);
-        double oldPixels = pixels;
+        double oldPixels = pixels();
         forcePixels(targetPixels);
-        isScrollingNotifier->value = true;
+        isScrollingNotifier->value() = true;
         didStartScroll();
-        didUpdateScrollPositionBy(pixels - oldPixels);
+        didUpdateScrollPositionBy(pixels() - oldPixels);
         didEndScroll();
         goBallistic(0.0);
     }
@@ -127,17 +127,17 @@ void ScrollPositionWithSingleContextCls::pointerScroll(double delta) {
 
 void ScrollPositionWithSingleContextCls::jumpToWithoutSettling(double value) {
     goIdle();
-    if (pixels != value) {
-        double oldPixels = pixels;
+    if (pixels() != value) {
+        double oldPixels = pixels();
         forcePixels(value);
         didStartScroll();
-        didUpdateScrollPositionBy(pixels - oldPixels);
+        didUpdateScrollPositionBy(pixels() - oldPixels);
         didEndScroll();
     }
 }
 
 ScrollHoldController ScrollPositionWithSingleContextCls::hold(VoidCallback holdCancelCallback) {
-    double previousVelocity = activity!->velocity;
+    double previousVelocity = activity()!->velocity();
     HoldScrollActivity holdActivity = make<HoldScrollActivityCls>(this, holdCancelCallback);
     beginActivity(holdActivity);
     _heldPreviousVelocity = previousVelocity;
@@ -145,7 +145,7 @@ ScrollHoldController ScrollPositionWithSingleContextCls::hold(VoidCallback holdC
 }
 
 Drag ScrollPositionWithSingleContextCls::drag(DragStartDetails details, VoidCallback dragCancelCallback) {
-    ScrollDragController drag = make<ScrollDragControllerCls>(this, details, dragCancelCallback, physics->carriedMomentum(_heldPreviousVelocity), physics->dragStartDistanceMotionThreshold);
+    ScrollDragController drag = make<ScrollDragControllerCls>(this, details, dragCancelCallback, physics->carriedMomentum(_heldPreviousVelocity), physics->dragStartDistanceMotionThreshold());
     beginActivity(make<DragScrollActivityCls>(this, drag));
     assert(_currentDrag == nullptr);
     _currentDrag = drag;

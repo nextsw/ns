@@ -91,7 +91,7 @@ bool StackParentDataCls::isPositioned() {
 
 String StackParentDataCls::toString() {
     List<String> list1 = make<ListCls<>>();if (top != nullptr) {    list1.add(ArrayItem);}if (right != nullptr) {    list1.add(ArrayItem);}if (bottom != nullptr) {    list1.add(ArrayItem);}if (left != nullptr) {    list1.add(ArrayItem);}if (width != nullptr) {    list1.add(ArrayItem);}if (height != nullptr) {    list1.add(ArrayItem);}List<String> values = list1;
-    if (values->isEmpty) {
+    if (values->isEmpty()) {
         values->add(__s("not positioned"));
     }
     values->add(super->toString());
@@ -266,17 +266,17 @@ Size RenderStackCls::computeDryLayout(BoxConstraints constraints) {
 }
 
 void RenderStackCls::performLayout() {
-    BoxConstraints constraints = this->constraints;
+    BoxConstraints constraints = this->constraints();
     _hasVisualOverflow = false;
-    size = _computeSize(constraints, ChildLayoutHelperCls::layoutChild);
+    size() = _computeSize(constraints, ChildLayoutHelperCls::layoutChild);
     assert(_resolvedAlignment != nullptr);
     RenderBox child = firstChild;
     while (child != nullptr) {
         StackParentData childParentData = as<StackParentData>(child->parentData!);
         if (!childParentData->isPositioned()) {
-            childParentData->offset = _resolvedAlignment!->alongOffset(as<Offset>(size - child->size()));
+            childParentData->offset = _resolvedAlignment!->alongOffset(as<Offset>(size() - child->size()));
         } else {
-            _hasVisualOverflow = layoutPositionedChild(child, childParentData, size, _resolvedAlignment!) || _hasVisualOverflow;
+            _hasVisualOverflow = layoutPositionedChild(child, childParentData, size(), _resolvedAlignment!) || _hasVisualOverflow;
         }
         assert(child->parentData == childParentData);
         child = childParentData->nextSibling;
@@ -293,7 +293,7 @@ void RenderStackCls::paintStack(PaintingContext context, Offset offset) {
 
 void RenderStackCls::paint(PaintingContext context, Offset offset) {
     if (clipBehavior() != ClipCls::none && _hasVisualOverflow) {
-        _clipRectLayer->layer() = context->pushClipRect(needsCompositing, offset, OffsetCls::zero & size, paintStack, clipBehavior(), _clipRectLayer->layer());
+        _clipRectLayer->layer() = context->pushClipRect(needsCompositing(), offset, OffsetCls::zero & size(), paintStack, clipBehavior(), _clipRectLayer->layer());
     } else {
         _clipRectLayer->layer() = nullptr;
         paintStack(context, offset);
@@ -334,7 +334,7 @@ Size RenderStackCls::_computeSize(BoxConstraints constraints, ChildLayouter layo
     assert(_resolvedAlignment != nullptr);
     bool hasNonPositionedChildren = false;
     if (childCount == 0) {
-        return (constraints->biggest()->isFinite)? constraints->biggest() : constraints->smallest();
+        return (constraints->biggest()->isFinite())? constraints->biggest() : constraints->smallest();
     }
     double width = constraints->minWidth;
     double height = constraints->minHeight;
@@ -361,7 +361,7 @@ Size RenderStackCls::_computeSize(BoxConstraints constraints, ChildLayouter layo
     } else {
         size = constraints->biggest();
     }
-    assert(size->isFinite);
+    assert(size->isFinite());
     return size;
 }
 

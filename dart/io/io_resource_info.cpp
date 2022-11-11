@@ -39,7 +39,7 @@ Map<String, dynamic> _ReadWriteResourceInfoCls::fullValueMap() {
 
 _ReadWriteResourceInfoCls::_ReadWriteResourceInfoCls(String type) : _IOResourceInfo(type) {
     {
-            map1.set(__s("type"), type);    map1.set(__s("id"), id);    map1.set(__s("name"), name);    map1.set(__s("readBytes"), readBytes);    map1.set(__s("writeBytes"), writeBytes);    map1.set(__s("readCount"), readCount);    map1.set(__s("writeCount"), writeCount);    map1.set(__s("lastReadTime"), lastReadTime);    map1.set(__s("lastWriteTime"), lastWriteTime);readBytes = 0;
+            map1.set(__s("type"), type);    map1.set(__s("id"), id);    map1.set(__s("name"), name());    map1.set(__s("readBytes"), readBytes);    map1.set(__s("writeBytes"), writeBytes);    map1.set(__s("readCount"), readCount);    map1.set(__s("writeCount"), writeCount);    map1.set(__s("lastReadTime"), lastReadTime);    map1.set(__s("lastWriteTime"), lastWriteTime);readBytes = 0;
         writeBytes = 0;
         readCount = 0;
         writeCount = 0;
@@ -72,7 +72,7 @@ Future<ServiceExtensionResponse> _FileResourceInfoCls::getOpenFiles(function , p
 }
 
 Map<String, dynamic> _FileResourceInfoCls::fileInfoMap() {
-    return fullValueMap;
+    return fullValueMap();
 }
 
 Future<ServiceExtensionResponse> _FileResourceInfoCls::getOpenFileInfoMapByID(function , params ) {

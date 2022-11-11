@@ -107,11 +107,11 @@ void RenderImageCls::opacity(Animation<double> value) {
     if (value == _opacity) {
         return;
     }
-    if (attached) {
+    if (attached()) {
         _opacity?->removeListener(markNeedsPaint);
     }
     _opacity = value;
-    if (attached) {
+    if (attached()) {
         value?->addListener(markNeedsPaint);
     }
 }
@@ -277,7 +277,7 @@ Size RenderImageCls::computeDryLayout(BoxConstraints constraints) {
 }
 
 void RenderImageCls::performLayout() {
-    size = _sizeForConstraints(constraints);
+    size() = _sizeForConstraints(constraints());
 }
 
 void RenderImageCls::attach(PipelineOwner owner) {
@@ -297,7 +297,7 @@ void RenderImageCls::paint(PaintingContext context, Offset offset) {
     _resolve();
     assert(_resolvedAlignment != nullptr);
     assert(_flipHorizontally != nullptr);
-    paintImage(context->canvas(), offset & size, _image!, debugImageLabel, _scale, _opacity?->value() | 1.0, _colorFilter, _fit, _resolvedAlignment!, _centerSlice, _repeat, _flipHorizontally!, invertColors(), _filterQuality, _isAntiAlias);
+    paintImage(context->canvas(), offset & size(), _image!, debugImageLabel, _scale, _opacity?->value() | 1.0, _colorFilter, _fit, _resolvedAlignment!, _centerSlice, _repeat, _flipHorizontally!, invertColors(), _filterQuality, _isAntiAlias);
 }
 
 void RenderImageCls::dispose() {

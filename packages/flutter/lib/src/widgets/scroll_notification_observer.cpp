@@ -45,7 +45,7 @@ Widget ScrollNotificationObserverStateCls::build(BuildContext context) {
     }, <ScrollNotification>make<NotificationListenerCls>([=] (ScrollNotification notification) {
         _notifyListeners(notification);
         return false;
-    }, make<_ScrollNotificationObserverScopeCls>(this, widget->child)));
+    }, make<_ScrollNotificationObserverScopeCls>(this, widget()->child)));
 }
 
 void ScrollNotificationObserverStateCls::dispose() {

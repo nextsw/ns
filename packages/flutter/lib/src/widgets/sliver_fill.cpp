@@ -80,12 +80,12 @@ void _RenderSliverFractionalPaddingCls::_markNeedsResolution() {
 }
 
 void _RenderSliverFractionalPaddingCls::_resolve() {
-    if (_resolvedPadding != nullptr && _lastResolvedConstraints == constraints) {
+    if (_resolvedPadding != nullptr && _lastResolvedConstraints == constraints()) {
         return;
     }
-    assert(constraints->axis != nullptr);
-    double paddingValue = constraints->viewportMainAxisExtent * viewportFraction();
-    _lastResolvedConstraints = constraints;
+    assert(constraints()->axis() != nullptr);
+    double paddingValue = constraints()->viewportMainAxisExtent * viewportFraction();
+    _lastResolvedConstraints = constraints();
     ;
     return;
 }
@@ -111,7 +111,7 @@ void SliverFillRemainingCls::debugFillProperties(DiagnosticPropertiesBuilder pro
     super->debugFillProperties(properties);
     properties->add(<Widget>make<DiagnosticsPropertyCls>(__s("child"), child));
     List<String> list1 = make<ListCls<>>();if (hasScrollBody) {    list1.add(ArrayItem);}if (fillOverscroll) {    list1.add(ArrayItem);}List<String> flags = list1;
-    if (flags->isEmpty) {
+    if (flags->isEmpty()) {
         flags->add(__s("nonscrollable"));
     }
     properties->add(<String>make<IterablePropertyCls>(__s("mode"), flags));

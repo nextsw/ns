@@ -169,7 +169,7 @@ void TextStyleCls::debugFillProperties(DiagnosticPropertiesBuilder properties, S
         if (decoration != nullptr) {
             decorationDescription->add(__s("$decoration"));
         }
-        assert(decorationDescription->isNotEmpty);
+        assert(decorationDescription->isNotEmpty());
         styles->add(make<MessagePropertyCls>(__s("${prefix}decoration"), decorationDescription->join(__s(" "))));
         styles->add(make<DoublePropertyCls>(__s("${prefix}decorationThickness"), decorationThickness, __s("x"), nullptr));
     }

@@ -11,7 +11,7 @@ bool TickerModeCls::of(BuildContext context) {
 }
 
 ValueNotifier<bool> TickerModeCls::getNotifier(BuildContext context) {
-    _EffectiveTickerMode widget = as<_EffectiveTickerMode>(context-><_EffectiveTickerMode>getElementForInheritedWidgetOfExactType()?->widget);
+    _EffectiveTickerMode widget = as<_EffectiveTickerMode>(context-><_EffectiveTickerMode>getElementForInheritedWidgetOfExactType()?->widget());
     return widget?->notifier | <bool>make<ValueNotifierCls>(true);
 }
 
@@ -21,7 +21,7 @@ State<TickerMode> TickerModeCls::createState() {
 
 void _TickerModeStateCls::didChangeDependencies() {
     super->didChangeDependencies();
-    _ancestorTicketMode = TickerModeCls->of(context);
+    _ancestorTicketMode = TickerModeCls->of(context());
     _updateEffectiveMode();
 }
 
@@ -36,16 +36,16 @@ void _TickerModeStateCls::dispose() {
 }
 
 Widget _TickerModeStateCls::build(BuildContext context) {
-    return make<_EffectiveTickerModeCls>(_effectiveMode->value(), _effectiveMode, widget->child);
+    return make<_EffectiveTickerModeCls>(_effectiveMode->value(), _effectiveMode, widget()->child);
 }
 
 void _TickerModeStateCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(make<FlagPropertyCls>(__s("requested mode"), widget->enabled, __s("enabled"), __s("disabled"), true));
+    properties->add(make<FlagPropertyCls>(__s("requested mode"), widget()->enabled, __s("enabled"), __s("disabled"), true));
 }
 
 void _TickerModeStateCls::_updateEffectiveMode() {
-    _effectiveMode->value() = _ancestorTicketMode && widget->enabled;
+    _effectiveMode->value() = _ancestorTicketMode && widget()->enabled;
 }
 
 bool _EffectiveTickerModeCls::updateShouldNotify(_EffectiveTickerMode oldWidget) {

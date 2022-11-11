@@ -184,7 +184,7 @@ List<double> TextPainterCls::inlinePlaceholderScales() {
 }
 
 void TextPainterCls::setPlaceholderDimensions(List<PlaceholderDimensions> value) {
-    if (value == nullptr || value->isEmpty || listEquals(value, _placeholderDimensions)) {
+    if (value == nullptr || value->isEmpty() || listEquals(value, _placeholderDimensions)) {
         return;
     }
     assert([=] () {
@@ -398,10 +398,10 @@ Rect TextPainterCls::_getRectFromUpstream(int offset, Rect caretPrototype) {
     bool needsSearch = _isUtf16Surrogate(prevCodeUnit) || _text!->codeUnitAt(offset) == _zwjUtf16 || _isUnicodeDirectionality(prevCodeUnit);
     int graphemeClusterLength = needsSearch? 2 : 1;
     List<TextBox> boxes = makeList();
-    while (boxes->isEmpty) {
+    while (boxes->isEmpty()) {
         int prevRuneOffset = offset - graphemeClusterLength;
         boxes = _paragraph!->getBoxesForRange(prevRuneOffset, offset, ui->BoxHeightStyleCls::strut);
-        if (boxes->isEmpty) {
+        if (boxes->isEmpty()) {
             if (!needsSearch && prevCodeUnit == NEWLINE_CODE_UNIT) {
                 break;
             }
@@ -431,10 +431,10 @@ Rect TextPainterCls::_getRectFromDownstream(int offset, Rect caretPrototype) {
     bool needsSearch = _isUtf16Surrogate(nextCodeUnit) || nextCodeUnit == _zwjUtf16 || _isUnicodeDirectionality(nextCodeUnit);
     int graphemeClusterLength = needsSearch? 2 : 1;
     List<TextBox> boxes = makeList();
-    while (boxes->isEmpty) {
+    while (boxes->isEmpty()) {
         int nextRuneOffset = offset + graphemeClusterLength;
         boxes = _paragraph!->getBoxesForRange(offset, nextRuneOffset, ui->BoxHeightStyleCls::strut);
-        if (boxes->isEmpty) {
+        if (boxes->isEmpty()) {
             if (!needsSearch) {
                 break;
             }

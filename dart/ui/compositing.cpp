@@ -171,7 +171,7 @@ PhysicalShapeEngineLayer SceneBuilderCls::pushPhysicalShape(Clip clipBehavior, C
 }
 
 void SceneBuilderCls::pop() {
-    if (_layerStack->isNotEmpty) {
+    if (_layerStack->isNotEmpty()) {
         _layerStack->removeLast();
     }
     _pop();
@@ -241,7 +241,7 @@ bool SceneBuilderCls::_debugCheckCanBeUsedAsOldLayer(_EngineLayerWrapper layer, 
 
 bool SceneBuilderCls::_debugPushLayer(_EngineLayerWrapper newLayer) {
     assert([=] () {
-        if (_layerStack->isNotEmpty) {
+        if (_layerStack->isNotEmpty()) {
             _EngineLayerWrapper currentLayer = _layerStack->last;
             currentLayer->_debugChildren |= makeList();
             currentLayer->_debugChildren!->add(newLayer);

@@ -49,18 +49,18 @@ bool _ImageFilterRenderObjectCls::alwaysNeedsCompositing() {
 void _ImageFilterRenderObjectCls::paint(PaintingContext context, Offset offset) {
     assert(imageFilter() != nullptr);
     if (!enabled()) {
-        layer = nullptr;
+        layer() = nullptr;
         return super->paint(context, offset);
     }
-    if (layer == nullptr) {
-        layer = make<ImageFilterLayerCls>(imageFilter());
+    if (layer() == nullptr) {
+        layer() = make<ImageFilterLayerCls>(imageFilter());
     } else {
-        ImageFilterLayer filterLayer = as<ImageFilterLayer>(layer!);
+        ImageFilterLayer filterLayer = as<ImageFilterLayer>(layer()!);
         filterLayer->imageFilter() = imageFilter();
     }
-    context->pushLayer(layer!, super->paint, offset);
+    context->pushLayer(layer()!, super->paint, offset);
     assert([=] () {
-        layer!->debugCreator = debugCreator;
+        layer()!->debugCreator = debugCreator;
         return true;
     }());
 }

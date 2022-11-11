@@ -430,7 +430,7 @@ K SplayTreeMapCls<K, V>::firstKey() {
     if (_root == nullptr) {
         return nullptr;
     }
-    return _first!->key;
+    return _first()!->key;
 }
 
 template<typename K, typename V>
@@ -438,7 +438,7 @@ K SplayTreeMapCls<K, V>::lastKey() {
     if (_root == nullptr) {
         return nullptr;
     }
-    return _last!->key;
+    return _last()!->key;
 }
 
 template<typename K, typename V>
@@ -491,7 +491,7 @@ K SplayTreeMapCls<K, V>::firstKeyAfter(K key) {
 
 template<typename K, typename Node, typename T>
 T _SplayTreeIteratorCls<K, Node, T>::current() {
-    if (_path->isEmpty) {
+    if (_path->isEmpty()) {
         return as<T>(nullptr);
     }
     auto node = _path->last;
@@ -508,11 +508,11 @@ bool _SplayTreeIteratorCls<K, Node, T>::moveNext() {
                 _path->add(node);
                 node = node->_left;
             }
-            return _path->isNotEmpty;
+            return _path->isNotEmpty();
         }
         throw make<ConcurrentModificationErrorCls>(_tree);
     }
-    if (_path->isEmpty) {
+    if (_path->isEmpty()) {
         return false;
     }
     if (_splayCount != _tree->_splayCount) {
@@ -528,10 +528,10 @@ bool _SplayTreeIteratorCls<K, Node, T>::moveNext() {
         return true;
     }
     _path->removeLast();
-    while (_path->isNotEmpty && identical(_path->last->_right, node)) {
+    while (_path->isNotEmpty() && identical(_path->last->_right, node)) {
         node = _path->removeLast();
     }
-    return _path->isNotEmpty;
+    return _path->isNotEmpty();
 }
 
 template<typename K, typename Node, typename T>
@@ -645,7 +645,7 @@ MapEntry<K, V> _SplayTreeMapEntryIteratorCls<K, V>::_getValue(_SplayTreeMapNode<
 
 template<typename K, typename V>
 void _SplayTreeMapEntryIteratorCls<K, V>::_replaceValue(V value) {
-    assert(_path->isNotEmpty);
+    assert(_path->isNotEmpty());
     if (_modificationCount != _tree->_modificationCount) {
         throw make<ConcurrentModificationErrorCls>(_tree);
     }
@@ -654,8 +654,8 @@ void _SplayTreeMapEntryIteratorCls<K, V>::_replaceValue(V value) {
     }
     auto last = _path->removeLast();
     auto newLast = last->_replaceValue(value);
-    if (_path->isEmpty) {
-        _tree->_root = newLast;
+    if (_path->isEmpty()) {
+        _tree->_root() = newLast;
     } else {
         auto parent = _path->last;
         if (identical(last, parent->_left)) {
@@ -727,7 +727,7 @@ E SplayTreeSetCls<E>::first() {
     auto _c1 = make<SplayTreeSetCls>(compare, isValidKey);_c1.addAll(elements);if (_count == 0) {
         throw IterableElementErrorCls->noElement();
     }
-    return _first!->key;
+    return _first()!->key;
 }
 
 template<typename E>
@@ -735,7 +735,7 @@ E SplayTreeSetCls<E>::last() {
     if (_count == 0) {
         throw IterableElementErrorCls->noElement();
     }
-    return _last!->key;
+    return _last()!->key;
 }
 
 template<typename E>

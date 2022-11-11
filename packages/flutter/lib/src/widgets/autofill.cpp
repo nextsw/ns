@@ -38,23 +38,23 @@ void AutofillGroupStateCls::unregister(String autofillId) {
 
 void AutofillGroupStateCls::didChangeDependencies() {
     super->didChangeDependencies();
-    _isTopmostAutofillGroup = AutofillGroupCls->of(context) == nullptr;
+    _isTopmostAutofillGroup = AutofillGroupCls->of(context()) == nullptr;
 }
 
 Widget AutofillGroupStateCls::build(BuildContext context) {
-    return make<_AutofillScopeCls>(this, widget->child);
+    return make<_AutofillScopeCls>(this, widget()->child);
 }
 
 void AutofillGroupStateCls::dispose() {
     super->dispose();
-    if (!_isTopmostAutofillGroup || widget->onDisposeAction == nullptr) {
+    if (!_isTopmostAutofillGroup || widget()->onDisposeAction == nullptr) {
         return;
     }
     ;
 }
 
 AutofillGroup _AutofillScopeCls::client() {
-    return _scope!->widget;
+    return _scope!->widget();
 }
 
 bool _AutofillScopeCls::updateShouldNotify(_AutofillScope old) {

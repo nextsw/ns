@@ -1,7 +1,7 @@
 ninja_required_version = 1.7.2
 
 rule gn
-  command = ../../../../../usr/local/bin/gn --root=./.. -q --ide=xcode --regeneration gen .
+  command = ../../../../../usr/local/bin/gn --root=./.. -q --regeneration gen .
   pool = console
   description = Regenerating ninja files
 

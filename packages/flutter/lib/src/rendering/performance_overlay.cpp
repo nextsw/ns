@@ -93,8 +93,8 @@ Size RenderPerformanceOverlayCls::computeDryLayout(BoxConstraints constraints) {
 }
 
 void RenderPerformanceOverlayCls::paint(PaintingContext context, Offset offset) {
-    assert(needsCompositing);
-    context->addLayer(make<PerformanceOverlayLayerCls>(RectCls->fromLTWH(offset->dx(), offset->dy(), size->width, size->height), optionsMask(), rasterizerThreshold(), checkerboardRasterCacheImages(), checkerboardOffscreenLayers()));
+    assert(needsCompositing());
+    context->addLayer(make<PerformanceOverlayLayerCls>(RectCls->fromLTWH(offset->dx(), offset->dy(), size()->width(), size()->height()), optionsMask(), rasterizerThreshold(), checkerboardRasterCacheImages(), checkerboardOffscreenLayers()));
 }
 
 double RenderPerformanceOverlayCls::_intrinsicHeight() {

@@ -24,7 +24,7 @@ _SinkTransformerStreamSubscriptionCls<S, T>::_SinkTransformerStreamSubscriptionC
 
 template<typename S, typename T>
 void _SinkTransformerStreamSubscriptionCls<S, T>::_add(T data) {
-    if (_isClosed) {
+    if (_isClosed()) {
         throw make<StateErrorCls>(__s("Stream is already closed"));
     }
     super->_add(data);
@@ -32,7 +32,7 @@ void _SinkTransformerStreamSubscriptionCls<S, T>::_add(T data) {
 
 template<typename S, typename T>
 void _SinkTransformerStreamSubscriptionCls<S, T>::_addError(Object error, StackTrace stackTrace) {
-    if (_isClosed) {
+    if (_isClosed()) {
         throw make<StateErrorCls>(__s("Stream is already closed"));
     }
     super->_addError(error, stackTrace);
@@ -40,7 +40,7 @@ void _SinkTransformerStreamSubscriptionCls<S, T>::_addError(Object error, StackT
 
 template<typename S, typename T>
 void _SinkTransformerStreamSubscriptionCls<S, T>::_close() {
-    if (_isClosed) {
+    if (_isClosed()) {
         throw make<StateErrorCls>(__s("Stream is already closed"));
     }
     super->_close();

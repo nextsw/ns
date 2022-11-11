@@ -52,7 +52,7 @@ void RenderViewCls::configuration(ViewConfiguration value) {
 }
 
 void RenderViewCls::prepareInitialFrame() {
-    assert(owner != nullptr);
+    assert(owner() != nullptr);
     assert(_rootTransform == nullptr);
     scheduleInitialLayout();
     scheduleInitialPaint(_updateMatricesAndCreateNewRootLayer());
@@ -70,7 +70,7 @@ void RenderViewCls::performResize() {
 void RenderViewCls::performLayout() {
     assert(_rootTransform != nullptr);
     _size = configuration()->size;
-    assert(_size->isFinite);
+    assert(_size->isFinite());
     if (child != nullptr) {
         child!->layout(BoxConstraintsCls->tight(_size));
     }
@@ -113,7 +113,7 @@ void RenderViewCls::compositeFrame() {
     }
     try {
         SceneBuilder builder = ui->make<SceneBuilderCls>();
-        Scene scene = layer!->buildScene(builder);
+        Scene scene = layer()!->buildScene(builder);
         if (automaticSystemUiAdjustment) {
             _updateSystemChrome();
         }
@@ -166,7 +166,7 @@ void RenderViewCls::_updateSystemChrome() {
     Rect bounds = paintBounds();
     Offset top = make<OffsetCls>(bounds->center()->dx(), _window->padding()->top / 2.0);
     Offset bottom = make<OffsetCls>(bounds->center()->dx(), bounds->bottom - 1.0 - _window->padding()->bottom / 2.0);
-    SystemUiOverlayStyle upperOverlayStyle = layer!-><SystemUiOverlayStyle>find(top);
+    SystemUiOverlayStyle upperOverlayStyle = layer()!-><SystemUiOverlayStyle>find(top);
     SystemUiOverlayStyle lowerOverlayStyle;
     ;
     if (upperOverlayStyle != nullptr || lowerOverlayStyle != nullptr) {

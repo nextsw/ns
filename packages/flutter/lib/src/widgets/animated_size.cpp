@@ -10,7 +10,7 @@ State<AnimatedSize> AnimatedSizeCls::createState() {
 }
 
 Widget _AnimatedSizeStateCls::build(BuildContext context) {
-    return make<_AnimatedSizeCls>(widget->alignment, widget->curve, widget->duration, widget->reverseDuration, this, widget->clipBehavior, widget->child);
+    return make<_AnimatedSizeCls>(widget()->alignment, widget()->curve, widget()->duration, widget()->reverseDuration, this, widget()->clipBehavior, widget()->child);
 }
 
 RenderAnimatedSize _AnimatedSizeCls::createRenderObject(BuildContext context) {

@@ -16,13 +16,13 @@ Iterable<ScrollPosition> ScrollControllerCls::positions() {
 }
 
 bool ScrollControllerCls::hasClients() {
-    return _positions->isNotEmpty;
+    return _positions->isNotEmpty();
 }
 
 ScrollPosition ScrollControllerCls::position() {
-    assert(_positions->isNotEmpty, __s("ScrollController not attached to any scroll views."));
+    assert(_positions->isNotEmpty(), __s("ScrollController not attached to any scroll views."));
     assert(_positions->length() == 1, __s("ScrollController attached to multiple scroll views."));
-    return _positions->single;
+    return _positions->single();
 }
 
 double ScrollControllerCls::offset() {
@@ -30,12 +30,12 @@ double ScrollControllerCls::offset() {
 }
 
 Future<void> ScrollControllerCls::animateTo(double offset, Curve curve, Duration duration) {
-    assert(_positions->isNotEmpty, __s("ScrollController not attached to any scroll views."));
+    assert(_positions->isNotEmpty(), __s("ScrollController not attached to any scroll views."));
     List<Future<void>> list1 = make<ListCls<>>();for (;  < _positions->length(); i += 1) {        ;    }{    list1.add(ArrayItem);}await await FutureCls-><void>wait(list1);
 }
 
 void ScrollControllerCls::jumpTo(double value) {
-    assert(_positions->isNotEmpty, __s("ScrollController not attached to any scroll views."));
+    assert(_positions->isNotEmpty(), __s("ScrollController not attached to any scroll views."));
     for (ScrollPosition position : <ScrollPosition>of(_positions)) {
         position()->jumpTo(value);
     }
@@ -77,7 +77,7 @@ void ScrollControllerCls::debugFillDescription(List<String> description) {
     if (initialScrollOffset() != 0.0) {
         description->add(__s("initialScrollOffset: ${initialScrollOffset.toStringAsFixed(1)}, "));
     }
-    if (_positions->isEmpty) {
+    if (_positions->isEmpty()) {
         description->add(__s("no clients"));
     } else {
         if (_positions->length() == 1) {
@@ -120,9 +120,9 @@ void TrackingScrollControllerCls::detach(ScrollPosition position) {
 }
 
 void TrackingScrollControllerCls::dispose() {
-    for (ScrollPosition position : positions) {
-        assert(_positionToListener->containsKey(position));
-        position->removeListener(_positionToListener[position]!);
+    for (ScrollPosition position : positions()) {
+        assert(_positionToListener->containsKey(position()));
+        position()->removeListener(_positionToListener[position()]!);
     }
     super->dispose();
 }

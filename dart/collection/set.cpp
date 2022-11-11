@@ -472,7 +472,7 @@ E UnmodifiableSetViewCls<E>::lookup(Object element) {
 
 template<typename E>
 int UnmodifiableSetViewCls<E>::length() {
-    return _source->length;
+    return _source->length();
 }
 
 template<typename E>

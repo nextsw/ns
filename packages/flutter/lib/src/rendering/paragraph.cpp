@@ -273,10 +273,10 @@ double RenderParagraphCls::computeMaxIntrinsicHeight(double width) {
 }
 
 double RenderParagraphCls::computeDistanceToActualBaseline(TextBaseline baseline) {
-    assert(!debugNeedsLayout);
-    assert(constraints != nullptr);
-    assert(constraints->debugAssertIsValid());
-    _layoutTextWithConstraints(constraints);
+    assert(!debugNeedsLayout());
+    assert(constraints() != nullptr);
+    assert(constraints()->debugAssertIsValid());
+    _layoutTextWithConstraints(constraints());
     return _textPainter->computeDistanceToActualBaseline(TextBaselineCls::alphabetic);
 }
 
@@ -296,7 +296,7 @@ bool RenderParagraphCls::hitTestChildren(BoxHitTestResult result, Offset positio
     int childIndex = 0;
     while (child != nullptr &&  < _textPainter->inlinePlaceholderBoxes()!->length()) {
         TextParentData textParentData = as<TextParentData>(child->parentData!);
-            auto _c1 = Matrix4Cls->translationValues(textParentData->offset->dx, textParentData->offset->dy, 0.0);    _c1.scale(textParentData->scale, textParentData->scale, textParentData->scale);Matrix4 transform = _c1;
+            auto _c1 = Matrix4Cls->translationValues(textParentData->offset->dx(), textParentData->offset->dy(), 0.0);    _c1.scale(textParentData->scale, textParentData->scale, textParentData->scale);Matrix4 transform = _c1;
         bool isHit = result->addWithPaintTransform(transform, position, [=] (BoxHitTestResult result,Offset transformed) {
     assert([=] () {
         Offset manualPosition = (position - textParentData->offset) / textParentData->scale!;
@@ -333,15 +333,15 @@ Size RenderParagraphCls::computeDryLayout(BoxConstraints constraints) {
 }
 
 void RenderParagraphCls::performLayout() {
-    BoxConstraints constraints = this->constraints;
+    BoxConstraints constraints = this->constraints();
     _placeholderDimensions = _layoutChildren(constraints);
     _layoutTextWithConstraints(constraints);
     _setParentData();
     Size textSize = _textPainter->size();
     bool textDidExceedMaxLines = _textPainter->didExceedMaxLines();
-    size = constraints->constrain(textSize);
-    bool didOverflowHeight = size->height < textSize->height() || textDidExceedMaxLines;
-    bool didOverflowWidth = size->width < textSize->width();
+    size() = constraints->constrain(textSize);
+    bool didOverflowHeight = size()->height() < textSize->height() || textDidExceedMaxLines;
+    bool didOverflowWidth = size()->width() < textSize->width();
     bool hasVisualOverflow = didOverflowWidth || didOverflowHeight;
     if (hasVisualOverflow) {
         ;
@@ -352,16 +352,16 @@ void RenderParagraphCls::performLayout() {
 }
 
 void RenderParagraphCls::paint(PaintingContext context, Offset offset) {
-    _layoutTextWithConstraints(constraints);
+    _layoutTextWithConstraints(constraints());
     assert([=] () {
         if (debugRepaintTextRainbowEnabled) {
                     auto _c1 = make<PaintCls>();        _c1.color = debugCurrentRepaintColor->toColor();Paint paint = _c1;
-            context->canvas()->drawRect(offset & size, paint);
+            context->canvas()->drawRect(offset & size(), paint);
         }
         return true;
     }());
     if (_needsClipping) {
-        Rect bounds = offset & size;
+        Rect bounds = offset & size();
         if (_overflowShader != nullptr) {
             context->canvas()->saveLayer(bounds, make<PaintCls>());
         } else {
@@ -375,7 +375,7 @@ void RenderParagraphCls::paint(PaintingContext context, Offset offset) {
     while (child != nullptr &&  < _textPainter->inlinePlaceholderBoxes()!->length()) {
         TextParentData textParentData = as<TextParentData>(child->parentData!);
         double scale = textParentData->scale!;
-        context->pushTransform(needsCompositing, offset + textParentData->offset, Matrix4Cls->diagonal3Values(scale, scale, scale), [=] (PaintingContext context,Offset offset) {
+        context->pushTransform(needsCompositing(), offset + textParentData->offset, Matrix4Cls->diagonal3Values(scale, scale, scale), [=] (PaintingContext context,Offset offset) {
             context->paintChild(child!, offset);
         });
         child = childAfter(child);
@@ -385,7 +385,7 @@ void RenderParagraphCls::paint(PaintingContext context, Offset offset) {
         if (_overflowShader != nullptr) {
             context->canvas()->translate(offset->dx(), offset->dy());
                     auto _c2 = make<PaintCls>();        _c2.blendMode = auto _c3 = BlendModeCls::modulate;        _c3.shader = _overflowShader;        _c3;Paint paint = _c2;
-            context->canvas()->drawRect(OffsetCls::zero & size, paint);
+            context->canvas()->drawRect(OffsetCls::zero & size(), paint);
         }
         context->canvas()->restore();
     }
@@ -398,39 +398,39 @@ void RenderParagraphCls::paint(PaintingContext context, Offset offset) {
 }
 
 Offset RenderParagraphCls::getOffsetForCaret(TextPosition position, Rect caretPrototype) {
-    assert(!debugNeedsLayout);
-    _layoutTextWithConstraints(constraints);
+    assert(!debugNeedsLayout());
+    _layoutTextWithConstraints(constraints());
     return _textPainter->getOffsetForCaret(position, caretPrototype);
 }
 
 double RenderParagraphCls::getFullHeightForCaret(TextPosition position) {
-    assert(!debugNeedsLayout);
-    _layoutTextWithConstraints(constraints);
+    assert(!debugNeedsLayout());
+    _layoutTextWithConstraints(constraints());
     return _textPainter->getFullHeightForCaret(position, RectCls::zero);
 }
 
 List<TextBox> RenderParagraphCls::getBoxesForSelection(TextSelection selection, BoxHeightStyle boxHeightStyle, BoxWidthStyle boxWidthStyle) {
-    assert(!debugNeedsLayout);
+    assert(!debugNeedsLayout());
     assert(boxHeightStyle != nullptr);
     assert(boxWidthStyle != nullptr);
-    _layoutTextWithConstraints(constraints);
+    _layoutTextWithConstraints(constraints());
     return _textPainter->getBoxesForSelection(selection, boxHeightStyle, boxWidthStyle);
 }
 
 TextPosition RenderParagraphCls::getPositionForOffset(Offset offset) {
-    assert(!debugNeedsLayout);
-    _layoutTextWithConstraints(constraints);
+    assert(!debugNeedsLayout());
+    _layoutTextWithConstraints(constraints());
     return _textPainter->getPositionForOffset(offset);
 }
 
 TextRange RenderParagraphCls::getWordBoundary(TextPosition position) {
-    assert(!debugNeedsLayout);
-    _layoutTextWithConstraints(constraints);
+    assert(!debugNeedsLayout());
+    _layoutTextWithConstraints(constraints());
     return _textPainter->getWordBoundary(position);
 }
 
 Size RenderParagraphCls::textSize() {
-    assert(!debugNeedsLayout);
+    assert(!debugNeedsLayout());
     return _textPainter->size();
 }
 
@@ -464,7 +464,7 @@ void RenderParagraphCls::describeSemanticsConfiguration(SemanticsConfiguration c
 }
 
 void RenderParagraphCls::assembleSemanticsNode(SemanticsNode node, SemanticsConfiguration config, Iterable<SemanticsNode> children) {
-    assert(_semanticsInfo != nullptr && _semanticsInfo!->isNotEmpty);
+    assert(_semanticsInfo != nullptr && _semanticsInfo!->isNotEmpty());
     List<SemanticsNode> newChildren = makeList();
     TextDirection currentDirection = textDirection();
     Rect currentRect;
@@ -494,7 +494,7 @@ void RenderParagraphCls::assembleSemanticsNode(SemanticsNode node, SemanticsConf
         } else {
             TextDirection initialDirection = currentDirection;
             List<TextBox> rects = getBoxesForSelection(selection);
-            if (rects->isEmpty) {
+            if (rects->isEmpty()) {
                 continue;
             }
             Rect rect = rects->first->toRect();
@@ -503,7 +503,7 @@ void RenderParagraphCls::assembleSemanticsNode(SemanticsNode node, SemanticsConf
                 rect = rect->expandToInclude(textBox->toRect());
                 currentDirection = textBox->direction;
             }
-            rect = RectCls->fromLTWH(math->max(0.0, rect->left), math->max(0.0, rect->top), math->min(rect->width(), constraints->maxWidth), math->min(rect->height(), constraints->maxHeight));
+            rect = RectCls->fromLTWH(math->max(0.0, rect->left), math->max(0.0, rect->top), math->min(rect->width(), constraints()->maxWidth), math->min(rect->height(), constraints()->maxHeight));
             currentRect = RectCls->fromLTRB(rect->left->floorToDouble() - 4.0, rect->top->floorToDouble() - 4.0, rect->right->ceilToDouble() + 4.0, rect->bottom->ceilToDouble() + 4.0);
                     auto _c1 = make<SemanticsConfigurationCls>();        _c1.sortKey = auto _c2 = make<OrdinalSortKeyCls>(ordinal++);        _c2.textDirection() = auto _c3 = initialDirection;        _c3.attributedLabel = make<AttributedStringCls>(info->semanticsLabel | info->text, info->stringAttributes);        _c3;        _c2;SemanticsConfiguration configuration = _c1;
             GestureRecognizer recognizer = info->recognizer;
@@ -535,8 +535,8 @@ void RenderParagraphCls::assembleSemanticsNode(SemanticsNode node, SemanticsConf
                 configuration->isHidden() = paintRect->isEmpty() && !currentRect->isEmpty();
             }
             SemanticsNode newChild;
-            if (_cachedChildNodes?->isNotEmpty | false) {
-                newChild = _cachedChildNodes!->remove(_cachedChildNodes!->keys->first)!;
+            if (_cachedChildNodes?->isNotEmpty() | false) {
+                newChild = _cachedChildNodes!->remove(_cachedChildNodes!->keys()->first())!;
             } else {
                 UniqueKey key = make<UniqueKeyCls>();
                 newChild = make<SemanticsNodeCls>(key, _createShowOnScreenFor(key));
@@ -779,7 +779,7 @@ Matrix4 _SelectableFragmentCls::getTransformTo(RenderObject ancestor) {
 }
 
 void _SelectableFragmentCls::pushHandleLayers(LayerLink startHandle, LayerLink endHandle) {
-    if (!paragraph->attached) {
+    if (!paragraph->attached()) {
         assert(startHandle == nullptr && endHandle == nullptr, __s("Only clean up can be called."));
         return;
     }
@@ -966,7 +966,7 @@ int _SelectableFragmentCls::_compareTextPositions(TextPosition position, TextPos
 Rect _SelectableFragmentCls::_rect() {
     if (_cachedRect == nullptr) {
         List<TextBox> boxes = paragraph->getBoxesForSelection(make<TextSelectionCls>(range->start, range->end));
-        if (boxes->isNotEmpty) {
+        if (boxes->isNotEmpty()) {
             Rect result = boxes->first->toRect();
             for (;  < boxes->length(); index += 1) {
                 result = result->expandToInclude(boxes[index]->toRect());

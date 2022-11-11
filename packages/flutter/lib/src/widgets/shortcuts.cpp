@@ -28,7 +28,7 @@ KeySetCls<T>::KeySetCls(T key1, T key2, T key3, T key4) {
                 return true;
             }());
         }
-        assert(_keys->length == count, __s("Two or more provided keys are identical. Each key must appear only once."));
+        assert(_keys->length() == count, __s("Two or more provided keys are identical. Each key must appear only once."));
     }
 }
 
@@ -51,7 +51,7 @@ bool KeySetCls<T>::==(Object other) {
 template<typename T>
 template<typename T>
 int KeySetCls<T>::_computeHashCode(Set<T> keys) {
-    int length = keys->length;
+    int length = keys->length();
     Iterator<T> iterator = keys->iterator();
     iterator->moveNext();
     int h1 = iterator->current()->hashCode;
@@ -90,14 +90,14 @@ bool LogicalKeySetCls::accepts(RawKeyEvent event, RawKeyboard state) {
     if (!is<RawKeyDownEvent>(event)) {
         return false;
     }
-    Set<LogicalKeyboardKey> collapsedRequired = LogicalKeyboardKeyCls->collapseSynonyms(keys);
+    Set<LogicalKeyboardKey> collapsedRequired = LogicalKeyboardKeyCls->collapseSynonyms(keys());
     Set<LogicalKeyboardKey> collapsedPressed = LogicalKeyboardKeyCls->collapseSynonyms(state->keysPressed());
-    bool keysEqual = collapsedRequired->difference(collapsedPressed)->isEmpty && collapsedRequired->length == collapsedPressed->length;
+    bool keysEqual = collapsedRequired->difference(collapsedPressed)->isEmpty() && collapsedRequired->length() == collapsedPressed->length();
     return keysEqual;
 }
 
 String LogicalKeySetCls::debugDescribeKeys() {
-    });List<LogicalKeyboardKey> sortedKeys = auto _c1 = keys->toList();_c1.sort([=] (LogicalKeyboardKey a,LogicalKeyboardKey b) {    bool aIsModifier = a->synonyms->isNotEmpty || _modifiers->contains(a);    bool bIsModifier = b->synonyms->isNotEmpty || _modifiers->contains(b);    };    }        if (aIsModifier && !bIsModifier) {            return -1;        } else {            if (bIsModifier && !aIsModifier) {            return 1;    return a->debugName!->compareTo(b->debugName!);_c1;
+    });List<LogicalKeyboardKey> sortedKeys = auto _c1 = keys()->toList();_c1.sort([=] (LogicalKeyboardKey a,LogicalKeyboardKey b) {    bool aIsModifier = a->synonyms->isNotEmpty || _modifiers->contains(a);    bool bIsModifier = b->synonyms->isNotEmpty || _modifiers->contains(b);    };    }        if (aIsModifier && !bIsModifier) {            return -1;        } else {            if (bIsModifier && !aIsModifier) {            return 1;    return a->debugName!->compareTo(b->debugName!);_c1;
     return sortedKeys-><String>map([=] (LogicalKeyboardKey key) {
         key->debugName->toString();
     })->join(__s(" + "));

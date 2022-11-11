@@ -65,7 +65,7 @@ Future<void> _HtmlElementViewControllerCls::_initialize() {
 }
 
 Widget _AndroidViewStateCls::build(BuildContext context) {
-    return make<FocusCls>(_focusNode, _onFocusChange, make<_AndroidPlatformViewCls>(_controller, widget->hitTestBehavior, widget->gestureRecognizers | _emptyRecognizersSet, widget->clipBehavior));
+    return make<FocusCls>(_focusNode, _onFocusChange, make<_AndroidPlatformViewCls>(_controller, widget()->hitTestBehavior, widget()->gestureRecognizers | _emptyRecognizersSet, widget()->clipBehavior));
 }
 
 void _AndroidViewStateCls::didChangeDependencies() {
@@ -84,7 +84,7 @@ void _AndroidViewStateCls::didUpdateWidget(AndroidView oldWidget) {
     TextDirection newLayoutDirection = _findLayoutDirection();
     bool didChangeLayoutDirection = _layoutDirection != newLayoutDirection;
     _layoutDirection = newLayoutDirection;
-    if (widget->viewType != oldWidget->viewType) {
+    if (widget()->viewType != oldWidget->viewType) {
         _controller->dispose();
         _createNewAndroidView();
         return;
@@ -109,17 +109,17 @@ void _AndroidViewStateCls::_initializeOnce() {
 }
 
 TextDirection _AndroidViewStateCls::_findLayoutDirection() {
-    assert(widget->layoutDirection != nullptr || debugCheckHasDirectionality(context));
-    return widget->layoutDirection | DirectionalityCls->of(context);
+    assert(widget()->layoutDirection != nullptr || debugCheckHasDirectionality(context()));
+    return widget()->layoutDirection | DirectionalityCls->of(context());
 }
 
 void _AndroidViewStateCls::_createNewAndroidView() {
     _id = platformViewsRegistry->getNextPlatformViewId();
-    _controller = PlatformViewsServiceCls->initAndroidView(_id!, widget->viewType, _layoutDirection!, widget->creationParams, widget->creationParamsCodec, [=] () {
+    _controller = PlatformViewsServiceCls->initAndroidView(_id!, widget()->viewType, _layoutDirection!, widget()->creationParams, widget()->creationParamsCodec, [=] () {
         _focusNode!->requestFocus();
     });
-    if (widget->onPlatformViewCreated != nullptr) {
-        _controller->addOnPlatformViewCreatedListener(widget->onPlatformViewCreated!);
+    if (widget()->onPlatformViewCreated != nullptr) {
+        _controller->addOnPlatformViewCreatedListener(widget()->onPlatformViewCreated!);
     }
 }
 
@@ -149,7 +149,7 @@ Widget _UiKitViewStateCls::build(BuildContext context) {
     }
     return make<FocusCls>(_focusNode, [=] (bool isFocused) {
         _onFocusChange(isFocused, controller);
-    }, make<_UiKitPlatformViewCls>(_controller!, widget->hitTestBehavior, widget->gestureRecognizers | _emptyRecognizersSet));
+    }, make<_UiKitPlatformViewCls>(_controller!, widget()->hitTestBehavior, widget()->gestureRecognizers | _emptyRecognizersSet));
 }
 
 void _UiKitViewStateCls::didChangeDependencies() {
@@ -168,7 +168,7 @@ void _UiKitViewStateCls::didUpdateWidget(UiKitView oldWidget) {
     TextDirection newLayoutDirection = _findLayoutDirection();
     bool didChangeLayoutDirection = _layoutDirection != newLayoutDirection;
     _layoutDirection = newLayoutDirection;
-    if (widget->viewType != oldWidget->viewType) {
+    if (widget()->viewType != oldWidget->viewType) {
         _controller?->dispose();
         _createNewUiKitView();
         return;
@@ -192,20 +192,20 @@ void _UiKitViewStateCls::_initializeOnce() {
 }
 
 TextDirection _UiKitViewStateCls::_findLayoutDirection() {
-    assert(widget->layoutDirection != nullptr || debugCheckHasDirectionality(context));
-    return widget->layoutDirection | DirectionalityCls->of(context);
+    assert(widget()->layoutDirection != nullptr || debugCheckHasDirectionality(context()));
+    return widget()->layoutDirection | DirectionalityCls->of(context());
 }
 
 Future<void> _UiKitViewStateCls::_createNewUiKitView() {
     int id = platformViewsRegistry->getNextPlatformViewId();
-    UiKitViewController controller = await PlatformViewsServiceCls->initUiKitView(id, widget->viewType, _layoutDirection!, widget->creationParams, widget->creationParamsCodec, [=] () {
+    UiKitViewController controller = await PlatformViewsServiceCls->initUiKitView(id, widget()->viewType, _layoutDirection!, widget()->creationParams, widget()->creationParamsCodec, [=] () {
     _focusNode->requestFocus();
 });
-    if (!mounted) {
+    if (!mounted()) {
         controller->dispose();
         return;
     }
-    widget->onPlatformViewCreated?->call(id);
+    widget()->onPlatformViewCreated?->call(id);
     setState([=] () {
         _controller = controller;
         _focusNode = make<FocusNodeCls>(__s("UiKitView(id: $id)"));
@@ -285,7 +285,7 @@ Widget _PlatformViewLinkStateCls::build(BuildContext context) {
             }
         });
     }
-    _surface |= widget->_surfaceFactory(context, controller);
+    _surface |= widget()->_surfaceFactory(context, controller);
     return make<FocusCls>(_focusNode, _handleFrameworkFocusChanged, _surface!);
 }
 
@@ -297,7 +297,7 @@ void _PlatformViewLinkStateCls::initState() {
 
 void _PlatformViewLinkStateCls::didUpdateWidget(PlatformViewLink oldWidget) {
     super->didUpdateWidget(oldWidget);
-    if (widget->viewType != oldWidget->viewType) {
+    if (widget()->viewType != oldWidget->viewType) {
         _controller?->dispose();
         _surface = nullptr;
         _initialize();
@@ -312,7 +312,7 @@ void _PlatformViewLinkStateCls::dispose() {
 
 void _PlatformViewLinkStateCls::_initialize() {
     _id = platformViewsRegistry->getNextPlatformViewId();
-    _controller = widget->_onCreatePlatformView(PlatformViewCreationParamsCls->_(_id!, widget->viewType, _onPlatformViewCreated, _handlePlatformFocusChanged));
+    _controller = widget()->_onCreatePlatformView(PlatformViewCreationParamsCls->_(_id!, widget()->viewType, _onPlatformViewCreated, _handlePlatformFocusChanged));
 }
 
 void _PlatformViewLinkStateCls::_onPlatformViewCreated(int id) {
@@ -362,7 +362,7 @@ RenderObject AndroidViewSurfaceCls::createRenderObject(BuildContext context) {
     AndroidViewController viewController = as<AndroidViewController>(controller);
     if (is<ExpensiveAndroidViewController>(viewController)) {
         PlatformViewRenderBox renderBox = as<PlatformViewRenderBox>(super->createRenderObject(context));
-        as<ExpensiveAndroidViewControllerCls>(viewController)->pointTransformer = [=] (Offset position) {
+        as<ExpensiveAndroidViewControllerCls>(viewController)->pointTransformer() = [=] (Offset position) {
             renderBox->globalToLocal(position);
         };
         return renderBox;
@@ -376,7 +376,7 @@ RenderObject AndroidViewSurfaceCls::createRenderObject(BuildContext context) {
 
 void _PlatformViewPlaceholderBoxCls::performLayout() {
     super->performLayout();
-    onLayout(size);
+    onLayout(size());
 }
 
 _PlatformViewPlaceholderBoxCls::_PlatformViewPlaceholderBoxCls(_OnLayoutCallback onLayout) : RenderConstrainedBox(BoxConstraintsCls->tightFor(double->infinity, double->infinity)) {

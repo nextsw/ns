@@ -404,8 +404,8 @@ void CompoundAnimationCls<T>::_maybeNotifyStatusListeners(AnimationStatus _) {
 
 template<typename T>
 void CompoundAnimationCls<T>::_maybeNotifyListeners() {
-    if (value != _lastValue) {
-        _lastValue = value;
+    if (value() != _lastValue) {
+        _lastValue = value();
         notifyListeners();
     }
 }
@@ -414,7 +414,7 @@ AnimationMeanCls::AnimationMeanCls(Animation<double> left, Animation<double> rig
 }
 
 double AnimationMeanCls::value() {
-    return (first->value + next->value) / 2.0;
+    return (first->value() + next->value()) / 2.0;
 }
 
 template<typename T>
@@ -423,7 +423,7 @@ AnimationMaxCls<T>::AnimationMaxCls(Animation<T> first, Animation<T> next) : Com
 
 template<typename T>
 T AnimationMaxCls<T>::value() {
-    return math->max(first->value, next->value);
+    return math->max(first->value(), next->value());
 }
 
 template<typename T>
@@ -432,5 +432,5 @@ AnimationMinCls<T>::AnimationMinCls(Animation<T> first, Animation<T> next) : Com
 
 template<typename T>
 T AnimationMinCls<T>::value() {
-    return math->min(first->value, next->value);
+    return math->min(first->value(), next->value());
 }

@@ -72,7 +72,7 @@ void DoubleTapGestureRecognizerCls::addAllowedPointer(PointerDownEvent event) {
             return _trackTap(event);
         } else {
             if (onDoubleTapDown != nullptr) {
-            TapDownDetails details = make<TapDownDetailsCls>(event->position, event->localPosition, getKindForPointer(event->pointer));
+            TapDownDetails details = make<TapDownDetailsCls>(event->position, event->localPosition(), getKindForPointer(event->pointer));
             <void>invokeCallback(__s("onDoubleTapDown"), [=] () {
                 onDoubleTapDown!(details);
             });
@@ -285,7 +285,7 @@ void MultiTapGestureRecognizerCls::addAllowedPointer(PointerDownEvent event) {
     _gestureMap[event->pointer] = make<_TapGestureCls>(this, event, longTapDelay, gestureSettings);
     if (onTapDown != nullptr) {
         <void>invokeCallback(__s("onTapDown"), [=] () {
-            onTapDown!(event->pointer, make<TapDownDetailsCls>(event->position, event->localPosition, event->kind));
+            onTapDown!(event->pointer, make<TapDownDetailsCls>(event->position, event->localPosition(), event->kind));
         });
     }
 }
@@ -381,7 +381,7 @@ bool SerialTapGestureRecognizerCls::isPointerAllowed(PointerDownEvent event) {
 }
 
 void SerialTapGestureRecognizerCls::addAllowedPointer(PointerDownEvent event) {
-    if ((_completedTaps->isNotEmpty && !_representsSameSeries(_completedTaps->last, event)) || _pendingTap != nullptr) {
+    if ((_completedTaps->isNotEmpty() && !_representsSameSeries(_completedTaps->last, event)) || _pendingTap != nullptr) {
         _reset();
     }
     _trackTap(event);
@@ -414,7 +414,7 @@ bool SerialTapGestureRecognizerCls::_representsSameSeries(_TapTracker tap, Point
 void SerialTapGestureRecognizerCls::_trackTap(PointerDownEvent event) {
     _stopSerialTapTimer();
     if (onSerialTapDown != nullptr) {
-        SerialTapDownDetails details = make<SerialTapDownDetailsCls>(event->position, event->localPosition, getKindForPointer(event->pointer), event->buttons, _completedTaps->length() + 1);
+        SerialTapDownDetails details = make<SerialTapDownDetailsCls>(event->position, event->localPosition(), getKindForPointer(event->pointer), event->buttons, _completedTaps->length() + 1);
         <void>invokeCallback(__s("onSerialTapDown"), [=] () {
             onSerialTapDown!(details);
         });
@@ -497,7 +497,7 @@ void SerialTapGestureRecognizerCls::_stopSerialTapTimer() {
 
 void SerialTapGestureRecognizerCls::_checkUp(PointerUpEvent event, _TapTracker tracker) {
     if (onSerialTapUp != nullptr) {
-        SerialTapUpDetails details = make<SerialTapUpDetailsCls>(event->position, event->localPosition, getKindForPointer(tracker->pointer), _completedTaps->length() + 1);
+        SerialTapUpDetails details = make<SerialTapUpDetailsCls>(event->position, event->localPosition(), getKindForPointer(tracker->pointer), _completedTaps->length() + 1);
         <void>invokeCallback(__s("onSerialTapUp"), [=] () {
             onSerialTapUp!(details);
         });

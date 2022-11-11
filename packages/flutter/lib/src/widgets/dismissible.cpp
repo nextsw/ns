@@ -33,7 +33,7 @@ _DismissibleClipperCls::_DismissibleClipperCls(Axis axis, Animation<Offset> move
 
 void _DismissibleStateCls::initState() {
     super->initState();
-    auto _c1 = make<AnimationControllerCls>(widget->movementDuration, this);_c1.auto _c2 = addStatusListener(_handleDismissStatusChanged);_c2.addListener(_handleDismissUpdateValueChanged);_c2;_moveController = _c1;
+    auto _c1 = make<AnimationControllerCls>(widget()->movementDuration, this);_c1.auto _c2 = addStatusListener(_handleDismissStatusChanged);_c2.addListener(_handleDismissUpdateValueChanged);_c2;_moveController = _c1;
     _updateMoveAnimation();
 }
 
@@ -50,11 +50,11 @@ void _DismissibleStateCls::dispose() {
 Widget _DismissibleStateCls::build(BuildContext context) {
     super->build(context);
     assert(!_directionIsXAxis() || debugCheckHasDirectionality(context));
-    Widget background = widget->background;
-    if (widget->secondaryBackground != nullptr) {
+    Widget background = widget()->background;
+    if (widget()->secondaryBackground != nullptr) {
         DismissDirection direction = _dismissDirection();
         if (direction == DismissDirectionCls::endToStart || direction == DismissDirectionCls::up) {
-            background = widget->secondaryBackground;
+            background = widget()->secondaryBackground;
         }
     }
     if (_resizeAnimation != nullptr) {
@@ -67,18 +67,18 @@ Widget _DismissibleStateCls::build(BuildContext context) {
         }());
         return make<SizeTransitionCls>(_resizeAnimation!, _directionIsXAxis()? AxisCls::vertical : AxisCls::horizontal, make<SizedBoxCls>(_sizePriorToCollapse!->width(), _sizePriorToCollapse!->height(), background));
     }
-    Widget content = make<SlideTransitionCls>(_moveAnimation, widget->child);
+    Widget content = make<SlideTransitionCls>(_moveAnimation, widget()->child);
     if (background != nullptr) {
             List<Widget> list1 = make<ListCls<>>();    if (!_moveAnimation->isDismissed()) {        list1.add(ArrayItem);    }list1.add(ArrayItem);content = make<StackCls>(list1);
     }
-    if (widget->direction == DismissDirectionCls::none) {
+    if (widget()->direction == DismissDirectionCls::none) {
         return content;
     }
-    return make<GestureDetectorCls>(_directionIsXAxis()? _handleDragStart : nullptr, _directionIsXAxis()? _handleDragUpdate : nullptr, _directionIsXAxis()? _handleDragEnd : nullptr, _directionIsXAxis()? nullptr : _handleDragStart, _directionIsXAxis()? nullptr : _handleDragUpdate, _directionIsXAxis()? nullptr : _handleDragEnd, widget->behavior, widget->dragStartBehavior, content);
+    return make<GestureDetectorCls>(_directionIsXAxis()? _handleDragStart : nullptr, _directionIsXAxis()? _handleDragUpdate : nullptr, _directionIsXAxis()? _handleDragEnd : nullptr, _directionIsXAxis()? nullptr : _handleDragStart, _directionIsXAxis()? nullptr : _handleDragUpdate, _directionIsXAxis()? nullptr : _handleDragEnd, widget()->behavior, widget()->dragStartBehavior, content);
 }
 
 bool _DismissibleStateCls::_directionIsXAxis() {
-    return widget->direction == DismissDirectionCls::horizontal || widget->direction == DismissDirectionCls::endToStart || widget->direction == DismissDirectionCls::startToEnd;
+    return widget()->direction == DismissDirectionCls::horizontal || widget()->direction == DismissDirectionCls::endToStart || widget()->direction == DismissDirectionCls::startToEnd;
 }
 
 DismissDirection _DismissibleStateCls::_extentToDirection(double extent) {
@@ -100,7 +100,7 @@ bool _DismissibleStateCls::_isActive() {
 }
 
 double _DismissibleStateCls::_overallDragAxisExtent() {
-    Size size = context->size!;
+    Size size = context()->size()!;
     return _directionIsXAxis()? size->width() : size->height();
 }
 
@@ -139,21 +139,21 @@ void _DismissibleStateCls::_handleDragUpdate(DragUpdateDetails details) {
 }
 
 void _DismissibleStateCls::_handleDismissUpdateValueChanged() {
-    if (widget->onUpdate != nullptr) {
+    if (widget()->onUpdate != nullptr) {
         bool oldDismissThresholdReached = _dismissThresholdReached;
-        _dismissThresholdReached = _moveController!->value() > (widget->dismissThresholds[_dismissDirection()] | _kDismissThreshold);
+        _dismissThresholdReached = _moveController!->value() > (widget()->dismissThresholds[_dismissDirection()] | _kDismissThreshold);
         DismissUpdateDetails details = make<DismissUpdateDetailsCls>(_dismissDirection(), _dismissThresholdReached, oldDismissThresholdReached, _moveController!->value());
-        widget->onUpdate!(details);
+        widget()->onUpdate!(details);
     }
 }
 
 void _DismissibleStateCls::_updateMoveAnimation() {
     double end = _dragExtent->sign();
-    _moveAnimation = _moveController!->drive(<Offset>make<TweenCls>(OffsetCls::zero, _directionIsXAxis()? make<OffsetCls>(end, widget->crossAxisEndOffset) : make<OffsetCls>(widget->crossAxisEndOffset, end)));
+    _moveAnimation = _moveController!->drive(<Offset>make<TweenCls>(OffsetCls::zero, _directionIsXAxis()? make<OffsetCls>(end, widget()->crossAxisEndOffset) : make<OffsetCls>(widget()->crossAxisEndOffset, end)));
 }
 
 _FlingGestureKind _DismissibleStateCls::_describeFlingGesture(Velocity velocity) {
-    assert(widget->direction != nullptr);
+    assert(widget()->direction != nullptr);
     if (_dragExtent == 0.0) {
         return _FlingGestureKindCls::none;
     }
@@ -185,7 +185,7 @@ void _DismissibleStateCls::_handleDragEnd(DragEndDetails details) {
         return;
     }
     _dragUnderway = false;
-    if (_moveController!->isCompleted) {
+    if (_moveController!->isCompleted()) {
         _handleMoveCompleted();
         return;
     }
@@ -197,18 +197,18 @@ Future<void> _DismissibleStateCls::_handleDismissStatusChanged(AnimationStatus s
     if (status == AnimationStatusCls::completed && !_dragUnderway) {
         await await _handleMoveCompleted();
     }
-    if (mounted) {
+    if (mounted()) {
         updateKeepAlive();
     }
 }
 
 Future<void> _DismissibleStateCls::_handleMoveCompleted() {
-    if ((widget->dismissThresholds[_dismissDirection()] | _kDismissThreshold) >= 1.0) {
+    if ((widget()->dismissThresholds[_dismissDirection()] | _kDismissThreshold) >= 1.0) {
         _moveController!->reverse();
         return;
     }
     bool result = await _confirmStartResizeAnimation();
-    if (mounted) {
+    if (mounted()) {
         if (result) {
             _startResizeAnimation();
         } else {
@@ -218,11 +218,11 @@ Future<void> _DismissibleStateCls::_handleMoveCompleted() {
 }
 
 Future<bool> _DismissibleStateCls::_confirmStartResizeAnimation() {
-    if (widget->confirmDismiss != nullptr) {
+    if (widget()->confirmDismiss != nullptr) {
         _confirming = true;
         DismissDirection direction = _dismissDirection();
         try {
-            return await widget->confirmDismiss!(direction) | false;
+            return await widget()->confirmDismiss!(direction) | false;
         } finally {
             _confirming = false;
         };
@@ -231,28 +231,28 @@ Future<bool> _DismissibleStateCls::_confirmStartResizeAnimation() {
 }
 
 void _DismissibleStateCls::_startResizeAnimation() {
-    assert(_moveController!->isCompleted);
+    assert(_moveController!->isCompleted());
     assert(_resizeController == nullptr);
     assert(_sizePriorToCollapse == nullptr);
-    if (widget->resizeDuration == nullptr) {
-        if (widget->onDismissed != nullptr) {
+    if (widget()->resizeDuration == nullptr) {
+        if (widget()->onDismissed != nullptr) {
             DismissDirection direction = _dismissDirection();
-            widget->onDismissed!(direction);
+            widget()->onDismissed!(direction);
         }
     } else {
-            auto _c1 = make<AnimationControllerCls>(widget->resizeDuration, this);    _c1.auto _c2 = addListener(_handleResizeProgressChanged);    _c2.addStatusListener([=] (AnimationStatus status) {                updateKeepAlive();            });    _c2;_resizeController = _c1;
+            auto _c1 = make<AnimationControllerCls>(widget()->resizeDuration, this);    _c1.auto _c2 = addListener(_handleResizeProgressChanged);    _c2.addStatusListener([=] (AnimationStatus status) {                updateKeepAlive();            });    _c2;_resizeController = _c1;
         _resizeController!->forward();
         setState([=] () {
-            _sizePriorToCollapse = context->size;
+            _sizePriorToCollapse = context()->size();
             _resizeAnimation = _resizeController!->drive(make<CurveTweenCls>(_kResizeTimeCurve))->drive(<double>make<TweenCls>(1.0, 0.0));
         });
     }
 }
 
 void _DismissibleStateCls::_handleResizeProgressChanged() {
-    if (_resizeController!->isCompleted) {
-        widget->onDismissed?->call(_dismissDirection());
+    if (_resizeController!->isCompleted()) {
+        widget()->onDismissed?->call(_dismissDirection());
     } else {
-        widget->onResize?->call();
+        widget()->onResize?->call();
     }
 }

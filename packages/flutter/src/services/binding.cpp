@@ -107,7 +107,7 @@ Stream<LicenseEntry> ServicesBindingCls::_addLicenses() {
             rawLicenses = await rootBundle->loadString(__s("NOTICES"), false);
         } else {
             ByteData licenseBytes = await rootBundle->load(__s("NOTICES.Z"));
-            List<int> unzippedBytes = await <List<int>, List<int>>compute(gzip->decode, licenseBytes->buffer->asUint8List(), __s("decompressLicenses"));
+            List<int> unzippedBytes = await <List<int>, List<int>>compute(gzip->decode, licenseBytes->buffer()->asUint8List(), __s("decompressLicenses"));
             rawLicenses = await <List<int>, String>compute(utf8->decode, unzippedBytes, __s("utf8DecodeLicenses"));
         }
         List<LicenseEntry> licenses = await <String, List<LicenseEntry>>compute(_parseLicenses, rawLicenses, __s("parseLicenses"));

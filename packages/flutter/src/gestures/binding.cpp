@@ -101,7 +101,7 @@ void GestureBindingCls::unlocked() {
 }
 
 void GestureBindingCls::cancelPointer(int pointer) {
-    if (_pendingPointerEvents->isEmpty && !locked) {
+    if (_pendingPointerEvents->isEmpty() && !locked) {
         scheduleMicrotask(_flushPointerEventQueue);
     }
     _pendingPointerEvents->addFirst(make<PointerCancelEventCls>(pointer));
@@ -178,7 +178,7 @@ void GestureBindingCls::_handlePointerDataPacket(PointerDataPacket packet) {
 
 void GestureBindingCls::_flushPointerEventQueue() {
     assert(!locked);
-    while (_pendingPointerEvents->isNotEmpty) {
+    while (_pendingPointerEvents->isNotEmpty()) {
         handlePointerEvent(_pendingPointerEvents->removeFirst());
     }
 }

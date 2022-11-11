@@ -11,7 +11,7 @@ String StringCodecCls::decodeMessage(ByteData message) {
     if (message == nullptr) {
         return nullptr;
     }
-    return utf8->decoder->convert(message->buffer->asUint8List(message->offsetInBytes, message->lengthInBytes));
+    return utf8->decoder->convert(message->buffer()->asUint8List(message->offsetInBytes(), message->lengthInBytes()));
 }
 
 ByteData StringCodecCls::encodeMessage(String message) {
@@ -136,37 +136,37 @@ void StandardMessageCodecCls::writeValue(WriteBuffer buffer, Object value) {
             }
         }
         if (utf8Bytes != nullptr) {
-            writeSize(buffer, utf8Offset + utf8Bytes->length);
+            writeSize(buffer, utf8Offset + utf8Bytes->length());
             buffer->putUint8List(Uint8ListCls->sublistView(asciiBytes, 0, utf8Offset));
             buffer->putUint8List(utf8Bytes);
         } else {
-            writeSize(buffer, asciiBytes->length);
+            writeSize(buffer, asciiBytes->length());
             buffer->putUint8List(asciiBytes);
         }
     } else {
         if (is<Uint8List>(value)) {
         buffer->putUint8(_valueUint8List);
-        writeSize(buffer, as<Uint8ListCls>(value)->length);
+        writeSize(buffer, as<Uint8ListCls>(value)->length());
         buffer->putUint8List(as<Uint8ListCls>(value));
     } else {
         if (is<Int32List>(value)) {
         buffer->putUint8(_valueInt32List);
-        writeSize(buffer, as<Int32ListCls>(value)->length);
+        writeSize(buffer, as<Int32ListCls>(value)->length());
         buffer->putInt32List(as<Int32ListCls>(value));
     } else {
         if (is<Int64List>(value)) {
         buffer->putUint8(_valueInt64List);
-        writeSize(buffer, as<Int64ListCls>(value)->length);
+        writeSize(buffer, as<Int64ListCls>(value)->length());
         buffer->putInt64List(as<Int64ListCls>(value));
     } else {
         if (is<Float32List>(value)) {
         buffer->putUint8(_valueFloat32List);
-        writeSize(buffer, as<Float32ListCls>(value)->length);
+        writeSize(buffer, as<Float32ListCls>(value)->length());
         buffer->putFloat32List(as<Float32ListCls>(value));
     } else {
         if (is<Float64List>(value)) {
         buffer->putUint8(_valueFloat64List);
-        writeSize(buffer, as<Float64ListCls>(value)->length);
+        writeSize(buffer, as<Float64ListCls>(value)->length());
         buffer->putFloat64List(as<Float64ListCls>(value));
     } else {
         if (is<List>(value)) {
@@ -266,7 +266,7 @@ ByteData StandardMethodCodecCls::encodeErrorEnvelope(String code, Object details
 }
 
 dynamic StandardMethodCodecCls::decodeEnvelope(ByteData envelope) {
-    if (envelope->lengthInBytes == 0) {
+    if (envelope->lengthInBytes() == 0) {
         throw make<FormatExceptionCls>(__s("Expected envelope, got nothing"));
     }
     ReadBuffer buffer = make<ReadBufferCls>(envelope);

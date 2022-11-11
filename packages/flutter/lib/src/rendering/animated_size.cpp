@@ -96,10 +96,10 @@ void RenderAnimatedSizeCls::detach() {
 void RenderAnimatedSizeCls::performLayout() {
     _lastValue = _controller->value();
     _hasVisualOverflow = false;
-    BoxConstraints constraints = this->constraints;
+    BoxConstraints constraints = this->constraints();
     if (child == nullptr || constraints->isTight()) {
         _controller->stop();
-        size = _sizeTween->begin = _sizeTween->end = constraints->smallest();
+        size() = _sizeTween->begin = _sizeTween->end = constraints->smallest();
         _state = RenderAnimatedSizeStateCls::start;
         child?->layout(constraints);
         return;
@@ -107,9 +107,9 @@ void RenderAnimatedSizeCls::performLayout() {
     child!->layout(constraints, true);
     assert(_state != nullptr);
     ;
-    size = constraints->constrain(_animatedSize()!);
+    size() = constraints->constrain(_animatedSize()!);
     alignChild();
-    if (size->width < _sizeTween->end!->width || size->height < _sizeTween->end!->height) {
+    if (size()->width() < _sizeTween->end!->width || size()->height() < _sizeTween->end!->height) {
         _hasVisualOverflow = true;
     }
 }
@@ -126,8 +126,8 @@ Size RenderAnimatedSizeCls::computeDryLayout(BoxConstraints constraints) {
 
 void RenderAnimatedSizeCls::paint(PaintingContext context, Offset offset) {
     if (child != nullptr && _hasVisualOverflow && clipBehavior() != ClipCls::none) {
-        Rect rect = OffsetCls::zero & size;
-        _clipRectLayer->layer() = context->pushClipRect(needsCompositing, offset, rect, super->paint, clipBehavior(), _clipRectLayer->layer());
+        Rect rect = OffsetCls::zero & size();
+        _clipRectLayer->layer() = context->pushClipRect(needsCompositing(), offset, rect, super->paint, clipBehavior(), _clipRectLayer->layer());
     } else {
         _clipRectLayer->layer() = nullptr;
         super->paint(context, offset);
@@ -155,7 +155,7 @@ void RenderAnimatedSizeCls::_layoutStart() {
 
 void RenderAnimatedSizeCls::_layoutStable() {
     if (_sizeTween->end != child!->size) {
-        _sizeTween->begin = size;
+        _sizeTween->begin = size();
         _sizeTween->end = debugAdoptSize(child!->size);
         _restartAnimation();
         _state = RenderAnimatedSizeStateCls::changed;

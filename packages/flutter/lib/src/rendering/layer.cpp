@@ -132,7 +132,7 @@ void LayerCls::engineLayer(EngineLayer value) {
     _engineLayer?->dispose();
     _engineLayer = value;
     if (!alwaysNeedsAddToScene()) {
-        if (parent() != nullptr && !parent()!->alwaysNeedsAddToScene) {
+        if (parent() != nullptr && !parent()!->alwaysNeedsAddToScene()) {
             parent()!->markNeedsAddToScene();
         }
     }
@@ -203,7 +203,7 @@ String LayerCls::toStringShort() {
 
 void LayerCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<Object>make<DiagnosticsPropertyCls>(__s("owner"), owner, parent() != nullptr? DiagnosticLevelCls::hidden : DiagnosticLevelCls::info, nullptr));
+    properties->add(<Object>make<DiagnosticsPropertyCls>(__s("owner"), owner(), parent() != nullptr? DiagnosticLevelCls::hidden : DiagnosticLevelCls::info, nullptr));
     properties->add(<Object>make<DiagnosticsPropertyCls>(__s("creator"), debugCreator, nullptr, DiagnosticLevelCls::debug));
     if (_engineLayer != nullptr) {
         properties->add(<String>make<DiagnosticsPropertyCls>(__s("engine layer"), describeIdentity(_engineLayer)));
@@ -404,7 +404,7 @@ bool ContainerLayerCls::hasChildren() {
 Scene ContainerLayerCls::buildScene(SceneBuilder builder) {
     updateSubtreeNeedsAddToScene();
     addToScene(builder);
-    if (subtreeHasCompositionCallbacks) {
+    if (subtreeHasCompositionCallbacks()) {
         _fireCompositionCallbacks(true);
     }
     _needsAddToScene = false;
@@ -469,7 +469,7 @@ void ContainerLayerCls::append(Layer child) {
     assert(child != firstChild());
     assert(child != lastChild());
     assert(child->parent() == nullptr);
-    assert(!child->attached);
+    assert(!child->attached());
     assert(child->nextSibling() == nullptr);
     assert(child->previousSibling() == nullptr);
     assert(child->_parentHandle->layer() == nullptr);
@@ -489,7 +489,7 @@ void ContainerLayerCls::append(Layer child) {
     _lastChild = child;
     _firstChild |= child;
     child->_parentHandle->layer() = child;
-    assert(child->attached == attached);
+    assert(child->attached() == attached());
 }
 
 void ContainerLayerCls::removeAllChildren() {
@@ -499,7 +499,7 @@ void ContainerLayerCls::removeAllChildren() {
         Layer next = child->nextSibling();
         child->_previousSibling = nullptr;
         child->_nextSibling = nullptr;
-        assert(child->attached == attached);
+        assert(child->attached() == attached());
         dropChild(child);
         assert(child->_parentHandle != nullptr);
         child->_parentHandle->layer() = nullptr;
@@ -573,28 +573,28 @@ void ContainerLayerCls::_fireCompositionCallbacks(bool includeChildren) {
 }
 
 bool ContainerLayerCls::_debugUltimatePreviousSiblingOf(Layer child, Layer equals) {
-    assert(child->attached == attached);
+    assert(child->attached() == attached());
     while (child->previousSibling() != nullptr) {
         assert(child->previousSibling() != child);
         child = child->previousSibling()!;
-        assert(child->attached == attached);
+        assert(child->attached() == attached());
     }
     return child == equals;
 }
 
 bool ContainerLayerCls::_debugUltimateNextSiblingOf(Layer child, Layer equals) {
-    assert(child->attached == attached);
+    assert(child->attached() == attached());
     while (child->_nextSibling != nullptr) {
         assert(child->_nextSibling != child);
         child = child->_nextSibling!;
-        assert(child->attached == attached);
+        assert(child->attached() == attached());
     }
     return child == equals;
 }
 
 void ContainerLayerCls::_removeChild(Layer child) {
     assert(child->parent() == this);
-    assert(child->attached == attached);
+    assert(child->attached() == attached());
     assert(_debugUltimatePreviousSiblingOf(child, firstChild()));
     assert(_debugUltimateNextSiblingOf(child, lastChild()));
     assert(child->_parentHandle->layer() != nullptr);
@@ -611,15 +611,15 @@ void ContainerLayerCls::_removeChild(Layer child) {
         child->nextSibling()!->_previousSibling = child->previousSibling();
     }
     assert((firstChild() == nullptr) == (lastChild() == nullptr));
-    assert(firstChild() == nullptr || firstChild()!->attached == attached);
-    assert(lastChild() == nullptr || lastChild()!->attached == attached);
+    assert(firstChild() == nullptr || firstChild()!->attached() == attached());
+    assert(lastChild() == nullptr || lastChild()!->attached() == attached());
     assert(firstChild() == nullptr || _debugUltimateNextSiblingOf(firstChild()!, lastChild()));
     assert(lastChild() == nullptr || _debugUltimatePreviousSiblingOf(lastChild()!, firstChild()));
     child->_previousSibling = nullptr;
     child->_nextSibling = nullptr;
     dropChild(child);
     child->_parentHandle->layer() = nullptr;
-    assert(!child->attached);
+    assert(!child->attached());
 }
 
 OffsetLayerCls::OffsetLayerCls(Offset offset) {
@@ -651,7 +651,7 @@ void OffsetLayerCls::applyTransform(Layer child, Matrix4 transform) {
 }
 
 void OffsetLayerCls::addToScene(SceneBuilder builder) {
-    engineLayer = builder->pushOffset(offset()->dx(), offset()->dy(), as<OffsetEngineLayer>(_engineLayer));
+    engineLayer() = builder->pushOffset(offset()->dx(), offset()->dy(), as<OffsetEngineLayer>(_engineLayer));
     addChildrenToScene(builder);
     builder->pop();
 }
@@ -730,9 +730,9 @@ void ClipRectLayerCls::addToScene(SceneBuilder builder) {
         return true;
     }());
     if (enabled) {
-        engineLayer = builder->pushClipRect(clipRect()!, clipBehavior(), as<ClipRectEngineLayer>(_engineLayer));
+        engineLayer() = builder->pushClipRect(clipRect()!, clipBehavior(), as<ClipRectEngineLayer>(_engineLayer));
     } else {
-        engineLayer = nullptr;
+        engineLayer() = nullptr;
     }
     addChildrenToScene(builder);
     if (enabled) {
@@ -800,9 +800,9 @@ void ClipRRectLayerCls::addToScene(SceneBuilder builder) {
         return true;
     }());
     if (enabled) {
-        engineLayer = builder->pushClipRRect(clipRRect()!, clipBehavior(), as<ClipRRectEngineLayer>(_engineLayer));
+        engineLayer() = builder->pushClipRRect(clipRRect()!, clipBehavior(), as<ClipRRectEngineLayer>(_engineLayer));
     } else {
-        engineLayer = nullptr;
+        engineLayer() = nullptr;
     }
     addChildrenToScene(builder);
     if (enabled) {
@@ -870,9 +870,9 @@ void ClipPathLayerCls::addToScene(SceneBuilder builder) {
         return true;
     }());
     if (enabled) {
-        engineLayer = builder->pushClipPath(clipPath()!, clipBehavior(), as<ClipPathEngineLayer>(_engineLayer));
+        engineLayer() = builder->pushClipPath(clipPath()!, clipBehavior(), as<ClipPathEngineLayer>(_engineLayer));
     } else {
-        engineLayer = nullptr;
+        engineLayer() = nullptr;
     }
     addChildrenToScene(builder);
     if (enabled) {
@@ -905,7 +905,7 @@ void ColorFilterLayerCls::colorFilter(ColorFilter value) {
 
 void ColorFilterLayerCls::addToScene(SceneBuilder builder) {
     assert(colorFilter() != nullptr);
-    engineLayer = builder->pushColorFilter(colorFilter()!, as<ColorFilterEngineLayer>(_engineLayer));
+    engineLayer() = builder->pushColorFilter(colorFilter()!, as<ColorFilterEngineLayer>(_engineLayer));
     addChildrenToScene(builder);
     builder->pop();
 }
@@ -935,7 +935,7 @@ void ImageFilterLayerCls::imageFilter(ImageFilter value) {
 
 void ImageFilterLayerCls::addToScene(SceneBuilder builder) {
     assert(imageFilter() != nullptr);
-    engineLayer = builder->pushImageFilter(imageFilter()!, as<ImageFilterEngineLayer>(_engineLayer));
+    engineLayer() = builder->pushImageFilter(imageFilter()!, as<ImageFilterEngineLayer>(_engineLayer));
     addChildrenToScene(builder);
     builder->pop();
 }
@@ -971,10 +971,10 @@ void TransformLayerCls::transform(Matrix4 value) {
 void TransformLayerCls::addToScene(SceneBuilder builder) {
     assert(transform() != nullptr);
     _lastEffectiveTransform = transform();
-    if (offset != OffsetCls::zero) {
-            auto _c1 = Matrix4Cls->translationValues(offset->dx, offset->dy, 0.0);    _c1.multiply(_lastEffectiveTransform!);_lastEffectiveTransform = _c1;
+    if (offset() != OffsetCls::zero) {
+            auto _c1 = Matrix4Cls->translationValues(offset()->dx(), offset()->dy(), 0.0);    _c1.multiply(_lastEffectiveTransform!);_lastEffectiveTransform = _c1;
     }
-    engineLayer = builder->pushTransform(_lastEffectiveTransform!->storage(), as<TransformEngineLayer>(_engineLayer));
+    engineLayer() = builder->pushTransform(_lastEffectiveTransform!->storage(), as<TransformEngineLayer>(_engineLayer));
     addChildrenToScene(builder);
     builder->pop();
 }
@@ -1029,7 +1029,7 @@ void OpacityLayerCls::alpha(int value) {
     assert(value != nullptr);
     if (value != _alpha) {
         if (value == 255 || _alpha == 255) {
-            engineLayer = nullptr;
+            engineLayer() = nullptr;
         }
         _alpha = value;
         markNeedsAddToScene();
@@ -1038,9 +1038,9 @@ void OpacityLayerCls::alpha(int value) {
 
 void OpacityLayerCls::addToScene(SceneBuilder builder) {
     assert(alpha() != nullptr);
-    bool enabled = firstChild != nullptr;
+    bool enabled = firstChild() != nullptr;
     if (!enabled) {
-        engineLayer = nullptr;
+        engineLayer() = nullptr;
         return;
     }
     assert([=] () {
@@ -1050,10 +1050,10 @@ void OpacityLayerCls::addToScene(SceneBuilder builder) {
     int realizedAlpha = alpha()!;
     if (enabled &&  < 255) {
         assert(is<OpacityEngineLayer>(_engineLayer));
-        engineLayer = builder->pushOpacity(realizedAlpha, offset, as<OpacityEngineLayer>(_engineLayer));
+        engineLayer() = builder->pushOpacity(realizedAlpha, offset(), as<OpacityEngineLayer>(_engineLayer));
     } else {
         assert(is<OffsetEngineLayer>(_engineLayer));
-        engineLayer = builder->pushOffset(offset->dx, offset->dy, as<OffsetEngineLayer>(_engineLayer));
+        engineLayer() = builder->pushOffset(offset()->dx(), offset()->dy(), as<OffsetEngineLayer>(_engineLayer));
     }
     addChildrenToScene(builder);
     builder->pop();
@@ -1109,7 +1109,7 @@ void ShaderMaskLayerCls::addToScene(SceneBuilder builder) {
     assert(shader() != nullptr);
     assert(maskRect() != nullptr);
     assert(blendMode() != nullptr);
-    engineLayer = builder->pushShaderMask(shader()!, maskRect()!, blendMode()!, as<ShaderMaskEngineLayer>(_engineLayer));
+    engineLayer() = builder->pushShaderMask(shader()!, maskRect()!, blendMode()!, as<ShaderMaskEngineLayer>(_engineLayer));
     addChildrenToScene(builder);
     builder->pop();
 }
@@ -1152,7 +1152,7 @@ void BackdropFilterLayerCls::blendMode(BlendMode value) {
 
 void BackdropFilterLayerCls::addToScene(SceneBuilder builder) {
     assert(filter() != nullptr);
-    engineLayer = builder->pushBackdropFilter(filter()!, blendMode(), as<BackdropFilterEngineLayer>(_engineLayer));
+    engineLayer() = builder->pushBackdropFilter(filter()!, blendMode(), as<BackdropFilterEngineLayer>(_engineLayer));
     addChildrenToScene(builder);
     builder->pop();
 }
@@ -1249,9 +1249,9 @@ void PhysicalModelLayerCls::addToScene(SceneBuilder builder) {
         return true;
     }());
     if (enabled) {
-        engineLayer = builder->pushPhysicalShape(clipPath()!, elevation()!, color()!, shadowColor(), clipBehavior(), as<PhysicalShapeEngineLayer>(_engineLayer));
+        engineLayer() = builder->pushPhysicalShape(clipPath()!, elevation()!, color()!, shadowColor(), clipBehavior(), as<PhysicalShapeEngineLayer>(_engineLayer));
     } else {
-        engineLayer = nullptr;
+        engineLayer() = nullptr;
     }
     addChildrenToScene(builder);
     if (enabled) {
@@ -1303,7 +1303,7 @@ void LayerLinkCls::_debugScheduleLeadersCleanUpCheck() {
         _debugLeaderCheckScheduled = true;
         SchedulerBindingCls::instance->addPostFrameCallback([=] (Duration timeStamp) {
             _debugLeaderCheckScheduled = false;
-            assert(_debugPreviousLeaders!->isEmpty);
+            assert(_debugPreviousLeaders!->isEmpty());
         });
         return true;
     }());
@@ -1326,7 +1326,7 @@ void LeaderLayerCls::link(LayerLink value) {
     if (_link == value) {
         return;
     }
-    if (attached) {
+    if (attached()) {
         _link->_unregisterLeader(this);
         value->_registerLeader(this);
     }
@@ -1343,7 +1343,7 @@ void LeaderLayerCls::offset(Offset value) {
         return;
     }
     _offset = value;
-    if (!alwaysNeedsAddToScene) {
+    if (!alwaysNeedsAddToScene()) {
         markNeedsAddToScene();
     }
 }
@@ -1366,7 +1366,7 @@ bool LeaderLayerCls::findAnnotations(AnnotationResult<S> result, Offset localPos
 void LeaderLayerCls::addToScene(SceneBuilder builder) {
     assert(offset() != nullptr);
     if (offset() != OffsetCls::zero) {
-        engineLayer = builder->pushTransform(Matrix4Cls->translationValues(offset()->dx(), offset()->dy(), 0.0)->storage, as<TransformEngineLayer>(_engineLayer));
+        engineLayer() = builder->pushTransform(Matrix4Cls->translationValues(offset()->dx(), offset()->dy(), 0.0)->storage, as<TransformEngineLayer>(_engineLayer));
     }
     addChildrenToScene(builder);
     if (offset() != OffsetCls::zero) {
@@ -1437,19 +1437,19 @@ void FollowerLayerCls::addToScene(SceneBuilder builder) {
         _lastTransform = nullptr;
         _lastOffset = nullptr;
         _inverseDirty = true;
-        engineLayer = nullptr;
+        engineLayer() = nullptr;
         return;
     }
     _establishTransform();
     if (_lastTransform != nullptr) {
         _lastOffset = unlinkedOffset;
-        engineLayer = builder->pushTransform(_lastTransform!->storage(), as<TransformEngineLayer>(_engineLayer));
+        engineLayer() = builder->pushTransform(_lastTransform!->storage(), as<TransformEngineLayer>(_engineLayer));
         addChildrenToScene(builder);
         builder->pop();
     } else {
         _lastOffset = nullptr;
         Matrix4 matrix = Matrix4Cls->translationValues(unlinkedOffset!->dx(), unlinkedOffset!->dy(), .0);
-        engineLayer = builder->pushTransform(matrix->storage(), as<TransformEngineLayer>(_engineLayer));
+        engineLayer() = builder->pushTransform(matrix->storage(), as<TransformEngineLayer>(_engineLayer));
         addChildrenToScene(builder);
         builder->pop();
     }
@@ -1500,11 +1500,11 @@ Layer FollowerLayerCls::_pathsToCommonAncestor(Layer a, Layer b, List<ContainerL
     if (identical(a, b)) {
         return a;
     }
-    if (a->depth < b->depth) {
+    if (a->depth() < b->depth()) {
         ancestorsB->add(b->parent());
         return _pathsToCommonAncestor(a, b->parent(), ancestorsA, ancestorsB);
     } else {
-        if (a->depth > b->depth) {
+        if (a->depth() > b->depth()) {
         ancestorsA->add(a->parent());
         return _pathsToCommonAncestor(a->parent(), b, ancestorsA, ancestorsB);
     }
@@ -1540,7 +1540,7 @@ void FollowerLayerCls::_establishTransform() {
     if (leader == nullptr) {
         return;
     }
-    assert(leader->owner == owner, __s("Linked LeaderLayer anchor is not in the same layer tree as the FollowerLayer."));
+    assert(leader->owner() == owner(), __s("Linked LeaderLayer anchor is not in the same layer tree as the FollowerLayer."));
     List<ContainerLayer> forwardLayers = makeList(ArrayItem);
     List<ContainerLayer> inverseLayers = makeList(ArrayItem);
     Layer ancestor = _pathsToCommonAncestor(leader, this, forwardLayers, inverseLayers);

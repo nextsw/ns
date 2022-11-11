@@ -60,7 +60,7 @@ void RenderFlowCls::delegate(FlowDelegate newDelegate) {
         markNeedsPaint();
     }
 ;
-    }    if (attached) {
+    }    if (attached()) {
         oldDelegate->_repaint?->removeListener(markNeedsPaint);
         newDelegate->_repaint?->addListener(markNeedsPaint);
     }
@@ -95,7 +95,7 @@ bool RenderFlowCls::isRepaintBoundary() {
 
 double RenderFlowCls::computeMinIntrinsicWidth(double height) {
     double width = _getSize(BoxConstraintsCls->tightForFinite(height))->width();
-    if (width->isFinite) {
+    if (width->isFinite()) {
         return width;
     }
     return 0.0;
@@ -103,7 +103,7 @@ double RenderFlowCls::computeMinIntrinsicWidth(double height) {
 
 double RenderFlowCls::computeMaxIntrinsicWidth(double height) {
     double width = _getSize(BoxConstraintsCls->tightForFinite(height))->width();
-    if (width->isFinite) {
+    if (width->isFinite()) {
         return width;
     }
     return 0.0;
@@ -111,7 +111,7 @@ double RenderFlowCls::computeMaxIntrinsicWidth(double height) {
 
 double RenderFlowCls::computeMinIntrinsicHeight(double width) {
     double height = _getSize(BoxConstraintsCls->tightForFinite(width))->height();
-    if (height->isFinite) {
+    if (height->isFinite()) {
         return height;
     }
     return 0.0;
@@ -119,7 +119,7 @@ double RenderFlowCls::computeMinIntrinsicHeight(double width) {
 
 double RenderFlowCls::computeMaxIntrinsicHeight(double width) {
     double height = _getSize(BoxConstraintsCls->tightForFinite(width))->height();
-    if (height->isFinite) {
+    if (height->isFinite()) {
         return height;
     }
     return 0.0;
@@ -130,8 +130,8 @@ Size RenderFlowCls::computeDryLayout(BoxConstraints constraints) {
 }
 
 void RenderFlowCls::performLayout() {
-    BoxConstraints constraints = this->constraints;
-    size = _getSize(constraints);
+    BoxConstraints constraints = this->constraints();
+    size() = _getSize(constraints);
     int i = 0;
     _randomAccessChildren->clear();
     RenderBox child = firstChild;
@@ -170,16 +170,16 @@ void RenderFlowCls::paintChild(int i, double opacity, Matrix4 transform) {
     }
     InlineMethod;
     if (opacity == 1.0) {
-        _paintingContext!->pushTransform(needsCompositing, _paintingOffset!, transform, painter);
+        _paintingContext!->pushTransform(needsCompositing(), _paintingOffset!, transform, painter);
     } else {
         _paintingContext!->pushOpacity(_paintingOffset!, ui->ColorCls->getAlphaFromOpacity(opacity), [=] (PaintingContext context,Offset offset) {
-            context->pushTransform(needsCompositing, offset, transform!, painter);
+            context->pushTransform(needsCompositing(), offset, transform!, painter);
         });
     }
 }
 
 void RenderFlowCls::paint(PaintingContext context, Offset offset) {
-    _clipRectLayer->layer() = context->pushClipRect(needsCompositing, offset, OffsetCls::zero & size, _paintWithDelegate, clipBehavior(), _clipRectLayer->layer());
+    _clipRectLayer->layer() = context->pushClipRect(needsCompositing(), offset, OffsetCls::zero & size(), _paintWithDelegate, clipBehavior(), _clipRectLayer->layer());
 }
 
 void RenderFlowCls::dispose() {

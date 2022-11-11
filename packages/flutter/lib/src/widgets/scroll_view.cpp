@@ -41,7 +41,7 @@ Widget ScrollViewCls::build(BuildContext context) {
     if (keyboardDismissBehavior == ScrollViewKeyboardDismissBehaviorCls::onDrag) {
         return <ScrollUpdateNotification>make<NotificationListenerCls>(scrollableResult, [=] (ScrollUpdateNotification notification) {
             FocusScopeNode focusScope = FocusScopeCls->of(context);
-            if (notification->dragDetails != nullptr && focusScope->hasFocus) {
+            if (notification->dragDetails != nullptr && focusScope->hasFocus()) {
                 focusScope->unfocus();
             }
             return false;

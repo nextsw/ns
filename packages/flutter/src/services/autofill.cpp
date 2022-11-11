@@ -28,10 +28,10 @@ _AutofillScopeTextInputConfigurationCls::_AutofillScopeTextInputConfigurationCls
 
 TextInputConnection AutofillScopeMixinCls::attach(TextInputClient trigger, TextInputConfiguration configuration) {
     assert(trigger != nullptr);
-    assert(!autofillClients->any([=] (AutofillClient client) {
+    assert(!autofillClients()->any([=] (AutofillClient client) {
         !client->textInputConfiguration->autofillConfiguration->enabled;
     }), __s("Every client in AutofillScope.autofillClients must enable autofill"));
-    TextInputConfiguration inputConfiguration = make<_AutofillScopeTextInputConfigurationCls>(autofillClients->map([=] (AutofillClient client) {
+    TextInputConfiguration inputConfiguration = make<_AutofillScopeTextInputConfigurationCls>(autofillClients()->map([=] (AutofillClient client) {
     client->textInputConfiguration;
 }), configuration);
     return TextInputCls->attach(trigger, inputConfiguration);

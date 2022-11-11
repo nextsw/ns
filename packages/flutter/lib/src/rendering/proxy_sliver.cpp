@@ -13,8 +13,8 @@ void RenderProxySliverCls::setupParentData(RenderObject child) {
 
 void RenderProxySliverCls::performLayout() {
     assert(child != nullptr);
-    child!->layout(constraints, true);
-    geometry = child!->geometry;
+    child!->layout(constraints(), true);
+    geometry() = child!->geometry;
 }
 
 void RenderProxySliverCls::paint(PaintingContext context, Offset offset) {
@@ -94,13 +94,13 @@ void RenderSliverOpacityCls::alwaysIncludeSemantics(bool value) {
 void RenderSliverOpacityCls::paint(PaintingContext context, Offset offset) {
     if (child != nullptr && child!->geometry!->visible) {
         if (_alpha == 0) {
-            layer = nullptr;
+            layer() = nullptr;
             return;
         }
-        assert(needsCompositing);
-        layer = context->pushOpacity(offset, _alpha, super->paint, as<OpacityLayer>(layer));
+        assert(needsCompositing());
+        layer() = context->pushOpacity(offset, _alpha, super->paint, as<OpacityLayer>(layer()));
         assert([=] () {
-            layer!->debugCreator = debugCreator;
+            layer()!->debugCreator = debugCreator;
             return true;
         }());
     }
@@ -204,11 +204,11 @@ void RenderSliverOffstageCls::offstage(bool value) {
 
 void RenderSliverOffstageCls::performLayout() {
     assert(child != nullptr);
-    child!->layout(constraints, true);
+    child!->layout(constraints(), true);
     if (!offstage()) {
-        geometry = child!->geometry;
+        geometry() = child!->geometry;
     } else {
-        geometry = SliverGeometryCls::zero;
+        geometry() = SliverGeometryCls::zero;
     }
 }
 

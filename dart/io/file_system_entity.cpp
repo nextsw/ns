@@ -300,9 +300,9 @@ Uint8List FileSystemEntityCls::_toUtf8Array(String s) {
 }
 
 Uint8List FileSystemEntityCls::_toNullTerminatedUtf8Array(Uint8List l) {
-    if (l->isEmpty || (l->isNotEmpty && l->last != 0)) {
-        Unknown tmp = make<Uint8ListCls>(l->length + 1);
-        tmp->setRange(0, l->length, l);
+    if (l->isEmpty() || (l->isNotEmpty() && l->last != 0)) {
+        Unknown tmp = make<Uint8ListCls>(l->length() + 1);
+        tmp->setRange(0, l->length(), l);
         return tmp;
     } else {
         return l;
@@ -312,7 +312,7 @@ Uint8List FileSystemEntityCls::_toNullTerminatedUtf8Array(Uint8List l) {
 String FileSystemEntityCls::_toStringFromUtf8Array(Uint8List l) {
     Uint8List nonNullTerminated = l;
     if (l->last == 0) {
-        nonNullTerminated = Uint8ListCls->view(l->buffer, l->offsetInBytes, l->length - 1);
+        nonNullTerminated = Uint8ListCls->view(l->buffer, l->offsetInBytes, l->length() - 1);
     }
     return utf8->decode(nonNullTerminated, true);
 }

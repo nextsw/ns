@@ -49,12 +49,12 @@ void HitTestResultCls::pushOffset(Offset offset) {
 }
 
 void HitTestResultCls::popTransform() {
-    if (_localTransforms->isNotEmpty) {
+    if (_localTransforms->isNotEmpty()) {
         _localTransforms->removeLast();
     } else {
         _transforms->removeLast();
     }
-    assert(_transforms->isNotEmpty);
+    assert(_transforms->isNotEmpty());
 }
 
 String HitTestResultCls::toString() {
@@ -62,7 +62,7 @@ String HitTestResultCls::toString() {
 }
 
 void HitTestResultCls::_globalizeTransforms() {
-    if (_localTransforms->isEmpty) {
+    if (_localTransforms->isEmpty()) {
         return;
     }
     Matrix4 last = _transforms->last;
@@ -75,7 +75,7 @@ void HitTestResultCls::_globalizeTransforms() {
 
 Matrix4 HitTestResultCls::_lastTransform() {
     _globalizeTransforms();
-    assert(_localTransforms->isEmpty);
+    assert(_localTransforms->isEmpty());
     return _transforms->last;
 }
 

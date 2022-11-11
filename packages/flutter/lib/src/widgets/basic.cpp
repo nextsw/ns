@@ -296,7 +296,7 @@ void TransformCls::updateRenderObject(BuildContext context, RenderTransform rend
 }
 
 Matrix4 TransformCls::_computeRotation(double radians) {
-    assert(radians->isFinite, __s("Cannot compute the rotation matrix for a non-finite angle: $radians"));
+    assert(radians->isFinite(), __s("Cannot compute the rotation matrix for a non-finite angle: $radians"));
     if (radians == 0.0) {
         return Matrix4Cls->identity();
     }
@@ -475,7 +475,7 @@ void LayoutIdCls::applyParentData(RenderObject renderObject) {
     MultiChildLayoutParentData parentData = as<MultiChildLayoutParentData>(renderObject->parentData!);
     if (parentData->id != id) {
         parentData->id = id;
-        AbstractNode targetParent = renderObject->parent;
+        AbstractNode targetParent = renderObject->parent();
         if (is<RenderObject>(targetParent)) {
             as<RenderObjectCls>(targetParent)->markNeedsLayout();
         }
@@ -759,7 +759,7 @@ SingleChildRenderObjectElement OffstageCls::createElement() {
 }
 
 void _OffstageElementCls::debugVisitOnstageChildren(ElementVisitor visitor) {
-    if (!(as<Offstage>(widget))->offstage) {
+    if (!(as<Offstage>(widget()))->offstage) {
         super->debugVisitOnstageChildren(visitor);
     }
 }
@@ -965,7 +965,7 @@ void PositionedCls::applyParentData(RenderObject renderObject) {
         needsLayout = true;
     }
     if (needsLayout) {
-        AbstractNode targetParent = renderObject->parent;
+        AbstractNode targetParent = renderObject->parent();
         if (is<RenderObject>(targetParent)) {
             as<RenderObjectCls>(targetParent)->markNeedsLayout();
         }
@@ -1049,7 +1049,7 @@ void FlexibleCls::applyParentData(RenderObject renderObject) {
         needsLayout = true;
     }
     if (needsLayout) {
-        AbstractNode targetParent = renderObject->parent;
+        AbstractNode targetParent = renderObject->parent();
         if (is<RenderObject>(targetParent)) {
             as<RenderObjectCls>(targetParent)->markNeedsLayout();
         }
@@ -1462,7 +1462,7 @@ void KeyedSubtreeCls::wrap(Widget child, int childIndex) {
 }
 
 List<Widget> KeyedSubtreeCls::ensureUniqueKeysForList(List<Widget> items, int baseIndex) {
-    if (items == nullptr || items->isEmpty) {
+    if (items == nullptr || items->isEmpty()) {
         return items;
     }
     List<Widget> itemsWithUniqueKeys = makeList();
@@ -1500,7 +1500,7 @@ State<StatefulBuilder> StatefulBuilderCls::createState() {
 }
 
 Widget _StatefulBuilderStateCls::build(BuildContext context) {
-    return widget->builder(context, setState);
+    return widget()->builder(context, setState);
 }
 
 ColoredBoxCls::ColoredBoxCls(Unknown child, Color color, Unknown key) {
@@ -1536,8 +1536,8 @@ void _RenderColoredBoxCls::color(Color value) {
 }
 
 void _RenderColoredBoxCls::paint(PaintingContext context, Offset offset) {
-    if (size > SizeCls::zero) {
-            auto _c1 = make<PaintCls>();    _c1.color() = color();context->canvas()->drawRect(offset & size, _c1);
+    if (size() > SizeCls::zero) {
+            auto _c1 = make<PaintCls>();    _c1.color() = color();context->canvas()->drawRect(offset & size(), _c1);
     }
     if (child != nullptr) {
         context->paintChild(child!, offset);

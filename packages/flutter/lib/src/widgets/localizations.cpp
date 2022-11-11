@@ -152,7 +152,7 @@ List<LocalizationsDelegate<dynamic>> LocalizationsCls::_delegatesOf(BuildContext
     assert(context != nullptr);
     _LocalizationsScope scope = context-><_LocalizationsScope>dependOnInheritedWidgetOfExactType();
     assert(scope != nullptr, __s("a Localizations ancestor was not found"));
-    return <LocalizationsDelegate<dynamic>>of(scope!->localizationsState->widget->delegates);
+    return <LocalizationsDelegate<dynamic>>of(scope!->localizationsState->widget()->delegates);
 }
 
 Locale _LocalizationsStateCls::locale() {
@@ -161,18 +161,18 @@ Locale _LocalizationsStateCls::locale() {
 
 void _LocalizationsStateCls::initState() {
     super->initState();
-    load(widget->locale);
+    load(widget()->locale());
 }
 
 void _LocalizationsStateCls::didUpdateWidget(Localizations old) {
     super->didUpdateWidget(old);
-    if (widget->locale != old->locale || (widget->delegates == nullptr) || (widget->delegates != nullptr && old->delegates == nullptr) || (widget->delegates != nullptr && _anyDelegatesShouldReload(old))) {
-        load(widget->locale);
+    if (widget()->locale() != old->locale || (widget()->delegates == nullptr) || (widget()->delegates != nullptr && old->delegates == nullptr) || (widget()->delegates != nullptr && _anyDelegatesShouldReload(old))) {
+        load(widget()->locale());
     }
 }
 
 void _LocalizationsStateCls::load(Locale locale) {
-    Iterable<LocalizationsDelegate<dynamic>> delegates = widget->delegates;
+    Iterable<LocalizationsDelegate<dynamic>> delegates = widget()->delegates;
     if (delegates == nullptr || delegates->isEmpty()) {
         _locale = locale;
         return;
@@ -187,7 +187,7 @@ void _LocalizationsStateCls::load(Locale locale) {
     } else {
         RendererBindingCls::instance->deferFirstFrame();
         typeToResourcesFuture-><void>then([=] (Map<Type, dynamic> value) {
-            if (mounted) {
+            if (mounted()) {
                 setState([=] () {
                     _typeToResources = value;
                     _locale = locale;
@@ -209,14 +209,14 @@ Widget _LocalizationsStateCls::build(BuildContext context) {
     if (_locale == nullptr) {
         return make<ContainerCls>();
     }
-    return make<SemanticsCls>(_textDirection(), make<_LocalizationsScopeCls>(_localizedResourcesScopeKey, _locale!, this, _typeToResources, make<DirectionalityCls>(_textDirection(), widget->child!)));
+    return make<SemanticsCls>(_textDirection(), make<_LocalizationsScopeCls>(_localizedResourcesScopeKey, _locale!, this, _typeToResources, make<DirectionalityCls>(_textDirection(), widget()->child!)));
 }
 
 bool _LocalizationsStateCls::_anyDelegatesShouldReload(Localizations old) {
-    if (widget->delegates->length != old->delegates->length()) {
+    if (widget()->delegates->length != old->delegates->length()) {
         return true;
     }
-    List<LocalizationsDelegate<dynamic>> delegates = widget->delegates->toList();
+    List<LocalizationsDelegate<dynamic>> delegates = widget()->delegates->toList();
     List<LocalizationsDelegate<dynamic>> oldDelegates = old->delegates->toList();
     for (;  < delegates->length(); i += 1) {
         LocalizationsDelegate<dynamic> delegate = delegates[i];

@@ -32,12 +32,12 @@ void RouteCls<T>::install() {
 
 template<typename T>
 TickerFuture RouteCls<T>::didPush() {
-        });return             }        auto _c1 = TickerFutureCls->complete();        _c1.<void>then([=] (void _) {                if (navigator()?->widget->requestFocus | false) {                    navigator()!->focusScopeNode->requestFocus();_c1;
+        });return             }        auto _c1 = TickerFutureCls->complete();        _c1.<void>then([=] (void _) {                if (navigator()?->widget()->requestFocus | false) {                    navigator()!->focusScopeNode->requestFocus();_c1;
 }
 
 template<typename T>
 void RouteCls<T>::didAdd() {
-    if (navigator()?->widget->requestFocus | false) {
+    if (navigator()?->widget()->requestFocus | false) {
         TickerFutureCls->complete()-><void>then([=] (void _) {
             navigator()?->focusScopeNode->requestFocus();
         });
@@ -260,7 +260,7 @@ Iterable<RouteTransitionRecord> TransitionDelegateCls<T>::_transition(Map<RouteT
                 indexOfNextRouteInNewHistory += 1;
             }
         }
-        assert(indexOfNextRouteInNewHistory == newPageRouteHistory->length() && exitingPageRoutes->isEmpty, __s("The merged result from the $runtimeType.resolve does not include all required routes. Do you remember to merge all exiting routes?"));
+        assert(indexOfNextRouteInNewHistory == newPageRouteHistory->length() && exitingPageRoutes->isEmpty(), __s("The merged result from the $runtimeType.resolve does not include all required routes. Do you remember to merge all exiting routes?"));
         return true;
     }());
     return results;
@@ -274,7 +274,7 @@ template<typename T>
 Iterable<RouteTransitionRecord> DefaultTransitionDelegateCls<T>::resolve(Map<RouteTransitionRecord, RouteTransitionRecord> locationToExitingPageRoute, List<RouteTransitionRecord> newPageRouteHistory, Map<RouteTransitionRecord, List<RouteTransitionRecord>> pageRouteToPagelessRoutes) {
     List<RouteTransitionRecord> results = makeList();
     InlineMethod;
-    handleExitingRoute(nullptr, newPageRouteHistory->isEmpty);
+    handleExitingRoute(nullptr, newPageRouteHistory->isEmpty());
     for (RouteTransitionRecord pageRoute : newPageRouteHistory) {
         bool isLastIteration = newPageRouteHistory->last == pageRoute;
         if (pageRoute->isWaitingForEnteringDecision) {
@@ -487,7 +487,7 @@ List<Route<dynamic>> NavigatorCls::defaultGenerateInitialRoutes(NavigatorState n
     }    result->removeWhere([=] (Route<dynamic> route) {
         route == nullptr;
     });
-    if (result->isEmpty) {
+    if (result->isEmpty()) {
         result->add(navigator-><dynamic>_routeNamed(NavigatorCls::defaultRouteName, nullptr));
     }
     return result-><Route<dynamic>>cast();
@@ -530,7 +530,7 @@ void _RouteEntryCls::handleAdd(NavigatorState navigator, Route<dynamic> previous
     assert(route->_navigator == nullptr);
     route->_navigator = navigator;
     route->install();
-    assert(route->overlayEntries()->isNotEmpty);
+    assert(route->overlayEntries()->isNotEmpty());
     currentState = _RouteLifecycleCls::adding;
     navigator->_observedRouteAdditions->add(make<_NavigatorPushObservationCls>(route, previousPresent));
 }
@@ -543,7 +543,7 @@ void _RouteEntryCls::handlePush(bool isNewFirst, NavigatorState navigator, Route
     _RouteLifecycle previousState = currentState;
     route->_navigator = navigator;
     route->install();
-    assert(route->overlayEntries()->isNotEmpty);
+    assert(route->overlayEntries()->isNotEmpty());
     if (currentState == _RouteLifecycleCls::push || currentState == _RouteLifecycleCls::pushReplace) {
         TickerFuture routeFuture = route->didPush();
         currentState = _RouteLifecycleCls::pushing;
@@ -810,25 +810,25 @@ void _NavigatorReplaceObservationCls::notify(NavigatorObserver observer) {
 void NavigatorStateCls::initState() {
     super->initState();
     assert([=] () {
-        if (widget->pages != makeList()) {
-            if (widget->pages->isEmpty) {
+        if (widget()->pages != makeList()) {
+            if (widget()->pages->isEmpty) {
                 FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(make<FlutterErrorCls>(__s("The Navigator.pages must not be empty to use the Navigator.pages API")), __s("widget library"), StackTraceCls::current));
             } else {
-                if (widget->onPopPage == nullptr) {
+                if (widget()->onPopPage == nullptr) {
                 FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(make<FlutterErrorCls>(__s("The Navigator.onPopPage must be provided to use the Navigator.pages API")), __s("widget library"), StackTraceCls::current));
             }
 ;
             }        }
         return true;
     }());
-    for (NavigatorObserver observer : widget->observers) {
+    for (NavigatorObserver observer : widget()->observers) {
         assert(observer->navigator == nullptr);
         observer->_navigator = this;
     }
-    _effectiveObservers = widget->observers;
-    HeroControllerScope heroControllerScope = as<HeroControllerScope>(context-><HeroControllerScope>getElementForInheritedWidgetOfExactType()?->widget);
+    _effectiveObservers = widget()->observers;
+    HeroControllerScope heroControllerScope = as<HeroControllerScope>(context()-><HeroControllerScope>getElementForInheritedWidgetOfExactType()?->widget());
     _updateHeroController(heroControllerScope?->controller);
-    if (widget->reportsRouteUpdateToEngine) {
+    if (widget()->reportsRouteUpdateToEngine) {
         SystemNavigatorCls->selectSingleEntryHistory();
     }
 }
@@ -836,30 +836,30 @@ void NavigatorStateCls::initState() {
 void NavigatorStateCls::restoreState(RestorationBucket oldBucket, bool initialRestore) {
     registerForRestoration(_rawNextPagelessRestorationScopeId, __s("id"));
     registerForRestoration(_serializableHistory, __s("history"));
-    while (_history->isNotEmpty) {
+    while (_history->isNotEmpty()) {
         _history->removeLast()->dispose();
     }
-    assert(_history->isEmpty);
+    assert(_history->isEmpty());
     _overlayKey = <OverlayState>make<GlobalKeyCls>();
     _history->addAll(_serializableHistory->restoreEntriesForPage(nullptr, this));
-    for (Page<dynamic> page : widget->pages) {
-        _RouteEntry entry = make<_RouteEntryCls>(page->createRoute(context), _RouteLifecycleCls::add);
+    for (Page<dynamic> page : widget()->pages) {
+        _RouteEntry entry = make<_RouteEntryCls>(page->createRoute(context()), _RouteLifecycleCls::add);
         assert(entry->route->settings() == page, __s("The settings getter of a page-based Route must return a Page object. Please set the settings to the Page in the Page.createRoute method."));
         _history->add(entry);
         _history->addAll(_serializableHistory->restoreEntriesForPage(entry, this));
     }
     if (!_serializableHistory->hasData()) {
-        String initialRoute = widget->initialRoute;
-        if (widget->pages->isEmpty) {
+        String initialRoute = widget()->initialRoute;
+        if (widget()->pages->isEmpty) {
             initialRoute = initialRoute | NavigatorCls::defaultRouteName;
         }
         if (initialRoute != nullptr) {
-            _history->addAll(widget->onGenerateInitialRoutes(this, widget->initialRoute | NavigatorCls::defaultRouteName)->map([=] (Route<dynamic> route) {
+            _history->addAll(widget()->onGenerateInitialRoutes(this, widget()->initialRoute | NavigatorCls::defaultRouteName)->map([=] (Route<dynamic> route) {
                 make<_RouteEntryCls>(route, _RouteLifecycleCls::add, route->settings->name != nullptr? _RestorationInformationCls->named(route->settings->name!, nullptr, _nextPagelessRestorationScopeId()) : nullptr);
             }));
         }
     }
-    assert(_history->isNotEmpty, __s("All routes returned by onGenerateInitialRoutes are not restorable. Please make sure that all routes returned by onGenerateInitialRoutes have their RouteSettings defined with names that are defined in the app's routes table."));
+    assert(_history->isNotEmpty(), __s("All routes returned by onGenerateInitialRoutes are not restorable. Please make sure that all routes returned by onGenerateInitialRoutes have their RouteSettings defined with names that are defined in the app's routes table."));
     assert(!_debugLocked);
     assert([=] () {
         _debugLocked = true;
@@ -882,12 +882,12 @@ void NavigatorStateCls::didToggleBucket(RestorationBucket oldBucket) {
 }
 
 String NavigatorStateCls::restorationId() {
-    return widget->restorationScopeId;
+    return widget()->restorationScopeId;
 }
 
 void NavigatorStateCls::didChangeDependencies() {
     super->didChangeDependencies();
-    _updateHeroController(HeroControllerScopeCls->of(context));
+    _updateHeroController(HeroControllerScopeCls->of(context()));
     for (_RouteEntry entry : _history) {
         entry->route->changedExternalState();
     }
@@ -896,30 +896,30 @@ void NavigatorStateCls::didChangeDependencies() {
 void NavigatorStateCls::didUpdateWidget(Navigator oldWidget) {
     super->didUpdateWidget(oldWidget);
     assert([=] () {
-        if (widget->pages != makeList()) {
-            if (widget->pages->isEmpty) {
+        if (widget()->pages != makeList()) {
+            if (widget()->pages->isEmpty) {
                 FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(make<FlutterErrorCls>(__s("The Navigator.pages must not be empty to use the Navigator.pages API")), __s("widget library"), StackTraceCls::current));
             } else {
-                if (widget->onPopPage == nullptr) {
+                if (widget()->onPopPage == nullptr) {
                 FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(make<FlutterErrorCls>(__s("The Navigator.onPopPage must be provided to use the Navigator.pages API")), __s("widget library"), StackTraceCls::current));
             }
 ;
             }        }
         return true;
     }());
-    if (oldWidget->observers != widget->observers) {
+    if (oldWidget->observers != widget()->observers) {
         for (NavigatorObserver observer : oldWidget->observers) {
             observer->_navigator = nullptr;
         }
-        for (NavigatorObserver observer : widget->observers) {
+        for (NavigatorObserver observer : widget()->observers) {
             assert(observer->navigator == nullptr);
             observer->_navigator = this;
         }
         _updateEffectiveObservers();
     }
-    if (oldWidget->pages != widget->pages && !restorePending) {
+    if (oldWidget->pages != widget()->pages && !restorePending) {
         assert([=] () {
-            if (widget->pages->isEmpty) {
+            if (widget()->pages->isEmpty) {
                 FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(make<FlutterErrorCls>(__s("The Navigator.pages must not be empty to use the Navigator.pages API")), __s("widget library"), StackTraceCls::current));
             }
             return true;
@@ -1065,7 +1065,7 @@ template<typename T>
 Future<T> NavigatorStateCls::pushAndRemoveUntil(Route<T> newRoute, RoutePredicate predicate) {
     assert(newRoute != nullptr);
     assert(newRoute->_navigator == nullptr);
-    assert(newRoute->overlayEntries()->isEmpty);
+    assert(newRoute->overlayEntries()->isEmpty());
     assert(_debugCheckIsPagelessRoute(newRoute));
     _pushEntryAndRemoveUntil(make<_RouteEntryCls>(newRoute, _RouteLifecycleCls::push), predicate);
     return newRoute->popped();
@@ -1152,7 +1152,7 @@ Future<bool> NavigatorStateCls::maybePop(T result) {
     assert(lastEntry->route->_navigator == this);
     RoutePopDisposition disposition = await lastEntry->route->willPop();
     assert(disposition != nullptr);
-    if (!mounted) {
+    if (!mounted()) {
         return true;
     }
     _RouteEntry newLastEntry = _history-><_RouteEntry>cast()->lastWhere([=] (_RouteEntry e) {
@@ -1175,7 +1175,7 @@ void NavigatorStateCls::pop(T result) {
     }());
     _RouteEntry entry = _history->lastWhere(_RouteEntryCls::isPresentPredicate);
     if (entry->hasPage()) {
-        if (widget->onPopPage!(entry->route, result) && entry->currentState == _RouteLifecycleCls::idle) {
+        if (widget()->onPopPage!(entry->route, result) && entry->currentState == _RouteLifecycleCls::idle) {
             assert(entry->route->_popCompleter->isCompleted);
             entry->currentState = _RouteLifecycleCls::pop;
         }
@@ -1323,7 +1323,7 @@ void NavigatorStateCls::didStopUserGesture() {
 
 Widget NavigatorStateCls::build(BuildContext context) {
     assert(!_debugLocked);
-    assert(_history->isNotEmpty);
+    assert(_history->isNotEmpty());
     return HeroControllerScopeCls->none(make<ListenerCls>(_handlePointerDown, _handlePointerUpOrCancel, _handlePointerUpOrCancel, make<AbsorbPointerCls>(false, make<FocusScopeCls>(focusScopeNode, true, make<UnmanagedRestorationScopeCls>(bucket, make<OverlayCls>(_overlayKey, overlay() == nullptr? _allRouteOverlayEntries()->toList(false) : makeList()))))));
 }
 
@@ -1335,8 +1335,8 @@ void NavigatorStateCls::_updateHeroController(HeroController newHeroController) 
     if (_heroControllerFromScope != newHeroController) {
         if (newHeroController != nullptr) {
             assert([=] () {
-                if (newHeroController->navigator != nullptr) {
-                    NavigatorState previousOwner = newHeroController->navigator!;
+                if (newHeroController->navigator() != nullptr) {
+                    NavigatorState previousOwner = newHeroController->navigator()!;
                     ServicesBindingCls::instance->addPostFrameCallback([=] (Duration timestamp) {
                         if (_heroControllerFromScope == newHeroController) {
                             bool hasHeroControllerOwnerShip = _heroControllerFromScope!->_navigator == this;
@@ -1361,16 +1361,16 @@ void NavigatorStateCls::_updateHeroController(HeroController newHeroController) 
 
 void NavigatorStateCls::_updateEffectiveObservers() {
     if (_heroControllerFromScope != nullptr) {
-        _effectiveObservers = widget->observers + makeList(ArrayItem);
+        _effectiveObservers = widget()->observers + makeList(ArrayItem);
     } else {
-        _effectiveObservers = widget->observers;
+        _effectiveObservers = widget()->observers;
     }
 }
 
 void NavigatorStateCls::_debugCheckDuplicatedPageKeys() {
     assert([=] () {
         Set<Key> keyReservation = makeSet();
-        for (Page<dynamic> page : widget->pages) {
+        for (Page<dynamic> page : widget()->pages) {
             LocalKey key = page->key;
             if (key != nullptr) {
                 assert(!keyReservation->contains(key));
@@ -1395,7 +1395,7 @@ void NavigatorStateCls::_updatePages() {
     bool needsExplicitDecision = false;
     int newPagesBottom = 0;
     int oldEntriesBottom = 0;
-    int newPagesTop = widget->pages->length - 1;
+    int newPagesTop = widget()->pages->length - 1;
     int oldEntriesTop = _history->length() - 1;
     List<_RouteEntry> newHistory = makeList();
     Map<_RouteEntry, List<_RouteEntry>> pageRouteToPagelessRoutes = makeMap(makeList(), makeList();
@@ -1414,7 +1414,7 @@ void NavigatorStateCls::_updatePages() {
         if (newPagesBottom > newPagesTop) {
             break;
         }
-        Page<dynamic> newPage = widget->pages[newPagesBottom];
+        Page<dynamic> newPage = widget()->pages[newPagesBottom];
         if (!oldEntry->canUpdateFrom(newPage)) {
             break;
         }
@@ -1433,7 +1433,7 @@ void NavigatorStateCls::_updatePages() {
             oldEntriesTop -= 1;
             continue;
         }
-        Page<dynamic> newPage = widget->pages[newPagesTop];
+        Page<dynamic> newPage = widget()->pages[newPagesTop];
         if (!oldEntry->canUpdateFrom(newPage)) {
             break;
         }
@@ -1465,10 +1465,10 @@ void NavigatorStateCls::_updatePages() {
         pageKeyToOldEntry[page->key!] = oldEntry;
     }
     while (newPagesBottom <= newPagesTop) {
-        Page<dynamic> nextPage = widget->pages[newPagesBottom];
+        Page<dynamic> nextPage = widget()->pages[newPagesBottom];
         newPagesBottom += 1;
         if (nextPage->key == nullptr || !pageKeyToOldEntry->containsKey(nextPage->key) || !pageKeyToOldEntry[nextPage->key]!->canUpdateFrom(nextPage)) {
-            _RouteEntry newEntry = make<_RouteEntryCls>(nextPage->createRoute(context), _RouteLifecycleCls::staging);
+            _RouteEntry newEntry = make<_RouteEntryCls>(nextPage->createRoute(context()), _RouteLifecycleCls::staging);
             needsExplicitDecision = true;
             assert(newEntry->route->settings() == nextPage, __s("The settings getter of a page-based Route must return a Page object. Please set the settings to the Page in the Page.createRoute method."));
             newHistory->add(newEntry);
@@ -1505,11 +1505,11 @@ void NavigatorStateCls::_updatePages() {
     }
     assert(oldEntriesBottom == oldEntriesTop + 1);
     assert(newPagesBottom == newPagesTop + 1);
-    newPagesTop = widget->pages->length - 1;
+    newPagesTop = widget()->pages->length - 1;
     oldEntriesTop = _history->length() - 1;
     assert([=] () {
         if (oldEntriesBottom <= oldEntriesTop) {
-            return newPagesBottom <= newPagesTop && _history[oldEntriesBottom]->hasPage() && _history[oldEntriesBottom]->canUpdateFrom(widget->pages[newPagesBottom]);
+            return newPagesBottom <= newPagesTop && _history[oldEntriesBottom]->hasPage() && _history[oldEntriesBottom]->canUpdateFrom(widget()->pages[newPagesBottom]);
         } else {
             return newPagesBottom > newPagesTop;
         }
@@ -1526,7 +1526,7 @@ void NavigatorStateCls::_updatePages() {
             continue;
         }
         previousOldPageRouteEntry = oldEntry;
-        Page<dynamic> newPage = widget->pages[newPagesBottom];
+        Page<dynamic> newPage = widget()->pages[newPagesBottom];
         assert(oldEntry->canUpdateFrom(newPage));
         oldEntry->route->_updateSettings(newPage);
         newHistory->add(oldEntry);
@@ -1536,7 +1536,7 @@ void NavigatorStateCls::_updatePages() {
     needsExplicitDecision = needsExplicitDecision || locationToExitingPageRoute->isNotEmpty();
     Iterable<_RouteEntry> results = newHistory;
     if (needsExplicitDecision) {
-        results = widget->transitionDelegate->_transition(newHistory, locationToExitingPageRoute, pageRouteToPagelessRoutes)-><_RouteEntry>cast();
+        results = widget()->transitionDelegate->_transition(newHistory, locationToExitingPageRoute, pageRouteToPagelessRoutes)-><_RouteEntry>cast();
     }
     _history = makeList();
     if (pageRouteToPagelessRoutes->containsKey(nullptr)) {
@@ -1583,7 +1583,7 @@ void NavigatorStateCls::_flushHistoryUpdates(bool rearrangeOverlay) {
     }
     _flushObserverNotifications();
     _flushRouteAnnouncement();
-    if (widget->reportsRouteUpdateToEngine) {
+    if (widget()->reportsRouteUpdateToEngine) {
         _RouteEntry lastEntry = _history-><_RouteEntry>cast()->lastWhere([=] (_RouteEntry e) {
     e != nullptr && _RouteEntryCls->isPresentPredicate(e);
 }, [=] () {
@@ -1611,16 +1611,16 @@ void NavigatorStateCls::_flushHistoryUpdates(bool rearrangeOverlay) {
 }
 
 void NavigatorStateCls::_flushObserverNotifications() {
-    if (_effectiveObservers->isEmpty) {
+    if (_effectiveObservers->isEmpty()) {
         _observedRouteDeletions->clear();
         _observedRouteAdditions->clear();
         return;
     }
-    while (_observedRouteAdditions->isNotEmpty) {
+    while (_observedRouteAdditions->isNotEmpty()) {
         _NavigatorObservation observation = _observedRouteAdditions->removeLast();
         _effectiveObservers->forEach(observation->notify);
     }
-    while (_observedRouteDeletions->isNotEmpty) {
+    while (_observedRouteDeletions->isNotEmpty()) {
         _NavigatorObservation observation = _observedRouteDeletions->removeFirst();
         _effectiveObservers->forEach(observation->notify);
     }
@@ -1673,25 +1673,25 @@ template<typename T>
 Route<T> NavigatorStateCls::_routeNamed(String name, bool allowNull, Object arguments) {
     assert(!_debugLocked);
     assert(name != nullptr);
-    if (allowNull && widget->onGenerateRoute == nullptr) {
+    if (allowNull && widget()->onGenerateRoute == nullptr) {
         return nullptr;
     }
     assert([=] () {
-        if (widget->onGenerateRoute == nullptr) {
+        if (widget()->onGenerateRoute == nullptr) {
             throw make<FlutterErrorCls>(__s("Navigator.onGenerateRoute was null, but the route named "$name" was referenced.\nTo use the Navigator API with named routes (pushNamed, pushReplacementNamed, or pushNamedAndRemoveUntil), the Navigator must be provided with an onGenerateRoute handler.\nThe Navigator was:\n  $this"));
         }
         return true;
     }());
     RouteSettings settings = make<RouteSettingsCls>(name, arguments);
-    Route<T> route = as<Route<T>>(widget->onGenerateRoute!(settings));
+    Route<T> route = as<Route<T>>(widget()->onGenerateRoute!(settings));
     if (route == nullptr && !allowNull) {
         assert([=] () {
-            if (widget->onUnknownRoute == nullptr) {
+            if (widget()->onUnknownRoute == nullptr) {
                 throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem, ArrayItem));
             }
             return true;
         }());
-        route = as<Route<T>>(widget->onUnknownRoute!(settings));
+        route = as<Route<T>>(widget()->onUnknownRoute!(settings));
         assert([=] () {
             if (route == nullptr) {
                 throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem, ArrayItem));
@@ -1776,7 +1776,7 @@ void NavigatorStateCls::_pushReplacementEntry(_RouteEntry entry, TO result) {
     }());
     assert(entry->route != nullptr);
     assert(entry->route->_navigator == nullptr);
-    assert(_history->isNotEmpty);
+    assert(_history->isNotEmpty());
     assert(_history->any(_RouteEntryCls::isPresentPredicate), __s("Navigator has no active routes to replace."));
     assert(entry->currentState == _RouteLifecycleCls::pushReplace);
     _history->lastWhere(_RouteEntryCls::isPresentPredicate)->complete(result, true);
@@ -1797,7 +1797,7 @@ void NavigatorStateCls::_pushEntryAndRemoveUntil(_RouteEntry entry, RoutePredica
     }());
     assert(entry->route != nullptr);
     assert(entry->route->_navigator == nullptr);
-    assert(entry->route->overlayEntries()->isEmpty);
+    assert(entry->route->overlayEntries()->isEmpty());
     assert(predicate != nullptr);
     assert(entry->currentState == _RouteLifecycleCls::push);
     int index = _history->length() - 1;
@@ -1909,7 +1909,7 @@ void NavigatorStateCls::_cancelActivePointers() {
 void _RestorationInformationCls::fromSerializableData(Object data) {
     assert(data != nullptr);
     List<Object> casted = as<List<Object>>(data);
-    assert(casted->isNotEmpty);
+    assert(casted->isNotEmpty());
     _RouteRestorationType type = _RouteRestorationTypeCls::values[as<int>(casted[0]!)];
     assert(type != nullptr);
     ;
@@ -1981,7 +1981,7 @@ List<Object> _AnonymousRestorationInformationCls::computeSerializableData() {
 }
 
 Route<dynamic> _AnonymousRestorationInformationCls::createRoute(NavigatorState navigator) {
-    Route<dynamic> result = routeBuilder(navigator->context, arguments);
+    Route<dynamic> result = routeBuilder(navigator->context(), arguments);
     assert(result != nullptr);
     return result;
 }
@@ -1993,7 +1993,7 @@ _AnonymousRestorationInformationCls::_AnonymousRestorationInformationCls(Object 
 }
 
 void _HistoryPropertyCls::update(List<_RouteEntry> history) {
-    assert(isRegistered);
+    assert(isRegistered());
     bool wasUninitialized = _pageToPagelessRoutes == nullptr;
     bool needsSerialization = wasUninitialized;
     _pageToPagelessRoutes |= makeMap(makeList(), makeList();
@@ -2039,7 +2039,7 @@ void _HistoryPropertyCls::update(List<_RouteEntry> history) {
     }
     needsSerialization = needsSerialization || newRoutesForCurrentPage->length() != oldRoutesForCurrentPage->length();
     _finalizePage(newRoutesForCurrentPage, currentPage, newMap, removedPages);
-    needsSerialization = needsSerialization || removedPages->isNotEmpty;
+    needsSerialization = needsSerialization || removedPages->isNotEmpty();
     assert(wasUninitialized || _debugMapsEqual(_pageToPagelessRoutes!, newMap) != needsSerialization);
     if (needsSerialization) {
         _pageToPagelessRoutes = newMap;
@@ -2048,7 +2048,7 @@ void _HistoryPropertyCls::update(List<_RouteEntry> history) {
 }
 
 void _HistoryPropertyCls::clear() {
-    assert(isRegistered);
+    assert(isRegistered());
     if (_pageToPagelessRoutes == nullptr) {
         return;
     }
@@ -2061,7 +2061,7 @@ bool _HistoryPropertyCls::hasData() {
 }
 
 List<_RouteEntry> _HistoryPropertyCls::restoreEntriesForPage(_RouteEntry page, NavigatorState navigator) {
-    assert(isRegistered);
+    assert(isRegistered());
     assert(page == nullptr || page->hasPage());
     List<_RouteEntry> result = makeList();
     if (_pageToPagelessRoutes == nullptr || (page != nullptr && page->restorationId() == nullptr)) {
@@ -2104,7 +2104,7 @@ void _HistoryPropertyCls::_finalizePage(List<Object> routes, _RouteEntry page, M
     assert(page == nullptr || page->hasPage());
     assert(pageToRoutes != nullptr);
     assert(!pageToRoutes->containsKey(page?->restorationId()));
-    if (routes != nullptr && routes->isNotEmpty) {
+    if (routes != nullptr && routes->isNotEmpty()) {
         assert(page == nullptr || page->restorationId() != nullptr);
         String restorationId = page?->restorationId();
         pageToRoutes[restorationId] = routes;
@@ -2135,7 +2135,7 @@ RestorableRouteFutureCls<T>::RestorableRouteFutureCls(NavigatorFinderCallback na
 template<typename T>
 void RestorableRouteFutureCls<T>::present(Object arguments) {
     assert(!isPresent());
-    assert(isRegistered);
+    assert(isRegistered());
     String routeId = onPresent(_navigator(), arguments);
     assert(routeId != nullptr);
     _hookOntoRouteFuture(routeId);
@@ -2191,7 +2191,7 @@ bool RestorableRouteFutureCls<T>::enabled() {
 
 template<typename T>
 NavigatorState RestorableRouteFutureCls<T>::_navigator() {
-    NavigatorState navigator = navigatorFinder(state->context);
+    NavigatorState navigator = navigatorFinder(state()->context());
     assert(navigator != nullptr);
     return navigator;
 }

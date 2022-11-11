@@ -152,9 +152,9 @@ double RenderSliverGridCls::childCrossAxisPosition(RenderBox child) {
 }
 
 void RenderSliverGridCls::performLayout() {
-    SliverConstraints constraints = this->constraints;
-    childManager->didStartLayout();
-    childManager->setDidUnderflow(false);
+    SliverConstraints constraints = this->constraints();
+    childManager()->didStartLayout();
+    childManager()->setDidUnderflow(false);
     double scrollOffset = constraints->scrollOffset + constraints->cacheOrigin;
     assert(scrollOffset >= 0.0);
     double remainingExtent = constraints->remainingCacheExtent;
@@ -162,7 +162,7 @@ void RenderSliverGridCls::performLayout() {
     double targetEndScrollOffset = scrollOffset + remainingExtent;
     SliverGridLayout layout = _gridDelegate->getLayout(constraints);
     int firstIndex = layout->getMinChildIndexForScrollOffset(scrollOffset);
-    int targetLastIndex = targetEndScrollOffset->isFinite? layout->getMaxChildIndexForScrollOffset(targetEndScrollOffset) : nullptr;
+    int targetLastIndex = targetEndScrollOffset->isFinite()? layout->getMaxChildIndexForScrollOffset(targetEndScrollOffset) : nullptr;
     if (firstChild != nullptr) {
         int oldFirstIndex = indexOf(firstChild!);
         int oldLastIndex = indexOf(lastChild!);
@@ -177,9 +177,9 @@ void RenderSliverGridCls::performLayout() {
     double trailingScrollOffset = firstChildGridGeometry->trailingScrollOffset();
     if (firstChild == nullptr) {
         if (!addInitialChild(firstIndex, firstChildGridGeometry->scrollOffset)) {
-            double max = layout->computeMaxScrollOffset(childManager->childCount);
-            geometry = make<SliverGeometryCls>(max, max);
-            childManager->didFinishLayout();
+            double max = layout->computeMaxScrollOffset(childManager()->childCount());
+            geometry() = make<SliverGeometryCls>(max, max);
+            childManager()->didFinishLayout();
             return;
         }
     }
@@ -225,12 +225,12 @@ void RenderSliverGridCls::performLayout() {
     assert(debugAssertChildListIsNonEmptyAndContiguous());
     assert(indexOf(firstChild!) == firstIndex);
     assert(targetLastIndex == nullptr || lastIndex <= targetLastIndex);
-    double estimatedTotalExtent = childManager->estimateMaxScrollOffset(constraints, firstIndex, lastIndex, leadingScrollOffset, trailingScrollOffset);
+    double estimatedTotalExtent = childManager()->estimateMaxScrollOffset(constraints, firstIndex, lastIndex, leadingScrollOffset, trailingScrollOffset);
     double paintExtent = calculatePaintOffset(constraints, math->min(constraints->scrollOffset, leadingScrollOffset), trailingScrollOffset);
     double cacheExtent = calculateCacheOffset(constraints, leadingScrollOffset, trailingScrollOffset);
-    geometry = make<SliverGeometryCls>(estimatedTotalExtent, paintExtent, estimatedTotalExtent, cacheExtent, estimatedTotalExtent > paintExtent || constraints->scrollOffset > 0.0 || constraints->overlap != 0.0);
+    geometry() = make<SliverGeometryCls>(estimatedTotalExtent, paintExtent, estimatedTotalExtent, cacheExtent, estimatedTotalExtent > paintExtent || constraints->scrollOffset > 0.0 || constraints->overlap != 0.0);
     if (estimatedTotalExtent == trailingScrollOffset) {
-        childManager->setDidUnderflow(true);
+        childManager()->setDidUnderflow(true);
     }
-    childManager->didFinishLayout();
+    childManager()->didFinishLayout();
 }

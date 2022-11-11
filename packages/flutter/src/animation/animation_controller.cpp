@@ -208,7 +208,7 @@ TickerFuture AnimationControllerCls::_animateToInternal(double target, Curve cur
         assert(!(this->duration == nullptr && _direction == _AnimationDirectionCls::forward));
         assert(!(this->duration == nullptr && _direction == _AnimationDirectionCls::reverse && reverseDuration == nullptr));
         double range = upperBound - lowerBound;
-        double remainingFraction = range->isFinite? (target - _value)->abs() / range : 1.0;
+        double remainingFraction = range->isFinite()? (target - _value)->abs() / range : 1.0;
         Duration directionDuration = (_direction == _AnimationDirectionCls::reverse && reverseDuration != nullptr)? reverseDuration! : this->duration!;
         simulationDuration = directionDuration * remainingFraction;
     } else {

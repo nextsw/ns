@@ -67,7 +67,7 @@ void _PrefixedStringBuilderCls::write(String s, bool allowWrap) {
             if (allowWrap && wrapWidth != nullptr) {
                 int wrapStart = _currentLine->length();
                 int wrapEnd = wrapStart + line->length();
-                if (_wrappableRanges->isNotEmpty && _wrappableRanges->last == wrapStart) {
+                if (_wrappableRanges->isNotEmpty() && _wrappableRanges->last == wrapStart) {
                     _wrappableRanges->last = wrapEnd;
                 } else {
                                     auto _c1 = _wrappableRanges;                _c1.auto _c2 = add(wrapStart);                _c2.add(wrapEnd);                _c2;_c1;
@@ -125,7 +125,7 @@ void _PrefixedStringBuilderCls::_finalizeLine(bool addTrailingLineBreak) {
     bool firstLine = _buffer->isEmpty();
     String text = _currentLine->toString();
     _currentLine->clear();
-    if (_wrappableRanges->isEmpty) {
+    if (_wrappableRanges->isEmpty()) {
         _writeLine(text, addTrailingLineBreak, firstLine);
         return;
     }
@@ -268,14 +268,14 @@ String TextTreeRendererCls::_debugRender(DiagnosticsNode node, TextTreeConfigura
             builder->write(__s("\n"));
         }
         if (includeName) {
-            builder->incrementPrefixOtherLines(children->isEmpty? config->propertyPrefixNoChildren : config->propertyPrefixIfChildren, true);
+            builder->incrementPrefixOtherLines(children->isEmpty()? config->propertyPrefixNoChildren : config->propertyPrefixIfChildren, true);
         }
         if (uppercaseTitle) {
             description = description->toUpperCase();
         }
         builder->write(description->trimRight(), wrapDescription);
         if (!includeName) {
-            builder->incrementPrefixOtherLines(children->isEmpty? config->propertyPrefixNoChildren : config->propertyPrefixIfChildren, false);
+            builder->incrementPrefixOtherLines(children->isEmpty()? config->propertyPrefixNoChildren : config->propertyPrefixIfChildren, false);
         }
     }
     if (config->suffixLineOne->isNotEmpty()) {
@@ -299,17 +299,17 @@ String TextTreeRendererCls::_debugRender(DiagnosticsNode node, TextTreeConfigura
     } else {
         properties = propertiesIterable->toList();
     }
-    if ((properties->isNotEmpty || children->isNotEmpty || node->emptyBodyDescription() != nullptr) && (node->showSeparator || description->isNotEmpty())) {
+    if ((properties->isNotEmpty() || children->isNotEmpty() || node->emptyBodyDescription() != nullptr) && (node->showSeparator || description->isNotEmpty())) {
         builder->write(config->afterDescriptionIfBody);
     }
     if (config->lineBreakProperties) {
         builder->write(config->lineBreak);
     }
-    if (properties->isNotEmpty) {
+    if (properties->isNotEmpty()) {
         builder->write(config->beforeProperties);
     }
     builder->incrementPrefixOtherLines(config->bodyIndent, false);
-    if (node->emptyBodyDescription() != nullptr && properties->isEmpty && children->isEmpty && prefixLineOne->isNotEmpty()) {
+    if (node->emptyBodyDescription() != nullptr && properties->isEmpty() && children->isEmpty() && prefixLineOne->isNotEmpty()) {
         builder->write(node->emptyBodyDescription()!);
         if (config->lineBreakProperties) {
             builder->write(config->lineBreak);
@@ -337,7 +337,7 @@ String TextTreeRendererCls::_debugRender(DiagnosticsNode node, TextTreeConfigura
             builder->writeRawLines(propertyRender);
         }
     }
-    if (properties->isNotEmpty) {
+    if (properties->isNotEmpty()) {
         builder->write(config->afterProperties);
     }
     builder->write(config->mandatoryAfterProperties);
@@ -346,11 +346,11 @@ String TextTreeRendererCls::_debugRender(DiagnosticsNode node, TextTreeConfigura
     }
     String prefixChildren = config->bodyIndent;
     String prefixChildrenRaw = __s("$prefixOtherLines$prefixChildren");
-    if (children->isEmpty && config->addBlankLineIfNoChildren && builder->requiresMultipleLines() && builder->prefixOtherLines!->trimRight()->isNotEmpty()) {
+    if (children->isEmpty() && config->addBlankLineIfNoChildren && builder->requiresMultipleLines() && builder->prefixOtherLines!->trimRight()->isNotEmpty()) {
         builder->write(config->lineBreak);
     }
-    if (children->isNotEmpty && config->showChildren) {
-        if (config->isBlankLineBetweenPropertiesAndChildren && properties->isNotEmpty && children->first->textTreeConfiguration!->isBlankLineBetweenPropertiesAndChildren) {
+    if (children->isNotEmpty() && config->showChildren) {
+        if (config->isBlankLineBetweenPropertiesAndChildren && properties->isNotEmpty() && children->first->textTreeConfiguration!->isBlankLineBetweenPropertiesAndChildren) {
             builder->write(config->lineBreak);
         }
         builder->prefixOtherLines = prefixOtherLines;
@@ -450,7 +450,7 @@ Map<String, String> DiagnosticsNodeCls::toTimelineArguments() {
 Map<String, Object> DiagnosticsNodeCls::toJsonMap(DiagnosticsSerializationDelegate delegate) {
     Map<String, Object> result = makeMap(makeList(), makeList();
     assert([=] () {
-        bool hasChildren = getChildren()->isNotEmpty;
+        bool hasChildren = getChildren()->isNotEmpty();
             Map<String, Object> map1 = make<MapCls<>>();    map1.set(__s("description"), toDescription());    map1.set(__s("type"), runtimeType->toString());    if (name != nullptr) {        map1.set(__s("name"), name);    }if (!showSeparator) {        map1.set(__s("showSeparator"), showSeparator);    }if (level() != DiagnosticLevelCls::info) {        map1.set(__s("level"), level()->name);    }if (showName == false) {        map1.set(__s("showName"), showName);    }if (emptyBodyDescription() != nullptr) {        map1.set(__s("emptyBodyDescription"), emptyBodyDescription());    }if (style != DiagnosticsTreeStyleCls::sparse) {        map1.set(__s("style"), style!->name);    }if (allowTruncate()) {        map1.set(__s("allowTruncate"), allowTruncate());    }if (hasChildren) {        map1.set(__s("hasChildren"), hasChildren);    }if (linePrefix?->isNotEmpty() | false) {        map1.set(__s("linePrefix"), linePrefix);    }if (!allowWrap()) {        map1.set(__s("allowWrap"), allowWrap());    }if (allowNameWrap()) {        map1.set(__s("allowNameWrap"), allowNameWrap());    }map1.addAll(delegate->additionalNodeProperties(this));if (delegate->includeProperties()) {        map1.set(__s("properties"), toJsonList(delegate->filterProperties(getProperties(), this), this, delegate));    }if (delegate->subtreeDepth() > 0) {        map1.set(__s("children"), toJsonList(delegate->filterChildren(getChildren(), this), this, delegate));    }result = list1;
         return true;
     }());
@@ -540,7 +540,7 @@ Map<String, Object> StringPropertyCls::toJsonMap(DiagnosticsSerializationDelegat
 }
 
 String StringPropertyCls::valueToString(TextTreeConfiguration parentConfiguration) {
-    String text = _description | value;
+    String text = _description | value();
     if (parentConfiguration != nullptr && !parentConfiguration->lineBreakProperties && text != nullptr) {
         text = text->replaceAll(__s("\n"), __s("\n"));
     }
@@ -568,8 +568,8 @@ Map<String, Object> _NumPropertyCls<T>::toJsonMap(DiagnosticsSerializationDelega
 
 template<typename T>
 String _NumPropertyCls<T>::valueToString(TextTreeConfiguration parentConfiguration) {
-    if (value == nullptr) {
-        return value->toString();
+    if (value() == nullptr) {
+        return value()->toString();
     }
     return unit != nullptr? __s("${numberToString()}$unit") : numberToString();
 }
@@ -585,7 +585,7 @@ DoublePropertyCls::DoublePropertyCls(Unknown name, Unknown value, Unknown defaul
 void DoublePropertyCls::lazy(Unknown name, Unknown computeValue, Unknown defaultValue, Unknown ifNull, Unknown level, Unknown showName, Unknown tooltip, Unknown unit)
 
 String DoublePropertyCls::numberToString() {
-    return debugFormatDouble(value);
+    return debugFormatDouble(value());
 }
 
 IntPropertyCls::IntPropertyCls(Unknown name, Unknown value, Unknown defaultValue, Unknown ifNull, Unknown level, Unknown showName, Unknown style, Unknown unit) {
@@ -597,7 +597,7 @@ IntPropertyCls::IntPropertyCls(Unknown name, Unknown value, Unknown defaultValue
 }
 
 String IntPropertyCls::numberToString() {
-    return value->toString();
+    return value()->toString();
 }
 
 PercentPropertyCls::PercentPropertyCls(Unknown name, Unknown fraction, Unknown ifNull, Unknown level, Unknown showName, Unknown tooltip, Unknown unit) {
@@ -608,16 +608,16 @@ PercentPropertyCls::PercentPropertyCls(Unknown name, Unknown fraction, Unknown i
 }
 
 String PercentPropertyCls::valueToString(TextTreeConfiguration parentConfiguration) {
-    if (value == nullptr) {
-        return value->toString();
+    if (value() == nullptr) {
+        return value()->toString();
     }
     return unit != nullptr? __s("${numberToString()} $unit") : numberToString();
 }
 
 String PercentPropertyCls::numberToString() {
-    double v = value;
+    double v = value();
     if (v == nullptr) {
-        return value->toString();
+        return value()->toString();
     }
     return __s("${(clampDouble(v, 0.0, 1.0) * 100.0).toStringAsFixed(1)}%");
 }
@@ -642,12 +642,12 @@ Map<String, Object> FlagPropertyCls::toJsonMap(DiagnosticsSerializationDelegate 
 }
 
 String FlagPropertyCls::valueToString(TextTreeConfiguration parentConfiguration) {
-    if (value | false) {
+    if (value() | false) {
         if (ifTrue != nullptr) {
             return ifTrue!;
         }
     } else {
-        if (value == false) {
+        if (value() == false) {
         if (ifFalse != nullptr) {
             return ifFalse!;
         }
@@ -657,19 +657,19 @@ String FlagPropertyCls::valueToString(TextTreeConfiguration parentConfiguration)
 }
 
 bool FlagPropertyCls::showName() {
-    if (value == nullptr || ((value | false) && ifTrue == nullptr) || (!(value | true) && ifFalse == nullptr)) {
+    if (value() == nullptr || ((value() | false) && ifTrue == nullptr) || (!(value() | true) && ifFalse == nullptr)) {
         return true;
     }
     return super->showName;
 }
 
 DiagnosticLevel FlagPropertyCls::level() {
-    if (value | false) {
+    if (value() | false) {
         if (ifTrue == nullptr) {
             return DiagnosticLevelCls::hidden;
         }
     }
-    if (value == false) {
+    if (value() == false) {
         if (ifFalse == nullptr) {
             return DiagnosticLevelCls::hidden;
         }
@@ -689,13 +689,13 @@ IterablePropertyCls<T>::IterablePropertyCls(String name, Unknown value, Unknown 
 
 template<typename T>
 String IterablePropertyCls<T>::valueToString(TextTreeConfiguration parentConfiguration) {
-    if (value == nullptr) {
-        return value->toString();
+    if (value() == nullptr) {
+        return value()->toString();
     }
-    if (value!->isEmpty) {
+    if (value()!->isEmpty) {
         return ifEmpty | __s("[]");
     }
-    Iterable<String> formattedValues = value!->map([=] (T v) {
+    Iterable<String> formattedValues = value()!->map([=] (T v) {
     if (T == double && is<double>(v)) {
         return debugFormatDouble(v);
     } else {
@@ -710,7 +710,7 @@ String IterablePropertyCls<T>::valueToString(TextTreeConfiguration parentConfigu
 
 template<typename T>
 DiagnosticLevel IterablePropertyCls<T>::level() {
-    if (ifEmpty == nullptr && value != nullptr && value!->isEmpty && super->level != DiagnosticLevelCls::hidden) {
+    if (ifEmpty == nullptr && value() != nullptr && value()!->isEmpty && super->level != DiagnosticLevelCls::hidden) {
         return DiagnosticLevelCls::fine;
     }
     return super->level;
@@ -719,9 +719,9 @@ DiagnosticLevel IterablePropertyCls<T>::level() {
 template<typename T>
 Map<String, Object> IterablePropertyCls<T>::toJsonMap(DiagnosticsSerializationDelegate delegate) {
     Map<String, Object> json = super->toJsonMap(delegate);
-    if (value != nullptr) {
-        json[__s("values")] = value!-><String>map([=] (T value) {
-            value->toString();
+    if (value() != nullptr) {
+        json[__s("values")] = value()!-><String>map([=] (T value) {
+            value()->toString();
         })->toList();
     }
     return json;
@@ -736,10 +736,10 @@ EnumPropertyCls<T>::EnumPropertyCls(String name, Unknown value, Unknown defaultV
 
 template<typename T>
 String EnumPropertyCls<T>::valueToString(TextTreeConfiguration parentConfiguration) {
-    if (value == nullptr) {
-        return value->toString();
+    if (value() == nullptr) {
+        return value()->toString();
     }
-    return describeEnum(value!);
+    return describeEnum(value()!);
 }
 
 template<typename T>
@@ -756,7 +756,7 @@ void ObjectFlagPropertyCls<T>::has(String name, Unknown value, Unknown level)
 
 template<typename T>
 String ObjectFlagPropertyCls<T>::valueToString(TextTreeConfiguration parentConfiguration) {
-    if (value != nullptr) {
+    if (value() != nullptr) {
         if (ifPresent != nullptr) {
             return ifPresent!;
         }
@@ -770,7 +770,7 @@ String ObjectFlagPropertyCls<T>::valueToString(TextTreeConfiguration parentConfi
 
 template<typename T>
 bool ObjectFlagPropertyCls<T>::showName() {
-    if ((value != nullptr && ifPresent == nullptr) || (value == nullptr && ifNull == nullptr)) {
+    if ((value() != nullptr && ifPresent == nullptr) || (value() == nullptr && ifNull == nullptr)) {
         return true;
     }
     return super->showName;
@@ -778,7 +778,7 @@ bool ObjectFlagPropertyCls<T>::showName() {
 
 template<typename T>
 DiagnosticLevel ObjectFlagPropertyCls<T>::level() {
-    if (value != nullptr) {
+    if (value() != nullptr) {
         if (ifPresent == nullptr) {
             return DiagnosticLevelCls::hidden;
         }
@@ -883,7 +883,7 @@ template<typename T>
 Map<String, Object> DiagnosticsPropertyCls<T>::toJsonMap(DiagnosticsSerializationDelegate delegate) {
     T v = value();
     List<Map<String, Object>> properties;
-    if (delegate->expandPropertyValues() && delegate->includeProperties() && is<Diagnosticable>(v) && getProperties()->isEmpty) {
+    if (delegate->expandPropertyValues() && delegate->includeProperties() && is<Diagnosticable>(v) && getProperties()->isEmpty()) {
         delegate = delegate->copyWith(0, false);
         properties = DiagnosticsNodeCls->toJsonList(delegate->filterProperties(v->toDiagnosticsNode()->getProperties(), this), this, delegate);
     }

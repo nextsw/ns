@@ -191,18 +191,18 @@ void DoubleLinkedQueueCls<E>::retainWhere(std::function<bool(E element)> test) {
 
 template<typename E>
 E DoubleLinkedQueueCls<E>::first() {
-    return _sentinel->_nextLink!->element;
+    return _sentinel->_nextLink!->element();
 }
 
 template<typename E>
 E DoubleLinkedQueueCls<E>::last() {
-    return _sentinel->_previousLink!->element;
+    return _sentinel->_previousLink!->element();
 }
 
 template<typename E>
 E DoubleLinkedQueueCls<E>::single() {
     if (identical(_sentinel->_nextLink, _sentinel->_previousLink)) {
-        return _sentinel->_nextLink!->element;
+        return _sentinel->_nextLink!->element();
     }
     throw IterableElementErrorCls->tooMany();
 }
