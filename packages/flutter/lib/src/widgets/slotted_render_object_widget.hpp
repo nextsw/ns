@@ -8,7 +8,8 @@
 #include "framework.hpp"
 
 
-template<typename S> class SlottedMultiChildRenderObjectWidgetMixinCls : public ObjectCls {
+template<typename S>
+class SlottedMultiChildRenderObjectWidgetMixinCls : public ObjectCls {
 public:
 
     virtual Iterable<S> slots();
@@ -20,9 +21,11 @@ public:
 private:
 
 };
-template<typename S> using SlottedMultiChildRenderObjectWidgetMixin = std::shared_ptr<SlottedMultiChildRenderObjectWidgetMixinCls<S>>;
+template<typename S>
+using SlottedMultiChildRenderObjectWidgetMixin = std::shared_ptr<SlottedMultiChildRenderObjectWidgetMixinCls<S>>;
 
-template<typename S> class SlottedContainerRenderObjectMixinCls : public ObjectCls {
+template<typename S>
+class SlottedContainerRenderObjectMixinCls : public ObjectCls {
 public:
 
     virtual RenderBox childForSlot(S slot);
@@ -50,9 +53,11 @@ private:
     virtual void _setChild(RenderBox child, S slot);
 
 };
-template<typename S> using SlottedContainerRenderObjectMixin = std::shared_ptr<SlottedContainerRenderObjectMixinCls<S>>;
+template<typename S>
+using SlottedContainerRenderObjectMixin = std::shared_ptr<SlottedContainerRenderObjectMixinCls<S>>;
 
-template<typename S> class SlottedRenderObjectElementCls : public RenderObjectElementCls {
+template<typename S>
+class SlottedRenderObjectElementCls : public RenderObjectElementCls {
 public:
 
      SlottedRenderObjectElementCls(SlottedMultiChildRenderObjectWidgetMixin<S> widget);
@@ -83,7 +88,8 @@ private:
     virtual void _updateChild(S slot, Widget widget);
 
 };
-template<typename S> using SlottedRenderObjectElement = std::shared_ptr<SlottedRenderObjectElementCls<S>>;
+template<typename S>
+using SlottedRenderObjectElement = std::shared_ptr<SlottedRenderObjectElementCls<S>>;
 
 
 #endif

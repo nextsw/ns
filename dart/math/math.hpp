@@ -21,8 +21,10 @@ double sqrt1_2;
 
 double sqrt2;
 
-template<typename T>  T min(T a, T b);
-template<typename T>  T max(T a, T b);
+template<typename T>
+ T min(T a, T b);
+template<typename T>
+ T max(T a, T b);
 double atan2(num a, num b);
 num pow(num exponent, num x);
 double sin(num radians);

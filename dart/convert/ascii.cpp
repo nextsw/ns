@@ -52,7 +52,7 @@ Stream<List<int>> _UnicodeSubsetEncoderCls::bind(Stream<String> stream) {
     return super->bind(stream);
 }
 
-AsciiEncoderCls::AsciiEncoderCls() : _UnicodeSubsetEncoder(_asciiMask) {
+AsciiEncoderCls::AsciiEncoderCls() {
 }
 
 void _UnicodeSubsetEncoderSinkCls::close() {
@@ -103,7 +103,7 @@ String _UnicodeSubsetDecoderCls::_convertInvalid(List<int> bytes, int end, int s
     return buffer->toString();
 }
 
-AsciiDecoderCls::AsciiDecoderCls(bool allowInvalid) : _UnicodeSubsetDecoder(allowInvalid, _asciiMask) {
+AsciiDecoderCls::AsciiDecoderCls(bool allowInvalid) {
 }
 
 ByteConversionSink AsciiDecoderCls::startChunkedConversion(Sink<String> sink) {

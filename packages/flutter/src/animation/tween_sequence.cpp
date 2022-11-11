@@ -1,5 +1,6 @@
 #include "tween_sequence.hpp"
-template<typename T> TweenSequenceCls<T>::TweenSequenceCls(List<TweenSequenceItem<T>> items) {
+template<typename T>
+TweenSequenceCls<T>::TweenSequenceCls(List<TweenSequenceItem<T>> items) {
     {
         assert(items != nullptr);
         assert(items->isNotEmpty);
@@ -20,7 +21,8 @@ template<typename T> TweenSequenceCls<T>::TweenSequenceCls(List<TweenSequenceIte
     }
 }
 
-template<typename T> T TweenSequenceCls<T>::transform(double t) {
+template<typename T>
+T TweenSequenceCls<T>::transform(double t) {
     assert(t >= 0.0 && t <= 1.0);
     if (t == 1.0) {
         return _evaluateAt(t, _items->length() - 1);
@@ -33,11 +35,13 @@ template<typename T> T TweenSequenceCls<T>::transform(double t) {
     ;
 }
 
-template<typename T> String TweenSequenceCls<T>::toString() {
+template<typename T>
+String TweenSequenceCls<T>::toString() {
     return __s("TweenSequence(${_items.length} items)");
 }
 
-template<typename T> T TweenSequenceCls<T>::_evaluateAt(int index, double t) {
+template<typename T>
+T TweenSequenceCls<T>::_evaluateAt(int index, double t) {
     TweenSequenceItem<T> element = _items[index];
     double tInterval = _intervals[index]->value(t);
     return element->tween->transform(tInterval);
@@ -53,7 +57,8 @@ double FlippedTweenSequenceCls::transform(double t) {
     return 1 - super->transform(1 - t);
 }
 
-template<typename T> TweenSequenceItemCls<T>::TweenSequenceItemCls(Animatable<T> tween, double weight) {
+template<typename T>
+TweenSequenceItemCls<T>::TweenSequenceItemCls(Animatable<T> tween, double weight) {
     {
         assert(tween != nullptr);
         assert(weight != nullptr);

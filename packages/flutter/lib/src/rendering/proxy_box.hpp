@@ -26,7 +26,8 @@ private:
 };
 using RenderProxyBox = std::shared_ptr<RenderProxyBoxCls>;
 
-template<typename T> class RenderProxyBoxMixinCls : public ObjectCls {
+template<typename T>
+class RenderProxyBoxMixinCls : public ObjectCls {
 public:
 
     virtual void setupParentData(RenderObject child);
@@ -56,7 +57,8 @@ public:
 private:
 
 };
-template<typename T> using RenderProxyBoxMixin = std::shared_ptr<RenderProxyBoxMixinCls<T>>;
+template<typename T>
+using RenderProxyBoxMixin = std::shared_ptr<RenderProxyBoxMixinCls<T>>;
 
 enum HitTestBehavior{
     deferToChild,
@@ -274,7 +276,8 @@ private:
 };
 using RenderOpacity = std::shared_ptr<RenderOpacityCls>;
 
-template<typename T> class RenderAnimatedOpacityMixinCls : public ObjectCls {
+template<typename T>
+class RenderAnimatedOpacityMixinCls : public ObjectCls {
 public:
 
     virtual bool isRepaintBoundary();
@@ -314,7 +317,8 @@ private:
     virtual void _updateOpacity();
 
 };
-template<typename T> using RenderAnimatedOpacityMixin = std::shared_ptr<RenderAnimatedOpacityMixinCls<T>>;
+template<typename T>
+using RenderAnimatedOpacityMixin = std::shared_ptr<RenderAnimatedOpacityMixinCls<T>>;
 
 class RenderAnimatedOpacityCls : public RenderProxyBoxCls {
 public:
@@ -382,7 +386,8 @@ private:
 };
 using RenderBackdropFilter = std::shared_ptr<RenderBackdropFilterCls>;
 
-template<typename T> class CustomClipperCls : public ListenableCls {
+template<typename T>
+class CustomClipperCls : public ListenableCls {
 public:
 
      CustomClipperCls(Listenable reclip);
@@ -402,7 +407,8 @@ private:
 
 
 };
-template<typename T> using CustomClipper = std::shared_ptr<CustomClipperCls<T>>;
+template<typename T>
+using CustomClipper = std::shared_ptr<CustomClipperCls<T>>;
 
 class ShapeBorderClipperCls : public CustomClipperCls<Path> {
 public:
@@ -422,7 +428,8 @@ private:
 };
 using ShapeBorderClipper = std::shared_ptr<ShapeBorderClipperCls>;
 
-template<typename T> class _RenderCustomClipCls : public RenderProxyBoxCls {
+template<typename T>
+class _RenderCustomClipCls : public RenderProxyBoxCls {
 public:
 
     virtual CustomClipper<T> clipper();
@@ -463,7 +470,8 @@ private:
     virtual void _updateClip();
 
 };
-template<typename T> using _RenderCustomClip = std::shared_ptr<_RenderCustomClipCls<T>>;
+template<typename T>
+using _RenderCustomClip = std::shared_ptr<_RenderCustomClipCls<T>>;
 
 class RenderClipRectCls : public _RenderCustomClipCls<Rect> {
 public:
@@ -555,7 +563,8 @@ private:
 };
 using RenderClipPath = std::shared_ptr<RenderClipPathCls>;
 
-template<typename T> class _RenderPhysicalModelBaseCls : public _RenderCustomClipCls<T> {
+template<typename T>
+class _RenderPhysicalModelBaseCls : public _RenderCustomClipCls<T> {
 public:
 
     virtual double elevation();
@@ -585,7 +594,8 @@ private:
      _RenderPhysicalModelBaseCls(Unknown child, Unknown clipBehavior, Unknown clipper, Color color, double elevation, Color shadowColor);
 
 };
-template<typename T> using _RenderPhysicalModelBase = std::shared_ptr<_RenderPhysicalModelBaseCls<T>>;
+template<typename T>
+using _RenderPhysicalModelBase = std::shared_ptr<_RenderPhysicalModelBaseCls<T>>;
 Paint _transparentPaint;
 
 
@@ -1386,7 +1396,8 @@ private:
 };
 using RenderFollowerLayer = std::shared_ptr<RenderFollowerLayerCls>;
 
-template<typename T> class RenderAnnotatedRegionCls : public RenderProxyBoxCls {
+template<typename T>
+class RenderAnnotatedRegionCls : public RenderProxyBoxCls {
 public:
     bool alwaysNeedsCompositing;
 
@@ -1410,7 +1421,8 @@ private:
 
 
 };
-template<typename T> using RenderAnnotatedRegion = std::shared_ptr<RenderAnnotatedRegionCls<T>>;
+template<typename T>
+using RenderAnnotatedRegion = std::shared_ptr<RenderAnnotatedRegionCls<T>>;
 
 
 #endif

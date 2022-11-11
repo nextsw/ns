@@ -211,7 +211,8 @@ void _DirectoryCls::_exceptionOrErrorFromResponse(response , String message) {
     ;
 }
 
-T _DirectoryCls::_checkNotNulltemplate<typename T> (String name, T t) {
+template<typename T>
+T _DirectoryCls::_checkNotNull(String name, T t) {
     ArgumentErrorCls->checkNotNull(t, name);
     return t;
 }

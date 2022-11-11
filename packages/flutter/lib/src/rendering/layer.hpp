@@ -12,7 +12,8 @@
 #include "debug.hpp"
 
 
-template<typename T> class AnnotationEntryCls : public ObjectCls {
+template<typename T>
+class AnnotationEntryCls : public ObjectCls {
 public:
     T annotation;
 
@@ -26,9 +27,11 @@ public:
 private:
 
 };
-template<typename T> using AnnotationEntry = std::shared_ptr<AnnotationEntryCls<T>>;
+template<typename T>
+using AnnotationEntry = std::shared_ptr<AnnotationEntryCls<T>>;
 
-template<typename T> class AnnotationResultCls : public ObjectCls {
+template<typename T>
+class AnnotationResultCls : public ObjectCls {
 public:
 
     virtual void add(AnnotationEntry<T> entry);
@@ -42,7 +45,8 @@ private:
 
 
 };
-template<typename T> using AnnotationResult = std::shared_ptr<AnnotationResultCls<T>>;
+template<typename T>
+using AnnotationResult = std::shared_ptr<AnnotationResultCls<T>>;
 
 class LayerCls : public AbstractNodeCls {
 public:
@@ -87,11 +91,14 @@ public:
 
     virtual void remove();
 
-    template<typename S>  virtual bool findAnnotations(Offset localPosition, bool onlyFirst, AnnotationResult<S> result);
+    template<typename S>
+ virtual bool findAnnotations(Offset localPosition, bool onlyFirst, AnnotationResult<S> result);
 
-    template<typename S>  virtual S find(Offset localPosition);
+    template<typename S>
+ virtual S find(Offset localPosition);
 
-    template<typename S>  virtual AnnotationResult<S> findAllAnnotations(Offset localPosition);
+    template<typename S>
+ virtual AnnotationResult<S> findAllAnnotations(Offset localPosition);
 
     virtual void addToScene(SceneBuilder builder);
     virtual String toStringShort();
@@ -133,7 +140,8 @@ private:
 };
 using Layer = std::shared_ptr<LayerCls>;
 
-template<typename T> class LayerHandleCls : public ObjectCls {
+template<typename T>
+class LayerHandleCls : public ObjectCls {
 public:
 
      LayerHandleCls(T _layer);
@@ -149,7 +157,8 @@ private:
 
 
 };
-template<typename T> using LayerHandle = std::shared_ptr<LayerHandleCls<T>>;
+template<typename T>
+using LayerHandle = std::shared_ptr<LayerHandleCls<T>>;
 
 class PictureLayerCls : public LayerCls {
 public:
@@ -175,7 +184,8 @@ public:
 
     virtual void debugFillProperties(DiagnosticPropertiesBuilder properties);
 
-    template<typename S>  virtual bool findAnnotations(Offset localPosition, bool onlyFirst, AnnotationResult<S> result);
+    template<typename S>
+ virtual bool findAnnotations(Offset localPosition, bool onlyFirst, AnnotationResult<S> result);
 
 private:
     Picture _picture;
@@ -203,7 +213,8 @@ public:
 
     virtual void addToScene(SceneBuilder builder);
 
-    template<typename S>  virtual bool findAnnotations(Offset localPosition, bool onlyFirst, AnnotationResult<S> result);
+    template<typename S>
+ virtual bool findAnnotations(Offset localPosition, bool onlyFirst, AnnotationResult<S> result);
 
 private:
 
@@ -245,7 +256,8 @@ public:
 
     virtual void addToScene(SceneBuilder builder);
 
-    template<typename S>  virtual bool findAnnotations(Offset localPosition, bool onlyFirst, AnnotationResult<S> result);
+    template<typename S>
+ virtual bool findAnnotations(Offset localPosition, bool onlyFirst, AnnotationResult<S> result);
 
 private:
     Rect _overlayRect;
@@ -269,7 +281,8 @@ public:
 
     virtual void updateSubtreeNeedsAddToScene();
 
-    template<typename S>  virtual bool findAnnotations(Offset localPosition, bool onlyFirst, AnnotationResult<S> result);
+    template<typename S>
+ virtual bool findAnnotations(Offset localPosition, bool onlyFirst, AnnotationResult<S> result);
 
     virtual void attach(Object owner);
 
@@ -315,7 +328,8 @@ public:
 
     virtual void  offset(Offset value);
 
-    template<typename S>  virtual bool findAnnotations(Offset localPosition, bool onlyFirst, AnnotationResult<S> result);
+    template<typename S>
+ virtual bool findAnnotations(Offset localPosition, bool onlyFirst, AnnotationResult<S> result);
 
     virtual void applyTransform(Layer child, Matrix4 transform);
 
@@ -347,7 +361,8 @@ public:
 
     virtual void  clipBehavior(Clip value);
 
-    template<typename S>  virtual bool findAnnotations(Offset localPosition, bool onlyFirst, AnnotationResult<S> result);
+    template<typename S>
+ virtual bool findAnnotations(Offset localPosition, bool onlyFirst, AnnotationResult<S> result);
 
     virtual void addToScene(SceneBuilder builder);
 
@@ -377,7 +392,8 @@ public:
 
     virtual void  clipBehavior(Clip value);
 
-    template<typename S>  virtual bool findAnnotations(Offset localPosition, bool onlyFirst, AnnotationResult<S> result);
+    template<typename S>
+ virtual bool findAnnotations(Offset localPosition, bool onlyFirst, AnnotationResult<S> result);
 
     virtual void addToScene(SceneBuilder builder);
 
@@ -407,7 +423,8 @@ public:
 
     virtual void  clipBehavior(Clip value);
 
-    template<typename S>  virtual bool findAnnotations(Offset localPosition, bool onlyFirst, AnnotationResult<S> result);
+    template<typename S>
+ virtual bool findAnnotations(Offset localPosition, bool onlyFirst, AnnotationResult<S> result);
 
     virtual void addToScene(SceneBuilder builder);
 
@@ -473,7 +490,8 @@ public:
 
     virtual void addToScene(SceneBuilder builder);
 
-    template<typename S>  virtual bool findAnnotations(Offset localPosition, bool onlyFirst, AnnotationResult<S> result);
+    template<typename S>
+ virtual bool findAnnotations(Offset localPosition, bool onlyFirst, AnnotationResult<S> result);
 
     virtual void applyTransform(Layer child, Matrix4 transform);
 
@@ -597,7 +615,8 @@ public:
 
     virtual void  shadowColor(Color value);
 
-    template<typename S>  virtual bool findAnnotations(Offset localPosition, bool onlyFirst, AnnotationResult<S> result);
+    template<typename S>
+ virtual bool findAnnotations(Offset localPosition, bool onlyFirst, AnnotationResult<S> result);
 
     virtual void addToScene(SceneBuilder builder);
 
@@ -661,7 +680,8 @@ public:
 
     virtual void detach();
 
-    template<typename S>  virtual bool findAnnotations(Offset localPosition, bool onlyFirst, AnnotationResult<S> result);
+    template<typename S>
+ virtual bool findAnnotations(Offset localPosition, bool onlyFirst, AnnotationResult<S> result);
 
     virtual void addToScene(SceneBuilder builder);
 
@@ -693,7 +713,8 @@ public:
 
     virtual void  link(LayerLink value);
 
-    template<typename S>  virtual bool findAnnotations(Offset localPosition, bool onlyFirst, AnnotationResult<S> result);
+    template<typename S>
+ virtual bool findAnnotations(Offset localPosition, bool onlyFirst, AnnotationResult<S> result);
 
     virtual Matrix4 getLastTransform();
 
@@ -730,7 +751,8 @@ private:
 };
 using FollowerLayer = std::shared_ptr<FollowerLayerCls>;
 
-template<typename T> class AnnotatedRegionLayerCls : public ContainerLayerCls {
+template<typename T>
+class AnnotatedRegionLayerCls : public ContainerLayerCls {
 public:
     T value;
 
@@ -743,14 +765,16 @@ public:
 
      AnnotatedRegionLayerCls(Offset offset, bool opaque, Size size, T value);
 
-    template<typename S>  virtual bool findAnnotations(Offset localPosition, bool onlyFirst, AnnotationResult<S> result);
+    template<typename S>
+ virtual bool findAnnotations(Offset localPosition, bool onlyFirst, AnnotationResult<S> result);
 
     virtual void debugFillProperties(DiagnosticPropertiesBuilder properties);
 
 private:
 
 };
-template<typename T> using AnnotatedRegionLayer = std::shared_ptr<AnnotatedRegionLayerCls<T>>;
+template<typename T>
+using AnnotatedRegionLayer = std::shared_ptr<AnnotatedRegionLayerCls<T>>;
 
 
 #endif

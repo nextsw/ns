@@ -1,5 +1,6 @@
 #include "autocomplete.hpp"
-template<typename T> RawAutocompleteCls<T>::RawAutocompleteCls(AutocompleteOptionToString<T> displayStringForOption, AutocompleteFieldViewBuilder fieldViewBuilder, FocusNode focusNode, TextEditingValue initialValue, Unknown key, AutocompleteOnSelected<T> onSelected, AutocompleteOptionsBuilder<T> optionsBuilder, AutocompleteOptionsViewBuilder<T> optionsViewBuilder, TextEditingController textEditingController) {
+template<typename T>
+RawAutocompleteCls<T>::RawAutocompleteCls(AutocompleteOptionToString<T> displayStringForOption, AutocompleteFieldViewBuilder fieldViewBuilder, FocusNode focusNode, TextEditingValue initialValue, Unknown key, AutocompleteOnSelected<T> onSelected, AutocompleteOptionsBuilder<T> optionsBuilder, AutocompleteOptionsViewBuilder<T> optionsViewBuilder, TextEditingController textEditingController) {
     {
         assert(displayStringForOption != nullptr);
         assert(fieldViewBuilder != nullptr || (key != nullptr && focusNode != nullptr && textEditingController != nullptr), __s("Pass in a fieldViewBuilder, or otherwise create a separate field and pass in the FocusNode, TextEditingController, and a key. Use the key with RawAutocomplete.onFieldSubmitted."));
@@ -10,20 +11,25 @@ template<typename T> RawAutocompleteCls<T>::RawAutocompleteCls(AutocompleteOptio
     }
 }
 
-template<typename T> void RawAutocompleteCls<T>::onFieldSubmittedtemplate<typename T> (GlobalKey key) {
+template<typename T>
+template<typename T>
+void RawAutocompleteCls<T>::onFieldSubmitted(GlobalKey key) {
     _RawAutocompleteState<T> rawAutocomplete = as<_RawAutocompleteState<T>>(key->currentState()!);
     rawAutocomplete->_onFieldSubmitted();
 }
 
-template<typename T> String RawAutocompleteCls<T>::defaultStringForOption(dynamic option) {
+template<typename T>
+String RawAutocompleteCls<T>::defaultStringForOption(dynamic option) {
     return option->toString();
 }
 
-template<typename T> State<RawAutocomplete<T>> RawAutocompleteCls<T>::createState() {
+template<typename T>
+State<RawAutocomplete<T>> RawAutocompleteCls<T>::createState() {
     return <T>make<_RawAutocompleteStateCls>();
 }
 
-template<typename T> void _RawAutocompleteStateCls<T>::initState() {
+template<typename T>
+void _RawAutocompleteStateCls<T>::initState() {
     super->initState();
     _textEditingController = widget->textEditingController or TextEditingControllerCls->fromValue(widget->initialValue);
     _textEditingController->addListener(_onChangedField);
@@ -37,7 +43,8 @@ template<typename T> void _RawAutocompleteStateCls<T>::initState() {
     _updateOverlay();
 }
 
-template<typename T> void _RawAutocompleteStateCls<T>::didUpdateWidget(RawAutocomplete<T> oldWidget) {
+template<typename T>
+void _RawAutocompleteStateCls<T>::didUpdateWidget(RawAutocomplete<T> oldWidget) {
     super->didUpdateWidget(oldWidget);
     _updateTextEditingController(oldWidget->textEditingController, widget->textEditingController);
     _updateFocusNode(oldWidget->focusNode, widget->focusNode);
@@ -45,7 +52,8 @@ template<typename T> void _RawAutocompleteStateCls<T>::didUpdateWidget(RawAutoco
     _updateOverlay();
 }
 
-template<typename T> void _RawAutocompleteStateCls<T>::dispose() {
+template<typename T>
+void _RawAutocompleteStateCls<T>::dispose() {
     _textEditingController->removeListener(_onChangedField);
     if (widget->textEditingController == nullptr) {
         _textEditingController->dispose();
@@ -59,15 +67,18 @@ template<typename T> void _RawAutocompleteStateCls<T>::dispose() {
     super->dispose();
 }
 
-template<typename T> Widget _RawAutocompleteStateCls<T>::build(BuildContext context) {
+template<typename T>
+Widget _RawAutocompleteStateCls<T>::build(BuildContext context) {
     return make<ContainerCls>(_fieldKey, make<ShortcutsCls>(_shortcuts, make<ActionsCls>(_actionMap, make<CompositedTransformTargetCls>(_optionsLayerLink, widget->fieldViewBuilder == nullptr? SizedBoxCls->shrink() : widget->fieldViewBuilder!(context, _textEditingController, _focusNode, _onFieldSubmitted)))));
 }
 
-template<typename T> bool _RawAutocompleteStateCls<T>::_shouldShowOptions() {
+template<typename T>
+bool _RawAutocompleteStateCls<T>::_shouldShowOptions() {
     return !_userHidOptions && _focusNode->hasFocus() && _selection == nullptr && _options->isNotEmpty();
 }
 
-template<typename T> Future<void> _RawAutocompleteStateCls<T>::_onChangedField() {
+template<typename T>
+Future<void> _RawAutocompleteStateCls<T>::_onChangedField() {
     TextEditingValue value = _textEditingController->value;
     Iterable<T> options = await widget->optionsBuilder(value);
     _options = options;
@@ -83,20 +94,23 @@ template<typename T> Future<void> _RawAutocompleteStateCls<T>::_onChangedField()
     _updateOverlay();
 }
 
-template<typename T> void _RawAutocompleteStateCls<T>::_onChangedFocus() {
+template<typename T>
+void _RawAutocompleteStateCls<T>::_onChangedFocus() {
     _userHidOptions = !_focusNode->hasFocus();
     _updateActions();
     _updateOverlay();
 }
 
-template<typename T> void _RawAutocompleteStateCls<T>::_onFieldSubmitted() {
+template<typename T>
+void _RawAutocompleteStateCls<T>::_onFieldSubmitted() {
     if (_options->isEmpty() || _userHidOptions) {
         return;
     }
     _select(_options->elementAt(_highlightedOptionIndex->value()));
 }
 
-template<typename T> void _RawAutocompleteStateCls<T>::_select(T nextSelection) {
+template<typename T>
+void _RawAutocompleteStateCls<T>::_select(T nextSelection) {
     if (nextSelection == _selection) {
         return;
     }
@@ -108,11 +122,13 @@ template<typename T> void _RawAutocompleteStateCls<T>::_select(T nextSelection) 
     widget->onSelected?->call(_selection!);
 }
 
-template<typename T> void _RawAutocompleteStateCls<T>::_updateHighlight(int newIndex) {
+template<typename T>
+void _RawAutocompleteStateCls<T>::_updateHighlight(int newIndex) {
     _highlightedOptionIndex->value() = _options->isEmpty()? 0 : newIndex % _options->length();
 }
 
-template<typename T> void _RawAutocompleteStateCls<T>::_highlightPreviousOption(AutocompletePreviousOptionIntent intent) {
+template<typename T>
+void _RawAutocompleteStateCls<T>::_highlightPreviousOption(AutocompletePreviousOptionIntent intent) {
     if (_userHidOptions) {
         _userHidOptions = false;
         _updateActions();
@@ -122,7 +138,8 @@ template<typename T> void _RawAutocompleteStateCls<T>::_highlightPreviousOption(
     _updateHighlight(_highlightedOptionIndex->value() - 1);
 }
 
-template<typename T> void _RawAutocompleteStateCls<T>::_highlightNextOption(AutocompleteNextOptionIntent intent) {
+template<typename T>
+void _RawAutocompleteStateCls<T>::_highlightNextOption(AutocompleteNextOptionIntent intent) {
     if (_userHidOptions) {
         _userHidOptions = false;
         _updateActions();
@@ -132,7 +149,8 @@ template<typename T> void _RawAutocompleteStateCls<T>::_highlightNextOption(Auto
     _updateHighlight(_highlightedOptionIndex->value() + 1);
 }
 
-template<typename T> Object _RawAutocompleteStateCls<T>::_hideOptions(DismissIntent intent) {
+template<typename T>
+Object _RawAutocompleteStateCls<T>::_hideOptions(DismissIntent intent) {
     if (!_userHidOptions) {
         _userHidOptions = true;
         _updateActions();
@@ -142,17 +160,20 @@ template<typename T> Object _RawAutocompleteStateCls<T>::_hideOptions(DismissInt
     return ActionsCls->invoke(context, intent);
 }
 
-template<typename T> void _RawAutocompleteStateCls<T>::_setActionsEnabled(bool enabled) {
+template<typename T>
+void _RawAutocompleteStateCls<T>::_setActionsEnabled(bool enabled) {
     _previousOptionAction->enabled = enabled;
     _nextOptionAction->enabled = enabled;
     _hideOptionsAction->enabled = enabled;
 }
 
-template<typename T> void _RawAutocompleteStateCls<T>::_updateActions() {
+template<typename T>
+void _RawAutocompleteStateCls<T>::_updateActions() {
     _setActionsEnabled(_focusNode->hasFocus() && _selection == nullptr && _options->isNotEmpty());
 }
 
-template<typename T> void _RawAutocompleteStateCls<T>::_updateOverlay() {
+template<typename T>
+void _RawAutocompleteStateCls<T>::_updateOverlay() {
     if (SchedulerBindingCls::instance->schedulerPhase == SchedulerPhaseCls::persistentCallbacks) {
         if (!_floatingOptionsUpdateScheduled) {
             _floatingOptionsUpdateScheduled = true;
@@ -177,7 +198,8 @@ template<typename T> void _RawAutocompleteStateCls<T>::_updateOverlay() {
     }
 }
 
-template<typename T> void _RawAutocompleteStateCls<T>::_updateTextEditingController(TextEditingController current, TextEditingController old) {
+template<typename T>
+void _RawAutocompleteStateCls<T>::_updateTextEditingController(TextEditingController current, TextEditingController old) {
     if ((old == nullptr && current == nullptr) || old == current) {
         return;
     }
@@ -197,7 +219,8 @@ template<typename T> void _RawAutocompleteStateCls<T>::_updateTextEditingControl
     }    _textEditingController->addListener(_onChangedField);
 }
 
-template<typename T> void _RawAutocompleteStateCls<T>::_updateFocusNode(FocusNode current, FocusNode old) {
+template<typename T>
+void _RawAutocompleteStateCls<T>::_updateFocusNode(FocusNode current, FocusNode old) {
     if ((old == nullptr && current == nullptr) || old == current) {
         return;
     }
@@ -217,15 +240,17 @@ template<typename T> void _RawAutocompleteStateCls<T>::_updateFocusNode(FocusNod
     }    _focusNode->addListener(_onChangedFocus);
 }
 
-template<typename T> bool _AutocompleteCallbackActionCls<T>::isEnabled(T intent) {
+template<typename T>
+bool _AutocompleteCallbackActionCls<T>::isEnabled(T intent) {
     return enabled;
 }
 
-template<typename T> bool _AutocompleteCallbackActionCls<T>::consumesKey(T intent) {
+template<typename T>
+bool _AutocompleteCallbackActionCls<T>::consumesKey(T intent) {
     return enabled;
 }
 
-AutocompleteHighlightedOptionCls::AutocompleteHighlightedOptionCls(Unknown child, ValueNotifier<int> highlightIndexNotifier, Unknown key) : InheritedNotifier<ValueNotifier<int>>(highlightIndexNotifier) {
+AutocompleteHighlightedOptionCls::AutocompleteHighlightedOptionCls(Unknown child, ValueNotifier<int> highlightIndexNotifier, Unknown key) {
 }
 
 int AutocompleteHighlightedOptionCls::of(BuildContext context) {

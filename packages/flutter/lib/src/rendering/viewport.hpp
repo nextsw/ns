@@ -49,7 +49,8 @@ private:
 };
 using RevealedOffset = std::shared_ptr<RevealedOffsetCls>;
 
-template<typename ParentDataClass> class RenderViewportBaseCls : public RenderBoxCls {
+template<typename ParentDataClass>
+class RenderViewportBaseCls : public RenderBoxCls {
 public:
 
      RenderViewportBaseCls(AxisDirection axisDirection, double cacheExtent, CacheExtentStyle cacheExtentStyle, Clip clipBehavior, AxisDirection crossAxisDirection, ViewportOffset offset);
@@ -158,7 +159,8 @@ private:
     virtual void _paintContents(PaintingContext context, Offset offset);
 
 };
-template<typename ParentDataClass> using RenderViewportBase = std::shared_ptr<RenderViewportBaseCls<ParentDataClass>>;
+template<typename ParentDataClass>
+using RenderViewportBase = std::shared_ptr<RenderViewportBaseCls<ParentDataClass>>;
 
 class RenderViewportCls : public RenderViewportBaseCls<SliverPhysicalContainerParentData> {
 public:

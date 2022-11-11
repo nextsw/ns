@@ -5,7 +5,8 @@
 #include <dart/core/core.hpp>
 
 
-template<typename E> class LinkedHashSetCls : public ObjectCls {
+template<typename E>
+class LinkedHashSetCls : public ObjectCls {
 public:
 
      LinkedHashSetCls(bool equals(E , E ) , int hashCode(E ) , bool isValidKey(dynamic ) );
@@ -19,7 +20,8 @@ public:
 private:
 
 };
-template<typename E> using LinkedHashSet = std::shared_ptr<LinkedHashSetCls<E>>;
+template<typename E>
+using LinkedHashSet = std::shared_ptr<LinkedHashSetCls<E>>;
 
 
 #endif

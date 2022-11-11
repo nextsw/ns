@@ -1,5 +1,6 @@
 #include "_isolates_io.hpp"
-Future<R> computetemplate<typename Q, typename R> (ComputeCallback<Q, R> callback, String debugLabel, Q message) {
+template<typename Q, typename R>
+Future<R> compute(ComputeCallback<Q, R> callback, String debugLabel, Q message) {
     debugLabel = kReleaseMode? __s("compute") : callback->toString();
     Flow flow = FlowCls->begin();
     TimelineCls->startSync(__s("$debugLabel: start")flow);
@@ -28,13 +29,15 @@ Future<R> computetemplate<typename Q, typename R> (ComputeCallback<Q, R> callbac
     ;
 }
 
-template<typename Q, typename R> FutureOr<R> _IsolateConfigurationCls<Q, R>::applyAndTime() {
+template<typename Q, typename R>
+FutureOr<R> _IsolateConfigurationCls<Q, R>::applyAndTime() {
     return TimelineCls->timeSync(debugLabel, [=] ()     {
         callback(message);
     }FlowCls->step(flowId));
 }
 
-Future<void> _spawntemplate<typename Q, typename R> (_IsolateConfiguration<Q, R> configuration) {
+template<typename Q, typename R>
+Future<void> _spawn(_IsolateConfiguration<Q, R> configuration) {
     List<dynamic> computationResult;
     try {
         computationResult = _buildSuccessResponse(await configuration->applyAndTime());
@@ -44,7 +47,8 @@ Future<void> _spawntemplate<typename Q, typename R> (_IsolateConfiguration<Q, R>
     IsolateCls->exit(configuration->resultPort, computationResult);
 }
 
-List<R> _buildSuccessResponsetemplate<typename R> (R result) {
+template<typename R>
+List<R> _buildSuccessResponse(R result) {
     return <R>filled(1, result);
 }
 

@@ -310,7 +310,7 @@ List<DiagnosticsNode> RenderSliverMultiBoxAdaptorCls::debugDescribeChildren() {
             SliverMultiBoxAdaptorParentData childParentData = as<SliverMultiBoxAdaptorParentData>(child!->parentData!);
             children->add(child->toDiagnosticsNode(__s("child with index ${childParentData.index}")));
             if (child == lastChild) {
-                                break;
+                break;
             }
             child = childParentData->nextSibling;
         }

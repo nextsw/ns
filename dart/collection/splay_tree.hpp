@@ -5,7 +5,8 @@
 #include <dart/core/core.hpp>
 
 
-template<typename K, typename Node> class _SplayTreeNodeCls : public ObjectCls {
+template<typename K, typename Node>
+class _SplayTreeNodeCls : public ObjectCls {
 public:
     K key;
 
@@ -18,9 +19,11 @@ private:
 
      _SplayTreeNodeCls(K key);
 };
-template<typename K, typename Node> using _SplayTreeNode = std::shared_ptr<_SplayTreeNodeCls<K, Node>>;
+template<typename K, typename Node>
+using _SplayTreeNode = std::shared_ptr<_SplayTreeNodeCls<K, Node>>;
 
-template<typename K> class _SplayTreeSetNodeCls : public _SplayTreeNodeCls<K, _SplayTreeSetNode<K>> {
+template<typename K>
+class _SplayTreeSetNodeCls : public _SplayTreeNodeCls<K, _SplayTreeSetNode<K>> {
 public:
 
 private:
@@ -28,9 +31,11 @@ private:
      _SplayTreeSetNodeCls(K key);
 
 };
-template<typename K> using _SplayTreeSetNode = std::shared_ptr<_SplayTreeSetNodeCls<K>>;
+template<typename K>
+using _SplayTreeSetNode = std::shared_ptr<_SplayTreeSetNodeCls<K>>;
 
-template<typename K, typename V> class _SplayTreeMapNodeCls : public _SplayTreeNodeCls<K, _SplayTreeMapNode<K, V>> {
+template<typename K, typename V>
+class _SplayTreeMapNodeCls : public _SplayTreeNodeCls<K, _SplayTreeMapNode<K, V>> {
 public:
     V value;
 
@@ -44,9 +49,11 @@ private:
     virtual _SplayTreeMapNode<K, V> _replaceValue(V value);
 
 };
-template<typename K, typename V> using _SplayTreeMapNode = std::shared_ptr<_SplayTreeMapNodeCls<K, V>>;
+template<typename K, typename V>
+using _SplayTreeMapNode = std::shared_ptr<_SplayTreeMapNodeCls<K, V>>;
 
-template<typename K, typename Node> class _SplayTreeCls : public ObjectCls {
+template<typename K, typename Node>
+class _SplayTreeCls : public ObjectCls {
 public:
 
 private:
@@ -80,13 +87,16 @@ private:
     virtual bool _containsKey(Object key);
 
 };
-template<typename K, typename Node> using _SplayTree = std::shared_ptr<_SplayTreeCls<K, Node>>;
+template<typename K, typename Node>
+using _SplayTree = std::shared_ptr<_SplayTreeCls<K, Node>>;
 int _dynamicCompare(dynamic a, dynamic b);
 
-template<typename K>  Comparator<K> _defaultCompare();
+template<typename K>
+ Comparator<K> _defaultCompare();
 
 
-template<typename K, typename V> class SplayTreeMapCls : public _SplayTreeCls<K, _SplayTreeMapNode<K, V>> {
+template<typename K, typename V>
+class SplayTreeMapCls : public _SplayTreeCls<K, _SplayTreeMapNode<K, V>> {
 public:
 
      SplayTreeMapCls(int compare(K key1, K key2) , bool isValidKey(dynamic potentialKey) );
@@ -150,9 +160,11 @@ private:
 
 
 };
-template<typename K, typename V> using SplayTreeMap = std::shared_ptr<SplayTreeMapCls<K, V>>;
+template<typename K, typename V>
+using SplayTreeMap = std::shared_ptr<SplayTreeMapCls<K, V>>;
 
-template<typename K, typename Node, typename T> class _SplayTreeIteratorCls : public ObjectCls {
+template<typename K, typename Node, typename T>
+class _SplayTreeIteratorCls : public ObjectCls {
 public:
 
     virtual T current();
@@ -177,9 +189,11 @@ private:
 
     virtual T _getValue(Node node);
 };
-template<typename K, typename Node, typename T> using _SplayTreeIterator = std::shared_ptr<_SplayTreeIteratorCls<K, Node, T>>;
+template<typename K, typename Node, typename T>
+using _SplayTreeIterator = std::shared_ptr<_SplayTreeIteratorCls<K, Node, T>>;
 
-template<typename K, typename Node> class _SplayTreeKeyIterableCls : public EfficientLengthIterableCls<K> {
+template<typename K, typename Node>
+class _SplayTreeKeyIterableCls : public EfficientLengthIterableCls<K> {
 public:
 
     virtual int length();
@@ -198,9 +212,11 @@ private:
 
      _SplayTreeKeyIterableCls(_SplayTree<K, Node> _tree);
 };
-template<typename K, typename Node> using _SplayTreeKeyIterable = std::shared_ptr<_SplayTreeKeyIterableCls<K, Node>>;
+template<typename K, typename Node>
+using _SplayTreeKeyIterable = std::shared_ptr<_SplayTreeKeyIterableCls<K, Node>>;
 
-template<typename K, typename V> class _SplayTreeValueIterableCls : public EfficientLengthIterableCls<V> {
+template<typename K, typename V>
+class _SplayTreeValueIterableCls : public EfficientLengthIterableCls<V> {
 public:
 
     virtual int length();
@@ -215,9 +231,11 @@ private:
 
      _SplayTreeValueIterableCls(SplayTreeMap<K, V> _map);
 };
-template<typename K, typename V> using _SplayTreeValueIterable = std::shared_ptr<_SplayTreeValueIterableCls<K, V>>;
+template<typename K, typename V>
+using _SplayTreeValueIterable = std::shared_ptr<_SplayTreeValueIterableCls<K, V>>;
 
-template<typename K, typename V> class _SplayTreeMapEntryIterableCls : public EfficientLengthIterableCls<MapEntry<K, V>> {
+template<typename K, typename V>
+class _SplayTreeMapEntryIterableCls : public EfficientLengthIterableCls<MapEntry<K, V>> {
 public:
 
     virtual int length();
@@ -232,9 +250,11 @@ private:
 
      _SplayTreeMapEntryIterableCls(SplayTreeMap<K, V> _map);
 };
-template<typename K, typename V> using _SplayTreeMapEntryIterable = std::shared_ptr<_SplayTreeMapEntryIterableCls<K, V>>;
+template<typename K, typename V>
+using _SplayTreeMapEntryIterable = std::shared_ptr<_SplayTreeMapEntryIterableCls<K, V>>;
 
-template<typename K, typename Node> class _SplayTreeKeyIteratorCls : public _SplayTreeIteratorCls<K, Node, K> {
+template<typename K, typename Node>
+class _SplayTreeKeyIteratorCls : public _SplayTreeIteratorCls<K, Node, K> {
 public:
 
 private:
@@ -244,9 +264,11 @@ private:
     virtual K _getValue(Node node);
 
 };
-template<typename K, typename Node> using _SplayTreeKeyIterator = std::shared_ptr<_SplayTreeKeyIteratorCls<K, Node>>;
+template<typename K, typename Node>
+using _SplayTreeKeyIterator = std::shared_ptr<_SplayTreeKeyIteratorCls<K, Node>>;
 
-template<typename K, typename V> class _SplayTreeValueIteratorCls : public _SplayTreeIteratorCls<K, _SplayTreeMapNode<K, V>, V> {
+template<typename K, typename V>
+class _SplayTreeValueIteratorCls : public _SplayTreeIteratorCls<K, _SplayTreeMapNode<K, V>, V> {
 public:
 
 private:
@@ -256,9 +278,11 @@ private:
     virtual V _getValue(_SplayTreeMapNode<K, V> node);
 
 };
-template<typename K, typename V> using _SplayTreeValueIterator = std::shared_ptr<_SplayTreeValueIteratorCls<K, V>>;
+template<typename K, typename V>
+using _SplayTreeValueIterator = std::shared_ptr<_SplayTreeValueIteratorCls<K, V>>;
 
-template<typename K, typename V> class _SplayTreeMapEntryIteratorCls : public _SplayTreeIteratorCls<K, _SplayTreeMapNode<K, V>, MapEntry<K, V>> {
+template<typename K, typename V>
+class _SplayTreeMapEntryIteratorCls : public _SplayTreeIteratorCls<K, _SplayTreeMapNode<K, V>, MapEntry<K, V>> {
 public:
 
 private:
@@ -270,9 +294,11 @@ private:
     virtual void _replaceValue(V value);
 
 };
-template<typename K, typename V> using _SplayTreeMapEntryIterator = std::shared_ptr<_SplayTreeMapEntryIteratorCls<K, V>>;
+template<typename K, typename V>
+using _SplayTreeMapEntryIterator = std::shared_ptr<_SplayTreeMapEntryIteratorCls<K, V>>;
 
-template<typename E> class SplayTreeSetCls : public _SplayTreeCls<E, _SplayTreeSetNode<E>> {
+template<typename E>
+class SplayTreeSetCls : public _SplayTreeCls<E, _SplayTreeSetNode<E>> {
 public:
 
      SplayTreeSetCls(int compare(E key1, E key2) , bool isValidKey(dynamic potentialKey) );
@@ -281,7 +307,8 @@ public:
 
     virtual void  of(int compare(E key1, E key2) , Iterable<E> elements, bool isValidKey(dynamic potentialKey) );
 
-    template<typename R>  virtual Set<R> cast();
+    template<typename R>
+ virtual Set<R> cast();
 
     virtual Iterator<E> iterator();
 
@@ -331,16 +358,19 @@ private:
     _Predicate _validKey;
 
 
-    template<typename T>  virtual Set<T> _newSet();
+    template<typename T>
+ virtual Set<T> _newSet();
 
     virtual bool _add(E element);
 
     virtual SplayTreeSet<E> _clone();
 
-    template<typename Node>  virtual _SplayTreeSetNode<E> _copyNode(Node node);
+    template<typename Node>
+ virtual _SplayTreeSetNode<E> _copyNode(Node node);
 
 };
-template<typename E> using SplayTreeSet = std::shared_ptr<SplayTreeSetCls<E>>;
+template<typename E>
+using SplayTreeSet = std::shared_ptr<SplayTreeSetCls<E>>;
 
 
 #endif

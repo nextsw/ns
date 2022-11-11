@@ -5,7 +5,8 @@
 #include <dart/core/core.hpp>
 
 
-template<typename T> class EfficientLengthIterableCls : public IterableCls<T> {
+template<typename T>
+class EfficientLengthIterableCls : public IterableCls<T> {
 public:
 
      EfficientLengthIterableCls();
@@ -13,7 +14,8 @@ public:
 private:
 
 };
-template<typename T> using EfficientLengthIterable = std::shared_ptr<EfficientLengthIterableCls<T>>;
+template<typename T>
+using EfficientLengthIterable = std::shared_ptr<EfficientLengthIterableCls<T>>;
 
 
 #endif

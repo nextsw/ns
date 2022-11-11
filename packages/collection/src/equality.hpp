@@ -9,7 +9,8 @@
 int _hashMask;
 
 
-template<typename E> class EqualityCls : public ObjectCls {
+template<typename E>
+class EqualityCls : public ObjectCls {
 public:
 
      EqualityCls();
@@ -19,9 +20,11 @@ public:
 private:
 
 };
-template<typename E> using Equality = std::shared_ptr<EqualityCls<E>>;
+template<typename E>
+using Equality = std::shared_ptr<EqualityCls<E>>;
 
-template<typename E, typename F> class EqualityByCls : public ObjectCls {
+template<typename E, typename F>
+class EqualityByCls : public ObjectCls {
 public:
 
      EqualityByCls(F comparisonKey(E ) , Equality<F> inner);
@@ -39,9 +42,11 @@ private:
 
 
 };
-template<typename E, typename F> using EqualityBy = std::shared_ptr<EqualityByCls<E, F>>;
+template<typename E, typename F>
+using EqualityBy = std::shared_ptr<EqualityByCls<E, F>>;
 
-template<typename E> class DefaultEqualityCls : public ObjectCls {
+template<typename E>
+class DefaultEqualityCls : public ObjectCls {
 public:
 
      DefaultEqualityCls();
@@ -54,9 +59,11 @@ public:
 private:
 
 };
-template<typename E> using DefaultEquality = std::shared_ptr<DefaultEqualityCls<E>>;
+template<typename E>
+using DefaultEquality = std::shared_ptr<DefaultEqualityCls<E>>;
 
-template<typename E> class IdentityEqualityCls : public ObjectCls {
+template<typename E>
+class IdentityEqualityCls : public ObjectCls {
 public:
 
      IdentityEqualityCls();
@@ -69,9 +76,11 @@ public:
 private:
 
 };
-template<typename E> using IdentityEquality = std::shared_ptr<IdentityEqualityCls<E>>;
+template<typename E>
+using IdentityEquality = std::shared_ptr<IdentityEqualityCls<E>>;
 
-template<typename E> class IterableEqualityCls : public ObjectCls {
+template<typename E>
+class IterableEqualityCls : public ObjectCls {
 public:
 
      IterableEqualityCls(Equality<E> elementEquality);
@@ -87,9 +96,11 @@ private:
 
 
 };
-template<typename E> using IterableEquality = std::shared_ptr<IterableEqualityCls<E>>;
+template<typename E>
+using IterableEquality = std::shared_ptr<IterableEqualityCls<E>>;
 
-template<typename E> class ListEqualityCls : public ObjectCls {
+template<typename E>
+class ListEqualityCls : public ObjectCls {
 public:
 
      ListEqualityCls(Equality<E> elementEquality);
@@ -105,9 +116,11 @@ private:
 
 
 };
-template<typename E> using ListEquality = std::shared_ptr<ListEqualityCls<E>>;
+template<typename E>
+using ListEquality = std::shared_ptr<ListEqualityCls<E>>;
 
-template<typename E, typename T> class _UnorderedEqualityCls : public ObjectCls {
+template<typename E, typename T>
+class _UnorderedEqualityCls : public ObjectCls {
 public:
 
     virtual bool equals(T elements1, T elements2);
@@ -120,9 +133,11 @@ private:
 
      _UnorderedEqualityCls(Equality<E> _elementEquality);
 };
-template<typename E, typename T> using _UnorderedEquality = std::shared_ptr<_UnorderedEqualityCls<E, T>>;
+template<typename E, typename T>
+using _UnorderedEquality = std::shared_ptr<_UnorderedEqualityCls<E, T>>;
 
-template<typename E> class UnorderedIterableEqualityCls : public _UnorderedEqualityCls<E, Iterable<E>> {
+template<typename E>
+class UnorderedIterableEqualityCls : public _UnorderedEqualityCls<E, Iterable<E>> {
 public:
 
      UnorderedIterableEqualityCls(Equality<E> elementEquality);
@@ -132,9 +147,11 @@ public:
 private:
 
 };
-template<typename E> using UnorderedIterableEquality = std::shared_ptr<UnorderedIterableEqualityCls<E>>;
+template<typename E>
+using UnorderedIterableEquality = std::shared_ptr<UnorderedIterableEqualityCls<E>>;
 
-template<typename E> class SetEqualityCls : public _UnorderedEqualityCls<E, Set<E>> {
+template<typename E>
+class SetEqualityCls : public _UnorderedEqualityCls<E, Set<E>> {
 public:
 
      SetEqualityCls(Equality<E> elementEquality);
@@ -144,7 +161,8 @@ public:
 private:
 
 };
-template<typename E> using SetEquality = std::shared_ptr<SetEqualityCls<E>>;
+template<typename E>
+using SetEquality = std::shared_ptr<SetEqualityCls<E>>;
 
 class _MapEntryCls : public ObjectCls {
 public:
@@ -165,7 +183,8 @@ private:
 };
 using _MapEntry = std::shared_ptr<_MapEntryCls>;
 
-template<typename K, typename V> class MapEqualityCls : public ObjectCls {
+template<typename K, typename V>
+class MapEqualityCls : public ObjectCls {
 public:
 
      MapEqualityCls(Equality<K> keys, Equality<V> values);
@@ -183,9 +202,11 @@ private:
 
 
 };
-template<typename K, typename V> using MapEquality = std::shared_ptr<MapEqualityCls<K, V>>;
+template<typename K, typename V>
+using MapEquality = std::shared_ptr<MapEqualityCls<K, V>>;
 
-template<typename E> class MultiEqualityCls : public ObjectCls {
+template<typename E>
+class MultiEqualityCls : public ObjectCls {
 public:
 
      MultiEqualityCls(Iterable<Equality<E>> equalities);
@@ -201,7 +222,8 @@ private:
 
 
 };
-template<typename E> using MultiEquality = std::shared_ptr<MultiEqualityCls<E>>;
+template<typename E>
+using MultiEquality = std::shared_ptr<MultiEqualityCls<E>>;
 
 class DeepCollectionEqualityCls : public ObjectCls {
 public:

@@ -42,7 +42,7 @@ String OffsetBaseCls::toString() {
     return __s("OffsetBase(${_dx.toStringAsFixed(1)}, ${_dy.toStringAsFixed(1)})");
 }
 
-OffsetCls::OffsetCls(double dx, double dy) : OffsetBase(dx, dy) {
+OffsetCls::OffsetCls(double dx, double dy) {
 }
 
 void OffsetCls::fromDirection(double direction, double distance) {
@@ -138,7 +138,7 @@ String OffsetCls::toString() {
     return __s("Offset(${dx.toStringAsFixed(1)}, ${dy.toStringAsFixed(1)})");
 }
 
-SizeCls::SizeCls(double height, double width) : OffsetBase(width, height) {
+SizeCls::SizeCls(double height, double width) {
 }
 
 void SizeCls::copy(Size source)

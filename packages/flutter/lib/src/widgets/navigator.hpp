@@ -31,7 +31,8 @@ enum RoutePopDisposition{
     bubble,
 } // end RoutePopDisposition
 
-template<typename T> class RouteCls : public ObjectCls {
+template<typename T>
+class RouteCls : public ObjectCls {
 public:
 
      RouteCls(RouteSettings settings);
@@ -99,7 +100,8 @@ private:
     virtual void _updateRestorationId(String restorationId);
 
 };
-template<typename T> using Route = std::shared_ptr<RouteCls<T>>;
+template<typename T>
+using Route = std::shared_ptr<RouteCls<T>>;
 
 class RouteSettingsCls : public ObjectCls {
 public:
@@ -118,7 +120,8 @@ private:
 };
 using RouteSettings = std::shared_ptr<RouteSettingsCls>;
 
-template<typename T> class PageCls : public RouteSettingsCls {
+template<typename T>
+class PageCls : public RouteSettingsCls {
 public:
     LocalKey key;
 
@@ -134,7 +137,8 @@ public:
 private:
 
 };
-template<typename T> using Page = std::shared_ptr<PageCls<T>>;
+template<typename T>
+using Page = std::shared_ptr<PageCls<T>>;
 
 class NavigatorObserverCls : public ObjectCls {
 public:
@@ -194,7 +198,8 @@ private:
 };
 using RouteTransitionRecord = std::shared_ptr<RouteTransitionRecordCls>;
 
-template<typename T> class TransitionDelegateCls : public ObjectCls {
+template<typename T>
+class TransitionDelegateCls : public ObjectCls {
 public:
 
      TransitionDelegateCls();
@@ -204,9 +209,11 @@ private:
     virtual Iterable<RouteTransitionRecord> _transition(Map<RouteTransitionRecord, RouteTransitionRecord> locationToExitingPageRoute, List<RouteTransitionRecord> newPageRouteHistory, Map<RouteTransitionRecord, List<RouteTransitionRecord>> pageRouteToPagelessRoutes);
 
 };
-template<typename T> using TransitionDelegate = std::shared_ptr<TransitionDelegateCls<T>>;
+template<typename T>
+using TransitionDelegate = std::shared_ptr<TransitionDelegateCls<T>>;
 
-template<typename T> class DefaultTransitionDelegateCls : public TransitionDelegateCls<T> {
+template<typename T>
+class DefaultTransitionDelegateCls : public TransitionDelegateCls<T> {
 public:
 
      DefaultTransitionDelegateCls();
@@ -216,7 +223,8 @@ public:
 private:
 
 };
-template<typename T> using DefaultTransitionDelegate = std::shared_ptr<DefaultTransitionDelegateCls<T>>;
+template<typename T>
+using DefaultTransitionDelegate = std::shared_ptr<DefaultTransitionDelegateCls<T>>;
 
 class NavigatorCls : public StatefulWidgetCls {
 public:
@@ -247,47 +255,67 @@ public:
 
      NavigatorCls(String initialRoute, Unknown key, List<NavigatorObserver> observers, RouteListFactory onGenerateInitialRoutes, RouteFactory onGenerateRoute, PopPageCallback onPopPage, RouteFactory onUnknownRoute, List<Page<dynamic>> pages, bool reportsRouteUpdateToEngine, bool requestFocus, String restorationScopeId, TransitionDelegate<dynamic> transitionDelegate);
 
-    template<typename T>  static Future<T> pushNamed(Object arguments, BuildContext context, String routeName);
+    template<typename T>
+ static Future<T> pushNamed(Object arguments, BuildContext context, String routeName);
 
-    template<typename T>  static String restorablePushNamed(Object arguments, BuildContext context, String routeName);
+    template<typename T>
+ static String restorablePushNamed(Object arguments, BuildContext context, String routeName);
 
-    template<typename T, typename TO>  static Future<T> pushReplacementNamed(Object arguments, BuildContext context, TO result, String routeName);
+    template<typename T, typename TO>
+ static Future<T> pushReplacementNamed(Object arguments, BuildContext context, TO result, String routeName);
 
-    template<typename T, typename TO>  static String restorablePushReplacementNamed(Object arguments, BuildContext context, TO result, String routeName);
+    template<typename T, typename TO>
+ static String restorablePushReplacementNamed(Object arguments, BuildContext context, TO result, String routeName);
 
-    template<typename T, typename TO>  static Future<T> popAndPushNamed(Object arguments, BuildContext context, TO result, String routeName);
+    template<typename T, typename TO>
+ static Future<T> popAndPushNamed(Object arguments, BuildContext context, TO result, String routeName);
 
-    template<typename T, typename TO>  static String restorablePopAndPushNamed(Object arguments, BuildContext context, TO result, String routeName);
+    template<typename T, typename TO>
+ static String restorablePopAndPushNamed(Object arguments, BuildContext context, TO result, String routeName);
 
-    template<typename T>  static Future<T> pushNamedAndRemoveUntil(Object arguments, BuildContext context, String newRouteName, RoutePredicate predicate);
+    template<typename T>
+ static Future<T> pushNamedAndRemoveUntil(Object arguments, BuildContext context, String newRouteName, RoutePredicate predicate);
 
-    template<typename T>  static String restorablePushNamedAndRemoveUntil(Object arguments, BuildContext context, String newRouteName, RoutePredicate predicate);
+    template<typename T>
+ static String restorablePushNamedAndRemoveUntil(Object arguments, BuildContext context, String newRouteName, RoutePredicate predicate);
 
-    template<typename T>  static Future<T> push(BuildContext context, Route<T> route);
+    template<typename T>
+ static Future<T> push(BuildContext context, Route<T> route);
 
-    template<typename T>  static String restorablePush(Object arguments, BuildContext context, RestorableRouteBuilder<T> routeBuilder);
+    template<typename T>
+ static String restorablePush(Object arguments, BuildContext context, RestorableRouteBuilder<T> routeBuilder);
 
-    template<typename T, typename TO>  static Future<T> pushReplacement(BuildContext context, Route<T> newRoute, TO result);
+    template<typename T, typename TO>
+ static Future<T> pushReplacement(BuildContext context, Route<T> newRoute, TO result);
 
-    template<typename T, typename TO>  static String restorablePushReplacement(Object arguments, BuildContext context, TO result, RestorableRouteBuilder<T> routeBuilder);
+    template<typename T, typename TO>
+ static String restorablePushReplacement(Object arguments, BuildContext context, TO result, RestorableRouteBuilder<T> routeBuilder);
 
-    template<typename T>  static Future<T> pushAndRemoveUntil(BuildContext context, Route<T> newRoute, RoutePredicate predicate);
+    template<typename T>
+ static Future<T> pushAndRemoveUntil(BuildContext context, Route<T> newRoute, RoutePredicate predicate);
 
-    template<typename T>  static String restorablePushAndRemoveUntil(Object arguments, BuildContext context, RestorableRouteBuilder<T> newRouteBuilder, RoutePredicate predicate);
+    template<typename T>
+ static String restorablePushAndRemoveUntil(Object arguments, BuildContext context, RestorableRouteBuilder<T> newRouteBuilder, RoutePredicate predicate);
 
-    template<typename T>  static void replace(BuildContext context, Route<T> newRoute, Route<dynamic> oldRoute);
+    template<typename T>
+ static void replace(BuildContext context, Route<T> newRoute, Route<dynamic> oldRoute);
 
-    template<typename T>  static String restorableReplace(Object arguments, BuildContext context, RestorableRouteBuilder<T> newRouteBuilder, Route<dynamic> oldRoute);
+    template<typename T>
+ static String restorableReplace(Object arguments, BuildContext context, RestorableRouteBuilder<T> newRouteBuilder, Route<dynamic> oldRoute);
 
-    template<typename T>  static void replaceRouteBelow(Route<dynamic> anchorRoute, BuildContext context, Route<T> newRoute);
+    template<typename T>
+ static void replaceRouteBelow(Route<dynamic> anchorRoute, BuildContext context, Route<T> newRoute);
 
-    template<typename T>  static String restorableReplaceRouteBelow(Route<dynamic> anchorRoute, Object arguments, BuildContext context, RestorableRouteBuilder<T> newRouteBuilder);
+    template<typename T>
+ static String restorableReplaceRouteBelow(Route<dynamic> anchorRoute, Object arguments, BuildContext context, RestorableRouteBuilder<T> newRouteBuilder);
 
     static bool canPop(BuildContext context);
 
-    template<typename T>  static Future<bool> maybePop(BuildContext context, T result);
+    template<typename T>
+ static Future<bool> maybePop(BuildContext context, T result);
 
-    template<typename T>  static void pop(BuildContext context, T result);
+    template<typename T>
+ static void pop(BuildContext context, T result);
 
     static void popUntil(BuildContext context, RoutePredicate predicate);
 
@@ -373,11 +401,13 @@ public:
 
     virtual void didAdd(bool isNewFirst, NavigatorState navigator);
 
-    template<typename T>  virtual void pop(T result);
+    template<typename T>
+ virtual void pop(T result);
 
     virtual void remove(bool isReplaced);
 
-    template<typename T>  virtual void complete(bool isReplaced, T result);
+    template<typename T>
+ virtual void complete(bool isReplaced, T result);
 
     virtual void finalize();
 
@@ -519,47 +549,67 @@ public:
 
     virtual OverlayState overlay();
 
-    template<typename T>  virtual Future<T> pushNamed(Object arguments, String routeName);
+    template<typename T>
+ virtual Future<T> pushNamed(Object arguments, String routeName);
 
-    template<typename T>  virtual String restorablePushNamed(Object arguments, String routeName);
+    template<typename T>
+ virtual String restorablePushNamed(Object arguments, String routeName);
 
-    template<typename T, typename TO>  virtual Future<T> pushReplacementNamed(Object arguments, TO result, String routeName);
+    template<typename T, typename TO>
+ virtual Future<T> pushReplacementNamed(Object arguments, TO result, String routeName);
 
-    template<typename T, typename TO>  virtual String restorablePushReplacementNamed(Object arguments, TO result, String routeName);
+    template<typename T, typename TO>
+ virtual String restorablePushReplacementNamed(Object arguments, TO result, String routeName);
 
-    template<typename T, typename TO>  virtual Future<T> popAndPushNamed(Object arguments, TO result, String routeName);
+    template<typename T, typename TO>
+ virtual Future<T> popAndPushNamed(Object arguments, TO result, String routeName);
 
-    template<typename T, typename TO>  virtual String restorablePopAndPushNamed(Object arguments, TO result, String routeName);
+    template<typename T, typename TO>
+ virtual String restorablePopAndPushNamed(Object arguments, TO result, String routeName);
 
-    template<typename T>  virtual Future<T> pushNamedAndRemoveUntil(Object arguments, String newRouteName, RoutePredicate predicate);
+    template<typename T>
+ virtual Future<T> pushNamedAndRemoveUntil(Object arguments, String newRouteName, RoutePredicate predicate);
 
-    template<typename T>  virtual String restorablePushNamedAndRemoveUntil(Object arguments, String newRouteName, RoutePredicate predicate);
+    template<typename T>
+ virtual String restorablePushNamedAndRemoveUntil(Object arguments, String newRouteName, RoutePredicate predicate);
 
-    template<typename T>  virtual Future<T> push(Route<T> route);
+    template<typename T>
+ virtual Future<T> push(Route<T> route);
 
-    template<typename T>  virtual String restorablePush(Object arguments, RestorableRouteBuilder<T> routeBuilder);
+    template<typename T>
+ virtual String restorablePush(Object arguments, RestorableRouteBuilder<T> routeBuilder);
 
-    template<typename T, typename TO>  virtual Future<T> pushReplacement(Route<T> newRoute, TO result);
+    template<typename T, typename TO>
+ virtual Future<T> pushReplacement(Route<T> newRoute, TO result);
 
-    template<typename T, typename TO>  virtual String restorablePushReplacement(Object arguments, TO result, RestorableRouteBuilder<T> routeBuilder);
+    template<typename T, typename TO>
+ virtual String restorablePushReplacement(Object arguments, TO result, RestorableRouteBuilder<T> routeBuilder);
 
-    template<typename T>  virtual Future<T> pushAndRemoveUntil(Route<T> newRoute, RoutePredicate predicate);
+    template<typename T>
+ virtual Future<T> pushAndRemoveUntil(Route<T> newRoute, RoutePredicate predicate);
 
-    template<typename T>  virtual String restorablePushAndRemoveUntil(Object arguments, RestorableRouteBuilder<T> newRouteBuilder, RoutePredicate predicate);
+    template<typename T>
+ virtual String restorablePushAndRemoveUntil(Object arguments, RestorableRouteBuilder<T> newRouteBuilder, RoutePredicate predicate);
 
-    template<typename T>  virtual void replace(Route<T> newRoute, Route<dynamic> oldRoute);
+    template<typename T>
+ virtual void replace(Route<T> newRoute, Route<dynamic> oldRoute);
 
-    template<typename T>  virtual String restorableReplace(Object arguments, RestorableRouteBuilder<T> newRouteBuilder, Route<dynamic> oldRoute);
+    template<typename T>
+ virtual String restorableReplace(Object arguments, RestorableRouteBuilder<T> newRouteBuilder, Route<dynamic> oldRoute);
 
-    template<typename T>  virtual void replaceRouteBelow(Route<dynamic> anchorRoute, Route<T> newRoute);
+    template<typename T>
+ virtual void replaceRouteBelow(Route<dynamic> anchorRoute, Route<T> newRoute);
 
-    template<typename T>  virtual String restorableReplaceRouteBelow(Route<dynamic> anchorRoute, Object arguments, RestorableRouteBuilder<T> newRouteBuilder);
+    template<typename T>
+ virtual String restorableReplaceRouteBelow(Route<dynamic> anchorRoute, Object arguments, RestorableRouteBuilder<T> newRouteBuilder);
 
     virtual bool canPop();
 
-    template<typename T>  virtual Future<bool> maybePop(T result);
+    template<typename T>
+ virtual Future<bool> maybePop(T result);
 
-    template<typename T>  virtual void pop(T result);
+    template<typename T>
+ virtual void pop(T result);
 
     virtual void popUntil(RoutePredicate predicate);
 
@@ -631,7 +681,8 @@ private:
 
     virtual _RouteEntry _getRouteAfter(int index, _RouteEntryPredicate predicate);
 
-    template<typename T>  virtual Route<T> _routeNamed(bool allowNull, Object arguments, String name);
+    template<typename T>
+ virtual Route<T> _routeNamed(bool allowNull, Object arguments, String name);
 
     virtual bool _debugCheckIsPagelessRoute(Route<dynamic> route);
 
@@ -641,7 +692,8 @@ private:
 
     virtual void _afterNavigation(Route<dynamic> route);
 
-    template<typename TO>  virtual void _pushReplacementEntry(_RouteEntry entry, TO result);
+    template<typename TO>
+ virtual void _pushReplacementEntry(_RouteEntry entry, TO result);
 
     virtual void _pushEntryAndRemoveUntil(_RouteEntry entry, RoutePredicate predicate);
 
@@ -649,7 +701,8 @@ private:
 
     virtual void _replaceEntryBelow(Route<dynamic> anchorRoute, _RouteEntry entry);
 
-    template<typename T>  virtual Route<T> _getRouteById(String id);
+    template<typename T>
+ virtual Route<T> _getRouteById(String id);
 
     virtual int _userGesturesInProgress();
 
@@ -775,7 +828,8 @@ private:
 };
 using _HistoryProperty = std::shared_ptr<_HistoryPropertyCls>;
 
-template<typename T> class RestorableRouteFutureCls : public RestorablePropertyCls<String> {
+template<typename T>
+class RestorableRouteFutureCls : public RestorablePropertyCls<String> {
 public:
     NavigatorFinderCallback navigatorFinder;
 
@@ -817,7 +871,8 @@ private:
     static NavigatorState _defaultNavigatorFinder(BuildContext context);
 
 };
-template<typename T> using RestorableRouteFuture = std::shared_ptr<RestorableRouteFutureCls<T>>;
+template<typename T>
+using RestorableRouteFuture = std::shared_ptr<RestorableRouteFutureCls<T>>;
 
 
 #endif

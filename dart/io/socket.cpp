@@ -71,11 +71,13 @@ String RawSocketEventCls::toString() {
     return makeList(ArrayItem, ArrayItem, ArrayItem, ArrayItem)[_value];
 }
 
-template<typename S> void ConnectionTaskCls<S>::cancel() {
+template<typename S>
+void ConnectionTaskCls<S>::cancel() {
     _onCancel();
 }
 
-template<typename S> void ConnectionTaskCls<S>::_(void onCancel() , Future<S> socket)
+template<typename S>
+void ConnectionTaskCls<S>::_(void onCancel() , Future<S> socket)
 
 Future<Socket> SocketCls::connect(host , sourceAddress , int port, int sourcePort, Duration timeout) {
     IOOverrides overrides = IOOverridesCls::current;

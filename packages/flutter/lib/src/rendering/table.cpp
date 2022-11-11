@@ -680,7 +680,7 @@ void RenderTableCls::paint(PaintingContext context, Offset offset) {
         Canvas canvas = context->canvas();
         for (;  < rows(); y = 1) {
             if (_rowDecorations!->length() <= y) {
-                                break;
+                break;
             }
             if (_rowDecorations![y] != nullptr) {
                 _rowDecorationPainters![y] = _rowDecorations![y]!->createBoxPainter(markNeedsPaint);

@@ -5,7 +5,8 @@
 #include <dart/core/core.hpp>
 
 
-template<typename T> class _EventSinkCls : public ObjectCls {
+template<typename T>
+class _EventSinkCls : public ObjectCls {
 public:
 
 private:
@@ -14,9 +15,11 @@ private:
     virtual void _addError(Object error, StackTrace stackTrace);
     virtual void _close();
 };
-template<typename T> using _EventSink = std::shared_ptr<_EventSinkCls<T>>;
+template<typename T>
+using _EventSink = std::shared_ptr<_EventSinkCls<T>>;
 
-template<typename T> class _EventDispatchCls : public ObjectCls {
+template<typename T>
+class _EventDispatchCls : public ObjectCls {
 public:
 
 private:
@@ -25,9 +28,11 @@ private:
     virtual void _sendError(Object error, StackTrace stackTrace);
     virtual void _sendDone();
 };
-template<typename T> using _EventDispatch = std::shared_ptr<_EventDispatchCls<T>>;
+template<typename T>
+using _EventDispatch = std::shared_ptr<_EventDispatchCls<T>>;
 
-template<typename T> class _BufferingStreamSubscriptionCls : public ObjectCls {
+template<typename T>
+class _BufferingStreamSubscriptionCls : public ObjectCls {
 public:
 
     virtual void  zoned(Zone _zone, bool cancelOnError, void onData(T data) , void onDone() , void  onError() );
@@ -44,7 +49,8 @@ public:
 
     virtual Future cancel();
 
-    template<typename E>  virtual Future<E> asFuture(E futureValue);
+    template<typename E>
+ virtual Future<E> asFuture(E futureValue);
 
     virtual bool isPaused();
 
@@ -84,7 +90,8 @@ private:
 
     virtual void _setPendingEvents(_PendingEvents<T> pendingEvents);
 
-    template<typename T>  static void Function(T ) _registerDataHandler(void handleData(T ) , Zone zone);
+    template<typename T>
+ static void Function(T ) _registerDataHandler(void handleData(T ) , Zone zone);
 
     static void  Function() _registerErrorHandler(void  handleError() , Zone zone);
 
@@ -139,9 +146,11 @@ private:
     virtual void _checkState(bool wasInputPaused);
 
 };
-template<typename T> using _BufferingStreamSubscription = std::shared_ptr<_BufferingStreamSubscriptionCls<T>>;
+template<typename T>
+using _BufferingStreamSubscription = std::shared_ptr<_BufferingStreamSubscriptionCls<T>>;
 
-template<typename T> class _StreamImplCls : public StreamCls<T> {
+template<typename T>
+class _StreamImplCls : public StreamCls<T> {
 public:
 
     virtual StreamSubscription<T> listen(bool cancelOnError, void onData(T data) , void onDone() , void  onError() );
@@ -153,7 +162,8 @@ private:
     virtual void _onListen(StreamSubscription subscription);
 
 };
-template<typename T> using _StreamImpl = std::shared_ptr<_StreamImplCls<T>>;
+template<typename T>
+using _StreamImpl = std::shared_ptr<_StreamImplCls<T>>;
 void _nullDataHandler(dynamic value);
 
 void _nullErrorHandler(Object error, StackTrace stackTrace);
@@ -161,7 +171,8 @@ void _nullErrorHandler(Object error, StackTrace stackTrace);
 void _nullDoneHandler();
 
 
-template<typename T> class _DelayedEventCls : public ObjectCls {
+template<typename T>
+class _DelayedEventCls : public ObjectCls {
 public:
     _DelayedEvent next;
 
@@ -170,9 +181,11 @@ public:
 private:
 
 };
-template<typename T> using _DelayedEvent = std::shared_ptr<_DelayedEventCls<T>>;
+template<typename T>
+using _DelayedEvent = std::shared_ptr<_DelayedEventCls<T>>;
 
-template<typename T> class _DelayedDataCls : public _DelayedEventCls<T> {
+template<typename T>
+class _DelayedDataCls : public _DelayedEventCls<T> {
 public:
     T value;
 
@@ -183,7 +196,8 @@ private:
 
      _DelayedDataCls(T value);
 };
-template<typename T> using _DelayedData = std::shared_ptr<_DelayedDataCls<T>>;
+template<typename T>
+using _DelayedData = std::shared_ptr<_DelayedDataCls<T>>;
 
 class _DelayedErrorCls : public _DelayedEventCls {
 public:
@@ -215,7 +229,8 @@ private:
 };
 using _DelayedDone = std::shared_ptr<_DelayedDoneCls>;
 
-template<typename T> class _PendingEventsCls : public ObjectCls {
+template<typename T>
+class _PendingEventsCls : public ObjectCls {
 public:
     static int stateUnscheduled;
 
@@ -249,9 +264,11 @@ private:
     virtual bool _eventScheduled();
 
 };
-template<typename T> using _PendingEvents = std::shared_ptr<_PendingEventsCls<T>>;
+template<typename T>
+using _PendingEvents = std::shared_ptr<_PendingEventsCls<T>>;
 
-template<typename T> class _DoneStreamSubscriptionCls : public ObjectCls {
+template<typename T>
+class _DoneStreamSubscriptionCls : public ObjectCls {
 public:
 
     virtual bool isPaused();
@@ -268,7 +285,8 @@ public:
 
     virtual Future cancel();
 
-    template<typename E>  virtual Future<E> asFuture(E futureValue);
+    template<typename E>
+ virtual Future<E> asFuture(E futureValue);
 
 private:
     static int _DONE_SENT;
@@ -295,9 +313,11 @@ private:
     virtual void _sendDone();
 
 };
-template<typename T> using _DoneStreamSubscription = std::shared_ptr<_DoneStreamSubscriptionCls<T>>;
+template<typename T>
+using _DoneStreamSubscription = std::shared_ptr<_DoneStreamSubscriptionCls<T>>;
 
-template<typename T> class _AsBroadcastStreamCls : public StreamCls<T> {
+template<typename T>
+class _AsBroadcastStreamCls : public StreamCls<T> {
 public:
 
     virtual bool isBroadcast();
@@ -333,9 +353,11 @@ private:
     virtual bool _isSubscriptionPaused();
 
 };
-template<typename T> using _AsBroadcastStream = std::shared_ptr<_AsBroadcastStreamCls<T>>;
+template<typename T>
+using _AsBroadcastStream = std::shared_ptr<_AsBroadcastStreamCls<T>>;
 
-template<typename T> class _BroadcastSubscriptionWrapperCls : public ObjectCls {
+template<typename T>
+class _BroadcastSubscriptionWrapperCls : public ObjectCls {
 public:
 
     virtual void onData(void handleData(T data) );
@@ -352,7 +374,8 @@ public:
 
     virtual bool isPaused();
 
-    template<typename E>  virtual Future<E> asFuture(E futureValue);
+    template<typename E>
+ virtual Future<E> asFuture(E futureValue);
 
 private:
     _AsBroadcastStream _stream;
@@ -360,9 +383,11 @@ private:
 
      _BroadcastSubscriptionWrapperCls(_AsBroadcastStream _stream);
 };
-template<typename T> using _BroadcastSubscriptionWrapper = std::shared_ptr<_BroadcastSubscriptionWrapperCls<T>>;
+template<typename T>
+using _BroadcastSubscriptionWrapper = std::shared_ptr<_BroadcastSubscriptionWrapperCls<T>>;
 
-template<typename T> class _StreamIteratorCls : public ObjectCls {
+template<typename T>
+class _StreamIteratorCls : public ObjectCls {
 public:
 
     virtual T current();
@@ -390,9 +415,11 @@ private:
     virtual void _onDone();
 
 };
-template<typename T> using _StreamIterator = std::shared_ptr<_StreamIteratorCls<T>>;
+template<typename T>
+using _StreamIterator = std::shared_ptr<_StreamIteratorCls<T>>;
 
-template<typename T> class _EmptyStreamCls : public StreamCls<T> {
+template<typename T>
+class _EmptyStreamCls : public StreamCls<T> {
 public:
 
     virtual bool isBroadcast();
@@ -404,9 +431,11 @@ private:
      _EmptyStreamCls();
 
 };
-template<typename T> using _EmptyStream = std::shared_ptr<_EmptyStreamCls<T>>;
+template<typename T>
+using _EmptyStream = std::shared_ptr<_EmptyStreamCls<T>>;
 
-template<typename T> class _MultiStreamCls : public StreamCls<T> {
+template<typename T>
+class _MultiStreamCls : public StreamCls<T> {
 public:
     bool isBroadcast;
 
@@ -419,9 +448,11 @@ private:
 
      _MultiStreamCls(void Function(MultiStreamController<T> ) _onListen, bool isBroadcast);
 };
-template<typename T> using _MultiStream = std::shared_ptr<_MultiStreamCls<T>>;
+template<typename T>
+using _MultiStream = std::shared_ptr<_MultiStreamCls<T>>;
 
-template<typename T> class _MultiStreamControllerCls : public _AsyncStreamControllerCls<T> {
+template<typename T>
+class _MultiStreamControllerCls : public _AsyncStreamControllerCls<T> {
 public:
 
     virtual void addSync(T data);
@@ -437,7 +468,8 @@ private:
      _MultiStreamControllerCls();
 
 };
-template<typename T> using _MultiStreamController = std::shared_ptr<_MultiStreamControllerCls<T>>;
+template<typename T>
+using _MultiStreamController = std::shared_ptr<_MultiStreamControllerCls<T>>;
 
 
 #endif

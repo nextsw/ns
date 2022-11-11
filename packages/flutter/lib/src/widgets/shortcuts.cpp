@@ -1,5 +1,6 @@
 #include "shortcuts.hpp"
-template<typename T> KeySetCls<T>::KeySetCls(T key1, T key2, T key3, T key4) {
+template<typename T>
+KeySetCls<T>::KeySetCls(T key1, T key2, T key3, T key4) {
     {
         assert(key1 != nullptr);
             auto _c1 = <T>make<HashSetCls>();    _c1.add(key1);_keys = _c1;
@@ -31,20 +32,25 @@ template<typename T> KeySetCls<T>::KeySetCls(T key1, T key2, T key3, T key4) {
     }
 }
 
-template<typename T> void KeySetCls<T>::fromSet(Set<T> keys)
+template<typename T>
+void KeySetCls<T>::fromSet(Set<T> keys)
 
-template<typename T> Set<T> KeySetCls<T>::keys() {
+template<typename T>
+Set<T> KeySetCls<T>::keys() {
     return _keys->toSet();
 }
 
-template<typename T> bool KeySetCls<T>::==(Object other) {
+template<typename T>
+bool KeySetCls<T>::==(Object other) {
     if (other->runtimeType() != runtimeType) {
         return false;
     }
     return is<KeySet<T>>(other) && <T>setEquals(other->_keys, _keys);
 }
 
-template<typename T> int KeySetCls<T>::_computeHashCodetemplate<typename T> (Set<T> keys) {
+template<typename T>
+template<typename T>
+int KeySetCls<T>::_computeHashCode(Set<T> keys) {
     int length = keys->length;
     Iterator<T> iterator = keys->iterator();
     iterator->moveNext();

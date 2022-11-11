@@ -22,7 +22,8 @@ private:
 };
 using Listenable = std::shared_ptr<ListenableCls>;
 
-template<typename T> class ValueListenableCls : public ListenableCls {
+template<typename T>
+class ValueListenableCls : public ListenableCls {
 public:
 
      ValueListenableCls();
@@ -30,7 +31,8 @@ public:
 private:
 
 };
-template<typename T> using ValueListenable = std::shared_ptr<ValueListenableCls<T>>;
+template<typename T>
+using ValueListenable = std::shared_ptr<ValueListenableCls<T>>;
 
 class ChangeNotifierCls : public ObjectCls {
 public:
@@ -83,7 +85,8 @@ private:
 };
 using _MergingListenable = std::shared_ptr<_MergingListenableCls>;
 
-template<typename T> class ValueNotifierCls : public ChangeNotifierCls {
+template<typename T>
+class ValueNotifierCls : public ChangeNotifierCls {
 public:
 
      ValueNotifierCls(T _value);
@@ -98,7 +101,8 @@ private:
 
 
 };
-template<typename T> using ValueNotifier = std::shared_ptr<ValueNotifierCls<T>>;
+template<typename T>
+using ValueNotifier = std::shared_ptr<ValueNotifierCls<T>>;
 
 
 #endif

@@ -100,7 +100,7 @@ void ImageStreamCls::removeListener(ImageStreamListener listener) {
     for (;  < _listeners!->length(); i = 1) {
         if (_listeners![i] == listener) {
             _listeners!->removeAt(i);
-                        break;
+            break;
         }
     }
 }
@@ -165,7 +165,7 @@ void ImageStreamCompleterCls::removeListener(ImageStreamListener listener) {
     for (;  < _listeners->length(); i = 1) {
         if (_listeners[i] == listener) {
             _listeners->removeAt(i);
-                        break;
+            break;
         }
     }
     if (_listeners->isEmpty) {

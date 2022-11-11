@@ -9,9 +9,11 @@ class EnumCls : public ObjectCls {
 public:
 
     virtual int index();
-    template<typename T>  static int compareByIndex(T value1, T value2);
+    template<typename T>
+ static int compareByIndex(T value1, T value2);
 
-    template<typename T>  static int compareByName(T value1, T value2);
+    template<typename T>
+ static int compareByName(T value1, T value2);
 
 private:
 
@@ -42,7 +44,8 @@ private:
 };
 using EnumName = std::shared_ptr<EnumNameCls>;
 
-template<typename T> class EnumByNameCls : public ObjectCls {
+template<typename T>
+class EnumByNameCls : public ObjectCls {
 public:
 
     virtual T byName(String name);
@@ -52,7 +55,8 @@ public:
 private:
 
 };
-template<typename T> using EnumByName = std::shared_ptr<EnumByNameCls<T>>;
+template<typename T>
+using EnumByName = std::shared_ptr<EnumByNameCls<T>>;
 
 
 #endif

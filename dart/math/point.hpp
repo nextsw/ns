@@ -5,7 +5,8 @@
 #include <dart/core/core.hpp>
 
 
-template<typename T> class PointCls : public ObjectCls {
+template<typename T>
+class PointCls : public ObjectCls {
 public:
     T x;
 
@@ -35,7 +36,8 @@ public:
 private:
 
 };
-template<typename T> using Point = std::shared_ptr<PointCls<T>>;
+template<typename T>
+using Point = std::shared_ptr<PointCls<T>>;
 
 
 #endif

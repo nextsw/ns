@@ -715,7 +715,7 @@ void _RenderScrollSemanticsCls::clearSemantics() {
     _innerNode = nullptr;
 }
 
-_RenderScrollSemanticsCls::_RenderScrollSemanticsCls(bool allowImplicitScrolling, RenderBox child, ScrollPosition position, int semanticChildCount) : RenderProxyBox(child) {
+_RenderScrollSemanticsCls::_RenderScrollSemanticsCls(bool allowImplicitScrolling, RenderBox child, ScrollPosition position, int semanticChildCount) {
     {
         _position = position;
         _allowImplicitScrolling = allowImplicitScrolling;

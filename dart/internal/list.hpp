@@ -5,7 +5,8 @@
 #include <dart/core/core.hpp>
 
 
-template<typename E> class FixedLengthListMixinCls : public ObjectCls {
+template<typename E>
+class FixedLengthListMixinCls : public ObjectCls {
 public:
 
     virtual void  length(int newLength);
@@ -37,9 +38,11 @@ public:
 private:
 
 };
-template<typename E> using FixedLengthListMixin = std::shared_ptr<FixedLengthListMixinCls<E>>;
+template<typename E>
+using FixedLengthListMixin = std::shared_ptr<FixedLengthListMixinCls<E>>;
 
-template<typename E> class UnmodifiableListMixinCls : public ObjectCls {
+template<typename E>
+class UnmodifiableListMixinCls : public ObjectCls {
 public:
 
     virtual void operator[]=(int index, E value);
@@ -87,23 +90,28 @@ public:
 private:
 
 };
-template<typename E> using UnmodifiableListMixin = std::shared_ptr<UnmodifiableListMixinCls<E>>;
+template<typename E>
+using UnmodifiableListMixin = std::shared_ptr<UnmodifiableListMixinCls<E>>;
 
-template<typename E> class FixedLengthListBaseCls : public ObjectCls {
+template<typename E>
+class FixedLengthListBaseCls : public ObjectCls {
 public:
 
 private:
 
 };
-template<typename E> using FixedLengthListBase = std::shared_ptr<FixedLengthListBaseCls<E>>;
+template<typename E>
+using FixedLengthListBase = std::shared_ptr<FixedLengthListBaseCls<E>>;
 
-template<typename E> class UnmodifiableListBaseCls : public ObjectCls {
+template<typename E>
+class UnmodifiableListBaseCls : public ObjectCls {
 public:
 
 private:
 
 };
-template<typename E> using UnmodifiableListBase = std::shared_ptr<UnmodifiableListBaseCls<E>>;
+template<typename E>
+using UnmodifiableListBase = std::shared_ptr<UnmodifiableListBaseCls<E>>;
 
 class _ListIndicesIterableCls : public ListIterableCls<int> {
 public:
@@ -120,7 +128,8 @@ private:
 };
 using _ListIndicesIterable = std::shared_ptr<_ListIndicesIterableCls>;
 
-template<typename E> class ListMapViewCls : public UnmodifiableMapBaseCls<int, E> {
+template<typename E>
+class ListMapViewCls : public UnmodifiableMapBaseCls<int, E> {
 public:
 
      ListMapViewCls(List<E> _values);
@@ -147,9 +156,11 @@ private:
 
 
 };
-template<typename E> using ListMapView = std::shared_ptr<ListMapViewCls<E>>;
+template<typename E>
+using ListMapView = std::shared_ptr<ListMapViewCls<E>>;
 
-template<typename E> class ReversedListIterableCls : public ListIterableCls<E> {
+template<typename E>
+class ReversedListIterableCls : public ListIterableCls<E> {
 public:
 
      ReversedListIterableCls(Iterable<E> _source);
@@ -162,7 +173,8 @@ private:
 
 
 };
-template<typename E> using ReversedListIterable = std::shared_ptr<ReversedListIterableCls<E>>;
+template<typename E>
+using ReversedListIterable = std::shared_ptr<ReversedListIterableCls<E>>;
 
 class UnmodifiableListErrorCls : public ObjectCls {
 public:
@@ -193,8 +205,10 @@ private:
 
 };
 using NonGrowableListError = std::shared_ptr<NonGrowableListErrorCls>;
-template<typename T>  List<T> makeListFixedLength(List<T> growableList);
-template<typename T>  List<T> makeFixedListUnmodifiable(List<T> fixedLengthList);
+template<typename T>
+ List<T> makeListFixedLength(List<T> growableList);
+template<typename T>
+ List<T> makeFixedListUnmodifiable(List<T> fixedLengthList);
 
 
 #endif

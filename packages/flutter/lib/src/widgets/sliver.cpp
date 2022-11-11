@@ -584,7 +584,7 @@ double SliverMultiBoxAdaptorElementCls::_extrapolateMaxScrollOffset(int childCou
     return trailingScrollOffset + averageExtent * remainingCount;
 }
 
-SliverOpacityCls::SliverOpacityCls(bool alwaysIncludeSemantics, Unknown key, double opacity, Widget sliver) : SingleChildRenderObjectWidget(sliver) {
+SliverOpacityCls::SliverOpacityCls(bool alwaysIncludeSemantics, Unknown key, double opacity, Widget sliver) {
     {
         assert(opacity != nullptr && opacity >= 0.0 && opacity <= 1.0);
         assert(alwaysIncludeSemantics != nullptr);
@@ -605,7 +605,7 @@ void SliverOpacityCls::debugFillProperties(DiagnosticPropertiesBuilder propertie
     properties->add(make<FlagPropertyCls>(__s("alwaysIncludeSemantics")alwaysIncludeSemantics, __s("alwaysIncludeSemantics")));
 }
 
-SliverIgnorePointerCls::SliverIgnorePointerCls(bool ignoring, bool ignoringSemantics, Unknown key, Widget sliver) : SingleChildRenderObjectWidget(sliver) {
+SliverIgnorePointerCls::SliverIgnorePointerCls(bool ignoring, bool ignoringSemantics, Unknown key, Widget sliver) {
     {
         assert(ignoring != nullptr);
     }
@@ -625,7 +625,7 @@ void SliverIgnorePointerCls::debugFillProperties(DiagnosticPropertiesBuilder pro
     properties->add(<bool>make<DiagnosticsPropertyCls>(__s("ignoringSemantics"), ignoringSemanticsnullptr));
 }
 
-SliverOffstageCls::SliverOffstageCls(Unknown key, bool offstage, Widget sliver) : SingleChildRenderObjectWidget(sliver) {
+SliverOffstageCls::SliverOffstageCls(Unknown key, bool offstage, Widget sliver) {
     {
         assert(offstage != nullptr);
     }

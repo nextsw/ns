@@ -52,7 +52,8 @@ PointerDeviceKind GestureRecognizerCls::getKindForPointer(int pointer) {
 void GestureRecognizerCls::dispose() {
 }
 
-T GestureRecognizerCls::invokeCallbacktemplate<typename T> (RecognizerCallback<T> callback, String debugReport() , String name) {
+template<typename T>
+T GestureRecognizerCls::invokeCallback(RecognizerCallback<T> callback, String debugReport() , String name) {
     assert(callback != nullptr);
     T result;
     try {

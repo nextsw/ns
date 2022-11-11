@@ -1,23 +1,28 @@
 #include "layer.hpp"
-template<typename T> AnnotationEntryCls<T>::AnnotationEntryCls(T annotation, Offset localPosition) {
+template<typename T>
+AnnotationEntryCls<T>::AnnotationEntryCls(T annotation, Offset localPosition) {
     {
         assert(localPosition != nullptr);
     }
 }
 
-template<typename T> String AnnotationEntryCls<T>::toString() {
+template<typename T>
+String AnnotationEntryCls<T>::toString() {
     return __s("${objectRuntimeType(this, 'AnnotationEntry')}(annotation: $annotation, localPosition: $localPosition)");
 }
 
-template<typename T> void AnnotationResultCls<T>::add(AnnotationEntry<T> entry) {
+template<typename T>
+void AnnotationResultCls<T>::add(AnnotationEntry<T> entry) {
     return _entries->add(entry);
 }
 
-template<typename T> Iterable<AnnotationEntry<T>> AnnotationResultCls<T>::entries() {
+template<typename T>
+Iterable<AnnotationEntry<T>> AnnotationResultCls<T>::entries() {
     return _entries;
 }
 
-template<typename T> Iterable<T> AnnotationResultCls<T>::annotations() {
+template<typename T>
+Iterable<T> AnnotationResultCls<T>::annotations() {
     return _entries->map([=] (AnnotationEntry<T> entry)     {
         entry->annotation;
     });
@@ -173,17 +178,20 @@ void LayerCls::remove() {
     parent()?->_removeChild(this);
 }
 
-bool LayerCls::findAnnotationstemplate<typename S> (Offset localPosition, bool onlyFirst, AnnotationResult<S> result) {
+template<typename S>
+bool LayerCls::findAnnotations(Offset localPosition, bool onlyFirst, AnnotationResult<S> result) {
     return false;
 }
 
-S LayerCls::findtemplate<typename S> (Offset localPosition) {
+template<typename S>
+S LayerCls::find(Offset localPosition) {
     AnnotationResult<S> result = <S>make<AnnotationResultCls>();
     <S>findAnnotations(result, localPositiontrue);
     return result->entries()->isEmpty()? nullptr : result->entries()->first()->annotation;
 }
 
-AnnotationResult<S> LayerCls::findAllAnnotationstemplate<typename S> (Offset localPosition) {
+template<typename S>
+AnnotationResult<S> LayerCls::findAllAnnotations(Offset localPosition) {
     AnnotationResult<S> result = <S>make<AnnotationResultCls>();
     <S>findAnnotations(result, localPositionfalse);
     return result;
@@ -237,7 +245,8 @@ void LayerCls::_addToSceneWithRetainedRendering(SceneBuilder builder) {
     _needsAddToScene = false;
 }
 
-template<typename T> LayerHandleCls<T>::LayerHandleCls(T _layer) {
+template<typename T>
+LayerHandleCls<T>::LayerHandleCls(T _layer) {
     {
         if (_layer != nullptr) {
             _layer!->_refCount = 1;
@@ -245,11 +254,13 @@ template<typename T> LayerHandleCls<T>::LayerHandleCls(T _layer) {
     }
 }
 
-template<typename T> T LayerHandleCls<T>::layer() {
+template<typename T>
+T LayerHandleCls<T>::layer() {
     return _layer;
 }
 
-template<typename T> void LayerHandleCls<T>::layer(T layer) {
+template<typename T>
+void LayerHandleCls<T>::layer(T layer) {
     assert(layer?->debugDisposed != true, __s("Attempted to create a handle to an already disposed layer: $layer."));
     if (identical(layer, _layer)) {
         return;
@@ -261,7 +272,8 @@ template<typename T> void LayerHandleCls<T>::layer(T layer) {
     }
 }
 
-template<typename T> String LayerHandleCls<T>::toString() {
+template<typename T>
+String LayerHandleCls<T>::toString() {
     return __s("LayerHandle(${_layer != null ? _layer.toString() : 'DISPOSED'})");
 }
 
@@ -315,7 +327,8 @@ void PictureLayerCls::debugFillProperties(DiagnosticPropertiesBuilder properties
     properties->add(<String>make<DiagnosticsPropertyCls>(__s("raster cache hints"), __s("isComplex = $isComplexHint, willChange = $willChangeHint")));
 }
 
-bool PictureLayerCls::findAnnotationstemplate<typename S> (Offset localPosition, bool onlyFirst, AnnotationResult<S> result) {
+template<typename S>
+bool PictureLayerCls::findAnnotations(Offset localPosition, bool onlyFirst, AnnotationResult<S> result) {
     return false;
 }
 
@@ -330,7 +343,8 @@ void TextureLayerCls::addToScene(SceneBuilder builder) {
     builder->addTexture(textureIdrect->topLeft(), rect->width(), rect->height(), freeze, filterQuality);
 }
 
-bool TextureLayerCls::findAnnotationstemplate<typename S> (Offset localPosition, bool onlyFirst, AnnotationResult<S> result) {
+template<typename S>
+bool TextureLayerCls::findAnnotations(Offset localPosition, bool onlyFirst, AnnotationResult<S> result) {
     return false;
 }
 
@@ -370,7 +384,8 @@ void PerformanceOverlayLayerCls::addToScene(SceneBuilder builder) {
     builder->setCheckerboardOffscreenLayers(checkerboardOffscreenLayers);
 }
 
-bool PerformanceOverlayLayerCls::findAnnotationstemplate<typename S> (Offset localPosition, bool onlyFirst, AnnotationResult<S> result) {
+template<typename S>
+bool PerformanceOverlayLayerCls::findAnnotations(Offset localPosition, bool onlyFirst, AnnotationResult<S> result) {
     return false;
 }
 
@@ -413,7 +428,8 @@ void ContainerLayerCls::updateSubtreeNeedsAddToScene() {
     }
 }
 
-bool ContainerLayerCls::findAnnotationstemplate<typename S> (Offset localPosition, bool onlyFirst, AnnotationResult<S> result) {
+template<typename S>
+bool ContainerLayerCls::findAnnotations(Offset localPosition, bool onlyFirst, AnnotationResult<S> result) {
     for (; child != nullptr; child = child->previousSibling) {
         bool isAbsorbed = child-><S>findAnnotations(result, localPositiononlyFirst);
         if (isAbsorbed) {
@@ -536,7 +552,7 @@ List<DiagnosticsNode> ContainerLayerCls::debugDescribeChildren() {
     while (true) {
         children->add(child!->toDiagnosticsNode(__s("child $count")));
         if (child == lastChild()) {
-                        break;
+            break;
         }
         count = 1;
         child = child->nextSibling();
@@ -623,7 +639,8 @@ void OffsetLayerCls::offset(Offset value) {
     _offset = value;
 }
 
-bool OffsetLayerCls::findAnnotationstemplate<typename S> (Offset localPosition, bool onlyFirst, AnnotationResult<S> result) {
+template<typename S>
+bool OffsetLayerCls::findAnnotations(Offset localPosition, bool onlyFirst, AnnotationResult<S> result) {
     return super-><S>findAnnotations(result, localPosition - offset()onlyFirst);
 }
 
@@ -696,7 +713,8 @@ void ClipRectLayerCls::clipBehavior(Clip value) {
     }
 }
 
-bool ClipRectLayerCls::findAnnotationstemplate<typename S> (Offset localPosition, bool onlyFirst, AnnotationResult<S> result) {
+template<typename S>
+bool ClipRectLayerCls::findAnnotations(Offset localPosition, bool onlyFirst, AnnotationResult<S> result) {
     if (!clipRect()!->contains(localPosition)) {
         return false;
     }
@@ -765,7 +783,8 @@ void ClipRRectLayerCls::clipBehavior(Clip value) {
     }
 }
 
-bool ClipRRectLayerCls::findAnnotationstemplate<typename S> (Offset localPosition, bool onlyFirst, AnnotationResult<S> result) {
+template<typename S>
+bool ClipRRectLayerCls::findAnnotations(Offset localPosition, bool onlyFirst, AnnotationResult<S> result) {
     if (!clipRRect()!->contains(localPosition)) {
         return false;
     }
@@ -834,7 +853,8 @@ void ClipPathLayerCls::clipBehavior(Clip value) {
     }
 }
 
-bool ClipPathLayerCls::findAnnotationstemplate<typename S> (Offset localPosition, bool onlyFirst, AnnotationResult<S> result) {
+template<typename S>
+bool ClipPathLayerCls::findAnnotations(Offset localPosition, bool onlyFirst, AnnotationResult<S> result) {
     if (!clipPath()!->contains(localPosition)) {
         return false;
     }
@@ -959,7 +979,8 @@ void TransformLayerCls::addToScene(SceneBuilder builder) {
     builder->pop();
 }
 
-bool TransformLayerCls::findAnnotationstemplate<typename S> (Offset localPosition, bool onlyFirst, AnnotationResult<S> result) {
+template<typename S>
+bool TransformLayerCls::findAnnotations(Offset localPosition, bool onlyFirst, AnnotationResult<S> result) {
     Offset transformedOffset = _transformOffset(localPosition);
     if (transformedOffset == nullptr) {
         return false;
@@ -1208,7 +1229,8 @@ void PhysicalModelLayerCls::shadowColor(Color value) {
     }
 }
 
-bool PhysicalModelLayerCls::findAnnotationstemplate<typename S> (Offset localPosition, bool onlyFirst, AnnotationResult<S> result) {
+template<typename S>
+bool PhysicalModelLayerCls::findAnnotations(Offset localPosition, bool onlyFirst, AnnotationResult<S> result) {
     if (!clipPath()!->contains(localPosition)) {
         return false;
     }
@@ -1336,7 +1358,8 @@ void LeaderLayerCls::detach() {
     super->detach();
 }
 
-bool LeaderLayerCls::findAnnotationstemplate<typename S> (Offset localPosition, bool onlyFirst, AnnotationResult<S> result) {
+template<typename S>
+bool LeaderLayerCls::findAnnotations(Offset localPosition, bool onlyFirst, AnnotationResult<S> result) {
     return super-><S>findAnnotations(result, localPosition - offset()onlyFirst);
 }
 
@@ -1379,7 +1402,8 @@ void FollowerLayerCls::link(LayerLink value) {
     _link = value;
 }
 
-bool FollowerLayerCls::findAnnotationstemplate<typename S> (Offset localPosition, bool onlyFirst, AnnotationResult<S> result) {
+template<typename S>
+bool FollowerLayerCls::findAnnotations(Offset localPosition, bool onlyFirst, AnnotationResult<S> result) {
     if (_link->leader() == nullptr) {
         if (showWhenUnlinked!) {
             return super->findAnnotations(result, localPosition - unlinkedOffset!onlyFirst);
@@ -1534,7 +1558,8 @@ void FollowerLayerCls::_establishTransform() {
     _inverseDirty = true;
 }
 
-template<typename T> AnnotatedRegionLayerCls<T>::AnnotatedRegionLayerCls(Offset offset, bool opaque, Size size, T value) {
+template<typename T>
+AnnotatedRegionLayerCls<T>::AnnotatedRegionLayerCls(Offset offset, bool opaque, Size size, T value) {
     {
         assert(value != nullptr);
         assert(opaque != nullptr);
@@ -1542,7 +1567,9 @@ template<typename T> AnnotatedRegionLayerCls<T>::AnnotatedRegionLayerCls(Offset 
     }
 }
 
-template<typename T> bool AnnotatedRegionLayerCls<T>::findAnnotationstemplate<typename S> (Offset localPosition, bool onlyFirst, AnnotationResult<S> result) {
+template<typename T>
+template<typename S>
+bool AnnotatedRegionLayerCls<T>::findAnnotations(Offset localPosition, bool onlyFirst, AnnotationResult<S> result) {
     bool isAbsorbed = super->findAnnotations(result, localPositiononlyFirst);
     if (result->entries()->isNotEmpty() && onlyFirst) {
         return isAbsorbed;
@@ -1559,7 +1586,8 @@ template<typename T> bool AnnotatedRegionLayerCls<T>::findAnnotationstemplate<ty
     return isAbsorbed;
 }
 
-template<typename T> void AnnotatedRegionLayerCls<T>::debugFillProperties(DiagnosticPropertiesBuilder properties) {
+template<typename T>
+void AnnotatedRegionLayerCls<T>::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
     properties->add(<T>make<DiagnosticsPropertyCls>(__s("value"), value));
     properties->add(<Size>make<DiagnosticsPropertyCls>(__s("size"), sizenullptr));

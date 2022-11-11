@@ -92,10 +92,12 @@ ClosableStringSink StringConversionSinkMixinCls::asStringSink() {
     return make<_StringConversionSinkAsStringSinkAdapterCls>(this);
 }
 
-template<typename TStringSink> void _StringSinkConversionSinkCls<TStringSink>::close() {
+template<typename TStringSink>
+void _StringSinkConversionSinkCls<TStringSink>::close() {
 }
 
-template<typename TStringSink> void _StringSinkConversionSinkCls<TStringSink>::addSlice(int end, bool isLast, int start, String str) {
+template<typename TStringSink>
+void _StringSinkConversionSinkCls<TStringSink>::addSlice(int end, bool isLast, int start, String str) {
     if (start != 0 || end != str->length()) {
         for (;  < end; i++) {
             _stringSink->writeCharCode(str->codeUnitAt(i));
@@ -108,15 +110,18 @@ template<typename TStringSink> void _StringSinkConversionSinkCls<TStringSink>::a
     }
 }
 
-template<typename TStringSink> void _StringSinkConversionSinkCls<TStringSink>::add(String str) {
+template<typename TStringSink>
+void _StringSinkConversionSinkCls<TStringSink>::add(String str) {
     _stringSink->write(str);
 }
 
-template<typename TStringSink> ByteConversionSink _StringSinkConversionSinkCls<TStringSink>::asUtf8Sink(bool allowMalformed) {
+template<typename TStringSink>
+ByteConversionSink _StringSinkConversionSinkCls<TStringSink>::asUtf8Sink(bool allowMalformed) {
     return make<_Utf8StringSinkAdapterCls>(this, _stringSink, allowMalformed);
 }
 
-template<typename TStringSink> ClosableStringSink _StringSinkConversionSinkCls<TStringSink>::asStringSink() {
+template<typename TStringSink>
+ClosableStringSink _StringSinkConversionSinkCls<TStringSink>::asStringSink() {
     return ClosableStringSinkCls->fromStringSink(_stringSink, close);
 }
 
@@ -130,7 +135,7 @@ ByteConversionSink _StringCallbackSinkCls::asUtf8Sink(bool allowMalformed) {
     return make<_Utf8StringSinkAdapterCls>(this, _stringSink, allowMalformed);
 }
 
-_StringCallbackSinkCls::_StringCallbackSinkCls(void Function(String ) _callback) : _StringSinkConversionSink<StringBuffer>(make<StringBufferCls>()) {
+_StringCallbackSinkCls::_StringCallbackSinkCls(void Function(String ) _callback) {
 }
 
 void _StringAdapterSinkCls::add(String str) {

@@ -850,7 +850,7 @@ void SemanticsNodeCls::_replaceChildren(List<SemanticsNode> newChildren) {
         for (;  < _children!->length(); i++) {
             if (_children![i]->id() != newChildren[i]->id()) {
                 sawChange = true;
-                                break;
+                break;
             }
         }
     }

@@ -120,5 +120,5 @@ double _RenderSliverPrototypeExtentListCls::itemExtent() {
     return constraints->axis == AxisCls::vertical? child()!->size()->height() : child()!->size()->width();
 }
 
-_RenderSliverPrototypeExtentListCls::_RenderSliverPrototypeExtentListCls(_SliverPrototypeExtentListElement childManager) : RenderSliverFixedExtentBoxAdaptor(childManager) {
+_RenderSliverPrototypeExtentListCls::_RenderSliverPrototypeExtentListCls(_SliverPrototypeExtentListElement childManager) {
 }

@@ -1,25 +1,31 @@
 #include "rectangle.hpp"
-template<typename T> T _RectangleBaseCls<T>::right() {
+template<typename T>
+T _RectangleBaseCls<T>::right() {
     return as<T>((left() + width()));
 }
 
-template<typename T> T _RectangleBaseCls<T>::bottom() {
+template<typename T>
+T _RectangleBaseCls<T>::bottom() {
     return as<T>((top() + height()));
 }
 
-template<typename T> String _RectangleBaseCls<T>::toString() {
+template<typename T>
+String _RectangleBaseCls<T>::toString() {
     return __s("Rectangle ($left, $top) $width x $height");
 }
 
-template<typename T> bool _RectangleBaseCls<T>::==(Object other) {
+template<typename T>
+bool _RectangleBaseCls<T>::==(Object other) {
     return is<Rectangle>(other) && left() == other->left && top() == other->top && right() == other->right && bottom() == other->bottom;
 }
 
-template<typename T> int _RectangleBaseCls<T>::hashCode() {
+template<typename T>
+int _RectangleBaseCls<T>::hashCode() {
     return SystemHashCls->hash4(left()->hashCode(), top()->hashCode(), right()->hashCode(), bottom()->hashCode());
 }
 
-template<typename T> Rectangle<T> _RectangleBaseCls<T>::intersection(Rectangle<T> other) {
+template<typename T>
+Rectangle<T> _RectangleBaseCls<T>::intersection(Rectangle<T> other) {
     auto x0 = max(left(), other->left);
     auto x1 = min(left() + width(), other->left + other->width);
     if (x0 <= x1) {
@@ -32,11 +38,13 @@ template<typename T> Rectangle<T> _RectangleBaseCls<T>::intersection(Rectangle<T
     return nullptr;
 }
 
-template<typename T> bool _RectangleBaseCls<T>::intersects(Rectangle<num> other) {
+template<typename T>
+bool _RectangleBaseCls<T>::intersects(Rectangle<num> other) {
     return (left() <= other->left + other->width && other->left <= left() + width() && top() <= other->top + other->height && other->top <= top() + height());
 }
 
-template<typename T> Rectangle<T> _RectangleBaseCls<T>::boundingBox(Rectangle<T> other) {
+template<typename T>
+Rectangle<T> _RectangleBaseCls<T>::boundingBox(Rectangle<T> other) {
     auto right = max(this->left() + this->width(), other->left + other->width);
     auto bottom = max(this->top() + this->height(), other->top + other->height);
     auto left = min(this->left(), other->left);
@@ -44,38 +52,46 @@ template<typename T> Rectangle<T> _RectangleBaseCls<T>::boundingBox(Rectangle<T>
     return <T>make<RectangleCls>(left, top, as<T>((right - left)), as<T>((bottom - top)));
 }
 
-template<typename T> bool _RectangleBaseCls<T>::containsRectangle(Rectangle<num> another) {
+template<typename T>
+bool _RectangleBaseCls<T>::containsRectangle(Rectangle<num> another) {
     return left() <= another->left && left() + width() >= another->left + another->width && top() <= another->top && top() + height() >= another->top + another->height;
 }
 
-template<typename T> bool _RectangleBaseCls<T>::containsPoint(Point<num> another) {
+template<typename T>
+bool _RectangleBaseCls<T>::containsPoint(Point<num> another) {
     return another->x >= left() && another->x <= left() + width() && another->y >= top() && another->y <= top() + height();
 }
 
-template<typename T> Point<T> _RectangleBaseCls<T>::topLeft() {
+template<typename T>
+Point<T> _RectangleBaseCls<T>::topLeft() {
     return <T>make<PointCls>(this->left(), this->top());
 }
 
-template<typename T> Point<T> _RectangleBaseCls<T>::topRight() {
+template<typename T>
+Point<T> _RectangleBaseCls<T>::topRight() {
     return <T>make<PointCls>(as<T>((this->left() + this->width())), this->top());
 }
 
-template<typename T> Point<T> _RectangleBaseCls<T>::bottomRight() {
+template<typename T>
+Point<T> _RectangleBaseCls<T>::bottomRight() {
     return <T>make<PointCls>(as<T>((this->left() + this->width())), as<T>((this->top() + this->height())));
 }
 
-template<typename T> Point<T> _RectangleBaseCls<T>::bottomLeft() {
+template<typename T>
+Point<T> _RectangleBaseCls<T>::bottomLeft() {
     return <T>make<PointCls>(this->left(), as<T>((this->top() + this->height())));
 }
 
-template<typename T> RectangleCls<T>::RectangleCls(T height, T left, T top, T width) {
+template<typename T>
+RectangleCls<T>::RectangleCls(T height, T left, T top, T width) {
     {
         width = ( < 0)? as<dynamic>((width == double->negativeInfinity? 0.0 : (-width * 0))) : (as<dynamic>(width + 0));
         height = ( < 0)? as<dynamic>((height == double->negativeInfinity? 0.0 : (-height * 0))) : (as<dynamic>(height + 0));
     }
 }
 
-template<typename T> void RectangleCls<T>::fromPoints(Point<T> a, Point<T> b) {
+template<typename T>
+void RectangleCls<T>::fromPoints(Point<T> a, Point<T> b) {
     T left = min(a->x, b->x);
     T width = as<T>((max(a->x, b->x) - left));
     T top = min(a->y, b->y);
@@ -83,14 +99,16 @@ template<typename T> void RectangleCls<T>::fromPoints(Point<T> a, Point<T> b) {
     return <T>make<RectangleCls>(left, top, width, height);
 }
 
-template<typename T> MutableRectangleCls<T>::MutableRectangleCls(T height, T left, T top, T width) {
+template<typename T>
+MutableRectangleCls<T>::MutableRectangleCls(T height, T left, T top, T width) {
     {
         this->_width = ( < 0)? <T>_clampToZero(width) : (as<dynamic>(width + 0));
         this->_height = ( < 0)? <T>_clampToZero(height) : (as<dynamic>(height + 0));
     }
 }
 
-template<typename T> void MutableRectangleCls<T>::fromPoints(Point<T> a, Point<T> b) {
+template<typename T>
+void MutableRectangleCls<T>::fromPoints(Point<T> a, Point<T> b) {
     T left = min(a->x, b->x);
     T width = as<T>((max(a->x, b->x) - left));
     T top = min(a->y, b->y);
@@ -98,29 +116,34 @@ template<typename T> void MutableRectangleCls<T>::fromPoints(Point<T> a, Point<T
     return <T>make<MutableRectangleCls>(left, top, width, height);
 }
 
-template<typename T> T MutableRectangleCls<T>::width() {
+template<typename T>
+T MutableRectangleCls<T>::width() {
     return _width;
 }
 
-template<typename T> void MutableRectangleCls<T>::width(T width) {
+template<typename T>
+void MutableRectangleCls<T>::width(T width) {
     if ( < 0)     {
         width = <T>_clampToZero(width);
     }
     _width = width;
 }
 
-template<typename T> T MutableRectangleCls<T>::height() {
+template<typename T>
+T MutableRectangleCls<T>::height() {
     return _height;
 }
 
-template<typename T> void MutableRectangleCls<T>::height(T height) {
+template<typename T>
+void MutableRectangleCls<T>::height(T height) {
     if ( < 0)     {
         height = <T>_clampToZero(height);
     }
     _height = height;
 }
 
-T _clampToZerotemplate<typename T> (T value) {
+template<typename T>
+T _clampToZero(T value) {
     assert( < 0);
     if (value == double->negativeInfinity)     {
         return as<dynamic>(0.0);

@@ -189,7 +189,7 @@ PointerAddedEvent _CopyPointerAddedEventCls::copyWith(int buttons, Offset delta,
     return make<PointerAddedEventCls>(timeStamp or this->timeStamp, kind or this->kind, device or this->device, position or this->position, obscured or this->obscured, pressureMin or this->pressureMin, pressureMax or this->pressureMax, distance or this->distance, distanceMax or this->distanceMax, radiusMin or this->radiusMin, radiusMax or this->radiusMax, orientation or this->orientation, tilt or this->tilt, embedderId or this->embedderId)->transformed(transform);
 }
 
-PointerAddedEventCls::PointerAddedEventCls(Unknown device, Unknown distance, Unknown distanceMax, Unknown embedderId, Unknown kind, Unknown obscured, Unknown orientation, Unknown pointer, Unknown position, Unknown pressureMax, Unknown pressureMin, Unknown radiusMax, Unknown radiusMin, Unknown tilt, Unknown timeStamp) : PointerEvent(0.0) {
+PointerAddedEventCls::PointerAddedEventCls(Unknown device, Unknown distance, Unknown distanceMax, Unknown embedderId, Unknown kind, Unknown obscured, Unknown orientation, Unknown pointer, Unknown position, Unknown pressureMax, Unknown pressureMin, Unknown radiusMax, Unknown radiusMin, Unknown tilt, Unknown timeStamp) {
 }
 
 PointerAddedEvent PointerAddedEventCls::transformed(Matrix4 transform) {
@@ -214,7 +214,7 @@ PointerRemovedEvent _CopyPointerRemovedEventCls::copyWith(int buttons, Offset de
     return make<PointerRemovedEventCls>(timeStamp or this->timeStamp, kind or this->kind, device or this->device, position or this->position, obscured or this->obscured, pressureMin or this->pressureMin, pressureMax or this->pressureMax, distanceMax or this->distanceMax, radiusMin or this->radiusMin, radiusMax or this->radiusMax, embedderId or this->embedderId)->transformed(transform);
 }
 
-PointerRemovedEventCls::PointerRemovedEventCls(Unknown device, Unknown distanceMax, Unknown embedderId, Unknown kind, Unknown obscured, PointerRemovedEvent original, Unknown pointer, Unknown position, Unknown pressureMax, Unknown pressureMin, Unknown radiusMax, Unknown radiusMin, Unknown timeStamp) : PointerEvent(0.0) {
+PointerRemovedEventCls::PointerRemovedEventCls(Unknown device, Unknown distanceMax, Unknown embedderId, Unknown kind, Unknown obscured, PointerRemovedEvent original, Unknown pointer, Unknown position, Unknown pressureMax, Unknown pressureMin, Unknown radiusMax, Unknown radiusMin, Unknown timeStamp) {
 }
 
 PointerRemovedEvent PointerRemovedEventCls::transformed(Matrix4 transform) {
@@ -239,7 +239,7 @@ PointerHoverEvent _CopyPointerHoverEventCls::copyWith(int buttons, Offset delta,
     return make<PointerHoverEventCls>(timeStamp or this->timeStamp, kind or this->kind, device or this->device, position or this->position, delta or this->delta, buttons or this->buttons, obscured or this->obscured, pressureMin or this->pressureMin, pressureMax or this->pressureMax, distance or this->distance, distanceMax or this->distanceMax, size or this->size, radiusMajor or this->radiusMajor, radiusMinor or this->radiusMinor, radiusMin or this->radiusMin, radiusMax or this->radiusMax, orientation or this->orientation, tilt or this->tilt, synthesized or this->synthesized, embedderId or this->embedderId)->transformed(transform);
 }
 
-PointerHoverEventCls::PointerHoverEventCls(Unknown buttons, Unknown delta, Unknown device, Unknown distance, Unknown distanceMax, Unknown embedderId, Unknown kind, Unknown obscured, Unknown orientation, Unknown pointer, Unknown position, Unknown pressureMax, Unknown pressureMin, Unknown radiusMajor, Unknown radiusMax, Unknown radiusMin, Unknown radiusMinor, Unknown size, Unknown synthesized, Unknown tilt, Unknown timeStamp) : PointerEvent(false, 0.0) {
+PointerHoverEventCls::PointerHoverEventCls(Unknown buttons, Unknown delta, Unknown device, Unknown distance, Unknown distanceMax, Unknown embedderId, Unknown kind, Unknown obscured, Unknown orientation, Unknown pointer, Unknown position, Unknown pressureMax, Unknown pressureMin, Unknown radiusMajor, Unknown radiusMax, Unknown radiusMin, Unknown radiusMinor, Unknown size, Unknown synthesized, Unknown tilt, Unknown timeStamp) {
 }
 
 PointerHoverEvent PointerHoverEventCls::transformed(Matrix4 transform) {
@@ -264,7 +264,7 @@ PointerEnterEvent _CopyPointerEnterEventCls::copyWith(int buttons, Offset delta,
     return make<PointerEnterEventCls>(timeStamp or this->timeStamp, kind or this->kind, device or this->device, position or this->position, delta or this->delta, buttons or this->buttons, obscured or this->obscured, pressureMin or this->pressureMin, pressureMax or this->pressureMax, distance or this->distance, distanceMax or this->distanceMax, size or this->size, radiusMajor or this->radiusMajor, radiusMinor or this->radiusMinor, radiusMin or this->radiusMin, radiusMax or this->radiusMax, orientation or this->orientation, tilt or this->tilt, synthesized or this->synthesized, embedderId or this->embedderId)->transformed(transform);
 }
 
-PointerEnterEventCls::PointerEnterEventCls(Unknown buttons, Unknown delta, Unknown device, Unknown distance, Unknown distanceMax, Unknown down, Unknown embedderId, Unknown kind, Unknown obscured, Unknown orientation, Unknown pointer, Unknown position, Unknown pressureMax, Unknown pressureMin, Unknown radiusMajor, Unknown radiusMax, Unknown radiusMin, Unknown radiusMinor, Unknown size, Unknown synthesized, Unknown tilt, Unknown timeStamp) : PointerEvent(0.0) {
+PointerEnterEventCls::PointerEnterEventCls(Unknown buttons, Unknown delta, Unknown device, Unknown distance, Unknown distanceMax, Unknown down, Unknown embedderId, Unknown kind, Unknown obscured, Unknown orientation, Unknown pointer, Unknown position, Unknown pressureMax, Unknown pressureMin, Unknown radiusMajor, Unknown radiusMax, Unknown radiusMin, Unknown radiusMinor, Unknown size, Unknown synthesized, Unknown tilt, Unknown timeStamp) {
 }
 
 void PointerEnterEventCls::fromMouseEvent(PointerEvent event) {
@@ -293,7 +293,7 @@ PointerExitEvent _CopyPointerExitEventCls::copyWith(int buttons, Offset delta, i
     return make<PointerExitEventCls>(timeStamp or this->timeStamp, kind or this->kind, device or this->device, position or this->position, delta or this->delta, buttons or this->buttons, obscured or this->obscured, pressureMin or this->pressureMin, pressureMax or this->pressureMax, distance or this->distance, distanceMax or this->distanceMax, size or this->size, radiusMajor or this->radiusMajor, radiusMinor or this->radiusMinor, radiusMin or this->radiusMin, radiusMax or this->radiusMax, orientation or this->orientation, tilt or this->tilt, synthesized or this->synthesized, embedderId or this->embedderId)->transformed(transform);
 }
 
-PointerExitEventCls::PointerExitEventCls(Unknown buttons, Unknown delta, Unknown device, Unknown distance, Unknown distanceMax, Unknown down, Unknown embedderId, Unknown kind, Unknown obscured, Unknown orientation, Unknown pointer, Unknown position, Unknown pressureMax, Unknown pressureMin, Unknown radiusMajor, Unknown radiusMax, Unknown radiusMin, Unknown radiusMinor, Unknown size, Unknown synthesized, Unknown tilt, Unknown timeStamp) : PointerEvent(0.0) {
+PointerExitEventCls::PointerExitEventCls(Unknown buttons, Unknown delta, Unknown device, Unknown distance, Unknown distanceMax, Unknown down, Unknown embedderId, Unknown kind, Unknown obscured, Unknown orientation, Unknown pointer, Unknown position, Unknown pressureMax, Unknown pressureMin, Unknown radiusMajor, Unknown radiusMax, Unknown radiusMin, Unknown radiusMinor, Unknown size, Unknown synthesized, Unknown tilt, Unknown timeStamp) {
 }
 
 void PointerExitEventCls::fromMouseEvent(PointerEvent event) {
@@ -322,7 +322,7 @@ PointerDownEvent _CopyPointerDownEventCls::copyWith(int buttons, Offset delta, i
     return make<PointerDownEventCls>(timeStamp or this->timeStamp, pointer or this->pointer, kind or this->kind, device or this->device, position or this->position, buttons or this->buttons, obscured or this->obscured, pressure or this->pressure, pressureMin or this->pressureMin, pressureMax or this->pressureMax, distanceMax or this->distanceMax, size or this->size, radiusMajor or this->radiusMajor, radiusMinor or this->radiusMinor, radiusMin or this->radiusMin, radiusMax or this->radiusMax, orientation or this->orientation, tilt or this->tilt, embedderId or this->embedderId)->transformed(transform);
 }
 
-PointerDownEventCls::PointerDownEventCls(Unknown buttons, Unknown device, Unknown distanceMax, Unknown embedderId, Unknown kind, Unknown obscured, Unknown orientation, Unknown pointer, Unknown position, Unknown pressure, Unknown pressureMax, Unknown pressureMin, Unknown radiusMajor, Unknown radiusMax, Unknown radiusMin, Unknown radiusMinor, Unknown size, Unknown tilt, Unknown timeStamp) : PointerEvent(true, 0.0) {
+PointerDownEventCls::PointerDownEventCls(Unknown buttons, Unknown device, Unknown distanceMax, Unknown embedderId, Unknown kind, Unknown obscured, Unknown orientation, Unknown pointer, Unknown position, Unknown pressure, Unknown pressureMax, Unknown pressureMin, Unknown radiusMajor, Unknown radiusMax, Unknown radiusMin, Unknown radiusMinor, Unknown size, Unknown tilt, Unknown timeStamp) {
 }
 
 PointerDownEvent PointerDownEventCls::transformed(Matrix4 transform) {
@@ -347,7 +347,7 @@ PointerMoveEvent _CopyPointerMoveEventCls::copyWith(int buttons, Offset delta, i
     return make<PointerMoveEventCls>(timeStamp or this->timeStamp, pointer or this->pointer, kind or this->kind, device or this->device, position or this->position, delta or this->delta, buttons or this->buttons, obscured or this->obscured, pressure or this->pressure, pressureMin or this->pressureMin, pressureMax or this->pressureMax, distanceMax or this->distanceMax, size or this->size, radiusMajor or this->radiusMajor, radiusMinor or this->radiusMinor, radiusMin or this->radiusMin, radiusMax or this->radiusMax, orientation or this->orientation, tilt or this->tilt, synthesized or this->synthesized, embedderId or this->embedderId)->transformed(transform);
 }
 
-PointerMoveEventCls::PointerMoveEventCls(Unknown buttons, Unknown delta, Unknown device, Unknown distanceMax, Unknown embedderId, Unknown kind, Unknown obscured, Unknown orientation, Unknown platformData, Unknown pointer, Unknown position, Unknown pressure, Unknown pressureMax, Unknown pressureMin, Unknown radiusMajor, Unknown radiusMax, Unknown radiusMin, Unknown radiusMinor, Unknown size, Unknown synthesized, Unknown tilt, Unknown timeStamp) : PointerEvent(true, 0.0) {
+PointerMoveEventCls::PointerMoveEventCls(Unknown buttons, Unknown delta, Unknown device, Unknown distanceMax, Unknown embedderId, Unknown kind, Unknown obscured, Unknown orientation, Unknown platformData, Unknown pointer, Unknown position, Unknown pressure, Unknown pressureMax, Unknown pressureMin, Unknown radiusMajor, Unknown radiusMax, Unknown radiusMin, Unknown radiusMinor, Unknown size, Unknown synthesized, Unknown tilt, Unknown timeStamp) {
 }
 
 PointerMoveEvent PointerMoveEventCls::transformed(Matrix4 transform) {
@@ -372,7 +372,7 @@ PointerUpEvent _CopyPointerUpEventCls::copyWith(int buttons, Offset delta, int d
     return make<PointerUpEventCls>(timeStamp or this->timeStamp, pointer or this->pointer, kind or this->kind, device or this->device, position or this->position, buttons or this->buttons, obscured or this->obscured, pressure or this->pressure, pressureMin or this->pressureMin, pressureMax or this->pressureMax, distance or this->distance, distanceMax or this->distanceMax, size or this->size, radiusMajor or this->radiusMajor, radiusMinor or this->radiusMinor, radiusMin or this->radiusMin, radiusMax or this->radiusMax, orientation or this->orientation, tilt or this->tilt, embedderId or this->embedderId)->transformed(transform);
 }
 
-PointerUpEventCls::PointerUpEventCls(Unknown buttons, Unknown device, Unknown distance, Unknown distanceMax, Unknown embedderId, Unknown kind, Unknown obscured, Unknown orientation, Unknown pointer, Unknown position, Unknown pressure, Unknown pressureMax, Unknown pressureMin, Unknown radiusMajor, Unknown radiusMax, Unknown radiusMin, Unknown radiusMinor, Unknown size, Unknown tilt, Unknown timeStamp) : PointerEvent(false) {
+PointerUpEventCls::PointerUpEventCls(Unknown buttons, Unknown device, Unknown distance, Unknown distanceMax, Unknown embedderId, Unknown kind, Unknown obscured, Unknown orientation, Unknown pointer, Unknown position, Unknown pressure, Unknown pressureMax, Unknown pressureMin, Unknown radiusMajor, Unknown radiusMax, Unknown radiusMin, Unknown radiusMinor, Unknown size, Unknown tilt, Unknown timeStamp) {
 }
 
 PointerUpEvent PointerUpEventCls::transformed(Matrix4 transform) {
@@ -573,7 +573,7 @@ PointerCancelEvent _CopyPointerCancelEventCls::copyWith(int buttons, Offset delt
     return make<PointerCancelEventCls>(timeStamp or this->timeStamp, pointer or this->pointer, kind or this->kind, device or this->device, position or this->position, buttons or this->buttons, obscured or this->obscured, pressureMin or this->pressureMin, pressureMax or this->pressureMax, distance or this->distance, distanceMax or this->distanceMax, size or this->size, radiusMajor or this->radiusMajor, radiusMinor or this->radiusMinor, radiusMin or this->radiusMin, radiusMax or this->radiusMax, orientation or this->orientation, tilt or this->tilt, embedderId or this->embedderId)->transformed(transform);
 }
 
-PointerCancelEventCls::PointerCancelEventCls(Unknown buttons, Unknown device, Unknown distance, Unknown distanceMax, Unknown embedderId, Unknown kind, Unknown obscured, Unknown orientation, Unknown pointer, Unknown position, Unknown pressureMax, Unknown pressureMin, Unknown radiusMajor, Unknown radiusMax, Unknown radiusMin, Unknown radiusMinor, Unknown size, Unknown tilt, Unknown timeStamp) : PointerEvent(false, 0.0) {
+PointerCancelEventCls::PointerCancelEventCls(Unknown buttons, Unknown device, Unknown distance, Unknown distanceMax, Unknown embedderId, Unknown kind, Unknown obscured, Unknown orientation, Unknown pointer, Unknown position, Unknown pressureMax, Unknown pressureMin, Unknown radiusMajor, Unknown radiusMax, Unknown radiusMin, Unknown radiusMinor, Unknown size, Unknown tilt, Unknown timeStamp) {
 }
 
 PointerCancelEvent PointerCancelEventCls::transformed(Matrix4 transform) {

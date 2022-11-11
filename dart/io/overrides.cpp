@@ -7,12 +7,14 @@ void IOOverridesCls::global(IOOverrides overrides) {
     _global = overrides;
 }
 
-R IOOverridesCls::runZonedtemplate<typename R> (R body() , Directory createDirectory(String ) , File createFile(String ) , Link createLink(String ) , Stream<FileSystemEvent> fsWatch(String , int , bool ) , bool fsWatchIsSupported() , Future<FileSystemEntityType> fseGetType(String , bool ) , FileSystemEntityType fseGetTypeSync(String , bool ) , Future<bool> fseIdentical(String , String ) , bool fseIdenticalSync(String , String ) , Directory getCurrentDirectory() , Directory getSystemTempDirectory() , Future<ServerSocket> serverSocketBind(dynamic , int , int backlog, bool shared, bool v6Only) , void setCurrentDirectory(String ) , Future<Socket> socketConnect(dynamic , int , dynamic sourceAddress, int sourcePort, Duration timeout) , Future<ConnectionTask<Socket>> socketStartConnect(dynamic , int , dynamic sourceAddress, int sourcePort) , Future<FileStat> stat(String ) , FileStat statSync(String ) , Stdout stderr() , Stdin stdin() , Stdout stdout() ) {
+template<typename R>
+R IOOverridesCls::runZoned(R body() , Directory createDirectory(String ) , File createFile(String ) , Link createLink(String ) , Stream<FileSystemEvent> fsWatch(String , int , bool ) , bool fsWatchIsSupported() , Future<FileSystemEntityType> fseGetType(String , bool ) , FileSystemEntityType fseGetTypeSync(String , bool ) , Future<bool> fseIdentical(String , String ) , bool fseIdenticalSync(String , String ) , Directory getCurrentDirectory() , Directory getSystemTempDirectory() , Future<ServerSocket> serverSocketBind(dynamic , int , int backlog, bool shared, bool v6Only) , void setCurrentDirectory(String ) , Future<Socket> socketConnect(dynamic , int , dynamic sourceAddress, int sourcePort, Duration timeout) , Future<ConnectionTask<Socket>> socketStartConnect(dynamic , int , dynamic sourceAddress, int sourcePort) , Future<FileStat> stat(String ) , FileStat statSync(String ) , Stdout stderr() , Stdin stdin() , Stdout stdout() ) {
     IOOverrides overrides = make<_IOOverridesScopeCls>(createDirectory, getCurrentDirectory, setCurrentDirectory, getSystemTempDirectory, createFile, stat, statSync, fseIdentical, fseIdenticalSync, fseGetType, fseGetTypeSync, fsWatch, fsWatchIsSupported, createLink, socketConnect, socketStartConnect, serverSocketBind, stdin, stdout, stderr);
     map1.set(_ioOverridesToken, overrides);return <R>_asyncRunZoned(bodylist1);
 }
 
-R IOOverridesCls::runWithIOOverridestemplate<typename R> (R body() , IOOverrides overrides) {
+template<typename R>
+R IOOverridesCls::runWithIOOverrides(R body() , IOOverrides overrides) {
     map1.set(_ioOverridesToken, overrides);return <R>_asyncRunZoned(bodylist1);
 }
 

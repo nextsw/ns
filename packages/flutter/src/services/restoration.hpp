@@ -78,11 +78,14 @@ public:
 
     virtual String restorationId();
 
-    template<typename P>  virtual P read(String restorationId);
+    template<typename P>
+ virtual P read(String restorationId);
 
-    template<typename P>  virtual void write(String restorationId, P value);
+    template<typename P>
+ virtual void write(String restorationId, P value);
 
-    template<typename P>  virtual P remove(String restorationId);
+    template<typename P>
+ virtual P remove(String restorationId);
 
     virtual bool contains(String restorationId);
 

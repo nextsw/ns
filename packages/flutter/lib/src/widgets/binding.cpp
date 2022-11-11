@@ -389,21 +389,26 @@ void debugDumpApp() {
     debugPrint(_debugDumpAppString());
 }
 
-template<typename T> RenderObjectToWidgetAdapterCls<T>::RenderObjectToWidgetAdapterCls(Widget child, RenderObjectWithChildMixin<T> container, String debugShortDescription) : RenderObjectWidget(make<GlobalObjectKeyCls>(container)) {
+template<typename T>
+RenderObjectToWidgetAdapterCls<T>::RenderObjectToWidgetAdapterCls(Widget child, RenderObjectWithChildMixin<T> container, String debugShortDescription) {
 }
 
-template<typename T> RenderObjectToWidgetElement<T> RenderObjectToWidgetAdapterCls<T>::createElement() {
+template<typename T>
+RenderObjectToWidgetElement<T> RenderObjectToWidgetAdapterCls<T>::createElement() {
     return <T>make<RenderObjectToWidgetElementCls>(this);
 }
 
-template<typename T> RenderObjectWithChildMixin<T> RenderObjectToWidgetAdapterCls<T>::createRenderObject(BuildContext context) {
+template<typename T>
+RenderObjectWithChildMixin<T> RenderObjectToWidgetAdapterCls<T>::createRenderObject(BuildContext context) {
     return container;
 }
 
-template<typename T> void RenderObjectToWidgetAdapterCls<T>::updateRenderObject(BuildContext context, RenderObject renderObject) {
+template<typename T>
+void RenderObjectToWidgetAdapterCls<T>::updateRenderObject(BuildContext context, RenderObject renderObject) {
 }
 
-template<typename T> RenderObjectToWidgetElement<T> RenderObjectToWidgetAdapterCls<T>::attachToRenderTree(RenderObjectToWidgetElement<T> element, BuildOwner owner) {
+template<typename T>
+RenderObjectToWidgetElement<T> RenderObjectToWidgetAdapterCls<T>::attachToRenderTree(RenderObjectToWidgetElement<T> element, BuildOwner owner) {
     if (element == nullptr) {
         owner->lockState([=] () {
             element = createElement();
@@ -420,36 +425,42 @@ template<typename T> RenderObjectToWidgetElement<T> RenderObjectToWidgetAdapterC
     return element!;
 }
 
-template<typename T> String RenderObjectToWidgetAdapterCls<T>::toStringShort() {
+template<typename T>
+String RenderObjectToWidgetAdapterCls<T>::toStringShort() {
     return debugShortDescription or super->toStringShort();
 }
 
-template<typename T> void RenderObjectToWidgetElementCls<T>::visitChildren(ElementVisitor visitor) {
+template<typename T>
+void RenderObjectToWidgetElementCls<T>::visitChildren(ElementVisitor visitor) {
     if (_child != nullptr) {
         visitor(_child!);
     }
 }
 
-template<typename T> void RenderObjectToWidgetElementCls<T>::forgetChild(Element child) {
+template<typename T>
+void RenderObjectToWidgetElementCls<T>::forgetChild(Element child) {
     assert(child == _child);
     _child = nullptr;
     super->forgetChild(child);
 }
 
-template<typename T> void RenderObjectToWidgetElementCls<T>::mount(Object newSlot, Element parent) {
+template<typename T>
+void RenderObjectToWidgetElementCls<T>::mount(Object newSlot, Element parent) {
     assert(parent == nullptr);
     super->mount(parent, newSlot);
     _rebuild();
     assert(_child != nullptr);
 }
 
-template<typename T> void RenderObjectToWidgetElementCls<T>::update(RenderObjectToWidgetAdapter<T> newWidget) {
+template<typename T>
+void RenderObjectToWidgetElementCls<T>::update(RenderObjectToWidgetAdapter<T> newWidget) {
     super->update(newWidget);
     assert(widget == newWidget);
     _rebuild();
 }
 
-template<typename T> void RenderObjectToWidgetElementCls<T>::performRebuild() {
+template<typename T>
+void RenderObjectToWidgetElementCls<T>::performRebuild() {
     if (_newWidget != nullptr) {
         Widget newWidget = _newWidget!;
         _newWidget = nullptr;
@@ -459,26 +470,31 @@ template<typename T> void RenderObjectToWidgetElementCls<T>::performRebuild() {
     assert(_newWidget == nullptr);
 }
 
-template<typename T> RenderObjectWithChildMixin<T> RenderObjectToWidgetElementCls<T>::renderObject() {
+template<typename T>
+RenderObjectWithChildMixin<T> RenderObjectToWidgetElementCls<T>::renderObject() {
     return as<RenderObjectWithChildMixin<T>>(super->renderObject);
 }
 
-template<typename T> void RenderObjectToWidgetElementCls<T>::insertRenderObjectChild(RenderObject child, Object slot) {
+template<typename T>
+void RenderObjectToWidgetElementCls<T>::insertRenderObjectChild(RenderObject child, Object slot) {
     assert(slot == _rootChildSlot);
     assert(renderObject()->debugValidateChild(child));
     renderObject()->child = as<T>(child);
 }
 
-template<typename T> void RenderObjectToWidgetElementCls<T>::moveRenderObjectChild(RenderObject child, Object newSlot, Object oldSlot) {
+template<typename T>
+void RenderObjectToWidgetElementCls<T>::moveRenderObjectChild(RenderObject child, Object newSlot, Object oldSlot) {
     assert(false);
 }
 
-template<typename T> void RenderObjectToWidgetElementCls<T>::removeRenderObjectChild(RenderObject child, Object slot) {
+template<typename T>
+void RenderObjectToWidgetElementCls<T>::removeRenderObjectChild(RenderObject child, Object slot) {
     assert(renderObject()->child == child);
     renderObject()->child = nullptr;
 }
 
-template<typename T> void RenderObjectToWidgetElementCls<T>::_rebuild() {
+template<typename T>
+void RenderObjectToWidgetElementCls<T>::_rebuild() {
     try {
         _child = updateChild(_child, (as<RenderObjectToWidgetAdapter<T>>(widget))->child, _rootChildSlot);
     } catch (Unknown exception) {

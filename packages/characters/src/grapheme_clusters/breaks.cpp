@@ -7,8 +7,8 @@ int BreaksCls::nextBreak() {
     while ( < end) {
         auto breakAt = cursor;
         auto char = base->codeUnitAt(cursor++);
-        if (char & 0xFC00 != 0xD800) {
-            state = move(state, low(char));
+        if (charValue & 0xFC00 != 0xD800) {
+            state = move(state, low(charValue));
             if (state & stateNoBreak == 0) {
                 return breakAt;
             }
@@ -18,7 +18,7 @@ int BreaksCls::nextBreak() {
         if ( < end) {
             auto nextChar = base->codeUnitAt(cursor);
             if (nextChar & 0xFC00 == 0xDC00) {
-                category = high(char, nextChar);
+                category = high(charValue, nextChar);
                 cursor++;
             }
         }
@@ -42,8 +42,8 @@ int BackBreaksCls::nextBreak() {
     while (cursor > start) {
         auto breakAt = cursor;
         auto char = base->codeUnitAt(--cursor);
-        if (char & 0xFC00 != 0xDC00) {
-            state = moveBack(state, low(char));
+        if (charValue & 0xFC00 != 0xDC00) {
+            state = moveBack(state, low(charValue));
             if (state >= stateLookaheadMin)             {
                 state = _lookAhead(state);
             }
@@ -56,7 +56,7 @@ int BackBreaksCls::nextBreak() {
         if (cursor >= start) {
             auto prevChar = base->codeUnitAt(cursor - 1);
             if (prevChar & 0xFC00 == 0xD800) {
-                category = high(prevChar, char);
+                category = high(prevChar, charValue);
                 cursor = 1;
             }
         }
@@ -103,15 +103,15 @@ int lookAheadRegional(String base, int cursor, int start) {
     while (index - 2 >= start) {
         auto tail = base->codeUnitAt(index - 1);
         if (tail & 0xFC00 != 0xDC00)         {
-                    break;
+            break;
         }
         auto lead = base->codeUnitAt(index - 2);
         if (lead & 0xFC00 != 0xD800)         {
-                    break;
+            break;
         }
         auto category = high(lead, tail);
         if (category != categoryRegionalIndicator)         {
-                    break;
+            break;
         }
         index = 2;
         count = 1;
@@ -129,20 +129,20 @@ int lookAheadPictorgraphicExtend(String base, int cursor, int start) {
         auto char = base->codeUnitAt(--index);
         auto prevChar = 0;
         auto category = categoryControl;
-        if (char & 0xFC00 != 0xDC00) {
-            category = low(char);
+        if (charValue & 0xFC00 != 0xDC00) {
+            category = low(charValue);
         } else         {
             if (index > start && (prevChar = base->codeUnitAt(--index)) & 0xFC00 == 0xD800) {
-            category = high(prevChar, char);
+            category = high(prevChar, charValue);
         } else {
-                        break;
+            break;
         }
 ;
         }        if (category == categoryPictographic) {
             return index;
         }
         if (category != categoryExtend)         {
-                    break;
+            break;
         }
     }
     return -1;
@@ -157,10 +157,10 @@ bool isGraphemeClusterBoundary(int end, int index, int start, String text) {
         auto char = text->codeUnitAt(index);
         auto prevChar = text->codeUnitAt(index - 1);
         auto catAfter = categoryControl;
-        if (char & 0xF800 != 0xD800) {
-            catAfter = low(char);
+        if (charValue & 0xF800 != 0xD800) {
+            catAfter = low(charValue);
         } else         {
-            if (char & 0xFC00 == 0xD800) {
+            if (charValue & 0xFC00 == 0xD800) {
             if (index + 1 >= end)             {
                 return true;
             }
@@ -168,7 +168,7 @@ bool isGraphemeClusterBoundary(int end, int index, int start, String text) {
             if (nextChar & 0xFC00 != 0xDC00)             {
                 return true;
             }
-            catAfter = high(char, nextChar);
+            catAfter = high(charValue, nextChar);
         } else {
             return prevChar & 0xFC00 != 0xD800;
         }

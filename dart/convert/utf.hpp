@@ -100,7 +100,8 @@ public:
 
     virtual Stream<String> bind(Stream<List<int>> stream);
 
-    template<typename T>  Converter<List<int>, T> fuse(Converter<String, T> next) override;
+    template<typename T>
+ Converter<List<int>, T> fuse(Converter<String, T> next) override;
 private:
     bool _allowMalformed;
 

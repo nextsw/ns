@@ -127,12 +127,12 @@ void StandardMessageCodecCls::writeValue(WriteBuffer buffer, Object value) {
         int utf8Offset = 0;
         for (;  < as<StringCls>(value)->length(); i = 1) {
             int char = value->codeUnitAt(i);
-            if (char <= 0x7f) {
-                asciiBytes[i] = char;
+            if (charValue <= 0x7f) {
+                asciiBytes[i] = charValue;
             } else {
                 utf8Bytes = utf8->encoder->convert(value->substring(i));
                 utf8Offset = i;
-                                break;
+                break;
             }
         }
         if (utf8Bytes != nullptr) {

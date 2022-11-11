@@ -5,15 +5,18 @@
 #include <dart/core/core.hpp>
 
 
-template<typename E> class QueueCls : public ObjectCls {
+template<typename E>
+class QueueCls : public ObjectCls {
 public:
 
      QueueCls();
     virtual void  from(Iterable elements);
     virtual void  of(Iterable<E> elements);
-    template<typename S, typename T>  static Queue<T> castFrom(Queue<S> source);
+    template<typename S, typename T>
+ static Queue<T> castFrom(Queue<S> source);
 
-    template<typename R>  virtual Queue<R> cast();
+    template<typename R>
+ virtual Queue<R> cast();
     virtual E removeFirst();
     virtual E removeLast();
     virtual void addFirst(E value);
@@ -27,9 +30,11 @@ public:
 private:
 
 };
-template<typename E> using Queue = std::shared_ptr<QueueCls<E>>;
+template<typename E>
+using Queue = std::shared_ptr<QueueCls<E>>;
 
-template<typename E> class _DoubleLinkedQueueEntryCls : public ObjectCls {
+template<typename E>
+class _DoubleLinkedQueueEntryCls : public ObjectCls {
 public:
 
     virtual E element();
@@ -50,9 +55,11 @@ private:
 
     virtual E _remove();
 };
-template<typename E> using _DoubleLinkedQueueEntry = std::shared_ptr<_DoubleLinkedQueueEntryCls<E>>;
+template<typename E>
+using _DoubleLinkedQueueEntry = std::shared_ptr<_DoubleLinkedQueueEntryCls<E>>;
 
-template<typename E> class _DoubleLinkedQueueElementCls : public _DoubleLinkedQueueEntryCls<E> {
+template<typename E>
+class _DoubleLinkedQueueElementCls : public _DoubleLinkedQueueEntryCls<E> {
 public:
     E element;
 
@@ -77,9 +84,11 @@ private:
     virtual _DoubleLinkedQueueElement<E> _asNonSentinelEntry();
 
 };
-template<typename E> using _DoubleLinkedQueueElement = std::shared_ptr<_DoubleLinkedQueueElementCls<E>>;
+template<typename E>
+using _DoubleLinkedQueueElement = std::shared_ptr<_DoubleLinkedQueueElementCls<E>>;
 
-template<typename E> class _DoubleLinkedQueueSentinelCls : public _DoubleLinkedQueueEntryCls<E> {
+template<typename E>
+class _DoubleLinkedQueueSentinelCls : public _DoubleLinkedQueueEntryCls<E> {
 public:
 
     virtual E element();
@@ -93,9 +102,11 @@ private:
     virtual E _remove();
 
 };
-template<typename E> using _DoubleLinkedQueueSentinel = std::shared_ptr<_DoubleLinkedQueueSentinelCls<E>>;
+template<typename E>
+using _DoubleLinkedQueueSentinel = std::shared_ptr<_DoubleLinkedQueueSentinelCls<E>>;
 
-template<typename E> class DoubleLinkedQueueCls : public IterableCls<E> {
+template<typename E>
+class DoubleLinkedQueueCls : public IterableCls<E> {
 public:
 
      DoubleLinkedQueueCls();
@@ -103,7 +114,8 @@ public:
 
     virtual void  of(Iterable<E> elements);
 
-    template<typename R>  virtual Queue<R> cast();
+    template<typename R>
+ virtual Queue<R> cast();
 
     virtual int length();
 
@@ -154,9 +166,11 @@ private:
     virtual void _filter(bool removeMatching, bool test(E element) );
 
 };
-template<typename E> using DoubleLinkedQueue = std::shared_ptr<DoubleLinkedQueueCls<E>>;
+template<typename E>
+using DoubleLinkedQueue = std::shared_ptr<DoubleLinkedQueueCls<E>>;
 
-template<typename E> class _DoubleLinkedQueueIteratorCls : public ObjectCls {
+template<typename E>
+class _DoubleLinkedQueueIteratorCls : public ObjectCls {
 public:
 
     virtual bool moveNext();
@@ -174,9 +188,11 @@ private:
      _DoubleLinkedQueueIteratorCls(DoubleLinkedQueue<E> _queue);
 
 };
-template<typename E> using _DoubleLinkedQueueIterator = std::shared_ptr<_DoubleLinkedQueueIteratorCls<E>>;
+template<typename E>
+using _DoubleLinkedQueueIterator = std::shared_ptr<_DoubleLinkedQueueIteratorCls<E>>;
 
-template<typename E> class ListQueueCls : public ListIterableCls<E> {
+template<typename E>
+class ListQueueCls : public ListIterableCls<E> {
 public:
 
      ListQueueCls(int initialCapacity);
@@ -185,7 +201,8 @@ public:
 
     virtual void  of(Iterable<E> elements);
 
-    template<typename R>  virtual Queue<R> cast();
+    template<typename R>
+ virtual Queue<R> cast();
 
     virtual Iterator<E> iterator();
 
@@ -260,9 +277,11 @@ private:
     virtual void _preGrow(int newElementCount);
 
 };
-template<typename E> using ListQueue = std::shared_ptr<ListQueueCls<E>>;
+template<typename E>
+using ListQueue = std::shared_ptr<ListQueueCls<E>>;
 
-template<typename E> class _ListQueueIteratorCls : public ObjectCls {
+template<typename E>
+class _ListQueueIteratorCls : public ObjectCls {
 public:
 
     virtual E current();
@@ -284,7 +303,8 @@ private:
      _ListQueueIteratorCls(ListQueue<E> queue);
 
 };
-template<typename E> using _ListQueueIterator = std::shared_ptr<_ListQueueIteratorCls<E>>;
+template<typename E>
+using _ListQueueIterator = std::shared_ptr<_ListQueueIteratorCls<E>>;
 
 
 #endif

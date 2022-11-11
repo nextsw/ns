@@ -8,7 +8,8 @@
 #include "wrappers.hpp"
 
 
-template<typename E> class NonGrowableListViewCls : public DelegatingListCls<E> {
+template<typename E>
+class NonGrowableListViewCls : public DelegatingListCls<E> {
 public:
 
      NonGrowableListViewCls(List<E> listBase);
@@ -16,9 +17,11 @@ public:
 private:
 
 };
-template<typename E> using NonGrowableListView = std::shared_ptr<NonGrowableListViewCls<E>>;
+template<typename E>
+using NonGrowableListView = std::shared_ptr<NonGrowableListViewCls<E>>;
 
-template<typename E> class NonGrowableListMixinCls : public ObjectCls {
+template<typename E>
+class NonGrowableListMixinCls : public ObjectCls {
 public:
 
     virtual void  length(int newLength);
@@ -52,9 +55,11 @@ private:
     static Never _throw();
 
 };
-template<typename E> using NonGrowableListMixin = std::shared_ptr<NonGrowableListMixinCls<E>>;
+template<typename E>
+using NonGrowableListMixin = std::shared_ptr<NonGrowableListMixinCls<E>>;
 
-template<typename E> class UnmodifiableSetViewCls : public DelegatingSetCls<E> {
+template<typename E>
+class UnmodifiableSetViewCls : public DelegatingSetCls<E> {
 public:
 
      UnmodifiableSetViewCls(Set<E> setBase);
@@ -63,9 +68,11 @@ public:
 private:
 
 };
-template<typename E> using UnmodifiableSetView = std::shared_ptr<UnmodifiableSetViewCls<E>>;
+template<typename E>
+using UnmodifiableSetView = std::shared_ptr<UnmodifiableSetViewCls<E>>;
 
-template<typename E> class UnmodifiableSetMixinCls : public ObjectCls {
+template<typename E>
+class UnmodifiableSetMixinCls : public ObjectCls {
 public:
 
     virtual bool add(E value);
@@ -89,9 +96,11 @@ private:
     static Never _throw();
 
 };
-template<typename E> using UnmodifiableSetMixin = std::shared_ptr<UnmodifiableSetMixinCls<E>>;
+template<typename E>
+using UnmodifiableSetMixin = std::shared_ptr<UnmodifiableSetMixinCls<E>>;
 
-template<typename K, typename V> class UnmodifiableMapMixinCls : public ObjectCls {
+template<typename K, typename V>
+class UnmodifiableMapMixinCls : public ObjectCls {
 public:
 
     virtual void operator[]=(K key, V value);
@@ -113,7 +122,8 @@ private:
     static Never _throw();
 
 };
-template<typename K, typename V> using UnmodifiableMapMixin = std::shared_ptr<UnmodifiableMapMixinCls<K, V>>;
+template<typename K, typename V>
+using UnmodifiableMapMixin = std::shared_ptr<UnmodifiableMapMixinCls<K, V>>;
 
 
 #endif

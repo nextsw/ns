@@ -5,55 +5,63 @@ RenderProxyBoxCls::RenderProxyBoxCls(RenderBox child) {
     }
 }
 
-template<typename T> void RenderProxyBoxMixinCls<T>::setupParentData(RenderObject child) {
+template<typename T>
+void RenderProxyBoxMixinCls<T>::setupParentData(RenderObject child) {
     if (!is<ParentData>(child->parentData)) {
         child->parentData = make<ParentDataCls>();
     }
 }
 
-template<typename T> double RenderProxyBoxMixinCls<T>::computeMinIntrinsicWidth(double height) {
+template<typename T>
+double RenderProxyBoxMixinCls<T>::computeMinIntrinsicWidth(double height) {
     if (child != nullptr) {
         return child!->getMinIntrinsicWidth(height);
     }
     return 0.0;
 }
 
-template<typename T> double RenderProxyBoxMixinCls<T>::computeMaxIntrinsicWidth(double height) {
+template<typename T>
+double RenderProxyBoxMixinCls<T>::computeMaxIntrinsicWidth(double height) {
     if (child != nullptr) {
         return child!->getMaxIntrinsicWidth(height);
     }
     return 0.0;
 }
 
-template<typename T> double RenderProxyBoxMixinCls<T>::computeMinIntrinsicHeight(double width) {
+template<typename T>
+double RenderProxyBoxMixinCls<T>::computeMinIntrinsicHeight(double width) {
     if (child != nullptr) {
         return child!->getMinIntrinsicHeight(width);
     }
     return 0.0;
 }
 
-template<typename T> double RenderProxyBoxMixinCls<T>::computeMaxIntrinsicHeight(double width) {
+template<typename T>
+double RenderProxyBoxMixinCls<T>::computeMaxIntrinsicHeight(double width) {
     if (child != nullptr) {
         return child!->getMaxIntrinsicHeight(width);
     }
     return 0.0;
 }
 
-template<typename T> double RenderProxyBoxMixinCls<T>::computeDistanceToActualBaseline(TextBaseline baseline) {
+template<typename T>
+double RenderProxyBoxMixinCls<T>::computeDistanceToActualBaseline(TextBaseline baseline) {
     if (child != nullptr) {
         return child!->getDistanceToActualBaseline(baseline);
     }
     return super->computeDistanceToActualBaseline(baseline);
 }
 
-template<typename T> Size RenderProxyBoxMixinCls<T>::computeDryLayout(BoxConstraints constraints) {
+template<typename T>
+Size RenderProxyBoxMixinCls<T>::computeDryLayout(BoxConstraints constraints) {
     if (child != nullptr) {
         return child!->getDryLayout(constraints);
     }
     return computeSizeForNoChild(constraints);
 }
 
-template<typename T> void RenderProxyBoxMixinCls<T>::performLayout() {
+template<typename T>
+void RenderProxyBoxMixinCls<T>::performLayout() {
     if (child != nullptr) {
         child!->layout(constraintstrue);
         size = child!->size;
@@ -62,24 +70,28 @@ template<typename T> void RenderProxyBoxMixinCls<T>::performLayout() {
     }
 }
 
-template<typename T> Size RenderProxyBoxMixinCls<T>::computeSizeForNoChild(BoxConstraints constraints) {
+template<typename T>
+Size RenderProxyBoxMixinCls<T>::computeSizeForNoChild(BoxConstraints constraints) {
     return constraints->smallest();
 }
 
-template<typename T> bool RenderProxyBoxMixinCls<T>::hitTestChildren(Offset position, BoxHitTestResult result) {
+template<typename T>
+bool RenderProxyBoxMixinCls<T>::hitTestChildren(Offset position, BoxHitTestResult result) {
     return child?->hitTest(resultposition) or false;
 }
 
-template<typename T> void RenderProxyBoxMixinCls<T>::applyPaintTransform(RenderObject child, Matrix4 transform) {
+template<typename T>
+void RenderProxyBoxMixinCls<T>::applyPaintTransform(RenderObject child, Matrix4 transform) {
 }
 
-template<typename T> void RenderProxyBoxMixinCls<T>::paint(PaintingContext context, Offset offset) {
+template<typename T>
+void RenderProxyBoxMixinCls<T>::paint(PaintingContext context, Offset offset) {
     if (child != nullptr) {
         context->paintChild(child!, offset);
     }
 }
 
-RenderProxyBoxWithHitTestBehaviorCls::RenderProxyBoxWithHitTestBehaviorCls(HitTestBehavior behavior, RenderBox child) : RenderProxyBox(child) {
+RenderProxyBoxWithHitTestBehaviorCls::RenderProxyBoxWithHitTestBehaviorCls(HitTestBehavior behavior, RenderBox child) {
 }
 
 bool RenderProxyBoxWithHitTestBehaviorCls::hitTest(Offset position, BoxHitTestResult result) {
@@ -102,7 +114,7 @@ void RenderProxyBoxWithHitTestBehaviorCls::debugFillProperties(DiagnosticPropert
     properties->add(<HitTestBehavior>make<EnumPropertyCls>(__s("behavior"), behaviornullptr));
 }
 
-RenderConstrainedBoxCls::RenderConstrainedBoxCls(BoxConstraints additionalConstraints, RenderBox child) : RenderProxyBox(child) {
+RenderConstrainedBoxCls::RenderConstrainedBoxCls(BoxConstraints additionalConstraints, RenderBox child) {
     {
         assert(additionalConstraints != nullptr);
         assert(additionalConstraints->debugAssertIsValid());
@@ -207,7 +219,7 @@ void RenderConstrainedBoxCls::debugFillProperties(DiagnosticPropertiesBuilder pr
     properties->add(<BoxConstraints>make<DiagnosticsPropertyCls>(__s("additionalConstraints"), additionalConstraints()));
 }
 
-RenderLimitedBoxCls::RenderLimitedBoxCls(RenderBox child, double maxHeight, double maxWidth) : RenderProxyBox(child) {
+RenderLimitedBoxCls::RenderLimitedBoxCls(RenderBox child, double maxHeight, double maxWidth) {
     {
         assert(maxWidth != nullptr && maxWidth >= 0.0);
         assert(maxHeight != nullptr && maxHeight >= 0.0);
@@ -268,7 +280,7 @@ Size RenderLimitedBoxCls::_computeSize(BoxConstraints constraints, ChildLayouter
     return _limitConstraints(constraints)->constrain(SizeCls::zero);
 }
 
-RenderAspectRatioCls::RenderAspectRatioCls(double aspectRatio, RenderBox child) : RenderProxyBox(child) {
+RenderAspectRatioCls::RenderAspectRatioCls(double aspectRatio, RenderBox child) {
     {
         assert(aspectRatio != nullptr);
         assert(aspectRatio > 0.0);
@@ -386,7 +398,7 @@ Size RenderAspectRatioCls::_applyAspectRatio(BoxConstraints constraints) {
     return constraints->constrain(make<SizeCls>(width, height));
 }
 
-RenderIntrinsicWidthCls::RenderIntrinsicWidthCls(RenderBox child, double stepHeight, double stepWidth) : RenderProxyBox(child) {
+RenderIntrinsicWidthCls::RenderIntrinsicWidthCls(RenderBox child, double stepHeight, double stepWidth) {
     {
         assert(stepWidth == nullptr || stepWidth > 0.0);
         assert(stepHeight == nullptr || stepHeight > 0.0);
@@ -497,7 +509,7 @@ Size RenderIntrinsicWidthCls::_computeSize(BoxConstraints constraints, ChildLayo
     }
 }
 
-RenderIntrinsicHeightCls::RenderIntrinsicHeightCls(RenderBox child) : RenderProxyBox(child) {
+RenderIntrinsicHeightCls::RenderIntrinsicHeightCls(RenderBox child) {
 }
 
 double RenderIntrinsicHeightCls::computeMinIntrinsicWidth(double height) {
@@ -547,7 +559,7 @@ Size RenderIntrinsicHeightCls::_computeSize(BoxConstraints constraints, ChildLay
     }
 }
 
-RenderOpacityCls::RenderOpacityCls(bool alwaysIncludeSemantics, RenderBox child, double opacity) : RenderProxyBox(child) {
+RenderOpacityCls::RenderOpacityCls(bool alwaysIncludeSemantics, RenderBox child, double opacity) {
     {
         assert(opacity != nullptr);
         assert(opacity >= 0.0 && opacity <= 1.0);
@@ -630,21 +642,25 @@ void RenderOpacityCls::debugFillProperties(DiagnosticPropertiesBuilder propertie
     properties->add(make<FlagPropertyCls>(__s("alwaysIncludeSemantics")alwaysIncludeSemantics(), __s("alwaysIncludeSemantics")));
 }
 
-template<typename T> bool RenderAnimatedOpacityMixinCls<T>::isRepaintBoundary() {
+template<typename T>
+bool RenderAnimatedOpacityMixinCls<T>::isRepaintBoundary() {
     return child != nullptr && _currentlyIsRepaintBoundary!;
 }
 
-template<typename T> OffsetLayer RenderAnimatedOpacityMixinCls<T>::updateCompositedLayer(OpacityLayer oldLayer) {
+template<typename T>
+OffsetLayer RenderAnimatedOpacityMixinCls<T>::updateCompositedLayer(OpacityLayer oldLayer) {
     OpacityLayer updatedLayer = oldLayer or make<OpacityLayerCls>();
     updatedLayer->alpha() = _alpha;
     return updatedLayer;
 }
 
-template<typename T> Animation<double> RenderAnimatedOpacityMixinCls<T>::opacity() {
+template<typename T>
+Animation<double> RenderAnimatedOpacityMixinCls<T>::opacity() {
     return _opacity!;
 }
 
-template<typename T> void RenderAnimatedOpacityMixinCls<T>::opacity(Animation<double> value) {
+template<typename T>
+void RenderAnimatedOpacityMixinCls<T>::opacity(Animation<double> value) {
     assert(value != nullptr);
     if (_opacity == value) {
         return;
@@ -659,11 +675,13 @@ template<typename T> void RenderAnimatedOpacityMixinCls<T>::opacity(Animation<do
     _updateOpacity();
 }
 
-template<typename T> bool RenderAnimatedOpacityMixinCls<T>::alwaysIncludeSemantics() {
+template<typename T>
+bool RenderAnimatedOpacityMixinCls<T>::alwaysIncludeSemantics() {
     return _alwaysIncludeSemantics!;
 }
 
-template<typename T> void RenderAnimatedOpacityMixinCls<T>::alwaysIncludeSemantics(bool value) {
+template<typename T>
+void RenderAnimatedOpacityMixinCls<T>::alwaysIncludeSemantics(bool value) {
     if (value == _alwaysIncludeSemantics) {
         return;
     }
@@ -671,42 +689,49 @@ template<typename T> void RenderAnimatedOpacityMixinCls<T>::alwaysIncludeSemanti
     markNeedsSemanticsUpdate();
 }
 
-template<typename T> void RenderAnimatedOpacityMixinCls<T>::attach(PipelineOwner owner) {
+template<typename T>
+void RenderAnimatedOpacityMixinCls<T>::attach(PipelineOwner owner) {
     super->attach(owner);
     opacity()->addListener(_updateOpacity);
     _updateOpacity();
 }
 
-template<typename T> void RenderAnimatedOpacityMixinCls<T>::detach() {
+template<typename T>
+void RenderAnimatedOpacityMixinCls<T>::detach() {
     opacity()->removeListener(_updateOpacity);
     super->detach();
 }
 
-template<typename T> bool RenderAnimatedOpacityMixinCls<T>::paintsChild(RenderObject child) {
+template<typename T>
+bool RenderAnimatedOpacityMixinCls<T>::paintsChild(RenderObject child) {
     assert(child->parent == this);
     return opacity()->value() > 0;
 }
 
-template<typename T> void RenderAnimatedOpacityMixinCls<T>::paint(PaintingContext context, Offset offset) {
+template<typename T>
+void RenderAnimatedOpacityMixinCls<T>::paint(PaintingContext context, Offset offset) {
     if (_alpha == 0) {
         return;
     }
     super->paint(context, offset);
 }
 
-template<typename T> void RenderAnimatedOpacityMixinCls<T>::visitChildrenForSemantics(RenderObjectVisitor visitor) {
+template<typename T>
+void RenderAnimatedOpacityMixinCls<T>::visitChildrenForSemantics(RenderObjectVisitor visitor) {
     if (child != nullptr && (_alpha != 0 || alwaysIncludeSemantics())) {
         visitor(child!);
     }
 }
 
-template<typename T> void RenderAnimatedOpacityMixinCls<T>::debugFillProperties(DiagnosticPropertiesBuilder properties) {
+template<typename T>
+void RenderAnimatedOpacityMixinCls<T>::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
     properties->add(<Animation<double>>make<DiagnosticsPropertyCls>(__s("opacity"), opacity()));
     properties->add(make<FlagPropertyCls>(__s("alwaysIncludeSemantics")alwaysIncludeSemantics(), __s("alwaysIncludeSemantics")));
 }
 
-template<typename T> void RenderAnimatedOpacityMixinCls<T>::_updateOpacity() {
+template<typename T>
+void RenderAnimatedOpacityMixinCls<T>::_updateOpacity() {
     int oldAlpha = _alpha;
     _alpha = ui->ColorCls->getAlphaFromOpacity(opacity()->value());
     if (oldAlpha != _alpha) {
@@ -722,7 +747,7 @@ template<typename T> void RenderAnimatedOpacityMixinCls<T>::_updateOpacity() {
     }
 }
 
-RenderAnimatedOpacityCls::RenderAnimatedOpacityCls(bool alwaysIncludeSemantics, RenderBox child, Animation<double> opacity) : RenderProxyBox(child) {
+RenderAnimatedOpacityCls::RenderAnimatedOpacityCls(bool alwaysIncludeSemantics, RenderBox child, Animation<double> opacity) {
     {
         assert(opacity != nullptr);
         assert(alwaysIncludeSemantics != nullptr);
@@ -733,7 +758,7 @@ RenderAnimatedOpacityCls::RenderAnimatedOpacityCls(bool alwaysIncludeSemantics, 
     }
 }
 
-RenderShaderMaskCls::RenderShaderMaskCls(BlendMode blendMode, RenderBox child, ShaderCallback shaderCallback) : RenderProxyBox(child) {
+RenderShaderMaskCls::RenderShaderMaskCls(BlendMode blendMode, RenderBox child, ShaderCallback shaderCallback) {
     {
         assert(shaderCallback != nullptr);
         assert(blendMode != nullptr);
@@ -791,7 +816,7 @@ void RenderShaderMaskCls::paint(PaintingContext context, Offset offset) {
     }
 }
 
-RenderBackdropFilterCls::RenderBackdropFilterCls(BlendMode blendMode, RenderBox child, ImageFilter filter) : RenderProxyBox(child) {
+RenderBackdropFilterCls::RenderBackdropFilterCls(BlendMode blendMode, RenderBox child, ImageFilter filter) {
     {
         assert(filter != nullptr);
         assert(blendMode != nullptr);
@@ -850,25 +875,30 @@ void RenderBackdropFilterCls::paint(PaintingContext context, Offset offset) {
     }
 }
 
-template<typename T> CustomClipperCls<T>::CustomClipperCls(Listenable reclip) {
+template<typename T>
+CustomClipperCls<T>::CustomClipperCls(Listenable reclip) {
     {
         _reclip = reclip;
     }
 }
 
-template<typename T> void CustomClipperCls<T>::addListener(VoidCallback listener) {
+template<typename T>
+void CustomClipperCls<T>::addListener(VoidCallback listener) {
     return _reclip?->addListener(listener);
 }
 
-template<typename T> void CustomClipperCls<T>::removeListener(VoidCallback listener) {
+template<typename T>
+void CustomClipperCls<T>::removeListener(VoidCallback listener) {
     return _reclip?->removeListener(listener);
 }
 
-template<typename T> Rect CustomClipperCls<T>::getApproximateClipRect(Size size) {
+template<typename T>
+Rect CustomClipperCls<T>::getApproximateClipRect(Size size) {
     return OffsetCls::zero & size;
 }
 
-template<typename T> String CustomClipperCls<T>::toString() {
+template<typename T>
+String CustomClipperCls<T>::toString() {
     return objectRuntimeType(this, __s("CustomClipper"));
 }
 
@@ -890,11 +920,13 @@ bool ShapeBorderClipperCls::shouldReclip(CustomClipper<Path> oldClipper) {
     return typedOldClipper->shape != shape || typedOldClipper->textDirection != textDirection;
 }
 
-template<typename T> CustomClipper<T> _RenderCustomClipCls<T>::clipper() {
+template<typename T>
+CustomClipper<T> _RenderCustomClipCls<T>::clipper() {
     return _clipper;
 }
 
-template<typename T> void _RenderCustomClipCls<T>::clipper(CustomClipper<T> newClipper) {
+template<typename T>
+void _RenderCustomClipCls<T>::clipper(CustomClipper<T> newClipper) {
     if (_clipper == newClipper) {
         return;
     }
@@ -910,28 +942,33 @@ template<typename T> void _RenderCustomClipCls<T>::clipper(CustomClipper<T> newC
     }
 }
 
-template<typename T> void _RenderCustomClipCls<T>::attach(PipelineOwner owner) {
+template<typename T>
+void _RenderCustomClipCls<T>::attach(PipelineOwner owner) {
     super->attach(owner);
     _clipper?->addListener(_markNeedsClip);
 }
 
-template<typename T> void _RenderCustomClipCls<T>::detach() {
+template<typename T>
+void _RenderCustomClipCls<T>::detach() {
     _clipper?->removeListener(_markNeedsClip);
     super->detach();
 }
 
-template<typename T> Clip _RenderCustomClipCls<T>::clipBehavior() {
+template<typename T>
+Clip _RenderCustomClipCls<T>::clipBehavior() {
     return _clipBehavior;
 }
 
-template<typename T> void _RenderCustomClipCls<T>::clipBehavior(Clip value) {
+template<typename T>
+void _RenderCustomClipCls<T>::clipBehavior(Clip value) {
     if (value != _clipBehavior) {
         _clipBehavior = value;
         markNeedsPaint();
     }
 }
 
-template<typename T> void _RenderCustomClipCls<T>::performLayout() {
+template<typename T>
+void _RenderCustomClipCls<T>::performLayout() {
     Size oldSize = hasSize? size : nullptr;
     super->performLayout();
     if (oldSize != size) {
@@ -939,11 +976,13 @@ template<typename T> void _RenderCustomClipCls<T>::performLayout() {
     }
 }
 
-template<typename T> Rect _RenderCustomClipCls<T>::describeApproximatePaintClip(RenderObject child) {
+template<typename T>
+Rect _RenderCustomClipCls<T>::describeApproximatePaintClip(RenderObject child) {
     ;
 }
 
-template<typename T> void _RenderCustomClipCls<T>::debugPaintSize(PaintingContext context, Offset offset) {
+template<typename T>
+void _RenderCustomClipCls<T>::debugPaintSize(PaintingContext context, Offset offset) {
     assert([=] () {
             auto _c1 = make<PaintCls>();    _c1.shader = auto _c2 = ui->GradientCls->linear(OffsetCls::zero, make<OffsetCls>(10.0, 10.0), makeList(ArrayItem, ArrayItem, ArrayItem, ArrayItem), makeList(ArrayItem, ArrayItem, ArrayItem, ArrayItem), TileModeCls::repeated);    _c2.strokeWidth = auto _c3 = 2.0;    _c3.style = PaintingStyleCls::stroke;    _c3;    _c2;_debugPaint = _c1;
             auto _c4 = make<TextPainterCls>(make<TextSpanCls>(__s("✂"), make<TextStyleCls>(make<ColorCls>(0xFFFF00FF), 14.0)), TextDirectionCls::rtl);    _c4.layout();_debugText = _c4;
@@ -951,7 +990,8 @@ template<typename T> void _RenderCustomClipCls<T>::debugPaintSize(PaintingContex
     }());
 }
 
-template<typename T> _RenderCustomClipCls<T>::_RenderCustomClipCls(RenderBox child, Clip clipBehavior, CustomClipper<T> clipper) : RenderProxyBox(child) {
+template<typename T>
+_RenderCustomClipCls<T>::_RenderCustomClipCls(RenderBox child, Clip clipBehavior, CustomClipper<T> clipper) {
     {
         assert(clipBehavior != nullptr);
         _clipper = clipper;
@@ -959,13 +999,15 @@ template<typename T> _RenderCustomClipCls<T>::_RenderCustomClipCls(RenderBox chi
     }
 }
 
-template<typename T> void _RenderCustomClipCls<T>::_markNeedsClip() {
+template<typename T>
+void _RenderCustomClipCls<T>::_markNeedsClip() {
     _clip = nullptr;
     markNeedsPaint();
     markNeedsSemanticsUpdate();
 }
 
-template<typename T> void _RenderCustomClipCls<T>::_updateClip() {
+template<typename T>
+void _RenderCustomClipCls<T>::_updateClip() {
     _clip = _clipper?->getClip(size) or _defaultClip();
 }
 
@@ -1017,7 +1059,7 @@ Rect RenderClipRectCls::_defaultClip() {
     return OffsetCls::zero & size;
 }
 
-RenderClipRRectCls::RenderClipRRectCls(BorderRadiusGeometry borderRadius, Unknown child, Unknown clipBehavior, CustomClipper<RRect> clipper, TextDirection textDirection) : _RenderCustomClip<RRect>(clipper) {
+RenderClipRRectCls::RenderClipRRectCls(BorderRadiusGeometry borderRadius, Unknown child, Unknown clipBehavior, CustomClipper<RRect> clipper, TextDirection textDirection) {
     {
         assert(clipBehavior != nullptr);
         _borderRadius = borderRadius;
@@ -1199,11 +1241,13 @@ Path RenderClipPathCls::_defaultClip() {
     return _c1;
 }
 
-template<typename T> double _RenderPhysicalModelBaseCls<T>::elevation() {
+template<typename T>
+double _RenderPhysicalModelBaseCls<T>::elevation() {
     return _elevation;
 }
 
-template<typename T> void _RenderPhysicalModelBaseCls<T>::elevation(double value) {
+template<typename T>
+void _RenderPhysicalModelBaseCls<T>::elevation(double value) {
     auto _c1 = make<PathCls>();_c1.addRect(OffsetCls::zero & size);assert(value != nullptr && value >= 0.0);
     if (elevation() == value) {
         return;
@@ -1216,11 +1260,13 @@ template<typename T> void _RenderPhysicalModelBaseCls<T>::elevation(double value
     markNeedsPaint();
 }
 
-template<typename T> Color _RenderPhysicalModelBaseCls<T>::shadowColor() {
+template<typename T>
+Color _RenderPhysicalModelBaseCls<T>::shadowColor() {
     return _shadowColor;
 }
 
-template<typename T> void _RenderPhysicalModelBaseCls<T>::shadowColor(Color value) {
+template<typename T>
+void _RenderPhysicalModelBaseCls<T>::shadowColor(Color value) {
     assert(value != nullptr);
     if (shadowColor() == value) {
         return;
@@ -1229,11 +1275,13 @@ template<typename T> void _RenderPhysicalModelBaseCls<T>::shadowColor(Color valu
     markNeedsPaint();
 }
 
-template<typename T> Color _RenderPhysicalModelBaseCls<T>::color() {
+template<typename T>
+Color _RenderPhysicalModelBaseCls<T>::color() {
     return _color;
 }
 
-template<typename T> void _RenderPhysicalModelBaseCls<T>::color(Color value) {
+template<typename T>
+void _RenderPhysicalModelBaseCls<T>::color(Color value) {
     assert(value != nullptr);
     if (color() == value) {
         return;
@@ -1242,19 +1290,22 @@ template<typename T> void _RenderPhysicalModelBaseCls<T>::color(Color value) {
     markNeedsPaint();
 }
 
-template<typename T> void _RenderPhysicalModelBaseCls<T>::describeSemanticsConfiguration(SemanticsConfiguration config) {
+template<typename T>
+void _RenderPhysicalModelBaseCls<T>::describeSemanticsConfiguration(SemanticsConfiguration config) {
     super->describeSemanticsConfiguration(config);
     config->elevation() = elevation();
 }
 
-template<typename T> void _RenderPhysicalModelBaseCls<T>::debugFillProperties(DiagnosticPropertiesBuilder description) {
+template<typename T>
+void _RenderPhysicalModelBaseCls<T>::debugFillProperties(DiagnosticPropertiesBuilder description) {
     super->debugFillProperties(description);
     description->add(make<DoublePropertyCls>(__s("elevation"), elevation()));
     description->add(make<ColorPropertyCls>(__s("color"), color()));
     description->add(make<ColorPropertyCls>(__s("shadowColor"), color()));
 }
 
-template<typename T> _RenderPhysicalModelBaseCls<T>::_RenderPhysicalModelBaseCls(Unknown child, Unknown clipBehavior, Unknown clipper, Color color, double elevation, Color shadowColor) {
+template<typename T>
+_RenderPhysicalModelBaseCls<T>::_RenderPhysicalModelBaseCls(Unknown child, Unknown clipBehavior, Unknown clipper, Color color, double elevation, Color shadowColor) {
     {
         assert(elevation != nullptr && elevation >= 0.0);
         assert(color != nullptr);
@@ -1434,7 +1485,7 @@ Path RenderPhysicalShapeCls::_defaultClip() {
     return _c1;
 }
 
-RenderDecoratedBoxCls::RenderDecoratedBoxCls(RenderBox child, ImageConfiguration configuration, Decoration decoration, DecorationPosition position) : RenderProxyBox(child) {
+RenderDecoratedBoxCls::RenderDecoratedBoxCls(RenderBox child, ImageConfiguration configuration, Decoration decoration, DecorationPosition position) {
     {
             auto _c1 = make<PathCls>();    _c1.addRect(OffsetCls::zero & size);assert(decoration != nullptr);
         assert(position != nullptr);
@@ -1534,7 +1585,7 @@ void RenderDecoratedBoxCls::debugFillProperties(DiagnosticPropertiesBuilder prop
     properties->add(<ImageConfiguration>make<DiagnosticsPropertyCls>(__s("configuration"), configuration()));
 }
 
-RenderTransformCls::RenderTransformCls(AlignmentGeometry alignment, RenderBox child, FilterQuality filterQuality, Offset origin, TextDirection textDirection, Matrix4 transform, bool transformHitTests) : RenderProxyBox(child) {
+RenderTransformCls::RenderTransformCls(AlignmentGeometry alignment, RenderBox child, FilterQuality filterQuality, Offset origin, TextDirection textDirection, Matrix4 transform, bool transformHitTests) {
     {
         assert(transform != nullptr);
     }
@@ -1734,7 +1785,7 @@ Matrix4 RenderTransformCls::_effectiveTransform() {
     return result;
 }
 
-RenderFittedBoxCls::RenderFittedBoxCls(AlignmentGeometry alignment, RenderBox child, Clip clipBehavior, BoxFit fit, TextDirection textDirection) : RenderProxyBox(child) {
+RenderFittedBoxCls::RenderFittedBoxCls(AlignmentGeometry alignment, RenderBox child, Clip clipBehavior, BoxFit fit, TextDirection textDirection) {
     {
         assert(fit != nullptr);
         assert(alignment != nullptr);
@@ -1934,7 +1985,7 @@ TransformLayer RenderFittedBoxCls::_paintChildWithTransform(PaintingContext cont
     return nullptr;
 }
 
-RenderFractionalTranslationCls::RenderFractionalTranslationCls(RenderBox child, bool transformHitTests, Offset translation) : RenderProxyBox(child) {
+RenderFractionalTranslationCls::RenderFractionalTranslationCls(RenderBox child, bool transformHitTests, Offset translation) {
     {
         assert(translation != nullptr);
         _translation = translation;
@@ -2023,7 +2074,7 @@ void RenderPointerListenerCls::debugFillProperties(DiagnosticPropertiesBuilder p
     Map<String, void  Function()> map1 = make<MapCls<>>();map1.set(__s("down"), onPointerDown);map1.set(__s("move"), onPointerMove);map1.set(__s("up"), onPointerUp);map1.set(__s("hover"), onPointerHover);map1.set(__s("cancel"), onPointerCancel);map1.set(__s("panZoomStart"), onPointerPanZoomStart);map1.set(__s("panZoomUpdate"), onPointerPanZoomUpdate);map1.set(__s("panZoomEnd"), onPointerPanZoomEnd);map1.set(__s("signal"), onPointerSignal);properties->add(<void  Function()>make<FlagsSummaryCls>(__s("listeners"), list1__s("<none>")));
 }
 
-RenderMouseRegionCls::RenderMouseRegionCls(Unknown child, MouseCursor cursor, HitTestBehavior hitTestBehavior, PointerEnterEventListener onEnter, PointerExitEventListener onExit, PointerHoverEventListener onHover, bool opaque, bool validForMouseTracker) : RenderProxyBoxWithHitTestBehavior(hitTestBehavior or HitTestBehaviorCls::opaque) {
+RenderMouseRegionCls::RenderMouseRegionCls(Unknown child, MouseCursor cursor, HitTestBehavior hitTestBehavior, PointerEnterEventListener onEnter, PointerExitEventListener onExit, PointerHoverEventListener onHover, bool opaque, bool validForMouseTracker) {
     {
         assert(opaque != nullptr);
         assert(cursor != nullptr);
@@ -2104,7 +2155,7 @@ void RenderMouseRegionCls::debugFillProperties(DiagnosticPropertiesBuilder prope
     properties->add(make<FlagPropertyCls>(__s("validForMouseTracker")validForMouseTracker(), true, __s("invalid for MouseTracker")));
 }
 
-RenderRepaintBoundaryCls::RenderRepaintBoundaryCls(RenderBox child) : RenderProxyBox(child) {
+RenderRepaintBoundaryCls::RenderRepaintBoundaryCls(RenderBox child) {
 }
 
 bool RenderRepaintBoundaryCls::isRepaintBoundary() {
@@ -2189,7 +2240,7 @@ void RenderRepaintBoundaryCls::debugFillProperties(DiagnosticPropertiesBuilder p
     }
 }
 
-RenderIgnorePointerCls::RenderIgnorePointerCls(RenderBox child, bool ignoring, bool ignoringSemantics) : RenderProxyBox(child) {
+RenderIgnorePointerCls::RenderIgnorePointerCls(RenderBox child, bool ignoring, bool ignoringSemantics) {
     {
         _ignoring = ignoring;
         _ignoringSemantics = ignoringSemantics;
@@ -2249,7 +2300,7 @@ bool RenderIgnorePointerCls::_effectiveIgnoringSemantics() {
     return ignoringSemantics() or ignoring();
 }
 
-RenderOffstageCls::RenderOffstageCls(RenderBox child, bool offstage) : RenderProxyBox(child) {
+RenderOffstageCls::RenderOffstageCls(RenderBox child, bool offstage) {
     {
         assert(offstage != nullptr);
         _offstage = offstage;
@@ -2363,7 +2414,7 @@ List<DiagnosticsNode> RenderOffstageCls::debugDescribeChildren() {
     return makeList(ArrayItem);
 }
 
-RenderAbsorbPointerCls::RenderAbsorbPointerCls(bool absorbing, RenderBox child, bool ignoringSemantics) : RenderProxyBox(child) {
+RenderAbsorbPointerCls::RenderAbsorbPointerCls(bool absorbing, RenderBox child, bool ignoringSemantics) {
     {
         assert(absorbing != nullptr);
         _absorbing = absorbing;
@@ -2574,7 +2625,7 @@ void RenderSemanticsGestureHandlerCls::_performSemanticScrollDown() {
     }
 }
 
-RenderSemanticsAnnotationsCls::RenderSemanticsAnnotationsCls(RenderBox child, bool container, bool excludeSemantics, bool explicitChildNodes, SemanticsProperties properties, TextDirection textDirection) : RenderProxyBox(child) {
+RenderSemanticsAnnotationsCls::RenderSemanticsAnnotationsCls(RenderBox child, bool container, bool excludeSemantics, bool explicitChildNodes, SemanticsProperties properties, TextDirection textDirection) {
     {
         assert(container != nullptr);
         _container = container;
@@ -2938,7 +2989,7 @@ void RenderSemanticsAnnotationsCls::_performDidLoseAccessibilityFocus() {
     _properties->onDidLoseAccessibilityFocus?->call();
 }
 
-RenderBlockSemanticsCls::RenderBlockSemanticsCls(bool blocking, RenderBox child) : RenderProxyBox(child) {
+RenderBlockSemanticsCls::RenderBlockSemanticsCls(bool blocking, RenderBox child) {
     {
         _blocking = blocking;
     }
@@ -2967,7 +3018,7 @@ void RenderBlockSemanticsCls::debugFillProperties(DiagnosticPropertiesBuilder pr
     properties->add(<bool>make<DiagnosticsPropertyCls>(__s("blocking"), blocking()));
 }
 
-RenderMergeSemanticsCls::RenderMergeSemanticsCls(RenderBox child) : RenderProxyBox(child) {
+RenderMergeSemanticsCls::RenderMergeSemanticsCls(RenderBox child) {
 }
 
 void RenderMergeSemanticsCls::describeSemanticsConfiguration(SemanticsConfiguration config) {
@@ -2975,7 +3026,7 @@ void RenderMergeSemanticsCls::describeSemanticsConfiguration(SemanticsConfigurat
     auto _c1 = config;_c1.isSemanticBoundary = auto _c2 = true;_c2.isMergingSemanticsOfDescendants = true;_c2;_c1;
 }
 
-RenderExcludeSemanticsCls::RenderExcludeSemanticsCls(RenderBox child, bool excluding) : RenderProxyBox(child) {
+RenderExcludeSemanticsCls::RenderExcludeSemanticsCls(RenderBox child, bool excluding) {
     {
         _excluding = excluding;
     }
@@ -3009,7 +3060,7 @@ void RenderExcludeSemanticsCls::debugFillProperties(DiagnosticPropertiesBuilder 
     properties->add(<bool>make<DiagnosticsPropertyCls>(__s("excluding"), excluding()));
 }
 
-RenderIndexedSemanticsCls::RenderIndexedSemanticsCls(RenderBox child, int index) : RenderProxyBox(child) {
+RenderIndexedSemanticsCls::RenderIndexedSemanticsCls(RenderBox child, int index) {
     {
         assert(index != nullptr);
         _index = index;
@@ -3038,7 +3089,7 @@ void RenderIndexedSemanticsCls::debugFillProperties(DiagnosticPropertiesBuilder 
     properties->add(<int>make<DiagnosticsPropertyCls>(__s("index"), index()));
 }
 
-RenderLeaderLayerCls::RenderLeaderLayerCls(RenderBox child, LayerLink link) : RenderProxyBox(child) {
+RenderLeaderLayerCls::RenderLeaderLayerCls(RenderBox child, LayerLink link) {
     {
         assert(link != nullptr);
         _link = link;
@@ -3091,7 +3142,7 @@ void RenderLeaderLayerCls::debugFillProperties(DiagnosticPropertiesBuilder prope
     properties->add(<LayerLink>make<DiagnosticsPropertyCls>(__s("link"), link()));
 }
 
-RenderFollowerLayerCls::RenderFollowerLayerCls(RenderBox child, Alignment followerAnchor, Alignment leaderAnchor, LayerLink link, Offset offset, bool showWhenUnlinked) : RenderProxyBox(child) {
+RenderFollowerLayerCls::RenderFollowerLayerCls(RenderBox child, Alignment followerAnchor, Alignment leaderAnchor, LayerLink link, Offset offset, bool showWhenUnlinked) {
     {
         assert(link != nullptr);
         assert(showWhenUnlinked != nullptr);
@@ -3228,7 +3279,8 @@ void RenderFollowerLayerCls::debugFillProperties(DiagnosticPropertiesBuilder pro
     properties->add(make<TransformPropertyCls>(__s("current transform matrix"), getCurrentTransform()));
 }
 
-template<typename T> RenderAnnotatedRegionCls<T>::RenderAnnotatedRegionCls(RenderBox child, bool sized, T value) : RenderProxyBox(child) {
+template<typename T>
+RenderAnnotatedRegionCls<T>::RenderAnnotatedRegionCls(RenderBox child, bool sized, T value) {
     {
         assert(value != nullptr);
         assert(sized != nullptr);
@@ -3237,11 +3289,13 @@ template<typename T> RenderAnnotatedRegionCls<T>::RenderAnnotatedRegionCls(Rende
     }
 }
 
-template<typename T> T RenderAnnotatedRegionCls<T>::value() {
+template<typename T>
+T RenderAnnotatedRegionCls<T>::value() {
     return _value;
 }
 
-template<typename T> void RenderAnnotatedRegionCls<T>::value(T newValue) {
+template<typename T>
+void RenderAnnotatedRegionCls<T>::value(T newValue) {
     if (_value == newValue) {
         return;
     }
@@ -3249,11 +3303,13 @@ template<typename T> void RenderAnnotatedRegionCls<T>::value(T newValue) {
     markNeedsPaint();
 }
 
-template<typename T> bool RenderAnnotatedRegionCls<T>::sized() {
+template<typename T>
+bool RenderAnnotatedRegionCls<T>::sized() {
     return _sized;
 }
 
-template<typename T> void RenderAnnotatedRegionCls<T>::sized(bool value) {
+template<typename T>
+void RenderAnnotatedRegionCls<T>::sized(bool value) {
     if (_sized == value) {
         return;
     }
@@ -3261,7 +3317,8 @@ template<typename T> void RenderAnnotatedRegionCls<T>::sized(bool value) {
     markNeedsPaint();
 }
 
-template<typename T> void RenderAnnotatedRegionCls<T>::paint(PaintingContext context, Offset offset) {
+template<typename T>
+void RenderAnnotatedRegionCls<T>::paint(PaintingContext context, Offset offset) {
     AnnotatedRegionLayer<T> layer = <T>make<AnnotatedRegionLayerCls>(value()sized()? size : nullptr, sized()? offset : nullptr);
     context->pushLayer(layer, super->paint, offset);
 }

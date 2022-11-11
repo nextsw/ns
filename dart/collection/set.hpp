@@ -5,7 +5,8 @@
 #include <dart/core/core.hpp>
 
 
-template<typename E> class SetMixinCls : public ObjectCls {
+template<typename E>
+class SetMixinCls : public ObjectCls {
 public:
 
     virtual bool add(E value);
@@ -19,11 +20,13 @@ public:
 
     virtual bool isNotEmpty();
 
-    template<typename R>  virtual Set<R> cast();
+    template<typename R>
+ virtual Set<R> cast();
 
     virtual Iterable<E> followedBy(Iterable<E> other);
 
-    template<typename T>  virtual Iterable<T> whereType();
+    template<typename T>
+ virtual Iterable<T> whereType();
 
     virtual void clear();
 
@@ -47,7 +50,8 @@ public:
 
     virtual List<E> toList(bool growable);
 
-    template<typename T>  virtual Iterable<T> map(T f(E element) );
+    template<typename T>
+ virtual Iterable<T> map(T f(E element) );
 
     virtual E single();
 
@@ -55,13 +59,15 @@ public:
 
     virtual Iterable<E> where(bool f(E element) );
 
-    template<typename T>  virtual Iterable<T> expand(Iterable<T> f(E element) );
+    template<typename T>
+ virtual Iterable<T> expand(Iterable<T> f(E element) );
 
     virtual void forEach(void f(E element) );
 
     virtual E reduce(E combine(E element, E value) );
 
-    template<typename T>  virtual T fold(T combine(E element, T previousValue) , T initialValue);
+    template<typename T>
+ virtual T fold(T combine(E element, T previousValue) , T initialValue);
 
     virtual bool every(bool f(E element) );
 
@@ -92,9 +98,11 @@ public:
 private:
 
 };
-template<typename E> using SetMixin = std::shared_ptr<SetMixinCls<E>>;
+template<typename E>
+using SetMixin = std::shared_ptr<SetMixinCls<E>>;
 
-template<typename E> class SetBaseCls : public ObjectCls {
+template<typename E>
+class SetBaseCls : public ObjectCls {
 public:
 
     static String setToString(Set set);
@@ -102,12 +110,15 @@ public:
 private:
 
 };
-template<typename E> using SetBase = std::shared_ptr<SetBaseCls<E>>;
+template<typename E>
+using SetBase = std::shared_ptr<SetBaseCls<E>>;
 
-template<typename E> class _SetBaseCls : public ObjectCls {
+template<typename E>
+class _SetBaseCls : public ObjectCls {
 public:
 
-    template<typename R>  virtual Set<R> cast();
+    template<typename R>
+ virtual Set<R> cast();
 
     virtual Set<E> difference(Set<Object> other);
 
@@ -119,11 +130,14 @@ private:
 
      _SetBaseCls();
     virtual Set<E> _newSet();
-    template<typename R>  virtual Set<R> _newSimilarSet();
+    template<typename R>
+ virtual Set<R> _newSimilarSet();
 };
-template<typename E> using _SetBase = std::shared_ptr<_SetBaseCls<E>>;
+template<typename E>
+using _SetBase = std::shared_ptr<_SetBaseCls<E>>;
 
-template<typename E> class _UnmodifiableSetMixinCls : public ObjectCls {
+template<typename E>
+class _UnmodifiableSetMixinCls : public ObjectCls {
 public:
 
     virtual bool add(E value);
@@ -147,9 +161,11 @@ private:
     static Never _throwUnmodifiable();
 
 };
-template<typename E> using _UnmodifiableSetMixin = std::shared_ptr<_UnmodifiableSetMixinCls<E>>;
+template<typename E>
+using _UnmodifiableSetMixin = std::shared_ptr<_UnmodifiableSetMixinCls<E>>;
 
-template<typename E> class _UnmodifiableSetCls : public _SetBaseCls<E> {
+template<typename E>
+class _UnmodifiableSetCls : public _SetBaseCls<E> {
 public:
 
     virtual bool contains(Object element);
@@ -167,12 +183,15 @@ private:
      _UnmodifiableSetCls(Map<E, Null> _map);
     virtual Set<E> _newSet();
 
-    template<typename R>  virtual Set<R> _newSimilarSet();
+    template<typename R>
+ virtual Set<R> _newSimilarSet();
 
 };
-template<typename E> using _UnmodifiableSet = std::shared_ptr<_UnmodifiableSetCls<E>>;
+template<typename E>
+using _UnmodifiableSet = std::shared_ptr<_UnmodifiableSetCls<E>>;
 
-template<typename E> class UnmodifiableSetViewCls : public SetBaseCls<E> {
+template<typename E>
+class UnmodifiableSetViewCls : public SetBaseCls<E> {
 public:
 
      UnmodifiableSetViewCls(Set<E> source);
@@ -192,7 +211,8 @@ private:
 
 
 };
-template<typename E> using UnmodifiableSetView = std::shared_ptr<UnmodifiableSetViewCls<E>>;
+template<typename E>
+using UnmodifiableSetView = std::shared_ptr<UnmodifiableSetViewCls<E>>;
 
 
 #endif

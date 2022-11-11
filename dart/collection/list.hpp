@@ -5,7 +5,8 @@
 #include <dart/core/core.hpp>
 
 
-template<typename E> class ListBaseCls : public ObjectCls {
+template<typename E>
+class ListBaseCls : public ObjectCls {
 public:
 
     static String listToString(List list);
@@ -13,9 +14,11 @@ public:
 private:
 
 };
-template<typename E> using ListBase = std::shared_ptr<ListBaseCls<E>>;
+template<typename E>
+using ListBase = std::shared_ptr<ListBaseCls<E>>;
 
-template<typename E> class ListMixinCls : public ObjectCls {
+template<typename E>
+class ListMixinCls : public ObjectCls {
 public:
 
     virtual Iterator<E> iterator();
@@ -56,15 +59,19 @@ public:
 
     virtual Iterable<E> where(bool test(E element) );
 
-    template<typename T>  virtual Iterable<T> whereType();
+    template<typename T>
+ virtual Iterable<T> whereType();
 
-    template<typename T>  virtual Iterable<T> map(T f(E element) );
+    template<typename T>
+ virtual Iterable<T> map(T f(E element) );
 
-    template<typename T>  virtual Iterable<T> expand(Iterable<T> f(E element) );
+    template<typename T>
+ virtual Iterable<T> expand(Iterable<T> f(E element) );
 
     virtual E reduce(E combine(E element, E previousValue) );
 
-    template<typename T>  virtual T fold(T combine(E element, T previousValue) , T initialValue);
+    template<typename T>
+ virtual T fold(T combine(E element, T previousValue) , T initialValue);
 
     virtual Iterable<E> skip(int count);
 
@@ -90,7 +97,8 @@ public:
 
     virtual void clear();
 
-    template<typename R>  virtual List<R> cast();
+    template<typename R>
+ virtual List<R> cast();
 
     virtual E removeLast();
 
@@ -143,7 +151,8 @@ private:
     static int _compareAny(dynamic a, dynamic b);
 
 };
-template<typename E> using ListMixin = std::shared_ptr<ListMixinCls<E>>;
+template<typename E>
+using ListMixin = std::shared_ptr<ListMixinCls<E>>;
 
 
 #endif

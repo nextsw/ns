@@ -22,7 +22,8 @@ double _timeDilation;
 void  timeDilation(double value);
 
 
-template<typename T> class _TaskEntryCls : public ObjectCls {
+template<typename T>
+class _TaskEntryCls : public ObjectCls {
 public:
     TaskCallback<T> task;
 
@@ -44,7 +45,8 @@ private:
      _TaskEntryCls(String debugLabel, Flow flow, int priority, TaskCallback<T> task);
 
 };
-template<typename T> using _TaskEntry = std::shared_ptr<_TaskEntryCls<T>>;
+template<typename T>
+using _TaskEntry = std::shared_ptr<_TaskEntryCls<T>>;
 
 class _FrameCallbackEntryCls : public ObjectCls {
 public:
@@ -89,7 +91,8 @@ public:
 
     virtual void handleAppLifecycleStateChanged(AppLifecycleState state);
 
-    template<typename T>  virtual Future<T> scheduleTask(String debugLabel, Flow flow, Priority priority, TaskCallback<T> task);
+    template<typename T>
+ virtual Future<T> scheduleTask(String debugLabel, Flow flow, Priority priority, TaskCallback<T> task);
 
     virtual void unlocked();
 

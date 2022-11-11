@@ -114,7 +114,8 @@ void KeepAliveHandleCls::release() {
     notifyListeners();
 }
 
-template<typename T> void AutomaticKeepAliveClientMixinCls<T>::updateKeepAlive() {
+template<typename T>
+void AutomaticKeepAliveClientMixinCls<T>::updateKeepAlive() {
     if (wantKeepAlive()) {
         if (_keepAliveHandle == nullptr) {
             _ensureKeepAlive();
@@ -126,34 +127,39 @@ template<typename T> void AutomaticKeepAliveClientMixinCls<T>::updateKeepAlive()
     }
 }
 
-template<typename T> void AutomaticKeepAliveClientMixinCls<T>::initState() {
+template<typename T>
+void AutomaticKeepAliveClientMixinCls<T>::initState() {
     super->initState();
     if (wantKeepAlive()) {
         _ensureKeepAlive();
     }
 }
 
-template<typename T> void AutomaticKeepAliveClientMixinCls<T>::deactivate() {
+template<typename T>
+void AutomaticKeepAliveClientMixinCls<T>::deactivate() {
     if (_keepAliveHandle != nullptr) {
         _releaseKeepAlive();
     }
     super->deactivate();
 }
 
-template<typename T> Widget AutomaticKeepAliveClientMixinCls<T>::build(BuildContext context) {
+template<typename T>
+Widget AutomaticKeepAliveClientMixinCls<T>::build(BuildContext context) {
     if (wantKeepAlive() && _keepAliveHandle == nullptr) {
         _ensureKeepAlive();
     }
     return make<_NullWidgetCls>();
 }
 
-template<typename T> void AutomaticKeepAliveClientMixinCls<T>::_ensureKeepAlive() {
+template<typename T>
+void AutomaticKeepAliveClientMixinCls<T>::_ensureKeepAlive() {
     assert(_keepAliveHandle == nullptr);
     _keepAliveHandle = make<KeepAliveHandleCls>();
     make<KeepAliveNotificationCls>(_keepAliveHandle!)->dispatch(context);
 }
 
-template<typename T> void AutomaticKeepAliveClientMixinCls<T>::_releaseKeepAlive() {
+template<typename T>
+void AutomaticKeepAliveClientMixinCls<T>::_releaseKeepAlive() {
     _keepAliveHandle!->release();
     _keepAliveHandle = nullptr;
 }

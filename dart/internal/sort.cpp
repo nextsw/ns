@@ -1,16 +1,19 @@
 #include "sort.hpp"
-void SortCls::sorttemplate<typename E> (List<E> a, int compare(E a, E b) ) {
+template<typename E>
+void SortCls::sort(List<E> a, int compare(E a, E b) ) {
     _doSort(a, 0, a->length - 1, compare);
 }
 
-void SortCls::sortRangetemplate<typename E> (List<E> a, int compare(E a, E b) , int from, int to) {
+template<typename E>
+void SortCls::sortRange(List<E> a, int compare(E a, E b) , int from, int to) {
     if (( < 0) || (to > a->length) || ( < from)) {
         ;
     }
     _doSort(a, from, to - 1, compare);
 }
 
-void SortCls::_doSorttemplate<typename E> (List<E> a, int compare(E a, E b) , int left, int right) {
+template<typename E>
+void SortCls::_doSort(List<E> a, int compare(E a, E b) , int left, int right) {
     if ((right - left) <= _INSERTION_SORT_THRESHOLDCls) {
         _insertionSort(a, left, right, compare);
     } else {
@@ -18,7 +21,8 @@ void SortCls::_doSorttemplate<typename E> (List<E> a, int compare(E a, E b) , in
     }
 }
 
-void SortCls::_insertionSorttemplate<typename E> (List<E> a, int compare(E a, E b) , int left, int right) {
+template<typename E>
+void SortCls::_insertionSort(List<E> a, int compare(E a, E b) , int left, int right) {
     for (; i <= right; i++) {
         auto el = a[i];
         int j = i;
@@ -30,7 +34,8 @@ void SortCls::_insertionSorttemplate<typename E> (List<E> a, int compare(E a, E 
     }
 }
 
-void SortCls::_dualPivotQuicksorttemplate<typename E> (List<E> a, int compare(E a, E b) , int left, int right) {
+template<typename E>
+void SortCls::_dualPivotQuicksort(List<E> a, int compare(E a, E b) , int left, int right) {
     assert(right - left > _INSERTION_SORT_THRESHOLDCls);
     int sixth = (right - left + 1) ~/ 6;
     int index1 = left + sixth;
@@ -123,11 +128,11 @@ void SortCls::_dualPivotQuicksorttemplate<typename E> (List<E> a, int compare(E 
                         a[k] = a[less];
                         a[less++] = a[great];
                         a[great--] = ak;
-                                                break;
+                        break;
                     } else {
                         a[k] = a[great];
                         a[great--] = ak;
-                                                break;
+                        break;
                     }
 ;
                     }                }
@@ -151,7 +156,7 @@ void SortCls::_dualPivotQuicksorttemplate<typename E> (List<E> a, int compare(E 
                         if (comp > 0) {
                             great--;
                             if ( < k)                             {
-                                                            break;
+                                break;
                             }
                             continue;
                         } else {
@@ -164,7 +169,7 @@ void SortCls::_dualPivotQuicksorttemplate<typename E> (List<E> a, int compare(E 
                                 a[k] = a[great];
                                 a[great--] = ak;
                             }
-                                                        break;
+                            break;
                         }
                     }
                 }
@@ -204,7 +209,7 @@ void SortCls::_dualPivotQuicksorttemplate<typename E> (List<E> a, int compare(E 
                         if (comp == 0) {
                             great--;
                             if ( < k)                             {
-                                                            break;
+                                break;
                             }
                             continue;
                         } else {
@@ -217,7 +222,7 @@ void SortCls::_dualPivotQuicksorttemplate<typename E> (List<E> a, int compare(E 
                                 a[k] = a[great];
                                 a[great--] = ak;
                             }
-                                                        break;
+                            break;
                         }
                     }
                 }

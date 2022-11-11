@@ -7,7 +7,8 @@
 #include "framework.hpp"
 
 
-template<typename T> class InheritedNotifierCls : public InheritedWidgetCls {
+template<typename T>
+class InheritedNotifierCls : public InheritedWidgetCls {
 public:
     T notifier;
 
@@ -21,9 +22,11 @@ public:
 private:
 
 };
-template<typename T> using InheritedNotifier = std::shared_ptr<InheritedNotifierCls<T>>;
+template<typename T>
+using InheritedNotifier = std::shared_ptr<InheritedNotifierCls<T>>;
 
-template<typename T> class _InheritedNotifierElementCls : public InheritedElementCls {
+template<typename T>
+class _InheritedNotifierElementCls : public InheritedElementCls {
 public:
 
     virtual void update(InheritedNotifier<T> newWidget);
@@ -43,7 +46,8 @@ private:
     virtual void _handleUpdate();
 
 };
-template<typename T> using _InheritedNotifierElement = std::shared_ptr<_InheritedNotifierElementCls<T>>;
+template<typename T>
+using _InheritedNotifierElement = std::shared_ptr<_InheritedNotifierElementCls<T>>;
 
 
 #endif

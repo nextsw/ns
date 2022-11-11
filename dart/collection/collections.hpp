@@ -5,12 +5,14 @@
 #include <dart/core/core.hpp>
 
 
-template<typename E> class UnmodifiableListViewCls : public UnmodifiableListBaseCls<E> {
+template<typename E>
+class UnmodifiableListViewCls : public UnmodifiableListBaseCls<E> {
 public:
 
      UnmodifiableListViewCls(Iterable<E> source);
 
-    template<typename R>  virtual List<R> cast();
+    template<typename R>
+ virtual List<R> cast();
 
     virtual int length();
 
@@ -21,7 +23,8 @@ private:
 
 
 };
-template<typename E> using UnmodifiableListView = std::shared_ptr<UnmodifiableListViewCls<E>>;
+template<typename E>
+using UnmodifiableListView = std::shared_ptr<UnmodifiableListViewCls<E>>;
 
 
 #endif

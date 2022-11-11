@@ -24,9 +24,11 @@ enum _PlatformViewState{
     resizing,
     ready,
 } // end _PlatformViewState
-template<typename T>  bool _factoryTypesSetEquals(Set<Factory<T>> a, Set<Factory<T>> b);
+template<typename T>
+ bool _factoryTypesSetEquals(Set<Factory<T>> a, Set<Factory<T>> b);
 
-template<typename T>  Set<Type> _factoriesTypeSet(Set<Factory<T>> factories);
+template<typename T>
+ Set<Type> _factoriesTypeSet(Set<Factory<T>> factories);
 
 
 class RenderAndroidViewCls : public PlatformViewRenderBoxCls {

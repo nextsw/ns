@@ -27,7 +27,8 @@ private:
 };
 using IOSink = std::shared_ptr<IOSinkCls>;
 
-template<typename T> class _StreamSinkImplCls : public ObjectCls {
+template<typename T>
+class _StreamSinkImplCls : public ObjectCls {
 public:
 
     virtual void add(T data);
@@ -68,7 +69,8 @@ private:
     virtual StreamController<T> _controller();
 
 };
-template<typename T> using _StreamSinkImpl = std::shared_ptr<_StreamSinkImplCls<T>>;
+template<typename T>
+using _StreamSinkImpl = std::shared_ptr<_StreamSinkImplCls<T>>;
 
 class _IOSinkImplCls : public _StreamSinkImplCls<List<int>> {
 public:

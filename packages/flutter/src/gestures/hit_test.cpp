@@ -1,9 +1,11 @@
 #include "hit_test.hpp"
-template<typename T> String HitTestEntryCls<T>::toString() {
+template<typename T>
+String HitTestEntryCls<T>::toString() {
     return __s("${describeIdentity(this)}($target)");
 }
 
-template<typename T> Matrix4 HitTestEntryCls<T>::transform() {
+template<typename T>
+Matrix4 HitTestEntryCls<T>::transform() {
     return _transform;
 }
 

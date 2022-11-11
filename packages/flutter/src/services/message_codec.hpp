@@ -8,7 +8,8 @@
 #include "platform_channel.hpp"
 
 
-template<typename T> class MessageCodecCls : public ObjectCls {
+template<typename T>
+class MessageCodecCls : public ObjectCls {
 public:
 
     virtual ByteData encodeMessage(T message);
@@ -16,7 +17,8 @@ public:
 private:
 
 };
-template<typename T> using MessageCodec = std::shared_ptr<MessageCodecCls<T>>;
+template<typename T>
+using MessageCodec = std::shared_ptr<MessageCodecCls<T>>;
 
 class MethodCallCls : public ObjectCls {
 public:

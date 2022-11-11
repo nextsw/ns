@@ -12,7 +12,8 @@ void timeDilation(double value) {
     _timeDilation = value;
 }
 
-template<typename T> void _TaskEntryCls<T>::run() {
+template<typename T>
+void _TaskEntryCls<T>::run() {
     if (!kReleaseMode) {
         TimelineCls->timeSync(debugLabel or __s("Scheduled Task"), [=] () {
             completer->complete(task());
@@ -22,7 +23,8 @@ template<typename T> void _TaskEntryCls<T>::run() {
     }
 }
 
-template<typename T> _TaskEntryCls<T>::_TaskEntryCls(String debugLabel, Flow flow, int priority, TaskCallback<T> task) {
+template<typename T>
+_TaskEntryCls<T>::_TaskEntryCls(String debugLabel, Flow flow, int priority, TaskCallback<T> task) {
     {
         assert([=] () {
             debugStack = StackTraceCls::current;
@@ -102,7 +104,8 @@ void SchedulerBindingCls::handleAppLifecycleStateChanged(AppLifecycleState state
     ;
 }
 
-Future<T> SchedulerBindingCls::scheduleTasktemplate<typename T> (String debugLabel, Flow flow, Priority priority, TaskCallback<T> task) {
+template<typename T>
+Future<T> SchedulerBindingCls::scheduleTask(String debugLabel, Flow flow, Priority priority, TaskCallback<T> task) {
     bool isFirstTask = _taskQueue->isEmpty();
     _TaskEntry<T> entry = <T>make<_TaskEntryCls>(task, priority->value(), debugLabel, flow);
     _taskQueue->add(entry);

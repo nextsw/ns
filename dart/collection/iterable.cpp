@@ -1,25 +1,35 @@
 #include "iterable.hpp"
-template<typename E> Iterable<R> IterableMixinCls<E>::casttemplate<typename R> () {
+template<typename E>
+template<typename R>
+Iterable<R> IterableMixinCls<E>::cast() {
     return IterableCls-><E, R>castFrom(this);
 }
 
-template<typename E> Iterable<T> IterableMixinCls<E>::maptemplate<typename T> (T toElement(E element) ) {
+template<typename E>
+template<typename T>
+Iterable<T> IterableMixinCls<E>::map(T toElement(E element) ) {
     return <E, T>make<MappedIterableCls>(this, toElement);
 }
 
-template<typename E> Iterable<E> IterableMixinCls<E>::where(bool test(E element) ) {
+template<typename E>
+Iterable<E> IterableMixinCls<E>::where(bool test(E element) ) {
     return <E>make<WhereIterableCls>(this, test);
 }
 
-template<typename E> Iterable<T> IterableMixinCls<E>::whereTypetemplate<typename T> () {
+template<typename E>
+template<typename T>
+Iterable<T> IterableMixinCls<E>::whereType() {
     return <T>make<WhereTypeIterableCls>(this);
 }
 
-template<typename E> Iterable<T> IterableMixinCls<E>::expandtemplate<typename T> (Iterable<T> toElements(E element) ) {
+template<typename E>
+template<typename T>
+Iterable<T> IterableMixinCls<E>::expand(Iterable<T> toElements(E element) ) {
     return <E, T>make<ExpandIterableCls>(this, toElements);
 }
 
-template<typename E> Iterable<E> IterableMixinCls<E>::followedBy(Iterable<E> other) {
+template<typename E>
+Iterable<E> IterableMixinCls<E>::followedBy(Iterable<E> other) {
     auto _c1 = <E>make<HashSetCls>();_c1.addAll(elements);Iterable<E> self = this;
     if (is<EfficientLengthIterable<E>>(self)) {
         return <E>firstEfficient(as<EfficientLengthIterableCls>(self), other);
@@ -27,7 +37,8 @@ template<typename E> Iterable<E> IterableMixinCls<E>::followedBy(Iterable<E> oth
     return <E>make<FollowedByIterableCls>(this, other);
 }
 
-template<typename E> bool IterableMixinCls<E>::contains(Object element) {
+template<typename E>
+bool IterableMixinCls<E>::contains(Object element) {
     for (E e : this) {
         if (e == element)         {
             return true;
@@ -36,13 +47,15 @@ template<typename E> bool IterableMixinCls<E>::contains(Object element) {
     return false;
 }
 
-template<typename E> void IterableMixinCls<E>::forEach(void action(E element) ) {
+template<typename E>
+void IterableMixinCls<E>::forEach(void action(E element) ) {
     for (E element : this)     {
         action(element);
     }
 }
 
-template<typename E> E IterableMixinCls<E>::reduce(E combine(E element, E value) ) {
+template<typename E>
+E IterableMixinCls<E>::reduce(E combine(E element, E value) ) {
     Iterator<E> iterator = this->iterator;
     if (!iterator->moveNext()) {
         ;
@@ -54,7 +67,9 @@ template<typename E> E IterableMixinCls<E>::reduce(E combine(E element, E value)
     return value;
 }
 
-template<typename E> T IterableMixinCls<E>::foldtemplate<typename T> (T combine(E element, T previousValue) , T initialValue) {
+template<typename E>
+template<typename T>
+T IterableMixinCls<E>::fold(T combine(E element, T previousValue) , T initialValue) {
     auto value = initialValue;
     for (E element : this)     {
         value = combine(value, element);
@@ -62,7 +77,8 @@ template<typename E> T IterableMixinCls<E>::foldtemplate<typename T> (T combine(
     return value;
 }
 
-template<typename E> bool IterableMixinCls<E>::every(bool test(E element) ) {
+template<typename E>
+bool IterableMixinCls<E>::every(bool test(E element) ) {
     for (E element : this) {
         if (!test(element))         {
             return false;
@@ -71,7 +87,8 @@ template<typename E> bool IterableMixinCls<E>::every(bool test(E element) ) {
     return true;
 }
 
-template<typename E> String IterableMixinCls<E>::join(String separator) {
+template<typename E>
+String IterableMixinCls<E>::join(String separator) {
     Iterator<E> iterator = this->iterator;
     if (!iterator->moveNext())     {
         return __s("");
@@ -91,7 +108,8 @@ template<typename E> String IterableMixinCls<E>::join(String separator) {
     return buffer->toString();
 }
 
-template<typename E> bool IterableMixinCls<E>::any(bool test(E element) ) {
+template<typename E>
+bool IterableMixinCls<E>::any(bool test(E element) ) {
     for (E element : this) {
         if (test(element))         {
             return true;
@@ -100,15 +118,18 @@ template<typename E> bool IterableMixinCls<E>::any(bool test(E element) ) {
     return false;
 }
 
-template<typename E> List<E> IterableMixinCls<E>::toList(bool growable) {
+template<typename E>
+List<E> IterableMixinCls<E>::toList(bool growable) {
     return <E>from(thisgrowable);
 }
 
-template<typename E> Set<E> IterableMixinCls<E>::toSet() {
+template<typename E>
+Set<E> IterableMixinCls<E>::toSet() {
     return <E>from(this);
 }
 
-template<typename E> int IterableMixinCls<E>::length() {
+template<typename E>
+int IterableMixinCls<E>::length() {
     assert(!is<EfficientLengthIterable>(this));
     int count = 0;
     Iterator it = iterator;
@@ -118,31 +139,38 @@ template<typename E> int IterableMixinCls<E>::length() {
     return count;
 }
 
-template<typename E> bool IterableMixinCls<E>::isEmpty() {
+template<typename E>
+bool IterableMixinCls<E>::isEmpty() {
     return !iterator->moveNext();
 }
 
-template<typename E> bool IterableMixinCls<E>::isNotEmpty() {
+template<typename E>
+bool IterableMixinCls<E>::isNotEmpty() {
     return !isEmpty();
 }
 
-template<typename E> Iterable<E> IterableMixinCls<E>::take(int count) {
+template<typename E>
+Iterable<E> IterableMixinCls<E>::take(int count) {
     return <E>make<TakeIterableCls>(this, count);
 }
 
-template<typename E> Iterable<E> IterableMixinCls<E>::takeWhile(bool test(E value) ) {
+template<typename E>
+Iterable<E> IterableMixinCls<E>::takeWhile(bool test(E value) ) {
     return <E>make<TakeWhileIterableCls>(this, test);
 }
 
-template<typename E> Iterable<E> IterableMixinCls<E>::skip(int count) {
+template<typename E>
+Iterable<E> IterableMixinCls<E>::skip(int count) {
     return <E>make<SkipIterableCls>(this, count);
 }
 
-template<typename E> Iterable<E> IterableMixinCls<E>::skipWhile(bool test(E value) ) {
+template<typename E>
+Iterable<E> IterableMixinCls<E>::skipWhile(bool test(E value) ) {
     return <E>make<SkipWhileIterableCls>(this, test);
 }
 
-template<typename E> E IterableMixinCls<E>::first() {
+template<typename E>
+E IterableMixinCls<E>::first() {
     Iterator<E> it = iterator;
     if (!it->moveNext()) {
         ;
@@ -150,7 +178,8 @@ template<typename E> E IterableMixinCls<E>::first() {
     return it->current();
 }
 
-template<typename E> E IterableMixinCls<E>::last() {
+template<typename E>
+E IterableMixinCls<E>::last() {
     Iterator<E> it = iterator;
     if (!it->moveNext()) {
         ;
@@ -162,7 +191,8 @@ template<typename E> E IterableMixinCls<E>::last() {
     return result;
 }
 
-template<typename E> E IterableMixinCls<E>::single() {
+template<typename E>
+E IterableMixinCls<E>::single() {
     Iterator<E> it = iterator;
     if (!it->moveNext())     {
         ;
@@ -174,7 +204,8 @@ template<typename E> E IterableMixinCls<E>::single() {
     return result;
 }
 
-template<typename E> E IterableMixinCls<E>::firstWhere(E orElse() , bool test(E value) ) {
+template<typename E>
+E IterableMixinCls<E>::firstWhere(E orElse() , bool test(E value) ) {
     for (E element : this) {
         if (test(element))         {
             return element;
@@ -186,7 +217,8 @@ template<typename E> E IterableMixinCls<E>::firstWhere(E orElse() , bool test(E 
     ;
 }
 
-template<typename E> E IterableMixinCls<E>::lastWhere(E orElse() , bool test(E value) ) {
+template<typename E>
+E IterableMixinCls<E>::lastWhere(E orElse() , bool test(E value) ) {
     E result;
     bool foundMatching = false;
     for (E element : this) {
@@ -204,7 +236,8 @@ template<typename E> E IterableMixinCls<E>::lastWhere(E orElse() , bool test(E v
     ;
 }
 
-template<typename E> E IterableMixinCls<E>::singleWhere(E orElse() , bool test(E element) ) {
+template<typename E>
+E IterableMixinCls<E>::singleWhere(E orElse() , bool test(E element) ) {
     E result;
     bool foundMatching = false;
     for (E element : this) {
@@ -225,7 +258,8 @@ template<typename E> E IterableMixinCls<E>::singleWhere(E orElse() , bool test(E
     ;
 }
 
-template<typename E> E IterableMixinCls<E>::elementAt(int index) {
+template<typename E>
+E IterableMixinCls<E>::elementAt(int index) {
     checkNotNullable(index, __s("index"));
     RangeErrorCls->checkNotNegative(index, __s("index"));
     int elementIndex = 0;
@@ -238,11 +272,13 @@ template<typename E> E IterableMixinCls<E>::elementAt(int index) {
     ;
 }
 
-template<typename E> String IterableMixinCls<E>::toString() {
+template<typename E>
+String IterableMixinCls<E>::toString() {
     return IterableBaseCls->iterableToShortString(this, __s("("), __s(")"));
 }
 
-template<typename E> String IterableBaseCls<E>::iterableToShortString(Iterable iterable, String leftDelimiter, String rightDelimiter) {
+template<typename E>
+String IterableBaseCls<E>::iterableToShortString(Iterable iterable, String leftDelimiter, String rightDelimiter) {
     if (_isToStringVisiting(iterable)) {
         if (leftDelimiter == __s("(") && rightDelimiter == __s(")")) {
             return __s("(...)");
@@ -260,7 +296,8 @@ template<typename E> String IterableBaseCls<E>::iterableToShortString(Iterable i
     auto _c1 = make<StringBufferCls>(leftDelimiter);_c1.auto _c2 = writeAll(parts, __s(", "));_c2.write(rightDelimiter);_c2;return (_c1)->toString();
 }
 
-template<typename E> String IterableBaseCls<E>::iterableToFullString(Iterable iterable, String leftDelimiter, String rightDelimiter) {
+template<typename E>
+String IterableBaseCls<E>::iterableToFullString(Iterable iterable, String leftDelimiter, String rightDelimiter) {
     if (_isToStringVisiting(iterable)) {
         return __s("$leftDelimiter...$rightDelimiter");
     }

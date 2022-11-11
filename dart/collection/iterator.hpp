@@ -5,7 +5,8 @@
 #include <dart/core/core.hpp>
 
 
-template<typename E> class HasNextIteratorCls : public ObjectCls {
+template<typename E>
+class HasNextIteratorCls : public ObjectCls {
 public:
 
      HasNextIteratorCls(Iterator<E> _iterator);
@@ -28,7 +29,8 @@ private:
     virtual void _move();
 
 };
-template<typename E> using HasNextIterator = std::shared_ptr<HasNextIteratorCls<E>>;
+template<typename E>
+using HasNextIterator = std::shared_ptr<HasNextIteratorCls<E>>;
 
 
 #endif

@@ -93,7 +93,7 @@ void RenderSliverFixedExtentBoxAdaptorCls::performLayout() {
             child = insertAndLayoutChild(childConstraintstrailingChildWithLayout);
             if (child == nullptr) {
                 estimatedMaxScrollOffset = index * itemExtent;
-                                break;
+                break;
             }
         } else {
             child->layout(childConstraints);

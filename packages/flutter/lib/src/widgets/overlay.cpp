@@ -97,7 +97,7 @@ _OverlayEntryWidgetState _OverlayEntryWidgetCls::createState() {
     return make<_OverlayEntryWidgetStateCls>();
 }
 
-_OverlayEntryWidgetCls::_OverlayEntryWidgetCls(OverlayEntry entry, Key key, bool tickerEnabled) : StatefulWidget(key) {
+_OverlayEntryWidgetCls::_OverlayEntryWidgetCls(OverlayEntry entry, Key key, bool tickerEnabled) {
     {
         assert(key != nullptr);
         assert(entry != nullptr);
@@ -218,10 +218,10 @@ bool OverlayStateCls::debugIsVisible(OverlayEntry entry) {
             OverlayEntry candidate = _entries[i];
             if (candidate == entry) {
                 result = true;
-                                break;
+                break;
             }
             if (candidate->opaque()) {
-                                break;
+                break;
             }
         }
         return true;

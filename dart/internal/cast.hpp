@@ -5,7 +5,8 @@
 #include <dart/core/core.hpp>
 
 
-template<typename S, typename T> class _CastIterableBaseCls : public IterableCls<T> {
+template<typename S, typename T>
+class _CastIterableBaseCls : public IterableCls<T> {
 public:
 
     virtual Iterator<T> iterator();
@@ -38,9 +39,11 @@ private:
 
     virtual Iterable<S> _source();
 };
-template<typename S, typename T> using _CastIterableBase = std::shared_ptr<_CastIterableBaseCls<S, T>>;
+template<typename S, typename T>
+using _CastIterableBase = std::shared_ptr<_CastIterableBaseCls<S, T>>;
 
-template<typename S, typename T> class CastIteratorCls : public ObjectCls {
+template<typename S, typename T>
+class CastIteratorCls : public ObjectCls {
 public:
 
      CastIteratorCls(Iterator<S> _source);
@@ -53,14 +56,17 @@ private:
 
 
 };
-template<typename S, typename T> using CastIterator = std::shared_ptr<CastIteratorCls<S, T>>;
+template<typename S, typename T>
+using CastIterator = std::shared_ptr<CastIteratorCls<S, T>>;
 
-template<typename S, typename T> class CastIterableCls : public _CastIterableBaseCls<S, T> {
+template<typename S, typename T>
+class CastIterableCls : public _CastIterableBaseCls<S, T> {
 public:
 
      CastIterableCls(Iterable<S> source);
 
-    template<typename R>  virtual Iterable<R> cast();
+    template<typename R>
+ virtual Iterable<R> cast();
 
 private:
     Iterable<S> _source;
@@ -68,9 +74,11 @@ private:
 
     virtual void  _(Iterable<S> _source);
 };
-template<typename S, typename T> using CastIterable = std::shared_ptr<CastIterableCls<S, T>>;
+template<typename S, typename T>
+using CastIterable = std::shared_ptr<CastIterableCls<S, T>>;
 
-template<typename S, typename T> class _EfficientLengthCastIterableCls : public CastIterableCls<S, T> {
+template<typename S, typename T>
+class _EfficientLengthCastIterableCls : public CastIterableCls<S, T> {
 public:
 
 private:
@@ -78,9 +86,11 @@ private:
      _EfficientLengthCastIterableCls(EfficientLengthIterable<S> source);
 
 };
-template<typename S, typename T> using _EfficientLengthCastIterable = std::shared_ptr<_EfficientLengthCastIterableCls<S, T>>;
+template<typename S, typename T>
+using _EfficientLengthCastIterable = std::shared_ptr<_EfficientLengthCastIterableCls<S, T>>;
 
-template<typename S, typename T> class _CastListBaseCls : public _CastIterableBaseCls<S, T> {
+template<typename S, typename T>
+class _CastListBaseCls : public _CastIterableBaseCls<S, T> {
 public:
 
     virtual T operator[](int index);
@@ -127,26 +137,32 @@ private:
 
     virtual List<S> _source() override;
 };
-template<typename S, typename T> using _CastListBase = std::shared_ptr<_CastListBaseCls<S, T>>;
+template<typename S, typename T>
+using _CastListBase = std::shared_ptr<_CastListBaseCls<S, T>>;
 
-template<typename S, typename T> class CastListCls : public _CastListBaseCls<S, T> {
+template<typename S, typename T>
+class CastListCls : public _CastListBaseCls<S, T> {
 public:
 
      CastListCls(List<S> _source);
-    template<typename R>  virtual List<R> cast();
+    template<typename R>
+ virtual List<R> cast();
 
 private:
     List<S> _source;
 
 
 };
-template<typename S, typename T> using CastList = std::shared_ptr<CastListCls<S, T>>;
+template<typename S, typename T>
+using CastList = std::shared_ptr<CastListCls<S, T>>;
 
-template<typename S, typename T> class CastSetCls : public _CastIterableBaseCls<S, T> {
+template<typename S, typename T>
+class CastSetCls : public _CastIterableBaseCls<S, T> {
 public:
 
      CastSetCls(<R>Set<R> Function() _emptySet, Set<S> _source);
-    template<typename R>  virtual Set<R> cast();
+    template<typename R>
+ virtual Set<R> cast();
 
     virtual bool add(T value);
 
@@ -187,13 +203,16 @@ private:
     virtual Set<T> _clone();
 
 };
-template<typename S, typename T> using CastSet = std::shared_ptr<CastSetCls<S, T>>;
+template<typename S, typename T>
+using CastSet = std::shared_ptr<CastSetCls<S, T>>;
 
-template<typename SK, typename SV, typename K, typename V> class CastMapCls : public MapBaseCls<K, V> {
+template<typename SK, typename SV, typename K, typename V>
+class CastMapCls : public MapBaseCls<K, V> {
 public:
 
      CastMapCls(Map<SK, SV> _source);
-    template<typename RK, typename RV>  virtual Map<RK, RV> cast();
+    template<typename RK, typename RV>
+ virtual Map<RK, RV> cast();
 
     virtual bool containsValue(Object value);
 
@@ -238,13 +257,16 @@ private:
 
 
 };
-template<typename SK, typename SV, typename K, typename V> using CastMap = std::shared_ptr<CastMapCls<SK, SV, K, V>>;
+template<typename SK, typename SV, typename K, typename V>
+using CastMap = std::shared_ptr<CastMapCls<SK, SV, K, V>>;
 
-template<typename S, typename T> class CastQueueCls : public _CastIterableBaseCls<S, T> {
+template<typename S, typename T>
+class CastQueueCls : public _CastIterableBaseCls<S, T> {
 public:
 
      CastQueueCls(Queue<S> _source);
-    template<typename R>  virtual Queue<R> cast();
+    template<typename R>
+ virtual Queue<R> cast();
 
     virtual T removeFirst();
 
@@ -271,7 +293,8 @@ private:
 
 
 };
-template<typename S, typename T> using CastQueue = std::shared_ptr<CastQueueCls<S, T>>;
+template<typename S, typename T>
+using CastQueue = std::shared_ptr<CastQueueCls<S, T>>;
 
 
 #endif

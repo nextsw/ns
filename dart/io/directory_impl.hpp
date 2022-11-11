@@ -69,7 +69,8 @@ private:
 
     virtual void  _exceptionOrErrorFromResponse(response , String message);
 
-    template<typename T>  static T _checkNotNull(String name, T t);
+    template<typename T>
+ static T _checkNotNull(String name, T t);
 
 };
 using _Directory = std::shared_ptr<_DirectoryCls>;

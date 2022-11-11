@@ -170,7 +170,7 @@ PageMetrics _PagePositionCls::copyWith(AxisDirection axisDirection, double maxSc
     return make<PageMetricsCls>(minScrollExtent or (hasContentDimensions? this->minScrollExtent : nullptr), maxScrollExtent or (hasContentDimensions? this->maxScrollExtent : nullptr), pixels or (hasPixels? this->pixels : nullptr), viewportDimension or (hasViewportDimension? this->viewportDimension : nullptr), axisDirection or this->axisDirection, viewportFraction or this->viewportFraction);
 }
 
-_PagePositionCls::_PagePositionCls(Unknown context, int initialPage, bool keepPage, Unknown oldPosition, Unknown physics, double viewportFraction) : ScrollPositionWithSingleContext(nullptr, keepPage) {
+_PagePositionCls::_PagePositionCls(Unknown context, int initialPage, bool keepPage, Unknown oldPosition, Unknown physics, double viewportFraction) {
     {
         assert(initialPage != nullptr);
         assert(keepPage != nullptr);

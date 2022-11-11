@@ -208,7 +208,7 @@ void RenderSliverGridCls::performLayout() {
         if (child == nullptr || indexOf(child) != index) {
             child = insertAndLayoutChild(childConstraintstrailingChildWithLayout);
             if (child == nullptr) {
-                                break;
+                break;
             }
         } else {
             child->layout(childConstraints);

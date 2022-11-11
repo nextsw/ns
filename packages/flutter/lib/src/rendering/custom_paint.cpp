@@ -36,7 +36,7 @@ CustomPainterSemanticsCls::CustomPainterSemanticsCls(Key key, SemanticsPropertie
     }
 }
 
-RenderCustomPaintCls::RenderCustomPaintCls(RenderBox child, CustomPainter foregroundPainter, bool isComplex, CustomPainter painter, Size preferredSize, bool willChange) : RenderProxyBox(child) {
+RenderCustomPaintCls::RenderCustomPaintCls(RenderBox child, CustomPainter foregroundPainter, bool isComplex, CustomPainter painter, Size preferredSize, bool willChange) {
     {
         assert(preferredSize != nullptr);
         _painter = painter;
@@ -283,7 +283,7 @@ List<SemanticsNode> RenderCustomPaintCls::_updateSemanticsChildren(List<CustomPa
         SemanticsNode oldChild = oldSemantics[oldChildrenTop];
         CustomPainterSemantics newSemantics = newChildSemantics[newChildrenTop];
         if (!_canUpdateSemanticsChild(oldChild, newSemantics)) {
-                        break;
+            break;
         }
         SemanticsNode newChild = _updateSemanticsChild(oldChild, newSemantics);
         newChildren[newChildrenTop] = newChild;
@@ -294,7 +294,7 @@ List<SemanticsNode> RenderCustomPaintCls::_updateSemanticsChildren(List<CustomPa
         SemanticsNode oldChild = oldSemantics[oldChildrenBottom];
         CustomPainterSemantics newChild = newChildSemantics[newChildrenBottom];
         if (!_canUpdateSemanticsChild(oldChild, newChild)) {
-                        break;
+            break;
         }
         oldChildrenBottom = 1;
         newChildrenBottom = 1;

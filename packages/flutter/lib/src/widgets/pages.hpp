@@ -8,7 +8,8 @@
 #include "routes.hpp"
 
 
-template<typename T> class PageRouteCls : public ModalRouteCls<T> {
+template<typename T>
+class PageRouteCls : public ModalRouteCls<T> {
 public:
     bool fullscreenDialog;
 
@@ -25,11 +26,13 @@ public:
 private:
 
 };
-template<typename T> using PageRoute = std::shared_ptr<PageRouteCls<T>>;
+template<typename T>
+using PageRoute = std::shared_ptr<PageRouteCls<T>>;
 Widget _defaultTransitionsBuilder(Animation<double> animation, Widget child, BuildContext context, Animation<double> secondaryAnimation);
 
 
-template<typename T> class PageRouteBuilderCls : public PageRouteCls<T> {
+template<typename T>
+class PageRouteBuilderCls : public PageRouteCls<T> {
 public:
     RoutePageBuilder pageBuilder;
 
@@ -59,7 +62,8 @@ public:
 private:
 
 };
-template<typename T> using PageRouteBuilder = std::shared_ptr<PageRouteBuilderCls<T>>;
+template<typename T>
+using PageRouteBuilder = std::shared_ptr<PageRouteBuilderCls<T>>;
 
 
 #endif

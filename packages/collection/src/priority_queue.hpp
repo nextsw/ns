@@ -7,7 +7,8 @@
 #include "utils.hpp"
 
 
-template<typename E> class PriorityQueueCls : public ObjectCls {
+template<typename E>
+class PriorityQueueCls : public ObjectCls {
 public:
 
      PriorityQueueCls(int comparison(E , E ) );
@@ -29,9 +30,11 @@ public:
 private:
 
 };
-template<typename E> using PriorityQueue = std::shared_ptr<PriorityQueueCls<E>>;
+template<typename E>
+using PriorityQueue = std::shared_ptr<PriorityQueueCls<E>>;
 
-template<typename E> class HeapPriorityQueueCls : public ObjectCls {
+template<typename E>
+class HeapPriorityQueueCls : public ObjectCls {
 public:
     Comparator<E> comparison;
 
@@ -97,9 +100,11 @@ private:
     virtual void _grow();
 
 };
-template<typename E> using HeapPriorityQueue = std::shared_ptr<HeapPriorityQueueCls<E>>;
+template<typename E>
+using HeapPriorityQueue = std::shared_ptr<HeapPriorityQueueCls<E>>;
 
-template<typename E> class _UnorderedElementsIterableCls : public IterableCls<E> {
+template<typename E>
+class _UnorderedElementsIterableCls : public IterableCls<E> {
 public:
 
     virtual Iterator<E> iterator();
@@ -110,9 +115,11 @@ private:
 
      _UnorderedElementsIterableCls(HeapPriorityQueue<E> _queue);
 };
-template<typename E> using _UnorderedElementsIterable = std::shared_ptr<_UnorderedElementsIterableCls<E>>;
+template<typename E>
+using _UnorderedElementsIterable = std::shared_ptr<_UnorderedElementsIterableCls<E>>;
 
-template<typename E> class _UnorderedElementsIteratorCls : public ObjectCls {
+template<typename E>
+class _UnorderedElementsIteratorCls : public ObjectCls {
 public:
 
     virtual bool moveNext();
@@ -132,7 +139,8 @@ private:
      _UnorderedElementsIteratorCls(HeapPriorityQueue<E> _queue);
 
 };
-template<typename E> using _UnorderedElementsIterator = std::shared_ptr<_UnorderedElementsIteratorCls<E>>;
+template<typename E>
+using _UnorderedElementsIterator = std::shared_ptr<_UnorderedElementsIteratorCls<E>>;
 
 
 #endif

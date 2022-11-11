@@ -1,5 +1,6 @@
 #include "platform_view.hpp"
-bool _factoryTypesSetEqualstemplate<typename T> (Set<Factory<T>> a, Set<Factory<T>> b) {
+template<typename T>
+bool _factoryTypesSetEquals(Set<Factory<T>> a, Set<Factory<T>> b) {
     if (a == b) {
         return true;
     }
@@ -9,13 +10,14 @@ bool _factoryTypesSetEqualstemplate<typename T> (Set<Factory<T>> a, Set<Factory<
     return setEquals(_factoriesTypeSet(a), _factoriesTypeSet(b));
 }
 
-Set<Type> _factoriesTypeSettemplate<typename T> (Set<Factory<T>> factories) {
+template<typename T>
+Set<Type> _factoriesTypeSet(Set<Factory<T>> factories) {
     return factories-><Type>map([=] (Factory<T> factory)     {
         factory->type;
     })->toSet();
 }
 
-RenderAndroidViewCls::RenderAndroidViewCls(Clip clipBehavior, Set<Factory<OneSequenceGestureRecognizer>> gestureRecognizers, PlatformViewHitTestBehavior hitTestBehavior, AndroidViewController viewController) : PlatformViewRenderBox(viewController, hitTestBehavior, gestureRecognizers) {
+RenderAndroidViewCls::RenderAndroidViewCls(Clip clipBehavior, Set<Factory<OneSequenceGestureRecognizer>> gestureRecognizers, PlatformViewHitTestBehavior hitTestBehavior, AndroidViewController viewController) {
     {
         assert(viewController != nullptr);
         assert(hitTestBehavior != nullptr);

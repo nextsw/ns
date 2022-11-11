@@ -1,34 +1,42 @@
 #include "navigator.hpp"
-template<typename T> RouteCls<T>::RouteCls(RouteSettings settings) {
+template<typename T>
+RouteCls<T>::RouteCls(RouteSettings settings) {
     {
         _settings = settings or make<RouteSettingsCls>();
     }
 }
 
-template<typename T> NavigatorState RouteCls<T>::navigator() {
+template<typename T>
+NavigatorState RouteCls<T>::navigator() {
     return _navigator;
 }
 
-template<typename T> RouteSettings RouteCls<T>::settings() {
+template<typename T>
+RouteSettings RouteCls<T>::settings() {
     return _settings;
 }
 
-template<typename T> ValueListenable<String> RouteCls<T>::restorationScopeId() {
+template<typename T>
+ValueListenable<String> RouteCls<T>::restorationScopeId() {
     return _restorationScopeId;
 }
 
-template<typename T> List<OverlayEntry> RouteCls<T>::overlayEntries() {
+template<typename T>
+List<OverlayEntry> RouteCls<T>::overlayEntries() {
     return makeList();
 }
 
-template<typename T> void RouteCls<T>::install() {
+template<typename T>
+void RouteCls<T>::install() {
 }
 
-template<typename T> TickerFuture RouteCls<T>::didPush() {
+template<typename T>
+TickerFuture RouteCls<T>::didPush() {
         });return             }        auto _c1 = TickerFutureCls->complete();        _c1.<void>then([=] (void _) {                if (navigator()?->widget->requestFocus or false) {                    navigator()!->focusScopeNode->requestFocus();_c1;
 }
 
-template<typename T> void RouteCls<T>::didAdd() {
+template<typename T>
+void RouteCls<T>::didAdd() {
     if (navigator()?->widget->requestFocus or false) {
         TickerFutureCls->complete()-><void>then([=] (void _) {
             navigator()?->focusScopeNode->requestFocus();
@@ -36,54 +44,68 @@ template<typename T> void RouteCls<T>::didAdd() {
     }
 }
 
-template<typename T> void RouteCls<T>::didReplace(Route<dynamic> oldRoute) {
+template<typename T>
+void RouteCls<T>::didReplace(Route<dynamic> oldRoute) {
 }
 
-template<typename T> Future<RoutePopDisposition> RouteCls<T>::willPop() {
+template<typename T>
+Future<RoutePopDisposition> RouteCls<T>::willPop() {
     return isFirst()? RoutePopDispositionCls::bubble : RoutePopDispositionCls::pop;
 }
 
-template<typename T> bool RouteCls<T>::willHandlePopInternally() {
+template<typename T>
+bool RouteCls<T>::willHandlePopInternally() {
     return false;
 }
 
-template<typename T> T RouteCls<T>::currentResult() {
+template<typename T>
+T RouteCls<T>::currentResult() {
     return nullptr;
 }
 
-template<typename T> Future<T> RouteCls<T>::popped() {
+template<typename T>
+Future<T> RouteCls<T>::popped() {
     return _popCompleter->future;
 }
 
-template<typename T> bool RouteCls<T>::didPop(T result) {
+template<typename T>
+bool RouteCls<T>::didPop(T result) {
     didComplete(result);
     return true;
 }
 
-template<typename T> void RouteCls<T>::didComplete(T result) {
+template<typename T>
+void RouteCls<T>::didComplete(T result) {
     _popCompleter->complete(result or currentResult());
 }
 
-template<typename T> void RouteCls<T>::didPopNext(Route<dynamic> nextRoute) {
+template<typename T>
+void RouteCls<T>::didPopNext(Route<dynamic> nextRoute) {
 }
 
-template<typename T> void RouteCls<T>::didChangeNext(Route<dynamic> nextRoute) {
+template<typename T>
+void RouteCls<T>::didChangeNext(Route<dynamic> nextRoute) {
 }
 
-template<typename T> void RouteCls<T>::didChangePrevious(Route<dynamic> previousRoute) {
+template<typename T>
+void RouteCls<T>::didChangePrevious(Route<dynamic> previousRoute) {
 }
 
-template<typename T> void RouteCls<T>::changedInternalState() {
+template<typename T>
+void RouteCls<T>::changedInternalState() {
 }
 
-template<typename T> void RouteCls<T>::changedExternalState() {
+template<typename T>
+void RouteCls<T>::changedExternalState() {
 }
 
-template<typename T> void RouteCls<T>::dispose() {
+template<typename T>
+void RouteCls<T>::dispose() {
     _navigator = nullptr;
 }
 
-template<typename T> bool RouteCls<T>::isCurrent() {
+template<typename T>
+bool RouteCls<T>::isCurrent() {
     if (_navigator == nullptr) {
         return false;
     }
@@ -98,7 +120,8 @@ template<typename T> bool RouteCls<T>::isCurrent() {
     return currentRouteEntry->route == this;
 }
 
-template<typename T> bool RouteCls<T>::isFirst() {
+template<typename T>
+bool RouteCls<T>::isFirst() {
     if (_navigator == nullptr) {
         return false;
     }
@@ -113,7 +136,8 @@ template<typename T> bool RouteCls<T>::isFirst() {
     return currentRouteEntry->route == this;
 }
 
-template<typename T> bool RouteCls<T>::hasActiveRouteBelow() {
+template<typename T>
+bool RouteCls<T>::hasActiveRouteBelow() {
     if (_navigator == nullptr) {
         return false;
     }
@@ -128,7 +152,8 @@ template<typename T> bool RouteCls<T>::hasActiveRouteBelow() {
     return false;
 }
 
-template<typename T> bool RouteCls<T>::isActive() {
+template<typename T>
+bool RouteCls<T>::isActive() {
     if (_navigator == nullptr) {
         return false;
     }
@@ -139,7 +164,8 @@ template<typename T> bool RouteCls<T>::isActive() {
     })?->isPresent or false;
 }
 
-template<typename T> void RouteCls<T>::_updateSettings(RouteSettings newSettings) {
+template<typename T>
+void RouteCls<T>::_updateSettings(RouteSettings newSettings) {
     assert(newSettings != nullptr);
     if (_settings != newSettings) {
         _settings = newSettings;
@@ -147,7 +173,8 @@ template<typename T> void RouteCls<T>::_updateSettings(RouteSettings newSettings
     }
 }
 
-template<typename T> void RouteCls<T>::_updateRestorationId(String restorationId) {
+template<typename T>
+void RouteCls<T>::_updateRestorationId(String restorationId) {
     _restorationScopeId->value() = restorationId;
 }
 
@@ -159,11 +186,13 @@ String RouteSettingsCls::toString() {
     return __s("${objectRuntimeType(this, 'RouteSettings')}("$name", $arguments)");
 }
 
-template<typename T> bool PageCls<T>::canUpdate(Page<dynamic> other) {
+template<typename T>
+bool PageCls<T>::canUpdate(Page<dynamic> other) {
     return other->runtimeType == runtimeType && other->key == key;
 }
 
-template<typename T> String PageCls<T>::toString() {
+template<typename T>
+String PageCls<T>::toString() {
     return __s("${objectRuntimeType(this, 'Page')}("$name", $key, $arguments)");
 }
 
@@ -206,7 +235,8 @@ bool HeroControllerScopeCls::updateShouldNotify(HeroControllerScope oldWidget) {
     return oldWidget->controller != controller;
 }
 
-template<typename T> Iterable<RouteTransitionRecord> TransitionDelegateCls<T>::_transition(Map<RouteTransitionRecord, RouteTransitionRecord> locationToExitingPageRoute, List<RouteTransitionRecord> newPageRouteHistory, Map<RouteTransitionRecord, List<RouteTransitionRecord>> pageRouteToPagelessRoutes) {
+template<typename T>
+Iterable<RouteTransitionRecord> TransitionDelegateCls<T>::_transition(Map<RouteTransitionRecord, RouteTransitionRecord> locationToExitingPageRoute, List<RouteTransitionRecord> newPageRouteHistory, Map<RouteTransitionRecord, List<RouteTransitionRecord>> pageRouteToPagelessRoutes) {
     Iterable<RouteTransitionRecord> results = resolve(newPageRouteHistory, locationToExitingPageRoute, pageRouteToPagelessRoutes);
     assert([=] () {
         List<RouteTransitionRecord> resultsToVerify = results->toList(false);
@@ -236,10 +266,12 @@ template<typename T> Iterable<RouteTransitionRecord> TransitionDelegateCls<T>::_
     return results;
 }
 
-template<typename T> DefaultTransitionDelegateCls<T>::DefaultTransitionDelegateCls() : TransitionDelegate<T>() {
+template<typename T>
+DefaultTransitionDelegateCls<T>::DefaultTransitionDelegateCls() {
 }
 
-template<typename T> Iterable<RouteTransitionRecord> DefaultTransitionDelegateCls<T>::resolve(Map<RouteTransitionRecord, RouteTransitionRecord> locationToExitingPageRoute, List<RouteTransitionRecord> newPageRouteHistory, Map<RouteTransitionRecord, List<RouteTransitionRecord>> pageRouteToPagelessRoutes) {
+template<typename T>
+Iterable<RouteTransitionRecord> DefaultTransitionDelegateCls<T>::resolve(Map<RouteTransitionRecord, RouteTransitionRecord> locationToExitingPageRoute, List<RouteTransitionRecord> newPageRouteHistory, Map<RouteTransitionRecord, List<RouteTransitionRecord>> pageRouteToPagelessRoutes) {
     List<RouteTransitionRecord> results = makeList();
     InlineMethod;
     handleExitingRoute(nullptr, newPageRouteHistory->isEmpty);
@@ -268,75 +300,93 @@ NavigatorCls::NavigatorCls(String initialRoute, Unknown key, List<NavigatorObser
     }
 }
 
-Future<T> NavigatorCls::pushNamedtemplate<typename T> (Object arguments, BuildContext context, String routeName) {
+template<typename T>
+Future<T> NavigatorCls::pushNamed(Object arguments, BuildContext context, String routeName) {
     return NavigatorCls->of(context)-><T>pushNamed(routeNamearguments);
 }
 
-String NavigatorCls::restorablePushNamedtemplate<typename T> (Object arguments, BuildContext context, String routeName) {
+template<typename T>
+String NavigatorCls::restorablePushNamed(Object arguments, BuildContext context, String routeName) {
     return NavigatorCls->of(context)-><T>restorablePushNamed(routeNamearguments);
 }
 
-Future<T> NavigatorCls::pushReplacementNamedtemplate<typename T, typename TO> (Object arguments, BuildContext context, TO result, String routeName) {
+template<typename T, typename TO>
+Future<T> NavigatorCls::pushReplacementNamed(Object arguments, BuildContext context, TO result, String routeName) {
     return NavigatorCls->of(context)-><T, TO>pushReplacementNamed(routeNamearguments, result);
 }
 
-String NavigatorCls::restorablePushReplacementNamedtemplate<typename T, typename TO> (Object arguments, BuildContext context, TO result, String routeName) {
+template<typename T, typename TO>
+String NavigatorCls::restorablePushReplacementNamed(Object arguments, BuildContext context, TO result, String routeName) {
     return NavigatorCls->of(context)-><T, TO>restorablePushReplacementNamed(routeNamearguments, result);
 }
 
-Future<T> NavigatorCls::popAndPushNamedtemplate<typename T, typename TO> (Object arguments, BuildContext context, TO result, String routeName) {
+template<typename T, typename TO>
+Future<T> NavigatorCls::popAndPushNamed(Object arguments, BuildContext context, TO result, String routeName) {
     return NavigatorCls->of(context)-><T, TO>popAndPushNamed(routeNamearguments, result);
 }
 
-String NavigatorCls::restorablePopAndPushNamedtemplate<typename T, typename TO> (Object arguments, BuildContext context, TO result, String routeName) {
+template<typename T, typename TO>
+String NavigatorCls::restorablePopAndPushNamed(Object arguments, BuildContext context, TO result, String routeName) {
     return NavigatorCls->of(context)-><T, TO>restorablePopAndPushNamed(routeNamearguments, result);
 }
 
-Future<T> NavigatorCls::pushNamedAndRemoveUntiltemplate<typename T> (Object arguments, BuildContext context, String newRouteName, RoutePredicate predicate) {
+template<typename T>
+Future<T> NavigatorCls::pushNamedAndRemoveUntil(Object arguments, BuildContext context, String newRouteName, RoutePredicate predicate) {
     return NavigatorCls->of(context)-><T>pushNamedAndRemoveUntil(newRouteName, predicatearguments);
 }
 
-String NavigatorCls::restorablePushNamedAndRemoveUntiltemplate<typename T> (Object arguments, BuildContext context, String newRouteName, RoutePredicate predicate) {
+template<typename T>
+String NavigatorCls::restorablePushNamedAndRemoveUntil(Object arguments, BuildContext context, String newRouteName, RoutePredicate predicate) {
     return NavigatorCls->of(context)-><T>restorablePushNamedAndRemoveUntil(newRouteName, predicatearguments);
 }
 
-Future<T> NavigatorCls::pushtemplate<typename T> (BuildContext context, Route<T> route) {
+template<typename T>
+Future<T> NavigatorCls::push(BuildContext context, Route<T> route) {
     return NavigatorCls->of(context)->push(route);
 }
 
-String NavigatorCls::restorablePushtemplate<typename T> (Object arguments, BuildContext context, RestorableRouteBuilder<T> routeBuilder) {
+template<typename T>
+String NavigatorCls::restorablePush(Object arguments, BuildContext context, RestorableRouteBuilder<T> routeBuilder) {
     return NavigatorCls->of(context)->restorablePush(routeBuilderarguments);
 }
 
-Future<T> NavigatorCls::pushReplacementtemplate<typename T, typename TO> (BuildContext context, Route<T> newRoute, TO result) {
+template<typename T, typename TO>
+Future<T> NavigatorCls::pushReplacement(BuildContext context, Route<T> newRoute, TO result) {
     return NavigatorCls->of(context)-><T, TO>pushReplacement(newRouteresult);
 }
 
-String NavigatorCls::restorablePushReplacementtemplate<typename T, typename TO> (Object arguments, BuildContext context, TO result, RestorableRouteBuilder<T> routeBuilder) {
+template<typename T, typename TO>
+String NavigatorCls::restorablePushReplacement(Object arguments, BuildContext context, TO result, RestorableRouteBuilder<T> routeBuilder) {
     return NavigatorCls->of(context)-><T, TO>restorablePushReplacement(routeBuilderresult, arguments);
 }
 
-Future<T> NavigatorCls::pushAndRemoveUntiltemplate<typename T> (BuildContext context, Route<T> newRoute, RoutePredicate predicate) {
+template<typename T>
+Future<T> NavigatorCls::pushAndRemoveUntil(BuildContext context, Route<T> newRoute, RoutePredicate predicate) {
     return NavigatorCls->of(context)-><T>pushAndRemoveUntil(newRoute, predicate);
 }
 
-String NavigatorCls::restorablePushAndRemoveUntiltemplate<typename T> (Object arguments, BuildContext context, RestorableRouteBuilder<T> newRouteBuilder, RoutePredicate predicate) {
+template<typename T>
+String NavigatorCls::restorablePushAndRemoveUntil(Object arguments, BuildContext context, RestorableRouteBuilder<T> newRouteBuilder, RoutePredicate predicate) {
     return NavigatorCls->of(context)-><T>restorablePushAndRemoveUntil(newRouteBuilder, predicatearguments);
 }
 
-void NavigatorCls::replacetemplate<typename T> (BuildContext context, Route<T> newRoute, Route<dynamic> oldRoute) {
+template<typename T>
+void NavigatorCls::replace(BuildContext context, Route<T> newRoute, Route<dynamic> oldRoute) {
     return NavigatorCls->of(context)-><T>replace(oldRoute, newRoute);
 }
 
-String NavigatorCls::restorableReplacetemplate<typename T> (Object arguments, BuildContext context, RestorableRouteBuilder<T> newRouteBuilder, Route<dynamic> oldRoute) {
+template<typename T>
+String NavigatorCls::restorableReplace(Object arguments, BuildContext context, RestorableRouteBuilder<T> newRouteBuilder, Route<dynamic> oldRoute) {
     return NavigatorCls->of(context)-><T>restorableReplace(oldRoute, newRouteBuilder, arguments);
 }
 
-void NavigatorCls::replaceRouteBelowtemplate<typename T> (Route<dynamic> anchorRoute, BuildContext context, Route<T> newRoute) {
+template<typename T>
+void NavigatorCls::replaceRouteBelow(Route<dynamic> anchorRoute, BuildContext context, Route<T> newRoute) {
     return NavigatorCls->of(context)-><T>replaceRouteBelow(anchorRoute, newRoute);
 }
 
-String NavigatorCls::restorableReplaceRouteBelowtemplate<typename T> (Route<dynamic> anchorRoute, Object arguments, BuildContext context, RestorableRouteBuilder<T> newRouteBuilder) {
+template<typename T>
+String NavigatorCls::restorableReplaceRouteBelow(Route<dynamic> anchorRoute, Object arguments, BuildContext context, RestorableRouteBuilder<T> newRouteBuilder) {
     return NavigatorCls->of(context)-><T>restorableReplaceRouteBelow(anchorRoute, newRouteBuilder, arguments);
 }
 
@@ -345,11 +395,13 @@ bool NavigatorCls::canPop(BuildContext context) {
     return navigator != nullptr && navigator->canPop();
 }
 
-Future<bool> NavigatorCls::maybePoptemplate<typename T> (BuildContext context, T result) {
+template<typename T>
+Future<bool> NavigatorCls::maybePop(BuildContext context, T result) {
     return NavigatorCls->of(context)-><T>maybePop(result);
 }
 
-void NavigatorCls::poptemplate<typename T> (BuildContext context, T result) {
+template<typename T>
+void NavigatorCls::pop(BuildContext context, T result) {
     NavigatorCls->of(context)-><T>pop(result);
 }
 
@@ -574,7 +626,8 @@ void _RouteEntryCls::didAdd(bool isNewFirst, NavigatorState navigator) {
     }
 }
 
-void _RouteEntryCls::poptemplate<typename T> (T result) {
+template<typename T>
+void _RouteEntryCls::pop(T result) {
     assert(isPresent());
     pendingResult = result;
     currentState = _RouteLifecycleCls::pop;
@@ -590,7 +643,8 @@ void _RouteEntryCls::remove(bool isReplaced) {
     currentState = _RouteLifecycleCls::remove;
 }
 
-void _RouteEntryCls::completetemplate<typename T> (bool isReplaced, T result) {
+template<typename T>
+void _RouteEntryCls::complete(bool isReplaced, T result) {
     assert(!hasPage() || isWaitingForExitingDecision(), __s("A page-based route cannot be completed using imperative api, provide a new list without the corresponding Page to Navigator.pages instead. "));
     if (currentState->index >= _RouteLifecycleCls::remove->index) {
         return;
@@ -917,11 +971,13 @@ OverlayState NavigatorStateCls::overlay() {
     return _overlayKey->currentState();
 }
 
-Future<T> NavigatorStateCls::pushNamedtemplate<typename T> (Object arguments, String routeName) {
+template<typename T>
+Future<T> NavigatorStateCls::pushNamed(Object arguments, String routeName) {
     return <T>push(<T>_routeNamed(routeNamearguments)!);
 }
 
-String NavigatorStateCls::restorablePushNamedtemplate<typename T> (Object arguments, String routeName) {
+template<typename T>
+String NavigatorStateCls::restorablePushNamed(Object arguments, String routeName) {
     assert(routeName != nullptr);
     assert(debugIsSerializableForRestoration(arguments), __s("The arguments object must be serializable via the StandardMessageCodec."));
     _RouteEntry entry = _RestorationInformationCls->named(routeName, arguments, _nextPagelessRestorationScopeId())->toRouteEntry(this_RouteLifecycleCls::push);
@@ -929,11 +985,13 @@ String NavigatorStateCls::restorablePushNamedtemplate<typename T> (Object argume
     return entry->restorationId()!;
 }
 
-Future<T> NavigatorStateCls::pushReplacementNamedtemplate<typename T, typename TO> (Object arguments, TO result, String routeName) {
+template<typename T, typename TO>
+Future<T> NavigatorStateCls::pushReplacementNamed(Object arguments, TO result, String routeName) {
     return <T, TO>pushReplacement(<T>_routeNamed(routeNamearguments)!result);
 }
 
-String NavigatorStateCls::restorablePushReplacementNamedtemplate<typename T, typename TO> (Object arguments, TO result, String routeName) {
+template<typename T, typename TO>
+String NavigatorStateCls::restorablePushReplacementNamed(Object arguments, TO result, String routeName) {
     assert(routeName != nullptr);
     assert(debugIsSerializableForRestoration(arguments), __s("The arguments object must be serializable via the StandardMessageCodec."));
     _RouteEntry entry = _RestorationInformationCls->named(routeName, arguments, _nextPagelessRestorationScopeId())->toRouteEntry(this_RouteLifecycleCls::pushReplace);
@@ -941,21 +999,25 @@ String NavigatorStateCls::restorablePushReplacementNamedtemplate<typename T, typ
     return entry->restorationId()!;
 }
 
-Future<T> NavigatorStateCls::popAndPushNamedtemplate<typename T, typename TO> (Object arguments, TO result, String routeName) {
+template<typename T, typename TO>
+Future<T> NavigatorStateCls::popAndPushNamed(Object arguments, TO result, String routeName) {
     <TO>pop(result);
     return <T>pushNamed(routeNamearguments);
 }
 
-String NavigatorStateCls::restorablePopAndPushNamedtemplate<typename T, typename TO> (Object arguments, TO result, String routeName) {
+template<typename T, typename TO>
+String NavigatorStateCls::restorablePopAndPushNamed(Object arguments, TO result, String routeName) {
     <TO>pop(result);
     return restorablePushNamed(routeNamearguments);
 }
 
-Future<T> NavigatorStateCls::pushNamedAndRemoveUntiltemplate<typename T> (Object arguments, String newRouteName, RoutePredicate predicate) {
+template<typename T>
+Future<T> NavigatorStateCls::pushNamedAndRemoveUntil(Object arguments, String newRouteName, RoutePredicate predicate) {
     return <T>pushAndRemoveUntil(<T>_routeNamed(newRouteNamearguments)!, predicate);
 }
 
-String NavigatorStateCls::restorablePushNamedAndRemoveUntiltemplate<typename T> (Object arguments, String newRouteName, RoutePredicate predicate) {
+template<typename T>
+String NavigatorStateCls::restorablePushNamedAndRemoveUntil(Object arguments, String newRouteName, RoutePredicate predicate) {
     assert(newRouteName != nullptr);
     assert(debugIsSerializableForRestoration(arguments), __s("The arguments object must be serializable via the StandardMessageCodec."));
     _RouteEntry entry = _RestorationInformationCls->named(newRouteName, arguments, _nextPagelessRestorationScopeId())->toRouteEntry(this_RouteLifecycleCls::push);
@@ -963,13 +1025,15 @@ String NavigatorStateCls::restorablePushNamedAndRemoveUntiltemplate<typename T> 
     return entry->restorationId()!;
 }
 
-Future<T> NavigatorStateCls::pushtemplate<typename T> (Route<T> route) {
+template<typename T>
+Future<T> NavigatorStateCls::push(Route<T> route) {
     assert(_debugCheckIsPagelessRoute(route));
     _pushEntry(make<_RouteEntryCls>(route_RouteLifecycleCls::push));
     return route->popped();
 }
 
-String NavigatorStateCls::restorablePushtemplate<typename T> (Object arguments, RestorableRouteBuilder<T> routeBuilder) {
+template<typename T>
+String NavigatorStateCls::restorablePush(Object arguments, RestorableRouteBuilder<T> routeBuilder) {
     assert(routeBuilder != nullptr);
     assert(_debugIsStaticCallback(routeBuilder), __s("The provided routeBuilder must be a static function."));
     assert(debugIsSerializableForRestoration(arguments), __s("The arguments object must be serializable via the StandardMessageCodec."));
@@ -978,7 +1042,8 @@ String NavigatorStateCls::restorablePushtemplate<typename T> (Object arguments, 
     return entry->restorationId()!;
 }
 
-Future<T> NavigatorStateCls::pushReplacementtemplate<typename T, typename TO> (Route<T> newRoute, TO result) {
+template<typename T, typename TO>
+Future<T> NavigatorStateCls::pushReplacement(Route<T> newRoute, TO result) {
     assert(newRoute != nullptr);
     assert(newRoute->_navigator == nullptr);
     assert(_debugCheckIsPagelessRoute(newRoute));
@@ -986,7 +1051,8 @@ Future<T> NavigatorStateCls::pushReplacementtemplate<typename T, typename TO> (R
     return newRoute->popped();
 }
 
-String NavigatorStateCls::restorablePushReplacementtemplate<typename T, typename TO> (Object arguments, TO result, RestorableRouteBuilder<T> routeBuilder) {
+template<typename T, typename TO>
+String NavigatorStateCls::restorablePushReplacement(Object arguments, TO result, RestorableRouteBuilder<T> routeBuilder) {
     assert(routeBuilder != nullptr);
     assert(_debugIsStaticCallback(routeBuilder), __s("The provided routeBuilder must be a static function."));
     assert(debugIsSerializableForRestoration(arguments), __s("The arguments object must be serializable via the StandardMessageCodec."));
@@ -995,7 +1061,8 @@ String NavigatorStateCls::restorablePushReplacementtemplate<typename T, typename
     return entry->restorationId()!;
 }
 
-Future<T> NavigatorStateCls::pushAndRemoveUntiltemplate<typename T> (Route<T> newRoute, RoutePredicate predicate) {
+template<typename T>
+Future<T> NavigatorStateCls::pushAndRemoveUntil(Route<T> newRoute, RoutePredicate predicate) {
     assert(newRoute != nullptr);
     assert(newRoute->_navigator == nullptr);
     assert(newRoute->overlayEntries()->isEmpty);
@@ -1004,7 +1071,8 @@ Future<T> NavigatorStateCls::pushAndRemoveUntiltemplate<typename T> (Route<T> ne
     return newRoute->popped();
 }
 
-String NavigatorStateCls::restorablePushAndRemoveUntiltemplate<typename T> (Object arguments, RestorableRouteBuilder<T> newRouteBuilder, RoutePredicate predicate) {
+template<typename T>
+String NavigatorStateCls::restorablePushAndRemoveUntil(Object arguments, RestorableRouteBuilder<T> newRouteBuilder, RoutePredicate predicate) {
     assert(newRouteBuilder != nullptr);
     assert(_debugIsStaticCallback(newRouteBuilder), __s("The provided routeBuilder must be a static function."));
     assert(debugIsSerializableForRestoration(arguments), __s("The arguments object must be serializable via the StandardMessageCodec."));
@@ -1013,7 +1081,8 @@ String NavigatorStateCls::restorablePushAndRemoveUntiltemplate<typename T> (Obje
     return entry->restorationId()!;
 }
 
-void NavigatorStateCls::replacetemplate<typename T> (Route<T> newRoute, Route<dynamic> oldRoute) {
+template<typename T>
+void NavigatorStateCls::replace(Route<T> newRoute, Route<dynamic> oldRoute) {
     assert(!_debugLocked);
     assert(oldRoute != nullptr);
     assert(oldRoute->_navigator == this);
@@ -1021,7 +1090,8 @@ void NavigatorStateCls::replacetemplate<typename T> (Route<T> newRoute, Route<dy
     _replaceEntry(make<_RouteEntryCls>(newRoute_RouteLifecycleCls::replace), oldRoute);
 }
 
-String NavigatorStateCls::restorableReplacetemplate<typename T> (Object arguments, RestorableRouteBuilder<T> newRouteBuilder, Route<dynamic> oldRoute) {
+template<typename T>
+String NavigatorStateCls::restorableReplace(Object arguments, RestorableRouteBuilder<T> newRouteBuilder, Route<dynamic> oldRoute) {
     assert(oldRoute != nullptr);
     assert(oldRoute->_navigator == this);
     assert(newRouteBuilder != nullptr);
@@ -1033,7 +1103,8 @@ String NavigatorStateCls::restorableReplacetemplate<typename T> (Object argument
     return entry->restorationId()!;
 }
 
-void NavigatorStateCls::replaceRouteBelowtemplate<typename T> (Route<dynamic> anchorRoute, Route<T> newRoute) {
+template<typename T>
+void NavigatorStateCls::replaceRouteBelow(Route<dynamic> anchorRoute, Route<T> newRoute) {
     assert(newRoute != nullptr);
     assert(newRoute->_navigator == nullptr);
     assert(anchorRoute != nullptr);
@@ -1041,7 +1112,8 @@ void NavigatorStateCls::replaceRouteBelowtemplate<typename T> (Route<dynamic> an
     _replaceEntryBelow(make<_RouteEntryCls>(newRoute_RouteLifecycleCls::replace), anchorRoute);
 }
 
-String NavigatorStateCls::restorableReplaceRouteBelowtemplate<typename T> (Route<dynamic> anchorRoute, Object arguments, RestorableRouteBuilder<T> newRouteBuilder) {
+template<typename T>
+String NavigatorStateCls::restorableReplaceRouteBelow(Route<dynamic> anchorRoute, Object arguments, RestorableRouteBuilder<T> newRouteBuilder) {
     assert(anchorRoute != nullptr);
     assert(anchorRoute->_navigator == this);
     assert(newRouteBuilder != nullptr);
@@ -1067,7 +1139,8 @@ bool NavigatorStateCls::canPop() {
     return true;
 }
 
-Future<bool> NavigatorStateCls::maybePoptemplate<typename T> (T result) {
+template<typename T>
+Future<bool> NavigatorStateCls::maybePop(T result) {
     _RouteEntry lastEntry = _history-><_RouteEntry>cast()->lastWhere([=] (_RouteEntry e) {
     e != nullptr && _RouteEntryCls->isPresentPredicate(e);
 }[=] () {
@@ -1093,7 +1166,8 @@ Future<bool> NavigatorStateCls::maybePoptemplate<typename T> (T result) {
     ;
 }
 
-void NavigatorStateCls::poptemplate<typename T> (T result) {
+template<typename T>
+void NavigatorStateCls::pop(T result) {
     assert(!_debugLocked);
     assert([=] () {
         _debugLocked = true;
@@ -1179,7 +1253,7 @@ void NavigatorStateCls::removeRouteBelow(Route<dynamic> anchorRoute) {
     int index = anchorIndex - 1;
     while (index >= 0) {
         if (_history[index]->isPresent()) {
-                        break;
+            break;
         }
         index = 1;
     }
@@ -1338,11 +1412,11 @@ void NavigatorStateCls::_updatePages() {
             continue;
         }
         if (newPagesBottom > newPagesTop) {
-                        break;
+            break;
         }
         Page<dynamic> newPage = widget->pages[newPagesBottom];
         if (!oldEntry->canUpdateFrom(newPage)) {
-                        break;
+            break;
         }
         previousOldPageRouteEntry = oldEntry;
         oldEntry->route->_updateSettings(newPage);
@@ -1361,7 +1435,7 @@ void NavigatorStateCls::_updatePages() {
         }
         Page<dynamic> newPage = widget->pages[newPagesTop];
         if (!oldEntry->canUpdateFrom(newPage)) {
-                        break;
+            break;
         }
         pagelessRoutesToSkip = 0;
         oldEntriesTop = 1;
@@ -1595,7 +1669,8 @@ _RouteEntry NavigatorStateCls::_getRouteAfter(int index, _RouteEntryPredicate pr
     return  < _history->length()? _history[index] : nullptr;
 }
 
-Route<T> NavigatorStateCls::_routeNamedtemplate<typename T> (bool allowNull, Object arguments, String name) {
+template<typename T>
+Route<T> NavigatorStateCls::_routeNamed(bool allowNull, Object arguments, String name) {
     assert(!_debugLocked);
     assert(name != nullptr);
     if (allowNull && widget->onGenerateRoute == nullptr) {
@@ -1692,7 +1767,8 @@ void NavigatorStateCls::_afterNavigation(Route<dynamic> route) {
     _cancelActivePointers();
 }
 
-void NavigatorStateCls::_pushReplacementEntrytemplate<typename TO> (_RouteEntry entry, TO result) {
+template<typename TO>
+void NavigatorStateCls::_pushReplacementEntry(_RouteEntry entry, TO result) {
     assert(!_debugLocked);
     assert([=] () {
         _debugLocked = true;
@@ -1779,7 +1855,7 @@ void NavigatorStateCls::_replaceEntryBelow(Route<dynamic> anchorRoute, _RouteEnt
     int index = anchorIndex - 1;
     while (index >= 0) {
         if (_history[index]->isPresent()) {
-                        break;
+            break;
         }
         index = 1;
     }
@@ -1793,7 +1869,8 @@ void NavigatorStateCls::_replaceEntryBelow(Route<dynamic> anchorRoute, _RouteEnt
     }());
 }
 
-Route<T> NavigatorStateCls::_getRouteByIdtemplate<typename T> (String id) {
+template<typename T>
+Route<T> NavigatorStateCls::_getRouteById(String id) {
     assert(id != nullptr);
     return as<Route<T>>(_history-><_RouteEntry>cast()->firstWhere([=] (_RouteEntry entry)     {
         entry!->restorationId == id;
@@ -1880,7 +1957,7 @@ Route<dynamic> _NamedRestorationInformationCls::createRoute(NavigatorState navig
     return route;
 }
 
-_NamedRestorationInformationCls::_NamedRestorationInformationCls(Object arguments, String name, int restorationScopeId) : _RestorationInformation(_RouteRestorationTypeCls::named) {
+_NamedRestorationInformationCls::_NamedRestorationInformationCls(Object arguments, String name, int restorationScopeId) {
     {
         assert(name != nullptr);
     }
@@ -1909,7 +1986,7 @@ Route<dynamic> _AnonymousRestorationInformationCls::createRoute(NavigatorState n
     return result;
 }
 
-_AnonymousRestorationInformationCls::_AnonymousRestorationInformationCls(Object arguments, int restorationScopeId, RestorableRouteBuilder<Object> routeBuilder) : _RestorationInformation(_RouteRestorationTypeCls::anonymous) {
+_AnonymousRestorationInformationCls::_AnonymousRestorationInformationCls(Object arguments, int restorationScopeId, RestorableRouteBuilder<Object> routeBuilder) {
     {
         assert(routeBuilder != nullptr);
     }
@@ -2047,14 +2124,16 @@ bool _HistoryPropertyCls::_debugMapsEqual(Map<String, List<Object>> a, Map<Strin
     return true;
 }
 
-template<typename T> RestorableRouteFutureCls<T>::RestorableRouteFutureCls(NavigatorFinderCallback navigatorFinder, RouteCompletionCallback<T> onComplete, RoutePresentationCallback onPresent) {
+template<typename T>
+RestorableRouteFutureCls<T>::RestorableRouteFutureCls(NavigatorFinderCallback navigatorFinder, RouteCompletionCallback<T> onComplete, RoutePresentationCallback onPresent) {
     {
         assert(onPresent != nullptr);
         assert(navigatorFinder != nullptr);
     }
 }
 
-template<typename T> void RestorableRouteFutureCls<T>::present(Object arguments) {
+template<typename T>
+void RestorableRouteFutureCls<T>::present(Object arguments) {
     assert(!isPresent());
     assert(isRegistered);
     String routeId = onPresent(_navigator(), arguments);
@@ -2063,52 +2142,62 @@ template<typename T> void RestorableRouteFutureCls<T>::present(Object arguments)
     notifyListeners();
 }
 
-template<typename T> bool RestorableRouteFutureCls<T>::isPresent() {
+template<typename T>
+bool RestorableRouteFutureCls<T>::isPresent() {
     return route() != nullptr;
 }
 
-template<typename T> Route<T> RestorableRouteFutureCls<T>::route() {
+template<typename T>
+Route<T> RestorableRouteFutureCls<T>::route() {
     return _route;
 }
 
-template<typename T> String RestorableRouteFutureCls<T>::createDefaultValue() {
+template<typename T>
+String RestorableRouteFutureCls<T>::createDefaultValue() {
     return nullptr;
 }
 
-template<typename T> void RestorableRouteFutureCls<T>::initWithValue(String value) {
+template<typename T>
+void RestorableRouteFutureCls<T>::initWithValue(String value) {
     if (value != nullptr) {
         _hookOntoRouteFuture(value);
     }
 }
 
-template<typename T> Object RestorableRouteFutureCls<T>::toPrimitives() {
+template<typename T>
+Object RestorableRouteFutureCls<T>::toPrimitives() {
     assert(route() != nullptr);
     assert(enabled());
     return route()?->restorationScopeId()->value();
 }
 
-template<typename T> String RestorableRouteFutureCls<T>::fromPrimitives(Object data) {
+template<typename T>
+String RestorableRouteFutureCls<T>::fromPrimitives(Object data) {
     assert(data != nullptr);
     return as<String>(data!);
 }
 
-template<typename T> void RestorableRouteFutureCls<T>::dispose() {
+template<typename T>
+void RestorableRouteFutureCls<T>::dispose() {
     super->dispose();
     _route?->restorationScopeId()->removeListener(notifyListeners);
     _disposed = true;
 }
 
-template<typename T> bool RestorableRouteFutureCls<T>::enabled() {
+template<typename T>
+bool RestorableRouteFutureCls<T>::enabled() {
     return route()?->restorationScopeId()->value() != nullptr;
 }
 
-template<typename T> NavigatorState RestorableRouteFutureCls<T>::_navigator() {
+template<typename T>
+NavigatorState RestorableRouteFutureCls<T>::_navigator() {
     NavigatorState navigator = navigatorFinder(state->context);
     assert(navigator != nullptr);
     return navigator;
 }
 
-template<typename T> void RestorableRouteFutureCls<T>::_hookOntoRouteFuture(String id) {
+template<typename T>
+void RestorableRouteFutureCls<T>::_hookOntoRouteFuture(String id) {
     assert(id != nullptr);
     _route = _navigator()-><T>_getRouteById(id);
     assert(_route != nullptr);
@@ -2124,6 +2213,7 @@ template<typename T> void RestorableRouteFutureCls<T>::_hookOntoRouteFuture(Stri
     });
 }
 
-template<typename T> NavigatorState RestorableRouteFutureCls<T>::_defaultNavigatorFinder(BuildContext context) {
+template<typename T>
+NavigatorState RestorableRouteFutureCls<T>::_defaultNavigatorFinder(BuildContext context) {
     return NavigatorCls->of(context);
 }

@@ -374,7 +374,7 @@ void PipelineOwnerCls::flushLayout() {
                     _shouldMergeDirtyNodes = false;
                     if (_nodesNeedingLayout->isNotEmpty) {
                         _nodesNeedingLayout->addAll(dirtyNodes->getRange(i, dirtyNodes->length()));
-                                                break;
+                        break;
                     }
                 }
                 RenderObject node = dirtyNodes[i];
@@ -754,7 +754,7 @@ void RenderObjectCls::layout(Constraints constraints, bool parentUsesSize) {
         for (;  < stack->length(); i = 1) {
             if (layoutFramePattern->matchAsPrefix(stack[i]) != nullptr) {
                 targetFrame = i + 1;
-                                break;
+                break;
             }
         }
         if (targetFrame != nullptr &&  < stack->length()) {
@@ -864,7 +864,8 @@ bool RenderObjectCls::sizedByParent() {
     return false;
 }
 
-void RenderObjectCls::invokeLayoutCallbacktemplate<typename T> (LayoutCallback<T> callback) {
+template<typename T>
+void RenderObjectCls::invokeLayoutCallback(LayoutCallback<T> callback) {
     assert(_debugMutationsLocked);
     assert(_debugDoingThisLayout);
     assert(!_doingThisLayoutWithCallback);
@@ -1150,7 +1151,7 @@ void RenderObjectCls::markNeedsSemanticsUpdate() {
     RenderObject node = this;
     while (!isEffectiveSemanticsBoundary && is<RenderObject>(node->parent)) {
         if (node != this && node->_needsSemanticsUpdate) {
-                        break;
+            break;
         }
         node->_needsSemanticsUpdate = true;
         node = as<RenderObject>(node->parent!);
@@ -1306,7 +1307,7 @@ bool RenderObjectCls::_debugCanPerformMutations() {
                 AbstractNode p = activeLayoutRoot->parent;
                 activeLayoutRoot = is<RenderObject>(p)? p : nullptr;
             } else {
-                                break;
+                break;
             }
         }
         RenderObject debugActiveLayout = RenderObjectCls::debugActiveLayout!;
@@ -1444,10 +1445,10 @@ void RenderObjectCls::_skippedPaintingOnLayer() {
     while (is<RenderObject>(node)) {
         if (node->isRepaintBoundary) {
             if (node->_layerHandle->layer() == nullptr) {
-                                break;
+                break;
             }
             if (node->_layerHandle->layer()!->attached) {
-                                break;
+                break;
             }
             node->_needsPaint = true;
         }
@@ -1612,7 +1613,8 @@ _SemanticsFragment RenderObjectCls::_getSemanticsForParent(bool mergeIntoParent)
     return result;
 }
 
-template<typename ChildType> bool RenderObjectWithChildMixinCls<ChildType>::debugValidateChild(RenderObject child) {
+template<typename ChildType>
+bool RenderObjectWithChildMixinCls<ChildType>::debugValidateChild(RenderObject child) {
     assert([=] () {
         if (!is<ChildType>(child)) {
             ;
@@ -1622,11 +1624,13 @@ template<typename ChildType> bool RenderObjectWithChildMixinCls<ChildType>::debu
     return true;
 }
 
-template<typename ChildType> ChildType RenderObjectWithChildMixinCls<ChildType>::child() {
+template<typename ChildType>
+ChildType RenderObjectWithChildMixinCls<ChildType>::child() {
     return _child;
 }
 
-template<typename ChildType> void RenderObjectWithChildMixinCls<ChildType>::child(ChildType value) {
+template<typename ChildType>
+void RenderObjectWithChildMixinCls<ChildType>::child(ChildType value) {
     if (_child != nullptr) {
         dropChild(_child!);
     }
@@ -1636,47 +1640,55 @@ template<typename ChildType> void RenderObjectWithChildMixinCls<ChildType>::chil
     }
 }
 
-template<typename ChildType> void RenderObjectWithChildMixinCls<ChildType>::attach(PipelineOwner owner) {
+template<typename ChildType>
+void RenderObjectWithChildMixinCls<ChildType>::attach(PipelineOwner owner) {
     super->attach(owner);
     if (_child != nullptr) {
         _child!->attach(owner);
     }
 }
 
-template<typename ChildType> void RenderObjectWithChildMixinCls<ChildType>::detach() {
+template<typename ChildType>
+void RenderObjectWithChildMixinCls<ChildType>::detach() {
     super->detach();
     if (_child != nullptr) {
         _child!->detach();
     }
 }
 
-template<typename ChildType> void RenderObjectWithChildMixinCls<ChildType>::redepthChildren() {
+template<typename ChildType>
+void RenderObjectWithChildMixinCls<ChildType>::redepthChildren() {
     if (_child != nullptr) {
         redepthChild(_child!);
     }
 }
 
-template<typename ChildType> void RenderObjectWithChildMixinCls<ChildType>::visitChildren(RenderObjectVisitor visitor) {
+template<typename ChildType>
+void RenderObjectWithChildMixinCls<ChildType>::visitChildren(RenderObjectVisitor visitor) {
     if (_child != nullptr) {
         visitor(_child!);
     }
 }
 
-template<typename ChildType> List<DiagnosticsNode> RenderObjectWithChildMixinCls<ChildType>::debugDescribeChildren() {
+template<typename ChildType>
+List<DiagnosticsNode> RenderObjectWithChildMixinCls<ChildType>::debugDescribeChildren() {
     return child() != nullptr? makeList(ArrayItem) : makeList();
 }
 
-template<typename ChildType> void ContainerParentDataMixinCls<ChildType>::detach() {
+template<typename ChildType>
+void ContainerParentDataMixinCls<ChildType>::detach() {
     assert(previousSibling == nullptr, __s("Pointers to siblings must be nulled before detaching ParentData."));
     assert(nextSibling == nullptr, __s("Pointers to siblings must be nulled before detaching ParentData."));
     super->detach();
 }
 
-template<typename ChildType, typename ParentDataType> int ContainerRenderObjectMixinCls<ChildType, ParentDataType>::childCount() {
+template<typename ChildType, typename ParentDataType>
+int ContainerRenderObjectMixinCls<ChildType, ParentDataType>::childCount() {
     return _childCount;
 }
 
-template<typename ChildType, typename ParentDataType> bool ContainerRenderObjectMixinCls<ChildType, ParentDataType>::debugValidateChild(RenderObject child) {
+template<typename ChildType, typename ParentDataType>
+bool ContainerRenderObjectMixinCls<ChildType, ParentDataType>::debugValidateChild(RenderObject child) {
     assert([=] () {
         if (!is<ChildType>(child)) {
             ;
@@ -1686,7 +1698,8 @@ template<typename ChildType, typename ParentDataType> bool ContainerRenderObject
     return true;
 }
 
-template<typename ChildType, typename ParentDataType> void ContainerRenderObjectMixinCls<ChildType, ParentDataType>::insert(ChildType after, ChildType child) {
+template<typename ChildType, typename ParentDataType>
+void ContainerRenderObjectMixinCls<ChildType, ParentDataType>::insert(ChildType after, ChildType child) {
     assert(child != this, __s("A RenderObject cannot be inserted into itself."));
     assert(after != this, __s("A RenderObject cannot simultaneously be both the parent and the sibling of another RenderObject."));
     assert(child != after, __s("A RenderObject cannot be inserted after itself."));
@@ -1696,20 +1709,24 @@ template<typename ChildType, typename ParentDataType> void ContainerRenderObject
     _insertIntoChildList(childafter);
 }
 
-template<typename ChildType, typename ParentDataType> void ContainerRenderObjectMixinCls<ChildType, ParentDataType>::add(ChildType child) {
+template<typename ChildType, typename ParentDataType>
+void ContainerRenderObjectMixinCls<ChildType, ParentDataType>::add(ChildType child) {
     insert(child_lastChild);
 }
 
-template<typename ChildType, typename ParentDataType> void ContainerRenderObjectMixinCls<ChildType, ParentDataType>::addAll(List<ChildType> children) {
+template<typename ChildType, typename ParentDataType>
+void ContainerRenderObjectMixinCls<ChildType, ParentDataType>::addAll(List<ChildType> children) {
     children?->forEach(add);
 }
 
-template<typename ChildType, typename ParentDataType> void ContainerRenderObjectMixinCls<ChildType, ParentDataType>::remove(ChildType child) {
+template<typename ChildType, typename ParentDataType>
+void ContainerRenderObjectMixinCls<ChildType, ParentDataType>::remove(ChildType child) {
     _removeFromChildList(child);
     dropChild(child);
 }
 
-template<typename ChildType, typename ParentDataType> void ContainerRenderObjectMixinCls<ChildType, ParentDataType>::removeAll() {
+template<typename ChildType, typename ParentDataType>
+void ContainerRenderObjectMixinCls<ChildType, ParentDataType>::removeAll() {
     ChildType child = _firstChild;
     while (child != nullptr) {
         ParentDataType childParentData = as<ParentDataType>(child->parentData!);
@@ -1724,7 +1741,8 @@ template<typename ChildType, typename ParentDataType> void ContainerRenderObject
     _childCount = 0;
 }
 
-template<typename ChildType, typename ParentDataType> void ContainerRenderObjectMixinCls<ChildType, ParentDataType>::move(ChildType after, ChildType child) {
+template<typename ChildType, typename ParentDataType>
+void ContainerRenderObjectMixinCls<ChildType, ParentDataType>::move(ChildType after, ChildType child) {
     assert(child != this);
     assert(after != this);
     assert(child != after);
@@ -1738,7 +1756,8 @@ template<typename ChildType, typename ParentDataType> void ContainerRenderObject
     markNeedsLayout();
 }
 
-template<typename ChildType, typename ParentDataType> void ContainerRenderObjectMixinCls<ChildType, ParentDataType>::attach(PipelineOwner owner) {
+template<typename ChildType, typename ParentDataType>
+void ContainerRenderObjectMixinCls<ChildType, ParentDataType>::attach(PipelineOwner owner) {
     super->attach(owner);
     ChildType child = _firstChild;
     while (child != nullptr) {
@@ -1748,7 +1767,8 @@ template<typename ChildType, typename ParentDataType> void ContainerRenderObject
     }
 }
 
-template<typename ChildType, typename ParentDataType> void ContainerRenderObjectMixinCls<ChildType, ParentDataType>::detach() {
+template<typename ChildType, typename ParentDataType>
+void ContainerRenderObjectMixinCls<ChildType, ParentDataType>::detach() {
     super->detach();
     ChildType child = _firstChild;
     while (child != nullptr) {
@@ -1758,7 +1778,8 @@ template<typename ChildType, typename ParentDataType> void ContainerRenderObject
     }
 }
 
-template<typename ChildType, typename ParentDataType> void ContainerRenderObjectMixinCls<ChildType, ParentDataType>::redepthChildren() {
+template<typename ChildType, typename ParentDataType>
+void ContainerRenderObjectMixinCls<ChildType, ParentDataType>::redepthChildren() {
     ChildType child = _firstChild;
     while (child != nullptr) {
         redepthChild(child);
@@ -1767,7 +1788,8 @@ template<typename ChildType, typename ParentDataType> void ContainerRenderObject
     }
 }
 
-template<typename ChildType, typename ParentDataType> void ContainerRenderObjectMixinCls<ChildType, ParentDataType>::visitChildren(RenderObjectVisitor visitor) {
+template<typename ChildType, typename ParentDataType>
+void ContainerRenderObjectMixinCls<ChildType, ParentDataType>::visitChildren(RenderObjectVisitor visitor) {
     ChildType child = _firstChild;
     while (child != nullptr) {
         visitor(child);
@@ -1776,29 +1798,34 @@ template<typename ChildType, typename ParentDataType> void ContainerRenderObject
     }
 }
 
-template<typename ChildType, typename ParentDataType> ChildType ContainerRenderObjectMixinCls<ChildType, ParentDataType>::firstChild() {
+template<typename ChildType, typename ParentDataType>
+ChildType ContainerRenderObjectMixinCls<ChildType, ParentDataType>::firstChild() {
     return _firstChild;
 }
 
-template<typename ChildType, typename ParentDataType> ChildType ContainerRenderObjectMixinCls<ChildType, ParentDataType>::lastChild() {
+template<typename ChildType, typename ParentDataType>
+ChildType ContainerRenderObjectMixinCls<ChildType, ParentDataType>::lastChild() {
     return _lastChild;
 }
 
-template<typename ChildType, typename ParentDataType> ChildType ContainerRenderObjectMixinCls<ChildType, ParentDataType>::childBefore(ChildType child) {
+template<typename ChildType, typename ParentDataType>
+ChildType ContainerRenderObjectMixinCls<ChildType, ParentDataType>::childBefore(ChildType child) {
     assert(child != nullptr);
     assert(child->parent == this);
     ParentDataType childParentData = as<ParentDataType>(child->parentData!);
     return childParentData->previousSibling;
 }
 
-template<typename ChildType, typename ParentDataType> ChildType ContainerRenderObjectMixinCls<ChildType, ParentDataType>::childAfter(ChildType child) {
+template<typename ChildType, typename ParentDataType>
+ChildType ContainerRenderObjectMixinCls<ChildType, ParentDataType>::childAfter(ChildType child) {
     assert(child != nullptr);
     assert(child->parent == this);
     ParentDataType childParentData = as<ParentDataType>(child->parentData!);
     return childParentData->nextSibling;
 }
 
-template<typename ChildType, typename ParentDataType> List<DiagnosticsNode> ContainerRenderObjectMixinCls<ChildType, ParentDataType>::debugDescribeChildren() {
+template<typename ChildType, typename ParentDataType>
+List<DiagnosticsNode> ContainerRenderObjectMixinCls<ChildType, ParentDataType>::debugDescribeChildren() {
     List<DiagnosticsNode> children = makeList();
     if (firstChild() != nullptr) {
         ChildType child = firstChild()!;
@@ -1806,7 +1833,7 @@ template<typename ChildType, typename ParentDataType> List<DiagnosticsNode> Cont
         while (true) {
             children->add(child->toDiagnosticsNode(__s("child $count")));
             if (child == lastChild()) {
-                                break;
+                break;
             }
             count = 1;
             ParentDataType childParentData = as<ParentDataType>(child->parentData!);
@@ -1816,7 +1843,8 @@ template<typename ChildType, typename ParentDataType> List<DiagnosticsNode> Cont
     return children;
 }
 
-template<typename ChildType, typename ParentDataType> bool ContainerRenderObjectMixinCls<ChildType, ParentDataType>::_debugUltimatePreviousSiblingOf(ChildType child, ChildType equals) {
+template<typename ChildType, typename ParentDataType>
+bool ContainerRenderObjectMixinCls<ChildType, ParentDataType>::_debugUltimatePreviousSiblingOf(ChildType child, ChildType equals) {
     ParentDataType childParentData = as<ParentDataType>(child->parentData!);
     while (childParentData->previousSibling != nullptr) {
         assert(childParentData->previousSibling != child);
@@ -1826,7 +1854,8 @@ template<typename ChildType, typename ParentDataType> bool ContainerRenderObject
     return child == equals;
 }
 
-template<typename ChildType, typename ParentDataType> bool ContainerRenderObjectMixinCls<ChildType, ParentDataType>::_debugUltimateNextSiblingOf(ChildType child, ChildType equals) {
+template<typename ChildType, typename ParentDataType>
+bool ContainerRenderObjectMixinCls<ChildType, ParentDataType>::_debugUltimateNextSiblingOf(ChildType child, ChildType equals) {
     ParentDataType childParentData = as<ParentDataType>(child->parentData!);
     while (childParentData->nextSibling != nullptr) {
         assert(childParentData->nextSibling != child);
@@ -1836,7 +1865,8 @@ template<typename ChildType, typename ParentDataType> bool ContainerRenderObject
     return child == equals;
 }
 
-template<typename ChildType, typename ParentDataType> void ContainerRenderObjectMixinCls<ChildType, ParentDataType>::_insertIntoChildList(ChildType after, ChildType child) {
+template<typename ChildType, typename ParentDataType>
+void ContainerRenderObjectMixinCls<ChildType, ParentDataType>::_insertIntoChildList(ChildType after, ChildType child) {
     ParentDataType childParentData = as<ParentDataType>(child->parentData!);
     assert(childParentData->nextSibling == nullptr);
     assert(childParentData->previousSibling == nullptr);
@@ -1873,7 +1903,8 @@ template<typename ChildType, typename ParentDataType> void ContainerRenderObject
     }
 }
 
-template<typename ChildType, typename ParentDataType> void ContainerRenderObjectMixinCls<ChildType, ParentDataType>::_removeFromChildList(ChildType child) {
+template<typename ChildType, typename ParentDataType>
+void ContainerRenderObjectMixinCls<ChildType, ParentDataType>::_removeFromChildList(ChildType child) {
     ParentDataType childParentData = as<ParentDataType>(child->parentData!);
     assert(_debugUltimatePreviousSiblingOf(child_firstChild));
     assert(_debugUltimateNextSiblingOf(child_lastChild));
@@ -2165,7 +2196,7 @@ Rect _SemanticsGeometryCls::_intersectRects(Rect a, Rect b) {
     return a->intersect(b);
 }
 
-DiagnosticsDebugCreatorCls::DiagnosticsDebugCreatorCls(Object value) : DiagnosticsProperty<Object>(__s("debugCreator"), valueDiagnosticLevelCls::hidden) {
+DiagnosticsDebugCreatorCls::DiagnosticsDebugCreatorCls(Object value) {
     {
         assert(value != nullptr);
     }

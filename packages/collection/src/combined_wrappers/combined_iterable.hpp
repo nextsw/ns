@@ -7,7 +7,8 @@
 #include "combined_iterator.hpp"
 
 
-template<typename T> class CombinedIterableViewCls : public IterableBaseCls<T> {
+template<typename T>
+class CombinedIterableViewCls : public IterableBaseCls<T> {
 public:
 
      CombinedIterableViewCls(Iterable<Iterable<T>> _iterables);
@@ -24,7 +25,8 @@ private:
 
 
 };
-template<typename T> using CombinedIterableView = std::shared_ptr<CombinedIterableViewCls<T>>;
+template<typename T>
+using CombinedIterableView = std::shared_ptr<CombinedIterableViewCls<T>>;
 
 
 #endif

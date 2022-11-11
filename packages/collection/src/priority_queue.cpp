@@ -1,16 +1,19 @@
 #include "priority_queue.hpp"
-template<typename E> HeapPriorityQueueCls<E>::HeapPriorityQueueCls(int comparison(E , E ) ) {
+template<typename E>
+HeapPriorityQueueCls<E>::HeapPriorityQueueCls(int comparison(E , E ) ) {
     {
         comparison = comparison or defaultCompare;
     }
 }
 
-template<typename E> void HeapPriorityQueueCls<E>::add(E element) {
+template<typename E>
+void HeapPriorityQueueCls<E>::add(E element) {
     _modificationCount++;
     _add(element);
 }
 
-template<typename E> void HeapPriorityQueueCls<E>::addAll(Iterable<E> elements) {
+template<typename E>
+void HeapPriorityQueueCls<E>::addAll(Iterable<E> elements) {
     auto modified = 0;
     for (auto element : elements) {
         modified = 1;
@@ -19,40 +22,48 @@ template<typename E> void HeapPriorityQueueCls<E>::addAll(Iterable<E> elements) 
     _modificationCount = modified;
 }
 
-template<typename E> void HeapPriorityQueueCls<E>::clear() {
+template<typename E>
+void HeapPriorityQueueCls<E>::clear() {
     _modificationCount++;
     _queue = makeList();
     _length = 0;
 }
 
-template<typename E> bool HeapPriorityQueueCls<E>::contains(E object) {
+template<typename E>
+bool HeapPriorityQueueCls<E>::contains(E object) {
     return _locate(object) >= 0;
 }
 
-template<typename E> Iterable<E> HeapPriorityQueueCls<E>::unorderedElements() {
+template<typename E>
+Iterable<E> HeapPriorityQueueCls<E>::unorderedElements() {
     return <E>make<_UnorderedElementsIterableCls>(this);
 }
 
-template<typename E> E HeapPriorityQueueCls<E>::first() {
+template<typename E>
+E HeapPriorityQueueCls<E>::first() {
     if (_length == 0)     {
         ;
     }
     return _elementAt(0);
 }
 
-template<typename E> bool HeapPriorityQueueCls<E>::isEmpty() {
+template<typename E>
+bool HeapPriorityQueueCls<E>::isEmpty() {
     return _length == 0;
 }
 
-template<typename E> bool HeapPriorityQueueCls<E>::isNotEmpty() {
+template<typename E>
+bool HeapPriorityQueueCls<E>::isNotEmpty() {
     return _length != 0;
 }
 
-template<typename E> int HeapPriorityQueueCls<E>::length() {
+template<typename E>
+int HeapPriorityQueueCls<E>::length() {
     return _length;
 }
 
-template<typename E> bool HeapPriorityQueueCls<E>::remove(E element) {
+template<typename E>
+bool HeapPriorityQueueCls<E>::remove(E element) {
     auto index = _locate(element);
     if ( < 0)     {
         return false;
@@ -70,7 +81,8 @@ template<typename E> bool HeapPriorityQueueCls<E>::remove(E element) {
     return true;
 }
 
-template<typename E> Iterable<E> HeapPriorityQueueCls<E>::removeAll() {
+template<typename E>
+Iterable<E> HeapPriorityQueueCls<E>::removeAll() {
     _modificationCount++;
     auto result = _queue;
     auto length = _length;
@@ -79,7 +91,8 @@ template<typename E> Iterable<E> HeapPriorityQueueCls<E>::removeAll() {
     return result->take(length)->cast();
 }
 
-template<typename E> E HeapPriorityQueueCls<E>::removeFirst() {
+template<typename E>
+E HeapPriorityQueueCls<E>::removeFirst() {
     if (_length == 0)     {
         ;
     }
@@ -92,11 +105,13 @@ template<typename E> E HeapPriorityQueueCls<E>::removeFirst() {
     return result;
 }
 
-template<typename E> List<E> HeapPriorityQueueCls<E>::toList() {
+template<typename E>
+List<E> HeapPriorityQueueCls<E>::toList() {
     return _c1;
 }
 
-template<typename E> Set<E> HeapPriorityQueueCls<E>::toSet() {
+template<typename E>
+Set<E> HeapPriorityQueueCls<E>::toSet() {
     auto _c1 = _toUnorderedList();_c1.sort(comparison);auto set = <E>make<SplayTreeSetCls>(comparison);
     for (;  < _length; i++) {
         set->add(_elementAt(i));
@@ -104,30 +119,36 @@ template<typename E> Set<E> HeapPriorityQueueCls<E>::toSet() {
     return set;
 }
 
-template<typename E> List<E> HeapPriorityQueueCls<E>::toUnorderedList() {
+template<typename E>
+List<E> HeapPriorityQueueCls<E>::toUnorderedList() {
     return _toUnorderedList();
 }
 
-template<typename E> String HeapPriorityQueueCls<E>::toString() {
+template<typename E>
+String HeapPriorityQueueCls<E>::toString() {
     return _queue->take(_length)->toString();
 }
 
-template<typename E> E HeapPriorityQueueCls<E>::_elementAt(int index) {
+template<typename E>
+E HeapPriorityQueueCls<E>::_elementAt(int index) {
     return _queue[index] or (as<E>(nullptr));
 }
 
-template<typename E> List<E> HeapPriorityQueueCls<E>::_toUnorderedList() {
+template<typename E>
+List<E> HeapPriorityQueueCls<E>::_toUnorderedList() {
     return list1;
 }
 
-template<typename E> void HeapPriorityQueueCls<E>::_add(E element) {
+template<typename E>
+void HeapPriorityQueueCls<E>::_add(E element) {
     for (;  < _length; i++)     {        ;    }{    list1.add(ArrayItem);}if (_length == _queue->length())     {
         _grow();
     }
     _bubbleUp(element, _length++);
 }
 
-template<typename E> int HeapPriorityQueueCls<E>::_locate(E object) {
+template<typename E>
+int HeapPriorityQueueCls<E>::_locate(E object) {
     if (_length == 0)     {
         return -1;
     }
@@ -156,7 +177,8 @@ template<typename E> int HeapPriorityQueueCls<E>::_locate(E object) {
     return -1;
 }
 
-template<typename E> E HeapPriorityQueueCls<E>::_removeLast() {
+template<typename E>
+E HeapPriorityQueueCls<E>::_removeLast() {
     auto newLength = _length - 1;
     auto last = _elementAt(newLength);
     _queue[newLength] = nullptr;
@@ -164,12 +186,13 @@ template<typename E> E HeapPriorityQueueCls<E>::_removeLast() {
     return last;
 }
 
-template<typename E> void HeapPriorityQueueCls<E>::_bubbleUp(E element, int index) {
+template<typename E>
+void HeapPriorityQueueCls<E>::_bubbleUp(E element, int index) {
     while (index > 0) {
         auto parentIndex = (index - 1) ~/ 2;
         auto parent = _elementAt(parentIndex);
         if (comparison(element, parent) > 0)         {
-                    break;
+            break;
         }
         _queue[index] = parent;
         index = parentIndex;
@@ -177,7 +200,8 @@ template<typename E> void HeapPriorityQueueCls<E>::_bubbleUp(E element, int inde
     _queue[index] = element;
 }
 
-template<typename E> void HeapPriorityQueueCls<E>::_bubbleDown(E element, int index) {
+template<typename E>
+void HeapPriorityQueueCls<E>::_bubbleDown(E element, int index) {
     auto rightChildIndex = index * 2 + 2;
     while ( < _length) {
         auto leftChildIndex = rightChildIndex - 1;
@@ -214,7 +238,8 @@ template<typename E> void HeapPriorityQueueCls<E>::_bubbleDown(E element, int in
     _queue[index] = element;
 }
 
-template<typename E> void HeapPriorityQueueCls<E>::_grow() {
+template<typename E>
+void HeapPriorityQueueCls<E>::_grow() {
     auto newCapacity = _queue->length() * 2 + 1;
     if ( < _initialCapacity)     {
         newCapacity = _initialCapacity;
@@ -224,11 +249,13 @@ template<typename E> void HeapPriorityQueueCls<E>::_grow() {
     _queue = newQueue;
 }
 
-template<typename E> Iterator<E> _UnorderedElementsIterableCls<E>::iterator() {
+template<typename E>
+Iterator<E> _UnorderedElementsIterableCls<E>::iterator() {
     return <E>make<_UnorderedElementsIteratorCls>(_queue);
 }
 
-template<typename E> bool _UnorderedElementsIteratorCls<E>::moveNext() {
+template<typename E>
+bool _UnorderedElementsIteratorCls<E>::moveNext() {
     if (_initialModificationCount != _queue->_modificationCount) {
         ;
     }
@@ -243,11 +270,13 @@ template<typename E> bool _UnorderedElementsIteratorCls<E>::moveNext() {
     return false;
 }
 
-template<typename E> E _UnorderedElementsIteratorCls<E>::current() {
+template<typename E>
+E _UnorderedElementsIteratorCls<E>::current() {
     return  < 0?  : (_current or as<E>(nullptr));
 }
 
-template<typename E> _UnorderedElementsIteratorCls<E>::_UnorderedElementsIteratorCls(HeapPriorityQueue<E> _queue) {
+template<typename E>
+_UnorderedElementsIteratorCls<E>::_UnorderedElementsIteratorCls(HeapPriorityQueue<E> _queue) {
     {
         _initialModificationCount = _queue->_modificationCount;
     }

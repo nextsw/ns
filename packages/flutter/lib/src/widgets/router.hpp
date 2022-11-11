@@ -29,7 +29,8 @@ private:
 };
 using RouteInformation = std::shared_ptr<RouteInformationCls>;
 
-template<typename T> class RouterConfigCls : public ObjectCls {
+template<typename T>
+class RouterConfigCls : public ObjectCls {
 public:
     RouteInformationProvider routeInformationProvider;
 
@@ -45,9 +46,11 @@ public:
 private:
 
 };
-template<typename T> using RouterConfig = std::shared_ptr<RouterConfigCls<T>>;
+template<typename T>
+using RouterConfig = std::shared_ptr<RouterConfigCls<T>>;
 
-template<typename T> class RouterCls : public StatefulWidgetCls {
+template<typename T>
+class RouterCls : public StatefulWidgetCls {
 public:
     RouteInformationProvider routeInformationProvider;
 
@@ -64,9 +67,11 @@ public:
 
     virtual void  withConfig(RouterConfig<T> config, Key key, String restorationScopeId);
 
-    template<typename T>  static Router<T> of(BuildContext context);
+    template<typename T>
+ static Router<T> of(BuildContext context);
 
-    template<typename T>  static Router<T> maybeOf(BuildContext context);
+    template<typename T>
+ static Router<T> maybeOf(BuildContext context);
 
     static void navigate(VoidCallback callback, BuildContext context);
 
@@ -77,7 +82,8 @@ public:
 private:
 
 };
-template<typename T> using Router = std::shared_ptr<RouterCls<T>>;
+template<typename T>
+using Router = std::shared_ptr<RouterCls<T>>;
 
 enum RouteInformationReportingType{
     none,
@@ -85,7 +91,8 @@ enum RouteInformationReportingType{
     navigate,
 } // end RouteInformationReportingType
 
-template<typename T> class _RouterStateCls : public StateCls<Router<T>> {
+template<typename T>
+class _RouterStateCls : public StateCls<Router<T>> {
 public:
 
     virtual String restorationId();
@@ -139,7 +146,8 @@ private:
     virtual void _handleRouterDelegateNotification();
 
 };
-template<typename T> using _RouterState = std::shared_ptr<_RouterStateCls<T>>;
+template<typename T>
+using _RouterState = std::shared_ptr<_RouterStateCls<T>>;
 
 class _RouterScopeCls : public InheritedWidgetCls {
 public:
@@ -163,7 +171,8 @@ private:
 };
 using _RouterScope = std::shared_ptr<_RouterScopeCls>;
 
-template<typename T> class _CallbackHookProviderCls : public ObjectCls {
+template<typename T>
+class _CallbackHookProviderCls : public ObjectCls {
 public:
 
     virtual bool hasCallbacks();
@@ -179,7 +188,8 @@ private:
 
 
 };
-template<typename T> using _CallbackHookProvider = std::shared_ptr<_CallbackHookProviderCls<T>>;
+template<typename T>
+using _CallbackHookProvider = std::shared_ptr<_CallbackHookProviderCls<T>>;
 
 class BackButtonDispatcherCls : public _CallbackHookProviderCls<Future<bool>> {
 public:
@@ -271,7 +281,8 @@ private:
 };
 using _BackButtonListenerState = std::shared_ptr<_BackButtonListenerStateCls>;
 
-template<typename T> class RouteInformationParserCls : public ObjectCls {
+template<typename T>
+class RouteInformationParserCls : public ObjectCls {
 public:
 
      RouteInformationParserCls();
@@ -284,9 +295,11 @@ public:
 private:
 
 };
-template<typename T> using RouteInformationParser = std::shared_ptr<RouteInformationParserCls<T>>;
+template<typename T>
+using RouteInformationParser = std::shared_ptr<RouteInformationParserCls<T>>;
 
-template<typename T> class RouterDelegateCls : public ListenableCls {
+template<typename T>
+class RouterDelegateCls : public ListenableCls {
 public:
 
     virtual Future<void> setInitialRoutePath(T configuration);
@@ -301,7 +314,8 @@ public:
 private:
 
 };
-template<typename T> using RouterDelegate = std::shared_ptr<RouterDelegateCls<T>>;
+template<typename T>
+using RouterDelegate = std::shared_ptr<RouterDelegateCls<T>>;
 
 class RouteInformationProviderCls : public ValueListenableCls<RouteInformation> {
 public:
@@ -343,7 +357,8 @@ private:
 };
 using PlatformRouteInformationProvider = std::shared_ptr<PlatformRouteInformationProviderCls>;
 
-template<typename T> class PopNavigatorRouterDelegateMixinCls : public ObjectCls {
+template<typename T>
+class PopNavigatorRouterDelegateMixinCls : public ObjectCls {
 public:
 
     virtual GlobalKey<NavigatorState> navigatorKey();
@@ -352,7 +367,8 @@ public:
 private:
 
 };
-template<typename T> using PopNavigatorRouterDelegateMixin = std::shared_ptr<PopNavigatorRouterDelegateMixinCls<T>>;
+template<typename T>
+using PopNavigatorRouterDelegateMixin = std::shared_ptr<PopNavigatorRouterDelegateMixinCls<T>>;
 
 class _RestorableRouteInformationCls : public RestorableValueCls<RouteInformation> {
 public:

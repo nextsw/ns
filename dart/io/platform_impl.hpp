@@ -58,7 +58,8 @@ private:
 };
 using _Platform = std::shared_ptr<_PlatformCls>;
 
-template<typename V> class _CaseInsensitiveStringMapCls : public MapBaseCls<String, V> {
+template<typename V>
+class _CaseInsensitiveStringMapCls : public MapBaseCls<String, V> {
 public:
 
     virtual bool containsKey(Object key);
@@ -91,7 +92,8 @@ public:
 
     virtual Iterable<MapEntry<String, V>> entries();
 
-    template<typename K2, typename V2>  virtual Map<K2, V2> map(MapEntry<K2, V2> transform(String key, V value) );
+    template<typename K2, typename V2>
+ virtual Map<K2, V2> map(MapEntry<K2, V2> transform(String key, V value) );
 
     virtual V update(V ifAbsent() , String key, V update(V value) );
 
@@ -106,7 +108,8 @@ private:
 
 
 };
-template<typename V> using _CaseInsensitiveStringMap = std::shared_ptr<_CaseInsensitiveStringMapCls<V>>;
+template<typename V>
+using _CaseInsensitiveStringMap = std::shared_ptr<_CaseInsensitiveStringMapCls<V>>;
 
 
 #endif

@@ -46,7 +46,8 @@ int StringCharactersCls::length() {
     return length;
 }
 
-Iterable<T> StringCharactersCls::whereTypetemplate<typename T> () {
+template<typename T>
+Iterable<T> StringCharactersCls::whereType() {
     Iterable<Object> self = this;
     if (is<Iterable<T>>(self)) {
         return as<IterableCls>(self)-><T>map([=] (Unknown  x)         {
@@ -152,7 +153,7 @@ Iterable<Characters> StringCharactersCls::split(int maxParts, Characters pattern
         do {
             auto match = _indexOf(stringValue, patternString, start, stringValue->length());
             if ( < 0)             {
-                            break;
+                break;
             }
             yield yield;
             make<StringCharactersCls>(stringValue->substring(start, match));
@@ -423,7 +424,7 @@ int StringCharactersCls::_skipIndices(Breaks breaks, int count, int cursor) {
     do {
         auto nextBreak = breaks->nextBreak();
         if ( < 0)         {
-                    break;
+            break;
         }
         cursor = nextBreak;
     } while (--count > 0);
@@ -544,7 +545,7 @@ void StringCharacterRangeCls::dropWhile(bool test(String ) ) {
     auto next = 0;
     while ((next = breaks->nextBreak()) >= 0) {
         if (!test(_string->substring(cursor, next))) {
-                        break;
+            break;
         }
         cursor = next;
     }
@@ -603,7 +604,7 @@ void StringCharacterRangeCls::dropBackWhile(bool test(String ) ) {
     auto next = 0;
     while ((next = breaks->nextBreak()) >= 0) {
         if (!test(_string->substring(next, cursor))) {
-                        break;
+            break;
         }
         cursor = next;
     }
@@ -630,7 +631,7 @@ void StringCharacterRangeCls::expandWhile(bool test(String character) ) {
     auto next = 0;
     while ((next = breaks->nextBreak()) >= 0) {
         if (!test(_string->substring(cursor, next))) {
-                        break;
+            break;
         }
         cursor = next;
     }
@@ -847,7 +848,7 @@ Iterable<CharacterRange> StringCharacterRangeCls::split(int maxParts, Characters
         do {
             auto match = _indexOf(_string, patternString, start, _end);
             if ( < 0)             {
-                            break;
+                break;
             }
             yield yield;
             StringCharacterRangeCls->_(_string, start, match);
@@ -897,14 +898,14 @@ bool StringCharacterRangeCls::_advanceEnd(int count, int newStart) {
             auto char = _string->codeUnitAt(index);
             auto category = categoryControl;
             auto nextIndex = index + 1;
-            if (char & 0xFC00 != 0xD800) {
-                category = low(char);
+            if (charValue & 0xFC00 != 0xD800) {
+                category = low(charValue);
             } else             {
                 if ( < _string->length()) {
                 auto nextChar = _string->codeUnitAt(nextIndex);
                 if (nextChar & 0xFC00 == 0xDC00) {
                     nextIndex = 1;
-                    category = high(char, nextChar);
+                    category = high(charValue, nextChar);
                 }
             }
 ;
@@ -945,7 +946,7 @@ bool StringCharacterRangeCls::_retractStart(int count, int newEnd) {
         if (nextBreak >= 0) {
             start = nextBreak;
         } else {
-                        break;
+            break;
         }
         count--;
     }
@@ -1051,7 +1052,7 @@ int _gcIndexOf(int end, String pattern, String source, int start) {
     while ((index = breaks->nextBreak()) >= 0) {
         auto endIndex = index + pattern->length();
         if (endIndex > end)         {
-                    break;
+            break;
         }
         if (source->startsWith(pattern, index) && isGraphemeClusterBoundary(source, start, end, endIndex)) {
             return index;
@@ -1091,7 +1092,7 @@ int _gcLastIndexOf(int end, String pattern, String source, int start) {
     while ((index = breaks->nextBreak()) >= 0) {
         auto startIndex = index - pattern->length();
         if ( < start)         {
-                    break;
+            break;
         }
         if (source->startsWith(pattern, startIndex) && isGraphemeClusterBoundary(source, start, end, startIndex)) {
             return startIndex;

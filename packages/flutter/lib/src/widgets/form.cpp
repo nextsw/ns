@@ -85,38 +85,46 @@ _FormScopeCls::_FormScopeCls(Unknown child, FormState formState, int generation)
     }
 }
 
-template<typename T> FormFieldCls<T>::FormFieldCls(AutovalidateMode autovalidateMode, FormFieldBuilder<T> builder, bool enabled, T initialValue, Unknown key, FormFieldSetter<T> onSaved, String restorationId, FormFieldValidator<T> validator) {
+template<typename T>
+FormFieldCls<T>::FormFieldCls(AutovalidateMode autovalidateMode, FormFieldBuilder<T> builder, bool enabled, T initialValue, Unknown key, FormFieldSetter<T> onSaved, String restorationId, FormFieldValidator<T> validator) {
     {
         assert(builder != nullptr);
         autovalidateMode = autovalidateMode or AutovalidateModeCls::disabled;
     }
 }
 
-template<typename T> FormFieldState<T> FormFieldCls<T>::createState() {
+template<typename T>
+FormFieldState<T> FormFieldCls<T>::createState() {
     return <T>make<FormFieldStateCls>();
 }
 
-template<typename T> T FormFieldStateCls<T>::value() {
+template<typename T>
+T FormFieldStateCls<T>::value() {
     return _value;
 }
 
-template<typename T> String FormFieldStateCls<T>::errorText() {
+template<typename T>
+String FormFieldStateCls<T>::errorText() {
     return _errorText->value;
 }
 
-template<typename T> bool FormFieldStateCls<T>::hasError() {
+template<typename T>
+bool FormFieldStateCls<T>::hasError() {
     return _errorText->value != nullptr;
 }
 
-template<typename T> bool FormFieldStateCls<T>::isValid() {
+template<typename T>
+bool FormFieldStateCls<T>::isValid() {
     return widget->validator?->call(_value) == nullptr;
 }
 
-template<typename T> void FormFieldStateCls<T>::save() {
+template<typename T>
+void FormFieldStateCls<T>::save() {
     widget->onSaved?->call(value());
 }
 
-template<typename T> void FormFieldStateCls<T>::reset() {
+template<typename T>
+void FormFieldStateCls<T>::reset() {
     setState([=] () {
         _value = widget->initialValue;
         _hasInteractedByUser->value = false;
@@ -125,14 +133,16 @@ template<typename T> void FormFieldStateCls<T>::reset() {
     FormCls->of(context)?->_fieldDidChange();
 }
 
-template<typename T> bool FormFieldStateCls<T>::validate() {
+template<typename T>
+bool FormFieldStateCls<T>::validate() {
     setState([=] () {
         _validate();
     });
     return !hasError();
 }
 
-template<typename T> void FormFieldStateCls<T>::didChange(T value) {
+template<typename T>
+void FormFieldStateCls<T>::didChange(T value) {
     setState([=] () {
         _value = value;
         _hasInteractedByUser->value = true;
@@ -140,25 +150,30 @@ template<typename T> void FormFieldStateCls<T>::didChange(T value) {
     FormCls->of(context)?->_fieldDidChange();
 }
 
-template<typename T> void FormFieldStateCls<T>::setValue(T value) {
+template<typename T>
+void FormFieldStateCls<T>::setValue(T value) {
     _value = value;
 }
 
-template<typename T> String FormFieldStateCls<T>::restorationId() {
+template<typename T>
+String FormFieldStateCls<T>::restorationId() {
     return widget->restorationId;
 }
 
-template<typename T> void FormFieldStateCls<T>::restoreState(bool initialRestore, RestorationBucket oldBucket) {
+template<typename T>
+void FormFieldStateCls<T>::restoreState(bool initialRestore, RestorationBucket oldBucket) {
     registerForRestoration(_errorText, __s("error_text"));
     registerForRestoration(_hasInteractedByUser, __s("has_interacted_by_user"));
 }
 
-template<typename T> void FormFieldStateCls<T>::deactivate() {
+template<typename T>
+void FormFieldStateCls<T>::deactivate() {
     FormCls->of(context)?->_unregister(this);
     super->deactivate();
 }
 
-template<typename T> Widget FormFieldStateCls<T>::build(BuildContext context) {
+template<typename T>
+Widget FormFieldStateCls<T>::build(BuildContext context) {
     if (widget->enabled) {
         ;
     }
@@ -166,7 +181,8 @@ template<typename T> Widget FormFieldStateCls<T>::build(BuildContext context) {
     return widget->builder(this);
 }
 
-template<typename T> void FormFieldStateCls<T>::_validate() {
+template<typename T>
+void FormFieldStateCls<T>::_validate() {
     if (widget->validator != nullptr) {
         _errorText->value = widget->validator!(_value);
     }

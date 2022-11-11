@@ -5,7 +5,8 @@
 #include <dart/core/core.hpp>
 
 
-template<typename E> class LinkedListCls : public IterableCls<E> {
+template<typename E>
+class LinkedListCls : public IterableCls<E> {
 public:
 
      LinkedListCls();
@@ -48,9 +49,11 @@ private:
     virtual void _unlink(E entry);
 
 };
-template<typename E> using LinkedList = std::shared_ptr<LinkedListCls<E>>;
+template<typename E>
+using LinkedList = std::shared_ptr<LinkedListCls<E>>;
 
-template<typename E> class _LinkedListIteratorCls : public ObjectCls {
+template<typename E>
+class _LinkedListIteratorCls : public ObjectCls {
 public:
 
     virtual E current();
@@ -72,9 +75,11 @@ private:
      _LinkedListIteratorCls(LinkedList<E> list);
 
 };
-template<typename E> using _LinkedListIterator = std::shared_ptr<_LinkedListIteratorCls<E>>;
+template<typename E>
+using _LinkedListIterator = std::shared_ptr<_LinkedListIteratorCls<E>>;
 
-template<typename E> class LinkedListEntryCls : public ObjectCls {
+template<typename E>
+class LinkedListEntryCls : public ObjectCls {
 public:
 
     virtual LinkedList<E> list();
@@ -98,7 +103,8 @@ private:
 
 
 };
-template<typename E> using LinkedListEntry = std::shared_ptr<LinkedListEntryCls<E>>;
+template<typename E>
+using LinkedListEntry = std::shared_ptr<LinkedListEntryCls<E>>;
 
 
 #endif

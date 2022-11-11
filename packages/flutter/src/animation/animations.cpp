@@ -47,43 +47,54 @@ String _AlwaysDismissedAnimationCls::toString() {
     return __s("kAlwaysDismissedAnimation");
 }
 
-template<typename T> void AlwaysStoppedAnimationCls<T>::addListener(VoidCallback listener) {
+template<typename T>
+void AlwaysStoppedAnimationCls<T>::addListener(VoidCallback listener) {
 }
 
-template<typename T> void AlwaysStoppedAnimationCls<T>::removeListener(VoidCallback listener) {
+template<typename T>
+void AlwaysStoppedAnimationCls<T>::removeListener(VoidCallback listener) {
 }
 
-template<typename T> void AlwaysStoppedAnimationCls<T>::addStatusListener(AnimationStatusListener listener) {
+template<typename T>
+void AlwaysStoppedAnimationCls<T>::addStatusListener(AnimationStatusListener listener) {
 }
 
-template<typename T> void AlwaysStoppedAnimationCls<T>::removeStatusListener(AnimationStatusListener listener) {
+template<typename T>
+void AlwaysStoppedAnimationCls<T>::removeStatusListener(AnimationStatusListener listener) {
 }
 
-template<typename T> AnimationStatus AlwaysStoppedAnimationCls<T>::status() {
+template<typename T>
+AnimationStatus AlwaysStoppedAnimationCls<T>::status() {
     return AnimationStatusCls::forward;
 }
 
-template<typename T> String AlwaysStoppedAnimationCls<T>::toStringDetails() {
+template<typename T>
+String AlwaysStoppedAnimationCls<T>::toStringDetails() {
     return __s("${super.toStringDetails()} $value; paused");
 }
 
-template<typename T> void AnimationWithParentMixinCls<T>::addListener(VoidCallback listener) {
+template<typename T>
+void AnimationWithParentMixinCls<T>::addListener(VoidCallback listener) {
     return parent()->addListener(listener);
 }
 
-template<typename T> void AnimationWithParentMixinCls<T>::removeListener(VoidCallback listener) {
+template<typename T>
+void AnimationWithParentMixinCls<T>::removeListener(VoidCallback listener) {
     return parent()->removeListener(listener);
 }
 
-template<typename T> void AnimationWithParentMixinCls<T>::addStatusListener(AnimationStatusListener listener) {
+template<typename T>
+void AnimationWithParentMixinCls<T>::addStatusListener(AnimationStatusListener listener) {
     return parent()->addStatusListener(listener);
 }
 
-template<typename T> void AnimationWithParentMixinCls<T>::removeStatusListener(AnimationStatusListener listener) {
+template<typename T>
+void AnimationWithParentMixinCls<T>::removeStatusListener(AnimationStatusListener listener) {
     return parent()->removeStatusListener(listener);
 }
 
-template<typename T> AnimationStatus AnimationWithParentMixinCls<T>::status() {
+template<typename T>
+AnimationStatus AnimationWithParentMixinCls<T>::status() {
     return parent()->status();
 }
 
@@ -346,69 +357,80 @@ void TrainHoppingAnimationCls::_valueChangeHandler() {
     }
 }
 
-template<typename T> CompoundAnimationCls<T>::CompoundAnimationCls(Animation<T> first, Animation<T> next) {
+template<typename T>
+CompoundAnimationCls<T>::CompoundAnimationCls(Animation<T> first, Animation<T> next) {
     {
         assert(first != nullptr);
         assert(next != nullptr);
     }
 }
 
-template<typename T> void CompoundAnimationCls<T>::didStartListening() {
+template<typename T>
+void CompoundAnimationCls<T>::didStartListening() {
     first->addListener(_maybeNotifyListeners);
     first->addStatusListener(_maybeNotifyStatusListeners);
     next->addListener(_maybeNotifyListeners);
     next->addStatusListener(_maybeNotifyStatusListeners);
 }
 
-template<typename T> void CompoundAnimationCls<T>::didStopListening() {
+template<typename T>
+void CompoundAnimationCls<T>::didStopListening() {
     first->removeListener(_maybeNotifyListeners);
     first->removeStatusListener(_maybeNotifyStatusListeners);
     next->removeListener(_maybeNotifyListeners);
     next->removeStatusListener(_maybeNotifyStatusListeners);
 }
 
-template<typename T> AnimationStatus CompoundAnimationCls<T>::status() {
+template<typename T>
+AnimationStatus CompoundAnimationCls<T>::status() {
     if (next->status() == AnimationStatusCls::forward || next->status() == AnimationStatusCls::reverse) {
         return next->status();
     }
     return first->status();
 }
 
-template<typename T> String CompoundAnimationCls<T>::toString() {
+template<typename T>
+String CompoundAnimationCls<T>::toString() {
     return __s("${objectRuntimeType(this, 'CompoundAnimation')}($first, $next)");
 }
 
-template<typename T> void CompoundAnimationCls<T>::_maybeNotifyStatusListeners(AnimationStatus _) {
+template<typename T>
+void CompoundAnimationCls<T>::_maybeNotifyStatusListeners(AnimationStatus _) {
     if (status() != _lastStatus) {
         _lastStatus = status();
         notifyStatusListeners(status());
     }
 }
 
-template<typename T> void CompoundAnimationCls<T>::_maybeNotifyListeners() {
+template<typename T>
+void CompoundAnimationCls<T>::_maybeNotifyListeners() {
     if (value != _lastValue) {
         _lastValue = value;
         notifyListeners();
     }
 }
 
-AnimationMeanCls::AnimationMeanCls(Animation<double> left, Animation<double> right) : CompoundAnimation<double>(left, right) {
+AnimationMeanCls::AnimationMeanCls(Animation<double> left, Animation<double> right) {
 }
 
 double AnimationMeanCls::value() {
     return (first->value + next->value) / 2.0;
 }
 
-template<typename T> AnimationMaxCls<T>::AnimationMaxCls(Animation<T> first, Animation<T> next) : CompoundAnimation<T>(first, next) {
+template<typename T>
+AnimationMaxCls<T>::AnimationMaxCls(Animation<T> first, Animation<T> next) {
 }
 
-template<typename T> T AnimationMaxCls<T>::value() {
+template<typename T>
+T AnimationMaxCls<T>::value() {
     return math->max(first->value, next->value);
 }
 
-template<typename T> AnimationMinCls<T>::AnimationMinCls(Animation<T> first, Animation<T> next) : CompoundAnimation<T>(first, next) {
+template<typename T>
+AnimationMinCls<T>::AnimationMinCls(Animation<T> first, Animation<T> next) {
 }
 
-template<typename T> T AnimationMinCls<T>::value() {
+template<typename T>
+T AnimationMinCls<T>::value() {
     return math->min(first->value, next->value);
 }

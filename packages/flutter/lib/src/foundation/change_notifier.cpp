@@ -40,7 +40,7 @@ void ChangeNotifierCls::removeListener(VoidCallback listener) {
             } else {
                 _removeAt(i);
             }
-                        break;
+            break;
         }
     }
 }
@@ -136,11 +136,13 @@ String _MergingListenableCls::toString() {
     return __s("Listenable.merge([${_children.join(", ")}])");
 }
 
-template<typename T> T ValueNotifierCls<T>::value() {
+template<typename T>
+T ValueNotifierCls<T>::value() {
     return _value;
 }
 
-template<typename T> void ValueNotifierCls<T>::value(T newValue) {
+template<typename T>
+void ValueNotifierCls<T>::value(T newValue) {
     if (_value == newValue) {
         return;
     }
@@ -148,6 +150,7 @@ template<typename T> void ValueNotifierCls<T>::value(T newValue) {
     notifyListeners();
 }
 
-template<typename T> String ValueNotifierCls<T>::toString() {
+template<typename T>
+String ValueNotifierCls<T>::toString() {
     return __s("${describeIdentity(this)}($value)");
 }

@@ -31,7 +31,8 @@ public:
 
     virtual int length();
 
-    template<typename T>  virtual Iterable<T> whereType();
+    template<typename T>
+ virtual Iterable<T> whereType();
 
     virtual String join(String separator);
 

@@ -75,7 +75,7 @@ void PointerEventResamplerCls::_processPointerEvents(Duration sampleTime) {
         Duration nextTimeStamp = _next?->timeStamp or DurationCls::zero;
         if ( < sampleTime) {
             _next = event;
-                        break;
+            break;
         }
     }
 }
@@ -87,21 +87,21 @@ void PointerEventResamplerCls::_dequeueAndSampleNonHoverOrMovePointerEventsUntil
         PointerEvent event = it->current();
         if (event->timeStamp > sampleTime) {
             if (event->timeStamp >= nextSampleTime) {
-                                break;
+                break;
             }
             if (is<PointerUpEvent>(event) || is<PointerRemovedEvent>(event)) {
                 endTime = event->timeStamp;
                 continue;
             }
             if (!is<PointerMoveEvent>(event) && !is<PointerHoverEvent>(event)) {
-                                break;
+                break;
             }
         }
     }
     while (_queuedEvents->isNotEmpty) {
         PointerEvent event = _queuedEvents->first;
         if (event->timeStamp > endTime) {
-                        break;
+            break;
         }
         bool wasTracked = _isTracked;
         bool wasDown = _isDown;

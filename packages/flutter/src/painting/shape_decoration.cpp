@@ -117,7 +117,7 @@ void _ShapeDecorationPainterCls::paint(Canvas canvas, ImageConfiguration configu
     _decoration->shape->paint(canvas, recttextDirection);
 }
 
-_ShapeDecorationPainterCls::_ShapeDecorationPainterCls(ShapeDecoration _decoration, VoidCallback onChanged) : BoxPainter(onChanged) {
+_ShapeDecorationPainterCls::_ShapeDecorationPainterCls(ShapeDecoration _decoration, VoidCallback onChanged) {
     {
         assert(_decoration != nullptr);
     }

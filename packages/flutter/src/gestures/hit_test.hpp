@@ -41,7 +41,8 @@ private:
 };
 using HitTestTarget = std::shared_ptr<HitTestTargetCls>;
 
-template<typename T> class HitTestEntryCls : public ObjectCls {
+template<typename T>
+class HitTestEntryCls : public ObjectCls {
 public:
     T target;
 
@@ -56,7 +57,8 @@ private:
 
 
 };
-template<typename T> using HitTestEntry = std::shared_ptr<HitTestEntryCls<T>>;
+template<typename T>
+using HitTestEntry = std::shared_ptr<HitTestEntryCls<T>>;
 
 class _TransformPartCls : public ObjectCls {
 public:

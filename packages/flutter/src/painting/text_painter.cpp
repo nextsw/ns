@@ -403,10 +403,10 @@ Rect TextPainterCls::_getRectFromUpstream(Rect caretPrototype, int offset) {
         boxes = _paragraph!->getBoxesForRange(prevRuneOffset, offsetui->BoxHeightStyleCls::strut);
         if (boxes->isEmpty) {
             if (!needsSearch && prevCodeUnit == NEWLINE_CODE_UNITCls) {
-                                break;
+                break;
             }
             if ( < -flattenedText->length()) {
-                                break;
+                break;
             }
             graphemeClusterLength = 2;
             continue;
@@ -436,10 +436,10 @@ Rect TextPainterCls::_getRectFromDownstream(Rect caretPrototype, int offset) {
         boxes = _paragraph!->getBoxesForRange(offset, nextRuneOffsetui->BoxHeightStyleCls::strut);
         if (boxes->isEmpty) {
             if (!needsSearch) {
-                                break;
+                break;
             }
             if (nextRuneOffset >= flattenedText->length() << 1) {
-                                break;
+                break;
             }
             graphemeClusterLength = 2;
             continue;

@@ -5,7 +5,8 @@
 #include <dart/core/core.hpp>
 
 
-template<typename T> class _CompleterCls : public ObjectCls {
+template<typename T>
+class _CompleterCls : public ObjectCls {
 public:
     _Future<T> future;
 
@@ -19,9 +20,11 @@ private:
 
     virtual void _completeError(Object error, StackTrace stackTrace);
 };
-template<typename T> using _Completer = std::shared_ptr<_CompleterCls<T>>;
+template<typename T>
+using _Completer = std::shared_ptr<_CompleterCls<T>>;
 
-template<typename T> class _AsyncCompleterCls : public _CompleterCls<T> {
+template<typename T>
+class _AsyncCompleterCls : public _CompleterCls<T> {
 public:
 
     virtual void complete(FutureOr<T> value);
@@ -31,9 +34,11 @@ private:
     virtual void _completeError(Object error, StackTrace stackTrace);
 
 };
-template<typename T> using _AsyncCompleter = std::shared_ptr<_AsyncCompleterCls<T>>;
+template<typename T>
+using _AsyncCompleter = std::shared_ptr<_AsyncCompleterCls<T>>;
 
-template<typename T> class _SyncCompleterCls : public _CompleterCls<T> {
+template<typename T>
+class _SyncCompleterCls : public _CompleterCls<T> {
 public:
 
     virtual void complete(FutureOr<T> value);
@@ -43,9 +48,11 @@ private:
     virtual void _completeError(Object error, StackTrace stackTrace);
 
 };
-template<typename T> using _SyncCompleter = std::shared_ptr<_SyncCompleterCls<T>>;
+template<typename T>
+using _SyncCompleter = std::shared_ptr<_SyncCompleterCls<T>>;
 
-template<typename S, typename T> class _FutureListenerCls : public ObjectCls {
+template<typename S, typename T>
+class _FutureListenerCls : public ObjectCls {
 public:
     static int maskValue;
 
@@ -121,7 +128,8 @@ private:
     virtual dynamic Function() _whenCompleteAction();
 
 };
-template<typename S, typename T> using _FutureListener = std::shared_ptr<_FutureListenerCls<S, T>>;
+template<typename S, typename T>
+using _FutureListener = std::shared_ptr<_FutureListenerCls<S, T>>;
 
 
 #endif

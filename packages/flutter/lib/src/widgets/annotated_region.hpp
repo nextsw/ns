@@ -7,7 +7,8 @@
 #include "framework.hpp"
 
 
-template<typename T> class AnnotatedRegionCls : public SingleChildRenderObjectWidgetCls {
+template<typename T>
+class AnnotatedRegionCls : public SingleChildRenderObjectWidgetCls {
 public:
     T value;
 
@@ -23,7 +24,8 @@ public:
 private:
 
 };
-template<typename T> using AnnotatedRegion = std::shared_ptr<AnnotatedRegionCls<T>>;
+template<typename T>
+using AnnotatedRegion = std::shared_ptr<AnnotatedRegionCls<T>>;
 
 
 #endif

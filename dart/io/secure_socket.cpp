@@ -731,7 +731,7 @@ int _ExternalBufferCls::writeFromSource(List<int> getData(int requested) ) {
     while (toWrite > 0) {
         auto inputData = getData(toWrite);
         if (inputData == nullptr || inputData->length == 0)         {
-                    break;
+            break;
         }
         auto len = inputData->length;
         data!->setRange(end, end + len, inputData);

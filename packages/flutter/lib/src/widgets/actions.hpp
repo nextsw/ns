@@ -29,7 +29,8 @@ private:
 };
 using Intent = std::shared_ptr<IntentCls>;
 
-template<typename T> class ActionCls : public ObjectCls {
+template<typename T>
+class ActionCls : public ObjectCls {
 public:
 
      ActionCls();
@@ -63,7 +64,8 @@ private:
     virtual Action<T> _makeOverridableAction(BuildContext context);
 
 };
-template<typename T> using Action = std::shared_ptr<ActionCls<T>>;
+template<typename T>
+using Action = std::shared_ptr<ActionCls<T>>;
 
 class ActionListenerCls : public StatefulWidgetCls {
 public:
@@ -99,7 +101,8 @@ private:
 };
 using _ActionListenerState = std::shared_ptr<_ActionListenerStateCls>;
 
-template<typename T> class ContextActionCls : public ActionCls<T> {
+template<typename T>
+class ContextActionCls : public ActionCls<T> {
 public:
 
     virtual Object invoke(BuildContext context, T intent) override;
@@ -108,9 +111,11 @@ private:
     virtual ContextAction<T> _makeOverridableAction(BuildContext context);
 
 };
-template<typename T> using ContextAction = std::shared_ptr<ContextActionCls<T>>;
+template<typename T>
+using ContextAction = std::shared_ptr<ContextActionCls<T>>;
 
-template<typename T> class CallbackActionCls : public ActionCls<T> {
+template<typename T>
+class CallbackActionCls : public ActionCls<T> {
 public:
     OnInvokeCallback<T> onInvoke;
 
@@ -122,7 +127,8 @@ public:
 private:
 
 };
-template<typename T> using CallbackAction = std::shared_ptr<CallbackActionCls<T>>;
+template<typename T>
+using CallbackAction = std::shared_ptr<CallbackActionCls<T>>;
 
 class ActionDispatcherCls : public ObjectCls {
 public:
@@ -146,17 +152,22 @@ public:
 
      ActionsCls(Map<Type, Action<Intent>> actions, Widget child, ActionDispatcher dispatcher, Unknown key);
 
-    template<typename T>  static VoidCallback handler(BuildContext context, T intent);
+    template<typename T>
+ static VoidCallback handler(BuildContext context, T intent);
 
-    template<typename T>  static Action<T> find(BuildContext context, T intent);
+    template<typename T>
+ static Action<T> find(BuildContext context, T intent);
 
-    template<typename T>  static Action<T> maybeFind(BuildContext context, T intent);
+    template<typename T>
+ static Action<T> maybeFind(BuildContext context, T intent);
 
     static ActionDispatcher of(BuildContext context);
 
-    template<typename T>  static Object invoke(BuildContext context, T intent);
+    template<typename T>
+ static Object invoke(BuildContext context, T intent);
 
-    template<typename T>  static Object maybeInvoke(BuildContext context, T intent);
+    template<typename T>
+ static Object maybeInvoke(BuildContext context, T intent);
 
     virtual State<Actions> createState();
 
@@ -168,9 +179,11 @@ private:
 
     static ActionDispatcher _findDispatcher(BuildContext context);
 
-    template<typename T>  static Action<T> _maybeFindWithoutDependingOn(BuildContext context, T intent);
+    template<typename T>
+ static Action<T> _maybeFindWithoutDependingOn(BuildContext context, T intent);
 
-    template<typename T>  static Action<T> _castAction(_ActionsMarker actionsMarker, T intent);
+    template<typename T>
+ static Action<T> _castAction(_ActionsMarker actionsMarker, T intent);
 
 };
 using Actions = std::shared_ptr<ActionsCls>;
@@ -436,7 +449,8 @@ private:
 };
 using PrioritizedAction = std::shared_ptr<PrioritizedActionCls>;
 
-template<typename T> class _OverridableActionMixinCls : public ObjectCls {
+template<typename T>
+class _OverridableActionMixinCls : public ObjectCls {
 public:
     bool debugAssertMutuallyRecursive;
 
@@ -471,9 +485,11 @@ private:
     virtual Object _invokeOverride(BuildContext context, T intent, Action<T> overrideAction);
 
 };
-template<typename T> using _OverridableActionMixin = std::shared_ptr<_OverridableActionMixinCls<T>>;
+template<typename T>
+using _OverridableActionMixin = std::shared_ptr<_OverridableActionMixinCls<T>>;
 
-template<typename T> class _OverridableActionCls : public ContextActionCls<T> {
+template<typename T>
+class _OverridableActionCls : public ContextActionCls<T> {
 public:
     Action<T> defaultAction;
 
@@ -488,9 +504,11 @@ private:
     virtual ContextAction<T> _makeOverridableAction(BuildContext context);
 
 };
-template<typename T> using _OverridableAction = std::shared_ptr<_OverridableActionCls<T>>;
+template<typename T>
+using _OverridableAction = std::shared_ptr<_OverridableActionCls<T>>;
 
-template<typename T> class _OverridableContextActionCls : public ContextActionCls<T> {
+template<typename T>
+class _OverridableContextActionCls : public ContextActionCls<T> {
 public:
     ContextAction<T> defaultAction;
 
@@ -507,9 +525,11 @@ private:
     virtual ContextAction<T> _makeOverridableAction(BuildContext context);
 
 };
-template<typename T> using _OverridableContextAction = std::shared_ptr<_OverridableContextActionCls<T>>;
+template<typename T>
+using _OverridableContextAction = std::shared_ptr<_OverridableContextActionCls<T>>;
 
-template<typename T> class _ContextActionToActionAdapterCls : public ActionCls<T> {
+template<typename T>
+class _ContextActionToActionAdapterCls : public ActionCls<T> {
 public:
     BuildContext invokeContext;
 
@@ -538,7 +558,8 @@ private:
     virtual void _updateCallingAction(Action<T> value);
 
 };
-template<typename T> using _ContextActionToActionAdapter = std::shared_ptr<_ContextActionToActionAdapterCls<T>>;
+template<typename T>
+using _ContextActionToActionAdapter = std::shared_ptr<_ContextActionToActionAdapterCls<T>>;
 
 
 #endif

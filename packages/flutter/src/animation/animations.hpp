@@ -63,7 +63,8 @@ using _AlwaysDismissedAnimation = std::shared_ptr<_AlwaysDismissedAnimationCls>;
 Animation<double> kAlwaysDismissedAnimation;
 
 
-template<typename T> class AlwaysStoppedAnimationCls : public AnimationCls<T> {
+template<typename T>
+class AlwaysStoppedAnimationCls : public AnimationCls<T> {
 public:
     T value;
 
@@ -84,9 +85,11 @@ public:
 private:
 
 };
-template<typename T> using AlwaysStoppedAnimation = std::shared_ptr<AlwaysStoppedAnimationCls<T>>;
+template<typename T>
+using AlwaysStoppedAnimation = std::shared_ptr<AlwaysStoppedAnimationCls<T>>;
 
-template<typename T> class AnimationWithParentMixinCls : public ObjectCls {
+template<typename T>
+class AnimationWithParentMixinCls : public ObjectCls {
 public:
 
     virtual Animation<T> parent();
@@ -103,7 +106,8 @@ public:
 private:
 
 };
-template<typename T> using AnimationWithParentMixin = std::shared_ptr<AnimationWithParentMixinCls<T>>;
+template<typename T>
+using AnimationWithParentMixin = std::shared_ptr<AnimationWithParentMixinCls<T>>;
 
 class ProxyAnimationCls : public AnimationCls<double> {
 public:
@@ -236,7 +240,8 @@ private:
 };
 using TrainHoppingAnimation = std::shared_ptr<TrainHoppingAnimationCls>;
 
-template<typename T> class CompoundAnimationCls : public AnimationCls<T> {
+template<typename T>
+class CompoundAnimationCls : public AnimationCls<T> {
 public:
     Animation<T> first;
 
@@ -264,7 +269,8 @@ private:
     virtual void _maybeNotifyListeners();
 
 };
-template<typename T> using CompoundAnimation = std::shared_ptr<CompoundAnimationCls<T>>;
+template<typename T>
+using CompoundAnimation = std::shared_ptr<CompoundAnimationCls<T>>;
 
 class AnimationMeanCls : public CompoundAnimationCls<double> {
 public:
@@ -278,7 +284,8 @@ private:
 };
 using AnimationMean = std::shared_ptr<AnimationMeanCls>;
 
-template<typename T> class AnimationMaxCls : public CompoundAnimationCls<T> {
+template<typename T>
+class AnimationMaxCls : public CompoundAnimationCls<T> {
 public:
 
      AnimationMaxCls(Animation<T> first, Animation<T> next);
@@ -288,9 +295,11 @@ public:
 private:
 
 };
-template<typename T> using AnimationMax = std::shared_ptr<AnimationMaxCls<T>>;
+template<typename T>
+using AnimationMax = std::shared_ptr<AnimationMaxCls<T>>;
 
-template<typename T> class AnimationMinCls : public CompoundAnimationCls<T> {
+template<typename T>
+class AnimationMinCls : public CompoundAnimationCls<T> {
 public:
 
      AnimationMinCls(Animation<T> first, Animation<T> next);
@@ -300,7 +309,8 @@ public:
 private:
 
 };
-template<typename T> using AnimationMin = std::shared_ptr<AnimationMinCls<T>>;
+template<typename T>
+using AnimationMin = std::shared_ptr<AnimationMinCls<T>>;
 
 
 #endif

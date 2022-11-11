@@ -26,7 +26,8 @@
 #include "transitions.hpp"
 
 
-template<typename T> class OverlayRouteCls : public RouteCls<T> {
+template<typename T>
+class OverlayRouteCls : public RouteCls<T> {
 public:
 
      OverlayRouteCls(Unknown settings);
@@ -46,9 +47,11 @@ private:
 
 
 };
-template<typename T> using OverlayRoute = std::shared_ptr<OverlayRouteCls<T>>;
+template<typename T>
+using OverlayRoute = std::shared_ptr<OverlayRouteCls<T>>;
 
-template<typename T> class TransitionRouteCls : public OverlayRouteCls<T> {
+template<typename T>
+class TransitionRouteCls : public OverlayRouteCls<T> {
 public:
     bool willDisposeAnimationController;
 
@@ -119,7 +122,8 @@ private:
     virtual void _setSecondaryAnimation(Animation<double> animation, Future<dynamic> disposed);
 
 };
-template<typename T> using TransitionRoute = std::shared_ptr<TransitionRouteCls<T>>;
+template<typename T>
+using TransitionRoute = std::shared_ptr<TransitionRouteCls<T>>;
 
 class LocalHistoryEntryCls : public ObjectCls {
 public:
@@ -140,7 +144,8 @@ private:
 };
 using LocalHistoryEntry = std::shared_ptr<LocalHistoryEntryCls>;
 
-template<typename T> class LocalHistoryRouteCls : public ObjectCls {
+template<typename T>
+class LocalHistoryRouteCls : public ObjectCls {
 public:
 
     virtual void addLocalHistoryEntry(LocalHistoryEntry entry);
@@ -160,7 +165,8 @@ private:
 
 
 };
-template<typename T> using LocalHistoryRoute = std::shared_ptr<LocalHistoryRouteCls<T>>;
+template<typename T>
+using LocalHistoryRoute = std::shared_ptr<LocalHistoryRouteCls<T>>;
 
 class _DismissModalActionCls : public DismissActionCls {
 public:
@@ -199,7 +205,8 @@ private:
 };
 using _ModalScopeStatus = std::shared_ptr<_ModalScopeStatusCls>;
 
-template<typename T> class _ModalScopeCls : public StatefulWidgetCls {
+template<typename T>
+class _ModalScopeCls : public StatefulWidgetCls {
 public:
     ModalRoute<T> route;
 
@@ -210,9 +217,11 @@ private:
 
      _ModalScopeCls(Unknown key, ModalRoute<T> route);
 };
-template<typename T> using _ModalScope = std::shared_ptr<_ModalScopeCls<T>>;
+template<typename T>
+using _ModalScope = std::shared_ptr<_ModalScopeCls<T>>;
 
-template<typename T> class _ModalScopeStateCls : public StateCls<_ModalScope<T>> {
+template<typename T>
+class _ModalScopeStateCls : public StateCls<_ModalScope<T>> {
 public:
     FocusScopeNode focusScopeNode;
 
@@ -244,15 +253,18 @@ private:
     virtual void _routeSetState(VoidCallback fn);
 
 };
-template<typename T> using _ModalScopeState = std::shared_ptr<_ModalScopeStateCls<T>>;
+template<typename T>
+using _ModalScopeState = std::shared_ptr<_ModalScopeStateCls<T>>;
 
-template<typename T> class ModalRouteCls : public TransitionRouteCls<T> {
+template<typename T>
+class ModalRouteCls : public TransitionRouteCls<T> {
 public:
     ImageFilter filter;
 
 
      ModalRouteCls(ImageFilter filter, Unknown settings);
-    template<typename T>  static ModalRoute<T> of(BuildContext context);
+    template<typename T>
+ static ModalRoute<T> of(BuildContext context);
 
     virtual void setState(VoidCallback fn);
 
@@ -334,9 +346,11 @@ private:
     virtual Widget _buildModalScope(BuildContext context);
 
 };
-template<typename T> using ModalRoute = std::shared_ptr<ModalRouteCls<T>>;
+template<typename T>
+using ModalRoute = std::shared_ptr<ModalRouteCls<T>>;
 
-template<typename T> class PopupRouteCls : public ModalRouteCls<T> {
+template<typename T>
+class PopupRouteCls : public ModalRouteCls<T> {
 public:
 
      PopupRouteCls(Unknown filter, Unknown settings);
@@ -347,9 +361,11 @@ public:
 private:
 
 };
-template<typename T> using PopupRoute = std::shared_ptr<PopupRouteCls<T>>;
+template<typename T>
+using PopupRoute = std::shared_ptr<PopupRouteCls<T>>;
 
-template<typename R> class RouteObserverCls : public NavigatorObserverCls {
+template<typename R>
+class RouteObserverCls : public NavigatorObserverCls {
 public:
 
     virtual bool debugObservingRoute(R route);
@@ -367,7 +383,8 @@ private:
 
 
 };
-template<typename R> using RouteObserver = std::shared_ptr<RouteObserverCls<R>>;
+template<typename R>
+using RouteObserver = std::shared_ptr<RouteObserverCls<R>>;
 
 class RouteAwareCls : public ObjectCls {
 public:
@@ -385,7 +402,8 @@ private:
 };
 using RouteAware = std::shared_ptr<RouteAwareCls>;
 
-template<typename T> class RawDialogRouteCls : public PopupRouteCls<T> {
+template<typename T>
+class RawDialogRouteCls : public PopupRouteCls<T> {
 public:
     Offset anchorPoint;
 
@@ -419,8 +437,10 @@ private:
 
 
 };
-template<typename T> using RawDialogRoute = std::shared_ptr<RawDialogRouteCls<T>>;
-template<typename T>  Future<T> showGeneralDialog(Offset anchorPoint, Color barrierColor, bool barrierDismissible, String barrierLabel, BuildContext context, RoutePageBuilder pageBuilder, RouteSettings routeSettings, RouteTransitionsBuilder transitionBuilder, Duration transitionDuration, bool useRootNavigator);
+template<typename T>
+using RawDialogRoute = std::shared_ptr<RawDialogRouteCls<T>>;
+template<typename T>
+ Future<T> showGeneralDialog(Offset anchorPoint, Color barrierColor, bool barrierDismissible, String barrierLabel, BuildContext context, RoutePageBuilder pageBuilder, RouteSettings routeSettings, RouteTransitionsBuilder transitionBuilder, Duration transitionDuration, bool useRootNavigator);
 
 
 class FocusTrapCls : public SingleChildRenderObjectWidgetCls {

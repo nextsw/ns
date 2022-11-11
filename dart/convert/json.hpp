@@ -79,7 +79,8 @@ public:
 
     virtual Stream<String> bind(Stream<Object> stream);
 
-    template<typename T>  virtual Converter<Object, T> fuse(Converter<String, T> other);
+    template<typename T>
+ virtual Converter<Object, T> fuse(Converter<String, T> other);
 
 private:
     Object Function(dynamic ) _toEncodable;

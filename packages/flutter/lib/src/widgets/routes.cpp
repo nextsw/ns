@@ -1,19 +1,23 @@
 #include "routes.hpp"
-template<typename T> List<OverlayEntry> OverlayRouteCls<T>::overlayEntries() {
+template<typename T>
+List<OverlayEntry> OverlayRouteCls<T>::overlayEntries() {
     return _overlayEntries;
 }
 
-template<typename T> void OverlayRouteCls<T>::install() {
+template<typename T>
+void OverlayRouteCls<T>::install() {
     assert(_overlayEntries->isEmpty);
     _overlayEntries->addAll(createOverlayEntries());
     super->install();
 }
 
-template<typename T> bool OverlayRouteCls<T>::finishedWhenPopped() {
+template<typename T>
+bool OverlayRouteCls<T>::finishedWhenPopped() {
     return true;
 }
 
-template<typename T> bool OverlayRouteCls<T>::didPop(T result) {
+template<typename T>
+bool OverlayRouteCls<T>::didPop(T result) {
     bool returnValue = super->didPop(result);
     assert(returnValue);
     if (finishedWhenPopped()) {
@@ -22,36 +26,44 @@ template<typename T> bool OverlayRouteCls<T>::didPop(T result) {
     return returnValue;
 }
 
-template<typename T> void OverlayRouteCls<T>::dispose() {
+template<typename T>
+void OverlayRouteCls<T>::dispose() {
     _overlayEntries->clear();
     super->dispose();
 }
 
-template<typename T> Future<T> TransitionRouteCls<T>::completed() {
+template<typename T>
+Future<T> TransitionRouteCls<T>::completed() {
     return _transitionCompleter->future;
 }
 
-template<typename T> Duration TransitionRouteCls<T>::reverseTransitionDuration() {
+template<typename T>
+Duration TransitionRouteCls<T>::reverseTransitionDuration() {
     return transitionDuration();
 }
 
-template<typename T> bool TransitionRouteCls<T>::finishedWhenPopped() {
+template<typename T>
+bool TransitionRouteCls<T>::finishedWhenPopped() {
     return _controller!->status() == AnimationStatusCls::dismissed && !_popFinalized;
 }
 
-template<typename T> Animation<double> TransitionRouteCls<T>::animation() {
+template<typename T>
+Animation<double> TransitionRouteCls<T>::animation() {
     return _animation;
 }
 
-template<typename T> AnimationController TransitionRouteCls<T>::controller() {
+template<typename T>
+AnimationController TransitionRouteCls<T>::controller() {
     return _controller;
 }
 
-template<typename T> Animation<double> TransitionRouteCls<T>::secondaryAnimation() {
+template<typename T>
+Animation<double> TransitionRouteCls<T>::secondaryAnimation() {
     return _secondaryAnimation;
 }
 
-template<typename T> AnimationController TransitionRouteCls<T>::createAnimationController() {
+template<typename T>
+AnimationController TransitionRouteCls<T>::createAnimationController() {
     assert(!_transitionCompleter->isCompleted, __s("Cannot reuse a $runtimeType after disposing it."));
     Duration duration = transitionDuration();
     Duration reverseDuration = reverseTransitionDuration();
@@ -59,13 +71,15 @@ template<typename T> AnimationController TransitionRouteCls<T>::createAnimationC
     return make<AnimationControllerCls>(duration, reverseDuration, debugLabel(), navigator!);
 }
 
-template<typename T> Animation<double> TransitionRouteCls<T>::createAnimation() {
+template<typename T>
+Animation<double> TransitionRouteCls<T>::createAnimation() {
     assert(!_transitionCompleter->isCompleted, __s("Cannot reuse a $runtimeType after disposing it."));
     assert(_controller != nullptr);
     return _controller!->view();
 }
 
-template<typename T> void TransitionRouteCls<T>::install() {
+template<typename T>
+void TransitionRouteCls<T>::install() {
     assert(!_transitionCompleter->isCompleted, __s("Cannot install a $runtimeType after disposing it."));
     _controller = createAnimationController();
     assert(_controller != nullptr, __s("$runtimeType.createAnimationController() returned null."));
@@ -77,21 +91,24 @@ template<typename T> void TransitionRouteCls<T>::install() {
     }
 }
 
-template<typename T> TickerFuture TransitionRouteCls<T>::didPush() {
+template<typename T>
+TickerFuture TransitionRouteCls<T>::didPush() {
     assert(_controller != nullptr, __s("$runtimeType.didPush called before calling install() or after calling dispose()."));
     assert(!_transitionCompleter->isCompleted, __s("Cannot reuse a $runtimeType after disposing it."));
     super->didPush();
     return _controller!->forward();
 }
 
-template<typename T> void TransitionRouteCls<T>::didAdd() {
+template<typename T>
+void TransitionRouteCls<T>::didAdd() {
     assert(_controller != nullptr, __s("$runtimeType.didPush called before calling install() or after calling dispose()."));
     assert(!_transitionCompleter->isCompleted, __s("Cannot reuse a $runtimeType after disposing it."));
     super->didAdd();
     _controller!->value() = _controller!->upperBound;
 }
 
-template<typename T> void TransitionRouteCls<T>::didReplace(Route<dynamic> oldRoute) {
+template<typename T>
+void TransitionRouteCls<T>::didReplace(Route<dynamic> oldRoute) {
     assert(_controller != nullptr, __s("$runtimeType.didReplace called before calling install() or after calling dispose()."));
     assert(!_transitionCompleter->isCompleted, __s("Cannot reuse a $runtimeType after disposing it."));
     if (is<TransitionRoute>(oldRoute)) {
@@ -100,7 +117,8 @@ template<typename T> void TransitionRouteCls<T>::didReplace(Route<dynamic> oldRo
     super->didReplace(oldRoute);
 }
 
-template<typename T> bool TransitionRouteCls<T>::didPop(T result) {
+template<typename T>
+bool TransitionRouteCls<T>::didPop(T result) {
     assert(_controller != nullptr, __s("$runtimeType.didPop called before calling install() or after calling dispose()."));
     assert(!_transitionCompleter->isCompleted, __s("Cannot reuse a $runtimeType after disposing it."));
     _result = result;
@@ -108,29 +126,34 @@ template<typename T> bool TransitionRouteCls<T>::didPop(T result) {
     return super->didPop(result);
 }
 
-template<typename T> void TransitionRouteCls<T>::didPopNext(Route<dynamic> nextRoute) {
+template<typename T>
+void TransitionRouteCls<T>::didPopNext(Route<dynamic> nextRoute) {
     assert(_controller != nullptr, __s("$runtimeType.didPopNext called before calling install() or after calling dispose()."));
     assert(!_transitionCompleter->isCompleted, __s("Cannot reuse a $runtimeType after disposing it."));
     _updateSecondaryAnimation(nextRoute);
     super->didPopNext(nextRoute);
 }
 
-template<typename T> void TransitionRouteCls<T>::didChangeNext(Route<dynamic> nextRoute) {
+template<typename T>
+void TransitionRouteCls<T>::didChangeNext(Route<dynamic> nextRoute) {
     assert(_controller != nullptr, __s("$runtimeType.didChangeNext called before calling install() or after calling dispose()."));
     assert(!_transitionCompleter->isCompleted, __s("Cannot reuse a $runtimeType after disposing it."));
     _updateSecondaryAnimation(nextRoute);
     super->didChangeNext(nextRoute);
 }
 
-template<typename T> bool TransitionRouteCls<T>::canTransitionTo(TransitionRoute<dynamic> nextRoute) {
+template<typename T>
+bool TransitionRouteCls<T>::canTransitionTo(TransitionRoute<dynamic> nextRoute) {
     return true;
 }
 
-template<typename T> bool TransitionRouteCls<T>::canTransitionFrom(TransitionRoute<dynamic> previousRoute) {
+template<typename T>
+bool TransitionRouteCls<T>::canTransitionFrom(TransitionRoute<dynamic> previousRoute) {
     return true;
 }
 
-template<typename T> void TransitionRouteCls<T>::dispose() {
+template<typename T>
+void TransitionRouteCls<T>::dispose() {
     assert(!_transitionCompleter->isCompleted, __s("Cannot dispose a $runtimeType twice."));
     _animation?->removeStatusListener(_handleStatusChanged);
     if (willDisposeAnimationController) {
@@ -140,19 +163,23 @@ template<typename T> void TransitionRouteCls<T>::dispose() {
     super->dispose();
 }
 
-template<typename T> String TransitionRouteCls<T>::debugLabel() {
+template<typename T>
+String TransitionRouteCls<T>::debugLabel() {
     return objectRuntimeType(this, __s("TransitionRoute"));
 }
 
-template<typename T> String TransitionRouteCls<T>::toString() {
+template<typename T>
+String TransitionRouteCls<T>::toString() {
     return __s("${objectRuntimeType(this, 'TransitionRoute')}(animation: $_controller)");
 }
 
-template<typename T> void TransitionRouteCls<T>::_handleStatusChanged(AnimationStatus status) {
+template<typename T>
+void TransitionRouteCls<T>::_handleStatusChanged(AnimationStatus status) {
     ;
 }
 
-template<typename T> void TransitionRouteCls<T>::_updateSecondaryAnimation(Route<dynamic> nextRoute) {
+template<typename T>
+void TransitionRouteCls<T>::_updateSecondaryAnimation(Route<dynamic> nextRoute) {
     VoidCallback previousTrainHoppingListenerRemover = _trainHoppingListenerRemover;
     _trainHoppingListenerRemover = nullptr;
     if (is<TransitionRoute<dynamic>>(nextRoute) && canTransitionTo(nextRoute) && nextRoute->canTransitionFrom(this)) {
@@ -192,7 +219,8 @@ template<typename T> void TransitionRouteCls<T>::_updateSecondaryAnimation(Route
     }
 }
 
-template<typename T> void TransitionRouteCls<T>::_setSecondaryAnimation(Animation<double> animation, Future<dynamic> disposed) {
+template<typename T>
+void TransitionRouteCls<T>::_setSecondaryAnimation(Animation<double> animation, Future<dynamic> disposed) {
     _secondaryAnimation->parent() = animation;
     disposed?->then([=] (dynamic _) {
         if (_secondaryAnimation->parent() == animation) {
@@ -213,7 +241,8 @@ void LocalHistoryEntryCls::_notifyRemoved() {
     onRemove?->call();
 }
 
-template<typename T> void LocalHistoryRouteCls<T>::addLocalHistoryEntry(LocalHistoryEntry entry) {
+template<typename T>
+void LocalHistoryRouteCls<T>::addLocalHistoryEntry(LocalHistoryEntry entry) {
     assert(entry->_owner == nullptr);
     entry->_owner = this;
     _localHistory = makeList();
@@ -229,7 +258,8 @@ template<typename T> void LocalHistoryRouteCls<T>::addLocalHistoryEntry(LocalHis
     }
 }
 
-template<typename T> void LocalHistoryRouteCls<T>::removeLocalHistoryEntry(LocalHistoryEntry entry) {
+template<typename T>
+void LocalHistoryRouteCls<T>::removeLocalHistoryEntry(LocalHistoryEntry entry) {
     assert(entry != nullptr);
     assert(entry->_owner == this);
     assert(_localHistory!->contains(entry));
@@ -252,14 +282,16 @@ template<typename T> void LocalHistoryRouteCls<T>::removeLocalHistoryEntry(Local
     }
 }
 
-template<typename T> Future<RoutePopDisposition> LocalHistoryRouteCls<T>::willPop() {
+template<typename T>
+Future<RoutePopDisposition> LocalHistoryRouteCls<T>::willPop() {
     if (willHandlePopInternally()) {
         return RoutePopDispositionCls::pop;
     }
     return super->willPop();
 }
 
-template<typename T> bool LocalHistoryRouteCls<T>::didPop(T result) {
+template<typename T>
+bool LocalHistoryRouteCls<T>::didPop(T result) {
     if (_localHistory != nullptr && _localHistory!->isNotEmpty) {
         LocalHistoryEntry entry = _localHistory!->removeLast();
         assert(entry->_owner == this);
@@ -278,7 +310,8 @@ template<typename T> bool LocalHistoryRouteCls<T>::didPop(T result) {
     return super->didPop(result);
 }
 
-template<typename T> bool LocalHistoryRouteCls<T>::willHandlePopInternally() {
+template<typename T>
+bool LocalHistoryRouteCls<T>::willHandlePopInternally() {
     return _localHistory != nullptr && _localHistory!->isNotEmpty;
 }
 
@@ -311,11 +344,13 @@ _ModalScopeStatusCls::_ModalScopeStatusCls(bool canPop, Unknown child, bool impl
     }
 }
 
-template<typename T> _ModalScopeState<T> _ModalScopeCls<T>::createState() {
+template<typename T>
+_ModalScopeState<T> _ModalScopeCls<T>::createState() {
     return <T>make<_ModalScopeStateCls>();
 }
 
-template<typename T> void _ModalScopeStateCls<T>::initState() {
+template<typename T>
+void _ModalScopeStateCls<T>::initState() {
     super->initState();
     List<Listenable> list1 = make<ListCls<>>();if (widget->route->animation != nullptr) {    list1.add(ArrayItem);}if (widget->route->secondaryAnimation != nullptr) {    list1.add(ArrayItem);}List<Listenable> animations = list1;
     _listenable = ListenableCls->merge(animations);
@@ -324,7 +359,8 @@ template<typename T> void _ModalScopeStateCls<T>::initState() {
     }
 }
 
-template<typename T> void _ModalScopeStateCls<T>::didUpdateWidget(_ModalScope<T> oldWidget) {
+template<typename T>
+void _ModalScopeStateCls<T>::didUpdateWidget(_ModalScope<T> oldWidget) {
     super->didUpdateWidget(oldWidget);
     assert(widget->route == oldWidget->route);
     if (widget->route->isCurrent && _shouldRequestFocus()) {
@@ -332,17 +368,20 @@ template<typename T> void _ModalScopeStateCls<T>::didUpdateWidget(_ModalScope<T>
     }
 }
 
-template<typename T> void _ModalScopeStateCls<T>::didChangeDependencies() {
+template<typename T>
+void _ModalScopeStateCls<T>::didChangeDependencies() {
     super->didChangeDependencies();
     _page = nullptr;
 }
 
-template<typename T> void _ModalScopeStateCls<T>::dispose() {
+template<typename T>
+void _ModalScopeStateCls<T>::dispose() {
     focusScopeNode->dispose();
     super->dispose();
 }
 
-template<typename T> Widget _ModalScopeStateCls<T>::build(BuildContext context) {
+template<typename T>
+Widget _ModalScopeStateCls<T>::build(BuildContext context) {
     return make<AnimatedBuilderCls>(widget->route->restorationScopeId, [=] (BuildContext context,Widget child) {
         assert(child != nullptr);
         return make<RestorationScopeCls>(widget->route->restorationScopeId->value, child!);
@@ -359,33 +398,40 @@ template<typename T> Widget _ModalScopeStateCls<T>::build(BuildContext context) 
     })))));
 }
 
-template<typename T> void _ModalScopeStateCls<T>::_forceRebuildPage() {
+template<typename T>
+void _ModalScopeStateCls<T>::_forceRebuildPage() {
     setState([=] () {
         _page = nullptr;
     });
 }
 
-template<typename T> bool _ModalScopeStateCls<T>::_shouldIgnoreFocusRequest() {
+template<typename T>
+bool _ModalScopeStateCls<T>::_shouldIgnoreFocusRequest() {
     return widget->route->animation?->status == AnimationStatusCls::reverse || (widget->route->navigator?->userGestureInProgress or false);
 }
 
-template<typename T> bool _ModalScopeStateCls<T>::_shouldRequestFocus() {
+template<typename T>
+bool _ModalScopeStateCls<T>::_shouldRequestFocus() {
     return widget->route->navigator!->widget->requestFocus;
 }
 
-template<typename T> void _ModalScopeStateCls<T>::_routeSetState(VoidCallback fn) {
+template<typename T>
+void _ModalScopeStateCls<T>::_routeSetState(VoidCallback fn) {
     if (widget->route->isCurrent && !_shouldIgnoreFocusRequest() && _shouldRequestFocus()) {
         widget->route->navigator!->focusScopeNode->setFirstFocus(focusScopeNode);
     }
     setState(fn);
 }
 
-template<typename T> ModalRoute<T> ModalRouteCls<T>::oftemplate<typename T> (BuildContext context) {
+template<typename T>
+template<typename T>
+ModalRoute<T> ModalRouteCls<T>::of(BuildContext context) {
     _ModalScopeStatus widget = context-><_ModalScopeStatus>dependOnInheritedWidgetOfExactType();
     return as<ModalRoute<T>>(widget?->route);
 }
 
-template<typename T> void ModalRouteCls<T>::setState(VoidCallback fn) {
+template<typename T>
+void ModalRouteCls<T>::setState(VoidCallback fn) {
     if (_scopeKey->currentState() != nullptr) {
         _scopeKey->currentState()!->_routeSetState(fn);
     } else {
@@ -393,49 +439,58 @@ template<typename T> void ModalRouteCls<T>::setState(VoidCallback fn) {
     }
 }
 
-template<typename T> RoutePredicate ModalRouteCls<T>::withName(String name) {
+template<typename T>
+RoutePredicate ModalRouteCls<T>::withName(String name) {
     return [=] (Route<dynamic> route) {
         return !route->willHandlePopInternally && is<ModalRoute>(route) && route->settings->name == name;
     };
 }
 
-template<typename T> Widget ModalRouteCls<T>::buildTransitions(Animation<double> animation, Widget child, BuildContext context, Animation<double> secondaryAnimation) {
+template<typename T>
+Widget ModalRouteCls<T>::buildTransitions(Animation<double> animation, Widget child, BuildContext context, Animation<double> secondaryAnimation) {
     return child;
 }
 
-template<typename T> void ModalRouteCls<T>::install() {
+template<typename T>
+void ModalRouteCls<T>::install() {
     super->install();
     _animationProxy = make<ProxyAnimationCls>(super->animation);
     _secondaryAnimationProxy = make<ProxyAnimationCls>(super->secondaryAnimation);
 }
 
-template<typename T> TickerFuture ModalRouteCls<T>::didPush() {
+template<typename T>
+TickerFuture ModalRouteCls<T>::didPush() {
     if (_scopeKey->currentState() != nullptr && navigator!->widget->requestFocus) {
         navigator!->focusScopeNode->setFirstFocus(_scopeKey->currentState()!->focusScopeNode);
     }
     return super->didPush();
 }
 
-template<typename T> void ModalRouteCls<T>::didAdd() {
+template<typename T>
+void ModalRouteCls<T>::didAdd() {
     if (_scopeKey->currentState() != nullptr && navigator!->widget->requestFocus) {
         navigator!->focusScopeNode->setFirstFocus(_scopeKey->currentState()!->focusScopeNode);
     }
     super->didAdd();
 }
 
-template<typename T> bool ModalRouteCls<T>::semanticsDismissible() {
+template<typename T>
+bool ModalRouteCls<T>::semanticsDismissible() {
     return true;
 }
 
-template<typename T> Curve ModalRouteCls<T>::barrierCurve() {
+template<typename T>
+Curve ModalRouteCls<T>::barrierCurve() {
     return CurvesCls::ease;
 }
 
-template<typename T> bool ModalRouteCls<T>::offstage() {
+template<typename T>
+bool ModalRouteCls<T>::offstage() {
     return _offstage;
 }
 
-template<typename T> void ModalRouteCls<T>::offstage(bool value) {
+template<typename T>
+void ModalRouteCls<T>::offstage(bool value) {
     if (_offstage == value) {
         return;
     }
@@ -447,19 +502,23 @@ template<typename T> void ModalRouteCls<T>::offstage(bool value) {
     changedInternalState();
 }
 
-template<typename T> BuildContext ModalRouteCls<T>::subtreeContext() {
+template<typename T>
+BuildContext ModalRouteCls<T>::subtreeContext() {
     return _subtreeKey->currentContext();
 }
 
-template<typename T> Animation<double> ModalRouteCls<T>::animation() {
+template<typename T>
+Animation<double> ModalRouteCls<T>::animation() {
     return _animationProxy;
 }
 
-template<typename T> Animation<double> ModalRouteCls<T>::secondaryAnimation() {
+template<typename T>
+Animation<double> ModalRouteCls<T>::secondaryAnimation() {
     return _secondaryAnimationProxy;
 }
 
-template<typename T> Future<RoutePopDisposition> ModalRouteCls<T>::willPop() {
+template<typename T>
+Future<RoutePopDisposition> ModalRouteCls<T>::willPop() {
     _ModalScopeState<T> scope = _scopeKey->currentState();
     assert(scope != nullptr);
     for (WillPopCallback callback : <WillPopCallback>of(_willPopCallbacks)) {
@@ -470,26 +529,31 @@ template<typename T> Future<RoutePopDisposition> ModalRouteCls<T>::willPop() {
     return super->willPop();
 }
 
-template<typename T> void ModalRouteCls<T>::addScopedWillPopCallback(WillPopCallback callback) {
+template<typename T>
+void ModalRouteCls<T>::addScopedWillPopCallback(WillPopCallback callback) {
     assert(_scopeKey->currentState() != nullptr, __s("Tried to add a willPop callback to a route that is not currently in the tree."));
     _willPopCallbacks->add(callback);
 }
 
-template<typename T> void ModalRouteCls<T>::removeScopedWillPopCallback(WillPopCallback callback) {
+template<typename T>
+void ModalRouteCls<T>::removeScopedWillPopCallback(WillPopCallback callback) {
     assert(_scopeKey->currentState() != nullptr, __s("Tried to remove a willPop callback from a route that is not currently in the tree."));
     _willPopCallbacks->remove(callback);
 }
 
-template<typename T> bool ModalRouteCls<T>::hasScopedWillPopCallback() {
+template<typename T>
+bool ModalRouteCls<T>::hasScopedWillPopCallback() {
     return _willPopCallbacks->isNotEmpty;
 }
 
-template<typename T> void ModalRouteCls<T>::didChangePrevious(Route<dynamic> previousRoute) {
+template<typename T>
+void ModalRouteCls<T>::didChangePrevious(Route<dynamic> previousRoute) {
     super->didChangePrevious(previousRoute);
     changedInternalState();
 }
 
-template<typename T> void ModalRouteCls<T>::changedInternalState() {
+template<typename T>
+void ModalRouteCls<T>::changedInternalState() {
     super->changedInternalState();
     setState([=] () {
     });
@@ -497,7 +561,8 @@ template<typename T> void ModalRouteCls<T>::changedInternalState() {
     _modalScope->maintainState() = maintainState();
 }
 
-template<typename T> void ModalRouteCls<T>::changedExternalState() {
+template<typename T>
+void ModalRouteCls<T>::changedExternalState() {
     super->changedExternalState();
     _modalBarrier->markNeedsBuild();
     if (_scopeKey->currentState() != nullptr) {
@@ -505,23 +570,28 @@ template<typename T> void ModalRouteCls<T>::changedExternalState() {
     }
 }
 
-template<typename T> bool ModalRouteCls<T>::canPop() {
+template<typename T>
+bool ModalRouteCls<T>::canPop() {
     return hasActiveRouteBelow || willHandlePopInternally;
 }
 
-template<typename T> bool ModalRouteCls<T>::impliesAppBarDismissal() {
+template<typename T>
+bool ModalRouteCls<T>::impliesAppBarDismissal() {
     return hasActiveRouteBelow || _entriesImpliesAppBarDismissal > 0;
 }
 
-template<typename T> Iterable<OverlayEntry> ModalRouteCls<T>::createOverlayEntries() {
+template<typename T>
+Iterable<OverlayEntry> ModalRouteCls<T>::createOverlayEntries() {
     return makeList(ArrayItem, ArrayItem);
 }
 
-template<typename T> String ModalRouteCls<T>::toString() {
+template<typename T>
+String ModalRouteCls<T>::toString() {
     return __s("${objectRuntimeType(this, 'ModalRoute')}($settings, animation: $_animation)");
 }
 
-template<typename T> Widget ModalRouteCls<T>::_buildModalBarrier(BuildContext context) {
+template<typename T>
+Widget ModalRouteCls<T>::_buildModalBarrier(BuildContext context) {
     Widget barrier;
     if (barrierColor() != nullptr && barrierColor()!->alpha() != 0 && !offstage()) {
         assert(barrierColor() != barrierColor()!->withOpacity(0.0));
@@ -540,19 +610,23 @@ template<typename T> Widget ModalRouteCls<T>::_buildModalBarrier(BuildContext co
     return barrier;
 }
 
-template<typename T> Widget ModalRouteCls<T>::_buildModalScope(BuildContext context) {
+template<typename T>
+Widget ModalRouteCls<T>::_buildModalScope(BuildContext context) {
     return _modalScopeCache ??= make<SemanticsCls>(make<OrdinalSortKeyCls>(0.0), <T>make<_ModalScopeCls>(_scopeKey, this));
 }
 
-template<typename T> bool PopupRouteCls<T>::opaque() {
+template<typename T>
+bool PopupRouteCls<T>::opaque() {
     return false;
 }
 
-template<typename T> bool PopupRouteCls<T>::maintainState() {
+template<typename T>
+bool PopupRouteCls<T>::maintainState() {
     return true;
 }
 
-template<typename R> bool RouteObserverCls<R>::debugObservingRoute(R route) {
+template<typename R>
+bool RouteObserverCls<R>::debugObservingRoute(R route) {
     bool contained;
     assert([=] () {
         contained = _listeners->containsKey(route);
@@ -561,7 +635,8 @@ template<typename R> bool RouteObserverCls<R>::debugObservingRoute(R route) {
     return contained;
 }
 
-template<typename R> void RouteObserverCls<R>::subscribe(R route, RouteAware routeAware) {
+template<typename R>
+void RouteObserverCls<R>::subscribe(R route, RouteAware routeAware) {
     assert(routeAware != nullptr);
     assert(route != nullptr);
     Set<RouteAware> subscribers = _listeners->putIfAbsent(route, [=] () {
@@ -572,7 +647,8 @@ template<typename R> void RouteObserverCls<R>::subscribe(R route, RouteAware rou
     }
 }
 
-template<typename R> void RouteObserverCls<R>::unsubscribe(RouteAware routeAware) {
+template<typename R>
+void RouteObserverCls<R>::unsubscribe(RouteAware routeAware) {
     assert(routeAware != nullptr);
     List<R> routes = _listeners->keys()->toList();
     for (R route : routes) {
@@ -586,7 +662,8 @@ template<typename R> void RouteObserverCls<R>::unsubscribe(RouteAware routeAware
     }
 }
 
-template<typename R> void RouteObserverCls<R>::didPop(Route<dynamic> previousRoute, Route<dynamic> route) {
+template<typename R>
+void RouteObserverCls<R>::didPop(Route<dynamic> previousRoute, Route<dynamic> route) {
     if (is<R>(route) && is<R>(previousRoute)) {
         List<RouteAware> previousSubscribers = _listeners[previousRoute]?->toList();
         if (previousSubscribers != nullptr) {
@@ -603,7 +680,8 @@ template<typename R> void RouteObserverCls<R>::didPop(Route<dynamic> previousRou
     }
 }
 
-template<typename R> void RouteObserverCls<R>::didPush(Route<dynamic> previousRoute, Route<dynamic> route) {
+template<typename R>
+void RouteObserverCls<R>::didPush(Route<dynamic> previousRoute, Route<dynamic> route) {
     if (is<R>(route) && is<R>(previousRoute)) {
         Set<RouteAware> previousSubscribers = _listeners[previousRoute];
         if (previousSubscribers != nullptr) {
@@ -626,7 +704,8 @@ void RouteAwareCls::didPop() {
 void RouteAwareCls::didPushNext() {
 }
 
-template<typename T> RawDialogRouteCls<T>::RawDialogRouteCls(Offset anchorPoint, Color barrierColor, bool barrierDismissible, String barrierLabel, RoutePageBuilder pageBuilder, Unknown settings, RouteTransitionsBuilder transitionBuilder, Duration transitionDuration) {
+template<typename T>
+RawDialogRouteCls<T>::RawDialogRouteCls(Offset anchorPoint, Color barrierColor, bool barrierDismissible, String barrierLabel, RoutePageBuilder pageBuilder, Unknown settings, RouteTransitionsBuilder transitionBuilder, Duration transitionDuration) {
     {
         assert(barrierDismissible != nullptr);
         _pageBuilder = pageBuilder;
@@ -638,34 +717,41 @@ template<typename T> RawDialogRouteCls<T>::RawDialogRouteCls(Offset anchorPoint,
     }
 }
 
-template<typename T> bool RawDialogRouteCls<T>::barrierDismissible() {
+template<typename T>
+bool RawDialogRouteCls<T>::barrierDismissible() {
     return _barrierDismissible;
 }
 
-template<typename T> String RawDialogRouteCls<T>::barrierLabel() {
+template<typename T>
+String RawDialogRouteCls<T>::barrierLabel() {
     return _barrierLabel;
 }
 
-template<typename T> Color RawDialogRouteCls<T>::barrierColor() {
+template<typename T>
+Color RawDialogRouteCls<T>::barrierColor() {
     return _barrierColor;
 }
 
-template<typename T> Duration RawDialogRouteCls<T>::transitionDuration() {
+template<typename T>
+Duration RawDialogRouteCls<T>::transitionDuration() {
     return _transitionDuration;
 }
 
-template<typename T> Widget RawDialogRouteCls<T>::buildPage(Animation<double> animation, BuildContext context, Animation<double> secondaryAnimation) {
+template<typename T>
+Widget RawDialogRouteCls<T>::buildPage(Animation<double> animation, BuildContext context, Animation<double> secondaryAnimation) {
     return make<SemanticsCls>(true, true, make<DisplayFeatureSubScreenCls>(anchorPoint, _pageBuilder(context, animation, secondaryAnimation)));
 }
 
-template<typename T> Widget RawDialogRouteCls<T>::buildTransitions(Animation<double> animation, Widget child, BuildContext context, Animation<double> secondaryAnimation) {
+template<typename T>
+Widget RawDialogRouteCls<T>::buildTransitions(Animation<double> animation, Widget child, BuildContext context, Animation<double> secondaryAnimation) {
     if (_transitionBuilder == nullptr) {
         return make<FadeTransitionCls>(make<CurvedAnimationCls>(animation, CurvesCls::linear), child);
     }
     return _transitionBuilder!(context, animation, secondaryAnimation, child);
 }
 
-Future<T> showGeneralDialogtemplate<typename T> (Offset anchorPoint, Color barrierColor, bool barrierDismissible, String barrierLabel, BuildContext context, RoutePageBuilder pageBuilder, RouteSettings routeSettings, RouteTransitionsBuilder transitionBuilder, Duration transitionDuration, bool useRootNavigator) {
+template<typename T>
+Future<T> showGeneralDialog(Offset anchorPoint, Color barrierColor, bool barrierDismissible, String barrierLabel, BuildContext context, RoutePageBuilder pageBuilder, RouteSettings routeSettings, RouteTransitionsBuilder transitionBuilder, Duration transitionDuration, bool useRootNavigator) {
     assert(pageBuilder != nullptr);
     assert(useRootNavigator != nullptr);
     assert(!barrierDismissible || barrierLabel != nullptr);
@@ -735,11 +821,11 @@ void _RenderFocusTrapCls::handleEvent(HitTestEntry entry, PointerEvent event) {
         HitTestTarget target = entry->target;
         if (target == renderObject) {
             hitCurrentFocus = true;
-                        break;
+            break;
         }
         if (is<_RenderFocusTrapArea>(target) && target->focusNode == focusNode) {
             hitCurrentFocus = true;
-                        break;
+            break;
         }
     }
     if (!hitCurrentFocus) {

@@ -6,7 +6,8 @@
 #include "framework.hpp"
 
 
-template<typename T> class UniqueWidgetCls : public StatefulWidgetCls {
+template<typename T>
+class UniqueWidgetCls : public StatefulWidgetCls {
 public:
 
      UniqueWidgetCls(GlobalKey<T> key);
@@ -17,7 +18,8 @@ public:
 private:
 
 };
-template<typename T> using UniqueWidget = std::shared_ptr<UniqueWidgetCls<T>>;
+template<typename T>
+using UniqueWidget = std::shared_ptr<UniqueWidgetCls<T>>;
 
 
 #endif

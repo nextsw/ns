@@ -23,42 +23,48 @@ void _ZoneDelegateCls::handleUncaughtError(Object error, StackTrace stackTrace, 
     _delegationTarget->_processUncaughtError(zone, error, stackTrace);
 }
 
-R _ZoneDelegateCls::runtemplate<typename R> (R f() , Zone zone) {
+template<typename R>
+R _ZoneDelegateCls::run(R f() , Zone zone) {
     auto implementation = _delegationTarget->_run();
     _Zone implZone = implementation->zone;
     auto handler = as<RunHandler>(implementation->function);
     return handler(implZone, implZone->_parentDelegate(), zone, f);
 }
 
-R _ZoneDelegateCls::runUnarytemplate<typename R, typename T> (T arg, R f(T arg) , Zone zone) {
+template<typename R, typename T>
+R _ZoneDelegateCls::runUnary(T arg, R f(T arg) , Zone zone) {
     auto implementation = _delegationTarget->_runUnary();
     _Zone implZone = implementation->zone;
     auto handler = as<RunUnaryHandler>(implementation->function);
     return handler(implZone, implZone->_parentDelegate(), zone, f, arg);
 }
 
-R _ZoneDelegateCls::runBinarytemplate<typename R, typename T1, typename T2> (T1 arg1, T2 arg2, R f(T1 arg1, T2 arg2) , Zone zone) {
+template<typename R, typename T1, typename T2>
+R _ZoneDelegateCls::runBinary(T1 arg1, T2 arg2, R f(T1 arg1, T2 arg2) , Zone zone) {
     auto implementation = _delegationTarget->_runBinary();
     _Zone implZone = implementation->zone;
     auto handler = as<RunBinaryHandler>(implementation->function);
     return handler(implZone, implZone->_parentDelegate(), zone, f, arg1, arg2);
 }
 
-ZoneCallback<R> _ZoneDelegateCls::registerCallbacktemplate<typename R> (R f() , Zone zone) {
+template<typename R>
+ZoneCallback<R> _ZoneDelegateCls::registerCallback(R f() , Zone zone) {
     auto implementation = _delegationTarget->_registerCallback();
     _Zone implZone = implementation->zone;
     auto handler = as<RegisterCallbackHandler>(implementation->function);
     return handler(implZone, implZone->_parentDelegate(), zone, f);
 }
 
-ZoneUnaryCallback<R, T> _ZoneDelegateCls::registerUnaryCallbacktemplate<typename R, typename T> (R f(T arg) , Zone zone) {
+template<typename R, typename T>
+ZoneUnaryCallback<R, T> _ZoneDelegateCls::registerUnaryCallback(R f(T arg) , Zone zone) {
     auto implementation = _delegationTarget->_registerUnaryCallback();
     _Zone implZone = implementation->zone;
     auto handler = as<RegisterUnaryCallbackHandler>(implementation->function);
     return handler(implZone, implZone->_parentDelegate(), zone, f);
 }
 
-ZoneBinaryCallback<R, T1, T2> _ZoneDelegateCls::registerBinaryCallbacktemplate<typename R, typename T1, typename T2> (R f(T1 arg1, T2 arg2) , Zone zone) {
+template<typename R, typename T1, typename T2>
+ZoneBinaryCallback<R, T1, T2> _ZoneDelegateCls::registerBinaryCallback(R f(T1 arg1, T2 arg2) , Zone zone) {
     auto implementation = _delegationTarget->_registerBinaryCallback();
     _Zone implZone = implementation->zone;
     auto handler = as<RegisterBinaryCallbackHandler>(implementation->function);
@@ -148,7 +154,8 @@ void _CustomZoneCls::runGuarded(void f() ) {
     };
 }
 
-void _CustomZoneCls::runUnaryGuardedtemplate<typename T> (T arg, void f(T arg) ) {
+template<typename T>
+void _CustomZoneCls::runUnaryGuarded(T arg, void f(T arg) ) {
     try {
         runUnary(f, arg);
     } catch (Unknown e) {
@@ -156,7 +163,8 @@ void _CustomZoneCls::runUnaryGuardedtemplate<typename T> (T arg, void f(T arg) )
     };
 }
 
-void _CustomZoneCls::runBinaryGuardedtemplate<typename T1, typename T2> (T1 arg1, T2 arg2, void f(T1 arg1, T2 arg2) ) {
+template<typename T1, typename T2>
+void _CustomZoneCls::runBinaryGuarded(T1 arg1, T2 arg2, void f(T1 arg1, T2 arg2) ) {
     try {
         runBinary(f, arg1, arg2);
     } catch (Unknown e) {
@@ -164,21 +172,24 @@ void _CustomZoneCls::runBinaryGuardedtemplate<typename T1, typename T2> (T1 arg1
     };
 }
 
-ZoneCallback<R> _CustomZoneCls::bindCallbacktemplate<typename R> (R f() ) {
+template<typename R>
+ZoneCallback<R> _CustomZoneCls::bindCallback(R f() ) {
     auto registered = registerCallback(f);
     return [=] ()     {
         this->run(registered);
     };
 }
 
-ZoneUnaryCallback<R, T> _CustomZoneCls::bindUnaryCallbacktemplate<typename R, typename T> (R f(T arg) ) {
+template<typename R, typename T>
+ZoneUnaryCallback<R, T> _CustomZoneCls::bindUnaryCallback(R f(T arg) ) {
     auto registered = registerUnaryCallback(f);
     return [=] (Unknown  arg)     {
         this->runUnary(registered, arg);
     };
 }
 
-ZoneBinaryCallback<R, T1, T2> _CustomZoneCls::bindBinaryCallbacktemplate<typename R, typename T1, typename T2> (R f(T1 arg1, T2 arg2) ) {
+template<typename R, typename T1, typename T2>
+ZoneBinaryCallback<R, T1, T2> _CustomZoneCls::bindBinaryCallback(R f(T1 arg1, T2 arg2) ) {
     auto registered = registerBinaryCallback(f);
     return [=] (Unknown  arg1,Unknown  arg2)     {
         this->runBinary(registered, arg1, arg2);
@@ -192,14 +203,16 @@ void Function() _CustomZoneCls::bindCallbackGuarded(void f() ) {
     };
 }
 
-void Function(T ) _CustomZoneCls::bindUnaryCallbackGuardedtemplate<typename T> (void f(T arg) ) {
+template<typename T>
+void Function(T ) _CustomZoneCls::bindUnaryCallbackGuarded(void f(T arg) ) {
     auto registered = registerUnaryCallback(f);
     return [=] (Unknown  arg)     {
         this->runUnaryGuarded(registered, arg);
     };
 }
 
-void Function(T1 , T2 ) _CustomZoneCls::bindBinaryCallbackGuardedtemplate<typename T1, typename T2> (void f(T1 arg1, T2 arg2) ) {
+template<typename T1, typename T2>
+void Function(T1 , T2 ) _CustomZoneCls::bindBinaryCallbackGuarded(void f(T1 arg1, T2 arg2) ) {
     auto registered = registerBinaryCallback(f);
     return [=] (Unknown  arg1,Unknown  arg2)     {
         this->runBinaryGuarded(registered, arg1, arg2);
@@ -233,42 +246,48 @@ Zone _CustomZoneCls::fork(ZoneSpecification specification, Map<Object, Object> z
     return handler(implementation->zone, parentDelegate, this, specification, zoneValues);
 }
 
-R _CustomZoneCls::runtemplate<typename R> (R f() ) {
+template<typename R>
+R _CustomZoneCls::run(R f() ) {
     auto implementation = this->_run;
     ZoneDelegate parentDelegate = implementation->zone->_parentDelegate();
     auto handler = as<RunHandler>(implementation->function);
     return handler(implementation->zone, parentDelegate, this, f);
 }
 
-R _CustomZoneCls::runUnarytemplate<typename R, typename T> (T arg, R f(T arg) ) {
+template<typename R, typename T>
+R _CustomZoneCls::runUnary(T arg, R f(T arg) ) {
     auto implementation = this->_runUnary;
     ZoneDelegate parentDelegate = implementation->zone->_parentDelegate();
     auto handler = as<RunUnaryHandler>(implementation->function);
     return handler(implementation->zone, parentDelegate, this, f, arg);
 }
 
-R _CustomZoneCls::runBinarytemplate<typename R, typename T1, typename T2> (T1 arg1, T2 arg2, R f(T1 arg1, T2 arg2) ) {
+template<typename R, typename T1, typename T2>
+R _CustomZoneCls::runBinary(T1 arg1, T2 arg2, R f(T1 arg1, T2 arg2) ) {
     auto implementation = this->_runBinary;
     ZoneDelegate parentDelegate = implementation->zone->_parentDelegate();
     auto handler = as<RunBinaryHandler>(implementation->function);
     return handler(implementation->zone, parentDelegate, this, f, arg1, arg2);
 }
 
-ZoneCallback<R> _CustomZoneCls::registerCallbacktemplate<typename R> (R callback() ) {
+template<typename R>
+ZoneCallback<R> _CustomZoneCls::registerCallback(R callback() ) {
     auto implementation = this->_registerCallback;
     ZoneDelegate parentDelegate = implementation->zone->_parentDelegate();
     auto handler = as<RegisterCallbackHandler>(implementation->function);
     return handler(implementation->zone, parentDelegate, this, callback);
 }
 
-ZoneUnaryCallback<R, T> _CustomZoneCls::registerUnaryCallbacktemplate<typename R, typename T> (R callback(T arg) ) {
+template<typename R, typename T>
+ZoneUnaryCallback<R, T> _CustomZoneCls::registerUnaryCallback(R callback(T arg) ) {
     auto implementation = this->_registerUnaryCallback;
     ZoneDelegate parentDelegate = implementation->zone->_parentDelegate();
     auto handler = as<RegisterUnaryCallbackHandler>(implementation->function);
     return handler(implementation->zone, parentDelegate, this, callback);
 }
 
-ZoneBinaryCallback<R, T1, T2> _CustomZoneCls::registerBinaryCallbacktemplate<typename R, typename T1, typename T2> (R callback(T1 arg1, T2 arg2) ) {
+template<typename R, typename T1, typename T2>
+ZoneBinaryCallback<R, T1, T2> _CustomZoneCls::registerBinaryCallback(R callback(T1 arg1, T2 arg2) ) {
     auto implementation = this->_registerBinaryCallback;
     ZoneDelegate parentDelegate = implementation->zone->_parentDelegate();
     auto handler = as<RegisterBinaryCallbackHandler>(implementation->function);
@@ -405,7 +424,8 @@ void _rootHandleError(Object error, StackTrace stackTrace) {
     });
 }
 
-R _rootRuntemplate<typename R> (R f() , ZoneDelegate parent, Zone self, Zone zone) {
+template<typename R>
+R _rootRun(R f() , ZoneDelegate parent, Zone self, Zone zone) {
     if (identical(ZoneCls::_current, zone))     {
         return f();
     }
@@ -420,7 +440,8 @@ R _rootRuntemplate<typename R> (R f() , ZoneDelegate parent, Zone self, Zone zon
     };
 }
 
-R _rootRunUnarytemplate<typename R, typename T> (T arg, R f(T arg) , ZoneDelegate parent, Zone self, Zone zone) {
+template<typename R, typename T>
+R _rootRunUnary(T arg, R f(T arg) , ZoneDelegate parent, Zone self, Zone zone) {
     if (identical(ZoneCls::_current, zone))     {
         return f(arg);
     }
@@ -435,7 +456,8 @@ R _rootRunUnarytemplate<typename R, typename T> (T arg, R f(T arg) , ZoneDelegat
     };
 }
 
-R _rootRunBinarytemplate<typename R, typename T1, typename T2> (T1 arg1, T2 arg2, R f(T1 arg1, T2 arg2) , ZoneDelegate parent, Zone self, Zone zone) {
+template<typename R, typename T1, typename T2>
+R _rootRunBinary(T1 arg1, T2 arg2, R f(T1 arg1, T2 arg2) , ZoneDelegate parent, Zone self, Zone zone) {
     if (identical(ZoneCls::_current, zone))     {
         return f(arg1, arg2);
     }
@@ -450,15 +472,18 @@ R _rootRunBinarytemplate<typename R, typename T1, typename T2> (T1 arg1, T2 arg2
     };
 }
 
-ZoneCallback<R> _rootRegisterCallbacktemplate<typename R> (R f() , ZoneDelegate parent, Zone self, Zone zone) {
+template<typename R>
+ZoneCallback<R> _rootRegisterCallback(R f() , ZoneDelegate parent, Zone self, Zone zone) {
     return f;
 }
 
-ZoneUnaryCallback<R, T> _rootRegisterUnaryCallbacktemplate<typename R, typename T> (R f(T arg) , ZoneDelegate parent, Zone self, Zone zone) {
+template<typename R, typename T>
+ZoneUnaryCallback<R, T> _rootRegisterUnaryCallback(R f(T arg) , ZoneDelegate parent, Zone self, Zone zone) {
     return f;
 }
 
-ZoneBinaryCallback<R, T1, T2> _rootRegisterBinaryCallbacktemplate<typename R, typename T1, typename T2> (R f(T1 arg1, T2 arg2) , ZoneDelegate parent, Zone self, Zone zone) {
+template<typename R, typename T1, typename T2>
+ZoneBinaryCallback<R, T1, T2> _rootRegisterBinaryCallback(R f(T1 arg1, T2 arg2) , ZoneDelegate parent, Zone self, Zone zone) {
     return f;
 }
 
@@ -544,7 +569,8 @@ void _RootZoneCls::runGuarded(void f() ) {
     };
 }
 
-void _RootZoneCls::runUnaryGuardedtemplate<typename T> (T arg, void f(T arg) ) {
+template<typename T>
+void _RootZoneCls::runUnaryGuarded(T arg, void f(T arg) ) {
     try {
         if (identical(_rootZone, ZoneCls::_current)) {
             f(arg);
@@ -556,7 +582,8 @@ void _RootZoneCls::runUnaryGuardedtemplate<typename T> (T arg, void f(T arg) ) {
     };
 }
 
-void _RootZoneCls::runBinaryGuardedtemplate<typename T1, typename T2> (T1 arg1, T2 arg2, void f(T1 arg1, T2 arg2) ) {
+template<typename T1, typename T2>
+void _RootZoneCls::runBinaryGuarded(T1 arg1, T2 arg2, void f(T1 arg1, T2 arg2) ) {
     try {
         if (identical(_rootZone, ZoneCls::_current)) {
             f(arg1, arg2);
@@ -568,19 +595,22 @@ void _RootZoneCls::runBinaryGuardedtemplate<typename T1, typename T2> (T1 arg1, 
     };
 }
 
-ZoneCallback<R> _RootZoneCls::bindCallbacktemplate<typename R> (R f() ) {
+template<typename R>
+ZoneCallback<R> _RootZoneCls::bindCallback(R f() ) {
     return [=] ()     {
         this-><R>run(f);
     };
 }
 
-ZoneUnaryCallback<R, T> _RootZoneCls::bindUnaryCallbacktemplate<typename R, typename T> (R f(T arg) ) {
+template<typename R, typename T>
+ZoneUnaryCallback<R, T> _RootZoneCls::bindUnaryCallback(R f(T arg) ) {
     return [=] (Unknown  arg)     {
         this-><R, T>runUnary(f, arg);
     };
 }
 
-ZoneBinaryCallback<R, T1, T2> _RootZoneCls::bindBinaryCallbacktemplate<typename R, typename T1, typename T2> (R f(T1 arg1, T2 arg2) ) {
+template<typename R, typename T1, typename T2>
+ZoneBinaryCallback<R, T1, T2> _RootZoneCls::bindBinaryCallback(R f(T1 arg1, T2 arg2) ) {
     return [=] (Unknown  arg1,Unknown  arg2)     {
         this-><R, T1, T2>runBinary(f, arg1, arg2);
     };
@@ -592,13 +622,15 @@ void Function() _RootZoneCls::bindCallbackGuarded(void f() ) {
     };
 }
 
-void Function(T ) _RootZoneCls::bindUnaryCallbackGuardedtemplate<typename T> (void f(T arg) ) {
+template<typename T>
+void Function(T ) _RootZoneCls::bindUnaryCallbackGuarded(void f(T arg) ) {
     return [=] (Unknown  arg)     {
         this->runUnaryGuarded(f, arg);
     };
 }
 
-void Function(T1 , T2 ) _RootZoneCls::bindBinaryCallbackGuardedtemplate<typename T1, typename T2> (void f(T1 arg1, T2 arg2) ) {
+template<typename T1, typename T2>
+void Function(T1 , T2 ) _RootZoneCls::bindBinaryCallbackGuarded(void f(T1 arg1, T2 arg2) ) {
     return [=] (Unknown  arg1,Unknown  arg2)     {
         this->runBinaryGuarded(f, arg1, arg2);
     };
@@ -616,36 +648,42 @@ Zone _RootZoneCls::fork(ZoneSpecification specification, Map<Object, Object> zon
     return _rootFork(nullptr, nullptr, this, specification, zoneValues);
 }
 
-R _RootZoneCls::runtemplate<typename R> (R f() ) {
+template<typename R>
+R _RootZoneCls::run(R f() ) {
     if (identical(ZoneCls::_current, _rootZone))     {
         return f();
     }
     return _rootRun(nullptr, nullptr, this, f);
 }
 
-R _RootZoneCls::runUnarytemplate<typename R, typename T> (T arg, R f(T arg) ) {
+template<typename R, typename T>
+R _RootZoneCls::runUnary(T arg, R f(T arg) ) {
     if (identical(ZoneCls::_current, _rootZone))     {
         return f(arg);
     }
     return _rootRunUnary(nullptr, nullptr, this, f, arg);
 }
 
-R _RootZoneCls::runBinarytemplate<typename R, typename T1, typename T2> (T1 arg1, T2 arg2, R f(T1 arg1, T2 arg2) ) {
+template<typename R, typename T1, typename T2>
+R _RootZoneCls::runBinary(T1 arg1, T2 arg2, R f(T1 arg1, T2 arg2) ) {
     if (identical(ZoneCls::_current, _rootZone))     {
         return f(arg1, arg2);
     }
     return _rootRunBinary(nullptr, nullptr, this, f, arg1, arg2);
 }
 
-ZoneCallback<R> _RootZoneCls::registerCallbacktemplate<typename R> (R f() ) {
+template<typename R>
+ZoneCallback<R> _RootZoneCls::registerCallback(R f() ) {
     return f;
 }
 
-ZoneUnaryCallback<R, T> _RootZoneCls::registerUnaryCallbacktemplate<typename R, typename T> (R f(T arg) ) {
+template<typename R, typename T>
+ZoneUnaryCallback<R, T> _RootZoneCls::registerUnaryCallback(R f(T arg) ) {
     return f;
 }
 
-ZoneBinaryCallback<R, T1, T2> _RootZoneCls::registerBinaryCallbacktemplate<typename R, typename T1, typename T2> (R f(T1 arg1, T2 arg2) ) {
+template<typename R, typename T1, typename T2>
+ZoneBinaryCallback<R, T1, T2> _RootZoneCls::registerBinaryCallback(R f(T1 arg1, T2 arg2) ) {
     return f;
 }
 
@@ -733,7 +771,8 @@ ZoneDelegate _RootZoneCls::_parentDelegate() {
     return _delegate();
 }
 
-R runZonedtemplate<typename R> (R body() , void  onError() , ZoneSpecification zoneSpecification, Map<Object, Object> zoneValues) {
+template<typename R>
+R runZoned(R body() , void  onError() , ZoneSpecification zoneSpecification, Map<Object, Object> zoneValues) {
     checkNotNullable(body, __s("body"));
     if (onError != nullptr) {
         if (!is<void Function(Object , StackTrace )>(onError)) {
@@ -751,7 +790,8 @@ R runZonedtemplate<typename R> (R body() , void  onError() , ZoneSpecification z
     return <R>_runZoned(body, zoneValues, zoneSpecification);
 }
 
-R runZonedGuardedtemplate<typename R> (R body() , void onError(Object error, StackTrace stack) , ZoneSpecification zoneSpecification, Map<Object, Object> zoneValues) {
+template<typename R>
+R runZonedGuarded(R body() , void onError(Object error, StackTrace stack) , ZoneSpecification zoneSpecification, Map<Object, Object> zoneValues) {
     checkNotNullable(body, __s("body"));
     checkNotNullable(onError, __s("onError"));
     _Zone parentZone = ZoneCls::_current;
@@ -779,6 +819,7 @@ R runZonedGuardedtemplate<typename R> (R body() , void onError(Object error, Sta
     return nullptr;
 }
 
-R _runZonedtemplate<typename R> (R body() , ZoneSpecification specification, Map<Object, Object> zoneValues) {
+template<typename R>
+R _runZoned(R body() , ZoneSpecification specification, Map<Object, Object> zoneValues) {
     return ZoneCls::current->fork(specification, zoneValues)-><R>run(body);
 }

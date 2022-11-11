@@ -5,18 +5,23 @@
 #include <dart/core/core.hpp>
 
 
-template<typename E> class IterableMixinCls : public ObjectCls {
+template<typename E>
+class IterableMixinCls : public ObjectCls {
 public:
 
-    template<typename R>  virtual Iterable<R> cast();
+    template<typename R>
+ virtual Iterable<R> cast();
 
-    template<typename T>  virtual Iterable<T> map(T toElement(E element) );
+    template<typename T>
+ virtual Iterable<T> map(T toElement(E element) );
 
     virtual Iterable<E> where(bool test(E element) );
 
-    template<typename T>  virtual Iterable<T> whereType();
+    template<typename T>
+ virtual Iterable<T> whereType();
 
-    template<typename T>  virtual Iterable<T> expand(Iterable<T> toElements(E element) );
+    template<typename T>
+ virtual Iterable<T> expand(Iterable<T> toElements(E element) );
 
     virtual Iterable<E> followedBy(Iterable<E> other);
 
@@ -26,7 +31,8 @@ public:
 
     virtual E reduce(E combine(E element, E value) );
 
-    template<typename T>  virtual T fold(T combine(E element, T previousValue) , T initialValue);
+    template<typename T>
+ virtual T fold(T combine(E element, T previousValue) , T initialValue);
 
     virtual bool every(bool test(E element) );
 
@@ -71,9 +77,11 @@ public:
 private:
 
 };
-template<typename E> using IterableMixin = std::shared_ptr<IterableMixinCls<E>>;
+template<typename E>
+using IterableMixin = std::shared_ptr<IterableMixinCls<E>>;
 
-template<typename E> class IterableBaseCls : public IterableCls<E> {
+template<typename E>
+class IterableBaseCls : public IterableCls<E> {
 public:
 
      IterableBaseCls();
@@ -84,7 +92,8 @@ public:
 private:
 
 };
-template<typename E> using IterableBase = std::shared_ptr<IterableBaseCls<E>>;
+template<typename E>
+using IterableBase = std::shared_ptr<IterableBaseCls<E>>;
 List<Object> _toStringVisiting;
 
 bool _isToStringVisiting(Object o);

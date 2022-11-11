@@ -5,27 +5,33 @@
 #include <dart/core/core.hpp>
 
 
-template<typename E> class IterableCls : public ObjectCls {
+template<typename E>
+class IterableCls : public ObjectCls {
 public:
 
      IterableCls();
     virtual void  generate(int count, E generator(int index) );
 
     virtual void  empty();
-    template<typename S, typename T>  static Iterable<T> castFrom(Iterable<S> source);
+    template<typename S, typename T>
+ static Iterable<T> castFrom(Iterable<S> source);
 
     virtual Iterator<E> iterator();
-    template<typename R>  virtual Iterable<R> cast();
+    template<typename R>
+ virtual Iterable<R> cast();
 
     virtual Iterable<E> followedBy(Iterable<E> other);
 
-    template<typename T>  virtual Iterable<T> map(T toElement(E e) );
+    template<typename T>
+ virtual Iterable<T> map(T toElement(E e) );
 
     virtual Iterable<E> where(bool test(E element) );
 
-    template<typename T>  virtual Iterable<T> whereType();
+    template<typename T>
+ virtual Iterable<T> whereType();
 
-    template<typename T>  virtual Iterable<T> expand(Iterable<T> toElements(E element) );
+    template<typename T>
+ virtual Iterable<T> expand(Iterable<T> toElements(E element) );
 
     virtual bool contains(Object element);
 
@@ -33,7 +39,8 @@ public:
 
     virtual E reduce(E combine(E element, E value) );
 
-    template<typename T>  virtual T fold(T combine(E element, T previousValue) , T initialValue);
+    template<typename T>
+ virtual T fold(T combine(E element, T previousValue) , T initialValue);
 
     virtual bool every(bool test(E element) );
 
@@ -78,9 +85,11 @@ public:
 private:
 
 };
-template<typename E> using Iterable = std::shared_ptr<IterableCls<E>>;
+template<typename E>
+using Iterable = std::shared_ptr<IterableCls<E>>;
 
-template<typename E> class _GeneratorIterableCls : public ListIterableCls<E> {
+template<typename E>
+class _GeneratorIterableCls : public ListIterableCls<E> {
 public:
     int length;
 
@@ -96,16 +105,19 @@ private:
     static int _id(int n);
 
 };
-template<typename E> using _GeneratorIterable = std::shared_ptr<_GeneratorIterableCls<E>>;
+template<typename E>
+using _GeneratorIterable = std::shared_ptr<_GeneratorIterableCls<E>>;
 
-template<typename E> class BidirectionalIteratorCls : public ObjectCls {
+template<typename E>
+class BidirectionalIteratorCls : public ObjectCls {
 public:
 
     virtual bool movePrevious();
 private:
 
 };
-template<typename E> using BidirectionalIterator = std::shared_ptr<BidirectionalIteratorCls<E>>;
+template<typename E>
+using BidirectionalIterator = std::shared_ptr<BidirectionalIteratorCls<E>>;
 
 
 #endif

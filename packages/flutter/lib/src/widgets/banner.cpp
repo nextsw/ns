@@ -1,5 +1,5 @@
 #include "banner.hpp"
-BannerPainterCls::BannerPainterCls(Color color, TextDirection layoutDirection, BannerLocation location, String message, TextDirection textDirection, TextStyle textStyle) : CustomPainter(PaintingBindingCls::instance->systemFonts) {
+BannerPainterCls::BannerPainterCls(Color color, TextDirection layoutDirection, BannerLocation location, String message, TextDirection textDirection, TextStyle textStyle) {
     {
         assert(message != nullptr);
         assert(textDirection != nullptr);

@@ -164,13 +164,15 @@ String RestorationBucketCls::restorationId() {
     return _restorationId;
 }
 
-P RestorationBucketCls::readtemplate<typename P> (String restorationId) {
+template<typename P>
+P RestorationBucketCls::read(String restorationId) {
     assert(_debugAssertNotDisposed());
     assert(restorationId != nullptr);
     return as<P>(_rawValues()[restorationId]);
 }
 
-void RestorationBucketCls::writetemplate<typename P> (String restorationId, P value) {
+template<typename P>
+void RestorationBucketCls::write(String restorationId, P value) {
     assert(_debugAssertNotDisposed());
     assert(restorationId != nullptr);
     assert(debugIsSerializableForRestoration(value));
@@ -180,7 +182,8 @@ void RestorationBucketCls::writetemplate<typename P> (String restorationId, P va
     }
 }
 
-P RestorationBucketCls::removetemplate<typename P> (String restorationId) {
+template<typename P>
+P RestorationBucketCls::remove(String restorationId) {
     assert(_debugAssertNotDisposed());
     assert(restorationId != nullptr);
     bool needsUpdate = _rawValues()->containsKey(restorationId);

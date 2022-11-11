@@ -284,7 +284,7 @@ String _LiveImageCls::toString() {
     return describeIdentity(this);
 }
 
-_LiveImageCls::_LiveImageCls(ImageStreamCompleter completer, VoidCallback handleRemove, int sizeBytes) : _CachedImageBase(completersizeBytes) {
+_LiveImageCls::_LiveImageCls(ImageStreamCompleter completer, VoidCallback handleRemove, int sizeBytes) {
     {
         _handleRemove = [=] () {
             handleRemove();

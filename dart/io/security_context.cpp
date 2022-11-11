@@ -24,8 +24,8 @@ Uint8List SecurityContextCls::_protocolsToLengthEncoding(List<String> protocols)
         int bits = 0;
         for (;  < proto->length(); j++) {
             auto char = proto->codeUnitAt(j);
-            bits = char;
-            bytes[bytesOffset++] = char & 0xff;
+            bits = charValue;
+            bytes[bytesOffset++] = charValue & 0xff;
         }
         if (bits > 0x7f) {
             return _protocolsToLengthEncodingNonAsciiBailout(protocols);

@@ -8,12 +8,14 @@
 #include "unmodifiable_wrappers.hpp"
 
 
-template<typename E> class _DelegatingIterableBaseCls : public ObjectCls {
+template<typename E>
+class _DelegatingIterableBaseCls : public ObjectCls {
 public:
 
     virtual bool any(bool test(E ) );
 
-    template<typename T>  virtual Iterable<T> cast();
+    template<typename T>
+ virtual Iterable<T> cast();
 
     virtual bool contains(Object element);
 
@@ -21,13 +23,15 @@ public:
 
     virtual bool every(bool test(E ) );
 
-    template<typename T>  virtual Iterable<T> expand(Iterable<T> f(E ) );
+    template<typename T>
+ virtual Iterable<T> expand(Iterable<T> f(E ) );
 
     virtual E first();
 
     virtual E firstWhere(E orElse() , bool test(E ) );
 
-    template<typename T>  virtual T fold(T combine(E element, T previousValue) , T initialValue);
+    template<typename T>
+ virtual T fold(T combine(E element, T previousValue) , T initialValue);
 
     virtual Iterable<E> followedBy(Iterable<E> other);
 
@@ -47,11 +51,13 @@ public:
 
     virtual int length();
 
-    template<typename T>  virtual Iterable<T> map(T f(E ) );
+    template<typename T>
+ virtual Iterable<T> map(T f(E ) );
 
     virtual E reduce(E combine(E element, E value) );
 
-    template<typename T>  virtual Iterable<T> retype();
+    template<typename T>
+ virtual Iterable<T> retype();
 
     virtual E single();
 
@@ -71,7 +77,8 @@ public:
 
     virtual Iterable<E> where(bool test(E ) );
 
-    template<typename T>  virtual Iterable<T> whereType();
+    template<typename T>
+ virtual Iterable<T> whereType();
 
     virtual String toString();
 
@@ -80,28 +87,34 @@ private:
     virtual Iterable<E> _base();
      _DelegatingIterableBaseCls();
 };
-template<typename E> using _DelegatingIterableBase = std::shared_ptr<_DelegatingIterableBaseCls<E>>;
+template<typename E>
+using _DelegatingIterableBase = std::shared_ptr<_DelegatingIterableBaseCls<E>>;
 
-template<typename E> class DelegatingIterableCls : public _DelegatingIterableBaseCls<E> {
+template<typename E>
+class DelegatingIterableCls : public _DelegatingIterableBaseCls<E> {
 public:
 
      DelegatingIterableCls(Iterable<E> base);
 
-    template<typename E>  static Iterable<E> typed(Iterable base);
+    template<typename E>
+ static Iterable<E> typed(Iterable base);
 
 private:
     Iterable<E> _base;
 
 
 };
-template<typename E> using DelegatingIterable = std::shared_ptr<DelegatingIterableCls<E>>;
+template<typename E>
+using DelegatingIterable = std::shared_ptr<DelegatingIterableCls<E>>;
 
-template<typename E> class DelegatingListCls : public _DelegatingIterableBaseCls<E> {
+template<typename E>
+class DelegatingListCls : public _DelegatingIterableBaseCls<E> {
 public:
 
      DelegatingListCls(List<E> base);
 
-    template<typename E>  static List<E> typed(List base);
+    template<typename E>
+ static List<E> typed(List base);
 
     virtual E operator[](int index);
 
@@ -115,7 +128,8 @@ public:
 
     virtual Map<int, E> asMap();
 
-    template<typename T>  virtual List<T> cast();
+    template<typename T>
+ virtual List<T> cast();
 
     virtual void clear();
 
@@ -155,7 +169,8 @@ public:
 
     virtual void retainWhere(bool test(E ) );
 
-    template<typename T>  virtual List<T> retype();
+    template<typename T>
+ virtual List<T> retype();
 
     virtual Iterable<E> reversed();
 
@@ -174,20 +189,24 @@ private:
 
 
 };
-template<typename E> using DelegatingList = std::shared_ptr<DelegatingListCls<E>>;
+template<typename E>
+using DelegatingList = std::shared_ptr<DelegatingListCls<E>>;
 
-template<typename E> class DelegatingSetCls : public _DelegatingIterableBaseCls<E> {
+template<typename E>
+class DelegatingSetCls : public _DelegatingIterableBaseCls<E> {
 public:
 
      DelegatingSetCls(Set<E> base);
 
-    template<typename E>  static Set<E> typed(Set base);
+    template<typename E>
+ static Set<E> typed(Set base);
 
     virtual bool add(E value);
 
     virtual void addAll(Iterable<E> elements);
 
-    template<typename T>  virtual Set<T> cast();
+    template<typename T>
+ virtual Set<T> cast();
 
     virtual void clear();
 
@@ -207,7 +226,8 @@ public:
 
     virtual void retainAll(Iterable<Object> elements);
 
-    template<typename T>  virtual Set<T> retype();
+    template<typename T>
+ virtual Set<T> retype();
 
     virtual void retainWhere(bool test(E ) );
 
@@ -220,14 +240,17 @@ private:
 
 
 };
-template<typename E> using DelegatingSet = std::shared_ptr<DelegatingSetCls<E>>;
+template<typename E>
+using DelegatingSet = std::shared_ptr<DelegatingSetCls<E>>;
 
-template<typename E> class DelegatingQueueCls : public _DelegatingIterableBaseCls<E> {
+template<typename E>
+class DelegatingQueueCls : public _DelegatingIterableBaseCls<E> {
 public:
 
      DelegatingQueueCls(Queue<E> queue);
 
-    template<typename E>  static Queue<E> typed(Queue base);
+    template<typename E>
+ static Queue<E> typed(Queue base);
 
     virtual void add(E value);
 
@@ -237,7 +260,8 @@ public:
 
     virtual void addLast(E value);
 
-    template<typename T>  virtual Queue<T> cast();
+    template<typename T>
+ virtual Queue<T> cast();
 
     virtual void clear();
 
@@ -247,7 +271,8 @@ public:
 
     virtual void retainWhere(bool test(E ) );
 
-    template<typename T>  virtual Queue<T> retype();
+    template<typename T>
+ virtual Queue<T> retype();
 
     virtual E removeFirst();
 
@@ -258,14 +283,17 @@ private:
 
 
 };
-template<typename E> using DelegatingQueue = std::shared_ptr<DelegatingQueueCls<E>>;
+template<typename E>
+using DelegatingQueue = std::shared_ptr<DelegatingQueueCls<E>>;
 
-template<typename K, typename V> class DelegatingMapCls : public ObjectCls {
+template<typename K, typename V>
+class DelegatingMapCls : public ObjectCls {
 public:
 
      DelegatingMapCls(Map<K, V> base);
 
-    template<typename K, typename V>  static Map<K, V> typed(Map base);
+    template<typename K, typename V>
+ static Map<K, V> typed(Map base);
 
     virtual V operator[](Object key);
 
@@ -277,7 +305,8 @@ public:
 
     virtual void clear();
 
-    template<typename K2, typename V2>  virtual Map<K2, V2> cast();
+    template<typename K2, typename V2>
+ virtual Map<K2, V2> cast();
 
     virtual bool containsKey(Object key);
 
@@ -295,7 +324,8 @@ public:
 
     virtual int length();
 
-    template<typename K2, typename V2>  virtual Map<K2, V2> map(MapEntry<K2, V2> transform(K , V ) );
+    template<typename K2, typename V2>
+ virtual Map<K2, V2> map(MapEntry<K2, V2> transform(K , V ) );
 
     virtual V putIfAbsent(V ifAbsent() , K key);
 
@@ -303,7 +333,8 @@ public:
 
     virtual void removeWhere(bool test(K , V ) );
 
-    template<typename K2, typename V2>  virtual Map<K2, V2> retype();
+    template<typename K2, typename V2>
+ virtual Map<K2, V2> retype();
 
     virtual Iterable<V> values();
 
@@ -318,13 +349,16 @@ private:
 
 
 };
-template<typename K, typename V> using DelegatingMap = std::shared_ptr<DelegatingMapCls<K, V>>;
+template<typename K, typename V>
+using DelegatingMap = std::shared_ptr<DelegatingMapCls<K, V>>;
 
-template<typename E> class MapKeySetCls : public _DelegatingIterableBaseCls<E> {
+template<typename E>
+class MapKeySetCls : public _DelegatingIterableBaseCls<E> {
 public:
 
      MapKeySetCls(Map<E, dynamic> _baseMap);
-    template<typename T>  virtual Set<T> cast();
+    template<typename T>
+ virtual Set<T> cast();
 
     virtual bool contains(Object element);
 
@@ -344,7 +378,8 @@ public:
 
     virtual E lookup(Object element);
 
-    template<typename T>  virtual Set<T> retype();
+    template<typename T>
+ virtual Set<T> retype();
 
     virtual Set<E> union(Set<E> other);
 
@@ -355,13 +390,16 @@ private:
     virtual Iterable<E> _base();
 
 };
-template<typename E> using MapKeySet = std::shared_ptr<MapKeySetCls<E>>;
+template<typename E>
+using MapKeySet = std::shared_ptr<MapKeySetCls<E>>;
 
-template<typename K, typename V> class MapValueSetCls : public _DelegatingIterableBaseCls<V> {
+template<typename K, typename V>
+class MapValueSetCls : public _DelegatingIterableBaseCls<V> {
 public:
 
      MapValueSetCls(Map<K, V> _baseMap, K Function(V ) _keyForValue);
-    template<typename T>  virtual Set<T> cast();
+    template<typename T>
+ virtual Set<T> cast();
 
     virtual bool contains(Object element);
 
@@ -397,7 +435,8 @@ public:
 
     virtual void retainWhere(bool test(V ) );
 
-    template<typename T>  virtual Set<T> retype();
+    template<typename T>
+ virtual Set<T> retype();
 
     virtual Set<V> union(Set<V> other);
 
@@ -410,7 +449,8 @@ private:
     virtual Iterable<V> _base();
 
 };
-template<typename K, typename V> using MapValueSet = std::shared_ptr<MapValueSetCls<K, V>>;
+template<typename K, typename V>
+using MapValueSet = std::shared_ptr<MapValueSetCls<K, V>>;
 
 
 #endif

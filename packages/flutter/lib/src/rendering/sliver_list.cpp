@@ -47,7 +47,7 @@ void RenderSliverListCls::performLayout() {
                 earliestUsefulChild = firstChild;
                 leadingChildWithLayout = earliestUsefulChild;
                 trailingChildWithLayout = earliestUsefulChild;
-                                break;
+                break;
             } else {
                 geometry = make<SliverGeometryCls>(-scrollOffset);
                 return;
@@ -108,7 +108,7 @@ void RenderSliverListCls::performLayout() {
     while ( < targetEndScrollOffset) {
         if (!advance()) {
             reachedEnd = true;
-                        break;
+            break;
         }
     }
     if (child != nullptr) {

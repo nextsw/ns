@@ -63,7 +63,8 @@ _EffectiveTickerModeCls::_EffectiveTickerModeCls(Unknown child, bool enabled, Va
     }
 }
 
-template<typename T> Ticker SingleTickerProviderStateMixinCls<T>::createTicker(TickerCallback onTick) {
+template<typename T>
+Ticker SingleTickerProviderStateMixinCls<T>::createTicker(TickerCallback onTick) {
     assert([=] () {
         if (_ticker == nullptr) {
             return true;
@@ -76,7 +77,8 @@ template<typename T> Ticker SingleTickerProviderStateMixinCls<T>::createTicker(T
     return _ticker!;
 }
 
-template<typename T> void SingleTickerProviderStateMixinCls<T>::dispose() {
+template<typename T>
+void SingleTickerProviderStateMixinCls<T>::dispose() {
     assert([=] () {
         if (_ticker == nullptr || !_ticker!->isActive()) {
             return true;
@@ -88,13 +90,15 @@ template<typename T> void SingleTickerProviderStateMixinCls<T>::dispose() {
     super->dispose();
 }
 
-template<typename T> void SingleTickerProviderStateMixinCls<T>::activate() {
+template<typename T>
+void SingleTickerProviderStateMixinCls<T>::activate() {
     super->activate();
     _updateTickerModeNotifier();
     _updateTicker();
 }
 
-template<typename T> void SingleTickerProviderStateMixinCls<T>::debugFillProperties(DiagnosticPropertiesBuilder properties) {
+template<typename T>
+void SingleTickerProviderStateMixinCls<T>::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
     String tickerDescription;
     if (_ticker != nullptr) {
@@ -115,13 +119,15 @@ template<typename T> void SingleTickerProviderStateMixinCls<T>::debugFillPropert
     properties->add(<Ticker>make<DiagnosticsPropertyCls>(__s("ticker"), _tickertickerDescription, false, nullptr));
 }
 
-template<typename T> void SingleTickerProviderStateMixinCls<T>::_updateTicker() {
+template<typename T>
+void SingleTickerProviderStateMixinCls<T>::_updateTicker() {
     if (_ticker != nullptr) {
         _ticker!->muted() = !_tickerModeNotifier!->value();
     }
 }
 
-template<typename T> void SingleTickerProviderStateMixinCls<T>::_updateTickerModeNotifier() {
+template<typename T>
+void SingleTickerProviderStateMixinCls<T>::_updateTickerModeNotifier() {
     ValueNotifier<bool> newNotifier = TickerModeCls->getNotifier(context);
     if (newNotifier == _tickerModeNotifier) {
         return;
@@ -131,7 +137,8 @@ template<typename T> void SingleTickerProviderStateMixinCls<T>::_updateTickerMod
     _tickerModeNotifier = newNotifier;
 }
 
-template<typename T> Ticker TickerProviderStateMixinCls<T>::createTicker(TickerCallback onTick) {
+template<typename T>
+Ticker TickerProviderStateMixinCls<T>::createTicker(TickerCallback onTick) {
     if (_tickerModeNotifier == nullptr) {
         _updateTickerModeNotifier();
     }
@@ -142,13 +149,15 @@ template<typename T> Ticker TickerProviderStateMixinCls<T>::createTicker(TickerC
     return result;
 }
 
-template<typename T> void TickerProviderStateMixinCls<T>::activate() {
+template<typename T>
+void TickerProviderStateMixinCls<T>::activate() {
     super->activate();
     _updateTickerModeNotifier();
     _updateTickers();
 }
 
-template<typename T> void TickerProviderStateMixinCls<T>::dispose() {
+template<typename T>
+void TickerProviderStateMixinCls<T>::dispose() {
     assert([=] () {
         if (_tickers != nullptr) {
             for (Ticker ticker : _tickers!) {
@@ -164,18 +173,21 @@ template<typename T> void TickerProviderStateMixinCls<T>::dispose() {
     super->dispose();
 }
 
-template<typename T> void TickerProviderStateMixinCls<T>::debugFillProperties(DiagnosticPropertiesBuilder properties) {
+template<typename T>
+void TickerProviderStateMixinCls<T>::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
     properties->add(<Set<Ticker>>make<DiagnosticsPropertyCls>(__s("tickers"), _tickers_tickers != nullptr? __s("tracking ${_tickers!.length} ticker${_tickers!.length == 1 ? "" : "s"}") : nullptr, nullptr));
 }
 
-template<typename T> void TickerProviderStateMixinCls<T>::_removeTicker(_WidgetTicker ticker) {
+template<typename T>
+void TickerProviderStateMixinCls<T>::_removeTicker(_WidgetTicker ticker) {
     assert(_tickers != nullptr);
     assert(_tickers!->contains(ticker));
     _tickers!->remove(ticker);
 }
 
-template<typename T> void TickerProviderStateMixinCls<T>::_updateTickers() {
+template<typename T>
+void TickerProviderStateMixinCls<T>::_updateTickers() {
     if (_tickers != nullptr) {
         bool muted = !_tickerModeNotifier!->value();
         for (Ticker ticker : _tickers!) {
@@ -184,7 +196,8 @@ template<typename T> void TickerProviderStateMixinCls<T>::_updateTickers() {
     }
 }
 
-template<typename T> void TickerProviderStateMixinCls<T>::_updateTickerModeNotifier() {
+template<typename T>
+void TickerProviderStateMixinCls<T>::_updateTickerModeNotifier() {
     ValueNotifier<bool> newNotifier = TickerModeCls->getNotifier(context);
     if (newNotifier == _tickerModeNotifier) {
         return;

@@ -5,7 +5,8 @@
 #include <dart/core/core.hpp>
 
 
-template<typename T> class ComparableCls : public ObjectCls {
+template<typename T>
+class ComparableCls : public ObjectCls {
 public:
 
     virtual int compareTo(T other);
@@ -14,7 +15,8 @@ public:
 private:
 
 };
-template<typename T> using Comparable = std::shared_ptr<ComparableCls<T>>;
+template<typename T>
+using Comparable = std::shared_ptr<ComparableCls<T>>;
 
 
 #endif

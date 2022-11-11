@@ -5,7 +5,8 @@
 #include <dart/core/core.hpp>
 
 
-template<typename T> class SinkCls : public ObjectCls {
+template<typename T>
+class SinkCls : public ObjectCls {
 public:
 
     virtual void add(T data);
@@ -13,7 +14,8 @@ public:
 private:
 
 };
-template<typename T> using Sink = std::shared_ptr<SinkCls<T>>;
+template<typename T>
+using Sink = std::shared_ptr<SinkCls<T>>;
 
 
 #endif

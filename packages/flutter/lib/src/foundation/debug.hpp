@@ -14,7 +14,8 @@ bool debugAssertAllFoundationVarsUnset(DebugPrintCallback debugPrintOverride, St
 
 bool debugInstrumentationEnabled;
 
-template<typename T>  Future<T> debugInstrumentAction(Future<T> action() , String description);
+template<typename T>
+ Future<T> debugInstrumentAction(Future<T> action() , String description);
 
 int debugDoublePrecision;
 

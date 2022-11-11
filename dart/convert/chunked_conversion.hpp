@@ -5,7 +5,8 @@
 #include <dart/core/core.hpp>
 
 
-template<typename T> class ChunkedConversionSinkCls : public ObjectCls {
+template<typename T>
+class ChunkedConversionSinkCls : public ObjectCls {
 public:
 
      ChunkedConversionSinkCls();
@@ -15,9 +16,11 @@ public:
 private:
 
 };
-template<typename T> using ChunkedConversionSink = std::shared_ptr<ChunkedConversionSinkCls<T>>;
+template<typename T>
+using ChunkedConversionSink = std::shared_ptr<ChunkedConversionSinkCls<T>>;
 
-template<typename T> class _SimpleCallbackSinkCls : public ChunkedConversionSinkCls<T> {
+template<typename T>
+class _SimpleCallbackSinkCls : public ChunkedConversionSinkCls<T> {
 public:
 
     virtual void add(T chunk);
@@ -32,9 +35,11 @@ private:
 
      _SimpleCallbackSinkCls(void Function(List<T> ) _callback);
 };
-template<typename T> using _SimpleCallbackSink = std::shared_ptr<_SimpleCallbackSinkCls<T>>;
+template<typename T>
+using _SimpleCallbackSink = std::shared_ptr<_SimpleCallbackSinkCls<T>>;
 
-template<typename S, typename T> class _ConverterStreamEventSinkCls : public ObjectCls {
+template<typename S, typename T>
+class _ConverterStreamEventSinkCls : public ObjectCls {
 public:
 
     virtual void add(S o);
@@ -52,7 +57,8 @@ private:
      _ConverterStreamEventSinkCls(Converter<S, T> converter, EventSink<T> sink);
 
 };
-template<typename S, typename T> using _ConverterStreamEventSink = std::shared_ptr<_ConverterStreamEventSinkCls<S, T>>;
+template<typename S, typename T>
+using _ConverterStreamEventSink = std::shared_ptr<_ConverterStreamEventSinkCls<S, T>>;
 
 
 #endif

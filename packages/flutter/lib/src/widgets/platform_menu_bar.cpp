@@ -279,7 +279,7 @@ void PlatformMenuItemCls::debugFillProperties(DiagnosticPropertiesBuilder proper
     properties->add(make<FlagPropertyCls>(__s("enabled")onSelected != nullptr, __s("DISABLED")));
 }
 
-PlatformProvidedMenuItemCls::PlatformProvidedMenuItemCls(bool enabled, PlatformProvidedMenuItemType type) : PlatformMenuItem(__s("")) {
+PlatformProvidedMenuItemCls::PlatformProvidedMenuItemCls(bool enabled, PlatformProvidedMenuItemType type) {
 }
 
 bool PlatformProvidedMenuItemCls::hasMenu(PlatformProvidedMenuItemType menu) {

@@ -13,7 +13,8 @@
 #include "platform_menu_bar.hpp"
 
 
-template<typename T> class KeySetCls : public ObjectCls {
+template<typename T>
+class KeySetCls : public ObjectCls {
 public:
     int hashCode;
 
@@ -34,10 +35,12 @@ private:
     static List<int> _tempHashStore4;
 
 
-    template<typename T>  static int _computeHashCode(Set<T> keys);
+    template<typename T>
+ static int _computeHashCode(Set<T> keys);
 
 };
-template<typename T> using KeySet = std::shared_ptr<KeySetCls<T>>;
+template<typename T>
+using KeySet = std::shared_ptr<KeySetCls<T>>;
 
 class ShortcutActivatorCls : public ObjectCls {
 public:

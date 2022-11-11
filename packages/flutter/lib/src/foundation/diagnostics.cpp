@@ -515,7 +515,7 @@ String DiagnosticsNodeCls::_separator() {
     return showSeparator? __s(":") : __s("");
 }
 
-MessagePropertyCls::MessagePropertyCls(DiagnosticLevel level, String message, String name, DiagnosticsTreeStyle style) : DiagnosticsProperty<void>(name, nullptrmessage, style, level) {
+MessagePropertyCls::MessagePropertyCls(DiagnosticLevel level, String message, String name, DiagnosticsTreeStyle style) {
     {
         assert(name != nullptr);
         assert(message != nullptr);
@@ -553,9 +553,11 @@ String StringPropertyCls::valueToString(TextTreeConfiguration parentConfiguratio
     return text->toString();
 }
 
-template<typename T> void _NumPropertyCls<T>::lazy(Unknown computeValue, Unknown defaultValue, Unknown ifNull, Unknown level, String name, Unknown showName, Unknown style, Unknown tooltip, String unit)
+template<typename T>
+void _NumPropertyCls<T>::lazy(Unknown computeValue, Unknown defaultValue, Unknown ifNull, Unknown level, String name, Unknown showName, Unknown style, Unknown tooltip, String unit)
 
-template<typename T> Map<String, Object> _NumPropertyCls<T>::toJsonMap(DiagnosticsSerializationDelegate delegate) {
+template<typename T>
+Map<String, Object> _NumPropertyCls<T>::toJsonMap(DiagnosticsSerializationDelegate delegate) {
     Map<String, Object> json = super->toJsonMap(delegate);
     if (unit != nullptr) {
         json[__s("unit")] = unit;
@@ -564,7 +566,8 @@ template<typename T> Map<String, Object> _NumPropertyCls<T>::toJsonMap(Diagnosti
     return json;
 }
 
-template<typename T> String _NumPropertyCls<T>::valueToString(TextTreeConfiguration parentConfiguration) {
+template<typename T>
+String _NumPropertyCls<T>::valueToString(TextTreeConfiguration parentConfiguration) {
     if (value == nullptr) {
         return value->toString();
     }
@@ -619,7 +622,7 @@ String PercentPropertyCls::numberToString() {
     return __s("${(clampDouble(v, 0.0, 1.0) * 100.0).toStringAsFixed(1)}%");
 }
 
-FlagPropertyCls::FlagPropertyCls(Object defaultValue, String ifFalse, String ifTrue, DiagnosticLevel level, String name, bool showName, bool value) : DiagnosticsProperty<bool>(name, valueshowName, defaultValue, level) {
+FlagPropertyCls::FlagPropertyCls(Object defaultValue, String ifFalse, String ifTrue, DiagnosticLevel level, String name, bool showName, bool value) {
     {
         assert(showName != nullptr);
         assert(level != nullptr);
@@ -674,7 +677,8 @@ DiagnosticLevel FlagPropertyCls::level() {
     return super->level;
 }
 
-template<typename T> IterablePropertyCls<T>::IterablePropertyCls(Unknown defaultValue, Unknown ifEmpty, Unknown ifNull, Unknown level, String name, Unknown showName, Unknown showSeparator, Unknown style, Unknown value) {
+template<typename T>
+IterablePropertyCls<T>::IterablePropertyCls(Unknown defaultValue, Unknown ifEmpty, Unknown ifNull, Unknown level, String name, Unknown showName, Unknown showSeparator, Unknown style, Unknown value) {
     {
         assert(style != nullptr);
         assert(showName != nullptr);
@@ -683,7 +687,8 @@ template<typename T> IterablePropertyCls<T>::IterablePropertyCls(Unknown default
     }
 }
 
-template<typename T> String IterablePropertyCls<T>::valueToString(TextTreeConfiguration parentConfiguration) {
+template<typename T>
+String IterablePropertyCls<T>::valueToString(TextTreeConfiguration parentConfiguration) {
     if (value == nullptr) {
         return value->toString();
     }
@@ -703,14 +708,16 @@ template<typename T> String IterablePropertyCls<T>::valueToString(TextTreeConfig
     return formattedValues->join(_isSingleLine(style)? __s(", ") : __s("\n"));
 }
 
-template<typename T> DiagnosticLevel IterablePropertyCls<T>::level() {
+template<typename T>
+DiagnosticLevel IterablePropertyCls<T>::level() {
     if (ifEmpty == nullptr && value != nullptr && value!->isEmpty && super->level != DiagnosticLevelCls::hidden) {
         return DiagnosticLevelCls::fine;
     }
     return super->level;
 }
 
-template<typename T> Map<String, Object> IterablePropertyCls<T>::toJsonMap(DiagnosticsSerializationDelegate delegate) {
+template<typename T>
+Map<String, Object> IterablePropertyCls<T>::toJsonMap(DiagnosticsSerializationDelegate delegate) {
     Map<String, Object> json = super->toJsonMap(delegate);
     if (value != nullptr) {
         json[__s("values")] = value!-><String>map([=] (T value)         {
@@ -720,20 +727,23 @@ template<typename T> Map<String, Object> IterablePropertyCls<T>::toJsonMap(Diagn
     return json;
 }
 
-template<typename T> EnumPropertyCls<T>::EnumPropertyCls(Unknown defaultValue, Unknown level, String name, Unknown value) {
+template<typename T>
+EnumPropertyCls<T>::EnumPropertyCls(Unknown defaultValue, Unknown level, String name, Unknown value) {
     {
         assert(level != nullptr);
     }
 }
 
-template<typename T> String EnumPropertyCls<T>::valueToString(TextTreeConfiguration parentConfiguration) {
+template<typename T>
+String EnumPropertyCls<T>::valueToString(TextTreeConfiguration parentConfiguration) {
     if (value == nullptr) {
         return value->toString();
     }
     return describeEnum(value!);
 }
 
-template<typename T> ObjectFlagPropertyCls<T>::ObjectFlagPropertyCls(Unknown ifNull, String ifPresent, Unknown level, String name, Unknown showName, Unknown value) {
+template<typename T>
+ObjectFlagPropertyCls<T>::ObjectFlagPropertyCls(Unknown ifNull, String ifPresent, Unknown level, String name, Unknown showName, Unknown value) {
     {
         assert(ifPresent != nullptr || ifNull != nullptr);
         assert(showName != nullptr);
@@ -741,9 +751,11 @@ template<typename T> ObjectFlagPropertyCls<T>::ObjectFlagPropertyCls(Unknown ifN
     }
 }
 
-template<typename T> void ObjectFlagPropertyCls<T>::has(Unknown level, String name, Unknown value)
+template<typename T>
+void ObjectFlagPropertyCls<T>::has(Unknown level, String name, Unknown value)
 
-template<typename T> String ObjectFlagPropertyCls<T>::valueToString(TextTreeConfiguration parentConfiguration) {
+template<typename T>
+String ObjectFlagPropertyCls<T>::valueToString(TextTreeConfiguration parentConfiguration) {
     if (value != nullptr) {
         if (ifPresent != nullptr) {
             return ifPresent!;
@@ -756,14 +768,16 @@ template<typename T> String ObjectFlagPropertyCls<T>::valueToString(TextTreeConf
     return super->valueToString(parentConfiguration);
 }
 
-template<typename T> bool ObjectFlagPropertyCls<T>::showName() {
+template<typename T>
+bool ObjectFlagPropertyCls<T>::showName() {
     if ((value != nullptr && ifPresent == nullptr) || (value == nullptr && ifNull == nullptr)) {
         return true;
     }
     return super->showName;
 }
 
-template<typename T> DiagnosticLevel ObjectFlagPropertyCls<T>::level() {
+template<typename T>
+DiagnosticLevel ObjectFlagPropertyCls<T>::level() {
     if (value != nullptr) {
         if (ifPresent == nullptr) {
             return DiagnosticLevelCls::hidden;
@@ -776,7 +790,8 @@ template<typename T> DiagnosticLevel ObjectFlagPropertyCls<T>::level() {
     return super->level;
 }
 
-template<typename T> Map<String, Object> ObjectFlagPropertyCls<T>::toJsonMap(DiagnosticsSerializationDelegate delegate) {
+template<typename T>
+Map<String, Object> ObjectFlagPropertyCls<T>::toJsonMap(DiagnosticsSerializationDelegate delegate) {
     Map<String, Object> json = super->toJsonMap(delegate);
     if (ifPresent != nullptr) {
         json[__s("ifPresent")] = ifPresent;
@@ -784,7 +799,8 @@ template<typename T> Map<String, Object> ObjectFlagPropertyCls<T>::toJsonMap(Dia
     return json;
 }
 
-template<typename T> FlagsSummaryCls<T>::FlagsSummaryCls(Unknown ifEmpty, Unknown level, String name, Unknown showName, Unknown showSeparator, Map<String, T> value) {
+template<typename T>
+FlagsSummaryCls<T>::FlagsSummaryCls(Unknown ifEmpty, Unknown level, String name, Unknown showName, Unknown showSeparator, Map<String, T> value) {
     {
         assert(value != nullptr);
         assert(showName != nullptr);
@@ -793,11 +809,13 @@ template<typename T> FlagsSummaryCls<T>::FlagsSummaryCls(Unknown ifEmpty, Unknow
     }
 }
 
-template<typename T> Map<String, T> FlagsSummaryCls<T>::value() {
+template<typename T>
+Map<String, T> FlagsSummaryCls<T>::value() {
     return super->value!;
 }
 
-template<typename T> String FlagsSummaryCls<T>::valueToString(TextTreeConfiguration parentConfiguration) {
+template<typename T>
+String FlagsSummaryCls<T>::valueToString(TextTreeConfiguration parentConfiguration) {
     assert(value() != nullptr);
     if (!_hasNonNullEntry() && ifEmpty != nullptr) {
         return ifEmpty!;
@@ -809,14 +827,16 @@ template<typename T> String FlagsSummaryCls<T>::valueToString(TextTreeConfigurat
     return formattedValues->join(_isSingleLine(style)? __s(", ") : __s("\n"));
 }
 
-template<typename T> DiagnosticLevel FlagsSummaryCls<T>::level() {
+template<typename T>
+DiagnosticLevel FlagsSummaryCls<T>::level() {
     if (!_hasNonNullEntry() && ifEmpty == nullptr) {
         return DiagnosticLevelCls::hidden;
     }
     return super->level;
 }
 
-template<typename T> Map<String, Object> FlagsSummaryCls<T>::toJsonMap(DiagnosticsSerializationDelegate delegate) {
+template<typename T>
+Map<String, Object> FlagsSummaryCls<T>::toJsonMap(DiagnosticsSerializationDelegate delegate) {
     Map<String, Object> json = super->toJsonMap(delegate);
     if (value()->isNotEmpty()) {
         json[__s("values")] = _formattedValues()->toList();
@@ -824,13 +844,15 @@ template<typename T> Map<String, Object> FlagsSummaryCls<T>::toJsonMap(Diagnosti
     return json;
 }
 
-template<typename T> bool FlagsSummaryCls<T>::_hasNonNullEntry() {
+template<typename T>
+bool FlagsSummaryCls<T>::_hasNonNullEntry() {
     return value()->values()->any([=] (T o)     {
         o != nullptr;
     });
 }
 
-template<typename T> Iterable<String> FlagsSummaryCls<T>::_formattedValues() {
+template<typename T>
+Iterable<String> FlagsSummaryCls<T>::_formattedValues() {
     return value()->entries()->where([=] (MapEntry<String, T> entry)     {
         entry->value != nullptr;
     })->map([=] (MapEntry<String, T> entry)     {
@@ -838,7 +860,8 @@ template<typename T> Iterable<String> FlagsSummaryCls<T>::_formattedValues() {
     });
 }
 
-template<typename T> DiagnosticsPropertyCls<T>::DiagnosticsPropertyCls(bool allowNameWrap, bool allowWrap, Object defaultValue, String description, bool expandableValue, String ifEmpty, String ifNull, DiagnosticLevel level, Unknown linePrefix, bool missingIfNull, String name, Unknown showName, Unknown showSeparator, DiagnosticsTreeStyle style, String tooltip, T value) : DiagnosticsNode(name) {
+template<typename T>
+DiagnosticsPropertyCls<T>::DiagnosticsPropertyCls(bool allowNameWrap, bool allowWrap, Object defaultValue, String description, bool expandableValue, String ifEmpty, String ifNull, DiagnosticLevel level, Unknown linePrefix, bool missingIfNull, String name, Unknown showName, Unknown showSeparator, DiagnosticsTreeStyle style, String tooltip, T value) {
     {
         assert(showName != nullptr);
         assert(showSeparator != nullptr);
@@ -853,9 +876,11 @@ template<typename T> DiagnosticsPropertyCls<T>::DiagnosticsPropertyCls(bool allo
     }
 }
 
-template<typename T> void DiagnosticsPropertyCls<T>::lazy(bool allowNameWrap, bool allowWrap, ComputePropertyValueCallback<T> computeValue, Object defaultValue, String description, bool expandableValue, String ifEmpty, String ifNull, DiagnosticLevel level, bool missingIfNull, String name, Unknown showName, Unknown showSeparator, DiagnosticsTreeStyle style, String tooltip)
+template<typename T>
+void DiagnosticsPropertyCls<T>::lazy(bool allowNameWrap, bool allowWrap, ComputePropertyValueCallback<T> computeValue, Object defaultValue, String description, bool expandableValue, String ifEmpty, String ifNull, DiagnosticLevel level, bool missingIfNull, String name, Unknown showName, Unknown showSeparator, DiagnosticsTreeStyle style, String tooltip)
 
-template<typename T> Map<String, Object> DiagnosticsPropertyCls<T>::toJsonMap(DiagnosticsSerializationDelegate delegate) {
+template<typename T>
+Map<String, Object> DiagnosticsPropertyCls<T>::toJsonMap(DiagnosticsSerializationDelegate delegate) {
     T v = value();
     List<Map<String, Object>> properties;
     if (delegate->expandPropertyValues() && delegate->includeProperties() && is<Diagnosticable>(v) && getProperties()->isEmpty) {
@@ -896,12 +921,14 @@ template<typename T> Map<String, Object> DiagnosticsPropertyCls<T>::toJsonMap(Di
     return json;
 }
 
-template<typename T> String DiagnosticsPropertyCls<T>::valueToString(TextTreeConfiguration parentConfiguration) {
+template<typename T>
+String DiagnosticsPropertyCls<T>::valueToString(TextTreeConfiguration parentConfiguration) {
     T v = value();
     return is<DiagnosticableTree>(v)? v->toStringShort() : v->toString();
 }
 
-template<typename T> String DiagnosticsPropertyCls<T>::toDescription(TextTreeConfiguration parentConfiguration) {
+template<typename T>
+String DiagnosticsPropertyCls<T>::toDescription(TextTreeConfiguration parentConfiguration) {
     if (_description != nullptr) {
         return _addTooltip(_description!);
     }
@@ -918,25 +945,30 @@ template<typename T> String DiagnosticsPropertyCls<T>::toDescription(TextTreeCon
     return _addTooltip(result);
 }
 
-template<typename T> Type DiagnosticsPropertyCls<T>::propertyType() {
+template<typename T>
+Type DiagnosticsPropertyCls<T>::propertyType() {
     return TCls;
 }
 
-template<typename T> T DiagnosticsPropertyCls<T>::value() {
+template<typename T>
+T DiagnosticsPropertyCls<T>::value() {
     _maybeCacheValue();
     return _value;
 }
 
-template<typename T> Object DiagnosticsPropertyCls<T>::exception() {
+template<typename T>
+Object DiagnosticsPropertyCls<T>::exception() {
     _maybeCacheValue();
     return _exception;
 }
 
-template<typename T> bool DiagnosticsPropertyCls<T>::isInteresting() {
+template<typename T>
+bool DiagnosticsPropertyCls<T>::isInteresting() {
     return defaultValue == kNoDefaultValue || value() != defaultValue;
 }
 
-template<typename T> DiagnosticLevel DiagnosticsPropertyCls<T>::level() {
+template<typename T>
+DiagnosticLevel DiagnosticsPropertyCls<T>::level() {
     if (_defaultLevel == DiagnosticLevelCls::hidden) {
         return _defaultLevel;
     }
@@ -952,7 +984,8 @@ template<typename T> DiagnosticLevel DiagnosticsPropertyCls<T>::level() {
     return _defaultLevel;
 }
 
-template<typename T> List<DiagnosticsNode> DiagnosticsPropertyCls<T>::getProperties() {
+template<typename T>
+List<DiagnosticsNode> DiagnosticsPropertyCls<T>::getProperties() {
     if (expandableValue) {
         T object = value();
         if (is<DiagnosticsNode>(object)) {
@@ -965,7 +998,8 @@ template<typename T> List<DiagnosticsNode> DiagnosticsPropertyCls<T>::getPropert
     return makeList();
 }
 
-template<typename T> List<DiagnosticsNode> DiagnosticsPropertyCls<T>::getChildren() {
+template<typename T>
+List<DiagnosticsNode> DiagnosticsPropertyCls<T>::getChildren() {
     if (expandableValue) {
         T object = value();
         if (is<DiagnosticsNode>(object)) {
@@ -978,12 +1012,14 @@ template<typename T> List<DiagnosticsNode> DiagnosticsPropertyCls<T>::getChildre
     return makeList();
 }
 
-template<typename T> String DiagnosticsPropertyCls<T>::_addTooltip(String text) {
+template<typename T>
+String DiagnosticsPropertyCls<T>::_addTooltip(String text) {
     assert(text != nullptr);
     return tooltip == nullptr? text : __s("$text ($tooltip)");
 }
 
-template<typename T> void DiagnosticsPropertyCls<T>::_maybeCacheValue() {
+template<typename T>
+void DiagnosticsPropertyCls<T>::_maybeCacheValue() {
     if (_valueComputed) {
         return;
     }
@@ -997,13 +1033,15 @@ template<typename T> void DiagnosticsPropertyCls<T>::_maybeCacheValue() {
     };
 }
 
-template<typename T> DiagnosticableNodeCls<T>::DiagnosticableNodeCls(Unknown name, Unknown style, T value) {
+template<typename T>
+DiagnosticableNodeCls<T>::DiagnosticableNodeCls(Unknown name, Unknown style, T value) {
     {
         assert(value != nullptr);
     }
 }
 
-template<typename T> DiagnosticPropertiesBuilder DiagnosticableNodeCls<T>::builder() {
+template<typename T>
+DiagnosticPropertiesBuilder DiagnosticableNodeCls<T>::builder() {
     if (kReleaseMode) {
         return nullptr;
     } else {
@@ -1018,23 +1056,28 @@ template<typename T> DiagnosticPropertiesBuilder DiagnosticableNodeCls<T>::build
     }
 }
 
-template<typename T> DiagnosticsTreeStyle DiagnosticableNodeCls<T>::style() {
+template<typename T>
+DiagnosticsTreeStyle DiagnosticableNodeCls<T>::style() {
     return kReleaseMode? DiagnosticsTreeStyleCls::none : super->style or builder()!->defaultDiagnosticsTreeStyle;
 }
 
-template<typename T> String DiagnosticableNodeCls<T>::emptyBodyDescription() {
+template<typename T>
+String DiagnosticableNodeCls<T>::emptyBodyDescription() {
     return (kReleaseMode || kProfileMode)? __s("") : builder()!->emptyBodyDescription;
 }
 
-template<typename T> List<DiagnosticsNode> DiagnosticableNodeCls<T>::getProperties() {
+template<typename T>
+List<DiagnosticsNode> DiagnosticableNodeCls<T>::getProperties() {
     return (kReleaseMode || kProfileMode)? makeList() : builder()!->properties;
 }
 
-template<typename T> List<DiagnosticsNode> DiagnosticableNodeCls<T>::getChildren() {
+template<typename T>
+List<DiagnosticsNode> DiagnosticableNodeCls<T>::getChildren() {
     return makeList();
 }
 
-template<typename T> String DiagnosticableNodeCls<T>::toDescription(TextTreeConfiguration parentConfiguration) {
+template<typename T>
+String DiagnosticableNodeCls<T>::toDescription(TextTreeConfiguration parentConfiguration) {
     String result = __s("");
     assert([=] () {
         result = value->toStringShort();
@@ -1171,7 +1214,7 @@ List<DiagnosticsNode> DiagnosticableTreeMixinCls::debugDescribeChildren() {
 void DiagnosticableTreeMixinCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
 }
 
-DiagnosticsBlockCls::DiagnosticsBlockCls(bool allowTruncate, List<DiagnosticsNode> children, String description, DiagnosticLevel level, Unknown linePrefix, Unknown name, List<DiagnosticsNode> properties, bool showName, Unknown showSeparator, DiagnosticsTreeStyle style, Object value) : DiagnosticsNode(showName && name != nullptr) {
+DiagnosticsBlockCls::DiagnosticsBlockCls(bool allowTruncate, List<DiagnosticsNode> children, String description, DiagnosticLevel level, Unknown linePrefix, Unknown name, List<DiagnosticsNode> properties, bool showName, Unknown showSeparator, DiagnosticsTreeStyle style, Object value) {
     {
         _description = description or __s("");
         _children = children;

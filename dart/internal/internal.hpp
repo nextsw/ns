@@ -11,8 +11,10 @@
 #include <dart/math/math.hpp>
 #include <dart/typed_data/typed_data.hpp>
 
-template<typename T>  bool typeAcceptsNull();
-template<typename T>  T unsafeCast(dynamic value);
+template<typename T>
+ bool typeAcceptsNull();
+template<typename T>
+ T unsafeCast(dynamic value);
 auto  POWERS_OF_TEN;
 
 
@@ -43,7 +45,7 @@ private:
 
 };
 using ExternalName = std::shared_ptr<ExternalNameCls>;
-int hexDigitValue(int char);
+int hexDigitValue(int charValue);
 
 int parseHexByte(int index, String source);
 
@@ -114,7 +116,8 @@ private:
 using SentinelValue = std::shared_ptr<SentinelValueCls>;
 Object sentinelValue;
 
-template<typename T>  Object extractTypeArguments(void  extract() , T instance);
+template<typename T>
+ Object extractTypeArguments(void  extract() , T instance);
 
 class SinceCls : public ObjectCls {
 public:
@@ -126,10 +129,12 @@ private:
 
 };
 using Since = std::shared_ptr<SinceCls>;
-template<typename T>  T checkNotNullable(String name, T value);
+template<typename T>
+ T checkNotNullable(String name, T value);
 
 
-template<typename T> class NotNullableErrorCls : public ErrorCls {
+template<typename T>
+class NotNullableErrorCls : public ErrorCls {
 public:
 
      NotNullableErrorCls(String _name);
@@ -140,8 +145,10 @@ private:
 
 
 };
-template<typename T> using NotNullableError = std::shared_ptr<NotNullableErrorCls<T>>;
-template<typename T>  T valueOfNonNullableParamWithDefault(T defaultVal, T value);
+template<typename T>
+using NotNullableError = std::shared_ptr<NotNullableErrorCls<T>>;
+template<typename T>
+ T valueOfNonNullableParamWithDefault(T defaultVal, T value);
 
 
 class HttpStatusCls : public ObjectCls {
@@ -364,7 +371,8 @@ private:
 };
 using HttpStatus = std::shared_ptr<HttpStatusCls>;
 
-template<typename E> class DoubleLinkedQueueEntryCls : public ObjectCls {
+template<typename E>
+class DoubleLinkedQueueEntryCls : public ObjectCls {
 public:
     E element;
 
@@ -389,7 +397,8 @@ private:
     virtual void _link(DoubleLinkedQueueEntry<E> next, DoubleLinkedQueueEntry<E> previous);
 
 };
-template<typename E> using DoubleLinkedQueueEntry = std::shared_ptr<DoubleLinkedQueueEntryCls<E>>;
+template<typename E>
+using DoubleLinkedQueueEntry = std::shared_ptr<DoubleLinkedQueueEntryCls<E>>;
 
 // Parts
 #include "async_cast.hpp"

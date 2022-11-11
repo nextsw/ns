@@ -33,14 +33,14 @@ String FormatExceptionCls::toString() {
         bool previousCharWasCR = false;
         for (;  < offset; i++) {
             int char = source->codeUnitAt(i);
-            if (char == 0x0a) {
+            if (charValue == 0x0a) {
                 if (lineStart != i || !previousCharWasCR) {
                     lineNum++;
                 }
                 lineStart = i + 1;
                 previousCharWasCR = false;
             } else             {
-                if (char == 0x0d) {
+                if (charValue == 0x0d) {
                 lineNum++;
                 lineStart = i + 1;
                 previousCharWasCR = true;
@@ -55,9 +55,9 @@ String FormatExceptionCls::toString() {
         int lineEnd = as<StringCls>(source)->length();
         for (;  < as<StringCls>(source)->length(); i++) {
             int char = source->codeUnitAt(i);
-            if (char == 0x0a || char == 0x0d) {
+            if (charValue == 0x0a || charValue == 0x0d) {
                 lineEnd = i;
-                                break;
+                break;
             }
         }
         int length = lineEnd - lineStart;

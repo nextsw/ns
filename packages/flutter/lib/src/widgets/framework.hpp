@@ -50,7 +50,8 @@ private:
 };
 using ObjectKey = std::shared_ptr<ObjectKeyCls>;
 
-template<typename T> class GlobalKeyCls : public KeyCls {
+template<typename T>
+class GlobalKeyCls : public KeyCls {
 public:
 
      GlobalKeyCls(String debugLabel);
@@ -68,9 +69,11 @@ private:
     virtual Element _currentElement();
 
 };
-template<typename T> using GlobalKey = std::shared_ptr<GlobalKeyCls<T>>;
+template<typename T>
+using GlobalKey = std::shared_ptr<GlobalKeyCls<T>>;
 
-template<typename T> class LabeledGlobalKeyCls : public GlobalKeyCls<T> {
+template<typename T>
+class LabeledGlobalKeyCls : public GlobalKeyCls<T> {
 public:
 
      LabeledGlobalKeyCls(String _debugLabel);
@@ -82,9 +85,11 @@ private:
 
 
 };
-template<typename T> using LabeledGlobalKey = std::shared_ptr<LabeledGlobalKeyCls<T>>;
+template<typename T>
+using LabeledGlobalKey = std::shared_ptr<LabeledGlobalKeyCls<T>>;
 
-template<typename T> class GlobalObjectKeyCls : public GlobalKeyCls<T> {
+template<typename T>
+class GlobalObjectKeyCls : public GlobalKeyCls<T> {
 public:
     Object value;
 
@@ -100,7 +105,8 @@ public:
 private:
 
 };
-template<typename T> using GlobalObjectKey = std::shared_ptr<GlobalObjectKeyCls<T>>;
+template<typename T>
+using GlobalObjectKey = std::shared_ptr<GlobalObjectKeyCls<T>>;
 
 class WidgetCls : public DiagnosticableTreeCls {
 public:
@@ -157,7 +163,8 @@ enum _StateLifecycle{
     defunct,
 } // end _StateLifecycle
 
-template<typename T> class StateCls : public ObjectCls {
+template<typename T>
+class StateCls : public ObjectCls {
 public:
 
     virtual T widget();
@@ -196,7 +203,8 @@ private:
     virtual bool _debugTypesAreRight(Widget widget);
 
 };
-template<typename T> using State = std::shared_ptr<StateCls<T>>;
+template<typename T>
+using State = std::shared_ptr<StateCls<T>>;
 
 class ProxyWidgetCls : public WidgetCls {
 public:
@@ -209,7 +217,8 @@ private:
 };
 using ProxyWidget = std::shared_ptr<ProxyWidgetCls>;
 
-template<typename T> class ParentDataWidgetCls : public ProxyWidgetCls {
+template<typename T>
+class ParentDataWidgetCls : public ProxyWidgetCls {
 public:
 
      ParentDataWidgetCls(Unknown child, Unknown key);
@@ -226,7 +235,8 @@ private:
     virtual Iterable<DiagnosticsNode> _debugDescribeIncorrectParentDataType(DiagnosticsNode ownershipChain, ParentData parentData, RenderObjectWidget parentDataCreator);
 
 };
-template<typename T> using ParentDataWidget = std::shared_ptr<ParentDataWidgetCls<T>>;
+template<typename T>
+using ParentDataWidget = std::shared_ptr<ParentDataWidgetCls<T>>;
 
 class InheritedWidgetCls : public ProxyWidgetCls {
 public:
@@ -333,12 +343,18 @@ public:
     virtual RenderObject findRenderObject();
     virtual Size size();
     virtual InheritedWidget dependOnInheritedElement(InheritedElement ancestor, Object aspect);
-    template<typename T>  virtual T dependOnInheritedWidgetOfExactType(Object aspect);
-    template<typename T>  virtual InheritedElement getElementForInheritedWidgetOfExactType();
-    template<typename T>  virtual T findAncestorWidgetOfExactType();
-    template<typename T>  virtual T findAncestorStateOfType();
-    template<typename T>  virtual T findRootAncestorStateOfType();
-    template<typename T>  virtual T findAncestorRenderObjectOfType();
+    template<typename T>
+ virtual T dependOnInheritedWidgetOfExactType(Object aspect);
+    template<typename T>
+ virtual InheritedElement getElementForInheritedWidgetOfExactType();
+    template<typename T>
+ virtual T findAncestorWidgetOfExactType();
+    template<typename T>
+ virtual T findAncestorStateOfType();
+    template<typename T>
+ virtual T findRootAncestorStateOfType();
+    template<typename T>
+ virtual T findAncestorRenderObjectOfType();
     virtual void visitAncestorElements(bool visitor(Element element) );
     virtual void visitChildElements(ElementVisitor visitor);
     virtual void dispatchNotification(Notification notification);
@@ -522,19 +538,25 @@ public:
 
     virtual InheritedWidget dependOnInheritedElement(InheritedElement ancestor, Object aspect);
 
-    template<typename T>  virtual T dependOnInheritedWidgetOfExactType(Object aspect);
+    template<typename T>
+ virtual T dependOnInheritedWidgetOfExactType(Object aspect);
 
-    template<typename T>  virtual InheritedElement getElementForInheritedWidgetOfExactType();
+    template<typename T>
+ virtual InheritedElement getElementForInheritedWidgetOfExactType();
 
     virtual void attachNotificationTree();
 
-    template<typename T>  virtual T findAncestorWidgetOfExactType();
+    template<typename T>
+ virtual T findAncestorWidgetOfExactType();
 
-    template<typename T>  virtual T findAncestorStateOfType();
+    template<typename T>
+ virtual T findAncestorStateOfType();
 
-    template<typename T>  virtual T findRootAncestorStateOfType();
+    template<typename T>
+ virtual T findRootAncestorStateOfType();
 
-    template<typename T>  virtual T findAncestorRenderObjectOfType();
+    template<typename T>
+ virtual T findAncestorRenderObjectOfType();
 
     virtual void visitAncestorElements(bool visitor(Element element) );
 
@@ -760,7 +782,8 @@ private:
 };
 using ProxyElement = std::shared_ptr<ProxyElementCls>;
 
-template<typename T> class ParentDataElementCls : public ProxyElementCls {
+template<typename T>
+class ParentDataElementCls : public ProxyElementCls {
 public:
 
      ParentDataElementCls(ParentDataWidget<T> widget);
@@ -773,7 +796,8 @@ private:
     virtual void _applyParentData(ParentDataWidget<T> widget);
 
 };
-template<typename T> using ParentDataElement = std::shared_ptr<ParentDataElementCls<T>>;
+template<typename T>
+using ParentDataElement = std::shared_ptr<ParentDataElementCls<T>>;
 
 class InheritedElementCls : public ProxyElementCls {
 public:
@@ -965,7 +989,8 @@ using DebugCreator = std::shared_ptr<DebugCreatorCls>;
 FlutterErrorDetails _debugReportException(DiagnosticsNode context, Object exception, InformationCollector informationCollector, StackTrace stack);
 
 
-template<typename T> class IndexedSlotCls : public ObjectCls {
+template<typename T>
+class IndexedSlotCls : public ObjectCls {
 public:
     T value;
 
@@ -980,7 +1005,8 @@ public:
 private:
 
 };
-template<typename T> using IndexedSlot = std::shared_ptr<IndexedSlotCls<T>>;
+template<typename T>
+using IndexedSlot = std::shared_ptr<IndexedSlotCls<T>>;
 
 class _NullElementCls : public ElementCls {
 public:

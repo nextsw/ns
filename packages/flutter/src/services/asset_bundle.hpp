@@ -21,7 +21,8 @@ public:
 
     virtual Future<String> loadString(bool cache, String key);
 
-    template<typename T>  virtual Future<T> loadStructuredData(String key, Future<T> parser(String value) );
+    template<typename T>
+ virtual Future<T> loadStructuredData(String key, Future<T> parser(String value) );
     virtual void evict(String key);
 
     virtual void clear();
@@ -42,7 +43,8 @@ public:
 
     virtual Future<ByteData> load(String key);
 
-    template<typename T>  virtual Future<T> loadStructuredData(String key, Future<T> parser(String value) );
+    template<typename T>
+ virtual Future<T> loadStructuredData(String key, Future<T> parser(String value) );
 
     virtual String toString();
 
@@ -62,7 +64,8 @@ public:
 
     virtual Future<String> loadString(bool cache, String key);
 
-    template<typename T>  virtual Future<T> loadStructuredData(String key, Future<T> parser(String value) );
+    template<typename T>
+ virtual Future<T> loadStructuredData(String key, Future<T> parser(String value) );
 
     virtual void evict(String key);
 

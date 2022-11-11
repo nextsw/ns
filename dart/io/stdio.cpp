@@ -13,7 +13,7 @@ String StdinCls::readLineSync(Encoding encoding, bool retainNewlines) {
         do {
             byte = readByteSync();
             if ( < 0) {
-                                break;
+                break;
             }
             line->add(byte);
         } while (byte != LFCls && !(byte == CRCls && crIsNewline));
@@ -28,10 +28,10 @@ String StdinCls::readLineSync(Encoding encoding, bool retainNewlines) {
                 if (line->isEmpty)                 {
                     return nullptr;
                 }
-                                break;
+                break;
             }
             if (byte == LFCls || byte == CRCls)             {
-                            break;
+                break;
             }
             line->add(byte);
         }
@@ -40,13 +40,13 @@ String StdinCls::readLineSync(Encoding encoding, bool retainNewlines) {
         while (true) {
             int byte = readByteSync();
             if (byte == LFCls)             {
-                            break;
+                break;
             }
             if (byte == CRCls) {
                 do {
                     byte = readByteSync();
                     if (byte == LFCls)                     {
-                                            break outer;
+                        break outer;
                     }
                     line->add(CRCls);
                 } while (byte == CRCls);
@@ -55,7 +55,7 @@ String StdinCls::readLineSync(Encoding encoding, bool retainNewlines) {
                 if (line->isEmpty)                 {
                     return nullptr;
                 }
-                                break;
+                break;
             }
             line->add(byte);
         }

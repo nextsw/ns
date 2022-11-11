@@ -1,17 +1,21 @@
 #include "linked_list.hpp"
-template<typename T> T LinkedListCls<T>::first() {
+template<typename T>
+T LinkedListCls<T>::first() {
     return as<T>(_first);
 }
 
-template<typename T> T LinkedListCls<T>::last() {
+template<typename T>
+T LinkedListCls<T>::last() {
     return as<T>(_last);
 }
 
-template<typename T> bool LinkedListCls<T>::isEmpty() {
+template<typename T>
+bool LinkedListCls<T>::isEmpty() {
     return length == 0;
 }
 
-template<typename T> void LinkedListCls<T>::add(T newLast) {
+template<typename T>
+void LinkedListCls<T>::add(T newLast) {
     assert(newLast->_next == nullptr && newLast->_previous == nullptr);
     if (_last != nullptr) {
         assert(_last!->_next == nullptr);
@@ -25,7 +29,8 @@ template<typename T> void LinkedListCls<T>::add(T newLast) {
     length++;
 }
 
-template<typename T> void LinkedListCls<T>::addFirst(T newFirst) {
+template<typename T>
+void LinkedListCls<T>::addFirst(T newFirst) {
     if (_first != nullptr) {
         assert(_first!->_previous == nullptr);
         _first!->_previous = newFirst;
@@ -38,7 +43,8 @@ template<typename T> void LinkedListCls<T>::addFirst(T newFirst) {
     length++;
 }
 
-template<typename T> void LinkedListCls<T>::remove(T node) {
+template<typename T>
+void LinkedListCls<T>::remove(T node) {
     if (node->_list != this)     {
         return;
     }
@@ -59,19 +65,23 @@ template<typename T> void LinkedListCls<T>::remove(T node) {
     node->_list = nullptr;
 }
 
-template<typename T> Iterator<T> LinkedListCls<T>::iterator() {
+template<typename T>
+Iterator<T> LinkedListCls<T>::iterator() {
     return <T>make<_LinkedListIteratorCls>(this);
 }
 
-template<typename T> void LinkedListEntryCls<T>::unlink() {
+template<typename T>
+void LinkedListEntryCls<T>::unlink() {
     _list?->remove(as<T>(this));
 }
 
-template<typename T> T _LinkedListIteratorCls<T>::current() {
+template<typename T>
+T _LinkedListIteratorCls<T>::current() {
     return as<T>(_current);
 }
 
-template<typename T> bool _LinkedListIteratorCls<T>::moveNext() {
+template<typename T>
+bool _LinkedListIteratorCls<T>::moveNext() {
     if (_current == nullptr) {
         auto list = _list;
         if (list == nullptr)         {
@@ -86,7 +96,8 @@ template<typename T> bool _LinkedListIteratorCls<T>::moveNext() {
     return _current != nullptr;
 }
 
-template<typename T> _LinkedListIteratorCls<T>::_LinkedListIteratorCls(LinkedList<T> list) {
+template<typename T>
+_LinkedListIteratorCls<T>::_LinkedListIteratorCls(LinkedList<T> list) {
     {
         _list = list;
     }

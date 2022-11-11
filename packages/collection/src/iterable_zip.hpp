@@ -6,7 +6,8 @@
 #include <dart/collection/collection.hpp>
 
 
-template<typename T> class IterableZipCls : public IterableBaseCls<List<T>> {
+template<typename T>
+class IterableZipCls : public IterableBaseCls<List<T>> {
 public:
 
      IterableZipCls(Iterable<Iterable<T>> iterables);
@@ -18,9 +19,11 @@ private:
 
 
 };
-template<typename T> using IterableZip = std::shared_ptr<IterableZipCls<T>>;
+template<typename T>
+using IterableZip = std::shared_ptr<IterableZipCls<T>>;
 
-template<typename T> class _IteratorZipCls : public ObjectCls {
+template<typename T>
+class _IteratorZipCls : public ObjectCls {
 public:
 
     virtual bool moveNext();
@@ -36,7 +39,8 @@ private:
      _IteratorZipCls(List<Iterator<T>> iterators);
 
 };
-template<typename T> using _IteratorZip = std::shared_ptr<_IteratorZipCls<T>>;
+template<typename T>
+using _IteratorZip = std::shared_ptr<_IteratorZipCls<T>>;
 
 
 #endif

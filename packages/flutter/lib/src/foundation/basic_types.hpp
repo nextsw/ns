@@ -6,17 +6,20 @@
 #include <dart/collection/collection.hpp>
 
 
-template<typename E> class CachingIterableCls : public IterableBaseCls<E> {
+template<typename E>
+class CachingIterableCls : public IterableBaseCls<E> {
 public:
 
      CachingIterableCls(Iterator<E> _prefillIterator);
     virtual Iterator<E> iterator();
 
-    template<typename T>  virtual Iterable<T> map(T toElement(E e) );
+    template<typename T>
+ virtual Iterable<T> map(T toElement(E e) );
 
     virtual Iterable<E> where(bool test(E element) );
 
-    template<typename T>  virtual Iterable<T> expand(Iterable<T> toElements(E element) );
+    template<typename T>
+ virtual Iterable<T> expand(Iterable<T> toElements(E element) );
 
     virtual Iterable<E> take(int count);
 
@@ -41,9 +44,11 @@ private:
     virtual bool _fillNext();
 
 };
-template<typename E> using CachingIterable = std::shared_ptr<CachingIterableCls<E>>;
+template<typename E>
+using CachingIterable = std::shared_ptr<CachingIterableCls<E>>;
 
-template<typename E> class _LazyListIteratorCls : public ObjectCls {
+template<typename E>
+class _LazyListIteratorCls : public ObjectCls {
 public:
 
     virtual E current();
@@ -59,9 +64,11 @@ private:
      _LazyListIteratorCls(CachingIterable<E> _owner);
 
 };
-template<typename E> using _LazyListIterator = std::shared_ptr<_LazyListIteratorCls<E>>;
+template<typename E>
+using _LazyListIterator = std::shared_ptr<_LazyListIteratorCls<E>>;
 
-template<typename T> class FactoryCls : public ObjectCls {
+template<typename T>
+class FactoryCls : public ObjectCls {
 public:
     ValueGetter<T> constructor;
 
@@ -75,7 +82,8 @@ public:
 private:
 
 };
-template<typename T> using Factory = std::shared_ptr<FactoryCls<T>>;
+template<typename T>
+using Factory = std::shared_ptr<FactoryCls<T>>;
 Duration lerpDuration(Duration a, Duration b, double t);
 
 

@@ -46,7 +46,8 @@ Future<ByteData> NetworkAssetBundleCls::load(String key) {
     return bytes->buffer->asByteData();
 }
 
-Future<T> NetworkAssetBundleCls::loadStructuredDatatemplate<typename T> (String key, Future<T> parser(String value) ) {
+template<typename T>
+Future<T> NetworkAssetBundleCls::loadStructuredData(String key, Future<T> parser(String value) ) {
     assert(key != nullptr);
     assert(parser != nullptr);
     return parser(await loadString(key));
@@ -69,7 +70,8 @@ Future<String> CachingAssetBundleCls::loadString(bool cache, String key) {
     return super->loadString(key);
 }
 
-Future<T> CachingAssetBundleCls::loadStructuredDatatemplate<typename T> (String key, Future<T> parser(String value) ) {
+template<typename T>
+Future<T> CachingAssetBundleCls::loadStructuredData(String key, Future<T> parser(String value) ) {
     assert(key != nullptr);
     assert(parser != nullptr);
     if (_structuredDataCache->containsKey(key)) {

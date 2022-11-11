@@ -5,7 +5,8 @@
 #include <dart/core/core.hpp>
 
 
-template<typename T> class _EventSinkWrapperCls : public ObjectCls {
+template<typename T>
+class _EventSinkWrapperCls : public ObjectCls {
 public:
 
     virtual void add(T data);
@@ -20,9 +21,11 @@ private:
 
      _EventSinkWrapperCls(_EventSink<T> _sink);
 };
-template<typename T> using _EventSinkWrapper = std::shared_ptr<_EventSinkWrapperCls<T>>;
+template<typename T>
+using _EventSinkWrapper = std::shared_ptr<_EventSinkWrapperCls<T>>;
 
-template<typename S, typename T> class _SinkTransformerStreamSubscriptionCls : public _BufferingStreamSubscriptionCls<T> {
+template<typename S, typename T>
+class _SinkTransformerStreamSubscriptionCls : public _BufferingStreamSubscriptionCls<T> {
 public:
 
 private:
@@ -52,9 +55,11 @@ private:
     virtual void _handleDone();
 
 };
-template<typename S, typename T> using _SinkTransformerStreamSubscription = std::shared_ptr<_SinkTransformerStreamSubscriptionCls<S, T>>;
+template<typename S, typename T>
+using _SinkTransformerStreamSubscription = std::shared_ptr<_SinkTransformerStreamSubscriptionCls<S, T>>;
 
-template<typename S, typename T> class _StreamSinkTransformerCls : public StreamTransformerBaseCls<S, T> {
+template<typename S, typename T>
+class _StreamSinkTransformerCls : public StreamTransformerBaseCls<S, T> {
 public:
 
     virtual Stream<T> bind(Stream<S> stream);
@@ -65,9 +70,11 @@ private:
 
      _StreamSinkTransformerCls(_SinkMapper<S, T> _sinkMapper);
 };
-template<typename S, typename T> using _StreamSinkTransformer = std::shared_ptr<_StreamSinkTransformerCls<S, T>>;
+template<typename S, typename T>
+using _StreamSinkTransformer = std::shared_ptr<_StreamSinkTransformerCls<S, T>>;
 
-template<typename S, typename T> class _BoundSinkStreamCls : public StreamCls<T> {
+template<typename S, typename T>
+class _BoundSinkStreamCls : public StreamCls<T> {
 public:
 
     virtual bool isBroadcast();
@@ -82,9 +89,11 @@ private:
 
      _BoundSinkStreamCls(_SinkMapper<S, T> _sinkMapper, Stream<S> _stream);
 };
-template<typename S, typename T> using _BoundSinkStream = std::shared_ptr<_BoundSinkStreamCls<S, T>>;
+template<typename S, typename T>
+using _BoundSinkStream = std::shared_ptr<_BoundSinkStreamCls<S, T>>;
 
-template<typename S, typename T> class _HandlerEventSinkCls : public ObjectCls {
+template<typename S, typename T>
+class _HandlerEventSinkCls : public ObjectCls {
 public:
 
     virtual void add(S data);
@@ -105,9 +114,11 @@ private:
 
      _HandlerEventSinkCls(_TransformDataHandler<S, T> _handleData, _TransformDoneHandler<T> _handleDone, _TransformErrorHandler<T> _handleError, EventSink<T> _sink);
 };
-template<typename S, typename T> using _HandlerEventSink = std::shared_ptr<_HandlerEventSinkCls<S, T>>;
+template<typename S, typename T>
+using _HandlerEventSink = std::shared_ptr<_HandlerEventSinkCls<S, T>>;
 
-template<typename S, typename T> class _StreamHandlerTransformerCls : public _StreamSinkTransformerCls<S, T> {
+template<typename S, typename T>
+class _StreamHandlerTransformerCls : public _StreamSinkTransformerCls<S, T> {
 public:
 
     virtual Stream<T> bind(Stream<S> stream);
@@ -117,9 +128,11 @@ private:
      _StreamHandlerTransformerCls(void handleData(S data, EventSink<T> sink) , void handleDone(EventSink<T> sink) , void handleError(Object error, EventSink<T> sink, StackTrace stackTrace) );
 
 };
-template<typename S, typename T> using _StreamHandlerTransformer = std::shared_ptr<_StreamHandlerTransformerCls<S, T>>;
+template<typename S, typename T>
+using _StreamHandlerTransformer = std::shared_ptr<_StreamHandlerTransformerCls<S, T>>;
 
-template<typename S, typename T> class _StreamBindTransformerCls : public StreamTransformerBaseCls<S, T> {
+template<typename S, typename T>
+class _StreamBindTransformerCls : public StreamTransformerBaseCls<S, T> {
 public:
 
     virtual Stream<T> bind(Stream<S> stream);
@@ -130,9 +143,11 @@ private:
 
      _StreamBindTransformerCls(Stream<T> Function(Stream<S> ) _bind);
 };
-template<typename S, typename T> using _StreamBindTransformer = std::shared_ptr<_StreamBindTransformerCls<S, T>>;
+template<typename S, typename T>
+using _StreamBindTransformer = std::shared_ptr<_StreamBindTransformerCls<S, T>>;
 
-template<typename S, typename T> class _StreamSubscriptionTransformerCls : public StreamTransformerBaseCls<S, T> {
+template<typename S, typename T>
+class _StreamSubscriptionTransformerCls : public StreamTransformerBaseCls<S, T> {
 public:
 
     virtual Stream<T> bind(Stream<S> stream);
@@ -143,9 +158,11 @@ private:
 
      _StreamSubscriptionTransformerCls(_SubscriptionTransformer<S, T> _onListen);
 };
-template<typename S, typename T> using _StreamSubscriptionTransformer = std::shared_ptr<_StreamSubscriptionTransformerCls<S, T>>;
+template<typename S, typename T>
+using _StreamSubscriptionTransformer = std::shared_ptr<_StreamSubscriptionTransformerCls<S, T>>;
 
-template<typename S, typename T> class _BoundSubscriptionStreamCls : public StreamCls<T> {
+template<typename S, typename T>
+class _BoundSubscriptionStreamCls : public StreamCls<T> {
 public:
 
     virtual bool isBroadcast();
@@ -160,7 +177,8 @@ private:
 
      _BoundSubscriptionStreamCls(_SubscriptionTransformer<S, T> _onListen, Stream<S> _stream);
 };
-template<typename S, typename T> using _BoundSubscriptionStream = std::shared_ptr<_BoundSubscriptionStreamCls<S, T>>;
+template<typename S, typename T>
+using _BoundSubscriptionStream = std::shared_ptr<_BoundSubscriptionStreamCls<S, T>>;
 
 
 #endif

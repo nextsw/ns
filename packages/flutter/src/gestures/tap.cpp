@@ -13,7 +13,7 @@ TapUpDetailsCls::TapUpDetailsCls(Offset globalPosition, PointerDeviceKind kind, 
     }
 }
 
-BaseTapGestureRecognizerCls::BaseTapGestureRecognizerCls(Unknown debugOwner, Unknown supportedDevices) : PrimaryPointerGestureRecognizer(kPressTimeout) {
+BaseTapGestureRecognizerCls::BaseTapGestureRecognizerCls(Unknown debugOwner, Unknown supportedDevices) {
 }
 
 void BaseTapGestureRecognizerCls::addAllowedPointer(PointerDownEvent event) {

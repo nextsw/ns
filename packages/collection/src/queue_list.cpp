@@ -1,11 +1,13 @@
 #include "queue_list.hpp"
-template<typename E> QueueListCls<E>::QueueListCls(int initialCapacity) {
+template<typename E>
+QueueListCls<E>::QueueListCls(int initialCapacity) {
     {
         this->_init(_computeInitialCapacity(initialCapacity));
     }
 }
 
-template<typename E> void QueueListCls<E>::from(Iterable<E> source) {
+template<typename E>
+void QueueListCls<E>::from(Iterable<E> source) {
     if (is<List>(source)) {
         auto length = as<ListCls>(source)->length();
         auto queue = <E>make<QueueListCls>(length + 1);
@@ -19,11 +21,13 @@ template<typename E> void QueueListCls<E>::from(Iterable<E> source) {
     }
 }
 
-template<typename E> void QueueListCls<E>::add(E element) {
+template<typename E>
+void QueueListCls<E>::add(E element) {
     _add(element);
 }
 
-template<typename E> void QueueListCls<E>::addAll(Iterable<E> iterable) {
+template<typename E>
+void QueueListCls<E>::addAll(Iterable<E> iterable) {
     if (is<List>(iterable)) {
         auto list = as<ListCls>(iterable);
         auto addCount = list->length();
@@ -51,23 +55,30 @@ template<typename E> void QueueListCls<E>::addAll(Iterable<E> iterable) {
     }
 }
 
-template<typename E> QueueList<T> QueueListCls<E>::casttemplate<typename T> () {
+template<typename E>
+template<typename T>
+QueueList<T> QueueListCls<E>::cast() {
     return QueueListCls-><E, T>_castFrom(this);
 }
 
-template<typename E> QueueList<T> QueueListCls<E>::retypetemplate<typename T> () {
+template<typename E>
+template<typename T>
+QueueList<T> QueueListCls<E>::retype() {
     return <T>cast();
 }
 
-template<typename E> String QueueListCls<E>::toString() {
+template<typename E>
+String QueueListCls<E>::toString() {
     return IterableBaseCls->iterableToFullString(this, __s("{"), __s("}"));
 }
 
-template<typename E> void QueueListCls<E>::addLast(E element) {
+template<typename E>
+void QueueListCls<E>::addLast(E element) {
     _add(element);
 }
 
-template<typename E> void QueueListCls<E>::addFirst(E element) {
+template<typename E>
+void QueueListCls<E>::addFirst(E element) {
     _head = (_head - 1) & (_table->length() - 1);
     _table[_head] = element;
     if (_head == _tail)     {
@@ -75,7 +86,8 @@ template<typename E> void QueueListCls<E>::addFirst(E element) {
     }
 }
 
-template<typename E> E QueueListCls<E>::removeFirst() {
+template<typename E>
+E QueueListCls<E>::removeFirst() {
     if (_head == _tail)     {
         ;
     }
@@ -85,7 +97,8 @@ template<typename E> E QueueListCls<E>::removeFirst() {
     return result;
 }
 
-template<typename E> E QueueListCls<E>::removeLast() {
+template<typename E>
+E QueueListCls<E>::removeLast() {
     if (_head == _tail)     {
         ;
     }
@@ -95,11 +108,13 @@ template<typename E> E QueueListCls<E>::removeLast() {
     return result;
 }
 
-template<typename E> int QueueListCls<E>::length() {
+template<typename E>
+int QueueListCls<E>::length() {
     return (_tail - _head) & (_table->length() - 1);
 }
 
-template<typename E> void QueueListCls<E>::length(int value) {
+template<typename E>
+void QueueListCls<E>::length(int value) {
     if ( < 0)     {
         ;
     }
@@ -125,27 +140,33 @@ template<typename E> void QueueListCls<E>::length(int value) {
     _tail = newTail;
 }
 
-template<typename E> E QueueListCls<E>::[](int index) {
+template<typename E>
+E QueueListCls<E>::[](int index) {
     if ( < 0 || index >= length()) {
         ;
     }
     return as<E>(_table[(_head + index) & (_table->length() - 1)]);
 }
 
-template<typename E> void QueueListCls<E>::[]=(int index, E value) {
+template<typename E>
+void QueueListCls<E>::[]=(int index, E value) {
     if ( < 0 || index >= length()) {
         ;
     }
     _table[(_head + index) & (_table->length() - 1)] = value;
 }
 
-template<typename E> QueueList<T> QueueListCls<E>::_castFromtemplate<typename S, typename T> (QueueList<S> source) {
+template<typename E>
+template<typename S, typename T>
+QueueList<T> QueueListCls<E>::_castFrom(QueueList<S> source) {
     return <S, T>make<_CastQueueListCls>(source);
 }
 
-template<typename E> void QueueListCls<E>::_init(int initialCapacity)
+template<typename E>
+void QueueListCls<E>::_init(int initialCapacity)
 
-template<typename E> int QueueListCls<E>::_computeInitialCapacity(int initialCapacity) {
+template<typename E>
+int QueueListCls<E>::_computeInitialCapacity(int initialCapacity) {
     if (initialCapacity == nullptr ||  < _initialCapacity) {
         return _initialCapacity;
     }
@@ -156,11 +177,13 @@ template<typename E> int QueueListCls<E>::_computeInitialCapacity(int initialCap
     return _nextPowerOf2(initialCapacity);
 }
 
-template<typename E> bool QueueListCls<E>::_isPowerOf2(int number) {
+template<typename E>
+bool QueueListCls<E>::_isPowerOf2(int number) {
     return (number & (number - 1)) == 0;
 }
 
-template<typename E> int QueueListCls<E>::_nextPowerOf2(int number) {
+template<typename E>
+int QueueListCls<E>::_nextPowerOf2(int number) {
     assert(number > 0);
     number = (number << 1) - 1;
     for (; ; ) {
@@ -172,7 +195,8 @@ template<typename E> int QueueListCls<E>::_nextPowerOf2(int number) {
     }
 }
 
-template<typename E> void QueueListCls<E>::_add(E element) {
+template<typename E>
+void QueueListCls<E>::_add(E element) {
     _table[_tail] = element;
     _tail = (_tail + 1) & (_table->length() - 1);
     if (_head == _tail)     {
@@ -180,7 +204,8 @@ template<typename E> void QueueListCls<E>::_add(E element) {
     }
 }
 
-template<typename E> void QueueListCls<E>::_grow() {
+template<typename E>
+void QueueListCls<E>::_grow() {
     auto newTable = <E>filled(_table->length() * 2, nullptr);
     auto split = _table->length() - _head;
     newTable->setRange(0, split, _table, _head);
@@ -190,7 +215,8 @@ template<typename E> void QueueListCls<E>::_grow() {
     _table = newTable;
 }
 
-template<typename E> int QueueListCls<E>::_writeToList(List<E> target) {
+template<typename E>
+int QueueListCls<E>::_writeToList(List<E> target) {
     assert(target->length() >= length());
     if (_head <= _tail) {
         auto length = _tail - _head;
@@ -204,7 +230,8 @@ template<typename E> int QueueListCls<E>::_writeToList(List<E> target) {
     }
 }
 
-template<typename E> void QueueListCls<E>::_preGrow(int newElementCount) {
+template<typename E>
+void QueueListCls<E>::_preGrow(int newElementCount) {
     assert(newElementCount >= length());
     newElementCount = newElementCount >> 1;
     auto newCapacity = _nextPowerOf2(newElementCount);
@@ -214,24 +241,29 @@ template<typename E> void QueueListCls<E>::_preGrow(int newElementCount) {
     _head = 0;
 }
 
-template<typename S, typename T> _CastQueueListCls<S, T>::_CastQueueListCls(QueueList<S> _delegate) {
+template<typename S, typename T>
+_CastQueueListCls<S, T>::_CastQueueListCls(QueueList<S> _delegate) {
     {
         super->_(-1, -1, _delegate->_table-><T>cast());
     }
 }
 
-template<typename S, typename T> int _CastQueueListCls<S, T>::_head() {
+template<typename S, typename T>
+int _CastQueueListCls<S, T>::_head() {
     return _delegate->_head;
 }
 
-template<typename S, typename T> void _CastQueueListCls<S, T>::_head(int value) {
+template<typename S, typename T>
+void _CastQueueListCls<S, T>::_head(int value) {
     return _delegate->_head = value;
 }
 
-template<typename S, typename T> int _CastQueueListCls<S, T>::_tail() {
+template<typename S, typename T>
+int _CastQueueListCls<S, T>::_tail() {
     return _delegate->_tail;
 }
 
-template<typename S, typename T> void _CastQueueListCls<S, T>::_tail(int value) {
+template<typename S, typename T>
+void _CastQueueListCls<S, T>::_tail(int value) {
     return _delegate->_tail = value;
 }

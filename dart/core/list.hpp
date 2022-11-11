@@ -5,7 +5,8 @@
 #include <dart/core/core.hpp>
 
 
-template<typename E> class ListCls : public ObjectCls {
+template<typename E>
+class ListCls : public ObjectCls {
 public:
 
      ListCls(int length);
@@ -15,13 +16,17 @@ public:
     void  of(Iterable<E> elements, bool growable);
     void  generate(E generator(int index) , bool growable, int length);
     void  unmodifiable(Iterable elements);
-    template<typename S, typename T>  static List<T> castFrom(List<S> source);
+    template<typename S, typename T>
+ static List<T> castFrom(List<S> source);
 
-    template<typename T>  static void copyRange(int at, int end, List<T> source, int start, List<T> target);
+    template<typename T>
+ static void copyRange(int at, int end, List<T> source, int start, List<T> target);
 
-    template<typename T>  static void writeIterable(int at, Iterable<T> source, List<T> target);
+    template<typename T>
+ static void writeIterable(int at, Iterable<T> source, List<T> target);
 
-    template<typename R>  virtual List<R> cast();
+    template<typename R>
+ virtual List<R> cast();
     virtual E operator[](int index);
     virtual void operator[]=(int index, E value);
     virtual void first(E value);
@@ -58,7 +63,8 @@ public:
 private:
 
 };
-template<typename E> using List = std::shared_ptr<ListCls<E>>;
+template<typename E>
+using List = std::shared_ptr<ListCls<E>>;
 
 
 #endif

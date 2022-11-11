@@ -13,7 +13,8 @@
 #include "media_query.hpp"
 
 
-template<typename T> class GestureRecognizerFactoryCls : public ObjectCls {
+template<typename T>
+class GestureRecognizerFactoryCls : public ObjectCls {
 public:
 
      GestureRecognizerFactoryCls();
@@ -24,9 +25,11 @@ private:
     virtual bool _debugAssertTypeMatches(Type type);
 
 };
-template<typename T> using GestureRecognizerFactory = std::shared_ptr<GestureRecognizerFactoryCls<T>>;
+template<typename T>
+using GestureRecognizerFactory = std::shared_ptr<GestureRecognizerFactoryCls<T>>;
 
-template<typename T> class GestureRecognizerFactoryWithHandlersCls : public GestureRecognizerFactoryCls<T> {
+template<typename T>
+class GestureRecognizerFactoryWithHandlersCls : public GestureRecognizerFactoryCls<T> {
 public:
 
      GestureRecognizerFactoryWithHandlersCls(GestureRecognizerFactoryConstructor<T> _constructor, GestureRecognizerFactoryInitializer<T> _initializer);
@@ -42,7 +45,8 @@ private:
 
 
 };
-template<typename T> using GestureRecognizerFactoryWithHandlers = std::shared_ptr<GestureRecognizerFactoryWithHandlersCls<T>>;
+template<typename T>
+using GestureRecognizerFactoryWithHandlers = std::shared_ptr<GestureRecognizerFactoryWithHandlersCls<T>>;
 
 class GestureDetectorCls : public StatelessWidgetCls {
 public:

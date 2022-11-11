@@ -41,11 +41,13 @@ Future<Map<Type, dynamic>> _loadAll(Iterable<LocalizationsDelegate<dynamic>> all
     });
 }
 
-template<typename T> Type LocalizationsDelegateCls<T>::type() {
+template<typename T>
+Type LocalizationsDelegateCls<T>::type() {
     return TCls;
 }
 
-template<typename T> String LocalizationsDelegateCls<T>::toString() {
+template<typename T>
+String LocalizationsDelegateCls<T>::toString() {
     return __s("${objectRuntimeType(this, 'LocalizationsDelegate')}[$type]");
 }
 
@@ -128,7 +130,8 @@ Locale LocalizationsCls::maybeLocaleOf(BuildContext context) {
     return scope?->localizationsState->locale();
 }
 
-T LocalizationsCls::oftemplate<typename T> (BuildContext context, Type type) {
+template<typename T>
+T LocalizationsCls::of(BuildContext context, Type type) {
     assert(context != nullptr);
     assert(type != nullptr);
     _LocalizationsScope scope = context-><_LocalizationsScope>dependOnInheritedWidgetOfExactType();
@@ -195,7 +198,8 @@ void _LocalizationsStateCls::load(Locale locale) {
     }
 }
 
-T _LocalizationsStateCls::resourcesFortemplate<typename T> (Type type) {
+template<typename T>
+T _LocalizationsStateCls::resourcesFor(Type type) {
     assert(type != nullptr);
     T resources = as<T>(_typeToResources[type]);
     return resources;

@@ -7,7 +7,8 @@
 #include "tween.hpp"
 
 
-template<typename T> class TweenSequenceCls : public AnimatableCls<T> {
+template<typename T>
+class TweenSequenceCls : public AnimatableCls<T> {
 public:
 
      TweenSequenceCls(List<TweenSequenceItem<T>> items);
@@ -25,7 +26,8 @@ private:
     virtual T _evaluateAt(int index, double t);
 
 };
-template<typename T> using TweenSequence = std::shared_ptr<TweenSequenceCls<T>>;
+template<typename T>
+using TweenSequence = std::shared_ptr<TweenSequenceCls<T>>;
 
 class FlippedTweenSequenceCls : public TweenSequenceCls<double> {
 public:
@@ -39,7 +41,8 @@ private:
 };
 using FlippedTweenSequence = std::shared_ptr<FlippedTweenSequenceCls>;
 
-template<typename T> class TweenSequenceItemCls : public ObjectCls {
+template<typename T>
+class TweenSequenceItemCls : public ObjectCls {
 public:
     Animatable<T> tween;
 
@@ -51,7 +54,8 @@ public:
 private:
 
 };
-template<typename T> using TweenSequenceItem = std::shared_ptr<TweenSequenceItemCls<T>>;
+template<typename T>
+using TweenSequenceItem = std::shared_ptr<TweenSequenceItemCls<T>>;
 
 class _IntervalCls : public ObjectCls {
 public:

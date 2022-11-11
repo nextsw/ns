@@ -8,7 +8,8 @@
 #include "wrappers.hpp"
 
 
-template<typename K, typename V> class EqualityMapCls : public DelegatingMapCls<K, V> {
+template<typename K, typename V>
+class EqualityMapCls : public DelegatingMapCls<K, V> {
 public:
 
      EqualityMapCls(Equality<K> equality);
@@ -18,7 +19,8 @@ public:
 private:
 
 };
-template<typename K, typename V> using EqualityMap = std::shared_ptr<EqualityMapCls<K, V>>;
+template<typename K, typename V>
+using EqualityMap = std::shared_ptr<EqualityMapCls<K, V>>;
 
 
 #endif

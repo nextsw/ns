@@ -25,10 +25,10 @@ int hashIgnoreAsciiCase(String stringValue) {
     auto hash = 0;
     for (;  < stringValue->length(); i++) {
         auto char = stringValue->codeUnitAt(i);
-        if (_lowerCaseA <= char && char <= _lowerCaseZ)         {
-            char = _asciiCaseBit;
+        if (_lowerCaseA <= charValue && charValue <= _lowerCaseZ)         {
+            charValue = _asciiCaseBit;
         }
-        hash = 0x1fffffff & (hash + char);
+        hash = 0x1fffffff & (hash + charValue);
         hash = 0x1fffffff & (hash + ((0x0007ffff & hash) << 10));
         hash = 6;
     }
@@ -262,7 +262,7 @@ int _compareNumerically(String a, int aChar, String b, int bChar, int index) {
                 if (aChar == bChar)                 {
                     continue;
                 }
-                                break;
+                break;
             }
             return 1;
         } else         {
@@ -313,8 +313,8 @@ bool _isDigit(int charCode) {
 bool _isNonZeroNumberSuffix(int index, String stringValue) {
     while (--index >= 0) {
         auto char = stringValue->codeUnitAt(index);
-        if (char != _zero)         {
-            return _isDigit(char);
+        if (charValue != _zero)         {
+            return _isDigit(charValue);
         }
     }
     return false;

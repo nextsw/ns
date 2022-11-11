@@ -1,5 +1,5 @@
 #include "text_editing.hpp"
-TextSelectionCls::TextSelectionCls(TextAffinity affinity, int baseOffset, int extentOffset, bool isDirectional) : TextRange( < extentOffset? baseOffset : extentOffset,  < extentOffset? extentOffset : baseOffset) {
+TextSelectionCls::TextSelectionCls(TextAffinity affinity, int baseOffset, int extentOffset, bool isDirectional) {
 }
 
 void TextSelectionCls::collapsed(TextAffinity affinity, int offset)

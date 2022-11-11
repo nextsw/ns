@@ -43,7 +43,7 @@ _AnimatedFadeOutFadeInState _AnimatedFadeOutFadeInCls::createState() {
     return make<_AnimatedFadeOutFadeInStateCls>();
 }
 
-_AnimatedFadeOutFadeInCls::_AnimatedFadeOutFadeInCls(Curve fadeInCurve, Duration fadeInDuration, Curve fadeOutCurve, Duration fadeOutDuration, bool isTargetLoaded, Widget placeholder, ProxyAnimation placeholderProxyAnimation, Widget target, ProxyAnimation targetProxyAnimation, bool wasSynchronouslyLoaded) : ImplicitlyAnimatedWidget(fadeInDuration + fadeOutDuration) {
+_AnimatedFadeOutFadeInCls::_AnimatedFadeOutFadeInCls(Curve fadeInCurve, Duration fadeInDuration, Curve fadeOutCurve, Duration fadeOutDuration, bool isTargetLoaded, Widget placeholder, ProxyAnimation placeholderProxyAnimation, Widget target, ProxyAnimation targetProxyAnimation, bool wasSynchronouslyLoaded) {
     {
         assert(target != nullptr);
         assert(placeholder != nullptr);

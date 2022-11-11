@@ -11,7 +11,8 @@
 #include "animations.hpp"
 
 
-template<typename T> class AnimatableCls : public ObjectCls {
+template<typename T>
+class AnimatableCls : public ObjectCls {
 public:
 
      AnimatableCls();
@@ -25,9 +26,11 @@ public:
 private:
 
 };
-template<typename T> using Animatable = std::shared_ptr<AnimatableCls<T>>;
+template<typename T>
+using Animatable = std::shared_ptr<AnimatableCls<T>>;
 
-template<typename T> class _AnimatedEvaluationCls : public AnimationCls<T> {
+template<typename T>
+class _AnimatedEvaluationCls : public AnimationCls<T> {
 public:
     Animation<double> parent;
 
@@ -44,9 +47,11 @@ private:
 
      _AnimatedEvaluationCls(Animatable<T> _evaluatable, Animation<double> parent);
 };
-template<typename T> using _AnimatedEvaluation = std::shared_ptr<_AnimatedEvaluationCls<T>>;
+template<typename T>
+using _AnimatedEvaluation = std::shared_ptr<_AnimatedEvaluationCls<T>>;
 
-template<typename T> class _ChainedEvaluationCls : public AnimatableCls<T> {
+template<typename T>
+class _ChainedEvaluationCls : public AnimatableCls<T> {
 public:
 
     virtual T transform(double t);
@@ -61,9 +66,11 @@ private:
 
      _ChainedEvaluationCls(Animatable<T> _evaluatable, Animatable<double> _parent);
 };
-template<typename T> using _ChainedEvaluation = std::shared_ptr<_ChainedEvaluationCls<T>>;
+template<typename T>
+using _ChainedEvaluation = std::shared_ptr<_ChainedEvaluationCls<T>>;
 
-template<typename T> class TweenCls : public AnimatableCls<T> {
+template<typename T>
+class TweenCls : public AnimatableCls<T> {
 public:
     T begin;
 
@@ -80,9 +87,11 @@ public:
 private:
 
 };
-template<typename T> using Tween = std::shared_ptr<TweenCls<T>>;
+template<typename T>
+using Tween = std::shared_ptr<TweenCls<T>>;
 
-template<typename T> class ReverseTweenCls : public TweenCls<T> {
+template<typename T>
+class ReverseTweenCls : public TweenCls<T> {
 public:
     Tween<T> parent;
 
@@ -94,7 +103,8 @@ public:
 private:
 
 };
-template<typename T> using ReverseTween = std::shared_ptr<ReverseTweenCls<T>>;
+template<typename T>
+using ReverseTween = std::shared_ptr<ReverseTweenCls<T>>;
 
 class ColorTweenCls : public TweenCls<Color> {
 public:
@@ -151,7 +161,8 @@ private:
 };
 using StepTween = std::shared_ptr<StepTweenCls>;
 
-template<typename T> class ConstantTweenCls : public TweenCls<T> {
+template<typename T>
+class ConstantTweenCls : public TweenCls<T> {
 public:
 
      ConstantTweenCls(T value);
@@ -163,7 +174,8 @@ public:
 private:
 
 };
-template<typename T> using ConstantTween = std::shared_ptr<ConstantTweenCls<T>>;
+template<typename T>
+using ConstantTween = std::shared_ptr<ConstantTweenCls<T>>;
 
 class CurveTweenCls : public AnimatableCls<double> {
 public:

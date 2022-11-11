@@ -6,7 +6,8 @@
 #include "union_set.hpp"
 
 
-template<typename E> class UnionSetControllerCls : public ObjectCls {
+template<typename E>
+class UnionSetControllerCls : public ObjectCls {
 public:
     UnionSet<E> set;
 
@@ -24,7 +25,8 @@ private:
     virtual void  _(Set<Set<E>> _sets, bool disjoint);
 
 };
-template<typename E> using UnionSetController = std::shared_ptr<UnionSetControllerCls<E>>;
+template<typename E>
+using UnionSetController = std::shared_ptr<UnionSetControllerCls<E>>;
 
 
 #endif

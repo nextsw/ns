@@ -379,7 +379,7 @@ void _PlatformViewPlaceholderBoxCls::performLayout() {
     onLayout(size);
 }
 
-_PlatformViewPlaceholderBoxCls::_PlatformViewPlaceholderBoxCls(_OnLayoutCallback onLayout) : RenderConstrainedBox(BoxConstraintsCls->tightFor(double->infinity, double->infinity)) {
+_PlatformViewPlaceholderBoxCls::_PlatformViewPlaceholderBoxCls(_OnLayoutCallback onLayout) {
 }
 
 _PlatformViewPlaceholderBox _PlatformViewPlaceHolderCls::createRenderObject(BuildContext context) {

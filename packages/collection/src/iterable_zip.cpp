@@ -1,18 +1,21 @@
 #include "iterable_zip.hpp"
-template<typename T> IterableZipCls<T>::IterableZipCls(Iterable<Iterable<T>> iterables) {
+template<typename T>
+IterableZipCls<T>::IterableZipCls(Iterable<Iterable<T>> iterables) {
     {
         _iterables = iterables;
     }
 }
 
-template<typename T> Iterator<List<T>> IterableZipCls<T>::iterator() {
+template<typename T>
+Iterator<List<T>> IterableZipCls<T>::iterator() {
     auto iterators = _iterables->map([=] (Unknown  x) {
     x->iterator;
 })->toList(false);
     return <T>make<_IteratorZipCls>(iterators);
 }
 
-template<typename T> bool _IteratorZipCls<T>::moveNext() {
+template<typename T>
+bool _IteratorZipCls<T>::moveNext() {
     if (_iterators->isEmpty)     {
         return false;
     }
@@ -28,11 +31,13 @@ template<typename T> bool _IteratorZipCls<T>::moveNext() {
     return true;
 }
 
-template<typename T> List<T> _IteratorZipCls<T>::current() {
+template<typename T>
+List<T> _IteratorZipCls<T>::current() {
     return _current or ();
 }
 
-template<typename T> _IteratorZipCls<T>::_IteratorZipCls(List<Iterator<T>> iterators) {
+template<typename T>
+_IteratorZipCls<T>::_IteratorZipCls(List<Iterator<T>> iterators) {
     {
         _iterators = iterators;
     }

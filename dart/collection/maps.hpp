@@ -5,7 +5,8 @@
 #include <dart/core/core.hpp>
 
 
-template<typename K, typename V> class MapBaseCls : public MapMixinCls<K, V> {
+template<typename K, typename V>
+class MapBaseCls : public MapMixinCls<K, V> {
 public:
 
     static String mapToString(Map<Object, Object> m);
@@ -19,9 +20,11 @@ private:
     static void _fillMapWithIterables(Iterable<Object> keys, Map<Object, Object> map, Iterable<Object> values);
 
 };
-template<typename K, typename V> using MapBase = std::shared_ptr<MapBaseCls<K, V>>;
+template<typename K, typename V>
+using MapBase = std::shared_ptr<MapBaseCls<K, V>>;
 
-template<typename K, typename V> class MapMixinCls : public ObjectCls {
+template<typename K, typename V>
+class MapMixinCls : public ObjectCls {
 public:
 
     virtual Iterable<K> keys();
@@ -29,7 +32,8 @@ public:
     virtual void  operator[]=(K key, V value);
     virtual V remove(Object key);
     virtual void clear();
-    template<typename RK, typename RV>  virtual Map<RK, RV> cast();
+    template<typename RK, typename RV>
+ virtual Map<RK, RV> cast();
 
     virtual void forEach(void action(K key, V value) );
 
@@ -45,7 +49,8 @@ public:
 
     virtual Iterable<MapEntry<K, V>> entries();
 
-    template<typename K2, typename V2>  virtual Map<K2, V2> map(MapEntry<K2, V2> transform(K key, V value) );
+    template<typename K2, typename V2>
+ virtual Map<K2, V2> map(MapEntry<K2, V2> transform(K key, V value) );
 
     virtual void addEntries(Iterable<MapEntry<K, V>> newEntries);
 
@@ -66,17 +71,21 @@ public:
 private:
 
 };
-template<typename K, typename V> using MapMixin = std::shared_ptr<MapMixinCls<K, V>>;
+template<typename K, typename V>
+using MapMixin = std::shared_ptr<MapMixinCls<K, V>>;
 
-template<typename K, typename V> class UnmodifiableMapBaseCls : public ObjectCls {
+template<typename K, typename V>
+class UnmodifiableMapBaseCls : public ObjectCls {
 public:
 
 private:
 
 };
-template<typename K, typename V> using UnmodifiableMapBase = std::shared_ptr<UnmodifiableMapBaseCls<K, V>>;
+template<typename K, typename V>
+using UnmodifiableMapBase = std::shared_ptr<UnmodifiableMapBaseCls<K, V>>;
 
-template<typename K, typename V> class _MapBaseValueIterableCls : public EfficientLengthIterableCls<V> {
+template<typename K, typename V>
+class _MapBaseValueIterableCls : public EfficientLengthIterableCls<V> {
 public:
 
     virtual int length();
@@ -99,9 +108,11 @@ private:
 
      _MapBaseValueIterableCls(Map<K, V> _map);
 };
-template<typename K, typename V> using _MapBaseValueIterable = std::shared_ptr<_MapBaseValueIterableCls<K, V>>;
+template<typename K, typename V>
+using _MapBaseValueIterable = std::shared_ptr<_MapBaseValueIterableCls<K, V>>;
 
-template<typename K, typename V> class _MapBaseValueIteratorCls : public ObjectCls {
+template<typename K, typename V>
+class _MapBaseValueIteratorCls : public ObjectCls {
 public:
 
     virtual bool moveNext();
@@ -119,9 +130,11 @@ private:
      _MapBaseValueIteratorCls(Map<K, V> map);
 
 };
-template<typename K, typename V> using _MapBaseValueIterator = std::shared_ptr<_MapBaseValueIteratorCls<K, V>>;
+template<typename K, typename V>
+using _MapBaseValueIterator = std::shared_ptr<_MapBaseValueIteratorCls<K, V>>;
 
-template<typename K, typename V> class _UnmodifiableMapMixinCls : public ObjectCls {
+template<typename K, typename V>
+class _UnmodifiableMapMixinCls : public ObjectCls {
 public:
 
     virtual void operator[]=(K key, V value);
@@ -145,14 +158,17 @@ public:
 private:
 
 };
-template<typename K, typename V> using _UnmodifiableMapMixin = std::shared_ptr<_UnmodifiableMapMixinCls<K, V>>;
+template<typename K, typename V>
+using _UnmodifiableMapMixin = std::shared_ptr<_UnmodifiableMapMixinCls<K, V>>;
 
-template<typename K, typename V> class MapViewCls : public ObjectCls {
+template<typename K, typename V>
+class MapViewCls : public ObjectCls {
 public:
 
      MapViewCls(Map<K, V> map);
 
-    template<typename RK, typename RV>  virtual Map<RK, RV> cast();
+    template<typename RK, typename RV>
+ virtual Map<RK, RV> cast();
 
     virtual V operator[](Object key);
 
@@ -188,7 +204,8 @@ public:
 
     virtual void addEntries(Iterable<MapEntry<K, V>> entries);
 
-    template<typename K2, typename V2>  virtual Map<K2, V2> map(MapEntry<K2, V2> transform(K key, V value) );
+    template<typename K2, typename V2>
+ virtual Map<K2, V2> map(MapEntry<K2, V2> transform(K key, V value) );
 
     virtual V update(V ifAbsent() , K key, V update(V value) );
 
@@ -201,19 +218,23 @@ private:
 
 
 };
-template<typename K, typename V> using MapView = std::shared_ptr<MapViewCls<K, V>>;
+template<typename K, typename V>
+using MapView = std::shared_ptr<MapViewCls<K, V>>;
 
-template<typename K, typename V> class UnmodifiableMapViewCls : public MapViewCls<K, V> {
+template<typename K, typename V>
+class UnmodifiableMapViewCls : public MapViewCls<K, V> {
 public:
 
      UnmodifiableMapViewCls(Map<K, V> map);
 
-    template<typename RK, typename RV>  virtual Map<RK, RV> cast();
+    template<typename RK, typename RV>
+ virtual Map<RK, RV> cast();
 
 private:
 
 };
-template<typename K, typename V> using UnmodifiableMapView = std::shared_ptr<UnmodifiableMapViewCls<K, V>>;
+template<typename K, typename V>
+using UnmodifiableMapView = std::shared_ptr<UnmodifiableMapViewCls<K, V>>;
 
 
 #endif

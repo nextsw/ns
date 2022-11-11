@@ -77,84 +77,105 @@ String _PlatformCls::version() {
     return _version();
 }
 
-template<typename V> bool _CaseInsensitiveStringMapCls<V>::containsKey(Object key) {
+template<typename V>
+bool _CaseInsensitiveStringMapCls<V>::containsKey(Object key) {
     return is<String>(key) && _map->containsKey(key->toUpperCase());
 }
 
-template<typename V> bool _CaseInsensitiveStringMapCls<V>::containsValue(Object value) {
+template<typename V>
+bool _CaseInsensitiveStringMapCls<V>::containsValue(Object value) {
     return _map->containsValue(value);
 }
 
-template<typename V> V _CaseInsensitiveStringMapCls<V>::[](Object key) {
+template<typename V>
+V _CaseInsensitiveStringMapCls<V>::[](Object key) {
     return is<String>(key)? _map[key->toUpperCase()] : nullptr;
 }
 
-template<typename V> void _CaseInsensitiveStringMapCls<V>::[]=(String key, V value) {
+template<typename V>
+void _CaseInsensitiveStringMapCls<V>::[]=(String key, V value) {
     _map[key->toUpperCase()] = value;
 }
 
-template<typename V> V _CaseInsensitiveStringMapCls<V>::putIfAbsent(V ifAbsent() , String key) {
+template<typename V>
+V _CaseInsensitiveStringMapCls<V>::putIfAbsent(V ifAbsent() , String key) {
     return _map->putIfAbsent(key->toUpperCase(), ifAbsent);
 }
 
-template<typename V> void _CaseInsensitiveStringMapCls<V>::addAll(Map<String, V> other) {
+template<typename V>
+void _CaseInsensitiveStringMapCls<V>::addAll(Map<String, V> other) {
     other->forEach([=] (Unknown  key,Unknown  value)     {
         this[key->toUpperCase()] = value;
     });
 }
 
-template<typename V> V _CaseInsensitiveStringMapCls<V>::remove(Object key) {
+template<typename V>
+V _CaseInsensitiveStringMapCls<V>::remove(Object key) {
     return is<String>(key)? _map->remove(key->toUpperCase()) : nullptr;
 }
 
-template<typename V> void _CaseInsensitiveStringMapCls<V>::clear() {
+template<typename V>
+void _CaseInsensitiveStringMapCls<V>::clear() {
     _map->clear();
 }
 
-template<typename V> void _CaseInsensitiveStringMapCls<V>::forEach(void f(String key, V value) ) {
+template<typename V>
+void _CaseInsensitiveStringMapCls<V>::forEach(void f(String key, V value) ) {
     _map->forEach(f);
 }
 
-template<typename V> Iterable<String> _CaseInsensitiveStringMapCls<V>::keys() {
+template<typename V>
+Iterable<String> _CaseInsensitiveStringMapCls<V>::keys() {
     return _map->keys();
 }
 
-template<typename V> Iterable<V> _CaseInsensitiveStringMapCls<V>::values() {
+template<typename V>
+Iterable<V> _CaseInsensitiveStringMapCls<V>::values() {
     return _map->values();
 }
 
-template<typename V> int _CaseInsensitiveStringMapCls<V>::length() {
+template<typename V>
+int _CaseInsensitiveStringMapCls<V>::length() {
     return _map->length();
 }
 
-template<typename V> bool _CaseInsensitiveStringMapCls<V>::isEmpty() {
+template<typename V>
+bool _CaseInsensitiveStringMapCls<V>::isEmpty() {
     return _map->isEmpty();
 }
 
-template<typename V> bool _CaseInsensitiveStringMapCls<V>::isNotEmpty() {
+template<typename V>
+bool _CaseInsensitiveStringMapCls<V>::isNotEmpty() {
     return _map->isNotEmpty();
 }
 
-template<typename V> Iterable<MapEntry<String, V>> _CaseInsensitiveStringMapCls<V>::entries() {
+template<typename V>
+Iterable<MapEntry<String, V>> _CaseInsensitiveStringMapCls<V>::entries() {
     return _map->entries();
 }
 
-template<typename V> Map<K2, V2> _CaseInsensitiveStringMapCls<V>::maptemplate<typename K2, typename V2> (MapEntry<K2, V2> transform(String key, V value) ) {
+template<typename V>
+template<typename K2, typename V2>
+Map<K2, V2> _CaseInsensitiveStringMapCls<V>::map(MapEntry<K2, V2> transform(String key, V value) ) {
     return _map->map(transform);
 }
 
-template<typename V> V _CaseInsensitiveStringMapCls<V>::update(V ifAbsent() , String key, V update(V value) ) {
+template<typename V>
+V _CaseInsensitiveStringMapCls<V>::update(V ifAbsent() , String key, V update(V value) ) {
     return _map->update(key->toUpperCase(), updateifAbsent);
 }
 
-template<typename V> void _CaseInsensitiveStringMapCls<V>::updateAll(V update(String key, V value) ) {
+template<typename V>
+void _CaseInsensitiveStringMapCls<V>::updateAll(V update(String key, V value) ) {
     _map->updateAll(update);
 }
 
-template<typename V> void _CaseInsensitiveStringMapCls<V>::removeWhere(bool test(String key, V value) ) {
+template<typename V>
+void _CaseInsensitiveStringMapCls<V>::removeWhere(bool test(String key, V value) ) {
     _map->removeWhere(test);
 }
 
-template<typename V> String _CaseInsensitiveStringMapCls<V>::toString() {
+template<typename V>
+String _CaseInsensitiveStringMapCls<V>::toString() {
     return _map->toString();
 }

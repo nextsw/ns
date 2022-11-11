@@ -6,7 +6,8 @@
 #include <dart/collection/collection.hpp>
 
 
-template<typename E> class QueueListCls : public ObjectCls {
+template<typename E>
+class QueueListCls : public ObjectCls {
 public:
 
      QueueListCls(int initialCapacity);
@@ -17,9 +18,11 @@ public:
 
     virtual void addAll(Iterable<E> iterable);
 
-    template<typename T>  virtual QueueList<T> cast();
+    template<typename T>
+ virtual QueueList<T> cast();
 
-    template<typename T>  virtual QueueList<T> retype();
+    template<typename T>
+ virtual QueueList<T> retype();
 
     virtual String toString();
 
@@ -49,7 +52,8 @@ private:
     int _tail;
 
 
-    template<typename S, typename T>  static QueueList<T> _castFrom(QueueList<S> source);
+    template<typename S, typename T>
+ static QueueList<T> _castFrom(QueueList<S> source);
 
     virtual void  _init(int initialCapacity);
 
@@ -69,9 +73,11 @@ private:
     virtual void _preGrow(int newElementCount);
 
 };
-template<typename E> using QueueList = std::shared_ptr<QueueListCls<E>>;
+template<typename E>
+using QueueList = std::shared_ptr<QueueListCls<E>>;
 
-template<typename S, typename T> class _CastQueueListCls : public QueueListCls<T> {
+template<typename S, typename T>
+class _CastQueueListCls : public QueueListCls<T> {
 public:
 
 private:
@@ -89,7 +95,8 @@ private:
     virtual void  _tail(int value);
 
 };
-template<typename S, typename T> using _CastQueueList = std::shared_ptr<_CastQueueListCls<S, T>>;
+template<typename S, typename T>
+using _CastQueueList = std::shared_ptr<_CastQueueListCls<S, T>>;
 
 
 #endif

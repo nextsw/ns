@@ -6,7 +6,8 @@
 #include "framework.hpp"
 
 
-template<typename T> class DisposableBuildContextCls : public ObjectCls {
+template<typename T>
+class DisposableBuildContextCls : public ObjectCls {
 public:
 
      DisposableBuildContextCls(T _state);
@@ -22,7 +23,8 @@ private:
     virtual bool _debugValidate();
 
 };
-template<typename T> using DisposableBuildContext = std::shared_ptr<DisposableBuildContextCls<T>>;
+template<typename T>
+using DisposableBuildContext = std::shared_ptr<DisposableBuildContextCls<T>>;
 
 
 #endif

@@ -3,7 +3,8 @@ void _ProxyLayerCls::addToScene(SceneBuilder builder) {
     _layer->addToScene(builder);
 }
 
-bool _ProxyLayerCls::findAnnotationstemplate<typename S> (Offset localPosition, bool onlyFirst, AnnotationResult<S> result) {
+template<typename S>
+bool _ProxyLayerCls::findAnnotations(Offset localPosition, bool onlyFirst, AnnotationResult<S> result) {
     return _layer->findAnnotations(result, localPositiononlyFirst);
 }
 
@@ -317,7 +318,7 @@ Future<Image> _ScreenshotPaintingContextCls::toImage(bool debugPaint, double pix
     return data->containerLayer->toImage(renderBoundspixelRatio);
 }
 
-_ScreenshotPaintingContextCls::_ScreenshotPaintingContextCls(ContainerLayer containerLayer, Rect estimatedBounds, _ScreenshotData screenshotData) : PaintingContext(containerLayer, estimatedBounds) {
+_ScreenshotPaintingContextCls::_ScreenshotPaintingContextCls(ContainerLayer containerLayer, Rect estimatedBounds, _ScreenshotData screenshotData) {
     {
         _data = screenshotData;
     }
@@ -388,7 +389,7 @@ List<_DiagnosticsPathNode> _followDiagnosticableChain(List<Diagnosticable> chain
                 foundMatch = true;
                 path->add(make<_DiagnosticsPathNodeCls>(diagnostic, children, j));
                 diagnostic = child;
-                                break;
+                break;
             }
         }
         assert(foundMatch);
@@ -846,7 +847,7 @@ void WidgetInspectorServiceCls::_registerServiceExtensionVarArgs(FutureOr<Object
             if (parameters->containsKey(name)) {
                 args->add(parameters[name]!);
             } else {
-                                break;
+                break;
             }
             index++;
         }
@@ -928,7 +929,7 @@ List<Element> WidgetInspectorServiceCls::_getRawElementParentChain(Element eleme
                 numLocalParents = numLocalParents! - 1;
                 if (numLocalParents <= 0) {
                     elements = elements->take(i + 1)->toList();
-                                        break;
+                    break;
                 }
             }
         }
@@ -1098,7 +1099,7 @@ Map<String, Object> WidgetInspectorServiceCls::_getSelectedSummaryWidget(String 
         for (Element candidate : current->debugGetDiagnosticChain()) {
             if (_isValueCreatedByLocalProject(candidate)) {
                 firstLocal = candidate;
-                                break;
+                break;
             }
         }
         current = firstLocal;
@@ -1536,7 +1537,8 @@ void _InspectorOverlayLayerCls::addToScene(SceneBuilder builder) {
     builder->addPicture(OffsetCls::zero, _picture);
 }
 
-bool _InspectorOverlayLayerCls::findAnnotationstemplate<typename S> (Offset localPosition, bool onlyFirst, AnnotationResult<S> result) {
+template<typename S>
+bool _InspectorOverlayLayerCls::findAnnotations(Offset localPosition, bool onlyFirst, AnnotationResult<S> result) {
     return false;
 }
 
@@ -1645,7 +1647,7 @@ Iterable<DiagnosticsNode> debugTransformDebugCreator(Iterable<DiagnosticsNode> p
     for (DiagnosticsNode node : properties) {
         if (is<ErrorSummary>(node)) {
             errorSummary = as<ErrorSummaryCls>(node);
-                        break;
+            break;
         }
     }
     bool foundStackTrace = false;
@@ -1697,7 +1699,7 @@ Iterable<DiagnosticsNode> _describeRelevantUserCode(Element element, ErrorSummar
     return nodes;
 }
 
-DevToolsDeepLinkPropertyCls::DevToolsDeepLinkPropertyCls(String description, String url) : DiagnosticsProperty<String>(__s(""), urldescription, DiagnosticLevelCls::info) {
+DevToolsDeepLinkPropertyCls::DevToolsDeepLinkPropertyCls(String description, String url) {
     {
         assert(description != nullptr);
         assert(url != nullptr);

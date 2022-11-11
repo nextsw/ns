@@ -296,7 +296,8 @@ private:
 };
 using StringProperty = std::shared_ptr<StringPropertyCls>;
 
-template<typename T> class _NumPropertyCls : public DiagnosticsPropertyCls<T> {
+template<typename T>
+class _NumPropertyCls : public DiagnosticsPropertyCls<T> {
 public:
     String unit;
 
@@ -312,7 +313,8 @@ private:
 
      _NumPropertyCls(Unknown defaultValue, Unknown ifNull, Unknown level, String name, Unknown showName, Unknown style, Unknown tooltip, String unit, Unknown value);
 };
-template<typename T> using _NumProperty = std::shared_ptr<_NumPropertyCls<T>>;
+template<typename T>
+using _NumProperty = std::shared_ptr<_NumPropertyCls<T>>;
 
 class DoublePropertyCls : public _NumPropertyCls<double> {
 public:
@@ -376,7 +378,8 @@ private:
 };
 using FlagProperty = std::shared_ptr<FlagPropertyCls>;
 
-template<typename T> class IterablePropertyCls : public DiagnosticsPropertyCls<Iterable<T>> {
+template<typename T>
+class IterablePropertyCls : public DiagnosticsPropertyCls<Iterable<T>> {
 public:
 
      IterablePropertyCls(Unknown defaultValue, Unknown ifEmpty, Unknown ifNull, Unknown level, String name, Unknown showName, Unknown showSeparator, Unknown style, Unknown value);
@@ -390,9 +393,11 @@ public:
 private:
 
 };
-template<typename T> using IterableProperty = std::shared_ptr<IterablePropertyCls<T>>;
+template<typename T>
+using IterableProperty = std::shared_ptr<IterablePropertyCls<T>>;
 
-template<typename T> class EnumPropertyCls : public DiagnosticsPropertyCls<T> {
+template<typename T>
+class EnumPropertyCls : public DiagnosticsPropertyCls<T> {
 public:
 
      EnumPropertyCls(Unknown defaultValue, Unknown level, String name, Unknown value);
@@ -402,9 +407,11 @@ public:
 private:
 
 };
-template<typename T> using EnumProperty = std::shared_ptr<EnumPropertyCls<T>>;
+template<typename T>
+using EnumProperty = std::shared_ptr<EnumPropertyCls<T>>;
 
-template<typename T> class ObjectFlagPropertyCls : public DiagnosticsPropertyCls<T> {
+template<typename T>
+class ObjectFlagPropertyCls : public DiagnosticsPropertyCls<T> {
 public:
     String ifPresent;
 
@@ -424,9 +431,11 @@ public:
 private:
 
 };
-template<typename T> using ObjectFlagProperty = std::shared_ptr<ObjectFlagPropertyCls<T>>;
+template<typename T>
+using ObjectFlagProperty = std::shared_ptr<ObjectFlagPropertyCls<T>>;
 
-template<typename T> class FlagsSummaryCls : public DiagnosticsPropertyCls<Map<String, T>> {
+template<typename T>
+class FlagsSummaryCls : public DiagnosticsPropertyCls<Map<String, T>> {
 public:
 
      FlagsSummaryCls(Unknown ifEmpty, Unknown level, String name, Unknown showName, Unknown showSeparator, Map<String, T> value);
@@ -446,9 +455,11 @@ private:
     virtual Iterable<String> _formattedValues();
 
 };
-template<typename T> using FlagsSummary = std::shared_ptr<FlagsSummaryCls<T>>;
+template<typename T>
+using FlagsSummary = std::shared_ptr<FlagsSummaryCls<T>>;
 
-template<typename T> class DiagnosticsPropertyCls : public DiagnosticsNodeCls {
+template<typename T>
+class DiagnosticsPropertyCls : public DiagnosticsNodeCls {
 public:
     bool expandableValue;
 
@@ -510,9 +521,11 @@ private:
     virtual void _maybeCacheValue();
 
 };
-template<typename T> using DiagnosticsProperty = std::shared_ptr<DiagnosticsPropertyCls<T>>;
+template<typename T>
+using DiagnosticsProperty = std::shared_ptr<DiagnosticsPropertyCls<T>>;
 
-template<typename T> class DiagnosticableNodeCls : public DiagnosticsNodeCls {
+template<typename T>
+class DiagnosticableNodeCls : public DiagnosticsNodeCls {
 public:
     T value;
 
@@ -536,7 +549,8 @@ private:
 
 
 };
-template<typename T> using DiagnosticableNode = std::shared_ptr<DiagnosticableNodeCls<T>>;
+template<typename T>
+using DiagnosticableNode = std::shared_ptr<DiagnosticableNodeCls<T>>;
 
 class DiagnosticableTreeNodeCls : public DiagnosticableNodeCls<DiagnosticableTree> {
 public:

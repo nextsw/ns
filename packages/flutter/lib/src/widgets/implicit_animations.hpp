@@ -123,7 +123,8 @@ private:
 };
 using ImplicitlyAnimatedWidget = std::shared_ptr<ImplicitlyAnimatedWidgetCls>;
 
-template<typename T> class ImplicitlyAnimatedWidgetStateCls : public StateCls<T> {
+template<typename T>
+class ImplicitlyAnimatedWidgetStateCls : public StateCls<T> {
 public:
 
     virtual AnimationController controller();
@@ -154,9 +155,11 @@ private:
     virtual bool _constructTweens();
 
 };
-template<typename T> using ImplicitlyAnimatedWidgetState = std::shared_ptr<ImplicitlyAnimatedWidgetStateCls<T>>;
+template<typename T>
+using ImplicitlyAnimatedWidgetState = std::shared_ptr<ImplicitlyAnimatedWidgetStateCls<T>>;
 
-template<typename T> class AnimatedWidgetBaseStateCls : public ImplicitlyAnimatedWidgetStateCls<T> {
+template<typename T>
+class AnimatedWidgetBaseStateCls : public ImplicitlyAnimatedWidgetStateCls<T> {
 public:
 
     virtual void initState();
@@ -166,7 +169,8 @@ private:
     virtual void _handleAnimationChanged();
 
 };
-template<typename T> using AnimatedWidgetBaseState = std::shared_ptr<AnimatedWidgetBaseStateCls<T>>;
+template<typename T>
+using AnimatedWidgetBaseState = std::shared_ptr<AnimatedWidgetBaseStateCls<T>>;
 
 class AnimatedContainerCls : public ImplicitlyAnimatedWidgetCls {
 public:

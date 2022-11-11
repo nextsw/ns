@@ -1,13 +1,17 @@
 #include "inherited_model.hpp"
-template<typename T> InheritedModelElement<T> InheritedModelCls<T>::createElement() {
+template<typename T>
+InheritedModelElement<T> InheritedModelCls<T>::createElement() {
     return <T>make<InheritedModelElementCls>(this);
 }
 
-template<typename T> bool InheritedModelCls<T>::isSupportedAspect(Object aspect) {
+template<typename T>
+bool InheritedModelCls<T>::isSupportedAspect(Object aspect) {
     return true;
 }
 
-template<typename T> T InheritedModelCls<T>::inheritFromtemplate<typename T> (Object aspect, BuildContext context) {
+template<typename T>
+template<typename T>
+T InheritedModelCls<T>::inheritFrom(Object aspect, BuildContext context) {
     if (aspect == nullptr) {
         return context-><T>dependOnInheritedWidgetOfExactType();
     }
@@ -27,7 +31,9 @@ template<typename T> T InheritedModelCls<T>::inheritFromtemplate<typename T> (Ob
     return nullptr;
 }
 
-template<typename T> void InheritedModelCls<T>::_findModelstemplate<typename T> (Object aspect, BuildContext context, List<InheritedElement> results) {
+template<typename T>
+template<typename T>
+void InheritedModelCls<T>::_findModels(Object aspect, BuildContext context, List<InheritedElement> results) {
     InheritedElement model = context-><T>getElementForInheritedWidgetOfExactType();
     if (model == nullptr) {
         return;
@@ -49,7 +55,8 @@ template<typename T> void InheritedModelCls<T>::_findModelstemplate<typename T> 
     <T>_findModels(modelParent!, aspect, results);
 }
 
-template<typename T> void InheritedModelElementCls<T>::updateDependencies(Object aspect, Element dependent) {
+template<typename T>
+void InheritedModelElementCls<T>::updateDependencies(Object aspect, Element dependent) {
     Set<T> dependencies = as<Set<T>>(getDependencies(dependent));
     if (dependencies != nullptr && dependencies->isEmpty) {
         return;
@@ -62,7 +69,8 @@ template<typename T> void InheritedModelElementCls<T>::updateDependencies(Object
     }
 }
 
-template<typename T> void InheritedModelElementCls<T>::notifyDependent(Element dependent, InheritedModel<T> oldWidget) {
+template<typename T>
+void InheritedModelElementCls<T>::notifyDependent(Element dependent, InheritedModel<T> oldWidget) {
     Set<T> dependencies = as<Set<T>>(getDependencies(dependent));
     if (dependencies == nullptr) {
         return;

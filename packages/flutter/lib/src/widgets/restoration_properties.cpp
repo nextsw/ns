@@ -1,10 +1,12 @@
 #include "restoration_properties.hpp"
-template<typename T> T RestorableValueCls<T>::value() {
+template<typename T>
+T RestorableValueCls<T>::value() {
     assert(isRegistered);
     return as<T>(_value);
 }
 
-template<typename T> void RestorableValueCls<T>::value(T newValue) {
+template<typename T>
+void RestorableValueCls<T>::value(T newValue) {
     assert(isRegistered);
     if (newValue != _value) {
         T oldValue = _value;
@@ -13,56 +15,67 @@ template<typename T> void RestorableValueCls<T>::value(T newValue) {
     }
 }
 
-template<typename T> void RestorableValueCls<T>::initWithValue(T value) {
+template<typename T>
+void RestorableValueCls<T>::initWithValue(T value) {
     _value = value;
 }
 
-template<typename T> T _RestorablePrimitiveValueNCls<T>::createDefaultValue() {
+template<typename T>
+T _RestorablePrimitiveValueNCls<T>::createDefaultValue() {
     return _defaultValue;
 }
 
-template<typename T> void _RestorablePrimitiveValueNCls<T>::didUpdateValue(T oldValue) {
+template<typename T>
+void _RestorablePrimitiveValueNCls<T>::didUpdateValue(T oldValue) {
     assert(debugIsSerializableForRestoration(value));
     notifyListeners();
 }
 
-template<typename T> T _RestorablePrimitiveValueNCls<T>::fromPrimitives(Object serialized) {
+template<typename T>
+T _RestorablePrimitiveValueNCls<T>::fromPrimitives(Object serialized) {
     return as<T>(serialized);
 }
 
-template<typename T> Object _RestorablePrimitiveValueNCls<T>::toPrimitives() {
+template<typename T>
+Object _RestorablePrimitiveValueNCls<T>::toPrimitives() {
     return value;
 }
 
-template<typename T> _RestorablePrimitiveValueNCls<T>::_RestorablePrimitiveValueNCls(T _defaultValue) : RestorableValue<T>() {
+template<typename T>
+_RestorablePrimitiveValueNCls<T>::_RestorablePrimitiveValueNCls(T _defaultValue) {
     {
         assert(debugIsSerializableForRestoration(_defaultValue));
     }
 }
 
-template<typename T> void _RestorablePrimitiveValueCls<T>::value(T value) {
+template<typename T>
+void _RestorablePrimitiveValueCls<T>::value(T value) {
     assert(value != nullptr);
     super->value = value;
 }
 
-template<typename T> T _RestorablePrimitiveValueCls<T>::fromPrimitives(Object serialized) {
+template<typename T>
+T _RestorablePrimitiveValueCls<T>::fromPrimitives(Object serialized) {
     assert(serialized != nullptr);
     return super->fromPrimitives(serialized);
 }
 
-template<typename T> Object _RestorablePrimitiveValueCls<T>::toPrimitives() {
+template<typename T>
+Object _RestorablePrimitiveValueCls<T>::toPrimitives() {
     assert(value != nullptr);
     return super->toPrimitives()!;
 }
 
-template<typename T> _RestorablePrimitiveValueCls<T>::_RestorablePrimitiveValueCls(Unknown defaultValue) {
+template<typename T>
+_RestorablePrimitiveValueCls<T>::_RestorablePrimitiveValueCls(Unknown defaultValue) {
     {
         assert(defaultValue != nullptr);
         assert(debugIsSerializableForRestoration(defaultValue));
     }
 }
 
-template<typename T> RestorableNumCls<T>::RestorableNumCls(Unknown defaultValue) {
+template<typename T>
+RestorableNumCls<T>::RestorableNumCls(Unknown defaultValue) {
     {
         assert(defaultValue != nullptr);
     }
@@ -138,34 +151,40 @@ Object RestorableDateTimeNCls::toPrimitives() {
     return value?->millisecondsSinceEpoch;
 }
 
-template<typename T> T RestorableListenableCls<T>::value() {
+template<typename T>
+T RestorableListenableCls<T>::value() {
     assert(isRegistered);
     return _value!;
 }
 
-template<typename T> void RestorableListenableCls<T>::initWithValue(T value) {
+template<typename T>
+void RestorableListenableCls<T>::initWithValue(T value) {
     assert(value != nullptr);
     _value?->removeListener(notifyListeners);
     _value = value;
     _value!->addListener(notifyListeners);
 }
 
-template<typename T> void RestorableListenableCls<T>::dispose() {
+template<typename T>
+void RestorableListenableCls<T>::dispose() {
     super->dispose();
     _value?->removeListener(notifyListeners);
 }
 
-template<typename T> void RestorableChangeNotifierCls<T>::initWithValue(T value) {
+template<typename T>
+void RestorableChangeNotifierCls<T>::initWithValue(T value) {
     _disposeOldValue();
     super->initWithValue(value);
 }
 
-template<typename T> void RestorableChangeNotifierCls<T>::dispose() {
+template<typename T>
+void RestorableChangeNotifierCls<T>::dispose() {
     _disposeOldValue();
     super->dispose();
 }
 
-template<typename T> void RestorableChangeNotifierCls<T>::_disposeOldValue() {
+template<typename T>
+void RestorableChangeNotifierCls<T>::_disposeOldValue() {
     if (_value != nullptr) {
         scheduleMicrotask(_value!->dispose);
     }

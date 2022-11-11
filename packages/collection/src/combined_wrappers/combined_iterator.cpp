@@ -1,5 +1,6 @@
 #include "combined_iterator.hpp"
-template<typename T> CombinedIteratorCls<T>::CombinedIteratorCls(Iterator<Iterator<T>> iterators) {
+template<typename T>
+CombinedIteratorCls<T>::CombinedIteratorCls(Iterator<Iterator<T>> iterators) {
     {
             auto _c1 = toSet();    _c1.addAll(other);_iterators = iterators;
     }
@@ -10,7 +11,8 @@ template<typename T> CombinedIteratorCls<T>::CombinedIteratorCls(Iterator<Iterat
     }
 }
 
-template<typename T> T CombinedIteratorCls<T>::current() {
+template<typename T>
+T CombinedIteratorCls<T>::current() {
     auto iterators = _iterators;
     if (iterators != nullptr)     {
         return iterators->current()->current();
@@ -18,7 +20,8 @@ template<typename T> T CombinedIteratorCls<T>::current() {
     return as<T>(nullptr);
 }
 
-template<typename T> bool CombinedIteratorCls<T>::moveNext() {
+template<typename T>
+bool CombinedIteratorCls<T>::moveNext() {
     auto iterators = _iterators;
     if (iterators != nullptr) {
         do {

@@ -7,7 +7,8 @@
 #include "combined_iterator.hpp"
 
 
-template<typename T> class CombinedListViewCls : public ListBaseCls<T> {
+template<typename T>
+class CombinedListViewCls : public ListBaseCls<T> {
 public:
 
      CombinedListViewCls(List<List<T>> _lists);
@@ -36,7 +37,8 @@ private:
     static Never _throw();
 
 };
-template<typename T> using CombinedListView = std::shared_ptr<CombinedListViewCls<T>>;
+template<typename T>
+using CombinedListView = std::shared_ptr<CombinedListViewCls<T>>;
 
 
 #endif

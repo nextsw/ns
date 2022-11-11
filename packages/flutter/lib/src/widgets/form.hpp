@@ -82,7 +82,8 @@ private:
 };
 using _FormScope = std::shared_ptr<_FormScopeCls>;
 
-template<typename T> class FormFieldCls : public StatefulWidgetCls {
+template<typename T>
+class FormFieldCls : public StatefulWidgetCls {
 public:
     FormFieldSetter<T> onSaved;
 
@@ -106,9 +107,11 @@ public:
 private:
 
 };
-template<typename T> using FormField = std::shared_ptr<FormFieldCls<T>>;
+template<typename T>
+using FormField = std::shared_ptr<FormFieldCls<T>>;
 
-template<typename T> class FormFieldStateCls : public StateCls<FormField<T>> {
+template<typename T>
+class FormFieldStateCls : public StateCls<FormField<T>> {
 public:
 
     virtual T value();
@@ -148,7 +151,8 @@ private:
     virtual void _validate();
 
 };
-template<typename T> using FormFieldState = std::shared_ptr<FormFieldStateCls<T>>;
+template<typename T>
+using FormFieldState = std::shared_ptr<FormFieldStateCls<T>>;
 
 enum AutovalidateMode{
     disabled,

@@ -91,13 +91,13 @@ int _Utf8EncoderCls::_fillBuffer(int end, int start, String str) {
         auto codeUnit = str->codeUnitAt(stringIndex);
         if (codeUnit <= _ONE_BYTE_LIMITCls) {
             if (_bufferIndex >= _buffer->length)             {
-                            break;
+                break;
             }
             _buffer[_bufferIndex++] = codeUnit;
         } else         {
             if (_isLeadSurrogate(codeUnit)) {
             if (_bufferIndex + 4 > _buffer->length)             {
-                            break;
+                break;
             }
             auto nextCodeUnit = str->codeUnitAt(stringIndex + 1);
             auto wasCombined = _writeSurrogate(codeUnit, nextCodeUnit);
@@ -107,21 +107,21 @@ int _Utf8EncoderCls::_fillBuffer(int end, int start, String str) {
         } else         {
             if (_isTailSurrogate(codeUnit)) {
             if (_bufferIndex + 3 > _buffer->length)             {
-                            break;
+                break;
             }
             _writeReplacementCharacter();
         } else {
             auto rune = codeUnit;
             if (rune <= _TWO_BYTE_LIMITCls) {
                 if (_bufferIndex + 1 >= _buffer->length)                 {
-                                    break;
+                    break;
                 }
                 _buffer[_bufferIndex++] = 0xC0 | (rune >> 6);
                 _buffer[_bufferIndex++] = 0x80 | (rune & 0x3f);
             } else {
                 assert(rune <= _THREE_BYTE_LIMITCls);
                 if (_bufferIndex + 2 >= _buffer->length)                 {
-                                    break;
+                    break;
                 }
                 _buffer[_bufferIndex++] = 0xE0 | (rune >> 12);
                 _buffer[_bufferIndex++] = 0x80 | ((rune >> 6) & 0x3f);
@@ -279,14 +279,14 @@ String _Utf8DecoderCls::decodeGeneral(Uint8List bytes, int end, bool single, int
         multibyte:;
         while (true) {
             int type = typeTable->codeUnitAt(byte) & typeMask;
-            char = (state <= afterBom)? byte & (shiftedByteMask >> type) : (byte & 0x3F) | (char << 6);
+            charValue = (state <= afterBom)? byte & (shiftedByteMask >> type) : (byte & 0x3F) | (charValue << 6);
             state = transitionTable->codeUnitAt(state + type);
             if (state == accept) {
-                buffer->writeCharCode(char);
+                buffer->writeCharCode(charValue);
                 if (i == end)                 {
-                                    break loop;
+                    break loop;
                 }
-                                break multibyte;
+                break multibyte;
             } else             {
                 if (isErrorState(state)) {
                 if (allowMalformed) {
@@ -300,7 +300,7 @@ String _Utf8DecoderCls::decodeGeneral(Uint8List bytes, int end, bool single, int
             }
 ;
             }            if (i == end)             {
-                            break loop;
+                break loop;
             }
             byte = bytes[i++];
         }
@@ -312,7 +312,7 @@ String _Utf8DecoderCls::decodeGeneral(Uint8List bytes, int end, bool single, int
                 byte = bytes[i++];
                 if (byte >= 128) {
                     markEnd = i - 1;
-                                        break;
+                    break;
                 }
             }
             assert( < markEnd);
@@ -324,7 +324,7 @@ String _Utf8DecoderCls::decodeGeneral(Uint8List bytes, int end, bool single, int
                 buffer->write(StringCls->fromCharCodes(bytes, markStart, markEnd));
             }
             if (markEnd == end)             {
-                            break loop;
+                break loop;
             }
         }
     }
@@ -338,7 +338,7 @@ String _Utf8DecoderCls::decodeGeneral(Uint8List bytes, int end, bool single, int
         }
     }
     _state = state;
-    _charOrIndex = char;
+    _charOrIndex = charValue;
     return buffer->toString();
 }
 

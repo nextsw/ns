@@ -482,7 +482,8 @@ String _FileCls::_tryDecode(List<int> bytes, Encoding encoding) {
     };
 }
 
-T _FileCls::_checkNotNulltemplate<typename T> (String name, T t) {
+template<typename T>
+T _FileCls::_checkNotNull(String name, T t) {
     ArgumentErrorCls->checkNotNull(t, name);
     return t;
 }

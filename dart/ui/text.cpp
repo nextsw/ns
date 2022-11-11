@@ -201,7 +201,8 @@ int TextHeightBehaviorCls::_encode() {
     return (applyHeightToFirstAscent? 0 : 1 << 0) | (applyHeightToLastDescent? 0 : 1 << 1);
 }
 
-bool _listEqualstemplate<typename T> (List<T> a, List<T> b) {
+template<typename T>
+bool _listEquals(List<T> a, List<T> b) {
     if (a == nullptr)     {
         return b == nullptr;
     }

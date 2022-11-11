@@ -9,7 +9,8 @@
 #include <packages/flutter/lib/foundation.hpp>
 
 
-template<typename T> class ParametricCurveCls : public ObjectCls {
+template<typename T>
+class ParametricCurveCls : public ObjectCls {
 public:
 
      ParametricCurveCls();
@@ -22,7 +23,8 @@ public:
 private:
 
 };
-template<typename T> using ParametricCurve = std::shared_ptr<ParametricCurveCls<T>>;
+template<typename T>
+using ParametricCurve = std::shared_ptr<ParametricCurveCls<T>>;
 
 class CurveCls : public ParametricCurveCls<double> {
 public:

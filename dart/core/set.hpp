@@ -5,7 +5,8 @@
 #include <dart/core/core.hpp>
 
 
-template<typename E> class SetCls : public EfficientLengthIterableCls<E> {
+template<typename E>
+class SetCls : public EfficientLengthIterableCls<E> {
 public:
 
      SetCls();
@@ -14,9 +15,11 @@ public:
     virtual void  of(Iterable<E> elements);
     virtual void  unmodifiable(Iterable<E> elements);
 
-    template<typename S, typename T>  static Set<T> castFrom(<R>Set<R> newSet() , Set<S> source);
+    template<typename S, typename T>
+ static Set<T> castFrom(<R>Set<R> newSet() , Set<S> source);
 
-<R>    template<typename R>  virtual Set<R> cast();
+<R>    template<typename R>
+ virtual Set<R> cast();
     virtual Iterator<E> iterator();
     virtual bool contains(Object value);
     virtual bool add(E value);
@@ -36,7 +39,8 @@ public:
 private:
 
 };
-template<typename E> using Set = std::shared_ptr<SetCls<E>>;
+template<typename E>
+using Set = std::shared_ptr<SetCls<E>>;
 
 
 #endif

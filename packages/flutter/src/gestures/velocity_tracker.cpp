@@ -90,13 +90,13 @@ VelocityEstimate VelocityTrackerCls::getVelocityEstimate() {
     do {
         _PointAtTime sample = _samples[index];
         if (sample == nullptr) {
-                        break;
+            break;
         }
         double age = (newestSample->time - sample->time)->inMicroseconds->toDouble() / 1000;
         double delta = (sample->time - previousSample->time)->inMicroseconds->abs()->toDouble() / 1000;
         previousSample = sample;
         if (age > _horizonMilliseconds || delta > _assumePointerMoveStoppedMilliseconds) {
-                        break;
+            break;
         }
         oldestSample = sample;
         Offset position = sample->point;
@@ -154,7 +154,7 @@ VelocityEstimate IOSScrollViewFlingVelocityTrackerCls::getVelocityEstimate() {
     for (; i <= _sampleSize; i = 1) {
         oldestNonNullSample = _touchSamples[(_index + i) % _sampleSize];
         if (oldestNonNullSample != nullptr) {
-                        break;
+            break;
         }
     }
     if (oldestNonNullSample == nullptr || newestSample == nullptr) {

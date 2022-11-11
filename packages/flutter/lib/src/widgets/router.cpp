@@ -1,22 +1,27 @@
 #include "router.hpp"
-template<typename T> RouterConfigCls<T>::RouterConfigCls(BackButtonDispatcher backButtonDispatcher, RouteInformationParser<T> routeInformationParser, RouteInformationProvider routeInformationProvider, RouterDelegate<T> routerDelegate) {
+template<typename T>
+RouterConfigCls<T>::RouterConfigCls(BackButtonDispatcher backButtonDispatcher, RouteInformationParser<T> routeInformationParser, RouteInformationProvider routeInformationProvider, RouterDelegate<T> routerDelegate) {
     {
         assert((routeInformationProvider == nullptr) == (routeInformationParser == nullptr));
     }
 }
 
-template<typename T> RouterCls<T>::RouterCls(BackButtonDispatcher backButtonDispatcher, Unknown key, String restorationScopeId, RouteInformationParser<T> routeInformationParser, RouteInformationProvider routeInformationProvider, RouterDelegate<T> routerDelegate) {
+template<typename T>
+RouterCls<T>::RouterCls(BackButtonDispatcher backButtonDispatcher, Unknown key, String restorationScopeId, RouteInformationParser<T> routeInformationParser, RouteInformationProvider routeInformationProvider, RouterDelegate<T> routerDelegate) {
     {
         assert(routeInformationProvider == nullptr || routeInformationParser != nullptr, __s("A routeInformationParser must be provided when a routeInformationProvider is specified."));
         assert(routerDelegate != nullptr);
     }
 }
 
-template<typename T> void RouterCls<T>::withConfig(RouterConfig<T> config, Key key, String restorationScopeId) {
+template<typename T>
+void RouterCls<T>::withConfig(RouterConfig<T> config, Key key, String restorationScopeId) {
     return <T>make<RouterCls>(key, config->routeInformationProvider, config->routeInformationParser, config->routerDelegate, config->backButtonDispatcher, restorationScopeId);
 }
 
-template<typename T> Router<T> RouterCls<T>::oftemplate<typename T> (BuildContext context) {
+template<typename T>
+template<typename T>
+Router<T> RouterCls<T>::of(BuildContext context) {
     _RouterScope scope = context-><_RouterScope>dependOnInheritedWidgetOfExactType();
     assert([=] () {
         if (scope == nullptr) {
@@ -27,37 +32,45 @@ template<typename T> Router<T> RouterCls<T>::oftemplate<typename T> (BuildContex
     return as<Router<T>>(scope!->routerState->widget);
 }
 
-template<typename T> Router<T> RouterCls<T>::maybeOftemplate<typename T> (BuildContext context) {
+template<typename T>
+template<typename T>
+Router<T> RouterCls<T>::maybeOf(BuildContext context) {
     _RouterScope scope = context-><_RouterScope>dependOnInheritedWidgetOfExactType();
     return as<Router<T>>(scope?->routerState->widget);
 }
 
-template<typename T> void RouterCls<T>::navigate(VoidCallback callback, BuildContext context) {
+template<typename T>
+void RouterCls<T>::navigate(VoidCallback callback, BuildContext context) {
     _RouterScope scope = as<_RouterScope>(context-><_RouterScope>getElementForInheritedWidgetOfExactType()!->widget);
     scope->routerState->_setStateWithExplicitReportStatus(RouteInformationReportingTypeCls::navigate, callback);
 }
 
-template<typename T> void RouterCls<T>::neglect(VoidCallback callback, BuildContext context) {
+template<typename T>
+void RouterCls<T>::neglect(VoidCallback callback, BuildContext context) {
     _RouterScope scope = as<_RouterScope>(context-><_RouterScope>getElementForInheritedWidgetOfExactType()!->widget);
     scope->routerState->_setStateWithExplicitReportStatus(RouteInformationReportingTypeCls::neglect, callback);
 }
 
-template<typename T> State<Router<T>> RouterCls<T>::createState() {
+template<typename T>
+State<Router<T>> RouterCls<T>::createState() {
     return <T>make<_RouterStateCls>();
 }
 
-template<typename T> String _RouterStateCls<T>::restorationId() {
+template<typename T>
+String _RouterStateCls<T>::restorationId() {
     return widget->restorationScopeId;
 }
 
-template<typename T> void _RouterStateCls<T>::initState() {
+template<typename T>
+void _RouterStateCls<T>::initState() {
     super->initState();
     widget->routeInformationProvider?->addListener(_handleRouteInformationProviderNotification);
     widget->backButtonDispatcher?->addCallback(_handleBackButtonDispatcherNotification);
     widget->routerDelegate->addListener(_handleRouterDelegateNotification);
 }
 
-template<typename T> void _RouterStateCls<T>::restoreState(bool initialRestore, RestorationBucket oldBucket) {
+template<typename T>
+void _RouterStateCls<T>::restoreState(bool initialRestore, RestorationBucket oldBucket) {
     registerForRestoration(_routeInformation, __s("route"));
     if (_routeInformation->value != nullptr) {
         assert(widget->routeInformationParser != nullptr);
@@ -73,7 +86,8 @@ template<typename T> void _RouterStateCls<T>::restoreState(bool initialRestore, 
 ;
     }}
 
-template<typename T> void _RouterStateCls<T>::didChangeDependencies() {
+template<typename T>
+void _RouterStateCls<T>::didChangeDependencies() {
     _routeParsePending = true;
     super->didChangeDependencies();
     if (widget->routeInformationProvider != nullptr && _routeParsePending) {
@@ -85,7 +99,8 @@ template<typename T> void _RouterStateCls<T>::didChangeDependencies() {
     _maybeNeedToReportRouteInformation();
 }
 
-template<typename T> void _RouterStateCls<T>::didUpdateWidget(Router<T> oldWidget) {
+template<typename T>
+void _RouterStateCls<T>::didUpdateWidget(Router<T> oldWidget) {
     super->didUpdateWidget(oldWidget);
     if (widget->routeInformationProvider != oldWidget->routeInformationProvider || widget->backButtonDispatcher != oldWidget->backButtonDispatcher || widget->routeInformationParser != oldWidget->routeInformationParser || widget->routerDelegate != oldWidget->routerDelegate) {
         _currentRouterTransaction = make<ObjectCls>();
@@ -108,7 +123,8 @@ template<typename T> void _RouterStateCls<T>::didUpdateWidget(Router<T> oldWidge
     }
 }
 
-template<typename T> void _RouterStateCls<T>::dispose() {
+template<typename T>
+void _RouterStateCls<T>::dispose() {
     widget->routeInformationProvider?->removeListener(_handleRouteInformationProviderNotification);
     widget->backButtonDispatcher?->removeCallback(_handleBackButtonDispatcherNotification);
     widget->routerDelegate->removeListener(_handleRouterDelegateNotification);
@@ -116,11 +132,13 @@ template<typename T> void _RouterStateCls<T>::dispose() {
     super->dispose();
 }
 
-template<typename T> Widget _RouterStateCls<T>::build(BuildContext context) {
+template<typename T>
+Widget _RouterStateCls<T>::build(BuildContext context) {
     return make<UnmanagedRestorationScopeCls>(bucket, make<_RouterScopeCls>(widget->routeInformationProvider, widget->backButtonDispatcher, widget->routeInformationParser, widget->routerDelegate, this, make<BuilderCls>(widget->routerDelegate->build)));
 }
 
-template<typename T> void _RouterStateCls<T>::_scheduleRouteInformationReportingTask() {
+template<typename T>
+void _RouterStateCls<T>::_scheduleRouteInformationReportingTask() {
     if (_routeInformationReportingTaskScheduled || widget->routeInformationProvider == nullptr) {
         return;
     }
@@ -129,7 +147,8 @@ template<typename T> void _RouterStateCls<T>::_scheduleRouteInformationReporting
     SchedulerBindingCls::instance->addPostFrameCallback(_reportRouteInformation);
 }
 
-template<typename T> void _RouterStateCls<T>::_reportRouteInformation(Duration timestamp) {
+template<typename T>
+void _RouterStateCls<T>::_reportRouteInformation(Duration timestamp) {
     assert(_routeInformationReportingTaskScheduled);
     _routeInformationReportingTaskScheduled = false;
     if (_routeInformation->value != nullptr) {
@@ -140,7 +159,8 @@ template<typename T> void _RouterStateCls<T>::_reportRouteInformation(Duration t
     _currentIntentionToReport = RouteInformationReportingTypeCls::none;
 }
 
-template<typename T> RouteInformation _RouterStateCls<T>::_retrieveNewRouteInformation() {
+template<typename T>
+RouteInformation _RouterStateCls<T>::_retrieveNewRouteInformation() {
     T configuration = widget->routerDelegate->currentConfiguration;
     if (configuration == nullptr) {
         return nullptr;
@@ -148,7 +168,8 @@ template<typename T> RouteInformation _RouterStateCls<T>::_retrieveNewRouteInfor
     return widget->routeInformationParser?->restoreRouteInformation(configuration);
 }
 
-template<typename T> void _RouterStateCls<T>::_setStateWithExplicitReportStatus(VoidCallback fn, RouteInformationReportingType status) {
+template<typename T>
+void _RouterStateCls<T>::_setStateWithExplicitReportStatus(VoidCallback fn, RouteInformationReportingType status) {
     assert(status != nullptr);
     assert(status->index >= RouteInformationReportingTypeCls::neglect->index);
     assert([=] () {
@@ -162,20 +183,23 @@ template<typename T> void _RouterStateCls<T>::_setStateWithExplicitReportStatus(
     fn();
 }
 
-template<typename T> void _RouterStateCls<T>::_maybeNeedToReportRouteInformation() {
+template<typename T>
+void _RouterStateCls<T>::_maybeNeedToReportRouteInformation() {
     _routeInformation->value = _retrieveNewRouteInformation();
     _currentIntentionToReport = RouteInformationReportingTypeCls::none;
     _scheduleRouteInformationReportingTask();
 }
 
-template<typename T> void _RouterStateCls<T>::_processRouteInformation(ValueGetter<_RouteSetter<T>> delegateRouteSetter, RouteInformation information) {
+template<typename T>
+void _RouterStateCls<T>::_processRouteInformation(ValueGetter<_RouteSetter<T>> delegateRouteSetter, RouteInformation information) {
     assert(_routeParsePending);
     _routeParsePending = false;
     _currentRouterTransaction = make<ObjectCls>();
     widget->routeInformationParser!->parseRouteInformationWithDependencies(information, context)-><void>then(_processParsedRouteInformation(_currentRouterTransaction, delegateRouteSetter));
 }
 
-template<typename T> _RouteSetter<T> _RouterStateCls<T>::_processParsedRouteInformation(ValueGetter<_RouteSetter<T>> delegateRouteSetter, Object transaction) {
+template<typename T>
+_RouteSetter<T> _RouterStateCls<T>::_processParsedRouteInformation(ValueGetter<_RouteSetter<T>> delegateRouteSetter, Object transaction) {
     return [=] (T data) {
         if (_currentRouterTransaction != transaction) {
             return;
@@ -187,7 +211,8 @@ template<typename T> _RouteSetter<T> _RouterStateCls<T>::_processParsedRouteInfo
     };
 }
 
-template<typename T> void _RouterStateCls<T>::_handleRouteInformationProviderNotification() {
+template<typename T>
+void _RouterStateCls<T>::_handleRouteInformationProviderNotification() {
     assert(widget->routeInformationProvider!->value != nullptr);
     _routeParsePending = true;
     _processRouteInformation(widget->routeInformationProvider!->value, [=] ()     {
@@ -195,12 +220,14 @@ template<typename T> void _RouterStateCls<T>::_handleRouteInformationProviderNot
     });
 }
 
-template<typename T> Future<bool> _RouterStateCls<T>::_handleBackButtonDispatcherNotification() {
+template<typename T>
+Future<bool> _RouterStateCls<T>::_handleBackButtonDispatcherNotification() {
     _currentRouterTransaction = make<ObjectCls>();
     return widget->routerDelegate->popRoute()-><bool>then(_handleRoutePopped(_currentRouterTransaction));
 }
 
-template<typename T> _AsyncPassthrough<bool> _RouterStateCls<T>::_handleRoutePopped(Object transaction) {
+template<typename T>
+_AsyncPassthrough<bool> _RouterStateCls<T>::_handleRoutePopped(Object transaction) {
     return [=] (bool data) {
         if (transaction != _currentRouterTransaction) {
             return <bool>make<SynchronousFutureCls>(true);
@@ -210,14 +237,16 @@ template<typename T> _AsyncPassthrough<bool> _RouterStateCls<T>::_handleRoutePop
     };
 }
 
-template<typename T> Future<void> _RouterStateCls<T>::_rebuild(void value) {
+template<typename T>
+Future<void> _RouterStateCls<T>::_rebuild(void value) {
     setState([=] () {
     });
     _maybeNeedToReportRouteInformation();
     return <void>make<SynchronousFutureCls>(value);
 }
 
-template<typename T> void _RouterStateCls<T>::_handleRouterDelegateNotification() {
+template<typename T>
+void _RouterStateCls<T>::_handleRouterDelegateNotification() {
     setState([=] () {
     });
     _maybeNeedToReportRouteInformation();
@@ -235,19 +264,23 @@ _RouterScopeCls::_RouterScopeCls(BackButtonDispatcher backButtonDispatcher, Unkn
     }
 }
 
-template<typename T> bool _CallbackHookProviderCls<T>::hasCallbacks() {
+template<typename T>
+bool _CallbackHookProviderCls<T>::hasCallbacks() {
     return _callbacks->isNotEmpty();
 }
 
-template<typename T> void _CallbackHookProviderCls<T>::addCallback(ValueGetter<T> callback) {
+template<typename T>
+void _CallbackHookProviderCls<T>::addCallback(ValueGetter<T> callback) {
     return _callbacks->add(callback);
 }
 
-template<typename T> void _CallbackHookProviderCls<T>::removeCallback(ValueGetter<T> callback) {
+template<typename T>
+void _CallbackHookProviderCls<T>::removeCallback(ValueGetter<T> callback) {
     return _callbacks->remove(callback);
 }
 
-template<typename T> T _CallbackHookProviderCls<T>::invokeCallback(T defaultValue) {
+template<typename T>
+T _CallbackHookProviderCls<T>::invokeCallback(T defaultValue) {
     if (_callbacks->isEmpty()) {
         return defaultValue;
     }
@@ -369,27 +402,33 @@ Widget _BackButtonListenerStateCls::build(BuildContext context) {
     return widget->child;
 }
 
-template<typename T> Future<T> RouteInformationParserCls<T>::parseRouteInformation(RouteInformation routeInformation) {
+template<typename T>
+Future<T> RouteInformationParserCls<T>::parseRouteInformation(RouteInformation routeInformation) {
     ;
 }
 
-template<typename T> Future<T> RouteInformationParserCls<T>::parseRouteInformationWithDependencies(BuildContext context, RouteInformation routeInformation) {
+template<typename T>
+Future<T> RouteInformationParserCls<T>::parseRouteInformationWithDependencies(BuildContext context, RouteInformation routeInformation) {
     return parseRouteInformation(routeInformation);
 }
 
-template<typename T> RouteInformation RouteInformationParserCls<T>::restoreRouteInformation(T configuration) {
+template<typename T>
+RouteInformation RouteInformationParserCls<T>::restoreRouteInformation(T configuration) {
     return nullptr;
 }
 
-template<typename T> Future<void> RouterDelegateCls<T>::setInitialRoutePath(T configuration) {
+template<typename T>
+Future<void> RouterDelegateCls<T>::setInitialRoutePath(T configuration) {
     return setNewRoutePath(configuration);
 }
 
-template<typename T> Future<void> RouterDelegateCls<T>::setRestoredRoutePath(T configuration) {
+template<typename T>
+Future<void> RouterDelegateCls<T>::setRestoredRoutePath(T configuration) {
     return setNewRoutePath(configuration);
 }
 
-template<typename T> T RouterDelegateCls<T>::currentConfiguration() {
+template<typename T>
+T RouterDelegateCls<T>::currentConfiguration() {
     return nullptr;
 }
 
@@ -456,7 +495,8 @@ void PlatformRouteInformationProviderCls::_platformReportsNewRouteInformation(Ro
     notifyListeners();
 }
 
-template<typename T> Future<bool> PopNavigatorRouterDelegateMixinCls<T>::popRoute() {
+template<typename T>
+Future<bool> PopNavigatorRouterDelegateMixinCls<T>::popRoute() {
     NavigatorState navigator = navigatorKey()?->currentState();
     if (navigator == nullptr) {
         return <bool>make<SynchronousFutureCls>(false);

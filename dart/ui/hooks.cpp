@@ -78,7 +78,8 @@ void _invoke(void callback() , Zone zone) {
     }
 }
 
-void _invoke1template<typename A> (A arg, void callback(A a) , Zone zone) {
+template<typename A>
+void _invoke1(A arg, void callback(A a) , Zone zone) {
     if (callback == nullptr) {
         return;
     }
@@ -90,7 +91,8 @@ void _invoke1template<typename A> (A arg, void callback(A a) , Zone zone) {
     }
 }
 
-void _invoke2template<typename A1, typename A2> (A1 arg1, A2 arg2, void callback(A1 a1, A2 a2) , Zone zone) {
+template<typename A1, typename A2>
+void _invoke2(A1 arg1, A2 arg2, void callback(A1 a1, A2 a2) , Zone zone) {
     if (callback == nullptr) {
         return;
     }
@@ -104,7 +106,8 @@ void _invoke2template<typename A1, typename A2> (A1 arg1, A2 arg2, void callback
     }
 }
 
-void _invoke3template<typename A1, typename A2, typename A3> (A1 arg1, A2 arg2, A3 arg3, void callback(A1 a1, A2 a2, A3 a3) , Zone zone) {
+template<typename A1, typename A2, typename A3>
+void _invoke3(A1 arg1, A2 arg2, A3 arg3, void callback(A1 a1, A2 a2, A3 a3) , Zone zone) {
     if (callback == nullptr) {
         return;
     }

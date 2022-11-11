@@ -17,7 +17,8 @@
 #include "shortcuts.hpp"
 
 
-template<typename T> class RawAutocompleteCls : public StatefulWidgetCls {
+template<typename T>
+class RawAutocompleteCls : public StatefulWidgetCls {
 public:
     AutocompleteFieldViewBuilder fieldViewBuilder;
 
@@ -38,7 +39,8 @@ public:
 
      RawAutocompleteCls(AutocompleteOptionToString<T> displayStringForOption, AutocompleteFieldViewBuilder fieldViewBuilder, FocusNode focusNode, TextEditingValue initialValue, Unknown key, AutocompleteOnSelected<T> onSelected, AutocompleteOptionsBuilder<T> optionsBuilder, AutocompleteOptionsViewBuilder<T> optionsViewBuilder, TextEditingController textEditingController);
 
-    template<typename T>  static void onFieldSubmitted(GlobalKey key);
+    template<typename T>
+ static void onFieldSubmitted(GlobalKey key);
 
     static String defaultStringForOption(dynamic option);
 
@@ -47,9 +49,11 @@ public:
 private:
 
 };
-template<typename T> using RawAutocomplete = std::shared_ptr<RawAutocompleteCls<T>>;
+template<typename T>
+using RawAutocomplete = std::shared_ptr<RawAutocompleteCls<T>>;
 
-template<typename T> class _RawAutocompleteStateCls : public StateCls<RawAutocomplete<T>> {
+template<typename T>
+class _RawAutocompleteStateCls : public StateCls<RawAutocomplete<T>> {
 public:
 
     virtual void initState();
@@ -123,9 +127,11 @@ private:
     virtual void _updateFocusNode(FocusNode current, FocusNode old);
 
 };
-template<typename T> using _RawAutocompleteState = std::shared_ptr<_RawAutocompleteStateCls<T>>;
+template<typename T>
+using _RawAutocompleteState = std::shared_ptr<_RawAutocompleteStateCls<T>>;
 
-template<typename T> class _AutocompleteCallbackActionCls : public CallbackActionCls<T> {
+template<typename T>
+class _AutocompleteCallbackActionCls : public CallbackActionCls<T> {
 public:
     bool enabled;
 
@@ -138,7 +144,8 @@ private:
 
      _AutocompleteCallbackActionCls(bool enabled, Unknown onInvoke);
 };
-template<typename T> using _AutocompleteCallbackAction = std::shared_ptr<_AutocompleteCallbackActionCls<T>>;
+template<typename T>
+using _AutocompleteCallbackAction = std::shared_ptr<_AutocompleteCallbackActionCls<T>>;
 
 class AutocompletePreviousOptionIntentCls : public IntentCls {
 public:

@@ -128,7 +128,7 @@ FixedExtentMetrics _FixedExtentScrollPositionCls::copyWith(AxisDirection axisDir
     return make<FixedExtentMetricsCls>(minScrollExtent or (hasContentDimensions? this->minScrollExtent : nullptr), maxScrollExtent or (hasContentDimensions? this->maxScrollExtent : nullptr), pixels or (hasPixels? this->pixels : nullptr), viewportDimension or (hasViewportDimension? this->viewportDimension : nullptr), axisDirection or this->axisDirection, itemIndex or this->itemIndex);
 }
 
-_FixedExtentScrollPositionCls::_FixedExtentScrollPositionCls(Unknown context, int initialItem, Unknown oldPosition, Unknown physics) : ScrollPositionWithSingleContext(_getItemExtentFromScrollContext(context) * initialItem) {
+_FixedExtentScrollPositionCls::_FixedExtentScrollPositionCls(Unknown context, int initialItem, Unknown oldPosition, Unknown physics) {
     {
         assert(is<_FixedExtentScrollableState>(context), __s("FixedExtentScrollController can only be used with ListWheelScrollViews"));
     }

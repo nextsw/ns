@@ -26,7 +26,8 @@ using _Pending = std::shared_ptr<_PendingCls>;
 Future<Map<Type, dynamic>> _loadAll(Iterable<LocalizationsDelegate<dynamic>> allDelegates, Locale locale);
 
 
-template<typename T> class LocalizationsDelegateCls : public ObjectCls {
+template<typename T>
+class LocalizationsDelegateCls : public ObjectCls {
 public:
 
      LocalizationsDelegateCls();
@@ -40,7 +41,8 @@ public:
 private:
 
 };
-template<typename T> using LocalizationsDelegate = std::shared_ptr<LocalizationsDelegateCls<T>>;
+template<typename T>
+using LocalizationsDelegate = std::shared_ptr<LocalizationsDelegateCls<T>>;
 
 class WidgetsLocalizationsCls : public ObjectCls {
 public:
@@ -120,7 +122,8 @@ public:
 
     static Locale maybeLocaleOf(BuildContext context);
 
-    template<typename T>  static T of(BuildContext context, Type type);
+    template<typename T>
+ static T of(BuildContext context, Type type);
 
     virtual State<Localizations> createState();
 
@@ -144,7 +147,8 @@ public:
 
     virtual void load(Locale locale);
 
-    template<typename T>  virtual T resourcesFor(Type type);
+    template<typename T>
+ virtual T resourcesFor(Type type);
 
     virtual Widget build(BuildContext context);
 

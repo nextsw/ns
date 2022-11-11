@@ -7,7 +7,8 @@
 #include "combined_iterable.hpp"
 
 
-template<typename K, typename V> class CombinedMapViewCls : public UnmodifiableMapBaseCls<K, V> {
+template<typename K, typename V>
+class CombinedMapViewCls : public UnmodifiableMapBaseCls<K, V> {
 public:
 
      CombinedMapViewCls(Iterable<Map<K, V>> _maps);
@@ -20,9 +21,11 @@ private:
 
 
 };
-template<typename K, typename V> using CombinedMapView = std::shared_ptr<CombinedMapViewCls<K, V>>;
+template<typename K, typename V>
+using CombinedMapView = std::shared_ptr<CombinedMapViewCls<K, V>>;
 
-template<typename T> class _DeduplicatingIterableViewCls : public IterableBaseCls<T> {
+template<typename T>
+class _DeduplicatingIterableViewCls : public IterableBaseCls<T> {
 public:
 
     virtual Iterator<T> iterator();
@@ -37,9 +40,11 @@ private:
 
      _DeduplicatingIterableViewCls(Iterable<T> _iterable);
 };
-template<typename T> using _DeduplicatingIterableView = std::shared_ptr<_DeduplicatingIterableViewCls<T>>;
+template<typename T>
+using _DeduplicatingIterableView = std::shared_ptr<_DeduplicatingIterableViewCls<T>>;
 
-template<typename T> class _DeduplicatingIteratorCls : public ObjectCls {
+template<typename T>
+class _DeduplicatingIteratorCls : public ObjectCls {
 public:
 
     virtual T current();
@@ -54,7 +59,8 @@ private:
 
      _DeduplicatingIteratorCls(Iterator<T> _iterator);
 };
-template<typename T> using _DeduplicatingIterator = std::shared_ptr<_DeduplicatingIteratorCls<T>>;
+template<typename T>
+using _DeduplicatingIterator = std::shared_ptr<_DeduplicatingIteratorCls<T>>;
 
 
 #endif

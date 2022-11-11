@@ -197,7 +197,8 @@ private:
 };
 using RawSocketEvent = std::shared_ptr<RawSocketEventCls>;
 
-template<typename S> class ConnectionTaskCls : public ObjectCls {
+template<typename S>
+class ConnectionTaskCls : public ObjectCls {
 public:
     Future<S> socket;
 
@@ -211,7 +212,8 @@ private:
     virtual void  _(void onCancel() , Future<S> socket);
 
 };
-template<typename S> using ConnectionTask = std::shared_ptr<ConnectionTaskCls<S>>;
+template<typename S>
+using ConnectionTask = std::shared_ptr<ConnectionTaskCls<S>>;
 
 class RawSocketCls : public ObjectCls {
 public:

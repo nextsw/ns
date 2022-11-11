@@ -5,7 +5,8 @@
 #include <dart/core/core.hpp>
 
 
-template<typename T> class FutureOrCls : public ObjectCls {
+template<typename T>
+class FutureOrCls : public ObjectCls {
 public:
 
 private:
@@ -13,7 +14,8 @@ private:
     virtual void  _();
 
 };
-template<typename T> using FutureOr = std::shared_ptr<FutureOrCls<T>>;
+template<typename T>
+using FutureOr = std::shared_ptr<FutureOrCls<T>>;
 
 
 #endif

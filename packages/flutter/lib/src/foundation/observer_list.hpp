@@ -6,7 +6,8 @@
 #include <dart/collection/collection.hpp>
 
 
-template<typename T> class ObserverListCls : public IterableCls<T> {
+template<typename T>
+class ObserverListCls : public IterableCls<T> {
 public:
 
     virtual void add(T item);
@@ -34,9 +35,11 @@ private:
 
 
 };
-template<typename T> using ObserverList = std::shared_ptr<ObserverListCls<T>>;
+template<typename T>
+using ObserverList = std::shared_ptr<ObserverListCls<T>>;
 
-template<typename T> class HashedObserverListCls : public IterableCls<T> {
+template<typename T>
+class HashedObserverListCls : public IterableCls<T> {
 public:
 
     virtual void add(T item);
@@ -56,7 +59,8 @@ private:
 
 
 };
-template<typename T> using HashedObserverList = std::shared_ptr<HashedObserverListCls<T>>;
+template<typename T>
+using HashedObserverList = std::shared_ptr<HashedObserverListCls<T>>;
 
 
 #endif

@@ -1,5 +1,5 @@
 #include "viewport.hpp"
-ViewportCls::ViewportCls(double anchor, AxisDirection axisDirection, double cacheExtent, CacheExtentStyle cacheExtentStyle, Key center, Clip clipBehavior, AxisDirection crossAxisDirection, Unknown key, ViewportOffset offset, List<Widget> slivers) : MultiChildRenderObjectWidget(slivers) {
+ViewportCls::ViewportCls(double anchor, AxisDirection axisDirection, double cacheExtent, CacheExtentStyle cacheExtentStyle, Key center, Clip clipBehavior, AxisDirection crossAxisDirection, Unknown key, ViewportOffset offset, List<Widget> slivers) {
     {
         assert(offset != nullptr);
         assert(slivers != nullptr);
@@ -101,7 +101,7 @@ void _ViewportElementCls::_updateCenter() {
         for (Element e : children) {
             if (e->widget->key == viewport->center) {
                 renderObject()->center() = as<RenderSliver>(e->renderObject);
-                                break;
+                break;
             }
             elementIndex++;
         }
@@ -118,7 +118,7 @@ void _ViewportElementCls::_updateCenter() {
 ;
     }}
 
-ShrinkWrappingViewportCls::ShrinkWrappingViewportCls(AxisDirection axisDirection, Clip clipBehavior, AxisDirection crossAxisDirection, Unknown key, ViewportOffset offset, List<Widget> slivers) : MultiChildRenderObjectWidget(slivers) {
+ShrinkWrappingViewportCls::ShrinkWrappingViewportCls(AxisDirection axisDirection, Clip clipBehavior, AxisDirection crossAxisDirection, Unknown key, ViewportOffset offset, List<Widget> slivers) {
     {
         assert(offset != nullptr);
     }

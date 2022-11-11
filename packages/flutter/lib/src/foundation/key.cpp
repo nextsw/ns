@@ -9,18 +9,21 @@ String UniqueKeyCls::toString() {
     return __s("[#${shortHash(this)}]");
 }
 
-template<typename T> bool ValueKeyCls<T>::==(Object other) {
+template<typename T>
+bool ValueKeyCls<T>::==(Object other) {
     if (other->runtimeType() != runtimeType) {
         return false;
     }
     return is<ValueKey<T>>(other) && other->value == value;
 }
 
-template<typename T> int ValueKeyCls<T>::hashCode() {
+template<typename T>
+int ValueKeyCls<T>::hashCode() {
     return ObjectCls->hash(runtimeType, value);
 }
 
-template<typename T> String ValueKeyCls<T>::toString() {
+template<typename T>
+String ValueKeyCls<T>::toString() {
     String valueString = TCls == StringCls? __s("<'$value'>") : __s("<$value>");
     if (runtimeType == <ValueKey<T>>make<_TypeLiteralCls>()->type) {
         return __s("[$valueString]");
@@ -28,6 +31,7 @@ template<typename T> String ValueKeyCls<T>::toString() {
     return __s("[$T $valueString]");
 }
 
-template<typename T> Type _TypeLiteralCls<T>::type() {
+template<typename T>
+Type _TypeLiteralCls<T>::type() {
     return TCls;
 }

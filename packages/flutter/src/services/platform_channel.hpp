@@ -87,7 +87,8 @@ void _debugRecordUpStream(ByteData bytes, String channelTypeName, String codecTy
 void _debugRecordDownStream(ByteData bytes, String channelTypeName, String codecTypeName, String name);
 
 
-template<typename T> class BasicMessageChannelCls : public ObjectCls {
+template<typename T>
+class BasicMessageChannelCls : public ObjectCls {
 public:
     String name;
 
@@ -107,7 +108,8 @@ private:
 
 
 };
-template<typename T> using BasicMessageChannel = std::shared_ptr<BasicMessageChannelCls<T>>;
+template<typename T>
+using BasicMessageChannel = std::shared_ptr<BasicMessageChannelCls<T>>;
 
 class MethodChannelCls : public ObjectCls {
 public:
@@ -120,11 +122,14 @@ public:
 
     virtual BinaryMessenger binaryMessenger();
 
-    template<typename T>  virtual Future<T> invokeMethod(dynamic arguments, String method);
+    template<typename T>
+ virtual Future<T> invokeMethod(dynamic arguments, String method);
 
-    template<typename T>  virtual Future<List<T>> invokeListMethod(dynamic arguments, String method);
+    template<typename T>
+ virtual Future<List<T>> invokeListMethod(dynamic arguments, String method);
 
-    template<typename K, typename V>  virtual Future<Map<K, V>> invokeMapMethod(dynamic arguments, String method);
+    template<typename K, typename V>
+ virtual Future<Map<K, V>> invokeMapMethod(dynamic arguments, String method);
 
     virtual void setMethodCallHandler(Future<dynamic> handler(MethodCall call) );
 
@@ -132,7 +137,8 @@ private:
     BinaryMessenger _binaryMessenger;
 
 
-    template<typename T>  virtual Future<T> _invokeMethod(dynamic arguments, String method, bool missingOk);
+    template<typename T>
+ virtual Future<T> _invokeMethod(dynamic arguments, String method, bool missingOk);
 
     virtual Future<ByteData> _handleAsMethodCall(Future<dynamic> handler(MethodCall call) , ByteData message);
 
@@ -143,7 +149,8 @@ class OptionalMethodChannelCls : public MethodChannelCls {
 public:
 
      OptionalMethodChannelCls(Unknown binaryMessenger, Unknown codec, Unknown name);
-    template<typename T>  virtual Future<T> invokeMethod(dynamic arguments, String method);
+    template<typename T>
+ virtual Future<T> invokeMethod(dynamic arguments, String method);
 
 private:
 

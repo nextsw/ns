@@ -82,7 +82,8 @@ void _debugRecordDownStream(ByteData bytes, String channelTypeName, String codec
     _debugLaunchProfilePlatformChannels();
 }
 
-template<typename T> BasicMessageChannelCls<T>::BasicMessageChannelCls(BinaryMessenger binaryMessenger, MessageCodec<T> codec, String name) {
+template<typename T>
+BasicMessageChannelCls<T>::BasicMessageChannelCls(BinaryMessenger binaryMessenger, MessageCodec<T> codec, String name) {
     {
         assert(name != nullptr);
         assert(codec != nullptr);
@@ -90,16 +91,19 @@ template<typename T> BasicMessageChannelCls<T>::BasicMessageChannelCls(BinaryMes
     }
 }
 
-template<typename T> BinaryMessenger BasicMessageChannelCls<T>::binaryMessenger() {
+template<typename T>
+BinaryMessenger BasicMessageChannelCls<T>::binaryMessenger() {
     BinaryMessenger result = _binaryMessenger or ServicesBindingCls::instance->defaultBinaryMessenger;
     return !kReleaseMode && debugProfilePlatformChannels? _debugBinaryMessengers[this] ??= make<_ProfiledBinaryMessengerCls>(result, runtimeType->toString(), codec->runtimeType->toString()) : result;
 }
 
-template<typename T> Future<T> BasicMessageChannelCls<T>::send(T message) {
+template<typename T>
+Future<T> BasicMessageChannelCls<T>::send(T message) {
     return codec->decodeMessage(await binaryMessenger()->send(name, codec->encodeMessage(message)));
 }
 
-template<typename T> void BasicMessageChannelCls<T>::setMessageHandler(Future<T> handler(T message) ) {
+template<typename T>
+void BasicMessageChannelCls<T>::setMessageHandler(Future<T> handler(T message) ) {
     if (handler == nullptr) {
         binaryMessenger()->setMessageHandler(name, nullptr);
     } else {
@@ -122,16 +126,19 @@ BinaryMessenger MethodChannelCls::binaryMessenger() {
     return !kReleaseMode && debugProfilePlatformChannels? _debugBinaryMessengers[this] ??= make<_ProfiledBinaryMessengerCls>(result, runtimeType->toString(), codec->runtimeType->toString()) : result;
 }
 
-Future<T> MethodChannelCls::invokeMethodtemplate<typename T> (dynamic arguments, String method) {
+template<typename T>
+Future<T> MethodChannelCls::invokeMethod(dynamic arguments, String method) {
     return <T>_invokeMethod(methodfalse, arguments);
 }
 
-Future<List<T>> MethodChannelCls::invokeListMethodtemplate<typename T> (dynamic arguments, String method) {
+template<typename T>
+Future<List<T>> MethodChannelCls::invokeListMethod(dynamic arguments, String method) {
     List<dynamic> result = await <List<dynamic>>invokeMethod(method, arguments);
     return result?-><T>cast();
 }
 
-Future<Map<K, V>> MethodChannelCls::invokeMapMethodtemplate<typename K, typename V> (dynamic arguments, String method) {
+template<typename K, typename V>
+Future<Map<K, V>> MethodChannelCls::invokeMapMethod(dynamic arguments, String method) {
     Map<dynamic, dynamic> result = await <Map<dynamic, dynamic>>invokeMethod(method, arguments);
     return result?-><K, V>cast();
 }
@@ -143,7 +150,8 @@ void MethodChannelCls::setMethodCallHandler(Future<dynamic> handler(MethodCall c
     });
 }
 
-Future<T> MethodChannelCls::_invokeMethodtemplate<typename T> (dynamic arguments, String method, bool missingOk) {
+template<typename T>
+Future<T> MethodChannelCls::_invokeMethod(dynamic arguments, String method, bool missingOk) {
     assert(method != nullptr);
     ByteData input = codec->encodeMethodCall(make<MethodCallCls>(method, arguments));
     ByteData result = !kReleaseMode && debugProfilePlatformChannels? await (as<_ProfiledBinaryMessenger>(binaryMessenger()))->sendWithPostfix(name, __s("#$method"), input) : await binaryMessenger()->send(name, input);
@@ -169,7 +177,8 @@ Future<ByteData> MethodChannelCls::_handleAsMethodCall(Future<dynamic> handler(M
     };
 }
 
-Future<T> OptionalMethodChannelCls::invokeMethodtemplate<typename T> (dynamic arguments, String method) {
+template<typename T>
+Future<T> OptionalMethodChannelCls::invokeMethod(dynamic arguments, String method) {
     return super-><T>_invokeMethod(methodtrue, arguments);
 }
 

@@ -59,7 +59,7 @@ String _ErrorDiagnosticCls::valueToString(TextTreeConfiguration parentConfigurat
     return value()->join();
 }
 
-_ErrorDiagnosticCls::_ErrorDiagnosticCls(DiagnosticLevel level, String message, DiagnosticsTreeStyle style) : DiagnosticsProperty<List<Object>>(nullptr, makeList(ArrayItem)false, false, nullptr, style, level) {
+_ErrorDiagnosticCls::_ErrorDiagnosticCls(DiagnosticLevel level, String message, DiagnosticsTreeStyle style) {
     {
         assert(message != nullptr);
     }
@@ -67,22 +67,22 @@ _ErrorDiagnosticCls::_ErrorDiagnosticCls(DiagnosticLevel level, String message, 
 
 void _ErrorDiagnosticCls::_fromParts(DiagnosticLevel level, List<Object> messageParts, DiagnosticsTreeStyle style)
 
-ErrorDescriptionCls::ErrorDescriptionCls(Unknown message) : _ErrorDiagnostic(DiagnosticLevelCls::info) {
+ErrorDescriptionCls::ErrorDescriptionCls(Unknown message) {
 }
 
 void ErrorDescriptionCls::_fromParts(Unknown messageParts)
 
-ErrorSummaryCls::ErrorSummaryCls(Unknown message) : _ErrorDiagnostic(DiagnosticLevelCls::summary) {
+ErrorSummaryCls::ErrorSummaryCls(Unknown message) {
 }
 
 void ErrorSummaryCls::_fromParts(Unknown messageParts)
 
-ErrorHintCls::ErrorHintCls(Unknown message) : _ErrorDiagnostic(DiagnosticLevelCls::hint) {
+ErrorHintCls::ErrorHintCls(Unknown message) {
 }
 
 void ErrorHintCls::_fromParts(Unknown messageParts)
 
-ErrorSpacerCls::ErrorSpacerCls() : DiagnosticsProperty<void>(__s(""), nullptr__s(""), false) {
+ErrorSpacerCls::ErrorSpacerCls() {
 }
 
 FlutterErrorDetailsCls::FlutterErrorDetailsCls(DiagnosticsNode context, Object exception, InformationCollector informationCollector, String library, bool silent, StackTrace stack, IterableFilter<String> stackFilter) {
@@ -409,7 +409,7 @@ void debugPrintStack(String label, int maxFrames, StackTrace stackTrace) {
     debugPrint(FlutterErrorCls->defaultStackFilter(lines)->join(__s("\n")));
 }
 
-DiagnosticsStackTraceCls::DiagnosticsStackTraceCls(String name, Unknown showSeparator, StackTrace stack, IterableFilter<String> stackFilter) : DiagnosticsBlock(name, stack, _applyStackFilter(stack, stackFilter), DiagnosticsTreeStyleCls::flat, true) {
+DiagnosticsStackTraceCls::DiagnosticsStackTraceCls(String name, Unknown showSeparator, StackTrace stack, IterableFilter<String> stackFilter) {
 }
 
 void DiagnosticsStackTraceCls::singleFrame(String frame, String name, Unknown showSeparator)

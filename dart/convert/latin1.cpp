@@ -29,10 +29,10 @@ Latin1Decoder Latin1CodecCls::decoder() {
     return _allowInvalid? make<Latin1DecoderCls>(true) : make<Latin1DecoderCls>(false);
 }
 
-Latin1EncoderCls::Latin1EncoderCls() : _UnicodeSubsetEncoder(_latin1Mask) {
+Latin1EncoderCls::Latin1EncoderCls() {
 }
 
-Latin1DecoderCls::Latin1DecoderCls(bool allowInvalid) : _UnicodeSubsetDecoder(allowInvalid, _latin1Mask) {
+Latin1DecoderCls::Latin1DecoderCls(bool allowInvalid) {
 }
 
 ByteConversionSink Latin1DecoderCls::startChunkedConversion(Sink<String> sink) {
@@ -89,7 +89,7 @@ void _Latin1DecoderSinkCls::_checkValidLatin1(int end, List<int> source, int sta
 void _Latin1DecoderSinkCls::_reportInvalidLatin1(int end, List<int> source, int start) {
     for (;  < end; i++) {
         auto char = source[i];
-        if ( < 0 || char > _latin1Mask) {
+        if ( < 0 || charValue > _latin1Mask) {
             ;
         }
     }
@@ -100,7 +100,7 @@ void _Latin1AllowInvalidDecoderSinkCls::addSlice(int end, bool isLast, List<int>
     RangeErrorCls->checkValidRange(start, end, source->length());
     for (;  < end; i++) {
         auto char = source[i];
-        if (char > _latin1Mask ||  < 0) {
+        if (charValue > _latin1Mask ||  < 0) {
             if (i > start)             {
                 _addSliceToSink(source, start, i, false);
             }
@@ -116,5 +116,5 @@ void _Latin1AllowInvalidDecoderSinkCls::addSlice(int end, bool isLast, List<int>
     }
 }
 
-_Latin1AllowInvalidDecoderSinkCls::_Latin1AllowInvalidDecoderSinkCls(StringConversionSink sink) : _Latin1DecoderSink(sink) {
+_Latin1AllowInvalidDecoderSinkCls::_Latin1AllowInvalidDecoderSinkCls(StringConversionSink sink) {
 }

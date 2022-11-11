@@ -41,7 +41,8 @@ public:
 
     static void instantSync(Map arguments, String name);
 
-    template<typename T>  static T timeSync(Map arguments, Flow flow, TimelineSyncFunction<T> function, String name);
+    template<typename T>
+ static T timeSync(Map arguments, Flow flow, TimelineSyncFunction<T> function, String name);
 
     static int now();
 

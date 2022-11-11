@@ -171,13 +171,15 @@ private:
 };
 using BoxParentData = std::shared_ptr<BoxParentDataCls>;
 
-template<typename ChildType> class ContainerBoxParentDataCls : public BoxParentDataCls {
+template<typename ChildType>
+class ContainerBoxParentDataCls : public BoxParentDataCls {
 public:
 
 private:
 
 };
-template<typename ChildType> using ContainerBoxParentData = std::shared_ptr<ContainerBoxParentDataCls<ChildType>>;
+template<typename ChildType>
+using ContainerBoxParentData = std::shared_ptr<ContainerBoxParentDataCls<ChildType>>;
 
 enum _IntrinsicDimension{
     minWidth,
@@ -319,7 +321,8 @@ private:
 };
 using RenderBox = std::shared_ptr<RenderBoxCls>;
 
-template<typename ChildType, typename ParentDataType> class RenderBoxContainerDefaultsMixinCls : public ObjectCls {
+template<typename ChildType, typename ParentDataType>
+class RenderBoxContainerDefaultsMixinCls : public ObjectCls {
 public:
 
     virtual double defaultComputeDistanceToFirstActualBaseline(TextBaseline baseline);
@@ -335,7 +338,8 @@ public:
 private:
 
 };
-template<typename ChildType, typename ParentDataType> using RenderBoxContainerDefaultsMixin = std::shared_ptr<RenderBoxContainerDefaultsMixinCls<ChildType, ParentDataType>>;
+template<typename ChildType, typename ParentDataType>
+using RenderBoxContainerDefaultsMixin = std::shared_ptr<RenderBoxContainerDefaultsMixinCls<ChildType, ParentDataType>>;
 
 
 #endif

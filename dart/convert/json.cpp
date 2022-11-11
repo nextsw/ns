@@ -10,7 +10,7 @@ String JsonUnsupportedObjectErrorCls::toString() {
     return __s("$prefix $safeString");
 }
 
-JsonCyclicErrorCls::JsonCyclicErrorCls(Object object) : JsonUnsupportedObjectError(object) {
+JsonCyclicErrorCls::JsonCyclicErrorCls(Object object) {
 }
 
 String JsonCyclicErrorCls::toString() {
@@ -88,7 +88,8 @@ Stream<String> JsonEncoderCls::bind(Stream<Object> stream) {
     return super->bind(stream);
 }
 
-Converter<Object, T> JsonEncoderCls::fusetemplate<typename T> (Converter<String, T> other) {
+template<typename T>
+Converter<Object, T> JsonEncoderCls::fuse(Converter<String, T> other) {
     if (is<Utf8Encoder>(other)) {
         return as<Converter<Object, T>>(make<JsonUtf8EncoderCls>(indent, _toEncodable));
     }
@@ -149,7 +150,7 @@ List<int> JsonUtf8EncoderCls::_utf8Encode(String stringValue) {
     {
         for (;  < stringValue->length(); i++) {
             if (stringValue->codeUnitAt(i) >= 0x80)             {
-                            break checkAscii;
+                break checkAscii;
             }
         }
         return stringValue->codeUnits();
@@ -477,7 +478,7 @@ void _JsonStringStringifierCls::writeCharCode(int charCode) {
     _sink->writeCharCode(charCode);
 }
 
-_JsonStringStringifierCls::_JsonStringStringifierCls(StringSink _sink, dynamic _toEncodable(dynamic object) ) : _JsonStringifier(_toEncodable) {
+_JsonStringStringifierCls::_JsonStringStringifierCls(StringSink _sink, dynamic _toEncodable(dynamic object) ) {
 }
 
 String _JsonStringStringifierCls::_partialResult() {
@@ -490,7 +491,7 @@ void _JsonStringStringifierPrettyCls::writeIndentation(int count) {
     }
 }
 
-_JsonStringStringifierPrettyCls::_JsonStringStringifierPrettyCls(String _indent, StringSink sink, dynamic toEncodable(dynamic o) ) : _JsonStringStringifier(sink, toEncodable) {
+_JsonStringStringifierPrettyCls::_JsonStringStringifierPrettyCls(String _indent, StringSink sink, dynamic toEncodable(dynamic o) ) {
 }
 
 void _JsonUtf8StringifierCls::stringify(void addChunk(Uint8List chunk, int end, int start) , int bufferSize, List<int> indent, Object object, dynamic toEncodable(dynamic o) ) {
@@ -519,8 +520,8 @@ void _JsonUtf8StringifierCls::writeNumber(num number) {
 void _JsonUtf8StringifierCls::writeAsciiString(String stringValue) {
     for (;  < stringValue->length(); i++) {
         auto char = stringValue->codeUnitAt(i);
-        assert(char <= 0x7f);
-        writeByte(char);
+        assert(charValue <= 0x7f);
+        writeByte(charValue);
     }
 }
 
@@ -531,15 +532,15 @@ void _JsonUtf8StringifierCls::writeString(String stringValue) {
 void _JsonUtf8StringifierCls::writeStringSlice(int end, int start, String stringValue) {
     for (;  < end; i++) {
         auto char = stringValue->codeUnitAt(i);
-        if (char <= 0x7f) {
-            writeByte(char);
+        if (charValue <= 0x7f) {
+            writeByte(charValue);
         } else {
-            if ((char & 0xF800) == 0xD800) {
+            if ((charValue & 0xF800) == 0xD800) {
                 if ( < 0xDC00 && i + 1 < end) {
                     auto nextChar = stringValue->codeUnitAt(i + 1);
                     if ((nextChar & 0xFC00) == 0xDC00) {
-                        char = 0x10000 + ((char & 0x3ff) << 10) + (nextChar & 0x3ff);
-                        writeFourByteCharCode(char);
+                        charValue = 0x10000 + ((charValue & 0x3ff) << 10) + (nextChar & 0x3ff);
+                        writeFourByteCharCode(charValue);
                         i++;
                         continue;
                     }
@@ -547,7 +548,7 @@ void _JsonUtf8StringifierCls::writeStringSlice(int end, int start, String string
                 writeMultiByteCharCode(unicodeReplacementCharacterRune);
                 continue;
             }
-            writeMultiByteCharCode(char);
+            writeMultiByteCharCode(charValue);
         }
     }
 }
@@ -593,7 +594,7 @@ void _JsonUtf8StringifierCls::writeByte(int byte) {
     buffer[index++] = byte;
 }
 
-_JsonUtf8StringifierCls::_JsonUtf8StringifierCls(void Function(int end, Uint8List list, int start) addChunk, int bufferSize, dynamic toEncodable(dynamic o) ) : _JsonStringifier(toEncodable) {
+_JsonUtf8StringifierCls::_JsonUtf8StringifierCls(void Function(int end, Uint8List list, int start) addChunk, int bufferSize, dynamic toEncodable(dynamic o) ) {
     {
         buffer = make<Uint8ListCls>(bufferSize);
     }
@@ -609,7 +610,7 @@ void _JsonUtf8StringifierPrettyCls::writeIndentation(int count) {
     if (indentLength == 1) {
         auto char = indent[0];
         while (count > 0) {
-            writeByte(char);
+            writeByte(charValue);
             count = 1;
         }
         return;
@@ -628,5 +629,5 @@ void _JsonUtf8StringifierPrettyCls::writeIndentation(int count) {
     }
 }
 
-_JsonUtf8StringifierPrettyCls::_JsonUtf8StringifierPrettyCls(void addChunk(Uint8List buffer, int end, int start) , int bufferSize, List<int> indent, dynamic toEncodable(dynamic o) ) : _JsonUtf8Stringifier(toEncodable, bufferSize, addChunk) {
+_JsonUtf8StringifierPrettyCls::_JsonUtf8StringifierPrettyCls(void addChunk(Uint8List buffer, int end, int start) , int bufferSize, List<int> indent, dynamic toEncodable(dynamic o) ) {
 }

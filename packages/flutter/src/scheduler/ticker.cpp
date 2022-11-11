@@ -199,7 +199,8 @@ Future<void> TickerFutureCls::catchError(void  onError() , bool test(Object ) ) 
     return _primaryCompleter->future->catchError(onErrortest);
 }
 
-Future<R> TickerFutureCls::thentemplate<typename R> (void  onError() , FutureOr<R> onValue(void value) ) {
+template<typename R>
+Future<R> TickerFutureCls::then(void  onError() , FutureOr<R> onValue(void value) ) {
     return _primaryCompleter->future-><R>then(onValueonError);
 }
 

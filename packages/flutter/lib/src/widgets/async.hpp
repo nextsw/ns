@@ -8,7 +8,8 @@
 #include "framework.hpp"
 
 
-template<typename T, typename S> class StreamBuilderBaseCls : public StatefulWidgetCls {
+template<typename T, typename S>
+class StreamBuilderBaseCls : public StatefulWidgetCls {
 public:
     Stream<T> stream;
 
@@ -30,9 +31,11 @@ public:
 private:
 
 };
-template<typename T, typename S> using StreamBuilderBase = std::shared_ptr<StreamBuilderBaseCls<T, S>>;
+template<typename T, typename S>
+using StreamBuilderBase = std::shared_ptr<StreamBuilderBaseCls<T, S>>;
 
-template<typename T, typename S> class _StreamBuilderBaseStateCls : public StateCls<StreamBuilderBase<T, S>> {
+template<typename T, typename S>
+class _StreamBuilderBaseStateCls : public StateCls<StreamBuilderBase<T, S>> {
 public:
 
     virtual void initState();
@@ -54,7 +57,8 @@ private:
     virtual void _unsubscribe();
 
 };
-template<typename T, typename S> using _StreamBuilderBaseState = std::shared_ptr<_StreamBuilderBaseStateCls<T, S>>;
+template<typename T, typename S>
+using _StreamBuilderBaseState = std::shared_ptr<_StreamBuilderBaseStateCls<T, S>>;
 
 enum ConnectionState{
     none,
@@ -63,7 +67,8 @@ enum ConnectionState{
     done,
 } // end ConnectionState
 
-template<typename T> class AsyncSnapshotCls : public ObjectCls {
+template<typename T>
+class AsyncSnapshotCls : public ObjectCls {
 public:
     ConnectionState connectionState;
 
@@ -101,9 +106,11 @@ private:
     virtual void  _(ConnectionState connectionState, T data, Object error, StackTrace stackTrace);
 
 };
-template<typename T> using AsyncSnapshot = std::shared_ptr<AsyncSnapshotCls<T>>;
+template<typename T>
+using AsyncSnapshot = std::shared_ptr<AsyncSnapshotCls<T>>;
 
-template<typename T> class StreamBuilderCls : public StreamBuilderBaseCls<T, AsyncSnapshot<T>> {
+template<typename T>
+class StreamBuilderCls : public StreamBuilderBaseCls<T, AsyncSnapshot<T>> {
 public:
     AsyncWidgetBuilder<T> builder;
 
@@ -129,9 +136,11 @@ public:
 private:
 
 };
-template<typename T> using StreamBuilder = std::shared_ptr<StreamBuilderCls<T>>;
+template<typename T>
+using StreamBuilder = std::shared_ptr<StreamBuilderCls<T>>;
 
-template<typename T> class FutureBuilderCls : public StatefulWidgetCls {
+template<typename T>
+class FutureBuilderCls : public StatefulWidgetCls {
 public:
     Future<T> future;
 
@@ -149,9 +158,11 @@ public:
 private:
 
 };
-template<typename T> using FutureBuilder = std::shared_ptr<FutureBuilderCls<T>>;
+template<typename T>
+using FutureBuilder = std::shared_ptr<FutureBuilderCls<T>>;
 
-template<typename T> class _FutureBuilderStateCls : public StateCls<FutureBuilder<T>> {
+template<typename T>
+class _FutureBuilderStateCls : public StateCls<FutureBuilder<T>> {
 public:
 
     virtual void initState();
@@ -173,7 +184,8 @@ private:
     virtual void _unsubscribe();
 
 };
-template<typename T> using _FutureBuilderState = std::shared_ptr<_FutureBuilderStateCls<T>>;
+template<typename T>
+using _FutureBuilderState = std::shared_ptr<_FutureBuilderStateCls<T>>;
 
 
 #endif

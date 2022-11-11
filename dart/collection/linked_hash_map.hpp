@@ -5,7 +5,8 @@
 #include <dart/core/core.hpp>
 
 
-template<typename K, typename V> class LinkedHashMapCls : public ObjectCls {
+template<typename K, typename V>
+class LinkedHashMapCls : public ObjectCls {
 public:
 
      LinkedHashMapCls(bool equals(K , K ) , int hashCode(K ) , bool isValidKey(dynamic ) );
@@ -23,7 +24,8 @@ public:
 private:
 
 };
-template<typename K, typename V> using LinkedHashMap = std::shared_ptr<LinkedHashMapCls<K, V>>;
+template<typename K, typename V>
+using LinkedHashMap = std::shared_ptr<LinkedHashMapCls<K, V>>;
 
 
 #endif

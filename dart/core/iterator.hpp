@@ -5,7 +5,8 @@
 #include <dart/core/core.hpp>
 
 
-template<typename E> class IteratorCls : public ObjectCls {
+template<typename E>
+class IteratorCls : public ObjectCls {
 public:
 
     virtual bool moveNext();
@@ -13,7 +14,8 @@ public:
 private:
 
 };
-template<typename E> using Iterator = std::shared_ptr<IteratorCls<E>>;
+template<typename E>
+using Iterator = std::shared_ptr<IteratorCls<E>>;
 
 
 #endif

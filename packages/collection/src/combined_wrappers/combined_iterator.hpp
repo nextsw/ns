@@ -5,7 +5,8 @@
 #include <dart/core/core.hpp>
 
 
-template<typename T> class CombinedIteratorCls : public ObjectCls {
+template<typename T>
+class CombinedIteratorCls : public ObjectCls {
 public:
 
      CombinedIteratorCls(Iterator<Iterator<T>> iterators);
@@ -19,7 +20,8 @@ private:
 
 
 };
-template<typename T> using CombinedIterator = std::shared_ptr<CombinedIteratorCls<T>>;
+template<typename T>
+using CombinedIterator = std::shared_ptr<CombinedIteratorCls<T>>;
 
 
 #endif

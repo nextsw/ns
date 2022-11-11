@@ -690,7 +690,7 @@ bool _NestedInnerBallisticScrollActivityCls::applyMoveTo(double value) {
     return super->applyMoveTo(coordinator->nestOffset(value, delegate()));
 }
 
-_NestedInnerBallisticScrollActivityCls::_NestedInnerBallisticScrollActivityCls(_NestedScrollCoordinator coordinator, _NestedScrollPosition position, Simulation simulation, TickerProvider vsync) : BallisticScrollActivity(position, simulation, vsync) {
+_NestedInnerBallisticScrollActivityCls::_NestedInnerBallisticScrollActivityCls(_NestedScrollCoordinator coordinator, _NestedScrollPosition position, Simulation simulation, TickerProvider vsync) {
 }
 
 _NestedScrollPosition _NestedOuterBallisticScrollActivityCls::delegate() {
@@ -738,7 +738,7 @@ String _NestedOuterBallisticScrollActivityCls::toString() {
     return __s("${objectRuntimeType(this, '_NestedOuterBallisticScrollActivity')}(${metrics.minRange} .. ${metrics.maxRange}; correcting by ${metrics.correctionOffset})");
 }
 
-_NestedOuterBallisticScrollActivityCls::_NestedOuterBallisticScrollActivityCls(_NestedScrollCoordinator coordinator, _NestedScrollMetrics metrics, _NestedScrollPosition position, Simulation simulation, TickerProvider vsync) : BallisticScrollActivity(position, simulation, vsync) {
+_NestedOuterBallisticScrollActivityCls::_NestedOuterBallisticScrollActivityCls(_NestedScrollCoordinator coordinator, _NestedScrollMetrics metrics, _NestedScrollPosition position, Simulation simulation, TickerProvider vsync) {
     {
         assert(metrics->minRange != metrics->maxRange);
         assert(metrics->maxRange > metrics->minRange);
@@ -769,7 +769,7 @@ void SliverOverlapAbsorberHandleCls::_markNeedsLayout() {
     return notifyListeners();
 }
 
-SliverOverlapAbsorberCls::SliverOverlapAbsorberCls(SliverOverlapAbsorberHandle handle, Unknown key, Widget sliver) : SingleChildRenderObjectWidget(sliver) {
+SliverOverlapAbsorberCls::SliverOverlapAbsorberCls(SliverOverlapAbsorberHandle handle, Unknown key, Widget sliver) {
     {
         assert(handle != nullptr);
     }
@@ -858,7 +858,7 @@ void RenderSliverOverlapAbsorberCls::debugFillProperties(DiagnosticPropertiesBui
     properties->add(<SliverOverlapAbsorberHandle>make<DiagnosticsPropertyCls>(__s("handle"), handle()));
 }
 
-SliverOverlapInjectorCls::SliverOverlapInjectorCls(SliverOverlapAbsorberHandle handle, Unknown key, Widget sliver) : SingleChildRenderObjectWidget(sliver) {
+SliverOverlapInjectorCls::SliverOverlapInjectorCls(SliverOverlapAbsorberHandle handle, Unknown key, Widget sliver) {
     {
         assert(handle != nullptr);
     }

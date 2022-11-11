@@ -87,7 +87,8 @@ public:
 
     virtual Future<void> catchError(void  onError() , bool test(Object ) );
 
-    template<typename R>  virtual Future<R> then(void  onError() , FutureOr<R> onValue(void value) );
+    template<typename R>
+ virtual Future<R> then(void  onError() , FutureOr<R> onValue(void value) );
 
     virtual Future<void> timeout(FutureOr<void> onTimeout() , Duration timeLimit);
 

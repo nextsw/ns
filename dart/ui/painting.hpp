@@ -1260,7 +1260,8 @@ private:
     virtual void _instantiateCodec(Codec outCodec, int targetHeight, int targetWidth);
 };
 using ImageDescriptor = std::shared_ptr<ImageDescriptorCls>;
-template<typename T>  Future<T> _futurize(_Callbacker<T> callbacker);
+template<typename T>
+ Future<T> _futurize(_Callbacker<T> callbacker);
 
 
 class PictureRasterizationExceptionCls : public ObjectCls {

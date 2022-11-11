@@ -38,7 +38,8 @@ private:
 };
 using UniqueKey = std::shared_ptr<UniqueKeyCls>;
 
-template<typename T> class ValueKeyCls : public LocalKeyCls {
+template<typename T>
+class ValueKeyCls : public LocalKeyCls {
 public:
     T value;
 
@@ -53,9 +54,11 @@ public:
 private:
 
 };
-template<typename T> using ValueKey = std::shared_ptr<ValueKeyCls<T>>;
+template<typename T>
+using ValueKey = std::shared_ptr<ValueKeyCls<T>>;
 
-template<typename T> class _TypeLiteralCls : public ObjectCls {
+template<typename T>
+class _TypeLiteralCls : public ObjectCls {
 public:
 
     virtual Type type();
@@ -63,7 +66,8 @@ public:
 private:
 
 };
-template<typename T> using _TypeLiteral = std::shared_ptr<_TypeLiteralCls<T>>;
+template<typename T>
+using _TypeLiteral = std::shared_ptr<_TypeLiteralCls<T>>;
 
 
 #endif

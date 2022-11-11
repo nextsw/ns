@@ -164,7 +164,7 @@ int SliverAnimatedListStateCls::_indexToItemIndex(int index) {
         if (item->itemIndex <= itemIndex) {
             itemIndex = 1;
         } else {
-                        break;
+            break;
         }
     }
     return itemIndex;
@@ -177,7 +177,7 @@ int SliverAnimatedListStateCls::_itemIndexToIndex(int itemIndex) {
         if (item->itemIndex < itemIndex) {
             index = 1;
         } else {
-                        break;
+            break;
         }
     }
     return index;

@@ -11,7 +11,8 @@
 #include "scrollable.hpp"
 
 
-template<typename T> class ScrollAwareImageProviderCls : public ImageProviderCls<T> {
+template<typename T>
+class ScrollAwareImageProviderCls : public ImageProviderCls<T> {
 public:
     DisposableBuildContext context;
 
@@ -31,7 +32,8 @@ public:
 private:
 
 };
-template<typename T> using ScrollAwareImageProvider = std::shared_ptr<ScrollAwareImageProviderCls<T>>;
+template<typename T>
+using ScrollAwareImageProvider = std::shared_ptr<ScrollAwareImageProviderCls<T>>;
 
 
 #endif

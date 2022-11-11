@@ -1,5 +1,5 @@
 #include "dismissible.hpp"
-DismissibleCls::DismissibleCls(Widget background, HitTestBehavior behavior, Widget child, ConfirmDismissCallback confirmDismiss, double crossAxisEndOffset, DismissDirection direction, Map<DismissDirection, double> dismissThresholds, DragStartBehavior dragStartBehavior, Key key, Duration movementDuration, DismissDirectionCallback onDismissed, VoidCallback onResize, DismissUpdateCallback onUpdate, Duration resizeDuration, Widget secondaryBackground) : StatefulWidget(key) {
+DismissibleCls::DismissibleCls(Widget background, HitTestBehavior behavior, Widget child, ConfirmDismissCallback confirmDismiss, double crossAxisEndOffset, DismissDirection direction, Map<DismissDirection, double> dismissThresholds, DragStartBehavior dragStartBehavior, Key key, Duration movementDuration, DismissDirectionCallback onDismissed, VoidCallback onResize, DismissUpdateCallback onUpdate, Duration resizeDuration, Widget secondaryBackground) {
     {
         assert(key != nullptr);
         assert(secondaryBackground == nullptr || background != nullptr);
@@ -24,7 +24,7 @@ bool _DismissibleClipperCls::shouldReclip(_DismissibleClipper oldClipper) {
     return oldClipper->axis != axis || oldClipper->moveAnimation->value() != moveAnimation->value();
 }
 
-_DismissibleClipperCls::_DismissibleClipperCls(Axis axis, Animation<Offset> moveAnimation) : CustomClipper<Rect>(moveAnimation) {
+_DismissibleClipperCls::_DismissibleClipperCls(Axis axis, Animation<Offset> moveAnimation) {
     {
         assert(axis != nullptr);
         assert(moveAnimation != nullptr);

@@ -6,7 +6,8 @@
 #include <dart/async/async.hpp>
 
 
-template<typename T> class SynchronousFutureCls : public ObjectCls {
+template<typename T>
+class SynchronousFutureCls : public ObjectCls {
 public:
 
      SynchronousFutureCls(T _value);
@@ -14,7 +15,8 @@ public:
 
     virtual Future<T> catchError(void  onError() , bool test(Object error) );
 
-    template<typename R>  virtual Future<R> then(void  onError() , FutureOr<R> onValue(T value) );
+    template<typename R>
+ virtual Future<R> then(void  onError() , FutureOr<R> onValue(T value) );
 
     virtual Future<T> timeout(FutureOr<T> onTimeout() , Duration timeLimit);
 
@@ -25,7 +27,8 @@ private:
 
 
 };
-template<typename T> using SynchronousFuture = std::shared_ptr<SynchronousFutureCls<T>>;
+template<typename T>
+using SynchronousFuture = std::shared_ptr<SynchronousFutureCls<T>>;
 
 
 #endif

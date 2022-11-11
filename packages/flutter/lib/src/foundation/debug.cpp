@@ -9,7 +9,8 @@ bool debugAssertAllFoundationVarsUnset(DebugPrintCallback debugPrintOverride, St
     return true;
 }
 
-Future<T> debugInstrumentActiontemplate<typename T> (Future<T> action() , String description) {
+template<typename T>
+Future<T> debugInstrumentAction(Future<T> action() , String description) {
     bool instrument = false;
     assert([=] () {
         instrument = debugInstrumentationEnabled;

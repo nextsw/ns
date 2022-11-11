@@ -1759,7 +1759,8 @@ Future<Codec> ImageDescriptorCls::instantiateCodec(int targetHeight, int targetW
     return codec;
 }
 
-Future<T> _futurizetemplate<typename T> (_Callbacker<T> callbacker) {
+template<typename T>
+Future<T> _futurize(_Callbacker<T> callbacker) {
     Completer<T> completer = <T>sync();
     bool sync = true;
     String error = callbacker([=] (T t) {

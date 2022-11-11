@@ -5,7 +5,8 @@
 #include <dart/core/core.hpp>
 
 
-template<typename S, typename T> class CodecCls : public ObjectCls {
+template<typename S, typename T>
+class CodecCls : public ObjectCls {
 public:
 
      CodecCls();
@@ -15,16 +16,19 @@ public:
 
     virtual Converter<S, T> encoder();
     virtual Converter<T, S> decoder();
-    template<typename R>  virtual Codec<S, R> fuse(Codec<T, R> other);
+    template<typename R>
+ virtual Codec<S, R> fuse(Codec<T, R> other);
 
     virtual Codec<T, S> inverted();
 
 private:
 
 };
-template<typename S, typename T> using Codec = std::shared_ptr<CodecCls<S, T>>;
+template<typename S, typename T>
+using Codec = std::shared_ptr<CodecCls<S, T>>;
 
-template<typename S, typename M, typename T> class _FusedCodecCls : public CodecCls<S, T> {
+template<typename S, typename M, typename T>
+class _FusedCodecCls : public CodecCls<S, T> {
 public:
 
     virtual Converter<S, T> encoder();
@@ -39,9 +43,11 @@ private:
 
      _FusedCodecCls(Codec<S, M> _first, Codec<M, T> _second);
 };
-template<typename S, typename M, typename T> using _FusedCodec = std::shared_ptr<_FusedCodecCls<S, M, T>>;
+template<typename S, typename M, typename T>
+using _FusedCodec = std::shared_ptr<_FusedCodecCls<S, M, T>>;
 
-template<typename T, typename S> class _InvertedCodecCls : public CodecCls<T, S> {
+template<typename T, typename S>
+class _InvertedCodecCls : public CodecCls<T, S> {
 public:
 
     virtual Converter<T, S> encoder();
@@ -57,7 +63,8 @@ private:
      _InvertedCodecCls(Codec<S, T> codec);
 
 };
-template<typename T, typename S> using _InvertedCodec = std::shared_ptr<_InvertedCodecCls<T, S>>;
+template<typename T, typename S>
+using _InvertedCodec = std::shared_ptr<_InvertedCodecCls<T, S>>;
 
 
 #endif

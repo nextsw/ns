@@ -22,7 +22,7 @@ void GaugeCls::value(double v) {
     }    _value = v;
 }
 
-GaugeCls::GaugeCls(String description, double max, double min, String name) : Metric(name, description) {
+GaugeCls::GaugeCls(String description, double max, double min, String name) {
     {
         _value = min;
     }
@@ -40,7 +40,7 @@ Map GaugeCls::_toJSON() {
     return map;
 }
 
-CounterCls::CounterCls(String description, String name) : Metric(name, description) {
+CounterCls::CounterCls(String description, String name) {
 }
 
 double CounterCls::value() {

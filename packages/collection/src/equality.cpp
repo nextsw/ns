@@ -1,20 +1,24 @@
 #include "equality.hpp"
-template<typename E, typename F> EqualityByCls<E, F>::EqualityByCls(F comparisonKey(E ) , Equality<F> inner) {
+template<typename E, typename F>
+EqualityByCls<E, F>::EqualityByCls(F comparisonKey(E ) , Equality<F> inner) {
     {
         _comparisonKey = comparisonKey;
         _inner = inner;
     }
 }
 
-template<typename E, typename F> bool EqualityByCls<E, F>::equals(E e1, E e2) {
+template<typename E, typename F>
+bool EqualityByCls<E, F>::equals(E e1, E e2) {
     return _inner->equals(_comparisonKey(e1), _comparisonKey(e2));
 }
 
-template<typename E, typename F> int EqualityByCls<E, F>::hash(E e) {
+template<typename E, typename F>
+int EqualityByCls<E, F>::hash(E e) {
     return _inner->hash(_comparisonKey(e));
 }
 
-template<typename E, typename F> bool EqualityByCls<E, F>::isValidKey(Object o) {
+template<typename E, typename F>
+bool EqualityByCls<E, F>::isValidKey(Object o) {
     if (is<E>(o)) {
         Unknown value = _comparisonKey(o);
         return _inner->isValidKey(value);
@@ -22,37 +26,45 @@ template<typename E, typename F> bool EqualityByCls<E, F>::isValidKey(Object o) 
     return false;
 }
 
-template<typename E> bool DefaultEqualityCls<E>::equals(Object e1, Object e2) {
+template<typename E>
+bool DefaultEqualityCls<E>::equals(Object e1, Object e2) {
     return e1 == e2;
 }
 
-template<typename E> int DefaultEqualityCls<E>::hash(Object e) {
+template<typename E>
+int DefaultEqualityCls<E>::hash(Object e) {
     return e->hashCode();
 }
 
-template<typename E> bool DefaultEqualityCls<E>::isValidKey(Object o) {
+template<typename E>
+bool DefaultEqualityCls<E>::isValidKey(Object o) {
     return true;
 }
 
-template<typename E> bool IdentityEqualityCls<E>::equals(E e1, E e2) {
+template<typename E>
+bool IdentityEqualityCls<E>::equals(E e1, E e2) {
     return identical(e1, e2);
 }
 
-template<typename E> int IdentityEqualityCls<E>::hash(E e) {
+template<typename E>
+int IdentityEqualityCls<E>::hash(E e) {
     return identityHashCode(e);
 }
 
-template<typename E> bool IdentityEqualityCls<E>::isValidKey(Object o) {
+template<typename E>
+bool IdentityEqualityCls<E>::isValidKey(Object o) {
     return true;
 }
 
-template<typename E> IterableEqualityCls<E>::IterableEqualityCls(Equality<E> elementEquality) {
+template<typename E>
+IterableEqualityCls<E>::IterableEqualityCls(Equality<E> elementEquality) {
     {
         _elementEquality = elementEquality;
     }
 }
 
-template<typename E> bool IterableEqualityCls<E>::equals(Iterable<E> elements1, Iterable<E> elements2) {
+template<typename E>
+bool IterableEqualityCls<E>::equals(Iterable<E> elements1, Iterable<E> elements2) {
     if (identical(elements1, elements2))     {
         return true;
     }
@@ -75,7 +87,8 @@ template<typename E> bool IterableEqualityCls<E>::equals(Iterable<E> elements1, 
     }
 }
 
-template<typename E> int IterableEqualityCls<E>::hash(Iterable<E> elements) {
+template<typename E>
+int IterableEqualityCls<E>::hash(Iterable<E> elements) {
     if (elements == nullptr)     {
         return nullptr->hashCode;
     }
@@ -92,17 +105,20 @@ template<typename E> int IterableEqualityCls<E>::hash(Iterable<E> elements) {
     return hash;
 }
 
-template<typename E> bool IterableEqualityCls<E>::isValidKey(Object o) {
+template<typename E>
+bool IterableEqualityCls<E>::isValidKey(Object o) {
     return is<Iterable<E>>(o);
 }
 
-template<typename E> ListEqualityCls<E>::ListEqualityCls(Equality<E> elementEquality) {
+template<typename E>
+ListEqualityCls<E>::ListEqualityCls(Equality<E> elementEquality) {
     {
         _elementEquality = elementEquality;
     }
 }
 
-template<typename E> bool ListEqualityCls<E>::equals(List<E> list1, List<E> list2) {
+template<typename E>
+bool ListEqualityCls<E>::equals(List<E> list1, List<E> list2) {
     if (identical(list1, list2))     {
         return true;
     }
@@ -121,7 +137,8 @@ template<typename E> bool ListEqualityCls<E>::equals(List<E> list1, List<E> list
     return true;
 }
 
-template<typename E> int ListEqualityCls<E>::hash(List<E> list) {
+template<typename E>
+int ListEqualityCls<E>::hash(List<E> list) {
     if (list == nullptr)     {
         return nullptr->hashCode;
     }
@@ -138,11 +155,13 @@ template<typename E> int ListEqualityCls<E>::hash(List<E> list) {
     return hash;
 }
 
-template<typename E> bool ListEqualityCls<E>::isValidKey(Object o) {
+template<typename E>
+bool ListEqualityCls<E>::isValidKey(Object o) {
     return is<List<E>>(o);
 }
 
-template<typename E, typename T> bool _UnorderedEqualityCls<E, T>::equals(T elements1, T elements2) {
+template<typename E, typename T>
+bool _UnorderedEqualityCls<E, T>::equals(T elements1, T elements2) {
     if (identical(elements1, elements2))     {
         return true;
     }
@@ -167,7 +186,8 @@ template<typename E, typename T> bool _UnorderedEqualityCls<E, T>::equals(T elem
     return length == 0;
 }
 
-template<typename E, typename T> int _UnorderedEqualityCls<E, T>::hash(T elements) {
+template<typename E, typename T>
+int _UnorderedEqualityCls<E, T>::hash(T elements) {
     if (elements == nullptr)     {
         return nullptr->hashCode;
     }
@@ -182,17 +202,21 @@ template<typename E, typename T> int _UnorderedEqualityCls<E, T>::hash(T element
     return hash;
 }
 
-template<typename E> UnorderedIterableEqualityCls<E>::UnorderedIterableEqualityCls(Equality<E> elementEquality) : _UnorderedEquality<E, Iterable<E>>(elementEquality) {
+template<typename E>
+UnorderedIterableEqualityCls<E>::UnorderedIterableEqualityCls(Equality<E> elementEquality) {
 }
 
-template<typename E> bool UnorderedIterableEqualityCls<E>::isValidKey(Object o) {
+template<typename E>
+bool UnorderedIterableEqualityCls<E>::isValidKey(Object o) {
     return is<Iterable<E>>(o);
 }
 
-template<typename E> SetEqualityCls<E>::SetEqualityCls(Equality<E> elementEquality) : _UnorderedEquality<E, Set<E>>(elementEquality) {
+template<typename E>
+SetEqualityCls<E>::SetEqualityCls(Equality<E> elementEquality) {
 }
 
-template<typename E> bool SetEqualityCls<E>::isValidKey(Object o) {
+template<typename E>
+bool SetEqualityCls<E>::isValidKey(Object o) {
     return is<Set<E>>(o);
 }
 
@@ -204,14 +228,16 @@ bool _MapEntryCls::==(Object other) {
     return is<_MapEntry>(other) && equality->_keyEquality->equals(key, other->key) && equality->_valueEquality->equals(value, other->value);
 }
 
-template<typename K, typename V> MapEqualityCls<K, V>::MapEqualityCls(Equality<K> keys, Equality<V> values) {
+template<typename K, typename V>
+MapEqualityCls<K, V>::MapEqualityCls(Equality<K> keys, Equality<V> values) {
     {
         _keyEquality = keys;
         _valueEquality = values;
     }
 }
 
-template<typename K, typename V> bool MapEqualityCls<K, V>::equals(Map<K, V> map1, Map<K, V> map2) {
+template<typename K, typename V>
+bool MapEqualityCls<K, V>::equals(Map<K, V> map1, Map<K, V> map2) {
     if (identical(map1, map2))     {
         return true;
     }
@@ -239,7 +265,8 @@ template<typename K, typename V> bool MapEqualityCls<K, V>::equals(Map<K, V> map
     return true;
 }
 
-template<typename K, typename V> int MapEqualityCls<K, V>::hash(Map<K, V> map) {
+template<typename K, typename V>
+int MapEqualityCls<K, V>::hash(Map<K, V> map) {
     if (map == nullptr)     {
         return nullptr->hashCode;
     }
@@ -255,17 +282,20 @@ template<typename K, typename V> int MapEqualityCls<K, V>::hash(Map<K, V> map) {
     return hash;
 }
 
-template<typename K, typename V> bool MapEqualityCls<K, V>::isValidKey(Object o) {
+template<typename K, typename V>
+bool MapEqualityCls<K, V>::isValidKey(Object o) {
     return is<Map<K, V>>(o);
 }
 
-template<typename E> MultiEqualityCls<E>::MultiEqualityCls(Iterable<Equality<E>> equalities) {
+template<typename E>
+MultiEqualityCls<E>::MultiEqualityCls(Iterable<Equality<E>> equalities) {
     {
         _equalities = equalities;
     }
 }
 
-template<typename E> bool MultiEqualityCls<E>::equals(E e1, E e2) {
+template<typename E>
+bool MultiEqualityCls<E>::equals(E e1, E e2) {
     for (auto eq : _equalities) {
         if (eq->isValidKey(e1))         {
             return eq->isValidKey(e2) && eq->equals(e1, e2);
@@ -274,7 +304,8 @@ template<typename E> bool MultiEqualityCls<E>::equals(E e1, E e2) {
     return false;
 }
 
-template<typename E> int MultiEqualityCls<E>::hash(E e) {
+template<typename E>
+int MultiEqualityCls<E>::hash(E e) {
     for (auto eq : _equalities) {
         if (eq->isValidKey(e))         {
             return eq->hash(e);
@@ -283,7 +314,8 @@ template<typename E> int MultiEqualityCls<E>::hash(E e) {
     return 0;
 }
 
-template<typename E> bool MultiEqualityCls<E>::isValidKey(Object o) {
+template<typename E>
+bool MultiEqualityCls<E>::isValidKey(Object o) {
     for (auto eq : _equalities) {
         if (eq->isValidKey(o))         {
             return true;

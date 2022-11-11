@@ -57,7 +57,8 @@ public:
     virtual void dispose();
 
     virtual String debugDescription();
-    template<typename T>  virtual T invokeCallback(RecognizerCallback<T> callback, String debugReport() , String name);
+    template<typename T>
+ virtual T invokeCallback(RecognizerCallback<T> callback, String debugReport() , String name);
 
     virtual void debugFillProperties(DiagnosticPropertiesBuilder properties);
 

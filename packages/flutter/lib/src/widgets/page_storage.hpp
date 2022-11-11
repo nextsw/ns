@@ -7,14 +7,16 @@
 #include "framework.hpp"
 
 
-template<typename T> class PageStorageKeyCls : public ValueKeyCls<T> {
+template<typename T>
+class PageStorageKeyCls : public ValueKeyCls<T> {
 public:
 
      PageStorageKeyCls(Unknown value);
 private:
 
 };
-template<typename T> using PageStorageKey = std::shared_ptr<PageStorageKeyCls<T>>;
+template<typename T>
+using PageStorageKey = std::shared_ptr<PageStorageKeyCls<T>>;
 
 class _StorageEntryIdentifierCls : public ObjectCls {
 public:

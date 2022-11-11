@@ -180,7 +180,8 @@ private:
 
     virtual String _tryDecode(List<int> bytes, Encoding encoding);
 
-    template<typename T>  static T _checkNotNull(String name, T t);
+    template<typename T>
+ static T _checkNotNull(String name, T t);
 
 };
 using _File = std::shared_ptr<_FileCls>;

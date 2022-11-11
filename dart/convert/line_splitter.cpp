@@ -4,10 +4,10 @@ Iterable<String> LineSplitterCls::split(int end, String lines, int start) {
     auto sliceStart = start;
     auto char = 0;
     for (;  < end; i++) {
-        auto previousChar = char;
-        char = lines->codeUnitAt(i);
-        if (char != _CRCls) {
-            if (char != _LFCls)             {
+        auto previousChar = charValue;
+        charValue = lines->codeUnitAt(i);
+        if (charValue != _CRCls) {
+            if (charValue != _LFCls)             {
                 continue;
             }
             if (previousChar == _CRCls) {
@@ -31,10 +31,10 @@ List<String> LineSplitterCls::convert(String data) {
     auto sliceStart = 0;
     auto char = 0;
     for (;  < end; i++) {
-        auto previousChar = char;
-        char = data->codeUnitAt(i);
-        if (char != _CRCls) {
-            if (char != _LFCls)             {
+        auto previousChar = charValue;
+        charValue = data->codeUnitAt(i);
+        if (charValue != _CRCls) {
+            if (charValue != _LFCls)             {
                 continue;
             }
             if (previousChar == _CRCls) {
@@ -102,10 +102,10 @@ void _LineSplitterSinkCls::_addLines(int end, String lines, int start) {
     auto sliceStart = start;
     auto char = 0;
     for (;  < end; i++) {
-        auto previousChar = char;
-        char = lines->codeUnitAt(i);
-        if (char != _CRCls) {
-            if (char != _LFCls)             {
+        auto previousChar = charValue;
+        charValue = lines->codeUnitAt(i);
+        if (charValue != _CRCls) {
+            if (charValue != _LFCls)             {
                 continue;
             }
             if (previousChar == _CRCls) {
@@ -119,7 +119,7 @@ void _LineSplitterSinkCls::_addLines(int end, String lines, int start) {
     if ( < end) {
         _carry = lines->substring(sliceStart, end);
     } else {
-        _skipLeadingLF = (char == _CRCls);
+        _skipLeadingLF = (charValue == _CRCls);
     }
 }
 
@@ -127,7 +127,7 @@ void _LineSplitterEventSinkCls::addError(Object o, StackTrace stackTrace) {
     _eventSink->addError(o, stackTrace);
 }
 
-_LineSplitterEventSinkCls::_LineSplitterEventSinkCls(EventSink<String> eventSink) : _LineSplitterSink(StringConversionSinkCls->from(eventSink)) {
+_LineSplitterEventSinkCls::_LineSplitterEventSinkCls(EventSink<String> eventSink) {
     {
         _eventSink = eventSink;
     }

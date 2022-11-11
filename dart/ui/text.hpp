@@ -231,7 +231,8 @@ private:
 
 };
 using TextHeightBehavior = std::shared_ptr<TextHeightBehaviorCls>;
-template<typename T>  bool _listEquals(List<T> a, List<T> b);
+template<typename T>
+ bool _listEquals(List<T> a, List<T> b);
 
 Int32List _encodeTextStyle(Paint background, Color color, TextDecoration decoration, Color decorationColor, TextDecorationStyle decorationStyle, double decorationThickness, String fontFamily, List<String> fontFamilyFallback, List<FontFeature> fontFeatures, double fontSize, FontStyle fontStyle, List<FontVariation> fontVariations, FontWeight fontWeight, Paint foreground, double height, double letterSpacing, Locale locale, List<Shadow> shadows, TextBaseline textBaseline, double wordSpacing);
 

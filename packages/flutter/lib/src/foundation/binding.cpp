@@ -33,7 +33,8 @@ void BindingBaseCls::initInstances() {
     }());
 }
 
-T BindingBaseCls::checkInstancetemplate<typename T> (T instance) {
+template<typename T>
+T BindingBaseCls::checkInstance(T instance) {
     assert([=] () {
         if (_debugInitializedType == nullptr && instance == nullptr) {
             ;

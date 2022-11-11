@@ -5,7 +5,8 @@
 #include <dart/core/core.hpp>
 
 
-template<typename T> class ExpandoCls : public ObjectCls {
+template<typename T>
+class ExpandoCls : public ObjectCls {
 public:
     String name;
 
@@ -18,9 +19,11 @@ public:
 private:
 
 };
-template<typename T> using Expando = std::shared_ptr<ExpandoCls<T>>;
+template<typename T>
+using Expando = std::shared_ptr<ExpandoCls<T>>;
 
-template<typename T> class WeakReferenceCls : public ObjectCls {
+template<typename T>
+class WeakReferenceCls : public ObjectCls {
 public:
 
      WeakReferenceCls(T target);
@@ -28,9 +31,11 @@ public:
 private:
 
 };
-template<typename T> using WeakReference = std::shared_ptr<WeakReferenceCls<T>>;
+template<typename T>
+using WeakReference = std::shared_ptr<WeakReferenceCls<T>>;
 
-template<typename T> class FinalizerCls : public ObjectCls {
+template<typename T>
+class FinalizerCls : public ObjectCls {
 public:
 
      FinalizerCls(void callback(T ) );
@@ -39,7 +44,8 @@ public:
 private:
 
 };
-template<typename T> using Finalizer = std::shared_ptr<FinalizerCls<T>>;
+template<typename T>
+using Finalizer = std::shared_ptr<FinalizerCls<T>>;
 
 
 #endif

@@ -175,31 +175,38 @@ void UnmodifiableByteDataViewCls::_unsupported() {
     ;
 }
 
-template<typename N, typename L, typename TD> int _UnmodifiableListMixinCls<N, L, TD>::length() {
+template<typename N, typename L, typename TD>
+int _UnmodifiableListMixinCls<N, L, TD>::length() {
     return _list()->length();
 }
 
-template<typename N, typename L, typename TD> N _UnmodifiableListMixinCls<N, L, TD>::[](int index) {
+template<typename N, typename L, typename TD>
+N _UnmodifiableListMixinCls<N, L, TD>::[](int index) {
     return _list()[index];
 }
 
-template<typename N, typename L, typename TD> int _UnmodifiableListMixinCls<N, L, TD>::elementSizeInBytes() {
+template<typename N, typename L, typename TD>
+int _UnmodifiableListMixinCls<N, L, TD>::elementSizeInBytes() {
     return _data()->elementSizeInBytes();
 }
 
-template<typename N, typename L, typename TD> int _UnmodifiableListMixinCls<N, L, TD>::offsetInBytes() {
+template<typename N, typename L, typename TD>
+int _UnmodifiableListMixinCls<N, L, TD>::offsetInBytes() {
     return _data()->offsetInBytes();
 }
 
-template<typename N, typename L, typename TD> int _UnmodifiableListMixinCls<N, L, TD>::lengthInBytes() {
+template<typename N, typename L, typename TD>
+int _UnmodifiableListMixinCls<N, L, TD>::lengthInBytes() {
     return _data()->lengthInBytes();
 }
 
-template<typename N, typename L, typename TD> ByteBuffer _UnmodifiableListMixinCls<N, L, TD>::buffer() {
+template<typename N, typename L, typename TD>
+ByteBuffer _UnmodifiableListMixinCls<N, L, TD>::buffer() {
     return make<UnmodifiableByteBufferViewCls>(_data()->buffer());
 }
 
-template<typename N, typename L, typename TD> L _UnmodifiableListMixinCls<N, L, TD>::sublist(int end, int start) {
+template<typename N, typename L, typename TD>
+L _UnmodifiableListMixinCls<N, L, TD>::sublist(int end, int start) {
     int endIndex = RangeErrorCls->checkValidRange(start, end!, length());
     int sublistLength = endIndex - start;
     L result = _createList(sublistLength);
@@ -207,7 +214,8 @@ template<typename N, typename L, typename TD> L _UnmodifiableListMixinCls<N, L, 
     return result;
 }
 
-template<typename N, typename L, typename TD> TD _UnmodifiableListMixinCls<N, L, TD>::_data() {
+template<typename N, typename L, typename TD>
+TD _UnmodifiableListMixinCls<N, L, TD>::_data() {
     return (as<TD>(_list()));
 }
 

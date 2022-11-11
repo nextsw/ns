@@ -203,11 +203,13 @@ HSLColor HSLColorCls::_scaleAlpha(double factor) {
     return withAlpha(alpha * factor);
 }
 
-template<typename T> Color ColorSwatchCls<T>::[](T index) {
+template<typename T>
+Color ColorSwatchCls<T>::[](T index) {
     return _swatch[index];
 }
 
-template<typename T> bool ColorSwatchCls<T>::==(Object other) {
+template<typename T>
+bool ColorSwatchCls<T>::==(Object other) {
     if (identical(this, other)) {
         return true;
     }
@@ -217,15 +219,19 @@ template<typename T> bool ColorSwatchCls<T>::==(Object other) {
     return super == other && is<ColorSwatch<T>>(other) && <T, Color>mapEquals(other->_swatch, _swatch);
 }
 
-template<typename T> int ColorSwatchCls<T>::hashCode() {
+template<typename T>
+int ColorSwatchCls<T>::hashCode() {
     return ObjectCls->hash(runtimeType, value, _swatch);
 }
 
-template<typename T> String ColorSwatchCls<T>::toString() {
+template<typename T>
+String ColorSwatchCls<T>::toString() {
     return __s("${objectRuntimeType(this, 'ColorSwatch')}(primary value: ${super.toString()})");
 }
 
-template<typename T> ColorSwatch<T> ColorSwatchCls<T>::lerptemplate<typename T> (ColorSwatch<T> a, ColorSwatch<T> b, double t) {
+template<typename T>
+template<typename T>
+ColorSwatch<T> ColorSwatchCls<T>::lerp(ColorSwatch<T> a, ColorSwatch<T> b, double t) {
     Map<T, Color> swatch;
     if (b == nullptr) {
         if (a == nullptr) {

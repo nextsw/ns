@@ -5,7 +5,8 @@
 #include <dart/core/core.hpp>
 
 
-template<typename T> class StreamControllerCls : public ObjectCls {
+template<typename T>
+class StreamControllerCls : public ObjectCls {
 public:
     void Function() onListen;
 
@@ -33,9 +34,11 @@ public:
 private:
 
 };
-template<typename T> using StreamController = std::shared_ptr<StreamControllerCls<T>>;
+template<typename T>
+using StreamController = std::shared_ptr<StreamControllerCls<T>>;
 
-template<typename T> class SynchronousStreamControllerCls : public ObjectCls {
+template<typename T>
+class SynchronousStreamControllerCls : public ObjectCls {
 public:
 
     virtual void add(T data);
@@ -44,9 +47,11 @@ public:
 private:
 
 };
-template<typename T> using SynchronousStreamController = std::shared_ptr<SynchronousStreamControllerCls<T>>;
+template<typename T>
+using SynchronousStreamController = std::shared_ptr<SynchronousStreamControllerCls<T>>;
 
-template<typename T> class _StreamControllerLifecycleCls : public ObjectCls {
+template<typename T>
+class _StreamControllerLifecycleCls : public ObjectCls {
 public:
 
 private:
@@ -59,17 +64,21 @@ private:
     virtual Future<void> _recordCancel(StreamSubscription<T> subscription);
 
 };
-template<typename T> using _StreamControllerLifecycle = std::shared_ptr<_StreamControllerLifecycleCls<T>>;
+template<typename T>
+using _StreamControllerLifecycle = std::shared_ptr<_StreamControllerLifecycleCls<T>>;
 
-template<typename T> class _StreamControllerBaseCls : public ObjectCls {
+template<typename T>
+class _StreamControllerBaseCls : public ObjectCls {
 public:
 
 private:
 
 };
-template<typename T> using _StreamControllerBase = std::shared_ptr<_StreamControllerBaseCls<T>>;
+template<typename T>
+using _StreamControllerBase = std::shared_ptr<_StreamControllerBaseCls<T>>;
 
-template<typename T> class _StreamControllerCls : public ObjectCls {
+template<typename T>
+class _StreamControllerCls : public ObjectCls {
 public:
     void Function() onListen;
 
@@ -156,9 +165,11 @@ private:
     virtual void _recordResume(StreamSubscription<T> subscription);
 
 };
-template<typename T> using _StreamController = std::shared_ptr<_StreamControllerCls<T>>;
+template<typename T>
+using _StreamController = std::shared_ptr<_StreamControllerCls<T>>;
 
-template<typename T> class _SyncStreamControllerDispatchCls : public ObjectCls {
+template<typename T>
+class _SyncStreamControllerDispatchCls : public ObjectCls {
 public:
 
 private:
@@ -170,9 +181,11 @@ private:
     virtual void _sendDone();
 
 };
-template<typename T> using _SyncStreamControllerDispatch = std::shared_ptr<_SyncStreamControllerDispatchCls<T>>;
+template<typename T>
+using _SyncStreamControllerDispatch = std::shared_ptr<_SyncStreamControllerDispatchCls<T>>;
 
-template<typename T> class _AsyncStreamControllerDispatchCls : public ObjectCls {
+template<typename T>
+class _AsyncStreamControllerDispatchCls : public ObjectCls {
 public:
 
 private:
@@ -184,27 +197,33 @@ private:
     virtual void _sendDone();
 
 };
-template<typename T> using _AsyncStreamControllerDispatch = std::shared_ptr<_AsyncStreamControllerDispatchCls<T>>;
+template<typename T>
+using _AsyncStreamControllerDispatch = std::shared_ptr<_AsyncStreamControllerDispatchCls<T>>;
 
-template<typename T> class _AsyncStreamControllerCls : public ObjectCls {
+template<typename T>
+class _AsyncStreamControllerCls : public ObjectCls {
 public:
 
 private:
 
 };
-template<typename T> using _AsyncStreamController = std::shared_ptr<_AsyncStreamControllerCls<T>>;
+template<typename T>
+using _AsyncStreamController = std::shared_ptr<_AsyncStreamControllerCls<T>>;
 
-template<typename T> class _SyncStreamControllerCls : public ObjectCls {
+template<typename T>
+class _SyncStreamControllerCls : public ObjectCls {
 public:
 
 private:
 
 };
-template<typename T> using _SyncStreamController = std::shared_ptr<_SyncStreamControllerCls<T>>;
+template<typename T>
+using _SyncStreamController = std::shared_ptr<_SyncStreamControllerCls<T>>;
 void _runGuarded(void notificationHandler() );
 
 
-template<typename T> class _ControllerStreamCls : public _StreamImplCls<T> {
+template<typename T>
+class _ControllerStreamCls : public _StreamImplCls<T> {
 public:
 
     virtual int hashCode();
@@ -219,9 +238,11 @@ private:
     virtual StreamSubscription<T> _createSubscription(bool cancelOnError, void onData(T data) , void onDone() , void  onError() );
 
 };
-template<typename T> using _ControllerStream = std::shared_ptr<_ControllerStreamCls<T>>;
+template<typename T>
+using _ControllerStream = std::shared_ptr<_ControllerStreamCls<T>>;
 
-template<typename T> class _ControllerSubscriptionCls : public _BufferingStreamSubscriptionCls<T> {
+template<typename T>
+class _ControllerSubscriptionCls : public _BufferingStreamSubscriptionCls<T> {
 public:
 
 private:
@@ -237,9 +258,11 @@ private:
     virtual void _onResume();
 
 };
-template<typename T> using _ControllerSubscription = std::shared_ptr<_ControllerSubscriptionCls<T>>;
+template<typename T>
+using _ControllerSubscription = std::shared_ptr<_ControllerSubscriptionCls<T>>;
 
-template<typename T> class _StreamSinkWrapperCls : public ObjectCls {
+template<typename T>
+class _StreamSinkWrapperCls : public ObjectCls {
 public:
 
     virtual void add(T data);
@@ -258,9 +281,11 @@ private:
 
      _StreamSinkWrapperCls(StreamController _target);
 };
-template<typename T> using _StreamSinkWrapper = std::shared_ptr<_StreamSinkWrapperCls<T>>;
+template<typename T>
+using _StreamSinkWrapper = std::shared_ptr<_StreamSinkWrapperCls<T>>;
 
-template<typename T> class _AddStreamStateCls : public ObjectCls {
+template<typename T>
+class _AddStreamStateCls : public ObjectCls {
 public:
     _Future addStreamFuture;
 
@@ -282,9 +307,11 @@ private:
      _AddStreamStateCls(bool cancelOnError, _EventSink<T> controller, Stream<T> source);
 
 };
-template<typename T> using _AddStreamState = std::shared_ptr<_AddStreamStateCls<T>>;
+template<typename T>
+using _AddStreamState = std::shared_ptr<_AddStreamStateCls<T>>;
 
-template<typename T> class _StreamControllerAddStreamStateCls : public _AddStreamStateCls<T> {
+template<typename T>
+class _StreamControllerAddStreamStateCls : public _AddStreamStateCls<T> {
 public:
     auto varData;
 
@@ -294,7 +321,8 @@ private:
      _StreamControllerAddStreamStateCls(bool cancelOnError, _StreamController<T> controller, Stream<T> source, auto varData);
 
 };
-template<typename T> using _StreamControllerAddStreamState = std::shared_ptr<_StreamControllerAddStreamStateCls<T>>;
+template<typename T>
+using _StreamControllerAddStreamState = std::shared_ptr<_StreamControllerAddStreamStateCls<T>>;
 
 
 #endif

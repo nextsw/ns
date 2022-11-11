@@ -56,15 +56,18 @@ void ImplicitlyAnimatedWidgetCls::debugFillProperties(DiagnosticPropertiesBuilde
     properties->add(make<IntPropertyCls>(__s("duration"), duration->inMilliseconds()__s("ms")));
 }
 
-template<typename T> AnimationController ImplicitlyAnimatedWidgetStateCls<T>::controller() {
+template<typename T>
+AnimationController ImplicitlyAnimatedWidgetStateCls<T>::controller() {
     return _controller;
 }
 
-template<typename T> Animation<double> ImplicitlyAnimatedWidgetStateCls<T>::animation() {
+template<typename T>
+Animation<double> ImplicitlyAnimatedWidgetStateCls<T>::animation() {
     return _animation;
 }
 
-template<typename T> void ImplicitlyAnimatedWidgetStateCls<T>::initState() {
+template<typename T>
+void ImplicitlyAnimatedWidgetStateCls<T>::initState() {
     super->initState();
     _controller->addStatusListener([=] (AnimationStatus status) {
         ;
@@ -73,7 +76,8 @@ template<typename T> void ImplicitlyAnimatedWidgetStateCls<T>::initState() {
     didUpdateTweens();
 }
 
-template<typename T> void ImplicitlyAnimatedWidgetStateCls<T>::didUpdateWidget(T oldWidget) {
+template<typename T>
+void ImplicitlyAnimatedWidgetStateCls<T>::didUpdateWidget(T oldWidget) {
     super->didUpdateWidget(oldWidget);
     if (widget->curve != oldWidget->curve) {
         (as<CurvedAnimation>(_animation))->dispose();
@@ -90,31 +94,37 @@ template<typename T> void ImplicitlyAnimatedWidgetStateCls<T>::didUpdateWidget(T
     }
 }
 
-template<typename T> void ImplicitlyAnimatedWidgetStateCls<T>::dispose() {
+template<typename T>
+void ImplicitlyAnimatedWidgetStateCls<T>::dispose() {
     (as<CurvedAnimation>(_animation))->dispose();
     _controller->dispose();
     super->dispose();
 }
 
-template<typename T> void ImplicitlyAnimatedWidgetStateCls<T>::didUpdateTweens() {
+template<typename T>
+void ImplicitlyAnimatedWidgetStateCls<T>::didUpdateTweens() {
 }
 
-template<typename T> CurvedAnimation ImplicitlyAnimatedWidgetStateCls<T>::_createCurve() {
+template<typename T>
+CurvedAnimation ImplicitlyAnimatedWidgetStateCls<T>::_createCurve() {
     return make<CurvedAnimationCls>(_controller, widget->curve);
 }
 
-template<typename T> bool ImplicitlyAnimatedWidgetStateCls<T>::_shouldAnimateTween(dynamic targetValue, Tween<dynamic> tween) {
+template<typename T>
+bool ImplicitlyAnimatedWidgetStateCls<T>::_shouldAnimateTween(dynamic targetValue, Tween<dynamic> tween) {
     return targetValue != (tween->end or tween->begin);
 }
 
-template<typename T> void ImplicitlyAnimatedWidgetStateCls<T>::_updateTween(dynamic targetValue, Tween<dynamic> tween) {
+template<typename T>
+void ImplicitlyAnimatedWidgetStateCls<T>::_updateTween(dynamic targetValue, Tween<dynamic> tween) {
     if (tween == nullptr) {
         return;
     }
     auto _c1 = tween;_c1.begin = auto _c2 = tween->evaluate(_animation);_c2.end = targetValue;_c2;_c1;
 }
 
-template<typename T> bool ImplicitlyAnimatedWidgetStateCls<T>::_constructTweens() {
+template<typename T>
+bool ImplicitlyAnimatedWidgetStateCls<T>::_constructTweens() {
     bool shouldStartAnimation = false;
     forEachTween([=] (Tween<dynamic> tween,dynamic targetValue,TweenConstructor<dynamic> constructor) {
         if (targetValue != nullptr) {
@@ -132,12 +142,14 @@ template<typename T> bool ImplicitlyAnimatedWidgetStateCls<T>::_constructTweens(
     return shouldStartAnimation;
 }
 
-template<typename T> void AnimatedWidgetBaseStateCls<T>::initState() {
+template<typename T>
+void AnimatedWidgetBaseStateCls<T>::initState() {
     super->initState();
     controller->addListener(_handleAnimationChanged);
 }
 
-template<typename T> void AnimatedWidgetBaseStateCls<T>::_handleAnimationChanged() {
+template<typename T>
+void AnimatedWidgetBaseStateCls<T>::_handleAnimationChanged() {
     setState([=] () {
     });
 }

@@ -1,36 +1,43 @@
 #include "layout_builder.hpp"
-template<typename ConstraintType> ConstrainedLayoutBuilderCls<ConstraintType>::ConstrainedLayoutBuilderCls(Widget Function(BuildContext , ConstraintType ) builder, Unknown key) {
+template<typename ConstraintType>
+ConstrainedLayoutBuilderCls<ConstraintType>::ConstrainedLayoutBuilderCls(Widget Function(BuildContext , ConstraintType ) builder, Unknown key) {
     {
         assert(builder != nullptr);
     }
 }
 
-template<typename ConstraintType> RenderObjectElement ConstrainedLayoutBuilderCls<ConstraintType>::createElement() {
+template<typename ConstraintType>
+RenderObjectElement ConstrainedLayoutBuilderCls<ConstraintType>::createElement() {
     return <ConstraintType>make<_LayoutBuilderElementCls>(this);
 }
 
-template<typename ConstraintType> RenderConstrainedLayoutBuilder<ConstraintType, RenderObject> _LayoutBuilderElementCls<ConstraintType>::renderObject() {
+template<typename ConstraintType>
+RenderConstrainedLayoutBuilder<ConstraintType, RenderObject> _LayoutBuilderElementCls<ConstraintType>::renderObject() {
     return as<RenderConstrainedLayoutBuilder<ConstraintType, RenderObject>>(super->renderObject);
 }
 
-template<typename ConstraintType> void _LayoutBuilderElementCls<ConstraintType>::visitChildren(ElementVisitor visitor) {
+template<typename ConstraintType>
+void _LayoutBuilderElementCls<ConstraintType>::visitChildren(ElementVisitor visitor) {
     if (_child != nullptr) {
         visitor(_child!);
     }
 }
 
-template<typename ConstraintType> void _LayoutBuilderElementCls<ConstraintType>::forgetChild(Element child) {
+template<typename ConstraintType>
+void _LayoutBuilderElementCls<ConstraintType>::forgetChild(Element child) {
     assert(child == _child);
     _child = nullptr;
     super->forgetChild(child);
 }
 
-template<typename ConstraintType> void _LayoutBuilderElementCls<ConstraintType>::mount(Object newSlot, Element parent) {
+template<typename ConstraintType>
+void _LayoutBuilderElementCls<ConstraintType>::mount(Object newSlot, Element parent) {
     super->mount(parent, newSlot);
     renderObject()->updateCallback(_layout);
 }
 
-template<typename ConstraintType> void _LayoutBuilderElementCls<ConstraintType>::update(ConstrainedLayoutBuilder<ConstraintType> newWidget) {
+template<typename ConstraintType>
+void _LayoutBuilderElementCls<ConstraintType>::update(ConstrainedLayoutBuilder<ConstraintType> newWidget) {
     assert(widget != newWidget);
     super->update(newWidget);
     assert(widget == newWidget);
@@ -38,17 +45,20 @@ template<typename ConstraintType> void _LayoutBuilderElementCls<ConstraintType>:
     renderObject()->markNeedsBuild();
 }
 
-template<typename ConstraintType> void _LayoutBuilderElementCls<ConstraintType>::performRebuild() {
+template<typename ConstraintType>
+void _LayoutBuilderElementCls<ConstraintType>::performRebuild() {
     renderObject()->markNeedsBuild();
     super->performRebuild();
 }
 
-template<typename ConstraintType> void _LayoutBuilderElementCls<ConstraintType>::unmount() {
+template<typename ConstraintType>
+void _LayoutBuilderElementCls<ConstraintType>::unmount() {
     renderObject()->updateCallback(nullptr);
     super->unmount();
 }
 
-template<typename ConstraintType> void _LayoutBuilderElementCls<ConstraintType>::insertRenderObjectChild(RenderObject child, Object slot) {
+template<typename ConstraintType>
+void _LayoutBuilderElementCls<ConstraintType>::insertRenderObjectChild(RenderObject child, Object slot) {
     RenderObjectWithChildMixin<RenderObject> renderObject = this->renderObject();
     assert(slot == nullptr);
     assert(renderObject->debugValidateChild(child));
@@ -56,23 +66,27 @@ template<typename ConstraintType> void _LayoutBuilderElementCls<ConstraintType>:
     assert(renderObject == this->renderObject);
 }
 
-template<typename ConstraintType> void _LayoutBuilderElementCls<ConstraintType>::moveRenderObjectChild(RenderObject child, Object newSlot, Object oldSlot) {
+template<typename ConstraintType>
+void _LayoutBuilderElementCls<ConstraintType>::moveRenderObjectChild(RenderObject child, Object newSlot, Object oldSlot) {
     assert(false);
 }
 
-template<typename ConstraintType> void _LayoutBuilderElementCls<ConstraintType>::removeRenderObjectChild(RenderObject child, Object slot) {
+template<typename ConstraintType>
+void _LayoutBuilderElementCls<ConstraintType>::removeRenderObjectChild(RenderObject child, Object slot) {
     RenderConstrainedLayoutBuilder<ConstraintType, RenderObject> renderObject = this->renderObject();
     assert(renderObject->child == child);
     renderObject->child = nullptr;
     assert(renderObject == this->renderObject);
 }
 
-template<typename ConstraintType> void _LayoutBuilderElementCls<ConstraintType>::_layout(ConstraintType constraints) {
+template<typename ConstraintType>
+void _LayoutBuilderElementCls<ConstraintType>::_layout(ConstraintType constraints) {
     InlineMethod;
     owner!->buildScope(this, layoutCallback);
 }
 
-template<typename ConstraintType, typename ChildType> void RenderConstrainedLayoutBuilderCls<ConstraintType, ChildType>::updateCallback(LayoutCallback<ConstraintType> value) {
+template<typename ConstraintType, typename ChildType>
+void RenderConstrainedLayoutBuilderCls<ConstraintType, ChildType>::updateCallback(LayoutCallback<ConstraintType> value) {
     if (value == _callback) {
         return;
     }
@@ -80,12 +94,14 @@ template<typename ConstraintType, typename ChildType> void RenderConstrainedLayo
     markNeedsLayout();
 }
 
-template<typename ConstraintType, typename ChildType> void RenderConstrainedLayoutBuilderCls<ConstraintType, ChildType>::markNeedsBuild() {
+template<typename ConstraintType, typename ChildType>
+void RenderConstrainedLayoutBuilderCls<ConstraintType, ChildType>::markNeedsBuild() {
     _needsBuild = true;
     markNeedsLayout();
 }
 
-template<typename ConstraintType, typename ChildType> void RenderConstrainedLayoutBuilderCls<ConstraintType, ChildType>::rebuildIfNecessary() {
+template<typename ConstraintType, typename ChildType>
+void RenderConstrainedLayoutBuilderCls<ConstraintType, ChildType>::rebuildIfNecessary() {
     assert(_callback != nullptr);
     if (_needsBuild || constraints != _previousConstraints) {
         _previousConstraints = constraints;

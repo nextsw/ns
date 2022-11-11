@@ -92,7 +92,8 @@ private:
 };
 using HSLColor = std::shared_ptr<HSLColorCls>;
 
-template<typename T> class ColorSwatchCls : public ColorCls {
+template<typename T>
+class ColorSwatchCls : public ColorCls {
 public:
 
      ColorSwatchCls(Map<T, Color> _swatch, Unknown primary);
@@ -104,14 +105,16 @@ public:
 
     virtual String toString();
 
-    template<typename T>  static ColorSwatch<T> lerp(ColorSwatch<T> a, ColorSwatch<T> b, double t);
+    template<typename T>
+ static ColorSwatch<T> lerp(ColorSwatch<T> a, ColorSwatch<T> b, double t);
 
 private:
     Map<T, Color> _swatch;
 
 
 };
-template<typename T> using ColorSwatch = std::shared_ptr<ColorSwatchCls<T>>;
+template<typename T>
+using ColorSwatch = std::shared_ptr<ColorSwatchCls<T>>;
 
 class ColorPropertyCls : public DiagnosticsPropertyCls<Color> {
 public:

@@ -8,7 +8,8 @@
 #include "wrappers.hpp"
 
 
-template<typename E> class EqualitySetCls : public DelegatingSetCls<E> {
+template<typename E>
+class EqualitySetCls : public DelegatingSetCls<E> {
 public:
 
      EqualitySetCls(Equality<E> equality);
@@ -18,7 +19,8 @@ public:
 private:
 
 };
-template<typename E> using EqualitySet = std::shared_ptr<EqualitySetCls<E>>;
+template<typename E>
+using EqualitySet = std::shared_ptr<EqualitySetCls<E>>;
 
 
 #endif

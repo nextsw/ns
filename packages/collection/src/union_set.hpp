@@ -7,7 +7,8 @@
 #include "unmodifiable_wrappers.hpp"
 
 
-template<typename E> class UnionSetCls : public SetBaseCls<E> {
+template<typename E>
+class UnionSetCls : public SetBaseCls<E> {
 public:
 
      UnionSetCls(bool disjoint, Set<Set<E>> sets);
@@ -33,7 +34,8 @@ private:
     virtual Iterable<E> _iterable();
 
 };
-template<typename E> using UnionSet = std::shared_ptr<UnionSetCls<E>>;
+template<typename E>
+using UnionSet = std::shared_ptr<UnionSetCls<E>>;
 
 
 #endif

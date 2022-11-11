@@ -11,10 +11,12 @@
 #include "constants.hpp"
 #include "isolates.hpp"
 
-template<typename Q, typename R>  Future<R> compute(ComputeCallback<Q, R> callback, String debugLabel, Q message);
+template<typename Q, typename R>
+ Future<R> compute(ComputeCallback<Q, R> callback, String debugLabel, Q message);
 
 
-template<typename Q, typename R> class _IsolateConfigurationCls : public ObjectCls {
+template<typename Q, typename R>
+class _IsolateConfigurationCls : public ObjectCls {
 public:
     ComputeCallback<Q, R> callback;
 
@@ -33,10 +35,13 @@ private:
 
      _IsolateConfigurationCls(ComputeCallback<Q, R> callback, String debugLabel, int flowId, Q message, SendPort resultPort);
 };
-template<typename Q, typename R> using _IsolateConfiguration = std::shared_ptr<_IsolateConfigurationCls<Q, R>>;
-template<typename Q, typename R>  Future<void> _spawn(_IsolateConfiguration<Q, R> configuration);
+template<typename Q, typename R>
+using _IsolateConfiguration = std::shared_ptr<_IsolateConfigurationCls<Q, R>>;
+template<typename Q, typename R>
+ Future<void> _spawn(_IsolateConfiguration<Q, R> configuration);
 
-template<typename R>  List<R> _buildSuccessResponse(R result);
+template<typename R>
+ List<R> _buildSuccessResponse(R result);
 
 List<dynamic> _buildErrorResponse(Object error, StackTrace stack);
 

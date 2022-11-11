@@ -5,7 +5,8 @@
 #include <dart/core/core.hpp>
 
 
-template<typename E> class HashSetCls : public ObjectCls {
+template<typename E>
+class HashSetCls : public ObjectCls {
 public:
 
      HashSetCls(bool equals(E , E ) , int hashCode(E ) , bool isValidKey(dynamic ) );
@@ -18,7 +19,8 @@ public:
 private:
 
 };
-template<typename E> using HashSet = std::shared_ptr<HashSetCls<E>>;
+template<typename E>
+using HashSet = std::shared_ptr<HashSetCls<E>>;
 
 
 #endif

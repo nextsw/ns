@@ -1,15 +1,18 @@
 #include "curves.hpp"
-template<typename T> T ParametricCurveCls<T>::transform(double t) {
+template<typename T>
+T ParametricCurveCls<T>::transform(double t) {
     assert(t != nullptr);
     assert(t >= 0.0 && t <= 1.0, __s("parametric value $t is outside of [0, 1] range."));
     return transformInternal(t);
 }
 
-template<typename T> T ParametricCurveCls<T>::transformInternal(double t) {
+template<typename T>
+T ParametricCurveCls<T>::transformInternal(double t) {
     ;
 }
 
-template<typename T> String ParametricCurveCls<T>::toString() {
+template<typename T>
+String ParametricCurveCls<T>::toString() {
     return objectRuntimeType(this, __s("ParametricCurve"));
 }
 

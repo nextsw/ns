@@ -45,23 +45,23 @@ String Base64CodecCls::normalize(int end, String source, int start) {
     for (;  < end; ) {
         auto sliceEnd = i;
         auto char = source->codeUnitAt(i++);
-        auto originalChar = char;
-        if (char == percent) {
+        auto originalChar = charValue;
+        if (charValue == percent) {
             if (i + 2 <= end) {
-                char = parseHexByte(source, i);
+                charValue = parseHexByte(source, i);
                 i = 2;
-                if (char == percent)                 {
-                    char = -1;
+                if (charValue == percent)                 {
+                    charValue = -1;
                 }
             } else {
-                char = -1;
+                charValue = -1;
             }
         }
-        if (0 <= char && char <= 127) {
-            auto value = inverseAlphabet[char];
+        if (0 <= charValue && charValue <= 127) {
+            auto value = inverseAlphabet[charValue];
             if (value >= 0) {
-                char = alphabet->codeUnitAt(value);
-                if (char == originalChar)                 {
+                charValue = alphabet->codeUnitAt(value);
+                if (charValue == originalChar)                 {
                     continue;
                 }
             } else             {
@@ -77,7 +77,7 @@ String Base64CodecCls::normalize(int end, String source, int start) {
             }
 ;
             }            if (value != _Base64DecoderCls::_invalid) {
-                            auto _c1 = (buffer ??= make<StringBufferCls>());            _c1.auto _c2 = write(source->substring(sliceStart, sliceEnd));            _c2.writeCharCode(char);            _c2;_c1;
+                            auto _c1 = (buffer ??= make<StringBufferCls>());            _c1.auto _c2 = write(source->substring(sliceStart, sliceEnd));            _c2.writeCharCode(charValue);            _c2;_c1;
                 sliceStart = i;
                 continue;
             }
@@ -205,7 +205,7 @@ int _Base64EncoderCls::encodeChunk(String alphabet, List<int> bytes, int end, bo
     while ( < end) {
         auto byte = bytes[i];
         if ( < 0 || byte > 255)         {
-                    break;
+            break;
         }
         i++;
     }
@@ -255,7 +255,7 @@ Uint8List _BufferCachingBase64EncoderCls::createBuffer(int bufferLength) {
     return Uint8ListCls->view(buffer->buffer, buffer->offsetInBytes, bufferLength);
 }
 
-_BufferCachingBase64EncoderCls::_BufferCachingBase64EncoderCls(bool urlSafe) : _Base64Encoder(urlSafe) {
+_BufferCachingBase64EncoderCls::_BufferCachingBase64EncoderCls(bool urlSafe) {
 }
 
 void _Base64EncoderSinkCls::add(List<int> source) {
@@ -357,8 +357,8 @@ int _Base64DecoderCls::decodeChunk(int end, String input, int outIndex, Uint8Lis
     Unknown inverseAlphabet = _Base64DecoderCls::_inverseAlphabet;
     for (;  < end; i++) {
         auto char = input->codeUnitAt(i);
-        charOr = char;
-        auto code = inverseAlphabet[char & asciiMask];
+        charOr = charValue;
+        auto code = inverseAlphabet[charValue & asciiMask];
         if (code >= 0) {
             bits = ((bits << bitsPerCharacter) | code) & 0xFFFFFF;
             count = (count + 1) & 3;
@@ -373,7 +373,7 @@ int _Base64DecoderCls::decodeChunk(int end, String input, int outIndex, Uint8Lis
         } else         {
             if (code == _padding && count > 1) {
             if ( < 0 || charOr > asciiMax)             {
-                            break;
+                break;
             }
             if (count == 3) {
                 if ((bits & 0x03) != 0) {
@@ -388,7 +388,7 @@ int _Base64DecoderCls::decodeChunk(int end, String input, int outIndex, Uint8Lis
                 output[outIndex++] = bits >> 4;
             }
             auto expectedPadding = (3 - count) * 3;
-            if (char == _char_percent)             {
+            if (charValue == _char_percent)             {
                 expectedPadding = 2;
             }
             state = _encodePaddingState(expectedPadding);
@@ -403,8 +403,8 @@ int _Base64DecoderCls::decodeChunk(int end, String input, int outIndex, Uint8Lis
     int i;
     for (i = start;  < end; i++) {
         auto char = input->codeUnitAt(i);
-        if ( < 0 || char > asciiMax)         {
-                    break;
+        if ( < 0 || charValue > asciiMax)         {
+            break;
         }
     }
     ;
@@ -462,31 +462,31 @@ int _Base64DecoderCls::_trimPaddingChars(int end, String input, int start) {
     while (index > start &&  < 2) {
         index--;
         auto char = input->codeUnitAt(index);
-        if (char == _paddingChar) {
+        if (charValue == _paddingChar) {
             padding++;
             newEnd = index;
             continue;
         }
-        if ((char | 0x20) == _char_d) {
+        if ((charValue | 0x20) == _char_d) {
             if (index == start)             {
-                            break;
-            }
-            index--;
-            char = input->codeUnitAt(index);
-        }
-        if (char == _char_3) {
-            if (index == start)             {
-                            break;
-            }
-            index--;
-            char = input->codeUnitAt(index);
-        }
-        if (char == _char_percent) {
-            padding++;
-            newEnd = index;
-            continue;
-        }
                 break;
+            }
+            index--;
+            charValue = input->codeUnitAt(index);
+        }
+        if (charValue == _char_3) {
+            if (index == start)             {
+                break;
+            }
+            index--;
+            charValue = input->codeUnitAt(index);
+        }
+        if (charValue == _char_percent) {
+            padding++;
+            newEnd = index;
+            continue;
+        }
+        break;
     }
     return newEnd;
 }
@@ -502,20 +502,20 @@ int _Base64DecoderCls::_checkPadding(int end, String input, int start, int state
     while (expectedPadding > 0) {
         auto char = input->codeUnitAt(start);
         if (expectedPadding == 3) {
-            if (char == _paddingChar) {
+            if (charValue == _paddingChar) {
                 expectedPadding = 3;
                 start++;
-                                break;
+                break;
             }
-            if (char == _char_percent) {
+            if (charValue == _char_percent) {
                 expectedPadding--;
                 start++;
                 if (start == end)                 {
-                                    break;
+                    break;
                 }
-                char = input->codeUnitAt(start);
+                charValue = input->codeUnitAt(start);
             } else {
-                                break;
+                break;
             }
         }
         auto expectedPartialPadding = expectedPadding;
@@ -523,23 +523,23 @@ int _Base64DecoderCls::_checkPadding(int end, String input, int start, int state
             expectedPartialPadding = 3;
         }
         if (expectedPartialPadding == 2) {
-            if (char != _char_3)             {
-                            break;
+            if (charValue != _char_3)             {
+                break;
             }
             start++;
             expectedPadding--;
             if (start == end)             {
-                            break;
+                break;
             }
-            char = input->codeUnitAt(start);
+            charValue = input->codeUnitAt(start);
         }
-        if ((char | 0x20) != _char_d)         {
-                    break;
+        if ((charValue | 0x20) != _char_d)         {
+            break;
         }
         start++;
         expectedPadding--;
         if (start == end)         {
-                    break;
+            break;
         }
     }
     if (start != end) {

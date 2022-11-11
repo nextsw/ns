@@ -19,7 +19,7 @@ Map<String, dynamic> _AutofillScopeTextInputConfigurationCls::toJson() {
     return result;
 }
 
-_AutofillScopeTextInputConfigurationCls::_AutofillScopeTextInputConfigurationCls(Iterable<TextInputConfiguration> allConfigurations, TextInputConfiguration currentClientConfiguration) : TextInputConfiguration(currentClientConfiguration->inputType, currentClientConfiguration->obscureText, currentClientConfiguration->autocorrect, currentClientConfiguration->smartDashesType, currentClientConfiguration->smartQuotesType, currentClientConfiguration->enableSuggestions, currentClientConfiguration->inputAction, currentClientConfiguration->textCapitalization, currentClientConfiguration->keyboardAppearance, currentClientConfiguration->actionLabel, currentClientConfiguration->autofillConfiguration) {
+_AutofillScopeTextInputConfigurationCls::_AutofillScopeTextInputConfigurationCls(Iterable<TextInputConfiguration> allConfigurations, TextInputConfiguration currentClientConfiguration) {
     {
         assert(allConfigurations != nullptr);
         assert(currentClientConfiguration != nullptr);

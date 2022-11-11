@@ -253,7 +253,8 @@ public:
 
     virtual void performResize();
     virtual void performLayout();
-    template<typename T>  virtual void invokeLayoutCallback(LayoutCallback<T> callback);
+    template<typename T>
+ virtual void invokeLayoutCallback(LayoutCallback<T> callback);
 
     virtual bool debugDoingThisPaint();
 
@@ -414,7 +415,8 @@ private:
 };
 using RenderObject = std::shared_ptr<RenderObjectCls>;
 
-template<typename ChildType> class RenderObjectWithChildMixinCls : public ObjectCls {
+template<typename ChildType>
+class RenderObjectWithChildMixinCls : public ObjectCls {
 public:
 
     virtual bool debugValidateChild(RenderObject child);
@@ -438,9 +440,11 @@ private:
 
 
 };
-template<typename ChildType> using RenderObjectWithChildMixin = std::shared_ptr<RenderObjectWithChildMixinCls<ChildType>>;
+template<typename ChildType>
+using RenderObjectWithChildMixin = std::shared_ptr<RenderObjectWithChildMixinCls<ChildType>>;
 
-template<typename ChildType> class ContainerParentDataMixinCls : public ObjectCls {
+template<typename ChildType>
+class ContainerParentDataMixinCls : public ObjectCls {
 public:
     ChildType previousSibling;
 
@@ -452,9 +456,11 @@ public:
 private:
 
 };
-template<typename ChildType> using ContainerParentDataMixin = std::shared_ptr<ContainerParentDataMixinCls<ChildType>>;
+template<typename ChildType>
+using ContainerParentDataMixin = std::shared_ptr<ContainerParentDataMixinCls<ChildType>>;
 
-template<typename ChildType, typename ParentDataType> class ContainerRenderObjectMixinCls : public ObjectCls {
+template<typename ChildType, typename ParentDataType>
+class ContainerRenderObjectMixinCls : public ObjectCls {
 public:
 
     virtual int childCount();
@@ -508,7 +514,8 @@ private:
     virtual void _removeFromChildList(ChildType child);
 
 };
-template<typename ChildType, typename ParentDataType> using ContainerRenderObjectMixin = std::shared_ptr<ContainerRenderObjectMixinCls<ChildType, ParentDataType>>;
+template<typename ChildType, typename ParentDataType>
+using ContainerRenderObjectMixin = std::shared_ptr<ContainerRenderObjectMixinCls<ChildType, ParentDataType>>;
 
 class RelayoutWhenSystemFontsChangeMixinCls : public ObjectCls {
 public:

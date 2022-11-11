@@ -1,5 +1,6 @@
 #include "stream_pipe.hpp"
-void _runUserCodetemplate<typename T> (onSuccess , onError , T userCode() ) {
+template<typename T>
+void _runUserCode(onSuccess , onError , T userCode() ) {
     try {
         onSuccess(userCode());
     } catch (Unknown e) {
@@ -51,55 +52,66 @@ void _cancelAndValue(value , _Future future, StreamSubscription subscription) {
     }
 }
 
-template<typename S, typename T> bool _ForwardingStreamCls<S, T>::isBroadcast() {
+template<typename S, typename T>
+bool _ForwardingStreamCls<S, T>::isBroadcast() {
     return _source->isBroadcast();
 }
 
-template<typename S, typename T> StreamSubscription<T> _ForwardingStreamCls<S, T>::listen(bool cancelOnError, void onData(T value) , void onDone() , void  onError() ) {
+template<typename S, typename T>
+StreamSubscription<T> _ForwardingStreamCls<S, T>::listen(bool cancelOnError, void onData(T value) , void onDone() , void  onError() ) {
     return _createSubscription(onData, onError, onDone, cancelOnError or false);
 }
 
-template<typename S, typename T> StreamSubscription<T> _ForwardingStreamCls<S, T>::_createSubscription(bool cancelOnError, void onData(T data) , void onDone() , void  onError() ) {
+template<typename S, typename T>
+StreamSubscription<T> _ForwardingStreamCls<S, T>::_createSubscription(bool cancelOnError, void onData(T data) , void onDone() , void  onError() ) {
     return <S, T>make<_ForwardingStreamSubscriptionCls>(this, onData, onError, onDone, cancelOnError);
 }
 
-template<typename S, typename T> void _ForwardingStreamCls<S, T>::_handleError(Object error, _EventSink<T> sink, StackTrace stackTrace) {
+template<typename S, typename T>
+void _ForwardingStreamCls<S, T>::_handleError(Object error, _EventSink<T> sink, StackTrace stackTrace) {
     sink->_addError(error, stackTrace);
 }
 
-template<typename S, typename T> void _ForwardingStreamCls<S, T>::_handleDone(_EventSink<T> sink) {
+template<typename S, typename T>
+void _ForwardingStreamCls<S, T>::_handleDone(_EventSink<T> sink) {
     sink->_close();
 }
 
-template<typename S, typename T> _ForwardingStreamSubscriptionCls<S, T>::_ForwardingStreamSubscriptionCls(_ForwardingStream<S, T> _stream, bool cancelOnError, void onData(T data) , void onDone() , void  onError() ) : _BufferingStreamSubscription<T>(onData, onError, onDone, cancelOnError) {
+template<typename S, typename T>
+_ForwardingStreamSubscriptionCls<S, T>::_ForwardingStreamSubscriptionCls(_ForwardingStream<S, T> _stream, bool cancelOnError, void onData(T data) , void onDone() , void  onError() ) {
     {
         _subscription = _stream->_source->listen(_handleData_handleError, _handleDone);
     }
 }
 
-template<typename S, typename T> void _ForwardingStreamSubscriptionCls<S, T>::_add(T data) {
+template<typename S, typename T>
+void _ForwardingStreamSubscriptionCls<S, T>::_add(T data) {
     if (_isClosed)     {
         return;
     }
     super->_add(data);
 }
 
-template<typename S, typename T> void _ForwardingStreamSubscriptionCls<S, T>::_addError(Object error, StackTrace stackTrace) {
+template<typename S, typename T>
+void _ForwardingStreamSubscriptionCls<S, T>::_addError(Object error, StackTrace stackTrace) {
     if (_isClosed)     {
         return;
     }
     super->_addError(error, stackTrace);
 }
 
-template<typename S, typename T> void _ForwardingStreamSubscriptionCls<S, T>::_onPause() {
+template<typename S, typename T>
+void _ForwardingStreamSubscriptionCls<S, T>::_onPause() {
     _subscription?->pause();
 }
 
-template<typename S, typename T> void _ForwardingStreamSubscriptionCls<S, T>::_onResume() {
+template<typename S, typename T>
+void _ForwardingStreamSubscriptionCls<S, T>::_onResume() {
     _subscription?->resume();
 }
 
-template<typename S, typename T> Future<void> _ForwardingStreamSubscriptionCls<S, T>::_onCancel() {
+template<typename S, typename T>
+Future<void> _ForwardingStreamSubscriptionCls<S, T>::_onCancel() {
     auto subscription = _subscription;
     if (subscription != nullptr) {
         _subscription = nullptr;
@@ -108,15 +120,18 @@ template<typename S, typename T> Future<void> _ForwardingStreamSubscriptionCls<S
     return nullptr;
 }
 
-template<typename S, typename T> void _ForwardingStreamSubscriptionCls<S, T>::_handleData(S data) {
+template<typename S, typename T>
+void _ForwardingStreamSubscriptionCls<S, T>::_handleData(S data) {
     _stream->_handleData(data, this);
 }
 
-template<typename S, typename T> void _ForwardingStreamSubscriptionCls<S, T>::_handleError(error , StackTrace stackTrace) {
+template<typename S, typename T>
+void _ForwardingStreamSubscriptionCls<S, T>::_handleError(error , StackTrace stackTrace) {
     _stream->_handleError(error, stackTrace, this);
 }
 
-template<typename S, typename T> void _ForwardingStreamSubscriptionCls<S, T>::_handleDone() {
+template<typename S, typename T>
+void _ForwardingStreamSubscriptionCls<S, T>::_handleDone() {
     _stream->_handleDone(this);
 }
 
@@ -129,13 +144,15 @@ void _addErrorWithReplacement(Object error, _EventSink sink, StackTrace stackTra
     sink->_addError(error, stackTrace);
 }
 
-template<typename T> _WhereStreamCls<T>::_WhereStreamCls(Stream<T> source, bool test(T value) ) : _ForwardingStream<T, T>(source) {
+template<typename T>
+_WhereStreamCls<T>::_WhereStreamCls(Stream<T> source, bool test(T value) ) {
     {
         _test = test;
     }
 }
 
-template<typename T> void _WhereStreamCls<T>::_handleData(T inputEvent, _EventSink<T> sink) {
+template<typename T>
+void _WhereStreamCls<T>::_handleData(T inputEvent, _EventSink<T> sink) {
     bool satisfies;
     try {
         satisfies = _test(inputEvent);
@@ -148,13 +165,15 @@ template<typename T> void _WhereStreamCls<T>::_handleData(T inputEvent, _EventSi
     }
 }
 
-template<typename S, typename T> _MapStreamCls<S, T>::_MapStreamCls(Stream<S> source, T transform(S event) ) : _ForwardingStream<S, T>(source) {
+template<typename S, typename T>
+_MapStreamCls<S, T>::_MapStreamCls(Stream<S> source, T transform(S event) ) {
     {
         this->_transform = transform;
     }
 }
 
-template<typename S, typename T> void _MapStreamCls<S, T>::_handleData(S inputEvent, _EventSink<T> sink) {
+template<typename S, typename T>
+void _MapStreamCls<S, T>::_handleData(S inputEvent, _EventSink<T> sink) {
     T outputEvent;
     try {
         outputEvent = _transform(inputEvent);
@@ -165,13 +184,15 @@ template<typename S, typename T> void _MapStreamCls<S, T>::_handleData(S inputEv
     sink->_add(outputEvent);
 }
 
-template<typename S, typename T> _ExpandStreamCls<S, T>::_ExpandStreamCls(Iterable<T> expand(S event) , Stream<S> source) : _ForwardingStream<S, T>(source) {
+template<typename S, typename T>
+_ExpandStreamCls<S, T>::_ExpandStreamCls(Iterable<T> expand(S event) , Stream<S> source) {
     {
         this->_expand = expand;
     }
 }
 
-template<typename S, typename T> void _ExpandStreamCls<S, T>::_handleData(S inputEvent, _EventSink<T> sink) {
+template<typename S, typename T>
+void _ExpandStreamCls<S, T>::_handleData(S inputEvent, _EventSink<T> sink) {
     try {
         for (T value : _expand(inputEvent)) {
             sink->_add(value);
@@ -181,14 +202,17 @@ template<typename S, typename T> void _ExpandStreamCls<S, T>::_handleData(S inpu
     };
 }
 
-template<typename T> _HandleErrorStreamCls<T>::_HandleErrorStreamCls(void Function(Object , StackTrace ) _onError, bool Function(Object ) _test, Stream<T> source) : _ForwardingStream<T, T>(source) {
+template<typename T>
+_HandleErrorStreamCls<T>::_HandleErrorStreamCls(void Function(Object , StackTrace ) _onError, bool Function(Object ) _test, Stream<T> source) {
 }
 
-template<typename T> void _HandleErrorStreamCls<T>::_handleData(T data, _EventSink<T> sink) {
+template<typename T>
+void _HandleErrorStreamCls<T>::_handleData(T data, _EventSink<T> sink) {
     sink->_add(data);
 }
 
-template<typename T> void _HandleErrorStreamCls<T>::_handleError(Object error, _EventSink<T> sink, StackTrace stackTrace) {
+template<typename T>
+void _HandleErrorStreamCls<T>::_handleError(Object error, _EventSink<T> sink, StackTrace stackTrace) {
     bool matches = true;
     auto test = _test;
     if (test != nullptr) {
@@ -215,13 +239,15 @@ template<typename T> void _HandleErrorStreamCls<T>::_handleError(Object error, _
     }
 }
 
-template<typename T> _TakeStreamCls<T>::_TakeStreamCls(int count, Stream<T> source) : _ForwardingStream<T, T>(source) {
+template<typename T>
+_TakeStreamCls<T>::_TakeStreamCls(int count, Stream<T> source) {
     {
         this->_count = count;
     }
 }
 
-template<typename T> StreamSubscription<T> _TakeStreamCls<T>::_createSubscription(bool cancelOnError, void onData(T data) , void onDone() , void  onError() ) {
+template<typename T>
+StreamSubscription<T> _TakeStreamCls<T>::_createSubscription(bool cancelOnError, void onData(T data) , void onDone() , void  onError() ) {
     if (_count == 0) {
         _source->listen(nullptr)->cancel();
         return <T>make<_DoneStreamSubscriptionCls>(onDone);
@@ -229,7 +255,8 @@ template<typename T> StreamSubscription<T> _TakeStreamCls<T>::_createSubscriptio
     return <int, T>make<_StateStreamSubscriptionCls>(this, onData, onError, onDone, cancelOnError, _count);
 }
 
-template<typename T> void _TakeStreamCls<T>::_handleData(T inputEvent, _EventSink<T> sink) {
+template<typename T>
+void _TakeStreamCls<T>::_handleData(T inputEvent, _EventSink<T> sink) {
     auto subscription = as<_StateStreamSubscription<int, T>>(sink);
     int count = subscription->_subState;
     if (count > 0) {
@@ -242,16 +269,19 @@ template<typename T> void _TakeStreamCls<T>::_handleData(T inputEvent, _EventSin
     }
 }
 
-template<typename S, typename T> _StateStreamSubscriptionCls<S, T>::_StateStreamSubscriptionCls(S _subState, bool cancelOnError, void onData(T data) , void onDone() , void  onError() , _ForwardingStream<T, T> stream) : _ForwardingStreamSubscription<T, T>(stream, onData, onError, onDone, cancelOnError) {
+template<typename S, typename T>
+_StateStreamSubscriptionCls<S, T>::_StateStreamSubscriptionCls(S _subState, bool cancelOnError, void onData(T data) , void onDone() , void  onError() , _ForwardingStream<T, T> stream) {
 }
 
-template<typename T> _TakeWhileStreamCls<T>::_TakeWhileStreamCls(Stream<T> source, bool test(T value) ) : _ForwardingStream<T, T>(source) {
+template<typename T>
+_TakeWhileStreamCls<T>::_TakeWhileStreamCls(Stream<T> source, bool test(T value) ) {
     {
         this->_test = test;
     }
 }
 
-template<typename T> void _TakeWhileStreamCls<T>::_handleData(T inputEvent, _EventSink<T> sink) {
+template<typename T>
+void _TakeWhileStreamCls<T>::_handleData(T inputEvent, _EventSink<T> sink) {
     bool satisfies;
     try {
         satisfies = _test(inputEvent);
@@ -267,7 +297,8 @@ template<typename T> void _TakeWhileStreamCls<T>::_handleData(T inputEvent, _Eve
     }
 }
 
-template<typename T> _SkipStreamCls<T>::_SkipStreamCls(int count, Stream<T> source) : _ForwardingStream<T, T>(source) {
+template<typename T>
+_SkipStreamCls<T>::_SkipStreamCls(int count, Stream<T> source) {
     {
         this->_count = count;
     }
@@ -276,11 +307,13 @@ template<typename T> _SkipStreamCls<T>::_SkipStreamCls(int count, Stream<T> sour
     }
 }
 
-template<typename T> StreamSubscription<T> _SkipStreamCls<T>::_createSubscription(bool cancelOnError, void onData(T data) , void onDone() , void  onError() ) {
+template<typename T>
+StreamSubscription<T> _SkipStreamCls<T>::_createSubscription(bool cancelOnError, void onData(T data) , void onDone() , void  onError() ) {
     return <int, T>make<_StateStreamSubscriptionCls>(this, onData, onError, onDone, cancelOnError, _count);
 }
 
-template<typename T> void _SkipStreamCls<T>::_handleData(T inputEvent, _EventSink<T> sink) {
+template<typename T>
+void _SkipStreamCls<T>::_handleData(T inputEvent, _EventSink<T> sink) {
     auto subscription = as<_StateStreamSubscription<int, T>>(sink);
     int count = subscription->_subState;
     if (count > 0) {
@@ -290,17 +323,20 @@ template<typename T> void _SkipStreamCls<T>::_handleData(T inputEvent, _EventSin
     sink->_add(inputEvent);
 }
 
-template<typename T> _SkipWhileStreamCls<T>::_SkipWhileStreamCls(Stream<T> source, bool test(T value) ) : _ForwardingStream<T, T>(source) {
+template<typename T>
+_SkipWhileStreamCls<T>::_SkipWhileStreamCls(Stream<T> source, bool test(T value) ) {
     {
         this->_test = test;
     }
 }
 
-template<typename T> StreamSubscription<T> _SkipWhileStreamCls<T>::_createSubscription(bool cancelOnError, void onData(T data) , void onDone() , void  onError() ) {
+template<typename T>
+StreamSubscription<T> _SkipWhileStreamCls<T>::_createSubscription(bool cancelOnError, void onData(T data) , void onDone() , void  onError() ) {
     return <bool, T>make<_StateStreamSubscriptionCls>(this, onData, onError, onDone, cancelOnError, false);
 }
 
-template<typename T> void _SkipWhileStreamCls<T>::_handleData(T inputEvent, _EventSink<T> sink) {
+template<typename T>
+void _SkipWhileStreamCls<T>::_handleData(T inputEvent, _EventSink<T> sink) {
     auto subscription = as<_StateStreamSubscription<bool, T>>(sink);
     bool hasFailed = subscription->_subState;
     if (hasFailed) {
@@ -321,17 +357,20 @@ template<typename T> void _SkipWhileStreamCls<T>::_handleData(T inputEvent, _Eve
     }
 }
 
-template<typename T> _DistinctStreamCls<T>::_DistinctStreamCls(bool equals(T a, T b) , Stream<T> source) : _ForwardingStream<T, T>(source) {
+template<typename T>
+_DistinctStreamCls<T>::_DistinctStreamCls(bool equals(T a, T b) , Stream<T> source) {
     {
         _equals = equals;
     }
 }
 
-template<typename T> StreamSubscription<T> _DistinctStreamCls<T>::_createSubscription(bool cancelOnError, void onData(T data) , void onDone() , void  onError() ) {
+template<typename T>
+StreamSubscription<T> _DistinctStreamCls<T>::_createSubscription(bool cancelOnError, void onData(T data) , void onDone() , void  onError() ) {
     return <Object, T>make<_StateStreamSubscriptionCls>(this, onData, onError, onDone, cancelOnError, _SENTINELCls);
 }
 
-template<typename T> void _DistinctStreamCls<T>::_handleData(T inputEvent, _EventSink<T> sink) {
+template<typename T>
+void _DistinctStreamCls<T>::_handleData(T inputEvent, _EventSink<T> sink) {
     auto subscription = as<_StateStreamSubscription<Object, T>>(sink);
     auto previous = subscription->_subState;
     if (identical(previous, _SENTINELCls)) {

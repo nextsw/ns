@@ -16,7 +16,8 @@ enum AnimationStatus{
     completed,
 } // end AnimationStatus
 
-template<typename T> class AnimationCls : public ListenableCls {
+template<typename T>
+class AnimationCls : public ListenableCls {
 public:
 
      AnimationCls();
@@ -30,7 +31,8 @@ public:
 
     virtual bool isCompleted();
 
-    template<typename U>  virtual Animation<U> drive(Animatable<U> child);
+    template<typename U>
+ virtual Animation<U> drive(Animatable<U> child);
 
     virtual String toString();
 
@@ -39,7 +41,8 @@ public:
 private:
 
 };
-template<typename T> using Animation = std::shared_ptr<AnimationCls<T>>;
+template<typename T>
+using Animation = std::shared_ptr<AnimationCls<T>>;
 
 
 #endif

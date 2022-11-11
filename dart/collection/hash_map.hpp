@@ -9,7 +9,8 @@ bool _defaultEquals(Object a, Object b);
 int _defaultHashCode(Object a);
 
 
-template<typename K, typename V> class HashMapCls : public ObjectCls {
+template<typename K, typename V>
+class HashMapCls : public ObjectCls {
 public:
 
      HashMapCls(bool equals(K , K ) , int hashCode(K ) , bool isValidKey(dynamic ) );
@@ -27,7 +28,8 @@ public:
 private:
 
 };
-template<typename K, typename V> using HashMap = std::shared_ptr<HashMapCls<K, V>>;
+template<typename K, typename V>
+using HashMap = std::shared_ptr<HashMapCls<K, V>>;
 
 
 #endif

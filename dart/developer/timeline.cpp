@@ -54,7 +54,8 @@ void TimelineCls::instantSync(Map arguments, String name) {
     _reportInstantEvent(__s("Dart"), name, _argumentsAsJson(instantArguments));
 }
 
-T TimelineCls::timeSynctemplate<typename T> (Map arguments, Flow flow, TimelineSyncFunction<T> function, String name) {
+template<typename T>
+T TimelineCls::timeSync(Map arguments, Flow flow, TimelineSyncFunction<T> function, String name) {
     startSync(namearguments, flow);
     try {
         return function();

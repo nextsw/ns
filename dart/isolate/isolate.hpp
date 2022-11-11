@@ -39,7 +39,8 @@ public:
     static Isolate current();
     static Future<Uri> packageConfig();
     static Future<Uri> resolvePackageUri(Uri packageUri);
-    template<typename T>  static Future<Isolate> spawn(String debugName, void entryPoint(T message) , bool errorsAreFatal, T message, SendPort onError, SendPort onExit, bool paused);
+    template<typename T>
+ static Future<Isolate> spawn(String debugName, void entryPoint(T message) , bool errorsAreFatal, T message, SendPort onError, SendPort onExit, bool paused);
     static Future<Isolate> spawnUri(List<String> args, bool automaticPackageResolution, bool checked, String debugName, Map<String, String> environment, bool errorsAreFatal, auto message, SendPort onError, SendPort onExit, Uri packageConfig, Uri packageRoot, bool paused, Uri uri);
     virtual Capability pause(Capability resumeCapability);
 

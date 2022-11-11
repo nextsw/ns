@@ -253,7 +253,7 @@ void RenderWrapCls::performLayout() {
         while (child != nullptr) {
             WrapParentData childParentData = as<WrapParentData>(child->parentData!);
             if (childParentData->_runIndex != i) {
-                                break;
+                break;
             }
             double childMainAxisExtent = _getMainAxisExtent(child->size());
             double childCrossAxisExtent = _getCrossAxisExtent(child->size());

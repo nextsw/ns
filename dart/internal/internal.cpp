@@ -11,16 +11,16 @@ String CodeUnitsCls::stringOf(CodeUnits u) {
     return u->_string;
 }
 
-int hexDigitValue(int char) {
-    assert(char >= 0 && char <= 0xFFFF);
+int hexDigitValue(int charValue) {
+    assert(charValue >= 0 && charValue <= 0xFFFF);
     int digit0 = 0x30;
     int a = 0x61;
     int f = 0x66;
-    int digit = char ^ digit0;
+    int digit = charValue ^ digit0;
     if (digit <= 9)     {
         return digit;
     }
-    int letter = (char | 0x20);
+    int letter = (charValue | 0x20);
     if (a <= letter && letter <= f)     {
         return letter - (a - 10);
     }
@@ -359,18 +359,21 @@ int SystemHashCls::smear(int x) {
     return x;
 }
 
-T checkNotNullabletemplate<typename T> (String name, T value) {
+template<typename T>
+T checkNotNullable(String name, T value) {
     if ((as<dynamic>(value)) == nullptr) {
         ;
     }
     return value;
 }
 
-template<typename T> String NotNullableErrorCls<T>::toString() {
+template<typename T>
+String NotNullableErrorCls<T>::toString() {
     return __s("Null is not a valid value for '$_name' of type '$T'");
 }
 
-T valueOfNonNullableParamWithDefaulttemplate<typename T> (T defaultVal, T value) {
+template<typename T>
+T valueOfNonNullableParamWithDefault(T defaultVal, T value) {
     if ((as<dynamic>(value)) == nullptr) {
         return defaultVal;
     } else {
@@ -378,15 +381,18 @@ T valueOfNonNullableParamWithDefaulttemplate<typename T> (T defaultVal, T value)
     }
 }
 
-template<typename E> void DoubleLinkedQueueEntryCls<E>::append(E e) {
+template<typename E>
+void DoubleLinkedQueueEntryCls<E>::append(E e) {
     <E>make<DoubleLinkedQueueEntryCls>(e)->_link(this, _nextLink);
 }
 
-template<typename E> void DoubleLinkedQueueEntryCls<E>::prepend(E e) {
+template<typename E>
+void DoubleLinkedQueueEntryCls<E>::prepend(E e) {
     <E>make<DoubleLinkedQueueEntryCls>(e)->_link(_previousLink, this);
 }
 
-template<typename E> E DoubleLinkedQueueEntryCls<E>::remove() {
+template<typename E>
+E DoubleLinkedQueueEntryCls<E>::remove() {
     _previousLink?->_nextLink = _nextLink;
     _nextLink?->_previousLink = _previousLink;
     _nextLink = nullptr;
@@ -394,15 +400,18 @@ template<typename E> E DoubleLinkedQueueEntryCls<E>::remove() {
     return element;
 }
 
-template<typename E> DoubleLinkedQueueEntry<E> DoubleLinkedQueueEntryCls<E>::previousEntry() {
+template<typename E>
+DoubleLinkedQueueEntry<E> DoubleLinkedQueueEntryCls<E>::previousEntry() {
     return _previousLink;
 }
 
-template<typename E> DoubleLinkedQueueEntry<E> DoubleLinkedQueueEntryCls<E>::nextEntry() {
+template<typename E>
+DoubleLinkedQueueEntry<E> DoubleLinkedQueueEntryCls<E>::nextEntry() {
     return _nextLink;
 }
 
-template<typename E> void DoubleLinkedQueueEntryCls<E>::_link(DoubleLinkedQueueEntry<E> next, DoubleLinkedQueueEntry<E> previous) {
+template<typename E>
+void DoubleLinkedQueueEntryCls<E>::_link(DoubleLinkedQueueEntry<E> next, DoubleLinkedQueueEntry<E> previous) {
     _nextLink = next;
     _previousLink = previous;
     previous?->_nextLink = this;

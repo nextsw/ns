@@ -311,7 +311,7 @@ Size BoxConstraintsCls::_debugPropagateDebugSize(Size result, Size size) {
     return result;
 }
 
-BoxHitTestResultCls::BoxHitTestResultCls() : HitTestResult() {
+BoxHitTestResultCls::BoxHitTestResultCls() {
 }
 
 void BoxHitTestResultCls::wrap(Unknown result)
@@ -973,7 +973,8 @@ bool RenderBoxCls::_clearCachedData() {
     return false;
 }
 
-template<typename ChildType, typename ParentDataType> double RenderBoxContainerDefaultsMixinCls<ChildType, ParentDataType>::defaultComputeDistanceToFirstActualBaseline(TextBaseline baseline) {
+template<typename ChildType, typename ParentDataType>
+double RenderBoxContainerDefaultsMixinCls<ChildType, ParentDataType>::defaultComputeDistanceToFirstActualBaseline(TextBaseline baseline) {
     assert(!debugNeedsLayout);
     ChildType child = firstChild;
     while (child != nullptr) {
@@ -987,7 +988,8 @@ template<typename ChildType, typename ParentDataType> double RenderBoxContainerD
     return nullptr;
 }
 
-template<typename ChildType, typename ParentDataType> double RenderBoxContainerDefaultsMixinCls<ChildType, ParentDataType>::defaultComputeDistanceToHighestActualBaseline(TextBaseline baseline) {
+template<typename ChildType, typename ParentDataType>
+double RenderBoxContainerDefaultsMixinCls<ChildType, ParentDataType>::defaultComputeDistanceToHighestActualBaseline(TextBaseline baseline) {
     assert(!debugNeedsLayout);
     double result;
     ChildType child = firstChild;
@@ -1007,7 +1009,8 @@ template<typename ChildType, typename ParentDataType> double RenderBoxContainerD
     return result;
 }
 
-template<typename ChildType, typename ParentDataType> bool RenderBoxContainerDefaultsMixinCls<ChildType, ParentDataType>::defaultHitTestChildren(Offset position, BoxHitTestResult result) {
+template<typename ChildType, typename ParentDataType>
+bool RenderBoxContainerDefaultsMixinCls<ChildType, ParentDataType>::defaultHitTestChildren(Offset position, BoxHitTestResult result) {
     ChildType child = lastChild;
     while (child != nullptr) {
         ParentDataType childParentData = as<ParentDataType>(child->parentData!);
@@ -1023,7 +1026,8 @@ template<typename ChildType, typename ParentDataType> bool RenderBoxContainerDef
     return false;
 }
 
-template<typename ChildType, typename ParentDataType> void RenderBoxContainerDefaultsMixinCls<ChildType, ParentDataType>::defaultPaint(PaintingContext context, Offset offset) {
+template<typename ChildType, typename ParentDataType>
+void RenderBoxContainerDefaultsMixinCls<ChildType, ParentDataType>::defaultPaint(PaintingContext context, Offset offset) {
     ChildType child = firstChild;
     while (child != nullptr) {
         ParentDataType childParentData = as<ParentDataType>(child->parentData!);
@@ -1032,7 +1036,8 @@ template<typename ChildType, typename ParentDataType> void RenderBoxContainerDef
     }
 }
 
-template<typename ChildType, typename ParentDataType> List<ChildType> RenderBoxContainerDefaultsMixinCls<ChildType, ParentDataType>::getChildrenAsList() {
+template<typename ChildType, typename ParentDataType>
+List<ChildType> RenderBoxContainerDefaultsMixinCls<ChildType, ParentDataType>::getChildrenAsList() {
     List<ChildType> result = makeList();
     RenderBox child = firstChild;
     while (child != nullptr) {

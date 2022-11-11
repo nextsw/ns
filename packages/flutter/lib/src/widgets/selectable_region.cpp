@@ -116,7 +116,8 @@ bool _SelectableRegionStateCls::_hasSelectionOverlayGeometry() {
     return _selectionDelegate->value->startSelectionPoint != nullptr || _selectionDelegate->value->endSelectionPoint != nullptr;
 }
 
-Action<T> _SelectableRegionStateCls::_makeOverridabletemplate<typename T> (Action<T> defaultAction) {
+template<typename T>
+Action<T> _SelectableRegionStateCls::_makeOverridable(Action<T> defaultAction) {
     return <T>overridable(context, defaultAction);
 }
 
@@ -386,7 +387,8 @@ Future<void> _SelectableRegionStateCls::_copy() {
     await await ClipboardCls->setData(make<ClipboardDataCls>(data->plainText));
 }
 
-template<typename T> Object _NonOverrideActionCls<T>::invoke(BuildContext context, T intent) {
+template<typename T>
+Object _NonOverrideActionCls<T>::invoke(BuildContext context, T intent) {
     if (callingAction != nullptr) {
         return callingAction!->invoke(intent);
     }

@@ -5,7 +5,8 @@
 #include <dart/core/core.hpp>
 
 
-template<typename T> class _BroadcastStreamCls : public _ControllerStreamCls<T> {
+template<typename T>
+class _BroadcastStreamCls : public _ControllerStreamCls<T> {
 public:
 
     virtual bool isBroadcast();
@@ -15,9 +16,11 @@ private:
      _BroadcastStreamCls(_StreamControllerLifecycle<T> controller);
 
 };
-template<typename T> using _BroadcastStream = std::shared_ptr<_BroadcastStreamCls<T>>;
+template<typename T>
+using _BroadcastStream = std::shared_ptr<_BroadcastStreamCls<T>>;
 
-template<typename T> class _BroadcastSubscriptionCls : public _ControllerSubscriptionCls<T> {
+template<typename T>
+class _BroadcastSubscriptionCls : public _ControllerSubscriptionCls<T> {
 public:
 
 private:
@@ -51,9 +54,11 @@ private:
     virtual void _onResume();
 
 };
-template<typename T> using _BroadcastSubscription = std::shared_ptr<_BroadcastSubscriptionCls<T>>;
+template<typename T>
+using _BroadcastSubscription = std::shared_ptr<_BroadcastSubscriptionCls<T>>;
 
-template<typename T> class _BroadcastStreamControllerCls : public ObjectCls {
+template<typename T>
+class _BroadcastStreamControllerCls : public ObjectCls {
 public:
     void Function() onListen;
 
@@ -149,9 +154,11 @@ private:
     virtual void _callOnCancel();
 
 };
-template<typename T> using _BroadcastStreamController = std::shared_ptr<_BroadcastStreamControllerCls<T>>;
+template<typename T>
+using _BroadcastStreamController = std::shared_ptr<_BroadcastStreamControllerCls<T>>;
 
-template<typename T> class _SyncBroadcastStreamControllerCls : public _BroadcastStreamControllerCls<T> {
+template<typename T>
+class _SyncBroadcastStreamControllerCls : public _BroadcastStreamControllerCls<T> {
 public:
 
 private:
@@ -169,9 +176,11 @@ private:
     virtual void _sendDone();
 
 };
-template<typename T> using _SyncBroadcastStreamController = std::shared_ptr<_SyncBroadcastStreamControllerCls<T>>;
+template<typename T>
+using _SyncBroadcastStreamController = std::shared_ptr<_SyncBroadcastStreamControllerCls<T>>;
 
-template<typename T> class _AsyncBroadcastStreamControllerCls : public _BroadcastStreamControllerCls<T> {
+template<typename T>
+class _AsyncBroadcastStreamControllerCls : public _BroadcastStreamControllerCls<T> {
 public:
 
 private:
@@ -185,9 +194,11 @@ private:
     virtual void _sendDone();
 
 };
-template<typename T> using _AsyncBroadcastStreamController = std::shared_ptr<_AsyncBroadcastStreamControllerCls<T>>;
+template<typename T>
+using _AsyncBroadcastStreamController = std::shared_ptr<_AsyncBroadcastStreamControllerCls<T>>;
 
-template<typename T> class _AsBroadcastStreamControllerCls : public _SyncBroadcastStreamControllerCls<T> {
+template<typename T>
+class _AsBroadcastStreamControllerCls : public _SyncBroadcastStreamControllerCls<T> {
 public:
 
     virtual void add(T data);
@@ -211,7 +222,8 @@ private:
     virtual void _callOnCancel();
 
 };
-template<typename T> using _AsBroadcastStreamController = std::shared_ptr<_AsBroadcastStreamControllerCls<T>>;
+template<typename T>
+using _AsBroadcastStreamController = std::shared_ptr<_AsBroadcastStreamControllerCls<T>>;
 
 
 #endif

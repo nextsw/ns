@@ -7,7 +7,8 @@
 #include "framework.hpp"
 
 
-template<typename T> class InheritedModelCls : public InheritedWidgetCls {
+template<typename T>
+class InheritedModelCls : public InheritedWidgetCls {
 public:
 
      InheritedModelCls(Unknown child, Unknown key);
@@ -16,16 +17,20 @@ public:
     virtual bool updateShouldNotifyDependent(Set<T> dependencies, InheritedModel<T> oldWidget);
     virtual bool isSupportedAspect(Object aspect);
 
-    template<typename T>  static T inheritFrom(Object aspect, BuildContext context);
+    template<typename T>
+ static T inheritFrom(Object aspect, BuildContext context);
 
 private:
 
-    template<typename T>  static void _findModels(Object aspect, BuildContext context, List<InheritedElement> results);
+    template<typename T>
+ static void _findModels(Object aspect, BuildContext context, List<InheritedElement> results);
 
 };
-template<typename T> using InheritedModel = std::shared_ptr<InheritedModelCls<T>>;
+template<typename T>
+using InheritedModel = std::shared_ptr<InheritedModelCls<T>>;
 
-template<typename T> class InheritedModelElementCls : public InheritedElementCls {
+template<typename T>
+class InheritedModelElementCls : public InheritedElementCls {
 public:
 
      InheritedModelElementCls(InheritedModel<T> widget);
@@ -36,7 +41,8 @@ public:
 private:
 
 };
-template<typename T> using InheritedModelElement = std::shared_ptr<InheritedModelElementCls<T>>;
+template<typename T>
+using InheritedModelElement = std::shared_ptr<InheritedModelElementCls<T>>;
 
 
 #endif

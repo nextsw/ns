@@ -446,7 +446,7 @@ void FocusNodeCls::_setAsFocusedChildForScope() {
     }
 }
 
-FocusScopeNodeCls::FocusScopeNodeCls(Unknown canRequestFocus, Unknown debugLabel, Unknown onKey, Unknown onKeyEvent, Unknown skipTraversal) : FocusNode(true) {
+FocusScopeNodeCls::FocusScopeNodeCls(Unknown canRequestFocus, Unknown debugLabel, Unknown onKey, Unknown onKeyEvent, Unknown skipTraversal) {
     {
         assert(skipTraversal != nullptr);
         assert(canRequestFocus != nullptr);
@@ -662,7 +662,7 @@ bool FocusManagerCls::_handleKeyMessage(KeyMessage message) {
         KeyEventResult result = combineKeyEventResults(results);
         ;
         assert(result != KeyEventResultCls::ignored);
-                break;
+        break;
     }
     if (!handled) {
         assert(_focusDebug(__s("Key event not handled by anyone: $message.")));

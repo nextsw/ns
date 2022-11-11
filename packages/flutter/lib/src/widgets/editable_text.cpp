@@ -1,5 +1,5 @@
 #include "editable_text.hpp"
-TextEditingControllerCls::TextEditingControllerCls(String text) : ValueNotifier<TextEditingValue>(text == nullptr? TextEditingValueCls::empty : make<TextEditingValueCls>(text)) {
+TextEditingControllerCls::TextEditingControllerCls(String text) {
 }
 
 void TextEditingControllerCls::fromValue(TextEditingValue value)
@@ -88,7 +88,7 @@ double _DiscreteKeyFrameSimulationCls::x(double time) {
         assert(_keyFrames[searchIndex]->time <= time);
         _KeyFrame next = _keyFrames[searchIndex + 1];
         if ( < next->time) {
-                        break;
+            break;
         }
         searchIndex = 1;
     }
@@ -1257,7 +1257,8 @@ _TextBoundary EditableTextStateCls::_documentBoundary(DirectionalTextEditingInte
     return make<_DocumentBoundaryCls>(_value());
 }
 
-Action<T> EditableTextStateCls::_makeOverridabletemplate<typename T> (Action<T> defaultAction) {
+template<typename T>
+Action<T> EditableTextStateCls::_makeOverridable(Action<T> defaultAction) {
     return <T>overridable(context, defaultAction);
 }
 
@@ -1340,7 +1341,7 @@ void _EditableCls::updateRenderObject(BuildContext context, RenderEditable rende
     auto _c1 = renderObject;_c1.text = auto _c2 = inlineSpan;_c2.cursorColor = auto _c3 = cursorColor;_c3.startHandleLayerLink = auto _c4 = startHandleLayerLink;_c4.endHandleLayerLink = auto _c5 = endHandleLayerLink;_c5.showCursor = auto _c6 = showCursor;_c6.forceLine = auto _c7 = forceLine;_c7.readOnly = auto _c8 = readOnly;_c8.hasFocus = auto _c9 = hasFocus;_c9.maxLines = auto _c10 = maxLines;_c10.minLines = auto _c11 = minLines;_c11.expands = auto _c12 = expands;_c12.strutStyle = auto _c13 = strutStyle;_c13.selectionColor = auto _c14 = selectionColor;_c14.textScaleFactor = auto _c15 = textScaleFactor;_c15.textAlign = auto _c16 = textAlign;_c16.textDirection = auto _c17 = textDirection;_c17.locale = auto _c18 = locale or LocalizationsCls->maybeLocaleOf(context);_c18.selection = auto _c19 = value->selection;_c19.offset = auto _c20 = offset;_c20.onCaretChanged = auto _c21 = onCaretChanged;_c21.ignorePointer = auto _c22 = rendererIgnoresPointer;_c22.textHeightBehavior = auto _c23 = textHeightBehavior;_c23.textWidthBasis = auto _c24 = textWidthBasis;_c24.obscuringCharacter = auto _c25 = obscuringCharacter;_c25.obscureText = auto _c26 = obscureText;_c26.cursorWidth = auto _c27 = cursorWidth;_c27.cursorHeight = auto _c28 = cursorHeight;_c28.cursorRadius = auto _c29 = cursorRadius;_c29.cursorOffset = auto _c30 = cursorOffset;_c30.selectionHeightStyle = auto _c31 = selectionHeightStyle;_c31.selectionWidthStyle = auto _c32 = selectionWidthStyle;_c32.enableInteractiveSelection = auto _c33 = enableInteractiveSelection;_c33.textSelectionDelegate = auto _c34 = textSelectionDelegate;_c34.devicePixelRatio = auto _c35 = devicePixelRatio;_c35.paintCursorAboveText = auto _c36 = paintCursorAboveText;_c36.promptRectColor = auto _c37 = promptRectColor;_c37.clipBehavior = auto _c38 = clipBehavior;_c38.setPromptRectRange(promptRectRange);_c38;_c37;_c36;_c35;_c34;_c33;_c32;_c31;_c30;_c29;_c28;_c27;_c26;_c25;_c24;_c23;_c22;_c21;_c20;_c19;_c18;_c17;_c16;_c15;_c14;_c13;_c12;_c11;_c10;_c9;_c8;_c7;_c6;_c5;_c4;_c3;_c2;_c1;
 }
 
-_EditableCls::_EditableCls(Color backgroundCursorColor, Clip clipBehavior, Color cursorColor, double cursorHeight, Offset cursorOffset, Radius cursorRadius, double cursorWidth, double devicePixelRatio, bool enableInteractiveSelection, LayerLink endHandleLayerLink, bool expands, bool forceLine, bool hasFocus, InlineSpan inlineSpan, Unknown key, Locale locale, int maxLines, int minLines, bool obscureText, String obscuringCharacter, ViewportOffset offset, CaretChangedHandler onCaretChanged, bool paintCursorAboveText, Color promptRectColor, TextRange promptRectRange, bool readOnly, bool rendererIgnoresPointer, Color selectionColor, BoxHeightStyle selectionHeightStyle, BoxWidthStyle selectionWidthStyle, ValueNotifier<bool> showCursor, LayerLink startHandleLayerLink, StrutStyle strutStyle, TextAlign textAlign, TextDirection textDirection, TextHeightBehavior textHeightBehavior, double textScaleFactor, TextSelectionDelegate textSelectionDelegate, TextWidthBasis textWidthBasis, TextEditingValue value) : MultiChildRenderObjectWidget(_extractChildren(inlineSpan)) {
+_EditableCls::_EditableCls(Color backgroundCursorColor, Clip clipBehavior, Color cursorColor, double cursorHeight, Offset cursorOffset, Radius cursorRadius, double cursorWidth, double devicePixelRatio, bool enableInteractiveSelection, LayerLink endHandleLayerLink, bool expands, bool forceLine, bool hasFocus, InlineSpan inlineSpan, Unknown key, Locale locale, int maxLines, int minLines, bool obscureText, String obscuringCharacter, ViewportOffset offset, CaretChangedHandler onCaretChanged, bool paintCursorAboveText, Color promptRectColor, TextRange promptRectRange, bool readOnly, bool rendererIgnoresPointer, Color selectionColor, BoxHeightStyle selectionHeightStyle, BoxWidthStyle selectionWidthStyle, ValueNotifier<bool> showCursor, LayerLink startHandleLayerLink, StrutStyle strutStyle, TextAlign textAlign, TextDirection textDirection, TextHeightBehavior textHeightBehavior, double textScaleFactor, TextSelectionDelegate textSelectionDelegate, TextWidthBasis textWidthBasis, TextEditingValue value) {
     {
         assert(textDirection != nullptr);
         assert(rendererIgnoresPointer != nullptr);
@@ -1564,7 +1565,8 @@ TextPosition _MixedBoundaryCls::getTrailingTextBoundaryAt(TextPosition position)
     return trailingTextBoundary->getTrailingTextBoundaryAt(position);
 }
 
-template<typename T> Object _DeleteTextActionCls<T>::invoke(BuildContext context, T intent) {
+template<typename T>
+Object _DeleteTextActionCls<T>::invoke(BuildContext context, T intent) {
     TextSelection selection = state->_value()->selection;
     assert(selection->isValid);
     if (!selection->isCollapsed) {
@@ -1580,11 +1582,13 @@ template<typename T> Object _DeleteTextActionCls<T>::invoke(BuildContext context
     return ActionsCls->invoke(context!, make<ReplaceTextIntentCls>(textBoundary->textEditingValue(), __s(""), textBoundary->getTextBoundaryAt(textBoundary->textEditingValue()->selection->base()), SelectionChangedCauseCls::keyboard));
 }
 
-template<typename T> bool _DeleteTextActionCls<T>::isActionEnabled() {
+template<typename T>
+bool _DeleteTextActionCls<T>::isActionEnabled() {
     return !state->widget->readOnly && state->_value()->selection->isValid;
 }
 
-template<typename T> TextRange _DeleteTextActionCls<T>::_expandNonCollapsedRange(TextEditingValue value) {
+template<typename T>
+TextRange _DeleteTextActionCls<T>::_expandNonCollapsedRange(TextEditingValue value) {
     TextRange selection = value->selection;
     assert(selection->isValid());
     assert(!selection->isCollapsed());
@@ -1592,7 +1596,8 @@ template<typename T> TextRange _DeleteTextActionCls<T>::_expandNonCollapsedRange
     return make<TextRangeCls>(atomicBoundary->getLeadingTextBoundaryAt(make<TextPositionCls>(selection->start))->offset, atomicBoundary->getTrailingTextBoundaryAt(make<TextPositionCls>(selection->end - 1))->offset);
 }
 
-template<typename T> Object _UpdateTextSelectionActionCls<T>::invoke(BuildContext context, T intent) {
+template<typename T>
+Object _UpdateTextSelectionActionCls<T>::invoke(BuildContext context, T intent) {
     TextSelection selection = state->_value()->selection;
     assert(selection->isValid);
     bool collapseSelection = intent->collapseSelection || !state->widget->selectionEnabled;
@@ -1626,16 +1631,19 @@ template<typename T> Object _UpdateTextSelectionActionCls<T>::invoke(BuildContex
     return ActionsCls->invoke(context!, make<UpdateSelectionIntentCls>(textBoundary->textEditingValue(), newSelection, SelectionChangedCauseCls::keyboard));
 }
 
-template<typename T> bool _UpdateTextSelectionActionCls<T>::isActionEnabled() {
+template<typename T>
+bool _UpdateTextSelectionActionCls<T>::isActionEnabled() {
     return state->_value()->selection->isValid;
 }
 
-template<typename T> bool _UpdateTextSelectionActionCls<T>::_isAtWordwrapUpstream(TextPosition position) {
+template<typename T>
+bool _UpdateTextSelectionActionCls<T>::_isAtWordwrapUpstream(TextPosition position) {
     TextPosition end = make<TextPositionCls>(state->renderEditable()->getLineAtOffset(position)->end, TextAffinityCls::upstream);
     return end == position && end->offset != state->textEditingValue()->text->length() && state->textEditingValue()->text->codeUnitAt(position->offset) != NEWLINE_CODE_UNITCls;
 }
 
-template<typename T> bool _UpdateTextSelectionActionCls<T>::_isAtWordwrapDownstream(TextPosition position) {
+template<typename T>
+bool _UpdateTextSelectionActionCls<T>::_isAtWordwrapDownstream(TextPosition position) {
     TextPosition start = make<TextPositionCls>(state->renderEditable()->getLineAtOffset(position)->start);
     return start == position && start->offset != 0 && state->textEditingValue()->text->codeUnitAt(position->offset - 1) != NEWLINE_CODE_UNITCls;
 }
@@ -1658,7 +1666,8 @@ bool _ExtendSelectionOrCaretPositionActionCls::isActionEnabled() {
     return state->widget->selectionEnabled && state->_value()->selection->isValid;
 }
 
-template<typename T> void _UpdateTextSelectionToAdjacentLineActionCls<T>::stopCurrentVerticalRunIfSelectionChanges() {
+template<typename T>
+void _UpdateTextSelectionToAdjacentLineActionCls<T>::stopCurrentVerticalRunIfSelectionChanges() {
     TextSelection runSelection = _runSelection;
     if (runSelection == nullptr) {
         assert(_verticalMovementRun == nullptr);
@@ -1673,7 +1682,8 @@ template<typename T> void _UpdateTextSelectionToAdjacentLineActionCls<T>::stopCu
     }
 }
 
-template<typename T> void _UpdateTextSelectionToAdjacentLineActionCls<T>::invoke(BuildContext context, T intent) {
+template<typename T>
+void _UpdateTextSelectionToAdjacentLineActionCls<T>::invoke(BuildContext context, T intent) {
     assert(state->_value()->selection->isValid);
     bool collapseSelection = intent->collapseSelection || !state->widget->selectionEnabled;
     TextEditingValue value = state->_textEditingValueforTextLayoutMetrics();
@@ -1695,7 +1705,8 @@ template<typename T> void _UpdateTextSelectionToAdjacentLineActionCls<T>::invoke
     }
 }
 
-template<typename T> bool _UpdateTextSelectionToAdjacentLineActionCls<T>::isActionEnabled() {
+template<typename T>
+bool _UpdateTextSelectionToAdjacentLineActionCls<T>::isActionEnabled() {
     return state->_value()->selection->isValid;
 }
 
@@ -1774,11 +1785,13 @@ void _TextEditingHistoryStateCls::_push() {
     _throttleTimer = _throttledPush(widget->controller->value);
 }
 
-template<typename T> T _UndoStackCls<T>::currentValue() {
+template<typename T>
+T _UndoStackCls<T>::currentValue() {
     return _list->isEmpty? nullptr : _list[_index];
 }
 
-template<typename T> void _UndoStackCls<T>::push(T value) {
+template<typename T>
+void _UndoStackCls<T>::push(T value) {
     if (_list->isEmpty) {
         _index = 0;
         _list->add(value);
@@ -1795,7 +1808,8 @@ template<typename T> void _UndoStackCls<T>::push(T value) {
     _index = _list->length() - 1;
 }
 
-template<typename T> T _UndoStackCls<T>::undo() {
+template<typename T>
+T _UndoStackCls<T>::undo() {
     if (_list->isEmpty) {
         return nullptr;
     }
@@ -1806,7 +1820,8 @@ template<typename T> T _UndoStackCls<T>::undo() {
     return currentValue();
 }
 
-template<typename T> T _UndoStackCls<T>::redo() {
+template<typename T>
+T _UndoStackCls<T>::redo() {
     if (_list->isEmpty) {
         return nullptr;
     }
@@ -1817,16 +1832,19 @@ template<typename T> T _UndoStackCls<T>::redo() {
     return currentValue();
 }
 
-template<typename T> void _UndoStackCls<T>::clear() {
+template<typename T>
+void _UndoStackCls<T>::clear() {
     _list->clear();
     _index = -1;
 }
 
-template<typename T> String _UndoStackCls<T>::toString() {
+template<typename T>
+String _UndoStackCls<T>::toString() {
     return __s("_UndoStack $_list");
 }
 
-_Throttled<T> _throttletemplate<typename T> (Duration duration, _Throttleable<T> function, bool leadingEdge) {
+template<typename T>
+_Throttled<T> _throttle(Duration duration, _Throttleable<T> function, bool leadingEdge) {
     Timer timer;
     bool calledDuringTimer = false;
     T arg;

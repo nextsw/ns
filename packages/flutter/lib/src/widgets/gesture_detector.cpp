@@ -1,21 +1,25 @@
 #include "gesture_detector.hpp"
-template<typename T> bool GestureRecognizerFactoryCls<T>::_debugAssertTypeMatches(Type type) {
+template<typename T>
+bool GestureRecognizerFactoryCls<T>::_debugAssertTypeMatches(Type type) {
     assert(type == TCls, __s("GestureRecognizerFactory of type $T was used where type $type was specified."));
     return true;
 }
 
-template<typename T> GestureRecognizerFactoryWithHandlersCls<T>::GestureRecognizerFactoryWithHandlersCls(GestureRecognizerFactoryConstructor<T> _constructor, GestureRecognizerFactoryInitializer<T> _initializer) {
+template<typename T>
+GestureRecognizerFactoryWithHandlersCls<T>::GestureRecognizerFactoryWithHandlersCls(GestureRecognizerFactoryConstructor<T> _constructor, GestureRecognizerFactoryInitializer<T> _initializer) {
     {
         assert(_constructor != nullptr);
         assert(_initializer != nullptr);
     }
 }
 
-template<typename T> T GestureRecognizerFactoryWithHandlersCls<T>::constructor() {
+template<typename T>
+T GestureRecognizerFactoryWithHandlersCls<T>::constructor() {
     return _constructor();
 }
 
-template<typename T> void GestureRecognizerFactoryWithHandlersCls<T>::initializer(T instance) {
+template<typename T>
+void GestureRecognizerFactoryWithHandlersCls<T>::initializer(T instance) {
     return _initializer(instance);
 }
 

@@ -275,11 +275,11 @@ void SliverReorderableListStateCls::_dragUpdateItems() {
         if (_reverse()) {
             if (itemEnd >= proxyItemEnd && proxyItemEnd >= itemMiddle) {
                 newIndex = item->index;
-                                break;
+                break;
             } else             {
                 if (itemMiddle >= proxyItemStart && proxyItemStart >= itemStart) {
                 newIndex = item->index + 1;
-                                break;
+                break;
             } else             {
                 if (itemStart > proxyItemEnd &&  < (item->index + 1)) {
                 newIndex = item->index + 1;
@@ -293,11 +293,11 @@ void SliverReorderableListStateCls::_dragUpdateItems() {
             }        } else {
             if (itemStart <= proxyItemStart && proxyItemStart <= itemMiddle) {
                 newIndex = item->index;
-                                break;
+                break;
             } else             {
                 if (itemMiddle <= proxyItemEnd && proxyItemEnd <= itemEnd) {
                 newIndex = item->index + 1;
-                                break;
+                break;
             } else             {
                 if ( < proxyItemStart &&  < (item->index + 1)) {
                 newIndex = item->index + 1;
@@ -345,7 +345,7 @@ _ReorderableItemState _ReorderableItemCls::createState() {
     return make<_ReorderableItemStateCls>();
 }
 
-_ReorderableItemCls::_ReorderableItemCls(CapturedThemes capturedThemes, Widget child, int index, Key key) : StatefulWidget(key) {
+_ReorderableItemCls::_ReorderableItemCls(CapturedThemes capturedThemes, Widget child, int index, Key key) {
 }
 
 Key _ReorderableItemStateCls::key() {
@@ -570,5 +570,5 @@ int _ReorderableItemGlobalKeyCls::hashCode() {
     return ObjectCls->hash(subKey, index, state);
 }
 
-_ReorderableItemGlobalKeyCls::_ReorderableItemGlobalKeyCls(int index, SliverReorderableListState state, Key subKey) : GlobalObjectKey(subKey) {
+_ReorderableItemGlobalKeyCls::_ReorderableItemGlobalKeyCls(int index, SliverReorderableListState state, Key subKey) {
 }

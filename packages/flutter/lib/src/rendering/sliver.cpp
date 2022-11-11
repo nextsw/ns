@@ -173,7 +173,7 @@ void SliverGeometryCls::debugFillProperties(DiagnosticPropertiesBuilder properti
     properties->add(make<DoublePropertyCls>(__s("cacheExtent"), cacheExtent0.0));
 }
 
-SliverHitTestResultCls::SliverHitTestResultCls() : HitTestResult() {
+SliverHitTestResultCls::SliverHitTestResultCls() {
 }
 
 void SliverHitTestResultCls::wrap(Unknown result)

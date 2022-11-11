@@ -7,7 +7,8 @@
 #include <packages/collection/collection.hpp>
 
 
-template<typename E> class EmptyUnmodifiableSetCls : public IterableBaseCls<E> {
+template<typename E>
+class EmptyUnmodifiableSetCls : public IterableBaseCls<E> {
 public:
 
      EmptyUnmodifiableSetCls();
@@ -15,7 +16,8 @@ public:
 
     virtual int length();
 
-    template<typename T>  virtual EmptyUnmodifiableSet<T> cast();
+    template<typename T>
+ virtual EmptyUnmodifiableSet<T> cast();
 
     virtual bool contains(Object element);
 
@@ -25,11 +27,13 @@ public:
 
     virtual E lookup(Object element);
 
-    template<typename T>  virtual EmptyUnmodifiableSet<T> retype();
+    template<typename T>
+ virtual EmptyUnmodifiableSet<T> retype();
 
     virtual E singleWhere(E orElse() , bool test(E ) );
 
-    template<typename T>  virtual Iterable<T> whereType();
+    template<typename T>
+ virtual Iterable<T> whereType();
 
     virtual Set<E> toSet();
 
@@ -42,7 +46,8 @@ public:
 private:
 
 };
-template<typename E> using EmptyUnmodifiableSet = std::shared_ptr<EmptyUnmodifiableSetCls<E>>;
+template<typename E>
+using EmptyUnmodifiableSet = std::shared_ptr<EmptyUnmodifiableSetCls<E>>;
 
 
 #endif

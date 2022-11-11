@@ -7,7 +7,8 @@
 #include "framework.hpp"
 
 
-template<typename T> class ValueListenableBuilderCls : public StatefulWidgetCls {
+template<typename T>
+class ValueListenableBuilderCls : public StatefulWidgetCls {
 public:
     ValueListenable<T> valueListenable;
 
@@ -23,9 +24,11 @@ public:
 private:
 
 };
-template<typename T> using ValueListenableBuilder = std::shared_ptr<ValueListenableBuilderCls<T>>;
+template<typename T>
+using ValueListenableBuilder = std::shared_ptr<ValueListenableBuilderCls<T>>;
 
-template<typename T> class _ValueListenableBuilderStateCls : public StateCls<ValueListenableBuilder<T>> {
+template<typename T>
+class _ValueListenableBuilderStateCls : public StateCls<ValueListenableBuilder<T>> {
 public:
     T value;
 
@@ -43,7 +46,8 @@ private:
     virtual void _valueChanged();
 
 };
-template<typename T> using _ValueListenableBuilderState = std::shared_ptr<_ValueListenableBuilderStateCls<T>>;
+template<typename T>
+using _ValueListenableBuilderState = std::shared_ptr<_ValueListenableBuilderStateCls<T>>;
 
 
 #endif

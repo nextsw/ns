@@ -17,20 +17,25 @@ String ObjectKeyCls::toString() {
     return __s("[${objectRuntimeType(this, 'ObjectKey')} ${describeIdentity(value)}]");
 }
 
-template<typename T> GlobalKeyCls<T>::GlobalKeyCls(String debugLabel) {
+template<typename T>
+GlobalKeyCls<T>::GlobalKeyCls(String debugLabel) {
 }
 
-template<typename T> void GlobalKeyCls<T>::constructor()
+template<typename T>
+void GlobalKeyCls<T>::constructor()
 
-template<typename T> BuildContext GlobalKeyCls<T>::currentContext() {
+template<typename T>
+BuildContext GlobalKeyCls<T>::currentContext() {
     return _currentElement();
 }
 
-template<typename T> Widget GlobalKeyCls<T>::currentWidget() {
+template<typename T>
+Widget GlobalKeyCls<T>::currentWidget() {
     return _currentElement()?->widget();
 }
 
-template<typename T> T GlobalKeyCls<T>::currentState() {
+template<typename T>
+T GlobalKeyCls<T>::currentState() {
     Element element = _currentElement();
     if (is<StatefulElement>(element)) {
         StatefulElement statefulElement = as<StatefulElementCls>(element);
@@ -42,17 +47,20 @@ template<typename T> T GlobalKeyCls<T>::currentState() {
     return nullptr;
 }
 
-template<typename T> Element GlobalKeyCls<T>::_currentElement() {
+template<typename T>
+Element GlobalKeyCls<T>::_currentElement() {
     return WidgetsBindingCls::instance->buildOwner!->_globalKeyRegistry[this];
 }
 
-template<typename T> LabeledGlobalKeyCls<T>::LabeledGlobalKeyCls(String _debugLabel) {
+template<typename T>
+LabeledGlobalKeyCls<T>::LabeledGlobalKeyCls(String _debugLabel) {
     {
         super->constructor();
     }
 }
 
-template<typename T> String LabeledGlobalKeyCls<T>::toString() {
+template<typename T>
+String LabeledGlobalKeyCls<T>::toString() {
     String label = _debugLabel != nullptr? __s(" $_debugLabel") : __s("");
     if (runtimeType == LabeledGlobalKeyCls) {
         return __s("[GlobalKey#${shortHash(this)}$label]");
@@ -60,24 +68,28 @@ template<typename T> String LabeledGlobalKeyCls<T>::toString() {
     return __s("[${describeIdentity(this)}$label]");
 }
 
-template<typename T> GlobalObjectKeyCls<T>::GlobalObjectKeyCls(Object value) {
+template<typename T>
+GlobalObjectKeyCls<T>::GlobalObjectKeyCls(Object value) {
     {
         super->constructor();
     }
 }
 
-template<typename T> bool GlobalObjectKeyCls<T>::==(Object other) {
+template<typename T>
+bool GlobalObjectKeyCls<T>::==(Object other) {
     if (other->runtimeType() != runtimeType) {
         return false;
     }
     return is<GlobalObjectKey<T>>(other) && identical(other->value, value);
 }
 
-template<typename T> int GlobalObjectKeyCls<T>::hashCode() {
+template<typename T>
+int GlobalObjectKeyCls<T>::hashCode() {
     return identityHashCode(value);
 }
 
-template<typename T> String GlobalObjectKeyCls<T>::toString() {
+template<typename T>
+String GlobalObjectKeyCls<T>::toString() {
     String selfType = objectRuntimeType(this, __s("GlobalObjectKey"));
     String suffix = __s("<State<StatefulWidget>>");
     if (selfType->endsWith(suffix)) {
@@ -120,11 +132,13 @@ StatefulElement StatefulWidgetCls::createElement() {
     return make<StatefulElementCls>(this);
 }
 
-template<typename T> T StateCls<T>::widget() {
+template<typename T>
+T StateCls<T>::widget() {
     return _widget!;
 }
 
-template<typename T> BuildContext StateCls<T>::context() {
+template<typename T>
+BuildContext StateCls<T>::context() {
     assert([=] () {
         if (_element == nullptr) {
             ;
@@ -134,21 +148,26 @@ template<typename T> BuildContext StateCls<T>::context() {
     return _element!;
 }
 
-template<typename T> bool StateCls<T>::mounted() {
+template<typename T>
+bool StateCls<T>::mounted() {
     return _element != nullptr;
 }
 
-template<typename T> void StateCls<T>::initState() {
+template<typename T>
+void StateCls<T>::initState() {
     assert(_debugLifecycleState == _StateLifecycleCls::created);
 }
 
-template<typename T> void StateCls<T>::didUpdateWidget(T oldWidget) {
+template<typename T>
+void StateCls<T>::didUpdateWidget(T oldWidget) {
 }
 
-template<typename T> void StateCls<T>::reassemble() {
+template<typename T>
+void StateCls<T>::reassemble() {
 }
 
-template<typename T> void StateCls<T>::setState(VoidCallback fn) {
+template<typename T>
+void StateCls<T>::setState(VoidCallback fn) {
     assert(fn != nullptr);
     assert([=] () {
         if (_debugLifecycleState == _StateLifecycleCls::defunct) {
@@ -169,13 +188,16 @@ template<typename T> void StateCls<T>::setState(VoidCallback fn) {
     _element!->markNeedsBuild();
 }
 
-template<typename T> void StateCls<T>::deactivate() {
+template<typename T>
+void StateCls<T>::deactivate() {
 }
 
-template<typename T> void StateCls<T>::activate() {
+template<typename T>
+void StateCls<T>::activate() {
 }
 
-template<typename T> void StateCls<T>::dispose() {
+template<typename T>
+void StateCls<T>::dispose() {
     assert(_debugLifecycleState == _StateLifecycleCls::ready);
     assert([=] () {
         _debugLifecycleState = _StateLifecycleCls::defunct;
@@ -183,10 +205,12 @@ template<typename T> void StateCls<T>::dispose() {
     }());
 }
 
-template<typename T> void StateCls<T>::didChangeDependencies() {
+template<typename T>
+void StateCls<T>::didChangeDependencies() {
 }
 
-template<typename T> void StateCls<T>::debugFillProperties(DiagnosticPropertiesBuilder properties) {
+template<typename T>
+void StateCls<T>::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
     assert([=] () {
         properties->add(<_StateLifecycle>make<EnumPropertyCls>(__s("lifecycle state"), _debugLifecycleState_StateLifecycleCls::ready));
@@ -196,25 +220,30 @@ template<typename T> void StateCls<T>::debugFillProperties(DiagnosticPropertiesB
     properties->add(<StatefulElement>make<ObjectFlagPropertyCls>(__s("_element"), _element__s("not mounted")));
 }
 
-template<typename T> bool StateCls<T>::_debugTypesAreRight(Widget widget) {
+template<typename T>
+bool StateCls<T>::_debugTypesAreRight(Widget widget) {
     return is<T>(widget);
 }
 
-template<typename T> ParentDataElement<T> ParentDataWidgetCls<T>::createElement() {
+template<typename T>
+ParentDataElement<T> ParentDataWidgetCls<T>::createElement() {
     return <T>make<ParentDataElementCls>(this);
 }
 
-template<typename T> bool ParentDataWidgetCls<T>::debugIsValidRenderObject(RenderObject renderObject) {
+template<typename T>
+bool ParentDataWidgetCls<T>::debugIsValidRenderObject(RenderObject renderObject) {
     assert(TCls != dynamic);
     assert(TCls != ParentDataCls);
     return is<T>(renderObject->parentData);
 }
 
-template<typename T> bool ParentDataWidgetCls<T>::debugCanApplyOutOfTurn() {
+template<typename T>
+bool ParentDataWidgetCls<T>::debugCanApplyOutOfTurn() {
     return false;
 }
 
-template<typename T> Iterable<DiagnosticsNode> ParentDataWidgetCls<T>::_debugDescribeIncorrectParentDataType(DiagnosticsNode ownershipChain, ParentData parentData, RenderObjectWidget parentDataCreator) {
+template<typename T>
+Iterable<DiagnosticsNode> ParentDataWidgetCls<T>::_debugDescribeIncorrectParentDataType(DiagnosticsNode ownershipChain, ParentData parentData, RenderObjectWidget parentDataCreator) {
     assert(TCls != dynamic);
     assert(TCls != ParentDataCls);
     assert(debugTypicalAncestorWidgetClass() != nullptr);
@@ -1213,7 +1242,8 @@ InheritedWidget ElementCls::dependOnInheritedElement(InheritedElement ancestor, 
     return as<InheritedWidget>(ancestor->widget);
 }
 
-T ElementCls::dependOnInheritedWidgetOfExactTypetemplate<typename T> (Object aspect) {
+template<typename T>
+T ElementCls::dependOnInheritedWidgetOfExactType(Object aspect) {
     assert(_debugCheckStateIsActiveForAncestorLookup());
     InheritedElement ancestor = _inheritedWidgets == nullptr? nullptr : _inheritedWidgets![TCls];
     if (ancestor != nullptr) {
@@ -1223,7 +1253,8 @@ T ElementCls::dependOnInheritedWidgetOfExactTypetemplate<typename T> (Object asp
     return nullptr;
 }
 
-InheritedElement ElementCls::getElementForInheritedWidgetOfExactTypetemplate<typename T> () {
+template<typename T>
+InheritedElement ElementCls::getElementForInheritedWidgetOfExactType() {
     assert(_debugCheckStateIsActiveForAncestorLookup());
     InheritedElement ancestor = _inheritedWidgets == nullptr? nullptr : _inheritedWidgets![TCls];
     return ancestor;
@@ -1233,7 +1264,8 @@ void ElementCls::attachNotificationTree() {
     _notificationTree = _parent?->_notificationTree;
 }
 
-T ElementCls::findAncestorWidgetOfExactTypetemplate<typename T> () {
+template<typename T>
+T ElementCls::findAncestorWidgetOfExactType() {
     assert(_debugCheckStateIsActiveForAncestorLookup());
     Element ancestor = _parent;
     while (ancestor != nullptr && ancestor->widget()->runtimeType != TCls) {
@@ -1242,12 +1274,13 @@ T ElementCls::findAncestorWidgetOfExactTypetemplate<typename T> () {
     return as<T>(ancestor?->widget());
 }
 
-T ElementCls::findAncestorStateOfTypetemplate<typename T> () {
+template<typename T>
+T ElementCls::findAncestorStateOfType() {
     assert(_debugCheckStateIsActiveForAncestorLookup());
     Element ancestor = _parent;
     while (ancestor != nullptr) {
         if (is<StatefulElement>(ancestor) && is<T>(ancestor->state)) {
-                        break;
+            break;
         }
         ancestor = ancestor->_parent;
     }
@@ -1255,7 +1288,8 @@ T ElementCls::findAncestorStateOfTypetemplate<typename T> () {
     return as<T>(statefulAncestor?->state());
 }
 
-T ElementCls::findRootAncestorStateOfTypetemplate<typename T> () {
+template<typename T>
+T ElementCls::findRootAncestorStateOfType() {
     assert(_debugCheckStateIsActiveForAncestorLookup());
     Element ancestor = _parent;
     StatefulElement statefulAncestor;
@@ -1268,7 +1302,8 @@ T ElementCls::findRootAncestorStateOfTypetemplate<typename T> () {
     return as<T>(statefulAncestor?->state());
 }
 
-T ElementCls::findAncestorRenderObjectOfTypetemplate<typename T> () {
+template<typename T>
+T ElementCls::findAncestorRenderObjectOfType() {
     assert(_debugCheckStateIsActiveForAncestorLookup());
     Element ancestor = _parent;
     while (ancestor != nullptr) {
@@ -1589,7 +1624,7 @@ Map<String, Object> _ElementDiagnosticableTreeNodeCls::toJsonMap(DiagnosticsSeri
     return json;
 }
 
-ErrorWidgetCls::ErrorWidgetCls(Object exception) : LeafRenderObjectWidget(make<UniqueKeyCls>()) {
+ErrorWidgetCls::ErrorWidgetCls(Object exception) {
     {
         message = _stringify(exception);
         _flutterError = is<FlutterError>(exception)? exception : nullptr;
@@ -1702,7 +1737,7 @@ void StatelessElementCls::update(StatelessWidget newWidget) {
     rebuild();
 }
 
-StatefulElementCls::StatefulElementCls(StatefulWidget widget) : ComponentElement(widget) {
+StatefulElementCls::StatefulElementCls(StatefulWidget widget) {
     {
         _state = widget->createState();
     }
@@ -1864,18 +1899,21 @@ void ProxyElementCls::updated(ProxyWidget oldWidget) {
     notifyClients(oldWidget);
 }
 
-template<typename T> void ParentDataElementCls<T>::applyWidgetOutOfTurn(ParentDataWidget<T> newWidget) {
+template<typename T>
+void ParentDataElementCls<T>::applyWidgetOutOfTurn(ParentDataWidget<T> newWidget) {
     assert(newWidget != nullptr);
     assert(newWidget->debugCanApplyOutOfTurn());
     assert(newWidget->child == (as<ParentDataWidget<T>>(widget))->child);
     _applyParentData(newWidget);
 }
 
-template<typename T> void ParentDataElementCls<T>::notifyClients(ParentDataWidget<T> oldWidget) {
+template<typename T>
+void ParentDataElementCls<T>::notifyClients(ParentDataWidget<T> oldWidget) {
     _applyParentData(as<ParentDataWidget<T>>(widget));
 }
 
-template<typename T> void ParentDataElementCls<T>::_applyParentData(ParentDataWidget<T> widget) {
+template<typename T>
+void ParentDataElementCls<T>::_applyParentData(ParentDataWidget<T> widget) {
     InlineMethod;
     visitChildren(applyParentDataToChild);
 }
@@ -1997,7 +2035,7 @@ List<Element> RenderObjectElementCls::updateChildren(Set<Element> forgottenChild
         Widget newWidget = newWidgets[newChildrenTop];
         assert(oldChild == nullptr || oldChild->_lifecycleState == _ElementLifecycleCls::active);
         if (oldChild == nullptr || !WidgetCls->canUpdate(oldChild->widget(), newWidget)) {
-                        break;
+            break;
         }
         Element newChild = updateChild(oldChild, newWidget, slotFor(newChildrenTop, previousChild))!;
         assert(newChild->_lifecycleState == _ElementLifecycleCls::active);
@@ -2011,7 +2049,7 @@ List<Element> RenderObjectElementCls::updateChildren(Set<Element> forgottenChild
         Widget newWidget = newWidgets[newChildrenBottom];
         assert(oldChild == nullptr || oldChild->_lifecycleState == _ElementLifecycleCls::active);
         if (oldChild == nullptr || !WidgetCls->canUpdate(oldChild->widget(), newWidget)) {
-                        break;
+            break;
         }
         oldChildrenBottom = 1;
         newChildrenBottom = 1;
@@ -2160,7 +2198,7 @@ ParentDataElement<ParentData> RenderObjectElementCls::_findAncestorParentDataEle
     while (ancestor != nullptr && !is<RenderObjectElement>(ancestor)) {
         if (is<ParentDataElement<ParentData>>(ancestor)) {
             result = as<ParentDataElementCls>(ancestor);
-                        break;
+            break;
         }
         ancestor = ancestor->_parent;
     }
@@ -2409,14 +2447,16 @@ FlutterErrorDetails _debugReportException(DiagnosticsNode context, Object except
     return details;
 }
 
-template<typename T> bool IndexedSlotCls<T>::==(Object other) {
+template<typename T>
+bool IndexedSlotCls<T>::==(Object other) {
     if (other->runtimeType() != runtimeType) {
         return false;
     }
     return is<IndexedSlot>(other) && index == other->index && value == other->value;
 }
 
-template<typename T> int IndexedSlotCls<T>::hashCode() {
+template<typename T>
+int IndexedSlotCls<T>::hashCode() {
     return ObjectCls->hash(index, value);
 }
 
@@ -2428,7 +2468,7 @@ void _NullElementCls::performRebuild() {
     return ;
 }
 
-_NullElementCls::_NullElementCls() : Element(make<_NullWidgetCls>()) {
+_NullElementCls::_NullElementCls() {
 }
 
 Element _NullWidgetCls::createElement() {

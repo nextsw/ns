@@ -12,11 +12,13 @@ String NotificationCls::toString() {
 void NotificationCls::debugFillDescription(List<String> description) {
 }
 
-template<typename T> Element NotificationListenerCls<T>::createElement() {
+template<typename T>
+Element NotificationListenerCls<T>::createElement() {
     return <T>make<_NotificationElementCls>(this);
 }
 
-template<typename T> bool _NotificationElementCls<T>::onNotification(Notification notification) {
+template<typename T>
+bool _NotificationElementCls<T>::onNotification(Notification notification) {
     NotificationListener<T> listener = as<NotificationListener<T>>(widget);
     if (listener->onNotification != nullptr && is<T>(notification)) {
         return listener->onNotification!(notification);
@@ -24,5 +26,6 @@ template<typename T> bool _NotificationElementCls<T>::onNotification(Notificatio
     return false;
 }
 
-template<typename T> void _NotificationElementCls<T>::notifyClients(ProxyWidget oldWidget) {
+template<typename T>
+void _NotificationElementCls<T>::notifyClients(ProxyWidget oldWidget) {
 }

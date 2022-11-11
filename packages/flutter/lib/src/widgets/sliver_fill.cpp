@@ -35,7 +35,7 @@ void _SliverFractionalPaddingCls::updateRenderObject(BuildContext context, _Rend
     renderObject->viewportFraction = viewportFraction;
 }
 
-_SliverFractionalPaddingCls::_SliverFractionalPaddingCls(Widget sliver, double viewportFraction) : SingleChildRenderObjectWidget(sliver) {
+_SliverFractionalPaddingCls::_SliverFractionalPaddingCls(Widget sliver, double viewportFraction) {
     {
         assert(viewportFraction != nullptr);
         assert(viewportFraction >= 0);
