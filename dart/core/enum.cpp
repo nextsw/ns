@@ -16,7 +16,7 @@ String EnumNameCls::name() {
 template<typename T>
 T EnumByNameCls<T>::byName(String name) {
     for (auto value : this) {
-        if (value->_name == name)         {
+        if (value->_name == name) {
             return value;
         }
     }

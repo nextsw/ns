@@ -4,7 +4,7 @@ int _synthesiseDownButtons(int buttons, PointerDeviceKind kind) {
 }
 
 Iterable<PointerEvent> PointerEventConverterCls::expand(Iterable<PointerData> data, double devicePixelRatio) {
-    return data->where([=] (PointerData datum)     {
+    return data->where([=] (PointerData datum) {
         datum->signalKind != ui->PointerSignalKindCls::unknown;
     })->map([=] (PointerData datum) {
         Offset position = make<OffsetCls>(datum->physicalX, datum->physicalY) / devicePixelRatio;

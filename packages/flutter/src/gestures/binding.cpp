@@ -29,7 +29,7 @@ void _ResamplerCls::sample(Duration samplingOffset, SamplingClock clock) {
             auto _c1 = clock->stopwatch();    _c1.start();_frameTimeAge = _c1;
     }
     if (_timer?->isActive() != true) {
-        _timer = TimerCls->periodic(_samplingInterval, [=] ()         {
+        _timer = TimerCls->periodic(_samplingInterval, [=] () {
             _onSampleTimeChanged();
         });
     }
@@ -57,7 +57,7 @@ void _ResamplerCls::sample(Duration samplingOffset, SamplingClock clock) {
             _frameTime = scheduler->currentSystemFrameTimeStamp();
             _frameTimeAge->reset();
             _timer?->cancel();
-            _timer = TimerCls->periodic(_samplingInterval, [=] ()             {
+            _timer = TimerCls->periodic(_samplingInterval, [=] () {
                 _onSampleTimeChanged();
             });
             _onSampleTimeChanged();
@@ -129,7 +129,7 @@ void GestureBindingCls::dispatchEvent(PointerEvent event, HitTestResult hitTestR
         try {
             pointerRouter->route(event);
         } catch (Unknown exception) {
-            FlutterErrorCls->reportError(make<FlutterErrorDetailsForPointerEventDispatcherCls>(exception, stack, __s("gesture library"), make<ErrorDescriptionCls>(__s("while dispatching a non-hit-tested pointer event")), event, [=] ()             {
+            FlutterErrorCls->reportError(make<FlutterErrorDetailsForPointerEventDispatcherCls>(exception, stack, __s("gesture library"), make<ErrorDescriptionCls>(__s("while dispatching a non-hit-tested pointer event")), event, [=] () {
                 makeList(ArrayItem);
             }));
         };
@@ -139,7 +139,7 @@ void GestureBindingCls::dispatchEvent(PointerEvent event, HitTestResult hitTestR
         try {
             entry->target->handleEvent(event->transformed(entry->transform), entry);
         } catch (Unknown exception) {
-            FlutterErrorCls->reportError(make<FlutterErrorDetailsForPointerEventDispatcherCls>(exception, stack, __s("gesture library"), make<ErrorDescriptionCls>(__s("while dispatching a pointer event")), event, entry, [=] ()             {
+            FlutterErrorCls->reportError(make<FlutterErrorDetailsForPointerEventDispatcherCls>(exception, stack, __s("gesture library"), make<ErrorDescriptionCls>(__s("while dispatching a pointer event")), event, entry, [=] () {
                 makeList(ArrayItem, ArrayItem);
             }));
         };
@@ -150,10 +150,10 @@ void GestureBindingCls::handleEvent(PointerEvent event, HitTestEntry entry) {
     pointerRouter->route(event);
     if (is<PointerDownEvent>(event) || is<PointerPanZoomStartEvent>(event)) {
         gestureArena->close(event->pointer);
-    } else     {
+    } else {
         if (is<PointerUpEvent>(event) || is<PointerPanZoomEndEvent>(event)) {
         gestureArena->sweep(event->pointer);
-    } else     {
+    } else {
         if (is<PointerSignalEvent>(event)) {
         pointerSignalResolver->resolve(as<PointerSignalEventCls>(event));
     }
@@ -198,10 +198,10 @@ void GestureBindingCls::_handlePointerEventImmediately(PointerEvent event) {
             }
             return true;
         }());
-    } else     {
+    } else {
         if (is<PointerUpEvent>(event) || is<PointerCancelEvent>(event) || is<PointerPanZoomEndEvent>(event)) {
         hitTestResult = _hitTests->remove(event->pointer);
-    } else     {
+    } else {
         if (event->down || is<PointerPanZoomUpdateEvent>(event)) {
         hitTestResult = _hitTests[event->pointer];
     }

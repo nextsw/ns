@@ -11,7 +11,7 @@ TextStyleCls::TextStyleCls(Paint background, Color backgroundColor, Color color,
 }
 
 List<String> TextStyleCls::fontFamilyFallback() {
-    return _package != nullptr && _fontFamilyFallback != nullptr? _fontFamilyFallback!->map([=] (String str)     {
+    return _package != nullptr && _fontFamilyFallback != nullptr? _fontFamilyFallback!->map([=] (String str) {
         __s("packages/$_package/$str");
     })->toList() : _fontFamilyFallback;
 }

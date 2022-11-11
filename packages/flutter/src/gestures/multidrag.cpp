@@ -116,7 +116,7 @@ void MultiDragGestureRecognizerCls::acceptGesture(int pointer) {
     if (state == nullptr) {
         return;
     }
-    state->accepted([=] (Offset initialPosition)     {
+    state->accepted([=] (Offset initialPosition) {
         _startDrag(initialPosition, pointer);
     });
 }
@@ -147,17 +147,17 @@ void MultiDragGestureRecognizerCls::_handleEvent(PointerEvent event) {
     MultiDragPointerState state = _pointers![event->pointer]!;
     if (is<PointerMoveEvent>(event)) {
         state->_move(as<PointerMoveEventCls>(event));
-    } else     {
+    } else {
         if (is<PointerUpEvent>(event)) {
         assert(as<PointerUpEventCls>(event)->delta == OffsetCls::zero);
         state->_up();
         _removeState(as<PointerUpEventCls>(event)->pointer);
-    } else     {
+    } else {
         if (is<PointerCancelEvent>(event)) {
         assert(as<PointerCancelEventCls>(event)->delta == OffsetCls::zero);
         state->_cancel();
         _removeState(as<PointerCancelEventCls>(event)->pointer);
-    } else     {
+    } else {
         if (!is<PointerDownEvent>(event)) {
         assert(false);
     }
@@ -173,7 +173,7 @@ Drag MultiDragGestureRecognizerCls::_startDrag(Offset initialPosition, int point
     assert(state->_pendingDelta != nullptr);
     Drag drag;
     if (onStart != nullptr) {
-        drag = <Drag>invokeCallback(__s("onStart"), [=] ()         {
+        drag = <Drag>invokeCallback(__s("onStart"), [=] () {
             onStart!(initialPosition);
         });
     }

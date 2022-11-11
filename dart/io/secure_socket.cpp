@@ -1,6 +1,6 @@
 #include "secure_socket.hpp"
 Future<SecureSocket> SecureSocketCls::connect(host , int port, SecurityContext context, std::function<void(String line)> keyLog, std::function<bool(X509Certificate certificate)> onBadCertificate, List<String> supportedProtocols, Duration timeout) {
-    return RawSecureSocketCls->connect(host, port, context, onBadCertificate, keyLog, supportedProtocols, timeout)->then([=] (Unknown  rawSocket)     {
+    return RawSecureSocketCls->connect(host, port, context, onBadCertificate, keyLog, supportedProtocols, timeout)->then([=] (Unknown  rawSocket) {
         SecureSocketCls->_(rawSocket);
     });
 }
@@ -17,7 +17,7 @@ Future<ConnectionTask<SecureSocket>> SecureSocketCls::startConnect(host , int po
 Future<SecureSocket> SecureSocketCls::secure(Socket socket, host , SecurityContext context, std::function<void(String line)> keyLog, std::function<bool(X509Certificate certificate)> onBadCertificate, List<String> supportedProtocols) {
     return (as<Future>((as<dynamic>(socket))->_detachRaw()))-><RawSecureSocket>then([=] (Unknown  detachedRaw) {
         return RawSecureSocketCls->secure(as<RawSocket>(detachedRaw[0]), as<StreamSubscription<RawSocketEvent>>(detachedRaw[1]), host, context, onBadCertificate, keyLog, supportedProtocols);
-    })-><SecureSocket>then([=] (Unknown  raw)     {
+    })-><SecureSocket>then([=] (Unknown  raw) {
         SecureSocketCls->_(raw);
     });
 }
@@ -25,7 +25,7 @@ Future<SecureSocket> SecureSocketCls::secure(Socket socket, host , SecurityConte
 Future<SecureSocket> SecureSocketCls::secureServer(Socket socket, SecurityContext context, List<int> bufferedData, bool requestClientCertificate, bool requireClientCertificate, List<String> supportedProtocols) {
     return (as<Future>((as<dynamic>(socket))->_detachRaw()))-><RawSecureSocket>then([=] (Unknown  detachedRaw) {
         return RawSecureSocketCls->secureServer(as<RawSocket>(detachedRaw[0]), context, as<StreamSubscription<RawSocketEvent>>(detachedRaw[1]), bufferedData, requestClientCertificate, requireClientCertificate, supportedProtocols);
-    })-><SecureSocket>then([=] (Unknown  raw)     {
+    })-><SecureSocket>then([=] (Unknown  raw) {
         SecureSocketCls->_(raw);
     });
 }
@@ -60,7 +60,7 @@ Future<RawSecureSocket> RawSecureSocketCls::secureServer(RawSocket socket, Secur
 
 Future<_RawSecureSocket> _RawSecureSocketCls::connect(dynamic host, int requestedPort, bool isServer, RawSocket socket, List<int> bufferedData, SecurityContext context, std::function<void(String line)> keyLog, std::function<bool(X509Certificate certificate)> onBadCertificate, bool requestClientCertificate, bool requireClientCertificate, StreamSubscription<RawSocketEvent> subscription, List<String> supportedProtocols) {
     _verifyFields(host, requestedPort, requestClientCertificate, requireClientCertificate);
-    if (is<InternetAddress>(host))     {
+    if (is<InternetAddress>(host)) {
         as<InternetAddressCls>(host) = as<InternetAddressCls>(host)->as<InternetAddressCls>(host);
     }
     InternetAddress address = socket->address();
@@ -124,7 +124,7 @@ bool _RawSecureSocketCls::writeEventsEnabled() {
 void _RawSecureSocketCls::writeEventsEnabled(bool value) {
     _writeEventsEnabled = value;
     if (value) {
-        TimerCls->run([=] ()         {
+        TimerCls->run([=] () {
             _sendWriteEvent();
         });
     }
@@ -170,7 +170,7 @@ int _RawSecureSocketCls::write(List<int> data, int offset, int bytes) {
         _controller->addError(make<SocketExceptionCls>(__s("Writing to a closed socket")));
         return 0;
     }
-    if (_status != connectedStatus)     {
+    if (_status != connectedStatus) {
         return 0;
     }
     bytes |= data->length() - offset;
@@ -284,7 +284,7 @@ void _RawSecureSocketCls::_owner(owner ) {
 }
 
 void _RawSecureSocketCls::_completeCloseCompleter(RawSocket dummy) {
-    if (!_closeCompleter->isCompleted)     {
+    if (!_closeCompleter->isCompleted) {
         _closeCompleter->complete(this);
     }
 }
@@ -312,7 +312,7 @@ int _RawSecureSocketCls::_fixOffset(int offset) {
 }
 
 bool _RawSecureSocketCls::_onBadCertificateWrapper(X509Certificate certificate) {
-    if (onBadCertificate == nullptr)     {
+    if (onBadCertificate == nullptr) {
         return false;
     }
     return onBadCertificate!(certificate);
@@ -322,10 +322,10 @@ void _RawSecureSocketCls::_eventDispatcher(RawSocketEvent event) {
     try {
         if (event == RawSocketEventCls::read) {
             _readHandler();
-        } else         {
+        } else {
             if (event == RawSocketEventCls::write) {
             _writeHandler();
-        } else         {
+        } else {
             if (event == RawSocketEventCls::readClosed) {
             _closeHandler();
         }
@@ -355,7 +355,7 @@ void _RawSecureSocketCls::_doneHandler() {
 void _RawSecureSocketCls::_reportError(e , StackTrace stackTrace) {
     if (_status == closedStatus) {
         return;
-    } else     {
+    } else {
         if (_connectPending) {
         _handshakeComplete->completeError(e, stackTrace);
     } else {
@@ -367,7 +367,7 @@ void _RawSecureSocketCls::_reportError(e , StackTrace stackTrace) {
 
 void _RawSecureSocketCls::_closeHandler() {
     if (_status == connectedStatus) {
-        if (_closedRead)         {
+        if (_closedRead) {
             return;
         }
         _socketClosedRead = true;
@@ -380,7 +380,7 @@ void _RawSecureSocketCls::_closeHandler() {
         } else {
             await await _scheduleFilter();
         }
-    } else     {
+    } else {
         if (_status == handshakeStatus) {
         _socketClosedRead = true;
         if (_filterStatus->readEmpty) {
@@ -414,7 +414,7 @@ void _RawSecureSocketCls::_secureHandshakeCompleteHandler() {
         _connectPending = false;
         try {
             _selectedProtocol = _secureFilter!->selectedProtocol();
-            TimerCls->run([=] ()             {
+            TimerCls->run([=] () {
                 _handshakeComplete->complete(this);
             });
         } catch (Unknown error) {
@@ -525,7 +525,7 @@ List<int> _RawSecureSocketCls::_readSocketOrBufferedData(int bytes) {
             _bufferedData = nullptr;
         }
         return result;
-    } else     {
+    } else {
         if (!_socketClosedRead) {
         return _socket->read(bytes);
     } else {
@@ -535,7 +535,7 @@ List<int> _RawSecureSocketCls::_readSocketOrBufferedData(int bytes) {
     }}
 
 void _RawSecureSocketCls::_readSocket() {
-    if (_status == closedStatus)     {
+    if (_status == closedStatus) {
         return;
     }
     auto buffer = _secureFilter!->buffers()![readEncryptedId];
@@ -547,7 +547,7 @@ void _RawSecureSocketCls::_readSocket() {
 }
 
 void _RawSecureSocketCls::_writeSocket() {
-    if (_socketClosedWrite)     {
+    if (_socketClosedWrite) {
         return;
     }
     auto buffer = _secureFilter!->buffers()![writeEncryptedId];
@@ -600,7 +600,7 @@ Future<_FilterStatus> _RawSecureSocketCls::_pushAllFilterStages() {
     InlineMethod;
     _FilterStatus status = make<_FilterStatusCls>();
     status->writeEmpty = bufs[writePlaintextId]->isEmpty() && start(writeEncryptedId) == end(writeEncryptedId);
-    if (wasInHandshake)     {
+    if (wasInHandshake) {
         status->writeEmpty = false;
     }
     status->readEmpty = bufs[readEncryptedId]->isEmpty() && start(readPlaintextId) == end(readPlaintextId);
@@ -680,10 +680,10 @@ int _ExternalBufferCls::free() {
 }
 
 int _ExternalBufferCls::linearFree() {
-    if (start > end)     {
+    if (start > end) {
         return start - end - 1;
     }
-    if (start == 0)     {
+    if (start == 0) {
         return size - end - 1;
     }
     return size - end;
@@ -695,7 +695,7 @@ Uint8List _ExternalBufferCls::read(int bytes) {
     } else {
         bytes = min(bytes, length());
     }
-    if (bytes == 0)     {
+    if (bytes == 0) {
         return nullptr;
     }
     Uint8List result = make<Uint8ListCls>(bytes);
@@ -730,7 +730,7 @@ int _ExternalBufferCls::writeFromSource(std::function<List<int>(int requested)> 
     int toWrite = linearFree();
     while (toWrite > 0) {
         auto inputData = getData(toWrite);
-        if (inputData == nullptr || inputData->length == 0)         {
+        if (inputData == nullptr || inputData->length == 0) {
             break;
         }
         auto len = inputData->length;
@@ -745,7 +745,7 @@ int _ExternalBufferCls::writeFromSource(std::function<List<int>(int requested)> 
 bool _ExternalBufferCls::readToSocket(RawSocket socket) {
     while (true) {
         auto toWrite = linearLength();
-        if (toWrite == 0)         {
+        if (toWrite == 0) {
             return false;
         }
         int bytes = socket->write(data!, start, toWrite);
@@ -778,7 +778,7 @@ String TlsExceptionCls::toString() {
         if (osError != nullptr) {
             sb->write(__s(" ($osError)"));
         }
-    } else     {
+    } else {
         if (osError != nullptr) {
         sb->write(__s(": $osError"));
     }

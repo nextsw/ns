@@ -123,7 +123,7 @@ T MutableRectangleCls<T>::width() {
 
 template<typename T>
 void MutableRectangleCls<T>::width(T width) {
-    if ( < 0)     {
+    if ( < 0) {
         width = <T>_clampToZero(width);
     }
     _width = width;
@@ -136,7 +136,7 @@ T MutableRectangleCls<T>::height() {
 
 template<typename T>
 void MutableRectangleCls<T>::height(T height) {
-    if ( < 0)     {
+    if ( < 0) {
         height = <T>_clampToZero(height);
     }
     _height = height;
@@ -145,7 +145,7 @@ void MutableRectangleCls<T>::height(T height) {
 template<typename T>
 T _clampToZero(T value) {
     assert( < 0);
-    if (value == double->negativeInfinity)     {
+    if (value == double->negativeInfinity) {
         return as<dynamic>(0.0);
     }
     return as<dynamic>((-value * 0));

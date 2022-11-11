@@ -106,7 +106,7 @@ void _FlutterLogoPainterCls::paint(Canvas canvas, Offset offset, ImageConfigurat
     Size logoSize;
     if (_config->_position > 0.0) {
         logoSize = make<SizeCls>(820.0, 232.0);
-    } else     {
+    } else {
         if (_config->_position < 0.0) {
         logoSize = make<SizeCls>(252.0, 306.0);
     } else {
@@ -121,7 +121,7 @@ void _FlutterLogoPainterCls::paint(Canvas canvas, Offset offset, ImageConfigurat
     Rect logoTargetSquare;
     if (_config->_position > 0.0) {
         logoTargetSquare = RectCls->fromLTWH(rect->left, rect->top, rect->height(), rect->height());
-    } else     {
+    } else {
         if (_config->_position < 0.0) {
         double logoHeight = rect->height() * 191.0 / 306.0;
         logoTargetSquare = RectCls->fromLTWH(rect->left + (rect->width() - logoHeight) / 2.0, rect->top, logoHeight, logoHeight);
@@ -150,7 +150,7 @@ void _FlutterLogoPainterCls::paint(Canvas canvas, Offset offset, ImageConfigurat
             canvas->scale(scale, scale);
             _textPainter->paint(canvas, OffsetCls::zero);
             canvas->restore();
-        } else         {
+        } else {
             if (_config->_position < 0.0) {
             double fontSize = 0.35 * logoTargetSquare->height() * (1 - (10.4 * 2.0) / 202.0);
             double scale = fontSize / 100.0;

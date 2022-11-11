@@ -1,7 +1,7 @@
 #include "print.hpp"
 void debugPrintSynchronously(String message, int wrapWidth) {
     if (message != nullptr && wrapWidth != nullptr) {
-        print(message->split(__s("\n"))-><String>expand([=] (String line)         {
+        print(message->split(__s("\n"))-><String>expand([=] (String line) {
             debugWordWrap(line, wrapWidth);
         })->join(__s("\n")));
     } else {
@@ -12,7 +12,7 @@ void debugPrintSynchronously(String message, int wrapWidth) {
 void debugPrintThrottled(String message, int wrapWidth) {
     List<String> messageLines = message?->split(__s("\n")) | makeList(ArrayItem);
     if (wrapWidth != nullptr) {
-        _debugPrintBuffer->addAll(messageLines-><String>expand([=] (String line)         {
+        _debugPrintBuffer->addAll(messageLines-><String>expand([=] (String line) {
             debugWordWrap(line, wrapWidth);
         }));
     } else {

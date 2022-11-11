@@ -123,14 +123,14 @@ void GestureArenaManagerCls::_tryToResolveArena(int pointer, _GestureArena state
     assert(_arenas[pointer] == state);
     assert(!state->isOpen);
     if (state->members->length() == 1) {
-        scheduleMicrotask([=] ()         {
+        scheduleMicrotask([=] () {
             _resolveByDefault(pointer, state);
         });
-    } else     {
+    } else {
         if (state->members->isEmpty) {
         _arenas->remove(pointer);
         assert(_debugLogDiagnostic(pointer, __s("Arena empty.")));
-    } else     {
+    } else {
         if (state->eagerWinner != nullptr) {
         assert(_debugLogDiagnostic(pointer, __s("Eager winner: ${state.eagerWinner}")));
         _resolveInFavorOf(pointer, state, state->eagerWinner!);

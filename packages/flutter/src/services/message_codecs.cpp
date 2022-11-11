@@ -103,14 +103,14 @@ dynamic StandardMessageCodecCls::decodeMessage(ByteData message) {
 void StandardMessageCodecCls::writeValue(WriteBuffer buffer, Object value) {
     if (value == nullptr) {
         buffer->putUint8(_valueNull);
-    } else     {
+    } else {
         if (is<bool>(value)) {
         buffer->putUint8(as<boolCls>(value)? _valueTrue : _valueFalse);
-    } else     {
+    } else {
         if (is<double>(value)) {
         buffer->putUint8(_valueFloat64);
         buffer->putFloat64(as<doubleCls>(value));
-    } else     {
+    } else {
         if (is<int>(value)) {
         if (-0x7fffffff - 1 <= as<intCls>(value) && as<intCls>(value) <= 0x7fffffff) {
             buffer->putUint8(_valueInt32);
@@ -119,7 +119,7 @@ void StandardMessageCodecCls::writeValue(WriteBuffer buffer, Object value) {
             buffer->putUint8(_valueInt64);
             buffer->putInt64(value);
         }
-    } else     {
+    } else {
         if (is<String>(value)) {
         buffer->putUint8(_valueString);
         Uint8List asciiBytes = make<Uint8ListCls>(as<StringCls>(value)->length());
@@ -143,39 +143,39 @@ void StandardMessageCodecCls::writeValue(WriteBuffer buffer, Object value) {
             writeSize(buffer, asciiBytes->length);
             buffer->putUint8List(asciiBytes);
         }
-    } else     {
+    } else {
         if (is<Uint8List>(value)) {
         buffer->putUint8(_valueUint8List);
         writeSize(buffer, as<Uint8ListCls>(value)->length);
         buffer->putUint8List(as<Uint8ListCls>(value));
-    } else     {
+    } else {
         if (is<Int32List>(value)) {
         buffer->putUint8(_valueInt32List);
         writeSize(buffer, as<Int32ListCls>(value)->length);
         buffer->putInt32List(as<Int32ListCls>(value));
-    } else     {
+    } else {
         if (is<Int64List>(value)) {
         buffer->putUint8(_valueInt64List);
         writeSize(buffer, as<Int64ListCls>(value)->length);
         buffer->putInt64List(as<Int64ListCls>(value));
-    } else     {
+    } else {
         if (is<Float32List>(value)) {
         buffer->putUint8(_valueFloat32List);
         writeSize(buffer, as<Float32ListCls>(value)->length);
         buffer->putFloat32List(as<Float32ListCls>(value));
-    } else     {
+    } else {
         if (is<Float64List>(value)) {
         buffer->putUint8(_valueFloat64List);
         writeSize(buffer, as<Float64ListCls>(value)->length);
         buffer->putFloat64List(as<Float64ListCls>(value));
-    } else     {
+    } else {
         if (is<List>(value)) {
         buffer->putUint8(_valueList);
         writeSize(buffer, as<ListCls>(value)->length());
         for (Object item : as<ListCls>(value)) {
             writeValue(buffer, item);
         }
-    } else     {
+    } else {
         if (is<Map>(value)) {
         buffer->putUint8(_valueMap);
         writeSize(buffer, as<MapCls>(value)->length());
@@ -215,7 +215,7 @@ void StandardMessageCodecCls::writeSize(WriteBuffer buffer, int value) {
     assert(0 <= value && value <= 0xffffffff);
     if ( < 254) {
         buffer->putUint8(value);
-    } else     {
+    } else {
         if (value <= 0xffff) {
         buffer->putUint8(254);
         buffer->putUint16(value);

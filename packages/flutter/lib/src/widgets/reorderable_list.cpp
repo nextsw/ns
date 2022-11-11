@@ -93,7 +93,7 @@ void SliverReorderableListStateCls::startItemDragReorder(PointerDownEvent event,
     setState([=] () {
         if (_dragInfo != nullptr) {
             cancelReorder();
-        } else         {
+        } else {
             if (_recognizer != nullptr && _recognizerPointer != event->pointer) {
             _recognizer!->dispose();
             _recognizer = nullptr;
@@ -121,7 +121,7 @@ Widget SliverReorderableListStateCls::build(BuildContext context) {
     SliverChildBuilderDelegate childrenDelegate = make<SliverChildBuilderDelegateCls>(_itemBuilder, widget->itemCount + (_dragInfo != nullptr? 1 : 0), widget->findChildIndexCallback);
     if (widget->itemExtent != nullptr) {
         return make<SliverFixedExtentListCls>(childrenDelegate, widget->itemExtent!);
-    } else     {
+    } else {
         if (widget->prototypeItem != nullptr) {
         return make<SliverPrototypeExtentListCls>(childrenDelegate, widget->prototypeItem!);
     }
@@ -276,14 +276,14 @@ void SliverReorderableListStateCls::_dragUpdateItems() {
             if (itemEnd >= proxyItemEnd && proxyItemEnd >= itemMiddle) {
                 newIndex = item->index;
                 break;
-            } else             {
+            } else {
                 if (itemMiddle >= proxyItemStart && proxyItemStart >= itemStart) {
                 newIndex = item->index + 1;
                 break;
-            } else             {
+            } else {
                 if (itemStart > proxyItemEnd &&  < (item->index + 1)) {
                 newIndex = item->index + 1;
-            } else             {
+            } else {
                 if (proxyItemStart > itemEnd && newIndex > item->index) {
                 newIndex = item->index;
             }
@@ -294,14 +294,14 @@ void SliverReorderableListStateCls::_dragUpdateItems() {
             if (itemStart <= proxyItemStart && proxyItemStart <= itemMiddle) {
                 newIndex = item->index;
                 break;
-            } else             {
+            } else {
                 if (itemMiddle <= proxyItemEnd && proxyItemEnd <= itemEnd) {
                 newIndex = item->index + 1;
                 break;
-            } else             {
+            } else {
                 if ( < proxyItemStart &&  < (item->index + 1)) {
                 newIndex = item->index + 1;
-            } else             {
+            } else {
                 if ( < itemStart && newIndex > item->index) {
                 newIndex = item->index;
             }
@@ -455,7 +455,7 @@ void _ReorderableItemStateCls::rebuild() {
 }
 
 Widget ReorderableDragStartListenerCls::build(BuildContext context) {
-    return make<ListenerCls>(enabled? [=] (PointerDownEvent event)     {
+    return make<ListenerCls>(enabled? [=] (PointerDownEvent event) {
         _startDragging(context, event);
     } : nullptr, child);
 }

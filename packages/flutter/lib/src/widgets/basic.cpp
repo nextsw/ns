@@ -525,7 +525,7 @@ String SizedBoxCls::toStringShort() {
     String type;
     if (width == double->infinity && height == double->infinity) {
         type = __s("${objectRuntimeType(this, 'SizedBox')}.expand");
-    } else     {
+    } else {
         if (width == 0.0 && height == 0.0) {
         type = __s("${objectRuntimeType(this, 'SizedBox')}.shrink");
     } else {
@@ -1309,7 +1309,7 @@ RenderRepaintBoundary RepaintBoundaryCls::createRenderObject(BuildContext contex
 
 IgnorePointerCls::IgnorePointerCls(Unknown child, bool ignoring, bool ignoringSemantics, Unknown key) {
     {
-            List<RepaintBoundary> list1 = make<ListCls<>>();    for (;  < widgets->length(); ++i)     {            ;        }    {        list1.add(ArrayItem);    }assert(ignoring != nullptr);
+            List<RepaintBoundary> list1 = make<ListCls<>>();    for (;  < widgets->length(); ++i) {            ;        }    {        list1.add(ArrayItem);    }assert(ignoring != nullptr);
     }
 }
 

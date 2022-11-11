@@ -53,7 +53,7 @@ _StoredMessage _ChannelCls::pop() {
 void _ChannelCls::setListener(ChannelCallback callback) {
     bool needDrain = _channelCallbackRecord == nullptr;
     _channelCallbackRecord = make<_ChannelCallbackRecordCls>(callback);
-    if (needDrain && !_draining)     {
+    if (needDrain && !_draining) {
         _drain();
     }
 }
@@ -113,7 +113,7 @@ void ChannelBuffersCls::setListener(String name, ChannelCallback callback) {
 
 void ChannelBuffersCls::clearListener(String name) {
     _Channel channel = _channels[name];
-    if (channel != nullptr)     {
+    if (channel != nullptr) {
         channel->clearListener();
     }
 }
@@ -130,7 +130,7 @@ void ChannelBuffersCls::handleMessage(ByteData data) {
     Uint8List bytes = data->buffer->asUint8List(data->offsetInBytes, data->lengthInBytes);
     if (bytes[0] == 0x07) {
         int methodNameLength = bytes[1];
-        if (methodNameLength >= 254)         {
+        if (methodNameLength >= 254) {
             throw make<ExceptionCls>(__s("Unrecognized message sent to $kControlChannelName (method name too long)"));
         }
         int index = 2;

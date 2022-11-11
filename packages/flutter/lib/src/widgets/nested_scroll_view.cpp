@@ -106,7 +106,7 @@ bool _NestedScrollCoordinatorCls::hasScrolledBody() {
     for (_NestedScrollPosition position : _innerPositions()) {
         if (!position->hasContentDimensions || !position->hasPixels) {
             continue;
-        } else         {
+        } else {
             if (position->pixels > position->minScrollExtent) {
             return true;
         }
@@ -263,7 +263,7 @@ void _NestedScrollCoordinatorCls::pointerScroll(double delta) {
     }
     if (_innerPositions()->isEmpty()) {
         _outerPosition()!->applyClampedPointerSignalUpdate(delta);
-    } else     {
+    } else {
         if (delta > 0.0) {
         double outerDelta = delta;
         for (_NestedScrollPosition position : _innerPositions()) {
@@ -310,7 +310,7 @@ double _NestedScrollCoordinatorCls::setPixels(double newPixels) {
 }
 
 ScrollHoldController _NestedScrollCoordinatorCls::hold(VoidCallback holdCancelCallback) {
-    beginActivity(make<HoldScrollActivityCls>(_outerPosition()!, holdCancelCallback), [=] (_NestedScrollPosition position)     {
+    beginActivity(make<HoldScrollActivityCls>(_outerPosition()!, holdCancelCallback), [=] (_NestedScrollPosition position) {
         make<HoldScrollActivityCls>(position);
     });
     return this;
@@ -322,7 +322,7 @@ void _NestedScrollCoordinatorCls::cancel() {
 
 Drag _NestedScrollCoordinatorCls::drag(DragStartDetails details, VoidCallback dragCancelCallback) {
     ScrollDragController drag = make<ScrollDragControllerCls>(this, details, dragCancelCallback);
-    beginActivity(make<DragScrollActivityCls>(_outerPosition()!, drag), [=] (_NestedScrollPosition position)     {
+    beginActivity(make<DragScrollActivityCls>(_outerPosition()!, drag), [=] (_NestedScrollPosition position) {
         make<DragScrollActivityCls>(position, drag);
     });
     assert(_currentDrag == nullptr);
@@ -335,7 +335,7 @@ void _NestedScrollCoordinatorCls::applyUserOffset(double delta) {
     assert(delta != 0.0);
     if (_innerPositions()->isEmpty()) {
         _outerPosition()!->applyFullDragUpdate(delta);
-    } else     {
+    } else {
         if ( < 0.0) {
         double outerDelta = delta;
         for (_NestedScrollPosition position : _innerPositions()) {
@@ -448,7 +448,7 @@ _NestedScrollMetrics _NestedScrollCoordinatorCls::_getMetrics(_NestedScrollPosit
             maxRange = pixels + extra;
             assert(minRange <= maxRange);
             correctionOffset = _outerPosition()!->pixels - pixels;
-        } else         {
+        } else {
             if (( < 0.0) && (innerPosition->pixels < innerPosition->minScrollExtent)) {
             extra = _outerPosition()!->pixels - _outerPosition()!->minScrollExtent;
             assert(extra >= 0.0);
@@ -459,7 +459,7 @@ _NestedScrollMetrics _NestedScrollCoordinatorCls::_getMetrics(_NestedScrollPosit
         } else {
             if (velocity > 0.0) {
                 extra = _outerPosition()!->minScrollExtent - _outerPosition()!->pixels;
-            } else             {
+            } else {
                 if ( < 0.0) {
                 extra = _outerPosition()!->pixels - (_outerPosition()!->maxScrollExtent - _outerPosition()!->minScrollExtent);
             }
@@ -715,7 +715,7 @@ bool _NestedOuterBallisticScrollActivityCls::applyMoveTo(double value) {
             value = metrics->maxRange;
             done = true;
         }
-    } else     {
+    } else {
         if ( < 0.0) {
         if (value > metrics->maxRange) {
             return true;

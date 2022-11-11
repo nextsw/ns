@@ -104,7 +104,7 @@ V _CaseInsensitiveStringMapCls<V>::putIfAbsent(String key, std::function<V()> if
 
 template<typename V>
 void _CaseInsensitiveStringMapCls<V>::addAll(Map<String, V> other) {
-    other->forEach([=] (Unknown  key,Unknown  value)     {
+    other->forEach([=] (Unknown  key,Unknown  value) {
         this[key->toUpperCase()] = value;
     });
 }

@@ -75,7 +75,7 @@ KeyHelperCls::KeyHelperCls(String toolkit) {
     {
         if (toolkit == __s("glfw")) {
             return make<GLFWKeyHelperCls>();
-        } else         {
+        } else {
             if (toolkit == __s("gtk")) {
             return make<GtkKeyHelperCls>();
         } else {

@@ -20,17 +20,17 @@ String StdinCls::readLineSync(Encoding encoding, bool retainNewlines) {
         if (line->isEmpty) {
             return nullptr;
         }
-    } else     {
+    } else {
         if (crIsNewline) {
         while (true) {
             int byte = readByteSync();
             if ( < 0) {
-                if (line->isEmpty)                 {
+                if (line->isEmpty) {
                     return nullptr;
                 }
                 break;
             }
-            if (byte == LF || byte == CR)             {
+            if (byte == LF || byte == CR) {
                 break;
             }
             line->add(byte);
@@ -39,20 +39,20 @@ String StdinCls::readLineSync(Encoding encoding, bool retainNewlines) {
         outer:;
         while (true) {
             int byte = readByteSync();
-            if (byte == LF)             {
+            if (byte == LF) {
                 break;
             }
             if (byte == CR) {
                 do {
                     byte = readByteSync();
-                    if (byte == LF)                     {
+                    if (byte == LF) {
                         break outer;
                     }
                     line->add(CR);
                 } while (byte == CR);
             }
             if ( < 0) {
-                if (line->isEmpty)                 {
+                if (line->isEmpty) {
                     return nullptr;
                 }
                 break;
@@ -202,7 +202,7 @@ Stdout stderr() {
 StdioType stdioType(object ) {
     if (is<_StdStream>(object)) {
         as<_StdStreamCls>(object) = as<_StdStreamCls>(object)->_stream;
-    } else     {
+    } else {
         if (object == stdout || object == stderr) {
         int stdiofd = object == stdout? _stdoutFD : _stderrFD;
         Unknown type = _StdIOUtilsCls->_getStdioHandleType(stdiofd);
@@ -217,7 +217,7 @@ StdioType stdioType(object ) {
     }
     if (is<Socket>(object)) {
         int socketType = _StdIOUtilsCls->_socketType(as<SocketCls>(object));
-        if (socketType == nullptr)         {
+        if (socketType == nullptr) {
             return StdioTypeCls::other;
         }
         ;

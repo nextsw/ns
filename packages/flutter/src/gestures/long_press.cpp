@@ -62,21 +62,21 @@ void LongPressGestureRecognizerCls::handlePrimaryPointer(PointerEvent event) {
             resolve(GestureDispositionCls::rejected);
         }
         _reset();
-    } else     {
+    } else {
         if (is<PointerCancelEvent>(event)) {
         _checkLongPressCancel();
         _reset();
-    } else     {
+    } else {
         if (is<PointerDownEvent>(event)) {
         _longPressOrigin = OffsetPairCls->fromEventPosition(as<PointerDownEventCls>(event));
         _initialButtons = as<PointerDownEventCls>(event)->buttons;
         _checkLongPressDown(as<PointerDownEventCls>(event));
-    } else     {
+    } else {
         if (is<PointerMoveEvent>(event)) {
         if (as<PointerMoveEventCls>(event)->buttons != _initialButtons) {
             resolve(GestureDispositionCls::rejected);
             stopTrackingPointer(primaryPointer!);
-        } else         {
+        } else {
             if (_longPressAccepted) {
             _checkLongPressMoveUpdate(event);
         }

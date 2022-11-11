@@ -74,12 +74,12 @@ void _RouterStateCls<T>::restoreState(RestorationBucket oldBucket, bool initialR
     registerForRestoration(_routeInformation, __s("route"));
     if (_routeInformation->value != nullptr) {
         assert(widget->routeInformationParser != nullptr);
-        _processRouteInformation(_routeInformation->value!, [=] ()         {
+        _processRouteInformation(_routeInformation->value!, [=] () {
             widget->routerDelegate->setRestoredRoutePath;
         });
-    } else     {
+    } else {
         if (widget->routeInformationProvider != nullptr) {
-        _processRouteInformation(widget->routeInformationProvider!->value, [=] ()         {
+        _processRouteInformation(widget->routeInformationProvider!->value, [=] () {
             widget->routerDelegate->setInitialRoutePath;
         });
     }
@@ -91,7 +91,7 @@ void _RouterStateCls<T>::didChangeDependencies() {
     _routeParsePending = true;
     super->didChangeDependencies();
     if (widget->routeInformationProvider != nullptr && _routeParsePending) {
-        _processRouteInformation(widget->routeInformationProvider!->value, [=] ()         {
+        _processRouteInformation(widget->routeInformationProvider!->value, [=] () {
             widget->routerDelegate->setNewRoutePath;
         });
     }
@@ -215,7 +215,7 @@ template<typename T>
 void _RouterStateCls<T>::_handleRouteInformationProviderNotification() {
     assert(widget->routeInformationProvider!->value != nullptr);
     _routeParsePending = true;
-    _processRouteInformation(widget->routeInformationProvider!->value, [=] ()     {
+    _processRouteInformation(widget->routeInformationProvider!->value, [=] () {
         widget->routerDelegate->setNewRoutePath;
     });
 }
@@ -287,7 +287,7 @@ T _CallbackHookProviderCls<T>::invokeCallback(T defaultValue) {
     try {
         return _callbacks->single();
     } catch (Unknown exception) {
-        FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(exception, stack, __s("widget library"), make<ErrorDescriptionCls>(__s("while invoking the callback for $runtimeType")), [=] ()         {
+        FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(exception, stack, __s("widget library"), make<ErrorDescriptionCls>(__s("while invoking the callback for $runtimeType")), [=] () {
             makeList(ArrayItem);
         }));
         return defaultValue;

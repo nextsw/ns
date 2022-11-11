@@ -691,7 +691,7 @@ void SemanticsNodeCls::debugFillProperties(DiagnosticPropertiesBuilder propertie
         String description;
         if (scale != nullptr) {
             description = __s("$rect scaled by ${scale.toStringAsFixed(1)}x");
-        } else         {
+        } else {
             if (transform() != nullptr && !MatrixUtilsCls->isIdentity(transform()!)) {
             String matrix = transform()->toString()->split(__s("\n"))->take(4)-><String>map([=] (String line) {
     line->substring(4);
@@ -701,7 +701,7 @@ void SemanticsNodeCls::debugFillProperties(DiagnosticPropertiesBuilder propertie
 ;
         }        properties->add(<Rect>make<DiagnosticsPropertyCls>(__s("rect"), rect(), description, false));
     }
-    properties->add(<String>make<IterablePropertyCls>(__s("tags"), tags?->map([=] (SemanticsTag tag)     {
+    properties->add(<String>make<IterablePropertyCls>(__s("tags"), tags?->map([=] (SemanticsTag tag) {
         tag->name;
     }), nullptr));
     auto _c1 = _actions->keys()-><String>map([=] (SemanticsAction action) {    describeEnum(action);})->toList();_c1.sort();List<String> actions = _c1;
@@ -751,7 +751,7 @@ DiagnosticsNode SemanticsNodeCls::toDiagnosticsNode(DebugSemanticsDumpOrder chil
 }
 
 List<DiagnosticsNode> SemanticsNodeCls::debugDescribeChildren(DebugSemanticsDumpOrder childOrder) {
-    return debugListChildrenInOrder(childOrder)-><DiagnosticsNode>map([=] (SemanticsNode node)     {
+    return debugListChildrenInOrder(childOrder)-><DiagnosticsNode>map([=] (SemanticsNode node) {
         node->toDiagnosticsNode(childOrder);
     })->toList();
 }
@@ -770,7 +770,7 @@ int SemanticsNodeCls::_generateNewId() {
 }
 
 void SemanticsNodeCls::_replaceChildren(List<SemanticsNode> newChildren) {
-    assert(!newChildren->any([=] (SemanticsNode child)     {
+    assert(!newChildren->any([=] (SemanticsNode child) {
         child == this;
     }));
     assert([=] () {
@@ -794,7 +794,7 @@ void SemanticsNodeCls::_replaceChildren(List<SemanticsNode> newChildren) {
                             List<DiagnosticsNode> list1 = make<ListCls<>>();            list1.add(ArrayItem);            list1.add(ArrayItem);            list1.add(ArrayItem);            for (auto _x1 : mutationErrors) {            {                list1.add(_x1);            }throw FlutterErrorCls->fromParts(list1);
             }
         }
-        assert(!newChildren->any([=] (SemanticsNode node)         {
+        assert(!newChildren->any([=] (SemanticsNode node) {
             node->isMergedIntoParent;
         }) || isPartOfNodeMerging());
         _debugPreviousSnapshot = <SemanticsNode>of(newChildren);
@@ -802,7 +802,7 @@ void SemanticsNodeCls::_replaceChildren(List<SemanticsNode> newChildren) {
         while (is<SemanticsNode>(ancestor->parent())) {
             ancestor = ancestor->parent()!;
         }
-        assert(!newChildren->any([=] (SemanticsNode child)         {
+        assert(!newChildren->any([=] (SemanticsNode child) {
             child == ancestor;
         }));
         return true;
@@ -960,7 +960,7 @@ List<SemanticsNode> SemanticsNodeCls::_childrenInTraversalOrder() {
         sortNodes->sort();
     }
     everythingSorted->addAll(sortNodes);
-    return everythingSorted-><SemanticsNode>map([=] (_TraversalSortNode sortNode)     {
+    return everythingSorted-><SemanticsNode>map([=] (_TraversalSortNode sortNode) {
         sortNode->node;
     })->toList();
 }
@@ -1010,7 +1010,7 @@ List<SemanticsNode> _SemanticsSortGroupCls::sortedWithinVerticalGroup() {
     if (textDirection == TextDirectionCls::rtl) {
         horizontalGroups = horizontalGroups->reversed()->toList();
     }
-    return horizontalGroups->expand([=] (_SemanticsSortGroup group)     {
+    return horizontalGroups->expand([=] (_SemanticsSortGroup group) {
         group->sortedWithinKnot();
     })->toList();
 }
@@ -1042,10 +1042,10 @@ List<SemanticsNode> _SemanticsSortGroupCls::sortedWithinKnot() {
     Set<int> visitedIds = makeSet();
     });List<SemanticsNode> startNodes = auto _c1 = nodes->toList();_c1.sort([=] (SemanticsNode a,SemanticsNode b) {    Offset aTopLeft = _pointInParentCoordinates(a, a->rect->topLeft);    Offset bTopLeft = _pointInParentCoordinates(b, b->rect->topLeft);    int verticalDiff = aTopLeft->dy()->compareTo(bTopLeft->dy());    }        if (verticalDiff != 0) {            return -verticalDiff;    return -aTopLeft->dx()->compareTo(bTopLeft->dx());_c1;
     InlineMethod;
-    startNodes-><int>map([=] (SemanticsNode node)     {
+    startNodes-><int>map([=] (SemanticsNode node) {
         node->id;
     })->forEach(search);
-    return sortedIds-><SemanticsNode>map([=] (int id)     {
+    return sortedIds-><SemanticsNode>map([=] (int id) {
         nodeMap[id]!;
     })->toList()->reversed->toList();
 }
@@ -1091,7 +1091,7 @@ List<SemanticsNode> _childrenInDefaultOrder(List<SemanticsNode> children, TextDi
         }
     }
     verticalGroups->sort();
-    return verticalGroups->expand([=] (_SemanticsSortGroup group)     {
+    return verticalGroups->expand([=] (_SemanticsSortGroup group) {
         group->sortedWithinVerticalGroup();
     })->toList();
 }
@@ -1133,7 +1133,7 @@ void SemanticsOwnerCls::sendSemanticsUpdate() {
 })->toList();
         _dirtyNodes->clear();
         _detachedNodes->clear();
-        localDirtyNodes->sort([=] (SemanticsNode a,SemanticsNode b)         {
+        localDirtyNodes->sort([=] (SemanticsNode a,SemanticsNode b) {
             a->depth - b->depth;
         });
         visitedNodes->addAll(localDirtyNodes);
@@ -1149,7 +1149,7 @@ void SemanticsOwnerCls::sendSemanticsUpdate() {
             }
         }
     }
-    visitedNodes->sort([=] (SemanticsNode a,SemanticsNode b)     {
+    visitedNodes->sort([=] (SemanticsNode a,SemanticsNode b) {
         a->depth - b->depth;
     });
     SemanticsUpdateBuilder builder = SemanticsBindingCls::instance->createSemanticsUpdateBuilder();
@@ -2086,7 +2086,7 @@ int SemanticsSortKeyCls::compareTo(SemanticsSortKey other) {
     }
     if (name == nullptr && other->name != nullptr) {
         return -1;
-    } else     {
+    } else {
         if (name != nullptr && other->name == nullptr) {
         return 1;
     }

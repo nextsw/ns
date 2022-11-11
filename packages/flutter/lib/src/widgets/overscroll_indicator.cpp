@@ -23,10 +23,10 @@ void GlowingOverscrollIndicatorCls::debugFillProperties(DiagnosticPropertiesBuil
     String showDescription;
     if (showLeading && showTrailing) {
         showDescription = __s("both sides");
-    } else     {
+    } else {
         if (showLeading) {
         showDescription = __s("leading side only");
-    } else     {
+    } else {
         if (showTrailing) {
         showDescription = __s("trailing side only");
     } else {
@@ -75,7 +75,7 @@ bool _GlowingOverscrollIndicatorStateCls::_handleScrollNotification(ScrollNotifi
         _GlowController controller;
         if (as<OverscrollNotificationCls>(notification)->overscroll < 0.0) {
             controller = _leadingController;
-        } else         {
+        } else {
             if (notification->overscroll > 0.0) {
             controller = _trailingController;
         } else {
@@ -110,7 +110,7 @@ bool _GlowingOverscrollIndicatorStateCls::_handleScrollNotification(ScrollNotifi
                 }
             }
         }
-    } else     {
+    } else {
         if (is<ScrollEndNotification>(notification) || is<ScrollUpdateNotification>(notification)) {
         if ((as<dynamic>(notification))->dragDetails != nullptr) {
             _leadingController!->scrollEnd();
@@ -198,7 +198,7 @@ void _GlowControllerCls::pull(double overscroll, double extent, double crossAxis
             notifyListeners();
         }
     }
-    _pullRecedeTimer = make<TimerCls>(_pullHoldTime, [=] ()     {
+    _pullRecedeTimer = make<TimerCls>(_pullHoldTime, [=] () {
         _recede(_pullDecayTime);
     });
 }
@@ -372,7 +372,7 @@ bool _StretchingOverscrollIndicatorStateCls::_handleScrollNotification(ScrollNot
                 }
             }
         }
-    } else     {
+    } else {
         if (is<ScrollEndNotification>(notification) || is<ScrollUpdateNotification>(notification)) {
         _stretchController->scrollEnd();
     }

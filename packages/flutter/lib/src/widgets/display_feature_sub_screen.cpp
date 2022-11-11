@@ -11,9 +11,9 @@ Widget DisplayFeatureSubScreenCls::build(BuildContext context) {
 }
 
 Iterable<Rect> DisplayFeatureSubScreenCls::avoidBounds(MediaQueryData mediaQuery) {
-    return mediaQuery->displayFeatures->where([=] (DisplayFeature d)     {
+    return mediaQuery->displayFeatures->where([=] (DisplayFeature d) {
         d->bounds->shortestSide > 0 || d->state == DisplayFeatureStateCls::postureHalfOpened;
-    })->map([=] (DisplayFeature d)     {
+    })->map([=] (DisplayFeature d) {
         d->bounds;
     });
 }
@@ -30,7 +30,7 @@ Iterable<Rect> DisplayFeatureSubScreenCls::subScreensInBounds(Rect wantedBounds,
                 if (screen->right > bounds->right) {
                     newSubScreens->add(RectCls->fromLTWH(bounds->right, screen->top, screen->right - bounds->right, screen->height));
                 }
-            } else             {
+            } else {
                 if (screen->left >= bounds->left && screen->right <= bounds->right) {
                 if (screen->top < bounds->top) {
                     newSubScreens->add(RectCls->fromLTWH(screen->left, screen->top, screen->width, bounds->top - screen->top));
@@ -70,18 +70,18 @@ double DisplayFeatureSubScreenCls::_distanceFromPointToRect(Offset point, Rect r
     if (point->dx() < rect->left) {
         if (point->dy() < rect->top) {
             return (point - rect->topLeft())->distance();
-        } else         {
+        } else {
             if (point->dy() > rect->bottom) {
             return (point - rect->bottomLeft())->distance();
         } else {
             return rect->left - point->dx();
         }
 ;
-        }    } else     {
+        }    } else {
         if (point->dx() > rect->right) {
         if (point->dy() < rect->top) {
             return (point - rect->topRight())->distance();
-        } else         {
+        } else {
             if (point->dy() > rect->bottom) {
             return (point - rect->bottomRight())->distance();
         } else {
@@ -91,7 +91,7 @@ double DisplayFeatureSubScreenCls::_distanceFromPointToRect(Offset point, Rect r
         }    } else {
         if (point->dy() < rect->top) {
             return rect->top - point->dy();
-        } else         {
+        } else {
             if (point->dy() > rect->bottom) {
             return point->dy() - rect->bottom;
         } else {

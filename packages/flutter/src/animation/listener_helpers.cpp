@@ -49,7 +49,7 @@ void AnimationLocalListenersMixinCls::notifyListeners() {
     for (VoidCallback listener : localListeners) {
         InformationCollector collector;
         assert([=] () {
-            collector = [=] ()             {
+            collector = [=] () {
                 makeList(ArrayItem);
             };
             return true;
@@ -90,7 +90,7 @@ void AnimationLocalStatusListenersMixinCls::notifyStatusListeners(AnimationStatu
         } catch (Unknown exception) {
             InformationCollector collector;
             assert([=] () {
-                collector = [=] ()                 {
+                collector = [=] () {
                     makeList(ArrayItem);
                 };
                 return true;

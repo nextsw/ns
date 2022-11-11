@@ -69,7 +69,7 @@ T GestureRecognizerCls::invokeCallback(String name, RecognizerCallback<T> callba
     } catch (Unknown exception) {
         InformationCollector collector;
         assert([=] () {
-            collector = [=] ()             {
+            collector = [=] () {
                 makeList(ArrayItem, ArrayItem);
             };
             return true;
@@ -192,7 +192,7 @@ void PrimaryPointerGestureRecognizerCls::addAllowedPointer(PointerDownEvent even
         _primaryPointer = event->pointer;
         _initialPosition = make<OffsetPairCls>(event->localPosition, event->position);
         if (deadline != nullptr) {
-            _timer = make<TimerCls>(deadline!, [=] ()             {
+            _timer = make<TimerCls>(deadline!, [=] () {
                 didExceedDeadlineWithEvent(event);
             });
         }

@@ -160,13 +160,13 @@ double SizeCls::height() {
 }
 
 double SizeCls::aspectRatio() {
-    if (height() != 0.0)     {
+    if (height() != 0.0) {
         return width() / height();
     }
-    if (width() > 0.0)     {
+    if (width() > 0.0) {
         return double->infinity;
     }
-    if ( < 0.0)     {
+    if ( < 0.0) {
         return double->negativeInfinity;
     }
     return 0.0;
@@ -177,10 +177,10 @@ bool SizeCls::isEmpty() {
 }
 
 OffsetBase SizeCls::-(OffsetBase other) {
-    if (is<Size>(other))     {
+    if (is<Size>(other)) {
         return make<OffsetCls>(width() - as<SizeCls>(other)->width(), height() - as<SizeCls>(other)->height());
     }
-    if (is<Offset>(other))     {
+    if (is<Offset>(other)) {
         return make<SizeCls>(width() - as<OffsetCls>(other)->dx(), height() - as<OffsetCls>(other)->dy());
     }
     throw make<ArgumentErrorCls>(other);
@@ -350,10 +350,10 @@ Rect RectCls::expandToInclude(Rect other) {
 }
 
 bool RectCls::overlaps(Rect other) {
-    if (right <= other->left || other->right <= left)     {
+    if (right <= other->left || other->right <= left) {
         return false;
     }
-    if (bottom <= other->top || other->bottom <= top)     {
+    if (bottom <= other->top || other->bottom <= top) {
         return false;
     }
     return true;
@@ -426,10 +426,10 @@ Rect RectCls::lerp(Rect a, Rect b, double t) {
 }
 
 bool RectCls::==(Object other) {
-    if (identical(this, other))     {
+    if (identical(this, other)) {
         return true;
     }
-    if (runtimeType != other->runtimeType())     {
+    if (runtimeType != other->runtimeType()) {
         return false;
     }
     return is<Rect>(other) && other->left == left && other->top == top && other->right == right && other->bottom == bottom;
@@ -501,10 +501,10 @@ Radius RadiusCls::lerp(Radius a, Radius b, double t) {
 }
 
 bool RadiusCls::==(Object other) {
-    if (identical(this, other))     {
+    if (identical(this, other)) {
         return true;
     }
-    if (runtimeType != other->runtimeType())     {
+    if (runtimeType != other->runtimeType()) {
         return false;
     }
     return is<Radius>(other) && other->x == x && other->y == y;
@@ -652,7 +652,7 @@ RRect RRectCls::scaleRadii() {
 }
 
 bool RRectCls::contains(Offset point) {
-    if (point->dx() < left || point->dx() >= right || point->dy() < top || point->dy() >= bottom)     {
+    if (point->dx() < left || point->dx() >= right || point->dy() < top || point->dy() >= bottom) {
         return false;
     }
     RRect scaled = scaleRadii();
@@ -665,19 +665,19 @@ bool RRectCls::contains(Offset point) {
         y = point->dy() - top - scaled->tlRadiusY;
         radiusX = scaled->tlRadiusX;
         radiusY = scaled->tlRadiusY;
-    } else     {
+    } else {
         if (point->dx() > right - scaled->trRadiusX && point->dy() < top + scaled->trRadiusY) {
         x = point->dx() - right + scaled->trRadiusX;
         y = point->dy() - top - scaled->trRadiusY;
         radiusX = scaled->trRadiusX;
         radiusY = scaled->trRadiusY;
-    } else     {
+    } else {
         if (point->dx() > right - scaled->brRadiusX && point->dy() > bottom - scaled->brRadiusY) {
         x = point->dx() - right + scaled->brRadiusX;
         y = point->dy() - bottom + scaled->brRadiusY;
         radiusX = scaled->brRadiusX;
         radiusY = scaled->brRadiusY;
-    } else     {
+    } else {
         if (point->dx() < left + scaled->blRadiusX && point->dy() > bottom - scaled->blRadiusY) {
         x = point->dx() - left - scaled->blRadiusX;
         y = point->dy() - bottom + scaled->blRadiusY;
@@ -691,7 +691,7 @@ bool RRectCls::contains(Offset point) {
     };
     }    x = x / radiusX;
     y = y / radiusY;
-    if (x * x + y * y > 1.0)     {
+    if (x * x + y * y > 1.0) {
         return false;
     }
     return true;
@@ -716,10 +716,10 @@ RRect RRectCls::lerp(RRect a, RRect b, double t) {
 }
 
 bool RRectCls::==(Object other) {
-    if (identical(this, other))     {
+    if (identical(this, other)) {
         return true;
     }
-    if (runtimeType != other->runtimeType())     {
+    if (runtimeType != other->runtimeType()) {
         return false;
     }
     return is<RRect>(other) && other->left == left && other->top == top && other->right == right && other->bottom == bottom && other->tlRadiusX == tlRadiusX && other->tlRadiusY == tlRadiusY && other->trRadiusX == trRadiusX && other->trRadiusY == trRadiusY && other->blRadiusX == blRadiusX && other->blRadiusY == blRadiusY && other->brRadiusX == brRadiusX && other->brRadiusY == brRadiusY;
@@ -732,7 +732,7 @@ int RRectCls::hashCode() {
 String RRectCls::toString() {
     String rect = __s("${left.toStringAsFixed(1)}, ${top.toStringAsFixed(1)}, ${right.toStringAsFixed(1)}, ${bottom.toStringAsFixed(1)}");
     if (tlRadius() == trRadius() && trRadius() == brRadius() && brRadius() == blRadius()) {
-        if (tlRadius()->x == tlRadius()->y)         {
+        if (tlRadius()->x == tlRadius()->y) {
             return __s("RRect.fromLTRBR($rect, ${tlRadius.x.toStringAsFixed(1)})");
         }
         return __s("RRect.fromLTRBXY($rect, ${tlRadius.x.toStringAsFixed(1)}, ${tlRadius.y.toStringAsFixed(1)})");
@@ -761,7 +761,7 @@ Float32List RRectCls::_getValue32() {
 
 double RRectCls::_getMin(double min, double radius1, double radius2, double limit) {
     double sum = radius1 + radius2;
-    if (sum > limit && sum != 0.0)     {
+    if (sum > limit && sum != 0.0) {
         return math->min(min, limit / sum);
     }
     return min;

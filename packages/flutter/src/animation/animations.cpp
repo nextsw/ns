@@ -276,7 +276,7 @@ TrainHoppingAnimationCls::TrainHoppingAnimationCls(Animation<double> _currentTra
             if (_currentTrain!->value() == _nextTrain!->value()) {
                 _currentTrain = _nextTrain;
                 _nextTrain = nullptr;
-            } else             {
+            } else {
                 if (_currentTrain!->value() > _nextTrain!->value()) {
                 _mode = _TrainHoppingModeCls::maximize;
             } else {

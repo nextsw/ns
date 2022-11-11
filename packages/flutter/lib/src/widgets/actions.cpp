@@ -57,7 +57,7 @@ void ActionCls<T>::notifyActionListeners() {
     for (ActionListenerCallback listener : localListeners) {
         InformationCollector collector;
         assert([=] () {
-            collector = [=] ()             {
+            collector = [=] () {
                 makeList(ArrayItem);
             };
             return true;

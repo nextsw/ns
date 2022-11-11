@@ -190,7 +190,7 @@ ShapeBorder _CompoundBorderCls::add(ShapeBorder other, bool reversed) {
 }
 
 ShapeBorder _CompoundBorderCls::scale(double t) {
-    return make<_CompoundBorderCls>(borders-><ShapeBorder>map([=] (ShapeBorder border)     {
+    return make<_CompoundBorderCls>(borders-><ShapeBorder>map([=] (ShapeBorder border) {
         border->scale(t);
     })->toList());
 }
@@ -263,7 +263,7 @@ int _CompoundBorderCls::hashCode() {
 }
 
 String _CompoundBorderCls::toString() {
-    return borders->reversed()-><String>map([=] (ShapeBorder border)     {
+    return borders->reversed()-><String>map([=] (ShapeBorder border) {
         border->toString();
     })->join(__s(" + "));
 }
@@ -272,7 +272,7 @@ _CompoundBorderCls::_CompoundBorderCls(List<ShapeBorder> borders) {
     {
         assert(borders != nullptr);
         assert(borders->length() >= 2);
-        assert(!borders->any([=] (ShapeBorder border)         {
+        assert(!borders->any([=] (ShapeBorder border) {
             is<_CompoundBorder>(border);
         }));
     }

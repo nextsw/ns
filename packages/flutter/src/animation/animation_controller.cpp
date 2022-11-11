@@ -189,7 +189,7 @@ void AnimationControllerCls::_internalSetValue(double newValue) {
     _value = clampDouble(newValue, lowerBound, upperBound);
     if (_value == lowerBound) {
         _status = AnimationStatusCls::dismissed;
-    } else     {
+    } else {
         if (_value == upperBound) {
         _status = AnimationStatusCls::completed;
     } else {
@@ -211,7 +211,7 @@ TickerFuture AnimationControllerCls::_animateToInternal(double target, Curve cur
         double remainingFraction = range->isFinite? (target - _value)->abs() / range : 1.0;
         Duration directionDuration = (_direction == _AnimationDirectionCls::reverse && reverseDuration != nullptr)? reverseDuration! : this->duration!;
         simulationDuration = directionDuration * remainingFraction;
-    } else     {
+    } else {
         if (target == value()) {
         simulationDuration = DurationCls::zero;
     }
@@ -274,7 +274,7 @@ double _InterpolationSimulationCls::x(double timeInSeconds) {
     double t = clampDouble(timeInSeconds / _durationInSeconds, 0.0, 1.0);
     if (t == 0.0) {
         return _begin;
-    } else     {
+    } else {
         if (t == 1.0) {
         return _end;
     } else {

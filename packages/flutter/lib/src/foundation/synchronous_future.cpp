@@ -32,7 +32,7 @@ Future<T> SynchronousFutureCls<T>::whenComplete(std::function<FutureOr<dynamic>(
     try {
         FutureOr<dynamic> result = action();
         if (is<Future>(result)) {
-            return result-><T>then([=] (dynamic value)             {
+            return result-><T>then([=] (dynamic value) {
                 _value;
             });
         }

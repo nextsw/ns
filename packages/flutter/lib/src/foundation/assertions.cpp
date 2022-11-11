@@ -114,10 +114,10 @@ String FlutterErrorDetailsCls::exceptionAsString() {
             }
         }
         longMessage |= fullMessage;
-    } else     {
+    } else {
         if (is<String>(exception)) {
         longMessage = as<String>(as<StringCls>(exception));
-    } else     {
+    } else {
         if (is<Error>(exception) || is<Exception>(exception)) {
         longMessage = exception->toString();
     } else {
@@ -142,9 +142,9 @@ DiagnosticsNode FlutterErrorDetailsCls::summary() {
     if (diagnosticable != nullptr) {
         DiagnosticPropertiesBuilder builder = make<DiagnosticPropertiesBuilderCls>();
         debugFillProperties(builder);
-        summary = builder->properties-><DiagnosticsNode>cast()->firstWhere([=] (DiagnosticsNode node)         {
+        summary = builder->properties-><DiagnosticsNode>cast()->firstWhere([=] (DiagnosticsNode node) {
             node!->level == DiagnosticLevelCls::summary;
-        }, [=] ()         {
+        }, [=] () {
             nullptr;
         });
     }
@@ -157,17 +157,17 @@ void FlutterErrorDetailsCls::debugFillProperties(DiagnosticPropertiesBuilder pro
     Diagnosticable diagnosticable = _exceptionToDiagnosticable();
     if (is<NullThrownError>(exception)) {
         properties->add(make<ErrorDescriptionCls>(__s("The null value was $verb.")));
-    } else     {
+    } else {
         if (is<num>(exception)) {
         properties->add(make<ErrorDescriptionCls>(__s("The number $exception was $verb.")));
     } else {
         DiagnosticsNode errorName;
         if (is<AssertionError>(exception)) {
             errorName = make<ErrorDescriptionCls>(__s("assertion"));
-        } else         {
+        } else {
             if (is<String>(exception)) {
             errorName = make<ErrorDescriptionCls>(__s("message"));
-        } else         {
+        } else {
             if (is<Error>(exception) || is<Exception>(exception)) {
             errorName = make<ErrorDescriptionCls>(__s("${exception.runtimeType}"));
         } else {
@@ -234,7 +234,7 @@ Diagnosticable FlutterErrorDetailsCls::_exceptionToDiagnosticable() {
 FlutterErrorCls::FlutterErrorCls(String message) {
     {
         List<String> lines = message->split(__s("\n"));
-            List<DiagnosticsNode> list1 = make<ListCls<>>();    list1.add(ArrayItem);    for (auto _x1 : lines->skip(1)-><DiagnosticsNode>map([=] (String line)         {                make<ErrorDescriptionCls>(line);            })) {    {        list1.add(_x1);    }return FlutterErrorCls->fromParts(list1);
+            List<DiagnosticsNode> list1 = make<ListCls<>>();    list1.add(ArrayItem);    for (auto _x1 : lines->skip(1)-><DiagnosticsNode>map([=] (String line) {                make<ErrorDescriptionCls>(line);            })) {    {        list1.add(_x1);    }return FlutterErrorCls->fromParts(list1);
     }
 }
 
@@ -304,15 +304,15 @@ Iterable<String> FlutterErrorCls::defaultStackFilter(Iterable<String> frames) {
         String package = __s("${frame.packageScheme}:${frame.package}");
         if (removedPackagesAndClasses->containsKey(className)) {
             skipped += 1;
-            removedPackagesAndClasses->update(className, [=] (int value)             {
+            removedPackagesAndClasses->update(className, [=] (int value) {
                 value + 1;
             });
             parsedFrames->removeAt(index);
             index -= 1;
-        } else         {
+        } else {
             if (removedPackagesAndClasses->containsKey(package)) {
             skipped += 1;
-            removedPackagesAndClasses->update(package, [=] (int value)             {
+            removedPackagesAndClasses->update(package, [=] (int value) {
                 value + 1;
             });
             parsedFrames->removeAt(index);
@@ -344,7 +344,7 @@ Iterable<String> FlutterErrorCls::defaultStackFilter(Iterable<String> frames) {
     auto _c2 = List<String> list3 = make<ListCls<>>();for (MapEntry<String, int> entry : removedPackagesAndClasses->entries()) {    ;}{    list3.add(ArrayItem);}list3;_c2.sort();List<String> where = _c2;
     if (skipped == 1) {
         result->add(__s("(elided one frame from ${where.single})"));
-    } else     {
+    } else {
         if (skipped > 1) {
         if (where->length() > 1) {
             where[where->length() - 1] = __s("and ${where.last}");
@@ -373,7 +373,7 @@ String FlutterErrorCls::toString(DiagnosticLevel minLevel) {
         return errors->isNotEmpty()? errors->first()->valueToString() : toStringShort();
     }
     TextTreeRenderer renderer = make<TextTreeRendererCls>(4000000000);
-    return diagnostics->map([=] (DiagnosticsNode node)     {
+    return diagnostics->map([=] (DiagnosticsNode node) {
         renderer->render(node)->trimRight();
     })->join(__s("\n"));
 }

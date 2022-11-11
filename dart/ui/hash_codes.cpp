@@ -76,7 +76,7 @@ int hashValues(Object arg01, Object arg02, Object arg03, Object arg04, Object ar
 int hashList(Iterable<Object> arguments) {
     int result = 0;
     if (arguments != nullptr) {
-        for (Object argument : arguments)         {
+        for (Object argument : arguments) {
             result = _JenkinsCls->combine(result, argument);
         }
     }

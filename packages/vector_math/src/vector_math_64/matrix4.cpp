@@ -514,12 +514,12 @@ void Matrix4Cls::translate(dynamic x, double y, double z) {
         tx = as<Vector3Cls>(x)->as<Vector3Cls>(x);
         ty = as<Vector3Cls>(x)->y;
         tz = as<Vector3Cls>(x)->z;
-    } else     {
+    } else {
         if (is<Vector4>(x)) {
         tx = as<Vector4Cls>(x)->as<Vector4Cls>(x);
         ty = as<Vector4Cls>(x)->y;
         tz = as<Vector4Cls>(x)->z;
-    } else     {
+    } else {
         if (is<double>(x)) {
         tx = as<doubleCls>(x);
         ty = y;
@@ -548,12 +548,12 @@ void Matrix4Cls::leftTranslate(dynamic x, double y, double z) {
         tx = as<Vector3Cls>(x)->as<Vector3Cls>(x);
         ty = as<Vector3Cls>(x)->y;
         tz = as<Vector3Cls>(x)->z;
-    } else     {
+    } else {
         if (is<Vector4>(x)) {
         tx = as<Vector4Cls>(x)->as<Vector4Cls>(x);
         ty = as<Vector4Cls>(x)->y;
         tz = as<Vector4Cls>(x)->z;
-    } else     {
+    } else {
         if (is<double>(x)) {
         tx = as<doubleCls>(x);
         ty = y;
@@ -697,12 +697,12 @@ void Matrix4Cls::scale(dynamic x, double y, double z) {
         sx = as<Vector3Cls>(x)->as<Vector3Cls>(x);
         sy = as<Vector3Cls>(x)->y;
         sz = as<Vector3Cls>(x)->z;
-    } else     {
+    } else {
         if (is<Vector4>(x)) {
         sx = as<Vector4Cls>(x)->as<Vector4Cls>(x);
         sy = as<Vector4Cls>(x)->y;
         sz = as<Vector4Cls>(x)->z;
-    } else     {
+    } else {
         if (is<double>(x)) {
         sx = as<doubleCls>(x);
         sy = y | as<doubleCls>(x);

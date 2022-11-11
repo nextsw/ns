@@ -4,7 +4,7 @@ BytesBuilderCls::BytesBuilderCls(bool copy) {
 
 void _CopyingBytesBuilderCls::add(List<int> bytes) {
     int byteCount = bytes->length();
-    if (byteCount == 0)     {
+    if (byteCount == 0) {
         return;
     }
     int required = _length + byteCount;
@@ -32,7 +32,7 @@ void _CopyingBytesBuilderCls::addByte(int byte) {
 }
 
 Uint8List _CopyingBytesBuilderCls::takeBytes() {
-    if (_length == 0)     {
+    if (_length == 0) {
         return _emptyList;
     }
     auto buffer = Uint8ListCls->view(_buffer->buffer, _buffer->offsetInBytes, _length);
@@ -41,7 +41,7 @@ Uint8List _CopyingBytesBuilderCls::takeBytes() {
 }
 
 Uint8List _CopyingBytesBuilderCls::toBytes() {
-    if (_length == 0)     {
+    if (_length == 0) {
         return _emptyList;
     }
     return Uint8ListCls->fromList(Uint8ListCls->view(_buffer->buffer, _buffer->offsetInBytes, _length));
@@ -114,7 +114,7 @@ void _BytesBuilderCls::addByte(int byte) {
 }
 
 Uint8List _BytesBuilderCls::takeBytes() {
-    if (_length == 0)     {
+    if (_length == 0) {
         return _CopyingBytesBuilderCls::_emptyList;
     }
     if (_chunks->length() == 1) {
@@ -133,7 +133,7 @@ Uint8List _BytesBuilderCls::takeBytes() {
 }
 
 Uint8List _BytesBuilderCls::toBytes() {
-    if (_length == 0)     {
+    if (_length == 0) {
         return _CopyingBytesBuilderCls::_emptyList;
     }
     auto buffer = make<Uint8ListCls>(_length);

@@ -66,7 +66,7 @@ void ChangeNotifierCls::notifyListeners() {
         try {
             _listeners[i]?->call();
         } catch (Unknown exception) {
-            FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(exception, stack, __s("foundation library"), make<ErrorDescriptionCls>(__s("while dispatching notifications for $runtimeType")), [=] ()             {
+            FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(exception, stack, __s("foundation library"), make<ErrorDescriptionCls>(__s("while dispatching notifications for $runtimeType")), [=] () {
                 makeList(ArrayItem);
             }));
         };

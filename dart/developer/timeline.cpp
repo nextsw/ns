@@ -12,7 +12,7 @@ Flow FlowCls::end(int id) {
 }
 
 void TimelineCls::startSync(String name, Map arguments, Flow flow) {
-    if (!_hasTimeline)     {
+    if (!_hasTimeline) {
         return;
     }
     ArgumentErrorCls->checkNotNull(name, __s("name"));
@@ -40,7 +40,7 @@ void TimelineCls::finishSync() {
 }
 
 void TimelineCls::instantSync(String name, Map arguments) {
-    if (!_hasTimeline)     {
+    if (!_hasTimeline) {
         return;
     }
     ArgumentErrorCls->checkNotNull(name, __s("name"));
@@ -83,7 +83,7 @@ void TimelineTaskCls::withTaskId(int taskId, String filterKey) {
 }
 
 void TimelineTaskCls::start(String name, Map arguments) {
-    if (!_hasTimeline)     {
+    if (!_hasTimeline) {
         return;
     }
     ArgumentErrorCls->checkNotNull(name, __s("name"));
@@ -99,17 +99,17 @@ void TimelineTaskCls::start(String name, Map arguments) {
             map[key] = arguments[key];
         }
     }
-    if (_parent != nullptr)     {
+    if (_parent != nullptr) {
         map[__s("parentId")] = _parent!->_taskId->toRadixString(16);
     }
-    if (_filterKey != nullptr)     {
+    if (_filterKey != nullptr) {
         map[_kFilterKey] = _filterKey;
     }
     block->_start(map);
 }
 
 void TimelineTaskCls::instant(String name, Map arguments) {
-    if (!_hasTimeline)     {
+    if (!_hasTimeline) {
         return;
     }
     ArgumentErrorCls->checkNotNull(name, __s("name"));

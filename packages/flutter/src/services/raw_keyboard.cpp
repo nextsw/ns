@@ -129,7 +129,7 @@ void RawKeyboardCls::keyEventHandler(RawKeyEventHandler handler) {
 bool RawKeyboardCls::handleRawKeyEvent(RawKeyEvent event) {
     if (is<RawKeyDownEvent>(event)) {
         _keysPressed[as<RawKeyDownEventCls>(event)->physicalKey] = as<RawKeyDownEventCls>(event)->logicalKey;
-    } else     {
+    } else {
         if (is<RawKeyUpEvent>(event)) {
         _keysPressed->remove(as<RawKeyUpEventCls>(event)->physicalKey);
     }
@@ -144,7 +144,7 @@ bool RawKeyboardCls::handleRawKeyEvent(RawKeyEvent event) {
         } catch (Unknown exception) {
             InformationCollector collector;
             assert([=] () {
-                collector = [=] ()                 {
+                collector = [=] () {
                     makeList(ArrayItem);
                 };
                 return true;
@@ -208,7 +208,7 @@ void RawKeyboardCls::_synchronizeModifiers(RawKeyEvent event) {
             modifierKeys[physicalModifier] = _allModifiers[physicalModifier]!;
         }
     }
-    _allModifiersExceptFn->keys()->where([=] (PhysicalKeyboardKey key)     {
+    _allModifiersExceptFn->keys()->where([=] (PhysicalKeyboardKey key) {
         !anySideKeys->contains(key);
     })->forEach(_keysPressed->remove);
     if (!is<RawKeyEventDataFuchsia>(event->data) && !is<RawKeyEventDataMacOs>(event->data)) {

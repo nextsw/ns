@@ -55,7 +55,7 @@ void RenderFlowCls::delegate(FlowDelegate newDelegate) {
     _delegate = newDelegate;
     if (newDelegate->runtimeType != oldDelegate->runtimeType || newDelegate->shouldRelayout(oldDelegate)) {
         markNeedsLayout();
-    } else     {
+    } else {
         if (newDelegate->shouldRepaint(oldDelegate)) {
         markNeedsPaint();
     }

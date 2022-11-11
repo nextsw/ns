@@ -104,7 +104,7 @@ List<double> GradientCls::_impliedStops() {
     }
     assert(colors->length() >= 2, __s("colors list must have at least two colors"));
     double separation = 1.0 / (colors->length() - 1);
-    return <double>generate(colors->length(), [=] (int index)     {
+    return <double>generate(colors->length(), [=] (int index) {
         index * separation;
     }, false);
 }
@@ -126,7 +126,7 @@ Shader LinearGradientCls::createShader(Rect rect, TextDirection textDirection) {
 }
 
 LinearGradient LinearGradientCls::scale(double factor) {
-    return make<LinearGradientCls>(begin, end, colors-><Color>map([=] (Color color)     {
+    return make<LinearGradientCls>(begin, end, colors-><Color>map([=] (Color color) {
         ColorCls->lerp(nullptr, color, factor)!;
     })->toList(), stops, tileMode);
 }
@@ -193,7 +193,7 @@ Shader RadialGradientCls::createShader(Rect rect, TextDirection textDirection) {
 }
 
 RadialGradient RadialGradientCls::scale(double factor) {
-    return make<RadialGradientCls>(center, radius, colors-><Color>map([=] (Color color)     {
+    return make<RadialGradientCls>(center, radius, colors-><Color>map([=] (Color color) {
         ColorCls->lerp(nullptr, color, factor)!;
     })->toList(), stops, tileMode, focal, focalRadius);
 }
@@ -260,7 +260,7 @@ Shader SweepGradientCls::createShader(Rect rect, TextDirection textDirection) {
 }
 
 SweepGradient SweepGradientCls::scale(double factor) {
-    return make<SweepGradientCls>(center, startAngle, endAngle, colors-><Color>map([=] (Color color)     {
+    return make<SweepGradientCls>(center, startAngle, endAngle, colors-><Color>map([=] (Color color) {
         ColorCls->lerp(nullptr, color, factor)!;
     })->toList(), stops, tileMode);
 }

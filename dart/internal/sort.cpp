@@ -108,7 +108,7 @@ void SortCls::_dualPivotQuicksort(List<E> a, int left, int right, std::function<
         for (; k <= great; k++) {
             auto ak = a[k];
             int comp = compare(ak, pivot);
-            if (comp == 0)             {
+            if (comp == 0) {
                 continue;
             }
             if ( < 0) {
@@ -123,7 +123,7 @@ void SortCls::_dualPivotQuicksort(List<E> a, int left, int right, std::function<
                     if (comp > 0) {
                         great--;
                         continue;
-                    } else                     {
+                    } else {
                         if ( < 0) {
                         a[k] = a[less];
                         a[less++] = a[great];
@@ -155,7 +155,7 @@ void SortCls::_dualPivotQuicksort(List<E> a, int left, int right, std::function<
                         int comp = compare(a[great], pivot2);
                         if (comp > 0) {
                             great--;
-                            if ( < k)                             {
+                            if ( < k) {
                                 break;
                             }
                             continue;
@@ -208,7 +208,7 @@ void SortCls::_dualPivotQuicksort(List<E> a, int left, int right, std::function<
                         int comp = compare(a[great], pivot2);
                         if (comp == 0) {
                             great--;
-                            if ( < k)                             {
+                            if ( < k) {
                                 break;
                             }
                             continue;

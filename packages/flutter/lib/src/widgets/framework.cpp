@@ -501,7 +501,7 @@ void BuildOwnerCls::buildScope(Element context, VoidCallback callback) {
             try {
                 element->rebuild();
             } catch (Unknown e) {
-                            List<DiagnosticsNode> list2 = make<ListCls<>>();            if (kDebugMode &&  < _dirtyElements->length()) {                list2.add(ArrayItem);            }if ( < _dirtyElements->length()) {                list2.add(ArrayItem);            } else {                list2.add(ArrayItem);            }_debugReportException(make<ErrorDescriptionCls>(__s("while rebuilding dirty elements")), e, stack, [=] ()                 {
+                            List<DiagnosticsNode> list2 = make<ListCls<>>();            if (kDebugMode &&  < _dirtyElements->length()) {                list2.add(ArrayItem);            }if ( < _dirtyElements->length()) {                list2.add(ArrayItem);            } else {                list2.add(ArrayItem);            }_debugReportException(make<ErrorDescriptionCls>(__s("while rebuilding dirty elements")), e, stack, [=] () {
                     list2;
                 });
             };
@@ -519,7 +519,7 @@ void BuildOwnerCls::buildScope(Element context, VoidCallback callback) {
             }
         }
         assert([=] () {
-            if (_dirtyElements->any([=] (Element element)             {
+            if (_dirtyElements->any([=] (Element element) {
                 element->_lifecycleState == _ElementLifecycleCls::active && element->dirty;
             })) {
                 throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem, ArrayItem));
@@ -573,11 +573,11 @@ void BuildOwnerCls::finalizeTree() {
                     }
                     if (keys->isNotEmpty) {
                         Map<String, int> keyStringCount = <String, int>make<HashMapCls>();
-                        for (String key : keys-><String>map([=] (GlobalKey key)                         {
+                        for (String key : keys-><String>map([=] (GlobalKey key) {
                             key->toString();
                         })) {
                             if (keyStringCount->containsKey(key)) {
-                                keyStringCount->update(key, [=] (int value)                                 {
+                                keyStringCount->update(key, [=] (int value) {
                                     value + 1;
                                 });
                             } else {
@@ -594,11 +594,11 @@ void BuildOwnerCls::finalizeTree() {
                         });
                         Iterable<Element> elements = _debugElementsThatWillNeedToBeRebuiltDueToGlobalKeyShenanigans!->keys;
                         Map<String, int> elementStringCount = <String, int>make<HashMapCls>();
-                        for (String element : elements-><String>map([=] (Element element)                         {
+                        for (String element : elements-><String>map([=] (Element element) {
                             element->toString();
                         })) {
                             if (elementStringCount->containsKey(element)) {
-                                elementStringCount->update(element, [=] (int value)                                 {
+                                elementStringCount->update(element, [=] (int value) {
                                     value + 1;
                                 });
                             } else {
@@ -906,7 +906,7 @@ List<DiagnosticsNode> ElementCls::describeMissingAncestor(Type expectedAncestorT
 }
 
 DiagnosticsNode ElementCls::describeElements(String name, Iterable<Element> elements) {
-    return make<DiagnosticsBlockCls>(name, elements-><DiagnosticsNode>map([=] (Element element)     {
+    return make<DiagnosticsBlockCls>(name, elements-><DiagnosticsNode>map([=] (Element element) {
         <Element>make<DiagnosticsPropertyCls>(__s(""), element);
     })->toList(), true);
 }
@@ -961,7 +961,7 @@ Element ElementCls::updateChild(Element child, Widget newWidget, Object newSlot)
                 updateSlotForChild(child, newSlot);
             }
             newChild = child;
-        } else         {
+        } else {
             if (hasSameSuperclass && WidgetCls->canUpdate(child->widget(), newWidget)) {
             if (child->slot() != newSlot) {
                 updateSlotForChild(child, newSlot);
@@ -1418,7 +1418,7 @@ void ElementCls::markNeedsBuild() {
                 throw FlutterErrorCls->fromParts(information);
             }
             assert(dirty());
-        } else         {
+        } else {
             if (owner()!->_debugStateLocked()) {
             assert(!_debugAllowIgnoredCallsToMarkNeedsBuild);
             throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem, ArrayItem));
@@ -1692,7 +1692,7 @@ void ComponentElementCls::performRebuild() {
         debugWidgetBuilderValue(widget, built);
     } catch (Unknown e) {
         _debugDoingBuild = false;
-            List<DiagnosticsNode> list1 = make<ListCls<>>();    if (kDebugMode) {        list1.add(ArrayItem);    }built = ErrorWidgetCls->builder(_debugReportException(make<ErrorDescriptionCls>(__s("building $this")), e, stack, [=] ()         {
+            List<DiagnosticsNode> list1 = make<ListCls<>>();    if (kDebugMode) {        list1.add(ArrayItem);    }built = ErrorWidgetCls->builder(_debugReportException(make<ErrorDescriptionCls>(__s("building $this")), e, stack, [=] () {
             list1;
         }));
     } finally {
@@ -1703,7 +1703,7 @@ void ComponentElementCls::performRebuild() {
         _child = updateChild(_child, built, slot);
         assert(_child != nullptr);
     } catch (Unknown e) {
-            List<DiagnosticsNode> list2 = make<ListCls<>>();    if (kDebugMode) {        list2.add(ArrayItem);    }built = ErrorWidgetCls->builder(_debugReportException(make<ErrorDescriptionCls>(__s("building $this")), e, stack, [=] ()         {
+            List<DiagnosticsNode> list2 = make<ListCls<>>();    if (kDebugMode) {        list2.add(ArrayItem);    }built = ErrorWidgetCls->builder(_debugReportException(make<ErrorDescriptionCls>(__s("building $this")), e, stack, [=] () {
             list2;
         }));
         _child = updateChild(nullptr, built, slot);
@@ -2121,7 +2121,7 @@ List<Element> RenderObjectElementCls::updateChildren(List<Element> oldChildren, 
             }
         }
     }
-    assert(newChildren->every([=] (Element element)     {
+    assert(newChildren->every([=] (Element element) {
         !is<_NullElement>(element);
     }));
     return newChildren;
@@ -2217,7 +2217,7 @@ ParentDataElement<ParentData> RenderObjectElementCls::_findAncestorParentDataEle
         if (badAncestors->isNotEmpty) {
             badAncestors->insert(0, result);
             try {
-                            List<DiagnosticsNode> list1 = make<ListCls<>>();            list1.add(ArrayItem);            list1.add(ArrayItem);            for (ParentDataElement<ParentData> ancestor : badAncestors)                 {                                ;                            }            {                list1.add(ArrayItem);            }list1.add(ArrayItem);            list1.add(ArrayItem);            list1.add(ArrayItem);throw FlutterErrorCls->fromParts(list1);
+                            List<DiagnosticsNode> list1 = make<ListCls<>>();            list1.add(ArrayItem);            list1.add(ArrayItem);            for (ParentDataElement<ParentData> ancestor : badAncestors) {                                ;                            }            {                list1.add(ArrayItem);            }list1.add(ArrayItem);            list1.add(ArrayItem);            list1.add(ArrayItem);throw FlutterErrorCls->fromParts(list1);
             } catch (FlutterError e) {
                 _debugReportException(make<ErrorSummaryCls>(__s("while looking for parent data.")), e, e->stackTrace);
             };
@@ -2358,7 +2358,7 @@ ContainerRenderObjectMixin<RenderObject, ContainerParentDataMixin<RenderObject>>
 }
 
 Iterable<Element> MultiChildRenderObjectElementCls::children() {
-    return _children->where([=] (Element child)     {
+    return _children->where([=] (Element child) {
         !_forgottenChildren->contains(child);
     });
 }

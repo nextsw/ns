@@ -150,13 +150,13 @@ Widget _WidgetsAppStateCls::build(BuildContext context) {
     Widget routing;
     if (_usesRouterWithDelegates()) {
         routing = <Object>make<RouterCls>(__s("router"), _effectiveRouteInformationProvider(), widget->routeInformationParser, widget->routerDelegate!, _effectiveBackButtonDispatcher());
-    } else     {
+    } else {
         if (_usesNavigator()) {
         assert(_navigator != nullptr);
         routing = make<NavigatorCls>(__s("nav"), _navigator, _initialRouteName(), _onGenerateRoute, widget->onGenerateInitialRoutes == nullptr? NavigatorCls::defaultGenerateInitialRoutes : [=] (NavigatorState navigator,String initialRouteName) {
             return widget->onGenerateInitialRoutes!(initialRouteName);
         }, _onUnknownRoute, widget->navigatorObservers!, true);
-    } else     {
+    } else {
         if (_usesRouterWithConfig()) {
         routing = <Object>withConfig(__s("router"), widget->routerConfig!);
     }
@@ -177,7 +177,7 @@ Widget _WidgetsAppStateCls::build(BuildContext context) {
     PerformanceOverlay performanceOverlay;
     if (widget->showPerformanceOverlay || WidgetsAppCls::showPerformanceOverlayOverride) {
         performanceOverlay = PerformanceOverlayCls->allEnabled(widget->checkerboardRasterCacheImages, widget->checkerboardOffscreenLayers);
-    } else     {
+    } else {
         if (widget->checkerboardRasterCacheImages || widget->checkerboardOffscreenLayers) {
         performanceOverlay = make<PerformanceOverlayCls>(widget->checkerboardRasterCacheImages, widget->checkerboardOffscreenLayers);
     }
@@ -244,7 +244,7 @@ void _WidgetsAppStateCls::_updateRouting(WidgetsApp oldWidget) {
         if (widget->backButtonDispatcher == nullptr) {
             _defaultBackButtonDispatcher |= make<RootBackButtonDispatcherCls>();
         }
-    } else     {
+    } else {
         if (_usesNavigator()) {
         assert(!_usesRouterWithDelegates() && !_usesRouterWithConfig());
         _clearRouterResource();
@@ -352,7 +352,7 @@ bool _WidgetsAppStateCls::_debugCheckLocalizations(Locale appLocale) {
         if (unsupportedTypes->isEmpty) {
             return true;
         }
-            List<DiagnosticsNode> list1 = make<ListCls<>>();    for (Type unsupportedType : unsupportedTypes)         {                ;            }    {        list1.add(ArrayItem);    }list1.add(ArrayItem);    if (unsupportedTypes->length == 1 && unsupportedTypes->single->toString() == __s("CupertinoLocalizations")) {        list1.add(ArrayItem);    }list1.add(ArrayItem);    list1.add(ArrayItem);    list1.add(ArrayItem);FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(__s("Warning: This application's locale, $appLocale, is not supported by all of its localization delegates."), __s("widgets"), [=] ()         {
+            List<DiagnosticsNode> list1 = make<ListCls<>>();    for (Type unsupportedType : unsupportedTypes) {                ;            }    {        list1.add(ArrayItem);    }list1.add(ArrayItem);    if (unsupportedTypes->length == 1 && unsupportedTypes->single->toString() == __s("CupertinoLocalizations")) {        list1.add(ArrayItem);    }list1.add(ArrayItem);    list1.add(ArrayItem);    list1.add(ArrayItem);FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(__s("Warning: This application's locale, $appLocale, is not supported by all of its localization delegates."), __s("widgets"), [=] () {
             list1;
         }));
         return true;

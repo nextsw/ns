@@ -42,7 +42,7 @@ void _ToolbarLayoutCls::performLayout(Size size) {
             middleStart = (size->width() - middleSize->width()) / 2.0;
             if (middleStart + middleSize->width() > size->width() - trailingWidth) {
                 middleStart = size->width() - trailingWidth - middleSize->width();
-            } else             {
+            } else {
                 if ( < middleStartMargin) {
                 middleStart = middleStartMargin;
             }

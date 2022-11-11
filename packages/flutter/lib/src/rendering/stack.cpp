@@ -184,25 +184,25 @@ double RenderStackCls::getIntrinsicDimension(RenderBox firstChild, std::function
 }
 
 double RenderStackCls::computeMinIntrinsicWidth(double height) {
-    return getIntrinsicDimension(firstChild, [=] (RenderBox child)     {
+    return getIntrinsicDimension(firstChild, [=] (RenderBox child) {
         child->getMinIntrinsicWidth(height);
     });
 }
 
 double RenderStackCls::computeMaxIntrinsicWidth(double height) {
-    return getIntrinsicDimension(firstChild, [=] (RenderBox child)     {
+    return getIntrinsicDimension(firstChild, [=] (RenderBox child) {
         child->getMaxIntrinsicWidth(height);
     });
 }
 
 double RenderStackCls::computeMinIntrinsicHeight(double width) {
-    return getIntrinsicDimension(firstChild, [=] (RenderBox child)     {
+    return getIntrinsicDimension(firstChild, [=] (RenderBox child) {
         child->getMinIntrinsicHeight(width);
     });
 }
 
 double RenderStackCls::computeMaxIntrinsicHeight(double width) {
-    return getIntrinsicDimension(firstChild, [=] (RenderBox child)     {
+    return getIntrinsicDimension(firstChild, [=] (RenderBox child) {
         child->getMaxIntrinsicHeight(width);
     });
 }
@@ -218,14 +218,14 @@ bool RenderStackCls::layoutPositionedChild(RenderBox child, StackParentData chil
     BoxConstraints childConstraints = make<BoxConstraintsCls>();
     if (childParentData->left != nullptr && childParentData->right != nullptr) {
         childConstraints = childConstraints->tighten(size->width() - childParentData->right! - childParentData->left!);
-    } else     {
+    } else {
         if (childParentData->width != nullptr) {
         childConstraints = childConstraints->tighten(childParentData->width);
     }
 ;
     }    if (childParentData->top != nullptr && childParentData->bottom != nullptr) {
         childConstraints = childConstraints->tighten(size->height() - childParentData->bottom! - childParentData->top!);
-    } else     {
+    } else {
         if (childParentData->height != nullptr) {
         childConstraints = childConstraints->tighten(childParentData->height);
     }
@@ -234,7 +234,7 @@ bool RenderStackCls::layoutPositionedChild(RenderBox child, StackParentData chil
     double x;
     if (childParentData->left != nullptr) {
         x = childParentData->left!;
-    } else     {
+    } else {
         if (childParentData->right != nullptr) {
         x = size->width() - childParentData->right! - child->size->width();
     } else {
@@ -247,7 +247,7 @@ bool RenderStackCls::layoutPositionedChild(RenderBox child, StackParentData chil
     double y;
     if (childParentData->top != nullptr) {
         y = childParentData->top!;
-    } else     {
+    } else {
         if (childParentData->bottom != nullptr) {
         y = size->height() - childParentData->bottom! - child->size->height();
     } else {

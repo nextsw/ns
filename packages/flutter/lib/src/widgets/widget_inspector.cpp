@@ -444,13 +444,13 @@ void WidgetInspectorServiceCls::initServiceExtensions(RegisterServiceExtensionCa
         return true;
     }());
     SchedulerBindingCls::instance->addPersistentFrameCallback(_onFrameStart);
-    _registerBoolServiceExtension(__s("structuredErrors"), [=] ()     {
+    _registerBoolServiceExtension(__s("structuredErrors"), [=] () {
         FlutterErrorCls::presentError == _reportStructuredError;
     }, [=] (bool value) {
         FlutterErrorCls::presentError = value? _reportStructuredError : defaultExceptionHandler;
         return <void>value();
     });
-    _registerBoolServiceExtension(__s("show"), [=] ()     {
+    _registerBoolServiceExtension(__s("show"), [=] () {
         WidgetsAppCls::debugShowWidgetInspectorOverride;
     }, [=] (bool value) {
         if (WidgetsAppCls::debugShowWidgetInspectorOverride == value) {
@@ -460,7 +460,7 @@ void WidgetInspectorServiceCls::initServiceExtensions(RegisterServiceExtensionCa
         return forceRebuild();
     });
     if (isWidgetCreationTracked()) {
-        _registerBoolServiceExtension(__s("trackRebuildDirtyWidgets"), [=] ()         {
+        _registerBoolServiceExtension(__s("trackRebuildDirtyWidgets"), [=] () {
             _trackRebuildDirtyWidgets;
         }, [=] (bool value) {
             if (value == _trackRebuildDirtyWidgets) {
@@ -478,7 +478,7 @@ void WidgetInspectorServiceCls::initServiceExtensions(RegisterServiceExtensionCa
                 return;
             }
         });
-        _registerBoolServiceExtension(__s("trackRepaintWidgets"), [=] ()         {
+        _registerBoolServiceExtension(__s("trackRepaintWidgets"), [=] () {
             _trackRepaintWidgets;
         }, [=] (bool value) {
             if (value == _trackRepaintWidgets) {
@@ -646,7 +646,7 @@ void WidgetInspectorServiceCls::resetPubRootDirectories() {
 }
 
 void WidgetInspectorServiceCls::addPubRootDirectories(List<String> pubRootDirectories) {
-    pubRootDirectories = pubRootDirectories-><String>map([=] (String directory)     {
+    pubRootDirectories = pubRootDirectories-><String>map([=] (String directory) {
         UriCls->parse(directory)->path;
     })->toList();
     Set<String> directorySet = <String>from(pubRootDirectories);
@@ -661,7 +661,7 @@ void WidgetInspectorServiceCls::removePubRootDirectories(List<String> pubRootDir
     if (_pubRootDirectories == nullptr) {
         return;
     }
-    pubRootDirectories = pubRootDirectories-><String>map([=] (String directory)     {
+    pubRootDirectories = pubRootDirectories-><String>map([=] (String directory) {
         UriCls->parse(directory)->path;
     })->toList();
     Set<String> directorySet = <String>from(_pubRootDirectories!);
@@ -902,14 +902,14 @@ List<Object> WidgetInspectorServiceCls::_getParentChain(String id, String groupN
     List<_DiagnosticsPathNode> path;
     if (is<RenderObject>(value)) {
         path = _getRenderObjectParentChain(as<RenderObjectCls>(value), groupName)!;
-    } else     {
+    } else {
         if (is<Element>(value)) {
         path = _getElementParentChain(as<ElementCls>(value), groupName);
     } else {
         throw FlutterErrorCls->fromParts(makeList(ArrayItem));
     }
 ;
-    }    return path-><Object>map([=] (_DiagnosticsPathNode node)     {
+    }    return path-><Object>map([=] (_DiagnosticsPathNode node) {
         _pathNodeToJson(node, make<InspectorSerializationDelegateCls>(groupName, this));
     })->toList();
 }
@@ -993,7 +993,7 @@ String WidgetInspectorServiceCls::_safeJsonEncode(Object object) {
 }
 
 List<DiagnosticsNode> WidgetInspectorServiceCls::_truncateNodes(Iterable<DiagnosticsNode> nodes, int maxDescendentsTruncatableNode) {
-    if (nodes->every([=] (DiagnosticsNode node)     {
+    if (nodes->every([=] (DiagnosticsNode node) {
         is<Element>(node->value);
     }) && isWidgetCreationTracked()) {
         List<DiagnosticsNode> localNodes = nodes->where([=] (DiagnosticsNode node) {
@@ -1269,7 +1269,7 @@ List<RenderObject> _WidgetInspectorStateCls::hitTest(Offset position, RenderObje
     List<RenderObject> edgeHits = makeList();
     _hitTestHelper(regularHits, edgeHits, position, root, root->getTransformTo(nullptr));
     InlineMethod;
-    regularHits->sort([=] (RenderObject a,RenderObject b)     {
+    regularHits->sort([=] (RenderObject a,RenderObject b) {
         area(a)->compareTo(area(b));
     });
     Set<RenderObject> set1 = make<SetCls<>>();for (auto _x1 : edgeHits) {{    set1.add(_x1);}for (auto _x1 : regularHits) {{    set1.add(_x1);}Set<RenderObject> hits = list1;
@@ -1678,7 +1678,7 @@ Iterable<DiagnosticsNode> _parseDiagnosticsNode(DiagnosticsNode node, ErrorSumma
         return _describeRelevantUserCode(element, errorSummary);
     } catch (Unknown error) {
         scheduleMicrotask([=] () {
-            FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(error, stack, __s("widget inspector"), [=] ()             {
+            FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(error, stack, __s("widget inspector"), [=] () {
                 makeList(ArrayItem);
             }));
         });

@@ -4,7 +4,7 @@ Uri ServiceProtocolInfoCls::serverWebSocketUri() {
     if (uri != nullptr) {
         Unknown pathSegments = makeList();
         if (uri->pathSegments->isNotEmpty()) {
-            pathSegments->addAll(uri->pathSegments->where([=] (Unknown  s)             {
+            pathSegments->addAll(uri->pathSegments->where([=] (Unknown  s) {
                 s->isNotEmpty;
             }));
         }
@@ -25,7 +25,7 @@ String ServiceProtocolInfoCls::toString() {
 Future<ServiceProtocolInfo> ServiceCls::getInfo() {
     RawReceivePort receivePort = make<RawReceivePortCls>(nullptr, __s("Service.getInfo"));
     Completer<String> completer = <String>make<CompleterCls>();
-    receivePort->handler = [=] (String uriString)     {
+    receivePort->handler = [=] (String uriString) {
         completer->complete(uriString);
     };
     _getServerInfo(receivePort->sendPort());
@@ -39,7 +39,7 @@ Future<ServiceProtocolInfo> ServiceCls::controlWebServer(bool enable, bool silen
     ArgumentErrorCls->checkNotNull(enable, __s("enable"));
     RawReceivePort receivePort = make<RawReceivePortCls>(nullptr, __s("Service.controlWebServer"));
     Completer<String> completer = <String>make<CompleterCls>();
-    receivePort->handler = [=] (String uriString)     {
+    receivePort->handler = [=] (String uriString) {
         completer->complete(uriString);
     };
     _webServerControl(receivePort->sendPort(), enable, silenceOutput);

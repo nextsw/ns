@@ -59,7 +59,7 @@ void _FileResourceInfoCls::fileClosed(_FileResourceInfo info) {
 }
 
 Iterable<Map<String, dynamic>> _FileResourceInfoCls::getOpenFilesList() {
-    return ListCls->from(openFiles->values->map([=] (Unknown  e)     {
+    return ListCls->from(openFiles->values->map([=] (Unknown  e) {
         e->referenceValueMap;
     }));
 }
@@ -115,7 +115,7 @@ void _SpawnedProcessResourceInfoCls::processStopped(_SpawnedProcessResourceInfo 
 }
 
 Iterable<Map<String, dynamic>> _SpawnedProcessResourceInfoCls::getStartedProcessesList() {
-    return ListCls->from(startedProcesses->values->map([=] (Unknown  e)     {
+    return ListCls->from(startedProcesses->values->map([=] (Unknown  e) {
         e->referenceValueMap;
     }));
 }

@@ -41,7 +41,7 @@ Iterable<E> HeapPriorityQueueCls<E>::unorderedElements() {
 
 template<typename E>
 E HeapPriorityQueueCls<E>::first() {
-    if (_length == 0)     {
+    if (_length == 0) {
         throw make<StateErrorCls>(__s("No element"));
     }
     return _elementAt(0);
@@ -65,7 +65,7 @@ int HeapPriorityQueueCls<E>::length() {
 template<typename E>
 bool HeapPriorityQueueCls<E>::remove(E element) {
     auto index = _locate(element);
-    if ( < 0)     {
+    if ( < 0) {
         return false;
     }
     _modificationCount++;
@@ -93,7 +93,7 @@ Iterable<E> HeapPriorityQueueCls<E>::removeAll() {
 
 template<typename E>
 E HeapPriorityQueueCls<E>::removeFirst() {
-    if (_length == 0)     {
+    if (_length == 0) {
         throw make<StateErrorCls>(__s("No element"));
     }
     _modificationCount++;
@@ -141,7 +141,7 @@ List<E> HeapPriorityQueueCls<E>::_toUnorderedList() {
 
 template<typename E>
 void HeapPriorityQueueCls<E>::_add(E element) {
-    for (;  < _length; i++)     {        ;    }{    list1.add(ArrayItem);}if (_length == _queue->length())     {
+    for (;  < _length; i++) {        ;    }{    list1.add(ArrayItem);}if (_length == _queue->length()) {
         _grow();
     }
     _bubbleUp(element, _length++);
@@ -149,7 +149,7 @@ void HeapPriorityQueueCls<E>::_add(E element) {
 
 template<typename E>
 int HeapPriorityQueueCls<E>::_locate(E object) {
-    if (_length == 0)     {
+    if (_length == 0) {
         return -1;
     }
     auto position = 1;
@@ -158,7 +158,7 @@ int HeapPriorityQueueCls<E>::_locate(E object) {
         auto element = _elementAt(index);
         auto comp = comparison(element, object);
         if (comp <= 0) {
-            if (comp == 0 && element == object)             {
+            if (comp == 0 && element == object) {
                 return index;
             }
             auto leftChildPosition = position * 2;
@@ -191,7 +191,7 @@ void HeapPriorityQueueCls<E>::_bubbleUp(E element, int index) {
     while (index > 0) {
         auto parentIndex = (index - 1) ~/ 2;
         auto parent = _elementAt(parentIndex);
-        if (comparison(element, parent) > 0)         {
+        if (comparison(element, parent) > 0) {
             break;
         }
         _queue[index] = parent;
@@ -241,7 +241,7 @@ void HeapPriorityQueueCls<E>::_bubbleDown(E element, int index) {
 template<typename E>
 void HeapPriorityQueueCls<E>::_grow() {
     auto newCapacity = _queue->length() * 2 + 1;
-    if ( < _initialCapacity)     {
+    if ( < _initialCapacity) {
         newCapacity = _initialCapacity;
     }
     auto newQueue = <E>filled(newCapacity, nullptr);

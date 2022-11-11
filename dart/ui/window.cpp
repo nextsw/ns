@@ -264,32 +264,32 @@ bool AccessibilityFeaturesCls::onOffSwitchLabels() {
 
 String AccessibilityFeaturesCls::toString() {
     List<String> features = makeList();
-    if (accessibleNavigation())     {
+    if (accessibleNavigation()) {
         features->add(__s("accessibleNavigation"));
     }
-    if (invertColors())     {
+    if (invertColors()) {
         features->add(__s("invertColors"));
     }
-    if (disableAnimations())     {
+    if (disableAnimations()) {
         features->add(__s("disableAnimations"));
     }
-    if (boldText())     {
+    if (boldText()) {
         features->add(__s("boldText"));
     }
-    if (reduceMotion())     {
+    if (reduceMotion()) {
         features->add(__s("reduceMotion"));
     }
-    if (highContrast())     {
+    if (highContrast()) {
         features->add(__s("highContrast"));
     }
-    if (onOffSwitchLabels())     {
+    if (onOffSwitchLabels()) {
         features->add(__s("onOffSwitchLabels"));
     }
     return __s("AccessibilityFeatures$features");
 }
 
 bool AccessibilityFeaturesCls::==(Object other) {
-    if (other->runtimeType() != runtimeType)     {
+    if (other->runtimeType() != runtimeType) {
         return false;
     }
     return is<AccessibilityFeatures>(other) && other->_index == _index;
@@ -304,7 +304,7 @@ GestureSettings GestureSettingsCls::copyWith(double physicalDoubleTapSlop, doubl
 }
 
 bool GestureSettingsCls::==(Object other) {
-    if (other->runtimeType() != runtimeType)     {
+    if (other->runtimeType() != runtimeType) {
         return false;
     }
     return is<GestureSettings>(other) && other->physicalTouchSlop == physicalTouchSlop && other->physicalDoubleTapSlop == physicalDoubleTapSlop;

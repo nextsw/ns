@@ -172,13 +172,13 @@ AndroidMotionEvent _AndroidMotionEventConverterCls::toAndroidMotionEvent(Pointer
     int action;
     if (is<PointerDownEvent>(event)) {
         action = numPointers == 1? AndroidViewControllerCls::kActionDown : AndroidViewControllerCls->pointerAction(pointerIdx, AndroidViewControllerCls::kActionPointerDown);
-    } else     {
+    } else {
         if (is<PointerUpEvent>(event)) {
         action = numPointers == 1? AndroidViewControllerCls::kActionUp : AndroidViewControllerCls->pointerAction(pointerIdx, AndroidViewControllerCls::kActionPointerUp);
-    } else     {
+    } else {
         if (is<PointerMoveEvent>(event)) {
         action = AndroidViewControllerCls::kActionMove;
-    } else     {
+    } else {
         if (is<PointerCancelEvent>(event)) {
         action = AndroidViewControllerCls::kActionCancel;
     } else {
@@ -187,9 +187,9 @@ AndroidMotionEvent _AndroidMotionEventConverterCls::toAndroidMotionEvent(Pointer
 ;
     };
     };
-    }    return make<AndroidMotionEventCls>(downTimeMillis!, event->timeStamp->inMilliseconds(), action, pointerPositions->length(), pointers-><AndroidPointerProperties>map([=] (int i)     {
+    }    return make<AndroidMotionEventCls>(downTimeMillis!, event->timeStamp->inMilliseconds(), action, pointerPositions->length(), pointers-><AndroidPointerProperties>map([=] (int i) {
         pointerProperties[i]!;
-    })->toList(), pointers-><AndroidPointerCoords>map([=] (int i)     {
+    })->toList(), pointers-><AndroidPointerCoords>map([=] (int i) {
         pointerPositions[i]!;
     })->toList(), 0, 0, 1.0, 1.0, 0, 0, 0, 0, event->embedderId);
 }
@@ -302,7 +302,7 @@ Future<void> AndroidViewControllerCls::dispatchPointerEvent(PointerEvent event) 
     AndroidMotionEvent androidEvent = _motionEventConverter->toAndroidMotionEvent(event);
     if (is<PointerUpEvent>(event)) {
         _motionEventConverter->handlePointerUpEvent(as<PointerUpEventCls>(event));
-    } else     {
+    } else {
         if (is<PointerCancelEvent>(event)) {
         _motionEventConverter->handlePointerCancelEvent(as<PointerCancelEventCls>(event));
     }

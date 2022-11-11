@@ -45,7 +45,7 @@ void LinkedListCls<T>::addFirst(T newFirst) {
 
 template<typename T>
 void LinkedListCls<T>::remove(T node) {
-    if (node->_list != this)     {
+    if (node->_list != this) {
         return;
     }
     length--;
@@ -84,7 +84,7 @@ template<typename T>
 bool _LinkedListIteratorCls<T>::moveNext() {
     if (_current == nullptr) {
         auto list = _list;
-        if (list == nullptr)         {
+        if (list == nullptr) {
             return false;
         }
         assert(list->length() > 0);
@@ -102,7 +102,7 @@ _LinkedListIteratorCls<T>::_LinkedListIteratorCls(LinkedList<T> list) {
         _list = list;
     }
     {
-        if (list->length() == 0)         {
+        if (list->length() == 0) {
             _list = nullptr;
         }
     }

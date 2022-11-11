@@ -37,10 +37,10 @@ void CastStreamSubscriptionCls<S, T>::onError(std::function<void ()> handleError
     _source->onError(handleError);
     if (handleError == nullptr) {
         _handleError = nullptr;
-    } else     {
+    } else {
         if (is<std::function<void(Object , StackTrace )>>(handleError)) {
         _handleError = _zone-><dynamic, Object, StackTrace>registerBinaryCallback(handleError);
-    } else     {
+    } else {
         if (is<std::function<void(Object )>>(handleError)) {
         _handleError = _zone-><dynamic, Object>registerUnaryCallback(handleError);
     } else {
@@ -78,7 +78,7 @@ Future<E> CastStreamSubscriptionCls<S, T>::asFuture(E futureValue) {
 
 template<typename S, typename T>
 void CastStreamSubscriptionCls<S, T>::_onData(S data) {
-    if (_handleData == nullptr)     {
+    if (_handleData == nullptr) {
         return;
     }
     T targetData;
@@ -88,7 +88,7 @@ void CastStreamSubscriptionCls<S, T>::_onData(S data) {
         auto handleError = _handleError;
         if (handleError == nullptr) {
             _zone->handleUncaughtError(error, stack);
-        } else         {
+        } else {
             if (is<std::function<void(Object , StackTrace )>>(handleError)) {
             _zone-><Object, StackTrace>runBinaryGuarded(handleError, error, stack);
         } else {

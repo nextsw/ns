@@ -1,7 +1,7 @@
 #include "combined_list.hpp"
 template<typename T>
 Iterator<T> CombinedListViewCls<T>::iterator() {
-    return <T>make<CombinedIteratorCls>(_lists->map([=] (Unknown  i)     {
+    return <T>make<CombinedIteratorCls>(_lists->map([=] (Unknown  i) {
         i->iterator;
     })->iterator);
 }
@@ -13,7 +13,7 @@ void CombinedListViewCls<T>::length(int length) {
 
 template<typename T>
 int CombinedListViewCls<T>::length() {
-    return _lists->fold(0, [=] (Unknown  length,Unknown  list)     {
+    return _lists->fold(0, [=] (Unknown  length,Unknown  list) {
         length + list->length;
     });
 }

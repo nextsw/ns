@@ -35,10 +35,10 @@ template<typename K, typename V>
 void MapBaseCls<K, V>::_fillMapWithMappedIterable(Map<Object, Object> map, Iterable<Object> iterable, std::function<Object(Object element)> key, std::function<Object(Object element)> value) {
     key |= _id;
     value |= _id;
-    if (key == nullptr)     {
+    if (key == nullptr) {
         throw __s("!");
     }
-    if (value == nullptr)     {
+    if (value == nullptr) {
         throw __s("!");
     }
     for (auto element : iterable) {
@@ -85,7 +85,7 @@ void MapMixinCls<K, V>::addAll(Map<K, V> other) {
 template<typename K, typename V>
 bool MapMixinCls<K, V>::containsValue(Object value) {
     for (K key : keys()) {
-        if (this[key] == value)         {
+        if (this[key] == value) {
             return true;
         }
     }
@@ -120,7 +120,7 @@ void MapMixinCls<K, V>::updateAll(std::function<V(K key, V value)> update) {
 
 template<typename K, typename V>
 Iterable<MapEntry<K, V>> MapMixinCls<K, V>::entries() {
-    return keys()->map([=] (K key)     {
+    return keys()->map([=] (K key) {
         <K, V>make<MapEntryCls>(key, as<V>(this[key]));
     });
 }
@@ -147,7 +147,7 @@ template<typename K, typename V>
 void MapMixinCls<K, V>::removeWhere(std::function<bool(K key, V value)> test) {
     auto keysToRemove = makeList();
     for (auto key : keys()) {
-        if (test(key, as<V>(this[key])))         {
+        if (test(key, as<V>(this[key]))) {
             keysToRemove->add(key);
         }
     }

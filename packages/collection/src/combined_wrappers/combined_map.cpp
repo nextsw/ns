@@ -12,7 +12,7 @@ V CombinedMapViewCls<K, V>::[](Object key) {
 
 template<typename K, typename V>
 Iterable<K> CombinedMapViewCls<K, V>::keys() {
-    return make<_DeduplicatingIterableViewCls>(make<CombinedIterableViewCls>(_maps->map([=] (Unknown  m)     {
+    return make<_DeduplicatingIterableViewCls>(make<CombinedIterableViewCls>(_maps->map([=] (Unknown  m) {
         m->keys;
     })));
 }

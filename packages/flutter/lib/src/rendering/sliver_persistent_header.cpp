@@ -101,10 +101,10 @@ void RenderSliverPersistentHeaderCls::describeSemanticsConfiguration(SemanticsCo
 
 void RenderSliverPersistentHeaderCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(DoublePropertyCls->lazy(__s("maxExtent"), [=] ()     {
+    properties->add(DoublePropertyCls->lazy(__s("maxExtent"), [=] () {
         maxExtent();
     }));
-    properties->add(DoublePropertyCls->lazy(__s("child position"), [=] ()     {
+    properties->add(DoublePropertyCls->lazy(__s("child position"), [=] () {
         childMainAxisPosition(child!);
     }));
 }

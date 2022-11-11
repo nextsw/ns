@@ -28,7 +28,7 @@ int BreaksCls::nextBreak() {
         }
     }
     state = move(state, categoryEoT);
-    if (state & stateNoBreak == 0)     {
+    if (state & stateNoBreak == 0) {
         return cursor;
     }
     return -1;
@@ -44,7 +44,7 @@ int BackBreaksCls::nextBreak() {
         auto char = base->codeUnitAt(--cursor);
         if (charValue & 0xFC00 != 0xDC00) {
             state = moveBack(state, low(charValue));
-            if (state >= stateLookaheadMin)             {
+            if (state >= stateLookaheadMin) {
                 state = _lookAhead(state);
             }
             if (state & stateNoBreak == 0) {
@@ -61,7 +61,7 @@ int BackBreaksCls::nextBreak() {
             }
         }
         state = moveBack(state, category);
-        if (state >= stateLookaheadMin)         {
+        if (state >= stateLookaheadMin) {
             state = _lookAhead(state);
         }
         if (state & stateNoBreak == 0) {
@@ -69,10 +69,10 @@ int BackBreaksCls::nextBreak() {
         }
     }
     state = moveBack(state, categoryEoT);
-    if (state >= stateLookaheadMin)     {
+    if (state >= stateLookaheadMin) {
         state = _lookAhead(state);
     }
-    if (state & stateNoBreak == 0)     {
+    if (state & stateNoBreak == 0) {
         return cursor;
     }
     return -1;
@@ -89,7 +89,7 @@ int lookAhead(String base, int start, int cursor, int state) {
     }
     if (state == stateZWJPictographicLookahead) {
         auto prevPic = lookAheadPictorgraphicExtend(base, start, cursor);
-        if (prevPic >= 0)         {
+        if (prevPic >= 0) {
             return stateZWJPictographic | stateNoBreak;
         }
         return stateExtend;
@@ -102,15 +102,15 @@ int lookAheadRegional(String base, int start, int cursor) {
     auto index = cursor;
     while (index - 2 >= start) {
         auto tail = base->codeUnitAt(index - 1);
-        if (tail & 0xFC00 != 0xDC00)         {
+        if (tail & 0xFC00 != 0xDC00) {
             break;
         }
         auto lead = base->codeUnitAt(index - 2);
-        if (lead & 0xFC00 != 0xD800)         {
+        if (lead & 0xFC00 != 0xD800) {
             break;
         }
         auto category = high(lead, tail);
-        if (category != categoryRegionalIndicator)         {
+        if (category != categoryRegionalIndicator) {
             break;
         }
         index -= 2;
@@ -131,7 +131,7 @@ int lookAheadPictorgraphicExtend(String base, int start, int cursor) {
         auto category = categoryControl;
         if (charValue & 0xFC00 != 0xDC00) {
             category = low(charValue);
-        } else         {
+        } else {
             if (index > start && (prevChar = base->codeUnitAt(--index)) & 0xFC00 == 0xD800) {
             category = high(prevChar, charValue);
         } else {
@@ -141,7 +141,7 @@ int lookAheadPictorgraphicExtend(String base, int start, int cursor) {
         }        if (category == categoryPictographic) {
             return index;
         }
-        if (category != categoryExtend)         {
+        if (category != categoryExtend) {
             break;
         }
     }
@@ -159,13 +159,13 @@ bool isGraphemeClusterBoundary(String text, int start, int end, int index) {
         auto catAfter = categoryControl;
         if (charValue & 0xF800 != 0xD800) {
             catAfter = low(charValue);
-        } else         {
+        } else {
             if (charValue & 0xFC00 == 0xD800) {
-            if (index + 1 >= end)             {
+            if (index + 1 >= end) {
                 return true;
             }
             auto nextChar = text->codeUnitAt(index + 1);
-            if (nextChar & 0xFC00 != 0xDC00)             {
+            if (nextChar & 0xFC00 != 0xDC00) {
                 return true;
             }
             catAfter = high(charValue, nextChar);
@@ -205,7 +205,7 @@ int previousBreak(String text, int start, int end, int index) {
     assert(start <= index);
     assert(index <= end);
     assert(end <= text->length());
-    if (index == start || index == end)     {
+    if (index == start || index == end) {
         return index;
     }
     auto indexBefore = index;
@@ -213,7 +213,7 @@ int previousBreak(String text, int start, int end, int index) {
     auto category = categoryControl;
     if (nextChar & 0xF800 != 0xD800) {
         category = low(nextChar);
-    } else     {
+    } else {
         if (nextChar & 0xFC00 == 0xD800) {
         auto indexAfter = index + 1;
         if ( < end) {
@@ -238,7 +238,7 @@ int nextBreak(String text, int start, int end, int index) {
     assert(start <= index);
     assert(index <= end);
     assert(end <= text->length());
-    if (index == start || index == end)     {
+    if (index == start || index == end) {
         return index;
     }
     auto indexBefore = index - 1;
@@ -246,17 +246,17 @@ int nextBreak(String text, int start, int end, int index) {
     auto prevCategory = categoryControl;
     if (prevChar & 0xF800 != 0xD800) {
         prevCategory = low(prevChar);
-    } else     {
+    } else {
         if (prevChar & 0xFC00 == 0xD800) {
         auto nextChar = text->codeUnitAt(index);
         if (nextChar & 0xFC00 == 0xDC00) {
             index += 1;
-            if (index == end)             {
+            if (index == end) {
                 return end;
             }
             prevCategory = high(prevChar, nextChar);
         }
-    } else     {
+    } else {
         if (indexBefore > start) {
         auto secondCharIndex = indexBefore - 1;
         auto secondChar = text->codeUnitAt(secondCharIndex);
@@ -273,7 +273,7 @@ int nextBreak(String text, int start, int end, int index) {
         if (prevState != stateRegionalOdd) {
             state = stateRegionalSingle;
         }
-    } else     {
+    } else {
         if (prevCategory == categoryZWJ || prevCategory == categoryExtend) {
         auto prevPic = lookAheadPictorgraphicExtend(text, start, indexBefore);
         if (prevPic >= 0) {

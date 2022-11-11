@@ -21,7 +21,7 @@ RendererBinding RendererBindingCls::instance() {
 void RendererBindingCls::initServiceExtensions() {
     super->initServiceExtensions();
     assert([=] () {
-        registerBoolServiceExtension(__s("invertOversizedImages"), [=] ()         {
+        registerBoolServiceExtension(__s("invertOversizedImages"), [=] () {
             debugInvertOversizedImages;
         }, [=] (bool value) {
             if (debugInvertOversizedImages != value) {
@@ -30,7 +30,7 @@ void RendererBindingCls::initServiceExtensions() {
             }
             return <void>value();
         });
-        registerBoolServiceExtension(__s("debugPaint"), [=] ()         {
+        registerBoolServiceExtension(__s("debugPaint"), [=] () {
             debugPaintSizeEnabled;
         }, [=] (bool value) {
             if (debugPaintSizeEnabled == value) {
@@ -39,7 +39,7 @@ void RendererBindingCls::initServiceExtensions() {
             debugPaintSizeEnabled = value;
             return _forceRepaint();
         });
-        registerBoolServiceExtension(__s("debugPaintBaselinesEnabled"), [=] ()         {
+        registerBoolServiceExtension(__s("debugPaintBaselinesEnabled"), [=] () {
             debugPaintBaselinesEnabled;
         }, [=] (bool value) {
             if (debugPaintBaselinesEnabled == value) {
@@ -48,7 +48,7 @@ void RendererBindingCls::initServiceExtensions() {
             debugPaintBaselinesEnabled = value;
             return _forceRepaint();
         });
-        registerBoolServiceExtension(__s("repaintRainbow"), [=] ()         {
+        registerBoolServiceExtension(__s("repaintRainbow"), [=] () {
             debugRepaintRainbowEnabled;
         }, [=] (bool value) {
             bool repaint = debugRepaintRainbowEnabled && !value;
@@ -62,7 +62,7 @@ void RendererBindingCls::initServiceExtensions() {
             String data = RendererBindingCls::instance->renderView->debugLayer?->toStringDeep() | __s("Layer tree unavailable.");
                     Map<String, Object> map1 = make<MapCls<>>();        map1.set(__s("data"), data);return list1;
         });
-        registerBoolServiceExtension(__s("debugDisableClipLayers"), [=] ()         {
+        registerBoolServiceExtension(__s("debugDisableClipLayers"), [=] () {
             debugDisableClipLayers;
         }, [=] (bool value) {
             if (debugDisableClipLayers == value) {
@@ -71,7 +71,7 @@ void RendererBindingCls::initServiceExtensions() {
             debugDisableClipLayers = value;
             return _forceRepaint();
         });
-        registerBoolServiceExtension(__s("debugDisablePhysicalShapeLayers"), [=] ()         {
+        registerBoolServiceExtension(__s("debugDisablePhysicalShapeLayers"), [=] () {
             debugDisablePhysicalShapeLayers;
         }, [=] (bool value) {
             if (debugDisablePhysicalShapeLayers == value) {
@@ -80,7 +80,7 @@ void RendererBindingCls::initServiceExtensions() {
             debugDisablePhysicalShapeLayers = value;
             return _forceRepaint();
         });
-        registerBoolServiceExtension(__s("debugDisableOpacityLayers"), [=] ()         {
+        registerBoolServiceExtension(__s("debugDisableOpacityLayers"), [=] () {
             debugDisableOpacityLayers;
         }, [=] (bool value) {
             if (debugDisableOpacityLayers == value) {
@@ -104,14 +104,14 @@ void RendererBindingCls::initServiceExtensions() {
             String data = RendererBindingCls::instance->renderView->debugSemantics?->toStringDeep(DebugSemanticsDumpOrderCls::inverseHitTest) | __s("Semantics not collected.");
                     Map<String, Object> map4 = make<MapCls<>>();        map4.set(__s("data"), data);return list4;
         });
-        registerBoolServiceExtension(__s("profileRenderObjectPaints"), [=] ()         {
+        registerBoolServiceExtension(__s("profileRenderObjectPaints"), [=] () {
             debugProfilePaintsEnabled;
         }, [=] (bool value) {
             if (debugProfilePaintsEnabled != value) {
                 debugProfilePaintsEnabled = value;
             }
         });
-        registerBoolServiceExtension(__s("profileRenderObjectLayouts"), [=] ()         {
+        registerBoolServiceExtension(__s("profileRenderObjectLayouts"), [=] () {
             debugProfileLayoutsEnabled;
         }, [=] (bool value) {
             if (debugProfileLayoutsEnabled != value) {
@@ -173,7 +173,7 @@ void RendererBindingCls::initMouseTracker(MouseTracker tracker) {
 }
 
 void RendererBindingCls::dispatchEvent(PointerEvent event, HitTestResult hitTestResult) {
-    _mouseTracker!->updateWithEvent(event, [=] ()     {
+    _mouseTracker!->updateWithEvent(event, [=] () {
         (hitTestResult == nullptr || is<PointerMoveEvent>(event))? renderView()->hitTestMouseTrackers(event->position) : hitTestResult;
     });
     super->dispatchEvent(event, hitTestResult);

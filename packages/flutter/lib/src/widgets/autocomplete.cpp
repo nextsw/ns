@@ -207,7 +207,7 @@ void _RawAutocompleteStateCls<T>::_updateTextEditingController(TextEditingContro
         _textEditingController->removeListener(_onChangedField);
         _textEditingController->dispose();
         _textEditingController = current!;
-    } else     {
+    } else {
         if (current == nullptr) {
         _textEditingController->removeListener(_onChangedField);
         _textEditingController = make<TextEditingControllerCls>();
@@ -228,7 +228,7 @@ void _RawAutocompleteStateCls<T>::_updateFocusNode(FocusNode old, FocusNode curr
         _focusNode->removeListener(_onChangedFocus);
         _focusNode->dispose();
         _focusNode = current!;
-    } else     {
+    } else {
         if (current == nullptr) {
         _focusNode->removeListener(_onChangedFocus);
         _focusNode = make<FocusNodeCls>();

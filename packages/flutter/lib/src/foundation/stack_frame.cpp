@@ -21,7 +21,7 @@ List<StackFrame> StackFrameCls::fromStackTrace(StackTrace stack) {
 
 List<StackFrame> StackFrameCls::fromStackString(String stack) {
     assert(stack != nullptr);
-    return stack->trim()->split(__s("\n"))->where([=] (String line)     {
+    return stack->trim()->split(__s("\n"))->where([=] (String line) {
         line->isNotEmpty;
     })->map(fromStackTraceLine)-><StackFrame>whereType()->toList();
 }
@@ -30,7 +30,7 @@ StackFrame StackFrameCls::fromStackTraceLine(String line) {
     assert(line != nullptr);
     if (line == __s("<asynchronous suspension>")) {
         return asynchronousSuspension;
-    } else     {
+    } else {
         if (line == __s("...")) {
         return stackOverFlowElision;
     }
@@ -56,7 +56,7 @@ StackFrame StackFrameCls::fromStackTraceLine(String line) {
             method = parts[1];
         }
         isConstructor = true;
-    } else     {
+    } else {
         if (method->contains(__s("."))) {
         List<String> parts = method->split(__s("."));
         className = parts[0];

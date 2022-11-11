@@ -12,7 +12,7 @@ BouncingScrollSimulationCls::BouncingScrollSimulationCls(double leadingExtent, d
         if ( < leadingExtent) {
             _springSimulation = _underscrollSimulation(position, velocity);
             _springTime = double->negativeInfinity;
-        } else         {
+        } else {
             if (position > trailingExtent) {
             _springSimulation = _overscrollSimulation(position, velocity);
             _springTime = double->negativeInfinity;
@@ -23,7 +23,7 @@ BouncingScrollSimulationCls::BouncingScrollSimulationCls(double leadingExtent, d
                 _springTime = _frictionSimulation->timeAtX(trailingExtent);
                 _springSimulation = _overscrollSimulation(trailingExtent, math->min(_frictionSimulation->dx(_springTime), maxSpringTransferVelocity));
                 assert(_springTime->isFinite);
-            } else             {
+            } else {
                 if ( < 0.0 &&  < leadingExtent) {
                 _springTime = _frictionSimulation->timeAtX(leadingExtent);
                 _springSimulation = _underscrollSimulation(leadingExtent, math->min(_frictionSimulation->dx(_springTime), maxSpringTransferVelocity));

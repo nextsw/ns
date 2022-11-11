@@ -63,7 +63,7 @@ Uri NetworkAssetBundleCls::_urlFromKey(String key) {
 
 Future<String> CachingAssetBundleCls::loadString(String key, bool cache) {
     if (cache) {
-        return _stringCache->putIfAbsent(key, [=] ()         {
+        return _stringCache->putIfAbsent(key, [=] () {
             super->loadString(key);
         });
     }

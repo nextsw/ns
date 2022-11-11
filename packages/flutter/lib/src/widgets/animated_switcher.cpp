@@ -58,7 +58,7 @@ void _AnimatedSwitcherStateCls::didUpdateWidget(AnimatedSwitcher oldWidget) {
     if (hasNewChild != hasOldChild || hasNewChild && !WidgetCls->canUpdate(widget->child!, _currentEntry!->widgetChild)) {
         _childNumber += 1;
         _addEntryForNewChild(true);
-    } else     {
+    } else {
         if (_currentEntry != nullptr) {
         assert(hasOldChild && hasNewChild);
         assert(WidgetCls->canUpdate(widget->child!, _currentEntry!->widgetChild));
@@ -133,7 +133,7 @@ void _AnimatedSwitcherStateCls::_updateTransitionForEntry(_ChildEntry entry) {
 }
 
 void _AnimatedSwitcherStateCls::_rebuildOutgoingWidgetsIfNeeded() {
-    _outgoingWidgets |= <Widget>unmodifiable(_outgoingEntries-><Widget>map([=] (_ChildEntry entry)     {
+    _outgoingWidgets |= <Widget>unmodifiable(_outgoingEntries-><Widget>map([=] (_ChildEntry entry) {
         entry->transition;
     }));
     assert(_outgoingEntries->length == _outgoingWidgets!->length());

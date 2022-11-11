@@ -89,7 +89,7 @@ void ColorsCls::rgbToHsv(Vector4 rgbColor, Vector4 hsvColor) {
     if (max != min) {
         if (max == rgbColor->r) {
             h = (rgbColor->g - rgbColor->b) / d + (rgbColor->g < rgbColor->b? 6.0 : 0.0);
-        } else         {
+        } else {
             if (max == rgbColor->g) {
             h = (rgbColor->b - rgbColor->r) / d + 2.0;
         } else {
@@ -121,7 +121,7 @@ void ColorsCls::rgbToHsl(Vector4 rgbColor, Vector4 hslColor) {
         s = l > 0.5? d / (2.0 - max - min) : d / (max + min);
         if (max == rgbColor->r) {
             h = (rgbColor->g - rgbColor->b) / d + (rgbColor->g < rgbColor->b? 6.0 : 0.0);
-        } else         {
+        } else {
             if (max == rgbColor->g) {
             h = (rgbColor->b - rgbColor->r) / d + 2.0;
         } else {
@@ -713,17 +713,17 @@ Vector4 ColorsCls::yellowGreen() {
 double ColorsCls::_hueToRgb(double p, double q, double t) {
     if ( < 0.0) {
         t += 1.0;
-    } else     {
+    } else {
         if (t > 1.0) {
         t -= 1.0;
     }
 ;
     }    if ( < 1.0 / 6.0) {
         return p + (q - p) * 6.0 * t;
-    } else     {
+    } else {
         if ( < 1.0 / 2.0) {
         return q;
-    } else     {
+    } else {
         if ( < 2.0 / 3.0) {
         return p + (q - p) * (2.0 / 3.0 - t) * 6.0;
     } else {

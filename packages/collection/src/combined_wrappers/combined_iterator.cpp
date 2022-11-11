@@ -5,7 +5,7 @@ CombinedIteratorCls<T>::CombinedIteratorCls(Iterator<Iterator<T>> iterators) {
             auto _c1 = toSet();    _c1.addAll(other);_iterators = iterators;
     }
     {
-        if (!iterators->moveNext())         {
+        if (!iterators->moveNext()) {
             _iterators = nullptr;
         }
     }
@@ -14,7 +14,7 @@ CombinedIteratorCls<T>::CombinedIteratorCls(Iterator<Iterator<T>> iterators) {
 template<typename T>
 T CombinedIteratorCls<T>::current() {
     auto iterators = _iterators;
-    if (iterators != nullptr)     {
+    if (iterators != nullptr) {
         return iterators->current()->current();
     }
     return as<T>(nullptr);

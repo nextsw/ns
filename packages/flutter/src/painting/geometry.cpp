@@ -23,7 +23,7 @@ Offset positionDependentBox(Size childSize, double margin, bool preferBelow, Siz
         double edge = margin + childSize->width() / 2.0;
         if ( < edge) {
             x = margin;
-        } else         {
+        } else {
             if (normalizedTargetX > size->width() - edge) {
             x = size->width() - margin - childSize->width();
         } else {

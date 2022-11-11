@@ -25,7 +25,7 @@ void PointerSignalResolverCls::resolve(PointerSignalEvent event) {
     } catch (Unknown exception) {
         InformationCollector collector;
         assert([=] () {
-            collector = [=] ()             {
+            collector = [=] () {
                 makeList(ArrayItem);
             };
             return true;

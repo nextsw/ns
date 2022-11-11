@@ -54,17 +54,17 @@ void TextEditingDeltaCls::fromJSON(Map<String, dynamic> encoded) {
     bool isReplaced = isOriginalComposingRegionTextChanged || (isReplacedByLonger || isReplacedByShorter || isReplacedBySame);
     if (isEqual) {
         return make<TextEditingDeltaNonTextUpdateCls>(oldText, newSelection, newComposing);
-    } else     {
+    } else {
         if ((isDeletingByReplacingWithEmpty || isDeletingInsideComposingRegion) && !isOriginalComposingRegionTextChanged) {
         int actualStart = replacementDestinationStart;
         if (!isDeletionGreaterThanOne) {
             actualStart = replacementDestinationEnd - 1;
         }
         return make<TextEditingDeltaDeletionCls>(oldText, make<TextRangeCls>(actualStart, replacementDestinationEnd), newSelection, newComposing);
-    } else     {
+    } else {
         if ((replacementDestinationStart == replacementDestinationEnd || isInsertingInsideComposingRegion) && !isOriginalComposingRegionTextChanged) {
         return make<TextEditingDeltaInsertionCls>(oldText, replacementSource->substring(replacementDestinationEnd - replacementDestinationStart, (replacementDestinationEnd - replacementDestinationStart) + (replacementSource->length() - (replacementDestinationEnd - replacementDestinationStart))), replacementDestinationEnd, newSelection, newComposing);
-    } else     {
+    } else {
         if (isReplaced) {
         return make<TextEditingDeltaReplacementCls>(oldText, replacementSource, make<TextRangeCls>(replacementDestinationStart, replacementDestinationEnd), newSelection, newComposing);
     }

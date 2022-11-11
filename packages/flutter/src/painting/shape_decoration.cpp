@@ -28,7 +28,7 @@ bool ShapeDecorationCls::isComplex() {
 ShapeDecoration ShapeDecorationCls::lerpFrom(Decoration a, double t) {
     if (is<BoxDecoration>(a)) {
         return ShapeDecorationCls->lerp(ShapeDecorationCls->fromBoxDecoration(as<BoxDecorationCls>(a)), this, t);
-    } else     {
+    } else {
         if (a == nullptr || is<ShapeDecoration>(a)) {
         return ShapeDecorationCls->lerp(as<ShapeDecoration>(a), this, t);
     }
@@ -39,7 +39,7 @@ ShapeDecoration ShapeDecorationCls::lerpFrom(Decoration a, double t) {
 ShapeDecoration ShapeDecorationCls::lerpTo(Decoration b, double t) {
     if (is<BoxDecoration>(b)) {
         return ShapeDecorationCls->lerp(this, ShapeDecorationCls->fromBoxDecoration(as<BoxDecorationCls>(b)), t);
-    } else     {
+    } else {
         if (b == nullptr || is<ShapeDecoration>(b)) {
         return ShapeDecorationCls->lerp(this, as<ShapeDecoration>(b), t);
     }
@@ -140,7 +140,7 @@ void _ShapeDecorationPainterCls::_precache(Rect rect, TextDirection textDirectio
     if (_decoration->shadows != nullptr) {
         if (_shadowCount == nullptr) {
             _shadowCount = _decoration->shadows!->length();
-                    List<Paint> list1 = make<ListCls<>>();        for (auto _x1 : _decoration->shadows!->map([=] (BoxShadow shadow)             {                        shadow->toPaint();                    })) {        {            list1.add(_x1);        }_shadowPaints = list1;
+                    List<Paint> list1 = make<ListCls<>>();        for (auto _x1 : _decoration->shadows!->map([=] (BoxShadow shadow) {                        shadow->toPaint();                    })) {        {            list1.add(_x1);        }_shadowPaints = list1;
         }
                     })) {    {        list2.add(_x2);    }_shadowPaths =         List<Path> list2 = make<ListCls<>>();        for (auto _x2 : _decoration->shadows!->map([=] (BoxShadow shadow) {                    return _decoration->shape->getOuterPath(rect->shift(shadow->offset)->inflate(shadow->spreadRadius), textDirection);list2;
     }

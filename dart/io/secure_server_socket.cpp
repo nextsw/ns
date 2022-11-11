@@ -1,12 +1,12 @@
 #include "secure_server_socket.hpp"
 Future<SecureServerSocket> SecureServerSocketCls::bind(address , int port, SecurityContext context, int backlog, bool requestClientCertificate, bool requireClientCertificate, bool shared, List<String> supportedProtocols, bool v6Only) {
-    return RawSecureServerSocketCls->bind(address, port, context, backlog, v6Only, requestClientCertificate, requireClientCertificate, supportedProtocols, shared)->then([=] (Unknown  serverSocket)     {
+    return RawSecureServerSocketCls->bind(address, port, context, backlog, v6Only, requestClientCertificate, requireClientCertificate, supportedProtocols, shared)->then([=] (Unknown  serverSocket) {
         SecureServerSocketCls->_(serverSocket);
     });
 }
 
 StreamSubscription<SecureSocket> SecureServerSocketCls::listen(std::function<void(SecureSocket socket)> onData, bool cancelOnError, std::function<void()> onDone, std::function<void ()> onError) {
-    return _socket->map([=] (Unknown  rawSocket)     {
+    return _socket->map([=] (Unknown  rawSocket) {
         SecureSocketCls->_(rawSocket);
     })->listen(onData, onError, onDone, cancelOnError);
 }
@@ -20,7 +20,7 @@ InternetAddress SecureServerSocketCls::address() {
 }
 
 Future<SecureServerSocket> SecureServerSocketCls::close() {
-    return _socket->close()->then([=] ()     {
+    return _socket->close()->then([=] () {
         this;
     });
 }
@@ -30,7 +30,7 @@ void SecureServerSocketCls::_owner(owner ) {
 }
 
 Future<RawSecureServerSocket> RawSecureServerSocketCls::bind(address , int port, SecurityContext context, int backlog, bool requestClientCertificate, bool requireClientCertificate, bool shared, List<String> supportedProtocols, bool v6Only) {
-    return RawServerSocketCls->bind(address, port, backlog, v6Only, shared)->then([=] (Unknown  serverSocket)     {
+    return RawServerSocketCls->bind(address, port, backlog, v6Only, shared)->then([=] (Unknown  serverSocket) {
         RawSecureServerSocketCls->_(serverSocket, context, requestClientCertificate, requireClientCertificate, supportedProtocols);
     });
 }
@@ -49,7 +49,7 @@ InternetAddress RawSecureServerSocketCls::address() {
 
 Future<RawSecureServerSocket> RawSecureServerSocketCls::close() {
     _closed = true;
-    return _socket->close()->then([=] ()     {
+    return _socket->close()->then([=] () {
         this;
     });
 }

@@ -73,12 +73,12 @@ void BindingBaseCls::initServiceExtensions() {
         if (!kIsWeb) {
             registerSignalServiceExtension(__s("exit"), _exitApplication);
         }
-        registerStringServiceExtension(__s("connectedVmServiceUri"), [=] ()         {
+        registerStringServiceExtension(__s("connectedVmServiceUri"), [=] () {
             connectedVmServiceUri | __s("");
         }, [=] (String uri) {
             connectedVmServiceUri = uri;
         });
-        registerStringServiceExtension(__s("activeDevToolsServerAddress"), [=] ()         {
+        registerStringServiceExtension(__s("activeDevToolsServerAddress"), [=] () {
             activeDevToolsServerAddress | __s("");
         }, [=] (String serverAddress) {
             activeDevToolsServerAddress = serverAddress;

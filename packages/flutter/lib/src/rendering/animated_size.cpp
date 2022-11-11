@@ -159,10 +159,10 @@ void RenderAnimatedSizeCls::_layoutStable() {
         _sizeTween->end = debugAdoptSize(child!->size);
         _restartAnimation();
         _state = RenderAnimatedSizeStateCls::changed;
-    } else     {
+    } else {
         if (_controller->value() == _controller->upperBound) {
         _sizeTween->begin = _sizeTween->end = debugAdoptSize(child!->size);
-    } else     {
+    } else {
         if (!_controller->isAnimating()) {
         _controller->forward();
     }

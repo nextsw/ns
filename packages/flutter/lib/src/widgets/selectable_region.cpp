@@ -8,7 +8,7 @@ void _SelectableRegionStateCls::initState() {
     widget->focusNode->addListener(_handleFocusChanged);
     _initMouseGestureRecognizer();
     _initTouchGestureRecognizer();
-    _gestureRecognizers[TapGestureRecognizerCls] = <TapGestureRecognizer>make<GestureRecognizerFactoryWithHandlersCls>([=] ()     {
+    _gestureRecognizers[TapGestureRecognizerCls] = <TapGestureRecognizer>make<GestureRecognizerFactoryWithHandlersCls>([=] () {
         make<TapGestureRecognizerCls>(this);
     }, [=] (TapGestureRecognizer instance) {
         instance->onTap = _clearSelection;
@@ -141,7 +141,7 @@ void _SelectableRegionStateCls::_updateSelectionStatus() {
 }
 
 void _SelectableRegionStateCls::_initMouseGestureRecognizer() {
-    _gestureRecognizers[PanGestureRecognizerCls] = <PanGestureRecognizer>make<GestureRecognizerFactoryWithHandlersCls>([=] ()     {
+    _gestureRecognizers[PanGestureRecognizerCls] = <PanGestureRecognizer>make<GestureRecognizerFactoryWithHandlersCls>([=] () {
         make<PanGestureRecognizerCls>(this, makeSet(ArrayItem));
     }, [=] (PanGestureRecognizer instance) {
             auto _c1 = instance;    _c1.onDown = auto _c2 = _startNewMouseSelectionGesture;    _c2.onStart = auto _c3 = _handleMouseDragStart;    _c3.onUpdate = auto _c4 = _handleMouseDragUpdate;    _c4.onEnd = auto _c5 = _handleMouseDragEnd;    _c5.onCancel = auto _c6 = _clearSelection;    _c6.dragStartBehavior = DragStartBehaviorCls::down;    _c6;    _c5;    _c4;    _c3;    _c2;_c1;
@@ -149,7 +149,7 @@ void _SelectableRegionStateCls::_initMouseGestureRecognizer() {
 }
 
 void _SelectableRegionStateCls::_initTouchGestureRecognizer() {
-    _gestureRecognizers[LongPressGestureRecognizerCls] = <LongPressGestureRecognizer>make<GestureRecognizerFactoryWithHandlersCls>([=] ()     {
+    _gestureRecognizers[LongPressGestureRecognizerCls] = <LongPressGestureRecognizer>make<GestureRecognizerFactoryWithHandlersCls>([=] () {
         make<LongPressGestureRecognizerCls>(this, _kLongPressSelectionDevices);
     }, [=] (LongPressGestureRecognizer instance) {
             auto _c1 = instance;    _c1.onLongPressStart = auto _c2 = _handleTouchLongPressStart;    _c2.onLongPressMoveUpdate = auto _c3 = _handleTouchLongPressMoveUpdate;    _c3.onLongPressEnd = auto _c4 = _handleTouchLongPressEnd;    _c4.onLongPressCancel = _clearSelection;    _c4;    _c3;    _c2;_c1;
@@ -289,9 +289,9 @@ void _SelectableRegionStateCls::_createSelectionOverlay() {
     } else {
         points = makeList(ArrayItem, ArrayItem);
     }
-    _selectionOverlay = make<SelectionOverlayCls>(context, widget, start?->handleType | TextSelectionHandleTypeCls::left, start?->lineHeight | end!->lineHeight, _handleSelectionStartHandleDragStart, _handleSelectionStartHandleDragUpdate, [=] (DragEndDetails details)     {
+    _selectionOverlay = make<SelectionOverlayCls>(context, widget, start?->handleType | TextSelectionHandleTypeCls::left, start?->lineHeight | end!->lineHeight, _handleSelectionStartHandleDragStart, _handleSelectionStartHandleDragUpdate, [=] (DragEndDetails details) {
         _stopSelectionStartEdgeUpdate();
-    }, end?->handleType | TextSelectionHandleTypeCls::right, end?->lineHeight | start!->lineHeight, _handleSelectionEndHandleDragStart, _handleSelectionEndHandleDragUpdate, [=] (DragEndDetails details)     {
+    }, end?->handleType | TextSelectionHandleTypeCls::right, end?->lineHeight | start!->lineHeight, _handleSelectionEndHandleDragStart, _handleSelectionEndHandleDragUpdate, [=] (DragEndDetails details) {
         _stopSelectionEndEdgeUpdate();
     }, points, widget->selectionControls, this, nullptr, _startHandleLayerLink, _endHandleLayerLink, _toolbarLayerLink);
 }
@@ -485,10 +485,10 @@ void _SelectableRegionContainerDelegateCls::didChangeSelectables() {
         handleSelectionEdgeUpdate(SelectionEdgeUpdateEventCls->forStart(_lastStartEdgeUpdateGlobalPosition!));
     }
     Set<Selectable> selectableSet = selectables->toSet();
-    _hasReceivedEndEvent->removeWhere([=] (Selectable selectable)     {
+    _hasReceivedEndEvent->removeWhere([=] (Selectable selectable) {
         !selectableSet->contains(selectable);
     });
-    _hasReceivedStartEvent->removeWhere([=] (Selectable selectable)     {
+    _hasReceivedStartEvent->removeWhere([=] (Selectable selectable) {
         !selectableSet->contains(selectable);
     });
     super->didChangeSelectables();
@@ -620,9 +620,9 @@ SelectionResult MultiSelectableSelectionContainerDelegateCls::handleSelectWord(S
             SelectionGeometry existingGeometry = selectables[index]->value;
             dispatchSelectionEventToChild(selectables[index], event);
             if (selectables[index]->value != existingGeometry) {
-                selectables->where([=] (Selectable target)                 {
+                selectables->where([=] (Selectable target) {
                     target != selectables[index];
-                })->forEach([=] (Selectable target)                 {
+                })->forEach([=] (Selectable target) {
                     dispatchSelectionEventToChild(target, make<ClearSelectionEventCls>());
                 });
                 currentSelectionStartIndex = currentSelectionEndIndex = index;

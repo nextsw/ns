@@ -31,7 +31,7 @@ Future<R> compute(ComputeCallback<Q, R> callback, Q message, String debugLabel) 
 
 template<typename Q, typename R>
 FutureOr<R> _IsolateConfigurationCls<Q, R>::applyAndTime() {
-    return TimelineCls->timeSync(debugLabel, [=] ()     {
+    return TimelineCls->timeSync(debugLabel, [=] () {
         callback(message);
     }, FlowCls->step(flowId));
 }

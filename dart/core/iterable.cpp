@@ -1,7 +1,7 @@
 #include "iterable.hpp"
 template<typename E>
 void IterableCls<E>::generate(int count, std::function<E(int index)> generator) {
-    if (count <= 0)     {
+    if (count <= 0) {
         return <E>make<EmptyIterableCls>();
     }
     return <E>make<_GeneratorIterableCls>(count, generator);
@@ -54,7 +54,7 @@ Iterable<T> IterableCls<E>::expand(std::function<Iterable<T>(E element)> toEleme
 template<typename E>
 bool IterableCls<E>::contains(Object element) {
     for (E e : this) {
-        if (e == element)         {
+        if (e == element) {
             return true;
         }
     }
@@ -63,7 +63,7 @@ bool IterableCls<E>::contains(Object element) {
 
 template<typename E>
 void IterableCls<E>::forEach(std::function<void(E element)> action) {
-    for (E element : this)     {
+    for (E element : this) {
         action(element);
     }
 }
@@ -85,7 +85,7 @@ template<typename E>
 template<typename T>
 T IterableCls<E>::fold(T initialValue, std::function<T(T previousValue, E element)> combine) {
     auto value = initialValue;
-    for (E element : this)     {
+    for (E element : this) {
         value = combine(value, element);
     }
     return value;
@@ -94,7 +94,7 @@ T IterableCls<E>::fold(T initialValue, std::function<T(T previousValue, E elemen
 template<typename E>
 bool IterableCls<E>::every(std::function<bool(E element)> test) {
     for (E element : this) {
-        if (!test(element))         {
+        if (!test(element)) {
             return false;
         }
     }
@@ -104,7 +104,7 @@ bool IterableCls<E>::every(std::function<bool(E element)> test) {
 template<typename E>
 String IterableCls<E>::join(String separator) {
     Iterator<E> iterator = this->iterator();
-    if (!iterator->moveNext())     {
+    if (!iterator->moveNext()) {
         return __s("");
     }
     StringBuffer buffer = make<StringBufferCls>();
@@ -125,7 +125,7 @@ String IterableCls<E>::join(String separator) {
 template<typename E>
 bool IterableCls<E>::any(std::function<bool(E element)> test) {
     for (E element : this) {
-        if (test(element))         {
+        if (test(element)) {
             return true;
         }
     }
@@ -208,11 +208,11 @@ E IterableCls<E>::last() {
 template<typename E>
 E IterableCls<E>::single() {
     Iterator<E> it = iterator();
-    if (!it->moveNext())     {
+    if (!it->moveNext()) {
         throw IterableElementErrorCls->noElement();
     }
     E result = it->current();
-    if (it->moveNext())     {
+    if (it->moveNext()) {
         throw IterableElementErrorCls->tooMany();
     }
     return result;
@@ -221,11 +221,11 @@ E IterableCls<E>::single() {
 template<typename E>
 E IterableCls<E>::firstWhere(std::function<bool(E element)> test, std::function<E()> orElse) {
     for (E element : this) {
-        if (test(element))         {
+        if (test(element)) {
             return element;
         }
     }
-    if (orElse != nullptr)     {
+    if (orElse != nullptr) {
         return orElse();
     }
     throw IterableElementErrorCls->noElement();
@@ -241,10 +241,10 @@ E IterableCls<E>::lastWhere(std::function<bool(E element)> test, std::function<E
             foundMatching = true;
         }
     }
-    if (foundMatching)     {
+    if (foundMatching) {
         return result;
     }
-    if (orElse != nullptr)     {
+    if (orElse != nullptr) {
         return orElse();
     }
     throw IterableElementErrorCls->noElement();
@@ -263,10 +263,10 @@ E IterableCls<E>::singleWhere(std::function<bool(E element)> test, std::function
             foundMatching = true;
         }
     }
-    if (foundMatching)     {
+    if (foundMatching) {
         return result;
     }
-    if (orElse != nullptr)     {
+    if (orElse != nullptr) {
         return orElse();
     }
     throw IterableElementErrorCls->noElement();
@@ -277,7 +277,7 @@ E IterableCls<E>::elementAt(int index) {
     RangeErrorCls->checkNotNegative(index, __s("index"));
     int elementIndex = 0;
     for (E element : this) {
-        if (index == elementIndex)         {
+        if (index == elementIndex) {
             return element;
         }
         elementIndex++;

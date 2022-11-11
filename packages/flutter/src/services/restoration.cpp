@@ -57,7 +57,7 @@ void RestorationManagerCls::scheduleSerializationFor(RestorationBucket bucket) {
     _bucketsNeedingSerialization->add(bucket);
     if (!_serializationScheduled) {
         _serializationScheduled = true;
-        SchedulerBindingCls::instance->addPostFrameCallback([=] (Duration _)         {
+        SchedulerBindingCls::instance->addPostFrameCallback([=] (Duration _) {
             _doSerialization();
         });
     }
@@ -266,13 +266,13 @@ String RestorationBucketCls::toString() {
 }
 
 Map<Object, Object> RestorationBucketCls::_rawChildren() {
-    return as<Map<Object, Object>>(_rawData->putIfAbsent(_childrenMapKey, [=] ()     {
+    return as<Map<Object, Object>>(_rawData->putIfAbsent(_childrenMapKey, [=] () {
         makeMap(makeList(), makeList();
     })!);
 }
 
 Map<Object, Object> RestorationBucketCls::_rawValues() {
-    return as<Map<Object, Object>>(_rawData->putIfAbsent(_valuesMapKey, [=] ()     {
+    return as<Map<Object, Object>>(_rawData->putIfAbsent(_valuesMapKey, [=] () {
         makeMap(makeList(), makeList();
     })!);
 }
@@ -325,7 +325,7 @@ bool RestorationBucketCls::_debugAssertIntegrity() {
             List<RestorationBucket> buckets = child->value;
             assert(buckets->isNotEmpty);
             assert(_claimedChildren->containsKey(id));
-                    List<DiagnosticsNode> list1 = make<ListCls<>>();        list1.add(ArrayItem);        for (auto _x1 : buckets->map([=] (RestorationBucket bucket)             {                        make<ErrorDescriptionCls>(__s("   * ${bucket.debugOwner}"));                    })) {        {            list1.add(_x1);        }list1.add(ArrayItem);error->addAll(list1);
+                    List<DiagnosticsNode> list1 = make<ListCls<>>();        list1.add(ArrayItem);        for (auto _x1 : buckets->map([=] (RestorationBucket bucket) {                        make<ErrorDescriptionCls>(__s("   * ${bucket.debugOwner}"));                    })) {        {            list1.add(_x1);        }list1.add(ArrayItem);error->addAll(list1);
         }
         throw FlutterErrorCls->fromParts(error);
     }());
@@ -361,7 +361,7 @@ void RestorationBucketCls::_addChildData(RestorationBucket child) {
     assert(child != nullptr);
     assert(child->_parent == this);
     if (_claimedChildren->containsKey(child->restorationId())) {
-        _childrenToAdd->putIfAbsent(child->restorationId(), [=] ()         {
+        _childrenToAdd->putIfAbsent(child->restorationId(), [=] () {
             makeList();
         })->add(child);
         _markNeedsSerialization();

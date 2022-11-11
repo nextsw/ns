@@ -53,7 +53,7 @@ Future<void> ScrollableCls::ensureVisible(BuildContext context, double alignment
     if (futures->length() == 1) {
         return futures->single;
     }
-    return FutureCls-><void>wait(futures)-><void>then([=] (List<void> _)     {
+    return FutureCls-><void>wait(futures)-><void>then([=] (List<void> _) {
         nullptr;
     });
 }
@@ -218,7 +218,7 @@ void ScrollableStateCls::_updatePosition() {
     _physics = _configuration->getScrollPhysics(context);
     if (widget->physics != nullptr) {
         _physics = widget->physics!->applyTo(_physics);
-    } else     {
+    } else {
         if (widget->scrollBehavior != nullptr) {
         _physics = widget->scrollBehavior!->getScrollPhysics(context)->applyTo(_physics);
     }
@@ -407,7 +407,7 @@ Future<void> EdgeDraggingAutoScrollerCls::_scroll() {
         if (proxyEnd > viewportEnd && scrollable->position()->pixels() > scrollable->position()->minScrollExtent()) {
             overDrag = math->max(proxyEnd - viewportEnd, overDragMax);
             newOffset = math->max(scrollable->position()->minScrollExtent(), scrollable->position()->pixels() - overDrag);
-        } else         {
+        } else {
             if ( < viewportStart && scrollable->position()->pixels() < scrollable->position()->maxScrollExtent()) {
             overDrag = math->max(viewportStart - proxyStart, overDragMax);
             newOffset = math->min(scrollable->position()->maxScrollExtent(), scrollable->position()->pixels() + overDrag);
@@ -417,7 +417,7 @@ Future<void> EdgeDraggingAutoScrollerCls::_scroll() {
         if ( < viewportStart && scrollable->position()->pixels() > scrollable->position()->minScrollExtent()) {
             overDrag = math->max(viewportStart - proxyStart, overDragMax);
             newOffset = math->max(scrollable->position()->minScrollExtent(), scrollable->position()->pixels() - overDrag);
-        } else         {
+        } else {
             if (proxyEnd > viewportEnd && scrollable->position()->pixels() < scrollable->position()->maxScrollExtent()) {
             overDrag = math->max(proxyEnd - viewportEnd, overDragMax);
             newOffset = math->min(scrollable->position()->maxScrollExtent(), scrollable->position()->pixels() + overDrag);
@@ -453,10 +453,10 @@ void _ScrollableSelectionContainerDelegateCls::position(ScrollPosition other) {
 
 void _ScrollableSelectionContainerDelegateCls::didChangeSelectables() {
     Set<Selectable> selectableSet = selectables->toSet();
-    _selectableStartEdgeUpdateRecords->removeWhere([=] (Selectable key,double value)     {
+    _selectableStartEdgeUpdateRecords->removeWhere([=] (Selectable key,double value) {
         !selectableSet->contains(key);
     });
-    _selectableEndEdgeUpdateRecords->removeWhere([=] (Selectable key,double value)     {
+    _selectableEndEdgeUpdateRecords->removeWhere([=] (Selectable key,double value) {
         !selectableSet->contains(key);
     });
     super->didChangeSelectables();

@@ -3,13 +3,13 @@ double _getHue(double red, double green, double blue, double max, double delta) 
     double hue;
     if (max == 0.0) {
         hue = 0.0;
-    } else     {
+    } else {
         if (max == red) {
         hue = 60.0 * (((green - blue) / delta) % 6);
-    } else     {
+    } else {
         if (max == green) {
         hue = 60.0 * (((blue - red) / delta) + 2);
-    } else     {
+    } else {
         if (max == blue) {
         hue = 60.0 * (((red - green) / delta) + 4);
     }
@@ -28,22 +28,22 @@ Color _colorFromHue(double alpha, double hue, double chroma, double secondary, d
         red = chroma;
         green = secondary;
         blue = 0.0;
-    } else     {
+    } else {
         if ( < 120.0) {
         red = secondary;
         green = chroma;
         blue = 0.0;
-    } else     {
+    } else {
         if ( < 180.0) {
         red = 0.0;
         green = chroma;
         blue = secondary;
-    } else     {
+    } else {
         if ( < 240.0) {
         red = 0.0;
         green = secondary;
         blue = chroma;
-    } else     {
+    } else {
         if ( < 300.0) {
         red = secondary;
         green = 0.0;
@@ -237,17 +237,17 @@ ColorSwatch<T> ColorSwatchCls<T>::lerp(ColorSwatch<T> a, ColorSwatch<T> b, doubl
         if (a == nullptr) {
             return nullptr;
         } else {
-            swatch = a->_swatch->map([=] (T key,Color color)             {
+            swatch = a->_swatch->map([=] (T key,Color color) {
                 <T, Color>make<MapEntryCls>(key, ColorCls->lerp(color, nullptr, t)!);
             });
         }
     } else {
         if (a == nullptr) {
-            swatch = b->_swatch->map([=] (T key,Color color)             {
+            swatch = b->_swatch->map([=] (T key,Color color) {
                 <T, Color>make<MapEntryCls>(key, ColorCls->lerp(nullptr, color, t)!);
             });
         } else {
-            swatch = a->_swatch->map([=] (T key,Color color)             {
+            swatch = a->_swatch->map([=] (T key,Color color) {
                 <T, Color>make<MapEntryCls>(key, ColorCls->lerp(color, b[key], t)!);
             });
         }

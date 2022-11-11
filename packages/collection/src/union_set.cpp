@@ -12,7 +12,7 @@ void UnionSetCls<E>::from(Iterable<Set<E>> sets, bool disjoint)
 
 template<typename E>
 int UnionSetCls<E>::length() {
-    return _disjoint? _sets->fold(0, [=] (Unknown  length,Unknown  set)     {
+    return _disjoint? _sets->fold(0, [=] (Unknown  length,Unknown  set) {
         length() + set->length;
     }) : _iterable()->length();
 }
@@ -24,7 +24,7 @@ Iterator<E> UnionSetCls<E>::iterator() {
 
 template<typename E>
 bool UnionSetCls<E>::contains(Object element) {
-    return _sets->any([=] (Unknown  set)     {
+    return _sets->any([=] (Unknown  set) {
         set->contains(element);
     });
 }
@@ -33,7 +33,7 @@ template<typename E>
 E UnionSetCls<E>::lookup(Object element) {
     for (auto set : _sets) {
         auto result = set->lookup(element);
-        if (result != nullptr || set->contains(nullptr))         {
+        if (result != nullptr || set->contains(nullptr)) {
             return result;
         }
     }
@@ -47,7 +47,7 @@ Set<E> UnionSetCls<E>::toSet() {
 
 template<typename E>
 Iterable<E> UnionSetCls<E>::_iterable() {
-    Set<E> set1 = make<SetCls<>>();for (auto set : _sets)     {        ;    }{    set1.add(ArrayItem);}auto allElements = _sets->expand([=] (Unknown  set) {
+    Set<E> set1 = make<SetCls<>>();for (auto set : _sets) {        ;    }{    set1.add(ArrayItem);}auto allElements = _sets->expand([=] (Unknown  set) {
     set;
 });
     return _disjoint? allElements : allElements->where(makeSet()->add);

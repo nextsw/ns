@@ -9,7 +9,7 @@ void SelectionRegistrantCls::registrar(SelectionRegistrar value) {
     }
     if (value == nullptr) {
         removeListener(_updateSelectionRegistrarSubscription);
-    } else     {
+    } else {
         if (_registrar == nullptr) {
         addListener(_updateSelectionRegistrarSubscription);
     }
@@ -32,7 +32,7 @@ void SelectionRegistrantCls::_updateSelectionRegistrarSubscription() {
     if (_subscribedToSelectionRegistrar && !value->hasContent) {
         _registrar!->remove(this);
         _subscribedToSelectionRegistrar = false;
-    } else     {
+    } else {
         if (!_subscribedToSelectionRegistrar && value->hasContent) {
         _registrar!->add(this);
         _subscribedToSelectionRegistrar = true;

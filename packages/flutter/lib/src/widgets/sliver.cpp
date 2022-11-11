@@ -378,13 +378,13 @@ void SliverMultiBoxAdaptorElementCls::performRebuild() {
                 }
                 newChildren[newIndex] = _childElements[index];
                 if (_replaceMovedChildren) {
-                    newChildren->putIfAbsent(index, [=] ()                     {
+                    newChildren->putIfAbsent(index, [=] () {
                         nullptr;
                     });
                 }
                 _childElements->remove(index);
             } else {
-                newChildren->putIfAbsent(index, [=] ()                 {
+                newChildren->putIfAbsent(index, [=] () {
                     _childElements[index];
                 });
             }
@@ -484,7 +484,7 @@ int SliverMultiBoxAdaptorElementCls::childCount() {
             lo = hi - 1;
             if ( < max ~/ 2) {
                 hi *= 2;
-            } else             {
+            } else {
                 if ( < max) {
                 hi = max;
             } else {
@@ -555,7 +555,7 @@ void SliverMultiBoxAdaptorElementCls::removeRenderObjectChild(RenderObject child
 }
 
 void SliverMultiBoxAdaptorElementCls::visitChildren(ElementVisitor visitor) {
-    assert(!_childElements->values()->any([=] (Element child)     {
+    assert(!_childElements->values()->any([=] (Element child) {
         child == nullptr;
     }));
     _childElements->values()-><Element>cast()->toList()->forEach(visitor);

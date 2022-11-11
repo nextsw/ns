@@ -81,14 +81,14 @@ template<typename E>
 void QueueListCls<E>::addFirst(E element) {
     _head = (_head - 1) & (_table->length() - 1);
     _table[_head] = element;
-    if (_head == _tail)     {
+    if (_head == _tail) {
         _grow();
     }
 }
 
 template<typename E>
 E QueueListCls<E>::removeFirst() {
-    if (_head == _tail)     {
+    if (_head == _tail) {
         throw make<StateErrorCls>(__s("No element"));
     }
     auto result = as<E>(_table[_head]);
@@ -99,7 +99,7 @@ E QueueListCls<E>::removeFirst() {
 
 template<typename E>
 E QueueListCls<E>::removeLast() {
-    if (_head == _tail)     {
+    if (_head == _tail) {
         throw make<StateErrorCls>(__s("No element"));
     }
     _tail = (_tail - 1) & (_table->length() - 1);
@@ -115,7 +115,7 @@ int QueueListCls<E>::length() {
 
 template<typename E>
 void QueueListCls<E>::length(int value) {
-    if ( < 0)     {
+    if ( < 0) {
         throw make<RangeErrorCls>(__s("Length $value may not be negative."));
     }
     if (value > length() && !is<E>(nullptr)) {
@@ -188,7 +188,7 @@ int QueueListCls<E>::_nextPowerOf2(int number) {
     number = (number << 1) - 1;
     for (; ; ) {
         auto nextNumber = number & (number - 1);
-        if (nextNumber == 0)         {
+        if (nextNumber == 0) {
             return number;
         }
         number = nextNumber;
@@ -199,7 +199,7 @@ template<typename E>
 void QueueListCls<E>::_add(E element) {
     _table[_tail] = element;
     _tail = (_tail + 1) & (_table->length() - 1);
-    if (_head == _tail)     {
+    if (_head == _tail) {
         _grow();
     }
 }

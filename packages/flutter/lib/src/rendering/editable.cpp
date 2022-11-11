@@ -669,7 +669,7 @@ void RenderEditableCls::clipBehavior(Clip value) {
 
 List<Rect> RenderEditableCls::getBoxesForSelection(TextSelection selection) {
     _computeTextMetricsIfNeeded();
-    return _textPainter->getBoxesForSelection(selection)->map([=] (TextBox textBox)     {
+    return _textPainter->getBoxesForSelection(selection)->map([=] (TextBox textBox) {
         textBox->toRect()->shift(_paintOffset());
     })->toList();
 }
@@ -677,7 +677,7 @@ List<Rect> RenderEditableCls::getBoxesForSelection(TextSelection selection) {
 void RenderEditableCls::describeSemanticsConfiguration(SemanticsConfiguration config) {
     super->describeSemanticsConfiguration(config);
     _semanticsInfo = _textPainter->text()!->getSemanticsInformation();
-    if (_semanticsInfo!->any([=] (InlineSpanSemanticsInformation info)     {
+    if (_semanticsInfo!->any([=] (InlineSpanSemanticsInformation info) {
         info->recognizer != nullptr;
     }) && defaultTargetPlatform != TargetPlatformCls::macOS) {
         assert(readOnly() && !obscureText());
@@ -769,13 +769,13 @@ void RenderEditableCls::assembleSemanticsNode(SemanticsNode node, SemanticsConfi
                         configuration->onTap() = recognizer->onTap;
                         configuration->isLink() = true;
                     }
-                } else                 {
+                } else {
                     if (is<DoubleTapGestureRecognizer>(recognizer)) {
                     if (as<DoubleTapGestureRecognizerCls>(recognizer)->onDoubleTap != nullptr) {
                         configuration->onTap() = recognizer->onDoubleTap;
                         configuration->isLink() = true;
                     }
-                } else                 {
+                } else {
                     if (is<LongPressGestureRecognizer>(recognizer)) {
                     if (as<LongPressGestureRecognizerCls>(recognizer)->onLongPress != nullptr) {
                         configuration->onLongPress() = recognizer->onLongPress;
@@ -872,7 +872,7 @@ Rect RenderEditableCls::getRectForComposingRange(TextRange range) {
     }
     _computeTextMetricsIfNeeded();
     List<TextBox> boxes = _textPainter->getBoxesForSelection(make<TextSelectionCls>(range->start, range->end), selectionHeightStyle(), selectionWidthStyle());
-    return boxes->fold(nullptr, [=] (Rect accum,TextBox incoming)     {
+    return boxes->fold(nullptr, [=] (Rect accum,TextBox incoming) {
         accum?->expandToInclude(incoming->toRect()) | incoming->toRect();
     })?->shift(_paintOffset());
 }
@@ -1074,7 +1074,7 @@ Offset RenderEditableCls::calculateBoundedFloatingCursorOffset(Offset rawCursorO
     if (_resetOriginOnLeft && deltaPosition->dx() > 0) {
         _relativeOrigin = make<OffsetCls>(rawCursorOffset->dx() - leftBound, _relativeOrigin->dy());
         _resetOriginOnLeft = false;
-    } else     {
+    } else {
         if (_resetOriginOnRight && deltaPosition->dx() < 0) {
         _relativeOrigin = make<OffsetCls>(rawCursorOffset->dx() - rightBound, _relativeOrigin->dy());
         _resetOriginOnRight = false;
@@ -1083,7 +1083,7 @@ Offset RenderEditableCls::calculateBoundedFloatingCursorOffset(Offset rawCursorO
     }    if (_resetOriginOnTop && deltaPosition->dy() > 0) {
         _relativeOrigin = make<OffsetCls>(_relativeOrigin->dx(), rawCursorOffset->dy() - topBound);
         _resetOriginOnTop = false;
-    } else     {
+    } else {
         if (_resetOriginOnBottom && deltaPosition->dy() < 0) {
         _relativeOrigin = make<OffsetCls>(_relativeOrigin->dx(), rawCursorOffset->dy() - bottomBound);
         _resetOriginOnBottom = false;
@@ -1096,14 +1096,14 @@ Offset RenderEditableCls::calculateBoundedFloatingCursorOffset(Offset rawCursorO
     Offset adjustedOffset = make<OffsetCls>(adjustedX, adjustedY);
     if ( < leftBound && deltaPosition->dx() < 0) {
         _resetOriginOnLeft = true;
-    } else     {
+    } else {
         if (currentX > rightBound && deltaPosition->dx() > 0) {
         _resetOriginOnRight = true;
     }
 ;
     }    if ( < topBound && deltaPosition->dy() < 0) {
         _resetOriginOnTop = true;
-    } else     {
+    } else {
         if (currentY > bottomBound && deltaPosition->dy() > 0) {
         _resetOriginOnBottom = true;
     }
@@ -1451,7 +1451,7 @@ TextSelection RenderEditableCls::_getWordAtOffset(TextPosition position) {
     }
     if (obscureText()) {
         return make<TextSelectionCls>(0, _plainText()->length());
-    } else     {
+    } else {
         if (TextLayoutMetricsCls->isWhitespace(_plainText()->codeUnitAt(position->offset)) && position->offset > 0) {
         assert(defaultTargetPlatform != nullptr);
         TextRange previousWord = _getPreviousWord(word->start);

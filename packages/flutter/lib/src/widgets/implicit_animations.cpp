@@ -184,28 +184,28 @@ void AnimatedContainerCls::debugFillProperties(DiagnosticPropertiesBuilder prope
 }
 
 void _AnimatedContainerStateCls::forEachTween(TweenVisitor<dynamic> visitor) {
-    _alignment = as<AlignmentGeometryTween>(visitor(_alignment, widget->alignment, [=] (dynamic value)     {
+    _alignment = as<AlignmentGeometryTween>(visitor(_alignment, widget->alignment, [=] (dynamic value) {
         make<AlignmentGeometryTweenCls>(as<AlignmentGeometry>(value));
     }));
-    _padding = as<EdgeInsetsGeometryTween>(visitor(_padding, widget->padding, [=] (dynamic value)     {
+    _padding = as<EdgeInsetsGeometryTween>(visitor(_padding, widget->padding, [=] (dynamic value) {
         make<EdgeInsetsGeometryTweenCls>(as<EdgeInsetsGeometry>(value));
     }));
-    _decoration = as<DecorationTween>(visitor(_decoration, widget->decoration, [=] (dynamic value)     {
+    _decoration = as<DecorationTween>(visitor(_decoration, widget->decoration, [=] (dynamic value) {
         make<DecorationTweenCls>(as<Decoration>(value));
     }));
-    _foregroundDecoration = as<DecorationTween>(visitor(_foregroundDecoration, widget->foregroundDecoration, [=] (dynamic value)     {
+    _foregroundDecoration = as<DecorationTween>(visitor(_foregroundDecoration, widget->foregroundDecoration, [=] (dynamic value) {
         make<DecorationTweenCls>(as<Decoration>(value));
     }));
-    _constraints = as<BoxConstraintsTween>(visitor(_constraints, widget->constraints, [=] (dynamic value)     {
+    _constraints = as<BoxConstraintsTween>(visitor(_constraints, widget->constraints, [=] (dynamic value) {
         make<BoxConstraintsTweenCls>(as<BoxConstraints>(value));
     }));
-    _margin = as<EdgeInsetsGeometryTween>(visitor(_margin, widget->margin, [=] (dynamic value)     {
+    _margin = as<EdgeInsetsGeometryTween>(visitor(_margin, widget->margin, [=] (dynamic value) {
         make<EdgeInsetsGeometryTweenCls>(as<EdgeInsetsGeometry>(value));
     }));
-    _transform = as<Matrix4Tween>(visitor(_transform, widget->transform, [=] (dynamic value)     {
+    _transform = as<Matrix4Tween>(visitor(_transform, widget->transform, [=] (dynamic value) {
         make<Matrix4TweenCls>(as<Matrix4>(value));
     }));
-    _transformAlignment = as<AlignmentGeometryTween>(visitor(_transformAlignment, widget->transformAlignment, [=] (dynamic value)     {
+    _transformAlignment = as<AlignmentGeometryTween>(visitor(_transformAlignment, widget->transformAlignment, [=] (dynamic value) {
         make<AlignmentGeometryTweenCls>(as<AlignmentGeometry>(value));
     }));
 }
@@ -244,7 +244,7 @@ void AnimatedPaddingCls::debugFillProperties(DiagnosticPropertiesBuilder propert
 }
 
 void _AnimatedPaddingStateCls::forEachTween(TweenVisitor<dynamic> visitor) {
-    _padding = as<EdgeInsetsGeometryTween>(visitor(_padding, widget->padding, [=] (dynamic value)     {
+    _padding = as<EdgeInsetsGeometryTween>(visitor(_padding, widget->padding, [=] (dynamic value) {
         make<EdgeInsetsGeometryTweenCls>(as<EdgeInsetsGeometry>(value));
     }));
 }
@@ -276,16 +276,16 @@ void AnimatedAlignCls::debugFillProperties(DiagnosticPropertiesBuilder propertie
 }
 
 void _AnimatedAlignStateCls::forEachTween(TweenVisitor<dynamic> visitor) {
-    _alignment = as<AlignmentGeometryTween>(visitor(_alignment, widget->alignment, [=] (dynamic value)     {
+    _alignment = as<AlignmentGeometryTween>(visitor(_alignment, widget->alignment, [=] (dynamic value) {
         make<AlignmentGeometryTweenCls>(as<AlignmentGeometry>(value));
     }));
     if (widget->heightFactor != nullptr) {
-        _heightFactorTween = as<Tween<double>>(visitor(_heightFactorTween, widget->heightFactor, [=] (dynamic value)         {
+        _heightFactorTween = as<Tween<double>>(visitor(_heightFactorTween, widget->heightFactor, [=] (dynamic value) {
             <double>make<TweenCls>(as<double>(value));
         }));
     }
     if (widget->widthFactor != nullptr) {
-        _widthFactorTween = as<Tween<double>>(visitor(_widthFactorTween, widget->widthFactor, [=] (dynamic value)         {
+        _widthFactorTween = as<Tween<double>>(visitor(_widthFactorTween, widget->widthFactor, [=] (dynamic value) {
             <double>make<TweenCls>(as<double>(value));
         }));
     }
@@ -326,22 +326,22 @@ void AnimatedPositionedCls::debugFillProperties(DiagnosticPropertiesBuilder prop
 }
 
 void _AnimatedPositionedStateCls::forEachTween(TweenVisitor<dynamic> visitor) {
-    _left = as<Tween<double>>(visitor(_left, widget->left, [=] (dynamic value)     {
+    _left = as<Tween<double>>(visitor(_left, widget->left, [=] (dynamic value) {
         <double>make<TweenCls>(as<double>(value));
     }));
-    _top = as<Tween<double>>(visitor(_top, widget->top, [=] (dynamic value)     {
+    _top = as<Tween<double>>(visitor(_top, widget->top, [=] (dynamic value) {
         <double>make<TweenCls>(as<double>(value));
     }));
-    _right = as<Tween<double>>(visitor(_right, widget->right, [=] (dynamic value)     {
+    _right = as<Tween<double>>(visitor(_right, widget->right, [=] (dynamic value) {
         <double>make<TweenCls>(as<double>(value));
     }));
-    _bottom = as<Tween<double>>(visitor(_bottom, widget->bottom, [=] (dynamic value)     {
+    _bottom = as<Tween<double>>(visitor(_bottom, widget->bottom, [=] (dynamic value) {
         <double>make<TweenCls>(as<double>(value));
     }));
-    _width = as<Tween<double>>(visitor(_width, widget->width, [=] (dynamic value)     {
+    _width = as<Tween<double>>(visitor(_width, widget->width, [=] (dynamic value) {
         <double>make<TweenCls>(as<double>(value));
     }));
-    _height = as<Tween<double>>(visitor(_height, widget->height, [=] (dynamic value)     {
+    _height = as<Tween<double>>(visitor(_height, widget->height, [=] (dynamic value) {
         <double>make<TweenCls>(as<double>(value));
     }));
 }
@@ -382,22 +382,22 @@ void AnimatedPositionedDirectionalCls::debugFillProperties(DiagnosticPropertiesB
 }
 
 void _AnimatedPositionedDirectionalStateCls::forEachTween(TweenVisitor<dynamic> visitor) {
-    _start = as<Tween<double>>(visitor(_start, widget->start, [=] (dynamic value)     {
+    _start = as<Tween<double>>(visitor(_start, widget->start, [=] (dynamic value) {
         <double>make<TweenCls>(as<double>(value));
     }));
-    _top = as<Tween<double>>(visitor(_top, widget->top, [=] (dynamic value)     {
+    _top = as<Tween<double>>(visitor(_top, widget->top, [=] (dynamic value) {
         <double>make<TweenCls>(as<double>(value));
     }));
-    _end = as<Tween<double>>(visitor(_end, widget->end, [=] (dynamic value)     {
+    _end = as<Tween<double>>(visitor(_end, widget->end, [=] (dynamic value) {
         <double>make<TweenCls>(as<double>(value));
     }));
-    _bottom = as<Tween<double>>(visitor(_bottom, widget->bottom, [=] (dynamic value)     {
+    _bottom = as<Tween<double>>(visitor(_bottom, widget->bottom, [=] (dynamic value) {
         <double>make<TweenCls>(as<double>(value));
     }));
-    _width = as<Tween<double>>(visitor(_width, widget->width, [=] (dynamic value)     {
+    _width = as<Tween<double>>(visitor(_width, widget->width, [=] (dynamic value) {
         <double>make<TweenCls>(as<double>(value));
     }));
-    _height = as<Tween<double>>(visitor(_height, widget->height, [=] (dynamic value)     {
+    _height = as<Tween<double>>(visitor(_height, widget->height, [=] (dynamic value) {
         <double>make<TweenCls>(as<double>(value));
     }));
 }
@@ -435,7 +435,7 @@ void AnimatedScaleCls::debugFillProperties(DiagnosticPropertiesBuilder propertie
 }
 
 void _AnimatedScaleStateCls::forEachTween(TweenVisitor<dynamic> visitor) {
-    _scale = as<Tween<double>>(visitor(_scale, widget->scale, [=] (dynamic value)     {
+    _scale = as<Tween<double>>(visitor(_scale, widget->scale, [=] (dynamic value) {
         <double>make<TweenCls>(as<double>(value));
     }));
 }
@@ -466,7 +466,7 @@ void AnimatedRotationCls::debugFillProperties(DiagnosticPropertiesBuilder proper
 }
 
 void _AnimatedRotationStateCls::forEachTween(TweenVisitor<dynamic> visitor) {
-    _turns = as<Tween<double>>(visitor(_turns, widget->turns, [=] (dynamic value)     {
+    _turns = as<Tween<double>>(visitor(_turns, widget->turns, [=] (dynamic value) {
         <double>make<TweenCls>(as<double>(value));
     }));
 }
@@ -489,7 +489,7 @@ void AnimatedSlideCls::debugFillProperties(DiagnosticPropertiesBuilder propertie
 }
 
 void _AnimatedSlideStateCls::forEachTween(TweenVisitor<dynamic> visitor) {
-    _offset = as<Tween<Offset>>(visitor(_offset, widget->offset, [=] (dynamic value)     {
+    _offset = as<Tween<Offset>>(visitor(_offset, widget->offset, [=] (dynamic value) {
         <Offset>make<TweenCls>(as<Offset>(value));
     }));
 }
@@ -518,7 +518,7 @@ void AnimatedOpacityCls::debugFillProperties(DiagnosticPropertiesBuilder propert
 }
 
 void _AnimatedOpacityStateCls::forEachTween(TweenVisitor<dynamic> visitor) {
-    _opacity = as<Tween<double>>(visitor(_opacity, widget->opacity, [=] (dynamic value)     {
+    _opacity = as<Tween<double>>(visitor(_opacity, widget->opacity, [=] (dynamic value) {
         <double>make<TweenCls>(as<double>(value));
     }));
 }
@@ -547,7 +547,7 @@ void SliverAnimatedOpacityCls::debugFillProperties(DiagnosticPropertiesBuilder p
 }
 
 void _SliverAnimatedOpacityStateCls::forEachTween(TweenVisitor<dynamic> visitor) {
-    _opacity = as<Tween<double>>(visitor(_opacity, widget->opacity, [=] (dynamic value)     {
+    _opacity = as<Tween<double>>(visitor(_opacity, widget->opacity, [=] (dynamic value) {
         <double>make<TweenCls>(as<double>(value));
     }));
 }
@@ -587,7 +587,7 @@ void AnimatedDefaultTextStyleCls::debugFillProperties(DiagnosticPropertiesBuilde
 }
 
 void _AnimatedDefaultTextStyleStateCls::forEachTween(TweenVisitor<dynamic> visitor) {
-    _style = as<TextStyleTween>(visitor(_style, widget->style, [=] (dynamic value)     {
+    _style = as<TextStyleTween>(visitor(_style, widget->style, [=] (dynamic value) {
         make<TextStyleTweenCls>(as<TextStyle>(value));
     }));
 }
@@ -626,16 +626,16 @@ void AnimatedPhysicalModelCls::debugFillProperties(DiagnosticPropertiesBuilder p
 }
 
 void _AnimatedPhysicalModelStateCls::forEachTween(TweenVisitor<dynamic> visitor) {
-    _borderRadius = as<BorderRadiusTween>(visitor(_borderRadius, widget->borderRadius, [=] (dynamic value)     {
+    _borderRadius = as<BorderRadiusTween>(visitor(_borderRadius, widget->borderRadius, [=] (dynamic value) {
         make<BorderRadiusTweenCls>(as<BorderRadius>(value));
     }));
-    _elevation = as<Tween<double>>(visitor(_elevation, widget->elevation, [=] (dynamic value)     {
+    _elevation = as<Tween<double>>(visitor(_elevation, widget->elevation, [=] (dynamic value) {
         <double>make<TweenCls>(as<double>(value));
     }));
-    _color = as<ColorTween>(visitor(_color, widget->color, [=] (dynamic value)     {
+    _color = as<ColorTween>(visitor(_color, widget->color, [=] (dynamic value) {
         make<ColorTweenCls>(as<Color>(value));
     }));
-    _shadowColor = as<ColorTween>(visitor(_shadowColor, widget->shadowColor, [=] (dynamic value)     {
+    _shadowColor = as<ColorTween>(visitor(_shadowColor, widget->shadowColor, [=] (dynamic value) {
         make<ColorTweenCls>(as<Color>(value));
     }));
 }
@@ -664,16 +664,16 @@ void AnimatedFractionallySizedBoxCls::debugFillProperties(DiagnosticPropertiesBu
 }
 
 void _AnimatedFractionallySizedBoxStateCls::forEachTween(TweenVisitor<dynamic> visitor) {
-    _alignment = as<AlignmentGeometryTween>(visitor(_alignment, widget->alignment, [=] (dynamic value)     {
+    _alignment = as<AlignmentGeometryTween>(visitor(_alignment, widget->alignment, [=] (dynamic value) {
         make<AlignmentGeometryTweenCls>(as<AlignmentGeometry>(value));
     }));
     if (widget->heightFactor != nullptr) {
-        _heightFactorTween = as<Tween<double>>(visitor(_heightFactorTween, widget->heightFactor, [=] (dynamic value)         {
+        _heightFactorTween = as<Tween<double>>(visitor(_heightFactorTween, widget->heightFactor, [=] (dynamic value) {
             <double>make<TweenCls>(as<double>(value));
         }));
     }
     if (widget->widthFactor != nullptr) {
-        _widthFactorTween = as<Tween<double>>(visitor(_widthFactorTween, widget->widthFactor, [=] (dynamic value)         {
+        _widthFactorTween = as<Tween<double>>(visitor(_widthFactorTween, widget->widthFactor, [=] (dynamic value) {
             <double>make<TweenCls>(as<double>(value));
         }));
     }

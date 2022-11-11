@@ -217,7 +217,7 @@ bool BoxConstraintsCls::debugAssertIsValid(InformationCollector informationColle
             String whichFields = __s("");
             if (affectedFieldsList->length() > 2) {
                 whichFields = affectedFieldsList->join(__s(", "));
-            } else             {
+            } else {
                 if (affectedFieldsList->length() == 2) {
                 whichFields = affectedFieldsList->join(__s(" "));
             } else {
@@ -362,7 +362,7 @@ bool BoxHitTestResultCls::addWithOutOfBandPosition(BoxHitTestWithOutOfBandPositi
     assert((paintOffset == nullptr && paintTransform == nullptr && rawTransform != nullptr) || (paintOffset == nullptr && paintTransform != nullptr && rawTransform == nullptr) || (paintOffset != nullptr && paintTransform == nullptr && rawTransform == nullptr), __s("Exactly one transform or offset argument must be provided."));
     if (paintOffset != nullptr) {
         pushOffset(-paintOffset);
-    } else     {
+    } else {
         if (rawTransform != nullptr) {
         pushTransform(rawTransform);
     } else {
@@ -644,7 +644,7 @@ double RenderBoxCls::getDistanceToBaseline(TextBaseline baseline, bool onlyReal)
 double RenderBoxCls::getDistanceToActualBaseline(TextBaseline baseline) {
     assert(_debugDoingBaseline, __s("Please see the documentation for computeDistanceToActualBaseline for the required calling conventions of this method."));
     _cachedBaselines |= makeMap(makeList(), makeList();
-    _cachedBaselines!->putIfAbsent(baseline, [=] ()     {
+    _cachedBaselines!->putIfAbsent(baseline, [=] () {
         computeDistanceToActualBaseline(baseline);
     });
     return _cachedBaselines![baseline];
@@ -827,7 +827,7 @@ bool RenderBoxCls::debugHandleEvent(PointerEvent event, HitTestEntry entry) {
         if (debugPaintPointersEnabled) {
             if (is<PointerDownEvent>(event)) {
                 _debugActivePointers += 1;
-            } else             {
+            } else {
                 if (is<PointerUpEvent>(event) || is<PointerCancelEvent>(event)) {
                 _debugActivePointers -= 1;
             }

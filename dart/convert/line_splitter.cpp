@@ -7,7 +7,7 @@ Iterable<String> LineSplitterCls::split(String lines, int start, int end) {
         auto previousChar = charValue;
         charValue = lines->codeUnitAt(i);
         if (charValue != _CR) {
-            if (charValue != _LF)             {
+            if (charValue != _LF) {
                 continue;
             }
             if (previousChar == _CR) {
@@ -34,7 +34,7 @@ List<String> LineSplitterCls::convert(String data) {
         auto previousChar = charValue;
         charValue = data->codeUnitAt(i);
         if (charValue != _CR) {
-            if (charValue != _LF)             {
+            if (charValue != _LF) {
                 continue;
             }
             if (previousChar == _CR) {
@@ -56,7 +56,7 @@ StringConversionSink LineSplitterCls::startChunkedConversion(Sink<String> sink) 
 }
 
 Stream<String> LineSplitterCls::bind(Stream<String> stream) {
-    return <String>eventTransformed(stream, [=] (EventSink<String> sink)     {
+    return <String>eventTransformed(stream, [=] (EventSink<String> sink) {
         make<_LineSplitterEventSinkCls>(sink);
     });
 }
@@ -64,7 +64,7 @@ Stream<String> LineSplitterCls::bind(Stream<String> stream) {
 void _LineSplitterSinkCls::addSlice(String chunk, int start, int end, bool isLast) {
     end = RangeErrorCls->checkValidRange(start, end, chunk->length());
     if (start >= end) {
-        if (isLast)         {
+        if (isLast) {
             close();
         }
         return;
@@ -76,7 +76,7 @@ void _LineSplitterSinkCls::addSlice(String chunk, int start, int end, bool isLas
         start = 0;
         end = chunk->length();
         _carry = nullptr;
-    } else     {
+    } else {
         if (_skipLeadingLF) {
         if (chunk->codeUnitAt(start) == _LF) {
             start += 1;
@@ -85,7 +85,7 @@ void _LineSplitterSinkCls::addSlice(String chunk, int start, int end, bool isLas
     }
 ;
     }    _addLines(chunk, start, end);
-    if (isLast)     {
+    if (isLast) {
         close();
     }
 }
@@ -105,7 +105,7 @@ void _LineSplitterSinkCls::_addLines(String lines, int start, int end) {
         auto previousChar = charValue;
         charValue = lines->codeUnitAt(i);
         if (charValue != _CR) {
-            if (charValue != _LF)             {
+            if (charValue != _LF) {
                 continue;
             }
             if (previousChar == _CR) {

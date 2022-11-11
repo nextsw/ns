@@ -39,7 +39,7 @@ Widget ContainerCls::build(BuildContext context) {
     Widget current = child;
     if (child == nullptr && (constraints == nullptr || !constraints!->isTight())) {
         current = make<LimitedBoxCls>(0.0, 0.0, make<ConstrainedBoxCls>(BoxConstraintsCls->expand()));
-    } else     {
+    } else {
         if (alignment != nullptr) {
         current = make<AlignCls>(alignment!, current);
     }

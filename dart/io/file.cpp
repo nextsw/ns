@@ -28,13 +28,13 @@ String FileSystemExceptionCls::toString() {
         if (osError != nullptr) {
             sb->write(__s(" ($osError)"));
         }
-    } else     {
+    } else {
         if (osError != nullptr) {
         sb->write(__s(": $osError"));
         if (path != nullptr) {
             sb->write(__s(", path = '$path'"));
         }
-    } else     {
+    } else {
         if (path != nullptr) {
         sb->write(__s(": $path"));
     }

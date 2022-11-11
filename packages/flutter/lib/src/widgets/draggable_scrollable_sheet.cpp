@@ -288,7 +288,7 @@ String _DraggableScrollableSheetStateCls::_snapSizeErrorMessage(int invalidIndex
 }
 
 _DraggableScrollableSheetScrollPosition _DraggableScrollableSheetScrollControllerCls::createScrollPosition(ScrollPhysics physics, ScrollContext context, ScrollPosition oldPosition) {
-    return make<_DraggableScrollableSheetScrollPositionCls>(physics, context, oldPosition, [=] ()     {
+    return make<_DraggableScrollableSheetScrollPositionCls>(physics, context, oldPosition, [=] () {
         extent;
     });
 }

@@ -75,7 +75,7 @@ AsyncError _ZoneDelegateCls::errorCallback(Zone zone, Object error, StackTrace s
     checkNotNullable(error, __s("error"));
     auto implementation = _delegationTarget->_errorCallback();
     _Zone implZone = implementation->zone;
-    if (identical(implZone, _rootZone))     {
+    if (identical(implZone, _rootZone)) {
         return nullptr;
     }
     ErrorCallbackHandler handler = implementation->function;
@@ -175,7 +175,7 @@ void _CustomZoneCls::runBinaryGuarded(std::function<void(T1 arg1, T2 arg2)> f, T
 template<typename R>
 ZoneCallback<R> _CustomZoneCls::bindCallback(std::function<R()> f) {
     auto registered = registerCallback(f);
-    return [=] ()     {
+    return [=] () {
         this->run(registered);
     };
 }
@@ -183,7 +183,7 @@ ZoneCallback<R> _CustomZoneCls::bindCallback(std::function<R()> f) {
 template<typename R, typename T>
 ZoneUnaryCallback<R, T> _CustomZoneCls::bindUnaryCallback(std::function<R(T arg)> f) {
     auto registered = registerUnaryCallback(f);
-    return [=] (Unknown  arg)     {
+    return [=] (Unknown  arg) {
         this->runUnary(registered, arg);
     };
 }
@@ -191,14 +191,14 @@ ZoneUnaryCallback<R, T> _CustomZoneCls::bindUnaryCallback(std::function<R(T arg)
 template<typename R, typename T1, typename T2>
 ZoneBinaryCallback<R, T1, T2> _CustomZoneCls::bindBinaryCallback(std::function<R(T1 arg1, T2 arg2)> f) {
     auto registered = registerBinaryCallback(f);
-    return [=] (Unknown  arg1,Unknown  arg2)     {
+    return [=] (Unknown  arg1,Unknown  arg2) {
         this->runBinary(registered, arg1, arg2);
     };
 }
 
 std::function<void()> _CustomZoneCls::bindCallbackGuarded(std::function<void()> f) {
     auto registered = registerCallback(f);
-    return [=] ()     {
+    return [=] () {
         this->runGuarded(registered);
     };
 }
@@ -206,7 +206,7 @@ std::function<void()> _CustomZoneCls::bindCallbackGuarded(std::function<void()> 
 template<typename T>
 std::function<void(T )> _CustomZoneCls::bindUnaryCallbackGuarded(std::function<void(T arg)> f) {
     auto registered = registerUnaryCallback(f);
-    return [=] (Unknown  arg)     {
+    return [=] (Unknown  arg) {
         this->runUnaryGuarded(registered, arg);
     };
 }
@@ -214,14 +214,14 @@ std::function<void(T )> _CustomZoneCls::bindUnaryCallbackGuarded(std::function<v
 template<typename T1, typename T2>
 std::function<void(T1 , T2 )> _CustomZoneCls::bindBinaryCallbackGuarded(std::function<void(T1 arg1, T2 arg2)> f) {
     auto registered = registerBinaryCallback(f);
-    return [=] (Unknown  arg1,Unknown  arg2)     {
+    return [=] (Unknown  arg1,Unknown  arg2) {
         this->runBinaryGuarded(registered, arg1, arg2);
     };
 }
 
 dynamic _CustomZoneCls::[](Object key) {
     auto result = _map[key];
-    if (result != nullptr || _map->containsKey(key))     {
+    if (result != nullptr || _map->containsKey(key)) {
         return result;
     }
     if (parent != nullptr) {
@@ -298,7 +298,7 @@ AsyncError _CustomZoneCls::errorCallback(Object error, StackTrace stackTrace) {
     checkNotNullable(error, __s("error"));
     auto implementation = this->_errorCallback;
     _Zone implementationZone = implementation->zone;
-    if (identical(implementationZone, _rootZone))     {
+    if (identical(implementationZone, _rootZone)) {
         return nullptr;
     }
     ZoneDelegate parentDelegate = implementationZone->_parentDelegate();
@@ -426,7 +426,7 @@ void _rootHandleError(Object error, StackTrace stackTrace) {
 
 template<typename R>
 R _rootRun(Zone self, ZoneDelegate parent, Zone zone, std::function<R()> f) {
-    if (identical(ZoneCls::_current, zone))     {
+    if (identical(ZoneCls::_current, zone)) {
         return f();
     }
     if (!is<_Zone>(zone)) {
@@ -442,7 +442,7 @@ R _rootRun(Zone self, ZoneDelegate parent, Zone zone, std::function<R()> f) {
 
 template<typename R, typename T>
 R _rootRunUnary(Zone self, ZoneDelegate parent, Zone zone, std::function<R(T arg)> f, T arg) {
-    if (identical(ZoneCls::_current, zone))     {
+    if (identical(ZoneCls::_current, zone)) {
         return f(arg);
     }
     if (!is<_Zone>(zone)) {
@@ -458,7 +458,7 @@ R _rootRunUnary(Zone self, ZoneDelegate parent, Zone zone, std::function<R(T arg
 
 template<typename R, typename T1, typename T2>
 R _rootRunBinary(Zone self, ZoneDelegate parent, Zone zone, std::function<R(T1 arg1, T2 arg2)> f, T1 arg1, T2 arg2) {
-    if (identical(ZoneCls::_current, zone))     {
+    if (identical(ZoneCls::_current, zone)) {
         return f(arg1, arg2);
     }
     if (!is<_Zone>(zone)) {
@@ -532,7 +532,7 @@ Zone _rootFork(Zone self, ZoneDelegate parent, Zone zone, ZoneSpecification spec
     printToZone = _printToZone;
     if (specification == nullptr) {
         specification = make<ZoneSpecificationCls>();
-    } else     {
+    } else {
         if (!is<_ZoneSpecification>(specification)) {
         as<_ZoneSpecificationCls>(specification) = ZoneSpecificationCls->from(as<_ZoneSpecificationCls>(specification));
     }
@@ -543,7 +543,7 @@ Zone _rootFork(Zone self, ZoneDelegate parent, Zone zone, ZoneSpecification spec
     } else {
         valueMap = <Object, Object>from(zoneValues);
     }
-    if (specification == nullptr)     {
+    if (specification == nullptr) {
         throw __s("unreachable");
     }
     return make<_CustomZoneCls>(zone, specification, valueMap);
@@ -597,41 +597,41 @@ void _RootZoneCls::runBinaryGuarded(std::function<void(T1 arg1, T2 arg2)> f, T1 
 
 template<typename R>
 ZoneCallback<R> _RootZoneCls::bindCallback(std::function<R()> f) {
-    return [=] ()     {
+    return [=] () {
         this-><R>run(f);
     };
 }
 
 template<typename R, typename T>
 ZoneUnaryCallback<R, T> _RootZoneCls::bindUnaryCallback(std::function<R(T arg)> f) {
-    return [=] (Unknown  arg)     {
+    return [=] (Unknown  arg) {
         this-><R, T>runUnary(f, arg);
     };
 }
 
 template<typename R, typename T1, typename T2>
 ZoneBinaryCallback<R, T1, T2> _RootZoneCls::bindBinaryCallback(std::function<R(T1 arg1, T2 arg2)> f) {
-    return [=] (Unknown  arg1,Unknown  arg2)     {
+    return [=] (Unknown  arg1,Unknown  arg2) {
         this-><R, T1, T2>runBinary(f, arg1, arg2);
     };
 }
 
 std::function<void()> _RootZoneCls::bindCallbackGuarded(std::function<void()> f) {
-    return [=] ()     {
+    return [=] () {
         this->runGuarded(f);
     };
 }
 
 template<typename T>
 std::function<void(T )> _RootZoneCls::bindUnaryCallbackGuarded(std::function<void(T arg)> f) {
-    return [=] (Unknown  arg)     {
+    return [=] (Unknown  arg) {
         this->runUnaryGuarded(f, arg);
     };
 }
 
 template<typename T1, typename T2>
 std::function<void(T1 , T2 )> _RootZoneCls::bindBinaryCallbackGuarded(std::function<void(T1 arg1, T2 arg2)> f) {
-    return [=] (Unknown  arg1,Unknown  arg2)     {
+    return [=] (Unknown  arg1,Unknown  arg2) {
         this->runBinaryGuarded(f, arg1, arg2);
     };
 }
@@ -650,7 +650,7 @@ Zone _RootZoneCls::fork(ZoneSpecification specification, Map<Object, Object> zon
 
 template<typename R>
 R _RootZoneCls::run(std::function<R()> f) {
-    if (identical(ZoneCls::_current, _rootZone))     {
+    if (identical(ZoneCls::_current, _rootZone)) {
         return f();
     }
     return _rootRun(nullptr, nullptr, this, f);
@@ -658,7 +658,7 @@ R _RootZoneCls::run(std::function<R()> f) {
 
 template<typename R, typename T>
 R _RootZoneCls::runUnary(std::function<R(T arg)> f, T arg) {
-    if (identical(ZoneCls::_current, _rootZone))     {
+    if (identical(ZoneCls::_current, _rootZone)) {
         return f(arg);
     }
     return _rootRunUnary(nullptr, nullptr, this, f, arg);
@@ -666,7 +666,7 @@ R _RootZoneCls::runUnary(std::function<R(T arg)> f, T arg) {
 
 template<typename R, typename T1, typename T2>
 R _RootZoneCls::runBinary(std::function<R(T1 arg1, T2 arg2)> f, T1 arg1, T2 arg2) {
-    if (identical(ZoneCls::_current, _rootZone))     {
+    if (identical(ZoneCls::_current, _rootZone)) {
         return f(arg1, arg2);
     }
     return _rootRunBinary(nullptr, nullptr, this, f, arg1, arg2);
@@ -778,7 +778,7 @@ R runZoned(std::function<R()> body, std::function<void ()> onError, ZoneSpecific
         if (!is<std::function<void(Object , StackTrace )>>(onError)) {
             if (is<std::function<void(Object )>>(onError)) {
                 auto originalOnError = onError;
-                onError = [=] (Object error,StackTrace stack)                 {
+                onError = [=] (Object error,StackTrace stack) {
                     originalOnError(error);
                 };
             } else {

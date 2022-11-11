@@ -1,6 +1,6 @@
 #include "lerp.hpp"
 double lerpDouble(num a, num b, double t) {
-    if (a == b || (a?->isNaN() == true) && (b?->isNaN() == true))     {
+    if (a == b || (a?->isNaN() == true) && (b?->isNaN() == true)) {
         return a?->toDouble();
     }
     a |= 0.0;
@@ -23,7 +23,7 @@ int _clampInt(int value, int min, int max) {
     assert(min <= max);
     if ( < min) {
         return min;
-    } else     {
+    } else {
         if (value > max) {
         return max;
     } else {

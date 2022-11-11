@@ -33,14 +33,14 @@ void SetMixinCls<E>::clear() {
 
 template<typename E>
 void SetMixinCls<E>::addAll(Iterable<E> elements) {
-    for (E element : elements)     {
+    for (E element : elements) {
         add(element);
     }
 }
 
 template<typename E>
 void SetMixinCls<E>::removeAll(Iterable<Object> elements) {
-    for (Object element : elements)     {
+    for (Object element : elements) {
         remove(element);
     }
 }
@@ -58,7 +58,7 @@ template<typename E>
 void SetMixinCls<E>::removeWhere(std::function<bool(E element)> test) {
     List<Object> toRemove = makeList();
     for (E element : this) {
-        if (test(element))         {
+        if (test(element)) {
             toRemove->add(element);
         }
     }
@@ -69,7 +69,7 @@ template<typename E>
 void SetMixinCls<E>::retainWhere(std::function<bool(E element)> test) {
     List<Object> toRemove = makeList();
     for (E element : this) {
-        if (!test(element))         {
+        if (!test(element)) {
             toRemove->add(element);
         }
     }
@@ -79,7 +79,7 @@ void SetMixinCls<E>::retainWhere(std::function<bool(E element)> test) {
 template<typename E>
 bool SetMixinCls<E>::containsAll(Iterable<Object> other) {
     for (auto o : other) {
-        if (!contains(o))         {
+        if (!contains(o)) {
             return false;
         }
     }
@@ -95,7 +95,7 @@ template<typename E>
 Set<E> SetMixinCls<E>::intersection(Set<Object> other) {
     Set<E> result = toSet();
     for (E element : this) {
-        if (!other->contains(element))         {
+        if (!other->contains(element)) {
             result->remove(element);
         }
     }
@@ -106,7 +106,7 @@ template<typename E>
 Set<E> SetMixinCls<E>::difference(Set<Object> other) {
     Set<E> result = toSet();
     for (E element : this) {
-        if (other->contains(element))         {
+        if (other->contains(element)) {
             result->remove(element);
         }
     }
@@ -126,11 +126,11 @@ Iterable<T> SetMixinCls<E>::map(std::function<T(E element)> f) {
 
 template<typename E>
 E SetMixinCls<E>::single() {
-    if (length() > 1)     {
+    if (length() > 1) {
         throw IterableElementErrorCls->tooMany();
     }
     Iterator<E> it = iterator();
-    if (!it->moveNext())     {
+    if (!it->moveNext()) {
         throw IterableElementErrorCls->noElement();
     }
     E result = it->current();
@@ -155,7 +155,7 @@ Iterable<T> SetMixinCls<E>::expand(std::function<Iterable<T>(E element)> f) {
 
 template<typename E>
 void SetMixinCls<E>::forEach(std::function<void(E element)> f) {
-    for (E element : this)     {
+    for (E element : this) {
         f(element);
     }
 }
@@ -177,7 +177,7 @@ template<typename E>
 template<typename T>
 T SetMixinCls<E>::fold(T initialValue, std::function<T(T previousValue, E element)> combine) {
     auto value = initialValue;
-    for (E element : this)     {
+    for (E element : this) {
         value = combine(value, element);
     }
     return value;
@@ -186,7 +186,7 @@ T SetMixinCls<E>::fold(T initialValue, std::function<T(T previousValue, E elemen
 template<typename E>
 bool SetMixinCls<E>::every(std::function<bool(E element)> f) {
     for (E element : this) {
-        if (!f(element))         {
+        if (!f(element)) {
             return false;
         }
     }
@@ -196,7 +196,7 @@ bool SetMixinCls<E>::every(std::function<bool(E element)> f) {
 template<typename E>
 String SetMixinCls<E>::join(String separator) {
     Iterator<E> iterator = this->iterator();
-    if (!iterator->moveNext())     {
+    if (!iterator->moveNext()) {
         return __s("");
     }
     StringBuffer buffer = make<StringBufferCls>();
@@ -217,7 +217,7 @@ String SetMixinCls<E>::join(String separator) {
 template<typename E>
 bool SetMixinCls<E>::any(std::function<bool(E element)> test) {
     for (E element : this) {
-        if (test(element))         {
+        if (test(element)) {
             return true;
         }
     }
@@ -269,11 +269,11 @@ E SetMixinCls<E>::last() {
 template<typename E>
 E SetMixinCls<E>::firstWhere(std::function<bool(E value)> test, std::function<E()> orElse) {
     for (E element : this) {
-        if (test(element))         {
+        if (test(element)) {
             return element;
         }
     }
-    if (orElse != nullptr)     {
+    if (orElse != nullptr) {
         return orElse();
     }
     throw IterableElementErrorCls->noElement();
@@ -289,10 +289,10 @@ E SetMixinCls<E>::lastWhere(std::function<bool(E value)> test, std::function<E()
             foundMatching = true;
         }
     }
-    if (foundMatching)     {
+    if (foundMatching) {
         return result;
     }
-    if (orElse != nullptr)     {
+    if (orElse != nullptr) {
         return orElse();
     }
     throw IterableElementErrorCls->noElement();
@@ -311,10 +311,10 @@ E SetMixinCls<E>::singleWhere(std::function<bool(E value)> test, std::function<E
             foundMatching = true;
         }
     }
-    if (foundMatching)     {
+    if (foundMatching) {
         return result;
     }
-    if (orElse != nullptr)     {
+    if (orElse != nullptr) {
         return orElse();
     }
     throw IterableElementErrorCls->noElement();
@@ -326,7 +326,7 @@ E SetMixinCls<E>::elementAt(int index) {
     RangeErrorCls->checkNotNegative(index, __s("index"));
     int elementIndex = 0;
     for (E element : this) {
-        if (index == elementIndex)         {
+        if (index == elementIndex) {
             return element;
         }
         elementIndex++;
@@ -349,7 +349,7 @@ template<typename E>
 Set<E> _SetBaseCls<E>::difference(Set<Object> other) {
     Set<E> result = _newSet();
     for (auto element : this) {
-        if (!other->contains(element))         {
+        if (!other->contains(element)) {
             result->add(element);
         }
     }
@@ -360,7 +360,7 @@ template<typename E>
 Set<E> _SetBaseCls<E>::intersection(Set<Object> other) {
     Set<E> result = _newSet();
     for (auto element : this) {
-        if (other->contains(element))         {
+        if (other->contains(element)) {
             result->add(element);
         }
     }
@@ -435,7 +435,7 @@ int _UnmodifiableSetCls<E>::length() {
 template<typename E>
 E _UnmodifiableSetCls<E>::lookup(Object element) {
     for (auto key : _map->keys()) {
-        if (key == element)         {
+        if (key == element) {
             return key;
         }
     }

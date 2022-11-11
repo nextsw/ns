@@ -10,7 +10,7 @@ void _TranspilerCls::transpile() {
     if (uniformDeclarations->isNotEmpty()) {
         src->writeln();
         List<int> locations = uniformDeclarations->keys()->toList();
-        locations->sort([=] (int a,int b)         {
+        locations->sort([=] (int a,int b) {
             a - b;
         });
         for (int location : locations) {
@@ -20,7 +20,7 @@ void _TranspilerCls::transpile() {
     if (samplerSizeDeclarations->isNotEmpty()) {
         src->writeln();
         List<int> locations = samplerSizeDeclarations->keys()->toList();
-        locations->sort([=] (int a,int b)         {
+        locations->sort([=] (int a,int b) {
             a - b;
         });
         for (int location : locations) {
@@ -82,10 +82,10 @@ String _TranspilerCls::resolveName(int id) {
     }
     if (nameOverloads->containsKey(id)) {
         return nameOverloads[id]!;
-    } else     {
+    } else {
         if (constantTrue > 0 && id == constantTrue) {
         return __s("true");
-    } else     {
+    } else {
         if (constantFalse > 0 && id == constantFalse) {
         return __s("false");
     }
@@ -97,10 +97,10 @@ String _TranspilerCls::resolveName(int id) {
         } else {
             return _colorVariableName;
         }
-    } else     {
+    } else {
         if (id == entryPoint) {
         return _mainFunctionName;
-    } else     {
+    } else {
         if (id == fragCoord && target != TargetLanguageCls::sksl) {
         return _glslFragCoord;
     }

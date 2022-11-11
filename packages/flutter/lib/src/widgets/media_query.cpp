@@ -59,7 +59,7 @@ MediaQueryData MediaQueryDataCls::removeDisplayFeatures(Rect subScreen) {
     }
     double rightInset = size->width() - subScreen->right;
     double bottomInset = size->height() - subScreen->bottom;
-    return copyWith(EdgeInsetsCls->only(math->max(0.0, padding->left - subScreen->left), math->max(0.0, padding->top - subScreen->top), math->max(0.0, padding->right - rightInset), math->max(0.0, padding->bottom - bottomInset)), EdgeInsetsCls->only(math->max(0.0, viewPadding->left - subScreen->left), math->max(0.0, viewPadding->top - subScreen->top), math->max(0.0, viewPadding->right - rightInset), math->max(0.0, viewPadding->bottom - bottomInset)), EdgeInsetsCls->only(math->max(0.0, viewInsets->left - subScreen->left), math->max(0.0, viewInsets->top - subScreen->top), math->max(0.0, viewInsets->right - rightInset), math->max(0.0, viewInsets->bottom - bottomInset)), displayFeatures->where([=] (DisplayFeature displayFeature)     {
+    return copyWith(EdgeInsetsCls->only(math->max(0.0, padding->left - subScreen->left), math->max(0.0, padding->top - subScreen->top), math->max(0.0, padding->right - rightInset), math->max(0.0, padding->bottom - bottomInset)), EdgeInsetsCls->only(math->max(0.0, viewPadding->left - subScreen->left), math->max(0.0, viewPadding->top - subScreen->top), math->max(0.0, viewPadding->right - rightInset), math->max(0.0, viewPadding->bottom - bottomInset)), EdgeInsetsCls->only(math->max(0.0, viewInsets->left - subScreen->left), math->max(0.0, viewInsets->top - subScreen->top), math->max(0.0, viewInsets->right - rightInset), math->max(0.0, viewInsets->bottom - bottomInset)), displayFeatures->where([=] (DisplayFeature displayFeature) {
         subScreen->overlaps(displayFeature->bounds);
     })->toList());
 }

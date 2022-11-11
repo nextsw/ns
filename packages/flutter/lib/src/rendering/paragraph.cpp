@@ -84,7 +84,7 @@ void RenderParagraphCls::registrar(SelectionRegistrar value) {
 }
 
 void RenderParagraphCls::markNeedsLayout() {
-    _lastSelectableFragments?->forEach([=] (_SelectableFragment element)     {
+    _lastSelectableFragments?->forEach([=] (_SelectableFragment element) {
         element->didChangeParagraphLayout();
     });
     super->markNeedsLayout();
@@ -239,7 +239,7 @@ void RenderParagraphCls::selectionColor(Color value) {
         return;
     }
     _selectionColor = value;
-    if (_lastSelectableFragments?->any([=] (_SelectableFragment fragment)     {
+    if (_lastSelectableFragments?->any([=] (_SelectableFragment fragment) {
         fragment->value->hasSelection;
     }) | false) {
         markNeedsPaint();
@@ -437,7 +437,7 @@ Size RenderParagraphCls::textSize() {
 void RenderParagraphCls::describeSemanticsConfiguration(SemanticsConfiguration config) {
     super->describeSemanticsConfiguration(config);
     _semanticsInfo = text()->getSemanticsInformation();
-    if (_semanticsInfo!->any([=] (InlineSpanSemanticsInformation info)     {
+    if (_semanticsInfo!->any([=] (InlineSpanSemanticsInformation info) {
         info->recognizer != nullptr;
     })) {
         config->explicitChildNodes = true;
@@ -513,13 +513,13 @@ void RenderParagraphCls::assembleSemanticsNode(SemanticsNode node, SemanticsConf
                         configuration->onTap() = recognizer->onTap;
                         configuration->isLink() = true;
                     }
-                } else                 {
+                } else {
                     if (is<DoubleTapGestureRecognizer>(recognizer)) {
                     if (as<DoubleTapGestureRecognizerCls>(recognizer)->onDoubleTap != nullptr) {
                         configuration->onTap() = recognizer->onDoubleTap;
                         configuration->isLink() = true;
                     }
-                } else                 {
+                } else {
                     if (is<LongPressGestureRecognizer>(recognizer)) {
                     if (as<LongPressGestureRecognizerCls>(recognizer)->onLongPress != nullptr) {
                         configuration->onLongPress() = recognizer->onLongPress;
@@ -950,10 +950,10 @@ bool _SelectableFragmentCls::_positionIsWithinCurrentSelection(TextPosition posi
 int _SelectableFragmentCls::_compareTextPositions(TextPosition position, TextPosition otherPosition) {
     if (position->offset < otherPosition->offset) {
         return 1;
-    } else     {
+    } else {
         if (position->offset > otherPosition->offset) {
         return -1;
-    } else     {
+    } else {
         if (position->affinity == otherPosition->affinity) {
         return 0;
     } else {

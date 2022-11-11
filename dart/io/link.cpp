@@ -41,7 +41,7 @@ Link _LinkCls::absolute() {
 
 Future<Link> _LinkCls::create(String target, bool recursive) {
     auto result = recursive? parent->create(true) : FutureCls->value(nullptr);
-    return result->then([=] ()     {
+    return result->then([=] () {
         _FileCls->_dispatchWithNamespace(_IOServiceCls::fileCreateLink, makeList(ArrayItem, ArrayItem, ArrayItem));
     })->then([=] (Unknown  response) {
         if (_isErrorResponse(response)) {
@@ -65,7 +65,7 @@ void _LinkCls::updateSync(String target) {
 }
 
 Future<Link> _LinkCls::update(String target) {
-    return delete()-><Link>then([=] ()     {
+    return delete()-><Link>then([=] () {
         create(target);
     });
 }
@@ -115,7 +115,7 @@ _LinkCls::_LinkCls(String path) {
 
 Future<Link> _LinkCls::_delete(bool recursive) {
     if (recursive) {
-        return DirectoryCls->fromRawPath(_rawPath)->delete(true)->then([=] ()         {
+        return DirectoryCls->fromRawPath(_rawPath)->delete(true)->then([=] () {
             this;
         });
     }

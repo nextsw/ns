@@ -16,11 +16,11 @@ String StringCharactersCls::last() {
 }
 
 String StringCharactersCls::single() {
-    if (stringValue->isEmpty())     {
+    if (stringValue->isEmpty()) {
         throw make<StateErrorCls>(__s("No element"));
     }
     auto firstEnd = make<BreaksCls>(stringValue, 0, stringValue->length(), stateSoTNoBreak)->nextBreak();
-    if (firstEnd == stringValue->length())     {
+    if (firstEnd == stringValue->length()) {
         return stringValue;
     }
     throw make<StateErrorCls>(__s("Too many elements"));
@@ -35,7 +35,7 @@ bool StringCharactersCls::isNotEmpty() {
 }
 
 int StringCharactersCls::length() {
-    if (stringValue->isEmpty())     {
+    if (stringValue->isEmpty()) {
         return 0;
     }
     auto brk = make<BreaksCls>(stringValue, 0, stringValue->length(), stateSoTNoBreak);
@@ -50,7 +50,7 @@ template<typename T>
 Iterable<T> StringCharactersCls::whereType() {
     Iterable<Object> self = this;
     if (is<Iterable<T>>(self)) {
-        return as<IterableCls>(self)-><T>map([=] (Unknown  x)         {
+        return as<IterableCls>(self)-><T>map([=] (Unknown  x) {
             x;
         });
     }
@@ -58,7 +58,7 @@ Iterable<T> StringCharactersCls::whereType() {
 }
 
 String StringCharactersCls::join(String separator) {
-    if (separator == __s(""))     {
+    if (separator == __s("")) {
         return stringValue;
     }
     return _explodeReplace(stringValue, 0, stringValue->length(), separator, __s(""));
@@ -70,12 +70,12 @@ String StringCharactersCls::lastWhere(std::function<bool(String element)> test, 
     auto next = 0;
     while ((next = brk->nextBreak()) >= 0) {
         auto current = stringValue->substring(next, cursor);
-        if (test(current))         {
+        if (test(current)) {
             return current;
         }
         cursor = next;
     }
-    if (orElse != nullptr)     {
+    if (orElse != nullptr) {
         return orElse();
     }
     throw make<StateErrorCls>(__s("No element"));
@@ -89,7 +89,7 @@ String StringCharactersCls::elementAt(int index) {
         auto start = 0;
         auto end = 0;
         while ((end = breaks->nextBreak()) >= 0) {
-            if (count == index)             {
+            if (count == index) {
                 return stringValue->substring(start, end);
             }
             count++;
@@ -100,14 +100,14 @@ String StringCharactersCls::elementAt(int index) {
 }
 
 bool StringCharactersCls::contains(Object singleCharacterString) {
-    if (!is<String>(singleCharacterString))     {
+    if (!is<String>(singleCharacterString)) {
         return false;
     }
-    if (singleCharacterString->isEmpty)     {
+    if (singleCharacterString->isEmpty) {
         return false;
     }
     auto next = make<BreaksCls>(singleCharacterString, 0, singleCharacterString->length, stateSoTNoBreak)->nextBreak();
-    if (next != singleCharacterString->length)     {
+    if (next != singleCharacterString->length) {
         return false;
     }
     return _indexOf(stringValue, singleCharacterString, 0, stringValue->length()) >= 0;
@@ -116,7 +116,7 @@ bool StringCharactersCls::contains(Object singleCharacterString) {
 bool StringCharactersCls::startsWith(Characters characters) {
     auto length = stringValue->length();
     auto otherString = characters->stringValue;
-    if (otherString->isEmpty())     {
+    if (otherString->isEmpty()) {
         return true;
     }
     return stringValue->startsWith(otherString) && isGraphemeClusterBoundary(stringValue, 0, length, otherString->length);
@@ -125,7 +125,7 @@ bool StringCharactersCls::startsWith(Characters characters) {
 bool StringCharactersCls::endsWith(Characters characters) {
     auto length = stringValue->length();
     auto otherString = characters->stringValue;
-    if (otherString->isEmpty())     {
+    if (otherString->isEmpty()) {
         return true;
     }
     auto otherLength = otherString->length;
@@ -152,7 +152,7 @@ Iterable<Characters> StringCharactersCls::split(Characters pattern, int maxParts
     if (patternString->isNotEmpty()) {
         do {
             auto match = _indexOf(stringValue, patternString, start, stringValue->length());
-            if ( < 0)             {
+            if ( < 0) {
                 break;
             }
             yield yield;
@@ -164,7 +164,7 @@ Iterable<Characters> StringCharactersCls::split(Characters pattern, int maxParts
         auto breaks = make<BreaksCls>(stringValue, 0, stringValue->length(), stateSoTNoBreak);
         do {
             auto match = breaks->nextBreak();
-            if ( < 0)             {
+            if ( < 0) {
                 return;
             }
             yield yield;
@@ -172,7 +172,7 @@ Iterable<Characters> StringCharactersCls::split(Characters pattern, int maxParts
             start = match;
             maxParts--;
         } while (maxParts != 1);
-        if (start == stringValue->length())         {
+        if (start == stringValue->length()) {
             return;
         }
     }
@@ -196,24 +196,24 @@ Characters StringCharactersCls::take(int count) {
 
 Characters StringCharactersCls::getRange(int start, int end) {
     RangeErrorCls->checkNotNegative(start, __s("start"));
-    if (end == nullptr)     {
+    if (end == nullptr) {
         return _skip(start);
     }
-    if ( < start)     {
+    if ( < start) {
         throw RangeErrorCls->range(end, start, nullptr, __s("end"));
     }
-    if (end == start)     {
+    if (end == start) {
         return CharactersCls::empty;
     }
-    if (start == 0)     {
+    if (start == 0) {
         return _take(end);
     }
-    if (stringValue->isEmpty())     {
+    if (stringValue->isEmpty()) {
         return this;
     }
     auto breaks = make<BreaksCls>(stringValue, 0, stringValue->length(), stateSoTNoBreak);
     auto startIndex = _skipIndices(start, 0, breaks);
-    if (startIndex == stringValue->length())     {
+    if (startIndex == stringValue->length()) {
         return CharactersCls::empty;
     }
     auto endIndex = _skipIndices(end - start, start, breaks);
@@ -226,15 +226,15 @@ Characters StringCharactersCls::characterAt(int position) {
     while (position > 0) {
         position--;
         start = breaks->nextBreak();
-        if ( < 0)         {
+        if ( < 0) {
             throw make<StateErrorCls>(__s("No element"));
         }
     }
     auto end = breaks->nextBreak();
-    if ( < 0)     {
+    if ( < 0) {
         throw make<StateErrorCls>(__s("No element"));
     }
-    if (start == 0 && end == stringValue->length())     {
+    if (start == 0 && end == stringValue->length()) {
         return this;
     }
     return make<StringCharactersCls>(stringValue->substring(start, end));
@@ -248,10 +248,10 @@ Characters StringCharactersCls::skipWhile(std::function<bool(String )> test) {
         auto startIndex = 0;
         while ((index = breaks->nextBreak()) >= 0) {
             if (!test(stringValue->substring(startIndex, index))) {
-                if (startIndex == 0)                 {
+                if (startIndex == 0) {
                     return this;
                 }
-                if (startIndex == stringLength)                 {
+                if (startIndex == stringLength) {
                     return CharactersCls::empty;
                 }
                 return make<StringCharactersCls>(stringValue->substring(startIndex));
@@ -269,7 +269,7 @@ Characters StringCharactersCls::takeWhile(std::function<bool(String )> test) {
         auto endIndex = 0;
         while ((index = breaks->nextBreak()) >= 0) {
             if (!test(stringValue->substring(endIndex, index))) {
-                if (endIndex == 0)                 {
+                if (endIndex == 0) {
                     return CharactersCls::empty;
                 }
                 return make<StringCharactersCls>(stringValue->substring(0, endIndex));
@@ -282,7 +282,7 @@ Characters StringCharactersCls::takeWhile(std::function<bool(String )> test) {
 
 Characters StringCharactersCls::where(std::function<bool(String )> test) {
     auto string = super->where(test)->join();
-    if (stringValue->isEmpty)     {
+    if (stringValue->isEmpty) {
         return CharactersCls::empty;
     }
     return make<StringCharactersCls>(stringValue);
@@ -294,7 +294,7 @@ Characters StringCharactersCls::+(Characters characters) {
 
 Characters StringCharactersCls::skipLast(int count) {
     RangeErrorCls->checkNotNegative(count, __s("count"));
-    if (count == 0)     {
+    if (count == 0) {
         return this;
     }
     if (stringValue->isNotEmpty()) {
@@ -309,7 +309,7 @@ Characters StringCharactersCls::skipLast(int count) {
                 return CharactersCls::empty;
             }
         }
-        if (endIndex > 0)         {
+        if (endIndex > 0) {
             return make<StringCharactersCls>(stringValue->substring(0, endIndex));
         }
     }
@@ -323,7 +323,7 @@ Characters StringCharactersCls::skipLastWhile(std::function<bool(String )> test)
         auto end = stringValue->length();
         while ((index = breaks->nextBreak()) >= 0) {
             if (!test(stringValue->substring(index, end))) {
-                if (end == stringValue->length())                 {
+                if (end == stringValue->length()) {
                     return this;
                 }
                 return end == 0? CharactersCls::empty : make<StringCharactersCls>(stringValue->substring(0, end));
@@ -336,7 +336,7 @@ Characters StringCharactersCls::skipLastWhile(std::function<bool(String )> test)
 
 Characters StringCharactersCls::takeLast(int count) {
     RangeErrorCls->checkNotNegative(count, __s("count"));
-    if (count == 0)     {
+    if (count == 0) {
         return CharactersCls::empty;
     }
     if (stringValue->isNotEmpty()) {
@@ -365,7 +365,7 @@ Characters StringCharactersCls::takeLastWhile(std::function<bool(String )> test)
         auto start = stringValue->length();
         while ((index = breaks->nextBreak()) >= 0) {
             if (!test(stringValue->substring(index, start))) {
-                if (start == stringValue->length())                 {
+                if (start == stringValue->length()) {
                     return CharactersCls::empty;
                 }
                 return make<StringCharactersCls>(stringValue->substring(start));
@@ -398,7 +398,7 @@ String StringCharactersCls::toString() {
 
 CharacterRange StringCharactersCls::findFirst(Characters characters) {
     auto range = _rangeAll();
-    if (range->collapseToFirst(characters))     {
+    if (range->collapseToFirst(characters)) {
         return range;
     }
     return nullptr;
@@ -406,7 +406,7 @@ CharacterRange StringCharactersCls::findFirst(Characters characters) {
 
 CharacterRange StringCharactersCls::findLast(Characters characters) {
     auto range = _rangeAll();
-    if (range->collapseToLast(characters))     {
+    if (range->collapseToLast(characters)) {
         return range;
     }
     return nullptr;
@@ -417,13 +417,13 @@ StringCharacterRange StringCharactersCls::_rangeAll() {
 }
 
 int StringCharactersCls::_skipIndices(int count, int cursor, Breaks breaks) {
-    if (count == 0 || cursor == stringValue->length())     {
+    if (count == 0 || cursor == stringValue->length()) {
         return cursor;
     }
     breaks |= make<BreaksCls>(stringValue, cursor, stringValue->length(), stateSoTNoBreak);
     do {
         auto nextBreak = breaks->nextBreak();
-        if ( < 0)         {
+        if ( < 0) {
             break;
         }
         cursor = nextBreak;
@@ -433,7 +433,7 @@ int StringCharactersCls::_skipIndices(int count, int cursor, Breaks breaks) {
 
 Characters StringCharactersCls::_skip(int count) {
     auto start = _skipIndices(count, 0, nullptr);
-    if (start == stringValue->length())     {
+    if (start == stringValue->length()) {
         return CharactersCls::empty;
     }
     return make<StringCharactersCls>(stringValue->substring(start));
@@ -441,7 +441,7 @@ Characters StringCharactersCls::_skip(int count) {
 
 Characters StringCharactersCls::_take(int count) {
     auto end = _skipIndices(count, 0, nullptr);
-    if (end == stringValue->length())     {
+    if (end == stringValue->length()) {
         return this;
     }
     return make<StringCharactersCls>(stringValue->substring(0, end));
@@ -492,7 +492,7 @@ void StringCharacterRangeCls::collapseToStart() {
 
 bool StringCharacterRangeCls::dropFirst(int count) {
     RangeErrorCls->checkNotNegative(count, __s("count"));
-    if (_start == _end)     {
+    if (_start == _end) {
         return count == 0;
     }
     auto breaks = make<BreaksCls>(_string, _start, _end, stateSoTNoBreak);
@@ -510,7 +510,7 @@ bool StringCharacterRangeCls::dropFirst(int count) {
 }
 
 bool StringCharacterRangeCls::dropTo(Characters target) {
-    if (_start == _end)     {
+    if (_start == _end) {
         return target->isEmpty;
     }
     auto targetString = target->stringValue();
@@ -523,7 +523,7 @@ bool StringCharacterRangeCls::dropTo(Characters target) {
 }
 
 bool StringCharacterRangeCls::dropUntil(Characters target) {
-    if (_start == _end)     {
+    if (_start == _end) {
         return target->isEmpty;
     }
     auto targetString = target->stringValue();
@@ -537,7 +537,7 @@ bool StringCharacterRangeCls::dropUntil(Characters target) {
 }
 
 void StringCharacterRangeCls::dropWhile(std::function<bool(String )> test) {
-    if (_start == _end)     {
+    if (_start == _end) {
         return;
     }
     auto breaks = make<BreaksCls>(_string, _start, _end, stateSoTNoBreak);
@@ -569,7 +569,7 @@ bool StringCharacterRangeCls::dropLast(int count) {
 }
 
 bool StringCharacterRangeCls::dropBackTo(Characters target) {
-    if (_start == _end)     {
+    if (_start == _end) {
         return target->isEmpty;
     }
     auto targetString = target->stringValue();
@@ -582,7 +582,7 @@ bool StringCharacterRangeCls::dropBackTo(Characters target) {
 }
 
 bool StringCharacterRangeCls::dropBackUntil(Characters target) {
-    if (_start == _end)     {
+    if (_start == _end) {
         return target->isEmpty;
     }
     auto targetString = target->stringValue();
@@ -596,7 +596,7 @@ bool StringCharacterRangeCls::dropBackUntil(Characters target) {
 }
 
 void StringCharacterRangeCls::dropBackWhile(std::function<bool(String )> test) {
-    if (_start == _end)     {
+    if (_start == _end) {
         return;
     }
     auto breaks = make<BackBreaksCls>(_string, _end, _start, stateEoTNoBreak);
@@ -734,7 +734,7 @@ CharacterRange StringCharacterRangeCls::replaceAll(Characters pattern, Character
         auto newEnd = replaced->length() - (_string->length() - _end);
         return _expandRange(replaced, _start, newEnd);
     }
-    if (_start == _end)     {
+    if (_start == _end) {
         return nullptr;
     }
     auto start = 0;
@@ -745,7 +745,7 @@ CharacterRange StringCharacterRangeCls::replaceAll(Characters pattern, Character
         cursor += patternString->length();
         start = cursor;
     }
-    if (buffer == nullptr)     {
+    if (buffer == nullptr) {
         return nullptr;
     }
     buffer->write(_string->substring(start));
@@ -847,7 +847,7 @@ Iterable<CharacterRange> StringCharacterRangeCls::split(Characters pattern, int 
     if (patternString->isNotEmpty()) {
         do {
             auto match = _indexOf(_string, patternString, start, _end);
-            if ( < 0)             {
+            if ( < 0) {
                 break;
             }
             yield yield;
@@ -861,7 +861,7 @@ Iterable<CharacterRange> StringCharacterRangeCls::split(Characters pattern, int 
         auto breaks = make<BreaksCls>(_string, _start, _end, stateSoTNoBreak);
         do {
             auto match = breaks->nextBreak();
-            if ( < 0)             {
+            if ( < 0) {
                 return;
             }
             yield yield;
@@ -900,7 +900,7 @@ bool StringCharacterRangeCls::_advanceEnd(int count, int newStart) {
             auto nextIndex = index + 1;
             if (charValue & 0xFC00 != 0xD800) {
                 category = low(charValue);
-            } else             {
+            } else {
                 if ( < _string->length()) {
                 auto nextChar = _string->codeUnitAt(nextIndex);
                 if (nextChar & 0xFC00 == 0xDC00) {
@@ -918,7 +918,7 @@ bool StringCharacterRangeCls::_advanceEnd(int count, int newStart) {
         }
         _move(newStart, _string->length());
         return count == 1 && state != stateSoTNoBreak;
-    } else     {
+    } else {
         if (count == 0) {
         _move(newStart, _end);
         return true;
@@ -1022,18 +1022,18 @@ String _explodeReplace(String stringValue, int start, int end, String internalRe
 
 int _indexOf(String source, String pattern, int start, int end) {
     auto patternLength = pattern->length();
-    if (patternLength == 0)     {
+    if (patternLength == 0) {
         return start;
     }
     auto realEnd = end - patternLength;
-    if ( < start)     {
+    if ( < start) {
         return -1;
     }
     auto rest = source->length() - realEnd;
     if (rest <= (realEnd - start) * 2) {
         auto index = 0;
         while ( < realEnd && (index = source->indexOf(pattern, start)) >= 0) {
-            if (index > realEnd)             {
+            if (index > realEnd) {
                 return -1;
             }
             if (isGraphemeClusterBoundary(source, start, end, index) && isGraphemeClusterBoundary(source, start, end, index + patternLength)) {
@@ -1051,7 +1051,7 @@ int _gcIndexOf(String source, String pattern, int start, int end) {
     auto index = 0;
     while ((index = breaks->nextBreak()) >= 0) {
         auto endIndex = index + pattern->length();
-        if (endIndex > end)         {
+        if (endIndex > end) {
             break;
         }
         if (source->startsWith(pattern, index) && isGraphemeClusterBoundary(source, start, end, endIndex)) {
@@ -1063,17 +1063,17 @@ int _gcIndexOf(String source, String pattern, int start, int end) {
 
 int _lastIndexOf(String source, String pattern, int start, int end) {
     auto patternLength = pattern->length();
-    if (patternLength == 0)     {
+    if (patternLength == 0) {
         return end;
     }
     auto realEnd = end - patternLength;
-    if ( < start)     {
+    if ( < start) {
         return -1;
     }
     if (realEnd * 2 > start) {
         auto index = 0;
         while (realEnd >= start && (index = source->lastIndexOf(pattern, realEnd)) >= 0) {
-            if ( < start)             {
+            if ( < start) {
                 return -1;
             }
             if (isGraphemeClusterBoundary(source, start, end, index) && isGraphemeClusterBoundary(source, start, end, index + patternLength)) {
@@ -1091,7 +1091,7 @@ int _gcLastIndexOf(String source, String pattern, int start, int end) {
     auto index = 0;
     while ((index = breaks->nextBreak()) >= 0) {
         auto startIndex = index - pattern->length();
-        if ( < start)         {
+        if ( < start) {
             break;
         }
         if (source->startsWith(pattern, startIndex) && isGraphemeClusterBoundary(source, start, end, startIndex)) {

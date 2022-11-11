@@ -14,7 +14,7 @@ void StrutStyleCls::fromTextStyle(TextStyle textStyle, String debugLabel, String
 
 List<String> StrutStyleCls::fontFamilyFallback() {
     if (_package != nullptr && _fontFamilyFallback != nullptr) {
-        return _fontFamilyFallback!->map([=] (String family)         {
+        return _fontFamilyFallback!->map([=] (String family) {
             __s("packages/$_package/$family");
         })->toList();
     }

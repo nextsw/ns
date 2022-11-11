@@ -1,7 +1,7 @@
 #include "errors.hpp"
 String ErrorCls::safeToString(Object object) {
     if (is<num>(object) || is<bool>(object) || nullptr == object) {
-            Map<String, T> map1 = make<MapCls<>>();    for (auto value : this)     {            ;        }    {        map1.set(value->_name, value);    }return object->toString();
+            Map<String, T> map1 = make<MapCls<>>();    for (auto value : this) {            ;        }    {        map1.set(value->_name, value);    }return object->toString();
     }
     if (is<String>(object)) {
         return _stringToSafeString(as<StringCls>(object));

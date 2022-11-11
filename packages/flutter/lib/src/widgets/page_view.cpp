@@ -134,7 +134,7 @@ bool _PagePositionCls::applyViewportDimension(double viewportDimension) {
     double page;
     if (oldPixels == nullptr) {
         page = _pageToUseOnStartup;
-    } else     {
+    } else {
         if (oldViewportDimensions == 0.0) {
         page = _cachedPage!;
     } else {
@@ -233,7 +233,7 @@ double PageScrollPhysicsCls::_getTargetPixels(ScrollMetrics position, Tolerance 
     double page = _getPage(position);
     if ( < -tolerance->velocity) {
         page -= 0.5;
-    } else     {
+    } else {
         if (velocity > tolerance->velocity) {
         page += 0.5;
     }

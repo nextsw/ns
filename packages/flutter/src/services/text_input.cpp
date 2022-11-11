@@ -346,7 +346,7 @@ bool TextInputCls::_debugEnsureInputActionWorksOnPlatform(TextInputAction inputA
         }
         if (PlatformCls::isIOS) {
             assert(_iOSSupportedInputActions->contains(inputAction), __s("The requested TextInputAction "$inputAction" is not supported on iOS."));
-        } else         {
+        } else {
             if (PlatformCls::isAndroid) {
             assert(_androidSupportedInputActions->contains(inputAction), __s("The requested TextInputAction "$inputAction" is not supported on Android."));
         }
@@ -360,7 +360,7 @@ Future<dynamic> TextInputCls::_loudlyHandleTextInputInvocation(MethodCall call) 
     try {
         return await _handleTextInputInvocation(call);
     } catch (Unknown exception) {
-        FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(exception, stack, __s("services library"), make<ErrorDescriptionCls>(__s("during method call ${call.method}")), [=] ()         {
+        FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(exception, stack, __s("services library"), make<ErrorDescriptionCls>(__s("during method call ${call.method}")), [=] () {
             makeList(ArrayItem);
         }));
         throw;
@@ -373,7 +373,7 @@ Future<dynamic> TextInputCls::_handleTextInputInvocation(MethodCall methodCall) 
         List<dynamic> args = as<List<dynamic>>(methodCall->arguments);
         _scribbleClients[args[0]]?->onScribbleFocus(make<OffsetCls>((as<num>(args[1]))->toDouble(), (as<num>(args[2]))->toDouble()));
         return;
-    } else     {
+    } else {
         if (method == __s("TextInputClient.requestElementsInRect")) {
         List<double> args = (as<List<dynamic>>(methodCall->arguments))-><num>cast()-><double>map([=] (num value) {
     value->toDouble();
@@ -389,11 +389,11 @@ Future<dynamic> TextInputCls::_handleTextInputInvocation(MethodCall methodCall) 
             Rect bounds = _scribbleClients[elementIdentifier]!->bounds;
                     List<dynamic> list1 = make<ListCls<>>();        list1.add(ArrayItem);        for (auto _x1 : makeList(ArrayItem, ArrayItem, ArrayItem, ArrayItem)) {        {            list1.add(_x1);        }return list1;
         })->toList();
-    } else     {
+    } else {
         if (method == __s("TextInputClient.scribbleInteractionBegan")) {
         _scribbleInProgress = true;
         return;
-    } else     {
+    } else {
         if (method == __s("TextInputClient.scribbleInteractionFinished")) {
         _scribbleInProgress = false;
         return;

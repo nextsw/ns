@@ -17,11 +17,11 @@ int hexDigitValue(int charValue) {
     int a = 0x61;
     int f = 0x66;
     int digit = charValue ^ digit0;
-    if (digit <= 9)     {
+    if (digit <= 9) {
         return digit;
     }
     int letter = (charValue | 0x20);
-    if (a <= letter && letter <= f)     {
+    if (a <= letter && letter <= f) {
         return letter - (a - 10);
     }
     return -1;

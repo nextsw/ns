@@ -76,7 +76,7 @@ void ScrollNotificationObserverStateCls::_notifyListeners(ScrollNotification not
                 entry->listener(notification);
             }
         } catch (Unknown exception) {
-            FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(exception, stack, __s("widget library"), make<ErrorDescriptionCls>(__s("while dispatching notifications for $runtimeType")), [=] ()             {
+            FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(exception, stack, __s("widget library"), make<ErrorDescriptionCls>(__s("while dispatching notifications for $runtimeType")), [=] () {
                 makeList(ArrayItem);
             }));
         };

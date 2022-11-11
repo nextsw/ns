@@ -23,7 +23,7 @@ Future _StreamSinkImplCls<T>::addStream(Stream<T> stream) {
     if (_isBound) {
         throw make<StateErrorCls>(__s("StreamSink is already bound to a stream"));
     }
-    if (_hasError)     {
+    if (_hasError) {
         return done();
     }
     _isBound = true;
@@ -41,7 +41,7 @@ Future _StreamSinkImplCls<T>::flush() {
     if (_isBound) {
         throw make<StateErrorCls>(__s("StreamSink is bound to a stream"));
     }
-    if (_controllerInstance == nullptr)     {
+    if (_controllerInstance == nullptr) {
         return FutureCls->value(this);
     }
     _isBound = true;
@@ -138,7 +138,7 @@ void _IOSinkImplCls::encoding(Encoding value) {
 
 void _IOSinkImplCls::write(Object obj) {
     String string = __s("$obj");
-    if (stringValue->isEmpty())     {
+    if (stringValue->isEmpty()) {
         return;
     }
     add(_encoding->encode(stringValue));
@@ -146,7 +146,7 @@ void _IOSinkImplCls::write(Object obj) {
 
 void _IOSinkImplCls::writeAll(Iterable objects, String separator) {
     Iterator iterator = objects->iterator();
-    if (!iterator->moveNext())     {
+    if (!iterator->moveNext()) {
         return;
     }
     if (separator->isEmpty()) {

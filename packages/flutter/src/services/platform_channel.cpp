@@ -59,7 +59,7 @@ Future<void> _debugLaunchProfilePlatformChannels() {
         StringBuffer log = make<StringBufferCls>();
         log->writeln(__s("Platform Channel Stats:"));
         List<_PlatformChannelStats> allStats = _debugProfilePlatformChannelsStats->values->toList();
-        allStats->sort([=] (_PlatformChannelStats x,_PlatformChannelStats y)         {
+        allStats->sort([=] (_PlatformChannelStats x,_PlatformChannelStats y) {
             (y->upBytes + y->downBytes) - (x->upBytes + x->downBytes);
         });
         for (_PlatformChannelStats stats : allStats) {
@@ -145,7 +145,7 @@ Future<Map<K, V>> MethodChannelCls::invokeMapMethod(String method, dynamic argum
 
 void MethodChannelCls::setMethodCallHandler(std::function<Future<dynamic>(MethodCall call)> handler) {
     assert(_binaryMessenger != nullptr || ServicesBindingCls::instance != nullptr, __s("Cannot set the method call handler before the binary messenger has been initialized. This happens when you call setMethodCallHandler() before the WidgetsFlutterBinding has been initialized. You can fix this by either calling WidgetsFlutterBinding.ensureInitialized() before this or by passing a custom BinaryMessenger instance to MethodChannel()."));
-    binaryMessenger()->setMessageHandler(name, handler == nullptr? nullptr : [=] (ByteData message)     {
+    binaryMessenger()->setMessageHandler(name, handler == nullptr? nullptr : [=] (ByteData message) {
         _handleAsMethodCall(message, handler);
     });
 }

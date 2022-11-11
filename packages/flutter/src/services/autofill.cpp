@@ -13,7 +13,7 @@ void AutofillConfigurationCls::_(List<String> autofillHints, TextEditingValue cu
 
 Map<String, dynamic> _AutofillScopeTextInputConfigurationCls::toJson() {
     Map<String, dynamic> result = super->toJson();
-    result[__s("fields")] = allConfigurations->map([=] (TextInputConfiguration configuration)     {
+    result[__s("fields")] = allConfigurations->map([=] (TextInputConfiguration configuration) {
         configuration->toJson();
     })->toList(false);
     return result;
@@ -28,7 +28,7 @@ _AutofillScopeTextInputConfigurationCls::_AutofillScopeTextInputConfigurationCls
 
 TextInputConnection AutofillScopeMixinCls::attach(TextInputClient trigger, TextInputConfiguration configuration) {
     assert(trigger != nullptr);
-    assert(!autofillClients->any([=] (AutofillClient client)     {
+    assert(!autofillClients->any([=] (AutofillClient client) {
         !client->textInputConfiguration->autofillConfiguration->enabled;
     }), __s("Every client in AutofillScope.autofillClients must enable autofill"));
     TextInputConfiguration inputConfiguration = make<_AutofillScopeTextInputConfigurationCls>(autofillClients->map([=] (AutofillClient client) {

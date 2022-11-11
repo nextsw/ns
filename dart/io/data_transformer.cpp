@@ -112,7 +112,7 @@ void _FilterSinkCls::add(List<int> data) {
 
 void _FilterSinkCls::addSlice(List<int> data, int start, int end, bool isLast) {
     ArgumentErrorCls->checkNotNull(end, __s("end"));
-    if (_closed)     {
+    if (_closed) {
         return;
     }
     RangeErrorCls->checkValidRange(start, end, data->length());
@@ -123,7 +123,7 @@ void _FilterSinkCls::addSlice(List<int> data, int start, int end, bool isLast) {
         List<int> out;
         while (true) {
             Unknown out = _filter->processed(false);
-            if (out == nullptr)             {
+            if (out == nullptr) {
                 break;
             }
             _sink->add(out);
@@ -132,22 +132,22 @@ void _FilterSinkCls::addSlice(List<int> data, int start, int end, bool isLast) {
         _closed = true;
         throw;
     };
-    if (isLast)     {
+    if (isLast) {
         close();
     }
 }
 
 void _FilterSinkCls::close() {
-    if (_closed)     {
+    if (_closed) {
         return;
     }
-    if (_empty)     {
+    if (_empty) {
         _filter->process(makeList(), 0, 0);
     }
     try {
         while (true) {
             Unknown out = _filter->processed(true);
-            if (out == nullptr)             {
+            if (out == nullptr) {
                 break;
             }
             _sink->add(out);

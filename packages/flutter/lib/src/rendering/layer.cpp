@@ -23,7 +23,7 @@ Iterable<AnnotationEntry<T>> AnnotationResultCls<T>::entries() {
 
 template<typename T>
 Iterable<T> AnnotationResultCls<T>::annotations() {
-    return _entries->map([=] (AnnotationEntry<T> entry)     {
+    return _entries->map([=] (AnnotationEntry<T> entry) {
         entry->annotation;
     });
 }
@@ -957,7 +957,7 @@ Matrix4 TransformLayerCls::transform() {
 
 void TransformLayerCls::transform(Matrix4 value) {
     assert(value != nullptr);
-    assert(value!->storage()->every([=] (double component)     {
+    assert(value!->storage()->every([=] (double component) {
         component->isFinite;
     }));
     if (value == _transform) {
@@ -1503,7 +1503,7 @@ Layer FollowerLayerCls::_pathsToCommonAncestor(Layer a, Layer b, List<ContainerL
     if (a->depth < b->depth) {
         ancestorsB->add(b->parent());
         return _pathsToCommonAncestor(a, b->parent(), ancestorsA, ancestorsB);
-    } else     {
+    } else {
         if (a->depth > b->depth) {
         ancestorsA->add(a->parent());
         return _pathsToCommonAncestor(a->parent(), b, ancestorsA, ancestorsB);

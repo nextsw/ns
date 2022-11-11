@@ -35,7 +35,7 @@ int _SplayTreeCls<K, Node>::_splay(K key) {
         comp = compare(current->key, key);
         if (comp > 0) {
             auto currentLeft = current->_left;
-            if (currentLeft == nullptr)             {
+            if (currentLeft == nullptr) {
                 break;
             }
             comp = compare(currentLeft->key, key);
@@ -44,7 +44,7 @@ int _SplayTreeCls<K, Node>::_splay(K key) {
                 currentLeft->_right = current;
                 current = currentLeft;
                 currentLeft = current->_left;
-                if (currentLeft == nullptr)                 {
+                if (currentLeft == nullptr) {
                     break;
                 }
             }
@@ -55,10 +55,10 @@ int _SplayTreeCls<K, Node>::_splay(K key) {
             }
             right = current;
             current = currentLeft;
-        } else         {
+        } else {
             if ( < 0) {
             auto currentRight = current->_right;
-            if (currentRight == nullptr)             {
+            if (currentRight == nullptr) {
                 break;
             }
             comp = compare(currentRight->key, key);
@@ -67,7 +67,7 @@ int _SplayTreeCls<K, Node>::_splay(K key) {
                 currentRight->_left = current;
                 current = currentRight;
                 currentRight = current->_right;
-                if (currentRight == nullptr)                 {
+                if (currentRight == nullptr) {
                     break;
                 }
             }
@@ -128,11 +128,11 @@ Node _SplayTreeCls<K, Node>::_splayMax(Node node) {
 
 template<typename K, typename Node>
 Node _SplayTreeCls<K, Node>::_remove(K key) {
-    if (_root() == nullptr)     {
+    if (_root() == nullptr) {
         return nullptr;
     }
     int comp = _splay(key);
-    if (comp != 0)     {
+    if (comp != 0) {
         return nullptr;
     }
     auto root = _root()!;
@@ -175,7 +175,7 @@ void _SplayTreeCls<K, Node>::_addNewRoot(Node node, int comp) {
 template<typename K, typename Node>
 Node _SplayTreeCls<K, Node>::_first() {
     auto root = _root();
-    if (root == nullptr)     {
+    if (root == nullptr) {
         return nullptr;
     }
     _root() = _splayMin(root);
@@ -185,7 +185,7 @@ Node _SplayTreeCls<K, Node>::_first() {
 template<typename K, typename Node>
 Node _SplayTreeCls<K, Node>::_last() {
     auto root = _root();
-    if (root == nullptr)     {
+    if (root == nullptr) {
         return nullptr;
     }
     _root() = _splayMax(root);
@@ -221,7 +221,7 @@ template<typename K, typename V>
 SplayTreeMapCls<K, V>::SplayTreeMapCls(std::function<int(K key1, K key2)> compare, std::function<bool(dynamic potentialKey)> isValidKey) {
     {
         _compare = compare | <K>_defaultCompare();
-        _validKey = isValidKey | ([=] (dynamic a)         {
+        _validKey = isValidKey | ([=] (dynamic a) {
             is<K>(a);
         });
     }
@@ -260,7 +260,7 @@ void SplayTreeMapCls<K, V>::fromIterables(Iterable<K> keys, Iterable<V> values, 
 
 template<typename K, typename V>
 V SplayTreeMapCls<K, V>::[](Object key) {
-    if (!_validKey(key))     {
+    if (!_validKey(key)) {
         return nullptr;
     }
     if (_root != nullptr) {
@@ -274,11 +274,11 @@ V SplayTreeMapCls<K, V>::[](Object key) {
 
 template<typename K, typename V>
 V SplayTreeMapCls<K, V>::remove(Object key) {
-    if (!_validKey(key))     {
+    if (!_validKey(key)) {
         return nullptr;
     }
     _SplayTreeMapNode<K, V> mapRoot = _remove(as<dynamic>(key));
-    if (mapRoot != nullptr)     {
+    if (mapRoot != nullptr) {
         return mapRoot->value;
     }
     return nullptr;
@@ -351,7 +351,7 @@ V SplayTreeMapCls<K, V>::update(K key, std::function<V(V value)> update, std::fu
 template<typename K, typename V>
 void SplayTreeMapCls<K, V>::updateAll(std::function<V(K key, V value)> update) {
     auto root = _root;
-    if (root == nullptr)     {
+    if (root == nullptr) {
         return;
     }
     auto iterator = make<_SplayTreeMapEntryIteratorCls>(this);
@@ -427,7 +427,7 @@ Iterable<MapEntry<K, V>> SplayTreeMapCls<K, V>::entries() {
 
 template<typename K, typename V>
 K SplayTreeMapCls<K, V>::firstKey() {
-    if (_root == nullptr)     {
+    if (_root == nullptr) {
         return nullptr;
     }
     return _first!->key;
@@ -435,7 +435,7 @@ K SplayTreeMapCls<K, V>::firstKey() {
 
 template<typename K, typename V>
 K SplayTreeMapCls<K, V>::lastKey() {
-    if (_root == nullptr)     {
+    if (_root == nullptr) {
         return nullptr;
     }
     return _last!->key;
@@ -443,18 +443,18 @@ K SplayTreeMapCls<K, V>::lastKey() {
 
 template<typename K, typename V>
 K SplayTreeMapCls<K, V>::lastKeyBefore(K key) {
-    if (key == nullptr)     {
+    if (key == nullptr) {
         throw make<ArgumentErrorCls>(key);
     }
-    if (_root == nullptr)     {
+    if (_root == nullptr) {
         return nullptr;
     }
     int comp = _splay(key);
-    if ( < 0)     {
+    if ( < 0) {
         return _root!->key;
     }
     _SplayTreeMapNode<K, V> node = _root!->_left;
-    if (node == nullptr)     {
+    if (node == nullptr) {
         return nullptr;
     }
     auto nodeRight = node->_right;
@@ -467,18 +467,18 @@ K SplayTreeMapCls<K, V>::lastKeyBefore(K key) {
 
 template<typename K, typename V>
 K SplayTreeMapCls<K, V>::firstKeyAfter(K key) {
-    if (key == nullptr)     {
+    if (key == nullptr) {
         throw make<ArgumentErrorCls>(key);
     }
-    if (_root == nullptr)     {
+    if (_root == nullptr) {
         return nullptr;
     }
     int comp = _splay(key);
-    if (comp > 0)     {
+    if (comp > 0) {
         return _root!->key;
     }
     _SplayTreeMapNode<K, V> node = _root!->_right;
-    if (node == nullptr)     {
+    if (node == nullptr) {
         return nullptr;
     }
     auto nodeLeft = node->_left;
@@ -491,7 +491,7 @@ K SplayTreeMapCls<K, V>::firstKeyAfter(K key) {
 
 template<typename K, typename Node, typename T>
 T _SplayTreeIteratorCls<K, Node, T>::current() {
-    if (_path->isEmpty)     {
+    if (_path->isEmpty) {
         return as<T>(nullptr);
     }
     auto node = _path->last;
@@ -512,7 +512,7 @@ bool _SplayTreeIteratorCls<K, Node, T>::moveNext() {
         }
         throw make<ConcurrentModificationErrorCls>(_tree);
     }
-    if (_path->isEmpty)     {
+    if (_path->isEmpty) {
         return false;
     }
     if (_splayCount != _tree->_splayCount) {
@@ -673,7 +673,7 @@ template<typename E>
 SplayTreeSetCls<E>::SplayTreeSetCls(std::function<int(E key1, E key2)> compare, std::function<bool(dynamic potentialKey)> isValidKey) {
     {
         _compare = compare | <E>_defaultCompare();
-        _validKey = isValidKey | ([=] (dynamic v)         {
+        _validKey = isValidKey | ([=] (dynamic v) {
             is<E>(v);
         });
     }
@@ -724,7 +724,7 @@ bool SplayTreeSetCls<E>::isNotEmpty() {
 
 template<typename E>
 E SplayTreeSetCls<E>::first() {
-    auto _c1 = make<SplayTreeSetCls>(compare, isValidKey);_c1.addAll(elements);if (_count == 0)     {
+    auto _c1 = make<SplayTreeSetCls>(compare, isValidKey);_c1.addAll(elements);if (_count == 0) {
         throw IterableElementErrorCls->noElement();
     }
     return _first!->key;
@@ -732,7 +732,7 @@ E SplayTreeSetCls<E>::first() {
 
 template<typename E>
 E SplayTreeSetCls<E>::last() {
-    if (_count == 0)     {
+    if (_count == 0) {
         throw IterableElementErrorCls->noElement();
     }
     return _last!->key;
@@ -740,10 +740,10 @@ E SplayTreeSetCls<E>::last() {
 
 template<typename E>
 E SplayTreeSetCls<E>::single() {
-    if (_count == 0)     {
+    if (_count == 0) {
         throw IterableElementErrorCls->noElement();
     }
-    if (_count > 1)     {
+    if (_count > 1) {
         throw IterableElementErrorCls->tooMany();
     }
     return _root!->key;
@@ -761,7 +761,7 @@ bool SplayTreeSetCls<E>::add(E element) {
 
 template<typename E>
 bool SplayTreeSetCls<E>::remove(Object object) {
-    if (!_validKey(object))     {
+    if (!_validKey(object)) {
         return false;
     }
     return _remove(as<E>(object)) != nullptr;
@@ -777,7 +777,7 @@ void SplayTreeSetCls<E>::addAll(Iterable<E> elements) {
 template<typename E>
 void SplayTreeSetCls<E>::removeAll(Iterable<Object> elements) {
     for (Object element : elements) {
-        if (_validKey(element))         {
+        if (_validKey(element)) {
             _remove(as<E>(element));
         }
     }
@@ -804,11 +804,11 @@ void SplayTreeSetCls<E>::retainAll(Iterable<Object> elements) {
 
 template<typename E>
 E SplayTreeSetCls<E>::lookup(Object object) {
-    if (!_validKey(object))     {
+    if (!_validKey(object)) {
         return nullptr;
     }
     int comp = _splay(as<E>(object));
-    if (comp != 0)     {
+    if (comp != 0) {
         return nullptr;
     }
     return _root!->key;
@@ -818,7 +818,7 @@ template<typename E>
 Set<E> SplayTreeSetCls<E>::intersection(Set<Object> other) {
     Set<E> result = <E>make<SplayTreeSetCls>(_compare, _validKey);
     for (E element : this) {
-        if (other->contains(element))         {
+        if (other->contains(element)) {
             result->add(element);
         }
     }
@@ -829,7 +829,7 @@ template<typename E>
 Set<E> SplayTreeSetCls<E>::difference(Set<Object> other) {
     Set<E> result = <E>make<SplayTreeSetCls>(_compare, _validKey);
     for (E element : this) {
-        if (!other->contains(element))         {
+        if (!other->contains(element)) {
             result->add(element);
         }
     }
@@ -859,7 +859,7 @@ String SplayTreeSetCls<E>::toString() {
 template<typename E>
 template<typename T>
 Set<T> SplayTreeSetCls<E>::_newSet() {
-    return <T>make<SplayTreeSetCls>([=] (T a,T b)     {
+    return <T>make<SplayTreeSetCls>([=] (T a,T b) {
         _compare(as<E>(a), as<E>(b));
     }, _validKey);
 }
@@ -867,7 +867,7 @@ Set<T> SplayTreeSetCls<E>::_newSet() {
 template<typename E>
 bool SplayTreeSetCls<E>::_add(E element) {
     int compare = _splay(element);
-    if (compare == 0)     {
+    if (compare == 0) {
         return false;
     }
     _addNewRoot(make<_SplayTreeSetNodeCls>(element), compare);
@@ -885,7 +885,7 @@ SplayTreeSet<E> SplayTreeSetCls<E>::_clone() {
 template<typename E>
 template<typename Node>
 _SplayTreeSetNode<E> SplayTreeSetCls<E>::_copyNode(Node node) {
-    if (node == nullptr)     {
+    if (node == nullptr) {
         return nullptr;
     }
     InlineMethod;

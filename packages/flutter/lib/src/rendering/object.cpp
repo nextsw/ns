@@ -49,7 +49,7 @@ void PaintingContextCls::paintChild(RenderObject child, Offset offset) {
     if (child->isRepaintBoundary()) {
         stopRecordingIfNeeded();
         _compositeChild(child, offset);
-    } else     {
+    } else {
         if (child->_wasRepaintBoundary) {
         assert(is<OffsetLayer>(child->_layerHandle->layer()));
         child->_layerHandle->layer() = nullptr;
@@ -140,7 +140,7 @@ ClipRectLayer PaintingContextCls::pushClipRect(bool needsCompositing, Offset off
         pushLayer(layer, painter, offset, offsetClipRect);
         return layer;
     } else {
-        clipRectAndPaint(offsetClipRect, clipBehavior, offsetClipRect, [=] ()         {
+        clipRectAndPaint(offsetClipRect, clipBehavior, offsetClipRect, [=] () {
             painter(this, offset);
         });
         return nullptr;
@@ -161,7 +161,7 @@ ClipRRectLayer PaintingContextCls::pushClipRRect(bool needsCompositing, Offset o
         pushLayer(layer, painter, offset, offsetBounds);
         return layer;
     } else {
-        clipRRectAndPaint(offsetClipRRect, clipBehavior, offsetBounds, [=] ()         {
+        clipRRectAndPaint(offsetClipRRect, clipBehavior, offsetBounds, [=] () {
             painter(this, offset);
         });
         return nullptr;
@@ -182,7 +182,7 @@ ClipPathLayer PaintingContextCls::pushClipPath(bool needsCompositing, Offset off
         pushLayer(layer, painter, offset, offsetBounds);
         return layer;
     } else {
-        clipPathAndPaint(offsetClipPath, clipBehavior, offsetBounds, [=] ()         {
+        clipPathAndPaint(offsetClipPath, clipBehavior, offsetBounds, [=] () {
             painter(this, offset);
         });
         return nullptr;
@@ -366,7 +366,7 @@ void PipelineOwnerCls::flushLayout() {
             assert(!_shouldMergeDirtyNodes);
             List<RenderObject> dirtyNodes = _nodesNeedingLayout;
             _nodesNeedingLayout = makeList();
-            dirtyNodes->sort([=] (RenderObject a,RenderObject b)             {
+            dirtyNodes->sort([=] (RenderObject a,RenderObject b) {
                 a->depth - b->depth;
             });
             for (;  < dirtyNodes->length(); i++) {
@@ -400,7 +400,7 @@ void PipelineOwnerCls::flushCompositingBits() {
     if (!kReleaseMode) {
         TimelineCls->startSync(__s("UPDATING COMPOSITING BITS"));
     }
-    _nodesNeedingCompositingBitsUpdate->sort([=] (RenderObject a,RenderObject b)     {
+    _nodesNeedingCompositingBitsUpdate->sort([=] (RenderObject a,RenderObject b) {
         a->depth - b->depth;
     });
     for (RenderObject node : _nodesNeedingCompositingBitsUpdate) {
@@ -437,7 +437,7 @@ void PipelineOwnerCls::flushPaint() {
         List<RenderObject> dirtyNodes = _nodesNeedingPaint;
         _nodesNeedingPaint = makeList();
         for (RenderObject node : _c2) {
-                    auto _c2 = dirtyNodes;        _c2.sort([=] (RenderObject a,RenderObject b)         {                    b->depth - a->depth;                });assert(node->_layerHandle->layer != nullptr);
+                    auto _c2 = dirtyNodes;        _c2.sort([=] (RenderObject a,RenderObject b) {                    b->depth - a->depth;                });assert(node->_layerHandle->layer != nullptr);
             if ((node->_needsPaint || node->_needsCompositedLayerUpdate) && node->owner == this) {
                 if (node->_layerHandle->layer!->attached) {
                     assert(node->isRepaintBoundary);
@@ -985,7 +985,7 @@ void RenderObjectCls::markNeedsPaint() {
             owner()!->_nodesNeedingPaint->add(this);
             owner()!->requestVisualUpdate();
         }
-    } else     {
+    } else {
         if (is<RenderObject>(parent)) {
         RenderObject parent = as<RenderObject>(this->as<RenderObjectCls>(parent)!);
         as<RenderObjectCls>(parent)->markNeedsPaint();
@@ -1115,7 +1115,7 @@ void RenderObjectCls::sendSemanticsEvent(SemanticsEvent semanticsEvent) {
     }
     if (_semantics != nullptr && !_semantics!->isMergedIntoParent()) {
         _semantics!->sendEvent(semanticsEvent);
-    } else     {
+    } else {
         if (parent != nullptr) {
         RenderObject renderParent = as<RenderObject>(parent!);
         renderParent->sendSemanticsEvent(semanticsEvent);
@@ -1279,7 +1279,7 @@ DiagnosticsNode RenderObjectCls::describeForError(String name, DiagnosticsTreeSt
 }
 
 void RenderObjectCls::_debugReportException(String method, Object exception, StackTrace stack) {
-    List<DiagnosticsNode> list1 = make<ListCls<>>();if (kDebugMode && debugCreator != nullptr) {    list1.add(ArrayItem);}list1.add(ArrayItem);list1.add(ArrayItem);FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(exception, stack, __s("rendering library"), make<ErrorDescriptionCls>(__s("during $method()")), [=] ()     {
+    List<DiagnosticsNode> list1 = make<ListCls<>>();if (kDebugMode && debugCreator != nullptr) {    list1.add(ArrayItem);}list1.add(ArrayItem);list1.add(ArrayItem);FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(exception, stack, __s("rendering library"), make<ErrorDescriptionCls>(__s("during $method()")), [=] () {
         list1;
     }));
 }
@@ -1425,7 +1425,7 @@ void RenderObjectCls::_updateCompositingBits() {
         owner()?->_nodesNeedingPaint->remove(this);
         _needsCompositingBitsUpdate = false;
         markNeedsPaint();
-    } else     {
+    } else {
         if (oldNeedsCompositing != _needsCompositing) {
         _needsCompositingBitsUpdate = false;
         markNeedsPaint();
@@ -1598,7 +1598,7 @@ _SemanticsFragment RenderObjectCls::_getSemanticsForParent(bool mergeIntoParent)
         assert(!config->hasBeenAnnotated());
         assert(!mergeIntoParent);
         result = make<_RootSemanticsFragmentCls>(this, dropSemanticsOfPreviousSiblings);
-    } else     {
+    } else {
         if (producesForkingFragment) {
         result = make<_ContainerSemanticsFragmentCls>(dropSemanticsOfPreviousSiblings);
     } else {

@@ -36,7 +36,7 @@ void JsonCodecCls::withReviver(std::function<dynamic(Object key, Object value)> 
 
 dynamic JsonCodecCls::decode(String source, std::function<Object(Object key, Object value)> reviver) {
     reviver |= _reviver;
-    if (reviver == nullptr)     {
+    if (reviver == nullptr) {
         return decoder()->convert(source);
     }
     return make<JsonDecoderCls>(reviver)->convert(source);
@@ -44,21 +44,21 @@ dynamic JsonCodecCls::decode(String source, std::function<Object(Object key, Obj
 
 String JsonCodecCls::encode(Object value, std::function<Object(dynamic object)> toEncodable) {
     toEncodable |= _toEncodable;
-    if (toEncodable == nullptr)     {
+    if (toEncodable == nullptr) {
         return encoder()->convert(value);
     }
     return make<JsonEncoderCls>(toEncodable)->convert(value);
 }
 
 JsonEncoder JsonCodecCls::encoder() {
-    if (_toEncodable == nullptr)     {
+    if (_toEncodable == nullptr) {
         return make<JsonEncoderCls>();
     }
     return make<JsonEncoderCls>(_toEncodable);
 }
 
 JsonDecoder JsonCodecCls::decoder() {
-    if (_reviver == nullptr)     {
+    if (_reviver == nullptr) {
         return make<JsonDecoderCls>();
     }
     return make<JsonDecoderCls>(_reviver);
@@ -108,7 +108,7 @@ List<int> JsonUtf8EncoderCls::convert(Object object) {
     auto bytes = makeList();
     InlineMethod;
     _JsonUtf8StringifierCls->stringify(object, _indent, _toEncodable, _bufferSize, addChunk);
-    if (bytes->length() == 1)     {
+    if (bytes->length() == 1) {
         return bytes[0];
     }
     auto length = 0;
@@ -140,16 +140,16 @@ Stream<List<int>> JsonUtf8EncoderCls::bind(Stream<Object> stream) {
 }
 
 List<int> JsonUtf8EncoderCls::_utf8Encode(String stringValue) {
-    if (stringValue == nullptr)     {
+    if (stringValue == nullptr) {
         return nullptr;
     }
-    if (stringValue->isEmpty())     {
+    if (stringValue->isEmpty()) {
         return make<Uint8ListCls>(0);
     }
     checkAscii:;
     {
         for (;  < stringValue->length(); i++) {
-            if (stringValue->codeUnitAt(i) >= 0x80)             {
+            if (stringValue->codeUnitAt(i) >= 0x80) {
                 break checkAscii;
             }
         }
@@ -220,7 +220,7 @@ void _JsonStringifierCls::writeStringContent(String s) {
         if (charCode > backslash) {
             if (charCode >= surrogateMin) {
                 if (((charCode & surrogateMask) == surrogateLead && !(i + 1 < length && (s->codeUnitAt(i + 1) & surrogateMask) == surrogateTrail)) || ((charCode & surrogateMask) == surrogateTrail && !(i - 1 >= 0 && (s->codeUnitAt(i - 1) & surrogateMask) == surrogateLead))) {
-                    if (i > offset)                     {
+                    if (i > offset) {
                         writeStringSlice(s, offset, i);
                     }
                     offset = i + 1;
@@ -235,15 +235,15 @@ void _JsonStringifierCls::writeStringContent(String s) {
             continue;
         }
         if ( < 32) {
-            if (i > offset)             {
+            if (i > offset) {
                 writeStringSlice(s, offset, i);
             }
             offset = i + 1;
             writeCharCode(backslash);
             ;
-        } else         {
+        } else {
             if (charCode == quote || charCode == backslash) {
-            if (i > offset)             {
+            if (i > offset) {
                 writeStringSlice(s, offset, i);
             }
             offset = i + 1;
@@ -254,7 +254,7 @@ void _JsonStringifierCls::writeStringContent(String s) {
         }    }
     if (offset == 0) {
         writeString(s);
-    } else     {
+    } else {
         if ( < length) {
         writeStringSlice(s, offset, length);
     }
@@ -262,7 +262,7 @@ void _JsonStringifierCls::writeStringContent(String s) {
     }}
 
 void _JsonStringifierCls::writeObject(Object object) {
-    if (writeJsonValue(object))     {
+    if (writeJsonValue(object)) {
         return;
     }
     _checkCycle(object);
@@ -279,36 +279,36 @@ void _JsonStringifierCls::writeObject(Object object) {
 
 bool _JsonStringifierCls::writeJsonValue(Object object) {
     if (is<num>(object)) {
-        if (!as<numCls>(object)->isFinite())         {
+        if (!as<numCls>(object)->isFinite()) {
             return false;
         }
         writeNumber(as<numCls>(object));
         return true;
-    } else     {
+    } else {
         if (identical(object, true)) {
         writeString(__s("true"));
         return true;
-    } else     {
+    } else {
         if (identical(object, false)) {
         writeString(__s("false"));
         return true;
-    } else     {
+    } else {
         if (object == nullptr) {
         writeString(__s("null"));
         return true;
-    } else     {
+    } else {
         if (is<String>(object)) {
         writeString(__s("""));
         writeStringContent(as<StringCls>(object));
         writeString(__s("""));
         return true;
-    } else     {
+    } else {
         if (is<List>(object)) {
         _checkCycle(as<ListCls>(object));
         writeList(as<ListCls>(object));
         _removeSeen(as<ListCls>(object));
         return true;
-    } else     {
+    } else {
         if (is<Map>(object)) {
         _checkCycle(as<MapCls>(object));
         auto success = writeMap(as<MapCls>(object));
@@ -352,7 +352,7 @@ bool _JsonStringifierCls::writeMap(Map<Object, Object> map) {
         keyValueList[i++] = key;
         keyValueList[i++] = value;
     });
-    if (!allStringKeys)     {
+    if (!allStringKeys) {
         return false;
     }
     writeString(__s("{"));
@@ -424,7 +424,7 @@ bool _JsonPrettyPrintMixinCls::writeMap(Map<Object, Object> map) {
         keyValueList[i++] = key;
         keyValueList[i++] = value;
     });
-    if (!allStringKeys)     {
+    if (!allStringKeys) {
         return false;
     }
     writeString(__s("{\n"));
@@ -486,7 +486,7 @@ String _JsonStringStringifierCls::_partialResult() {
 }
 
 void _JsonStringStringifierPrettyCls::writeIndentation(int count) {
-    for (;  < count; i++)     {
+    for (;  < count; i++) {
         writeString(_indent);
     }
 }

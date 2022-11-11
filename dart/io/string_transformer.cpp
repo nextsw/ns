@@ -56,7 +56,7 @@ void _WindowsCodePageEncoderSinkCls::addSlice(String source, int start, int end,
         source = source->substring(start, end);
     }
     add(source);
-    if (isLast)     {
+    if (isLast) {
         close();
     }
 }

@@ -34,7 +34,7 @@ List<_Variable> _FunctionCls::variableDeps(int id) {
     }
     Set<int> deps = makeSet();
     transpiler->collectDeps(deps, id);
-    return deps->where(variables->containsKey)->map([=] (int id)     {
+    return deps->where(variables->containsKey)->map([=] (int id) {
         variables[id]!;
     })->toList();
 }

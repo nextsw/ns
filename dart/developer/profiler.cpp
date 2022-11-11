@@ -14,7 +14,7 @@ double GaugeCls::value() {
 void GaugeCls::value(double v) {
     if ( < min) {
         v = min;
-    } else     {
+    } else {
         if (v > max) {
         v = max;
     }
@@ -29,7 +29,7 @@ GaugeCls::GaugeCls(String name, String description, double min, double max) : Me
     {
         ArgumentErrorCls->checkNotNull(min, __s("min"));
         ArgumentErrorCls->checkNotNull(max, __s("max"));
-        if (!( < max))         {
+        if (!( < max)) {
             throw make<ArgumentErrorCls>(__s("min must be less than max"));
         }
     }

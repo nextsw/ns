@@ -56,9 +56,9 @@ bool _CastIterableBaseCls<S, T>::contains(Object other) {
 
 template<typename S, typename T>
 T _CastIterableBaseCls<S, T>::lastWhere(std::function<bool(T element)> test, std::function<T()> orElse) {
-    return as<T>(_source()->lastWhere([=] (S element)     {
+    return as<T>(_source()->lastWhere([=] (S element) {
         test(as<T>(element));
-    }, (orElse == nullptr)? nullptr : [=] ()     {
+    }, (orElse == nullptr)? nullptr : [=] () {
         as<S>(orElse());
     }));
 }
@@ -128,7 +128,7 @@ void _CastListBaseCls<S, T>::addAll(Iterable<T> values) {
 
 template<typename S, typename T>
 void _CastListBaseCls<S, T>::sort(std::function<int(T v1, T v2)> compare) {
-    _source()->sort(compare == nullptr? nullptr : [=] (S v1,S v2)     {
+    _source()->sort(compare == nullptr? nullptr : [=] (S v1,S v2) {
         compare(as<T>(v1), as<T>(v2));
     });
 }
@@ -170,14 +170,14 @@ T _CastListBaseCls<S, T>::removeLast() {
 
 template<typename S, typename T>
 void _CastListBaseCls<S, T>::removeWhere(std::function<bool(T element)> test) {
-    _source()->removeWhere([=] (S element)     {
+    _source()->removeWhere([=] (S element) {
         test(as<T>(element));
     });
 }
 
 template<typename S, typename T>
 void _CastListBaseCls<S, T>::retainWhere(std::function<bool(T element)> test) {
-    _source()->retainWhere([=] (S element)     {
+    _source()->retainWhere([=] (S element) {
         test(as<T>(element));
     });
 }
@@ -246,14 +246,14 @@ void CastSetCls<S, T>::retainAll(Iterable<Object> objects) {
 
 template<typename S, typename T>
 void CastSetCls<S, T>::removeWhere(std::function<bool(T element)> test) {
-    _source->removeWhere([=] (S element)     {
+    _source->removeWhere([=] (S element) {
         test(as<T>(element));
     });
 }
 
 template<typename S, typename T>
 void CastSetCls<S, T>::retainWhere(std::function<bool(T element)> test) {
-    _source->retainWhere([=] (S element)     {
+    _source->retainWhere([=] (S element) {
         test(as<T>(element));
     });
 }
@@ -265,7 +265,7 @@ bool CastSetCls<S, T>::containsAll(Iterable<Object> objects) {
 
 template<typename S, typename T>
 Set<T> CastSetCls<S, T>::intersection(Set<Object> other) {
-    if (_emptySet != nullptr)     {
+    if (_emptySet != nullptr) {
         return _conditionalAdd(other, true);
     }
     return <S, T>make<CastSetCls>(_source->intersection(other), nullptr);
@@ -273,7 +273,7 @@ Set<T> CastSetCls<S, T>::intersection(Set<Object> other) {
 
 template<typename S, typename T>
 Set<T> CastSetCls<S, T>::difference(Set<Object> other) {
-    if (_emptySet != nullptr)     {
+    if (_emptySet != nullptr) {
         return _conditionalAdd(other, false);
     }
     return <S, T>make<CastSetCls>(_source->difference(other), nullptr);
@@ -305,7 +305,7 @@ Set<T> CastSetCls<S, T>::_conditionalAdd(Set<Object> other, bool otherContains) 
     Set<T> result = (emptySet == nullptr)? <T>make<SetCls>() : <T>emptySet();
     for (auto element : _source) {
         T castElement = as<T>(element);
-        if (otherContains == other->contains(castElement))         {
+        if (otherContains == other->contains(castElement)) {
             result->add(castElement);
         }
     }
@@ -348,7 +348,7 @@ void CastMapCls<SK, SV, K, V>::[]=(K key, V value) {
 
 template<typename SK, typename SV, typename K, typename V>
 V CastMapCls<SK, SV, K, V>::putIfAbsent(K key, std::function<V()> ifAbsent) {
-    return as<V>(_source->putIfAbsent(as<SK>(key), [=] ()     {
+    return as<V>(_source->putIfAbsent(as<SK>(key), [=] () {
         as<SV>(ifAbsent());
     }));
 }
@@ -402,23 +402,23 @@ bool CastMapCls<SK, SV, K, V>::isNotEmpty() {
 
 template<typename SK, typename SV, typename K, typename V>
 V CastMapCls<SK, SV, K, V>::update(K key, std::function<V(V value)> update, std::function<V()> ifAbsent) {
-    return as<V>(_source->update(as<SK>(key), [=] (SV value)     {
+    return as<V>(_source->update(as<SK>(key), [=] (SV value) {
         as<SV>(update(as<V>(value)));
-    }, (ifAbsent == nullptr)? nullptr : [=] ()     {
+    }, (ifAbsent == nullptr)? nullptr : [=] () {
         as<SV>(ifAbsent());
     }));
 }
 
 template<typename SK, typename SV, typename K, typename V>
 void CastMapCls<SK, SV, K, V>::updateAll(std::function<V(K key, V value)> update) {
-    _source->updateAll([=] (SK key,SV value)     {
+    _source->updateAll([=] (SK key,SV value) {
         as<SV>(update(as<K>(key), as<V>(value)));
     });
 }
 
 template<typename SK, typename SV, typename K, typename V>
 Iterable<MapEntry<K, V>> CastMapCls<SK, SV, K, V>::entries() {
-    return _source->entries()-><MapEntry<K, V>>map([=] (MapEntry<SK, SV> e)     {
+    return _source->entries()-><MapEntry<K, V>>map([=] (MapEntry<SK, SV> e) {
         <K, V>make<MapEntryCls>(as<K>(e->key), as<V>(e->value));
     });
 }
@@ -432,7 +432,7 @@ void CastMapCls<SK, SV, K, V>::addEntries(Iterable<MapEntry<K, V>> entries) {
 
 template<typename SK, typename SV, typename K, typename V>
 void CastMapCls<SK, SV, K, V>::removeWhere(std::function<bool(K key, V value)> test) {
-    _source->removeWhere([=] (SK key,SV value)     {
+    _source->removeWhere([=] (SK key,SV value) {
         test(as<K>(key), as<V>(value));
     });
 }
@@ -480,14 +480,14 @@ void CastQueueCls<S, T>::addAll(Iterable<T> elements) {
 
 template<typename S, typename T>
 void CastQueueCls<S, T>::removeWhere(std::function<bool(T element)> test) {
-    _source->removeWhere([=] (S element)     {
+    _source->removeWhere([=] (S element) {
         test(as<T>(element));
     });
 }
 
 template<typename S, typename T>
 void CastQueueCls<S, T>::retainWhere(std::function<bool(T element)> test) {
-    _source->retainWhere([=] (S element)     {
+    _source->retainWhere([=] (S element) {
         test(as<T>(element));
     });
 }

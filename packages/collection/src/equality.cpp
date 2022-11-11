@@ -65,23 +65,23 @@ IterableEqualityCls<E>::IterableEqualityCls(Equality<E> elementEquality) {
 
 template<typename E>
 bool IterableEqualityCls<E>::equals(Iterable<E> elements1, Iterable<E> elements2) {
-    if (identical(elements1, elements2))     {
+    if (identical(elements1, elements2)) {
         return true;
     }
-    if (elements1 == nullptr || elements2 == nullptr)     {
+    if (elements1 == nullptr || elements2 == nullptr) {
         return false;
     }
     auto it1 = elements1->iterator();
     auto it2 = elements2->iterator();
     while (true) {
         auto hasNext = it1->moveNext();
-        if (hasNext != it2->moveNext())         {
+        if (hasNext != it2->moveNext()) {
             return false;
         }
-        if (!hasNext)         {
+        if (!hasNext) {
             return true;
         }
-        if (!_elementEquality->equals(it1->current(), it2->current()))         {
+        if (!_elementEquality->equals(it1->current(), it2->current())) {
             return false;
         }
     }
@@ -89,7 +89,7 @@ bool IterableEqualityCls<E>::equals(Iterable<E> elements1, Iterable<E> elements2
 
 template<typename E>
 int IterableEqualityCls<E>::hash(Iterable<E> elements) {
-    if (elements == nullptr)     {
+    if (elements == nullptr) {
         return nullptr->hashCode;
     }
     auto hash = 0;
@@ -119,18 +119,18 @@ ListEqualityCls<E>::ListEqualityCls(Equality<E> elementEquality) {
 
 template<typename E>
 bool ListEqualityCls<E>::equals(List<E> list1, List<E> list2) {
-    if (identical(list1, list2))     {
+    if (identical(list1, list2)) {
         return true;
     }
-    if (list1 == nullptr || list2 == nullptr)     {
+    if (list1 == nullptr || list2 == nullptr) {
         return false;
     }
     auto length = list1->length();
-    if (length != list2->length)     {
+    if (length != list2->length) {
         return false;
     }
     for (;  < length; i++) {
-        if (!_elementEquality->equals(list1[i], list2[i]))         {
+        if (!_elementEquality->equals(list1[i], list2[i])) {
             return false;
         }
     }
@@ -139,7 +139,7 @@ bool ListEqualityCls<E>::equals(List<E> list1, List<E> list2) {
 
 template<typename E>
 int ListEqualityCls<E>::hash(List<E> list) {
-    if (list == nullptr)     {
+    if (list == nullptr) {
         return nullptr->hashCode;
     }
     auto hash = 0;
@@ -162,10 +162,10 @@ bool ListEqualityCls<E>::isValidKey(Object o) {
 
 template<typename E, typename T>
 bool _UnorderedEqualityCls<E, T>::equals(T elements1, T elements2) {
-    if (identical(elements1, elements2))     {
+    if (identical(elements1, elements2)) {
         return true;
     }
-    if (elements1 == nullptr || elements2 == nullptr)     {
+    if (elements1 == nullptr || elements2 == nullptr) {
         return false;
     }
     auto counts = <E, int>make<HashMapCls>(_elementEquality->equals, _elementEquality->hash, _elementEquality->isValidKey);
@@ -177,7 +177,7 @@ bool _UnorderedEqualityCls<E, T>::equals(T elements1, T elements2) {
     }
     for (auto e : elements2) {
         auto count = counts[e];
-        if (count == nullptr || count == 0)         {
+        if (count == nullptr || count == 0) {
             return false;
         }
         counts[e] = count - 1;
@@ -188,7 +188,7 @@ bool _UnorderedEqualityCls<E, T>::equals(T elements1, T elements2) {
 
 template<typename E, typename T>
 int _UnorderedEqualityCls<E, T>::hash(T elements) {
-    if (elements == nullptr)     {
+    if (elements == nullptr) {
         return nullptr->hashCode;
     }
     auto hash = 0;
@@ -238,14 +238,14 @@ MapEqualityCls<K, V>::MapEqualityCls(Equality<K> keys, Equality<V> values) {
 
 template<typename K, typename V>
 bool MapEqualityCls<K, V>::equals(Map<K, V> map1, Map<K, V> map2) {
-    if (identical(map1, map2))     {
+    if (identical(map1, map2)) {
         return true;
     }
-    if (map1 == nullptr || map2 == nullptr)     {
+    if (map1 == nullptr || map2 == nullptr) {
         return false;
     }
     auto length = map1->length();
-    if (length != map2->length)     {
+    if (length != map2->length) {
         return false;
     }
     Map<_MapEntry, int> equalElementCounts = make<HashMapCls>();
@@ -257,7 +257,7 @@ bool MapEqualityCls<K, V>::equals(Map<K, V> map1, Map<K, V> map2) {
     for (auto key : map2->keys()) {
         auto entry = make<_MapEntryCls>(this, key, map2[key]);
         auto count = equalElementCounts[entry];
-        if (count == nullptr || count == 0)         {
+        if (count == nullptr || count == 0) {
             return false;
         }
         equalElementCounts[entry] = count - 1;
@@ -267,7 +267,7 @@ bool MapEqualityCls<K, V>::equals(Map<K, V> map1, Map<K, V> map2) {
 
 template<typename K, typename V>
 int MapEqualityCls<K, V>::hash(Map<K, V> map) {
-    if (map == nullptr)     {
+    if (map == nullptr) {
         return nullptr->hashCode;
     }
     auto hash = 0;
@@ -297,7 +297,7 @@ MultiEqualityCls<E>::MultiEqualityCls(Iterable<Equality<E>> equalities) {
 template<typename E>
 bool MultiEqualityCls<E>::equals(E e1, E e2) {
     for (auto eq : _equalities) {
-        if (eq->isValidKey(e1))         {
+        if (eq->isValidKey(e1)) {
             return eq->isValidKey(e2) && eq->equals(e1, e2);
         }
     }
@@ -307,7 +307,7 @@ bool MultiEqualityCls<E>::equals(E e1, E e2) {
 template<typename E>
 int MultiEqualityCls<E>::hash(E e) {
     for (auto eq : _equalities) {
-        if (eq->isValidKey(e))         {
+        if (eq->isValidKey(e)) {
             return eq->hash(e);
         }
     }
@@ -317,7 +317,7 @@ int MultiEqualityCls<E>::hash(E e) {
 template<typename E>
 bool MultiEqualityCls<E>::isValidKey(Object o) {
     for (auto eq : _equalities) {
-        if (eq->isValidKey(o))         {
+        if (eq->isValidKey(o)) {
             return true;
         }
     }
@@ -347,9 +347,9 @@ bool DeepCollectionEqualityCls::equals(e1 , e2 ) {
         if (is<Iterable>(e1)) {
             return is<Iterable>(e2) && make<IterableEqualityCls>(this)->equals(as<IterableCls>(e1), e2);
         }
-    } else     {
+    } else {
         if (is<Iterable>(e1)) {
-        if (is<List>(as<IterableCls>(e1)) != is<List>(e2))         {
+        if (is<List>(as<IterableCls>(e1)) != is<List>(e2)) {
             return false;
         }
         return is<Iterable>(e2) && make<UnorderedIterableEqualityCls>(this)->equals(as<IterableCls>(e1), e2);
@@ -359,20 +359,20 @@ bool DeepCollectionEqualityCls::equals(e1 , e2 ) {
 }
 
 int DeepCollectionEqualityCls::hash(Object o) {
-    if (is<Set>(o))     {
+    if (is<Set>(o)) {
         return make<SetEqualityCls>(this)->hash(as<SetCls>(o));
     }
-    if (is<Map>(o))     {
+    if (is<Map>(o)) {
         return make<MapEqualityCls>(this, this)->hash(as<MapCls>(o));
     }
     if (!_unordered) {
-        if (is<List>(o))         {
+        if (is<List>(o)) {
             return make<ListEqualityCls>(this)->hash(as<ListCls>(o));
         }
-        if (is<Iterable>(o))         {
+        if (is<Iterable>(o)) {
             return make<IterableEqualityCls>(this)->hash(as<IterableCls>(o));
         }
-    } else     {
+    } else {
         if (is<Iterable>(o)) {
         return make<UnorderedIterableEqualityCls>(this)->hash(as<IterableCls>(o));
     }

@@ -53,7 +53,7 @@ void TextPainterCls::text(InlineSpan value) {
     _text = value;
     if (comparison->index >= RenderComparisonCls::layout->index) {
         markNeedsLayout();
-    } else     {
+    } else {
         if (comparison->index >= RenderComparisonCls::paint->index) {
         _rebuildParagraphForPaint = true;
     }

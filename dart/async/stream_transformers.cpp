@@ -147,7 +147,7 @@ void _HandlerEventSinkCls<S, T>::addError(Object error, StackTrace stackTrace) {
 template<typename S, typename T>
 void _HandlerEventSinkCls<S, T>::close() {
     auto sink = _sink;
-    if (sink == nullptr)     {
+    if (sink == nullptr) {
         return;
     }
     _sink = nullptr;

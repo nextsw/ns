@@ -239,7 +239,7 @@ void DelegatingListCls<E>::fillRange(int start, int end, E fillValue) {
 
 template<typename E>
 void DelegatingListCls<E>::first(E value) {
-    if (isEmpty)     {
+    if (isEmpty) {
         throw RangeErrorCls->index(0, this);
     }
     this[0] = value;
@@ -272,7 +272,7 @@ void DelegatingListCls<E>::insertAll(int index, Iterable<E> iterable) {
 
 template<typename E>
 void DelegatingListCls<E>::last(E value) {
-    if (isEmpty)     {
+    if (isEmpty) {
         throw RangeErrorCls->index(0, this);
     }
     this[length - 1] = value;
@@ -706,7 +706,7 @@ bool MapKeySetCls<E>::containsAll(Iterable<Object> other) {
 
 template<typename E>
 Set<E> MapKeySetCls<E>::difference(Set<Object> other) {
-    return where([=] (Unknown  element)     {
+    return where([=] (Unknown  element) {
         !other->contains(element);
     })->toSet();
 }
@@ -748,7 +748,7 @@ Set<T> MapValueSetCls<K, V>::cast() {
 
 template<typename K, typename V>
 bool MapValueSetCls<K, V>::contains(Object element) {
-    if (!is<V>(element))     {
+    if (!is<V>(element)) {
         return false;
     }
     auto key = _keyForValue(element);
@@ -803,7 +803,7 @@ bool MapValueSetCls<K, V>::containsAll(Iterable<Object> other) {
 
 template<typename K, typename V>
 Set<V> MapValueSetCls<K, V>::difference(Set<Object> other) {
-    return where([=] (Unknown  element)     {
+    return where([=] (Unknown  element) {
         !other->contains(element);
     })->toSet();
 }
@@ -815,7 +815,7 @@ Set<V> MapValueSetCls<K, V>::intersection(Set<Object> other) {
 
 template<typename K, typename V>
 V MapValueSetCls<K, V>::lookup(Object element) {
-    if (!is<V>(element))     {
+    if (!is<V>(element)) {
         return nullptr;
     }
     auto key = _keyForValue(element);
@@ -824,11 +824,11 @@ V MapValueSetCls<K, V>::lookup(Object element) {
 
 template<typename K, typename V>
 bool MapValueSetCls<K, V>::remove(Object element) {
-    if (!is<V>(element))     {
+    if (!is<V>(element)) {
         return false;
     }
     auto key = _keyForValue(element);
-    if (!_baseMap->containsKey(key))     {
+    if (!_baseMap->containsKey(key)) {
         return false;
     }
     _baseMap->remove(key);
@@ -844,7 +844,7 @@ template<typename K, typename V>
 void MapValueSetCls<K, V>::removeWhere(std::function<bool(V )> test) {
     auto toRemove = makeList();
     _baseMap->forEach([=] (Unknown  key,Unknown  value) {
-        if (test(value))         {
+        if (test(value)) {
             toRemove->add(key);
         }
     });
@@ -855,18 +855,18 @@ template<typename K, typename V>
 void MapValueSetCls<K, V>::retainAll(Iterable<Object> elements) {
     auto valuesToRetain = <V>identity();
     for (auto element : elements) {
-        if (!is<V>(element))         {
+        if (!is<V>(element)) {
             continue;
         }
         auto key = _keyForValue(element);
-        if (!_baseMap->containsKey(key))         {
+        if (!_baseMap->containsKey(key)) {
             continue;
         }
         valuesToRetain->add(_baseMap[key] | as<V>(nullptr));
     }
     auto keysToRemove = makeList();
     _baseMap->forEach([=] (Unknown  k,Unknown  v) {
-        if (!valuesToRetain->contains(v))         {
+        if (!valuesToRetain->contains(v)) {
             keysToRemove->add(k);
         }
     });
@@ -875,7 +875,7 @@ void MapValueSetCls<K, V>::retainAll(Iterable<Object> elements) {
 
 template<typename K, typename V>
 void MapValueSetCls<K, V>::retainWhere(std::function<bool(V )> test) {
-    return removeWhere([=] (Unknown  element)     {
+    return removeWhere([=] (Unknown  element) {
         !test(element);
     });
 }

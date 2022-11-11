@@ -794,7 +794,7 @@ List<double> RenderTableCls::_computeColumnWidths(BoxConstraints constraints) {
             }
             assert(tableWidth + precisionErrorTolerance >= targetWidth);
         }
-    } else     {
+    } else {
         if ( < minWidthConstraint) {
         double delta = (minWidthConstraint - tableWidth) / columns();
         for (;  < columns(); x += 1) {

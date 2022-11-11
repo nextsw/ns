@@ -20,7 +20,7 @@ bool _offsetIsValid(Offset offset) {
 bool _matrix4IsValid(Float64List matrix4) {
     assert(matrix4 != nullptr, __s("Matrix4 argument was null."));
     assert(matrix4->length == 16, __s("Matrix4 must have 16 entries."));
-    assert(matrix4->every([=] (double value)     {
+    assert(matrix4->every([=] (double value) {
         value->isFinite;
     }), __s("Matrix4 entries must be finite."));
     return true;
@@ -134,10 +134,10 @@ int ColorCls::getAlphaFromOpacity(double opacity) {
 }
 
 bool ColorCls::==(Object other) {
-    if (identical(this, other))     {
+    if (identical(this, other)) {
         return true;
     }
-    if (other->runtimeType() != runtimeType)     {
+    if (other->runtimeType() != runtimeType) {
         return false;
     }
     return is<Color>(other) && other->value == value;
@@ -152,7 +152,7 @@ String ColorCls::toString() {
 }
 
 double ColorCls::_linearizeColorComponent(double component) {
-    if (component <= 0.03928)     {
+    if (component <= 0.03928) {
         return component / 12.92;
     }
     return as<double>(math->pow((component + 0.055) / 1.055, 2.4));
@@ -334,16 +334,16 @@ String PaintCls::toString() {
     result->write(__s("Paint("));
     if (style() == PaintingStyleCls::stroke) {
         result->write(__s("$style"));
-        if (strokeWidth() != 0.0)         {
+        if (strokeWidth() != 0.0) {
             result->write(__s(" ${strokeWidth.toStringAsFixed(1)}"));
-        } else         {
+        } else {
             result->write(__s(" hairline"));
         }
-        if (strokeCap() != StrokeCapCls::butt)         {
+        if (strokeCap() != StrokeCapCls::butt) {
             result->write(__s(" $strokeCap"));
         }
         if (strokeJoin() == StrokeJoinCls::miter) {
-            if (strokeMiterLimit() != _kStrokeMiterLimitDefault)             {
+            if (strokeMiterLimit() != _kStrokeMiterLimitDefault) {
                 result->write(__s(" $strokeJoin up to ${strokeMiterLimit.toStringAsFixed(1)}"));
             }
         } else {
@@ -383,10 +383,10 @@ String PaintCls::toString() {
         result->write(__s("${semicolon}imageFilter: $imageFilter"));
         semicolon = __s("; ");
     }
-    if (invertColors())     {
+    if (invertColors()) {
         result->write(__s("${semicolon}invert: $invertColors"));
     }
-    if (_dither())     {
+    if (_dither()) {
         result->write(__s("${semicolon}dither: $_dither"));
     }
     result->write(__s(")"));
@@ -433,7 +433,7 @@ Future<ByteData> ImageCls::toByteData(ImageByteFormat format) {
 List<StackTrace> ImageCls::debugGetOpenHandleStackTraces() {
     List<StackTrace> stacks;
     assert([=] () {
-        stacks = _image->_handles->map([=] (Image handle)         {
+        stacks = _image->_handles->map([=] (Image handle) {
             handle->_debugStack!;
         })->toList();
         return true;
@@ -805,7 +805,7 @@ void ColorFilterCls::linearToSrgbGamma()
 void ColorFilterCls::srgbToLinearGamma()
 
 bool ColorFilterCls::==(Object other) {
-    if (other->runtimeType() != runtimeType)     {
+    if (other->runtimeType() != runtimeType) {
         return false;
     }
     return is<ColorFilter>(other) && other->_type == _type && <double>_listEquals(other->_matrix, _matrix) && other->_color == _color && other->_blendMode == _blendMode;
@@ -873,7 +873,7 @@ void ImageFilterCls::erode(double radiusX, double radiusY) {
 void ImageFilterCls::matrix(Float64List matrix4, FilterQuality filterQuality) {
     assert(matrix4 != nullptr);
     assert(filterQuality != nullptr);
-    if (matrix4->length != 16)     {
+    if (matrix4->length != 16) {
         throw make<ArgumentErrorCls>(__s(""matrix4" must have 16 entries."));
     }
     return make<_MatrixImageFilterCls>(Float64ListCls->fromList(matrix4), filterQuality);
@@ -889,7 +889,7 @@ String _MatrixImageFilterCls::toString() {
 }
 
 bool _MatrixImageFilterCls::==(Object other) {
-    if (other->runtimeType() != runtimeType)     {
+    if (other->runtimeType() != runtimeType) {
         return false;
     }
     return is<_MatrixImageFilter>(other) && other->filterQuality == filterQuality && <double>_listEquals(other->data, data);
@@ -912,7 +912,7 @@ String _GaussianBlurImageFilterCls::toString() {
 }
 
 bool _GaussianBlurImageFilterCls::==(Object other) {
-    if (other->runtimeType() != runtimeType)     {
+    if (other->runtimeType() != runtimeType) {
         return false;
     }
     return is<_GaussianBlurImageFilter>(other) && other->sigmaX == sigmaX && other->sigmaY == sigmaY && other->tileMode == tileMode;
@@ -939,7 +939,7 @@ String _DilateImageFilterCls::toString() {
 }
 
 bool _DilateImageFilterCls::==(Object other) {
-    if (other->runtimeType() != runtimeType)     {
+    if (other->runtimeType() != runtimeType) {
         return false;
     }
     return is<_DilateImageFilter>(other) && other->radiusX == radiusX && other->radiusY == radiusY;
@@ -962,7 +962,7 @@ String _ErodeImageFilterCls::toString() {
 }
 
 bool _ErodeImageFilterCls::==(Object other) {
-    if (other->runtimeType() != runtimeType)     {
+    if (other->runtimeType() != runtimeType) {
         return false;
     }
     return is<_ErodeImageFilter>(other) && other->radiusX == radiusX && other->radiusY == radiusY;
@@ -985,7 +985,7 @@ String _ComposeImageFilterCls::toString() {
 }
 
 bool _ComposeImageFilterCls::==(Object other) {
-    if (other->runtimeType() != runtimeType)     {
+    if (other->runtimeType() != runtimeType) {
         return false;
     }
     return is<_ComposeImageFilter>(other) && other->innerFilter == innerFilter && other->outerFilter == outerFilter;
@@ -1019,7 +1019,7 @@ void _ImageFilterCls::erode(_ErodeImageFilter filter) {
 }
 
 void _ImageFilterCls::matrix(_MatrixImageFilter filter) {
-    if (filter->data->length != 16)     {
+    if (filter->data->length != 16) {
         throw make<ArgumentErrorCls>(__s(""matrix4" must have 16 entries."));
     }
     _constructor();
@@ -1042,7 +1042,7 @@ void _ImageFilterCls::composed(_ComposeImageFilter filter) {
 Int32List _encodeColorList(List<Color> colors) {
     int colorCount = colors->length();
     Int32List result = make<Int32ListCls>(colorCount);
-    for (;  < colorCount; ++i)     {
+    for (;  < colorCount; ++i) {
         result[i] = colors[i]->value;
     }
     return result;
@@ -1107,11 +1107,11 @@ void GradientCls::sweep(Offset center, List<Color> colors, List<double> colorSto
 
 void GradientCls::_validateColorStops(List<Color> colors, List<double> colorStops) {
     if (colorStops == nullptr) {
-        if (colors->length() != 2)         {
+        if (colors->length() != 2) {
             throw make<ArgumentErrorCls>(__s(""colors" must have length 2 if "colorStops" is omitted."));
         }
     } else {
-        if (colors->length() != colorStops->length())         {
+        if (colors->length() != colorStops->length()) {
             throw make<ArgumentErrorCls>(__s(""colors" and "colorStops" arguments must have equal length."));
         }
     }
@@ -1126,7 +1126,7 @@ ImageShaderCls::ImageShaderCls(Image image, TileMode tmx, TileMode tmy, Float64L
         super->_();
     }
     {
-        if (matrix4->length != 16)         {
+        if (matrix4->length != 16) {
             throw make<ArgumentErrorCls>(__s(""matrix4" must have 16 entries."));
         }
         _constructor();
@@ -1138,7 +1138,7 @@ ImageShaderCls::ImageShaderCls(Image image, TileMode tmx, TileMode tmy, Float64L
 }
 
 Future<FragmentProgram> FragmentProgramCls::compile(bool debugPrint, ByteBuffer spirv) {
-    return <FragmentProgram>microtask([=] ()     {
+    return <FragmentProgram>microtask([=] () {
         FragmentProgramCls->_(spirv, debugPrint);
     });
 }
@@ -1172,10 +1172,10 @@ void FragmentProgramCls::_(bool debugPrint, ByteBuffer spirv) {
 }
 
 bool _FragmentShaderCls::==(Object other) {
-    if (identical(this, other))     {
+    if (identical(this, other)) {
         return true;
     }
-    if (other->runtimeType() != runtimeType)     {
+    if (other->runtimeType() != runtimeType) {
         return false;
     }
     return is<_FragmentShader>(other) && other->_builder == _builder && <double>_listEquals(other->_floatUniforms, _floatUniforms) && <ImageShader>_listEquals(other->_samplerUniforms, _samplerUniforms);
@@ -1197,40 +1197,40 @@ VerticesCls::VerticesCls(VertexMode mode, List<Offset> positions, List<Color> co
         assert(positions != nullptr);
     }
     {
-        if (textureCoordinates != nullptr && textureCoordinates->length() != positions->length())         {
+        if (textureCoordinates != nullptr && textureCoordinates->length() != positions->length()) {
             throw make<ArgumentErrorCls>(__s(""positions" and "textureCoordinates" lengths must match."));
         }
-        if (colors != nullptr && colors->length() != positions->length())         {
+        if (colors != nullptr && colors->length() != positions->length()) {
             throw make<ArgumentErrorCls>(__s(""positions" and "colors" lengths must match."));
         }
-        if (indices != nullptr && indices->any([=] (int i)         {
+        if (indices != nullptr && indices->any([=] (int i) {
              < 0 || i >= positions->length();
-        }))         {
+        })) {
             throw make<ArgumentErrorCls>(__s(""indices" values must be valid indices in the positions list."));
         }
         Float32List encodedPositions = _encodePointList(positions);
         Float32List encodedTextureCoordinates = (textureCoordinates != nullptr)? _encodePointList(textureCoordinates) : nullptr;
         Int32List encodedColors = colors != nullptr? _encodeColorList(colors) : nullptr;
         Uint16List encodedIndices = indices != nullptr? Uint16ListCls->fromList(indices) : nullptr;
-        if (!_init(this, mode->index, encodedPositions, encodedTextureCoordinates, encodedColors, encodedIndices))         {
+        if (!_init(this, mode->index, encodedPositions, encodedTextureCoordinates, encodedColors, encodedIndices)) {
             throw make<ArgumentErrorCls>(__s("Invalid configuration for vertices."));
         }
     }
 }
 
 void VerticesCls::raw(VertexMode mode, Float32List positions, Int32List colors, Uint16List indices, Float32List textureCoordinates) {
-    if (textureCoordinates != nullptr && textureCoordinates->length != positions->length)     {
+    if (textureCoordinates != nullptr && textureCoordinates->length != positions->length) {
         throw make<ArgumentErrorCls>(__s(""positions" and "textureCoordinates" lengths must match."));
     }
-    if (colors != nullptr && colors->length * 2 != positions->length)     {
+    if (colors != nullptr && colors->length * 2 != positions->length) {
         throw make<ArgumentErrorCls>(__s(""positions" and "colors" lengths must match."));
     }
-    if (indices != nullptr && indices->any([=] (int i)     {
+    if (indices != nullptr && indices->any([=] (int i) {
          < 0 || i >= positions->length;
-    }))     {
+    })) {
         throw make<ArgumentErrorCls>(__s(""indices" values must be valid indices in the positions list."));
     }
-    if (!_init(this, mode->index, positions, textureCoordinates, colors, indices))     {
+    if (!_init(this, mode->index, positions, textureCoordinates, colors, indices)) {
         throw make<ArgumentErrorCls>(__s("Invalid configuration for vertices."));
     }
 }
@@ -1240,7 +1240,7 @@ CanvasCls::CanvasCls(PictureRecorder recorder, Rect cullRect) {
         assert(recorder != nullptr);
     }
     {
-        if (recorder->isRecording())         {
+        if (recorder->isRecording()) {
             throw make<ArgumentErrorCls>(__s(""recorder" must not already be associated with another Canvas."));
         }
         _recorder = recorder;
@@ -1266,7 +1266,7 @@ void CanvasCls::scale(double sx, double sy) {
 
 void CanvasCls::transform(Float64List matrix4) {
     assert(matrix4 != nullptr);
-    if (matrix4->length != 16)     {
+    if (matrix4->length != 16) {
         throw make<ArgumentErrorCls>(__s(""matrix4" must have 16 entries."));
     }
     _transform(matrix4);
@@ -1425,7 +1425,7 @@ void CanvasCls::drawRawPoints(PointMode pointMode, Float32List points, Paint pai
     assert(pointMode != nullptr);
     assert(points != nullptr);
     assert(paint != nullptr);
-    if (points->length % 2 != 0)     {
+    if (points->length % 2 != 0) {
         throw make<ArgumentErrorCls>(__s(""points" must have an even number of values."));
     }
     _drawPoints(paint->_objects, paint->_data, pointMode->index, points);
@@ -1445,10 +1445,10 @@ void CanvasCls::drawAtlas(Image atlas, List<RSTransform> transforms, List<Rect> 
     assert(colors == nullptr || colors->isEmpty || blendMode != nullptr);
     assert(paint != nullptr);
     int rectCount = rects->length();
-    if (transforms->length() != rectCount)     {
+    if (transforms->length() != rectCount) {
         throw make<ArgumentErrorCls>(__s(""transforms" and "rects" lengths must match."));
     }
-    if (colors != nullptr && colors->isNotEmpty && colors->length() != rectCount)     {
+    if (colors != nullptr && colors->isNotEmpty && colors->length() != rectCount) {
         throw make<ArgumentErrorCls>(__s("If non-null, "colors" length must match that of "transforms" and "rects"."));
     }
     Float32List rstTransformBuffer = make<Float32ListCls>(rectCount * 4);
@@ -1486,13 +1486,13 @@ void CanvasCls::drawRawAtlas(Image atlas, Float32List rstTransforms, Float32List
     assert(colors == nullptr || blendMode != nullptr);
     assert(paint != nullptr);
     int rectCount = rects->length;
-    if (rstTransforms->length != rectCount)     {
+    if (rstTransforms->length != rectCount) {
         throw make<ArgumentErrorCls>(__s(""rstTransforms" and "rects" lengths must match."));
     }
-    if (rectCount % 4 != 0)     {
+    if (rectCount % 4 != 0) {
         throw make<ArgumentErrorCls>(__s(""rstTransforms" and "rects" lengths must be a multiple of four."));
     }
-    if (colors != nullptr && colors->length * 4 != rectCount)     {
+    if (colors != nullptr && colors->length * 4 != rectCount) {
         throw make<ArgumentErrorCls>(__s("If non-null, "colors" length must be one fourth the length of "rstTransforms" and "rects"."));
     }
     int qualityIndex = paint->filterQuality()->index;
@@ -1511,10 +1511,10 @@ void CanvasCls::drawShadow(Path path, Color color, double elevation, bool transp
 
 Future<Image> PictureCls::toImage(int width, int height) {
     assert(!_disposed);
-    if (width <= 0 || height <= 0)     {
+    if (width <= 0 || height <= 0) {
         throw make<ExceptionCls>(__s("Invalid image dimensions."));
     }
-    return _futurize([=] (_Callback<Image> callback)     {
+    return _futurize([=] (_Callback<Image> callback) {
         _toImage(width, height, [=] (_Image image) {
         if (image == nullptr) {
             callback(nullptr);
@@ -1554,7 +1554,7 @@ bool PictureRecorderCls::isRecording() {
 }
 
 Picture PictureRecorderCls::endRecording() {
-    if (_canvas == nullptr)     {
+    if (_canvas == nullptr) {
         throw make<StateErrorCls>(__s("PictureRecorder did not start recording."));
     }
     Picture picture = PictureCls->_();
@@ -1607,27 +1607,27 @@ Shadow ShadowCls::lerp(Shadow a, Shadow b, double t) {
 
 List<Shadow> ShadowCls::lerpList(List<Shadow> a, List<Shadow> b, double t) {
     assert(t != nullptr);
-    if (a == nullptr && b == nullptr)     {
+    if (a == nullptr && b == nullptr) {
         return nullptr;
     }
     a |= makeList();
     b |= makeList();
     List<Shadow> result = makeList();
     int commonLength = math->min(a->length(), b->length());
-    for (;  < commonLength; i += 1)     {
+    for (;  < commonLength; i += 1) {
         result->add(ShadowCls->lerp(a[i], b[i], t)!);
     }
-    for (;  < a->length(); i += 1)     {
+    for (;  < a->length(); i += 1) {
         result->add(a[i]->scale(1.0 - t));
     }
-    for (;  < b->length(); i += 1)     {
+    for (;  < b->length(); i += 1) {
         result->add(b[i]->scale(t));
     }
     return result;
 }
 
 bool ShadowCls::==(Object other) {
-    if (identical(this, other))     {
+    if (identical(this, other)) {
         return true;
     }
     return is<Shadow>(other) && other->color == color && other->offset == offset && other->blurRadius == blurRadius;
@@ -1642,7 +1642,7 @@ String ShadowCls::toString() {
 }
 
 ByteData ShadowCls::_encodeShadows(List<Shadow> shadows) {
-    if (shadows == nullptr)     {
+    if (shadows == nullptr) {
         return make<ByteDataCls>(0);
     }
     int byteCount = shadows->length() * _kBytesPerShadow;
@@ -1666,7 +1666,7 @@ Future<ImmutableBuffer> ImmutableBufferCls::fromUint8List(Uint8List list) {
     ImmutableBuffer instance = ImmutableBufferCls->_(list->length);
     return _futurize([=] (_Callback<void> callback) {
         instance->_init(list, callback);
-    })->then([=] ()     {
+    })->then([=] () {
         instance;
     });
 }
@@ -1676,7 +1676,7 @@ Future<ImmutableBuffer> ImmutableBufferCls::fromAsset(String assetKey) {
     ImmutableBuffer instance = ImmutableBufferCls->_(0);
     auto _c1 = instance;_c1._length = length;return _futurize([=] (_Callback<int> callback) {
         return instance->_initFromAsset(encodedKey, callback);
-    })->then([=] (int length)     {
+    })->then([=] (int length) {
         _c1;
     });
 }
@@ -1707,7 +1707,7 @@ Future<ImageDescriptor> ImageDescriptorCls::encoded(ImmutableBuffer buffer) {
     ImageDescriptor descriptor = ImageDescriptorCls->_();
     return _futurize([=] (_Callback<void> callback) {
         return descriptor->_initEncoded(buffer, callback);
-    })->then([=] ()     {
+    })->then([=] () {
         descriptor;
     });
 }
@@ -1741,11 +1741,11 @@ Future<Codec> ImageDescriptorCls::instantiateCodec(int targetHeight, int targetW
     if (targetWidth == nullptr && targetHeight == nullptr) {
         targetWidth = width();
         targetHeight = height();
-    } else     {
+    } else {
         if (targetWidth == nullptr && targetHeight != nullptr) {
         targetWidth = (targetHeight * (width() / height()))->round();
         targetHeight = targetHeight;
-    } else     {
+    } else {
         if (targetHeight == nullptr && targetWidth != nullptr) {
         targetWidth = targetWidth;
         targetHeight = targetWidth ~/ (width() / height());
@@ -1775,7 +1775,7 @@ Future<T> _futurize(_Callbacker<T> callbacker) {
     }
 });
     sync = false;
-    if (error != nullptr)     {
+    if (error != nullptr) {
         throw make<ExceptionCls>(error);
     }
     return completer->future;

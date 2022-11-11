@@ -10,7 +10,7 @@ TextPosition TextSelectionCls::base() {
     TextAffinity affinity;
     if (!isValid || baseOffset == extentOffset) {
         affinity = this->affinity;
-    } else     {
+    } else {
         if ( < extentOffset) {
         affinity = TextAffinityCls::downstream;
     } else {
@@ -24,7 +24,7 @@ TextPosition TextSelectionCls::extent() {
     TextAffinity affinity;
     if (!isValid || baseOffset == extentOffset) {
         affinity = this->affinity;
-    } else     {
+    } else {
         if ( < extentOffset) {
         affinity = TextAffinityCls::upstream;
     } else {

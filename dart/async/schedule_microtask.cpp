@@ -4,7 +4,7 @@ void _microtaskLoop() {
         _lastPriorityCallback = nullptr;
         auto next = entry->next;
         _nextCallback = next;
-        if (next == nullptr)         {
+        if (next == nullptr) {
             _lastCallback = nullptr;
         }
         (entry->callback)();

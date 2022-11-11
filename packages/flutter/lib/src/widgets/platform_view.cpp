@@ -147,7 +147,7 @@ Widget _UiKitViewStateCls::build(BuildContext context) {
     if (controller == nullptr) {
         return SizedBoxCls->expand();
     }
-    return make<FocusCls>(_focusNode, [=] (bool isFocused)     {
+    return make<FocusCls>(_focusNode, [=] (bool isFocused) {
         _onFocusChange(isFocused, controller);
     }, make<_UiKitPlatformViewCls>(_controller!, widget->hitTestBehavior, widget->gestureRecognizers | _emptyRecognizersSet));
 }
@@ -362,13 +362,13 @@ RenderObject AndroidViewSurfaceCls::createRenderObject(BuildContext context) {
     AndroidViewController viewController = as<AndroidViewController>(controller);
     if (is<ExpensiveAndroidViewController>(viewController)) {
         PlatformViewRenderBox renderBox = as<PlatformViewRenderBox>(super->createRenderObject(context));
-        as<ExpensiveAndroidViewControllerCls>(viewController)->pointTransformer = [=] (Offset position)         {
+        as<ExpensiveAndroidViewControllerCls>(viewController)->pointTransformer = [=] (Offset position) {
             renderBox->globalToLocal(position);
         };
         return renderBox;
     }
     RenderAndroidView renderBox = make<RenderAndroidViewCls>(viewController, gestureRecognizers, hitTestBehavior);
-    viewController->pointTransformer() = [=] (Offset position)     {
+    viewController->pointTransformer() = [=] (Offset position) {
         renderBox->globalToLocal(position);
     };
     return renderBox;

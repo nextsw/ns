@@ -4,7 +4,7 @@ ExceptionCls::ExceptionCls(auto message) {
 
 String _ExceptionCls::toString() {
     Object message = this->message;
-    if (message == nullptr)     {
+    if (message == nullptr) {
         return __s("Exception");
     }
     return __s("Exception: $message");
@@ -39,7 +39,7 @@ String FormatExceptionCls::toString() {
                 }
                 lineStart = i + 1;
                 previousCharWasCR = false;
-            } else             {
+            } else {
                 if (charValue == 0x0d) {
                 lineNum++;
                 lineStart = i + 1;
@@ -70,7 +70,7 @@ String FormatExceptionCls::toString() {
             if ( < 75) {
                 end = start + 75;
                 postfix = __s("...");
-            } else             {
+            } else {
                 if (end -  < 75) {
                 start = end - 75;
                 prefix = __s("...");

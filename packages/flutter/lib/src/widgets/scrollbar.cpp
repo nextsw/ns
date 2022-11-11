@@ -604,7 +604,7 @@ void RawScrollbarStateCls<T>::handleHover(PointerHoverEvent event) {
         _hoverIsActive = true;
         _fadeoutAnimationController->forward();
         _fadeoutTimer?->cancel();
-    } else     {
+    } else {
         if (_hoverIsActive) {
         _hoverIsActive = false;
         _maybeStartFadeoutTimer();
@@ -657,7 +657,7 @@ void RawScrollbarStateCls<T>::_validateInteractions(AnimationStatus status) {
     ScrollController scrollController = widget->controller | PrimaryScrollControllerCls->of(context);
     if (status == AnimationStatusCls::dismissed) {
         assert(_fadeoutOpacityAnimation->value() == 0.0);
-    } else     {
+    } else {
         if (scrollController != nullptr && enableGestures()) {
         assert(_debugCheckHasValidScrollPosition());
     }
@@ -675,10 +675,10 @@ bool RawScrollbarStateCls<T>::_debugCheckHasValidScrollPosition() {
     String when = __s("");
     if (widget->isAlwaysShown | false) {
         when = __s("Scrollbar.isAlwaysShown is true");
-    } else     {
+    } else {
         if (widget->thumbVisibility | false) {
         when = __s("Scrollbar.thumbVisibility is true");
-    } else     {
+    } else {
         if (enableGestures()) {
         when = __s("the scrollbar is interactive");
     } else {
@@ -802,7 +802,7 @@ bool RawScrollbarStateCls<T>::_handleScrollNotification(ScrollNotification notif
         if (_shouldUpdatePainter(metrics->axis())) {
             scrollbarPainter->update(metrics, metrics->axisDirection());
         }
-    } else     {
+    } else {
         if (is<ScrollEndNotification>(notification)) {
         if (_dragScrollbarAxisOffset == nullptr) {
             _maybeStartFadeoutTimer();
@@ -819,21 +819,21 @@ Map<Type, GestureRecognizerFactory> RawScrollbarStateCls<T>::_gestures() {
     if (controller == nullptr || !enableGestures()) {
         return gestures;
     }
-    gestures[_ThumbPressGestureRecognizerCls] = <_ThumbPressGestureRecognizer>make<GestureRecognizerFactoryWithHandlersCls>([=] ()     {
+    gestures[_ThumbPressGestureRecognizerCls] = <_ThumbPressGestureRecognizer>make<GestureRecognizerFactoryWithHandlersCls>([=] () {
         make<_ThumbPressGestureRecognizerCls>(this, _scrollbarPainterKey, widget->pressDuration);
     }, [=] (_ThumbPressGestureRecognizer instance) {
         instance->onLongPress = handleThumbPress;
-        instance->onLongPressStart = [=] (LongPressStartDetails details)         {
+        instance->onLongPressStart = [=] (LongPressStartDetails details) {
             handleThumbPressStart(details->localPosition);
         };
-        instance->onLongPressMoveUpdate = [=] (LongPressMoveUpdateDetails details)         {
+        instance->onLongPressMoveUpdate = [=] (LongPressMoveUpdateDetails details) {
             handleThumbPressUpdate(details->localPosition);
         };
-        instance->onLongPressEnd = [=] (LongPressEndDetails details)         {
+        instance->onLongPressEnd = [=] (LongPressEndDetails details) {
             handleThumbPressEnd(details->localPosition, details->velocity);
         };
     });
-    gestures[_TrackTapGestureRecognizerCls] = <_TrackTapGestureRecognizer>make<GestureRecognizerFactoryWithHandlersCls>([=] ()     {
+    gestures[_TrackTapGestureRecognizerCls] = <_TrackTapGestureRecognizer>make<GestureRecognizerFactoryWithHandlersCls>([=] () {
         make<_TrackTapGestureRecognizerCls>(this, _scrollbarPainterKey);
     }, [=] (_TrackTapGestureRecognizer instance) {
         instance->onTapDown = _handleTrackTapDown;

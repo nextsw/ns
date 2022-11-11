@@ -50,56 +50,56 @@ Widget GestureDetectorCls::build(BuildContext context) {
     Map<Type, GestureRecognizerFactory> gestures = makeMap(makeList(), makeList();
     DeviceGestureSettings gestureSettings = MediaQueryCls->maybeOf(context)?->gestureSettings;
     if (onTapDown != nullptr || onTapUp != nullptr || onTap != nullptr || onTapCancel != nullptr || onSecondaryTap != nullptr || onSecondaryTapDown != nullptr || onSecondaryTapUp != nullptr || onSecondaryTapCancel != nullptr || onTertiaryTapDown != nullptr || onTertiaryTapUp != nullptr || onTertiaryTapCancel != nullptr) {
-        gestures[TapGestureRecognizerCls] = <TapGestureRecognizer>make<GestureRecognizerFactoryWithHandlersCls>([=] ()         {
+        gestures[TapGestureRecognizerCls] = <TapGestureRecognizer>make<GestureRecognizerFactoryWithHandlersCls>([=] () {
             make<TapGestureRecognizerCls>(this);
         }, [=] (TapGestureRecognizer instance) {
                     auto _c1 = instance;        _c1.onTapDown = auto _c2 = onTapDown;        _c2.onTapUp = auto _c3 = onTapUp;        _c3.onTap = auto _c4 = onTap;        _c4.onTapCancel = auto _c5 = onTapCancel;        _c5.onSecondaryTap = auto _c6 = onSecondaryTap;        _c6.onSecondaryTapDown = auto _c7 = onSecondaryTapDown;        _c7.onSecondaryTapUp = auto _c8 = onSecondaryTapUp;        _c8.onSecondaryTapCancel = auto _c9 = onSecondaryTapCancel;        _c9.onTertiaryTapDown = auto _c10 = onTertiaryTapDown;        _c10.onTertiaryTapUp = auto _c11 = onTertiaryTapUp;        _c11.onTertiaryTapCancel = auto _c12 = onTertiaryTapCancel;        _c12.gestureSettings = gestureSettings;        _c12;        _c11;        _c10;        _c9;        _c8;        _c7;        _c6;        _c5;        _c4;        _c3;        _c2;_c1;
         });
     }
     if (onDoubleTap != nullptr) {
-        gestures[DoubleTapGestureRecognizerCls] = <DoubleTapGestureRecognizer>make<GestureRecognizerFactoryWithHandlersCls>([=] ()         {
+        gestures[DoubleTapGestureRecognizerCls] = <DoubleTapGestureRecognizer>make<GestureRecognizerFactoryWithHandlersCls>([=] () {
             make<DoubleTapGestureRecognizerCls>(this);
         }, [=] (DoubleTapGestureRecognizer instance) {
                     auto _c13 = instance;        _c13.onDoubleTapDown = auto _c14 = onDoubleTapDown;        _c14.onDoubleTap = auto _c15 = onDoubleTap;        _c15.onDoubleTapCancel = auto _c16 = onDoubleTapCancel;        _c16.gestureSettings = gestureSettings;        _c16;        _c15;        _c14;_c13;
         });
     }
     if (onLongPressDown != nullptr || onLongPressCancel != nullptr || onLongPress != nullptr || onLongPressStart != nullptr || onLongPressMoveUpdate != nullptr || onLongPressUp != nullptr || onLongPressEnd != nullptr || onSecondaryLongPressDown != nullptr || onSecondaryLongPressCancel != nullptr || onSecondaryLongPress != nullptr || onSecondaryLongPressStart != nullptr || onSecondaryLongPressMoveUpdate != nullptr || onSecondaryLongPressUp != nullptr || onSecondaryLongPressEnd != nullptr || onTertiaryLongPressDown != nullptr || onTertiaryLongPressCancel != nullptr || onTertiaryLongPress != nullptr || onTertiaryLongPressStart != nullptr || onTertiaryLongPressMoveUpdate != nullptr || onTertiaryLongPressUp != nullptr || onTertiaryLongPressEnd != nullptr) {
-        gestures[LongPressGestureRecognizerCls] = <LongPressGestureRecognizer>make<GestureRecognizerFactoryWithHandlersCls>([=] ()         {
+        gestures[LongPressGestureRecognizerCls] = <LongPressGestureRecognizer>make<GestureRecognizerFactoryWithHandlersCls>([=] () {
             make<LongPressGestureRecognizerCls>(this);
         }, [=] (LongPressGestureRecognizer instance) {
                     auto _c17 = instance;        _c17.onLongPressDown = auto _c18 = onLongPressDown;        _c18.onLongPressCancel = auto _c19 = onLongPressCancel;        _c19.onLongPress = auto _c20 = onLongPress;        _c20.onLongPressStart = auto _c21 = onLongPressStart;        _c21.onLongPressMoveUpdate = auto _c22 = onLongPressMoveUpdate;        _c22.onLongPressUp = auto _c23 = onLongPressUp;        _c23.onLongPressEnd = auto _c24 = onLongPressEnd;        _c24.onSecondaryLongPressDown = auto _c25 = onSecondaryLongPressDown;        _c25.onSecondaryLongPressCancel = auto _c26 = onSecondaryLongPressCancel;        _c26.onSecondaryLongPress = auto _c27 = onSecondaryLongPress;        _c27.onSecondaryLongPressStart = auto _c28 = onSecondaryLongPressStart;        _c28.onSecondaryLongPressMoveUpdate = auto _c29 = onSecondaryLongPressMoveUpdate;        _c29.onSecondaryLongPressUp = auto _c30 = onSecondaryLongPressUp;        _c30.onSecondaryLongPressEnd = auto _c31 = onSecondaryLongPressEnd;        _c31.onTertiaryLongPressDown = auto _c32 = onTertiaryLongPressDown;        _c32.onTertiaryLongPressCancel = auto _c33 = onTertiaryLongPressCancel;        _c33.onTertiaryLongPress = auto _c34 = onTertiaryLongPress;        _c34.onTertiaryLongPressStart = auto _c35 = onTertiaryLongPressStart;        _c35.onTertiaryLongPressMoveUpdate = auto _c36 = onTertiaryLongPressMoveUpdate;        _c36.onTertiaryLongPressUp = auto _c37 = onTertiaryLongPressUp;        _c37.onTertiaryLongPressEnd = auto _c38 = onTertiaryLongPressEnd;        _c38.gestureSettings = gestureSettings;        _c38;        _c37;        _c36;        _c35;        _c34;        _c33;        _c32;        _c31;        _c30;        _c29;        _c28;        _c27;        _c26;        _c25;        _c24;        _c23;        _c22;        _c21;        _c20;        _c19;        _c18;_c17;
         });
     }
     if (onVerticalDragDown != nullptr || onVerticalDragStart != nullptr || onVerticalDragUpdate != nullptr || onVerticalDragEnd != nullptr || onVerticalDragCancel != nullptr) {
-        gestures[VerticalDragGestureRecognizerCls] = <VerticalDragGestureRecognizer>make<GestureRecognizerFactoryWithHandlersCls>([=] ()         {
+        gestures[VerticalDragGestureRecognizerCls] = <VerticalDragGestureRecognizer>make<GestureRecognizerFactoryWithHandlersCls>([=] () {
             make<VerticalDragGestureRecognizerCls>(this);
         }, [=] (VerticalDragGestureRecognizer instance) {
                     auto _c39 = instance;        _c39.onDown = auto _c40 = onVerticalDragDown;        _c40.onStart = auto _c41 = onVerticalDragStart;        _c41.onUpdate = auto _c42 = onVerticalDragUpdate;        _c42.onEnd = auto _c43 = onVerticalDragEnd;        _c43.onCancel = auto _c44 = onVerticalDragCancel;        _c44.dragStartBehavior = auto _c45 = dragStartBehavior;        _c45.gestureSettings = gestureSettings;        _c45;        _c44;        _c43;        _c42;        _c41;        _c40;_c39;
         });
     }
     if (onHorizontalDragDown != nullptr || onHorizontalDragStart != nullptr || onHorizontalDragUpdate != nullptr || onHorizontalDragEnd != nullptr || onHorizontalDragCancel != nullptr) {
-        gestures[HorizontalDragGestureRecognizerCls] = <HorizontalDragGestureRecognizer>make<GestureRecognizerFactoryWithHandlersCls>([=] ()         {
+        gestures[HorizontalDragGestureRecognizerCls] = <HorizontalDragGestureRecognizer>make<GestureRecognizerFactoryWithHandlersCls>([=] () {
             make<HorizontalDragGestureRecognizerCls>(this);
         }, [=] (HorizontalDragGestureRecognizer instance) {
                     auto _c46 = instance;        _c46.onDown = auto _c47 = onHorizontalDragDown;        _c47.onStart = auto _c48 = onHorizontalDragStart;        _c48.onUpdate = auto _c49 = onHorizontalDragUpdate;        _c49.onEnd = auto _c50 = onHorizontalDragEnd;        _c50.onCancel = auto _c51 = onHorizontalDragCancel;        _c51.dragStartBehavior = auto _c52 = dragStartBehavior;        _c52.gestureSettings = gestureSettings;        _c52;        _c51;        _c50;        _c49;        _c48;        _c47;_c46;
         });
     }
     if (onPanDown != nullptr || onPanStart != nullptr || onPanUpdate != nullptr || onPanEnd != nullptr || onPanCancel != nullptr) {
-        gestures[PanGestureRecognizerCls] = <PanGestureRecognizer>make<GestureRecognizerFactoryWithHandlersCls>([=] ()         {
+        gestures[PanGestureRecognizerCls] = <PanGestureRecognizer>make<GestureRecognizerFactoryWithHandlersCls>([=] () {
             make<PanGestureRecognizerCls>(this);
         }, [=] (PanGestureRecognizer instance) {
                     auto _c53 = instance;        _c53.onDown = auto _c54 = onPanDown;        _c54.onStart = auto _c55 = onPanStart;        _c55.onUpdate = auto _c56 = onPanUpdate;        _c56.onEnd = auto _c57 = onPanEnd;        _c57.onCancel = auto _c58 = onPanCancel;        _c58.dragStartBehavior = auto _c59 = dragStartBehavior;        _c59.gestureSettings = gestureSettings;        _c59;        _c58;        _c57;        _c56;        _c55;        _c54;_c53;
         });
     }
     if (onScaleStart != nullptr || onScaleUpdate != nullptr || onScaleEnd != nullptr) {
-        gestures[ScaleGestureRecognizerCls] = <ScaleGestureRecognizer>make<GestureRecognizerFactoryWithHandlersCls>([=] ()         {
+        gestures[ScaleGestureRecognizerCls] = <ScaleGestureRecognizer>make<GestureRecognizerFactoryWithHandlersCls>([=] () {
             make<ScaleGestureRecognizerCls>(this);
         }, [=] (ScaleGestureRecognizer instance) {
                     auto _c60 = instance;        _c60.onStart = auto _c61 = onScaleStart;        _c61.onUpdate = auto _c62 = onScaleUpdate;        _c62.onEnd = auto _c63 = onScaleEnd;        _c63.dragStartBehavior = auto _c64 = dragStartBehavior;        _c64.gestureSettings = gestureSettings;        _c64;        _c63;        _c62;        _c61;_c60;
         });
     }
     if (onForcePressStart != nullptr || onForcePressPeak != nullptr || onForcePressUpdate != nullptr || onForcePressEnd != nullptr) {
-        gestures[ForcePressGestureRecognizerCls] = <ForcePressGestureRecognizer>make<GestureRecognizerFactoryWithHandlersCls>([=] ()         {
+        gestures[ForcePressGestureRecognizerCls] = <ForcePressGestureRecognizer>make<GestureRecognizerFactoryWithHandlersCls>([=] () {
             make<ForcePressGestureRecognizerCls>(this);
         }, [=] (ForcePressGestureRecognizer instance) {
                     auto _c65 = instance;        _c65.onStart = auto _c66 = onForcePressStart;        _c66.onPeak = auto _c67 = onForcePressPeak;        _c67.onUpdate = auto _c68 = onForcePressUpdate;        _c68.onEnd = auto _c69 = onForcePressEnd;        _c69.gestureSettings = gestureSettings;        _c69;        _c68;        _c67;        _c66;_c65;

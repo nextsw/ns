@@ -26,17 +26,17 @@ String HtmlEscapeCls::_convert(String text, int start, int end) {
         ;
         if (replacement != nullptr) {
             result |= make<StringBufferCls>();
-            if (i > start)             {
+            if (i > start) {
                 result->write(text->substring(start, i));
             }
             result->write(replacement);
             start = i + 1;
         }
     }
-    if (result == nullptr)     {
+    if (result == nullptr) {
         return nullptr;
     }
-    if (end > start)     {
+    if (end > start) {
         result->write(text->substring(start, end));
     }
     return result->toString();
@@ -48,7 +48,7 @@ void _HtmlEscapeSinkCls::addSlice(String chunk, int start, int end, bool isLast)
         _sink->addSlice(chunk, start, end, isLast);
     } else {
         _sink->add(val);
-        if (isLast)         {
+        if (isLast) {
             _sink->close();
         }
     }

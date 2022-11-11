@@ -104,7 +104,7 @@ void ListViewCls::custom(Unknown cacheExtent, SliverChildDelegate childrenDelega
 Widget ListViewCls::buildChildLayout(BuildContext context) {
     if (itemExtent != nullptr) {
         return make<SliverFixedExtentListCls>(childrenDelegate, itemExtent!);
-    } else     {
+    } else {
         if (prototypeItem != nullptr) {
         return make<SliverPrototypeExtentListCls>(childrenDelegate, prototypeItem!);
     }

@@ -63,7 +63,7 @@ void WidgetsBindingCls::initServiceExtensions() {
                     Map<String, Object> map1 = make<MapCls<>>();        map1.set(__s("data"), data);return list1;
         });
         if (!kIsWeb) {
-            registerBoolServiceExtension(__s("showPerformanceOverlay"), [=] ()             {
+            registerBoolServiceExtension(__s("showPerformanceOverlay"), [=] () {
                 <bool>value(WidgetsAppCls::showPerformanceOverlayOverride);
             }, [=] (bool value) {
                 if (WidgetsAppCls::showPerformanceOverlayOverride == value) {
@@ -89,14 +89,14 @@ void WidgetsBindingCls::initServiceExtensions() {
             };
                     Map<String, String> map4 = make<MapCls<>>();        map4.set(__s("type"), __s("Success"));return list4;
         });
-        registerBoolServiceExtension(__s("profileWidgetBuilds"), [=] ()         {
+        registerBoolServiceExtension(__s("profileWidgetBuilds"), [=] () {
             debugProfileBuildsEnabled;
         }, [=] (bool value) {
             if (debugProfileBuildsEnabled != value) {
                 debugProfileBuildsEnabled = value;
             }
         });
-        registerBoolServiceExtension(__s("profileUserWidgetBuilds"), [=] ()         {
+        registerBoolServiceExtension(__s("profileUserWidgetBuilds"), [=] () {
             debugProfileBuildsEnabledUserWidgets;
         }, [=] (bool value) {
             if (debugProfileBuildsEnabledUserWidgets != value) {
@@ -105,7 +105,7 @@ void WidgetsBindingCls::initServiceExtensions() {
         });
     }
     assert([=] () {
-        registerBoolServiceExtension(__s("debugAllowBanner"), [=] ()         {
+        registerBoolServiceExtension(__s("debugAllowBanner"), [=] () {
             <bool>value(WidgetsAppCls::debugAllowBannerOverride);
         }, [=] (bool value) {
             if (WidgetsAppCls::debugAllowBannerOverride == value) {
@@ -114,7 +114,7 @@ void WidgetsBindingCls::initServiceExtensions() {
             WidgetsAppCls::debugAllowBannerOverride = value;
             return _forceRebuild();
         });
-        registerBoolServiceExtension(__s("debugWidgetInspector"), [=] ()         {
+        registerBoolServiceExtension(__s("debugWidgetInspector"), [=] () {
             WidgetsAppCls::debugShowWidgetInspectorOverride;
         }, [=] (bool value) {
             if (WidgetsAppCls::debugShowWidgetInspectorOverride == value) {

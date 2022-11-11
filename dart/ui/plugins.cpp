@@ -6,7 +6,7 @@ int CallbackHandleCls::toRawHandle() {
 }
 
 bool CallbackHandleCls::==(Object other) {
-    if (runtimeType != other->runtimeType())     {
+    if (runtimeType != other->runtimeType()) {
         return false;
     }
     return is<CallbackHandle>(other) && other->_handle == _handle;
@@ -26,7 +26,7 @@ CallbackHandle PluginUtilitiesCls::getCallbackHandle(std::function<void ()> call
 
 std::function<void ()> PluginUtilitiesCls::getCallbackFromHandle(CallbackHandle handle) {
     assert(handle != nullptr, __s("'handle' must not be null."));
-    return _backwardCache->putIfAbsent(handle, [=] ()     {
+    return _backwardCache->putIfAbsent(handle, [=] () {
         _getCallbackFromHandle(handle->toRawHandle());
     });
 }

@@ -131,25 +131,25 @@ void RenderFlexCls::setupParentData(RenderBox child) {
 }
 
 double RenderFlexCls::computeMinIntrinsicWidth(double height) {
-    return _getIntrinsicSize(AxisCls::horizontal, height, [=] (RenderBox child,double extent)     {
+    return _getIntrinsicSize(AxisCls::horizontal, height, [=] (RenderBox child,double extent) {
         child->getMinIntrinsicWidth(extent);
     });
 }
 
 double RenderFlexCls::computeMaxIntrinsicWidth(double height) {
-    return _getIntrinsicSize(AxisCls::horizontal, height, [=] (RenderBox child,double extent)     {
+    return _getIntrinsicSize(AxisCls::horizontal, height, [=] (RenderBox child,double extent) {
         child->getMaxIntrinsicWidth(extent);
     });
 }
 
 double RenderFlexCls::computeMinIntrinsicHeight(double width) {
-    return _getIntrinsicSize(AxisCls::vertical, width, [=] (RenderBox child,double extent)     {
+    return _getIntrinsicSize(AxisCls::vertical, width, [=] (RenderBox child,double extent) {
         child->getMinIntrinsicHeight(extent);
     });
 }
 
 double RenderFlexCls::computeMaxIntrinsicHeight(double width) {
-    return _getIntrinsicSize(AxisCls::vertical, width, [=] (RenderBox child,double extent)     {
+    return _getIntrinsicSize(AxisCls::vertical, width, [=] (RenderBox child,double extent) {
         child->getMaxIntrinsicHeight(extent);
     });
 }

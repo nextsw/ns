@@ -99,142 +99,142 @@ Stdout IOOverridesCls::stderr() {
 }
 
 Directory _IOOverridesScopeCls::createDirectory(String path) {
-    if (_createDirectory != nullptr)     {
+    if (_createDirectory != nullptr) {
         return _createDirectory!(path);
     }
-    if (_previous != nullptr)     {
+    if (_previous != nullptr) {
         return _previous!->createDirectory(path);
     }
     return super->createDirectory(path);
 }
 
 Directory _IOOverridesScopeCls::getCurrentDirectory() {
-    if (_getCurrentDirectory != nullptr)     {
+    if (_getCurrentDirectory != nullptr) {
         return _getCurrentDirectory!();
     }
-    if (_previous != nullptr)     {
+    if (_previous != nullptr) {
         return _previous!->getCurrentDirectory();
     }
     return super->getCurrentDirectory();
 }
 
 void _IOOverridesScopeCls::setCurrentDirectory(String path) {
-    if (_setCurrentDirectory != nullptr)     {
+    if (_setCurrentDirectory != nullptr) {
         _setCurrentDirectory!(path);
-    } else     {
-        if (_previous != nullptr)     {
+    } else {
+        if (_previous != nullptr) {
         _previous!->setCurrentDirectory(path);
-    } else     {
+    } else {
         super->setCurrentDirectory(path);
     }
 ;
     }}
 
 Directory _IOOverridesScopeCls::getSystemTempDirectory() {
-    if (_getSystemTempDirectory != nullptr)     {
+    if (_getSystemTempDirectory != nullptr) {
         return _getSystemTempDirectory!();
     }
-    if (_previous != nullptr)     {
+    if (_previous != nullptr) {
         return _previous!->getSystemTempDirectory();
     }
     return super->getSystemTempDirectory();
 }
 
 File _IOOverridesScopeCls::createFile(String path) {
-    if (_createFile != nullptr)     {
+    if (_createFile != nullptr) {
         return _createFile!(path);
     }
-    if (_previous != nullptr)     {
+    if (_previous != nullptr) {
         return _previous!->createFile(path);
     }
     return super->createFile(path);
 }
 
 Future<FileStat> _IOOverridesScopeCls::stat(String path) {
-    if (_stat != nullptr)     {
+    if (_stat != nullptr) {
         return _stat!(path);
     }
-    if (_previous != nullptr)     {
+    if (_previous != nullptr) {
         return _previous!->stat(path);
     }
     return super->stat(path);
 }
 
 FileStat _IOOverridesScopeCls::statSync(String path) {
-    if (_stat != nullptr)     {
+    if (_stat != nullptr) {
         return _statSync!(path);
     }
-    if (_previous != nullptr)     {
+    if (_previous != nullptr) {
         return _previous!->statSync(path);
     }
     return super->statSync(path);
 }
 
 Future<bool> _IOOverridesScopeCls::fseIdentical(String path1, String path2) {
-    if (_fseIdentical != nullptr)     {
+    if (_fseIdentical != nullptr) {
         return _fseIdentical!(path1, path2);
     }
-    if (_previous != nullptr)     {
+    if (_previous != nullptr) {
         return _previous!->fseIdentical(path1, path2);
     }
     return super->fseIdentical(path1, path2);
 }
 
 bool _IOOverridesScopeCls::fseIdenticalSync(String path1, String path2) {
-    if (_fseIdenticalSync != nullptr)     {
+    if (_fseIdenticalSync != nullptr) {
         return _fseIdenticalSync!(path1, path2);
     }
-    if (_previous != nullptr)     {
+    if (_previous != nullptr) {
         return _previous!->fseIdenticalSync(path1, path2);
     }
     return super->fseIdenticalSync(path1, path2);
 }
 
 Future<FileSystemEntityType> _IOOverridesScopeCls::fseGetType(String path, bool followLinks) {
-    if (_fseGetType != nullptr)     {
+    if (_fseGetType != nullptr) {
         return _fseGetType!(path, followLinks);
     }
-    if (_previous != nullptr)     {
+    if (_previous != nullptr) {
         return _previous!->fseGetType(path, followLinks);
     }
     return super->fseGetType(path, followLinks);
 }
 
 FileSystemEntityType _IOOverridesScopeCls::fseGetTypeSync(String path, bool followLinks) {
-    if (_fseGetTypeSync != nullptr)     {
+    if (_fseGetTypeSync != nullptr) {
         return _fseGetTypeSync!(path, followLinks);
     }
-    if (_previous != nullptr)     {
+    if (_previous != nullptr) {
         return _previous!->fseGetTypeSync(path, followLinks);
     }
     return super->fseGetTypeSync(path, followLinks);
 }
 
 Stream<FileSystemEvent> _IOOverridesScopeCls::fsWatch(String path, int events, bool recursive) {
-    if (_fsWatch != nullptr)     {
+    if (_fsWatch != nullptr) {
         return _fsWatch!(path, events, recursive);
     }
-    if (_previous != nullptr)     {
+    if (_previous != nullptr) {
         return _previous!->fsWatch(path, events, recursive);
     }
     return super->fsWatch(path, events, recursive);
 }
 
 bool _IOOverridesScopeCls::fsWatchIsSupported() {
-    if (_fsWatchIsSupported != nullptr)     {
+    if (_fsWatchIsSupported != nullptr) {
         return _fsWatchIsSupported!();
     }
-    if (_previous != nullptr)     {
+    if (_previous != nullptr) {
         return _previous!->fsWatchIsSupported();
     }
     return super->fsWatchIsSupported();
 }
 
 Link _IOOverridesScopeCls::createLink(String path) {
-    if (_createLink != nullptr)     {
+    if (_createLink != nullptr) {
         return _createLink!(path);
     }
-    if (_previous != nullptr)     {
+    if (_previous != nullptr) {
         return _previous!->createLink(path);
     }
     return super->createLink(path);

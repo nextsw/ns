@@ -154,7 +154,7 @@ void SliverGeometryCls::debugFillProperties(DiagnosticPropertiesBuilder properti
     properties->add(make<DoublePropertyCls>(__s("scrollExtent"), scrollExtent));
     if (paintExtent > 0.0) {
         properties->add(make<DoublePropertyCls>(__s("paintExtent"), paintExtent, visible? nullptr : __s(" but not painting")));
-    } else     {
+    } else {
         if (paintExtent == 0.0) {
         if (visible) {
             properties->add(make<DoublePropertyCls>(__s("paintExtent"), paintExtent, visible? nullptr : __s(" but visible")));
@@ -271,7 +271,7 @@ void RenderSliverCls::debugResetSize() {
 }
 
 void RenderSliverCls::debugAssertDoesMeetConstraints() {
-    assert(geometry()!->debugAssertIsValid([=] ()     {
+    assert(geometry()!->debugAssertIsValid([=] () {
         makeList(ArrayItem);
     }));
     assert([=] () {

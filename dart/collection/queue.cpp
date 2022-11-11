@@ -163,7 +163,7 @@ bool DoubleLinkedQueueCls<E>::remove(Object o) {
     _DoubleLinkedQueueEntry<E> entry = _sentinel->_nextLink!;
     while (true) {
         auto elementEntry = entry->_asNonSentinelEntry();
-        if (elementEntry == nullptr)         {
+        if (elementEntry == nullptr) {
             return false;
         }
         bool equals = (elementEntry->element == o);
@@ -227,7 +227,7 @@ void DoubleLinkedQueueCls<E>::clear() {
     auto cursor = _sentinel->_nextLink!;
     while (true) {
         auto entry = cursor->_asNonSentinelEntry();
-        if (entry == nullptr)         {
+        if (entry == nullptr) {
             break;
         }
         cursor = cursor->_nextLink!;
@@ -243,7 +243,7 @@ void DoubleLinkedQueueCls<E>::forEachEntry(std::function<void(DoubleLinkedQueueE
     auto cursor = _sentinel->_nextLink!;
     while (true) {
         auto element = cursor->_asNonSentinelEntry();
-        if (element == nullptr)         {
+        if (element == nullptr) {
             break;
         }
         if (!identical(element->_queue, this)) {
@@ -272,7 +272,7 @@ void DoubleLinkedQueueCls<E>::_filter(std::function<bool(E element)> test, bool 
     _DoubleLinkedQueueEntry<E> entry = _sentinel->_nextLink!;
     while (true) {
         auto elementEntry = entry->_asNonSentinelEntry();
-        if (elementEntry == nullptr)         {
+        if (elementEntry == nullptr) {
             return;
         }
         bool matches = test(elementEntry->element);
@@ -387,7 +387,7 @@ int ListQueueCls<E>::length() {
 
 template<typename E>
 E ListQueueCls<E>::first() {
-    if (_head == _tail)     {
+    if (_head == _tail) {
         throw IterableElementErrorCls->noElement();
     }
     return as<E>(_table[_head]);
@@ -395,7 +395,7 @@ E ListQueueCls<E>::first() {
 
 template<typename E>
 E ListQueueCls<E>::last() {
-    if (_head == _tail)     {
+    if (_head == _tail) {
         throw IterableElementErrorCls->noElement();
     }
     return as<E>(_table[(_tail - 1) & (_table->length() - 1)]);
@@ -403,10 +403,10 @@ E ListQueueCls<E>::last() {
 
 template<typename E>
 E ListQueueCls<E>::single() {
-    if (_head == _tail)     {
+    if (_head == _tail) {
         throw IterableElementErrorCls->noElement();
     }
-    if (length() > 1)     {
+    if (length() > 1) {
         throw IterableElementErrorCls->tooMany();
     }
     return as<E>(_table[_head]);
@@ -422,7 +422,7 @@ template<typename E>
 List<E> ListQueueCls<E>::toList(bool growable) {
     int mask = _table->length() - 1;
     int length = (_tail - _head) & mask;
-    if (length == 0)     {
+    if (length == 0) {
         return <E>empty(growable);
     }
     auto list = <E>filled(length, first(), growable);
@@ -461,7 +461,7 @@ void ListQueueCls<E>::addAll(Iterable<E> elements) {
         }
         _modificationCount++;
     } else {
-        for (E element : elements)         {
+        for (E element : elements) {
             _add(element);
         }
     }
@@ -515,7 +515,7 @@ template<typename E>
 void ListQueueCls<E>::addFirst(E value) {
     _head = (_head - 1) & (_table->length() - 1);
     _table[_head] = value;
-    if (_head == _tail)     {
+    if (_head == _tail) {
         _grow();
     }
     _modificationCount++;
@@ -523,7 +523,7 @@ void ListQueueCls<E>::addFirst(E value) {
 
 template<typename E>
 E ListQueueCls<E>::removeFirst() {
-    if (_head == _tail)     {
+    if (_head == _tail) {
         throw IterableElementErrorCls->noElement();
     }
     _modificationCount++;
@@ -535,7 +535,7 @@ E ListQueueCls<E>::removeFirst() {
 
 template<typename E>
 E ListQueueCls<E>::removeLast() {
-    if (_head == _tail)     {
+    if (_head == _tail) {
         throw IterableElementErrorCls->noElement();
     }
     _modificationCount++;
@@ -549,7 +549,7 @@ template<typename E>
 int ListQueueCls<E>::_calculateCapacity(int initialCapacity) {
     if (initialCapacity == nullptr ||  < _INITIAL_CAPACITY) {
         return _INITIAL_CAPACITY;
-    } else     {
+    } else {
         if (!_isPowerOf2(initialCapacity)) {
         return _nextPowerOf2(initialCapacity);
     }
@@ -586,7 +586,7 @@ int ListQueueCls<E>::_nextPowerOf2(int number) {
     number = (number << 1) - 1;
     for (; ; ) {
         int nextNumber = number & (number - 1);
-        if (nextNumber == 0)         {
+        if (nextNumber == 0) {
             return number;
         }
         number = nextNumber;
@@ -604,7 +604,7 @@ template<typename E>
 void ListQueueCls<E>::_add(E element) {
     _table[_tail] = element;
     _tail = (_tail + 1) & (_table->length() - 1);
-    if (_head == _tail)     {
+    if (_head == _tail) {
         _grow();
     }
     _modificationCount++;

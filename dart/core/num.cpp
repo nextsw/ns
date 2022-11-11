@@ -1,10 +1,10 @@
 #include "num.hpp"
 num numCls::parse(String input, std::function<num(String input)> onError) {
     num result = tryParse(input);
-    if (result != nullptr)     {
+    if (result != nullptr) {
         return result;
     }
-    if (onError == nullptr)     {
+    if (onError == nullptr) {
         throw make<FormatExceptionCls>(input);
     }
     return onError(input);

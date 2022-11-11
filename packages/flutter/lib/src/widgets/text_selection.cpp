@@ -478,7 +478,7 @@ Widget _SelectionHandleOverlayStateCls::build(BuildContext context) {
     Rect handleRect = RectCls->fromLTWH(-handleAnchor->dx(), -handleAnchor->dy(), handleSize->width(), handleSize->height());
     Rect interactiveRect = handleRect->expandToInclude(RectCls->fromCircle(handleRect->center(), kMinInteractiveDimension / 2));
     RelativeRect padding = RelativeRectCls->fromLTRB(math->max((interactiveRect->width() - handleRect->width()) / 2, 0), math->max((interactiveRect->height() - handleRect->height()) / 2, 0), math->max((interactiveRect->width() - handleRect->width()) / 2, 0), math->max((interactiveRect->height() - handleRect->height()) / 2, 0));
-        }));return make<CompositedTransformFollowerCls>(widget->handleLayerLink, interactiveRect->topLeft(), false, make<FadeTransitionCls>(_opacity(), make<ContainerCls>(AlignmentCls::topLeft, interactiveRect->width(), interactiveRect->height(), make<RawGestureDetectorCls>(HitTestBehaviorCls::translucent,     Map<Type, GestureRecognizerFactory> map1 = make<MapCls<>>();    map1.set(PanGestureRecognizerCls, <PanGestureRecognizer>make<GestureRecognizerFactoryWithHandlersCls>([=] ()     {            make<PanGestureRecognizerCls>(this, makeSet(ArrayItem, ArrayItem, ArrayItem));        }, [=] (PanGestureRecognizer instance) {            auto _c2 = instance;    _c2.dragStartBehavior = auto _c3 = widget->dragStartBehavior;    _c3.onStart = auto _c4 = widget->onSelectionHandleDragStart;    _c4.onUpdate = auto _c5 = widget->onSelectionHandleDragUpdate;    _c5.onEnd = widget->onSelectionHandleDragEnd;    _c5;    _c4;    _c3;    _c2;list1, make<PaddingCls>(EdgeInsetsCls->only(padding->left, padding->top, padding->right, padding->bottom), widget->selectionControls->buildHandle(context, widget->type, widget->preferredLineHeight, widget->onSelectionHandleTapped))))));
+        }));return make<CompositedTransformFollowerCls>(widget->handleLayerLink, interactiveRect->topLeft(), false, make<FadeTransitionCls>(_opacity(), make<ContainerCls>(AlignmentCls::topLeft, interactiveRect->width(), interactiveRect->height(), make<RawGestureDetectorCls>(HitTestBehaviorCls::translucent,     Map<Type, GestureRecognizerFactory> map1 = make<MapCls<>>();    map1.set(PanGestureRecognizerCls, <PanGestureRecognizer>make<GestureRecognizerFactoryWithHandlersCls>([=] () {            make<PanGestureRecognizerCls>(this, makeSet(ArrayItem, ArrayItem, ArrayItem));        }, [=] (PanGestureRecognizer instance) {            auto _c2 = instance;    _c2.dragStartBehavior = auto _c3 = widget->dragStartBehavior;    _c3.onStart = auto _c4 = widget->onSelectionHandleDragStart;    _c4.onUpdate = auto _c5 = widget->onSelectionHandleDragUpdate;    _c5.onEnd = widget->onSelectionHandleDragEnd;    _c5;    _c4;    _c3;    _c2;list1, make<PaddingCls>(EdgeInsetsCls->only(padding->left, padding->top, padding->right, padding->bottom), widget->selectionControls->buildHandle(context, widget->type, widget->preferredLineHeight, widget->onSelectionHandleTapped))))));
 }
 
 Animation<double> _SelectionHandleOverlayStateCls::_opacity() {
@@ -620,7 +620,7 @@ void TextSelectionGestureDetectorBuilderCls::onDragSelectionUpdate(DragStartDeta
     bool isInverted = isShiftTapDragSelectionForward? nextExtent->offset < _shiftTapDragSelection!->baseOffset : nextExtent->offset > _shiftTapDragSelection!->baseOffset;
     if (isInverted && selection->baseOffset == _shiftTapDragSelection!->baseOffset) {
         editableText()->userUpdateTextEditingValue(editableText()->textEditingValue()->copyWith(make<TextSelectionCls>(_shiftTapDragSelection!->extentOffset, nextExtent->offset)), SelectionChangedCauseCls::drag);
-    } else     {
+    } else {
         if (!isInverted && nextExtent->offset != _shiftTapDragSelection!->baseOffset && selection->baseOffset != _shiftTapDragSelection!->baseOffset) {
         editableText()->userUpdateTextEditingValue(editableText()->textEditingValue()->copyWith(make<TextSelectionCls>(_shiftTapDragSelection!->baseOffset, nextExtent->offset)), SelectionChangedCauseCls::drag);
     } else {
@@ -692,27 +692,27 @@ void _TextSelectionGestureDetectorStateCls::dispose() {
 
 Widget _TextSelectionGestureDetectorStateCls::build(BuildContext context) {
     Map<Type, GestureRecognizerFactory> gestures = makeMap(makeList(), makeList();
-    gestures[TapGestureRecognizerCls] = <TapGestureRecognizer>make<GestureRecognizerFactoryWithHandlersCls>([=] ()     {
+    gestures[TapGestureRecognizerCls] = <TapGestureRecognizer>make<GestureRecognizerFactoryWithHandlersCls>([=] () {
         make<TapGestureRecognizerCls>(this);
     }, [=] (TapGestureRecognizer instance) {
             auto _c1 = instance;    _c1.onSecondaryTap = auto _c2 = widget->onSecondaryTap;    _c2.onSecondaryTapDown = auto _c3 = widget->onSecondaryTapDown;    _c3.onTapDown = auto _c4 = _handleTapDown;    _c4.onTapUp = auto _c5 = _handleTapUp;    _c5.onTapCancel = _handleTapCancel;    _c5;    _c4;    _c3;    _c2;_c1;
     });
     if (widget->onSingleLongTapStart != nullptr || widget->onSingleLongTapMoveUpdate != nullptr || widget->onSingleLongTapEnd != nullptr) {
-        gestures[LongPressGestureRecognizerCls] = <LongPressGestureRecognizer>make<GestureRecognizerFactoryWithHandlersCls>([=] ()         {
+        gestures[LongPressGestureRecognizerCls] = <LongPressGestureRecognizer>make<GestureRecognizerFactoryWithHandlersCls>([=] () {
             make<LongPressGestureRecognizerCls>(this, PointerDeviceKindCls::touch);
         }, [=] (LongPressGestureRecognizer instance) {
                     auto _c6 = instance;        _c6.onLongPressStart = auto _c7 = _handleLongPressStart;        _c7.onLongPressMoveUpdate = auto _c8 = _handleLongPressMoveUpdate;        _c8.onLongPressEnd = _handleLongPressEnd;        _c8;        _c7;_c6;
         });
     }
     if (widget->onDragSelectionStart != nullptr || widget->onDragSelectionUpdate != nullptr || widget->onDragSelectionEnd != nullptr) {
-        gestures[PanGestureRecognizerCls] = <PanGestureRecognizer>make<GestureRecognizerFactoryWithHandlersCls>([=] ()         {
+        gestures[PanGestureRecognizerCls] = <PanGestureRecognizer>make<GestureRecognizerFactoryWithHandlersCls>([=] () {
             make<PanGestureRecognizerCls>(this, makeSet(ArrayItem));
         }, [=] (PanGestureRecognizer instance) {
                     auto _c9 = instance;        _c9.dragStartBehavior = auto _c10 = DragStartBehaviorCls::down;        _c10.onStart = auto _c11 = _handleDragStart;        _c11.onUpdate = auto _c12 = _handleDragUpdate;        _c12.onEnd = _handleDragEnd;        _c12;        _c11;        _c10;_c9;
         });
     }
     if (widget->onForcePressStart != nullptr || widget->onForcePressEnd != nullptr) {
-        gestures[ForcePressGestureRecognizerCls] = <ForcePressGestureRecognizer>make<GestureRecognizerFactoryWithHandlersCls>([=] ()         {
+        gestures[ForcePressGestureRecognizerCls] = <ForcePressGestureRecognizer>make<GestureRecognizerFactoryWithHandlersCls>([=] () {
             make<ForcePressGestureRecognizerCls>(this);
         }, [=] (ForcePressGestureRecognizer instance) {
                     auto _c13 = instance;        _c13.onStart = widget->onForcePressStart != nullptr? _forcePressStarted : auto _c14 = nullptr;        _c14.onEnd = widget->onForcePressEnd != nullptr? _forcePressEnded : nullptr;        _c14;_c13;

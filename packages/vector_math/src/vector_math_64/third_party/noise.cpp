@@ -5,10 +5,10 @@ SimplexNoiseCls::SimplexNoiseCls(Random r) {
         Unknown p = <int>generate(256, [=] () {
     r!->nextInt(256);
 }, false);
-        _perm = <int>generate(p->length * 2, [=] (int i)         {
+        _perm = <int>generate(p->length * 2, [=] (int i) {
             p[i % p->length];
         }, false);
-        _permMod12 = <int>generate(_perm->length(), [=] (int i)         {
+        _permMod12 = <int>generate(_perm->length(), [=] (int i) {
             _perm[i] % 12;
         }, false);
     }
@@ -88,7 +88,7 @@ double SimplexNoiseCls::noise3D(double xin, double yin, double zin) {
             i2 = 1;
             j2 = 1;
             k2 = 0;
-        } else         {
+        } else {
             if (x0 >= z0) {
             i1 = 1;
             j1 = 0;
@@ -113,7 +113,7 @@ double SimplexNoiseCls::noise3D(double xin, double yin, double zin) {
             i2 = 0;
             j2 = 1;
             k2 = 1;
-        } else         {
+        } else {
             if ( < z0) {
             i1 = 0;
             j1 = 1;

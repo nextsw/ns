@@ -31,7 +31,7 @@ double ScrollControllerCls::offset() {
 
 Future<void> ScrollControllerCls::animateTo(double offset, Curve curve, Duration duration) {
     assert(_positions->isNotEmpty, __s("ScrollController not attached to any scroll views."));
-    List<Future<void>> list1 = make<ListCls<>>();for (;  < _positions->length(); i += 1)     {        ;    }{    list1.add(ArrayItem);}await await FutureCls-><void>wait(list1);
+    List<Future<void>> list1 = make<ListCls<>>();for (;  < _positions->length(); i += 1) {        ;    }{    list1.add(ArrayItem);}await await FutureCls-><void>wait(list1);
 }
 
 void ScrollControllerCls::jumpTo(double value) {
@@ -79,7 +79,7 @@ void ScrollControllerCls::debugFillDescription(List<String> description) {
     }
     if (_positions->isEmpty) {
         description->add(__s("no clients"));
-    } else     {
+    } else {
         if (_positions->length() == 1) {
         description->add(__s("one client, offset ${offset.toStringAsFixed(1)}"));
     } else {

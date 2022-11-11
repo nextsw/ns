@@ -95,7 +95,7 @@ String _UnicodeSubsetDecoderCls::_convertInvalid(List<int> bytes, int start, int
     auto buffer = make<StringBufferCls>();
     for (;  < end; i++) {
         auto value = bytes[i];
-        if ((value & ~_subsetMask) != 0)         {
+        if ((value & ~_subsetMask) != 0) {
             value = 0xFFFD;
         }
         buffer->writeCharCode(value);
@@ -132,7 +132,7 @@ void _ErrorHandlingAsciiDecoderSinkCls::addSlice(List<int> source, int start, in
     RangeErrorCls->checkValidRange(start, end, source->length());
     for (;  < end; i++) {
         if ((source[i] & ~_asciiMask) != 0) {
-            if (i > start)             {
+            if (i > start) {
                 _utf8Sink->addSlice(source, start, i, false);
             }
             _utf8Sink->add(makeList(ArrayItem, ArrayItem, ArrayItem));
@@ -141,7 +141,7 @@ void _ErrorHandlingAsciiDecoderSinkCls::addSlice(List<int> source, int start, in
     }
     if ( < end) {
         _utf8Sink->addSlice(source, start, end, isLast);
-    } else     {
+    } else {
         if (isLast) {
         close();
     }
@@ -170,7 +170,7 @@ void _SimpleAsciiDecoderSinkCls::addSlice(List<int> source, int start, int end, 
         }
         add(source);
     }
-    if (isLast)     {
+    if (isLast) {
         close();
     }
 }

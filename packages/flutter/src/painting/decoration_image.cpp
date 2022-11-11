@@ -178,7 +178,7 @@ void paintImage(Alignment alignment, Canvas canvas, Rect centerSlice, ColorFilte
                 if (_pendingImageSizeInfo->isEmpty) {
                     return;
                 }
-                            Map<String, Object> map3 = make<MapCls<>>();            for (ImageSizeInfo imageSizeInfo : _pendingImageSizeInfo->values)                 {                                ;                            }            {                map3.set(imageSizeInfo->source!, imageSizeInfo->toJson());            }developer->postEvent(__s("Flutter.ImageSizesForFrame"), list3);
+                            Map<String, Object> map3 = make<MapCls<>>();            for (ImageSizeInfo imageSizeInfo : _pendingImageSizeInfo->values) {                                ;                            }            {                map3.set(imageSizeInfo->source!, imageSizeInfo->toJson());            }developer->postEvent(__s("Flutter.ImageSizesForFrame"), list3);
                 _pendingImageSizeInfo = makeMap(makeList(), makeList();
             });
         }
@@ -238,7 +238,7 @@ Iterable<Rect> _generateImageTileRects(Rect outputRect, Rect fundamentalRect, Im
         startY = ((outputRect->top - fundamentalRect->top) / strideY)->floor();
         stopY = ((outputRect->bottom - fundamentalRect->bottom) / strideY)->ceil();
     }
-    List<Rect> list1 = make<ListCls<>>();for (; i <= stopX; ++i)     {        ;    }{    list1.add(ArrayItem);}return list1;
+    List<Rect> list1 = make<ListCls<>>();for (; i <= stopX; ++i) {        ;    }{    list1.add(ArrayItem);}return list1;
 }
 
 Rect _scaleRect(Rect rect, double scale) {

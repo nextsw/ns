@@ -164,7 +164,7 @@ Iterable<FocusNode> FocusNodeCls::traversalChildren() {
     if (!descendantsAreFocusable()) {
         return <FocusNode>empty();
     }
-    return children()->where([=] (FocusNode node)     {
+    return children()->where([=] (FocusNode node) {
         !node->skipTraversal && node->canRequestFocus;
     });
 }
@@ -196,7 +196,7 @@ Iterable<FocusNode> FocusNodeCls::traversalDescendants() {
     if (!descendantsAreFocusable()) {
         return <FocusNode>empty();
     }
-    return descendants()->where([=] (FocusNode node)     {
+    return descendants()->where([=] (FocusNode node) {
         !node->skipTraversal && node->canRequestFocus;
     });
 }
@@ -622,7 +622,7 @@ void FocusManagerCls::_notifyHighlightModeListeners() {
         } catch (Unknown exception) {
             InformationCollector collector;
             assert([=] () {
-                collector = [=] ()                 {
+                collector = [=] () {
                     makeList(ArrayItem);
                 };
                 return true;
@@ -734,7 +734,7 @@ void FocusManagerCls::_applyFocusChange() {
     for (FocusNode node : _dirtyNodes) {
         node->_notify();
     }
-    assert(_focusDebug(__s("Notified ${_dirtyNodes.length} dirty nodes:"), _dirtyNodes->toList()-><String>map([=] (FocusNode node)     {
+    assert(_focusDebug(__s("Notified ${_dirtyNodes.length} dirty nodes:"), _dirtyNodes->toList()-><String>map([=] (FocusNode node) {
         node->toString();
     })));
     _dirtyNodes->clear();

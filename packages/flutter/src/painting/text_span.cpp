@@ -79,7 +79,7 @@ void TextSpanCls::computeToPlainText(StringBuffer buffer, bool includePlaceholde
     assert(debugAssertIsValid());
     if (semanticsLabel != nullptr && includeSemanticsLabels) {
         buffer->write(semanticsLabel);
-    } else     {
+    } else {
         if (text != nullptr) {
         buffer->write(text);
     }

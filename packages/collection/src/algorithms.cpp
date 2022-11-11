@@ -15,7 +15,7 @@ int binarySearchBy(List<E> sortedList, std::function<K(E element)> keyOf, std::f
         auto mid = min + ((max - min) >> 1);
         auto element = sortedList[mid];
         auto comp = compare(keyOf(element), key);
-        if (comp == 0)         {
+        if (comp == 0) {
             return mid;
         }
         if ( < 0) {

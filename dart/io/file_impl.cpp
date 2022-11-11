@@ -26,7 +26,7 @@ Future _FileStreamCls::_closeFile() {
 }
 
 void _FileStreamCls::_readBlock() {
-    if (_readInProgress)     {
+    if (_readInProgress) {
         return;
     }
     if (_atEnd) {
@@ -106,7 +106,7 @@ Future<File> _FileStreamConsumerCls::addStream(Stream<List<int>> stream) {
         _subscription = stream->listen([=] (Unknown  d) {
             _subscription->pause();
             try {
-                openedFile->writeFrom(d, 0, d->length)->then([=] ()                 {
+                openedFile->writeFrom(d, 0, d->length)->then([=] () {
                     _subscription->resume();
                 }, error);
             } catch (Unknown e) {
@@ -120,9 +120,9 @@ Future<File> _FileStreamConsumerCls::addStream(Stream<List<int>> stream) {
 }
 
 Future<File> _FileStreamConsumerCls::close() {
-    return _openFuture->then([=] (Unknown  openedFile)     {
+    return _openFuture->then([=] (Unknown  openedFile) {
         openedFile->close();
-    })->then([=] ()     {
+    })->then([=] () {
         _file;
     });
 }
@@ -161,7 +161,7 @@ File _FileCls::absolute() {
 
 Future<File> _FileCls::create(bool recursive) {
     auto result = recursive? parent->create(true) : FutureCls->value(nullptr);
-    return result->then([=] ()     {
+    return result->then([=] () {
         _dispatchWithNamespace(_IOServiceCls::fileCreate, makeList(ArrayItem, ArrayItem));
     })->then([=] (Unknown  response) {
         if (_isErrorResponse(response)) {
@@ -344,7 +344,7 @@ Uint8List _FileCls::readAsBytesSync() {
             auto builder = make<BytesBuilderCls>(false);
             do {
                 data = opened->readSync(_blockSize);
-                if (data->length > 0)                 {
+                if (data->length > 0) {
                     builder->add(data);
                 }
             } while (data->length > 0);
@@ -384,8 +384,8 @@ List<String> _FileCls::readAsLinesSync(Encoding encoding) {
 Future<File> _FileCls::writeAsBytes(List<int> bytes, bool flush, FileMode mode) {
     return open(mode)->then([=] (Unknown  file) {
         return file->writeFrom(bytes, 0, bytes->length())-><File>then([=] () {
-            if (flush)             {
-                return file->flush()->then([=] ()             {
+            if (flush) {
+                return file->flush()->then([=] () {
                 this;
             });
             }
@@ -398,7 +398,7 @@ void _FileCls::writeAsBytesSync(List<int> bytes, bool flush, FileMode mode) {
     RandomAccessFile opened = openSync(mode);
     try {
         opened->writeFromSync(bytes, 0, bytes->length());
-        if (flush)         {
+        if (flush) {
             opened->flushSync();
         }
     } finally {
@@ -446,7 +446,7 @@ Future _FileCls::_dispatchWithNamespace(int request, List data) {
 
 Future<File> _FileCls::_delete(bool recursive) {
     if (recursive) {
-        return make<DirectoryCls>(path())->delete(true)->then([=] ()         {
+        return make<DirectoryCls>(path())->delete(true)->then([=] () {
             this;
         });
     }

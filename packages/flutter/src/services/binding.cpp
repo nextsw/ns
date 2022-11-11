@@ -6,7 +6,7 @@ void ServicesBindingCls::initInstances() {
     _restorationManager = createRestorationManager();
     _initKeyboard();
     initLicenses();
-    SystemChannelsCls::system->setMessageHandler([=] (dynamic message)     {
+    SystemChannelsCls::system->setMessageHandler([=] (dynamic message) {
         handleSystemMessage(as<Object>(message));
     });
     SystemChannelsCls::lifecycle->setMessageHandler(_handleLifecycleMessage);
@@ -57,7 +57,7 @@ void ServicesBindingCls::initLicenses() {
 void ServicesBindingCls::initServiceExtensions() {
     super->initServiceExtensions();
     assert([=] () {
-        registerStringServiceExtension(__s("evict"), [=] ()         {
+        registerStringServiceExtension(__s("evict"), [=] () {
             __s("");
         }, [=] (String value) {
             evict(value);

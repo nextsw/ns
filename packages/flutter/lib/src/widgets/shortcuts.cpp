@@ -97,8 +97,8 @@ bool LogicalKeySetCls::accepts(RawKeyEvent event, RawKeyboard state) {
 }
 
 String LogicalKeySetCls::debugDescribeKeys() {
-    });List<LogicalKeyboardKey> sortedKeys = auto _c1 = keys->toList();_c1.sort([=] (LogicalKeyboardKey a,LogicalKeyboardKey b) {    bool aIsModifier = a->synonyms->isNotEmpty || _modifiers->contains(a);    bool bIsModifier = b->synonyms->isNotEmpty || _modifiers->contains(b);    };    }        if (aIsModifier && !bIsModifier) {            return -1;        } else     {            if (bIsModifier && !aIsModifier) {            return 1;    return a->debugName!->compareTo(b->debugName!);_c1;
-    return sortedKeys-><String>map([=] (LogicalKeyboardKey key)     {
+    });List<LogicalKeyboardKey> sortedKeys = auto _c1 = keys->toList();_c1.sort([=] (LogicalKeyboardKey a,LogicalKeyboardKey b) {    bool aIsModifier = a->synonyms->isNotEmpty || _modifiers->contains(a);    bool bIsModifier = b->synonyms->isNotEmpty || _modifiers->contains(b);    };    }        if (aIsModifier && !bIsModifier) {            return -1;        } else {            if (bIsModifier && !aIsModifier) {            return 1;    return a->debugName!->compareTo(b->debugName!);_c1;
+    return sortedKeys-><String>map([=] (LogicalKeyboardKey key) {
         key->debugName->toString();
     })->join(__s(" + "));
 }

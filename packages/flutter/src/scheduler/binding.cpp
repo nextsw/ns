@@ -86,7 +86,7 @@ void SchedulerBindingCls::removeTimingsCallback(TimingsCallback callback) {
 void SchedulerBindingCls::initServiceExtensions() {
     super->initServiceExtensions();
     if (!kReleaseMode) {
-        registerNumericServiceExtension(__s("timeDilation"), [=] ()         {
+        registerNumericServiceExtension(__s("timeDilation"), [=] () {
             timeDilation;
         }, [=] (double value) {
             timeDilation = value;
@@ -168,7 +168,7 @@ bool SchedulerBindingCls::debugAssertNoTransientCallbacks(String reason) {
         if (transientCallbackCount() > 0) {
             int count = transientCallbackCount();
             Map<int, _FrameCallbackEntry> callbacks = <int, _FrameCallbackEntry>of(_transientCallbacks);
-                    List<DiagnosticsNode> list1 = make<ListCls<>>();        if (count == 1) {            list1.add(ArrayItem);        } else {            list1.add(ArrayItem);        }for (int id : callbacks->keys())             {                        ;                    }        {            list1.add(ArrayItem);        }FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(reason, __s("scheduler library"), [=] ()             {
+                    List<DiagnosticsNode> list1 = make<ListCls<>>();        if (count == 1) {            list1.add(ArrayItem);        } else {            list1.add(ArrayItem);        }for (int id : callbacks->keys()) {                        ;                    }        {            list1.add(ArrayItem);        }FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(reason, __s("scheduler library"), [=] () {
                 list1;
             }));
         }
@@ -382,7 +382,7 @@ void SchedulerBindingCls::_executeTimingsCallbacks(List<FrameTiming> timings) {
         } catch (Unknown exception) {
             InformationCollector collector;
             assert([=] () {
-                collector = [=] ()                 {
+                collector = [=] () {
                     makeList(ArrayItem);
                 };
                 return true;

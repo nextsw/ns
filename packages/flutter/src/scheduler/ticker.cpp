@@ -19,7 +19,7 @@ void TickerCls::muted(bool value) {
     _muted = value;
     if (value) {
         unscheduleTick();
-    } else     {
+    } else {
         if (shouldScheduleTick()) {
         scheduleTick();
     }

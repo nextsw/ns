@@ -42,7 +42,7 @@ bool FormStateCls::validate() {
 
 void FormStateCls::_fieldDidChange() {
     widget->onChanged?->call();
-    _hasInteractedByUser = _fields->any([=] (FormFieldState<dynamic> field)     {
+    _hasInteractedByUser = _fields->any([=] (FormFieldState<dynamic> field) {
         field->_hasInteractedByUser->value;
     });
     _forceRebuild();

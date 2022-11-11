@@ -18,7 +18,7 @@ Duration DurationCls::*(num factor) {
 }
 
 Duration DurationCls::~/(int quotient) {
-    if (quotient == 0)     {
+    if (quotient == 0) {
         throw make<IntegerDivisionByZeroExceptionCls>();
     }
     return DurationCls->_microseconds(_duration ~/ quotient);
@@ -81,7 +81,7 @@ String DurationCls::toString() {
     auto sign = ( < 0)? __s("-") : __s("");
     auto hours = microseconds ~/ microsecondsPerHour;
     microseconds = microseconds->remainder(microsecondsPerHour);
-    if ( < 0)     {
+    if ( < 0) {
         microseconds = -microseconds;
     }
     auto minutes = microseconds ~/ microsecondsPerMinute;

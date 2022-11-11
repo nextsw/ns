@@ -27,7 +27,7 @@ List<String> _stringify(List<dynamic> list) {
 }
 
 Future<void> SystemChromeCls::setPreferredOrientations(List<DeviceOrientation> orientations) {
-    List<String> list1 = make<ListCls<>>();for (dynamic item : list)     {        ;    }{    list1.add(ArrayItem);}await await SystemChannelsCls::platform-><void>invokeMethod(__s("SystemChrome.setPreferredOrientations"), _stringify(orientations));
+    List<String> list1 = make<ListCls<>>();for (dynamic item : list) {        ;    }{    list1.add(ArrayItem);}await await SystemChannelsCls::platform-><void>invokeMethod(__s("SystemChrome.setPreferredOrientations"), _stringify(orientations));
 }
 
 Future<void> SystemChromeCls::setApplicationSwitcherDescription(ApplicationSwitcherDescription description) {

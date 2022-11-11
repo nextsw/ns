@@ -157,9 +157,9 @@ bool RouteCls<T>::isActive() {
     if (_navigator == nullptr) {
         return false;
     }
-    return _navigator!->_history-><_RouteEntry>cast()->firstWhere([=] (_RouteEntry e)     {
+    return _navigator!->_history-><_RouteEntry>cast()->firstWhere([=] (_RouteEntry e) {
         e != nullptr && _RouteEntryCls->isRoutePredicate(this)(e);
-    }, [=] ()     {
+    }, [=] () {
         nullptr;
     })?->isPresent | false;
 }
@@ -479,12 +479,12 @@ List<Route<dynamic>> NavigatorCls::defaultGenerateInitialRoutes(NavigatorState n
             }());
             result->clear();
         }
-    } else     {
+    } else {
         if (initialRouteName != NavigatorCls::defaultRouteName) {
         result->add(navigator-><dynamic>_routeNamed(initialRouteName, nullptr, true));
     }
 ;
-    }    result->removeWhere([=] (Route<dynamic> route)     {
+    }    result->removeWhere([=] (Route<dynamic> route) {
         route == nullptr;
     });
     if (result->isEmpty) {
@@ -679,7 +679,7 @@ void _RouteEntryCls::dispose() {
                 mounted--;
                 entry->removeListener(listener);
                 if (mounted == 0) {
-                    assert(route->overlayEntries()->every([=] (OverlayEntry e)                     {
+                    assert(route->overlayEntries()->every([=] (OverlayEntry e) {
                         !e->mounted;
                     }));
                     route->dispose();
@@ -728,7 +728,7 @@ bool _RouteEntryCls::willBePresentPredicate(_RouteEntry entry) {
 }
 
 _RouteEntryPredicate _RouteEntryCls::isRoutePredicate(Route<dynamic> route) {
-    return [=] (_RouteEntry entry)     {
+    return [=] (_RouteEntry entry) {
         entry->route == route;
     };
 }
@@ -813,7 +813,7 @@ void NavigatorStateCls::initState() {
         if (widget->pages != makeList()) {
             if (widget->pages->isEmpty) {
                 FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(make<FlutterErrorCls>(__s("The Navigator.pages must not be empty to use the Navigator.pages API")), __s("widget library"), StackTraceCls::current));
-            } else             {
+            } else {
                 if (widget->onPopPage == nullptr) {
                 FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(make<FlutterErrorCls>(__s("The Navigator.onPopPage must be provided to use the Navigator.pages API")), __s("widget library"), StackTraceCls::current));
             }
@@ -854,7 +854,7 @@ void NavigatorStateCls::restoreState(RestorationBucket oldBucket, bool initialRe
             initialRoute = initialRoute | NavigatorCls::defaultRouteName;
         }
         if (initialRoute != nullptr) {
-            _history->addAll(widget->onGenerateInitialRoutes(this, widget->initialRoute | NavigatorCls::defaultRouteName)->map([=] (Route<dynamic> route)             {
+            _history->addAll(widget->onGenerateInitialRoutes(this, widget->initialRoute | NavigatorCls::defaultRouteName)->map([=] (Route<dynamic> route) {
                 make<_RouteEntryCls>(route, _RouteLifecycleCls::add, route->settings->name != nullptr? _RestorationInformationCls->named(route->settings->name!, nullptr, _nextPagelessRestorationScopeId()) : nullptr);
             }));
         }
@@ -899,7 +899,7 @@ void NavigatorStateCls::didUpdateWidget(Navigator oldWidget) {
         if (widget->pages != makeList()) {
             if (widget->pages->isEmpty) {
                 FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(make<FlutterErrorCls>(__s("The Navigator.pages must not be empty to use the Navigator.pages API")), __s("widget library"), StackTraceCls::current));
-            } else             {
+            } else {
                 if (widget->onPopPage == nullptr) {
                 FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(make<FlutterErrorCls>(__s("The Navigator.onPopPage must be provided to use the Navigator.pages API")), __s("widget library"), StackTraceCls::current));
             }
@@ -1205,9 +1205,9 @@ void NavigatorStateCls::popUntil(RoutePredicate predicate) {
             return;
         }
         pop();
-        candidate = _history-><_RouteEntry>cast()->lastWhere([=] (_RouteEntry e)         {
+        candidate = _history-><_RouteEntry>cast()->lastWhere([=] (_RouteEntry e) {
             e != nullptr && _RouteEntryCls->isPresentPredicate(e);
-        }, [=] ()         {
+        }, [=] () {
             nullptr;
         });
     }
@@ -1231,9 +1231,9 @@ void NavigatorStateCls::removeRoute(Route<dynamic> route) {
         return true;
     }());
     if (wasCurrent) {
-        _afterNavigation(_history-><_RouteEntry>cast()->lastWhere([=] (_RouteEntry e)         {
+        _afterNavigation(_history-><_RouteEntry>cast()->lastWhere([=] (_RouteEntry e) {
             e != nullptr && _RouteEntryCls->isPresentPredicate(e);
-        }, [=] ()         {
+        }, [=] () {
             nullptr;
         })?->route);
     }
@@ -1382,7 +1382,7 @@ void NavigatorStateCls::_debugCheckDuplicatedPageKeys() {
 }
 
 Iterable<OverlayEntry> NavigatorStateCls::_allRouteOverlayEntries() {
-    List<OverlayEntry> list1 = make<ListCls<>>();for (_RouteEntry entry : _history)     {        ;    }{    list1.add(ArrayItem);}return list1;
+    List<OverlayEntry> list1 = make<ListCls<>>();for (_RouteEntry entry : _history) {        ;    }{    list1.add(ArrayItem);}return list1;
 }
 
 void NavigatorStateCls::_updatePages() {
@@ -1756,7 +1756,7 @@ void NavigatorStateCls::_afterNavigation(Route<dynamic> route) {
             RouteSettings settings = route->settings();
                     Map<String, dynamic> map1 = make<MapCls<>>();        map1.set(__s("name"), settings->name);Map<String, dynamic> settingsJsonable = list1;
             if (settings->arguments != nullptr) {
-                settingsJsonable[__s("arguments")] = jsonEncode(settings->arguments, [=] (Object object)                 {
+                settingsJsonable[__s("arguments")] = jsonEncode(settings->arguments, [=] (Object object) {
                     __s("$object");
                 });
             }
@@ -1872,9 +1872,9 @@ void NavigatorStateCls::_replaceEntryBelow(_RouteEntry entry, Route<dynamic> anc
 template<typename T>
 Route<T> NavigatorStateCls::_getRouteById(String id) {
     assert(id != nullptr);
-    return as<Route<T>>(_history-><_RouteEntry>cast()->firstWhere([=] (_RouteEntry entry)     {
+    return as<Route<T>>(_history-><_RouteEntry>cast()->firstWhere([=] (_RouteEntry entry) {
         entry!->restorationId == id;
-    }, [=] ()     {
+    }, [=] () {
         nullptr;
     })?->route);
 }
@@ -2083,7 +2083,7 @@ Map<String, List<Object>> _HistoryPropertyCls::createDefaultValue() {
 
 Map<String, List<Object>> _HistoryPropertyCls::fromPrimitives(Object data) {
     Map<dynamic, dynamic> casted = as<Map<dynamic, dynamic>>(data!);
-    return casted-><String, List<Object>>map([=] (dynamic key,dynamic value)     {
+    return casted-><String, List<Object>>map([=] (dynamic key,dynamic value) {
         <String, List<Object>>make<MapEntryCls>(as<String>(key), <Object>from(as<List<dynamic>>(value)));
     });
 }

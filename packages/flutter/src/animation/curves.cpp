@@ -415,11 +415,11 @@ double _DecelerateCurveCls::transformInternal(double t) {
 double _bounce(double t) {
     if ( < 1.0 / 2.75) {
         return 7.5625 * t * t;
-    } else     {
+    } else {
         if ( < 2 / 2.75) {
         t -= 1.5 / 2.75;
         return 7.5625 * t * t + 0.75;
-    } else     {
+    } else {
         if ( < 2.5 / 2.75) {
         t -= 2.25 / 2.75;
         return 7.5625 * t * t + 0.9375;

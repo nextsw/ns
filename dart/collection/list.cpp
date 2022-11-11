@@ -42,7 +42,7 @@ bool ListMixinCls<E>::isNotEmpty() {
 
 template<typename E>
 E ListMixinCls<E>::first() {
-    if (length == 0)     {
+    if (length == 0) {
         throw IterableElementErrorCls->noElement();
     }
     return this[0];
@@ -50,7 +50,7 @@ E ListMixinCls<E>::first() {
 
 template<typename E>
 void ListMixinCls<E>::first(E value) {
-    if (length == 0)     {
+    if (length == 0) {
         throw IterableElementErrorCls->noElement();
     }
     this[0] = value;
@@ -58,7 +58,7 @@ void ListMixinCls<E>::first(E value) {
 
 template<typename E>
 E ListMixinCls<E>::last() {
-    if (length == 0)     {
+    if (length == 0) {
         throw IterableElementErrorCls->noElement();
     }
     return this[length - 1];
@@ -66,7 +66,7 @@ E ListMixinCls<E>::last() {
 
 template<typename E>
 void ListMixinCls<E>::last(E value) {
-    if (length == 0)     {
+    if (length == 0) {
         throw IterableElementErrorCls->noElement();
     }
     this[length - 1] = value;
@@ -74,10 +74,10 @@ void ListMixinCls<E>::last(E value) {
 
 template<typename E>
 E ListMixinCls<E>::single() {
-    if (length == 0)     {
+    if (length == 0) {
         throw IterableElementErrorCls->noElement();
     }
-    if (length > 1)     {
+    if (length > 1) {
         throw IterableElementErrorCls->tooMany();
     }
     return this[0];
@@ -87,7 +87,7 @@ template<typename E>
 bool ListMixinCls<E>::contains(Object element) {
     int length = this->length;
     for (;  < length; i++) {
-        if (this[i] == element)         {
+        if (this[i] == element) {
             return true;
         }
         if (length != this->length) {
@@ -101,7 +101,7 @@ template<typename E>
 bool ListMixinCls<E>::every(std::function<bool(E element)> test) {
     int length = this->length;
     for (;  < length; i++) {
-        if (!test(this[i]))         {
+        if (!test(this[i])) {
             return false;
         }
         if (length != this->length) {
@@ -115,7 +115,7 @@ template<typename E>
 bool ListMixinCls<E>::any(std::function<bool(E element)> test) {
     int length = this->length;
     for (;  < length; i++) {
-        if (test(this[i]))         {
+        if (test(this[i])) {
             return true;
         }
         if (length != this->length) {
@@ -130,14 +130,14 @@ E ListMixinCls<E>::firstWhere(std::function<bool(E element)> test, std::function
     int length = this->length;
     for (;  < length; i++) {
         E element = this[i];
-        if (test(element))         {
+        if (test(element)) {
             return element;
         }
         if (length != this->length) {
             throw make<ConcurrentModificationErrorCls>(this);
         }
     }
-    if (orElse != nullptr)     {
+    if (orElse != nullptr) {
         return orElse();
     }
     throw IterableElementErrorCls->noElement();
@@ -148,14 +148,14 @@ E ListMixinCls<E>::lastWhere(std::function<bool(E element)> test, std::function<
     int length = this->length;
     for (; i >= 0; i--) {
         E element = this[i];
-        if (test(element))         {
+        if (test(element)) {
             return element;
         }
         if (length != this->length) {
             throw make<ConcurrentModificationErrorCls>(this);
         }
     }
-    if (orElse != nullptr)     {
+    if (orElse != nullptr) {
         return orElse();
     }
     throw IterableElementErrorCls->noElement();
@@ -179,10 +179,10 @@ E ListMixinCls<E>::singleWhere(std::function<bool(E element)> test, std::functio
             throw make<ConcurrentModificationErrorCls>(this);
         }
     }
-    if (matchFound)     {
+    if (matchFound) {
         return match;
     }
-    if (orElse != nullptr)     {
+    if (orElse != nullptr) {
         return orElse();
     }
     throw IterableElementErrorCls->noElement();
@@ -190,7 +190,7 @@ E ListMixinCls<E>::singleWhere(std::function<bool(E element)> test, std::functio
 
 template<typename E>
 String ListMixinCls<E>::join(String separator) {
-    if (length == 0)     {
+    if (length == 0) {
         return __s("");
     }
     auto _c1 = make<StringBufferCls>();_c1.writeAll(this, separator);StringBuffer buffer = _c1;
@@ -223,7 +223,7 @@ Iterable<T> ListMixinCls<E>::expand(std::function<Iterable<T>(E element)> f) {
 template<typename E>
 E ListMixinCls<E>::reduce(std::function<E(E previousValue, E element)> combine) {
     int length = this->length;
-    if (length == 0)     {
+    if (length == 0) {
         throw IterableElementErrorCls->noElement();
     }
     E value = this[0];
@@ -272,7 +272,7 @@ Iterable<E> ListMixinCls<E>::takeWhile(std::function<bool(E element)> test) {
 
 template<typename E>
 List<E> ListMixinCls<E>::toList(bool growable) {
-    if (this->isEmpty())     {
+    if (this->isEmpty()) {
         return <E>empty(growable);
     }
     auto first = this[0];
@@ -357,7 +357,7 @@ void ListMixinCls<E>::sort(std::function<int(E a, E b)> compare) {
 template<typename E>
 void ListMixinCls<E>::shuffle(Random random) {
     random |= make<RandomCls>();
-    if (random == nullptr)     {
+    if (random == nullptr) {
         throw __s("!");
     }
     int length = this->length;
@@ -384,7 +384,7 @@ template<typename E>
 List<E> ListMixinCls<E>::sublist(int start, int end) {
     for (auto _x1 : this) {{    list1.add(_x1);}for (auto _x1 : other) {{    list1.add(_x1);}int listLength = this->length;
     end |= listLength;
-    if (end == nullptr)     {
+    if (end == nullptr) {
         throw __s("!");
     }
     RangeErrorCls->checkValidRange(start, end, listLength);
@@ -418,7 +418,7 @@ template<typename E>
 void ListMixinCls<E>::setRange(int start, int end, Iterable<E> iterable, int skipCount) {
     RangeErrorCls->checkValidRange(start, end, this->length);
     int length = end - start;
-    if (length == 0)     {
+    if (length == 0) {
         return;
     }
     RangeErrorCls->checkNotNegative(skipCount, __s("skipCount"));
@@ -463,7 +463,7 @@ void ListMixinCls<E>::replaceRange(int start, int end, Iterable<E> newContents) 
         if (removeLength > insertLength) {
             _closeGap(insertEnd, end);
         }
-    } else     {
+    } else {
         if (end == this->length) {
         int i = start;
         for (E element : newContents) {
@@ -491,11 +491,11 @@ void ListMixinCls<E>::replaceRange(int start, int end, Iterable<E> newContents) 
 
 template<typename E>
 int ListMixinCls<E>::indexOf(Object element, int start) {
-    if ( < 0)     {
+    if ( < 0) {
         start = 0;
     }
     for (;  < this->length; i++) {
-        if (this[i] == element)         {
+        if (this[i] == element) {
             return i;
         }
     }
@@ -504,11 +504,11 @@ int ListMixinCls<E>::indexOf(Object element, int start) {
 
 template<typename E>
 int ListMixinCls<E>::indexWhere(std::function<bool(E element)> test, int start) {
-    if ( < 0)     {
+    if ( < 0) {
         start = 0;
     }
     for (;  < this->length; i++) {
-        if (test(this[i]))         {
+        if (test(this[i])) {
             return i;
         }
     }
@@ -517,14 +517,14 @@ int ListMixinCls<E>::indexWhere(std::function<bool(E element)> test, int start) 
 
 template<typename E>
 int ListMixinCls<E>::lastIndexOf(Object element, int start) {
-    if (start == nullptr || start >= this->length)     {
+    if (start == nullptr || start >= this->length) {
         start = this->length - 1;
     }
-    if (start == nullptr)     {
+    if (start == nullptr) {
         throw __s("!");
     }
     for (; i >= 0; i--) {
-        if (this[i] == element)         {
+        if (this[i] == element) {
             return i;
         }
     }
@@ -533,14 +533,14 @@ int ListMixinCls<E>::lastIndexOf(Object element, int start) {
 
 template<typename E>
 int ListMixinCls<E>::lastIndexWhere(std::function<bool(E element)> test, int start) {
-    if (start == nullptr || start >= this->length)     {
+    if (start == nullptr || start >= this->length) {
         start = this->length - 1;
     }
-    if (start == nullptr)     {
+    if (start == nullptr) {
         throw __s("!");
     }
     for (; i >= 0; i--) {
-        if (test(this[i]))         {
+        if (test(this[i])) {
             return i;
         }
     }

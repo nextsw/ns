@@ -227,7 +227,7 @@ Iterable<FocusNode> DirectionalFocusTraversalPolicyMixinCls::_sortAndFilterHoriz
     Iterable<FocusNode> nodes = nearestScope->traversalDescendants();
     assert(!nodes->contains(nearestScope));
     List<FocusNode> sorted = nodes->toList();
-    <FocusNode>mergeSort(sorted, [=] (FocusNode a,FocusNode b)     {
+    <FocusNode>mergeSort(sorted, [=] (FocusNode a,FocusNode b) {
         a->rect->center->dx->compareTo(b->rect->center->dx);
     });
     Iterable<FocusNode> result;
@@ -237,7 +237,7 @@ Iterable<FocusNode> DirectionalFocusTraversalPolicyMixinCls::_sortAndFilterHoriz
 
 Iterable<FocusNode> DirectionalFocusTraversalPolicyMixinCls::_sortAndFilterVertically(TraversalDirection direction, Rect target, Iterable<FocusNode> nodes) {
     List<FocusNode> sorted = nodes->toList();
-    <FocusNode>mergeSort(sorted, [=] (FocusNode a,FocusNode b)     {
+    <FocusNode>mergeSort(sorted, [=] (FocusNode a,FocusNode b) {
         a->rect->center->dy->compareTo(b->rect->center->dy);
     });
     ;
@@ -327,7 +327,7 @@ TextDirection _ReadingOrderDirectionalGroupDataCls::directionality() {
 
 Rect _ReadingOrderDirectionalGroupDataCls::rect() {
     if (_rect == nullptr) {
-        for (Rect rect : members-><Rect>map([=] (_ReadingOrderSortData data)         {
+        for (Rect rect : members-><Rect>map([=] (_ReadingOrderSortData data) {
             data->rect;
         })) {
             _rect |= rect();
@@ -408,7 +408,7 @@ List<_ReadingOrderDirectionalGroupData> ReadingOrderTraversalPolicyCls::_collect
 }
 
 _ReadingOrderSortData ReadingOrderTraversalPolicyCls::_pickNext(List<_ReadingOrderSortData> candidates) {
-    <_ReadingOrderSortData>mergeSort(candidates, [=] (_ReadingOrderSortData a,_ReadingOrderSortData b)     {
+    <_ReadingOrderSortData>mergeSort(candidates, [=] (_ReadingOrderSortData a,_ReadingOrderSortData b) {
         a->rect->top->compareTo(b->rect->top);
     });
     _ReadingOrderSortData topmost = candidates->first;
@@ -487,7 +487,7 @@ Iterable<FocusNode> OrderedTraversalPolicyCls::sortDescendants(Iterable<FocusNod
         assert(a->order->runtimeType() == b->order->runtimeType(), __s("When sorting nodes for determining focus order, the order (${a.order}) of node ${a.node}, isn't the same type as the order (${b.order}) of ${b.node}. Incompatible order types can't be compared.  Use a FocusTraversalGroup to group similar orders together."));
         return a->order->compareTo(b->order);
     });
-    return ordered-><FocusNode>map([=] (_OrderedFocusInfo info)     {
+    return ordered-><FocusNode>map([=] (_OrderedFocusInfo info) {
         info->node;
     })->followedBy(unordered);
 }

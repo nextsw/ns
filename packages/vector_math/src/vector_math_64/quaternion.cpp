@@ -140,7 +140,7 @@ void QuaternionCls::setFromTwoVectors(Vector3 a, Vector3 b) {
         } else {
             axis = v1->cross(make<Vector3Cls>(1.0, 0.0, 0.0));
         }
-    } else     {
+    } else {
         if ((1.0 - c)->abs() < 0.0005) {
         angle = 0.0;
         axis = make<Vector3Cls>(1.0, 0.0, 0.0);

@@ -138,7 +138,7 @@ void SliverAnimatedListStateCls::removeItem(int index, AnimatedListRemovedItemBu
                 item->itemIndex -= 1;
             }
         }
-        setState([=] ()         {
+        setState([=] () {
             _itemsCount -= 1;
         });
     });

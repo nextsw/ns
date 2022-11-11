@@ -100,7 +100,7 @@ String _SocketProfileCls::toJson() {
 }
 
 void _SocketProfileCls::collectNewSocket(int id, String type, InternetAddress addr, int port) {
-    map1.set(__s("type"), _kType);map1.set(__s("sockets"), _idToSocketStatistic->values->map([=] (Unknown  f)     {        f->toMap();    })->toList());_SocketProfileCls->collectStatistic(id, _SocketProfileTypeCls::startTime);
+    map1.set(__s("type"), _kType);map1.set(__s("sockets"), _idToSocketStatistic->values->map([=] (Unknown  f) {        f->toMap();    })->toList());_SocketProfileCls->collectStatistic(id, _SocketProfileTypeCls::startTime);
     _SocketProfileCls->collectStatistic(id, _SocketProfileTypeCls::socketType, type);
     _SocketProfileCls->collectStatistic(id, _SocketProfileTypeCls::address, addr);
     _SocketProfileCls->collectStatistic(id, _SocketProfileTypeCls::port, port);
@@ -110,7 +110,7 @@ void _SocketProfileCls::collectStatistic(int id, _SocketProfileType type, dynami
     if (!_enableSocketProfiling) {
         return;
     }
-    if (!_idToSocketStatistic->containsKey(id) && type != _SocketProfileTypeCls::startTime)     {
+    if (!_idToSocketStatistic->containsKey(id) && type != _SocketProfileTypeCls::startTime) {
         return;
     }
     _SocketStatistic stats = _idToSocketStatistic[id] ??= make<_SocketStatisticCls>(id);
@@ -147,7 +147,7 @@ Map<String, dynamic> _SocketStatisticCls::toMap() {
 }
 
 void _SocketStatisticCls::_setIfNotNull(Map<String, dynamic> json, String key, Object value) {
-    if (value == nullptr)     {
+    if (value == nullptr) {
         return;
     }
     json[key] = value;

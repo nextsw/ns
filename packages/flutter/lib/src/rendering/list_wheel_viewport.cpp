@@ -220,13 +220,13 @@ bool RenderListWheelViewportCls::isRepaintBoundary() {
 }
 
 double RenderListWheelViewportCls::computeMinIntrinsicWidth(double height) {
-    return _getIntrinsicCrossAxis([=] (RenderBox child)     {
+    return _getIntrinsicCrossAxis([=] (RenderBox child) {
         child->getMinIntrinsicWidth(height);
     });
 }
 
 double RenderListWheelViewportCls::computeMaxIntrinsicWidth(double height) {
-    return _getIntrinsicCrossAxis([=] (RenderBox child)     {
+    return _getIntrinsicCrossAxis([=] (RenderBox child) {
         child->getMaxIntrinsicWidth(height);
     });
 }

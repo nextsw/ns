@@ -50,7 +50,7 @@ void _SelectionContainerStateCls::didUpdateWidget(SelectionContainer oldWidget) 
     }
     if (widget->_disabled) {
         registrar = nullptr;
-    } else     {
+    } else {
         if (widget->registrar != nullptr) {
         registrar = widget->registrar;
     }

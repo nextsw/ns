@@ -332,7 +332,7 @@ void EditableTextStateCls::didChangeDependencies() {
         _tickersEnabled = newTickerEnabled;
         if (_tickersEnabled && _cursorActive) {
             _startCursorBlink();
-        } else         {
+        } else {
             if (!_tickersEnabled && _cursorTimer != nullptr) {
             _cursorTimer!->cancel();
             _cursorTimer = nullptr;
@@ -384,7 +384,7 @@ void EditableTextStateCls::didUpdateWidget(EditableText oldWidget) {
     }
     if (!_shouldCreateInputConnection()) {
         _closeInputConnectionIfNeeded();
-    } else     {
+    } else {
         if (oldWidget->readOnly && _hasFocus()) {
         _openInputConnection();
     }
@@ -569,7 +569,7 @@ bool EditableTextStateCls::showToolbar() {
 void EditableTextStateCls::hideToolbar(bool hideHandles) {
     if (hideHandles) {
         _selectionOverlay?->hide();
-    } else     {
+    } else {
         if (_selectionOverlay?->toolbarIsVisible() | false) {
         _selectionOverlay?->hideToolbar();
     }
@@ -839,7 +839,7 @@ void EditableTextStateCls::_closeInputConnectionIfNeeded() {
 void EditableTextStateCls::_openOrCloseInputConnectionIfNeeded() {
     if (_hasFocus() && widget->focusNode->consumeKeyboardToken()) {
         _openInputConnection();
-    } else     {
+    } else {
         if (!_hasFocus()) {
         _closeInputConnectionIfNeeded();
         widget->controller->clearComposing();
@@ -959,7 +959,7 @@ void EditableTextStateCls::_formatAndSetValue(TextEditingValue value, SelectionC
     bool selectionChanged = _value()->selection != value->selection;
     if (textChanged) {
         try {
-            value = widget->inputFormatters?-><TextEditingValue>fold(value, [=] (TextEditingValue newValue,TextInputFormatter formatter)             {
+            value = widget->inputFormatters?-><TextEditingValue>fold(value, [=] (TextEditingValue newValue,TextInputFormatter formatter) {
                 formatter->formatEditUpdate(_value(), newValue);
             }) | value;
         } catch (Unknown exception) {
@@ -1016,7 +1016,7 @@ void EditableTextStateCls::_onCursorTick() {
     }
     if (widget->cursorOpacityAnimates) {
         _cursorTimer?->cancel();
-        _cursorTimer = make<TimerCls>(DurationCls::zero, [=] ()         {
+        _cursorTimer = make<TimerCls>(DurationCls::zero, [=] () {
             _cursorBlinkOpacityController()->animateWith(_iosBlinkCursorSimulation)->whenComplete(_onCursorTick);
         });
     } else {
@@ -1042,7 +1042,7 @@ void EditableTextStateCls::_stopCursorBlink(bool resetCharTicks) {
 void EditableTextStateCls::_startOrStopCursorTimerIfNeeded() {
     if (_cursorTimer == nullptr && _hasFocus() && _value()->selection->isCollapsed) {
         _startCursorBlink();
-    } else     {
+    } else {
         if (_cursorActive && (!_hasFocus() || !_value()->selection->isCollapsed)) {
         _stopCursorBlink();
     }
@@ -1150,10 +1150,10 @@ void EditableTextStateCls::_updateSizeAndTransform() {
         Matrix4 transform = renderEditable()->getTransformTo(nullptr);
         _textInputConnection!->setEditableSizeAndTransform(size, transform);
         _updateSelectionRects();
-        SchedulerBindingCls::instance->addPostFrameCallback([=] (Duration _)         {
+        SchedulerBindingCls::instance->addPostFrameCallback([=] (Duration _) {
             _updateSizeAndTransform();
         });
-    } else     {
+    } else {
         if (_placeholderLocation != -1) {
         removeTextPlaceholder();
     }
@@ -1172,7 +1172,7 @@ void EditableTextStateCls::_updateComposingRectIfNeeded() {
         }
         assert(composingRect != nullptr);
         _textInputConnection!->setComposingRect(composingRect);
-        SchedulerBindingCls::instance->addPostFrameCallback([=] (Duration _)         {
+        SchedulerBindingCls::instance->addPostFrameCallback([=] (Duration _) {
             _updateComposingRectIfNeeded();
         });
     }
@@ -1185,7 +1185,7 @@ void EditableTextStateCls::_updateCaretRectIfNeeded() {
             Rect caretRect = renderEditable()->getLocalRectForCaret(currentTextPosition);
             _textInputConnection!->setCaretRect(caretRect);
         }
-        SchedulerBindingCls::instance->addPostFrameCallback([=] (Duration _)         {
+        SchedulerBindingCls::instance->addPostFrameCallback([=] (Duration _) {
             _updateCaretRectIfNeeded();
         });
     }
@@ -1202,19 +1202,19 @@ double EditableTextStateCls::_devicePixelRatio() {
 }
 
 VoidCallback EditableTextStateCls::_semanticsOnCopy(TextSelectionControls controls) {
-    return widget->selectionEnabled && copyEnabled() && _hasFocus() && (controls?->canCopy(this) | false)? [=] ()     {
+    return widget->selectionEnabled && copyEnabled() && _hasFocus() && (controls?->canCopy(this) | false)? [=] () {
         controls!->handleCopy(this);
     } : nullptr;
 }
 
 VoidCallback EditableTextStateCls::_semanticsOnCut(TextSelectionControls controls) {
-    return widget->selectionEnabled && cutEnabled() && _hasFocus() && (controls?->canCut(this) | false)? [=] ()     {
+    return widget->selectionEnabled && cutEnabled() && _hasFocus() && (controls?->canCut(this) | false)? [=] () {
         controls!->handleCut(this);
     } : nullptr;
 }
 
 VoidCallback EditableTextStateCls::_semanticsOnPaste(TextSelectionControls controls) {
-    return widget->selectionEnabled && pasteEnabled() && _hasFocus() && (controls?->canPaste(this) | false) && (_clipboardStatus == nullptr || _clipboardStatus!->value == ClipboardStatusCls::pasteable)? [=] ()     {
+    return widget->selectionEnabled && pasteEnabled() && _hasFocus() && (controls?->canPaste(this) | false) && (_clipboardStatus == nullptr || _clipboardStatus!->value == ClipboardStatusCls::pasteable)? [=] () {
         controls!->handlePaste(this);
     } : nullptr;
 }
@@ -1413,7 +1413,7 @@ bool _ScribbleFocusableStateCls::isInScribbleRect(Rect rect) {
     Rect intersection = calculatedBounds->intersect(rect);
     HitTestResult result = make<HitTestResultCls>();
     WidgetsBindingCls::instance->hitTest(result, intersection->center());
-    return result->path()->any([=] (HitTestEntry entry)     {
+    return result->path()->any([=] (HitTestEntry entry) {
         entry->target == renderEditable();
     });
 }
@@ -1617,7 +1617,7 @@ Object _UpdateTextSelectionActionCls<T>::invoke(T intent, BuildContext context) 
     if (intent->continuesAtWrap) {
         if (intent->forward && _isAtWordwrapUpstream(extent)) {
             extent = make<TextPositionCls>(extent->offset);
-        } else         {
+        } else {
             if (!intent->forward && _isAtWordwrapDownstream(extent)) {
             extent = make<TextPositionCls>(extent->offset, TextAffinityCls::upstream);
         }

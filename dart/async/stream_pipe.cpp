@@ -18,7 +18,7 @@ void _runUserCode(std::function<T()> userCode, onSuccess , onError ) {
 void _cancelAndError(StreamSubscription subscription, _Future future, Object error, StackTrace stackTrace) {
     auto cancelFuture = subscription->cancel();
     if (cancelFuture != nullptr && !identical(cancelFuture, FutureCls::_nullFuture)) {
-        cancelFuture->whenComplete([=] ()         {
+        cancelFuture->whenComplete([=] () {
             future->_completeError(error, stackTrace);
         });
     } else {
@@ -44,7 +44,7 @@ std::function<void(Object error, StackTrace stackTrace)> _cancelAndErrorClosure(
 void _cancelAndValue(StreamSubscription subscription, _Future future, value ) {
     auto cancelFuture = subscription->cancel();
     if (cancelFuture != nullptr && !identical(cancelFuture, FutureCls::_nullFuture)) {
-        cancelFuture->whenComplete([=] ()         {
+        cancelFuture->whenComplete([=] () {
             future->_complete(value);
         });
     } else {
@@ -86,7 +86,7 @@ _ForwardingStreamSubscriptionCls<S, T>::_ForwardingStreamSubscriptionCls(_Forwar
 
 template<typename S, typename T>
 void _ForwardingStreamSubscriptionCls<S, T>::_add(T data) {
-    if (_isClosed)     {
+    if (_isClosed) {
         return;
     }
     super->_add(data);
@@ -94,7 +94,7 @@ void _ForwardingStreamSubscriptionCls<S, T>::_add(T data) {
 
 template<typename S, typename T>
 void _ForwardingStreamSubscriptionCls<S, T>::_addError(Object error, StackTrace stackTrace) {
-    if (_isClosed)     {
+    if (_isClosed) {
         return;
     }
     super->_addError(error, stackTrace);

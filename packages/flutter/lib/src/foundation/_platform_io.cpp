@@ -3,19 +3,19 @@ TargetPlatform defaultTargetPlatform() {
     TargetPlatform result;
     if (PlatformCls::isAndroid) {
         result = platform->TargetPlatformCls::android;
-    } else     {
+    } else {
         if (PlatformCls::isIOS) {
         result = platform->TargetPlatformCls::iOS;
-    } else     {
+    } else {
         if (PlatformCls::isFuchsia) {
         result = platform->TargetPlatformCls::fuchsia;
-    } else     {
+    } else {
         if (PlatformCls::isLinux) {
         result = platform->TargetPlatformCls::linux;
-    } else     {
+    } else {
         if (PlatformCls::isMacOS) {
         result = platform->TargetPlatformCls::macOS;
-    } else     {
+    } else {
         if (PlatformCls::isWindows) {
         result = platform->TargetPlatformCls::windows;
     }

@@ -199,7 +199,7 @@ void RenderCustomPaintCls::_didUpdatePainter(CustomPainter newPainter, CustomPai
     if (newPainter == nullptr) {
         assert(oldPainter != nullptr);
         markNeedsPaint();
-    } else     {
+    } else {
         if (oldPainter == nullptr || newPainter->runtimeType != oldPainter->runtimeType || newPainter->shouldRepaint(oldPainter)) {
         markNeedsPaint();
     }
@@ -213,7 +213,7 @@ void RenderCustomPaintCls::_didUpdatePainter(CustomPainter newPainter, CustomPai
         if (attached) {
             markNeedsSemanticsUpdate();
         }
-    } else     {
+    } else {
         if (oldPainter == nullptr || newPainter->runtimeType != oldPainter->runtimeType || newPainter->shouldRebuildSemantics(oldPainter)) {
         markNeedsSemanticsUpdate();
     }

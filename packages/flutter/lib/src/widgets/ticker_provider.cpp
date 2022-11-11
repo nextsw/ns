@@ -104,10 +104,10 @@ void SingleTickerProviderStateMixinCls<T>::debugFillProperties(DiagnosticPropert
     if (_ticker != nullptr) {
         if (_ticker!->isActive() && _ticker!->muted()) {
             tickerDescription = __s("active but muted");
-        } else         {
+        } else {
             if (_ticker!->isActive()) {
             tickerDescription = __s("active");
-        } else         {
+        } else {
             if (_ticker!->muted()) {
             tickerDescription = __s("inactive and muted");
         } else {

@@ -55,7 +55,7 @@ void PointerRouterCls::_dispatch(PointerEvent event, PointerRoute route, Matrix4
     } catch (Unknown exception) {
         InformationCollector collector;
         assert([=] () {
-            collector = [=] ()             {
+            collector = [=] () {
                 makeList(ArrayItem, ArrayItem, ArrayItem);
             };
             return true;

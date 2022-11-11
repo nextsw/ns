@@ -64,10 +64,10 @@ bool HardwareKeyboardCls::handleKeyEvent(KeyEvent event) {
                 _lockModes->add(lockMode);
             }
         }
-    } else     {
+    } else {
         if (is<KeyUpEvent>(event)) {
         _pressedKeys->remove(physicalKey);
-    } else     {
+    } else {
         if (is<KeyRepeatEvent>(event)) {
     }
 ;
@@ -87,7 +87,7 @@ void HardwareKeyboardCls::_assertEventIsRegular(KeyEvent event) {
         String common = __s("If this occurs in real application, please report this bug to Flutter. If this occurs in unit tests, please ensure that simulated events follow Flutter's event model as documented in `HardwareKeyboard`. This was the event: ");
         if (is<KeyDownEvent>(event)) {
             assert(!_pressedKeys->containsKey(as<KeyDownEventCls>(event)->physicalKey), __s("A ${event.runtimeType} is dispatched, but the state shows that the physical key is already pressed. $common$event"));
-        } else         {
+        } else {
             if (is<KeyRepeatEvent>(event) || is<KeyUpEvent>(event)) {
             assert(_pressedKeys->containsKey(event->physicalKey), __s("A ${event.runtimeType} is dispatched, but the state shows that the physical key is not pressed. $common$event"));
             assert(_pressedKeys[event->physicalKey] == event->logicalKey, __s("A ${event.runtimeType} is dispatched, but the state shows that the physical key is pressed on a different logical key. $common$event and the recorded logical key ${_pressedKeys[event.physicalKey]}"));
@@ -110,7 +110,7 @@ bool HardwareKeyboardCls::_dispatchKeyEvent(KeyEvent event) {
         } catch (Unknown exception) {
             InformationCollector collector;
             assert([=] () {
-                collector = [=] ()                 {
+                collector = [=] () {
                     makeList(ArrayItem);
                 };
                 return true;
@@ -149,7 +149,7 @@ Future<Map<String, dynamic>> KeyEventManagerCls::handleRawKeyMessage(dynamic mes
         } else {
             _skippedRawKeysPressed->remove(rawEvent->physicalKey);
         }
-    } else     {
+    } else {
         if (is<RawKeyUpEvent>(rawEvent)) {
         if (_skippedRawKeysPressed->contains(as<RawKeyUpEventCls>(rawEvent)->physicalKey)) {
             _skippedRawKeysPressed->remove(rawEvent->physicalKey);
@@ -189,7 +189,7 @@ bool KeyEventManagerCls::_dispatchKeyMessage(List<KeyEvent> keyEvents, RawKeyEve
         } catch (Unknown exception) {
             InformationCollector collector;
             assert([=] () {
-                collector = [=] ()                 {
+                collector = [=] () {
                     makeList(ArrayItem);
                 };
                 return true;

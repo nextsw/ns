@@ -3,7 +3,7 @@ Future<Image> SceneCls::toImage(int width, int height) {
     if (width <= 0 || height <= 0) {
         throw make<ExceptionCls>(__s("Invalid image dimensions."));
     }
-    return _futurize([=] (_Callback<Image> callback)     {
+    return _futurize([=] (_Callback<Image> callback) {
         _toImage(width, height, [=] (_Image image) {
         if (image == nullptr) {
             callback(nullptr);

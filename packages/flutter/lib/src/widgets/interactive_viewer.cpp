@@ -92,7 +92,7 @@ void _InteractiveViewerStateCls::didUpdateWidget(InteractiveViewer oldWidget) {
             _transformationController!->removeListener(_onTransformationControllerChange);
             _transformationController = make<TransformationControllerCls>();
             _transformationController!->addListener(_onTransformationControllerChange);
-        } else         {
+        } else {
             if (widget->transformationController != oldWidget->transformationController) {
             _transformationController!->removeListener(_onTransformationControllerChange);
             _transformationController = widget->transformationController;
@@ -206,7 +206,7 @@ _GestureType _InteractiveViewerStateCls::_getGestureType(ScaleUpdateDetails deta
     double rotation = !_rotateEnabled? 0.0 : details->rotation;
     if ((scale - 1)->abs() > rotation->abs()) {
         return _GestureTypeCls::scale;
-    } else     {
+    } else {
         if (rotation != 0.0) {
         return _GestureTypeCls::rotate;
     } else {

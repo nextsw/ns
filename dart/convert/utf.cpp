@@ -26,7 +26,7 @@ Uint8List Utf8EncoderCls::convert(String stringValue, int start, int end) {
     auto stringLength = stringValue->length();
     end = RangeErrorCls->checkValidRange(start, end, stringLength);
     auto length = end - start;
-    if (length == 0)     {
+    if (length == 0) {
         return make<Uint8ListCls>(0);
     }
     auto encoder = _Utf8EncoderCls->withBufferSize(length * 3);
@@ -90,37 +90,37 @@ int _Utf8EncoderCls::_fillBuffer(String str, int start, int end) {
     for (stringIndex = start;  < end; stringIndex++) {
         auto codeUnit = str->codeUnitAt(stringIndex);
         if (codeUnit <= _ONE_BYTE_LIMIT) {
-            if (_bufferIndex >= _buffer->length)             {
+            if (_bufferIndex >= _buffer->length) {
                 break;
             }
             _buffer[_bufferIndex++] = codeUnit;
-        } else         {
+        } else {
             if (_isLeadSurrogate(codeUnit)) {
-            if (_bufferIndex + 4 > _buffer->length)             {
+            if (_bufferIndex + 4 > _buffer->length) {
                 break;
             }
             auto nextCodeUnit = str->codeUnitAt(stringIndex + 1);
             auto wasCombined = _writeSurrogate(codeUnit, nextCodeUnit);
-            if (wasCombined)             {
+            if (wasCombined) {
                 stringIndex++;
             }
-        } else         {
+        } else {
             if (_isTailSurrogate(codeUnit)) {
-            if (_bufferIndex + 3 > _buffer->length)             {
+            if (_bufferIndex + 3 > _buffer->length) {
                 break;
             }
             _writeReplacementCharacter();
         } else {
             auto rune = codeUnit;
             if (rune <= _TWO_BYTE_LIMIT) {
-                if (_bufferIndex + 1 >= _buffer->length)                 {
+                if (_bufferIndex + 1 >= _buffer->length) {
                     break;
                 }
                 _buffer[_bufferIndex++] = 0xC0 | (rune >> 6);
                 _buffer[_bufferIndex++] = 0x80 | (rune & 0x3f);
             } else {
                 assert(rune <= _THREE_BYTE_LIMIT);
-                if (_bufferIndex + 2 >= _buffer->length)                 {
+                if (_bufferIndex + 2 >= _buffer->length) {
                     break;
                 }
                 _buffer[_bufferIndex++] = 0xE0 | (rune >> 12);
@@ -156,7 +156,7 @@ void _Utf8EncoderSinkCls::addSlice(String str, int start, int end, bool isLast) 
         }
         auto wasCombined = _writeSurrogate(_carry, nextCodeUnit);
         assert(!wasCombined || start != end);
-        if (wasCombined)         {
+        if (wasCombined) {
             start++;
         }
         _carry = 0;
@@ -175,7 +175,7 @@ void _Utf8EncoderSinkCls::addSlice(String str, int start, int end, bool isLast) 
         _sink->addSlice(_buffer, 0, _bufferIndex, isLastSlice);
         _bufferIndex = 0;
     } while ( < end);
-    if (isLast)     {
+    if (isLast) {
         close();
     }
 }
@@ -230,7 +230,7 @@ String _Utf8DecoderCls::errorDescription(int state) {
 
 String _Utf8DecoderCls::convertGeneral(List<int> codeUnits, int start, int maybeEnd, bool single) {
     int end = RangeErrorCls->checkValidRange(start, maybeEnd, codeUnits->length());
-    if (start == end)     {
+    if (start == end) {
         return __s("");
     }
     Uint8List bytes;
@@ -283,11 +283,11 @@ String _Utf8DecoderCls::decodeGeneral(Uint8List bytes, int start, int end, bool 
             state = transitionTable->codeUnitAt(state + type);
             if (state == accept) {
                 buffer->writeCharCode(charValue);
-                if (i == end)                 {
+                if (i == end) {
                     break loop;
                 }
                 break multibyte;
-            } else             {
+            } else {
                 if (isErrorState(state)) {
                 if (allowMalformed) {
                     ;
@@ -299,7 +299,7 @@ String _Utf8DecoderCls::decodeGeneral(Uint8List bytes, int start, int end, bool 
                 }
             }
 ;
-            }            if (i == end)             {
+            }            if (i == end) {
                 break loop;
             }
             byte = bytes[i++];
@@ -323,7 +323,7 @@ String _Utf8DecoderCls::decodeGeneral(Uint8List bytes, int start, int end, bool 
             } else {
                 buffer->write(StringCls->fromCharCodes(bytes, markStart, markEnd));
             }
-            if (markEnd == end)             {
+            if (markEnd == end) {
                 break loop;
             }
         }
@@ -346,7 +346,7 @@ String _Utf8DecoderCls::_convertRecursive(Uint8List bytes, int start, int end, b
     if (end - start > 1000) {
         int mid = (start + end) ~/ 2;
         String s1 = _convertRecursive(bytes, start, mid, false);
-        if (isErrorState(_state))         {
+        if (isErrorState(_state)) {
             return s1;
         }
         String s2 = _convertRecursive(bytes, mid, end, single);

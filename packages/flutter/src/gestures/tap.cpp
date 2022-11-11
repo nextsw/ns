@@ -40,14 +40,14 @@ void BaseTapGestureRecognizerCls::handlePrimaryPointer(PointerEvent event) {
     if (is<PointerUpEvent>(event)) {
         _up = as<PointerUpEventCls>(event);
         _checkUp();
-    } else     {
+    } else {
         if (is<PointerCancelEvent>(event)) {
         resolve(GestureDispositionCls::rejected);
         if (_sentTapDown) {
             _checkCancel(event, __s(""));
         }
         _reset();
-    } else     {
+    } else {
         if (event->buttons != _down!->buttons) {
         resolve(GestureDispositionCls::rejected);
         stopTrackingPointer(primaryPointer!);

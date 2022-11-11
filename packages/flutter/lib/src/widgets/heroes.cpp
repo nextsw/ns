@@ -98,7 +98,7 @@ void _HeroFlightCls::onTick() {
             Rect heroRectEnd = toHeroOrigin & heroRectTween->end!->size;
             heroRectTween = manifest->createHeroRectTween(heroRectTween->begin, heroRectEnd);
         }
-    } else     {
+    } else {
         if (_heroOpacity->isCompleted()) {
         _heroOpacity = _proxyAnimation->drive(_reverseTween->chain(make<CurveTweenCls>(make<IntervalCls>(_proxyAnimation->value(), 1.0))));
     }
@@ -135,7 +135,7 @@ void _HeroFlightCls::divert(_HeroFlightManifest newManifest) {
         assert(manifest->toRoute == newManifest->fromRoute);
         _proxyAnimation->parent() = make<ReverseAnimationCls>(newManifest->animation());
         heroRectTween = <Rect>make<ReverseTweenCls>(heroRectTween);
-    } else     {
+    } else {
         if (manifest->type == HeroFlightDirectionCls::pop && newManifest->type == HeroFlightDirectionCls::push) {
         assert(newManifest->animation()->status() == AnimationStatusCls::forward);
         assert(manifest->toHero == newManifest->fromHero);

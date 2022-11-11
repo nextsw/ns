@@ -240,7 +240,7 @@ void _DismissibleStateCls::_startResizeAnimation() {
             widget->onDismissed!(direction);
         }
     } else {
-            auto _c1 = make<AnimationControllerCls>(widget->resizeDuration, this);    _c1.auto _c2 = addListener(_handleResizeProgressChanged);    _c2.addStatusListener([=] (AnimationStatus status)         {                updateKeepAlive();            });    _c2;_resizeController = _c1;
+            auto _c1 = make<AnimationControllerCls>(widget->resizeDuration, this);    _c1.auto _c2 = addListener(_handleResizeProgressChanged);    _c2.addStatusListener([=] (AnimationStatus status) {                updateKeepAlive();            });    _c2;_resizeController = _c1;
         _resizeController!->forward();
         setState([=] () {
             _sizePriorToCollapse = context->size;

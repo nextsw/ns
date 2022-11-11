@@ -10,7 +10,7 @@ String TableRowCls::toString() {
     }
     if (children == nullptr) {
         result->write(__s("child list is null"));
-    } else     {
+    } else {
         if (children!->isEmpty) {
         result->write(__s("no children"));
     } else {
@@ -28,7 +28,7 @@ TableCls::TableCls(TableBorder border, List<TableRow> children, Map<int, TableCo
         assert(defaultVerticalAlignment != nullptr);
         assert(defaultVerticalAlignment != TableCellVerticalAlignmentCls::baseline || textBaseline != nullptr, __s("textBaseline is required if you specify the defaultVerticalAlignment with TableCellVerticalAlignment.baseline"));
         assert([=] () {
-            if (children->any([=] (TableRow row)             {
+            if (children->any([=] (TableRow row) {
                 row->children == nullptr;
             })) {
                 throw make<FlutterErrorCls>(__s("One of the rows of the table had null children.\nThe children property of TableRow must not be null."));
@@ -36,8 +36,8 @@ TableCls::TableCls(TableBorder border, List<TableRow> children, Map<int, TableCo
             return true;
         }());
         assert([=] () {
-            if (children->any([=] (TableRow row)             {
-                row->children!->any([=] (Widget cell)             {
+            if (children->any([=] (TableRow row) {
+                row->children!->any([=] (Widget cell) {
                 cell == nullptr;
             });
             })) {
@@ -46,8 +46,8 @@ TableCls::TableCls(TableBorder border, List<TableRow> children, Map<int, TableCo
             return true;
         }());
         assert([=] () {
-            if (children->any([=] (TableRow row1)             {
-                row1->key != nullptr && children->any([=] (TableRow row2)             {
+            if (children->any([=] (TableRow row1) {
+                row1->key != nullptr && children->any([=] (TableRow row2) {
                 row1 != row2 && row1->key == row2->key;
             });
             })) {
@@ -58,7 +58,7 @@ TableCls::TableCls(TableBorder border, List<TableRow> children, Map<int, TableCo
         assert([=] () {
             if (children->isNotEmpty) {
                 int cellCount = children->first->children!->length();
-                if (children->any([=] (TableRow row)                 {
+                if (children->any([=] (TableRow row) {
                     row->children!->length() != cellCount;
                 })) {
                     throw make<FlutterErrorCls>(__s("Table contains irregular row lengths.\nEvery TableRow in a Table must have the same number of children, so that every cell is filled. Otherwise, the table will contain holes."));
@@ -66,9 +66,9 @@ TableCls::TableCls(TableBorder border, List<TableRow> children, Map<int, TableCo
             }
             return true;
         }());
-        _rowDecorations = children->any([=] (TableRow row)         {
+        _rowDecorations = children->any([=] (TableRow row) {
             row->decoration != nullptr;
-        })? children-><Decoration>map([=] (TableRow row)         {
+        })? children-><Decoration>map([=] (TableRow row) {
             row->decoration;
         })->toList(false) : nullptr;
     }
@@ -158,7 +158,7 @@ void _TableElementCls::update(Table newWidget) {
         if (row->key != nullptr && oldKeyedRows->containsKey(row->key)) {
             oldChildren = oldKeyedRows[row->key]!;
             taken->add(oldChildren);
-        } else         {
+        } else {
             if (row->key == nullptr && oldUnkeyedRows->moveNext()) {
             oldChildren = oldUnkeyedRows->current()->children;
         } else {
@@ -173,7 +173,7 @@ void _TableElementCls::update(Table newWidget) {
     while (oldUnkeyedRows->moveNext()) {
         updateChildren(oldUnkeyedRows->current()->children, makeList(), _forgottenChildren);
     }
-    for (List<Element> oldChildren : oldKeyedRows->values()->where([=] (List<Element> list)     {
+    for (List<Element> oldChildren : oldKeyedRows->values()->where([=] (List<Element> list) {
         !taken->contains(list);
     })) {
         updateChildren(oldChildren, makeList(), _forgottenChildren);
@@ -188,7 +188,7 @@ void _TableElementCls::update(Table newWidget) {
 }
 
 void _TableElementCls::visitChildren(ElementVisitor visitor) {
-    for (Element child : _children-><Element>expand([=] (_TableElementRow row)     {
+    for (Element child : _children-><Element>expand([=] (_TableElementRow row) {
         row->children;
     })) {
         if (!_forgottenChildren->contains(child)) {

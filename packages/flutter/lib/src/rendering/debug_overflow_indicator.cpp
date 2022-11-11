@@ -41,7 +41,7 @@ String DebugOverflowIndicatorMixinCls::_formatPixels(double value) {
     String pixels;
     if (value > 10.0) {
         pixels = value->toStringAsFixed(0);
-    } else     {
+    } else {
         if (value > 1.0) {
         pixels = value->toStringAsFixed(1);
     } else {
@@ -82,7 +82,7 @@ void DebugOverflowIndicatorMixinCls::_reportOverflow(RelativeRect overflow, List
     String overflowText = __s("");
     assert(overflows->isNotEmpty, __s("Somehow $runtimeType didn't actually overflow like it thought it did."));
     ;
-    List<DiagnosticsNode> list2 = make<ListCls<>>();if (kDebugMode && debugCreator != nullptr) {    list2.add(ArrayItem);}for (auto _x2 : overflowHints!) {{    list2.add(_x2);}list2.add(ArrayItem);list2.add(ArrayItem);FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(make<FlutterErrorCls>(__s("A $runtimeType overflowed by $overflowText.")), __s("rendering library"), make<ErrorDescriptionCls>(__s("during layout")), [=] ()     {
+    List<DiagnosticsNode> list2 = make<ListCls<>>();if (kDebugMode && debugCreator != nullptr) {    list2.add(ArrayItem);}for (auto _x2 : overflowHints!) {{    list2.add(_x2);}list2.add(ArrayItem);list2.add(ArrayItem);FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(make<FlutterErrorCls>(__s("A $runtimeType overflowed by $overflowText.")), __s("rendering library"), make<ErrorDescriptionCls>(__s("during layout")), [=] () {
         list2;
     }));
 }

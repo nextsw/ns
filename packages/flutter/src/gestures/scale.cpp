@@ -101,26 +101,26 @@ void ScaleGestureRecognizerCls::handleEvent(PointerEvent event) {
         _pointerLocations[as<PointerMoveEventCls>(event)->pointer] = as<PointerMoveEventCls>(event)->position;
         shouldStartIfAccepted = true;
         _lastTransform = as<PointerMoveEventCls>(event)->transform;
-    } else     {
+    } else {
         if (is<PointerDownEvent>(event)) {
         _pointerLocations[as<PointerDownEventCls>(event)->pointer] = as<PointerDownEventCls>(event)->position;
         _pointerQueue->add(as<PointerDownEventCls>(event)->pointer);
         didChangeConfiguration = true;
         shouldStartIfAccepted = true;
         _lastTransform = as<PointerDownEventCls>(event)->transform;
-    } else     {
+    } else {
         if (is<PointerUpEvent>(event) || is<PointerCancelEvent>(event)) {
         _pointerLocations->remove(event->pointer);
         _pointerQueue->remove(event->pointer);
         didChangeConfiguration = true;
         _lastTransform = event->transform;
-    } else     {
+    } else {
         if (is<PointerPanZoomStartEvent>(event)) {
         assert(_pointerPanZooms[as<PointerPanZoomStartEventCls>(event)->pointer] == nullptr);
         _pointerPanZooms[as<PointerPanZoomStartEventCls>(event)->pointer] = make<_PointerPanZoomDataCls>(as<PointerPanZoomStartEventCls>(event)->position, 1, 0);
         didChangeConfiguration = true;
         shouldStartIfAccepted = true;
-    } else     {
+    } else {
         if (is<PointerPanZoomUpdateEvent>(event)) {
         assert(_pointerPanZooms[as<PointerPanZoomUpdateEventCls>(event)->pointer] != nullptr);
         if (!as<PointerPanZoomUpdateEventCls>(event)->synthesized) {
@@ -129,7 +129,7 @@ void ScaleGestureRecognizerCls::handleEvent(PointerEvent event) {
         _pointerPanZooms[as<PointerPanZoomUpdateEventCls>(event)->pointer] = make<_PointerPanZoomDataCls>(as<PointerPanZoomUpdateEventCls>(event)->position + as<PointerPanZoomUpdateEventCls>(event)->pan, as<PointerPanZoomUpdateEventCls>(event)->scale, as<PointerPanZoomUpdateEventCls>(event)->rotation);
         _lastTransform = as<PointerPanZoomUpdateEventCls>(event)->transform;
         shouldStartIfAccepted = true;
-    } else     {
+    } else {
         if (is<PointerPanZoomEndEvent>(event)) {
         assert(_pointerPanZooms[as<PointerPanZoomEndEventCls>(event)->pointer] != nullptr);
         _pointerPanZooms->remove(as<PointerPanZoomEndEventCls>(event)->pointer);
@@ -163,9 +163,9 @@ void ScaleGestureRecognizerCls::acceptGesture(int pointer) {
                 _initialPanZoomRotationFactor = 0.0;
             } else {
                 _initialPanZoomScaleFactor = _scaleFactor() / _pointerScaleFactor();
-                _initialPanZoomRotationFactor = _pointerPanZooms->values()->map([=] (_PointerPanZoomData x)                 {
+                _initialPanZoomRotationFactor = _pointerPanZooms->values()->map([=] (_PointerPanZoomData x) {
                     x->rotation;
-                })->reduce([=] (double a,double b)                 {
+                })->reduce([=] (double a,double b) {
                     a + b;
                 });
             }
@@ -300,7 +300,7 @@ void ScaleGestureRecognizerCls::_updateLines() {
     assert(_pointerQueue->length() >= count);
     if ( < 2) {
         _initialLine = _currentLine;
-    } else     {
+    } else {
         if (_initialLine != nullptr && _initialLine!->pointerStartId == _pointerQueue[0] && _initialLine!->pointerEndId == _pointerQueue[1]) {
         _currentLine = make<_LineBetweenPointersCls>(_pointerQueue[0], _pointerLocations[_pointerQueue[0]]!, _pointerQueue[1], _pointerLocations[_pointerQueue[1]]!);
     } else {
@@ -321,9 +321,9 @@ bool ScaleGestureRecognizerCls::_reconfigure(int pointer) {
         _initialPanZoomRotationFactor = 0.0;
     } else {
         _initialPanZoomScaleFactor = _scaleFactor() / _pointerScaleFactor();
-        _initialPanZoomRotationFactor = _pointerPanZooms->values()->map([=] (_PointerPanZoomData x)         {
+        _initialPanZoomRotationFactor = _pointerPanZooms->values()->map([=] (_PointerPanZoomData x) {
             x->rotation;
-        })->reduce([=] (double a,double b)         {
+        })->reduce([=] (double a,double b) {
             a + b;
         });
     }
@@ -336,11 +336,11 @@ bool ScaleGestureRecognizerCls::_reconfigure(int pointer) {
                 if (pixelsPerSecond->distanceSquared() > kMaxFlingVelocity * kMaxFlingVelocity) {
                     velocity = make<VelocityCls>((pixelsPerSecond / pixelsPerSecond->distance()) * kMaxFlingVelocity);
                 }
-                <void>invokeCallback(__s("onEnd"), [=] ()                 {
+                <void>invokeCallback(__s("onEnd"), [=] () {
                     onEnd!(make<ScaleEndDetailsCls>(velocity, _pointerCount()));
                 });
             } else {
-                <void>invokeCallback(__s("onEnd"), [=] ()                 {
+                <void>invokeCallback(__s("onEnd"), [=] () {
                     onEnd!(make<ScaleEndDetailsCls>(_pointerCount()));
                 });
             }
@@ -361,7 +361,7 @@ void ScaleGestureRecognizerCls::_advanceStateMachine(bool shouldStartIfAccepted,
         if (spanDelta > computeScaleSlop(pointerDeviceKind) || focalPointDelta > computePanSlop(pointerDeviceKind, gestureSettings) || math->max(_scaleFactor() / _pointerScaleFactor(), _pointerScaleFactor() / _scaleFactor()) > 1.05) {
             resolve(GestureDispositionCls::accepted);
         }
-    } else     {
+    } else {
         if (_state->index >= _ScaleStateCls::accepted->index) {
         resolve(GestureDispositionCls::accepted);
     }

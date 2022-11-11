@@ -20,7 +20,7 @@ String OSErrorCls::toString() {
         if (errorCode != noErrorCode) {
                     auto _c3 = sb;        _c3.auto _c4 = write(__s(", errno = "));        _c4.write(errorCode->toString());        _c4;_c3;
         }
-    } else     {
+    } else {
         if (errorCode != noErrorCode) {
             auto _c5 = sb;    _c5.auto _c6 = write(__s(": errno = "));    _c6.write(errorCode->toString());    _c6;_c5;
     }

@@ -28,7 +28,7 @@ Future<Map<Type, dynamic>> _loadAll(Locale locale, Iterable<LocalizationsDelegat
     if (pendingList == nullptr) {
         return <Map<Type, dynamic>>make<SynchronousFutureCls>(output);
     }
-    return FutureCls-><dynamic>wait(pendingList-><Future<dynamic>>map([=] (_Pending p)     {
+    return FutureCls-><dynamic>wait(pendingList-><Future<dynamic>>map([=] (_Pending p) {
         p->futureValue;
     }))-><Map<Type, dynamic>>then([=] (List<dynamic> values) {
         assert(values->length == pendingList!->length());
@@ -95,7 +95,7 @@ LocalizationsCls::LocalizationsCls(Widget child, List<LocalizationsDelegate<dyna
     {
         assert(locale != nullptr);
         assert(delegates != nullptr);
-        assert(delegates->any([=] (LocalizationsDelegate<dynamic> delegate)         {
+        assert(delegates->any([=] (LocalizationsDelegate<dynamic> delegate) {
             is<LocalizationsDelegate<WidgetsLocalizations>>(delegate);
         }));
     }

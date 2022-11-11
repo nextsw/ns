@@ -179,7 +179,7 @@ LinkedHashMap<MouseTrackerAnnotation, Matrix4> MouseTrackerCls::_findAnnotations
 void MouseTrackerCls::_handleDeviceUpdate(_MouseTrackerUpdateDetails details) {
     assert(_debugDuringDeviceUpdate);
     _handleDeviceUpdateMouseEvents(details);
-    _mouseCursorMixin->handleDeviceCursorUpdate(details->device(), details->triggeringEvent, details->nextAnnotations->keys->map([=] (MouseTrackerAnnotation annotation)     {
+    _mouseCursorMixin->handleDeviceCursorUpdate(details->device(), details->triggeringEvent, details->nextAnnotations->keys->map([=] (MouseTrackerAnnotation annotation) {
         annotation->cursor;
     }));
 }

@@ -8,13 +8,13 @@ String InternetAddressTypeCls::toString() {
 }
 
 void InternetAddressTypeCls::_from(int value) {
-    if (value == IPv4Cls::_value)     {
+    if (value == IPv4Cls::_value) {
         return IPv4Cls;
     }
-    if (value == IPv6Cls::_value)     {
+    if (value == IPv6Cls::_value) {
         return IPv6Cls;
     }
-    if (value == unix->_value)     {
+    if (value == unix->_value) {
         return unix;
     }
     throw make<ArgumentErrorCls>(__s("Invalid type: $value"));
@@ -105,7 +105,7 @@ String SocketExceptionCls::toString() {
         if (osError != nullptr) {
             sb->write(__s(" ($osError)"));
         }
-    } else     {
+    } else {
         if (osError != nullptr) {
         sb->write(__s(": $osError"));
     }

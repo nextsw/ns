@@ -20,7 +20,7 @@ void _ClosableStringSinkCls::writeAll(Iterable objects, String separator) {
 }
 
 void _StringConversionSinkAsStringSinkAdapterCls::close() {
-    if (_buffer->isNotEmpty())     {
+    if (_buffer->isNotEmpty()) {
         _flush();
     }
     _chunkedSink->close();
@@ -28,13 +28,13 @@ void _StringConversionSinkAsStringSinkAdapterCls::close() {
 
 void _StringConversionSinkAsStringSinkAdapterCls::writeCharCode(int charCode) {
     _buffer->writeCharCode(charCode);
-    if (_buffer->length() > _MIN_STRING_SIZE)     {
+    if (_buffer->length() > _MIN_STRING_SIZE) {
         _flush();
     }
 }
 
 void _StringConversionSinkAsStringSinkAdapterCls::write(Object o) {
-    if (_buffer->isNotEmpty())     {
+    if (_buffer->isNotEmpty()) {
         _flush();
     }
     _chunkedSink->add(o->toString());
@@ -42,17 +42,17 @@ void _StringConversionSinkAsStringSinkAdapterCls::write(Object o) {
 
 void _StringConversionSinkAsStringSinkAdapterCls::writeln(Object o) {
     _buffer->writeln(o);
-    if (_buffer->length() > _MIN_STRING_SIZE)     {
+    if (_buffer->length() > _MIN_STRING_SIZE) {
         _flush();
     }
 }
 
 void _StringConversionSinkAsStringSinkAdapterCls::writeAll(Iterable objects, String separator) {
-    if (_buffer->isNotEmpty())     {
+    if (_buffer->isNotEmpty()) {
         _flush();
     }
     auto iterator = objects->iterator();
-    if (!iterator->moveNext())     {
+    if (!iterator->moveNext()) {
         return;
     }
     if (separator->isEmpty()) {
@@ -105,7 +105,7 @@ void _StringSinkConversionSinkCls<TStringSink>::addSlice(String str, int start, 
     } else {
         _stringSink->write(str);
     }
-    if (isLast)     {
+    if (isLast) {
         close();
     }
 }
@@ -148,7 +148,7 @@ void _StringAdapterSinkCls::addSlice(String str, int start, int end, bool isLast
     } else {
         add(str->substring(start, end));
     }
-    if (isLast)     {
+    if (isLast) {
         close();
     }
 }
@@ -168,7 +168,7 @@ void _Utf8StringSinkAdapterCls::add(List<int> chunk) {
 
 void _Utf8StringSinkAdapterCls::addSlice(List<int> codeUnits, int startIndex, int endIndex, bool isLast) {
     _stringSink->write(_decoder->convertChunked(codeUnits, startIndex, endIndex));
-    if (isLast)     {
+    if (isLast) {
         close();
     }
 }
@@ -202,7 +202,7 @@ void _Utf8ConversionSinkCls::addSlice(List<int> chunk, int startIndex, int endIn
         _buffer->clear();
         return;
     }
-    if (isLast)     {
+    if (isLast) {
         close();
     }
 }

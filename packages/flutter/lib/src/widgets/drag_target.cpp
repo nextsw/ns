@@ -139,7 +139,7 @@ State<DragTarget<T>> DragTargetCls<T>::createState() {
 
 template<typename T>
 List<T> _mapAvatarsToData(List<_DragAvatar<Object>> avatars) {
-    return avatars-><T>map([=] (_DragAvatar<Object> avatar)     {
+    return avatars-><T>map([=] (_DragAvatar<Object> avatar) {
         as<T>(avatar->data);
     })->toList();
 }

@@ -1,15 +1,15 @@
 #include "comparators.hpp"
 bool equalsIgnoreAsciiCase(String a, String b) {
-    if (a->length() != b->length())     {
+    if (a->length() != b->length()) {
         return false;
     }
     for (;  < a->length(); i++) {
         auto aChar = a->codeUnitAt(i);
         auto bChar = b->codeUnitAt(i);
-        if (aChar == bChar)         {
+        if (aChar == bChar) {
             continue;
         }
-        if (aChar ^ bChar != _asciiCaseBit)         {
+        if (aChar ^ bChar != _asciiCaseBit) {
             return false;
         }
         auto aCharLowerCase = aChar | _asciiCaseBit;
@@ -25,7 +25,7 @@ int hashIgnoreAsciiCase(String stringValue) {
     auto hash = 0;
     for (;  < stringValue->length(); i++) {
         auto char = stringValue->codeUnitAt(i);
-        if (_lowerCaseA <= charValue && charValue <= _lowerCaseZ)         {
+        if (_lowerCaseA <= charValue && charValue <= _lowerCaseZ) {
             charValue -= _asciiCaseBit;
         }
         hash = 0x1fffffff & (hash + charValue);
@@ -40,12 +40,12 @@ int hashIgnoreAsciiCase(String stringValue) {
 int compareAsciiUpperCase(String a, String b) {
     auto defaultResult = 0;
     for (;  < a->length(); i++) {
-        if (i >= b->length())         {
+        if (i >= b->length()) {
             return 1;
         }
         auto aChar = a->codeUnitAt(i);
         auto bChar = b->codeUnitAt(i);
-        if (aChar == bChar)         {
+        if (aChar == bChar) {
             continue;
         }
         auto aUpperCase = aChar;
@@ -56,14 +56,14 @@ int compareAsciiUpperCase(String a, String b) {
         if (_lowerCaseA <= bChar && bChar <= _lowerCaseZ) {
             bUpperCase -= _asciiCaseBit;
         }
-        if (aUpperCase != bUpperCase)         {
+        if (aUpperCase != bUpperCase) {
             return (aUpperCase - bUpperCase)->sign();
         }
-        if (defaultResult == 0)         {
+        if (defaultResult == 0) {
             defaultResult = (aChar - bChar);
         }
     }
-    if (b->length() > a->length())     {
+    if (b->length() > a->length()) {
         return -1;
     }
     return defaultResult->sign();
@@ -72,12 +72,12 @@ int compareAsciiUpperCase(String a, String b) {
 int compareAsciiLowerCase(String a, String b) {
     auto defaultResult = 0;
     for (;  < a->length(); i++) {
-        if (i >= b->length())         {
+        if (i >= b->length()) {
             return 1;
         }
         auto aChar = a->codeUnitAt(i);
         auto bChar = b->codeUnitAt(i);
-        if (aChar == bChar)         {
+        if (aChar == bChar) {
             continue;
         }
         auto aLowerCase = aChar;
@@ -88,14 +88,14 @@ int compareAsciiLowerCase(String a, String b) {
         if (_upperCaseA <= aChar && aChar <= _upperCaseZ) {
             aLowerCase += _asciiCaseBit;
         }
-        if (aLowerCase != bLowerCase)         {
+        if (aLowerCase != bLowerCase) {
             return (aLowerCase - bLowerCase)->sign();
         }
-        if (defaultResult == 0)         {
+        if (defaultResult == 0) {
             defaultResult = aChar - bChar;
         }
     }
-    if (b->length() > a->length())     {
+    if (b->length() > a->length()) {
         return -1;
     }
     return defaultResult->sign();
@@ -103,7 +103,7 @@ int compareAsciiLowerCase(String a, String b) {
 
 int compareNatural(String a, String b) {
     for (;  < a->length(); i++) {
-        if (i >= b->length())         {
+        if (i >= b->length()) {
             return 1;
         }
         auto aChar = a->codeUnitAt(i);
@@ -112,7 +112,7 @@ int compareNatural(String a, String b) {
             return _compareNaturally(a, b, i, aChar, bChar);
         }
     }
-    if (b->length() > a->length())     {
+    if (b->length() > a->length()) {
         return -1;
     }
     return 0;
@@ -121,12 +121,12 @@ int compareNatural(String a, String b) {
 int compareAsciiLowerCaseNatural(String a, String b) {
     auto defaultResult = 0;
     for (;  < a->length(); i++) {
-        if (i >= b->length())         {
+        if (i >= b->length()) {
             return 1;
         }
         auto aChar = a->codeUnitAt(i);
         auto bChar = b->codeUnitAt(i);
-        if (aChar == bChar)         {
+        if (aChar == bChar) {
             continue;
         }
         auto aLowerCase = aChar;
@@ -140,11 +140,11 @@ int compareAsciiLowerCaseNatural(String a, String b) {
         if (aLowerCase != bLowerCase) {
             return _compareNaturally(a, b, i, aLowerCase, bLowerCase);
         }
-        if (defaultResult == 0)         {
+        if (defaultResult == 0) {
             defaultResult = aChar - bChar;
         }
     }
-    if (b->length() > a->length())     {
+    if (b->length() > a->length()) {
         return -1;
     }
     return defaultResult->sign();
@@ -153,12 +153,12 @@ int compareAsciiLowerCaseNatural(String a, String b) {
 int compareAsciiUpperCaseNatural(String a, String b) {
     auto defaultResult = 0;
     for (;  < a->length(); i++) {
-        if (i >= b->length())         {
+        if (i >= b->length()) {
             return 1;
         }
         auto aChar = a->codeUnitAt(i);
         auto bChar = b->codeUnitAt(i);
-        if (aChar == bChar)         {
+        if (aChar == bChar) {
             continue;
         }
         auto aUpperCase = aChar;
@@ -172,11 +172,11 @@ int compareAsciiUpperCaseNatural(String a, String b) {
         if (aUpperCase != bUpperCase) {
             return _compareNaturally(a, b, i, aUpperCase, bUpperCase);
         }
-        if (defaultResult == 0)         {
+        if (defaultResult == 0) {
             defaultResult = aChar - bChar;
         }
     }
-    if (b->length() > a->length())     {
+    if (b->length() > a->length()) {
         return -1;
     }
     return defaultResult->sign();
@@ -189,12 +189,12 @@ int _compareNaturally(String a, String b, int index, int aChar, int bChar) {
     if (aIsDigit) {
         if (bIsDigit) {
             return _compareNumerically(a, b, aChar, bChar, index);
-        } else         {
+        } else {
             if (index > 0 && _isDigit(a->codeUnitAt(index - 1))) {
             return 1;
         }
 ;
-        }    } else     {
+        }    } else {
         if (bIsDigit && index > 0 && _isDigit(b->codeUnitAt(index - 1))) {
         return -1;
     }
@@ -205,7 +205,7 @@ int _compareNaturally(String a, String b, int index, int aChar, int bChar) {
 int _compareNumerically(String a, String b, int aChar, int bChar, int index) {
     if (_isNonZeroNumberSuffix(a, index)) {
         auto result = _compareDigitCount(a, b, index, index);
-        if (result != 0)         {
+        if (result != 0) {
             return result;
         }
         return (aChar - bChar)->sign();
@@ -215,31 +215,31 @@ int _compareNumerically(String a, String b, int aChar, int bChar, int index) {
     if (aChar == _zero) {
         do {
             aIndex++;
-            if (aIndex == a->length())             {
+            if (aIndex == a->length()) {
                 return -1;
             }
             aChar = a->codeUnitAt(aIndex);
         } while (aChar == _zero);
-        if (!_isDigit(aChar))         {
+        if (!_isDigit(aChar)) {
             return -1;
         }
-    } else     {
+    } else {
         if (bChar == _zero) {
         do {
             bIndex++;
-            if (bIndex == b->length())             {
+            if (bIndex == b->length()) {
                 return 1;
             }
             bChar = b->codeUnitAt(bIndex);
         } while (bChar == _zero);
-        if (!_isDigit(bChar))         {
+        if (!_isDigit(bChar)) {
             return 1;
         }
     }
 ;
     }    if (aChar != bChar) {
         auto result = _compareDigitCount(a, b, aIndex, bIndex);
-        if (result != 0)         {
+        if (result != 0) {
             return result;
         }
         return (aChar - bChar)->sign();
@@ -259,13 +259,13 @@ int _compareNumerically(String a, String b, int aChar, int bChar, int index) {
         }
         if (aIsDigit) {
             if (bIsDigit) {
-                if (aChar == bChar)                 {
+                if (aChar == bChar) {
                     continue;
                 }
                 break;
             }
             return 1;
-        } else         {
+        } else {
             if (bIsDigit) {
             return -1;
         } else {
@@ -274,7 +274,7 @@ int _compareNumerically(String a, String b, int aChar, int bChar, int index) {
 ;
         }    }
     auto result = _compareDigitCount(a, b, aIndex, bIndex);
-    if (result != 0)     {
+    if (result != 0) {
         return result;
     }
     return (aChar - bChar)->sign();
@@ -283,16 +283,16 @@ int _compareNumerically(String a, String b, int aChar, int bChar, int index) {
 int _compareDigitCount(String a, String b, int i, int j) {
     while (++ < a->length()) {
         auto aIsDigit = _isDigit(a->codeUnitAt(i));
-        if (++j == b->length())         {
+        if (++j == b->length()) {
             return aIsDigit? 1 : 0;
         }
         auto bIsDigit = _isDigit(b->codeUnitAt(j));
         if (aIsDigit) {
-            if (bIsDigit)             {
+            if (bIsDigit) {
                 continue;
             }
             return 1;
-        } else         {
+        } else {
             if (bIsDigit) {
             return -1;
         } else {
@@ -313,7 +313,7 @@ bool _isDigit(int charCode) {
 bool _isNonZeroNumberSuffix(String stringValue, int index) {
     while (--index >= 0) {
         auto char = stringValue->codeUnitAt(index);
-        if (charValue != _zero)         {
+        if (charValue != _zero) {
             return _isDigit(charValue);
         }
     }

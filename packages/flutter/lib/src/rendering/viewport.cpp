@@ -47,7 +47,7 @@ void RenderViewportBaseCls<ParentDataClass>::describeSemanticsConfiguration(Sema
 
 template<typename ParentDataClass>
 void RenderViewportBaseCls<ParentDataClass>::visitChildrenForSemantics(RenderObjectVisitor visitor) {
-    childrenInPaintOrder()->where([=] (RenderSliver sliver)     {
+    childrenInPaintOrder()->where([=] (RenderSliver sliver) {
         sliver->geometry!->visible || sliver->geometry!->cacheExtent > 0.0;
     })->forEach(visitor);
 }
@@ -369,7 +369,7 @@ RevealedOffset RenderViewportBaseCls<ParentDataClass>::getOffsetToReveal(RenderO
         ;
         rect |= target->paintBounds();
         rectLocal = MatrixUtilsCls->transformRect(target->getTransformTo(pivot), rect);
-    } else     {
+    } else {
         if (onlySlivers) {
         RenderSliver targetSliver = as<RenderSliver>(target);
         growthDirection = targetSliver->constraints()->growthDirection;
@@ -467,10 +467,10 @@ Rect RenderViewportBaseCls<ParentDataClass>::showInViewport(Curve curve, RenderO
         double leadingEdgeDiff = (offset->pixels() - leadingEdgeOffset->offset)->abs();
         double trailingEdgeDiff = (offset->pixels() - trailingEdgeOffset->offset)->abs();
         targetOffset =  < trailingEdgeDiff? leadingEdgeOffset : trailingEdgeOffset;
-    } else     {
+    } else {
         if (currentOffset > leadingEdgeOffset->offset) {
         targetOffset = leadingEdgeOffset;
-    } else     {
+    } else {
         if ( < trailingEdgeOffset->offset) {
         targetOffset = trailingEdgeOffset;
     } else {

@@ -17,7 +17,7 @@ void LinkedListCls<E>::addAll(Iterable<E> entries) {
 
 template<typename E>
 bool LinkedListCls<E>::remove(E entry) {
-    if (entry->_list != this)     {
+    if (entry->_list != this) {
         return false;
     }
     _unlink(entry);
@@ -42,7 +42,7 @@ int LinkedListCls<E>::length() {
 template<typename E>
 void LinkedListCls<E>::clear() {
     _modificationCount++;
-    if (isEmpty())     {
+    if (isEmpty()) {
         return;
     }
     E next = _first!;
@@ -85,7 +85,7 @@ E LinkedListCls<E>::single() {
 template<typename E>
 void LinkedListCls<E>::forEach(std::function<void(E entry)> action) {
     int modificationCount = _modificationCount;
-    if (isEmpty())     {
+    if (isEmpty()) {
         return;
     }
     E current = _first!;
@@ -138,7 +138,7 @@ void LinkedListCls<E>::_unlink(E entry) {
     entry->_list = entry->_next = entry->_previous = nullptr;
     if (isEmpty()) {
         _first = nullptr;
-    } else     {
+    } else {
         if (identical(entry, _first)) {
         _first = next;
     }
@@ -187,7 +187,7 @@ void LinkedListEntryCls<E>::unlink() {
 
 template<typename E>
 E LinkedListEntryCls<E>::next() {
-    if (_list == nullptr || identical(_list!->first(), _next))     {
+    if (_list == nullptr || identical(_list!->first(), _next)) {
         return nullptr;
     }
     return _next;
@@ -195,7 +195,7 @@ E LinkedListEntryCls<E>::next() {
 
 template<typename E>
 E LinkedListEntryCls<E>::previous() {
-    if (_list == nullptr || identical(this, _list!->first()))     {
+    if (_list == nullptr || identical(this, _list!->first())) {
         return nullptr;
     }
     return _previous;

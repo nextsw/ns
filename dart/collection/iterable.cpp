@@ -40,7 +40,7 @@ Iterable<E> IterableMixinCls<E>::followedBy(Iterable<E> other) {
 template<typename E>
 bool IterableMixinCls<E>::contains(Object element) {
     for (E e : this) {
-        if (e == element)         {
+        if (e == element) {
             return true;
         }
     }
@@ -49,7 +49,7 @@ bool IterableMixinCls<E>::contains(Object element) {
 
 template<typename E>
 void IterableMixinCls<E>::forEach(std::function<void(E element)> action) {
-    for (E element : this)     {
+    for (E element : this) {
         action(element);
     }
 }
@@ -71,7 +71,7 @@ template<typename E>
 template<typename T>
 T IterableMixinCls<E>::fold(T initialValue, std::function<T(T previousValue, E element)> combine) {
     auto value = initialValue;
-    for (E element : this)     {
+    for (E element : this) {
         value = combine(value, element);
     }
     return value;
@@ -80,7 +80,7 @@ T IterableMixinCls<E>::fold(T initialValue, std::function<T(T previousValue, E e
 template<typename E>
 bool IterableMixinCls<E>::every(std::function<bool(E element)> test) {
     for (E element : this) {
-        if (!test(element))         {
+        if (!test(element)) {
             return false;
         }
     }
@@ -90,7 +90,7 @@ bool IterableMixinCls<E>::every(std::function<bool(E element)> test) {
 template<typename E>
 String IterableMixinCls<E>::join(String separator) {
     Iterator<E> iterator = this->iterator;
-    if (!iterator->moveNext())     {
+    if (!iterator->moveNext()) {
         return __s("");
     }
     StringBuffer buffer = make<StringBufferCls>();
@@ -111,7 +111,7 @@ String IterableMixinCls<E>::join(String separator) {
 template<typename E>
 bool IterableMixinCls<E>::any(std::function<bool(E element)> test) {
     for (E element : this) {
-        if (test(element))         {
+        if (test(element)) {
             return true;
         }
     }
@@ -194,11 +194,11 @@ E IterableMixinCls<E>::last() {
 template<typename E>
 E IterableMixinCls<E>::single() {
     Iterator<E> it = iterator;
-    if (!it->moveNext())     {
+    if (!it->moveNext()) {
         throw IterableElementErrorCls->noElement();
     }
     E result = it->current();
-    if (it->moveNext())     {
+    if (it->moveNext()) {
         throw IterableElementErrorCls->tooMany();
     }
     return result;
@@ -207,11 +207,11 @@ E IterableMixinCls<E>::single() {
 template<typename E>
 E IterableMixinCls<E>::firstWhere(std::function<bool(E value)> test, std::function<E()> orElse) {
     for (E element : this) {
-        if (test(element))         {
+        if (test(element)) {
             return element;
         }
     }
-    if (orElse != nullptr)     {
+    if (orElse != nullptr) {
         return orElse();
     }
     throw IterableElementErrorCls->noElement();
@@ -227,10 +227,10 @@ E IterableMixinCls<E>::lastWhere(std::function<bool(E value)> test, std::functio
             foundMatching = true;
         }
     }
-    if (foundMatching)     {
+    if (foundMatching) {
         return result;
     }
-    if (orElse != nullptr)     {
+    if (orElse != nullptr) {
         return orElse();
     }
     throw IterableElementErrorCls->noElement();
@@ -249,10 +249,10 @@ E IterableMixinCls<E>::singleWhere(std::function<bool(E element)> test, std::fun
             foundMatching = true;
         }
     }
-    if (foundMatching)     {
+    if (foundMatching) {
         return result;
     }
-    if (orElse != nullptr)     {
+    if (orElse != nullptr) {
         return orElse();
     }
     throw IterableElementErrorCls->noElement();
@@ -264,7 +264,7 @@ E IterableMixinCls<E>::elementAt(int index) {
     RangeErrorCls->checkNotNegative(index, __s("index"));
     int elementIndex = 0;
     for (E element : this) {
-        if (index == elementIndex)         {
+        if (index == elementIndex) {
             return element;
         }
         elementIndex++;
@@ -315,7 +315,7 @@ String IterableBaseCls<E>::iterableToFullString(Iterable iterable, String leftDe
 
 bool _isToStringVisiting(Object o) {
     for (;  < _toStringVisiting->length; i++) {
-        if (identical(o, _toStringVisiting[i]))         {
+        if (identical(o, _toStringVisiting[i])) {
             return true;
         }
     }
@@ -333,7 +333,7 @@ void _iterablePartsToStrings(Iterable<Object> iterable, List<String> parts) {
     int count = 0;
     Iterator<Object> it = iterable->iterator();
     while ( < lengthLimit ||  < headCount) {
-        if (!it->moveNext())         {
+        if (!it->moveNext()) {
             return;
         }
         String next = __s("${it.current}");
@@ -344,7 +344,7 @@ void _iterablePartsToStrings(Iterable<Object> iterable, List<String> parts) {
     String penultimateString;
     String ultimateString;
     if (!it->moveNext()) {
-        if (count <= headCount + tailCount)         {
+        if (count <= headCount + tailCount) {
             return;
         }
         ultimateString = parts->removeLast();

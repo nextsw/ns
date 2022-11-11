@@ -1,7 +1,7 @@
 #include "text.hpp"
 FontWeight FontWeightCls::lerp(FontWeight a, FontWeight b, double t) {
     assert(t != nullptr);
-    if (a == nullptr && b == nullptr)     {
+    if (a == nullptr && b == nullptr) {
         return nullptr;
     }
     return values[_lerpInt((a | normal)->index, (b | normal)->index, t)->round()->clamp(0, 8)];
@@ -83,7 +83,7 @@ void FontFeatureCls::tabularFigures()
 void FontFeatureCls::slashedZero()
 
 bool FontFeatureCls::==(Object other) {
-    if (other->runtimeType() != runtimeType)     {
+    if (other->runtimeType() != runtimeType) {
         return false;
     }
     return is<FontFeature>(other) && other->feature == feature && other->value == value;
@@ -98,7 +98,7 @@ String FontFeatureCls::toString() {
 }
 
 void FontFeatureCls::_encode(ByteData byteData) {
-    assert(feature->codeUnits()->every([=] (int c)     {
+    assert(feature->codeUnits()->every([=] (int c) {
         c >= 0x20 && c <= 0x7F;
     }));
     for (;  < 4; i++) {
@@ -116,7 +116,7 @@ FontVariationCls::FontVariationCls(String axis, double value) {
 }
 
 bool FontVariationCls::==(Object other) {
-    if (other->runtimeType() != runtimeType)     {
+    if (other->runtimeType() != runtimeType) {
         return false;
     }
     return is<FontVariation>(other) && other->axis == axis && other->value == value;
@@ -131,7 +131,7 @@ String FontVariationCls::toString() {
 }
 
 void FontVariationCls::_encode(ByteData byteData) {
-    assert(axis->codeUnits()->every([=] (int c)     {
+    assert(axis->codeUnits()->every([=] (int c) {
         c >= 0x20 && c <= 0x7F;
     }));
     for (;  < 4; i++) {
@@ -142,7 +142,7 @@ void FontVariationCls::_encode(ByteData byteData) {
 
 void TextDecorationCls::combine(List<TextDecoration> decorations) {
     int mask = 0;
-    for (TextDecoration decoration : decorations)     {
+    for (TextDecoration decoration : decorations) {
         mask |= decoration->_mask;
     }
     return TextDecorationCls->_(mask);
@@ -161,27 +161,27 @@ int TextDecorationCls::hashCode() {
 }
 
 String TextDecorationCls::toString() {
-    if (_mask == 0)     {
+    if (_mask == 0) {
         return __s("TextDecoration.none");
     }
     List<String> values = makeList();
-    if (_mask & underline->_mask != 0)     {
+    if (_mask & underline->_mask != 0) {
         values->add(__s("underline"));
     }
-    if (_mask & overline->_mask != 0)     {
+    if (_mask & overline->_mask != 0) {
         values->add(__s("overline"));
     }
-    if (_mask & lineThrough->_mask != 0)     {
+    if (_mask & lineThrough->_mask != 0) {
         values->add(__s("lineThrough"));
     }
-    if (values->length() == 1)     {
+    if (values->length() == 1) {
         return __s("TextDecoration.${values[0]}");
     }
     return __s("TextDecoration.combine([${values.join(", ")}])");
 }
 
 bool TextHeightBehaviorCls::==(Object other) {
-    if (other->runtimeType() != runtimeType)     {
+    if (other->runtimeType() != runtimeType) {
         return false;
     }
     return is<TextHeightBehavior>(other) && other->applyHeightToFirstAscent == applyHeightToFirstAscent && other->applyHeightToLastDescent == applyHeightToLastDescent && other->leadingDistribution == leadingDistribution;
@@ -203,14 +203,14 @@ int TextHeightBehaviorCls::_encode() {
 
 template<typename T>
 bool _listEquals(List<T> a, List<T> b) {
-    if (a == nullptr)     {
+    if (a == nullptr) {
         return b == nullptr;
     }
-    if (b == nullptr || a->length() != b->length())     {
+    if (b == nullptr || a->length() != b->length()) {
         return false;
     }
     for (;  < a->length(); index += 1) {
-        if (a[index] != b[index])         {
+        if (a[index] != b[index]) {
             return false;
         }
     }
@@ -308,7 +308,7 @@ TextStyleCls::TextStyleCls(Paint background, Color color, TextDecoration decorat
 }
 
 bool TextStyleCls::==(Object other) {
-    if (identical(this, other))     {
+    if (identical(this, other)) {
         return true;
     }
     return is<TextStyle>(other) && other->_leadingDistribution == _leadingDistribution && other->_fontFamily == _fontFamily && other->_fontSize == _fontSize && other->_letterSpacing == _letterSpacing && other->_wordSpacing == _wordSpacing && other->_height == _height && other->_decorationThickness == _decorationThickness && other->_locale == _locale && other->_background == _background && other->_foreground == _foreground && <int>_listEquals(other->_encoded, _encoded) && <Shadow>_listEquals(other->_shadows, _shadows) && <String>_listEquals(other->_fontFamilyFallback, _fontFamilyFallback) && <FontFeature>_listEquals(other->_fontFeatures, _fontFeatures) && <FontVariation>_listEquals(other->_fontVariations, _fontVariations);
@@ -383,10 +383,10 @@ ParagraphStyleCls::ParagraphStyleCls(String ellipsis, String fontFamily, double 
 }
 
 bool ParagraphStyleCls::==(Object other) {
-    if (identical(this, other))     {
+    if (identical(this, other)) {
         return true;
     }
-    if (other->runtimeType() != runtimeType)     {
+    if (other->runtimeType() != runtimeType) {
         return false;
     }
     return is<ParagraphStyle>(other) && other->_fontFamily == _fontFamily && other->_fontSize == _fontSize && other->_height == _height && other->_strutStyle == _strutStyle && other->_ellipsis == _ellipsis && other->_locale == _locale && other->_leadingDistribution == _leadingDistribution && <int>_listEquals(other->_encoded, _encoded);
@@ -401,7 +401,7 @@ String ParagraphStyleCls::toString() {
 }
 
 ByteData _encodeStrut(String fontFamily, List<String> fontFamilyFallback, double fontSize, double height, TextLeadingDistribution leadingDistribution, double leading, FontWeight fontWeight, FontStyle fontStyle, bool forceStrutHeight) {
-    if (fontFamily == nullptr && fontSize == nullptr && height == nullptr && leadingDistribution == nullptr && leading == nullptr && fontWeight == nullptr && fontStyle == nullptr && forceStrutHeight == nullptr)     {
+    if (fontFamily == nullptr && fontSize == nullptr && height == nullptr && leadingDistribution == nullptr && leading == nullptr && fontWeight == nullptr && fontStyle == nullptr && forceStrutHeight == nullptr) {
         return make<ByteDataCls>(0);
     }
     ByteData data = make<ByteDataCls>(16);
@@ -454,10 +454,10 @@ StrutStyleCls::StrutStyleCls(String fontFamily, List<String> fontFamilyFallback,
 }
 
 bool StrutStyleCls::==(Object other) {
-    if (identical(this, other))     {
+    if (identical(this, other)) {
         return true;
     }
-    if (other->runtimeType() != runtimeType)     {
+    if (other->runtimeType() != runtimeType) {
         return false;
     }
     return is<StrutStyle>(other) && other->_fontFamily == _fontFamily && other->_leadingDistribution == _leadingDistribution && <String>_listEquals(other->_fontFamilyFallback, _fontFamilyFallback) && <int>_listEquals(other->_encoded->buffer->asInt8List(), _encoded->buffer->asInt8List());
@@ -484,10 +484,10 @@ double TextBoxCls::end() {
 }
 
 bool TextBoxCls::==(Object other) {
-    if (identical(this, other))     {
+    if (identical(this, other)) {
         return true;
     }
-    if (other->runtimeType() != runtimeType)     {
+    if (other->runtimeType() != runtimeType) {
         return false;
     }
     return is<TextBox>(other) && other->left == left && other->top == top && other->right == right && other->bottom == bottom && other->direction == direction;
@@ -509,7 +509,7 @@ TextPositionCls::TextPositionCls(TextAffinity affinity, int offset) {
 }
 
 bool TextPositionCls::==(Object other) {
-    if (other->runtimeType() != runtimeType)     {
+    if (other->runtimeType() != runtimeType) {
         return false;
     }
     return is<TextPosition>(other) && other->offset == offset && other->affinity == affinity;
@@ -560,7 +560,7 @@ String TextRangeCls::textInside(String text) {
 }
 
 bool TextRangeCls::==(Object other) {
-    if (identical(this, other))     {
+    if (identical(this, other)) {
         return true;
     }
     return is<TextRange>(other) && other->start == start && other->end == end;
@@ -581,7 +581,7 @@ ParagraphConstraintsCls::ParagraphConstraintsCls(double width) {
 }
 
 bool ParagraphConstraintsCls::==(Object other) {
-    if (other->runtimeType() != runtimeType)     {
+    if (other->runtimeType() != runtimeType) {
         return false;
     }
     return is<ParagraphConstraints>(other) && other->width == width;
@@ -706,7 +706,7 @@ List<double> ParagraphBuilderCls::placeholderScales() {
 void ParagraphBuilderCls::pushStyle(TextStyle style) {
     List<String> fullFontFamilies = makeList();
     fullFontFamilies->add(style->_fontFamily());
-    if (style->_fontFamilyFallback != nullptr)     {
+    if (style->_fontFamilyFallback != nullptr) {
         fullFontFamilies->addAll(style->_fontFamilyFallback!);
     }
     Int32List encoded = style->_encoded;
@@ -738,7 +738,7 @@ void ParagraphBuilderCls::pushStyle(TextStyle style) {
 
 void ParagraphBuilderCls::addText(String text) {
     String error = _addText(text);
-    if (error != nullptr)     {
+    if (error != nullptr) {
         throw make<ArgumentErrorCls>(error);
     }
 }
@@ -764,7 +764,7 @@ String ParagraphBuilderCls::_encodeLocale(Locale locale) {
 Future<void> loadFontFromList(Uint8List list, String fontFamily) {
     return _futurize([=] (_Callback<void> callback) {
         _loadFontFromList(list, callback, fontFamily | __s(""));
-    })->then([=] ()     {
+    })->then([=] () {
         _sendFontChangeMessage();
     });
 }

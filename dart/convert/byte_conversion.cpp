@@ -1,7 +1,7 @@
 #include "byte_conversion.hpp"
 void ByteConversionSinkBaseCls::addSlice(List<int> chunk, int start, int end, bool isLast) {
     add(chunk->sublist(start, end));
-    if (isLast)     {
+    if (isLast) {
         close();
     }
 }

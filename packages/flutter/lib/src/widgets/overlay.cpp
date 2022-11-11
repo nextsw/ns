@@ -165,10 +165,10 @@ void OverlayStateCls::insert(OverlayEntry entry, OverlayEntry above, OverlayEntr
 
 void OverlayStateCls::insertAll(Iterable<OverlayEntry> entries, OverlayEntry above, OverlayEntry below) {
     assert(_debugVerifyInsertPosition(above, below));
-    assert(entries->every([=] (OverlayEntry entry)     {
+    assert(entries->every([=] (OverlayEntry entry) {
         !_entries->contains(entry);
     }), __s("One or more of the specified entries are already present in the Overlay."));
-    assert(entries->every([=] (OverlayEntry entry)     {
+    assert(entries->every([=] (OverlayEntry entry) {
         entry->_overlay == nullptr;
     }), __s("One or more of the specified entries are already present in another Overlay."));
     if (entries->isEmpty()) {
@@ -186,10 +186,10 @@ void OverlayStateCls::insertAll(Iterable<OverlayEntry> entries, OverlayEntry abo
 void OverlayStateCls::rearrange(Iterable<OverlayEntry> newEntries, OverlayEntry above, OverlayEntry below) {
     List<OverlayEntry> newEntriesList = is<List<OverlayEntry>>(newEntries)? newEntries : newEntries->toList(false);
     assert(_debugVerifyInsertPosition(above, below, newEntriesList));
-    assert(newEntriesList->every([=] (OverlayEntry entry)     {
+    assert(newEntriesList->every([=] (OverlayEntry entry) {
         entry->_overlay == nullptr || entry->_overlay == this;
     }), __s("One or more of the specified entries are already present in another Overlay."));
-    assert(newEntriesList->every([=] (OverlayEntry entry)     {
+    assert(newEntriesList->every([=] (OverlayEntry entry) {
         _entries->indexOf(entry) == _entries->lastIndexOf(entry);
     }), __s("One or more of the specified entries are specified multiple times."));
     if (newEntriesList->isEmpty) {
@@ -241,7 +241,7 @@ Widget OverlayStateCls::build(BuildContext context) {
             if (entry->opaque()) {
                 onstage = false;
             }
-        } else         {
+        } else {
             if (entry->maintainState()) {
             children->add(make<_OverlayEntryWidgetCls>(entry->_key, entry, false));
         }
@@ -366,25 +366,25 @@ void _RenderTheatreCls::clipBehavior(Clip value) {
 }
 
 double _RenderTheatreCls::computeMinIntrinsicWidth(double height) {
-    return RenderStackCls->getIntrinsicDimension(_firstOnstageChild(), [=] (RenderBox child)     {
+    return RenderStackCls->getIntrinsicDimension(_firstOnstageChild(), [=] (RenderBox child) {
         child->getMinIntrinsicWidth(height);
     });
 }
 
 double _RenderTheatreCls::computeMaxIntrinsicWidth(double height) {
-    return RenderStackCls->getIntrinsicDimension(_firstOnstageChild(), [=] (RenderBox child)     {
+    return RenderStackCls->getIntrinsicDimension(_firstOnstageChild(), [=] (RenderBox child) {
         child->getMaxIntrinsicWidth(height);
     });
 }
 
 double _RenderTheatreCls::computeMinIntrinsicHeight(double width) {
-    return RenderStackCls->getIntrinsicDimension(_firstOnstageChild(), [=] (RenderBox child)     {
+    return RenderStackCls->getIntrinsicDimension(_firstOnstageChild(), [=] (RenderBox child) {
         child->getMinIntrinsicHeight(width);
     });
 }
 
 double _RenderTheatreCls::computeMaxIntrinsicHeight(double width) {
-    return RenderStackCls->getIntrinsicDimension(_firstOnstageChild(), [=] (RenderBox child)     {
+    return RenderStackCls->getIntrinsicDimension(_firstOnstageChild(), [=] (RenderBox child) {
         child->getMaxIntrinsicHeight(width);
     });
 }

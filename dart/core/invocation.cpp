@@ -46,7 +46,7 @@ bool _InvocationCls::isAccessor() {
 }
 
 List<Type> _InvocationCls::_ensureNonNullTypes(Iterable<Type> types) {
-    if (types == nullptr)     {
+    if (types == nullptr) {
         return makeList();
     }
     List<Type> typeArguments = <Type>unmodifiable(types);

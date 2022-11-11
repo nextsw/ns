@@ -105,7 +105,7 @@ void _GrowableBoolListCls::length(int length) {
     RangeErrorCls->checkNotNegative(length, __s("length"));
     if (length > _length) {
         _expand(length);
-    } else     {
+    } else {
         if ( < _length) {
         _shrink(length);
     }

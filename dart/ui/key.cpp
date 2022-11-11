@@ -40,7 +40,7 @@ String KeyDataCls::_escapeCharacter() {
 }
 
 String KeyDataCls::_quotedCharCode() {
-    if (character == nullptr)     {
+    if (character == nullptr) {
         return __s("");
     }
     Iterable<String> hexChars = character!->codeUnits()->map([=] (int code) {

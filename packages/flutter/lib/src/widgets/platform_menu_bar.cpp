@@ -130,10 +130,10 @@ Future<void> DefaultPlatformMenuDelegateCls::_methodCallHandler(MethodCall call)
         if (item->onSelectedIntent() != nullptr) {
             ActionsCls->maybeInvoke(FocusManagerCls::instance->primaryFocus!->context!, item->onSelectedIntent()!);
         }
-    } else     {
+    } else {
         if (call->method == _kMenuItemOpenedMethod) {
         item->onOpen()?->call();
-    } else     {
+    } else {
         if (call->method == _kMenuItemClosedMethod) {
         item->onClose()?->call();
     }
@@ -152,7 +152,7 @@ State<PlatformMenuBar> PlatformMenuBarCls::createState() {
 }
 
 List<DiagnosticsNode> PlatformMenuBarCls::debugDescribeChildren() {
-    return menus-><DiagnosticsNode>map([=] (MenuItem child)     {
+    return menus-><DiagnosticsNode>map([=] (MenuItem child) {
         child->toDiagnosticsNode();
     })->toList();
 }
@@ -192,7 +192,7 @@ List<MenuItem> PlatformMenuCls::descendants() {
 }
 
 List<MenuItem> PlatformMenuCls::getDescendants(PlatformMenu item) {
-    List<MenuItem> list1 = make<ListCls<>>();for (MenuItem child : item->menus)     {        ;    }{    list1.add(ArrayItem);}return list1;
+    List<MenuItem> list1 = make<ListCls<>>();for (MenuItem child : item->menus) {        ;    }{    list1.add(ArrayItem);}return list1;
 }
 
 Iterable<Map<String, Object>> PlatformMenuCls::toChannelRepresentation(PlatformMenuDelegate delegate, MenuItemSerializableIdGenerator getId) {
@@ -222,7 +222,7 @@ Map<String, Object> PlatformMenuCls::serialize(PlatformMenu item, PlatformMenuDe
 }
 
 List<DiagnosticsNode> PlatformMenuCls::debugDescribeChildren() {
-    return menus-><DiagnosticsNode>map([=] (MenuItem child)     {
+    return menus-><DiagnosticsNode>map([=] (MenuItem child) {
         child->toDiagnosticsNode();
     })->toList();
 }

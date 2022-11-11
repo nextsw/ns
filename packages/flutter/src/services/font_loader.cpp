@@ -10,7 +10,7 @@ void FontLoaderCls::addFont(Future<ByteData> bytes) {
     if (_loaded) {
         throw make<StateErrorCls>(__s("FontLoader is already loaded"));
     }
-    _fontFutures->add(bytes->then([=] (ByteData data)     {
+    _fontFutures->add(bytes->then([=] (ByteData data) {
         Uint8ListCls->view(data->buffer, data->offsetInBytes, data->lengthInBytes);
     }));
 }

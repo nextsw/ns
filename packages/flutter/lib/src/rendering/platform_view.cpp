@@ -12,7 +12,7 @@ bool _factoryTypesSetEquals(Set<Factory<T>> a, Set<Factory<T>> b) {
 
 template<typename T>
 Set<Type> _factoriesTypeSet(Set<Factory<T>> factories) {
-    return factories-><Type>map([=] (Factory<T> factory)     {
+    return factories-><Type>map([=] (Factory<T> factory) {
         factory->type;
     })->toSet();
 }
@@ -27,7 +27,7 @@ RenderAndroidViewCls::RenderAndroidViewCls(Clip clipBehavior, Set<Factory<OneSeq
         _clipBehavior = clipBehavior;
     }
     {
-        _viewController->pointTransformer() = [=] (Offset offset)         {
+        _viewController->pointTransformer() = [=] (Offset offset) {
             globalToLocal(offset);
         };
         updateGestureRecognizers(gestureRecognizers);
@@ -51,7 +51,7 @@ void RenderAndroidViewCls::controller(AndroidViewController controller) {
     _viewController->removeOnPlatformViewCreatedListener(_onPlatformViewCreated);
     super->controller = controller;
     _viewController = controller;
-    _viewController->pointTransformer() = [=] (Offset offset)     {
+    _viewController->pointTransformer() = [=] (Offset offset) {
         globalToLocal(offset);
     };
     _sizePlatformView();
@@ -308,11 +308,11 @@ _UiKitViewGestureRecognizerCls::_UiKitViewGestureRecognizerCls(UiKitViewControll
             if (is<LongPressGestureRecognizer>(gestureRecognizer)) {
                 as<LongPressGestureRecognizerCls>(gestureRecognizer)->onLongPress |= [=] () {
                 };
-            } else             {
+            } else {
                 if (is<DragGestureRecognizer>(gestureRecognizer)) {
                 gestureRecognizer->onDown |= [=] () {
                 };
-            } else             {
+            } else {
                 if (is<TapGestureRecognizer>(gestureRecognizer)) {
                 as<TapGestureRecognizerCls>(gestureRecognizer)->onTapDown |= [=] () {
                 };
@@ -379,11 +379,11 @@ _PlatformViewGestureRecognizerCls::_PlatformViewGestureRecognizerCls(_HandlePoin
             if (is<LongPressGestureRecognizer>(gestureRecognizer)) {
                 as<LongPressGestureRecognizerCls>(gestureRecognizer)->onLongPress |= [=] () {
                 };
-            } else             {
+            } else {
                 if (is<DragGestureRecognizer>(gestureRecognizer)) {
                 gestureRecognizer->onDown |= [=] () {
                 };
-            } else             {
+            } else {
                 if (is<TapGestureRecognizer>(gestureRecognizer)) {
                 as<TapGestureRecognizerCls>(gestureRecognizer)->onTapDown |= [=] () {
                 };

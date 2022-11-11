@@ -18,7 +18,7 @@ void ScrollAwareImageProviderCls<T>::resolveStreamForKey(ImageConfiguration conf
     }
     if (ScrollableCls->recommendDeferredLoadingForContext(context->context!)) {
         SchedulerBindingCls::instance->scheduleFrameCallback([=] () {
-            scheduleMicrotask([=] ()             {
+            scheduleMicrotask([=] () {
                 resolveStreamForKey(configuration, stream, key, handleError);
             });
         });

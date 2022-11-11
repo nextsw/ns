@@ -32,7 +32,7 @@ void _BlockCls::write(_BlockContext ctx) {
             ctx->writeIndent();
             inst->write(transpiler(), ctx->out);
             ctx->out->writeln(__s(";"));
-        } else         {
+        } else {
             if (inst->refCount > 1) {
             ctx->writeIndent();
             String typeString = transpiler()->resolveType(inst->type);
@@ -45,14 +45,14 @@ void _BlockCls::write(_BlockContext ctx) {
         }    }
     if (hasSelectionStructure()) {
         _writeSelectionStructure(ctx);
-    } else     {
+    } else {
         if (hasLoopStructure()) {
         _writeLoopStructure(ctx);
     }
 ;
     }    if (mergeBlock != 0) {
         function->block(mergeBlock)->write(ctx);
-    } else     {
+    } else {
         if (branch != 0) {
         if (branch == ctx->merge) {
             return;
@@ -148,7 +148,7 @@ void _BlockCls::_writeLoopStructure(_BlockContext ctx) {
         if (truthyBlock == mergeBlock) {
             conditionString = __s("!") + conditionString;
             loopBody = falseyBlock;
-        } else         {
+        } else {
             if (falseyBlock == mergeBlock) {
             loopBody = truthyBlock;
         }
@@ -162,7 +162,7 @@ void _BlockCls::_writeLoopStructure(_BlockContext ctx) {
         if (branchBlock->truthyBlock == mergeBlock) {
             conditionString = __s("!") + conditionString;
             loopBody = branchBlock->falseyBlock;
-        } else         {
+        } else {
             if (branchBlock->falseyBlock == mergeBlock) {
             loopBody = branchBlock->truthyBlock;
         }

@@ -57,10 +57,10 @@ _AnimatedFadeOutFadeInCls::_AnimatedFadeOutFadeInCls(Curve fadeInCurve, Duration
 }
 
 void _AnimatedFadeOutFadeInStateCls::forEachTween(TweenVisitor<dynamic> visitor) {
-    _targetOpacity = as<Tween<double>>(visitor(_targetOpacity, widget->isTargetLoaded? 1.0 : 0.0, [=] (dynamic value)     {
+    _targetOpacity = as<Tween<double>>(visitor(_targetOpacity, widget->isTargetLoaded? 1.0 : 0.0, [=] (dynamic value) {
         <double>make<TweenCls>(as<double>(value));
     }));
-    _placeholderOpacity = as<Tween<double>>(visitor(_placeholderOpacity, widget->isTargetLoaded? 0.0 : 1.0, [=] (dynamic value)     {
+    _placeholderOpacity = as<Tween<double>>(visitor(_placeholderOpacity, widget->isTargetLoaded? 0.0 : 1.0, [=] (dynamic value) {
         <double>make<TweenCls>(as<double>(value));
     }));
 }

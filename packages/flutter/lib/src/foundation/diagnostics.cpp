@@ -227,7 +227,7 @@ String TextTreeRendererCls::_debugRender(DiagnosticsNode node, TextTreeConfigura
         StringBuffer information = make<StringBufferCls>(prefixLineOne);
         if (lines > 1) {
             information->writeln(__s("This ${node.name} had the following descendants (showing up to depth $maxDepth):"));
-        } else         {
+        } else {
             if (descendants->length() == 1) {
             information->writeln(__s("This ${node.name} had the following child:"));
         } else {
@@ -646,7 +646,7 @@ String FlagPropertyCls::valueToString(TextTreeConfiguration parentConfiguration)
         if (ifTrue != nullptr) {
             return ifTrue!;
         }
-    } else     {
+    } else {
         if (value == false) {
         if (ifFalse != nullptr) {
             return ifFalse!;
@@ -720,7 +720,7 @@ template<typename T>
 Map<String, Object> IterablePropertyCls<T>::toJsonMap(DiagnosticsSerializationDelegate delegate) {
     Map<String, Object> json = super->toJsonMap(delegate);
     if (value != nullptr) {
-        json[__s("values")] = value!-><String>map([=] (T value)         {
+        json[__s("values")] = value!-><String>map([=] (T value) {
             value->toString();
         })->toList();
     }
@@ -846,16 +846,16 @@ Map<String, Object> FlagsSummaryCls<T>::toJsonMap(DiagnosticsSerializationDelega
 
 template<typename T>
 bool FlagsSummaryCls<T>::_hasNonNullEntry() {
-    return value()->values()->any([=] (T o)     {
+    return value()->values()->any([=] (T o) {
         o != nullptr;
     });
 }
 
 template<typename T>
 Iterable<String> FlagsSummaryCls<T>::_formattedValues() {
-    return value()->entries()->where([=] (MapEntry<String, T> entry)     {
+    return value()->entries()->where([=] (MapEntry<String, T> entry) {
         entry->value != nullptr;
-    })->map([=] (MapEntry<String, T> entry)     {
+    })->map([=] (MapEntry<String, T> entry) {
         entry->key;
     });
 }
@@ -1149,7 +1149,7 @@ String DiagnosticableTreeCls::toStringShallow(String joiner, DiagnosticLevel min
         result->write(joiner);
         DiagnosticPropertiesBuilder builder = make<DiagnosticPropertiesBuilderCls>();
         debugFillProperties(builder);
-        result->write(builder->properties->where([=] (DiagnosticsNode n)         {
+        result->write(builder->properties->where([=] (DiagnosticsNode n) {
             !n->isFiltered(minLevel);
         })->join(joiner));
         shallowString = result->toString();
@@ -1186,7 +1186,7 @@ String DiagnosticableTreeMixinCls::toStringShallow(String joiner, DiagnosticLeve
         result->write(joiner);
         DiagnosticPropertiesBuilder builder = make<DiagnosticPropertiesBuilderCls>();
         debugFillProperties(builder);
-        result->write(builder->properties->where([=] (DiagnosticsNode n)         {
+        result->write(builder->properties->where([=] (DiagnosticsNode n) {
             !n->isFiltered(minLevel);
         })->join(joiner));
         shallowString = result->toString();

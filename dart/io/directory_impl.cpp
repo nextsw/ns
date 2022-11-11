@@ -17,10 +17,10 @@ void _DirectoryCls::current(path ) {
     Uint8List _rawPath;
     if (is<_Directory>(path)) {
         _rawPath = as<_DirectoryCls>(path)->_rawPath;
-    } else     {
+    } else {
         if (is<Directory>(path)) {
         _rawPath = FileSystemEntityCls->_toUtf8Array(as<DirectoryCls>(path)->as<DirectoryCls>(path));
-    } else     {
+    } else {
         if (is<String>(path)) {
         _rawPath = FileSystemEntityCls->_toUtf8Array(as<StringCls>(path));
     } else {
@@ -32,7 +32,7 @@ void _DirectoryCls::current(path ) {
         throw make<UnsupportedErrorCls>(__s("This embedder disallows setting Directory.current"));
     }
     auto result = _setCurrent(_NamespaceCls::_namespace, _rawPath);
-    if (is<ArgumentError>(result))     {
+    if (is<ArgumentError>(result)) {
         throw result;
     }
     if (is<OSError>(result)) {
@@ -68,7 +68,7 @@ Directory _DirectoryCls::absolute() {
 Future<Directory> _DirectoryCls::create(bool recursive) {
     if (recursive) {
         return exists()->then([=] (Unknown  exists) {
-            if (exists)             {
+            if (exists) {
                 return this;
             }
             if (path() != parent->path) {
@@ -91,7 +91,7 @@ Future<Directory> _DirectoryCls::create(bool recursive) {
 
 void _DirectoryCls::createSync(bool recursive) {
     if (recursive) {
-        if (existsSync())         {
+        if (existsSync()) {
             return;
         }
         if (path() != parent->path) {
@@ -226,7 +226,7 @@ void _AsyncDirectoryListerCls::onListen() {
         if (is<int>(response)) {
             _ops = make<_AsyncDirectoryListerOpsCls>(as<intCls>(response));
             next();
-        } else         {
+        } else {
             if (is<Error>(response)) {
             controller->addError(as<ErrorCls>(response), as<ErrorCls>(response)->stackTrace());
             close();
@@ -300,14 +300,14 @@ void _AsyncDirectoryListerCls::error(message ) {
     auto errorType = message[responseError][_errorResponseErrorType];
     if (errorType == _illegalArgumentResponse) {
         controller->addError(make<ArgumentErrorCls>());
-    } else     {
+    } else {
         if (errorType == _osErrorResponse) {
         auto responseErrorInfo = message[responseError];
         auto err = make<OSErrorCls>(responseErrorInfo[_osErrorResponseMessage], responseErrorInfo[_osErrorResponseErrorCode]);
         auto errorPath = message[responsePath];
         if (errorPath == nullptr) {
             errorPath = utf8->decode(rawPath, true);
-        } else         {
+        } else {
             if (is<Uint8List>(errorPath)) {
             as<Uint8ListCls>(errorPath) = utf8->decode(message[responsePath], true);
         }

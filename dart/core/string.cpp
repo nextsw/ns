@@ -69,10 +69,10 @@ int RuneIteratorCls::currentSize() {
 }
 
 String RuneIteratorCls::currentAsString() {
-    if (_position == _nextPosition)     {
+    if (_position == _nextPosition) {
         return __s("");
     }
-    if (_position + 1 == _nextPosition)     {
+    if (_position + 1 == _nextPosition) {
         return stringValue[_position];
     }
     return stringValue->substring(_position, _nextPosition);

@@ -3,7 +3,7 @@ ViewportCls::ViewportCls(double anchor, AxisDirection axisDirection, double cach
     {
         assert(offset != nullptr);
         assert(slivers != nullptr);
-        assert(center == nullptr || slivers->where([=] (Widget child)         {
+        assert(center == nullptr || slivers->where([=] (Widget child) {
             child->key == center;
         })->length == 1);
         assert(cacheExtentStyle != nullptr);
@@ -37,7 +37,7 @@ void ViewportCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     properties->add(<ViewportOffset>make<DiagnosticsPropertyCls>(__s("offset"), offset));
     if (center != nullptr) {
         properties->add(<Key>make<DiagnosticsPropertyCls>(__s("center"), center));
-    } else     {
+    } else {
         if (children->isNotEmpty && children->first->key != nullptr) {
         properties->add(<Key>make<DiagnosticsPropertyCls>(__s("center"), children->first->key, __s("implicit")));
     }
@@ -107,7 +107,7 @@ void _ViewportElementCls::_updateCenter() {
         }
         assert( < children->length);
         _centerSlotIndex = elementIndex;
-    } else     {
+    } else {
         if (children->isNotEmpty) {
         renderObject()->center() = as<RenderSliver>(children->first->renderObject);
         _centerSlotIndex = 0;

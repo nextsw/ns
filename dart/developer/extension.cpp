@@ -22,7 +22,7 @@ String ServiceExtensionResponseCls::_errorCodeMessage(int errorCode) {
 
 void ServiceExtensionResponseCls::_validateErrorCode(int errorCode) {
     checkNotNullable(errorCode, __s("errorCode"));
-    if (errorCode == invalidParams)     {
+    if (errorCode == invalidParams) {
         return;
     }
     if ((errorCode >= extensionErrorMin) && (errorCode <= extensionErrorMax)) {

@@ -51,10 +51,10 @@ bool _StreamControllerCls<T>::isPaused() {
 
 template<typename T>
 Future _StreamControllerCls<T>::addStream(Stream<T> source, bool cancelOnError) {
-    if (!_mayAddEvent())     {
+    if (!_mayAddEvent()) {
         throw _badEventState();
     }
-    if (_isCanceled())     {
+    if (_isCanceled()) {
         return _FutureCls->immediate(nullptr);
     }
     _StreamControllerAddStreamState<T> addState = <T>make<_StreamControllerAddStreamStateCls>(this, _varData, source, cancelOnError | false);
@@ -70,7 +70,7 @@ Future<void> _StreamControllerCls<T>::done() {
 
 template<typename T>
 void _StreamControllerCls<T>::add(T value) {
-    if (!_mayAddEvent())     {
+    if (!_mayAddEvent()) {
         throw _badEventState();
     }
     _add(value);
@@ -79,7 +79,7 @@ void _StreamControllerCls<T>::add(T value) {
 template<typename T>
 void _StreamControllerCls<T>::addError(Object error, StackTrace stackTrace) {
     checkNotNullable(error, __s("error"));
-    if (!_mayAddEvent())     {
+    if (!_mayAddEvent()) {
         throw _badEventState();
     }
     AsyncError replacement = ZoneCls::current->errorCallback(error, stackTrace);
@@ -97,7 +97,7 @@ Future _StreamControllerCls<T>::close() {
     if (isClosed()) {
         return _ensureDoneFuture();
     }
-    if (!_mayAddEvent())     {
+    if (!_mayAddEvent()) {
         throw _badEventState();
     }
     _closeUnchecked();
@@ -182,7 +182,7 @@ void _StreamControllerCls<T>::_closeUnchecked() {
     _state |= _STATE_CLOSED;
     if (hasListener()) {
         _sendDone();
-    } else     {
+    } else {
         if (_isInitialState()) {
         _ensurePendingEvents()->add(make<_DelayedDoneCls>());
     }
@@ -193,7 +193,7 @@ template<typename T>
 void _StreamControllerCls<T>::_add(T value) {
     if (hasListener()) {
         _sendData(value);
-    } else     {
+    } else {
         if (_isInitialState()) {
         _ensurePendingEvents()->add(<T>make<_DelayedDataCls>(value));
     }
@@ -204,7 +204,7 @@ template<typename T>
 void _StreamControllerCls<T>::_addError(Object error, StackTrace stackTrace) {
     if (hasListener()) {
         _sendError(error, stackTrace);
-    } else     {
+    } else {
         if (_isInitialState()) {
         _ensurePendingEvents()->add(make<_DelayedErrorCls>(error, stackTrace));
     }
@@ -324,7 +324,7 @@ void _AsyncStreamControllerDispatchCls<T>::_sendDone() {
 }
 
 void _runGuarded(std::function<void()> notificationHandler) {
-    if (notificationHandler == nullptr)     {
+    if (notificationHandler == nullptr) {
         return;
     }
     try {
@@ -341,7 +341,7 @@ int _ControllerStreamCls<T>::hashCode() {
 
 template<typename T>
 bool _ControllerStreamCls<T>::==(Object other) {
-    if (identical(this, other))     {
+    if (identical(this, other)) {
         return true;
     }
     return is<_ControllerStream>(other) && identical(other->_controller, this->_controller);

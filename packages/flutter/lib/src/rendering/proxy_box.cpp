@@ -1969,7 +1969,7 @@ void RenderFittedBoxCls::_updatePaintData() {
         _hasVisualOverflow = sourceRect->width() < childSize->width() || sourceRect->height() < childSize->height();
         assert(scaleX->isFinite && scaleY->isFinite);
             auto _c1 = Matrix4Cls->translationValues(destinationRect->left, destinationRect->top, 0.0);    _c1.auto _c2 = scale(scaleX, scaleY, 1.0);    _c2.translate(-sourceRect->left, -sourceRect->top);    _c2;_transform = _c1;
-        assert(_transform!->storage()->every([=] (double value)         {
+        assert(_transform!->storage()->every([=] (double value) {
             value->isFinite;
         }));
     }
@@ -2207,19 +2207,19 @@ void RenderRepaintBoundaryCls::debugFillProperties(DiagnosticPropertiesBuilder p
             String diagnosis;
             if (debugSymmetricPaintCount() +  < 5) {
                 diagnosis = __s("insufficient data to draw conclusion (less than five repaints)");
-            } else             {
+            } else {
                 if (fraction > 0.9) {
                 diagnosis = __s("this is an outstandingly useful repaint boundary and should definitely be kept");
-            } else             {
+            } else {
                 if (fraction > 0.5) {
                 diagnosis = __s("this is a useful repaint boundary and should be kept");
-            } else             {
+            } else {
                 if (fraction > 0.30) {
                 diagnosis = __s("this repaint boundary is probably useful, but maybe it would be more useful in tandem with adding more repaint boundaries elsewhere");
-            } else             {
+            } else {
                 if (fraction > 0.1) {
                 diagnosis = __s("this repaint boundary does sometimes show value, though currently not that often");
-            } else             {
+            } else {
                 if (debugAsymmetricPaintCount() == 0) {
                 diagnosis = __s("this repaint boundary is astoundingly ineffectual and should be removed");
             } else {
