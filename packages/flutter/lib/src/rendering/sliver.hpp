@@ -137,7 +137,7 @@ public:
     double crossAxisPosition;
 
 
-     SliverHitTestEntryCls(Unknown target, double crossAxisPosition, double mainAxisPosition);
+     SliverHitTestEntryCls(T target, double crossAxisPosition, double mainAxisPosition);
 
     virtual String toString();
 

@@ -21,7 +21,7 @@ public:
     AutovalidateMode autovalidateMode;
 
 
-     FormCls(AutovalidateMode autovalidateMode, Widget child, Unknown key, VoidCallback onChanged, WillPopCallback onWillPop);
+     FormCls(AutovalidateMode autovalidateMode, Widget child, Key key, VoidCallback onChanged, WillPopCallback onWillPop);
 
     static FormState of(BuildContext context);
 
@@ -77,7 +77,7 @@ private:
     int _generation;
 
 
-     _FormScopeCls(Unknown child, FormState formState, int generation);
+     _FormScopeCls(Widget child, FormState formState, int generation);
 
 };
 using _FormScope = std::shared_ptr<_FormScopeCls>;
@@ -100,7 +100,7 @@ public:
     String restorationId;
 
 
-     FormFieldCls(AutovalidateMode autovalidateMode, FormFieldBuilder<T> builder, bool enabled, T initialValue, Unknown key, FormFieldSetter<T> onSaved, String restorationId, FormFieldValidator<T> validator);
+     FormFieldCls(AutovalidateMode autovalidateMode, FormFieldBuilder<T> builder, bool enabled, T initialValue, Key key, FormFieldSetter<T> onSaved, String restorationId, FormFieldValidator<T> validator);
 
     virtual FormFieldState<T> createState();
 

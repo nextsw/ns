@@ -1,5 +1,5 @@
 #include "rounded_rectangle_border.hpp"
-RoundedRectangleBorderCls::RoundedRectangleBorderCls(BorderRadiusGeometry borderRadius, Unknown side) {
+RoundedRectangleBorderCls::RoundedRectangleBorderCls(BorderRadiusGeometry borderRadius, BorderSide side) {
     {
         assert(side != nullptr);
         assert(borderRadius != nullptr);
@@ -139,7 +139,7 @@ String _RoundedRectangleToCircleBorderCls::toString() {
     return __s("RoundedRectangleBorder($side, $borderRadius, ${(circleness * 100).toStringAsFixed(1)}% of the way to being a CircleBorder)");
 }
 
-_RoundedRectangleToCircleBorderCls::_RoundedRectangleToCircleBorderCls(BorderRadiusGeometry borderRadius, double circleness, Unknown side) {
+_RoundedRectangleToCircleBorderCls::_RoundedRectangleToCircleBorderCls(BorderRadiusGeometry borderRadius, double circleness, BorderSide side) {
     {
         assert(side != nullptr);
         assert(borderRadius != nullptr);

@@ -17,7 +17,7 @@ public:
     Widget child;
 
 
-     ValueListenableBuilderCls(ValueWidgetBuilder<T> builder, Widget child, Unknown key, ValueListenable<T> valueListenable);
+     ValueListenableBuilderCls(ValueWidgetBuilder<T> builder, Widget child, Key key, ValueListenable<T> valueListenable);
 
     virtual State<StatefulWidget> createState();
 

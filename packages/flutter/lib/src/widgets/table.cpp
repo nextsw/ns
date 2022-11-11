@@ -21,7 +21,7 @@ String TableRowCls::toString() {
     return result->toString();
 }
 
-TableCls::TableCls(TableBorder border, List<TableRow> children, Map<int, TableColumnWidth> columnWidths, TableColumnWidth defaultColumnWidth, TableCellVerticalAlignment defaultVerticalAlignment, Unknown key, TextBaseline textBaseline, TextDirection textDirection) {
+TableCls::TableCls(TableBorder border, List<TableRow> children, Map<int, TableColumnWidth> columnWidths, TableColumnWidth defaultColumnWidth, TableCellVerticalAlignment defaultVerticalAlignment, Key key, TextBaseline textBaseline, TextDirection textDirection) {
     {
         assert(children != nullptr);
         assert(defaultColumnWidth != nullptr);

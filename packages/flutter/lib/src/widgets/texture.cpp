@@ -1,5 +1,5 @@
 #include "texture.hpp"
-TextureCls::TextureCls(FilterQuality filterQuality, bool freeze, Unknown key, int textureId) {
+TextureCls::TextureCls(FilterQuality filterQuality, bool freeze, Key key, int textureId) {
     {
         assert(textureId != nullptr);
     }

@@ -46,7 +46,7 @@ public:
 
 private:
 
-     _UbiquitousInheritedWidgetCls(Unknown child, Unknown key);
+     _UbiquitousInheritedWidgetCls(Widget child, Key key);
 };
 using _UbiquitousInheritedWidget = std::shared_ptr<_UbiquitousInheritedWidgetCls>;
 
@@ -55,7 +55,7 @@ public:
     TextDirection textDirection;
 
 
-     DirectionalityCls(Unknown child, Unknown key, TextDirection textDirection);
+     DirectionalityCls(Widget child, Key key, TextDirection textDirection);
 
     static TextDirection of(BuildContext context);
 
@@ -77,7 +77,7 @@ public:
     bool alwaysIncludeSemantics;
 
 
-     OpacityCls(bool alwaysIncludeSemantics, Unknown child, Unknown key, double opacity);
+     OpacityCls(bool alwaysIncludeSemantics, Widget child, Key key, double opacity);
 
     virtual RenderOpacity createRenderObject(BuildContext context);
 
@@ -97,7 +97,7 @@ public:
     BlendMode blendMode;
 
 
-     ShaderMaskCls(BlendMode blendMode, Unknown child, Unknown key, ShaderCallback shaderCallback);
+     ShaderMaskCls(BlendMode blendMode, Widget child, Key key, ShaderCallback shaderCallback);
 
     virtual RenderShaderMask createRenderObject(BuildContext context);
 
@@ -115,7 +115,7 @@ public:
     BlendMode blendMode;
 
 
-     BackdropFilterCls(BlendMode blendMode, Unknown child, ImageFilter filter, Unknown key);
+     BackdropFilterCls(BlendMode blendMode, Widget child, ImageFilter filter, Key key);
 
     virtual RenderBackdropFilter createRenderObject(BuildContext context);
 
@@ -139,7 +139,7 @@ public:
     bool willChange;
 
 
-     CustomPaintCls(Unknown child, CustomPainter foregroundPainter, bool isComplex, Unknown key, CustomPainter painter, Size size, bool willChange);
+     CustomPaintCls(Widget child, CustomPainter foregroundPainter, bool isComplex, Key key, CustomPainter painter, Size size, bool willChange);
 
     virtual RenderCustomPaint createRenderObject(BuildContext context);
 
@@ -159,7 +159,7 @@ public:
     Clip clipBehavior;
 
 
-     ClipRectCls(Unknown child, Clip clipBehavior, CustomClipper<Rect> clipper, Unknown key);
+     ClipRectCls(Widget child, Clip clipBehavior, CustomClipper<Rect> clipper, Key key);
 
     virtual RenderClipRect createRenderObject(BuildContext context);
 
@@ -183,7 +183,7 @@ public:
     Clip clipBehavior;
 
 
-     ClipRRectCls(BorderRadiusGeometry borderRadius, Unknown child, Clip clipBehavior, CustomClipper<RRect> clipper, Unknown key);
+     ClipRRectCls(BorderRadiusGeometry borderRadius, Widget child, Clip clipBehavior, CustomClipper<RRect> clipper, Key key);
 
     virtual RenderClipRRect createRenderObject(BuildContext context);
 
@@ -203,7 +203,7 @@ public:
     Clip clipBehavior;
 
 
-     ClipOvalCls(Unknown child, Clip clipBehavior, CustomClipper<Rect> clipper, Unknown key);
+     ClipOvalCls(Widget child, Clip clipBehavior, CustomClipper<Rect> clipper, Key key);
 
     virtual RenderClipOval createRenderObject(BuildContext context);
 
@@ -225,7 +225,7 @@ public:
     Clip clipBehavior;
 
 
-     ClipPathCls(Unknown child, Clip clipBehavior, CustomClipper<Path> clipper, Unknown key);
+     ClipPathCls(Widget child, Clip clipBehavior, CustomClipper<Path> clipper, Key key);
 
     static Widget shape(Widget child, Clip clipBehavior, Key key, ShapeBorder shape);
 
@@ -257,7 +257,7 @@ public:
     Color shadowColor;
 
 
-     PhysicalModelCls(BorderRadius borderRadius, Unknown child, Clip clipBehavior, Color color, double elevation, Unknown key, Color shadowColor, BoxShape shape);
+     PhysicalModelCls(BorderRadius borderRadius, Widget child, Clip clipBehavior, Color color, double elevation, Key key, Color shadowColor, BoxShape shape);
 
     virtual RenderPhysicalModel createRenderObject(BuildContext context);
 
@@ -283,7 +283,7 @@ public:
     Color shadowColor;
 
 
-     PhysicalShapeCls(Unknown child, Clip clipBehavior, CustomClipper<Path> clipper, Color color, double elevation, Unknown key, Color shadowColor);
+     PhysicalShapeCls(Widget child, Clip clipBehavior, CustomClipper<Path> clipper, Color color, double elevation, Key key, Color shadowColor);
 
     virtual RenderPhysicalShape createRenderObject(BuildContext context);
 
@@ -309,13 +309,13 @@ public:
     FilterQuality filterQuality;
 
 
-     TransformCls(AlignmentGeometry alignment, Unknown child, FilterQuality filterQuality, Unknown key, Offset origin, Matrix4 transform, bool transformHitTests);
+     TransformCls(AlignmentGeometry alignment, Widget child, FilterQuality filterQuality, Key key, Offset origin, Matrix4 transform, bool transformHitTests);
 
-    virtual void  rotate(AlignmentGeometry alignment, double angle, Unknown child, FilterQuality filterQuality, Unknown key, Offset origin, bool transformHitTests);
+    virtual void  rotate(AlignmentGeometry alignment, double angle, Widget child, FilterQuality filterQuality, Key key, Offset origin, bool transformHitTests);
 
-    virtual void  translate(Unknown child, FilterQuality filterQuality, Unknown key, Offset offset, bool transformHitTests);
+    virtual void  translate(Widget child, FilterQuality filterQuality, Key key, Offset offset, bool transformHitTests);
 
-    virtual void  scale(AlignmentGeometry alignment, Unknown child, FilterQuality filterQuality, Unknown key, Offset origin, double scale, double scaleX, double scaleY, bool transformHitTests);
+    virtual void  scale(AlignmentGeometry alignment, Widget child, FilterQuality filterQuality, Key key, Offset origin, double scale, double scaleX, double scaleY, bool transformHitTests);
 
     virtual RenderTransform createRenderObject(BuildContext context);
 
@@ -335,7 +335,7 @@ public:
     LayerLink link;
 
 
-     CompositedTransformTargetCls(Unknown child, Unknown key, LayerLink link);
+     CompositedTransformTargetCls(Widget child, Key key, LayerLink link);
 
     virtual RenderLeaderLayer createRenderObject(BuildContext context);
 
@@ -359,7 +359,7 @@ public:
     Offset offset;
 
 
-     CompositedTransformFollowerCls(Unknown child, Alignment followerAnchor, Unknown key, LayerLink link, Offset offset, bool showWhenUnlinked, Alignment targetAnchor);
+     CompositedTransformFollowerCls(Widget child, Alignment followerAnchor, Key key, LayerLink link, Offset offset, bool showWhenUnlinked, Alignment targetAnchor);
 
     virtual RenderFollowerLayer createRenderObject(BuildContext context);
 
@@ -379,7 +379,7 @@ public:
     Clip clipBehavior;
 
 
-     FittedBoxCls(AlignmentGeometry alignment, Unknown child, Clip clipBehavior, BoxFit fit, Unknown key);
+     FittedBoxCls(AlignmentGeometry alignment, Widget child, Clip clipBehavior, BoxFit fit, Key key);
 
     virtual RenderFittedBox createRenderObject(BuildContext context);
 
@@ -399,7 +399,7 @@ public:
     bool transformHitTests;
 
 
-     FractionalTranslationCls(Unknown child, Unknown key, bool transformHitTests, Offset translation);
+     FractionalTranslationCls(Widget child, Key key, bool transformHitTests, Offset translation);
 
     virtual RenderFractionalTranslation createRenderObject(BuildContext context);
 
@@ -415,7 +415,7 @@ public:
     int quarterTurns;
 
 
-     RotatedBoxCls(Unknown child, Unknown key, int quarterTurns);
+     RotatedBoxCls(Widget child, Key key, int quarterTurns);
 
     virtual RenderRotatedBox createRenderObject(BuildContext context);
 
@@ -431,7 +431,7 @@ public:
     EdgeInsetsGeometry padding;
 
 
-     PaddingCls(Unknown child, Unknown key, EdgeInsetsGeometry padding);
+     PaddingCls(Widget child, Key key, EdgeInsetsGeometry padding);
 
     virtual RenderPadding createRenderObject(BuildContext context);
 
@@ -453,7 +453,7 @@ public:
     double heightFactor;
 
 
-     AlignCls(AlignmentGeometry alignment, Unknown child, double heightFactor, Unknown key, double widthFactor);
+     AlignCls(AlignmentGeometry alignment, Widget child, double heightFactor, Key key, double widthFactor);
 
     virtual RenderPositionedBox createRenderObject(BuildContext context);
 
@@ -469,7 +469,7 @@ using Align = std::shared_ptr<AlignCls>;
 class CenterCls : public AlignCls {
 public:
 
-     CenterCls(Unknown child, Unknown heightFactor, Unknown key, Unknown widthFactor);
+     CenterCls(Widget child, double heightFactor, Key key, double widthFactor);
 private:
 
 };
@@ -480,7 +480,7 @@ public:
     SingleChildLayoutDelegate delegate;
 
 
-     CustomSingleChildLayoutCls(Unknown child, SingleChildLayoutDelegate delegate, Unknown key);
+     CustomSingleChildLayoutCls(Widget child, SingleChildLayoutDelegate delegate, Key key);
 
     virtual RenderCustomSingleChildLayoutBox createRenderObject(BuildContext context);
 
@@ -496,7 +496,7 @@ public:
     Object id;
 
 
-     LayoutIdCls(Unknown child, Object id, Key key);
+     LayoutIdCls(Widget child, Object id, Key key);
 
     virtual void applyParentData(RenderObject renderObject);
 
@@ -514,7 +514,7 @@ public:
     MultiChildLayoutDelegate delegate;
 
 
-     CustomMultiChildLayoutCls(Unknown children, MultiChildLayoutDelegate delegate, Unknown key);
+     CustomMultiChildLayoutCls(List<Widget> children, MultiChildLayoutDelegate delegate, Key key);
 
     virtual RenderCustomMultiChildLayoutBox createRenderObject(BuildContext context);
 
@@ -532,14 +532,14 @@ public:
     double height;
 
 
-     SizedBoxCls(Unknown child, double height, Unknown key, double width);
-    virtual void  expand(Unknown child, Unknown key);
+     SizedBoxCls(Widget child, double height, Key key, double width);
+    virtual void  expand(Widget child, Key key);
 
-    virtual void  shrink(Unknown child, Unknown key);
+    virtual void  shrink(Widget child, Key key);
 
-    virtual void  fromSize(Unknown child, Unknown key, Size size);
+    virtual void  fromSize(Widget child, Key key, Size size);
 
-    virtual void  square(Unknown child, double dimension, Unknown key);
+    virtual void  square(Widget child, double dimension, Key key);
 
     virtual RenderConstrainedBox createRenderObject(BuildContext context);
 
@@ -561,7 +561,7 @@ public:
     BoxConstraints constraints;
 
 
-     ConstrainedBoxCls(Unknown child, BoxConstraints constraints, Unknown key);
+     ConstrainedBoxCls(Widget child, BoxConstraints constraints, Key key);
 
     virtual RenderConstrainedBox createRenderObject(BuildContext context);
 
@@ -585,7 +585,7 @@ public:
     Clip clipBehavior;
 
 
-     ConstraintsTransformBoxCls(AlignmentGeometry alignment, Unknown child, Clip clipBehavior, BoxConstraintsTransform constraintsTransform, String debugTransformType, Unknown key, TextDirection textDirection);
+     ConstraintsTransformBoxCls(AlignmentGeometry alignment, Widget child, Clip clipBehavior, BoxConstraintsTransform constraintsTransform, String debugTransformType, Key key, TextDirection textDirection);
 
     static BoxConstraints unmodified(BoxConstraints constraints);
 
@@ -629,7 +629,7 @@ public:
     Widget child;
 
 
-     UnconstrainedBoxCls(AlignmentGeometry alignment, Widget child, Clip clipBehavior, Axis constrainedAxis, Unknown key, TextDirection textDirection);
+     UnconstrainedBoxCls(AlignmentGeometry alignment, Widget child, Clip clipBehavior, Axis constrainedAxis, Key key, TextDirection textDirection);
 
     virtual Widget build(BuildContext context);
 
@@ -651,7 +651,7 @@ public:
     AlignmentGeometry alignment;
 
 
-     FractionallySizedBoxCls(AlignmentGeometry alignment, Unknown child, double heightFactor, Unknown key, double widthFactor);
+     FractionallySizedBoxCls(AlignmentGeometry alignment, Widget child, double heightFactor, Key key, double widthFactor);
 
     virtual RenderFractionallySizedOverflowBox createRenderObject(BuildContext context);
 
@@ -671,7 +671,7 @@ public:
     double maxHeight;
 
 
-     LimitedBoxCls(Unknown child, Unknown key, double maxHeight, double maxWidth);
+     LimitedBoxCls(Widget child, Key key, double maxHeight, double maxWidth);
 
     virtual RenderLimitedBox createRenderObject(BuildContext context);
 
@@ -697,7 +697,7 @@ public:
     double maxHeight;
 
 
-     OverflowBoxCls(AlignmentGeometry alignment, Unknown child, Unknown key, double maxHeight, double maxWidth, double minHeight, double minWidth);
+     OverflowBoxCls(AlignmentGeometry alignment, Widget child, Key key, double maxHeight, double maxWidth, double minHeight, double minWidth);
     virtual RenderConstrainedOverflowBox createRenderObject(BuildContext context);
 
     virtual void updateRenderObject(BuildContext context, RenderConstrainedOverflowBox renderObject);
@@ -716,7 +716,7 @@ public:
     Size size;
 
 
-     SizedOverflowBoxCls(AlignmentGeometry alignment, Unknown child, Unknown key, Size size);
+     SizedOverflowBoxCls(AlignmentGeometry alignment, Widget child, Key key, Size size);
 
     virtual RenderSizedOverflowBox createRenderObject(BuildContext context);
 
@@ -734,7 +734,7 @@ public:
     bool offstage;
 
 
-     OffstageCls(Unknown child, Unknown key, bool offstage);
+     OffstageCls(Widget child, Key key, bool offstage);
 
     virtual RenderOffstage createRenderObject(BuildContext context);
 
@@ -765,7 +765,7 @@ public:
     double aspectRatio;
 
 
-     AspectRatioCls(double aspectRatio, Unknown child, Unknown key);
+     AspectRatioCls(double aspectRatio, Widget child, Key key);
 
     virtual RenderAspectRatio createRenderObject(BuildContext context);
 
@@ -785,7 +785,7 @@ public:
     double stepHeight;
 
 
-     IntrinsicWidthCls(Unknown child, Unknown key, double stepHeight, double stepWidth);
+     IntrinsicWidthCls(Widget child, Key key, double stepHeight, double stepWidth);
 
     virtual RenderIntrinsicWidth createRenderObject(BuildContext context);
 
@@ -803,7 +803,7 @@ using IntrinsicWidth = std::shared_ptr<IntrinsicWidthCls>;
 class IntrinsicHeightCls : public SingleChildRenderObjectWidgetCls {
 public:
 
-     IntrinsicHeightCls(Unknown child, Unknown key);
+     IntrinsicHeightCls(Widget child, Key key);
     virtual RenderIntrinsicHeight createRenderObject(BuildContext context);
 
 private:
@@ -818,7 +818,7 @@ public:
     TextBaseline baselineType;
 
 
-     BaselineCls(double baseline, TextBaseline baselineType, Unknown child, Unknown key);
+     BaselineCls(double baseline, TextBaseline baselineType, Widget child, Key key);
 
     virtual RenderBaseline createRenderObject(BuildContext context);
 
@@ -832,7 +832,7 @@ using Baseline = std::shared_ptr<BaselineCls>;
 class SliverToBoxAdapterCls : public SingleChildRenderObjectWidgetCls {
 public:
 
-     SliverToBoxAdapterCls(Unknown child, Unknown key);
+     SliverToBoxAdapterCls(Widget child, Key key);
     virtual RenderSliverToBoxAdapter createRenderObject(BuildContext context);
 
 private:
@@ -845,7 +845,7 @@ public:
     EdgeInsetsGeometry padding;
 
 
-     SliverPaddingCls(Unknown key, EdgeInsetsGeometry padding, Widget sliver);
+     SliverPaddingCls(Key key, EdgeInsetsGeometry padding, Widget sliver);
 
     virtual RenderSliverPadding createRenderObject(BuildContext context);
 
@@ -867,7 +867,7 @@ public:
     bool reverse;
 
 
-     ListBodyCls(Unknown children, Unknown key, Axis mainAxis, bool reverse);
+     ListBodyCls(List<Widget> children, Key key, Axis mainAxis, bool reverse);
 
     virtual RenderListBody createRenderObject(BuildContext context);
 
@@ -891,7 +891,7 @@ public:
     Clip clipBehavior;
 
 
-     StackCls(AlignmentGeometry alignment, Unknown children, Clip clipBehavior, StackFit fit, Unknown key, TextDirection textDirection);
+     StackCls(AlignmentGeometry alignment, List<Widget> children, Clip clipBehavior, StackFit fit, Key key, TextDirection textDirection);
 
     virtual RenderStack createRenderObject(BuildContext context);
 
@@ -911,7 +911,7 @@ public:
     int index;
 
 
-     IndexedStackCls(Unknown alignment, Unknown children, int index, Unknown key, StackFit sizing, Unknown textDirection);
+     IndexedStackCls(AlignmentGeometry alignment, List<Widget> children, int index, Key key, StackFit sizing, TextDirection textDirection);
 
     virtual RenderIndexedStack createRenderObject(BuildContext context);
 
@@ -937,13 +937,13 @@ public:
     double height;
 
 
-     PositionedCls(double bottom, Unknown child, double height, Unknown key, double left, double right, double top, double width);
+     PositionedCls(double bottom, Widget child, double height, Key key, double left, double right, double top, double width);
 
-    virtual void  fromRect(Unknown child, Unknown key, Rect rect);
+    virtual void  fromRect(Widget child, Key key, Rect rect);
 
-    virtual void  fromRelativeRect(Unknown child, Unknown key, RelativeRect rect);
+    virtual void  fromRelativeRect(Widget child, Key key, RelativeRect rect);
 
-    virtual void  fill(double bottom, Unknown child, Unknown key, double left, double right, double top);
+    virtual void  fill(double bottom, Widget child, Key key, double left, double right, double top);
 
     virtual void  directional(double bottom, Widget child, double end, double height, Key key, double start, TextDirection textDirection, double top, double width);
 
@@ -975,7 +975,7 @@ public:
     Widget child;
 
 
-     PositionedDirectionalCls(double bottom, Widget child, double end, double height, Unknown key, double start, double top, double width);
+     PositionedDirectionalCls(double bottom, Widget child, double end, double height, Key key, double start, double top, double width);
     virtual Widget build(BuildContext context);
 
 private:
@@ -1002,7 +1002,7 @@ public:
     Clip clipBehavior;
 
 
-     FlexCls(Unknown children, Clip clipBehavior, CrossAxisAlignment crossAxisAlignment, Axis direction, Unknown key, MainAxisAlignment mainAxisAlignment, MainAxisSize mainAxisSize, TextBaseline textBaseline, TextDirection textDirection, VerticalDirection verticalDirection);
+     FlexCls(List<Widget> children, Clip clipBehavior, CrossAxisAlignment crossAxisAlignment, Axis direction, Key key, MainAxisAlignment mainAxisAlignment, MainAxisSize mainAxisSize, TextBaseline textBaseline, TextDirection textDirection, VerticalDirection verticalDirection);
 
     virtual TextDirection getEffectiveTextDirection(BuildContext context);
 
@@ -1022,7 +1022,7 @@ using Flex = std::shared_ptr<FlexCls>;
 class RowCls : public FlexCls {
 public:
 
-     RowCls(Unknown children, Unknown crossAxisAlignment, Unknown key, Unknown mainAxisAlignment, Unknown mainAxisSize, Unknown textBaseline, Unknown textDirection, Unknown verticalDirection);
+     RowCls(List<Widget> children, CrossAxisAlignment crossAxisAlignment, Key key, MainAxisAlignment mainAxisAlignment, MainAxisSize mainAxisSize, TextBaseline textBaseline, TextDirection textDirection, VerticalDirection verticalDirection);
 
 private:
 
@@ -1032,7 +1032,7 @@ using Row = std::shared_ptr<RowCls>;
 class ColumnCls : public FlexCls {
 public:
 
-     ColumnCls(Unknown children, Unknown crossAxisAlignment, Unknown key, Unknown mainAxisAlignment, Unknown mainAxisSize, Unknown textBaseline, Unknown textDirection, Unknown verticalDirection);
+     ColumnCls(List<Widget> children, CrossAxisAlignment crossAxisAlignment, Key key, MainAxisAlignment mainAxisAlignment, MainAxisSize mainAxisSize, TextBaseline textBaseline, TextDirection textDirection, VerticalDirection verticalDirection);
 
 private:
 
@@ -1046,7 +1046,7 @@ public:
     FlexFit fit;
 
 
-     FlexibleCls(Unknown child, FlexFit fit, int flex, Unknown key);
+     FlexibleCls(Widget child, FlexFit fit, int flex, Key key);
     virtual void applyParentData(RenderObject renderObject);
 
     virtual Type debugTypicalAncestorWidgetClass();
@@ -1061,7 +1061,7 @@ using Flexible = std::shared_ptr<FlexibleCls>;
 class ExpandedCls : public FlexibleCls {
 public:
 
-     ExpandedCls(Unknown child, Unknown flex, Unknown key);
+     ExpandedCls(Widget child, int flex, Key key);
 
 private:
 
@@ -1089,7 +1089,7 @@ public:
     Clip clipBehavior;
 
 
-     WrapCls(WrapAlignment alignment, Unknown children, Clip clipBehavior, WrapCrossAlignment crossAxisAlignment, Axis direction, Unknown key, WrapAlignment runAlignment, double runSpacing, double spacing, TextDirection textDirection, VerticalDirection verticalDirection);
+     WrapCls(WrapAlignment alignment, List<Widget> children, Clip clipBehavior, WrapCrossAlignment crossAxisAlignment, Axis direction, Key key, WrapAlignment runAlignment, double runSpacing, double spacing, TextDirection textDirection, VerticalDirection verticalDirection);
 
     virtual RenderWrap createRenderObject(BuildContext context);
 
@@ -1109,9 +1109,9 @@ public:
     Clip clipBehavior;
 
 
-     FlowCls(List<Widget> children, Clip clipBehavior, FlowDelegate delegate, Unknown key);
+     FlowCls(List<Widget> children, Clip clipBehavior, FlowDelegate delegate, Key key);
 
-    virtual void  unwrapped(Unknown children, Clip clipBehavior, FlowDelegate delegate, Unknown key);
+    virtual void  unwrapped(List<Widget> children, Clip clipBehavior, FlowDelegate delegate, Key key);
 
     virtual RenderFlow createRenderObject(BuildContext context);
 
@@ -1151,7 +1151,7 @@ public:
     Color selectionColor;
 
 
-     RichTextCls(Unknown key, Locale locale, int maxLines, TextOverflow overflow, Color selectionColor, SelectionRegistrar selectionRegistrar, bool softWrap, StrutStyle strutStyle, InlineSpan text, TextAlign textAlign, TextDirection textDirection, TextHeightBehavior textHeightBehavior, double textScaleFactor, TextWidthBasis textWidthBasis);
+     RichTextCls(Key key, Locale locale, int maxLines, TextOverflow overflow, Color selectionColor, SelectionRegistrar selectionRegistrar, bool softWrap, StrutStyle strutStyle, InlineSpan text, TextAlign textAlign, TextDirection textDirection, TextHeightBehavior textHeightBehavior, double textScaleFactor, TextWidthBasis textWidthBasis);
 
     virtual RenderParagraph createRenderObject(BuildContext context);
 
@@ -1201,7 +1201,7 @@ public:
     bool isAntiAlias;
 
 
-     RawImageCls(AlignmentGeometry alignment, Rect centerSlice, Color color, BlendMode colorBlendMode, String debugImageLabel, FilterQuality filterQuality, BoxFit fit, double height, Image image, bool invertColors, bool isAntiAlias, Unknown key, bool matchTextDirection, Animation<double> opacity, ImageRepeat repeat, double scale, double width);
+     RawImageCls(AlignmentGeometry alignment, Rect centerSlice, Color color, BlendMode colorBlendMode, String debugImageLabel, FilterQuality filterQuality, BoxFit fit, double height, Image image, bool invertColors, bool isAntiAlias, Key key, bool matchTextDirection, Animation<double> opacity, ImageRepeat repeat, double scale, double width);
 
     virtual RenderImage createRenderObject(BuildContext context);
 
@@ -1221,7 +1221,7 @@ public:
     AssetBundle bundle;
 
 
-     DefaultAssetBundleCls(AssetBundle bundle, Unknown child, Unknown key);
+     DefaultAssetBundleCls(AssetBundle bundle, Widget child, Key key);
 
     static AssetBundle of(BuildContext context);
 
@@ -1277,7 +1277,7 @@ public:
     HitTestBehavior behavior;
 
 
-     ListenerCls(HitTestBehavior behavior, Unknown child, Unknown key, PointerCancelEventListener onPointerCancel, PointerDownEventListener onPointerDown, PointerHoverEventListener onPointerHover, PointerMoveEventListener onPointerMove, PointerPanZoomEndEventListener onPointerPanZoomEnd, PointerPanZoomStartEventListener onPointerPanZoomStart, PointerPanZoomUpdateEventListener onPointerPanZoomUpdate, PointerSignalEventListener onPointerSignal, PointerUpEventListener onPointerUp);
+     ListenerCls(HitTestBehavior behavior, Widget child, Key key, PointerCancelEventListener onPointerCancel, PointerDownEventListener onPointerDown, PointerHoverEventListener onPointerHover, PointerMoveEventListener onPointerMove, PointerPanZoomEndEventListener onPointerPanZoomEnd, PointerPanZoomStartEventListener onPointerPanZoomStart, PointerPanZoomUpdateEventListener onPointerPanZoomUpdate, PointerSignalEventListener onPointerSignal, PointerUpEventListener onPointerUp);
 
     virtual RenderPointerListener createRenderObject(BuildContext context);
 
@@ -1305,7 +1305,7 @@ public:
     HitTestBehavior hitTestBehavior;
 
 
-     MouseRegionCls(Unknown child, MouseCursor cursor, HitTestBehavior hitTestBehavior, Unknown key, PointerEnterEventListener onEnter, PointerExitEventListener onExit, PointerHoverEventListener onHover, bool opaque);
+     MouseRegionCls(Widget child, MouseCursor cursor, HitTestBehavior hitTestBehavior, Key key, PointerEnterEventListener onEnter, PointerExitEventListener onExit, PointerHoverEventListener onHover, bool opaque);
 
     virtual RenderMouseRegion createRenderObject(BuildContext context);
 
@@ -1321,7 +1321,7 @@ using MouseRegion = std::shared_ptr<MouseRegionCls>;
 class RepaintBoundaryCls : public SingleChildRenderObjectWidgetCls {
 public:
 
-     RepaintBoundaryCls(Unknown child, Unknown key);
+     RepaintBoundaryCls(Widget child, Key key);
     virtual void  wrap(Widget child, int childIndex);
 
     static List<RepaintBoundary> wrapAll(List<Widget> widgets);
@@ -1340,7 +1340,7 @@ public:
     bool ignoringSemantics;
 
 
-     IgnorePointerCls(Unknown child, bool ignoring, bool ignoringSemantics, Unknown key);
+     IgnorePointerCls(Widget child, bool ignoring, bool ignoringSemantics, Key key);
 
     virtual RenderIgnorePointer createRenderObject(BuildContext context);
 
@@ -1360,7 +1360,7 @@ public:
     bool ignoringSemantics;
 
 
-     AbsorbPointerCls(bool absorbing, Unknown child, bool ignoringSemantics, Unknown key);
+     AbsorbPointerCls(bool absorbing, Widget child, bool ignoringSemantics, Key key);
 
     virtual RenderAbsorbPointer createRenderObject(BuildContext context);
 
@@ -1380,7 +1380,7 @@ public:
     HitTestBehavior behavior;
 
 
-     MetaDataCls(HitTestBehavior behavior, Unknown child, Unknown key, dynamic metaData);
+     MetaDataCls(HitTestBehavior behavior, Widget child, Key key, dynamic metaData);
     virtual RenderMetaData createRenderObject(BuildContext context);
 
     virtual void updateRenderObject(BuildContext context, RenderMetaData renderObject);
@@ -1405,7 +1405,7 @@ public:
 
      SemanticsCls(AttributedString attributedDecreasedValue, AttributedString attributedHint, AttributedString attributedIncreasedValue, AttributedString attributedLabel, AttributedString attributedValue, bool button, bool checked, Widget child, bool container, int currentValueLength, Map<CustomSemanticsAction, VoidCallback> customSemanticsActions, String decreasedValue, bool enabled, bool excludeSemantics, bool explicitChildNodes, bool focusable, bool focused, bool header, bool hidden, String hint, bool image, bool inMutuallyExclusiveGroup, String increasedValue, Key key, bool keyboardKey, String label, bool link, bool liveRegion, int maxValueLength, bool multiline, bool namesRoute, bool obscured, VoidCallback onCopy, VoidCallback onCut, VoidCallback onDecrease, VoidCallback onDidGainAccessibilityFocus, VoidCallback onDidLoseAccessibilityFocus, VoidCallback onDismiss, VoidCallback onIncrease, VoidCallback onLongPress, String onLongPressHint, MoveCursorHandler onMoveCursorBackwardByCharacter, MoveCursorHandler onMoveCursorForwardByCharacter, VoidCallback onPaste, VoidCallback onScrollDown, VoidCallback onScrollLeft, VoidCallback onScrollRight, VoidCallback onScrollUp, SetSelectionHandler onSetSelection, SetTextHandler onSetText, VoidCallback onTap, String onTapHint, bool readOnly, bool scopesRoute, bool selected, bool slider, SemanticsSortKey sortKey, SemanticsTag tagForChildren, TextDirection textDirection, bool textField, bool toggled, String tooltip, String value);
 
-    virtual void  fromProperties(Unknown child, bool container, bool excludeSemantics, bool explicitChildNodes, Unknown key, SemanticsProperties properties);
+    virtual void  fromProperties(Widget child, bool container, bool excludeSemantics, bool explicitChildNodes, Key key, SemanticsProperties properties);
 
     virtual RenderSemanticsAnnotations createRenderObject(BuildContext context);
 
@@ -1423,7 +1423,7 @@ using Semantics = std::shared_ptr<SemanticsCls>;
 class MergeSemanticsCls : public SingleChildRenderObjectWidgetCls {
 public:
 
-     MergeSemanticsCls(Unknown child, Unknown key);
+     MergeSemanticsCls(Widget child, Key key);
     virtual RenderMergeSemantics createRenderObject(BuildContext context);
 
 private:
@@ -1436,7 +1436,7 @@ public:
     bool blocking;
 
 
-     BlockSemanticsCls(bool blocking, Unknown child, Unknown key);
+     BlockSemanticsCls(bool blocking, Widget child, Key key);
     virtual RenderBlockSemantics createRenderObject(BuildContext context);
 
     virtual void updateRenderObject(BuildContext context, RenderBlockSemantics renderObject);
@@ -1453,7 +1453,7 @@ public:
     bool excluding;
 
 
-     ExcludeSemanticsCls(Unknown child, bool excluding, Unknown key);
+     ExcludeSemanticsCls(Widget child, bool excluding, Key key);
 
     virtual RenderExcludeSemantics createRenderObject(BuildContext context);
 
@@ -1471,7 +1471,7 @@ public:
     int index;
 
 
-     IndexedSemanticsCls(Unknown child, int index, Unknown key);
+     IndexedSemanticsCls(Widget child, int index, Key key);
 
     virtual RenderIndexedSemantics createRenderObject(BuildContext context);
 
@@ -1489,7 +1489,7 @@ public:
     Widget child;
 
 
-     KeyedSubtreeCls(Widget child, Unknown key);
+     KeyedSubtreeCls(Widget child, Key key);
 
     virtual void  wrap(Widget child, int childIndex);
 
@@ -1507,7 +1507,7 @@ public:
     WidgetBuilder builder;
 
 
-     BuilderCls(WidgetBuilder builder, Unknown key);
+     BuilderCls(WidgetBuilder builder, Key key);
 
     virtual Widget build(BuildContext context);
 
@@ -1521,7 +1521,7 @@ public:
     StatefulWidgetBuilder builder;
 
 
-     StatefulBuilderCls(StatefulWidgetBuilder builder, Unknown key);
+     StatefulBuilderCls(StatefulWidgetBuilder builder, Key key);
 
     virtual State<StatefulBuilder> createState();
 
@@ -1545,7 +1545,7 @@ public:
     Color color;
 
 
-     ColoredBoxCls(Unknown child, Color color, Unknown key);
+     ColoredBoxCls(Widget child, Color color, Key key);
 
     virtual RenderObject createRenderObject(BuildContext context);
 

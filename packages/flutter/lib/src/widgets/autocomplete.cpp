@@ -1,6 +1,6 @@
 #include "autocomplete.hpp"
 template<typename T>
-RawAutocompleteCls<T>::RawAutocompleteCls(AutocompleteOptionToString<T> displayStringForOption, AutocompleteFieldViewBuilder fieldViewBuilder, FocusNode focusNode, TextEditingValue initialValue, Unknown key, AutocompleteOnSelected<T> onSelected, AutocompleteOptionsBuilder<T> optionsBuilder, AutocompleteOptionsViewBuilder<T> optionsViewBuilder, TextEditingController textEditingController) {
+RawAutocompleteCls<T>::RawAutocompleteCls(AutocompleteOptionToString<T> displayStringForOption, AutocompleteFieldViewBuilder fieldViewBuilder, FocusNode focusNode, TextEditingValue initialValue, Key key, AutocompleteOnSelected<T> onSelected, AutocompleteOptionsBuilder<T> optionsBuilder, AutocompleteOptionsViewBuilder<T> optionsViewBuilder, TextEditingController textEditingController) {
     {
         assert(displayStringForOption != nullptr);
         assert(fieldViewBuilder != nullptr || (key != nullptr && focusNode != nullptr && textEditingController != nullptr), __s("Pass in a fieldViewBuilder, or otherwise create a separate field and pass in the FocusNode, TextEditingController, and a key. Use the key with RawAutocomplete.onFieldSubmitted."));
@@ -250,7 +250,7 @@ bool _AutocompleteCallbackActionCls<T>::consumesKey(T intent) {
     return enabled;
 }
 
-AutocompleteHighlightedOptionCls::AutocompleteHighlightedOptionCls(Unknown child, ValueNotifier<int> highlightIndexNotifier, Unknown key) : InheritedNotifier<ValueNotifier<int>>(highlightIndexNotifier) {
+AutocompleteHighlightedOptionCls::AutocompleteHighlightedOptionCls(Widget child, ValueNotifier<int> highlightIndexNotifier, Key key) : InheritedNotifier<ValueNotifier<int>>(highlightIndexNotifier) {
 }
 
 int AutocompleteHighlightedOptionCls::of(BuildContext context) {

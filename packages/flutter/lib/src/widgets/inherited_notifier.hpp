@@ -13,7 +13,7 @@ public:
     T notifier;
 
 
-     InheritedNotifierCls(Unknown child, Unknown key, T notifier);
+     InheritedNotifierCls(Widget child, Key key, T notifier);
 
     virtual bool updateShouldNotify(InheritedNotifier<T> oldWidget);
 

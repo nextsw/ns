@@ -1,5 +1,5 @@
 #include "continuous_rectangle_border.hpp"
-ContinuousRectangleBorderCls::ContinuousRectangleBorderCls(BorderRadiusGeometry borderRadius, Unknown side) {
+ContinuousRectangleBorderCls::ContinuousRectangleBorderCls(BorderRadiusGeometry borderRadius, BorderSide side) {
     {
         assert(side != nullptr);
         assert(borderRadius != nullptr);

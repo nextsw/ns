@@ -290,7 +290,7 @@ public:
 
 private:
 
-    virtual void  _(Unknown creationParams, Unknown creationParamsCodec, Unknown layoutDirection, Unknown viewId, Unknown viewType);
+    virtual void  _(Unknown creationParams, Unknown creationParamsCodec, Unknown layoutDirection, int viewId, Unknown viewType);
 
 };
 using SurfaceAndroidViewController = std::shared_ptr<SurfaceAndroidViewControllerCls>;
@@ -304,7 +304,7 @@ public:
 
 private:
 
-    virtual void  _(Unknown creationParams, Unknown creationParamsCodec, Unknown layoutDirection, Unknown viewId, Unknown viewType);
+    virtual void  _(Unknown creationParams, Unknown creationParamsCodec, Unknown layoutDirection, int viewId, Unknown viewType);
 
     virtual bool _createRequiresSize();
 
@@ -330,7 +330,7 @@ private:
     Offset _off;
 
 
-    virtual void  _(Unknown creationParams, Unknown creationParamsCodec, Unknown layoutDirection, Unknown viewId, Unknown viewType);
+    virtual void  _(Unknown creationParams, Unknown creationParamsCodec, Unknown layoutDirection, int viewId, Unknown viewType);
 
     virtual Future<Size> _sendResizeMessage(Size size);
 

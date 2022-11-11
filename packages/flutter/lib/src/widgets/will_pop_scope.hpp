@@ -15,7 +15,7 @@ public:
     WillPopCallback onWillPop;
 
 
-     WillPopScopeCls(Widget child, Unknown key, WillPopCallback onWillPop);
+     WillPopScopeCls(Widget child, Key key, WillPopCallback onWillPop);
 
     virtual State<WillPopScope> createState();
 

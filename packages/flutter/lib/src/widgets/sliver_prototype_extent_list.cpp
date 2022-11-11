@@ -1,5 +1,5 @@
 #include "sliver_prototype_extent_list.hpp"
-SliverPrototypeExtentListCls::SliverPrototypeExtentListCls(Unknown delegate, Unknown key, Widget prototypeItem) {
+SliverPrototypeExtentListCls::SliverPrototypeExtentListCls(SliverChildDelegate delegate, Key key, Widget prototypeItem) {
     {
         assert(prototypeItem != nullptr);
     }

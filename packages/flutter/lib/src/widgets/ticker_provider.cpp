@@ -1,5 +1,5 @@
 #include "ticker_provider.hpp"
-TickerModeCls::TickerModeCls(Widget child, bool enabled, Unknown key) {
+TickerModeCls::TickerModeCls(Widget child, bool enabled, Key key) {
     {
         assert(enabled != nullptr);
     }
@@ -57,7 +57,7 @@ void _EffectiveTickerModeCls::debugFillProperties(DiagnosticPropertiesBuilder pr
     properties->add(make<FlagPropertyCls>(__s("effective mode"), enabled, __s("enabled"), __s("disabled"), true));
 }
 
-_EffectiveTickerModeCls::_EffectiveTickerModeCls(Unknown child, bool enabled, ValueNotifier<bool> notifier) {
+_EffectiveTickerModeCls::_EffectiveTickerModeCls(Widget child, bool enabled, ValueNotifier<bool> notifier) {
     {
         assert(enabled != nullptr);
     }

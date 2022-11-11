@@ -476,7 +476,7 @@ public:
     Widget child;
 
 
-     TextSelectionGestureDetectorCls(HitTestBehavior behavior, Widget child, Unknown key, GestureTapDownCallback onDoubleTapDown, GestureDragEndCallback onDragSelectionEnd, GestureDragStartCallback onDragSelectionStart, DragSelectionUpdateCallback onDragSelectionUpdate, GestureForcePressEndCallback onForcePressEnd, GestureForcePressStartCallback onForcePressStart, GestureTapCallback onSecondaryTap, GestureTapDownCallback onSecondaryTapDown, GestureLongPressEndCallback onSingleLongTapEnd, GestureLongPressMoveUpdateCallback onSingleLongTapMoveUpdate, GestureLongPressStartCallback onSingleLongTapStart, GestureTapCancelCallback onSingleTapCancel, GestureTapUpCallback onSingleTapUp, GestureTapDownCallback onTapDown);
+     TextSelectionGestureDetectorCls(HitTestBehavior behavior, Widget child, Key key, GestureTapDownCallback onDoubleTapDown, GestureDragEndCallback onDragSelectionEnd, GestureDragStartCallback onDragSelectionStart, DragSelectionUpdateCallback onDragSelectionUpdate, GestureForcePressEndCallback onForcePressEnd, GestureForcePressStartCallback onForcePressStart, GestureTapCallback onSecondaryTap, GestureTapDownCallback onSecondaryTapDown, GestureLongPressEndCallback onSingleLongTapEnd, GestureLongPressMoveUpdateCallback onSingleLongTapMoveUpdate, GestureLongPressStartCallback onSingleLongTapStart, GestureTapCancelCallback onSingleTapCancel, GestureTapUpCallback onSingleTapUp, GestureTapDownCallback onTapDown);
 
     virtual State<StatefulWidget> createState();
 

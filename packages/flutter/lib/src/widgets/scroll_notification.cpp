@@ -27,7 +27,7 @@ void ScrollStartNotificationCls::debugFillDescription(List<String> description) 
     }
 }
 
-ScrollUpdateNotificationCls::ScrollUpdateNotificationCls(BuildContext context, int depth, DragUpdateDetails dragDetails, Unknown metrics, double scrollDelta) {
+ScrollUpdateNotificationCls::ScrollUpdateNotificationCls(BuildContext context, int depth, DragUpdateDetails dragDetails, ScrollMetrics metrics, double scrollDelta) {
     {
         if (depth != nullptr) {
             _depth = depth;
@@ -43,7 +43,7 @@ void ScrollUpdateNotificationCls::debugFillDescription(List<String> description)
     }
 }
 
-OverscrollNotificationCls::OverscrollNotificationCls(BuildContext context, DragUpdateDetails dragDetails, Unknown metrics, double overscroll, double velocity) {
+OverscrollNotificationCls::OverscrollNotificationCls(BuildContext context, DragUpdateDetails dragDetails, ScrollMetrics metrics, double overscroll, double velocity) {
     {
         assert(overscroll != nullptr);
         assert(overscroll->isFinite());

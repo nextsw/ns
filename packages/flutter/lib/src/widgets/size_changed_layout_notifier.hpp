@@ -20,7 +20,7 @@ using SizeChangedLayoutNotification = std::shared_ptr<SizeChangedLayoutNotificat
 class SizeChangedLayoutNotifierCls : public SingleChildRenderObjectWidgetCls {
 public:
 
-     SizeChangedLayoutNotifierCls(Unknown child, Unknown key);
+     SizeChangedLayoutNotifierCls(Widget child, Key key);
     virtual RenderObject createRenderObject(BuildContext context);
 
 private:

@@ -125,7 +125,7 @@ void _OverlayEntryWidgetStateCls::_markNeedsBuild() {
     });
 }
 
-OverlayCls::OverlayCls(Clip clipBehavior, List<OverlayEntry> initialEntries, Unknown key) {
+OverlayCls::OverlayCls(Clip clipBehavior, List<OverlayEntry> initialEntries, Key key) {
     {
         assert(initialEntries != nullptr);
         assert(clipBehavior != nullptr);
@@ -302,12 +302,12 @@ void _TheatreCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     properties->add(make<IntPropertyCls>(__s("skipCount"), skipCount));
 }
 
-_TheatreCls::_TheatreCls(Unknown children, Clip clipBehavior, int skipCount) {
+_TheatreCls::_TheatreCls(List<Widget> children, Clip clipBehavior, int skipCount) {
     {
         assert(skipCount != nullptr);
         assert(skipCount >= 0);
         assert(children != nullptr);
-        assert(children->length >= skipCount);
+        assert(children->length() >= skipCount);
         assert(clipBehavior != nullptr);
     }
 }

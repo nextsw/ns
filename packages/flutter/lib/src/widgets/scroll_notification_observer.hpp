@@ -20,7 +20,7 @@ private:
     ScrollNotificationObserverState _scrollNotificationObserverState;
 
 
-     _ScrollNotificationObserverScopeCls(Unknown child, ScrollNotificationObserverState scrollNotificationObserverState);
+     _ScrollNotificationObserverScopeCls(Widget child, ScrollNotificationObserverState scrollNotificationObserverState);
 
 };
 using _ScrollNotificationObserverScope = std::shared_ptr<_ScrollNotificationObserverScopeCls>;
@@ -41,7 +41,7 @@ public:
     Widget child;
 
 
-     ScrollNotificationObserverCls(Widget child, Unknown key);
+     ScrollNotificationObserverCls(Widget child, Key key);
 
     static ScrollNotificationObserverState of(BuildContext context);
 
@@ -79,7 +79,7 @@ public:
 
 private:
 
-     _ConvertedScrollMetricsNotificationCls(Unknown context, Unknown depth, Unknown metrics);
+     _ConvertedScrollMetricsNotificationCls(BuildContext context, Unknown depth, ScrollMetrics metrics);
 };
 using _ConvertedScrollMetricsNotification = std::shared_ptr<_ConvertedScrollMetricsNotificationCls>;
 

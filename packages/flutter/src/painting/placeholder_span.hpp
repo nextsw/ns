@@ -21,7 +21,7 @@ public:
     TextBaseline baseline;
 
 
-     PlaceholderSpanCls(PlaceholderAlignment alignment, TextBaseline baseline, Unknown style);
+     PlaceholderSpanCls(PlaceholderAlignment alignment, TextBaseline baseline, TextStyle style);
     virtual void computeToPlainText(StringBuffer buffer, bool includePlaceholders, bool includeSemanticsLabels);
 
     virtual void computeSemanticsInformation(List<InlineSpanSemanticsInformation> collector);

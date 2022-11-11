@@ -90,7 +90,7 @@ void DraggableScrollableControllerCls::_disposeAnimationControllers() {
     _animationControllers->clear();
 }
 
-DraggableScrollableSheetCls::DraggableScrollableSheetCls(ScrollableWidgetBuilder builder, DraggableScrollableController controller, bool expand, double initialChildSize, Unknown key, double maxChildSize, double minChildSize, bool snap, List<double> snapSizes) {
+DraggableScrollableSheetCls::DraggableScrollableSheetCls(ScrollableWidgetBuilder builder, DraggableScrollableController controller, bool expand, double initialChildSize, Key key, double maxChildSize, double minChildSize, bool snap, List<double> snapSizes) {
     {
         assert(initialChildSize != nullptr);
         assert(minChildSize != nullptr);
@@ -460,7 +460,7 @@ double _SnappingSimulationCls::x(double time) {
     return newPosition;
 }
 
-_SnappingSimulationCls::_SnappingSimulationCls(double initialVelocity, List<double> pixelSnapSize, double position, Unknown tolerance) {
+_SnappingSimulationCls::_SnappingSimulationCls(double initialVelocity, List<double> pixelSnapSize, double position, Tolerance tolerance) {
     {
         _pixelSnapSize = _getSnapSize(initialVelocity, pixelSnapSize);
         if ( < position) {

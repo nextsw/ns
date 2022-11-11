@@ -221,9 +221,9 @@ void debugPrintStack(String label, int maxFrames, StackTrace stackTrace);
 class DiagnosticsStackTraceCls : public DiagnosticsBlockCls {
 public:
 
-     DiagnosticsStackTraceCls(String name, StackTrace stack, Unknown showSeparator, IterableFilter<String> stackFilter);
+     DiagnosticsStackTraceCls(String name, StackTrace stack, bool showSeparator, IterableFilter<String> stackFilter);
 
-    virtual void  singleFrame(String name, String frame, Unknown showSeparator);
+    virtual void  singleFrame(String name, String frame, bool showSeparator);
 
     virtual bool allowTruncate();
 
@@ -243,7 +243,7 @@ public:
 
 private:
 
-     _FlutterErrorDetailsNodeCls(Unknown name, Unknown style, Unknown value);
+     _FlutterErrorDetailsNodeCls(String name, Unknown style, T value);
 };
 using _FlutterErrorDetailsNode = std::shared_ptr<_FlutterErrorDetailsNodeCls>;
 

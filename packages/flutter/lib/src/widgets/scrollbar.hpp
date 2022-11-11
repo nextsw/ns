@@ -254,7 +254,7 @@ public:
     double crossAxisMargin;
 
 
-     RawScrollbarCls(Widget child, ScrollController controller, double crossAxisMargin, Duration fadeDuration, bool interactive, bool isAlwaysShown, Unknown key, double mainAxisMargin, double minOverscrollLength, double minThumbLength, ScrollNotificationPredicate notificationPredicate, Duration pressDuration, Radius radius, ScrollbarOrientation scrollbarOrientation, OutlinedBorder shape, double thickness, Color thumbColor, bool thumbVisibility, Duration timeToFade, Color trackBorderColor, Color trackColor, Radius trackRadius, bool trackVisibility);
+     RawScrollbarCls(Widget child, ScrollController controller, double crossAxisMargin, Duration fadeDuration, bool interactive, bool isAlwaysShown, Key key, double mainAxisMargin, double minOverscrollLength, double minThumbLength, ScrollNotificationPredicate notificationPredicate, Duration pressDuration, Radius radius, ScrollbarOrientation scrollbarOrientation, OutlinedBorder shape, double thickness, Color thumbColor, bool thumbVisibility, Duration timeToFade, Color trackBorderColor, Color trackColor, Radius trackRadius, bool trackVisibility);
 
     virtual RawScrollbarState<RawScrollbar> createState();
 

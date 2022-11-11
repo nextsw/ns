@@ -53,7 +53,7 @@ public:
     bool maintainState;
 
 
-     PageRouteBuilderCls(Color barrierColor, bool barrierDismissible, String barrierLabel, Unknown fullscreenDialog, bool maintainState, bool opaque, RoutePageBuilder pageBuilder, Duration reverseTransitionDuration, Unknown settings, Duration transitionDuration, RouteTransitionsBuilder transitionsBuilder);
+     PageRouteBuilderCls(Color barrierColor, bool barrierDismissible, String barrierLabel, bool fullscreenDialog, bool maintainState, bool opaque, RoutePageBuilder pageBuilder, Duration reverseTransitionDuration, Unknown settings, Duration transitionDuration, RouteTransitionsBuilder transitionsBuilder);
 
     virtual Widget buildPage(BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation);
 

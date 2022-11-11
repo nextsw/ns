@@ -1,5 +1,5 @@
 #include "text.hpp"
-DefaultTextStyleCls::DefaultTextStyleCls(Unknown child, Unknown key, int maxLines, TextOverflow overflow, bool softWrap, TextStyle style, TextAlign textAlign, TextHeightBehavior textHeightBehavior, TextWidthBasis textWidthBasis) {
+DefaultTextStyleCls::DefaultTextStyleCls(Widget child, Key key, int maxLines, TextOverflow overflow, bool softWrap, TextStyle style, TextAlign textAlign, TextHeightBehavior textHeightBehavior, TextWidthBasis textWidthBasis) {
     {
         assert(style != nullptr);
         assert(softWrap != nullptr);
@@ -10,7 +10,7 @@ DefaultTextStyleCls::DefaultTextStyleCls(Unknown child, Unknown key, int maxLine
     }
 }
 
-void DefaultTextStyleCls::fallback(Unknown key)
+void DefaultTextStyleCls::fallback(Key key)
 
 Widget DefaultTextStyleCls::merge(Widget child, Key key, int maxLines, TextOverflow overflow, bool softWrap, TextStyle style, TextAlign textAlign, TextWidthBasis textWidthBasis) {
     assert(child != nullptr);
@@ -47,7 +47,7 @@ Widget _NullWidgetCls::build(BuildContext context) {
     throw make<FlutterErrorCls>(__s("A DefaultTextStyle constructed with DefaultTextStyle.fallback cannot be incorporated into the widget tree, it is meant only to provide a fallback value returned by DefaultTextStyle.of() when no enclosing default text style is present in a BuildContext."));
 }
 
-DefaultTextHeightBehaviorCls::DefaultTextHeightBehaviorCls(Unknown child, Unknown key, TextHeightBehavior textHeightBehavior) {
+DefaultTextHeightBehaviorCls::DefaultTextHeightBehaviorCls(Widget child, Key key, TextHeightBehavior textHeightBehavior) {
     {
         assert(textHeightBehavior != nullptr);
         assert(child != nullptr);
@@ -71,14 +71,14 @@ void DefaultTextHeightBehaviorCls::debugFillProperties(DiagnosticPropertiesBuild
     properties->add(<TextHeightBehavior>make<DiagnosticsPropertyCls>(__s("textHeightBehavior"), textHeightBehavior, nullptr));
 }
 
-TextCls::TextCls(String data, Unknown key, Locale locale, int maxLines, TextOverflow overflow, Color selectionColor, String semanticsLabel, bool softWrap, StrutStyle strutStyle, TextStyle style, TextAlign textAlign, TextDirection textDirection, TextHeightBehavior textHeightBehavior, double textScaleFactor, TextWidthBasis textWidthBasis) {
+TextCls::TextCls(String data, Key key, Locale locale, int maxLines, TextOverflow overflow, Color selectionColor, String semanticsLabel, bool softWrap, StrutStyle strutStyle, TextStyle style, TextAlign textAlign, TextDirection textDirection, TextHeightBehavior textHeightBehavior, double textScaleFactor, TextWidthBasis textWidthBasis) {
     {
         assert(data != nullptr, __s("A non-null String must be provided to a Text widget."));
         textSpan = nullptr;
     }
 }
 
-void TextCls::rich(InlineSpan textSpan, Unknown key, Locale locale, int maxLines, TextOverflow overflow, Color selectionColor, String semanticsLabel, bool softWrap, StrutStyle strutStyle, TextStyle style, TextAlign textAlign, TextDirection textDirection, TextHeightBehavior textHeightBehavior, double textScaleFactor, TextWidthBasis textWidthBasis)
+void TextCls::rich(InlineSpan textSpan, Key key, Locale locale, int maxLines, TextOverflow overflow, Color selectionColor, String semanticsLabel, bool softWrap, StrutStyle strutStyle, TextStyle style, TextAlign textAlign, TextDirection textDirection, TextHeightBehavior textHeightBehavior, double textScaleFactor, TextWidthBasis textWidthBasis)
 
 Widget TextCls::build(BuildContext context) {
     DefaultTextStyle defaultTextStyle = DefaultTextStyleCls->of(context);

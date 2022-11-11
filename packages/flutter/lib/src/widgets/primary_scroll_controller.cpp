@@ -1,11 +1,11 @@
 #include "primary_scroll_controller.hpp"
-PrimaryScrollControllerCls::PrimaryScrollControllerCls(Set<TargetPlatform> automaticallyInheritForPlatforms, Unknown child, ScrollController controller, Unknown key, Axis scrollDirection) {
+PrimaryScrollControllerCls::PrimaryScrollControllerCls(Set<TargetPlatform> automaticallyInheritForPlatforms, Widget child, ScrollController controller, Key key, Axis scrollDirection) {
     {
         assert(controller != nullptr);
     }
 }
 
-void PrimaryScrollControllerCls::none(Unknown child, Unknown key)
+void PrimaryScrollControllerCls::none(Widget child, Key key)
 
 bool PrimaryScrollControllerCls::shouldInherit(BuildContext context, Axis scrollDirection) {
     PrimaryScrollController result = context-><PrimaryScrollController>findAncestorWidgetOfExactType();

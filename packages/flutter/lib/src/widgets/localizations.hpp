@@ -100,7 +100,7 @@ public:
 
 private:
 
-     _LocalizationsScopeCls(Unknown child, Unknown key, Locale locale, _LocalizationsState localizationsState, Map<Type, dynamic> typeToResources);
+     _LocalizationsScopeCls(Widget child, Key key, Locale locale, _LocalizationsState localizationsState, Map<Type, dynamic> typeToResources);
 
 };
 using _LocalizationsScope = std::shared_ptr<_LocalizationsScopeCls>;
@@ -114,7 +114,7 @@ public:
     Widget child;
 
 
-     LocalizationsCls(Widget child, List<LocalizationsDelegate<dynamic>> delegates, Unknown key, Locale locale);
+     LocalizationsCls(Widget child, List<LocalizationsDelegate<dynamic>> delegates, Key key, Locale locale);
 
     virtual void  override(Widget child, BuildContext context, List<LocalizationsDelegate<dynamic>> delegates, Key key, Locale locale);
 

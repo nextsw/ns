@@ -19,7 +19,7 @@ public:
     Widget child;
 
 
-     TweenAnimationBuilderCls(ValueWidgetBuilder<T> builder, Widget child, Unknown curve, Unknown duration, Unknown key, Unknown onEnd, Tween<T> tween);
+     TweenAnimationBuilderCls(ValueWidgetBuilder<T> builder, Widget child, Curve curve, Duration duration, Key key, VoidCallback onEnd, Tween<T> tween);
 
     virtual ImplicitlyAnimatedWidgetState<ImplicitlyAnimatedWidget> createState();
 

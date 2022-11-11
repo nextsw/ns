@@ -87,7 +87,7 @@ public:
     MediaQueryData data;
 
 
-     MediaQueryCls(Unknown child, MediaQueryData data, Unknown key);
+     MediaQueryCls(Widget child, MediaQueryData data, Key key);
 
     virtual void  removePadding(Widget child, BuildContext context, Key key, bool removeBottom, bool removeLeft, bool removeRight, bool removeTop);
 
@@ -132,7 +132,7 @@ public:
 
 private:
 
-     _MediaQueryFromWindowCls(Widget child, Unknown key);
+     _MediaQueryFromWindowCls(Widget child, Key key);
 };
 using _MediaQueryFromWindow = std::shared_ptr<_MediaQueryFromWindowCls>;
 

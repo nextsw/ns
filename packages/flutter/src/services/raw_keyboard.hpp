@@ -101,7 +101,7 @@ using RawKeyEvent = std::shared_ptr<RawKeyEventCls>;
 class RawKeyDownEventCls : public RawKeyEventCls {
 public:
 
-     RawKeyDownEventCls(Unknown character, Unknown data, Unknown repeat);
+     RawKeyDownEventCls(String character, RawKeyEventData data, bool repeat);
 private:
 
 };
@@ -110,7 +110,7 @@ using RawKeyDownEvent = std::shared_ptr<RawKeyDownEventCls>;
 class RawKeyUpEventCls : public RawKeyEventCls {
 public:
 
-     RawKeyUpEventCls(Unknown character, Unknown data);
+     RawKeyUpEventCls(String character, RawKeyEventData data);
 
 private:
 

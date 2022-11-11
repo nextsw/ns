@@ -17,7 +17,7 @@ public:
     DecorationPosition position;
 
 
-     DecoratedBoxCls(Unknown child, Decoration decoration, Unknown key, DecorationPosition position);
+     DecoratedBoxCls(Widget child, Decoration decoration, Key key, DecorationPosition position);
 
     virtual RenderDecoratedBox createRenderObject(BuildContext context);
 
@@ -55,7 +55,7 @@ public:
     Clip clipBehavior;
 
 
-     ContainerCls(AlignmentGeometry alignment, Widget child, Clip clipBehavior, Color color, BoxConstraints constraints, Decoration decoration, Decoration foregroundDecoration, double height, Unknown key, EdgeInsetsGeometry margin, EdgeInsetsGeometry padding, Matrix4 transform, AlignmentGeometry transformAlignment, double width);
+     ContainerCls(AlignmentGeometry alignment, Widget child, Clip clipBehavior, Color color, BoxConstraints constraints, Decoration decoration, Decoration foregroundDecoration, double height, Key key, EdgeInsetsGeometry margin, EdgeInsetsGeometry padding, Matrix4 transform, AlignmentGeometry transformAlignment, double width);
 
     virtual Widget build(BuildContext context);
 

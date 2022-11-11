@@ -9,7 +9,7 @@
 class InheritedThemeCls : public InheritedWidgetCls {
 public:
 
-     InheritedThemeCls(Unknown child, Unknown key);
+     InheritedThemeCls(Widget child, Key key);
     virtual Widget wrap(BuildContext context, Widget child);
     static Widget captureAll(BuildContext context, Widget child, BuildContext to);
 

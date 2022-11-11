@@ -82,7 +82,7 @@ Action<T> ActionCls<T>::_makeOverridableAction(BuildContext context) {
     return <T>make<_OverridableActionCls>(this, context);
 }
 
-ActionListenerCls::ActionListenerCls(Action<Intent> action, Widget child, Unknown key, ActionListenerCallback listener) {
+ActionListenerCls::ActionListenerCls(Action<Intent> action, Widget child, Key key, ActionListenerCallback listener) {
     {
         assert(listener != nullptr);
         assert(action != nullptr);
@@ -146,7 +146,7 @@ Object ActionDispatcherCls::invokeAction(Action<Intent> action, Intent intent, B
     }
 }
 
-ActionsCls::ActionsCls(Map<Type, Action<Intent>> actions, Widget child, ActionDispatcher dispatcher, Unknown key) {
+ActionsCls::ActionsCls(Map<Type, Action<Intent>> actions, Widget child, ActionDispatcher dispatcher, Key key) {
     {
         assert(actions != nullptr);
         assert(child != nullptr);
@@ -349,14 +349,14 @@ bool _ActionsMarkerCls::updateShouldNotify(_ActionsMarker oldWidget) {
     return rebuildKey != oldWidget->rebuildKey || oldWidget->dispatcher != dispatcher || !<Type, Action<Intent>>mapEquals(oldWidget->actions, actions);
 }
 
-_ActionsMarkerCls::_ActionsMarkerCls(Map<Type, Action<Intent>> actions, Unknown child, ActionDispatcher dispatcher, Object rebuildKey) {
+_ActionsMarkerCls::_ActionsMarkerCls(Map<Type, Action<Intent>> actions, Widget child, ActionDispatcher dispatcher, Object rebuildKey) {
     {
         assert(child != nullptr);
         assert(actions != nullptr);
     }
 }
 
-FocusableActionDetectorCls::FocusableActionDetectorCls(Map<Type, Action<Intent>> actions, bool autofocus, Widget child, bool descendantsAreFocusable, bool descendantsAreTraversable, bool enabled, FocusNode focusNode, Unknown key, MouseCursor mouseCursor, ValueChanged<bool> onFocusChange, ValueChanged<bool> onShowFocusHighlight, ValueChanged<bool> onShowHoverHighlight, Map<ShortcutActivator, Intent> shortcuts) {
+FocusableActionDetectorCls::FocusableActionDetectorCls(Map<Type, Action<Intent>> actions, bool autofocus, Widget child, bool descendantsAreFocusable, bool descendantsAreTraversable, bool enabled, FocusNode focusNode, Key key, MouseCursor mouseCursor, ValueChanged<bool> onFocusChange, ValueChanged<bool> onShowFocusHighlight, ValueChanged<bool> onShowHoverHighlight, Map<ShortcutActivator, Intent> shortcuts) {
     {
         assert(enabled != nullptr);
         assert(autofocus != nullptr);

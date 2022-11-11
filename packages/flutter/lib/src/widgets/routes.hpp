@@ -200,7 +200,7 @@ public:
 
 private:
 
-     _ModalScopeStatusCls(bool canPop, Unknown child, bool impliesAppBarDismissal, bool isCurrent, Route<dynamic> route);
+     _ModalScopeStatusCls(bool canPop, Widget child, bool impliesAppBarDismissal, bool isCurrent, Route<dynamic> route);
 
 };
 using _ModalScopeStatus = std::shared_ptr<_ModalScopeStatusCls>;
@@ -215,7 +215,7 @@ public:
 
 private:
 
-     _ModalScopeCls(Unknown key, ModalRoute<T> route);
+     _ModalScopeCls(Key key, ModalRoute<T> route);
 };
 template<typename T>
 using _ModalScope = std::shared_ptr<_ModalScopeCls<T>>;
@@ -353,7 +353,7 @@ template<typename T>
 class PopupRouteCls : public ModalRouteCls<T> {
 public:
 
-     PopupRouteCls(Unknown filter, Unknown settings);
+     PopupRouteCls(ImageFilter filter, Unknown settings);
     virtual bool opaque();
 
     virtual bool maintainState();
@@ -448,7 +448,7 @@ public:
     FocusScopeNode focusScopeNode;
 
 
-     FocusTrapCls(Widget child, FocusScopeNode focusScopeNode, Unknown key);
+     FocusTrapCls(Widget child, FocusScopeNode focusScopeNode, Key key);
     virtual RenderObject createRenderObject(BuildContext context);
 
     virtual void updateRenderObject(BuildContext context, RenderObject renderObject);
@@ -463,7 +463,7 @@ public:
     FocusNode focusNode;
 
 
-     FocusTrapAreaCls(Unknown child, FocusNode focusNode, Unknown key);
+     FocusTrapAreaCls(Widget child, FocusNode focusNode, Key key);
     virtual RenderObject createRenderObject(BuildContext context);
 
     virtual void updateRenderObject(BuildContext context, RenderObject renderObject);

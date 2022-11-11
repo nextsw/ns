@@ -16,7 +16,7 @@ public:
     bool enabled;
 
 
-     ImageFilteredCls(Unknown child, bool enabled, ImageFilter imageFilter, Unknown key);
+     ImageFilteredCls(Widget child, bool enabled, ImageFilter imageFilter, Key key);
 
     virtual RenderObject createRenderObject(BuildContext context);
 

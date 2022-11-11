@@ -24,7 +24,7 @@ public:
     Clip clipBehavior;
 
 
-     AnimatedSizeCls(AlignmentGeometry alignment, Widget child, Clip clipBehavior, Curve curve, Duration duration, Unknown key, Duration reverseDuration, TickerProvider vsync);
+     AnimatedSizeCls(AlignmentGeometry alignment, Widget child, Clip clipBehavior, Curve curve, Duration duration, Key key, Duration reverseDuration, TickerProvider vsync);
 
     virtual State<AnimatedSize> createState();
 
@@ -66,7 +66,7 @@ public:
 
 private:
 
-     _AnimatedSizeCls(AlignmentGeometry alignment, Unknown child, Clip clipBehavior, Curve curve, Duration duration, Duration reverseDuration, TickerProvider vsync);
+     _AnimatedSizeCls(AlignmentGeometry alignment, Widget child, Clip clipBehavior, Curve curve, Duration duration, Duration reverseDuration, TickerProvider vsync);
 
 };
 using _AnimatedSize = std::shared_ptr<_AnimatedSizeCls>;

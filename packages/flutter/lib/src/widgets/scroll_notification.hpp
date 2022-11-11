@@ -54,7 +54,7 @@ public:
     DragStartDetails dragDetails;
 
 
-     ScrollStartNotificationCls(Unknown context, DragStartDetails dragDetails, Unknown metrics);
+     ScrollStartNotificationCls(BuildContext context, DragStartDetails dragDetails, ScrollMetrics metrics);
     virtual void debugFillDescription(List<String> description);
 
 private:
@@ -69,7 +69,7 @@ public:
     double scrollDelta;
 
 
-     ScrollUpdateNotificationCls(BuildContext context, int depth, DragUpdateDetails dragDetails, Unknown metrics, double scrollDelta);
+     ScrollUpdateNotificationCls(BuildContext context, int depth, DragUpdateDetails dragDetails, ScrollMetrics metrics, double scrollDelta);
 
     virtual void debugFillDescription(List<String> description);
 
@@ -87,7 +87,7 @@ public:
     double velocity;
 
 
-     OverscrollNotificationCls(BuildContext context, DragUpdateDetails dragDetails, Unknown metrics, double overscroll, double velocity);
+     OverscrollNotificationCls(BuildContext context, DragUpdateDetails dragDetails, ScrollMetrics metrics, double overscroll, double velocity);
 
     virtual void debugFillDescription(List<String> description);
 
@@ -101,7 +101,7 @@ public:
     DragEndDetails dragDetails;
 
 
-     ScrollEndNotificationCls(BuildContext context, DragEndDetails dragDetails, Unknown metrics);
+     ScrollEndNotificationCls(BuildContext context, DragEndDetails dragDetails, ScrollMetrics metrics);
     virtual void debugFillDescription(List<String> description);
 
 private:
@@ -114,7 +114,7 @@ public:
     ScrollDirection direction;
 
 
-     UserScrollNotificationCls(BuildContext context, ScrollDirection direction, Unknown metrics);
+     UserScrollNotificationCls(BuildContext context, ScrollDirection direction, ScrollMetrics metrics);
     virtual void debugFillDescription(List<String> description);
 
 private:

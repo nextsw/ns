@@ -24,7 +24,7 @@ public:
     double middleSpacing;
 
 
-     NavigationToolbarCls(bool centerMiddle, Unknown key, Widget leading, Widget middle, double middleSpacing, Widget trailing);
+     NavigationToolbarCls(bool centerMiddle, Key key, Widget leading, Widget middle, double middleSpacing, Widget trailing);
 
     virtual Widget build(BuildContext context);
 

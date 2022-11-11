@@ -17,7 +17,7 @@ public:
     BlurStyle blurStyle;
 
 
-     BoxShadowCls(Unknown blurRadius, BlurStyle blurStyle, Unknown color, Unknown offset, double spreadRadius);
+     BoxShadowCls(double blurRadius, BlurStyle blurStyle, Color color, Offset offset, double spreadRadius);
     virtual Paint toPaint();
 
     virtual BoxShadow scale(double factor);

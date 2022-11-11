@@ -1,5 +1,5 @@
 #include "nested_scroll_view.hpp"
-NestedScrollViewCls::NestedScrollViewCls(Widget body, Clip clipBehavior, ScrollController controller, DragStartBehavior dragStartBehavior, bool floatHeaderSlivers, NestedScrollViewHeaderSliversBuilder headerSliverBuilder, Unknown key, ScrollPhysics physics, String restorationId, bool reverse, ScrollBehavior scrollBehavior, Axis scrollDirection) {
+NestedScrollViewCls::NestedScrollViewCls(Widget body, Clip clipBehavior, ScrollController controller, DragStartBehavior dragStartBehavior, bool floatHeaderSlivers, NestedScrollViewHeaderSliversBuilder headerSliverBuilder, Key key, ScrollPhysics physics, String restorationId, bool reverse, ScrollBehavior scrollBehavior, Axis scrollDirection) {
     {
         assert(scrollDirection != nullptr);
         assert(reverse != nullptr);
@@ -83,7 +83,7 @@ bool _InheritedNestedScrollViewCls::updateShouldNotify(_InheritedNestedScrollVie
     return state != old->state;
 }
 
-_InheritedNestedScrollViewCls::_InheritedNestedScrollViewCls(Unknown child, NestedScrollViewState state) {
+_InheritedNestedScrollViewCls::_InheritedNestedScrollViewCls(Widget child, NestedScrollViewState state) {
     {
         assert(state != nullptr);
         assert(child != nullptr);
@@ -661,7 +661,7 @@ Drag _NestedScrollPositionCls::drag(DragStartDetails details, VoidCallback dragC
     return coordinator->drag(details, dragCancelCallback);
 }
 
-_NestedScrollPositionCls::_NestedScrollPositionCls(Unknown context, _NestedScrollCoordinator coordinator, Unknown debugLabel, double initialPixels, Unknown oldPosition, Unknown physics) {
+_NestedScrollPositionCls::_NestedScrollPositionCls(ScrollContext context, _NestedScrollCoordinator coordinator, String debugLabel, double initialPixels, Unknown oldPosition, ScrollPhysics physics) {
     {
         if (!hasPixels() && initialPixels != nullptr) {
             correctPixels(initialPixels);
@@ -769,7 +769,7 @@ void SliverOverlapAbsorberHandleCls::_markNeedsLayout() {
     return notifyListeners();
 }
 
-SliverOverlapAbsorberCls::SliverOverlapAbsorberCls(SliverOverlapAbsorberHandle handle, Unknown key, Widget sliver) : SingleChildRenderObjectWidget(sliver) {
+SliverOverlapAbsorberCls::SliverOverlapAbsorberCls(SliverOverlapAbsorberHandle handle, Key key, Widget sliver) : SingleChildRenderObjectWidget(sliver) {
     {
         assert(handle != nullptr);
     }
@@ -858,7 +858,7 @@ void RenderSliverOverlapAbsorberCls::debugFillProperties(DiagnosticPropertiesBui
     properties->add(<SliverOverlapAbsorberHandle>make<DiagnosticsPropertyCls>(__s("handle"), handle()));
 }
 
-SliverOverlapInjectorCls::SliverOverlapInjectorCls(SliverOverlapAbsorberHandle handle, Unknown key, Widget sliver) : SingleChildRenderObjectWidget(sliver) {
+SliverOverlapInjectorCls::SliverOverlapInjectorCls(SliverOverlapAbsorberHandle handle, Key key, Widget sliver) : SingleChildRenderObjectWidget(sliver) {
     {
         assert(handle != nullptr);
     }
@@ -944,7 +944,7 @@ void RenderSliverOverlapInjectorCls::debugFillProperties(DiagnosticPropertiesBui
     properties->add(<SliverOverlapAbsorberHandle>make<DiagnosticsPropertyCls>(__s("handle"), handle()));
 }
 
-NestedScrollViewViewportCls::NestedScrollViewViewportCls(Unknown anchor, Unknown axisDirection, Unknown center, Unknown clipBehavior, Unknown crossAxisDirection, SliverOverlapAbsorberHandle handle, Unknown key, Unknown offset, Unknown slivers) {
+NestedScrollViewViewportCls::NestedScrollViewViewportCls(double anchor, AxisDirection axisDirection, Key center, Clip clipBehavior, AxisDirection crossAxisDirection, SliverOverlapAbsorberHandle handle, Key key, ViewportOffset offset, Unknown slivers) {
     {
         assert(handle != nullptr);
     }

@@ -109,7 +109,7 @@ using ReverseTween = std::shared_ptr<ReverseTweenCls<T>>;
 class ColorTweenCls : public TweenCls<Color> {
 public:
 
-     ColorTweenCls(Unknown begin, Unknown end);
+     ColorTweenCls(T begin, T end);
     virtual Color lerp(double t);
 
 private:
@@ -120,7 +120,7 @@ using ColorTween = std::shared_ptr<ColorTweenCls>;
 class SizeTweenCls : public TweenCls<Size> {
 public:
 
-     SizeTweenCls(Unknown begin, Unknown end);
+     SizeTweenCls(T begin, T end);
     virtual Size lerp(double t);
 
 private:
@@ -131,7 +131,7 @@ using SizeTween = std::shared_ptr<SizeTweenCls>;
 class RectTweenCls : public TweenCls<Rect> {
 public:
 
-     RectTweenCls(Unknown begin, Unknown end);
+     RectTweenCls(T begin, T end);
     virtual Rect lerp(double t);
 
 private:
@@ -142,7 +142,7 @@ using RectTween = std::shared_ptr<RectTweenCls>;
 class IntTweenCls : public TweenCls<int> {
 public:
 
-     IntTweenCls(Unknown begin, Unknown end);
+     IntTweenCls(T begin, T end);
     virtual int lerp(double t);
 
 private:
@@ -153,7 +153,7 @@ using IntTween = std::shared_ptr<IntTweenCls>;
 class StepTweenCls : public TweenCls<int> {
 public:
 
-     StepTweenCls(Unknown begin, Unknown end);
+     StepTweenCls(T begin, T end);
     virtual int lerp(double t);
 
 private:

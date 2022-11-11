@@ -1,6 +1,6 @@
 #include "value_listenable_builder.hpp"
 template<typename T>
-ValueListenableBuilderCls<T>::ValueListenableBuilderCls(ValueWidgetBuilder<T> builder, Widget child, Unknown key, ValueListenable<T> valueListenable) {
+ValueListenableBuilderCls<T>::ValueListenableBuilderCls(ValueWidgetBuilder<T> builder, Widget child, Key key, ValueListenable<T> valueListenable) {
     {
         assert(valueListenable != nullptr);
         assert(builder != nullptr);

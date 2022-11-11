@@ -1,5 +1,5 @@
 #include "widget_span.hpp"
-WidgetSpanCls::WidgetSpanCls(Unknown alignment, Unknown baseline, Widget child, Unknown style) {
+WidgetSpanCls::WidgetSpanCls(PlaceholderAlignment alignment, TextBaseline baseline, Widget child, TextStyle style) {
     {
         assert(child != nullptr);
         assert(baseline != nullptr || !(identical(alignment, ui->PlaceholderAlignmentCls::aboveBaseline) || identical(alignment, ui->PlaceholderAlignmentCls::belowBaseline) || identical(alignment, ui->PlaceholderAlignmentCls::baseline)));

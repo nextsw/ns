@@ -50,7 +50,7 @@ using TapUpDetails = std::shared_ptr<TapUpDetailsCls>;
 class BaseTapGestureRecognizerCls : public PrimaryPointerGestureRecognizerCls {
 public:
 
-     BaseTapGestureRecognizerCls(Unknown debugOwner, Unknown supportedDevices);
+     BaseTapGestureRecognizerCls(Object debugOwner, Unknown supportedDevices);
 
     virtual void handleTapDown(PointerDownEvent down);
     virtual void handleTapUp(PointerDownEvent down, PointerUpEvent up);
@@ -119,7 +119,7 @@ public:
     GestureTapCancelCallback onTertiaryTapCancel;
 
 
-     TapGestureRecognizerCls(Unknown debugOwner, Unknown supportedDevices);
+     TapGestureRecognizerCls(Object debugOwner, Unknown supportedDevices);
     virtual bool isPointerAllowed(PointerDownEvent event);
 
     virtual void handleTapDown(PointerDownEvent down);

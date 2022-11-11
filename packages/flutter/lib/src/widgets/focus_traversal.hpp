@@ -279,7 +279,7 @@ public:
     FocusOrder order;
 
 
-     FocusTraversalOrderCls(Unknown child, Unknown key, FocusOrder order);
+     FocusTraversalOrderCls(Widget child, Key key, FocusOrder order);
     static FocusOrder of(BuildContext context);
 
     static FocusOrder maybeOf(BuildContext context);
@@ -304,7 +304,7 @@ public:
     Widget child;
 
 
-     FocusTraversalGroupCls(Widget child, bool descendantsAreFocusable, bool descendantsAreTraversable, Unknown key, FocusTraversalPolicy policy);
+     FocusTraversalGroupCls(Widget child, bool descendantsAreFocusable, bool descendantsAreTraversable, Key key, FocusTraversalPolicy policy);
 
     static FocusTraversalPolicy of(BuildContext context);
 
@@ -346,7 +346,7 @@ public:
 
 private:
 
-     _FocusTraversalGroupMarkerCls(Unknown child, FocusNode focusNode, FocusTraversalPolicy policy);
+     _FocusTraversalGroupMarkerCls(Widget child, FocusNode focusNode, FocusTraversalPolicy policy);
 
 };
 using _FocusTraversalGroupMarker = std::shared_ptr<_FocusTraversalGroupMarkerCls>;
@@ -448,7 +448,7 @@ public:
     Widget child;
 
 
-     ExcludeFocusTraversalCls(Widget child, bool excluding, Unknown key);
+     ExcludeFocusTraversalCls(Widget child, bool excluding, Key key);
 
     virtual Widget build(BuildContext context);
 

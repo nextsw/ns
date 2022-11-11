@@ -113,7 +113,7 @@ public:
     ScrollBehavior behavior;
 
 
-     ScrollConfigurationCls(ScrollBehavior behavior, Unknown child, Unknown key);
+     ScrollConfigurationCls(ScrollBehavior behavior, Widget child, Key key);
     static ScrollBehavior of(BuildContext context);
 
     virtual bool updateShouldNotify(ScrollConfiguration oldWidget);

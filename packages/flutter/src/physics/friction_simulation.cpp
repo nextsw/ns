@@ -1,5 +1,5 @@
 #include "friction_simulation.hpp"
-FrictionSimulationCls::FrictionSimulationCls(double drag, double position, double velocity, Unknown tolerance) {
+FrictionSimulationCls::FrictionSimulationCls(double drag, double position, double velocity, Tolerance tolerance) {
     {
         _drag = drag;
         _dragLog = math->log(drag);

@@ -20,7 +20,7 @@ bool _GridPaperPainterCls::hitTest(Offset position) {
     return false;
 }
 
-GridPaperCls::GridPaperCls(Widget child, Color color, int divisions, double interval, Unknown key, int subdivisions) {
+GridPaperCls::GridPaperCls(Widget child, Color color, int divisions, double interval, Key key, int subdivisions) {
     {
         assert(divisions > 0, __s("The "divisions" property must be greater than zero. If there were no divisions, the grid paper would not paint anything."));
         assert(subdivisions > 0, __s("The "subdivisions" property must be greater than zero. If there were no subdivisions, the grid paper would not paint anything."));

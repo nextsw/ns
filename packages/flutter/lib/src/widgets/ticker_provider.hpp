@@ -16,7 +16,7 @@ public:
     Widget child;
 
 
-     TickerModeCls(Widget child, bool enabled, Unknown key);
+     TickerModeCls(Widget child, bool enabled, Key key);
 
     static bool of(BuildContext context);
 
@@ -66,7 +66,7 @@ public:
 
 private:
 
-     _EffectiveTickerModeCls(Unknown child, bool enabled, ValueNotifier<bool> notifier);
+     _EffectiveTickerModeCls(Widget child, bool enabled, ValueNotifier<bool> notifier);
 
 };
 using _EffectiveTickerMode = std::shared_ptr<_EffectiveTickerModeCls>;
@@ -134,7 +134,7 @@ private:
     TickerProviderStateMixin _creator;
 
 
-     _WidgetTickerCls(Unknown onTick, TickerProviderStateMixin _creator, Unknown debugLabel);
+     _WidgetTickerCls(Unknown onTick, TickerProviderStateMixin _creator, String debugLabel);
 };
 using _WidgetTicker = std::shared_ptr<_WidgetTickerCls>;
 

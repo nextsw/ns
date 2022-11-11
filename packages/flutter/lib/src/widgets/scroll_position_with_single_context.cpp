@@ -1,5 +1,5 @@
 #include "scroll_position_with_single_context.hpp"
-ScrollPositionWithSingleContextCls::ScrollPositionWithSingleContextCls(Unknown context, Unknown debugLabel, double initialPixels, Unknown keepScrollOffset, Unknown oldPosition, Unknown physics) {
+ScrollPositionWithSingleContextCls::ScrollPositionWithSingleContextCls(ScrollContext context, String debugLabel, double initialPixels, bool keepScrollOffset, Unknown oldPosition, ScrollPhysics physics) {
     {
         if (!hasPixels() && initialPixels != nullptr) {
             correctPixels(initialPixels);

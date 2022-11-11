@@ -1,5 +1,5 @@
 #include "spacer.hpp"
-SpacerCls::SpacerCls(int flex, Unknown key) {
+SpacerCls::SpacerCls(int flex, Key key) {
     {
         assert(flex != nullptr);
         assert(flex > 0);

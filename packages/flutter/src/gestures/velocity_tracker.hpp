@@ -105,7 +105,7 @@ using VelocityTracker = std::shared_ptr<VelocityTrackerCls>;
 class IOSScrollViewFlingVelocityTrackerCls : public VelocityTrackerCls {
 public:
 
-     IOSScrollViewFlingVelocityTrackerCls(Unknown kind);
+     IOSScrollViewFlingVelocityTrackerCls(PointerDeviceKind kind);
 
     virtual void addPosition(Duration time, Offset position);
 

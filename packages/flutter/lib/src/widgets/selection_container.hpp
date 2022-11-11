@@ -16,9 +16,9 @@ public:
     SelectionContainerDelegate delegate;
 
 
-     SelectionContainerCls(Widget child, SelectionContainerDelegate delegate, Unknown key, SelectionRegistrar registrar);
+     SelectionContainerCls(Widget child, SelectionContainerDelegate delegate, Key key, SelectionRegistrar registrar);
 
-    virtual void  disabled(Widget child, Unknown key);
+    virtual void  disabled(Widget child, Key key);
 
     static SelectionRegistrar maybeOf(BuildContext context);
 
@@ -74,13 +74,13 @@ public:
     SelectionRegistrar registrar;
 
 
-     SelectionRegistrarScopeCls(Unknown child, Unknown key, SelectionRegistrar registrar);
+     SelectionRegistrarScopeCls(Widget child, Key key, SelectionRegistrar registrar);
 
     virtual bool updateShouldNotify(SelectionRegistrarScope oldWidget);
 
 private:
 
-    virtual void  _disabled(Unknown child);
+    virtual void  _disabled(Widget child);
 
 };
 using SelectionRegistrarScope = std::shared_ptr<SelectionRegistrarScopeCls>;

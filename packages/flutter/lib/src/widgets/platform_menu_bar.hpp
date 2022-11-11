@@ -175,7 +175,7 @@ public:
     List<MenuItem> menus;
 
 
-     PlatformMenuBarCls(Widget body, Widget child, Unknown key, List<MenuItem> menus);
+     PlatformMenuBarCls(Widget body, Widget child, Key key, List<MenuItem> menus);
 
     virtual State<PlatformMenuBar> createState();
 

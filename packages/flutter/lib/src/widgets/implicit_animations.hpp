@@ -19,7 +19,7 @@
 class BoxConstraintsTweenCls : public TweenCls<BoxConstraints> {
 public:
 
-     BoxConstraintsTweenCls(Unknown begin, Unknown end);
+     BoxConstraintsTweenCls(T begin, T end);
     virtual BoxConstraints lerp(double t);
 
 private:
@@ -30,7 +30,7 @@ using BoxConstraintsTween = std::shared_ptr<BoxConstraintsTweenCls>;
 class DecorationTweenCls : public TweenCls<Decoration> {
 public:
 
-     DecorationTweenCls(Unknown begin, Unknown end);
+     DecorationTweenCls(T begin, T end);
     virtual Decoration lerp(double t);
 
 private:
@@ -41,7 +41,7 @@ using DecorationTween = std::shared_ptr<DecorationTweenCls>;
 class EdgeInsetsTweenCls : public TweenCls<EdgeInsets> {
 public:
 
-     EdgeInsetsTweenCls(Unknown begin, Unknown end);
+     EdgeInsetsTweenCls(T begin, T end);
     virtual EdgeInsets lerp(double t);
 
 private:
@@ -52,7 +52,7 @@ using EdgeInsetsTween = std::shared_ptr<EdgeInsetsTweenCls>;
 class EdgeInsetsGeometryTweenCls : public TweenCls<EdgeInsetsGeometry> {
 public:
 
-     EdgeInsetsGeometryTweenCls(Unknown begin, Unknown end);
+     EdgeInsetsGeometryTweenCls(T begin, T end);
     virtual EdgeInsetsGeometry lerp(double t);
 
 private:
@@ -63,7 +63,7 @@ using EdgeInsetsGeometryTween = std::shared_ptr<EdgeInsetsGeometryTweenCls>;
 class BorderRadiusTweenCls : public TweenCls<BorderRadius> {
 public:
 
-     BorderRadiusTweenCls(Unknown begin, Unknown end);
+     BorderRadiusTweenCls(T begin, T end);
     virtual BorderRadius lerp(double t);
 
 private:
@@ -74,7 +74,7 @@ using BorderRadiusTween = std::shared_ptr<BorderRadiusTweenCls>;
 class BorderTweenCls : public TweenCls<Border> {
 public:
 
-     BorderTweenCls(Unknown begin, Unknown end);
+     BorderTweenCls(T begin, T end);
     virtual Border lerp(double t);
 
 private:
@@ -85,7 +85,7 @@ using BorderTween = std::shared_ptr<BorderTweenCls>;
 class Matrix4TweenCls : public TweenCls<Matrix4> {
 public:
 
-     Matrix4TweenCls(Unknown begin, Unknown end);
+     Matrix4TweenCls(T begin, T end);
     virtual Matrix4 lerp(double t);
 
 private:
@@ -96,7 +96,7 @@ using Matrix4Tween = std::shared_ptr<Matrix4TweenCls>;
 class TextStyleTweenCls : public TweenCls<TextStyle> {
 public:
 
-     TextStyleTweenCls(Unknown begin, Unknown end);
+     TextStyleTweenCls(T begin, T end);
     virtual TextStyle lerp(double t);
 
 private:
@@ -113,7 +113,7 @@ public:
     VoidCallback onEnd;
 
 
-     ImplicitlyAnimatedWidgetCls(Curve curve, Duration duration, Unknown key, VoidCallback onEnd);
+     ImplicitlyAnimatedWidgetCls(Curve curve, Duration duration, Key key, VoidCallback onEnd);
 
     virtual ImplicitlyAnimatedWidgetState<ImplicitlyAnimatedWidget> createState() override;
     virtual void debugFillProperties(DiagnosticPropertiesBuilder properties);
@@ -195,7 +195,7 @@ public:
     Clip clipBehavior;
 
 
-     AnimatedContainerCls(AlignmentGeometry alignment, Widget child, Clip clipBehavior, Color color, BoxConstraints constraints, Unknown curve, Decoration decoration, Unknown duration, Decoration foregroundDecoration, double height, Unknown key, EdgeInsetsGeometry margin, Unknown onEnd, EdgeInsetsGeometry padding, Matrix4 transform, AlignmentGeometry transformAlignment, double width);
+     AnimatedContainerCls(AlignmentGeometry alignment, Widget child, Clip clipBehavior, Color color, BoxConstraints constraints, Curve curve, Decoration decoration, Duration duration, Decoration foregroundDecoration, double height, Key key, EdgeInsetsGeometry margin, VoidCallback onEnd, EdgeInsetsGeometry padding, Matrix4 transform, AlignmentGeometry transformAlignment, double width);
 
     virtual AnimatedWidgetBaseState<AnimatedContainer> createState();
 
@@ -243,7 +243,7 @@ public:
     Widget child;
 
 
-     AnimatedPaddingCls(Widget child, Unknown curve, Unknown duration, Unknown key, Unknown onEnd, EdgeInsetsGeometry padding);
+     AnimatedPaddingCls(Widget child, Curve curve, Duration duration, Key key, VoidCallback onEnd, EdgeInsetsGeometry padding);
 
     virtual AnimatedWidgetBaseState<AnimatedPadding> createState();
 
@@ -281,7 +281,7 @@ public:
     double widthFactor;
 
 
-     AnimatedAlignCls(AlignmentGeometry alignment, Widget child, Unknown curve, Unknown duration, double heightFactor, Unknown key, Unknown onEnd, double widthFactor);
+     AnimatedAlignCls(AlignmentGeometry alignment, Widget child, Curve curve, Duration duration, double heightFactor, Key key, VoidCallback onEnd, double widthFactor);
 
     virtual AnimatedWidgetBaseState<AnimatedAlign> createState();
 
@@ -329,9 +329,9 @@ public:
     double height;
 
 
-     AnimatedPositionedCls(double bottom, Widget child, Unknown curve, Unknown duration, double height, Unknown key, double left, Unknown onEnd, double right, double top, double width);
+     AnimatedPositionedCls(double bottom, Widget child, Curve curve, Duration duration, double height, Key key, double left, VoidCallback onEnd, double right, double top, double width);
 
-    virtual void  fromRect(Widget child, Unknown curve, Unknown duration, Unknown key, Unknown onEnd, Rect rect);
+    virtual void  fromRect(Widget child, Curve curve, Duration duration, Key key, VoidCallback onEnd, Rect rect);
 
     virtual AnimatedWidgetBaseState<AnimatedPositioned> createState();
 
@@ -385,7 +385,7 @@ public:
     double height;
 
 
-     AnimatedPositionedDirectionalCls(double bottom, Widget child, Unknown curve, Unknown duration, double end, double height, Unknown key, Unknown onEnd, double start, double top, double width);
+     AnimatedPositionedDirectionalCls(double bottom, Widget child, Curve curve, Duration duration, double end, double height, Key key, VoidCallback onEnd, double start, double top, double width);
 
     virtual AnimatedWidgetBaseState<AnimatedPositionedDirectional> createState();
 
@@ -433,7 +433,7 @@ public:
     FilterQuality filterQuality;
 
 
-     AnimatedScaleCls(Alignment alignment, Widget child, Unknown curve, Unknown duration, FilterQuality filterQuality, Unknown key, Unknown onEnd, double scale);
+     AnimatedScaleCls(Alignment alignment, Widget child, Curve curve, Duration duration, FilterQuality filterQuality, Key key, VoidCallback onEnd, double scale);
 
     virtual ImplicitlyAnimatedWidgetState<AnimatedScale> createState();
 
@@ -473,7 +473,7 @@ public:
     FilterQuality filterQuality;
 
 
-     AnimatedRotationCls(Alignment alignment, Widget child, Unknown curve, Unknown duration, FilterQuality filterQuality, Unknown key, Unknown onEnd, double turns);
+     AnimatedRotationCls(Alignment alignment, Widget child, Curve curve, Duration duration, FilterQuality filterQuality, Key key, VoidCallback onEnd, double turns);
 
     virtual ImplicitlyAnimatedWidgetState<AnimatedRotation> createState();
 
@@ -509,7 +509,7 @@ public:
     Offset offset;
 
 
-     AnimatedSlideCls(Widget child, Unknown curve, Unknown duration, Unknown key, Offset offset, Unknown onEnd);
+     AnimatedSlideCls(Widget child, Curve curve, Duration duration, Key key, Offset offset, VoidCallback onEnd);
     virtual ImplicitlyAnimatedWidgetState<AnimatedSlide> createState();
 
     virtual void debugFillProperties(DiagnosticPropertiesBuilder properties);
@@ -546,7 +546,7 @@ public:
     bool alwaysIncludeSemantics;
 
 
-     AnimatedOpacityCls(bool alwaysIncludeSemantics, Widget child, Unknown curve, Unknown duration, Unknown key, Unknown onEnd, double opacity);
+     AnimatedOpacityCls(bool alwaysIncludeSemantics, Widget child, Curve curve, Duration duration, Key key, VoidCallback onEnd, double opacity);
 
     virtual ImplicitlyAnimatedWidgetState<AnimatedOpacity> createState();
 
@@ -584,7 +584,7 @@ public:
     bool alwaysIncludeSemantics;
 
 
-     SliverAnimatedOpacityCls(bool alwaysIncludeSemantics, Unknown curve, Unknown duration, Unknown key, Unknown onEnd, double opacity, Widget sliver);
+     SliverAnimatedOpacityCls(bool alwaysIncludeSemantics, Curve curve, Duration duration, Key key, VoidCallback onEnd, double opacity, Widget sliver);
 
     virtual ImplicitlyAnimatedWidgetState<SliverAnimatedOpacity> createState();
 
@@ -632,7 +632,7 @@ public:
     TextHeightBehavior textHeightBehavior;
 
 
-     AnimatedDefaultTextStyleCls(Widget child, Unknown curve, Unknown duration, Unknown key, int maxLines, Unknown onEnd, TextOverflow overflow, bool softWrap, TextStyle style, TextAlign textAlign, TextHeightBehavior textHeightBehavior, TextWidthBasis textWidthBasis);
+     AnimatedDefaultTextStyleCls(Widget child, Curve curve, Duration duration, Key key, int maxLines, VoidCallback onEnd, TextOverflow overflow, bool softWrap, TextStyle style, TextAlign textAlign, TextHeightBehavior textHeightBehavior, TextWidthBasis textWidthBasis);
 
     virtual AnimatedWidgetBaseState<AnimatedDefaultTextStyle> createState();
 
@@ -678,7 +678,7 @@ public:
     bool animateShadowColor;
 
 
-     AnimatedPhysicalModelCls(bool animateColor, bool animateShadowColor, BorderRadius borderRadius, Widget child, Clip clipBehavior, Color color, Unknown curve, Unknown duration, double elevation, Unknown key, Unknown onEnd, Color shadowColor, BoxShape shape);
+     AnimatedPhysicalModelCls(bool animateColor, bool animateShadowColor, BorderRadius borderRadius, Widget child, Clip clipBehavior, Color color, Curve curve, Duration duration, double elevation, Key key, VoidCallback onEnd, Color shadowColor, BoxShape shape);
 
     virtual AnimatedWidgetBaseState<AnimatedPhysicalModel> createState();
 
@@ -720,7 +720,7 @@ public:
     AlignmentGeometry alignment;
 
 
-     AnimatedFractionallySizedBoxCls(AlignmentGeometry alignment, Widget child, Unknown curve, Unknown duration, double heightFactor, Unknown key, Unknown onEnd, double widthFactor);
+     AnimatedFractionallySizedBoxCls(AlignmentGeometry alignment, Widget child, Curve curve, Duration duration, double heightFactor, Key key, VoidCallback onEnd, double widthFactor);
 
     virtual AnimatedWidgetBaseState<AnimatedFractionallySizedBox> createState();
 

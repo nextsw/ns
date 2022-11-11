@@ -60,7 +60,7 @@ public:
     TextBaseline textBaseline;
 
 
-     TableCls(TableBorder border, List<TableRow> children, Map<int, TableColumnWidth> columnWidths, TableColumnWidth defaultColumnWidth, TableCellVerticalAlignment defaultVerticalAlignment, Unknown key, TextBaseline textBaseline, TextDirection textDirection);
+     TableCls(TableBorder border, List<TableRow> children, Map<int, TableColumnWidth> columnWidths, TableColumnWidth defaultColumnWidth, TableCellVerticalAlignment defaultVerticalAlignment, Key key, TextBaseline textBaseline, TextDirection textDirection);
 
     virtual RenderObjectElement createElement();
 
@@ -113,7 +113,7 @@ public:
     TableCellVerticalAlignment verticalAlignment;
 
 
-     TableCellCls(Unknown child, Unknown key, TableCellVerticalAlignment verticalAlignment);
+     TableCellCls(Widget child, Key key, TableCellVerticalAlignment verticalAlignment);
     virtual void applyParentData(RenderObject renderObject);
 
     virtual Type debugTypicalAncestorWidgetClass();

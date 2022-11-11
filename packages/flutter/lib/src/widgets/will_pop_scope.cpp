@@ -1,5 +1,5 @@
 #include "will_pop_scope.hpp"
-WillPopScopeCls::WillPopScopeCls(Widget child, Unknown key, WillPopCallback onWillPop) {
+WillPopScopeCls::WillPopScopeCls(Widget child, Key key, WillPopCallback onWillPop) {
     {
         assert(child != nullptr);
     }

@@ -1,5 +1,5 @@
 #include "autofill.hpp"
-AutofillGroupCls::AutofillGroupCls(Widget child, Unknown key, AutofillContextAction onDisposeAction) {
+AutofillGroupCls::AutofillGroupCls(Widget child, Key key, AutofillContextAction onDisposeAction) {
     {
         assert(child != nullptr);
     }
@@ -61,7 +61,7 @@ bool _AutofillScopeCls::updateShouldNotify(_AutofillScope old) {
     return _scope != old->_scope;
 }
 
-_AutofillScopeCls::_AutofillScopeCls(AutofillGroupState autofillScopeState, Unknown child) {
+_AutofillScopeCls::_AutofillScopeCls(AutofillGroupState autofillScopeState, Widget child) {
     {
         _scope = autofillScopeState;
     }

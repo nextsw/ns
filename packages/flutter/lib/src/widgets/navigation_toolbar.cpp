@@ -1,5 +1,5 @@
 #include "navigation_toolbar.hpp"
-NavigationToolbarCls::NavigationToolbarCls(bool centerMiddle, Unknown key, Widget leading, Widget middle, double middleSpacing, Widget trailing) {
+NavigationToolbarCls::NavigationToolbarCls(bool centerMiddle, Key key, Widget leading, Widget middle, double middleSpacing, Widget trailing) {
     {
         assert(centerMiddle != nullptr);
         assert(middleSpacing != nullptr);

@@ -1,5 +1,5 @@
 #include "dual_transition_builder.hpp"
-DualTransitionBuilderCls::DualTransitionBuilderCls(Animation<double> animation, Widget child, AnimatedTransitionBuilder forwardBuilder, Unknown key, AnimatedTransitionBuilder reverseBuilder) {
+DualTransitionBuilderCls::DualTransitionBuilderCls(Animation<double> animation, Widget child, AnimatedTransitionBuilder forwardBuilder, Key key, AnimatedTransitionBuilder reverseBuilder) {
     {
         assert(animation != nullptr);
         assert(forwardBuilder != nullptr);

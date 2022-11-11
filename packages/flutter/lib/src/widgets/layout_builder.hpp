@@ -15,7 +15,7 @@ public:
     std::function<Widget(BuildContext , ConstraintType )> builder;
 
 
-     ConstrainedLayoutBuilderCls(std::function<Widget(BuildContext , ConstraintType )> builder, Unknown key);
+     ConstrainedLayoutBuilderCls(std::function<Widget(BuildContext , ConstraintType )> builder, Key key);
 
     virtual RenderObjectElement createElement();
 
@@ -85,7 +85,7 @@ using RenderConstrainedLayoutBuilder = std::shared_ptr<RenderConstrainedLayoutBu
 class LayoutBuilderCls : public ConstrainedLayoutBuilderCls<BoxConstraints> {
 public:
 
-     LayoutBuilderCls(Unknown builder, Unknown key);
+     LayoutBuilderCls(Unknown builder, Key key);
 
     virtual LayoutWidgetBuilder builder();
 

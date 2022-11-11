@@ -14,11 +14,11 @@ String IconDataCls::toString() {
     return __s("IconData(U+${codePoint.toRadixString(16).toUpperCase().padLeft(5, '0')})");
 }
 
-IconDataPropertyCls::IconDataPropertyCls(String name, Unknown value, Unknown ifNull, Unknown level, Unknown showName, Unknown style) {
+IconDataPropertyCls::IconDataPropertyCls(String name, Unknown value, String ifNull, Unknown level, bool showName, DiagnosticsTreeStyle style) {
     {
         assert(showName != nullptr);
         assert(style != nullptr);
-        assert(level != nullptr);
+        assert(level() != nullptr);
     }
 }
 

@@ -7,7 +7,7 @@ RouterConfigCls<T>::RouterConfigCls(BackButtonDispatcher backButtonDispatcher, R
 }
 
 template<typename T>
-RouterCls<T>::RouterCls(BackButtonDispatcher backButtonDispatcher, Unknown key, String restorationScopeId, RouteInformationParser<T> routeInformationParser, RouteInformationProvider routeInformationProvider, RouterDelegate<T> routerDelegate) {
+RouterCls<T>::RouterCls(BackButtonDispatcher backButtonDispatcher, Key key, String restorationScopeId, RouteInformationParser<T> routeInformationParser, RouteInformationProvider routeInformationProvider, RouterDelegate<T> routerDelegate) {
     {
         assert(routeInformationProvider == nullptr || routeInformationParser != nullptr, __s("A routeInformationParser must be provided when a routeInformationProvider is specified."));
         assert(routerDelegate != nullptr);
@@ -256,7 +256,7 @@ bool _RouterScopeCls::updateShouldNotify(_RouterScope oldWidget) {
     return routeInformationProvider != oldWidget->routeInformationProvider || backButtonDispatcher != oldWidget->backButtonDispatcher || routeInformationParser != oldWidget->routeInformationParser || routerDelegate != oldWidget->routerDelegate || routerState != oldWidget->routerState;
 }
 
-_RouterScopeCls::_RouterScopeCls(BackButtonDispatcher backButtonDispatcher, Unknown child, RouteInformationParser<Object> routeInformationParser, ValueListenable<RouteInformation> routeInformationProvider, RouterDelegate<Object> routerDelegate, _RouterState<Object> routerState) {
+_RouterScopeCls::_RouterScopeCls(BackButtonDispatcher backButtonDispatcher, Widget child, RouteInformationParser<Object> routeInformationParser, ValueListenable<RouteInformation> routeInformationProvider, RouterDelegate<Object> routerDelegate, _RouterState<Object> routerState) {
     {
         assert(routeInformationProvider == nullptr || routeInformationParser != nullptr);
         assert(routerDelegate != nullptr);

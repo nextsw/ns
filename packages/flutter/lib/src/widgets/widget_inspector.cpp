@@ -1238,7 +1238,7 @@ Element _WidgetForTypeTestsCls::createElement() {
     return throw make<UnimplementedErrorCls>();
 }
 
-WidgetInspectorCls::WidgetInspectorCls(Widget child, Unknown key, InspectorSelectButtonBuilder selectButtonBuilder) {
+WidgetInspectorCls::WidgetInspectorCls(Widget child, Key key, InspectorSelectButtonBuilder selectButtonBuilder) {
     {
         assert(child != nullptr);
     }

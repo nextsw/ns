@@ -24,7 +24,7 @@ public:
     Size preferredSize;
 
 
-     PreferredSizeCls(Widget child, Unknown key, Size preferredSize);
+     PreferredSizeCls(Widget child, Key key, Size preferredSize);
     virtual Widget build(BuildContext context);
 
 private:

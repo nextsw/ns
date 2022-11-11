@@ -13,7 +13,7 @@ public:
     Widget prototypeItem;
 
 
-     SliverPrototypeExtentListCls(Unknown delegate, Unknown key, Widget prototypeItem);
+     SliverPrototypeExtentListCls(SliverChildDelegate delegate, Key key, Widget prototypeItem);
 
     virtual RenderSliverMultiBoxAdaptor createRenderObject(BuildContext context);
 

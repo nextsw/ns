@@ -16,7 +16,7 @@ public:
     Widget child;
 
 
-     DefaultTextEditingShortcutsCls(Widget child, Unknown key);
+     DefaultTextEditingShortcutsCls(Widget child, Key key);
     virtual Widget build(BuildContext context);
 
 private:

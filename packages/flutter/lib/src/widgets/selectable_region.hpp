@@ -33,7 +33,7 @@ public:
     TextSelectionControls selectionControls;
 
 
-     SelectableRegionCls(Widget child, FocusNode focusNode, Unknown key, TextSelectionControls selectionControls);
+     SelectableRegionCls(Widget child, FocusNode focusNode, Key key, TextSelectionControls selectionControls);
     virtual State<StatefulWidget> createState();
 
 private:

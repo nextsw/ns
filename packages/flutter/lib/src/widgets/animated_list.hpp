@@ -59,7 +59,7 @@ public:
     Clip clipBehavior;
 
 
-     AnimatedListCls(Clip clipBehavior, ScrollController controller, int initialItemCount, AnimatedListItemBuilder itemBuilder, Unknown key, EdgeInsetsGeometry padding, ScrollPhysics physics, bool primary, bool reverse, Axis scrollDirection, bool shrinkWrap);
+     AnimatedListCls(Clip clipBehavior, ScrollController controller, int initialItemCount, AnimatedListItemBuilder itemBuilder, Key key, EdgeInsetsGeometry padding, ScrollPhysics physics, bool primary, bool reverse, Axis scrollDirection, bool shrinkWrap);
 
     static AnimatedListState of(BuildContext context);
 
@@ -97,7 +97,7 @@ public:
     int initialItemCount;
 
 
-     SliverAnimatedListCls(ChildIndexGetter findChildIndexCallback, int initialItemCount, AnimatedListItemBuilder itemBuilder, Unknown key);
+     SliverAnimatedListCls(ChildIndexGetter findChildIndexCallback, int initialItemCount, AnimatedListItemBuilder itemBuilder, Key key);
 
     virtual SliverAnimatedListState createState();
 

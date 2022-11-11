@@ -148,7 +148,7 @@ using MethodChannel = std::shared_ptr<MethodChannelCls>;
 class OptionalMethodChannelCls : public MethodChannelCls {
 public:
 
-     OptionalMethodChannelCls(Unknown name, Unknown codec, Unknown binaryMessenger);
+     OptionalMethodChannelCls(String name, MethodCodec codec, Unknown binaryMessenger);
     template<typename T>
  virtual Future<T> invokeMethod(String method, dynamic arguments);
 

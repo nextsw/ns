@@ -84,14 +84,14 @@ bool _LocalizationsScopeCls::updateShouldNotify(_LocalizationsScope old) {
     return typeToResources != old->typeToResources;
 }
 
-_LocalizationsScopeCls::_LocalizationsScopeCls(Unknown child, Unknown key, Locale locale, _LocalizationsState localizationsState, Map<Type, dynamic> typeToResources) {
+_LocalizationsScopeCls::_LocalizationsScopeCls(Widget child, Key key, Locale locale, _LocalizationsState localizationsState, Map<Type, dynamic> typeToResources) {
     {
         assert(localizationsState != nullptr);
         assert(typeToResources != nullptr);
     }
 }
 
-LocalizationsCls::LocalizationsCls(Widget child, List<LocalizationsDelegate<dynamic>> delegates, Unknown key, Locale locale) {
+LocalizationsCls::LocalizationsCls(Widget child, List<LocalizationsDelegate<dynamic>> delegates, Key key, Locale locale) {
     {
         assert(locale != nullptr);
         assert(delegates != nullptr);

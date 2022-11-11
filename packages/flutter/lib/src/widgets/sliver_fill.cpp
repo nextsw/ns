@@ -1,5 +1,5 @@
 #include "sliver_fill.hpp"
-SliverFillViewportCls::SliverFillViewportCls(SliverChildDelegate delegate, Unknown key, bool padEnds, double viewportFraction) {
+SliverFillViewportCls::SliverFillViewportCls(SliverChildDelegate delegate, Key key, bool padEnds, double viewportFraction) {
     {
         assert(viewportFraction != nullptr);
         assert(viewportFraction > 0.0);
@@ -20,7 +20,7 @@ void _SliverFillViewportRenderObjectWidgetCls::updateRenderObject(BuildContext c
     renderObject->viewportFraction = viewportFraction;
 }
 
-_SliverFillViewportRenderObjectWidgetCls::_SliverFillViewportRenderObjectWidgetCls(Unknown delegate, double viewportFraction) {
+_SliverFillViewportRenderObjectWidgetCls::_SliverFillViewportRenderObjectWidgetCls(SliverChildDelegate delegate, double viewportFraction) {
     {
         assert(viewportFraction != nullptr);
         assert(viewportFraction > 0.0);
@@ -90,7 +90,7 @@ void _RenderSliverFractionalPaddingCls::_resolve() {
     return;
 }
 
-SliverFillRemainingCls::SliverFillRemainingCls(Widget child, bool fillOverscroll, bool hasScrollBody, Unknown key) {
+SliverFillRemainingCls::SliverFillRemainingCls(Widget child, bool fillOverscroll, bool hasScrollBody, Key key) {
     {
         assert(hasScrollBody != nullptr);
         assert(fillOverscroll != nullptr);

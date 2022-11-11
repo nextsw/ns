@@ -1,6 +1,6 @@
 #include "annotated_region.hpp"
 template<typename T>
-AnnotatedRegionCls<T>::AnnotatedRegionCls(Widget child, Unknown key, bool sized, T value) {
+AnnotatedRegionCls<T>::AnnotatedRegionCls(Widget child, Key key, bool sized, T value) {
     {
         assert(value != nullptr);
         assert(child != nullptr);

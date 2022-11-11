@@ -1,5 +1,5 @@
 #include "focus_scope.hpp"
-FocusCls::FocusCls(bool autofocus, bool canRequestFocus, Widget child, String debugLabel, bool descendantsAreFocusable, bool descendantsAreTraversable, FocusNode focusNode, bool includeSemantics, Unknown key, ValueChanged<bool> onFocusChange, FocusOnKeyCallback onKey, FocusOnKeyEventCallback onKeyEvent, bool skipTraversal) {
+FocusCls::FocusCls(bool autofocus, bool canRequestFocus, Widget child, String debugLabel, bool descendantsAreFocusable, bool descendantsAreTraversable, FocusNode focusNode, bool includeSemantics, Key key, ValueChanged<bool> onFocusChange, FocusOnKeyCallback onKey, FocusOnKeyEventCallback onKeyEvent, bool skipTraversal) {
     {
         _onKeyEvent = onKeyEvent;
         _onKey = onKey;
@@ -261,7 +261,7 @@ void _FocusStateCls::_handleFocusChanged() {
     }
 }
 
-FocusScopeCls::FocusScopeCls(Unknown autofocus, Unknown canRequestFocus, Unknown child, Unknown debugLabel, Unknown key, FocusScopeNode node, Unknown onFocusChange, Unknown onKey, Unknown onKeyEvent, Unknown skipTraversal) : Focus(node) {
+FocusScopeCls::FocusScopeCls(bool autofocus, Unknown canRequestFocus, Widget child, Unknown debugLabel, Key key, FocusScopeNode node, ValueChanged<bool> onFocusChange, Unknown onKey, Unknown onKeyEvent, Unknown skipTraversal) : Focus(node) {
     {
         assert(child != nullptr);
         assert(autofocus != nullptr);
@@ -306,7 +306,7 @@ String _FocusScopeWithExternalFocusNodeCls::debugLabel() {
     return focusNode!->debugLabel();
 }
 
-_FocusScopeWithExternalFocusNodeCls::_FocusScopeWithExternalFocusNodeCls(Unknown autofocus, Unknown child, FocusScopeNode focusScopeNode, Unknown key, Unknown onFocusChange) : FocusScope(focusScopeNode) {
+_FocusScopeWithExternalFocusNodeCls::_FocusScopeWithExternalFocusNodeCls(bool autofocus, Widget child, FocusScopeNode focusScopeNode, Key key, ValueChanged<bool> onFocusChange) : FocusScope(focusScopeNode) {
 }
 
 bool _FocusScopeWithExternalFocusNodeCls::_usingExternalFocus() {
@@ -322,14 +322,14 @@ FocusScopeNode _FocusScopeStateCls::_createNode() {
     return make<FocusScopeNodeCls>(widget()->debugLabel, widget()->canRequestFocus, widget()->skipTraversal);
 }
 
-_FocusMarkerCls::_FocusMarkerCls(Unknown child, FocusNode node) : InheritedNotifier<FocusNode>(node) {
+_FocusMarkerCls::_FocusMarkerCls(Widget child, FocusNode node) : InheritedNotifier<FocusNode>(node) {
     {
         assert(node != nullptr);
         assert(child != nullptr);
     }
 }
 
-ExcludeFocusCls::ExcludeFocusCls(Widget child, bool excluding, Unknown key) {
+ExcludeFocusCls::ExcludeFocusCls(Widget child, bool excluding, Key key) {
     {
         assert(excluding != nullptr);
         assert(child != nullptr);

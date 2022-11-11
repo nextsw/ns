@@ -18,8 +18,8 @@ public:
     bool checkerboardOffscreenLayers;
 
 
-     PerformanceOverlayCls(bool checkerboardOffscreenLayers, bool checkerboardRasterCacheImages, Unknown key, int optionsMask, int rasterizerThreshold);
-    virtual void  allEnabled(bool checkerboardOffscreenLayers, bool checkerboardRasterCacheImages, Unknown key, int rasterizerThreshold);
+     PerformanceOverlayCls(bool checkerboardOffscreenLayers, bool checkerboardRasterCacheImages, Key key, int optionsMask, int rasterizerThreshold);
+    virtual void  allEnabled(bool checkerboardOffscreenLayers, bool checkerboardRasterCacheImages, Key key, int rasterizerThreshold);
 
     virtual RenderPerformanceOverlay createRenderObject(BuildContext context);
 

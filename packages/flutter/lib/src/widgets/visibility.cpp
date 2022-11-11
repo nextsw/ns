@@ -1,5 +1,5 @@
 #include "visibility.hpp"
-VisibilityCls::VisibilityCls(Widget child, Unknown key, bool maintainAnimation, bool maintainInteractivity, bool maintainSemantics, bool maintainSize, bool maintainState, Widget replacement, bool visible) {
+VisibilityCls::VisibilityCls(Widget child, Key key, bool maintainAnimation, bool maintainInteractivity, bool maintainSemantics, bool maintainSize, bool maintainState, Widget replacement, bool visible) {
     {
         assert(child != nullptr);
         assert(replacement != nullptr);
@@ -47,7 +47,7 @@ void VisibilityCls::debugFillProperties(DiagnosticPropertiesBuilder properties) 
     properties->add(make<FlagPropertyCls>(__s("maintainInteractivity"), maintainInteractivity, __s("maintainInteractivity")));
 }
 
-SliverVisibilityCls::SliverVisibilityCls(Unknown key, bool maintainAnimation, bool maintainInteractivity, bool maintainSemantics, bool maintainSize, bool maintainState, Widget replacementSliver, Widget sliver, bool visible) {
+SliverVisibilityCls::SliverVisibilityCls(Key key, bool maintainAnimation, bool maintainInteractivity, bool maintainSemantics, bool maintainSize, bool maintainState, Widget replacementSliver, Widget sliver, bool visible) {
     {
         assert(sliver != nullptr);
         assert(replacementSliver != nullptr);

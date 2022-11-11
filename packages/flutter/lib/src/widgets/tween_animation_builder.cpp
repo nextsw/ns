@@ -1,6 +1,6 @@
 #include "tween_animation_builder.hpp"
 template<typename T>
-TweenAnimationBuilderCls<T>::TweenAnimationBuilderCls(ValueWidgetBuilder<T> builder, Widget child, Unknown curve, Unknown duration, Unknown key, Unknown onEnd, Tween<T> tween) {
+TweenAnimationBuilderCls<T>::TweenAnimationBuilderCls(ValueWidgetBuilder<T> builder, Widget child, Curve curve, Duration duration, Key key, VoidCallback onEnd, Tween<T> tween) {
     {
         assert(tween != nullptr);
         assert(curve != nullptr);

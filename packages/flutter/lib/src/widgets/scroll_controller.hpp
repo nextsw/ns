@@ -58,7 +58,7 @@ using ScrollController = std::shared_ptr<ScrollControllerCls>;
 class TrackingScrollControllerCls : public ScrollControllerCls {
 public:
 
-     TrackingScrollControllerCls(Unknown debugLabel, Unknown initialScrollOffset, Unknown keepScrollOffset);
+     TrackingScrollControllerCls(String debugLabel, Unknown initialScrollOffset, bool keepScrollOffset);
     virtual ScrollPosition mostRecentlyUpdatedPosition();
 
     virtual double initialScrollOffset();

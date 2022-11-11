@@ -12,7 +12,7 @@ public:
     Widget child;
 
 
-     SharedAppDataCls(Widget child, Unknown key);
+     SharedAppDataCls(Widget child, Key key);
     virtual State<StatefulWidget> createState();
 
     template<typename K, typename V>
@@ -59,7 +59,7 @@ public:
 
 private:
 
-     _SharedAppModelCls(Unknown child, _SharedAppDataState sharedAppDataState);
+     _SharedAppModelCls(Widget child, _SharedAppDataState sharedAppDataState);
 
 };
 using _SharedAppModel = std::shared_ptr<_SharedAppModelCls>;

@@ -280,7 +280,7 @@ void _SelectionKeepAliveStateCls::_updateSelectablesWithSelections(Selectable se
     wantKeepAlive() = _selectablesWithSelections?->isNotEmpty() | false;
 }
 
-SliverMultiBoxAdaptorWidgetCls::SliverMultiBoxAdaptorWidgetCls(SliverChildDelegate delegate, Unknown key) {
+SliverMultiBoxAdaptorWidgetCls::SliverMultiBoxAdaptorWidgetCls(SliverChildDelegate delegate, Key key) {
     {
         assert(delegate != nullptr);
     }
@@ -318,9 +318,9 @@ void SliverFixedExtentListCls::updateRenderObject(BuildContext context, RenderSl
     renderObject->itemExtent = itemExtent;
 }
 
-void SliverGridCls::count(double childAspectRatio, List<Widget> children, int crossAxisCount, double crossAxisSpacing, Unknown key, double mainAxisSpacing)
+void SliverGridCls::count(double childAspectRatio, List<Widget> children, int crossAxisCount, double crossAxisSpacing, Key key, double mainAxisSpacing)
 
-void SliverGridCls::extent(double childAspectRatio, List<Widget> children, double crossAxisSpacing, Unknown key, double mainAxisSpacing, double maxCrossAxisExtent)
+void SliverGridCls::extent(double childAspectRatio, List<Widget> children, double crossAxisSpacing, Key key, double mainAxisSpacing, double maxCrossAxisExtent)
 
 RenderSliverGrid SliverGridCls::createRenderObject(BuildContext context) {
     SliverMultiBoxAdaptorElement element = as<SliverMultiBoxAdaptorElement>(context);
@@ -584,7 +584,7 @@ double SliverMultiBoxAdaptorElementCls::_extrapolateMaxScrollOffset(int firstInd
     return trailingScrollOffset + averageExtent * remainingCount;
 }
 
-SliverOpacityCls::SliverOpacityCls(bool alwaysIncludeSemantics, Unknown key, double opacity, Widget sliver) : SingleChildRenderObjectWidget(sliver) {
+SliverOpacityCls::SliverOpacityCls(bool alwaysIncludeSemantics, Key key, double opacity, Widget sliver) : SingleChildRenderObjectWidget(sliver) {
     {
         assert(opacity != nullptr && opacity >= 0.0 && opacity <= 1.0);
         assert(alwaysIncludeSemantics != nullptr);
@@ -605,7 +605,7 @@ void SliverOpacityCls::debugFillProperties(DiagnosticPropertiesBuilder propertie
     properties->add(make<FlagPropertyCls>(__s("alwaysIncludeSemantics"), alwaysIncludeSemantics, __s("alwaysIncludeSemantics")));
 }
 
-SliverIgnorePointerCls::SliverIgnorePointerCls(bool ignoring, bool ignoringSemantics, Unknown key, Widget sliver) : SingleChildRenderObjectWidget(sliver) {
+SliverIgnorePointerCls::SliverIgnorePointerCls(bool ignoring, bool ignoringSemantics, Key key, Widget sliver) : SingleChildRenderObjectWidget(sliver) {
     {
         assert(ignoring != nullptr);
     }
@@ -625,7 +625,7 @@ void SliverIgnorePointerCls::debugFillProperties(DiagnosticPropertiesBuilder pro
     properties->add(<bool>make<DiagnosticsPropertyCls>(__s("ignoringSemantics"), ignoringSemantics, nullptr));
 }
 
-SliverOffstageCls::SliverOffstageCls(Unknown key, bool offstage, Widget sliver) : SingleChildRenderObjectWidget(sliver) {
+SliverOffstageCls::SliverOffstageCls(Key key, bool offstage, Widget sliver) : SingleChildRenderObjectWidget(sliver) {
     {
         assert(offstage != nullptr);
     }
@@ -654,7 +654,7 @@ void _SliverOffstageElementCls::debugVisitOnstageChildren(ElementVisitor visitor
     }
 }
 
-KeepAliveCls::KeepAliveCls(Unknown child, bool keepAlive, Unknown key) {
+KeepAliveCls::KeepAliveCls(Widget child, bool keepAlive, Key key) {
     {
         assert(child != nullptr);
         assert(keepAlive != nullptr);

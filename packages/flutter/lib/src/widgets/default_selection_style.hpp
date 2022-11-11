@@ -15,8 +15,8 @@ public:
     Color selectionColor;
 
 
-     DefaultSelectionStyleCls(Unknown child, Color cursorColor, Unknown key, Color selectionColor);
-    virtual void  fallback(Unknown key);
+     DefaultSelectionStyleCls(Widget child, Color cursorColor, Key key, Color selectionColor);
+    virtual void  fallback(Key key);
 
     static DefaultSelectionStyle of(BuildContext context);
 

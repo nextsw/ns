@@ -44,7 +44,7 @@ TextStyle TextStyleTweenCls::lerp(double t) {
     return TextStyleCls->lerp(begin, end, t)!;
 }
 
-ImplicitlyAnimatedWidgetCls::ImplicitlyAnimatedWidgetCls(Curve curve, Duration duration, Unknown key, VoidCallback onEnd) {
+ImplicitlyAnimatedWidgetCls::ImplicitlyAnimatedWidgetCls(Curve curve, Duration duration, Key key, VoidCallback onEnd) {
     {
         assert(curve != nullptr);
         assert(duration != nullptr);
@@ -154,7 +154,7 @@ void AnimatedWidgetBaseStateCls<T>::_handleAnimationChanged() {
     });
 }
 
-AnimatedContainerCls::AnimatedContainerCls(AlignmentGeometry alignment, Widget child, Clip clipBehavior, Color color, BoxConstraints constraints, Unknown curve, Decoration decoration, Unknown duration, Decoration foregroundDecoration, double height, Unknown key, EdgeInsetsGeometry margin, Unknown onEnd, EdgeInsetsGeometry padding, Matrix4 transform, AlignmentGeometry transformAlignment, double width) {
+AnimatedContainerCls::AnimatedContainerCls(AlignmentGeometry alignment, Widget child, Clip clipBehavior, Color color, BoxConstraints constraints, Curve curve, Decoration decoration, Duration duration, Decoration foregroundDecoration, double height, Key key, EdgeInsetsGeometry margin, VoidCallback onEnd, EdgeInsetsGeometry padding, Matrix4 transform, AlignmentGeometry transformAlignment, double width) {
     {
         assert(margin == nullptr || margin->isNonNegative());
         assert(padding == nullptr || padding->isNonNegative());
@@ -227,7 +227,7 @@ void _AnimatedContainerStateCls::debugFillProperties(DiagnosticPropertiesBuilder
     description->add(<AlignmentGeometryTween>make<DiagnosticsPropertyCls>(__s("transformAlignment"), _transformAlignment, nullptr));
 }
 
-AnimatedPaddingCls::AnimatedPaddingCls(Widget child, Unknown curve, Unknown duration, Unknown key, Unknown onEnd, EdgeInsetsGeometry padding) {
+AnimatedPaddingCls::AnimatedPaddingCls(Widget child, Curve curve, Duration duration, Key key, VoidCallback onEnd, EdgeInsetsGeometry padding) {
     {
         assert(padding != nullptr);
         assert(padding->isNonNegative());
@@ -258,7 +258,7 @@ void _AnimatedPaddingStateCls::debugFillProperties(DiagnosticPropertiesBuilder d
     description->add(<EdgeInsetsGeometryTween>make<DiagnosticsPropertyCls>(__s("padding"), _padding, nullptr));
 }
 
-AnimatedAlignCls::AnimatedAlignCls(AlignmentGeometry alignment, Widget child, Unknown curve, Unknown duration, double heightFactor, Unknown key, Unknown onEnd, double widthFactor) {
+AnimatedAlignCls::AnimatedAlignCls(AlignmentGeometry alignment, Widget child, Curve curve, Duration duration, double heightFactor, Key key, VoidCallback onEnd, double widthFactor) {
     {
         assert(alignment != nullptr);
         assert(widthFactor == nullptr || widthFactor >= 0.0);
@@ -302,14 +302,14 @@ void _AnimatedAlignStateCls::debugFillProperties(DiagnosticPropertiesBuilder des
     description->add(<Tween<double>>make<DiagnosticsPropertyCls>(__s("heightFactor"), _heightFactorTween, nullptr));
 }
 
-AnimatedPositionedCls::AnimatedPositionedCls(double bottom, Widget child, Unknown curve, Unknown duration, double height, Unknown key, double left, Unknown onEnd, double right, double top, double width) {
+AnimatedPositionedCls::AnimatedPositionedCls(double bottom, Widget child, Curve curve, Duration duration, double height, Key key, double left, VoidCallback onEnd, double right, double top, double width) {
     {
         assert(left == nullptr || right == nullptr || width == nullptr);
         assert(top == nullptr || bottom == nullptr || height == nullptr);
     }
 }
 
-void AnimatedPositionedCls::fromRect(Widget child, Unknown curve, Unknown duration, Unknown key, Unknown onEnd, Rect rect)
+void AnimatedPositionedCls::fromRect(Widget child, Curve curve, Duration duration, Key key, VoidCallback onEnd, Rect rect)
 
 AnimatedWidgetBaseState<AnimatedPositioned> AnimatedPositionedCls::createState() {
     return make<_AnimatedPositionedStateCls>();
@@ -360,7 +360,7 @@ void _AnimatedPositionedStateCls::debugFillProperties(DiagnosticPropertiesBuilde
     description->add(<Tween<double>>has(__s("height"), _height));
 }
 
-AnimatedPositionedDirectionalCls::AnimatedPositionedDirectionalCls(double bottom, Widget child, Unknown curve, Unknown duration, double end, double height, Unknown key, Unknown onEnd, double start, double top, double width) {
+AnimatedPositionedDirectionalCls::AnimatedPositionedDirectionalCls(double bottom, Widget child, Curve curve, Duration duration, double end, double height, Key key, VoidCallback onEnd, double start, double top, double width) {
     {
         assert(start == nullptr || end == nullptr || width == nullptr);
         assert(top == nullptr || bottom == nullptr || height == nullptr);
@@ -417,7 +417,7 @@ void _AnimatedPositionedDirectionalStateCls::debugFillProperties(DiagnosticPrope
     description->add(<Tween<double>>has(__s("height"), _height));
 }
 
-AnimatedScaleCls::AnimatedScaleCls(Alignment alignment, Widget child, Unknown curve, Unknown duration, FilterQuality filterQuality, Unknown key, Unknown onEnd, double scale) {
+AnimatedScaleCls::AnimatedScaleCls(Alignment alignment, Widget child, Curve curve, Duration duration, FilterQuality filterQuality, Key key, VoidCallback onEnd, double scale) {
     {
         assert(scale != nullptr);
     }
@@ -448,7 +448,7 @@ Widget _AnimatedScaleStateCls::build(BuildContext context) {
     return make<ScaleTransitionCls>(_scaleAnimation, widget()->alignment, widget()->filterQuality, widget()->child);
 }
 
-AnimatedRotationCls::AnimatedRotationCls(Alignment alignment, Widget child, Unknown curve, Unknown duration, FilterQuality filterQuality, Unknown key, Unknown onEnd, double turns) {
+AnimatedRotationCls::AnimatedRotationCls(Alignment alignment, Widget child, Curve curve, Duration duration, FilterQuality filterQuality, Key key, VoidCallback onEnd, double turns) {
     {
         assert(turns != nullptr);
     }
@@ -502,7 +502,7 @@ Widget _AnimatedSlideStateCls::build(BuildContext context) {
     return make<SlideTransitionCls>(_offsetAnimation, widget()->child);
 }
 
-AnimatedOpacityCls::AnimatedOpacityCls(bool alwaysIncludeSemantics, Widget child, Unknown curve, Unknown duration, Unknown key, Unknown onEnd, double opacity) {
+AnimatedOpacityCls::AnimatedOpacityCls(bool alwaysIncludeSemantics, Widget child, Curve curve, Duration duration, Key key, VoidCallback onEnd, double opacity) {
     {
         assert(opacity != nullptr && opacity >= 0.0 && opacity <= 1.0);
     }
@@ -531,7 +531,7 @@ Widget _AnimatedOpacityStateCls::build(BuildContext context) {
     return make<FadeTransitionCls>(_opacityAnimation, widget()->alwaysIncludeSemantics, widget()->child);
 }
 
-SliverAnimatedOpacityCls::SliverAnimatedOpacityCls(bool alwaysIncludeSemantics, Unknown curve, Unknown duration, Unknown key, Unknown onEnd, double opacity, Widget sliver) {
+SliverAnimatedOpacityCls::SliverAnimatedOpacityCls(bool alwaysIncludeSemantics, Curve curve, Duration duration, Key key, VoidCallback onEnd, double opacity, Widget sliver) {
     {
         assert(opacity != nullptr && opacity >= 0.0 && opacity <= 1.0);
     }
@@ -560,7 +560,7 @@ Widget _SliverAnimatedOpacityStateCls::build(BuildContext context) {
     return make<SliverFadeTransitionCls>(_opacityAnimation, widget()->sliver, widget()->alwaysIncludeSemantics);
 }
 
-AnimatedDefaultTextStyleCls::AnimatedDefaultTextStyleCls(Widget child, Unknown curve, Unknown duration, Unknown key, int maxLines, Unknown onEnd, TextOverflow overflow, bool softWrap, TextStyle style, TextAlign textAlign, TextHeightBehavior textHeightBehavior, TextWidthBasis textWidthBasis) {
+AnimatedDefaultTextStyleCls::AnimatedDefaultTextStyleCls(Widget child, Curve curve, Duration duration, Key key, int maxLines, VoidCallback onEnd, TextOverflow overflow, bool softWrap, TextStyle style, TextAlign textAlign, TextHeightBehavior textHeightBehavior, TextWidthBasis textWidthBasis) {
     {
         assert(style != nullptr);
         assert(child != nullptr);
@@ -596,7 +596,7 @@ Widget _AnimatedDefaultTextStyleStateCls::build(BuildContext context) {
     return make<DefaultTextStyleCls>(_style!->evaluate(animation()), widget()->textAlign, widget()->softWrap, widget()->overflow, widget()->maxLines, widget()->textWidthBasis, widget()->textHeightBehavior, widget()->child);
 }
 
-AnimatedPhysicalModelCls::AnimatedPhysicalModelCls(bool animateColor, bool animateShadowColor, BorderRadius borderRadius, Widget child, Clip clipBehavior, Color color, Unknown curve, Unknown duration, double elevation, Unknown key, Unknown onEnd, Color shadowColor, BoxShape shape) {
+AnimatedPhysicalModelCls::AnimatedPhysicalModelCls(bool animateColor, bool animateShadowColor, BorderRadius borderRadius, Widget child, Clip clipBehavior, Color color, Curve curve, Duration duration, double elevation, Key key, VoidCallback onEnd, Color shadowColor, BoxShape shape) {
     {
         assert(child != nullptr);
         assert(shape != nullptr);
@@ -644,7 +644,7 @@ Widget _AnimatedPhysicalModelStateCls::build(BuildContext context) {
     return make<PhysicalModelCls>(widget()->shape, widget()->clipBehavior, _borderRadius!->evaluate(animation()), _elevation!->evaluate(animation()), widget()->animateColor? _color!->evaluate(animation())! : widget()->color, widget()->animateShadowColor? _shadowColor!->evaluate(animation())! : widget()->shadowColor, widget()->child);
 }
 
-AnimatedFractionallySizedBoxCls::AnimatedFractionallySizedBoxCls(AlignmentGeometry alignment, Widget child, Unknown curve, Unknown duration, double heightFactor, Unknown key, Unknown onEnd, double widthFactor) {
+AnimatedFractionallySizedBoxCls::AnimatedFractionallySizedBoxCls(AlignmentGeometry alignment, Widget child, Curve curve, Duration duration, double heightFactor, Key key, VoidCallback onEnd, double widthFactor) {
     {
         assert(alignment != nullptr);
         assert(widthFactor == nullptr || widthFactor >= 0.0);

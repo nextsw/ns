@@ -1,5 +1,5 @@
 #include "raw_keyboard_listener.hpp"
-RawKeyboardListenerCls::RawKeyboardListenerCls(bool autofocus, Widget child, FocusNode focusNode, bool includeSemantics, Unknown key, ValueChanged<RawKeyEvent> onKey) {
+RawKeyboardListenerCls::RawKeyboardListenerCls(bool autofocus, Widget child, FocusNode focusNode, bool includeSemantics, Key key, ValueChanged<RawKeyEvent> onKey) {
     {
         assert(focusNode != nullptr);
         assert(autofocus != nullptr);

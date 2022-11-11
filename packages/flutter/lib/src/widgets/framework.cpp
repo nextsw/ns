@@ -269,7 +269,7 @@ SingleChildRenderObjectElement SingleChildRenderObjectWidgetCls::createElement()
     return make<SingleChildRenderObjectElementCls>(this);
 }
 
-MultiChildRenderObjectWidgetCls::MultiChildRenderObjectWidgetCls(List<Widget> children, Unknown key) {
+MultiChildRenderObjectWidgetCls::MultiChildRenderObjectWidgetCls(List<Widget> children, Key key) {
     {
         assert(children != nullptr);
     }

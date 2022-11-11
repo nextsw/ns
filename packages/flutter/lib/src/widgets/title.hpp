@@ -18,7 +18,7 @@ public:
     Widget child;
 
 
-     TitleCls(Widget child, Color color, Unknown key, String title);
+     TitleCls(Widget child, Color color, Key key, String title);
 
     virtual Widget build(BuildContext context);
 

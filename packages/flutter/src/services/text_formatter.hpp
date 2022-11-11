@@ -94,7 +94,7 @@ public:
     static TextInputFormatter digitsOnly;
 
 
-     FilteringTextInputFormatterCls(Pattern filterPattern, bool allow, String replacementString);
+     FilteringTextInputFormatterCls(Pattern filterPattern, Unknown allow, String replacementString);
 
     virtual void  allow(Pattern filterPattern, String replacementString);
 

@@ -18,7 +18,7 @@ public:
     SliverChildDelegate delegate;
 
 
-     SliverFillViewportCls(SliverChildDelegate delegate, Unknown key, bool padEnds, double viewportFraction);
+     SliverFillViewportCls(SliverChildDelegate delegate, Key key, bool padEnds, double viewportFraction);
 
     virtual Widget build(BuildContext context);
 
@@ -38,7 +38,7 @@ public:
 
 private:
 
-     _SliverFillViewportRenderObjectWidgetCls(Unknown delegate, double viewportFraction);
+     _SliverFillViewportRenderObjectWidgetCls(SliverChildDelegate delegate, double viewportFraction);
 
 };
 using _SliverFillViewportRenderObjectWidget = std::shared_ptr<_SliverFillViewportRenderObjectWidgetCls>;
@@ -96,7 +96,7 @@ public:
     bool fillOverscroll;
 
 
-     SliverFillRemainingCls(Widget child, bool fillOverscroll, bool hasScrollBody, Unknown key);
+     SliverFillRemainingCls(Widget child, bool fillOverscroll, bool hasScrollBody, Key key);
 
     virtual Widget build(BuildContext context);
 
@@ -114,7 +114,7 @@ public:
 
 private:
 
-     _SliverFillRemainingWithScrollableCls(Unknown child);
+     _SliverFillRemainingWithScrollableCls(Widget child);
 };
 using _SliverFillRemainingWithScrollable = std::shared_ptr<_SliverFillRemainingWithScrollableCls>;
 
@@ -125,7 +125,7 @@ public:
 
 private:
 
-     _SliverFillRemainingWithoutScrollableCls(Unknown child);
+     _SliverFillRemainingWithoutScrollableCls(Widget child);
 };
 using _SliverFillRemainingWithoutScrollable = std::shared_ptr<_SliverFillRemainingWithoutScrollableCls>;
 
@@ -136,7 +136,7 @@ public:
 
 private:
 
-     _SliverFillRemainingAndOverscrollCls(Unknown child);
+     _SliverFillRemainingAndOverscrollCls(Widget child);
 };
 using _SliverFillRemainingAndOverscroll = std::shared_ptr<_SliverFillRemainingAndOverscrollCls>;
 

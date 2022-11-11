@@ -1,5 +1,5 @@
 #include "title.hpp"
-TitleCls::TitleCls(Widget child, Color color, Unknown key, String title) {
+TitleCls::TitleCls(Widget child, Color color, Key key, String title) {
     {
         assert(title != nullptr);
         assert(color != nullptr && color->alpha() == 0xFF);

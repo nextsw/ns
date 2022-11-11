@@ -43,7 +43,7 @@ public:
     Widget child;
 
 
-     GridPaperCls(Widget child, Color color, int divisions, double interval, Unknown key, int subdivisions);
+     GridPaperCls(Widget child, Color color, int divisions, double interval, Key key, int subdivisions);
 
     virtual Widget build(BuildContext context);
 

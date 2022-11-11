@@ -1,5 +1,5 @@
 #include "semantics_debugger.hpp"
-SemanticsDebuggerCls::SemanticsDebuggerCls(Widget child, Unknown key, TextStyle labelStyle) {
+SemanticsDebuggerCls::SemanticsDebuggerCls(Widget child, Key key, TextStyle labelStyle) {
     {
         assert(child != nullptr);
         assert(labelStyle != nullptr);

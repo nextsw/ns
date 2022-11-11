@@ -33,7 +33,7 @@ public:
     bool spellOut;
 
 
-     TextSpanCls(List<InlineSpan> children, Locale locale, MouseCursor mouseCursor, PointerEnterEventListener onEnter, PointerExitEventListener onExit, GestureRecognizer recognizer, String semanticsLabel, bool spellOut, Unknown style, String text);
+     TextSpanCls(List<InlineSpan> children, Locale locale, MouseCursor mouseCursor, PointerEnterEventListener onEnter, PointerExitEventListener onExit, GestureRecognizer recognizer, String semanticsLabel, bool spellOut, TextStyle style, String text);
 
     virtual MouseCursor cursor();
 

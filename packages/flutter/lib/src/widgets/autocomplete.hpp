@@ -37,7 +37,7 @@ public:
     TextEditingValue initialValue;
 
 
-     RawAutocompleteCls(AutocompleteOptionToString<T> displayStringForOption, AutocompleteFieldViewBuilder fieldViewBuilder, FocusNode focusNode, TextEditingValue initialValue, Unknown key, AutocompleteOnSelected<T> onSelected, AutocompleteOptionsBuilder<T> optionsBuilder, AutocompleteOptionsViewBuilder<T> optionsViewBuilder, TextEditingController textEditingController);
+     RawAutocompleteCls(AutocompleteOptionToString<T> displayStringForOption, AutocompleteFieldViewBuilder fieldViewBuilder, FocusNode focusNode, TextEditingValue initialValue, Key key, AutocompleteOnSelected<T> onSelected, AutocompleteOptionsBuilder<T> optionsBuilder, AutocompleteOptionsViewBuilder<T> optionsViewBuilder, TextEditingController textEditingController);
 
     template<typename T>
  static void onFieldSubmitted(GlobalKey key);
@@ -142,7 +142,7 @@ public:
 
 private:
 
-     _AutocompleteCallbackActionCls(bool enabled, Unknown onInvoke);
+     _AutocompleteCallbackActionCls(bool enabled, OnInvokeCallback<T> onInvoke);
 };
 template<typename T>
 using _AutocompleteCallbackAction = std::shared_ptr<_AutocompleteCallbackActionCls<T>>;
@@ -168,7 +168,7 @@ using AutocompleteNextOptionIntent = std::shared_ptr<AutocompleteNextOptionInten
 class AutocompleteHighlightedOptionCls : public InheritedNotifierCls<ValueNotifier<int>> {
 public:
 
-     AutocompleteHighlightedOptionCls(Unknown child, ValueNotifier<int> highlightIndexNotifier, Unknown key);
+     AutocompleteHighlightedOptionCls(Widget child, ValueNotifier<int> highlightIndexNotifier, Key key);
 
     static int of(BuildContext context);
 

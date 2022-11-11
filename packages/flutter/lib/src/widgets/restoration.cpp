@@ -1,5 +1,5 @@
 #include "restoration.hpp"
-RestorationScopeCls::RestorationScopeCls(Widget child, Unknown key, String restorationId) {
+RestorationScopeCls::RestorationScopeCls(Widget child, Key key, String restorationId) {
     {
         assert(child != nullptr);
     }
@@ -24,7 +24,7 @@ Widget _RestorationScopeStateCls::build(BuildContext context) {
     return make<UnmanagedRestorationScopeCls>(bucket, widget()->child);
 }
 
-UnmanagedRestorationScopeCls::UnmanagedRestorationScopeCls(RestorationBucket bucket, Unknown child, Unknown key) {
+UnmanagedRestorationScopeCls::UnmanagedRestorationScopeCls(RestorationBucket bucket, Widget child, Key key) {
     {
         assert(child != nullptr);
     }
@@ -34,7 +34,7 @@ bool UnmanagedRestorationScopeCls::updateShouldNotify(UnmanagedRestorationScope 
     return oldWidget->bucket != bucket;
 }
 
-RootRestorationScopeCls::RootRestorationScopeCls(Widget child, Unknown key, String restorationId) {
+RootRestorationScopeCls::RootRestorationScopeCls(Widget child, Key key, String restorationId) {
     {
         assert(child != nullptr);
     }

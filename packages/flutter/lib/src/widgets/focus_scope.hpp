@@ -23,7 +23,7 @@ public:
     bool includeSemantics;
 
 
-     FocusCls(bool autofocus, bool canRequestFocus, Widget child, String debugLabel, bool descendantsAreFocusable, bool descendantsAreTraversable, FocusNode focusNode, bool includeSemantics, Unknown key, ValueChanged<bool> onFocusChange, FocusOnKeyCallback onKey, FocusOnKeyEventCallback onKeyEvent, bool skipTraversal);
+     FocusCls(bool autofocus, bool canRequestFocus, Widget child, String debugLabel, bool descendantsAreFocusable, bool descendantsAreTraversable, FocusNode focusNode, bool includeSemantics, Key key, ValueChanged<bool> onFocusChange, FocusOnKeyCallback onKey, FocusOnKeyEventCallback onKeyEvent, bool skipTraversal);
 
     virtual void  withExternalFocusNode(bool autofocus, Widget child, FocusNode focusNode, bool includeSemantics, Key key, ValueChanged<bool> onFocusChange);
     virtual FocusOnKeyEventCallback onKeyEvent();
@@ -88,7 +88,7 @@ public:
 
 private:
 
-     _FocusWithExternalFocusNodeCls(Unknown autofocus, Unknown child, FocusNode focusNode, Unknown includeSemantics, Unknown key, Unknown onFocusChange);
+     _FocusWithExternalFocusNodeCls(bool autofocus, Widget child, FocusNode focusNode, bool includeSemantics, Key key, ValueChanged<bool> onFocusChange);
     virtual bool _usingExternalFocus();
 
     virtual bool _descendantsAreTraversable();
@@ -143,7 +143,7 @@ using _FocusState = std::shared_ptr<_FocusStateCls>;
 class FocusScopeCls : public FocusCls {
 public:
 
-     FocusScopeCls(Unknown autofocus, Unknown canRequestFocus, Unknown child, Unknown debugLabel, Unknown key, FocusScopeNode node, Unknown onFocusChange, Unknown onKey, Unknown onKeyEvent, Unknown skipTraversal);
+     FocusScopeCls(bool autofocus, Unknown canRequestFocus, Widget child, Unknown debugLabel, Key key, FocusScopeNode node, ValueChanged<bool> onFocusChange, Unknown onKey, Unknown onKeyEvent, Unknown skipTraversal);
 
     virtual void  withExternalFocusNode(bool autofocus, Widget child, FocusScopeNode focusScopeNode, Key key, ValueChanged<bool> onFocusChange) override;
     static FocusScopeNode of(BuildContext context);
@@ -174,7 +174,7 @@ public:
 
 private:
 
-     _FocusScopeWithExternalFocusNodeCls(Unknown autofocus, Unknown child, FocusScopeNode focusScopeNode, Unknown key, Unknown onFocusChange);
+     _FocusScopeWithExternalFocusNodeCls(bool autofocus, Widget child, FocusScopeNode focusScopeNode, Key key, ValueChanged<bool> onFocusChange);
 
     virtual bool _usingExternalFocus();
 
@@ -198,7 +198,7 @@ public:
 
 private:
 
-     _FocusMarkerCls(Unknown child, FocusNode node);
+     _FocusMarkerCls(Widget child, FocusNode node);
 
 };
 using _FocusMarker = std::shared_ptr<_FocusMarkerCls>;
@@ -210,7 +210,7 @@ public:
     Widget child;
 
 
-     ExcludeFocusCls(Widget child, bool excluding, Unknown key);
+     ExcludeFocusCls(Widget child, bool excluding, Key key);
 
     virtual Widget build(BuildContext context);
 

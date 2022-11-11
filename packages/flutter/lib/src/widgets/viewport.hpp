@@ -30,7 +30,7 @@ public:
     Clip clipBehavior;
 
 
-     ViewportCls(double anchor, AxisDirection axisDirection, double cacheExtent, CacheExtentStyle cacheExtentStyle, Key center, Clip clipBehavior, AxisDirection crossAxisDirection, Unknown key, ViewportOffset offset, List<Widget> slivers);
+     ViewportCls(double anchor, AxisDirection axisDirection, double cacheExtent, CacheExtentStyle cacheExtentStyle, Key center, Clip clipBehavior, AxisDirection crossAxisDirection, Key key, ViewportOffset offset, List<Widget> slivers);
 
     static AxisDirection getDefaultCrossAxisDirection(BuildContext context, AxisDirection axisDirection);
 
@@ -87,7 +87,7 @@ public:
     Clip clipBehavior;
 
 
-     ShrinkWrappingViewportCls(AxisDirection axisDirection, Clip clipBehavior, AxisDirection crossAxisDirection, Unknown key, ViewportOffset offset, List<Widget> slivers);
+     ShrinkWrappingViewportCls(AxisDirection axisDirection, Clip clipBehavior, AxisDirection crossAxisDirection, Key key, ViewportOffset offset, List<Widget> slivers);
 
     virtual RenderShrinkWrappingViewport createRenderObject(BuildContext context);
 

@@ -128,7 +128,7 @@ FixedExtentMetrics _FixedExtentScrollPositionCls::copyWith(AxisDirection axisDir
     return make<FixedExtentMetricsCls>(minScrollExtent | (hasContentDimensions()? this->minScrollExtent : nullptr), maxScrollExtent | (hasContentDimensions()? this->maxScrollExtent : nullptr), pixels | (hasPixels()? this->pixels : nullptr), viewportDimension | (hasViewportDimension()? this->viewportDimension : nullptr), axisDirection | this->axisDirection, itemIndex | this->itemIndex);
 }
 
-_FixedExtentScrollPositionCls::_FixedExtentScrollPositionCls(Unknown context, int initialItem, Unknown oldPosition, Unknown physics) : ScrollPositionWithSingleContext(_getItemExtentFromScrollContext(context) * initialItem) {
+_FixedExtentScrollPositionCls::_FixedExtentScrollPositionCls(ScrollContext context, int initialItem, Unknown oldPosition, ScrollPhysics physics) : ScrollPositionWithSingleContext(_getItemExtentFromScrollContext(context) * initialItem) {
     {
         assert(is<_FixedExtentScrollableState>(context), __s("FixedExtentScrollController can only be used with ListWheelScrollViews"));
     }
@@ -173,7 +173,7 @@ Simulation FixedExtentScrollPhysicsCls::createBallisticSimulation(ScrollMetrics 
     return FrictionSimulationCls->through(metrics->pixels(), settlingPixels, velocity, tolerance()->velocity * velocity->sign());
 }
 
-ListWheelScrollViewCls::ListWheelScrollViewCls(List<Widget> children, Clip clipBehavior, ScrollController controller, double diameterRatio, double itemExtent, Unknown key, double magnification, double offAxisFraction, ValueChanged<int> onSelectedItemChanged, double overAndUnderCenterOpacity, double perspective, ScrollPhysics physics, bool renderChildrenOutsideViewport, String restorationId, ScrollBehavior scrollBehavior, double squeeze, bool useMagnifier) {
+ListWheelScrollViewCls::ListWheelScrollViewCls(List<Widget> children, Clip clipBehavior, ScrollController controller, double diameterRatio, double itemExtent, Key key, double magnification, double offAxisFraction, ValueChanged<int> onSelectedItemChanged, double overAndUnderCenterOpacity, double perspective, ScrollPhysics physics, bool renderChildrenOutsideViewport, String restorationId, ScrollBehavior scrollBehavior, double squeeze, bool useMagnifier) {
     {
         assert(children != nullptr);
         assert(diameterRatio != nullptr);
@@ -195,7 +195,7 @@ ListWheelScrollViewCls::ListWheelScrollViewCls(List<Widget> children, Clip clipB
     }
 }
 
-void ListWheelScrollViewCls::useDelegate(ListWheelChildDelegate childDelegate, Clip clipBehavior, ScrollController controller, double diameterRatio, double itemExtent, Unknown key, double magnification, double offAxisFraction, ValueChanged<int> onSelectedItemChanged, double overAndUnderCenterOpacity, double perspective, ScrollPhysics physics, bool renderChildrenOutsideViewport, String restorationId, ScrollBehavior scrollBehavior, double squeeze, bool useMagnifier)
+void ListWheelScrollViewCls::useDelegate(ListWheelChildDelegate childDelegate, Clip clipBehavior, ScrollController controller, double diameterRatio, double itemExtent, Key key, double magnification, double offAxisFraction, ValueChanged<int> onSelectedItemChanged, double overAndUnderCenterOpacity, double perspective, ScrollPhysics physics, bool renderChildrenOutsideViewport, String restorationId, ScrollBehavior scrollBehavior, double squeeze, bool useMagnifier)
 
 State<ListWheelScrollView> ListWheelScrollViewCls::createState() {
     return make<_ListWheelScrollViewStateCls>();
@@ -352,7 +352,7 @@ void ListWheelElementCls::forgetChild(Element child) {
     super->forgetChild(child);
 }
 
-ListWheelViewportCls::ListWheelViewportCls(ListWheelChildDelegate childDelegate, Clip clipBehavior, double diameterRatio, double itemExtent, Unknown key, double magnification, double offAxisFraction, ViewportOffset offset, double overAndUnderCenterOpacity, double perspective, bool renderChildrenOutsideViewport, double squeeze, bool useMagnifier) {
+ListWheelViewportCls::ListWheelViewportCls(ListWheelChildDelegate childDelegate, Clip clipBehavior, double diameterRatio, double itemExtent, Key key, double magnification, double offAxisFraction, ViewportOffset offset, double overAndUnderCenterOpacity, double perspective, bool renderChildrenOutsideViewport, double squeeze, bool useMagnifier) {
     {
         assert(childDelegate != nullptr);
         assert(offset != nullptr);

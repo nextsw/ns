@@ -1,5 +1,5 @@
 #include "status_transitions.hpp"
-StatusTransitionWidgetCls::StatusTransitionWidgetCls(Animation<double> animation, Unknown key) {
+StatusTransitionWidgetCls::StatusTransitionWidgetCls(Animation<double> animation, Key key) {
     {
         assert(animation != nullptr);
     }

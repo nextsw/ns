@@ -1,5 +1,5 @@
 #include "text_span.hpp"
-TextSpanCls::TextSpanCls(List<InlineSpan> children, Locale locale, MouseCursor mouseCursor, PointerEnterEventListener onEnter, PointerExitEventListener onExit, GestureRecognizer recognizer, String semanticsLabel, bool spellOut, Unknown style, String text) {
+TextSpanCls::TextSpanCls(List<InlineSpan> children, Locale locale, MouseCursor mouseCursor, PointerEnterEventListener onEnter, PointerExitEventListener onExit, GestureRecognizer recognizer, String semanticsLabel, bool spellOut, TextStyle style, String text) {
     {
         mouseCursor = mouseCursor | (recognizer == nullptr? MouseCursorCls::defer : SystemMouseCursorsCls::click);
         assert(!(text == nullptr && semanticsLabel != nullptr));

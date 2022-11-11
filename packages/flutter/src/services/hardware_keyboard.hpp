@@ -58,7 +58,7 @@ using KeyEvent = std::shared_ptr<KeyEventCls>;
 class KeyDownEventCls : public KeyEventCls {
 public:
 
-     KeyDownEventCls(Unknown character, Unknown logicalKey, Unknown physicalKey, Unknown synthesized, Unknown timeStamp);
+     KeyDownEventCls(String character, LogicalKeyboardKey logicalKey, PhysicalKeyboardKey physicalKey, bool synthesized, Duration timeStamp);
 private:
 
 };
@@ -67,7 +67,7 @@ using KeyDownEvent = std::shared_ptr<KeyDownEventCls>;
 class KeyUpEventCls : public KeyEventCls {
 public:
 
-     KeyUpEventCls(Unknown logicalKey, Unknown physicalKey, Unknown synthesized, Unknown timeStamp);
+     KeyUpEventCls(LogicalKeyboardKey logicalKey, PhysicalKeyboardKey physicalKey, bool synthesized, Duration timeStamp);
 private:
 
 };
@@ -76,7 +76,7 @@ using KeyUpEvent = std::shared_ptr<KeyUpEventCls>;
 class KeyRepeatEventCls : public KeyEventCls {
 public:
 
-     KeyRepeatEventCls(Unknown character, Unknown logicalKey, Unknown physicalKey, Unknown timeStamp);
+     KeyRepeatEventCls(String character, LogicalKeyboardKey logicalKey, PhysicalKeyboardKey physicalKey, Duration timeStamp);
 private:
 
 };

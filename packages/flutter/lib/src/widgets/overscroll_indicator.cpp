@@ -1,5 +1,5 @@
 #include "overscroll_indicator.hpp"
-GlowingOverscrollIndicatorCls::GlowingOverscrollIndicatorCls(AxisDirection axisDirection, Widget child, Color color, Unknown key, ScrollNotificationPredicate notificationPredicate, bool showLeading, bool showTrailing) {
+GlowingOverscrollIndicatorCls::GlowingOverscrollIndicatorCls(AxisDirection axisDirection, Widget child, Color color, Key key, ScrollNotificationPredicate notificationPredicate, bool showLeading, bool showTrailing) {
     {
         assert(showLeading != nullptr);
         assert(showTrailing != nullptr);
@@ -305,7 +305,7 @@ void _GlowingOverscrollIndicatorPainterCls::_paintSide(Canvas canvas, Size size,
     ;
 }
 
-StretchingOverscrollIndicatorCls::StretchingOverscrollIndicatorCls(AxisDirection axisDirection, Widget child, Clip clipBehavior, Unknown key, ScrollNotificationPredicate notificationPredicate) {
+StretchingOverscrollIndicatorCls::StretchingOverscrollIndicatorCls(AxisDirection axisDirection, Widget child, Clip clipBehavior, Key key, ScrollNotificationPredicate notificationPredicate) {
     {
         assert(axisDirection != nullptr);
         assert(notificationPredicate != nullptr);

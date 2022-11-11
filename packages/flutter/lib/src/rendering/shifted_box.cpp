@@ -434,7 +434,7 @@ BoxConstraints RenderConstrainedOverflowBoxCls::_getInnerConstraints(BoxConstrai
 
 RenderConstraintsTransformBoxCls::RenderConstraintsTransformBoxCls(Unknown alignment, Unknown child, Clip clipBehavior, BoxConstraintsTransform constraintsTransform, Unknown textDirection) {
     {
-        assert(alignment != nullptr);
+        assert(alignment() != nullptr);
         assert(clipBehavior != nullptr);
         assert(constraintsTransform != nullptr);
         _constraintsTransform = constraintsTransform;
@@ -549,8 +549,8 @@ String RenderConstraintsTransformBoxCls::toStringShort() {
 
 RenderUnconstrainedBoxCls::RenderUnconstrainedBoxCls(Unknown alignment, Unknown child, Unknown clipBehavior, Axis constrainedAxis, Unknown textDirection) : RenderConstraintsTransformBox(_convertAxis(constrainedAxis)) {
     {
-        assert(alignment != nullptr);
-        assert(clipBehavior != nullptr);
+        assert(alignment() != nullptr);
+        assert(clipBehavior() != nullptr);
         _constrainedAxis = constrainedAxis;
     }
 }

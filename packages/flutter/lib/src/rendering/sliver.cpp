@@ -194,7 +194,7 @@ bool SliverHitTestResultCls::addWithAxisOffset(double crossAxisOffset, double cr
     return isHit;
 }
 
-SliverHitTestEntryCls::SliverHitTestEntryCls(Unknown target, double crossAxisPosition, double mainAxisPosition) {
+SliverHitTestEntryCls::SliverHitTestEntryCls(T target, double crossAxisPosition, double mainAxisPosition) {
     {
         assert(mainAxisPosition != nullptr);
         assert(crossAxisPosition != nullptr);

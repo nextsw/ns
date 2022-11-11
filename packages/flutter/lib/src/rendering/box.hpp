@@ -150,7 +150,7 @@ public:
     Offset localPosition;
 
 
-     BoxHitTestEntryCls(Unknown target, Offset localPosition);
+     BoxHitTestEntryCls(T target, Offset localPosition);
 
     virtual String toString();
 

@@ -16,7 +16,7 @@ public:
     FilterQuality filterQuality;
 
 
-     TextureCls(FilterQuality filterQuality, bool freeze, Unknown key, int textureId);
+     TextureCls(FilterQuality filterQuality, bool freeze, Key key, int textureId);
 
     virtual TextureBox createRenderObject(BuildContext context);
 

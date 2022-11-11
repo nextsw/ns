@@ -60,7 +60,7 @@ bool _SharedAppModelCls::updateShouldNotifyDependent(_SharedAppModel old, Set<Ob
     return false;
 }
 
-_SharedAppModelCls::_SharedAppModelCls(Unknown child, _SharedAppDataState sharedAppDataState) {
+_SharedAppModelCls::_SharedAppModelCls(Widget child, _SharedAppDataState sharedAppDataState) {
     {
         data = sharedAppDataState->data;
     }

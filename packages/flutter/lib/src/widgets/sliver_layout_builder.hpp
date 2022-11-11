@@ -11,7 +11,7 @@
 class SliverLayoutBuilderCls : public ConstrainedLayoutBuilderCls<SliverConstraints> {
 public:
 
-     SliverLayoutBuilderCls(Unknown builder, Unknown key);
+     SliverLayoutBuilderCls(Unknown builder, Key key);
     virtual SliverLayoutWidgetBuilder builder();
 
     virtual RenderObject createRenderObject(BuildContext context);

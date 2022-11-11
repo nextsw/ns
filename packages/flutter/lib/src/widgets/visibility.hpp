@@ -29,7 +29,7 @@ public:
     bool maintainInteractivity;
 
 
-     VisibilityCls(Widget child, Unknown key, bool maintainAnimation, bool maintainInteractivity, bool maintainSemantics, bool maintainSize, bool maintainState, Widget replacement, bool visible);
+     VisibilityCls(Widget child, Key key, bool maintainAnimation, bool maintainInteractivity, bool maintainSemantics, bool maintainSize, bool maintainState, Widget replacement, bool visible);
 
     virtual Widget build(BuildContext context);
 
@@ -59,7 +59,7 @@ public:
     bool maintainInteractivity;
 
 
-     SliverVisibilityCls(Unknown key, bool maintainAnimation, bool maintainInteractivity, bool maintainSemantics, bool maintainSize, bool maintainState, Widget replacementSliver, Widget sliver, bool visible);
+     SliverVisibilityCls(Key key, bool maintainAnimation, bool maintainInteractivity, bool maintainSemantics, bool maintainSize, bool maintainState, Widget replacementSliver, Widget sliver, bool visible);
 
     virtual Widget build(BuildContext context);
 

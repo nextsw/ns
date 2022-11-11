@@ -44,7 +44,7 @@ public:
     ScrollViewKeyboardDismissBehavior keyboardDismissBehavior;
 
 
-     SingleChildScrollViewCls(Widget child, Clip clipBehavior, ScrollController controller, DragStartBehavior dragStartBehavior, Unknown key, ScrollViewKeyboardDismissBehavior keyboardDismissBehavior, EdgeInsetsGeometry padding, ScrollPhysics physics, bool primary, String restorationId, bool reverse, Axis scrollDirection);
+     SingleChildScrollViewCls(Widget child, Clip clipBehavior, ScrollController controller, DragStartBehavior dragStartBehavior, Key key, ScrollViewKeyboardDismissBehavior keyboardDismissBehavior, EdgeInsetsGeometry padding, ScrollPhysics physics, bool primary, String restorationId, bool reverse, Axis scrollDirection);
 
     virtual Widget build(BuildContext context);
 
@@ -72,7 +72,7 @@ public:
 
 private:
 
-     _SingleChildViewportCls(AxisDirection axisDirection, Unknown child, Clip clipBehavior, ViewportOffset offset);
+     _SingleChildViewportCls(AxisDirection axisDirection, Widget child, Clip clipBehavior, ViewportOffset offset);
 
 };
 using _SingleChildViewport = std::shared_ptr<_SingleChildViewportCls>;

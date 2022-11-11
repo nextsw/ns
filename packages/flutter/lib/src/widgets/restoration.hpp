@@ -18,7 +18,7 @@ public:
     String restorationId;
 
 
-     RestorationScopeCls(Widget child, Unknown key, String restorationId);
+     RestorationScopeCls(Widget child, Key key, String restorationId);
 
     static RestorationBucket of(BuildContext context);
 
@@ -48,7 +48,7 @@ public:
     RestorationBucket bucket;
 
 
-     UnmanagedRestorationScopeCls(RestorationBucket bucket, Unknown child, Unknown key);
+     UnmanagedRestorationScopeCls(RestorationBucket bucket, Widget child, Key key);
 
     virtual bool updateShouldNotify(UnmanagedRestorationScope oldWidget);
 
@@ -64,7 +64,7 @@ public:
     String restorationId;
 
 
-     RootRestorationScopeCls(Widget child, Unknown key, String restorationId);
+     RootRestorationScopeCls(Widget child, Key key, String restorationId);
 
     virtual State<RootRestorationScope> createState();
 

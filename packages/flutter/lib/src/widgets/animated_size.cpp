@@ -1,5 +1,5 @@
 #include "animated_size.hpp"
-AnimatedSizeCls::AnimatedSizeCls(AlignmentGeometry alignment, Widget child, Clip clipBehavior, Curve curve, Duration duration, Unknown key, Duration reverseDuration, TickerProvider vsync) {
+AnimatedSizeCls::AnimatedSizeCls(AlignmentGeometry alignment, Widget child, Clip clipBehavior, Curve curve, Duration duration, Key key, Duration reverseDuration, TickerProvider vsync) {
     {
         assert(clipBehavior != nullptr);
     }
@@ -28,7 +28,7 @@ void _AnimatedSizeCls::debugFillProperties(DiagnosticPropertiesBuilder propertie
     properties->add(make<IntPropertyCls>(__s("reverseDuration"), reverseDuration?->inMilliseconds(), __s("ms"), nullptr));
 }
 
-_AnimatedSizeCls::_AnimatedSizeCls(AlignmentGeometry alignment, Unknown child, Clip clipBehavior, Curve curve, Duration duration, Duration reverseDuration, TickerProvider vsync) {
+_AnimatedSizeCls::_AnimatedSizeCls(AlignmentGeometry alignment, Widget child, Clip clipBehavior, Curve curve, Duration duration, Duration reverseDuration, TickerProvider vsync) {
     {
         assert(clipBehavior != nullptr);
     }

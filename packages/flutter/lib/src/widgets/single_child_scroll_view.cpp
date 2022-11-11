@@ -1,5 +1,5 @@
 #include "single_child_scroll_view.hpp"
-SingleChildScrollViewCls::SingleChildScrollViewCls(Widget child, Clip clipBehavior, ScrollController controller, DragStartBehavior dragStartBehavior, Unknown key, ScrollViewKeyboardDismissBehavior keyboardDismissBehavior, EdgeInsetsGeometry padding, ScrollPhysics physics, bool primary, String restorationId, bool reverse, Axis scrollDirection) {
+SingleChildScrollViewCls::SingleChildScrollViewCls(Widget child, Clip clipBehavior, ScrollController controller, DragStartBehavior dragStartBehavior, Key key, ScrollViewKeyboardDismissBehavior keyboardDismissBehavior, EdgeInsetsGeometry padding, ScrollPhysics physics, bool primary, String restorationId, bool reverse, Axis scrollDirection) {
     {
         assert(scrollDirection != nullptr);
         assert(dragStartBehavior != nullptr);
@@ -47,7 +47,7 @@ SingleChildRenderObjectElement _SingleChildViewportCls::createElement() {
     return make<_SingleChildViewportElementCls>(this);
 }
 
-_SingleChildViewportCls::_SingleChildViewportCls(AxisDirection axisDirection, Unknown child, Clip clipBehavior, ViewportOffset offset) {
+_SingleChildViewportCls::_SingleChildViewportCls(AxisDirection axisDirection, Widget child, Clip clipBehavior, ViewportOffset offset) {
     {
         assert(axisDirection != nullptr);
         assert(clipBehavior != nullptr);

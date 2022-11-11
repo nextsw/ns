@@ -24,7 +24,7 @@ Widget _defaultTransitionsBuilder(BuildContext context, Animation<double> animat
 }
 
 template<typename T>
-PageRouteBuilderCls<T>::PageRouteBuilderCls(Color barrierColor, bool barrierDismissible, String barrierLabel, Unknown fullscreenDialog, bool maintainState, bool opaque, RoutePageBuilder pageBuilder, Duration reverseTransitionDuration, Unknown settings, Duration transitionDuration, RouteTransitionsBuilder transitionsBuilder) {
+PageRouteBuilderCls<T>::PageRouteBuilderCls(Color barrierColor, bool barrierDismissible, String barrierLabel, bool fullscreenDialog, bool maintainState, bool opaque, RoutePageBuilder pageBuilder, Duration reverseTransitionDuration, Unknown settings, Duration transitionDuration, RouteTransitionsBuilder transitionsBuilder) {
     {
         assert(pageBuilder != nullptr);
         assert(transitionsBuilder != nullptr);

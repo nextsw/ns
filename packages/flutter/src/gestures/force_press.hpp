@@ -51,7 +51,7 @@ public:
     GestureForceInterpolation interpolation;
 
 
-     ForcePressGestureRecognizerCls(Unknown debugOwner, GestureForceInterpolation interpolation, Unknown kind, double peakPressure, double startPressure, Unknown supportedDevices);
+     ForcePressGestureRecognizerCls(Object debugOwner, GestureForceInterpolation interpolation, Unknown kind, double peakPressure, double startPressure, Unknown supportedDevices);
 
     virtual void addAllowedPointer(PointerDownEvent event);
 

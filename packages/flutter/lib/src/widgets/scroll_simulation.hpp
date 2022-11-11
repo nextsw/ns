@@ -19,7 +19,7 @@ public:
     SpringDescription spring;
 
 
-     BouncingScrollSimulationCls(double leadingExtent, double position, SpringDescription spring, Unknown tolerance, double trailingExtent, double velocity);
+     BouncingScrollSimulationCls(double leadingExtent, double position, SpringDescription spring, Tolerance tolerance, double trailingExtent, double velocity);
 
     virtual double x(double time);
 
@@ -57,7 +57,7 @@ public:
     double friction;
 
 
-     ClampingScrollSimulationCls(double friction, double position, Unknown tolerance, double velocity);
+     ClampingScrollSimulationCls(double friction, double position, Tolerance tolerance, double velocity);
 
     virtual double x(double time);
 

@@ -11,7 +11,7 @@ _ChildEntryCls::_ChildEntryCls(Animation<double> animation, AnimationController 
     }
 }
 
-AnimatedSwitcherCls::AnimatedSwitcherCls(Widget child, Duration duration, Unknown key, AnimatedSwitcherLayoutBuilder layoutBuilder, Duration reverseDuration, Curve switchInCurve, Curve switchOutCurve, AnimatedSwitcherTransitionBuilder transitionBuilder) {
+AnimatedSwitcherCls::AnimatedSwitcherCls(Widget child, Duration duration, Key key, AnimatedSwitcherLayoutBuilder layoutBuilder, Duration reverseDuration, Curve switchInCurve, Curve switchOutCurve, AnimatedSwitcherTransitionBuilder transitionBuilder) {
     {
         assert(duration != nullptr);
         assert(switchInCurve != nullptr);

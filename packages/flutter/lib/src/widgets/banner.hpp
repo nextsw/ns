@@ -92,7 +92,7 @@ public:
     TextStyle textStyle;
 
 
-     BannerCls(Widget child, Color color, Unknown key, TextDirection layoutDirection, BannerLocation location, String message, TextDirection textDirection, TextStyle textStyle);
+     BannerCls(Widget child, Color color, Key key, TextDirection layoutDirection, BannerLocation location, String message, TextDirection textDirection, TextStyle textStyle);
 
     virtual Widget build(BuildContext context);
 
@@ -108,7 +108,7 @@ public:
     Widget child;
 
 
-     CheckedModeBannerCls(Widget child, Unknown key);
+     CheckedModeBannerCls(Widget child, Key key);
     virtual Widget build(BuildContext context);
 
     virtual void debugFillProperties(DiagnosticPropertiesBuilder properties);

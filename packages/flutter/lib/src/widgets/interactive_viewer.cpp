@@ -1,5 +1,5 @@
 #include "interactive_viewer.hpp"
-InteractiveViewerCls::InteractiveViewerCls(bool alignPanAxis, EdgeInsets boundaryMargin, Widget child, Clip clipBehavior, bool constrained, Unknown key, double maxScale, double minScale, GestureScaleEndCallback onInteractionEnd, GestureScaleStartCallback onInteractionStart, GestureScaleUpdateCallback onInteractionUpdate, bool panEnabled, bool scaleEnabled, double scaleFactor, TransformationController transformationController) {
+InteractiveViewerCls::InteractiveViewerCls(bool alignPanAxis, EdgeInsets boundaryMargin, Widget child, Clip clipBehavior, bool constrained, Key key, double maxScale, double minScale, GestureScaleEndCallback onInteractionEnd, GestureScaleStartCallback onInteractionStart, GestureScaleUpdateCallback onInteractionUpdate, bool panEnabled, bool scaleEnabled, double scaleFactor, TransformationController transformationController) {
     {
         assert(alignPanAxis != nullptr);
         assert(child != nullptr);
@@ -18,7 +18,7 @@ InteractiveViewerCls::InteractiveViewerCls(bool alignPanAxis, EdgeInsets boundar
     }
 }
 
-void InteractiveViewerCls::builder(bool alignPanAxis, EdgeInsets boundaryMargin, InteractiveViewerWidgetBuilder builder, Clip clipBehavior, Unknown key, double maxScale, double minScale, GestureScaleEndCallback onInteractionEnd, GestureScaleStartCallback onInteractionStart, GestureScaleUpdateCallback onInteractionUpdate, bool panEnabled, bool scaleEnabled, double scaleFactor, TransformationController transformationController)
+void InteractiveViewerCls::builder(bool alignPanAxis, EdgeInsets boundaryMargin, InteractiveViewerWidgetBuilder builder, Clip clipBehavior, Key key, double maxScale, double minScale, GestureScaleEndCallback onInteractionEnd, GestureScaleStartCallback onInteractionStart, GestureScaleUpdateCallback onInteractionUpdate, bool panEnabled, bool scaleEnabled, double scaleFactor, TransformationController transformationController)
 
 Vector3 InteractiveViewerCls::getNearestPointOnLine(Vector3 point, Vector3 l1, Vector3 l2) {
     double lengthSquared = math->pow(l2->x - l1->x, 2.0)->toDouble() + math->pow(l2->y - l1->y, 2.0)->toDouble();

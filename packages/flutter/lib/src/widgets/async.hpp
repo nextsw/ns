@@ -14,7 +14,7 @@ public:
     Stream<T> stream;
 
 
-     StreamBuilderBaseCls(Unknown key, Stream<T> stream);
+     StreamBuilderBaseCls(Key key, Stream<T> stream);
     virtual S initial();
     virtual S afterConnected(S current);
 
@@ -117,7 +117,7 @@ public:
     T initialData;
 
 
-     StreamBuilderCls(AsyncWidgetBuilder<T> builder, T initialData, Unknown key, Unknown stream);
+     StreamBuilderCls(AsyncWidgetBuilder<T> builder, T initialData, Key key, Stream<T> stream);
 
     virtual AsyncSnapshot<T> initial();
 
@@ -151,7 +151,7 @@ public:
     static bool debugRethrowError;
 
 
-     FutureBuilderCls(AsyncWidgetBuilder<T> builder, Future<T> future, T initialData, Unknown key);
+     FutureBuilderCls(AsyncWidgetBuilder<T> builder, Future<T> future, T initialData, Key key);
 
     virtual State<FutureBuilder<T>> createState();
 

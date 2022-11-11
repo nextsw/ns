@@ -1,5 +1,5 @@
 #include "stadium_border.hpp"
-StadiumBorderCls::StadiumBorderCls(Unknown side) {
+StadiumBorderCls::StadiumBorderCls(BorderSide side) {
     {
         assert(side != nullptr);
     }
@@ -144,7 +144,7 @@ String _StadiumToCircleBorderCls::toString() {
     return __s("StadiumBorder($side, ${(circleness * 100).toStringAsFixed(1)}% of the way to being a CircleBorder)");
 }
 
-_StadiumToCircleBorderCls::_StadiumToCircleBorderCls(double circleness, Unknown side) {
+_StadiumToCircleBorderCls::_StadiumToCircleBorderCls(double circleness, BorderSide side) {
     {
         assert(side != nullptr);
         assert(circleness != nullptr);
@@ -238,7 +238,7 @@ String _StadiumToRoundedRectangleBorderCls::toString() {
     return __s("StadiumBorder($side, $borderRadius, ${(rectness * 100).toStringAsFixed(1)}% of the way to being a RoundedRectangleBorder)");
 }
 
-_StadiumToRoundedRectangleBorderCls::_StadiumToRoundedRectangleBorderCls(BorderRadius borderRadius, double rectness, Unknown side) {
+_StadiumToRoundedRectangleBorderCls::_StadiumToRoundedRectangleBorderCls(BorderRadius borderRadius, double rectness, BorderSide side) {
     {
         assert(side != nullptr);
         assert(borderRadius != nullptr);

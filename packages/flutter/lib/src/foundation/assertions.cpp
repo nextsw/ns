@@ -409,10 +409,10 @@ void debugPrintStack(String label, int maxFrames, StackTrace stackTrace) {
     debugPrint(FlutterErrorCls->defaultStackFilter(lines)->join(__s("\n")));
 }
 
-DiagnosticsStackTraceCls::DiagnosticsStackTraceCls(String name, StackTrace stack, Unknown showSeparator, IterableFilter<String> stackFilter) : DiagnosticsBlock(name, stack, _applyStackFilter(stack, stackFilter), DiagnosticsTreeStyleCls::flat, true) {
+DiagnosticsStackTraceCls::DiagnosticsStackTraceCls(String name, StackTrace stack, bool showSeparator, IterableFilter<String> stackFilter) : DiagnosticsBlock(name, stack, _applyStackFilter(stack, stackFilter), DiagnosticsTreeStyleCls::flat, true) {
 }
 
-void DiagnosticsStackTraceCls::singleFrame(String name, String frame, Unknown showSeparator)
+void DiagnosticsStackTraceCls::singleFrame(String name, String frame, bool showSeparator)
 
 bool DiagnosticsStackTraceCls::allowTruncate() {
     return false;

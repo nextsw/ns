@@ -24,7 +24,7 @@ public:
     Widget child;
 
 
-     RawKeyboardListenerCls(bool autofocus, Widget child, FocusNode focusNode, bool includeSemantics, Unknown key, ValueChanged<RawKeyEvent> onKey);
+     RawKeyboardListenerCls(bool autofocus, Widget child, FocusNode focusNode, bool includeSemantics, Key key, ValueChanged<RawKeyEvent> onKey);
 
     virtual State<RawKeyboardListener> createState();
 

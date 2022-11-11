@@ -95,7 +95,7 @@ public:
     TileMode tileMode;
 
 
-     LinearGradientCls(AlignmentGeometry begin, Unknown colors, AlignmentGeometry end, Unknown stops, TileMode tileMode, Unknown transform);
+     LinearGradientCls(AlignmentGeometry begin, List<Color> colors, AlignmentGeometry end, List<double> stops, TileMode tileMode, GradientTransform transform);
 
     virtual Shader createShader(Rect rect, TextDirection textDirection);
 
@@ -131,7 +131,7 @@ public:
     double focalRadius;
 
 
-     RadialGradientCls(AlignmentGeometry center, Unknown colors, AlignmentGeometry focal, double focalRadius, double radius, Unknown stops, TileMode tileMode, Unknown transform);
+     RadialGradientCls(AlignmentGeometry center, List<Color> colors, AlignmentGeometry focal, double focalRadius, double radius, List<double> stops, TileMode tileMode, GradientTransform transform);
 
     virtual Shader createShader(Rect rect, TextDirection textDirection);
 
@@ -165,7 +165,7 @@ public:
     TileMode tileMode;
 
 
-     SweepGradientCls(AlignmentGeometry center, Unknown colors, double endAngle, double startAngle, Unknown stops, TileMode tileMode, Unknown transform);
+     SweepGradientCls(AlignmentGeometry center, List<Color> colors, double endAngle, double startAngle, List<double> stops, TileMode tileMode, GradientTransform transform);
 
     virtual Shader createShader(Rect rect, TextDirection textDirection);
 

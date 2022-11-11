@@ -42,7 +42,7 @@ public:
     int insertionOffset;
 
 
-     TextEditingDeltaInsertionCls(Unknown composing, int insertionOffset, Unknown oldText, Unknown selection, String textInserted);
+     TextEditingDeltaInsertionCls(TextRange composing, int insertionOffset, String oldText, TextSelection selection, String textInserted);
     virtual TextEditingValue apply(TextEditingValue value);
 
 private:
@@ -55,7 +55,7 @@ public:
     TextRange deletedRange;
 
 
-     TextEditingDeltaDeletionCls(Unknown composing, TextRange deletedRange, Unknown oldText, Unknown selection);
+     TextEditingDeltaDeletionCls(TextRange composing, TextRange deletedRange, String oldText, TextSelection selection);
     virtual String textDeleted();
 
     virtual TextEditingValue apply(TextEditingValue value);
@@ -72,7 +72,7 @@ public:
     TextRange replacedRange;
 
 
-     TextEditingDeltaReplacementCls(Unknown composing, Unknown oldText, TextRange replacedRange, String replacementText, Unknown selection);
+     TextEditingDeltaReplacementCls(TextRange composing, String oldText, TextRange replacedRange, String replacementText, TextSelection selection);
     virtual String textReplaced();
 
     virtual TextEditingValue apply(TextEditingValue value);
@@ -85,7 +85,7 @@ using TextEditingDeltaReplacement = std::shared_ptr<TextEditingDeltaReplacementC
 class TextEditingDeltaNonTextUpdateCls : public TextEditingDeltaCls {
 public:
 
-     TextEditingDeltaNonTextUpdateCls(Unknown composing, Unknown oldText, Unknown selection);
+     TextEditingDeltaNonTextUpdateCls(TextRange composing, String oldText, TextSelection selection);
     virtual TextEditingValue apply(TextEditingValue value);
 
 private:

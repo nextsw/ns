@@ -335,7 +335,7 @@ void _ModalScopeStatusCls::debugFillProperties(DiagnosticPropertiesBuilder descr
     description->add(make<FlagPropertyCls>(__s("impliesAppBarDismissal"), impliesAppBarDismissal, __s("implies app bar dismissal")));
 }
 
-_ModalScopeStatusCls::_ModalScopeStatusCls(bool canPop, Unknown child, bool impliesAppBarDismissal, bool isCurrent, Route<dynamic> route) {
+_ModalScopeStatusCls::_ModalScopeStatusCls(bool canPop, Widget child, bool impliesAppBarDismissal, bool isCurrent, Route<dynamic> route) {
     {
         assert(isCurrent != nullptr);
         assert(canPop != nullptr);

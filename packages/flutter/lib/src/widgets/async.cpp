@@ -142,7 +142,7 @@ template<typename T>
 void AsyncSnapshotCls<T>::_(ConnectionState connectionState, T data, Object error, StackTrace stackTrace)
 
 template<typename T>
-StreamBuilderCls<T>::StreamBuilderCls(AsyncWidgetBuilder<T> builder, T initialData, Unknown key, Unknown stream) {
+StreamBuilderCls<T>::StreamBuilderCls(AsyncWidgetBuilder<T> builder, T initialData, Key key, Stream<T> stream) {
     {
         assert(builder != nullptr);
     }
@@ -184,7 +184,7 @@ Widget StreamBuilderCls<T>::build(BuildContext context, AsyncSnapshot<T> current
 }
 
 template<typename T>
-FutureBuilderCls<T>::FutureBuilderCls(AsyncWidgetBuilder<T> builder, Future<T> future, T initialData, Unknown key) {
+FutureBuilderCls<T>::FutureBuilderCls(AsyncWidgetBuilder<T> builder, Future<T> future, T initialData, Key key) {
     {
         assert(builder != nullptr);
     }

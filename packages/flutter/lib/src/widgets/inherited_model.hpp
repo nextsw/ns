@@ -11,7 +11,7 @@ template<typename T>
 class InheritedModelCls : public InheritedWidgetCls {
 public:
 
-     InheritedModelCls(Unknown child, Unknown key);
+     InheritedModelCls(Widget child, Key key);
     virtual InheritedModelElement<T> createElement();
 
     virtual bool updateShouldNotifyDependent(InheritedModel<T> oldWidget, Set<T> dependencies);

@@ -1,5 +1,5 @@
 #include "circle_border.hpp"
-CircleBorderCls::CircleBorderCls(Unknown side) {
+CircleBorderCls::CircleBorderCls(BorderSide side) {
     {
         assert(side != nullptr);
     }

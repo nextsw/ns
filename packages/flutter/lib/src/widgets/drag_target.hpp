@@ -65,7 +65,7 @@ public:
     HitTestBehavior hitTestBehavior;
 
 
-     DraggableCls(Axis affinity, Axis axis, Widget child, Widget childWhenDragging, T data, DragAnchor dragAnchor, DragAnchorStrategy dragAnchorStrategy, Widget feedback, Offset feedbackOffset, HitTestBehavior hitTestBehavior, bool ignoringFeedbackPointer, bool ignoringFeedbackSemantics, Unknown key, int maxSimultaneousDrags, VoidCallback onDragCompleted, DragEndCallback onDragEnd, VoidCallback onDragStarted, DragUpdateCallback onDragUpdate, DraggableCanceledCallback onDraggableCanceled, bool rootOverlay);
+     DraggableCls(Axis affinity, Axis axis, Widget child, Widget childWhenDragging, T data, DragAnchor dragAnchor, DragAnchorStrategy dragAnchorStrategy, Widget feedback, Offset feedbackOffset, HitTestBehavior hitTestBehavior, bool ignoringFeedbackPointer, bool ignoringFeedbackSemantics, Key key, int maxSimultaneousDrags, VoidCallback onDragCompleted, DragEndCallback onDragEnd, VoidCallback onDragStarted, DragUpdateCallback onDragUpdate, DraggableCanceledCallback onDraggableCanceled, bool rootOverlay);
 
     virtual MultiDragGestureRecognizer createRecognizer(GestureMultiDragStartCallback onStart);
 
@@ -85,7 +85,7 @@ public:
     Duration delay;
 
 
-     LongPressDraggableCls(Unknown axis, Unknown child, Unknown childWhenDragging, Unknown data, Duration delay, Unknown dragAnchor, Unknown dragAnchorStrategy, Unknown feedback, Unknown feedbackOffset, bool hapticFeedbackOnStart, Unknown ignoringFeedbackPointer, Unknown ignoringFeedbackSemantics, Unknown key, Unknown maxSimultaneousDrags, Unknown onDragCompleted, Unknown onDragEnd, Unknown onDragStarted, Unknown onDragUpdate, Unknown onDraggableCanceled);
+     LongPressDraggableCls(Axis axis, Widget child, Widget childWhenDragging, T data, Duration delay, DragAnchor dragAnchor, DragAnchorStrategy dragAnchorStrategy, Widget feedback, Offset feedbackOffset, bool hapticFeedbackOnStart, bool ignoringFeedbackPointer, bool ignoringFeedbackSemantics, Key key, int maxSimultaneousDrags, VoidCallback onDragCompleted, DragEndCallback onDragEnd, VoidCallback onDragStarted, DragUpdateCallback onDragUpdate, DraggableCanceledCallback onDraggableCanceled);
     virtual DelayedMultiDragGestureRecognizer createRecognizer(GestureMultiDragStartCallback onStart);
 
 private:
@@ -172,7 +172,7 @@ public:
     HitTestBehavior hitTestBehavior;
 
 
-     DragTargetCls(DragTargetBuilder<T> builder, HitTestBehavior hitTestBehavior, Unknown key, DragTargetAccept<T> onAccept, DragTargetAcceptWithDetails<T> onAcceptWithDetails, DragTargetLeave<T> onLeave, DragTargetMove<T> onMove, DragTargetWillAccept<T> onWillAccept);
+     DragTargetCls(DragTargetBuilder<T> builder, HitTestBehavior hitTestBehavior, Key key, DragTargetAccept<T> onAccept, DragTargetAcceptWithDetails<T> onAcceptWithDetails, DragTargetLeave<T> onLeave, DragTargetMove<T> onMove, DragTargetWillAccept<T> onWillAccept);
     virtual State<DragTarget<T>> createState();
 
 private:

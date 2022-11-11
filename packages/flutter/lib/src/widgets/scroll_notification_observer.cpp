@@ -3,13 +3,13 @@ bool _ScrollNotificationObserverScopeCls::updateShouldNotify(_ScrollNotification
     return _scrollNotificationObserverState != old->_scrollNotificationObserverState;
 }
 
-_ScrollNotificationObserverScopeCls::_ScrollNotificationObserverScopeCls(Unknown child, ScrollNotificationObserverState scrollNotificationObserverState) {
+_ScrollNotificationObserverScopeCls::_ScrollNotificationObserverScopeCls(Widget child, ScrollNotificationObserverState scrollNotificationObserverState) {
     {
         _scrollNotificationObserverState = scrollNotificationObserverState;
     }
 }
 
-ScrollNotificationObserverCls::ScrollNotificationObserverCls(Widget child, Unknown key) {
+ScrollNotificationObserverCls::ScrollNotificationObserverCls(Widget child, Key key) {
     {
         assert(child != nullptr);
     }

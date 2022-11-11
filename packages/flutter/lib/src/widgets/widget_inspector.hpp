@@ -504,7 +504,7 @@ public:
     InspectorSelectButtonBuilder selectButtonBuilder;
 
 
-     WidgetInspectorCls(Widget child, Unknown key, InspectorSelectButtonBuilder selectButtonBuilder);
+     WidgetInspectorCls(Widget child, Key key, InspectorSelectButtonBuilder selectButtonBuilder);
 
     virtual State<WidgetInspector> createState();
 

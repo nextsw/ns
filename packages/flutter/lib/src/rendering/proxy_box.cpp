@@ -1013,7 +1013,7 @@ void _RenderCustomClipCls<T>::_updateClip() {
 
 RenderClipRectCls::RenderClipRectCls(Unknown child, Unknown clipBehavior, Unknown clipper) {
     {
-        assert(clipBehavior != nullptr);
+        assert(clipBehavior() != nullptr);
     }
 }
 
@@ -1061,7 +1061,7 @@ Rect RenderClipRectCls::_defaultClip() {
 
 RenderClipRRectCls::RenderClipRRectCls(BorderRadiusGeometry borderRadius, Unknown child, Unknown clipBehavior, CustomClipper<RRect> clipper, TextDirection textDirection) : _RenderCustomClip<RRect>(clipper) {
     {
-        assert(clipBehavior != nullptr);
+        assert(clipBehavior() != nullptr);
         _borderRadius = borderRadius;
         _textDirection = textDirection;
     }
@@ -1139,7 +1139,7 @@ RRect RenderClipRRectCls::_defaultClip() {
 
 RenderClipOvalCls::RenderClipOvalCls(Unknown child, Unknown clipBehavior, Unknown clipper) {
     {
-        assert(clipBehavior != nullptr);
+        assert(clipBehavior() != nullptr);
     }
 }
 
@@ -1195,7 +1195,7 @@ Rect RenderClipOvalCls::_defaultClip() {
 
 RenderClipPathCls::RenderClipPathCls(Unknown child, Unknown clipBehavior, Unknown clipper) {
     {
-        assert(clipBehavior != nullptr);
+        assert(clipBehavior() != nullptr);
     }
 }
 
@@ -1310,7 +1310,7 @@ _RenderPhysicalModelBaseCls<T>::_RenderPhysicalModelBaseCls(Unknown child, Unkno
         assert(elevation != nullptr && elevation >= 0.0);
         assert(color != nullptr);
         assert(shadowColor != nullptr);
-        assert(clipBehavior != nullptr);
+        assert(clipBehavior() != nullptr);
         _elevation = elevation;
         _color = color;
         _shadowColor = shadowColor;
@@ -1320,10 +1320,10 @@ _RenderPhysicalModelBaseCls<T>::_RenderPhysicalModelBaseCls(Unknown child, Unkno
 RenderPhysicalModelCls::RenderPhysicalModelCls(BorderRadius borderRadius, Unknown child, Unknown clipBehavior, Unknown color, Unknown elevation, Unknown shadowColor, BoxShape shape) {
     {
         assert(shape != nullptr);
-        assert(clipBehavior != nullptr);
-        assert(elevation != nullptr && elevation >= 0.0);
-        assert(color != nullptr);
-        assert(shadowColor != nullptr);
+        assert(clipBehavior() != nullptr);
+        assert(elevation() != nullptr && elevation() >= 0.0);
+        assert(color() != nullptr);
+        assert(shadowColor() != nullptr);
         _shape = shape;
         _borderRadius = borderRadius;
     }
@@ -1420,9 +1420,9 @@ RRect RenderPhysicalModelCls::_defaultClip() {
 RenderPhysicalShapeCls::RenderPhysicalShapeCls(Unknown child, Unknown clipBehavior, CustomClipper<Path> clipper, Unknown color, Unknown elevation, Unknown shadowColor) {
     {
         assert(clipper != nullptr);
-        assert(elevation != nullptr && elevation >= 0.0);
-        assert(color != nullptr);
-        assert(shadowColor != nullptr);
+        assert(elevation() != nullptr && elevation() >= 0.0);
+        assert(color() != nullptr);
+        assert(shadowColor() != nullptr);
     }
 }
 
@@ -2476,7 +2476,7 @@ void RenderMetaDataCls::debugFillProperties(DiagnosticPropertiesBuilder properti
     properties->add(<dynamic>make<DiagnosticsPropertyCls>(__s("metaData"), metaData));
 }
 
-RenderSemanticsGestureHandlerCls::RenderSemanticsGestureHandlerCls(Unknown behavior, Unknown child, GestureDragUpdateCallback onHorizontalDragUpdate, GestureLongPressCallback onLongPress, GestureTapCallback onTap, GestureDragUpdateCallback onVerticalDragUpdate, double scrollFactor) {
+RenderSemanticsGestureHandlerCls::RenderSemanticsGestureHandlerCls(HitTestBehavior behavior, Unknown child, GestureDragUpdateCallback onHorizontalDragUpdate, GestureLongPressCallback onLongPress, GestureTapCallback onTap, GestureDragUpdateCallback onVerticalDragUpdate, double scrollFactor) {
     {
         assert(scrollFactor != nullptr);
         _onTap = onTap;

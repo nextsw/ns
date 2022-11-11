@@ -17,7 +17,7 @@ public:
     Widget child;
 
 
-     AutomaticKeepAliveCls(Widget child, Unknown key);
+     AutomaticKeepAliveCls(Widget child, Key key);
     virtual State<AutomaticKeepAlive> createState();
 
 private:

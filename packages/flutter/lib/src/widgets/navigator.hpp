@@ -128,7 +128,7 @@ public:
     String restorationId;
 
 
-     PageCls(Unknown arguments, LocalKey key, Unknown name, String restorationId);
+     PageCls(Object arguments, LocalKey key, String name, String restorationId);
     virtual bool canUpdate(Page<dynamic> other);
 
     virtual Route<T> createRoute(BuildContext context);
@@ -169,9 +169,9 @@ public:
     HeroController controller;
 
 
-     HeroControllerScopeCls(Unknown child, HeroController controller, Unknown key);
+     HeroControllerScopeCls(Widget child, HeroController controller, Key key);
 
-    virtual void  none(Unknown child, Unknown key);
+    virtual void  none(Widget child, Key key);
 
     static HeroController of(BuildContext context);
 
@@ -253,7 +253,7 @@ public:
     bool requestFocus;
 
 
-     NavigatorCls(String initialRoute, Unknown key, List<NavigatorObserver> observers, RouteListFactory onGenerateInitialRoutes, RouteFactory onGenerateRoute, PopPageCallback onPopPage, RouteFactory onUnknownRoute, List<Page<dynamic>> pages, bool reportsRouteUpdateToEngine, bool requestFocus, String restorationScopeId, TransitionDelegate<dynamic> transitionDelegate);
+     NavigatorCls(String initialRoute, Key key, List<NavigatorObserver> observers, RouteListFactory onGenerateInitialRoutes, RouteFactory onGenerateRoute, PopPageCallback onPopPage, RouteFactory onUnknownRoute, List<Page<dynamic>> pages, bool reportsRouteUpdateToEngine, bool requestFocus, String restorationScopeId, TransitionDelegate<dynamic> transitionDelegate);
 
     template<typename T>
  static Future<T> pushNamed(BuildContext context, String routeName, Object arguments);
@@ -485,7 +485,7 @@ public:
 
 private:
 
-     _NavigatorPushObservationCls(Unknown primaryRoute, Unknown secondaryRoute);
+     _NavigatorPushObservationCls(Route<dynamic> primaryRoute, Route<dynamic> secondaryRoute);
 };
 using _NavigatorPushObservation = std::shared_ptr<_NavigatorPushObservationCls>;
 
@@ -496,7 +496,7 @@ public:
 
 private:
 
-     _NavigatorPopObservationCls(Unknown primaryRoute, Unknown secondaryRoute);
+     _NavigatorPopObservationCls(Route<dynamic> primaryRoute, Route<dynamic> secondaryRoute);
 };
 using _NavigatorPopObservation = std::shared_ptr<_NavigatorPopObservationCls>;
 
@@ -507,7 +507,7 @@ public:
 
 private:
 
-     _NavigatorRemoveObservationCls(Unknown primaryRoute, Unknown secondaryRoute);
+     _NavigatorRemoveObservationCls(Route<dynamic> primaryRoute, Route<dynamic> secondaryRoute);
 };
 using _NavigatorRemoveObservation = std::shared_ptr<_NavigatorRemoveObservationCls>;
 
@@ -518,7 +518,7 @@ public:
 
 private:
 
-     _NavigatorReplaceObservationCls(Unknown primaryRoute, Unknown secondaryRoute);
+     _NavigatorReplaceObservationCls(Route<dynamic> primaryRoute, Route<dynamic> secondaryRoute);
 };
 using _NavigatorReplaceObservation = std::shared_ptr<_NavigatorReplaceObservationCls>;
 

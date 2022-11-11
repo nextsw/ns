@@ -183,10 +183,10 @@ List<String> debugDescribeTransform(Matrix4 transform) {
     return makeList(ArrayItem, ArrayItem, ArrayItem, ArrayItem);
 }
 
-TransformPropertyCls::TransformPropertyCls(String name, Unknown value, Unknown defaultValue, Unknown level, Unknown showName) {
+TransformPropertyCls::TransformPropertyCls(String name, Unknown value, Object defaultValue, Unknown level, bool showName) {
     {
         assert(showName != nullptr);
-        assert(level != nullptr);
+        assert(level() != nullptr);
     }
 }
 

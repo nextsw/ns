@@ -1,5 +1,5 @@
 #include "safe_area.hpp"
-SafeAreaCls::SafeAreaCls(bool bottom, Widget child, Unknown key, bool left, bool maintainBottomViewPadding, EdgeInsets minimum, bool right, bool top) {
+SafeAreaCls::SafeAreaCls(bool bottom, Widget child, Key key, bool left, bool maintainBottomViewPadding, EdgeInsets minimum, bool right, bool top) {
     {
         assert(left != nullptr);
         assert(top != nullptr);
@@ -26,7 +26,7 @@ void SafeAreaCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     properties->add(make<FlagPropertyCls>(__s("bottom"), bottom, __s("avoid bottom padding")));
 }
 
-SliverSafeAreaCls::SliverSafeAreaCls(bool bottom, Unknown key, bool left, EdgeInsets minimum, bool right, Widget sliver, bool top) {
+SliverSafeAreaCls::SliverSafeAreaCls(bool bottom, Key key, bool left, EdgeInsets minimum, bool right, Widget sliver, bool top) {
     {
         assert(left != nullptr);
         assert(top != nullptr);

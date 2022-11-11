@@ -15,7 +15,7 @@ PersistentHeaderShowOnScreenConfiguration SliverPersistentHeaderDelegateCls::sho
     return nullptr;
 }
 
-SliverPersistentHeaderCls::SliverPersistentHeaderCls(SliverPersistentHeaderDelegate delegate, bool floating, Unknown key, bool pinned) {
+SliverPersistentHeaderCls::SliverPersistentHeaderCls(SliverPersistentHeaderDelegate delegate, bool floating, Key key, bool pinned) {
     {
         assert(delegate != nullptr);
         assert(pinned != nullptr);
@@ -206,7 +206,7 @@ void _SliverFloatingPersistentHeaderCls::updateRenderObject(BuildContext context
     renderObject->showOnScreenConfiguration = delegate->showOnScreenConfiguration();
 }
 
-_SliverFloatingPersistentHeaderCls::_SliverFloatingPersistentHeaderCls(Unknown delegate) : _SliverPersistentHeaderRenderObjectWidget(true) {
+_SliverFloatingPersistentHeaderCls::_SliverFloatingPersistentHeaderCls(SliverPersistentHeaderDelegate delegate) : _SliverPersistentHeaderRenderObjectWidget(true) {
 }
 
 _RenderSliverPersistentHeaderForWidgetsMixin _SliverFloatingPinnedPersistentHeaderCls::createRenderObject(BuildContext context) {
@@ -220,5 +220,5 @@ void _SliverFloatingPinnedPersistentHeaderCls::updateRenderObject(BuildContext c
     renderObject->showOnScreenConfiguration = delegate->showOnScreenConfiguration();
 }
 
-_SliverFloatingPinnedPersistentHeaderCls::_SliverFloatingPinnedPersistentHeaderCls(Unknown delegate) : _SliverPersistentHeaderRenderObjectWidget(true) {
+_SliverFloatingPinnedPersistentHeaderCls::_SliverFloatingPinnedPersistentHeaderCls(SliverPersistentHeaderDelegate delegate) : _SliverPersistentHeaderRenderObjectWidget(true) {
 }

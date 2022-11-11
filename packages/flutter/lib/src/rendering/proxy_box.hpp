@@ -871,7 +871,7 @@ public:
     PointerSignalEventListener onPointerSignal;
 
 
-     RenderPointerListenerCls(Unknown behavior, Unknown child, PointerCancelEventListener onPointerCancel, PointerDownEventListener onPointerDown, PointerHoverEventListener onPointerHover, PointerMoveEventListener onPointerMove, PointerPanZoomEndEventListener onPointerPanZoomEnd, PointerPanZoomStartEventListener onPointerPanZoomStart, PointerPanZoomUpdateEventListener onPointerPanZoomUpdate, PointerSignalEventListener onPointerSignal, PointerUpEventListener onPointerUp);
+     RenderPointerListenerCls(HitTestBehavior behavior, Unknown child, PointerCancelEventListener onPointerCancel, PointerDownEventListener onPointerDown, PointerHoverEventListener onPointerHover, PointerMoveEventListener onPointerMove, PointerPanZoomEndEventListener onPointerPanZoomEnd, PointerPanZoomStartEventListener onPointerPanZoomStart, PointerPanZoomUpdateEventListener onPointerPanZoomUpdate, PointerSignalEventListener onPointerSignal, PointerUpEventListener onPointerUp);
     virtual Size computeSizeForNoChild(BoxConstraints constraints);
 
     virtual void handleEvent(PointerEvent event, HitTestEntry entry);
@@ -1070,7 +1070,7 @@ public:
     dynamic metaData;
 
 
-     RenderMetaDataCls(Unknown behavior, Unknown child, dynamic metaData);
+     RenderMetaDataCls(HitTestBehavior behavior, Unknown child, dynamic metaData);
     virtual void debugFillProperties(DiagnosticPropertiesBuilder properties);
 
 private:
@@ -1083,7 +1083,7 @@ public:
     double scrollFactor;
 
 
-     RenderSemanticsGestureHandlerCls(Unknown behavior, Unknown child, GestureDragUpdateCallback onHorizontalDragUpdate, GestureLongPressCallback onLongPress, GestureTapCallback onTap, GestureDragUpdateCallback onVerticalDragUpdate, double scrollFactor);
+     RenderSemanticsGestureHandlerCls(HitTestBehavior behavior, Unknown child, GestureDragUpdateCallback onHorizontalDragUpdate, GestureLongPressCallback onLongPress, GestureTapCallback onTap, GestureDragUpdateCallback onVerticalDragUpdate, double scrollFactor);
 
     virtual Set<SemanticsAction> validActions();
 

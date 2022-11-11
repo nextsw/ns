@@ -28,7 +28,7 @@ public:
     String semanticsLabel;
 
 
-     ModalBarrierCls(bool barrierSemanticsDismissible, Color color, bool dismissible, Unknown key, VoidCallback onDismiss, String semanticsLabel);
+     ModalBarrierCls(bool barrierSemanticsDismissible, Color color, bool dismissible, Key key, VoidCallback onDismiss, String semanticsLabel);
     virtual Widget build(BuildContext context);
 
 private:
@@ -47,7 +47,7 @@ public:
     VoidCallback onDismiss;
 
 
-     AnimatedModalBarrierCls(bool barrierSemanticsDismissible, Animation<Color> color, bool dismissible, Unknown key, VoidCallback onDismiss, String semanticsLabel);
+     AnimatedModalBarrierCls(bool barrierSemanticsDismissible, Animation<Color> color, bool dismissible, Key key, VoidCallback onDismiss, String semanticsLabel);
 
     virtual Animation<Color> color();
 

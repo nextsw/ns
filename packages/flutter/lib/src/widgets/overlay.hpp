@@ -100,7 +100,7 @@ public:
     Clip clipBehavior;
 
 
-     OverlayCls(Clip clipBehavior, List<OverlayEntry> initialEntries, Unknown key);
+     OverlayCls(Clip clipBehavior, List<OverlayEntry> initialEntries, Key key);
 
     static OverlayState of(BuildContext context, Widget debugRequiredFor, bool rootOverlay);
 
@@ -160,7 +160,7 @@ public:
 
 private:
 
-     _TheatreCls(Unknown children, Clip clipBehavior, int skipCount);
+     _TheatreCls(List<Widget> children, Clip clipBehavior, int skipCount);
 
 };
 using _Theatre = std::shared_ptr<_TheatreCls>;

@@ -35,7 +35,7 @@ _TextEditingValueAccumulatorCls::_TextEditingValueAccumulatorCls(TextEditingValu
     }
 }
 
-FilteringTextInputFormatterCls::FilteringTextInputFormatterCls(Pattern filterPattern, bool allow, String replacementString) {
+FilteringTextInputFormatterCls::FilteringTextInputFormatterCls(Pattern filterPattern, Unknown allow, String replacementString) {
     {
         assert(filterPattern != nullptr);
         assert(allow != nullptr);

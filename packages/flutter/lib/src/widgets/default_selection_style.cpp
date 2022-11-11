@@ -1,5 +1,5 @@
 #include "default_selection_style.hpp"
-void DefaultSelectionStyleCls::fallback(Unknown key)
+void DefaultSelectionStyleCls::fallback(Key key)
 
 DefaultSelectionStyle DefaultSelectionStyleCls::of(BuildContext context) {
     return context-><DefaultSelectionStyle>dependOnInheritedWidgetOfExactType() | DefaultSelectionStyleCls->fallback();

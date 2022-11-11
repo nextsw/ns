@@ -87,10 +87,10 @@ String AttributedStringCls::toString() {
     return __s("${objectRuntimeType(this, 'AttributedString')}('$string', attributes: $attributes)");
 }
 
-AttributedStringPropertyCls::AttributedStringPropertyCls(String name, Unknown value, Unknown defaultValue, Unknown description, Unknown level, Unknown showName, bool showWhenEmpty) {
+AttributedStringPropertyCls::AttributedStringPropertyCls(String name, Unknown value, Object defaultValue, Unknown description, Unknown level, bool showName, bool showWhenEmpty) {
     {
         assert(showName != nullptr);
-        assert(level != nullptr);
+        assert(level() != nullptr);
     }
 }
 
@@ -2099,7 +2099,7 @@ void SemanticsSortKeyCls::debugFillProperties(DiagnosticPropertiesBuilder proper
     properties->add(make<StringPropertyCls>(__s("name"), name, nullptr));
 }
 
-OrdinalSortKeyCls::OrdinalSortKeyCls(double order, Unknown name) {
+OrdinalSortKeyCls::OrdinalSortKeyCls(double order, String name) {
     {
         assert(order != nullptr);
         assert(order != double->nan);

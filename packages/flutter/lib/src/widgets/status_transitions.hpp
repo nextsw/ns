@@ -12,7 +12,7 @@ public:
     Animation<double> animation;
 
 
-     StatusTransitionWidgetCls(Animation<double> animation, Unknown key);
+     StatusTransitionWidgetCls(Animation<double> animation, Key key);
 
     virtual Widget build(BuildContext context);
     virtual State<StatusTransitionWidget> createState();

@@ -1,6 +1,6 @@
 #include "inherited_notifier.hpp"
 template<typename T>
-InheritedNotifierCls<T>::InheritedNotifierCls(Unknown child, Unknown key, T notifier) {
+InheritedNotifierCls<T>::InheritedNotifierCls(Widget child, Key key, T notifier) {
     {
         assert(child != nullptr);
     }

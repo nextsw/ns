@@ -28,7 +28,7 @@ public:
     NotificationListenerCallback<T> onNotification;
 
 
-     NotificationListenerCls(Unknown child, Unknown key, NotificationListenerCallback<T> onNotification);
+     NotificationListenerCls(Widget child, Key key, NotificationListenerCallback<T> onNotification);
     virtual Element createElement();
 
 private:

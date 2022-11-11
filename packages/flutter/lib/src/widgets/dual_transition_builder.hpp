@@ -18,7 +18,7 @@ public:
     Widget child;
 
 
-     DualTransitionBuilderCls(Animation<double> animation, Widget child, AnimatedTransitionBuilder forwardBuilder, Unknown key, AnimatedTransitionBuilder reverseBuilder);
+     DualTransitionBuilderCls(Animation<double> animation, Widget child, AnimatedTransitionBuilder forwardBuilder, Key key, AnimatedTransitionBuilder reverseBuilder);
 
     virtual State<DualTransitionBuilder> createState();
 

@@ -14,7 +14,7 @@ public:
     OrientationWidgetBuilder builder;
 
 
-     OrientationBuilderCls(OrientationWidgetBuilder builder, Unknown key);
+     OrientationBuilderCls(OrientationWidgetBuilder builder, Key key);
 
     virtual Widget build(BuildContext context);
 

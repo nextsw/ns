@@ -1976,7 +1976,7 @@ void _InterestingSemanticsFragmentCls::addAncestor(RenderObject ancestor) {
     _ancestorChain->add(ancestor);
 }
 
-_InterestingSemanticsFragmentCls::_InterestingSemanticsFragmentCls(Unknown dropsSemanticsOfPreviousSiblings, RenderObject owner) {
+_InterestingSemanticsFragmentCls::_InterestingSemanticsFragmentCls(bool dropsSemanticsOfPreviousSiblings, RenderObject owner) {
     {
         assert(owner != nullptr);
         _ancestorChain = makeList(ArrayItem);
@@ -2076,7 +2076,7 @@ void _SwitchableSemanticsFragmentCls::markAsExplicit() {
     _isExplicit = true;
 }
 
-_SwitchableSemanticsFragmentCls::_SwitchableSemanticsFragmentCls(SemanticsConfiguration config, Unknown dropsSemanticsOfPreviousSiblings, bool mergeIntoParent, Unknown owner) {
+_SwitchableSemanticsFragmentCls::_SwitchableSemanticsFragmentCls(SemanticsConfiguration config, bool dropsSemanticsOfPreviousSiblings, bool mergeIntoParent, Unknown owner) {
     {
         _mergeIntoParent = mergeIntoParent;
         _config = config;

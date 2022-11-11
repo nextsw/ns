@@ -196,7 +196,7 @@ using FocusNode = std::shared_ptr<FocusNodeCls>;
 class FocusScopeNodeCls : public FocusNodeCls {
 public:
 
-     FocusScopeNodeCls(Unknown canRequestFocus, Unknown debugLabel, Unknown onKey, Unknown onKeyEvent, Unknown skipTraversal);
+     FocusScopeNodeCls(Unknown canRequestFocus, Unknown debugLabel, FocusOnKeyCallback onKey, FocusOnKeyEventCallback onKeyEvent, Unknown skipTraversal);
 
     virtual FocusScopeNode nearestScope();
 

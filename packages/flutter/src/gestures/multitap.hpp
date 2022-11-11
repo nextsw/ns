@@ -75,7 +75,7 @@ public:
     GestureTapCancelCallback onDoubleTapCancel;
 
 
-     DoubleTapGestureRecognizerCls(Unknown debugOwner, Unknown kind, Unknown supportedDevices);
+     DoubleTapGestureRecognizerCls(Object debugOwner, Unknown kind, Unknown supportedDevices);
     virtual bool isPointerAllowed(PointerDownEvent event);
 
     virtual void addAllowedPointer(PointerDownEvent event);
@@ -148,7 +148,7 @@ private:
     OffsetPair _finalPosition;
 
 
-     _TapGestureCls(PointerEvent event, MultiTapGestureRecognizer gestureRecognizer, Unknown gestureSettings, Duration longTapDelay);
+     _TapGestureCls(PointerEvent event, MultiTapGestureRecognizer gestureRecognizer, DeviceGestureSettings gestureSettings, Duration longTapDelay);
 
     virtual void _check();
 
@@ -170,7 +170,7 @@ public:
     GestureMultiTapDownCallback onLongTapDown;
 
 
-     MultiTapGestureRecognizerCls(Unknown debugOwner, Unknown kind, Duration longTapDelay, Unknown supportedDevices);
+     MultiTapGestureRecognizerCls(Object debugOwner, Unknown kind, Duration longTapDelay, Unknown supportedDevices);
     virtual void addAllowedPointer(PointerDownEvent event);
 
     virtual void acceptGesture(int pointer);
@@ -253,7 +253,7 @@ public:
     GestureSerialTapUpCallback onSerialTapUp;
 
 
-     SerialTapGestureRecognizerCls(Unknown debugOwner, Unknown supportedDevices);
+     SerialTapGestureRecognizerCls(Object debugOwner, Unknown supportedDevices);
     virtual bool isTrackingPointer();
 
     virtual bool isPointerAllowed(PointerDownEvent event);

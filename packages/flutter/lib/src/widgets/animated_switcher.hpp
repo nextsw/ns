@@ -47,7 +47,7 @@ public:
     AnimatedSwitcherLayoutBuilder layoutBuilder;
 
 
-     AnimatedSwitcherCls(Widget child, Duration duration, Unknown key, AnimatedSwitcherLayoutBuilder layoutBuilder, Duration reverseDuration, Curve switchInCurve, Curve switchOutCurve, AnimatedSwitcherTransitionBuilder transitionBuilder);
+     AnimatedSwitcherCls(Widget child, Duration duration, Key key, AnimatedSwitcherLayoutBuilder layoutBuilder, Duration reverseDuration, Curve switchInCurve, Curve switchOutCurve, AnimatedSwitcherTransitionBuilder transitionBuilder);
 
     virtual State<AnimatedSwitcher> createState();
 

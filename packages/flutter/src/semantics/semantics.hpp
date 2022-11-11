@@ -93,7 +93,7 @@ public:
     bool showWhenEmpty;
 
 
-     AttributedStringPropertyCls(String name, Unknown value, Unknown defaultValue, Unknown description, Unknown level, Unknown showName, bool showWhenEmpty);
+     AttributedStringPropertyCls(String name, Unknown value, Object defaultValue, Unknown description, Unknown level, bool showName, bool showWhenEmpty);
 
     virtual bool isInteresting();
 
@@ -195,7 +195,7 @@ public:
 
 private:
 
-     _SemanticsDiagnosticableNodeCls(DebugSemanticsDumpOrder childOrder, Unknown name, Unknown style, Unknown value);
+     _SemanticsDiagnosticableNodeCls(DebugSemanticsDumpOrder childOrder, String name, Unknown style, T value);
 };
 using _SemanticsDiagnosticableNode = std::shared_ptr<_SemanticsDiagnosticableNodeCls>;
 
@@ -1133,7 +1133,7 @@ public:
     double order;
 
 
-     OrdinalSortKeyCls(double order, Unknown name);
+     OrdinalSortKeyCls(double order, String name);
 
     virtual int doCompare(OrdinalSortKey other);
 

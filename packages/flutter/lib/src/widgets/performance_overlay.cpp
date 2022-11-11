@@ -1,5 +1,5 @@
 #include "performance_overlay.hpp"
-void PerformanceOverlayCls::allEnabled(bool checkerboardOffscreenLayers, bool checkerboardRasterCacheImages, Unknown key, int rasterizerThreshold)
+void PerformanceOverlayCls::allEnabled(bool checkerboardOffscreenLayers, bool checkerboardRasterCacheImages, Key key, int rasterizerThreshold)
 
 RenderPerformanceOverlay PerformanceOverlayCls::createRenderObject(BuildContext context) {
     return make<RenderPerformanceOverlayCls>(optionsMask, rasterizerThreshold, checkerboardRasterCacheImages, checkerboardOffscreenLayers);

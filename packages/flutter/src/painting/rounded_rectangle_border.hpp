@@ -17,7 +17,7 @@ public:
     BorderRadiusGeometry borderRadius;
 
 
-     RoundedRectangleBorderCls(BorderRadiusGeometry borderRadius, Unknown side);
+     RoundedRectangleBorderCls(BorderRadiusGeometry borderRadius, BorderSide side);
 
     virtual EdgeInsetsGeometry dimensions();
 
@@ -77,7 +77,7 @@ public:
 
 private:
 
-     _RoundedRectangleToCircleBorderCls(BorderRadiusGeometry borderRadius, double circleness, Unknown side);
+     _RoundedRectangleToCircleBorderCls(BorderRadiusGeometry borderRadius, double circleness, BorderSide side);
 
     virtual Rect _adjustRect(Rect rect);
 

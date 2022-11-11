@@ -5,7 +5,7 @@ String SpringDescriptionCls::toString() {
     return __s("${objectRuntimeType(this, 'SpringDescription')}(mass: ${mass.toStringAsFixed(1)}, stiffness: ${stiffness.toStringAsFixed(1)}, damping: ${damping.toStringAsFixed(1)})");
 }
 
-SpringSimulationCls::SpringSimulationCls(SpringDescription spring, double start, double end, double velocity, Unknown tolerance) {
+SpringSimulationCls::SpringSimulationCls(SpringDescription spring, double start, double end, double velocity, Tolerance tolerance) {
     {
         _endPosition = end;
         _solution = make<_SpringSolutionCls>(spring, start - end, velocity);

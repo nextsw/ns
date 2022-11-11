@@ -33,7 +33,7 @@ public:
     Widget child;
 
 
-     GlowingOverscrollIndicatorCls(AxisDirection axisDirection, Widget child, Color color, Unknown key, ScrollNotificationPredicate notificationPredicate, bool showLeading, bool showTrailing);
+     GlowingOverscrollIndicatorCls(AxisDirection axisDirection, Widget child, Color color, Key key, ScrollNotificationPredicate notificationPredicate, bool showLeading, bool showTrailing);
 
     virtual Axis axis();
 
@@ -209,7 +209,7 @@ public:
     Widget child;
 
 
-     StretchingOverscrollIndicatorCls(AxisDirection axisDirection, Widget child, Clip clipBehavior, Unknown key, ScrollNotificationPredicate notificationPredicate);
+     StretchingOverscrollIndicatorCls(AxisDirection axisDirection, Widget child, Clip clipBehavior, Key key, ScrollNotificationPredicate notificationPredicate);
 
     virtual Axis axis();
 

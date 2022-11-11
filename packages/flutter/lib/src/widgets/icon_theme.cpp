@@ -1,5 +1,5 @@
 #include "icon_theme.hpp"
-IconThemeCls::IconThemeCls(Unknown child, IconThemeData data, Unknown key) {
+IconThemeCls::IconThemeCls(Widget child, IconThemeData data, Key key) {
     {
         assert(data != nullptr);
         assert(child != nullptr);

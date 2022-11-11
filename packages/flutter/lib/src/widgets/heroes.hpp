@@ -37,7 +37,7 @@ public:
     bool transitionOnUserGestures;
 
 
-     HeroCls(Widget child, CreateRectTween createRectTween, HeroFlightShuttleBuilder flightShuttleBuilder, Unknown key, HeroPlaceholderBuilder placeholderBuilder, Object tag, bool transitionOnUserGestures);
+     HeroCls(Widget child, CreateRectTween createRectTween, HeroFlightShuttleBuilder flightShuttleBuilder, Key key, HeroPlaceholderBuilder placeholderBuilder, Object tag, bool transitionOnUserGestures);
 
     virtual State<Hero> createState();
 
@@ -202,7 +202,7 @@ public:
     bool enabled;
 
 
-     HeroModeCls(Widget child, bool enabled, Unknown key);
+     HeroModeCls(Widget child, bool enabled, Key key);
 
     virtual Widget build(BuildContext context);
 

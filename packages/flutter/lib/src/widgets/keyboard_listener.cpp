@@ -1,5 +1,5 @@
 #include "keyboard_listener.hpp"
-KeyboardListenerCls::KeyboardListenerCls(bool autofocus, Widget child, FocusNode focusNode, bool includeSemantics, Unknown key, ValueChanged<KeyEvent> onKeyEvent) {
+KeyboardListenerCls::KeyboardListenerCls(bool autofocus, Widget child, FocusNode focusNode, bool includeSemantics, Key key, ValueChanged<KeyEvent> onKeyEvent) {
     {
         assert(focusNode != nullptr);
         assert(autofocus != nullptr);

@@ -1,5 +1,5 @@
 #include "scroll_simulation.hpp"
-BouncingScrollSimulationCls::BouncingScrollSimulationCls(double leadingExtent, double position, SpringDescription spring, Unknown tolerance, double trailingExtent, double velocity) {
+BouncingScrollSimulationCls::BouncingScrollSimulationCls(double leadingExtent, double position, SpringDescription spring, Tolerance tolerance, double trailingExtent, double velocity) {
     {
         assert(position != nullptr);
         assert(velocity != nullptr);
@@ -74,7 +74,7 @@ Simulation BouncingScrollSimulationCls::_simulation(double time) {
     auto _c1 = simulation;_c1.tolerance = tolerance;return _c1;
 }
 
-ClampingScrollSimulationCls::ClampingScrollSimulationCls(double friction, double position, Unknown tolerance, double velocity) {
+ClampingScrollSimulationCls::ClampingScrollSimulationCls(double friction, double position, Tolerance tolerance, double velocity) {
     {
         assert(_flingVelocityPenetration(0.0) == _initialVelocityPenetration);
     }

@@ -497,8 +497,8 @@ RenderViewportCls::RenderViewportCls(double anchor, Unknown axisDirection, Unkno
     {
         assert(anchor != nullptr);
         assert(anchor >= 0.0 && anchor <= 1.0);
-        assert(cacheExtentStyle != CacheExtentStyleCls::viewport || cacheExtent != nullptr);
-        assert(clipBehavior != nullptr);
+        assert(cacheExtentStyle() != CacheExtentStyleCls::viewport || cacheExtent() != nullptr);
+        assert(clipBehavior() != nullptr);
         _anchor = anchor;
         _center = center;
     }

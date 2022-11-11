@@ -20,7 +20,7 @@ public:
     TextStyle labelStyle;
 
 
-     SemanticsDebuggerCls(Widget child, Unknown key, TextStyle labelStyle);
+     SemanticsDebuggerCls(Widget child, Key key, TextStyle labelStyle);
 
     virtual State<SemanticsDebugger> createState();
 

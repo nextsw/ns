@@ -116,7 +116,7 @@ public:
 
 private:
 
-     _CachedImageCls(Unknown completer, Unknown sizeBytes);
+     _CachedImageCls(ImageStreamCompleter completer, int sizeBytes);
 };
 using _CachedImage = std::shared_ptr<_CachedImageCls>;
 

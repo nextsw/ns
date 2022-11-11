@@ -48,7 +48,7 @@ public:
     ScrollBehavior scrollBehavior;
 
 
-     NestedScrollViewCls(Widget body, Clip clipBehavior, ScrollController controller, DragStartBehavior dragStartBehavior, bool floatHeaderSlivers, NestedScrollViewHeaderSliversBuilder headerSliverBuilder, Unknown key, ScrollPhysics physics, String restorationId, bool reverse, ScrollBehavior scrollBehavior, Axis scrollDirection);
+     NestedScrollViewCls(Widget body, Clip clipBehavior, ScrollController controller, DragStartBehavior dragStartBehavior, bool floatHeaderSlivers, NestedScrollViewHeaderSliversBuilder headerSliverBuilder, Key key, ScrollPhysics physics, String restorationId, bool reverse, ScrollBehavior scrollBehavior, Axis scrollDirection);
 
     static SliverOverlapAbsorberHandle sliverOverlapAbsorberHandleFor(BuildContext context);
 
@@ -100,7 +100,7 @@ public:
 
 private:
 
-     _NestedScrollViewCustomScrollViewCls(Unknown clipBehavior, ScrollController controller, Unknown dragStartBehavior, SliverOverlapAbsorberHandle handle, ScrollPhysics physics, Unknown restorationId, Unknown reverse, ScrollBehavior scrollBehavior, Unknown scrollDirection, Unknown slivers);
+     _NestedScrollViewCustomScrollViewCls(Clip clipBehavior, ScrollController controller, DragStartBehavior dragStartBehavior, SliverOverlapAbsorberHandle handle, ScrollPhysics physics, String restorationId, bool reverse, ScrollBehavior scrollBehavior, Axis scrollDirection, List<Widget> slivers);
 };
 using _NestedScrollViewCustomScrollView = std::shared_ptr<_NestedScrollViewCustomScrollViewCls>;
 
@@ -113,7 +113,7 @@ public:
 
 private:
 
-     _InheritedNestedScrollViewCls(Unknown child, NestedScrollViewState state);
+     _InheritedNestedScrollViewCls(Widget child, NestedScrollViewState state);
 
 };
 using _InheritedNestedScrollView = std::shared_ptr<_InheritedNestedScrollViewCls>;
@@ -131,7 +131,7 @@ public:
 
 private:
 
-     _NestedScrollMetricsCls(Unknown axisDirection, double correctionOffset, double maxRange, Unknown maxScrollExtent, double minRange, Unknown minScrollExtent, Unknown pixels, Unknown viewportDimension);
+     _NestedScrollMetricsCls(AxisDirection axisDirection, double correctionOffset, double maxRange, Unknown maxScrollExtent, double minRange, Unknown minScrollExtent, Unknown pixels, Unknown viewportDimension);
 };
 using _NestedScrollMetrics = std::shared_ptr<_NestedScrollMetricsCls>;
 
@@ -236,7 +236,7 @@ public:
 
 private:
 
-     _NestedScrollControllerCls(_NestedScrollCoordinator coordinator, Unknown debugLabel, Unknown initialScrollOffset);
+     _NestedScrollControllerCls(_NestedScrollCoordinator coordinator, String debugLabel, Unknown initialScrollOffset);
     virtual void _scheduleUpdateShadow();
 
 };
@@ -297,7 +297,7 @@ private:
     ScrollController _parent;
 
 
-     _NestedScrollPositionCls(Unknown context, _NestedScrollCoordinator coordinator, Unknown debugLabel, double initialPixels, Unknown oldPosition, Unknown physics);
+     _NestedScrollPositionCls(ScrollContext context, _NestedScrollCoordinator coordinator, String debugLabel, double initialPixels, Unknown oldPosition, ScrollPhysics physics);
 
 };
 using _NestedScrollPosition = std::shared_ptr<_NestedScrollPositionCls>;
@@ -381,7 +381,7 @@ public:
     SliverOverlapAbsorberHandle handle;
 
 
-     SliverOverlapAbsorberCls(SliverOverlapAbsorberHandle handle, Unknown key, Widget sliver);
+     SliverOverlapAbsorberCls(SliverOverlapAbsorberHandle handle, Key key, Widget sliver);
 
     virtual RenderSliverOverlapAbsorber createRenderObject(BuildContext context);
 
@@ -429,7 +429,7 @@ public:
     SliverOverlapAbsorberHandle handle;
 
 
-     SliverOverlapInjectorCls(SliverOverlapAbsorberHandle handle, Unknown key, Widget sliver);
+     SliverOverlapInjectorCls(SliverOverlapAbsorberHandle handle, Key key, Widget sliver);
 
     virtual RenderSliverOverlapInjector createRenderObject(BuildContext context);
 
@@ -477,7 +477,7 @@ public:
     SliverOverlapAbsorberHandle handle;
 
 
-     NestedScrollViewViewportCls(Unknown anchor, Unknown axisDirection, Unknown center, Unknown clipBehavior, Unknown crossAxisDirection, SliverOverlapAbsorberHandle handle, Unknown key, Unknown offset, Unknown slivers);
+     NestedScrollViewViewportCls(double anchor, AxisDirection axisDirection, Key center, Clip clipBehavior, AxisDirection crossAxisDirection, SliverOverlapAbsorberHandle handle, Key key, ViewportOffset offset, Unknown slivers);
 
     virtual RenderNestedScrollViewViewport createRenderObject(BuildContext context);
 

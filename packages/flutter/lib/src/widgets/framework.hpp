@@ -135,7 +135,7 @@ using Widget = std::shared_ptr<WidgetCls>;
 class StatelessWidgetCls : public WidgetCls {
 public:
 
-     StatelessWidgetCls(Unknown key);
+     StatelessWidgetCls(Key key);
     virtual StatelessElement createElement();
 
     virtual Widget build(BuildContext context);
@@ -147,7 +147,7 @@ using StatelessWidget = std::shared_ptr<StatelessWidgetCls>;
 class StatefulWidgetCls : public WidgetCls {
 public:
 
-     StatefulWidgetCls(Unknown key);
+     StatefulWidgetCls(Key key);
     virtual StatefulElement createElement();
 
     virtual State createState();
@@ -211,7 +211,7 @@ public:
     Widget child;
 
 
-     ProxyWidgetCls(Widget child, Unknown key);
+     ProxyWidgetCls(Widget child, Key key);
 private:
 
 };
@@ -221,7 +221,7 @@ template<typename T>
 class ParentDataWidgetCls : public ProxyWidgetCls {
 public:
 
-     ParentDataWidgetCls(Unknown child, Unknown key);
+     ParentDataWidgetCls(Widget child, Key key);
     virtual ParentDataElement<T> createElement();
 
     virtual bool debugIsValidRenderObject(RenderObject renderObject);
@@ -241,7 +241,7 @@ using ParentDataWidget = std::shared_ptr<ParentDataWidgetCls<T>>;
 class InheritedWidgetCls : public ProxyWidgetCls {
 public:
 
-     InheritedWidgetCls(Unknown child, Unknown key);
+     InheritedWidgetCls(Widget child, Key key);
     virtual InheritedElement createElement();
 
     virtual bool updateShouldNotify(InheritedWidget oldWidget);
@@ -253,7 +253,7 @@ using InheritedWidget = std::shared_ptr<InheritedWidgetCls>;
 class RenderObjectWidgetCls : public WidgetCls {
 public:
 
-     RenderObjectWidgetCls(Unknown key);
+     RenderObjectWidgetCls(Key key);
     virtual RenderObjectElement createElement() override;
     virtual RenderObject createRenderObject(BuildContext context);
     virtual void updateRenderObject(BuildContext context, RenderObject renderObject);
@@ -268,7 +268,7 @@ using RenderObjectWidget = std::shared_ptr<RenderObjectWidgetCls>;
 class LeafRenderObjectWidgetCls : public RenderObjectWidgetCls {
 public:
 
-     LeafRenderObjectWidgetCls(Unknown key);
+     LeafRenderObjectWidgetCls(Key key);
     virtual LeafRenderObjectElement createElement();
 
 private:
@@ -281,7 +281,7 @@ public:
     Widget child;
 
 
-     SingleChildRenderObjectWidgetCls(Widget child, Unknown key);
+     SingleChildRenderObjectWidgetCls(Widget child, Key key);
     virtual SingleChildRenderObjectElement createElement();
 
 private:
@@ -294,7 +294,7 @@ public:
     List<Widget> children;
 
 
-     MultiChildRenderObjectWidgetCls(List<Widget> children, Unknown key);
+     MultiChildRenderObjectWidgetCls(List<Widget> children, Key key);
 
     virtual MultiChildRenderObjectElement createElement();
 
@@ -657,7 +657,7 @@ public:
 
 private:
 
-     _ElementDiagnosticableTreeNodeCls(Unknown name, bool stateful, Unknown style, Element value);
+     _ElementDiagnosticableTreeNodeCls(String name, bool stateful, Unknown style, Element value);
 };
 using _ElementDiagnosticableTreeNode = std::shared_ptr<_ElementDiagnosticableTreeNodeCls>;
 

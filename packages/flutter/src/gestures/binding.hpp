@@ -141,7 +141,7 @@ public:
     HitTestEntry hitTestEntry;
 
 
-     FlutterErrorDetailsForPointerEventDispatcherCls(Unknown context, PointerEvent event, Unknown exception, HitTestEntry hitTestEntry, Unknown informationCollector, Unknown library, Unknown silent, Unknown stack);
+     FlutterErrorDetailsForPointerEventDispatcherCls(DiagnosticsNode context, PointerEvent event, Object exception, HitTestEntry hitTestEntry, InformationCollector informationCollector, String library, bool silent, StackTrace stack);
 private:
 
 };

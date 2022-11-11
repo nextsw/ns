@@ -7,7 +7,7 @@ ForcePressDetailsCls::ForcePressDetailsCls(Offset globalPosition, Offset localPo
     }
 }
 
-ForcePressGestureRecognizerCls::ForcePressGestureRecognizerCls(Unknown debugOwner, GestureForceInterpolation interpolation, Unknown kind, double peakPressure, double startPressure, Unknown supportedDevices) {
+ForcePressGestureRecognizerCls::ForcePressGestureRecognizerCls(Object debugOwner, GestureForceInterpolation interpolation, Unknown kind, double peakPressure, double startPressure, Unknown supportedDevices) {
     {
         assert(startPressure != nullptr);
         assert(peakPressure != nullptr);

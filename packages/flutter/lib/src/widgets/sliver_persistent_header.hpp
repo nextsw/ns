@@ -41,7 +41,7 @@ public:
     bool floating;
 
 
-     SliverPersistentHeaderCls(SliverPersistentHeaderDelegate delegate, bool floating, Unknown key, bool pinned);
+     SliverPersistentHeaderCls(SliverPersistentHeaderDelegate delegate, bool floating, Key key, bool pinned);
 
     virtual Widget build(BuildContext context);
 
@@ -165,7 +165,7 @@ public:
 
 private:
 
-     _SliverScrollingPersistentHeaderCls(Unknown delegate);
+     _SliverScrollingPersistentHeaderCls(SliverPersistentHeaderDelegate delegate);
 };
 using _SliverScrollingPersistentHeader = std::shared_ptr<_SliverScrollingPersistentHeaderCls>;
 
@@ -174,7 +174,7 @@ public:
 
 private:
 
-     _RenderSliverScrollingPersistentHeaderForWidgetsCls(Unknown stretchConfiguration);
+     _RenderSliverScrollingPersistentHeaderForWidgetsCls(OverScrollHeaderStretchConfiguration stretchConfiguration);
 };
 using _RenderSliverScrollingPersistentHeaderForWidgets = std::shared_ptr<_RenderSliverScrollingPersistentHeaderForWidgetsCls>;
 
@@ -185,7 +185,7 @@ public:
 
 private:
 
-     _SliverPinnedPersistentHeaderCls(Unknown delegate);
+     _SliverPinnedPersistentHeaderCls(SliverPersistentHeaderDelegate delegate);
 };
 using _SliverPinnedPersistentHeader = std::shared_ptr<_SliverPinnedPersistentHeaderCls>;
 
@@ -194,7 +194,7 @@ public:
 
 private:
 
-     _RenderSliverPinnedPersistentHeaderForWidgetsCls(Unknown showOnScreenConfiguration, Unknown stretchConfiguration);
+     _RenderSliverPinnedPersistentHeaderForWidgetsCls(PersistentHeaderShowOnScreenConfiguration showOnScreenConfiguration, OverScrollHeaderStretchConfiguration stretchConfiguration);
 };
 using _RenderSliverPinnedPersistentHeaderForWidgets = std::shared_ptr<_RenderSliverPinnedPersistentHeaderForWidgetsCls>;
 
@@ -207,7 +207,7 @@ public:
 
 private:
 
-     _SliverFloatingPersistentHeaderCls(Unknown delegate);
+     _SliverFloatingPersistentHeaderCls(SliverPersistentHeaderDelegate delegate);
 
 };
 using _SliverFloatingPersistentHeader = std::shared_ptr<_SliverFloatingPersistentHeaderCls>;
@@ -217,7 +217,7 @@ public:
 
 private:
 
-     _RenderSliverFloatingPinnedPersistentHeaderForWidgetsCls(Unknown showOnScreenConfiguration, Unknown snapConfiguration, Unknown stretchConfiguration, Unknown vsync);
+     _RenderSliverFloatingPinnedPersistentHeaderForWidgetsCls(PersistentHeaderShowOnScreenConfiguration showOnScreenConfiguration, FloatingHeaderSnapConfiguration snapConfiguration, OverScrollHeaderStretchConfiguration stretchConfiguration, Unknown vsync);
 };
 using _RenderSliverFloatingPinnedPersistentHeaderForWidgets = std::shared_ptr<_RenderSliverFloatingPinnedPersistentHeaderForWidgetsCls>;
 
@@ -230,7 +230,7 @@ public:
 
 private:
 
-     _SliverFloatingPinnedPersistentHeaderCls(Unknown delegate);
+     _SliverFloatingPinnedPersistentHeaderCls(SliverPersistentHeaderDelegate delegate);
 
 };
 using _SliverFloatingPinnedPersistentHeader = std::shared_ptr<_SliverFloatingPinnedPersistentHeaderCls>;
@@ -240,7 +240,7 @@ public:
 
 private:
 
-     _RenderSliverFloatingPersistentHeaderForWidgetsCls(Unknown showOnScreenConfiguration, Unknown snapConfiguration, Unknown stretchConfiguration, Unknown vsync);
+     _RenderSliverFloatingPersistentHeaderForWidgetsCls(PersistentHeaderShowOnScreenConfiguration showOnScreenConfiguration, FloatingHeaderSnapConfiguration snapConfiguration, OverScrollHeaderStretchConfiguration stretchConfiguration, Unknown vsync);
 };
 using _RenderSliverFloatingPersistentHeaderForWidgets = std::shared_ptr<_RenderSliverFloatingPersistentHeaderForWidgetsCls>;
 

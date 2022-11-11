@@ -15,7 +15,7 @@ public:
     IconThemeData data;
 
 
-     IconThemeCls(Unknown child, IconThemeData data, Unknown key);
+     IconThemeCls(Widget child, IconThemeData data, Key key);
 
     static Widget merge(Widget child, IconThemeData data, Key key);
 

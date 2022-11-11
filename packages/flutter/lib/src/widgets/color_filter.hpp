@@ -13,7 +13,7 @@ public:
     ColorFilter colorFilter;
 
 
-     ColorFilteredCls(Unknown child, ColorFilter colorFilter, Unknown key);
+     ColorFilteredCls(Widget child, ColorFilter colorFilter, Key key);
 
     virtual RenderObject createRenderObject(BuildContext context);
 

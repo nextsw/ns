@@ -1,5 +1,5 @@
 #include "animated_cross_fade.hpp"
-AnimatedCrossFadeCls::AnimatedCrossFadeCls(AlignmentGeometry alignment, CrossFadeState crossFadeState, Duration duration, bool excludeBottomFocus, Widget firstChild, Curve firstCurve, Unknown key, AnimatedCrossFadeBuilder layoutBuilder, Duration reverseDuration, Widget secondChild, Curve secondCurve, Curve sizeCurve) {
+AnimatedCrossFadeCls::AnimatedCrossFadeCls(AlignmentGeometry alignment, CrossFadeState crossFadeState, Duration duration, bool excludeBottomFocus, Widget firstChild, Curve firstCurve, Key key, AnimatedCrossFadeBuilder layoutBuilder, Duration reverseDuration, Widget secondChild, Curve secondCurve, Curve sizeCurve) {
     {
         assert(firstChild != nullptr);
         assert(secondChild != nullptr);

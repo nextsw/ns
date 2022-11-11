@@ -16,7 +16,7 @@ public:
     BorderRadiusGeometry borderRadius;
 
 
-     ContinuousRectangleBorderCls(BorderRadiusGeometry borderRadius, Unknown side);
+     ContinuousRectangleBorderCls(BorderRadiusGeometry borderRadius, BorderSide side);
 
     virtual EdgeInsetsGeometry dimensions();
 

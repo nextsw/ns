@@ -1,5 +1,5 @@
 #include "image_filter.hpp"
-ImageFilteredCls::ImageFilteredCls(Unknown child, bool enabled, ImageFilter imageFilter, Unknown key) {
+ImageFilteredCls::ImageFilteredCls(Widget child, bool enabled, ImageFilter imageFilter, Key key) {
     {
         assert(imageFilter != nullptr);
     }

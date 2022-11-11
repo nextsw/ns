@@ -79,7 +79,7 @@ public:
     ScrollableWidgetBuilder builder;
 
 
-     DraggableScrollableSheetCls(ScrollableWidgetBuilder builder, DraggableScrollableController controller, bool expand, double initialChildSize, Unknown key, double maxChildSize, double minChildSize, bool snap, List<double> snapSizes);
+     DraggableScrollableSheetCls(ScrollableWidgetBuilder builder, DraggableScrollableController controller, bool expand, double initialChildSize, Key key, double maxChildSize, double minChildSize, bool snap, List<double> snapSizes);
 
     virtual State<DraggableScrollableSheet> createState();
 
@@ -251,7 +251,7 @@ private:
     Set<AnimationController> _ballisticControllers;
 
 
-     _DraggableScrollableSheetScrollPositionCls(Unknown context, std::function<_DraggableSheetExtent()> getExtent, Unknown oldPosition, Unknown physics);
+     _DraggableScrollableSheetScrollPositionCls(ScrollContext context, std::function<_DraggableSheetExtent()> getExtent, Unknown oldPosition, ScrollPhysics physics);
     virtual bool _isAtSnapSize();
 
     virtual bool _shouldSnap();
@@ -264,7 +264,7 @@ public:
     Widget child;
 
 
-     DraggableScrollableActuatorCls(Widget child, Unknown key);
+     DraggableScrollableActuatorCls(Widget child, Key key);
     static bool reset(BuildContext context);
 
     virtual Widget build(BuildContext context);
@@ -295,7 +295,7 @@ public:
 
 private:
 
-     _InheritedResetNotifierCls(Unknown child, _ResetNotifier notifier);
+     _InheritedResetNotifierCls(Widget child, _ResetNotifier notifier);
     virtual bool _sendReset();
 
 };
@@ -320,7 +320,7 @@ private:
     double _pixelSnapSize;
 
 
-     _SnappingSimulationCls(double initialVelocity, List<double> pixelSnapSize, double position, Unknown tolerance);
+     _SnappingSimulationCls(double initialVelocity, List<double> pixelSnapSize, double position, Tolerance tolerance);
 
     virtual double _getSnapSize(double initialVelocity, List<double> pixelSnapSizes);
 

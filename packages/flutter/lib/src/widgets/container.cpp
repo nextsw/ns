@@ -1,5 +1,5 @@
 #include "container.hpp"
-DecoratedBoxCls::DecoratedBoxCls(Unknown child, Decoration decoration, Unknown key, DecorationPosition position) {
+DecoratedBoxCls::DecoratedBoxCls(Widget child, Decoration decoration, Key key, DecorationPosition position) {
     {
         assert(decoration != nullptr);
         assert(position != nullptr);
@@ -22,7 +22,7 @@ void DecoratedBoxCls::debugFillProperties(DiagnosticPropertiesBuilder properties
     properties->add(<Decoration>make<DiagnosticsPropertyCls>(label, decoration));
 }
 
-ContainerCls::ContainerCls(AlignmentGeometry alignment, Widget child, Clip clipBehavior, Color color, BoxConstraints constraints, Decoration decoration, Decoration foregroundDecoration, double height, Unknown key, EdgeInsetsGeometry margin, EdgeInsetsGeometry padding, Matrix4 transform, AlignmentGeometry transformAlignment, double width) {
+ContainerCls::ContainerCls(AlignmentGeometry alignment, Widget child, Clip clipBehavior, Color color, BoxConstraints constraints, Decoration decoration, Decoration foregroundDecoration, double height, Key key, EdgeInsetsGeometry margin, EdgeInsetsGeometry padding, Matrix4 transform, AlignmentGeometry transformAlignment, double width) {
     {
         assert(margin == nullptr || margin->isNonNegative());
         assert(padding == nullptr || padding->isNonNegative());

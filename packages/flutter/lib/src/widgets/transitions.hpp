@@ -17,7 +17,7 @@ public:
     Listenable listenable;
 
 
-     AnimatedWidgetCls(Unknown key, Listenable listenable);
+     AnimatedWidgetCls(Key key, Listenable listenable);
 
     virtual Widget build(BuildContext context);
     virtual State<AnimatedWidget> createState();
@@ -56,7 +56,7 @@ public:
     Widget child;
 
 
-     SlideTransitionCls(Widget child, Unknown key, Animation<Offset> position, TextDirection textDirection, bool transformHitTests);
+     SlideTransitionCls(Widget child, Key key, Animation<Offset> position, TextDirection textDirection, bool transformHitTests);
 
     virtual Animation<Offset> position();
 
@@ -76,7 +76,7 @@ public:
     Widget child;
 
 
-     ScaleTransitionCls(Alignment alignment, Widget child, FilterQuality filterQuality, Unknown key, Animation<double> scale);
+     ScaleTransitionCls(Alignment alignment, Widget child, FilterQuality filterQuality, Key key, Animation<double> scale);
 
     virtual Animation<double> scale();
 
@@ -96,7 +96,7 @@ public:
     Widget child;
 
 
-     RotationTransitionCls(Alignment alignment, Widget child, FilterQuality filterQuality, Unknown key, Animation<double> turns);
+     RotationTransitionCls(Alignment alignment, Widget child, FilterQuality filterQuality, Key key, Animation<double> turns);
 
     virtual Animation<double> turns();
 
@@ -116,7 +116,7 @@ public:
     Widget child;
 
 
-     SizeTransitionCls(Axis axis, double axisAlignment, Widget child, Unknown key, Animation<double> sizeFactor);
+     SizeTransitionCls(Axis axis, double axisAlignment, Widget child, Key key, Animation<double> sizeFactor);
 
     virtual Animation<double> sizeFactor();
 
@@ -134,7 +134,7 @@ public:
     bool alwaysIncludeSemantics;
 
 
-     FadeTransitionCls(bool alwaysIncludeSemantics, Unknown child, Unknown key, Animation<double> opacity);
+     FadeTransitionCls(bool alwaysIncludeSemantics, Widget child, Key key, Animation<double> opacity);
 
     virtual RenderAnimatedOpacity createRenderObject(BuildContext context);
 
@@ -154,7 +154,7 @@ public:
     bool alwaysIncludeSemantics;
 
 
-     SliverFadeTransitionCls(bool alwaysIncludeSemantics, Unknown key, Animation<double> opacity, Widget sliver);
+     SliverFadeTransitionCls(bool alwaysIncludeSemantics, Key key, Animation<double> opacity, Widget sliver);
 
     virtual RenderSliverAnimatedOpacity createRenderObject(BuildContext context);
 
@@ -170,7 +170,7 @@ using SliverFadeTransition = std::shared_ptr<SliverFadeTransitionCls>;
 class RelativeRectTweenCls : public TweenCls<RelativeRect> {
 public:
 
-     RelativeRectTweenCls(Unknown begin, Unknown end);
+     RelativeRectTweenCls(T begin, T end);
     virtual RelativeRect lerp(double t);
 
 private:
@@ -183,7 +183,7 @@ public:
     Widget child;
 
 
-     PositionedTransitionCls(Widget child, Unknown key, Animation<RelativeRect> rect);
+     PositionedTransitionCls(Widget child, Key key, Animation<RelativeRect> rect);
 
     virtual Animation<RelativeRect> rect();
 
@@ -201,7 +201,7 @@ public:
     Widget child;
 
 
-     RelativePositionedTransitionCls(Widget child, Unknown key, Animation<Rect> rect, Size size);
+     RelativePositionedTransitionCls(Widget child, Key key, Animation<Rect> rect, Size size);
 
     virtual Animation<Rect> rect();
 
@@ -221,7 +221,7 @@ public:
     Widget child;
 
 
-     DecoratedBoxTransitionCls(Widget child, Animation<Decoration> decoration, Unknown key, DecorationPosition position);
+     DecoratedBoxTransitionCls(Widget child, Animation<Decoration> decoration, Key key, DecorationPosition position);
 
     virtual Widget build(BuildContext context);
 
@@ -239,7 +239,7 @@ public:
     Widget child;
 
 
-     AlignTransitionCls(Animation<AlignmentGeometry> alignment, Widget child, double heightFactor, Unknown key, double widthFactor);
+     AlignTransitionCls(Animation<AlignmentGeometry> alignment, Widget child, double heightFactor, Key key, double widthFactor);
 
     virtual Animation<AlignmentGeometry> alignment();
 
@@ -263,7 +263,7 @@ public:
     Widget child;
 
 
-     DefaultTextStyleTransitionCls(Widget child, Unknown key, int maxLines, TextOverflow overflow, bool softWrap, Animation<TextStyle> style, TextAlign textAlign);
+     DefaultTextStyleTransitionCls(Widget child, Key key, int maxLines, TextOverflow overflow, bool softWrap, Animation<TextStyle> style, TextAlign textAlign);
 
     virtual Animation<TextStyle> style();
 
@@ -281,7 +281,7 @@ public:
     Widget child;
 
 
-     AnimatedBuilderCls(Listenable animation, TransitionBuilder builder, Widget child, Unknown key);
+     AnimatedBuilderCls(Listenable animation, TransitionBuilder builder, Widget child, Key key);
 
     virtual Widget build(BuildContext context);
 

@@ -12,7 +12,7 @@
 class FrictionSimulationCls : public SimulationCls {
 public:
 
-     FrictionSimulationCls(double drag, double position, double velocity, Unknown tolerance);
+     FrictionSimulationCls(double drag, double position, double velocity, Tolerance tolerance);
 
     virtual void  through(double startPosition, double endPosition, double startVelocity, double endVelocity);
 

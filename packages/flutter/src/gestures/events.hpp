@@ -218,7 +218,7 @@ using _CopyPointerAddedEvent = std::shared_ptr<_CopyPointerAddedEventCls>;
 class PointerAddedEventCls : public PointerEventCls {
 public:
 
-     PointerAddedEventCls(Unknown device, Unknown distance, Unknown distanceMax, Unknown embedderId, Unknown kind, Unknown obscured, Unknown orientation, Unknown pointer, Unknown position, Unknown pressureMax, Unknown pressureMin, Unknown radiusMax, Unknown radiusMin, Unknown tilt, Unknown timeStamp);
+     PointerAddedEventCls(int device, double distance, double distanceMax, int embedderId, PointerDeviceKind kind, bool obscured, double orientation, int pointer, Offset position, double pressureMax, double pressureMin, double radiusMax, double radiusMin, double tilt, Duration timeStamp);
 
     virtual PointerAddedEvent transformed(Matrix4 transform);
 
@@ -256,7 +256,7 @@ using _CopyPointerRemovedEvent = std::shared_ptr<_CopyPointerRemovedEventCls>;
 class PointerRemovedEventCls : public PointerEventCls {
 public:
 
-     PointerRemovedEventCls(Unknown device, Unknown distanceMax, Unknown embedderId, Unknown kind, Unknown obscured, PointerRemovedEvent original, Unknown pointer, Unknown position, Unknown pressureMax, Unknown pressureMin, Unknown radiusMax, Unknown radiusMin, Unknown timeStamp);
+     PointerRemovedEventCls(int device, double distanceMax, int embedderId, PointerDeviceKind kind, bool obscured, PointerRemovedEvent original, int pointer, Offset position, double pressureMax, double pressureMin, double radiusMax, double radiusMin, Duration timeStamp);
 
     virtual PointerRemovedEvent transformed(Matrix4 transform);
 
@@ -294,7 +294,7 @@ using _CopyPointerHoverEvent = std::shared_ptr<_CopyPointerHoverEventCls>;
 class PointerHoverEventCls : public PointerEventCls {
 public:
 
-     PointerHoverEventCls(Unknown buttons, Unknown delta, Unknown device, Unknown distance, Unknown distanceMax, Unknown embedderId, Unknown kind, Unknown obscured, Unknown orientation, Unknown pointer, Unknown position, Unknown pressureMax, Unknown pressureMin, Unknown radiusMajor, Unknown radiusMax, Unknown radiusMin, Unknown radiusMinor, Unknown size, Unknown synthesized, Unknown tilt, Unknown timeStamp);
+     PointerHoverEventCls(int buttons, Offset delta, int device, double distance, double distanceMax, int embedderId, PointerDeviceKind kind, bool obscured, double orientation, int pointer, Offset position, double pressureMax, double pressureMin, double radiusMajor, double radiusMax, double radiusMin, double radiusMinor, double size, bool synthesized, double tilt, Duration timeStamp);
 
     virtual PointerHoverEvent transformed(Matrix4 transform);
 
@@ -332,7 +332,7 @@ using _CopyPointerEnterEvent = std::shared_ptr<_CopyPointerEnterEventCls>;
 class PointerEnterEventCls : public PointerEventCls {
 public:
 
-     PointerEnterEventCls(Unknown buttons, Unknown delta, Unknown device, Unknown distance, Unknown distanceMax, Unknown down, Unknown embedderId, Unknown kind, Unknown obscured, Unknown orientation, Unknown pointer, Unknown position, Unknown pressureMax, Unknown pressureMin, Unknown radiusMajor, Unknown radiusMax, Unknown radiusMin, Unknown radiusMinor, Unknown size, Unknown synthesized, Unknown tilt, Unknown timeStamp);
+     PointerEnterEventCls(int buttons, Offset delta, int device, double distance, double distanceMax, bool down, int embedderId, PointerDeviceKind kind, bool obscured, double orientation, int pointer, Offset position, double pressureMax, double pressureMin, double radiusMajor, double radiusMax, double radiusMin, double radiusMinor, double size, bool synthesized, double tilt, Duration timeStamp);
 
     virtual void  fromMouseEvent(PointerEvent event);
 
@@ -372,7 +372,7 @@ using _CopyPointerExitEvent = std::shared_ptr<_CopyPointerExitEventCls>;
 class PointerExitEventCls : public PointerEventCls {
 public:
 
-     PointerExitEventCls(Unknown buttons, Unknown delta, Unknown device, Unknown distance, Unknown distanceMax, Unknown down, Unknown embedderId, Unknown kind, Unknown obscured, Unknown orientation, Unknown pointer, Unknown position, Unknown pressureMax, Unknown pressureMin, Unknown radiusMajor, Unknown radiusMax, Unknown radiusMin, Unknown radiusMinor, Unknown size, Unknown synthesized, Unknown tilt, Unknown timeStamp);
+     PointerExitEventCls(int buttons, Offset delta, int device, double distance, double distanceMax, bool down, int embedderId, PointerDeviceKind kind, bool obscured, double orientation, int pointer, Offset position, double pressureMax, double pressureMin, double radiusMajor, double radiusMax, double radiusMin, double radiusMinor, double size, bool synthesized, double tilt, Duration timeStamp);
 
     virtual void  fromMouseEvent(PointerEvent event);
 
@@ -412,7 +412,7 @@ using _CopyPointerDownEvent = std::shared_ptr<_CopyPointerDownEventCls>;
 class PointerDownEventCls : public PointerEventCls {
 public:
 
-     PointerDownEventCls(Unknown buttons, Unknown device, Unknown distanceMax, Unknown embedderId, Unknown kind, Unknown obscured, Unknown orientation, Unknown pointer, Unknown position, Unknown pressure, Unknown pressureMax, Unknown pressureMin, Unknown radiusMajor, Unknown radiusMax, Unknown radiusMin, Unknown radiusMinor, Unknown size, Unknown tilt, Unknown timeStamp);
+     PointerDownEventCls(int buttons, int device, double distanceMax, int embedderId, PointerDeviceKind kind, bool obscured, double orientation, int pointer, Offset position, double pressure, double pressureMax, double pressureMin, double radiusMajor, double radiusMax, double radiusMin, double radiusMinor, double size, double tilt, Duration timeStamp);
 
     virtual PointerDownEvent transformed(Matrix4 transform);
 
@@ -450,7 +450,7 @@ using _CopyPointerMoveEvent = std::shared_ptr<_CopyPointerMoveEventCls>;
 class PointerMoveEventCls : public PointerEventCls {
 public:
 
-     PointerMoveEventCls(Unknown buttons, Unknown delta, Unknown device, Unknown distanceMax, Unknown embedderId, Unknown kind, Unknown obscured, Unknown orientation, Unknown platformData, Unknown pointer, Unknown position, Unknown pressure, Unknown pressureMax, Unknown pressureMin, Unknown radiusMajor, Unknown radiusMax, Unknown radiusMin, Unknown radiusMinor, Unknown size, Unknown synthesized, Unknown tilt, Unknown timeStamp);
+     PointerMoveEventCls(int buttons, Offset delta, int device, double distanceMax, int embedderId, PointerDeviceKind kind, bool obscured, double orientation, int platformData, int pointer, Offset position, double pressure, double pressureMax, double pressureMin, double radiusMajor, double radiusMax, double radiusMin, double radiusMinor, double size, bool synthesized, double tilt, Duration timeStamp);
 
     virtual PointerMoveEvent transformed(Matrix4 transform);
 
@@ -488,7 +488,7 @@ using _CopyPointerUpEvent = std::shared_ptr<_CopyPointerUpEventCls>;
 class PointerUpEventCls : public PointerEventCls {
 public:
 
-     PointerUpEventCls(Unknown buttons, Unknown device, Unknown distance, Unknown distanceMax, Unknown embedderId, Unknown kind, Unknown obscured, Unknown orientation, Unknown pointer, Unknown position, Unknown pressure, Unknown pressureMax, Unknown pressureMin, Unknown radiusMajor, Unknown radiusMax, Unknown radiusMin, Unknown radiusMinor, Unknown size, Unknown tilt, Unknown timeStamp);
+     PointerUpEventCls(int buttons, int device, double distance, double distanceMax, int embedderId, PointerDeviceKind kind, bool obscured, double orientation, int pointer, Offset position, double pressure, double pressureMax, double pressureMin, double radiusMajor, double radiusMax, double radiusMin, double radiusMinor, double size, double tilt, Duration timeStamp);
 
     virtual PointerUpEvent transformed(Matrix4 transform);
 
@@ -516,7 +516,7 @@ using _TransformedPointerUpEvent = std::shared_ptr<_TransformedPointerUpEventCls
 class PointerSignalEventCls : public PointerEventCls {
 public:
 
-     PointerSignalEventCls(Unknown device, Unknown embedderId, Unknown kind, Unknown pointer, Unknown position, Unknown timeStamp);
+     PointerSignalEventCls(int device, int embedderId, PointerDeviceKind kind, int pointer, Offset position, Duration timeStamp);
 private:
 
 };
@@ -538,7 +538,7 @@ public:
     Offset scrollDelta;
 
 
-     PointerScrollEventCls(Unknown device, Unknown embedderId, Unknown kind, Unknown position, Offset scrollDelta, Unknown timeStamp);
+     PointerScrollEventCls(int device, int embedderId, PointerDeviceKind kind, Offset position, Offset scrollDelta, Duration timeStamp);
 
     virtual PointerScrollEvent transformed(Matrix4 transform);
 
@@ -582,7 +582,7 @@ using _CopyPointerPanZoomStartEvent = std::shared_ptr<_CopyPointerPanZoomStartEv
 class PointerPanZoomStartEventCls : public PointerEventCls {
 public:
 
-     PointerPanZoomStartEventCls(Unknown device, Unknown embedderId, Unknown kind, Unknown pointer, Unknown position, Unknown synthesized, Unknown timeStamp);
+     PointerPanZoomStartEventCls(int device, int embedderId, PointerDeviceKind kind, int pointer, Offset position, bool synthesized, Duration timeStamp);
 
     virtual PointerPanZoomStartEvent transformed(Matrix4 transform);
 
@@ -634,7 +634,7 @@ public:
     double rotation;
 
 
-     PointerPanZoomUpdateEventCls(Unknown device, Unknown embedderId, Unknown kind, Offset pan, Offset panDelta, Unknown pointer, Unknown position, double rotation, double scale, Unknown synthesized, Unknown timeStamp);
+     PointerPanZoomUpdateEventCls(int device, int embedderId, PointerDeviceKind kind, Offset pan, Offset panDelta, int pointer, Offset position, double rotation, double scale, bool synthesized, Duration timeStamp);
 
     virtual Offset localPan();
 
@@ -688,7 +688,7 @@ using _CopyPointerPanZoomEndEvent = std::shared_ptr<_CopyPointerPanZoomEndEventC
 class PointerPanZoomEndEventCls : public PointerEventCls {
 public:
 
-     PointerPanZoomEndEventCls(Unknown device, Unknown embedderId, Unknown kind, Unknown pointer, Unknown position, Unknown synthesized, Unknown timeStamp);
+     PointerPanZoomEndEventCls(int device, int embedderId, PointerDeviceKind kind, int pointer, Offset position, bool synthesized, Duration timeStamp);
 
     virtual PointerPanZoomEndEvent transformed(Matrix4 transform);
 
@@ -726,7 +726,7 @@ using _CopyPointerCancelEvent = std::shared_ptr<_CopyPointerCancelEventCls>;
 class PointerCancelEventCls : public PointerEventCls {
 public:
 
-     PointerCancelEventCls(Unknown buttons, Unknown device, Unknown distance, Unknown distanceMax, Unknown embedderId, Unknown kind, Unknown obscured, Unknown orientation, Unknown pointer, Unknown position, Unknown pressureMax, Unknown pressureMin, Unknown radiusMajor, Unknown radiusMax, Unknown radiusMin, Unknown radiusMinor, Unknown size, Unknown tilt, Unknown timeStamp);
+     PointerCancelEventCls(int buttons, int device, double distance, double distanceMax, int embedderId, PointerDeviceKind kind, bool obscured, double orientation, int pointer, Offset position, double pressureMax, double pressureMin, double radiusMajor, double radiusMax, double radiusMin, double radiusMinor, double size, double tilt, Duration timeStamp);
 
     virtual PointerCancelEvent transformed(Matrix4 transform);
 

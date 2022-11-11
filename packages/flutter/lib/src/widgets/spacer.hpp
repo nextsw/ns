@@ -12,7 +12,7 @@ public:
     int flex;
 
 
-     SpacerCls(int flex, Unknown key);
+     SpacerCls(int flex, Key key);
 
     virtual Widget build(BuildContext context);
 

@@ -170,7 +170,7 @@ using _SelectionKeepAliveState = std::shared_ptr<_SelectionKeepAliveStateCls>;
 class SliverWithKeepAliveWidgetCls : public RenderObjectWidgetCls {
 public:
 
-     SliverWithKeepAliveWidgetCls(Unknown key);
+     SliverWithKeepAliveWidgetCls(Key key);
     virtual RenderSliverWithKeepAliveMixin createRenderObject(BuildContext context) override;
 private:
 
@@ -182,7 +182,7 @@ public:
     SliverChildDelegate delegate;
 
 
-     SliverMultiBoxAdaptorWidgetCls(SliverChildDelegate delegate, Unknown key);
+     SliverMultiBoxAdaptorWidgetCls(SliverChildDelegate delegate, Key key);
 
     virtual SliverMultiBoxAdaptorElement createElement();
 
@@ -199,7 +199,7 @@ using SliverMultiBoxAdaptorWidget = std::shared_ptr<SliverMultiBoxAdaptorWidgetC
 class SliverListCls : public SliverMultiBoxAdaptorWidgetCls {
 public:
 
-     SliverListCls(Unknown delegate, Unknown key);
+     SliverListCls(SliverChildDelegate delegate, Key key);
     virtual SliverMultiBoxAdaptorElement createElement();
 
     virtual RenderSliverList createRenderObject(BuildContext context);
@@ -214,7 +214,7 @@ public:
     double itemExtent;
 
 
-     SliverFixedExtentListCls(Unknown delegate, double itemExtent, Unknown key);
+     SliverFixedExtentListCls(SliverChildDelegate delegate, double itemExtent, Key key);
     virtual RenderSliverFixedExtentList createRenderObject(BuildContext context);
 
     virtual void updateRenderObject(BuildContext context, RenderSliverFixedExtentList renderObject);
@@ -229,10 +229,10 @@ public:
     SliverGridDelegate gridDelegate;
 
 
-     SliverGridCls(Unknown delegate, SliverGridDelegate gridDelegate, Unknown key);
-    virtual void  count(double childAspectRatio, List<Widget> children, int crossAxisCount, double crossAxisSpacing, Unknown key, double mainAxisSpacing);
+     SliverGridCls(SliverChildDelegate delegate, SliverGridDelegate gridDelegate, Key key);
+    virtual void  count(double childAspectRatio, List<Widget> children, int crossAxisCount, double crossAxisSpacing, Key key, double mainAxisSpacing);
 
-    virtual void  extent(double childAspectRatio, List<Widget> children, double crossAxisSpacing, Unknown key, double mainAxisSpacing, double maxCrossAxisExtent);
+    virtual void  extent(double childAspectRatio, List<Widget> children, double crossAxisSpacing, Key key, double mainAxisSpacing, double maxCrossAxisExtent);
 
     virtual RenderSliverGrid createRenderObject(BuildContext context);
 
@@ -316,7 +316,7 @@ public:
     bool alwaysIncludeSemantics;
 
 
-     SliverOpacityCls(bool alwaysIncludeSemantics, Unknown key, double opacity, Widget sliver);
+     SliverOpacityCls(bool alwaysIncludeSemantics, Key key, double opacity, Widget sliver);
 
     virtual RenderSliverOpacity createRenderObject(BuildContext context);
 
@@ -336,7 +336,7 @@ public:
     bool ignoringSemantics;
 
 
-     SliverIgnorePointerCls(bool ignoring, bool ignoringSemantics, Unknown key, Widget sliver);
+     SliverIgnorePointerCls(bool ignoring, bool ignoringSemantics, Key key, Widget sliver);
 
     virtual RenderSliverIgnorePointer createRenderObject(BuildContext context);
 
@@ -354,7 +354,7 @@ public:
     bool offstage;
 
 
-     SliverOffstageCls(Unknown key, bool offstage, Widget sliver);
+     SliverOffstageCls(Key key, bool offstage, Widget sliver);
 
     virtual RenderSliverOffstage createRenderObject(BuildContext context);
 
@@ -385,7 +385,7 @@ public:
     bool keepAlive;
 
 
-     KeepAliveCls(Unknown child, bool keepAlive, Unknown key);
+     KeepAliveCls(Widget child, bool keepAlive, Key key);
 
     virtual void applyParentData(RenderObject renderObject);
 

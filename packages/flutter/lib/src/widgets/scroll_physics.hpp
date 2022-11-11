@@ -67,7 +67,7 @@ using ScrollPhysics = std::shared_ptr<ScrollPhysicsCls>;
 class RangeMaintainingScrollPhysicsCls : public ScrollPhysicsCls {
 public:
 
-     RangeMaintainingScrollPhysicsCls(Unknown parent);
+     RangeMaintainingScrollPhysicsCls(ScrollPhysics parent);
     virtual RangeMaintainingScrollPhysics applyTo(ScrollPhysics ancestor);
 
     virtual double adjustPositionForNewDimensions(bool isScrolling, ScrollMetrics newPosition, ScrollMetrics oldPosition, double velocity);
@@ -80,7 +80,7 @@ using RangeMaintainingScrollPhysics = std::shared_ptr<RangeMaintainingScrollPhys
 class BouncingScrollPhysicsCls : public ScrollPhysicsCls {
 public:
 
-     BouncingScrollPhysicsCls(Unknown parent);
+     BouncingScrollPhysicsCls(ScrollPhysics parent);
     virtual BouncingScrollPhysics applyTo(ScrollPhysics ancestor);
 
     virtual double frictionFactor(double overscrollFraction);
@@ -107,7 +107,7 @@ using BouncingScrollPhysics = std::shared_ptr<BouncingScrollPhysicsCls>;
 class ClampingScrollPhysicsCls : public ScrollPhysicsCls {
 public:
 
-     ClampingScrollPhysicsCls(Unknown parent);
+     ClampingScrollPhysicsCls(ScrollPhysics parent);
     virtual ClampingScrollPhysics applyTo(ScrollPhysics ancestor);
 
     virtual double applyBoundaryConditions(ScrollMetrics position, double value);
@@ -122,7 +122,7 @@ using ClampingScrollPhysics = std::shared_ptr<ClampingScrollPhysicsCls>;
 class AlwaysScrollableScrollPhysicsCls : public ScrollPhysicsCls {
 public:
 
-     AlwaysScrollableScrollPhysicsCls(Unknown parent);
+     AlwaysScrollableScrollPhysicsCls(ScrollPhysics parent);
     virtual AlwaysScrollableScrollPhysics applyTo(ScrollPhysics ancestor);
 
     virtual bool shouldAcceptUserOffset(ScrollMetrics position);
@@ -135,7 +135,7 @@ using AlwaysScrollableScrollPhysics = std::shared_ptr<AlwaysScrollableScrollPhys
 class NeverScrollableScrollPhysicsCls : public ScrollPhysicsCls {
 public:
 
-     NeverScrollableScrollPhysicsCls(Unknown parent);
+     NeverScrollableScrollPhysicsCls(ScrollPhysics parent);
     virtual NeverScrollableScrollPhysics applyTo(ScrollPhysics ancestor);
 
     virtual bool shouldAcceptUserOffset(ScrollMetrics position);

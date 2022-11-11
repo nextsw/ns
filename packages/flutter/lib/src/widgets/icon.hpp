@@ -28,7 +28,7 @@ public:
     List<Shadow> shadows;
 
 
-     IconCls(IconData icon, Color color, Unknown key, String semanticLabel, List<Shadow> shadows, double size, TextDirection textDirection);
+     IconCls(IconData icon, Color color, Key key, String semanticLabel, List<Shadow> shadows, double size, TextDirection textDirection);
     virtual Widget build(BuildContext context);
 
     virtual void debugFillProperties(DiagnosticPropertiesBuilder properties);

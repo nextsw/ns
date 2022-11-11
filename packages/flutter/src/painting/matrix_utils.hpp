@@ -50,7 +50,7 @@ List<String> debugDescribeTransform(Matrix4 transform);
 class TransformPropertyCls : public DiagnosticsPropertyCls<Matrix4> {
 public:
 
-     TransformPropertyCls(String name, Unknown value, Unknown defaultValue, Unknown level, Unknown showName);
+     TransformPropertyCls(String name, Unknown value, Object defaultValue, Unknown level, bool showName);
 
     virtual String valueToString(TextTreeConfiguration parentConfiguration);
 

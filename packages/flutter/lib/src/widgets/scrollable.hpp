@@ -59,7 +59,7 @@ public:
     Clip clipBehavior;
 
 
-     ScrollableCls(AxisDirection axisDirection, Clip clipBehavior, ScrollController controller, DragStartBehavior dragStartBehavior, bool excludeFromSemantics, ScrollIncrementCalculator incrementCalculator, Unknown key, ScrollPhysics physics, String restorationId, ScrollBehavior scrollBehavior, int semanticChildCount, ViewportBuilder viewportBuilder);
+     ScrollableCls(AxisDirection axisDirection, Clip clipBehavior, ScrollController controller, DragStartBehavior dragStartBehavior, bool excludeFromSemantics, ScrollIncrementCalculator incrementCalculator, Key key, ScrollPhysics physics, String restorationId, ScrollBehavior scrollBehavior, int semanticChildCount, ViewportBuilder viewportBuilder);
 
     virtual Axis axis();
 
@@ -89,7 +89,7 @@ public:
 
 private:
 
-     _ScrollableScopeCls(Unknown child, ScrollPosition position, ScrollableState scrollable);
+     _ScrollableScopeCls(Widget child, ScrollPosition position, ScrollableState scrollable);
 
 };
 using _ScrollableScope = std::shared_ptr<_ScrollableScopeCls>;
@@ -364,7 +364,7 @@ public:
 
 private:
 
-     _ScrollSemanticsCls(bool allowImplicitScrolling, Unknown child, Unknown key, ScrollPosition position, int semanticChildCount);
+     _ScrollSemanticsCls(bool allowImplicitScrolling, Widget child, Key key, ScrollPosition position, int semanticChildCount);
 
 };
 using _ScrollSemantics = std::shared_ptr<_ScrollSemanticsCls>;

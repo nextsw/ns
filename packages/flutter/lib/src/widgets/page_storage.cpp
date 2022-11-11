@@ -70,7 +70,7 @@ _StorageEntryIdentifier PageStorageBucketCls::_computeIdentifier(BuildContext co
     return make<_StorageEntryIdentifierCls>(_allKeys(context));
 }
 
-PageStorageCls::PageStorageCls(PageStorageBucket bucket, Widget child, Unknown key) {
+PageStorageCls::PageStorageCls(PageStorageBucket bucket, Widget child, Key key) {
     {
         assert(bucket != nullptr);
     }

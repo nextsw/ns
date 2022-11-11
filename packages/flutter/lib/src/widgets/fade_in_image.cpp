@@ -1,5 +1,5 @@
 #include "fade_in_image.hpp"
-FadeInImageCls::FadeInImageCls(AlignmentGeometry alignment, bool excludeFromSemantics, Curve fadeInCurve, Duration fadeInDuration, Curve fadeOutCurve, Duration fadeOutDuration, BoxFit fit, double height, ImageProvider image, ImageErrorWidgetBuilder imageErrorBuilder, String imageSemanticLabel, Unknown key, bool matchTextDirection, ImageProvider placeholder, ImageErrorWidgetBuilder placeholderErrorBuilder, BoxFit placeholderFit, ImageRepeat repeat, double width) {
+FadeInImageCls::FadeInImageCls(AlignmentGeometry alignment, bool excludeFromSemantics, Curve fadeInCurve, Duration fadeInDuration, Curve fadeOutCurve, Duration fadeOutDuration, BoxFit fit, double height, ImageProvider image, ImageErrorWidgetBuilder imageErrorBuilder, String imageSemanticLabel, Key key, bool matchTextDirection, ImageProvider placeholder, ImageErrorWidgetBuilder placeholderErrorBuilder, BoxFit placeholderFit, ImageRepeat repeat, double width) {
     {
         assert(placeholder != nullptr);
         assert(image != nullptr);
@@ -13,9 +13,9 @@ FadeInImageCls::FadeInImageCls(AlignmentGeometry alignment, bool excludeFromSema
     }
 }
 
-void FadeInImageCls::memoryNetwork(AlignmentGeometry alignment, bool excludeFromSemantics, Curve fadeInCurve, Duration fadeInDuration, Curve fadeOutCurve, Duration fadeOutDuration, BoxFit fit, double height, String image, int imageCacheHeight, int imageCacheWidth, ImageErrorWidgetBuilder imageErrorBuilder, double imageScale, String imageSemanticLabel, Unknown key, bool matchTextDirection, Uint8List placeholder, int placeholderCacheHeight, int placeholderCacheWidth, ImageErrorWidgetBuilder placeholderErrorBuilder, BoxFit placeholderFit, double placeholderScale, ImageRepeat repeat, double width)
+void FadeInImageCls::memoryNetwork(AlignmentGeometry alignment, bool excludeFromSemantics, Curve fadeInCurve, Duration fadeInDuration, Curve fadeOutCurve, Duration fadeOutDuration, BoxFit fit, double height, String image, int imageCacheHeight, int imageCacheWidth, ImageErrorWidgetBuilder imageErrorBuilder, double imageScale, String imageSemanticLabel, Key key, bool matchTextDirection, Uint8List placeholder, int placeholderCacheHeight, int placeholderCacheWidth, ImageErrorWidgetBuilder placeholderErrorBuilder, BoxFit placeholderFit, double placeholderScale, ImageRepeat repeat, double width)
 
-void FadeInImageCls::assetNetwork(AlignmentGeometry alignment, AssetBundle bundle, bool excludeFromSemantics, Curve fadeInCurve, Duration fadeInDuration, Curve fadeOutCurve, Duration fadeOutDuration, BoxFit fit, double height, String image, int imageCacheHeight, int imageCacheWidth, ImageErrorWidgetBuilder imageErrorBuilder, double imageScale, String imageSemanticLabel, Unknown key, bool matchTextDirection, String placeholder, int placeholderCacheHeight, int placeholderCacheWidth, ImageErrorWidgetBuilder placeholderErrorBuilder, BoxFit placeholderFit, double placeholderScale, ImageRepeat repeat, double width)
+void FadeInImageCls::assetNetwork(AlignmentGeometry alignment, AssetBundle bundle, bool excludeFromSemantics, Curve fadeInCurve, Duration fadeInDuration, Curve fadeOutCurve, Duration fadeOutDuration, BoxFit fit, double height, String image, int imageCacheHeight, int imageCacheWidth, ImageErrorWidgetBuilder imageErrorBuilder, double imageScale, String imageSemanticLabel, Key key, bool matchTextDirection, String placeholder, int placeholderCacheHeight, int placeholderCacheWidth, ImageErrorWidgetBuilder placeholderErrorBuilder, BoxFit placeholderFit, double placeholderScale, ImageRepeat repeat, double width)
 
 State<FadeInImage> FadeInImageCls::createState() {
     return make<_FadeInImageStateCls>();

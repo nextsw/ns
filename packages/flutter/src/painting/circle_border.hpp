@@ -13,7 +13,7 @@
 class CircleBorderCls : public OutlinedBorderCls {
 public:
 
-     CircleBorderCls(Unknown side);
+     CircleBorderCls(BorderSide side);
 
     virtual EdgeInsetsGeometry dimensions();
 

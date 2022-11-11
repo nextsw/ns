@@ -554,7 +554,7 @@ public:
 
 private:
 
-     _ContainerSemanticsFragmentCls(Unknown dropsSemanticsOfPreviousSiblings);
+     _ContainerSemanticsFragmentCls(bool dropsSemanticsOfPreviousSiblings);
 };
 using _ContainerSemanticsFragment = std::shared_ptr<_ContainerSemanticsFragmentCls>;
 
@@ -581,7 +581,7 @@ private:
     Set<SemanticsTag> _tagsForChildren;
 
 
-     _InterestingSemanticsFragmentCls(Unknown dropsSemanticsOfPreviousSiblings, RenderObject owner);
+     _InterestingSemanticsFragmentCls(bool dropsSemanticsOfPreviousSiblings, RenderObject owner);
 
 };
 using _InterestingSemanticsFragment = std::shared_ptr<_InterestingSemanticsFragmentCls>;
@@ -601,7 +601,7 @@ private:
     List<_InterestingSemanticsFragment> _children;
 
 
-     _RootSemanticsFragmentCls(Unknown dropsSemanticsOfPreviousSiblings, Unknown owner);
+     _RootSemanticsFragmentCls(bool dropsSemanticsOfPreviousSiblings, Unknown owner);
 };
 using _RootSemanticsFragment = std::shared_ptr<_RootSemanticsFragmentCls>;
 
@@ -628,7 +628,7 @@ private:
     bool _isExplicit;
 
 
-     _SwitchableSemanticsFragmentCls(SemanticsConfiguration config, Unknown dropsSemanticsOfPreviousSiblings, bool mergeIntoParent, Unknown owner);
+     _SwitchableSemanticsFragmentCls(SemanticsConfiguration config, bool dropsSemanticsOfPreviousSiblings, bool mergeIntoParent, Unknown owner);
 
     virtual void _ensureConfigIsWritable();
 

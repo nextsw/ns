@@ -66,7 +66,7 @@ public:
     bool continuesAtWrap;
 
 
-     DirectionalCaretMovementIntentCls(Unknown forward, bool collapseSelection, bool collapseAtReversal, bool continuesAtWrap);
+     DirectionalCaretMovementIntentCls(bool forward, bool collapseSelection, bool collapseAtReversal, bool continuesAtWrap);
 
 private:
 

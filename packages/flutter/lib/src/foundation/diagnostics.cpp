@@ -524,12 +524,12 @@ MessagePropertyCls::MessagePropertyCls(String name, String message, DiagnosticLe
     }
 }
 
-StringPropertyCls::StringPropertyCls(String name, Unknown value, Unknown defaultValue, Unknown description, Unknown ifEmpty, Unknown level, bool quoted, Unknown showName, Unknown style, Unknown tooltip) {
+StringPropertyCls::StringPropertyCls(String name, Unknown value, Object defaultValue, Unknown description, String ifEmpty, Unknown level, bool quoted, bool showName, DiagnosticsTreeStyle style, String tooltip) {
     {
         assert(showName != nullptr);
         assert(quoted != nullptr);
         assert(style != nullptr);
-        assert(level != nullptr);
+        assert(level() != nullptr);
     }
 }
 
@@ -554,7 +554,7 @@ String StringPropertyCls::valueToString(TextTreeConfiguration parentConfiguratio
 }
 
 template<typename T>
-void _NumPropertyCls<T>::lazy(String name, Unknown computeValue, Unknown defaultValue, Unknown ifNull, Unknown level, Unknown showName, Unknown style, Unknown tooltip, String unit)
+void _NumPropertyCls<T>::lazy(String name, Unknown computeValue, Object defaultValue, String ifNull, Unknown level, bool showName, DiagnosticsTreeStyle style, String tooltip, String unit)
 
 template<typename T>
 Map<String, Object> _NumPropertyCls<T>::toJsonMap(DiagnosticsSerializationDelegate delegate) {
@@ -574,24 +574,24 @@ String _NumPropertyCls<T>::valueToString(TextTreeConfiguration parentConfigurati
     return unit != nullptr? __s("${numberToString()}$unit") : numberToString();
 }
 
-DoublePropertyCls::DoublePropertyCls(Unknown name, Unknown value, Unknown defaultValue, Unknown ifNull, Unknown level, Unknown showName, Unknown style, Unknown tooltip, Unknown unit) {
+DoublePropertyCls::DoublePropertyCls(String name, Unknown value, Object defaultValue, String ifNull, Unknown level, bool showName, DiagnosticsTreeStyle style, String tooltip, String unit) {
     {
         assert(showName != nullptr);
         assert(style != nullptr);
-        assert(level != nullptr);
+        assert(level() != nullptr);
     }
 }
 
-void DoublePropertyCls::lazy(Unknown name, Unknown computeValue, Unknown defaultValue, Unknown ifNull, Unknown level, Unknown showName, Unknown tooltip, Unknown unit)
+void DoublePropertyCls::lazy(String name, Unknown computeValue, Object defaultValue, String ifNull, Unknown level, bool showName, String tooltip, String unit)
 
 String DoublePropertyCls::numberToString() {
     return debugFormatDouble(value());
 }
 
-IntPropertyCls::IntPropertyCls(Unknown name, Unknown value, Unknown defaultValue, Unknown ifNull, Unknown level, Unknown showName, Unknown style, Unknown unit) {
+IntPropertyCls::IntPropertyCls(String name, Unknown value, Object defaultValue, String ifNull, Unknown level, bool showName, DiagnosticsTreeStyle style, String unit) {
     {
         assert(showName != nullptr);
-        assert(level != nullptr);
+        assert(level() != nullptr);
         assert(style != nullptr);
     }
 }
@@ -600,10 +600,10 @@ String IntPropertyCls::numberToString() {
     return value()->toString();
 }
 
-PercentPropertyCls::PercentPropertyCls(Unknown name, Unknown fraction, Unknown ifNull, Unknown level, Unknown showName, Unknown tooltip, Unknown unit) {
+PercentPropertyCls::PercentPropertyCls(String name, Unknown fraction, String ifNull, Unknown level, bool showName, String tooltip, String unit) {
     {
         assert(showName != nullptr);
-        assert(level != nullptr);
+        assert(level() != nullptr);
     }
 }
 
@@ -678,12 +678,12 @@ DiagnosticLevel FlagPropertyCls::level() {
 }
 
 template<typename T>
-IterablePropertyCls<T>::IterablePropertyCls(String name, Unknown value, Unknown defaultValue, Unknown ifEmpty, Unknown ifNull, Unknown level, Unknown showName, Unknown showSeparator, Unknown style) {
+IterablePropertyCls<T>::IterablePropertyCls(String name, Unknown value, Object defaultValue, String ifEmpty, String ifNull, Unknown level, bool showName, bool showSeparator, DiagnosticsTreeStyle style) {
     {
         assert(style != nullptr);
         assert(showName != nullptr);
         assert(showSeparator != nullptr);
-        assert(level != nullptr);
+        assert(level() != nullptr);
     }
 }
 
@@ -728,9 +728,9 @@ Map<String, Object> IterablePropertyCls<T>::toJsonMap(DiagnosticsSerializationDe
 }
 
 template<typename T>
-EnumPropertyCls<T>::EnumPropertyCls(String name, Unknown value, Unknown defaultValue, Unknown level) {
+EnumPropertyCls<T>::EnumPropertyCls(String name, Unknown value, Object defaultValue, Unknown level) {
     {
-        assert(level != nullptr);
+        assert(level() != nullptr);
     }
 }
 
@@ -743,11 +743,11 @@ String EnumPropertyCls<T>::valueToString(TextTreeConfiguration parentConfigurati
 }
 
 template<typename T>
-ObjectFlagPropertyCls<T>::ObjectFlagPropertyCls(String name, Unknown value, Unknown ifNull, String ifPresent, Unknown level, Unknown showName) {
+ObjectFlagPropertyCls<T>::ObjectFlagPropertyCls(String name, Unknown value, String ifNull, String ifPresent, Unknown level, Unknown showName) {
     {
         assert(ifPresent != nullptr || ifNull != nullptr);
-        assert(showName != nullptr);
-        assert(level != nullptr);
+        assert(showName() != nullptr);
+        assert(level() != nullptr);
     }
 }
 
@@ -800,12 +800,12 @@ Map<String, Object> ObjectFlagPropertyCls<T>::toJsonMap(DiagnosticsSerialization
 }
 
 template<typename T>
-FlagsSummaryCls<T>::FlagsSummaryCls(String name, Map<String, T> value, Unknown ifEmpty, Unknown level, Unknown showName, Unknown showSeparator) {
+FlagsSummaryCls<T>::FlagsSummaryCls(String name, Map<String, T> value, String ifEmpty, Unknown level, bool showName, bool showSeparator) {
     {
         assert(value != nullptr);
         assert(showName != nullptr);
         assert(showSeparator != nullptr);
-        assert(level != nullptr);
+        assert(level() != nullptr);
     }
 }
 
@@ -861,7 +861,7 @@ Iterable<String> FlagsSummaryCls<T>::_formattedValues() {
 }
 
 template<typename T>
-DiagnosticsPropertyCls<T>::DiagnosticsPropertyCls(String name, T value, bool allowNameWrap, bool allowWrap, Object defaultValue, String description, bool expandableValue, String ifEmpty, String ifNull, DiagnosticLevel level, Unknown linePrefix, bool missingIfNull, Unknown showName, Unknown showSeparator, DiagnosticsTreeStyle style, String tooltip) : DiagnosticsNode(name) {
+DiagnosticsPropertyCls<T>::DiagnosticsPropertyCls(String name, T value, bool allowNameWrap, bool allowWrap, Object defaultValue, String description, bool expandableValue, String ifEmpty, String ifNull, DiagnosticLevel level, String linePrefix, bool missingIfNull, bool showName, bool showSeparator, DiagnosticsTreeStyle style, String tooltip) : DiagnosticsNode(name) {
     {
         assert(showName != nullptr);
         assert(showSeparator != nullptr);
@@ -877,7 +877,7 @@ DiagnosticsPropertyCls<T>::DiagnosticsPropertyCls(String name, T value, bool all
 }
 
 template<typename T>
-void DiagnosticsPropertyCls<T>::lazy(String name, ComputePropertyValueCallback<T> computeValue, bool allowNameWrap, bool allowWrap, Object defaultValue, String description, bool expandableValue, String ifEmpty, String ifNull, DiagnosticLevel level, bool missingIfNull, Unknown showName, Unknown showSeparator, DiagnosticsTreeStyle style, String tooltip)
+void DiagnosticsPropertyCls<T>::lazy(String name, ComputePropertyValueCallback<T> computeValue, bool allowNameWrap, bool allowWrap, Object defaultValue, String description, bool expandableValue, String ifEmpty, String ifNull, DiagnosticLevel level, bool missingIfNull, bool showName, bool showSeparator, DiagnosticsTreeStyle style, String tooltip)
 
 template<typename T>
 Map<String, Object> DiagnosticsPropertyCls<T>::toJsonMap(DiagnosticsSerializationDelegate delegate) {
@@ -1034,7 +1034,7 @@ void DiagnosticsPropertyCls<T>::_maybeCacheValue() {
 }
 
 template<typename T>
-DiagnosticableNodeCls<T>::DiagnosticableNodeCls(Unknown name, Unknown style, T value) {
+DiagnosticableNodeCls<T>::DiagnosticableNodeCls(String name, Unknown style, T value) {
     {
         assert(value != nullptr);
     }
@@ -1214,7 +1214,7 @@ List<DiagnosticsNode> DiagnosticableTreeMixinCls::debugDescribeChildren() {
 void DiagnosticableTreeMixinCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
 }
 
-DiagnosticsBlockCls::DiagnosticsBlockCls(bool allowTruncate, List<DiagnosticsNode> children, String description, DiagnosticLevel level, Unknown linePrefix, Unknown name, List<DiagnosticsNode> properties, bool showName, Unknown showSeparator, DiagnosticsTreeStyle style, Object value) : DiagnosticsNode(showName && name != nullptr) {
+DiagnosticsBlockCls::DiagnosticsBlockCls(bool allowTruncate, List<DiagnosticsNode> children, String description, DiagnosticLevel level, String linePrefix, String name, List<DiagnosticsNode> properties, bool showName, bool showSeparator, DiagnosticsTreeStyle style, Object value) : DiagnosticsNode(showName && name != nullptr) {
     {
         _description = description | __s("");
         _children = children;

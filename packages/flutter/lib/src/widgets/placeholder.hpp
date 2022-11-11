@@ -40,7 +40,7 @@ public:
     Widget child;
 
 
-     PlaceholderCls(Widget child, Color color, double fallbackHeight, double fallbackWidth, Unknown key, double strokeWidth);
+     PlaceholderCls(Widget child, Color color, double fallbackHeight, double fallbackWidth, Key key, double strokeWidth);
     virtual Widget build(BuildContext context);
 
     virtual void debugFillProperties(DiagnosticPropertiesBuilder properties);

@@ -11,7 +11,7 @@ template<typename T>
 class PageStorageKeyCls : public ValueKeyCls<T> {
 public:
 
-     PageStorageKeyCls(Unknown value);
+     PageStorageKeyCls(T value);
 private:
 
 };
@@ -65,7 +65,7 @@ public:
     PageStorageBucket bucket;
 
 
-     PageStorageCls(PageStorageBucket bucket, Widget child, Unknown key);
+     PageStorageCls(PageStorageBucket bucket, Widget child, Key key);
 
     static PageStorageBucket of(BuildContext context);
 

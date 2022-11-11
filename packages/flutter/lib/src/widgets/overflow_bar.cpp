@@ -1,5 +1,5 @@
 #include "overflow_bar.hpp"
-OverflowBarCls::OverflowBarCls(MainAxisAlignment alignment, Unknown children, Clip clipBehavior, Unknown key, OverflowBarAlignment overflowAlignment, VerticalDirection overflowDirection, double overflowSpacing, double spacing, TextDirection textDirection) {
+OverflowBarCls::OverflowBarCls(MainAxisAlignment alignment, List<Widget> children, Clip clipBehavior, Key key, OverflowBarAlignment overflowAlignment, VerticalDirection overflowDirection, double overflowSpacing, double spacing, TextDirection textDirection) {
     {
         assert(spacing != nullptr);
         assert(overflowSpacing != nullptr);

@@ -13,7 +13,7 @@ public:
     Widget child;
 
 
-     WidgetSpanCls(Unknown alignment, Unknown baseline, Widget child, Unknown style);
+     WidgetSpanCls(PlaceholderAlignment alignment, TextBaseline baseline, Widget child, TextStyle style);
 
     virtual void build(ParagraphBuilder builder, List<PlaceholderDimensions> dimensions, double textScaleFactor);
 

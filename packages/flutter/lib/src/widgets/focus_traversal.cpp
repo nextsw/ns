@@ -519,7 +519,7 @@ void FocusTraversalOrderCls::debugFillProperties(DiagnosticPropertiesBuilder pro
     properties->add(<FocusOrder>make<DiagnosticsPropertyCls>(__s("order"), order));
 }
 
-FocusTraversalGroupCls::FocusTraversalGroupCls(Widget child, bool descendantsAreFocusable, bool descendantsAreTraversable, Unknown key, FocusTraversalPolicy policy) {
+FocusTraversalGroupCls::FocusTraversalGroupCls(Widget child, bool descendantsAreFocusable, bool descendantsAreTraversable, Key key, FocusTraversalPolicy policy) {
     {
         assert(descendantsAreFocusable != nullptr);
         assert(descendantsAreTraversable != nullptr);
@@ -572,7 +572,7 @@ bool _FocusTraversalGroupMarkerCls::updateShouldNotify(InheritedWidget oldWidget
     return false;
 }
 
-_FocusTraversalGroupMarkerCls::_FocusTraversalGroupMarkerCls(Unknown child, FocusNode focusNode, FocusTraversalPolicy policy) {
+_FocusTraversalGroupMarkerCls::_FocusTraversalGroupMarkerCls(Widget child, FocusNode focusNode, FocusTraversalPolicy policy) {
     {
         assert(policy != nullptr);
         assert(focusNode != nullptr);
@@ -617,7 +617,7 @@ void DirectionalFocusActionCls::invoke(DirectionalFocusIntent intent) {
     }
 }
 
-ExcludeFocusTraversalCls::ExcludeFocusTraversalCls(Widget child, bool excluding, Unknown key) {
+ExcludeFocusTraversalCls::ExcludeFocusTraversalCls(Widget child, bool excluding, Key key) {
     {
         assert(excluding != nullptr);
         assert(child != nullptr);

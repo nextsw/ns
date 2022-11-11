@@ -1,5 +1,5 @@
 #include "form.hpp"
-FormCls::FormCls(AutovalidateMode autovalidateMode, Widget child, Unknown key, VoidCallback onChanged, WillPopCallback onWillPop) {
+FormCls::FormCls(AutovalidateMode autovalidateMode, Widget child, Key key, VoidCallback onChanged, WillPopCallback onWillPop) {
     {
         assert(child != nullptr);
         autovalidateMode = autovalidateMode | AutovalidateModeCls::disabled;
@@ -78,7 +78,7 @@ bool _FormScopeCls::updateShouldNotify(_FormScope old) {
     return _generation != old->_generation;
 }
 
-_FormScopeCls::_FormScopeCls(Unknown child, FormState formState, int generation) {
+_FormScopeCls::_FormScopeCls(Widget child, FormState formState, int generation) {
     {
         _formState = formState;
         _generation = generation;
@@ -86,7 +86,7 @@ _FormScopeCls::_FormScopeCls(Unknown child, FormState formState, int generation)
 }
 
 template<typename T>
-FormFieldCls<T>::FormFieldCls(AutovalidateMode autovalidateMode, FormFieldBuilder<T> builder, bool enabled, T initialValue, Unknown key, FormFieldSetter<T> onSaved, String restorationId, FormFieldValidator<T> validator) {
+FormFieldCls<T>::FormFieldCls(AutovalidateMode autovalidateMode, FormFieldBuilder<T> builder, bool enabled, T initialValue, Key key, FormFieldSetter<T> onSaved, String restorationId, FormFieldValidator<T> validator) {
     {
         assert(builder != nullptr);
         autovalidateMode = autovalidateMode | AutovalidateModeCls::disabled;

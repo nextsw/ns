@@ -67,7 +67,7 @@ public:
     Widget prototypeItem;
 
 
-     ReorderableListCls(double anchor, double cacheExtent, Clip clipBehavior, ScrollController controller, DragStartBehavior dragStartBehavior, IndexedWidgetBuilder itemBuilder, int itemCount, double itemExtent, Unknown key, ScrollViewKeyboardDismissBehavior keyboardDismissBehavior, ReorderCallback onReorder, std::function<void(int index)> onReorderEnd, std::function<void(int index)> onReorderStart, EdgeInsetsGeometry padding, ScrollPhysics physics, bool primary, Widget prototypeItem, ReorderItemProxyDecorator proxyDecorator, String restorationId, bool reverse, Axis scrollDirection, bool shrinkWrap);
+     ReorderableListCls(double anchor, double cacheExtent, Clip clipBehavior, ScrollController controller, DragStartBehavior dragStartBehavior, IndexedWidgetBuilder itemBuilder, int itemCount, double itemExtent, Key key, ScrollViewKeyboardDismissBehavior keyboardDismissBehavior, ReorderCallback onReorder, std::function<void(int index)> onReorderEnd, std::function<void(int index)> onReorderStart, EdgeInsetsGeometry padding, ScrollPhysics physics, bool primary, Widget prototypeItem, ReorderItemProxyDecorator proxyDecorator, String restorationId, bool reverse, Axis scrollDirection, bool shrinkWrap);
 
     static ReorderableListState of(BuildContext context);
 
@@ -117,7 +117,7 @@ public:
     Widget prototypeItem;
 
 
-     SliverReorderableListCls(ChildIndexGetter findChildIndexCallback, IndexedWidgetBuilder itemBuilder, int itemCount, double itemExtent, Unknown key, ReorderCallback onReorder, std::function<void(int )> onReorderEnd, std::function<void(int )> onReorderStart, Widget prototypeItem, ReorderItemProxyDecorator proxyDecorator);
+     SliverReorderableListCls(ChildIndexGetter findChildIndexCallback, IndexedWidgetBuilder itemBuilder, int itemCount, double itemExtent, Key key, ReorderCallback onReorder, std::function<void(int )> onReorderEnd, std::function<void(int )> onReorderStart, Widget prototypeItem, ReorderItemProxyDecorator proxyDecorator);
 
     virtual SliverReorderableListState createState();
 
@@ -277,7 +277,7 @@ public:
     bool enabled;
 
 
-     ReorderableDragStartListenerCls(Widget child, bool enabled, int index, Unknown key);
+     ReorderableDragStartListenerCls(Widget child, bool enabled, int index, Key key);
     virtual Widget build(BuildContext context);
 
     virtual MultiDragGestureRecognizer createRecognizer();
@@ -292,7 +292,7 @@ using ReorderableDragStartListener = std::shared_ptr<ReorderableDragStartListene
 class ReorderableDelayedDragStartListenerCls : public ReorderableDragStartListenerCls {
 public:
 
-     ReorderableDelayedDragStartListenerCls(Unknown child, Unknown enabled, Unknown index, Unknown key);
+     ReorderableDelayedDragStartListenerCls(Widget child, bool enabled, int index, Key key);
     virtual MultiDragGestureRecognizer createRecognizer();
 
 private:

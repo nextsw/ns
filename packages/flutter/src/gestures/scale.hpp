@@ -131,7 +131,7 @@ public:
     GestureScaleEndCallback onEnd;
 
 
-     ScaleGestureRecognizerCls(Unknown debugOwner, DragStartBehavior dragStartBehavior, Unknown kind, Unknown supportedDevices);
+     ScaleGestureRecognizerCls(Object debugOwner, DragStartBehavior dragStartBehavior, Unknown kind, Unknown supportedDevices);
 
     virtual void addAllowedPointer(PointerDownEvent event);
 

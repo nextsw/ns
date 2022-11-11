@@ -85,7 +85,7 @@ public:
 
 private:
 
-     _NoopMouseCursorSessionCls(_NoopMouseCursor cursor, Unknown device);
+     _NoopMouseCursorSessionCls(_NoopMouseCursor cursor, int device);
 };
 using _NoopMouseCursorSession = std::shared_ptr<_NoopMouseCursorSessionCls>;
 
@@ -113,7 +113,7 @@ public:
 
 private:
 
-     _SystemMouseCursorSessionCls(SystemMouseCursor cursor, Unknown device);
+     _SystemMouseCursorSessionCls(SystemMouseCursor cursor, int device);
 };
 using _SystemMouseCursorSession = std::shared_ptr<_SystemMouseCursorSessionCls>;
 

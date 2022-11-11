@@ -1,5 +1,5 @@
 #include "scrollable.hpp"
-ScrollableCls::ScrollableCls(AxisDirection axisDirection, Clip clipBehavior, ScrollController controller, DragStartBehavior dragStartBehavior, bool excludeFromSemantics, ScrollIncrementCalculator incrementCalculator, Unknown key, ScrollPhysics physics, String restorationId, ScrollBehavior scrollBehavior, int semanticChildCount, ViewportBuilder viewportBuilder) {
+ScrollableCls::ScrollableCls(AxisDirection axisDirection, Clip clipBehavior, ScrollController controller, DragStartBehavior dragStartBehavior, bool excludeFromSemantics, ScrollIncrementCalculator incrementCalculator, Key key, ScrollPhysics physics, String restorationId, ScrollBehavior scrollBehavior, int semanticChildCount, ViewportBuilder viewportBuilder) {
     {
         assert(axisDirection != nullptr);
         assert(dragStartBehavior != nullptr);
@@ -62,7 +62,7 @@ bool _ScrollableScopeCls::updateShouldNotify(_ScrollableScope old) {
     return position != old->position;
 }
 
-_ScrollableScopeCls::_ScrollableScopeCls(Unknown child, ScrollPosition position, ScrollableState scrollable) {
+_ScrollableScopeCls::_ScrollableScopeCls(Widget child, ScrollPosition position, ScrollableState scrollable) {
     {
         assert(scrollable != nullptr);
         assert(child != nullptr);
@@ -630,7 +630,7 @@ void _ScrollSemanticsCls::updateRenderObject(BuildContext context, _RenderScroll
     auto _c1 = renderObject;_c1.allowImplicitScrolling = auto _c2 = allowImplicitScrolling;_c2.position = auto _c3 = position;_c3.semanticChildCount = semanticChildCount;_c3;_c2;_c1;
 }
 
-_ScrollSemanticsCls::_ScrollSemanticsCls(bool allowImplicitScrolling, Unknown child, Unknown key, ScrollPosition position, int semanticChildCount) {
+_ScrollSemanticsCls::_ScrollSemanticsCls(bool allowImplicitScrolling, Widget child, Key key, ScrollPosition position, int semanticChildCount) {
     {
         assert(position != nullptr);
         assert(semanticChildCount == nullptr || semanticChildCount >= 0);

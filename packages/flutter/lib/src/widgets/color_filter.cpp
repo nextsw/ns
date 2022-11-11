@@ -1,5 +1,5 @@
 #include "color_filter.hpp"
-ColorFilteredCls::ColorFilteredCls(Unknown child, ColorFilter colorFilter, Unknown key) {
+ColorFilteredCls::ColorFilteredCls(Widget child, ColorFilter colorFilter, Key key) {
     {
         assert(colorFilter != nullptr);
     }

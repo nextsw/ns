@@ -7,7 +7,7 @@ int _ActiveItemCls::compareTo(_ActiveItem other) {
     return itemIndex - other->itemIndex;
 }
 
-AnimatedListCls::AnimatedListCls(Clip clipBehavior, ScrollController controller, int initialItemCount, AnimatedListItemBuilder itemBuilder, Unknown key, EdgeInsetsGeometry padding, ScrollPhysics physics, bool primary, bool reverse, Axis scrollDirection, bool shrinkWrap) {
+AnimatedListCls::AnimatedListCls(Clip clipBehavior, ScrollController controller, int initialItemCount, AnimatedListItemBuilder itemBuilder, Key key, EdgeInsetsGeometry padding, ScrollPhysics physics, bool primary, bool reverse, Axis scrollDirection, bool shrinkWrap) {
     {
         assert(itemBuilder != nullptr);
         assert(initialItemCount != nullptr && initialItemCount >= 0);
@@ -47,7 +47,7 @@ Widget AnimatedListStateCls::build(BuildContext context) {
     return make<CustomScrollViewCls>(widget()->scrollDirection, widget()->reverse, widget()->controller, widget()->primary, widget()->physics, widget()->shrinkWrap, widget()->clipBehavior, makeList(ArrayItem));
 }
 
-SliverAnimatedListCls::SliverAnimatedListCls(ChildIndexGetter findChildIndexCallback, int initialItemCount, AnimatedListItemBuilder itemBuilder, Unknown key) {
+SliverAnimatedListCls::SliverAnimatedListCls(ChildIndexGetter findChildIndexCallback, int initialItemCount, AnimatedListItemBuilder itemBuilder, Key key) {
     {
         assert(itemBuilder != nullptr);
         assert(initialItemCount != nullptr && initialItemCount >= 0);

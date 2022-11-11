@@ -20,7 +20,7 @@ public:
     AutofillContextAction onDisposeAction;
 
 
-     AutofillGroupCls(Widget child, Unknown key, AutofillContextAction onDisposeAction);
+     AutofillGroupCls(Widget child, Key key, AutofillContextAction onDisposeAction);
 
     static AutofillGroupState of(BuildContext context);
 
@@ -68,7 +68,7 @@ private:
     AutofillGroupState _scope;
 
 
-     _AutofillScopeCls(AutofillGroupState autofillScopeState, Unknown child);
+     _AutofillScopeCls(AutofillGroupState autofillScopeState, Widget child);
 
 };
 using _AutofillScope = std::shared_ptr<_AutofillScopeCls>;

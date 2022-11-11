@@ -80,7 +80,7 @@ String MediaQueryDataCls::toString() {
     return __s("${objectRuntimeType(this, 'MediaQueryData')}(${properties.join(', ')})");
 }
 
-MediaQueryCls::MediaQueryCls(Unknown child, MediaQueryData data, Unknown key) {
+MediaQueryCls::MediaQueryCls(Widget child, MediaQueryData data, Key key) {
     {
         assert(child != nullptr);
         assert(data != nullptr);

@@ -24,7 +24,7 @@ public:
     Widget child;
 
 
-     KeyboardListenerCls(bool autofocus, Widget child, FocusNode focusNode, bool includeSemantics, Unknown key, ValueChanged<KeyEvent> onKeyEvent);
+     KeyboardListenerCls(bool autofocus, Widget child, FocusNode focusNode, bool includeSemantics, Key key, ValueChanged<KeyEvent> onKeyEvent);
 
     virtual Widget build(BuildContext context);
 

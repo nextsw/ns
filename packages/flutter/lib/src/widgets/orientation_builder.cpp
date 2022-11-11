@@ -1,5 +1,5 @@
 #include "orientation_builder.hpp"
-OrientationBuilderCls::OrientationBuilderCls(OrientationWidgetBuilder builder, Unknown key) {
+OrientationBuilderCls::OrientationBuilderCls(OrientationWidgetBuilder builder, Key key) {
     {
         assert(builder != nullptr);
     }

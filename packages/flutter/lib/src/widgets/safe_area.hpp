@@ -28,7 +28,7 @@ public:
     Widget child;
 
 
-     SafeAreaCls(bool bottom, Widget child, Unknown key, bool left, bool maintainBottomViewPadding, EdgeInsets minimum, bool right, bool top);
+     SafeAreaCls(bool bottom, Widget child, Key key, bool left, bool maintainBottomViewPadding, EdgeInsets minimum, bool right, bool top);
 
     virtual Widget build(BuildContext context);
 
@@ -54,7 +54,7 @@ public:
     Widget sliver;
 
 
-     SliverSafeAreaCls(bool bottom, Unknown key, bool left, EdgeInsets minimum, bool right, Widget sliver, bool top);
+     SliverSafeAreaCls(bool bottom, Key key, bool left, EdgeInsets minimum, bool right, Widget sliver, bool top);
 
     virtual Widget build(BuildContext context);
 

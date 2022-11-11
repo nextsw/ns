@@ -1,5 +1,5 @@
 #include "platform_view.hpp"
-AndroidViewCls::AndroidViewCls(Clip clipBehavior, dynamic creationParams, MessageCodec<dynamic> creationParamsCodec, Set<Factory<OneSequenceGestureRecognizer>> gestureRecognizers, PlatformViewHitTestBehavior hitTestBehavior, Unknown key, TextDirection layoutDirection, PlatformViewCreatedCallback onPlatformViewCreated, String viewType) {
+AndroidViewCls::AndroidViewCls(Clip clipBehavior, dynamic creationParams, MessageCodec<dynamic> creationParamsCodec, Set<Factory<OneSequenceGestureRecognizer>> gestureRecognizers, PlatformViewHitTestBehavior hitTestBehavior, Key key, TextDirection layoutDirection, PlatformViewCreatedCallback onPlatformViewCreated, String viewType) {
     {
         assert(viewType != nullptr);
         assert(hitTestBehavior != nullptr);
@@ -12,7 +12,7 @@ State<AndroidView> AndroidViewCls::createState() {
     return make<_AndroidViewStateCls>();
 }
 
-UiKitViewCls::UiKitViewCls(dynamic creationParams, MessageCodec<dynamic> creationParamsCodec, Set<Factory<OneSequenceGestureRecognizer>> gestureRecognizers, PlatformViewHitTestBehavior hitTestBehavior, Unknown key, TextDirection layoutDirection, PlatformViewCreatedCallback onPlatformViewCreated, String viewType) {
+UiKitViewCls::UiKitViewCls(dynamic creationParams, MessageCodec<dynamic> creationParamsCodec, Set<Factory<OneSequenceGestureRecognizer>> gestureRecognizers, PlatformViewHitTestBehavior hitTestBehavior, Key key, TextDirection layoutDirection, PlatformViewCreatedCallback onPlatformViewCreated, String viewType) {
     {
         assert(viewType != nullptr);
         assert(hitTestBehavior != nullptr);
@@ -24,7 +24,7 @@ State<UiKitView> UiKitViewCls::createState() {
     return make<_UiKitViewStateCls>();
 }
 
-HtmlElementViewCls::HtmlElementViewCls(Unknown key, PlatformViewCreatedCallback onPlatformViewCreated, String viewType) {
+HtmlElementViewCls::HtmlElementViewCls(Key key, PlatformViewCreatedCallback onPlatformViewCreated, String viewType) {
     {
         assert(viewType != nullptr);
         assert(kIsWeb, __s("HtmlElementView is only available on Flutter Web."));
@@ -259,7 +259,7 @@ _UiKitPlatformViewCls::_UiKitPlatformViewCls(UiKitViewController controller, Set
 
 void PlatformViewCreationParamsCls::_(int id, ValueChanged<bool> onFocusChanged, PlatformViewCreatedCallback onPlatformViewCreated, String viewType)
 
-PlatformViewLinkCls::PlatformViewLinkCls(Unknown key, CreatePlatformViewCallback onCreatePlatformView, PlatformViewSurfaceFactory surfaceFactory, String viewType) {
+PlatformViewLinkCls::PlatformViewLinkCls(Key key, CreatePlatformViewCallback onCreatePlatformView, PlatformViewSurfaceFactory surfaceFactory, String viewType) {
     {
         assert(surfaceFactory != nullptr);
         assert(onCreatePlatformView != nullptr);
@@ -334,7 +334,7 @@ void _PlatformViewLinkStateCls::_handlePlatformFocusChanged(bool isFocused) {
     }
 }
 
-PlatformViewSurfaceCls::PlatformViewSurfaceCls(PlatformViewController controller, Set<Factory<OneSequenceGestureRecognizer>> gestureRecognizers, PlatformViewHitTestBehavior hitTestBehavior, Unknown key) {
+PlatformViewSurfaceCls::PlatformViewSurfaceCls(PlatformViewController controller, Set<Factory<OneSequenceGestureRecognizer>> gestureRecognizers, PlatformViewHitTestBehavior hitTestBehavior, Key key) {
     {
         assert(controller != nullptr);
         assert(hitTestBehavior != nullptr);
@@ -350,7 +350,7 @@ void PlatformViewSurfaceCls::updateRenderObject(BuildContext context, PlatformVi
     auto _c1 = renderObject;_c1.controller = auto _c2 = controller;_c2.hitTestBehavior = auto _c3 = hitTestBehavior;_c3.updateGestureRecognizers(gestureRecognizers);_c3;_c2;_c1;
 }
 
-AndroidViewSurfaceCls::AndroidViewSurfaceCls(AndroidViewController controller, Unknown gestureRecognizers, Unknown hitTestBehavior, Unknown key) {
+AndroidViewSurfaceCls::AndroidViewSurfaceCls(AndroidViewController controller, Set<Factory<OneSequenceGestureRecognizer>> gestureRecognizers, PlatformViewHitTestBehavior hitTestBehavior, Key key) {
     {
         assert(controller != nullptr);
         assert(hitTestBehavior != nullptr);

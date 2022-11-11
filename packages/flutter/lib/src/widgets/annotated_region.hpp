@@ -15,7 +15,7 @@ public:
     bool sized;
 
 
-     AnnotatedRegionCls(Widget child, Unknown key, bool sized, T value);
+     AnnotatedRegionCls(Widget child, Key key, bool sized, T value);
 
     virtual RenderObject createRenderObject(BuildContext context);
 

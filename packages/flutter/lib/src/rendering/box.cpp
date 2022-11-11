@@ -377,7 +377,7 @@ bool BoxHitTestResultCls::addWithOutOfBandPosition(BoxHitTestWithOutOfBandPositi
     return isHit;
 }
 
-BoxHitTestEntryCls::BoxHitTestEntryCls(Unknown target, Offset localPosition) {
+BoxHitTestEntryCls::BoxHitTestEntryCls(T target, Offset localPosition) {
     {
         assert(localPosition != nullptr);
     }

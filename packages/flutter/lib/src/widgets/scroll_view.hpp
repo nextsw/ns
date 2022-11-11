@@ -62,7 +62,7 @@ public:
     Clip clipBehavior;
 
 
-     ScrollViewCls(double anchor, double cacheExtent, Key center, Clip clipBehavior, ScrollController controller, DragStartBehavior dragStartBehavior, Unknown key, ScrollViewKeyboardDismissBehavior keyboardDismissBehavior, ScrollPhysics physics, bool primary, String restorationId, bool reverse, ScrollBehavior scrollBehavior, Axis scrollDirection, int semanticChildCount, bool shrinkWrap);
+     ScrollViewCls(double anchor, double cacheExtent, Key center, Clip clipBehavior, ScrollController controller, DragStartBehavior dragStartBehavior, Key key, ScrollViewKeyboardDismissBehavior keyboardDismissBehavior, ScrollPhysics physics, bool primary, String restorationId, bool reverse, ScrollBehavior scrollBehavior, Axis scrollDirection, int semanticChildCount, bool shrinkWrap);
 
     virtual AxisDirection getDirection(BuildContext context);
 
@@ -83,7 +83,7 @@ public:
     List<Widget> slivers;
 
 
-     CustomScrollViewCls(Unknown anchor, Unknown cacheExtent, Unknown center, Unknown clipBehavior, Unknown controller, Unknown dragStartBehavior, Unknown key, Unknown keyboardDismissBehavior, Unknown physics, Unknown primary, Unknown restorationId, Unknown reverse, Unknown scrollBehavior, Unknown scrollDirection, Unknown semanticChildCount, Unknown shrinkWrap, List<Widget> slivers);
+     CustomScrollViewCls(double anchor, double cacheExtent, Key center, Clip clipBehavior, ScrollController controller, DragStartBehavior dragStartBehavior, Key key, ScrollViewKeyboardDismissBehavior keyboardDismissBehavior, ScrollPhysics physics, bool primary, String restorationId, bool reverse, ScrollBehavior scrollBehavior, Axis scrollDirection, int semanticChildCount, bool shrinkWrap, List<Widget> slivers);
     virtual List<Widget> buildSlivers(BuildContext context);
 
 private:
@@ -96,7 +96,7 @@ public:
     EdgeInsetsGeometry padding;
 
 
-     BoxScrollViewCls(Unknown cacheExtent, Unknown clipBehavior, Unknown controller, Unknown dragStartBehavior, Unknown key, Unknown keyboardDismissBehavior, EdgeInsetsGeometry padding, Unknown physics, Unknown primary, Unknown restorationId, Unknown reverse, Unknown scrollDirection, Unknown semanticChildCount, Unknown shrinkWrap);
+     BoxScrollViewCls(double cacheExtent, Clip clipBehavior, ScrollController controller, DragStartBehavior dragStartBehavior, Key key, ScrollViewKeyboardDismissBehavior keyboardDismissBehavior, EdgeInsetsGeometry padding, ScrollPhysics physics, bool primary, String restorationId, bool reverse, Axis scrollDirection, int semanticChildCount, bool shrinkWrap);
     virtual List<Widget> buildSlivers(BuildContext context);
 
     virtual Widget buildChildLayout(BuildContext context);
@@ -116,13 +116,13 @@ public:
     SliverChildDelegate childrenDelegate;
 
 
-     ListViewCls(bool addAutomaticKeepAlives, bool addRepaintBoundaries, bool addSemanticIndexes, Unknown cacheExtent, List<Widget> children, Unknown clipBehavior, Unknown controller, Unknown dragStartBehavior, double itemExtent, Unknown key, Unknown keyboardDismissBehavior, Unknown padding, Unknown physics, Unknown primary, Widget prototypeItem, Unknown restorationId, Unknown reverse, Unknown scrollDirection, int semanticChildCount, Unknown shrinkWrap);
+     ListViewCls(bool addAutomaticKeepAlives, bool addRepaintBoundaries, bool addSemanticIndexes, double cacheExtent, List<Widget> children, Clip clipBehavior, ScrollController controller, DragStartBehavior dragStartBehavior, double itemExtent, Key key, ScrollViewKeyboardDismissBehavior keyboardDismissBehavior, EdgeInsetsGeometry padding, ScrollPhysics physics, bool primary, Widget prototypeItem, String restorationId, bool reverse, Axis scrollDirection, int semanticChildCount, bool shrinkWrap);
 
-    virtual void  builder(bool addAutomaticKeepAlives, bool addRepaintBoundaries, bool addSemanticIndexes, Unknown cacheExtent, Unknown clipBehavior, Unknown controller, Unknown dragStartBehavior, ChildIndexGetter findChildIndexCallback, IndexedWidgetBuilder itemBuilder, int itemCount, double itemExtent, Unknown key, Unknown keyboardDismissBehavior, Unknown padding, Unknown physics, Unknown primary, Widget prototypeItem, Unknown restorationId, Unknown reverse, Unknown scrollDirection, int semanticChildCount, Unknown shrinkWrap);
+    virtual void  builder(bool addAutomaticKeepAlives, bool addRepaintBoundaries, bool addSemanticIndexes, double cacheExtent, Clip clipBehavior, ScrollController controller, DragStartBehavior dragStartBehavior, ChildIndexGetter findChildIndexCallback, IndexedWidgetBuilder itemBuilder, int itemCount, double itemExtent, Key key, ScrollViewKeyboardDismissBehavior keyboardDismissBehavior, EdgeInsetsGeometry padding, ScrollPhysics physics, bool primary, Widget prototypeItem, String restorationId, bool reverse, Axis scrollDirection, int semanticChildCount, bool shrinkWrap);
 
-    virtual void  separated(bool addAutomaticKeepAlives, bool addRepaintBoundaries, bool addSemanticIndexes, Unknown cacheExtent, Unknown clipBehavior, Unknown controller, Unknown dragStartBehavior, ChildIndexGetter findChildIndexCallback, IndexedWidgetBuilder itemBuilder, int itemCount, Unknown key, Unknown keyboardDismissBehavior, Unknown padding, Unknown physics, Unknown primary, Unknown restorationId, Unknown reverse, Unknown scrollDirection, IndexedWidgetBuilder separatorBuilder, Unknown shrinkWrap);
+    virtual void  separated(bool addAutomaticKeepAlives, bool addRepaintBoundaries, bool addSemanticIndexes, double cacheExtent, Clip clipBehavior, ScrollController controller, DragStartBehavior dragStartBehavior, ChildIndexGetter findChildIndexCallback, IndexedWidgetBuilder itemBuilder, int itemCount, Key key, ScrollViewKeyboardDismissBehavior keyboardDismissBehavior, EdgeInsetsGeometry padding, ScrollPhysics physics, bool primary, String restorationId, bool reverse, Axis scrollDirection, IndexedWidgetBuilder separatorBuilder, bool shrinkWrap);
 
-    virtual void  custom(Unknown cacheExtent, SliverChildDelegate childrenDelegate, Unknown clipBehavior, Unknown controller, Unknown dragStartBehavior, double itemExtent, Unknown key, Unknown keyboardDismissBehavior, Unknown padding, Unknown physics, Unknown primary, Widget prototypeItem, Unknown restorationId, Unknown reverse, Unknown scrollDirection, Unknown semanticChildCount, Unknown shrinkWrap);
+    virtual void  custom(double cacheExtent, SliverChildDelegate childrenDelegate, Clip clipBehavior, ScrollController controller, DragStartBehavior dragStartBehavior, double itemExtent, Key key, ScrollViewKeyboardDismissBehavior keyboardDismissBehavior, EdgeInsetsGeometry padding, ScrollPhysics physics, bool primary, Widget prototypeItem, String restorationId, bool reverse, Axis scrollDirection, int semanticChildCount, bool shrinkWrap);
 
     virtual Widget buildChildLayout(BuildContext context);
 
@@ -142,15 +142,15 @@ public:
     SliverChildDelegate childrenDelegate;
 
 
-     GridViewCls(bool addAutomaticKeepAlives, bool addRepaintBoundaries, bool addSemanticIndexes, Unknown cacheExtent, List<Widget> children, Unknown clipBehavior, Unknown controller, Unknown dragStartBehavior, SliverGridDelegate gridDelegate, Unknown key, Unknown keyboardDismissBehavior, Unknown padding, Unknown physics, Unknown primary, Unknown restorationId, Unknown reverse, Unknown scrollDirection, int semanticChildCount, Unknown shrinkWrap);
+     GridViewCls(bool addAutomaticKeepAlives, bool addRepaintBoundaries, bool addSemanticIndexes, double cacheExtent, List<Widget> children, Clip clipBehavior, ScrollController controller, DragStartBehavior dragStartBehavior, SliverGridDelegate gridDelegate, Key key, ScrollViewKeyboardDismissBehavior keyboardDismissBehavior, EdgeInsetsGeometry padding, ScrollPhysics physics, bool primary, String restorationId, bool reverse, Axis scrollDirection, int semanticChildCount, bool shrinkWrap);
 
-    virtual void  builder(bool addAutomaticKeepAlives, bool addRepaintBoundaries, bool addSemanticIndexes, Unknown cacheExtent, Unknown clipBehavior, Unknown controller, Unknown dragStartBehavior, ChildIndexGetter findChildIndexCallback, SliverGridDelegate gridDelegate, IndexedWidgetBuilder itemBuilder, int itemCount, Unknown key, Unknown keyboardDismissBehavior, Unknown padding, Unknown physics, Unknown primary, Unknown restorationId, Unknown reverse, Unknown scrollDirection, int semanticChildCount, Unknown shrinkWrap);
+    virtual void  builder(bool addAutomaticKeepAlives, bool addRepaintBoundaries, bool addSemanticIndexes, double cacheExtent, Clip clipBehavior, ScrollController controller, DragStartBehavior dragStartBehavior, ChildIndexGetter findChildIndexCallback, SliverGridDelegate gridDelegate, IndexedWidgetBuilder itemBuilder, int itemCount, Key key, ScrollViewKeyboardDismissBehavior keyboardDismissBehavior, EdgeInsetsGeometry padding, ScrollPhysics physics, bool primary, String restorationId, bool reverse, Axis scrollDirection, int semanticChildCount, bool shrinkWrap);
 
-    virtual void  custom(Unknown cacheExtent, SliverChildDelegate childrenDelegate, Unknown clipBehavior, Unknown controller, Unknown dragStartBehavior, SliverGridDelegate gridDelegate, Unknown key, Unknown keyboardDismissBehavior, Unknown padding, Unknown physics, Unknown primary, Unknown restorationId, Unknown reverse, Unknown scrollDirection, Unknown semanticChildCount, Unknown shrinkWrap);
+    virtual void  custom(double cacheExtent, SliverChildDelegate childrenDelegate, Clip clipBehavior, ScrollController controller, DragStartBehavior dragStartBehavior, SliverGridDelegate gridDelegate, Key key, ScrollViewKeyboardDismissBehavior keyboardDismissBehavior, EdgeInsetsGeometry padding, ScrollPhysics physics, bool primary, String restorationId, bool reverse, Axis scrollDirection, int semanticChildCount, bool shrinkWrap);
 
-    virtual void  count(bool addAutomaticKeepAlives, bool addRepaintBoundaries, bool addSemanticIndexes, Unknown cacheExtent, double childAspectRatio, List<Widget> children, Unknown clipBehavior, Unknown controller, int crossAxisCount, double crossAxisSpacing, Unknown dragStartBehavior, Unknown key, Unknown keyboardDismissBehavior, double mainAxisSpacing, Unknown padding, Unknown physics, Unknown primary, Unknown restorationId, Unknown reverse, Unknown scrollDirection, int semanticChildCount, Unknown shrinkWrap);
+    virtual void  count(bool addAutomaticKeepAlives, bool addRepaintBoundaries, bool addSemanticIndexes, double cacheExtent, double childAspectRatio, List<Widget> children, Clip clipBehavior, ScrollController controller, int crossAxisCount, double crossAxisSpacing, DragStartBehavior dragStartBehavior, Key key, ScrollViewKeyboardDismissBehavior keyboardDismissBehavior, double mainAxisSpacing, EdgeInsetsGeometry padding, ScrollPhysics physics, bool primary, String restorationId, bool reverse, Axis scrollDirection, int semanticChildCount, bool shrinkWrap);
 
-    virtual void  extent(bool addAutomaticKeepAlives, bool addRepaintBoundaries, bool addSemanticIndexes, Unknown cacheExtent, double childAspectRatio, List<Widget> children, Unknown clipBehavior, Unknown controller, double crossAxisSpacing, Unknown dragStartBehavior, Unknown key, Unknown keyboardDismissBehavior, double mainAxisSpacing, double maxCrossAxisExtent, Unknown padding, Unknown physics, Unknown primary, Unknown restorationId, Unknown reverse, Unknown scrollDirection, int semanticChildCount, Unknown shrinkWrap);
+    virtual void  extent(bool addAutomaticKeepAlives, bool addRepaintBoundaries, bool addSemanticIndexes, double cacheExtent, double childAspectRatio, List<Widget> children, Clip clipBehavior, ScrollController controller, double crossAxisSpacing, DragStartBehavior dragStartBehavior, Key key, ScrollViewKeyboardDismissBehavior keyboardDismissBehavior, double mainAxisSpacing, double maxCrossAxisExtent, EdgeInsetsGeometry padding, ScrollPhysics physics, bool primary, String restorationId, bool reverse, Axis scrollDirection, int semanticChildCount, bool shrinkWrap);
 
     virtual Widget buildChildLayout(BuildContext context);
 

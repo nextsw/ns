@@ -1,6 +1,6 @@
 #include "layout_builder.hpp"
 template<typename ConstraintType>
-ConstrainedLayoutBuilderCls<ConstraintType>::ConstrainedLayoutBuilderCls(std::function<Widget(BuildContext , ConstraintType )> builder, Unknown key) {
+ConstrainedLayoutBuilderCls<ConstraintType>::ConstrainedLayoutBuilderCls(std::function<Widget(BuildContext , ConstraintType )> builder, Key key) {
     {
         assert(builder != nullptr);
     }
@@ -110,9 +110,9 @@ void RenderConstrainedLayoutBuilderCls<ConstraintType, ChildType>::rebuildIfNece
     }
 }
 
-LayoutBuilderCls::LayoutBuilderCls(Unknown builder, Unknown key) {
+LayoutBuilderCls::LayoutBuilderCls(Unknown builder, Key key) {
     {
-        assert(builder != nullptr);
+        assert(builder() != nullptr);
     }
 }
 

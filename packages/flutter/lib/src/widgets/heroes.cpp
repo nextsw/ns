@@ -1,5 +1,5 @@
 #include "heroes.hpp"
-HeroCls::HeroCls(Widget child, CreateRectTween createRectTween, HeroFlightShuttleBuilder flightShuttleBuilder, Unknown key, HeroPlaceholderBuilder placeholderBuilder, Object tag, bool transitionOnUserGestures) {
+HeroCls::HeroCls(Widget child, CreateRectTween createRectTween, HeroFlightShuttleBuilder flightShuttleBuilder, Key key, HeroPlaceholderBuilder placeholderBuilder, Object tag, bool transitionOnUserGestures) {
     {
         assert(tag != nullptr);
         assert(transitionOnUserGestures != nullptr);
@@ -335,7 +335,7 @@ Widget HeroControllerCls::_defaultHeroFlightShuttleBuilder(BuildContext flightCo
     });
 }
 
-HeroModeCls::HeroModeCls(Widget child, bool enabled, Unknown key) {
+HeroModeCls::HeroModeCls(Widget child, bool enabled, Key key) {
     {
         assert(child != nullptr);
         assert(enabled != nullptr);

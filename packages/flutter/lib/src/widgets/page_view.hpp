@@ -62,7 +62,7 @@ public:
     double viewportFraction;
 
 
-     PageMetricsCls(Unknown axisDirection, Unknown maxScrollExtent, Unknown minScrollExtent, Unknown pixels, Unknown viewportDimension, double viewportFraction);
+     PageMetricsCls(AxisDirection axisDirection, Unknown maxScrollExtent, Unknown minScrollExtent, Unknown pixels, Unknown viewportDimension, double viewportFraction);
     virtual PageMetrics copyWith(AxisDirection axisDirection, double maxScrollExtent, double minScrollExtent, double pixels, double viewportDimension, double viewportFraction);
 
     virtual double page();
@@ -113,7 +113,7 @@ private:
     double _viewportFraction;
 
 
-     _PagePositionCls(Unknown context, int initialPage, bool keepPage, Unknown oldPosition, Unknown physics, double viewportFraction);
+     _PagePositionCls(ScrollContext context, int initialPage, bool keepPage, Unknown oldPosition, ScrollPhysics physics, double viewportFraction);
 
     virtual double _initialPageOffset();
 
@@ -129,7 +129,7 @@ public:
 
 private:
 
-     _ForceImplicitScrollPhysicsCls(bool allowImplicitScrolling, Unknown parent);
+     _ForceImplicitScrollPhysicsCls(bool allowImplicitScrolling, ScrollPhysics parent);
 
 };
 using _ForceImplicitScrollPhysics = std::shared_ptr<_ForceImplicitScrollPhysicsCls>;
@@ -137,7 +137,7 @@ using _ForceImplicitScrollPhysics = std::shared_ptr<_ForceImplicitScrollPhysicsC
 class PageScrollPhysicsCls : public ScrollPhysicsCls {
 public:
 
-     PageScrollPhysicsCls(Unknown parent);
+     PageScrollPhysicsCls(ScrollPhysics parent);
     virtual PageScrollPhysics applyTo(ScrollPhysics ancestor);
 
     virtual Simulation createBallisticSimulation(ScrollMetrics position, double velocity);
@@ -188,11 +188,11 @@ public:
     bool padEnds;
 
 
-     PageViewCls(bool allowImplicitScrolling, List<Widget> children, Clip clipBehavior, PageController controller, DragStartBehavior dragStartBehavior, Unknown key, ValueChanged<int> onPageChanged, bool padEnds, bool pageSnapping, ScrollPhysics physics, String restorationId, bool reverse, ScrollBehavior scrollBehavior, Axis scrollDirection);
+     PageViewCls(bool allowImplicitScrolling, List<Widget> children, Clip clipBehavior, PageController controller, DragStartBehavior dragStartBehavior, Key key, ValueChanged<int> onPageChanged, bool padEnds, bool pageSnapping, ScrollPhysics physics, String restorationId, bool reverse, ScrollBehavior scrollBehavior, Axis scrollDirection);
 
-    virtual void  builder(bool allowImplicitScrolling, Clip clipBehavior, PageController controller, DragStartBehavior dragStartBehavior, ChildIndexGetter findChildIndexCallback, IndexedWidgetBuilder itemBuilder, int itemCount, Unknown key, ValueChanged<int> onPageChanged, bool padEnds, bool pageSnapping, ScrollPhysics physics, String restorationId, bool reverse, ScrollBehavior scrollBehavior, Axis scrollDirection);
+    virtual void  builder(bool allowImplicitScrolling, Clip clipBehavior, PageController controller, DragStartBehavior dragStartBehavior, ChildIndexGetter findChildIndexCallback, IndexedWidgetBuilder itemBuilder, int itemCount, Key key, ValueChanged<int> onPageChanged, bool padEnds, bool pageSnapping, ScrollPhysics physics, String restorationId, bool reverse, ScrollBehavior scrollBehavior, Axis scrollDirection);
 
-    virtual void  custom(bool allowImplicitScrolling, SliverChildDelegate childrenDelegate, Clip clipBehavior, PageController controller, DragStartBehavior dragStartBehavior, Unknown key, ValueChanged<int> onPageChanged, bool padEnds, bool pageSnapping, ScrollPhysics physics, String restorationId, bool reverse, ScrollBehavior scrollBehavior, Axis scrollDirection);
+    virtual void  custom(bool allowImplicitScrolling, SliverChildDelegate childrenDelegate, Clip clipBehavior, PageController controller, DragStartBehavior dragStartBehavior, Key key, ValueChanged<int> onPageChanged, bool padEnds, bool pageSnapping, ScrollPhysics physics, String restorationId, bool reverse, ScrollBehavior scrollBehavior, Axis scrollDirection);
 
     virtual State<PageView> createState();
 

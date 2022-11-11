@@ -218,13 +218,13 @@ void NavigatorObserverCls::didStartUserGesture(Route<dynamic> route, Route<dynam
 void NavigatorObserverCls::didStopUserGesture() {
 }
 
-HeroControllerScopeCls::HeroControllerScopeCls(Unknown child, HeroController controller, Unknown key) {
+HeroControllerScopeCls::HeroControllerScopeCls(Widget child, HeroController controller, Key key) {
     {
         assert(controller != nullptr);
     }
 }
 
-void HeroControllerScopeCls::none(Unknown child, Unknown key)
+void HeroControllerScopeCls::none(Widget child, Key key)
 
 HeroController HeroControllerScopeCls::of(BuildContext context) {
     HeroControllerScope host = context-><HeroControllerScope>dependOnInheritedWidgetOfExactType();
@@ -290,7 +290,7 @@ Iterable<RouteTransitionRecord> DefaultTransitionDelegateCls<T>::resolve(Map<Rou
     return results;
 }
 
-NavigatorCls::NavigatorCls(String initialRoute, Unknown key, List<NavigatorObserver> observers, RouteListFactory onGenerateInitialRoutes, RouteFactory onGenerateRoute, PopPageCallback onPopPage, RouteFactory onUnknownRoute, List<Page<dynamic>> pages, bool reportsRouteUpdateToEngine, bool requestFocus, String restorationScopeId, TransitionDelegate<dynamic> transitionDelegate) {
+NavigatorCls::NavigatorCls(String initialRoute, Key key, List<NavigatorObserver> observers, RouteListFactory onGenerateInitialRoutes, RouteFactory onGenerateRoute, PopPageCallback onPopPage, RouteFactory onUnknownRoute, List<Page<dynamic>> pages, bool reportsRouteUpdateToEngine, bool requestFocus, String restorationScopeId, TransitionDelegate<dynamic> transitionDelegate) {
     {
         assert(pages != nullptr);
         assert(onGenerateInitialRoutes != nullptr);

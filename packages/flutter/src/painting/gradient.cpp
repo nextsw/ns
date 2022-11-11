@@ -113,7 +113,7 @@ Float64List GradientCls::_resolveTransform(Rect bounds, TextDirection textDirect
     return transform?->transform(bounds, textDirection)?->storage();
 }
 
-LinearGradientCls::LinearGradientCls(AlignmentGeometry begin, Unknown colors, AlignmentGeometry end, Unknown stops, TileMode tileMode, Unknown transform) {
+LinearGradientCls::LinearGradientCls(AlignmentGeometry begin, List<Color> colors, AlignmentGeometry end, List<double> stops, TileMode tileMode, GradientTransform transform) {
     {
         assert(begin != nullptr);
         assert(end != nullptr);
@@ -179,7 +179,7 @@ String LinearGradientCls::toString() {
     return __s("${objectRuntimeType(this, 'LinearGradient')}(${description.join(', ')})");
 }
 
-RadialGradientCls::RadialGradientCls(AlignmentGeometry center, Unknown colors, AlignmentGeometry focal, double focalRadius, double radius, Unknown stops, TileMode tileMode, Unknown transform) {
+RadialGradientCls::RadialGradientCls(AlignmentGeometry center, List<Color> colors, AlignmentGeometry focal, double focalRadius, double radius, List<double> stops, TileMode tileMode, GradientTransform transform) {
     {
         assert(center != nullptr);
         assert(radius != nullptr);
@@ -246,7 +246,7 @@ String RadialGradientCls::toString() {
     return __s("${objectRuntimeType(this, 'RadialGradient')}(${description.join(', ')})");
 }
 
-SweepGradientCls::SweepGradientCls(AlignmentGeometry center, Unknown colors, double endAngle, double startAngle, Unknown stops, TileMode tileMode, Unknown transform) {
+SweepGradientCls::SweepGradientCls(AlignmentGeometry center, List<Color> colors, double endAngle, double startAngle, List<double> stops, TileMode tileMode, GradientTransform transform) {
     {
         assert(center != nullptr);
         assert(startAngle != nullptr);

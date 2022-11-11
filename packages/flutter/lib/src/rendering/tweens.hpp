@@ -10,7 +10,7 @@
 class FractionalOffsetTweenCls : public TweenCls<FractionalOffset> {
 public:
 
-     FractionalOffsetTweenCls(Unknown begin, Unknown end);
+     FractionalOffsetTweenCls(T begin, T end);
     virtual FractionalOffset lerp(double t);
 
 private:
@@ -21,7 +21,7 @@ using FractionalOffsetTween = std::shared_ptr<FractionalOffsetTweenCls>;
 class AlignmentTweenCls : public TweenCls<Alignment> {
 public:
 
-     AlignmentTweenCls(Unknown begin, Unknown end);
+     AlignmentTweenCls(T begin, T end);
     virtual Alignment lerp(double t);
 
 private:
@@ -32,7 +32,7 @@ using AlignmentTween = std::shared_ptr<AlignmentTweenCls>;
 class AlignmentGeometryTweenCls : public TweenCls<AlignmentGeometry> {
 public:
 
-     AlignmentGeometryTweenCls(Unknown begin, Unknown end);
+     AlignmentGeometryTweenCls(T begin, T end);
     virtual AlignmentGeometry lerp(double t);
 
 private:

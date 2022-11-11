@@ -119,7 +119,7 @@ using ColorSwatch = std::shared_ptr<ColorSwatchCls<T>>;
 class ColorPropertyCls : public DiagnosticsPropertyCls<Color> {
 public:
 
-     ColorPropertyCls(String name, Unknown value, Unknown defaultValue, Unknown level, Unknown showName, Unknown style);
+     ColorPropertyCls(String name, Unknown value, Object defaultValue, Unknown level, bool showName, DiagnosticsTreeStyle style);
 
     virtual Map<String, Object> toJsonMap(DiagnosticsSerializationDelegate delegate);
 

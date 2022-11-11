@@ -33,7 +33,7 @@ public:
     Clip clipBehavior;
 
 
-     AndroidViewCls(Clip clipBehavior, dynamic creationParams, MessageCodec<dynamic> creationParamsCodec, Set<Factory<OneSequenceGestureRecognizer>> gestureRecognizers, PlatformViewHitTestBehavior hitTestBehavior, Unknown key, TextDirection layoutDirection, PlatformViewCreatedCallback onPlatformViewCreated, String viewType);
+     AndroidViewCls(Clip clipBehavior, dynamic creationParams, MessageCodec<dynamic> creationParamsCodec, Set<Factory<OneSequenceGestureRecognizer>> gestureRecognizers, PlatformViewHitTestBehavior hitTestBehavior, Key key, TextDirection layoutDirection, PlatformViewCreatedCallback onPlatformViewCreated, String viewType);
 
     virtual State<AndroidView> createState();
 
@@ -59,7 +59,7 @@ public:
     Set<Factory<OneSequenceGestureRecognizer>> gestureRecognizers;
 
 
-     UiKitViewCls(dynamic creationParams, MessageCodec<dynamic> creationParamsCodec, Set<Factory<OneSequenceGestureRecognizer>> gestureRecognizers, PlatformViewHitTestBehavior hitTestBehavior, Unknown key, TextDirection layoutDirection, PlatformViewCreatedCallback onPlatformViewCreated, String viewType);
+     UiKitViewCls(dynamic creationParams, MessageCodec<dynamic> creationParamsCodec, Set<Factory<OneSequenceGestureRecognizer>> gestureRecognizers, PlatformViewHitTestBehavior hitTestBehavior, Key key, TextDirection layoutDirection, PlatformViewCreatedCallback onPlatformViewCreated, String viewType);
 
     virtual State<UiKitView> createState();
 
@@ -75,7 +75,7 @@ public:
     PlatformViewCreatedCallback onPlatformViewCreated;
 
 
-     HtmlElementViewCls(Unknown key, PlatformViewCreatedCallback onPlatformViewCreated, String viewType);
+     HtmlElementViewCls(Key key, PlatformViewCreatedCallback onPlatformViewCreated, String viewType);
 
     virtual Widget build(BuildContext context);
 
@@ -244,7 +244,7 @@ public:
     String viewType;
 
 
-     PlatformViewLinkCls(Unknown key, CreatePlatformViewCallback onCreatePlatformView, PlatformViewSurfaceFactory surfaceFactory, String viewType);
+     PlatformViewLinkCls(Key key, CreatePlatformViewCallback onCreatePlatformView, PlatformViewSurfaceFactory surfaceFactory, String viewType);
 
     virtual State<StatefulWidget> createState();
 
@@ -300,7 +300,7 @@ public:
     PlatformViewHitTestBehavior hitTestBehavior;
 
 
-     PlatformViewSurfaceCls(PlatformViewController controller, Set<Factory<OneSequenceGestureRecognizer>> gestureRecognizers, PlatformViewHitTestBehavior hitTestBehavior, Unknown key);
+     PlatformViewSurfaceCls(PlatformViewController controller, Set<Factory<OneSequenceGestureRecognizer>> gestureRecognizers, PlatformViewHitTestBehavior hitTestBehavior, Key key);
 
     virtual RenderObject createRenderObject(BuildContext context);
 
@@ -314,7 +314,7 @@ using PlatformViewSurface = std::shared_ptr<PlatformViewSurfaceCls>;
 class AndroidViewSurfaceCls : public PlatformViewSurfaceCls {
 public:
 
-     AndroidViewSurfaceCls(AndroidViewController controller, Unknown gestureRecognizers, Unknown hitTestBehavior, Unknown key);
+     AndroidViewSurfaceCls(AndroidViewController controller, Set<Factory<OneSequenceGestureRecognizer>> gestureRecognizers, PlatformViewHitTestBehavior hitTestBehavior, Key key);
 
     virtual RenderObject createRenderObject(BuildContext context);
 

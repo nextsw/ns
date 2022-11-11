@@ -16,7 +16,7 @@
 class StadiumBorderCls : public OutlinedBorderCls {
 public:
 
-     StadiumBorderCls(Unknown side);
+     StadiumBorderCls(BorderSide side);
 
     virtual EdgeInsetsGeometry dimensions();
 
@@ -74,7 +74,7 @@ public:
 
 private:
 
-     _StadiumToCircleBorderCls(double circleness, Unknown side);
+     _StadiumToCircleBorderCls(double circleness, BorderSide side);
 
     virtual Rect _adjustRect(Rect rect);
 
@@ -114,7 +114,7 @@ public:
 
 private:
 
-     _StadiumToRoundedRectangleBorderCls(BorderRadius borderRadius, double rectness, Unknown side);
+     _StadiumToRoundedRectangleBorderCls(BorderRadius borderRadius, double rectness, BorderSide side);
 
     virtual BorderRadius _adjustBorderRadius(Rect rect);
 

@@ -32,7 +32,7 @@ public:
     Clip clipBehavior;
 
 
-     OverflowBarCls(MainAxisAlignment alignment, Unknown children, Clip clipBehavior, Unknown key, OverflowBarAlignment overflowAlignment, VerticalDirection overflowDirection, double overflowSpacing, double spacing, TextDirection textDirection);
+     OverflowBarCls(MainAxisAlignment alignment, List<Widget> children, Clip clipBehavior, Key key, OverflowBarAlignment overflowAlignment, VerticalDirection overflowDirection, double overflowSpacing, double spacing, TextDirection textDirection);
 
     virtual RenderObject createRenderObject(BuildContext context);
 

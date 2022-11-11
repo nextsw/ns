@@ -141,7 +141,7 @@ Future<void> DefaultPlatformMenuDelegateCls::_methodCallHandler(MethodCall call)
     };
     }}
 
-PlatformMenuBarCls::PlatformMenuBarCls(Widget body, Widget child, Unknown key, List<MenuItem> menus) {
+PlatformMenuBarCls::PlatformMenuBarCls(Widget body, Widget child, Key key, List<MenuItem> menus) {
     {
         assert(body == nullptr || child == nullptr, __s("The body argument is deprecated, and only one of body or child may be used."));
     }

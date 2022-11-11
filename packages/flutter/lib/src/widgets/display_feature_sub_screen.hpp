@@ -18,7 +18,7 @@ public:
     Widget child;
 
 
-     DisplayFeatureSubScreenCls(Offset anchorPoint, Widget child, Unknown key);
+     DisplayFeatureSubScreenCls(Offset anchorPoint, Widget child, Key key);
     virtual Widget build(BuildContext context);
 
     static Iterable<Rect> avoidBounds(MediaQueryData mediaQuery);

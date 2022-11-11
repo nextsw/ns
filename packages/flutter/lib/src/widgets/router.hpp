@@ -63,7 +63,7 @@ public:
     String restorationScopeId;
 
 
-     RouterCls(BackButtonDispatcher backButtonDispatcher, Unknown key, String restorationScopeId, RouteInformationParser<T> routeInformationParser, RouteInformationProvider routeInformationProvider, RouterDelegate<T> routerDelegate);
+     RouterCls(BackButtonDispatcher backButtonDispatcher, Key key, String restorationScopeId, RouteInformationParser<T> routeInformationParser, RouteInformationProvider routeInformationProvider, RouterDelegate<T> routerDelegate);
 
     virtual void  withConfig(RouterConfig<T> config, Key key, String restorationScopeId);
 
@@ -166,7 +166,7 @@ public:
 
 private:
 
-     _RouterScopeCls(BackButtonDispatcher backButtonDispatcher, Unknown child, RouteInformationParser<Object> routeInformationParser, ValueListenable<RouteInformation> routeInformationProvider, RouterDelegate<Object> routerDelegate, _RouterState<Object> routerState);
+     _RouterScopeCls(BackButtonDispatcher backButtonDispatcher, Widget child, RouteInformationParser<Object> routeInformationParser, ValueListenable<RouteInformation> routeInformationProvider, RouterDelegate<Object> routerDelegate, _RouterState<Object> routerState);
 
 };
 using _RouterScope = std::shared_ptr<_RouterScopeCls>;
@@ -255,7 +255,7 @@ public:
     ValueGetter<Future<bool>> onBackButtonPressed;
 
 
-     BackButtonListenerCls(Widget child, Unknown key, ValueGetter<Future<bool>> onBackButtonPressed);
+     BackButtonListenerCls(Widget child, Key key, ValueGetter<Future<bool>> onBackButtonPressed);
     virtual State<BackButtonListener> createState();
 
 private:

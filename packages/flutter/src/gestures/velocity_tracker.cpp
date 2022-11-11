@@ -129,7 +129,7 @@ Velocity VelocityTrackerCls::getVelocity() {
     return make<VelocityCls>(estimate->pixelsPerSecond);
 }
 
-IOSScrollViewFlingVelocityTrackerCls::IOSScrollViewFlingVelocityTrackerCls(Unknown kind) {
+IOSScrollViewFlingVelocityTrackerCls::IOSScrollViewFlingVelocityTrackerCls(PointerDeviceKind kind) {
     {
         super->withKind();
     }
